@@ -4,45 +4,45 @@
 - (BOOL)isRangeExpression;
 - (BOOL)isSingleColumnSpanningReference;
 - (BOOL)isSingleRowSpanningReference;
-- (TSCECombinedReferenceFormulaNode)initWithCategoryRef:(id)a3 hostCellRef:(const TSCECellRef *)a4;
-- (TSCECombinedReferenceFormulaNode)initWithReferenceStart:(id)a3 referenceEnd:(id)a4 calcEngine:(id)a5;
-- (TSCECombinedReferenceFormulaNode)initWithUidRectRef:(id)a3 hostCellRef:(const TSCECellRef *)a4;
+- (TSCECombinedReferenceFormulaNode)initWithCategoryRef:(id)ref hostCellRef:(const TSCECellRef *)cellRef;
+- (TSCECombinedReferenceFormulaNode)initWithReferenceStart:(id)start referenceEnd:(id)end calcEngine:(id)engine;
+- (TSCECombinedReferenceFormulaNode)initWithUidRectRef:(id)ref hostCellRef:(const TSCECellRef *)cellRef;
 - (TSCERangeCoordinate)baseBoundingBox;
 - (TSKUIDStruct)tableUID;
 - (id).cxx_construct;
-- (id)convertCategoryRefToRelativeForHostCell:(const TSCECellRef *)a3 calcEngine:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)appendToNodeArray:(TSCEASTNodeArray *)a3 forCoord:(TSUCellCoord)a4 preserveFlags:(unsigned __int8)a5 hostCellRef:(const TSCECellRef *)a6 calcEngine:(id)a7;
-- (void)appendToNodeArray:(TSCEASTNodeArray *)a3 hostCellRef:(const TSCECellRef *)a4 symbolTable:(void *)a5 calcEngine:(id)a6;
-- (void)setHostCellRef:(TSCECellRef *)a3;
+- (id)convertCategoryRefToRelativeForHostCell:(const TSCECellRef *)cell calcEngine:(id)engine;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)appendToNodeArray:(TSCEASTNodeArray *)array forCoord:(TSUCellCoord)coord preserveFlags:(unsigned __int8)flags hostCellRef:(const TSCECellRef *)ref calcEngine:(id)engine;
+- (void)appendToNodeArray:(TSCEASTNodeArray *)array hostCellRef:(const TSCECellRef *)ref symbolTable:(void *)table calcEngine:(id)engine;
+- (void)setHostCellRef:(TSCECellRef *)ref;
 @end
 
 @implementation TSCECombinedReferenceFormulaNode
 
-- (TSCECombinedReferenceFormulaNode)initWithUidRectRef:(id)a3 hostCellRef:(const TSCECellRef *)a4
+- (TSCECombinedReferenceFormulaNode)initWithUidRectRef:(id)ref hostCellRef:(const TSCECellRef *)cellRef
 {
-  v7 = a3;
+  refCopy = ref;
   v13.receiver = self;
   v13.super_class = TSCECombinedReferenceFormulaNode;
   v8 = [(TSCEFormulaNode *)&v13 initWithNodeType:16];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_uidRectRef, a3);
+    objc_storeStrong(&v8->_uidRectRef, ref);
     categoryRef = v9->_categoryRef;
     v9->_categoryRef = 0;
 
-    upper = a4->_tableUID._upper;
-    *&v9->_hostCellRef.coordinate.row = *&a4->coordinate.row;
+    upper = cellRef->_tableUID._upper;
+    *&v9->_hostCellRef.coordinate.row = *&cellRef->coordinate.row;
     v9->_hostCellRef._tableUID._upper = upper;
   }
 
   return v9;
 }
 
-- (TSCECombinedReferenceFormulaNode)initWithCategoryRef:(id)a3 hostCellRef:(const TSCECellRef *)a4
+- (TSCECombinedReferenceFormulaNode)initWithCategoryRef:(id)ref hostCellRef:(const TSCECellRef *)cellRef
 {
-  v7 = a3;
+  refCopy = ref;
   v13.receiver = self;
   v13.super_class = TSCECombinedReferenceFormulaNode;
   v8 = [(TSCEFormulaNode *)&v13 initWithNodeType:16];
@@ -52,16 +52,16 @@
     uidRectRef = v8->_uidRectRef;
     v8->_uidRectRef = 0;
 
-    objc_storeStrong(&v9->_categoryRef, a3);
-    upper = a4->_tableUID._upper;
-    *&v9->_hostCellRef.coordinate.row = *&a4->coordinate.row;
+    objc_storeStrong(&v9->_categoryRef, ref);
+    upper = cellRef->_tableUID._upper;
+    *&v9->_hostCellRef.coordinate.row = *&cellRef->coordinate.row;
     v9->_hostCellRef._tableUID._upper = upper;
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19.receiver = self;
   v19.super_class = TSCECombinedReferenceFormulaNode;
@@ -191,18 +191,18 @@
   return v13;
 }
 
-- (TSCECombinedReferenceFormulaNode)initWithReferenceStart:(id)a3 referenceEnd:(id)a4 calcEngine:(id)a5
+- (TSCECombinedReferenceFormulaNode)initWithReferenceStart:(id)start referenceEnd:(id)end calcEngine:(id)engine
 {
-  v8 = a3;
-  v9 = a4;
-  v14 = a5;
-  if (!v8)
+  startCopy = start;
+  endCopy = end;
+  engineCopy = engine;
+  if (!startCopy)
   {
     v15 = 0;
     bottomRight = 0;
     v92 = 0;
     v93 = 0;
-    if (v9)
+    if (endCopy)
     {
       goto LABEL_3;
     }
@@ -214,16 +214,16 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  objc_msgSend_hostCellRef(v8, v10, v11, v12, v13);
+  objc_msgSend_hostCellRef(startCopy, v10, v11, v12, v13);
   bottomRight = v92._bottomRight;
   v15 = v93;
-  if (!v9)
+  if (!endCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  objc_msgSend_hostCellRef(v9, v10, v11, v12, v13, *&v92._topLeft);
+  objc_msgSend_hostCellRef(endCopy, v10, v11, v12, v13, *&v92._topLeft);
   v17 = v97._bottomRight;
 LABEL_6:
   if (bottomRight != v17 || v15 != v98)
@@ -236,39 +236,39 @@ LABEL_6:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26, v27, v28);
   }
 
-  v29 = objc_msgSend_uidRectRef(v8, v10, v11, v12, v13, *&v92._topLeft);
+  v29 = objc_msgSend_uidRectRef(startCopy, v10, v11, v12, v13, *&v92._topLeft);
   v34 = objc_msgSend_viewTopLeftCoord(v29, v30, v31, v32, v33);
 
-  v39 = objc_msgSend_uidRectRef(v9, v35, v36, v37, v38);
+  v39 = objc_msgSend_uidRectRef(endCopy, v35, v36, v37, v38);
   v44 = objc_msgSend_viewBottomRightCoord(v39, v40, v41, v42, v43);
 
   v96._topLeft = v34;
   v96._bottomRight = v44;
-  LOBYTE(v34) = objc_msgSend_viewPreserveFlags(v8, v45, v46, v47, v48);
-  v95._flags = objc_msgSend_viewPreserveFlags(v9, v49, v50, v51, v52) & 0xFC | v34 & 3;
+  LOBYTE(v34) = objc_msgSend_viewPreserveFlags(startCopy, v45, v46, v47, v48);
+  v95._flags = objc_msgSend_viewPreserveFlags(endCopy, v49, v50, v51, v52) & 0xFC | v34 & 3;
   TSCERangeCoordinate::fixInversions(&v96, &v95);
   flags = v95._flags;
-  v58 = objc_msgSend_tableUID(v8, v54, v55, v56, v57);
+  v58 = objc_msgSend_tableUID(startCopy, v54, v55, v56, v57);
   v60 = v59;
-  if ((objc_msgSend_isRangeExpression(v8, v59, v61, v62, v63) & 1) == 0 && (objc_msgSend_isRangeExpression(v9, v64, v65, v66, v67) & 1) == 0)
+  if ((objc_msgSend_isRangeExpression(startCopy, v59, v61, v62, v63) & 1) == 0 && (objc_msgSend_isRangeExpression(endCopy, v64, v65, v66, v67) & 1) == 0)
   {
-    if (v8)
+    if (startCopy)
     {
-      objc_msgSend_hostCellRef(v8, v68, v69, v70, v71);
+      objc_msgSend_hostCellRef(startCopy, v68, v69, v70, v71);
       v82 = v92._bottomRight;
       v81 = v93;
-      if (v9)
+      if (endCopy)
       {
 LABEL_18:
-        objc_msgSend_hostCellRef(v9, v68, v69, v70, v71, v92, v93);
+        objc_msgSend_hostCellRef(endCopy, v68, v69, v70, v71, v92, v93);
         v84 = v97._bottomRight;
         v83 = v98;
 LABEL_21:
         if (v82 == v84 && v81 == v83)
         {
-          v85 = objc_msgSend_tableUID(v8, v68, v69, v70, v71);
+          v85 = objc_msgSend_tableUID(startCopy, v68, v69, v70, v71);
           v87 = v86;
-          if (v85 == objc_msgSend_tableUID(v9, v86, v88, v89, v90) && v87 == v91 && TSCERangeCoordinate::isValidOrSpanning(&v96))
+          if (v85 == objc_msgSend_tableUID(endCopy, v86, v88, v89, v90) && v87 == v91 && TSCERangeCoordinate::isValidOrSpanning(&v96))
           {
             goto LABEL_12;
           }
@@ -284,7 +284,7 @@ LABEL_21:
       v82 = 0;
       v92 = 0;
       v93 = 0;
-      if (v9)
+      if (endCopy)
       {
         goto LABEL_18;
       }
@@ -305,10 +305,10 @@ LABEL_12:
   v92 = v97;
   v93 = v58;
   v94 = v60;
-  v78 = objc_msgSend_initWithCalcEngine_viewRangeRef_preserveFlags_(v72, v73, v14, &v92, flags);
-  if (v8)
+  v78 = objc_msgSend_initWithCalcEngine_viewRangeRef_preserveFlags_(v72, v73, engineCopy, &v92, flags);
+  if (startCopy)
   {
-    objc_msgSend_hostCellRef(v8, v74, v75, v76, v77);
+    objc_msgSend_hostCellRef(startCopy, v74, v75, v76, v77);
   }
 
   else
@@ -322,32 +322,32 @@ LABEL_12:
   return v79;
 }
 
-- (id)convertCategoryRefToRelativeForHostCell:(const TSCECellRef *)a3 calcEngine:(id)a4
+- (id)convertCategoryRefToRelativeForHostCell:(const TSCECellRef *)cell calcEngine:(id)engine
 {
-  v6 = a4;
+  engineCopy = engine;
   v7 = self->_categoryRef;
   if ((objc_msgSend_preserveFlags(self->_categoryRef, v8, v9, v10, v11) & 2) == 0)
   {
     v16 = objc_msgSend_groupByUid(self->_categoryRef, v12, v13, v14, v15);
-    v18 = objc_msgSend_groupByForUID_withCalcEngine_(TSTGroupBy, v17, v16, v17, v6);
+    v18 = objc_msgSend_groupByForUID_withCalcEngine_(TSTGroupBy, v17, v16, v17, engineCopy);
     v23 = v18;
     if (v18)
     {
       v24 = objc_msgSend_tableInfo(v18, v19, v20, v21, v22);
-      if (objc_msgSend_tableUID(v24, v25, v26, v27, v28) == a3->_tableUID._lower)
+      if (objc_msgSend_tableUID(v24, v25, v26, v27, v28) == cell->_tableUID._lower)
       {
         v30 = v29;
-        upper = a3->_tableUID._upper;
+        upper = cell->_tableUID._upper;
 
         if (v30 == upper)
         {
           v36 = objc_msgSend_tableInfo(v23, v32, v33, v34, v35);
           v41 = objc_msgSend_translator(v36, v37, v38, v39, v40);
-          v51[0] = objc_msgSend_rowUIDForBaseRowIndex_(v41, v42, a3->coordinate.row, v43, v44);
+          v51[0] = objc_msgSend_rowUIDForBaseRowIndex_(v41, v42, cell->coordinate.row, v43, v44);
           v51[1] = v45;
 
           categoryRef = self->_categoryRef;
-          tableUID = a3->_tableUID;
+          tableUID = cell->_tableUID;
           v48 = objc_msgSend_convertCategoryRefToRelativeAncestorUid_atRowUid_inHostTable_(v23, v47, categoryRef, v51, &tableUID);
 
           v7 = v48;
@@ -363,12 +363,12 @@ LABEL_12:
   return v7;
 }
 
-- (void)appendToNodeArray:(TSCEASTNodeArray *)a3 forCoord:(TSUCellCoord)a4 preserveFlags:(unsigned __int8)a5 hostCellRef:(const TSCECellRef *)a6 calcEngine:(id)a7
+- (void)appendToNodeArray:(TSCEASTNodeArray *)array forCoord:(TSUCellCoord)coord preserveFlags:(unsigned __int8)flags hostCellRef:(const TSCECellRef *)ref calcEngine:(id)engine
 {
-  HIBYTE(v52.var2) = a5;
-  lower = a6->_tableUID._lower;
-  upper = a6->_tableUID._upper;
-  if (lower == objc_msgSend_tableUID(self, a2, a3, *&a4, a5))
+  HIBYTE(v52.var2) = flags;
+  lower = ref->_tableUID._lower;
+  upper = ref->_tableUID._upper;
+  if (lower == objc_msgSend_tableUID(self, a2, array, *&coord, flags))
   {
     v52.var0 = 0;
     v52.var1 = 0;
@@ -391,46 +391,46 @@ LABEL_12:
   v52.var0 = objc_msgSend_tableUID(self, v13, v14, v15, v16);
   v52.var1 = v13;
 LABEL_6:
-  v18 = *&a4 & 0xFFFF00000000;
-  if (a4.row != 0x7FFFFFFF)
+  v18 = *&coord & 0xFFFF00000000;
+  if (coord.row != 0x7FFFFFFF)
   {
     if (v18 != 0x7FFF00000000)
     {
       v45 = (&v52.var2 + 7);
-      v46 = a4;
-      v50._lower = TSCERelativeCellCoordinate::makeRelativeCellCoordinateFromAbsoluteCoordinates(*&a6->coordinate, v46, v45, v15);
+      coordCopy = coord;
+      v50._lower = TSCERelativeCellCoordinate::makeRelativeCellCoordinateFromAbsoluteCoordinates(*&ref->coordinate, coordCopy, v45, v15);
       goto LABEL_23;
     }
 
-    row = a6->coordinate.row;
+    row = ref->coordinate.row;
     if ((v52.var2 & 0x200000000000000) != 0)
     {
       row = 0;
     }
 
-    v31 = a4.row - row;
+    v31 = coord.row - row;
     sub_2210899C8(v31, v13, v14, v15, v16);
     sub_2210899C8(v31, v32, v33, v34, v35);
     v37 = ((HIBYTE(v52.var2) & 2) << 47) | ((HIBYTE(v52.var2) & 1) << 56) | v31 | 0x7FFF00000000;
 LABEL_21:
     v50._lower = v37;
 LABEL_23:
-    TSCEASTRelativeCoordRefElement::appendRelativeCoordRefElement(a3, &v52, &v50, (&v52.var2 + 7), 0, v36);
+    TSCEASTRelativeCoordRefElement::appendRelativeCoordRefElement(array, &v52, &v50, (&v52.var2 + 7), 0, v36);
     return;
   }
 
   if (v18 != 0x7FFF00000000)
   {
-    column = a6->coordinate.column;
+    column = ref->coordinate.column;
     if ((v52.var2 & 0x100000000000000) != 0)
     {
       column = 0;
     }
 
-    v39 = a4.column - column;
-    if (a4.column == 0x7FFF)
+    v39 = coord.column - column;
+    if (coord.column == 0x7FFF)
     {
-      v40 = a4.column;
+      v40 = coord.column;
     }
 
     else
@@ -451,31 +451,31 @@ LABEL_23:
     TSCEASTRefFlags::setPreserveFlags(&v51, &v52.var2 + 7);
     if (v17)
     {
-      TSCEASTRelativeCoordRefElement::appendReferenceErrorWithTractList(a3, v51._flags, v24, v27, v28, v29);
+      TSCEASTRelativeCoordRefElement::appendReferenceErrorWithTractList(array, v51._flags, v24, v27, v28, v29);
     }
 
     else
     {
       v50._lower = objc_msgSend_tableUID(self, v25, v26, v27, v28);
       v50._upper = v47;
-      TSCEASTRelativeCoordRefElement::appendReferenceErrorWithTractList(a3, &v50, v51._flags, v24, v48, v49);
+      TSCEASTRelativeCoordRefElement::appendReferenceErrorWithTractList(array, &v50, v51._flags, v24, v48, v49);
     }
   }
 
   else
   {
 
-    TSCEASTRelativeCoordRefElement::appendReferenceError(a3, v19, v20, v21, v22, v23);
+    TSCEASTRelativeCoordRefElement::appendReferenceError(array, v19, v20, v21, v22, v23);
   }
 }
 
-- (void)appendToNodeArray:(TSCEASTNodeArray *)a3 hostCellRef:(const TSCECellRef *)a4 symbolTable:(void *)a5 calcEngine:(id)a6
+- (void)appendToNodeArray:(TSCEASTNodeArray *)array hostCellRef:(const TSCECellRef *)ref symbolTable:(void *)table calcEngine:(id)engine
 {
-  v9 = a6;
+  engineCopy = engine;
   if (!objc_msgSend_isCategoryRef(self, v10, v11, v12, v13))
   {
     v25 = objc_msgSend_tableUID(self, v14, v15, v16, v17);
-    v27 = objc_msgSend_tableInfoForTableUID_withCalcEngine_(TSTTableInfo, v26, v25, v26, v9);
+    v27 = objc_msgSend_tableInfoForTableUID_withCalcEngine_(TSTTableInfo, v26, v25, v26, engineCopy);
     if (objc_msgSend_isAPivotTable(v27, v28, v29, v30, v31))
     {
       v36 = objc_msgSend_uidRectRef(self, v32, v33, v34, v35);
@@ -498,7 +498,7 @@ LABEL_23:
         {
           *&v151[0]._flags = objc_msgSend_tableUID(self, v78, v79, v80, v81);
           v152 = v82;
-          TSCEASTViewTractRefElement::appendViewTractRefElement(a3, v151, &v153[1], v153, v55, 255, 255, 0xFFFF);
+          TSCEASTViewTractRefElement::appendViewTractRefElement(array, v151, &v153[1], v153, v55, 255, 255, 0xFFFF);
         }
 
         else
@@ -508,7 +508,7 @@ LABEL_23:
           v152 = v143;
           v146 = objc_msgSend_initWithTableUID_(v138, v143, v151, v144, v145);
           objc_msgSend_setPreserveFlags_(v146, v147, 15, v148, v149);
-          TSCEASTViewTractRefElement::appendViewTractRefElement(a3, v146, v150);
+          TSCEASTViewTractRefElement::appendViewTractRefElement(array, v146, v150);
         }
 
         goto LABEL_21;
@@ -524,7 +524,7 @@ LABEL_23:
       if (objc_msgSend_isSingleCellOrSpanningRange(v41, v93, v94, v95, v96) && (v92 & 3) == v92 >> 2)
       {
         v101 = objc_msgSend_topLeft(v41, v97, v98, v99, v100);
-        objc_msgSend_appendToNodeArray_forCoord_preserveFlags_hostCellRef_calcEngine_(self, v102, a3, v101, v92 & 3, a4, v9);
+        objc_msgSend_appendToNodeArray_forCoord_preserveFlags_hostCellRef_calcEngine_(self, v102, array, v101, v92 & 3, ref, engineCopy);
 LABEL_23:
 
         goto LABEL_24;
@@ -533,14 +533,14 @@ LABEL_23:
       if (v41 && objc_msgSend_isValid(v41, v97, v98, v99, v100))
       {
         v103 = [TSCERelativeTractRef alloc];
-        *&v151[0]._flags = a4->coordinate;
+        *&v151[0]._flags = ref->coordinate;
         v106 = objc_msgSend_initWithAbsoluteTractRef_hostCell_(v103, v104, v41, v151, v105);
-        if (objc_msgSend_tableUID(v106, v107, v108, v109, v110) == a4->_tableUID._lower && v111 == a4->_tableUID._upper)
+        if (objc_msgSend_tableUID(v106, v107, v108, v109, v110) == ref->_tableUID._lower && v111 == ref->_tableUID._upper)
         {
           objc_msgSend_setTableUID_(v106, v111, 0, 0, v113);
         }
 
-        TSCEASTColonTractElement::appendColonTractElement(a3, v106, 0, v112);
+        TSCEASTColonTractElement::appendColonTractElement(array, v106, 0, v112);
 
         goto LABEL_23;
       }
@@ -556,34 +556,34 @@ LABEL_23:
         v124 = objc_msgSend_uidRectRef(self, v120, v121, v122, v123);
         v55 = objc_msgSend_includeUidTractList(v124, v125, v126, v127, v128);
 
-        TSCEASTRelativeCoordRefElement::appendReferenceErrorWithTractList(a3, v151[0]._flags, v55, v129, v130, v131);
+        TSCEASTRelativeCoordRefElement::appendReferenceErrorWithTractList(array, v151[0]._flags, v55, v129, v130, v131);
 LABEL_21:
 
         goto LABEL_23;
       }
     }
 
-    TSCEASTRelativeCoordRefElement::appendReferenceError(a3, v46, v47, v48, v49, v50);
+    TSCEASTRelativeCoordRefElement::appendReferenceError(array, v46, v47, v48, v49, v50);
     goto LABEL_23;
   }
 
-  v18 = objc_msgSend_convertCategoryRefToRelativeForHostCell_calcEngine_(self, v14, a4, v9, v17);
+  v18 = objc_msgSend_convertCategoryRefToRelativeForHostCell_calcEngine_(self, v14, ref, engineCopy, v17);
   categoryRef = self->_categoryRef;
   self->_categoryRef = v18;
 
-  TSCEASTCategoryRefElement::appendCategoryRefElement(a3, self->_categoryRef, v20);
+  TSCEASTCategoryRefElement::appendCategoryRefElement(array, self->_categoryRef, v20);
 LABEL_24:
   v132 = objc_msgSend_whitespaceBefore(self, v21, v22, v23, v24);
-  TSCEASTWhitespaceElement::appendWhitespaceElement(a3, 31, v132);
+  TSCEASTWhitespaceElement::appendWhitespaceElement(array, 31, v132);
 
   v137 = objc_msgSend_whitespaceAfter(self, v133, v134, v135, v136);
-  TSCEASTWhitespaceElement::appendWhitespaceElement(a3, 32, v137);
+  TSCEASTWhitespaceElement::appendWhitespaceElement(array, 32, v137);
 }
 
-- (void)setHostCellRef:(TSCECellRef *)a3
+- (void)setHostCellRef:(TSCECellRef *)ref
 {
-  upper = a3->_tableUID._upper;
-  *&self->_hostCellRef.coordinate.row = *&a3->coordinate.row;
+  upper = ref->_tableUID._upper;
+  *&self->_hostCellRef.coordinate.row = *&ref->coordinate.row;
   self->_hostCellRef._tableUID._upper = upper;
 }
 

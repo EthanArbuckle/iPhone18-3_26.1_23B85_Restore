@@ -1,9 +1,9 @@
 @interface SSFlowHostCache
 + (id)sharedInstance;
 - (SSFlowHostCache)init;
-- (id)objectForKey:(id)a3;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (id)objectForKey:(id)key;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation SSFlowHostCache
@@ -44,32 +44,32 @@ uint64_t __33__SSFlowHostCache_sharedInstance__block_invoke()
   return v2;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_dict objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_dict objectForKey:keyCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableDictionary *)self->_dict removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_dict removeObjectForKey:keyCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableDictionary *)self->_dict setObject:v7 forKey:v6];
+  [(NSMutableDictionary *)self->_dict setObject:objectCopy forKey:keyCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }

@@ -1,22 +1,22 @@
 @interface CLMiLoPlaceLabel
-- (CLMiLoPlaceLabel)initWithCoder:(id)a3;
-- (CLMiLoPlaceLabel)initWithPlaceIdentifier:(id)a3 placeAdditionalInformation:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CLMiLoPlaceLabel)initWithCoder:(id)coder;
+- (CLMiLoPlaceLabel)initWithPlaceIdentifier:(id)identifier placeAdditionalInformation:(id)information;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLMiLoPlaceLabel
 
-- (CLMiLoPlaceLabel)initWithPlaceIdentifier:(id)a3 placeAdditionalInformation:(id)a4
+- (CLMiLoPlaceLabel)initWithPlaceIdentifier:(id)identifier placeAdditionalInformation:(id)information
 {
   v8.receiver = self;
   v8.super_class = CLMiLoPlaceLabel;
   v6 = [(CLMiLoPlaceLabel *)&v8 init];
   if (v6)
   {
-    v6->_placeIdentifier = [a3 copy];
-    v6->_placeAdditionalInformation = [a4 copy];
+    v6->_placeIdentifier = [identifier copy];
+    v6->_placeAdditionalInformation = [information copy];
   }
 
   return v6;
@@ -29,29 +29,29 @@
   [(CLMiLoPlaceLabel *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   placeIdentifier = self->_placeIdentifier;
   placeAdditionalInformation = self->_placeAdditionalInformation;
 
   return MEMORY[0x1EEE66B58](v4, sel_initWithPlaceIdentifier_placeAdditionalInformation_);
 }
 
-- (CLMiLoPlaceLabel)initWithCoder:(id)a3
+- (CLMiLoPlaceLabel)initWithCoder:(id)coder
 {
-  [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCLMiLoConnectionCodingKeyLocationPlaceIdentifier"];
-  [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCLMiLoConnectionCodingKeyLocationPlaceAdditionalInformation"];
+  [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCLMiLoConnectionCodingKeyLocationPlaceIdentifier"];
+  [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCLMiLoConnectionCodingKeyLocationPlaceAdditionalInformation"];
 
   return MEMORY[0x1EEE66B58](self, sel_initWithPlaceIdentifier_placeAdditionalInformation_);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_placeIdentifier forKey:@"kCLMiLoConnectionCodingKeyLocationPlaceIdentifier"];
+  [coder encodeObject:self->_placeIdentifier forKey:@"kCLMiLoConnectionCodingKeyLocationPlaceIdentifier"];
   placeAdditionalInformation = self->_placeAdditionalInformation;
 
-  [a3 encodeObject:placeAdditionalInformation forKey:@"kCLMiLoConnectionCodingKeyLocationPlaceAdditionalInformation"];
+  [coder encodeObject:placeAdditionalInformation forKey:@"kCLMiLoConnectionCodingKeyLocationPlaceAdditionalInformation"];
 }
 
 @end

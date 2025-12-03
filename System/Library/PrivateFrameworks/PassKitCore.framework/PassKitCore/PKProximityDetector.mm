@@ -1,28 +1,28 @@
 @interface PKProximityDetector
-- (PKProximityDetector)initWithAdvertisingDeviceUUID:(id)a3;
-- (id)_createDeviceFoundBlockWithName:(id)a3;
-- (id)_createDeviceLostBlockWithName:(id)a3;
-- (id)_createDiscoveryActivationBlockWithName:(id)a3 duration:(double)a4 completion:(id)a5;
+- (PKProximityDetector)initWithAdvertisingDeviceUUID:(id)d;
+- (id)_createDeviceFoundBlockWithName:(id)name;
+- (id)_createDeviceLostBlockWithName:(id)name;
+- (id)_createDiscoveryActivationBlockWithName:(id)name duration:(double)duration completion:(id)completion;
 - (void)_createPowerAssertion;
 - (void)_endPowerAssertion;
 - (void)_queue_endDetecting;
 - (void)dealloc;
 - (void)endDetecting;
-- (void)startDetectingWithDuration:(double)a3 completion:(id)a4;
+- (void)startDetectingWithDuration:(double)duration completion:(id)completion;
 @end
 
 @implementation PKProximityDetector
 
-- (PKProximityDetector)initWithAdvertisingDeviceUUID:(id)a3
+- (PKProximityDetector)initWithAdvertisingDeviceUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = PKProximityDetector;
   v6 = [(PKProximityDetector *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_advertisingDeviceUUID, a3);
+    objc_storeStrong(&v6->_advertisingDeviceUUID, d);
     v7->_advertisingDeviceNearby = 0;
     v8 = dispatch_queue_create("PKProximityDetectorTimerQueue", 0);
     timerQueue = v7->_timerQueue;
@@ -46,9 +46,9 @@
   [(PKProximityDetector *)&v3 dealloc];
 }
 
-- (void)startDetectingWithDuration:(double)a3 completion:(id)a4
+- (void)startDetectingWithDuration:(double)duration completion:(id)completion
 {
-  v16 = a4;
+  completionCopy = completion;
   if (self->_isDetecting)
   {
     [(PKProximityDetector *)self endDetecting];
@@ -79,21 +79,21 @@
   [(SFDeviceDiscovery *)self->_nearbyInfoDiscovery setOverrideScreenOff:1];
   self->_isDetecting = 1;
   v14 = self->_nearbyInfoDiscovery;
-  v15 = [(PKProximityDetector *)self _createDiscoveryActivationBlockWithName:@"NearbyInfo" duration:v16 completion:a3];
+  v15 = [(PKProximityDetector *)self _createDiscoveryActivationBlockWithName:@"NearbyInfo" duration:completionCopy completion:duration];
   [(SFDeviceDiscovery *)v14 activateWithCompletion:v15];
 }
 
-- (id)_createDeviceFoundBlockWithName:(id)a3
+- (id)_createDeviceFoundBlockWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   objc_initWeak(&location, self);
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __55__PKProximityDetector__createDeviceFoundBlockWithName___block_invoke;
   v12 = &unk_1E79DC298;
   objc_copyWeak(&v15, &location);
-  v13 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = nameCopy;
   v14 = v5;
   v6 = _Block_copy(&v9);
   v7 = [v6 copy];
@@ -132,17 +132,17 @@ void __55__PKProximityDetector__createDeviceFoundBlockWithName___block_invoke(ui
   }
 }
 
-- (id)_createDeviceLostBlockWithName:(id)a3
+- (id)_createDeviceLostBlockWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   objc_initWeak(&location, self);
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __54__PKProximityDetector__createDeviceLostBlockWithName___block_invoke;
   v12 = &unk_1E79DC298;
   objc_copyWeak(&v15, &location);
-  v13 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = nameCopy;
   v14 = v5;
   v6 = _Block_copy(&v9);
   v7 = [v6 copy];
@@ -181,21 +181,21 @@ void __54__PKProximityDetector__createDeviceLostBlockWithName___block_invoke(uin
   }
 }
 
-- (id)_createDiscoveryActivationBlockWithName:(id)a3 duration:(double)a4 completion:(id)a5
+- (id)_createDiscoveryActivationBlockWithName:(id)name duration:(double)duration completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  nameCopy = name;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __83__PKProximityDetector__createDiscoveryActivationBlockWithName_duration_completion___block_invoke;
   v18 = &unk_1E79DC2E8;
-  v19 = self;
-  v10 = v8;
+  selfCopy = self;
+  v10 = nameCopy;
   v20 = v10;
   objc_copyWeak(v22, &location);
-  v22[1] = *&a4;
-  v11 = v9;
+  v22[1] = *&duration;
+  v11 = completionCopy;
   v21 = v11;
   v12 = _Block_copy(&v15);
   v13 = [v12 copy];

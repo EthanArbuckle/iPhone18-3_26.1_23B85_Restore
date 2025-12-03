@@ -1,23 +1,23 @@
 @interface MBCKSQLiteCopyPlugin
-- (id)endedBackupWithEngine:(id)a3 error:(id)a4;
-- (id)startingBackupWithEngine:(id)a3;
+- (id)endedBackupWithEngine:(id)engine error:(id)error;
+- (id)startingBackupWithEngine:(id)engine;
 @end
 
 @implementation MBCKSQLiteCopyPlugin
 
-- (id)startingBackupWithEngine:(id)a3
+- (id)startingBackupWithEngine:(id)engine
 {
-  v3 = [a3 persona];
-  v4 = [v3 sqliteCopyDirectory];
+  persona = [engine persona];
+  sqliteCopyDirectory = [persona sqliteCopyDirectory];
 
-  if (mkdir([v4 fileSystemRepresentation], 0x1C0u) && *__error() != 17)
+  if (mkdir([sqliteCopyDirectory fileSystemRepresentation], 0x1C0u) && *__error() != 17)
   {
     v5 = MBGetDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v6 = *__error();
       *buf = 138543618;
-      v10 = v4;
+      v10 = sqliteCopyDirectory;
       v11 = 1024;
       v12 = v6;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Failed to create the directory at %{public}@: %{errno}d", buf, 0x12u);
@@ -29,22 +29,22 @@
   return 0;
 }
 
-- (id)endedBackupWithEngine:(id)a3 error:(id)a4
+- (id)endedBackupWithEngine:(id)engine error:(id)error
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 persona];
-  v8 = [v7 sqliteCopyDirectory];
+  engineCopy = engine;
+  errorCopy = error;
+  persona = [engineCopy persona];
+  sqliteCopyDirectory = [persona sqliteCopyDirectory];
 
   memset(&v35, 0, sizeof(v35));
-  if (lstat([v8 fileSystemRepresentation], &v35))
+  if (lstat([sqliteCopyDirectory fileSystemRepresentation], &v35))
   {
     v9 = MBGetDefaultLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v10 = *__error();
       *buf = 138543618;
-      v37 = v8;
+      v37 = sqliteCopyDirectory;
       v38 = 1024;
       LODWORD(v39) = v10;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Failed to lstat %{public}@: %{errno}d", buf, 0x12u);
@@ -55,10 +55,10 @@
 
   else
   {
-    v27 = v5;
+    v27 = engineCopy;
     v9 = +[NSFileManager defaultManager];
-    v34 = v6;
-    v11 = [v9 contentsOfDirectoryAtPath:v8 error:&v34];
+    v34 = errorCopy;
+    v11 = [v9 contentsOfDirectoryAtPath:sqliteCopyDirectory error:&v34];
     v26 = v34;
 
     v32 = 0u;
@@ -82,7 +82,7 @@
 
           v17 = *(*(&v30 + 1) + 8 * i);
           v18 = objc_autoreleasePoolPush();
-          v19 = [v8 stringByAppendingPathComponent:v17];
+          v19 = [sqliteCopyDirectory stringByAppendingPathComponent:v17];
           v29 = 0;
           if ([v9 fileExistsAtPath:v19 isDirectory:&v29]&& (v29 & 1) == 0)
           {
@@ -122,8 +122,8 @@
       while (v14);
     }
 
-    v6 = v26;
-    v5 = v27;
+    errorCopy = v26;
+    engineCopy = v27;
   }
 
   return 0;

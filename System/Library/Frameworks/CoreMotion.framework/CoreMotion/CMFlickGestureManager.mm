@@ -5,15 +5,15 @@
 - (void)connect;
 - (void)dealloc;
 - (void)deallocPrivate;
-- (void)feedFlickGestureEvent:(int64_t)a3 timestamp:(double)a4;
-- (void)logClientEventWithType:(id)a3 payload:(id)a4;
-- (void)onFlickGestureData:(const FlickGestureState *)a3;
-- (void)onNotification:(id)a3;
+- (void)feedFlickGestureEvent:(int64_t)event timestamp:(double)timestamp;
+- (void)logClientEventWithType:(id)type payload:(id)payload;
+- (void)onFlickGestureData:(const FlickGestureState *)data;
+- (void)onNotification:(id)notification;
 - (void)sendEventToClientPrivate;
 - (void)sendServiceRequestPrivate;
 - (void)startService;
-- (void)startUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4;
-- (void)startUpdatesToQueue:(id)a3 withHandler:(id)a4;
+- (void)startUpdatesPrivateToQueue:(id)queue withHandler:(id)handler;
+- (void)startUpdatesToQueue:(id)queue withHandler:(id)handler;
 - (void)stopService;
 - (void)stopUpdates;
 - (void)stopUpdatesPrivate;
@@ -50,7 +50,7 @@
   block[1] = 3221225472;
   block[2] = sub_19B69B728;
   block[3] = &unk_1E7532988;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED71D358 != -1)
   {
     dispatch_once(&qword_1ED71D358, block);
@@ -132,7 +132,7 @@
   sub_19B421668(v3, v4);
 }
 
-- (void)startUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)startUpdatesToQueue:(id)queue withHandler:(id)handler
 {
   v7 = sub_19B420D84();
   v8[0] = MEMORY[0x1E69E9820];
@@ -140,8 +140,8 @@
   v8[2] = sub_19B69CCE8;
   v8[3] = &unk_1E7532C08;
   v8[4] = self;
-  v8[5] = a3;
-  v8[6] = a4;
+  v8[5] = queue;
+  v8[6] = handler;
   sub_19B421668(v7, v8);
 }
 
@@ -156,7 +156,7 @@
   sub_19B421668(v3, v4);
 }
 
-- (void)startUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4
+- (void)startUpdatesPrivateToQueue:(id)queue withHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
   sub_19B420D84();
@@ -194,17 +194,17 @@
     }
 
     v13 = internal[2];
-    if (v13 != a3)
+    if (v13 != queue)
     {
 
-      internal[2] = a3;
+      internal[2] = queue;
     }
 
     v14 = internal[1];
-    if (v14 != a4)
+    if (v14 != handler)
     {
 
-      internal[1] = objc_msgSend_copy(a4, v15, v16);
+      internal[1] = objc_msgSend_copy(handler, v15, v16);
     }
 
     if (!internal[8] && (sub_19B421620() & 0x2000000000000000) != 0)
@@ -425,7 +425,7 @@
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onNotification:(id)a3
+- (void)onNotification:(id)notification
 {
   v8 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE2968 != -1)
@@ -466,10 +466,10 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onFlickGestureData:(const FlickGestureState *)a3
+- (void)onFlickGestureData:(const FlickGestureState *)data
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (data)
   {
     if (qword_1EAFE2968 != -1)
     {
@@ -479,9 +479,9 @@
     v5 = off_1EAFE2970;
     if (os_log_type_enabled(off_1EAFE2970, OS_LOG_TYPE_INFO))
     {
-      var1 = a3->var1;
-      var2 = a3->var2;
-      var0 = a3->var0;
+      var1 = data->var1;
+      var2 = data->var2;
+      var0 = data->var0;
       *buf = 67240704;
       v20 = var1;
       v21 = 1026;
@@ -500,9 +500,9 @@
         dispatch_once(&qword_1EAFE2968, &unk_1F0E27B40);
       }
 
-      v16 = a3->var1;
-      v17 = a3->var2;
-      v18 = a3->var0;
+      v16 = data->var1;
+      v17 = data->var2;
+      v18 = data->var0;
       v11 = _os_log_send_and_compose_impl();
       sub_19B6BB7CC("Generic", 1, 0, 2, "[CMFlickGestureManager onFlickGestureData:]", "CoreLocation: %s\n", v11);
       if (v11 != buf)
@@ -511,9 +511,9 @@
       }
     }
 
-    if (a3->var1 == 1)
+    if (data->var1 == 1)
     {
-      objc_msgSend_feedFlickGestureEvent_timestamp_(self, v10, 1, a3->var0);
+      objc_msgSend_feedFlickGestureEvent_timestamp_(self, v10, 1, data->var0);
     }
   }
 
@@ -552,7 +552,7 @@
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)feedFlickGestureEvent:(int64_t)a3 timestamp:(double)a4
+- (void)feedFlickGestureEvent:(int64_t)event timestamp:(double)timestamp
 {
   v7 = sub_19B420D84();
   v8[0] = MEMORY[0x1E69E9820];
@@ -560,12 +560,12 @@
   v8[2] = sub_19B69DE6C;
   v8[3] = &unk_1E7533448;
   v8[4] = self;
-  v8[5] = a3;
-  *&v8[6] = a4;
+  v8[5] = event;
+  *&v8[6] = timestamp;
   sub_19B421668(v7, v8);
 }
 
-- (void)logClientEventWithType:(id)a3 payload:(id)a4
+- (void)logClientEventWithType:(id)type payload:(id)payload
 {
   v14 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE2968 != -1)
@@ -577,9 +577,9 @@
   if (os_log_type_enabled(off_1EAFE2970, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v11 = a3;
+    typeCopy = type;
     v12 = 2112;
-    v13 = a4;
+    payloadCopy = payload;
     _os_log_impl(&dword_19B41C000, v6, OS_LOG_TYPE_DEFAULT, "Type %@, Payload: %@", buf, 0x16u);
   }
 

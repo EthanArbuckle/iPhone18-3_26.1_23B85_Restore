@@ -1,47 +1,47 @@
 @interface PKStrokeSelection
 + (NSArray)readableTypeIdentifiersForItemProvider;
 + (NSArray)writableTypeIdentifiersForItemProvider;
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 drawingClass:(Class)a5 error:(id *)a6;
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
-+ (id)strokeSelectionFromData:(id)a3;
-+ (id)strokeSelectionFromData:(id)a3 forDrawingClass:(Class)a4;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier drawingClass:(Class)class error:(id *)error;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
++ (id)strokeSelectionFromData:(id)data;
++ (id)strokeSelectionFromData:(id)data forDrawingClass:(Class)class;
 - (BOOL)containsBitmapData;
 - (CGRect)bounds;
 - (CGRect)boundsWithoutLasso;
 - (CGRect)externalElementsBounds;
 - (NSArray)writableTypeIdentifiersForItemProvider;
 - (NSString)description;
-- (PKStrokeSelection)initWithStrokes:(id)a3 externalElements:(id)a4 lassoStroke:(id)a5 drawing:(id)a6;
-- (PKStrokeSelection)initWithStrokes:(id)a3 lassoStroke:(id)a4 drawing:(id)a5;
+- (PKStrokeSelection)initWithStrokes:(id)strokes externalElements:(id)elements lassoStroke:(id)stroke drawing:(id)drawing;
+- (PKStrokeSelection)initWithStrokes:(id)strokes lassoStroke:(id)stroke drawing:(id)drawing;
 - (id)_newDrawingWithStrokes;
 - (id)imageDataForSelection;
 - (id)legacyStrokeDataForSelection;
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
 - (id)strokeDataForSelection;
 - (int64_t)requiredContentVersion;
-- (void)generateImageWithConfig:(id)a3 fullSizeConfig:(id)a4 selectionInteraction:(id)a5 withCompletion:(id)a6;
-- (void)newExternalElementsCGImageFromCGImage:(CGImage *)a3 withConfig:(id)a4 selectionInteraction:(id)a5 renderImage:(BOOL)a6 withCompletion:(id)a7;
+- (void)generateImageWithConfig:(id)config fullSizeConfig:(id)sizeConfig selectionInteraction:(id)interaction withCompletion:(id)completion;
+- (void)newExternalElementsCGImageFromCGImage:(CGImage *)image withConfig:(id)config selectionInteraction:(id)interaction renderImage:(BOOL)renderImage withCompletion:(id)completion;
 @end
 
 @implementation PKStrokeSelection
 
-- (PKStrokeSelection)initWithStrokes:(id)a3 lassoStroke:(id)a4 drawing:(id)a5
+- (PKStrokeSelection)initWithStrokes:(id)strokes lassoStroke:(id)stroke drawing:(id)drawing
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  strokesCopy = strokes;
+  strokeCopy = stroke;
+  drawingCopy = drawing;
   v27.receiver = self;
   v27.super_class = PKStrokeSelection;
   v11 = [(PKStrokeSelection *)&v27 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [strokesCopy copy];
     strokes = v11->_strokes;
     v11->_strokes = v12;
 
-    objc_storeStrong(&v11->_lassoStroke, a4);
-    objc_storeStrong(&v11->_drawing, a5);
+    objc_storeStrong(&v11->_lassoStroke, stroke);
+    objc_storeStrong(&v11->_drawing, drawing);
     v14 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v23 = 0u;
     v24 = 0u;
@@ -63,8 +63,8 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v23 + 1) + 8 * v19) _strokeUUID];
-          [(NSSet *)v14 addObject:v20];
+          _strokeUUID = [*(*(&v23 + 1) + 8 * v19) _strokeUUID];
+          [(NSSet *)v14 addObject:_strokeUUID];
 
           ++v19;
         }
@@ -83,13 +83,13 @@
   return v11;
 }
 
-- (PKStrokeSelection)initWithStrokes:(id)a3 externalElements:(id)a4 lassoStroke:(id)a5 drawing:(id)a6
+- (PKStrokeSelection)initWithStrokes:(id)strokes externalElements:(id)elements lassoStroke:(id)stroke drawing:(id)drawing
 {
-  v10 = a4;
-  v11 = [(PKStrokeSelection *)self initWithStrokes:a3 lassoStroke:a5 drawing:a6];
+  elementsCopy = elements;
+  v11 = [(PKStrokeSelection *)self initWithStrokes:strokes lassoStroke:stroke drawing:drawing];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [elementsCopy copy];
     externalElements = v11->_externalElements;
     v11->_externalElements = v12;
   }
@@ -120,10 +120,10 @@ LABEL_3:
         objc_enumerationMutation(v2);
       }
 
-      v8 = [*(*(&v10 + 1) + 8 * v7) requiredContentVersion];
-      if (v6 <= v8)
+      requiredContentVersion = [*(*(&v10 + 1) + 8 * v7) requiredContentVersion];
+      if (v6 <= requiredContentVersion)
       {
-        v6 = v8;
+        v6 = requiredContentVersion;
       }
 
       if (v6 == 4)
@@ -324,22 +324,22 @@ LABEL_3:
   return v2;
 }
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [PKStrokeSelection objectWithItemProviderData:v8 typeIdentifier:v7 drawingClass:objc_opt_class() error:a5];
+  identifierCopy = identifier;
+  dataCopy = data;
+  v9 = [PKStrokeSelection objectWithItemProviderData:dataCopy typeIdentifier:identifierCopy drawingClass:objc_opt_class() error:error];
 
   return v9;
 }
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 drawingClass:(Class)a5 error:(id *)a6
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier drawingClass:(Class)class error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (([v9 isEqual:@"com.apple.pencilkit.strokes"] & 1) != 0 || objc_msgSend(v9, "isEqual:", @"com.apple.drawing"))
+  dataCopy = data;
+  identifierCopy = identifier;
+  if (([identifierCopy isEqual:@"com.apple.pencilkit.strokes"] & 1) != 0 || objc_msgSend(identifierCopy, "isEqual:", @"com.apple.drawing"))
   {
-    v10 = [PKStrokeSelection strokeSelectionFromData:v8 forDrawingClass:a5];
+    v10 = [PKStrokeSelection strokeSelectionFromData:dataCopy forDrawingClass:class];
   }
 
   else
@@ -352,86 +352,86 @@ LABEL_3:
 
 + (NSArray)writableTypeIdentifiersForItemProvider
 {
-  v2 = [MEMORY[0x1E695DF70] array];
-  [v2 addObject:@"com.apple.drawing"];
-  v3 = [MEMORY[0x1E69DCAB8] writableTypeIdentifiersForItemProvider];
-  [v2 addObjectsFromArray:v3];
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObject:@"com.apple.drawing"];
+  writableTypeIdentifiersForItemProvider = [MEMORY[0x1E69DCAB8] writableTypeIdentifiersForItemProvider];
+  [array addObjectsFromArray:writableTypeIdentifiersForItemProvider];
 
-  v4 = [*MEMORY[0x1E6983060] identifier];
-  [v2 addObject:v4];
+  identifier = [*MEMORY[0x1E6983060] identifier];
+  [array addObject:identifier];
 
-  return v2;
+  return array;
 }
 
 - (NSArray)writableTypeIdentifiersForItemProvider
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 addObject:@"com.apple.drawing"];
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObject:@"com.apple.drawing"];
   if (![(PKStrokeSelection *)self containsBitmapData])
   {
-    [v3 addObject:@"com.apple.pencilkit.strokes"];
+    [array addObject:@"com.apple.pencilkit.strokes"];
   }
 
-  v4 = [MEMORY[0x1E69DCAB8] writableTypeIdentifiersForItemProvider];
-  [v3 addObjectsFromArray:v4];
+  writableTypeIdentifiersForItemProvider = [MEMORY[0x1E69DCAB8] writableTypeIdentifiersForItemProvider];
+  [array addObjectsFromArray:writableTypeIdentifiersForItemProvider];
 
-  return v3;
+  return array;
 }
 
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqual:@"com.apple.drawing"])
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if ([identifierCopy isEqual:@"com.apple.drawing"])
   {
-    v8 = [(PKStrokeSelection *)self strokeDataForSelection];
+    strokeDataForSelection = [(PKStrokeSelection *)self strokeDataForSelection];
 LABEL_3:
-    v9 = v8;
-    v7[2](v7, v8, 0);
+    combinedImage = strokeDataForSelection;
+    handlerCopy[2](handlerCopy, strokeDataForSelection, 0);
 LABEL_4:
 
     goto LABEL_14;
   }
 
-  if ([v6 isEqual:@"com.apple.pencilkit.strokes"] && !-[PKStrokeSelection containsBitmapData](self, "containsBitmapData"))
+  if ([identifierCopy isEqual:@"com.apple.pencilkit.strokes"] && !-[PKStrokeSelection containsBitmapData](self, "containsBitmapData"))
   {
-    v8 = [(PKStrokeSelection *)self legacyStrokeDataForSelection];
+    strokeDataForSelection = [(PKStrokeSelection *)self legacyStrokeDataForSelection];
     goto LABEL_3;
   }
 
-  v10 = [MEMORY[0x1E69DCAB8] readableTypeIdentifiersForItemProvider];
-  v11 = [v10 containsObject:v6];
+  readableTypeIdentifiersForItemProvider = [MEMORY[0x1E69DCAB8] readableTypeIdentifiersForItemProvider];
+  v11 = [readableTypeIdentifiersForItemProvider containsObject:identifierCopy];
 
   if (v11)
   {
     strokeImage = self->_strokeImage;
     if (strokeImage)
     {
-      v13 = [(PKStrokeSelectionImage *)strokeImage fullSizeConfig];
-      if (v13)
+      fullSizeConfig = [(PKStrokeSelectionImage *)strokeImage fullSizeConfig];
+      if (fullSizeConfig)
       {
-        v14 = v13;
-        v15 = [(PKStrokeSelectionImage *)self->_strokeImage fullSizeConfig];
-        v16 = [(PKStrokeSelectionImage *)self->_strokeImage config];
-        v17 = [v15 isEqual:v16];
+        v14 = fullSizeConfig;
+        fullSizeConfig2 = [(PKStrokeSelectionImage *)self->_strokeImage fullSizeConfig];
+        config = [(PKStrokeSelectionImage *)self->_strokeImage config];
+        v17 = [fullSizeConfig2 isEqual:config];
 
         if ((v17 & 1) == 0)
         {
-          v19 = [(PKStrokeSelectionImage *)self->_strokeImage fullSizeConfig];
+          fullSizeConfig3 = [(PKStrokeSelectionImage *)self->_strokeImage fullSizeConfig];
           v21[0] = MEMORY[0x1E69E9820];
           v21[1] = 3221225472;
           v21[2] = __81__PKStrokeSelection_loadDataWithTypeIdentifier_forItemProviderCompletionHandler___block_invoke;
           v21[3] = &unk_1E82D8E08;
-          v22 = v6;
-          v23 = v7;
-          [(PKStrokeSelection *)self generateImageWithConfig:v19 fullSizeConfig:0 selectionInteraction:0 withCompletion:v21];
+          v22 = identifierCopy;
+          v23 = handlerCopy;
+          [(PKStrokeSelection *)self generateImageWithConfig:fullSizeConfig3 fullSizeConfig:0 selectionInteraction:0 withCompletion:v21];
 
           goto LABEL_14;
         }
       }
 
-      v9 = [(PKStrokeSelectionImage *)self->_strokeImage combinedImage];
-      v18 = [v9 loadDataWithTypeIdentifier:v6 forItemProviderCompletionHandler:v7];
+      combinedImage = [(PKStrokeSelectionImage *)self->_strokeImage combinedImage];
+      v18 = [combinedImage loadDataWithTypeIdentifier:identifierCopy forItemProviderCompletionHandler:handlerCopy];
       goto LABEL_4;
     }
   }
@@ -449,8 +449,8 @@ void __81__PKStrokeSelection_loadDataWithTypeIdentifier_forItemProviderCompletio
 
 - (id)imageDataForSelection
 {
-  v2 = [(PKStrokeSelectionImage *)self->_strokeImage combinedImage];
-  v3 = UIImagePNGRepresentation(v2);
+  combinedImage = [(PKStrokeSelectionImage *)self->_strokeImage combinedImage];
+  v3 = UIImagePNGRepresentation(combinedImage);
 
   return v3;
 }
@@ -458,8 +458,8 @@ void __81__PKStrokeSelection_loadDataWithTypeIdentifier_forItemProviderCompletio
 - (id)_newDrawingWithStrokes
 {
   v3 = objc_alloc(objc_opt_class());
-  v4 = [(NSOrderedSet *)self->_strokes array];
-  v5 = [v3 initWithStrokes:v4 fromDrawing:self->_drawing];
+  array = [(NSOrderedSet *)self->_strokes array];
+  v5 = [v3 initWithStrokes:array fromDrawing:self->_drawing];
 
   if (self->_lassoStroke)
   {
@@ -474,8 +474,8 @@ void __81__PKStrokeSelection_loadDataWithTypeIdentifier_forItemProviderCompletio
 {
   if (self->_strokes && self->_drawing)
   {
-    v2 = [(PKStrokeSelection *)self _newDrawingWithStrokes];
-    v3 = [v2 serializeWithVersion:0];
+    _newDrawingWithStrokes = [(PKStrokeSelection *)self _newDrawingWithStrokes];
+    v3 = [_newDrawingWithStrokes serializeWithVersion:0];
   }
 
   else
@@ -490,44 +490,44 @@ void __81__PKStrokeSelection_loadDataWithTypeIdentifier_forItemProviderCompletio
 {
   if (self->_strokes && self->_drawing)
   {
-    v2 = [(PKStrokeSelection *)self _newDrawingWithStrokes];
-    v3 = [v2 serializeTransiently];
+    _newDrawingWithStrokes = [(PKStrokeSelection *)self _newDrawingWithStrokes];
+    serializeTransiently = [_newDrawingWithStrokes serializeTransiently];
   }
 
   else
   {
-    v3 = 0;
+    serializeTransiently = 0;
   }
 
-  return v3;
+  return serializeTransiently;
 }
 
-+ (id)strokeSelectionFromData:(id)a3
++ (id)strokeSelectionFromData:(id)data
 {
-  v4 = a3;
-  v5 = [a1 strokeSelectionFromData:v4 forDrawingClass:objc_opt_class()];
+  dataCopy = data;
+  v5 = [self strokeSelectionFromData:dataCopy forDrawingClass:objc_opt_class()];
 
   return v5;
 }
 
-+ (id)strokeSelectionFromData:(id)a3 forDrawingClass:(Class)a4
++ (id)strokeSelectionFromData:(id)data forDrawingClass:(Class)class
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  dataCopy = data;
+  if (dataCopy)
   {
-    v6 = [[a4 alloc] initWithData:v5 loadNonInkingStrokes:1 error:0];
+    v6 = [[class alloc] initWithData:dataCopy loadNonInkingStrokes:1 error:0];
     v7 = MEMORY[0x1E695DFA0];
-    v8 = [v6 strokes];
-    v23 = [v7 orderedSetWithArray:v8];
+    strokes = [v6 strokes];
+    v23 = [v7 orderedSetWithArray:strokes];
 
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
     v24 = v6;
-    v9 = [v6 _rootStrokes];
-    v10 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    _rootStrokes = [v6 _rootStrokes];
+    v10 = [_rootStrokes countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v10)
     {
       v11 = v10;
@@ -538,13 +538,13 @@ LABEL_4:
       {
         if (*v26 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(_rootStrokes);
         }
 
         v14 = *(*(&v25 + 1) + 8 * v13);
         v15 = [v14 ink];
-        v16 = [v15 identifier];
-        v17 = [v16 isEqual:@"com.apple.ink.lasso"];
+        identifier = [v15 identifier];
+        v17 = [identifier isEqual:@"com.apple.ink.lasso"];
 
         if (v17)
         {
@@ -553,7 +553,7 @@ LABEL_4:
 
         if (v11 == ++v13)
         {
-          v11 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+          v11 = [_rootStrokes countByEnumeratingWithState:&v25 objects:v29 count:16];
           if (v11)
           {
             goto LABEL_4;
@@ -601,51 +601,51 @@ LABEL_14:
 
 - (BOOL)containsBitmapData
 {
-  v2 = [(PKStrokeSelection *)self _newDrawingWithStrokes];
-  v3 = [v2 _minimumSerializationVersion] > 1;
+  _newDrawingWithStrokes = [(PKStrokeSelection *)self _newDrawingWithStrokes];
+  v3 = [_newDrawingWithStrokes _minimumSerializationVersion] > 1;
 
   return v3;
 }
 
-- (void)newExternalElementsCGImageFromCGImage:(CGImage *)a3 withConfig:(id)a4 selectionInteraction:(id)a5 renderImage:(BOOL)a6 withCompletion:(id)a7
+- (void)newExternalElementsCGImageFromCGImage:(CGImage *)image withConfig:(id)config selectionInteraction:(id)interaction renderImage:(BOOL)renderImage withCompletion:(id)completion
 {
   v39 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  if (!a3)
+  configCopy = config;
+  interactionCopy = interaction;
+  completionCopy = completion;
+  if (!image)
   {
     goto LABEL_13;
   }
 
-  v15 = [(PKStrokeSelection *)self externalElements];
-  if (![v15 count])
+  externalElements = [(PKStrokeSelection *)self externalElements];
+  if (![externalElements count])
   {
 
     goto LABEL_13;
   }
 
-  v16 = [v13 delegate];
+  delegate = [interactionCopy delegate];
   v17 = objc_opt_respondsToSelector();
 
   if ((v17 & 1) == 0)
   {
 LABEL_13:
-    v14[2](v14, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_14;
   }
 
-  v28 = a6;
+  renderImageCopy = renderImage;
   v27 = CGBitmapContextCreateForFlatteningImage();
-  v18 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v19 = [(PKStrokeSelection *)self externalElements];
-  v20 = [v19 reversedOrderedSet];
+  externalElements2 = [(PKStrokeSelection *)self externalElements];
+  reversedOrderedSet = [externalElements2 reversedOrderedSet];
 
-  v21 = [v20 countByEnumeratingWithState:&v34 objects:v38 count:16];
+  v21 = [reversedOrderedSet countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v21)
   {
     v22 = v21;
@@ -657,32 +657,32 @@ LABEL_13:
       {
         if (*v35 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(reversedOrderedSet);
         }
 
-        v25 = [*(*(&v34 + 1) + 8 * v24) identifier];
-        [v18 addObject:v25];
+        identifier = [*(*(&v34 + 1) + 8 * v24) identifier];
+        [array addObject:identifier];
 
         ++v24;
       }
 
       while (v22 != v24);
-      v22 = [v20 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      v22 = [reversedOrderedSet countByEnumeratingWithState:&v34 objects:v38 count:16];
     }
 
     while (v22);
   }
 
-  v26 = [v13 delegate];
+  delegate2 = [interactionCopy delegate];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __118__PKStrokeSelection_newExternalElementsCGImageFromCGImage_withConfig_selectionInteraction_renderImage_withCompletion___block_invoke;
   v29[3] = &unk_1E82D8E30;
-  v33 = v28;
-  v31 = a3;
+  v33 = renderImageCopy;
+  imageCopy = image;
   v32 = v27;
-  v30 = v14;
-  [v26 selectionInteraction:v13 renderPreviewForElements:v18 inContext:v27 withConfig:v12 inAttachment:0 withCompletion:v29];
+  v30 = completionCopy;
+  [delegate2 selectionInteraction:interactionCopy renderPreviewForElements:array inContext:v27 withConfig:configCopy inAttachment:0 withCompletion:v29];
 
 LABEL_14:
 }
@@ -712,16 +712,16 @@ uint64_t __118__PKStrokeSelection_newExternalElementsCGImageFromCGImage_withConf
   return v4();
 }
 
-- (void)generateImageWithConfig:(id)a3 fullSizeConfig:(id)a4 selectionInteraction:(id)a5 withCompletion:(id)a6
+- (void)generateImageWithConfig:(id)config fullSizeConfig:(id)sizeConfig selectionInteraction:(id)interaction withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 sixChannel];
-  v15 = [v10 transparentBlending];
-  v16 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v16 scale];
+  configCopy = config;
+  sizeConfigCopy = sizeConfig;
+  interactionCopy = interaction;
+  completionCopy = completion;
+  sixChannel = [configCopy sixChannel];
+  transparentBlending = [configCopy transparentBlending];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v18 = v17;
 
   v62 = 0;
@@ -730,58 +730,58 @@ uint64_t __118__PKStrokeSelection_newExternalElementsCGImageFromCGImage_withConf
   v65 = __Block_byref_object_copy__13;
   v66 = __Block_byref_object_dispose__13;
   v19 = [PKImageRenderer alloc];
-  [v10 imageSize];
-  v67 = -[PKImageRenderer initWithSize:scale:renderQueue:sixChannelBlending:transparentBlending:extendedDynamicRange:](v19, "initWithSize:scale:renderQueue:sixChannelBlending:transparentBlending:extendedDynamicRange:", 0, v14, v15, [v10 extendedDynamicRange], v20, v21, v18);
-  v22 = [v10 invertedColors];
-  [v63[5] setInvertColors:v22];
+  [configCopy imageSize];
+  v67 = -[PKImageRenderer initWithSize:scale:renderQueue:sixChannelBlending:transparentBlending:extendedDynamicRange:](v19, "initWithSize:scale:renderQueue:sixChannelBlending:transparentBlending:extendedDynamicRange:", 0, sixChannel, transparentBlending, [configCopy extendedDynamicRange], v20, v21, v18);
+  invertedColors = [configCopy invertedColors];
+  [v63[5] setInvertColors:invertedColors];
   v23 = v63[5];
   [(PKStrokeSelection *)self strokes];
-  if (v14)
+  if (sixChannel)
     v24 = {;
-    v25 = [v24 array];
-    [v10 strokeBounds];
+    array = [v24 array];
+    [configCopy strokeBounds];
     v27 = v26;
     v29 = v28;
     v31 = v30;
     v33 = v32;
-    [v10 scale];
+    [configCopy scale];
     v35 = v34;
     v55[0] = MEMORY[0x1E69E9820];
     v55[1] = 3221225472;
     v55[2] = __96__PKStrokeSelection_generateImageWithConfig_fullSizeConfig_selectionInteraction_withCompletion___block_invoke;
     v55[3] = &unk_1E82D8E80;
-    v56 = v10;
-    v57 = v11;
-    v58 = self;
-    v59 = v12;
+    v56 = configCopy;
+    v57 = sizeConfigCopy;
+    selfCopy = self;
+    v59 = interactionCopy;
     v61 = &v62;
-    v60 = v13;
-    [v23 sixChannelCGRenderStrokes:v25 clippedToStrokeSpaceRect:v55 scale:v27 completion:{v29, v31, v33, v35}];
+    v60 = completionCopy;
+    [v23 sixChannelCGRenderStrokes:array clippedToStrokeSpaceRect:v55 scale:v27 completion:{v29, v31, v33, v35}];
 
     v36 = v56;
   }
 
   else
     v37 = {;
-    v38 = [v37 array];
-    [v10 strokeBounds];
+    array2 = [v37 array];
+    [configCopy strokeBounds];
     v40 = v39;
     v42 = v41;
     v44 = v43;
     v46 = v45;
-    [v10 scale];
+    [configCopy scale];
     v48 = v47;
     v49[0] = MEMORY[0x1E69E9820];
     v49[1] = 3221225472;
     v49[2] = __96__PKStrokeSelection_generateImageWithConfig_fullSizeConfig_selectionInteraction_withCompletion___block_invoke_3;
     v49[3] = &unk_1E82D8ED0;
     v49[4] = self;
-    v50 = v10;
-    v51 = v12;
+    v50 = configCopy;
+    v51 = interactionCopy;
     v54 = &v62;
-    v53 = v13;
-    v52 = v11;
-    [v23 renderCGStrokes:v38 clippedToStrokeSpaceRect:v49 scale:v40 completion:{v42, v44, v46, v48}];
+    v53 = completionCopy;
+    v52 = sizeConfigCopy;
+    [v23 renderCGStrokes:array2 clippedToStrokeSpaceRect:v49 scale:v40 completion:{v42, v44, v46, v48}];
 
     v36 = v50;
   }
@@ -894,10 +894,10 @@ LABEL_5:
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PKStrokeSelection *)self strokeIdentifiers];
-  v5 = [v4 count];
-  v6 = [(PKStrokeSelection *)self externalElements];
-  v7 = [v3 stringWithFormat:@"<PKStrokeSelection: %p %ld strokes, %ld elements>", self, v5, objc_msgSend(v6, "count")];
+  strokeIdentifiers = [(PKStrokeSelection *)self strokeIdentifiers];
+  v5 = [strokeIdentifiers count];
+  externalElements = [(PKStrokeSelection *)self externalElements];
+  v7 = [v3 stringWithFormat:@"<PKStrokeSelection: %p %ld strokes, %ld elements>", self, v5, objc_msgSend(externalElements, "count")];
 
   return v7;
 }

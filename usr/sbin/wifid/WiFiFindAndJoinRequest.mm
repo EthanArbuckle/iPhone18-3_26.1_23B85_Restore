@@ -1,13 +1,13 @@
 @interface WiFiFindAndJoinRequest
-- (BOOL)_canPerformRetry:(id)a3;
+- (BOOL)_canPerformRetry:(id)retry;
 - (BOOL)_checkAndRequestChipResetIfNeeded;
-- (BOOL)_runFindAndJoinOnInterface:(id)a3 outError:(id *)a4;
-- (BOOL)runAsynchronouslyOnQueue:(id)a3 onInterface:(id)a4 withReply:(id)a5;
-- (BOOL)runSynchronouslyOnQueue:(id)a3 onInterface:(id)a4 outError:(id *)a5;
-- (WiFiFindAndJoinRequest)initWithNetworkName:(id)a3;
+- (BOOL)_runFindAndJoinOnInterface:(id)interface outError:(id *)error;
+- (BOOL)runAsynchronouslyOnQueue:(id)queue onInterface:(id)interface withReply:(id)reply;
+- (BOOL)runSynchronouslyOnQueue:(id)queue onInterface:(id)interface outError:(id *)error;
+- (WiFiFindAndJoinRequest)initWithNetworkName:(id)name;
 - (id)_printSupportedChannels;
 - (id)description;
-- (void)_chipResetDidComplete:(id)a3;
+- (void)_chipResetDidComplete:(id)complete;
 - (void)_populateSupportedChannels;
 - (void)dealloc;
 - (void)submitMetric;
@@ -15,13 +15,13 @@
 
 @implementation WiFiFindAndJoinRequest
 
-- (WiFiFindAndJoinRequest)initWithNetworkName:(id)a3
+- (WiFiFindAndJoinRequest)initWithNetworkName:(id)name
 {
   v17.receiver = self;
   v17.super_class = WiFiFindAndJoinRequest;
-  v3 = a3;
+  nameCopy = name;
   v4 = [(WiFiFindAndJoinRequest *)&v17 init];
-  [(WiFiFindAndJoinRequest *)v4 setNetworkName:v3, v17.receiver, v17.super_class];
+  [(WiFiFindAndJoinRequest *)v4 setNetworkName:nameCopy, v17.receiver, v17.super_class];
 
   [(WiFiFindAndJoinRequest *)v4 setChannelNumber:0];
   [(WiFiFindAndJoinRequest *)v4 setChannelBand:0];
@@ -57,18 +57,18 @@
   v13 = [[CWFInterface alloc] initWithServiceType:1];
   [(WiFiFindAndJoinRequest *)v4 setInterface:v13];
 
-  v14 = [(WiFiFindAndJoinRequest *)v4 interface];
+  interface = [(WiFiFindAndJoinRequest *)v4 interface];
 
-  if (v14)
+  if (interface)
   {
-    v15 = [(WiFiFindAndJoinRequest *)v4 interface];
-    [v15 activate];
+    interface2 = [(WiFiFindAndJoinRequest *)v4 interface];
+    [interface2 activate];
   }
 
   else
   {
     sub_10015703C();
-    v15 = v4;
+    interface2 = v4;
     v4 = 0;
   }
 
@@ -81,8 +81,8 @@
   v4 = NSStringFromClass(v3);
   v5 = [NSMutableString stringWithFormat:@"< %@:%p ", v4, self];
 
-  v6 = [(WiFiFindAndJoinRequest *)self networkName];
-  [v5 appendFormat:@"SSID='%@' ", v6];
+  networkName = [(WiFiFindAndJoinRequest *)self networkName];
+  [v5 appendFormat:@"SSID='%@' ", networkName];
 
   [v5 appendFormat:@"Channel=%d ", -[WiFiFindAndJoinRequest channelNumber](self, "channelNumber")];
   [v5 appendFormat:@"Band=%d ", -[WiFiFindAndJoinRequest channelBand](self, "channelBand")];
@@ -101,23 +101,23 @@
   [(WiFiFindAndJoinRequest *)&v3 dealloc];
 }
 
-- (BOOL)_canPerformRetry:(id)a3
+- (BOOL)_canPerformRetry:(id)retry
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 code] == 82)
+  retryCopy = retry;
+  v5 = retryCopy;
+  if (retryCopy && [retryCopy code] == 82)
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [(WiFiFindAndJoinRequest *)self startedAt];
-    if (v7)
+    startedAt = [(WiFiFindAndJoinRequest *)self startedAt];
+    if (startedAt)
     {
       v8 = +[NSDate date];
-      v9 = [(WiFiFindAndJoinRequest *)self startedAt];
-      [v8 timeIntervalSinceDate:v9];
+      startedAt2 = [(WiFiFindAndJoinRequest *)self startedAt];
+      [v8 timeIntervalSinceDate:startedAt2];
       v11 = v10;
       [(WiFiFindAndJoinRequest *)self timeout];
       v13 = v11 > v12;
@@ -128,10 +128,10 @@
       v13 = 0;
     }
 
-    v14 = [(WiFiFindAndJoinRequest *)self scanFailureList];
-    v15 = [v14 count];
-    v16 = [(WiFiFindAndJoinRequest *)self joinFailureList];
-    v17 = [v16 count];
+    scanFailureList = [(WiFiFindAndJoinRequest *)self scanFailureList];
+    v15 = [scanFailureList count];
+    joinFailureList = [(WiFiFindAndJoinRequest *)self joinFailureList];
+    v17 = [joinFailureList count];
 
     v18 = CWFGetOSLog();
     if (v18)
@@ -163,21 +163,21 @@
   [(WiFiFindAndJoinRequest *)self timeout];
   v4 = v3;
   v5 = +[NSDate date];
-  v6 = [(WiFiFindAndJoinRequest *)self startedAt];
-  [v5 timeIntervalSinceDate:v6];
+  startedAt = [(WiFiFindAndJoinRequest *)self startedAt];
+  [v5 timeIntervalSinceDate:startedAt];
   v8 = v7;
 
-  v9 = [(WiFiFindAndJoinRequest *)self chipResetWaiter];
-  if (v9 || (v10 = v4 - v8, v10 < 0.0))
+  chipResetWaiter = [(WiFiFindAndJoinRequest *)self chipResetWaiter];
+  if (chipResetWaiter || (v10 = v4 - v8, v10 < 0.0))
   {
 
     return 1;
   }
 
-  v11 = [(WiFiFindAndJoinRequest *)self scanFailureList];
-  v12 = [v11 count];
-  v13 = [(WiFiFindAndJoinRequest *)self joinFailureList];
-  v14 = &v12[[v13 count]];
+  scanFailureList = [(WiFiFindAndJoinRequest *)self scanFailureList];
+  v12 = [scanFailureList count];
+  joinFailureList = [(WiFiFindAndJoinRequest *)self joinFailureList];
+  v14 = &v12[[joinFailureList count]];
 
   if (v14 < 3)
   {
@@ -198,10 +198,10 @@
 
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
-    v19 = [(WiFiFindAndJoinRequest *)self scanFailureList];
-    [v19 count];
-    v20 = [(WiFiFindAndJoinRequest *)self joinFailureList];
-    [v20 count];
+    scanFailureList2 = [(WiFiFindAndJoinRequest *)self scanFailureList];
+    [scanFailureList2 count];
+    joinFailureList2 = [(WiFiFindAndJoinRequest *)self joinFailureList];
+    [joinFailureList2 count];
     _os_log_send_and_compose_impl();
   }
 
@@ -211,9 +211,9 @@
   v22 = dispatch_semaphore_create(0);
   [(WiFiFindAndJoinRequest *)self setChipResetWaiter:v22];
 
-  v23 = [(WiFiFindAndJoinRequest *)self chipResetWaiter];
+  chipResetWaiter2 = [(WiFiFindAndJoinRequest *)self chipResetWaiter];
   v24 = dispatch_time(0, (v10 * 1000000000.0));
-  v25 = dispatch_semaphore_wait(v23, v24);
+  v25 = dispatch_semaphore_wait(chipResetWaiter2, v24);
 
   v26 = CWFGetOSLog();
   v27 = v26;
@@ -257,21 +257,21 @@
   return 0;
 }
 
-- (void)_chipResetDidComplete:(id)a3
+- (void)_chipResetDidComplete:(id)complete
 {
-  v4 = [(WiFiFindAndJoinRequest *)self chipResetWaiter];
+  chipResetWaiter = [(WiFiFindAndJoinRequest *)self chipResetWaiter];
 
-  if (v4)
+  if (chipResetWaiter)
   {
-    v5 = [(WiFiFindAndJoinRequest *)self chipResetWaiter];
-    dispatch_semaphore_signal(v5);
+    chipResetWaiter2 = [(WiFiFindAndJoinRequest *)self chipResetWaiter];
+    dispatch_semaphore_signal(chipResetWaiter2);
   }
 }
 
 - (void)_populateSupportedChannels
 {
-  v3 = [(WiFiFindAndJoinRequest *)self interface];
-  v4 = [v3 supportedChannelsWithCountryCode:0];
+  interface = [(WiFiFindAndJoinRequest *)self interface];
+  v4 = [interface supportedChannelsWithCountryCode:0];
 
   v22 = 0u;
   v23 = 0u;
@@ -298,22 +298,22 @@
         {
           if ([v10 band] == 1)
           {
-            v11 = [(WiFiFindAndJoinRequest *)self supported2GHzChannels];
+            supported2GHzChannels = [(WiFiFindAndJoinRequest *)self supported2GHzChannels];
             goto LABEL_13;
           }
 
           if ([v10 band] == 2)
           {
-            v11 = [(WiFiFindAndJoinRequest *)self supported5GHzChannels];
+            supported2GHzChannels = [(WiFiFindAndJoinRequest *)self supported5GHzChannels];
             goto LABEL_13;
           }
 
           if ([v10 band] == 3)
           {
-            v11 = [(WiFiFindAndJoinRequest *)self supported6GHzChannels];
+            supported2GHzChannels = [(WiFiFindAndJoinRequest *)self supported6GHzChannels];
 LABEL_13:
-            v12 = v11;
-            [v11 addObject:v10];
+            v12 = supported2GHzChannels;
+            [supported2GHzChannels addObject:v10];
           }
 
           else
@@ -332,14 +332,14 @@ LABEL_13:
 
             if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
             {
-              v15 = [v10 band];
-              v16 = [v10 channel];
+              band = [v10 band];
+              channel = [v10 channel];
               v24 = 136315650;
               v25 = "[WiFiFindAndJoinRequest _populateSupportedChannels]";
               v26 = 1024;
-              v27 = v15;
+              v27 = band;
               v28 = 1024;
-              v29 = v16;
+              v29 = channel;
               LODWORD(v19) = 24;
               v18 = &v24;
               _os_log_send_and_compose_impl();
@@ -363,25 +363,25 @@ LABEL_13:
 {
   v3 = +[NSMutableString string];
   objc_msgSend(v3, "appendFormat:", @"6GHz:(");
-  v4 = [(WiFiFindAndJoinRequest *)self supported6GHzChannels];
-  v5 = [v4 allObjects];
-  v6 = [v5 valueForKey:@"description"];
+  supported6GHzChannels = [(WiFiFindAndJoinRequest *)self supported6GHzChannels];
+  allObjects = [supported6GHzChannels allObjects];
+  v6 = [allObjects valueForKey:@"description"];
   v7 = [v6 componentsJoinedByString:{@", "}];
   [v3 appendFormat:@"%@, ", v7];
 
   [v3 appendFormat:@", "]);
   objc_msgSend(v3, "appendFormat:", @"5GHz:(");
-  v8 = [(WiFiFindAndJoinRequest *)self supported5GHzChannels];
-  v9 = [v8 allObjects];
-  v10 = [v9 valueForKey:@"description"];
+  supported5GHzChannels = [(WiFiFindAndJoinRequest *)self supported5GHzChannels];
+  allObjects2 = [supported5GHzChannels allObjects];
+  v10 = [allObjects2 valueForKey:@"description"];
   v11 = [v10 componentsJoinedByString:{@", "}];
   [v3 appendFormat:@"%@, ", v11];
 
   [v3 appendFormat:@", "]);
   objc_msgSend(v3, "appendFormat:", @"2.4GHz:(");
-  v12 = [(WiFiFindAndJoinRequest *)self supported2GHzChannels];
-  v13 = [v12 allObjects];
-  v14 = [v13 valueForKey:@"description"];
+  supported2GHzChannels = [(WiFiFindAndJoinRequest *)self supported2GHzChannels];
+  allObjects3 = [supported2GHzChannels allObjects];
+  v14 = [allObjects3 valueForKey:@"description"];
   v15 = [v14 componentsJoinedByString:{@", "}];
   [v3 appendFormat:@"%@, ", v15];
 
@@ -390,14 +390,14 @@ LABEL_13:
   return v3;
 }
 
-- (BOOL)_runFindAndJoinOnInterface:(id)a3 outError:(id *)a4
+- (BOOL)_runFindAndJoinOnInterface:(id)interface outError:(id *)error
 {
-  v118 = a3;
+  interfaceCopy = interface;
   v6 = +[NSMutableArray array];
   v7 = +[NSMutableSet set];
-  v8 = [(WiFiFindAndJoinRequest *)self networkName];
+  networkName = [(WiFiFindAndJoinRequest *)self networkName];
 
-  if (!v8)
+  if (!networkName)
   {
     v111 = CWFGetOSLog();
     if (v111)
@@ -442,17 +442,17 @@ LABEL_13:
     v11 = &_os_log_default;
   }
 
-  v117 = a4;
+  errorCopy = error;
 
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(WiFiFindAndJoinRequest *)self _printSupportedChannels];
+    _printSupportedChannels = [(WiFiFindAndJoinRequest *)self _printSupportedChannels];
     v132 = 136315650;
     v133 = "[WiFiFindAndJoinRequest _runFindAndJoinOnInterface:outError:]";
     v134 = 2112;
-    v135 = self;
+    selfCopy = self;
     v136 = 2112;
-    *v137 = v12;
+    *v137 = _printSupportedChannels;
     LODWORD(v115) = 32;
     v113 = &v132;
     _os_log_send_and_compose_impl();
@@ -496,11 +496,11 @@ LABEL_13:
 
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v18 = [(WiFiFindAndJoinRequest *)self channelBand];
+      channelBand = [(WiFiFindAndJoinRequest *)self channelBand];
       v132 = 136315394;
       v133 = "[WiFiFindAndJoinRequest _runFindAndJoinOnInterface:outError:]";
       v134 = 1024;
-      LODWORD(v135) = v18;
+      LODWORD(selfCopy) = channelBand;
       LODWORD(v116) = 18;
       v114 = &v132;
       _os_log_send_and_compose_impl();
@@ -529,8 +529,8 @@ LABEL_24:
     v24 = v125;
     v25 = objc_alloc_init(CWFScanParameters);
 
-    v26 = [(WiFiFindAndJoinRequest *)self networkName];
-    [v25 setSSID:v26];
+    networkName2 = [(WiFiFindAndJoinRequest *)self networkName];
+    [v25 setSSID:networkName2];
 
     [v25 setBSSType:3];
     [v25 setPHYMode:1];
@@ -551,15 +551,15 @@ LABEL_24:
     [v25 setScanType:1];
     v125 = +[NSDate date];
 
-    v28 = [(WiFiFindAndJoinRequest *)self interface];
+    interface = [(WiFiFindAndJoinRequest *)self interface];
     v131 = 0;
-    v29 = [v28 performScanWithParameters:v25 error:&v131];
+    v29 = [interface performScanWithParameters:v25 error:&v131];
     v30 = v131;
 
     if (v30)
     {
-      v31 = [(WiFiFindAndJoinRequest *)self scanFailureList];
-      [v31 addObject:v30];
+      scanFailureList = [(WiFiFindAndJoinRequest *)self scanFailureList];
+      [scanFailureList addObject:v30];
 LABEL_33:
 
       goto LABEL_34;
@@ -567,9 +567,9 @@ LABEL_33:
 
     if (!v29 || ![v29 count])
     {
-      v31 = [(WiFiFindAndJoinRequest *)self scanFailureList];
+      scanFailureList = [(WiFiFindAndJoinRequest *)self scanFailureList];
       v32 = [NSError errorWithDomain:NSPOSIXErrorDomain code:2 userInfo:0];
-      [v31 addObject:v32];
+      [scanFailureList addObject:v32];
 
       goto LABEL_33;
     }
@@ -603,9 +603,9 @@ LABEL_34:
           }
 
           v41 = *(*(&v127 + 1) + 8 * j);
-          v42 = [v41 networkName];
-          v43 = [(WiFiFindAndJoinRequest *)self networkName];
-          v44 = [v42 isEqualToString:v43];
+          networkName3 = [v41 networkName];
+          networkName4 = [(WiFiFindAndJoinRequest *)self networkName];
+          v44 = [networkName3 isEqualToString:networkName4];
 
           if (v44)
           {
@@ -643,7 +643,7 @@ LABEL_34:
       v132 = 136316162;
       v133 = "[WiFiFindAndJoinRequest _runFindAndJoinOnInterface:outError:]";
       v134 = 2112;
-      v135 = v49;
+      selfCopy = v49;
       v136 = 1024;
       *v137 = v50;
       v22 = v123;
@@ -664,13 +664,13 @@ LABEL_34:
 
     if ([i count])
     {
-      v58 = [(WiFiFindAndJoinRequest *)self scannedChannels];
-      [v58 addObjectsFromArray:i];
+      scannedChannels = [(WiFiFindAndJoinRequest *)self scannedChannels];
+      [scannedChannels addObjectsFromArray:i];
     }
 
     v59 = [(WiFiFindAndJoinRequest *)self joinCandidates:v113];
-    v60 = [v7 allObjects];
-    [v59 addObjectsFromArray:v60];
+    allObjects = [v7 allObjects];
+    [v59 addObjectsFromArray:allObjects];
 
     while (1)
     {
@@ -686,29 +686,29 @@ LABEL_34:
       v63 = v119;
       v64 = objc_alloc_init(CWFAssocParameters);
 
-      v65 = [(WiFiFindAndJoinRequest *)self joinCandidates];
-      v66 = [v65 allObjects];
-      v67 = [v66 firstObject];
-      [v64 setScanResult:v67];
+      joinCandidates = [(WiFiFindAndJoinRequest *)self joinCandidates];
+      allObjects2 = [joinCandidates allObjects];
+      firstObject = [allObjects2 firstObject];
+      [v64 setScanResult:firstObject];
 
       [v64 setForceBSSID:1];
-      v68 = [(WiFiFindAndJoinRequest *)self password];
-      [v64 setPassword:v68];
+      password = [(WiFiFindAndJoinRequest *)self password];
+      [v64 setPassword:password];
 
       [v64 setRememberUponSuccessfulAssociation:1];
       [v64 setKnownNetworkProfile:0];
       v119 = +[NSDate date];
 
-      v69 = [(WiFiFindAndJoinRequest *)self interface];
+      interface2 = [(WiFiFindAndJoinRequest *)self interface];
       v126 = 0;
       v120 = v64;
-      v70 = [v69 associateWithParameters:v64 error:&v126];
+      v70 = [interface2 associateWithParameters:v64 error:&v126];
       v22 = v126;
 
       if (v22)
       {
-        v71 = [(WiFiFindAndJoinRequest *)self joinFailureList];
-        [v71 addObject:v22];
+        joinFailureList = [(WiFiFindAndJoinRequest *)self joinFailureList];
+        [joinFailureList addObject:v22];
       }
 
       else
@@ -718,9 +718,9 @@ LABEL_34:
           goto LABEL_66;
         }
 
-        v71 = [(WiFiFindAndJoinRequest *)self joinFailureList];
+        joinFailureList = [(WiFiFindAndJoinRequest *)self joinFailureList];
         v72 = [NSError errorWithDomain:NSPOSIXErrorDomain code:97 userInfo:0];
-        [v71 addObject:v72];
+        [joinFailureList addObject:v72];
       }
 
 LABEL_66:
@@ -744,11 +744,11 @@ LABEL_66:
 
       if (os_log_type_enabled(v78, OS_LOG_TYPE_ERROR))
       {
-        v80 = [v120 scanResult];
+        scanResult = [v120 scanResult];
         v132 = 136315650;
         v133 = "[WiFiFindAndJoinRequest _runFindAndJoinOnInterface:outError:]";
         v134 = 2112;
-        v135 = v80;
+        selfCopy = scanResult;
         v136 = 2112;
         *v137 = v22;
         LODWORD(v115) = 32;
@@ -756,9 +756,9 @@ LABEL_66:
         _os_log_send_and_compose_impl();
       }
 
-      v81 = [(WiFiFindAndJoinRequest *)self joinCandidates];
-      v82 = [v120 scanResult];
-      [v81 removeObject:v82];
+      joinCandidates2 = [(WiFiFindAndJoinRequest *)self joinCandidates];
+      scanResult2 = [v120 scanResult];
+      [joinCandidates2 removeObject:scanResult2];
 
       if (v70)
       {
@@ -776,11 +776,11 @@ LABEL_66:
 
         if (os_log_type_enabled(v105, OS_LOG_TYPE_DEFAULT))
         {
-          v108 = [(WiFiFindAndJoinRequest *)self networkName];
+          networkName5 = [(WiFiFindAndJoinRequest *)self networkName];
           v132 = 136315650;
           v133 = "[WiFiFindAndJoinRequest _runFindAndJoinOnInterface:outError:]";
           v134 = 2112;
-          v135 = v108;
+          selfCopy = networkName5;
           v136 = 2112;
           *v137 = v22;
           LODWORD(v115) = 32;
@@ -788,20 +788,20 @@ LABEL_66:
           _os_log_send_and_compose_impl();
         }
 
-        v109 = [v120 scanResult];
-        [(WiFiFindAndJoinRequest *)self setJoinedNetwork:v109];
+        scanResult3 = [v120 scanResult];
+        [(WiFiFindAndJoinRequest *)self setJoinedNetwork:scanResult3];
 
         v102 = 1;
         goto LABEL_100;
       }
 
-      v83 = [(WiFiFindAndJoinRequest *)self joinFailureList];
-      v84 = [v83 lastObject];
-      v85 = [(WiFiFindAndJoinRequest *)self _canPerformRetry:v84];
+      joinFailureList2 = [(WiFiFindAndJoinRequest *)self joinFailureList];
+      lastObject = [joinFailureList2 lastObject];
+      v85 = [(WiFiFindAndJoinRequest *)self _canPerformRetry:lastObject];
 
       if (!v85)
       {
-        a4 = v117;
+        error = errorCopy;
         goto LABEL_93;
       }
 
@@ -822,21 +822,21 @@ LABEL_66:
         v132 = 136315394;
         v133 = "[WiFiFindAndJoinRequest _runFindAndJoinOnInterface:outError:]";
         v134 = 2112;
-        v135 = v22;
+        selfCopy = v22;
         LODWORD(v115) = 22;
         v113 = &v132;
         _os_log_send_and_compose_impl();
       }
     }
 
-    v89 = [(WiFiFindAndJoinRequest *)self joinFailureList];
-    v90 = [v89 lastObject];
-    v91 = [(WiFiFindAndJoinRequest *)self _canPerformRetry:v90];
+    joinFailureList3 = [(WiFiFindAndJoinRequest *)self joinFailureList];
+    lastObject2 = [joinFailureList3 lastObject];
+    v91 = [(WiFiFindAndJoinRequest *)self _canPerformRetry:lastObject2];
 
     if (!v91)
     {
       v106 = CWFGetOSLog();
-      a4 = v117;
+      error = errorCopy;
       if (v106)
       {
         v95 = CWFGetOSLog();
@@ -885,9 +885,9 @@ LABEL_66:
 LABEL_56:
   }
 
-  v52 = [(WiFiFindAndJoinRequest *)self scanFailureList];
-  v53 = [v52 lastObject];
-  v54 = [(WiFiFindAndJoinRequest *)self _canPerformRetry:v53];
+  scanFailureList2 = [(WiFiFindAndJoinRequest *)self scanFailureList];
+  lastObject3 = [scanFailureList2 lastObject];
+  v54 = [(WiFiFindAndJoinRequest *)self _canPerformRetry:lastObject3];
 
   if (v54)
   {
@@ -918,7 +918,7 @@ LABEL_55:
   }
 
   v94 = CWFGetOSLog();
-  a4 = v117;
+  error = errorCopy;
   if (v94)
   {
     v95 = CWFGetOSLog();
@@ -958,24 +958,24 @@ LABEL_93:
   if (os_log_type_enabled(v98, OS_LOG_TYPE_DEFAULT))
   {
     [(WiFiFindAndJoinRequest *)self networkName];
-    v101 = v100 = a4;
+    v101 = v100 = error;
     v132 = 136315650;
     v133 = "[WiFiFindAndJoinRequest _runFindAndJoinOnInterface:outError:]";
     v134 = 2112;
-    v135 = v101;
+    selfCopy = v101;
     v136 = 2112;
     *v137 = v22;
     LODWORD(v115) = 32;
     v113 = &v132;
     _os_log_send_and_compose_impl();
 
-    a4 = v100;
+    error = v100;
   }
 
   v102 = 0;
-  if (a4)
+  if (error)
   {
-    *a4 = [(WiFiFindAndJoinRequest *)v22 copy];
+    *error = [(WiFiFindAndJoinRequest *)v22 copy];
   }
 
 LABEL_100:
@@ -989,8 +989,8 @@ LABEL_100:
   if (&_AnalyticsSendEventLazy)
   {
     v3 = +[NSMutableDictionary dictionary];
-    v4 = [(WiFiFindAndJoinRequest *)self joinedNetwork];
-    if (v4)
+    joinedNetwork = [(WiFiFindAndJoinRequest *)self joinedNetwork];
+    if (joinedNetwork)
     {
       v5 = @"Success";
     }
@@ -1002,8 +1002,8 @@ LABEL_100:
 
     [v3 setObject:v5 forKeyedSubscript:@"Status"];
 
-    v6 = [(WiFiFindAndJoinRequest *)self chipResetWaiter];
-    if (v6)
+    chipResetWaiter = [(WiFiFindAndJoinRequest *)self chipResetWaiter];
+    if (chipResetWaiter)
     {
       v7 = @"YES";
     }
@@ -1016,8 +1016,8 @@ LABEL_100:
     [v3 setObject:v7 forKeyedSubscript:@"DidPerformChipReset"];
 
     v8 = +[NSDate date];
-    v9 = [(WiFiFindAndJoinRequest *)self startedAt];
-    [v8 timeIntervalSinceDate:v9];
+    startedAt = [(WiFiFindAndJoinRequest *)self startedAt];
+    [v8 timeIntervalSinceDate:startedAt];
     v11 = [NSNumber numberWithUnsignedLong:(v10 * 1000.0)];
     [v3 setObject:v11 forKeyedSubscript:@"CompletionTimeMillisecs"];
 
@@ -1029,28 +1029,28 @@ LABEL_100:
     v15 = [NSNumber numberWithUnsignedLong:(v14 * 1000.0)];
     [v3 setObject:v15 forKeyedSubscript:@"JoinTimeMillisecs"];
 
-    v16 = [(WiFiFindAndJoinRequest *)self supported2GHzChannels];
-    v17 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v16 count]);
+    supported2GHzChannels = [(WiFiFindAndJoinRequest *)self supported2GHzChannels];
+    v17 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [supported2GHzChannels count]);
     [v3 setObject:v17 forKeyedSubscript:@"Supported2GHzChannelCount"];
 
-    v18 = [(WiFiFindAndJoinRequest *)self supported5GHzChannels];
-    v19 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v18 count]);
+    supported5GHzChannels = [(WiFiFindAndJoinRequest *)self supported5GHzChannels];
+    v19 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [supported5GHzChannels count]);
     [v3 setObject:v19 forKeyedSubscript:@"Supported5GHzChannelCount"];
 
-    v20 = [(WiFiFindAndJoinRequest *)self supported6GHzChannels];
-    v21 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v20 count]);
+    supported6GHzChannels = [(WiFiFindAndJoinRequest *)self supported6GHzChannels];
+    v21 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [supported6GHzChannels count]);
     [v3 setObject:v21 forKeyedSubscript:@"Supported6GHzChannelCount"];
 
-    v22 = [(WiFiFindAndJoinRequest *)self scannedChannels];
-    v23 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v22 count]);
+    scannedChannels = [(WiFiFindAndJoinRequest *)self scannedChannels];
+    v23 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [scannedChannels count]);
     [v3 setObject:v23 forKeyedSubscript:@"ScannedChannelCount"];
 
-    v24 = [(WiFiFindAndJoinRequest *)self scanFailureList];
-    v25 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v24 count]);
+    scanFailureList = [(WiFiFindAndJoinRequest *)self scanFailureList];
+    v25 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [scanFailureList count]);
     [v3 setObject:v25 forKeyedSubscript:@"ScanFailureCount"];
 
-    v26 = [(WiFiFindAndJoinRequest *)self joinFailureList];
-    v27 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v26 count]);
+    joinFailureList = [(WiFiFindAndJoinRequest *)self joinFailureList];
+    v27 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [joinFailureList count]);
     [v3 setObject:v27 forKeyedSubscript:@"JoinFailureCount"];
 
     v28 = [NSNumber numberWithUnsignedInteger:[(WiFiFindAndJoinRequest *)self channelNumber]];
@@ -1059,12 +1059,12 @@ LABEL_100:
     v29 = [NSNumber numberWithUnsignedInteger:[(WiFiFindAndJoinRequest *)self channelBand]];
     [v3 setObject:v29 forKeyedSubscript:@"RequestedBand"];
 
-    v30 = [(WiFiFindAndJoinRequest *)self joinedNetwork];
-    if (v30)
+    joinedNetwork2 = [(WiFiFindAndJoinRequest *)self joinedNetwork];
+    if (joinedNetwork2)
     {
-      v31 = [(WiFiFindAndJoinRequest *)self joinedNetwork];
-      v32 = [v31 channel];
-      v33 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v32 channel]);
+      joinedNetwork3 = [(WiFiFindAndJoinRequest *)self joinedNetwork];
+      channel = [joinedNetwork3 channel];
+      v33 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [channel channel]);
       [v3 setObject:v33 forKeyedSubscript:@"JoinedChannel"];
     }
 
@@ -1073,12 +1073,12 @@ LABEL_100:
       [v3 setObject:0 forKeyedSubscript:@"JoinedChannel"];
     }
 
-    v34 = [(WiFiFindAndJoinRequest *)self joinedNetwork];
-    if (v34)
+    joinedNetwork4 = [(WiFiFindAndJoinRequest *)self joinedNetwork];
+    if (joinedNetwork4)
     {
-      v35 = [(WiFiFindAndJoinRequest *)self joinedNetwork];
-      v36 = [v35 channel];
-      v37 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v36 band]);
+      joinedNetwork5 = [(WiFiFindAndJoinRequest *)self joinedNetwork];
+      channel2 = [joinedNetwork5 channel];
+      v37 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [channel2 band]);
       [v3 setObject:v37 forKeyedSubscript:@"JoinedBand"];
     }
 
@@ -1087,11 +1087,11 @@ LABEL_100:
       [v3 setObject:0 forKeyedSubscript:@"JoinedBand"];
     }
 
-    v38 = [(WiFiFindAndJoinRequest *)self scanFailureList];
-    if ([v38 count])
+    scanFailureList2 = [(WiFiFindAndJoinRequest *)self scanFailureList];
+    if ([scanFailureList2 count])
     {
-      v39 = [(WiFiFindAndJoinRequest *)self scanFailureList];
-      v40 = [v39 valueForKey:@"description"];
+      scanFailureList3 = [(WiFiFindAndJoinRequest *)self scanFailureList];
+      v40 = [scanFailureList3 valueForKey:@"description"];
       v41 = [v40 componentsJoinedByString:{@", "}];
       [v3 setObject:v41 forKeyedSubscript:@"ScanFailures"];
     }
@@ -1101,11 +1101,11 @@ LABEL_100:
       [v3 setObject:0 forKeyedSubscript:@"ScanFailures"];
     }
 
-    v42 = [(WiFiFindAndJoinRequest *)self joinFailureList];
-    if ([v42 count])
+    joinFailureList2 = [(WiFiFindAndJoinRequest *)self joinFailureList];
+    if ([joinFailureList2 count])
     {
-      v43 = [(WiFiFindAndJoinRequest *)self joinFailureList];
-      v44 = [v43 valueForKey:@"description"];
+      joinFailureList3 = [(WiFiFindAndJoinRequest *)self joinFailureList];
+      v44 = [joinFailureList3 valueForKey:@"description"];
       v45 = [v44 componentsJoinedByString:{@", "}];
       [v3 setObject:v45 forKeyedSubscript:@"JoinFailures"];
     }
@@ -1138,10 +1138,10 @@ LABEL_100:
   }
 }
 
-- (BOOL)runSynchronouslyOnQueue:(id)a3 onInterface:(id)a4 outError:(id *)a5
+- (BOOL)runSynchronouslyOnQueue:(id)queue onInterface:(id)interface outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  queueCopy = queue;
+  interfaceCopy = interface;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -1160,12 +1160,12 @@ LABEL_100:
   block[2] = sub_10006E358;
   block[3] = &unk_100260610;
   block[4] = self;
-  v14 = v9;
+  v14 = interfaceCopy;
   v15 = &v20;
   v16 = v18;
-  v17 = a5;
-  v11 = v9;
-  dispatch_sync(v8, block);
+  errorCopy = error;
+  v11 = interfaceCopy;
+  dispatch_sync(queueCopy, block);
   LOBYTE(self) = *(v21 + 24);
 
   _Block_object_dispose(v18, 8);
@@ -1174,11 +1174,11 @@ LABEL_100:
   return self;
 }
 
-- (BOOL)runAsynchronouslyOnQueue:(id)a3 onInterface:(id)a4 withReply:(id)a5
+- (BOOL)runAsynchronouslyOnQueue:(id)queue onInterface:(id)interface withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  interfaceCopy = interface;
+  replyCopy = reply;
   v11 = +[NSDate date];
   [(WiFiFindAndJoinRequest *)self setStartedAt:v11];
 
@@ -1188,12 +1188,12 @@ LABEL_100:
   v17[2] = sub_10006E514;
   v17[3] = &unk_100260660;
   v17[4] = self;
-  v18 = v9;
-  v19 = v8;
-  v20 = v10;
-  v13 = v8;
-  v14 = v10;
-  v15 = v9;
+  v18 = interfaceCopy;
+  v19 = queueCopy;
+  v20 = replyCopy;
+  v13 = queueCopy;
+  v14 = replyCopy;
+  v15 = interfaceCopy;
   dispatch_async(v12, v17);
 
   return 1;

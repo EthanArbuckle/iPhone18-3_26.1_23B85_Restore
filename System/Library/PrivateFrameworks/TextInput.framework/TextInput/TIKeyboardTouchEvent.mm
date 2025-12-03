@@ -1,12 +1,12 @@
 @interface TIKeyboardTouchEvent
-+ (TIKeyboardTouchEvent)touchEventWithStage:(int)a3 location:(CGPoint)a4 radius:(double)a5 timestamp:(double)a6 pathIndex:(int64_t)a7 fingerID:(int)a8 forcedKeyCode:(int64_t)a9;
-+ (TIKeyboardTouchEvent)touchEventWithStage:(int)a3 location:(CGPoint)a4 radius:(double)a5 timestamp:(double)a6 pathIndex:(int64_t)a7 fingerID:(int)a8 forcedKeyCode:(int64_t)a9 continuousPathState:(int)a10;
++ (TIKeyboardTouchEvent)touchEventWithStage:(int)stage location:(CGPoint)location radius:(double)radius timestamp:(double)timestamp pathIndex:(int64_t)index fingerID:(int)d forcedKeyCode:(int64_t)code;
++ (TIKeyboardTouchEvent)touchEventWithStage:(int)stage location:(CGPoint)location radius:(double)radius timestamp:(double)timestamp pathIndex:(int64_t)index fingerID:(int)d forcedKeyCode:(int64_t)code continuousPathState:(int)self0;
 - (CGPoint)location;
-- (TIKeyboardTouchEvent)initWithCoder:(id)a3;
-- (TIKeyboardTouchEvent)initWithStage:(int)a3 location:(CGPoint)a4 radius:(double)a5 timestamp:(double)a6 pathIndex:(int64_t)a7 fingerID:(int)a8 forcedKeyCode:(int64_t)a9 continuousPathState:(int)a10;
+- (TIKeyboardTouchEvent)initWithCoder:(id)coder;
+- (TIKeyboardTouchEvent)initWithStage:(int)stage location:(CGPoint)location radius:(double)radius timestamp:(double)timestamp pathIndex:(int64_t)index fingerID:(int)d forcedKeyCode:(int64_t)code continuousPathState:(int)self0;
 - (id)description;
 - (id)shortDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TIKeyboardTouchEvent
@@ -22,26 +22,26 @@
 
 - (id)shortDescription
 {
-  v3 = [(TIKeyboardTouchEvent *)self stage];
-  if (v3 > 3)
+  stage = [(TIKeyboardTouchEvent *)self stage];
+  if (stage > 3)
   {
     v4 = "?";
   }
 
   else
   {
-    v4 = off_1E6F4CE78[v3];
+    v4 = off_1E6F4CE78[stage];
   }
 
-  v5 = [(TIKeyboardTouchEvent *)self continuousPathState];
-  if (v5 > 6)
+  continuousPathState = [(TIKeyboardTouchEvent *)self continuousPathState];
+  if (continuousPathState > 6)
   {
     v6 = "";
   }
 
   else
   {
-    v6 = off_1E6F4CE98[v5];
+    v6 = off_1E6F4CE98[continuousPathState];
   }
 
   v7 = MEMORY[0x1E696AEC0];
@@ -59,10 +59,10 @@
 - (id)description
 {
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"<%@: %p", objc_opt_class(), self];
-  v4 = [(TIKeyboardTouchEvent *)self stage];
-  if (v4 <= 5)
+  stage = [(TIKeyboardTouchEvent *)self stage];
+  if (stage <= 5)
   {
-    [v3 appendString:*(&off_1E6F4CDA8 + v4)];
+    [v3 appendString:*(&off_1E6F4CDA8 + stage)];
   }
 
   [(TIKeyboardTouchEvent *)self location];
@@ -74,17 +74,17 @@
   [(TIKeyboardTouchEvent *)self timestamp];
   [v3 appendFormat:@"; timestamp = %f", v9];
   [v3 appendFormat:@"; pathIndex = %ld", -[TIKeyboardTouchEvent pathIndex](self, "pathIndex")];
-  v10 = [(TIKeyboardTouchEvent *)self fingerID];
-  if (v10 <= 0xC && ((0x1F7Du >> v10) & 1) != 0)
+  fingerID = [(TIKeyboardTouchEvent *)self fingerID];
+  if (fingerID <= 0xC && ((0x1F7Du >> fingerID) & 1) != 0)
   {
-    [v3 appendString:*(&off_1E6F4CDD8 + v10)];
+    [v3 appendString:*(&off_1E6F4CDD8 + fingerID)];
   }
 
   [v3 appendFormat:@"; forcedKeyCode = %ld", -[TIKeyboardTouchEvent forcedKeyCode](self, "forcedKeyCode")];
-  v11 = [(TIKeyboardTouchEvent *)self continuousPathState];
-  if (v11 <= 6)
+  continuousPathState = [(TIKeyboardTouchEvent *)self continuousPathState];
+  if (continuousPathState <= 6)
   {
-    [v3 appendString:*(&off_1E6F4CE40 + v11)];
+    [v3 appendString:*(&off_1E6F4CE40 + continuousPathState)];
   }
 
   [v3 appendString:@">"];
@@ -92,15 +92,15 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   stage = self->_stage;
-  v12 = v4;
+  v12 = coderCopy;
   if (stage)
   {
-    [v4 encodeInteger:stage forKey:@"stage"];
-    v4 = v12;
+    [coderCopy encodeInteger:stage forKey:@"stage"];
+    coderCopy = v12;
   }
 
   x = self->_location.x;
@@ -108,7 +108,7 @@
   {
     *&x = x;
     [v12 encodeFloat:@"location.x" forKey:x];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   y = self->_location.y;
@@ -116,82 +116,82 @@
   {
     *&y = y;
     [v12 encodeFloat:@"location.y" forKey:y];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   if (self->_radius != 0.0)
   {
     [v12 encodeDouble:@"radius" forKey:?];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   if (self->_timestamp != 0.0)
   {
     [v12 encodeDouble:@"timestamp" forKey:?];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   pathIndex = self->_pathIndex;
   if (pathIndex)
   {
     [v12 encodeInteger:pathIndex forKey:@"pathIndex"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   fingerID = self->_fingerID;
   if (fingerID)
   {
     [v12 encodeInteger:fingerID forKey:@"fingerID"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   forcedKeyCode = self->_forcedKeyCode;
   if (forcedKeyCode)
   {
     [v12 encodeInteger:forcedKeyCode forKey:@"forcedKeyCode"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   integerValue = self->_mask.integerValue;
   if (integerValue)
   {
     [v12 encodeInteger:integerValue forKey:@"flags"];
-    v4 = v12;
+    coderCopy = v12;
   }
 }
 
-- (TIKeyboardTouchEvent)initWithCoder:(id)a3
+- (TIKeyboardTouchEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = TIKeyboardTouchEvent;
   v5 = [(TIKeyboardTouchEvent *)&v12 init];
   if (v5)
   {
-    v5->_stage = [v4 decodeIntegerForKey:@"stage"];
-    [v4 decodeFloatForKey:@"location.x"];
+    v5->_stage = [coderCopy decodeIntegerForKey:@"stage"];
+    [coderCopy decodeFloatForKey:@"location.x"];
     v7 = v6;
-    [v4 decodeFloatForKey:@"location.y"];
+    [coderCopy decodeFloatForKey:@"location.y"];
     v5->_location.x = v7;
     v5->_location.y = v8;
-    [v4 decodeDoubleForKey:@"radius"];
+    [coderCopy decodeDoubleForKey:@"radius"];
     v5->_radius = v9;
-    [v4 decodeDoubleForKey:@"timestamp"];
+    [coderCopy decodeDoubleForKey:@"timestamp"];
     v5->_timestamp = v10;
-    v5->_pathIndex = [v4 decodeIntegerForKey:@"pathIndex"];
-    v5->_fingerID = [v4 decodeIntegerForKey:@"fingerID"];
-    v5->_forcedKeyCode = [v4 decodeIntegerForKey:@"forcedKeyCode"];
-    v5->_mask.integerValue = [v4 decodeIntegerForKey:@"flags"];
+    v5->_pathIndex = [coderCopy decodeIntegerForKey:@"pathIndex"];
+    v5->_fingerID = [coderCopy decodeIntegerForKey:@"fingerID"];
+    v5->_forcedKeyCode = [coderCopy decodeIntegerForKey:@"forcedKeyCode"];
+    v5->_mask.integerValue = [coderCopy decodeIntegerForKey:@"flags"];
   }
 
   return v5;
 }
 
-- (TIKeyboardTouchEvent)initWithStage:(int)a3 location:(CGPoint)a4 radius:(double)a5 timestamp:(double)a6 pathIndex:(int64_t)a7 fingerID:(int)a8 forcedKeyCode:(int64_t)a9 continuousPathState:(int)a10
+- (TIKeyboardTouchEvent)initWithStage:(int)stage location:(CGPoint)location radius:(double)radius timestamp:(double)timestamp pathIndex:(int64_t)index fingerID:(int)d forcedKeyCode:(int64_t)code continuousPathState:(int)self0
 {
-  v10 = a10;
-  y = a4.y;
-  x = a4.x;
+  stateCopy = state;
+  y = location.y;
+  x = location.x;
   v20.receiver = self;
   v20.super_class = TIKeyboardTouchEvent;
   result = [(TIKeyboardTouchEvent *)&v20 init];
@@ -199,30 +199,30 @@
   {
     result->_location.x = x;
     result->_location.y = y;
-    result->_radius = a5;
-    result->_timestamp = a6;
-    result->_stage = a3;
-    result->_fingerID = a8;
-    result->_pathIndex = a7;
-    result->_forcedKeyCode = a9;
-    LOBYTE(result->_mask.integerValue) = result->_mask.integerValue & 0xF0 | v10 & 0xF;
+    result->_radius = radius;
+    result->_timestamp = timestamp;
+    result->_stage = stage;
+    result->_fingerID = d;
+    result->_pathIndex = index;
+    result->_forcedKeyCode = code;
+    LOBYTE(result->_mask.integerValue) = result->_mask.integerValue & 0xF0 | stateCopy & 0xF;
   }
 
   return result;
 }
 
-+ (TIKeyboardTouchEvent)touchEventWithStage:(int)a3 location:(CGPoint)a4 radius:(double)a5 timestamp:(double)a6 pathIndex:(int64_t)a7 fingerID:(int)a8 forcedKeyCode:(int64_t)a9 continuousPathState:(int)a10
++ (TIKeyboardTouchEvent)touchEventWithStage:(int)stage location:(CGPoint)location radius:(double)radius timestamp:(double)timestamp pathIndex:(int64_t)index fingerID:(int)d forcedKeyCode:(int64_t)code continuousPathState:(int)self0
 {
-  v10 = [[TIKeyboardTouchEvent alloc] initWithStage:*&a3 location:a7 radius:*&a8 timestamp:a9 pathIndex:*&a10 fingerID:a4.x forcedKeyCode:a4.y continuousPathState:a5, a6];
+  timestamp = [[TIKeyboardTouchEvent alloc] initWithStage:*&stage location:index radius:*&d timestamp:code pathIndex:*&state fingerID:location.x forcedKeyCode:location.y continuousPathState:radius, timestamp];
 
-  return v10;
+  return timestamp;
 }
 
-+ (TIKeyboardTouchEvent)touchEventWithStage:(int)a3 location:(CGPoint)a4 radius:(double)a5 timestamp:(double)a6 pathIndex:(int64_t)a7 fingerID:(int)a8 forcedKeyCode:(int64_t)a9
++ (TIKeyboardTouchEvent)touchEventWithStage:(int)stage location:(CGPoint)location radius:(double)radius timestamp:(double)timestamp pathIndex:(int64_t)index fingerID:(int)d forcedKeyCode:(int64_t)code
 {
-  v9 = [[TIKeyboardTouchEvent alloc] initWithStage:*&a3 location:a7 radius:*&a8 timestamp:a9 pathIndex:2 fingerID:a4.x forcedKeyCode:a4.y continuousPathState:a5, a6];
+  timestamp = [[TIKeyboardTouchEvent alloc] initWithStage:*&stage location:index radius:*&d timestamp:code pathIndex:2 fingerID:location.x forcedKeyCode:location.y continuousPathState:radius, timestamp];
 
-  return v9;
+  return timestamp;
 }
 
 @end

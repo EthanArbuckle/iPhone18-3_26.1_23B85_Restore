@@ -1,9 +1,9 @@
 @interface SXVideoPlayerViewControllerManager
 - (SXVideoPlayerViewControllerManager)init;
-- (id)videoPlayerViewControllerForURL:(id)a3 receiveOwnershipBlock:(id)a4;
-- (void)configureAutoplayForVideoWithURL:(id)a3 analyticsRouter:(id)a4;
-- (void)registerExistingVideoPlayerViewController:(id)a3 URL:(id)a4 analyticsRouter:(id)a5 videoPlayerVisibilityMonitor:(id)a6 loseOwnershipBlock:(id)a7;
-- (void)setPresentedAndAppeared:(BOOL)a3;
+- (id)videoPlayerViewControllerForURL:(id)l receiveOwnershipBlock:(id)block;
+- (void)configureAutoplayForVideoWithURL:(id)l analyticsRouter:(id)router;
+- (void)registerExistingVideoPlayerViewController:(id)controller URL:(id)l analyticsRouter:(id)router videoPlayerVisibilityMonitor:(id)monitor loseOwnershipBlock:(id)block;
+- (void)setPresentedAndAppeared:(BOOL)appeared;
 @end
 
 @implementation SXVideoPlayerViewControllerManager
@@ -15,59 +15,59 @@
   v2 = [(SXVideoPlayerViewControllerManager *)&v18 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     videoPlayerViewControllers = v2->_videoPlayerViewControllers;
-    v2->_videoPlayerViewControllers = v3;
+    v2->_videoPlayerViewControllers = dictionary;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     loseOwnershipBlocks = v2->_loseOwnershipBlocks;
-    v2->_loseOwnershipBlocks = v5;
+    v2->_loseOwnershipBlocks = dictionary2;
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     pendingLoseOwnershipBlocks = v2->_pendingLoseOwnershipBlocks;
-    v2->_pendingLoseOwnershipBlocks = v7;
+    v2->_pendingLoseOwnershipBlocks = dictionary3;
 
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary4 = [MEMORY[0x1E695DF90] dictionary];
     pendingReceiveOwnershipBlocks = v2->_pendingReceiveOwnershipBlocks;
-    v2->_pendingReceiveOwnershipBlocks = v9;
+    v2->_pendingReceiveOwnershipBlocks = dictionary4;
 
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary5 = [MEMORY[0x1E695DF90] dictionary];
     pendingVideoPlayerViewControllers = v2->_pendingVideoPlayerViewControllers;
-    v2->_pendingVideoPlayerViewControllers = v11;
+    v2->_pendingVideoPlayerViewControllers = dictionary5;
 
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary6 = [MEMORY[0x1E695DF90] dictionary];
     videoAnalyticsRouters = v2->_videoAnalyticsRouters;
-    v2->_videoAnalyticsRouters = v13;
+    v2->_videoAnalyticsRouters = dictionary6;
 
-    v15 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary7 = [MEMORY[0x1E695DF90] dictionary];
     visibilityMonitors = v2->_visibilityMonitors;
-    v2->_visibilityMonitors = v15;
+    v2->_visibilityMonitors = dictionary7;
   }
 
   return v2;
 }
 
-- (id)videoPlayerViewControllerForURL:(id)a3 receiveOwnershipBlock:(id)a4
+- (id)videoPlayerViewControllerForURL:(id)l receiveOwnershipBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  blockCopy = block;
   v8 = objc_alloc_init(SXVideoPlayerViewControllerResponse);
-  if (v6)
+  if (lCopy)
   {
-    v9 = [(SXVideoPlayerViewControllerManager *)self loseOwnershipBlocks];
-    v10 = [v9 objectForKey:v6];
+    loseOwnershipBlocks = [(SXVideoPlayerViewControllerManager *)self loseOwnershipBlocks];
+    v10 = [loseOwnershipBlocks objectForKey:lCopy];
 
-    v11 = [(SXVideoPlayerViewControllerManager *)self videoPlayerViewControllers];
-    v12 = [v11 objectForKey:v6];
+    videoPlayerViewControllers = [(SXVideoPlayerViewControllerManager *)self videoPlayerViewControllers];
+    v12 = [videoPlayerViewControllers objectForKey:lCopy];
 
-    v13 = [(SXVideoPlayerViewControllerManager *)self autoplayURL];
-    v14 = [v13 isEqual:v6];
+    autoplayURL = [(SXVideoPlayerViewControllerManager *)self autoplayURL];
+    v14 = [autoplayURL isEqual:lCopy];
 
-    v15 = [(SXVideoPlayerViewControllerManager *)self videoAnalyticsRouters];
-    v16 = [v15 objectForKey:v6];
+    videoAnalyticsRouters = [(SXVideoPlayerViewControllerManager *)self videoAnalyticsRouters];
+    v16 = [videoAnalyticsRouters objectForKey:lCopy];
 
-    v17 = [(SXVideoPlayerViewControllerManager *)self visibilityMonitors];
-    v18 = [v17 objectForKey:v6];
+    visibilityMonitors = [(SXVideoPlayerViewControllerManager *)self visibilityMonitors];
+    v18 = [visibilityMonitors objectForKey:lCopy];
 
     v19 = v12;
     if (!v12 && v14)
@@ -91,18 +91,18 @@
       if (v10)
       {
         (*(v10 + 16))();
-        v20 = [(SXVideoPlayerViewControllerManager *)self loseOwnershipBlocks];
-        [v20 removeObjectForKey:v6];
+        loseOwnershipBlocks2 = [(SXVideoPlayerViewControllerManager *)self loseOwnershipBlocks];
+        [loseOwnershipBlocks2 removeObjectForKey:lCopy];
       }
 
-      v21 = [(SXVideoPlayerViewControllerManager *)self videoPlayerViewControllers];
-      [v21 removeObjectForKey:v6];
+      videoPlayerViewControllers2 = [(SXVideoPlayerViewControllerManager *)self videoPlayerViewControllers];
+      [videoPlayerViewControllers2 removeObjectForKey:lCopy];
 
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __92__SXVideoPlayerViewControllerManager_videoPlayerViewControllerForURL_receiveOwnershipBlock___block_invoke;
       block[3] = &unk_1E8500B00;
-      v38 = v7;
+      v38 = blockCopy;
       v37 = v19;
       dispatch_async(MEMORY[0x1E69E96A0], block);
 
@@ -122,35 +122,35 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v23 = [MEMORY[0x1E696AFB0] UUID];
-      v34 = [v23 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
 
-      if (v7)
+      if (blockCopy)
       {
-        v32 = [(SXVideoPlayerViewControllerManager *)self pendingReceiveOwnershipBlocks];
-        v30 = [v7 copy];
+        pendingReceiveOwnershipBlocks = [(SXVideoPlayerViewControllerManager *)self pendingReceiveOwnershipBlocks];
+        v30 = [blockCopy copy];
         v24 = MEMORY[0x1DA716BE0]();
-        [v32 setObject:v24 forKey:v34];
+        [pendingReceiveOwnershipBlocks setObject:v24 forKey:uUIDString];
       }
 
       if (v35)
       {
-        v33 = [(SXVideoPlayerViewControllerManager *)self pendingLoseOwnershipBlocks];
+        pendingLoseOwnershipBlocks = [(SXVideoPlayerViewControllerManager *)self pendingLoseOwnershipBlocks];
         v31 = [v35 copy];
         v25 = MEMORY[0x1DA716BE0]();
-        [v33 setObject:v25 forKey:v34];
+        [pendingLoseOwnershipBlocks setObject:v25 forKey:uUIDString];
       }
 
-      v26 = [(SXVideoPlayerViewControllerManager *)self pendingVideoPlayerViewControllers];
-      [v26 setObject:v19 forKey:v34];
+      pendingVideoPlayerViewControllers = [(SXVideoPlayerViewControllerManager *)self pendingVideoPlayerViewControllers];
+      [pendingVideoPlayerViewControllers setObject:v19 forKey:uUIDString];
 
-      v27 = [(SXVideoPlayerViewControllerManager *)self videoPlayerViewControllers];
-      [v27 removeObjectForKey:v6];
+      videoPlayerViewControllers3 = [(SXVideoPlayerViewControllerManager *)self videoPlayerViewControllers];
+      [videoPlayerViewControllers3 removeObjectForKey:lCopy];
 
-      v28 = [(SXVideoPlayerViewControllerManager *)self loseOwnershipBlocks];
-      [v28 removeObjectForKey:v6];
+      loseOwnershipBlocks3 = [(SXVideoPlayerViewControllerManager *)self loseOwnershipBlocks];
+      [loseOwnershipBlocks3 removeObjectForKey:lCopy];
 
-      v22 = v34;
+      v22 = uUIDString;
     }
 
     goto LABEL_19;
@@ -161,47 +161,47 @@ LABEL_20:
   return v8;
 }
 
-- (void)registerExistingVideoPlayerViewController:(id)a3 URL:(id)a4 analyticsRouter:(id)a5 videoPlayerVisibilityMonitor:(id)a6 loseOwnershipBlock:(id)a7
+- (void)registerExistingVideoPlayerViewController:(id)controller URL:(id)l analyticsRouter:(id)router videoPlayerVisibilityMonitor:(id)monitor loseOwnershipBlock:(id)block
 {
-  v22 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v12)
+  controllerCopy = controller;
+  lCopy = l;
+  routerCopy = router;
+  monitorCopy = monitor;
+  blockCopy = block;
+  if (lCopy)
   {
-    v16 = [(SXVideoPlayerViewControllerManager *)self videoPlayerViewControllers];
-    [v16 setObject:v22 forKey:v12];
+    videoPlayerViewControllers = [(SXVideoPlayerViewControllerManager *)self videoPlayerViewControllers];
+    [videoPlayerViewControllers setObject:controllerCopy forKey:lCopy];
 
-    v17 = [(SXVideoPlayerViewControllerManager *)self videoAnalyticsRouters];
-    [v17 setObject:v13 forKey:v12];
+    videoAnalyticsRouters = [(SXVideoPlayerViewControllerManager *)self videoAnalyticsRouters];
+    [videoAnalyticsRouters setObject:routerCopy forKey:lCopy];
 
-    v18 = [(SXVideoPlayerViewControllerManager *)self visibilityMonitors];
-    [v18 setObject:v14 forKey:v12];
+    visibilityMonitors = [(SXVideoPlayerViewControllerManager *)self visibilityMonitors];
+    [visibilityMonitors setObject:monitorCopy forKey:lCopy];
 
-    if (v15)
+    if (blockCopy)
     {
-      v19 = [(SXVideoPlayerViewControllerManager *)self loseOwnershipBlocks];
-      v20 = [v15 copy];
+      loseOwnershipBlocks = [(SXVideoPlayerViewControllerManager *)self loseOwnershipBlocks];
+      v20 = [blockCopy copy];
       v21 = MEMORY[0x1DA716BE0]();
-      [v19 setObject:v21 forKey:v12];
+      [loseOwnershipBlocks setObject:v21 forKey:lCopy];
     }
   }
 }
 
-- (void)setPresentedAndAppeared:(BOOL)a3
+- (void)setPresentedAndAppeared:(BOOL)appeared
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (a3 && !self->_presentedAndAppeared)
+  if (appeared && !self->_presentedAndAppeared)
   {
-    v21 = a3;
+    appearedCopy = appeared;
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v4 = [(SXVideoPlayerViewControllerManager *)self pendingVideoPlayerViewControllers];
-    v5 = [v4 allKeys];
-    v6 = [v5 copy];
+    pendingVideoPlayerViewControllers = [(SXVideoPlayerViewControllerManager *)self pendingVideoPlayerViewControllers];
+    allKeys = [pendingVideoPlayerViewControllers allKeys];
+    v6 = [allKeys copy];
 
     v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v7)
@@ -218,14 +218,14 @@ LABEL_20:
           }
 
           v11 = *(*(&v22 + 1) + 8 * i);
-          v12 = [(SXVideoPlayerViewControllerManager *)self pendingVideoPlayerViewControllers];
-          v13 = [v12 objectForKey:v11];
+          pendingVideoPlayerViewControllers2 = [(SXVideoPlayerViewControllerManager *)self pendingVideoPlayerViewControllers];
+          v13 = [pendingVideoPlayerViewControllers2 objectForKey:v11];
 
-          v14 = [(SXVideoPlayerViewControllerManager *)self pendingReceiveOwnershipBlocks];
-          v15 = [v14 objectForKey:v11];
+          pendingReceiveOwnershipBlocks = [(SXVideoPlayerViewControllerManager *)self pendingReceiveOwnershipBlocks];
+          v15 = [pendingReceiveOwnershipBlocks objectForKey:v11];
 
-          v16 = [(SXVideoPlayerViewControllerManager *)self pendingLoseOwnershipBlocks];
-          v17 = [v16 objectForKey:v11];
+          pendingLoseOwnershipBlocks = [(SXVideoPlayerViewControllerManager *)self pendingLoseOwnershipBlocks];
+          v17 = [pendingLoseOwnershipBlocks objectForKey:v11];
 
           if (v17)
           {
@@ -237,14 +237,14 @@ LABEL_20:
             (v15)[2](v15, v13);
           }
 
-          v18 = [(SXVideoPlayerViewControllerManager *)self pendingVideoPlayerViewControllers];
-          [v18 removeObjectForKey:v11];
+          pendingVideoPlayerViewControllers3 = [(SXVideoPlayerViewControllerManager *)self pendingVideoPlayerViewControllers];
+          [pendingVideoPlayerViewControllers3 removeObjectForKey:v11];
 
-          v19 = [(SXVideoPlayerViewControllerManager *)self pendingLoseOwnershipBlocks];
-          [v19 removeObjectForKey:v11];
+          pendingLoseOwnershipBlocks2 = [(SXVideoPlayerViewControllerManager *)self pendingLoseOwnershipBlocks];
+          [pendingLoseOwnershipBlocks2 removeObjectForKey:v11];
 
-          v20 = [(SXVideoPlayerViewControllerManager *)self pendingReceiveOwnershipBlocks];
-          [v20 removeObjectForKey:v11];
+          pendingReceiveOwnershipBlocks2 = [(SXVideoPlayerViewControllerManager *)self pendingReceiveOwnershipBlocks];
+          [pendingReceiveOwnershipBlocks2 removeObjectForKey:v11];
         }
 
         v8 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -253,21 +253,21 @@ LABEL_20:
       while (v8);
     }
 
-    a3 = v21;
+    appeared = appearedCopy;
   }
 
-  self->_presentedAndAppeared = a3;
+  self->_presentedAndAppeared = appeared;
 }
 
-- (void)configureAutoplayForVideoWithURL:(id)a3 analyticsRouter:(id)a4
+- (void)configureAutoplayForVideoWithURL:(id)l analyticsRouter:(id)router
 {
-  v8 = a3;
-  v6 = a4;
-  [(SXVideoPlayerViewControllerManager *)self setAutoplayURL:v8];
-  if (v6)
+  lCopy = l;
+  routerCopy = router;
+  [(SXVideoPlayerViewControllerManager *)self setAutoplayURL:lCopy];
+  if (routerCopy)
   {
-    v7 = [(SXVideoPlayerViewControllerManager *)self videoAnalyticsRouters];
-    [v7 setObject:v6 forKey:v8];
+    videoAnalyticsRouters = [(SXVideoPlayerViewControllerManager *)self videoAnalyticsRouters];
+    [videoAnalyticsRouters setObject:routerCopy forKey:lCopy];
   }
 }
 

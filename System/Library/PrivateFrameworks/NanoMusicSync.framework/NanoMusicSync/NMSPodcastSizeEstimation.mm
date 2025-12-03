@@ -1,11 +1,11 @@
 @interface NMSPodcastSizeEstimation
-- (BOOL)incrementSize:(unint64_t)a3 duration:(double)a4 forFeedURL:(id)a5;
+- (BOOL)incrementSize:(unint64_t)size duration:(double)duration forFeedURL:(id)l;
 - (NMSPodcastSizeEstimation)init;
-- (double)_adjustedSizeDurationRatio:(double)a3;
+- (double)_adjustedSizeDurationRatio:(double)ratio;
 - (double)_totalSizeDurationRatio;
 - (id)_cachedPodcastSizeInfoDict;
 - (unint64_t)_totalAverageSize;
-- (unint64_t)sizeForFeedURL:(id)a3 duration:(double)a4 feedProvidedSize:(unint64_t)a5;
+- (unint64_t)sizeForFeedURL:(id)l duration:(double)duration feedProvidedSize:(unint64_t)size;
 - (void)_cachedPodcastSizeInfoDict;
 - (void)_setupFromCache;
 - (void)synchronize;
@@ -27,15 +27,15 @@
   return v3;
 }
 
-- (BOOL)incrementSize:(unint64_t)a3 duration:(double)a4 forFeedURL:(id)a5
+- (BOOL)incrementSize:(unint64_t)size duration:(double)duration forFeedURL:(id)l
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = v8;
-  if (a3 && fabs(a4) >= 2.22044605e-16 && [v8 length])
+  lCopy = l;
+  v9 = lCopy;
+  if (size && fabs(duration) >= 2.22044605e-16 && [lCopy length])
   {
-    v10 = [(NMSPodcastSizeEstimation *)self sizeInfoDict];
-    v11 = [v10 objectForKeyedSubscript:v9];
+    sizeInfoDict = [(NMSPodcastSizeEstimation *)self sizeInfoDict];
+    v11 = [sizeInfoDict objectForKeyedSubscript:v9];
     v12 = v11;
     if (v11)
     {
@@ -53,22 +53,22 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v22 = 138412290;
-      v23 = v14;
+      sizeCopy = v14;
       _os_log_impl(&dword_25B27B000, v16, OS_LOG_TYPE_DEFAULT, "[PodcastSize] Updating podcastSizeInfo. Before: %@", &v22, 0xCu);
     }
 
-    [v14 setTotalSize:[v14 totalSize]+ a3];
+    [v14 setTotalSize:[v14 totalSize]+ size];
     [v14 totalDuration];
-    [v14 setTotalDuration:v17 + a4];
+    [v14 setTotalDuration:v17 + duration];
     [v14 setCount:[v14 count]+ 1];
-    v18 = [(NMSPodcastSizeEstimation *)self sizeInfoDict];
-    [v18 setObject:v14 forKeyedSubscript:v9];
+    sizeInfoDict2 = [(NMSPodcastSizeEstimation *)self sizeInfoDict];
+    [sizeInfoDict2 setObject:v14 forKeyedSubscript:v9];
 
     v19 = NMLogForCategory(5);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       v22 = 138412290;
-      v23 = v14;
+      sizeCopy = v14;
       _os_log_impl(&dword_25B27B000, v19, OS_LOG_TYPE_DEFAULT, "[PodcastSize] Updating podcastSizeInfo. After: %@", &v22, 0xCu);
     }
 
@@ -81,9 +81,9 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v22 = 134218498;
-      v23 = a3;
+      sizeCopy = size;
       v24 = 2048;
-      v25 = a4;
+      durationCopy = duration;
       v26 = 2112;
       v27 = v9;
       _os_log_error_impl(&dword_25B27B000, v14, OS_LOG_TYPE_ERROR, "[PodcastSize] Failed to update podcast size estimation cache with size: %llu, duration: %f, feedURL: %@", &v22, 0x20u);
@@ -100,19 +100,19 @@
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_25B27B000, a2, OS_LOG_TYPE_ERROR, "[PodcastSize] Failed to archive podcasts size info due to: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)sizeForFeedURL:(id)a3 duration:(double)a4 feedProvidedSize:(unint64_t)a5
+- (unint64_t)sizeForFeedURL:(id)l duration:(double)duration feedProvidedSize:(unint64_t)size
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if ([v8 length])
+  lCopy = l;
+  if ([lCopy length])
   {
-    v9 = [(NMSPodcastSizeEstimation *)self sizeInfoDict];
-    v10 = [v9 objectForKeyedSubscript:v8];
+    sizeInfoDict = [(NMSPodcastSizeEstimation *)self sizeInfoDict];
+    v10 = [sizeInfoDict objectForKeyedSubscript:lCopy];
   }
 
   else
@@ -120,19 +120,19 @@
     v10 = 0;
   }
 
-  if ([objc_opt_class() _minimumSizeThreshold] < a5)
+  if ([objc_opt_class() _minimumSizeThreshold] < size)
   {
     v11 = NMLogForCategory(5);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      [NMSPodcastSizeEstimation sizeForFeedURL:v8 duration:a5 feedProvidedSize:v11];
+      [NMSPodcastSizeEstimation sizeForFeedURL:lCopy duration:size feedProvidedSize:v11];
     }
 
-    totalAverageSize = a5;
+    totalAverageSize = size;
     goto LABEL_23;
   }
 
-  v13 = fabs(a4);
+  v13 = fabs(duration);
   if (v10)
   {
     if (v13 <= 2.22044605e-16)
@@ -145,11 +145,11 @@
       }
 
       v26 = 138413058;
-      v27 = v8;
+      v27 = lCopy;
       v28 = 2048;
-      v29 = a5;
+      sizeCopy5 = size;
       v30 = 2048;
-      v31 = a4;
+      durationCopy5 = duration;
       v32 = 2048;
       v33 = totalAverageSize;
       v16 = "[PodcastSize] Podcast %@ provided size is %llu, duration is %f, estimated size %llu based on podcast average.";
@@ -161,7 +161,7 @@
     [v10 sizeDurationRatio];
     [(NMSPodcastSizeEstimation *)self _adjustedSizeDurationRatio:?];
     v15 = v14;
-    totalAverageSize = (v14 * a4);
+    totalAverageSize = (v14 * duration);
     v11 = NMLogForCategory(5);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
@@ -169,11 +169,11 @@
     }
 
     v26 = 138413314;
-    v27 = v8;
+    v27 = lCopy;
     v28 = 2048;
-    v29 = a5;
+    sizeCopy5 = size;
     v30 = 2048;
-    v31 = a4;
+    durationCopy5 = duration;
     v32 = 2048;
     v33 = totalAverageSize;
     v34 = 2048;
@@ -191,7 +191,7 @@ LABEL_22:
   {
     [(NMSPodcastSizeEstimation *)self _adjustedSizeDurationRatio:self->_totalSizeDurationRatio];
     v18 = v17;
-    totalAverageSize = (v17 * a4);
+    totalAverageSize = (v17 * duration);
     v11 = NMLogForCategory(5);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
@@ -199,11 +199,11 @@ LABEL_22:
     }
 
     v26 = 138413314;
-    v27 = v8;
+    v27 = lCopy;
     v28 = 2048;
-    v29 = a5;
+    sizeCopy5 = size;
     v30 = 2048;
-    v31 = a4;
+    durationCopy5 = duration;
     v32 = 2048;
     v33 = totalAverageSize;
     v34 = 2048;
@@ -213,10 +213,10 @@ LABEL_22:
   }
 
   totalAverageSize = self->_totalAverageSize;
-  v21 = [objc_opt_class() _defaultEstimatedSize];
-  if (totalAverageSize <= v21)
+  _defaultEstimatedSize = [objc_opt_class() _defaultEstimatedSize];
+  if (totalAverageSize <= _defaultEstimatedSize)
   {
-    totalAverageSize = v21;
+    totalAverageSize = _defaultEstimatedSize;
   }
 
   v11 = NMLogForCategory(5);
@@ -224,11 +224,11 @@ LABEL_22:
   {
     v22 = self->_totalAverageSize;
     v26 = 138413314;
-    v27 = v8;
+    v27 = lCopy;
     v28 = 2048;
-    v29 = a5;
+    sizeCopy5 = size;
     v30 = 2048;
-    v31 = a4;
+    durationCopy5 = duration;
     v32 = 2048;
     v33 = v22;
     v34 = 2048;
@@ -245,11 +245,11 @@ LABEL_23:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       v26 = 138413058;
-      v27 = v8;
+      v27 = lCopy;
       v28 = 2048;
-      v29 = a5;
+      sizeCopy5 = size;
       v30 = 2048;
-      v31 = a4;
+      durationCopy5 = duration;
       v32 = 2048;
       v33 = totalAverageSize;
       _os_log_impl(&dword_25B27B000, v23, OS_LOG_TYPE_DEFAULT, "[PodcastSize] Podcast %@ provided size is %llu, duration is %f, estimated size is %llu. Using static estimate instead.", &v26, 0x2Au);
@@ -262,34 +262,34 @@ LABEL_23:
   return totalAverageSize;
 }
 
-- (double)_adjustedSizeDurationRatio:(double)a3
+- (double)_adjustedSizeDurationRatio:(double)ratio
 {
-  if (fabs(a3) <= 2.22044605e-16)
+  if (fabs(ratio) <= 2.22044605e-16)
   {
     return 16000.0;
   }
 
-  v3 = 8000.0;
-  if (a3 >= 8000.0)
+  ratioCopy = 8000.0;
+  if (ratio >= 8000.0)
   {
-    v3 = a3;
-    if (a3 > 40000.0)
+    ratioCopy = ratio;
+    if (ratio > 40000.0)
     {
       return 40000.0;
     }
   }
 
-  return v3;
+  return ratioCopy;
 }
 
 - (void)_setupFromCache
 {
-  v6 = [(NMSPodcastSizeEstimation *)self _cachedPodcastSizeInfoDict];
-  v3 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v6];
+  _cachedPodcastSizeInfoDict = [(NMSPodcastSizeEstimation *)self _cachedPodcastSizeInfoDict];
+  v3 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:_cachedPodcastSizeInfoDict];
   sizeInfoDict = self->_sizeInfoDict;
   self->_sizeInfoDict = v3;
 
-  self->_empty = v6 == 0;
+  self->_empty = _cachedPodcastSizeInfoDict == 0;
   [(NMSPodcastSizeEstimation *)self _totalSizeDurationRatio];
   self->_totalSizeDurationRatio = v5;
   self->_totalAverageSize = [(NMSPodcastSizeEstimation *)self _totalAverageSize];
@@ -298,9 +298,9 @@ LABEL_23:
 - (id)_cachedPodcastSizeInfoDict
 {
   v2 = +[NMSyncDefaults sharedDefaults];
-  v3 = [v2 podcastSizeEstimationData];
+  podcastSizeEstimationData = [v2 podcastSizeEstimationData];
 
-  if (v3)
+  if (podcastSizeEstimationData)
   {
     v4 = MEMORY[0x277CCAAC8];
     v5 = MEMORY[0x277CBEB98];
@@ -308,7 +308,7 @@ LABEL_23:
     v7 = objc_opt_class();
     v8 = [v5 setWithObjects:{v6, v7, objc_opt_class(), 0}];
     v13 = 0;
-    v9 = [v4 unarchivedObjectOfClasses:v8 fromData:v3 error:&v13];
+    v9 = [v4 unarchivedObjectOfClasses:v8 fromData:podcastSizeEstimationData error:&v13];
     v10 = v13;
 
     if (v10)
@@ -339,14 +339,14 @@ LABEL_23:
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v2 = [(NMSPodcastSizeEstimation *)self sizeInfoDict];
+  sizeInfoDict = [(NMSPodcastSizeEstimation *)self sizeInfoDict];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__NMSPodcastSizeEstimation__totalSizeDurationRatio__block_invoke;
   v7[3] = &unk_27993DB58;
   v7[4] = &v12;
   v7[5] = &v8;
-  [v2 enumerateKeysAndObjectsUsingBlock:v7];
+  [sizeInfoDict enumerateKeysAndObjectsUsingBlock:v7];
 
   v3 = v9[3];
   if (fabs(v3) <= 2.22044605e-16)
@@ -388,14 +388,14 @@ double __51__NMSPodcastSizeEstimation__totalSizeDurationRatio__block_invoke(uint
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v2 = [(NMSPodcastSizeEstimation *)self sizeInfoDict];
+  sizeInfoDict = [(NMSPodcastSizeEstimation *)self sizeInfoDict];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__NMSPodcastSizeEstimation__totalAverageSize__block_invoke;
   v6[3] = &unk_27993DB58;
   v6[4] = &v11;
   v6[5] = &v7;
-  [v2 enumerateKeysAndObjectsUsingBlock:v6];
+  [sizeInfoDict enumerateKeysAndObjectsUsingBlock:v6];
 
   v3 = v12[3];
   v4 = v8[3];
@@ -433,7 +433,7 @@ void __45__NMSPodcastSizeEstimation__totalAverageSize__block_invoke(uint64_t a1,
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_25B27B000, a2, OS_LOG_TYPE_ERROR, "[PodcastSize] Failed to uarchive podcasts size info due to: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

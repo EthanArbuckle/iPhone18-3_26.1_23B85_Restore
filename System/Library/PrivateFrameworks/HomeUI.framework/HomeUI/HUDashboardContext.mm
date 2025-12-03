@@ -1,22 +1,22 @@
 @interface HUDashboardContext
-+ (id)categoryDashboardForAccessoryTypeGroup:(id)a3 home:(id)a4 room:(id)a5;
-+ (id)homeDashboardForHome:(id)a3;
-+ (id)roomDashboardForRoom:(id)a3 home:(id)a4;
++ (id)categoryDashboardForAccessoryTypeGroup:(id)group home:(id)home room:(id)room;
++ (id)homeDashboardForHome:(id)home;
++ (id)roomDashboardForRoom:(id)room home:(id)home;
 - (BOOL)allowsAdding;
 - (BOOL)allowsAnnounce;
 - (BOOL)allowsEditing;
 - (BOOL)allowsEnergyIndicator;
 - (BOOL)allowsHomeNavigation;
 - (BOOL)includePredictedScenes;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)shouldCreateModule:(Class)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)shouldCreateModule:(Class)module;
 - (BOOL)shouldDelayItemUpdatesForViewVisibility;
-- (BOOL)shouldHideAccessoryRepresentable:(id)a3;
+- (BOOL)shouldHideAccessoryRepresentable:(id)representable;
 - (BOOL)shouldHideEmptySections;
 - (BOOL)shouldHideForGuests;
-- (BOOL)shouldHideHomeKitObject:(id)a3;
+- (BOOL)shouldHideHomeKitObject:(id)object;
 - (BOOL)shouldHidePlaceholderService;
-- (BOOL)shouldHideStatusItemClass:(Class)a3;
+- (BOOL)shouldHideStatusItemClass:(Class)class;
 - (BOOL)shouldIncludeRoomInAccessoryNames;
 - (HFAccessoryTypeGroup)accessoryTypeGroup;
 - (HUDashboardContext)init;
@@ -27,55 +27,55 @@
 - (int64_t)backgroundStyle;
 - (int64_t)cameraPresentationStyle;
 - (int64_t)filterPresentationStyle;
-- (int64_t)maximumNumberOfItemsInSectionWithIdentifier:(id)a3;
+- (int64_t)maximumNumberOfItemsInSectionWithIdentifier:(id)identifier;
 - (int64_t)scenePresentationStyle;
 - (unint64_t)accessoryLikeItemObjectLevel;
-- (void)setAccessoryGroupingStyle:(int64_t)a3;
-- (void)setAccessoryLikeItemObjectLevel:(unint64_t)a3;
-- (void)setAllowsAdding:(BOOL)a3;
-- (void)setAllowsAnnounce:(BOOL)a3;
-- (void)setAllowsEditing:(BOOL)a3;
-- (void)setAllowsEnergyIndicator:(BOOL)a3;
-- (void)setAllowsHomeNavigation:(BOOL)a3;
-- (void)setBackgroundStyle:(int64_t)a3;
-- (void)setCameraPresentationStyle:(int64_t)a3;
-- (void)setFilterPresentationStyle:(int64_t)a3;
-- (void)setIncludePredictedScenes:(BOOL)a3;
-- (void)setOverrideDashboardTitle:(id)a3;
-- (void)setOverrideNavigationBarTintColor:(id)a3;
-- (void)setScenePresentationStyle:(int64_t)a3;
-- (void)setShouldDelayItemUpdatesForViewVisibility:(BOOL)a3;
-- (void)setShouldHideEmptySections:(BOOL)a3;
-- (void)setShouldHideForGuests:(BOOL)a3;
-- (void)setShouldHidePlaceholderService:(BOOL)a3;
-- (void)setShouldIncludeRoomInAccessoryNames:(BOOL)a3;
+- (void)setAccessoryGroupingStyle:(int64_t)style;
+- (void)setAccessoryLikeItemObjectLevel:(unint64_t)level;
+- (void)setAllowsAdding:(BOOL)adding;
+- (void)setAllowsAnnounce:(BOOL)announce;
+- (void)setAllowsEditing:(BOOL)editing;
+- (void)setAllowsEnergyIndicator:(BOOL)indicator;
+- (void)setAllowsHomeNavigation:(BOOL)navigation;
+- (void)setBackgroundStyle:(int64_t)style;
+- (void)setCameraPresentationStyle:(int64_t)style;
+- (void)setFilterPresentationStyle:(int64_t)style;
+- (void)setIncludePredictedScenes:(BOOL)scenes;
+- (void)setOverrideDashboardTitle:(id)title;
+- (void)setOverrideNavigationBarTintColor:(id)color;
+- (void)setScenePresentationStyle:(int64_t)style;
+- (void)setShouldDelayItemUpdatesForViewVisibility:(BOOL)visibility;
+- (void)setShouldHideEmptySections:(BOOL)sections;
+- (void)setShouldHideForGuests:(BOOL)guests;
+- (void)setShouldHidePlaceholderService:(BOOL)service;
+- (void)setShouldIncludeRoomInAccessoryNames:(BOOL)names;
 @end
 
 @implementation HUDashboardContext
 
-+ (id)homeDashboardForHome:(id)a3
++ (id)homeDashboardForHome:(id)home
 {
-  v3 = a3;
-  v4 = sub_20CFED888(v3);
+  homeCopy = home;
+  v4 = sub_20CFED888(homeCopy);
 
   return v4;
 }
 
-+ (id)roomDashboardForRoom:(id)a3 home:(id)a4
++ (id)roomDashboardForRoom:(id)room home:(id)home
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = sub_20CFED69C(v5, v6);
+  roomCopy = room;
+  homeCopy = home;
+  v7 = sub_20CFED69C(roomCopy, homeCopy);
 
   return v7;
 }
 
-+ (id)categoryDashboardForAccessoryTypeGroup:(id)a3 home:(id)a4 room:(id)a5
++ (id)categoryDashboardForAccessoryTypeGroup:(id)group home:(id)home room:(id)room
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = sub_20CFEDCCC(v7, v8, a5);
+  groupCopy = group;
+  homeCopy = home;
+  roomCopy = room;
+  v10 = sub_20CFEDCCC(groupCopy, homeCopy, room);
 
   return v10;
 }
@@ -93,7 +93,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_20CFE8034();
 
   v3 = sub_20D5677F8();
@@ -101,11 +101,11 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_20D568628();
     swift_unknownObjectRelease();
@@ -114,7 +114,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_20CFE828C(v8);
@@ -145,11 +145,11 @@
   return *(self + v3);
 }
 
-- (void)setAccessoryGroupingStyle:(int64_t)a3
+- (void)setAccessoryGroupingStyle:(int64_t)style
 {
   v5 = OBJC_IVAR___HUDashboardContext_accessoryGroupingStyle;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = style;
 }
 
 - (unint64_t)accessoryLikeItemObjectLevel
@@ -159,11 +159,11 @@
   return *(self + v3);
 }
 
-- (void)setAccessoryLikeItemObjectLevel:(unint64_t)a3
+- (void)setAccessoryLikeItemObjectLevel:(unint64_t)level
 {
   v5 = OBJC_IVAR___HUDashboardContext_accessoryLikeItemObjectLevel;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = level;
 }
 
 - (BOOL)allowsAdding
@@ -173,11 +173,11 @@
   return *(self + v3);
 }
 
-- (void)setAllowsAdding:(BOOL)a3
+- (void)setAllowsAdding:(BOOL)adding
 {
   v5 = OBJC_IVAR___HUDashboardContext_allowsAdding;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = adding;
 }
 
 - (BOOL)allowsAnnounce
@@ -187,11 +187,11 @@
   return *(self + v3);
 }
 
-- (void)setAllowsAnnounce:(BOOL)a3
+- (void)setAllowsAnnounce:(BOOL)announce
 {
   v5 = OBJC_IVAR___HUDashboardContext_allowsAnnounce;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = announce;
 }
 
 - (BOOL)allowsEditing
@@ -201,11 +201,11 @@
   return *(self + v3);
 }
 
-- (void)setAllowsEditing:(BOOL)a3
+- (void)setAllowsEditing:(BOOL)editing
 {
   v5 = OBJC_IVAR___HUDashboardContext_allowsEditing;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = editing;
 }
 
 - (BOOL)allowsEnergyIndicator
@@ -215,11 +215,11 @@
   return *(self + v3);
 }
 
-- (void)setAllowsEnergyIndicator:(BOOL)a3
+- (void)setAllowsEnergyIndicator:(BOOL)indicator
 {
   v5 = OBJC_IVAR___HUDashboardContext_allowsEnergyIndicator;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = indicator;
 }
 
 - (BOOL)allowsHomeNavigation
@@ -229,11 +229,11 @@
   return *(self + v3);
 }
 
-- (void)setAllowsHomeNavigation:(BOOL)a3
+- (void)setAllowsHomeNavigation:(BOOL)navigation
 {
   v5 = OBJC_IVAR___HUDashboardContext_allowsHomeNavigation;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = navigation;
 }
 
 - (BOOL)includePredictedScenes
@@ -243,11 +243,11 @@
   return *(self + v3);
 }
 
-- (void)setIncludePredictedScenes:(BOOL)a3
+- (void)setIncludePredictedScenes:(BOOL)scenes
 {
   v5 = OBJC_IVAR___HUDashboardContext_includePredictedScenes;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = scenes;
 }
 
 - (int64_t)backgroundStyle
@@ -257,11 +257,11 @@
   return *(self + v3);
 }
 
-- (void)setBackgroundStyle:(int64_t)a3
+- (void)setBackgroundStyle:(int64_t)style
 {
   v5 = OBJC_IVAR___HUDashboardContext_backgroundStyle;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = style;
 }
 
 - (UIColor)overrideNavigationBarTintColor
@@ -271,13 +271,13 @@
   return *(self + v3);
 }
 
-- (void)setOverrideNavigationBarTintColor:(id)a3
+- (void)setOverrideNavigationBarTintColor:(id)color
 {
   v5 = OBJC_IVAR___HUDashboardContext_overrideNavigationBarTintColor;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = color;
+  colorCopy = color;
 }
 
 - (int64_t)scenePresentationStyle
@@ -287,11 +287,11 @@
   return *(self + v3);
 }
 
-- (void)setScenePresentationStyle:(int64_t)a3
+- (void)setScenePresentationStyle:(int64_t)style
 {
   v5 = OBJC_IVAR___HUDashboardContext_scenePresentationStyle;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = style;
 }
 
 - (int64_t)cameraPresentationStyle
@@ -301,11 +301,11 @@
   return *(self + v3);
 }
 
-- (void)setCameraPresentationStyle:(int64_t)a3
+- (void)setCameraPresentationStyle:(int64_t)style
 {
   v5 = OBJC_IVAR___HUDashboardContext_cameraPresentationStyle;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = style;
 }
 
 - (int64_t)filterPresentationStyle
@@ -315,11 +315,11 @@
   return *(self + v3);
 }
 
-- (void)setFilterPresentationStyle:(int64_t)a3
+- (void)setFilterPresentationStyle:(int64_t)style
 {
   v5 = OBJC_IVAR___HUDashboardContext_filterPresentationStyle;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = style;
 }
 
 - (NSString)overrideDashboardTitle
@@ -340,9 +340,9 @@
   return v3;
 }
 
-- (void)setOverrideDashboardTitle:(id)a3
+- (void)setOverrideDashboardTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = sub_20D567838();
     v6 = v5;
@@ -367,11 +367,11 @@
   return *(self + v3);
 }
 
-- (void)setShouldDelayItemUpdatesForViewVisibility:(BOOL)a3
+- (void)setShouldDelayItemUpdatesForViewVisibility:(BOOL)visibility
 {
   v5 = OBJC_IVAR___HUDashboardContext_shouldDelayItemUpdatesForViewVisibility;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = visibility;
 }
 
 - (BOOL)shouldHideEmptySections
@@ -381,11 +381,11 @@
   return *(self + v3);
 }
 
-- (void)setShouldHideEmptySections:(BOOL)a3
+- (void)setShouldHideEmptySections:(BOOL)sections
 {
   v5 = OBJC_IVAR___HUDashboardContext_shouldHideEmptySections;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = sections;
 }
 
 - (BOOL)shouldHidePlaceholderService
@@ -395,11 +395,11 @@
   return *(self + v3);
 }
 
-- (void)setShouldHidePlaceholderService:(BOOL)a3
+- (void)setShouldHidePlaceholderService:(BOOL)service
 {
   v5 = OBJC_IVAR___HUDashboardContext_shouldHidePlaceholderService;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = service;
 }
 
 - (BOOL)shouldHideForGuests
@@ -409,11 +409,11 @@
   return *(self + v3);
 }
 
-- (void)setShouldHideForGuests:(BOOL)a3
+- (void)setShouldHideForGuests:(BOOL)guests
 {
   v5 = OBJC_IVAR___HUDashboardContext_shouldHideForGuests;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = guests;
 }
 
 - (BOOL)shouldIncludeRoomInAccessoryNames
@@ -423,45 +423,45 @@
   return *(self + v3);
 }
 
-- (void)setShouldIncludeRoomInAccessoryNames:(BOOL)a3
+- (void)setShouldIncludeRoomInAccessoryNames:(BOOL)names
 {
   v5 = OBJC_IVAR___HUDashboardContext_shouldIncludeRoomInAccessoryNames;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = names;
 }
 
-- (BOOL)shouldHideAccessoryRepresentable:(id)a3
+- (BOOL)shouldHideAccessoryRepresentable:(id)representable
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = sub_20CFECCC8(a3, v5);
+  selfCopy = self;
+  v6 = sub_20CFECCC8(representable, selfCopy);
   swift_unknownObjectRelease();
 
   return v6 & 1;
 }
 
-- (BOOL)shouldHideHomeKitObject:(id)a3
+- (BOOL)shouldHideHomeKitObject:(id)object
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = sub_20CFECE24(a3, v5);
+  selfCopy = self;
+  v6 = sub_20CFECE24(object, selfCopy);
   swift_unknownObjectRelease();
 
   return v6 & 1;
 }
 
-- (BOOL)shouldHideStatusItemClass:(Class)a3
+- (BOOL)shouldHideStatusItemClass:(Class)class
 {
   ObjCClassMetadata = swift_getObjCClassMetadata();
-  v5 = self;
+  selfCopy = self;
   sub_20CFEA938(ObjCClassMetadata);
   LOBYTE(ObjCClassMetadata) = v6;
 
   return ObjCClassMetadata & 1;
 }
 
-- (BOOL)shouldCreateModule:(Class)a3
+- (BOOL)shouldCreateModule:(Class)module
 {
   swift_getObjCClassMetadata();
   sub_20CECF940(0, &unk_28111FED8);
@@ -478,19 +478,19 @@
   return [objc_opt_self() isHomeControlService] ^ 1;
 }
 
-- (int64_t)maximumNumberOfItemsInSectionWithIdentifier:(id)a3
+- (int64_t)maximumNumberOfItemsInSectionWithIdentifier:(id)identifier
 {
   v4 = sub_20D567838();
   v6 = v5;
   if (sub_20D567838() == v4 && v7 == v6)
   {
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
     v9 = sub_20D568BF8();
-    v10 = self;
+    selfCopy2 = self;
 
     if ((v9 & 1) == 0)
     {

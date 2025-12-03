@@ -29,14 +29,14 @@
 
 + (AUHelperInstance)sharedInstance
 {
-  v11 = a1;
+  selfCopy = self;
   v10 = a2;
   obj = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = __34__AUHelperInstance_sharedInstance__block_invoke;
   v8 = &__block_descriptor_40_e5_v8__0l;
-  v9 = a1;
+  selfCopy2 = self;
   v13 = &sharedInstance_onceToken;
   location = 0;
   objc_storeStrong(&location, &obj);
@@ -60,11 +60,11 @@ void __34__AUHelperInstance_sharedInstance__block_invoke(uint64_t a1)
 
 - (AUHelperServiceProtocol)remoteObject
 {
-  v5 = self;
+  selfCopy = self;
   v4[1] = a2;
   if (self->_xpcConnection)
   {
-    v4[0] = [(NSXPCConnection *)v5->_xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global];
+    v4[0] = [(NSXPCConnection *)selfCopy->_xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global];
     v6 = v4[0];
     objc_storeStrong(v4, 0);
   }
@@ -99,7 +99,7 @@ void __32__AUHelperInstance_remoteObject__block_invoke(id a1, NSError *a2)
 + (id)xpcConnectionToHelper
 {
   v24 = "+[AUHelperInstance xpcConnectionToHelper]";
-  v30[2] = a1;
+  v30[2] = self;
   v30[1] = a2;
   v30[0] = 0;
   v29 = [[NSXPCConnection alloc] initWithMachServiceName:@"com.apple.accessoryupdater.launchauhelper" options:4096];
@@ -120,13 +120,13 @@ void __32__AUHelperInstance_remoteObject__block_invoke(id a1, NSError *a2)
     v3 = v30[0];
     v30[0] = v2;
 
-    v15 = [v29 remoteObjectInterface];
+    remoteObjectInterface = [v29 remoteObjectInterface];
     v16 = 0;
     v18 = 1;
-    [v15 setClasses:v30[0] forSelector:"userPreferenceSetObject:forSuite:withKey:" argumentIndex:? ofReply:?];
+    [remoteObjectInterface setClasses:v30[0] forSelector:"userPreferenceSetObject:forSuite:withKey:" argumentIndex:? ofReply:?];
 
-    v17 = [v29 remoteObjectInterface];
-    [v17 setClasses:v30[0] forSelector:"userPreferenceObjectForSuite:withKey:withReply:" argumentIndex:v16 ofReply:v18 & 1];
+    remoteObjectInterface2 = [v29 remoteObjectInterface];
+    [remoteObjectInterface2 setClasses:v30[0] forSelector:"userPreferenceObjectForSuite:withKey:withReply:" argumentIndex:v16 ofReply:v18 & 1];
 
     [v29 resume];
     v31 = v29;

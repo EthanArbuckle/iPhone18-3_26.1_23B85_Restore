@@ -1,21 +1,21 @@
 @interface TSDCanvasSubviewsController
-- (TSDCanvasSubviewsController)initWithLayerAndSubviewHost:(id)a3;
+- (TSDCanvasSubviewsController)initWithLayerAndSubviewHost:(id)host;
 - (id)p_topLevelReps;
 - (id)updateAlternateLayersForViews;
-- (void)addSubviews:(id)a3;
+- (void)addSubviews:(id)subviews;
 - (void)dealloc;
-- (void)p_recursivelyFindAlternateLayersForRep:(id)a3 accumulatingLayers:(id)a4 repsByChildLayer:(id)a5;
-- (void)p_recursivelyFindChildViewsForRep:(id)a3 accumulatingViews:(id)a4 accumulatingRepsByChildView:(id)a5;
-- (void)p_recursivelyFindHostingRepsForRep:(id)a3 accumulatingHostingReps:(id)a4;
-- (void)removeSubviews:(id)a3;
-- (void)syncPerformBlock:(id)a3;
-- (void)updateTopLevelLayersForTiling:(id)a3;
+- (void)p_recursivelyFindAlternateLayersForRep:(id)rep accumulatingLayers:(id)layers repsByChildLayer:(id)layer;
+- (void)p_recursivelyFindChildViewsForRep:(id)rep accumulatingViews:(id)views accumulatingRepsByChildView:(id)view;
+- (void)p_recursivelyFindHostingRepsForRep:(id)rep accumulatingHostingReps:(id)reps;
+- (void)removeSubviews:(id)subviews;
+- (void)syncPerformBlock:(id)block;
+- (void)updateTopLevelLayersForTiling:(id)tiling;
 - (void)updateViewsFromReps;
 @end
 
 @implementation TSDCanvasSubviewsController
 
-- (TSDCanvasSubviewsController)initWithLayerAndSubviewHost:(id)a3
+- (TSDCanvasSubviewsController)initWithLayerAndSubviewHost:(id)host
 {
   v9 = *MEMORY[0x277D85DE8];
   v7.receiver = self;
@@ -24,7 +24,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_host = a3;
+    v4->_host = host;
     v4->_subviewLayers = objc_opt_new();
     v8.__sig = 0;
     *v8.__opaque = 0;
@@ -41,9 +41,9 @@
 {
   if (!self->_hasBeenTornDown)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDCanvasSubviewsController dealloc]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvasSubviewsController.m"), 80, @"Canvas Subviews Controller should have been torn down before dealloc"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvasSubviewsController.m"), 80, @"Canvas Subviews Controller should have been torn down before dealloc"}];
   }
 
   self->_repChildViews = 0;
@@ -72,7 +72,7 @@
   }
 }
 
-- (void)p_recursivelyFindAlternateLayersForRep:(id)a3 accumulatingLayers:(id)a4 repsByChildLayer:(id)a5
+- (void)p_recursivelyFindAlternateLayersForRep:(id)rep accumulatingLayers:(id)layers repsByChildLayer:(id)layer
 {
   v31 = *MEMORY[0x277D85DE8];
   objc_opt_class();
@@ -103,7 +103,7 @@
               objc_enumerationMutation(v10);
             }
 
-            [a5 setObject:v9 forUncopiedKey:*(*(&v25 + 1) + 8 * i)];
+            [layer setObject:v9 forUncopiedKey:*(*(&v25 + 1) + 8 * i)];
           }
 
           v12 = [v10 countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -112,7 +112,7 @@
         while (v12);
       }
 
-      [a4 addObjectsFromArray:v10];
+      [layers addObjectsFromArray:v10];
     }
 
     if (!TSUProtocolCast())
@@ -121,8 +121,8 @@
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v15 = [v9 childReps];
-      v16 = [v15 countByEnumeratingWithState:&v21 objects:v29 count:16];
+      childReps = [v9 childReps];
+      v16 = [childReps countByEnumeratingWithState:&v21 objects:v29 count:16];
       if (v16)
       {
         v17 = v16;
@@ -133,13 +133,13 @@
           {
             if (*v22 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(childReps);
             }
 
-            [(TSDCanvasSubviewsController *)self p_recursivelyFindAlternateLayersForRep:*(*(&v21 + 1) + 8 * j) accumulatingLayers:a4 repsByChildLayer:a5, v20];
+            [(TSDCanvasSubviewsController *)self p_recursivelyFindAlternateLayersForRep:*(*(&v21 + 1) + 8 * j) accumulatingLayers:layers repsByChildLayer:layer, v20];
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v21 objects:v29 count:16];
+          v17 = [childReps countByEnumeratingWithState:&v21 objects:v29 count:16];
         }
 
         while (v17);
@@ -151,14 +151,14 @@
 - (id)updateAlternateLayersForViews
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = objc_alloc_init(MEMORY[0x277D6C368]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = [(TSDCanvasSubviewsController *)self p_topLevelReps];
-  v6 = [v5 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  p_topLevelReps = [(TSDCanvasSubviewsController *)self p_topLevelReps];
+  v6 = [p_topLevelReps countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v6)
   {
     v7 = v6;
@@ -169,13 +169,13 @@
       {
         if (*v25 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(p_topLevelReps);
         }
 
-        [(TSDCanvasSubviewsController *)self p_recursivelyFindAlternateLayersForRep:*(*(&v24 + 1) + 8 * i) accumulatingLayers:v3 repsByChildLayer:v4];
+        [(TSDCanvasSubviewsController *)self p_recursivelyFindAlternateLayersForRep:*(*(&v24 + 1) + 8 * i) accumulatingLayers:array repsByChildLayer:v4];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v7 = [p_topLevelReps countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v7);
@@ -185,7 +185,7 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [v3 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  v10 = [array countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v10)
   {
     v11 = v10;
@@ -196,7 +196,7 @@
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(array);
         }
 
         v14 = *(*(&v20 + 1) + 8 * j);
@@ -242,19 +242,19 @@ LABEL_22:
         }
       }
 
-      v11 = [v3 countByEnumeratingWithState:&v20 objects:v28 count:{16, v17}];
+      v11 = [array countByEnumeratingWithState:&v20 objects:v28 count:{16, v17}];
     }
 
     while (v11);
   }
 
-  [(TSDCanvasSubviewsController *)self p_sortLayers:v3];
+  [(TSDCanvasSubviewsController *)self p_sortLayers:array];
 
-  self->_alternateLayersForViews = v3;
-  return v3;
+  self->_alternateLayersForViews = array;
+  return array;
 }
 
-- (void)p_recursivelyFindChildViewsForRep:(id)a3 accumulatingViews:(id)a4 accumulatingRepsByChildView:(id)a5
+- (void)p_recursivelyFindChildViewsForRep:(id)rep accumulatingViews:(id)views accumulatingRepsByChildView:(id)view
 {
   v34 = *MEMORY[0x277D85DE8];
   objc_opt_class();
@@ -285,7 +285,7 @@ LABEL_22:
               objc_enumerationMutation(v10);
             }
 
-            [a5 setObject:v9 forUncopiedKey:*(*(&v28 + 1) + 8 * i)];
+            [view setObject:v9 forUncopiedKey:*(*(&v28 + 1) + 8 * i)];
           }
 
           v12 = [v10 countByEnumeratingWithState:&v28 objects:v33 count:16];
@@ -294,15 +294,15 @@ LABEL_22:
         while (v12);
       }
 
-      [a4 addObjectsFromArray:v10];
+      [views addObjectsFromArray:v10];
     }
 
     v15 = TSUProtocolCast();
     if (v15)
     {
-      v16 = [v15 layerAndSubviewHost];
-      v17 = [v16 subviewsController];
-      [objc_msgSend(v16 "subviewsController")];
+      layerAndSubviewHost = [v15 layerAndSubviewHost];
+      subviewsController = [layerAndSubviewHost subviewsController];
+      [objc_msgSend(layerAndSubviewHost "subviewsController")];
     }
 
     else
@@ -311,8 +311,8 @@ LABEL_22:
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v18 = [v9 childReps];
-      v19 = [v18 countByEnumeratingWithState:&v24 objects:v32 count:16];
+      childReps = [v9 childReps];
+      v19 = [childReps countByEnumeratingWithState:&v24 objects:v32 count:16];
       if (v19)
       {
         v20 = v19;
@@ -323,13 +323,13 @@ LABEL_22:
           {
             if (*v25 != v21)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(childReps);
             }
 
-            [(TSDCanvasSubviewsController *)self p_recursivelyFindChildViewsForRep:*(*(&v24 + 1) + 8 * j) accumulatingViews:a4 accumulatingRepsByChildView:a5, v23];
+            [(TSDCanvasSubviewsController *)self p_recursivelyFindChildViewsForRep:*(*(&v24 + 1) + 8 * j) accumulatingViews:views accumulatingRepsByChildView:view, v23];
           }
 
-          v20 = [v18 countByEnumeratingWithState:&v24 objects:v32 count:16];
+          v20 = [childReps countByEnumeratingWithState:&v24 objects:v32 count:16];
         }
 
         while (v20);
@@ -338,7 +338,7 @@ LABEL_22:
   }
 }
 
-- (void)p_recursivelyFindHostingRepsForRep:(id)a3 accumulatingHostingReps:(id)a4
+- (void)p_recursivelyFindHostingRepsForRep:(id)rep accumulatingHostingReps:(id)reps
 {
   v20 = *MEMORY[0x277D85DE8];
   objc_opt_class();
@@ -346,13 +346,13 @@ LABEL_22:
   if (v7)
   {
     v8 = v7;
-    if (([a3 hasBeenRemoved] & 1) == 0)
+    if (([rep hasBeenRemoved] & 1) == 0)
     {
       v9 = TSUProtocolCast();
       if (v9)
       {
 
-        [a4 addObject:v9];
+        [reps addObject:v9];
       }
 
       else
@@ -361,8 +361,8 @@ LABEL_22:
         v18 = 0u;
         v15 = 0u;
         v16 = 0u;
-        v10 = [v8 childReps];
-        v11 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        childReps = [v8 childReps];
+        v11 = [childReps countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v11)
         {
           v12 = v11;
@@ -373,13 +373,13 @@ LABEL_22:
             {
               if (*v16 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(childReps);
               }
 
-              [(TSDCanvasSubviewsController *)self p_recursivelyFindHostingRepsForRep:*(*(&v15 + 1) + 8 * i) accumulatingHostingReps:a4];
+              [(TSDCanvasSubviewsController *)self p_recursivelyFindHostingRepsForRep:*(*(&v15 + 1) + 8 * i) accumulatingHostingReps:reps];
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+            v12 = [childReps countByEnumeratingWithState:&v15 objects:v19 count:16];
           }
 
           while (v12);
@@ -446,8 +446,8 @@ uint64_t __46__TSDCanvasSubviewsController_p_sortSubviews___block_invoke(uint64_
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v5 = [(TSDCanvasSubviewsController *)self p_topLevelReps];
-  v6 = [v5 countByEnumeratingWithState:&v69 objects:v77 count:16];
+  p_topLevelReps = [(TSDCanvasSubviewsController *)self p_topLevelReps];
+  v6 = [p_topLevelReps countByEnumeratingWithState:&v69 objects:v77 count:16];
   if (v6)
   {
     v7 = v6;
@@ -458,13 +458,13 @@ uint64_t __46__TSDCanvasSubviewsController_p_sortSubviews___block_invoke(uint64_
       {
         if (*v70 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(p_topLevelReps);
         }
 
         [(TSDCanvasSubviewsController *)self p_recursivelyFindChildViewsForRep:*(*(&v69 + 1) + 8 * i) accumulatingViews:v3 accumulatingRepsByChildView:v4];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v69 objects:v77 count:16];
+      v7 = [p_topLevelReps countByEnumeratingWithState:&v69 objects:v77 count:16];
     }
 
     while (v7);
@@ -487,9 +487,9 @@ uint64_t __46__TSDCanvasSubviewsController_p_sortSubviews___block_invoke(uint64_
   }
 
   v48 = v4;
-  v52 = [(TSDLayerAndSubviewHosting *)self->_host containerView];
+  containerView = [(TSDLayerAndSubviewHosting *)self->_host containerView];
   v50 = v10;
-  v51 = [(TSDLayerAndSubviewHosting *)self->_host containerViewController];
+  containerViewController = [(TSDLayerAndSubviewHosting *)self->_host containerViewController];
   v11 = [(NSSet *)v10 isSubsetOfSet:self->_repChildViews];
   needsLayout = self->_needsLayout;
   self->_needsLayout = 0;
@@ -522,17 +522,17 @@ uint64_t __46__TSDCanvasSubviewsController_p_sortSubviews___block_invoke(uint64_
         v18 = [(NSDictionary *)v48 objectForKey:v17, obj];
         if (objc_opt_respondsToSelector())
         {
-          [v18 willAddChildView:v17 toView:v52];
+          [v18 willAddChildView:v17 toView:containerView];
         }
 
         if (objc_opt_respondsToSelector())
         {
-          v19 = [v18 containerManagesChildView];
+          containerManagesChildView = [v18 containerManagesChildView];
         }
 
         else
         {
-          v19 = 0;
+          containerManagesChildView = 0;
         }
 
         v20 = 1.0;
@@ -575,7 +575,7 @@ LABEL_34:
         }
 
 LABEL_35:
-        if ((v19 & 1) == 0)
+        if ((containerManagesChildView & 1) == 0)
         {
           [v49 addObject:v17];
         }
@@ -605,16 +605,16 @@ LABEL_39:
               }
 
               v26 = *(*(&v61 + 1) + 8 * k);
-              if (v51)
+              if (containerViewController)
               {
                 v27 = [(NSDictionary *)v48 objectForKey:*(*(&v61 + 1) + 8 * k)];
                 if (objc_opt_respondsToSelector())
                 {
                   v28 = [v27 viewControllerForView:v26];
-                  if (v28 && v28 != v51)
+                  if (v28 && v28 != containerViewController)
                   {
                     v30 = v28;
-                    [v51 addChildViewController:v28];
+                    [containerViewController addChildViewController:v28];
                     repViewControllersByChildView = self->_repViewControllersByChildView;
                     if (!repViewControllersByChildView)
                     {
@@ -627,7 +627,7 @@ LABEL_39:
                 }
               }
 
-              [v52 addSubview:v26];
+              [containerView addSubview:v26];
             }
 
             v23 = [v49 countByEnumeratingWithState:&v61 objects:v75 count:16];
@@ -728,18 +728,18 @@ LABEL_39:
   self->_repsByChildView = v48;
 }
 
-- (void)syncPerformBlock:(id)a3
+- (void)syncPerformBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
     pthread_mutex_lock(&self->_mutex);
-    (*(a3 + 2))(a3);
+    (*(block + 2))(block);
 
     pthread_mutex_unlock(&self->_mutex);
   }
 }
 
-- (void)updateTopLevelLayersForTiling:(id)a3
+- (void)updateTopLevelLayersForTiling:(id)tiling
 {
   v37 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -747,8 +747,8 @@ LABEL_39:
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v6 = [(TSDCanvasSubviewsController *)self p_topLevelReps];
-  v7 = [v6 countByEnumeratingWithState:&v30 objects:v36 count:16];
+  p_topLevelReps = [(TSDCanvasSubviewsController *)self p_topLevelReps];
+  v7 = [p_topLevelReps countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v7)
   {
     v8 = v7;
@@ -760,14 +760,14 @@ LABEL_39:
       {
         if (*v31 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(p_topLevelReps);
         }
 
         [(TSDCanvasSubviewsController *)self p_recursivelyFindHostingRepsForRep:*(*(&v30 + 1) + 8 * v10++) accumulatingHostingReps:v5];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v30 objects:v36 count:16];
+      v8 = [p_topLevelReps countByEnumeratingWithState:&v30 objects:v36 count:16];
     }
 
     while (v8);
@@ -792,10 +792,10 @@ LABEL_39:
           objc_enumerationMutation(v5);
         }
 
-        v15 = [*(*(&v26 + 1) + 8 * v14) layerAndSubviewHost];
-        if (v15)
+        layerAndSubviewHost = [*(*(&v26 + 1) + 8 * v14) layerAndSubviewHost];
+        if (layerAndSubviewHost)
         {
-          [a3 addObject:{objc_msgSend(v15, "topLevelTilingLayer")}];
+          [tiling addObject:{objc_msgSend(layerAndSubviewHost, "topLevelTilingLayer")}];
         }
 
         ++v14;
@@ -813,7 +813,7 @@ LABEL_39:
   v25[2] = __61__TSDCanvasSubviewsController_updateTopLevelLayersForTiling___block_invoke;
   v25[3] = &unk_279D47708;
   v25[4] = self;
-  v25[5] = a3;
+  v25[5] = tiling;
   [(TSDCanvasSubviewsController *)self syncPerformBlock:v25];
   v23 = 0u;
   v24 = 0u;
@@ -835,7 +835,7 @@ LABEL_39:
           objc_enumerationMutation(alternateLayersForViews);
         }
 
-        [a3 removeObject:*(*(&v21 + 1) + 8 * v20++)];
+        [tiling removeObject:*(*(&v21 + 1) + 8 * v20++)];
       }
 
       while (v18 != v20);
@@ -883,22 +883,22 @@ uint64_t __61__TSDCanvasSubviewsController_updateTopLevelLayersForTiling___block
   return result;
 }
 
-- (void)addSubviews:(id)a3
+- (void)addSubviews:(id)subviews
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDCanvasSubviewsController addSubviews:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvasSubviewsController.m"), 498, @"This operation must only be performed on the main thread."}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvasSubviewsController.m"), 498, @"This operation must only be performed on the main thread."}];
   }
 
-  v7 = [(TSDLayerAndSubviewHosting *)self->_host containerView];
+  containerView = [(TSDLayerAndSubviewHosting *)self->_host containerView];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __43__TSDCanvasSubviewsController_addSubviews___block_invoke;
   v8[3] = &unk_279D47C18;
-  v8[4] = v7;
-  v8[5] = a3;
+  v8[4] = containerView;
+  v8[5] = subviews;
   v8[6] = self;
   [(TSDCanvasSubviewsController *)self syncPerformBlock:v8];
 }
@@ -978,22 +978,22 @@ void __43__TSDCanvasSubviewsController_addSubviews___block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeSubviews:(id)a3
+- (void)removeSubviews:(id)subviews
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDCanvasSubviewsController removeSubviews:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvasSubviewsController.m"), 533, @"This operation must only be performed on the main thread."}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvasSubviewsController.m"), 533, @"This operation must only be performed on the main thread."}];
   }
 
-  v7 = [(TSDLayerAndSubviewHosting *)self->_host containerView];
+  containerView = [(TSDLayerAndSubviewHosting *)self->_host containerView];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__TSDCanvasSubviewsController_removeSubviews___block_invoke;
   v8[3] = &unk_279D47C18;
-  v8[4] = a3;
-  v8[5] = v7;
+  v8[4] = subviews;
+  v8[5] = containerView;
   v8[6] = self;
   [(TSDCanvasSubviewsController *)self syncPerformBlock:v8];
 }

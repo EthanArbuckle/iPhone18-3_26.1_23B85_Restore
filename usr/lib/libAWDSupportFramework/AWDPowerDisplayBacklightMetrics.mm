@@ -1,38 +1,38 @@
 @interface AWDPowerDisplayBacklightMetrics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addBacklightBucket:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addBacklightBucket:(id)bucket;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAlsAutoBrightnessChangeCount:(BOOL)a3;
-- (void)setHasAlsAutoBrightnessCurveE0A:(BOOL)a3;
-- (void)setHasAlsAutoBrightnessCurveE0B:(BOOL)a3;
-- (void)setHasAlsAutoBrightnessCurveE1:(BOOL)a3;
-- (void)setHasAlsAutoBrightnessCurveE2:(BOOL)a3;
-- (void)setHasAlsAutoBrightnessCurveEdynth:(BOOL)a3;
-- (void)setHasAlsAutoBrightnessCurveL0A:(BOOL)a3;
-- (void)setHasAlsAutoBrightnessCurveL0B:(BOOL)a3;
-- (void)setHasAlsAutoBrightnessCurveL1:(BOOL)a3;
-- (void)setHasAlsAutoBrightnessCurveL2:(BOOL)a3;
-- (void)setHasAlsAutoBrightnessLux:(BOOL)a3;
-- (void)setHasAlsAutoBrightnessSlider:(BOOL)a3;
-- (void)setHasAlsBrightnessEnableCnt:(BOOL)a3;
-- (void)setHasDispOnCount:(BOOL)a3;
-- (void)setHasDisplayIdlePercentage:(BOOL)a3;
-- (void)setHasFrameRateResidencyPercentage:(BOOL)a3;
-- (void)setHasMieCount:(BOOL)a3;
-- (void)setHasMieDuration:(BOOL)a3;
-- (void)setHasPluggedDisplayOnDuration:(BOOL)a3;
-- (void)setHasResidencyPercentage30Hz:(BOOL)a3;
-- (void)setHasResidencyPercentage60Hz:(BOOL)a3;
-- (void)setHasTotalBacklightPower:(BOOL)a3;
-- (void)setHasTotalDisplayPower:(BOOL)a3;
-- (void)setHasUnpluggedDisplayOnDuration:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasAlsAutoBrightnessChangeCount:(BOOL)count;
+- (void)setHasAlsAutoBrightnessCurveE0A:(BOOL)a;
+- (void)setHasAlsAutoBrightnessCurveE0B:(BOOL)b;
+- (void)setHasAlsAutoBrightnessCurveE1:(BOOL)e1;
+- (void)setHasAlsAutoBrightnessCurveE2:(BOOL)e2;
+- (void)setHasAlsAutoBrightnessCurveEdynth:(BOOL)edynth;
+- (void)setHasAlsAutoBrightnessCurveL0A:(BOOL)a;
+- (void)setHasAlsAutoBrightnessCurveL0B:(BOOL)b;
+- (void)setHasAlsAutoBrightnessCurveL1:(BOOL)l1;
+- (void)setHasAlsAutoBrightnessCurveL2:(BOOL)l2;
+- (void)setHasAlsAutoBrightnessLux:(BOOL)lux;
+- (void)setHasAlsAutoBrightnessSlider:(BOOL)slider;
+- (void)setHasAlsBrightnessEnableCnt:(BOOL)cnt;
+- (void)setHasDispOnCount:(BOOL)count;
+- (void)setHasDisplayIdlePercentage:(BOOL)percentage;
+- (void)setHasFrameRateResidencyPercentage:(BOOL)percentage;
+- (void)setHasMieCount:(BOOL)count;
+- (void)setHasMieDuration:(BOOL)duration;
+- (void)setHasPluggedDisplayOnDuration:(BOOL)duration;
+- (void)setHasResidencyPercentage30Hz:(BOOL)hz;
+- (void)setHasResidencyPercentage60Hz:(BOOL)hz;
+- (void)setHasTotalBacklightPower:(BOOL)power;
+- (void)setHasTotalDisplayPower:(BOOL)power;
+- (void)setHasUnpluggedDisplayOnDuration:(BOOL)duration;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDPowerDisplayBacklightMetrics
@@ -45,9 +45,9 @@
   [(AWDPowerDisplayBacklightMetrics *)&v3 dealloc];
 }
 
-- (void)setHasDispOnCount:(BOOL)a3
+- (void)setHasDispOnCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x4000;
   }
@@ -60,9 +60,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasUnpluggedDisplayOnDuration:(BOOL)a3
+- (void)setHasUnpluggedDisplayOnDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 0x1000000;
   }
@@ -75,9 +75,9 @@
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)setHasPluggedDisplayOnDuration:(BOOL)a3
+- (void)setHasPluggedDisplayOnDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 0x80000;
   }
@@ -90,9 +90,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasMieDuration:(BOOL)a3
+- (void)setHasMieDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 0x40000;
   }
@@ -105,9 +105,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasMieCount:(BOOL)a3
+- (void)setHasMieCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x20000;
   }
@@ -120,9 +120,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasDisplayIdlePercentage:(BOOL)a3
+- (void)setHasDisplayIdlePercentage:(BOOL)percentage
 {
-  if (a3)
+  if (percentage)
   {
     v3 = 0x8000;
   }
@@ -135,9 +135,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasAlsAutoBrightnessCurveE1:(BOOL)a3
+- (void)setHasAlsAutoBrightnessCurveE1:(BOOL)e1
 {
-  if (a3)
+  if (e1)
   {
     v3 = 16;
   }
@@ -150,9 +150,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasAlsAutoBrightnessCurveL1:(BOOL)a3
+- (void)setHasAlsAutoBrightnessCurveL1:(BOOL)l1
 {
-  if (a3)
+  if (l1)
   {
     v3 = 512;
   }
@@ -165,9 +165,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasAlsAutoBrightnessCurveE2:(BOOL)a3
+- (void)setHasAlsAutoBrightnessCurveE2:(BOOL)e2
 {
-  if (a3)
+  if (e2)
   {
     v3 = 32;
   }
@@ -180,9 +180,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasAlsAutoBrightnessCurveL2:(BOOL)a3
+- (void)setHasAlsAutoBrightnessCurveL2:(BOOL)l2
 {
-  if (a3)
+  if (l2)
   {
     v3 = 1024;
   }
@@ -195,9 +195,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasAlsAutoBrightnessCurveE0A:(BOOL)a3
+- (void)setHasAlsAutoBrightnessCurveE0A:(BOOL)a
 {
-  if (a3)
+  if (a)
   {
     v3 = 4;
   }
@@ -210,9 +210,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasAlsAutoBrightnessCurveL0A:(BOOL)a3
+- (void)setHasAlsAutoBrightnessCurveL0A:(BOOL)a
 {
-  if (a3)
+  if (a)
   {
     v3 = 128;
   }
@@ -225,9 +225,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasAlsAutoBrightnessCurveE0B:(BOOL)a3
+- (void)setHasAlsAutoBrightnessCurveE0B:(BOOL)b
 {
-  if (a3)
+  if (b)
   {
     v3 = 8;
   }
@@ -240,9 +240,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasAlsAutoBrightnessCurveL0B:(BOOL)a3
+- (void)setHasAlsAutoBrightnessCurveL0B:(BOOL)b
 {
-  if (a3)
+  if (b)
   {
     v3 = 256;
   }
@@ -255,9 +255,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasAlsAutoBrightnessCurveEdynth:(BOOL)a3
+- (void)setHasAlsAutoBrightnessCurveEdynth:(BOOL)edynth
 {
-  if (a3)
+  if (edynth)
   {
     v3 = 64;
   }
@@ -270,9 +270,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasAlsAutoBrightnessSlider:(BOOL)a3
+- (void)setHasAlsAutoBrightnessSlider:(BOOL)slider
 {
-  if (a3)
+  if (slider)
   {
     v3 = 4096;
   }
@@ -285,9 +285,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasAlsAutoBrightnessLux:(BOOL)a3
+- (void)setHasAlsAutoBrightnessLux:(BOOL)lux
 {
-  if (a3)
+  if (lux)
   {
     v3 = 2048;
   }
@@ -300,9 +300,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasAlsAutoBrightnessChangeCount:(BOOL)a3
+- (void)setHasAlsAutoBrightnessChangeCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -315,9 +315,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasAlsBrightnessEnableCnt:(BOOL)a3
+- (void)setHasAlsBrightnessEnableCnt:(BOOL)cnt
 {
-  if (a3)
+  if (cnt)
   {
     v3 = 0x2000;
   }
@@ -330,7 +330,7 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)addBacklightBucket:(id)a3
+- (void)addBacklightBucket:(id)bucket
 {
   backlightBuckets = self->_backlightBuckets;
   if (!backlightBuckets)
@@ -339,12 +339,12 @@
     self->_backlightBuckets = backlightBuckets;
   }
 
-  [(NSMutableArray *)backlightBuckets addObject:a3];
+  [(NSMutableArray *)backlightBuckets addObject:bucket];
 }
 
-- (void)setHasTotalDisplayPower:(BOOL)a3
+- (void)setHasTotalDisplayPower:(BOOL)power
 {
-  if (a3)
+  if (power)
   {
     v3 = 0x800000;
   }
@@ -357,9 +357,9 @@
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (void)setHasTotalBacklightPower:(BOOL)a3
+- (void)setHasTotalBacklightPower:(BOOL)power
 {
-  if (a3)
+  if (power)
   {
     v3 = 0x400000;
   }
@@ -372,9 +372,9 @@
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasFrameRateResidencyPercentage:(BOOL)a3
+- (void)setHasFrameRateResidencyPercentage:(BOOL)percentage
 {
-  if (a3)
+  if (percentage)
   {
     v3 = 0x10000;
   }
@@ -387,9 +387,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasResidencyPercentage60Hz:(BOOL)a3
+- (void)setHasResidencyPercentage60Hz:(BOOL)hz
 {
-  if (a3)
+  if (hz)
   {
     v3 = 0x200000;
   }
@@ -402,9 +402,9 @@
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasResidencyPercentage30Hz:(BOOL)a3
+- (void)setHasResidencyPercentage30Hz:(BOOL)hz
 {
-  if (a3)
+  if (hz)
   {
     v3 = 0x100000;
   }
@@ -427,11 +427,11 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (*&has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((*&has & 0x4000) == 0)
     {
@@ -450,7 +450,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dispOnCount), @"dispOnCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dispOnCount), @"dispOnCount"}];
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
   {
@@ -464,7 +464,7 @@ LABEL_4:
   }
 
 LABEL_40:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_unpluggedDisplayOnDuration), @"unpluggedDisplayOnDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_unpluggedDisplayOnDuration), @"unpluggedDisplayOnDuration"}];
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -478,7 +478,7 @@ LABEL_5:
   }
 
 LABEL_41:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_pluggedDisplayOnDuration), @"pluggedDisplayOnDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_pluggedDisplayOnDuration), @"pluggedDisplayOnDuration"}];
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -492,7 +492,7 @@ LABEL_6:
   }
 
 LABEL_42:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_mieDuration), @"mieDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_mieDuration), @"mieDuration"}];
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -506,7 +506,7 @@ LABEL_7:
   }
 
 LABEL_43:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_mieCount), @"mieCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_mieCount), @"mieCount"}];
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -520,7 +520,7 @@ LABEL_8:
   }
 
 LABEL_44:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_displayIdlePercentage), @"displayIdlePercentage"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_displayIdlePercentage), @"displayIdlePercentage"}];
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -534,7 +534,7 @@ LABEL_9:
   }
 
 LABEL_45:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_alsAutoBrightnessCurveE1), @"alsAutoBrightnessCurveE1"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_alsAutoBrightnessCurveE1), @"alsAutoBrightnessCurveE1"}];
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -548,7 +548,7 @@ LABEL_10:
   }
 
 LABEL_46:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_alsAutoBrightnessCurveL1), @"alsAutoBrightnessCurveL1"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_alsAutoBrightnessCurveL1), @"alsAutoBrightnessCurveL1"}];
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -562,7 +562,7 @@ LABEL_11:
   }
 
 LABEL_47:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_alsAutoBrightnessCurveE2), @"alsAutoBrightnessCurveE2"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_alsAutoBrightnessCurveE2), @"alsAutoBrightnessCurveE2"}];
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -576,7 +576,7 @@ LABEL_12:
   }
 
 LABEL_48:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_alsAutoBrightnessCurveL2), @"alsAutoBrightnessCurveL2"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_alsAutoBrightnessCurveL2), @"alsAutoBrightnessCurveL2"}];
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -590,7 +590,7 @@ LABEL_13:
   }
 
 LABEL_49:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_alsAutoBrightnessCurveE0A), @"alsAutoBrightnessCurveE0A"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_alsAutoBrightnessCurveE0A), @"alsAutoBrightnessCurveE0A"}];
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -604,7 +604,7 @@ LABEL_14:
   }
 
 LABEL_50:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_alsAutoBrightnessCurveL0A), @"alsAutoBrightnessCurveL0A"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_alsAutoBrightnessCurveL0A), @"alsAutoBrightnessCurveL0A"}];
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -618,7 +618,7 @@ LABEL_15:
   }
 
 LABEL_51:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_alsAutoBrightnessCurveE0B), @"alsAutoBrightnessCurveE0B"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_alsAutoBrightnessCurveE0B), @"alsAutoBrightnessCurveE0B"}];
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -632,7 +632,7 @@ LABEL_16:
   }
 
 LABEL_52:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_alsAutoBrightnessCurveL0B), @"alsAutoBrightnessCurveL0B"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_alsAutoBrightnessCurveL0B), @"alsAutoBrightnessCurveL0B"}];
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -646,7 +646,7 @@ LABEL_17:
   }
 
 LABEL_53:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_alsAutoBrightnessCurveEdynth), @"alsAutoBrightnessCurveEdynth"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_alsAutoBrightnessCurveEdynth), @"alsAutoBrightnessCurveEdynth"}];
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -660,7 +660,7 @@ LABEL_18:
   }
 
 LABEL_54:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_alsAutoBrightnessSlider), @"alsAutoBrightnessSlider"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_alsAutoBrightnessSlider), @"alsAutoBrightnessSlider"}];
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -674,7 +674,7 @@ LABEL_19:
   }
 
 LABEL_55:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_alsAutoBrightnessLux), @"alsAutoBrightnessLux"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_alsAutoBrightnessLux), @"alsAutoBrightnessLux"}];
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -688,11 +688,11 @@ LABEL_20:
   }
 
 LABEL_56:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_alsAutoBrightnessChangeCount), @"alsAutoBrightnessChangeCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_alsAutoBrightnessChangeCount), @"alsAutoBrightnessChangeCount"}];
   if ((*&self->_has & 0x2000) != 0)
   {
 LABEL_21:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_alsBrightnessEnableCnt), @"alsBrightnessEnableCnt"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_alsBrightnessEnableCnt), @"alsBrightnessEnableCnt"}];
   }
 
 LABEL_22:
@@ -727,13 +727,13 @@ LABEL_22:
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"backlightBucket"];
+    [dictionary setObject:v5 forKey:@"backlightBucket"];
   }
 
   v11 = self->_has;
   if ((*&v11 & 0x800000) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_totalDisplayPower), @"totalDisplayPower"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_totalDisplayPower), @"totalDisplayPower"}];
     v11 = self->_has;
     if ((*&v11 & 0x400000) == 0)
     {
@@ -752,7 +752,7 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_totalBacklightPower), @"totalBacklightPower"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_totalBacklightPower), @"totalBacklightPower"}];
   v11 = self->_has;
   if ((*&v11 & 0x10000) == 0)
   {
@@ -763,7 +763,7 @@ LABEL_34:
     }
 
 LABEL_61:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_residencyPercentage60Hz), @"residencyPercentage60Hz"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_residencyPercentage60Hz), @"residencyPercentage60Hz"}];
     if ((*&self->_has & 0x100000) == 0)
     {
       goto LABEL_37;
@@ -773,7 +773,7 @@ LABEL_61:
   }
 
 LABEL_60:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_frameRateResidencyPercentage), @"frameRateResidencyPercentage"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_frameRateResidencyPercentage), @"frameRateResidencyPercentage"}];
   v11 = self->_has;
   if ((*&v11 & 0x200000) != 0)
   {
@@ -784,15 +784,15 @@ LABEL_35:
   if ((*&v11 & 0x100000) != 0)
   {
 LABEL_36:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_residencyPercentage30Hz), @"residencyPercentage30Hz"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_residencyPercentage30Hz), @"residencyPercentage30Hz"}];
   }
 
 LABEL_37:
   v12 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v43 = *MEMORY[0x29EDCA608];
   has = self->_has;
@@ -1178,13 +1178,13 @@ LABEL_35:
   v14 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (*&has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 31) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 31) |= 1u;
     has = self->_has;
     if ((*&has & 0x4000) == 0)
     {
@@ -1203,8 +1203,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 20) = self->_dispOnCount;
-  *(a3 + 31) |= 0x4000u;
+  *(to + 20) = self->_dispOnCount;
+  *(to + 31) |= 0x4000u;
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
   {
@@ -1218,8 +1218,8 @@ LABEL_4:
   }
 
 LABEL_35:
-  *(a3 + 30) = self->_unpluggedDisplayOnDuration;
-  *(a3 + 31) |= 0x1000000u;
+  *(to + 30) = self->_unpluggedDisplayOnDuration;
+  *(to + 31) |= 0x1000000u;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -1233,8 +1233,8 @@ LABEL_5:
   }
 
 LABEL_36:
-  *(a3 + 25) = self->_pluggedDisplayOnDuration;
-  *(a3 + 31) |= 0x80000u;
+  *(to + 25) = self->_pluggedDisplayOnDuration;
+  *(to + 31) |= 0x80000u;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -1248,8 +1248,8 @@ LABEL_6:
   }
 
 LABEL_37:
-  *(a3 + 24) = self->_mieDuration;
-  *(a3 + 31) |= 0x40000u;
+  *(to + 24) = self->_mieDuration;
+  *(to + 31) |= 0x40000u;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -1263,8 +1263,8 @@ LABEL_7:
   }
 
 LABEL_38:
-  *(a3 + 23) = self->_mieCount;
-  *(a3 + 31) |= 0x20000u;
+  *(to + 23) = self->_mieCount;
+  *(to + 31) |= 0x20000u;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -1278,8 +1278,8 @@ LABEL_8:
   }
 
 LABEL_39:
-  *(a3 + 21) = self->_displayIdlePercentage;
-  *(a3 + 31) |= 0x8000u;
+  *(to + 21) = self->_displayIdlePercentage;
+  *(to + 31) |= 0x8000u;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -1293,8 +1293,8 @@ LABEL_9:
   }
 
 LABEL_40:
-  *(a3 + 7) = self->_alsAutoBrightnessCurveE1;
-  *(a3 + 31) |= 0x10u;
+  *(to + 7) = self->_alsAutoBrightnessCurveE1;
+  *(to + 31) |= 0x10u;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -1308,8 +1308,8 @@ LABEL_10:
   }
 
 LABEL_41:
-  *(a3 + 12) = self->_alsAutoBrightnessCurveL1;
-  *(a3 + 31) |= 0x200u;
+  *(to + 12) = self->_alsAutoBrightnessCurveL1;
+  *(to + 31) |= 0x200u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -1323,8 +1323,8 @@ LABEL_11:
   }
 
 LABEL_42:
-  *(a3 + 8) = self->_alsAutoBrightnessCurveE2;
-  *(a3 + 31) |= 0x20u;
+  *(to + 8) = self->_alsAutoBrightnessCurveE2;
+  *(to + 31) |= 0x20u;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -1338,8 +1338,8 @@ LABEL_12:
   }
 
 LABEL_43:
-  *(a3 + 13) = self->_alsAutoBrightnessCurveL2;
-  *(a3 + 31) |= 0x400u;
+  *(to + 13) = self->_alsAutoBrightnessCurveL2;
+  *(to + 31) |= 0x400u;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -1353,8 +1353,8 @@ LABEL_13:
   }
 
 LABEL_44:
-  *(a3 + 5) = self->_alsAutoBrightnessCurveE0A;
-  *(a3 + 31) |= 4u;
+  *(to + 5) = self->_alsAutoBrightnessCurveE0A;
+  *(to + 31) |= 4u;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -1368,8 +1368,8 @@ LABEL_14:
   }
 
 LABEL_45:
-  *(a3 + 10) = self->_alsAutoBrightnessCurveL0A;
-  *(a3 + 31) |= 0x80u;
+  *(to + 10) = self->_alsAutoBrightnessCurveL0A;
+  *(to + 31) |= 0x80u;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -1383,8 +1383,8 @@ LABEL_15:
   }
 
 LABEL_46:
-  *(a3 + 6) = self->_alsAutoBrightnessCurveE0B;
-  *(a3 + 31) |= 8u;
+  *(to + 6) = self->_alsAutoBrightnessCurveE0B;
+  *(to + 31) |= 8u;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -1398,8 +1398,8 @@ LABEL_16:
   }
 
 LABEL_47:
-  *(a3 + 11) = self->_alsAutoBrightnessCurveL0B;
-  *(a3 + 31) |= 0x100u;
+  *(to + 11) = self->_alsAutoBrightnessCurveL0B;
+  *(to + 31) |= 0x100u;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1413,8 +1413,8 @@ LABEL_17:
   }
 
 LABEL_48:
-  *(a3 + 9) = self->_alsAutoBrightnessCurveEdynth;
-  *(a3 + 31) |= 0x40u;
+  *(to + 9) = self->_alsAutoBrightnessCurveEdynth;
+  *(to + 31) |= 0x40u;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -1428,8 +1428,8 @@ LABEL_18:
   }
 
 LABEL_49:
-  *(a3 + 15) = self->_alsAutoBrightnessSlider;
-  *(a3 + 31) |= 0x1000u;
+  *(to + 15) = self->_alsAutoBrightnessSlider;
+  *(to + 31) |= 0x1000u;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -1440,8 +1440,8 @@ LABEL_19:
     }
 
 LABEL_51:
-    *(a3 + 4) = self->_alsAutoBrightnessChangeCount;
-    *(a3 + 31) |= 2u;
+    *(to + 4) = self->_alsAutoBrightnessChangeCount;
+    *(to + 31) |= 2u;
     if ((*&self->_has & 0x2000) == 0)
     {
       goto LABEL_22;
@@ -1451,8 +1451,8 @@ LABEL_51:
   }
 
 LABEL_50:
-  *(a3 + 14) = self->_alsAutoBrightnessLux;
-  *(a3 + 31) |= 0x800u;
+  *(to + 14) = self->_alsAutoBrightnessLux;
+  *(to + 31) |= 0x800u;
   has = self->_has;
   if ((*&has & 2) != 0)
   {
@@ -1463,21 +1463,21 @@ LABEL_20:
   if ((*&has & 0x2000) != 0)
   {
 LABEL_21:
-    *(a3 + 16) = self->_alsBrightnessEnableCnt;
-    *(a3 + 31) |= 0x2000u;
+    *(to + 16) = self->_alsBrightnessEnableCnt;
+    *(to + 31) |= 0x2000u;
   }
 
 LABEL_22:
   if ([(AWDPowerDisplayBacklightMetrics *)self backlightBucketsCount])
   {
-    [a3 clearBacklightBuckets];
-    v6 = [(AWDPowerDisplayBacklightMetrics *)self backlightBucketsCount];
-    if (v6)
+    [to clearBacklightBuckets];
+    backlightBucketsCount = [(AWDPowerDisplayBacklightMetrics *)self backlightBucketsCount];
+    if (backlightBucketsCount)
     {
-      v7 = v6;
+      v7 = backlightBucketsCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addBacklightBucket:{-[AWDPowerDisplayBacklightMetrics backlightBucketAtIndex:](self, "backlightBucketAtIndex:", i)}];
+        [to addBacklightBucket:{-[AWDPowerDisplayBacklightMetrics backlightBucketAtIndex:](self, "backlightBucketAtIndex:", i)}];
       }
     }
   }
@@ -1485,8 +1485,8 @@ LABEL_22:
   v9 = self->_has;
   if ((*&v9 & 0x800000) != 0)
   {
-    *(a3 + 29) = self->_totalDisplayPower;
-    *(a3 + 31) |= 0x800000u;
+    *(to + 29) = self->_totalDisplayPower;
+    *(to + 31) |= 0x800000u;
     v9 = self->_has;
     if ((*&v9 & 0x400000) == 0)
     {
@@ -1505,8 +1505,8 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  *(a3 + 28) = self->_totalBacklightPower;
-  *(a3 + 31) |= 0x400000u;
+  *(to + 28) = self->_totalBacklightPower;
+  *(to + 31) |= 0x400000u;
   v9 = self->_has;
   if ((*&v9 & 0x10000) == 0)
   {
@@ -1520,8 +1520,8 @@ LABEL_29:
   }
 
 LABEL_55:
-  *(a3 + 22) = self->_frameRateResidencyPercentage;
-  *(a3 + 31) |= 0x10000u;
+  *(to + 22) = self->_frameRateResidencyPercentage;
+  *(to + 31) |= 0x10000u;
   v9 = self->_has;
   if ((*&v9 & 0x200000) == 0)
   {
@@ -1535,22 +1535,22 @@ LABEL_30:
   }
 
 LABEL_56:
-  *(a3 + 27) = self->_residencyPercentage60Hz;
-  *(a3 + 31) |= 0x200000u;
+  *(to + 27) = self->_residencyPercentage60Hz;
+  *(to + 31) |= 0x200000u;
   if ((*&self->_has & 0x100000) == 0)
   {
     return;
   }
 
 LABEL_31:
-  *(a3 + 26) = self->_residencyPercentage30Hz;
-  *(a3 + 31) |= 0x100000u;
+  *(to + 26) = self->_residencyPercentage30Hz;
+  *(to + 31) |= 0x100000u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (*&has)
@@ -1859,7 +1859,7 @@ LABEL_22:
           objc_enumerationMutation(backlightBuckets);
         }
 
-        v13 = [*(*(&v17 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v17 + 1) + 8 * i) copyWithZone:zone];
         [v6 addBacklightBucket:v13];
       }
 
@@ -1936,16 +1936,16 @@ LABEL_35:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 31);
+    v7 = *(equal + 31);
     if (*&has)
     {
-      if ((v7 & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((v7 & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_129;
       }
@@ -1960,7 +1960,7 @@ LABEL_129:
 
     if ((*&has & 0x4000) != 0)
     {
-      if ((v7 & 0x4000) == 0 || self->_dispOnCount != *(a3 + 20))
+      if ((v7 & 0x4000) == 0 || self->_dispOnCount != *(equal + 20))
       {
         goto LABEL_129;
       }
@@ -1973,7 +1973,7 @@ LABEL_129:
 
     if ((*&has & 0x1000000) != 0)
     {
-      if ((v7 & 0x1000000) == 0 || self->_unpluggedDisplayOnDuration != *(a3 + 30))
+      if ((v7 & 0x1000000) == 0 || self->_unpluggedDisplayOnDuration != *(equal + 30))
       {
         goto LABEL_129;
       }
@@ -1986,7 +1986,7 @@ LABEL_129:
 
     if ((*&has & 0x80000) != 0)
     {
-      if ((v7 & 0x80000) == 0 || self->_pluggedDisplayOnDuration != *(a3 + 25))
+      if ((v7 & 0x80000) == 0 || self->_pluggedDisplayOnDuration != *(equal + 25))
       {
         goto LABEL_129;
       }
@@ -1999,7 +1999,7 @@ LABEL_129:
 
     if ((*&has & 0x40000) != 0)
     {
-      if ((v7 & 0x40000) == 0 || self->_mieDuration != *(a3 + 24))
+      if ((v7 & 0x40000) == 0 || self->_mieDuration != *(equal + 24))
       {
         goto LABEL_129;
       }
@@ -2012,7 +2012,7 @@ LABEL_129:
 
     if ((*&has & 0x20000) != 0)
     {
-      if ((v7 & 0x20000) == 0 || self->_mieCount != *(a3 + 23))
+      if ((v7 & 0x20000) == 0 || self->_mieCount != *(equal + 23))
       {
         goto LABEL_129;
       }
@@ -2025,7 +2025,7 @@ LABEL_129:
 
     if ((*&has & 0x8000) != 0)
     {
-      if ((v7 & 0x8000) == 0 || self->_displayIdlePercentage != *(a3 + 21))
+      if ((v7 & 0x8000) == 0 || self->_displayIdlePercentage != *(equal + 21))
       {
         goto LABEL_129;
       }
@@ -2038,7 +2038,7 @@ LABEL_129:
 
     if ((*&has & 0x10) != 0)
     {
-      if ((v7 & 0x10) == 0 || self->_alsAutoBrightnessCurveE1 != *(a3 + 7))
+      if ((v7 & 0x10) == 0 || self->_alsAutoBrightnessCurveE1 != *(equal + 7))
       {
         goto LABEL_129;
       }
@@ -2051,7 +2051,7 @@ LABEL_129:
 
     if ((*&has & 0x200) != 0)
     {
-      if ((v7 & 0x200) == 0 || self->_alsAutoBrightnessCurveL1 != *(a3 + 12))
+      if ((v7 & 0x200) == 0 || self->_alsAutoBrightnessCurveL1 != *(equal + 12))
       {
         goto LABEL_129;
       }
@@ -2064,7 +2064,7 @@ LABEL_129:
 
     if ((*&has & 0x20) != 0)
     {
-      if ((v7 & 0x20) == 0 || self->_alsAutoBrightnessCurveE2 != *(a3 + 8))
+      if ((v7 & 0x20) == 0 || self->_alsAutoBrightnessCurveE2 != *(equal + 8))
       {
         goto LABEL_129;
       }
@@ -2077,7 +2077,7 @@ LABEL_129:
 
     if ((*&has & 0x400) != 0)
     {
-      if ((v7 & 0x400) == 0 || self->_alsAutoBrightnessCurveL2 != *(a3 + 13))
+      if ((v7 & 0x400) == 0 || self->_alsAutoBrightnessCurveL2 != *(equal + 13))
       {
         goto LABEL_129;
       }
@@ -2090,7 +2090,7 @@ LABEL_129:
 
     if ((*&has & 4) != 0)
     {
-      if ((v7 & 4) == 0 || self->_alsAutoBrightnessCurveE0A != *(a3 + 5))
+      if ((v7 & 4) == 0 || self->_alsAutoBrightnessCurveE0A != *(equal + 5))
       {
         goto LABEL_129;
       }
@@ -2103,7 +2103,7 @@ LABEL_129:
 
     if ((*&has & 0x80) != 0)
     {
-      if ((v7 & 0x80) == 0 || self->_alsAutoBrightnessCurveL0A != *(a3 + 10))
+      if ((v7 & 0x80) == 0 || self->_alsAutoBrightnessCurveL0A != *(equal + 10))
       {
         goto LABEL_129;
       }
@@ -2116,7 +2116,7 @@ LABEL_129:
 
     if ((*&has & 8) != 0)
     {
-      if ((v7 & 8) == 0 || self->_alsAutoBrightnessCurveE0B != *(a3 + 6))
+      if ((v7 & 8) == 0 || self->_alsAutoBrightnessCurveE0B != *(equal + 6))
       {
         goto LABEL_129;
       }
@@ -2129,7 +2129,7 @@ LABEL_129:
 
     if ((*&has & 0x100) != 0)
     {
-      if ((v7 & 0x100) == 0 || self->_alsAutoBrightnessCurveL0B != *(a3 + 11))
+      if ((v7 & 0x100) == 0 || self->_alsAutoBrightnessCurveL0B != *(equal + 11))
       {
         goto LABEL_129;
       }
@@ -2142,7 +2142,7 @@ LABEL_129:
 
     if ((*&has & 0x40) != 0)
     {
-      if ((v7 & 0x40) == 0 || self->_alsAutoBrightnessCurveEdynth != *(a3 + 9))
+      if ((v7 & 0x40) == 0 || self->_alsAutoBrightnessCurveEdynth != *(equal + 9))
       {
         goto LABEL_129;
       }
@@ -2155,7 +2155,7 @@ LABEL_129:
 
     if ((*&has & 0x1000) != 0)
     {
-      if ((v7 & 0x1000) == 0 || self->_alsAutoBrightnessSlider != *(a3 + 15))
+      if ((v7 & 0x1000) == 0 || self->_alsAutoBrightnessSlider != *(equal + 15))
       {
         goto LABEL_129;
       }
@@ -2168,7 +2168,7 @@ LABEL_129:
 
     if ((*&has & 0x800) != 0)
     {
-      if ((v7 & 0x800) == 0 || self->_alsAutoBrightnessLux != *(a3 + 14))
+      if ((v7 & 0x800) == 0 || self->_alsAutoBrightnessLux != *(equal + 14))
       {
         goto LABEL_129;
       }
@@ -2181,7 +2181,7 @@ LABEL_129:
 
     if ((*&has & 2) != 0)
     {
-      if ((v7 & 2) == 0 || self->_alsAutoBrightnessChangeCount != *(a3 + 4))
+      if ((v7 & 2) == 0 || self->_alsAutoBrightnessChangeCount != *(equal + 4))
       {
         goto LABEL_129;
       }
@@ -2194,7 +2194,7 @@ LABEL_129:
 
     if ((*&has & 0x2000) != 0)
     {
-      if ((v7 & 0x2000) == 0 || self->_alsBrightnessEnableCnt != *(a3 + 16))
+      if ((v7 & 0x2000) == 0 || self->_alsBrightnessEnableCnt != *(equal + 16))
       {
         goto LABEL_129;
       }
@@ -2206,7 +2206,7 @@ LABEL_129:
     }
 
     backlightBuckets = self->_backlightBuckets;
-    if (backlightBuckets | *(a3 + 9))
+    if (backlightBuckets | *(equal + 9))
     {
       v5 = [(NSMutableArray *)backlightBuckets isEqual:?];
       if (!v5)
@@ -2217,10 +2217,10 @@ LABEL_129:
       has = self->_has;
     }
 
-    v9 = *(a3 + 31);
+    v9 = *(equal + 31);
     if ((*&has & 0x800000) != 0)
     {
-      if ((v9 & 0x800000) == 0 || self->_totalDisplayPower != *(a3 + 29))
+      if ((v9 & 0x800000) == 0 || self->_totalDisplayPower != *(equal + 29))
       {
         goto LABEL_129;
       }
@@ -2233,7 +2233,7 @@ LABEL_129:
 
     if ((*&has & 0x400000) != 0)
     {
-      if ((v9 & 0x400000) == 0 || self->_totalBacklightPower != *(a3 + 28))
+      if ((v9 & 0x400000) == 0 || self->_totalBacklightPower != *(equal + 28))
       {
         goto LABEL_129;
       }
@@ -2246,7 +2246,7 @@ LABEL_129:
 
     if ((*&has & 0x10000) != 0)
     {
-      if ((v9 & 0x10000) == 0 || self->_frameRateResidencyPercentage != *(a3 + 22))
+      if ((v9 & 0x10000) == 0 || self->_frameRateResidencyPercentage != *(equal + 22))
       {
         goto LABEL_129;
       }
@@ -2259,7 +2259,7 @@ LABEL_129:
 
     if ((*&has & 0x200000) != 0)
     {
-      if ((v9 & 0x200000) == 0 || self->_residencyPercentage60Hz != *(a3 + 27))
+      if ((v9 & 0x200000) == 0 || self->_residencyPercentage60Hz != *(equal + 27))
       {
         goto LABEL_129;
       }
@@ -2273,7 +2273,7 @@ LABEL_129:
     LOBYTE(v5) = (v9 & 0x100000) == 0;
     if ((*&has & 0x100000) != 0)
     {
-      if ((v9 & 0x100000) == 0 || self->_residencyPercentage30Hz != *(a3 + 26))
+      if ((v9 & 0x100000) == 0 || self->_residencyPercentage30Hz != *(equal + 26))
       {
         goto LABEL_129;
       }
@@ -2630,15 +2630,15 @@ LABEL_47:
   return v30 ^ v31 ^ v29 ^ v28 ^ v27 ^ v26 ^ v25 ^ v24 ^ v23 ^ v22 ^ v21 ^ v20 ^ v19 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x29EDCA608];
-  v5 = *(a3 + 31);
+  v5 = *(from + 31);
   if (v5)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v5 = *(a3 + 31);
+    v5 = *(from + 31);
     if ((v5 & 0x4000) == 0)
     {
 LABEL_3:
@@ -2656,9 +2656,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_dispOnCount = *(a3 + 20);
+  self->_dispOnCount = *(from + 20);
   *&self->_has |= 0x4000u;
-  v5 = *(a3 + 31);
+  v5 = *(from + 31);
   if ((v5 & 0x1000000) == 0)
   {
 LABEL_4:
@@ -2671,9 +2671,9 @@ LABEL_4:
   }
 
 LABEL_38:
-  self->_unpluggedDisplayOnDuration = *(a3 + 30);
+  self->_unpluggedDisplayOnDuration = *(from + 30);
   *&self->_has |= 0x1000000u;
-  v5 = *(a3 + 31);
+  v5 = *(from + 31);
   if ((v5 & 0x80000) == 0)
   {
 LABEL_5:
@@ -2686,9 +2686,9 @@ LABEL_5:
   }
 
 LABEL_39:
-  self->_pluggedDisplayOnDuration = *(a3 + 25);
+  self->_pluggedDisplayOnDuration = *(from + 25);
   *&self->_has |= 0x80000u;
-  v5 = *(a3 + 31);
+  v5 = *(from + 31);
   if ((v5 & 0x40000) == 0)
   {
 LABEL_6:
@@ -2701,9 +2701,9 @@ LABEL_6:
   }
 
 LABEL_40:
-  self->_mieDuration = *(a3 + 24);
+  self->_mieDuration = *(from + 24);
   *&self->_has |= 0x40000u;
-  v5 = *(a3 + 31);
+  v5 = *(from + 31);
   if ((v5 & 0x20000) == 0)
   {
 LABEL_7:
@@ -2716,9 +2716,9 @@ LABEL_7:
   }
 
 LABEL_41:
-  self->_mieCount = *(a3 + 23);
+  self->_mieCount = *(from + 23);
   *&self->_has |= 0x20000u;
-  v5 = *(a3 + 31);
+  v5 = *(from + 31);
   if ((v5 & 0x8000) == 0)
   {
 LABEL_8:
@@ -2731,9 +2731,9 @@ LABEL_8:
   }
 
 LABEL_42:
-  self->_displayIdlePercentage = *(a3 + 21);
+  self->_displayIdlePercentage = *(from + 21);
   *&self->_has |= 0x8000u;
-  v5 = *(a3 + 31);
+  v5 = *(from + 31);
   if ((v5 & 0x10) == 0)
   {
 LABEL_9:
@@ -2746,9 +2746,9 @@ LABEL_9:
   }
 
 LABEL_43:
-  self->_alsAutoBrightnessCurveE1 = *(a3 + 7);
+  self->_alsAutoBrightnessCurveE1 = *(from + 7);
   *&self->_has |= 0x10u;
-  v5 = *(a3 + 31);
+  v5 = *(from + 31);
   if ((v5 & 0x200) == 0)
   {
 LABEL_10:
@@ -2761,9 +2761,9 @@ LABEL_10:
   }
 
 LABEL_44:
-  self->_alsAutoBrightnessCurveL1 = *(a3 + 12);
+  self->_alsAutoBrightnessCurveL1 = *(from + 12);
   *&self->_has |= 0x200u;
-  v5 = *(a3 + 31);
+  v5 = *(from + 31);
   if ((v5 & 0x20) == 0)
   {
 LABEL_11:
@@ -2776,9 +2776,9 @@ LABEL_11:
   }
 
 LABEL_45:
-  self->_alsAutoBrightnessCurveE2 = *(a3 + 8);
+  self->_alsAutoBrightnessCurveE2 = *(from + 8);
   *&self->_has |= 0x20u;
-  v5 = *(a3 + 31);
+  v5 = *(from + 31);
   if ((v5 & 0x400) == 0)
   {
 LABEL_12:
@@ -2791,9 +2791,9 @@ LABEL_12:
   }
 
 LABEL_46:
-  self->_alsAutoBrightnessCurveL2 = *(a3 + 13);
+  self->_alsAutoBrightnessCurveL2 = *(from + 13);
   *&self->_has |= 0x400u;
-  v5 = *(a3 + 31);
+  v5 = *(from + 31);
   if ((v5 & 4) == 0)
   {
 LABEL_13:
@@ -2806,9 +2806,9 @@ LABEL_13:
   }
 
 LABEL_47:
-  self->_alsAutoBrightnessCurveE0A = *(a3 + 5);
+  self->_alsAutoBrightnessCurveE0A = *(from + 5);
   *&self->_has |= 4u;
-  v5 = *(a3 + 31);
+  v5 = *(from + 31);
   if ((v5 & 0x80) == 0)
   {
 LABEL_14:
@@ -2821,9 +2821,9 @@ LABEL_14:
   }
 
 LABEL_48:
-  self->_alsAutoBrightnessCurveL0A = *(a3 + 10);
+  self->_alsAutoBrightnessCurveL0A = *(from + 10);
   *&self->_has |= 0x80u;
-  v5 = *(a3 + 31);
+  v5 = *(from + 31);
   if ((v5 & 8) == 0)
   {
 LABEL_15:
@@ -2836,9 +2836,9 @@ LABEL_15:
   }
 
 LABEL_49:
-  self->_alsAutoBrightnessCurveE0B = *(a3 + 6);
+  self->_alsAutoBrightnessCurveE0B = *(from + 6);
   *&self->_has |= 8u;
-  v5 = *(a3 + 31);
+  v5 = *(from + 31);
   if ((v5 & 0x100) == 0)
   {
 LABEL_16:
@@ -2851,9 +2851,9 @@ LABEL_16:
   }
 
 LABEL_50:
-  self->_alsAutoBrightnessCurveL0B = *(a3 + 11);
+  self->_alsAutoBrightnessCurveL0B = *(from + 11);
   *&self->_has |= 0x100u;
-  v5 = *(a3 + 31);
+  v5 = *(from + 31);
   if ((v5 & 0x40) == 0)
   {
 LABEL_17:
@@ -2866,9 +2866,9 @@ LABEL_17:
   }
 
 LABEL_51:
-  self->_alsAutoBrightnessCurveEdynth = *(a3 + 9);
+  self->_alsAutoBrightnessCurveEdynth = *(from + 9);
   *&self->_has |= 0x40u;
-  v5 = *(a3 + 31);
+  v5 = *(from + 31);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_18:
@@ -2881,9 +2881,9 @@ LABEL_18:
   }
 
 LABEL_52:
-  self->_alsAutoBrightnessSlider = *(a3 + 15);
+  self->_alsAutoBrightnessSlider = *(from + 15);
   *&self->_has |= 0x1000u;
-  v5 = *(a3 + 31);
+  v5 = *(from + 31);
   if ((v5 & 0x800) == 0)
   {
 LABEL_19:
@@ -2896,9 +2896,9 @@ LABEL_19:
   }
 
 LABEL_53:
-  self->_alsAutoBrightnessLux = *(a3 + 14);
+  self->_alsAutoBrightnessLux = *(from + 14);
   *&self->_has |= 0x800u;
-  v5 = *(a3 + 31);
+  v5 = *(from + 31);
   if ((v5 & 2) == 0)
   {
 LABEL_20:
@@ -2911,12 +2911,12 @@ LABEL_20:
   }
 
 LABEL_54:
-  self->_alsAutoBrightnessChangeCount = *(a3 + 4);
+  self->_alsAutoBrightnessChangeCount = *(from + 4);
   *&self->_has |= 2u;
-  if ((*(a3 + 31) & 0x2000) != 0)
+  if ((*(from + 31) & 0x2000) != 0)
   {
 LABEL_21:
-    self->_alsBrightnessEnableCnt = *(a3 + 16);
+    self->_alsBrightnessEnableCnt = *(from + 16);
     *&self->_has |= 0x2000u;
   }
 
@@ -2925,7 +2925,7 @@ LABEL_22:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = *(a3 + 9);
+  v6 = *(from + 9);
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -2949,12 +2949,12 @@ LABEL_22:
     while (v8);
   }
 
-  v11 = *(a3 + 31);
+  v11 = *(from + 31);
   if ((v11 & 0x800000) != 0)
   {
-    self->_totalDisplayPower = *(a3 + 29);
+    self->_totalDisplayPower = *(from + 29);
     *&self->_has |= 0x800000u;
-    v11 = *(a3 + 31);
+    v11 = *(from + 31);
     if ((v11 & 0x400000) == 0)
     {
 LABEL_31:
@@ -2972,9 +2972,9 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  self->_totalBacklightPower = *(a3 + 28);
+  self->_totalBacklightPower = *(from + 28);
   *&self->_has |= 0x400000u;
-  v11 = *(a3 + 31);
+  v11 = *(from + 31);
   if ((v11 & 0x10000) == 0)
   {
 LABEL_32:
@@ -2984,9 +2984,9 @@ LABEL_32:
     }
 
 LABEL_59:
-    self->_residencyPercentage60Hz = *(a3 + 27);
+    self->_residencyPercentage60Hz = *(from + 27);
     *&self->_has |= 0x200000u;
-    if ((*(a3 + 31) & 0x100000) == 0)
+    if ((*(from + 31) & 0x100000) == 0)
     {
       goto LABEL_35;
     }
@@ -2995,9 +2995,9 @@ LABEL_59:
   }
 
 LABEL_58:
-  self->_frameRateResidencyPercentage = *(a3 + 22);
+  self->_frameRateResidencyPercentage = *(from + 22);
   *&self->_has |= 0x10000u;
-  v11 = *(a3 + 31);
+  v11 = *(from + 31);
   if ((v11 & 0x200000) != 0)
   {
     goto LABEL_59;
@@ -3007,7 +3007,7 @@ LABEL_33:
   if ((v11 & 0x100000) != 0)
   {
 LABEL_34:
-    self->_residencyPercentage30Hz = *(a3 + 26);
+    self->_residencyPercentage30Hz = *(from + 26);
     *&self->_has |= 0x100000u;
   }
 

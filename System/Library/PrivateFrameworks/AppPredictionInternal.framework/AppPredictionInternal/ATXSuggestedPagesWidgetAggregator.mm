@@ -1,7 +1,7 @@
 @interface ATXSuggestedPagesWidgetAggregator
 - (ATXSuggestedPagesWidgetAggregator)init;
-- (ATXSuggestedPagesWidgetAggregator)initWithSources:(id)a3;
-- (id)provideWidgetsForPageType:(int64_t)a3 environment:(id)a4;
+- (ATXSuggestedPagesWidgetAggregator)initWithSources:(id)sources;
+- (id)provideWidgetsForPageType:(int64_t)type environment:(id)environment;
 @end
 
 @implementation ATXSuggestedPagesWidgetAggregator
@@ -24,15 +24,15 @@
   return v8;
 }
 
-- (ATXSuggestedPagesWidgetAggregator)initWithSources:(id)a3
+- (ATXSuggestedPagesWidgetAggregator)initWithSources:(id)sources
 {
-  v4 = a3;
+  sourcesCopy = sources;
   v9.receiver = self;
   v9.super_class = ATXSuggestedPagesWidgetAggregator;
   v5 = [(ATXSuggestedPagesWidgetAggregator *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [sourcesCopy copy];
     sources = v5->_sources;
     v5->_sources = v6;
   }
@@ -40,10 +40,10 @@
   return v5;
 }
 
-- (id)provideWidgetsForPageType:(int64_t)a3 environment:(id)a4
+- (id)provideWidgetsForPageType:(int64_t)type environment:(id)environment
 {
   v54 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  environmentCopy = environment;
   v7 = objc_opt_new();
   v47 = 0u;
   v48 = 0u;
@@ -65,7 +65,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v14 = [*(*(&v47 + 1) + 8 * i) provideWidgetsForPageType:a3 environment:v6];
+        v14 = [*(*(&v47 + 1) + 8 * i) provideWidgetsForPageType:type environment:environmentCopy];
         v15 = v14;
         if (v14)
         {
@@ -107,10 +107,10 @@
         }
 
         v23 = *(*(&v43 + 1) + 8 * j);
-        v24 = [v23 intent];
-        if (v24)
+        intent = [v23 intent];
+        if (intent)
         {
-          [v17 setObject:v24 forKey:v23];
+          [v17 setObject:intent forKey:v23];
           [v23 setIntent:0];
         }
       }
@@ -123,13 +123,13 @@
 
   v38 = v18;
   v25 = [MEMORY[0x277CBEB98] setWithArray:v18];
-  v26 = [v25 allObjects];
+  allObjects = [v25 allObjects];
 
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v27 = v26;
+  v27 = allObjects;
   v28 = [v27 countByEnumeratingWithState:&v39 objects:v51 count:16];
   if (v28)
   {
@@ -145,9 +145,9 @@
         }
 
         v32 = *(*(&v39 + 1) + 8 * k);
-        v33 = [MEMORY[0x277CCAD78] UUID];
-        v34 = [v33 UUIDString];
-        [v32 setWidgetUniqueId:v34];
+        uUID = [MEMORY[0x277CCAD78] UUID];
+        uUIDString = [uUID UUIDString];
+        [v32 setWidgetUniqueId:uUIDString];
 
         v35 = [v17 objectForKey:v32];
         [v32 setIntent:v35];

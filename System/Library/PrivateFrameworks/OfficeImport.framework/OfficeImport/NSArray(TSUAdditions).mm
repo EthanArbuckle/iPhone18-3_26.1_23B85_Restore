@@ -38,7 +38,7 @@
   {
     if (!count)
     {
-      return [a1 initWithObjects:v11 count:0];
+      return [self initWithObjects:v11 count:0];
     }
 
     v7 = v11;
@@ -51,7 +51,7 @@ LABEL_5:
     }
 
     while (count != v8);
-    v9 = [a1 initWithObjects:v7 count:count];
+    v9 = [self initWithObjects:v7 count:count];
     if (v7 != v11)
     {
       free(v7);
@@ -66,12 +66,12 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  return [a1 initWithObjects:0 count:count];
+  return [self initWithObjects:0 count:count];
 }
 
 + (id)tsu_arrayWithCGFloats:()TSUAdditions count:
 {
-  v4 = [[a1 alloc] tsu_initWithCGFloats:a3 count:a4];
+  v4 = [[self alloc] tsu_initWithCGFloats:a3 count:a4];
 
   return v4;
 }
@@ -83,7 +83,7 @@ LABEL_5:
   {
     if (!count)
     {
-      return [a1 initWithObjects:v11 count:0];
+      return [self initWithObjects:v11 count:0];
     }
 
     v7 = v11;
@@ -96,7 +96,7 @@ LABEL_5:
     }
 
     while (count != v8);
-    v9 = [a1 initWithObjects:v7 count:count];
+    v9 = [self initWithObjects:v7 count:count];
     if (v7 != v11)
     {
       free(v7);
@@ -111,12 +111,12 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  return [a1 initWithObjects:0 count:count];
+  return [self initWithObjects:0 count:count];
 }
 
 + (id)tsu_arrayWithInts:()TSUAdditions count:
 {
-  v4 = [[a1 alloc] tsu_initWithInts:a3 count:a4];
+  v4 = [[self alloc] tsu_initWithInts:a3 count:a4];
 
   return v4;
 }
@@ -141,7 +141,7 @@ LABEL_5:
   {
     if (!count)
     {
-      return [a1 initWithObjects:v11 count:0];
+      return [self initWithObjects:v11 count:0];
     }
 
     v7 = v11;
@@ -154,7 +154,7 @@ LABEL_5:
     }
 
     while (count != v8);
-    v9 = [a1 initWithObjects:v7 count:count];
+    v9 = [self initWithObjects:v7 count:count];
     if (v7 != v11)
     {
       free(v7);
@@ -169,40 +169,40 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  return [a1 initWithObjects:0 count:count];
+  return [self initWithObjects:0 count:count];
 }
 
 + (id)tsu_arrayWithUIntegers:()TSUAdditions count:
 {
-  v4 = [[a1 alloc] tsu_initWithUIntegers:a3 count:a4];
+  v4 = [[self alloc] tsu_initWithUIntegers:a3 count:a4];
 
   return v4;
 }
 
 - (uint64_t)tsu_rangeCheckedObjectAtIndex:()TSUAdditions
 {
-  if ([a1 count] <= a3)
+  if ([self count] <= a3)
   {
     return 0;
   }
 
-  return [a1 objectAtIndex:a3];
+  return [self objectAtIndex:a3];
 }
 
 - (uint64_t)tsu_objectPriorToObject:()TSUAdditions
 {
-  v2 = [a1 indexOfObject:?];
+  v2 = [self indexOfObject:?];
   if (!v2 || v2 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  return [a1 objectAtIndex:v2 - 1];
+  return [self objectAtIndex:v2 - 1];
 }
 
 - (uint64_t)tsu_indexOfSmallestObject
 {
-  v2 = [a1 count];
+  v2 = [self count];
   if (!v2)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -214,7 +214,7 @@ LABEL_5:
   v6 = 0x7FFFFFFFFFFFFFFFLL;
   do
   {
-    v7 = [a1 objectAtIndex:v4];
+    v7 = [self objectAtIndex:v4];
     v8 = v7;
     if (!v5 || [v7 compare:v5] == -1)
     {
@@ -232,7 +232,7 @@ LABEL_5:
 - (void)tsu_indexesOfObjects:()TSUAdditions
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -252,10 +252,10 @@ LABEL_5:
           objc_enumerationMutation(a3);
         }
 
-        v10 = [a1 indexOfObject:*(*(&v12 + 1) + 8 * v9)];
+        v10 = [self indexOfObject:*(*(&v12 + 1) + 8 * v9)];
         if (v10 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          [v5 addIndex:v10];
+          [indexSet addIndex:v10];
         }
 
         ++v9;
@@ -268,20 +268,20 @@ LABEL_5:
     while (v7);
   }
 
-  return v5;
+  return indexSet;
 }
 
 - (void)tsu_arrayWithObjectsInSet:()TSUAdditions
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (a3)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [a1 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v6 = [self countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -292,37 +292,37 @@ LABEL_5:
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(a1);
+            objc_enumerationMutation(self);
           }
 
           v10 = *(*(&v12 + 1) + 8 * i);
           if ([a3 containsObject:v10])
           {
-            [v5 addObject:v10];
+            [array addObject:v10];
           }
         }
 
-        v7 = [a1 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [self countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v7);
     }
   }
 
-  return v5;
+  return array;
 }
 
 - (void)tsu_intersectionWithArray:()TSUAdditions
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (a3)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [a1 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v6 = [self countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -333,24 +333,24 @@ LABEL_5:
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(a1);
+            objc_enumerationMutation(self);
           }
 
           v10 = *(*(&v12 + 1) + 8 * i);
           if ([a3 indexOfObject:v10] != 0x7FFFFFFFFFFFFFFFLL)
           {
-            [v5 addObject:v10];
+            [array addObject:v10];
           }
         }
 
-        v7 = [a1 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [self countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v7);
     }
   }
 
-  return v5;
+  return array;
 }
 
 - (void)tsu_arrayByRemovingObjectsIdenticalToObjectsInArray:()TSUAdditions
@@ -358,25 +358,25 @@ LABEL_5:
   v5 = [a3 count];
   if (!v5)
   {
-    return a1;
+    return self;
   }
 
   v6 = v5;
   v7 = 0;
   v8 = 0;
-  v9 = a1;
+  selfCopy = self;
   do
   {
     v10 = [a3 objectAtIndex:v7];
-    v11 = [v9 indexOfObjectIdenticalTo:v10];
+    v11 = [selfCopy indexOfObjectIdenticalTo:v10];
     if (v11 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      for (i = v11; i != 0x7FFFFFFFFFFFFFFFLL; i = [v9 indexOfObjectIdenticalTo:v10])
+      for (i = v11; i != 0x7FFFFFFFFFFFFFFFLL; i = [selfCopy indexOfObjectIdenticalTo:v10])
       {
         if (!v8)
         {
-          v8 = [MEMORY[0x277CBEB18] arrayWithArray:a1];
-          v9 = v8;
+          v8 = [MEMORY[0x277CBEB18] arrayWithArray:self];
+          selfCopy = v8;
         }
 
         [v8 removeObjectAtIndex:i];
@@ -387,7 +387,7 @@ LABEL_5:
   }
 
   while (v7 != v6);
-  return v9;
+  return selfCopy;
 }
 
 - (void)tsu_arrayByAddingNonContainedObjectsFromArray:()TSUAdditions
@@ -400,12 +400,12 @@ LABEL_5:
     do
     {
       v9 = [a3 objectAtIndex:v8];
-      if (([a1 containsObject:v9] & 1) == 0)
+      if (([self containsObject:v9] & 1) == 0)
       {
         if (!v7)
         {
-          v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a1, "count") + v6}];
-          [v7 addObjectsFromArray:a1];
+          v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(self, "count") + v6}];
+          [v7 addObjectsFromArray:self];
         }
 
         [v7 addObject:v9];
@@ -430,20 +430,20 @@ LABEL_5:
 
   else
   {
-    return a1;
+    return self;
   }
 }
 
 - (void)tsu_arrayByReversingOrder
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v2 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [a1 reverseObjectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  reverseObjectEnumerator = [self reverseObjectEnumerator];
+  v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -455,14 +455,14 @@ LABEL_5:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         [v2 addObject:*(*(&v9 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -473,14 +473,14 @@ LABEL_5:
 
 - (uint64_t)tsu_arrayByRemovingFirstObject
 {
-  if (![a1 count])
+  if (![self count])
   {
     v2 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[NSArray(TSUAdditions) tsu_arrayByRemovingFirstObject]"];
     +[OITSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](OITSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v2, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/NSArrayAdditions.m"], 231, 1, "Can't remove the first object of an empty array!");
     TSUCrash("Fatal Assertion failure: %{public}s %{public}s:%d Can't remove the first object of an empty array!", v3, v4, v5, v6, v7, v8, v9, "[NSArray(TSUAdditions) tsu_arrayByRemovingFirstObject]");
   }
 
-  v10 = [MEMORY[0x277CBEB18] arrayWithArray:a1];
+  v10 = [MEMORY[0x277CBEB18] arrayWithArray:self];
   [v10 removeObjectAtIndex:0];
   v11 = objc_opt_class();
 
@@ -489,7 +489,7 @@ LABEL_5:
 
 - (void)tsu_enumerateSnapshotObjectsUsingBlock:()TSUAdditions
 {
-  v4 = [a1 copy];
+  v4 = [self copy];
   [v4 enumerateObjectsUsingBlock:a3];
 }
 
@@ -505,7 +505,7 @@ LABEL_5:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [a1 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [self countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (!v5)
   {
     return 0;
@@ -519,7 +519,7 @@ LABEL_4:
   {
     if (*v12 != v7)
     {
-      objc_enumerationMutation(a1);
+      objc_enumerationMutation(self);
     }
 
     v9 = *(*(&v11 + 1) + 8 * v8);
@@ -530,7 +530,7 @@ LABEL_4:
 
     if (v6 == ++v8)
     {
-      v6 = [a1 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [self countByEnumeratingWithState:&v11 objects:v15 count:16];
       v9 = 0;
       if (v6)
       {
@@ -554,7 +554,7 @@ LABEL_4:
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  result = [a1 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  result = [self countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (result)
   {
     v6 = result;
@@ -565,7 +565,7 @@ LABEL_4:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(a1);
+          objc_enumerationMutation(self);
         }
 
         if ((*(a3 + 16))(a3, *(*(&v9 + 1) + 8 * i)))
@@ -574,7 +574,7 @@ LABEL_4:
         }
       }
 
-      v6 = [a1 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [self countByEnumeratingWithState:&v9 objects:v13 count:16];
       result = 0;
       if (v6)
       {
@@ -595,7 +595,7 @@ LABEL_4:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [a1 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  v2 = [self countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v2)
   {
     v3 = v2;
@@ -607,7 +607,7 @@ LABEL_4:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(a1);
+          objc_enumerationMutation(self);
         }
 
         if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -619,7 +619,7 @@ LABEL_4:
       }
 
       while (v3 != v5);
-      v3 = [a1 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [self countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -636,13 +636,13 @@ LABEL_4:
 {
   if (a3)
   {
-    v4 = a1;
+    selfCopy = self;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __55__NSArray_TSUAdditions__tsu_arrayOfObjectsPassingTest___block_invoke;
     v10[3] = &unk_2799C6348;
     v10[4] = a3;
-    v5 = [a1 indexesOfObjectsPassingTest:v10];
+    v5 = [self indexesOfObjectsPassingTest:v10];
     if (!v5)
     {
       return [MEMORY[0x277CBEA60] array];
@@ -654,12 +654,12 @@ LABEL_4:
       return [MEMORY[0x277CBEA60] array];
     }
 
-    if ([v6 containsIndexesInRange:{0, objc_msgSend(v4, "count")}])
+    if ([v6 containsIndexesInRange:{0, objc_msgSend(selfCopy, "count")}])
     {
-      return v4;
+      return selfCopy;
     }
 
-    return [v4 objectsAtIndexes:v6];
+    return [selfCopy objectsAtIndexes:v6];
   }
 
   v9 = MEMORY[0x277CBEA60];
@@ -669,26 +669,26 @@ LABEL_4:
 
 - (uint64_t)tsu_arrayByTransformingWithBlock:()TSUAdditions
 {
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__NSArray_TSUAdditions__tsu_arrayByTransformingWithBlock___block_invoke;
   v7[3] = &unk_2799C6370;
   v7[4] = v5;
   v7[5] = a3;
-  [a1 enumerateObjectsUsingBlock:v7];
+  [self enumerateObjectsUsingBlock:v7];
   return v5;
 }
 
 - (id)tsu_arrayByMappingObjectsUsingBlock:()TSUAdditions
 {
   v19 = *MEMORY[0x277D85DE8];
-  v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [a1 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v4 = [self countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -699,7 +699,7 @@ LABEL_4:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(a1);
+          objc_enumerationMutation(self);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
@@ -717,7 +717,7 @@ LABEL_4:
         }
       }
 
-      v5 = [a1 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [self countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -728,7 +728,7 @@ LABEL_4:
 
 - (void)tsu_arrayByFlattening
 {
-  v2 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v5[0] = 0;
   v5[1] = v5;
   v5[2] = 0x3052000000;
@@ -740,34 +740,34 @@ LABEL_4:
   v4[3] = &unk_2799C6398;
   v4[4] = v5;
   v5[5] = v4;
-  __46__NSArray_TSUAdditions__tsu_arrayByFlattening__block_invoke(v4, a1, v2);
+  __46__NSArray_TSUAdditions__tsu_arrayByFlattening__block_invoke(v4, self, array);
   _Block_object_dispose(v5, 8);
-  return v2;
+  return array;
 }
 
 - (uint64_t)tsu_onlyObject
 {
-  if ([a1 count] >= 2)
+  if ([self count] >= 2)
   {
     v2 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[NSArray(TSUAdditions) tsu_onlyObject]"];
     +[OITSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](OITSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v2, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/NSArrayAdditions.m"], 365, 0, "As this method returns the only object in the array, it only makes sense if the array has at most one object.");
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
-  return [a1 firstObject];
+  return [self firstObject];
 }
 
 - (id)tsu_localizedList
 {
-  v2 = [MEMORY[0x277CCAB68] string];
-  v3 = [a1 count];
+  string = [MEMORY[0x277CCAB68] string];
+  v3 = [self count];
   if (v3)
   {
     v4 = v3;
     v5 = 2;
     for (i = v3; i; --i)
     {
-      [v2 appendFormat:@"%@", objc_msgSend(objc_msgSend(a1, "objectAtIndexedSubscript:", v5 - 2), "description")];
+      [string appendFormat:@"%@", objc_msgSend(objc_msgSend(self, "objectAtIndexedSubscript:", v5 - 2), "description")];
       if (i < 3)
       {
         if (v4 >= 3 && i == 2)
@@ -797,13 +797,13 @@ LABEL_4:
         v9 = @", ";
       }
 
-      [v2 appendFormat:@"%@", objc_msgSend(v7, "localizedStringForKey:value:table:", v8, v9, @"TSUtility"];
+      [string appendFormat:@"%@", objc_msgSend(v7, "localizedStringForKey:value:table:", v8, v9, @"TSUtility"];
 LABEL_12:
       ++v5;
     }
   }
 
-  v10 = [v2 copy];
+  v10 = [string copy];
 
   return v10;
 }

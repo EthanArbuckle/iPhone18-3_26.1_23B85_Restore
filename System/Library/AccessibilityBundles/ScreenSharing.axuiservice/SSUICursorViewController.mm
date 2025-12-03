@@ -1,26 +1,26 @@
 @interface SSUICursorViewController
 + (id)serviceBundle;
-+ (id)transformImage:(id)a3 flip:(BOOL)a4 rotate:(BOOL)a5;
++ (id)transformImage:(id)image flip:(BOOL)flip rotate:(BOOL)rotate;
 - (BOOL)cursorHidden;
 - (CGRect)cursorFrame;
-- (SSUICursorViewController)initWithAXUIService:(id)a3;
-- (SSUICursorViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)_updateCursorFrameAnimated:(BOOL)a3;
+- (SSUICursorViewController)initWithAXUIService:(id)service;
+- (SSUICursorViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)_updateCursorFrameAnimated:(BOOL)animated;
 - (void)_updateCursorPath;
 - (void)dealloc;
 - (void)doneAssisting;
-- (void)handleAlternateMessage:(id)a3;
-- (void)handleAnnotation:(id)a3;
+- (void)handleAlternateMessage:(id)message;
+- (void)handleAnnotation:(id)annotation;
 - (void)handleHideAllPointers;
-- (void)handlePointerAnnotation:(id)a3;
-- (void)handleSetCursorFrameMessage:(id)a3;
+- (void)handlePointerAnnotation:(id)annotation;
+- (void)handleSetCursorFrameMessage:(id)message;
 - (void)handleShowAllPointers;
-- (void)setCursorHidden:(BOOL)a3;
-- (void)setCursorPath:(CGPath *)a3;
-- (void)setCursorPath:(CGPath *)a3 withColor:(int)a4 flipped:(BOOL)a5 rotated:(BOOL)a6;
-- (void)setFrameOriginWithPoint:(CGPoint)a3;
+- (void)setCursorHidden:(BOOL)hidden;
+- (void)setCursorPath:(CGPath *)path;
+- (void)setCursorPath:(CGPath *)path withColor:(int)color flipped:(BOOL)flipped rotated:(BOOL)rotated;
+- (void)setFrameOriginWithPoint:(CGPoint)point;
 - (void)stroke;
-- (void)strokeCore:(BOOL)a3 rotate:(BOOL)a4;
+- (void)strokeCore:(BOOL)core rotate:(BOOL)rotate;
 - (void)tearDownViews;
 - (void)viewDidLoad;
 @end
@@ -39,20 +39,20 @@
   return v3;
 }
 
-+ (id)transformImage:(id)a3 flip:(BOOL)a4 rotate:(BOOL)a5
++ (id)transformImage:(id)image flip:(BOOL)flip rotate:(BOOL)rotate
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = [a3 CGImage];
-  Width = CGImageGetWidth(v7);
-  Height = CGImageGetHeight(v7);
+  rotateCopy = rotate;
+  flipCopy = flip;
+  cGImage = [image CGImage];
+  Width = CGImageGetWidth(cGImage);
+  Height = CGImageGetHeight(cGImage);
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   v11 = malloc_type_calloc(4 * Width * Height, 1uLL, 0x100004077774924uLL);
   v12 = CGBitmapContextCreate(v11, Width, Height, 8uLL, 4 * Width, DeviceRGB, 0x4001u);
   CGColorSpaceRelease(DeviceRGB);
-  if (v5)
+  if (rotateCopy)
   {
-    if (v6)
+    if (flipCopy)
     {
       v13 = 1.57079633;
     }
@@ -67,7 +67,7 @@
     CGContextTranslateCTM(v12, -(Height >> 1), -(Width >> 1));
   }
 
-  else if (v6)
+  else if (flipCopy)
   {
     CGContextTranslateCTM(v12, Width, 0.0);
     CGContextScaleCTM(v12, -1.0, 1.0);
@@ -77,7 +77,7 @@
   v19.size.height = Height;
   v19.origin.x = 0.0;
   v19.origin.y = 0.0;
-  CGContextDrawImage(v12, v19, v7);
+  CGContextDrawImage(v12, v19, cGImage);
   Image = CGBitmapContextCreateImage(v12);
   if (Image)
   {
@@ -97,22 +97,22 @@
   return v16;
 }
 
-- (SSUICursorViewController)initWithAXUIService:(id)a3
+- (SSUICursorViewController)initWithAXUIService:(id)service
 {
   result = [(SSUICursorViewController *)self initWithNibName:0 bundle:0];
   if (result)
   {
-    result->_axuiService = a3;
+    result->_axuiService = service;
   }
 
   return result;
 }
 
-- (SSUICursorViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SSUICursorViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v19.receiver = self;
   v19.super_class = SSUICursorViewController;
-  v4 = [(SSUICursorViewController *)&v19 initWithNibName:a3 bundle:a4];
+  v4 = [(SSUICursorViewController *)&v19 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = +[SSUICursorViewController serviceBundle];
@@ -120,21 +120,21 @@
     [(SSUICursorViewController *)v4 setArrowImage:v6];
     [(SSUICursorViewController *)v4 setCurrentArrowImage:v6];
 
-    v7 = [(SSUICursorViewController *)v4 arrowImage];
-    v8 = [SSUICursorViewController transformImage:v7 flip:1 rotate:0];
+    arrowImage = [(SSUICursorViewController *)v4 arrowImage];
+    v8 = [SSUICursorViewController transformImage:arrowImage flip:1 rotate:0];
     [(SSUICursorViewController *)v4 setLeftarrowImage:v8];
 
-    v9 = [(SSUICursorViewController *)v4 arrowImage];
-    v10 = [SSUICursorViewController transformImage:v9 flip:1 rotate:1];
+    arrowImage2 = [(SSUICursorViewController *)v4 arrowImage];
+    v10 = [SSUICursorViewController transformImage:arrowImage2 flip:1 rotate:1];
     [(SSUICursorViewController *)v4 setUpArrowImage:v10];
 
-    v11 = [(SSUICursorViewController *)v4 arrowImage];
-    v12 = [SSUICursorViewController transformImage:v11 flip:0 rotate:1];
+    arrowImage3 = [(SSUICursorViewController *)v4 arrowImage];
+    v12 = [SSUICursorViewController transformImage:arrowImage3 flip:0 rotate:1];
     [(SSUICursorViewController *)v4 setDownArrowImage:v12];
 
     arrowImage = v4->arrowImage;
-    v14 = [(SSUICursorViewController *)v4 cursorView];
-    [v14 setImage:arrowImage];
+    cursorView = [(SSUICursorViewController *)v4 cursorView];
+    [cursorView setImage:arrowImage];
 
     v15 = dispatch_semaphore_create(0);
     blinker = v4->blinker;
@@ -167,23 +167,23 @@
   [(SSUICursorViewController *)&v4 dealloc];
 }
 
-- (void)handleSetCursorFrameMessage:(id)a3
+- (void)handleSetCursorFrameMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"messageType"];
-  v6 = [v5 unsignedShortValue];
+  messageCopy = message;
+  v5 = [messageCopy objectForKey:@"messageType"];
+  unsignedShortValue = [v5 unsignedShortValue];
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = messageCopy;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "## handleSetCursorFrameMessage incoming message %@", &v8, 0xCu);
   }
 
   v7 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-  if (v6 <= 2)
+  if (unsignedShortValue <= 2)
   {
-    if (v6 == 1)
+    if (unsignedShortValue == 1)
     {
       if (v7)
       {
@@ -191,12 +191,12 @@
         _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "SS kSSSafeViewAnnotationCmd", &v8, 2u);
       }
 
-      [(SSUICursorViewController *)self handleAnnotation:v4];
+      [(SSUICursorViewController *)self handleAnnotation:messageCopy];
     }
 
     else
     {
-      if (v6 != 2)
+      if (unsignedShortValue != 2)
       {
 LABEL_24:
         if (v7)
@@ -214,13 +214,13 @@ LABEL_24:
         _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "SS kSSPointerAnnotationCmd", &v8, 2u);
       }
 
-      [(SSUICursorViewController *)self handlePointerAnnotation:v4];
+      [(SSUICursorViewController *)self handlePointerAnnotation:messageCopy];
     }
   }
 
   else
   {
-    switch(v6)
+    switch(unsignedShortValue)
     {
       case 3:
         if (v7)
@@ -257,20 +257,20 @@ LABEL_24:
 LABEL_26:
 }
 
-- (void)handleAnnotation:(id)a3
+- (void)handleAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"animate"];
-  v6 = [v5 BOOLValue];
+  annotationCopy = annotation;
+  v5 = [annotationCopy objectForKey:@"animate"];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [v4 objectForKey:@"frame"];
+  v7 = [annotationCopy objectForKey:@"frame"];
   v47 = CGRectFromString(v7);
   x = v47.origin.x;
   y = v47.origin.y;
   width = v47.size.width;
   height = v47.size.height;
 
-  v12 = [v4 objectForKey:@"path"];
+  v12 = [annotationCopy objectForKey:@"path"];
   if (v12)
   {
     v13 = AX_CGPathCreateWithDataRepresentation();
@@ -298,8 +298,8 @@ LABEL_26:
     }
 
     [(SSUICursorViewController *)self setCursorHidden:1];
-    v22 = [(SSUICursorViewController *)self slateView];
-    [v22 wipeSlate];
+    slateView = [(SSUICursorViewController *)self slateView];
+    [slateView wipeSlate];
 
     goto LABEL_32;
   }
@@ -309,23 +309,23 @@ LABEL_26:
     [(SSUICursorViewController *)self setCursorHidden:0];
   }
 
-  v15 = [v4 objectForKey:@"flags"];
-  v16 = [v15 unsignedIntValue];
+  v15 = [annotationCopy objectForKey:@"flags"];
+  unsignedIntValue = [v15 unsignedIntValue];
 
-  v17 = v16 & 7;
+  v17 = unsignedIntValue & 7;
   switch(v17)
   {
     case 3:
-      v18 = [(SSUICursorViewController *)self slateView];
-      [v18 setHidden:0];
+      slateView2 = [(SSUICursorViewController *)self slateView];
+      [slateView2 setHidden:0];
 
-      v19 = [(SSUICursorViewController *)self cursorView];
-      [v19 setHidden:1];
+      cursorView = [(SSUICursorViewController *)self cursorView];
+      [cursorView setHidden:1];
 
-      v20 = [(SSUICursorViewController *)self perUserView];
-      [v20 setHidden:1];
+      perUserView = [(SSUICursorViewController *)self perUserView];
+      [perUserView setHidden:1];
 
-      v21 = [(SSUICursorViewController *)self slateView];
+      slateView3 = [(SSUICursorViewController *)self slateView];
       break;
     case 5:
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -334,31 +334,31 @@ LABEL_26:
         _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "handleSetCursorFrameMessage per user", v45, 2u);
       }
 
-      v27 = [(SSUICursorViewController *)self slateView];
-      [v27 setHidden:1];
+      slateView4 = [(SSUICursorViewController *)self slateView];
+      [slateView4 setHidden:1];
 
-      v28 = [(SSUICursorViewController *)self cursorView];
-      [v28 setHidden:1];
+      cursorView2 = [(SSUICursorViewController *)self cursorView];
+      [cursorView2 setHidden:1];
 
-      v29 = [(SSUICursorViewController *)self perUserView];
-      [v29 setHidden:0];
+      perUserView2 = [(SSUICursorViewController *)self perUserView];
+      [perUserView2 setHidden:0];
 
-      v21 = [(SSUICursorViewController *)self perUserView];
+      slateView3 = [(SSUICursorViewController *)self perUserView];
       break;
     case 2:
-      v23 = [(SSUICursorViewController *)self slateView];
-      [v23 wipeSlate];
+      slateView5 = [(SSUICursorViewController *)self slateView];
+      [slateView5 wipeSlate];
 
-      v24 = [(SSUICursorViewController *)self slateView];
-      [v24 setHidden:1];
+      slateView6 = [(SSUICursorViewController *)self slateView];
+      [slateView6 setHidden:1];
 
-      v25 = [(SSUICursorViewController *)self cursorView];
-      [v25 setHidden:0];
+      cursorView3 = [(SSUICursorViewController *)self cursorView];
+      [cursorView3 setHidden:0];
 
-      v26 = [(SSUICursorViewController *)self perUserView];
-      [v26 setHidden:1];
+      perUserView3 = [(SSUICursorViewController *)self perUserView];
+      [perUserView3 setHidden:1];
 
-      v21 = [(SSUICursorViewController *)self cursorView];
+      slateView3 = [(SSUICursorViewController *)self cursorView];
       break;
     default:
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -369,43 +369,43 @@ LABEL_26:
       goto LABEL_22;
   }
 
-  v30 = v21;
-  [(SSUICursorViewController *)self setCurrentView:v21];
+  v30 = slateView3;
+  [(SSUICursorViewController *)self setCurrentView:slateView3];
 
 LABEL_22:
-  v31 = [(SSUICursorViewController *)self currentView];
-  [v31 setEventFlags:v16];
+  currentView = [(SSUICursorViewController *)self currentView];
+  [currentView setEventFlags:unsignedIntValue];
 
-  v32 = [(SSUICursorViewController *)self currentView];
-  [v32 hotspotAdjustmentForCursorFrame:{x, y, width, height}];
+  currentView2 = [(SSUICursorViewController *)self currentView];
+  [currentView2 hotspotAdjustmentForCursorFrame:{x, y, width, height}];
   v34 = v33;
   v36 = v35;
 
   v37 = x + v34;
   if (v17 == 3)
   {
-    v38 = [v4 objectForKey:@"orientation"];
-    v39 = [v38 integerValue];
+    v38 = [annotationCopy objectForKey:@"orientation"];
+    integerValue = [v38 integerValue];
 
-    v40 = [(SSUICursorViewController *)self slateView];
-    [v40 setCurrentOrientation:v39];
+    slateView7 = [(SSUICursorViewController *)self slateView];
+    [slateView7 setCurrentOrientation:integerValue];
 
-    v41 = [(SSUICursorViewController *)self slateView];
-    v42 = v41;
-    if ((v16 & 0x80000000) != 0)
+    slateView8 = [(SSUICursorViewController *)self slateView];
+    v42 = slateView8;
+    if ((unsignedIntValue & 0x80000000) != 0)
     {
-      [v41 startPeriodicUpdate];
+      [slateView8 startPeriodicUpdate];
 
-      v43 = [(SSUICursorViewController *)self slateView];
-      [v43 addPoint:{v37, y + v36}];
+      slateView9 = [(SSUICursorViewController *)self slateView];
+      [slateView9 addPoint:{v37, y + v36}];
     }
 
     else
     {
-      [v41 stopPeriodicUpdate];
+      [slateView8 stopPeriodicUpdate];
 
-      v43 = [(SSUICursorViewController *)self slateView];
-      [v43 drawCompletedPath];
+      slateView9 = [(SSUICursorViewController *)self slateView];
+      [slateView9 drawCompletedPath];
     }
   }
 
@@ -413,8 +413,8 @@ LABEL_22:
   {
     if (v17 != 5)
     {
-      [(SSUICursorViewController *)self setCursorFrame:v6 animated:v37, y + v36, width, height];
-      [(SSUICursorViewController *)self setCursorPath:v13 withColor:v16 & 0x70 flipped:(v16 >> 29) & 1 rotated:(v16 >> 28) & 1];
+      [(SSUICursorViewController *)self setCursorFrame:bOOLValue animated:v37, y + v36, width, height];
+      [(SSUICursorViewController *)self setCursorPath:v13 withColor:unsignedIntValue & 0x70 flipped:(unsignedIntValue >> 29) & 1 rotated:(unsignedIntValue >> 28) & 1];
       if (!v13)
       {
         goto LABEL_32;
@@ -423,11 +423,11 @@ LABEL_22:
       goto LABEL_31;
     }
 
-    v44 = [(SSUICursorViewController *)self perUserView];
-    [v44 setCursorFrame:v6 animated:{v37, y + v36, width, height}];
+    perUserView4 = [(SSUICursorViewController *)self perUserView];
+    [perUserView4 setCursorFrame:bOOLValue animated:{v37, y + v36, width, height}];
 
-    v43 = [(SSUICursorViewController *)self perUserView];
-    [v43 setUserData:v4];
+    slateView9 = [(SSUICursorViewController *)self perUserView];
+    [slateView9 setUserData:annotationCopy];
   }
 
   if (v13)
@@ -439,31 +439,31 @@ LABEL_31:
 LABEL_32:
 }
 
-- (void)handlePointerAnnotation:(id)a3
+- (void)handlePointerAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"enabled"];
-  v6 = [v5 BOOLValue];
+  annotationCopy = annotation;
+  v5 = [annotationCopy objectForKeyedSubscript:@"enabled"];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [v4 objectForKeyedSubscript:@"uniqueID"];
+  v7 = [annotationCopy objectForKeyedSubscript:@"uniqueID"];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v49 = 138412290;
-    v50 = v4;
+    v50 = annotationCopy;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "## handlePointerAnnotation incoming dict %@", &v49, 0xCu);
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(SSUICursorViewController *)v8 annotationInfo];
-  v10 = [v9 objectForKeyedSubscript:v7];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  annotationInfo = [(SSUICursorViewController *)selfCopy annotationInfo];
+  v10 = [annotationInfo objectForKeyedSubscript:v7];
 
   if (v10)
   {
     v11 = [v10 objectForKeyedSubscript:@"enabled"];
-    v12 = [v11 BOOLValue];
+    bOOLValue2 = [v11 BOOLValue];
 
-    [v10 addEntriesFromDictionary:v4];
+    [v10 addEntriesFromDictionary:annotationCopy];
     [v10 setObject:&__kCFBooleanTrue forKeyedSubscript:@"needsUpdate"];
     v13 = [v10 objectForKeyedSubscript:@"x"];
     [v13 doubleValue];
@@ -472,23 +472,23 @@ LABEL_32:
     [v16 doubleValue];
     v18 = v17;
 
-    if (v6)
+    if (bOOLValue)
     {
-      if (v12)
+      if (bOOLValue2)
       {
         [v10 setObject:&__kCFBooleanFalse forKeyedSubscript:@"showTransition"];
         v19 = &_os_log_default;
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
         {
           v20 = v7;
-          v21 = [v7 UTF8String];
+          uTF8String = [v7 UTF8String];
           v22 = [v10 objectForKeyedSubscript:@"displayName"];
           v23 = v22;
-          v24 = [v22 UTF8String];
+          uTF8String2 = [v22 UTF8String];
           v49 = 136315906;
-          v50 = v21;
+          v50 = uTF8String;
           v51 = 2080;
-          v52 = v24;
+          v52 = uTF8String2;
           v53 = 2048;
           v54 = v15;
           v55 = 2048;
@@ -505,14 +505,14 @@ LABEL_32:
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
         {
           v31 = v7;
-          v32 = [v7 UTF8String];
+          uTF8String3 = [v7 UTF8String];
           v33 = [v10 objectForKeyedSubscript:@"displayName"];
           v34 = v33;
-          v35 = [v33 UTF8String];
+          uTF8String4 = [v33 UTF8String];
           v49 = 136315906;
-          v50 = v32;
+          v50 = uTF8String3;
           v51 = 2080;
-          v52 = v35;
+          v52 = uTF8String4;
           v53 = 2048;
           v54 = v15;
           v55 = 2048;
@@ -524,13 +524,13 @@ LABEL_32:
 LABEL_23:
 
 LABEL_24:
-      v36 = [(SSUICursorViewController *)v8 annotationInfo];
-      [v36 setObject:v10 forKeyedSubscript:v7];
+      annotationInfo2 = [(SSUICursorViewController *)selfCopy annotationInfo];
+      [annotationInfo2 setObject:v10 forKeyedSubscript:v7];
 
       goto LABEL_25;
     }
 
-    if (v12)
+    if (bOOLValue2)
     {
       [v10 setObject:&__kCFBooleanFalse forKeyedSubscript:@"enabled"];
       [v10 setObject:&__kCFBooleanTrue forKeyedSubscript:@"showTransition"];
@@ -538,9 +538,9 @@ LABEL_24:
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
         v26 = v7;
-        v27 = [v7 UTF8String];
+        uTF8String5 = [v7 UTF8String];
         v49 = 136315138;
-        v50 = v27;
+        v50 = uTF8String5;
         _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "hide %s", &v49, 0xCu);
       }
 
@@ -556,10 +556,10 @@ LABEL_24:
 
   else
   {
-    if (v6)
+    if (bOOLValue)
     {
       v10 = +[NSMutableDictionary dictionary];
-      [v10 addEntriesFromDictionary:v4];
+      [v10 addEntriesFromDictionary:annotationCopy];
       [v10 setObject:&__kCFBooleanTrue forKeyedSubscript:@"needsUpdate"];
       [v10 setObject:&__kCFBooleanTrue forKeyedSubscript:@"enabled"];
       [v10 setObject:&__kCFBooleanTrue forKeyedSubscript:@"showTransition"];
@@ -583,9 +583,9 @@ LABEL_24:
     v28 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v29 = [(SSUICursorViewController *)v8 annotationInfo];
+      annotationInfo3 = [(SSUICursorViewController *)selfCopy annotationInfo];
       v49 = 138412290;
-      v50 = v29;
+      v50 = annotationInfo3;
       _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "known users: %@", &v49, 0xCu);
     }
 
@@ -593,11 +593,11 @@ LABEL_24:
   }
 
 LABEL_25:
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
-  v37 = [(SSUICursorViewController *)v8 annotationHiddenByLocalUser];
+  annotationHiddenByLocalUser = [(SSUICursorViewController *)selfCopy annotationHiddenByLocalUser];
   v38 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-  if (v37)
+  if (annotationHiddenByLocalUser)
   {
     if (v38)
     {
@@ -615,9 +615,9 @@ LABEL_25:
     }
 
     v39 = [v10 objectForKeyedSubscript:@"flags"];
-    v40 = [v39 unsignedIntValue];
+    unsignedIntValue = [v39 unsignedIntValue];
 
-    v41 = [NSNumber numberWithUnsignedInt:v40 & 0xFFFFFFF8 | 5];
+    v41 = [NSNumber numberWithUnsignedInt:unsignedIntValue & 0xFFFFFFF8 | 5];
     [v10 setObject:v41 forKeyedSubscript:@"flags"];
 
     v42 = [v10 objectForKeyedSubscript:@"x"];
@@ -634,7 +634,7 @@ LABEL_25:
     v48 = NSStringFromCGRect(v57);
     [v10 setObject:v48 forKeyedSubscript:@"frame"];
 
-    [(SSUICursorViewController *)v8 handleAnnotation:v10];
+    [(SSUICursorViewController *)selfCopy handleAnnotation:v10];
   }
 }
 
@@ -658,8 +658,8 @@ LABEL_25:
       _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "local user hid all annotation pointers", buf, 2u);
     }
 
-    v3 = [(SSUICursorViewController *)self perUserView];
-    [v3 hideAllPointers];
+    perUserView = [(SSUICursorViewController *)self perUserView];
+    [perUserView hideAllPointers];
   }
 }
 
@@ -674,8 +674,8 @@ LABEL_25:
       _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "local unhid all annotation pointers", buf, 2u);
     }
 
-    v3 = [(SSUICursorViewController *)self perUserView];
-    [v3 showAllPointers];
+    perUserView = [(SSUICursorViewController *)self perUserView];
+    [perUserView showAllPointers];
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -687,19 +687,19 @@ LABEL_25:
 
 - (void)doneAssisting
 {
-  v2 = [(SSUICursorViewController *)self perUserView];
-  [v2 clearUserData];
+  perUserView = [(SSUICursorViewController *)self perUserView];
+  [perUserView clearUserData];
 }
 
-- (void)handleAlternateMessage:(id)a3
+- (void)handleAlternateMessage:(id)message
 {
-  v4 = [a3 objectForKey:@"flags"];
-  v5 = [v4 unsignedIntValue];
+  v4 = [message objectForKey:@"flags"];
+  unsignedIntValue = [v4 unsignedIntValue];
 
-  if ((v5 & 7) == 3)
+  if ((unsignedIntValue & 7) == 3)
   {
-    v6 = [(SSUICursorViewController *)self slateView];
-    [v6 wipeSlate];
+    slateView = [(SSUICursorViewController *)self slateView];
+    [slateView wipeSlate];
   }
 
   else
@@ -709,37 +709,37 @@ LABEL_25:
   }
 }
 
-- (void)setFrameOriginWithPoint:(CGPoint)a3
+- (void)setFrameOriginWithPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(SSUICursorViewController *)self cursorView];
-  [v6 frame];
+  y = point.y;
+  x = point.x;
+  cursorView = [(SSUICursorViewController *)self cursorView];
+  [cursorView frame];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(SSUICursorViewController *)self cursorView];
-  [v11 setFrame:{x, y, v8, v10}];
+  cursorView2 = [(SSUICursorViewController *)self cursorView];
+  [cursorView2 setFrame:{x, y, v8, v10}];
 }
 
-- (void)strokeCore:(BOOL)a3 rotate:(BOOL)a4
+- (void)strokeCore:(BOOL)core rotate:(BOOL)rotate
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_3050;
   v4[3] = &unk_10530;
-  v5 = a4;
-  v6 = a3;
+  rotateCopy = rotate;
+  coreCopy = core;
   v4[4] = self;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
 - (void)stroke
 {
-  v3 = [(SSUICursorViewController *)self currentView];
-  v4 = [(SSUICursorViewController *)self cursorView];
+  currentView = [(SSUICursorViewController *)self currentView];
+  cursorView = [(SSUICursorViewController *)self cursorView];
 
-  if (v3 == v4 && !self->counter)
+  if (currentView == cursorView && !self->counter)
   {
     v5 = dispatch_get_global_queue(-32768, 0);
     block[0] = _NSConcreteStackBlock;
@@ -751,46 +751,46 @@ LABEL_25:
   }
 }
 
-- (void)_updateCursorFrameAnimated:(BOOL)a3
+- (void)_updateCursorFrameAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [SSUICursorView resizeFrameForDisplay:self->_cursorFrame.origin.x, self->_cursorFrame.origin.y, self->_cursorFrame.size.width, self->_cursorFrame.size.height];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(SSUICursorViewController *)self view];
-  v14 = [v13 window];
-  [v14 _convertRectFromSceneReferenceSpace:{v6, v8, v10, v12}];
+  view = [(SSUICursorViewController *)self view];
+  window = [view window];
+  [window _convertRectFromSceneReferenceSpace:{v6, v8, v10, v12}];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
-  v23 = [(SSUICursorViewController *)self cursorView];
-  [v23 resizeFrameForWindow:{v16, v18, v20, v22}];
+  cursorView = [(SSUICursorViewController *)self cursorView];
+  [cursorView resizeFrameForWindow:{v16, v18, v20, v22}];
   v25 = v24;
   v27 = v26;
   v29 = v28;
   v31 = v30;
 
-  v32 = [(SSUICursorViewController *)self view];
-  [v32 convertRect:0 fromView:{v25, v27, v29, v31}];
+  view2 = [(SSUICursorViewController *)self view];
+  [view2 convertRect:0 fromView:{v25, v27, v29, v31}];
   v34 = v33;
   v36 = v35;
   v38 = v37;
   v40 = v39;
 
-  v41 = [(SSUICursorViewController *)self cursorView];
-  [v41 setCursorFrame:v3 animated:{v34, v36, v38, v40}];
+  cursorView2 = [(SSUICursorViewController *)self cursorView];
+  [cursorView2 setCursorFrame:animatedCopy animated:{v34, v36, v38, v40}];
 }
 
-- (void)setCursorPath:(CGPath *)a3
+- (void)setCursorPath:(CGPath *)path
 {
   cursorPath = self->_cursorPath;
-  if (a3)
+  if (path)
   {
-    v5 = CFRetain(a3);
+    v5 = CFRetain(path);
   }
 
   else
@@ -805,24 +805,24 @@ LABEL_25:
   }
 
   [(SSUICursorViewController *)self _updateCursorPath];
-  v6 = [(SSUICursorViewController *)self currentArrowImage];
-  v7 = [(SSUICursorViewController *)self cursorView];
-  [v7 setImage:v6];
+  currentArrowImage = [(SSUICursorViewController *)self currentArrowImage];
+  cursorView = [(SSUICursorViewController *)self cursorView];
+  [cursorView setImage:currentArrowImage];
 
   x = self->_cursorFrame.origin.x;
   y = self->_cursorFrame.origin.y;
   width = self->_cursorFrame.size.width;
   height = self->_cursorFrame.size.height;
-  v12 = [(SSUICursorViewController *)self cursorView];
-  [v12 setFrame:{x, y, width, height}];
+  cursorView2 = [(SSUICursorViewController *)self cursorView];
+  [cursorView2 setFrame:{x, y, width, height}];
 }
 
-- (void)setCursorPath:(CGPath *)a3 withColor:(int)a4 flipped:(BOOL)a5 rotated:(BOOL)a6
+- (void)setCursorPath:(CGPath *)path withColor:(int)color flipped:(BOOL)flipped rotated:(BOOL)rotated
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = *&a4;
-  if ([(SSUICursorViewController *)self currentColor]!= a4)
+  rotatedCopy = rotated;
+  flippedCopy = flipped;
+  v8 = *&color;
+  if ([(SSUICursorViewController *)self currentColor]!= color)
   {
     HIDWORD(v12) = v8 - 16;
     LODWORD(v12) = v8 - 16;
@@ -841,28 +841,28 @@ LABEL_25:
     v15 = [UIImage imageNamed:v13 inBundle:v14 compatibleWithTraitCollection:0];
     [(SSUICursorViewController *)self setArrowImage:v15];
 
-    v16 = [(SSUICursorViewController *)self arrowImage];
-    v17 = [SSUICursorViewController transformImage:v16 flip:1 rotate:0];
+    arrowImage = [(SSUICursorViewController *)self arrowImage];
+    v17 = [SSUICursorViewController transformImage:arrowImage flip:1 rotate:0];
     [(SSUICursorViewController *)self setLeftarrowImage:v17];
 
-    v18 = [(SSUICursorViewController *)self arrowImage];
-    v19 = [SSUICursorViewController transformImage:v18 flip:1 rotate:1];
+    arrowImage2 = [(SSUICursorViewController *)self arrowImage];
+    v19 = [SSUICursorViewController transformImage:arrowImage2 flip:1 rotate:1];
     [(SSUICursorViewController *)self setUpArrowImage:v19];
 
-    v20 = [(SSUICursorViewController *)self arrowImage];
-    v21 = [SSUICursorViewController transformImage:v20 flip:0 rotate:1];
+    arrowImage3 = [(SSUICursorViewController *)self arrowImage];
+    v21 = [SSUICursorViewController transformImage:arrowImage3 flip:0 rotate:1];
     [(SSUICursorViewController *)self setDownArrowImage:v21];
 
     [(SSUICursorViewController *)self setCurrentColor:v8];
     goto LABEL_9;
   }
 
-  if ([(SSUICursorViewController *)self flipped]!= v7 || [(SSUICursorViewController *)self rotated]!= v6)
+  if ([(SSUICursorViewController *)self flipped]!= flippedCopy || [(SSUICursorViewController *)self rotated]!= rotatedCopy)
   {
 LABEL_9:
-    if (v7)
+    if (flippedCopy)
     {
-      if (v6)
+      if (rotatedCopy)
       {
         [(SSUICursorViewController *)self upArrowImage];
       }
@@ -873,7 +873,7 @@ LABEL_9:
       }
     }
 
-    else if (v6)
+    else if (rotatedCopy)
     {
       [(SSUICursorViewController *)self downArrowImage];
     }
@@ -886,11 +886,11 @@ LABEL_9:
     v23 = v22;
     [(SSUICursorViewController *)self setCurrentArrowImage:v22];
 
-    [(SSUICursorViewController *)self setFlipped:v7];
-    [(SSUICursorViewController *)self setRotated:v6];
+    [(SSUICursorViewController *)self setFlipped:flippedCopy];
+    [(SSUICursorViewController *)self setRotated:rotatedCopy];
   }
 
-  [(SSUICursorViewController *)self setCursorPath:a3];
+  [(SSUICursorViewController *)self setCursorPath:path];
 }
 
 - (void)_updateCursorPath
@@ -898,36 +898,36 @@ LABEL_9:
   if (self->_cursorPath)
   {
     v3 = [UIBezierPath bezierPathWithCGPath:?];
-    v8 = UIAccessibilitySceneReferencePathToScreenPath();
+    cursorView2 = UIAccessibilitySceneReferencePathToScreenPath();
 
-    v4 = [(SSUICursorViewController *)self view];
+    view = [(SSUICursorViewController *)self view];
     v5 = UIAccessibilityPathForAccessibilityPath();
-    v6 = [v5 CGPath];
+    cGPath = [v5 CGPath];
 
-    v7 = [(SSUICursorViewController *)self cursorView];
-    [v7 setPath:v6];
+    cursorView = [(SSUICursorViewController *)self cursorView];
+    [cursorView setPath:cGPath];
   }
 
   else
   {
-    v8 = [(SSUICursorViewController *)self cursorView];
-    [v8 setPath:0];
+    cursorView2 = [(SSUICursorViewController *)self cursorView];
+    [cursorView2 setPath:0];
   }
 }
 
 - (BOOL)cursorHidden
 {
-  v2 = [(SSUICursorViewController *)self view];
-  v3 = [v2 isHidden];
+  view = [(SSUICursorViewController *)self view];
+  isHidden = [view isHidden];
 
-  return v3;
+  return isHidden;
 }
 
-- (void)setCursorHidden:(BOOL)a3
+- (void)setCursorHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(SSUICursorViewController *)self view];
-  [v4 setHidden:v3];
+  hiddenCopy = hidden;
+  view = [(SSUICursorViewController *)self view];
+  [view setHidden:hiddenCopy];
 }
 
 - (void)viewDidLoad
@@ -939,8 +939,8 @@ LABEL_9:
   v7 = [v3 initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(SSUICursorViewController *)self setView:v7];
 
-  v8 = [[SSUICursorView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-  [(SSUICursorViewController *)self setCursorView:v8];
+  height = [[SSUICursorView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  [(SSUICursorViewController *)self setCursorView:height];
 
   v9 = [SSUISlateView alloc];
   v10 = +[UIScreen mainScreen];
@@ -954,20 +954,20 @@ LABEL_9:
   v14 = [(SSUIPerUserMasterView *)v12 initWithFrame:?];
   [(SSUICursorViewController *)self setPerUserView:v14];
 
-  v15 = [(SSUICursorViewController *)self view];
-  v16 = [(SSUICursorViewController *)self cursorView];
-  [v15 addSubview:v16];
+  view = [(SSUICursorViewController *)self view];
+  cursorView = [(SSUICursorViewController *)self cursorView];
+  [view addSubview:cursorView];
 
-  v17 = [(SSUICursorViewController *)self view];
-  v18 = [(SSUICursorViewController *)self slateView];
-  [v17 addSubview:v18];
+  view2 = [(SSUICursorViewController *)self view];
+  slateView = [(SSUICursorViewController *)self slateView];
+  [view2 addSubview:slateView];
 
-  v19 = [(SSUICursorViewController *)self view];
-  v20 = [(SSUICursorViewController *)self perUserView];
-  [v19 addSubview:v20];
+  view3 = [(SSUICursorViewController *)self view];
+  perUserView = [(SSUICursorViewController *)self perUserView];
+  [view3 addSubview:perUserView];
 
-  v21 = [(SSUICursorViewController *)self cursorView];
-  [(SSUICursorViewController *)self setCurrentView:v21];
+  cursorView2 = [(SSUICursorViewController *)self cursorView];
+  [(SSUICursorViewController *)self setCurrentView:cursorView2];
 
   v22.receiver = self;
   v22.super_class = SSUICursorViewController;
@@ -976,21 +976,21 @@ LABEL_9:
 
 - (void)tearDownViews
 {
-  v3 = [(SSUICursorViewController *)self view];
+  view = [(SSUICursorViewController *)self view];
 
-  if (v3)
+  if (view)
   {
     [(SSUICursorViewController *)self setCurrentView:0];
-    v4 = [(SSUICursorViewController *)self cursorView];
-    [v4 removeFromSuperview];
+    cursorView = [(SSUICursorViewController *)self cursorView];
+    [cursorView removeFromSuperview];
 
     [(SSUICursorViewController *)self setCursorView:0];
-    v5 = [(SSUICursorViewController *)self slateView];
-    [v5 removeFromSuperview];
+    slateView = [(SSUICursorViewController *)self slateView];
+    [slateView removeFromSuperview];
 
     [(SSUICursorViewController *)self setSlateView:0];
-    v6 = [(SSUICursorViewController *)self perUserView];
-    [v6 removeFromSuperview];
+    perUserView = [(SSUICursorViewController *)self perUserView];
+    [perUserView removeFromSuperview];
 
     [(SSUICursorViewController *)self setPerUserView:0];
 

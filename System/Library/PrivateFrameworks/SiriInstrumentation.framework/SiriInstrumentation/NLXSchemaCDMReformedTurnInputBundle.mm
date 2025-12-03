@@ -1,34 +1,34 @@
 @interface NLXSchemaCDMReformedTurnInputBundle
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaCDMReformedTurnInputBundle)initWithDictionary:(id)a3;
-- (NLXSchemaCDMReformedTurnInputBundle)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaCDMReformedTurnInputBundle)initWithDictionary:(id)dictionary;
+- (NLXSchemaCDMReformedTurnInputBundle)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasPreviousTurnsSkip:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasPreviousTurnsSkip:(BOOL)skip;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaCDMReformedTurnInputBundle
 
-- (NLXSchemaCDMReformedTurnInputBundle)initWithDictionary:(id)a3
+- (NLXSchemaCDMReformedTurnInputBundle)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = NLXSchemaCDMReformedTurnInputBundle;
   v5 = [(NLXSchemaCDMReformedTurnInputBundle *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"type"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLXSchemaCDMReformedTurnInputBundle setType:](v5, "setType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"currentTurn"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"currentTurn"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(NLXSchemaCDMReformedTurnInputBundle *)v5 setCurrentTurn:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"previousTurnsSkip"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"previousTurnsSkip"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (NLXSchemaCDMReformedTurnInputBundle)initWithJSON:(id)a3
+- (NLXSchemaCDMReformedTurnInputBundle)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaCDMReformedTurnInputBundle *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaCDMReformedTurnInputBundle *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaCDMReformedTurnInputBundle *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,20 +85,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_currentTurn)
   {
-    v4 = [(NLXSchemaCDMReformedTurnInputBundle *)self currentTurn];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    currentTurn = [(NLXSchemaCDMReformedTurnInputBundle *)self currentTurn];
+    dictionaryRepresentation = [currentTurn dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"currentTurn"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"currentTurn"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"currentTurn"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"currentTurn"];
     }
   }
 
@@ -106,7 +106,7 @@
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NLXSchemaCDMReformedTurnInputBundle previousTurnsSkip](self, "previousTurnsSkip")}];
-    [v3 setObject:v8 forKeyedSubscript:@"previousTurnsSkip"];
+    [dictionary setObject:v8 forKeyedSubscript:@"previousTurnsSkip"];
 
     has = self->_has;
   }
@@ -124,12 +124,12 @@
       v10 = off_1E78DB8E0[v9];
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"type"];
+    [dictionary setObject:v10 forKeyedSubscript:@"type"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -158,15 +158,15 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  if ((*&self->_has & 1) != (v4[28] & 1))
+  if ((*&self->_has & 1) != (equalCopy[28] & 1))
   {
     goto LABEL_15;
   }
@@ -174,16 +174,16 @@
   if (*&self->_has)
   {
     type = self->_type;
-    if (type != [v4 type])
+    if (type != [equalCopy type])
     {
       goto LABEL_15;
     }
   }
 
-  v6 = [(NLXSchemaCDMReformedTurnInputBundle *)self currentTurn];
-  v7 = [v4 currentTurn];
-  v8 = v7;
-  if ((v6 != 0) == (v7 == 0))
+  currentTurn = [(NLXSchemaCDMReformedTurnInputBundle *)self currentTurn];
+  currentTurn2 = [equalCopy currentTurn];
+  v8 = currentTurn2;
+  if ((currentTurn != 0) == (currentTurn2 == 0))
   {
 
 LABEL_15:
@@ -191,13 +191,13 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v9 = [(NLXSchemaCDMReformedTurnInputBundle *)self currentTurn];
-  if (v9)
+  currentTurn3 = [(NLXSchemaCDMReformedTurnInputBundle *)self currentTurn];
+  if (currentTurn3)
   {
-    v10 = v9;
-    v11 = [(NLXSchemaCDMReformedTurnInputBundle *)self currentTurn];
-    v12 = [v4 currentTurn];
-    v13 = [v11 isEqual:v12];
+    v10 = currentTurn3;
+    currentTurn4 = [(NLXSchemaCDMReformedTurnInputBundle *)self currentTurn];
+    currentTurn5 = [equalCopy currentTurn];
+    v13 = [currentTurn4 isEqual:currentTurn5];
 
     if (!v13)
     {
@@ -210,7 +210,7 @@ LABEL_15:
   }
 
   v14 = (*&self->_has >> 1) & 1;
-  if (v14 != ((v4[28] >> 1) & 1))
+  if (v14 != ((equalCopy[28] >> 1) & 1))
   {
     goto LABEL_15;
   }
@@ -218,7 +218,7 @@ LABEL_15:
   if (v14)
   {
     previousTurnsSkip = self->_previousTurnsSkip;
-    if (previousTurnsSkip != [v4 previousTurnsSkip])
+    if (previousTurnsSkip != [equalCopy previousTurnsSkip])
     {
       goto LABEL_15;
     }
@@ -230,19 +230,19 @@ LABEL_16:
   return v16;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = [(NLXSchemaCDMReformedTurnInputBundle *)self currentTurn];
+  currentTurn = [(NLXSchemaCDMReformedTurnInputBundle *)self currentTurn];
 
-  if (v4)
+  if (currentTurn)
   {
-    v5 = [(NLXSchemaCDMReformedTurnInputBundle *)self currentTurn];
+    currentTurn2 = [(NLXSchemaCDMReformedTurnInputBundle *)self currentTurn];
     PBDataWriterWriteSubmessage();
   }
 
@@ -252,9 +252,9 @@ LABEL_16:
   }
 }
 
-- (void)setHasPreviousTurnsSkip:(BOOL)a3
+- (void)setHasPreviousTurnsSkip:(BOOL)skip
 {
-  if (a3)
+  if (skip)
   {
     v3 = 2;
   }
@@ -267,17 +267,17 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = NLXSchemaCDMReformedTurnInputBundle;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(NLXSchemaCDMReformedTurnInputBundle *)self currentTurn:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(NLXSchemaCDMReformedTurnInputBundle *)self deleteCurrentTurn];
   }

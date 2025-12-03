@@ -1,10 +1,10 @@
 @interface PXStoryExtendedTraitCollection
 - (CGSize)layoutReferenceSize;
-- (PXStoryExtendedTraitCollection)initWithLayoutReferenceSize:(CGSize)a3 displayScale:(double)a4;
+- (PXStoryExtendedTraitCollection)initWithLayoutReferenceSize:(CGSize)size displayScale:(double)scale;
 - (int64_t)layoutOrientation;
-- (void)performChanges:(id)a3;
-- (void)setDisplayScale:(double)a3;
-- (void)setLayoutReferenceSize:(CGSize)a3;
+- (void)performChanges:(id)changes;
+- (void)setDisplayScale:(double)scale;
+- (void)setLayoutReferenceSize:(CGSize)size;
 @end
 
 @implementation PXStoryExtendedTraitCollection
@@ -18,24 +18,24 @@
   return result;
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXStoryExtendedTraitCollection;
-  [(PXStoryExtendedTraitCollection *)&v3 performChanges:a3];
+  [(PXStoryExtendedTraitCollection *)&v3 performChanges:changes];
 }
 
-- (void)setDisplayScale:(double)a3
+- (void)setDisplayScale:(double)scale
 {
-  self->_displayScale = a3;
+  self->_displayScale = scale;
   v3.receiver = self;
   v3.super_class = PXStoryExtendedTraitCollection;
   [(PXStoryExtendedTraitCollection *)&v3 setDisplayScale:?];
 }
 
-- (void)setLayoutReferenceSize:(CGSize)a3
+- (void)setLayoutReferenceSize:(CGSize)size
 {
-  self->_layoutReferenceSize = a3;
+  self->_layoutReferenceSize = size;
   v3.receiver = self;
   v3.super_class = PXStoryExtendedTraitCollection;
   [(PXStoryExtendedTraitCollection *)&v3 setLayoutReferenceSize:?];
@@ -54,10 +54,10 @@
   }
 }
 
-- (PXStoryExtendedTraitCollection)initWithLayoutReferenceSize:(CGSize)a3 displayScale:(double)a4
+- (PXStoryExtendedTraitCollection)initWithLayoutReferenceSize:(CGSize)size displayScale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = PXStoryExtendedTraitCollection;
   result = [(PXStoryExtendedTraitCollection *)&v8 _initForSubclassWithUserInterfaceFeature:0];
@@ -65,7 +65,7 @@
   {
     result->_layoutReferenceSize.width = width;
     result->_layoutReferenceSize.height = height;
-    result->_displayScale = a4;
+    result->_displayScale = scale;
   }
 
   return result;

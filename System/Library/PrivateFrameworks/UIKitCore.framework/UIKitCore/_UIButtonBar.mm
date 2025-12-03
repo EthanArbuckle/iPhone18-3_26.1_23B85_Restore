@@ -1,14 +1,14 @@
 @interface _UIButtonBar
 - ($1AB5FA073B851C12C2339EC22442E995)widthInfo;
-- (BOOL)_item:(id)a3 addSymbolEffect:(id)a4 options:(id)a5 animated:(BOOL)a6;
-- (BOOL)_item:(id)a3 removeAllSymbolEffectsWithOptions:(id)a4 animated:(BOOL)a5;
-- (BOOL)_item:(id)a3 removeSymbolEffectOfType:(id)a4 options:(id)a5 animated:(BOOL)a6;
-- (BOOL)_itemDidUpdateMenu:(id)a3 fromMenu:(id)a4;
+- (BOOL)_item:(id)_item addSymbolEffect:(id)effect options:(id)options animated:(BOOL)animated;
+- (BOOL)_item:(id)_item removeAllSymbolEffectsWithOptions:(id)options animated:(BOOL)animated;
+- (BOOL)_item:(id)_item removeSymbolEffectOfType:(id)type options:(id)options animated:(BOOL)animated;
+- (BOOL)_itemDidUpdateMenu:(id)menu fromMenu:(id)fromMenu;
 - (BOOL)hasAlwaysOverflowGroups;
 - (BOOL)hasVisibleContent;
 - (BOOL)needsLeadingSpacer;
 - (BOOL)needsTrailingSpacer;
-- (CGRect)_preferredRegionRectForButton:(id)a3;
+- (CGRect)_preferredRegionRectForButton:(id)button;
 - (NSArray)elementsForOverflowMenu;
 - (NSArray)elementsRepresentingOrderedGroups;
 - (NSArray)groupRealizedOrder;
@@ -21,64 +21,64 @@
 - (UIEdgeInsets)hitTestInsets;
 - (UIView)_viewForOverlayRects;
 - (_UIButtonBar)init;
-- (_UIButtonBar)initWithCoder:(id)a3;
+- (_UIButtonBar)initWithCoder:(id)coder;
 - (_UIButtonBarAppearanceDelegate)_appearanceDelegate;
 - (_UIButtonBarDelegate)delegate;
 - (_UIPointerInteractionAssistant)assistant;
-- (double)_widthInfoForLayout:(uint64_t)a1;
-- (id)_contextMenuInteractionForItem:(id)a3;
-- (id)_groupOrdererGroups:(id)a3;
+- (double)_widthInfoForLayout:(uint64_t)layout;
+- (id)_contextMenuInteractionForItem:(id)item;
+- (id)_groupOrdererGroups:(id)groups;
 - (id)_overflowFallbackItem;
-- (id)_targetActionForBarButtonItem:(id)a3;
-- (id)_updatedViewForBarButtonItem:(id)a3 withView:(id)a4;
-- (id)itemAtPoint:(CGPoint)a3 inView:(id)a4;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)_targetActionForBarButtonItem:(id)item;
+- (id)_updatedViewForBarButtonItem:(id)item withView:(id)view;
+- (id)itemAtPoint:(CGPoint)point inView:(id)view;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (unint64_t)_numberOfGroups;
 - (void)_appearanceChanged;
-- (void)_buttonBarStackViewDidLayoutSubviews:(id)a3;
+- (void)_buttonBarStackViewDidLayoutSubviews:(id)subviews;
 - (void)_confirmOwnershipOfFixedGroups;
 - (void)_disablePointerInteractions;
 - (void)_enablePointerInteractions;
-- (void)_enumerateAllGroups:(id)a3;
-- (void)_enumerateLayoutGroups:(id)a3;
-- (void)_forwardEnumerateVisibleItems:(void *)a1;
-- (void)_groupDidUpdateItems:(id)a3 removedItems:(id)a4;
-- (void)_groupDidUpdateRepresentative:(id)a3 fromRepresentative:(id)a4;
-- (void)_groupOrdererDidUpdate:(id)a3;
-- (void)_invalidateAssistant:(id)a3;
-- (void)_item:(id)a3 applyContentTransition:(id)a4 options:(id)a5;
-- (void)_itemCustomViewDidChange:(id)a3 fromView:(id)a4;
-- (void)_itemDidChangeHiddenState:(id)a3;
-- (void)_itemDidChangeSelectionState:(id)a3;
-- (void)_itemDidChangeWidth:(id)a3;
-- (void)_itemStandardViewNeedsUpdate:(id)a3;
+- (void)_enumerateAllGroups:(id)groups;
+- (void)_enumerateLayoutGroups:(id)groups;
+- (void)_forwardEnumerateVisibleItems:(void *)items;
+- (void)_groupDidUpdateItems:(id)items removedItems:(id)removedItems;
+- (void)_groupDidUpdateRepresentative:(id)representative fromRepresentative:(id)fromRepresentative;
+- (void)_groupOrdererDidUpdate:(id)update;
+- (void)_invalidateAssistant:(id)assistant;
+- (void)_item:(id)_item applyContentTransition:(id)transition options:(id)options;
+- (void)_itemCustomViewDidChange:(id)change fromView:(id)view;
+- (void)_itemDidChangeHiddenState:(id)state;
+- (void)_itemDidChangeSelectionState:(id)state;
+- (void)_itemDidChangeWidth:(id)width;
+- (void)_itemStandardViewNeedsUpdate:(id)update;
 - (void)_layoutBar;
-- (void)_reverseEnumerateVisibleItems:(void *)a1;
+- (void)_reverseEnumerateVisibleItems:(void *)items;
 - (void)_setNeedsAppearanceUpdate;
 - (void)_setNeedsVisualUpdate;
 - (void)_updateEffectiveLayout;
 - (void)_updateHitRects;
 - (void)_validateAllItems;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5;
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5;
-- (void)setBarButtonGroups:(id)a3;
-- (void)setDoneItemAppearance:(id)a3;
-- (void)setFixedLeadingGroups:(id)a3;
-- (void)setFixedTrailingGroups:(id)a3;
-- (void)setForceFixedSpacing:(BOOL)a3;
-- (void)setGroupOrderer:(id)a3;
-- (void)setHitTestDirectionalInsets:(NSDirectionalEdgeInsets)a3;
-- (void)setHitTestInsets:(UIEdgeInsets)a3;
-- (void)setItemDistribution:(int64_t)a3;
-- (void)setItemsInGroupUseSameSize:(BOOL)a3;
-- (void)setMinimumInterItemSpace:(double)a3;
-- (void)setPlainItemAppearance:(id)a3;
-- (void)setSupportsOverflow:(BOOL)a3;
-- (void)setTargetLayoutWidth:(double)a3;
-- (void)setViewUpdater:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator;
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator;
+- (void)setBarButtonGroups:(id)groups;
+- (void)setDoneItemAppearance:(id)appearance;
+- (void)setFixedLeadingGroups:(id)groups;
+- (void)setFixedTrailingGroups:(id)groups;
+- (void)setForceFixedSpacing:(BOOL)spacing;
+- (void)setGroupOrderer:(id)orderer;
+- (void)setHitTestDirectionalInsets:(NSDirectionalEdgeInsets)insets;
+- (void)setHitTestInsets:(UIEdgeInsets)insets;
+- (void)setItemDistribution:(int64_t)distribution;
+- (void)setItemsInGroupUseSameSize:(BOOL)size;
+- (void)setMinimumInterItemSpace:(double)space;
+- (void)setPlainItemAppearance:(id)appearance;
+- (void)setSupportsOverflow:(BOOL)overflow;
+- (void)setTargetLayoutWidth:(double)width;
+- (void)setViewUpdater:(id)updater;
 @end
 
 @implementation _UIButtonBar
@@ -169,8 +169,8 @@
       if (v11)
       {
         v12 = v11;
-        v13 = 0;
-        v14 = 0;
+        array2 = 0;
+        array = 0;
         v15 = 0;
         v16 = *v171;
         do
@@ -194,22 +194,22 @@
             {
               if ([v18 fixed])
               {
-                if (!v14)
+                if (!array)
                 {
-                  v14 = [MEMORY[0x1E695DF70] array];
+                  array = [MEMORY[0x1E695DF70] array];
                 }
 
-                v20 = v14;
+                v20 = array;
               }
 
               else
               {
-                if (!v13)
+                if (!array2)
                 {
-                  v13 = [MEMORY[0x1E695DF70] array];
+                  array2 = [MEMORY[0x1E695DF70] array];
                 }
 
-                v20 = v13;
+                v20 = array2;
               }
 
               [v20 addObject:v18];
@@ -225,24 +225,24 @@
         {
           if (v15)
           {
-            v21 = [MEMORY[0x1E695DF70] arrayWithObject:v15];
+            array3 = [MEMORY[0x1E695DF70] arrayWithObject:v15];
 LABEL_37:
 
-            if (v14)
+            if (array)
             {
-              [(NSMutableArray *)v21 addObjectsFromArray:v14];
+              [(NSMutableArray *)array3 addObjectsFromArray:array];
             }
 
-            if (!v13)
+            if (!array2)
             {
               goto LABEL_43;
             }
 
-            [(NSMutableArray *)v21 addObjectsFromArray:v13];
+            [(NSMutableArray *)array3 addObjectsFromArray:array2];
 LABEL_42:
 
 LABEL_43:
-            v8 = v21;
+            v8 = array3;
 LABEL_44:
             v28 = *&self->_groupOrderer;
             v166 = 0u;
@@ -307,15 +307,15 @@ LABEL_55:
                 v46 = v44 - v45;
                 if (([v36 critical] & obj) == 1 && v46 > 0.0)
                 {
-                  v47 = 1;
+                  _shouldAlwaysCollapse = 1;
                 }
 
                 else
                 {
-                  v49 = [v36 group];
-                  v47 = [v49 _shouldAlwaysCollapse];
+                  group = [v36 group];
+                  _shouldAlwaysCollapse = [group _shouldAlwaysCollapse];
 
-                  if (((v46 <= v28 + 0.00000011920929) & v32) != 0 && (v47 & 1) == 0)
+                  if (((v46 <= v28 + 0.00000011920929) & v32) != 0 && (_shouldAlwaysCollapse & 1) == 0)
                   {
                     [v36 setCompact:0];
                     [v36 setSpilled:0];
@@ -337,7 +337,7 @@ LABEL_55:
                 }
 
                 [v36 setSpilled:v48];
-                v32 &= (v46 <= v28 + 0.00000011920929) & v47;
+                v32 &= (v46 <= v28 + 0.00000011920929) & _shouldAlwaysCollapse;
 LABEL_56:
                 ++v35;
               }
@@ -355,7 +355,7 @@ LABEL_69:
           }
 
 LABEL_36:
-          v21 = [MEMORY[0x1E695DF70] array];
+          array3 = [MEMORY[0x1E695DF70] array];
           v15 = 0;
           goto LABEL_37;
         }
@@ -364,8 +364,8 @@ LABEL_36:
       else
       {
 
-        v13 = 0;
-        v14 = 0;
+        array2 = 0;
+        array = 0;
         v15 = 0;
         if (*&groupOrderer < v4)
         {
@@ -373,10 +373,10 @@ LABEL_36:
         }
       }
 
-      v21 = [(NSMutableArray *)self->_effectiveLayout mutableCopy];
+      array3 = [(NSMutableArray *)self->_effectiveLayout mutableCopy];
 
-      [(NSMutableArray *)v21 removeObject:v15];
-      [(NSMutableArray *)v21 insertObject:v15 atIndex:0];
+      [(NSMutableArray *)array3 removeObject:v15];
+      [(NSMutableArray *)array3 insertObject:v15 atIndex:0];
       goto LABEL_42;
     }
 
@@ -679,9 +679,9 @@ LABEL_70:
     [MEMORY[0x1E69977A0] deactivateConstraints:{v128, v122}];
     if (v57)
     {
-      v102 = [v57 centerXAnchor];
-      v103 = [(UIView *)self->_stackView centerXAnchor];
-      v104 = [v102 constraintEqualToAnchor:v103];
+      centerXAnchor = [v57 centerXAnchor];
+      centerXAnchor2 = [(UIView *)self->_stackView centerXAnchor];
+      v104 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
       v101 = v128;
       LODWORD(v105) = 1144569856;
@@ -698,7 +698,7 @@ LABEL_70:
 
     [MEMORY[0x1E69977A0] activateConstraints:v100];
 
-    v109 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     v170 = 0u;
     v171 = 0u;
     v172 = 0u;
@@ -723,8 +723,8 @@ LABEL_70:
           v167 = 0u;
           v168 = 0u;
           v169 = 0u;
-          v114 = [v113 subLayouts];
-          v115 = [v114 countByEnumeratingWithState:&v166 objects:&v174 count:16];
+          subLayouts = [v113 subLayouts];
+          v115 = [subLayouts countByEnumeratingWithState:&v166 objects:&v174 count:16];
           if (v115)
           {
             v116 = v115;
@@ -735,18 +735,18 @@ LABEL_70:
               {
                 if (*v167 != v117)
                 {
-                  objc_enumerationMutation(v114);
+                  objc_enumerationMutation(subLayouts);
                 }
 
-                v119 = [*(*(&v166 + 1) + 8 * i1) barButtonItem];
-                if (v119)
+                barButtonItem = [*(*(&v166 + 1) + 8 * i1) barButtonItem];
+                if (barButtonItem)
                 {
-                  v120 = [(NSMapTable *)self->_senderActionMap objectForKey:v119];
-                  [(NSMapTable *)v109 setObject:v120 forKey:v119];
+                  v120 = [(NSMapTable *)self->_senderActionMap objectForKey:barButtonItem];
+                  [(NSMapTable *)weakToStrongObjectsMapTable setObject:v120 forKey:barButtonItem];
                 }
               }
 
-              v116 = [v114 countByEnumeratingWithState:&v166 objects:&v174 count:16];
+              v116 = [subLayouts countByEnumeratingWithState:&v166 objects:&v174 count:16];
             }
 
             while (v116);
@@ -760,7 +760,7 @@ LABEL_70:
     }
 
     senderActionMap = self->_senderActionMap;
-    self->_senderActionMap = v109;
+    self->_senderActionMap = weakToStrongObjectsMapTable;
 
     [(_UIButtonBar *)self _enablePointerInteractions];
     *&self->_buttonBarFlags &= ~1u;
@@ -770,10 +770,10 @@ LABEL_70:
 - (void)_updateEffectiveLayout
 {
   v35 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [*(a1 + 8) distribution] != 0;
-    v3 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    v2 = [*(self + 8) distribution] != 0;
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v30 = 0;
     v31 = &v30;
@@ -783,23 +783,23 @@ LABEL_70:
     v25[1] = 3221225472;
     v25[2] = __38___UIButtonBar__updateEffectiveLayout__block_invoke;
     v25[3] = &unk_1E70F72D0;
-    v25[4] = a1;
+    v25[4] = self;
     v29 = v2;
-    v18 = v3;
+    v18 = strongToStrongObjectsMapTable;
     v26 = v18;
     v19 = v4;
     v27 = v19;
     v28 = &v30;
-    [a1 _enumerateLayoutGroups:v25];
-    objc_storeStrong((a1 + 64), v4);
-    objc_storeStrong((a1 + 80), v3);
+    [self _enumerateLayoutGroups:v25];
+    objc_storeStrong((self + 64), v4);
+    objc_storeStrong((self + 80), strongToStrongObjectsMapTable);
     v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v6 = *(a1 + 64);
+    v6 = *(self + 64);
     v7 = [v6 countByEnumeratingWithState:&v21 objects:v34 count:16];
     if (v7)
     {
@@ -815,13 +815,13 @@ LABEL_70:
           }
 
           v11 = *(*(&v21 + 1) + 8 * i);
-          v12 = [v11 group];
-          v13 = [v12 _isHiddenForCalculation];
+          group = [v11 group];
+          _isHiddenForCalculation = [group _isHiddenForCalculation];
 
-          if ((v13 & 1) == 0)
+          if ((_isHiddenForCalculation & 1) == 0)
           {
             [v5 addObject:v11];
-            [v11 dirtyLayoutForPlainAppearanceChange:(*(a1 + 120) >> 2) & 1 doneAppearanceChanged:(*(a1 + 120) >> 3) & 1];
+            [v11 dirtyLayoutForPlainAppearanceChange:(*(self + 120) >> 2) & 1 doneAppearanceChanged:(*(self + 120) >> 3) & 1];
             if (v8)
             {
               [v20 addObject:v8];
@@ -844,9 +844,9 @@ LABEL_70:
         v15 = v20;
         [v20 addObject:v8];
 LABEL_17:
-        *(a1 + 120) = *(a1 + 120) & 0xDF | (32 * *(v31 + 24));
-        v16 = *(a1 + 72);
-        *(a1 + 72) = v15;
+        *(self + 120) = *(self + 120) & 0xDF | (32 * *(v31 + 24));
+        v16 = *(self + 72);
+        *(self + 72) = v15;
         v17 = v15;
 
         _Block_object_dispose(&v30, 8);
@@ -870,15 +870,15 @@ LABEL_17:
   defaultActionFilter = self->_defaultActionFilter;
   if (defaultActionFilter)
   {
-    v4 = [(_UIButtonBarGroupOrderer *)defaultActionFilter orderedGroups];
+    orderedGroups = [(_UIButtonBarGroupOrderer *)defaultActionFilter orderedGroups];
   }
 
   else
   {
-    v4 = *&self->_minimumInterItemSpace;
+    orderedGroups = *&self->_minimumInterItemSpace;
   }
 
-  return v4;
+  return orderedGroups;
 }
 
 - (void)_enablePointerInteractions
@@ -926,16 +926,16 @@ LABEL_17:
     v23 = MaxX;
     if (v4 == 1)
     {
-      v24 = [v51 firstObject];
-      if ([v24 isCustomViewItem])
+      firstObject = [v51 firstObject];
+      if ([firstObject isCustomViewItem])
       {
 LABEL_14:
 
         goto LABEL_15;
       }
 
-      v25 = [v24 view];
-      _configureInsets(v25, MinX, v23);
+      view = [firstObject view];
+      _configureInsets(view, MinX, v23);
     }
 
     else
@@ -946,10 +946,10 @@ LABEL_14:
       }
 
       v49 = MaxX;
-      v26 = [v51 firstObject];
-      v27 = _viewRepresentingItem(v26, self->_stackView);
-      v25 = 0;
-      v24 = 0;
+      firstObject2 = [v51 firstObject];
+      v27 = _viewRepresentingItem(firstObject2, self->_stackView);
+      view = 0;
+      firstObject = 0;
       v28 = 1;
       do
       {
@@ -978,24 +978,24 @@ LABEL_14:
         v56.size.width = v44;
         v56.size.height = v46;
         v48 = (v47 + CGRectGetMinX(v56)) * 0.5;
-        if (([v26 isCustomViewItem] & 1) == 0)
+        if (([firstObject2 isCustomViewItem] & 1) == 0)
         {
           _configureInsets(v27, v50, v48);
         }
 
-        v25 = v30;
+        view = v30;
 
-        v24 = v29;
+        firstObject = v29;
         ++v28;
-        v27 = v25;
-        v26 = v24;
+        v27 = view;
+        firstObject2 = firstObject;
         MinX = v48;
       }
 
       while (v4 != v28);
-      if (([v24 isCustomViewItem] & 1) == 0)
+      if (([firstObject isCustomViewItem] & 1) == 0)
       {
-        _configureInsets(v25, v48, v49);
+        _configureInsets(view, v48, v49);
       }
     }
 
@@ -1023,9 +1023,9 @@ LABEL_15:
   [(_UIButtonBar *)&v3 dealloc];
 }
 
-- (_UIButtonBar)initWithCoder:(id)a3
+- (_UIButtonBar)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = _UIButtonBar;
   v5 = [(_UIButtonBar *)&v11 init];
@@ -1033,7 +1033,7 @@ LABEL_15:
   if (v5)
   {
     _UIButtonBarCommonInit(v5);
-    v7 = [v4 decodeObjectForKey:@"UIButtonBarGroups"];
+    v7 = [coderCopy decodeObjectForKey:@"UIButtonBarGroups"];
     v8 = [v7 copy];
     minimumInterItemSpace = v6->_minimumInterItemSpace;
     *&v6->_minimumInterItemSpace = v8;
@@ -1044,19 +1044,19 @@ LABEL_15:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   minimumInterItemSpace = self->_minimumInterItemSpace;
   if (minimumInterItemSpace != 0.0)
   {
-    [a3 encodeObject:*&minimumInterItemSpace forKey:@"UIButtonBarGroups"];
+    [coder encodeObject:*&minimumInterItemSpace forKey:@"UIButtonBarGroups"];
   }
 }
 
 - (UIView)_viewForOverlayRects
 {
-  v3 = [(UIStackView *)self->_stackView arrangedSubviews];
-  if ([v3 count])
+  arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+  if ([arrangedSubviews count])
   {
     stackView = self->_stackView;
   }
@@ -1071,11 +1071,11 @@ LABEL_15:
   return &stackView->super.super;
 }
 
-- (void)setBarButtonGroups:(id)a3
+- (void)setBarButtonGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   v5 = *&self->_minimumInterItemSpace;
-  v6 = v4;
+  v6 = groupsCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -1107,23 +1107,23 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setMinimumInterItemSpace:(double)a3
+- (void)setMinimumInterItemSpace:(double)space
 {
-  if (*&self->_fixedLeadingGroups != a3)
+  if (*&self->_fixedLeadingGroups != space)
   {
-    *&self->_fixedLeadingGroups = a3;
+    *&self->_fixedLeadingGroups = space;
     [(NSLayoutConstraint *)self->_minimumInterItemSpaceConstraint setConstant:?];
 
     [(_UIButtonBar *)self _setNeedsVisualUpdate];
   }
 }
 
-- (void)setItemsInGroupUseSameSize:(BOOL)a3
+- (void)setItemsInGroupUseSameSize:(BOOL)size
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (LOBYTE(self->_barButtonGroups) != a3)
+  if (LOBYTE(self->_barButtonGroups) != size)
   {
-    LOBYTE(self->_barButtonGroups) = a3;
+    LOBYTE(self->_barButtonGroups) = size;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
@@ -1158,30 +1158,30 @@ LABEL_9:
   }
 }
 
-- (void)setForceFixedSpacing:(BOOL)a3
+- (void)setForceFixedSpacing:(BOOL)spacing
 {
-  if (BYTE1(self->_barButtonGroups) != a3)
+  if (BYTE1(self->_barButtonGroups) != spacing)
   {
-    BYTE1(self->_barButtonGroups) = a3;
+    BYTE1(self->_barButtonGroups) = spacing;
     [(_UIButtonBar *)self _setNeedsVisualUpdate];
   }
 }
 
-- (void)setSupportsOverflow:(BOOL)a3
+- (void)setSupportsOverflow:(BOOL)overflow
 {
-  if (BYTE2(self->_barButtonGroups) != a3)
+  if (BYTE2(self->_barButtonGroups) != overflow)
   {
-    BYTE2(self->_barButtonGroups) = a3;
+    BYTE2(self->_barButtonGroups) = overflow;
     [(_UIButtonBar *)self _setNeedsVisualUpdate];
   }
 }
 
-- (void)setItemDistribution:(int64_t)a3
+- (void)setItemDistribution:(int64_t)distribution
 {
   v15 = *MEMORY[0x1E69E9840];
-  if ([(UIStackView *)self->_stackView distribution]!= a3)
+  if ([(UIStackView *)self->_stackView distribution]!= distribution)
   {
-    [(UIStackView *)self->_stackView setDistribution:a3];
+    [(UIStackView *)self->_stackView setDistribution:distribution];
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
@@ -1202,7 +1202,7 @@ LABEL_9:
             objc_enumerationMutation(v5);
           }
 
-          [*(*(&v10 + 1) + 8 * v9++) setSuppressSpacing:{a3 != 0, v10}];
+          [*(*(&v10 + 1) + 8 * v9++) setSuppressSpacing:{distribution != 0, v10}];
         }
 
         while (v7 != v9);
@@ -1226,12 +1226,12 @@ LABEL_9:
   return result;
 }
 
-- (void)setHitTestInsets:(UIEdgeInsets)a3
+- (void)setHitTestInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   [(UIView *)self->_stackView hitTestInsets];
   if (v11 != left || v8 != top || v10 != right || v9 != bottom)
   {
@@ -1251,12 +1251,12 @@ LABEL_9:
   return result;
 }
 
-- (void)setHitTestDirectionalInsets:(NSDirectionalEdgeInsets)a3
+- (void)setHitTestDirectionalInsets:(NSDirectionalEdgeInsets)insets
 {
-  trailing = a3.trailing;
-  bottom = a3.bottom;
-  leading = a3.leading;
-  top = a3.top;
+  trailing = insets.trailing;
+  bottom = insets.bottom;
+  leading = insets.leading;
+  top = insets.top;
   [(UIView *)self->_stackView hitTestDirectionalInsets];
   if (v11 != leading || v8 != top || v10 != trailing || v9 != bottom)
   {
@@ -1266,11 +1266,11 @@ LABEL_9:
   }
 }
 
-- (void)setFixedLeadingGroups:(id)a3
+- (void)setFixedLeadingGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   v5 = self->_fixedTrailingGroups;
-  v6 = v4;
+  v6 = groupsCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -1301,11 +1301,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setFixedTrailingGroups:(id)a3
+- (void)setFixedTrailingGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   v5 = self->_delegate;
-  v6 = v4;
+  v6 = groupsCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -1348,13 +1348,13 @@ LABEL_9:
   return result;
 }
 
-- (double)_widthInfoForLayout:(uint64_t)a1
+- (double)_widthInfoForLayout:(uint64_t)layout
 {
   v26 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
   v5 = 0.0;
-  if (a1)
+  if (layout)
   {
     v23 = 0u;
     v24 = 0u;
@@ -1377,13 +1377,13 @@ LABEL_9:
           }
 
           v12 = *(*(&v21 + 1) + 8 * i);
-          [v12 recalculateLayoutWidthsGivenItemSpaceWidth:*(a1 + 144)];
+          [v12 recalculateLayoutWidthsGivenItemSpaceWidth:*(layout + 144)];
           [v12 compactWidth];
           v14 = v13;
-          v15 = [v12 group];
-          v16 = [v15 _disabledExpansion];
+          group = [v12 group];
+          _disabledExpansion = [group _disabledExpansion];
 
-          if (v16)
+          if (_disabledExpansion)
           {
             [v12 compactWidth];
           }
@@ -1419,41 +1419,41 @@ LABEL_9:
   return v8;
 }
 
-- (void)setTargetLayoutWidth:(double)a3
+- (void)setTargetLayoutWidth:(double)width
 {
-  if (a3 < 0.0)
+  if (width < 0.0)
   {
-    a3 = 0.0;
+    width = 0.0;
   }
 
-  if (*&self->_groupOrderer != a3)
+  if (*&self->_groupOrderer != width)
   {
-    *&self->_groupOrderer = a3;
+    *&self->_groupOrderer = width;
     [(_UIButtonBar *)self _setNeedsVisualUpdate];
   }
 }
 
-- (void)setGroupOrderer:(id)a3
+- (void)setGroupOrderer:(id)orderer
 {
-  v5 = a3;
+  ordererCopy = orderer;
   p_defaultActionFilter = &self->_defaultActionFilter;
   defaultActionFilter = self->_defaultActionFilter;
-  if (defaultActionFilter != v5)
+  if (defaultActionFilter != ordererCopy)
   {
-    v8 = v5;
+    v8 = ordererCopy;
     if (defaultActionFilter)
     {
       objc_storeWeak(defaultActionFilter + 6, 0);
     }
 
-    objc_storeStrong(&self->_defaultActionFilter, a3);
+    objc_storeStrong(&self->_defaultActionFilter, orderer);
     if (*p_defaultActionFilter)
     {
       objc_storeWeak(*p_defaultActionFilter + 6, self);
     }
 
     [(_UIButtonBar *)self _setNeedsVisualUpdate];
-    v5 = v8;
+    ordererCopy = v8;
   }
 }
 
@@ -1542,7 +1542,7 @@ LABEL_11:
 - (NSArray)elementsForOverflowMenu
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -1565,17 +1565,17 @@ LABEL_11:
         v9 = *(*(&v28 + 1) + 8 * i);
         if (([v9 spilled] & 1) == 0)
         {
-          v10 = [v9 group];
-          v11 = [v10 _showInOverflow];
+          group = [v9 group];
+          _showInOverflow = [group _showInOverflow];
 
-          if (!v11)
+          if (!_showInOverflow)
           {
             continue;
           }
         }
 
-        v12 = [v9 group];
-        [v3 addObject:v12];
+        group2 = [v9 group];
+        [orderedSet addObject:group2];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v28 objects:v33 count:16];
@@ -1588,10 +1588,10 @@ LABEL_11:
   v26[1] = 3221225472;
   v26[2] = __39___UIButtonBar_elementsForOverflowMenu__block_invoke;
   v26[3] = &unk_1E70F71B8;
-  v13 = v3;
+  v13 = orderedSet;
   v27 = v13;
   [(_UIButtonBar *)self _enumerateAllGroups:v26];
-  v14 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -1611,8 +1611,8 @@ LABEL_11:
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v22 + 1) + 8 * j) _effectiveMenuRepresentation];
-        [v14 addObject:v20];
+        _effectiveMenuRepresentation = [*(*(&v22 + 1) + 8 * j) _effectiveMenuRepresentation];
+        [array addObject:_effectiveMenuRepresentation];
       }
 
       v17 = [v15 countByEnumeratingWithState:&v22 objects:v32 count:16];
@@ -1621,19 +1621,19 @@ LABEL_11:
     while (v17);
   }
 
-  return v14;
+  return array;
 }
 
 - (NSArray)elementsRepresentingOrderedGroups
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [(_UIButtonBar *)self groupRealizedOrder];
-  v3 = [MEMORY[0x1E695DF70] array];
+  groupRealizedOrder = [(_UIButtonBar *)self groupRealizedOrder];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = v2;
+  v4 = groupRealizedOrder;
   v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
@@ -1648,8 +1648,8 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) _effectiveMenuRepresentation];
-        [v3 addObject:v9];
+        _effectiveMenuRepresentation = [*(*(&v11 + 1) + 8 * i) _effectiveMenuRepresentation];
+        [array addObject:_effectiveMenuRepresentation];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -1658,14 +1658,14 @@ LABEL_11:
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
-- (id)itemAtPoint:(CGPoint)a3 inView:(id)a4
+- (id)itemAtPoint:(CGPoint)point inView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -1676,7 +1676,7 @@ LABEL_11:
   v11[1] = 3221225472;
   v11[2] = __35___UIButtonBar_itemAtPoint_inView___block_invoke;
   v11[3] = &unk_1E70F71E0;
-  v8 = v7;
+  v8 = viewCopy;
   v14 = x;
   v15 = y;
   v12 = v8;
@@ -1689,17 +1689,17 @@ LABEL_11:
   return v9;
 }
 
-- (void)_forwardEnumerateVisibleItems:(void *)a1
+- (void)_forwardEnumerateVisibleItems:(void *)items
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (items)
   {
     v18 = 0;
     v19 = &v18;
     v20 = 0x2020000000;
     v21 = 0;
-    v5 = a1[19];
+    v5 = items[19];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __46___UIButtonBar__forwardEnumerateVisibleItems___block_invoke;
@@ -1710,7 +1710,7 @@ LABEL_11:
     [v5 enumerateObjectsUsingBlock:v15];
     if ((v19[3] & 1) == 0)
     {
-      v7 = a1[17];
+      v7 = items[17];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __46___UIButtonBar__forwardEnumerateVisibleItems___block_invoke_2;
@@ -1722,7 +1722,7 @@ LABEL_11:
 
       if ((v19[3] & 1) == 0)
       {
-        v9 = a1[20];
+        v9 = items[20];
         v10[0] = MEMORY[0x1E69E9820];
         v10[1] = 3221225472;
         v10[2] = __46___UIButtonBar__forwardEnumerateVisibleItems___block_invoke_3;
@@ -1736,17 +1736,17 @@ LABEL_11:
   }
 }
 
-- (void)_reverseEnumerateVisibleItems:(void *)a1
+- (void)_reverseEnumerateVisibleItems:(void *)items
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (items)
   {
     v18 = 0;
     v19 = &v18;
     v20 = 0x2020000000;
     v21 = 0;
-    v5 = a1[20];
+    v5 = items[20];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __46___UIButtonBar__reverseEnumerateVisibleItems___block_invoke;
@@ -1757,7 +1757,7 @@ LABEL_11:
     [v5 enumerateObjectsWithOptions:2 usingBlock:v15];
     if ((v19[3] & 1) == 0)
     {
-      v7 = a1[17];
+      v7 = items[17];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __46___UIButtonBar__reverseEnumerateVisibleItems___block_invoke_2;
@@ -1769,7 +1769,7 @@ LABEL_11:
 
       if ((v19[3] & 1) == 0)
       {
-        v9 = a1[19];
+        v9 = items[19];
         v10[0] = MEMORY[0x1E69E9820];
         v10[1] = 3221225472;
         v10[2] = __46___UIButtonBar__reverseEnumerateVisibleItems___block_invoke_3;
@@ -1917,19 +1917,19 @@ LABEL_11:
   return v2;
 }
 
-- (void)setViewUpdater:(id)a3
+- (void)setViewUpdater:(id)updater
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  updaterCopy = updater;
+  if (!updaterCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"UIButtonBar.m" lineNumber:624 description:@"viewUpdater is nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIButtonBar.m" lineNumber:624 description:@"viewUpdater is nil"];
   }
 
-  if (self[1].super.isa != v5)
+  if (self[1].super.isa != updaterCopy)
   {
-    v6 = [(objc_class *)v5 copy];
+    v6 = [(objc_class *)updaterCopy copy];
     isa = self[1].super.isa;
     self[1].super.isa = v6;
 
@@ -1965,24 +1965,24 @@ LABEL_11:
   }
 }
 
-- (id)_targetActionForBarButtonItem:(id)a3
+- (id)_targetActionForBarButtonItem:(id)item
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_senderActionMap objectForKey:v4];
+  itemCopy = item;
+  v5 = [(NSMapTable *)self->_senderActionMap objectForKey:itemCopy];
   if (!v5)
   {
-    v5 = [[_UIButtonBarTargetAction alloc] initWithBarButtonItem:v4];
+    v5 = [[_UIButtonBarTargetAction alloc] initWithBarButtonItem:itemCopy];
     [(_UIButtonBarTargetAction *)v5 setActionFilter:self->__appearanceDelegate];
-    [(NSMapTable *)self->_senderActionMap setObject:v5 forKey:v4];
+    [(NSMapTable *)self->_senderActionMap setObject:v5 forKey:itemCopy];
   }
 
   return v5;
 }
 
-- (void)_enumerateLayoutGroups:(id)a3
+- (void)_enumerateLayoutGroups:(id)groups
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  groupsCopy = groups;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -2003,7 +2003,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        v4[2](v4, *(*(&v28 + 1) + 8 * v9++), 1);
+        groupsCopy[2](groupsCopy, *(*(&v28 + 1) + 8 * v9++), 1);
       }
 
       while (v7 != v9);
@@ -2013,12 +2013,12 @@ LABEL_11:
     while (v7);
   }
 
-  v10 = [(_UIButtonBar *)self groupRealizedOrder];
+  groupRealizedOrder = [(_UIButtonBar *)self groupRealizedOrder];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v11 = [v10 countByEnumeratingWithState:&v24 objects:v33 count:16];
+  v11 = [groupRealizedOrder countByEnumeratingWithState:&v24 objects:v33 count:16];
   if (v11)
   {
     v12 = v11;
@@ -2030,14 +2030,14 @@ LABEL_11:
       {
         if (*v25 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(groupRealizedOrder);
         }
 
-        v4[2](v4, *(*(&v24 + 1) + 8 * v14++), 0);
+        groupsCopy[2](groupsCopy, *(*(&v24 + 1) + 8 * v14++), 0);
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v24 objects:v33 count:16];
+      v12 = [groupRealizedOrder countByEnumeratingWithState:&v24 objects:v33 count:16];
     }
 
     while (v12);
@@ -2063,7 +2063,7 @@ LABEL_11:
           objc_enumerationMutation(v15);
         }
 
-        v4[2](v4, *(*(&v20 + 1) + 8 * v19++), 1);
+        groupsCopy[2](groupsCopy, *(*(&v20 + 1) + 8 * v19++), 1);
       }
 
       while (v17 != v19);
@@ -2074,10 +2074,10 @@ LABEL_11:
   }
 }
 
-- (void)_enumerateAllGroups:(id)a3
+- (void)_enumerateAllGroups:(id)groups
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  groupsCopy = groups;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -2098,7 +2098,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        v4[2](v4, *(*(&v31 + 1) + 8 * v9++), 1);
+        groupsCopy[2](groupsCopy, *(*(&v31 + 1) + 8 * v9++), 1);
       }
 
       while (v7 != v9);
@@ -2115,7 +2115,7 @@ LABEL_11:
     v29[1] = 3221225472;
     v29[2] = __36___UIButtonBar__enumerateAllGroups___block_invoke;
     v29[3] = &unk_1E70F7280;
-    v30 = v4;
+    v30 = groupsCopy;
     [(_UIButtonBarGroupOrderer *)defaultActionFilter enumerateSourceGroups:v29];
     v11 = v30;
   }
@@ -2142,7 +2142,7 @@ LABEL_11:
             objc_enumerationMutation(v11);
           }
 
-          v4[2](v4, *(*(&v25 + 1) + 8 * v15++), 0);
+          groupsCopy[2](groupsCopy, *(*(&v25 + 1) + 8 * v15++), 0);
         }
 
         while (v13 != v15);
@@ -2173,7 +2173,7 @@ LABEL_11:
           objc_enumerationMutation(v16);
         }
 
-        v4[2](v4, *(*(&v21 + 1) + 8 * v20++), 1);
+        groupsCopy[2](groupsCopy, *(*(&v21 + 1) + 8 * v20++), 1);
       }
 
       while (v18 != v20);
@@ -2184,25 +2184,25 @@ LABEL_11:
   }
 }
 
-- (void)_buttonBarStackViewDidLayoutSubviews:(id)a3
+- (void)_buttonBarStackViewDidLayoutSubviews:(id)subviews
 {
-  v4 = [a3 layer];
-  v5 = [v4 needsLayout];
+  layer = [subviews layer];
+  needsLayout = [layer needsLayout];
 
-  if ((v5 & 1) == 0)
+  if ((needsLayout & 1) == 0)
   {
-    v6 = [(_UIButtonBar *)self delegate];
-    [v6 buttonBarDidLayout:self];
+    delegate = [(_UIButtonBar *)self delegate];
+    [delegate buttonBarDidLayout:self];
   }
 }
 
-- (id)_updatedViewForBarButtonItem:(id)a3 withView:(id)a4
+- (id)_updatedViewForBarButtonItem:(id)item withView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isCustomViewItem])
+  itemCopy = item;
+  viewCopy = view;
+  if ([itemCopy isCustomViewItem])
   {
-    v8 = [v6 customView];
+    customView = [itemCopy customView];
   }
 
   else
@@ -2210,16 +2210,16 @@ LABEL_11:
     isa = self[1].super.isa;
     if (isa)
     {
-      v8 = (*(isa + 2))(isa, self, v6, v7);
+      customView = (*(isa + 2))(isa, self, itemCopy, viewCopy);
     }
 
     else
     {
-      v8 = v7;
+      customView = viewCopy;
     }
   }
 
-  v10 = v8;
+  v10 = customView;
 
   return v10;
 }
@@ -2294,11 +2294,11 @@ LABEL_11:
   [(_UIButtonBar *)self _setNeedsVisualUpdate];
 }
 
-- (void)setPlainItemAppearance:(id)a3
+- (void)setPlainItemAppearance:(id)appearance
 {
-  v5 = a3;
+  appearanceCopy = appearance;
   v6 = self->_doneItemAppearance;
-  v7 = v5;
+  v7 = appearanceCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -2317,7 +2317,7 @@ LABEL_11:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_doneItemAppearance, a3);
+    objc_storeStrong(&self->_doneItemAppearance, appearance);
     *&self->_buttonBarFlags |= 4u;
     [(_UIButtonBar *)self _setNeedsAppearanceUpdate];
   }
@@ -2325,11 +2325,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setDoneItemAppearance:(id)a3
+- (void)setDoneItemAppearance:(id)appearance
 {
-  v5 = a3;
+  appearanceCopy = appearance;
   v6 = self->_assistant;
-  v7 = v5;
+  v7 = appearanceCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -2348,7 +2348,7 @@ LABEL_9:
   if ((v8 & 1) == 0)
   {
 LABEL_8:
-    objc_storeStrong(&self->_assistant, a3);
+    objc_storeStrong(&self->_assistant, appearance);
     *&self->_buttonBarFlags |= 8u;
     [(_UIButtonBar *)self _setNeedsAppearanceUpdate];
   }
@@ -2365,38 +2365,38 @@ LABEL_9:
   }
 }
 
-- (void)_itemCustomViewDidChange:(id)a3 fromView:(id)a4
+- (void)_itemCustomViewDidChange:(id)change fromView:(id)view
 {
-  v5 = a3;
-  v6 = [v5 buttonGroup];
-  v8 = [(_UIButtonBar *)self _layoutForGroup:v6];
+  changeCopy = change;
+  buttonGroup = [changeCopy buttonGroup];
+  v8 = [(_UIButtonBar *)self _layoutForGroup:buttonGroup];
 
-  v7 = [v8 layoutForBarButtonItem:v5];
+  v7 = [v8 layoutForBarButtonItem:changeCopy];
 
   [v7 setDirty:1];
   [(_UIButtonBar *)self _setNeedsVisualUpdate];
 }
 
-- (void)_itemStandardViewNeedsUpdate:(id)a3
+- (void)_itemStandardViewNeedsUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 buttonGroup];
-  v7 = [(_UIButtonBar *)self _layoutForGroup:v5];
+  updateCopy = update;
+  buttonGroup = [updateCopy buttonGroup];
+  v7 = [(_UIButtonBar *)self _layoutForGroup:buttonGroup];
 
-  v6 = [v7 layoutForBarButtonItem:v4];
+  v6 = [v7 layoutForBarButtonItem:updateCopy];
 
   [v6 setDirty:1];
   [(_UIButtonBar *)self _setNeedsVisualUpdate];
 }
 
-- (void)_itemDidChangeWidth:(id)a3
+- (void)_itemDidChangeWidth:(id)width
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 buttonGroup];
-  v6 = [(_UIButtonBar *)self _layoutForGroup:v5];
+  widthCopy = width;
+  buttonGroup = [widthCopy buttonGroup];
+  v6 = [(_UIButtonBar *)self _layoutForGroup:buttonGroup];
 
-  v7 = [v6 layoutsForSpacerItem:v4];
+  v7 = [v6 layoutsForSpacerItem:widthCopy];
   v8 = v7;
   if (v7)
   {
@@ -2432,39 +2432,39 @@ LABEL_9:
 
   else
   {
-    v13 = [v6 layoutForBarButtonItem:v4];
+    v13 = [v6 layoutForBarButtonItem:widthCopy];
     [v13 setDirty:1];
     [(_UIButtonBar *)self _setNeedsVisualUpdate];
   }
 }
 
-- (void)_itemDidChangeSelectionState:(id)a3
+- (void)_itemDidChangeSelectionState:(id)state
 {
-  v4 = a3;
-  v3 = _UIButtonBarButtonFromItem(v4);
+  stateCopy = state;
+  v3 = _UIButtonBarButtonFromItem(stateCopy);
   if (v3)
   {
-    [v3 setSelected:{objc_msgSend(v4, "isSelected")}];
+    [v3 setSelected:{objc_msgSend(stateCopy, "isSelected")}];
   }
 }
 
-- (void)_itemDidChangeHiddenState:(id)a3
+- (void)_itemDidChangeHiddenState:(id)state
 {
-  v4 = [a3 buttonGroup];
-  v5 = [(_UIButtonBar *)self _layoutForGroup:v4];
+  buttonGroup = [state buttonGroup];
+  v5 = [(_UIButtonBar *)self _layoutForGroup:buttonGroup];
   [v5 setDirty:1];
 
   [(_UIButtonBar *)self _setNeedsVisualUpdate];
 }
 
-- (BOOL)_itemDidUpdateMenu:(id)a3 fromMenu:(id)a4
+- (BOOL)_itemDidUpdateMenu:(id)menu fromMenu:(id)fromMenu
 {
-  v5 = a4;
-  v6 = _UIButtonBarButtonFromItem(a3);
+  fromMenuCopy = fromMenu;
+  v6 = _UIButtonBarButtonFromItem(menu);
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 updatePresentedMenuFrom:v5];
+    v8 = [v6 updatePresentedMenuFrom:fromMenuCopy];
   }
 
   else
@@ -2475,76 +2475,76 @@ LABEL_9:
   return v8;
 }
 
-- (id)_contextMenuInteractionForItem:(id)a3
+- (id)_contextMenuInteractionForItem:(id)item
 {
-  v3 = _UIButtonBarButtonFromItem(a3);
+  v3 = _UIButtonBarButtonFromItem(item);
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 contextMenuInteraction];
+    contextMenuInteraction = [v3 contextMenuInteraction];
   }
 
   else
   {
-    v5 = 0;
+    contextMenuInteraction = 0;
   }
 
-  return v5;
+  return contextMenuInteraction;
 }
 
-- (BOOL)_item:(id)a3 addSymbolEffect:(id)a4 options:(id)a5 animated:(BOOL)a6
+- (BOOL)_item:(id)_item addSymbolEffect:(id)effect options:(id)options animated:(BOOL)animated
 {
-  v6 = a6;
-  v9 = a4;
-  v10 = a5;
-  v11 = _UIButtonBarButtonFromItem(a3);
+  animatedCopy = animated;
+  effectCopy = effect;
+  optionsCopy = options;
+  v11 = _UIButtonBarButtonFromItem(_item);
   v12 = v11;
   if (v11)
   {
-    [v11 addSymbolEffect:v9 options:v10 animated:v6];
+    [v11 addSymbolEffect:effectCopy options:optionsCopy animated:animatedCopy];
   }
 
   return v12 == 0;
 }
 
-- (BOOL)_item:(id)a3 removeSymbolEffectOfType:(id)a4 options:(id)a5 animated:(BOOL)a6
+- (BOOL)_item:(id)_item removeSymbolEffectOfType:(id)type options:(id)options animated:(BOOL)animated
 {
-  v6 = a6;
-  v9 = a4;
-  v10 = a5;
-  v11 = _UIButtonBarButtonFromItem(a3);
+  animatedCopy = animated;
+  typeCopy = type;
+  optionsCopy = options;
+  v11 = _UIButtonBarButtonFromItem(_item);
   v12 = v11;
   if (v11)
   {
-    [v11 removeSymbolEffectOfType:v9 options:v10 animated:v6];
+    [v11 removeSymbolEffectOfType:typeCopy options:optionsCopy animated:animatedCopy];
   }
 
   return v12 == 0;
 }
 
-- (BOOL)_item:(id)a3 removeAllSymbolEffectsWithOptions:(id)a4 animated:(BOOL)a5
+- (BOOL)_item:(id)_item removeAllSymbolEffectsWithOptions:(id)options animated:(BOOL)animated
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = _UIButtonBarButtonFromItem(a3);
+  animatedCopy = animated;
+  optionsCopy = options;
+  v8 = _UIButtonBarButtonFromItem(_item);
   v9 = v8;
   if (v8)
   {
-    [v8 removeAllSymbolEffectsWithOptions:v7 animated:v5];
+    [v8 removeAllSymbolEffectsWithOptions:optionsCopy animated:animatedCopy];
   }
 
   return v9 == 0;
 }
 
-- (void)_item:(id)a3 applyContentTransition:(id)a4 options:(id)a5
+- (void)_item:(id)_item applyContentTransition:(id)transition options:(id)options
 {
-  v10 = a4;
-  v7 = a5;
-  v8 = _UIButtonBarButtonFromItem(a3);
+  transitionCopy = transition;
+  optionsCopy = options;
+  v8 = _UIButtonBarButtonFromItem(_item);
   v9 = v8;
   if (v8)
   {
-    [v8 applyContentTransition:v10 options:v7];
+    [v8 applyContentTransition:transitionCopy options:optionsCopy];
   }
 }
 
@@ -2573,10 +2573,10 @@ LABEL_9:
         v8 = *(*(&v13 + 1) + 8 * i);
         if (([v8 spilled] & 1) == 0)
         {
-          v9 = [v8 group];
-          v10 = [v9 _showInOverflow];
+          group = [v8 group];
+          _showInOverflow = [group _showInOverflow];
 
-          if ((v10 & 1) == 0)
+          if ((_showInOverflow & 1) == 0)
           {
             continue;
           }
@@ -2607,20 +2607,20 @@ LABEL_13:
   return WeakRetained;
 }
 
-- (void)_groupDidUpdateItems:(id)a3 removedItems:(id)a4
+- (void)_groupDidUpdateItems:(id)items removedItems:(id)removedItems
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  _UIButtonBarClearOwnedItems(v7, self);
-  v8 = [v6 _items];
-  _UIButtonBarSetItemOwners(v8, self);
+  itemsCopy = items;
+  removedItemsCopy = removedItems;
+  _UIButtonBarClearOwnedItems(removedItemsCopy, self);
+  _items = [itemsCopy _items];
+  _UIButtonBarSetItemOwners(_items, self);
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = v7;
+  v9 = removedItemsCopy;
   v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
@@ -2646,29 +2646,29 @@ LABEL_13:
     while (v11);
   }
 
-  v14 = [(_UIButtonBar *)self _layoutForGroup:v6];
+  v14 = [(_UIButtonBar *)self _layoutForGroup:itemsCopy];
   [v14 setDirty:1];
 
   [(_UIButtonBar *)self _setNeedsVisualUpdate];
 }
 
-- (void)_groupDidUpdateRepresentative:(id)a3 fromRepresentative:(id)a4
+- (void)_groupDidUpdateRepresentative:(id)representative fromRepresentative:(id)fromRepresentative
 {
-  v6 = a3;
-  [a4 _relinquishOwnership:self];
-  v7 = [v6 representativeItem];
-  [v7 _setViewOwner:self];
+  representativeCopy = representative;
+  [fromRepresentative _relinquishOwnership:self];
+  representativeItem = [representativeCopy representativeItem];
+  [representativeItem _setViewOwner:self];
 
-  v8 = [(_UIButtonBar *)self _layoutForGroup:v6];
+  v8 = [(_UIButtonBar *)self _layoutForGroup:representativeCopy];
 
   [v8 setDirty:1];
 
   [(_UIButtonBar *)self _setNeedsVisualUpdate];
 }
 
-- (id)_groupOrdererGroups:(id)a3
+- (id)_groupOrdererGroups:(id)groups
 {
-  if (self->_defaultActionFilter == a3)
+  if (self->_defaultActionFilter == groups)
   {
     return *&self->_minimumInterItemSpace;
   }
@@ -2679,23 +2679,23 @@ LABEL_13:
   }
 }
 
-- (void)_groupOrdererDidUpdate:(id)a3
+- (void)_groupOrdererDidUpdate:(id)update
 {
-  if (self->_defaultActionFilter == a3)
+  if (self->_defaultActionFilter == update)
   {
     [(_UIButtonBar *)self _setNeedsVisualUpdate];
   }
 }
 
-- (void)_invalidateAssistant:(id)a3
+- (void)_invalidateAssistant:(id)assistant
 {
   WeakRetained = objc_loadWeakRetained(&self->_popOverPresentingSourceItem);
   [WeakRetained invalidate];
 }
 
-- (CGRect)_preferredRegionRectForButton:(id)a3
+- (CGRect)_preferredRegionRectForButton:(id)button
 {
-  [a3 _buttonBarHitRect];
+  [button _buttonBarHitRect];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -2703,17 +2703,17 @@ LABEL_13:
   return result;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v7 = a3;
-  v8 = a4;
+  interactionCopy = interaction;
+  requestCopy = request;
   if ((*&self->_buttonBarFlags & 0x10) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v16 = 0;
     goto LABEL_14;
   }
 
-  [v7 request:v8 locationInView:self->_stackView];
+  [interactionCopy request:requestCopy locationInView:self->_stackView];
   v9 = [(UIView *)self->_stackView hitTest:0 withEvent:?];
   v10 = v9;
   if (!v9)
@@ -2739,7 +2739,7 @@ LABEL_13:
     if (objc_opt_isKindOfClass())
     {
       [(UIView *)v10 bounds];
-      v16 = [v7 createRegionFromRect:v10 targetView:@"com.apple.UIKit.UIButtonBar.UIButton" identifier:-[_UIButtonBarStackView isSelected](v10 selected:{"isSelected"), v17, v18, v19, v20}];
+      v16 = [interactionCopy createRegionFromRect:v10 targetView:@"com.apple.UIKit.UIButtonBar.UIButton" identifier:-[_UIButtonBarStackView isSelected](v10 selected:{"isSelected"), v17, v18, v19, v20}];
       goto LABEL_13;
     }
 
@@ -2750,7 +2750,7 @@ LABEL_12:
 
   v11 = v10;
   [(_UIButtonBar *)self _preferredRegionRectForButton:v11];
-  v16 = [v7 createRegionFromRect:v11 targetView:@"com.apple.UIKit.UIButtonBar._UIButtonBarButton" identifier:-[_UIButtonBarStackView isSelected](v11 selected:{"isSelected"), v12, v13, v14, v15}];
+  v16 = [interactionCopy createRegionFromRect:v11 targetView:@"com.apple.UIKit.UIButtonBar._UIButtonBarButton" identifier:-[_UIButtonBarStackView isSelected](v11 selected:{"isSelected"), v12, v13, v14, v15}];
 
 LABEL_13:
 LABEL_14:
@@ -2758,10 +2758,10 @@ LABEL_14:
   return v16;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = a3;
-  v6 = a4;
+  interactionCopy = interaction;
+  regionCopy = region;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -2769,8 +2769,8 @@ LABEL_14:
     goto LABEL_11;
   }
 
-  v7 = [v6 targetView];
-  if (!v7)
+  targetView = [regionCopy targetView];
+  if (!targetView)
   {
     goto LABEL_9;
   }
@@ -2781,7 +2781,7 @@ LABEL_14:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v5 createStyleForButton:v7 shapeProvider:0];
+      v8 = [interactionCopy createStyleForButton:targetView shapeProvider:0];
       goto LABEL_8;
     }
 
@@ -2790,7 +2790,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v8 = [v7 pointerInteraction:v5 styleForRegion:v6];
+  v8 = [targetView pointerInteraction:interactionCopy styleForRegion:regionCopy];
 LABEL_8:
   v9 = v8;
 LABEL_10:
@@ -2800,16 +2800,16 @@ LABEL_11:
   return v9;
 }
 
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator
 {
-  v9 = a5;
-  v6 = [a4 targetView];
-  if (v6)
+  animatorCopy = animator;
+  targetView = [region targetView];
+  if (targetView)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 visualProvider];
+      visualProvider = [targetView visualProvider];
     }
 
     else
@@ -2820,26 +2820,26 @@ LABEL_11:
         goto LABEL_7;
       }
 
-      v7 = [v6 _visualProvider];
+      visualProvider = [targetView _visualProvider];
     }
 
-    v8 = v7;
-    [v7 pointerWillEnter:v9];
+    v8 = visualProvider;
+    [visualProvider pointerWillEnter:animatorCopy];
   }
 
 LABEL_7:
 }
 
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator
 {
-  v9 = a5;
-  v6 = [a4 targetView];
-  if (v6)
+  animatorCopy = animator;
+  targetView = [region targetView];
+  if (targetView)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 visualProvider];
+      visualProvider = [targetView visualProvider];
     }
 
     else
@@ -2850,11 +2850,11 @@ LABEL_7:
         goto LABEL_7;
       }
 
-      v7 = [v6 _visualProvider];
+      visualProvider = [targetView _visualProvider];
     }
 
-    v8 = v7;
-    [v7 pointerWillExit:v9];
+    v8 = visualProvider;
+    [visualProvider pointerWillExit:animatorCopy];
   }
 
 LABEL_7:

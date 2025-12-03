@@ -9,14 +9,14 @@
 
 - (id)ak_serverFriendlyString
 {
-  v10[2] = a1;
+  v10[2] = self;
   v10[1] = a2;
   v4 = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
   v7 = __42__NSDate_AuthKit__ak_serverFriendlyString__block_invoke;
   v8 = &unk_1E73D8A40;
-  v9 = MEMORY[0x1E69E5928](a1);
+  v9 = MEMORY[0x1E69E5928](self);
   v10[0] = ak_unfair_lock_perform_with_result_5(&timeFormatterLock, &v4);
   v3 = MEMORY[0x1E69E5928](v10[0]);
   objc_storeStrong(v10, 0);
@@ -43,7 +43,7 @@
 
 + (id)ak_dateFromString:()AuthKit
 {
-  v12 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -52,7 +52,7 @@
   v7 = 0;
   v8 = __37__NSDate_AuthKit__ak_dateFromString___block_invoke;
   v9 = &unk_1E73D8A68;
-  v10[1] = v12;
+  v10[1] = selfCopy;
   v10[0] = MEMORY[0x1E69E5928](location[0]);
   v4 = ak_unfair_lock_perform_with_result_5(&timeFormatterLock, &v5);
   objc_storeStrong(v10, 0);
@@ -63,7 +63,7 @@
 
 + (id)ak_dateFromRFC2822String:()AuthKit
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);

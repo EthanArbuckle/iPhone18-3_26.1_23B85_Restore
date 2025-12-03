@@ -1,9 +1,9 @@
 @interface ConnectivityWiFiDE
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 - (id)getOutputDirectoryForCurrentSession;
-- (unint64_t)getCDFSubsystemCollectionFlags:(unint64_t)a3 params:(id)a4;
-- (void)setupWithParameters:(id)a3;
-- (void)teardownWithParameters:(id)a3;
+- (unint64_t)getCDFSubsystemCollectionFlags:(unint64_t)flags params:(id)params;
+- (void)setupWithParameters:(id)parameters;
+- (void)teardownWithParameters:(id)parameters;
 @end
 
 @implementation ConnectivityWiFiDE
@@ -11,8 +11,8 @@
 - (id)getOutputDirectoryForCurrentSession
 {
   v2 = +[NSUUID UUID];
-  v3 = [v2 UUIDString];
-  v4 = [@"/private/var/tmp/ConnectivityWiFiDE" stringByAppendingFormat:@"/%@", v3];
+  uUIDString = [v2 UUIDString];
+  v4 = [@"/private/var/tmp/ConnectivityWiFiDE" stringByAppendingFormat:@"/%@", uUIDString];
 
   v5 = [NSURL fileURLWithPath:v4 isDirectory:1];
   v6 = +[NSFileManager defaultManager];
@@ -42,10 +42,10 @@
   return v9;
 }
 
-- (unint64_t)getCDFSubsystemCollectionFlags:(unint64_t)a3 params:(id)a4
+- (unint64_t)getCDFSubsystemCollectionFlags:(unint64_t)flags params:(id)params
 {
-  v5 = a4;
-  if (a3 != 3)
+  paramsCopy = params;
+  if (flags != 3)
   {
     sub_1000013C4();
   }
@@ -53,7 +53,7 @@
   return 6;
 }
 
-- (void)setupWithParameters:(id)a3
+- (void)setupWithParameters:(id)parameters
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -63,7 +63,7 @@
   }
 }
 
-- (void)teardownWithParameters:(id)a3
+- (void)teardownWithParameters:(id)parameters
 {
   v3 = +[NSFileManager defaultManager];
   v6 = 0;
@@ -72,11 +72,11 @@
 
   if (v4 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v4 localizedDescription];
+    localizedDescription = [v4 localizedDescription];
     *buf = 136315394;
     v8 = "[ConnectivityWiFiDE teardownWithParameters:]";
     v9 = 2114;
-    v10 = v5;
+    v10 = localizedDescription;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "ConnectivityWiFiDE: %s: Failed to clean tmp archive: %{public}@", buf, 0x16u);
   }
 
@@ -88,11 +88,11 @@
   }
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v30 = +[NSMutableArray array];
-  v5 = [v4 objectForKeyedSubscript:@"DEExtensionHostAppKey"];
+  v5 = [parametersCopy objectForKeyedSubscript:@"DEExtensionHostAppKey"];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
@@ -111,15 +111,15 @@ LABEL_25:
     goto LABEL_20;
   }
 
-  v7 = [(ConnectivityWiFiDE *)self getOutputDirectoryForCurrentSession];
-  if (!v7)
+  getOutputDirectoryForCurrentSession = [(ConnectivityWiFiDE *)self getOutputDirectoryForCurrentSession];
+  if (!getOutputDirectoryForCurrentSession)
   {
     sub_100001600(buf);
     goto LABEL_25;
   }
 
-  v8 = v7;
-  if (-[ConnectivityWiFiDE getCDFSubsystemCollectionFlags:params:](self, "getCDFSubsystemCollectionFlags:params:", [v6 unsignedLongValue], v4))
+  v8 = getOutputDirectoryForCurrentSession;
+  if (-[ConnectivityWiFiDE getCDFSubsystemCollectionFlags:params:](self, "getCDFSubsystemCollectionFlags:params:", [v6 unsignedLongValue], parametersCopy))
   {
     v35 = 0;
     v9 = collectSubsystemLogsForClient();
@@ -131,7 +131,7 @@ LABEL_25:
       v26 = v8;
       v27 = v6;
       v28 = v5;
-      v29 = v4;
+      v29 = parametersCopy;
       v33 = 0u;
       v34 = 0u;
       v31 = 0u;
@@ -152,11 +152,11 @@ LABEL_25:
             }
 
             v17 = *(*(&v31 + 1) + 8 * i);
-            v18 = [v17 path];
-            v19 = [v17 name];
-            v20 = [v17 date];
+            path = [v17 path];
+            name = [v17 name];
+            date = [v17 date];
             v21 = [v17 size];
-            v22 = [DEAttachmentItem attachmentWithPath:v18 withDisplayName:v19 modificationDate:v20 andFilesize:v21];
+            v22 = [DEAttachmentItem attachmentWithPath:path withDisplayName:name modificationDate:date andFilesize:v21];
 
             if (v22)
             {
@@ -166,11 +166,11 @@ LABEL_25:
 
             else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
             {
-              v23 = [v17 name];
+              name2 = [v17 name];
               *buf = 136315394;
               *&buf[4] = "[ConnectivityWiFiDE attachmentsForParameters:]";
               v38 = 2114;
-              v39 = v23;
+              v39 = name2;
               _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "ConnectivityWiFiDE: %s: failed to create attachment for file %{public}@", buf, 0x16u);
             }
           }
@@ -182,7 +182,7 @@ LABEL_25:
       }
 
       v5 = v28;
-      v4 = v29;
+      parametersCopy = v29;
       v6 = v27;
       v11 = v25;
     }

@@ -1,36 +1,36 @@
 @interface HKInteractiveChartAnnotationViewDataSource
 - (BOOL)_isMultiSelectionDateRange;
 - (HKCurrentValueViewDataSourceDelegate)currentValueViewDataSourceDelegate;
-- (HKInteractiveChartAnnotationViewDataSource)initWithSelectedRangeFormatter:(id)a3 firstWeekday:(int64_t)a4 currentValueViewDataSourceDelegate:(id)a5;
-- (id)_dateRangeFromSelectionContext:(id)a3 timeScope:(int64_t)a4;
-- (id)_weeksContainingDateRange:(id)a3;
-- (id)dateViewWithOrientation:(int64_t)a3;
-- (id)valueViewForColumnAtIndex:(int64_t)a3 orientation:(int64_t)a4;
+- (HKInteractiveChartAnnotationViewDataSource)initWithSelectedRangeFormatter:(id)formatter firstWeekday:(int64_t)weekday currentValueViewDataSourceDelegate:(id)delegate;
+- (id)_dateRangeFromSelectionContext:(id)context timeScope:(int64_t)scope;
+- (id)_weeksContainingDateRange:(id)range;
+- (id)dateViewWithOrientation:(int64_t)orientation;
+- (id)valueViewForColumnAtIndex:(int64_t)index orientation:(int64_t)orientation;
 - (void)_buildDateLabels;
-- (void)_updateDateTextWithTimeScope:(int64_t)a3 resolution:(int64_t)a4;
-- (void)updateWithSelectionContext:(id)a3 displayType:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 healthStore:(id)a7 viewController:(id)a8;
+- (void)_updateDateTextWithTimeScope:(int64_t)scope resolution:(int64_t)resolution;
+- (void)updateWithSelectionContext:(id)context displayType:(id)type timeScope:(int64_t)scope resolution:(int64_t)resolution healthStore:(id)store viewController:(id)controller;
 @end
 
 @implementation HKInteractiveChartAnnotationViewDataSource
 
-- (HKInteractiveChartAnnotationViewDataSource)initWithSelectedRangeFormatter:(id)a3 firstWeekday:(int64_t)a4 currentValueViewDataSourceDelegate:(id)a5
+- (HKInteractiveChartAnnotationViewDataSource)initWithSelectedRangeFormatter:(id)formatter firstWeekday:(int64_t)weekday currentValueViewDataSourceDelegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a5;
+  formatterCopy = formatter;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = HKInteractiveChartAnnotationViewDataSource;
   v11 = [(HKInteractiveChartAnnotationViewDataSource *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_selectedRangeFormatter, a3);
-    v12->_firstWeekday = a4;
-    objc_storeWeak(&v12->_currentValueViewDataSourceDelegate, v10);
-    v13 = [MEMORY[0x1E69DB878] hk_chartCurrentValueValueFont];
-    [(HKInteractiveChartAnnotationViewDataSource *)v12 setMajorFont:v13];
+    objc_storeStrong(&v11->_selectedRangeFormatter, formatter);
+    v12->_firstWeekday = weekday;
+    objc_storeWeak(&v12->_currentValueViewDataSourceDelegate, delegateCopy);
+    hk_chartCurrentValueValueFont = [MEMORY[0x1E69DB878] hk_chartCurrentValueValueFont];
+    [(HKInteractiveChartAnnotationViewDataSource *)v12 setMajorFont:hk_chartCurrentValueValueFont];
 
-    v14 = [MEMORY[0x1E69DB878] hk_chartCurrentValueUnitFont];
-    [(HKInteractiveChartAnnotationViewDataSource *)v12 setMinorFont:v14];
+    hk_chartCurrentValueUnitFont = [MEMORY[0x1E69DB878] hk_chartCurrentValueUnitFont];
+    [(HKInteractiveChartAnnotationViewDataSource *)v12 setMinorFont:hk_chartCurrentValueUnitFont];
 
     [(HKInteractiveChartAnnotationViewDataSource *)v12 _buildDateLabels];
   }
@@ -40,41 +40,41 @@
 
 - (void)_buildDateLabels
 {
-  v10 = [MEMORY[0x1E69DC888] hk_chartLollipopLabelColor];
+  hk_chartLollipopLabelColor = [MEMORY[0x1E69DC888] hk_chartLollipopLabelColor];
   v3 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [(HKInteractiveChartAnnotationViewDataSource *)self setMainDateLabel:v3];
 
-  v4 = [(HKInteractiveChartAnnotationViewDataSource *)self mainDateLabel];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  mainDateLabel = [(HKInteractiveChartAnnotationViewDataSource *)self mainDateLabel];
+  [mainDateLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [MEMORY[0x1E69DB878] hk_chartCurrentValueDateFont];
-  v6 = [(HKInteractiveChartAnnotationViewDataSource *)self mainDateLabel];
-  [v6 setFont:v5];
+  hk_chartCurrentValueDateFont = [MEMORY[0x1E69DB878] hk_chartCurrentValueDateFont];
+  mainDateLabel2 = [(HKInteractiveChartAnnotationViewDataSource *)self mainDateLabel];
+  [mainDateLabel2 setFont:hk_chartCurrentValueDateFont];
 
-  v7 = v10;
-  if (!v10)
+  v7 = hk_chartLollipopLabelColor;
+  if (!hk_chartLollipopLabelColor)
   {
     v7 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.6];
   }
 
-  v8 = [(HKInteractiveChartAnnotationViewDataSource *)self mainDateLabel];
-  [v8 setTextColor:v7];
+  mainDateLabel3 = [(HKInteractiveChartAnnotationViewDataSource *)self mainDateLabel];
+  [mainDateLabel3 setTextColor:v7];
 
-  if (!v10)
+  if (!hk_chartLollipopLabelColor)
   {
   }
 
-  v9 = [(HKInteractiveChartAnnotationViewDataSource *)self mainDateLabel];
-  [v9 setBaselineAdjustment:1];
+  mainDateLabel4 = [(HKInteractiveChartAnnotationViewDataSource *)self mainDateLabel];
+  [mainDateLabel4 setBaselineAdjustment:1];
 }
 
-- (id)dateViewWithOrientation:(int64_t)a3
+- (id)dateViewWithOrientation:(int64_t)orientation
 {
-  v5 = [(HKInteractiveChartAnnotationViewDataSource *)self lastCombinedDateString];
-  v6 = [(HKInteractiveChartAnnotationViewDataSource *)self mainDateLabel];
-  [v6 setText:v5];
+  lastCombinedDateString = [(HKInteractiveChartAnnotationViewDataSource *)self lastCombinedDateString];
+  mainDateLabel = [(HKInteractiveChartAnnotationViewDataSource *)self mainDateLabel];
+  [mainDateLabel setText:lastCombinedDateString];
 
-  if (!a3)
+  if (!orientation)
   {
     _HKInitializeLogging();
     v7 = HKLogWellnessDashboard();
@@ -84,18 +84,18 @@
     }
   }
 
-  v8 = [(HKInteractiveChartAnnotationViewDataSource *)self mainDateLabel];
+  mainDateLabel2 = [(HKInteractiveChartAnnotationViewDataSource *)self mainDateLabel];
 
-  return v8;
+  return mainDateLabel2;
 }
 
-- (void)_updateDateTextWithTimeScope:(int64_t)a3 resolution:(int64_t)a4
+- (void)_updateDateTextWithTimeScope:(int64_t)scope resolution:(int64_t)resolution
 {
   if ([(HKInteractiveChartAnnotationViewDataSource *)self _isMultiSelectionDateRange])
   {
-    v7 = [(HKInteractiveChartAnnotationViewDataSource *)self currentValueViewDataSourceDelegate];
-    v8 = [(HKInteractiveChartAnnotationViewDataSource *)self lastDateRange];
-    v18 = [v7 stringForValueRange:v8 timeScope:a3];
+    currentValueViewDataSourceDelegate = [(HKInteractiveChartAnnotationViewDataSource *)self currentValueViewDataSourceDelegate];
+    lastDateRange = [(HKInteractiveChartAnnotationViewDataSource *)self lastDateRange];
+    v18 = [currentValueViewDataSourceDelegate stringForValueRange:lastDateRange timeScope:scope];
 
     [(HKInteractiveChartAnnotationViewDataSource *)self setLastUpperDateString:v18];
     [(HKInteractiveChartAnnotationViewDataSource *)self setLastLowerDateString:0];
@@ -104,35 +104,35 @@
 
   else
   {
-    v9 = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithLocalTimeZone];
-    v10 = [(HKInteractiveChartAnnotationViewDataSource *)self lastDateRange];
-    v11 = [v10 startDate];
-    v18 = [v9 components:126 fromDate:v11];
+    hk_gregorianCalendarWithLocalTimeZone = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithLocalTimeZone];
+    lastDateRange2 = [(HKInteractiveChartAnnotationViewDataSource *)self lastDateRange];
+    startDate = [lastDateRange2 startDate];
+    v18 = [hk_gregorianCalendarWithLocalTimeZone components:126 fromDate:startDate];
 
-    v12 = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithLocalTimeZone];
-    v13 = HKUpperStringForAnnotationDateWithTimeScope(v18, v12, a3);
+    hk_gregorianCalendarWithLocalTimeZone2 = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithLocalTimeZone];
+    v13 = HKUpperStringForAnnotationDateWithTimeScope(v18, hk_gregorianCalendarWithLocalTimeZone2, scope);
     [(HKInteractiveChartAnnotationViewDataSource *)self setLastUpperDateString:v13];
 
-    v14 = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithLocalTimeZone];
-    v15 = HKLowerStringForAnnotationDateWithTimeScope(v18, v14, a3);
+    hk_gregorianCalendarWithLocalTimeZone3 = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithLocalTimeZone];
+    v15 = HKLowerStringForAnnotationDateWithTimeScope(v18, hk_gregorianCalendarWithLocalTimeZone3, scope);
     [(HKInteractiveChartAnnotationViewDataSource *)self setLastLowerDateString:v15];
 
-    v16 = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithLocalTimeZone];
-    v17 = HKCombinedStringForAnnotationDateWithTimeScope(v18, v16, a3, a4);
+    hk_gregorianCalendarWithLocalTimeZone4 = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithLocalTimeZone];
+    v17 = HKCombinedStringForAnnotationDateWithTimeScope(v18, hk_gregorianCalendarWithLocalTimeZone4, scope, resolution);
     [(HKInteractiveChartAnnotationViewDataSource *)self setLastCombinedDateString:v17];
   }
 }
 
 - (BOOL)_isMultiSelectionDateRange
 {
-  v3 = [(HKInteractiveChartAnnotationViewDataSource *)self lastDateRange];
-  if (v3)
+  lastDateRange = [(HKInteractiveChartAnnotationViewDataSource *)self lastDateRange];
+  if (lastDateRange)
   {
-    v4 = [(HKInteractiveChartAnnotationViewDataSource *)self lastDateRange];
-    v5 = [v4 startDate];
-    v6 = [(HKInteractiveChartAnnotationViewDataSource *)self lastDateRange];
-    v7 = [v6 endDate];
-    v8 = [v5 hk_isBeforeDate:v7];
+    lastDateRange2 = [(HKInteractiveChartAnnotationViewDataSource *)self lastDateRange];
+    startDate = [lastDateRange2 startDate];
+    lastDateRange3 = [(HKInteractiveChartAnnotationViewDataSource *)self lastDateRange];
+    endDate = [lastDateRange3 endDate];
+    v8 = [startDate hk_isBeforeDate:endDate];
   }
 
   else
@@ -143,17 +143,17 @@
   return v8;
 }
 
-- (id)valueViewForColumnAtIndex:(int64_t)a3 orientation:(int64_t)a4
+- (id)valueViewForColumnAtIndex:(int64_t)index orientation:(int64_t)orientation
 {
-  v5 = [(NSArray *)self->_annotationLabels objectAtIndexedSubscript:a3];
+  v5 = [(NSArray *)self->_annotationLabels objectAtIndexedSubscript:index];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
     v7 = v6;
-    if (a4)
+    if (orientation)
     {
-      if (a4 != 1)
+      if (orientation != 1)
       {
 LABEL_7:
 
@@ -177,26 +177,26 @@ LABEL_8:
   return v5;
 }
 
-- (void)updateWithSelectionContext:(id)a3 displayType:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 healthStore:(id)a7 viewController:(id)a8
+- (void)updateWithSelectionContext:(id)context displayType:(id)type timeScope:(int64_t)scope resolution:(int64_t)resolution healthStore:(id)store viewController:(id)controller
 {
   v54 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v45 = a7;
-  v44 = a8;
-  v15 = [(HKInteractiveChartAnnotationViewDataSource *)self _dateRangeFromSelectionContext:v13 timeScope:a5];
+  contextCopy = context;
+  typeCopy = type;
+  storeCopy = store;
+  controllerCopy = controller;
+  v15 = [(HKInteractiveChartAnnotationViewDataSource *)self _dateRangeFromSelectionContext:contextCopy timeScope:scope];
   [(HKInteractiveChartAnnotationViewDataSource *)self setLastDateRange:v15];
 
-  v16 = [(HKInteractiveChartAnnotationViewDataSource *)self selectedRangeFormatter];
-  v41 = v13;
-  v17 = [v13 userInfo];
-  v18 = [(HKInteractiveChartAnnotationViewDataSource *)self majorFont];
-  v19 = [(HKInteractiveChartAnnotationViewDataSource *)self minorFont];
-  v42 = v14;
-  v39 = a5;
-  v20 = [v16 selectedRangeDataWithCoordinateInfo:v17 majorFont:v18 minorFont:v19 displayType:v14 timeScope:a5 context:0];
+  selectedRangeFormatter = [(HKInteractiveChartAnnotationViewDataSource *)self selectedRangeFormatter];
+  v41 = contextCopy;
+  userInfo = [contextCopy userInfo];
+  majorFont = [(HKInteractiveChartAnnotationViewDataSource *)self majorFont];
+  minorFont = [(HKInteractiveChartAnnotationViewDataSource *)self minorFont];
+  v42 = typeCopy;
+  scopeCopy = scope;
+  v20 = [selectedRangeFormatter selectedRangeDataWithCoordinateInfo:userInfo majorFont:majorFont minorFont:minorFont displayType:typeCopy timeScope:scope context:0];
 
-  v21 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
@@ -222,38 +222,38 @@ LABEL_8:
         }
 
         v30 = *(*(&v49 + 1) + 8 * v29);
-        v31 = [(HKInteractiveChartAnnotationViewDataSource *)self currentValueViewDataSourceDelegate];
+        currentValueViewDataSourceDelegate = [(HKInteractiveChartAnnotationViewDataSource *)self currentValueViewDataSourceDelegate];
         v32 = objc_opt_respondsToSelector();
 
         if (v32)
         {
-          v33 = [(HKInteractiveChartAnnotationViewDataSource *)self currentValueViewDataSourceDelegate];
-          [v33 processSelectedRangeData:v30 displayType:v42];
+          currentValueViewDataSourceDelegate2 = [(HKInteractiveChartAnnotationViewDataSource *)self currentValueViewDataSourceDelegate];
+          [currentValueViewDataSourceDelegate2 processSelectedRangeData:v30 displayType:v42];
         }
 
         v34 = [[HKInteractiveChartAnnotationViewKeyValueLabel alloc] initWithFrame:v25, v26, v27, v28];
-        v35 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)v34 keyLabel];
-        [v35 setSelectedRangeData:v30];
+        keyLabel = [(HKInteractiveChartAnnotationViewKeyValueLabel *)v34 keyLabel];
+        [keyLabel setSelectedRangeData:v30];
 
-        v36 = [v30 titleTapOutBlock];
+        titleTapOutBlock = [v30 titleTapOutBlock];
 
-        if (v36)
+        if (titleTapOutBlock)
         {
           v46[0] = MEMORY[0x1E69E9820];
           v46[1] = 3221225472;
           v46[2] = __133__HKInteractiveChartAnnotationViewDataSource_updateWithSelectionContext_displayType_timeScope_resolution_healthStore_viewController___block_invoke;
           v46[3] = &unk_1E81B5A10;
           v46[4] = v30;
-          v47 = v45;
-          v48 = v44;
+          v47 = storeCopy;
+          v48 = controllerCopy;
           [(HKInteractiveChartAnnotationViewKeyValueLabel *)v34 setTapOutBlock:v46];
         }
 
-        v37 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)v34 valueLabel];
-        v38 = [v30 attributedString];
-        [v37 setAttributedText:v38];
+        valueLabel = [(HKInteractiveChartAnnotationViewKeyValueLabel *)v34 valueLabel];
+        attributedString = [v30 attributedString];
+        [valueLabel setAttributedText:attributedString];
 
-        [v21 addObject:v34];
+        [array addObject:v34];
         ++v29;
       }
 
@@ -264,8 +264,8 @@ LABEL_8:
     while (v23);
   }
 
-  [(HKInteractiveChartAnnotationViewDataSource *)self setAnnotationLabels:v21];
-  [(HKInteractiveChartAnnotationViewDataSource *)self _updateDateTextWithTimeScope:v39 resolution:a6];
+  [(HKInteractiveChartAnnotationViewDataSource *)self setAnnotationLabels:array];
+  [(HKInteractiveChartAnnotationViewDataSource *)self _updateDateTextWithTimeScope:scopeCopy resolution:resolution];
 }
 
 void __133__HKInteractiveChartAnnotationViewDataSource_updateWithSelectionContext_displayType_timeScope_resolution_healthStore_viewController___block_invoke(uint64_t a1)
@@ -274,23 +274,23 @@ void __133__HKInteractiveChartAnnotationViewDataSource_updateWithSelectionContex
   (*(v2 + 2))(v2, *(a1 + 40), *(a1 + 48));
 }
 
-- (id)_dateRangeFromSelectionContext:(id)a3 timeScope:(int64_t)a4
+- (id)_dateRangeFromSelectionContext:(id)context timeScope:(int64_t)scope
 {
-  v6 = a3;
-  v7 = [(HKInteractiveChartAnnotationViewDataSource *)self currentValueViewDataSourceDelegate];
+  contextCopy = context;
+  currentValueViewDataSourceDelegate = [(HKInteractiveChartAnnotationViewDataSource *)self currentValueViewDataSourceDelegate];
   v8 = objc_opt_respondsToSelector();
 
-  if ((v8 & 1) == 0 || (-[HKInteractiveChartAnnotationViewDataSource currentValueViewDataSourceDelegate](self, "currentValueViewDataSourceDelegate"), v9 = objc_claimAutoreleasedReturnValue(), [v9 dateRangeFromSelectionContext:v6 timeScope:a4], v10 = objc_claimAutoreleasedReturnValue(), v9, !v10))
+  if ((v8 & 1) == 0 || (-[HKInteractiveChartAnnotationViewDataSource currentValueViewDataSourceDelegate](self, "currentValueViewDataSourceDelegate"), v9 = objc_claimAutoreleasedReturnValue(), [v9 dateRangeFromSelectionContext:contextCopy timeScope:scope], v10 = objc_claimAutoreleasedReturnValue(), v9, !v10))
   {
-    if (a4 > 8)
+    if (scope > 8)
     {
       v10 = 0;
     }
 
     else
     {
-      [v6 selectedPointValueRange];
-      if (a4 == 3)
+      [contextCopy selectedPointValueRange];
+      if (scope == 3)
         v12 = {;
         v10 = [(HKInteractiveChartAnnotationViewDataSource *)self _weeksContainingDateRange:v12];
       }
@@ -304,18 +304,18 @@ void __133__HKInteractiveChartAnnotationViewDataSource_updateWithSelectionContex
   return v10;
 }
 
-- (id)_weeksContainingDateRange:(id)a3
+- (id)_weeksContainingDateRange:(id)range
 {
   v4 = MEMORY[0x1E695DEE8];
-  v5 = a3;
-  v6 = [v4 hk_gregorianCalendarWithLocalTimeZone];
-  v7 = [MEMORY[0x1E696AB80] hk_dateIntervalWithValueRange:v5];
+  rangeCopy = range;
+  hk_gregorianCalendarWithLocalTimeZone = [v4 hk_gregorianCalendarWithLocalTimeZone];
+  v7 = [MEMORY[0x1E696AB80] hk_dateIntervalWithValueRange:rangeCopy];
 
-  v8 = [v6 hk_weeksContainingInterval:v7 firstWeekday:{-[HKInteractiveChartAnnotationViewDataSource firstWeekday](self, "firstWeekday")}];
+  v8 = [hk_gregorianCalendarWithLocalTimeZone hk_weeksContainingInterval:v7 firstWeekday:{-[HKInteractiveChartAnnotationViewDataSource firstWeekday](self, "firstWeekday")}];
 
-  v9 = [v8 startDate];
-  v10 = [v8 endDate];
-  v11 = [HKValueRange valueRangeWithMinValue:v9 maxValue:v10];
+  startDate = [v8 startDate];
+  endDate = [v8 endDate];
+  v11 = [HKValueRange valueRangeWithMinValue:startDate maxValue:endDate];
 
   return v11;
 }

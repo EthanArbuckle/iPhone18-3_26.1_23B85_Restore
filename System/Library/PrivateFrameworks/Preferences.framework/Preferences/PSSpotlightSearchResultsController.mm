@@ -2,23 +2,23 @@
 - (PSSpotlightSearchResultsController)init;
 - (PSSpotlightSearchResultsControllerDelegate)delegate;
 - (double)iconWidth;
-- (id)_itemForIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_removeIconViewForSection:(id)a3;
-- (void)_selectIndexPath:(id)a3;
-- (void)_updateIconViews:(BOOL)a3;
+- (id)_itemForIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_removeIconViewForSection:(id)section;
+- (void)_selectIndexPath:(id)path;
+- (void)_updateIconViews:(BOOL)views;
 - (void)searchQueryCompleted;
-- (void)searchQueryFoundItems:(id)a3;
+- (void)searchQueryFoundItems:(id)items;
 - (void)selectNextSearchResult;
 - (void)selectPreviousSearchResult;
-- (void)setResults:(id)a3;
+- (void)setResults:(id)results;
 - (void)showSelectedSearchResult;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PSSpotlightSearchResultsController
@@ -38,11 +38,11 @@
     reusableIconViews = v2->_reusableIconViews;
     v2->_reusableIconViews = v5;
 
-    v7 = [MEMORY[0x1E69DC938] currentDevice];
-    v2->_deviceOrientation = [v7 orientation];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    v2->_deviceOrientation = [currentDevice orientation];
 
-    v8 = [(PSSpotlightSearchResultsController *)v2 view];
-    [v8 directionalLayoutMargins];
+    view = [(PSSpotlightSearchResultsController *)v2 view];
+    [view directionalLayoutMargins];
     v2->originalInset = v9;
   }
 
@@ -55,21 +55,21 @@
   v14.super_class = PSSpotlightSearchResultsController;
   [(PSSpotlightSearchResultsController *)&v14 viewDidLoad];
   v3 = objc_opt_new();
-  v4 = [(PSSpotlightSearchResultsController *)self tableView];
-  [v4 setTableFooterView:v3];
+  tableView = [(PSSpotlightSearchResultsController *)self tableView];
+  [tableView setTableFooterView:v3];
 
-  v5 = [(PSSpotlightSearchResultsController *)self tableView];
-  [v5 setKeyboardDismissMode:1];
+  tableView2 = [(PSSpotlightSearchResultsController *)self tableView];
+  [tableView2 setKeyboardDismissMode:1];
 
-  v6 = [(PSSpotlightSearchResultsController *)self tableView];
-  [v6 setAutoresizingMask:18];
+  tableView3 = [(PSSpotlightSearchResultsController *)self tableView];
+  [tableView3 setAutoresizingMask:18];
 
   v7 = +[PSListController appearance];
-  v8 = [v7 usesDarkTheme];
+  usesDarkTheme = [v7 usesDarkTheme];
 
-  v9 = [(PSSpotlightSearchResultsController *)self tableView];
-  v10 = v9;
-  if (v8)
+  tableView4 = [(PSSpotlightSearchResultsController *)self tableView];
+  v10 = tableView4;
+  if (usesDarkTheme)
   {
     v11 = 2;
   }
@@ -79,7 +79,7 @@
     v11 = 0;
   }
 
-  if (v8)
+  if (usesDarkTheme)
   {
     v12 = 2;
   }
@@ -89,26 +89,26 @@
     v12 = 1;
   }
 
-  [v9 setIndicatorStyle:v11];
+  [tableView4 setIndicatorStyle:v11];
 
-  v13 = [(PSSpotlightSearchResultsController *)self tableView];
-  [v13 _accessibilitySetInterfaceStyleIntent:v12];
+  tableView5 = [(PSSpotlightSearchResultsController *)self tableView];
+  [tableView5 _accessibilitySetInterfaceStyleIntent:v12];
 }
 
-- (void)setResults:(id)a3
+- (void)setResults:(id)results
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_results, a3);
-  if ([v5 count])
+  resultsCopy = results;
+  objc_storeStrong(&self->_results, results);
+  if ([resultsCopy count])
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v28 = v5;
-    v7 = v5;
+    v28 = resultsCopy;
+    v7 = resultsCopy;
     v8 = [v7 countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v8)
     {
@@ -124,12 +124,12 @@
           }
 
           v12 = *(*(&v34 + 1) + 8 * i);
-          v13 = [v12 attributeSet];
-          v14 = [v13 theme];
+          attributeSet = [v12 attributeSet];
+          theme = [attributeSet theme];
 
-          if (v14)
+          if (theme)
           {
-            v15 = v14;
+            v15 = theme;
           }
 
           else
@@ -162,8 +162,8 @@
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v20 = [v6 allKeys];
-    v21 = [v20 countByEnumeratingWithState:&v30 objects:v38 count:16];
+    allKeys = [v6 allKeys];
+    v21 = [allKeys countByEnumeratingWithState:&v30 objects:v38 count:16];
     if (v21)
     {
       v22 = v21;
@@ -174,29 +174,29 @@
         {
           if (*v31 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(allKeys);
           }
 
           v25 = [v6 objectForKeyedSubscript:{*(*(&v30 + 1) + 8 * j), v28}];
-          v26 = [(PSSpotlightSearchResultsController *)self tableData];
-          [v26 addObject:v25];
+          tableData = [(PSSpotlightSearchResultsController *)self tableData];
+          [tableData addObject:v25];
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v30 objects:v38 count:16];
+        v22 = [allKeys countByEnumeratingWithState:&v30 objects:v38 count:16];
       }
 
       while (v22);
     }
 
-    v27 = [(PSSpotlightSearchResultsController *)self tableData];
+    tableData2 = [(PSSpotlightSearchResultsController *)self tableData];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __49__PSSpotlightSearchResultsController_setResults___block_invoke;
     v29[3] = &unk_1E71DEBC0;
     v29[4] = self;
-    [v27 sortUsingComparator:v29];
+    [tableData2 sortUsingComparator:v29];
 
-    v5 = v28;
+    resultsCopy = v28;
   }
 }
 
@@ -218,59 +218,59 @@ uint64_t __49__PSSpotlightSearchResultsController_setResults___block_invoke(uint
   return v13;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7 = MEMORY[0x1E69DC938];
-  v8 = a4;
-  v9 = [v7 currentDevice];
-  [v9 orientation];
+  coordinatorCopy = coordinator;
+  currentDevice = [v7 currentDevice];
+  [currentDevice orientation];
 
   v10.receiver = self;
   v10.super_class = PSSpotlightSearchResultsController;
-  [(PSSpotlightSearchResultsController *)&v10 viewWillTransitionToSize:v8 withTransitionCoordinator:width, height];
+  [(PSSpotlightSearchResultsController *)&v10 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(PSSpotlightSearchResultsController *)self tableData];
-  v4 = [v3 count];
+  tableData = [(PSSpotlightSearchResultsController *)self tableData];
+  v4 = [tableData count];
 
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(PSSpotlightSearchResultsController *)self tableData];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  tableData = [(PSSpotlightSearchResultsController *)self tableData];
+  v6 = [tableData objectAtIndexedSubscript:section];
   v7 = [v6 count];
 
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [(PSSpotlightSearchResultsController *)self _itemForIndexPath:a4];
+  viewCopy = view;
+  v7 = [(PSSpotlightSearchResultsController *)self _itemForIndexPath:path];
   v8 = objc_opt_class();
-  v9 = [v8 reuseIdentifier];
-  v10 = [v6 dequeueReusableCellWithIdentifier:v9];
+  reuseIdentifier = [v8 reuseIdentifier];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:reuseIdentifier];
 
   if (!v10)
   {
-    v10 = [[v8 alloc] initWithStyle:3 reuseIdentifier:v9];
+    v10 = [[v8 alloc] initWithStyle:3 reuseIdentifier:reuseIdentifier];
   }
 
-  v11 = [v7 attributeSet];
-  v12 = [v11 subject];
-  v13 = [v10 textLabel];
-  [v13 setText:v12];
+  attributeSet = [v7 attributeSet];
+  subject = [attributeSet subject];
+  textLabel = [v10 textLabel];
+  [textLabel setText:subject];
 
-  v14 = [v7 attributeSet];
-  v15 = [v14 contentDescription];
-  v16 = [v10 detailTextLabel];
-  [v16 setText:v15];
+  attributeSet2 = [v7 attributeSet];
+  contentDescription = [attributeSet2 contentDescription];
+  detailTextLabel = [v10 detailTextLabel];
+  [detailTextLabel setText:contentDescription];
 
   [v10 setShouldIndentSeparator:1];
   [v10 setShouldIndentContent:0];
@@ -278,35 +278,35 @@ uint64_t __49__PSSpotlightSearchResultsController_setResults___block_invoke(uint
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(PSSpotlightSearchResultsController *)self _itemForIndexPath:v6];
+  viewCopy = view;
+  pathCopy = path;
+  v7 = [(PSSpotlightSearchResultsController *)self _itemForIndexPath:pathCopy];
   v8 = v7;
   if (v7)
   {
     v9 = MEMORY[0x1E695DFF8];
-    v10 = [v7 uniqueIdentifier];
-    v11 = [v9 URLWithString:v10];
+    uniqueIdentifier = [v7 uniqueIdentifier];
+    v11 = [v9 URLWithString:uniqueIdentifier];
 
-    v12 = [(PSSpotlightSearchResultsController *)self delegate];
-    [v12 searchResultsController:self didSelectURL:v11];
+    delegate = [(PSSpotlightSearchResultsController *)self delegate];
+    [delegate searchResultsController:self didSelectURL:v11];
   }
 
-  [v13 deselectRowAtIndexPath:v6 animated:0];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:0];
 }
 
-- (id)_itemForIndexPath:(id)a3
+- (id)_itemForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PSSpotlightSearchResultsController *)self tableData];
+  pathCopy = path;
+  tableData = [(PSSpotlightSearchResultsController *)self tableData];
 
-  if (v5)
+  if (tableData)
   {
-    v6 = [(PSSpotlightSearchResultsController *)self tableData];
-    v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v4, "section")}];
-    v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+    tableData2 = [(PSSpotlightSearchResultsController *)self tableData];
+    v7 = [tableData2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+    v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   }
 
   else
@@ -339,46 +339,46 @@ void __47__PSSpotlightSearchResultsController_iconWidth__block_invoke()
   v12.receiver = self;
   v12.super_class = PSSpotlightSearchResultsController;
   [(PSSpotlightSearchResultsController *)&v12 viewDidLayoutSubviews];
-  v3 = [(PSSpotlightSearchResultsController *)self view];
-  [v3 directionalLayoutMargins];
+  view = [(PSSpotlightSearchResultsController *)self view];
+  [view directionalLayoutMargins];
   v5 = v4;
   [(PSSpotlightSearchResultsController *)self iconWidth];
   v7 = v5 + v6;
 
-  v8 = [(PSSpotlightSearchResultsController *)self tableView];
-  [v8 separatorInset];
+  tableView = [(PSSpotlightSearchResultsController *)self tableView];
+  [tableView separatorInset];
   v10 = v9;
 
   if (v10 != v7)
   {
-    v11 = [(PSSpotlightSearchResultsController *)self tableView];
-    [v11 setSeparatorInset:{0.0, v7, 0.0, 0.0}];
+    tableView2 = [(PSSpotlightSearchResultsController *)self tableView];
+    [tableView2 setSeparatorInset:{0.0, v7, 0.0, 0.0}];
   }
 }
 
-- (void)_removeIconViewForSection:(id)a3
+- (void)_removeIconViewForSection:(id)section
 {
-  v5 = a3;
+  sectionCopy = section;
   v4 = [(NSMutableDictionary *)self->_iconViewMap objectForKeyedSubscript:?];
   if (v4)
   {
     [(NSMutableArray *)self->_reusableIconViews addObject:v4];
     [v4 removeFromSuperview];
-    [(NSMutableDictionary *)self->_iconViewMap removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->_iconViewMap removeObjectForKey:sectionCopy];
   }
 }
 
-- (void)_updateIconViews:(BOOL)a3
+- (void)_updateIconViews:(BOOL)views
 {
   v105 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (views)
   {
-    v4 = [(NSMutableDictionary *)self->_iconViewMap allKeys];
+    allKeys = [(NSMutableDictionary *)self->_iconViewMap allKeys];
     v97 = 0u;
     v98 = 0u;
     v99 = 0u;
     v100 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v97 objects:v104 count:16];
+    v5 = [allKeys countByEnumeratingWithState:&v97 objects:v104 count:16];
     if (v5)
     {
       v6 = v5;
@@ -389,35 +389,35 @@ void __47__PSSpotlightSearchResultsController_iconWidth__block_invoke()
         {
           if (*v98 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allKeys);
           }
 
           [(PSSpotlightSearchResultsController *)self _removeIconViewForSection:*(*(&v97 + 1) + 8 * i)];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v97 objects:v104 count:16];
+        v6 = [allKeys countByEnumeratingWithState:&v97 objects:v104 count:16];
       }
 
       while (v6);
     }
   }
 
-  v9 = [(PSSpotlightSearchResultsController *)self tableView];
-  [v9 contentOffset];
+  tableView = [(PSSpotlightSearchResultsController *)self tableView];
+  [tableView contentOffset];
   v11 = v10;
-  v12 = [(PSSpotlightSearchResultsController *)self tableView];
-  [v12 adjustedContentInset];
+  tableView2 = [(PSSpotlightSearchResultsController *)self tableView];
+  [tableView2 adjustedContentInset];
   v14 = v13;
 
-  v15 = [(PSSpotlightSearchResultsController *)self tableView];
-  v16 = [v15 indexPathsForVisibleRows];
+  tableView3 = [(PSSpotlightSearchResultsController *)self tableView];
+  indexPathsForVisibleRows = [tableView3 indexPathsForVisibleRows];
 
-  v17 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v16, "count")}];
+  v17 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(indexPathsForVisibleRows, "count")}];
   v93 = 0u;
   v94 = 0u;
   v95 = 0u;
   v96 = 0u;
-  v18 = v16;
+  v18 = indexPathsForVisibleRows;
   v19 = [v18 countByEnumeratingWithState:&v93 objects:v103 count:16];
   if (v19)
   {
@@ -466,17 +466,17 @@ void __47__PSSpotlightSearchResultsController_iconWidth__block_invoke()
         }
 
         v26 = *(*(&v89 + 1) + 8 * v25);
-        v27 = [v26 unsignedIntegerValue];
-        v28 = [(PSSpotlightSearchResultsController *)self view];
-        [v28 directionalLayoutMargins];
+        unsignedIntegerValue = [v26 unsignedIntegerValue];
+        view = [(PSSpotlightSearchResultsController *)self view];
+        [view directionalLayoutMargins];
         v30 = v29;
 
         [(PSSpotlightSearchResultsController *)self iconWidth];
         v32 = v31;
         v33 = [(NSMutableDictionary *)self->_iconViewMap objectForKeyedSubscript:v26];
-        v34 = [(PSSpotlightSearchResultsController *)self tableView];
-        v35 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:v27];
-        [v34 rectForRowAtIndexPath:v35];
+        tableView4 = [(PSSpotlightSearchResultsController *)self tableView];
+        v35 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:unsignedIntegerValue];
+        [tableView4 rectForRowAtIndexPath:v35];
         v37 = v36;
         v39 = v38;
         v41 = v40;
@@ -486,13 +486,13 @@ void __47__PSSpotlightSearchResultsController_iconWidth__block_invoke()
           goto LABEL_23;
         }
 
-        v63 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:v27];
+        v63 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:unsignedIntegerValue];
         v33 = [(PSSpotlightSearchResultsController *)self _itemForIndexPath:v63];
 
-        v64 = [(PSSpotlightSearchResultsController *)self delegate];
-        v65 = [v33 attributeSet];
-        v66 = [v65 theme];
-        v67 = [v64 searchResultsController:self iconForCategory:v66];
+        delegate = [(PSSpotlightSearchResultsController *)self delegate];
+        attributeSet = [v33 attributeSet];
+        theme = [attributeSet theme];
+        v67 = [delegate searchResultsController:self iconForCategory:theme];
 
         if (!v67)
         {
@@ -512,16 +512,16 @@ void __47__PSSpotlightSearchResultsController_iconWidth__block_invoke()
         }
 
         [v68 setImage:v67];
-        v69 = [(PSSpotlightSearchResultsController *)self tableView];
-        [v69 addSubview:v68];
+        tableView5 = [(PSSpotlightSearchResultsController *)self tableView];
+        [tableView5 addSubview:v68];
 
         [(NSMutableDictionary *)self->_iconViewMap setObject:v68 forKeyedSubscript:v26];
         v33 = v68;
         if (v68)
         {
 LABEL_23:
-          v42 = [(PSSpotlightSearchResultsController *)self tableView];
-          [v42 rectForSection:v27];
+          tableView6 = [(PSSpotlightSearchResultsController *)self tableView];
+          [tableView6 rectForSection:unsignedIntegerValue];
           v44 = v43;
           v46 = v45;
           v48 = v47;
@@ -556,13 +556,13 @@ LABEL_23:
             v58 = v56;
           }
 
-          v59 = [MEMORY[0x1E69DC668] sharedApplication];
-          v60 = [v59 userInterfaceLayoutDirection];
+          mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+          userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-          if (v60 == 1)
+          if (userInterfaceLayoutDirection == 1)
           {
-            v61 = [(PSSpotlightSearchResultsController *)self tableView];
-            [v61 frame];
+            tableView7 = [(PSSpotlightSearchResultsController *)self tableView];
+            [tableView7 frame];
             v30 = v62 - (v30 + v54);
           }
 
@@ -583,11 +583,11 @@ LABEL_31:
   }
 
   v71 = v79;
-  if (!a3)
+  if (!views)
   {
     v72 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:self->_iconViewMap];
-    v73 = [v24 allObjects];
-    [v72 removeObjectsForKeys:v73];
+    allObjects = [v24 allObjects];
+    [v72 removeObjectsForKeys:allObjects];
 
     v87 = 0u;
     v88 = 0u;
@@ -621,45 +621,45 @@ LABEL_31:
   }
 }
 
-- (void)searchQueryFoundItems:(id)a3
+- (void)searchQueryFoundItems:(id)items
 {
-  v4 = a3;
-  v5 = [(PSSpotlightSearchResultsController *)self results];
-  v6 = [v4 arrayByAddingObjectsFromArray:v5];
+  itemsCopy = items;
+  results = [(PSSpotlightSearchResultsController *)self results];
+  v6 = [itemsCopy arrayByAddingObjectsFromArray:results];
 
   [(PSSpotlightSearchResultsController *)self setResults:v6];
-  v7 = [(PSSpotlightSearchResultsController *)self tableView];
-  [v7 reloadData];
+  tableView = [(PSSpotlightSearchResultsController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)searchQueryCompleted
 {
-  v2 = [(PSSpotlightSearchResultsController *)self tableView];
-  [v2 reloadData];
+  tableView = [(PSSpotlightSearchResultsController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)selectPreviousSearchResult
 {
-  v3 = [(PSSpotlightSearchResultsController *)self tableView];
-  v13 = [v3 indexPathForSelectedRow];
+  tableView = [(PSSpotlightSearchResultsController *)self tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
 
-  v4 = v13;
-  if (v13)
+  v4 = indexPathForSelectedRow;
+  if (indexPathForSelectedRow)
   {
-    v5 = [v13 section];
-    v6 = [v13 row];
+    section = [indexPathForSelectedRow section];
+    v6 = [indexPathForSelectedRow row];
     v7 = v6 - 1;
     if (v6 < 1)
     {
-      v9 = v5-- < 1;
-      v4 = v13;
+      v9 = section-- < 1;
+      v4 = indexPathForSelectedRow;
       if (v9)
       {
         goto LABEL_7;
       }
 
-      v10 = [(PSSpotlightSearchResultsController *)self tableView];
-      v11 = [v10 numberOfRowsInSection:v5] - 1;
+      tableView2 = [(PSSpotlightSearchResultsController *)self tableView];
+      v11 = [tableView2 numberOfRowsInSection:section] - 1;
 
       v8 = MEMORY[0x1E696AC88];
       v7 = v11;
@@ -670,10 +670,10 @@ LABEL_31:
       v8 = MEMORY[0x1E696AC88];
     }
 
-    v12 = [v8 indexPathForRow:v7 inSection:v5];
+    v12 = [v8 indexPathForRow:v7 inSection:section];
     [(PSSpotlightSearchResultsController *)self _selectIndexPath:v12];
 
-    v4 = v13;
+    v4 = indexPathForSelectedRow;
   }
 
 LABEL_7:
@@ -681,28 +681,28 @@ LABEL_7:
 
 - (void)selectNextSearchResult
 {
-  v3 = [(PSSpotlightSearchResultsController *)self tableView];
-  v14 = [v3 indexPathForSelectedRow];
+  tableView = [(PSSpotlightSearchResultsController *)self tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
 
-  if (v14)
+  if (indexPathForSelectedRow)
   {
-    v4 = [v14 section];
-    v5 = [v14 row];
-    v6 = [(PSSpotlightSearchResultsController *)self tableView];
-    v7 = [v6 numberOfRowsInSection:v4] - 1;
+    section = [indexPathForSelectedRow section];
+    v5 = [indexPathForSelectedRow row];
+    tableView2 = [(PSSpotlightSearchResultsController *)self tableView];
+    v7 = [tableView2 numberOfRowsInSection:section] - 1;
 
     if (v5 >= v7)
     {
-      v11 = [(PSSpotlightSearchResultsController *)self tableView];
-      v12 = [v11 numberOfSections] - 1;
+      tableView3 = [(PSSpotlightSearchResultsController *)self tableView];
+      v12 = [tableView3 numberOfSections] - 1;
 
-      if (v4 >= v12)
+      if (section >= v12)
       {
         goto LABEL_8;
       }
 
       v8 = MEMORY[0x1E696AC88];
-      v10 = v4 + 1;
+      v10 = section + 1;
       v9 = 0;
     }
 
@@ -710,7 +710,7 @@ LABEL_7:
     {
       v8 = MEMORY[0x1E696AC88];
       v9 = v5 + 1;
-      v10 = v4;
+      v10 = section;
     }
   }
 
@@ -727,31 +727,31 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)_selectIndexPath:(id)a3
+- (void)_selectIndexPath:(id)path
 {
-  v14 = a3;
-  v4 = [(PSSpotlightSearchResultsController *)self tableView];
-  v5 = [v4 indexPathsForVisibleRows];
+  pathCopy = path;
+  tableView = [(PSSpotlightSearchResultsController *)self tableView];
+  indexPathsForVisibleRows = [tableView indexPathsForVisibleRows];
 
-  v6 = [v5 firstObject];
-  v7 = [v6 compare:v14];
+  firstObject = [indexPathsForVisibleRows firstObject];
+  v7 = [firstObject compare:pathCopy];
 
   if (v7 == 1)
   {
-    v8 = [(PSSpotlightSearchResultsController *)self tableView];
-    v9 = v8;
-    v10 = v14;
+    tableView2 = [(PSSpotlightSearchResultsController *)self tableView];
+    v9 = tableView2;
+    v10 = pathCopy;
     v11 = 1;
   }
 
   else
   {
-    v12 = [v5 lastObject];
-    v13 = [v12 compare:v14];
+    lastObject = [indexPathsForVisibleRows lastObject];
+    v13 = [lastObject compare:pathCopy];
 
-    v8 = [(PSSpotlightSearchResultsController *)self tableView];
-    v9 = v8;
-    v10 = v14;
+    tableView2 = [(PSSpotlightSearchResultsController *)self tableView];
+    v9 = tableView2;
+    v10 = pathCopy;
     if (v13 == -1)
     {
       v11 = 3;
@@ -763,20 +763,20 @@ LABEL_8:
     }
   }
 
-  [v8 selectRowAtIndexPath:v10 animated:1 scrollPosition:v11];
+  [tableView2 selectRowAtIndexPath:v10 animated:1 scrollPosition:v11];
 }
 
 - (void)showSelectedSearchResult
 {
-  v3 = [(PSSpotlightSearchResultsController *)self tableView];
-  v5 = [v3 indexPathForSelectedRow];
+  tableView = [(PSSpotlightSearchResultsController *)self tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
 
-  if (v5)
+  if (indexPathForSelectedRow)
   {
-    v4 = [(PSSpotlightSearchResultsController *)self tableView];
-    [(PSSpotlightSearchResultsController *)self tableView:v4 didSelectRowAtIndexPath:v5];
+    tableView2 = [(PSSpotlightSearchResultsController *)self tableView];
+    [(PSSpotlightSearchResultsController *)self tableView:tableView2 didSelectRowAtIndexPath:indexPathForSelectedRow];
 
-    [(PSSpotlightSearchResultsController *)self _selectIndexPath:v5];
+    [(PSSpotlightSearchResultsController *)self _selectIndexPath:indexPathForSelectedRow];
   }
 }
 

@@ -1,56 +1,56 @@
 @interface SBSystemActionInstanceIdentity
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)initWithHostIdentifier:(void *)a3 configurationIdentifier:;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)initWithHostIdentifier:(void *)identifier configurationIdentifier:;
 @end
 
 @implementation SBSystemActionInstanceIdentity
 
-- (void)initWithHostIdentifier:(void *)a3 configurationIdentifier:
+- (void)initWithHostIdentifier:(void *)identifier configurationIdentifier:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  identifierCopy = identifier;
+  if (self)
   {
     if (!v5)
     {
       [SBSystemActionInstanceIdentity initWithHostIdentifier:? configurationIdentifier:?];
     }
 
-    if (!v6)
+    if (!identifierCopy)
     {
       [SBSystemActionInstanceIdentity initWithHostIdentifier:? configurationIdentifier:?];
     }
 
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = SBSystemActionInstanceIdentity;
-    a1 = objc_msgSendSuper2(&v12, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v12, sel_init);
+    if (self)
     {
       v7 = [v5 copy];
-      v8 = a1[1];
-      a1[1] = v7;
+      v8 = self[1];
+      self[1] = v7;
 
-      v9 = [v6 copy];
-      v10 = a1[2];
-      a1[2] = v9;
+      v9 = [identifierCopy copy];
+      v10 = self[2];
+      self[2] = v9;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __63__SBSystemActionInstanceIdentity_appendDescriptionToFormatter___block_invoke;
   v6[3] = &unk_2783A92D8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = formatterCopy;
+  selfCopy = self;
+  v5 = formatterCopy;
   [v5 appendProem:0 block:v6];
 }
 
@@ -63,10 +63,10 @@ uint64_t __63__SBSystemActionInstanceIdentity_appendDescriptionToFormatter___blo
   return [v2 appendString:v3 withName:@"configurationIdentifier"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -78,7 +78,7 @@ uint64_t __63__SBSystemActionInstanceIdentity_appendDescriptionToFormatter___blo
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       if (BSEqualStrings())
       {
         v8 = BSEqualStrings();
@@ -101,8 +101,8 @@ uint64_t __63__SBSystemActionInstanceIdentity_appendDescriptionToFormatter___blo
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendString:self->_hostIdentifier];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendString:self->_hostIdentifier];
   v5 = [v4 appendString:self->_configurationIdentifier];
   v6 = [v5 hash];
 

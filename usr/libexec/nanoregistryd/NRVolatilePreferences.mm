@@ -1,6 +1,6 @@
 @interface NRVolatilePreferences
 - (void)_clearIfFirstAccessSinceBoot;
-- (void)_setDomain:(id)a3;
+- (void)_setDomain:(id)domain;
 @end
 
 @implementation NRVolatilePreferences
@@ -28,11 +28,11 @@
   }
 }
 
-- (void)_setDomain:(id)a3
+- (void)_setDomain:(id)domain
 {
   v4.receiver = self;
   v4.super_class = NRVolatilePreferences;
-  [(NRPreferences *)&v4 _setDomain:a3];
+  [(NRPreferences *)&v4 _setDomain:domain];
   [(NRVolatilePreferences *)self _clearIfFirstAccessSinceBoot];
 }
 

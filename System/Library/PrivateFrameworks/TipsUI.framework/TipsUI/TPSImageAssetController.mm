@@ -1,10 +1,10 @@
 @interface TPSImageAssetController
-+ (id)dataCacheForIdentifier:(id)a3;
++ (id)dataCacheForIdentifier:(id)identifier;
 + (id)defaultInMemoryImageCache;
-+ (id)formattedDataForPath:(id)a3 identifier:(id)a4 priority:(float)a5 completionHandler:(id)a6;
-+ (id)getImageForIdentifier:(id)a3;
-+ (id)imageFromMemoryCacheForIdentifier:(id)a3;
-+ (void)addInMemoryCacheForImage:(id)a3 identifier:(id)a4 cost:(unint64_t)a5;
++ (id)formattedDataForPath:(id)path identifier:(id)identifier priority:(float)priority completionHandler:(id)handler;
++ (id)getImageForIdentifier:(id)identifier;
++ (id)imageFromMemoryCacheForIdentifier:(id)identifier;
++ (void)addInMemoryCacheForImage:(id)image identifier:(id)identifier cost:(unint64_t)cost;
 + (void)removeInMemoryCache;
 @end
 
@@ -39,52 +39,52 @@ uint64_t __52__TPSImageAssetController_defaultInMemoryImageCache__block_invoke()
   [v2 removeAllObjects];
 }
 
-+ (void)addInMemoryCacheForImage:(id)a3 identifier:(id)a4 cost:(unint64_t)a5
++ (void)addInMemoryCacheForImage:(id)image identifier:(id)identifier cost:(unint64_t)cost
 {
-  v10 = a3;
-  v7 = a4;
-  if (v10)
+  imageCopy = image;
+  identifierCopy = identifier;
+  if (imageCopy)
   {
     v8 = +[TPSImageAssetController defaultInMemoryImageCache];
     v9 = v8;
-    if (a5)
+    if (cost)
     {
-      [v8 setObject:v10 forKey:v7 cost:a5];
+      [v8 setObject:imageCopy forKey:identifierCopy cost:cost];
     }
 
     else
     {
-      [v8 setObject:v10 forKey:v7];
+      [v8 setObject:imageCopy forKey:identifierCopy];
     }
   }
 }
 
-+ (id)imageFromMemoryCacheForIdentifier:(id)a3
++ (id)imageFromMemoryCacheForIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[TPSImageAssetController defaultInMemoryImageCache];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:identifierCopy];
 
   return v5;
 }
 
-+ (id)getImageForIdentifier:(id)a3
++ (id)getImageForIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [TPSImageAssetController imageFromMemoryCacheForIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [TPSImageAssetController imageFromMemoryCacheForIdentifier:identifierCopy];
   if (!v4)
   {
-    v5 = [MEMORY[0x277D716A0] sharedInstance];
-    v6 = [v5 dataCacheForIdentifier:v3];
+    mEMORY[0x277D716A0] = [MEMORY[0x277D716A0] sharedInstance];
+    v6 = [mEMORY[0x277D716A0] dataCacheForIdentifier:identifierCopy];
 
-    v7 = [MEMORY[0x277D716A0] sharedInstance];
-    v8 = [v7 cacheFileURLForDataCache:v6];
+    mEMORY[0x277D716A0]2 = [MEMORY[0x277D716A0] sharedInstance];
+    v8 = [mEMORY[0x277D716A0]2 cacheFileURLForDataCache:v6];
 
     if (v8)
     {
       v9 = objc_alloc(MEMORY[0x277D755B8]);
-      v10 = [v8 path];
-      v4 = [v9 initWithContentsOfFile:v10];
+      path = [v8 path];
+      v4 = [v9 initWithContentsOfFile:path];
     }
 
     else
@@ -96,33 +96,33 @@ uint64_t __52__TPSImageAssetController_defaultInMemoryImageCache__block_invoke()
   return v4;
 }
 
-+ (id)dataCacheForIdentifier:(id)a3
++ (id)dataCacheForIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277D716A0];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  v6 = [v5 dataCacheForIdentifier:v4];
+  identifierCopy = identifier;
+  sharedInstance = [v3 sharedInstance];
+  v6 = [sharedInstance dataCacheForIdentifier:identifierCopy];
 
   return v6;
 }
 
-+ (id)formattedDataForPath:(id)a3 identifier:(id)a4 priority:(float)a5 completionHandler:(id)a6
++ (id)formattedDataForPath:(id)path identifier:(id)identifier priority:(float)priority completionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a6;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = MEMORY[0x277D716A0];
-  v12 = a3;
-  v13 = [v11 sharedInstance];
+  pathCopy = path;
+  sharedInstance = [v11 sharedInstance];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __86__TPSImageAssetController_formattedDataForPath_identifier_priority_completionHandler___block_invoke;
   v19[3] = &unk_278451370;
-  v20 = v9;
-  v21 = v10;
-  v14 = v10;
-  v15 = v9;
-  *&v16 = a5;
-  v17 = [v13 formattedDataForPath:v12 identifier:v15 attributionIdentifier:0 priority:v19 completionHandler:v16];
+  v20 = identifierCopy;
+  v21 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = identifierCopy;
+  *&v16 = priority;
+  v17 = [sharedInstance formattedDataForPath:pathCopy identifier:v15 attributionIdentifier:0 priority:v19 completionHandler:v16];
 
   return v17;
 }

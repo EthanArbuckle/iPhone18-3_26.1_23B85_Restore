@@ -1,12 +1,12 @@
 @interface UIKeyboardCameraPadPresentationController
 - (CGRect)frameOfPresentedViewInContainerView;
 - (UIDimmingViewDelegate)dimmingViewDelegate;
-- (void)_animateDismissTransition:(id)a3;
-- (void)_animatePresentTransition:(id)a3;
-- (void)animateTransition:(id)a3;
+- (void)_animateDismissTransition:(id)transition;
+- (void)_animatePresentTransition:(id)transition;
+- (void)animateTransition:(id)transition;
 - (void)dismissalTransitionWillBegin;
 - (void)presentationTransitionWillBegin;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation UIKeyboardCameraPadPresentationController
@@ -30,8 +30,8 @@
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v3 = [(UIPresentationController *)self presentingViewController];
-  +[UIKeyboard sizeForInterfaceOrientation:](UIKeyboard, "sizeForInterfaceOrientation:", [v3 interfaceOrientation]);
+  presentingViewController = [(UIPresentationController *)self presentingViewController];
+  +[UIKeyboard sizeForInterfaceOrientation:](UIKeyboard, "sizeForInterfaceOrientation:", [presentingViewController interfaceOrientation]);
   v5 = v4;
 
   if (v5 > 400.0)
@@ -44,8 +44,8 @@
     v6 = 400.0;
   }
 
-  v7 = [(UIPresentationController *)self containerView];
-  [v7 bounds];
+  containerView = [(UIPresentationController *)self containerView];
+  [containerView bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -66,14 +66,14 @@
   return result;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v16.receiver = self;
   v16.super_class = UIKeyboardCameraPadPresentationController;
-  [(UIPresentationController *)&v16 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(UIPresentationController *)&v16 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x4010000000;
@@ -100,7 +100,7 @@
   v8[4] = self;
   v8[5] = v13;
   v8[6] = v10;
-  [v7 animateAlongsideTransition:v9 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:v9 completion:v8];
   _Block_object_dispose(v10, 8);
   _Block_object_dispose(v13, 8);
 }
@@ -143,22 +143,22 @@ uint64_t __96__UIKeyboardCameraPadPresentationController_viewWillTransitionToSiz
   return [*(a1 + 32) modifyKeyboardTrackingUsingNotificationType:2 from:0 to:v1[4] forStart:{v1[5], v1[6], v1[7], v2[4], v2[5], v2[6], v2[7]}];
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   if (self->_shadowView)
   {
-    [(UIKeyboardCameraPadPresentationController *)self _animateDismissTransition:a3];
+    [(UIKeyboardCameraPadPresentationController *)self _animateDismissTransition:transition];
   }
 
   else
   {
-    [(UIKeyboardCameraPadPresentationController *)self _animatePresentTransition:a3];
+    [(UIKeyboardCameraPadPresentationController *)self _animatePresentTransition:transition];
   }
 }
 
-- (void)_animateDismissTransition:(id)a3
+- (void)_animateDismissTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __71__UIKeyboardCameraPadPresentationController__animateDismissTransition___block_invoke;
@@ -169,8 +169,8 @@ uint64_t __96__UIKeyboardCameraPadPresentationController_viewWillTransitionToSiz
   v6[2] = __71__UIKeyboardCameraPadPresentationController__animateDismissTransition___block_invoke_2;
   v6[3] = &unk_1E70F3C60;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = transitionCopy;
+  v5 = transitionCopy;
   [UIView _animateUsingSpringWithDuration:0 delay:v8 options:v6 mass:0.8 stiffness:0.0 damping:2.0 initialVelocity:300.0 animations:50.0 completion:0.0];
 }
 
@@ -192,39 +192,39 @@ uint64_t __71__UIKeyboardCameraPadPresentationController__animateDismissTransiti
   return [v4 completeTransition:a2];
 }
 
-- (void)_animatePresentTransition:(id)a3
+- (void)_animatePresentTransition:(id)transition
 {
-  v5 = a3;
-  v6 = [v5 viewControllerForKey:@"UITransitionContextToViewController"];
-  v7 = [v6 view];
-  v8 = [v5 containerView];
-  [v8 setIgnoresInteractionEvents:0];
-  [v8 setIgnoreDirectTouchEvents:0];
+  transitionCopy = transition;
+  v6 = [transitionCopy viewControllerForKey:@"UITransitionContextToViewController"];
+  view = [v6 view];
+  containerView = [transitionCopy containerView];
+  [containerView setIgnoresInteractionEvents:0];
+  [containerView setIgnoreDirectTouchEvents:0];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"UIKeyboardCameraPadPresentationController.m" lineNumber:150 description:@"Keyboard Camera is being presented in something other than a UITransitionView."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIKeyboardCameraPadPresentationController.m" lineNumber:150 description:@"Keyboard Camera is being presented in something other than a UITransitionView."];
   }
 
-  v9 = [v8 delegate];
+  delegate = [containerView delegate];
 
-  if (v9 != self)
+  if (delegate != self)
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"UIKeyboardCameraPadPresentationController.m" lineNumber:151 description:@"Expecting to be the delegate of the UITransitionView for UITextEffectsWindow."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIKeyboardCameraPadPresentationController.m" lineNumber:151 description:@"Expecting to be the delegate of the UITransitionView for UITextEffectsWindow."];
   }
 
   v10 = objc_alloc_init(UIDimmingView);
   dimmingView = self->_dimmingView;
   self->_dimmingView = v10;
 
-  v12 = [(UIKeyboardCameraPadPresentationController *)self dimmingViewDelegate];
-  [(UIDimmingView *)self->_dimmingView setDelegate:v12];
+  dimmingViewDelegate = [(UIKeyboardCameraPadPresentationController *)self dimmingViewDelegate];
+  [(UIDimmingView *)self->_dimmingView setDelegate:dimmingViewDelegate];
 
-  [v8 bounds];
+  [containerView bounds];
   [(UIView *)self->_dimmingView setFrame:?];
-  [v5 finalFrameForViewController:v6];
+  [transitionCopy finalFrameForViewController:v6];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -235,33 +235,33 @@ uint64_t __71__UIKeyboardCameraPadPresentationController__animateDismissTransiti
 
   [(UIView *)self->_shadowView setFrame:v14, v16, v18, v20];
   [(UIView *)self->_shadowView bounds];
-  [v7 setFrame:?];
-  [v7 setClipsToBounds:1];
-  [v7 _setContinuousCornerRadius:15.0];
-  [(UIView *)self->_shadowView addSubview:v7];
-  [v8 addSubview:self->_dimmingView];
-  [v8 addSubview:self->_shadowView];
+  [view setFrame:?];
+  [view setClipsToBounds:1];
+  [view _setContinuousCornerRadius:15.0];
+  [(UIView *)self->_shadowView addSubview:view];
+  [containerView addSubview:self->_dimmingView];
+  [containerView addSubview:self->_shadowView];
   [(UIView *)self->_shadowView setAlpha:0.0];
   CGAffineTransformMakeScale(&v38, 0.6, 0.6);
   v23 = self->_shadowView;
   v37 = v38;
   [(UIView *)v23 setTransform:&v37];
-  v24 = [(UIView *)self->_shadowView layer];
+  layer = [(UIView *)self->_shadowView layer];
   LODWORD(v25) = 0.25;
-  [v24 setShadowOpacity:v25];
+  [layer setShadowOpacity:v25];
 
-  v26 = [(UIView *)self->_shadowView layer];
-  [v26 setShadowRadius:30.0];
+  layer2 = [(UIView *)self->_shadowView layer];
+  [layer2 setShadowRadius:30.0];
 
-  v27 = [(UIView *)self->_shadowView layer];
-  [v27 setShadowOffset:{0.0, -10.0}];
+  layer3 = [(UIView *)self->_shadowView layer];
+  [layer3 setShadowOffset:{0.0, -10.0}];
 
   v28 = +[UIColor blackColor];
-  v29 = [v28 CGColor];
-  v30 = [(UIView *)self->_shadowView layer];
-  [v30 setShadowColor:v29];
+  cGColor = [v28 CGColor];
+  layer4 = [(UIView *)self->_shadowView layer];
+  [layer4 setShadowColor:cGColor];
 
-  v35 = v5;
+  v35 = transitionCopy;
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __71__UIKeyboardCameraPadPresentationController__animatePresentTransition___block_invoke;
@@ -271,7 +271,7 @@ uint64_t __71__UIKeyboardCameraPadPresentationController__animateDismissTransiti
   v34[1] = 3221225472;
   v34[2] = __71__UIKeyboardCameraPadPresentationController__animatePresentTransition___block_invoke_2;
   v34[3] = &unk_1E70F5AC0;
-  v31 = v5;
+  v31 = transitionCopy;
   [UIView _animateUsingSpringWithDuration:0 delay:v36 options:v34 mass:0.8 stiffness:0.0 damping:2.0 initialVelocity:300.0 animations:50.0 completion:0.0];
 }
 

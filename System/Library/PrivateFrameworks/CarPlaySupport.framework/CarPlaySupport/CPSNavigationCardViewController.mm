@@ -1,22 +1,22 @@
 @interface CPSNavigationCardViewController
-- (CGRect)adjustedShadowConstraintsWithFrame:(CGRect)a3;
-- (id)createShadowViewWithFrame:(CGRect)a3;
-- (void)_showPausedViewForReason:(unint64_t)a3 description:(id)a4 pauseCardColor:(id)a5;
-- (void)_transitionFromViews:(id)a3 inView:(id)a4;
+- (CGRect)adjustedShadowConstraintsWithFrame:(CGRect)frame;
+- (id)createShadowViewWithFrame:(CGRect)frame;
+- (void)_showPausedViewForReason:(unint64_t)reason description:(id)description pauseCardColor:(id)color;
+- (void)_transitionFromViews:(id)views inView:(id)view;
 - (void)_updateCardBackgroundColors;
 - (void)_updateHelperConstraints;
 - (void)_updateLinkedCheck;
 - (void)_updateNavigationCardHidden;
-- (void)_updateSizingViewConstraintsForView:(id)a3;
-- (void)availableHeightChangedTo:(double)a3;
-- (void)navigator:(id)a3 didEndTrip:(BOOL)a4;
-- (void)navigator:(id)a3 pausedTripForReason:(unint64_t)a4 description:(id)a5 usingColor:(id)a6;
-- (void)setGuidanceBackgroundColor:(id)a3;
-- (void)setNavigatingBundleIdentifier:(id)a3;
-- (void)setNavigationCardHidden:(BOOL)a3 forRequester:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)showManeuvers:(id)a3 usingDisplayStyles:(id)a4;
-- (void)updateEstimates:(id)a3 forManeuver:(id)a4;
-- (void)updateTripEstimates:(id)a3;
+- (void)_updateSizingViewConstraintsForView:(id)view;
+- (void)availableHeightChangedTo:(double)to;
+- (void)navigator:(id)navigator didEndTrip:(BOOL)trip;
+- (void)navigator:(id)navigator pausedTripForReason:(unint64_t)reason description:(id)description usingColor:(id)color;
+- (void)setGuidanceBackgroundColor:(id)color;
+- (void)setNavigatingBundleIdentifier:(id)identifier;
+- (void)setNavigationCardHidden:(BOOL)hidden forRequester:(id)requester animated:(BOOL)animated completion:(id)completion;
+- (void)showManeuvers:(id)maneuvers usingDisplayStyles:(id)styles;
+- (void)updateEstimates:(id)estimates forManeuver:(id)maneuver;
+- (void)updateTripEstimates:(id)estimates;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -26,127 +26,127 @@
 - (void)_updateHelperConstraints
 {
   v56[2] = *MEMORY[0x277D85DE8];
-  v53 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  v51 = [(CPSNavigationCardViewController *)self currentManeuversCardView];
-  *&v2 = MEMORY[0x277D82BD8](v51).n128_u64[0];
-  if (v51)
+  currentManeuversCardView = [(CPSNavigationCardViewController *)self currentManeuversCardView];
+  *&v2 = MEMORY[0x277D82BD8](currentManeuversCardView).n128_u64[0];
+  if (currentManeuversCardView)
   {
-    v50 = [(CPSNavigationCardViewController *)v53 layoutHelperView];
-    v49 = [(CPSLayoutHelperView *)v50 topAnchor];
-    v48 = [(CPSNavigationCardViewController *)v53 currentManeuversCardView];
-    v47 = [(CPSManeuversCardView *)v48 contentView];
-    v46 = [(UIView *)v47 topAnchor];
-    v45 = [v49 constraintEqualToAnchor:?];
+    layoutHelperView = [(CPSNavigationCardViewController *)selfCopy layoutHelperView];
+    topAnchor = [(CPSLayoutHelperView *)layoutHelperView topAnchor];
+    currentManeuversCardView2 = [(CPSNavigationCardViewController *)selfCopy currentManeuversCardView];
+    contentView = [(CPSManeuversCardView *)currentManeuversCardView2 contentView];
+    topAnchor2 = [(UIView *)contentView topAnchor];
+    v45 = [topAnchor constraintEqualToAnchor:?];
     v56[0] = v45;
-    v44 = [(CPSNavigationCardViewController *)v53 layoutHelperView];
-    v43 = [(CPSLayoutHelperView *)v44 bottomAnchor];
-    v42 = [(CPSNavigationCardViewController *)v53 currentManeuversCardView];
-    v41 = [(CPSManeuversCardView *)v42 contentView];
-    v40 = [(UIView *)v41 bottomAnchor];
-    v39 = [v43 constraintEqualToAnchor:?];
+    layoutHelperView2 = [(CPSNavigationCardViewController *)selfCopy layoutHelperView];
+    bottomAnchor = [(CPSLayoutHelperView *)layoutHelperView2 bottomAnchor];
+    currentManeuversCardView3 = [(CPSNavigationCardViewController *)selfCopy currentManeuversCardView];
+    contentView2 = [(CPSManeuversCardView *)currentManeuversCardView3 contentView];
+    bottomAnchor2 = [(UIView *)contentView2 bottomAnchor];
+    v39 = [bottomAnchor constraintEqualToAnchor:?];
     v56[1] = v39;
     v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v56 count:2];
     v4 = location[0];
     location[0] = v3;
     MEMORY[0x277D82BD8](v4);
     MEMORY[0x277D82BD8](v39);
-    MEMORY[0x277D82BD8](v40);
-    MEMORY[0x277D82BD8](v41);
-    MEMORY[0x277D82BD8](v42);
-    MEMORY[0x277D82BD8](v43);
-    MEMORY[0x277D82BD8](v44);
+    MEMORY[0x277D82BD8](bottomAnchor2);
+    MEMORY[0x277D82BD8](contentView2);
+    MEMORY[0x277D82BD8](currentManeuversCardView3);
+    MEMORY[0x277D82BD8](bottomAnchor);
+    MEMORY[0x277D82BD8](layoutHelperView2);
     MEMORY[0x277D82BD8](v45);
-    MEMORY[0x277D82BD8](v46);
-    MEMORY[0x277D82BD8](v47);
-    MEMORY[0x277D82BD8](v48);
-    MEMORY[0x277D82BD8](v49);
-    v5 = MEMORY[0x277D82BD8](v50).n128_u64[0];
+    MEMORY[0x277D82BD8](topAnchor2);
+    MEMORY[0x277D82BD8](contentView);
+    MEMORY[0x277D82BD8](currentManeuversCardView2);
+    MEMORY[0x277D82BD8](topAnchor);
+    v5 = MEMORY[0x277D82BD8](layoutHelperView).n128_u64[0];
   }
 
   else
   {
-    v38 = [(CPSNavigationCardViewController *)v53 currentPausedCardView];
-    *&v6 = MEMORY[0x277D82BD8](v38).n128_u64[0];
-    if (v38)
+    currentPausedCardView = [(CPSNavigationCardViewController *)selfCopy currentPausedCardView];
+    *&v6 = MEMORY[0x277D82BD8](currentPausedCardView).n128_u64[0];
+    if (currentPausedCardView)
     {
-      v37 = [(CPSNavigationCardViewController *)v53 layoutHelperView];
-      v36 = [(CPSLayoutHelperView *)v37 topAnchor];
-      v35 = [(CPSNavigationCardViewController *)v53 currentPausedCardView];
-      v34 = [(CPSPausedCardView *)v35 contentView];
-      v33 = [(UIView *)v34 topAnchor];
-      v32 = [v36 constraintEqualToAnchor:?];
+      layoutHelperView3 = [(CPSNavigationCardViewController *)selfCopy layoutHelperView];
+      topAnchor3 = [(CPSLayoutHelperView *)layoutHelperView3 topAnchor];
+      currentPausedCardView2 = [(CPSNavigationCardViewController *)selfCopy currentPausedCardView];
+      contentView3 = [(CPSPausedCardView *)currentPausedCardView2 contentView];
+      topAnchor4 = [(UIView *)contentView3 topAnchor];
+      v32 = [topAnchor3 constraintEqualToAnchor:?];
       v55[0] = v32;
-      v31 = [(CPSNavigationCardViewController *)v53 layoutHelperView];
-      v30 = [(CPSLayoutHelperView *)v31 bottomAnchor];
-      v29 = [(CPSNavigationCardViewController *)v53 currentPausedCardView];
-      v28 = [(CPSPausedCardView *)v29 contentView];
-      v27 = [(UIView *)v28 bottomAnchor];
-      v26 = [v30 constraintEqualToAnchor:?];
+      layoutHelperView4 = [(CPSNavigationCardViewController *)selfCopy layoutHelperView];
+      bottomAnchor3 = [(CPSLayoutHelperView *)layoutHelperView4 bottomAnchor];
+      currentPausedCardView3 = [(CPSNavigationCardViewController *)selfCopy currentPausedCardView];
+      contentView4 = [(CPSPausedCardView *)currentPausedCardView3 contentView];
+      bottomAnchor4 = [(UIView *)contentView4 bottomAnchor];
+      v26 = [bottomAnchor3 constraintEqualToAnchor:?];
       v55[1] = v26;
       v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:2];
       v8 = location[0];
       location[0] = v7;
       MEMORY[0x277D82BD8](v8);
       MEMORY[0x277D82BD8](v26);
-      MEMORY[0x277D82BD8](v27);
-      MEMORY[0x277D82BD8](v28);
-      MEMORY[0x277D82BD8](v29);
-      MEMORY[0x277D82BD8](v30);
-      MEMORY[0x277D82BD8](v31);
+      MEMORY[0x277D82BD8](bottomAnchor4);
+      MEMORY[0x277D82BD8](contentView4);
+      MEMORY[0x277D82BD8](currentPausedCardView3);
+      MEMORY[0x277D82BD8](bottomAnchor3);
+      MEMORY[0x277D82BD8](layoutHelperView4);
       MEMORY[0x277D82BD8](v32);
-      MEMORY[0x277D82BD8](v33);
-      MEMORY[0x277D82BD8](v34);
-      MEMORY[0x277D82BD8](v35);
-      MEMORY[0x277D82BD8](v36);
-      v5 = MEMORY[0x277D82BD8](v37).n128_u64[0];
+      MEMORY[0x277D82BD8](topAnchor4);
+      MEMORY[0x277D82BD8](contentView3);
+      MEMORY[0x277D82BD8](currentPausedCardView2);
+      MEMORY[0x277D82BD8](topAnchor3);
+      v5 = MEMORY[0x277D82BD8](layoutHelperView3).n128_u64[0];
     }
 
     else
     {
-      v25 = [(CPSNavigationCardViewController *)v53 layoutHelperView];
-      v24 = [(CPSLayoutHelperView *)v25 topAnchor];
-      v23 = [(CPSNavigationCardViewController *)v53 view];
-      v22 = [v23 topAnchor];
-      v21 = [v24 constraintEqualToAnchor:?];
+      layoutHelperView5 = [(CPSNavigationCardViewController *)selfCopy layoutHelperView];
+      topAnchor5 = [(CPSLayoutHelperView *)layoutHelperView5 topAnchor];
+      view = [(CPSNavigationCardViewController *)selfCopy view];
+      topAnchor6 = [view topAnchor];
+      v21 = [topAnchor5 constraintEqualToAnchor:?];
       v54[0] = v21;
-      v20 = [(CPSNavigationCardViewController *)v53 layoutHelperView];
-      v19 = [(CPSLayoutHelperView *)v20 heightAnchor];
-      v18 = [v19 constraintEqualToConstant:0.0];
+      layoutHelperView6 = [(CPSNavigationCardViewController *)selfCopy layoutHelperView];
+      heightAnchor = [(CPSLayoutHelperView *)layoutHelperView6 heightAnchor];
+      v18 = [heightAnchor constraintEqualToConstant:0.0];
       v54[1] = v18;
       v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v54 count:2];
       v10 = location[0];
       location[0] = v9;
       MEMORY[0x277D82BD8](v10);
       MEMORY[0x277D82BD8](v18);
-      MEMORY[0x277D82BD8](v19);
-      MEMORY[0x277D82BD8](v20);
+      MEMORY[0x277D82BD8](heightAnchor);
+      MEMORY[0x277D82BD8](layoutHelperView6);
       MEMORY[0x277D82BD8](v21);
-      MEMORY[0x277D82BD8](v22);
-      MEMORY[0x277D82BD8](v23);
-      MEMORY[0x277D82BD8](v24);
-      v5 = MEMORY[0x277D82BD8](v25).n128_u64[0];
+      MEMORY[0x277D82BD8](topAnchor6);
+      MEMORY[0x277D82BD8](view);
+      MEMORY[0x277D82BD8](topAnchor5);
+      v5 = MEMORY[0x277D82BD8](layoutHelperView5).n128_u64[0];
     }
   }
 
-  v16 = [(CPSNavigationCardViewController *)v53 layoutHelperVerticalConstraints];
+  layoutHelperVerticalConstraints = [(CPSNavigationCardViewController *)selfCopy layoutHelperVerticalConstraints];
   v17 = [location[0] isEqualToArray:?];
-  *&v11 = MEMORY[0x277D82BD8](v16).n128_u64[0];
+  *&v11 = MEMORY[0x277D82BD8](layoutHelperVerticalConstraints).n128_u64[0];
   if ((v17 & 1) == 0)
   {
-    v15 = [(CPSNavigationCardViewController *)v53 layoutHelperVerticalConstraints];
-    v12 = MEMORY[0x277D82BD8](v15).n128_u64[0];
-    if (v15)
+    layoutHelperVerticalConstraints2 = [(CPSNavigationCardViewController *)selfCopy layoutHelperVerticalConstraints];
+    v12 = MEMORY[0x277D82BD8](layoutHelperVerticalConstraints2).n128_u64[0];
+    if (layoutHelperVerticalConstraints2)
     {
       v13 = MEMORY[0x277CCAAD0];
-      v14 = [(CPSNavigationCardViewController *)v53 layoutHelperVerticalConstraints];
+      layoutHelperVerticalConstraints3 = [(CPSNavigationCardViewController *)selfCopy layoutHelperVerticalConstraints];
       [v13 deactivateConstraints:?];
-      v12 = MEMORY[0x277D82BD8](v14).n128_u64[0];
+      v12 = MEMORY[0x277D82BD8](layoutHelperVerticalConstraints3).n128_u64[0];
     }
 
     [MEMORY[0x277CCAAD0] activateConstraints:{location[0], *&v12}];
-    [(CPSNavigationCardViewController *)v53 setLayoutHelperVerticalConstraints:location[0]];
+    [(CPSNavigationCardViewController *)selfCopy setLayoutHelperVerticalConstraints:location[0]];
   }
 
   objc_storeStrong(location, 0);
@@ -154,7 +154,7 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = CPSNavigationCardViewController;
@@ -164,109 +164,109 @@
 - (void)viewDidLoad
 {
   v34[6] = *MEMORY[0x277D85DE8];
-  v33 = self;
+  selfCopy = self;
   v32 = a2;
   v31.receiver = self;
   v31.super_class = CPSNavigationCardViewController;
   [(CPSNavigationCardViewController *)&v31 viewDidLoad];
-  v30 = [(CPSNavigationCardViewController *)v33 view];
-  [v30 setUserInteractionEnabled:0];
+  view = [(CPSNavigationCardViewController *)selfCopy view];
+  [view setUserInteractionEnabled:0];
   v29 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v29 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v29 setClipsToBounds:1];
-  v6 = [(CPSNavigationCardViewController *)v33 view];
-  [v6 addSubview:v29];
-  *&v2 = MEMORY[0x277D82BD8](v6).n128_u64[0];
-  [(CPSNavigationCardViewController *)v33 setContainerView:v29, v2];
+  view2 = [(CPSNavigationCardViewController *)selfCopy view];
+  [view2 addSubview:v29];
+  *&v2 = MEMORY[0x277D82BD8](view2).n128_u64[0];
+  [(CPSNavigationCardViewController *)selfCopy setContainerView:v29, v2];
   v28 = objc_alloc_init(CPSLayoutHelperView);
   [(CPSLayoutHelperView *)v28 setClipsToBounds:1];
-  v7 = [(CPSNavigationCardViewController *)v33 view];
-  [v7 addSubview:v28];
-  MEMORY[0x277D82BD8](v7);
-  objc_storeStrong(&v33->_layoutHelperView, v28);
+  view3 = [(CPSNavigationCardViewController *)selfCopy view];
+  [view3 addSubview:v28];
+  MEMORY[0x277D82BD8](view3);
+  objc_storeStrong(&selfCopy->_layoutHelperView, v28);
   LODWORD(v3) = 1112014848;
   [(CPSLayoutHelperView *)v28 setContentHuggingPriority:1 forAxis:v3];
-  v10 = [v29 topAnchor];
-  v9 = [v30 topAnchor];
-  v8 = [v10 constraintEqualToAnchor:?];
-  [(CPSNavigationCardViewController *)v33 setContainerViewTopConstraint:?];
+  topAnchor = [v29 topAnchor];
+  topAnchor2 = [view topAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:?];
+  [(CPSNavigationCardViewController *)selfCopy setContainerViewTopConstraint:?];
   MEMORY[0x277D82BD8](v8);
-  MEMORY[0x277D82BD8](v9);
-  *&v4 = MEMORY[0x277D82BD8](v10).n128_u64[0];
-  v12 = [v29 heightAnchor];
-  v11 = [v12 constraintEqualToConstant:0.0];
-  [(CPSNavigationCardViewController *)v33 setContainerViewHeightConstraint:?];
+  MEMORY[0x277D82BD8](topAnchor2);
+  *&v4 = MEMORY[0x277D82BD8](topAnchor).n128_u64[0];
+  heightAnchor = [v29 heightAnchor];
+  v11 = [heightAnchor constraintEqualToConstant:0.0];
+  [(CPSNavigationCardViewController *)selfCopy setContainerViewHeightConstraint:?];
   MEMORY[0x277D82BD8](v11);
-  *&v5 = MEMORY[0x277D82BD8](v12).n128_u64[0];
+  *&v5 = MEMORY[0x277D82BD8](heightAnchor).n128_u64[0];
   v13 = MEMORY[0x277CCAAD0];
-  v27 = [(CPSNavigationCardViewController *)v33 containerViewTopConstraint];
-  v34[0] = v27;
-  v26 = [(CPSNavigationCardViewController *)v33 containerViewHeightConstraint];
-  v34[1] = v26;
-  v25 = [v29 leftAnchor];
-  v24 = [v30 leftAnchor];
-  v23 = [v25 constraintEqualToAnchor:?];
+  containerViewTopConstraint = [(CPSNavigationCardViewController *)selfCopy containerViewTopConstraint];
+  v34[0] = containerViewTopConstraint;
+  containerViewHeightConstraint = [(CPSNavigationCardViewController *)selfCopy containerViewHeightConstraint];
+  v34[1] = containerViewHeightConstraint;
+  leftAnchor = [v29 leftAnchor];
+  leftAnchor2 = [view leftAnchor];
+  v23 = [leftAnchor constraintEqualToAnchor:?];
   v34[2] = v23;
-  v22 = [v29 rightAnchor];
-  v21 = [v30 rightAnchor];
-  v20 = [v22 constraintEqualToAnchor:?];
+  rightAnchor = [v29 rightAnchor];
+  rightAnchor2 = [view rightAnchor];
+  v20 = [rightAnchor constraintEqualToAnchor:?];
   v34[3] = v20;
-  v19 = [(CPSLayoutHelperView *)v28 leadingAnchor];
-  v18 = [v30 leadingAnchor];
-  v17 = [v19 constraintEqualToAnchor:?];
+  leadingAnchor = [(CPSLayoutHelperView *)v28 leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:?];
   v34[4] = v17;
-  v16 = [(CPSLayoutHelperView *)v28 widthAnchor];
-  v15 = [v16 constraintEqualToConstant:1.0];
+  widthAnchor = [(CPSLayoutHelperView *)v28 widthAnchor];
+  v15 = [widthAnchor constraintEqualToConstant:1.0];
   v34[5] = v15;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:6];
   [v13 activateConstraints:?];
   MEMORY[0x277D82BD8](v14);
   MEMORY[0x277D82BD8](v15);
-  MEMORY[0x277D82BD8](v16);
+  MEMORY[0x277D82BD8](widthAnchor);
   MEMORY[0x277D82BD8](v17);
-  MEMORY[0x277D82BD8](v18);
-  MEMORY[0x277D82BD8](v19);
+  MEMORY[0x277D82BD8](leadingAnchor2);
+  MEMORY[0x277D82BD8](leadingAnchor);
   MEMORY[0x277D82BD8](v20);
-  MEMORY[0x277D82BD8](v21);
-  MEMORY[0x277D82BD8](v22);
+  MEMORY[0x277D82BD8](rightAnchor2);
+  MEMORY[0x277D82BD8](rightAnchor);
   MEMORY[0x277D82BD8](v23);
-  MEMORY[0x277D82BD8](v24);
-  MEMORY[0x277D82BD8](v25);
-  MEMORY[0x277D82BD8](v26);
-  MEMORY[0x277D82BD8](v27);
+  MEMORY[0x277D82BD8](leftAnchor2);
+  MEMORY[0x277D82BD8](leftAnchor);
+  MEMORY[0x277D82BD8](containerViewHeightConstraint);
+  MEMORY[0x277D82BD8](containerViewTopConstraint);
   objc_storeStrong(&v28, 0);
   objc_storeStrong(&v29, 0);
-  objc_storeStrong(&v30, 0);
+  objc_storeStrong(&view, 0);
 }
 
-- (void)availableHeightChangedTo:(double)a3
+- (void)availableHeightChangedTo:(double)to
 {
-  v29 = [(CPSNavigationCardViewController *)self currentManeuversCardView];
-  *&v3 = MEMORY[0x277D82BD8](v29).n128_u64[0];
-  if (v29)
+  currentManeuversCardView = [(CPSNavigationCardViewController *)self currentManeuversCardView];
+  *&v3 = MEMORY[0x277D82BD8](currentManeuversCardView).n128_u64[0];
+  if (currentManeuversCardView)
   {
-    v27 = [(CPSNavigationCardViewController *)self currentManeuversCardView];
-    v26 = [(CPSManeuversCardView *)v27 contentView];
-    [(UIView *)v26 frame];
+    currentManeuversCardView2 = [(CPSNavigationCardViewController *)self currentManeuversCardView];
+    contentView = [(CPSManeuversCardView *)currentManeuversCardView2 contentView];
+    [(UIView *)contentView frame];
     v28 = v4;
-    MEMORY[0x277D82BD8](v26);
-    MEMORY[0x277D82BD8](v27);
-    if (v28 > a3)
+    MEMORY[0x277D82BD8](contentView);
+    MEMORY[0x277D82BD8](currentManeuversCardView2);
+    if (v28 > to)
     {
-      v22 = [(CPSNavigationCardViewController *)self currentManeuversCardView];
-      v21 = [(CPSNavigationCardViewController *)self containerView];
-      [(UIView *)v21 bounds];
+      currentManeuversCardView3 = [(CPSNavigationCardViewController *)self currentManeuversCardView];
+      containerView = [(CPSNavigationCardViewController *)self containerView];
+      [(UIView *)containerView bounds];
       CGSizeMake_8();
-      v23 = [(CPSManeuversCardView *)v22 canFitSize:v5, v6];
-      MEMORY[0x277D82BD8](v21);
-      *&v7 = MEMORY[0x277D82BD8](v22).n128_u64[0];
+      v23 = [(CPSManeuversCardView *)currentManeuversCardView3 canFitSize:v5, v6];
+      MEMORY[0x277D82BD8](containerView);
+      *&v7 = MEMORY[0x277D82BD8](currentManeuversCardView3).n128_u64[0];
       if (v23)
       {
-        v19 = [(CPSNavigationCardViewController *)self currentManeuversCardView];
-        [(CPSManeuversCardView *)v19 invalidate];
-        v20 = [(CPSNavigationCardViewController *)self containerViewHeightConstraint];
-        [(NSLayoutConstraint *)v20 setConstant:a3];
-        [(CPSNavigationCardViewController *)self setNavigationCardHidden:0 forRequester:@"Sizing" animated:1 completion:0, MEMORY[0x277D82BD8](v20).n128_f64[0]];
+        currentManeuversCardView4 = [(CPSNavigationCardViewController *)self currentManeuversCardView];
+        [(CPSManeuversCardView *)currentManeuversCardView4 invalidate];
+        containerViewHeightConstraint = [(CPSNavigationCardViewController *)self containerViewHeightConstraint];
+        [(NSLayoutConstraint *)containerViewHeightConstraint setConstant:to];
+        [(CPSNavigationCardViewController *)self setNavigationCardHidden:0 forRequester:@"Sizing" animated:1 completion:0, MEMORY[0x277D82BD8](containerViewHeightConstraint).n128_f64[0]];
       }
 
       else
@@ -277,104 +277,104 @@
 
     else
     {
-      v24 = [(CPSNavigationCardViewController *)self currentManeuversCardView];
-      [(CPSManeuversCardView *)v24 invalidate];
-      v25 = [(CPSNavigationCardViewController *)self containerViewHeightConstraint];
-      [(NSLayoutConstraint *)v25 setConstant:a3];
-      [(CPSNavigationCardViewController *)self setNavigationCardHidden:0 forRequester:@"Sizing" animated:1 completion:0, MEMORY[0x277D82BD8](v25).n128_f64[0]];
+      currentManeuversCardView5 = [(CPSNavigationCardViewController *)self currentManeuversCardView];
+      [(CPSManeuversCardView *)currentManeuversCardView5 invalidate];
+      containerViewHeightConstraint2 = [(CPSNavigationCardViewController *)self containerViewHeightConstraint];
+      [(NSLayoutConstraint *)containerViewHeightConstraint2 setConstant:to];
+      [(CPSNavigationCardViewController *)self setNavigationCardHidden:0 forRequester:@"Sizing" animated:1 completion:0, MEMORY[0x277D82BD8](containerViewHeightConstraint2).n128_f64[0]];
     }
   }
 
   else
   {
-    v18 = [(CPSNavigationCardViewController *)self currentPausedCardView];
-    *&v8 = MEMORY[0x277D82BD8](v18).n128_u64[0];
-    if (v18)
+    currentPausedCardView = [(CPSNavigationCardViewController *)self currentPausedCardView];
+    *&v8 = MEMORY[0x277D82BD8](currentPausedCardView).n128_u64[0];
+    if (currentPausedCardView)
     {
-      v16 = [(CPSNavigationCardViewController *)self currentPausedCardView];
-      v15 = [(CPSPausedCardView *)v16 contentView];
-      [(UIView *)v15 frame];
+      currentPausedCardView2 = [(CPSNavigationCardViewController *)self currentPausedCardView];
+      contentView2 = [(CPSPausedCardView *)currentPausedCardView2 contentView];
+      [(UIView *)contentView2 frame];
       v17 = v9;
-      MEMORY[0x277D82BD8](v15);
-      MEMORY[0x277D82BD8](v16);
-      if (v17 > a3)
+      MEMORY[0x277D82BD8](contentView2);
+      MEMORY[0x277D82BD8](currentPausedCardView2);
+      if (v17 > to)
       {
         [(CPSNavigationCardViewController *)self setNavigationCardHidden:1 forRequester:@"Sizing" animated:1 completion:0, v17];
-        v13 = [(CPSNavigationCardViewController *)self containerViewTopConstraint];
-        v12 = [(CPSNavigationCardViewController *)self currentPausedCardView];
-        [(CPSPausedCardView *)v12 frame];
-        [(NSLayoutConstraint *)v13 setConstant:-(v10 + 8.0 + 44.0)];
-        MEMORY[0x277D82BD8](v12);
-        MEMORY[0x277D82BD8](v13);
+        containerViewTopConstraint = [(CPSNavigationCardViewController *)self containerViewTopConstraint];
+        currentPausedCardView3 = [(CPSNavigationCardViewController *)self currentPausedCardView];
+        [(CPSPausedCardView *)currentPausedCardView3 frame];
+        [(NSLayoutConstraint *)containerViewTopConstraint setConstant:-(v10 + 8.0 + 44.0)];
+        MEMORY[0x277D82BD8](currentPausedCardView3);
+        MEMORY[0x277D82BD8](containerViewTopConstraint);
       }
 
       else
       {
-        v14 = [(CPSNavigationCardViewController *)self containerViewHeightConstraint];
-        [(NSLayoutConstraint *)v14 setConstant:a3];
-        [(CPSNavigationCardViewController *)self setNavigationCardHidden:0 forRequester:@"Sizing" animated:1 completion:0, MEMORY[0x277D82BD8](v14).n128_f64[0]];
+        containerViewHeightConstraint3 = [(CPSNavigationCardViewController *)self containerViewHeightConstraint];
+        [(NSLayoutConstraint *)containerViewHeightConstraint3 setConstant:to];
+        [(CPSNavigationCardViewController *)self setNavigationCardHidden:0 forRequester:@"Sizing" animated:1 completion:0, MEMORY[0x277D82BD8](containerViewHeightConstraint3).n128_f64[0]];
       }
     }
 
     else
     {
-      v11 = [(CPSNavigationCardViewController *)self containerViewHeightConstraint];
-      [(NSLayoutConstraint *)v11 setConstant:a3];
-      [(CPSNavigationCardViewController *)self setNavigationCardHidden:0 forRequester:@"Sizing" animated:1 completion:0, MEMORY[0x277D82BD8](v11).n128_f64[0]];
+      containerViewHeightConstraint4 = [(CPSNavigationCardViewController *)self containerViewHeightConstraint];
+      [(NSLayoutConstraint *)containerViewHeightConstraint4 setConstant:to];
+      [(CPSNavigationCardViewController *)self setNavigationCardHidden:0 forRequester:@"Sizing" animated:1 completion:0, MEMORY[0x277D82BD8](containerViewHeightConstraint4).n128_f64[0]];
     }
   }
 }
 
-- (void)setNavigationCardHidden:(BOOL)a3 forRequester:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)setNavigationCardHidden:(BOOL)hidden forRequester:(id)requester animated:(BOOL)animated completion:(id)completion
 {
-  v75 = self;
+  selfCopy = self;
   v74 = a2;
-  v73 = a3;
+  hiddenCopy = hidden;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v71 = a5;
+  objc_storeStrong(&location, requester);
+  animatedCopy = animated;
   v70 = 0;
-  objc_storeStrong(&v70, a6);
-  if (v73)
+  objc_storeStrong(&v70, completion);
+  if (hiddenCopy)
   {
-    if (!v75->_navigationCardHiddenRequesters)
+    if (!selfCopy->_navigationCardHiddenRequesters)
     {
       v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
-      navigationCardHiddenRequesters = v75->_navigationCardHiddenRequesters;
-      v75->_navigationCardHiddenRequesters = v6;
+      navigationCardHiddenRequesters = selfCopy->_navigationCardHiddenRequesters;
+      selfCopy->_navigationCardHiddenRequesters = v6;
       MEMORY[0x277D82BD8](navigationCardHiddenRequesters);
     }
 
-    v30 = [(CPSNavigationCardViewController *)v75 navigationCardHiddenRequesters];
-    [(NSMutableSet *)v30 addObject:location];
-    v8 = MEMORY[0x277D82BD8](v30).n128_u64[0];
+    navigationCardHiddenRequesters = [(CPSNavigationCardViewController *)selfCopy navigationCardHiddenRequesters];
+    [(NSMutableSet *)navigationCardHiddenRequesters addObject:location];
+    v8 = MEMORY[0x277D82BD8](navigationCardHiddenRequesters).n128_u64[0];
   }
 
   else
   {
-    v29 = [(CPSNavigationCardViewController *)v75 navigationCardHiddenRequesters];
-    [(NSMutableSet *)v29 removeObject:location];
-    v8 = MEMORY[0x277D82BD8](v29).n128_u64[0];
+    navigationCardHiddenRequesters2 = [(CPSNavigationCardViewController *)selfCopy navigationCardHiddenRequesters];
+    [(NSMutableSet *)navigationCardHiddenRequesters2 removeObject:location];
+    v8 = MEMORY[0x277D82BD8](navigationCardHiddenRequesters2).n128_u64[0];
   }
 
-  [(CPSNavigationCardViewController *)v75 _updateNavigationCardHidden];
-  if (v71)
+  [(CPSNavigationCardViewController *)selfCopy _updateNavigationCardHidden];
+  if (animatedCopy)
   {
     v68 = 0u;
     v69 = 0u;
-    v28 = [(CPSNavigationCardViewController *)v75 currentManeuversCardView];
+    currentManeuversCardView = [(CPSNavigationCardViewController *)selfCopy currentManeuversCardView];
     v66 = 0;
     v64 = 0;
     v62 = 0;
     v60 = 0;
     v58 = 0;
-    if (v28)
+    if (currentManeuversCardView)
     {
-      v67 = [(CPSNavigationCardViewController *)v75 currentManeuversCardView];
+      currentManeuversCardView2 = [(CPSNavigationCardViewController *)selfCopy currentManeuversCardView];
       v66 = 1;
-      v65 = [(CPSManeuversCardView *)v67 contentView];
+      contentView = [(CPSManeuversCardView *)currentManeuversCardView2 contentView];
       v64 = 1;
-      [(UIView *)v65 frame];
+      [(UIView *)contentView frame];
       *&v68 = v9;
       *(&v68 + 1) = v10;
       *&v69 = v11;
@@ -383,15 +383,15 @@
 
     else
     {
-      v63 = [(CPSNavigationCardViewController *)v75 currentPausedCardView];
+      currentPausedCardView = [(CPSNavigationCardViewController *)selfCopy currentPausedCardView];
       v62 = 1;
-      if (v63)
+      if (currentPausedCardView)
       {
-        v61 = [(CPSNavigationCardViewController *)v75 currentPausedCardView];
+        currentPausedCardView2 = [(CPSNavigationCardViewController *)selfCopy currentPausedCardView];
         v60 = 1;
-        v59 = [(CPSPausedCardView *)v61 contentView];
+        contentView2 = [(CPSPausedCardView *)currentPausedCardView2 contentView];
         v58 = 1;
-        [(UIView *)v59 frame];
+        [(UIView *)contentView2 frame];
         *&v68 = v13;
         *(&v68 + 1) = v14;
         *&v69 = v15;
@@ -407,40 +407,40 @@
 
     if (v58)
     {
-      MEMORY[0x277D82BD8](v59);
+      MEMORY[0x277D82BD8](contentView2);
     }
 
     if (v60)
     {
-      MEMORY[0x277D82BD8](v61);
+      MEMORY[0x277D82BD8](currentPausedCardView2);
     }
 
     if (v62)
     {
-      MEMORY[0x277D82BD8](v63);
+      MEMORY[0x277D82BD8](currentPausedCardView);
     }
 
     if (v64)
     {
-      MEMORY[0x277D82BD8](v65);
+      MEMORY[0x277D82BD8](contentView);
     }
 
     if (v66)
     {
-      MEMORY[0x277D82BD8](v67);
+      MEMORY[0x277D82BD8](currentManeuversCardView2);
     }
 
-    MEMORY[0x277D82BD8](v28);
-    [(CPSNavigationCardViewController *)v75 adjustedShadowConstraintsWithFrame:v68, v69];
+    MEMORY[0x277D82BD8](currentManeuversCardView);
+    [(CPSNavigationCardViewController *)selfCopy adjustedShadowConstraintsWithFrame:v68, v69];
     *&v56 = v17;
     *(&v56 + 1) = v18;
     *&v57 = v19;
     *(&v57 + 1) = v20;
     v55 = 8.0;
-    v26 = [(CPSNavigationCardViewController *)v75 containerViewTopConstraint];
-    [(NSLayoutConstraint *)v26 constant];
+    containerViewTopConstraint = [(CPSNavigationCardViewController *)selfCopy containerViewTopConstraint];
+    [(NSLayoutConstraint *)containerViewTopConstraint constant];
     v27 = fabs(v21);
-    MEMORY[0x277D82BD8](v26);
+    MEMORY[0x277D82BD8](containerViewTopConstraint);
     v54 = v27;
     *&v52 = 0.4;
     v51 = 0.4 * (v27 / 8.0);
@@ -470,7 +470,7 @@
 
     v47[1] = *&v24;
     v53 = v24;
-    objc_initWeak(v47, v75);
+    objc_initWeak(v47, selfCopy);
     v23 = MEMORY[0x277D75D18];
     v22 = v53;
     v39 = MEMORY[0x277D85DD0];
@@ -528,38 +528,38 @@ uint64_t __92__CPSNavigationCardViewController_setNavigationCardHidden_forReques
 
 - (void)_updateNavigationCardHidden
 {
-  v14 = [(CPSNavigationCardViewController *)self navigationCardHiddenRequesters];
-  v15 = [(NSMutableSet *)v14 count];
-  *&v2 = MEMORY[0x277D82BD8](v14).n128_u64[0];
+  navigationCardHiddenRequesters = [(CPSNavigationCardViewController *)self navigationCardHiddenRequesters];
+  v15 = [(NSMutableSet *)navigationCardHiddenRequesters count];
+  *&v2 = MEMORY[0x277D82BD8](navigationCardHiddenRequesters).n128_u64[0];
   if (v15)
   {
     if (![(CPSNavigationCardViewController *)self navigationCardHidden])
     {
       [(CPSNavigationCardViewController *)self setNavigationCardHidden:1];
-      v13 = [(CPSNavigationCardViewController *)self currentManeuversCardView];
-      *&v3 = MEMORY[0x277D82BD8](v13).n128_u64[0];
-      if (v13)
+      currentManeuversCardView = [(CPSNavigationCardViewController *)self currentManeuversCardView];
+      *&v3 = MEMORY[0x277D82BD8](currentManeuversCardView).n128_u64[0];
+      if (currentManeuversCardView)
       {
-        v12 = [(CPSNavigationCardViewController *)self containerViewTopConstraint];
-        v11 = [(CPSNavigationCardViewController *)self currentManeuversCardView];
-        [(CPSManeuversCardView *)v11 frame];
-        [(NSLayoutConstraint *)v12 setConstant:-(v4 + 48.0)];
-        MEMORY[0x277D82BD8](v11);
-        MEMORY[0x277D82BD8](v12);
+        containerViewTopConstraint = [(CPSNavigationCardViewController *)self containerViewTopConstraint];
+        currentManeuversCardView2 = [(CPSNavigationCardViewController *)self currentManeuversCardView];
+        [(CPSManeuversCardView *)currentManeuversCardView2 frame];
+        [(NSLayoutConstraint *)containerViewTopConstraint setConstant:-(v4 + 48.0)];
+        MEMORY[0x277D82BD8](currentManeuversCardView2);
+        MEMORY[0x277D82BD8](containerViewTopConstraint);
       }
 
       else
       {
-        v10 = [(CPSNavigationCardViewController *)self currentPausedCardView];
-        *&v5 = MEMORY[0x277D82BD8](v10).n128_u64[0];
-        if (v10)
+        currentPausedCardView = [(CPSNavigationCardViewController *)self currentPausedCardView];
+        *&v5 = MEMORY[0x277D82BD8](currentPausedCardView).n128_u64[0];
+        if (currentPausedCardView)
         {
-          v9 = [(CPSNavigationCardViewController *)self containerViewTopConstraint];
-          v8 = [(CPSNavigationCardViewController *)self currentPausedCardView];
-          [(CPSPausedCardView *)v8 frame];
-          [(NSLayoutConstraint *)v9 setConstant:-(v6 + 8.0)];
-          MEMORY[0x277D82BD8](v8);
-          MEMORY[0x277D82BD8](v9);
+          containerViewTopConstraint2 = [(CPSNavigationCardViewController *)self containerViewTopConstraint];
+          currentPausedCardView2 = [(CPSNavigationCardViewController *)self currentPausedCardView];
+          [(CPSPausedCardView *)currentPausedCardView2 frame];
+          [(NSLayoutConstraint *)containerViewTopConstraint2 setConstant:-(v6 + 8.0)];
+          MEMORY[0x277D82BD8](currentPausedCardView2);
+          MEMORY[0x277D82BD8](containerViewTopConstraint2);
         }
       }
     }
@@ -568,99 +568,99 @@ uint64_t __92__CPSNavigationCardViewController_setNavigationCardHidden_forReques
   else if ([(CPSNavigationCardViewController *)self navigationCardHidden])
   {
     [(CPSNavigationCardViewController *)self setNavigationCardHidden:0];
-    v7 = [(CPSNavigationCardViewController *)self containerViewTopConstraint];
-    [(NSLayoutConstraint *)v7 setConstant:0.0];
-    MEMORY[0x277D82BD8](v7);
+    containerViewTopConstraint3 = [(CPSNavigationCardViewController *)self containerViewTopConstraint];
+    [(NSLayoutConstraint *)containerViewTopConstraint3 setConstant:0.0];
+    MEMORY[0x277D82BD8](containerViewTopConstraint3);
   }
 }
 
-- (void)showManeuvers:(id)a3 usingDisplayStyles:(id)a4
+- (void)showManeuvers:(id)maneuvers usingDisplayStyles:(id)styles
 {
   v36[2] = *MEMORY[0x277D85DE8];
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, maneuvers);
   v33 = 0;
-  objc_storeStrong(&v33, a4);
-  v22 = [(CPSNavigationCardViewController *)v35 currentManeuversCardView];
+  objc_storeStrong(&v33, styles);
+  currentManeuversCardView = [(CPSNavigationCardViewController *)selfCopy currentManeuversCardView];
   v30 = 0;
   v28 = 0;
   v23 = 0;
-  if (v22)
+  if (currentManeuversCardView)
   {
-    v31 = [(CPSNavigationCardViewController *)v35 currentManeuversCardView];
+    currentManeuversCardView2 = [(CPSNavigationCardViewController *)selfCopy currentManeuversCardView];
     v30 = 1;
-    v29 = [(CPSManeuversCardView *)v31 maneuvers];
+    maneuvers = [(CPSManeuversCardView *)currentManeuversCardView2 maneuvers];
     v28 = 1;
     v23 = BSEqualObjects();
   }
 
   if (v28)
   {
-    MEMORY[0x277D82BD8](v29);
+    MEMORY[0x277D82BD8](maneuvers);
   }
 
   if (v30)
   {
-    MEMORY[0x277D82BD8](v31);
+    MEMORY[0x277D82BD8](currentManeuversCardView2);
   }
 
-  *&v4 = MEMORY[0x277D82BD8](v22).n128_u64[0];
+  *&v4 = MEMORY[0x277D82BD8](currentManeuversCardView).n128_u64[0];
   v32 = v23 & 1;
   if (v23)
   {
-    v20 = [(CPSNavigationCardViewController *)v35 currentManeuversCardView];
-    [(CPSManeuversCardView *)v20 showManeuvers:location[0] usingDisplayStyles:MEMORY[0x277CBEBF8]];
-    MEMORY[0x277D82BD8](v20);
+    currentManeuversCardView3 = [(CPSNavigationCardViewController *)selfCopy currentManeuversCardView];
+    [(CPSManeuversCardView *)currentManeuversCardView3 showManeuvers:location[0] usingDisplayStyles:MEMORY[0x277CBEBF8]];
+    MEMORY[0x277D82BD8](currentManeuversCardView3);
     v27 = 1;
   }
 
   else
   {
-    v26 = [(CPSNavigationCardViewController *)v35 containerView];
-    v19 = [(CPSNavigationCardViewController *)v35 containerView];
-    v18 = [(UIView *)v19 subviews];
-    v25 = [(NSArray *)v18 copy];
-    MEMORY[0x277D82BD8](v18);
-    *&v5 = MEMORY[0x277D82BD8](v19).n128_u64[0];
+    containerView = [(CPSNavigationCardViewController *)selfCopy containerView];
+    containerView2 = [(CPSNavigationCardViewController *)selfCopy containerView];
+    subviews = [(UIView *)containerView2 subviews];
+    v25 = [(NSArray *)subviews copy];
+    MEMORY[0x277D82BD8](subviews);
+    *&v5 = MEMORY[0x277D82BD8](containerView2).n128_u64[0];
     v24 = 0;
-    [(CPSNavigationCardViewController *)v35 setCurrentManeuversCardView:v5];
-    [(CPSNavigationCardViewController *)v35 setCurrentPausedCardView:0];
+    [(CPSNavigationCardViewController *)selfCopy setCurrentManeuversCardView:v5];
+    [(CPSNavigationCardViewController *)selfCopy setCurrentPausedCardView:0];
     if ([location[0] count])
     {
       v7 = [CPSManeuversCardView alloc];
       v8 = [(CPSManeuversCardView *)v7 initWithManeuvers:location[0]];
       v9 = v24;
       v24 = v8;
-      [v26 addSubview:{v8, MEMORY[0x277D82BD8](v9).n128_f64[0]}];
-      [(CPSNavigationCardViewController *)v35 setCurrentManeuversCardView:v24];
-      [(CPSNavigationCardViewController *)v35 _updateCardBackgroundColors];
+      [containerView addSubview:{v8, MEMORY[0x277D82BD8](v9).n128_f64[0]}];
+      [(CPSNavigationCardViewController *)selfCopy setCurrentManeuversCardView:v24];
+      [(CPSNavigationCardViewController *)selfCopy _updateCardBackgroundColors];
       v10 = MEMORY[0x277CCAAD0];
-      v17 = [(CPSManeuversCardView *)v24 topAnchor];
-      v16 = [v26 topAnchor];
-      v15 = [v17 constraintEqualToAnchor:?];
+      topAnchor = [(CPSManeuversCardView *)v24 topAnchor];
+      topAnchor2 = [containerView topAnchor];
+      v15 = [topAnchor constraintEqualToAnchor:?];
       v36[0] = v15;
-      v14 = [(CPSManeuversCardView *)v24 bottomAnchor];
-      v13 = [v26 bottomAnchor];
-      v12 = [v14 constraintEqualToAnchor:?];
+      bottomAnchor = [(CPSManeuversCardView *)v24 bottomAnchor];
+      bottomAnchor2 = [containerView bottomAnchor];
+      v12 = [bottomAnchor constraintEqualToAnchor:?];
       v36[1] = v12;
       v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:2];
       [v10 activateConstraints:?];
       MEMORY[0x277D82BD8](v11);
       MEMORY[0x277D82BD8](v12);
-      MEMORY[0x277D82BD8](v13);
-      MEMORY[0x277D82BD8](v14);
+      MEMORY[0x277D82BD8](bottomAnchor2);
+      MEMORY[0x277D82BD8](bottomAnchor);
       MEMORY[0x277D82BD8](v15);
-      MEMORY[0x277D82BD8](v16);
-      *&v6 = MEMORY[0x277D82BD8](v17).n128_u64[0];
+      MEMORY[0x277D82BD8](topAnchor2);
+      *&v6 = MEMORY[0x277D82BD8](topAnchor).n128_u64[0];
     }
 
-    [(CPSNavigationCardViewController *)v35 _updateHelperConstraints];
-    [(CPSNavigationCardViewController *)v35 _transitionFromViews:v25 inView:v24];
+    [(CPSNavigationCardViewController *)selfCopy _updateHelperConstraints];
+    [(CPSNavigationCardViewController *)selfCopy _transitionFromViews:v25 inView:v24];
     objc_storeStrong(&v24, 0);
     objc_storeStrong(&v25, 0);
-    objc_storeStrong(&v26, 0);
+    objc_storeStrong(&containerView, 0);
     v27 = 0;
   }
 
@@ -668,172 +668,172 @@ uint64_t __92__CPSNavigationCardViewController_setNavigationCardHidden_forReques
   objc_storeStrong(location, 0);
 }
 
-- (void)updateEstimates:(id)a3 forManeuver:(id)a4
+- (void)updateEstimates:(id)estimates forManeuver:(id)maneuver
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, estimates);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  v7 = [(CPSNavigationCardViewController *)v10 currentManeuversCardView];
-  *&v4 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-  if (v7)
+  objc_storeStrong(&v8, maneuver);
+  currentManeuversCardView = [(CPSNavigationCardViewController *)selfCopy currentManeuversCardView];
+  *&v4 = MEMORY[0x277D82BD8](currentManeuversCardView).n128_u64[0];
+  if (currentManeuversCardView)
   {
-    v5 = [(CPSNavigationCardViewController *)v10 currentManeuversCardView];
-    [(CPSManeuversCardView *)v5 updateEstimates:location[0] forManeuver:v8];
-    MEMORY[0x277D82BD8](v5);
+    currentManeuversCardView2 = [(CPSNavigationCardViewController *)selfCopy currentManeuversCardView];
+    [(CPSManeuversCardView *)currentManeuversCardView2 updateEstimates:location[0] forManeuver:v8];
+    MEMORY[0x277D82BD8](currentManeuversCardView2);
   }
 
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)navigator:(id)a3 pausedTripForReason:(unint64_t)a4 description:(id)a5 usingColor:(id)a6
+- (void)navigator:(id)navigator pausedTripForReason:(unint64_t)reason description:(id)description usingColor:(id)color
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11 = a4;
+  objc_storeStrong(location, navigator);
+  reasonCopy = reason;
   v10 = 0;
-  objc_storeStrong(&v10, a5);
+  objc_storeStrong(&v10, description);
   v9 = 0;
-  objc_storeStrong(&v9, a6);
-  [(CPSNavigationCardViewController *)v13 _showPausedViewForReason:v11 description:v10 pauseCardColor:v9];
+  objc_storeStrong(&v9, color);
+  [(CPSNavigationCardViewController *)selfCopy _showPausedViewForReason:reasonCopy description:v10 pauseCardColor:v9];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_showPausedViewForReason:(unint64_t)a3 description:(id)a4 pauseCardColor:(id)a5
+- (void)_showPausedViewForReason:(unint64_t)reason description:(id)description pauseCardColor:(id)color
 {
   v32[3] = *MEMORY[0x277D85DE8];
-  v31 = self;
+  selfCopy = self;
   v30 = a2;
-  v29 = a3;
+  reasonCopy = reason;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, description);
   v27 = 0;
-  objc_storeStrong(&v27, a5);
-  v11 = [(CPSNavigationCardViewController *)v31 containerView];
-  v10 = [(UIView *)v11 subviews];
-  v26 = [(NSArray *)v10 copy];
-  MEMORY[0x277D82BD8](v10);
-  *&v5 = MEMORY[0x277D82BD8](v11).n128_u64[0];
-  [(CPSNavigationCardViewController *)v31 setCurrentManeuversCardView:0, v5];
-  [(CPSNavigationCardViewController *)v31 setCurrentPausedCardView:0];
+  objc_storeStrong(&v27, color);
+  containerView = [(CPSNavigationCardViewController *)selfCopy containerView];
+  subviews = [(UIView *)containerView subviews];
+  v26 = [(NSArray *)subviews copy];
+  MEMORY[0x277D82BD8](subviews);
+  *&v5 = MEMORY[0x277D82BD8](containerView).n128_u64[0];
+  [(CPSNavigationCardViewController *)selfCopy setCurrentManeuversCardView:0, v5];
+  [(CPSNavigationCardViewController *)selfCopy setCurrentPausedCardView:0];
   v6 = [CPSPausedCardView alloc];
-  v25 = [(CPSPausedCardView *)v6 initWithReason:v29 title:location backgroundColor:v27];
-  [(CPSNavigationCardViewController *)v31 setCurrentPausedCardView:v25];
-  [(CPSNavigationCardViewController *)v31 _updateCardBackgroundColors];
-  v12 = [(CPSNavigationCardViewController *)v31 containerView];
-  [(UIView *)v12 addSubview:v25];
-  *&v7 = MEMORY[0x277D82BD8](v12).n128_u64[0];
+  v25 = [(CPSPausedCardView *)v6 initWithReason:reasonCopy title:location backgroundColor:v27];
+  [(CPSNavigationCardViewController *)selfCopy setCurrentPausedCardView:v25];
+  [(CPSNavigationCardViewController *)selfCopy _updateCardBackgroundColors];
+  containerView2 = [(CPSNavigationCardViewController *)selfCopy containerView];
+  [(UIView *)containerView2 addSubview:v25];
+  *&v7 = MEMORY[0x277D82BD8](containerView2).n128_u64[0];
   v13 = MEMORY[0x277CCAAD0];
-  v24 = [(CPSPausedCardView *)v25 topAnchor];
-  v23 = [(CPSNavigationCardViewController *)v31 containerView];
-  v22 = [(UIView *)v23 topAnchor];
-  v21 = [v24 constraintEqualToAnchor:?];
+  topAnchor = [(CPSPausedCardView *)v25 topAnchor];
+  containerView3 = [(CPSNavigationCardViewController *)selfCopy containerView];
+  topAnchor2 = [(UIView *)containerView3 topAnchor];
+  v21 = [topAnchor constraintEqualToAnchor:?];
   v32[0] = v21;
-  v20 = [(CPSPausedCardView *)v25 heightAnchor];
-  v19 = [v20 constraintGreaterThanOrEqualToConstant:56.0];
+  heightAnchor = [(CPSPausedCardView *)v25 heightAnchor];
+  v19 = [heightAnchor constraintGreaterThanOrEqualToConstant:56.0];
   v32[1] = v19;
-  v18 = [(CPSPausedCardView *)v25 bottomAnchor];
-  v17 = [(CPSNavigationCardViewController *)v31 containerView];
-  v16 = [(UIView *)v17 bottomAnchor];
-  v15 = [v18 constraintLessThanOrEqualToAnchor:?];
+  bottomAnchor = [(CPSPausedCardView *)v25 bottomAnchor];
+  containerView4 = [(CPSNavigationCardViewController *)selfCopy containerView];
+  bottomAnchor2 = [(UIView *)containerView4 bottomAnchor];
+  v15 = [bottomAnchor constraintLessThanOrEqualToAnchor:?];
   v32[2] = v15;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:3];
   [v13 activateConstraints:?];
   MEMORY[0x277D82BD8](v14);
   MEMORY[0x277D82BD8](v15);
-  MEMORY[0x277D82BD8](v16);
-  MEMORY[0x277D82BD8](v17);
-  MEMORY[0x277D82BD8](v18);
+  MEMORY[0x277D82BD8](bottomAnchor2);
+  MEMORY[0x277D82BD8](containerView4);
+  MEMORY[0x277D82BD8](bottomAnchor);
   MEMORY[0x277D82BD8](v19);
-  MEMORY[0x277D82BD8](v20);
+  MEMORY[0x277D82BD8](heightAnchor);
   MEMORY[0x277D82BD8](v21);
-  MEMORY[0x277D82BD8](v22);
-  MEMORY[0x277D82BD8](v23);
-  *&v8 = MEMORY[0x277D82BD8](v24).n128_u64[0];
-  [(CPSNavigationCardViewController *)v31 _updateHelperConstraints];
-  [(CPSNavigationCardViewController *)v31 _transitionFromViews:v26 inView:v25];
+  MEMORY[0x277D82BD8](topAnchor2);
+  MEMORY[0x277D82BD8](containerView3);
+  *&v8 = MEMORY[0x277D82BD8](topAnchor).n128_u64[0];
+  [(CPSNavigationCardViewController *)selfCopy _updateHelperConstraints];
+  [(CPSNavigationCardViewController *)selfCopy _transitionFromViews:v26 inView:v25];
   objc_storeStrong(&v25, 0);
   objc_storeStrong(&v26, 0);
   objc_storeStrong(&v27, 0);
   objc_storeStrong(&location, 0);
 }
 
-- (void)_transitionFromViews:(id)a3 inView:(id)a4
+- (void)_transitionFromViews:(id)views inView:(id)view
 {
   v126[2] = *MEMORY[0x277D85DE8];
-  v124 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, views);
   v122 = 0;
-  objc_storeStrong(&v122, a4);
+  objc_storeStrong(&v122, view);
   if ([location[0] count])
   {
     v121 = v122 == 0;
-    v83 = [(CPSNavigationCardViewController *)v124 shadowCardView];
-    [(UIView *)v83 removeFromSuperview];
-    MEMORY[0x277D82BD8](v83);
+    shadowCardView = [(CPSNavigationCardViewController *)selfCopy shadowCardView];
+    [(UIView *)shadowCardView removeFromSuperview];
+    MEMORY[0x277D82BD8](shadowCardView);
     v84 = location[0];
     v114 = MEMORY[0x277D85DD0];
     v115 = -1073741824;
     v116 = 0;
     v117 = __63__CPSNavigationCardViewController__transitionFromViews_inView___block_invoke;
     v118 = &unk_278D92F88;
-    v119 = MEMORY[0x277D82BE0](v124);
+    v119 = MEMORY[0x277D82BE0](selfCopy);
     v120 = v121;
     [v84 enumerateObjectsUsingBlock:&v114];
     if (v122)
     {
-      v69 = [v122 leadingAnchor];
-      v68 = [(CPSNavigationCardViewController *)v124 containerView];
-      v67 = [(UIView *)v68 leadingAnchor];
-      v66 = [(CPSNavigationCardViewController *)v124 containerView];
-      [(UIView *)v66 frame];
+      leadingAnchor = [v122 leadingAnchor];
+      containerView = [(CPSNavigationCardViewController *)selfCopy containerView];
+      leadingAnchor2 = [(UIView *)containerView leadingAnchor];
+      containerView2 = [(CPSNavigationCardViewController *)selfCopy containerView];
+      [(UIView *)containerView2 frame];
       v112[1] = v4;
       v112[2] = v5;
       v112[3] = v6;
       v112[4] = v7;
-      v113 = [v69 constraintEqualToAnchor:v67 constant:*&v6 + 8.0];
-      MEMORY[0x277D82BD8](v66);
-      MEMORY[0x277D82BD8](v67);
-      MEMORY[0x277D82BD8](v68);
-      *&v8 = MEMORY[0x277D82BD8](v69).n128_u64[0];
-      v73 = [v122 trailingAnchor];
-      v72 = [(CPSNavigationCardViewController *)v124 containerView];
-      v71 = [(UIView *)v72 trailingAnchor];
-      v70 = [(CPSNavigationCardViewController *)v124 containerView];
-      [(UIView *)v70 frame];
+      v113 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:*&v6 + 8.0];
+      MEMORY[0x277D82BD8](containerView2);
+      MEMORY[0x277D82BD8](leadingAnchor2);
+      MEMORY[0x277D82BD8](containerView);
+      *&v8 = MEMORY[0x277D82BD8](leadingAnchor).n128_u64[0];
+      trailingAnchor = [v122 trailingAnchor];
+      containerView3 = [(CPSNavigationCardViewController *)selfCopy containerView];
+      trailingAnchor2 = [(UIView *)containerView3 trailingAnchor];
+      containerView4 = [(CPSNavigationCardViewController *)selfCopy containerView];
+      [(UIView *)containerView4 frame];
       v108 = v9;
       v109 = v10;
       v110 = v11;
       v111 = v12;
-      v112[0] = [v73 constraintEqualToAnchor:v71 constant:v11 + 8.0];
-      MEMORY[0x277D82BD8](v70);
-      MEMORY[0x277D82BD8](v71);
-      MEMORY[0x277D82BD8](v72);
-      *&v13 = MEMORY[0x277D82BD8](v73).n128_u64[0];
+      v112[0] = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:v11 + 8.0];
+      MEMORY[0x277D82BD8](containerView4);
+      MEMORY[0x277D82BD8](trailingAnchor2);
+      MEMORY[0x277D82BD8](containerView3);
+      *&v13 = MEMORY[0x277D82BD8](trailingAnchor).n128_u64[0];
       v74 = MEMORY[0x277CCAAD0];
       v126[0] = v113;
       v126[1] = v112[0];
       v75 = [MEMORY[0x277CBEA60] arrayWithObjects:v126 count:{2, v13}];
       [v74 activateConstraints:?];
       *&v14 = MEMORY[0x277D82BD8](v75).n128_u64[0];
-      v76 = [(CPSNavigationCardViewController *)v124 view];
-      [v76 layoutIfNeeded];
-      *&v15 = MEMORY[0x277D82BD8](v76).n128_u64[0];
+      view = [(CPSNavigationCardViewController *)selfCopy view];
+      [view layoutIfNeeded];
+      *&v15 = MEMORY[0x277D82BD8](view).n128_u64[0];
       [v122 layoutIfNeeded];
       [v113 setConstant:?];
       [v112[0] setConstant:0.0];
-      v77 = v124;
-      v78 = [v122 contentView];
-      [v78 frame];
+      v77 = selfCopy;
+      contentView = [v122 contentView];
+      [contentView frame];
       v105[1] = v16;
       v105[2] = v17;
       v105[3] = v18;
@@ -843,18 +843,18 @@ uint64_t __92__CPSNavigationCardViewController_setNavigationCardHidden_forReques
       *(&v106 + 1) = v21;
       *&v107 = v22;
       *(&v107 + 1) = v23;
-      MEMORY[0x277D82BD8](v78);
-      v79 = [(CPSNavigationCardViewController *)v124 createShadowViewWithFrame:v106, v107];
-      [(CPSNavigationCardViewController *)v124 setShadowCardView:?];
-      *&v24 = MEMORY[0x277D82BD8](v79).n128_u64[0];
-      v82 = [(CPSNavigationCardViewController *)v124 view];
-      v81 = [(CPSNavigationCardViewController *)v124 shadowCardView];
-      v80 = [(CPSNavigationCardViewController *)v124 containerView];
-      [v82 insertSubview:v81 belowSubview:?];
-      MEMORY[0x277D82BD8](v80);
-      MEMORY[0x277D82BD8](v81);
-      *&v25 = MEMORY[0x277D82BD8](v82).n128_u64[0];
-      if ([(CPSNavigationCardViewController *)v124 _shouldAnimate])
+      MEMORY[0x277D82BD8](contentView);
+      v107 = [(CPSNavigationCardViewController *)selfCopy createShadowViewWithFrame:v106, v107];
+      [(CPSNavigationCardViewController *)selfCopy setShadowCardView:?];
+      *&v24 = MEMORY[0x277D82BD8](v107).n128_u64[0];
+      view2 = [(CPSNavigationCardViewController *)selfCopy view];
+      shadowCardView2 = [(CPSNavigationCardViewController *)selfCopy shadowCardView];
+      containerView5 = [(CPSNavigationCardViewController *)selfCopy containerView];
+      [view2 insertSubview:shadowCardView2 belowSubview:?];
+      MEMORY[0x277D82BD8](containerView5);
+      MEMORY[0x277D82BD8](shadowCardView2);
+      *&v25 = MEMORY[0x277D82BD8](view2).n128_u64[0];
+      if ([(CPSNavigationCardViewController *)selfCopy _shouldAnimate])
       {
         v65 = MEMORY[0x277D75D18];
         v99 = MEMORY[0x277D85DD0];
@@ -862,7 +862,7 @@ uint64_t __92__CPSNavigationCardViewController_setNavigationCardHidden_forReques
         v101 = 0;
         v102 = __63__CPSNavigationCardViewController__transitionFromViews_inView___block_invoke_4;
         v103 = &unk_278D910D8;
-        v104 = MEMORY[0x277D82BE0](v124);
+        v104 = MEMORY[0x277D82BE0](selfCopy);
         v105[0] = MEMORY[0x277D82BE0](v122);
         [v65 animateWithDuration:0 delay:&v99 options:&__block_literal_global_6 animations:0.4 completion:0.0];
         objc_storeStrong(v105, 0);
@@ -871,9 +871,9 @@ uint64_t __92__CPSNavigationCardViewController_setNavigationCardHidden_forReques
 
       else
       {
-        v64 = [(CPSNavigationCardViewController *)v124 view];
-        [v64 layoutIfNeeded];
-        *&v26 = MEMORY[0x277D82BD8](v64).n128_u64[0];
+        view3 = [(CPSNavigationCardViewController *)selfCopy view];
+        [view3 layoutIfNeeded];
+        *&v26 = MEMORY[0x277D82BD8](view3).n128_u64[0];
         [v122 layoutIfNeeded];
       }
 
@@ -887,40 +887,40 @@ uint64_t __92__CPSNavigationCardViewController_setNavigationCardHidden_forReques
   else if (v122)
   {
     v43 = MEMORY[0x277CCAAD0];
-    v52 = [v122 leadingAnchor];
-    v51 = [(CPSNavigationCardViewController *)v124 containerView];
-    v50 = [(UIView *)v51 leadingAnchor];
-    v49 = [v52 constraintEqualToAnchor:? constant:?];
+    leadingAnchor3 = [v122 leadingAnchor];
+    containerView6 = [(CPSNavigationCardViewController *)selfCopy containerView];
+    leadingAnchor4 = [(UIView *)containerView6 leadingAnchor];
+    v49 = [leadingAnchor3 constraintEqualToAnchor:? constant:?];
     v125[0] = v49;
-    v48 = [v122 trailingAnchor];
-    v47 = [(CPSNavigationCardViewController *)v124 containerView];
-    v46 = [(UIView *)v47 trailingAnchor];
-    v45 = [v48 constraintEqualToAnchor:0.0 constant:?];
+    trailingAnchor3 = [v122 trailingAnchor];
+    containerView7 = [(CPSNavigationCardViewController *)selfCopy containerView];
+    trailingAnchor4 = [(UIView *)containerView7 trailingAnchor];
+    v45 = [trailingAnchor3 constraintEqualToAnchor:0.0 constant:?];
     v125[1] = v45;
     v44 = [MEMORY[0x277CBEA60] arrayWithObjects:v125 count:2];
     [v43 activateConstraints:?];
     MEMORY[0x277D82BD8](v44);
     MEMORY[0x277D82BD8](v45);
-    MEMORY[0x277D82BD8](v46);
-    MEMORY[0x277D82BD8](v47);
-    MEMORY[0x277D82BD8](v48);
+    MEMORY[0x277D82BD8](trailingAnchor4);
+    MEMORY[0x277D82BD8](containerView7);
+    MEMORY[0x277D82BD8](trailingAnchor3);
     MEMORY[0x277D82BD8](v49);
-    MEMORY[0x277D82BD8](v50);
-    MEMORY[0x277D82BD8](v51);
-    *&v27 = MEMORY[0x277D82BD8](v52).n128_u64[0];
-    v54 = [(CPSNavigationCardViewController *)v124 containerViewTopConstraint];
-    v53 = [(CPSNavigationCardViewController *)v124 containerView];
-    [(UIView *)v53 frame];
+    MEMORY[0x277D82BD8](leadingAnchor4);
+    MEMORY[0x277D82BD8](containerView6);
+    *&v27 = MEMORY[0x277D82BD8](leadingAnchor3).n128_u64[0];
+    containerViewTopConstraint = [(CPSNavigationCardViewController *)selfCopy containerViewTopConstraint];
+    containerView8 = [(CPSNavigationCardViewController *)selfCopy containerView];
+    [(UIView *)containerView8 frame];
     v95 = v28;
     v96 = v29;
     v97 = v30;
     v98 = v31;
-    [(NSLayoutConstraint *)v54 setConstant:-v31];
-    MEMORY[0x277D82BD8](v53);
-    MEMORY[0x277D82BD8](v54);
-    v55 = v124;
-    v56 = [v122 contentView];
-    [v56 frame];
+    [(NSLayoutConstraint *)containerViewTopConstraint setConstant:-v31];
+    MEMORY[0x277D82BD8](containerView8);
+    MEMORY[0x277D82BD8](containerViewTopConstraint);
+    v55 = selfCopy;
+    contentView2 = [v122 contentView];
+    [contentView2 frame];
     v92[1] = v32;
     v92[2] = v33;
     v92[3] = v34;
@@ -930,30 +930,30 @@ uint64_t __92__CPSNavigationCardViewController_setNavigationCardHidden_forReques
     *(&v93 + 1) = v37;
     *&v94 = v38;
     *(&v94 + 1) = v39;
-    MEMORY[0x277D82BD8](v56);
-    v57 = [(CPSNavigationCardViewController *)v124 createShadowViewWithFrame:v93, v94];
-    [(CPSNavigationCardViewController *)v124 setShadowCardView:?];
+    MEMORY[0x277D82BD8](contentView2);
+    v57 = [(CPSNavigationCardViewController *)selfCopy createShadowViewWithFrame:v93, v94];
+    [(CPSNavigationCardViewController *)selfCopy setShadowCardView:?];
     *&v40 = MEMORY[0x277D82BD8](v57).n128_u64[0];
-    v58 = [(CPSNavigationCardViewController *)v124 view];
-    [v58 layoutIfNeeded];
-    *&v41 = MEMORY[0x277D82BD8](v58).n128_u64[0];
-    v59 = [(CPSNavigationCardViewController *)v124 containerViewTopConstraint];
-    [(NSLayoutConstraint *)v59 setConstant:0.0];
-    *&v42 = MEMORY[0x277D82BD8](v59).n128_u64[0];
-    v62 = [(CPSNavigationCardViewController *)v124 view];
-    v61 = [(CPSNavigationCardViewController *)v124 shadowCardView];
-    v60 = [(CPSNavigationCardViewController *)v124 containerView];
-    [v62 insertSubview:v61 belowSubview:?];
-    MEMORY[0x277D82BD8](v60);
-    MEMORY[0x277D82BD8](v61);
-    MEMORY[0x277D82BD8](v62);
+    view4 = [(CPSNavigationCardViewController *)selfCopy view];
+    [view4 layoutIfNeeded];
+    *&v41 = MEMORY[0x277D82BD8](view4).n128_u64[0];
+    containerViewTopConstraint2 = [(CPSNavigationCardViewController *)selfCopy containerViewTopConstraint];
+    [(NSLayoutConstraint *)containerViewTopConstraint2 setConstant:0.0];
+    *&v42 = MEMORY[0x277D82BD8](containerViewTopConstraint2).n128_u64[0];
+    view5 = [(CPSNavigationCardViewController *)selfCopy view];
+    shadowCardView3 = [(CPSNavigationCardViewController *)selfCopy shadowCardView];
+    containerView9 = [(CPSNavigationCardViewController *)selfCopy containerView];
+    [view5 insertSubview:shadowCardView3 belowSubview:?];
+    MEMORY[0x277D82BD8](containerView9);
+    MEMORY[0x277D82BD8](shadowCardView3);
+    MEMORY[0x277D82BD8](view5);
     v63 = MEMORY[0x277D75D18];
     v86 = MEMORY[0x277D85DD0];
     v87 = -1073741824;
     v88 = 0;
     v89 = __63__CPSNavigationCardViewController__transitionFromViews_inView___block_invoke_6;
     v90 = &unk_278D910D8;
-    v91 = MEMORY[0x277D82BE0](v124);
+    v91 = MEMORY[0x277D82BE0](selfCopy);
     v92[0] = MEMORY[0x277D82BE0](v122);
     [v63 animateWithDuration:0 delay:&v86 usingSpringWithDamping:&__block_literal_global_97 initialSpringVelocity:0.35 options:0.0 animations:0.8 completion:?];
     objc_storeStrong(v92, 0);
@@ -1122,16 +1122,16 @@ double __63__CPSNavigationCardViewController__transitionFromViews_inView___block
   return result;
 }
 
-- (CGRect)adjustedShadowConstraintsWithFrame:(CGRect)a3
+- (CGRect)adjustedShadowConstraintsWithFrame:(CGRect)frame
 {
-  v11 = [(CPSNavigationCardViewController *)self containerViewTopConstraint];
-  [(NSLayoutConstraint *)v11 constant];
+  containerViewTopConstraint = [(CPSNavigationCardViewController *)self containerViewTopConstraint];
+  [(NSLayoutConstraint *)containerViewTopConstraint constant];
   CGRectMake_0();
   v12 = v3;
   v13 = v4;
   v14 = v5;
   v15 = v6;
-  MEMORY[0x277D82BD8](v11);
+  MEMORY[0x277D82BD8](containerViewTopConstraint);
   v7 = v12;
   v8 = v13;
   v9 = v14;
@@ -1143,79 +1143,79 @@ double __63__CPSNavigationCardViewController__transitionFromViews_inView___block
   return result;
 }
 
-- (id)createShadowViewWithFrame:(CGRect)a3
+- (id)createShadowViewWithFrame:(CGRect)frame
 {
-  v15 = a3;
-  v14 = self;
+  frameCopy = frame;
+  selfCopy = self;
   v13[1] = a2;
   v13[0] = objc_opt_new();
-  v7 = [(CPSNavigationCardViewController *)v14 shadowCardView];
-  v6 = [(UIView *)v7 layer];
-  [(CALayer *)v6 setCornerRadius:10.0];
-  MEMORY[0x277D82BD8](v6);
-  *&v3 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-  v9 = [(CPSNavigationCardViewController *)v14 shadowCardView];
-  v8 = [(UIView *)v9 layer];
-  [(CALayer *)v8 setShadowRadius:20.0];
-  MEMORY[0x277D82BD8](v8);
-  *&v4 = MEMORY[0x277D82BD8](v9).n128_u64[0];
-  v11 = [(CPSNavigationCardViewController *)v14 shadowCardView];
-  v10 = [(UIView *)v11 layer];
-  [(CALayer *)v10 setOpacity:0.0];
-  MEMORY[0x277D82BD8](v10);
-  MEMORY[0x277D82BD8](v11);
+  shadowCardView = [(CPSNavigationCardViewController *)selfCopy shadowCardView];
+  layer = [(UIView *)shadowCardView layer];
+  [(CALayer *)layer setCornerRadius:10.0];
+  MEMORY[0x277D82BD8](layer);
+  *&v3 = MEMORY[0x277D82BD8](shadowCardView).n128_u64[0];
+  shadowCardView2 = [(CPSNavigationCardViewController *)selfCopy shadowCardView];
+  layer2 = [(UIView *)shadowCardView2 layer];
+  [(CALayer *)layer2 setShadowRadius:20.0];
+  MEMORY[0x277D82BD8](layer2);
+  *&v4 = MEMORY[0x277D82BD8](shadowCardView2).n128_u64[0];
+  shadowCardView3 = [(CPSNavigationCardViewController *)selfCopy shadowCardView];
+  layer3 = [(UIView *)shadowCardView3 layer];
+  [(CALayer *)layer3 setOpacity:0.0];
+  MEMORY[0x277D82BD8](layer3);
+  MEMORY[0x277D82BD8](shadowCardView3);
   v12 = MEMORY[0x277D82BE0](v13[0]);
   objc_storeStrong(v13, 0);
 
   return v12;
 }
 
-- (void)updateTripEstimates:(id)a3
+- (void)updateTripEstimates:(id)estimates
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, estimates);
   objc_storeStrong(location, 0);
 }
 
-- (void)_updateSizingViewConstraintsForView:(id)a3
+- (void)_updateSizingViewConstraintsForView:(id)view
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   objc_storeStrong(location, 0);
 }
 
-- (void)navigator:(id)a3 didEndTrip:(BOOL)a4
+- (void)navigator:(id)navigator didEndTrip:(BOOL)trip
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [(CPSNavigationCardViewController *)v9 currentManeuversCardView];
-  [(CPSManeuversCardView *)v6 removeFromSuperview];
-  *&v4 = MEMORY[0x277D82BD8](v6).n128_u64[0];
-  v7 = [(CPSNavigationCardViewController *)v9 currentPausedCardView];
-  [(CPSPausedCardView *)v7 removeFromSuperview];
-  *&v5 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-  [(CPSNavigationCardViewController *)v9 setCurrentPausedCardView:0, v5];
-  [(CPSNavigationCardViewController *)v9 setCurrentManeuversCardView:0];
-  [(CPSNavigationCardViewController *)v9 _updateHelperConstraints];
+  objc_storeStrong(location, navigator);
+  currentManeuversCardView = [(CPSNavigationCardViewController *)selfCopy currentManeuversCardView];
+  [(CPSManeuversCardView *)currentManeuversCardView removeFromSuperview];
+  *&v4 = MEMORY[0x277D82BD8](currentManeuversCardView).n128_u64[0];
+  currentPausedCardView = [(CPSNavigationCardViewController *)selfCopy currentPausedCardView];
+  [(CPSPausedCardView *)currentPausedCardView removeFromSuperview];
+  *&v5 = MEMORY[0x277D82BD8](currentPausedCardView).n128_u64[0];
+  [(CPSNavigationCardViewController *)selfCopy setCurrentPausedCardView:0, v5];
+  [(CPSNavigationCardViewController *)selfCopy setCurrentManeuversCardView:0];
+  [(CPSNavigationCardViewController *)selfCopy _updateHelperConstraints];
   objc_storeStrong(location, 0);
 }
 
-- (void)setGuidanceBackgroundColor:(id)a3
+- (void)setGuidanceBackgroundColor:(id)color
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_guidanceBackgroundColor != location[0])
+  objc_storeStrong(location, color);
+  if (selfCopy->_guidanceBackgroundColor != location[0])
   {
-    objc_storeStrong(&v4->_guidanceBackgroundColor, location[0]);
-    [(CPSNavigationCardViewController *)v4 _updateCardBackgroundColors];
+    objc_storeStrong(&selfCopy->_guidanceBackgroundColor, location[0]);
+    [(CPSNavigationCardViewController *)selfCopy _updateCardBackgroundColors];
   }
 
   objc_storeStrong(location, 0);
@@ -1223,40 +1223,40 @@ double __63__CPSNavigationCardViewController__transitionFromViews_inView___block
 
 - (void)_updateCardBackgroundColors
 {
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  v22 = [(CPSNavigationCardViewController *)self currentManeuversCardView];
-  v21 = [(CPSManeuversCardView *)v22 maneuvers];
-  v20 = [(NSArray *)v21 firstObject];
-  v34 = [v20 cardBackgroundColor];
-  MEMORY[0x277D82BD8](v20);
-  MEMORY[0x277D82BD8](v21);
-  v2 = MEMORY[0x277D82BD8](v22).n128_u64[0];
+  currentManeuversCardView = [(CPSNavigationCardViewController *)self currentManeuversCardView];
+  maneuvers = [(CPSManeuversCardView *)currentManeuversCardView maneuvers];
+  firstObject = [(NSArray *)maneuvers firstObject];
+  cardBackgroundColor = [firstObject cardBackgroundColor];
+  MEMORY[0x277D82BD8](firstObject);
+  MEMORY[0x277D82BD8](maneuvers);
+  v2 = MEMORY[0x277D82BD8](currentManeuversCardView).n128_u64[0];
   v32 = 0;
   v23 = 1;
-  if (!v34)
+  if (!cardBackgroundColor)
   {
-    v33 = [(CPSNavigationCardViewController *)v36 guidanceBackgroundColor];
+    guidanceBackgroundColor = [(CPSNavigationCardViewController *)selfCopy guidanceBackgroundColor];
     v32 = 1;
-    v23 = v33 != 0;
+    v23 = guidanceBackgroundColor != 0;
   }
 
   if (v32)
   {
-    v2 = MEMORY[0x277D82BD8](v33).n128_u64[0];
+    v2 = MEMORY[0x277D82BD8](guidanceBackgroundColor).n128_u64[0];
   }
 
-  v18 = [(CPSNavigationCardViewController *)v36 currentPausedCardView];
-  v17 = [(CPSPausedCardView *)v18 contentView];
-  v3 = [(UIView *)v17 backgroundColor];
+  currentPausedCardView = [(CPSNavigationCardViewController *)selfCopy currentPausedCardView];
+  contentView = [(CPSPausedCardView *)currentPausedCardView contentView];
+  backgroundColor = [(UIView *)contentView backgroundColor];
   v4 = location[0];
-  location[0] = v3;
+  location[0] = backgroundColor;
   MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v17);
-  v19 = [(CPSNavigationCardViewController *)v36 guidanceBackgroundColor];
-  *&v5 = MEMORY[0x277D82BD8](v19).n128_u64[0];
-  if (v19)
+  MEMORY[0x277D82BD8](contentView);
+  guidanceBackgroundColor2 = [(CPSNavigationCardViewController *)selfCopy guidanceBackgroundColor];
+  *&v5 = MEMORY[0x277D82BD8](guidanceBackgroundColor2).n128_u64[0];
+  if (guidanceBackgroundColor2)
   {
     v26 = 0;
     if (location[0])
@@ -1266,32 +1266,32 @@ double __63__CPSNavigationCardViewController__transitionFromViews_inView___block
 
     else
     {
-      v27 = [(CPSNavigationCardViewController *)v36 guidanceBackgroundColor];
+      guidanceBackgroundColor3 = [(CPSNavigationCardViewController *)selfCopy guidanceBackgroundColor];
       v26 = 1;
-      objc_storeStrong(location, v27);
+      objc_storeStrong(location, guidanceBackgroundColor3);
     }
 
     if (v26)
     {
-      MEMORY[0x277D82BD8](v27);
+      MEMORY[0x277D82BD8](guidanceBackgroundColor3);
     }
 
     v24 = 0;
-    if (v34)
+    if (cardBackgroundColor)
     {
-      objc_storeStrong(&v34, v34);
+      objc_storeStrong(&cardBackgroundColor, cardBackgroundColor);
     }
 
     else
     {
-      v25 = [(CPSNavigationCardViewController *)v36 guidanceBackgroundColor];
+      guidanceBackgroundColor4 = [(CPSNavigationCardViewController *)selfCopy guidanceBackgroundColor];
       v24 = 1;
-      objc_storeStrong(&v34, v25);
+      objc_storeStrong(&cardBackgroundColor, guidanceBackgroundColor4);
     }
 
     if (v24)
     {
-      MEMORY[0x277D82BD8](v25);
+      MEMORY[0x277D82BD8](guidanceBackgroundColor4);
     }
   }
 
@@ -1305,93 +1305,93 @@ double __63__CPSNavigationCardViewController__transitionFromViews_inView___block
 
     else
     {
-      v31 = [MEMORY[0x277D75348] crsui_consoleTurnCardETATrayBackgroundColor];
+      crsui_consoleTurnCardETATrayBackgroundColor = [MEMORY[0x277D75348] crsui_consoleTurnCardETATrayBackgroundColor];
       v30 = 1;
-      objc_storeStrong(location, v31);
+      objc_storeStrong(location, crsui_consoleTurnCardETATrayBackgroundColor);
     }
 
     if (v30)
     {
-      MEMORY[0x277D82BD8](v31);
+      MEMORY[0x277D82BD8](crsui_consoleTurnCardETATrayBackgroundColor);
     }
 
     v28 = 0;
-    if (v34)
+    if (cardBackgroundColor)
     {
-      objc_storeStrong(&v34, v34);
+      objc_storeStrong(&cardBackgroundColor, cardBackgroundColor);
     }
 
     else
     {
-      v29 = [MEMORY[0x277D75348] crsui_consoleTurnCardETATrayBackgroundColor];
+      crsui_consoleTurnCardETATrayBackgroundColor2 = [MEMORY[0x277D75348] crsui_consoleTurnCardETATrayBackgroundColor];
       v28 = 1;
-      objc_storeStrong(&v34, v29);
+      objc_storeStrong(&cardBackgroundColor, crsui_consoleTurnCardETATrayBackgroundColor2);
     }
 
     if (v28)
     {
-      MEMORY[0x277D82BD8](v29);
+      MEMORY[0x277D82BD8](crsui_consoleTurnCardETATrayBackgroundColor2);
     }
   }
 
-  v12 = [(CPSNavigationCardViewController *)v36 currentManeuversCardView];
-  [(CPSManeuversCardView *)v12 setUsesCustomBackgroundColor:v23];
-  *&v6 = MEMORY[0x277D82BD8](v12).n128_u64[0];
+  currentManeuversCardView2 = [(CPSNavigationCardViewController *)selfCopy currentManeuversCardView];
+  [(CPSManeuversCardView *)currentManeuversCardView2 setUsesCustomBackgroundColor:v23];
+  *&v6 = MEMORY[0x277D82BD8](currentManeuversCardView2).n128_u64[0];
   v13 = location[0];
-  v14 = [(CPSNavigationCardViewController *)v36 currentPausedCardView];
-  [(CPSPausedCardView *)v14 setCardBackgroundColor:v13];
-  *&v7 = MEMORY[0x277D82BD8](v14).n128_u64[0];
-  v15 = v34;
-  v16 = [(CPSNavigationCardViewController *)v36 currentManeuversCardView];
-  [(CPSManeuversCardView *)v16 setCardBackgroundColor:v15];
-  *&v8 = MEMORY[0x277D82BD8](v16).n128_u64[0];
+  currentPausedCardView2 = [(CPSNavigationCardViewController *)selfCopy currentPausedCardView];
+  [(CPSPausedCardView *)currentPausedCardView2 setCardBackgroundColor:v13];
+  *&v7 = MEMORY[0x277D82BD8](currentPausedCardView2).n128_u64[0];
+  v15 = cardBackgroundColor;
+  currentManeuversCardView3 = [(CPSNavigationCardViewController *)selfCopy currentManeuversCardView];
+  [(CPSManeuversCardView *)currentManeuversCardView3 setCardBackgroundColor:v15];
+  *&v8 = MEMORY[0x277D82BD8](currentManeuversCardView3).n128_u64[0];
   if (v23)
   {
-    v10 = [(CPSNavigationCardViewController *)v36 currentPausedCardView];
-    [(UIView *)v10 overrideUserInterfaceStyleBasedOnBackgroundColor:location[0]];
-    *&v9 = MEMORY[0x277D82BD8](v10).n128_u64[0];
-    v11 = [(CPSNavigationCardViewController *)v36 currentManeuversCardView];
-    [(UIView *)v11 overrideUserInterfaceStyleBasedOnBackgroundColor:v34];
-    MEMORY[0x277D82BD8](v11);
+    currentPausedCardView3 = [(CPSNavigationCardViewController *)selfCopy currentPausedCardView];
+    [(UIView *)currentPausedCardView3 overrideUserInterfaceStyleBasedOnBackgroundColor:location[0]];
+    *&v9 = MEMORY[0x277D82BD8](currentPausedCardView3).n128_u64[0];
+    currentManeuversCardView4 = [(CPSNavigationCardViewController *)selfCopy currentManeuversCardView];
+    [(UIView *)currentManeuversCardView4 overrideUserInterfaceStyleBasedOnBackgroundColor:cardBackgroundColor];
+    MEMORY[0x277D82BD8](currentManeuversCardView4);
   }
 
-  objc_storeStrong(&v34, 0);
+  objc_storeStrong(&cardBackgroundColor, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)_updateLinkedCheck
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   v3 = MEMORY[0x277CC1E88];
-  v4 = [(CPSNavigationCardViewController *)self navigatingBundleIdentifier];
+  navigatingBundleIdentifier = [(CPSNavigationCardViewController *)self navigatingBundleIdentifier];
   location[0] = [v3 bundleProxyForIdentifier:?];
-  v5 = [location[0] sdkVersion];
-  v6 = [v5 compare:@"13.4" options:64];
-  *&v2 = MEMORY[0x277D82BD8](v5).n128_u64[0];
+  sdkVersion = [location[0] sdkVersion];
+  v6 = [sdkVersion compare:@"13.4" options:64];
+  *&v2 = MEMORY[0x277D82BD8](sdkVersion).n128_u64[0];
   v7 = 1;
   if (v6)
   {
     v7 = v6 == 1;
   }
 
-  [(CPSNavigationCardViewController *)v9 setPassesLinkCheck:v7, v2];
+  [(CPSNavigationCardViewController *)selfCopy setPassesLinkCheck:v7, v2];
   objc_storeStrong(location, 0);
 }
 
-- (void)setNavigatingBundleIdentifier:(id)a3
+- (void)setNavigatingBundleIdentifier:(id)identifier
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (![(NSString *)v7->_navigatingBundleIdentifier isEqualToString:location[0]])
+  objc_storeStrong(location, identifier);
+  if (![(NSString *)selfCopy->_navigatingBundleIdentifier isEqualToString:location[0]])
   {
     v3 = [location[0] copy];
-    navigatingBundleIdentifier = v7->_navigatingBundleIdentifier;
-    v7->_navigatingBundleIdentifier = v3;
+    navigatingBundleIdentifier = selfCopy->_navigatingBundleIdentifier;
+    selfCopy->_navigatingBundleIdentifier = v3;
     *&v5 = MEMORY[0x277D82BD8](navigatingBundleIdentifier).n128_u64[0];
-    [(CPSNavigationCardViewController *)v7 _updateLinkedCheck];
+    [(CPSNavigationCardViewController *)selfCopy _updateLinkedCheck];
   }
 
   objc_storeStrong(location, 0);

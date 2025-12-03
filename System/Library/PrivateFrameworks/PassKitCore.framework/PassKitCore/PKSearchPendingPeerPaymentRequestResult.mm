@@ -1,19 +1,19 @@
 @interface PKSearchPendingPeerPaymentRequestResult
-- (BOOL)isEqual:(id)a3;
-- (PKSearchPendingPeerPaymentRequestResult)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKSearchPendingPeerPaymentRequestResult)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation PKSearchPendingPeerPaymentRequestResult
 
-- (PKSearchPendingPeerPaymentRequestResult)initWithCoder:(id)a3
+- (PKSearchPendingPeerPaymentRequestResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKSearchPendingPeerPaymentRequestResult *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pendingRequest"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pendingRequest"];
     pendingRequest = v5->_pendingRequest;
     v5->_pendingRequest = v6;
   }
@@ -34,14 +34,14 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     pendingRequest = self->_pendingRequest;
-    v6 = v4[1];
+    v6 = equalCopy[1];
     if (pendingRequest && v6)
     {
       v7 = [(PKPeerPaymentPendingRequest *)pendingRequest isEqual:?];

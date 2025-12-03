@@ -7,11 +7,11 @@
 - (id)crlaxStorage
 {
   v8 = 0;
-  v2 = [(CRLTextLayoutAccessibility *)self crlaxTarget];
-  v3 = [v2 info];
+  crlaxTarget = [(CRLTextLayoutAccessibility *)self crlaxTarget];
+  info = [crlaxTarget info];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v8);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, info, 1, &v8);
   if (v8 == 1)
   {
     abort();

@@ -1,13 +1,13 @@
 @interface STConcreteXPCServiceProvider
 + (id)privateAgentServiceDescription;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (STConcreteXPCServiceProvider)init;
 - (id)_supportedMachServices;
 - (id)provideAskService;
 - (id)provideCommunicationService;
 - (id)provideDowntimeService;
-- (id)providePasscodeAuthenticationServiceWithClientListenerEndpoint:(id)a3;
-- (id)providePasscodePromptServiceWithClientListenerEndpoint:(id)a3;
+- (id)providePasscodeAuthenticationServiceWithClientListenerEndpoint:(id)endpoint;
+- (id)providePasscodePromptServiceWithClientListenerEndpoint:(id)endpoint;
 - (id)providePrivateAgentService;
 - (id)providePublicAgentService;
 - (id)provideReactorToolService;
@@ -39,12 +39,12 @@
   providedServicesByServiceName = v2->_providedServicesByServiceName;
   v2->_providedServicesByServiceName = v9;
 
-  v11 = [(STConcreteXPCServiceProvider *)v2 _supportedMachServices];
+  _supportedMachServices = [(STConcreteXPCServiceProvider *)v2 _supportedMachServices];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v12 = [v11 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  v12 = [_supportedMachServices countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v12)
   {
     v13 = v12;
@@ -55,18 +55,18 @@
       {
         if (*v21 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(_supportedMachServices);
         }
 
         v16 = *(*(&v20 + 1) + 8 * i);
-        v17 = [v16 serviceName];
-        [(NSMutableDictionary *)v2->_serviceDescriptionsByServiceName setObject:v16 forKeyedSubscript:v17];
-        v18 = [[NSXPCListener alloc] initWithMachServiceName:v17];
+        serviceName = [v16 serviceName];
+        [(NSMutableDictionary *)v2->_serviceDescriptionsByServiceName setObject:v16 forKeyedSubscript:serviceName];
+        v18 = [[NSXPCListener alloc] initWithMachServiceName:serviceName];
         [v18 setDelegate:v2];
-        [(NSMutableDictionary *)v2->_machXpcListenersByServiceName setObject:v18 forKeyedSubscript:v17];
+        [(NSMutableDictionary *)v2->_machXpcListenersByServiceName setObject:v18 forKeyedSubscript:serviceName];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v13 = [_supportedMachServices countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v13);
@@ -99,14 +99,14 @@
 
 - (void)resume
 {
-  v2 = [(STConcreteXPCServiceProvider *)self machXpcListenersByServiceName];
-  [v2 enumerateKeysAndObjectsUsingBlock:&stru_1001A3510];
+  machXpcListenersByServiceName = [(STConcreteXPCServiceProvider *)self machXpcListenersByServiceName];
+  [machXpcListenersByServiceName enumerateKeysAndObjectsUsingBlock:&stru_1001A3510];
 }
 
 - (void)suspend
 {
-  v2 = [(STConcreteXPCServiceProvider *)self machXpcListenersByServiceName];
-  [v2 enumerateKeysAndObjectsUsingBlock:&stru_1001A3530];
+  machXpcListenersByServiceName = [(STConcreteXPCServiceProvider *)self machXpcListenersByServiceName];
+  [machXpcListenersByServiceName enumerateKeysAndObjectsUsingBlock:&stru_1001A3530];
 }
 
 + (id)privateAgentServiceDescription
@@ -132,9 +132,9 @@
 {
   v3 = +[STConcreteXPCServiceProvider askServiceDescription];
   v4 = objc_opt_new();
-  v5 = [(STConcreteXPCServiceProvider *)self providedServicesByServiceName];
-  v6 = [v3 serviceName];
-  [v5 setObject:v4 forKeyedSubscript:v6];
+  providedServicesByServiceName = [(STConcreteXPCServiceProvider *)self providedServicesByServiceName];
+  serviceName = [v3 serviceName];
+  [providedServicesByServiceName setObject:v4 forKeyedSubscript:serviceName];
 
   return v4;
 }
@@ -143,22 +143,22 @@
 {
   v3 = +[STConcreteXPCServiceProvider setupServiceDescription];
   v4 = objc_opt_new();
-  v5 = [(STConcreteXPCServiceProvider *)self providedServicesByServiceName];
-  v6 = [v3 serviceName];
-  [v5 setObject:v4 forKeyedSubscript:v6];
+  providedServicesByServiceName = [(STConcreteXPCServiceProvider *)self providedServicesByServiceName];
+  serviceName = [v3 serviceName];
+  [providedServicesByServiceName setObject:v4 forKeyedSubscript:serviceName];
 
   return v4;
 }
 
-- (id)providePasscodePromptServiceWithClientListenerEndpoint:(id)a3
+- (id)providePasscodePromptServiceWithClientListenerEndpoint:(id)endpoint
 {
   v8 = STRemoteAlertConfigurationContextKeyPasscodeMode;
   v9 = &off_1001B2128;
-  v3 = a3;
+  endpointCopy = endpoint;
   v4 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
   v5 = [STRemoteViewServiceDescription sharedDescriptionWithServiceName:@"com.apple.ScreenTimeUnlock" viewControllerClassName:@"STRemoteServiceViewController" configurationContextUserInfo:v4];
 
-  v6 = [[STConcretePrimitiveRemoteViewService alloc] initWithServiceDescription:v5 listenerEndpoint:v3];
+  v6 = [[STConcretePrimitiveRemoteViewService alloc] initWithServiceDescription:v5 listenerEndpoint:endpointCopy];
 
   return v6;
 }
@@ -167,22 +167,22 @@
 {
   v3 = +[STConcreteXPCServiceProvider communicationServiceDescription];
   v4 = objc_opt_new();
-  v5 = [(STConcreteXPCServiceProvider *)self providedServicesByServiceName];
-  v6 = [v3 serviceName];
-  [v5 setObject:v4 forKeyedSubscript:v6];
+  providedServicesByServiceName = [(STConcreteXPCServiceProvider *)self providedServicesByServiceName];
+  serviceName = [v3 serviceName];
+  [providedServicesByServiceName setObject:v4 forKeyedSubscript:serviceName];
 
   return v4;
 }
 
-- (id)providePasscodeAuthenticationServiceWithClientListenerEndpoint:(id)a3
+- (id)providePasscodeAuthenticationServiceWithClientListenerEndpoint:(id)endpoint
 {
   v8 = STRemoteAlertConfigurationContextKeyPasscodeMode;
   v9 = &off_1001B2140;
-  v3 = a3;
+  endpointCopy = endpoint;
   v4 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
   v5 = [STRemoteViewServiceDescription sharedDescriptionWithServiceName:@"com.apple.ScreenTimeUnlock" viewControllerClassName:@"STRemoteServiceViewController" configurationContextUserInfo:v4];
 
-  v6 = [[STConcretePrimitiveRemoteViewService alloc] initWithServiceDescription:v5 listenerEndpoint:v3];
+  v6 = [[STConcretePrimitiveRemoteViewService alloc] initWithServiceDescription:v5 listenerEndpoint:endpointCopy];
 
   return v6;
 }
@@ -191,9 +191,9 @@
 {
   v3 = +[STConcreteXPCServiceProvider privateAgentServiceDescription];
   v4 = objc_opt_new();
-  v5 = [(STConcreteXPCServiceProvider *)self providedServicesByServiceName];
-  v6 = [v3 serviceName];
-  [v5 setObject:v4 forKeyedSubscript:v6];
+  providedServicesByServiceName = [(STConcreteXPCServiceProvider *)self providedServicesByServiceName];
+  serviceName = [v3 serviceName];
+  [providedServicesByServiceName setObject:v4 forKeyedSubscript:serviceName];
 
   return v4;
 }
@@ -202,9 +202,9 @@
 {
   v3 = +[STConcreteXPCServiceProvider publicAgentServiceDescription];
   v4 = objc_opt_new();
-  v5 = [(STConcreteXPCServiceProvider *)self providedServicesByServiceName];
-  v6 = [v3 serviceName];
-  [v5 setObject:v4 forKeyedSubscript:v6];
+  providedServicesByServiceName = [(STConcreteXPCServiceProvider *)self providedServicesByServiceName];
+  serviceName = [v3 serviceName];
+  [providedServicesByServiceName setObject:v4 forKeyedSubscript:serviceName];
 
   return v4;
 }
@@ -213,9 +213,9 @@
 {
   v3 = +[STConcreteXPCServiceProvider reactorToolServiceDescription];
   v4 = objc_opt_new();
-  v5 = [(STConcreteXPCServiceProvider *)self providedServicesByServiceName];
-  v6 = [v3 serviceName];
-  [v5 setObject:v4 forKeyedSubscript:v6];
+  providedServicesByServiceName = [(STConcreteXPCServiceProvider *)self providedServicesByServiceName];
+  serviceName = [v3 serviceName];
+  [providedServicesByServiceName setObject:v4 forKeyedSubscript:serviceName];
 
   return v4;
 }
@@ -224,25 +224,25 @@
 {
   v3 = +[STConcreteXPCServiceProvider downtimeServiceDescription];
   v4 = objc_opt_new();
-  v5 = [(STConcreteXPCServiceProvider *)self providedServicesByServiceName];
-  v6 = [v3 serviceName];
-  [v5 setObject:v4 forKeyedSubscript:v6];
+  providedServicesByServiceName = [(STConcreteXPCServiceProvider *)self providedServicesByServiceName];
+  serviceName = [v3 serviceName];
+  [providedServicesByServiceName setObject:v4 forKeyedSubscript:serviceName];
 
   return v4;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 serviceName];
-  if (!v8)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  serviceName = [connectionCopy serviceName];
+  if (!serviceName)
   {
     v9 = +[STLog xpcServiceProvider];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v7;
+      *(&buf + 4) = connectionCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Looking for service description for anonymous connection request: %{public}@", &buf, 0xCu);
     }
 
@@ -252,16 +252,16 @@
     v30 = sub_10001F4F8;
     v31 = sub_10001F508;
     v32 = 0;
-    v10 = [(STConcreteXPCServiceProvider *)self anonymousXpcListenersByServiceName];
+    anonymousXpcListenersByServiceName = [(STConcreteXPCServiceProvider *)self anonymousXpcListenersByServiceName];
     v22 = _NSConcreteStackBlock;
     v23 = 3221225472;
     v24 = sub_10001F510;
     v25 = &unk_1001A3558;
-    v26 = v6;
+    v26 = listenerCopy;
     p_buf = &buf;
-    [v10 enumerateKeysAndObjectsUsingBlock:&v22];
+    [anonymousXpcListenersByServiceName enumerateKeysAndObjectsUsingBlock:&v22];
 
-    v8 = *(*(&buf + 1) + 40);
+    serviceName = *(*(&buf + 1) + 40);
     _Block_object_dispose(&buf, 8);
   }
 
@@ -269,41 +269,41 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v8;
+    *(&buf + 4) = serviceName;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "New connection request on service: %{public}@", &buf, 0xCu);
   }
 
-  v12 = [(STConcreteXPCServiceProvider *)self serviceDescriptionsByServiceName];
-  v13 = [v12 objectForKeyedSubscript:v8];
+  serviceDescriptionsByServiceName = [(STConcreteXPCServiceProvider *)self serviceDescriptionsByServiceName];
+  v13 = [serviceDescriptionsByServiceName objectForKeyedSubscript:serviceName];
 
   if (v13)
   {
-    v14 = [(STConcreteXPCServiceProvider *)self providedServicesByServiceName];
-    v15 = [v14 objectForKeyedSubscript:v8];
+    providedServicesByServiceName = [(STConcreteXPCServiceProvider *)self providedServicesByServiceName];
+    v15 = [providedServicesByServiceName objectForKeyedSubscript:serviceName];
 
     if (!v15)
     {
-      v16 = +[STLog xpcServiceProvider];
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      serviceEntitlement = +[STLog xpcServiceProvider];
+      if (os_log_type_enabled(serviceEntitlement, OS_LOG_TYPE_ERROR))
       {
-        sub_100113144(v16);
+        sub_100113144(serviceEntitlement);
       }
 
       v19 = 0;
       goto LABEL_26;
     }
 
-    v16 = [v13 serviceEntitlement];
-    if (v16)
+    serviceEntitlement = [v13 serviceEntitlement];
+    if (serviceEntitlement)
     {
-      v17 = [v7 valueForEntitlement:v16];
+      v17 = [connectionCopy valueForEntitlement:serviceEntitlement];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0 || ([v17 BOOLValue]& 1) == 0)
       {
         v20 = +[STLog xpcServiceProvider];
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
-          sub_1001130CC(v16, v20);
+          sub_1001130CC(serviceEntitlement, v20);
         }
 
         v19 = 0;
@@ -311,11 +311,11 @@
       }
     }
 
-    v18 = [v13 exportedInterface];
-    [v7 setExportedInterface:v18];
+    exportedInterface = [v13 exportedInterface];
+    [connectionCopy setExportedInterface:exportedInterface];
 
-    [v7 setExportedObject:v15];
-    [v7 resume];
+    [connectionCopy setExportedObject:v15];
+    [connectionCopy resume];
     v17 = +[STLog xpcServiceProvider];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {

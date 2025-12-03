@@ -1,21 +1,21 @@
 @interface RDPersistentStoreLookupForREMCDObject
 - (NSPersistentStore)persistentStore;
-- (id)init:(id)a3;
+- (id)init:(id)init;
 @end
 
 @implementation RDPersistentStoreLookupForREMCDObject
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
-  v4 = a3;
+  initCopy = init;
   v9.receiver = self;
   v9.super_class = RDPersistentStoreLookupForREMCDObject;
   v5 = [(RDPersistentStoreLookupForREMCDObject *)&v9 init];
   if (v5)
   {
-    v6 = [v4 objectID];
-    v7 = [v6 persistentStore];
-    [(RDPersistentStoreLookupForREMCDObject *)v5 setPersistentStore:v7];
+    objectID = [initCopy objectID];
+    persistentStore = [objectID persistentStore];
+    [(RDPersistentStoreLookupForREMCDObject *)v5 setPersistentStore:persistentStore];
   }
 
   return v5;

@@ -1,26 +1,26 @@
 @interface ICASSmartFolderCreationData
-- (ICASSmartFolderCreationData)initWithFolderCreationApproach:(id)a3 countOfTags:(id)a4 filterCondition:(id)a5 enabledFiltersArray:(id)a6;
+- (ICASSmartFolderCreationData)initWithFolderCreationApproach:(id)approach countOfTags:(id)tags filterCondition:(id)condition enabledFiltersArray:(id)array;
 - (id)toDict;
 @end
 
 @implementation ICASSmartFolderCreationData
 
-- (ICASSmartFolderCreationData)initWithFolderCreationApproach:(id)a3 countOfTags:(id)a4 filterCondition:(id)a5 enabledFiltersArray:(id)a6
+- (ICASSmartFolderCreationData)initWithFolderCreationApproach:(id)approach countOfTags:(id)tags filterCondition:(id)condition enabledFiltersArray:(id)array
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  approachCopy = approach;
+  tagsCopy = tags;
+  conditionCopy = condition;
+  arrayCopy = array;
   v18.receiver = self;
   v18.super_class = ICASSmartFolderCreationData;
   v15 = [(ICASSmartFolderCreationData *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_folderCreationApproach, a3);
-    objc_storeStrong(&v16->_countOfTags, a4);
-    objc_storeStrong(&v16->_filterCondition, a5);
-    objc_storeStrong(&v16->_enabledFiltersArray, a6);
+    objc_storeStrong(&v15->_folderCreationApproach, approach);
+    objc_storeStrong(&v16->_countOfTags, tags);
+    objc_storeStrong(&v16->_filterCondition, condition);
+    objc_storeStrong(&v16->_enabledFiltersArray, array);
   }
 
   return v16;
@@ -30,61 +30,61 @@
 {
   v19[4] = *MEMORY[0x277D85DE8];
   v18[0] = @"folderCreationApproach";
-  v3 = [(ICASSmartFolderCreationData *)self folderCreationApproach];
-  if (v3)
+  folderCreationApproach = [(ICASSmartFolderCreationData *)self folderCreationApproach];
+  if (folderCreationApproach)
   {
-    v4 = [(ICASSmartFolderCreationData *)self folderCreationApproach];
+    folderCreationApproach2 = [(ICASSmartFolderCreationData *)self folderCreationApproach];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    folderCreationApproach2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v19[0] = v4;
+  v5 = folderCreationApproach2;
+  v19[0] = folderCreationApproach2;
   v18[1] = @"countOfTags";
-  v6 = [(ICASSmartFolderCreationData *)self countOfTags];
-  if (v6)
+  countOfTags = [(ICASSmartFolderCreationData *)self countOfTags];
+  if (countOfTags)
   {
-    v7 = [(ICASSmartFolderCreationData *)self countOfTags];
+    countOfTags2 = [(ICASSmartFolderCreationData *)self countOfTags];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    countOfTags2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v19[1] = v7;
+  v8 = countOfTags2;
+  v19[1] = countOfTags2;
   v18[2] = @"filterCondition";
-  v9 = [(ICASSmartFolderCreationData *)self filterCondition];
-  if (v9)
+  filterCondition = [(ICASSmartFolderCreationData *)self filterCondition];
+  if (filterCondition)
   {
-    v10 = [(ICASSmartFolderCreationData *)self filterCondition];
+    filterCondition2 = [(ICASSmartFolderCreationData *)self filterCondition];
   }
 
   else
   {
-    v10 = objc_opt_new();
+    filterCondition2 = objc_opt_new();
   }
 
-  v11 = v10;
-  v19[2] = v10;
+  v11 = filterCondition2;
+  v19[2] = filterCondition2;
   v18[3] = @"enabledFiltersArray";
-  v12 = [(ICASSmartFolderCreationData *)self enabledFiltersArray];
-  if (v12)
+  enabledFiltersArray = [(ICASSmartFolderCreationData *)self enabledFiltersArray];
+  if (enabledFiltersArray)
   {
-    v13 = [(ICASSmartFolderCreationData *)self enabledFiltersArray];
+    enabledFiltersArray2 = [(ICASSmartFolderCreationData *)self enabledFiltersArray];
   }
 
   else
   {
-    v13 = objc_opt_new();
+    enabledFiltersArray2 = objc_opt_new();
   }
 
-  v14 = v13;
-  v19[3] = v13;
+  v14 = enabledFiltersArray2;
+  v19[3] = enabledFiltersArray2;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:4];
 
   v16 = *MEMORY[0x277D85DE8];

@@ -1,11 +1,11 @@
 @interface SCServicePolicyChecker
-+ (id)isSensitiveContentWarningEnabledForBundleID:(id)a3 allServices:(id)a4 allApplications:(id)a5;
++ (id)isSensitiveContentWarningEnabledForBundleID:(id)d allServices:(id)services allApplications:(id)applications;
 - (SCServicePolicyChecker)init;
 @end
 
 @implementation SCServicePolicyChecker
 
-+ (id)isSensitiveContentWarningEnabledForBundleID:(id)a3 allServices:(id)a4 allApplications:(id)a5
++ (id)isSensitiveContentWarningEnabledForBundleID:(id)d allServices:(id)services allApplications:(id)applications
 {
   v5 = sub_1AEAF95BC();
   v7 = v6;

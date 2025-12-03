@@ -1,17 +1,17 @@
 @interface PGMemoryTriggerUpcomingAnniversary
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5;
-- (id)upcomingAnniversaryDateFromLocalDate:(id)a3 originalAnniversaryDate:(id)a4;
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter;
+- (id)upcomingAnniversaryDateFromLocalDate:(id)date originalAnniversaryDate:(id)anniversaryDate;
 @end
 
 @implementation PGMemoryTriggerUpcomingAnniversary
 
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 isCancelledWithProgress:0.0])
+  contextCopy = context;
+  graphCopy = graph;
+  reporterCopy = reporter;
+  if ([reporterCopy isCancelledWithProgress:0.0])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -27,12 +27,12 @@
 
   else
   {
-    v12 = [v8 localDate];
-    v13 = [v8 timeZone];
-    v14 = [PGMemoryTrigger monthDayNodesInGraph:v9 startDayOffset:1 endDayOffset:3 fromLocalDate:v12 inTimeZone:v13];
-    v15 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:v9];
-    v16 = [v14 anniversaryPersonNodes];
-    v17 = [v16 collectionBySubtracting:v15];
+    localDate = [contextCopy localDate];
+    timeZone = [contextCopy timeZone];
+    v14 = [PGMemoryTrigger monthDayNodesInGraph:graphCopy startDayOffset:1 endDayOffset:3 fromLocalDate:localDate inTimeZone:timeZone];
+    v15 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:graphCopy];
+    anniversaryPersonNodes = [v14 anniversaryPersonNodes];
+    v17 = [anniversaryPersonNodes collectionBySubtracting:v15];
 
     v18 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v25 = MEMORY[0x277D85DD0];
@@ -40,17 +40,17 @@
     v27 = __91__PGMemoryTriggerUpcomingAnniversary_resultsTriggeredWithContext_inGraph_progressReporter___block_invoke;
     v28 = &unk_278884CE8;
     v29 = v15;
-    v30 = v9;
-    v31 = self;
-    v32 = v12;
-    v33 = v13;
+    v30 = graphCopy;
+    selfCopy = self;
+    v32 = localDate;
+    v33 = timeZone;
     v19 = v18;
     v34 = v19;
     v20 = v15;
-    v21 = v12;
-    v22 = v13;
+    v21 = localDate;
+    v22 = timeZone;
     [v17 enumerateNodesUsingBlock:&v25];
-    if ([v10 isCancelledWithProgress:{1.0, v25, v26, v27, v28}])
+    if ([reporterCopy isCancelledWithProgress:{1.0, v25, v26, v27, v28}])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -116,18 +116,18 @@ BOOL __91__PGMemoryTriggerUpcomingAnniversary_resultsTriggeredWithContext_inGrap
   return v5;
 }
 
-- (id)upcomingAnniversaryDateFromLocalDate:(id)a3 originalAnniversaryDate:(id)a4
+- (id)upcomingAnniversaryDateFromLocalDate:(id)date originalAnniversaryDate:(id)anniversaryDate
 {
-  v5 = a4;
+  anniversaryDateCopy = anniversaryDate;
   v6 = MEMORY[0x277D27690];
-  v7 = a3;
-  v8 = [v6 yearFromDate:v7];
-  v9 = [MEMORY[0x277D27690] dateBySettingYear:v8 ofDate:v5];
-  v10 = [MEMORY[0x277D27690] numberOfDaysBetweenDate:v7 andDate:v9];
+  dateCopy = date;
+  v8 = [v6 yearFromDate:dateCopy];
+  v9 = [MEMORY[0x277D27690] dateBySettingYear:v8 ofDate:anniversaryDateCopy];
+  v10 = [MEMORY[0x277D27690] numberOfDaysBetweenDate:dateCopy andDate:v9];
 
   if (v10 >= 4)
   {
-    v11 = [MEMORY[0x277D27690] dateBySettingYear:v8 + 1 ofDate:v5];
+    v11 = [MEMORY[0x277D27690] dateBySettingYear:v8 + 1 ofDate:anniversaryDateCopy];
 
     v9 = v11;
   }

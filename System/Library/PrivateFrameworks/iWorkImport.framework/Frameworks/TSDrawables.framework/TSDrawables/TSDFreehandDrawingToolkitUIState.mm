@@ -1,31 +1,31 @@
 @interface TSDFreehandDrawingToolkitUIState
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFreehandDrawingToolkitUIState:(id)a3;
-- (TSDFreehandDrawingToolkitUIState)initWithContext:(id)a3;
-- (double)p_defaultStrokeWidthForToolType:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFreehandDrawingToolkitUIState:(id)state;
+- (TSDFreehandDrawingToolkitUIState)initWithContext:(id)context;
+- (double)p_defaultStrokeWidthForToolType:(unint64_t)type;
 - (id)copy;
-- (id)p_defaultColorForToolType:(unint64_t)a3;
-- (id)strokeWidthsForFreehandDrawingToolType:(unint64_t)a3;
+- (id)p_defaultColorForToolType:(unint64_t)type;
+- (id)strokeWidthsForFreehandDrawingToolType:(unint64_t)type;
 - (unint64_t)hash;
 - (unint64_t)p_defaultToolType;
-- (unint64_t)p_indexOfDefaultStrokeWidthForFreehandDrawingToolType:(unint64_t)a3;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)p_setColor:(id)a3 forToolType:(unint64_t)a4;
-- (void)p_setDefaultToolType:(unint64_t)a3;
+- (unint64_t)p_indexOfDefaultStrokeWidthForFreehandDrawingToolType:(unint64_t)type;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)p_setColor:(id)color forToolType:(unint64_t)type;
+- (void)p_setDefaultToolType:(unint64_t)type;
 - (void)p_setupDefaultValues;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSDFreehandDrawingToolkitUIState
 
-- (TSDFreehandDrawingToolkitUIState)initWithContext:(id)a3
+- (TSDFreehandDrawingToolkitUIState)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = TSDFreehandDrawingToolkitUIState;
-  v5 = [(TSDFreehandDrawingToolkitUIState *)&v11 initWithContext:v4];
+  v5 = [(TSDFreehandDrawingToolkitUIState *)&v11 initWithContext:contextCopy];
   v6 = v5;
   if (v5)
   {
@@ -71,13 +71,13 @@
   objc_msgSend_p_setColor_forToolType_(self, v20, v24, 3);
 }
 
-- (id)p_defaultColorForToolType:(unint64_t)a3
+- (id)p_defaultColorForToolType:(unint64_t)type
 {
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 != 2)
+    if (type != 2)
     {
-      if (a3 == 3)
+      if (type == 3)
       {
         v4 = objc_msgSend_pencilTrayYellowColor(MEMORY[0x277D81180], a2, 3);
         goto LABEL_11;
@@ -91,9 +91,9 @@
 
   else
   {
-    if (a3)
+    if (type)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         v4 = objc_msgSend_pencilTrayGreenColor(MEMORY[0x277D81180], a2, 1);
         goto LABEL_11;
@@ -103,7 +103,7 @@ LABEL_8:
       v5 = MEMORY[0x277D81150];
       v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDFreehandDrawingToolkitUIState p_defaultColorForToolType:]");
       v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDFreehandDrawingToolkitUIState.mm");
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v5, v9, v6, v8, 120, 0, "Tool type %lu does not support color", a3);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v5, v9, v6, v8, 120, 0, "Tool type %lu does not support color", type);
 
       objc_msgSend_logFullBacktrace(MEMORY[0x277D81150], v10, v11);
       v4 = 0;
@@ -118,16 +118,16 @@ LABEL_11:
   return v4;
 }
 
-- (double)p_defaultStrokeWidthForToolType:(unint64_t)a3
+- (double)p_defaultStrokeWidthForToolType:(unint64_t)type
 {
-  v5 = objc_msgSend_p_indexOfDefaultStrokeWidthForFreehandDrawingToolType_(self, a2, a3);
-  v7 = objc_msgSend_strokeWidthsForFreehandDrawingToolType_(self, v6, a3);
+  v5 = objc_msgSend_p_indexOfDefaultStrokeWidthForFreehandDrawingToolType_(self, a2, type);
+  v7 = objc_msgSend_strokeWidthsForFreehandDrawingToolType_(self, v6, type);
   if (v5 >= objc_msgSend_count(v7, v8, v9))
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSDFreehandDrawingToolkitUIState p_defaultStrokeWidthForToolType:]");
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDFreehandDrawingToolkitUIState.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v15, v12, v14, 130, 0, "The app delegate must provide at least %lu widths for tool type: %lu", v5 + 1, a3);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v15, v12, v14, 130, 0, "The app delegate must provide at least %lu widths for tool type: %lu", v5 + 1, type);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v16, v17);
   }
@@ -139,18 +139,18 @@ LABEL_11:
   return v22;
 }
 
-- (id)strokeWidthsForFreehandDrawingToolType:(unint64_t)a3
+- (id)strokeWidthsForFreehandDrawingToolType:(unint64_t)type
 {
   objc_opt_class();
   v6 = objc_msgSend_sharedPropertiesProvider(MEMORY[0x277D80610], v4, v5);
   v7 = TSUCheckedDynamicCast();
 
-  v9 = objc_msgSend_strokeWidthsForFreehandDrawingToolType_(v7, v8, a3);
+  v9 = objc_msgSend_strokeWidthsForFreehandDrawingToolType_(v7, v8, type);
   if (!objc_msgSend_count(v9, v10, v11))
   {
-    if (a3 > 2)
+    if (type > 2)
     {
-      switch(a3)
+      switch(type)
       {
         case 3uLL:
           goto LABEL_8;
@@ -162,7 +162,7 @@ LABEL_8:
           v14 = MEMORY[0x277D81150];
           v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "[TSDFreehandDrawingToolkitUIState strokeWidthsForFreehandDrawingToolType:]");
           v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDFreehandDrawingToolkitUIState.mm");
-          objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v14, v18, v15, v17, 155, 0, "Unknown tool type %lu when generating stroke widths.", a3);
+          objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v14, v18, v15, v17, 155, 0, "Unknown tool type %lu when generating stroke widths.", type);
 
           objc_msgSend_logFullBacktrace(MEMORY[0x277D81150], v19, v20);
           break;
@@ -171,7 +171,7 @@ LABEL_8:
 
     else
     {
-      if (a3 < 2)
+      if (type < 2)
       {
         v13 = &unk_28859C740;
 LABEL_12:
@@ -180,7 +180,7 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      if (a3 == 2)
+      if (type == 2)
       {
         v13 = &unk_28859C758;
         goto LABEL_12;
@@ -194,28 +194,28 @@ LABEL_13:
   return v9;
 }
 
-- (BOOL)isEqualToFreehandDrawingToolkitUIState:(id)a3
+- (BOOL)isEqualToFreehandDrawingToolkitUIState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
-  v12 = self->_currentToolType == *(v4 + 8) && self->_mostRecentRestorableToolType == *(v4 + 23) && ((v6 = *(v4 + 10), v7 = self->_penToolColor, v8 = v6, !(v7 | v8)) || (v10 = v8, isEqual = objc_msgSend_isEqual_(v7, v9, v8), v10, v7, isEqual)) && self->_penToolOpacity == v5[11] && self->_penToolUnscaledWidth == v5[12] && sub_2766CEE2C(self->_pencilToolColor, *(v5 + 13)) && self->_pencilToolOpacity == v5[14] && self->_pencilToolUnscaledWidth == v5[15] && sub_2766CEE2C(self->_crayonToolColor, *(v5 + 16)) && self->_crayonToolOpacity == v5[17] && self->_crayonToolUnscaledWidth == v5[18] && sub_2766CEE2C(self->_fillToolColor, *(v5 + 19)) && self->_fillToolOpacity == v5[20] && self->_eraserToolScaledWidth == v5[21] && self->_eraserToolErasesWholeObjects == *(v5 + 176);
+  stateCopy = state;
+  v5 = stateCopy;
+  v12 = self->_currentToolType == *(stateCopy + 8) && self->_mostRecentRestorableToolType == *(stateCopy + 23) && ((v6 = *(stateCopy + 10), v7 = self->_penToolColor, v8 = v6, !(v7 | v8)) || (v10 = v8, isEqual = objc_msgSend_isEqual_(v7, v9, v8), v10, v7, isEqual)) && self->_penToolOpacity == v5[11] && self->_penToolUnscaledWidth == v5[12] && sub_2766CEE2C(self->_pencilToolColor, *(v5 + 13)) && self->_pencilToolOpacity == v5[14] && self->_pencilToolUnscaledWidth == v5[15] && sub_2766CEE2C(self->_crayonToolColor, *(v5 + 16)) && self->_crayonToolOpacity == v5[17] && self->_crayonToolUnscaledWidth == v5[18] && sub_2766CEE2C(self->_fillToolColor, *(v5 + 19)) && self->_fillToolOpacity == v5[20] && self->_eraserToolScaledWidth == v5[21] && self->_eraserToolErasesWholeObjects == *(v5 + 176);
 
   return v12;
 }
 
-- (unint64_t)p_indexOfDefaultStrokeWidthForFreehandDrawingToolType:(unint64_t)a3
+- (unint64_t)p_indexOfDefaultStrokeWidthForFreehandDrawingToolType:(unint64_t)type
 {
   result = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3 > 2)
+  if (type > 2)
   {
-    if (a3 != 3)
+    if (type != 3)
     {
-      if (a3 == 4)
+      if (type == 4)
       {
         return 2;
       }
 
-      if (a3 != 5)
+      if (type != 5)
       {
         return result;
       }
@@ -224,13 +224,13 @@ LABEL_13:
     v6 = MEMORY[0x277D81150];
     v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDFreehandDrawingToolkitUIState p_indexOfDefaultStrokeWidthForFreehandDrawingToolType:]");
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDFreehandDrawingToolkitUIState.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v6, v10, v7, v9, 202, 0, "Unknown tool type %lu when generating stroke widths.", a3);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v6, v10, v7, v9, 202, 0, "Unknown tool type %lu when generating stroke widths.", type);
 
     objc_msgSend_logFullBacktrace(MEMORY[0x277D81150], v11, v12);
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v5 = 2;
   }
@@ -240,12 +240,12 @@ LABEL_13:
     v5 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v5 = 1;
   }
 
-  if (a3)
+  if (type)
   {
     return v5;
   }
@@ -278,10 +278,10 @@ LABEL_13:
   return v11;
 }
 
-- (void)p_setDefaultToolType:(unint64_t)a3
+- (void)p_setDefaultToolType:(unint64_t)type
 {
-  v7 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, a3);
-  v5 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v4, a3);
+  v7 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, type);
+  v5 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v4, type);
   objc_msgSend_setObject_forKey_(v7, v6, v5, @"TSDFreehandDrawingToolkitUIStateDefaultToolKey");
 }
 
@@ -321,10 +321,10 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqualToFreehandDrawingToolkitUIState = 1;
   }
@@ -334,7 +334,7 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      isEqualToFreehandDrawingToolkitUIState = objc_msgSend_isEqualToFreehandDrawingToolkitUIState_(self, v5, v4);
+      isEqualToFreehandDrawingToolkitUIState = objc_msgSend_isEqualToFreehandDrawingToolkitUIState_(self, v5, equalCopy);
     }
 
     else
@@ -381,19 +381,19 @@ LABEL_13:
   return TSUHashWithSeed();
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v7 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithDescriptor_(v7, v4, off_2812F5188[98]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812F5188[98]);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, v7);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, unarchiverCopy);
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  objc_msgSend_p_setupDefaultValues(self, a2, a3, a4);
-  v6 = *(a3 + 16);
+  objc_msgSend_p_setupDefaultValues(self, a2, archive, unarchiver);
+  v6 = *(archive + 16);
   if (v6 > 2)
   {
     switch(v6)
@@ -437,17 +437,17 @@ LABEL_12:
   self->_mostRecentRestorableToolType = 0;
 LABEL_16:
   self->_currentToolType = mostRecentRestorableToolType;
-  v8 = *(a3 + 4);
+  v8 = *(archive + 4);
   if (v8 & 2) != 0 || (v8)
   {
     v9 = TSPTSUColorCreateFromMessage();
     objc_msgSend_p_setColor_forToolType_(self, v10, v9, 0);
   }
 
-  v11 = *(a3 + 4);
+  v11 = *(archive + 4);
   if ((v11 & 0x40) != 0)
   {
-    self->_penToolOpacity = *(a3 + 17);
+    self->_penToolOpacity = *(archive + 17);
     if ((v11 & 0x80) == 0)
     {
 LABEL_21:
@@ -465,7 +465,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  self->_penToolUnscaledWidth = *(a3 + 18);
+  self->_penToolUnscaledWidth = *(archive + 18);
   if ((v11 & 4) == 0)
   {
 LABEL_22:
@@ -480,10 +480,10 @@ LABEL_26:
   objc_msgSend_p_setColor_forToolType_(self, v13, v12, 1);
 
 LABEL_27:
-  v14 = *(a3 + 4);
+  v14 = *(archive + 4);
   if ((v14 & 0x100) != 0)
   {
-    self->_pencilToolOpacity = *(a3 + 19);
+    self->_pencilToolOpacity = *(archive + 19);
     if ((v14 & 0x200) == 0)
     {
 LABEL_29:
@@ -501,7 +501,7 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  self->_pencilToolUnscaledWidth = *(a3 + 20);
+  self->_pencilToolUnscaledWidth = *(archive + 20);
   if ((v14 & 8) == 0)
   {
 LABEL_30:
@@ -516,10 +516,10 @@ LABEL_34:
   objc_msgSend_p_setColor_forToolType_(self, v16, v15, 2);
 
 LABEL_35:
-  v17 = *(a3 + 4);
+  v17 = *(archive + 4);
   if ((v17 & 0x400) != 0)
   {
-    self->_crayonToolOpacity = *(a3 + 21);
+    self->_crayonToolOpacity = *(archive + 21);
     if ((v17 & 0x800) == 0)
     {
 LABEL_37:
@@ -537,7 +537,7 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  self->_crayonToolUnscaledWidth = *(a3 + 22);
+  self->_crayonToolUnscaledWidth = *(archive + 22);
   if ((v17 & 0x10) == 0)
   {
 LABEL_38:
@@ -552,10 +552,10 @@ LABEL_42:
   objc_msgSend_p_setColor_forToolType_(self, v19, v18, 3);
 
 LABEL_43:
-  v20 = *(a3 + 4);
+  v20 = *(archive + 4);
   if ((v20 & 0x1000) != 0)
   {
-    self->_fillToolOpacity = *(a3 + 23);
+    self->_fillToolOpacity = *(archive + 23);
     if ((v20 & 0x2000) == 0)
     {
 LABEL_45:
@@ -573,28 +573,28 @@ LABEL_45:
     goto LABEL_45;
   }
 
-  self->_eraserToolScaledWidth = *(a3 + 24);
+  self->_eraserToolScaledWidth = *(archive + 24);
   if ((v20 & 0x4000) == 0)
   {
     return;
   }
 
 LABEL_46:
-  self->_eraserToolErasesWholeObjects = *(a3 + 100);
+  self->_eraserToolErasesWholeObjects = *(archive + 100);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_2766D02A4, off_2812F5188[98]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_2766D02A4, off_2812F5188[98]);
 
-  objc_msgSend_saveToArchive_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveToArchive_archiver_(self, v6, v5, archiverCopy);
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v41 = a4;
+  archiverCopy = archiver;
   v6 = 0;
   mostRecentRestorableToolType = self->_mostRecentRestorableToolType;
   if (mostRecentRestorableToolType <= 2)
@@ -608,16 +608,16 @@ LABEL_46:
           goto LABEL_26;
         }
 
-        v8 = *(a3 + 4);
-        *(a3 + 4) = v8 | 0x20;
-        *(a3 + 16) = 2;
-        *(a3 + 4) = v8 | 0x21;
-        if (*(a3 + 3))
+        v8 = *(archive + 4);
+        *(archive + 4) = v8 | 0x20;
+        *(archive + 16) = 2;
+        *(archive + 4) = v8 | 0x21;
+        if (*(archive + 3))
         {
           goto LABEL_25;
         }
 
-        v9 = *(a3 + 1);
+        v9 = *(archive + 1);
         if (v9)
         {
           v9 = *(v9 & 0xFFFFFFFFFFFFFFFELL);
@@ -626,32 +626,32 @@ LABEL_46:
         goto LABEL_24;
       }
 
-      v12 = *(a3 + 4);
-      *(a3 + 4) = v12 | 0x20;
-      *(a3 + 16) = 1;
-      *(a3 + 4) = v12 | 0x21;
-      if (!*(a3 + 3))
+      v12 = *(archive + 4);
+      *(archive + 4) = v12 | 0x20;
+      *(archive + 16) = 1;
+      *(archive + 4) = v12 | 0x21;
+      if (!*(archive + 3))
       {
-        v9 = *(a3 + 1);
+        v9 = *(archive + 1);
         if (v9)
         {
           v9 = *(v9 & 0xFFFFFFFFFFFFFFFELL);
         }
 
 LABEL_24:
-        *(a3 + 3) = MEMORY[0x277C9BAF0](v9);
+        *(archive + 3) = MEMORY[0x277C9BAF0](v9);
       }
     }
 
     else
     {
-      v10 = *(a3 + 4);
-      *(a3 + 4) = v10 | 0x20;
-      *(a3 + 16) = 0;
-      *(a3 + 4) = v10 | 0x21;
-      if (!*(a3 + 3))
+      v10 = *(archive + 4);
+      *(archive + 4) = v10 | 0x20;
+      *(archive + 16) = 0;
+      *(archive + 4) = v10 | 0x21;
+      if (!*(archive + 3))
       {
-        v9 = *(a3 + 1);
+        v9 = *(archive + 1);
         if (v9)
         {
           v9 = *(v9 & 0xFFFFFFFFFFFFFFFELL);
@@ -669,13 +669,13 @@ LABEL_25:
 
   if (mostRecentRestorableToolType == 3)
   {
-    v11 = *(a3 + 4);
-    *(a3 + 4) = v11 | 0x20;
-    *(a3 + 16) = 3;
-    *(a3 + 4) = v11 | 0x21;
-    if (!*(a3 + 3))
+    v11 = *(archive + 4);
+    *(archive + 4) = v11 | 0x20;
+    *(archive + 16) = 3;
+    *(archive + 4) = v11 | 0x21;
+    if (!*(archive + 3))
     {
-      v9 = *(a3 + 1);
+      v9 = *(archive + 1);
       if (v9)
       {
         v9 = *(v9 & 0xFFFFFFFFFFFFFFFELL);
@@ -689,91 +689,91 @@ LABEL_25:
 
   if (mostRecentRestorableToolType == 4 || mostRecentRestorableToolType == 5)
   {
-    *(a3 + 4) |= 0x20u;
-    *(a3 + 16) = mostRecentRestorableToolType;
+    *(archive + 4) |= 0x20u;
+    *(archive + 16) = mostRecentRestorableToolType;
     v6 = 1;
   }
 
 LABEL_26:
-  *(a3 + 4) |= 2u;
-  if (!*(a3 + 4))
+  *(archive + 4) |= 2u;
+  if (!*(archive + 4))
   {
-    v13 = *(a3 + 1);
+    v13 = *(archive + 1);
     if (v13)
     {
       v13 = *(v13 & 0xFFFFFFFFFFFFFFFELL);
     }
 
-    *(a3 + 4) = MEMORY[0x277C9BAF0](v13);
+    *(archive + 4) = MEMORY[0x277C9BAF0](v13);
   }
 
   TSPTSUColorCopyToMessage();
   penToolOpacity = self->_penToolOpacity;
-  v15 = *(a3 + 4);
+  v15 = *(archive + 4);
   penToolUnscaledWidth = self->_penToolUnscaledWidth;
-  *(a3 + 4) = v15 | 0xC0;
-  *(a3 + 17) = penToolOpacity;
-  *(a3 + 18) = penToolUnscaledWidth;
-  *(a3 + 4) = v15 | 0xC4;
-  if (!*(a3 + 5))
+  *(archive + 4) = v15 | 0xC0;
+  *(archive + 17) = penToolOpacity;
+  *(archive + 18) = penToolUnscaledWidth;
+  *(archive + 4) = v15 | 0xC4;
+  if (!*(archive + 5))
   {
-    v17 = *(a3 + 1);
+    v17 = *(archive + 1);
     if (v17)
     {
       v17 = *(v17 & 0xFFFFFFFFFFFFFFFELL);
     }
 
-    *(a3 + 5) = MEMORY[0x277C9BAF0](v17);
+    *(archive + 5) = MEMORY[0x277C9BAF0](v17);
   }
 
   TSPTSUColorCopyToMessage();
   pencilToolOpacity = self->_pencilToolOpacity;
-  v19 = *(a3 + 4);
+  v19 = *(archive + 4);
   pencilToolUnscaledWidth = self->_pencilToolUnscaledWidth;
-  *(a3 + 4) = v19 | 0x300;
-  *(a3 + 19) = pencilToolOpacity;
-  *(a3 + 20) = pencilToolUnscaledWidth;
-  *(a3 + 4) = v19 | 0x308;
-  if (!*(a3 + 6))
+  *(archive + 4) = v19 | 0x300;
+  *(archive + 19) = pencilToolOpacity;
+  *(archive + 20) = pencilToolUnscaledWidth;
+  *(archive + 4) = v19 | 0x308;
+  if (!*(archive + 6))
   {
-    v21 = *(a3 + 1);
+    v21 = *(archive + 1);
     if (v21)
     {
       v21 = *(v21 & 0xFFFFFFFFFFFFFFFELL);
     }
 
-    *(a3 + 6) = MEMORY[0x277C9BAF0](v21);
+    *(archive + 6) = MEMORY[0x277C9BAF0](v21);
   }
 
   TSPTSUColorCopyToMessage();
   crayonToolOpacity = self->_crayonToolOpacity;
-  v23 = *(a3 + 4);
+  v23 = *(archive + 4);
   crayonToolUnscaledWidth = self->_crayonToolUnscaledWidth;
-  *(a3 + 4) = v23 | 0xC00;
-  *(a3 + 21) = crayonToolOpacity;
-  *(a3 + 22) = crayonToolUnscaledWidth;
-  *(a3 + 4) = v23 | 0xC10;
-  if (!*(a3 + 7))
+  *(archive + 4) = v23 | 0xC00;
+  *(archive + 21) = crayonToolOpacity;
+  *(archive + 22) = crayonToolUnscaledWidth;
+  *(archive + 4) = v23 | 0xC10;
+  if (!*(archive + 7))
   {
-    v25 = *(a3 + 1);
+    v25 = *(archive + 1);
     if (v25)
     {
       v25 = *(v25 & 0xFFFFFFFFFFFFFFFELL);
     }
 
-    *(a3 + 7) = MEMORY[0x277C9BAF0](v25);
+    *(archive + 7) = MEMORY[0x277C9BAF0](v25);
   }
 
   TSPTSUColorCopyToMessage();
   fillToolOpacity = self->_fillToolOpacity;
-  v27 = *(a3 + 4);
+  v27 = *(archive + 4);
   eraserToolScaledWidth = self->_eraserToolScaledWidth;
-  *(a3 + 23) = fillToolOpacity;
-  *(a3 + 24) = eraserToolScaledWidth;
+  *(archive + 23) = fillToolOpacity;
+  *(archive + 24) = eraserToolScaledWidth;
   eraserToolErasesWholeObjects = self->_eraserToolErasesWholeObjects;
-  *(a3 + 4) = v27 | 0x7000;
-  *(a3 + 100) = eraserToolErasesWholeObjects;
-  if (objc_msgSend_shouldSaveAlternates(v41, v30, v31))
+  *(archive + 4) = v27 | 0x7000;
+  *(archive + 100) = eraserToolErasesWholeObjects;
+  if (objc_msgSend_shouldSaveAlternates(archiverCopy, v30, v31))
   {
     v33 = self->_penToolOpacity;
     v34 = self->_pencilToolOpacity;
@@ -782,7 +782,7 @@ LABEL_26:
     v37 = fmin(fmin(fmin(v33, v34), v35), v36) < 0.1 ? 1 : v6;
     if (v37 == 1)
     {
-      v38 = objc_msgSend_alternateDiffToMergeBeforeVersion_fileFormatVersion_message_(v41, v32, *MEMORY[0x277D808D8], *MEMORY[0x277D809B8], a3);
+      v38 = objc_msgSend_alternateDiffToMergeBeforeVersion_fileFormatVersion_message_(archiverCopy, v32, *MEMORY[0x277D808D8], *MEMORY[0x277D809B8], archive);
       google::protobuf::internal::AssignDescriptors();
       v40 = objc_msgSend_messageWithNewFunction_descriptor_(v38, v39, sub_2766D02A4, off_2812F5188[98]);
 
@@ -819,25 +819,25 @@ LABEL_26:
   }
 }
 
-- (void)p_setColor:(id)a3 forToolType:(unint64_t)a4
+- (void)p_setColor:(id)color forToolType:(unint64_t)type
 {
-  v6 = a3;
-  obj = objc_msgSend_colorWithAlphaComponent_(v6, v7, v8, 1.0);
+  colorCopy = color;
+  obj = objc_msgSend_colorWithAlphaComponent_(colorCopy, v7, v8, 1.0);
 
-  if (a4 > 2)
+  if (type > 2)
   {
-    if (a4 - 4 < 2)
+    if (type - 4 < 2)
     {
       v13 = MEMORY[0x277D81150];
       v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "[TSDFreehandDrawingToolkitUIState p_setColor:forToolType:]");
       v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDFreehandDrawingToolkitUIState.mm");
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v17, v14, v16, 718, 0, "Cannot set color for given tool (%zd)", a4);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v17, v14, v16, 718, 0, "Cannot set color for given tool (%zd)", type);
 
       objc_msgSend_logFullBacktrace(MEMORY[0x277D81150], v18, v19);
       goto LABEL_16;
     }
 
-    if (a4 == 3)
+    if (type == 3)
     {
       p_fillToolColor = &self->_fillToolColor;
       if ((objc_msgSend_isEqual_(self->_fillToolColor, v9, obj) & 1) == 0)
@@ -849,7 +849,7 @@ LABEL_26:
 
   else
   {
-    switch(a4)
+    switch(type)
     {
       case 0uLL:
         p_fillToolColor = &self->_penToolColor;

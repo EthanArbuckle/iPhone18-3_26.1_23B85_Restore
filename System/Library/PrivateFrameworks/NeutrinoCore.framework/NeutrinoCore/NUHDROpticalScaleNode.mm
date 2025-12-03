@@ -1,27 +1,27 @@
 @interface NUHDROpticalScaleNode
-- (NUHDROpticalScaleNode)initWithInput:(id)a3 opticalScale:(double)a4;
-- (NUHDROpticalScaleNode)initWithSettings:(id)a3 inputs:(id)a4;
+- (NUHDROpticalScaleNode)initWithInput:(id)input opticalScale:(double)scale;
+- (NUHDROpticalScaleNode)initWithSettings:(id)settings inputs:(id)inputs;
 - (double)opticalScale;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation NUHDROpticalScaleNode
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(NURenderNode *)self inputs];
+  cacheCopy = cache;
+  stateCopy = state;
+  inputs = [(NURenderNode *)self inputs];
   v11 = *MEMORY[0x1E695FAB0];
-  v12 = [v10 objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
+  v12 = [inputs objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
 
-  v13 = [v12 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:a5];
+  v13 = [v12 nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:error];
   if (v13)
   {
-    if ([v9 auxiliaryImageType] == 1)
+    if ([stateCopy auxiliaryImageType] == 1)
     {
-      v14 = [v12 imageProperties:a5];
+      v14 = [v12 imageProperties:error];
       v15 = v14;
       if (v14)
       {
@@ -59,8 +59,8 @@
           v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
           v27 = [(NUFilterNode *)v25 initWithFilterName:@"CIColorMatrix" settings:v21 inputs:v26];
 
-          v28 = [(NURenderNode *)v27 inputs];
-          v20 = [(NURenderNode *)v27 resolvedNodeWithCachedInputs:v28 cache:v8 pipelineState:v9 error:a5];
+          inputs2 = [(NURenderNode *)v27 inputs];
+          v20 = [(NURenderNode *)v27 resolvedNodeWithCachedInputs:inputs2 cache:cacheCopy pipelineState:stateCopy error:error];
         }
 
         else
@@ -91,19 +91,19 @@
 
 - (double)opticalScale
 {
-  v2 = [(NURenderNode *)self settings];
-  v3 = [v2 objectForKeyedSubscript:@"opticalScale"];
+  settings = [(NURenderNode *)self settings];
+  v3 = [settings objectForKeyedSubscript:@"opticalScale"];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (NUHDROpticalScaleNode)initWithInput:(id)a3 opticalScale:(double)a4
+- (NUHDROpticalScaleNode)initWithInput:(id)input opticalScale:(double)scale
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  inputCopy = input;
+  if (!inputCopy)
   {
     v13 = NUAssertLogger_11533();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -124,8 +124,8 @@
         v27 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v28 = MEMORY[0x1E696AF00];
         v29 = v27;
-        v30 = [v28 callStackSymbols];
-        v31 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v28 callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v51 = v27;
         v52 = 2114;
@@ -136,8 +136,8 @@
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v51 = v19;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -146,7 +146,7 @@
     _NUAssertFailHandler("[NUHDROpticalScaleNode initWithInput:opticalScale:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUHDRGainMapNode.m", 413, @"Invalid parameter not satisfying: %s", v32, v33, v34, v35, "input != nil");
   }
 
-  if (a4 <= 0.0)
+  if (scale <= 0.0)
   {
     v20 = NUAssertLogger_11533();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -167,8 +167,8 @@
         v36 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v37 = MEMORY[0x1E696AF00];
         v38 = v36;
-        v39 = [v37 callStackSymbols];
-        v40 = [v39 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v37 callStackSymbols];
+        v40 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v51 = v36;
         v52 = 2114;
@@ -179,8 +179,8 @@
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v51 = v26;
       _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -189,9 +189,9 @@
     _NUAssertFailHandler("[NUHDROpticalScaleNode initWithInput:opticalScale:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUHDRGainMapNode.m", 414, @"Invalid parameter not satisfying: %s", v41, v42, v43, v44, "opticalScale > 0.0");
   }
 
-  v7 = v6;
+  v7 = inputCopy;
   v48 = @"opticalScale";
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:scale];
   v49 = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
   v46 = *MEMORY[0x1E695FAB0];
@@ -204,11 +204,11 @@
   return v11;
 }
 
-- (NUHDROpticalScaleNode)initWithSettings:(id)a3 inputs:(id)a4
+- (NUHDROpticalScaleNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_311);
@@ -252,8 +252,8 @@ LABEL_8:
     {
       v17 = MEMORY[0x1E696AF00];
       v18 = v16;
-      v19 = [v17 callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v17 callStackSymbols];
+      v20 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v35 = v20;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -269,8 +269,8 @@ LABEL_8:
     v23 = MEMORY[0x1E696AF00];
     v24 = specific;
     v25 = v21;
-    v26 = [v23 callStackSymbols];
-    v27 = [v26 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v23 callStackSymbols];
+    v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v35 = specific;
     v36 = 2114;

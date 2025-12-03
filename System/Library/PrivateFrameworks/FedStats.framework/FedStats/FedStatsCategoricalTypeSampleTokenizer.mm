@@ -1,47 +1,47 @@
 @interface FedStatsCategoricalTypeSampleTokenizer
-+ (id)instanceWithParameters:(id)a3 error:(id *)a4;
-+ (id)mutateParameters:(id)a3 usingFieldValues:(id)a4 assetURLs:(id)a5 requiredFields:(id *)a6 assetNames:(id *)a7 error:(id *)a8;
-- (FedStatsCategoricalTypeSampleTokenizer)initWithKnownListDB:(id)a3;
-- (id)tokenize:(id)a3;
++ (id)instanceWithParameters:(id)parameters error:(id *)error;
++ (id)mutateParameters:(id)parameters usingFieldValues:(id)values assetURLs:(id)ls requiredFields:(id *)fields assetNames:(id *)names error:(id *)error;
+- (FedStatsCategoricalTypeSampleTokenizer)initWithKnownListDB:(id)b;
+- (id)tokenize:(id)tokenize;
 @end
 
 @implementation FedStatsCategoricalTypeSampleTokenizer
 
-- (FedStatsCategoricalTypeSampleTokenizer)initWithKnownListDB:(id)a3
+- (FedStatsCategoricalTypeSampleTokenizer)initWithKnownListDB:(id)b
 {
-  v5 = a3;
+  bCopy = b;
   v9.receiver = self;
   v9.super_class = FedStatsCategoricalTypeSampleTokenizer;
   v6 = [(FedStatsCategoricalTypeSampleTokenizer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_knownListDB, a3);
+    objc_storeStrong(&v6->_knownListDB, b);
   }
 
   return v7;
 }
 
-+ (id)instanceWithParameters:(id)a3 error:(id *)a4
++ (id)instanceWithParameters:(id)parameters error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 objectForKey:@"fileName"];
+  parametersCopy = parameters;
+  v7 = [parametersCopy objectForKey:@"fileName"];
   if (v7)
   {
-    v8 = [v6 objectForKey:@"tableName"];
-    v9 = [v6 objectForKey:@"columnName"];
+    v8 = [parametersCopy objectForKey:@"tableName"];
+    v9 = [parametersCopy objectForKey:@"columnName"];
     v14 = 0;
     v10 = [FedStatsSQLiteDenyListDatabase databaseWithFileURL:v7 tableName:v8 columnName:v9 error:&v14];
     v11 = v14;
     if (v10)
     {
-      v12 = [[a1 alloc] initWithKnownListDB:v10];
+      v12 = [[self alloc] initWithKnownListDB:v10];
     }
 
-    else if (a4)
+    else if (error)
     {
       [FedStatsError errorWithCode:101 underlyingError:v11 description:@"The URL cannot be loaded as a database"];
-      *a4 = v12 = 0;
+      *error = v12 = 0;
     }
 
     else
@@ -52,21 +52,21 @@
 
   else
   {
-    v12 = [[a1 alloc] initWithKnownListDB:0];
+    v12 = [[self alloc] initWithKnownListDB:0];
   }
 
   return v12;
 }
 
-- (id)tokenize:(id)a3
+- (id)tokenize:(id)tokenize
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tokenizeCopy = tokenize;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 componentsSeparatedByString:@" "];
-    v6 = [MEMORY[0x277CBEB18] array];
+    v5 = [tokenizeCopy componentsSeparatedByString:@" "];
+    array = [MEMORY[0x277CBEB18] array];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
@@ -89,12 +89,12 @@
           v12 = *(*(&v22 + 1) + 8 * i);
           if ([v12 length])
           {
-            v13 = [(FedStatsCategoricalTypeSampleTokenizer *)self knownListDB];
-            v14 = [v13 isInDenyList:v12 partialMatch:0];
+            knownListDB = [(FedStatsCategoricalTypeSampleTokenizer *)self knownListDB];
+            v14 = [knownListDB isInDenyList:v12 partialMatch:0];
 
             if ((v14 & 1) == 0)
             {
-              [v6 addObject:v12];
+              [array addObject:v12];
             }
           }
         }
@@ -105,9 +105,9 @@
       while (v9);
     }
 
-    if ([v6 count])
+    if ([array count])
     {
-      v15 = [v6 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(v6, "count"))}];
+      v15 = [array objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(array, "count"))}];
       v16 = +[FedStatsLog logger];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
@@ -146,21 +146,21 @@
   return v17;
 }
 
-+ (id)mutateParameters:(id)a3 usingFieldValues:(id)a4 assetURLs:(id)a5 requiredFields:(id *)a6 assetNames:(id *)a7 error:(id *)a8
++ (id)mutateParameters:(id)parameters usingFieldValues:(id)values assetURLs:(id)ls requiredFields:(id *)fields assetNames:(id *)names error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = [v13 objectForKey:@"fileName"];
+  parametersCopy = parameters;
+  valuesCopy = values;
+  lsCopy = ls;
+  v16 = [parametersCopy objectForKey:@"fileName"];
 
   if (v16)
   {
-    v17 = [FedStatsCategoricalTypeAssetSpecifier mutateParameters:v13 forKey:@"fileName" usingFieldValues:v14 assetURLs:v15 requiredFields:a6 assetNames:a7 error:a8];
+    v17 = [FedStatsCategoricalTypeAssetSpecifier mutateParameters:parametersCopy forKey:@"fileName" usingFieldValues:valuesCopy assetURLs:lsCopy requiredFields:fields assetNames:names error:error];
   }
 
   else
   {
-    v17 = v13;
+    v17 = parametersCopy;
   }
 
   v18 = v17;

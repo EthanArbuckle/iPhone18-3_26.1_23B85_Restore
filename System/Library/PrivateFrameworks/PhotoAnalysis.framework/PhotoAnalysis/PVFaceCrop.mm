@@ -1,7 +1,7 @@
 @interface PVFaceCrop
 - (CGSize)imageDimensions;
-- (PVFaceCrop)initWithFaceCropData:(id)a3 originatingFace:(id)a4;
-- (PVFaceCrop)initWithLocalIdentifier:(id)a3 faceCropData:(id)a4;
+- (PVFaceCrop)initWithFaceCropData:(id)data originatingFace:(id)face;
+- (PVFaceCrop)initWithLocalIdentifier:(id)identifier faceCropData:(id)data;
 - (id)description;
 @end
 
@@ -19,8 +19,8 @@
   originatingFace = self->_originatingFace;
   if (originatingFace)
   {
-    v7 = [(PVObject *)originatingFace localIdentifier];
-    [v5 appendFormat:@"  originating face       : %@\n", v7];
+    localIdentifier = [(PVObject *)originatingFace localIdentifier];
+    [v5 appendFormat:@"  originating face       : %@\n", localIdentifier];
   }
 
   return v5;
@@ -33,8 +33,8 @@
   height = self->_cachedImageDimensions.height;
   if (width == *MEMORY[0x277CBF3A8] && height == *(MEMORY[0x277CBF3A8] + 8))
   {
-    v6 = [(PVFaceCrop *)self faceCropData];
-    [PVFaceCropUtils faceCropDimensionsFromFaceCrop:v6 error:0];
+    faceCropData = [(PVFaceCrop *)self faceCropData];
+    [PVFaceCropUtils faceCropDimensionsFromFaceCrop:faceCropData error:0];
     p_cachedImageDimensions->width = v7;
     p_cachedImageDimensions->height = v8;
 
@@ -47,35 +47,35 @@
   return result;
 }
 
-- (PVFaceCrop)initWithFaceCropData:(id)a3 originatingFace:(id)a4
+- (PVFaceCrop)initWithFaceCropData:(id)data originatingFace:(id)face
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  faceCopy = face;
   v13.receiver = self;
   v13.super_class = PVFaceCrop;
   v8 = [(PVObject *)&v13 initWithLocalIdentifier:0];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dataCopy copy];
     faceCropData = v8->_faceCropData;
     v8->_faceCropData = v9;
 
-    objc_storeStrong(&v8->_originatingFace, a4);
+    objc_storeStrong(&v8->_originatingFace, face);
     v11 = v8;
   }
 
   return v8;
 }
 
-- (PVFaceCrop)initWithLocalIdentifier:(id)a3 faceCropData:(id)a4
+- (PVFaceCrop)initWithLocalIdentifier:(id)identifier faceCropData:(id)data
 {
-  v6 = a4;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = PVFaceCrop;
-  v7 = [(PVObject *)&v12 initWithLocalIdentifier:a3];
+  v7 = [(PVObject *)&v12 initWithLocalIdentifier:identifier];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [dataCopy copy];
     faceCropData = v7->_faceCropData;
     v7->_faceCropData = v8;
 

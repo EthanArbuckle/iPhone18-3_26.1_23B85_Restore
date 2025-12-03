@@ -1,7 +1,7 @@
 @interface CSDRelayIDSService
 + (id)sharedInstance;
-- (void)_handlePairedDeviceChangedFrom:(id)a3 to:(id)a4;
-- (void)handleActiveAccountsChanged:(id)a3;
+- (void)_handlePairedDeviceChangedFrom:(id)from to:(id)to;
+- (void)handleActiveAccountsChanged:(id)changed;
 @end
 
 @implementation CSDRelayIDSService
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000AABD8;
   block[3] = &unk_10061A860;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006ACC08 != -1)
   {
     dispatch_once(&qword_1006ACC08, block);
@@ -23,20 +23,20 @@
   return v2;
 }
 
-- (void)handleActiveAccountsChanged:(id)a3
+- (void)handleActiveAccountsChanged:(id)changed
 {
   v5.receiver = self;
   v5.super_class = CSDRelayIDSService;
-  [(CSDIDSService *)&v5 handleActiveAccountsChanged:a3];
+  [(CSDIDSService *)&v5 handleActiveAccountsChanged:changed];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:@"CSDRelayIDSActiveAccountsChanged" object:self];
 }
 
-- (void)_handlePairedDeviceChangedFrom:(id)a3 to:(id)a4
+- (void)_handlePairedDeviceChangedFrom:(id)from to:(id)to
 {
-  v9 = a3;
-  v6 = a4;
-  if (!v9 && v6)
+  fromCopy = from;
+  toCopy = to;
+  if (!fromCopy && toCopy)
   {
     v7 = @"CSDRelayPairedDeviceConnectedNotification";
 LABEL_7:
@@ -46,7 +46,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v9 && !v6)
+  if (fromCopy && !toCopy)
   {
     v7 = @"CSDRelayPairedDeviceDisconnectedNotification";
     goto LABEL_7;

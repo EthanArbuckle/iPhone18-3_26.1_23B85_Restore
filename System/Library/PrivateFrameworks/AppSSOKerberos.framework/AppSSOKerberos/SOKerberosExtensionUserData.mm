@@ -14,8 +14,8 @@
   v2 = [(SOKerberosExtensionUserData *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v3 registerDefaults:&unk_28520B8E8];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults registerDefaults:&unk_28520B8E8];
   }
 
   return v2;
@@ -23,24 +23,24 @@
 
 - (BOOL)useKeychain
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"useKeychain"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"useKeychain"];
 
   return v3;
 }
 
 - (BOOL)userSetKeychainChoice
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"userSetKeychainChoice"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"userSetKeychainChoice"];
 
   return v3;
 }
 
 - (BOOL)useSmartCard
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"useSmartCard"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"useSmartCard"];
 
   return v3;
 }

@@ -1,11 +1,11 @@
 @interface PGMeaningfulEventTrait
 - (PGMeaningfulEventTrait)init;
-- (id)debugDescriptionWithMomentNode:(id)a3;
+- (id)debugDescriptionWithMomentNode:(id)node;
 @end
 
 @implementation PGMeaningfulEventTrait
 
-- (id)debugDescriptionWithMomentNode:(id)a3
+- (id)debugDescriptionWithMomentNode:(id)node
 {
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();

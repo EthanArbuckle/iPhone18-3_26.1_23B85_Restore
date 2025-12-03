@@ -1,9 +1,9 @@
 @interface SBSSystemNotesPresentationClientToServerProxy
 - (SBSSystemNotesPresentationServerToClientInterface)delegate;
 - (void)_setupAndActivateConnection;
-- (void)activateConfiguration:(id)a3;
+- (void)activateConfiguration:(id)configuration;
 - (void)invalidate;
-- (void)presentWithConfiguration:(id)a3 completion:(id)a4;
+- (void)presentWithConfiguration:(id)configuration completion:(id)completion;
 @end
 
 @implementation SBSSystemNotesPresentationClientToServerProxy
@@ -16,10 +16,10 @@
   self->_connection = 0;
 }
 
-- (void)activateConfiguration:(id)a3
+- (void)activateConfiguration:(id)configuration
 {
-  objc_storeStrong(&self->_requestedConfiguration, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_requestedConfiguration, configuration);
+  configurationCopy = configuration;
   requestedConfiguration = self->_requestedConfiguration;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -52,16 +52,16 @@ void __71__SBSSystemNotesPresentationClientToServerProxy_activateConfiguration__
   }
 }
 
-- (void)presentWithConfiguration:(id)a3 completion:(id)a4
+- (void)presentWithConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"SBSSystemNotesPresentationClientToServerProxy.m" lineNumber:49 description:@"deprecated method that should be called via SBSSystemNotesPresentationRequest"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBSSystemNotesPresentationClientToServerProxy.m" lineNumber:49 description:@"deprecated method that should be called via SBSSystemNotesPresentationRequest"];
 }
 
 - (void)_setupAndActivateConnection
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:a3 file:@"SBSSystemNotesPresentationClientToServerProxy.m" lineNumber:57 description:{@"_activateConnection called but we already have a connection queue: %@", *a1}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:a3 file:@"SBSSystemNotesPresentationClientToServerProxy.m" lineNumber:57 description:{@"_activateConnection called but we already have a connection queue: %@", *self}];
 }
 
 void __76__SBSSystemNotesPresentationClientToServerProxy__setupAndActivateConnection__block_invoke(uint64_t a1, void *a2)

@@ -1,22 +1,22 @@
 @interface FTSpeechTranslationFinalRecognitionResponse
 - (FTRecognitionResult)recognition_result;
-- (FTSpeechTranslationFinalRecognitionResponse)initWithFlatbuffData:(id)a3 root:(const SpeechTranslationFinalRecognitionResponse *)a4 verify:(BOOL)a5;
+- (FTSpeechTranslationFinalRecognitionResponse)initWithFlatbuffData:(id)data root:(const SpeechTranslationFinalRecognitionResponse *)root verify:(BOOL)verify;
 - (NSString)conversation_id;
 - (NSString)recognition_text;
 - (NSString)request_id;
 - (NSString)return_str;
 - (NSString)source_locale;
-- (Offset<siri::speech::schema_fb::SpeechTranslationFinalRecognitionResponse>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::SpeechTranslationFinalRecognitionResponse>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 - (int)return_code;
 @end
 
 @implementation FTSpeechTranslationFinalRecognitionResponse
 
-- (FTSpeechTranslationFinalRecognitionResponse)initWithFlatbuffData:(id)a3 root:(const SpeechTranslationFinalRecognitionResponse *)a4 verify:(BOOL)a5
+- (FTSpeechTranslationFinalRecognitionResponse)initWithFlatbuffData:(id)data root:(const SpeechTranslationFinalRecognitionResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTSpeechTranslationFinalRecognitionResponse;
   v10 = [(FTSpeechTranslationFinalRecognitionResponse *)&v25 init];
@@ -25,35 +25,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -234,79 +234,79 @@ LABEL_13:
   return v3;
 }
 
-- (Offset<siri::speech::schema_fb::SpeechTranslationFinalRecognitionResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::SpeechTranslationFinalRecognitionResponse>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(FTSpeechTranslationFinalRecognitionResponse *)self conversation_id];
-  v6 = v5;
-  if (!v5)
+  conversation_id = [(FTSpeechTranslationFinalRecognitionResponse *)self conversation_id];
+  v6 = conversation_id;
+  if (!conversation_id)
   {
-    v5 = &stru_284834138;
+    conversation_id = &stru_284834138;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)conversation_id UTF8String];
+  v8 = strlen(uTF8String);
+  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v10 = [(FTSpeechTranslationFinalRecognitionResponse *)self request_id];
-  v11 = v10;
-  if (!v10)
+  request_id = [(FTSpeechTranslationFinalRecognitionResponse *)self request_id];
+  v11 = request_id;
+  if (!request_id)
   {
-    v10 = &stru_284834138;
+    request_id = &stru_284834138;
   }
 
-  v12 = [(__CFString *)v10 UTF8String];
-  v13 = strlen(v12);
-  v14 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v12, v13);
+  uTF8String2 = [(__CFString *)request_id UTF8String];
+  v13 = strlen(uTF8String2);
+  v14 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String2, v13);
 
-  v15 = [(FTSpeechTranslationFinalRecognitionResponse *)self return_code];
-  v16 = [(FTSpeechTranslationFinalRecognitionResponse *)self return_str];
-  v17 = v16;
-  if (!v16)
+  return_code = [(FTSpeechTranslationFinalRecognitionResponse *)self return_code];
+  return_str = [(FTSpeechTranslationFinalRecognitionResponse *)self return_str];
+  v17 = return_str;
+  if (!return_str)
   {
-    v16 = &stru_284834138;
+    return_str = &stru_284834138;
   }
 
-  v18 = [(__CFString *)v16 UTF8String];
-  v19 = strlen(v18);
-  v20 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v18, v19);
+  uTF8String3 = [(__CFString *)return_str UTF8String];
+  v19 = strlen(uTF8String3);
+  v20 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String3, v19);
 
-  v21 = [(FTSpeechTranslationFinalRecognitionResponse *)self source_locale];
-  v22 = v21;
-  if (!v21)
+  source_locale = [(FTSpeechTranslationFinalRecognitionResponse *)self source_locale];
+  v22 = source_locale;
+  if (!source_locale)
   {
-    v21 = &stru_284834138;
+    source_locale = &stru_284834138;
   }
 
-  v23 = [(__CFString *)v21 UTF8String];
-  v24 = strlen(v23);
-  v25 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v23, v24);
+  uTF8String4 = [(__CFString *)source_locale UTF8String];
+  v24 = strlen(uTF8String4);
+  v25 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String4, v24);
 
-  v26 = [(FTSpeechTranslationFinalRecognitionResponse *)self recognition_text];
-  v27 = v26;
-  if (!v26)
+  recognition_text = [(FTSpeechTranslationFinalRecognitionResponse *)self recognition_text];
+  v27 = recognition_text;
+  if (!recognition_text)
   {
-    v26 = &stru_284834138;
+    recognition_text = &stru_284834138;
   }
 
-  v28 = [(__CFString *)v26 UTF8String];
-  v29 = strlen(v28);
-  LODWORD(v28) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v28, v29);
+  uTF8String5 = [(__CFString *)recognition_text UTF8String];
+  v29 = strlen(uTF8String5);
+  LODWORD(uTF8String5) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String5, v29);
 
-  v30 = [(FTSpeechTranslationFinalRecognitionResponse *)self recognition_result];
-  v31 = [v30 addObjectToBuffer:a3];
+  recognition_result = [(FTSpeechTranslationFinalRecognitionResponse *)self recognition_result];
+  v31 = [recognition_result addObjectToBuffer:buffer];
 
-  *(a3 + 70) = 1;
-  v32 = *(a3 + 10);
-  v33 = *(a3 + 8) - *(a3 + 12);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 4, String);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v14);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 8, v15, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v20);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 12, v25);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 14, v28);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 16, v31);
+  *(buffer + 70) = 1;
+  v32 = *(buffer + 10);
+  v33 = *(buffer + 8) - *(buffer + 12);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 4, String);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v14);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 8, return_code, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v20);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 12, v25);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 14, uTF8String5);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 16, v31);
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v33 + v32);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v33 + v32);
 }
 
 - (id)flatbuffData

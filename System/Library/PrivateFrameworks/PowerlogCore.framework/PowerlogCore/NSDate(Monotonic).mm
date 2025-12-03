@@ -29,7 +29,7 @@
 - (id)convertFromBasebandToMonotonic
 {
   v2 = +[PLTimeManager sharedInstance];
-  v3 = [v2 convertTime:a1 fromTimeReference:3 toTimeReference:0];
+  v3 = [v2 convertTime:self fromTimeReference:3 toTimeReference:0];
 
   return v3;
 }
@@ -37,15 +37,15 @@
 - (id)convertFromSystemToMonotonic
 {
   v2 = +[PLTimeManager sharedInstance];
-  v3 = [v2 convertTime:a1 fromTimeReference:1 toTimeReference:0];
+  v3 = [v2 convertTime:self fromTimeReference:1 toTimeReference:0];
 
   return v3;
 }
 
 - (double)timeIntervalSinceMonitonicNow
 {
-  v2 = [MEMORY[0x1E695DF00] monotonicDate];
-  [a1 timeIntervalSinceDate:v2];
+  monotonicDate = [MEMORY[0x1E695DF00] monotonicDate];
+  [self timeIntervalSinceDate:monotonicDate];
   v4 = v3;
 
   return v4;
@@ -54,15 +54,15 @@
 - (id)convertFromMonotonicToSystem
 {
   v2 = +[PLTimeManager sharedInstance];
-  v3 = [v2 convertTime:a1 fromTimeReference:0 toTimeReference:1];
+  v3 = [v2 convertTime:self fromTimeReference:0 toTimeReference:1];
 
   return v3;
 }
 
 + (id)monotonicDateWithTimeIntervalSinceNow:()Monotonic
 {
-  v2 = [objc_opt_class() monotonicDate];
-  v3 = [v2 dateByAddingTimeInterval:a1];
+  monotonicDate = [objc_opt_class() monotonicDate];
+  v3 = [monotonicDate dateByAddingTimeInterval:self];
 
   return v3;
 }
@@ -70,15 +70,15 @@
 - (id)convertFromMonotonicToBaseband
 {
   v2 = +[PLTimeManager sharedInstance];
-  v3 = [v2 convertTime:a1 fromTimeReference:0 toTimeReference:3];
+  v3 = [v2 convertTime:self fromTimeReference:0 toTimeReference:3];
 
   return v3;
 }
 
 - (BOOL)isInMonotonicFuture
 {
-  v2 = [objc_opt_class() monotonicDate];
-  [a1 timeIntervalSinceDate:v2];
+  monotonicDate = [objc_opt_class() monotonicDate];
+  [self timeIntervalSinceDate:monotonicDate];
   v4 = v3 > 60.0;
 
   return v4;
@@ -86,8 +86,8 @@
 
 - (BOOL)isInMonotonicFutureWithDistance:()Monotonic
 {
-  v4 = [objc_opt_class() monotonicDate];
-  [a1 timeIntervalSinceDate:v4];
+  monotonicDate = [objc_opt_class() monotonicDate];
+  [self timeIntervalSinceDate:monotonicDate];
   v6 = v5 > fabs(a2);
 
   return v6;
@@ -95,8 +95,8 @@
 
 - (BOOL)isInMonotonicPastWithDistance:()Monotonic
 {
-  v4 = [objc_opt_class() monotonicDate];
-  [a1 timeIntervalSinceDate:v4];
+  monotonicDate = [objc_opt_class() monotonicDate];
+  [self timeIntervalSinceDate:monotonicDate];
   v6 = v5 < -fabs(a2);
 
   return v6;
@@ -134,10 +134,10 @@
 {
   v3 = MEMORY[0x1E695DEE8];
   v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 components:28 fromDate:v4];
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar components:28 fromDate:v4];
 
-  v7 = [v5 dateFromComponents:v6];
+  v7 = [currentCalendar dateFromComponents:v6];
 
   return v7;
 }
@@ -146,12 +146,12 @@
 {
   v3 = MEMORY[0x1E695DEE8];
   v4 = a3;
-  v5 = [v3 currentCalendar];
+  currentCalendar = [v3 currentCalendar];
   v6 = objc_opt_new();
   [v6 setHour:0];
   [v6 setMinute:0];
   [v6 setSecond:0];
-  v7 = [v5 nextDateAfterDate:v4 matchingComponents:v6 options:2];
+  v7 = [currentCalendar nextDateAfterDate:v4 matchingComponents:v6 options:2];
 
   return v7;
 }
@@ -182,9 +182,9 @@
       v7 = v14;
     }
 
-    v15 = [objc_opt_class() defaultDateFormatter];
-    v16 = [v15 stringFromDate:v5];
-    v17 = [v15 stringFromDate:v7];
+    defaultDateFormatter = [objc_opt_class() defaultDateFormatter];
+    v16 = [defaultDateFormatter stringFromDate:v5];
+    v17 = [defaultDateFormatter stringFromDate:v7];
     v18 = [v17 isEqualToString:v16];
     if ([objc_opt_class() dateIsMidnightLocalTime:v7])
     {

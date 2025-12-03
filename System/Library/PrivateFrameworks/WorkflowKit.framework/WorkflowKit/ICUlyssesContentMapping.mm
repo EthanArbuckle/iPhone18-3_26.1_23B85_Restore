@@ -1,25 +1,25 @@
 @interface ICUlyssesContentMapping
 - (id)contentItemClasses;
-- (void)getImageURLQueryString:(id)a3 withInput:(id)a4 parameters:(id)a5;
-- (void)getStringRepresentation:(id)a3 withInput:(id)a4 parameters:(id)a5;
-- (void)getTextRepresentation:(id)a3 withInput:(id)a4 parameters:(id)a5;
-- (void)getTextURLQueryString:(id)a3 withInput:(id)a4 parameters:(id)a5;
+- (void)getImageURLQueryString:(id)string withInput:(id)input parameters:(id)parameters;
+- (void)getStringRepresentation:(id)representation withInput:(id)input parameters:(id)parameters;
+- (void)getTextRepresentation:(id)representation withInput:(id)input parameters:(id)parameters;
+- (void)getTextURLQueryString:(id)string withInput:(id)input parameters:(id)parameters;
 @end
 
 @implementation ICUlyssesContentMapping
 
-- (void)getImageURLQueryString:(id)a3 withInput:(id)a4 parameters:(id)a5
+- (void)getImageURLQueryString:(id)string withInput:(id)input parameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  inputCopy = input;
   v8 = objc_opt_class();
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __71__ICUlyssesContentMapping_getImageURLQueryString_withInput_parameters___block_invoke;
   v10[3] = &unk_1E837DBF8;
-  v11 = v6;
-  v9 = v6;
-  [v7 generateCollectionByCoercingToItemClass:v8 completionHandler:v10];
+  v11 = stringCopy;
+  v9 = stringCopy;
+  [inputCopy generateCollectionByCoercingToItemClass:v8 completionHandler:v10];
 }
 
 void __71__ICUlyssesContentMapping_getImageURLQueryString_withInput_parameters___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -72,35 +72,35 @@ void __71__ICUlyssesContentMapping_getImageURLQueryString_withInput_parameters__
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getTextRepresentation:(id)a3 withInput:(id)a4 parameters:(id)a5
+- (void)getTextRepresentation:(id)representation withInput:(id)input parameters:(id)parameters
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 objectForKey:@"UlyssesTextFormat"];
+  representationCopy = representation;
+  inputCopy = input;
+  parametersCopy = parameters;
+  v11 = [parametersCopy objectForKey:@"UlyssesTextFormat"];
   v12 = [v11 isEqualToString:@"Markdown"];
   v13 = [v11 isEqualToString:@"HTML"];
-  v14 = [v9 items];
-  v15 = [v14 objectsMatchingClass:objc_opt_class()];
-  v16 = [v15 firstObject];
+  items = [inputCopy items];
+  v15 = [items objectsMatchingClass:objc_opt_class()];
+  firstObject = [v15 firstObject];
 
-  if (v16 && ((v12 | v13) & 1) != 0)
+  if (firstObject && ((v12 | v13) & 1) != 0)
   {
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __70__ICUlyssesContentMapping_getTextRepresentation_withInput_parameters___block_invoke;
     v18[3] = &unk_1E837BB60;
-    v19 = v8;
+    v19 = representationCopy;
     v20 = v12;
     v17 = [MEMORY[0x1E69E0AF8] typeWithUTType:{*MEMORY[0x1E6982E18], v18[0], 3221225472, __70__ICUlyssesContentMapping_getTextRepresentation_withInput_parameters___block_invoke, &unk_1E837BB60}];
-    [v16 getFileRepresentation:v18 forType:v17];
+    [firstObject getFileRepresentation:v18 forType:v17];
   }
 
   else
   {
     v21.receiver = self;
     v21.super_class = ICUlyssesContentMapping;
-    [(WFInterchangeContentMapping *)&v21 getStringRepresentation:v8 withInput:v9 parameters:v10];
+    [(WFInterchangeContentMapping *)&v21 getStringRepresentation:representationCopy withInput:inputCopy parameters:parametersCopy];
   }
 }
 
@@ -139,16 +139,16 @@ void __70__ICUlyssesContentMapping_getTextRepresentation_withInput_parameters___
 LABEL_7:
 }
 
-- (void)getTextURLQueryString:(id)a3 withInput:(id)a4 parameters:(id)a5
+- (void)getTextURLQueryString:(id)string withInput:(id)input parameters:(id)parameters
 {
-  v8 = a3;
+  stringCopy = string;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __70__ICUlyssesContentMapping_getTextURLQueryString_withInput_parameters___block_invoke;
   v10[3] = &unk_1E837FBD8;
-  v11 = v8;
-  v9 = v8;
-  [(ICUlyssesContentMapping *)self getTextRepresentation:v10 withInput:a4 parameters:a5];
+  v11 = stringCopy;
+  v9 = stringCopy;
+  [(ICUlyssesContentMapping *)self getTextRepresentation:v10 withInput:input parameters:parameters];
 }
 
 void __70__ICUlyssesContentMapping_getTextURLQueryString_withInput_parameters___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -176,25 +176,25 @@ void __70__ICUlyssesContentMapping_getTextURLQueryString_withInput_parameters___
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getStringRepresentation:(id)a3 withInput:(id)a4 parameters:(id)a5
+- (void)getStringRepresentation:(id)representation withInput:(id)input parameters:(id)parameters
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 objectForKey:@"UlyssesAttachmentType"];
+  representationCopy = representation;
+  inputCopy = input;
+  parametersCopy = parameters;
+  v10 = [parametersCopy objectForKey:@"UlyssesAttachmentType"];
   if ([v10 isEqualToString:@"Keywords"])
   {
-    v11[2](v11, &stru_1F4A1C408, 0);
+    representationCopy[2](representationCopy, &stru_1F4A1C408, 0);
   }
 
   else if ([v10 isEqualToString:@"Image"])
   {
-    [(ICUlyssesContentMapping *)self getImageURLQueryString:v11 withInput:v8 parameters:v9];
+    [(ICUlyssesContentMapping *)self getImageURLQueryString:representationCopy withInput:inputCopy parameters:parametersCopy];
   }
 
   else
   {
-    [(ICUlyssesContentMapping *)self getTextURLQueryString:v11 withInput:v8 parameters:v9];
+    [(ICUlyssesContentMapping *)self getTextURLQueryString:representationCopy withInput:inputCopy parameters:parametersCopy];
   }
 }
 

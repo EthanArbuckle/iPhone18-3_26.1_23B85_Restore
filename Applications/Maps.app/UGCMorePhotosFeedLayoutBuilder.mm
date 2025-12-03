@@ -3,8 +3,8 @@
 + (id)_thumbnailGalleryLayoutForPadPortrait;
 + (id)_thumbnailGalleryLayoutForPhoneLandscape;
 + (id)_thumbnailGalleryLayoutForPhonePortrait;
-+ (id)_thumbnailGalleryLayoutForTraitCollection:(id)a3;
-+ (id)thumbnailGalleryLayoutForTraitCollection:(id)a3;
++ (id)_thumbnailGalleryLayoutForTraitCollection:(id)collection;
++ (id)thumbnailGalleryLayoutForTraitCollection:(id)collection;
 @end
 
 @implementation UGCMorePhotosFeedLayoutBuilder
@@ -208,48 +208,48 @@
   return v14;
 }
 
-+ (id)_thumbnailGalleryLayoutForTraitCollection:(id)a3
++ (id)_thumbnailGalleryLayoutForTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [v4 userInterfaceIdiom];
+  collectionCopy = collection;
+  userInterfaceIdiom = [collectionCopy userInterfaceIdiom];
   v6 = +[UIDevice currentDevice];
-  v7 = [v6 orientation];
+  orientation = [v6 orientation];
 
-  if (v5 == 5)
+  if (userInterfaceIdiom == 5)
   {
-    v8 = [a1 _thumbnailGalleryLayoutForMacOS];
+    _thumbnailGalleryLayoutForMacOS = [self _thumbnailGalleryLayoutForMacOS];
   }
 
-  else if (v5 == 1)
+  else if (userInterfaceIdiom == 1)
   {
-    if ((v7 - 1) > 1)
+    if ((orientation - 1) > 1)
     {
-      [a1 _thumbnailGalleryLayoutForPadLandscape];
+      [self _thumbnailGalleryLayoutForPadLandscape];
     }
 
     else
     {
-      [a1 _thumbnailGalleryLayoutForPadPortrait];
+      [self _thumbnailGalleryLayoutForPadPortrait];
     }
-    v8 = ;
+    _thumbnailGalleryLayoutForMacOS = ;
   }
 
-  else if (v5 || [v4 verticalSizeClass] != 1)
+  else if (userInterfaceIdiom || [collectionCopy verticalSizeClass] != 1)
   {
-    v8 = [a1 _thumbnailGalleryLayoutForPhonePortrait];
+    _thumbnailGalleryLayoutForMacOS = [self _thumbnailGalleryLayoutForPhonePortrait];
   }
 
   else
   {
-    v8 = [a1 _thumbnailGalleryLayoutForPhoneLandscape];
+    _thumbnailGalleryLayoutForMacOS = [self _thumbnailGalleryLayoutForPhoneLandscape];
   }
 
-  v9 = v8;
+  v9 = _thumbnailGalleryLayoutForMacOS;
 
   return v9;
 }
 
-+ (id)thumbnailGalleryLayoutForTraitCollection:(id)a3
++ (id)thumbnailGalleryLayoutForTraitCollection:(id)collection
 {
   v4 = objc_alloc_init(UICollectionViewCompositionalLayoutConfiguration);
   [v4 setContentInsetsReference:1];
@@ -257,7 +257,7 @@
   v7[1] = 3221225472;
   v7[2] = sub_100D324C8;
   v7[3] = &unk_101651B48;
-  v7[4] = a1;
+  v7[4] = self;
   v5 = [[UICollectionViewCompositionalLayout alloc] initWithSectionProvider:v7 configuration:v4];
 
   return v5;

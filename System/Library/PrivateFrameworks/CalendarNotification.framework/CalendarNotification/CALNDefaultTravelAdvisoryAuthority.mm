@@ -1,6 +1,6 @@
 @interface CALNDefaultTravelAdvisoryAuthority
 + (CALNDefaultTravelAdvisoryAuthority)sharedInstance;
-- (BOOL)doesHypothesisSatisfyMinimumAllowableTravelTime:(id)a3;
+- (BOOL)doesHypothesisSatisfyMinimumAllowableTravelTime:(id)time;
 @end
 
 @implementation CALNDefaultTravelAdvisoryAuthority
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __52__CALNDefaultTravelAdvisoryAuthority_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -29,12 +29,12 @@ uint64_t __52__CALNDefaultTravelAdvisoryAuthority_sharedInstance__block_invoke(u
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)doesHypothesisSatisfyMinimumAllowableTravelTime:(id)a3
+- (BOOL)doesHypothesisSatisfyMinimumAllowableTravelTime:(id)time
 {
   v4 = MEMORY[0x277CF7CE0];
-  v5 = a3;
+  timeCopy = time;
   [(CALNDefaultTravelAdvisoryAuthority *)self minimumAllowableTravelTime];
-  LOBYTE(self) = [v4 doesHypothesisSatisfyMinimumAllowableTravelTime:v5 minimumAllowableTravelTime:?];
+  LOBYTE(self) = [v4 doesHypothesisSatisfyMinimumAllowableTravelTime:timeCopy minimumAllowableTravelTime:?];
 
   return self;
 }

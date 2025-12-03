@@ -1,20 +1,20 @@
 @interface CHDDataValuesCollection
-- (BOOL)addDataPoint:(CHDDataPoint *)a3;
-- (BOOL)addDataValue:(id)a3;
-- (CHDDataPoint)dataPointAtIndex:(unint64_t)a3;
-- (CHDDataPoint)dataPointWithIndex:(unint64_t)a3;
+- (BOOL)addDataPoint:(CHDDataPoint *)point;
+- (BOOL)addDataValue:(id)value;
+- (CHDDataPoint)dataPointAtIndex:(unint64_t)index;
+- (CHDDataPoint)dataPointWithIndex:(unint64_t)index;
 - (CHDDataValuesCollection)init;
-- (CHDDataValuesCollection)initWithDataPointCount:(unint64_t)a3;
-- (id)contentFormatAtIndex:(unint64_t)a3 resources:(id)a4;
-- (id)dataValueAtIndex:(unint64_t)a3;
-- (id)dataValueWithIndex:(unint64_t)a3;
+- (CHDDataValuesCollection)initWithDataPointCount:(unint64_t)count;
+- (id)contentFormatAtIndex:(unint64_t)index resources:(id)resources;
+- (id)dataValueAtIndex:(unint64_t)index;
+- (id)dataValueWithIndex:(unint64_t)index;
 - (id)description;
 - (unint64_t)maxDataPointIndex;
 - (void)cleanup;
 - (void)dealloc;
 - (void)finishReading;
-- (void)resetWithDataPointCount:(unint64_t)a3;
-- (void)setupBufferForValues:(unint64_t)a3;
+- (void)resetWithDataPointCount:(unint64_t)count;
+- (void)setupBufferForValues:(unint64_t)values;
 @end
 
 @implementation CHDDataValuesCollection
@@ -104,7 +104,7 @@
   }
 }
 
-- (CHDDataValuesCollection)initWithDataPointCount:(unint64_t)a3
+- (CHDDataValuesCollection)initWithDataPointCount:(unint64_t)count
 {
   v7.receiver = self;
   v7.super_class = CHDDataValuesCollection;
@@ -114,25 +114,25 @@
   {
     v4->mContainsStringValue = 0;
     v4->mDataValueCount = 0;
-    [(CHDDataValuesCollection *)v4 setupBufferForValues:a3];
+    [(CHDDataValuesCollection *)v4 setupBufferForValues:count];
   }
 
   return v5;
 }
 
-- (void)resetWithDataPointCount:(unint64_t)a3
+- (void)resetWithDataPointCount:(unint64_t)count
 {
-  if (self->mDataValueCount == a3)
+  if (self->mDataValueCount == count)
   {
     [(CHDDataValuesCollection *)self cleanup];
-    [(CHDDataValuesCollection *)self setupBufferForValues:a3];
+    [(CHDDataValuesCollection *)self setupBufferForValues:count];
   }
 
   self->mContainsStringValue = 0;
   self->mDataValueCount = 0;
 }
 
-- (BOOL)addDataPoint:(CHDDataPoint *)a3
+- (BOOL)addDataPoint:(CHDDataPoint *)point
 {
   MutableBytePtr = CFDataGetMutableBytePtr(self->mPackedValues);
   if (MutableBytePtr)
@@ -147,11 +147,11 @@
     }
 
     v9 = &v8[32 * self->mDataValueCount];
-    *v9 = a3->index;
-    EDValue::operator=((v9 + 1), &a3->value);
-    v9[3] = a3->contentFormatId;
+    *v9 = point->index;
+    EDValue::operator=((v9 + 1), &point->value);
+    v9[3] = point->contentFormatId;
     ++self->mDataValueCount;
-    if (!self->mContainsStringValue && EDValue::isStringType(&a3->value))
+    if (!self->mContainsStringValue && EDValue::isStringType(&point->value))
     {
       self->mContainsStringValue = 1;
     }
@@ -160,13 +160,13 @@
   return MutableBytePtr != 0;
 }
 
-- (BOOL)addDataValue:(id)a3
+- (BOOL)addDataValue:(id)value
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  valueCopy = value;
+  v5 = valueCopy;
+  if (valueCopy)
   {
-    v6 = -[CHDDataValuesCollection addDataPoint:](self, "addDataPoint:", [v4 dataPoint]);
+    v6 = -[CHDDataValuesCollection addDataPoint:](self, "addDataPoint:", [valueCopy dataPoint]);
   }
 
   else
@@ -177,12 +177,12 @@
   return v6;
 }
 
-- (CHDDataPoint)dataPointAtIndex:(unint64_t)a3
+- (CHDDataPoint)dataPointAtIndex:(unint64_t)index
 {
   MutableBytePtr = CFDataGetMutableBytePtr(self->mPackedValues);
   if (MutableBytePtr)
   {
-    v6 = self->mDataValueCount > a3;
+    v6 = self->mDataValueCount > index;
   }
 
   else
@@ -192,7 +192,7 @@
 
   if (v6)
   {
-    return &MutableBytePtr[32 * a3];
+    return &MutableBytePtr[32 * index];
   }
 
   else
@@ -201,13 +201,13 @@
   }
 }
 
-- (CHDDataPoint)dataPointWithIndex:(unint64_t)a3
+- (CHDDataPoint)dataPointWithIndex:(unint64_t)index
 {
   mIndexToDataValueMap = self->mIndexToDataValueMap;
   if (mIndexToDataValueMap)
   {
     value = 0;
-    if (CFDictionaryGetValueIfPresent(mIndexToDataValueMap, a3, &value))
+    if (CFDictionaryGetValueIfPresent(mIndexToDataValueMap, index, &value))
     {
       return [(CHDDataValuesCollection *)self dataPointAtIndex:value];
     }
@@ -226,7 +226,7 @@
     result = [(CHDDataValuesCollection *)self dataPointAtIndex:v7];
     if (result)
     {
-      if (result->index == a3)
+      if (result->index == index)
       {
         break;
       }
@@ -241,9 +241,9 @@
   return result;
 }
 
-- (id)dataValueAtIndex:(unint64_t)a3
+- (id)dataValueAtIndex:(unint64_t)index
 {
-  v3 = [(CHDDataValuesCollection *)self dataPointAtIndex:a3];
+  v3 = [(CHDDataValuesCollection *)self dataPointAtIndex:index];
   if (v3)
   {
     v4 = v3;
@@ -259,22 +259,22 @@
   return v5;
 }
 
-- (id)contentFormatAtIndex:(unint64_t)a3 resources:(id)a4
+- (id)contentFormatAtIndex:(unint64_t)index resources:(id)resources
 {
-  v6 = a4;
-  v7 = [(CHDDataValuesCollection *)self dataPointAtIndex:a3];
+  resourcesCopy = resources;
+  v7 = [(CHDDataValuesCollection *)self dataPointAtIndex:index];
   if (v7)
   {
-    v8 = [v6 contentFormats];
-    v7 = [v8 objectWithKey:v7->contentFormatId];
+    contentFormats = [resourcesCopy contentFormats];
+    v7 = [contentFormats objectWithKey:v7->contentFormatId];
   }
 
   return v7;
 }
 
-- (id)dataValueWithIndex:(unint64_t)a3
+- (id)dataValueWithIndex:(unint64_t)index
 {
-  v3 = [(CHDDataValuesCollection *)self dataPointWithIndex:a3];
+  v3 = [(CHDDataValuesCollection *)self dataPointWithIndex:index];
   if (v3)
   {
     v4 = v3;
@@ -316,14 +316,14 @@
   return v2;
 }
 
-- (void)setupBufferForValues:(unint64_t)a3
+- (void)setupBufferForValues:(unint64_t)values
 {
   Mutable = CFDataCreateMutable(*MEMORY[0x277CBECE8], 0);
   self->mPackedValues = Mutable;
   if (Mutable)
   {
 
-    CFDataIncreaseLength(Mutable, 32 * a3);
+    CFDataIncreaseLength(Mutable, 32 * values);
   }
 }
 

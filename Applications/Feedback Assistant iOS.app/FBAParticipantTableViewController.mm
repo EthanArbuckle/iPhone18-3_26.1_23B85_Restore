@@ -1,11 +1,11 @@
 @interface FBAParticipantTableViewController
-- (_TtC18Feedback_Assistant33FBAParticipantTableViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC18Feedback_Assistant33FBAParticipantTableViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (_TtP18Feedback_Assistant41FBAParticipantTableViewControllerDelegate_)participantDelegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)configureWithContentItem:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)configureWithContentItem:(id)item;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
 @end
 
@@ -20,18 +20,18 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10005813C();
 }
 
-- (void)configureWithContentItem:(id)a3
+- (void)configureWithContentItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000582FC(v4);
+  itemCopy = item;
+  selfCopy = self;
+  sub_1000582FC(itemCopy);
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   v4 = *(self + OBJC_IVAR____TtC18Feedback_Assistant33FBAParticipantTableViewController_displayedParticipants);
   if (!(v4 >> 62))
@@ -47,7 +47,7 @@
   return _CocoaArrayWrapper.endIndex.getter();
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
@@ -55,16 +55,16 @@
   __chkstk_darwin(v6);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
-  v13 = sub_100058940(v11);
+  viewCopy = view;
+  selfCopy = self;
+  v13 = sub_100058940(viewCopy);
 
   (*(v7 + 8))(v10, v6);
 
   return v13;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v5 = type metadata accessor for IndexPath();
   v6 = *(v5 - 8);
@@ -86,17 +86,17 @@
   aBlock[2] = sub_100088474;
   aBlock[3] = &unk_1000E0E48;
   v14 = _Block_copy(aBlock);
-  v15 = self;
+  selfCopy = self;
 
-  [(FBAParticipantTableViewController *)v15 dismissViewControllerAnimated:1 completion:v14];
+  [(FBAParticipantTableViewController *)selfCopy dismissViewControllerAnimated:1 completion:v14];
   _Block_release(v14);
 
   (*(v6 + 8))(v11, v5);
 }
 
-- (_TtC18Feedback_Assistant33FBAParticipantTableViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18Feedback_Assistant33FBAParticipantTableViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -108,15 +108,15 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_10005927C(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_10005927C(v5, v7, bundle);
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_100059630(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_100059630(controllerCopy);
 }
 
 @end

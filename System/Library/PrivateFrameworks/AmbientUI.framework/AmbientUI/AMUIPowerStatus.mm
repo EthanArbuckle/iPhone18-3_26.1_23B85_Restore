@@ -1,6 +1,6 @@
 @interface AMUIPowerStatus
 - (AMUIPowerStatus)init;
-- (void)setPowerStatus:(unint64_t)a3;
+- (void)setPowerStatus:(unint64_t)status;
 @end
 
 @implementation AMUIPowerStatus
@@ -20,11 +20,11 @@
   return result;
 }
 
-- (void)setPowerStatus:(unint64_t)a3
+- (void)setPowerStatus:(unint64_t)status
 {
-  if (self->_powerStatus != a3)
+  if (self->_powerStatus != status)
   {
-    self->_powerStatus = a3;
+    self->_powerStatus = status;
   }
 }
 

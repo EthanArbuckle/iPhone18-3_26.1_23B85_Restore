@@ -1,19 +1,19 @@
 @interface ICAppDelegate
 + (ICAppDelegate)sharedInstance;
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5;
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4;
-- (BOOL)isAnyAudioInspectorShowingForWindow:(id)a3;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (BOOL)application:(id)application runTest:(id)test options:(id)options;
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options;
+- (BOOL)isAnyAudioInspectorShowingForWindow:(id)window;
 - (BOOL)isAnyWelcomeScreenVisible;
-- (BOOL)isAuxWindowForConnectionOptions:(id)a3;
+- (BOOL)isAuxWindowForConnectionOptions:(id)options;
 - (BOOL)isRunningPPT;
-- (BOOL)isScrollingTest:(id)a3;
+- (BOOL)isScrollingTest:(id)test;
 - (BOOL)resetMigrationStateForInternalSettingsAndShowMigrationScreenIfNecessary;
 - (BOOL)scrollTestUseFlick;
 - (BOOL)scrollTestUseRecap;
-- (BOOL)selectFirstNoteInCollectionView:(id)a3 errorString:(id *)a4;
-- (BOOL)selectFirstNoteInScrollView:(id)a3 errorString:(id *)a4;
-- (BOOL)selectFirstNoteInTableView:(id)a3 errorString:(id *)a4;
+- (BOOL)selectFirstNoteInCollectionView:(id)view errorString:(id *)string;
+- (BOOL)selectFirstNoteInScrollView:(id)view errorString:(id *)string;
+- (BOOL)selectFirstNoteInTableView:(id)view errorString:(id *)string;
 - (BOOL)shouldShowMigrationScreen;
 - (BOOL)showMigrationStartupScreenIfNecessary;
 - (ICAppDelegate)init;
@@ -23,36 +23,36 @@
 - (ICWindowStateArchive)lastBackgroundedArchiveState;
 - (ICWindowStateArchive)quicknoteArchiveState;
 - (NSArray)viewControllerManagers;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
 - (id)ic_folderListScrollView;
 - (id)ic_noteEditorViewController;
 - (id)ic_notesGridScrollView;
 - (id)ic_notesListScrollView;
 - (id)ic_viewControllerManager;
 - (id)mainWindowIdentifier;
-- (id)serverChangeTokensForCloudKitAccounts:(id)a3;
+- (id)serverChangeTokensForCloudKitAccounts:(id)accounts;
 - (id)sharedInstanceInit;
 - (id)windows;
 - (int64_t)scrollIterationsFromDefaults;
 - (int64_t)scrollOffsetFromDefaults;
-- (unint64_t)application:(id)a3 supportedInterfaceOrientationsForWindow:(id)a4;
-- (unint64_t)beginBackgroundTaskWithName:(id)a3 expirationHandler:(id)a4;
-- (void)accountWillBeDeleted:(id)a3;
-- (void)accountsDidChange:(id)a3;
-- (void)alertWithTitle:(id)a3 message:(id)a4 cancelButtonTitle:(id)a5 defaultButtonTitle:(id)a6 actionHandler:(id)a7;
-- (void)application:(id)a3 didFailToRegisterForRemoteNotificationsWithError:(id)a4;
-- (void)application:(id)a3 didReceiveRemoteNotification:(id)a4 fetchCompletionHandler:(id)a5;
-- (void)application:(id)a3 didRegisterForRemoteNotificationsWithDeviceToken:(id)a4;
-- (void)applicationDidBecomeActive:(id)a3;
-- (void)applicationDidEnterBackground:(id)a3;
-- (void)applicationDidReceiveMemoryWarning:(id)a3;
-- (void)applicationWillEnterForeground:(id)a3;
-- (void)applicationWillResignActive:(id)a3;
-- (void)applicationWillTerminate:(id)a3;
+- (unint64_t)application:(id)application supportedInterfaceOrientationsForWindow:(id)window;
+- (unint64_t)beginBackgroundTaskWithName:(id)name expirationHandler:(id)handler;
+- (void)accountWillBeDeleted:(id)deleted;
+- (void)accountsDidChange:(id)change;
+- (void)alertWithTitle:(id)title message:(id)message cancelButtonTitle:(id)buttonTitle defaultButtonTitle:(id)defaultButtonTitle actionHandler:(id)handler;
+- (void)application:(id)application didFailToRegisterForRemoteNotificationsWithError:(id)error;
+- (void)application:(id)application didReceiveRemoteNotification:(id)notification fetchCompletionHandler:(id)handler;
+- (void)application:(id)application didRegisterForRemoteNotificationsWithDeviceToken:(id)token;
+- (void)applicationDidBecomeActive:(id)active;
+- (void)applicationDidEnterBackground:(id)background;
+- (void)applicationDidReceiveMemoryWarning:(id)warning;
+- (void)applicationWillEnterForeground:(id)foreground;
+- (void)applicationWillResignActive:(id)active;
+- (void)applicationWillTerminate:(id)terminate;
 - (void)bringUpKeyboard;
-- (void)buildMenuWithBuilder:(id)a3;
-- (void)checkIfHasSharedNotesOrFolders:(id)a3;
-- (void)checkIfUserNotificationsAllowed:(id)a3;
+- (void)buildMenuWithBuilder:(id)builder;
+- (void)checkIfHasSharedNotesOrFolders:(id)folders;
+- (void)checkIfUserNotificationsAllowed:(id)allowed;
 - (void)cleanUpTemporaryFiles;
 - (void)dealloc;
 - (void)didEditorBeginEditing;
@@ -64,88 +64,88 @@
 - (void)didShowNotesList;
 - (void)dismissAllowNotificationsWarmingSheet;
 - (void)dismissKeyboard;
-- (void)dismissMigrationScreenCompletionBlock:(id)a3;
-- (void)endBackgroundTask:(unint64_t)a3;
+- (void)dismissMigrationScreenCompletionBlock:(id)block;
+- (void)endBackgroundTask:(unint64_t)task;
 - (void)finishLaunching;
 - (void)folderListDidLayoutSubviews;
 - (void)goToBottomOfNoteInEditor;
-- (void)handleDarwinNotificationName:(id)a3;
-- (void)ic_selectFolderNamed:(id)a3;
+- (void)handleDarwinNotificationName:(id)name;
+- (void)ic_selectFolderNamed:(id)named;
 - (void)ic_selectLocalModernAccount;
 - (void)inkPickerDidShow;
 - (void)legacyNotesChanged;
 - (void)lockAllNotes;
-- (void)managedObjectContextDidSave:(id)a3;
-- (void)managedObjectContextWillSave:(id)a3;
-- (void)mentionNotificationDidSend:(id)a3;
-- (void)mentionNotificationWillSend:(id)a3;
-- (void)newShareCreatedOrSynced:(id)a3;
-- (void)noteContextDidSetupCoreDataStack:(id)a3;
-- (void)noteContextWillSetupCoreDataStack:(id)a3;
+- (void)managedObjectContextDidSave:(id)save;
+- (void)managedObjectContextWillSave:(id)save;
+- (void)mentionNotificationDidSend:(id)send;
+- (void)mentionNotificationWillSend:(id)send;
+- (void)newShareCreatedOrSynced:(id)synced;
+- (void)noteContextDidSetupCoreDataStack:(id)stack;
+- (void)noteContextWillSetupCoreDataStack:(id)stack;
 - (void)noteEditorDidLayoutSubviews;
 - (void)noteListDidLayoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)performFlickScrollOnScrollView:(id)a3 duration:(double)a4 delta:(int64_t)a5 delayBetweenScroll:(double)a6 iterations:(unint64_t)a7;
-- (void)performFlickScrollTestForScrollView:(id)a3 withOptions:(id)a4;
-- (void)performScrollTestForScrollView:(id)a3 withOptions:(id)a4;
-- (void)persistentContainerDidUnlockDatabase:(id)a3;
-- (void)persistentContainerWillLockDatabase:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)performFlickScrollOnScrollView:(id)view duration:(double)duration delta:(int64_t)delta delayBetweenScroll:(double)scroll iterations:(unint64_t)iterations;
+- (void)performFlickScrollTestForScrollView:(id)view withOptions:(id)options;
+- (void)performScrollTestForScrollView:(id)view withOptions:(id)options;
+- (void)persistentContainerDidUnlockDatabase:(id)database;
+- (void)persistentContainerWillLockDatabase:(id)database;
 - (void)registerBackgroundTasks;
 - (void)registerForNotifications;
-- (void)reindexEverythingThenPerformBlock:(id)a3;
+- (void)reindexEverythingThenPerformBlock:(id)block;
 - (void)requestAuthorizationToShowUserNotificationsIfNecessary;
-- (void)rotateToOrientation:(int64_t)a3 iterationsRemaining:(int)a4 completion:(id)a5;
+- (void)rotateToOrientation:(int64_t)orientation iterationsRemaining:(int)remaining completion:(id)completion;
 - (void)runDelayedLaunchTasks;
-- (void)saveLastBackgroundedArchiveState:(id)a3;
-- (void)saveQuicknoteArchiveState:(id)a3;
+- (void)saveLastBackgroundedArchiveState:(id)state;
+- (void)saveQuicknoteArchiveState:(id)state;
 - (void)searchResultBecameVisible;
-- (void)sessionDidStartForWindowScene:(id)a3;
+- (void)sessionDidStartForWindowScene:(id)scene;
 - (void)setupReachability;
-- (void)showAccountsListAnimated:(BOOL)a3;
-- (void)showAllowNotificationsWarmingSheet:(id)a3;
-- (void)showNoteWithAccountSelectionBlock:(id)a3 noteSelectionBlock:(id)a4 readyBlock:(id)a5 errorBlock:(id)a6;
-- (void)showNotesGridWithAccountSelectionBlock:(id)a3 readyBlock:(id)a4;
-- (void)showNotesListWithAccountSelectionBlock:(id)a3 readyBlock:(id)a4;
-- (void)showStartupWithForceWelcomeScreen:(BOOL)a3 completion:(id)a4;
-- (void)startAnalyticsSessionWithReferralURL:(id)a3 referralApplication:(id)a4;
-- (void)startICInsertChecklistTest:(id)a3;
-- (void)startICKeyboardBringUpAndDismissal:(id)a3;
-- (void)startICKeyboardRotation:(id)a3;
-- (void)startICKeyboardSplitAndMerge:(id)a3;
-- (void)startICNewNoteFromNoteViewTest:(id)a3 warm:(BOOL)a4;
-- (void)startICNewNoteFromNotesListTest:(id)a3;
-- (void)startICNoteEditorTypingTest:(id)a3;
-- (void)startICResizeWindowTest:(id)a3;
-- (void)startICRotateAccountsListTest:(id)a3;
-- (void)startICRotateNoteTest:(id)a3;
-- (void)startICRotateNotesListTest:(id)a3;
-- (void)startICScrollAccountsListTest:(id)a3;
-- (void)startICScrollEnglishNotesListTest:(id)a3;
-- (void)startICScrollGridViewTest:(id)a3;
-- (void)startICScrollInlineSketchTest:(id)a3;
-- (void)startICScrollNoteTest:(id)a3 withKeyboardUp:(BOOL)a4;
-- (void)startICScrollNotesListTest:(id)a3;
-- (void)startICScrollSearchResultsNotesListTest:(id)a3;
-- (void)startICScrollTableHorizontallyTest:(id)a3;
-- (void)startICScrollTableVerticallyTest:(id)a3;
-- (void)startICShowAccountsListTest:(id)a3;
-- (void)startICShowGridViewTest:(id)a3;
-- (void)startICShowInkPickerTest:(id)a3;
-- (void)startICShowNoteTest:(id)a3;
-- (void)startICShowNoteTestInFolderNamed:(id)a3 withOptions:(id)a4;
-- (void)startICShowNotesListTest:(id)a3 warm:(BOOL)a4;
-- (void)startICShowSearchResultsTest:(id)a3;
-- (void)startICShowShareSheetFromNoteViewTest:(id)a3;
-- (void)submitBackgroundAnalyticsEventsWithEventReporter:(id)a3;
-- (void)submitMoveCheckedItemsToBottomSwitchEventChangedInPreferencesWithState:(BOOL)a3 eventReporter:(id)a4;
-- (void)submitPasswordChangeEventsWithReset:(BOOL)a3 eventReporter:(id)a4;
-- (void)submitPasswordChangeModeEventWithEventReporter:(id)a3;
+- (void)showAccountsListAnimated:(BOOL)animated;
+- (void)showAllowNotificationsWarmingSheet:(id)sheet;
+- (void)showNoteWithAccountSelectionBlock:(id)block noteSelectionBlock:(id)selectionBlock readyBlock:(id)readyBlock errorBlock:(id)errorBlock;
+- (void)showNotesGridWithAccountSelectionBlock:(id)block readyBlock:(id)readyBlock;
+- (void)showNotesListWithAccountSelectionBlock:(id)block readyBlock:(id)readyBlock;
+- (void)showStartupWithForceWelcomeScreen:(BOOL)screen completion:(id)completion;
+- (void)startAnalyticsSessionWithReferralURL:(id)l referralApplication:(id)application;
+- (void)startICInsertChecklistTest:(id)test;
+- (void)startICKeyboardBringUpAndDismissal:(id)dismissal;
+- (void)startICKeyboardRotation:(id)rotation;
+- (void)startICKeyboardSplitAndMerge:(id)merge;
+- (void)startICNewNoteFromNoteViewTest:(id)test warm:(BOOL)warm;
+- (void)startICNewNoteFromNotesListTest:(id)test;
+- (void)startICNoteEditorTypingTest:(id)test;
+- (void)startICResizeWindowTest:(id)test;
+- (void)startICRotateAccountsListTest:(id)test;
+- (void)startICRotateNoteTest:(id)test;
+- (void)startICRotateNotesListTest:(id)test;
+- (void)startICScrollAccountsListTest:(id)test;
+- (void)startICScrollEnglishNotesListTest:(id)test;
+- (void)startICScrollGridViewTest:(id)test;
+- (void)startICScrollInlineSketchTest:(id)test;
+- (void)startICScrollNoteTest:(id)test withKeyboardUp:(BOOL)up;
+- (void)startICScrollNotesListTest:(id)test;
+- (void)startICScrollSearchResultsNotesListTest:(id)test;
+- (void)startICScrollTableHorizontallyTest:(id)test;
+- (void)startICScrollTableVerticallyTest:(id)test;
+- (void)startICShowAccountsListTest:(id)test;
+- (void)startICShowGridViewTest:(id)test;
+- (void)startICShowInkPickerTest:(id)test;
+- (void)startICShowNoteTest:(id)test;
+- (void)startICShowNoteTestInFolderNamed:(id)named withOptions:(id)options;
+- (void)startICShowNotesListTest:(id)test warm:(BOOL)warm;
+- (void)startICShowSearchResultsTest:(id)test;
+- (void)startICShowShareSheetFromNoteViewTest:(id)test;
+- (void)submitBackgroundAnalyticsEventsWithEventReporter:(id)reporter;
+- (void)submitMoveCheckedItemsToBottomSwitchEventChangedInPreferencesWithState:(BOOL)state eventReporter:(id)reporter;
+- (void)submitPasswordChangeEventsWithReset:(BOOL)reset eventReporter:(id)reporter;
+- (void)submitPasswordChangeModeEventWithEventReporter:(id)reporter;
 - (void)testScrollNote;
 - (void)testScrollNotesList;
 - (void)textViewDidChange;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
-- (void)userNotificationCenter:(id)a3 willPresentNotification:(id)a4 withCompletionHandler:(id)a5;
-- (void)waitForDelayedLaunchWithCompletionHandler:(id)a3;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
+- (void)userNotificationCenter:(id)center willPresentNotification:(id)notification withCompletionHandler:(id)handler;
+- (void)waitForDelayedLaunchWithCompletionHandler:(id)handler;
 - (void)willLoadNoteIntoEditor;
 @end
 
@@ -156,9 +156,9 @@
   v5.receiver = self;
   v5.super_class = ICAppDelegate;
   v2 = [(ICAppDelegate *)&v5 init];
-  v3 = [objc_opt_class() sharedInstance];
+  sharedInstance = [objc_opt_class() sharedInstance];
 
-  return v3;
+  return sharedInstance;
 }
 
 + (ICAppDelegate)sharedInstance
@@ -175,27 +175,27 @@
 
 - (id)sharedInstanceInit
 {
-  v2 = self;
-  v12.receiver = v2;
+  selfCopy = self;
+  v12.receiver = selfCopy;
   v12.super_class = ICAppDelegate;
 
   v3 = objc_alloc_init(NSMutableDictionary);
-  backgroundTasks = v2->_backgroundTasks;
-  v2->_backgroundTasks = v3;
+  backgroundTasks = selfCopy->_backgroundTasks;
+  selfCopy->_backgroundTasks = v3;
 
   v5 = +[NSMapTable strongToStrongObjectsMapTable];
-  managedObjectContextSaveTasks = v2->_managedObjectContextSaveTasks;
-  v2->_managedObjectContextSaveTasks = v5;
+  managedObjectContextSaveTasks = selfCopy->_managedObjectContextSaveTasks;
+  selfCopy->_managedObjectContextSaveTasks = v5;
 
   v7 = +[NSMapTable strongToStrongObjectsMapTable];
-  noteContextTasks = v2->_noteContextTasks;
-  v2->_noteContextTasks = v7;
+  noteContextTasks = selfCopy->_noteContextTasks;
+  selfCopy->_noteContextTasks = v7;
 
   v9 = +[NSUUID UUID];
-  databaseLockBackgroundTaskIdentifier = v2->_databaseLockBackgroundTaskIdentifier;
-  v2->_databaseLockBackgroundTaskIdentifier = v9;
+  databaseLockBackgroundTaskIdentifier = selfCopy->_databaseLockBackgroundTaskIdentifier;
+  selfCopy->_databaseLockBackgroundTaskIdentifier = v9;
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -239,9 +239,9 @@
 - (ICNAController)analyticsController
 {
   v3 = +[ICNAController sharedController];
-  v4 = [v3 appDelegate];
+  appDelegate = [v3 appDelegate];
 
-  if (!v4)
+  if (!appDelegate)
   {
     [v3 setAppDelegate:self];
   }
@@ -305,9 +305,9 @@
   if ((byte_1006CB359 & 1) == 0 && (([qword_1006CB340 containsString:@"ICShowInlineSketchNote"] & 1) != 0 || objc_msgSend(qword_1006CB340, "containsString:", @"ICShowTableNote")))
   {
     v2 = +[UIDevice currentDevice];
-    v3 = [v2 userInterfaceIdiom];
+    userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-    if (v3 == 1)
+    if (userInterfaceIdiom == 1)
     {
       [UIApp startedTest:qword_1006CB340];
       v4 = UIApp;
@@ -319,16 +319,16 @@
 
 - (BOOL)isAnyWelcomeScreenVisible
 {
-  v2 = [(ICAppDelegate *)self viewControllerManagers];
-  v3 = [v2 ic_containsObjectPassingTest:&stru_1006478B0];
+  viewControllerManagers = [(ICAppDelegate *)self viewControllerManagers];
+  v3 = [viewControllerManagers ic_containsObjectPassingTest:&stru_1006478B0];
 
   return v3;
 }
 
 - (NSArray)viewControllerManagers
 {
-  v2 = [(ICAppDelegate *)self windows];
-  v3 = [v2 ic_compactMap:&stru_100647560];
+  windows = [(ICAppDelegate *)self windows];
+  v3 = [windows ic_compactMap:&stru_100647560];
 
   return v3;
 }
@@ -337,13 +337,13 @@
 {
   v2 = +[NSMutableArray array];
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 connectedScenes];
+  connectedScenes = [v3 connectedScenes];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v4;
+  v5 = connectedScenes;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -358,8 +358,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) _windows];
-        [v2 ic_addObjectsFromNonNilArray:v10];
+        _windows = [*(*(&v13 + 1) + 8 * i) _windows];
+        [v2 ic_addObjectsFromNonNilArray:_windows];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -446,18 +446,18 @@
     }
   }
 
-  v18 = [(ICAppDelegate *)self window];
-  [ICLongRunningTaskController setMainWindow:v18];
+  window = [(ICAppDelegate *)self window];
+  [ICLongRunningTaskController setMainWindow:window];
 
   [(ICAppDelegate *)self setDelayedLockProtectedNotesTask:UIBackgroundTaskInvalid];
   v19 = +[NSProcessInfo processInfo];
-  v20 = [v19 arguments];
+  arguments = [v19 arguments];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v21 = v20;
+  v21 = arguments;
   v22 = [v21 countByEnumeratingWithState:&v26 objects:v32 count:16];
   if (v22)
   {
@@ -503,13 +503,13 @@ LABEL_21:
 
 - (BOOL)showMigrationStartupScreenIfNecessary
 {
-  v3 = [(ICAppDelegate *)self shouldShowMigrationScreen];
-  if (v3)
+  shouldShowMigrationScreen = [(ICAppDelegate *)self shouldShowMigrationScreen];
+  if (shouldShowMigrationScreen)
   {
     [(ICAppDelegate *)self showStartupWithCompletionBlock:0];
   }
 
-  return v3;
+  return shouldShowMigrationScreen;
 }
 
 - (BOOL)shouldShowMigrationScreen
@@ -517,8 +517,8 @@ LABEL_21:
   if ([(ICAppDelegate *)self shouldShowWelcomeScreenWhenLoggingInToUnmigratedICloudAccount])
   {
     v3 = +[ICNoteContext sharedContext];
-    v4 = [v3 managedObjectContext];
-    v5 = [ICAccount cloudKitAccountInContext:v4];
+    managedObjectContext = [v3 managedObjectContext];
+    v5 = [ICAccount cloudKitAccountInContext:managedObjectContext];
 
     if (v5 && ([v5 didChooseToMigrate] & 1) == 0)
     {
@@ -538,10 +538,10 @@ LABEL_21:
   }
 
   v7 = +[UMUserManager sharedManager];
-  v8 = [v7 currentUser];
-  v9 = [v8 userType];
+  currentUser = [v7 currentUser];
+  userType = [currentUser userType];
 
-  if (v9 == 1)
+  if (userType == 1)
   {
     [ICStartupController setHasShownWelcomeScreen:1];
     +[ICMigrationController upgradeEmptyLocalLegacyAccountIfNecessary];
@@ -551,8 +551,8 @@ LABEL_21:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = [(ICAppDelegate *)self viewControllerManagers];
-  v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  viewControllerManagers = [(ICAppDelegate *)self viewControllerManagers];
+  v11 = [viewControllerManagers countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
     v12 = v11;
@@ -564,15 +564,15 @@ LABEL_21:
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(viewControllerManagers);
         }
 
         v15 = *(*(&v18 + 1) + 8 * v14);
         if (v15)
         {
-          v16 = [v15 systemPaperViewController];
+          systemPaperViewController = [v15 systemPaperViewController];
 
-          if (v16)
+          if (systemPaperViewController)
           {
 
             return 0;
@@ -583,7 +583,7 @@ LABEL_21:
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v12 = [viewControllerManagers countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v12)
       {
         continue;
@@ -640,9 +640,9 @@ LABEL_21:
   if ((byte_1006CB359 & 1) == 0 && (([qword_1006CB340 containsString:@"ICShowNote"] & 1) != 0 || (objc_msgSend(qword_1006CB340, "containsString:", @"ICShowInlineSketchNote") & 1) != 0 || objc_msgSend(qword_1006CB340, "containsString:", @"ICShowTableNote")))
   {
     v2 = +[UIDevice currentDevice];
-    v3 = [v2 userInterfaceIdiom];
+    userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-    if (!v3)
+    if (!userInterfaceIdiom)
     {
       v4 = qword_1006CB340;
 
@@ -656,8 +656,8 @@ LABEL_21:
   if (!-[ICAppDelegate extendedLaunchTimeIsLogged](self, "extendedLaunchTimeIsLogged") && [UIApp shouldRecordExtendedLaunchTime])
   {
     v3 = UIApp;
-    v4 = [UIApp _launchTestName];
-    [v3 finishedTest:v4];
+    _launchTestName = [UIApp _launchTestName];
+    [v3 finishedTest:_launchTestName];
 
     [(ICAppDelegate *)self setExtendedLaunchTimeIsLogged:1];
   }
@@ -668,9 +668,9 @@ LABEL_21:
   if ((byte_1006CB359 & 1) == 0 && (([qword_1006CB340 containsString:@"ICShowNote"] & 1) != 0 || (objc_msgSend(qword_1006CB340, "containsString:", @"ICShowInlineSketchNote") & 1) != 0 || objc_msgSend(qword_1006CB340, "containsString:", @"ICShowTableNote")))
   {
     v2 = +[UIDevice currentDevice];
-    v3 = [v2 userInterfaceIdiom];
+    userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-    if (!v3)
+    if (!userInterfaceIdiom)
     {
       if (byte_1006CB370 == 1)
       {
@@ -693,27 +693,27 @@ LABEL_21:
 
 - (ICViewControllerManager)randomViewControllerManager
 {
-  v2 = [(ICAppDelegate *)self viewControllerManagers];
-  v3 = [v2 firstObject];
+  viewControllerManagers = [(ICAppDelegate *)self viewControllerManagers];
+  firstObject = [viewControllerManagers firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [v8 role];
+  optionsCopy = options;
+  sessionCopy = session;
+  role = [sessionCopy role];
   v10 = _UIWindowSceneSessionTypeCoverSheet;
 
-  if (v9 == v10)
+  if (role == v10)
   {
     v13 = @"quicknoteScene";
   }
 
   else
   {
-    v11 = [(ICAppDelegate *)self isAuxWindowForConnectionOptions:v7];
+    v11 = [(ICAppDelegate *)self isAuxWindowForConnectionOptions:optionsCopy];
     v12 = off_1006BAAF0;
     if (!v11)
     {
@@ -724,21 +724,21 @@ LABEL_21:
   }
 
   v14 = [UISceneConfiguration alloc];
-  v15 = [v8 role];
+  role2 = [sessionCopy role];
 
-  v16 = [v14 initWithName:v13 sessionRole:v15];
+  v16 = [v14 initWithName:v13 sessionRole:role2];
 
   return v16;
 }
 
-- (BOOL)isAuxWindowForConnectionOptions:(id)a3
+- (BOOL)isAuxWindowForConnectionOptions:(id)options
 {
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [a3 userActivities];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  userActivities = [options userActivities];
+  v4 = [userActivities countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -749,15 +749,15 @@ LABEL_21:
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(userActivities);
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
-        v9 = [v8 activityType];
-        if ([v9 isEqualToString:@"com.apple.notes.open.object"])
+        activityType = [v8 activityType];
+        if ([activityType isEqualToString:@"com.apple.notes.open.object"])
         {
-          v10 = [v8 userInfo];
-          v11 = [v10 objectForKeyedSubscript:@"ICUseAuxiliaryWindow"];
+          userInfo = [v8 userInfo];
+          v11 = [userInfo objectForKeyedSubscript:@"ICUseAuxiliaryWindow"];
           v12 = [v11 isEqual:&__kCFBooleanTrue];
 
           if (v12)
@@ -769,7 +769,7 @@ LABEL_21:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [userActivities countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v5)
       {
         continue;
@@ -785,9 +785,9 @@ LABEL_12:
   return v13;
 }
 
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options
 {
-  v5 = a4;
+  optionsCopy = options;
   v6 = os_log_create("com.apple.notes", "Application");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -808,7 +808,7 @@ LABEL_12:
   [ICNoteContext startSharedContextWithOptions:v7];
   +[ICNoteContext importArchivesForCurrentLaunchConfigurationIfNeeded];
   +[ICAccount initializeLocalAccountNamesInBackground];
-  v8 = [v5 objectForKeyedSubscript:UIApplicationLaunchOptionsURLKey];
+  v8 = [optionsCopy objectForKeyedSubscript:UIApplicationLaunchOptionsURLKey];
   [(ICAppDelegate *)self setLaunchURL:v8];
 
   if ([(ICAppDelegate *)self isRunningPPT])
@@ -816,10 +816,10 @@ LABEL_12:
     +[ICNAOptedInObject disableAnalytics];
   }
 
-  v9 = [v5 objectForKeyedSubscript:UIApplicationLaunchOptionsSourceApplicationKey];
-  v10 = [(ICAppDelegate *)self analyticsController];
-  v11 = [(ICAppDelegate *)self launchURL];
-  [v10 startAppAndGlobalSessionIfNecessaryWithReferralURL:v11 referralApplication:v9];
+  v9 = [optionsCopy objectForKeyedSubscript:UIApplicationLaunchOptionsSourceApplicationKey];
+  analyticsController = [(ICAppDelegate *)self analyticsController];
+  launchURL = [(ICAppDelegate *)self launchURL];
+  [analyticsController startAppAndGlobalSessionIfNecessaryWithReferralURL:launchURL referralApplication:v9];
 
   if (ICIsSandboxModeEnabled())
   {
@@ -845,10 +845,10 @@ LABEL_12:
   return 1;
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v6 = a4;
-  v7 = a3;
+  optionsCopy = options;
+  applicationCopy = application;
   v8 = os_log_create("com.apple.notes", "Application");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -859,17 +859,17 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s:%d", buf, 0x12u);
   }
 
-  self->_isLaunchedInBackground = [v7 applicationState] == 2;
+  self->_isLaunchedInBackground = [applicationCopy applicationState] == 2;
   [(ICAppDelegate *)self setExtendedLaunchTimeIsLogged:0];
   v9 = +[NotesApp sharedNotesApp];
-  [v9 application:v7 didFinishLaunchingWithOptions:v6];
+  [v9 application:applicationCopy didFinishLaunchingWithOptions:optionsCopy];
 
   v10 = objc_alloc_init(ICNotesCloudContextDelegate);
   [(ICAppDelegate *)self setCloudContextDelegate:v10];
 
   v11 = +[ICCloudContext sharedContext];
-  v12 = [(ICAppDelegate *)self cloudContextDelegate];
-  [v11 setCloudContextDelegate:v12];
+  cloudContextDelegate = [(ICAppDelegate *)self cloudContextDelegate];
+  [v11 setCloudContextDelegate:cloudContextDelegate];
 
   v13 = +[ICCloudContext sharedContext];
   v14 = +[ICNACloudOperationEventReporter sharedReporter];
@@ -885,10 +885,10 @@ LABEL_12:
   [v18 setCollaborationAnalyticsDelegate:v17];
 
   [(ICAppDelegate *)self registerForNotifications];
-  v19 = [(ICAppDelegate *)self launchURL];
-  [(ICAppDelegate *)self setLaunchingQuickNoteViaPencil:[ICAppURLUtilities isLaunchingQuickNoteViaPencil:v19]];
+  launchURL = [(ICAppDelegate *)self launchURL];
+  [(ICAppDelegate *)self setLaunchingQuickNoteViaPencil:[ICAppURLUtilities isLaunchingQuickNoteViaPencil:launchURL]];
 
-  v20 = [v6 objectForKeyedSubscript:UIApplicationLaunchOptionsUserActivityDictionaryKey];
+  v20 = [optionsCopy objectForKeyedSubscript:UIApplicationLaunchOptionsUserActivityDictionaryKey];
 
   if (v20)
   {
@@ -951,26 +951,26 @@ LABEL_12:
   [v4 postNotificationName:@"ICAppDelegateWillRunDelayedLaunchTasks" object:self];
 
   [(ICAppDelegate *)self setupReachability];
-  v5 = [(ICAppDelegate *)self cloudContextDelegate];
-  [v5 syncPasswordProtectedNotesIfNecessary];
+  cloudContextDelegate = [(ICAppDelegate *)self cloudContextDelegate];
+  [cloudContextDelegate syncPasswordProtectedNotesIfNecessary];
 
-  v6 = [(ICAppDelegate *)self cloudContextDelegate];
-  [v6 updateLastOSVersion];
+  cloudContextDelegate2 = [(ICAppDelegate *)self cloudContextDelegate];
+  [cloudContextDelegate2 updateLastOSVersion];
 
-  v7 = [(ICAppDelegate *)self cloudContextDelegate];
-  [v7 updateAppleAccountBags];
+  cloudContextDelegate3 = [(ICAppDelegate *)self cloudContextDelegate];
+  [cloudContextDelegate3 updateAppleAccountBags];
 
-  v8 = [(ICAppDelegate *)self cloudContextDelegate];
-  [v8 registerForSyncMessagesWithAlertProvider:self];
+  cloudContextDelegate4 = [(ICAppDelegate *)self cloudContextDelegate];
+  [cloudContextDelegate4 registerForSyncMessagesWithAlertProvider:self];
 
   if (+[ICNoteContext hasSharedContext])
   {
-    v9 = [(ICAppDelegate *)self windows];
-    v10 = [v9 ic_firstObjectOfClass:objc_opt_class()];
+    windows = [(ICAppDelegate *)self windows];
+    v10 = [windows ic_firstObjectOfClass:objc_opt_class()];
 
-    v11 = [v10 traitCollection];
+    traitCollection = [v10 traitCollection];
     v12 = +[ICSystemPaperThumbnailService sharedService];
-    [v12 setTraitCollection:v11];
+    [v12 setTraitCollection:traitCollection];
 
     v13 = +[ICSystemPaperThumbnailService sharedService];
     [v13 observe];
@@ -996,9 +996,9 @@ LABEL_12:
   }
 
   v20 = +[UIApplication sharedApplication];
-  v21 = [v20 applicationState];
+  applicationState = [v20 applicationState];
 
-  if (!v21)
+  if (!applicationState)
   {
     +[ICMigrationController continueMigrationIfNecessary];
   }
@@ -1008,8 +1008,8 @@ LABEL_12:
   v36 = 0u;
   v37 = 0u;
   v22 = +[ICNoteContext sharedContext];
-  v23 = [v22 managedObjectContext];
-  v24 = [ICAccount allActiveAccountsInContext:v23];
+  managedObjectContext = [v22 managedObjectContext];
+  v24 = [ICAccount allActiveAccountsInContext:managedObjectContext];
 
   v25 = [v24 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v25)
@@ -1027,8 +1027,8 @@ LABEL_12:
 
         v29 = *(*(&v36 + 1) + 8 * i);
         [v29 updateFullNameAndEmail:0];
-        v30 = [v29 accountDataCreateIfNecessary];
-        [v30 updateSupportsV1Neo:0];
+        accountDataCreateIfNecessary = [v29 accountDataCreateIfNecessary];
+        [accountDataCreateIfNecessary updateSupportsV1Neo:0];
       }
 
       v26 = [v24 countByEnumeratingWithState:&v36 objects:v40 count:16];
@@ -1038,9 +1038,9 @@ LABEL_12:
   }
 
   v31 = +[ICNoteContext sharedContext];
-  v32 = [v31 workerManagedObjectContext];
+  workerManagedObjectContext = [v31 workerManagedObjectContext];
   v33 = +[ICSharedWithYouController sharedController];
-  [v33 setManagedObjectContext:v32];
+  [v33 setManagedObjectContext:workerManagedObjectContext];
 
   v35[0] = _NSConcreteStackBlock;
   v35[1] = 3221225472;
@@ -1051,7 +1051,7 @@ LABEL_12:
   [(ICAppDelegate *)self setDelayedLaunchTasks:v34];
 }
 
-- (void)applicationDidBecomeActive:(id)a3
+- (void)applicationDidBecomeActive:(id)active
 {
   v4 = os_log_create("com.apple.notes", "Application");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1071,8 +1071,8 @@ LABEL_12:
       [(ICAppDelegate *)self setRefreshAccountsInFolderViewOnActivate:0];
     }
 
-    v5 = [(ICAppDelegate *)self lockNotesInBackgroundTimer];
-    [v5 invalidate];
+    lockNotesInBackgroundTimer = [(ICAppDelegate *)self lockNotesInBackgroundTimer];
+    [lockNotesInBackgroundTimer invalidate];
 
     [(ICAppDelegate *)self setLockNotesInBackgroundTimer:0];
     if ([(ICAppDelegate *)self delayedLockProtectedNotesTask]!= UIBackgroundTaskInvalid)
@@ -1099,9 +1099,9 @@ LABEL_12:
   objc_destroyWeak(buf);
 }
 
-- (void)applicationWillTerminate:(id)a3
+- (void)applicationWillTerminate:(id)terminate
 {
-  v4 = a3;
+  terminateCopy = terminate;
   v5 = os_log_create("com.apple.notes", "Application");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1113,14 +1113,14 @@ LABEL_12:
   }
 
   self->_willTerminate = 1;
-  v6 = [(ICAppDelegate *)self delayedLaunchTasks];
-  [v6 cancel];
+  delayedLaunchTasks = [(ICAppDelegate *)self delayedLaunchTasks];
+  [delayedLaunchTasks cancel];
 
   [(ICAppDelegate *)self setDelayedLaunchTasks:0];
   v7 = +[ICQuickNoteSessionManager sharedManager];
-  v8 = [v7 isQuickNoteSessionActive];
+  isQuickNoteSessionActive = [v7 isQuickNoteSessionActive];
 
-  if (v8)
+  if (isQuickNoteSessionActive)
   {
     v9 = +[ICQuickNoteSessionManager sharedManager];
     [v9 endSession];
@@ -1148,14 +1148,14 @@ LABEL_12:
   [v16 cancelAll];
 
   v17 = +[NotesApp sharedNotesApp];
-  [v17 applicationWillTerminate:v4];
+  [v17 applicationWillTerminate:terminateCopy];
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v18 = [(ICAppDelegate *)self viewControllerManagers];
-  v19 = [v18 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  viewControllerManagers = [(ICAppDelegate *)self viewControllerManagers];
+  v19 = [viewControllerManagers countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v19)
   {
     v20 = v19;
@@ -1167,17 +1167,17 @@ LABEL_12:
       {
         if (*v33 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(viewControllerManagers);
         }
 
-        v23 = [*(*(&v32 + 1) + 8 * v22) legacyNoteEditorViewController];
-        [v23 donateEditingIntentIfNecessary];
+        legacyNoteEditorViewController = [*(*(&v32 + 1) + 8 * v22) legacyNoteEditorViewController];
+        [legacyNoteEditorViewController donateEditingIntentIfNecessary];
 
         v22 = v22 + 1;
       }
 
       while (v20 != v22);
-      v20 = [v18 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v20 = [viewControllerManagers countByEnumeratingWithState:&v32 objects:v36 count:16];
     }
 
     while (v20);
@@ -1187,8 +1187,8 @@ LABEL_12:
   v25 = [v24 beginBackgroundTaskWithName:@"Remove All Cloud Syncing Activity Events" expirationHandler:&stru_100647648];
 
   v26 = +[ICNoteContext sharedContext];
-  v27 = [v26 managedObjectContext];
-  [ICCloudSyncingObject removeAllCloudSyncingObjectActivityEventsForUnsharedObjectsInContext:v27];
+  managedObjectContext = [v26 managedObjectContext];
+  [ICCloudSyncingObject removeAllCloudSyncingObjectActivityEventsForUnsharedObjectsInContext:managedObjectContext];
 
   v28 = +[UIApplication sharedApplication];
   [v28 endBackgroundTask:v25];
@@ -1199,15 +1199,15 @@ LABEL_12:
   v30 = +[ICCloudContext sharedContext];
   [v30 applicationWillTerminate];
 
-  v31 = [(ICAppDelegate *)self analyticsController];
-  [v31 appSessionDidTerminate];
+  analyticsController = [(ICAppDelegate *)self analyticsController];
+  [analyticsController appSessionDidTerminate];
 
   [(ICAppDelegate *)self cleanUpTemporaryFiles];
 }
 
-- (void)applicationWillResignActive:(id)a3
+- (void)applicationWillResignActive:(id)active
 {
-  v4 = a3;
+  activeCopy = active;
   v5 = os_log_create("com.apple.notes", "Application");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1219,15 +1219,15 @@ LABEL_12:
   }
 
   objc_opt_class();
-  v6 = [v4 object];
+  object = [activeCopy object];
   v7 = ICCheckedDynamicCast();
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(ICAppDelegate *)self viewControllerManagers];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  viewControllerManagers = [(ICAppDelegate *)self viewControllerManagers];
+  v9 = [viewControllerManagers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1238,21 +1238,21 @@ LABEL_12:
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(viewControllerManagers);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) noteEditorViewController];
-        v14 = [v13 note];
-        v15 = [v14 isPasswordProtected];
+        noteEditorViewController = [*(*(&v16 + 1) + 8 * i) noteEditorViewController];
+        note = [noteEditorViewController note];
+        isPasswordProtected = [note isPasswordProtected];
 
-        if (v15)
+        if (isPasswordProtected)
         {
           [v7 ignoreSnapshotOnNextApplicationLaunch];
           goto LABEL_13;
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [viewControllerManagers countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v10)
       {
         continue;
@@ -1270,11 +1270,11 @@ LABEL_13:
   }
 }
 
-- (void)applicationDidEnterBackground:(id)a3
+- (void)applicationDidEnterBackground:(id)background
 {
-  v4 = a3;
+  backgroundCopy = background;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [backgroundCopy object];
   v6 = ICCheckedDynamicCast();
 
   if (ICUseCoreDataCoreSpotlightIntegration())
@@ -1308,25 +1308,25 @@ LABEL_13:
   if ([v12 isQuickNoteSessionActive])
   {
     v13 = +[ICQuickNoteSessionManager sharedManager];
-    v14 = [v13 isSecureScreenShowing];
+    isSecureScreenShowing = [v13 isSecureScreenShowing];
 
-    if (v14)
+    if (isSecureScreenShowing)
     {
       goto LABEL_12;
     }
 
     v12 = +[ICQuickNoteSessionManager sharedManager];
-    v15 = [v12 noteEditorViewController];
-    v16 = [v15 presentedViewController];
+    noteEditorViewController = [v12 noteEditorViewController];
+    presentedViewController = [noteEditorViewController presentedViewController];
     v17 = objc_opt_respondsToSelector();
 
     if (v17)
     {
-      v18 = [v15 presentedViewController];
-      [v18 prepareForDismissal];
+      presentedViewController2 = [noteEditorViewController presentedViewController];
+      [presentedViewController2 prepareForDismissal];
     }
 
-    [v15 dismissViewControllerAnimated:0 completion:0];
+    [noteEditorViewController dismissViewControllerAnimated:0 completion:0];
     v19 = +[ICQuickNoteSessionManager sharedManager];
     [v19 endSession];
   }
@@ -1344,8 +1344,8 @@ LABEL_12:
   v48 = 0u;
   v49 = 0u;
   v47 = 0u;
-  v22 = [(ICAppDelegate *)self viewControllerManagers];
-  v23 = [v22 countByEnumeratingWithState:&v47 objects:v51 count:16];
+  viewControllerManagers = [(ICAppDelegate *)self viewControllerManagers];
+  v23 = [viewControllerManagers countByEnumeratingWithState:&v47 objects:v51 count:16];
   if (v23)
   {
     v24 = v23;
@@ -1357,17 +1357,17 @@ LABEL_12:
       {
         if (*v48 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(viewControllerManagers);
         }
 
-        v27 = [*(*(&v47 + 1) + 8 * v26) legacyNoteEditorViewController];
-        [v27 donateEditingIntentIfNecessary];
+        legacyNoteEditorViewController = [*(*(&v47 + 1) + 8 * v26) legacyNoteEditorViewController];
+        [legacyNoteEditorViewController donateEditingIntentIfNecessary];
 
         v26 = v26 + 1;
       }
 
       while (v24 != v26);
-      v24 = [v22 countByEnumeratingWithState:&v47 objects:v51 count:16];
+      v24 = [viewControllerManagers countByEnumeratingWithState:&v47 objects:v51 count:16];
     }
 
     while (v24);
@@ -1386,8 +1386,8 @@ LABEL_12:
   [v31 applicationDidEnterBackground:v6];
 
   v32 = +[ICNoteContext sharedContext];
-  v33 = [v32 managedObjectContext];
-  v34 = [ICAccount cloudKitAccountInContext:v33];
+  managedObjectContext = [v32 managedObjectContext];
+  v34 = [ICAccount cloudKitAccountInContext:managedObjectContext];
 
   if (!v34 || [v34 didChooseToMigrate])
   {
@@ -1407,13 +1407,13 @@ LABEL_12:
   }
 
   v36 = +[ICAuthenticationState sharedState];
-  v37 = [v36 isAuthenticated];
+  isAuthenticated = [v36 isAuthenticated];
 
-  if (v37)
+  if (isAuthenticated)
   {
-    v38 = [(ICAppDelegate *)self secureWindow];
+    secureWindow = [(ICAppDelegate *)self secureWindow];
 
-    if (v38)
+    if (secureWindow)
     {
       [(ICAppDelegate *)self lockAllNotes];
     }
@@ -1430,8 +1430,8 @@ LABEL_12:
       [(ICAppDelegate *)self setLockNotesInBackgroundTimer:v39];
 
       v40 = +[NSRunLoop currentRunLoop];
-      v41 = [(ICAppDelegate *)self lockNotesInBackgroundTimer];
-      [v40 addTimer:v41 forMode:NSDefaultRunLoopMode];
+      lockNotesInBackgroundTimer = [(ICAppDelegate *)self lockNotesInBackgroundTimer];
+      [v40 addTimer:lockNotesInBackgroundTimer forMode:NSDefaultRunLoopMode];
     }
   }
 
@@ -1470,16 +1470,16 @@ LABEL_12:
 
 - (void)lockAllNotes
 {
-  v3 = [(ICAppDelegate *)self lockNotesInBackgroundTimer];
-  [v3 invalidate];
+  lockNotesInBackgroundTimer = [(ICAppDelegate *)self lockNotesInBackgroundTimer];
+  [lockNotesInBackgroundTimer invalidate];
 
   [(ICAppDelegate *)self setLockNotesInBackgroundTimer:0];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(ICAppDelegate *)self viewControllerManagers];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  viewControllerManagers = [(ICAppDelegate *)self viewControllerManagers];
+  v5 = [viewControllerManagers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1490,13 +1490,13 @@ LABEL_12:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(viewControllerManagers);
         }
 
         [*(*(&v10 + 1) + 8 * i) lockNotesNow];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [viewControllerManagers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -1514,9 +1514,9 @@ LABEL_12:
   }
 }
 
-- (void)applicationWillEnterForeground:(id)a3
+- (void)applicationWillEnterForeground:(id)foreground
 {
-  v4 = a3;
+  foregroundCopy = foreground;
   v5 = os_log_create("com.apple.notes", "Application");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1528,7 +1528,7 @@ LABEL_12:
   }
 
   objc_opt_class();
-  v6 = [v4 object];
+  object = [foregroundCopy object];
 
   v7 = ICCheckedDynamicCast();
 
@@ -1550,9 +1550,9 @@ LABEL_12:
     [v10 enableAutomaticPreviewGeneration];
     [v10 generatePreviewsIfNeeded];
     v11 = +[ICNoteContext sharedContext];
-    v12 = [v11 workerManagedObjectContext];
+    workerManagedObjectContext = [v11 workerManagedObjectContext];
 
-    [v10 generateMissingOrOutdatedAttachmentMetaDataIfNeededInContext:v12];
+    [v10 generateMissingOrOutdatedAttachmentMetaDataIfNeededInContext:workerManagedObjectContext];
     v13 = +[ICCloudContext sharedContext];
     [v13 applicationWillEnterForeground];
   }
@@ -1567,15 +1567,15 @@ LABEL_12:
   +[ICDateHeadersUtilities clearCache];
 }
 
-- (unint64_t)application:(id)a3 supportedInterfaceOrientationsForWindow:(id)a4
+- (unint64_t)application:(id)application supportedInterfaceOrientationsForWindow:(id)window
 {
-  v5 = a4;
-  if ([(ICAppDelegate *)self isAnyWelcomeScreenVisible]|| [(ICAppDelegate *)self isAnyAudioInspectorShowingForWindow:v5])
+  windowCopy = window;
+  if ([(ICAppDelegate *)self isAnyWelcomeScreenVisible]|| [(ICAppDelegate *)self isAnyAudioInspectorShowingForWindow:windowCopy])
   {
-    v6 = [v5 traitCollection];
-    v7 = [v6 userInterfaceIdiom];
+    traitCollection = [windowCopy traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v7)
+    if (userInterfaceIdiom)
     {
       v8 = 30;
     }
@@ -1594,32 +1594,32 @@ LABEL_12:
   return v8;
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v7.receiver = self;
   v7.super_class = ICAppDelegate;
-  [(ICAppDelegate *)&v7 buildMenuWithBuilder:v4];
-  v5 = [v4 system];
+  [(ICAppDelegate *)&v7 buildMenuWithBuilder:builderCopy];
+  system = [builderCopy system];
   v6 = +[UIMenuSystem mainSystem];
 
-  if (v5 == v6)
+  if (system == v6)
   {
-    [v4 removeMenuForIdentifier:UIMenuTextSize];
-    [v4 removeMenuForIdentifier:UIMenuOpen];
-    [ICApplicationMainMenu buildMenuWithBuilder:v4];
+    [builderCopy removeMenuForIdentifier:UIMenuTextSize];
+    [builderCopy removeMenuForIdentifier:UIMenuOpen];
+    [ICApplicationMainMenu buildMenuWithBuilder:builderCopy];
   }
 }
 
-- (id)serverChangeTokensForCloudKitAccounts:(id)a3
+- (id)serverChangeTokensForCloudKitAccounts:(id)accounts
 {
-  v3 = a3;
+  accountsCopy = accounts;
   v4 = objc_alloc_init(NSMutableSet);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v3;
+  obj = accountsCopy;
   v5 = [obj countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v5)
   {
@@ -1639,8 +1639,8 @@ LABEL_12:
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v9 = [v8 serverChangeTokens];
-        v10 = [v9 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        serverChangeTokens = [v8 serverChangeTokens];
+        v10 = [serverChangeTokens countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v10)
         {
           v11 = v10;
@@ -1651,21 +1651,21 @@ LABEL_12:
             {
               if (*v22 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(serverChangeTokens);
               }
 
               v14 = *(*(&v21 + 1) + 8 * j);
-              v15 = [v14 zoneID];
-              v16 = [v15 zoneName];
+              zoneID = [v14 zoneID];
+              zoneName = [zoneID zoneName];
 
-              if (v16)
+              if (zoneName)
               {
-                v17 = [v14 ckServerChangeToken];
-                [v4 addObject:v17];
+                ckServerChangeToken = [v14 ckServerChangeToken];
+                [v4 addObject:ckServerChangeToken];
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v21 objects:v29 count:16];
+            v11 = [serverChangeTokens countByEnumeratingWithState:&v21 objects:v29 count:16];
           }
 
           while (v11);
@@ -1681,10 +1681,10 @@ LABEL_12:
   return v4;
 }
 
-- (void)application:(id)a3 didReceiveRemoteNotification:(id)a4 fetchCompletionHandler:(id)a5
+- (void)application:(id)application didReceiveRemoteNotification:(id)notification fetchCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a5;
+  notificationCopy = notification;
+  handlerCopy = handler;
   v8 = os_log_create("com.apple.notes", "Application");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -1696,14 +1696,14 @@ LABEL_12:
   v11[1] = 3221225472;
   v11[2] = sub_100092AA8;
   v11[3] = &unk_100647780;
-  v12 = v7;
-  v10 = v7;
-  [v9 handleRemoteNotificationWithUserInfo:v6 completion:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [v9 handleRemoteNotificationWithUserInfo:notificationCopy completion:v11];
 }
 
-- (void)application:(id)a3 didRegisterForRemoteNotificationsWithDeviceToken:(id)a4
+- (void)application:(id)application didRegisterForRemoteNotificationsWithDeviceToken:(id)token
 {
-  v4 = a4;
+  tokenCopy = token;
   v5 = os_log_create("com.apple.notes", "Application");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1711,9 +1711,9 @@ LABEL_12:
   }
 }
 
-- (void)application:(id)a3 didFailToRegisterForRemoteNotificationsWithError:(id)a4
+- (void)application:(id)application didFailToRegisterForRemoteNotificationsWithError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   ++qword_1006CB260;
   v5 = fmin((60 * qword_1006CB260), 300.0);
   v6 = os_log_create("com.apple.notes", "Application");
@@ -1726,7 +1726,7 @@ LABEL_12:
   dispatch_after(v7, &_dispatch_main_q, &stru_1006477A0);
 }
 
-- (void)applicationDidReceiveMemoryWarning:(id)a3
+- (void)applicationDidReceiveMemoryWarning:(id)warning
 {
   v3 = os_log_create("com.apple.notes", "Application");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -1738,18 +1738,18 @@ LABEL_12:
   [v4 didReceiveMemoryWarning];
 }
 
-- (void)handleDarwinNotificationName:(id)a3
+- (void)handleDarwinNotificationName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = ICInternalPreferencesChangedNotification();
-  v6 = [v4 isEqualToString:v5];
+  v6 = [nameCopy isEqualToString:v5];
 
   if (v6)
   {
     [(ICAppDelegate *)self setRefreshAccountsInFolderViewOnActivate:1];
   }
 
-  else if ([v4 isEqualToString:@"com.apple.springboard.lockcomplete"])
+  else if ([nameCopy isEqualToString:@"com.apple.springboard.lockcomplete"])
   {
     v7 = os_log_create("com.apple.notes", "Crypto");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -1760,14 +1760,14 @@ LABEL_12:
     [(ICAppDelegate *)self lockAllNotes];
   }
 
-  else if ([v4 isEqualToString:@"GSEventHardwareKeyboardAttached"])
+  else if ([nameCopy isEqualToString:@"GSEventHardwareKeyboardAttached"])
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = [(ICAppDelegate *)self viewControllerManagers];
-    v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    viewControllerManagers = [(ICAppDelegate *)self viewControllerManagers];
+    v9 = [viewControllerManagers countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1779,17 +1779,17 @@ LABEL_12:
         {
           if (*v15 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(viewControllerManagers);
           }
 
-          v13 = [*(*(&v14 + 1) + 8 * v12) keyboardHandler];
-          [v13 updateHardwareKeyboardAvailability];
+          keyboardHandler = [*(*(&v14 + 1) + 8 * v12) keyboardHandler];
+          [keyboardHandler updateHardwareKeyboardAvailability];
 
           v12 = v12 + 1;
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v10 = [viewControllerManagers countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v10);
@@ -1803,42 +1803,42 @@ LABEL_12:
   [v2 addOrDeleteLocalAccountIfNecessary];
 
   v3 = +[ICNoteContext sharedContext];
-  v4 = [v3 managedObjectContext];
-  v5 = [v4 hasChanges];
+  managedObjectContext = [v3 managedObjectContext];
+  hasChanges = [managedObjectContext hasChanges];
 
-  if (v5)
+  if (hasChanges)
   {
     v7 = +[ICNoteContext sharedContext];
-    v6 = [v7 managedObjectContext];
-    [v6 ic_save];
+    managedObjectContext2 = [v7 managedObjectContext];
+    [managedObjectContext2 ic_save];
   }
 }
 
-- (void)mentionNotificationWillSend:(id)a3
+- (void)mentionNotificationWillSend:(id)send
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100093038;
   v5[3] = &unk_100645BA0;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  sendCopy = send;
+  selfCopy = self;
+  v4 = sendCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
-- (void)mentionNotificationDidSend:(id)a3
+- (void)mentionNotificationDidSend:(id)send
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100093340;
   v5[3] = &unk_100645BA0;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  sendCopy = send;
+  selfCopy = self;
+  v4 = sendCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
-- (void)persistentContainerWillLockDatabase:(id)a3
+- (void)persistentContainerWillLockDatabase:(id)database
 {
   v4 = os_log_create("com.apple.notes", "Application");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1854,12 +1854,12 @@ LABEL_12:
   v6 = [v5 beginBackgroundTaskWithName:@"Finish Database-locking operation" expirationHandler:&stru_1006477C0];
 
   v7 = [NSNumber numberWithUnsignedInteger:v6];
-  v8 = [(ICAppDelegate *)self backgroundTasks];
-  v9 = [(ICAppDelegate *)self databaseLockBackgroundTaskIdentifier];
-  [v8 setObject:v7 forKeyedSubscript:v9];
+  backgroundTasks = [(ICAppDelegate *)self backgroundTasks];
+  databaseLockBackgroundTaskIdentifier = [(ICAppDelegate *)self databaseLockBackgroundTaskIdentifier];
+  [backgroundTasks setObject:v7 forKeyedSubscript:databaseLockBackgroundTaskIdentifier];
 }
 
-- (void)persistentContainerDidUnlockDatabase:(id)a3
+- (void)persistentContainerDidUnlockDatabase:(id)database
 {
   v4 = os_log_create("com.apple.notes", "Application");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1871,9 +1871,9 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s:%d", &v12, 0x12u);
   }
 
-  v5 = [(ICAppDelegate *)self backgroundTasks];
-  v6 = [(ICAppDelegate *)self databaseLockBackgroundTaskIdentifier];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  backgroundTasks = [(ICAppDelegate *)self backgroundTasks];
+  databaseLockBackgroundTaskIdentifier = [(ICAppDelegate *)self databaseLockBackgroundTaskIdentifier];
+  v7 = [backgroundTasks objectForKeyedSubscript:databaseLockBackgroundTaskIdentifier];
 
   if (v7)
   {
@@ -1886,56 +1886,56 @@ LABEL_12:
     v9 = +[UIApplication sharedApplication];
     [v9 endBackgroundTask:{objc_msgSend(v7, "unsignedIntegerValue")}];
 
-    v10 = [(ICAppDelegate *)self backgroundTasks];
-    v11 = [(ICAppDelegate *)self databaseLockBackgroundTaskIdentifier];
-    [v10 setObject:0 forKeyedSubscript:v11];
+    backgroundTasks2 = [(ICAppDelegate *)self backgroundTasks];
+    databaseLockBackgroundTaskIdentifier2 = [(ICAppDelegate *)self databaseLockBackgroundTaskIdentifier];
+    [backgroundTasks2 setObject:0 forKeyedSubscript:databaseLockBackgroundTaskIdentifier2];
   }
 }
 
-- (void)managedObjectContextWillSave:(id)a3
+- (void)managedObjectContextWillSave:(id)save
 {
-  v4 = [a3 object];
-  if (!v4)
+  object = [save object];
+  if (!object)
   {
     [ICAssert handleFailedAssertWithCondition:"((context) != nil)" functionName:"[ICAppDelegate managedObjectContextWillSave:]" simulateCrash:1 showAlert:0 format:@"Expected non-nil value for '%s'", "context"];
   }
 
-  v5 = [(ICAppDelegate *)self managedObjectContextSaveTasks];
-  v6 = [v5 objectForKey:v4];
+  managedObjectContextSaveTasks = [(ICAppDelegate *)self managedObjectContextSaveTasks];
+  v6 = [managedObjectContextSaveTasks objectForKey:object];
 
   if (v6)
   {
     [ICAssert handleFailedAssertWithCondition:"(([self.managedObjectContextSaveTasks objectForKey:context]) == nil)" functionName:"[ICAppDelegate managedObjectContextWillSave:]" simulateCrash:1 showAlert:0 format:@"Expected nil value for '%s'", "[self.managedObjectContextSaveTasks objectForKey:context]"];
   }
 
-  v7 = [v4 name];
-  v8 = [NSString stringWithFormat:@"Context Save %@", v7];
+  name = [object name];
+  v8 = [NSString stringWithFormat:@"Context Save %@", name];
 
   v9 = +[UIApplication sharedApplication];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100093A4C;
   v14[3] = &unk_100645E30;
-  v15 = v4;
-  v10 = v4;
+  v15 = object;
+  v10 = object;
   v11 = [v9 beginBackgroundTaskWithName:v8 expirationHandler:v14];
 
   v16 = v11;
-  v12 = [(ICAppDelegate *)self managedObjectContextSaveTasks];
+  managedObjectContextSaveTasks2 = [(ICAppDelegate *)self managedObjectContextSaveTasks];
   v13 = [NSValue value:&v16 withObjCType:"Q"];
-  [v12 setObject:v13 forKey:v10];
+  [managedObjectContextSaveTasks2 setObject:v13 forKey:v10];
 }
 
-- (void)managedObjectContextDidSave:(id)a3
+- (void)managedObjectContextDidSave:(id)save
 {
-  v4 = [a3 object];
-  if (!v4)
+  object = [save object];
+  if (!object)
   {
     [ICAssert handleFailedAssertWithCondition:"((context) != nil)" functionName:"[ICAppDelegate managedObjectContextDidSave:]" simulateCrash:1 showAlert:0 format:@"Expected non-nil value for '%s'", "context"];
   }
 
-  v5 = [(ICAppDelegate *)self managedObjectContextSaveTasks];
-  v6 = [v5 objectForKey:v4];
+  managedObjectContextSaveTasks = [(ICAppDelegate *)self managedObjectContextSaveTasks];
+  v6 = [managedObjectContextSaveTasks objectForKey:object];
 
   if (!v6)
   {
@@ -1950,52 +1950,52 @@ LABEL_12:
     [v7 endBackgroundTask:v9];
   }
 
-  v8 = [(ICAppDelegate *)self managedObjectContextSaveTasks];
-  [v8 removeObjectForKey:v4];
+  managedObjectContextSaveTasks2 = [(ICAppDelegate *)self managedObjectContextSaveTasks];
+  [managedObjectContextSaveTasks2 removeObjectForKey:object];
 }
 
-- (void)noteContextWillSetupCoreDataStack:(id)a3
+- (void)noteContextWillSetupCoreDataStack:(id)stack
 {
-  v4 = [a3 object];
-  if (!v4)
+  object = [stack object];
+  if (!object)
   {
     [ICAssert handleFailedAssertWithCondition:"((noteContext) != nil)" functionName:"[ICAppDelegate noteContextWillSetupCoreDataStack:]" simulateCrash:1 showAlert:0 format:@"Expected non-nil value for '%s'", "noteContext"];
   }
 
-  v5 = [(ICAppDelegate *)self noteContextTasks];
-  v6 = [v5 objectForKey:v4];
+  noteContextTasks = [(ICAppDelegate *)self noteContextTasks];
+  v6 = [noteContextTasks objectForKey:object];
 
   if (v6)
   {
     [ICAssert handleFailedAssertWithCondition:"(([self.noteContextTasks objectForKey:noteContext]) == nil)" functionName:"[ICAppDelegate noteContextWillSetupCoreDataStack:]" simulateCrash:1 showAlert:0 format:@"Expected nil value for '%s'", "[self.noteContextTasks objectForKey:noteContext]"];
   }
 
-  v7 = [NSString stringWithFormat:@"Note Context Setup %p", v4];
+  v7 = [NSString stringWithFormat:@"Note Context Setup %p", object];
   v8 = +[UIApplication sharedApplication];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100093E40;
   v13[3] = &unk_100645E30;
-  v14 = v4;
-  v9 = v4;
+  v14 = object;
+  v9 = object;
   v10 = [v8 beginBackgroundTaskWithName:v7 expirationHandler:v13];
 
   v15 = v10;
-  v11 = [(ICAppDelegate *)self noteContextTasks];
+  noteContextTasks2 = [(ICAppDelegate *)self noteContextTasks];
   v12 = [NSValue value:&v15 withObjCType:"Q"];
-  [v11 setObject:v12 forKey:v9];
+  [noteContextTasks2 setObject:v12 forKey:v9];
 }
 
-- (void)noteContextDidSetupCoreDataStack:(id)a3
+- (void)noteContextDidSetupCoreDataStack:(id)stack
 {
-  v4 = [a3 object];
-  if (!v4)
+  object = [stack object];
+  if (!object)
   {
     [ICAssert handleFailedAssertWithCondition:"((noteContext) != nil)" functionName:"[ICAppDelegate noteContextDidSetupCoreDataStack:]" simulateCrash:1 showAlert:0 format:@"Expected non-nil value for '%s'", "noteContext"];
   }
 
-  v5 = [(ICAppDelegate *)self noteContextTasks];
-  v6 = [v5 objectForKey:v4];
+  noteContextTasks = [(ICAppDelegate *)self noteContextTasks];
+  v6 = [noteContextTasks objectForKey:object];
 
   if (!v6)
   {
@@ -2010,24 +2010,24 @@ LABEL_12:
     [v7 endBackgroundTask:v9];
   }
 
-  v8 = [(ICAppDelegate *)self noteContextTasks];
-  [v8 removeObjectForKey:v4];
+  noteContextTasks2 = [(ICAppDelegate *)self noteContextTasks];
+  [noteContextTasks2 removeObjectForKey:object];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a3;
-  if (([(ICAppDelegate *)self ic_didAddObserverForContext:a6 inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotes/Ironcade/iOS/GlobalUI/ICAppDelegate.m"]& 1) != 0)
+  objectCopy = object;
+  changeCopy = change;
+  pathCopy = path;
+  if (([(ICAppDelegate *)self ic_didAddObserverForContext:context inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotes/Ironcade/iOS/GlobalUI/ICAppDelegate.m"]& 1) != 0)
   {
-    v13 = [(ICAppDelegate *)self ic_shouldIgnoreObserveValue:v11 ofObject:v10 forKeyPath:v12];
+    v13 = [(ICAppDelegate *)self ic_shouldIgnoreObserveValue:changeCopy ofObject:objectCopy forKeyPath:pathCopy];
 
-    if (a6 == &off_1006BADF8 && (v13 & 1) == 0)
+    if (context == &off_1006BADF8 && (v13 & 1) == 0)
     {
       v14 = +[NSUserDefaults standardUserDefaults];
 
-      if (v14 == v10)
+      if (v14 == objectCopy)
       {
         +[ICNoteListSortUtilities clearCache];
         +[ICDateHeadersUtilities clearCache];
@@ -2039,11 +2039,11 @@ LABEL_12:
   {
     v15.receiver = self;
     v15.super_class = ICAppDelegate;
-    [(ICAppDelegate *)&v15 observeValueForKeyPath:v12 ofObject:v10 change:v11 context:a6];
+    [(ICAppDelegate *)&v15 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)accountsDidChange:(id)a3
+- (void)accountsDidChange:(id)change
 {
   v4 = os_log_create("com.apple.notes", "Accounts");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -2055,8 +2055,8 @@ LABEL_12:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(ICAppDelegate *)self viewControllerManagers];
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  viewControllerManagers = [(ICAppDelegate *)self viewControllerManagers];
+  v6 = [viewControllerManagers countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2067,30 +2067,30 @@ LABEL_12:
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(viewControllerManagers);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 currentAttachmentPresenter];
+        currentAttachmentPresenter = [v10 currentAttachmentPresenter];
 
-        if (v11)
+        if (currentAttachmentPresenter)
         {
-          v12 = [v10 currentAttachmentPresenter];
-          v13 = [v12 attachments];
-          v14 = [v13 ic_containsObjectPassingTest:&stru_100647800];
+          currentAttachmentPresenter2 = [v10 currentAttachmentPresenter];
+          attachments = [currentAttachmentPresenter2 attachments];
+          v14 = [attachments ic_containsObjectPassingTest:&stru_100647800];
 
           if (v14)
           {
-            v15 = [v10 currentAttachmentPresenter];
-            v16 = [v15 presentedViewController];
-            [v16 dismissViewControllerAnimated:1 completion:0];
+            currentAttachmentPresenter3 = [v10 currentAttachmentPresenter];
+            presentedViewController = [currentAttachmentPresenter3 presentedViewController];
+            [presentedViewController dismissViewControllerAnimated:1 completion:0];
           }
         }
 
         [(ICAppDelegate *)self showMigrationStartupScreenIfNecessary];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [viewControllerManagers countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v7);
@@ -2100,7 +2100,7 @@ LABEL_12:
   [v17 deauthenticate];
 }
 
-- (void)accountWillBeDeleted:(id)a3
+- (void)accountWillBeDeleted:(id)deleted
 {
   v4 = os_log_create("com.apple.notes", "Accounts");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -2108,40 +2108,40 @@ LABEL_12:
     sub_1004DAE94();
   }
 
-  v5 = [(ICAppDelegate *)self undoManager];
-  [v5 removeAllActions];
+  undoManager = [(ICAppDelegate *)self undoManager];
+  [undoManager removeAllActions];
 }
 
-- (void)startAnalyticsSessionWithReferralURL:(id)a3 referralApplication:(id)a4
+- (void)startAnalyticsSessionWithReferralURL:(id)l referralApplication:(id)application
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICAppDelegate *)self analyticsController];
-  [v8 startSessionWithReferralURL:v7 referralApplication:v6 startingSessionType:4];
+  applicationCopy = application;
+  lCopy = l;
+  analyticsController = [(ICAppDelegate *)self analyticsController];
+  [analyticsController startSessionWithReferralURL:lCopy referralApplication:applicationCopy startingSessionType:4];
 }
 
-- (void)submitBackgroundAnalyticsEventsWithEventReporter:(id)a3
+- (void)submitBackgroundAnalyticsEventsWithEventReporter:(id)reporter
 {
-  v4 = a3;
-  [(ICAppDelegate *)self submitMoveCheckedItemsToBottomSwitchEventChangedInPreferencesWithState:1 eventReporter:v4];
-  [(ICAppDelegate *)self submitMoveCheckedItemsToBottomSwitchEventChangedInPreferencesWithState:0 eventReporter:v4];
-  [(ICAppDelegate *)self submitPasswordChangeEventsWithReset:1 eventReporter:v4];
-  [(ICAppDelegate *)self submitPasswordChangeEventsWithReset:0 eventReporter:v4];
-  [(ICAppDelegate *)self submitPasswordChangeModeEventWithEventReporter:v4];
+  reporterCopy = reporter;
+  [(ICAppDelegate *)self submitMoveCheckedItemsToBottomSwitchEventChangedInPreferencesWithState:1 eventReporter:reporterCopy];
+  [(ICAppDelegate *)self submitMoveCheckedItemsToBottomSwitchEventChangedInPreferencesWithState:0 eventReporter:reporterCopy];
+  [(ICAppDelegate *)self submitPasswordChangeEventsWithReset:1 eventReporter:reporterCopy];
+  [(ICAppDelegate *)self submitPasswordChangeEventsWithReset:0 eventReporter:reporterCopy];
+  [(ICAppDelegate *)self submitPasswordChangeModeEventWithEventReporter:reporterCopy];
 }
 
-- (void)submitMoveCheckedItemsToBottomSwitchEventChangedInPreferencesWithState:(BOOL)a3 eventReporter:(id)a4
+- (void)submitMoveCheckedItemsToBottomSwitchEventChangedInPreferencesWithState:(BOOL)state eventReporter:(id)reporter
 {
-  v4 = a3;
-  v7 = a4;
-  v5 = [ICInstrumentationUtilities autoSortSelectionChangeCountForState:v4];
+  stateCopy = state;
+  reporterCopy = reporter;
+  v5 = [ICInstrumentationUtilities autoSortSelectionChangeCountForState:stateCopy];
   if (v5 >= 1)
   {
     v6 = v5;
-    [ICInstrumentationUtilities clearAutoSortSelectionChangeCountForState:v4];
+    [ICInstrumentationUtilities clearAutoSortSelectionChangeCountForState:stateCopy];
     do
     {
-      [v7 submitMoveCheckedItemsToBottomSwitchEventWithNewState:v4 isInApp:0];
+      [reporterCopy submitMoveCheckedItemsToBottomSwitchEventWithNewState:stateCopy isInApp:0];
       --v6;
     }
 
@@ -2149,15 +2149,15 @@ LABEL_12:
   }
 }
 
-- (void)submitPasswordChangeEventsWithReset:(BOOL)a3 eventReporter:(id)a4
+- (void)submitPasswordChangeEventsWithReset:(BOOL)reset eventReporter:(id)reporter
 {
-  v4 = a3;
-  v5 = a4;
-  v6 = [ICInstrumentationUtilities recentPasswordChangeCountAsReset:v4];
+  resetCopy = reset;
+  reporterCopy = reporter;
+  v6 = [ICInstrumentationUtilities recentPasswordChangeCountAsReset:resetCopy];
   v7 = os_log_create("com.apple.notes", "Analytics");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    sub_1004DAED0(v4, v6, v7);
+    sub_1004DAED0(resetCopy, v6, v7);
   }
 
   if (v6 >= 1)
@@ -2167,48 +2167,48 @@ LABEL_12:
     v9[1] = 3221225472;
     v9[2] = sub_100094698;
     v9[3] = &unk_100647828;
-    v12 = v4;
+    v12 = resetCopy;
     v11 = v6;
-    v10 = v5;
+    v10 = reporterCopy;
     [v8 performSnapshotBackgroundTask:v9];
   }
 }
 
-- (void)submitPasswordChangeModeEventWithEventReporter:(id)a3
+- (void)submitPasswordChangeModeEventWithEventReporter:(id)reporter
 {
-  v3 = a3;
+  reporterCopy = reporter;
   v4 = +[ICNoteContext sharedContext];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10009480C;
   v6[3] = &unk_100647870;
-  v7 = v3;
-  v5 = v3;
+  v7 = reporterCopy;
+  v5 = reporterCopy;
   [v4 performSnapshotBackgroundTask:v6];
 }
 
-- (BOOL)isAnyAudioInspectorShowingForWindow:(id)a3
+- (BOOL)isAnyAudioInspectorShowingForWindow:(id)window
 {
-  v4 = a3;
-  v5 = [(ICAppDelegate *)self viewControllerManagers];
+  windowCopy = window;
+  viewControllerManagers = [(ICAppDelegate *)self viewControllerManagers];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100094C8C;
   v9[3] = &unk_1006478D8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 ic_containsObjectPassingTest:v9];
+  v10 = windowCopy;
+  v6 = windowCopy;
+  v7 = [viewControllerManagers ic_containsObjectPassingTest:v9];
 
   return v7;
 }
 
 - (id)mainWindowIdentifier
 {
-  v3 = [(ICAppDelegate *)self lastBackgroundedArchiveState];
-  v4 = v3;
-  if (v3)
+  lastBackgroundedArchiveState = [(ICAppDelegate *)self lastBackgroundedArchiveState];
+  v4 = lastBackgroundedArchiveState;
+  if (lastBackgroundedArchiveState)
   {
-    v5 = [v3 windowIdentifier];
+    windowIdentifier = [lastBackgroundedArchiveState windowIdentifier];
   }
 
   else
@@ -2217,8 +2217,8 @@ LABEL_12:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(ICAppDelegate *)self viewControllerManagers];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    viewControllerManagers = [(ICAppDelegate *)self viewControllerManagers];
+    v7 = [viewControllerManagers countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -2229,20 +2229,20 @@ LABEL_12:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(viewControllerManagers);
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
           if (![v11 isAuxiliary])
           {
-            v12 = [v11 window];
-            v5 = [v12 windowIdentifier];
+            window = [v11 window];
+            windowIdentifier = [window windowIdentifier];
 
             goto LABEL_13;
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [viewControllerManagers countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v8)
         {
           continue;
@@ -2252,18 +2252,18 @@ LABEL_12:
       }
     }
 
-    v5 = 0;
+    windowIdentifier = 0;
   }
 
 LABEL_13:
 
-  return v5;
+  return windowIdentifier;
 }
 
-- (void)showStartupWithForceWelcomeScreen:(BOOL)a3 completion:(id)a4
+- (void)showStartupWithForceWelcomeScreen:(BOOL)screen completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  screenCopy = screen;
+  completionCopy = completion;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -2289,10 +2289,10 @@ LABEL_13:
         v14[1] = 3221225472;
         v14[2] = sub_10009501C;
         v14[3] = &unk_100647900;
-        v12 = v6;
+        v12 = completionCopy;
         v14[4] = self;
         v15 = v12;
-        [v11 showStartupWithForceWelcomeScreen:v4 completion:v14];
+        [v11 showStartupWithForceWelcomeScreen:screenCopy completion:v14];
 
         v10 = v10 + 1;
       }
@@ -2305,24 +2305,24 @@ LABEL_13:
   }
 }
 
-- (void)userNotificationCenter:(id)a3 willPresentNotification:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center willPresentNotification:(id)notification withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a5;
+  notificationCopy = notification;
+  handlerCopy = handler;
   v8 = os_log_create("com.apple.notes", "Notifications");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     sub_1004DB050();
   }
 
-  v7[2](v7, 26);
+  handlerCopy[2](handlerCopy, 26);
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v7 = a4;
+  responseCopy = response;
   v8 = kICNANotificationCenterReferralURL;
-  v9 = a5;
+  handlerCopy = handler;
   v10 = [NSURL URLWithString:v8];
   [(ICAppDelegate *)self startAnalyticsSessionWithReferralURL:v10 referralApplication:0];
 
@@ -2333,13 +2333,13 @@ LABEL_13:
   }
 
   [UIApp setApplicationIconBadgeNumber:0];
-  v12 = [v7 notification];
-  v13 = [v12 request];
-  v14 = [v13 content];
-  v15 = [v14 userInfo];
+  notification = [responseCopy notification];
+  request = [notification request];
+  content = [request content];
+  userInfo = [content userInfo];
 
   objc_opt_class();
-  v16 = [v15 objectForKeyedSubscript:kICCloudNotificationsNotesPayloadKey];
+  v16 = [userInfo objectForKeyedSubscript:kICCloudNotificationsNotesPayloadKey];
   v17 = ICDynamicCast();
 
   objc_opt_class();
@@ -2352,7 +2352,7 @@ LABEL_13:
   else
   {
     v18 = kICNotificationNoteIdentifierKey;
-    v19 = v15;
+    v19 = userInfo;
   }
 
   v20 = [v19 objectForKeyedSubscript:v18];
@@ -2362,7 +2362,7 @@ LABEL_13:
   v22 = [v17 objectForKeyedSubscript:kICCloudNotificationsNotesPayloadInlineAttachmentUUIDKey];
   v23 = ICDynamicCast();
 
-  v24 = [(ICAppDelegate *)self randomViewControllerManager];
+  randomViewControllerManager = [(ICAppDelegate *)self randomViewControllerManager];
   v25 = os_log_create("com.apple.notes", "Notifications");
   v26 = v25;
   if (v23 && v21)
@@ -2372,7 +2372,7 @@ LABEL_13:
       sub_1004DB1DC();
     }
 
-    [v24 showInlineAttachmentWithIdentifier:v23 inNoteIdentifier:v21];
+    [randomViewControllerManager showInlineAttachmentWithIdentifier:v23 inNoteIdentifier:v21];
   }
 
   else if (v21)
@@ -2382,7 +2382,7 @@ LABEL_13:
       sub_1004DB16C();
     }
 
-    [v24 showNoteWithIdentifier:v21];
+    [randomViewControllerManager showNoteWithIdentifier:v21];
   }
 
   else
@@ -2393,12 +2393,12 @@ LABEL_13:
     }
   }
 
-  v9[2](v9);
+  handlerCopy[2](handlerCopy);
 }
 
-- (void)newShareCreatedOrSynced:(id)a3
+- (void)newShareCreatedOrSynced:(id)synced
 {
-  v4 = a3;
+  syncedCopy = synced;
   objc_initWeak(&location, self);
   objc_copyWeak(&v5, &location);
   performBlockOnMainThread();
@@ -2406,29 +2406,29 @@ LABEL_13:
   objc_destroyWeak(&location);
 }
 
-- (void)checkIfHasSharedNotesOrFolders:(id)a3
+- (void)checkIfHasSharedNotesOrFolders:(id)folders
 {
-  v3 = a3;
+  foldersCopy = folders;
   v4 = +[ICNoteContext sharedContext];
-  v5 = [v4 workerManagedObjectContext];
+  workerManagedObjectContext = [v4 workerManagedObjectContext];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100095914;
   v8[3] = &unk_100645E80;
-  v9 = v5;
-  v10 = v3;
-  v6 = v3;
-  v7 = v5;
+  v9 = workerManagedObjectContext;
+  v10 = foldersCopy;
+  v6 = foldersCopy;
+  v7 = workerManagedObjectContext;
   [v7 performBlock:v8];
 }
 
-- (void)showAllowNotificationsWarmingSheet:(id)a3
+- (void)showAllowNotificationsWarmingSheet:(id)sheet
 {
-  v4 = a3;
+  sheetCopy = sheet;
   objc_opt_class();
   v5 = +[ICUIApplicationShim sharedInstance];
-  v6 = [v5 keyWindow];
+  keyWindow = [v5 keyWindow];
   v7 = ICDynamicCast();
   v8 = v7;
   if (v7)
@@ -2439,8 +2439,8 @@ LABEL_13:
   else
   {
     v10 = +[ICUIApplicationShim sharedInstance];
-    v11 = [v10 windows];
-    v9 = [v11 ic_firstObjectOfClass:objc_opt_class()];
+    windows = [v10 windows];
+    v9 = [windows ic_firstObjectOfClass:objc_opt_class()];
   }
 
   if ([v9 behavior] == 1)
@@ -2455,19 +2455,19 @@ LABEL_13:
 
   else
   {
-    v13 = [v9 ic_topmostPresentedViewController];
-    v14 = v13;
-    if (v13)
+    ic_topmostPresentedViewController = [v9 ic_topmostPresentedViewController];
+    v14 = ic_topmostPresentedViewController;
+    if (ic_topmostPresentedViewController)
     {
-      v15 = v13;
+      rootViewController = ic_topmostPresentedViewController;
     }
 
     else
     {
-      v15 = [v9 rootViewController];
+      rootViewController = [v9 rootViewController];
     }
 
-    v16 = v15;
+    v16 = rootViewController;
 
     if (+[UIDevice ic_isiPhone])
     {
@@ -2482,30 +2482,30 @@ LABEL_13:
     v18 = objc_alloc_init(ICAllowNotificationsViewController);
     [(ICAppDelegate *)self setAllowNotificationsViewController:v18];
 
-    v19 = [(ICAppDelegate *)self allowNotificationsViewController];
-    [v19 setModalPresentationStyle:v17];
+    allowNotificationsViewController = [(ICAppDelegate *)self allowNotificationsViewController];
+    [allowNotificationsViewController setModalPresentationStyle:v17];
 
-    v20 = [(ICAppDelegate *)self allowNotificationsViewController];
-    [v20 setModalInPresentation:1];
+    allowNotificationsViewController2 = [(ICAppDelegate *)self allowNotificationsViewController];
+    [allowNotificationsViewController2 setModalInPresentation:1];
 
     if (+[UIDevice ic_isVision])
     {
-      v21 = [(ICAppDelegate *)self allowNotificationsViewController];
-      [v21 setPreferredContentSize:{512.0, 680.0}];
+      allowNotificationsViewController3 = [(ICAppDelegate *)self allowNotificationsViewController];
+      [allowNotificationsViewController3 setPreferredContentSize:{512.0, 680.0}];
     }
 
-    v22 = [(ICAppDelegate *)self allowNotificationsViewController];
-    [v22 setCompletionHandler:v4];
+    allowNotificationsViewController4 = [(ICAppDelegate *)self allowNotificationsViewController];
+    [allowNotificationsViewController4 setCompletionHandler:sheetCopy];
 
-    v23 = [(ICAppDelegate *)self allowNotificationsViewController];
-    [v16 presentViewController:v23 animated:1 completion:0];
+    allowNotificationsViewController5 = [(ICAppDelegate *)self allowNotificationsViewController];
+    [v16 presentViewController:allowNotificationsViewController5 animated:1 completion:0];
   }
 }
 
 - (void)dismissAllowNotificationsWarmingSheet
 {
-  v3 = [(ICAppDelegate *)self allowNotificationsViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  allowNotificationsViewController = [(ICAppDelegate *)self allowNotificationsViewController];
+  [allowNotificationsViewController dismissViewControllerAnimated:1 completion:0];
 
   [(ICAppDelegate *)self setAllowNotificationsViewController:0];
 }
@@ -2536,9 +2536,9 @@ LABEL_19:
       v24 = 0u;
       v25 = 0u;
       v3 = +[UIApplication sharedApplication];
-      v4 = [v3 connectedScenes];
+      connectedScenes = [v3 connectedScenes];
 
-      v5 = [v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v5 = [connectedScenes countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v5)
       {
         v6 = v5;
@@ -2550,15 +2550,15 @@ LABEL_19:
           {
             if (*v25 != v7)
             {
-              objc_enumerationMutation(v4);
+              objc_enumerationMutation(connectedScenes);
             }
 
             objc_opt_class();
             v9 = ICDynamicCast();
-            v10 = [v9 screen];
-            v11 = [v10 ic_isSecure];
+            screen = [v9 screen];
+            ic_isSecure = [screen ic_isSecure];
 
-            if (v11)
+            if (ic_isSecure)
             {
 
               goto LABEL_19;
@@ -2568,7 +2568,7 @@ LABEL_19:
           }
 
           while (v6 != v8);
-          v6 = [v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
+          v6 = [connectedScenes countByEnumeratingWithState:&v24 objects:v28 count:16];
           if (v6)
           {
             continue;
@@ -2580,23 +2580,23 @@ LABEL_19:
 
       objc_opt_class();
       v12 = +[ICUIApplicationShim sharedInstance];
-      v13 = [v12 keyWindow];
+      keyWindow = [v12 keyWindow];
       v14 = ICDynamicCast();
 
-      v15 = [v14 ic_topmostPresentedViewController];
+      ic_topmostPresentedViewController = [v14 ic_topmostPresentedViewController];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      v17 = [(ICAppDelegate *)self isAnyWelcomeScreenVisible];
-      v18 = [v14 windowScene];
-      v19 = [v18 session];
-      v20 = [v19 role];
+      isAnyWelcomeScreenVisible = [(ICAppDelegate *)self isAnyWelcomeScreenVisible];
+      windowScene = [v14 windowScene];
+      session = [windowScene session];
+      role = [session role];
 
       if (![(ICAppDelegate *)self requestedAuthorizationToShowUserNotifications])
       {
         v21 = +[UIApplication sharedApplication];
-        v22 = ([v21 applicationState] != 0) | v17 | isKindOfClass;
+        v22 = ([v21 applicationState] != 0) | isAnyWelcomeScreenVisible | isKindOfClass;
 
-        if ((v22 & 1) == 0 && v20 != SBSUIWindowSceneSessionRoleSystemNotes)
+        if ((v22 & 1) == 0 && role != SBSUIWindowSceneSessionRoleSystemNotes)
         {
           [(ICAppDelegate *)self setRequestedAuthorizationToShowUserNotifications:1];
           v23[0] = _NSConcreteStackBlock;
@@ -2611,17 +2611,17 @@ LABEL_19:
   }
 }
 
-- (void)checkIfUserNotificationsAllowed:(id)a3
+- (void)checkIfUserNotificationsAllowed:(id)allowed
 {
-  v4 = a3;
-  v5 = [(ICAppDelegate *)self userNotificationsAllowed];
+  allowedCopy = allowed;
+  userNotificationsAllowed = [(ICAppDelegate *)self userNotificationsAllowed];
 
-  if (v5)
+  if (userNotificationsAllowed)
   {
-    if (v4)
+    if (allowedCopy)
     {
-      v6 = [(ICAppDelegate *)self userNotificationsAllowed];
-      v4[2](v4, [v6 integerValue]);
+      userNotificationsAllowed2 = [(ICAppDelegate *)self userNotificationsAllowed];
+      allowedCopy[2](allowedCopy, [userNotificationsAllowed2 integerValue]);
     }
   }
 
@@ -2633,27 +2633,27 @@ LABEL_19:
     v8[2] = sub_100096330;
     v8[3] = &unk_100647978;
     v8[4] = self;
-    v9 = v4;
+    v9 = allowedCopy;
     [v7 getNotificationSettingsWithCompletionHandler:v8];
   }
 }
 
-- (void)saveQuicknoteArchiveState:(id)a3
+- (void)saveQuicknoteArchiveState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v5 = +[NSUserDefaults standardUserDefaults];
-  v4 = [v3 dictionaryRepresentation];
+  dictionaryRepresentation = [stateCopy dictionaryRepresentation];
 
-  [v5 setObject:v4 forKey:@"quicknoteState"];
+  [v5 setObject:dictionaryRepresentation forKey:@"quicknoteState"];
 }
 
-- (void)saveLastBackgroundedArchiveState:(id)a3
+- (void)saveLastBackgroundedArchiveState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v5 = +[NSUserDefaults standardUserDefaults];
-  v4 = [v3 dictionaryRepresentation];
+  dictionaryRepresentation = [stateCopy dictionaryRepresentation];
 
-  [v5 setObject:v4 forKey:@"lastBackgroundedState"];
+  [v5 setObject:dictionaryRepresentation forKey:@"lastBackgroundedState"];
 }
 
 - (ICWindowStateArchive)quicknoteArchiveState
@@ -2692,27 +2692,27 @@ LABEL_19:
   return v4;
 }
 
-- (unint64_t)beginBackgroundTaskWithName:(id)a3 expirationHandler:(id)a4
+- (unint64_t)beginBackgroundTaskWithName:(id)name expirationHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  nameCopy = name;
   v7 = +[UIApplication sharedApplication];
-  v8 = [v7 beginBackgroundTaskWithName:v6 expirationHandler:v5];
+  v8 = [v7 beginBackgroundTaskWithName:nameCopy expirationHandler:handlerCopy];
 
   return v8;
 }
 
-- (void)endBackgroundTask:(unint64_t)a3
+- (void)endBackgroundTask:(unint64_t)task
 {
   v4 = +[UIApplication sharedApplication];
-  [v4 endBackgroundTask:a3];
+  [v4 endBackgroundTask:task];
 }
 
-- (void)sessionDidStartForWindowScene:(id)a3
+- (void)sessionDidStartForWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v5 = [ICNAEventReporter alloc];
-  v6 = [v5 initWithSubTrackerName:kICNASubtrackerNameAppDelegate windowScene:v4];
+  v6 = [v5 initWithSubTrackerName:kICNASubtrackerNameAppDelegate windowScene:sceneCopy];
 
   [(ICAppDelegate *)self submitBackgroundAnalyticsEventsWithEventReporter:v6];
 }
@@ -2722,34 +2722,34 @@ LABEL_19:
   v3 = +[ICReachability sharedReachabilityForInternetConnection];
   [(ICAppDelegate *)self setReachability:v3];
 
-  v4 = [(ICAppDelegate *)self reachability];
-  [v4 startNotifier];
+  reachability = [(ICAppDelegate *)self reachability];
+  [reachability startNotifier];
 
   v5 = +[ICMentionNotificationController sharedController];
   [v5 listenForReachabilityChange];
 }
 
-- (void)alertWithTitle:(id)a3 message:(id)a4 cancelButtonTitle:(id)a5 defaultButtonTitle:(id)a6 actionHandler:(id)a7
+- (void)alertWithTitle:(id)title message:(id)message cancelButtonTitle:(id)buttonTitle defaultButtonTitle:(id)defaultButtonTitle actionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v19 = v11;
-  v20 = v12;
-  v22 = a6;
-  v23 = a7;
-  v21 = v13;
-  v14 = v22;
-  v15 = v23;
-  v16 = v13;
-  v17 = v12;
-  v18 = v11;
+  titleCopy = title;
+  messageCopy = message;
+  buttonTitleCopy = buttonTitle;
+  v19 = titleCopy;
+  v20 = messageCopy;
+  defaultButtonTitleCopy = defaultButtonTitle;
+  handlerCopy = handler;
+  v21 = buttonTitleCopy;
+  v14 = defaultButtonTitleCopy;
+  v15 = handlerCopy;
+  v16 = buttonTitleCopy;
+  v17 = messageCopy;
+  v18 = titleCopy;
   performBlockOnMainThread();
 }
 
-- (void)waitForDelayedLaunchWithCompletionHandler:(id)a3
+- (void)waitForDelayedLaunchWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!+[NSThread isMainThread])
   {
     [ICAssert handleFailedAssertWithCondition:"[NSThread isMainThread]" functionName:"[ICAppDelegate(DelayedLaunch) waitForDelayedLaunchWithCompletionHandler:]" simulateCrash:1 showAlert:0 format:@"Unexpected call from background thread"];
@@ -2757,9 +2757,9 @@ LABEL_19:
 
   if ([(ICAppDelegate *)self isReadyForDelayedLaunchTasks])
   {
-    if (v4)
+    if (handlerCopy)
     {
-      v4[2](v4);
+      handlerCopy[2](handlerCopy);
     }
   }
 
@@ -2777,7 +2777,7 @@ LABEL_19:
     v8[2] = sub_1000970E0;
     v8[3] = &unk_100647A08;
     v10 = &v11;
-    v9 = v4;
+    v9 = handlerCopy;
     v6 = [v5 addObserverForName:@"ICAppDelegateWillRunDelayedLaunchTasks" object:self queue:0 usingBlock:v8];
     v7 = v12[5];
     v12[5] = v6;
@@ -2789,108 +2789,108 @@ LABEL_19:
 - (id)ic_viewControllerManager
 {
   v2 = +[ICAppDelegate sharedInstance];
-  v3 = [v2 viewControllerManagers];
-  v4 = [v3 firstObject];
+  viewControllerManagers = [v2 viewControllerManagers];
+  firstObject = [viewControllerManagers firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (void)ic_selectLocalModernAccount
 {
   v3 = +[ICNoteContext sharedContext];
-  v4 = [v3 managedObjectContext];
-  v8 = [ICAccount localAccountInContext:v4];
+  managedObjectContext = [v3 managedObjectContext];
+  v8 = [ICAccount localAccountInContext:managedObjectContext];
 
-  v5 = [(ICAppDelegate *)self ic_viewControllerManager];
-  v6 = [v5 folderListViewController];
-  v7 = [v8 objectID];
-  [v6 selectItemWithIdentifier:v7 animated:0];
+  ic_viewControllerManager = [(ICAppDelegate *)self ic_viewControllerManager];
+  folderListViewController = [ic_viewControllerManager folderListViewController];
+  objectID = [v8 objectID];
+  [folderListViewController selectItemWithIdentifier:objectID animated:0];
 }
 
-- (void)ic_selectFolderNamed:(id)a3
+- (void)ic_selectFolderNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   v5 = +[ICNoteContext sharedContext];
-  v6 = [v5 managedObjectContext];
-  v7 = [ICFolder predicateForVisibleFoldersInContext:v6];
+  managedObjectContext = [v5 managedObjectContext];
+  v7 = [ICFolder predicateForVisibleFoldersInContext:managedObjectContext];
   v18[0] = v7;
-  v8 = [NSPredicate predicateWithFormat:@"title == %@", v4];
-  v18[1] = v8;
+  namedCopy = [NSPredicate predicateWithFormat:@"title == %@", namedCopy];
+  v18[1] = namedCopy;
   v9 = [NSArray arrayWithObjects:v18 count:2];
   v10 = [NSCompoundPredicate andPredicateWithSubpredicates:v9];
 
   v11 = +[ICNoteContext sharedContext];
-  v12 = [v11 managedObjectContext];
-  v13 = [ICFolder foldersMatchingPredicate:v10 context:v12];
+  managedObjectContext2 = [v11 managedObjectContext];
+  v13 = [ICFolder foldersMatchingPredicate:v10 context:managedObjectContext2];
 
   if ([v13 count] != 1)
   {
-    +[ICAssert handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:](ICAssert, "handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:", "folders.count == 1", "-[ICAppDelegate(ICTesting) ic_selectFolderNamed:]", 1, 0, @"Unexpected number (%lu) of folders named: %@", [v13 count], v4);
+    +[ICAssert handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:](ICAssert, "handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:", "folders.count == 1", "-[ICAppDelegate(ICTesting) ic_selectFolderNamed:]", 1, 0, @"Unexpected number (%lu) of folders named: %@", [v13 count], namedCopy);
   }
 
-  v14 = [v13 firstObject];
-  v15 = [(ICAppDelegate *)self ic_viewControllerManager];
-  v16 = [v15 folderListViewController];
-  v17 = [v14 objectID];
-  [v16 selectItemWithIdentifier:v17 animated:0];
+  firstObject = [v13 firstObject];
+  ic_viewControllerManager = [(ICAppDelegate *)self ic_viewControllerManager];
+  folderListViewController = [ic_viewControllerManager folderListViewController];
+  objectID = [firstObject objectID];
+  [folderListViewController selectItemWithIdentifier:objectID animated:0];
 }
 
 - (id)ic_folderListScrollView
 {
-  v2 = [(ICAppDelegate *)self ic_viewControllerManager];
-  v3 = [v2 folderListViewController];
-  v4 = [v3 collectionView];
+  ic_viewControllerManager = [(ICAppDelegate *)self ic_viewControllerManager];
+  folderListViewController = [ic_viewControllerManager folderListViewController];
+  collectionView = [folderListViewController collectionView];
 
-  return v4;
+  return collectionView;
 }
 
 - (id)ic_notesListScrollView
 {
-  v3 = [(ICAppDelegate *)self ic_viewControllerManager];
-  v4 = [v3 rootNoteBrowseViewController];
+  ic_viewControllerManager = [(ICAppDelegate *)self ic_viewControllerManager];
+  rootNoteBrowseViewController = [ic_viewControllerManager rootNoteBrowseViewController];
 
-  if ([v4 noteContainerViewMode])
+  if ([rootNoteBrowseViewController noteContainerViewMode])
   {
-    +[ICAssert handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:](ICAssert, "handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:", "noteBrowseViewController.noteContainerViewMode == ICNoteContainerViewModeList", "-[ICAppDelegate(ICTesting) ic_notesListScrollView]", 1, 0, @"Expected a note list, but got view mode %lu", [v4 noteContainerViewMode]);
+    +[ICAssert handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:](ICAssert, "handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:", "noteBrowseViewController.noteContainerViewMode == ICNoteContainerViewModeList", "-[ICAppDelegate(ICTesting) ic_notesListScrollView]", 1, 0, @"Expected a note list, but got view mode %lu", [rootNoteBrowseViewController noteContainerViewMode]);
   }
 
-  v5 = [(ICAppDelegate *)self ic_viewControllerManager];
-  v6 = [v5 rootNoteBrowseViewController];
-  v7 = [v6 collectionView];
+  ic_viewControllerManager2 = [(ICAppDelegate *)self ic_viewControllerManager];
+  rootNoteBrowseViewController2 = [ic_viewControllerManager2 rootNoteBrowseViewController];
+  collectionView = [rootNoteBrowseViewController2 collectionView];
 
-  return v7;
+  return collectionView;
 }
 
 - (id)ic_noteEditorViewController
 {
-  v2 = [(ICAppDelegate *)self ic_viewControllerManager];
-  v3 = [v2 noteEditorViewController];
+  ic_viewControllerManager = [(ICAppDelegate *)self ic_viewControllerManager];
+  noteEditorViewController = [ic_viewControllerManager noteEditorViewController];
 
-  return v3;
+  return noteEditorViewController;
 }
 
 - (id)ic_notesGridScrollView
 {
-  v2 = [(ICAppDelegate *)self ic_viewControllerManager];
-  v3 = [v2 rootNoteBrowseViewController];
+  ic_viewControllerManager = [(ICAppDelegate *)self ic_viewControllerManager];
+  rootNoteBrowseViewController = [ic_viewControllerManager rootNoteBrowseViewController];
 
-  if ([v3 noteContainerViewMode] != 1)
+  if ([rootNoteBrowseViewController noteContainerViewMode] != 1)
   {
-    +[ICAssert handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:](ICAssert, "handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:", "noteBrowseViewController.noteContainerViewMode == ICNoteContainerViewModeGrid", "-[ICAppDelegate(ICTesting) ic_notesGridScrollView]", 1, 0, @"Expected grid view, but got view mode %lu", [v3 noteContainerViewMode]);
+    +[ICAssert handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:](ICAssert, "handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:", "noteBrowseViewController.noteContainerViewMode == ICNoteContainerViewModeGrid", "-[ICAppDelegate(ICTesting) ic_notesGridScrollView]", 1, 0, @"Expected grid view, but got view mode %lu", [rootNoteBrowseViewController noteContainerViewMode]);
   }
 
-  v4 = [v3 collectionView];
+  collectionView = [rootNoteBrowseViewController collectionView];
 
-  return v4;
+  return collectionView;
 }
 
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5
+- (BOOL)application:(id)application runTest:(id)test options:(id)options
 {
-  v8 = a4;
-  v9 = a5;
-  objc_storeStrong(&qword_1006CB340, a4);
-  objc_storeStrong(&qword_1006CB348, a5);
-  [v8 containsString:@"Landscape"];
+  testCopy = test;
+  optionsCopy = options;
+  objc_storeStrong(&qword_1006CB340, test);
+  objc_storeStrong(&qword_1006CB348, options);
+  [testCopy containsString:@"Landscape"];
   byte_1006CB359 = 0;
   v10 = objc_opt_class();
   if (v10)
@@ -2899,185 +2899,185 @@ LABEL_19:
   }
 
   byte_1006CB358 = v10;
-  [(ICAppDelegate *)self setIcSearchIndexerDisabled:[(ICAppDelegate *)self isScrollingTest:v8]];
-  if ([v8 containsString:@"ICShowAccountsList"])
+  [(ICAppDelegate *)self setIcSearchIndexerDisabled:[(ICAppDelegate *)self isScrollingTest:testCopy]];
+  if ([testCopy containsString:@"ICShowAccountsList"])
   {
-    [(ICAppDelegate *)self startICShowAccountsListTest:v9];
+    [(ICAppDelegate *)self startICShowAccountsListTest:optionsCopy];
     goto LABEL_8;
   }
 
-  if (([v8 containsString:@"ICScrollAccountsList"] & 1) != 0 || objc_msgSend(v8, "containsString:", @"ICScrollAccountsListRecap"))
+  if (([testCopy containsString:@"ICScrollAccountsList"] & 1) != 0 || objc_msgSend(testCopy, "containsString:", @"ICScrollAccountsListRecap"))
   {
-    [(ICAppDelegate *)self startICScrollAccountsListTest:v9];
+    [(ICAppDelegate *)self startICScrollAccountsListTest:optionsCopy];
     goto LABEL_8;
   }
 
-  if ([v8 containsString:@"ICRotateAccountsList"])
+  if ([testCopy containsString:@"ICRotateAccountsList"])
   {
-    [(ICAppDelegate *)self startICRotateAccountsListTest:v9];
+    [(ICAppDelegate *)self startICRotateAccountsListTest:optionsCopy];
     goto LABEL_8;
   }
 
-  if (([v8 containsString:@"ICShowNotesList"] & 1) != 0 || objc_msgSend(v8, "containsString:", @"ICWarmShowNotesList"))
+  if (([testCopy containsString:@"ICShowNotesList"] & 1) != 0 || objc_msgSend(testCopy, "containsString:", @"ICWarmShowNotesList"))
   {
-    -[ICAppDelegate startICShowNotesListTest:warm:](self, "startICShowNotesListTest:warm:", v9, [v8 containsString:@"ICWarmShowNotesList"]);
+    -[ICAppDelegate startICShowNotesListTest:warm:](self, "startICShowNotesListTest:warm:", optionsCopy, [testCopy containsString:@"ICWarmShowNotesList"]);
     goto LABEL_8;
   }
 
-  if ([v8 containsString:@"ICScrollNotesList"])
+  if ([testCopy containsString:@"ICScrollNotesList"])
   {
-    [(ICAppDelegate *)self startICScrollNotesListTest:v9];
+    [(ICAppDelegate *)self startICScrollNotesListTest:optionsCopy];
     goto LABEL_8;
   }
 
-  if (([v8 containsString:@"ICScrollEnglishNotesList"] & 1) != 0 || objc_msgSend(v8, "containsString:", @"ICScrollEnglishNotesListRecap"))
+  if (([testCopy containsString:@"ICScrollEnglishNotesList"] & 1) != 0 || objc_msgSend(testCopy, "containsString:", @"ICScrollEnglishNotesListRecap"))
   {
-    [(ICAppDelegate *)self startICScrollEnglishNotesListTest:v9];
+    [(ICAppDelegate *)self startICScrollEnglishNotesListTest:optionsCopy];
     goto LABEL_8;
   }
 
-  if ([v8 containsString:@"ICNewNoteFromNotesList"])
+  if ([testCopy containsString:@"ICNewNoteFromNotesList"])
   {
-    [(ICAppDelegate *)self startICNewNoteFromNotesListTest:v9];
+    [(ICAppDelegate *)self startICNewNoteFromNotesListTest:optionsCopy];
     goto LABEL_8;
   }
 
-  if ([v8 containsString:@"ICRotateNotesList"])
+  if ([testCopy containsString:@"ICRotateNotesList"])
   {
-    [(ICAppDelegate *)self startICRotateNotesListTest:v9];
+    [(ICAppDelegate *)self startICRotateNotesListTest:optionsCopy];
     goto LABEL_8;
   }
 
-  if ([v8 containsString:@"ICScrollSearchResultsNotesList"])
+  if ([testCopy containsString:@"ICScrollSearchResultsNotesList"])
   {
-    [(ICAppDelegate *)self startICScrollSearchResultsNotesListTest:v9];
+    [(ICAppDelegate *)self startICScrollSearchResultsNotesListTest:optionsCopy];
     goto LABEL_8;
   }
 
-  if ([v8 containsString:@"ICShowSearchResults"])
+  if ([testCopy containsString:@"ICShowSearchResults"])
   {
-    [(ICAppDelegate *)self startICShowSearchResultsTest:v9];
+    [(ICAppDelegate *)self startICShowSearchResultsTest:optionsCopy];
     goto LABEL_8;
   }
 
-  if ([v8 containsString:@"ICScrollTableHorizontally"])
+  if ([testCopy containsString:@"ICScrollTableHorizontally"])
   {
-    [(ICAppDelegate *)self startICScrollTableHorizontallyTest:v9];
+    [(ICAppDelegate *)self startICScrollTableHorizontallyTest:optionsCopy];
     goto LABEL_8;
   }
 
-  if ([v8 containsString:@"ICScrollTableVertically"])
+  if ([testCopy containsString:@"ICScrollTableVertically"])
   {
-    [(ICAppDelegate *)self startICScrollTableVerticallyTest:v9];
+    [(ICAppDelegate *)self startICScrollTableVerticallyTest:optionsCopy];
     goto LABEL_8;
   }
 
-  if ([v8 containsString:@"ICShowTableNote"])
+  if ([testCopy containsString:@"ICShowTableNote"])
   {
     v12 = @"Tables";
 LABEL_33:
-    [(ICAppDelegate *)self startICShowNoteTestInFolderNamed:v12 withOptions:v9];
+    [(ICAppDelegate *)self startICShowNoteTestInFolderNamed:v12 withOptions:optionsCopy];
     goto LABEL_8;
   }
 
-  if ([v8 containsString:@"ICShowGridView"])
+  if ([testCopy containsString:@"ICShowGridView"])
   {
-    [(ICAppDelegate *)self startICShowGridViewTest:v9];
+    [(ICAppDelegate *)self startICShowGridViewTest:optionsCopy];
     goto LABEL_8;
   }
 
-  if (([v8 containsString:@"ICScrollNotesGrid"] & 1) != 0 || objc_msgSend(v8, "containsString:", @"ICScrollNotesGridRecap"))
+  if (([testCopy containsString:@"ICScrollNotesGrid"] & 1) != 0 || objc_msgSend(testCopy, "containsString:", @"ICScrollNotesGridRecap"))
   {
-    [(ICAppDelegate *)self startICScrollGridViewTest:v9];
+    [(ICAppDelegate *)self startICScrollGridViewTest:optionsCopy];
     goto LABEL_8;
   }
 
-  if ([v8 containsString:@"ICShowInlineSketchNote"])
+  if ([testCopy containsString:@"ICShowInlineSketchNote"])
   {
     v12 = @"Inline Sketches";
     goto LABEL_33;
   }
 
-  if ([v8 containsString:@"ICScrollInlineSketchNote"])
+  if ([testCopy containsString:@"ICScrollInlineSketchNote"])
   {
-    [(ICAppDelegate *)self startICScrollInlineSketchTest:v9];
+    [(ICAppDelegate *)self startICScrollInlineSketchTest:optionsCopy];
     goto LABEL_8;
   }
 
-  if ([v8 containsString:@"ICShowInkPicker"])
+  if ([testCopy containsString:@"ICShowInkPicker"])
   {
-    [(ICAppDelegate *)self startICShowInkPickerTest:v9];
+    [(ICAppDelegate *)self startICShowInkPickerTest:optionsCopy];
     goto LABEL_8;
   }
 
-  if (([v8 containsString:@"ICNewNoteFromNoteView"] & 1) != 0 || objc_msgSend(v8, "containsString:", @"ICWarmKeyboardNewNoteFromNoteView"))
+  if (([testCopy containsString:@"ICNewNoteFromNoteView"] & 1) != 0 || objc_msgSend(testCopy, "containsString:", @"ICWarmKeyboardNewNoteFromNoteView"))
   {
-    -[ICAppDelegate startICNewNoteFromNoteViewTest:warm:](self, "startICNewNoteFromNoteViewTest:warm:", v9, [v8 containsString:@"ICWarmKeyboardNewNoteFromNoteView"]);
+    -[ICAppDelegate startICNewNoteFromNoteViewTest:warm:](self, "startICNewNoteFromNoteViewTest:warm:", optionsCopy, [testCopy containsString:@"ICWarmKeyboardNewNoteFromNoteView"]);
     goto LABEL_8;
   }
 
-  if ([v8 containsString:@"ICShowNote"])
+  if ([testCopy containsString:@"ICShowNote"])
   {
-    [(ICAppDelegate *)self startICShowNoteTest:v9];
+    [(ICAppDelegate *)self startICShowNoteTest:optionsCopy];
     goto LABEL_8;
   }
 
-  if ([v8 containsString:@"ICScrollNoteKeyboardUp"])
+  if ([testCopy containsString:@"ICScrollNoteKeyboardUp"])
   {
-    v13 = self;
-    v14 = v9;
+    selfCopy2 = self;
+    v14 = optionsCopy;
     v15 = 1;
 LABEL_55:
-    [(ICAppDelegate *)v13 startICScrollNoteTest:v14 withKeyboardUp:v15];
+    [(ICAppDelegate *)selfCopy2 startICScrollNoteTest:v14 withKeyboardUp:v15];
     goto LABEL_8;
   }
 
-  if (([v8 containsString:@"ICScrollNote"] & 1) != 0 || objc_msgSend(v8, "containsString:", @"ICScrollNoteRecap"))
+  if (([testCopy containsString:@"ICScrollNote"] & 1) != 0 || objc_msgSend(testCopy, "containsString:", @"ICScrollNoteRecap"))
   {
-    v13 = self;
-    v14 = v9;
+    selfCopy2 = self;
+    v14 = optionsCopy;
     v15 = 0;
     goto LABEL_55;
   }
 
-  if ([v8 containsString:@"ICShowShareSheetFromNoteView"])
+  if ([testCopy containsString:@"ICShowShareSheetFromNoteView"])
   {
-    [(ICAppDelegate *)self startICShowShareSheetFromNoteViewTest:v9];
+    [(ICAppDelegate *)self startICShowShareSheetFromNoteViewTest:optionsCopy];
   }
 
-  else if ([v8 containsString:@"ICRotateNote"])
+  else if ([testCopy containsString:@"ICRotateNote"])
   {
-    [(ICAppDelegate *)self startICRotateNoteTest:v9];
+    [(ICAppDelegate *)self startICRotateNoteTest:optionsCopy];
   }
 
-  else if ([v8 containsString:@"ICInsertChecklist"])
+  else if ([testCopy containsString:@"ICInsertChecklist"])
   {
-    [(ICAppDelegate *)self startICInsertChecklistTest:v9];
+    [(ICAppDelegate *)self startICInsertChecklistTest:optionsCopy];
   }
 
-  else if ([v8 containsString:@"ICKeyboardBringUpAndDismissal"])
+  else if ([testCopy containsString:@"ICKeyboardBringUpAndDismissal"])
   {
-    [(ICAppDelegate *)self startICKeyboardBringUpAndDismissal:v9];
+    [(ICAppDelegate *)self startICKeyboardBringUpAndDismissal:optionsCopy];
   }
 
-  else if ([v8 containsString:@"ICKeyboardRotation"])
+  else if ([testCopy containsString:@"ICKeyboardRotation"])
   {
-    [(ICAppDelegate *)self startICKeyboardRotation:v9];
+    [(ICAppDelegate *)self startICKeyboardRotation:optionsCopy];
   }
 
-  else if ([v8 containsString:@"ICKeyboardSplitAndMerge"])
+  else if ([testCopy containsString:@"ICKeyboardSplitAndMerge"])
   {
-    [(ICAppDelegate *)self startICKeyboardSplitAndMerge:v9];
+    [(ICAppDelegate *)self startICKeyboardSplitAndMerge:optionsCopy];
   }
 
-  else if ([v8 containsString:@"ICNoteEditorTyping"])
+  else if ([testCopy containsString:@"ICNoteEditorTyping"])
   {
-    [(ICAppDelegate *)self startICNoteEditorTypingTest:v9];
+    [(ICAppDelegate *)self startICNoteEditorTypingTest:optionsCopy];
   }
 
-  else if ([v8 containsString:@"ICResizeWindow"])
+  else if ([testCopy containsString:@"ICResizeWindow"])
   {
-    [(ICAppDelegate *)self startICResizeWindowTest:v9];
+    [(ICAppDelegate *)self startICResizeWindowTest:optionsCopy];
   }
 
 LABEL_8:
@@ -3185,17 +3185,17 @@ LABEL_8:
 
     else if ([qword_1006CB340 containsString:@"ICNoteEditorTyping"] && byte_1006CB35A == 1)
     {
-      v4 = [(ICAppDelegate *)self ic_noteEditorViewController];
-      v9 = [v4 textView];
+      ic_noteEditorViewController = [(ICAppDelegate *)self ic_noteEditorViewController];
+      textView = [ic_noteEditorViewController textView];
 
-      v5 = [v9 textStorage];
+      textStorage = [textView textStorage];
       v6 = [@"dog" length];
-      if ([v5 length] > v6)
+      if ([textStorage length] > v6)
       {
-        v7 = [v5 attributedSubstringFromRange:{objc_msgSend(v5, "length") - v6, v6}];
-        v8 = [v7 string];
+        v7 = [textStorage attributedSubstringFromRange:{objc_msgSend(textStorage, "length") - v6, v6}];
+        string = [v7 string];
 
-        if ([v8 isEqualToString:@"dog"])
+        if ([string isEqualToString:@"dog"])
         {
           [UIApp installCACommitCompletionBlock:&stru_100649B60];
         }
@@ -3259,7 +3259,7 @@ LABEL_8:
   }
 }
 
-- (void)startICShowAccountsListTest:(id)a3
+- (void)startICShowAccountsListTest:(id)test
 {
   byte_1006CB359 = 1;
   v3[4] = self;
@@ -3275,31 +3275,31 @@ LABEL_8:
   [(ICAppDelegate *)self showNotesListWithAccountSelectionBlock:v4 readyBlock:v3];
 }
 
-- (void)startICScrollAccountsListTest:(id)a3
+- (void)startICScrollAccountsListTest:(id)test
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000F27F0;
   v4[3] = &unk_100645BA0;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(ICAppDelegate *)v5 dismissMigrationScreenCompletionBlock:v4];
+  selfCopy = self;
+  testCopy = test;
+  v3 = testCopy;
+  [(ICAppDelegate *)selfCopy dismissMigrationScreenCompletionBlock:v4];
 }
 
-- (void)startICRotateAccountsListTest:(id)a3
+- (void)startICRotateAccountsListTest:(id)test
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000F2A38;
   v4[3] = &unk_100645BA0;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(ICAppDelegate *)v5 dismissMigrationScreenCompletionBlock:v4];
+  selfCopy = self;
+  testCopy = test;
+  v3 = testCopy;
+  [(ICAppDelegate *)selfCopy dismissMigrationScreenCompletionBlock:v4];
 }
 
-- (void)startICShowNotesListTest:(id)a3 warm:(BOOL)a4
+- (void)startICShowNotesListTest:(id)test warm:(BOOL)warm
 {
   byte_1006CB359 = 1;
   v4[0] = _NSConcreteStackBlock;
@@ -3307,34 +3307,34 @@ LABEL_8:
   v4[2] = sub_1000F2D40;
   v4[3] = &unk_100646080;
   v4[4] = self;
-  v5 = a4;
+  warmCopy = warm;
   [(ICAppDelegate *)self dismissMigrationScreenCompletionBlock:v4];
 }
 
-- (void)performScrollTestForScrollView:(id)a3 withOptions:(id)a4
+- (void)performScrollTestForScrollView:(id)view withOptions:(id)options
 {
-  v5 = a4;
-  v12 = a3;
-  v6 = [v5 objectForKey:@"iterations"];
-  v7 = [v6 intValue];
+  optionsCopy = options;
+  viewCopy = view;
+  v6 = [optionsCopy objectForKey:@"iterations"];
+  intValue = [v6 intValue];
 
-  v8 = [v5 objectForKey:@"offset"];
-  v9 = [v8 intValue];
+  v8 = [optionsCopy objectForKey:@"offset"];
+  intValue2 = [v8 intValue];
 
-  [v12 scrollToTop];
-  v10 = [v5 objectForKey:@"recapBased"];
+  [viewCopy scrollToTop];
+  v10 = [optionsCopy objectForKey:@"recapBased"];
 
-  LODWORD(v5) = [v10 BOOLValue];
-  if (v5)
+  LODWORD(optionsCopy) = [v10 BOOLValue];
+  if (optionsCopy)
   {
-    [v12 ic_performRecapScrollTestNamed:qword_1006CB340 iterations:v7];
+    [viewCopy ic_performRecapScrollTestNamed:qword_1006CB340 iterations:intValue];
   }
 
   else
   {
-    if (v9)
+    if (intValue2)
     {
-      v11 = v9;
+      v11 = intValue2;
     }
 
     else
@@ -3342,46 +3342,46 @@ LABEL_8:
       v11 = 20;
     }
 
-    [v12 _performScrollTest:qword_1006CB340 iterations:v7 delta:v11];
+    [viewCopy _performScrollTest:qword_1006CB340 iterations:intValue delta:v11];
   }
 }
 
-- (void)performFlickScrollOnScrollView:(id)a3 duration:(double)a4 delta:(int64_t)a5 delayBetweenScroll:(double)a6 iterations:(unint64_t)a7
+- (void)performFlickScrollOnScrollView:(id)view duration:(double)duration delta:(int64_t)delta delayBetweenScroll:(double)scroll iterations:(unint64_t)iterations
 {
-  v12 = a3;
+  viewCopy = view;
   v13 = os_log_create("com.apple.notes", "Test");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     sub_1004DF880(v13);
   }
 
-  v14 = a5;
+  deltaCopy = delta;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000F3410;
   v16[3] = &unk_100649BF0;
-  v17 = v12;
-  v18 = a7;
+  v17 = viewCopy;
+  iterationsCopy = iterations;
   v16[4] = self;
-  v19 = a6;
-  v20 = a4;
-  v21 = a5;
-  v15 = v12;
-  [v15 _simulateScrollWithTranslation:0 duration:0 willBeginDragging:0 didEndDragging:v16 willBeginDecelerating:0.0 didEndDecelerating:{v14, a4}];
+  scrollCopy = scroll;
+  durationCopy = duration;
+  deltaCopy2 = delta;
+  v15 = viewCopy;
+  [v15 _simulateScrollWithTranslation:0 duration:0 willBeginDragging:0 didEndDragging:v16 willBeginDecelerating:0.0 didEndDecelerating:{deltaCopy, duration}];
 }
 
-- (void)performFlickScrollTestForScrollView:(id)a3 withOptions:(id)a4
+- (void)performFlickScrollTestForScrollView:(id)view withOptions:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 objectForKey:@"iterations"];
-  v9 = [v8 intValue];
+  optionsCopy = options;
+  viewCopy = view;
+  v8 = [optionsCopy objectForKey:@"iterations"];
+  intValue = [v8 intValue];
 
-  v10 = [v6 objectForKey:@"offset"];
-  v11 = [v10 intValue];
-  if (v11)
+  v10 = [optionsCopy objectForKey:@"offset"];
+  intValue2 = [v10 intValue];
+  if (intValue2)
   {
-    v12 = v11;
+    v12 = intValue2;
   }
 
   else
@@ -3389,7 +3389,7 @@ LABEL_8:
     v12 = 100;
   }
 
-  v13 = [v6 objectForKey:@"flickDelay"];
+  v13 = [optionsCopy objectForKey:@"flickDelay"];
 
   [v13 doubleValue];
   v15 = v14;
@@ -3398,7 +3398,7 @@ LABEL_8:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
     v17 = 134218752;
-    v18 = v9;
+    v18 = intValue;
     v19 = 2048;
     v20 = v12;
     v21 = 2048;
@@ -3408,74 +3408,74 @@ LABEL_8:
     _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "Flick scroll test iterations %lu, delta: %lu, duration: %.2f, delay: %.2f", &v17, 0x2Au);
   }
 
-  [v7 scrollToTop];
-  [(ICAppDelegate *)self performFlickScrollOnScrollView:v7 duration:v12 delta:v9 delayBetweenScroll:0.2 iterations:v15];
+  [viewCopy scrollToTop];
+  [(ICAppDelegate *)self performFlickScrollOnScrollView:viewCopy duration:v12 delta:intValue delayBetweenScroll:0.2 iterations:v15];
 }
 
-- (void)startICScrollNotesListTest:(id)a3
+- (void)startICScrollNotesListTest:(id)test
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F37DC;
   v6[3] = &unk_100645E30;
-  v7 = self;
+  selfCopy = self;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000F37E4;
   v4[3] = &unk_100645BA0;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
-  [(ICAppDelegate *)v7 showNotesListWithAccountSelectionBlock:v6 readyBlock:v4];
+  testCopy = test;
+  v3 = testCopy;
+  [(ICAppDelegate *)selfCopy showNotesListWithAccountSelectionBlock:v6 readyBlock:v4];
 }
 
-- (void)startICScrollEnglishNotesListTest:(id)a3
+- (void)startICScrollEnglishNotesListTest:(id)test
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F391C;
   v6[3] = &unk_100645E30;
-  v7 = self;
+  selfCopy = self;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000F392C;
   v4[3] = &unk_100645BA0;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
-  [(ICAppDelegate *)v7 showNotesListWithAccountSelectionBlock:v6 readyBlock:v4];
+  testCopy = test;
+  v3 = testCopy;
+  [(ICAppDelegate *)selfCopy showNotesListWithAccountSelectionBlock:v6 readyBlock:v4];
 }
 
-- (void)startICScrollSearchResultsNotesListTest:(id)a3
+- (void)startICScrollSearchResultsNotesListTest:(id)test
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000F3A20;
   v4[3] = &unk_100645BA0;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(ICAppDelegate *)v5 reindexEverythingThenPerformBlock:v4];
+  selfCopy = self;
+  testCopy = test;
+  v3 = testCopy;
+  [(ICAppDelegate *)selfCopy reindexEverythingThenPerformBlock:v4];
 }
 
-- (void)startICRotateNotesListTest:(id)a3
+- (void)startICRotateNotesListTest:(id)test
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000F3DA0;
   v7[3] = &unk_100645E30;
-  v8 = self;
+  selfCopy = self;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000F3DA8;
   v4[3] = &unk_100645BA0;
-  v5 = a3;
-  v6 = v8;
-  v3 = v5;
-  [(ICAppDelegate *)v8 showNotesListWithAccountSelectionBlock:v7 readyBlock:v4];
+  testCopy = test;
+  v6 = selfCopy;
+  v3 = testCopy;
+  [(ICAppDelegate *)selfCopy showNotesListWithAccountSelectionBlock:v7 readyBlock:v4];
 }
 
-- (void)startICShowNoteTest:(id)a3
+- (void)startICShowNoteTest:(id)test
 {
   v3[4] = self;
   v4[0] = _NSConcreteStackBlock;
@@ -3490,7 +3490,7 @@ LABEL_8:
   [(ICAppDelegate *)self showNotesListWithAccountSelectionBlock:v4 readyBlock:v3];
 }
 
-- (void)startICNewNoteFromNotesListTest:(id)a3
+- (void)startICNewNoteFromNotesListTest:(id)test
 {
   byte_1006CB359 = 1;
   v3[4] = self;
@@ -3506,7 +3506,7 @@ LABEL_8:
   [(ICAppDelegate *)self showNotesListWithAccountSelectionBlock:v4 readyBlock:v3];
 }
 
-- (void)startICNewNoteFromNoteViewTest:(id)a3 warm:(BOOL)a4
+- (void)startICNewNoteFromNoteViewTest:(id)test warm:(BOOL)warm
 {
   byte_1006CB359 = 1;
   v8[0] = _NSConcreteStackBlock;
@@ -3519,40 +3519,40 @@ LABEL_8:
   v6[2] = sub_1000F43CC;
   v6[3] = &unk_100649C60;
   v6[4] = self;
-  v7 = a4;
+  warmCopy = warm;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000F44E8;
   v4[3] = &unk_100646080;
   v4[4] = self;
-  v5 = a4;
+  warmCopy2 = warm;
   [(ICAppDelegate *)self showNoteWithAccountSelectionBlock:v8 noteSelectionBlock:v6 readyBlock:v4 errorBlock:&stru_100649AC0];
 }
 
-- (void)startICScrollNoteTest:(id)a3 withKeyboardUp:(BOOL)a4
+- (void)startICScrollNoteTest:(id)test withKeyboardUp:(BOOL)up
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000F486C;
   v9[3] = &unk_100649C38;
-  v10 = self;
+  selfCopy = self;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000F488C;
   v7[3] = &unk_100649C60;
   v7[4] = self;
-  v8 = a4;
+  upCopy = up;
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000F4900;
   v5[3] = &unk_100645BA0;
   v5[4] = self;
-  v6 = a3;
-  v4 = v6;
-  [(ICAppDelegate *)v10 showNoteWithAccountSelectionBlock:v9 noteSelectionBlock:v7 readyBlock:v5 errorBlock:&stru_100649AC0];
+  testCopy = test;
+  v4 = testCopy;
+  [(ICAppDelegate *)selfCopy showNoteWithAccountSelectionBlock:v9 noteSelectionBlock:v7 readyBlock:v5 errorBlock:&stru_100649AC0];
 }
 
-- (void)startICShowShareSheetFromNoteViewTest:(id)a3
+- (void)startICShowShareSheetFromNoteViewTest:(id)test
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
@@ -3572,14 +3572,14 @@ LABEL_8:
   [(ICAppDelegate *)self showNoteWithAccountSelectionBlock:v5 noteSelectionBlock:v4 readyBlock:v3 errorBlock:&stru_100649AC0];
 }
 
-- (void)startICRotateNoteTest:(id)a3
+- (void)startICRotateNoteTest:(id)test
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000F4CE4;
   v8[3] = &unk_100649C38;
-  v9 = self;
-  v6 = self;
+  selfCopy = self;
+  selfCopy2 = self;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000F4D04;
@@ -3589,19 +3589,19 @@ LABEL_8:
   v4[1] = 3221225472;
   v4[2] = sub_1000F4D5C;
   v4[3] = &unk_100645BA0;
-  v5 = a3;
-  v3 = v5;
-  [(ICAppDelegate *)v9 showNoteWithAccountSelectionBlock:v8 noteSelectionBlock:v7 readyBlock:v4 errorBlock:&stru_100649AC0];
+  testCopy = test;
+  v3 = testCopy;
+  [(ICAppDelegate *)selfCopy showNoteWithAccountSelectionBlock:v8 noteSelectionBlock:v7 readyBlock:v4 errorBlock:&stru_100649AC0];
 }
 
-- (void)startICScrollTableHorizontallyTest:(id)a3
+- (void)startICScrollTableHorizontallyTest:(id)test
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000F4FA8;
   v8[3] = &unk_100649C38;
-  v9 = self;
-  v6 = self;
+  selfCopy = self;
+  selfCopy2 = self;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000F4FD0;
@@ -3611,19 +3611,19 @@ LABEL_8:
   v4[1] = 3221225472;
   v4[2] = sub_1000F5028;
   v4[3] = &unk_100645BA0;
-  v5 = a3;
-  v3 = v5;
-  [(ICAppDelegate *)v9 showNoteWithAccountSelectionBlock:v8 noteSelectionBlock:v7 readyBlock:v4 errorBlock:&stru_100649AC0];
+  testCopy = test;
+  v3 = testCopy;
+  [(ICAppDelegate *)selfCopy showNoteWithAccountSelectionBlock:v8 noteSelectionBlock:v7 readyBlock:v4 errorBlock:&stru_100649AC0];
 }
 
-- (void)startICScrollTableVerticallyTest:(id)a3
+- (void)startICScrollTableVerticallyTest:(id)test
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000F51FC;
   v8[3] = &unk_100649C38;
-  v9 = self;
-  v6 = self;
+  selfCopy = self;
+  selfCopy2 = self;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000F5224;
@@ -3633,12 +3633,12 @@ LABEL_8:
   v4[1] = 3221225472;
   v4[2] = sub_1000F527C;
   v4[3] = &unk_100645BA0;
-  v5 = a3;
-  v3 = v5;
-  [(ICAppDelegate *)v9 showNoteWithAccountSelectionBlock:v8 noteSelectionBlock:v7 readyBlock:v4 errorBlock:&stru_100649AC0];
+  testCopy = test;
+  v3 = testCopy;
+  [(ICAppDelegate *)selfCopy showNoteWithAccountSelectionBlock:v8 noteSelectionBlock:v7 readyBlock:v4 errorBlock:&stru_100649AC0];
 }
 
-- (void)startICShowGridViewTest:(id)a3
+- (void)startICShowGridViewTest:(id)test
 {
   v3[4] = self;
   v4[0] = _NSConcreteStackBlock;
@@ -3653,31 +3653,31 @@ LABEL_8:
   [(ICAppDelegate *)self showNotesListWithAccountSelectionBlock:v4 readyBlock:v3];
 }
 
-- (void)startICScrollGridViewTest:(id)a3
+- (void)startICScrollGridViewTest:(id)test
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F55C4;
   v6[3] = &unk_100645E30;
-  v7 = self;
+  selfCopy = self;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000F55D4;
   v4[3] = &unk_100645BA0;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
-  [(ICAppDelegate *)v7 showNotesGridWithAccountSelectionBlock:v6 readyBlock:v4];
+  testCopy = test;
+  v3 = testCopy;
+  [(ICAppDelegate *)selfCopy showNotesGridWithAccountSelectionBlock:v6 readyBlock:v4];
 }
 
-- (void)startICShowNoteTestInFolderNamed:(id)a3 withOptions:(id)a4
+- (void)startICShowNoteTestInFolderNamed:(id)named withOptions:(id)options
 {
-  v5 = a3;
+  namedCopy = named;
   byte_1006CB359 = 1;
   v6 = +[UIDevice currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  userInterfaceIdiom = [v6 userInterfaceIdiom];
 
-  if (v7 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
@@ -3685,8 +3685,8 @@ LABEL_8:
     v16[3] = &unk_100645BA0;
     v8 = &v17;
     v16[4] = self;
-    v17 = v5;
-    v9 = v5;
+    v17 = namedCopy;
+    v9 = namedCopy;
     v10 = &stru_100649CA0;
     v11 = v16;
   }
@@ -3699,13 +3699,13 @@ LABEL_8:
     v14[3] = &unk_100645BA0;
     v8 = &v15;
     v14[4] = self;
-    v15 = v5;
+    v15 = namedCopy;
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000F57C8;
     v13[3] = &unk_100645E30;
     v13[4] = self;
-    v12 = v5;
+    v12 = namedCopy;
     v10 = v14;
     v11 = v13;
   }
@@ -3713,14 +3713,14 @@ LABEL_8:
   [(ICAppDelegate *)self showNotesListWithAccountSelectionBlock:v10 readyBlock:v11];
 }
 
-- (void)startICScrollInlineSketchTest:(id)a3
+- (void)startICScrollInlineSketchTest:(id)test
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000F59B0;
   v8[3] = &unk_100649C38;
-  v9 = self;
-  v6 = self;
+  selfCopy = self;
+  selfCopy2 = self;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000F59D8;
@@ -3730,12 +3730,12 @@ LABEL_8:
   v4[1] = 3221225472;
   v4[2] = sub_1000F5A30;
   v4[3] = &unk_100645BA0;
-  v5 = a3;
-  v3 = v5;
-  [(ICAppDelegate *)v9 showNoteWithAccountSelectionBlock:v8 noteSelectionBlock:v7 readyBlock:v4 errorBlock:&stru_100649AC0];
+  testCopy = test;
+  v3 = testCopy;
+  [(ICAppDelegate *)selfCopy showNoteWithAccountSelectionBlock:v8 noteSelectionBlock:v7 readyBlock:v4 errorBlock:&stru_100649AC0];
 }
 
-- (void)startICKeyboardBringUpAndDismissal:(id)a3
+- (void)startICKeyboardBringUpAndDismissal:(id)dismissal
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
@@ -3755,7 +3755,7 @@ LABEL_8:
   [(ICAppDelegate *)self showNoteWithAccountSelectionBlock:v5 noteSelectionBlock:v4 readyBlock:v3 errorBlock:&stru_100649AC0];
 }
 
-- (void)startICKeyboardRotation:(id)a3
+- (void)startICKeyboardRotation:(id)rotation
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
@@ -3775,7 +3775,7 @@ LABEL_8:
   [(ICAppDelegate *)self showNoteWithAccountSelectionBlock:v5 noteSelectionBlock:v4 readyBlock:v3 errorBlock:&stru_100649AC0];
 }
 
-- (void)startICKeyboardSplitAndMerge:(id)a3
+- (void)startICKeyboardSplitAndMerge:(id)merge
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
@@ -3795,7 +3795,7 @@ LABEL_8:
   [(ICAppDelegate *)self showNoteWithAccountSelectionBlock:v5 noteSelectionBlock:v4 readyBlock:v3 errorBlock:&stru_100649AC0];
 }
 
-- (void)startICInsertChecklistTest:(id)a3
+- (void)startICInsertChecklistTest:(id)test
 {
   byte_1006CB359 = 1;
   v5[0] = _NSConcreteStackBlock;
@@ -3816,7 +3816,7 @@ LABEL_8:
   [(ICAppDelegate *)self showNoteWithAccountSelectionBlock:v5 noteSelectionBlock:v4 readyBlock:v3 errorBlock:&stru_100649CC0];
 }
 
-- (void)startICShowInkPickerTest:(id)a3
+- (void)startICShowInkPickerTest:(id)test
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
@@ -3836,19 +3836,19 @@ LABEL_8:
   [(ICAppDelegate *)self showNoteWithAccountSelectionBlock:v5 noteSelectionBlock:v4 readyBlock:v3 errorBlock:&stru_100649AC0];
 }
 
-- (void)startICShowSearchResultsTest:(id)a3
+- (void)startICShowSearchResultsTest:(id)test
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000F685C;
   v4[3] = &unk_100645BA0;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(ICAppDelegate *)v5 reindexEverythingThenPerformBlock:v4];
+  selfCopy = self;
+  testCopy = test;
+  v3 = testCopy;
+  [(ICAppDelegate *)selfCopy reindexEverythingThenPerformBlock:v4];
 }
 
-- (void)startICNoteEditorTypingTest:(id)a3
+- (void)startICNoteEditorTypingTest:(id)test
 {
   if (byte_1006CB358)
   {
@@ -3881,7 +3881,7 @@ LABEL_8:
   }
 }
 
-- (void)startICResizeWindowTest:(id)a3
+- (void)startICResizeWindowTest:(id)test
 {
   if (byte_1006CB358)
   {
@@ -3999,9 +3999,9 @@ LABEL_8:
   notify_register_dispatch("com.apple.mobilenotes.testScrollNote", &out_token, &_dispatch_main_q, v3);
 }
 
-- (void)reindexEverythingThenPerformBlock:(id)a3
+- (void)reindexEverythingThenPerformBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = +[NSDate date];
   v5 = os_log_create("com.apple.notes", "Test");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -4017,8 +4017,8 @@ LABEL_8:
     v16[2] = sub_1000F7CB4;
     v16[3] = &unk_100645570;
     v17 = v4;
-    v18 = v3;
-    v7 = v3;
+    v18 = blockCopy;
+    v7 = blockCopy;
     v8 = v4;
     [v6 reindexAllSearchableItemsWithCompletionHandler:v16];
 
@@ -4035,28 +4035,28 @@ LABEL_8:
     v12[3] = &unk_100649D30;
     v13 = v4;
     v14 = v10;
-    v15 = v3;
-    v9 = v3;
+    v15 = blockCopy;
+    v9 = blockCopy;
     v7 = v10;
     v11 = v4;
     [v7 reindexAllSearchableItemsWithCompletionHandler:v12];
   }
 }
 
-- (void)dismissMigrationScreenCompletionBlock:(id)a3
+- (void)dismissMigrationScreenCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_opt_class();
-  v5 = [(ICAppDelegate *)self window];
+  window = [(ICAppDelegate *)self window];
   v6 = ICDynamicCast();
-  v7 = [v6 ic_topmostPresentedViewController];
+  ic_topmostPresentedViewController = [v6 ic_topmostPresentedViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 noUpgradeActionAndDismiss];
+    [ic_topmostPresentedViewController noUpgradeActionAndDismiss];
     v8 = 2000000000;
-    if (!v4)
+    if (!blockCopy)
     {
       goto LABEL_6;
     }
@@ -4065,7 +4065,7 @@ LABEL_8:
   }
 
   v8 = 0;
-  if (v4)
+  if (blockCopy)
   {
 LABEL_5:
     v9 = dispatch_time(0, v8);
@@ -4073,69 +4073,69 @@ LABEL_5:
     block[1] = 3221225472;
     block[2] = sub_1000F7EE8;
     block[3] = &unk_100645CC8;
-    v11 = v4;
+    v11 = blockCopy;
     dispatch_after(v9, &_dispatch_main_q, block);
   }
 
 LABEL_6:
 }
 
-- (void)showNotesListWithAccountSelectionBlock:(id)a3 readyBlock:(id)a4
+- (void)showNotesListWithAccountSelectionBlock:(id)block readyBlock:(id)readyBlock
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000F7FB8;
   v7[3] = &unk_100646030;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(ICAppDelegate *)v8 dismissMigrationScreenCompletionBlock:v7];
+  selfCopy = self;
+  blockCopy = block;
+  readyBlockCopy = readyBlock;
+  v5 = readyBlockCopy;
+  v6 = blockCopy;
+  [(ICAppDelegate *)selfCopy dismissMigrationScreenCompletionBlock:v7];
 }
 
-- (void)showNotesGridWithAccountSelectionBlock:(id)a3 readyBlock:(id)a4
+- (void)showNotesGridWithAccountSelectionBlock:(id)block readyBlock:(id)readyBlock
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F8240;
   v6[3] = &unk_100645E80;
-  v7 = self;
-  v8 = a4;
-  v5 = v8;
-  [(ICAppDelegate *)v7 showNotesListWithAccountSelectionBlock:a3 readyBlock:v6];
+  selfCopy = self;
+  readyBlockCopy = readyBlock;
+  v5 = readyBlockCopy;
+  [(ICAppDelegate *)selfCopy showNotesListWithAccountSelectionBlock:block readyBlock:v6];
 }
 
-- (void)showNoteWithAccountSelectionBlock:(id)a3 noteSelectionBlock:(id)a4 readyBlock:(id)a5 errorBlock:(id)a6
+- (void)showNoteWithAccountSelectionBlock:(id)block noteSelectionBlock:(id)selectionBlock readyBlock:(id)readyBlock errorBlock:(id)errorBlock
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  blockCopy = block;
+  selectionBlockCopy = selectionBlock;
+  readyBlockCopy = readyBlock;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000F84D4;
   v17[3] = &unk_100649DD0;
   v17[4] = self;
-  v18 = v10;
-  v19 = a6;
-  v20 = v11;
-  v21 = v12;
-  v13 = v12;
-  v14 = v11;
-  v15 = v19;
-  v16 = v10;
+  v18 = blockCopy;
+  errorBlockCopy = errorBlock;
+  v20 = selectionBlockCopy;
+  v21 = readyBlockCopy;
+  v13 = readyBlockCopy;
+  v14 = selectionBlockCopy;
+  v15 = errorBlockCopy;
+  v16 = blockCopy;
   [(ICAppDelegate *)self dismissMigrationScreenCompletionBlock:v17];
 }
 
-- (BOOL)selectFirstNoteInCollectionView:(id)a3 errorString:(id *)a4
+- (BOOL)selectFirstNoteInCollectionView:(id)view errorString:(id *)string
 {
-  v6 = a3;
-  v7 = [v6 numberOfItemsInSection:0];
+  viewCopy = view;
+  v7 = [viewCopy numberOfItemsInSection:0];
   if (v7)
   {
     v8 = [NSIndexPath indexPathForItem:0 inSection:0];
-    v9 = [v6 delegate];
-    v10 = [v9 collectionView:v6 shouldSelectItemAtIndexPath:v8];
+    delegate = [viewCopy delegate];
+    v10 = [delegate collectionView:viewCopy shouldSelectItemAtIndexPath:v8];
 
     if (v10)
     {
@@ -4146,8 +4146,8 @@ LABEL_6:
     {
       v11 = [NSIndexPath indexPathForItem:1 inSection:0];
 
-      v12 = [v6 delegate];
-      v13 = [v12 collectionView:v6 shouldSelectItemAtIndexPath:v11];
+      delegate2 = [viewCopy delegate];
+      v13 = [delegate2 collectionView:viewCopy shouldSelectItemAtIndexPath:v11];
 
       if ((v13 & 1) == 0)
       {
@@ -4155,59 +4155,59 @@ LABEL_6:
       }
     }
 
-    [v6 selectItemAtIndexPath:v11 animated:0 scrollPosition:0];
-    v14 = [v6 delegate];
-    [v14 collectionView:v6 didSelectItemAtIndexPath:v11];
+    [viewCopy selectItemAtIndexPath:v11 animated:0 scrollPosition:0];
+    delegate3 = [viewCopy delegate];
+    [delegate3 collectionView:viewCopy didSelectItemAtIndexPath:v11];
 
-    v15 = [v6 delegate];
-    [v15 collectionView:v6 performPrimaryActionForItemAtIndexPath:v11];
+    delegate4 = [viewCopy delegate];
+    [delegate4 collectionView:viewCopy performPrimaryActionForItemAtIndexPath:v11];
 
     v16 = +[UIDevice currentDevice];
-    v17 = [v16 userInterfaceIdiom];
+    userInterfaceIdiom = [v16 userInterfaceIdiom];
 
-    if (v17 == 1)
+    if (userInterfaceIdiom == 1)
     {
-      v18 = [(ICAppDelegate *)self ic_viewControllerManager];
-      v19 = [v18 mainSplitViewController];
-      [v19 hideColumn:1];
+      ic_viewControllerManager = [(ICAppDelegate *)self ic_viewControllerManager];
+      mainSplitViewController = [ic_viewControllerManager mainSplitViewController];
+      [mainSplitViewController hideColumn:1];
     }
   }
 
-  else if (a4)
+  else if (string)
   {
-    *a4 = @"No notes found.";
+    *string = @"No notes found.";
   }
 
   return v7 != 0;
 }
 
-- (BOOL)selectFirstNoteInTableView:(id)a3 errorString:(id *)a4
+- (BOOL)selectFirstNoteInTableView:(id)view errorString:(id *)string
 {
-  v5 = a3;
-  v6 = [v5 numberOfRowsInSection:0];
+  viewCopy = view;
+  v6 = [viewCopy numberOfRowsInSection:0];
   if (v6)
   {
     v7 = [NSIndexPath indexPathForItem:0 inSection:0];
-    [v5 selectRowAtIndexPath:v7 animated:0 scrollPosition:0];
-    v8 = [v5 delegate];
-    [v8 tableView:v5 didSelectRowAtIndexPath:v7];
+    [viewCopy selectRowAtIndexPath:v7 animated:0 scrollPosition:0];
+    delegate = [viewCopy delegate];
+    [delegate tableView:viewCopy didSelectRowAtIndexPath:v7];
   }
 
-  else if (a4)
+  else if (string)
   {
-    *a4 = @"No notes found.";
+    *string = @"No notes found.";
   }
 
   return v6 != 0;
 }
 
-- (BOOL)selectFirstNoteInScrollView:(id)a3 errorString:(id *)a4
+- (BOOL)selectFirstNoteInScrollView:(id)view errorString:(id *)string
 {
-  v6 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(ICAppDelegate *)self selectFirstNoteInTableView:v6 errorString:a4];
+    v7 = [(ICAppDelegate *)self selectFirstNoteInTableView:viewCopy errorString:string];
   }
 
   else
@@ -4219,7 +4219,7 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    v7 = [(ICAppDelegate *)self selectFirstNoteInCollectionView:v6 errorString:a4];
+    v7 = [(ICAppDelegate *)self selectFirstNoteInCollectionView:viewCopy errorString:string];
   }
 
   v8 = v7;
@@ -4228,58 +4228,58 @@ LABEL_7:
   return v8;
 }
 
-- (void)showAccountsListAnimated:(BOOL)a3
+- (void)showAccountsListAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(ICAppDelegate *)self ic_viewControllerManager];
-  [v4 showAccountListAnimated:v3];
+  animatedCopy = animated;
+  ic_viewControllerManager = [(ICAppDelegate *)self ic_viewControllerManager];
+  [ic_viewControllerManager showAccountListAnimated:animatedCopy];
 }
 
 - (void)bringUpKeyboard
 {
-  v2 = [(ICAppDelegate *)self ic_noteEditorViewController];
-  [v2 setEditing:1 animated:1];
+  ic_noteEditorViewController = [(ICAppDelegate *)self ic_noteEditorViewController];
+  [ic_noteEditorViewController setEditing:1 animated:1];
 }
 
 - (void)goToBottomOfNoteInEditor
 {
-  v2 = [(ICAppDelegate *)self ic_noteEditorViewController];
-  v6 = [v2 textView];
+  ic_noteEditorViewController = [(ICAppDelegate *)self ic_noteEditorViewController];
+  textView = [ic_noteEditorViewController textView];
 
-  v3 = [v6 textStorage];
-  [v6 setSelectedRange:{objc_msgSend(v3, "length"), 0}];
+  textStorage = [textView textStorage];
+  [textView setSelectedRange:{objc_msgSend(textStorage, "length"), 0}];
 
-  v4 = [v6 selectedRange];
-  [v6 ic_scrollRangeToVisible:v4 consideringInsets:v5 animated:{1, 0}];
+  selectedRange = [textView selectedRange];
+  [textView ic_scrollRangeToVisible:selectedRange consideringInsets:v5 animated:{1, 0}];
 }
 
 - (void)dismissKeyboard
 {
-  v2 = [(ICAppDelegate *)self ic_noteEditorViewController];
-  [v2 setEditing:0 animated:1];
+  ic_noteEditorViewController = [(ICAppDelegate *)self ic_noteEditorViewController];
+  [ic_noteEditorViewController setEditing:0 animated:1];
 }
 
-- (BOOL)isScrollingTest:(id)a3
+- (BOOL)isScrollingTest:(id)test
 {
   v3 = qword_1006CB368;
-  v4 = a3;
+  testCopy = test;
   if (v3 != -1)
   {
     sub_1004DFA24();
   }
 
-  v5 = [qword_1006CB360 containsObject:v4];
+  v5 = [qword_1006CB360 containsObject:testCopy];
 
   return v5;
 }
 
-- (void)rotateToOrientation:(int64_t)a3 iterationsRemaining:(int)a4 completion:(id)a5
+- (void)rotateToOrientation:(int64_t)orientation iterationsRemaining:(int)remaining completion:(id)completion
 {
-  v8 = a5;
-  v9 = v8;
-  if (a4 < 1)
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (remaining < 1)
   {
-    v8[2](v8);
+    completionCopy[2](completionCopy);
   }
 
   else
@@ -4289,11 +4289,11 @@ LABEL_7:
     v11[1] = 3221225472;
     v11[2] = sub_1000F8F14;
     v11[3] = &unk_100649E40;
-    v13 = a3;
+    orientationCopy = orientation;
     v11[4] = self;
-    v14 = a4;
-    v12 = v8;
-    [v10 rotateIfNeeded:a3 completion:v11];
+    remainingCopy = remaining;
+    v12 = completionCopy;
+    [v10 rotateIfNeeded:orientation completion:v11];
   }
 }
 

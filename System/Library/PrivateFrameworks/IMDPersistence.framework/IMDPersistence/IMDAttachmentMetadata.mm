@@ -1,9 +1,9 @@
 @interface IMDAttachmentMetadata
 - (IMDAttachmentMetadata)init;
-- (IMDAttachmentMetadata)initWithPermanentAttachmentGUID:(id)a3 messageGUID:(id)a4 fromMe:(BOOL)a5 handleID:(id)a6;
+- (IMDAttachmentMetadata)initWithPermanentAttachmentGUID:(id)d messageGUID:(id)iD fromMe:(BOOL)me handleID:(id)handleID;
 - (NSString)handleID;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHandleID:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHandleID:(id)d;
 @end
 
 @implementation IMDAttachmentMetadata
@@ -26,9 +26,9 @@
   return v4;
 }
 
-- (void)setHandleID:(id)a3
+- (void)setHandleID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = sub_1B7CFEA60();
   }
@@ -45,13 +45,13 @@
   v6[1] = v5;
 }
 
-- (IMDAttachmentMetadata)initWithPermanentAttachmentGUID:(id)a3 messageGUID:(id)a4 fromMe:(BOOL)a5 handleID:(id)a6
+- (IMDAttachmentMetadata)initWithPermanentAttachmentGUID:(id)d messageGUID:(id)iD fromMe:(BOOL)me handleID:(id)handleID
 {
   v9 = sub_1B7CFEA60();
   v11 = v10;
   v12 = sub_1B7CFEA60();
   v14 = v13;
-  if (a6)
+  if (handleID)
   {
     v15 = sub_1B7CFEA60();
   }
@@ -71,7 +71,7 @@
   v19 = (self + OBJC_IVAR___IMDAttachmentMetadata_messageGUID);
   *v19 = v12;
   v19[1] = v14;
-  *(self + OBJC_IVAR___IMDAttachmentMetadata_fromMe) = a5;
+  *(self + OBJC_IVAR___IMDAttachmentMetadata_fromMe) = me;
   *v17 = v15;
   v17[1] = v16;
   v21.receiver = self;
@@ -79,11 +79,11 @@
   return [(IMDAttachmentMetadata *)&v21 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B7C505E8(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1B7C505E8(coderCopy);
 }
 
 - (IMDAttachmentMetadata)init

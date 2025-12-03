@@ -1,9 +1,9 @@
 @interface APSPayloadMessageStatsCount
 - (APSPayloadMessageStatsCount)init;
-- (unint64_t)sumOfBucketType:(unsigned __int8)a3;
-- (void)countTopic:(id)a3 now:(double)a4;
+- (unint64_t)sumOfBucketType:(unsigned __int8)type;
+- (void)countTopic:(id)topic now:(double)now;
 - (void)dealloc;
-- (void)shiftBucketsBasedOnNow:(double)a3;
+- (void)shiftBucketsBasedOnNow:(double)now;
 @end
 
 @implementation APSPayloadMessageStatsCount
@@ -43,13 +43,13 @@
   [(APSPayloadMessageStatsCount *)&v4 dealloc];
 }
 
-- (void)shiftBucketsBasedOnNow:(double)a3
+- (void)shiftBucketsBasedOnNow:(double)now
 {
   lastMessageTime = self->_lastMessageTime;
   if (lastMessageTime != 0.0)
   {
     v4 = 0;
-    v5 = a3 - lastMessageTime;
+    v5 = now - lastMessageTime;
     buckets = self->_buckets;
     v7 = 1;
     do
@@ -87,22 +87,22 @@
   }
 }
 
-- (void)countTopic:(id)a3 now:(double)a4
+- (void)countTopic:(id)topic now:(double)now
 {
-  v6 = a3;
-  [(APSPayloadMessageStatsCount *)self shiftBucketsBasedOnNow:a4];
+  topicCopy = topic;
+  [(APSPayloadMessageStatsCount *)self shiftBucketsBasedOnNow:now];
   ++*self->_buckets[0].data;
   count = self->_count;
   ++*self->_buckets[1].data;
   self->_count = count + 1;
-  self->_lastMessageTime = a4;
+  self->_lastMessageTime = now;
   lastMessageTopic = self->_lastMessageTopic;
-  self->_lastMessageTopic = v6;
+  self->_lastMessageTopic = topicCopy;
 }
 
-- (unint64_t)sumOfBucketType:(unsigned __int8)a3
+- (unint64_t)sumOfBucketType:(unsigned __int8)type
 {
-  v3 = self + 24 * a3;
+  v3 = self + 24 * type;
   v4 = v3[16];
   if (!v3[16])
   {

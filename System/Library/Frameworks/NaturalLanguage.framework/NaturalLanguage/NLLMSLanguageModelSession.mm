@@ -1,40 +1,40 @@
 @interface NLLMSLanguageModelSession
 - (BOOL)enumeratePredictionsForContext:maximumPredictions:maximumTokensPerPrediction:withBlock:;
-- (NLLMSLanguageModelSession)initWithLanguageModel:(id)a3 options:(id)a4;
+- (NLLMSLanguageModelSession)initWithLanguageModel:(id)model options:(id)options;
 - (__n128)enumeratePredictionsForContext:maximumPredictions:maximumTokensPerPrediction:withBlock:;
-- (id)conditionalProbabilityForString:(id)a3 context:(id)a4;
-- (id)conditionalProbabilityForToken:(id)a3 context:(id)a4;
+- (id)conditionalProbabilityForString:(id)string context:(id)context;
+- (id)conditionalProbabilityForToken:(id)token context:(id)context;
 - (id)description;
-- (int64_t)blocklistStatusForString:(id)a3 matchType:(int64_t)a4;
+- (int64_t)blocklistStatusForString:(id)string matchType:(int64_t)type;
 - (uint64_t)enumeratePredictionsForContext:maximumPredictions:maximumTokensPerPrediction:withBlock:;
-- (void)adaptToToken:(id)a3 context:(id)a4;
-- (void)enumeratePredictionsForContext:(id)a3 maximumPredictions:(unint64_t)a4 maximumTokensPerPrediction:(unint64_t)a5 withBlock:(id)a6;
+- (void)adaptToToken:(id)token context:(id)context;
+- (void)enumeratePredictionsForContext:(id)context maximumPredictions:(unint64_t)predictions maximumTokensPerPrediction:(unint64_t)prediction withBlock:(id)block;
 - (void)reset;
-- (void)unadaptToToken:(id)a3 context:(id)a4;
+- (void)unadaptToToken:(id)token context:(id)context;
 @end
 
 @implementation NLLMSLanguageModelSession
 
-- (NLLMSLanguageModelSession)initWithLanguageModel:(id)a3 options:(id)a4
+- (NLLMSLanguageModelSession)initWithLanguageModel:(id)model options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  optionsCopy = options;
   v25[0] = 0;
   v25[1] = 0;
   v24 = v25;
-  v8 = [v7 objectForKey:@"AppContext"];
+  v8 = [optionsCopy objectForKey:@"AppContext"];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 UTF8String];
+    uTF8String = [v8 UTF8String];
   }
 
   else
   {
-    v10 = 0;
+    uTF8String = 0;
   }
 
-  v23 = v10;
+  v23 = uTF8String;
   std::string::basic_string[abi:ne200100]<0>(__p, *MEMORY[0x1E69ABD88]);
   v26 = __p;
   v11 = std::__tree<std::__value_type<std::string,std::variant<language_modeling::v1::SessionType,std::string>>,std::__map_value_compare<std::string,std::__value_type<std::string,std::variant<language_modeling::v1::SessionType,std::string>>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,std::variant<language_modeling::v1::SessionType,std::string>>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&v24, __p);
@@ -49,13 +49,13 @@
   if (v22 < 0)
   {
     operator delete(__p[0]);
-    if (!v10)
+    if (!uTF8String)
     {
       goto LABEL_12;
     }
   }
 
-  else if (!v10)
+  else if (!uTF8String)
   {
     goto LABEL_12;
   }
@@ -72,10 +72,10 @@
 LABEL_12:
   v20.receiver = self;
   v20.super_class = NLLMSLanguageModelSession;
-  v14 = [(NLLanguageModelSession *)&v20 initWithLanguageModel:v6 options:v7];
+  v14 = [(NLLanguageModelSession *)&v20 initWithLanguageModel:modelCopy options:optionsCopy];
   if (v14)
   {
-    [v6 _underlyingModel];
+    [modelCopy _underlyingModel];
     language_modeling::v1::LanguageModel::makeSession();
     v15 = __p[0];
     __p[0] = 0;
@@ -103,23 +103,23 @@ LABEL_12:
   v9.receiver = self;
   v9.super_class = NLLMSLanguageModelSession;
   v4 = [(NLLMSLanguageModelSession *)&v9 description];
-  v5 = [(NLLanguageModelSession *)self languageModel];
-  v6 = [v5 localization];
-  v7 = objc_msgSend(v3, "stringWithFormat:", @"%@(%@"), v4, v6;
+  languageModel = [(NLLanguageModelSession *)self languageModel];
+  localization = [languageModel localization];
+  v7 = objc_msgSend(v3, "stringWithFormat:", @"%@(%@"), v4, localization;
 
   [v7 appendString:@""]);
 
   return v7;
 }
 
-- (id)conditionalProbabilityForToken:(id)a3 context:(id)a4
+- (id)conditionalProbabilityForToken:(id)token context:(id)context
 {
-  v6 = a3;
-  v7 = wordSequenceForString(a4, self->_tokenizer);
-  v8 = [v6 UTF8String];
+  tokenCopy = token;
+  v7 = wordSequenceForString(context, self->_tokenizer);
+  uTF8String = [tokenCopy UTF8String];
   if (self->_session.__ptr_)
   {
-    v9 = v8 == 0;
+    v9 = uTF8String == 0;
   }
 
   else
@@ -129,12 +129,12 @@ LABEL_12:
 
   if (v9 || v7 == 0)
   {
-    v11 = [[NLProbabilityInfo alloc] initWithInvalidProbability];
+    initWithInvalidProbability = [[NLProbabilityInfo alloc] initWithInvalidProbability];
   }
 
   else
   {
-    std::string::basic_string[abi:ne200100]<0>(&__p, v8);
+    std::string::basic_string[abi:ne200100]<0>(&__p, uTF8String);
     v18 = 0;
     makeContext(v7, v15);
     v12 = language_modeling::v1::LanguageModelSession::conditionalProbability();
@@ -144,19 +144,19 @@ LABEL_12:
       operator delete(__p);
     }
 
-    v11 = [[NLProbabilityInfo alloc] initWithLog10Probability:0 flags:*&v12];
+    initWithInvalidProbability = [[NLProbabilityInfo alloc] initWithLog10Probability:0 flags:*&v12];
   }
 
-  v13 = v11;
+  v13 = initWithInvalidProbability;
 
   return v13;
 }
 
-- (id)conditionalProbabilityForString:(id)a3 context:(id)a4
+- (id)conditionalProbabilityForString:(id)string context:(id)context
 {
-  v6 = a3;
-  v7 = wordSequenceForString(a4, self->_tokenizer);
-  v8 = wordSequenceForString(v6, self->_tokenizer);
+  stringCopy = string;
+  v7 = wordSequenceForString(context, self->_tokenizer);
+  v8 = wordSequenceForString(stringCopy, self->_tokenizer);
   v9 = v8;
   if (self->_session.__ptr_)
   {
@@ -173,7 +173,7 @@ LABEL_12:
   if (v11)
   {
 LABEL_19:
-    v21 = [objc_alloc(*(v12 + 2280)) initWithInvalidProbability];
+    initWithInvalidProbability = [objc_alloc(*(v12 + 2280)) initWithInvalidProbability];
     goto LABEL_20;
   }
 
@@ -186,14 +186,14 @@ LABEL_19:
     while (1)
     {
       v17 = [v9 objectAtIndex:v15];
-      v18 = [v17 UTF8String];
-      if (!v18)
+      uTF8String = [v17 UTF8String];
+      if (!uTF8String)
       {
         break;
       }
 
       ptr = self->_session.__ptr_;
-      std::string::basic_string[abi:ne200100]<0>(&__p, v18);
+      std::string::basic_string[abi:ne200100]<0>(&__p, uTF8String);
       v26 = 0;
       makeContext(v14, v23);
       v20 = COERCE_DOUBLE(language_modeling::v1::LanguageModelSession::conditionalProbability());
@@ -218,25 +218,25 @@ LABEL_19:
 
   v16 = 0.0;
 LABEL_16:
-  v21 = [[NLProbabilityInfo alloc] initWithLog10Probability:0 flags:v16];
+  initWithInvalidProbability = [[NLProbabilityInfo alloc] initWithLog10Probability:0 flags:v16];
 
   v12 = 0x1E7628000;
-  if (!v21)
+  if (!initWithInvalidProbability)
   {
     goto LABEL_19;
   }
 
 LABEL_20:
 
-  return v21;
+  return initWithInvalidProbability;
 }
 
-- (void)enumeratePredictionsForContext:(id)a3 maximumPredictions:(unint64_t)a4 maximumTokensPerPrediction:(unint64_t)a5 withBlock:(id)a6
+- (void)enumeratePredictionsForContext:(id)context maximumPredictions:(unint64_t)predictions maximumTokensPerPrediction:(unint64_t)prediction withBlock:(id)block
 {
   v16 = *MEMORY[0x1E69E9840];
-  v15 = a4;
-  v14 = a6;
-  v8 = wordSequenceForString(a3, self->_tokenizer);
+  predictionsCopy = predictions;
+  blockCopy = block;
+  v8 = wordSequenceForString(context, self->_tokenizer);
   v13 = 0;
   if (self->_session.__ptr_)
   {
@@ -258,13 +258,13 @@ LABEL_20:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)blocklistStatusForString:(id)a3 matchType:(int64_t)a4
+- (int64_t)blocklistStatusForString:(id)string matchType:(int64_t)type
 {
-  v5 = wordSequenceForString(a3, self->_tokenizer);
+  v5 = wordSequenceForString(string, self->_tokenizer);
   if (v5)
   {
-    v6 = [(NLLanguageModelSession *)self languageModel];
-    [v6 _underlyingModel];
+    languageModel = [(NLLanguageModelSession *)self languageModel];
+    [languageModel _underlyingModel];
     makeContext(v5, v10);
     v7 = language_modeling::v1::LanguageModel::blocklistStatus();
     language_modeling::v1::LinguisticContext::~LinguisticContext(v10);
@@ -280,14 +280,14 @@ LABEL_20:
   return v8;
 }
 
-- (void)adaptToToken:(id)a3 context:(id)a4
+- (void)adaptToToken:(id)token context:(id)context
 {
-  v6 = a3;
-  v7 = wordSequenceForString(a4, self->_tokenizer);
-  v8 = [v6 UTF8String];
+  tokenCopy = token;
+  v7 = wordSequenceForString(context, self->_tokenizer);
+  uTF8String = [tokenCopy UTF8String];
   if (self->_session.__ptr_)
   {
-    v9 = v8 == 0;
+    v9 = uTF8String == 0;
   }
 
   else
@@ -297,7 +297,7 @@ LABEL_20:
 
   if (!v9 && v7 != 0)
   {
-    std::string::basic_string[abi:ne200100]<0>(&__p, v8);
+    std::string::basic_string[abi:ne200100]<0>(&__p, uTF8String);
     v14 = 0;
     makeContext(v7, v11);
     language_modeling::v1::LanguageModelSession::adaptToToken();
@@ -309,14 +309,14 @@ LABEL_20:
   }
 }
 
-- (void)unadaptToToken:(id)a3 context:(id)a4
+- (void)unadaptToToken:(id)token context:(id)context
 {
-  v6 = a3;
-  v7 = wordSequenceForString(a4, self->_tokenizer);
-  v8 = [v6 UTF8String];
+  tokenCopy = token;
+  v7 = wordSequenceForString(context, self->_tokenizer);
+  uTF8String = [tokenCopy UTF8String];
   if (self->_session.__ptr_)
   {
-    v9 = v8 == 0;
+    v9 = uTF8String == 0;
   }
 
   else
@@ -326,7 +326,7 @@ LABEL_20:
 
   if (!v9 && v7 != 0)
   {
-    std::string::basic_string[abi:ne200100]<0>(&__p, v8);
+    std::string::basic_string[abi:ne200100]<0>(&__p, uTF8String);
     v14 = 0;
     makeContext(v7, v11);
     language_modeling::v1::LanguageModelSession::unAdaptToToken();
@@ -340,15 +340,15 @@ LABEL_20:
 
 - (void)reset
 {
-  v2 = [(NLLanguageModelSession *)self languageModel];
-  language_modeling::v1::LanguageModel::deallocateInternalBuffers([v2 _underlyingModel]);
+  languageModel = [(NLLanguageModelSession *)self languageModel];
+  language_modeling::v1::LanguageModel::deallocateInternalBuffers([languageModel _underlyingModel]);
 }
 
 - (__n128)enumeratePredictionsForContext:maximumPredictions:maximumTokensPerPrediction:withBlock:
 {
   *a2 = &unk_1F10C6370;
-  result = *(a1 + 8);
-  *(a2 + 24) = *(a1 + 24);
+  result = *(self + 8);
+  *(a2 + 24) = *(self + 24);
   *(a2 + 8) = result;
   return result;
 }
@@ -376,11 +376,11 @@ LABEL_20:
   v7 = [[NLProbabilityInfo alloc] initWithLog10Probability:0 flags:COERCE_DOUBLE(language_modeling::v1::Prediction::probability(this))];
   v8 = [[NLPredictionInfo alloc] initWithPrediction:v6 contextLength:language_modeling::v1::Prediction::contextSize(this) probabilityInfo:v7];
   LOBYTE(__p[0]) = 0;
-  (*(*a1[1] + 16))();
-  v9 = a1[2];
+  (*(*self[1] + 16))();
+  v9 = self[2];
   v10 = *v9 + 1;
   *v9 = v10;
-  v11 = (__p[0] & 1) == 0 && v10 < *a1[3];
+  v11 = (__p[0] & 1) == 0 && v10 < *self[3];
 
   return v11;
 }
@@ -388,7 +388,7 @@ LABEL_20:
 - (uint64_t)enumeratePredictionsForContext:maximumPredictions:maximumTokensPerPrediction:withBlock:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else

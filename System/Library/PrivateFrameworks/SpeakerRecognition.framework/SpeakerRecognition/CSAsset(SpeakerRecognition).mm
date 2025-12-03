@@ -31,22 +31,22 @@
 
 - (uint64_t)useSpeakerRecognitionAsset
 {
-  v1 = [a1 getNumberForKey:@"useSpeakerRecognitionAsset" category:@"speakerRecognition" default:0];
-  v2 = [v1 BOOLValue];
+  v1 = [self getNumberForKey:@"useSpeakerRecognitionAsset" category:@"speakerRecognition" default:0];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (BOOL)containsMultiUserThresholds
 {
   v23 = *MEMORY[0x277D85DE8];
-  v1 = [a1 path];
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [v2 fileExistsAtPath:v1];
+  path = [self path];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v3 = [defaultManager fileExistsAtPath:path];
 
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v1];
+    v4 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:path];
     if (!v4)
     {
       v10 = *MEMORY[0x277D015D8];
@@ -56,7 +56,7 @@
         *buf = 136315394;
         v18 = "[CSAsset(SpeakerRecognition) containsMultiUserThresholds]";
         v19 = 2114;
-        v20 = v1;
+        v20 = path;
         _os_log_impl(&dword_225E12000, v10, OS_LOG_TYPE_DEFAULT, "%s Could not read: %{public}@", buf, 0x16u);
         v9 = 0;
       }
@@ -75,7 +75,7 @@
         *buf = 136315650;
         v18 = "[CSAsset(SpeakerRecognition) containsMultiUserThresholds]";
         v19 = 2114;
-        v20 = v1;
+        v20 = path;
         v21 = 2114;
         v22 = v6;
         _os_log_impl(&dword_225E12000, v7, OS_LOG_TYPE_DEFAULT, "%s Could not decode contents of: %{public}@: err: %{public}@", buf, 0x20u);
@@ -114,7 +114,7 @@ LABEL_17:
     *buf = 136315394;
     v18 = "[CSAsset(SpeakerRecognition) containsMultiUserThresholds]";
     v19 = 2114;
-    v20 = v1;
+    v20 = path;
     _os_log_impl(&dword_225E12000, v8, OS_LOG_TYPE_DEFAULT, "%s %{public}@ doesnt exist", buf, 0x16u);
     v9 = 0;
   }
@@ -129,50 +129,50 @@ LABEL_18:
 {
   v2 = (CSIsIOS() & 1) != 0 || CSIsMac();
 
-  return [a1 getBoolForKey:@"implicit_training_enabled" category:@"speakerRecognition" default:v2];
+  return [self getBoolForKey:@"implicit_training_enabled" category:@"speakerRecognition" default:v2];
 }
 
 - (id)keywordDetectorNDAPIConfigFilePath
 {
-  v2 = [a1 resourcePath];
-  v3 = [a1 getStringForKey:@"configFileNDAPI" category:@"voiceTriggerSecondPassAOP" default:@"config.txt"];
-  v4 = [v2 stringByAppendingPathComponent:v3];
+  resourcePath = [self resourcePath];
+  v3 = [self getStringForKey:@"configFileNDAPI" category:@"voiceTriggerSecondPassAOP" default:@"config.txt"];
+  v4 = [resourcePath stringByAppendingPathComponent:v3];
 
   return v4;
 }
 
 - (id)keywordDetectorQuasarConfigFilePath
 {
-  v2 = [a1 resourcePath];
-  if ([MEMORY[0x277D018F8] horsemanDeviceType] != 1 || (objc_msgSend(MEMORY[0x277D01958], "getDefaultRecognizerForB238"), v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(a1, "getStringForKey:category:default:", v3, @"voiceTriggerSecondPass", 0), v4 = objc_claimAutoreleasedReturnValue(), v3, !v4))
+  resourcePath = [self resourcePath];
+  if ([MEMORY[0x277D018F8] horsemanDeviceType] != 1 || (objc_msgSend(MEMORY[0x277D01958], "getDefaultRecognizerForB238"), v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(self, "getStringForKey:category:default:", v3, @"voiceTriggerSecondPass", 0), v4 = objc_claimAutoreleasedReturnValue(), v3, !v4))
   {
-    v4 = [a1 getStringForKey:@"configFileRecognizer" category:@"voiceTriggerSecondPassAOP" default:@"recognizer.json"];
+    v4 = [self getStringForKey:@"configFileRecognizer" category:@"voiceTriggerSecondPassAOP" default:@"recognizer.json"];
   }
 
-  v5 = [v2 stringByAppendingPathComponent:v4];
+  v5 = [resourcePath stringByAppendingPathComponent:v4];
 
   return v5;
 }
 
 - (uint64_t)maxAllowedEnrollmentUtterances
 {
-  v1 = [a1 getNumberForKey:@"maxEnrollmentUtterances" category:@"speakerRecognition" default:&unk_283933A50];
-  v2 = [v1 unsignedIntegerValue];
+  v1 = [self getNumberForKey:@"maxEnrollmentUtterances" category:@"speakerRecognition" default:&unk_283933A50];
+  unsignedIntegerValue = [v1 unsignedIntegerValue];
 
-  return v2;
+  return unsignedIntegerValue;
 }
 
 - (uint64_t)pruningNumRetentionUtterance
 {
-  v1 = [a1 getNumberForKey:@"numPruningRetentionUtt" category:@"speakerRecognition" default:&unk_283933A38];
-  v2 = [v1 unsignedIntegerValue];
+  v1 = [self getNumberForKey:@"numPruningRetentionUtt" category:@"speakerRecognition" default:&unk_283933A38];
+  unsignedIntegerValue = [v1 unsignedIntegerValue];
 
-  return v2;
+  return unsignedIntegerValue;
 }
 
 - (float)pruningThresholdPSR
 {
-  v1 = [a1 getNumberForKey:@"pruningPSRThreshold" category:@"speakerRecognition" default:&unk_283933A78];
+  v1 = [self getNumberForKey:@"pruningPSRThreshold" category:@"speakerRecognition" default:&unk_283933A78];
   [v1 floatValue];
   v3 = v2;
 
@@ -181,7 +181,7 @@ LABEL_18:
 
 - (float)pruningThresholdSAT
 {
-  v1 = [a1 getNumberForKey:@"pruningSATThreshold" category:@"speakerRecognition" default:&unk_283933A78];
+  v1 = [self getNumberForKey:@"pruningSATThreshold" category:@"speakerRecognition" default:&unk_283933A78];
   [v1 floatValue];
   v3 = v2;
 
@@ -190,7 +190,7 @@ LABEL_18:
 
 - (float)pruningExplicitUttThresholdPSR
 {
-  v1 = [a1 getNumberForKey:@"pruningExplicitPSRThreshold" category:@"speakerRecognition" default:&unk_283933A78];
+  v1 = [self getNumberForKey:@"pruningExplicitPSRThreshold" category:@"speakerRecognition" default:&unk_283933A78];
   [v1 floatValue];
   v3 = v2;
 
@@ -199,7 +199,7 @@ LABEL_18:
 
 - (float)pruningExplicitUttThresholdSAT
 {
-  v1 = [a1 getNumberForKey:@"pruningExplicitSATThreshold" category:@"speakerRecognition" default:&unk_283933A78];
+  v1 = [self getNumberForKey:@"pruningExplicitSATThreshold" category:@"speakerRecognition" default:&unk_283933A78];
   [v1 floatValue];
   v3 = v2;
 
@@ -208,7 +208,7 @@ LABEL_18:
 
 - (float)satVTImplicitThreshold
 {
-  v1 = [a1 getNumberForKey:@"implicitVTThreshold" category:@"speakerRecognition" default:&unk_283933A78];
+  v1 = [self getNumberForKey:@"implicitVTThreshold" category:@"speakerRecognition" default:&unk_283933A78];
   [v1 floatValue];
   v3 = v2;
 
@@ -217,7 +217,7 @@ LABEL_18:
 
 - (float)satImplicitProfileDeltaThreshold
 {
-  v1 = [a1 getNumberForKey:@"implicitProfileDeltaThreshold" category:@"speakerRecognition" default:&unk_283933A98];
+  v1 = [self getNumberForKey:@"implicitProfileDeltaThreshold" category:@"speakerRecognition" default:&unk_283933A98];
   [v1 floatValue];
   v3 = v2;
 
@@ -226,9 +226,9 @@ LABEL_18:
 
 - (float)satImplicitProfileThreshold
 {
-  [a1 satScoreThreshold];
+  [self satScoreThreshold];
   v2 = [MEMORY[0x277CCABB0] numberWithFloat:?];
-  v3 = [a1 getNumberForKey:@"implicitProfileThreshold" category:@"speakerRecognition" default:v2];
+  v3 = [self getNumberForKey:@"implicitProfileThreshold" category:@"speakerRecognition" default:v2];
   [v3 floatValue];
   v5 = v4;
 
@@ -237,7 +237,7 @@ LABEL_18:
 
 - (float)psrCombinationWeight
 {
-  v1 = [a1 getNumberForKey:@"combinationWeight" category:@"speakerRecognition" default:&unk_283933A88];
+  v1 = [self getNumberForKey:@"combinationWeight" category:@"speakerRecognition" default:&unk_283933A88];
   [v1 floatValue];
   v3 = v2;
 
@@ -246,115 +246,115 @@ LABEL_18:
 
 - (uint64_t)multiUserDeltaScoreThreshold
 {
-  v1 = [a1 getNumberForKey:@"multiUserDeltaScoreThreshold" category:@"speakerRecognition" default:&unk_283933A20];
-  v2 = [v1 integerValue];
+  v1 = [self getNumberForKey:@"multiUserDeltaScoreThreshold" category:@"speakerRecognition" default:&unk_283933A20];
+  integerValue = [v1 integerValue];
 
-  return v2;
+  return integerValue;
 }
 
 - (unint64_t)multiUserDeltaScoreThresholdForPhId:()SpeakerRecognition
 {
-  v2 = [a1 getPhraseConfig:?];
+  v2 = [self getPhraseConfig:?];
   v3 = v2;
   if (v2 && ([v2 objectForKeyedSubscript:@"multiUserDeltaScoreThreshold"], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
     v5 = [v3 objectForKeyedSubscript:@"multiUserDeltaScoreThreshold"];
     [v5 floatValue];
-    v7 = v6;
+    multiUserDeltaScoreThreshold = v6;
   }
 
   else
   {
-    v7 = [a1 multiUserDeltaScoreThreshold];
+    multiUserDeltaScoreThreshold = [self multiUserDeltaScoreThreshold];
   }
 
-  return v7;
+  return multiUserDeltaScoreThreshold;
 }
 
 - (uint64_t)multiUserConfidentScoreThreshold
 {
-  v1 = [a1 getNumberForKey:@"multiUserConfidentScoreThreshold" category:@"speakerRecognition" default:&unk_283933A08];
-  v2 = [v1 integerValue];
+  v1 = [self getNumberForKey:@"multiUserConfidentScoreThreshold" category:@"speakerRecognition" default:&unk_283933A08];
+  integerValue = [v1 integerValue];
 
-  return v2;
+  return integerValue;
 }
 
 - (unint64_t)multiUserConfidentScoreThresholdForPhId:()SpeakerRecognition
 {
-  v2 = [a1 getPhraseConfig:?];
+  v2 = [self getPhraseConfig:?];
   v3 = v2;
   if (v2 && ([v2 objectForKeyedSubscript:@"multiUserConfidentScoreThreshold"], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
     v5 = [v3 objectForKeyedSubscript:@"multiUserConfidentScoreThreshold"];
     [v5 floatValue];
-    v7 = v6;
+    multiUserConfidentScoreThreshold = v6;
   }
 
   else
   {
-    v7 = [a1 multiUserConfidentScoreThreshold];
+    multiUserConfidentScoreThreshold = [self multiUserConfidentScoreThreshold];
   }
 
-  return v7;
+  return multiUserConfidentScoreThreshold;
 }
 
 - (uint64_t)multiUserHighScoreThreshold
 {
-  v1 = [a1 getNumberForKey:@"multiUserHighScoreThreshold" category:@"speakerRecognition" default:&unk_2839339F0];
-  v2 = [v1 integerValue];
+  v1 = [self getNumberForKey:@"multiUserHighScoreThreshold" category:@"speakerRecognition" default:&unk_2839339F0];
+  integerValue = [v1 integerValue];
 
-  return v2;
+  return integerValue;
 }
 
 - (unint64_t)multiUserHighScoreThresholdForPhId:()SpeakerRecognition
 {
-  v2 = [a1 getPhraseConfig:?];
+  v2 = [self getPhraseConfig:?];
   v3 = v2;
   if (v2 && ([v2 objectForKeyedSubscript:@"multiUserHighScoreThreshold"], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
     v5 = [v3 objectForKeyedSubscript:@"multiUserHighScoreThreshold"];
     [v5 floatValue];
-    v7 = v6;
+    multiUserHighScoreThreshold = v6;
   }
 
   else
   {
-    v7 = [a1 multiUserHighScoreThreshold];
+    multiUserHighScoreThreshold = [self multiUserHighScoreThreshold];
   }
 
-  return v7;
+  return multiUserHighScoreThreshold;
 }
 
 - (uint64_t)multiUserLowScoreThreshold
 {
-  v1 = [a1 getNumberForKey:@"multiUserLowScoreThreshold" category:@"speakerRecognition" default:&unk_2839339D8];
-  v2 = [v1 integerValue];
+  v1 = [self getNumberForKey:@"multiUserLowScoreThreshold" category:@"speakerRecognition" default:&unk_2839339D8];
+  integerValue = [v1 integerValue];
 
-  return v2;
+  return integerValue;
 }
 
 - (unint64_t)multiUserLowScoreThresholdForPhId:()SpeakerRecognition
 {
-  v2 = [a1 getPhraseConfig:?];
+  v2 = [self getPhraseConfig:?];
   v3 = v2;
   if (v2 && ([v2 objectForKeyedSubscript:@"multiUserLowScoreThreshold"], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
     v5 = [v3 objectForKeyedSubscript:@"multiUserLowScoreThreshold"];
     [v5 floatValue];
-    v7 = v6;
+    multiUserLowScoreThreshold = v6;
   }
 
   else
   {
-    v7 = [a1 multiUserLowScoreThreshold];
+    multiUserLowScoreThreshold = [self multiUserLowScoreThreshold];
   }
 
-  return v7;
+  return multiUserLowScoreThreshold;
 }
 
 - (float)satScoreThreshold
 {
-  v1 = [a1 getNumberForKey:@"satThreshold" category:@"speakerRecognition" default:&unk_283933A68];
+  v1 = [self getNumberForKey:@"satThreshold" category:@"speakerRecognition" default:&unk_283933A68];
   [v1 floatValue];
   v3 = v2;
 
@@ -363,7 +363,7 @@ LABEL_18:
 
 - (float)satScoreThresholdForPhId:()SpeakerRecognition
 {
-  v2 = [a1 getPhraseConfig:?];
+  v2 = [self getPhraseConfig:?];
   v3 = v2;
   if (v2 && ([v2 objectForKeyedSubscript:@"satThreshold"], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
@@ -374,7 +374,7 @@ LABEL_18:
 
   else
   {
-    [a1 satScoreThreshold];
+    [self satScoreThreshold];
     v7 = v8;
   }
 
@@ -384,7 +384,7 @@ LABEL_18:
 - (id)getPhraseConfig:()SpeakerRecognition
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = [a1 getValueForKey:@"phrase" category:@"speakerRecognition"];
+  v4 = [self getValueForKey:@"phrase" category:@"speakerRecognition"];
   v5 = v4;
   if (v4 && [v4 count] <= a3)
   {

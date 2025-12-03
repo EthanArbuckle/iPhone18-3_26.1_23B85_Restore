@@ -1,36 +1,36 @@
 @interface HUMediaAccessControlEditorModuleController
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (Class)cellClassForItem:(id)a3;
-- (HUMediaAccessControlEditorModuleController)initWithModule:(id)a3;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (Class)cellClassForItem:(id)item;
+- (HUMediaAccessControlEditorModuleController)initWithModule:(id)module;
 - (HUMediaAccessControlEditorModuleControllerDelegate)delegate;
-- (id)updateAccessControlDescriptor:(id)a3;
-- (unint64_t)didSelectItem:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4;
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
+- (id)updateAccessControlDescriptor:(id)descriptor;
+- (unint64_t)didSelectItem:(id)item;
+- (void)setupCell:(id)cell forItem:(id)item;
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation HUMediaAccessControlEditorModuleController
 
-- (HUMediaAccessControlEditorModuleController)initWithModule:(id)a3
+- (HUMediaAccessControlEditorModuleController)initWithModule:(id)module
 {
   v4.receiver = self;
   v4.super_class = HUMediaAccessControlEditorModuleController;
-  return [(HUItemModuleController *)&v4 initWithModule:a3];
+  return [(HUItemModuleController *)&v4 initWithModule:module];
 }
 
-- (id)updateAccessControlDescriptor:(id)a3
+- (id)updateAccessControlDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   objc_initWeak(&location, self);
-  v5 = [(HUItemModuleController *)self module];
-  v6 = [v5 updateAccessControlDescriptor:v4];
+  module = [(HUItemModuleController *)self module];
+  v6 = [module updateAccessControlDescriptor:descriptorCopy];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __76__HUMediaAccessControlEditorModuleController_updateAccessControlDescriptor___block_invoke;
   v10[3] = &unk_277DBC1A0;
   objc_copyWeak(&v12, &location);
-  v7 = v4;
+  v7 = descriptorCopy;
   v11 = v7;
   v8 = [v6 addCompletionBlock:v10];
 
@@ -53,18 +53,18 @@ void __76__HUMediaAccessControlEditorModuleController_updateAccessControlDescrip
   }
 }
 
-- (Class)cellClassForItem:(id)a3
+- (Class)cellClassForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUItemModuleController *)self module];
-  v6 = [v5 accessControlEditorItemProvider];
-  v7 = [v6 passwordEnableItem];
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  accessControlEditorItemProvider = [module accessControlEditorItemProvider];
+  passwordEnableItem = [accessControlEditorItemProvider passwordEnableItem];
 
-  if (v7 != v4)
+  if (passwordEnableItem != itemCopy)
   {
-    v8 = [(HUItemModuleController *)self module];
-    v9 = [v8 accessControlEditorItemProvider];
-    [v9 passwordItem];
+    module2 = [(HUItemModuleController *)self module];
+    accessControlEditorItemProvider2 = [module2 accessControlEditorItemProvider];
+    [accessControlEditorItemProvider2 passwordItem];
   }
 
   v10 = objc_opt_class();
@@ -72,18 +72,18 @@ void __76__HUMediaAccessControlEditorModuleController_updateAccessControlDescrip
   return v10;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
-  v17 = a3;
-  v6 = a4;
-  v7 = [(HUItemModuleController *)self module];
-  v8 = [v7 accessControlEditorItemProvider];
-  v9 = [v8 passwordItem];
+  cellCopy = cell;
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  accessControlEditorItemProvider = [module accessControlEditorItemProvider];
+  passwordItem = [accessControlEditorItemProvider passwordItem];
 
-  if (v9 == v6)
+  if (passwordItem == itemCopy)
   {
     objc_opt_class();
-    v10 = v17;
+    v10 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v11 = v10;
@@ -96,30 +96,30 @@ void __76__HUMediaAccessControlEditorModuleController_updateAccessControlDescrip
 
     v12 = v11;
 
-    v13 = [v12 valueTextField];
-    [v13 setDelegate:self];
+    valueTextField = [v12 valueTextField];
+    [valueTextField setDelegate:self];
 
     v14 = _HULocalizedStringWithDefaultValue(@"HUMediaAccessControlPasswordPlaceholder", @"HUMediaAccessControlPasswordPlaceholder", 1);
-    v15 = [v12 valueTextField];
-    [v15 setPlaceholder:v14];
+    valueTextField2 = [v12 valueTextField];
+    [valueTextField2 setPlaceholder:v14];
 
-    v16 = [v12 valueTextField];
-    [v16 setAutocorrectionType:1];
+    valueTextField3 = [v12 valueTextField];
+    [valueTextField3 setAutocorrectionType:1];
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v32 = a3;
-  v7 = a4;
-  v8 = [(HUItemModuleController *)self module];
-  v9 = [v8 accessControlEditorItemProvider];
-  v10 = [v9 passwordItem];
+  cellCopy = cell;
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  accessControlEditorItemProvider = [module accessControlEditorItemProvider];
+  passwordItem = [accessControlEditorItemProvider passwordItem];
 
-  if (v10 == v7)
+  if (passwordItem == itemCopy)
   {
     objc_opt_class();
-    v21 = v32;
+    v21 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v22 = v21;
@@ -130,28 +130,28 @@ void __76__HUMediaAccessControlEditorModuleController_updateAccessControlDescrip
       v22 = 0;
     }
 
-    v19 = v22;
+    hf_keyColor = v22;
 
-    v23 = [v7 latestResults];
-    v24 = [v23 objectForKeyedSubscript:*MEMORY[0x277D13318]];
-    v25 = [v19 valueTextField];
-    [v25 setText:v24];
+    latestResults = [itemCopy latestResults];
+    v24 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13318]];
+    valueTextField = [hf_keyColor valueTextField];
+    [valueTextField setText:v24];
 
-    v26 = [MEMORY[0x277D75348] systemGrayColor];
-    v27 = [v19 valueTextField];
-    [v27 setTextColor:v26];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    valueTextField2 = [hf_keyColor valueTextField];
+    [valueTextField2 setTextColor:systemGrayColor];
 
     goto LABEL_13;
   }
 
-  v11 = [(HUItemModuleController *)self module];
-  v12 = [v11 accessControlEditorItemProvider];
-  v13 = [v12 passwordEnableItem];
+  module2 = [(HUItemModuleController *)self module];
+  accessControlEditorItemProvider2 = [module2 accessControlEditorItemProvider];
+  passwordEnableItem = [accessControlEditorItemProvider2 passwordEnableItem];
 
-  if (v13 == v7)
+  if (passwordEnableItem == itemCopy)
   {
     objc_opt_class();
-    v28 = v32;
+    v28 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v29 = v28;
@@ -162,86 +162,86 @@ void __76__HUMediaAccessControlEditorModuleController_updateAccessControlDescrip
       v29 = 0;
     }
 
-    v19 = v29;
+    hf_keyColor = v29;
 
-    v30 = [v7 latestResults];
-    v31 = [v30 objectForKeyedSubscript:*MEMORY[0x277D13318]];
-    [v19 setOn:{objc_msgSend(v31, "BOOLValue")}];
+    latestResults2 = [itemCopy latestResults];
+    v31 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13318]];
+    [hf_keyColor setOn:{objc_msgSend(v31, "BOOLValue")}];
 
-    [v19 setDelegate:self];
+    [hf_keyColor setDelegate:self];
 LABEL_13:
-    [v19 setSelectionStyle:0];
+    [hf_keyColor setSelectionStyle:0];
     goto LABEL_15;
   }
 
-  v14 = [v7 latestResults];
-  v15 = [v14 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-  v16 = [v32 textLabel];
-  [v16 setText:v15];
+  latestResults3 = [itemCopy latestResults];
+  v15 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  textLabel = [cellCopy textLabel];
+  [textLabel setText:v15];
 
-  v17 = [v7 latestResults];
-  v18 = [v17 objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
-  LODWORD(v16) = [v18 BOOLValue];
+  latestResults4 = [itemCopy latestResults];
+  v18 = [latestResults4 objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
+  LODWORD(textLabel) = [v18 BOOLValue];
 
-  if (v16)
+  if (textLabel)
   {
-    [v32 setAccessoryType:3];
-    v19 = [MEMORY[0x277D75348] hf_keyColor];
-    v20 = [v32 textLabel];
-    [v20 setTextColor:v19];
+    [cellCopy setAccessoryType:3];
+    hf_keyColor = [MEMORY[0x277D75348] hf_keyColor];
+    textLabel2 = [cellCopy textLabel];
+    [textLabel2 setTextColor:hf_keyColor];
   }
 
   else
   {
-    [v32 setAccessoryType:0];
-    v19 = [v32 textLabel];
-    [v19 setTextColor:0];
+    [cellCopy setAccessoryType:0];
+    hf_keyColor = [cellCopy textLabel];
+    [hf_keyColor setTextColor:0];
   }
 
 LABEL_15:
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUItemModuleController *)self module];
-  v6 = [v5 accessControlEditorItemProvider];
-  v7 = [v6 passwordItem];
-  v8 = v7;
-  if (v7 == v4)
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  accessControlEditorItemProvider = [module accessControlEditorItemProvider];
+  passwordItem = [accessControlEditorItemProvider passwordItem];
+  v8 = passwordItem;
+  if (passwordItem == itemCopy)
   {
 
     goto LABEL_6;
   }
 
-  v9 = [(HUItemModuleController *)self module];
-  v10 = [v9 accessControlEditorItemProvider];
-  v11 = [v10 passwordEnableItem];
+  module2 = [(HUItemModuleController *)self module];
+  accessControlEditorItemProvider2 = [module2 accessControlEditorItemProvider];
+  passwordEnableItem = [accessControlEditorItemProvider2 passwordEnableItem];
 
-  if (v11 != v4)
+  if (passwordEnableItem != itemCopy)
   {
-    v12 = [(HUItemModuleController *)self module];
-    v13 = [v12 accessControlEditorItemProvider];
-    v14 = [v13 accessControlItems];
-    v15 = [v14 containsObject:v4];
+    module3 = [(HUItemModuleController *)self module];
+    accessControlEditorItemProvider3 = [module3 accessControlEditorItemProvider];
+    accessControlItems = [accessControlEditorItemProvider3 accessControlItems];
+    v15 = [accessControlItems containsObject:itemCopy];
 
     if (v15)
     {
-      v16 = [(HUItemModuleController *)self module];
-      v17 = [v16 accessControlEditorItemProvider];
-      v18 = [v17 accessControlItems];
-      v19 = [v18 indexOfObject:v4];
+      module4 = [(HUItemModuleController *)self module];
+      accessControlEditorItemProvider4 = [module4 accessControlEditorItemProvider];
+      accessControlItems2 = [accessControlEditorItemProvider4 accessControlItems];
+      v19 = [accessControlItems2 indexOfObject:itemCopy];
 
-      v20 = [(HUItemModuleController *)self module];
-      v21 = [v20 home];
-      v5 = [v21 hf_accessControlDescriptor];
+      module5 = [(HUItemModuleController *)self module];
+      home = [module5 home];
+      module = [home hf_accessControlDescriptor];
 
       v22 = MEMORY[0x277D147D8];
-      v23 = [v5 accessRequiresPassword];
-      v24 = [v5 accessPassword];
-      v6 = [v22 descriptorWithAccess:v19 requiresPassword:v23 password:v24];
+      accessRequiresPassword = [module accessRequiresPassword];
+      accessPassword = [module accessPassword];
+      accessControlEditorItemProvider = [v22 descriptorWithAccess:v19 requiresPassword:accessRequiresPassword password:accessPassword];
 
-      v25 = [(HUMediaAccessControlEditorModuleController *)self updateAccessControlDescriptor:v6];
+      v25 = [(HUMediaAccessControlEditorModuleController *)self updateAccessControlDescriptor:accessControlEditorItemProvider];
 LABEL_6:
     }
   }
@@ -249,90 +249,90 @@ LABEL_6:
   return 0;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = [v4 text];
-  v6 = [v5 length];
+  returnCopy = return;
+  text = [returnCopy text];
+  v6 = [text length];
 
   if (v6)
   {
     v7 = MEMORY[0x277CD1A60];
-    v8 = [v4 text];
+    text2 = [returnCopy text];
     v24 = 0;
-    [v7 isValidMediaPassword:v8 error:&v24];
-    v9 = v24;
+    [v7 isValidMediaPassword:text2 error:&v24];
+    hf_accessControlDescriptor = v24;
 
-    v10 = v9 == 0;
-    if (v9)
+    v10 = hf_accessControlDescriptor == 0;
+    if (hf_accessControlDescriptor)
     {
-      v11 = [MEMORY[0x277D14640] sharedHandler];
-      [v11 handleError:v9 operationType:*MEMORY[0x277D13C28] options:0 retryBlock:0 cancelBlock:0];
+      mEMORY[0x277D14640] = [MEMORY[0x277D14640] sharedHandler];
+      [mEMORY[0x277D14640] handleError:hf_accessControlDescriptor operationType:*MEMORY[0x277D13C28] options:0 retryBlock:0 cancelBlock:0];
     }
 
     else
     {
-      v15 = [(HUItemModuleController *)self module];
-      v16 = [v15 home];
-      v11 = [v16 hf_accessControlDescriptor];
+      module = [(HUItemModuleController *)self module];
+      home = [module home];
+      mEMORY[0x277D14640] = [home hf_accessControlDescriptor];
 
       v17 = MEMORY[0x277D147D8];
-      v18 = [v11 access];
-      v19 = [v11 accessRequiresPassword];
-      v20 = [v4 text];
-      v21 = [v17 descriptorWithAccess:v18 requiresPassword:v19 password:v20];
+      access = [mEMORY[0x277D14640] access];
+      accessRequiresPassword = [mEMORY[0x277D14640] accessRequiresPassword];
+      text3 = [returnCopy text];
+      v21 = [v17 descriptorWithAccess:access requiresPassword:accessRequiresPassword password:text3];
 
       v22 = [(HUMediaAccessControlEditorModuleController *)self updateAccessControlDescriptor:v21];
-      [v4 endEditing:1];
+      [returnCopy endEditing:1];
     }
   }
 
   else
   {
-    v12 = [(HUItemModuleController *)self module];
-    v13 = [v12 home];
-    v9 = [v13 hf_accessControlDescriptor];
+    module2 = [(HUItemModuleController *)self module];
+    home2 = [module2 home];
+    hf_accessControlDescriptor = [home2 hf_accessControlDescriptor];
 
-    v14 = [v9 accessPassword];
-    [v4 setText:v14];
+    accessPassword = [hf_accessControlDescriptor accessPassword];
+    [returnCopy setText:accessPassword];
 
     v10 = 1;
-    [v4 endEditing:1];
+    [returnCopy endEditing:1];
   }
 
   return v10;
 }
 
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(HUItemModuleController *)self module];
-  v8 = [v7 home];
-  v9 = [v8 hf_accessControlDescriptor];
+  onCopy = on;
+  cellCopy = cell;
+  module = [(HUItemModuleController *)self module];
+  home = [module home];
+  hf_accessControlDescriptor = [home hf_accessControlDescriptor];
 
-  v10 = [v9 accessPassword];
-  if (!v10)
+  accessPassword = [hf_accessControlDescriptor accessPassword];
+  if (!accessPassword)
   {
     v25 = 0;
-    v10 = [MEMORY[0x277CD1A60] generateMediaPasswordWithError:&v25];
+    accessPassword = [MEMORY[0x277CD1A60] generateMediaPasswordWithError:&v25];
     v11 = v25;
     if (v11)
     {
-      v12 = [MEMORY[0x277D14640] sharedHandler];
-      [v12 logError:v11 operationDescription:@"API failed to generate a random 6 digit password"];
+      mEMORY[0x277D14640] = [MEMORY[0x277D14640] sharedHandler];
+      [mEMORY[0x277D14640] logError:v11 operationDescription:@"API failed to generate a random 6 digit password"];
 
-      v10 = @"000000";
+      accessPassword = @"000000";
     }
   }
 
-  v13 = [MEMORY[0x277D147D8] descriptorWithAccess:objc_msgSend(v9 requiresPassword:"access") password:{v4, v10}];
+  v13 = [MEMORY[0x277D147D8] descriptorWithAccess:objc_msgSend(hf_accessControlDescriptor requiresPassword:"access") password:{onCopy, accessPassword}];
   v14 = [(HUMediaAccessControlEditorModuleController *)self updateAccessControlDescriptor:v13];
   objc_opt_class();
-  v15 = [(HUMediaAccessControlEditorModuleController *)self delegate];
+  delegate = [(HUMediaAccessControlEditorModuleController *)self delegate];
   if (objc_opt_isKindOfClass())
   {
-    v16 = v15;
+    v16 = delegate;
   }
 
   else
@@ -345,9 +345,9 @@ LABEL_6:
   if (v17)
   {
     objc_opt_class();
-    v18 = [v6 item];
-    v19 = [v18 latestResults];
-    v20 = [v19 objectForKeyedSubscript:*MEMORY[0x277D13F68]];
+    item = [cellCopy item];
+    latestResults = [item latestResults];
+    v20 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F68]];
     if (objc_opt_isKindOfClass())
     {
       v21 = v20;
@@ -361,8 +361,8 @@ LABEL_6:
     v22 = v21;
 
     v23 = MEMORY[0x277D143D8];
-    v24 = [v6 item];
-    [v23 sendSwitchCellToggleEventForItem:v24 isOn:v4 title:v22 fromSourceViewController:v17];
+    item2 = [cellCopy item];
+    [v23 sendSwitchCellToggleEventForItem:item2 isOn:onCopy title:v22 fromSourceViewController:v17];
   }
 }
 

@@ -1,18 +1,18 @@
 @interface BLTSectionInfoListBBProvider
-- (BLTSectionInfoListBBProvider)initWithSettingsGateway:(id)a3;
+- (BLTSectionInfoListBBProvider)initWithSettingsGateway:(id)gateway;
 - (BLTSectionInfoListProviderDelegate)delegate;
-- (void)applicationsDidInstall:(id)a3;
+- (void)applicationsDidInstall:(id)install;
 - (void)dealloc;
-- (void)reloadSection:(id)a3 completion:(id)a4;
-- (void)sectionInfoObserver:(id)a3 removedSectionWithSectionID:(id)a4 transaction:(id)a5;
-- (void)sectionInfoObserver:(id)a3 updatedSectionInfoForSectionIDs:(id)a4 transaction:(id)a5;
+- (void)reloadSection:(id)section completion:(id)completion;
+- (void)sectionInfoObserver:(id)observer removedSectionWithSectionID:(id)d transaction:(id)transaction;
+- (void)sectionInfoObserver:(id)observer updatedSectionInfoForSectionIDs:(id)ds transaction:(id)transaction;
 @end
 
 @implementation BLTSectionInfoListBBProvider
 
-- (BLTSectionInfoListBBProvider)initWithSettingsGateway:(id)a3
+- (BLTSectionInfoListBBProvider)initWithSettingsGateway:(id)gateway
 {
-  v4 = a3;
+  gatewayCopy = gateway;
   v14.receiver = self;
   v14.super_class = BLTSectionInfoListBBProvider;
   v5 = [(BLTSectionInfoListBBProvider *)&v14 init];
@@ -23,14 +23,14 @@
     queue = v5->_queue;
     v5->_queue = v7;
 
-    v9 = [[BLTSectionInfoObserver alloc] initWithSettingsGateway:v4];
+    v9 = [[BLTSectionInfoObserver alloc] initWithSettingsGateway:gatewayCopy];
     observer = v5->_observer;
     v5->_observer = v9;
 
     [(BLTSectionInfoObserver *)v5->_observer setDelegate:v5];
-    v11 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
     appWorkspace = v5->_appWorkspace;
-    v5->_appWorkspace = v11;
+    v5->_appWorkspace = defaultWorkspace;
 
     [(LSApplicationWorkspace *)v5->_appWorkspace addObserver:v5];
   }
@@ -46,41 +46,41 @@
   [(BLTSectionInfoListBBProvider *)&v3 dealloc];
 }
 
-- (void)reloadSection:(id)a3 completion:(id)a4
+- (void)reloadSection:(id)section completion:(id)completion
 {
   observer = self->_observer;
   v6 = MEMORY[0x277CBEB98];
-  v7 = a4;
-  v8 = [v6 setWithObject:a3];
-  [(BLTSectionInfoObserver *)observer updateSectionInfoBySectionIDs:v8 completion:v7];
+  completionCopy = completion;
+  v8 = [v6 setWithObject:section];
+  [(BLTSectionInfoObserver *)observer updateSectionInfoBySectionIDs:v8 completion:completionCopy];
 }
 
-- (void)sectionInfoObserver:(id)a3 updatedSectionInfoForSectionIDs:(id)a4 transaction:(id)a5
+- (void)sectionInfoObserver:(id)observer updatedSectionInfoForSectionIDs:(id)ds transaction:(id)transaction
 {
-  v7 = a5;
-  v8 = a4;
+  transactionCopy = transaction;
+  dsCopy = ds;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained updateSectionInfoForSectionIDs:v8 transaction:v7];
+  [WeakRetained updateSectionInfoForSectionIDs:dsCopy transaction:transactionCopy];
 }
 
-- (void)sectionInfoObserver:(id)a3 removedSectionWithSectionID:(id)a4 transaction:(id)a5
+- (void)sectionInfoObserver:(id)observer removedSectionWithSectionID:(id)d transaction:(id)transaction
 {
-  v7 = a5;
-  v8 = a4;
+  transactionCopy = transaction;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained removedSectionWithSectionID:v8 transaction:v7];
+  [WeakRetained removedSectionWithSectionID:dCopy transaction:transactionCopy];
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  installCopy = install;
   v5 = [MEMORY[0x277CBEB58] set];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = installCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -96,8 +96,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) bundleIdentifier];
-        [v5 addObject:v11];
+        bundleIdentifier = [*(*(&v13 + 1) + 8 * v10) bundleIdentifier];
+        [v5 addObject:bundleIdentifier];
 
         ++v10;
       }

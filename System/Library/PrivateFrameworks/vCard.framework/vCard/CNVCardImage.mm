@@ -1,91 +1,91 @@
 @interface CNVCardImage
-+ (CGSize)sizeOfImageData:(id)a3;
++ (CGSize)sizeOfImageData:(id)data;
 - (CGSize)size;
 - (CNVCardImage)init;
-- (CNVCardImage)initWithData:(id)a3 cropRects:(id)a4;
-- (CNVCardImage)initWithData:(id)a3 cropRects:(id)a4 size:(CGSize)a5;
+- (CNVCardImage)initWithData:(id)data cropRects:(id)rects;
+- (CNVCardImage)initWithData:(id)data cropRects:(id)rects size:(CGSize)size;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)describePropertiesWithBuilder:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)describePropertiesWithBuilder:(id)builder;
 @end
 
 @implementation CNVCardImage
 
 - (CNVCardImage)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-- (CNVCardImage)initWithData:(id)a3 cropRects:(id)a4
+- (CNVCardImage)initWithData:(id)data cropRects:(id)rects
 {
-  v4 = a3;
-  if (a3)
+  selfCopy = data;
+  if (data)
   {
-    v6 = a4;
-    v7 = v4;
+    rectsCopy = rects;
+    v7 = selfCopy;
     [objc_opt_class() sizeOfImageData:v7];
-    v8 = [(CNVCardImage *)self initWithData:v7 cropRects:v6 size:?];
+    v8 = [(CNVCardImage *)self initWithData:v7 cropRects:rectsCopy size:?];
 
     self = v8;
-    v4 = self;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (CNVCardImage)initWithData:(id)a3 cropRects:(id)a4 size:(CGSize)a5
+- (CNVCardImage)initWithData:(id)data cropRects:(id)rects size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a3;
-  v10 = a4;
-  if (v9 && (v17.receiver = self, v17.super_class = CNVCardImage, (self = [(CNVCardImage *)&v17 init]) != 0))
+  height = size.height;
+  width = size.width;
+  dataCopy = data;
+  rectsCopy = rects;
+  if (dataCopy && (v17.receiver = self, v17.super_class = CNVCardImage, (self = [(CNVCardImage *)&v17 init]) != 0))
   {
-    v11 = [v9 copy];
+    v11 = [dataCopy copy];
     data = self->_data;
     self->_data = v11;
 
-    v13 = [v10 copy];
+    v13 = [rectsCopy copy];
     cropRects = self->_cropRects;
     self->_cropRects = v13;
 
     self->_size.width = width;
     self->_size.height = height;
     self = self;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 - (id)description
 {
   v3 = [MEMORY[0x277CFBDF0] descriptionBuilderWithObject:self];
   [(CNVCardImage *)self describePropertiesWithBuilder:v3];
-  v4 = [v3 build];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (void)describePropertiesWithBuilder:(id)a3
+- (void)describePropertiesWithBuilder:(id)builder
 {
-  v20 = a3;
+  builderCopy = builder;
   v4 = MEMORY[0x277CCACA8];
   v5 = MEMORY[0x277CCABB0];
-  v6 = [(CNVCardImage *)self data];
-  v7 = [v5 numberWithUnsignedInteger:{objc_msgSend(v6, "length")}];
+  data = [(CNVCardImage *)self data];
+  v7 = [v5 numberWithUnsignedInteger:{objc_msgSend(data, "length")}];
   v8 = [v4 stringWithFormat:@"%@ bytes", v7];
-  v9 = [v20 appendName:@"data" object:v8];
+  v9 = [builderCopy appendName:@"data" object:v8];
 
-  v10 = [(CNVCardImage *)self cropRects];
-  v11 = [v20 appendName:@"cropRects" object:v10];
+  cropRects = [(CNVCardImage *)self cropRects];
+  v11 = [builderCopy appendName:@"cropRects" object:cropRects];
 
   v12 = MEMORY[0x277CCACA8];
   v13 = MEMORY[0x277CCABB0];
@@ -95,23 +95,23 @@
   [(CNVCardImage *)self size];
   v17 = [v15 numberWithDouble:v16];
   v18 = [v12 stringWithFormat:@"%@x%@", v14, v17];
-  v19 = [v20 appendName:@"size" object:v18];
+  v19 = [builderCopy appendName:@"size" object:v18];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CNVCardMutableImage alloc];
-  v5 = [(CNVCardImage *)self data];
-  v6 = [(CNVCardImage *)self cropRects];
+  data = [(CNVCardImage *)self data];
+  cropRects = [(CNVCardImage *)self cropRects];
   [(CNVCardImage *)self size];
-  v7 = [(CNVCardMutableImage *)v4 initWithData:v5 cropRects:v6 size:?];
+  v7 = [(CNVCardMutableImage *)v4 initWithData:data cropRects:cropRects size:?];
 
   return v7;
 }
 
-+ (CGSize)sizeOfImageData:(id)a3
++ (CGSize)sizeOfImageData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -136,7 +136,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v6 = v4(v3, 0);
+  v6 = v4(dataCopy, 0);
   if (!v6)
   {
     v15 = 0.0;

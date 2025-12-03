@@ -1,42 +1,42 @@
 @interface CRKTransportPreflightOperation
-- (BOOL)anyCommonNameInArrayHasLeaderPrefix:(id)a3;
-- (BOOL)errorIndicatesThatInterruptionWasCausedByDecisionHandler:(id)a3;
-- (BOOL)isCommonNamePrefixValidForRemoteTransport:(id)a3;
-- (BOOL)isCommonNamePrefixValidForTransport:(id)a3;
-- (BOOL)isInsecureConnectionError:(id)a3;
+- (BOOL)anyCommonNameInArrayHasLeaderPrefix:(id)prefix;
+- (BOOL)errorIndicatesThatInterruptionWasCausedByDecisionHandler:(id)handler;
+- (BOOL)isCommonNamePrefixValidForRemoteTransport:(id)transport;
+- (BOOL)isCommonNamePrefixValidForTransport:(id)transport;
+- (BOOL)isInsecureConnectionError:(id)error;
 - (CRKSession)session;
-- (CRKTransportPreflightOperation)initWithTransport:(id)a3 session:(id)a4;
+- (CRKTransportPreflightOperation)initWithTransport:(id)transport session:(id)session;
 - (NSDictionary)stateDictionary;
-- (id)ASMUserIdentifierFromTrustDecision:(id)a3;
+- (id)ASMUserIdentifierFromTrustDecision:(id)decision;
 - (void)cancel;
-- (void)clearDelegatesOnTransport:(id)a3;
-- (void)finishWithShouldResetBackoff:(BOOL)a3;
-- (void)finishWithTransport:(id)a3;
-- (void)handleContinuationDecision:(unint64_t)a3 forTrustDecision:(id)a4;
+- (void)clearDelegatesOnTransport:(id)transport;
+- (void)finishWithShouldResetBackoff:(BOOL)backoff;
+- (void)finishWithTransport:(id)transport;
+- (void)handleContinuationDecision:(unint64_t)decision forTrustDecision:(id)trustDecision;
 - (void)invalidateTransport;
 - (void)main;
-- (void)respondToTrustDecision:(id)a3 withAllowUntrustedConnections:(BOOL)a4;
-- (void)setDelegatesOnTransport:(id)a3;
-- (void)transport:(id)a3 didInterruptWithError:(id)a4;
-- (void)transport:(id)a3 encounteredTrustDecisionWhileTryingToSecure:(id)a4;
-- (void)transportDidConnect:(id)a3;
-- (void)transportDidInvalidate:(id)a3;
+- (void)respondToTrustDecision:(id)decision withAllowUntrustedConnections:(BOOL)connections;
+- (void)setDelegatesOnTransport:(id)transport;
+- (void)transport:(id)transport didInterruptWithError:(id)error;
+- (void)transport:(id)transport encounteredTrustDecisionWhileTryingToSecure:(id)secure;
+- (void)transportDidConnect:(id)connect;
+- (void)transportDidInvalidate:(id)invalidate;
 @end
 
 @implementation CRKTransportPreflightOperation
 
-- (CRKTransportPreflightOperation)initWithTransport:(id)a3 session:(id)a4
+- (CRKTransportPreflightOperation)initWithTransport:(id)transport session:(id)session
 {
-  v7 = a3;
-  v8 = a4;
+  transportCopy = transport;
+  sessionCopy = session;
   v12.receiver = self;
   v12.super_class = CRKTransportPreflightOperation;
   v9 = [(CRKTransportPreflightOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_transport, a3);
-    objc_storeWeak(&v10->_session, v8);
+    objc_storeStrong(&v9->_transport, transport);
+    objc_storeWeak(&v10->_session, sessionCopy);
   }
 
   return v10;
@@ -46,8 +46,8 @@
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"transport";
-  v2 = [(CRKTransportPreflightOperation *)self transport];
-  v3 = [v2 description];
+  transport = [(CRKTransportPreflightOperation *)self transport];
+  v3 = [transport description];
   v7[0] = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
@@ -128,11 +128,11 @@ void __38__CRKTransportPreflightOperation_main__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setDelegatesOnTransport:(id)a3
+- (void)setDelegatesOnTransport:(id)transport
 {
-  v4 = a3;
-  [v4 setDelegate:self];
-  v7 = v4;
+  transportCopy = transport;
+  [transportCopy setDelegate:self];
+  v7 = transportCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -149,11 +149,11 @@ void __38__CRKTransportPreflightOperation_main__block_invoke(uint64_t a1)
   [v6 setRemoteTransportDelegate:self];
 }
 
-- (void)clearDelegatesOnTransport:(id)a3
+- (void)clearDelegatesOnTransport:(id)transport
 {
-  v3 = a3;
-  [v3 setDelegate:0];
-  v6 = v3;
+  transportCopy = transport;
+  [transportCopy setDelegate:0];
+  v6 = transportCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -170,22 +170,22 @@ void __38__CRKTransportPreflightOperation_main__block_invoke(uint64_t a1)
   [v5 setRemoteTransportDelegate:0];
 }
 
-- (BOOL)errorIndicatesThatInterruptionWasCausedByDecisionHandler:(id)a3
+- (BOOL)errorIndicatesThatInterruptionWasCausedByDecisionHandler:(id)handler
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+  userInfo = [handler userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
   LOBYTE(self) = [(CRKTransportPreflightOperation *)self isInsecureConnectionError:v5];
 
   return self;
 }
 
-- (BOOL)isInsecureConnectionError:(id)a3
+- (BOOL)isInsecureConnectionError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:*MEMORY[0x277CF9518]])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277CF9518]])
   {
-    v5 = [v3 code] == 106;
+    v5 = [errorCopy code] == 106;
   }
 
   else
@@ -199,34 +199,34 @@ void __38__CRKTransportPreflightOperation_main__block_invoke(uint64_t a1)
 - (void)invalidateTransport
 {
   [(CRKTransportPreflightOperation *)self setInvalidationTriggered:1];
-  v3 = [(CRKTransportPreflightOperation *)self transport];
-  [v3 invalidate];
+  transport = [(CRKTransportPreflightOperation *)self transport];
+  [transport invalidate];
 }
 
-- (void)finishWithTransport:(id)a3
+- (void)finishWithTransport:(id)transport
 {
-  v4 = a3;
-  [(CRKTransportPreflightOperation *)self clearDelegatesOnTransport:v4];
-  [v4 suspend];
-  v5 = [[CRKTransportPreflightResultObject alloc] initWithTransport:v4 shouldResetBackoff:0];
+  transportCopy = transport;
+  [(CRKTransportPreflightOperation *)self clearDelegatesOnTransport:transportCopy];
+  [transportCopy suspend];
+  v5 = [[CRKTransportPreflightResultObject alloc] initWithTransport:transportCopy shouldResetBackoff:0];
 
   [(CRKTransportPreflightOperation *)self endOperationWithResultObject:v5];
 }
 
-- (void)finishWithShouldResetBackoff:(BOOL)a3
+- (void)finishWithShouldResetBackoff:(BOOL)backoff
 {
-  v4 = [[CRKTransportPreflightResultObject alloc] initWithTransport:0 shouldResetBackoff:a3];
+  v4 = [[CRKTransportPreflightResultObject alloc] initWithTransport:0 shouldResetBackoff:backoff];
   [(CRKTransportPreflightOperation *)self endOperationWithResultObject:v4];
 }
 
-- (void)transportDidConnect:(id)a3
+- (void)transportDidConnect:(id)connect
 {
-  v4 = a3;
+  connectCopy = connect;
   if ([(CRKTransportPreflightOperation *)self isExecuting]&& ![(CRKTransportPreflightOperation *)self invalidationTriggered])
   {
-    if ([(CRKTransportPreflightOperation *)self isCommonNamePrefixValidForTransport:v4])
+    if ([(CRKTransportPreflightOperation *)self isCommonNamePrefixValidForTransport:connectCopy])
     {
-      [(CRKTransportPreflightOperation *)self finishWithTransport:v4];
+      [(CRKTransportPreflightOperation *)self finishWithTransport:connectCopy];
     }
 
     else
@@ -234,7 +234,7 @@ void __38__CRKTransportPreflightOperation_main__block_invoke(uint64_t a1)
       v5 = _CRKLogSession_0();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
       {
-        [(CRKTransportPreflightOperation *)self transportDidConnect:v4, v5];
+        [(CRKTransportPreflightOperation *)self transportDidConnect:connectCopy, v5];
       }
 
       [(CRKTransportPreflightOperation *)self invalidateTransport];
@@ -242,23 +242,23 @@ void __38__CRKTransportPreflightOperation_main__block_invoke(uint64_t a1)
   }
 }
 
-- (void)transport:(id)a3 didInterruptWithError:(id)a4
+- (void)transport:(id)transport didInterruptWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   if ([(CRKTransportPreflightOperation *)self isExecuting]&& ![(CRKTransportPreflightOperation *)self invalidationTriggered])
   {
     v6 = _CRKLogSession_0();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(CRKTransportPreflightOperation *)self transport:v5 didInterruptWithError:v6];
+      [(CRKTransportPreflightOperation *)self transport:errorCopy didInterruptWithError:v6];
     }
 
-    [(CRKTransportPreflightOperation *)self setConnectionInterruptedDueToDecisionHandler:[(CRKTransportPreflightOperation *)self errorIndicatesThatInterruptionWasCausedByDecisionHandler:v5]];
+    [(CRKTransportPreflightOperation *)self setConnectionInterruptedDueToDecisionHandler:[(CRKTransportPreflightOperation *)self errorIndicatesThatInterruptionWasCausedByDecisionHandler:errorCopy]];
     [(CRKTransportPreflightOperation *)self invalidateTransport];
   }
 }
 
-- (void)transportDidInvalidate:(id)a3
+- (void)transportDidInvalidate:(id)invalidate
 {
   if ([(CRKTransportPreflightOperation *)self isExecuting])
   {
@@ -272,28 +272,28 @@ void __38__CRKTransportPreflightOperation_main__block_invoke(uint64_t a1)
     {
       if ([(CRKTransportPreflightOperation *)self decisionHandlerWantsBackoffReset])
       {
-        v4 = [(CRKTransportPreflightOperation *)self connectionInterruptedDueToDecisionHandler];
+        connectionInterruptedDueToDecisionHandler = [(CRKTransportPreflightOperation *)self connectionInterruptedDueToDecisionHandler];
       }
 
       else
       {
-        v4 = 0;
+        connectionInterruptedDueToDecisionHandler = 0;
       }
 
-      [(CRKTransportPreflightOperation *)self finishWithShouldResetBackoff:v4];
+      [(CRKTransportPreflightOperation *)self finishWithShouldResetBackoff:connectionInterruptedDueToDecisionHandler];
     }
   }
 }
 
-- (void)transport:(id)a3 encounteredTrustDecisionWhileTryingToSecure:(id)a4
+- (void)transport:(id)transport encounteredTrustDecisionWhileTryingToSecure:(id)secure
 {
-  v7 = a3;
-  v8 = a4;
+  transportCopy = transport;
+  secureCopy = secure;
   if ([(CRKTransportPreflightOperation *)self isExecuting]&& ![(CRKTransportPreflightOperation *)self invalidationTriggered])
   {
-    v9 = [(CRKTransportPreflightOperation *)self ASMUserIdentifierFromTrustDecision:v8];
-    v10 = [(CRKTransportPreflightOperation *)self session];
-    v11 = [v10 delegate];
+    v9 = [(CRKTransportPreflightOperation *)self ASMUserIdentifierFromTrustDecision:secureCopy];
+    session = [(CRKTransportPreflightOperation *)self session];
+    delegate = [session delegate];
     objc_initWeak(&location, self);
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -302,8 +302,8 @@ void __38__CRKTransportPreflightOperation_main__block_invoke(uint64_t a1)
     v14[1] = a2;
     v12[4] = self;
     objc_copyWeak(v14, &location);
-    v13 = v8;
-    [v11 session:v10 encounteredUntrustedConnectionForASMInstructorIdentifier:v9 decisionHandler:v12];
+    v13 = secureCopy;
+    [delegate session:session encounteredUntrustedConnectionForASMInstructorIdentifier:v9 decisionHandler:v12];
 
     objc_destroyWeak(v14);
     objc_destroyWeak(&location);
@@ -324,66 +324,66 @@ void __88__CRKTransportPreflightOperation_transport_encounteredTrustDecisionWhil
   }
 }
 
-- (id)ASMUserIdentifierFromTrustDecision:(id)a3
+- (id)ASMUserIdentifierFromTrustDecision:(id)decision
 {
-  v3 = a3;
+  decisionCopy = decision;
   v4 = [CRKConcreteTrust alloc];
-  v5 = [v3 trust];
+  trust = [decisionCopy trust];
 
-  v6 = [(CRKConcreteTrust *)v4 initWithTrust:v5];
-  v7 = [(CRKConcreteTrust *)v6 leafCertificate];
-  v8 = [CRKASMCertificateUserIdentifierExtractor userIdentifierFromCertificate:v7];
+  v6 = [(CRKConcreteTrust *)v4 initWithTrust:trust];
+  leafCertificate = [(CRKConcreteTrust *)v6 leafCertificate];
+  v8 = [CRKASMCertificateUserIdentifierExtractor userIdentifierFromCertificate:leafCertificate];
 
   return v8;
 }
 
-- (void)handleContinuationDecision:(unint64_t)a3 forTrustDecision:(id)a4
+- (void)handleContinuationDecision:(unint64_t)decision forTrustDecision:(id)trustDecision
 {
-  v6 = a4;
-  if (a3 == 2)
+  trustDecisionCopy = trustDecision;
+  if (decision == 2)
   {
-    v8 = self;
-    v9 = v6;
+    selfCopy2 = self;
+    v9 = trustDecisionCopy;
     v10 = 1;
   }
 
   else
   {
-    if (a3 == 1)
+    if (decision == 1)
     {
       [(CRKTransportPreflightOperation *)self setDecisionHandlerWantsBackoffReset:1];
     }
 
-    else if (a3)
+    else if (decision)
     {
       v7 = _CRKLogSession_0();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        [(CRKTransportPreflightOperation *)self handleContinuationDecision:a3 forTrustDecision:v7];
+        [(CRKTransportPreflightOperation *)self handleContinuationDecision:decision forTrustDecision:v7];
       }
     }
 
-    v8 = self;
-    v9 = v6;
+    selfCopy2 = self;
+    v9 = trustDecisionCopy;
     v10 = 0;
   }
 
-  [(CRKTransportPreflightOperation *)v8 respondToTrustDecision:v9 withAllowUntrustedConnections:v10];
+  [(CRKTransportPreflightOperation *)selfCopy2 respondToTrustDecision:v9 withAllowUntrustedConnections:v10];
 }
 
-- (void)respondToTrustDecision:(id)a3 withAllowUntrustedConnections:(BOOL)a4
+- (void)respondToTrustDecision:(id)decision withAllowUntrustedConnections:(BOOL)connections
 {
-  v4 = a4;
-  v6 = a3;
+  connectionsCopy = connections;
+  decisionCopy = decision;
   v7 = _CRKLogSession_0();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    [(CRKTransportPreflightOperation *)self respondToTrustDecision:v4 withAllowUntrustedConnections:v7];
+    [(CRKTransportPreflightOperation *)self respondToTrustDecision:connectionsCopy withAllowUntrustedConnections:v7];
   }
 
   v8 = [CRKConcreteTrust alloc];
-  v9 = [v6 trust];
-  v10 = [(CRKConcreteTrust *)v8 initWithTrust:v9];
+  trust = [decisionCopy trust];
+  v10 = [(CRKConcreteTrust *)v8 initWithTrust:trust];
 
   v11 = _CRKLogSession_0();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -391,17 +391,17 @@ void __88__CRKTransportPreflightOperation_transport_encounteredTrustDecisionWhil
     [(CRKTransportPreflightOperation *)self respondToTrustDecision:v10 withAllowUntrustedConnections:v11];
   }
 
-  [v6 respondWithDecisionToAllowUntrustedConnection:v4];
+  [decisionCopy respondWithDecisionToAllowUntrustedConnection:connectionsCopy];
 }
 
-- (BOOL)isCommonNamePrefixValidForTransport:(id)a3
+- (BOOL)isCommonNamePrefixValidForTransport:(id)transport
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transportCopy = transport;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CRKTransportPreflightOperation *)self isCommonNamePrefixValidForRemoteTransport:v4];
+    v5 = [(CRKTransportPreflightOperation *)self isCommonNamePrefixValidForRemoteTransport:transportCopy];
   }
 
   else
@@ -409,16 +409,16 @@ void __88__CRKTransportPreflightOperation_transport_encounteredTrustDecisionWhil
     v6 = _CRKLogSession_0();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(CRKTransportPreflightOperation *)self session];
-      v8 = [(CRKTransportPreflightOperation *)self session];
-      v9 = [v8 endpoint];
-      v10 = [v9 stringValue];
+      session = [(CRKTransportPreflightOperation *)self session];
+      session2 = [(CRKTransportPreflightOperation *)self session];
+      endpoint = [session2 endpoint];
+      stringValue = [endpoint stringValue];
       v12 = 138543874;
-      v13 = v7;
+      v13 = session;
       v14 = 2114;
-      v15 = v10;
+      v15 = stringValue;
       v16 = 2114;
-      v17 = v4;
+      v17 = transportCopy;
       _os_log_impl(&dword_243550000, v6, OS_LOG_TYPE_DEFAULT, "SESSION:%{public}@. IP:%{public}@. Not validating common name prefix of certificate because transport %{public}@ is not remote", &v12, 0x20u);
     }
 
@@ -428,35 +428,35 @@ void __88__CRKTransportPreflightOperation_transport_encounteredTrustDecisionWhil
   return v5;
 }
 
-- (BOOL)isCommonNamePrefixValidForRemoteTransport:(id)a3
+- (BOOL)isCommonNamePrefixValidForRemoteTransport:(id)transport
 {
-  v4 = a3;
+  transportCopy = transport;
   v5 = [CRKConcreteTrust alloc];
-  v6 = [v4 peerTrust];
+  peerTrust = [transportCopy peerTrust];
 
-  v7 = [(CRKConcreteTrust *)v5 initWithTrust:v6];
-  v8 = [(CRKConcreteTrust *)v7 leafCertificate];
+  v7 = [(CRKConcreteTrust *)v5 initWithTrust:peerTrust];
+  leafCertificate = [(CRKConcreteTrust *)v7 leafCertificate];
   v9 = _CRKLogSession_0();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    [(CRKTransportPreflightOperation *)self isCommonNamePrefixValidForRemoteTransport:v8, v9];
+    [(CRKTransportPreflightOperation *)self isCommonNamePrefixValidForRemoteTransport:leafCertificate, v9];
   }
 
-  v10 = [v8 commonNames];
-  v11 = [(CRKTransportPreflightOperation *)self anyCommonNameInArrayHasLeaderPrefix:v10];
+  commonNames = [leafCertificate commonNames];
+  v11 = [(CRKTransportPreflightOperation *)self anyCommonNameInArrayHasLeaderPrefix:commonNames];
 
   return v11;
 }
 
-- (BOOL)anyCommonNameInArrayHasLeaderPrefix:(id)a3
+- (BOOL)anyCommonNameInArrayHasLeaderPrefix:(id)prefix
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  prefixCopy = prefix;
+  v5 = [prefixCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -467,7 +467,7 @@ void __88__CRKTransportPreflightOperation_transport_encounteredTrustDecisionWhil
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(prefixCopy);
         }
 
         if ([(CRKTransportPreflightOperation *)self commonNameHasLeaderPrefix:*(*(&v11 + 1) + 8 * i), v11])
@@ -477,7 +477,7 @@ void __88__CRKTransportPreflightOperation_transport_encounteredTrustDecisionWhil
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [prefixCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;

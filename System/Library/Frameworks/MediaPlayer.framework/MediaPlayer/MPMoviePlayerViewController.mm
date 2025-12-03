@@ -7,8 +7,8 @@
 
 - (void)loadView
 {
-  v3 = [(MPMoviePlayerController *)self->_moviePlayer view];
-  [(MPMoviePlayerViewController *)self setView:v3];
+  view = [(MPMoviePlayerController *)self->_moviePlayer view];
+  [(MPMoviePlayerViewController *)self setView:view];
 }
 
 - (MPMoviePlayerViewController)initWithContentURL:(NSURL *)contentURL

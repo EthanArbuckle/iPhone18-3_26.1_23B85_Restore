@@ -1,27 +1,27 @@
 @interface WFREPBRunRequestProgress
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WFREPBRunRequestProgress
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(WFREPBRunRequestProgress *)self setRunRequestIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  self->_progress = v4[1];
+  self->_progress = fromCopy[1];
 }
 
 - (unint64_t)hash
@@ -55,18 +55,18 @@
   return v11 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v6 = [v4 isMemberOfClass:objc_opt_class()] && ((runRequestIdentifier = self->_runRequestIdentifier, !(runRequestIdentifier | *(v4 + 2))) || -[NSString isEqual:](runRequestIdentifier, "isEqual:")) && self->_progress == *(v4 + 1);
+  equalCopy = equal;
+  v6 = [equalCopy isMemberOfClass:objc_opt_class()] && ((runRequestIdentifier = self->_runRequestIdentifier, !(runRequestIdentifier | *(equalCopy + 2))) || -[NSString isEqual:](runRequestIdentifier, "isEqual:")) && self->_progress == *(equalCopy + 1);
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_runRequestIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_runRequestIdentifier copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -74,23 +74,23 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   runRequestIdentifier = self->_runRequestIdentifier;
-  v5 = a3;
-  [v5 setRunRequestIdentifier:runRequestIdentifier];
-  v5[1] = self->_progress;
+  toCopy = to;
+  [toCopy setRunRequestIdentifier:runRequestIdentifier];
+  toCopy[1] = self->_progress;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_runRequestIdentifier)
   {
     __assert_rtn("[WFREPBRunRequestProgress writeTo:]", "WFREPBRunRequestProgress.m", 79, "nil != self->_runRequestIdentifier");
   }
 
-  v6 = v4;
+  v6 = toCopy;
   PBDataWriterWriteStringField();
   progress = self->_progress;
   PBDataWriterWriteDoubleField();
@@ -98,12 +98,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   runRequestIdentifier = self->_runRequestIdentifier;
   if (runRequestIdentifier)
   {
-    [v3 setObject:runRequestIdentifier forKey:@"runRequestIdentifier"];
+    [dictionary setObject:runRequestIdentifier forKey:@"runRequestIdentifier"];
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_progress];
@@ -118,8 +118,8 @@
   v8.receiver = self;
   v8.super_class = WFREPBRunRequestProgress;
   v4 = [(WFREPBRunRequestProgress *)&v8 description];
-  v5 = [(WFREPBRunRequestProgress *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WFREPBRunRequestProgress *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

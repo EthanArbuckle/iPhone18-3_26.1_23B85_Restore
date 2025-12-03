@@ -34,62 +34,62 @@
 
 + (void)__MPModelPropertyFileAssetTraits__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelFileAsset.m" lineNumber:37 description:@"Translator was missing mapping for MPModelPropertyFileAssetTraits"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelFileAsset.m" lineNumber:37 description:@"Translator was missing mapping for MPModelPropertyFileAssetTraits"];
 }
 
 + (void)__MPModelPropertyFileAssetHLSKeyCertificateURL__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelFileAsset.m" lineNumber:36 description:@"Translator was missing mapping for MPModelPropertyFileAssetHLSKeyCertificateURL"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelFileAsset.m" lineNumber:36 description:@"Translator was missing mapping for MPModelPropertyFileAssetHLSKeyCertificateURL"];
 }
 
 + (void)__MPModelPropertyFileAssetHLSKeyServerProtocol__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelFileAsset.m" lineNumber:35 description:@"Translator was missing mapping for MPModelPropertyFileAssetHLSKeyServerProtocol"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelFileAsset.m" lineNumber:35 description:@"Translator was missing mapping for MPModelPropertyFileAssetHLSKeyServerProtocol"];
 }
 
 + (void)__MPModelPropertyFileAssetHLSKeyServerURL__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelFileAsset.m" lineNumber:34 description:@"Translator was missing mapping for MPModelPropertyFileAssetHLSKeyServerURL"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelFileAsset.m" lineNumber:34 description:@"Translator was missing mapping for MPModelPropertyFileAssetHLSKeyServerURL"];
 }
 
 + (void)__MPModelPropertyFileAssetQualityType__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelFileAsset.m" lineNumber:33 description:@"Translator was missing mapping for MPModelPropertyFileAssetQualityType"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelFileAsset.m" lineNumber:33 description:@"Translator was missing mapping for MPModelPropertyFileAssetQualityType"];
 }
 
 + (void)__MPModelPropertyFileAssetPurchaseBundleFilePath__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelFileAsset.m" lineNumber:32 description:@"Translator was missing mapping for MPModelPropertyFileAssetPurchaseBundleFilePath"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelFileAsset.m" lineNumber:32 description:@"Translator was missing mapping for MPModelPropertyFileAssetPurchaseBundleFilePath"];
 }
 
 + (void)__MPModelPropertyFileAssetProtectionType__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelFileAsset.m" lineNumber:31 description:@"Translator was missing mapping for MPModelPropertyFileAssetProtectionType"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelFileAsset.m" lineNumber:31 description:@"Translator was missing mapping for MPModelPropertyFileAssetProtectionType"];
 }
 
 + (void)__MPModelPropertyFileAssetNonPurgeable__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelFileAsset.m" lineNumber:30 description:@"Translator was missing mapping for MPModelPropertyFileAssetNonPurgeable"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelFileAsset.m" lineNumber:30 description:@"Translator was missing mapping for MPModelPropertyFileAssetNonPurgeable"];
 }
 
 + (void)__MPModelPropertyFileAssetFileSize__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelFileAsset.m" lineNumber:29 description:@"Translator was missing mapping for MPModelPropertyFileAssetFileSize"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelFileAsset.m" lineNumber:29 description:@"Translator was missing mapping for MPModelPropertyFileAssetFileSize"];
 }
 
 + (void)__MPModelPropertyFileAssetFilePath__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelFileAsset.m" lineNumber:28 description:@"Translator was missing mapping for MPModelPropertyFileAssetFilePath"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelFileAsset.m" lineNumber:28 description:@"Translator was missing mapping for MPModelPropertyFileAssetFilePath"];
 }
 
 @end

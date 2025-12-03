@@ -1,9 +1,9 @@
 @interface AMUIPosterUpdater
 + (id)defaultUpdater;
 - (AMUIPosterUpdater)init;
-- (BOOL)updateInfograph:(id)a3 forPosterConfiguration:(id)a4 completion:(id)a5;
+- (BOOL)updateInfograph:(id)infograph forPosterConfiguration:(id)configuration completion:(id)completion;
 - (void)_clearInflightAndFireNextRequest;
-- (void)_lock_fireInfographUpdate:(id)a3;
+- (void)_lock_fireInfographUpdate:(id)update;
 @end
 
 @implementation AMUIPosterUpdater
@@ -40,13 +40,13 @@ uint64_t __35__AMUIPosterUpdater_defaultUpdater__block_invoke()
   return result;
 }
 
-- (BOOL)updateInfograph:(id)a3 forPosterConfiguration:(id)a4 completion:(id)a5
+- (BOOL)updateInfograph:(id)infograph forPosterConfiguration:(id)configuration completion:(id)completion
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v9;
+  infographCopy = infograph;
+  configurationCopy = configuration;
+  completionCopy = completion;
+  v12 = infographCopy;
   NSClassFromString(&cfstr_Nsdictionary.isa);
   if (!v12)
   {
@@ -58,7 +58,7 @@ uint64_t __35__AMUIPosterUpdater_defaultUpdater__block_invoke()
     [AMUIPosterUpdater updateInfograph:a2 forPosterConfiguration:? completion:?];
   }
 
-  v13 = v10;
+  v13 = configurationCopy;
   NSClassFromString(&cfstr_Prsposterconfi.isa);
   if (!v13)
   {
@@ -70,18 +70,18 @@ uint64_t __35__AMUIPosterUpdater_defaultUpdater__block_invoke()
     [AMUIPosterUpdater updateInfograph:a2 forPosterConfiguration:? completion:?];
   }
 
-  if (!v11)
+  if (!completionCopy)
   {
     [AMUIPosterUpdater updateInfograph:a2 forPosterConfiguration:? completion:?];
   }
 
   v14 = [v13 pr_loadAmbientWidgetLayoutWithError:0];
-  v15 = [v14 widgetLayoutIconState];
-  v16 = [v15 isEqual:v12];
+  widgetLayoutIconState = [v14 widgetLayoutIconState];
+  v16 = [widgetLayoutIconState isEqual:v12];
 
   if (v16)
   {
-    v11[2](v11, v13, 0);
+    completionCopy[2](completionCopy, v13, 0);
   }
 
   else
@@ -109,7 +109,7 @@ uint64_t __35__AMUIPosterUpdater_defaultUpdater__block_invoke()
             [AMUIPosterUpdater updateInfograph:forPosterConfiguration:completion:];
           }
 
-          [(_AMUIPosterUpdate *)*p_lock_pendingInfographConfigurationUpdate appendCompletion:v11];
+          [(_AMUIPosterUpdate *)*p_lock_pendingInfographConfigurationUpdate appendCompletion:completionCopy];
         }
 
         else
@@ -144,7 +144,7 @@ uint64_t __35__AMUIPosterUpdater_defaultUpdater__block_invoke()
 
     else
     {
-      [(_AMUIPosterUpdate *)v20 appendCompletion:v11];
+      [(_AMUIPosterUpdate *)v20 appendCompletion:completionCopy];
       v25 = AMUILogInfograph();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
@@ -181,15 +181,15 @@ uint64_t __35__AMUIPosterUpdater_defaultUpdater__block_invoke()
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_fireInfographUpdate:(id)a3
+- (void)_lock_fireInfographUpdate:(id)update
 {
-  v6 = a3;
+  updateCopy = update;
   if (self->_lock_inflightInfographConfigurationUpdate)
   {
     [AMUIPosterUpdater _lock_fireInfographUpdate:a2];
   }
 
-  objc_storeStrong(&self->_lock_inflightInfographConfigurationUpdate, a3);
+  objc_storeStrong(&self->_lock_inflightInfographConfigurationUpdate, update);
   v7 = AMUILogInfograph();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
@@ -197,7 +197,7 @@ uint64_t __35__AMUIPosterUpdater_defaultUpdater__block_invoke()
   }
 
   lock_service = self->_lock_service;
-  if (v6)
+  if (updateCopy)
   {
     if (!lock_service)
     {
@@ -208,15 +208,15 @@ uint64_t __35__AMUIPosterUpdater_defaultUpdater__block_invoke()
 
     objc_initWeak(&location, self);
     v11 = self->_lock_service;
-    v12 = [v6 posterConfiguration];
-    v13 = [v6 update];
+    posterConfiguration = [updateCopy posterConfiguration];
+    update = [updateCopy update];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __47__AMUIPosterUpdater__lock_fireInfographUpdate___block_invoke;
     v14[3] = &unk_278C760B8;
     objc_copyWeak(&v16, &location);
-    v15 = v6;
-    [(PRSService *)v11 updatePosterConfiguration:v12 update:v13 completion:v14];
+    v15 = updateCopy;
+    [(PRSService *)v11 updatePosterConfiguration:posterConfiguration update:update completion:v14];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);

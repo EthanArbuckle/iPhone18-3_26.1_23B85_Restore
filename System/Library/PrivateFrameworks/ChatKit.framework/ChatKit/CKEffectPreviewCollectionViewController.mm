@@ -2,13 +2,13 @@
 - (CKEffectPreviewCollectionViewController)init;
 - (CKEffectPreviewCollectionViewControllerDelegate)delegate;
 - (CKFullScreenEffect)currentEffect;
-- (void)addAnimationTimerForCell:(id)a3;
+- (void)addAnimationTimerForCell:(id)cell;
 - (void)dealloc;
-- (void)displayEffectWithIdentifier:(id)a3;
+- (void)displayEffectWithIdentifier:(id)identifier;
 - (void)loadView;
 - (void)resumeEffect;
-- (void)setCurrentEffect:(id)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)setCurrentEffect:(id)effect;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CKEffectPreviewCollectionViewController
@@ -37,47 +37,47 @@
 
 - (void)dealloc
 {
-  v3 = [(CKEffectPreviewCollectionViewController *)self animationTimer];
-  [v3 invalidate];
+  animationTimer = [(CKEffectPreviewCollectionViewController *)self animationTimer];
+  [animationTimer invalidate];
 
   v4.receiver = self;
   v4.super_class = CKEffectPreviewCollectionViewController;
   [(CKEffectPreviewCollectionViewController *)&v4 dealloc];
 }
 
-- (void)displayEffectWithIdentifier:(id)a3
+- (void)displayEffectWithIdentifier:(id)identifier
 {
   v77 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKEffectPreviewCollectionViewController *)self fsem];
-  v6 = [v5 effectForIdentifier:v4];
+  identifierCopy = identifier;
+  fsem = [(CKEffectPreviewCollectionViewController *)self fsem];
+  v6 = [fsem effectForIdentifier:identifierCopy];
 
-  v7 = [(CKEffectPreviewCollectionViewController *)self currentEffect];
+  currentEffect = [(CKEffectPreviewCollectionViewController *)self currentEffect];
 
-  if (v7 != v6)
+  if (currentEffect != v6)
   {
-    v8 = [(CKEffectPreviewCollectionViewController *)self currentCell];
-    [v8 removeFromSuperview];
+    currentCell = [(CKEffectPreviewCollectionViewController *)self currentCell];
+    [currentCell removeFromSuperview];
 
     [(CKEffectPreviewCollectionViewController *)self setCurrentCell:0];
     [(CKEffectPreviewCollectionViewController *)self setCurrentEffect:v6];
     if (v6)
     {
-      v56 = v4;
-      v9 = [(CKEffectPreviewCollectionViewController *)self animationTimer];
-      [v9 invalidate];
+      v56 = identifierCopy;
+      animationTimer = [(CKEffectPreviewCollectionViewController *)self animationTimer];
+      [animationTimer invalidate];
 
       v10 = [CKMomentCollectionViewCell alloc];
-      v11 = [(CKEffectPreviewCollectionViewController *)self view];
-      [v11 frame];
+      view = [(CKEffectPreviewCollectionViewController *)self view];
+      [view frame];
       v12 = [(CKMomentCollectionViewCell *)v10 initWithFrame:?];
 
       [(CKEffectPreviewCollectionViewController *)self setCurrentCell:v12];
       v55 = v6;
       [(CKMomentCollectionViewCell *)v12 setEffect:v6];
       [(CKMomentCollectionViewCell *)v12 setupEffectIfNeeded];
-      v13 = [(CKEffectPreviewCollectionViewController *)self delegate];
-      v59 = [v13 balloonView];
+      delegate = [(CKEffectPreviewCollectionViewController *)self delegate];
+      balloonView = [delegate balloonView];
 
       v73 = 0u;
       v74 = 0u;
@@ -101,45 +101,45 @@
 
             v64 = v14;
             v15 = *(*(&v71 + 1) + 8 * v14);
-            v16 = [v59 superview];
-            [v59 center];
+            superview = [balloonView superview];
+            [balloonView center];
             v18 = v17;
             v20 = v19;
-            v21 = [(CKEffectPreviewCollectionViewController *)self view];
-            [v16 convertPoint:v21 toView:{v18, v20}];
+            view2 = [(CKEffectPreviewCollectionViewController *)self view];
+            [superview convertPoint:view2 toView:{v18, v20}];
             [v15 setFocusPoint:?];
 
-            v22 = [v59 superview];
-            [v59 frame];
+            superview2 = [balloonView superview];
+            [balloonView frame];
             v24 = v23;
             v26 = v25;
             v28 = v27;
             v30 = v29;
-            v31 = [(CKEffectPreviewCollectionViewController *)self view];
-            [v22 convertRect:v31 toView:{v24, v26, v28, v30}];
+            view3 = [(CKEffectPreviewCollectionViewController *)self view];
+            [superview2 convertRect:view3 toView:{v24, v26, v28, v30}];
             [v15 setMessageRect:?];
 
-            [v15 setMessageOrientation:{objc_msgSend(v59, "orientation")}];
-            v32 = [(CKEffectPreviewCollectionViewController *)self delegate];
-            v33 = [v32 balloonView];
+            [v15 setMessageOrientation:{objc_msgSend(balloonView, "orientation")}];
+            delegate2 = [(CKEffectPreviewCollectionViewController *)self delegate];
+            balloonView2 = [delegate2 balloonView];
 
-            [v33 center];
+            [balloonView2 center];
             v35 = v34;
             v37 = v36;
-            v38 = [MEMORY[0x1E69DCA80] preferredFormat];
-            v39 = [MEMORY[0x1E69DCEB0] mainScreen];
-            [v39 scale];
-            [v38 setScale:?];
+            preferredFormat = [MEMORY[0x1E69DCA80] preferredFormat];
+            mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+            [mainScreen scale];
+            [preferredFormat setScale:?];
 
             v40 = objc_alloc(MEMORY[0x1E69DCA78]);
-            [v33 bounds];
-            v63 = v38;
-            v43 = [v40 initWithSize:v38 format:{v41, v42}];
+            [balloonView2 bounds];
+            v63 = preferredFormat;
+            v43 = [v40 initWithSize:preferredFormat format:{v41, v42}];
             v69[0] = MEMORY[0x1E69E9820];
             v69[1] = 3221225472;
             v69[2] = __71__CKEffectPreviewCollectionViewController_displayEffectWithIdentifier___block_invoke;
             v69[3] = &unk_1E72EBBE8;
-            v44 = v33;
+            v44 = balloonView2;
             v70 = v44;
             v62 = v43;
             v45 = [v43 imageWithActions:v69];
@@ -147,8 +147,8 @@
             v66 = 0u;
             v67 = 0u;
             v68 = 0u;
-            v46 = [(CKMomentCollectionViewCell *)v60 effectViews];
-            v47 = [v46 countByEnumeratingWithState:&v65 objects:v75 count:16];
+            effectViews = [(CKMomentCollectionViewCell *)v60 effectViews];
+            v47 = [effectViews countByEnumeratingWithState:&v65 objects:v75 count:16];
             if (v47)
             {
               v48 = v47;
@@ -160,13 +160,13 @@
                 {
                   if (*v66 != v49)
                   {
-                    objc_enumerationMutation(v46);
+                    objc_enumerationMutation(effectViews);
                   }
 
                   v51 = *(*(&v65 + 1) + 8 * v50);
-                  v52 = [v44 superview];
-                  v53 = [(CKEffectPreviewCollectionViewController *)self view];
-                  [v52 convertPoint:v53 toView:{v35, v37}];
+                  superview3 = [v44 superview];
+                  view4 = [(CKEffectPreviewCollectionViewController *)self view];
+                  [superview3 convertPoint:view4 toView:{v35, v37}];
                   [v51 setFocusPoint:?];
 
                   [v51 setMessageImage:v45];
@@ -174,7 +174,7 @@
                 }
 
                 while (v48 != v50);
-                v48 = [v46 countByEnumeratingWithState:&v65 objects:v75 count:16];
+                v48 = [effectViews countByEnumeratingWithState:&v65 objects:v75 count:16];
               }
 
               while (v48);
@@ -190,14 +190,14 @@
         while (v61);
       }
 
-      v54 = [(CKEffectPreviewCollectionViewController *)self view];
-      [v54 addSubview:v60];
+      view5 = [(CKEffectPreviewCollectionViewController *)self view];
+      [view5 addSubview:v60];
 
       [(CKEffectPreviewCollectionViewController *)self addAnimationTimerForCell:v60];
       [(CKMomentCollectionViewCell *)v60 animate];
 
       v6 = v55;
-      v4 = v56;
+      identifierCopy = v56;
     }
   }
 }
@@ -210,23 +210,23 @@ void __71__CKEffectPreviewCollectionViewController_displayEffectWithIdentifier__
   [v2 drawViewHierarchyInRect:0 afterScreenUpdates:?];
 }
 
-- (void)setCurrentEffect:(id)a3
+- (void)setCurrentEffect:(id)effect
 {
-  v4 = a3;
-  objc_storeWeak(&self->_currentEffect, v4);
-  v6 = [v4 backgroundColor];
+  effectCopy = effect;
+  objc_storeWeak(&self->_currentEffect, effectCopy);
+  backgroundColor = [effectCopy backgroundColor];
 
-  v5 = [(CKEffectPreviewCollectionViewController *)self view];
-  [v5 setBackgroundColor:v6];
+  view = [(CKEffectPreviewCollectionViewController *)self view];
+  [view setBackgroundColor:backgroundColor];
 }
 
-- (void)addAnimationTimerForCell:(id)a3
+- (void)addAnimationTimerForCell:(id)cell
 {
-  v4 = a3;
-  objc_initWeak(&location, v4);
+  cellCopy = cell;
+  objc_initWeak(&location, cellCopy);
   v5 = MEMORY[0x1E695DFF0];
-  v6 = [v4 effect];
-  [v6 duration];
+  effect = [cellCopy effect];
+  [effect duration];
   v8 = v7;
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
@@ -235,8 +235,8 @@ void __71__CKEffectPreviewCollectionViewController_displayEffectWithIdentifier__
   objc_copyWeak(&v15, &location);
   v9 = [v5 timerWithTimeInterval:1 repeats:&v11 block:v8];
 
-  v10 = [MEMORY[0x1E695DFD0] currentRunLoop];
-  [v10 addTimer:v9 forMode:*MEMORY[0x1E695DA28]];
+  currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+  [currentRunLoop addTimer:v9 forMode:*MEMORY[0x1E695DA28]];
 
   [(CKEffectPreviewCollectionViewController *)self setAnimationTimer:v9];
   objc_destroyWeak(&v15);
@@ -251,31 +251,31 @@ void __68__CKEffectPreviewCollectionViewController_addAnimationTimerForCell___bl
 
 - (void)resumeEffect
 {
-  v3 = [(CKEffectPreviewCollectionViewController *)self resizingSavedIdentifier];
-  [(CKEffectPreviewCollectionViewController *)self displayEffectWithIdentifier:v3];
+  resizingSavedIdentifier = [(CKEffectPreviewCollectionViewController *)self resizingSavedIdentifier];
+  [(CKEffectPreviewCollectionViewController *)self displayEffectWithIdentifier:resizingSavedIdentifier];
 
   [(CKEffectPreviewCollectionViewController *)self setResizingSavedIdentifier:0];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v12.receiver = self;
   v12.super_class = CKEffectPreviewCollectionViewController;
-  v7 = a4;
-  [(CKEffectPreviewCollectionViewController *)&v12 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(CKEffectPreviewCollectionViewController *)self resizingSavedIdentifier];
-  if (v8)
+  coordinatorCopy = coordinator;
+  [(CKEffectPreviewCollectionViewController *)&v12 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  resizingSavedIdentifier = [(CKEffectPreviewCollectionViewController *)self resizingSavedIdentifier];
+  if (resizingSavedIdentifier)
   {
-    [(CKEffectPreviewCollectionViewController *)self setResizingSavedIdentifier:v8];
+    [(CKEffectPreviewCollectionViewController *)self setResizingSavedIdentifier:resizingSavedIdentifier];
   }
 
   else
   {
-    v9 = [(CKEffectPreviewCollectionViewController *)self currentEffect];
-    v10 = [v9 identifier];
-    [(CKEffectPreviewCollectionViewController *)self setResizingSavedIdentifier:v10];
+    currentEffect = [(CKEffectPreviewCollectionViewController *)self currentEffect];
+    identifier = [currentEffect identifier];
+    [(CKEffectPreviewCollectionViewController *)self setResizingSavedIdentifier:identifier];
   }
 
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel_resumeEffect object:0];
@@ -285,7 +285,7 @@ void __68__CKEffectPreviewCollectionViewController_addAnimationTimerForCell___bl
   v11[2] = __94__CKEffectPreviewCollectionViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v11[3] = &unk_1E72EC3E8;
   v11[4] = self;
-  [v7 animateAlongsideTransition:&__block_literal_global_172 completion:v11];
+  [coordinatorCopy animateAlongsideTransition:&__block_literal_global_172 completion:v11];
 }
 
 - (CKEffectPreviewCollectionViewControllerDelegate)delegate

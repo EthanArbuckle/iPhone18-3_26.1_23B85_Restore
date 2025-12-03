@@ -7,7 +7,7 @@
 
 - (uint64_t)prs_interfaceStyle
 {
-  result = [a1 userInterfaceStyle];
+  result = [self userInterfaceStyle];
   if (result != 2)
   {
     return result == 1;
@@ -18,15 +18,15 @@
 
 - (uint64_t)prs_accessibilityContrast
 {
-  v1 = [a1 accessibilityContrast];
-  if (v1 == 1)
+  accessibilityContrast = [self accessibilityContrast];
+  if (accessibilityContrast == 1)
   {
     return 2;
   }
 
   else
   {
-    return v1 == 0;
+    return accessibilityContrast == 0;
   }
 }
 

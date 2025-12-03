@@ -1,15 +1,15 @@
 @interface MSFeedbackAction
 + (id)abandonment;
-+ (id)actionTypeDescription:(int)a3;
-- (BOOL)isEqual:(id)a3;
-- (MSFeedbackAction)initWithType:(int)a3 suggestion:(id)a4 suggestionBundleID:(id)a5;
++ (id)actionTypeDescription:(int)description;
+- (BOOL)isEqual:(id)equal;
+- (MSFeedbackAction)initWithType:(int)type suggestion:(id)suggestion suggestionBundleID:(id)d;
 - (MSSuggestion)suggestion;
 - (NSString)suggestionBundleID;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSuggestion:(id)a3;
-- (void)setSuggestionBundleID:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSuggestion:(id)suggestion;
+- (void)setSuggestionBundleID:(id)d;
 @end
 
 @implementation MSFeedbackAction
@@ -21,11 +21,11 @@
   return v2;
 }
 
-- (void)setSuggestion:(id)a3
+- (void)setSuggestion:(id)suggestion
 {
-  v5 = a3;
-  v6 = self;
-  sub_22C9FC660(a3);
+  suggestionCopy = suggestion;
+  selfCopy = self;
+  sub_22C9FC660(suggestion);
 }
 
 - (NSString)suggestionBundleID
@@ -44,9 +44,9 @@
   return v3;
 }
 
-- (void)setSuggestionBundleID:(id)a3
+- (void)setSuggestionBundleID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = sub_22CA20E20();
     v6 = v5;
@@ -58,13 +58,13 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_22C9FC788(v4, v6);
 }
 
-- (MSFeedbackAction)initWithType:(int)a3 suggestion:(id)a4 suggestionBundleID:(id)a5
+- (MSFeedbackAction)initWithType:(int)type suggestion:(id)suggestion suggestionBundleID:(id)d
 {
-  if (a5)
+  if (d)
   {
     v7 = sub_22CA20E20();
     v9 = v8;
@@ -76,8 +76,8 @@
     v9 = 0;
   }
 
-  v10 = a4;
-  return sub_22C9FC7A4(a3, a4, v7, v9);
+  suggestionCopy = suggestion;
+  return sub_22C9FC7A4(type, suggestion, v7, v9);
 }
 
 + (id)abandonment
@@ -88,9 +88,9 @@
   return v2;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   MSFeedbackAction.copy(with:)(v6);
 
   sub_22C9D05CC(v6, v6[3]);
@@ -99,18 +99,18 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  MSFeedbackAction.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  MSFeedbackAction.encode(with:)(coderCopy);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_22CA21130();
     swift_unknownObjectRelease();
@@ -119,7 +119,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = MSFeedbackAction.isEqual(_:)(v8);
@@ -130,13 +130,13 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MSFeedbackAction.hash.getter();
 
   return v3;
 }
 
-+ (id)actionTypeDescription:(int)a3
++ (id)actionTypeDescription:(int)description
 {
   swift_getObjCClassMetadata();
   sub_22C9FD150();

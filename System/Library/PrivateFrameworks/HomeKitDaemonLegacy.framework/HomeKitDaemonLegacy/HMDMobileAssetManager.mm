@@ -2,9 +2,9 @@
 - (HMDMobileAssetManager)init;
 - (HMDMobileAssetManagerDelegate)delegate;
 - (void)_downloadCatalogAndUpdateMetadataIfAble;
-- (void)_downloadNewAsset:(id)a3 availableVersion:(unint64_t)a4 newVersion:(unint64_t)a5;
+- (void)_downloadNewAsset:(id)asset availableVersion:(unint64_t)version newVersion:(unint64_t)newVersion;
 - (void)_handleMetadataAssetUpdated;
-- (void)_installAvailableAsset:(id)a3 version:(unint64_t)a4;
+- (void)_installAvailableAsset:(id)asset version:(unint64_t)version;
 - (void)_updateMetadata;
 - (void)handleMetadataAssetUpdated;
 - (void)purgeAllInstalledAssets;
@@ -22,15 +22,15 @@
 - (void)_handleMetadataAssetUpdated
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDMobileAssetManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDMobileAssetManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = [objc_alloc(MEMORY[0x277D289D8]) initWithType:@"com.apple.MobileAsset.HomeKit"];
-  v5 = [v4 queryMetaDataSync];
-  if (v5)
+  queryMetaDataSync = [v4 queryMetaDataSync];
+  if (queryMetaDataSync)
   {
-    v6 = v5;
-    if (v5 == 2)
+    v6 = queryMetaDataSync;
+    if (queryMetaDataSync == 2)
     {
       v7 = objc_autoreleasePoolPush();
       v8 = HMFGetOSLogHandle();
@@ -107,8 +107,8 @@ LABEL_17:
 
 - (void)_downloadCatalogAndUpdateMetadataIfAble
 {
-  v3 = [(HMDMobileAssetManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDMobileAssetManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = objc_opt_new();
   [v4 setDiscretionary:0];
@@ -177,27 +177,27 @@ void __64__HMDMobileAssetManager__downloadCatalogAndUpdateMetadataIfAble__block_
 - (void)_updateMetadata
 {
   v74 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDMobileAssetManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDMobileAssetManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = [objc_alloc(MEMORY[0x277D289D8]) initWithType:@"com.apple.MobileAsset.HomeKit"];
   [v4 queryMetaDataSync];
-  v5 = [v4 results];
-  if ([v5 count])
+  results = [v4 results];
+  if ([results count])
   {
     v45 = v4;
-    v43 = self;
+    selfCopy = self;
     [(HMDMobileAssetManager *)self setIndexDownloaded:1];
     v48 = +[HMDHAPMetadata getSharedInstance];
-    v6 = [v48 version];
-    v7 = [v6 unsignedIntegerValue];
+    version = [v48 version];
+    unsignedIntegerValue = [version unsignedIntegerValue];
 
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v44 = v5;
-    obj = v5;
+    v44 = results;
+    obj = results;
     v54 = [obj countByEnumeratingWithState:&v57 objects:v73 count:16];
     if (!v54)
     {
@@ -225,13 +225,13 @@ void __64__HMDMobileAssetManager__downloadCatalogAndUpdateMetadataIfAble__block_
         }
 
         v11 = *(*(&v57 + 1) + 8 * v10);
-        v12 = [v11 attributes];
-        v13 = [v12 objectForKeyedSubscript:v52];
-        v14 = [v13 intValue];
+        attributes = [v11 attributes];
+        v13 = [attributes objectForKeyedSubscript:v52];
+        intValue = [v13 intValue];
 
-        v15 = [v11 attributes];
-        v16 = [v15 objectForKeyedSubscript:v9];
-        v17 = [v16 intValue];
+        attributes2 = [v11 attributes];
+        v16 = [attributes2 objectForKeyedSubscript:v9];
+        intValue2 = [v16 intValue];
 
         v18 = objc_autoreleasePoolPush();
         v19 = HMFGetOSLogHandle();
@@ -240,29 +240,29 @@ void __64__HMDMobileAssetManager__downloadCatalogAndUpdateMetadataIfAble__block_
           v20 = HMFGetLogIdentifier();
           v21 = v18;
           v22 = v10;
-          v23 = v14;
-          v24 = v17;
-          v25 = v7;
+          v23 = intValue;
+          v24 = intValue2;
+          v25 = unsignedIntegerValue;
           v26 = v8;
-          v27 = [v11 state];
+          state = [v11 state];
           [v48 version];
           v28 = v51 = v11;
           *buf = 138544642;
           v62 = v20;
           v63 = 2048;
-          v64 = v27;
+          v64 = state;
           v8 = v26;
-          v7 = v25;
-          v17 = v24;
-          v14 = v23;
+          unsignedIntegerValue = v25;
+          intValue2 = v24;
+          intValue = v23;
           v10 = v22;
           v18 = v21;
           v65 = 2048;
-          v66 = v17;
+          v66 = intValue2;
           v67 = 2112;
           v68 = v28;
           v69 = 2048;
-          v70 = v7;
+          v70 = unsignedIntegerValue;
           v71 = 2048;
           v72 = v8;
           _os_log_impl(&dword_2531F8000, v19, OS_LOG_TYPE_INFO, "%{public}@Asset (state %ld  Version %ld)  Current version %@  best installed version %ld  best not installed version %ld", buf, 0x3Eu);
@@ -272,17 +272,17 @@ void __64__HMDMobileAssetManager__downloadCatalogAndUpdateMetadataIfAble__block_
         }
 
         objc_autoreleasePoolPop(v18);
-        if (v14 == 1)
+        if (intValue == 1)
         {
           if ([v11 state] == 2)
           {
-            if (v7 >= v17)
+            if (unsignedIntegerValue >= intValue2)
             {
               goto LABEL_23;
             }
 
             v29 = v11;
-            if (v8 <= v17)
+            if (v8 <= intValue2)
             {
 
               v30 = 0;
@@ -296,8 +296,8 @@ void __64__HMDMobileAssetManager__downloadCatalogAndUpdateMetadataIfAble__block_
 
             if (v46)
             {
-              v32 = [v46 attributes];
-              v33 = [v32 objectForKeyedSubscript:v9];
+              attributes3 = [v46 attributes];
+              v33 = [attributes3 objectForKeyedSubscript:v9];
 
               v34 = objc_autoreleasePoolPush();
               v35 = HMFGetOSLogHandle();
@@ -324,19 +324,19 @@ void __64__HMDMobileAssetManager__downloadCatalogAndUpdateMetadataIfAble__block_
 
               v31 = v46;
               v46 = v29;
-              v7 = v17;
+              unsignedIntegerValue = intValue2;
               goto LABEL_22;
             }
 
             v47 = v30;
             v46 = v29;
-            v7 = v17;
+            unsignedIntegerValue = intValue2;
           }
 
-          else if (v8 < v17 && v7 < v17)
+          else if (v8 < intValue2 && unsignedIntegerValue < intValue2)
           {
             v30 = v11;
-            v8 = v17;
+            v8 = intValue2;
             v31 = v47;
 LABEL_22:
 
@@ -355,10 +355,10 @@ LABEL_23:
       {
 LABEL_32:
 
-        [(HMDMobileAssetManager *)v43 _downloadNewAsset:v47 availableVersion:v7 newVersion:v8];
-        [(HMDMobileAssetManager *)v43 _installAvailableAsset:v46 version:v7];
+        [(HMDMobileAssetManager *)selfCopy _downloadNewAsset:v47 availableVersion:unsignedIntegerValue newVersion:v8];
+        [(HMDMobileAssetManager *)selfCopy _installAvailableAsset:v46 version:unsignedIntegerValue];
 
-        v5 = v44;
+        results = v44;
         v4 = v45;
         goto LABEL_33;
       }
@@ -423,37 +423,37 @@ LABEL_6:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_installAvailableAsset:(id)a3 version:(unint64_t)a4
+- (void)_installAvailableAsset:(id)asset version:(unint64_t)version
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HMDMobileAssetManager *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  assetCopy = asset;
+  workQueue = [(HMDMobileAssetManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (v6)
+  if (assetCopy)
   {
     v8 = +[HMDHAPMetadata getSharedInstance];
-    v9 = [v6 getLocalFileUrl];
+    getLocalFileUrl = [assetCopy getLocalFileUrl];
     v10 = objc_autoreleasePoolPush();
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [v8 version];
-      v14 = [v9 path];
+      version = [v8 version];
+      path = [getLocalFileUrl path];
       v22 = 138544130;
       v23 = v12;
       v24 = 2112;
-      v25 = v13;
+      v25 = version;
       v26 = 2048;
-      v27 = a4;
+      versionCopy = version;
       v28 = 2112;
-      v29 = v14;
+      v29 = path;
       _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@Current version: %@,  Best installed asset version: %ld,  path: %@", &v22, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v10);
-    v15 = [v9 URLByAppendingPathComponent:@"plain-metadata.config"];
+    v15 = [getLocalFileUrl URLByAppendingPathComponent:@"plain-metadata.config"];
     v16 = objc_autoreleasePoolPush();
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -470,22 +470,22 @@ LABEL_6:
     if (v15)
     {
       v19 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:v15];
-      v20 = [(HMDMobileAssetManager *)self delegate];
-      [v20 mobileAssetManager:self didReceiveMetadata:v19];
+      delegate = [(HMDMobileAssetManager *)self delegate];
+      [delegate mobileAssetManager:self didReceiveMetadata:v19];
     }
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_downloadNewAsset:(id)a3 availableVersion:(unint64_t)a4 newVersion:(unint64_t)a5
+- (void)_downloadNewAsset:(id)asset availableVersion:(unint64_t)version newVersion:(unint64_t)newVersion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(HMDMobileAssetManager *)self workQueue];
-  dispatch_assert_queue_V2(v9);
+  assetCopy = asset;
+  workQueue = [(HMDMobileAssetManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (v8)
+  if (assetCopy)
   {
     v10 = +[HMDHAPMetadata getSharedInstance];
     v11 = objc_autoreleasePoolPush();
@@ -493,15 +493,15 @@ LABEL_6:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = HMFGetLogIdentifier();
-      v14 = [v10 version];
+      version = [v10 version];
       *buf = 138544130;
       v21 = v13;
       v22 = 2112;
-      v23 = v14;
+      v23 = version;
       v24 = 2048;
-      v25 = a4;
+      versionCopy = version;
       v26 = 2048;
-      v27 = a5;
+      newVersionCopy = newVersion;
       _os_log_impl(&dword_2531F8000, v12, OS_LOG_TYPE_INFO, "%{public}@Current version %@  best installed version %ld  best not installed version %ld - requesting download", buf, 0x2Au);
     }
 
@@ -512,8 +512,8 @@ LABEL_6:
     v17[1] = 3221225472;
     v17[2] = __71__HMDMobileAssetManager__downloadNewAsset_availableVersion_newVersion___block_invoke;
     v17[3] = &unk_279734B90;
-    v19 = a5;
-    v18 = v8;
+    newVersionCopy2 = newVersion;
+    v18 = assetCopy;
     [v18 startDownload:v15 then:v17];
   }
 
@@ -579,13 +579,13 @@ void __71__HMDMobileAssetManager__downloadNewAsset_availableVersion_newVersion__
   }
 
   objc_autoreleasePoolPop(v3);
-  v6 = [(HMDMobileAssetManager *)self workQueue];
+  workQueue = [(HMDMobileAssetManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__HMDMobileAssetManager_handleMetadataAssetUpdated__block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v6, block);
+  dispatch_async(workQueue, block);
 
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -619,8 +619,8 @@ void __71__HMDMobileAssetManager__downloadNewAsset_availableVersion_newVersion__
           }
 
           v8 = *(*(&v20 + 1) + 8 * i);
-          v9 = [v8 attributes];
-          v10 = [v9 objectForKeyedSubscript:v6];
+          attributes = [v8 attributes];
+          v10 = [attributes objectForKeyedSubscript:v6];
 
           v11 = objc_autoreleasePoolPush();
           v12 = HMFGetOSLogHandle();
@@ -717,21 +717,21 @@ LABEL_6:
     v2->_scheduler = v8;
 
     [(NSBackgroundActivityScheduler *)v2->_scheduler setRepeats:1];
-    v10 = [MEMORY[0x277D0F8D0] sharedPreferences];
-    v11 = [v10 preferenceForKey:@"mobileCatalogUpdatePeriodSeconds"];
-    v12 = [v11 numberValue];
+    mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+    v11 = [mEMORY[0x277D0F8D0] preferenceForKey:@"mobileCatalogUpdatePeriodSeconds"];
+    numberValue = [v11 numberValue];
 
-    if (v12)
+    if (numberValue)
     {
-      v13 = [v12 integerValue];
+      integerValue = [numberValue integerValue];
     }
 
     else
     {
-      v13 = 86400.0;
+      integerValue = 86400.0;
     }
 
-    [(NSBackgroundActivityScheduler *)v2->_scheduler setInterval:v13];
+    [(NSBackgroundActivityScheduler *)v2->_scheduler setInterval:integerValue];
     objc_initWeak(&location, v2);
     v14 = v2->_scheduler;
     v16[0] = MEMORY[0x277D85DD0];

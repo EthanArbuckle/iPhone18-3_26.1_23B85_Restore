@@ -7,7 +7,7 @@
 - (void)_ICSStringWithOptions:()ICSWriter appendingToString:
 {
   v7 = a4;
-  v5 = ICSEncodeBase64(0, a1);
+  v5 = ICSEncodeBase64(0, self);
   if (v5)
   {
     v6 = v5;

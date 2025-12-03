@@ -1,11 +1,11 @@
 @interface CRSUIStatusBarStyleAssertion
 - (BOOL)isValid;
-- (CRSUIStatusBarStyleAssertion)initWithInterfaceStyle:(int64_t)a3 contrast:(int64_t)a4;
-- (id)_initWithInterfaceStyle:(int64_t)a3 colorVariant:(int64_t)a4 siriPresentation:(BOOL)a5 standByScreen:(BOOL)a6;
+- (CRSUIStatusBarStyleAssertion)initWithInterfaceStyle:(int64_t)style contrast:(int64_t)contrast;
+- (id)_initWithInterfaceStyle:(int64_t)style colorVariant:(int64_t)variant siriPresentation:(BOOL)presentation standByScreen:(BOOL)screen;
 - (void)_handleConnectionActivated;
-- (void)acquireWithAnimationSettings:(id)a3;
+- (void)acquireWithAnimationSettings:(id)settings;
 - (void)invalidate;
-- (void)relinquishWithAnimationSettings:(id)a3;
+- (void)relinquishWithAnimationSettings:(id)settings;
 @end
 
 @implementation CRSUIStatusBarStyleAssertion
@@ -34,9 +34,9 @@
         _os_log_impl(&dword_243218000, v3, OS_LOG_TYPE_DEFAULT, "Acquiring assertion for Siri presentation", v13, 2u);
       }
 
-      v4 = [(CRSUIStatusBarStyleAssertion *)self connection];
-      v5 = [v4 remoteTarget];
-      [v5 clientAcquireForSiriPresentationWithFenceHandle:self->_lock_pendingAcquireFence animationSettings:self->_lock_pendingAcquireAnimationSettings];
+      connection = [(CRSUIStatusBarStyleAssertion *)self connection];
+      remoteTarget = [connection remoteTarget];
+      [remoteTarget clientAcquireForSiriPresentationWithFenceHandle:self->_lock_pendingAcquireFence animationSettings:self->_lock_pendingAcquireAnimationSettings];
     }
 
     else if ([(CRSUIStatusBarStyleAssertion *)self standByScreen])
@@ -48,31 +48,31 @@
         _os_log_impl(&dword_243218000, v6, OS_LOG_TYPE_DEFAULT, "Acquiring assertion for StandBy screen", v13, 2u);
       }
 
-      v4 = [(CRSUIStatusBarStyleAssertion *)self connection];
-      v5 = [v4 remoteTarget];
-      [v5 clientAcquireForStandByScreenWithFenceHandle:self->_lock_pendingAcquireFence animationSettings:self->_lock_pendingAcquireAnimationSettings];
+      connection = [(CRSUIStatusBarStyleAssertion *)self connection];
+      remoteTarget = [connection remoteTarget];
+      [remoteTarget clientAcquireForStandByScreenWithFenceHandle:self->_lock_pendingAcquireFence animationSettings:self->_lock_pendingAcquireAnimationSettings];
     }
 
     else
     {
       if ([(CRSUIStatusBarStyleAssertion *)self interfaceStyle])
       {
-        v4 = [MEMORY[0x277CCABB0] numberWithInteger:{-[CRSUIStatusBarStyleAssertion interfaceStyle](self, "interfaceStyle")}];
+        connection = [MEMORY[0x277CCABB0] numberWithInteger:{-[CRSUIStatusBarStyleAssertion interfaceStyle](self, "interfaceStyle")}];
       }
 
       else
       {
-        v4 = 0;
+        connection = 0;
       }
 
       if ([(CRSUIStatusBarStyleAssertion *)self colorVariant]== -1)
       {
-        v5 = 0;
+        remoteTarget = 0;
       }
 
       else
       {
-        v5 = [MEMORY[0x277CCABB0] numberWithInteger:{-[CRSUIStatusBarStyleAssertion colorVariant](self, "colorVariant")}];
+        remoteTarget = [MEMORY[0x277CCABB0] numberWithInteger:{-[CRSUIStatusBarStyleAssertion colorVariant](self, "colorVariant")}];
       }
 
       v7 = CRSUILogForCategory(1uLL);
@@ -81,13 +81,13 @@
         v13[0] = 67109376;
         v13[1] = [(CRSUIStatusBarStyleAssertion *)self interfaceStyle];
         v14 = 1024;
-        v15 = [(CRSUIStatusBarStyleAssertion *)self colorVariant];
+        colorVariant = [(CRSUIStatusBarStyleAssertion *)self colorVariant];
         _os_log_impl(&dword_243218000, v7, OS_LOG_TYPE_DEFAULT, "Acquiring assertion for interface style: %d, contrast: %d", v13, 0xEu);
       }
 
-      v8 = [(CRSUIStatusBarStyleAssertion *)self connection];
-      v9 = [v8 remoteTarget];
-      [v9 clientAcquireWithInterfaceStyle:v4 colorVariant:v5 fenceHandle:self->_lock_pendingAcquireFence animationSettings:self->_lock_pendingAcquireAnimationSettings];
+      connection2 = [(CRSUIStatusBarStyleAssertion *)self connection];
+      remoteTarget2 = [connection2 remoteTarget];
+      [remoteTarget2 clientAcquireWithInterfaceStyle:connection colorVariant:remoteTarget fenceHandle:self->_lock_pendingAcquireFence animationSettings:self->_lock_pendingAcquireAnimationSettings];
     }
 
     lock_pendingAcquireFence = self->_lock_pendingAcquireFence;
@@ -104,9 +104,9 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (CRSUIStatusBarStyleAssertion)initWithInterfaceStyle:(int64_t)a3 contrast:(int64_t)a4
+- (CRSUIStatusBarStyleAssertion)initWithInterfaceStyle:(int64_t)style contrast:(int64_t)contrast
 {
-  if (a4 == 1)
+  if (contrast == 1)
   {
     v4 = 1;
   }
@@ -116,7 +116,7 @@
     v4 = -1;
   }
 
-  if (a4)
+  if (contrast)
   {
     v5 = v4;
   }
@@ -126,10 +126,10 @@
     v5 = 0;
   }
 
-  return [(CRSUIStatusBarStyleAssertion *)self _initWithInterfaceStyle:a3 colorVariant:v5 siriPresentation:0 standByScreen:0];
+  return [(CRSUIStatusBarStyleAssertion *)self _initWithInterfaceStyle:style colorVariant:v5 siriPresentation:0 standByScreen:0];
 }
 
-- (id)_initWithInterfaceStyle:(int64_t)a3 colorVariant:(int64_t)a4 siriPresentation:(BOOL)a5 standByScreen:(BOOL)a6
+- (id)_initWithInterfaceStyle:(int64_t)style colorVariant:(int64_t)variant siriPresentation:(BOOL)presentation standByScreen:(BOOL)screen
 {
   v32 = *MEMORY[0x277D85DE8];
   v29.receiver = self;
@@ -138,19 +138,19 @@
   v11 = v10;
   if (v10)
   {
-    v10->_interfaceStyle = a3;
-    v10->_colorVariant = a4;
-    v10->_siriPresentation = a5;
-    v10->_standByScreen = a6;
-    v12 = [MEMORY[0x277CCAD78] UUID];
+    v10->_interfaceStyle = style;
+    v10->_colorVariant = variant;
+    v10->_siriPresentation = presentation;
+    v10->_standByScreen = screen;
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v11->_identifier;
-    v11->_identifier = v12;
+    v11->_identifier = uUID;
 
     v11->_lock._os_unfair_lock_opaque = 0;
     v14 = MEMORY[0x277CF3288];
     v15 = +[CRSUIStatusBarStyleSpecification identifier];
-    v16 = [(NSUUID *)v11->_identifier UUIDString];
-    v17 = [v14 endpointForMachName:@"com.apple.CarPlayApp.status-bar-service" service:v15 instance:v16];
+    uUIDString = [(NSUUID *)v11->_identifier UUIDString];
+    v17 = [v14 endpointForMachName:@"com.apple.CarPlayApp.status-bar-service" service:v15 instance:uUIDString];
 
     v18 = [MEMORY[0x277CF3280] connectionWithEndpoint:v17];
     connection = v11->_connection;
@@ -243,13 +243,13 @@ void __100__CRSUIStatusBarStyleAssertion__initWithInterfaceStyle_colorVariant_si
   }
 }
 
-- (void)acquireWithAnimationSettings:(id)a3
+- (void)acquireWithAnimationSettings:(id)settings
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  settingsCopy = settings;
   BSDispatchQueueAssertMain();
   os_unfair_lock_lock(&self->_lock);
-  v6 = [MEMORY[0x277D75DA8] _synchronizedDrawingFence];
+  _synchronizedDrawingFence = [MEMORY[0x277D75DA8] _synchronizedDrawingFence];
   if (self->_lock_connectionActivated && !self->_lock_invalidated)
   {
     if ([(CRSUIStatusBarStyleAssertion *)self siriPresentation])
@@ -261,9 +261,9 @@ void __100__CRSUIStatusBarStyleAssertion__initWithInterfaceStyle_colorVariant_si
         _os_log_impl(&dword_243218000, v7, OS_LOG_TYPE_DEFAULT, "Acquiring assertion for Siri presentation", v15, 2u);
       }
 
-      v8 = [(CRSUIStatusBarStyleAssertion *)self connection];
-      v9 = [v8 remoteTarget];
-      [v9 clientAcquireForSiriPresentationWithFenceHandle:v6 animationSettings:v5];
+      connection = [(CRSUIStatusBarStyleAssertion *)self connection];
+      remoteTarget = [connection remoteTarget];
+      [remoteTarget clientAcquireForSiriPresentationWithFenceHandle:_synchronizedDrawingFence animationSettings:settingsCopy];
     }
 
     else if ([(CRSUIStatusBarStyleAssertion *)self standByScreen])
@@ -275,31 +275,31 @@ void __100__CRSUIStatusBarStyleAssertion__initWithInterfaceStyle_colorVariant_si
         _os_log_impl(&dword_243218000, v10, OS_LOG_TYPE_DEFAULT, "Acquiring assertion for StandBy screen", v15, 2u);
       }
 
-      v8 = [(CRSUIStatusBarStyleAssertion *)self connection];
-      v9 = [v8 remoteTarget];
-      [v9 clientAcquireForStandByScreenWithFenceHandle:v6 animationSettings:v5];
+      connection = [(CRSUIStatusBarStyleAssertion *)self connection];
+      remoteTarget = [connection remoteTarget];
+      [remoteTarget clientAcquireForStandByScreenWithFenceHandle:_synchronizedDrawingFence animationSettings:settingsCopy];
     }
 
     else
     {
       if ([(CRSUIStatusBarStyleAssertion *)self interfaceStyle])
       {
-        v8 = [MEMORY[0x277CCABB0] numberWithInteger:{-[CRSUIStatusBarStyleAssertion interfaceStyle](self, "interfaceStyle")}];
+        connection = [MEMORY[0x277CCABB0] numberWithInteger:{-[CRSUIStatusBarStyleAssertion interfaceStyle](self, "interfaceStyle")}];
       }
 
       else
       {
-        v8 = 0;
+        connection = 0;
       }
 
       if ([(CRSUIStatusBarStyleAssertion *)self colorVariant]== -1)
       {
-        v9 = 0;
+        remoteTarget = 0;
       }
 
       else
       {
-        v9 = [MEMORY[0x277CCABB0] numberWithInteger:{-[CRSUIStatusBarStyleAssertion colorVariant](self, "colorVariant")}];
+        remoteTarget = [MEMORY[0x277CCABB0] numberWithInteger:{-[CRSUIStatusBarStyleAssertion colorVariant](self, "colorVariant")}];
       }
 
       v11 = CRSUILogForCategory(1uLL);
@@ -308,13 +308,13 @@ void __100__CRSUIStatusBarStyleAssertion__initWithInterfaceStyle_colorVariant_si
         v15[0] = 67109376;
         v15[1] = [(CRSUIStatusBarStyleAssertion *)self interfaceStyle];
         v16 = 1024;
-        v17 = [(CRSUIStatusBarStyleAssertion *)self colorVariant];
+        colorVariant = [(CRSUIStatusBarStyleAssertion *)self colorVariant];
         _os_log_impl(&dword_243218000, v11, OS_LOG_TYPE_DEFAULT, "Acquiring assertion for interface style: %d, color variant: %d", v15, 0xEu);
       }
 
-      v12 = [(CRSUIStatusBarStyleAssertion *)self connection];
-      v13 = [v12 remoteTarget];
-      [v13 clientAcquireWithInterfaceStyle:v8 colorVariant:v9 fenceHandle:v6 animationSettings:v5];
+      connection2 = [(CRSUIStatusBarStyleAssertion *)self connection];
+      remoteTarget2 = [connection2 remoteTarget];
+      [remoteTarget2 clientAcquireWithInterfaceStyle:connection colorVariant:remoteTarget fenceHandle:_synchronizedDrawingFence animationSettings:settingsCopy];
     }
 
     self->_lock_acquired = 1;
@@ -323,8 +323,8 @@ void __100__CRSUIStatusBarStyleAssertion__initWithInterfaceStyle_colorVariant_si
   else
   {
     self->_lock_pendingAcquire = 1;
-    objc_storeStrong(&self->_lock_pendingAcquireFence, v6);
-    objc_storeStrong(&self->_lock_pendingAcquireAnimationSettings, a3);
+    objc_storeStrong(&self->_lock_pendingAcquireFence, _synchronizedDrawingFence);
+    objc_storeStrong(&self->_lock_pendingAcquireAnimationSettings, settings);
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -332,12 +332,12 @@ void __100__CRSUIStatusBarStyleAssertion__initWithInterfaceStyle_colorVariant_si
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)relinquishWithAnimationSettings:(id)a3
+- (void)relinquishWithAnimationSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   BSDispatchQueueAssertMain();
   os_unfair_lock_lock(&self->_lock);
-  v5 = [MEMORY[0x277D75DA8] _synchronizedDrawingFence];
+  _synchronizedDrawingFence = [MEMORY[0x277D75DA8] _synchronizedDrawingFence];
   if (self->_lock_acquired && !self->_lock_invalidated)
   {
     v6 = CRSUILogForCategory(1uLL);
@@ -347,9 +347,9 @@ void __100__CRSUIStatusBarStyleAssertion__initWithInterfaceStyle_colorVariant_si
       _os_log_impl(&dword_243218000, v6, OS_LOG_TYPE_DEFAULT, "Relinquishing status bar style assertion", v9, 2u);
     }
 
-    v7 = [(CRSUIStatusBarStyleAssertion *)self connection];
-    v8 = [v7 remoteTarget];
-    [v8 clientReliquishWithFenceHandle:v5 animationSettings:v4];
+    connection = [(CRSUIStatusBarStyleAssertion *)self connection];
+    remoteTarget = [connection remoteTarget];
+    [remoteTarget clientReliquishWithFenceHandle:_synchronizedDrawingFence animationSettings:settingsCopy];
 
     self->_lock_acquired = 0;
   }

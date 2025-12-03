@@ -1,38 +1,38 @@
 @interface AXElementGroupingKeyboardExtrasConsolidationPass
-- (BOOL)shouldTransformGroup:(id)a3 forGrouper:(id)a4;
-- (id)transformGroup:(id)a3 forGrouper:(id)a4;
+- (BOOL)shouldTransformGroup:(id)group forGrouper:(id)grouper;
+- (id)transformGroup:(id)group forGrouper:(id)grouper;
 @end
 
 @implementation AXElementGroupingKeyboardExtrasConsolidationPass
 
-- (BOOL)shouldTransformGroup:(id)a3 forGrouper:(id)a4
+- (BOOL)shouldTransformGroup:(id)group forGrouper:(id)grouper
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![v4 isKeyboardContainer])
+  groupCopy = group;
+  if (![groupCopy isKeyboardContainer])
   {
     goto LABEL_15;
   }
 
-  v5 = [v4 firstObject];
-  if (([v5 isGroup] & 1) == 0)
+  firstObject = [groupCopy firstObject];
+  if (([firstObject isGroup] & 1) == 0)
   {
 
     goto LABEL_15;
   }
 
-  v6 = [v4 firstObject];
-  v7 = [v6 canBeReplacedByChildren];
+  firstObject2 = [groupCopy firstObject];
+  canBeReplacedByChildren = [firstObject2 canBeReplacedByChildren];
 
-  if (!v7)
+  if (!canBeReplacedByChildren)
   {
     goto LABEL_16;
   }
 
-  if ([v4 count] < 2)
+  if ([groupCopy count] < 2)
   {
 LABEL_15:
-    LOBYTE(v7) = 0;
+    LOBYTE(canBeReplacedByChildren) = 0;
     goto LABEL_16;
   }
 
@@ -40,13 +40,13 @@ LABEL_15:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  LOBYTE(v7) = 1;
-  v8 = [v4 subarrayWithRange:{1, objc_msgSend(v4, "count", 0) - 1}];
+  LOBYTE(canBeReplacedByChildren) = 1;
+  v8 = [groupCopy subarrayWithRange:{1, objc_msgSend(groupCopy, "count", 0) - 1}];
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
-    v7 = 0;
+    canBeReplacedByChildren = 0;
     v11 = *v15;
     do
     {
@@ -57,43 +57,43 @@ LABEL_15:
           objc_enumerationMutation(v8);
         }
 
-        v7 |= [*(*(&v14 + 1) + 8 * i) isGroup];
+        canBeReplacedByChildren |= [*(*(&v14 + 1) + 8 * i) isGroup];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
-    LOBYTE(v7) = v7 ^ 1;
+    LOBYTE(canBeReplacedByChildren) = canBeReplacedByChildren ^ 1;
   }
 
 LABEL_16:
-  return v7 & 1;
+  return canBeReplacedByChildren & 1;
 }
 
-- (id)transformGroup:(id)a3 forGrouper:(id)a4
+- (id)transformGroup:(id)group forGrouper:(id)grouper
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 isKeyboardContainer] & 1) == 0 || objc_msgSend(v4, "count") <= 1)
+  groupCopy = group;
+  if (([groupCopy isKeyboardContainer] & 1) == 0 || objc_msgSend(groupCopy, "count") <= 1)
   {
     goto LABEL_21;
   }
 
-  v5 = [v4 firstObject];
-  if (([v5 isGroup] & 1) == 0)
+  firstObject = [groupCopy firstObject];
+  if (([firstObject isGroup] & 1) == 0)
   {
 
     goto LABEL_21;
   }
 
-  v6 = [v4 firstObject];
-  v7 = [v6 canBeReplacedByChildren];
+  firstObject2 = [groupCopy firstObject];
+  canBeReplacedByChildren = [firstObject2 canBeReplacedByChildren];
 
-  if ((v7 & 1) == 0)
+  if ((canBeReplacedByChildren & 1) == 0)
   {
 LABEL_21:
-    v20 = v4;
+    v20 = groupCopy;
     goto LABEL_22;
   }
 
@@ -102,8 +102,8 @@ LABEL_21:
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v9 = [v4 firstObject];
-  v10 = [v9 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  firstObject3 = [groupCopy firstObject];
+  v10 = [firstObject3 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v10)
   {
     v11 = v10;
@@ -114,13 +114,13 @@ LABEL_21:
       {
         if (*v28 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(firstObject3);
         }
 
         [v8 addObject:*(*(&v27 + 1) + 8 * i)];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v11 = [firstObject3 countByEnumeratingWithState:&v27 objects:v32 count:16];
     }
 
     while (v11);
@@ -130,7 +130,7 @@ LABEL_21:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v14 = [v4 subarrayWithRange:{1, objc_msgSend(v4, "count", 0) - 1}];
+  v14 = [groupCopy subarrayWithRange:{1, objc_msgSend(groupCopy, "count", 0) - 1}];
   v15 = [v14 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v15)
   {
@@ -154,13 +154,13 @@ LABEL_21:
     while (v16);
   }
 
-  v19 = [v4 label];
-  v20 = [AXElementGroup groupWithElements:v8 label:v19];
+  label = [groupCopy label];
+  v20 = [AXElementGroup groupWithElements:v8 label:label];
 
-  [v20 setGroupTraits:{objc_msgSend(v4, "groupTraits")}];
-  [v20 setUserDefinedScanningBehaviorTraits:{objc_msgSend(v4, "userDefinedScanningBehaviorTraits")}];
-  v21 = [v4 identifier];
-  [v20 setIdentifier:v21];
+  [v20 setGroupTraits:{objc_msgSend(groupCopy, "groupTraits")}];
+  [v20 setUserDefinedScanningBehaviorTraits:{objc_msgSend(groupCopy, "userDefinedScanningBehaviorTraits")}];
+  identifier = [groupCopy identifier];
+  [v20 setIdentifier:identifier];
 
 LABEL_22:
 

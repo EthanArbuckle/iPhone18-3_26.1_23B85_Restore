@@ -1,21 +1,21 @@
 @interface PKMultiKeyValueCell
-- (BOOL)_shouldStackLabelsWithBounds:(CGRect)a3;
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BOOL)_shouldStackLabelsWithBounds:(CGRect)bounds;
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setSources:(id)a3;
+- (void)setSources:(id)sources;
 @end
 
 @implementation PKMultiKeyValueCell
 
-- (void)setSources:(id)a3
+- (void)setSources:(id)sources
 {
   v60 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  sourcesCopy = sources;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_sources, a3);
+    objc_storeStrong(&self->_sources, sources);
     v55 = 0u;
     v56 = 0u;
     v53 = 0u;
@@ -73,16 +73,16 @@
       while (v13);
     }
 
-    v35 = self;
-    v44 = [(PKMultiKeyValueCell *)self contentView];
+    selfCopy = self;
+    contentView = [(PKMultiKeyValueCell *)self contentView];
     v42 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v41 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v36 = v5;
-    obj = v5;
+    v36 = sourcesCopy;
+    obj = sourcesCopy;
     v43 = [obj countByEnumeratingWithState:&v45 objects:v57 count:16];
     if (v43)
     {
@@ -112,40 +112,40 @@
           }
 
           v21 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-          v22 = [v19 title];
-          [v21 setText:v22];
+          title = [v19 title];
+          [v21 setText:title];
 
           [v21 setNumberOfLines:0];
-          v23 = [MEMORY[0x1E69DC888] labelColor];
-          [v21 setTextColor:v23];
+          labelColor = [MEMORY[0x1E69DC888] labelColor];
+          [v21 setTextColor:labelColor];
 
           v24 = PKFontForDefaultDesign(v16, v17, v20, 0);
           [v21 setFont:v24];
 
           [v21 setAccessibilityIdentifier:v39];
-          [v44 addSubview:v21];
+          [contentView addSubview:v21];
           v25 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-          v26 = [v19 subtitle];
-          [v25 setText:v26];
+          subtitle = [v19 subtitle];
+          [v25 setText:subtitle];
 
           [v25 setNumberOfLines:0];
-          v27 = [v19 subtitleTextColor];
-          if (v27)
+          subtitleTextColor = [v19 subtitleTextColor];
+          if (subtitleTextColor)
           {
-            [v25 setTextColor:v27];
+            [v25 setTextColor:subtitleTextColor];
           }
 
           else
           {
-            v28 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-            [v25 setTextColor:v28];
+            secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+            [v25 setTextColor:secondaryLabelColor];
           }
 
           v29 = PKFontForDefaultDesign(v16, v17, v20, 0);
           [v25 setFont:v29];
 
           [v25 setAccessibilityIdentifier:v38];
-          [v44 addSubview:v25];
+          [contentView addSubview:v25];
           [v42 addObject:v21];
           [v41 addObject:v25];
         }
@@ -157,15 +157,15 @@
     }
 
     v30 = [v42 copy];
-    titleLabels = v35->_titleLabels;
-    v35->_titleLabels = v30;
+    titleLabels = selfCopy->_titleLabels;
+    selfCopy->_titleLabels = v30;
 
     v32 = [v41 copy];
-    v33 = *(&v35->super.super.super.super.super.super.isa + v34);
-    *(&v35->super.super.super.super.super.super.isa + v34) = v32;
+    v33 = *(&selfCopy->super.super.super.super.super.super.isa + v34);
+    *(&selfCopy->super.super.super.super.super.super.isa + v34) = v32;
 
-    [(PKMultiKeyValueCell *)v35 setNeedsLayout];
-    v5 = v36;
+    [(PKMultiKeyValueCell *)selfCopy setNeedsLayout];
+    sourcesCopy = v36;
   }
 }
 
@@ -174,29 +174,29 @@
   v4.receiver = self;
   v4.super_class = PKMultiKeyValueCell;
   [(PKMultiKeyValueCell *)&v4 layoutSubviews];
-  v3 = [(PKMultiKeyValueCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PKMultiKeyValueCell *)self contentView];
+  [contentView bounds];
   [(PKMultiKeyValueCell *)self _layoutWithBounds:0 isTemplateLayout:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKMultiKeyValueCell *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKMultiKeyValueCell *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout
 {
-  width = a3.size.width;
-  v7 = a3.origin.x + 16.0;
-  v8 = a3.origin.y + 16.0;
-  v9 = a3.size.height + -32.0;
-  v10 = [(PKMultiKeyValueCell *)self _shouldReverseLayoutDirection];
+  width = bounds.size.width;
+  v7 = bounds.origin.x + 16.0;
+  v8 = bounds.origin.y + 16.0;
+  v9 = bounds.size.height + -32.0;
+  _shouldReverseLayoutDirection = [(PKMultiKeyValueCell *)self _shouldReverseLayoutDirection];
   v11 = [(PKMultiKeyValueCell *)self _shouldStackLabelsWithBounds:v7, v8, width + -32.0, v9];
-  v12 = v10 == 0;
-  if (v10)
+  v12 = _shouldReverseLayoutDirection == 0;
+  if (_shouldReverseLayoutDirection)
   {
     v13 = CGRectMaxXEdge;
   }
@@ -285,7 +285,7 @@
         v16 = v16 + 5.0;
       }
 
-      if (!a4)
+      if (!layout)
       {
         [v17 setFrame:{v53, v29, v31, v33}];
         [v22 setFrame:{v35, v37, v39, v41}];
@@ -308,10 +308,10 @@
   return result;
 }
 
-- (BOOL)_shouldStackLabelsWithBounds:(CGRect)a3
+- (BOOL)_shouldStackLabelsWithBounds:(CGRect)bounds
 {
-  width = a3.size.width;
-  if (![(NSArray *)self->_titleLabels count:a3.origin.x])
+  width = bounds.size.width;
+  if (![(NSArray *)self->_titleLabels count:bounds.origin.x])
   {
     return 0;
   }

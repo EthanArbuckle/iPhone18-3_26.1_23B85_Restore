@@ -6,19 +6,19 @@
 - (id)valueLabel;
 - (void)_setUpViews;
 - (void)_updateLeadingConstraint;
-- (void)setBackgroundColor:(id)a3;
-- (void)setHTMLSubLabelData:(id)a3 sourceURL:(id)a4 delegate:(id)a5;
-- (void)setImage:(id)a3;
-- (void)setImage:(id)a3 padding:(UIEdgeInsets)a4 tintColor:(id)a5;
+- (void)setBackgroundColor:(id)color;
+- (void)setHTMLSubLabelData:(id)data sourceURL:(id)l delegate:(id)delegate;
+- (void)setImage:(id)image;
+- (void)setImage:(id)image padding:(UIEdgeInsets)padding tintColor:(id)color;
 @end
 
 @implementation RemoteUITableViewSubtitleAndValueCell
 
 - (id)effectiveDetailTextLabel
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v4))
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     [(RemoteUITableViewSubtitleAndValueCell *)self detailTextLabel];
   }
@@ -34,9 +34,9 @@
 
 - (id)effectiveValueTextLabel
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v4))
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     [(RemoteUITableViewSubtitleAndValueCell *)self valueLabel];
   }
@@ -68,10 +68,10 @@
 
 - (void)_updateLeadingConstraint
 {
-  v3 = [(RemoteUITableViewSubtitleAndValueCell *)self imageView];
-  v4 = [v3 image];
-  v5 = v4 == 0;
-  v6 = v4 != 0;
+  imageView = [(RemoteUITableViewSubtitleAndValueCell *)self imageView];
+  image = [imageView image];
+  v5 = image == 0;
+  v6 = image != 0;
 
   [(NSLayoutConstraint *)self->_imageConstraint setActive:v6];
   leadingConstraint = self->_leadingConstraint;
@@ -79,39 +79,39 @@
   [(NSLayoutConstraint *)leadingConstraint setActive:v5];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v5 = [(RemoteUITableViewSubtitleAndValueCell *)self _tableView];
-  [v5 beginUpdates];
+  imageCopy = image;
+  _tableView = [(RemoteUITableViewSubtitleAndValueCell *)self _tableView];
+  [_tableView beginUpdates];
 
   v7.receiver = self;
   v7.super_class = RemoteUITableViewSubtitleAndValueCell;
-  [(RemoteUITableViewSubtitleAndValueCell *)&v7 setImage:v4];
+  [(RemoteUITableViewSubtitleAndValueCell *)&v7 setImage:imageCopy];
 
   [(RemoteUITableViewSubtitleAndValueCell *)self _updateLeadingConstraint];
-  v6 = [(RemoteUITableViewSubtitleAndValueCell *)self _tableView];
-  [v6 endUpdates];
+  _tableView2 = [(RemoteUITableViewSubtitleAndValueCell *)self _tableView];
+  [_tableView2 endUpdates];
 }
 
-- (void)setImage:(id)a3 padding:(UIEdgeInsets)a4 tintColor:(id)a5
+- (void)setImage:(id)image padding:(UIEdgeInsets)padding tintColor:(id)color
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v11 = a5;
-  v12 = a3;
-  v13 = [(RemoteUITableViewSubtitleAndValueCell *)self _tableView];
-  [v13 beginUpdates];
+  right = padding.right;
+  bottom = padding.bottom;
+  left = padding.left;
+  top = padding.top;
+  colorCopy = color;
+  imageCopy = image;
+  _tableView = [(RemoteUITableViewSubtitleAndValueCell *)self _tableView];
+  [_tableView beginUpdates];
 
   v15.receiver = self;
   v15.super_class = RemoteUITableViewSubtitleAndValueCell;
-  [(RemoteUITableViewCell *)&v15 setImage:v12 padding:v11 tintColor:top, left, bottom, right];
+  [(RemoteUITableViewCell *)&v15 setImage:imageCopy padding:colorCopy tintColor:top, left, bottom, right];
 
   [(RemoteUITableViewSubtitleAndValueCell *)self _updateLeadingConstraint];
-  v14 = [(RemoteUITableViewSubtitleAndValueCell *)self _tableView];
-  [v14 endUpdates];
+  _tableView2 = [(RemoteUITableViewSubtitleAndValueCell *)self _tableView];
+  [_tableView2 endUpdates];
 }
 
 - (void)_setUpViews
@@ -196,51 +196,51 @@
     [v32 setAxis:0];
     [v32 setSpacing:8.0];
     [v32 setDistribution:0];
-    v33 = [(RemoteUITableViewSubtitleAndValueCell *)self contentView];
-    [v33 addSubview:v32];
+    contentView = [(RemoteUITableViewSubtitleAndValueCell *)self contentView];
+    [contentView addSubview:v32];
 
-    v34 = [v32 leadingAnchor];
-    v35 = [(RemoteUITableViewSubtitleAndValueCell *)self imageView];
-    v36 = [v35 trailingAnchor];
-    v37 = [v34 constraintEqualToAnchor:v36 constant:16.0];
+    leadingAnchor = [v32 leadingAnchor];
+    imageView = [(RemoteUITableViewSubtitleAndValueCell *)self imageView];
+    trailingAnchor = [imageView trailingAnchor];
+    v37 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:16.0];
     imageConstraint = self->_imageConstraint;
     self->_imageConstraint = v37;
 
-    v39 = [v32 leadingAnchor];
-    v40 = [(RemoteUITableViewSubtitleAndValueCell *)self contentView];
-    v41 = [v40 readableContentGuide];
-    v42 = [v41 leadingAnchor];
-    v43 = [v39 constraintEqualToAnchor:v42];
+    leadingAnchor2 = [v32 leadingAnchor];
+    contentView2 = [(RemoteUITableViewSubtitleAndValueCell *)self contentView];
+    readableContentGuide = [contentView2 readableContentGuide];
+    leadingAnchor3 = [readableContentGuide leadingAnchor];
+    v43 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
     leadingConstraint = self->_leadingConstraint;
     self->_leadingConstraint = v43;
 
     v66 = MEMORY[0x277CCAAD0];
-    v75 = [(RUIWebContainerView *)self->_htmlSublabelContainer leadingAnchor];
+    leadingAnchor4 = [(RUIWebContainerView *)self->_htmlSublabelContainer leadingAnchor];
     v76 = v25;
-    v74 = [v25 leadingAnchor];
-    v73 = [v75 constraintEqualToAnchor:v74];
+    leadingAnchor5 = [v25 leadingAnchor];
+    v73 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
     v77[0] = v73;
-    v72 = [(RUIWebContainerView *)self->_htmlSublabelContainer trailingAnchor];
-    v71 = [v25 trailingAnchor];
-    v70 = [v72 constraintEqualToAnchor:v71];
+    trailingAnchor2 = [(RUIWebContainerView *)self->_htmlSublabelContainer trailingAnchor];
+    trailingAnchor3 = [v25 trailingAnchor];
+    v70 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
     v77[1] = v70;
-    v68 = [v32 topAnchor];
-    v69 = [(RemoteUITableViewSubtitleAndValueCell *)self contentView];
-    v67 = [v69 readableContentGuide];
-    v65 = [v67 topAnchor];
-    v64 = [v68 constraintEqualToAnchor:v65];
+    topAnchor = [v32 topAnchor];
+    contentView3 = [(RemoteUITableViewSubtitleAndValueCell *)self contentView];
+    readableContentGuide2 = [contentView3 readableContentGuide];
+    topAnchor2 = [readableContentGuide2 topAnchor];
+    v64 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v77[2] = v64;
-    v62 = [v32 trailingAnchor];
-    v63 = [(RemoteUITableViewSubtitleAndValueCell *)self contentView];
-    v61 = [v63 readableContentGuide];
-    v45 = [v61 trailingAnchor];
-    v46 = [v62 constraintEqualToAnchor:v45];
+    trailingAnchor4 = [v32 trailingAnchor];
+    contentView4 = [(RemoteUITableViewSubtitleAndValueCell *)self contentView];
+    readableContentGuide3 = [contentView4 readableContentGuide];
+    trailingAnchor5 = [readableContentGuide3 trailingAnchor];
+    v46 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
     v77[3] = v46;
-    v47 = [v32 bottomAnchor];
-    v48 = [(RemoteUITableViewSubtitleAndValueCell *)self contentView];
-    v49 = [v48 readableContentGuide];
-    v50 = [v49 bottomAnchor];
-    v51 = [v47 constraintEqualToAnchor:v50];
+    bottomAnchor = [v32 bottomAnchor];
+    contentView5 = [(RemoteUITableViewSubtitleAndValueCell *)self contentView];
+    readableContentGuide4 = [contentView5 readableContentGuide];
+    bottomAnchor2 = [readableContentGuide4 bottomAnchor];
+    v51 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v77[4] = v51;
     v52 = [MEMORY[0x277CBEA60] arrayWithObjects:v77 count:5];
     [v66 activateConstraints:v52];
@@ -257,12 +257,12 @@
     [(UILabel *)self->_valueLabel setContentCompressionResistancePriority:1 forAxis:v57];
     LODWORD(v58) = 1144750080;
     [(UILabel *)self->_detailLabel setContentHuggingPriority:1 forAxis:v58];
-    v59 = [(RemoteUITableViewSubtitleAndValueCell *)self _tableView];
-    [v59 beginUpdates];
+    _tableView = [(RemoteUITableViewSubtitleAndValueCell *)self _tableView];
+    [_tableView beginUpdates];
 
     [(RemoteUITableViewSubtitleAndValueCell *)self _updateLeadingConstraint];
-    v60 = [(RemoteUITableViewSubtitleAndValueCell *)self _tableView];
-    [v60 endUpdates];
+    _tableView2 = [(RemoteUITableViewSubtitleAndValueCell *)self _tableView];
+    [_tableView2 endUpdates];
   }
 }
 
@@ -274,38 +274,38 @@
   return valueLabel;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = [(RemoteUITableViewSubtitleAndValueCell *)self backgroundColor];
-  v6 = [v5 CGColor];
+  colorCopy = color;
+  backgroundColor = [(RemoteUITableViewSubtitleAndValueCell *)self backgroundColor];
+  cGColor = [backgroundColor CGColor];
   v8.receiver = self;
   v8.super_class = RemoteUITableViewSubtitleAndValueCell;
-  [(RemoteUITableViewSubtitleAndValueCell *)&v8 setBackgroundColor:v4];
-  if ([(RemoteUITableViewSubtitleAndValueCell *)self selectionStyle]&& ([(RemoteUITableViewSubtitleAndValueCell *)self isSelected]& 1) != 0 || ([(RemoteUITableViewSubtitleAndValueCell *)self isHighlighted]& 1) != 0 || !CGColorEqualToColor([(UILabel *)self->_valueLabel _backgroundCGColor], v6))
+  [(RemoteUITableViewSubtitleAndValueCell *)&v8 setBackgroundColor:colorCopy];
+  if ([(RemoteUITableViewSubtitleAndValueCell *)self selectionStyle]&& ([(RemoteUITableViewSubtitleAndValueCell *)self isSelected]& 1) != 0 || ([(RemoteUITableViewSubtitleAndValueCell *)self isHighlighted]& 1) != 0 || !CGColorEqualToColor([(UILabel *)self->_valueLabel _backgroundCGColor], cGColor))
   {
-    v7 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)self->_valueLabel setBackgroundColor:v7];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)self->_valueLabel setBackgroundColor:clearColor];
   }
 
   else
   {
-    [(UILabel *)self->_valueLabel setBackgroundColor:v4];
+    [(UILabel *)self->_valueLabel setBackgroundColor:colorCopy];
   }
 }
 
-- (void)setHTMLSubLabelData:(id)a3 sourceURL:(id)a4 delegate:(id)a5
+- (void)setHTMLSubLabelData:(id)data sourceURL:(id)l delegate:(id)delegate
 {
-  if (a3)
+  if (data)
   {
     htmlSublabelContainer = self->_htmlSublabelContainer;
-    v9 = a5;
-    v10 = a4;
-    v11 = a3;
+    delegateCopy = delegate;
+    lCopy = l;
+    dataCopy = data;
     [(RUIWebContainerView *)htmlSublabelContainer setHidden:0];
-    [(RUIWebContainerView *)self->_htmlSublabelContainer setDelegate:v9];
+    [(RUIWebContainerView *)self->_htmlSublabelContainer setDelegate:delegateCopy];
 
-    [(RUIWebContainerView *)self->_htmlSublabelContainer updateContent:v11 baseURL:v10];
+    [(RUIWebContainerView *)self->_htmlSublabelContainer updateContent:dataCopy baseURL:lCopy];
   }
 }
 

@@ -1,9 +1,9 @@
 @interface CertInfoGradientLabel
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIFont)font;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
-- (void)setGradient:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setGradient:(id)gradient;
 @end
 
 @implementation CertInfoGradientLabel
@@ -37,10 +37,10 @@
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   text = self->_text;
-  v4 = [(CertInfoGradientLabel *)self font:a3.width];
+  v4 = [(CertInfoGradientLabel *)self font:fits.width];
   [(NSString *)text _legacy_sizeWithFont:v4 constrainedToSize:4 lineBreakMode:*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)];
   v6 = v5;
   v8 = v7;
@@ -52,13 +52,13 @@
   return result;
 }
 
-- (void)setGradient:(id)a3
+- (void)setGradient:(id)gradient
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_gradient != v5)
+  gradientCopy = gradient;
+  if (self->_gradient != gradientCopy)
   {
-    objc_storeStrong(&self->_gradient, a3);
+    objc_storeStrong(&self->_gradient, gradient);
     patternColor = self->_patternColor;
     if (patternColor)
     {
@@ -96,25 +96,25 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v13 = *MEMORY[0x277D85DE8];
   CurrentContext = UIGraphicsGetCurrentContext();
-  v5 = [(CertInfoGradientLabel *)self text];
-  v6 = [(CertInfoGradientLabel *)self font];
+  text = [(CertInfoGradientLabel *)self text];
+  font = [(CertInfoGradientLabel *)self font];
   [(CertInfoGradientLabel *)self bounds];
   v8 = v7;
   v10 = v9;
   v12[0] = xmmword_2433CA2F0;
   v12[1] = unk_2433CA300;
   CGContextSetFillColor(CurrentContext, v12);
-  [v5 _legacy_drawAtPoint:v6 withFont:{v8, v10}];
+  [text _legacy_drawAtPoint:font withFont:{v8, v10}];
   CGContextSetFillColorWithColor(CurrentContext, [(CertInfoGradientLabel *)self _patternColor]);
   CGContextSaveGState(CurrentContext);
   v14.width = v8;
   v14.height = v10;
   CGContextSetPatternPhase(CurrentContext, v14);
-  [v5 _legacy_drawAtPoint:v6 withFont:{v8, v10}];
+  [text _legacy_drawAtPoint:font withFont:{v8, v10}];
   CGContextRestoreGState(CurrentContext);
 
   v11 = *MEMORY[0x277D85DE8];

@@ -3,28 +3,28 @@
 - (BOOL)simulateInternationalCall;
 - (NSString)conversationLinkBaseURLString;
 - (NSURL)conversationLinkBaseURL;
-- (TUConfiguration)initWithDataSource:(id)a3;
-- (id)numberForKey:(id)a3;
+- (TUConfiguration)initWithDataSource:(id)source;
+- (id)numberForKey:(id)key;
 - (unint64_t)announceCalls;
-- (void)addDelegate:(id)a3 queue:(id)a4;
-- (void)removeDelegate:(id)a3;
-- (void)setAnnounceCalls:(unint64_t)a3;
-- (void)setConversationLinkBaseURL:(id)a3;
-- (void)setConversationLinkBaseURLString:(id)a3;
+- (void)addDelegate:(id)delegate queue:(id)queue;
+- (void)removeDelegate:(id)delegate;
+- (void)setAnnounceCalls:(unint64_t)calls;
+- (void)setConversationLinkBaseURL:(id)l;
+- (void)setConversationLinkBaseURLString:(id)string;
 @end
 
 @implementation TUConfiguration
 
-- (TUConfiguration)initWithDataSource:(id)a3
+- (TUConfiguration)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v11.receiver = self;
   v11.super_class = TUConfiguration;
   v6 = [(TUConfiguration *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
     v8 = objc_alloc_init(TUDelegateController);
     delegateController = v7->_delegateController;
     v7->_delegateController = v8;
@@ -36,32 +36,32 @@
 - (unint64_t)announceCalls
 {
   v2 = [(TUConfiguration *)self numberForKey:@"announceCalls"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (void)setAnnounceCalls:(unint64_t)a3
+- (void)setAnnounceCalls:(unint64_t)calls
 {
-  v5 = [(TUConfiguration *)self dataSource];
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forKey:@"announceCalls"];
+  dataSource = [(TUConfiguration *)self dataSource];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:calls];
+  [dataSource setObject:v4 forKey:@"announceCalls"];
 }
 
 - (NSString)conversationLinkBaseURLString
 {
-  v2 = [(TUConfiguration *)self dataSource];
-  v3 = [v2 stringForKey:@"conversationLinkBaseURL"];
+  dataSource = [(TUConfiguration *)self dataSource];
+  v3 = [dataSource stringForKey:@"conversationLinkBaseURL"];
 
   return v3;
 }
 
 - (NSURL)conversationLinkBaseURL
 {
-  v2 = [(TUConfiguration *)self conversationLinkBaseURLString];
-  if (v2)
+  conversationLinkBaseURLString = [(TUConfiguration *)self conversationLinkBaseURLString];
+  if (conversationLinkBaseURLString)
   {
-    v3 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v2];
+    v3 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:conversationLinkBaseURLString];
   }
 
   else
@@ -72,20 +72,20 @@
   return v3;
 }
 
-- (void)setConversationLinkBaseURLString:(id)a3
+- (void)setConversationLinkBaseURLString:(id)string
 {
-  v4 = a3;
-  v5 = [(TUConfiguration *)self dataSource];
-  [v5 setObject:v4 forKey:@"conversationLinkBaseURL"];
+  stringCopy = string;
+  dataSource = [(TUConfiguration *)self dataSource];
+  [dataSource setObject:stringCopy forKey:@"conversationLinkBaseURL"];
 }
 
-- (void)setConversationLinkBaseURL:(id)a3
+- (void)setConversationLinkBaseURL:(id)l
 {
-  v4 = a3;
-  v6 = [(TUConfiguration *)self dataSource];
-  v5 = [v4 absoluteString];
+  lCopy = l;
+  dataSource = [(TUConfiguration *)self dataSource];
+  absoluteString = [lCopy absoluteString];
 
-  [v6 setObject:v5 forKey:@"conversationLinkBaseURL"];
+  [dataSource setObject:absoluteString forKey:@"conversationLinkBaseURL"];
 }
 
 - (BOOL)simulateFatalPersistentStoreError
@@ -94,9 +94,9 @@
   if (v3)
   {
     v4 = [(TUConfiguration *)self numberForKey:@"simulateFatalPersistentStoreError"];
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(v3) = bOOLValue;
   }
 
   return v3;
@@ -108,19 +108,19 @@
   if (v3)
   {
     v4 = [(TUConfiguration *)self numberForKey:@"simulateInternationalCall"];
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(v3) = bOOLValue;
   }
 
   return v3;
 }
 
-- (id)numberForKey:(id)a3
+- (id)numberForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(TUConfiguration *)self dataSource];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  dataSource = [(TUConfiguration *)self dataSource];
+  v6 = [dataSource objectForKey:keyCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -144,19 +144,19 @@ LABEL_7:
   return v8;
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TUConfiguration *)self delegateController];
-  [v8 addDelegate:v7 queue:v6];
+  queueCopy = queue;
+  delegateCopy = delegate;
+  delegateController = [(TUConfiguration *)self delegateController];
+  [delegateController addDelegate:delegateCopy queue:queueCopy];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(TUConfiguration *)self delegateController];
-  [v5 removeDelegate:v4];
+  delegateCopy = delegate;
+  delegateController = [(TUConfiguration *)self delegateController];
+  [delegateController removeDelegate:delegateCopy];
 }
 
 @end

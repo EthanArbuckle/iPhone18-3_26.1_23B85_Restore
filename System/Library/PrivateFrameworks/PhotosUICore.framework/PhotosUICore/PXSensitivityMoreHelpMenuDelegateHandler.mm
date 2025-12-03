@@ -1,6 +1,6 @@
 @interface PXSensitivityMoreHelpMenuDelegateHandler
 - (_TtC12PhotosUICoreP33_476D1ADF3CD5BE522901E19A76A09BDD40PXSensitivityMoreHelpMenuDelegateHandler)init;
-- (void)didUnsubscribe:(id)a3;
+- (void)didUnsubscribe:(id)unsubscribe;
 @end
 
 @implementation PXSensitivityMoreHelpMenuDelegateHandler
@@ -13,10 +13,10 @@
   return [(PXSensitivityMoreHelpMenuDelegateHandler *)&v4 init];
 }
 
-- (void)didUnsubscribe:(id)a3
+- (void)didUnsubscribe:(id)unsubscribe
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1A47E28AC();
   swift_unknownObjectRelease();
 }

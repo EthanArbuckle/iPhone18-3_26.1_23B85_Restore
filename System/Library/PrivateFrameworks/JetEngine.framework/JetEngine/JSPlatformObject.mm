@@ -1,15 +1,15 @@
 @interface JSPlatformObject
 - (_TtC9JetEngine16JSPlatformObject)init;
-- (id)lookup:(id)a3;
+- (id)lookup:(id)lookup;
 @end
 
 @implementation JSPlatformObject
 
-- (id)lookup:(id)a3
+- (id)lookup:(id)lookup
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1AB388D58(v4);
+  lookupCopy = lookup;
+  selfCopy = self;
+  v6 = sub_1AB388D58(lookupCopy);
 
   return v6;
 }

@@ -1,12 +1,12 @@
 @interface PFSceneGeography
 - (BOOL)loadOrCreateIndex;
-- (c_iterator<boost::unordered::detail::node<boost::interprocess::allocator<pf::SceneGeographyNode,)findPOIHash:(id)a3;
+- (c_iterator<boost::unordered::detail::node<boost::interprocess::allocator<pf::SceneGeographyNode,)findPOIHash:(id)hash;
 - (char)magic;
-- (double)popularityForPOI:(id)a3 popularity:(unsigned __int16)a4;
-- (double)scoreForPOI:(id)a3 scenes:(id)a4 maxScenesCount:(int64_t)a5 popularityWeight:(double)a6;
+- (double)popularityForPOI:(id)i popularity:(unsigned __int16)popularity;
+- (double)scoreForPOI:(id)i scenes:(id)scenes maxScenesCount:(int64_t)count popularityWeight:(double)weight;
 - (id)dataArchivePath;
 - (id)indexName;
-- (id)scenesByScoreForPOIHash:(id)a3;
+- (id)scenesByScoreForPOIHash:(id)hash;
 @end
 
 @implementation PFSceneGeography
@@ -22,14 +22,14 @@
 - (char)magic
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v2 = [a1 architectureHash];
-  v3 = [a1 dataArchivePath];
-  if (stat([v3 fileSystemRepresentation], &v12))
+  architectureHash = [self architectureHash];
+  dataArchivePath = [self dataArchivePath];
+  if (stat([dataArchivePath fileSystemRepresentation], &v12))
   {
     v4 = 0;
   }
@@ -50,10 +50,10 @@
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v9 = [a1 dataArchivePath];
+      dataArchivePath2 = [self dataArchivePath];
       v10 = *__error();
       *buf = 138543618;
-      v14 = v9;
+      v14 = dataArchivePath2;
       v15 = 1024;
       v16 = v10;
       _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to get file metadata from dataArchivePath %{public}@: %d.", buf, 0x12u);
@@ -62,7 +62,7 @@
     v6 = 0;
   }
 
-  v11 = v2;
+  v11 = architectureHash;
   v7 = [PFSceneGeography magic]::buffer;
   snprintf([PFSceneGeography magic]::buffer, 0x50uLL, "%s%s%02x%08x%08x", "PFSceneGeography", "02", 2, v11, v6);
   return v7;
@@ -73,27 +73,27 @@
   dataArchivePath = self->_dataArchivePath;
   if (dataArchivePath)
   {
-    v3 = [(NSString *)dataArchivePath lastPathComponent];
-    v4 = [v3 stringByDeletingPathExtension];
+    lastPathComponent = [(NSString *)dataArchivePath lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
   }
 
   else
   {
-    v4 = @"PFSceneGeographyData";
+    stringByDeletingPathExtension = @"PFSceneGeographyData";
   }
 
-  return v4;
+  return stringByDeletingPathExtension;
 }
 
-- (c_iterator<boost::unordered::detail::node<boost::interprocess::allocator<pf::SceneGeographyNode,)findPOIHash:(id)a3
+- (c_iterator<boost::unordered::detail::node<boost::interprocess::allocator<pf::SceneGeographyNode,)findPOIHash:(id)hash
 {
   v5 = v3;
   v11 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PFSceneGeography *)self loadOrCreateIndex];
-  if (v6)
+  hashCopy = hash;
+  loadOrCreateIndex = [(PFSceneGeography *)self loadOrCreateIndex];
+  if (hashCopy)
   {
-    v8 = v7;
+    v8 = loadOrCreateIndex;
   }
 
   else
@@ -111,14 +111,14 @@
   return v9;
 }
 
-- (id)scenesByScoreForPOIHash:(id)a3
+- (id)scenesByScoreForPOIHash:(id)hash
 {
-  v4 = a3;
-  [(PFSceneGeography *)self findPOIHash:v4];
+  hashCopy = hash;
+  [(PFSceneGeography *)self findPOIHash:hashCopy];
   v5 = 0;
   if (v68 != 1 && v68 != -&v68)
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     if (v68 == 1)
     {
       v8 = 0;
@@ -165,8 +165,8 @@
       __assert_rtn("operator+=", "vector.hpp", 181, "m_ptr || !off");
     }
 
-    v5 = v7;
-    v63 = v4;
+    v5 = dictionary;
+    v63 = hashCopy;
     v20 = v17 + 2 * v18;
     v66 = v20;
     v21 = v15 == 1;
@@ -401,17 +401,17 @@
       while (v60 != v61);
     }
 
-    v4 = v63;
+    hashCopy = v63;
   }
 
   return v5;
 }
 
-- (double)popularityForPOI:(id)a3 popularity:(unsigned __int16)a4
+- (double)popularityForPOI:(id)i popularity:(unsigned __int16)popularity
 {
-  v5 = a4;
-  v7 = a3;
-  [(PFSceneGeography *)self findPOIHash:v7];
+  popularityCopy = popularity;
+  iCopy = i;
+  [(PFSceneGeography *)self findPOIHash:iCopy];
   v8 = &v12 + v12;
   if (v12 == 1 || v8 == 0)
   {
@@ -421,13 +421,13 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (v5 == 1)
+  if (popularityCopy == 1)
   {
     v10 = (v8 + 32);
     goto LABEL_11;
   }
 
-  if (!v5)
+  if (!popularityCopy)
   {
     v10 = (v8 + 40);
     goto LABEL_11;
@@ -438,13 +438,13 @@ LABEL_12:
   return v4;
 }
 
-- (double)scoreForPOI:(id)a3 scenes:(id)a4 maxScenesCount:(int64_t)a5 popularityWeight:(double)a6
+- (double)scoreForPOI:(id)i scenes:(id)scenes maxScenesCount:(int64_t)count popularityWeight:(double)weight
 {
   v88[250] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v78 = v9;
-  [(PFSceneGeography *)self findPOIHash:v9];
+  iCopy = i;
+  scenesCopy = scenes;
+  v78 = iCopy;
+  [(PFSceneGeography *)self findPOIHash:iCopy];
   v11 = v86 == 1 || v86 == -&v86;
   if (v11)
   {
@@ -453,22 +453,22 @@ LABEL_12:
 
   else
   {
-    v13 = [v10 count];
-    if (v13 >= a5)
+    v13 = [scenesCopy count];
+    if (v13 >= count)
     {
-      v14 = a5;
+      countCopy = count;
     }
 
     else
     {
-      v14 = v13;
+      countCopy = v13;
     }
 
     v15 = 250;
-    v79 = v14;
-    if (v14 < 0xFA)
+    v79 = countCopy;
+    if (countCopy < 0xFA)
     {
-      v15 = v14;
+      v15 = countCopy;
     }
 
     v80 = v15;
@@ -691,12 +691,12 @@ LABEL_12:
           }
 
           v64 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*v61];
-          v65 = [v10 containsObject:v64];
+          v65 = [scenesCopy containsObject:v64];
 
           if (v65)
           {
             v12 = v41 + v12;
-            if (a5 != 0x7FFFFFFFFFFFFFFFLL)
+            if (count != 0x7FFFFFFFFFFFFFFFLL)
             {
               if (v31 >= v80)
               {
@@ -827,7 +827,7 @@ LABEL_102:
       goto LABEL_102;
     }
 
-    if (a6 != 0.0)
+    if (weight != 0.0)
     {
       if (*&PFSceneGeographyClipTFIDF >= v12)
       {
@@ -839,7 +839,7 @@ LABEL_102:
         v76 = *&PFSceneGeographyClipTFIDF;
       }
 
-      v12 = (v77[5] * a6 + (1.0 - a6) * v76) / (a6 + (1.0 - a6) * *&PFSceneGeographyClipTFIDF);
+      v12 = (v77[5] * weight + (1.0 - weight) * v76) / (weight + (1.0 - weight) * *&PFSceneGeographyClipTFIDF);
     }
   }
 

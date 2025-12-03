@@ -36,14 +36,14 @@
     v16 = __Block_byref_object_copy__1;
     v17 = __Block_byref_object_dispose__1;
     v18 = 0;
-    v5 = [a1 _axDictionaryQueue];
+    _axDictionaryQueue = [self _axDictionaryQueue];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __52__NSProxy_AXSideStorage___accessibilityValueForKey___block_invoke;
     v12[3] = &unk_1E735B758;
-    v12[4] = a1;
+    v12[4] = self;
     v12[5] = &v13;
-    dispatch_sync(v5, v12);
+    dispatch_sync(_axDictionaryQueue, v12);
 
     v6 = v14[5];
     objc_sync_enter(v6);
@@ -52,15 +52,15 @@
 
     if ([v7 _axIsWrappedPointer])
     {
-      v8 = [v7 nonretainedObjectValue];
+      nonretainedObjectValue = [v7 nonretainedObjectValue];
     }
 
     else
     {
-      v8 = v7;
+      nonretainedObjectValue = v7;
     }
 
-    v10 = v8;
+    v10 = nonretainedObjectValue;
 
     _Block_object_dispose(&v13, 8);
   }
@@ -70,7 +70,7 @@
     v9 = AXLogValidations();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(NSProxy(AXSideStorage) *)a1 _accessibilityValueForKey:v9];
+      [(NSProxy(AXSideStorage) *)self _accessibilityValueForKey:v9];
     }
 
     v10 = 0;
@@ -81,26 +81,26 @@
 
 - (uint64_t)_accessibilityBoolValueForKey:()AXSideStorage
 {
-  v1 = [a1 _accessibilityValueForKey:?];
-  v2 = [v1 BOOLValue];
+  v1 = [self _accessibilityValueForKey:?];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (uint64_t)_accessibilityIntegerValueForKey:()AXSideStorage
 {
-  v1 = [a1 _accessibilityValueForKey:?];
-  v2 = [v1 integerValue];
+  v1 = [self _accessibilityValueForKey:?];
+  integerValue = [v1 integerValue];
 
-  return v2;
+  return integerValue;
 }
 
 - (uint64_t)_accessibilityUnsignedIntegerValueForKey:()AXSideStorage
 {
-  v1 = [a1 _accessibilityValueForKey:?];
-  v2 = [v1 unsignedIntegerValue];
+  v1 = [self _accessibilityValueForKey:?];
+  unsignedIntegerValue = [v1 unsignedIntegerValue];
 
-  return v2;
+  return unsignedIntegerValue;
 }
 
 - (void)_accessibilitySetValue:()AXSideStorage forKey:storageMode:
@@ -115,16 +115,16 @@
     v25 = __Block_byref_object_copy__1;
     v26 = __Block_byref_object_dispose__1;
     v27 = 0;
-    v10 = [a1 _axDictionaryQueue];
+    _axDictionaryQueue = [self _axDictionaryQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __68__NSProxy_AXSideStorage___accessibilitySetValue_forKey_storageMode___block_invoke;
     block[3] = &unk_1E735B780;
     v21 = &v22;
-    block[4] = a1;
+    block[4] = self;
     v11 = v8;
     v20 = v11;
-    dispatch_sync(v10, block);
+    dispatch_sync(_axDictionaryQueue, block);
 
     v12 = v23[5];
     if (v11)
@@ -176,7 +176,7 @@ LABEL_16:
   v17 = AXLogValidations();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
   {
-    [NSProxy(AXSideStorage) _accessibilitySetValue:v8 forKey:a1 storageMode:v17];
+    [NSProxy(AXSideStorage) _accessibilitySetValue:v8 forKey:self storageMode:v17];
   }
 
 LABEL_17:
@@ -187,7 +187,7 @@ LABEL_17:
   v6 = MEMORY[0x1E696AD98];
   v7 = a4;
   v8 = [v6 numberWithBool:a3];
-  [a1 _accessibilitySetRetainedValue:v8 forKey:v7];
+  [self _accessibilitySetRetainedValue:v8 forKey:v7];
 }
 
 - (void)_accessibilitySetIntegerValue:()AXSideStorage forKey:
@@ -195,7 +195,7 @@ LABEL_17:
   v6 = MEMORY[0x1E696AD98];
   v7 = a4;
   v8 = [[v6 alloc] initWithInteger:a3];
-  [a1 _accessibilitySetRetainedValue:v8 forKey:v7];
+  [self _accessibilitySetRetainedValue:v8 forKey:v7];
 }
 
 - (void)_accessibilitySetUnsignedIntegerValue:()AXSideStorage forKey:
@@ -203,7 +203,7 @@ LABEL_17:
   v6 = MEMORY[0x1E696AD98];
   v7 = a4;
   v8 = [[v6 alloc] initWithUnsignedInteger:a3];
-  [a1 _accessibilitySetRetainedValue:v8 forKey:v7];
+  [self _accessibilitySetRetainedValue:v8 forKey:v7];
 }
 
 - (void)_accessibilitySetAssignedValue:()AXSideStorage forKey:
@@ -212,7 +212,7 @@ LABEL_17:
   v7 = a4;
   v8 = [v6 valueWithNonretainedObject:a3];
   [v8 _axSetIsWrappedPointer:1];
-  [a1 _accessibilitySetValue:v8 forKey:v7 storageMode:2];
+  [self _accessibilitySetValue:v8 forKey:v7 storageMode:2];
 }
 
 - (void)_accessibilityValueForKey:()AXSideStorage .cold.1(uint64_t a1, NSObject *a2)

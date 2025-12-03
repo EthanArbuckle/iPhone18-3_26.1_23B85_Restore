@@ -1,45 +1,45 @@
 @interface CNRepeatingGradientSeparatorView
 - (CGSize)intrinsicContentSize;
-- (CNRepeatingGradientSeparatorView)initWithFrame:(CGRect)a3;
+- (CNRepeatingGradientSeparatorView)initWithFrame:(CGRect)frame;
 - (NSArray)gradientColors;
 - (void)_updateGradients;
 - (void)layoutSubviews;
-- (void)setEndColor:(id)a3;
-- (void)setLineCount:(int64_t)a3;
-- (void)setStartColor:(id)a3;
+- (void)setEndColor:(id)color;
+- (void)setLineCount:(int64_t)count;
+- (void)setStartColor:(id)color;
 @end
 
 @implementation CNRepeatingGradientSeparatorView
 
-- (void)setEndColor:(id)a3
+- (void)setEndColor:(id)color
 {
-  v5 = a3;
-  if (self->_endColor != v5)
+  colorCopy = color;
+  if (self->_endColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_endColor, a3);
-    v5 = v6;
+    v6 = colorCopy;
+    objc_storeStrong(&self->_endColor, color);
+    colorCopy = v6;
   }
 }
 
-- (void)setStartColor:(id)a3
+- (void)setStartColor:(id)color
 {
-  v5 = a3;
-  if (self->_startColor != v5)
+  colorCopy = color;
+  if (self->_startColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_startColor, a3);
-    v5 = v6;
+    v6 = colorCopy;
+    objc_storeStrong(&self->_startColor, color);
+    colorCopy = v6;
   }
 }
 
 - (NSArray)gradientColors
 {
   v7[2] = *MEMORY[0x1E69E9840];
-  v3 = [(CNRepeatingGradientSeparatorView *)self startColor];
-  v7[0] = [v3 CGColor];
-  v4 = [(CNRepeatingGradientSeparatorView *)self endColor];
-  v7[1] = [v4 CGColor];
+  startColor = [(CNRepeatingGradientSeparatorView *)self startColor];
+  v7[0] = [startColor CGColor];
+  endColor = [(CNRepeatingGradientSeparatorView *)self endColor];
+  v7[1] = [endColor CGColor];
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:2];
 
   return v5;
@@ -58,10 +58,10 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(CNRepeatingGradientSeparatorView *)self layer];
-  v4 = [v3 sublayers];
+  layer = [(CNRepeatingGradientSeparatorView *)self layer];
+  sublayers = [layer sublayers];
 
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  v5 = [sublayers countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -75,7 +75,7 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sublayers);
         }
 
         v11 = *(*(&v12 + 1) + 8 * v9);
@@ -87,7 +87,7 @@
       }
 
       while (v6 != v9);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      v6 = [sublayers countByEnumeratingWithState:&v12 objects:v17 count:16];
     }
 
     while (v6);
@@ -98,21 +98,21 @@
 {
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
-  v3 = [(CNRepeatingGradientSeparatorView *)self layer];
-  v4 = [v3 sublayers];
-  [v4 makeObjectsPerformSelector:sel_removeFromSuperlayer];
+  layer = [(CNRepeatingGradientSeparatorView *)self layer];
+  sublayers = [layer sublayers];
+  [sublayers makeObjectsPerformSelector:sel_removeFromSuperlayer];
 
   if ([(CNRepeatingGradientSeparatorView *)self lineCount]>= 1)
   {
     v5 = 0;
     do
     {
-      v6 = [MEMORY[0x1E6979380] layer];
-      v7 = [(CNRepeatingGradientSeparatorView *)self gradientColors];
-      [v6 setColors:v7];
+      layer2 = [MEMORY[0x1E6979380] layer];
+      gradientColors = [(CNRepeatingGradientSeparatorView *)self gradientColors];
+      [layer2 setColors:gradientColors];
 
-      v8 = [(CNRepeatingGradientSeparatorView *)self layer];
-      [v8 addSublayer:v6];
+      layer3 = [(CNRepeatingGradientSeparatorView *)self layer];
+      [layer3 addSublayer:layer2];
 
       ++v5;
     }
@@ -127,19 +127,19 @@
   [v9 commit];
 }
 
-- (void)setLineCount:(int64_t)a3
+- (void)setLineCount:(int64_t)count
 {
-  if (self->_lineCount != a3)
+  if (self->_lineCount != count)
   {
-    self->_lineCount = a3;
+    self->_lineCount = count;
     [(CNRepeatingGradientSeparatorView *)self _updateGradients];
   }
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(CNRepeatingGradientSeparatorView *)self _screen];
-  [v2 scale];
+  _screen = [(CNRepeatingGradientSeparatorView *)self _screen];
+  [_screen scale];
   if (v3 == 0.0)
   {
     if (RoundToScale_onceToken != -1)
@@ -163,16 +163,16 @@
   return result;
 }
 
-- (CNRepeatingGradientSeparatorView)initWithFrame:(CGRect)a3
+- (CNRepeatingGradientSeparatorView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = CNRepeatingGradientSeparatorView;
-  v3 = [(CNRepeatingGradientSeparatorView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CNRepeatingGradientSeparatorView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] clearColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
     startColor = v3->_startColor;
-    v3->_startColor = v4;
+    v3->_startColor = clearColor;
 
     v6 = +[CNUIColorRepository contactStyleDefaultSeparatorColor];
     endColor = v3->_endColor;

@@ -1,6 +1,6 @@
 @interface JavaMathMathContext
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -8,13 +8,13 @@
 
 @implementation JavaMathMathContext
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    if (!a3)
+    if (!equal)
     {
       JreThrowNullPointerException();
     }
@@ -24,12 +24,12 @@
       goto LABEL_8;
     }
 
-    if ([a3 getPrecision] == self->precision_)
+    if ([equal getPrecision] == self->precision_)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        return [a3 getRoundingMode] == self->roundingMode_;
+        return [equal getRoundingMode] == self->roundingMode_;
       }
 
 LABEL_8:
@@ -73,7 +73,7 @@ LABEL_8:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if ((atomic_load_explicit(JavaMathRoundingModeEnum__initialized, memory_order_acquire) & 1) == 0)
     {

@@ -1,24 +1,24 @@
 @interface STYAbcHelper
-- (void)shareSeedDiagnosticsWithABC:(id)a3 tailspinFilenamePrefix:(id)a4;
+- (void)shareSeedDiagnosticsWithABC:(id)c tailspinFilenamePrefix:(id)prefix;
 @end
 
 @implementation STYAbcHelper
 
-- (void)shareSeedDiagnosticsWithABC:(id)a3 tailspinFilenamePrefix:(id)a4
+- (void)shareSeedDiagnosticsWithABC:(id)c tailspinFilenamePrefix:(id)prefix
 {
-  v5 = a3;
-  v6 = a4;
+  cCopy = c;
+  prefixCopy = prefix;
   v7 = +[STYFrameworkHelper sharedHelper];
-  v8 = [v7 sharedSerialQueueAtUtility];
+  sharedSerialQueueAtUtility = [v7 sharedSerialQueueAtUtility];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __67__STYAbcHelper_shareSeedDiagnosticsWithABC_tailspinFilenamePrefix___block_invoke;
   v11[3] = &unk_279B9B4C0;
-  v12 = v5;
-  v13 = v6;
-  v9 = v6;
-  v10 = v5;
-  dispatch_async(v8, v11);
+  v12 = cCopy;
+  v13 = prefixCopy;
+  v9 = prefixCopy;
+  v10 = cCopy;
+  dispatch_async(sharedSerialQueueAtUtility, v11);
 }
 
 void __67__STYAbcHelper_shareSeedDiagnosticsWithABC_tailspinFilenamePrefix___block_invoke(uint64_t a1)

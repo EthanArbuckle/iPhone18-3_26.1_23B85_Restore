@@ -1,7 +1,7 @@
 @interface CalDefaultReminderKitProvider
 + (CalDefaultReminderKitProvider)sharedInstance;
-- (id)newSaveRequestWithStore:(id)a3;
-- (void)setDefaultReminderListIdentifier:(id)a3;
+- (id)newSaveRequestWithStore:(id)store;
+- (void)setDefaultReminderListIdentifier:(id)identifier;
 @end
 
 @implementation CalDefaultReminderKitProvider
@@ -25,9 +25,9 @@ uint64_t __47__CalDefaultReminderKitProvider_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)newSaveRequestWithStore:(id)a3
+- (id)newSaveRequestWithStore:(id)store
 {
-  v3 = a3;
+  storeCopy = store;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2050000000;
@@ -46,14 +46,14 @@ uint64_t __47__CalDefaultReminderKitProvider_sharedInstance__block_invoke()
 
   v5 = v4;
   _Block_object_dispose(&v9, 8);
-  v6 = [[v4 alloc] initWithStore:v3];
+  v6 = [[v4 alloc] initWithStore:storeCopy];
 
   return v6;
 }
 
-- (void)setDefaultReminderListIdentifier:(id)a3
+- (void)setDefaultReminderListIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2050000000;
@@ -72,8 +72,8 @@ uint64_t __47__CalDefaultReminderKitProvider_sharedInstance__block_invoke()
 
   v5 = v4;
   _Block_object_dispose(&v8, 8);
-  v6 = [v4 daemonUserDefaults];
-  [v6 setPreferredDefaultListID:v3];
+  daemonUserDefaults = [v4 daemonUserDefaults];
+  [daemonUserDefaults setPreferredDefaultListID:identifierCopy];
 }
 
 @end

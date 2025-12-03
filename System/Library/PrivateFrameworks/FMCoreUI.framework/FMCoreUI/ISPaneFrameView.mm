@@ -7,12 +7,12 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(ISPaneFrameView *)self owningViewController];
+  owningViewController = [(ISPaneFrameView *)self owningViewController];
   v4.receiver = self;
   v4.super_class = ISPaneFrameView;
   [(ISPaneFrameView *)&v4 layoutSubviews];
   [(ISPaneFrameView *)self frame];
-  [v3 _paneFrameChanged:?];
+  [owningViewController _paneFrameChanged:?];
 }
 
 - (FMSlidingPaneViewController)owningViewController

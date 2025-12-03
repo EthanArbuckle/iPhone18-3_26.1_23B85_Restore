@@ -1,40 +1,40 @@
 @interface RTLearnedPlaceTypeInferenceStats
-- (RTLearnedPlaceTypeInferenceStats)initWithWeeklyStats:(id)a3 topMedianDwellTime:(double)a4;
+- (RTLearnedPlaceTypeInferenceStats)initWithWeeklyStats:(id)stats topMedianDwellTime:(double)time;
 - (id)description;
 @end
 
 @implementation RTLearnedPlaceTypeInferenceStats
 
-- (RTLearnedPlaceTypeInferenceStats)initWithWeeklyStats:(id)a3 topMedianDwellTime:(double)a4
+- (RTLearnedPlaceTypeInferenceStats)initWithWeeklyStats:(id)stats topMedianDwellTime:(double)time
 {
-  v7 = a3;
+  statsCopy = stats;
   v29.receiver = self;
   v29.super_class = RTLearnedPlaceTypeInferenceStats;
   v8 = [(RTLearnedPlaceTypeInferenceStats *)&v29 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_weeklyStats, a3);
-    v9->_topMedianDwellTime = a4;
+    objc_storeStrong(&v8->_weeklyStats, stats);
+    v9->_topMedianDwellTime = time;
     *&v9->_weeklyAggregateDwellTimeBetweenDateRangeAverage = 0u;
     *&v9->_weeklyTotalDailyVisitCountAverage = 0u;
-    v10 = [v7 valueForKeyPath:@"@sum.totalDailyVisitCount"];
+    v10 = [statsCopy valueForKeyPath:@"@sum.totalDailyVisitCount"];
     v9->_totalDailyVisitCount = [v10 unsignedIntegerValue];
 
     v9->_weeksWithNonZeroDwellTime = 0;
-    v11 = [v7 valueForKeyPath:@"@sum.dailyAggregateDwellTimeBetweenDateRangeAverage"];
+    v11 = [statsCopy valueForKeyPath:@"@sum.dailyAggregateDwellTimeBetweenDateRangeAverage"];
     [v11 doubleValue];
     v13 = v12;
 
-    v14 = [v7 valueForKeyPath:@"@sum.dailyAggregateDwellTimeBetweenDateRangeStandardDeviation"];
+    v14 = [statsCopy valueForKeyPath:@"@sum.dailyAggregateDwellTimeBetweenDateRangeStandardDeviation"];
     [v14 doubleValue];
     v16 = v15;
 
-    v17 = [v7 valueForKeyPath:@"@sum.totalDailyVisitCount"];
+    v17 = [statsCopy valueForKeyPath:@"@sum.totalDailyVisitCount"];
     [v17 doubleValue];
     v19 = v18;
 
-    v20 = [v7 valueForKeyPath:@"@sum.daysWithNonZeroDwellTime"];
+    v20 = [statsCopy valueForKeyPath:@"@sum.daysWithNonZeroDwellTime"];
     [v20 doubleValue];
     v22 = v21;
 
@@ -73,10 +73,10 @@ uint64_t __75__RTLearnedPlaceTypeInferenceStats_initWithWeeklyStats_topMedianDwe
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(RTLearnedPlaceTypeInferenceStats *)self weeklyStats];
-  v5 = [v4 count];
-  v6 = [(RTLearnedPlaceTypeInferenceStats *)self totalDailyVisitCount];
-  v7 = [(RTLearnedPlaceTypeInferenceStats *)self weeksWithNonZeroDwellTime];
+  weeklyStats = [(RTLearnedPlaceTypeInferenceStats *)self weeklyStats];
+  v5 = [weeklyStats count];
+  totalDailyVisitCount = [(RTLearnedPlaceTypeInferenceStats *)self totalDailyVisitCount];
+  weeksWithNonZeroDwellTime = [(RTLearnedPlaceTypeInferenceStats *)self weeksWithNonZeroDwellTime];
   [(RTLearnedPlaceTypeInferenceStats *)self weeklyAggregateDwellTimeBetweenDateRangeAverage];
   v9 = v8;
   [(RTLearnedPlaceTypeInferenceStats *)self weeklyAggregateDwellTimeBetweenDateRangeStandardDeviation];
@@ -86,7 +86,7 @@ uint64_t __75__RTLearnedPlaceTypeInferenceStats_initWithWeeklyStats_topMedianDwe
   [(RTLearnedPlaceTypeInferenceStats *)self weeklyDaysWithNonZeroDwellTimeAverage];
   v15 = v14;
   [(RTLearnedPlaceTypeInferenceStats *)self topMedianDwellTime];
-  v17 = [v3 stringWithFormat:@"weeklyStats, %lu, totalWeeklyVisitCount, %lu, weeksWithNonZeroDwellTime, %lu, weeklyAggregateDwellTimeBetweenDateRangeAverage, %.2f, weeklyAggregateDwellTimeBetweenDateRangeStandardDeviation, %.2f, weeklyTotalDailyVisitCountAverage, %.2f, weeklyDaysWithNonZeroDwellTimeAverage, %.2f, topMedianDwellTime, %.2f", v5, v6, v7, v9, v11, v13, v15, v16];
+  v17 = [v3 stringWithFormat:@"weeklyStats, %lu, totalWeeklyVisitCount, %lu, weeksWithNonZeroDwellTime, %lu, weeklyAggregateDwellTimeBetweenDateRangeAverage, %.2f, weeklyAggregateDwellTimeBetweenDateRangeStandardDeviation, %.2f, weeklyTotalDailyVisitCountAverage, %.2f, weeklyDaysWithNonZeroDwellTimeAverage, %.2f, topMedianDwellTime, %.2f", v5, totalDailyVisitCount, weeksWithNonZeroDwellTime, v9, v11, v13, v15, v16];
 
   return v17;
 }

@@ -1,7 +1,7 @@
 @interface HAPMetadataCharacteristicValue
-+ (id)initWithDictionary:(id)a3;
-- (HAPMetadataCharacteristicValue)initWithMinLength:(id)a3 maxLength:(id)a4;
-- (HAPMetadataCharacteristicValue)initWithMinValue:(id)a3 maxValue:(id)a4 stepValue:(id)a5 validValues:(id)a6;
++ (id)initWithDictionary:(id)dictionary;
+- (HAPMetadataCharacteristicValue)initWithMinLength:(id)length maxLength:(id)maxLength;
+- (HAPMetadataCharacteristicValue)initWithMinValue:(id)value maxValue:(id)maxValue stepValue:(id)stepValue validValues:(id)values;
 - (id)description;
 - (id)generateDictionary;
 - (void)dump;
@@ -9,11 +9,11 @@
 
 @implementation HAPMetadataCharacteristicValue
 
-- (HAPMetadataCharacteristicValue)initWithMinLength:(id)a3 maxLength:(id)a4
+- (HAPMetadataCharacteristicValue)initWithMinLength:(id)length maxLength:(id)maxLength
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7 | v8)
+  lengthCopy = length;
+  maxLengthCopy = maxLength;
+  if (lengthCopy | maxLengthCopy)
   {
     v13.receiver = self;
     v13.super_class = HAPMetadataCharacteristicValue;
@@ -21,8 +21,8 @@
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_minLength, a3);
-      v11 = v8;
+      objc_storeStrong(&v9->_minLength, length);
+      v11 = maxLengthCopy;
       self = v10->_maxLength;
       v10->_maxLength = v11;
     }
@@ -41,13 +41,13 @@
   return v10;
 }
 
-- (HAPMetadataCharacteristicValue)initWithMinValue:(id)a3 maxValue:(id)a4 stepValue:(id)a5 validValues:(id)a6
+- (HAPMetadataCharacteristicValue)initWithMinValue:(id)value maxValue:(id)maxValue stepValue:(id)stepValue validValues:(id)values
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11 || v12 || v13)
+  valueCopy = value;
+  maxValueCopy = maxValue;
+  stepValueCopy = stepValue;
+  valuesCopy = values;
+  if (valueCopy || maxValueCopy || stepValueCopy)
   {
     v19.receiver = self;
     v19.super_class = HAPMetadataCharacteristicValue;
@@ -55,10 +55,10 @@
     v15 = v16;
     if (v16)
     {
-      objc_storeStrong(&v16->_minValue, a3);
-      objc_storeStrong(&v15->_maxValue, a4);
-      objc_storeStrong(&v15->_stepValue, a5);
-      v17 = v14;
+      objc_storeStrong(&v16->_minValue, value);
+      objc_storeStrong(&v15->_maxValue, maxValue);
+      objc_storeStrong(&v15->_stepValue, stepValue);
+      v17 = valuesCopy;
       self = v15->_validValues;
       v15->_validValues = v17;
     }
@@ -77,11 +77,11 @@
   return v15;
 }
 
-+ (id)initWithDictionary:(id)a3
++ (id)initWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 hmf_numberForKey:@"MinLength"];
-  v5 = [v3 hmf_numberForKey:@"MaxLength"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy hmf_numberForKey:@"MinLength"];
+  v5 = [dictionaryCopy hmf_numberForKey:@"MaxLength"];
   if (v4 | v5)
   {
     v6 = [[HAPMetadataCharacteristicValue alloc] initWithMinLength:v4 maxLength:v5];
@@ -92,10 +92,10 @@
     v6 = 0;
   }
 
-  v7 = [v3 hmf_numberForKey:@"MinValue"];
-  v8 = [v3 hmf_numberForKey:@"MaxValue"];
-  v9 = [v3 hmf_numberForKey:@"StepValue"];
-  v10 = [v3 hmf_arrayForKey:@"ValidValues"];
+  v7 = [dictionaryCopy hmf_numberForKey:@"MinValue"];
+  v8 = [dictionaryCopy hmf_numberForKey:@"MaxValue"];
+  v9 = [dictionaryCopy hmf_numberForKey:@"StepValue"];
+  v10 = [dictionaryCopy hmf_arrayForKey:@"ValidValues"];
   if (v7 || v8 || v9)
   {
     if (v6)
@@ -104,7 +104,7 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         v15 = sub_10007FAFC(0);
-        [v3 hmf_stringForKey:@"ShortUUID"];
+        [dictionaryCopy hmf_stringForKey:@"ShortUUID"];
         *buf = 138544898;
         v17 = v15;
         v19 = v18 = 2112;
@@ -134,53 +134,53 @@
 - (id)generateDictionary
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(HAPMetadataCharacteristicValue *)self minLength];
+  minLength = [(HAPMetadataCharacteristicValue *)self minLength];
 
-  if (v4)
+  if (minLength)
   {
-    v5 = [(HAPMetadataCharacteristicValue *)self minLength];
-    [v3 setObject:v5 forKeyedSubscript:@"MinLength"];
+    minLength2 = [(HAPMetadataCharacteristicValue *)self minLength];
+    [v3 setObject:minLength2 forKeyedSubscript:@"MinLength"];
   }
 
-  v6 = [(HAPMetadataCharacteristicValue *)self maxLength];
+  maxLength = [(HAPMetadataCharacteristicValue *)self maxLength];
 
-  if (v6)
+  if (maxLength)
   {
-    v7 = [(HAPMetadataCharacteristicValue *)self maxLength];
-    [v3 setObject:v7 forKeyedSubscript:@"MaxLength"];
+    maxLength2 = [(HAPMetadataCharacteristicValue *)self maxLength];
+    [v3 setObject:maxLength2 forKeyedSubscript:@"MaxLength"];
   }
 
-  v8 = [(HAPMetadataCharacteristicValue *)self minValue];
+  minValue = [(HAPMetadataCharacteristicValue *)self minValue];
 
-  if (v8)
+  if (minValue)
   {
-    v9 = [(HAPMetadataCharacteristicValue *)self minValue];
-    [v3 setObject:v9 forKeyedSubscript:@"MinValue"];
+    minValue2 = [(HAPMetadataCharacteristicValue *)self minValue];
+    [v3 setObject:minValue2 forKeyedSubscript:@"MinValue"];
   }
 
-  v10 = [(HAPMetadataCharacteristicValue *)self maxValue];
+  maxValue = [(HAPMetadataCharacteristicValue *)self maxValue];
 
-  if (v10)
+  if (maxValue)
   {
-    v11 = [(HAPMetadataCharacteristicValue *)self maxValue];
-    [v3 setObject:v11 forKeyedSubscript:@"MaxValue"];
+    maxValue2 = [(HAPMetadataCharacteristicValue *)self maxValue];
+    [v3 setObject:maxValue2 forKeyedSubscript:@"MaxValue"];
   }
 
-  v12 = [(HAPMetadataCharacteristicValue *)self stepValue];
+  stepValue = [(HAPMetadataCharacteristicValue *)self stepValue];
 
-  if (v12)
+  if (stepValue)
   {
-    v13 = [(HAPMetadataCharacteristicValue *)self stepValue];
-    [v3 setObject:v13 forKeyedSubscript:@"StepValue"];
+    stepValue2 = [(HAPMetadataCharacteristicValue *)self stepValue];
+    [v3 setObject:stepValue2 forKeyedSubscript:@"StepValue"];
   }
 
-  v14 = [(HAPMetadataCharacteristicValue *)self validValues];
-  v15 = [v14 count];
+  validValues = [(HAPMetadataCharacteristicValue *)self validValues];
+  v15 = [validValues count];
 
   if (v15)
   {
-    v16 = [(HAPMetadataCharacteristicValue *)self validValues];
-    [v3 setObject:v16 forKeyedSubscript:@"ValidValues"];
+    validValues2 = [(HAPMetadataCharacteristicValue *)self validValues];
+    [v3 setObject:validValues2 forKeyedSubscript:@"ValidValues"];
   }
 
   return v3;
@@ -189,52 +189,52 @@
 - (id)description
 {
   v3 = [NSMutableString stringWithFormat:@"ValueMetadata"];
-  v4 = [(HAPMetadataCharacteristicValue *)self minLength];
+  minLength = [(HAPMetadataCharacteristicValue *)self minLength];
 
-  if (v4)
+  if (minLength)
   {
-    v5 = [(HAPMetadataCharacteristicValue *)self minLength];
-    [v3 appendFormat:@"  minLength:%@", v5];
+    minLength2 = [(HAPMetadataCharacteristicValue *)self minLength];
+    [v3 appendFormat:@"  minLength:%@", minLength2];
   }
 
-  v6 = [(HAPMetadataCharacteristicValue *)self maxLength];
+  maxLength = [(HAPMetadataCharacteristicValue *)self maxLength];
 
-  if (v6)
+  if (maxLength)
   {
-    v7 = [(HAPMetadataCharacteristicValue *)self maxLength];
-    [v3 appendFormat:@"  maxLength:%@", v7];
+    maxLength2 = [(HAPMetadataCharacteristicValue *)self maxLength];
+    [v3 appendFormat:@"  maxLength:%@", maxLength2];
   }
 
-  v8 = [(HAPMetadataCharacteristicValue *)self minValue];
+  minValue = [(HAPMetadataCharacteristicValue *)self minValue];
 
-  if (v8)
+  if (minValue)
   {
-    v9 = [(HAPMetadataCharacteristicValue *)self minValue];
-    [v3 appendFormat:@"  minValue:%@", v9];
+    minValue2 = [(HAPMetadataCharacteristicValue *)self minValue];
+    [v3 appendFormat:@"  minValue:%@", minValue2];
   }
 
-  v10 = [(HAPMetadataCharacteristicValue *)self maxValue];
+  maxValue = [(HAPMetadataCharacteristicValue *)self maxValue];
 
-  if (v10)
+  if (maxValue)
   {
-    v11 = [(HAPMetadataCharacteristicValue *)self maxValue];
-    [v3 appendFormat:@"  maxValue:%@", v11];
+    maxValue2 = [(HAPMetadataCharacteristicValue *)self maxValue];
+    [v3 appendFormat:@"  maxValue:%@", maxValue2];
   }
 
-  v12 = [(HAPMetadataCharacteristicValue *)self stepValue];
+  stepValue = [(HAPMetadataCharacteristicValue *)self stepValue];
 
-  if (v12)
+  if (stepValue)
   {
-    v13 = [(HAPMetadataCharacteristicValue *)self stepValue];
-    [v3 appendFormat:@"  stepValue:%@", v13];
+    stepValue2 = [(HAPMetadataCharacteristicValue *)self stepValue];
+    [v3 appendFormat:@"  stepValue:%@", stepValue2];
   }
 
-  v14 = [(HAPMetadataCharacteristicValue *)self validValues];
+  validValues = [(HAPMetadataCharacteristicValue *)self validValues];
 
-  if (v14)
+  if (validValues)
   {
-    v15 = [(HAPMetadataCharacteristicValue *)self validValues];
-    [v3 appendFormat:@"  validValues:%@", v15];
+    validValues2 = [(HAPMetadataCharacteristicValue *)self validValues];
+    [v3 appendFormat:@"  validValues:%@", validValues2];
   }
 
   return v3;

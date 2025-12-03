@@ -1,14 +1,14 @@
 @interface PresentRAPActionHandler
-+ (void)_showErrorMessageinContext:(id)a3;
-+ (void)_showRAPForMapItem:(id)a3 inContext:(id)a4;
-+ (void)performAction:(id)a3 inContext:(id)a4;
++ (void)_showErrorMessageinContext:(id)context;
++ (void)_showRAPForMapItem:(id)item inContext:(id)context;
++ (void)performAction:(id)action inContext:(id)context;
 @end
 
 @implementation PresentRAPActionHandler
 
-+ (void)_showErrorMessageinContext:(id)a3
++ (void)_showErrorMessageinContext:(id)context
 {
-  v9 = [a3 chrome];
+  chrome = [context chrome];
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"Location Details Not Available [Report a Problem]" value:@"localized string not found" table:0];
   v5 = [UIAlertController alertControllerWithTitle:0 message:v4 preferredStyle:1];
@@ -18,47 +18,47 @@
   v8 = [UIAlertAction actionWithTitle:v7 style:1 handler:0];
   [v5 addAction:v8];
 
-  [v9 _maps_topMostPresentViewController:v5 animated:1 completion:0];
+  [chrome _maps_topMostPresentViewController:v5 animated:1 completion:0];
 }
 
-+ (void)_showRAPForMapItem:(id)a3 inContext:(id)a4
++ (void)_showRAPForMapItem:(id)item inContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  contextCopy = context;
   if (_MKRAPIsAvailable() && !sub_1007413D0())
   {
-    if (([v6 _isMapItemTypeBrand] & 1) == 0)
+    if (([itemCopy _isMapItemTypeBrand] & 1) == 0)
     {
-      [v6 _coordinate];
+      [itemCopy _coordinate];
       if (fabs(v16) > 180.0 || v15 < -90.0 || v15 > 90.0)
       {
-        [a1 _showErrorMessageinContext:v7];
+        [self _showErrorMessageinContext:contextCopy];
         goto LABEL_5;
       }
     }
 
-    v8 = [[SearchResult alloc] initWithMapItem:v6];
-    if (_MKRAPIsAvailable() && (sub_1007413D0() & 1) == 0 && v8)
+    chrome3 = [[SearchResult alloc] initWithMapItem:itemCopy];
+    if (_MKRAPIsAvailable() && (sub_1007413D0() & 1) == 0 && chrome3)
     {
-      v17 = [v7 chrome];
-      v18 = [v17 mapSelectionManager];
-      [v18 selectMapItem:v6 animated:0];
+      chrome = [contextCopy chrome];
+      mapSelectionManager = [chrome mapSelectionManager];
+      [mapSelectionManager selectMapItem:itemCopy animated:0];
 
-      v19 = [v7 chrome];
-      v20 = [v19 _maps_mapsSceneDelegate];
-      v21 = [v20 rapPresenter];
+      chrome2 = [contextCopy chrome];
+      _maps_mapsSceneDelegate = [chrome2 _maps_mapsSceneDelegate];
+      rapPresenter = [_maps_mapsSceneDelegate rapPresenter];
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_10071F890;
       v22[3] = &unk_10163BCB0;
-      v23 = v8;
-      [v21 presentReportAProblemFromPlaceCardViewController:0 editingContext:v22 overriddenUserInterfaceStyle:0 sourceView:0 entryPoint:201 completion:0];
+      v23 = chrome3;
+      [rapPresenter presentReportAProblemFromPlaceCardViewController:0 editingContext:v22 overriddenUserInterfaceStyle:0 sourceView:0 entryPoint:201 completion:0];
     }
   }
 
   else
   {
-    v8 = [v7 chrome];
+    chrome3 = [contextCopy chrome];
     v9 = +[NSBundle mainBundle];
     v10 = [v9 localizedStringForKey:@"This feature isn’t available to you [Report a Problem]" value:@"localized string not found" table:0];
     v11 = [UIAlertController alertControllerWithTitle:0 message:v10 preferredStyle:1];
@@ -68,70 +68,70 @@
     v14 = [UIAlertAction actionWithTitle:v13 style:1 handler:0];
     [v11 addAction:v14];
 
-    [(SearchResult *)v8 _maps_topMostPresentViewController:v11 animated:1 completion:0];
+    [(SearchResult *)chrome3 _maps_topMostPresentViewController:v11 animated:1 completion:0];
   }
 
 LABEL_5:
 }
 
-+ (void)performAction:(id)a3 inContext:(id)a4
++ (void)performAction:(id)action inContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  contextCopy = context;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
-    v9 = [v8 mapItem];
+    v8 = actionCopy;
+    mapItem = [v8 mapItem];
 
-    if (v9)
+    if (mapItem)
     {
-      v10 = [v8 mapItem];
-      [a1 _showRAPForMapItem:v10 inContext:v7];
+      mapItem2 = [v8 mapItem];
+      [self _showRAPForMapItem:mapItem2 inContext:contextCopy];
 LABEL_4:
 
 LABEL_15:
       goto LABEL_16;
     }
 
-    v11 = [v8 response];
+    response = [v8 response];
 
-    if (!v11)
+    if (!response)
     {
-      v20 = [v8 rapInfo];
+      rapInfo = [v8 rapInfo];
 
-      if (v20)
+      if (rapInfo)
       {
-        v21 = [v7 chrome];
-        v22 = [v8 rapInfo];
-        v23 = [v22 rapId];
+        chrome = [contextCopy chrome];
+        rapInfo2 = [v8 rapInfo];
+        rapId = [rapInfo2 rapId];
         v38[0] = _NSConcreteStackBlock;
         v38[1] = 3221225472;
         v38[2] = sub_10071FEF8;
         v38[3] = &unk_101638D38;
-        v39 = v7;
-        v40 = v21;
-        v24 = v21;
-        [RAPRecordManager fetchRAPRecordsMatchingProblemId:v23 completion:v38];
+        v39 = contextCopy;
+        v40 = chrome;
+        coordinator = chrome;
+        [RAPRecordManager fetchRAPRecordsMatchingProblemId:rapId completion:v38];
       }
 
       else
       {
-        v32 = [v8 locationQueryItem];
+        locationQueryItem = [v8 locationQueryItem];
 
-        if (v32)
+        if (locationQueryItem)
         {
-          v33 = [v7 chrome];
-          v10 = [v33 currentTraits];
+          chrome2 = [contextCopy chrome];
+          mapItem2 = [chrome2 currentTraits];
 
-          objc_initWeak(&location, a1);
+          objc_initWeak(&location, self);
           v34[0] = _NSConcreteStackBlock;
           v34[1] = 3221225472;
           v34[2] = sub_100720010;
           v34[3] = &unk_101627808;
           objc_copyWeak(&v36, &location);
-          v35 = v7;
-          [v8 resolveMapItemWithTraits:v10 completion:v34];
+          v35 = contextCopy;
+          [v8 resolveMapItemWithTraits:mapItem2 completion:v34];
 
           objc_destroyWeak(&v36);
           objc_destroyWeak(&location);
@@ -143,8 +143,8 @@ LABEL_15:
           goto LABEL_15;
         }
 
-        v24 = [v7 coordinator];
-        [v24 viewControllerShowReports:0];
+        coordinator = [contextCopy coordinator];
+        [coordinator viewControllerShowReports:0];
       }
 
 LABEL_14:
@@ -153,15 +153,15 @@ LABEL_14:
     }
 
     v12 = +[UIApplication sharedMapsDelegate];
-    v13 = [v12 poiSearchManager];
-    [v13 didReceiveRAPNotification];
+    poiSearchManager = [v12 poiSearchManager];
+    [poiSearchManager didReceiveRAPNotification];
 
-    v14 = [v8 response];
+    response2 = [v8 response];
     LOBYTE(location) = 0;
-    v15 = [v14 canDisplayAdditionalUI];
+    canDisplayAdditionalUI = [response2 canDisplayAdditionalUI];
     v50 = 0;
     v51[0] = 0;
-    v16 = [v14 getSingleServerSideAlertTitle:v51 message:&v50 messageIsSameAsNotificationTitle:&location];
+    v16 = [response2 getSingleServerSideAlertTitle:v51 message:&v50 messageIsSameAsNotificationTitle:&location];
     v17 = v51[0];
     v18 = v50;
     if (v16)
@@ -170,8 +170,8 @@ LABEL_14:
       {
         v19 = 1;
 LABEL_13:
-        v27 = [v7 chrome];
-        v28 = [v7 appCoordinator];
+        chrome3 = [contextCopy chrome];
+        appCoordinator = [contextCopy appCoordinator];
         v41[0] = _NSConcreteStackBlock;
         v41[1] = 3221225472;
         v41[2] = sub_10071FCF8;
@@ -179,14 +179,14 @@ LABEL_13:
         v46 = v19;
         v42 = v17;
         v43 = v18;
-        v47 = v15;
-        v44 = v14;
-        v45 = v27;
-        v29 = v27;
-        v24 = v14;
+        v47 = canDisplayAdditionalUI;
+        v44 = response2;
+        v45 = chrome3;
+        v29 = chrome3;
+        coordinator = response2;
         v30 = v18;
         v31 = v17;
-        [v28 displayOrScheduleDisplayOfEnqueuedFixedProblem:v41];
+        [appCoordinator displayOrScheduleDisplayOfEnqueuedFixedProblem:v41];
 
         goto LABEL_14;
       }
@@ -196,7 +196,7 @@ LABEL_13:
     {
       v48 = 0;
       v49 = 0;
-      [v14 getDefaultAlertTitle:&v49 alertMessage:&v48];
+      [response2 getDefaultAlertTitle:&v49 alertMessage:&v48];
       v25 = v49;
 
       v26 = v48;
@@ -204,7 +204,7 @@ LABEL_13:
       v18 = v26;
     }
 
-    v19 = v15 ^ 1;
+    v19 = canDisplayAdditionalUI ^ 1;
     goto LABEL_13;
   }
 

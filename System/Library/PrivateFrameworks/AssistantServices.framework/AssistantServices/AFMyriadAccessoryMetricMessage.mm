@@ -1,20 +1,20 @@
 @interface AFMyriadAccessoryMetricMessage
-- (AFMyriadAccessoryMetricMessage)initWithDataPayload:(id)a3;
-- (AFMyriadAccessoryMetricMessage)initWithMetricData:(id)a3;
-- (BOOL)_decodeMetricDataPayload:(id)a3 decodedPayload:(MyriadMetricsDataV1 *)a4;
+- (AFMyriadAccessoryMetricMessage)initWithDataPayload:(id)payload;
+- (AFMyriadAccessoryMetricMessage)initWithMetricData:(id)data;
+- (BOOL)_decodeMetricDataPayload:(id)payload decodedPayload:(MyriadMetricsDataV1 *)decodedPayload;
 - (MyriadMetricsDataV1)messageAsStruct;
-- (id)_extractMetricDataFromDataPayload:(id)a3;
+- (id)_extractMetricDataFromDataPayload:(id)payload;
 - (id)messageAsData;
 @end
 
 @implementation AFMyriadAccessoryMetricMessage
 
-- (BOOL)_decodeMetricDataPayload:(id)a3 decodedPayload:(MyriadMetricsDataV1 *)a4
+- (BOOL)_decodeMetricDataPayload:(id)payload decodedPayload:(MyriadMetricsDataV1 *)decodedPayload
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v5 && [v5 length])
+  payloadCopy = payload;
+  v6 = payloadCopy;
+  if (payloadCopy && [payloadCopy length])
   {
     v14 = 0;
     [v6 getBytes:&v14 range:{0, 1}];
@@ -22,8 +22,8 @@
     if (v14)
     {
       v8 = [v6 length];
-      *&a4->version = 0u;
-      *&a4->eventType = 0u;
+      *&decodedPayload->version = 0u;
+      *&decodedPayload->eventType = 0u;
       if (v8 >= 0xE8)
       {
         v9 = 232;
@@ -34,20 +34,20 @@
         v9 = v8;
       }
 
-      *&a4->state = 0uLL;
-      *&a4->advInterval = 0uLL;
-      *&a4->previousDecisionTime = 0uLL;
-      *&a4->electionParticipantGoodnessScore[5] = 0uLL;
-      *&a4->electionParticipantGoodnessScore[21] = 0uLL;
-      *&a4->electionParticipantGoodnessScore[37] = 0uLL;
-      *&a4->electionParticipantDeviceType[3] = 0uLL;
-      *&a4->electionParticipantDeviceType[19] = 0uLL;
-      *&a4->electionParticipantDeviceType[35] = 0uLL;
-      *&a4->electionParticipantProductType[1] = 0uLL;
-      *&a4->electionParticipantProductType[17] = 0uLL;
-      *&a4->electionParticipantProductType[33] = 0uLL;
-      *&a4->electionParticipantProductType[49] = 0;
-      memcpy(a4, [v6 bytes], v9);
+      *&decodedPayload->state = 0uLL;
+      *&decodedPayload->advInterval = 0uLL;
+      *&decodedPayload->previousDecisionTime = 0uLL;
+      *&decodedPayload->electionParticipantGoodnessScore[5] = 0uLL;
+      *&decodedPayload->electionParticipantGoodnessScore[21] = 0uLL;
+      *&decodedPayload->electionParticipantGoodnessScore[37] = 0uLL;
+      *&decodedPayload->electionParticipantDeviceType[3] = 0uLL;
+      *&decodedPayload->electionParticipantDeviceType[19] = 0uLL;
+      *&decodedPayload->electionParticipantDeviceType[35] = 0uLL;
+      *&decodedPayload->electionParticipantProductType[1] = 0uLL;
+      *&decodedPayload->electionParticipantProductType[17] = 0uLL;
+      *&decodedPayload->electionParticipantProductType[33] = 0uLL;
+      *&decodedPayload->electionParticipantProductType[49] = 0;
+      memcpy(decodedPayload, [v6 bytes], v9);
     }
 
     else
@@ -83,15 +83,15 @@
   return v7;
 }
 
-- (id)_extractMetricDataFromDataPayload:(id)a3
+- (id)_extractMetricDataFromDataPayload:(id)payload
 {
-  v3 = a3;
+  payloadCopy = payload;
   v4 = +[AFMyriadMetrics sharedInstance];
-  v5 = [v4 isMyriadMetricsMessage:v3];
+  v5 = [v4 isMyriadMetricsMessage:payloadCopy];
 
   if (v5)
   {
-    v6 = [v3 objectForKeyedSubscript:@"accessoryMetrics"];
+    v6 = [payloadCopy objectForKeyedSubscript:@"accessoryMetrics"];
   }
 
   else
@@ -137,9 +137,9 @@
   return v3;
 }
 
-- (AFMyriadAccessoryMetricMessage)initWithDataPayload:(id)a3
+- (AFMyriadAccessoryMetricMessage)initWithDataPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v10.receiver = self;
   v10.super_class = AFMyriadAccessoryMetricMessage;
   v5 = [(AFMyriadAccessoryMetricMessage *)&v10 init];
@@ -151,7 +151,7 @@ LABEL_4:
     goto LABEL_6;
   }
 
-  v7 = [(AFMyriadAccessoryMetricMessage *)v5 _extractMetricDataFromDataPayload:v4];
+  v7 = [(AFMyriadAccessoryMetricMessage *)v5 _extractMetricDataFromDataPayload:payloadCopy];
   if (v7)
   {
     v8 = [(AFMyriadAccessoryMetricMessage *)v6 _decodeMetricDataPayload:v7 decodedPayload:&v6->_metric];
@@ -170,14 +170,14 @@ LABEL_6:
   return v7;
 }
 
-- (AFMyriadAccessoryMetricMessage)initWithMetricData:(id)a3
+- (AFMyriadAccessoryMetricMessage)initWithMetricData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = AFMyriadAccessoryMetricMessage;
   v5 = [(AFMyriadAccessoryMetricMessage *)&v9 init];
   v6 = v5;
-  if (v5 && ![(AFMyriadAccessoryMetricMessage *)v5 _decodeMetricDataPayload:v4 decodedPayload:&v5->_metric])
+  if (v5 && ![(AFMyriadAccessoryMetricMessage *)v5 _decodeMetricDataPayload:dataCopy decodedPayload:&v5->_metric])
   {
     v7 = 0;
   }

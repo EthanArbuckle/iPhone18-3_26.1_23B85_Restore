@@ -26,7 +26,7 @@
     v11[3] = &unk_1E7342C40;
     v9 = v7;
     v12 = v9;
-    [a1 enumerateByteRangesUsingBlock:v11];
+    [self enumerateByteRangesUsingBlock:v11];
     if ((a3 & 1) == 0)
     {
       v9[2](v9, AFSecurityDigestibleChunksProviderEnd, 4);

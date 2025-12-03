@@ -1,12 +1,12 @@
 @interface _UIToolbarNavigationButton
-- (void)updateImageIfNeededWithTintColor:(id)a3;
+- (void)updateImageIfNeededWithTintColor:(id)color;
 @end
 
 @implementation _UIToolbarNavigationButton
 
-- (void)updateImageIfNeededWithTintColor:(id)a3
+- (void)updateImageIfNeededWithTintColor:(id)color
 {
-  [(UINavigationButton *)self _setTintColor:a3];
+  [(UINavigationButton *)self _setTintColor:color];
 
   [(UINavigationButton *)self _updateStyle];
 }

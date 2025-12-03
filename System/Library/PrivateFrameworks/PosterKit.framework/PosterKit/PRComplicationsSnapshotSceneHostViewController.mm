@@ -1,64 +1,64 @@
 @interface PRComplicationsSnapshotSceneHostViewController
-- (PRComplicationsSnapshotSceneHostViewController)initWithScene:(id)a3;
+- (PRComplicationsSnapshotSceneHostViewController)initWithScene:(id)scene;
 - (void)dealloc;
-- (void)setOverrideUserInterfaceStyle:(int64_t)a3;
+- (void)setOverrideUserInterfaceStyle:(int64_t)style;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation PRComplicationsSnapshotSceneHostViewController
 
-- (PRComplicationsSnapshotSceneHostViewController)initWithScene:(id)a3
+- (PRComplicationsSnapshotSceneHostViewController)initWithScene:(id)scene
 {
   v33[4] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  sceneCopy = scene;
   v32.receiver = self;
   v32.super_class = PRComplicationsSnapshotSceneHostViewController;
   v6 = [(PRComplicationsSnapshotSceneHostViewController *)&v32 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_scene, a3);
+    objc_storeStrong(&v6->_scene, scene);
     [(FBScene *)v7->_scene configureParameters:&__block_literal_global_96];
-    v8 = [(FBScene *)v7->_scene uiPresentationManager];
-    v9 = [v8 createPresenterWithIdentifier:@"complications-snapshot"];
-    v31 = v5;
+    uiPresentationManager = [(FBScene *)v7->_scene uiPresentationManager];
+    v9 = [uiPresentationManager createPresenterWithIdentifier:@"complications-snapshot"];
+    v31 = sceneCopy;
     scenePresenter = v7->_scenePresenter;
     v7->_scenePresenter = v9;
 
     [(UIScenePresenter *)v7->_scenePresenter modifyPresentationContext:&__block_literal_global_103];
     [(UIScenePresenter *)v7->_scenePresenter activate];
-    v11 = [(UIScenePresenter *)v7->_scenePresenter presentationView];
-    [v11 setClipsToBounds:1];
-    v12 = [v11 layer];
-    [v12 setName:@"Scene View"];
+    presentationView = [(UIScenePresenter *)v7->_scenePresenter presentationView];
+    [presentationView setClipsToBounds:1];
+    layer = [presentationView layer];
+    [layer setName:@"Scene View"];
 
     [(FBScene *)v7->_scene activateWithTransitionContext:0];
-    v13 = [(PRComplicationsSnapshotSceneHostViewController *)v7 view];
-    [v13 addSubview:v11];
+    view = [(PRComplicationsSnapshotSceneHostViewController *)v7 view];
+    [view addSubview:presentationView];
 
-    v14 = [(PRComplicationsSnapshotSceneHostViewController *)v7 view];
+    view2 = [(PRComplicationsSnapshotSceneHostViewController *)v7 view];
     v15 = MEMORY[0x1E695DF70];
-    v30 = [v11 leadingAnchor];
-    v29 = [v14 leadingAnchor];
-    v28 = [v30 constraintEqualToAnchor:v29];
+    leadingAnchor = [presentationView leadingAnchor];
+    leadingAnchor2 = [view2 leadingAnchor];
+    v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v33[0] = v28;
-    v27 = [v11 trailingAnchor];
-    v26 = [v14 trailingAnchor];
-    v25 = [v27 constraintEqualToAnchor:v26];
+    trailingAnchor = [presentationView trailingAnchor];
+    trailingAnchor2 = [view2 trailingAnchor];
+    v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v33[1] = v25;
-    v24 = [v11 topAnchor];
-    v16 = [v14 topAnchor];
-    v17 = [v24 constraintEqualToAnchor:v16];
+    topAnchor = [presentationView topAnchor];
+    topAnchor2 = [view2 topAnchor];
+    v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v33[2] = v17;
-    v18 = [v11 bottomAnchor];
-    v19 = [v14 bottomAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    bottomAnchor = [presentationView bottomAnchor];
+    bottomAnchor2 = [view2 bottomAnchor];
+    v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v33[3] = v20;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:4];
     v22 = [v15 arrayWithArray:v21];
 
     [MEMORY[0x1E696ACD8] activateConstraints:v22];
-    v5 = v31;
+    sceneCopy = v31;
   }
 
   return v7;
@@ -128,7 +128,7 @@ void __71__PRComplicationsSnapshotSceneHostViewController_viewDidLayoutSubviews_
   [v12 setFrame:{v5, v7, v9, v11}];
 }
 
-- (void)setOverrideUserInterfaceStyle:(int64_t)a3
+- (void)setOverrideUserInterfaceStyle:(int64_t)style
 {
   v7.receiver = self;
   v7.super_class = PRComplicationsSnapshotSceneHostViewController;
@@ -138,7 +138,7 @@ void __71__PRComplicationsSnapshotSceneHostViewController_viewDidLayoutSubviews_
   v6[1] = 3221225472;
   v6[2] = __80__PRComplicationsSnapshotSceneHostViewController_setOverrideUserInterfaceStyle___block_invoke;
   v6[3] = &__block_descriptor_40_e63_v24__0__FBSMutableSceneSettings_8__FBSSceneTransitionContext_16l;
-  v6[4] = a3;
+  v6[4] = style;
   [(FBScene *)scene performUpdate:v6];
 }
 

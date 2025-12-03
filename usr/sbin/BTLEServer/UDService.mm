@@ -1,28 +1,28 @@
 @interface UDService
-- (BOOL)consentForUserIndex:(unsigned __int8)a3 withConsentCode:(unsigned __int16)a4;
+- (BOOL)consentForUserIndex:(unsigned __int8)index withConsentCode:(unsigned __int16)code;
 - (BOOL)deleteCurrentUser;
 - (BOOL)registerNewUser;
-- (UDService)initWithManager:(id)a3 peripheral:(id)a4 service:(id)a5;
-- (id)getDescriptionForResponseValue:(unsigned __int8)a3;
+- (UDService)initWithManager:(id)manager peripheral:(id)peripheral service:(id)service;
+- (id)getDescriptionForResponseValue:(unsigned __int8)value;
 - (void)controlPointTimeout;
 - (void)extractControlPointResponse;
 - (void)extractDatabaseChangeIncrement;
 - (void)extractRegisteredUserData;
 - (void)extractUserIndex;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation UDService
 
-- (UDService)initWithManager:(id)a3 peripheral:(id)a4 service:(id)a5
+- (UDService)initWithManager:(id)manager peripheral:(id)peripheral service:(id)service
 {
   v8.receiver = self;
   v8.super_class = UDService;
-  v5 = [(ClientService *)&v8 initWithManager:a3 peripheral:a4 service:a5];
+  v5 = [(ClientService *)&v8 initWithManager:manager peripheral:peripheral service:service];
   v6 = v5;
   if (v5)
   {
@@ -57,17 +57,17 @@
   v13[3] = v8;
   v9 = [NSArray arrayWithObjects:v13 count:4];
 
-  v10 = [(ClientService *)self peripheral];
-  v11 = [(ClientService *)self service];
-  [v10 discoverCharacteristics:v9 forService:v11];
+  peripheral = [(ClientService *)self peripheral];
+  service = [(ClientService *)self service];
+  [peripheral discoverCharacteristics:v9 forService:service];
 
   [(UDService *)self setControlPointTimer:0];
 }
 
 - (void)stop
 {
-  v3 = [(UDService *)self controlPointTimer];
-  [v3 invalidate];
+  controlPointTimer = [(UDService *)self controlPointTimer];
+  [controlPointTimer invalidate];
 
   v4.receiver = self;
   v4.super_class = UDService;
@@ -93,9 +93,9 @@
     v16 = 1;
     v17 = v4;
     v5 = [NSData dataWithBytesNoCopy:&v16 length:3 freeWhenDone:0];
-    v6 = [(ClientService *)self peripheral];
-    v7 = [(UDService *)self userControlPointCharacteristic];
-    [v6 writeValue:v5 forCharacteristic:v7 type:0];
+    peripheral = [(ClientService *)self peripheral];
+    userControlPointCharacteristic = [(UDService *)self userControlPointCharacteristic];
+    [peripheral writeValue:v5 forCharacteristic:userControlPointCharacteristic type:0];
 
     self->_consentCode = v4;
     self->_isControlPointOpInProgress = 1;
@@ -107,12 +107,12 @@
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v9;
-      v11 = [(ClientService *)self peripheral];
-      v12 = [v11 name];
+      peripheral2 = [(ClientService *)self peripheral];
+      name = [peripheral2 name];
       *buf = 141558275;
       v19 = 1752392040;
       v20 = 2113;
-      v21 = v12;
+      v21 = name;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "UDS register new user request sent for peripheral %{private, mask.hash}@", buf, 0x16u);
     }
 
@@ -122,7 +122,7 @@
   return v13;
 }
 
-- (BOOL)consentForUserIndex:(unsigned __int8)a3 withConsentCode:(unsigned __int16)a4
+- (BOOL)consentForUserIndex:(unsigned __int8)index withConsentCode:(unsigned __int16)code
 {
   if (self->_isControlPointOpInProgress || ([(UDService *)self userControlPointCharacteristic], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
   {
@@ -137,15 +137,15 @@
 
   else
   {
-    self->_userIndex = a3;
-    self->_consentCode = a4;
+    self->_userIndex = index;
+    self->_consentCode = code;
     v19 = 2;
     BYTE1(v19) = self->_userIndex;
-    HIWORD(v19) = a4;
+    HIWORD(v19) = code;
     v8 = [NSData dataWithBytesNoCopy:&v19 length:4 freeWhenDone:0];
-    v9 = [(ClientService *)self peripheral];
-    v10 = [(UDService *)self userControlPointCharacteristic];
-    [v9 writeValue:v8 forCharacteristic:v10 type:0];
+    peripheral = [(ClientService *)self peripheral];
+    userControlPointCharacteristic = [(UDService *)self userControlPointCharacteristic];
+    [peripheral writeValue:v8 forCharacteristic:userControlPointCharacteristic type:0];
 
     self->_isControlPointOpInProgress = 1;
     self->_currentRequestedOpCode = 2;
@@ -156,12 +156,12 @@
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
-      v14 = [(ClientService *)self peripheral];
-      v15 = [v14 name];
+      peripheral2 = [(ClientService *)self peripheral];
+      name = [peripheral2 name];
       *buf = 141558275;
       v21 = 1752392040;
       v22 = 2113;
-      v23 = v15;
+      v23 = name;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "UDS consent request sent for peripheral %{private, mask.hash}@", buf, 0x16u);
     }
 
@@ -188,9 +188,9 @@
   {
     v15 = 3;
     v4 = [NSData dataWithBytesNoCopy:&v15 length:1 freeWhenDone:0];
-    v5 = [(ClientService *)self peripheral];
-    v6 = [(UDService *)self userControlPointCharacteristic];
-    [v5 writeValue:v4 forCharacteristic:v6 type:0];
+    peripheral = [(ClientService *)self peripheral];
+    userControlPointCharacteristic = [(UDService *)self userControlPointCharacteristic];
+    [peripheral writeValue:v4 forCharacteristic:userControlPointCharacteristic type:0];
 
     self->_isControlPointOpInProgress = 1;
     self->_currentRequestedOpCode = 3;
@@ -201,12 +201,12 @@
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [(ClientService *)self peripheral];
-      v11 = [v10 name];
+      peripheral2 = [(ClientService *)self peripheral];
+      name = [peripheral2 name];
       *buf = 141558275;
       v17 = 1752392040;
       v18 = 2113;
-      v19 = v11;
+      v19 = name;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "UDS delete user data request sent for peripheral %{private, mask.hash}@", buf, 0x16u);
     }
 
@@ -229,18 +229,18 @@
     if (self->_currentRequestedOpCode - 1 <= 1)
     {
       v4 = +[NSNotificationCenter defaultCenter];
-      v5 = [(ClientService *)self peripheral];
-      [v4 postNotificationName:@"UserDataServiceConsentDidFailNotification" object:v5 userInfo:0];
+      peripheral = [(ClientService *)self peripheral];
+      [v4 postNotificationName:@"UserDataServiceConsentDidFailNotification" object:peripheral userInfo:0];
     }
   }
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v33 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  peripheralCopy = peripheral;
+  serviceCopy = service;
+  errorCopy = error;
+  if (errorCopy)
   {
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
@@ -250,13 +250,13 @@
 
   else
   {
-    v32 = v8;
+    v32 = serviceCopy;
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v10 = [v8 characteristics];
-    v11 = [v10 countByEnumeratingWithState:&v38 objects:v42 count:16];
+    characteristics = [serviceCopy characteristics];
+    v11 = [characteristics countByEnumeratingWithState:&v38 objects:v42 count:16];
     if (v11)
     {
       v12 = v11;
@@ -271,20 +271,20 @@
         {
           if (*v39 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(characteristics);
           }
 
           v15 = *(*(&v38 + 1) + 8 * i);
-          v16 = [(UDService *)self databaseChangeIncrementCharacteristic];
-          if (v16)
+          databaseChangeIncrementCharacteristic = [(UDService *)self databaseChangeIncrementCharacteristic];
+          if (databaseChangeIncrementCharacteristic)
           {
           }
 
           else
           {
-            v17 = [v15 UUID];
+            uUID = [v15 UUID];
             v18 = [CBUUID UUIDWithString:v37];
-            v19 = [v17 isEqual:v18];
+            v19 = [uUID isEqual:v18];
 
             if (v19)
             {
@@ -292,16 +292,16 @@
             }
           }
 
-          v20 = [(UDService *)self userIndexCharacteristic];
-          if (v20)
+          userIndexCharacteristic = [(UDService *)self userIndexCharacteristic];
+          if (userIndexCharacteristic)
           {
           }
 
           else
           {
-            v21 = [v15 UUID];
+            uUID2 = [v15 UUID];
             v22 = [CBUUID UUIDWithString:v36];
-            v23 = [v21 isEqual:v22];
+            v23 = [uUID2 isEqual:v22];
 
             if (v23)
             {
@@ -309,67 +309,67 @@
             }
           }
 
-          v24 = [(UDService *)self userControlPointCharacteristic];
-          if (v24)
+          userControlPointCharacteristic = [(UDService *)self userControlPointCharacteristic];
+          if (userControlPointCharacteristic)
           {
           }
 
           else
           {
-            v25 = [v15 UUID];
+            uUID3 = [v15 UUID];
             v26 = [CBUUID UUIDWithString:v35];
-            v27 = [v25 isEqual:v26];
+            v27 = [uUID3 isEqual:v26];
 
             if (v27)
             {
               [(UDService *)self setUserControlPointCharacteristic:v15];
               if (([v15 properties] & 0x20) != 0)
               {
-                [v33 setNotifyValue:1 forCharacteristic:v15];
+                [peripheralCopy setNotifyValue:1 forCharacteristic:v15];
               }
             }
           }
 
-          v28 = [(UDService *)self registeredUserCharacteristic];
-          if (v28)
+          registeredUserCharacteristic = [(UDService *)self registeredUserCharacteristic];
+          if (registeredUserCharacteristic)
           {
           }
 
           else
           {
-            v29 = [v15 UUID];
+            uUID4 = [v15 UUID];
             v30 = [CBUUID UUIDWithString:v34];
-            v31 = [v29 isEqual:v30];
+            v31 = [uUID4 isEqual:v30];
 
             if (v31)
             {
               [(UDService *)self setRegisteredUserCharacteristic:v15];
               if (([v15 properties] & 0x20) != 0)
               {
-                [v33 setNotifyValue:1 forCharacteristic:v15];
+                [peripheralCopy setNotifyValue:1 forCharacteristic:v15];
               }
             }
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v38 objects:v42 count:16];
+        v12 = [characteristics countByEnumeratingWithState:&v38 objects:v42 count:16];
       }
 
       while (v12);
     }
 
     [(ClientService *)self notifyDidStart];
-    v9 = 0;
-    v8 = v32;
+    errorCopy = 0;
+    serviceCopy = v32;
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  if (errorCopy)
   {
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
@@ -379,36 +379,36 @@
 
   else
   {
-    v11 = [(UDService *)self databaseChangeIncrementCharacteristic];
+    databaseChangeIncrementCharacteristic = [(UDService *)self databaseChangeIncrementCharacteristic];
 
-    if (v11 == v9)
+    if (databaseChangeIncrementCharacteristic == characteristicCopy)
     {
       [(UDService *)self extractDatabaseChangeIncrement];
     }
 
     else
     {
-      v12 = [(UDService *)self userIndexCharacteristic];
+      userIndexCharacteristic = [(UDService *)self userIndexCharacteristic];
 
-      if (v12 == v9)
+      if (userIndexCharacteristic == characteristicCopy)
       {
         [(UDService *)self extractUserIndex];
       }
 
       else
       {
-        v13 = [(UDService *)self userControlPointCharacteristic];
+        userControlPointCharacteristic = [(UDService *)self userControlPointCharacteristic];
 
-        if (v13 == v9)
+        if (userControlPointCharacteristic == characteristicCopy)
         {
           [(UDService *)self extractControlPointResponse];
         }
 
         else
         {
-          v14 = [(UDService *)self registeredUserCharacteristic];
+          registeredUserCharacteristic = [(UDService *)self registeredUserCharacteristic];
 
-          if (v14 == v9)
+          if (registeredUserCharacteristic == characteristicCopy)
           {
             [(UDService *)self extractRegisteredUserData];
           }
@@ -418,12 +418,12 @@
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  if (errorCopy)
   {
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
@@ -433,8 +433,8 @@
 
   else
   {
-    v11 = [(UDService *)self userControlPointCharacteristic];
-    if (v11 == v9)
+    userControlPointCharacteristic = [(UDService *)self userControlPointCharacteristic];
+    if (userControlPointCharacteristic == characteristicCopy)
     {
       isConsentInitiated = self->_isConsentInitiated;
 
@@ -444,22 +444,22 @@
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
         {
           v14 = v13;
-          v15 = [(ClientService *)self peripheral];
-          v16 = [v15 name];
+          peripheral = [(ClientService *)self peripheral];
+          name = [peripheral name];
           userIndex = self->_userIndex;
           *buf = 138412546;
-          v31 = v16;
+          v31 = name;
           v32 = 1024;
           LODWORD(v33) = userIndex;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "UDS didUpdateNotificationStateForCharacteristic for peripheral %@: %u%%", buf, 0x12u);
         }
 
         self->_isConsentInitiated = 1;
-        v18 = [(ClientService *)self peripheral];
-        v19 = [v18 customProperty:@"UserDataServiceUserIndex"];
+        peripheral2 = [(ClientService *)self peripheral];
+        v19 = [peripheral2 customProperty:@"UserDataServiceUserIndex"];
 
-        v20 = [(ClientService *)self peripheral];
-        v21 = [v20 customProperty:@"UserDataServiceConsentCode"];
+        peripheral3 = [(ClientService *)self peripheral];
+        v21 = [peripheral3 customProperty:@"UserDataServiceConsentCode"];
 
         if (v19 && v21)
         {
@@ -479,12 +479,12 @@
             if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
             {
               log = v26;
-              v29 = [(ClientService *)self peripheral];
-              v27 = [v29 name];
+              peripheral4 = [(ClientService *)self peripheral];
+              name2 = [peripheral4 name];
               *buf = 141558787;
               v31 = 1752392040;
               v32 = 2113;
-              v33 = v27;
+              v33 = name2;
               v34 = 2112;
               v35 = v19;
               v36 = 2112;
@@ -509,19 +509,19 @@
 
 - (void)extractDatabaseChangeIncrement
 {
-  v3 = [(UDService *)self databaseChangeIncrementCharacteristic];
-  v4 = [v3 value];
-  v5 = [DataInputStream inputStreamWithData:v4];
+  databaseChangeIncrementCharacteristic = [(UDService *)self databaseChangeIncrementCharacteristic];
+  value = [databaseChangeIncrementCharacteristic value];
+  v5 = [DataInputStream inputStreamWithData:value];
 
   v6 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [(ClientService *)self peripheral];
-    v9 = [v8 name];
+    peripheral = [(ClientService *)self peripheral];
+    name = [peripheral name];
     userIndex = self->_userIndex;
     v11 = 138412546;
-    v12 = v9;
+    v12 = name;
     v13 = 1024;
     v14 = userIndex;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "UDS database change incremented for peripheral %@: %u%%", &v11, 0x12u);
@@ -530,9 +530,9 @@
 
 - (void)extractUserIndex
 {
-  v3 = [(UDService *)self userIndexCharacteristic];
-  v4 = [v3 value];
-  v5 = [DataInputStream inputStreamWithData:v4];
+  userIndexCharacteristic = [(UDService *)self userIndexCharacteristic];
+  value = [userIndexCharacteristic value];
+  v5 = [DataInputStream inputStreamWithData:value];
 
   if ([v5 readUint8:&self->_userIndex])
   {
@@ -540,11 +540,11 @@
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v7 = v6;
-      v8 = [(ClientService *)self peripheral];
-      v9 = [v8 name];
+      peripheral = [(ClientService *)self peripheral];
+      name = [peripheral name];
       userIndex = self->_userIndex;
       v11 = 138412546;
-      v12 = v9;
+      v12 = name;
       v13 = 1024;
       v14 = userIndex;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "User index for peripheral %@: %u%%", &v11, 0x12u);
@@ -554,14 +554,14 @@
 
 - (void)extractRegisteredUserData
 {
-  v3 = [(UDService *)self registeredUserCharacteristic];
-  v4 = [v3 value];
-  v5 = [DataInputStream inputStreamWithData:v4];
+  registeredUserCharacteristic = [(UDService *)self registeredUserCharacteristic];
+  value = [registeredUserCharacteristic value];
+  v5 = [DataInputStream inputStreamWithData:value];
 
   v31 = 0;
-  v6 = [(UDService *)self registeredUserCharacteristic];
-  v7 = [v6 value];
-  v8 = [v7 length];
+  registeredUserCharacteristic2 = [(UDService *)self registeredUserCharacteristic];
+  value2 = [registeredUserCharacteristic2 value];
+  v8 = [value2 length];
 
   if ([v5 readUint8:&v31])
   {
@@ -570,9 +570,9 @@
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v10;
-      v12 = [(ClientService *)self peripheral];
-      v13 = [v12 name];
-      v14 = v13;
+      peripheral = [(ClientService *)self peripheral];
+      name = [peripheral name];
+      v14 = name;
       v15 = "Y";
       *buf = 141559299;
       v33 = 1752392040;
@@ -587,7 +587,7 @@
         v16 = "N";
       }
 
-      v35 = v13;
+      v35 = name;
       if ((v9 & 2) == 0)
       {
         v15 = "N";
@@ -614,12 +614,12 @@
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
         {
           v19 = v18;
-          v20 = [(ClientService *)self peripheral];
-          v21 = [v20 name];
+          peripheral2 = [(ClientService *)self peripheral];
+          name2 = [peripheral2 name];
           *buf = 141558531;
           v33 = 1752392040;
           v34 = 2113;
-          v35 = v21;
+          v35 = name2;
           v36 = 1024;
           v37 = v30;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Stored Health Observation for peripheral %{private, mask.hash}@: flags %u", buf, 0x1Cu);
@@ -633,11 +633,11 @@
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
         {
           v23 = v22;
-          v24 = [(ClientService *)self peripheral];
-          v25 = [v24 name];
+          peripheral3 = [(ClientService *)self peripheral];
+          name3 = [peripheral3 name];
           userIndex = self->_userIndex;
           *buf = 138412546;
-          v33 = v25;
+          v33 = name3;
           v34 = 1024;
           LODWORD(v35) = userIndex;
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "User index for peripheral %@: %u%%", buf, 0x12u);
@@ -665,11 +665,11 @@
   }
 }
 
-- (id)getDescriptionForResponseValue:(unsigned __int8)a3
+- (id)getDescriptionForResponseValue:(unsigned __int8)value
 {
-  if ((a3 - 1) < 5)
+  if ((value - 1) < 5)
   {
-    return *(&off_1000BD1D0 + (a3 - 1));
+    return *(&off_1000BD1D0 + (value - 1));
   }
 
   v4 = qword_1000DDBC8;
@@ -692,15 +692,15 @@
     }
   }
 
-  v4 = [(UDService *)self controlPointTimer];
-  [v4 invalidate];
+  controlPointTimer = [(UDService *)self controlPointTimer];
+  [controlPointTimer invalidate];
 
   [(UDService *)self setControlPointTimer:0];
   v40 = 0;
   v39 = 0;
-  v5 = [(UDService *)self userControlPointCharacteristic];
-  v6 = [v5 value];
-  v7 = [DataInputStream inputStreamWithData:v6 byteOrder:1];
+  userControlPointCharacteristic = [(UDService *)self userControlPointCharacteristic];
+  value = [userControlPointCharacteristic value];
+  v7 = [DataInputStream inputStreamWithData:value byteOrder:1];
 
   if (([v7 readUint8:&v40 + 1] & 1) == 0)
   {
@@ -743,13 +743,13 @@
           {
             if ([v7 readUint8:&self->_userIndex])
             {
-              v22 = [(ClientService *)self peripheral];
+              peripheral = [(ClientService *)self peripheral];
               v23 = [NSString stringWithFormat:@"%d", self->_userIndex];
-              [v22 setCustomProperty:@"UserDataServiceUserIndex" value:v23];
+              [peripheral setCustomProperty:@"UserDataServiceUserIndex" value:v23];
 
-              v24 = [(ClientService *)self peripheral];
+              peripheral2 = [(ClientService *)self peripheral];
               v25 = [NSString stringWithFormat:@"%d", self->_consentCode];
-              [v24 setCustomProperty:@"UserDataServiceConsentCode" value:v25];
+              [peripheral2 setCustomProperty:@"UserDataServiceConsentCode" value:v25];
             }
 
             v26 = qword_1000DDBC8;
@@ -790,20 +790,20 @@
               _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "UDS consent completed successfully, index =%d", buf, 8u);
             }
 
-            v30 = [(ClientService *)self peripheral];
-            v31 = [(UDService *)self databaseChangeIncrementCharacteristic];
-            [v30 readValueForCharacteristic:v31];
+            peripheral3 = [(ClientService *)self peripheral];
+            databaseChangeIncrementCharacteristic = [(UDService *)self databaseChangeIncrementCharacteristic];
+            [peripheral3 readValueForCharacteristic:databaseChangeIncrementCharacteristic];
 
-            v32 = [(ClientService *)self peripheral];
-            v33 = [(UDService *)self userIndexCharacteristic];
-            [v32 readValueForCharacteristic:v33];
+            peripheral4 = [(ClientService *)self peripheral];
+            userIndexCharacteristic = [(UDService *)self userIndexCharacteristic];
+            [peripheral4 readValueForCharacteristic:userIndexCharacteristic];
           }
 
           v19 = +[NSNotificationCenter defaultCenter];
-          v20 = [(ClientService *)self peripheral];
+          peripheral5 = [(ClientService *)self peripheral];
           v21 = @"UserDataServiceConsentDidSucceedNotification";
 LABEL_41:
-          [v19 postNotificationName:v21 object:v20 userInfo:0];
+          [v19 postNotificationName:v21 object:peripheral5 userInfo:0];
 
           goto LABEL_42;
         }
@@ -820,14 +820,14 @@ LABEL_41:
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
         {
           v34 = v18;
-          v35 = [(ClientService *)self peripheral];
-          v36 = [v35 name];
+          peripheral6 = [(ClientService *)self peripheral];
+          name = [peripheral6 name];
           v37 = v40;
           v38 = [(UDService *)self getDescriptionForResponseValue:v39];
           *buf = 141558787;
           v42 = 1752392040;
           v43 = 2113;
-          v44 = v36;
+          v44 = name;
           v45 = 1024;
           v46 = v37;
           v47 = 2112;
@@ -838,7 +838,7 @@ LABEL_41:
         if (v40 - 1 <= 1)
         {
           v19 = +[NSNotificationCenter defaultCenter];
-          v20 = [(ClientService *)self peripheral];
+          peripheral5 = [(ClientService *)self peripheral];
           v21 = @"UserDataServiceConsentDidFailNotification";
           goto LABEL_41;
         }
@@ -851,13 +851,13 @@ LABEL_41:
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
       {
         v14 = v13;
-        v15 = [(ClientService *)self peripheral];
-        v16 = [v15 name];
+        peripheral7 = [(ClientService *)self peripheral];
+        name2 = [peripheral7 name];
         currentRequestedOpCode = self->_currentRequestedOpCode;
         *buf = 141558787;
         v42 = 1752392040;
         v43 = 2113;
-        v44 = v16;
+        v44 = name2;
         v45 = 1024;
         v46 = v40;
         v47 = 1024;

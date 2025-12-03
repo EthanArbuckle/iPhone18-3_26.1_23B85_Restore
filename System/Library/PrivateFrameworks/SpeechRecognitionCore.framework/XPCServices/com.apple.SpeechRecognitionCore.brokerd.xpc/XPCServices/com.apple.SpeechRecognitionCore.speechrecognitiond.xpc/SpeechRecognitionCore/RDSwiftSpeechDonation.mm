@@ -1,12 +1,12 @@
 @interface RDSwiftSpeechDonation
 - (_TtC50com_apple_SpeechRecognitionCore_speechrecognitiond21RDSwiftSpeechDonation)init;
-- (_TtC50com_apple_SpeechRecognitionCore_speechrecognitiond21RDSwiftSpeechDonation)initWithDonorBundleID:(id)a3 donorReferenceID:(id)a4 recordingDate:(id)a5 locale:(id)a6 taskHint:(id)a7 transcription:(id)a8;
-- (void)donateWithAudioBuffers:(id)a3 logAudioFile:(BOOL)a4;
+- (_TtC50com_apple_SpeechRecognitionCore_speechrecognitiond21RDSwiftSpeechDonation)initWithDonorBundleID:(id)d donorReferenceID:(id)iD recordingDate:(id)date locale:(id)locale taskHint:(id)hint transcription:(id)transcription;
+- (void)donateWithAudioBuffers:(id)buffers logAudioFile:(BOOL)file;
 @end
 
 @implementation RDSwiftSpeechDonation
 
-- (_TtC50com_apple_SpeechRecognitionCore_speechrecognitiond21RDSwiftSpeechDonation)initWithDonorBundleID:(id)a3 donorReferenceID:(id)a4 recordingDate:(id)a5 locale:(id)a6 taskHint:(id)a7 transcription:(id)a8
+- (_TtC50com_apple_SpeechRecognitionCore_speechrecognitiond21RDSwiftSpeechDonation)initWithDonorBundleID:(id)d donorReferenceID:(id)iD recordingDate:(id)date locale:(id)locale taskHint:(id)hint transcription:(id)transcription
 {
   v28[1] = self;
   v8 = sub_1000C9564();
@@ -29,12 +29,12 @@
   return RDSwiftSpeechDonation.init(donorBundleID:donorReferenceID:recordingDate:locale:taskHint:transcription:)(v16, v18, v19, v21, v15, v11, v22, v24, v25, v26);
 }
 
-- (void)donateWithAudioBuffers:(id)a3 logAudioFile:(BOOL)a4
+- (void)donateWithAudioBuffers:(id)buffers logAudioFile:(BOOL)file
 {
   sub_100056E30();
   v6 = sub_1000C9B74();
-  v7 = self;
-  RDSwiftSpeechDonation.donate(audioBuffers:logAudioFile:)(v6, a4);
+  selfCopy = self;
+  RDSwiftSpeechDonation.donate(audioBuffers:logAudioFile:)(v6, file);
 }
 
 - (_TtC50com_apple_SpeechRecognitionCore_speechrecognitiond21RDSwiftSpeechDonation)init

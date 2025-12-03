@@ -1,6 +1,6 @@
 @interface DOMHTMLAreaElement
 - (BOOL)noHref;
-- (CGRect)boundingBoxWithOwner:(id)a3;
+- (CGRect)boundingBoxWithOwner:(id)owner;
 - (NSString)accessKey;
 - (NSString)alt;
 - (NSString)coords;
@@ -15,9 +15,9 @@
 - (NSString)shape;
 - (NSString)target;
 - (NSURL)absoluteLinkURL;
-- (_WKQuad)absoluteQuadWithOwner:(SEL)a3;
-- (id)absoluteQuadsWithOwner:(id)a3;
-- (id)boundingBoxesWithOwner:(id)a3;
+- (_WKQuad)absoluteQuadWithOwner:(SEL)owner;
+- (id)absoluteQuadsWithOwner:(id)owner;
+- (id)boundingBoxesWithOwner:(id)owner;
 - (id)origin;
 - (id)ping;
 - (id)rel;
@@ -27,8 +27,8 @@
 - (void)setCoords:(NSString *)coords;
 - (void)setHref:(NSString *)href;
 - (void)setNoHref:(BOOL)noHref;
-- (void)setPing:(id)a3;
-- (void)setRel:(id)a3;
+- (void)setPing:(id)ping;
+- (void)setRel:(id)rel;
 - (void)setShape:(NSString *)shape;
 - (void)setTarget:(NSString *)target;
 @end
@@ -235,10 +235,10 @@ LABEL_13:
   return v4;
 }
 
-- (void)setPing:(id)a3
+- (void)setPing:(id)ping
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, ping, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -285,10 +285,10 @@ LABEL_13:
   return v4;
 }
 
-- (void)setRel:(id)a3
+- (void)setRel:(id)rel
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, rel, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -873,16 +873,16 @@ LABEL_13:
   return v5;
 }
 
-- (CGRect)boundingBoxWithOwner:(id)a3
+- (CGRect)boundingBoxWithOwner:(id)owner
 {
-  if (a3)
+  if (owner)
   {
     if (self)
     {
       self = self->super.super.super.super._internal;
     }
 
-    WebCore::HTMLAreaElement::computeRect(self, *(*(a3 + 2) + 72));
+    WebCore::HTMLAreaElement::computeRect(self, *(*(owner + 2) + 72));
     WebCore::IntRect::operator CGRect();
   }
 
@@ -901,7 +901,7 @@ LABEL_13:
   return result;
 }
 
-- (_WKQuad)absoluteQuadWithOwner:(SEL)a3
+- (_WKQuad)absoluteQuadWithOwner:(SEL)owner
 {
   if (a4)
   {
@@ -962,22 +962,22 @@ LABEL_13:
   return self;
 }
 
-- (id)boundingBoxesWithOwner:(id)a3
+- (id)boundingBoxesWithOwner:(id)owner
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696B098];
-  [(DOMHTMLAreaElement *)self boundingBoxWithOwner:a3];
+  [(DOMHTMLAreaElement *)self boundingBoxWithOwner:owner];
   v5[0] = [v3 valueWithRect:?];
   return [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
 }
 
-- (id)absoluteQuadsWithOwner:(id)a3
+- (id)absoluteQuadsWithOwner:(id)owner
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v5 = [WKQuadObject alloc];
   if (self)
   {
-    [(DOMHTMLAreaElement *)self absoluteQuadWithOwner:a3];
+    [(DOMHTMLAreaElement *)self absoluteQuadWithOwner:owner];
   }
 
   else

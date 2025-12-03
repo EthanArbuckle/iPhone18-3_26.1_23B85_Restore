@@ -9,8 +9,8 @@
 
 + (id)sbui_systemApertureTextButtonConfiguration
 {
-  v2 = [MEMORY[0x1E69DD1B8] sbui_bestTraitCollection];
-  v3 = [a1 sbui_systemApertureTextButtonConfigurationCompatibleWithTraitCollection:v2];
+  sbui_bestTraitCollection = [MEMORY[0x1E69DD1B8] sbui_bestTraitCollection];
+  v3 = [self sbui_systemApertureTextButtonConfigurationCompatibleWithTraitCollection:sbui_bestTraitCollection];
 
   return v3;
 }
@@ -18,49 +18,49 @@
 + (id)sbui_systemApertureTextButtonConfigurationCompatibleWithTraitCollection:()SBUISystemApertureStyling
 {
   v4 = a3;
-  v5 = [a1 tintedButtonConfiguration];
-  [v5 setCornerStyle:4];
-  v6 = [MEMORY[0x1E69DC888] systemExtraLightGrayColor];
-  [v5 setBaseBackgroundColor:v6];
+  tintedButtonConfiguration = [self tintedButtonConfiguration];
+  [tintedButtonConfiguration setCornerStyle:4];
+  systemExtraLightGrayColor = [MEMORY[0x1E69DC888] systemExtraLightGrayColor];
+  [tintedButtonConfiguration setBaseBackgroundColor:systemExtraLightGrayColor];
 
-  v7 = [MEMORY[0x1E69DC888] systemWhiteColor];
-  [v5 setBaseForegroundColor:v7];
+  systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+  [tintedButtonConfiguration setBaseForegroundColor:systemWhiteColor];
 
   v8 = [MEMORY[0x1E69DB878] sbui_systemAperturePreferredTextButtonFontCompatibleWithTraitCollection:v4];
 
-  v9 = [a1 _sbui_titleTextAttributesTransformerForTitleFont:v8];
-  [v5 setTitleTextAttributesTransformer:v9];
+  v9 = [self _sbui_titleTextAttributesTransformerForTitleFont:v8];
+  [tintedButtonConfiguration setTitleTextAttributesTransformer:v9];
   v10 = [MEMORY[0x1E69DCAD8] configurationWithFont:v8 scale:2];
-  [v5 setPreferredSymbolConfigurationForImage:v10];
+  [tintedButtonConfiguration setPreferredSymbolConfigurationForImage:v10];
 
-  [v5 setButtonSize:3];
-  [v5 contentInsets];
-  [v5 setContentInsets:v11 + -5.0];
-  [v5 setImagePadding:7.0];
-  v12 = [v5 background];
-  [v12 setBackgroundColorTransformer:&__block_literal_global_5];
+  [tintedButtonConfiguration setButtonSize:3];
+  [tintedButtonConfiguration contentInsets];
+  [tintedButtonConfiguration setContentInsets:v11 + -5.0];
+  [tintedButtonConfiguration setImagePadding:7.0];
+  background = [tintedButtonConfiguration background];
+  [background setBackgroundColorTransformer:&__block_literal_global_5];
 
-  return v5;
+  return tintedButtonConfiguration;
 }
 
 + (id)sbui_systemApertureSymbolButtonConfiguration
 {
-  v1 = [a1 tintedButtonConfiguration];
-  [v1 setCornerStyle:4];
-  v2 = [MEMORY[0x1E69DC888] systemExtraLightGrayColor];
-  [v1 setBaseBackgroundColor:v2];
+  tintedButtonConfiguration = [self tintedButtonConfiguration];
+  [tintedButtonConfiguration setCornerStyle:4];
+  systemExtraLightGrayColor = [MEMORY[0x1E69DC888] systemExtraLightGrayColor];
+  [tintedButtonConfiguration setBaseBackgroundColor:systemExtraLightGrayColor];
 
-  v3 = [MEMORY[0x1E69DC888] systemWhiteColor];
-  [v1 setBaseForegroundColor:v3];
+  systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+  [tintedButtonConfiguration setBaseForegroundColor:systemWhiteColor];
 
-  v4 = [MEMORY[0x1E69DCAD8] sbui_systemApertureControlConfiguration];
-  [v1 setPreferredSymbolConfigurationForImage:v4];
+  sbui_systemApertureControlConfiguration = [MEMORY[0x1E69DCAD8] sbui_systemApertureControlConfiguration];
+  [tintedButtonConfiguration setPreferredSymbolConfigurationForImage:sbui_systemApertureControlConfiguration];
 
-  [v1 setButtonSize:3];
-  v5 = [v1 background];
-  [v5 setBackgroundColorTransformer:&__block_literal_global_16];
+  [tintedButtonConfiguration setButtonSize:3];
+  background = [tintedButtonConfiguration background];
+  [background setBackgroundColorTransformer:&__block_literal_global_16];
 
-  return v1;
+  return tintedButtonConfiguration;
 }
 
 + (id)_sbui_titleTextAttributesTransformerForTitleFont:()SBUISystemApertureStyling

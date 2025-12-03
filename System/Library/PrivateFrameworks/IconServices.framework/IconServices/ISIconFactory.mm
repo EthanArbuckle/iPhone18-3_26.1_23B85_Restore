@@ -1,36 +1,36 @@
 @interface ISIconFactory
-+ (id)_iconForURL:(id)a3 options:(unint64_t)a4;
-- (ISIconFactory)initWithApplicationBundleIdentifier:(id)a3;
-- (ISIconFactory)initWithApplicationExtensionBundleIdentifier:(id)a3;
-- (ISIconFactory)initWithApplicationIdentity:(id)a3;
-- (ISIconFactory)initWithBundleIdentifier:(id)a3;
-- (ISIconFactory)initWithBundleURL:(id)a3 fileExtension:(id)a4;
-- (ISIconFactory)initWithBundleURL:(id)a3 type:(id)a4;
-- (ISIconFactory)initWithFileExtension:(id)a3;
-- (ISIconFactory)initWithImages:(id)a3;
-- (ISIconFactory)initWithMIMEType:(id)a3;
-- (ISIconFactory)initWithModelCode:(id)a3;
-- (ISIconFactory)initWithResourceProxy:(id)a3;
-- (ISIconFactory)initWithSymbolName:(id)a3;
-- (ISIconFactory)initWithSymbolName:(id)a3 configuration:(id)a4;
-- (ISIconFactory)initWithType:(id)a3 iconConfiguration:(id)a4;
-- (ISIconFactory)initWithTypeIdentifier:(id)a3 layerGroups:(id)a4;
-- (ISIconFactory)initWithURL:(id)a3;
-- (ISIconFactory)initWithURL:(id)a3 options:(unint64_t)a4;
++ (id)_iconForURL:(id)l options:(unint64_t)options;
+- (ISIconFactory)initWithApplicationBundleIdentifier:(id)identifier;
+- (ISIconFactory)initWithApplicationExtensionBundleIdentifier:(id)identifier;
+- (ISIconFactory)initWithApplicationIdentity:(id)identity;
+- (ISIconFactory)initWithBundleIdentifier:(id)identifier;
+- (ISIconFactory)initWithBundleURL:(id)l fileExtension:(id)extension;
+- (ISIconFactory)initWithBundleURL:(id)l type:(id)type;
+- (ISIconFactory)initWithFileExtension:(id)extension;
+- (ISIconFactory)initWithImages:(id)images;
+- (ISIconFactory)initWithMIMEType:(id)type;
+- (ISIconFactory)initWithModelCode:(id)code;
+- (ISIconFactory)initWithResourceProxy:(id)proxy;
+- (ISIconFactory)initWithSymbolName:(id)name;
+- (ISIconFactory)initWithSymbolName:(id)name configuration:(id)configuration;
+- (ISIconFactory)initWithType:(id)type iconConfiguration:(id)configuration;
+- (ISIconFactory)initWithTypeIdentifier:(id)identifier layerGroups:(id)groups;
+- (ISIconFactory)initWithURL:(id)l;
+- (ISIconFactory)initWithURL:(id)l options:(unint64_t)options;
 - (id)_init;
 @end
 
 @implementation ISIconFactory
 
-+ (id)_iconForURL:(id)a3 options:(unint64_t)a4
++ (id)_iconForURL:(id)l options:(unint64_t)options
 {
-  v99 = a4;
+  optionsCopy = options;
   v110[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v5 = +[ISURLResourcePropertySpecification sharedInstance];
-  v6 = [v5 iconInitWithURLProperties];
+  iconInitWithURLProperties = [v5 iconInitWithURLProperties];
   v101 = 0;
-  v7 = [v4 __is_resourceValuesForKeys:v6 error:&v101];
+  v7 = [lCopy __is_resourceValuesForKeys:iconInitWithURLProperties error:&v101];
   v8 = v101;
 
   v9 = MEMORY[0x1E695DC40];
@@ -45,14 +45,14 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v103 = v4;
+      v103 = lCopy;
       v104 = 2112;
       v105 = v8;
       _os_log_impl(&dword_1A77B8000, v11, OS_LOG_TYPE_DEFAULT, "Could not get resource properties for URL: %@ with error: %@", buf, 0x16u);
     }
 
     v12 = _ISURLCacheLog();
-    v13 = os_signpost_id_make_with_pointer(v12, v4);
+    v13 = os_signpost_id_make_with_pointer(v12, lCopy);
 
     if (v13)
     {
@@ -73,12 +73,12 @@
 
     v10 = *v9;
     v109[0] = *v9;
-    v18 = [v4 path];
-    v19 = v18;
+    path = [lCopy path];
+    v19 = path;
     v20 = &stru_1F1A4DB80;
-    if (v18)
+    if (path)
     {
-      v20 = v18;
+      v20 = path;
     }
 
     v109[1] = *MEMORY[0x1E695DBB8];
@@ -87,11 +87,11 @@
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v110 forKeys:v109 count:2];
   }
 
-  v21 = [v7 _IF_objectOfClass:objc_opt_class() forKey:v10];
-  if (!v21)
+  path2 = [v7 _IF_objectOfClass:objc_opt_class() forKey:v10];
+  if (!path2)
   {
     v22 = _ISURLCacheLog();
-    v23 = os_signpost_id_make_with_pointer(v22, v4);
+    v23 = os_signpost_id_make_with_pointer(v22, lCopy);
 
     if (v23)
     {
@@ -110,13 +110,13 @@
       }
     }
 
-    v21 = [v4 path];
+    path2 = [lCopy path];
   }
 
   v100 = v8;
   v28 = [v7 _IF_BOOLForKey:*MEMORY[0x1E695DB78]];
   v29 = [v7 _IF_BOOLForKey:*MEMORY[0x1E695DBA0]];
-  v30 = [v21 pathExtension];
+  pathExtension = [path2 pathExtension];
   if (([v7 _IF_BOOLForKey:*MEMORY[0x1E695DB68]] & 1) != 0 || objc_msgSend(v7, "_IF_BOOLForKey:", *MEMORY[0x1E695DBC8]))
   {
     v31 = _ISDefaultLog();
@@ -125,14 +125,14 @@
       +[ISIconFactory _iconForURL:options:];
     }
 
-    v32 = [[ISAliasIcon alloc] initWithAliasURL:v4];
+    v32 = [[ISAliasIcon alloc] initWithAliasURL:lCopy];
     goto LABEL_27;
   }
 
   if ([v7 _IF_BOOLForKey:*MEMORY[0x1E695DB70]])
   {
 LABEL_33:
-    v37 = _ISGenerateInProcess(v4);
+    v37 = _ISGenerateInProcess(lCopy);
     v38 = _ISDefaultLog();
     v39 = os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG);
     if (v37)
@@ -142,14 +142,14 @@ LABEL_33:
         +[ISIconFactory _iconForURL:options:];
       }
 
-      v40 = [objc_alloc(MEMORY[0x1E69A8960]) initWithURL:v4];
-      v41 = [v40 iconDictionary];
-      v42 = [v41 _IF_arrayForKey:@"CFBundleIconFiles"];
+      v40 = [objc_alloc(MEMORY[0x1E69A8960]) initWithURL:lCopy];
+      iconDictionary = [v40 iconDictionary];
+      v42 = [iconDictionary _IF_arrayForKey:@"CFBundleIconFiles"];
 
       if (![v42 count])
       {
-        v43 = [v40 iconDictionary];
-        v44 = [v43 _IF_stringForKey:@"CFBundleIconFile"];
+        iconDictionary2 = [v40 iconDictionary];
+        v44 = [iconDictionary2 _IF_stringForKey:@"CFBundleIconFile"];
 
         if (v44)
         {
@@ -160,13 +160,13 @@ LABEL_33:
         }
       }
 
-      v46 = [MEMORY[0x1E69A8990] imageBagWithResourcesNames:v42 fromBundle:v40];
-      if (!v46)
+      defaultAppIconAssetsBag = [MEMORY[0x1E69A8990] imageBagWithResourcesNames:v42 fromBundle:v40];
+      if (!defaultAppIconAssetsBag)
       {
-        v46 = [MEMORY[0x1E69A8990] defaultAppIconAssetsBag];
+        defaultAppIconAssetsBag = [MEMORY[0x1E69A8990] defaultAppIconAssetsBag];
       }
 
-      v33 = [[ISImageBagIcon alloc] initWithImageBag:v46];
+      v33 = [[ISImageBagIcon alloc] initWithImageBag:defaultAppIconAssetsBag];
     }
 
     else
@@ -176,16 +176,16 @@ LABEL_33:
         +[ISIconFactory _iconForURL:options:];
       }
 
-      v33 = [[ISBundleIcon alloc] initWithBundleURL:v4];
-      v58 = [objc_alloc(MEMORY[0x1E69635F8]) initWithURL:v4 allowPlaceholder:0 error:0];
+      v33 = [[ISBundleIcon alloc] initWithBundleURL:lCopy];
+      v58 = [objc_alloc(MEMORY[0x1E69635F8]) initWithURL:lCopy allowPlaceholder:0 error:0];
       v40 = v58;
       if (!v58 || [v58 developerType] != 1)
       {
         goto LABEL_75;
       }
 
-      v59 = [v40 bundleIdentifier];
-      v42 = _aliasedIcon(v59, v33);
+      bundleIdentifier = [v40 bundleIdentifier];
+      v42 = _aliasedIcon(bundleIdentifier, v33);
 
       if (v42)
       {
@@ -197,7 +197,7 @@ LABEL_33:
           *buf = 138412802;
           v103 = v96;
           v104 = 2112;
-          v105 = v4;
+          v105 = lCopy;
           v106 = 2112;
           v107 = v33;
 
@@ -215,7 +215,7 @@ LABEL_75:
 
   if (v29)
   {
-    if ([v7 _IF_BOOLForKey:*MEMORY[0x1E695DB88]] && objc_msgSend(v4, "__is_hasFileExtension:", @"appex"))
+    if ([v7 _IF_BOOLForKey:*MEMORY[0x1E695DB88]] && objc_msgSend(lCopy, "__is_hasFileExtension:", @"appex"))
     {
       goto LABEL_33;
     }
@@ -229,13 +229,13 @@ LABEL_75:
     v56 = [ISTagIcon alloc];
     v57 = MEMORY[0x1E6963868];
 LABEL_86:
-    v32 = [(ISTagIcon *)v56 initWithFileExtension:v30 baseType:*v57];
+    v32 = [(ISTagIcon *)v56 initWithFileExtension:pathExtension baseType:*v57];
 LABEL_27:
     v33 = v32;
     goto LABEL_28;
   }
 
-  v62 = [v30 length];
+  v62 = [pathExtension length];
   v63 = *MEMORY[0x1E695DBB8];
   if (!v62 && [v7 _IF_BOOLForKey:*MEMORY[0x1E695DBB8]] && objc_msgSend(v7, "_IF_BOOLForKey:", *MEMORY[0x1E695DB88]))
   {
@@ -270,7 +270,7 @@ LABEL_27:
   }
 
   v67 = _ISURLCacheLog();
-  v68 = os_signpost_id_make_with_pointer(v67, v4);
+  v68 = os_signpost_id_make_with_pointer(v67, lCopy);
 
   if (v68)
   {
@@ -289,10 +289,10 @@ LABEL_27:
     }
   }
 
-  if ([v4 isFileReferenceURL])
+  if ([lCopy isFileReferenceURL])
   {
     v73 = _ISURLCacheLog();
-    v74 = os_signpost_id_make_with_pointer(v73, v4);
+    v74 = os_signpost_id_make_with_pointer(v73, lCopy);
 
     if (v74)
     {
@@ -314,7 +314,7 @@ LABEL_27:
     v79 = _ISDefaultLog();
     if (os_log_type_enabled(v79, OS_LOG_TYPE_DEBUG))
     {
-      [ISIconFactory _iconForURL:v4 options:v79];
+      [ISIconFactory _iconForURL:lCopy options:v79];
     }
   }
 
@@ -328,7 +328,7 @@ LABEL_27:
   }
 
   v80 = +[ISCustomIconManager sharedInstance];
-  v81 = [v80 specialFolderTypeForURL:v4];
+  v81 = [v80 specialFolderTypeForURL:lCopy];
 
   if (v81)
   {
@@ -343,17 +343,17 @@ LABEL_27:
   }
 
   v83 = +[ISDefaults sharedInstance];
-  v84 = [v83 forceSymbolEmbossment];
-  if (v84)
+  forceSymbolEmbossment = [v83 forceSymbolEmbossment];
+  if (forceSymbolEmbossment)
   {
 
 LABEL_113:
     v87 = [ISFolderIconConfiguration alloc];
     v97 = +[ISDefaults sharedInstance];
-    v88 = [v97 forceSymbolEmbossment];
+    forceSymbolEmbossment2 = [v97 forceSymbolEmbossment];
     v89 = +[ISDefaults sharedInstance];
-    v90 = [v89 tintColor];
-    v91 = [(ISFolderIconConfiguration *)v87 initWithSymbolName:v88 tintColor:v90];
+    tintColor = [v89 tintColor];
+    v91 = [(ISFolderIconConfiguration *)v87 initWithSymbolName:forceSymbolEmbossment2 tintColor:tintColor];
 
     v92 = v91;
     v93 = _ISDefaultLog();
@@ -363,16 +363,16 @@ LABEL_113:
     }
 
     v94 = [ISTypeIcon alloc];
-    v95 = [*MEMORY[0x1E6982DC8] identifier];
-    v33 = [(ISTypeIcon *)v94 initWithType:v95 iconConfiguration:v91];
+    identifier = [*MEMORY[0x1E6982DC8] identifier];
+    v33 = [(ISTypeIcon *)v94 initWithType:identifier iconConfiguration:v91];
 
     goto LABEL_116;
   }
 
   v85 = +[ISDefaults sharedInstance];
-  v86 = [v85 tintColor];
+  tintColor2 = [v85 tintColor];
 
-  if (v86)
+  if (tintColor2)
   {
     goto LABEL_113;
   }
@@ -389,10 +389,10 @@ LABEL_28:
     goto LABEL_46;
   }
 
-  v35 = [v4 __is_accessFlags];
-  if (v35)
+  __is_accessFlags = [lCopy __is_accessFlags];
+  if (__is_accessFlags)
   {
-    if (v35 != 2)
+    if (__is_accessFlags != 2)
     {
       goto LABEL_46;
     }
@@ -409,7 +409,7 @@ LABEL_28:
   [v34 addObject:v47];
 
 LABEL_46:
-  if ([v4 __is_locked])
+  if ([lCopy __is_locked])
   {
     v48 = [[ISIconDecoration alloc] initWithType:@"com.apple.icon-decoration.badge.locked"];
     [v34 addObject:v48];
@@ -417,7 +417,7 @@ LABEL_46:
 
   if ([v34 count])
   {
-    if ((v99 & 2) != 0)
+    if ((optionsCopy & 2) != 0)
     {
       v50 = _ISDefaultLog();
       if (os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
@@ -428,8 +428,8 @@ LABEL_46:
 
     else
     {
-      v49 = [(ISImageBagIcon *)v33 decorations];
-      v50 = [v49 arrayByAddingObjectsFromArray:v34];
+      decorations = [(ISImageBagIcon *)v33 decorations];
+      v50 = [decorations arrayByAddingObjectsFromArray:v34];
 
       v51 = [[ISDecoratedIcon alloc] initWithIcon:v33 decorations:v50];
       v33 = v51;
@@ -454,17 +454,17 @@ LABEL_46:
 
 - (id)_init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"ISIcon.m" lineNumber:588 description:@"Unexpected call of -[ISIconFactory _init]"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ISIcon.m" lineNumber:588 description:@"Unexpected call of -[ISIconFactory _init]"];
 
   return 0;
 }
 
-- (ISIconFactory)initWithURL:(id)a3 options:(unint64_t)a4
+- (ISIconFactory)initWithURL:(id)l options:(unint64_t)options
 {
-  v6 = a3;
+  lCopy = l;
   v7 = _ISURLCacheLog();
-  v8 = os_signpost_id_make_with_pointer(v7, v6);
+  v8 = os_signpost_id_make_with_pointer(v7, lCopy);
 
   if (v8)
   {
@@ -477,9 +477,9 @@ LABEL_46:
     }
   }
 
-  v11 = [ISIconFactory _iconForURL:v6 options:a4];
+  v11 = [ISIconFactory _iconForURL:lCopy options:options];
   v12 = _ISURLCacheLog();
-  v13 = os_signpost_id_make_with_pointer(v12, v6);
+  v13 = os_signpost_id_make_with_pointer(v12, lCopy);
 
   if (v13)
   {
@@ -504,11 +504,11 @@ LABEL_46:
   return v19;
 }
 
-- (ISIconFactory)initWithURL:(id)a3
+- (ISIconFactory)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = _ISURLCacheLog();
-  v6 = os_signpost_id_make_with_pointer(v5, v4);
+  v6 = os_signpost_id_make_with_pointer(v5, lCopy);
 
   if (v6)
   {
@@ -521,9 +521,9 @@ LABEL_46:
     }
   }
 
-  v9 = [ISIconFactory _iconForURL:v4 options:0];
+  v9 = [ISIconFactory _iconForURL:lCopy options:0];
   v10 = _ISURLCacheLog();
-  v11 = os_signpost_id_make_with_pointer(v10, v4);
+  v11 = os_signpost_id_make_with_pointer(v10, lCopy);
 
   if (v11)
   {
@@ -548,10 +548,10 @@ LABEL_46:
   return v17;
 }
 
-- (ISIconFactory)initWithApplicationIdentity:(id)a3
+- (ISIconFactory)initWithApplicationIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = [[ISApplicationIdentityIcon alloc] initWithApplicationIdentity:v4];
+  identityCopy = identity;
+  v5 = [[ISApplicationIdentityIcon alloc] initWithApplicationIdentity:identityCopy];
 
   v6 = +[ISIconManager sharedInstance];
   v7 = [v6 findOrRegisterIcon:v5];
@@ -559,11 +559,11 @@ LABEL_46:
   return v7;
 }
 
-- (ISIconFactory)initWithBundleIdentifier:(id)a3
+- (ISIconFactory)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[ISBundleIdentifierIcon alloc] initWithBundleIdentifier:v4];
-  v6 = _aliasedIcon(v4, v5);
+  identifierCopy = identifier;
+  v5 = [[ISBundleIdentifierIcon alloc] initWithBundleIdentifier:identifierCopy];
+  v6 = _aliasedIcon(identifierCopy, v5);
   if (v6)
   {
     v7 = _ISDefaultLog();
@@ -582,10 +582,10 @@ LABEL_46:
   return v10;
 }
 
-- (ISIconFactory)initWithApplicationBundleIdentifier:(id)a3
+- (ISIconFactory)initWithApplicationBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[ISBundleIdentifierIcon alloc] initWithBundleIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[ISBundleIdentifierIcon alloc] initWithBundleIdentifier:identifierCopy];
 
   v6 = +[ISIconManager sharedInstance];
   v7 = [v6 findOrRegisterIcon:v5];
@@ -593,10 +593,10 @@ LABEL_46:
   return v7;
 }
 
-- (ISIconFactory)initWithApplicationExtensionBundleIdentifier:(id)a3
+- (ISIconFactory)initWithApplicationExtensionBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[ISBundleIdentifierIcon alloc] initWithBundleIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[ISBundleIdentifierIcon alloc] initWithBundleIdentifier:identifierCopy];
 
   v6 = +[ISIconManager sharedInstance];
   v7 = [v6 findOrRegisterIcon:v5];
@@ -604,11 +604,11 @@ LABEL_46:
   return v7;
 }
 
-- (ISIconFactory)initWithBundleURL:(id)a3 type:(id)a4
+- (ISIconFactory)initWithBundleURL:(id)l type:(id)type
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[ISBundleIcon alloc] initWithBundleURL:v7 type:v6];
+  typeCopy = type;
+  lCopy = l;
+  v8 = [[ISBundleIcon alloc] initWithBundleURL:lCopy type:typeCopy];
 
   v9 = +[ISIconManager sharedInstance];
   v10 = [v9 findOrRegisterIcon:v8];
@@ -616,11 +616,11 @@ LABEL_46:
   return v10;
 }
 
-- (ISIconFactory)initWithBundleURL:(id)a3 fileExtension:(id)a4
+- (ISIconFactory)initWithBundleURL:(id)l fileExtension:(id)extension
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[ISBundleIcon alloc] initWithBundleURL:v7 fileExtension:v6];
+  extensionCopy = extension;
+  lCopy = l;
+  v8 = [[ISBundleIcon alloc] initWithBundleURL:lCopy fileExtension:extensionCopy];
 
   v9 = +[ISIconManager sharedInstance];
   v10 = [v9 findOrRegisterIcon:v8];
@@ -628,43 +628,43 @@ LABEL_46:
   return v10;
 }
 
-- (ISIconFactory)initWithType:(id)a3 iconConfiguration:(id)a4
+- (ISIconFactory)initWithType:(id)type iconConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  configurationCopy = configuration;
   v8 = +[ISDefaults sharedInstance];
-  v9 = [v8 isSolariumEnabled];
+  isSolariumEnabled = [v8 isSolariumEnabled];
 
-  if ((v9 & 1) == 0 && ![v6 caseInsensitiveCompare:*MEMORY[0x1E69637D0]])
+  if ((isSolariumEnabled & 1) == 0 && ![typeCopy caseInsensitiveCompare:*MEMORY[0x1E69637D0]])
   {
     v13 = ISGenericFolderIcon;
     goto LABEL_7;
   }
 
-  if (![v6 caseInsensitiveCompare:*MEMORY[0x1E6963738]])
+  if (![typeCopy caseInsensitiveCompare:*MEMORY[0x1E6963738]])
   {
     v13 = ISGenericApplicationIcon;
 LABEL_7:
-    v12 = [(__objc2_class *)v13 sharedInstance];
+    sharedInstance = [(__objc2_class *)v13 sharedInstance];
     goto LABEL_8;
   }
 
-  v10 = [[ISTypeIcon alloc] initWithType:v6 iconConfiguration:v7];
+  v10 = [[ISTypeIcon alloc] initWithType:typeCopy iconConfiguration:configurationCopy];
   v11 = +[ISIconManager sharedInstance];
-  v12 = [v11 findOrRegisterIcon:v10];
+  sharedInstance = [v11 findOrRegisterIcon:v10];
 
 LABEL_8:
-  return v12;
+  return sharedInstance;
 }
 
-- (ISIconFactory)initWithResourceProxy:(id)a3
+- (ISIconFactory)initWithResourceProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 bundleIdentifier];
-    v6 = [[ISBundleIdentifierIcon alloc] initWithBundleIdentifier:v5];
+    bundleIdentifier = [proxyCopy bundleIdentifier];
+    v6 = [[ISBundleIdentifierIcon alloc] initWithBundleIdentifier:bundleIdentifier];
   }
 
   else
@@ -681,53 +681,53 @@ LABEL_8:
       goto LABEL_15;
     }
 
-    v8 = v4;
-    v11 = [v8 URL];
+    bundleIdentifier2 = proxyCopy;
+    v11 = [bundleIdentifier2 URL];
 
     if (v11)
     {
-      v12 = [v8 URL];
-      v13 = [ISIconFactory _iconForURL:v12 options:0];
+      name3 = [bundleIdentifier2 URL];
+      v13 = [ISIconFactory _iconForURL:name3 options:0];
     }
 
     else
     {
-      v14 = [v8 typeIdentifier];
+      typeIdentifier = [bundleIdentifier2 typeIdentifier];
 
-      if (!v14)
+      if (!typeIdentifier)
       {
-        v19 = [v8 name];
-        if (v19)
+        name = [bundleIdentifier2 name];
+        if (name)
         {
-          v20 = v19;
-          v21 = [v8 name];
-          v22 = [v21 pathExtension];
-          v23 = [v22 length];
+          v20 = name;
+          name2 = [bundleIdentifier2 name];
+          pathExtension = [name2 pathExtension];
+          v23 = [pathExtension length];
 
           if (v23)
           {
             v24 = [ISTagIcon alloc];
-            v12 = [v8 name];
-            v25 = [(ISBundleIdentifierIcon *)v12 pathExtension];
-            v10 = [(ISTagIcon *)v24 initWithFileExtension:v25];
+            name3 = [bundleIdentifier2 name];
+            pathExtension2 = [(ISBundleIdentifierIcon *)name3 pathExtension];
+            v10 = [(ISTagIcon *)v24 initWithFileExtension:pathExtension2];
 
             goto LABEL_13;
           }
         }
 
-        v26 = [v8 MIMEType];
+        mIMEType = [bundleIdentifier2 MIMEType];
 
-        if (v26)
+        if (mIMEType)
         {
           v27 = [ISTagIcon alloc];
-          v12 = [v8 MIMEType];
-          v13 = [(ISTagIcon *)v27 initWithMIMEType:v12];
+          name3 = [bundleIdentifier2 MIMEType];
+          v13 = [(ISTagIcon *)v27 initWithMIMEType:name3];
           goto LABEL_12;
         }
 
-        v28 = [v8 typeIdentifier];
+        typeIdentifier2 = [bundleIdentifier2 typeIdentifier];
 
-        if (!v28)
+        if (!typeIdentifier2)
         {
           v9 = +[(ISIcon *)ISGenericDocumentIcon];
           goto LABEL_6;
@@ -735,21 +735,21 @@ LABEL_8:
       }
 
       v15 = [ISTypeIcon alloc];
-      v12 = [v8 typeIdentifier];
-      v13 = [(ISTypeIcon *)v15 initWithType:v12];
+      name3 = [bundleIdentifier2 typeIdentifier];
+      v13 = [(ISTypeIcon *)v15 initWithType:name3];
     }
 
 LABEL_12:
     v10 = v13;
 
 LABEL_13:
-    v6 = v12;
+    v6 = name3;
     goto LABEL_14;
   }
 
   v7 = [ISBundleIdentifierIcon alloc];
-  v8 = [v4 bundleIdentifier];
-  v9 = [(ISBundleIdentifierIcon *)v7 initWithBundleIdentifier:v8];
+  bundleIdentifier2 = [proxyCopy bundleIdentifier];
+  v9 = [(ISBundleIdentifierIcon *)v7 initWithBundleIdentifier:bundleIdentifier2];
 LABEL_6:
   v10 = v9;
 LABEL_14:
@@ -770,18 +770,18 @@ LABEL_15:
   return v17;
 }
 
-- (ISIconFactory)initWithImages:(id)a3
+- (ISIconFactory)initWithImages:(id)images
 {
-  v4 = a3;
-  v5 = [[ISImageBagIcon alloc] initWithImages:v4];
+  imagesCopy = images;
+  v5 = [[ISImageBagIcon alloc] initWithImages:imagesCopy];
 
   return v5;
 }
 
-- (ISIconFactory)initWithFileExtension:(id)a3
+- (ISIconFactory)initWithFileExtension:(id)extension
 {
-  v4 = a3;
-  v5 = [[ISTagIcon alloc] initWithFileExtension:v4];
+  extensionCopy = extension;
+  v5 = [[ISTagIcon alloc] initWithFileExtension:extensionCopy];
 
   v6 = +[ISIconManager sharedInstance];
   v7 = [v6 findOrRegisterIcon:v5];
@@ -789,11 +789,11 @@ LABEL_15:
   return v7;
 }
 
-- (ISIconFactory)initWithModelCode:(id)a3
+- (ISIconFactory)initWithModelCode:(id)code
 {
-  v4 = a3;
-  v5 = v4;
-  if (*MEMORY[0x1E69636E8] == v4 || [v4 isEqualToString:?])
+  codeCopy = code;
+  v5 = codeCopy;
+  if (*MEMORY[0x1E69636E8] == codeCopy || [codeCopy isEqualToString:?])
   {
     v6 = +[ISCurrentDeviceIcon sharedInstance];
   }
@@ -808,10 +808,10 @@ LABEL_15:
   return v6;
 }
 
-- (ISIconFactory)initWithMIMEType:(id)a3
+- (ISIconFactory)initWithMIMEType:(id)type
 {
-  v4 = a3;
-  v5 = [[ISTagIcon alloc] initWithMIMEType:v4];
+  typeCopy = type;
+  v5 = [[ISTagIcon alloc] initWithMIMEType:typeCopy];
 
   v6 = +[ISIconManager sharedInstance];
   v7 = [v6 findOrRegisterIcon:v5];
@@ -819,10 +819,10 @@ LABEL_15:
   return v7;
 }
 
-- (ISIconFactory)initWithSymbolName:(id)a3
+- (ISIconFactory)initWithSymbolName:(id)name
 {
-  v4 = a3;
-  v5 = [[ISSymbolIcon alloc] initWithSymbolName:v4];
+  nameCopy = name;
+  v5 = [[ISSymbolIcon alloc] initWithSymbolName:nameCopy];
 
   v6 = +[ISIconManager sharedInstance];
   v7 = [v6 findOrRegisterIcon:v5];
@@ -830,11 +830,11 @@ LABEL_15:
   return v7;
 }
 
-- (ISIconFactory)initWithSymbolName:(id)a3 configuration:(id)a4
+- (ISIconFactory)initWithSymbolName:(id)name configuration:(id)configuration
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[ISSymbolIcon alloc] initWithSymbolName:v7 configuration:v6];
+  configurationCopy = configuration;
+  nameCopy = name;
+  v8 = [[ISSymbolIcon alloc] initWithSymbolName:nameCopy configuration:configurationCopy];
 
   v9 = +[ISIconManager sharedInstance];
   v10 = [v9 findOrRegisterIcon:v8];
@@ -842,11 +842,11 @@ LABEL_15:
   return v10;
 }
 
-- (ISIconFactory)initWithTypeIdentifier:(id)a3 layerGroups:(id)a4
+- (ISIconFactory)initWithTypeIdentifier:(id)identifier layerGroups:(id)groups
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[ISLayeredIcon alloc] initWithTypeIdentifier:v7 layerGroups:v6];
+  groupsCopy = groups;
+  identifierCopy = identifier;
+  v8 = [[ISLayeredIcon alloc] initWithTypeIdentifier:identifierCopy layerGroups:groupsCopy];
 
   v9 = +[ISIconManager sharedInstance];
   v10 = [v9 findOrRegisterIcon:v8];

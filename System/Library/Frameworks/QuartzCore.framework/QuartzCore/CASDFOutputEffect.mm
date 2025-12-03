@@ -1,7 +1,7 @@
 @interface CASDFOutputEffect
 + (id)defaultValues;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)configureLayer:(void *)a3 transaction:(void *)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)configureLayer:(void *)layer transaction:(void *)transaction;
 @end
 
 @implementation CASDFOutputEffect
@@ -23,30 +23,30 @@ void *__34__CASDFOutputEffect_defaultValues__block_invoke()
   return result;
 }
 
-- (void)configureLayer:(void *)a3 transaction:(void *)a4
+- (void)configureLayer:(void *)layer transaction:(void *)transaction
 {
-  [(CASDFOutputEffect *)self minimum:a3];
+  [(CASDFOutputEffect *)self minimum:layer];
   v7 = v6;
   [(CASDFOutputEffect *)self maximum];
-  *(a3 + 136) = 1;
+  *(layer + 136) = 1;
   *&v8 = v8;
-  *(a3 + 6) = v7;
-  *(a3 + 7) = LODWORD(v8);
-  *(a3 + 2) = 0u;
-  *(a3 + 3) = 0u;
-  *(a3 + 4) = 0u;
-  *(a3 + 5) = 0u;
-  *(a3 + 6) = 0u;
-  *(a3 + 7) = 0u;
-  *(a3 + 16) = 0;
+  *(layer + 6) = v7;
+  *(layer + 7) = LODWORD(v8);
+  *(layer + 2) = 0u;
+  *(layer + 3) = 0u;
+  *(layer + 4) = 0u;
+  *(layer + 5) = 0u;
+  *(layer + 6) = 0u;
+  *(layer + 7) = 0u;
+  *(layer + 16) = 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
   v5.super_class = CASDFOutputEffect;
-  result = [(CASDFEffect *)&v5 copyWithZone:a3];
+  result = [(CASDFEffect *)&v5 copyWithZone:zone];
   if (result)
   {
     *(result + 1) = *&self->_minimum;

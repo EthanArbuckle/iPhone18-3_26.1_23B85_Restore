@@ -1,10 +1,10 @@
 @interface SRDatastore
 + (void)initialize;
-- (BOOL)writeSampleBytes:(z_size_t)a3 length:(SRError *)a4 timestamp:(double)a5 error:;
+- (BOOL)writeSampleBytes:(z_size_t)bytes length:(SRError *)length timestamp:(double)timestamp error:;
 - (void)dealloc;
-- (void)fetchSamplesFrom:(double)a3 to:(double)a4 callback:;
-- (void)initWithSampleFile:(void *)a3 metadataFile:(void *)a4 configurationFile:(uint64_t)a5 permission:(uint64_t)a6 defaults:(uint64_t)a7 writingStats:;
-- (void)removeSamplesFrom:(double)a3 to:(double)a4 callback:;
+- (void)fetchSamplesFrom:(double)from to:(double)to callback:;
+- (void)initWithSampleFile:(void *)file metadataFile:(void *)metadataFile configurationFile:(uint64_t)configurationFile permission:(uint64_t)permission defaults:(uint64_t)defaults writingStats:;
+- (void)removeSamplesFrom:(double)from to:(double)to callback:;
 - (void)startTimeOfCurrentSegment;
 - (void)syncMappedFiles;
 @end
@@ -13,32 +13,32 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     SRLogDatastore = os_log_create("com.apple.SensorKit", "Datastore");
   }
 }
 
-- (void)initWithSampleFile:(void *)a3 metadataFile:(void *)a4 configurationFile:(uint64_t)a5 permission:(uint64_t)a6 defaults:(uint64_t)a7 writingStats:
+- (void)initWithSampleFile:(void *)file metadataFile:(void *)metadataFile configurationFile:(uint64_t)configurationFile permission:(uint64_t)permission defaults:(uint64_t)defaults writingStats:
 {
   v45 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v14 = 0;
     goto LABEL_38;
   }
 
-  v38.receiver = a1;
+  v38.receiver = self;
   v38.super_class = SRDatastore;
   v13 = objc_msgSendSuper2(&v38, sel_init);
   v14 = v13;
   if (v13)
   {
-    v13[1] = a5;
-    if (a6)
+    v13[1] = configurationFile;
+    if (permission)
     {
-      v15 = *(a6 + 16);
-      if (a7)
+      v15 = *(permission + 16);
+      if (defaults)
       {
         goto LABEL_5;
       }
@@ -47,16 +47,16 @@
     else
     {
       v15 = 0;
-      if (a7)
+      if (defaults)
       {
 LABEL_5:
-        v16 = *(a7 + 56);
-        v17 = *(a7 + 64);
+        v16 = *(defaults + 56);
+        v17 = *(defaults + 64);
         if (v17)
         {
-          if (a6)
+          if (permission)
           {
-            v18 = *(a6 + 64);
+            v18 = *(permission + 64);
           }
 
           else
@@ -64,10 +64,10 @@ LABEL_5:
             v18 = 0.0;
           }
 
-          v19 = *(a7 + 8);
+          v19 = *(defaults + 8);
           if (v19)
           {
-            v20 = *(a7 + 16) / v19;
+            v20 = *(defaults + 16) / v19;
           }
 
           else
@@ -76,9 +76,9 @@ LABEL_5:
           }
 
           v21 = (exp2((v18 - v20) / v18) * v17);
-          if (a6)
+          if (permission)
           {
-            v22 = *(a6 + 72);
+            v22 = *(permission + 72);
           }
 
           else
@@ -102,25 +102,25 @@ LABEL_5:
 
     if (a2)
     {
-      v24 = [-[NSFileHandle pathname](a2) lastPathComponent];
+      lastPathComponent = [-[NSFileHandle pathname](a2) lastPathComponent];
     }
 
     else
     {
-      v24 = 0;
+      lastPathComponent = 0;
     }
 
-    [v24 doubleValue];
-    [(SRWritingStats *)a7 updateSegmentCreationTime:v15 rateAdjustedSize:v25];
-    if (a7)
+    [lastPathComponent doubleValue];
+    [(SRWritingStats *)defaults updateSegmentCreationTime:v15 rateAdjustedSize:v25];
+    if (defaults)
     {
       v26 = SRLogDatastore;
       if (os_log_type_enabled(SRLogDatastore, OS_LOG_TYPE_INFO))
       {
-        if (a6)
+        if (permission)
         {
-          v27 = *(a6 + 64);
-          v28 = *(a6 + 16);
+          v27 = *(permission + 64);
+          v28 = *(permission + 16);
         }
 
         else
@@ -130,7 +130,7 @@ LABEL_5:
         }
 
         *buf = 138412802;
-        v40 = a7;
+        defaultsCopy = defaults;
         v41 = 2050;
         v42 = v27;
         v43 = 2048;
@@ -139,9 +139,9 @@ LABEL_5:
       }
     }
 
-    if (a6)
+    if (permission)
     {
-      v29 = *(a6 + 44);
+      v29 = *(permission + 44);
     }
 
     else
@@ -150,9 +150,9 @@ LABEL_5:
     }
 
     v30 = (v29 * v15) / NSPageSize();
-    if (a6)
+    if (permission)
     {
-      v31 = *(a6 + 32);
+      v31 = *(permission + 32);
     }
 
     else
@@ -176,11 +176,11 @@ LABEL_5:
     }
 
     v33 = v32 * NSPageSize();
-    if (a6)
+    if (permission)
     {
-      v14[2] = *(a6 + 32);
-      v34 = *(a6 + 40);
-      v35 = *(a6 + 24);
+      v14[2] = *(permission + 32);
+      v34 = *(permission + 40);
+      v35 = *(permission + 24);
     }
 
     else
@@ -191,16 +191,16 @@ LABEL_5:
     }
 
     *(v14 + 6) = v34;
-    v14[4] = a6;
-    v14[5] = [[SRFrameStore alloc] initWithFileHandle:a2 maxSize:v33 permission:v14[1] defaults:a6];
-    if (a3)
+    v14[4] = permission;
+    v14[5] = [[SRFrameStore alloc] initWithFileHandle:a2 maxSize:v33 permission:v14[1] defaults:permission];
+    if (file)
     {
-      v14[6] = [[SRFrameStore alloc] initWithFileHandle:a3 maxSize:v35 permission:v14[1] defaults:a6];
+      v14[6] = [[SRFrameStore alloc] initWithFileHandle:file maxSize:v35 permission:v14[1] defaults:permission];
     }
 
-    if (a4)
+    if (metadataFile)
     {
-      v14[7] = [[SRFrameStore alloc] initWithFileHandle:a4 maxSize:v35 permission:v14[1] defaults:a6];
+      v14[7] = [[SRFrameStore alloc] initWithFileHandle:metadataFile maxSize:v35 permission:v14[1] defaults:permission];
     }
   }
 
@@ -224,7 +224,7 @@ LABEL_38:
   [(SRDatastore *)&v5 dealloc];
 }
 
-- (BOOL)writeSampleBytes:(z_size_t)a3 length:(SRError *)a4 timestamp:(double)a5 error:
+- (BOOL)writeSampleBytes:(z_size_t)bytes length:(SRError *)length timestamp:(double)timestamp error:
 {
   v46 = *MEMORY[0x1E69E9840];
   if (!result)
@@ -249,14 +249,14 @@ LABEL_42:
     }
 
 LABEL_43:
-    if (!a4)
+    if (!length)
     {
       goto LABEL_45;
     }
 
     v40 = [SRError errorWithCode:12291];
     result = 0;
-    *a4 = v40;
+    *length = v40;
     goto LABEL_46;
   }
 
@@ -272,7 +272,7 @@ LABEL_43:
     v13 = 0;
   }
 
-  if (v13 >= a3 + 20)
+  if (v13 >= bytes + 20)
   {
     goto LABEL_21;
   }
@@ -291,9 +291,9 @@ LABEL_43:
     }
 
     v42 = 134349312;
-    v43 = v15;
+    bytesCopy = v15;
     v44 = 2050;
-    v45 = a3 + 20;
+    v45 = bytes + 20;
     _os_log_impl(&dword_1C914D000, v14, OS_LOG_TYPE_INFO, "Not enough free space (%{public}zu) to write %{public}zu. Attempting to expand the mapped region", &v42, 0x16u);
   }
 
@@ -318,7 +318,7 @@ LABEL_43:
     }
   }
 
-  v26 = ((v19 + a3) * *(v9 + 24));
+  v26 = ((v19 + bytes) * *(v9 + 24));
   v27 = SRLogDatastore;
   if (v16 <= v26)
   {
@@ -344,7 +344,7 @@ LABEL_43:
       }
 
       v42 = 134349312;
-      v43 = a3;
+      bytesCopy = bytes;
       v44 = 2050;
       v45 = v16 - v32;
       v21 = "Trying to write %{public}zd but only have %{public}llul available. Dropping the data.";
@@ -360,7 +360,7 @@ LABEL_43:
   if (os_log_type_enabled(SRLogDatastore, OS_LOG_TYPE_INFO))
   {
     v42 = 134217984;
-    v43 = v26;
+    bytesCopy = v26;
     _os_log_impl(&dword_1C914D000, v27, OS_LOG_TYPE_INFO, "Expanding the mapped region to %llu bytes while a new segment is fetched", &v42, 0xCu);
   }
 
@@ -390,7 +390,7 @@ LABEL_21:
     }
   }
 
-  [(SRFrameStore *)v11 writeFrameForBytes:a2 length:a3 timestamp:a4 error:a5];
+  [(SRFrameStore *)v11 writeFrameForBytes:a2 length:bytes timestamp:length error:timestamp];
   v34 = *(v11 + 24);
   if (v34 && (v35 = *(v34 + 16)) != 0)
   {
@@ -411,7 +411,7 @@ LABEL_21:
     }
   }
 
-  if (v36 >= v30 + a3)
+  if (v36 >= v30 + bytes)
   {
     result = 1;
   }
@@ -434,10 +434,10 @@ LABEL_46:
   return result;
 }
 
-- (void)fetchSamplesFrom:(double)a3 to:(double)a4 callback:
+- (void)fetchSamplesFrom:(double)from to:(double)to callback:
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v32 = 0;
     v30 = 0;
@@ -445,7 +445,7 @@ LABEL_46:
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    Property = objc_getProperty(a1, a2, 40, 1);
+    Property = objc_getProperty(self, a2, 40, 1);
     v9 = [(SRFrameStore *)Property enumerateFromOffset:?];
     v10 = [(SRFramesStoreOffsetEnumerator *)v9 countByEnumeratingWithState:&v25 objects:v33 count:16];
     if (v10)
@@ -463,9 +463,9 @@ LABEL_46:
 
           v14 = *(*(&v25 + 1) + 8 * i);
           v15 = *v14;
-          if (*v14 <= a3 || v15 > a4)
+          if (*v14 <= from || v15 > to)
           {
-            if (v15 > a4)
+            if (v15 > to)
             {
               goto LABEL_30;
             }
@@ -473,7 +473,7 @@ LABEL_46:
 
           else
           {
-            v17 = a1[6];
+            v17 = self[6];
             if (v17)
             {
               fetchMetadataFromFrameStore(v17, &v32, &v31, v15);
@@ -496,7 +496,7 @@ LABEL_46:
               v18 = 0;
             }
 
-            v20 = a1[7];
+            v20 = self[7];
             if (v20)
             {
               fetchMetadataFromFrameStore(v20, &v30, &v29, v15);
@@ -520,7 +520,7 @@ LABEL_46:
             }
 
             v23 = (*(a2 + 16))(a2, v14 + 20, *(v14 + 16), v19, v18, v22, v21, v15);
-            if (v15 > a4 || (v23 & 1) == 0)
+            if (v15 > to || (v23 & 1) == 0)
             {
               goto LABEL_30;
             }
@@ -538,16 +538,16 @@ LABEL_30:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeSamplesFrom:(double)a3 to:(double)a4 callback:
+- (void)removeSamplesFrom:(double)from to:(double)to callback:
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    Property = objc_getProperty(a1, a2, 40, 1);
+    Property = objc_getProperty(self, a2, 40, 1);
     v9 = [(SRFrameStore *)Property enumerateFromOffset:?];
     v10 = [(SRFramesStoreOffsetEnumerator *)v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
@@ -565,13 +565,13 @@ LABEL_4:
 
         v14 = *(*(&v18 + 1) + 8 * v13);
         v15 = *v14;
-        if (*v14 >= a3 && v15 <= a4)
+        if (*v14 >= from && v15 <= to)
         {
-          [(SRFrameStore *)a1[5] markFrameAsRemoved:v14];
+          [(SRFrameStore *)self[5] markFrameAsRemoved:v14];
           (*(a2 + 16))(a2, v15);
         }
 
-        if (v15 > a4)
+        if (v15 > to)
         {
           break;
         }
@@ -596,10 +596,10 @@ LABEL_4:
 - (void)startTimeOfCurrentSegment
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     memset(v5, 0, sizeof(v5));
-    Property = objc_getProperty(a1, a2, 40, 1);
+    Property = objc_getProperty(self, a2, 40, 1);
     if ([(SRFramesStoreOffsetEnumerator *)[(SRFrameStore *)Property enumerateFromOffset:?] countByEnumeratingWithState:v5 objects:v6 count:16])
     {
       v3 = ***(&v5[0] + 1);
@@ -616,13 +616,13 @@ LABEL_4:
 
 - (void)syncMappedFiles
 {
-  if (a1)
+  if (self)
   {
-    Property = objc_getProperty(a1, a2, 40, 1);
+    Property = objc_getProperty(self, a2, 40, 1);
     [(SRFrameStore *)Property sync];
-    v5 = objc_getProperty(a1, v4, 48, 1);
+    v5 = objc_getProperty(self, v4, 48, 1);
     [(SRFrameStore *)v5 sync];
-    v7 = objc_getProperty(a1, v6, 56, 1);
+    v7 = objc_getProperty(self, v6, 56, 1);
 
     [(SRFrameStore *)v7 sync];
   }

@@ -1,8 +1,8 @@
 @interface W5PeerDiscoveryConfiguration
-- (W5PeerDiscoveryConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (W5PeerDiscoveryConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation W5PeerDiscoveryConfiguration
@@ -19,7 +19,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[W5PeerDiscoveryConfiguration allocWithZone:?]];
   [(W5PeerDiscoveryConfiguration *)v4 setDiscoveryFlags:self->_discoveryFlags];
@@ -27,24 +27,24 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   controlFlags = self->_controlFlags;
-  v5 = a3;
-  [v5 encodeInteger:controlFlags forKey:@"_controlFlags"];
-  [v5 encodeInteger:self->_discoveryFlags forKey:@"_discoveryFlags"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:controlFlags forKey:@"_controlFlags"];
+  [coderCopy encodeInteger:self->_discoveryFlags forKey:@"_discoveryFlags"];
 }
 
-- (W5PeerDiscoveryConfiguration)initWithCoder:(id)a3
+- (W5PeerDiscoveryConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = W5PeerDiscoveryConfiguration;
   v5 = [(W5PeerDiscoveryConfiguration *)&v7 init];
   if (v5)
   {
-    v5->_controlFlags = [v4 decodeIntegerForKey:@"_controlFlags"];
-    v5->_discoveryFlags = [v4 decodeIntegerForKey:@"_discoveryFlags"];
+    v5->_controlFlags = [coderCopy decodeIntegerForKey:@"_controlFlags"];
+    v5->_discoveryFlags = [coderCopy decodeIntegerForKey:@"_discoveryFlags"];
   }
 
   return v5;

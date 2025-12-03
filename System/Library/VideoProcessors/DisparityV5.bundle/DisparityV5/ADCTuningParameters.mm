@@ -1,7 +1,7 @@
 @interface ADCTuningParameters
 - (ADCTuningParameters)init;
-- (ADCTuningParameters)initWithDictionary:(id)a3;
-- (BOOL)readAdaptiveCorrectionConfig:(id)a3;
+- (ADCTuningParameters)initWithDictionary:(id)dictionary;
+- (BOOL)readAdaptiveCorrectionConfig:(id)config;
 - (float)checkAndCorrectFocalLengthTele:(float)result;
 - (float)checkAndCorrectFocalLengthWide:(float)result;
 @end
@@ -85,16 +85,16 @@
   return result;
 }
 
-- (BOOL)readAdaptiveCorrectionConfig:(id)a3
+- (BOOL)readAdaptiveCorrectionConfig:(id)config
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  configCopy = config;
+  v5 = configCopy;
+  if (!configCopy)
   {
     goto LABEL_28;
   }
 
-  sub_29576283C(v4, "epErrorLimitWidePix_FirstPass", &self->_adaptiveCorrectionConfig.epErrorLimitWidePix_FirstPass);
+  sub_29576283C(configCopy, "epErrorLimitWidePix_FirstPass", &self->_adaptiveCorrectionConfig.epErrorLimitWidePix_FirstPass);
   if (!v6)
   {
     goto LABEL_28;
@@ -217,9 +217,9 @@ LABEL_28:
   return v53;
 }
 
-- (ADCTuningParameters)initWithDictionary:(id)a3
+- (ADCTuningParameters)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19 = objc_msgSend_init(self, v5, v6, v7, v8, v9, v10, v11, v12);
   if (!v19)
   {
@@ -228,7 +228,7 @@ LABEL_28:
     goto LABEL_12;
   }
 
-  v21 = objc_msgSend_objectForKeyedSubscript_(v4, v13, @"Calibration", v14, v15, v16, v17, v18, v20);
+  v21 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v13, @"Calibration", v14, v15, v16, v17, v18, v20);
   v22 = v21;
   if (!v21 || (sub_2957628D8(v21, "defaultFocalLengthTeleMicrometers", v19 + 3), !v23) || (sub_2957628D8(v22, "defaultFocalLengthWideMicrometers", v19 + 5), !v24) || (sub_2957628D8(v22, "defaultFocalLengthTeleMaxDeviationMicrometers", v19 + 4), !v25) || (sub_2957628D8(v22, "defaultFocalLengthWideMaxDeviationMicrometers", v19 + 6), !v26) || (v33 = sub_2957628D8(v22, "keypointsDetectionThreshold", v19 + 2), !v34))
   {
@@ -238,7 +238,7 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  v35 = objc_msgSend_objectForKeyedSubscript_(v4, v27, @"ADC", v28, v29, v30, v31, v32, v33);
+  v35 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v27, @"ADC", v28, v29, v30, v31, v32, v33);
   if (objc_msgSend_readAdaptiveCorrectionConfig_(v19, v36, v35, v37, v38, v39, v40, v41, v42))
   {
     v43 = v19;

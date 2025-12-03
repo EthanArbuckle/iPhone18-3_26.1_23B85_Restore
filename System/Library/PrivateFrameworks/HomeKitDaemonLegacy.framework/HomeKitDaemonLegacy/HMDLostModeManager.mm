@@ -48,19 +48,19 @@ uint64_t __41__HMDLostModeManager_Common__logCategory__block_invoke()
 
 - (BOOL)isLostOrNeedsExitAuth
 {
-  v2 = [MEMORY[0x277D08F78] sharedInstance];
-  if ([v2 lostModeIsActive])
+  mEMORY[0x277D08F78] = [MEMORY[0x277D08F78] sharedInstance];
+  if ([mEMORY[0x277D08F78] lostModeIsActive])
   {
-    v3 = 1;
+    needsLostModeExitAuth = 1;
   }
 
   else
   {
-    v4 = [MEMORY[0x277D08F78] sharedInstance];
-    v3 = [v4 needsLostModeExitAuth];
+    mEMORY[0x277D08F78]2 = [MEMORY[0x277D08F78] sharedInstance];
+    needsLostModeExitAuth = [mEMORY[0x277D08F78]2 needsLostModeExitAuth];
   }
 
-  return v3;
+  return needsLostModeExitAuth;
 }
 
 - (BOOL)isLost
@@ -84,8 +84,8 @@ uint64_t __41__HMDLostModeManager_Common__logCategory__block_invoke()
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v3, __HMDLostModeManagerLostModeChangeNotification, *MEMORY[0x277D08FB8], 0, CFNotificationSuspensionBehaviorCoalesce);
     v5 = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(v5, v3, __HMDLostModeManagerExitLostModeWithAuthCompleteNotification, *MEMORY[0x277D08F60], 0, CFNotificationSuspensionBehaviorCoalesce);
-    v6 = [MEMORY[0x277D08F78] sharedInstance];
-    v3->_lost = [v6 lostModeIsActive];
+    mEMORY[0x277D08F78] = [MEMORY[0x277D08F78] sharedInstance];
+    v3->_lost = [mEMORY[0x277D08F78] lostModeIsActive];
   }
 
   return v3;

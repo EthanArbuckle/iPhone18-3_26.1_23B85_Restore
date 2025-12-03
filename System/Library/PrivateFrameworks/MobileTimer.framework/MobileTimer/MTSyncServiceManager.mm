@@ -1,41 +1,41 @@
 @interface MTSyncServiceManager
 - (MTSyncDataModel)syncDataModel;
-- (MTSyncServiceManager)initWithSyncService:(id)a3 syncStatusProvider:(id)a4 syncDataModel:(id)a5 syncMetrics:(id)a6;
-- (MTSyncServiceManager)initWithSyncService:(id)a3 syncStatusProvider:(id)a4 syncDataModel:(id)a5 syncMetrics:(id)a6 syncChangeStore:(id)a7;
+- (MTSyncServiceManager)initWithSyncService:(id)service syncStatusProvider:(id)provider syncDataModel:(id)model syncMetrics:(id)metrics;
+- (MTSyncServiceManager)initWithSyncService:(id)service syncStatusProvider:(id)provider syncDataModel:(id)model syncMetrics:(id)metrics syncChangeStore:(id)store;
 - (id)gatherDiagnostics;
-- (id)requestSync:(unint64_t)a3;
-- (void)applyChange:(id)a3;
+- (id)requestSync:(unint64_t)sync;
+- (void)applyChange:(id)change;
 - (void)checkForPendingChanges;
-- (void)pendingChangesSent:(id)a3;
+- (void)pendingChangesSent:(id)sent;
 - (void)printDiagnostics;
 - (void)resetDataStore;
 - (void)startSyncService;
 - (void)stopSyncService;
-- (void)syncChange:(id)a3;
-- (void)syncStatusProvider:(id)a3 didChangeSyncStatus:(unint64_t)a4;
+- (void)syncChange:(id)change;
+- (void)syncStatusProvider:(id)provider didChangeSyncStatus:(unint64_t)status;
 @end
 
 @implementation MTSyncServiceManager
 
-- (MTSyncServiceManager)initWithSyncService:(id)a3 syncStatusProvider:(id)a4 syncDataModel:(id)a5 syncMetrics:(id)a6
+- (MTSyncServiceManager)initWithSyncService:(id)service syncStatusProvider:(id)provider syncDataModel:(id)model syncMetrics:(id)metrics
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [MTSyncChangeStore persistentStoreForDataModel:v11];
-  v15 = [(MTSyncServiceManager *)self initWithSyncService:v13 syncStatusProvider:v12 syncDataModel:v11 syncMetrics:v10 syncChangeStore:v14];
+  metricsCopy = metrics;
+  modelCopy = model;
+  providerCopy = provider;
+  serviceCopy = service;
+  v14 = [MTSyncChangeStore persistentStoreForDataModel:modelCopy];
+  v15 = [(MTSyncServiceManager *)self initWithSyncService:serviceCopy syncStatusProvider:providerCopy syncDataModel:modelCopy syncMetrics:metricsCopy syncChangeStore:v14];
 
   return v15;
 }
 
-- (MTSyncServiceManager)initWithSyncService:(id)a3 syncStatusProvider:(id)a4 syncDataModel:(id)a5 syncMetrics:(id)a6 syncChangeStore:(id)a7
+- (MTSyncServiceManager)initWithSyncService:(id)service syncStatusProvider:(id)provider syncDataModel:(id)model syncMetrics:(id)metrics syncChangeStore:(id)store
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  serviceCopy = service;
+  providerCopy = provider;
+  modelCopy = model;
+  metricsCopy = metrics;
+  storeCopy = store;
   v24.receiver = self;
   v24.super_class = MTSyncServiceManager;
   v18 = [(MTSyncServiceManager *)&v24 init];
@@ -45,17 +45,17 @@
     serializer = v18->_serializer;
     v18->_serializer = v19;
 
-    objc_storeStrong(&v18->_syncService, a3);
-    [v13 setDelegate:v18];
-    objc_storeStrong(&v18->_syncStatusProvider, a4);
+    objc_storeStrong(&v18->_syncService, service);
+    [serviceCopy setDelegate:v18];
+    objc_storeStrong(&v18->_syncStatusProvider, provider);
     [(MTSyncStatusProvider *)v18->_syncStatusProvider setSyncStatusProviderDelegate:v18];
-    objc_storeWeak(&v18->_syncDataModel, v15);
-    v21 = [[MTSyncChangeQueue alloc] initWithChangeStore:v17];
+    objc_storeWeak(&v18->_syncDataModel, modelCopy);
+    v21 = [[MTSyncChangeQueue alloc] initWithChangeStore:storeCopy];
     syncChangeQueue = v18->_syncChangeQueue;
     v18->_syncChangeQueue = v21;
 
     [(MTSyncChangeQueue *)v18->_syncChangeQueue loadChanges];
-    objc_storeStrong(&v18->_syncMetrics, a6);
+    objc_storeStrong(&v18->_syncMetrics, metrics);
   }
 
   return v18;
@@ -161,15 +161,15 @@ uint64_t __39__MTSyncServiceManager_stopSyncService__block_invoke(uint64_t resul
 - (void)checkForPendingChanges
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(MTSyncChangeQueue *)self->_syncChangeQueue hasPendingChanges];
+  hasPendingChanges = [(MTSyncChangeQueue *)self->_syncChangeQueue hasPendingChanges];
   v4 = MTLogForCategory(6);
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (hasPendingChanges)
   {
     if (v5)
     {
       v8 = 138543362;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B1F9F000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ still has changes", &v8, 0xCu);
     }
 
@@ -181,7 +181,7 @@ uint64_t __39__MTSyncServiceManager_stopSyncService__block_invoke(uint64_t resul
     if (v5)
     {
       v8 = 138543362;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B1F9F000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ no pending changes", &v8, 0xCu);
     }
   }
@@ -189,17 +189,17 @@ uint64_t __39__MTSyncServiceManager_stopSyncService__block_invoke(uint64_t resul
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)syncChange:(id)a3
+- (void)syncChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   serializer = self->_serializer;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__MTSyncServiceManager_syncChange___block_invoke;
   v7[3] = &unk_1E7B0C928;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   [(NAScheduler *)serializer performBlock:v7];
 }
 
@@ -240,32 +240,32 @@ void __35__MTSyncServiceManager_syncChange___block_invoke(uint64_t a1)
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)applyChange:(id)a3
+- (void)applyChange:(id)change
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = [(MTSyncChangeQueue *)self->_syncChangeQueue resolveChange:a3];
-  v5 = MTLogForCategory(6);
-  v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
+  v4 = [(MTSyncChangeQueue *)self->_syncChangeQueue resolveChange:change];
+  syncDataModel = MTLogForCategory(6);
+  v6 = os_log_type_enabled(syncDataModel, OS_LOG_TYPE_DEFAULT);
   if (v4)
   {
     if (v6)
     {
       v8 = 138543618;
-      v9 = self;
+      selfCopy2 = self;
       v10 = 2114;
       v11 = v4;
-      _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ applying change %{public}@", &v8, 0x16u);
+      _os_log_impl(&dword_1B1F9F000, syncDataModel, OS_LOG_TYPE_DEFAULT, "%{public}@ applying change %{public}@", &v8, 0x16u);
     }
 
-    v5 = [(MTSyncServiceManager *)self syncDataModel];
-    [v5 applyChange:v4];
+    syncDataModel = [(MTSyncServiceManager *)self syncDataModel];
+    [syncDataModel applyChange:v4];
   }
 
   else if (v6)
   {
     v8 = 138543362;
-    v9 = self;
-    _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ nothing to apply", &v8, 0xCu);
+    selfCopy2 = self;
+    _os_log_impl(&dword_1B1F9F000, syncDataModel, OS_LOG_TYPE_DEFAULT, "%{public}@ nothing to apply", &v8, 0xCu);
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -278,52 +278,52 @@ void __35__MTSyncServiceManager_syncChange___block_invoke(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ resetting data store", &v6, 0xCu);
   }
 
   [(MTSyncChangeQueue *)self->_syncChangeQueue removePendingChanges];
-  v4 = [(MTSyncServiceManager *)self syncDataModel];
-  [v4 resetDataStore];
+  syncDataModel = [(MTSyncServiceManager *)self syncDataModel];
+  [syncDataModel resetDataStore];
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)pendingChangesSent:(id)a3
+- (void)pendingChangesSent:(id)sent
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sentCopy = sent;
   v5 = MTLogForCategory(6);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2048;
-    v10 = [v4 count];
+    v10 = [sentCopy count];
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ successfully sent %lu changes", &v7, 0x16u);
   }
 
-  [(MTSyncChangeQueue *)self->_syncChangeQueue dequeueChanges:v4];
+  [(MTSyncChangeQueue *)self->_syncChangeQueue dequeueChanges:sentCopy];
   [(MTSyncServiceManager *)self checkForPendingChanges];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)requestSync:(unint64_t)a3
+- (id)requestSync:(unint64_t)sync
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!sync)
   {
     v5 = MTLogForCategory(6);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ incremental sync requested", buf, 0xCu);
     }
   }
 
-  v6 = [(MTSyncService *)self->_syncService requestSync:a3];
+  v6 = [(MTSyncService *)self->_syncService requestSync:sync];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __36__MTSyncServiceManager_requestSync___block_invoke;
@@ -349,17 +349,17 @@ uint64_t __36__MTSyncServiceManager_requestSync___block_invoke(uint64_t a1, uint
   }
 }
 
-- (void)syncStatusProvider:(id)a3 didChangeSyncStatus:(unint64_t)a4
+- (void)syncStatusProvider:(id)provider didChangeSyncStatus:(unint64_t)status
 {
   v11 = *MEMORY[0x1E69E9840];
   v6 = MTLogForCategory(6);
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (a4 == 3)
+  if (status == 3)
   {
     if (v7)
     {
       v9 = 138543362;
-      v10 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B1F9F000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ sync is disabled.", &v9, 0xCu);
     }
 
@@ -371,7 +371,7 @@ uint64_t __36__MTSyncServiceManager_requestSync___block_invoke(uint64_t a1, uint
     if (v7)
     {
       v9 = 138543362;
-      v10 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B1F9F000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ sync isn't disabled.", &v9, 0xCu);
     }
 
@@ -387,7 +387,7 @@ uint64_t __36__MTSyncServiceManager_requestSync___block_invoke(uint64_t a1, uint
   v3 = MTLogForCategory(1);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(MTSyncServiceManager *)self syncService];
+    syncService = [(MTSyncServiceManager *)self syncService];
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
     v15 = 138412290;
@@ -398,19 +398,19 @@ uint64_t __36__MTSyncServiceManager_requestSync___block_invoke(uint64_t a1, uint
   v7 = MTLogForCategory(1);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(MTSyncServiceManager *)self syncStatusProvider];
-    v9 = [v8 syncStatus];
+    syncStatusProvider = [(MTSyncServiceManager *)self syncStatusProvider];
+    syncStatus = [syncStatusProvider syncStatus];
     v15 = 134217984;
-    v16 = v9;
+    v16 = syncStatus;
     _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_DEFAULT, "Sync Status: %lu", &v15, 0xCu);
   }
 
   v10 = MTLogForCategory(1);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(MTSyncServiceManager *)self syncChangeQueue];
-    v12 = [v11 pendingChanges];
-    v13 = [v12 count];
+    syncChangeQueue = [(MTSyncServiceManager *)self syncChangeQueue];
+    pendingChanges = [syncChangeQueue pendingChanges];
+    v13 = [pendingChanges count];
     v15 = 134217984;
     v16 = v13;
     _os_log_impl(&dword_1B1F9F000, v10, OS_LOG_TYPE_DEFAULT, "Pending Changes: %lu", &v15, 0xCu);
@@ -423,20 +423,20 @@ uint64_t __36__MTSyncServiceManager_requestSync___block_invoke(uint64_t a1, uint
 {
   v17[3] = *MEMORY[0x1E69E9840];
   v16[0] = @"Sync Service";
-  v3 = [(MTSyncServiceManager *)self syncService];
+  syncService = [(MTSyncServiceManager *)self syncService];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v17[0] = v5;
   v16[1] = @"Sync Status";
   v6 = MEMORY[0x1E696AD98];
-  v7 = [(MTSyncServiceManager *)self syncStatusProvider];
-  v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(v7, "syncStatus")}];
+  syncStatusProvider = [(MTSyncServiceManager *)self syncStatusProvider];
+  v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(syncStatusProvider, "syncStatus")}];
   v17[1] = v8;
   v16[2] = @"Pending Changes";
   v9 = MEMORY[0x1E696AD98];
-  v10 = [(MTSyncServiceManager *)self syncChangeQueue];
-  v11 = [v10 pendingChanges];
-  v12 = [v9 numberWithUnsignedInteger:{objc_msgSend(v11, "count")}];
+  syncChangeQueue = [(MTSyncServiceManager *)self syncChangeQueue];
+  pendingChanges = [syncChangeQueue pendingChanges];
+  v12 = [v9 numberWithUnsignedInteger:{objc_msgSend(pendingChanges, "count")}];
   v17[2] = v12;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:3];
 

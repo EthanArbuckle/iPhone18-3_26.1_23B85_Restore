@@ -1,20 +1,20 @@
 @interface PLGlobalKeyValue
 + (id)_debugDescriptionDateFormatter;
-+ (id)_globalValueForKeyValue:(id)a3;
++ (id)_globalValueForKeyValue:(id)value;
 + (id)allDecodeClasses;
 + (id)attributesForKey;
-+ (id)debugDescriptionOfValue:(id)a3 forKey:(id)a4;
-+ (id)dictionaryWithManagedObjectContext:(id)a3 forMigrationHistory:(BOOL)a4;
-+ (id)fetchGlobalKeyValueForKey:(id)a3 withManagedObjectContext:(id)a4 createIfMissing:(BOOL)a5;
-+ (id)fetchGlobalKeyValuesForKeys:(id)a3 withManagedObjectContext:(id)a4;
-+ (id)globalValueForKey:(id)a3 managedObjectContext:(id)a4;
-+ (id)globalValuesForKeys:(id)a3 managedObjectContext:(id)a4;
-+ (signed)typeForKey:(id)a3;
-+ (void)_setGlobalValue:(id)a3 forKeyValue:(id)a4 managedObjectContext:(id)a5;
-+ (void)checkTypeForKey:(id)a3 andValue:(id)a4;
-+ (void)migrateLocaleIdentifierToGlobalKeyValues:(id)a3 withPathManager:(id)a4;
-+ (void)populateWithDictionary:(id)a3 managedObjectContext:(id)a4 replaceExisting:(BOOL)a5;
-+ (void)setGlobalValue:(id)a3 forKey:(id)a4 managedObjectContext:(id)a5;
++ (id)debugDescriptionOfValue:(id)value forKey:(id)key;
++ (id)dictionaryWithManagedObjectContext:(id)context forMigrationHistory:(BOOL)history;
++ (id)fetchGlobalKeyValueForKey:(id)key withManagedObjectContext:(id)context createIfMissing:(BOOL)missing;
++ (id)fetchGlobalKeyValuesForKeys:(id)keys withManagedObjectContext:(id)context;
++ (id)globalValueForKey:(id)key managedObjectContext:(id)context;
++ (id)globalValuesForKeys:(id)keys managedObjectContext:(id)context;
++ (signed)typeForKey:(id)key;
++ (void)_setGlobalValue:(id)value forKeyValue:(id)keyValue managedObjectContext:(id)context;
++ (void)checkTypeForKey:(id)key andValue:(id)value;
++ (void)migrateLocaleIdentifierToGlobalKeyValues:(id)values withPathManager:(id)manager;
++ (void)populateWithDictionary:(id)dictionary managedObjectContext:(id)context replaceExisting:(BOOL)existing;
++ (void)setGlobalValue:(id)value forKey:(id)key managedObjectContext:(id)context;
 @end
 
 @implementation PLGlobalKeyValue
@@ -31,29 +31,29 @@
   return v3;
 }
 
-+ (void)migrateLocaleIdentifierToGlobalKeyValues:(id)a3 withPathManager:(id)a4
++ (void)migrateLocaleIdentifierToGlobalKeyValues:(id)values withPathManager:(id)manager
 {
   v4 = MEMORY[0x1E695E000];
-  v5 = a3;
+  valuesCopy = values;
   v7 = [[v4 alloc] initWithSuiteName:@"com.apple.mobileslideshow"];
   v6 = [v7 objectForKey:@"com.apple.Photos.LocaleIdentifier"];
-  [v5 setObject:v6 forKeyedSubscript:@"LocaleIdentifier"];
+  [valuesCopy setObject:v6 forKeyedSubscript:@"LocaleIdentifier"];
 }
 
-+ (id)fetchGlobalKeyValuesForKeys:(id)a3 withManagedObjectContext:(id)a4
++ (id)fetchGlobalKeyValuesForKeys:(id)keys withManagedObjectContext:(id)context
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  keysCopy = keys;
   v7 = MEMORY[0x1E695D5E0];
-  v8 = a4;
-  v9 = [a1 entityName];
-  v10 = [v7 fetchRequestWithEntityName:v9];
+  contextCopy = context;
+  entityName = [self entityName];
+  v10 = [v7 fetchRequestWithEntityName:entityName];
 
-  v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"key", v6];
-  [v10 setPredicate:v11];
+  keysCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"key", keysCopy];
+  [v10 setPredicate:keysCopy];
 
   v16 = 0;
-  v12 = [v8 executeFetchRequest:v10 error:&v16];
+  v12 = [contextCopy executeFetchRequest:v10 error:&v16];
 
   v13 = v16;
   if (!v12)
@@ -62,7 +62,7 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v18 = v6;
+      v18 = keysCopy;
       v19 = 2112;
       v20 = v13;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "Error fetching GlobalKeyValue for keys %{public}@, error: %@", buf, 0x16u);
@@ -72,29 +72,29 @@
   return v12;
 }
 
-+ (id)fetchGlobalKeyValueForKey:(id)a3 withManagedObjectContext:(id)a4 createIfMissing:(BOOL)a5
++ (id)fetchGlobalKeyValueForKey:(id)key withManagedObjectContext:(id)context createIfMissing:(BOOL)missing
 {
-  v5 = a5;
+  missingCopy = missing;
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  keyCopy = key;
+  contextCopy = context;
   v10 = MEMORY[0x1E695D5E0];
-  v11 = [a1 entityName];
-  v12 = [v10 fetchRequestWithEntityName:v11];
+  entityName = [self entityName];
+  v12 = [v10 fetchRequestWithEntityName:entityName];
 
-  v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"key", v8];
-  [v12 setPredicate:v13];
+  keyCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"key", keyCopy];
+  [v12 setPredicate:keyCopy];
 
   v19 = 0;
-  v14 = [v9 executeFetchRequest:v12 error:&v19];
+  v14 = [contextCopy executeFetchRequest:v12 error:&v19];
   v15 = v19;
   if (v14)
   {
-    v16 = [v14 firstObject];
-    if (!v16 && v5)
+    firstObject = [v14 firstObject];
+    if (!firstObject && missingCopy)
     {
-      v16 = [(PLManagedObject *)PLGlobalKeyValue insertInManagedObjectContext:v9];
-      [v16 setKey:v8];
+      firstObject = [(PLManagedObject *)PLGlobalKeyValue insertInManagedObjectContext:contextCopy];
+      [firstObject setKey:keyCopy];
     }
   }
 
@@ -104,30 +104,30 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v21 = v8;
+      v21 = keyCopy;
       v22 = 2112;
       v23 = v15;
       _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_ERROR, "Error fetching GlobalKeyValue for key %{public}@, error: %@", buf, 0x16u);
     }
 
-    v16 = 0;
+    firstObject = 0;
   }
 
-  return v16;
+  return firstObject;
 }
 
-+ (id)_globalValueForKeyValue:(id)a3
++ (id)_globalValueForKeyValue:(id)value
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  valueCopy = value;
+  v5 = valueCopy;
+  if (!valueCopy)
   {
     v8 = 0;
     goto LABEL_17;
   }
 
-  v6 = [v4 key];
-  v7 = [a1 typeForKey:v6];
+  v6 = [valueCopy key];
+  v7 = [self typeForKey:v6];
 
   v8 = 0;
   if (v7 > 3u)
@@ -135,13 +135,13 @@
     switch(v7)
     {
       case 4u:
-        v9 = [v5 dateValue];
+        dateValue = [v5 dateValue];
         break;
       case 5u:
-        v9 = [v5 stringValue];
+        dateValue = [v5 stringValue];
         break;
       case 6u:
-        v9 = [v5 anyValue];
+        dateValue = [v5 anyValue];
         break;
       default:
         goto LABEL_17;
@@ -153,46 +153,46 @@
     switch(v7)
     {
       case 1u:
-        v9 = [v5 BOOLValue];
+        dateValue = [v5 BOOLValue];
         break;
       case 2u:
-        v9 = [v5 integerValue];
+        dateValue = [v5 integerValue];
         break;
       case 3u:
-        v9 = [v5 doubleValue];
+        dateValue = [v5 doubleValue];
         break;
       default:
         goto LABEL_17;
     }
   }
 
-  v8 = v9;
+  v8 = dateValue;
 LABEL_17:
 
   return v8;
 }
 
-+ (void)_setGlobalValue:(id)a3 forKeyValue:(id)a4 managedObjectContext:(id)a5
++ (void)_setGlobalValue:(id)value forKeyValue:(id)keyValue managedObjectContext:(id)context
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  valueCopy = value;
+  keyValueCopy = keyValue;
+  contextCopy = context;
+  if (!keyValueCopy)
   {
     goto LABEL_25;
   }
 
   v11 = PLBackendGetLog();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_INFO);
-  if (!v8)
+  if (!valueCopy)
   {
     if (v12)
     {
-      v17 = [v10 name];
-      v18 = [v9 key];
+      name = [contextCopy name];
+      v18 = [keyValueCopy key];
       v21 = 138412546;
-      v22 = v17;
+      v22 = name;
       v23 = 2114;
       v24 = v18;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_INFO, "GlobalKeyValue: (%@) removing %{public}@", &v21, 0x16u);
@@ -203,29 +203,29 @@ LABEL_17:
 
   if (v12)
   {
-    v13 = [v10 name];
-    v14 = [v9 key];
+    name2 = [contextCopy name];
+    v14 = [keyValueCopy key];
     v21 = 138412802;
-    v22 = v13;
+    v22 = name2;
     v23 = 2114;
     v24 = v14;
     v25 = 2112;
-    v26 = v8;
+    v26 = valueCopy;
     _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_INFO, "GlobalKeyValue: (%@) setting %{public}@ = %@", &v21, 0x20u);
   }
 
-  v15 = [v9 key];
-  v16 = [a1 typeForKey:v15];
+  v15 = [keyValueCopy key];
+  v16 = [self typeForKey:v15];
 
-  [v9 setType:v16];
+  [keyValueCopy setType:v16];
   if (v16 <= 2u)
   {
     if (v16)
     {
       if (v16 == 1)
       {
-        v19 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "BOOLValue")}];
-        [v9 setBoolValue:v19];
+        v19 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(valueCopy, "BOOLValue")}];
+        [keyValueCopy setBoolValue:v19];
       }
 
       else
@@ -235,15 +235,15 @@ LABEL_17:
           goto LABEL_25;
         }
 
-        v19 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v8, "integerValue")}];
-        [v9 setIntegerValue:v19];
+        v19 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(valueCopy, "integerValue")}];
+        [keyValueCopy setIntegerValue:v19];
       }
 
       goto LABEL_24;
     }
 
 LABEL_13:
-    [v10 deleteObject:v9];
+    [contextCopy deleteObject:keyValueCopy];
     goto LABEL_25;
   }
 
@@ -253,16 +253,16 @@ LABEL_13:
     {
       if (v16 == 4)
       {
-        [v9 setDateValue:v8];
+        [keyValueCopy setDateValue:valueCopy];
       }
 
       goto LABEL_25;
     }
 
     v20 = MEMORY[0x1E696AD98];
-    [v8 doubleValue];
+    [valueCopy doubleValue];
     v19 = [v20 numberWithDouble:?];
-    [v9 setDoubleValue:v19];
+    [keyValueCopy setDoubleValue:v19];
 LABEL_24:
 
     goto LABEL_25;
@@ -270,41 +270,41 @@ LABEL_24:
 
   if (v16 == 5)
   {
-    [v9 setStringValue:v8];
+    [keyValueCopy setStringValue:valueCopy];
   }
 
   else if (v16 == 6)
   {
-    [v9 setAnyValue:v8];
+    [keyValueCopy setAnyValue:valueCopy];
   }
 
 LABEL_25:
 }
 
-+ (void)populateWithDictionary:(id)a3 managedObjectContext:(id)a4 replaceExisting:(BOOL)a5
++ (void)populateWithDictionary:(id)dictionary managedObjectContext:(id)context replaceExisting:(BOOL)existing
 {
-  v8 = a3;
-  v9 = a4;
-  if (a5)
+  dictionaryCopy = dictionary;
+  contextCopy = context;
+  if (existing)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = [a1 dictionaryWithManagedObjectContext:v9 forMigrationHistory:0];
+    v10 = [self dictionaryWithManagedObjectContext:contextCopy forMigrationHistory:0];
   }
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __80__PLGlobalKeyValue_populateWithDictionary_managedObjectContext_replaceExisting___block_invoke;
   v13[3] = &unk_1E7570850;
-  v15 = v9;
-  v16 = a1;
+  v15 = contextCopy;
+  selfCopy = self;
   v14 = v10;
-  v11 = v9;
+  v11 = contextCopy;
   v12 = v10;
-  [v8 enumerateKeysAndObjectsUsingBlock:v13];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v13];
 }
 
 void __80__PLGlobalKeyValue_populateWithDictionary_managedObjectContext_replaceExisting___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -319,18 +319,18 @@ void __80__PLGlobalKeyValue_populateWithDictionary_managedObjectContext_replaceE
   }
 }
 
-+ (id)dictionaryWithManagedObjectContext:(id)a3 forMigrationHistory:(BOOL)a4
++ (id)dictionaryWithManagedObjectContext:(id)context forMigrationHistory:(BOOL)history
 {
-  v4 = a4;
+  historyCopy = history;
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v32 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v7 = MEMORY[0x1E695D5E0];
-  v8 = [a1 entityName];
-  v9 = [v7 fetchRequestWithEntityName:v8];
+  entityName = [self entityName];
+  v9 = [v7 fetchRequestWithEntityName:entityName];
 
   v37 = 0;
-  v10 = [v6 executeFetchRequest:v9 error:&v37];
+  v10 = [contextCopy executeFetchRequest:v9 error:&v37];
   v11 = v37;
   if (v10)
   {
@@ -346,7 +346,7 @@ void __80__PLGlobalKeyValue_populateWithDictionary_managedObjectContext_replaceE
       v27 = v11;
       v28 = v10;
       v29 = v9;
-      v30 = v6;
+      v30 = contextCopy;
       v14 = *v34;
       v15 = obj;
       do
@@ -359,21 +359,21 @@ void __80__PLGlobalKeyValue_populateWithDictionary_managedObjectContext_replaceE
           }
 
           v17 = *(*(&v33 + 1) + 8 * i);
-          if (v4)
+          if (historyCopy)
           {
-            v18 = [a1 attributesForKey];
+            attributesForKey = [self attributesForKey];
             v19 = [v17 key];
-            v20 = [v18 objectForKeyedSubscript:v19];
-            v21 = [v20 includeInMigrationHistory];
+            v20 = [attributesForKey objectForKeyedSubscript:v19];
+            includeInMigrationHistory = [v20 includeInMigrationHistory];
 
             v15 = obj;
-            if (!v21)
+            if (!includeInMigrationHistory)
             {
               continue;
             }
           }
 
-          v22 = [a1 _globalValueForKeyValue:{v17, v27, v28, v29, v30}];
+          v22 = [self _globalValueForKeyValue:{v17, v27, v28, v29, v30}];
           v23 = [v17 key];
           [v32 setObject:v22 forKeyedSubscript:v23];
         }
@@ -383,7 +383,7 @@ void __80__PLGlobalKeyValue_populateWithDictionary_managedObjectContext_replaceE
 
       while (v13);
       v9 = v29;
-      v6 = v30;
+      contextCopy = v30;
       v11 = v27;
       v10 = v28;
     }
@@ -406,13 +406,13 @@ void __80__PLGlobalKeyValue_populateWithDictionary_managedObjectContext_replaceE
   return v25;
 }
 
-+ (id)globalValuesForKeys:(id)a3 managedObjectContext:(id)a4
++ (id)globalValuesForKeys:(id)keys managedObjectContext:(id)context
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  contextCopy = context;
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v9 = [a1 fetchGlobalKeyValuesForKeys:v6 withManagedObjectContext:v7];
+  v9 = [self fetchGlobalKeyValuesForKeys:keysCopy withManagedObjectContext:contextCopy];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -432,7 +432,7 @@ void __80__PLGlobalKeyValue_populateWithDictionary_managedObjectContext_replaceE
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        v15 = [a1 _globalValueForKeyValue:v14];
+        v15 = [self _globalValueForKeyValue:v14];
         v16 = [v14 key];
         [v8 setObject:v15 forKeyedSubscript:v16];
       }
@@ -446,39 +446,39 @@ void __80__PLGlobalKeyValue_populateWithDictionary_managedObjectContext_replaceE
   return v8;
 }
 
-+ (id)globalValueForKey:(id)a3 managedObjectContext:(id)a4
++ (id)globalValueForKey:(id)key managedObjectContext:(id)context
 {
-  v5 = [a1 fetchGlobalKeyValueForKey:a3 withManagedObjectContext:a4 createIfMissing:0];
-  v6 = [a1 _globalValueForKeyValue:v5];
+  v5 = [self fetchGlobalKeyValueForKey:key withManagedObjectContext:context createIfMissing:0];
+  v6 = [self _globalValueForKeyValue:v5];
 
   return v6;
 }
 
-+ (void)setGlobalValue:(id)a3 forKey:(id)a4 managedObjectContext:(id)a5
++ (void)setGlobalValue:(id)value forKey:(id)key managedObjectContext:(id)context
 {
-  v12 = a3;
-  v8 = a5;
-  v9 = a4;
-  [a1 checkTypeForKey:v9 andValue:v12];
-  v10 = [a1 fetchGlobalKeyValueForKey:v9 withManagedObjectContext:v8 createIfMissing:1];
+  valueCopy = value;
+  contextCopy = context;
+  keyCopy = key;
+  [self checkTypeForKey:keyCopy andValue:valueCopy];
+  v10 = [self fetchGlobalKeyValueForKey:keyCopy withManagedObjectContext:contextCopy createIfMissing:1];
 
-  v11 = [a1 _globalValueForKeyValue:v10];
+  v11 = [self _globalValueForKeyValue:v10];
   if (([v10 isInserted] & 1) != 0 || (PLObjectIsEqual() & 1) == 0)
   {
-    [a1 _setGlobalValue:v12 forKeyValue:v10 managedObjectContext:v8];
+    [self _setGlobalValue:valueCopy forKeyValue:v10 managedObjectContext:contextCopy];
   }
 }
 
-+ (void)checkTypeForKey:(id)a3 andValue:(id)a4
++ (void)checkTypeForKey:(id)key andValue:(id)value
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [a1 typeForKey:v16];
+  keyCopy = key;
+  valueCopy = value;
+  v7 = [self typeForKey:keyCopy];
   if (v7 > 3)
   {
     if (v7 == 4)
     {
-      if (!v6)
+      if (!valueCopy)
       {
         goto LABEL_20;
       }
@@ -490,12 +490,12 @@ void __80__PLGlobalKeyValue_populateWithDictionary_managedObjectContext_replaceE
       }
 
       v8 = MEMORY[0x1E695DF30];
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"Expect date value for key %@", v16, v15];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"Expect date value for key %@", keyCopy, v15];
     }
 
     else if (v7 == 5)
     {
-      if (!v6)
+      if (!valueCopy)
       {
         goto LABEL_20;
       }
@@ -507,21 +507,21 @@ void __80__PLGlobalKeyValue_populateWithDictionary_managedObjectContext_replaceE
       }
 
       v8 = MEMORY[0x1E695DF30];
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"Expect string value for key %@", v16, v15];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"Expect string value for key %@", keyCopy, v15];
     }
 
     else
     {
-      if (v7 != 6 || !v6)
+      if (v7 != 6 || !valueCopy)
       {
         goto LABEL_20;
       }
 
-      v9 = [a1 attributesForKey];
-      v10 = [v9 objectForKeyedSubscript:v16];
-      v11 = [v10 anyValueClass];
+      attributesForKey = [self attributesForKey];
+      v10 = [attributesForKey objectForKeyedSubscript:keyCopy];
+      anyValueClass = [v10 anyValueClass];
 
-      if (v11)
+      if (anyValueClass)
       {
         if (objc_opt_isKindOfClass())
         {
@@ -529,13 +529,13 @@ void __80__PLGlobalKeyValue_populateWithDictionary_managedObjectContext_replaceE
         }
 
         v8 = MEMORY[0x1E695DF30];
-        [MEMORY[0x1E696AEC0] stringWithFormat:@"Value's class not supported for key %@, must confirm to %@", v16, v11];
+        [MEMORY[0x1E696AEC0] stringWithFormat:@"Value's class not supported for key %@, must confirm to %@", keyCopy, anyValueClass];
       }
 
       else
       {
         v8 = MEMORY[0x1E695DF30];
-        [MEMORY[0x1E696AEC0] stringWithFormat:@"No any-value class defined for key %@", v16, v15];
+        [MEMORY[0x1E696AEC0] stringWithFormat:@"No any-value class defined for key %@", keyCopy, v15];
       }
     }
 
@@ -554,17 +554,17 @@ void __80__PLGlobalKeyValue_populateWithDictionary_managedObjectContext_replaceE
     }
 
     v8 = MEMORY[0x1E695DF30];
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"No type defined for key %@", v16, v15];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"No type defined for key %@", keyCopy, v15];
     goto LABEL_25;
   }
 
-  if (v6)
+  if (valueCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v8 = MEMORY[0x1E695DF30];
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"Expect number value for key %@", v16, v15];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"Expect number value for key %@", keyCopy, v15];
       goto LABEL_25;
     }
   }
@@ -575,14 +575,14 @@ LABEL_20:
 + (id)allDecodeClasses
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v4 = [a1 attributesForKey];
+  attributesForKey = [self attributesForKey];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__PLGlobalKeyValue_allDecodeClasses__block_invoke;
   v7[3] = &unk_1E7570828;
   v5 = v3;
   v8 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v7];
+  [attributesForKey enumerateKeysAndObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -596,33 +596,33 @@ void __36__PLGlobalKeyValue_allDecodeClasses__block_invoke(uint64_t a1, uint64_t
   }
 }
 
-+ (id)debugDescriptionOfValue:(id)a3 forKey:(id)a4
++ (id)debugDescriptionOfValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  valueCopy = value;
+  keyCopy = key;
+  v8 = keyCopy;
+  if (!valueCopy)
   {
     v10 = @"nil";
     goto LABEL_9;
   }
 
-  if ([v7 isEqualToString:@"LibraryCreateOptions"])
+  if ([keyCopy isEqualToString:@"LibraryCreateOptions"])
   {
-    v9 = PLDescriptionForLibraryCreateOptions([v6 integerValue]);
+    v9 = PLDescriptionForLibraryCreateOptions([valueCopy integerValue]);
   }
 
   else
   {
-    if ([a1 typeForKey:v8] == 4)
+    if ([self typeForKey:v8] == 4)
     {
-      v11 = [a1 _debugDescriptionDateFormatter];
-      v10 = [v11 stringFromDate:v6];
+      _debugDescriptionDateFormatter = [self _debugDescriptionDateFormatter];
+      v10 = [_debugDescriptionDateFormatter stringFromDate:valueCopy];
 
       goto LABEL_9;
     }
 
-    v9 = [v6 description];
+    v9 = [valueCopy description];
   }
 
   v10 = v9;
@@ -635,20 +635,20 @@ LABEL_9:
 {
   v2 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v2 setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
-  v3 = [MEMORY[0x1E695DFE8] localTimeZone];
-  [v2 setTimeZone:v3];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  [v2 setTimeZone:localTimeZone];
 
   return v2;
 }
 
-+ (signed)typeForKey:(id)a3
++ (signed)typeForKey:(id)key
 {
-  v4 = a3;
-  v5 = [a1 attributesForKey];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  attributesForKey = [self attributesForKey];
+  v6 = [attributesForKey objectForKeyedSubscript:keyCopy];
 
-  LOWORD(v4) = [v6 type];
-  return v4;
+  LOWORD(keyCopy) = [v6 type];
+  return keyCopy;
 }
 
 void __36__PLGlobalKeyValue_attributesForKey__block_invoke()

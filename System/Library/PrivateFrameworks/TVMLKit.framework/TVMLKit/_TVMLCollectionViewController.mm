@@ -1,65 +1,65 @@
 @interface _TVMLCollectionViewController
-+ (id)_shadowViewElementForCollectionElement:(id)a3;
-+ (id)footerElementFromCollectionElement:(id)a3;
-+ (id)headerElementFromCollectionElement:(id)a3;
-- (BOOL)collectionView:(id)a3 shouldHandleLongPressForItemAtIndexPath:(id)a4;
-- (CGSize)expectedCellSizeForElement:(id)a3 atIndexPath:(id)a4;
++ (id)_shadowViewElementForCollectionElement:(id)element;
++ (id)footerElementFromCollectionElement:(id)element;
++ (id)headerElementFromCollectionElement:(id)element;
+- (BOOL)collectionView:(id)view shouldHandleLongPressForItemAtIndexPath:(id)path;
+- (CGSize)expectedCellSizeForElement:(id)element atIndexPath:(id)path;
 - (TVCellMetrics)cellMetrics;
 - (_TVCollectionWrappingView)collectionWrappingView;
 - (_TVMLCollectionViewController)init;
-- (id)_closestIndexPathToIndexPath:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 indexPathForIndexTitle:(id)a4 atIndex:(int64_t)a5;
-- (id)impressionableElementsContainedInDocument:(id)a3;
-- (id)indexPathForPreferredFocusedViewInCollectionView:(id)a3;
+- (id)_closestIndexPathToIndexPath:(id)path;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view indexPathForIndexTitle:(id)title atIndex:(int64_t)index;
+- (id)impressionableElementsContainedInDocument:(id)document;
+- (id)indexPathForPreferredFocusedViewInCollectionView:(id)view;
 - (id)preferredFocusEnvironments;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
-- (void)_applicationDidBecomeActive:(id)a3;
-- (void)_applicationWillResignActive:(id)a3;
-- (void)_doUpdateViewLayoutAnimated:(BOOL)a3 relayout:(BOOL)a4;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
+- (void)_applicationDidBecomeActive:(id)active;
+- (void)_applicationWillResignActive:(id)active;
+- (void)_doUpdateViewLayoutAnimated:(BOOL)animated relayout:(BOOL)relayout;
 - (void)_recordImpressionsForVisibleView;
-- (void)_registerCellClassesInCollectionView:(id)a3;
+- (void)_registerCellClassesInCollectionView:(id)view;
 - (void)_registerPreviewInteractionController;
 - (void)_updateFooterView;
 - (void)_updateHeaderView;
 - (void)_updateImpressions;
-- (void)adjustContentOffsetToDisplayIndexPath:(id)a3;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)adjustContentOffsetToDisplayIndexPath:(id)path;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)dispatchEvent:(id)a3 forItemAtIndexPath:(id)a4 completionBlock:(id)a5;
+- (void)dispatchEvent:(id)event forItemAtIndexPath:(id)path completionBlock:(id)block;
 - (void)loadView;
-- (void)preloadCellsInRect:(CGRect)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setShowcaseConfig:(TVShowcaseConfig *)a3;
-- (void)tv_setShowcaseConfig:(TVShowcaseConfig *)a3;
+- (void)preloadCellsInRect:(CGRect)rect;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setShowcaseConfig:(TVShowcaseConfig *)config;
+- (void)tv_setShowcaseConfig:(TVShowcaseConfig *)config;
 - (void)tv_updateViewLayout;
-- (void)updateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)updateVisibleCell:(id)a3 atIndexPath:(id)a4 withElement:(id)a5;
-- (void)updateWithViewElement:(id)a3 cellMetrics:(TVCellMetrics *)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)updateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)updateVisibleCell:(id)cell atIndexPath:(id)path withElement:(id)element;
+- (void)updateWithViewElement:(id)element cellMetrics:(TVCellMetrics *)metrics;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation _TVMLCollectionViewController
 
-+ (id)headerElementFromCollectionElement:(id)a3
++ (id)headerElementFromCollectionElement:(id)element
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [a3 children];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  children = [element children];
+  v4 = [children countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -69,7 +69,7 @@
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(children);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
@@ -80,7 +80,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [children countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -95,15 +95,15 @@ LABEL_11:
   return v4;
 }
 
-+ (id)footerElementFromCollectionElement:(id)a3
++ (id)footerElementFromCollectionElement:(id)element
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [a3 children];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  children = [element children];
+  v4 = [children countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -113,7 +113,7 @@ LABEL_11:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(children);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
@@ -124,7 +124,7 @@ LABEL_11:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [children countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -156,14 +156,14 @@ LABEL_11:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(_TVMLCollectionViewController *)self collectionView];
-  [v4 setDelegate:0];
+  collectionView = [(_TVMLCollectionViewController *)self collectionView];
+  [collectionView setDelegate:0];
 
-  v5 = [(_TVMLCollectionViewController *)self collectionView];
-  [v5 setDataSource:0];
+  collectionView2 = [(_TVMLCollectionViewController *)self collectionView];
+  [collectionView2 setDataSource:0];
 
   v6.receiver = self;
   v6.super_class = _TVMLCollectionViewController;
@@ -175,15 +175,15 @@ LABEL_11:
   v14.receiver = self;
   v14.super_class = _TVMLCollectionViewController;
   [(_TVMLCollectionViewController *)&v14 viewDidLoad];
-  v3 = [(_TVMLCollectionViewController *)self collectionWrappingView];
+  collectionWrappingView = [(_TVMLCollectionViewController *)self collectionWrappingView];
   [(_TVMLCollectionViewController *)self showcaseConfig];
-  [v3 setShowcaseConfig:v13];
+  [collectionWrappingView setShowcaseConfig:v13];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel__applicationDidBecomeActive_ name:*MEMORY[0x277D76648] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__applicationDidBecomeActive_ name:*MEMORY[0x277D76648] object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel__applicationWillResignActive_ name:*MEMORY[0x277D76768] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__applicationWillResignActive_ name:*MEMORY[0x277D76768] object:0];
 
   if ([(_TVMLCollectionViewController *)self contentFlowsVertically])
   {
@@ -196,14 +196,14 @@ LABEL_11:
   }
 
   v7 = [_TVNeedsMoreContentEvaluator alloc];
-  v8 = [(_TVMLCollectionViewController *)self collectionView];
-  v9 = [(_TVNeedsMoreContentEvaluator *)v7 initWithScrollView:v8 axis:v6];
+  collectionView = [(_TVMLCollectionViewController *)self collectionView];
+  v9 = [(_TVNeedsMoreContentEvaluator *)v7 initWithScrollView:collectionView axis:v6];
   needsMoreContentEvaluator = self->_needsMoreContentEvaluator;
   self->_needsMoreContentEvaluator = v9;
 
   v11 = self->_needsMoreContentEvaluator;
-  v12 = [(_TVMLCollectionViewController *)self collectionElement];
-  [(_TVNeedsMoreContentEvaluator *)v11 setViewElement:v12];
+  collectionElement = [(_TVMLCollectionViewController *)self collectionElement];
+  [(_TVNeedsMoreContentEvaluator *)v11 setViewElement:collectionElement];
 }
 
 - (void)viewDidLayoutSubviews
@@ -214,8 +214,8 @@ LABEL_11:
   if (self->_didUpdateFocus)
   {
     self->_didUpdateFocus = 0;
-    v3 = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
-    [(_TVMLCollectionViewController *)self adjustContentOffsetToDisplayIndexPath:v3];
+    lastFocusedIndexPath = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
+    [(_TVMLCollectionViewController *)self adjustContentOffsetToDisplayIndexPath:lastFocusedIndexPath];
   }
 
   [(_TVMLCollectionViewController *)self setLastFocusedIndexPath:0];
@@ -231,24 +231,24 @@ LABEL_11:
   objc_destroyWeak(&location);
 }
 
-- (void)updateWithViewElement:(id)a3 cellMetrics:(TVCellMetrics *)a4
+- (void)updateWithViewElement:(id)element cellMetrics:(TVCellMetrics *)metrics
 {
   v215 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  elementCopy = element;
   v132 = self->_shadowViewElement;
-  v138 = self;
-  v135 = v7;
-  obj = [objc_opt_class() _shadowViewElementForCollectionElement:v7];
-  objc_storeStrong(&self->_collectionElement, a3);
-  v8 = [(IKCollectionElement *)self->_collectionElement attributes];
-  v9 = [v8 objectForKey:@"remembersFocus"];
+  selfCopy = self;
+  v135 = elementCopy;
+  obj = [objc_opt_class() _shadowViewElementForCollectionElement:elementCopy];
+  objc_storeStrong(&self->_collectionElement, element);
+  attributes = [(IKCollectionElement *)self->_collectionElement attributes];
+  v9 = [attributes objectForKey:@"remembersFocus"];
 
   if (v9)
   {
-    v10 = [(_TVMLCollectionViewController *)self collectionView];
-    v11 = [(IKCollectionElement *)self->_collectionElement attributes];
-    v12 = [v11 objectForKey:@"remembersFocus"];
-    [v10 setRemembersLastFocusedIndexPath:{objc_msgSend(v12, "BOOLValue")}];
+    collectionView = [(_TVMLCollectionViewController *)self collectionView];
+    attributes2 = [(IKCollectionElement *)self->_collectionElement attributes];
+    v12 = [attributes2 objectForKey:@"remembersFocus"];
+    [collectionView setRemembersLastFocusedIndexPath:{objc_msgSend(v12, "BOOLValue")}];
   }
 
   previewInteractionController = self->_previewInteractionController;
@@ -257,22 +257,22 @@ LABEL_11:
     [(TVPreviewInteractionController *)previewInteractionController updatePresentingElement:self->_collectionElement];
   }
 
-  v14 = [v135 appDocument];
-  [v14 impressionThreshold];
+  appDocument = [v135 appDocument];
+  [appDocument impressionThreshold];
   self->_impressionThreshold = v15;
 
-  self->_cellMetrics.cellSize = a4->cellSize;
-  v16 = *&a4->cellInset.bottom;
-  v18 = *&a4->cellPadding.top;
-  v17 = *&a4->cellPadding.bottom;
-  *&self->_cellMetrics.cellInset.top = *&a4->cellInset.top;
+  self->_cellMetrics.cellSize = metrics->cellSize;
+  v16 = *&metrics->cellInset.bottom;
+  v18 = *&metrics->cellPadding.top;
+  v17 = *&metrics->cellPadding.bottom;
+  *&self->_cellMetrics.cellInset.top = *&metrics->cellInset.top;
   *&self->_cellMetrics.cellInset.bottom = v16;
   *&self->_cellMetrics.cellPadding.top = v18;
   *&self->_cellMetrics.cellPadding.bottom = v17;
-  v19 = *&a4->cellMargin.bottom;
-  v21 = *&a4->cellInsetAlt.top;
-  v20 = *&a4->cellInsetAlt.bottom;
-  *&self->_cellMetrics.cellMargin.top = *&a4->cellMargin.top;
+  v19 = *&metrics->cellMargin.bottom;
+  v21 = *&metrics->cellInsetAlt.top;
+  v20 = *&metrics->cellInsetAlt.bottom;
+  *&self->_cellMetrics.cellMargin.top = *&metrics->cellMargin.top;
   *&self->_cellMetrics.cellMargin.bottom = v19;
   *&self->_cellMetrics.cellInsetAlt.top = v21;
   *&self->_cellMetrics.cellInsetAlt.bottom = v20;
@@ -282,18 +282,18 @@ LABEL_11:
   v207 = __Block_byref_object_copy__6;
   v208 = __Block_byref_object_dispose__6;
   v209 = 0;
-  v22 = [v135 sections];
+  sections = [v135 sections];
   v203[0] = MEMORY[0x277D85DD0];
   v203[1] = 3221225472;
   v203[2] = __67___TVMLCollectionViewController_updateWithViewElement_cellMetrics___block_invoke;
   v203[3] = &unk_279D708A8;
   v203[4] = &v204;
-  [v22 enumerateObjectsUsingBlock:v203];
+  [sections enumerateObjectsUsingBlock:v203];
 
   if (!v205[5])
   {
-    v23 = [v135 attributes];
-    v24 = [v23 objectForKey:@"firstItem"];
+    attributes3 = [v135 attributes];
+    v24 = [attributes3 objectForKey:@"firstItem"];
 
     v25 = [TVMLUtilities indexPathForFirstItemAttributeValue:v24];
     v26 = v205[5];
@@ -308,15 +308,15 @@ LABEL_11:
   footerElement = self->_footerElement;
   self->_footerElement = v29;
 
-  v31 = [MEMORY[0x277CBEB38] dictionary];
-  v32 = [v135 sections];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  sections2 = [v135 sections];
   v201[0] = MEMORY[0x277D85DD0];
   v201[1] = 3221225472;
   v201[2] = __67___TVMLCollectionViewController_updateWithViewElement_cellMetrics___block_invoke_2;
   v201[3] = &unk_279D70920;
-  v133 = v31;
+  v133 = dictionary;
   v202 = v133;
-  [v32 enumerateObjectsUsingBlock:v201];
+  [sections2 enumerateObjectsUsingBlock:v201];
 
   v33 = [v133 count];
   if (v33)
@@ -334,34 +334,34 @@ LABEL_11:
   {
   }
 
-  v35 = [(_TVMLCollectionViewController *)self indexPathsByIndexTitle];
-  v36 = [v35 allKeys];
+  indexPathsByIndexTitle = [(_TVMLCollectionViewController *)self indexPathsByIndexTitle];
+  allKeys = [indexPathsByIndexTitle allKeys];
   v200[0] = MEMORY[0x277D85DD0];
   v200[1] = 3221225472;
   v200[2] = __67___TVMLCollectionViewController_updateWithViewElement_cellMetrics___block_invoke_4;
   v200[3] = &unk_279D70948;
   v200[4] = self;
-  v37 = [v36 sortedArrayUsingComparator:v200];
+  v37 = [allKeys sortedArrayUsingComparator:v200];
   [(_TVMLCollectionViewController *)self setSortedIndexTitles:v37];
 
   if (![(_TVMLCollectionViewController *)self isViewLoaded])
   {
     objc_storeStrong(&self->_shadowViewElement, obj);
-    v53 = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
-    self->_didUpdateFocus = [v53 isEqual:v205[5]] ^ 1;
+    lastFocusedIndexPath = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
+    self->_didUpdateFocus = [lastFocusedIndexPath isEqual:v205[5]] ^ 1;
 
     [(_TVMLCollectionViewController *)self setLastFocusedIndexPath:v205[5]];
     goto LABEL_110;
   }
 
   self->_isPreparingCollectionUpdates = 1;
-  v38 = [(_TVMLCollectionViewController *)self collectionView];
-  [(_TVMLCollectionViewController *)self _registerCellClassesInCollectionView:v38];
+  collectionView2 = [(_TVMLCollectionViewController *)self collectionView];
+  [(_TVMLCollectionViewController *)self _registerCellClassesInCollectionView:collectionView2];
 
-  v39 = [(_TVMLCollectionViewController *)self collectionWrappingView];
-  v40 = [v39 collectionView];
+  collectionWrappingView = [(_TVMLCollectionViewController *)self collectionWrappingView];
+  collectionView3 = [collectionWrappingView collectionView];
 
-  [v40 setSemanticContentAttribute:{objc_msgSend(v135, "tv_semanticContentAttribute")}];
+  [collectionView3 setSemanticContentAttribute:{objc_msgSend(v135, "tv_semanticContentAttribute")}];
   v196 = 0;
   v197 = &v196;
   v198 = 0x2020000000;
@@ -376,106 +376,106 @@ LABEL_11:
   v189 = __Block_byref_object_copy__26;
   v190 = __Block_byref_object_dispose__27;
   v191 = 0;
-  v136 = [MEMORY[0x277CBEB18] array];
-  v137 = [MEMORY[0x277CBEB18] array];
-  v41 = [(_TVShadowViewElement *)v132 elementID];
-  v42 = [obj elementID];
-  if ([v41 isEqual:v42])
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  elementID = [(_TVShadowViewElement *)v132 elementID];
+  elementID2 = [obj elementID];
+  if ([elementID isEqual:elementID2])
   {
-    v43 = [(_TVMLCollectionViewController *)self view];
-    v44 = [v43 window];
-    v45 = v44 == 0;
+    view = [(_TVMLCollectionViewController *)self view];
+    window = [view window];
+    v45 = window == 0;
 
     if (!v45)
     {
-      v129 = [(_TVShadowViewElement *)v132 children];
-      v46 = [obj children];
-      v47 = [MEMORY[0x277CCAB58] indexSet];
-      v48 = [MEMORY[0x277CCAB58] indexSetWithIndexesInRange:{0, objc_msgSend(v46, "count")}];
-      v49 = [MEMORY[0x277CBEB38] dictionary];
-      v50 = [MEMORY[0x277CBEB38] dictionary];
+      children = [(_TVShadowViewElement *)v132 children];
+      children2 = [obj children];
+      indexSet = [MEMORY[0x277CCAB58] indexSet];
+      v48 = [MEMORY[0x277CCAB58] indexSetWithIndexesInRange:{0, objc_msgSend(children2, "count")}];
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary3 = [MEMORY[0x277CBEB38] dictionary];
       v180[0] = MEMORY[0x277D85DD0];
       v180[1] = 3221225472;
       v180[2] = __67___TVMLCollectionViewController_updateWithViewElement_cellMetrics___block_invoke_30;
       v180[3] = &unk_279D70970;
-      v125 = v46;
+      v125 = children2;
       v181 = v125;
-      v51 = v47;
+      v51 = indexSet;
       v182 = v51;
       v127 = v48;
       v183 = v127;
-      v52 = v50;
+      v52 = dictionary3;
       v184 = v52;
-      v128 = v49;
+      v128 = dictionary2;
       v185 = v128;
-      [v129 enumerateObjectsUsingBlock:v180];
-      v130 = [(_TVMLCollectionViewController *)v138 lastFocusedIndexPath];
+      [children enumerateObjectsUsingBlock:v180];
+      lastFocusedIndexPath2 = [(_TVMLCollectionViewController *)selfCopy lastFocusedIndexPath];
       if (v205[5])
       {
-        if (([v130 isEqual:v125] & 1) == 0)
+        if (([lastFocusedIndexPath2 isEqual:v125] & 1) == 0)
         {
-          v138->_didUpdateFocus = 1;
-          [(_TVMLCollectionViewController *)v138 setLastFocusedIndexPath:v205[5]];
+          selfCopy->_didUpdateFocus = 1;
+          [(_TVMLCollectionViewController *)selfCopy setLastFocusedIndexPath:v205[5]];
         }
       }
 
-      else if (v130)
+      else if (lastFocusedIndexPath2)
       {
-        v54 = [v130 section];
-        if ([v51 containsIndex:v54])
+        section = [lastFocusedIndexPath2 section];
+        if ([v51 containsIndex:section])
         {
-          v54 = 0x7FFFFFFFFFFFFFFFLL;
+          section = 0x7FFFFFFFFFFFFFFFLL;
         }
 
         else
         {
-          v55 = [MEMORY[0x277CCABB0] numberWithInteger:v54];
+          v55 = [MEMORY[0x277CCABB0] numberWithInteger:section];
           v56 = [v128 objectForKeyedSubscript:v55];
           if (v56)
           {
-            v57 = [MEMORY[0x277CCABB0] numberWithInteger:v54];
+            v57 = [MEMORY[0x277CCABB0] numberWithInteger:section];
             v58 = [v128 objectForKeyedSubscript:v57];
-            v54 = [v58 integerValue];
+            section = [v58 integerValue];
           }
         }
 
-        v59 = [v130 item];
-        if (v54 == 0x7FFFFFFFFFFFFFFFLL)
+        item = [lastFocusedIndexPath2 item];
+        if (section == 0x7FFFFFFFFFFFFFFFLL)
         {
           goto LABEL_31;
         }
 
-        v60 = v59;
-        v61 = [v125 objectAtIndex:v54];
-        v62 = [v61 elementID];
-        v63 = [v62 viewElement];
+        v60 = item;
+        v61 = [v125 objectAtIndex:section];
+        elementID3 = [v61 elementID];
+        viewElement = [elementID3 viewElement];
 
-        v64 = [v63 itemsChangeSet];
-        v65 = v64;
-        if (v64)
+        itemsChangeSet = [viewElement itemsChangeSet];
+        v65 = itemsChangeSet;
+        if (itemsChangeSet)
         {
-          v60 = [v64 newIndexForOldIndex:v60];
+          v60 = [itemsChangeSet newIndexForOldIndex:v60];
         }
 
         if (v60 == 0x7FFFFFFFFFFFFFFFLL)
         {
 LABEL_31:
-          v66 = [(_TVMLCollectionViewController *)v138 _closestIndexPathToIndexPath:v130];
-          [(_TVMLCollectionViewController *)v138 setLastFocusedIndexPath:v66];
+          v66 = [(_TVMLCollectionViewController *)selfCopy _closestIndexPathToIndexPath:lastFocusedIndexPath2];
+          [(_TVMLCollectionViewController *)selfCopy setLastFocusedIndexPath:v66];
         }
 
         else
         {
-          v66 = [MEMORY[0x277CCAA70] indexPathForItem:v60 inSection:v54];
-          [(_TVMLCollectionViewController *)v138 setLastFocusedIndexPath:v66];
+          v66 = [MEMORY[0x277CCAA70] indexPathForItem:v60 inSection:section];
+          [(_TVMLCollectionViewController *)selfCopy setLastFocusedIndexPath:v66];
         }
 
-        v67 = [(_TVMLCollectionViewController *)v138 lastFocusedIndexPath];
-        v68 = [v130 isEqual:v67];
+        lastFocusedIndexPath3 = [(_TVMLCollectionViewController *)selfCopy lastFocusedIndexPath];
+        v68 = [lastFocusedIndexPath2 isEqual:lastFocusedIndexPath3];
 
         if ((v68 & 1) == 0)
         {
-          v138->_didUpdateFocus = 1;
+          selfCopy->_didUpdateFocus = 1;
         }
       }
 
@@ -483,8 +483,8 @@ LABEL_31:
       v179 = 0u;
       v176 = 0u;
       v177 = 0u;
-      v69 = [v40 indexPathsForVisibleItems];
-      v70 = [v69 countByEnumeratingWithState:&v176 objects:v214 count:16];
+      indexPathsForVisibleItems = [collectionView3 indexPathsForVisibleItems];
+      v70 = [indexPathsForVisibleItems countByEnumeratingWithState:&v176 objects:v214 count:16];
       if (v70)
       {
         v71 = *v177;
@@ -494,17 +494,17 @@ LABEL_31:
           {
             if (*v177 != v71)
             {
-              objc_enumerationMutation(v69);
+              objc_enumerationMutation(indexPathsForVisibleItems);
             }
 
             v73 = *(*(&v176 + 1) + 8 * i);
             if ([v51 containsIndex:{objc_msgSend(v73, "section")}])
             {
-              [v136 addObject:v73];
+              [array addObject:v73];
             }
           }
 
-          v70 = [v69 countByEnumeratingWithState:&v176 objects:v214 count:16];
+          v70 = [indexPathsForVisibleItems countByEnumeratingWithState:&v176 objects:v214 count:16];
         }
 
         while (v70);
@@ -515,16 +515,16 @@ LABEL_31:
       v166[1] = 3221225472;
       v166[2] = __67___TVMLCollectionViewController_updateWithViewElement_cellMetrics___block_invoke_2_33;
       v166[3] = &unk_279D709C0;
-      v75 = v129;
+      v75 = children;
       v167 = v75;
       v76 = v126;
       v168 = v76;
-      v169 = v136;
-      v170 = v138;
-      v77 = v40;
+      v169 = array;
+      v170 = selfCopy;
+      v77 = collectionView3;
       v171 = v77;
       v174 = &v192;
-      v172 = v137;
+      v172 = array2;
       v175 = &v196;
       v78 = v74;
       v173 = v78;
@@ -559,7 +559,7 @@ LABEL_51:
   v159[1] = 3221225472;
   v159[2] = __67___TVMLCollectionViewController_updateWithViewElement_cellMetrics___block_invoke_9;
   v159[3] = &unk_279D70A80;
-  v159[4] = v138;
+  v159[4] = selfCopy;
   v159[5] = &v192;
   v131 = MEMORY[0x26D6AFBB0](v159);
   if (v197[3])
@@ -568,8 +568,8 @@ LABEL_51:
     v146 = 0u;
     v143 = 0u;
     v144 = 0u;
-    v81 = [v40 visibleCells];
-    v82 = [v81 countByEnumeratingWithState:&v143 objects:v211 count:16];
+    visibleCells = [collectionView3 visibleCells];
+    v82 = [visibleCells countByEnumeratingWithState:&v143 objects:v211 count:16];
     if (v82)
     {
       v83 = *v144;
@@ -579,41 +579,41 @@ LABEL_51:
         {
           if (*v144 != v83)
           {
-            objc_enumerationMutation(v81);
+            objc_enumerationMutation(visibleCells);
           }
 
           [*(*(&v143 + 1) + 8 * j) tv_setBelongsToOldIndexPath:1];
         }
 
-        v82 = [v81 countByEnumeratingWithState:&v143 objects:v211 count:16];
+        v82 = [visibleCells countByEnumeratingWithState:&v143 objects:v211 count:16];
       }
 
       while (v82);
     }
 
-    v85 = [(_TVMLCollectionViewController *)v138 lastFocusedIndexPath];
-    v86 = v85;
+    lastFocusedIndexPath4 = [(_TVMLCollectionViewController *)selfCopy lastFocusedIndexPath];
+    preparedCells = lastFocusedIndexPath4;
     if (v205[5])
     {
-      [(_TVMLCollectionViewController *)v138 setLastFocusedIndexPath:?];
+      [(_TVMLCollectionViewController *)selfCopy setLastFocusedIndexPath:?];
     }
 
-    else if (v85)
+    else if (lastFocusedIndexPath4)
     {
-      v111 = [(_TVMLCollectionViewController *)v138 _closestIndexPathToIndexPath:v85];
-      [(_TVMLCollectionViewController *)v138 setLastFocusedIndexPath:v111];
+      v111 = [(_TVMLCollectionViewController *)selfCopy _closestIndexPathToIndexPath:lastFocusedIndexPath4];
+      [(_TVMLCollectionViewController *)selfCopy setLastFocusedIndexPath:v111];
     }
 
-    v112 = [(_TVMLCollectionViewController *)v138 lastFocusedIndexPath];
-    v113 = [v86 isEqual:v112];
+    lastFocusedIndexPath5 = [(_TVMLCollectionViewController *)selfCopy lastFocusedIndexPath];
+    v113 = [preparedCells isEqual:lastFocusedIndexPath5];
 
     if ((v113 & 1) == 0)
     {
-      v138->_didUpdateFocus = 1;
+      selfCopy->_didUpdateFocus = 1;
     }
 
     v131[2]();
-    [v40 reloadData];
+    [collectionView3 reloadData];
   }
 
   else
@@ -622,7 +622,7 @@ LABEL_51:
     v158 = 0u;
     v155 = 0u;
     v156 = 0u;
-    v87 = v136;
+    v87 = array;
     v88 = [v87 countByEnumeratingWithState:&v155 objects:v213 count:16];
     if (v88)
     {
@@ -636,7 +636,7 @@ LABEL_51:
             objc_enumerationMutation(v87);
           }
 
-          v91 = [v40 cellForItemAtIndexPath:*(*(&v155 + 1) + 8 * k)];
+          v91 = [collectionView3 cellForItemAtIndexPath:*(*(&v155 + 1) + 8 * k)];
           [v91 tv_setBelongsToOldIndexPath:1];
         }
 
@@ -652,7 +652,7 @@ LABEL_51:
       v151[1] = 3221225472;
       v151[2] = __67___TVMLCollectionViewController_updateWithViewElement_cellMetrics___block_invoke_10;
       v151[3] = &unk_279D70AD0;
-      v152 = v40;
+      v152 = collectionView3;
       v153 = v131;
       v154 = &v186;
       v92 = MEMORY[0x26D6AFBB0](v151);
@@ -676,8 +676,8 @@ LABEL_51:
     v150 = 0u;
     v147 = 0u;
     v148 = 0u;
-    v86 = [v40 preparedCells];
-    v93 = [v86 countByEnumeratingWithState:&v147 objects:v212 count:16];
+    preparedCells = [collectionView3 preparedCells];
+    v93 = [preparedCells countByEnumeratingWithState:&v147 objects:v212 count:16];
     if (v93)
     {
       v94 = *v148;
@@ -689,11 +689,11 @@ LABEL_51:
         {
           if (*v148 != v94)
           {
-            objc_enumerationMutation(v86);
+            objc_enumerationMutation(preparedCells);
           }
 
           v98 = *(*(&v147 + 1) + 8 * m);
-          v99 = [v40 indexPathForCell:v98];
+          v99 = [collectionView3 indexPathForCell:v98];
           if (v99 || (objc_opt_respondsToSelector() & 1) == 0)
           {
             v100 = v99;
@@ -706,38 +706,38 @@ LABEL_51:
 
           v101 = v100;
 
-          if (v101 && [v137 containsObject:v101])
+          if (v101 && [array2 containsObject:v101])
           {
-            v102 = [(IKCollectionElement *)v138->_collectionElement sections];
-            v103 = [v102 objectAtIndexedSubscript:{objc_msgSend(v101, "section")}];
+            sections3 = [(IKCollectionElement *)selfCopy->_collectionElement sections];
+            v103 = [sections3 objectAtIndexedSubscript:{objc_msgSend(v101, "section")}];
 
             v104 = [v103 elementForItemAtIndex:{objc_msgSend(v101, "item")}];
             [v98 center];
             v106 = v105;
             v108 = v107;
-            [(_TVMLCollectionViewController *)v138 expectedCellSizeForElement:v104 atIndexPath:v101];
+            [(_TVMLCollectionViewController *)selfCopy expectedCellSizeForElement:v104 atIndexPath:v101];
             [v98 setBounds:{v95, v96, v109, v110}];
             [v98 setCenter:{v106, v108}];
-            [(_TVMLCollectionViewController *)v138 updateVisibleCell:v98 atIndexPath:v101 withElement:v104];
+            [(_TVMLCollectionViewController *)selfCopy updateVisibleCell:v98 atIndexPath:v101 withElement:v104];
           }
         }
 
-        v93 = [v86 countByEnumeratingWithState:&v147 objects:v212 count:16];
+        v93 = [preparedCells countByEnumeratingWithState:&v147 objects:v212 count:16];
       }
 
       while (v93);
     }
   }
 
-  objc_storeStrong(&v138->_shadowViewElement, obj);
-  [(_TVMLCollectionViewController *)v138 didUpdateCollectionViewByNeedingReload:*(v197 + 24) focusUpdate:v138->_didUpdateFocus];
-  [(_TVNeedsMoreContentEvaluator *)v138->_needsMoreContentEvaluator setViewElement:v135];
+  objc_storeStrong(&selfCopy->_shadowViewElement, obj);
+  [(_TVMLCollectionViewController *)selfCopy didUpdateCollectionViewByNeedingReload:*(v197 + 24) focusUpdate:selfCopy->_didUpdateFocus];
+  [(_TVNeedsMoreContentEvaluator *)selfCopy->_needsMoreContentEvaluator setViewElement:v135];
   v141 = 0u;
   v142 = 0u;
   v139 = 0u;
   v140 = 0u;
-  v114 = [v135 sections];
-  v115 = [v114 countByEnumeratingWithState:&v139 objects:v210 count:16];
+  sections4 = [v135 sections];
+  v115 = [sections4 countByEnumeratingWithState:&v139 objects:v210 count:16];
   if (v115)
   {
     v116 = *v140;
@@ -747,37 +747,37 @@ LABEL_51:
       {
         if (*v140 != v116)
         {
-          objc_enumerationMutation(v114);
+          objc_enumerationMutation(sections4);
         }
 
         v118 = *(*(&v139 + 1) + 8 * n);
-        v119 = [v118 itemsChangeSet];
+        itemsChangeSet2 = [v118 itemsChangeSet];
         if ([v118 updateType] == 4)
         {
           goto LABEL_108;
         }
 
-        v120 = [v119 addedIndexes];
-        if ([v120 count])
+        addedIndexes = [itemsChangeSet2 addedIndexes];
+        if ([addedIndexes count])
         {
           goto LABEL_107;
         }
 
-        v121 = [v119 removedIndexes];
-        if ([v121 count])
+        removedIndexes = [itemsChangeSet2 removedIndexes];
+        if ([removedIndexes count])
         {
 
 LABEL_107:
 LABEL_108:
 
-          [(_TVNeedsMoreContentEvaluator *)v138->_needsMoreContentEvaluator reset];
-          v114 = [(_TVMLCollectionViewController *)v138 view];
-          [v114 setNeedsLayout];
+          [(_TVNeedsMoreContentEvaluator *)selfCopy->_needsMoreContentEvaluator reset];
+          sections4 = [(_TVMLCollectionViewController *)selfCopy view];
+          [sections4 setNeedsLayout];
           goto LABEL_109;
         }
 
-        v122 = [v119 movedIndexesByNewIndex];
-        v123 = [v122 count] == 0;
+        movedIndexesByNewIndex = [itemsChangeSet2 movedIndexesByNewIndex];
+        v123 = [movedIndexesByNewIndex count] == 0;
 
         if (!v123)
         {
@@ -785,7 +785,7 @@ LABEL_108:
         }
       }
 
-      v115 = [v114 countByEnumeratingWithState:&v139 objects:v210 count:16];
+      v115 = [sections4 countByEnumeratingWithState:&v139 objects:v210 count:16];
       if (v115)
       {
         continue;
@@ -802,11 +802,11 @@ LABEL_109:
   _Block_object_dispose(&v196, 8);
 
 LABEL_110:
-  if (v138->_didUpdateFocus && [(_TVMLCollectionViewController *)v138 isViewLoaded])
+  if (selfCopy->_didUpdateFocus && [(_TVMLCollectionViewController *)selfCopy isViewLoaded])
   {
-    [(_TVMLCollectionViewController *)v138 setNeedsFocusUpdate];
-    v124 = [(_TVMLCollectionViewController *)v138 view];
-    [v124 setNeedsLayout];
+    [(_TVMLCollectionViewController *)selfCopy setNeedsFocusUpdate];
+    view2 = [(_TVMLCollectionViewController *)selfCopy view];
+    [view2 setNeedsLayout];
   }
 
   _Block_object_dispose(&v204, 8);
@@ -816,47 +816,47 @@ LABEL_110:
 {
   if ([(_TVMLCollectionViewController *)self isViewLoaded])
   {
-    v3 = [(_TVMLCollectionViewController *)self view];
+    view = [(_TVMLCollectionViewController *)self view];
   }
 
   else
   {
-    v3 = 0;
+    view = 0;
   }
 
-  return v3;
+  return view;
 }
 
-- (void)tv_setShowcaseConfig:(TVShowcaseConfig *)a3
+- (void)tv_setShowcaseConfig:(TVShowcaseConfig *)config
 {
-  v6 = *a3;
+  v6 = *config;
   [(_TVMLCollectionViewController *)self setShowcaseConfig:&v6];
-  v5 = [(_TVMLCollectionViewController *)self collectionWrappingView];
-  v6 = *a3;
-  [v5 setShowcaseConfig:&v6];
+  collectionWrappingView = [(_TVMLCollectionViewController *)self collectionWrappingView];
+  v6 = *config;
+  [collectionWrappingView setShowcaseConfig:&v6];
 }
 
-- (CGSize)expectedCellSizeForElement:(id)a3 atIndexPath:(id)a4
+- (CGSize)expectedCellSizeForElement:(id)element atIndexPath:(id)path
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  pathCopy = path;
   [(_TVMLCollectionViewController *)self cellMetrics];
   v9 = v34;
   v8 = v35;
   if (v34 == 0.0)
   {
-    v10 = [v6 style];
-    [v10 tv_width];
+    style = [elementCopy style];
+    [style tv_width];
     v9 = v11;
 
-    v12 = [v6 style];
-    [v12 tv_height];
+    style2 = [elementCopy style];
+    [style2 tv_height];
     v14 = v13;
 
     if (v14 <= 0.0 || v9 <= 0.0)
     {
-      v15 = [v6 objectForKeyedSubscript:@"TVFactoryKeyCellMetrics"];
+      v15 = [elementCopy objectForKeyedSubscript:@"TVFactoryKeyCellMetrics"];
       v16 = v15;
       if (v15)
       {
@@ -892,17 +892,17 @@ LABEL_110:
     if (os_log_type_enabled(TVMLKitLogObject, OS_LOG_TYPE_ERROR))
     {
       v21 = v18;
-      v22 = [v7 section];
-      v23 = [v7 item];
+      section = [pathCopy section];
+      item = [pathCopy item];
       v24 = [v17 debugDescription];
       *buf = 134219010;
       v37 = v9;
       v38 = 2048;
       v39 = v8;
       v40 = 2048;
-      v41 = v22;
+      v41 = section;
       v42 = 2048;
-      v43 = v23;
+      v43 = item;
       v44 = 2112;
       v45 = v24;
       _os_log_error_impl(&dword_26CD9A000, v21, OS_LOG_TYPE_ERROR, "CollectionLayout: invalid cell size: {%lf, %lf} for [%ld, %ld] in: %@", buf, 0x34u);
@@ -916,90 +916,90 @@ LABEL_110:
   return result;
 }
 
-- (void)updateVisibleCell:(id)a3 atIndexPath:(id)a4 withElement:(id)a5
+- (void)updateVisibleCell:(id)cell atIndexPath:(id)path withElement:(id)element
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (v7)
+  cellCopy = cell;
+  elementCopy = element;
+  v9 = elementCopy;
+  if (cellCopy)
   {
     v10 = MEMORY[0x277CCAE60];
-    v11 = [v8 style];
-    [v11 tv_focusMargin];
+    style = [elementCopy style];
+    [style tv_focusMargin];
     v12 = [v10 valueWithUIEdgeInsets:?];
-    [v7 setValue:v12 forTVViewStyle:@"tv-focus-margin"];
+    [cellCopy setValue:v12 forTVViewStyle:@"tv-focus-margin"];
 
     v13 = MEMORY[0x277CCAE60];
     [(_TVMLCollectionViewController *)self cellMetrics];
     v14 = [v13 valueWithUIEdgeInsets:{v20, v21, v22, v23}];
-    [v7 setValue:v14 forTVViewStyle:@"padding"];
+    [cellCopy setValue:v14 forTVViewStyle:@"padding"];
 
     v15 = MEMORY[0x277CCABB0];
-    v16 = [(IKCollectionElement *)self->_collectionElement style];
-    v17 = [v15 numberWithInteger:{objc_msgSend(v16, "tv_contentAlignment")}];
-    [v7 setValue:v17 forTVViewStyle:@"tv-content-align"];
+    style2 = [(IKCollectionElement *)self->_collectionElement style];
+    v17 = [v15 numberWithInteger:{objc_msgSend(style2, "tv_contentAlignment")}];
+    [cellCopy setValue:v17 forTVViewStyle:@"tv-content-align"];
 
     v18 = +[TVInterfaceFactory sharedInterfaceFactory];
-    v19 = [v18 _viewFromElement:v9 existingView:v7];
+    v19 = [v18 _viewFromElement:v9 existingView:cellCopy];
   }
 }
 
-- (void)updateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)updateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v10 = a3;
-  v5 = [(_TVMLCollectionViewController *)self view];
-  v6 = [v5 window];
-  if (v6)
+  contextCopy = context;
+  view = [(_TVMLCollectionViewController *)self view];
+  window = [view window];
+  if (window)
   {
-    v7 = v6;
-    v8 = [v10 nextFocusedIndexPath];
+    v7 = window;
+    nextFocusedIndexPath = [contextCopy nextFocusedIndexPath];
 
-    if (!v8)
+    if (!nextFocusedIndexPath)
     {
       goto LABEL_5;
     }
 
-    v9 = [v10 nextFocusedIndexPath];
-    [(_TVMLCollectionViewController *)self setLastFocusedIndexPath:v9];
+    nextFocusedIndexPath2 = [contextCopy nextFocusedIndexPath];
+    [(_TVMLCollectionViewController *)self setLastFocusedIndexPath:nextFocusedIndexPath2];
 
-    v5 = [v10 nextFocusedIndexPath];
-    [(_TVMLCollectionViewController *)self dispatchEvent:@"highlight" forItemAtIndexPath:v5 completionBlock:0];
+    view = [contextCopy nextFocusedIndexPath];
+    [(_TVMLCollectionViewController *)self dispatchEvent:@"highlight" forItemAtIndexPath:view completionBlock:0];
   }
 
 LABEL_5:
 }
 
-- (void)dispatchEvent:(id)a3 forItemAtIndexPath:(id)a4 completionBlock:(id)a5
+- (void)dispatchEvent:(id)event forItemAtIndexPath:(id)path completionBlock:(id)block
 {
-  v16 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [(_TVMLCollectionViewController *)self collectionElement];
-  v11 = [v10 sections];
-  v12 = [v11 objectAtIndex:{objc_msgSend(v9, "section")}];
+  eventCopy = event;
+  blockCopy = block;
+  pathCopy = path;
+  collectionElement = [(_TVMLCollectionViewController *)self collectionElement];
+  sections = [collectionElement sections];
+  v12 = [sections objectAtIndex:{objc_msgSend(pathCopy, "section")}];
 
-  v13 = [v12 elementForItemAtIndex:{objc_msgSend(v9, "row")}];
-  v14 = [(_TVMLCollectionViewController *)self collectionView];
-  v15 = [v14 cellForItemAtIndexPath:v9];
+  v13 = [v12 elementForItemAtIndex:{objc_msgSend(pathCopy, "row")}];
+  collectionView = [(_TVMLCollectionViewController *)self collectionView];
+  v15 = [collectionView cellForItemAtIndexPath:pathCopy];
 
   if (([v13 isDisabled] & 1) == 0)
   {
-    [v13 tv_dispatchEvent:v16 canBubble:1 isCancelable:1 extraInfo:0 targetResponder:v15 completionBlock:v8];
+    [v13 tv_dispatchEvent:eventCopy canBubble:1 isCancelable:1 extraInfo:0 targetResponder:v15 completionBlock:blockCopy];
   }
 }
 
 - (void)loadView
 {
   v3 = [_TVCollectionWrappingView alloc];
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v13 = [(_TVCollectionWrappingView *)v3 initWithFrame:?];
 
   [(_TVCollectionWrappingView *)v13 setAutoresizingMask:18];
-  v5 = [(IKCollectionElement *)self->_collectionElement style];
-  v6 = [v5 tv_backgroundColor];
+  style = [(IKCollectionElement *)self->_collectionElement style];
+  tv_backgroundColor = [style tv_backgroundColor];
 
-  [(_TVCollectionWrappingView *)v13 setIkBackgroundColor:v6];
+  [(_TVCollectionWrappingView *)v13 setIkBackgroundColor:tv_backgroundColor];
   [(_TVMLCollectionViewController *)self setView:v13];
   [(_TVCollectionWrappingView *)v13 bounds];
   v7 = [(_TVMLCollectionViewController *)self makeCollectionViewWithFrame:?];
@@ -1011,13 +1011,13 @@ LABEL_5:
   [v7 setDelegate:self];
   [v7 setDataSource:self];
   [v7 _setContentInsetAdjustmentBehavior:2];
-  v8 = [(IKCollectionElement *)self->_collectionElement attributes];
-  v9 = [v8 objectForKey:@"remembersFocus"];
+  attributes = [(IKCollectionElement *)self->_collectionElement attributes];
+  v9 = [attributes objectForKey:@"remembersFocus"];
 
   if (v9)
   {
-    v10 = [(IKCollectionElement *)self->_collectionElement attributes];
-    v11 = [v10 objectForKey:@"remembersFocus"];
+    attributes2 = [(IKCollectionElement *)self->_collectionElement attributes];
+    v11 = [attributes2 objectForKey:@"remembersFocus"];
     [v7 setRemembersLastFocusedIndexPath:{objc_msgSend(v11, "BOOLValue")}];
   }
 
@@ -1025,8 +1025,8 @@ LABEL_5:
   [(_TVCollectionWrappingView *)v13 setCollectionView:v7];
   if (([(_TVMLCollectionViewController *)self contentFlowsVertically]& 1) != 0)
   {
-    v12 = [(_TVMLCollectionViewController *)self collectionView];
-    -[_TVCollectionWrappingView setHeaderAuxiliarySelecting:](v13, "setHeaderAuxiliarySelecting:", [v12 isScrollEnabled] ^ 1);
+    collectionView = [(_TVMLCollectionViewController *)self collectionView];
+    -[_TVCollectionWrappingView setHeaderAuxiliarySelecting:](v13, "setHeaderAuxiliarySelecting:", [collectionView isScrollEnabled] ^ 1);
   }
 
   else
@@ -1040,27 +1040,27 @@ LABEL_5:
   [(_TVMLCollectionViewController *)self _doUpdateViewLayoutAnimated:0 relayout:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = _TVMLCollectionViewController;
-  [(_TVMLCollectionViewController *)&v4 viewDidAppear:a3];
+  [(_TVMLCollectionViewController *)&v4 viewDidAppear:appear];
   self->_didAppear = 1;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = _TVMLCollectionViewController;
-  [(_TVMLCollectionViewController *)&v4 viewDidDisappear:a3];
+  [(_TVMLCollectionViewController *)&v4 viewDidDisappear:disappear];
   [(_TVMLCollectionViewController *)self _cancelImpressionsUpdate];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v6.receiver = self;
   v6.super_class = _TVMLCollectionViewController;
-  [(_TVMLCollectionViewController *)&v6 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(_TVMLCollectionViewController *)&v6 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
   previewInteractionController = self->_previewInteractionController;
   if (previewInteractionController)
   {
@@ -1068,11 +1068,11 @@ LABEL_5:
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = _TVMLCollectionViewController;
-  [(_TVMLCollectionViewController *)&v5 viewWillDisappear:a3];
+  [(_TVMLCollectionViewController *)&v5 viewWillDisappear:disappear];
   previewInteractionController = self->_previewInteractionController;
   if (previewInteractionController)
   {
@@ -1082,8 +1082,8 @@ LABEL_5:
 
 - (void)tv_updateViewLayout
 {
-  v3 = [(_TVMLCollectionViewController *)self collectionElement];
-  [_TVLockupFactory cellMetricsForCollectionElement:v3];
+  collectionElement = [(_TVMLCollectionViewController *)self collectionElement];
+  [_TVLockupFactory cellMetricsForCollectionElement:collectionElement];
 
   v4 = self->_cellMetrics.cellSize.width == 0.0 && self->_cellMetrics.cellSize.height == 0.0;
   if (!v4 || (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(0, *&self->_cellMetrics.cellPadding.top), vceqq_f64(0, *&self->_cellMetrics.cellPadding.bottom)))) & 1) == 0)
@@ -1107,11 +1107,11 @@ LABEL_5:
 - (id)preferredFocusEnvironments
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v3 = [(_TVMLCollectionViewController *)self collectionWrappingView];
-  if (v3)
+  collectionWrappingView = [(_TVMLCollectionViewController *)self collectionWrappingView];
+  if (collectionWrappingView)
   {
-    v4 = [(_TVMLCollectionViewController *)self collectionWrappingView];
-    v7[0] = v4;
+    collectionWrappingView2 = [(_TVMLCollectionViewController *)self collectionWrappingView];
+    v7[0] = collectionWrappingView2;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
   }
 
@@ -1123,63 +1123,63 @@ LABEL_5:
   return v5;
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
-  v3 = [(_TVMLCollectionViewController *)self collectionElement];
-  v4 = [v3 sections];
-  v5 = [v4 count];
+  collectionElement = [(_TVMLCollectionViewController *)self collectionElement];
+  sections = [collectionElement sections];
+  v5 = [sections count];
 
   return v5;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v5 = [(_TVMLCollectionViewController *)self collectionElement];
-  v6 = [v5 sections];
-  v7 = [v6 objectAtIndex:a4];
+  collectionElement = [(_TVMLCollectionViewController *)self collectionElement];
+  sections = [collectionElement sections];
+  v7 = [sections objectAtIndex:section];
 
-  v8 = [v7 numberOfItems];
-  return v8;
+  numberOfItems = [v7 numberOfItems];
+  return numberOfItems;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v49 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  pathCopy = path;
   if (self->_isPreparingCollectionUpdates)
   {
-    v6 = [(_TVMLCollectionViewController *)self shadowViewElement];
-    v7 = [v6 children];
-    v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
+    shadowViewElement = [(_TVMLCollectionViewController *)self shadowViewElement];
+    children = [shadowViewElement children];
+    v8 = [children objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-    v9 = [(_TVMLCollectionViewController *)self collectionView];
-    v10 = [v8 resourceName];
-    v11 = [v9 dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:v5];
+    collectionView = [(_TVMLCollectionViewController *)self collectionView];
+    resourceName = [v8 resourceName];
+    v11 = [collectionView dequeueReusableCellWithReuseIdentifier:resourceName forIndexPath:pathCopy];
   }
 
   else
   {
-    v12 = [(_TVMLCollectionViewController *)self collectionElement];
-    v13 = [v12 sections];
-    v14 = [v13 objectAtIndex:{objc_msgSend(v5, "section")}];
+    collectionElement = [(_TVMLCollectionViewController *)self collectionElement];
+    sections = [collectionElement sections];
+    v14 = [sections objectAtIndex:{objc_msgSend(pathCopy, "section")}];
 
-    v15 = [v14 elementForItemAtIndex:{objc_msgSend(v5, "item")}];
-    v16 = [v15 elementName];
+    v15 = [v14 elementForItemAtIndex:{objc_msgSend(pathCopy, "item")}];
+    elementName = [v15 elementName];
     if ([v15 tv_elementType] == 24)
     {
-      v39 = v16;
+      v39 = elementName;
       v46 = 0u;
       v47 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v17 = [v15 children];
-      v18 = [v17 countByEnumeratingWithState:&v44 objects:v48 count:16];
+      children2 = [v15 children];
+      v18 = [children2 countByEnumeratingWithState:&v44 objects:v48 count:16];
       if (v18)
       {
         v19 = v18;
         v36 = v15;
         v37 = v14;
-        v38 = v5;
+        v38 = pathCopy;
         v20 = *v45;
         while (2)
         {
@@ -1187,7 +1187,7 @@ LABEL_5:
           {
             if (*v45 != v20)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(children2);
             }
 
             v22 = *(*(&v44 + 1) + 8 * i);
@@ -1198,8 +1198,8 @@ LABEL_5:
               if ([v24 tv_isResourceURL])
               {
                 v25 = +[TVInterfaceFactory sharedInterfaceFactory];
-                v26 = [v24 tv_resourceName];
-                v27 = [v25 URLForResource:v26];
+                tv_resourceName = [v24 tv_resourceName];
+                v27 = [v25 URLForResource:tv_resourceName];
 
                 v24 = v27;
               }
@@ -1208,15 +1208,15 @@ LABEL_5:
               {
                 if ([v24 tv_imageURLType] == 1)
                 {
-                  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-LCR", v39];
+                  elementName = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-LCR", v39];
 
-                  v5 = v38;
+                  pathCopy = v38;
                 }
 
                 else
                 {
-                  v5 = v38;
-                  v16 = v39;
+                  pathCopy = v38;
+                  elementName = v39;
                 }
 
                 v15 = v36;
@@ -1227,7 +1227,7 @@ LABEL_5:
             }
           }
 
-          v19 = [v17 countByEnumeratingWithState:&v44 objects:v48 count:16];
+          v19 = [children2 countByEnumeratingWithState:&v44 objects:v48 count:16];
           if (v19)
           {
             continue;
@@ -1237,26 +1237,26 @@ LABEL_5:
         }
 
         v14 = v37;
-        v5 = v38;
+        pathCopy = v38;
         v15 = v36;
       }
 
-      v16 = v39;
+      elementName = v39;
 LABEL_23:
     }
 
-    v28 = [(_TVMLCollectionViewController *)self collectionView];
-    v11 = [v28 dequeueReusableCellWithReuseIdentifier:v16 forIndexPath:v5];
+    collectionView2 = [(_TVMLCollectionViewController *)self collectionView];
+    v11 = [collectionView2 dequeueReusableCellWithReuseIdentifier:elementName forIndexPath:pathCopy];
 
     v29 = objc_opt_new();
-    v30 = [v15 style];
-    [v30 tv_focusMargin];
+    style = [v15 style];
+    [style tv_focusMargin];
     [v29 setFocusMargin:?];
 
     [(_TVMLCollectionViewController *)self cellMetrics];
     [v29 setPadding:{v40, v41, v42, v43}];
-    v31 = [(IKCollectionElement *)self->_collectionElement style];
-    [v29 setContentAlignment:{objc_msgSend(v31, "tv_contentAlignment")}];
+    style2 = [(IKCollectionElement *)self->_collectionElement style];
+    [v29 setContentAlignment:{objc_msgSend(style2, "tv_contentAlignment")}];
 
     [v11 tv_setAssociatedIKViewElement:0];
     v32 = +[TVInterfaceFactory sharedInterfaceFactory];
@@ -1264,76 +1264,76 @@ LABEL_23:
 
     if (v33 != v11)
     {
-      v34 = [v11 contentView];
-      [v34 addSubview:v33];
+      contentView = [v11 contentView];
+      [contentView addSubview:v33];
     }
   }
 
   return v11;
 }
 
-- (id)collectionView:(id)a3 indexPathForIndexTitle:(id)a4 atIndex:(int64_t)a5
+- (id)collectionView:(id)view indexPathForIndexTitle:(id)title atIndex:(int64_t)index
 {
-  v6 = a4;
-  v7 = [(_TVMLCollectionViewController *)self indexPathsByIndexTitle];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  titleCopy = title;
+  indexPathsByIndexTitle = [(_TVMLCollectionViewController *)self indexPathsByIndexTitle];
+  v8 = [indexPathsByIndexTitle objectForKeyedSubscript:titleCopy];
 
   return v8;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v7 = *MEMORY[0x277D76620];
-  v8 = a5;
-  v9 = a4;
-  [v9 tv_setDisplayed:{objc_msgSend(v7, "applicationState") == 0}];
+  pathCopy = path;
+  cellCopy = cell;
+  [cellCopy tv_setDisplayed:{objc_msgSend(v7, "applicationState") == 0}];
 
-  v10 = [(_TVMLCollectionViewController *)self collectionElement];
-  v11 = [v10 sections];
-  v13 = [v11 objectAtIndexedSubscript:{objc_msgSend(v8, "section")}];
+  collectionElement = [(_TVMLCollectionViewController *)self collectionElement];
+  sections = [collectionElement sections];
+  v13 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v12 = [v8 item];
-  [v13 loadIndex:v12];
+  item = [pathCopy item];
+  [v13 loadIndex:item];
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v11 = a4;
-  v7 = a5;
-  [v11 tv_setDisplayed:0];
-  if (([v11 tv_belongsToOldIndexPath] & 1) == 0)
+  cellCopy = cell;
+  pathCopy = path;
+  [cellCopy tv_setDisplayed:0];
+  if (([cellCopy tv_belongsToOldIndexPath] & 1) == 0)
   {
-    v8 = [(_TVMLCollectionViewController *)self collectionElement];
-    v9 = [v8 sections];
-    v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v7, "section")}];
+    collectionElement = [(_TVMLCollectionViewController *)self collectionElement];
+    sections = [collectionElement sections];
+    v10 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-    [v10 unloadIndex:{objc_msgSend(v7, "item")}];
+    [v10 unloadIndex:{objc_msgSend(pathCopy, "item")}];
   }
 
-  [v11 tv_setBelongsToOldIndexPath:0];
+  [cellCopy tv_setBelongsToOldIndexPath:0];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __73___TVMLCollectionViewController_collectionView_didSelectItemAtIndexPath___block_invoke;
   v10[3] = &unk_279D70AF8;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = viewCopy;
+  v12 = pathCopy;
+  v8 = pathCopy;
+  v9 = viewCopy;
   [(_TVMLCollectionViewController *)self dispatchEvent:@"select" forItemAtIndexPath:v8 completionBlock:v10];
 }
 
-- (BOOL)collectionView:(id)a3 shouldHandleLongPressForItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHandleLongPressForItemAtIndexPath:(id)path
 {
   previewInteractionController = self->_previewInteractionController;
   if (previewInteractionController)
   {
-    return [(TVPreviewInteractionController *)previewInteractionController collectionView:a3 shouldHandleLongPressForItemAtIndexPath:a4];
+    return [(TVPreviewInteractionController *)previewInteractionController collectionView:view shouldHandleLongPressForItemAtIndexPath:path];
   }
 
   else
@@ -1342,33 +1342,33 @@ LABEL_23:
   }
 }
 
-- (void)collectionView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5
+- (void)collectionView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(_TVMLCollectionViewController *)self view];
-  v11 = [v10 window];
+  viewCopy = view;
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  view = [(_TVMLCollectionViewController *)self view];
+  window = [view window];
 
-  if (v11)
+  if (window)
   {
-    v12 = [v8 previouslyFocusedIndexPath];
-    v13 = [v8 nextFocusedIndexPath];
-    if (([v12 isEqual:v13] & 1) == 0)
+    previouslyFocusedIndexPath = [contextCopy previouslyFocusedIndexPath];
+    nextFocusedIndexPath = [contextCopy nextFocusedIndexPath];
+    if (([previouslyFocusedIndexPath isEqual:nextFocusedIndexPath] & 1) == 0)
     {
-      v14 = [v16 cellForItemAtIndexPath:v12];
+      v14 = [viewCopy cellForItemAtIndexPath:previouslyFocusedIndexPath];
       [v14 tv_setFocused:0];
-      v15 = [v16 cellForItemAtIndexPath:v13];
+      v15 = [viewCopy cellForItemAtIndexPath:nextFocusedIndexPath];
       [v15 tv_setFocused:1];
     }
   }
 
-  [(_TVMLCollectionViewController *)self updateFocusInContext:v8 withAnimationCoordinator:v9];
+  [(_TVMLCollectionViewController *)self updateFocusInContext:contextCopy withAnimationCoordinator:coordinatorCopy];
 }
 
-- (id)indexPathForPreferredFocusedViewInCollectionView:(id)a3
+- (id)indexPathForPreferredFocusedViewInCollectionView:(id)view
 {
-  if ([a3 tv_isFocusOnNonOwnedCell])
+  if ([view tv_isFocusOnNonOwnedCell])
   {
     lastFocusedIndexPath = 0;
   }
@@ -1381,39 +1381,39 @@ LABEL_23:
   return lastFocusedIndexPath;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = [(_TVMLCollectionViewController *)self collectionView];
-  [v4 bounds];
+  collectionView = [(_TVMLCollectionViewController *)self collectionView];
+  [collectionView bounds];
   rect = v5;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(_TVMLCollectionViewController *)self collectionView];
-  [v12 contentInset];
+  collectionView2 = [(_TVMLCollectionViewController *)self collectionView];
+  [collectionView2 contentInset];
   v14 = v13;
   v16 = v15;
   v28 = v17;
   v19 = v18;
 
-  v20 = [(_TVMLCollectionViewController *)self collectionView];
-  [v20 contentSize];
+  collectionView3 = [(_TVMLCollectionViewController *)self collectionView];
+  [collectionView3 contentSize];
   v22 = v21;
   v24 = v23;
 
   if (([(_TVMLCollectionViewController *)self contentFlowsVertically]& 1) == 0 && (v31.origin.x = rect, v31.origin.y = v7, v31.size.width = v9, v31.size.height = v11, v19 + v16 + v22 <= CGRectGetWidth(v31)) || [(_TVMLCollectionViewController *)self contentFlowsVertically]&& (v32.origin.x = rect, v32.origin.y = v7, v32.size.width = v9, v32.size.height = v11, v28 + v14 + v24 <= CGRectGetHeight(v32)))
   {
-    v25 = [(_TVMLCollectionViewController *)self collectionView];
-    [v25 setContentOffset:0 animated:{-v16, -v14}];
+    collectionView4 = [(_TVMLCollectionViewController *)self collectionView];
+    [collectionView4 setContentOffset:0 animated:{-v16, -v14}];
   }
 
   [(_TVNeedsMoreContentEvaluator *)self->_needsMoreContentEvaluator evaluateForState:2];
-  v26 = [(_TVMLCollectionViewController *)self collectionWrappingView];
-  [v26 reevaluateHeaderFrame];
+  collectionWrappingView = [(_TVMLCollectionViewController *)self collectionWrappingView];
+  [collectionWrappingView reevaluateHeaderFrame];
 
-  v27 = [(_TVMLCollectionViewController *)self collectionWrappingView];
-  [v27 reevaluateFooterFrame];
+  collectionWrappingView2 = [(_TVMLCollectionViewController *)self collectionWrappingView];
+  [collectionWrappingView2 reevaluateFooterFrame];
 
   if (self->_didAppear)
   {
@@ -1422,33 +1422,33 @@ LABEL_23:
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  v7 = [(_TVMLCollectionViewController *)self collectionView:a3];
-  v8 = [v7 tv_isFocusOnNonOwnedCell];
+  v7 = [(_TVMLCollectionViewController *)self collectionView:dragging];
+  tv_isFocusOnNonOwnedCell = [v7 tv_isFocusOnNonOwnedCell];
 
-  if (v8)
+  if (tv_isFocusOnNonOwnedCell)
   {
     return;
   }
 
-  v9 = [MEMORY[0x277D759A0] mainScreen];
-  v30 = [v9 focusedView];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  focusedView = [mainScreen focusedView];
 
-  v10 = [(_TVMLCollectionViewController *)self collectionWrappingView];
-  if (![v10 isHeaderFloating] || !-[_TVMLCollectionViewController contentFlowsVertically](self, "contentFlowsVertically"))
+  collectionWrappingView = [(_TVMLCollectionViewController *)self collectionWrappingView];
+  if (![collectionWrappingView isHeaderFloating] || !-[_TVMLCollectionViewController contentFlowsVertically](self, "contentFlowsVertically"))
   {
     goto LABEL_6;
   }
 
-  v11 = [(_TVMLCollectionViewController *)self collectionView];
-  v12 = [v30 isDescendantOfView:v11];
+  collectionView = [(_TVMLCollectionViewController *)self collectionView];
+  v12 = [focusedView isDescendantOfView:collectionView];
 
   if (v12)
   {
-    v13 = [(_TVMLCollectionViewController *)self collectionView];
-    [v30 bounds];
-    [v13 convertRect:v30 fromView:?];
+    collectionView2 = [(_TVMLCollectionViewController *)self collectionView];
+    [focusedView bounds];
+    [collectionView2 convertRect:focusedView fromView:?];
     v15 = v14;
     v17 = v16;
     v19 = v18;
@@ -1459,16 +1459,16 @@ LABEL_23:
     v32.size.width = v19;
     v32.size.height = v21;
     MinY = CGRectGetMinY(v32);
-    v23 = [(_TVMLCollectionViewController *)self collectionView];
-    [v23 _gradientMaskEdgeInsets];
+    collectionView3 = [(_TVMLCollectionViewController *)self collectionView];
+    [collectionView3 _gradientMaskEdgeInsets];
     v25 = v24;
-    v26 = [(_TVMLCollectionViewController *)self collectionView];
-    [v26 _gradientMaskLengths];
+    collectionView4 = [(_TVMLCollectionViewController *)self collectionView];
+    [collectionView4 _gradientMaskLengths];
     v28 = MinY - (v25 + v27);
 
-    v10 = [(_TVMLCollectionViewController *)self collectionView];
-    [v10 contentInset];
-    a5->y = fmin(fmax(v28, -v29), a5->y);
+    collectionWrappingView = [(_TVMLCollectionViewController *)self collectionView];
+    [collectionWrappingView contentInset];
+    offset->y = fmin(fmax(v28, -v29), offset->y);
 LABEL_6:
   }
 }
@@ -1485,38 +1485,38 @@ LABEL_6:
 
 - (void)_recordImpressionsForVisibleView
 {
-  v3 = [(_TVMLCollectionViewController *)self view];
-  v4 = [v3 window];
+  view = [(_TVMLCollectionViewController *)self view];
+  window = [view window];
 
-  if (v4)
+  if (window)
   {
-    v6 = [(IKCollectionElement *)self->_collectionElement appDocument];
+    appDocument = [(IKCollectionElement *)self->_collectionElement appDocument];
     v5 = [(_TVMLCollectionViewController *)self impressionableElementsContainedInDocument:?];
     if ([v5 count])
     {
-      [v6 recordImpressionsForViewElements:v5];
+      [appDocument recordImpressionsForViewElements:v5];
     }
   }
 }
 
-- (id)impressionableElementsContainedInDocument:(id)a3
+- (id)impressionableElementsContainedInDocument:(id)document
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(IKCollectionElement *)self->_collectionElement appDocument];
-  if ([v5 isEqual:v4])
+  documentCopy = document;
+  appDocument = [(IKCollectionElement *)self->_collectionElement appDocument];
+  if ([appDocument isEqual:documentCopy])
   {
-    v6 = [(_TVMLCollectionViewController *)self collectionView];
-    v7 = [v6 visibleCells];
+    collectionView = [(_TVMLCollectionViewController *)self collectionView];
+    visibleCells = [collectionView visibleCells];
 
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     if ([(_TVMLCollectionViewController *)self isViewLoaded])
     {
       v22 = 0u;
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v9 = v7;
+      v9 = visibleCells;
       v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v10)
       {
@@ -1531,8 +1531,8 @@ LABEL_6:
               objc_enumerationMutation(v9);
             }
 
-            v14 = [*(*(&v20 + 1) + 8 * i) tv_impressionableElementsForDocument:{v4, v20}];
-            [v8 addObjectsFromArray:v14];
+            v14 = [*(*(&v20 + 1) + 8 * i) tv_impressionableElementsForDocument:{documentCopy, v20}];
+            [array addObjectsFromArray:v14];
           }
 
           v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -1541,15 +1541,15 @@ LABEL_6:
         while (v11);
       }
 
-      v15 = [(_TVMLCollectionViewController *)self collectionWrappingView];
-      v16 = [v15 headerView];
-      v17 = [v16 tv_impressionableElementsForDocument:v4];
-      [v8 addObjectsFromArray:v17];
+      collectionWrappingView = [(_TVMLCollectionViewController *)self collectionWrappingView];
+      headerView = [collectionWrappingView headerView];
+      v17 = [headerView tv_impressionableElementsForDocument:documentCopy];
+      [array addObjectsFromArray:v17];
     }
 
-    if ([v8 count])
+    if ([array count])
     {
-      v18 = [MEMORY[0x277CBEA60] arrayWithArray:v8];
+      v18 = [MEMORY[0x277CBEA60] arrayWithArray:array];
     }
 
     else
@@ -1566,30 +1566,30 @@ LABEL_6:
   return v18;
 }
 
-- (void)preloadCellsInRect:(CGRect)a3
+- (void)preloadCellsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(_TVMLCollectionViewController *)self view];
-  [v8 layoutBelowIfNeeded];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  view = [(_TVMLCollectionViewController *)self view];
+  [view layoutBelowIfNeeded];
 
-  v9 = [(_TVMLCollectionViewController *)self collectionView];
-  [v9 _ensureViewsAreLoadedInRect:{x, y, width, height}];
+  collectionView = [(_TVMLCollectionViewController *)self collectionView];
+  [collectionView _ensureViewsAreLoadedInRect:{x, y, width, height}];
 }
 
-- (void)_applicationDidBecomeActive:(id)a3
+- (void)_applicationDidBecomeActive:(id)active
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(_TVMLCollectionViewController *)self collectionView:a3];
-  v4 = [v3 visibleCells];
+  v3 = [(_TVMLCollectionViewController *)self collectionView:active];
+  visibleCells = [v3 visibleCells];
 
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [visibleCells countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1601,31 +1601,31 @@ LABEL_6:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(visibleCells);
         }
 
         [*(*(&v9 + 1) + 8 * v8++) tv_setDisplayed:1];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [visibleCells countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_applicationWillResignActive:(id)a3
+- (void)_applicationWillResignActive:(id)active
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(_TVMLCollectionViewController *)self collectionView:a3];
-  v4 = [v3 visibleCells];
+  v3 = [(_TVMLCollectionViewController *)self collectionView:active];
+  visibleCells = [v3 visibleCells];
 
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [visibleCells countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1637,58 +1637,58 @@ LABEL_6:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(visibleCells);
         }
 
         [*(*(&v9 + 1) + 8 * v8++) tv_setDisplayed:0];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [visibleCells countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)adjustContentOffsetToDisplayIndexPath:(id)a3
+- (void)adjustContentOffsetToDisplayIndexPath:(id)path
 {
-  v57 = a3;
-  if (v57)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v4 = [(_TVMLCollectionViewController *)self collectionView];
-    [v4 layoutBelowIfNeeded];
+    collectionView = [(_TVMLCollectionViewController *)self collectionView];
+    [collectionView layoutBelowIfNeeded];
 
-    v5 = [(_TVMLCollectionViewController *)self preferredScrollPosition];
-    v6 = [(_TVMLCollectionViewController *)self collectionView];
-    v7 = [v6 layoutAttributesForItemAtIndexPath:v57];
+    preferredScrollPosition = [(_TVMLCollectionViewController *)self preferredScrollPosition];
+    collectionView2 = [(_TVMLCollectionViewController *)self collectionView];
+    v7 = [collectionView2 layoutAttributesForItemAtIndexPath:pathCopy];
     [v7 frame];
     v53 = v9;
     v54 = v8;
     v11 = v10;
     v52 = v12;
 
-    v13 = [(_TVMLCollectionViewController *)self collectionView];
-    [v13 contentInset];
+    collectionView3 = [(_TVMLCollectionViewController *)self collectionView];
+    [collectionView3 contentInset];
     v50 = v15;
     v51 = v14;
     v55 = v17;
     v56 = v16;
 
-    v18 = [(_TVMLCollectionViewController *)self collectionView];
-    [v18 bounds];
+    collectionView4 = [(_TVMLCollectionViewController *)self collectionView];
+    [collectionView4 bounds];
     v20 = v19;
     v22 = v21;
 
-    v23 = [(_TVMLCollectionViewController *)self collectionView];
-    [v23 contentOffset];
+    collectionView5 = [(_TVMLCollectionViewController *)self collectionView];
+    [collectionView5 contentOffset];
     v25 = v24;
     v27 = v26;
     v28 = v24;
     v29 = v26;
 
-    v30 = [(_TVMLCollectionViewController *)self collectionView];
-    [v30 contentSize];
+    collectionView6 = [(_TVMLCollectionViewController *)self collectionView];
+    [collectionView6 contentSize];
     v49 = v31;
     v33 = v32;
 
@@ -1714,14 +1714,14 @@ LABEL_6:
 
       if (v27 < v34 || v29 > v35)
       {
-        if (v5 == 1)
+        if (preferredScrollPosition == 1)
         {
           v37 = v11 - v51;
         }
 
-        else if (v5 != 2)
+        else if (preferredScrollPosition != 2)
         {
-          if (v5 == 4)
+          if (preferredScrollPosition == 4)
           {
             v37 = v11 + v52 + v50 - v22;
           }
@@ -1786,25 +1786,25 @@ LABEL_6:
         v42 = v54 - v56;
       }
 
-      v43 = [(_TVMLCollectionViewController *)self view];
-      v44 = [v43 effectiveUserInterfaceLayoutDirection];
+      view = [(_TVMLCollectionViewController *)self view];
+      effectiveUserInterfaceLayoutDirection = [view effectiveUserInterfaceLayoutDirection];
 
       if (v25 < v39 || v28 > v40)
       {
         v46 = v55 + v49 - v20;
-        if (v5 == 8)
+        if (preferredScrollPosition == 8)
         {
           v42 = v54 - v56;
         }
 
-        else if (v5 != 16)
+        else if (preferredScrollPosition != 16)
         {
-          if (v5 == 32)
+          if (preferredScrollPosition == 32)
           {
             v42 = v54 + v53 + v55 - v20;
           }
 
-          else if (v44 == 1)
+          else if (effectiveUserInterfaceLayoutDirection == 1)
           {
             v42 = v54 + v53 + v55 - v20;
           }
@@ -1834,27 +1834,27 @@ LABEL_6:
 
     if (v25 != v28 || v27 != v29)
     {
-      v48 = [(_TVMLCollectionViewController *)self collectionView];
-      [v48 setContentOffset:0 animated:{v28, v29}];
+      collectionView7 = [(_TVMLCollectionViewController *)self collectionView];
+      [collectionView7 setContentOffset:0 animated:{v28, v29}];
     }
   }
 }
 
-+ (id)_shadowViewElementForCollectionElement:(id)a3
++ (id)_shadowViewElementForCollectionElement:(id)element
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  elementCopy = element;
   v4 = objc_alloc_init(_TVShadowViewElement);
-  v17 = [[_TVShadowViewElementID alloc] initWithViewElement:v3];
+  v17 = [[_TVShadowViewElementID alloc] initWithViewElement:elementCopy];
   [(_TVShadowViewElement *)v4 setElementID:?];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v18 = v3;
-  v6 = [v3 sections];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v18 = elementCopy;
+  sections = [elementCopy sections];
+  v7 = [sections countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1865,7 +1865,7 @@ LABEL_6:
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(sections);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
@@ -1878,16 +1878,16 @@ LABEL_6:
           if ([v11 numberOfItems] >= 1)
           {
             v14 = [v11 elementForItemAtIndex:0];
-            v15 = [v14 elementName];
+            elementName = [v14 elementName];
 
-            [(_TVShadowViewElement *)v13 setResourceName:v15];
+            [(_TVShadowViewElement *)v13 setResourceName:elementName];
           }
 
           [v5 addObject:v13];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [sections countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v8);
@@ -1901,38 +1901,38 @@ LABEL_6:
   return v4;
 }
 
-- (void)_doUpdateViewLayoutAnimated:(BOOL)a3 relayout:(BOOL)a4
+- (void)_doUpdateViewLayoutAnimated:(BOOL)animated relayout:(BOOL)relayout
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(_TVMLCollectionViewController *)self view];
-  v8 = [(_TVMLCollectionViewController *)self collectionElement];
-  [v7 transferLayoutStylesFromElement:v8];
+  relayoutCopy = relayout;
+  animatedCopy = animated;
+  view = [(_TVMLCollectionViewController *)self view];
+  collectionElement = [(_TVMLCollectionViewController *)self collectionElement];
+  [view transferLayoutStylesFromElement:collectionElement];
 
-  [(_TVMLCollectionViewController *)self updateViewLayoutAnimated:v5 relayout:v4];
+  [(_TVMLCollectionViewController *)self updateViewLayoutAnimated:animatedCopy relayout:relayoutCopy];
 }
 
 - (void)_updateHeaderView
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(_TVMLCollectionViewController *)self collectionWrappingView];
-  v4 = [(_TVMLCollectionViewController *)self headerViewController];
+  collectionWrappingView = [(_TVMLCollectionViewController *)self collectionWrappingView];
+  headerViewController = [(_TVMLCollectionViewController *)self headerViewController];
   v5 = +[TVInterfaceFactory sharedInterfaceFactory];
-  v6 = [(_TVMLCollectionViewController *)self headerElement];
-  v7 = [v5 _viewControllerFromElement:v6 existingController:v4];
+  headerElement = [(_TVMLCollectionViewController *)self headerElement];
+  v7 = [v5 _viewControllerFromElement:headerElement existingController:headerViewController];
 
   if (!v7)
   {
-    v8 = [v4 view];
+    view = [headerViewController view];
     v9 = +[TVInterfaceFactory sharedInterfaceFactory];
-    v10 = [(_TVMLCollectionViewController *)self headerElement];
-    v11 = [v9 _viewFromElement:v10 existingView:v8];
+    headerElement2 = [(_TVMLCollectionViewController *)self headerElement];
+    v11 = [v9 _viewFromElement:headerElement2 existingView:view];
 
     if (v11)
     {
-      if (v11 == v8)
+      if (v11 == view)
       {
-        v7 = v4;
+        v7 = headerViewController;
       }
 
       else
@@ -1948,45 +1948,45 @@ LABEL_6:
     }
   }
 
-  if (v7 != v4)
+  if (v7 != headerViewController)
   {
-    [v4 willMoveToParentViewController:0];
+    [headerViewController willMoveToParentViewController:0];
     if (v7)
     {
       [(_TVMLCollectionViewController *)self addChildViewController:v7];
     }
 
-    v12 = [v4 view];
-    [v12 removeFromSuperview];
+    view2 = [headerViewController view];
+    [view2 removeFromSuperview];
 
-    v13 = [v7 view];
-    [v3 setHeaderView:v13];
+    view3 = [v7 view];
+    [collectionWrappingView setHeaderView:view3];
 
-    [v4 removeFromParentViewController];
+    [headerViewController removeFromParentViewController];
     [v7 didMoveToParentViewController:self];
   }
 
   [(_TVMLCollectionViewController *)self setHeaderViewController:v7];
-  v14 = [(IKViewElement *)self->_headerElement attributes];
-  v15 = [v14 objectForKeyedSubscript:@"floating"];
+  attributes = [(IKViewElement *)self->_headerElement attributes];
+  v15 = [attributes objectForKeyedSubscript:@"floating"];
 
   if ([v15 length])
   {
-    v16 = [v15 BOOLValue];
+    bOOLValue = [v15 BOOLValue];
   }
 
   else
   {
-    v16 = [(_TVMLCollectionViewController *)self shouldHeaderFloatByDefault];
+    bOOLValue = [(_TVMLCollectionViewController *)self shouldHeaderFloatByDefault];
   }
 
-  [v3 setHeaderFloating:v16];
+  [collectionWrappingView setHeaderFloating:bOOLValue];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v17 = [(IKViewElement *)self->_headerElement children];
-  v18 = [v17 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  children = [(IKViewElement *)self->_headerElement children];
+  v18 = [children countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v18)
   {
     v19 = *v25;
@@ -1996,7 +1996,7 @@ LABEL_6:
       {
         if (*v25 != v19)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(children);
         }
 
         if ([*(*(&v24 + 1) + 8 * i) tv_elementType] == 50)
@@ -2006,7 +2006,7 @@ LABEL_6:
         }
       }
 
-      v18 = [v17 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v18 = [children countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v18)
       {
         continue;
@@ -2018,15 +2018,15 @@ LABEL_6:
 
 LABEL_25:
 
-  [v3 setHeaderCanBecomeFocused:v18];
-  v21 = [v3 headerView];
+  [collectionWrappingView setHeaderCanBecomeFocused:v18];
+  headerView = [collectionWrappingView headerView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v23 = [v3 headerView];
-    [v23 setGestureTargetView:v3];
+    headerView2 = [collectionWrappingView headerView];
+    [headerView2 setGestureTargetView:collectionWrappingView];
   }
 }
 
@@ -2034,14 +2034,14 @@ LABEL_25:
 {
   if (!self->_previewInteractionController)
   {
-    v3 = [(_TVMLCollectionViewController *)self collectionView];
+    collectionView = [(_TVMLCollectionViewController *)self collectionView];
 
-    if (v3)
+    if (collectionView)
     {
-      v8 = [(IKCollectionElement *)self->_collectionElement appDocument];
-      v4 = [(_TVMLCollectionViewController *)self collectionView];
-      v5 = [(_TVMLCollectionViewController *)self collectionElement];
-      v6 = [v8 tv_interactionPreviewControllerForViewController:self presentingView:v4 presentingElement:v5];
+      appDocument = [(IKCollectionElement *)self->_collectionElement appDocument];
+      collectionView2 = [(_TVMLCollectionViewController *)self collectionView];
+      collectionElement = [(_TVMLCollectionViewController *)self collectionElement];
+      v6 = [appDocument tv_interactionPreviewControllerForViewController:self presentingView:collectionView2 presentingElement:collectionElement];
 
       previewInteractionController = self->_previewInteractionController;
       self->_previewInteractionController = v6;
@@ -2051,24 +2051,24 @@ LABEL_25:
 
 - (void)_updateFooterView
 {
-  v13 = [(_TVMLCollectionViewController *)self collectionWrappingView];
-  v3 = [(_TVMLCollectionViewController *)self footerViewController];
+  collectionWrappingView = [(_TVMLCollectionViewController *)self collectionWrappingView];
+  footerViewController = [(_TVMLCollectionViewController *)self footerViewController];
   v4 = +[TVInterfaceFactory sharedInterfaceFactory];
-  v5 = [(_TVMLCollectionViewController *)self footerElement];
-  v6 = [v4 _viewControllerFromElement:v5 existingController:v3];
+  footerElement = [(_TVMLCollectionViewController *)self footerElement];
+  v6 = [v4 _viewControllerFromElement:footerElement existingController:footerViewController];
 
   if (!v6)
   {
-    v7 = [v3 view];
+    view = [footerViewController view];
     v8 = +[TVInterfaceFactory sharedInterfaceFactory];
-    v9 = [(_TVMLCollectionViewController *)self footerElement];
-    v10 = [v8 _viewFromElement:v9 existingView:v7];
+    footerElement2 = [(_TVMLCollectionViewController *)self footerElement];
+    v10 = [v8 _viewFromElement:footerElement2 existingView:view];
 
     if (v10)
     {
-      if (v10 == v7)
+      if (v10 == view)
       {
-        v6 = v3;
+        v6 = footerViewController;
       }
 
       else
@@ -2084,42 +2084,42 @@ LABEL_25:
     }
   }
 
-  if (v6 != v3)
+  if (v6 != footerViewController)
   {
-    [v3 willMoveToParentViewController:0];
+    [footerViewController willMoveToParentViewController:0];
     if (v6)
     {
       [(_TVMLCollectionViewController *)self addChildViewController:v6];
     }
 
-    v11 = [v3 view];
-    [v11 removeFromSuperview];
+    view2 = [footerViewController view];
+    [view2 removeFromSuperview];
 
-    v12 = [v6 view];
-    [v13 setFooterView:v12];
+    view3 = [v6 view];
+    [collectionWrappingView setFooterView:view3];
 
-    [v3 removeFromParentViewController];
+    [footerViewController removeFromParentViewController];
     [v6 didMoveToParentViewController:self];
   }
 
   [(_TVMLCollectionViewController *)self setFooterViewController:v6];
 }
 
-- (void)_registerCellClassesInCollectionView:(id)a3
+- (void)_registerCellClassesInCollectionView:(id)view
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   v5 = [MEMORY[0x277CBEB58] set];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v26 = self;
-  v6 = [(_TVMLCollectionViewController *)self collectionElement];
-  v7 = [v6 sections];
+  selfCopy = self;
+  collectionElement = [(_TVMLCollectionViewController *)self collectionElement];
+  sections = [collectionElement sections];
 
-  obj = v7;
-  v24 = [v7 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  obj = sections;
+  v24 = [sections countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v24)
   {
     v23 = *v32;
@@ -2139,8 +2139,8 @@ LABEL_25:
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v10 = [v9 prototypes];
-        v11 = [v10 countByEnumeratingWithState:&v27 objects:v35 count:16];
+        prototypes = [v9 prototypes];
+        v11 = [prototypes countByEnumeratingWithState:&v27 objects:v35 count:16];
         if (v11)
         {
           v12 = v11;
@@ -2151,14 +2151,14 @@ LABEL_25:
             {
               if (*v28 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(prototypes);
               }
 
               v15 = *(*(&v27 + 1) + 8 * i);
-              v16 = [v15 elementName];
-              if (([v5 containsObject:v16] & 1) == 0)
+              elementName = [v15 elementName];
+              if (([v5 containsObject:elementName] & 1) == 0)
               {
-                [v5 addObject:v16];
+                [v5 addObject:elementName];
                 v17 = +[TVInterfaceFactory sharedInterfaceFactory];
                 v18 = [v17 _collectionViewCellClassForElement:v15];
                 if (v18)
@@ -2168,7 +2168,7 @@ LABEL_25:
 
                 else
                 {
-                  v19 = [(_TVMLCollectionViewController *)v26 cellClassForElement:v15];
+                  v19 = [(_TVMLCollectionViewController *)selfCopy cellClassForElement:v15];
 
                   if (!v19)
                   {
@@ -2182,18 +2182,18 @@ LABEL_25:
                   }
                 }
 
-                [v4 registerClass:v19 forCellWithReuseIdentifier:v16];
+                [viewCopy registerClass:v19 forCellWithReuseIdentifier:elementName];
                 if ([v15 tv_elementType] == 24)
                 {
-                  v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-LCR", v16];
-                  [v4 registerClass:v19 forCellWithReuseIdentifier:v21];
+                  v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-LCR", elementName];
+                  [viewCopy registerClass:v19 forCellWithReuseIdentifier:v21];
                 }
               }
 
 LABEL_19:
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v27 objects:v35 count:16];
+            v12 = [prototypes countByEnumeratingWithState:&v27 objects:v35 count:16];
           }
 
           while (v12);
@@ -2210,24 +2210,24 @@ LABEL_19:
   }
 }
 
-- (id)_closestIndexPathToIndexPath:(id)a3
+- (id)_closestIndexPathToIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(_TVMLCollectionViewController *)self collectionElement];
-  v6 = [v5 sections];
+  pathCopy = path;
+  collectionElement = [(_TVMLCollectionViewController *)self collectionElement];
+  sections = [collectionElement sections];
 
-  v7 = [v4 section];
-  if (v7 >= [v6 count] || (objc_msgSend(v6, "objectAtIndexedSubscript:", objc_msgSend(v4, "section")), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "numberOfItems"), v8, v9 < 1))
+  section = [pathCopy section];
+  if (section >= [sections count] || (objc_msgSend(sections, "objectAtIndexedSubscript:", objc_msgSend(pathCopy, "section")), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "numberOfItems"), v8, v9 < 1))
   {
-    v17 = [v4 section];
-    while (++v17 < [v6 count])
+    section2 = [pathCopy section];
+    while (++section2 < [sections count])
     {
-      v18 = [v6 objectAtIndexedSubscript:v17];
-      v19 = [v18 numberOfItems];
+      v18 = [sections objectAtIndexedSubscript:section2];
+      numberOfItems = [v18 numberOfItems];
 
-      if (v19 >= 1)
+      if (numberOfItems >= 1)
       {
-        v20 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:v17];
+        v20 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:section2];
         if (v20)
         {
           goto LABEL_18;
@@ -2237,8 +2237,8 @@ LABEL_19:
       }
     }
 
-    v21 = [v4 section] - 1;
-    v22 = [v6 count];
+    v21 = [pathCopy section] - 1;
+    v22 = [sections count];
     if (v21 >= v22 - 1)
     {
       v23 = v22 - 1;
@@ -2258,10 +2258,10 @@ LABEL_15:
 
     while (1)
     {
-      v24 = [v6 objectAtIndexedSubscript:v23];
-      v25 = [v24 numberOfItems];
+      v24 = [sections objectAtIndexedSubscript:v23];
+      numberOfItems2 = [v24 numberOfItems];
 
-      if (v25 >= 1)
+      if (numberOfItems2 >= 1)
       {
         break;
       }
@@ -2273,24 +2273,24 @@ LABEL_15:
     }
 
     v27 = MEMORY[0x277CCAA70];
-    v12 = [v6 objectAtIndexedSubscript:v23];
+    v12 = [sections objectAtIndexedSubscript:v23];
     v16 = [v12 numberOfItems] - 1;
     v15 = v27;
-    v14 = v23;
+    section3 = v23;
   }
 
   else
   {
     v10 = MEMORY[0x277CCAA70];
-    v11 = [v4 item];
-    v12 = [v6 objectAtIndexedSubscript:{objc_msgSend(v4, "section")}];
-    v13 = fmin(v11, ([v12 numberOfItems] - 1));
-    v14 = [v4 section];
+    item = [pathCopy item];
+    v12 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+    v13 = fmin(item, ([v12 numberOfItems] - 1));
+    section3 = [pathCopy section];
     v15 = v10;
     v16 = v13;
   }
 
-  v20 = [v15 indexPathForItem:v16 inSection:v14];
+  v20 = [v15 indexPathForItem:v16 inSection:section3];
 
 LABEL_18:
 
@@ -2315,10 +2315,10 @@ LABEL_18:
   return self;
 }
 
-- (void)setShowcaseConfig:(TVShowcaseConfig *)a3
+- (void)setShowcaseConfig:(TVShowcaseConfig *)config
 {
-  inset = a3->inset;
-  *&self->_showcaseConfig.flavor = *&a3->flavor;
+  inset = config->inset;
+  *&self->_showcaseConfig.flavor = *&config->flavor;
   self->_showcaseConfig.inset = inset;
 }
 

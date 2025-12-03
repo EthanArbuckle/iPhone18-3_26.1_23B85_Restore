@@ -1,6 +1,6 @@
 @interface _CDPerfMetric
 - (NSDate)lastUpdate;
-- (_CDPerfMetric)initWithName:(id)a3 string:(id)a4 family:(id)a5;
+- (_CDPerfMetric)initWithName:(id)name string:(id)string family:(id)family;
 - (_CDPerfMetricFamily)family;
 - (double)averageElapsedTime;
 - (double)lastElapsedTime;
@@ -13,11 +13,11 @@
 
 @implementation _CDPerfMetric
 
-- (_CDPerfMetric)initWithName:(id)a3 string:(id)a4 family:(id)a5
+- (_CDPerfMetric)initWithName:(id)name string:(id)string family:(id)family
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  stringCopy = string;
+  familyCopy = family;
   v15.receiver = self;
   v15.super_class = _CDPerfMetric;
   v12 = [(_CDPerfMetric *)&v15 init];
@@ -25,9 +25,9 @@
   if (v12)
   {
     v12->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v12->_name, a3);
-    objc_storeStrong(&v13->_string, a4);
-    objc_storeWeak(&v13->_family, v11);
+    objc_storeStrong(&v12->_name, name);
+    objc_storeStrong(&v13->_string, string);
+    objc_storeWeak(&v13->_family, familyCopy);
   }
 
   return v13;

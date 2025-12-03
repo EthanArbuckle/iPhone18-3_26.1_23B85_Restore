@@ -1,85 +1,85 @@
 @interface _MRContentItemMetadataProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsActiveFormatJustification:(id)a3;
-- (int)StringAsAlbumTraits:(id)a3;
-- (int)StringAsFormatTierPreference:(id)a3;
-- (int)StringAsPlaylistTraits:(id)a3;
-- (int)StringAsSongTraits:(id)a3;
+- (int)StringAsActiveFormatJustification:(id)justification;
+- (int)StringAsAlbumTraits:(id)traits;
+- (int)StringAsFormatTierPreference:(id)preference;
+- (int)StringAsPlaylistTraits:(id)traits;
+- (int)StringAsSongTraits:(id)traits;
 - (int)activeFormatJustification;
 - (int)albumTraits;
 - (int)formatTierPreference;
 - (int)playlistTraits;
 - (int)songTraits;
 - (unint64_t)hash;
-- (void)addAlternativeFormats:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasActiveFormatJustification:(BOOL)a3;
-- (void)setHasAlbumTraits:(BOOL)a3;
-- (void)setHasArtworkAvailable:(BOOL)a3;
-- (void)setHasArtworkDataHeightDeprecated:(BOOL)a3;
-- (void)setHasArtworkDataWidthDeprecated:(BOOL)a3;
-- (void)setHasChapterCount:(BOOL)a3;
-- (void)setHasDefaultPlaybackRate:(BOOL)a3;
-- (void)setHasDiscNumber:(BOOL)a3;
-- (void)setHasDownloadProgress:(BOOL)a3;
-- (void)setHasDownloadState:(BOOL)a3;
-- (void)setHasEditingStyleFlags:(BOOL)a3;
-- (void)setHasElapsedTime:(BOOL)a3;
-- (void)setHasElapsedTimeTimestamp:(BOOL)a3;
-- (void)setHasEpisodeNumber:(BOOL)a3;
-- (void)setHasEpisodeType:(BOOL)a3;
-- (void)setHasExcludeFromSuggestions:(BOOL)a3;
-- (void)setHasFormatTierPreference:(BOOL)a3;
-- (void)setHasHasAlternativeFormats:(BOOL)a3;
-- (void)setHasITunesStoreAlbumArtistIdentifier:(BOOL)a3;
-- (void)setHasITunesStoreAlbumIdentifier:(BOOL)a3;
-- (void)setHasITunesStoreArtistIdentifier:(BOOL)a3;
-- (void)setHasITunesStoreIdentifier:(BOOL)a3;
-- (void)setHasITunesStoreSubscriptionIdentifier:(BOOL)a3;
-- (void)setHasInferredTimestamp:(BOOL)a3;
-- (void)setHasInfoAvailable:(BOOL)a3;
-- (void)setHasIsAdvertisement:(BOOL)a3;
-- (void)setHasIsAlwaysLive:(BOOL)a3;
-- (void)setHasIsContainer:(BOOL)a3;
-- (void)setHasIsCurrentlyPlaying:(BOOL)a3;
-- (void)setHasIsExplicitItem:(BOOL)a3;
-- (void)setHasIsInTransition:(BOOL)a3;
-- (void)setHasIsInWishList:(BOOL)a3;
-- (void)setHasIsLiked:(BOOL)a3;
-- (void)setHasIsLoading:(BOOL)a3;
-- (void)setHasIsPlayable:(BOOL)a3;
-- (void)setHasIsResolvableParticipant:(BOOL)a3;
-- (void)setHasIsSharable:(BOOL)a3;
-- (void)setHasIsSteerable:(BOOL)a3;
-- (void)setHasIsStreamingContent:(BOOL)a3;
-- (void)setHasLanguageOptionsAvailable:(BOOL)a3;
-- (void)setHasLegacyUniqueIdentifier:(BOOL)a3;
-- (void)setHasLyricsAdamID:(BOOL)a3;
-- (void)setHasLyricsAvailable:(BOOL)a3;
-- (void)setHasMediaSubType:(BOOL)a3;
-- (void)setHasMediaType:(BOOL)a3;
-- (void)setHasNumberOfSections:(BOOL)a3;
-- (void)setHasPlayCount:(BOOL)a3;
-- (void)setHasPlaybackProgress:(BOOL)a3;
-- (void)setHasPlaybackRate:(BOOL)a3;
-- (void)setHasPlaylistTraits:(BOOL)a3;
-- (void)setHasPlaylistType:(BOOL)a3;
-- (void)setHasRadioStationIdentifier:(BOOL)a3;
-- (void)setHasRadioStationType:(BOOL)a3;
-- (void)setHasReleaseDate:(BOOL)a3;
-- (void)setHasReportingAdamID:(BOOL)a3;
-- (void)setHasSeasonNumber:(BOOL)a3;
-- (void)setHasSongTraits:(BOOL)a3;
-- (void)setHasStartTime:(BOOL)a3;
-- (void)setHasTotalDiscCount:(BOOL)a3;
-- (void)setHasTotalTrackCount:(BOOL)a3;
-- (void)setHasTrackNumber:(BOOL)a3;
-- (void)setHasTranscriptAlignmentsAvailable:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAlternativeFormats:(id)formats;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasActiveFormatJustification:(BOOL)justification;
+- (void)setHasAlbumTraits:(BOOL)traits;
+- (void)setHasArtworkAvailable:(BOOL)available;
+- (void)setHasArtworkDataHeightDeprecated:(BOOL)deprecated;
+- (void)setHasArtworkDataWidthDeprecated:(BOOL)deprecated;
+- (void)setHasChapterCount:(BOOL)count;
+- (void)setHasDefaultPlaybackRate:(BOOL)rate;
+- (void)setHasDiscNumber:(BOOL)number;
+- (void)setHasDownloadProgress:(BOOL)progress;
+- (void)setHasDownloadState:(BOOL)state;
+- (void)setHasEditingStyleFlags:(BOOL)flags;
+- (void)setHasElapsedTime:(BOOL)time;
+- (void)setHasElapsedTimeTimestamp:(BOOL)timestamp;
+- (void)setHasEpisodeNumber:(BOOL)number;
+- (void)setHasEpisodeType:(BOOL)type;
+- (void)setHasExcludeFromSuggestions:(BOOL)suggestions;
+- (void)setHasFormatTierPreference:(BOOL)preference;
+- (void)setHasHasAlternativeFormats:(BOOL)formats;
+- (void)setHasITunesStoreAlbumArtistIdentifier:(BOOL)identifier;
+- (void)setHasITunesStoreAlbumIdentifier:(BOOL)identifier;
+- (void)setHasITunesStoreArtistIdentifier:(BOOL)identifier;
+- (void)setHasITunesStoreIdentifier:(BOOL)identifier;
+- (void)setHasITunesStoreSubscriptionIdentifier:(BOOL)identifier;
+- (void)setHasInferredTimestamp:(BOOL)timestamp;
+- (void)setHasInfoAvailable:(BOOL)available;
+- (void)setHasIsAdvertisement:(BOOL)advertisement;
+- (void)setHasIsAlwaysLive:(BOOL)live;
+- (void)setHasIsContainer:(BOOL)container;
+- (void)setHasIsCurrentlyPlaying:(BOOL)playing;
+- (void)setHasIsExplicitItem:(BOOL)item;
+- (void)setHasIsInTransition:(BOOL)transition;
+- (void)setHasIsInWishList:(BOOL)list;
+- (void)setHasIsLiked:(BOOL)liked;
+- (void)setHasIsLoading:(BOOL)loading;
+- (void)setHasIsPlayable:(BOOL)playable;
+- (void)setHasIsResolvableParticipant:(BOOL)participant;
+- (void)setHasIsSharable:(BOOL)sharable;
+- (void)setHasIsSteerable:(BOOL)steerable;
+- (void)setHasIsStreamingContent:(BOOL)content;
+- (void)setHasLanguageOptionsAvailable:(BOOL)available;
+- (void)setHasLegacyUniqueIdentifier:(BOOL)identifier;
+- (void)setHasLyricsAdamID:(BOOL)d;
+- (void)setHasLyricsAvailable:(BOOL)available;
+- (void)setHasMediaSubType:(BOOL)type;
+- (void)setHasMediaType:(BOOL)type;
+- (void)setHasNumberOfSections:(BOOL)sections;
+- (void)setHasPlayCount:(BOOL)count;
+- (void)setHasPlaybackProgress:(BOOL)progress;
+- (void)setHasPlaybackRate:(BOOL)rate;
+- (void)setHasPlaylistTraits:(BOOL)traits;
+- (void)setHasPlaylistType:(BOOL)type;
+- (void)setHasRadioStationIdentifier:(BOOL)identifier;
+- (void)setHasRadioStationType:(BOOL)type;
+- (void)setHasReleaseDate:(BOOL)date;
+- (void)setHasReportingAdamID:(BOOL)d;
+- (void)setHasSeasonNumber:(BOOL)number;
+- (void)setHasSongTraits:(BOOL)traits;
+- (void)setHasStartTime:(BOOL)time;
+- (void)setHasTotalDiscCount:(BOOL)count;
+- (void)setHasTotalTrackCount:(BOOL)count;
+- (void)setHasTrackNumber:(BOOL)number;
+- (void)setHasTranscriptAlignmentsAvailable:(BOOL)available;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRContentItemMetadataProtobuf
@@ -149,10 +149,10 @@
   }
 }
 
-- (void)setHasIsContainer:(BOOL)a3
+- (void)setHasIsContainer:(BOOL)container
 {
   v3 = 0x1000000000000;
-  if (!a3)
+  if (!container)
   {
     v3 = 0;
   }
@@ -160,10 +160,10 @@
   self->_has = (*&self->_has & 0xFFFEFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasIsPlayable:(BOOL)a3
+- (void)setHasIsPlayable:(BOOL)playable
 {
   v3 = 0x80000000000000;
-  if (!a3)
+  if (!playable)
   {
     v3 = 0;
   }
@@ -171,10 +171,10 @@
   self->_has = (*&self->_has & 0xFF7FFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasPlaybackProgress:(BOOL)a3
+- (void)setHasPlaybackProgress:(BOOL)progress
 {
   v3 = 0x100000000;
-  if (!a3)
+  if (!progress)
   {
     v3 = 0;
   }
@@ -182,10 +182,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFEFFFFFFFFLL | v3);
 }
 
-- (void)setHasSeasonNumber:(BOOL)a3
+- (void)setHasSeasonNumber:(BOOL)number
 {
   v3 = 0x2000000000;
-  if (!a3)
+  if (!number)
   {
     v3 = 0;
   }
@@ -193,10 +193,10 @@
   self->_has = (*&self->_has & 0xFFFFFFDFFFFFFFFFLL | v3);
 }
 
-- (void)setHasEpisodeNumber:(BOOL)a3
+- (void)setHasEpisodeNumber:(BOOL)number
 {
   v3 = 0x2000000;
-  if (!a3)
+  if (!number)
   {
     v3 = 0;
   }
@@ -204,10 +204,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFDFFFFFFLL | v3);
 }
 
-- (void)setHasReleaseDate:(BOOL)a3
+- (void)setHasReleaseDate:(BOOL)date
 {
   v3 = 4096;
-  if (!a3)
+  if (!date)
   {
     v3 = 0;
   }
@@ -215,10 +215,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFEFFFLL | v3);
 }
 
-- (void)setHasPlayCount:(BOOL)a3
+- (void)setHasPlayCount:(BOOL)count
 {
   v3 = 0x80000000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -226,10 +226,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFF7FFFFFFFLL | v3);
 }
 
-- (void)setHasIsExplicitItem:(BOOL)a3
+- (void)setHasIsExplicitItem:(BOOL)item
 {
   v3 = 0x4000000000000;
-  if (!a3)
+  if (!item)
   {
     v3 = 0;
   }
@@ -237,10 +237,10 @@
   self->_has = (*&self->_has & 0xFFFBFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasPlaylistType:(BOOL)a3
+- (void)setHasPlaylistType:(BOOL)type
 {
   v3 = 0x800000000;
-  if (!a3)
+  if (!type)
   {
     v3 = 0;
   }
@@ -248,10 +248,10 @@
   self->_has = (*&self->_has & 0xFFFFFFF7FFFFFFFFLL | v3);
 }
 
-- (void)setHasRadioStationType:(BOOL)a3
+- (void)setHasRadioStationType:(BOOL)type
 {
   v3 = 0x1000000000;
-  if (!a3)
+  if (!type)
   {
     v3 = 0;
   }
@@ -259,10 +259,10 @@
   self->_has = (*&self->_has & 0xFFFFFFEFFFFFFFFFLL | v3);
 }
 
-- (void)setHasArtworkAvailable:(BOOL)a3
+- (void)setHasArtworkAvailable:(BOOL)available
 {
   v3 = 0x40000000000;
-  if (!a3)
+  if (!available)
   {
     v3 = 0;
   }
@@ -270,10 +270,10 @@
   self->_has = (*&self->_has & 0xFFFFFBFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasInfoAvailable:(BOOL)a3
+- (void)setHasInfoAvailable:(BOOL)available
 {
   v3 = 0x200000000000;
-  if (!a3)
+  if (!available)
   {
     v3 = 0;
   }
@@ -281,10 +281,10 @@
   self->_has = (*&self->_has & 0xFFFFDFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasLanguageOptionsAvailable:(BOOL)a3
+- (void)setHasLanguageOptionsAvailable:(BOOL)available
 {
   v3 = 0x1000000000000000;
-  if (!a3)
+  if (!available)
   {
     v3 = 0;
   }
@@ -292,10 +292,10 @@
   self->_has = (*&self->_has & 0xEFFFFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasNumberOfSections:(BOOL)a3
+- (void)setHasNumberOfSections:(BOOL)sections
 {
   v3 = 0x40000000;
-  if (!a3)
+  if (!sections)
   {
     v3 = 0;
   }
@@ -303,10 +303,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFBFFFFFFFLL | v3);
 }
 
-- (void)setHasLyricsAvailable:(BOOL)a3
+- (void)setHasLyricsAvailable:(BOOL)available
 {
   v3 = 0x2000000000000000;
-  if (!a3)
+  if (!available)
   {
     v3 = 0;
   }
@@ -314,10 +314,10 @@
   self->_has = (*&self->_has & 0xDFFFFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasEditingStyleFlags:(BOOL)a3
+- (void)setHasEditingStyleFlags:(BOOL)flags
 {
   v3 = 0x1000000;
-  if (!a3)
+  if (!flags)
   {
     v3 = 0;
   }
@@ -325,10 +325,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFEFFFFFFLL | v3);
 }
 
-- (void)setHasIsStreamingContent:(BOOL)a3
+- (void)setHasIsStreamingContent:(BOOL)content
 {
   v3 = 0x800000000000000;
-  if (!a3)
+  if (!content)
   {
     v3 = 0;
   }
@@ -336,10 +336,10 @@
   self->_has = (*&self->_has & 0xF7FFFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasIsCurrentlyPlaying:(BOOL)a3
+- (void)setHasIsCurrentlyPlaying:(BOOL)playing
 {
   v3 = 0x2000000000000;
-  if (!a3)
+  if (!playing)
   {
     v3 = 0;
   }
@@ -347,10 +347,10 @@
   self->_has = (*&self->_has & 0xFFFDFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasStartTime:(BOOL)a3
+- (void)setHasStartTime:(BOOL)time
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!time)
   {
     v3 = 0;
   }
@@ -358,10 +358,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFBFFFLL | v3);
 }
 
-- (void)setHasDiscNumber:(BOOL)a3
+- (void)setHasDiscNumber:(BOOL)number
 {
   v3 = 0x200000;
-  if (!a3)
+  if (!number)
   {
     v3 = 0;
   }
@@ -369,10 +369,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFDFFFFFLL | v3);
 }
 
-- (void)setHasElapsedTime:(BOOL)a3
+- (void)setHasElapsedTime:(BOOL)time
 {
   v3 = 2;
-  if (!a3)
+  if (!time)
   {
     v3 = 0;
   }
@@ -380,10 +380,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFDLL | v3);
 }
 
-- (void)setHasIsAlwaysLive:(BOOL)a3
+- (void)setHasIsAlwaysLive:(BOOL)live
 {
   v3 = 0x800000000000;
-  if (!a3)
+  if (!live)
   {
     v3 = 0;
   }
@@ -391,10 +391,10 @@
   self->_has = (*&self->_has & 0xFFFF7FFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasPlaybackRate:(BOOL)a3
+- (void)setHasPlaybackRate:(BOOL)rate
 {
   v3 = 0x200000000;
-  if (!a3)
+  if (!rate)
   {
     v3 = 0;
   }
@@ -402,10 +402,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFDFFFFFFFFLL | v3);
 }
 
-- (void)setHasChapterCount:(BOOL)a3
+- (void)setHasChapterCount:(BOOL)count
 {
   v3 = 0x80000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -413,10 +413,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFF7FFFFLL | v3);
 }
 
-- (void)setHasTotalDiscCount:(BOOL)a3
+- (void)setHasTotalDiscCount:(BOOL)count
 {
   v3 = 0x8000000000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -424,10 +424,10 @@
   self->_has = (*&self->_has & 0xFFFFFF7FFFFFFFFFLL | v3);
 }
 
-- (void)setHasTotalTrackCount:(BOOL)a3
+- (void)setHasTotalTrackCount:(BOOL)count
 {
   v3 = 0x10000000000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -435,10 +435,10 @@
   self->_has = (*&self->_has & 0xFFFFFEFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTrackNumber:(BOOL)a3
+- (void)setHasTrackNumber:(BOOL)number
 {
   v3 = 0x20000000000;
-  if (!a3)
+  if (!number)
   {
     v3 = 0;
   }
@@ -446,10 +446,10 @@
   self->_has = (*&self->_has & 0xFFFFFDFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasIsSharable:(BOOL)a3
+- (void)setHasIsSharable:(BOOL)sharable
 {
   v3 = 0x200000000000000;
-  if (!a3)
+  if (!sharable)
   {
     v3 = 0;
   }
@@ -457,10 +457,10 @@
   self->_has = (*&self->_has & 0xFDFFFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasIsLiked:(BOOL)a3
+- (void)setHasIsLiked:(BOOL)liked
 {
   v3 = 0x20000000000000;
-  if (!a3)
+  if (!liked)
   {
     v3 = 0;
   }
@@ -468,10 +468,10 @@
   self->_has = (*&self->_has & 0xFFDFFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasIsInWishList:(BOOL)a3
+- (void)setHasIsInWishList:(BOOL)list
 {
   v3 = 0x10000000000000;
-  if (!a3)
+  if (!list)
   {
     v3 = 0;
   }
@@ -479,10 +479,10 @@
   self->_has = (*&self->_has & 0xFFEFFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasRadioStationIdentifier:(BOOL)a3
+- (void)setHasRadioStationIdentifier:(BOOL)identifier
 {
   v3 = 2048;
-  if (!a3)
+  if (!identifier)
   {
     v3 = 0;
   }
@@ -490,10 +490,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFF7FFLL | v3);
 }
 
-- (void)setHasITunesStoreIdentifier:(BOOL)a3
+- (void)setHasITunesStoreIdentifier:(BOOL)identifier
 {
   v3 = 64;
-  if (!a3)
+  if (!identifier)
   {
     v3 = 0;
   }
@@ -501,10 +501,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFBFLL | v3);
 }
 
-- (void)setHasITunesStoreSubscriptionIdentifier:(BOOL)a3
+- (void)setHasITunesStoreSubscriptionIdentifier:(BOOL)identifier
 {
   v3 = 128;
-  if (!a3)
+  if (!identifier)
   {
     v3 = 0;
   }
@@ -512,10 +512,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFF7FLL | v3);
 }
 
-- (void)setHasITunesStoreArtistIdentifier:(BOOL)a3
+- (void)setHasITunesStoreArtistIdentifier:(BOOL)identifier
 {
   v3 = 32;
-  if (!a3)
+  if (!identifier)
   {
     v3 = 0;
   }
@@ -523,10 +523,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFDFLL | v3);
 }
 
-- (void)setHasITunesStoreAlbumIdentifier:(BOOL)a3
+- (void)setHasITunesStoreAlbumIdentifier:(BOOL)identifier
 {
   v3 = 16;
-  if (!a3)
+  if (!identifier)
   {
     v3 = 0;
   }
@@ -534,10 +534,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFEFLL | v3);
 }
 
-- (void)setHasDefaultPlaybackRate:(BOOL)a3
+- (void)setHasDefaultPlaybackRate:(BOOL)rate
 {
   v3 = 0x100000;
-  if (!a3)
+  if (!rate)
   {
     v3 = 0;
   }
@@ -545,10 +545,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFEFFFFFLL | v3);
 }
 
-- (void)setHasDownloadState:(BOOL)a3
+- (void)setHasDownloadState:(BOOL)state
 {
   v3 = 0x800000;
-  if (!a3)
+  if (!state)
   {
     v3 = 0;
   }
@@ -556,10 +556,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFF7FFFFFLL | v3);
 }
 
-- (void)setHasDownloadProgress:(BOOL)a3
+- (void)setHasDownloadProgress:(BOOL)progress
 {
   v3 = 0x400000;
-  if (!a3)
+  if (!progress)
   {
     v3 = 0;
   }
@@ -567,10 +567,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFBFFFFFLL | v3);
 }
 
-- (void)setHasMediaType:(BOOL)a3
+- (void)setHasMediaType:(BOOL)type
 {
   v3 = 0x20000000;
-  if (!a3)
+  if (!type)
   {
     v3 = 0;
   }
@@ -578,10 +578,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFDFFFFFFFLL | v3);
 }
 
-- (void)setHasMediaSubType:(BOOL)a3
+- (void)setHasMediaSubType:(BOOL)type
 {
   v3 = 0x10000000;
-  if (!a3)
+  if (!type)
   {
     v3 = 0;
   }
@@ -589,10 +589,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFEFFFFFFFLL | v3);
 }
 
-- (void)setHasIsSteerable:(BOOL)a3
+- (void)setHasIsSteerable:(BOOL)steerable
 {
   v3 = 0x400000000000000;
-  if (!a3)
+  if (!steerable)
   {
     v3 = 0;
   }
@@ -600,10 +600,10 @@
   self->_has = (*&self->_has & 0xFBFFFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasElapsedTimeTimestamp:(BOOL)a3
+- (void)setHasElapsedTimeTimestamp:(BOOL)timestamp
 {
   v3 = 4;
-  if (!a3)
+  if (!timestamp)
   {
     v3 = 0;
   }
@@ -611,10 +611,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFBLL | v3);
 }
 
-- (void)setHasInferredTimestamp:(BOOL)a3
+- (void)setHasInferredTimestamp:(BOOL)timestamp
 {
   v3 = 256;
-  if (!a3)
+  if (!timestamp)
   {
     v3 = 0;
   }
@@ -622,10 +622,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFEFFLL | v3);
 }
 
-- (void)setHasArtworkDataWidthDeprecated:(BOOL)a3
+- (void)setHasArtworkDataWidthDeprecated:(BOOL)deprecated
 {
   v3 = 0x40000;
-  if (!a3)
+  if (!deprecated)
   {
     v3 = 0;
   }
@@ -633,10 +633,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFBFFFFLL | v3);
 }
 
-- (void)setHasArtworkDataHeightDeprecated:(BOOL)a3
+- (void)setHasArtworkDataHeightDeprecated:(BOOL)deprecated
 {
   v3 = 0x20000;
-  if (!a3)
+  if (!deprecated)
   {
     v3 = 0;
   }
@@ -644,10 +644,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFDFFFFLL | v3);
 }
 
-- (void)setHasIsLoading:(BOOL)a3
+- (void)setHasIsLoading:(BOOL)loading
 {
   v3 = 0x40000000000000;
-  if (!a3)
+  if (!loading)
   {
     v3 = 0;
   }
@@ -655,10 +655,10 @@
   self->_has = (*&self->_has & 0xFFBFFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasLegacyUniqueIdentifier:(BOOL)a3
+- (void)setHasLegacyUniqueIdentifier:(BOOL)identifier
 {
   v3 = 512;
-  if (!a3)
+  if (!identifier)
   {
     v3 = 0;
   }
@@ -666,10 +666,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFDFFLL | v3);
 }
 
-- (void)setHasEpisodeType:(BOOL)a3
+- (void)setHasEpisodeType:(BOOL)type
 {
   v3 = 0x4000000;
-  if (!a3)
+  if (!type)
   {
     v3 = 0;
   }
@@ -677,10 +677,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFBFFFFFFLL | v3);
 }
 
-- (void)setHasSongTraits:(BOOL)a3
+- (void)setHasSongTraits:(BOOL)traits
 {
   v3 = 0x4000000000;
-  if (!a3)
+  if (!traits)
   {
     v3 = 0;
   }
@@ -688,40 +688,40 @@
   self->_has = (*&self->_has & 0xFFFFFFBFFFFFFFFFLL | v3);
 }
 
-- (int)StringAsSongTraits:(id)a3
+- (int)StringAsSongTraits:(id)traits
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  traitsCopy = traits;
+  if ([traitsCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"AppleDigitalMaster"])
+  else if ([traitsCopy isEqualToString:@"AppleDigitalMaster"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Loseless"])
+  else if ([traitsCopy isEqualToString:@"Loseless"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"HighResolutionLossless"])
+  else if ([traitsCopy isEqualToString:@"HighResolutionLossless"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Spatial"])
+  else if ([traitsCopy isEqualToString:@"Spatial"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Atmos"])
+  else if ([traitsCopy isEqualToString:@"Atmos"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"Surround"])
+  else if ([traitsCopy isEqualToString:@"Surround"])
   {
     v4 = 32;
   }
@@ -734,10 +734,10 @@
   return v4;
 }
 
-- (void)setHasAlbumTraits:(BOOL)a3
+- (void)setHasAlbumTraits:(BOOL)traits
 {
   v3 = 0x10000;
-  if (!a3)
+  if (!traits)
   {
     v3 = 0;
   }
@@ -745,40 +745,40 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFEFFFFLL | v3);
 }
 
-- (int)StringAsAlbumTraits:(id)a3
+- (int)StringAsAlbumTraits:(id)traits
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  traitsCopy = traits;
+  if ([traitsCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"AppleDigitalMaster"])
+  else if ([traitsCopy isEqualToString:@"AppleDigitalMaster"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Loseless"])
+  else if ([traitsCopy isEqualToString:@"Loseless"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"HighResolutionLossless"])
+  else if ([traitsCopy isEqualToString:@"HighResolutionLossless"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Spatial"])
+  else if ([traitsCopy isEqualToString:@"Spatial"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Atmos"])
+  else if ([traitsCopy isEqualToString:@"Atmos"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"Surround"])
+  else if ([traitsCopy isEqualToString:@"Surround"])
   {
     v4 = 32;
   }
@@ -791,10 +791,10 @@
   return v4;
 }
 
-- (void)setHasPlaylistTraits:(BOOL)a3
+- (void)setHasPlaylistTraits:(BOOL)traits
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!traits)
   {
     v3 = 0;
   }
@@ -802,30 +802,30 @@
   self->_has = (*&self->_has & 0xFFFFFFFBFFFFFFFFLL | v3);
 }
 
-- (int)StringAsPlaylistTraits:(id)a3
+- (int)StringAsPlaylistTraits:(id)traits
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  traitsCopy = traits;
+  if ([traitsCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Spatial"])
+  else if ([traitsCopy isEqualToString:@"Spatial"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Atmos"])
+  else if ([traitsCopy isEqualToString:@"Atmos"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"Surround"])
+  else if ([traitsCopy isEqualToString:@"Surround"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"Sing"])
+  else if ([traitsCopy isEqualToString:@"Sing"])
   {
     v4 = 256;
   }
@@ -838,10 +838,10 @@
   return v4;
 }
 
-- (void)setHasActiveFormatJustification:(BOOL)a3
+- (void)setHasActiveFormatJustification:(BOOL)justification
 {
   v3 = 0x8000;
-  if (!a3)
+  if (!justification)
   {
     v3 = 0;
   }
@@ -849,40 +849,40 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFF7FFFLL | v3);
 }
 
-- (int)StringAsActiveFormatJustification:(id)a3
+- (int)StringAsActiveFormatJustification:(id)justification
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  justificationCopy = justification;
+  if ([justificationCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Unavailable"])
+  else if ([justificationCopy isEqualToString:@"Unavailable"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"UserPreference"])
+  else if ([justificationCopy isEqualToString:@"UserPreference"])
   {
     v4 = 100;
   }
 
-  else if ([v3 isEqualToString:@"UserDownload"])
+  else if ([justificationCopy isEqualToString:@"UserDownload"])
   {
     v4 = 101;
   }
 
-  else if ([v3 isEqualToString:@"RouteIncompatible"])
+  else if ([justificationCopy isEqualToString:@"RouteIncompatible"])
   {
     v4 = 500;
   }
 
-  else if ([v3 isEqualToString:@"RouteUnknownCompatibility"])
+  else if ([justificationCopy isEqualToString:@"RouteUnknownCompatibility"])
   {
     v4 = 501;
   }
 
-  else if ([v3 isEqualToString:@"BandwidthInsufficient"])
+  else if ([justificationCopy isEqualToString:@"BandwidthInsufficient"])
   {
     v4 = 1000;
   }
@@ -895,10 +895,10 @@
   return v4;
 }
 
-- (void)setHasFormatTierPreference:(BOOL)a3
+- (void)setHasFormatTierPreference:(BOOL)preference
 {
   v3 = 0x8000000;
-  if (!a3)
+  if (!preference)
   {
     v3 = 0;
   }
@@ -906,30 +906,30 @@
   self->_has = (*&self->_has & 0xFFFFFFFFF7FFFFFFLL | v3);
 }
 
-- (int)StringAsFormatTierPreference:(id)a3
+- (int)StringAsFormatTierPreference:(id)preference
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LowBandwidthStereo"])
+  preferenceCopy = preference;
+  if ([preferenceCopy isEqualToString:@"LowBandwidthStereo"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"HighQualityStereo"])
+  else if ([preferenceCopy isEqualToString:@"HighQualityStereo"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Lossless"])
+  else if ([preferenceCopy isEqualToString:@"Lossless"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"HighResolutionLossless"])
+  else if ([preferenceCopy isEqualToString:@"HighResolutionLossless"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Spatial"])
+  else if ([preferenceCopy isEqualToString:@"Spatial"])
   {
     v4 = 16;
   }
@@ -942,28 +942,28 @@
   return v4;
 }
 
-- (void)addAlternativeFormats:(id)a3
+- (void)addAlternativeFormats:(id)formats
 {
-  v4 = a3;
+  formatsCopy = formats;
   alternativeFormats = self->_alternativeFormats;
-  v8 = v4;
+  v8 = formatsCopy;
   if (!alternativeFormats)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_alternativeFormats;
     self->_alternativeFormats = v6;
 
-    v4 = v8;
+    formatsCopy = v8;
     alternativeFormats = self->_alternativeFormats;
   }
 
-  [(NSMutableArray *)alternativeFormats addObject:v4];
+  [(NSMutableArray *)alternativeFormats addObject:formatsCopy];
 }
 
-- (void)setHasIsAdvertisement:(BOOL)a3
+- (void)setHasIsAdvertisement:(BOOL)advertisement
 {
   v3 = 0x400000000000;
-  if (!a3)
+  if (!advertisement)
   {
     v3 = 0;
   }
@@ -971,10 +971,10 @@
   self->_has = (*&self->_has & 0xFFFFBFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasHasAlternativeFormats:(BOOL)a3
+- (void)setHasHasAlternativeFormats:(BOOL)formats
 {
   v3 = 0x100000000000;
-  if (!a3)
+  if (!formats)
   {
     v3 = 0;
   }
@@ -982,10 +982,10 @@
   self->_has = (*&self->_has & 0xFFFFEFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasReportingAdamID:(BOOL)a3
+- (void)setHasReportingAdamID:(BOOL)d
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!d)
   {
     v3 = 0;
   }
@@ -993,10 +993,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFDFFFLL | v3);
 }
 
-- (void)setHasLyricsAdamID:(BOOL)a3
+- (void)setHasLyricsAdamID:(BOOL)d
 {
   v3 = 1024;
-  if (!a3)
+  if (!d)
   {
     v3 = 0;
   }
@@ -1004,10 +1004,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFBFFLL | v3);
 }
 
-- (void)setHasITunesStoreAlbumArtistIdentifier:(BOOL)a3
+- (void)setHasITunesStoreAlbumArtistIdentifier:(BOOL)identifier
 {
   v3 = 8;
-  if (!a3)
+  if (!identifier)
   {
     v3 = 0;
   }
@@ -1015,10 +1015,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFF7 | v3);
 }
 
-- (void)setHasIsResolvableParticipant:(BOOL)a3
+- (void)setHasIsResolvableParticipant:(BOOL)participant
 {
   v3 = 0x100000000000000;
-  if (!a3)
+  if (!participant)
   {
     v3 = 0;
   }
@@ -1026,10 +1026,10 @@
   self->_has = (*&self->_has & 0xFEFFFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasIsInTransition:(BOOL)a3
+- (void)setHasIsInTransition:(BOOL)transition
 {
   v3 = 0x8000000000000;
-  if (!a3)
+  if (!transition)
   {
     v3 = 0;
   }
@@ -1037,10 +1037,10 @@
   self->_has = (*&self->_has & 0xFFF7FFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasExcludeFromSuggestions:(BOOL)a3
+- (void)setHasExcludeFromSuggestions:(BOOL)suggestions
 {
   v3 = 0x80000000000;
-  if (!a3)
+  if (!suggestions)
   {
     v3 = 0;
   }
@@ -1048,10 +1048,10 @@
   self->_has = (*&self->_has & 0xFFFFF7FFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTranscriptAlignmentsAvailable:(BOOL)a3
+- (void)setHasTranscriptAlignmentsAvailable:(BOOL)available
 {
   v3 = 0x4000000000000000;
-  if (!a3)
+  if (!available)
   {
     v3 = 0;
   }
@@ -1065,8 +1065,8 @@
   v8.receiver = self;
   v8.super_class = _MRContentItemMetadataProtobuf;
   v4 = [(_MRContentItemMetadataProtobuf *)&v8 description];
-  v5 = [(_MRContentItemMetadataProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRContentItemMetadataProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -1074,12 +1074,12 @@
 - (id)dictionaryRepresentation
 {
   v152 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v5 = dictionary;
   title = self->_title;
   if (title)
   {
-    [v3 setObject:title forKey:@"title"];
+    [dictionary setObject:title forKey:@"title"];
   }
 
   subtitle = self->_subtitle;
@@ -2046,15 +2046,15 @@ LABEL_225:
   preferredFormat = self->_preferredFormat;
   if (preferredFormat)
   {
-    v108 = [(_MRAudioFormatProtobuf *)preferredFormat dictionaryRepresentation];
-    [v5 setObject:v108 forKey:@"preferredFormat"];
+    dictionaryRepresentation = [(_MRAudioFormatProtobuf *)preferredFormat dictionaryRepresentation];
+    [v5 setObject:dictionaryRepresentation forKey:@"preferredFormat"];
   }
 
   activeFormat = self->_activeFormat;
   if (activeFormat)
   {
-    v110 = [(_MRAudioFormatProtobuf *)activeFormat dictionaryRepresentation];
-    [v5 setObject:v110 forKey:@"activeFormat"];
+    dictionaryRepresentation2 = [(_MRAudioFormatProtobuf *)activeFormat dictionaryRepresentation];
+    [v5 setObject:dictionaryRepresentation2 forKey:@"activeFormat"];
   }
 
   v111 = self->_has;
@@ -2166,8 +2166,8 @@ LABEL_262:
   audioRoute = self->_audioRoute;
   if (audioRoute)
   {
-    v117 = [(_MRAudioRouteProtobuf *)audioRoute dictionaryRepresentation];
-    [v5 setObject:v117 forKey:@"audioRoute"];
+    dictionaryRepresentation3 = [(_MRAudioRouteProtobuf *)audioRoute dictionaryRepresentation];
+    [v5 setObject:dictionaryRepresentation3 forKey:@"audioRoute"];
   }
 
   if ([(NSMutableArray *)self->_alternativeFormats count])
@@ -2192,8 +2192,8 @@ LABEL_262:
             objc_enumerationMutation(v119);
           }
 
-          v124 = [*(*(&v147 + 1) + 8 * i) dictionaryRepresentation];
-          [v118 addObject:v124];
+          dictionaryRepresentation4 = [*(*(&v147 + 1) + 8 * i) dictionaryRepresentation];
+          [v118 addObject:dictionaryRepresentation4];
         }
 
         v121 = [(NSMutableArray *)v119 countByEnumeratingWithState:&v147 objects:v151 count:16];
@@ -2344,10 +2344,10 @@ LABEL_297:
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v97 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_title)
   {
     PBDataWriterWriteStringField();
@@ -3275,27 +3275,27 @@ LABEL_181:
   v56 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v27 = v4;
+  toCopy = to;
+  v27 = toCopy;
   if (self->_title)
   {
-    [v4 setTitle:?];
-    v4 = v27;
+    [toCopy setTitle:?];
+    toCopy = v27;
   }
 
   if (self->_subtitle)
   {
     [v27 setSubtitle:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   has = self->_has;
   if ((*&has & 0x1000000000000) != 0)
   {
-    *(v4 + 630) = self->_isContainer;
-    *(v4 + 81) |= 0x1000000000000uLL;
+    *(toCopy + 630) = self->_isContainer;
+    *(toCopy + 81) |= 0x1000000000000uLL;
     has = self->_has;
     if ((*&has & 0x80000000000000) == 0)
     {
@@ -3314,45 +3314,45 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 637) = self->_isPlayable;
-  *(v4 + 81) |= 0x80000000000000uLL;
+  *(toCopy + 637) = self->_isPlayable;
+  *(toCopy + 81) |= 0x80000000000000uLL;
   if ((*&self->_has & 0x100000000) != 0)
   {
 LABEL_8:
-    *(v4 + 117) = LODWORD(self->_playbackProgress);
-    *(v4 + 81) |= 0x100000000uLL;
+    *(toCopy + 117) = LODWORD(self->_playbackProgress);
+    *(toCopy + 81) |= 0x100000000uLL;
   }
 
 LABEL_9:
   if (self->_albumName)
   {
     [v27 setAlbumName:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   if (self->_trackArtistName)
   {
     [v27 setTrackArtistName:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   if (self->_albumArtistName)
   {
     [v27 setAlbumArtistName:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   if (self->_directorName)
   {
     [v27 setDirectorName:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   v6 = self->_has;
   if ((*&v6 & 0x2000000000) != 0)
   {
-    *(v4 + 133) = self->_seasonNumber;
-    *(v4 + 81) |= 0x2000000000uLL;
+    *(toCopy + 133) = self->_seasonNumber;
+    *(toCopy + 81) |= 0x2000000000uLL;
     v6 = self->_has;
     if ((*&v6 & 0x2000000) == 0)
     {
@@ -3371,8 +3371,8 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  *(v4 + 93) = self->_episodeNumber;
-  *(v4 + 81) |= 0x2000000uLL;
+  *(toCopy + 93) = self->_episodeNumber;
+  *(toCopy + 81) |= 0x2000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x1000) == 0)
   {
@@ -3386,8 +3386,8 @@ LABEL_20:
   }
 
 LABEL_190:
-  *(v4 + 13) = *&self->_releaseDate;
-  *(v4 + 81) |= 0x1000uLL;
+  *(toCopy + 13) = *&self->_releaseDate;
+  *(toCopy + 81) |= 0x1000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x80000000) == 0)
   {
@@ -3401,27 +3401,27 @@ LABEL_21:
   }
 
 LABEL_191:
-  *(v4 + 116) = self->_playCount;
-  *(v4 + 81) |= 0x80000000uLL;
+  *(toCopy + 116) = self->_playCount;
+  *(toCopy + 81) |= 0x80000000uLL;
   if (*&self->_has)
   {
 LABEL_22:
-    *(v4 + 1) = *&self->_duration;
-    *(v4 + 81) |= 1uLL;
+    *(toCopy + 1) = *&self->_duration;
+    *(toCopy + 81) |= 1uLL;
   }
 
 LABEL_23:
   if (self->_localizedContentRating)
   {
     [v27 setLocalizedContentRating:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   v7 = self->_has;
   if ((*&v7 & 0x4000000000000) != 0)
   {
-    *(v4 + 632) = self->_isExplicitItem;
-    *(v4 + 81) |= 0x4000000000000uLL;
+    *(toCopy + 632) = self->_isExplicitItem;
+    *(toCopy + 81) |= 0x4000000000000uLL;
     v7 = self->_has;
     if ((*&v7 & 0x800000000) == 0)
     {
@@ -3440,8 +3440,8 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  *(v4 + 120) = self->_playlistType;
-  *(v4 + 81) |= 0x800000000uLL;
+  *(toCopy + 120) = self->_playlistType;
+  *(toCopy + 81) |= 0x800000000uLL;
   v7 = self->_has;
   if ((*&v7 & 0x1000000000) == 0)
   {
@@ -3455,8 +3455,8 @@ LABEL_28:
   }
 
 LABEL_195:
-  *(v4 + 132) = self->_radioStationType;
-  *(v4 + 81) |= 0x1000000000uLL;
+  *(toCopy + 132) = self->_radioStationType;
+  *(toCopy + 81) |= 0x1000000000uLL;
   v7 = self->_has;
   if ((*&v7 & 0x40000000000) == 0)
   {
@@ -3470,8 +3470,8 @@ LABEL_29:
   }
 
 LABEL_196:
-  *(v4 + 624) = self->_artworkAvailable;
-  *(v4 + 81) |= 0x40000000000uLL;
+  *(toCopy + 624) = self->_artworkAvailable;
+  *(toCopy + 81) |= 0x40000000000uLL;
   v7 = self->_has;
   if ((*&v7 & 0x200000000000) == 0)
   {
@@ -3485,8 +3485,8 @@ LABEL_30:
   }
 
 LABEL_197:
-  *(v4 + 627) = self->_infoAvailable;
-  *(v4 + 81) |= 0x200000000000uLL;
+  *(toCopy + 627) = self->_infoAvailable;
+  *(toCopy + 81) |= 0x200000000000uLL;
   v7 = self->_has;
   if ((*&v7 & 0x1000000000000000) == 0)
   {
@@ -3500,8 +3500,8 @@ LABEL_31:
   }
 
 LABEL_198:
-  *(v4 + 642) = self->_languageOptionsAvailable;
-  *(v4 + 81) |= 0x1000000000000000uLL;
+  *(toCopy + 642) = self->_languageOptionsAvailable;
+  *(toCopy + 81) |= 0x1000000000000000uLL;
   v7 = self->_has;
   if ((*&v7 & 0x40000000) == 0)
   {
@@ -3515,8 +3515,8 @@ LABEL_32:
   }
 
 LABEL_199:
-  *(v4 + 110) = self->_numberOfSections;
-  *(v4 + 81) |= 0x40000000uLL;
+  *(toCopy + 110) = self->_numberOfSections;
+  *(toCopy + 81) |= 0x40000000uLL;
   v7 = self->_has;
   if ((*&v7 & 0x2000000000000000) == 0)
   {
@@ -3530,8 +3530,8 @@ LABEL_33:
   }
 
 LABEL_200:
-  *(v4 + 643) = self->_lyricsAvailable;
-  *(v4 + 81) |= 0x2000000000000000uLL;
+  *(toCopy + 643) = self->_lyricsAvailable;
+  *(toCopy + 81) |= 0x2000000000000000uLL;
   v7 = self->_has;
   if ((*&v7 & 0x1000000) == 0)
   {
@@ -3545,8 +3545,8 @@ LABEL_34:
   }
 
 LABEL_201:
-  *(v4 + 92) = self->_editingStyleFlags;
-  *(v4 + 81) |= 0x1000000uLL;
+  *(toCopy + 92) = self->_editingStyleFlags;
+  *(toCopy + 81) |= 0x1000000uLL;
   v7 = self->_has;
   if ((*&v7 & 0x800000000000000) == 0)
   {
@@ -3560,77 +3560,77 @@ LABEL_35:
   }
 
 LABEL_202:
-  *(v4 + 641) = self->_isStreamingContent;
-  *(v4 + 81) |= 0x800000000000000uLL;
+  *(toCopy + 641) = self->_isStreamingContent;
+  *(toCopy + 81) |= 0x800000000000000uLL;
   if ((*&self->_has & 0x2000000000000) != 0)
   {
 LABEL_36:
-    *(v4 + 631) = self->_isCurrentlyPlaying;
-    *(v4 + 81) |= 0x2000000000000uLL;
+    *(toCopy + 631) = self->_isCurrentlyPlaying;
+    *(toCopy + 81) |= 0x2000000000000uLL;
   }
 
 LABEL_37:
   if (self->_collectionIdentifier)
   {
     [v27 setCollectionIdentifier:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   if (self->_profileIdentifier)
   {
     [v27 setProfileIdentifier:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   if ((*(&self->_has + 1) & 0x40) != 0)
   {
-    *(v4 + 15) = *&self->_startTime;
-    *(v4 + 81) |= 0x4000uLL;
+    *(toCopy + 15) = *&self->_startTime;
+    *(toCopy + 81) |= 0x4000uLL;
   }
 
   if (self->_artworkMIMEType)
   {
     [v27 setArtworkMIMEType:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   if (self->_assetURLString)
   {
     [v27 setAssetURLString:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   if (self->_composer)
   {
     [v27 setComposer:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   v8 = self->_has;
   if ((*&v8 & 0x200000) != 0)
   {
-    *(v4 + 86) = self->_discNumber;
-    *(v4 + 81) |= 0x200000uLL;
+    *(toCopy + 86) = self->_discNumber;
+    *(toCopy + 81) |= 0x200000uLL;
     v8 = self->_has;
   }
 
   if ((*&v8 & 2) != 0)
   {
-    *(v4 + 2) = *&self->_elapsedTime;
-    *(v4 + 81) |= 2uLL;
+    *(toCopy + 2) = *&self->_elapsedTime;
+    *(toCopy + 81) |= 2uLL;
   }
 
   if (self->_genre)
   {
     [v27 setGenre:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   v9 = self->_has;
   if ((*&v9 & 0x800000000000) != 0)
   {
-    *(v4 + 629) = self->_isAlwaysLive;
-    *(v4 + 81) |= 0x800000000000uLL;
+    *(toCopy + 629) = self->_isAlwaysLive;
+    *(toCopy + 81) |= 0x800000000000uLL;
     v9 = self->_has;
     if ((*&v9 & 0x200000000) == 0)
     {
@@ -3649,8 +3649,8 @@ LABEL_57:
     goto LABEL_57;
   }
 
-  *(v4 + 118) = LODWORD(self->_playbackRate);
-  *(v4 + 81) |= 0x200000000uLL;
+  *(toCopy + 118) = LODWORD(self->_playbackRate);
+  *(toCopy + 81) |= 0x200000000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x80000) == 0)
   {
@@ -3664,8 +3664,8 @@ LABEL_58:
   }
 
 LABEL_206:
-  *(v4 + 66) = self->_chapterCount;
-  *(v4 + 81) |= 0x80000uLL;
+  *(toCopy + 66) = self->_chapterCount;
+  *(toCopy + 81) |= 0x80000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x8000000000) == 0)
   {
@@ -3679,8 +3679,8 @@ LABEL_59:
   }
 
 LABEL_207:
-  *(v4 + 146) = self->_totalDiscCount;
-  *(v4 + 81) |= 0x8000000000uLL;
+  *(toCopy + 146) = self->_totalDiscCount;
+  *(toCopy + 81) |= 0x8000000000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x10000000000) == 0)
   {
@@ -3694,27 +3694,27 @@ LABEL_60:
   }
 
 LABEL_208:
-  *(v4 + 147) = self->_totalTrackCount;
-  *(v4 + 81) |= 0x10000000000uLL;
+  *(toCopy + 147) = self->_totalTrackCount;
+  *(toCopy + 81) |= 0x10000000000uLL;
   if ((*&self->_has & 0x20000000000) != 0)
   {
 LABEL_61:
-    *(v4 + 150) = self->_trackNumber;
-    *(v4 + 81) |= 0x20000000000uLL;
+    *(toCopy + 150) = self->_trackNumber;
+    *(toCopy + 81) |= 0x20000000000uLL;
   }
 
 LABEL_62:
   if (self->_contentIdentifier)
   {
     [v27 setContentIdentifier:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   v10 = self->_has;
   if ((*&v10 & 0x200000000000000) != 0)
   {
-    *(v4 + 639) = self->_isSharable;
-    *(v4 + 81) |= 0x200000000000000uLL;
+    *(toCopy + 639) = self->_isSharable;
+    *(toCopy + 81) |= 0x200000000000000uLL;
     v10 = self->_has;
     if ((*&v10 & 0x20000000000000) == 0)
     {
@@ -3733,8 +3733,8 @@ LABEL_66:
     goto LABEL_66;
   }
 
-  *(v4 + 635) = self->_isLiked;
-  *(v4 + 81) |= 0x20000000000000uLL;
+  *(toCopy + 635) = self->_isLiked;
+  *(toCopy + 81) |= 0x20000000000000uLL;
   v10 = self->_has;
   if ((*&v10 & 0x10000000000000) == 0)
   {
@@ -3748,33 +3748,33 @@ LABEL_67:
   }
 
 LABEL_212:
-  *(v4 + 634) = self->_isInWishList;
-  *(v4 + 81) |= 0x10000000000000uLL;
+  *(toCopy + 634) = self->_isInWishList;
+  *(toCopy + 81) |= 0x10000000000000uLL;
   if ((*&self->_has & 0x800) != 0)
   {
 LABEL_68:
-    *(v4 + 12) = self->_radioStationIdentifier;
-    *(v4 + 81) |= 0x800uLL;
+    *(toCopy + 12) = self->_radioStationIdentifier;
+    *(toCopy + 81) |= 0x800uLL;
   }
 
 LABEL_69:
   if (self->_radioStationName)
   {
     [v27 setRadioStationName:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   if (self->_radioStationString)
   {
     [v27 setRadioStationString:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   v11 = self->_has;
   if ((*&v11 & 0x40) != 0)
   {
-    *(v4 + 7) = self->_iTunesStoreIdentifier;
-    *(v4 + 81) |= 0x40uLL;
+    *(toCopy + 7) = self->_iTunesStoreIdentifier;
+    *(toCopy + 81) |= 0x40uLL;
     v11 = self->_has;
     if ((*&v11 & 0x80) == 0)
     {
@@ -3793,8 +3793,8 @@ LABEL_75:
     goto LABEL_75;
   }
 
-  *(v4 + 8) = self->_iTunesStoreSubscriptionIdentifier;
-  *(v4 + 81) |= 0x80uLL;
+  *(toCopy + 8) = self->_iTunesStoreSubscriptionIdentifier;
+  *(toCopy + 81) |= 0x80uLL;
   v11 = self->_has;
   if ((*&v11 & 0x20) == 0)
   {
@@ -3808,27 +3808,27 @@ LABEL_76:
   }
 
 LABEL_216:
-  *(v4 + 6) = self->_iTunesStoreArtistIdentifier;
-  *(v4 + 81) |= 0x20uLL;
+  *(toCopy + 6) = self->_iTunesStoreArtistIdentifier;
+  *(toCopy + 81) |= 0x20uLL;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_77:
-    *(v4 + 5) = self->_iTunesStoreAlbumIdentifier;
-    *(v4 + 81) |= 0x10uLL;
+    *(toCopy + 5) = self->_iTunesStoreAlbumIdentifier;
+    *(toCopy + 81) |= 0x10uLL;
   }
 
 LABEL_78:
   if (self->_purchaseInfoData)
   {
     [v27 setPurchaseInfoData:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   v12 = self->_has;
   if ((*&v12 & 0x100000) != 0)
   {
-    *(v4 + 80) = LODWORD(self->_defaultPlaybackRate);
-    *(v4 + 81) |= 0x100000uLL;
+    *(toCopy + 80) = LODWORD(self->_defaultPlaybackRate);
+    *(toCopy + 81) |= 0x100000uLL;
     v12 = self->_has;
     if ((*&v12 & 0x800000) == 0)
     {
@@ -3847,185 +3847,185 @@ LABEL_82:
     goto LABEL_82;
   }
 
-  *(v4 + 88) = self->_downloadState;
-  *(v4 + 81) |= 0x800000uLL;
+  *(toCopy + 88) = self->_downloadState;
+  *(toCopy + 81) |= 0x800000uLL;
   if ((*&self->_has & 0x400000) != 0)
   {
 LABEL_83:
-    *(v4 + 87) = LODWORD(self->_downloadProgress);
-    *(v4 + 81) |= 0x400000uLL;
+    *(toCopy + 87) = LODWORD(self->_downloadProgress);
+    *(toCopy + 81) |= 0x400000uLL;
   }
 
 LABEL_84:
   if (self->_appMetricsData)
   {
     [v27 setAppMetricsData:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   if (self->_seriesName)
   {
     [v27 setSeriesName:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   v13 = self->_has;
   if ((*&v13 & 0x20000000) != 0)
   {
-    *(v4 + 107) = self->_mediaType;
-    *(v4 + 81) |= 0x20000000uLL;
+    *(toCopy + 107) = self->_mediaType;
+    *(toCopy + 81) |= 0x20000000uLL;
     v13 = self->_has;
   }
 
   if ((*&v13 & 0x10000000) != 0)
   {
-    *(v4 + 106) = self->_mediaSubType;
-    *(v4 + 81) |= 0x10000000uLL;
+    *(toCopy + 106) = self->_mediaSubType;
+    *(toCopy + 81) |= 0x10000000uLL;
   }
 
   if (self->_nowPlayingInfoData)
   {
     [v27 setNowPlayingInfoData:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   if (self->_userInfoData)
   {
     [v27 setUserInfoData:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   if ((*(&self->_has + 7) & 4) != 0)
   {
-    *(v4 + 640) = self->_isSteerable;
-    *(v4 + 81) |= 0x400000000000000uLL;
+    *(toCopy + 640) = self->_isSteerable;
+    *(toCopy + 81) |= 0x400000000000000uLL;
   }
 
   if (self->_artworkURL)
   {
     [v27 setArtworkURL:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   if (self->_lyricsURL)
   {
     [v27 setLyricsURL:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   if (self->_deviceSpecificUserInfoData)
   {
     [v27 setDeviceSpecificUserInfoData:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   if (self->_collectionInfoData)
   {
     [v27 setCollectionInfoData:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   v14 = self->_has;
   if ((*&v14 & 4) != 0)
   {
-    *(v4 + 3) = *&self->_elapsedTimeTimestamp;
-    *(v4 + 81) |= 4uLL;
+    *(toCopy + 3) = *&self->_elapsedTimeTimestamp;
+    *(toCopy + 81) |= 4uLL;
     v14 = self->_has;
   }
 
   if ((*&v14 & 0x100) != 0)
   {
-    *(v4 + 9) = *&self->_inferredTimestamp;
-    *(v4 + 81) |= 0x100uLL;
+    *(toCopy + 9) = *&self->_inferredTimestamp;
+    *(toCopy + 81) |= 0x100uLL;
   }
 
   if (self->_serviceIdentifier)
   {
     [v27 setServiceIdentifier:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   v15 = self->_has;
   if ((*&v15 & 0x40000) != 0)
   {
-    *(v4 + 49) = self->_artworkDataWidthDeprecated;
-    *(v4 + 81) |= 0x40000uLL;
+    *(toCopy + 49) = self->_artworkDataWidthDeprecated;
+    *(toCopy + 81) |= 0x40000uLL;
     v15 = self->_has;
   }
 
   if ((*&v15 & 0x20000) != 0)
   {
-    *(v4 + 48) = self->_artworkDataHeightDeprecated;
-    *(v4 + 81) |= 0x20000uLL;
+    *(toCopy + 48) = self->_artworkDataHeightDeprecated;
+    *(toCopy + 81) |= 0x20000uLL;
   }
 
   if (self->_currentPlaybackDateData)
   {
     [v27 setCurrentPlaybackDateData:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   if (self->_artworkIdentifier)
   {
     [v27 setArtworkIdentifier:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   if ((*(&self->_has + 6) & 0x40) != 0)
   {
-    *(v4 + 636) = self->_isLoading;
-    *(v4 + 81) |= 0x40000000000000uLL;
+    *(toCopy + 636) = self->_isLoading;
+    *(toCopy + 81) |= 0x40000000000000uLL;
   }
 
   if (self->_artworkURLTemplatesData)
   {
     [v27 setArtworkURLTemplatesData:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   v16 = self->_has;
   if ((*&v16 & 0x200) != 0)
   {
-    *(v4 + 10) = self->_legacyUniqueIdentifier;
-    *(v4 + 81) |= 0x200uLL;
+    *(toCopy + 10) = self->_legacyUniqueIdentifier;
+    *(toCopy + 81) |= 0x200uLL;
     v16 = self->_has;
   }
 
   if ((*&v16 & 0x4000000) != 0)
   {
-    *(v4 + 94) = self->_episodeType;
-    *(v4 + 81) |= 0x4000000uLL;
+    *(toCopy + 94) = self->_episodeType;
+    *(toCopy + 81) |= 0x4000000uLL;
   }
 
   if (self->_artworkFileURL)
   {
     [v27 setArtworkFileURL:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   if (self->_brandIdentifier)
   {
     [v27 setBrandIdentifier:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   if (self->_localizedDurationString)
   {
     [v27 setLocalizedDurationString:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   if (self->_albumYear)
   {
     [v27 setAlbumYear:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   v17 = self->_has;
   if ((*&v17 & 0x4000000000) != 0)
   {
-    *(v4 + 138) = self->_songTraits;
-    *(v4 + 81) |= 0x4000000000uLL;
+    *(toCopy + 138) = self->_songTraits;
+    *(toCopy + 81) |= 0x4000000000uLL;
     v17 = self->_has;
     if ((*&v17 & 0x10000) == 0)
     {
@@ -4044,40 +4044,40 @@ LABEL_138:
     goto LABEL_138;
   }
 
-  *(v4 + 40) = self->_albumTraits;
-  *(v4 + 81) |= 0x10000uLL;
+  *(toCopy + 40) = self->_albumTraits;
+  *(toCopy + 81) |= 0x10000uLL;
   if ((*&self->_has & 0x400000000) != 0)
   {
 LABEL_139:
-    *(v4 + 119) = self->_playlistTraits;
-    *(v4 + 81) |= 0x400000000uLL;
+    *(toCopy + 119) = self->_playlistTraits;
+    *(toCopy + 81) |= 0x400000000uLL;
   }
 
 LABEL_140:
   if (self->_preferredFormat)
   {
     [v27 setPreferredFormat:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   if (self->_activeFormat)
   {
     [v27 setActiveFormat:?];
-    v4 = v27;
+    toCopy = v27;
   }
 
   v18 = self->_has;
   if ((*&v18 & 0x8000) != 0)
   {
-    *(v4 + 34) = self->_activeFormatJustification;
-    *(v4 + 81) |= 0x8000uLL;
+    *(toCopy + 34) = self->_activeFormatJustification;
+    *(toCopy + 81) |= 0x8000uLL;
     v18 = self->_has;
   }
 
   if ((*&v18 & 0x8000000) != 0)
   {
-    *(v4 + 95) = self->_formatTierPreference;
-    *(v4 + 81) |= 0x8000000uLL;
+    *(toCopy + 95) = self->_formatTierPreference;
+    *(toCopy + 81) |= 0x8000000uLL;
   }
 
   if (self->_audioRoute)
@@ -4088,10 +4088,10 @@ LABEL_140:
   if ([(_MRContentItemMetadataProtobuf *)self alternativeFormatsCount])
   {
     [v27 clearAlternativeFormats];
-    v19 = [(_MRContentItemMetadataProtobuf *)self alternativeFormatsCount];
-    if (v19)
+    alternativeFormatsCount = [(_MRContentItemMetadataProtobuf *)self alternativeFormatsCount];
+    if (alternativeFormatsCount)
     {
-      v20 = v19;
+      v20 = alternativeFormatsCount;
       for (i = 0; i != v20; ++i)
       {
         v22 = [(_MRContentItemMetadataProtobuf *)self alternativeFormatsAtIndex:i];
@@ -4230,15 +4230,15 @@ LABEL_178:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v123 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_title copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_title copyWithZone:zone];
   v7 = *(v5 + 576);
   *(v5 + 576) = v6;
 
-  v8 = [(NSString *)self->_subtitle copyWithZone:a3];
+  v8 = [(NSString *)self->_subtitle copyWithZone:zone];
   v9 = *(v5 + 560);
   *(v5 + 560) = v8;
 
@@ -4275,19 +4275,19 @@ LABEL_4:
   }
 
 LABEL_5:
-  v11 = [(NSString *)self->_albumName copyWithZone:a3];
+  v11 = [(NSString *)self->_albumName copyWithZone:zone];
   v12 = *(v5 + 152);
   *(v5 + 152) = v11;
 
-  v13 = [(NSString *)self->_trackArtistName copyWithZone:a3];
+  v13 = [(NSString *)self->_trackArtistName copyWithZone:zone];
   v14 = *(v5 + 592);
   *(v5 + 592) = v13;
 
-  v15 = [(NSString *)self->_albumArtistName copyWithZone:a3];
+  v15 = [(NSString *)self->_albumArtistName copyWithZone:zone];
   v16 = *(v5 + 144);
   *(v5 + 144) = v15;
 
-  v17 = [(NSString *)self->_directorName copyWithZone:a3];
+  v17 = [(NSString *)self->_directorName copyWithZone:zone];
   v18 = *(v5 + 336);
   *(v5 + 336) = v17;
 
@@ -4354,7 +4354,7 @@ LABEL_10:
   }
 
 LABEL_11:
-  v20 = [(NSString *)self->_localizedContentRating copyWithZone:a3];
+  v20 = [(NSString *)self->_localizedContentRating copyWithZone:zone];
   v21 = *(v5 + 400);
   *(v5 + 400) = v20;
 
@@ -4511,11 +4511,11 @@ LABEL_22:
   }
 
 LABEL_23:
-  v23 = [(NSString *)self->_collectionIdentifier copyWithZone:a3];
+  v23 = [(NSString *)self->_collectionIdentifier copyWithZone:zone];
   v24 = *(v5 + 280);
   *(v5 + 280) = v23;
 
-  v25 = [(NSString *)self->_profileIdentifier copyWithZone:a3];
+  v25 = [(NSString *)self->_profileIdentifier copyWithZone:zone];
   v26 = *(v5 + 496);
   *(v5 + 496) = v25;
 
@@ -4525,15 +4525,15 @@ LABEL_23:
     *(v5 + 648) |= 0x4000uLL;
   }
 
-  v27 = [(NSString *)self->_artworkMIMEType copyWithZone:a3];
+  v27 = [(NSString *)self->_artworkMIMEType copyWithZone:zone];
   v28 = *(v5 + 216);
   *(v5 + 216) = v27;
 
-  v29 = [(NSString *)self->_assetURLString copyWithZone:a3];
+  v29 = [(NSString *)self->_assetURLString copyWithZone:zone];
   v30 = *(v5 + 240);
   *(v5 + 240) = v29;
 
-  v31 = [(NSString *)self->_composer copyWithZone:a3];
+  v31 = [(NSString *)self->_composer copyWithZone:zone];
   v32 = *(v5 + 296);
   *(v5 + 296) = v31;
 
@@ -4551,7 +4551,7 @@ LABEL_23:
     *(v5 + 648) |= 2uLL;
   }
 
-  v34 = [(NSString *)self->_genre copyWithZone:a3];
+  v34 = [(NSString *)self->_genre copyWithZone:zone];
   v35 = *(v5 + 384);
   *(v5 + 384) = v34;
 
@@ -4633,7 +4633,7 @@ LABEL_35:
   }
 
 LABEL_36:
-  v37 = [(NSString *)self->_contentIdentifier copyWithZone:a3];
+  v37 = [(NSString *)self->_contentIdentifier copyWithZone:zone];
   v38 = *(v5 + 304);
   *(v5 + 304) = v37;
 
@@ -4685,11 +4685,11 @@ LABEL_40:
   }
 
 LABEL_41:
-  v40 = [(NSString *)self->_radioStationName copyWithZone:a3];
+  v40 = [(NSString *)self->_radioStationName copyWithZone:zone];
   v41 = *(v5 + 512);
   *(v5 + 512) = v40;
 
-  v42 = [(NSString *)self->_radioStationString copyWithZone:a3];
+  v42 = [(NSString *)self->_radioStationString copyWithZone:zone];
   v43 = *(v5 + 520);
   *(v5 + 520) = v42;
 
@@ -4741,7 +4741,7 @@ LABEL_45:
   }
 
 LABEL_46:
-  v45 = [(NSData *)self->_purchaseInfoData copyWithZone:a3];
+  v45 = [(NSData *)self->_purchaseInfoData copyWithZone:zone];
   v46 = *(v5 + 504);
   *(v5 + 504) = v45;
 
@@ -4778,11 +4778,11 @@ LABEL_49:
   }
 
 LABEL_50:
-  v48 = [(NSData *)self->_appMetricsData copyWithZone:a3];
+  v48 = [(NSData *)self->_appMetricsData copyWithZone:zone];
   v49 = *(v5 + 184);
   *(v5 + 184) = v48;
 
-  v50 = [(NSString *)self->_seriesName copyWithZone:a3];
+  v50 = [(NSString *)self->_seriesName copyWithZone:zone];
   v51 = *(v5 + 536);
   *(v5 + 536) = v50;
 
@@ -4800,11 +4800,11 @@ LABEL_50:
     *(v5 + 648) |= 0x10000000uLL;
   }
 
-  v53 = [(NSData *)self->_nowPlayingInfoData copyWithZone:a3];
+  v53 = [(NSData *)self->_nowPlayingInfoData copyWithZone:zone];
   v54 = *(v5 + 432);
   *(v5 + 432) = v53;
 
-  v55 = [(NSData *)self->_userInfoData copyWithZone:a3];
+  v55 = [(NSData *)self->_userInfoData copyWithZone:zone];
   v56 = *(v5 + 616);
   *(v5 + 616) = v55;
 
@@ -4814,19 +4814,19 @@ LABEL_50:
     *(v5 + 648) |= 0x400000000000000uLL;
   }
 
-  v57 = [(NSString *)self->_artworkURL copyWithZone:a3];
+  v57 = [(NSString *)self->_artworkURL copyWithZone:zone];
   v58 = *(v5 + 224);
   *(v5 + 224) = v57;
 
-  v59 = [(NSString *)self->_lyricsURL copyWithZone:a3];
+  v59 = [(NSString *)self->_lyricsURL copyWithZone:zone];
   v60 = *(v5 + 416);
   *(v5 + 416) = v59;
 
-  v61 = [(NSData *)self->_deviceSpecificUserInfoData copyWithZone:a3];
+  v61 = [(NSData *)self->_deviceSpecificUserInfoData copyWithZone:zone];
   v62 = *(v5 + 328);
   *(v5 + 328) = v61;
 
-  v63 = [(NSData *)self->_collectionInfoData copyWithZone:a3];
+  v63 = [(NSData *)self->_collectionInfoData copyWithZone:zone];
   v64 = *(v5 + 288);
   *(v5 + 288) = v63;
 
@@ -4844,7 +4844,7 @@ LABEL_50:
     *(v5 + 648) |= 0x100uLL;
   }
 
-  v66 = [(NSString *)self->_serviceIdentifier copyWithZone:a3];
+  v66 = [(NSString *)self->_serviceIdentifier copyWithZone:zone];
   v67 = *(v5 + 544);
   *(v5 + 544) = v66;
 
@@ -4862,11 +4862,11 @@ LABEL_50:
     *(v5 + 648) |= 0x20000uLL;
   }
 
-  v69 = [(NSData *)self->_currentPlaybackDateData copyWithZone:a3];
+  v69 = [(NSData *)self->_currentPlaybackDateData copyWithZone:zone];
   v70 = *(v5 + 312);
   *(v5 + 312) = v69;
 
-  v71 = [(NSString *)self->_artworkIdentifier copyWithZone:a3];
+  v71 = [(NSString *)self->_artworkIdentifier copyWithZone:zone];
   v72 = *(v5 + 208);
   *(v5 + 208) = v71;
 
@@ -4876,7 +4876,7 @@ LABEL_50:
     *(v5 + 648) |= 0x40000000000000uLL;
   }
 
-  v73 = [(NSData *)self->_artworkURLTemplatesData copyWithZone:a3];
+  v73 = [(NSData *)self->_artworkURLTemplatesData copyWithZone:zone];
   v74 = *(v5 + 232);
   *(v5 + 232) = v73;
 
@@ -4894,19 +4894,19 @@ LABEL_50:
     *(v5 + 648) |= 0x4000000uLL;
   }
 
-  v76 = [(NSString *)self->_artworkFileURL copyWithZone:a3];
+  v76 = [(NSString *)self->_artworkFileURL copyWithZone:zone];
   v77 = *(v5 + 200);
   *(v5 + 200) = v76;
 
-  v78 = [(NSString *)self->_brandIdentifier copyWithZone:a3];
+  v78 = [(NSString *)self->_brandIdentifier copyWithZone:zone];
   v79 = *(v5 + 256);
   *(v5 + 256) = v78;
 
-  v80 = [(NSString *)self->_localizedDurationString copyWithZone:a3];
+  v80 = [(NSString *)self->_localizedDurationString copyWithZone:zone];
   v81 = *(v5 + 408);
   *(v5 + 408) = v80;
 
-  v82 = [(NSString *)self->_albumYear copyWithZone:a3];
+  v82 = [(NSString *)self->_albumYear copyWithZone:zone];
   v83 = *(v5 + 168);
   *(v5 + 168) = v82;
 
@@ -4943,11 +4943,11 @@ LABEL_73:
   }
 
 LABEL_74:
-  v85 = [(_MRAudioFormatProtobuf *)self->_preferredFormat copyWithZone:a3];
+  v85 = [(_MRAudioFormatProtobuf *)self->_preferredFormat copyWithZone:zone];
   v86 = *(v5 + 488);
   *(v5 + 488) = v85;
 
-  v87 = [(_MRAudioFormatProtobuf *)self->_activeFormat copyWithZone:a3];
+  v87 = [(_MRAudioFormatProtobuf *)self->_activeFormat copyWithZone:zone];
   v88 = *(v5 + 128);
   *(v5 + 128) = v87;
 
@@ -4965,7 +4965,7 @@ LABEL_74:
     *(v5 + 648) |= 0x8000000uLL;
   }
 
-  v90 = [(_MRAudioRouteProtobuf *)self->_audioRoute copyWithZone:a3];
+  v90 = [(_MRAudioRouteProtobuf *)self->_audioRoute copyWithZone:zone];
   v91 = *(v5 + 248);
   *(v5 + 248) = v90;
 
@@ -4989,7 +4989,7 @@ LABEL_74:
           objc_enumerationMutation(v92);
         }
 
-        v97 = [*(*(&v118 + 1) + 8 * v96) copyWithZone:{a3, v118}];
+        v97 = [*(*(&v118 + 1) + 8 * v96) copyWithZone:{zone, v118}];
         [v5 addAlternativeFormats:v97];
 
         ++v96;
@@ -5016,15 +5016,15 @@ LABEL_74:
     *(v5 + 648) |= 0x100000000000uLL;
   }
 
-  v99 = [(NSString *)self->_participantName copyWithZone:a3, v118];
+  v118 = [(NSString *)self->_participantName copyWithZone:zone, v118];
   v100 = *(v5 + 456);
-  *(v5 + 456) = v99;
+  *(v5 + 456) = v118;
 
-  v101 = [(NSString *)self->_participantIdentifier copyWithZone:a3];
+  v101 = [(NSString *)self->_participantIdentifier copyWithZone:zone];
   v102 = *(v5 + 448);
   *(v5 + 448) = v101;
 
-  v103 = [(NSString *)self->_classicalWork copyWithZone:a3];
+  v103 = [(NSString *)self->_classicalWork copyWithZone:zone];
   v104 = *(v5 + 272);
   *(v5 + 272) = v103;
 
@@ -5061,7 +5061,7 @@ LABEL_92:
   }
 
 LABEL_93:
-  v106 = [(NSString *)self->_durationStringLocalizationKey copyWithZone:a3];
+  v106 = [(NSString *)self->_durationStringLocalizationKey copyWithZone:zone];
   v107 = *(v5 + 360);
   *(v5 + 360) = v106;
 
@@ -5071,7 +5071,7 @@ LABEL_93:
     *(v5 + 648) |= 0x100000000000000uLL;
   }
 
-  v108 = [(NSString *)self->_internationalStandardRecordingCode copyWithZone:a3];
+  v108 = [(NSString *)self->_internationalStandardRecordingCode copyWithZone:zone];
   v109 = *(v5 + 392);
   *(v5 + 392) = v108;
 
@@ -5111,11 +5111,11 @@ LABEL_98:
   }
 
 LABEL_99:
-  v111 = [(NSString *)self->_subtitleShort copyWithZone:a3];
+  v111 = [(NSString *)self->_subtitleShort copyWithZone:zone];
   v112 = *(v5 + 568);
   *(v5 + 568) = v111;
 
-  v113 = [(NSData *)self->_transitionInfoData copyWithZone:a3];
+  v113 = [(NSData *)self->_transitionInfoData copyWithZone:zone];
   v114 = *(v5 + 608);
   *(v5 + 608) = v113;
 
@@ -5124,16 +5124,16 @@ LABEL_99:
   return v115;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_37;
   }
 
   title = self->_title;
-  if (title | *(v4 + 72))
+  if (title | *(equalCopy + 72))
   {
     if (![(NSString *)title isEqual:?])
     {
@@ -5142,7 +5142,7 @@ LABEL_99:
   }
 
   subtitle = self->_subtitle;
-  if (subtitle | *(v4 + 70))
+  if (subtitle | *(equalCopy + 70))
   {
     if (![(NSString *)subtitle isEqual:?])
     {
@@ -5151,7 +5151,7 @@ LABEL_99:
   }
 
   has = self->_has;
-  v8 = *(v4 + 81);
+  v8 = *(equalCopy + 81);
   if ((*&has & 0x1000000000000) != 0)
   {
     if ((v8 & 0x1000000000000) == 0)
@@ -5159,16 +5159,16 @@ LABEL_99:
       goto LABEL_37;
     }
 
-    v9 = *(v4 + 630);
+    v9 = *(equalCopy + 630);
     if (self->_isContainer)
     {
-      if ((*(v4 + 630) & 1) == 0)
+      if ((*(equalCopy + 630) & 1) == 0)
       {
         goto LABEL_37;
       }
     }
 
-    else if (*(v4 + 630))
+    else if (*(equalCopy + 630))
     {
       goto LABEL_37;
     }
@@ -5186,16 +5186,16 @@ LABEL_99:
       goto LABEL_37;
     }
 
-    v10 = *(v4 + 637);
+    v10 = *(equalCopy + 637);
     if (self->_isPlayable)
     {
-      if ((*(v4 + 637) & 1) == 0)
+      if ((*(equalCopy + 637) & 1) == 0)
       {
         goto LABEL_37;
       }
     }
 
-    else if (*(v4 + 637))
+    else if (*(equalCopy + 637))
     {
       goto LABEL_37;
     }
@@ -5208,7 +5208,7 @@ LABEL_99:
 
   if ((*&has & 0x100000000) != 0)
   {
-    if ((v8 & 0x100000000) == 0 || self->_playbackProgress != *(v4 + 117))
+    if ((v8 & 0x100000000) == 0 || self->_playbackProgress != *(equalCopy + 117))
     {
       goto LABEL_37;
     }
@@ -5220,13 +5220,13 @@ LABEL_99:
   }
 
   albumName = self->_albumName;
-  if (albumName | *(v4 + 19) && ![(NSString *)albumName isEqual:?])
+  if (albumName | *(equalCopy + 19) && ![(NSString *)albumName isEqual:?])
   {
     goto LABEL_37;
   }
 
   trackArtistName = self->_trackArtistName;
-  if (trackArtistName | *(v4 + 74))
+  if (trackArtistName | *(equalCopy + 74))
   {
     if (![(NSString *)trackArtistName isEqual:?])
     {
@@ -5235,7 +5235,7 @@ LABEL_99:
   }
 
   albumArtistName = self->_albumArtistName;
-  if (albumArtistName | *(v4 + 18))
+  if (albumArtistName | *(equalCopy + 18))
   {
     if (![(NSString *)albumArtistName isEqual:?])
     {
@@ -5244,7 +5244,7 @@ LABEL_99:
   }
 
   directorName = self->_directorName;
-  if (directorName | *(v4 + 42))
+  if (directorName | *(equalCopy + 42))
   {
     if (![(NSString *)directorName isEqual:?])
     {
@@ -5253,10 +5253,10 @@ LABEL_99:
   }
 
   v15 = self->_has;
-  v16 = *(v4 + 81);
+  v16 = *(equalCopy + 81);
   if ((*&v15 & 0x2000000000) != 0)
   {
-    if ((v16 & 0x2000000000) == 0 || self->_seasonNumber != *(v4 + 133))
+    if ((v16 & 0x2000000000) == 0 || self->_seasonNumber != *(equalCopy + 133))
     {
       goto LABEL_37;
     }
@@ -5269,7 +5269,7 @@ LABEL_99:
 
   if ((*&v15 & 0x2000000) != 0)
   {
-    if ((v16 & 0x2000000) == 0 || self->_episodeNumber != *(v4 + 93))
+    if ((v16 & 0x2000000) == 0 || self->_episodeNumber != *(equalCopy + 93))
     {
       goto LABEL_37;
     }
@@ -5282,7 +5282,7 @@ LABEL_99:
 
   if ((*&v15 & 0x1000) != 0)
   {
-    if ((v16 & 0x1000) == 0 || self->_releaseDate != *(v4 + 13))
+    if ((v16 & 0x1000) == 0 || self->_releaseDate != *(equalCopy + 13))
     {
       goto LABEL_37;
     }
@@ -5295,7 +5295,7 @@ LABEL_99:
 
   if ((*&v15 & 0x80000000) != 0)
   {
-    if ((v16 & 0x80000000) == 0 || self->_playCount != *(v4 + 116))
+    if ((v16 & 0x80000000) == 0 || self->_playCount != *(equalCopy + 116))
     {
       goto LABEL_37;
     }
@@ -5308,7 +5308,7 @@ LABEL_99:
 
   if (*&v15)
   {
-    if ((v16 & 1) == 0 || self->_duration != *(v4 + 1))
+    if ((v16 & 1) == 0 || self->_duration != *(equalCopy + 1))
     {
       goto LABEL_37;
     }
@@ -5320,7 +5320,7 @@ LABEL_99:
   }
 
   localizedContentRating = self->_localizedContentRating;
-  if (localizedContentRating | *(v4 + 50))
+  if (localizedContentRating | *(equalCopy + 50))
   {
     if (![(NSString *)localizedContentRating isEqual:?])
     {
@@ -5330,7 +5330,7 @@ LABEL_99:
     v15 = self->_has;
   }
 
-  v20 = *(v4 + 81);
+  v20 = *(equalCopy + 81);
   if ((*&v15 & 0x4000000000000) != 0)
   {
     if ((v20 & 0x4000000000000) == 0)
@@ -5338,16 +5338,16 @@ LABEL_99:
       goto LABEL_37;
     }
 
-    v21 = *(v4 + 632);
+    v21 = *(equalCopy + 632);
     if (self->_isExplicitItem)
     {
-      if ((*(v4 + 632) & 1) == 0)
+      if ((*(equalCopy + 632) & 1) == 0)
       {
         goto LABEL_37;
       }
     }
 
-    else if (*(v4 + 632))
+    else if (*(equalCopy + 632))
     {
       goto LABEL_37;
     }
@@ -5360,7 +5360,7 @@ LABEL_99:
 
   if ((*&v15 & 0x800000000) != 0)
   {
-    if ((v20 & 0x800000000) == 0 || self->_playlistType != *(v4 + 120))
+    if ((v20 & 0x800000000) == 0 || self->_playlistType != *(equalCopy + 120))
     {
       goto LABEL_37;
     }
@@ -5373,7 +5373,7 @@ LABEL_99:
 
   if ((*&v15 & 0x1000000000) != 0)
   {
-    if ((v20 & 0x1000000000) == 0 || self->_radioStationType != *(v4 + 132))
+    if ((v20 & 0x1000000000) == 0 || self->_radioStationType != *(equalCopy + 132))
     {
       goto LABEL_37;
     }
@@ -5391,16 +5391,16 @@ LABEL_99:
       goto LABEL_37;
     }
 
-    v22 = *(v4 + 624);
+    v22 = *(equalCopy + 624);
     if (self->_artworkAvailable)
     {
-      if ((*(v4 + 624) & 1) == 0)
+      if ((*(equalCopy + 624) & 1) == 0)
       {
         goto LABEL_37;
       }
     }
 
-    else if (*(v4 + 624))
+    else if (*(equalCopy + 624))
     {
       goto LABEL_37;
     }
@@ -5418,16 +5418,16 @@ LABEL_99:
       goto LABEL_37;
     }
 
-    v23 = *(v4 + 627);
+    v23 = *(equalCopy + 627);
     if (self->_infoAvailable)
     {
-      if ((*(v4 + 627) & 1) == 0)
+      if ((*(equalCopy + 627) & 1) == 0)
       {
         goto LABEL_37;
       }
     }
 
-    else if (*(v4 + 627))
+    else if (*(equalCopy + 627))
     {
       goto LABEL_37;
     }
@@ -5445,16 +5445,16 @@ LABEL_99:
       goto LABEL_37;
     }
 
-    v24 = *(v4 + 642);
+    v24 = *(equalCopy + 642);
     if (self->_languageOptionsAvailable)
     {
-      if ((*(v4 + 642) & 1) == 0)
+      if ((*(equalCopy + 642) & 1) == 0)
       {
         goto LABEL_37;
       }
     }
 
-    else if (*(v4 + 642))
+    else if (*(equalCopy + 642))
     {
       goto LABEL_37;
     }
@@ -5467,7 +5467,7 @@ LABEL_99:
 
   if ((*&v15 & 0x40000000) != 0)
   {
-    if ((v20 & 0x40000000) == 0 || self->_numberOfSections != *(v4 + 110))
+    if ((v20 & 0x40000000) == 0 || self->_numberOfSections != *(equalCopy + 110))
     {
       goto LABEL_37;
     }
@@ -5485,16 +5485,16 @@ LABEL_99:
       goto LABEL_37;
     }
 
-    v25 = *(v4 + 643);
+    v25 = *(equalCopy + 643);
     if (self->_lyricsAvailable)
     {
-      if ((*(v4 + 643) & 1) == 0)
+      if ((*(equalCopy + 643) & 1) == 0)
       {
         goto LABEL_37;
       }
     }
 
-    else if (*(v4 + 643))
+    else if (*(equalCopy + 643))
     {
       goto LABEL_37;
     }
@@ -5507,7 +5507,7 @@ LABEL_99:
 
   if ((*&v15 & 0x1000000) != 0)
   {
-    if ((v20 & 0x1000000) == 0 || self->_editingStyleFlags != *(v4 + 92))
+    if ((v20 & 0x1000000) == 0 || self->_editingStyleFlags != *(equalCopy + 92))
     {
       goto LABEL_37;
     }
@@ -5525,16 +5525,16 @@ LABEL_99:
       goto LABEL_37;
     }
 
-    v29 = *(v4 + 641);
+    v29 = *(equalCopy + 641);
     if (self->_isStreamingContent)
     {
-      if ((*(v4 + 641) & 1) == 0)
+      if ((*(equalCopy + 641) & 1) == 0)
       {
         goto LABEL_37;
       }
     }
 
-    else if (*(v4 + 641))
+    else if (*(equalCopy + 641))
     {
       goto LABEL_37;
     }
@@ -5552,16 +5552,16 @@ LABEL_99:
       goto LABEL_37;
     }
 
-    v30 = *(v4 + 631);
+    v30 = *(equalCopy + 631);
     if (self->_isCurrentlyPlaying)
     {
-      if ((*(v4 + 631) & 1) == 0)
+      if ((*(equalCopy + 631) & 1) == 0)
       {
         goto LABEL_37;
       }
     }
 
-    else if (*(v4 + 631))
+    else if (*(equalCopy + 631))
     {
       goto LABEL_37;
     }
@@ -5573,13 +5573,13 @@ LABEL_99:
   }
 
   collectionIdentifier = self->_collectionIdentifier;
-  if (collectionIdentifier | *(v4 + 35) && ![(NSString *)collectionIdentifier isEqual:?])
+  if (collectionIdentifier | *(equalCopy + 35) && ![(NSString *)collectionIdentifier isEqual:?])
   {
     goto LABEL_37;
   }
 
   profileIdentifier = self->_profileIdentifier;
-  if (profileIdentifier | *(v4 + 62))
+  if (profileIdentifier | *(equalCopy + 62))
   {
     if (![(NSString *)profileIdentifier isEqual:?])
     {
@@ -5587,10 +5587,10 @@ LABEL_99:
     }
   }
 
-  v28 = *(v4 + 81);
+  v28 = *(equalCopy + 81);
   if ((*(&self->_has + 1) & 0x40) != 0)
   {
-    if ((v28 & 0x4000) == 0 || self->_startTime != *(v4 + 15))
+    if ((v28 & 0x4000) == 0 || self->_startTime != *(equalCopy + 15))
     {
       goto LABEL_37;
     }
@@ -5602,13 +5602,13 @@ LABEL_99:
   }
 
   artworkMIMEType = self->_artworkMIMEType;
-  if (artworkMIMEType | *(v4 + 27) && ![(NSString *)artworkMIMEType isEqual:?])
+  if (artworkMIMEType | *(equalCopy + 27) && ![(NSString *)artworkMIMEType isEqual:?])
   {
     goto LABEL_37;
   }
 
   assetURLString = self->_assetURLString;
-  if (assetURLString | *(v4 + 30))
+  if (assetURLString | *(equalCopy + 30))
   {
     if (![(NSString *)assetURLString isEqual:?])
     {
@@ -5617,7 +5617,7 @@ LABEL_99:
   }
 
   composer = self->_composer;
-  if (composer | *(v4 + 37))
+  if (composer | *(equalCopy + 37))
   {
     if (![(NSString *)composer isEqual:?])
     {
@@ -5626,10 +5626,10 @@ LABEL_99:
   }
 
   v34 = self->_has;
-  v35 = *(v4 + 81);
+  v35 = *(equalCopy + 81);
   if ((*&v34 & 0x200000) != 0)
   {
-    if ((v35 & 0x200000) == 0 || self->_discNumber != *(v4 + 86))
+    if ((v35 & 0x200000) == 0 || self->_discNumber != *(equalCopy + 86))
     {
       goto LABEL_37;
     }
@@ -5642,7 +5642,7 @@ LABEL_99:
 
   if ((*&v34 & 2) != 0)
   {
-    if ((v35 & 2) == 0 || self->_elapsedTime != *(v4 + 2))
+    if ((v35 & 2) == 0 || self->_elapsedTime != *(equalCopy + 2))
     {
       goto LABEL_37;
     }
@@ -5654,7 +5654,7 @@ LABEL_99:
   }
 
   genre = self->_genre;
-  if (genre | *(v4 + 48))
+  if (genre | *(equalCopy + 48))
   {
     if (![(NSString *)genre isEqual:?])
     {
@@ -5664,7 +5664,7 @@ LABEL_99:
     v34 = self->_has;
   }
 
-  v37 = *(v4 + 81);
+  v37 = *(equalCopy + 81);
   if ((*&v34 & 0x800000000000) != 0)
   {
     if ((v37 & 0x800000000000) == 0)
@@ -5672,16 +5672,16 @@ LABEL_99:
       goto LABEL_37;
     }
 
-    v38 = *(v4 + 629);
+    v38 = *(equalCopy + 629);
     if (self->_isAlwaysLive)
     {
-      if ((*(v4 + 629) & 1) == 0)
+      if ((*(equalCopy + 629) & 1) == 0)
       {
         goto LABEL_37;
       }
     }
 
-    else if (*(v4 + 629))
+    else if (*(equalCopy + 629))
     {
       goto LABEL_37;
     }
@@ -5694,7 +5694,7 @@ LABEL_99:
 
   if ((*&v34 & 0x200000000) != 0)
   {
-    if ((v37 & 0x200000000) == 0 || self->_playbackRate != *(v4 + 118))
+    if ((v37 & 0x200000000) == 0 || self->_playbackRate != *(equalCopy + 118))
     {
       goto LABEL_37;
     }
@@ -5707,7 +5707,7 @@ LABEL_99:
 
   if ((*&v34 & 0x80000) != 0)
   {
-    if ((v37 & 0x80000) == 0 || self->_chapterCount != *(v4 + 66))
+    if ((v37 & 0x80000) == 0 || self->_chapterCount != *(equalCopy + 66))
     {
       goto LABEL_37;
     }
@@ -5720,7 +5720,7 @@ LABEL_99:
 
   if ((*&v34 & 0x8000000000) != 0)
   {
-    if ((v37 & 0x8000000000) == 0 || self->_totalDiscCount != *(v4 + 146))
+    if ((v37 & 0x8000000000) == 0 || self->_totalDiscCount != *(equalCopy + 146))
     {
       goto LABEL_37;
     }
@@ -5733,7 +5733,7 @@ LABEL_99:
 
   if ((*&v34 & 0x10000000000) != 0)
   {
-    if ((v37 & 0x10000000000) == 0 || self->_totalTrackCount != *(v4 + 147))
+    if ((v37 & 0x10000000000) == 0 || self->_totalTrackCount != *(equalCopy + 147))
     {
       goto LABEL_37;
     }
@@ -5746,7 +5746,7 @@ LABEL_99:
 
   if ((*&v34 & 0x20000000000) != 0)
   {
-    if ((v37 & 0x20000000000) == 0 || self->_trackNumber != *(v4 + 150))
+    if ((v37 & 0x20000000000) == 0 || self->_trackNumber != *(equalCopy + 150))
     {
       goto LABEL_37;
     }
@@ -5758,7 +5758,7 @@ LABEL_99:
   }
 
   contentIdentifier = self->_contentIdentifier;
-  if (contentIdentifier | *(v4 + 38))
+  if (contentIdentifier | *(equalCopy + 38))
   {
     if (![(NSString *)contentIdentifier isEqual:?])
     {
@@ -5768,7 +5768,7 @@ LABEL_99:
     v34 = self->_has;
   }
 
-  v40 = *(v4 + 81);
+  v40 = *(equalCopy + 81);
   if ((*&v34 & 0x200000000000000) != 0)
   {
     if ((v40 & 0x200000000000000) == 0)
@@ -5776,16 +5776,16 @@ LABEL_99:
       goto LABEL_37;
     }
 
-    v41 = *(v4 + 639);
+    v41 = *(equalCopy + 639);
     if (self->_isSharable)
     {
-      if ((*(v4 + 639) & 1) == 0)
+      if ((*(equalCopy + 639) & 1) == 0)
       {
         goto LABEL_37;
       }
     }
 
-    else if (*(v4 + 639))
+    else if (*(equalCopy + 639))
     {
       goto LABEL_37;
     }
@@ -5803,16 +5803,16 @@ LABEL_99:
       goto LABEL_37;
     }
 
-    v42 = *(v4 + 635);
+    v42 = *(equalCopy + 635);
     if (self->_isLiked)
     {
-      if ((*(v4 + 635) & 1) == 0)
+      if ((*(equalCopy + 635) & 1) == 0)
       {
         goto LABEL_37;
       }
     }
 
-    else if (*(v4 + 635))
+    else if (*(equalCopy + 635))
     {
       goto LABEL_37;
     }
@@ -5830,16 +5830,16 @@ LABEL_99:
       goto LABEL_37;
     }
 
-    v43 = *(v4 + 634);
+    v43 = *(equalCopy + 634);
     if (self->_isInWishList)
     {
-      if ((*(v4 + 634) & 1) == 0)
+      if ((*(equalCopy + 634) & 1) == 0)
       {
         goto LABEL_37;
       }
     }
 
-    else if (*(v4 + 634))
+    else if (*(equalCopy + 634))
     {
       goto LABEL_37;
     }
@@ -5852,7 +5852,7 @@ LABEL_99:
 
   if ((*&v34 & 0x800) != 0)
   {
-    if ((v40 & 0x800) == 0 || self->_radioStationIdentifier != *(v4 + 12))
+    if ((v40 & 0x800) == 0 || self->_radioStationIdentifier != *(equalCopy + 12))
     {
       goto LABEL_37;
     }
@@ -5864,13 +5864,13 @@ LABEL_99:
   }
 
   radioStationName = self->_radioStationName;
-  if (radioStationName | *(v4 + 64) && ![(NSString *)radioStationName isEqual:?])
+  if (radioStationName | *(equalCopy + 64) && ![(NSString *)radioStationName isEqual:?])
   {
     goto LABEL_37;
   }
 
   radioStationString = self->_radioStationString;
-  if (radioStationString | *(v4 + 65))
+  if (radioStationString | *(equalCopy + 65))
   {
     if (![(NSString *)radioStationString isEqual:?])
     {
@@ -5879,10 +5879,10 @@ LABEL_99:
   }
 
   v46 = self->_has;
-  v47 = *(v4 + 81);
+  v47 = *(equalCopy + 81);
   if ((*&v46 & 0x40) != 0)
   {
-    if ((v47 & 0x40) == 0 || self->_iTunesStoreIdentifier != *(v4 + 7))
+    if ((v47 & 0x40) == 0 || self->_iTunesStoreIdentifier != *(equalCopy + 7))
     {
       goto LABEL_37;
     }
@@ -5895,7 +5895,7 @@ LABEL_99:
 
   if ((*&v46 & 0x80) != 0)
   {
-    if ((v47 & 0x80) == 0 || self->_iTunesStoreSubscriptionIdentifier != *(v4 + 8))
+    if ((v47 & 0x80) == 0 || self->_iTunesStoreSubscriptionIdentifier != *(equalCopy + 8))
     {
       goto LABEL_37;
     }
@@ -5908,7 +5908,7 @@ LABEL_99:
 
   if ((*&v46 & 0x20) != 0)
   {
-    if ((v47 & 0x20) == 0 || self->_iTunesStoreArtistIdentifier != *(v4 + 6))
+    if ((v47 & 0x20) == 0 || self->_iTunesStoreArtistIdentifier != *(equalCopy + 6))
     {
       goto LABEL_37;
     }
@@ -5921,7 +5921,7 @@ LABEL_99:
 
   if ((*&v46 & 0x10) != 0)
   {
-    if ((v47 & 0x10) == 0 || self->_iTunesStoreAlbumIdentifier != *(v4 + 5))
+    if ((v47 & 0x10) == 0 || self->_iTunesStoreAlbumIdentifier != *(equalCopy + 5))
     {
       goto LABEL_37;
     }
@@ -5933,7 +5933,7 @@ LABEL_99:
   }
 
   purchaseInfoData = self->_purchaseInfoData;
-  if (purchaseInfoData | *(v4 + 63))
+  if (purchaseInfoData | *(equalCopy + 63))
   {
     if (![(NSData *)purchaseInfoData isEqual:?])
     {
@@ -5943,10 +5943,10 @@ LABEL_99:
     v46 = self->_has;
   }
 
-  v49 = *(v4 + 81);
+  v49 = *(equalCopy + 81);
   if ((*&v46 & 0x100000) != 0)
   {
-    if ((v49 & 0x100000) == 0 || self->_defaultPlaybackRate != *(v4 + 80))
+    if ((v49 & 0x100000) == 0 || self->_defaultPlaybackRate != *(equalCopy + 80))
     {
       goto LABEL_37;
     }
@@ -5959,7 +5959,7 @@ LABEL_99:
 
   if ((*&v46 & 0x800000) != 0)
   {
-    if ((v49 & 0x800000) == 0 || self->_downloadState != *(v4 + 88))
+    if ((v49 & 0x800000) == 0 || self->_downloadState != *(equalCopy + 88))
     {
       goto LABEL_37;
     }
@@ -5972,7 +5972,7 @@ LABEL_99:
 
   if ((*&v46 & 0x400000) != 0)
   {
-    if ((v49 & 0x400000) == 0 || self->_downloadProgress != *(v4 + 87))
+    if ((v49 & 0x400000) == 0 || self->_downloadProgress != *(equalCopy + 87))
     {
       goto LABEL_37;
     }
@@ -5984,13 +5984,13 @@ LABEL_99:
   }
 
   appMetricsData = self->_appMetricsData;
-  if (appMetricsData | *(v4 + 23) && ![(NSData *)appMetricsData isEqual:?])
+  if (appMetricsData | *(equalCopy + 23) && ![(NSData *)appMetricsData isEqual:?])
   {
     goto LABEL_37;
   }
 
   seriesName = self->_seriesName;
-  if (seriesName | *(v4 + 67))
+  if (seriesName | *(equalCopy + 67))
   {
     if (![(NSString *)seriesName isEqual:?])
     {
@@ -5999,10 +5999,10 @@ LABEL_99:
   }
 
   v52 = self->_has;
-  v53 = *(v4 + 81);
+  v53 = *(equalCopy + 81);
   if ((*&v52 & 0x20000000) != 0)
   {
-    if ((v53 & 0x20000000) == 0 || self->_mediaType != *(v4 + 107))
+    if ((v53 & 0x20000000) == 0 || self->_mediaType != *(equalCopy + 107))
     {
       goto LABEL_37;
     }
@@ -6015,7 +6015,7 @@ LABEL_99:
 
   if ((*&v52 & 0x10000000) != 0)
   {
-    if ((v53 & 0x10000000) == 0 || self->_mediaSubType != *(v4 + 106))
+    if ((v53 & 0x10000000) == 0 || self->_mediaSubType != *(equalCopy + 106))
     {
       goto LABEL_37;
     }
@@ -6027,13 +6027,13 @@ LABEL_99:
   }
 
   nowPlayingInfoData = self->_nowPlayingInfoData;
-  if (nowPlayingInfoData | *(v4 + 54) && ![(NSData *)nowPlayingInfoData isEqual:?])
+  if (nowPlayingInfoData | *(equalCopy + 54) && ![(NSData *)nowPlayingInfoData isEqual:?])
   {
     goto LABEL_37;
   }
 
   userInfoData = self->_userInfoData;
-  if (userInfoData | *(v4 + 77))
+  if (userInfoData | *(equalCopy + 77))
   {
     if (![(NSData *)userInfoData isEqual:?])
     {
@@ -6041,7 +6041,7 @@ LABEL_99:
     }
   }
 
-  v56 = *(v4 + 81);
+  v56 = *(equalCopy + 81);
   if ((*(&self->_has + 7) & 4) != 0)
   {
     if ((v56 & 0x400000000000000) == 0)
@@ -6049,16 +6049,16 @@ LABEL_99:
       goto LABEL_37;
     }
 
-    v57 = *(v4 + 640);
+    v57 = *(equalCopy + 640);
     if (self->_isSteerable)
     {
-      if ((*(v4 + 640) & 1) == 0)
+      if ((*(equalCopy + 640) & 1) == 0)
       {
         goto LABEL_37;
       }
     }
 
-    else if (*(v4 + 640))
+    else if (*(equalCopy + 640))
     {
       goto LABEL_37;
     }
@@ -6070,13 +6070,13 @@ LABEL_99:
   }
 
   artworkURL = self->_artworkURL;
-  if (artworkURL | *(v4 + 28) && ![(NSString *)artworkURL isEqual:?])
+  if (artworkURL | *(equalCopy + 28) && ![(NSString *)artworkURL isEqual:?])
   {
     goto LABEL_37;
   }
 
   lyricsURL = self->_lyricsURL;
-  if (lyricsURL | *(v4 + 52))
+  if (lyricsURL | *(equalCopy + 52))
   {
     if (![(NSString *)lyricsURL isEqual:?])
     {
@@ -6085,7 +6085,7 @@ LABEL_99:
   }
 
   deviceSpecificUserInfoData = self->_deviceSpecificUserInfoData;
-  if (deviceSpecificUserInfoData | *(v4 + 41))
+  if (deviceSpecificUserInfoData | *(equalCopy + 41))
   {
     if (![(NSData *)deviceSpecificUserInfoData isEqual:?])
     {
@@ -6094,7 +6094,7 @@ LABEL_99:
   }
 
   collectionInfoData = self->_collectionInfoData;
-  if (collectionInfoData | *(v4 + 36))
+  if (collectionInfoData | *(equalCopy + 36))
   {
     if (![(NSData *)collectionInfoData isEqual:?])
     {
@@ -6103,10 +6103,10 @@ LABEL_99:
   }
 
   v62 = self->_has;
-  v63 = *(v4 + 81);
+  v63 = *(equalCopy + 81);
   if ((*&v62 & 4) != 0)
   {
-    if ((v63 & 4) == 0 || self->_elapsedTimeTimestamp != *(v4 + 3))
+    if ((v63 & 4) == 0 || self->_elapsedTimeTimestamp != *(equalCopy + 3))
     {
       goto LABEL_37;
     }
@@ -6119,7 +6119,7 @@ LABEL_99:
 
   if ((*&v62 & 0x100) != 0)
   {
-    if ((v63 & 0x100) == 0 || self->_inferredTimestamp != *(v4 + 9))
+    if ((v63 & 0x100) == 0 || self->_inferredTimestamp != *(equalCopy + 9))
     {
       goto LABEL_37;
     }
@@ -6131,7 +6131,7 @@ LABEL_99:
   }
 
   serviceIdentifier = self->_serviceIdentifier;
-  if (serviceIdentifier | *(v4 + 68))
+  if (serviceIdentifier | *(equalCopy + 68))
   {
     if (![(NSString *)serviceIdentifier isEqual:?])
     {
@@ -6141,10 +6141,10 @@ LABEL_99:
     v62 = self->_has;
   }
 
-  v65 = *(v4 + 81);
+  v65 = *(equalCopy + 81);
   if ((*&v62 & 0x40000) != 0)
   {
-    if ((v65 & 0x40000) == 0 || self->_artworkDataWidthDeprecated != *(v4 + 49))
+    if ((v65 & 0x40000) == 0 || self->_artworkDataWidthDeprecated != *(equalCopy + 49))
     {
       goto LABEL_37;
     }
@@ -6157,7 +6157,7 @@ LABEL_99:
 
   if ((*&v62 & 0x20000) != 0)
   {
-    if ((v65 & 0x20000) == 0 || self->_artworkDataHeightDeprecated != *(v4 + 48))
+    if ((v65 & 0x20000) == 0 || self->_artworkDataHeightDeprecated != *(equalCopy + 48))
     {
       goto LABEL_37;
     }
@@ -6169,13 +6169,13 @@ LABEL_99:
   }
 
   currentPlaybackDateData = self->_currentPlaybackDateData;
-  if (currentPlaybackDateData | *(v4 + 39) && ![(NSData *)currentPlaybackDateData isEqual:?])
+  if (currentPlaybackDateData | *(equalCopy + 39) && ![(NSData *)currentPlaybackDateData isEqual:?])
   {
     goto LABEL_37;
   }
 
   artworkIdentifier = self->_artworkIdentifier;
-  if (artworkIdentifier | *(v4 + 26))
+  if (artworkIdentifier | *(equalCopy + 26))
   {
     if (![(NSString *)artworkIdentifier isEqual:?])
     {
@@ -6184,7 +6184,7 @@ LABEL_99:
   }
 
   v68 = self->_has;
-  v69 = *(v4 + 81);
+  v69 = *(equalCopy + 81);
   if ((*&v68 & 0x40000000000000) != 0)
   {
     if ((v69 & 0x40000000000000) == 0)
@@ -6192,16 +6192,16 @@ LABEL_99:
       goto LABEL_37;
     }
 
-    v70 = *(v4 + 636);
+    v70 = *(equalCopy + 636);
     if (self->_isLoading)
     {
-      if ((*(v4 + 636) & 1) == 0)
+      if ((*(equalCopy + 636) & 1) == 0)
       {
         goto LABEL_37;
       }
     }
 
-    else if (*(v4 + 636))
+    else if (*(equalCopy + 636))
     {
       goto LABEL_37;
     }
@@ -6213,7 +6213,7 @@ LABEL_99:
   }
 
   artworkURLTemplatesData = self->_artworkURLTemplatesData;
-  if (artworkURLTemplatesData | *(v4 + 29))
+  if (artworkURLTemplatesData | *(equalCopy + 29))
   {
     if (![(NSData *)artworkURLTemplatesData isEqual:?])
     {
@@ -6223,10 +6223,10 @@ LABEL_99:
     v68 = self->_has;
   }
 
-  v72 = *(v4 + 81);
+  v72 = *(equalCopy + 81);
   if ((*&v68 & 0x200) != 0)
   {
-    if ((v72 & 0x200) == 0 || self->_legacyUniqueIdentifier != *(v4 + 10))
+    if ((v72 & 0x200) == 0 || self->_legacyUniqueIdentifier != *(equalCopy + 10))
     {
       goto LABEL_37;
     }
@@ -6239,7 +6239,7 @@ LABEL_99:
 
   if ((*&v68 & 0x4000000) != 0)
   {
-    if ((v72 & 0x4000000) == 0 || self->_episodeType != *(v4 + 94))
+    if ((v72 & 0x4000000) == 0 || self->_episodeType != *(equalCopy + 94))
     {
       goto LABEL_37;
     }
@@ -6251,13 +6251,13 @@ LABEL_99:
   }
 
   artworkFileURL = self->_artworkFileURL;
-  if (artworkFileURL | *(v4 + 25) && ![(NSString *)artworkFileURL isEqual:?])
+  if (artworkFileURL | *(equalCopy + 25) && ![(NSString *)artworkFileURL isEqual:?])
   {
     goto LABEL_37;
   }
 
   brandIdentifier = self->_brandIdentifier;
-  if (brandIdentifier | *(v4 + 32))
+  if (brandIdentifier | *(equalCopy + 32))
   {
     if (![(NSString *)brandIdentifier isEqual:?])
     {
@@ -6266,7 +6266,7 @@ LABEL_99:
   }
 
   localizedDurationString = self->_localizedDurationString;
-  if (localizedDurationString | *(v4 + 51))
+  if (localizedDurationString | *(equalCopy + 51))
   {
     if (![(NSString *)localizedDurationString isEqual:?])
     {
@@ -6275,7 +6275,7 @@ LABEL_99:
   }
 
   albumYear = self->_albumYear;
-  if (albumYear | *(v4 + 21))
+  if (albumYear | *(equalCopy + 21))
   {
     if (![(NSString *)albumYear isEqual:?])
     {
@@ -6284,10 +6284,10 @@ LABEL_99:
   }
 
   v77 = self->_has;
-  v78 = *(v4 + 81);
+  v78 = *(equalCopy + 81);
   if ((*&v77 & 0x4000000000) != 0)
   {
-    if ((v78 & 0x4000000000) == 0 || self->_songTraits != *(v4 + 138))
+    if ((v78 & 0x4000000000) == 0 || self->_songTraits != *(equalCopy + 138))
     {
       goto LABEL_37;
     }
@@ -6300,7 +6300,7 @@ LABEL_99:
 
   if ((*&v77 & 0x10000) != 0)
   {
-    if ((v78 & 0x10000) == 0 || self->_albumTraits != *(v4 + 40))
+    if ((v78 & 0x10000) == 0 || self->_albumTraits != *(equalCopy + 40))
     {
       goto LABEL_37;
     }
@@ -6313,7 +6313,7 @@ LABEL_99:
 
   if ((*&v77 & 0x400000000) != 0)
   {
-    if ((v78 & 0x400000000) == 0 || self->_playlistTraits != *(v4 + 119))
+    if ((v78 & 0x400000000) == 0 || self->_playlistTraits != *(equalCopy + 119))
     {
       goto LABEL_37;
     }
@@ -6325,13 +6325,13 @@ LABEL_99:
   }
 
   preferredFormat = self->_preferredFormat;
-  if (preferredFormat | *(v4 + 61) && ![(_MRAudioFormatProtobuf *)preferredFormat isEqual:?])
+  if (preferredFormat | *(equalCopy + 61) && ![(_MRAudioFormatProtobuf *)preferredFormat isEqual:?])
   {
     goto LABEL_37;
   }
 
   activeFormat = self->_activeFormat;
-  if (activeFormat | *(v4 + 16))
+  if (activeFormat | *(equalCopy + 16))
   {
     if (![(_MRAudioFormatProtobuf *)activeFormat isEqual:?])
     {
@@ -6340,10 +6340,10 @@ LABEL_99:
   }
 
   v81 = self->_has;
-  v82 = *(v4 + 81);
+  v82 = *(equalCopy + 81);
   if ((*&v81 & 0x8000) != 0)
   {
-    if ((v82 & 0x8000) == 0 || self->_activeFormatJustification != *(v4 + 34))
+    if ((v82 & 0x8000) == 0 || self->_activeFormatJustification != *(equalCopy + 34))
     {
       goto LABEL_37;
     }
@@ -6356,7 +6356,7 @@ LABEL_99:
 
   if ((*&v81 & 0x8000000) != 0)
   {
-    if ((v82 & 0x8000000) == 0 || self->_formatTierPreference != *(v4 + 95))
+    if ((v82 & 0x8000000) == 0 || self->_formatTierPreference != *(equalCopy + 95))
     {
       goto LABEL_37;
     }
@@ -6368,13 +6368,13 @@ LABEL_99:
   }
 
   audioRoute = self->_audioRoute;
-  if (audioRoute | *(v4 + 31) && ![(_MRAudioRouteProtobuf *)audioRoute isEqual:?])
+  if (audioRoute | *(equalCopy + 31) && ![(_MRAudioRouteProtobuf *)audioRoute isEqual:?])
   {
     goto LABEL_37;
   }
 
   alternativeFormats = self->_alternativeFormats;
-  if (alternativeFormats | *(v4 + 22))
+  if (alternativeFormats | *(equalCopy + 22))
   {
     if (![(NSMutableArray *)alternativeFormats isEqual:?])
     {
@@ -6383,7 +6383,7 @@ LABEL_99:
   }
 
   v85 = self->_has;
-  v86 = *(v4 + 81);
+  v86 = *(equalCopy + 81);
   if ((*&v85 & 0x400000000000) != 0)
   {
     if ((v86 & 0x400000000000) == 0)
@@ -6391,16 +6391,16 @@ LABEL_99:
       goto LABEL_37;
     }
 
-    v87 = *(v4 + 628);
+    v87 = *(equalCopy + 628);
     if (self->_isAdvertisement)
     {
-      if ((*(v4 + 628) & 1) == 0)
+      if ((*(equalCopy + 628) & 1) == 0)
       {
         goto LABEL_37;
       }
     }
 
-    else if (*(v4 + 628))
+    else if (*(equalCopy + 628))
     {
       goto LABEL_37;
     }
@@ -6418,16 +6418,16 @@ LABEL_99:
       goto LABEL_37;
     }
 
-    v88 = *(v4 + 626);
+    v88 = *(equalCopy + 626);
     if (self->_hasAlternativeFormats)
     {
-      if ((*(v4 + 626) & 1) == 0)
+      if ((*(equalCopy + 626) & 1) == 0)
       {
         goto LABEL_37;
       }
     }
 
-    else if (*(v4 + 626))
+    else if (*(equalCopy + 626))
     {
       goto LABEL_37;
     }
@@ -6439,13 +6439,13 @@ LABEL_99:
   }
 
   participantName = self->_participantName;
-  if (participantName | *(v4 + 57) && ![(NSString *)participantName isEqual:?])
+  if (participantName | *(equalCopy + 57) && ![(NSString *)participantName isEqual:?])
   {
     goto LABEL_37;
   }
 
   participantIdentifier = self->_participantIdentifier;
-  if (participantIdentifier | *(v4 + 56))
+  if (participantIdentifier | *(equalCopy + 56))
   {
     if (![(NSString *)participantIdentifier isEqual:?])
     {
@@ -6454,7 +6454,7 @@ LABEL_99:
   }
 
   classicalWork = self->_classicalWork;
-  if (classicalWork | *(v4 + 34))
+  if (classicalWork | *(equalCopy + 34))
   {
     if (![(NSString *)classicalWork isEqual:?])
     {
@@ -6463,10 +6463,10 @@ LABEL_99:
   }
 
   v92 = self->_has;
-  v93 = *(v4 + 81);
+  v93 = *(equalCopy + 81);
   if ((*&v92 & 0x2000) != 0)
   {
-    if ((v93 & 0x2000) == 0 || self->_reportingAdamID != *(v4 + 14))
+    if ((v93 & 0x2000) == 0 || self->_reportingAdamID != *(equalCopy + 14))
     {
       goto LABEL_37;
     }
@@ -6479,7 +6479,7 @@ LABEL_99:
 
   if ((*&v92 & 0x400) != 0)
   {
-    if ((v93 & 0x400) == 0 || self->_lyricsAdamID != *(v4 + 11))
+    if ((v93 & 0x400) == 0 || self->_lyricsAdamID != *(equalCopy + 11))
     {
       goto LABEL_37;
     }
@@ -6492,7 +6492,7 @@ LABEL_99:
 
   if ((*&v92 & 8) != 0)
   {
-    if ((v93 & 8) == 0 || self->_iTunesStoreAlbumArtistIdentifier != *(v4 + 4))
+    if ((v93 & 8) == 0 || self->_iTunesStoreAlbumArtistIdentifier != *(equalCopy + 4))
     {
       goto LABEL_37;
     }
@@ -6504,7 +6504,7 @@ LABEL_99:
   }
 
   durationStringLocalizationKey = self->_durationStringLocalizationKey;
-  if (durationStringLocalizationKey | *(v4 + 45))
+  if (durationStringLocalizationKey | *(equalCopy + 45))
   {
     if (![(NSString *)durationStringLocalizationKey isEqual:?])
     {
@@ -6514,7 +6514,7 @@ LABEL_99:
     v92 = self->_has;
   }
 
-  v95 = *(v4 + 81);
+  v95 = *(equalCopy + 81);
   if ((*&v92 & 0x100000000000000) != 0)
   {
     if ((v95 & 0x100000000000000) == 0)
@@ -6522,16 +6522,16 @@ LABEL_99:
       goto LABEL_37;
     }
 
-    v96 = *(v4 + 638);
+    v96 = *(equalCopy + 638);
     if (self->_isResolvableParticipant)
     {
-      if ((*(v4 + 638) & 1) == 0)
+      if ((*(equalCopy + 638) & 1) == 0)
       {
         goto LABEL_37;
       }
     }
 
-    else if (*(v4 + 638))
+    else if (*(equalCopy + 638))
     {
       goto LABEL_37;
     }
@@ -6543,7 +6543,7 @@ LABEL_99:
   }
 
   internationalStandardRecordingCode = self->_internationalStandardRecordingCode;
-  if (internationalStandardRecordingCode | *(v4 + 49))
+  if (internationalStandardRecordingCode | *(equalCopy + 49))
   {
     if (![(NSString *)internationalStandardRecordingCode isEqual:?])
     {
@@ -6553,7 +6553,7 @@ LABEL_99:
     v92 = self->_has;
   }
 
-  v98 = *(v4 + 81);
+  v98 = *(equalCopy + 81);
   if ((*&v92 & 0x8000000000000) != 0)
   {
     if ((v98 & 0x8000000000000) == 0)
@@ -6561,16 +6561,16 @@ LABEL_99:
       goto LABEL_37;
     }
 
-    v99 = *(v4 + 633);
+    v99 = *(equalCopy + 633);
     if (self->_isInTransition)
     {
-      if ((*(v4 + 633) & 1) == 0)
+      if ((*(equalCopy + 633) & 1) == 0)
       {
         goto LABEL_37;
       }
     }
 
-    else if (*(v4 + 633))
+    else if (*(equalCopy + 633))
     {
       goto LABEL_37;
     }
@@ -6588,16 +6588,16 @@ LABEL_99:
       goto LABEL_37;
     }
 
-    v100 = *(v4 + 625);
+    v100 = *(equalCopy + 625);
     if (self->_excludeFromSuggestions)
     {
-      if ((*(v4 + 625) & 1) == 0)
+      if ((*(equalCopy + 625) & 1) == 0)
       {
         goto LABEL_37;
       }
     }
 
-    else if (*(v4 + 625))
+    else if (*(equalCopy + 625))
     {
       goto LABEL_37;
     }
@@ -6625,10 +6625,10 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  v101 = *(v4 + 644);
+  v101 = *(equalCopy + 644);
   if (self->_transcriptAlignmentsAvailable)
   {
-    if (*(v4 + 644))
+    if (*(equalCopy + 644))
     {
       goto LABEL_473;
     }
@@ -6636,20 +6636,20 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  if (*(v4 + 644))
+  if (*(equalCopy + 644))
   {
     goto LABEL_37;
   }
 
 LABEL_473:
   subtitleShort = self->_subtitleShort;
-  if (subtitleShort | *(v4 + 71) && ![(NSString *)subtitleShort isEqual:?])
+  if (subtitleShort | *(equalCopy + 71) && ![(NSString *)subtitleShort isEqual:?])
   {
     goto LABEL_37;
   }
 
   transitionInfoData = self->_transitionInfoData;
-  if (transitionInfoData | *(v4 + 76))
+  if (transitionInfoData | *(equalCopy + 76))
   {
     v17 = [(NSData *)transitionInfoData isEqual:?];
   }
@@ -7714,26 +7714,26 @@ LABEL_205:
   return v179 ^ v180 ^ v178 ^ v177 ^ v176 ^ v175 ^ v174 ^ v173 ^ v172 ^ v171 ^ v170 ^ v169 ^ v168 ^ v167 ^ v166 ^ v165 ^ v164 ^ v163 ^ v162 ^ v161 ^ v160 ^ v159 ^ v158 ^ v157 ^ v156 ^ v155 ^ v154 ^ v153 ^ v152 ^ v151 ^ v150 ^ v149 ^ v148 ^ v147 ^ v146 ^ v145 ^ v144 ^ v143 ^ v142 ^ v141 ^ v140 ^ v139 ^ v138 ^ v137 ^ v136 ^ v135 ^ v134 ^ v133 ^ v132 ^ v131 ^ v130 ^ v129 ^ v128 ^ v127 ^ v126 ^ v125 ^ v124 ^ v123 ^ v122 ^ v121 ^ v120 ^ v119 ^ v118 ^ v117 ^ v116 ^ v115 ^ v114 ^ v113 ^ v112 ^ v111 ^ v110 ^ v109 ^ v108 ^ v107 ^ v106 ^ v105 ^ v104 ^ v103 ^ v102 ^ v101 ^ v100 ^ v99 ^ v98 ^ v97 ^ v96 ^ v95 ^ v94 ^ v93 ^ v92 ^ v91 ^ v90 ^ v89 ^ v88 ^ v87 ^ v72 ^ v73 ^ v75 ^ v85 ^ [(NSData *)self->_transitionInfoData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 72))
+  fromCopy = from;
+  if (*(fromCopy + 72))
   {
     [(_MRContentItemMetadataProtobuf *)self setTitle:?];
   }
 
-  if (*(v4 + 70))
+  if (*(fromCopy + 70))
   {
     [(_MRContentItemMetadataProtobuf *)self setSubtitle:?];
   }
 
-  v5 = *(v4 + 81);
+  v5 = *(fromCopy + 81);
   if ((v5 & 0x1000000000000) != 0)
   {
-    self->_isContainer = *(v4 + 630);
+    self->_isContainer = *(fromCopy + 630);
     *&self->_has |= 0x1000000000000uLL;
-    v5 = *(v4 + 81);
+    v5 = *(fromCopy + 81);
     if ((v5 & 0x80000000000000) == 0)
     {
 LABEL_7:
@@ -7751,42 +7751,42 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  self->_isPlayable = *(v4 + 637);
+  self->_isPlayable = *(fromCopy + 637);
   *&self->_has |= 0x80000000000000uLL;
-  if ((*(v4 + 81) & 0x100000000) != 0)
+  if ((*(fromCopy + 81) & 0x100000000) != 0)
   {
 LABEL_8:
-    self->_playbackProgress = *(v4 + 117);
+    self->_playbackProgress = *(fromCopy + 117);
     *&self->_has |= 0x100000000uLL;
   }
 
 LABEL_9:
-  if (*(v4 + 19))
+  if (*(fromCopy + 19))
   {
     [(_MRContentItemMetadataProtobuf *)self setAlbumName:?];
   }
 
-  if (*(v4 + 74))
+  if (*(fromCopy + 74))
   {
     [(_MRContentItemMetadataProtobuf *)self setTrackArtistName:?];
   }
 
-  if (*(v4 + 18))
+  if (*(fromCopy + 18))
   {
     [(_MRContentItemMetadataProtobuf *)self setAlbumArtistName:?];
   }
 
-  if (*(v4 + 42))
+  if (*(fromCopy + 42))
   {
     [(_MRContentItemMetadataProtobuf *)self setDirectorName:?];
   }
 
-  v6 = *(v4 + 81);
+  v6 = *(fromCopy + 81);
   if ((v6 & 0x2000000000) != 0)
   {
-    self->_seasonNumber = *(v4 + 133);
+    self->_seasonNumber = *(fromCopy + 133);
     *&self->_has |= 0x2000000000uLL;
-    v6 = *(v4 + 81);
+    v6 = *(fromCopy + 81);
     if ((v6 & 0x2000000) == 0)
     {
 LABEL_19:
@@ -7804,9 +7804,9 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  self->_episodeNumber = *(v4 + 93);
+  self->_episodeNumber = *(fromCopy + 93);
   *&self->_has |= 0x2000000uLL;
-  v6 = *(v4 + 81);
+  v6 = *(fromCopy + 81);
   if ((v6 & 0x1000) == 0)
   {
 LABEL_20:
@@ -7819,9 +7819,9 @@ LABEL_20:
   }
 
 LABEL_148:
-  self->_releaseDate = *(v4 + 13);
+  self->_releaseDate = *(fromCopy + 13);
   *&self->_has |= 0x1000uLL;
-  v6 = *(v4 + 81);
+  v6 = *(fromCopy + 81);
   if ((v6 & 0x80000000) == 0)
   {
 LABEL_21:
@@ -7834,27 +7834,27 @@ LABEL_21:
   }
 
 LABEL_149:
-  self->_playCount = *(v4 + 116);
+  self->_playCount = *(fromCopy + 116);
   *&self->_has |= 0x80000000uLL;
-  if (*(v4 + 81))
+  if (*(fromCopy + 81))
   {
 LABEL_22:
-    self->_duration = *(v4 + 1);
+    self->_duration = *(fromCopy + 1);
     *&self->_has |= 1uLL;
   }
 
 LABEL_23:
-  if (*(v4 + 50))
+  if (*(fromCopy + 50))
   {
     [(_MRContentItemMetadataProtobuf *)self setLocalizedContentRating:?];
   }
 
-  v7 = *(v4 + 81);
+  v7 = *(fromCopy + 81);
   if ((v7 & 0x4000000000000) != 0)
   {
-    self->_isExplicitItem = *(v4 + 632);
+    self->_isExplicitItem = *(fromCopy + 632);
     *&self->_has |= 0x4000000000000uLL;
-    v7 = *(v4 + 81);
+    v7 = *(fromCopy + 81);
     if ((v7 & 0x800000000) == 0)
     {
 LABEL_27:
@@ -7872,9 +7872,9 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  self->_playlistType = *(v4 + 120);
+  self->_playlistType = *(fromCopy + 120);
   *&self->_has |= 0x800000000uLL;
-  v7 = *(v4 + 81);
+  v7 = *(fromCopy + 81);
   if ((v7 & 0x1000000000) == 0)
   {
 LABEL_28:
@@ -7887,9 +7887,9 @@ LABEL_28:
   }
 
 LABEL_153:
-  self->_radioStationType = *(v4 + 132);
+  self->_radioStationType = *(fromCopy + 132);
   *&self->_has |= 0x1000000000uLL;
-  v7 = *(v4 + 81);
+  v7 = *(fromCopy + 81);
   if ((v7 & 0x40000000000) == 0)
   {
 LABEL_29:
@@ -7902,9 +7902,9 @@ LABEL_29:
   }
 
 LABEL_154:
-  self->_artworkAvailable = *(v4 + 624);
+  self->_artworkAvailable = *(fromCopy + 624);
   *&self->_has |= 0x40000000000uLL;
-  v7 = *(v4 + 81);
+  v7 = *(fromCopy + 81);
   if ((v7 & 0x200000000000) == 0)
   {
 LABEL_30:
@@ -7917,9 +7917,9 @@ LABEL_30:
   }
 
 LABEL_155:
-  self->_infoAvailable = *(v4 + 627);
+  self->_infoAvailable = *(fromCopy + 627);
   *&self->_has |= 0x200000000000uLL;
-  v7 = *(v4 + 81);
+  v7 = *(fromCopy + 81);
   if ((v7 & 0x1000000000000000) == 0)
   {
 LABEL_31:
@@ -7932,9 +7932,9 @@ LABEL_31:
   }
 
 LABEL_156:
-  self->_languageOptionsAvailable = *(v4 + 642);
+  self->_languageOptionsAvailable = *(fromCopy + 642);
   *&self->_has |= 0x1000000000000000uLL;
-  v7 = *(v4 + 81);
+  v7 = *(fromCopy + 81);
   if ((v7 & 0x40000000) == 0)
   {
 LABEL_32:
@@ -7947,9 +7947,9 @@ LABEL_32:
   }
 
 LABEL_157:
-  self->_numberOfSections = *(v4 + 110);
+  self->_numberOfSections = *(fromCopy + 110);
   *&self->_has |= 0x40000000uLL;
-  v7 = *(v4 + 81);
+  v7 = *(fromCopy + 81);
   if ((v7 & 0x2000000000000000) == 0)
   {
 LABEL_33:
@@ -7962,9 +7962,9 @@ LABEL_33:
   }
 
 LABEL_158:
-  self->_lyricsAvailable = *(v4 + 643);
+  self->_lyricsAvailable = *(fromCopy + 643);
   *&self->_has |= 0x2000000000000000uLL;
-  v7 = *(v4 + 81);
+  v7 = *(fromCopy + 81);
   if ((v7 & 0x1000000) == 0)
   {
 LABEL_34:
@@ -7977,9 +7977,9 @@ LABEL_34:
   }
 
 LABEL_159:
-  self->_editingStyleFlags = *(v4 + 92);
+  self->_editingStyleFlags = *(fromCopy + 92);
   *&self->_has |= 0x1000000uLL;
-  v7 = *(v4 + 81);
+  v7 = *(fromCopy + 81);
   if ((v7 & 0x800000000000000) == 0)
   {
 LABEL_35:
@@ -7992,72 +7992,72 @@ LABEL_35:
   }
 
 LABEL_160:
-  self->_isStreamingContent = *(v4 + 641);
+  self->_isStreamingContent = *(fromCopy + 641);
   *&self->_has |= 0x800000000000000uLL;
-  if ((*(v4 + 81) & 0x2000000000000) != 0)
+  if ((*(fromCopy + 81) & 0x2000000000000) != 0)
   {
 LABEL_36:
-    self->_isCurrentlyPlaying = *(v4 + 631);
+    self->_isCurrentlyPlaying = *(fromCopy + 631);
     *&self->_has |= 0x2000000000000uLL;
   }
 
 LABEL_37:
-  if (*(v4 + 35))
+  if (*(fromCopy + 35))
   {
     [(_MRContentItemMetadataProtobuf *)self setCollectionIdentifier:?];
   }
 
-  if (*(v4 + 62))
+  if (*(fromCopy + 62))
   {
     [(_MRContentItemMetadataProtobuf *)self setProfileIdentifier:?];
   }
 
-  if ((*(v4 + 649) & 0x40) != 0)
+  if ((*(fromCopy + 649) & 0x40) != 0)
   {
-    self->_startTime = *(v4 + 15);
+    self->_startTime = *(fromCopy + 15);
     *&self->_has |= 0x4000uLL;
   }
 
-  if (*(v4 + 27))
+  if (*(fromCopy + 27))
   {
     [(_MRContentItemMetadataProtobuf *)self setArtworkMIMEType:?];
   }
 
-  if (*(v4 + 30))
+  if (*(fromCopy + 30))
   {
     [(_MRContentItemMetadataProtobuf *)self setAssetURLString:?];
   }
 
-  if (*(v4 + 37))
+  if (*(fromCopy + 37))
   {
     [(_MRContentItemMetadataProtobuf *)self setComposer:?];
   }
 
-  v8 = *(v4 + 81);
+  v8 = *(fromCopy + 81);
   if ((v8 & 0x200000) != 0)
   {
-    self->_discNumber = *(v4 + 86);
+    self->_discNumber = *(fromCopy + 86);
     *&self->_has |= 0x200000uLL;
-    v8 = *(v4 + 81);
+    v8 = *(fromCopy + 81);
   }
 
   if ((v8 & 2) != 0)
   {
-    self->_elapsedTime = *(v4 + 2);
+    self->_elapsedTime = *(fromCopy + 2);
     *&self->_has |= 2uLL;
   }
 
-  if (*(v4 + 48))
+  if (*(fromCopy + 48))
   {
     [(_MRContentItemMetadataProtobuf *)self setGenre:?];
   }
 
-  v9 = *(v4 + 81);
+  v9 = *(fromCopy + 81);
   if ((v9 & 0x800000000000) != 0)
   {
-    self->_isAlwaysLive = *(v4 + 629);
+    self->_isAlwaysLive = *(fromCopy + 629);
     *&self->_has |= 0x800000000000uLL;
-    v9 = *(v4 + 81);
+    v9 = *(fromCopy + 81);
     if ((v9 & 0x200000000) == 0)
     {
 LABEL_57:
@@ -8075,9 +8075,9 @@ LABEL_57:
     goto LABEL_57;
   }
 
-  self->_playbackRate = *(v4 + 118);
+  self->_playbackRate = *(fromCopy + 118);
   *&self->_has |= 0x200000000uLL;
-  v9 = *(v4 + 81);
+  v9 = *(fromCopy + 81);
   if ((v9 & 0x80000) == 0)
   {
 LABEL_58:
@@ -8090,9 +8090,9 @@ LABEL_58:
   }
 
 LABEL_164:
-  self->_chapterCount = *(v4 + 66);
+  self->_chapterCount = *(fromCopy + 66);
   *&self->_has |= 0x80000uLL;
-  v9 = *(v4 + 81);
+  v9 = *(fromCopy + 81);
   if ((v9 & 0x8000000000) == 0)
   {
 LABEL_59:
@@ -8105,9 +8105,9 @@ LABEL_59:
   }
 
 LABEL_165:
-  self->_totalDiscCount = *(v4 + 146);
+  self->_totalDiscCount = *(fromCopy + 146);
   *&self->_has |= 0x8000000000uLL;
-  v9 = *(v4 + 81);
+  v9 = *(fromCopy + 81);
   if ((v9 & 0x10000000000) == 0)
   {
 LABEL_60:
@@ -8120,27 +8120,27 @@ LABEL_60:
   }
 
 LABEL_166:
-  self->_totalTrackCount = *(v4 + 147);
+  self->_totalTrackCount = *(fromCopy + 147);
   *&self->_has |= 0x10000000000uLL;
-  if ((*(v4 + 81) & 0x20000000000) != 0)
+  if ((*(fromCopy + 81) & 0x20000000000) != 0)
   {
 LABEL_61:
-    self->_trackNumber = *(v4 + 150);
+    self->_trackNumber = *(fromCopy + 150);
     *&self->_has |= 0x20000000000uLL;
   }
 
 LABEL_62:
-  if (*(v4 + 38))
+  if (*(fromCopy + 38))
   {
     [(_MRContentItemMetadataProtobuf *)self setContentIdentifier:?];
   }
 
-  v10 = *(v4 + 81);
+  v10 = *(fromCopy + 81);
   if ((v10 & 0x200000000000000) != 0)
   {
-    self->_isSharable = *(v4 + 639);
+    self->_isSharable = *(fromCopy + 639);
     *&self->_has |= 0x200000000000000uLL;
-    v10 = *(v4 + 81);
+    v10 = *(fromCopy + 81);
     if ((v10 & 0x20000000000000) == 0)
     {
 LABEL_66:
@@ -8158,9 +8158,9 @@ LABEL_66:
     goto LABEL_66;
   }
 
-  self->_isLiked = *(v4 + 635);
+  self->_isLiked = *(fromCopy + 635);
   *&self->_has |= 0x20000000000000uLL;
-  v10 = *(v4 + 81);
+  v10 = *(fromCopy + 81);
   if ((v10 & 0x10000000000000) == 0)
   {
 LABEL_67:
@@ -8173,32 +8173,32 @@ LABEL_67:
   }
 
 LABEL_170:
-  self->_isInWishList = *(v4 + 634);
+  self->_isInWishList = *(fromCopy + 634);
   *&self->_has |= 0x10000000000000uLL;
-  if ((*(v4 + 81) & 0x800) != 0)
+  if ((*(fromCopy + 81) & 0x800) != 0)
   {
 LABEL_68:
-    self->_radioStationIdentifier = *(v4 + 12);
+    self->_radioStationIdentifier = *(fromCopy + 12);
     *&self->_has |= 0x800uLL;
   }
 
 LABEL_69:
-  if (*(v4 + 64))
+  if (*(fromCopy + 64))
   {
     [(_MRContentItemMetadataProtobuf *)self setRadioStationName:?];
   }
 
-  if (*(v4 + 65))
+  if (*(fromCopy + 65))
   {
     [(_MRContentItemMetadataProtobuf *)self setRadioStationString:?];
   }
 
-  v11 = *(v4 + 81);
+  v11 = *(fromCopy + 81);
   if ((v11 & 0x40) != 0)
   {
-    self->_iTunesStoreIdentifier = *(v4 + 7);
+    self->_iTunesStoreIdentifier = *(fromCopy + 7);
     *&self->_has |= 0x40uLL;
-    v11 = *(v4 + 81);
+    v11 = *(fromCopy + 81);
     if ((v11 & 0x80) == 0)
     {
 LABEL_75:
@@ -8216,9 +8216,9 @@ LABEL_75:
     goto LABEL_75;
   }
 
-  self->_iTunesStoreSubscriptionIdentifier = *(v4 + 8);
+  self->_iTunesStoreSubscriptionIdentifier = *(fromCopy + 8);
   *&self->_has |= 0x80uLL;
-  v11 = *(v4 + 81);
+  v11 = *(fromCopy + 81);
   if ((v11 & 0x20) == 0)
   {
 LABEL_76:
@@ -8231,27 +8231,27 @@ LABEL_76:
   }
 
 LABEL_174:
-  self->_iTunesStoreArtistIdentifier = *(v4 + 6);
+  self->_iTunesStoreArtistIdentifier = *(fromCopy + 6);
   *&self->_has |= 0x20uLL;
-  if ((*(v4 + 81) & 0x10) != 0)
+  if ((*(fromCopy + 81) & 0x10) != 0)
   {
 LABEL_77:
-    self->_iTunesStoreAlbumIdentifier = *(v4 + 5);
+    self->_iTunesStoreAlbumIdentifier = *(fromCopy + 5);
     *&self->_has |= 0x10uLL;
   }
 
 LABEL_78:
-  if (*(v4 + 63))
+  if (*(fromCopy + 63))
   {
     [(_MRContentItemMetadataProtobuf *)self setPurchaseInfoData:?];
   }
 
-  v12 = *(v4 + 81);
+  v12 = *(fromCopy + 81);
   if ((v12 & 0x100000) != 0)
   {
-    self->_defaultPlaybackRate = *(v4 + 80);
+    self->_defaultPlaybackRate = *(fromCopy + 80);
     *&self->_has |= 0x100000uLL;
-    v12 = *(v4 + 81);
+    v12 = *(fromCopy + 81);
     if ((v12 & 0x800000) == 0)
     {
 LABEL_82:
@@ -8269,170 +8269,170 @@ LABEL_82:
     goto LABEL_82;
   }
 
-  self->_downloadState = *(v4 + 88);
+  self->_downloadState = *(fromCopy + 88);
   *&self->_has |= 0x800000uLL;
-  if ((*(v4 + 81) & 0x400000) != 0)
+  if ((*(fromCopy + 81) & 0x400000) != 0)
   {
 LABEL_83:
-    self->_downloadProgress = *(v4 + 87);
+    self->_downloadProgress = *(fromCopy + 87);
     *&self->_has |= 0x400000uLL;
   }
 
 LABEL_84:
-  if (*(v4 + 23))
+  if (*(fromCopy + 23))
   {
     [(_MRContentItemMetadataProtobuf *)self setAppMetricsData:?];
   }
 
-  if (*(v4 + 67))
+  if (*(fromCopy + 67))
   {
     [(_MRContentItemMetadataProtobuf *)self setSeriesName:?];
   }
 
-  v13 = *(v4 + 81);
+  v13 = *(fromCopy + 81);
   if ((v13 & 0x20000000) != 0)
   {
-    self->_mediaType = *(v4 + 107);
+    self->_mediaType = *(fromCopy + 107);
     *&self->_has |= 0x20000000uLL;
-    v13 = *(v4 + 81);
+    v13 = *(fromCopy + 81);
   }
 
   if ((v13 & 0x10000000) != 0)
   {
-    self->_mediaSubType = *(v4 + 106);
+    self->_mediaSubType = *(fromCopy + 106);
     *&self->_has |= 0x10000000uLL;
   }
 
-  if (*(v4 + 54))
+  if (*(fromCopy + 54))
   {
     [(_MRContentItemMetadataProtobuf *)self setNowPlayingInfoData:?];
   }
 
-  if (*(v4 + 77))
+  if (*(fromCopy + 77))
   {
     [(_MRContentItemMetadataProtobuf *)self setUserInfoData:?];
   }
 
-  if ((*(v4 + 655) & 4) != 0)
+  if ((*(fromCopy + 655) & 4) != 0)
   {
-    self->_isSteerable = *(v4 + 640);
+    self->_isSteerable = *(fromCopy + 640);
     *&self->_has |= 0x400000000000000uLL;
   }
 
-  if (*(v4 + 28))
+  if (*(fromCopy + 28))
   {
     [(_MRContentItemMetadataProtobuf *)self setArtworkURL:?];
   }
 
-  if (*(v4 + 52))
+  if (*(fromCopy + 52))
   {
     [(_MRContentItemMetadataProtobuf *)self setLyricsURL:?];
   }
 
-  if (*(v4 + 41))
+  if (*(fromCopy + 41))
   {
     [(_MRContentItemMetadataProtobuf *)self setDeviceSpecificUserInfoData:?];
   }
 
-  if (*(v4 + 36))
+  if (*(fromCopy + 36))
   {
     [(_MRContentItemMetadataProtobuf *)self setCollectionInfoData:?];
   }
 
-  v14 = *(v4 + 81);
+  v14 = *(fromCopy + 81);
   if ((v14 & 4) != 0)
   {
-    self->_elapsedTimeTimestamp = *(v4 + 3);
+    self->_elapsedTimeTimestamp = *(fromCopy + 3);
     *&self->_has |= 4uLL;
-    v14 = *(v4 + 81);
+    v14 = *(fromCopy + 81);
   }
 
   if ((v14 & 0x100) != 0)
   {
-    self->_inferredTimestamp = *(v4 + 9);
+    self->_inferredTimestamp = *(fromCopy + 9);
     *&self->_has |= 0x100uLL;
   }
 
-  if (*(v4 + 68))
+  if (*(fromCopy + 68))
   {
     [(_MRContentItemMetadataProtobuf *)self setServiceIdentifier:?];
   }
 
-  v15 = *(v4 + 81);
+  v15 = *(fromCopy + 81);
   if ((v15 & 0x40000) != 0)
   {
-    self->_artworkDataWidthDeprecated = *(v4 + 49);
+    self->_artworkDataWidthDeprecated = *(fromCopy + 49);
     *&self->_has |= 0x40000uLL;
-    v15 = *(v4 + 81);
+    v15 = *(fromCopy + 81);
   }
 
   if ((v15 & 0x20000) != 0)
   {
-    self->_artworkDataHeightDeprecated = *(v4 + 48);
+    self->_artworkDataHeightDeprecated = *(fromCopy + 48);
     *&self->_has |= 0x20000uLL;
   }
 
-  if (*(v4 + 39))
+  if (*(fromCopy + 39))
   {
     [(_MRContentItemMetadataProtobuf *)self setCurrentPlaybackDateData:?];
   }
 
-  if (*(v4 + 26))
+  if (*(fromCopy + 26))
   {
     [(_MRContentItemMetadataProtobuf *)self setArtworkIdentifier:?];
   }
 
-  if ((*(v4 + 654) & 0x40) != 0)
+  if ((*(fromCopy + 654) & 0x40) != 0)
   {
-    self->_isLoading = *(v4 + 636);
+    self->_isLoading = *(fromCopy + 636);
     *&self->_has |= 0x40000000000000uLL;
   }
 
-  if (*(v4 + 29))
+  if (*(fromCopy + 29))
   {
     [(_MRContentItemMetadataProtobuf *)self setArtworkURLTemplatesData:?];
   }
 
-  v16 = *(v4 + 81);
+  v16 = *(fromCopy + 81);
   if ((v16 & 0x200) != 0)
   {
-    self->_legacyUniqueIdentifier = *(v4 + 10);
+    self->_legacyUniqueIdentifier = *(fromCopy + 10);
     *&self->_has |= 0x200uLL;
-    v16 = *(v4 + 81);
+    v16 = *(fromCopy + 81);
   }
 
   if ((v16 & 0x4000000) != 0)
   {
-    self->_episodeType = *(v4 + 94);
+    self->_episodeType = *(fromCopy + 94);
     *&self->_has |= 0x4000000uLL;
   }
 
-  if (*(v4 + 25))
+  if (*(fromCopy + 25))
   {
     [(_MRContentItemMetadataProtobuf *)self setArtworkFileURL:?];
   }
 
-  if (*(v4 + 32))
+  if (*(fromCopy + 32))
   {
     [(_MRContentItemMetadataProtobuf *)self setBrandIdentifier:?];
   }
 
-  if (*(v4 + 51))
+  if (*(fromCopy + 51))
   {
     [(_MRContentItemMetadataProtobuf *)self setLocalizedDurationString:?];
   }
 
-  if (*(v4 + 21))
+  if (*(fromCopy + 21))
   {
     [(_MRContentItemMetadataProtobuf *)self setAlbumYear:?];
   }
 
-  v17 = *(v4 + 81);
+  v17 = *(fromCopy + 81);
   if ((v17 & 0x4000000000) != 0)
   {
-    self->_songTraits = *(v4 + 138);
+    self->_songTraits = *(fromCopy + 138);
     *&self->_has |= 0x4000000000uLL;
-    v17 = *(v4 + 81);
+    v17 = *(fromCopy + 81);
     if ((v17 & 0x10000) == 0)
     {
 LABEL_138:
@@ -8450,18 +8450,18 @@ LABEL_138:
     goto LABEL_138;
   }
 
-  self->_albumTraits = *(v4 + 40);
+  self->_albumTraits = *(fromCopy + 40);
   *&self->_has |= 0x10000uLL;
-  if ((*(v4 + 81) & 0x400000000) != 0)
+  if ((*(fromCopy + 81) & 0x400000000) != 0)
   {
 LABEL_139:
-    self->_playlistTraits = *(v4 + 119);
+    self->_playlistTraits = *(fromCopy + 119);
     *&self->_has |= 0x400000000uLL;
   }
 
 LABEL_140:
   preferredFormat = self->_preferredFormat;
-  v19 = *(v4 + 61);
+  v19 = *(fromCopy + 61);
   if (preferredFormat)
   {
     if (v19)
@@ -8476,7 +8476,7 @@ LABEL_140:
   }
 
   activeFormat = self->_activeFormat;
-  v21 = *(v4 + 16);
+  v21 = *(fromCopy + 16);
   if (activeFormat)
   {
     if (v21)
@@ -8490,22 +8490,22 @@ LABEL_140:
     [(_MRContentItemMetadataProtobuf *)self setActiveFormat:?];
   }
 
-  v22 = *(v4 + 81);
+  v22 = *(fromCopy + 81);
   if ((v22 & 0x8000) != 0)
   {
-    self->_activeFormatJustification = *(v4 + 34);
+    self->_activeFormatJustification = *(fromCopy + 34);
     *&self->_has |= 0x8000uLL;
-    v22 = *(v4 + 81);
+    v22 = *(fromCopy + 81);
   }
 
   if ((v22 & 0x8000000) != 0)
   {
-    self->_formatTierPreference = *(v4 + 95);
+    self->_formatTierPreference = *(fromCopy + 95);
     *&self->_has |= 0x8000000uLL;
   }
 
   audioRoute = self->_audioRoute;
-  v24 = *(v4 + 31);
+  v24 = *(fromCopy + 31);
   if (audioRoute)
   {
     if (v24)
@@ -8523,7 +8523,7 @@ LABEL_140:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v25 = *(v4 + 22);
+  v25 = *(fromCopy + 22);
   v26 = [v25 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v26)
   {
@@ -8547,41 +8547,41 @@ LABEL_140:
     while (v27);
   }
 
-  v30 = *(v4 + 81);
+  v30 = *(fromCopy + 81);
   if ((v30 & 0x400000000000) != 0)
   {
-    self->_isAdvertisement = *(v4 + 628);
+    self->_isAdvertisement = *(fromCopy + 628);
     *&self->_has |= 0x400000000000uLL;
-    v30 = *(v4 + 81);
+    v30 = *(fromCopy + 81);
   }
 
   if ((v30 & 0x100000000000) != 0)
   {
-    self->_hasAlternativeFormats = *(v4 + 626);
+    self->_hasAlternativeFormats = *(fromCopy + 626);
     *&self->_has |= 0x100000000000uLL;
   }
 
-  if (*(v4 + 57))
+  if (*(fromCopy + 57))
   {
     [(_MRContentItemMetadataProtobuf *)self setParticipantName:?];
   }
 
-  if (*(v4 + 56))
+  if (*(fromCopy + 56))
   {
     [(_MRContentItemMetadataProtobuf *)self setParticipantIdentifier:?];
   }
 
-  if (*(v4 + 34))
+  if (*(fromCopy + 34))
   {
     [(_MRContentItemMetadataProtobuf *)self setClassicalWork:?];
   }
 
-  v31 = *(v4 + 81);
+  v31 = *(fromCopy + 81);
   if ((v31 & 0x2000) != 0)
   {
-    self->_reportingAdamID = *(v4 + 14);
+    self->_reportingAdamID = *(fromCopy + 14);
     *&self->_has |= 0x2000uLL;
-    v31 = *(v4 + 81);
+    v31 = *(fromCopy + 81);
     if ((v31 & 0x400) == 0)
     {
 LABEL_217:
@@ -8599,38 +8599,38 @@ LABEL_217:
     goto LABEL_217;
   }
 
-  self->_lyricsAdamID = *(v4 + 11);
+  self->_lyricsAdamID = *(fromCopy + 11);
   *&self->_has |= 0x400uLL;
-  if ((*(v4 + 81) & 8) != 0)
+  if ((*(fromCopy + 81) & 8) != 0)
   {
 LABEL_218:
-    self->_iTunesStoreAlbumArtistIdentifier = *(v4 + 4);
+    self->_iTunesStoreAlbumArtistIdentifier = *(fromCopy + 4);
     *&self->_has |= 8uLL;
   }
 
 LABEL_219:
-  if (*(v4 + 45))
+  if (*(fromCopy + 45))
   {
     [(_MRContentItemMetadataProtobuf *)self setDurationStringLocalizationKey:?];
   }
 
-  if (*(v4 + 655))
+  if (*(fromCopy + 655))
   {
-    self->_isResolvableParticipant = *(v4 + 638);
+    self->_isResolvableParticipant = *(fromCopy + 638);
     *&self->_has |= 0x100000000000000uLL;
   }
 
-  if (*(v4 + 49))
+  if (*(fromCopy + 49))
   {
     [(_MRContentItemMetadataProtobuf *)self setInternationalStandardRecordingCode:?];
   }
 
-  v32 = *(v4 + 81);
+  v32 = *(fromCopy + 81);
   if ((v32 & 0x8000000000000) != 0)
   {
-    self->_isInTransition = *(v4 + 633);
+    self->_isInTransition = *(fromCopy + 633);
     *&self->_has |= 0x8000000000000uLL;
-    v32 = *(v4 + 81);
+    v32 = *(fromCopy + 81);
     if ((v32 & 0x80000000000) == 0)
     {
 LABEL_227:
@@ -8648,22 +8648,22 @@ LABEL_227:
     goto LABEL_227;
   }
 
-  self->_excludeFromSuggestions = *(v4 + 625);
+  self->_excludeFromSuggestions = *(fromCopy + 625);
   *&self->_has |= 0x80000000000uLL;
-  if ((*(v4 + 81) & 0x4000000000000000) != 0)
+  if ((*(fromCopy + 81) & 0x4000000000000000) != 0)
   {
 LABEL_228:
-    self->_transcriptAlignmentsAvailable = *(v4 + 644);
+    self->_transcriptAlignmentsAvailable = *(fromCopy + 644);
     *&self->_has |= 0x4000000000000000uLL;
   }
 
 LABEL_229:
-  if (*(v4 + 71))
+  if (*(fromCopy + 71))
   {
     [(_MRContentItemMetadataProtobuf *)self setSubtitleShort:?];
   }
 
-  if (*(v4 + 76))
+  if (*(fromCopy + 76))
   {
     [(_MRContentItemMetadataProtobuf *)self setTransitionInfoData:?];
   }

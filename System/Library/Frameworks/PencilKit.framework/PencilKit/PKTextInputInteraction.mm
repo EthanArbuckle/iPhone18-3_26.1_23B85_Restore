@@ -1,16 +1,16 @@
 @interface PKTextInputInteraction
-+ (BOOL)writeCurrentPencilSharpenerLogsToURL:(id)a3 fullLogs:(BOOL)a4 windowScene:(id)a5;
-- (BOOL)_beginGestureIfPossible:(id)a3;
-- (BOOL)_handleDrawingGestureTapInElement:(id)a3 gesture:(id)a4 touch:(id)a5;
-- (BOOL)_isTapAwayFromCurrentStrokesAtCanvasViewLocation:(CGPoint)a3;
-- (BOOL)_shouldAvoidStartingDrawingOnView:(id)a3 location:(CGPoint)a4;
-- (BOOL)cursorControllerCustomHighlightFeedbackIsVisible:(id)a3;
-- (BOOL)drawingGestureRecognizer:(id)a3 shouldBeginDrawingWithTouches:(id)a4 event:(id)a5;
-- (BOOL)drawingGestureRecognizer:(id)a3 shouldFinishGestureWithTouch:(id)a4;
-- (BOOL)drawingGestureRecognizerLongPressShouldBegin:(id)a3;
-- (BOOL)drawingGestureRecognizerRequiresPastTapToBegin:(id)a3;
-- (BOOL)drawingGestureRecognizerRequiresTargetElementToBegin:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
++ (BOOL)writeCurrentPencilSharpenerLogsToURL:(id)l fullLogs:(BOOL)logs windowScene:(id)scene;
+- (BOOL)_beginGestureIfPossible:(id)possible;
+- (BOOL)_handleDrawingGestureTapInElement:(id)element gesture:(id)gesture touch:(id)touch;
+- (BOOL)_isTapAwayFromCurrentStrokesAtCanvasViewLocation:(CGPoint)location;
+- (BOOL)_shouldAvoidStartingDrawingOnView:(id)view location:(CGPoint)location;
+- (BOOL)cursorControllerCustomHighlightFeedbackIsVisible:(id)visible;
+- (BOOL)drawingGestureRecognizer:(id)recognizer shouldBeginDrawingWithTouches:(id)touches event:(id)event;
+- (BOOL)drawingGestureRecognizer:(id)recognizer shouldFinishGestureWithTouch:(id)touch;
+- (BOOL)drawingGestureRecognizerLongPressShouldBegin:(id)begin;
+- (BOOL)drawingGestureRecognizerRequiresPastTapToBegin:(id)begin;
+- (BOOL)drawingGestureRecognizerRequiresTargetElementToBegin:(id)begin;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (BOOL)isCursorWeak;
 - (BOOL)isFloatingKeyboardVisible;
 - (CGRect)editingOverlayContainerSceneBounds;
@@ -18,20 +18,20 @@
 - (NSString)currentLanguageIdentifier;
 - (PKTextInputInteraction)init;
 - (UIView)view;
-- (id)_findControlFromHitView:(id)a3 referenceView:(id)a4;
-- (id)_topLevelHitViewForContainerViewPosition:(CGPoint)a3 event:(id)a4;
-- (id)canvasControllerDrawingGestureRecognizer:(id)a3;
-- (id)canvasControllerPreferredStrokeColor:(id)a3 animated:(BOOL *)a4;
-- (id)containerView:(id)a3 hitTest:(CGPoint)a4 withEvent:(id)a5;
-- (id)paletteControllerDebugSharpenerLog:(id)a3;
-- (id)windowSceneForController:(id)a3;
-- (int64_t)cursorControllerWritingState:(id)a3;
-- (void)_drawingGestureElementFinderDidFinishWithLocationInContainerView:(CGPoint)a3;
-- (void)_handlePotentialDebugOverlayGestureAtPoint:(CGPoint)a3;
-- (void)_notifyTargetElementOfTouches:(id)a3 event:(id)a4;
-- (void)_setDebugControllerAnchorCorner:(unint64_t)a3;
-- (void)_setHandwritingInteractionEnabled:(BOOL)a3;
-- (void)_setLastHandwritingEventTimestamp:(double)a3;
+- (id)_findControlFromHitView:(id)view referenceView:(id)referenceView;
+- (id)_topLevelHitViewForContainerViewPosition:(CGPoint)position event:(id)event;
+- (id)canvasControllerDrawingGestureRecognizer:(id)recognizer;
+- (id)canvasControllerPreferredStrokeColor:(id)color animated:(BOOL *)animated;
+- (id)containerView:(id)view hitTest:(CGPoint)test withEvent:(id)event;
+- (id)paletteControllerDebugSharpenerLog:(id)log;
+- (id)windowSceneForController:(id)controller;
+- (int64_t)cursorControllerWritingState:(id)state;
+- (void)_drawingGestureElementFinderDidFinishWithLocationInContainerView:(CGPoint)view;
+- (void)_handlePotentialDebugOverlayGestureAtPoint:(CGPoint)point;
+- (void)_notifyTargetElementOfTouches:(id)touches event:(id)event;
+- (void)_setDebugControllerAnchorCorner:(unint64_t)corner;
+- (void)_setHandwritingInteractionEnabled:(BOOL)enabled;
+- (void)_setLastHandwritingEventTimestamp:(double)timestamp;
 - (void)_updateCanvasController;
 - (void)_updateCanvasStrokeColor;
 - (void)_updateContainerView;
@@ -43,39 +43,39 @@
 - (void)_updateKeyboardSuppressionPolicy;
 - (void)_updatePaletteController;
 - (void)cancelReplay;
-- (void)canvasController:(id)a3 drawingDidChange:(id)a4;
-- (void)canvasControllerCanvasDidFinishAnimatingStrokes:(id)a3;
-- (void)canvasControllerDidCancelStroke:(id)a3 strokeAcceptanceState:(int64_t)a4;
-- (void)canvasControllerDidEndDrawing:(id)a3;
-- (void)canvasControllerEndedStroke:(id)a3;
-- (void)canvasControllerInProgressStrokeDidChange:(id)a3;
+- (void)canvasController:(id)controller drawingDidChange:(id)change;
+- (void)canvasControllerCanvasDidFinishAnimatingStrokes:(id)strokes;
+- (void)canvasControllerDidCancelStroke:(id)stroke strokeAcceptanceState:(int64_t)state;
+- (void)canvasControllerDidEndDrawing:(id)drawing;
+- (void)canvasControllerEndedStroke:(id)stroke;
+- (void)canvasControllerInProgressStrokeDidChange:(id)change;
 - (void)dealloc;
-- (void)didMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
 - (void)dismissFloatingKeyboard;
-- (void)drawingGestureRecognizerDrawingTargetIsDrawingDidChange:(id)a3;
-- (void)drawingGestureRecognizerLongPressStateDidChange:(id)a3;
-- (void)drawingGestureStrokeAcceptanceStateDidChange:(id)a3;
-- (void)editingOverlayContainerDidChangeToSceneBounds:(CGRect)a3;
-- (void)elementsControllerLastDiscoveredElementsDidChange:(id)a3;
-- (void)feedbackControllerShowingCustomFeedbackDidChange:(id)a3;
-- (void)handwritingControllerDidFinishActiveCommands:(id)a3;
-- (void)handwritingControllerWritingStateDidChange:(id)a3;
-- (void)hoverControllerDidLift:(id)a3;
+- (void)drawingGestureRecognizerDrawingTargetIsDrawingDidChange:(id)change;
+- (void)drawingGestureRecognizerLongPressStateDidChange:(id)change;
+- (void)drawingGestureStrokeAcceptanceStateDidChange:(id)change;
+- (void)editingOverlayContainerDidChangeToSceneBounds:(CGRect)bounds;
+- (void)elementsControllerLastDiscoveredElementsDidChange:(id)change;
+- (void)feedbackControllerShowingCustomFeedbackDidChange:(id)change;
+- (void)handwritingControllerDidFinishActiveCommands:(id)commands;
+- (void)handwritingControllerWritingStateDidChange:(id)change;
+- (void)hoverControllerDidLift:(id)lift;
 - (void)presentFloatingKeyboard;
 - (void)presentProblemReportingView;
-- (void)reportDebugStateDescription:(id)a3;
-- (void)reserveSpaceController:(id)a3 willFocusElement:(id)a4;
-- (void)reserveSpaceControllerIsActiveChanged:(id)a3;
-- (void)reserveSpaceControllerIsPlaceholderVisibleChanged:(id)a3;
-- (void)saveInteractionForScene:(id)a3;
-- (void)setCurrentLanguageIdentifier:(id)a3;
-- (void)setEditingOverlayContainerSceneBounds:(CGRect)a3;
-- (void)simulateReserveSpaceForTextInputView:(id)a3 location:(CGPoint)a4 completion:(id)a5;
-- (void)textInputLanguageSelectionControllerDidChangeLanguage:(id)a3;
-- (void)textInputPaletteControllerFloatingKeyboardWillHide:(id)a3;
-- (void)textInputPaletteControllerFloatingKeyboardWillShow:(id)a3;
+- (void)reportDebugStateDescription:(id)description;
+- (void)reserveSpaceController:(id)controller willFocusElement:(id)element;
+- (void)reserveSpaceControllerIsActiveChanged:(id)changed;
+- (void)reserveSpaceControllerIsPlaceholderVisibleChanged:(id)changed;
+- (void)saveInteractionForScene:(id)scene;
+- (void)setCurrentLanguageIdentifier:(id)identifier;
+- (void)setEditingOverlayContainerSceneBounds:(CGRect)bounds;
+- (void)simulateReserveSpaceForTextInputView:(id)view location:(CGPoint)location completion:(id)completion;
+- (void)textInputLanguageSelectionControllerDidChangeLanguage:(id)language;
+- (void)textInputPaletteControllerFloatingKeyboardWillHide:(id)hide;
+- (void)textInputPaletteControllerFloatingKeyboardWillShow:(id)show;
 - (void)touchesDetected;
-- (void)willMoveToView:(id)a3;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation PKTextInputInteraction
@@ -130,8 +130,8 @@
       v18 = *(v2 + 13);
       *(v2 + 13) = v17;
 
-      v19 = [MEMORY[0x1E695DF00] distantPast];
-      [v19 timeIntervalSinceReferenceDate];
+      distantPast = [MEMORY[0x1E695DF00] distantPast];
+      [distantPast timeIntervalSinceReferenceDate];
       *(v2 + 10) = v20;
 
       +[PKTextInputAnalyticsController beginObservingSessionAnalytics];
@@ -144,47 +144,47 @@
 
 - (void)dealloc
 {
-  v3 = [(PKTextInputInteraction *)self _canvasController];
-  [(PKTextInputCanvasController *)v3 setDelegate:?];
+  _canvasController = [(PKTextInputInteraction *)self _canvasController];
+  [(PKTextInputCanvasController *)_canvasController setDelegate:?];
 
-  v4 = [(PKTextInputInteraction *)self _canvasController];
-  v5 = v4;
-  if (v4)
+  _canvasController2 = [(PKTextInputInteraction *)self _canvasController];
+  v5 = _canvasController2;
+  if (_canvasController2)
   {
-    objc_storeWeak((v4 + 80), 0);
+    objc_storeWeak((_canvasController2 + 80), 0);
   }
 
-  v6 = [(PKTextInputInteraction *)self _reserveSpaceController];
-  [v6 setDelegate:0];
+  _reserveSpaceController = [(PKTextInputInteraction *)self _reserveSpaceController];
+  [_reserveSpaceController setDelegate:0];
 
-  v7 = [(PKTextInputInteraction *)self _containerView];
-  v8 = v7;
-  if (v7)
+  _containerView = [(PKTextInputInteraction *)self _containerView];
+  v8 = _containerView;
+  if (_containerView)
   {
-    objc_storeWeak((v7 + 408), 0);
+    objc_storeWeak((_containerView + 408), 0);
   }
 
-  v9 = [(PKTextInputInteraction *)self drawingGestureRecognizer];
-  [v9 setDelegate:0];
+  drawingGestureRecognizer = [(PKTextInputInteraction *)self drawingGestureRecognizer];
+  [drawingGestureRecognizer setDelegate:0];
 
   v10.receiver = self;
   v10.super_class = PKTextInputInteraction;
   [(PKTextInputInteraction *)&v10 dealloc];
 }
 
-+ (BOOL)writeCurrentPencilSharpenerLogsToURL:(id)a3 fullLogs:(BOOL)a4 windowScene:(id)a5
++ (BOOL)writeCurrentPencilSharpenerLogsToURL:(id)l fullLogs:(BOOL)logs windowScene:(id)scene
 {
-  v6 = a4;
+  logsCopy = logs;
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  lCopy = l;
+  sceneCopy = scene;
   if (os_variant_has_internal_diagnostics())
   {
-    v9 = [PKTextInputInteraction interactionForScene:v8];
-    v12 = [v9 debugLogController];
-    v13 = [(PKTextInputDebugLogController *)v12 sharpenerLogWithCurrentContent];
+    v9 = [PKTextInputInteraction interactionForScene:sceneCopy];
+    debugLogController = [v9 debugLogController];
+    sharpenerLogWithCurrentContent = [(PKTextInputDebugLogController *)debugLogController sharpenerLogWithCurrentContent];
 
-    if (v6)
+    if (logsCopy)
     {
       v14 = 2;
     }
@@ -195,7 +195,7 @@
     }
 
     v19 = 0;
-    v10 = [v13 writeToURL:v7 withContentLevel:v14 excludeEntyIndexes:0 error:&v19];
+    v10 = [sharpenerLogWithCurrentContent writeToURL:lCopy withContentLevel:v14 excludeEntyIndexes:0 error:&v19];
     v15 = v19;
     v16 = v15;
     if (v10)
@@ -214,7 +214,7 @@
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v21 = v7;
+        v21 = lCopy;
         v22 = 2112;
         v23 = v16;
         _os_log_error_impl(&dword_1C7CCA000, v18, OS_LOG_TYPE_ERROR, "Error writing pencil sharpener logs to url: %@, %@", buf, 0x16u);
@@ -237,41 +237,41 @@
   return v10;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  viewCopy = view;
+  if (!viewCopy)
   {
-    v5 = [MEMORY[0x1E69DCBB8] suppressionPolicyDelegate];
-    v6 = [(PKTextInputInteraction *)self _keyboardSuppressionPolicyDelegate];
+    suppressionPolicyDelegate = [MEMORY[0x1E69DCBB8] suppressionPolicyDelegate];
+    _keyboardSuppressionPolicyDelegate = [(PKTextInputInteraction *)self _keyboardSuppressionPolicyDelegate];
 
-    if (v5 == v6)
+    if (suppressionPolicyDelegate == _keyboardSuppressionPolicyDelegate)
     {
       [MEMORY[0x1E69DCBB8] setSuppressionPolicyDelegate:0];
     }
   }
 
   [(PKTextInputInteraction *)self set_hoverController:0];
-  v7 = [(PKTextInputInteraction *)self _pencilObserverInteraction];
+  _pencilObserverInteraction = [(PKTextInputInteraction *)self _pencilObserverInteraction];
 
-  if (v7)
+  if (_pencilObserverInteraction)
   {
-    v8 = [(PKTextInputInteraction *)self view];
-    v9 = [(PKTextInputInteraction *)self _pencilObserverInteraction];
-    [v8 removeInteraction:v9];
+    view = [(PKTextInputInteraction *)self view];
+    _pencilObserverInteraction2 = [(PKTextInputInteraction *)self _pencilObserverInteraction];
+    [view removeInteraction:_pencilObserverInteraction2];
 
     [(PKTextInputInteraction *)self set_pencilObserverInteraction:0];
   }
 
   v10 = _os_feature_enabled_impl();
-  if (v4 && v10)
+  if (viewCopy && v10)
   {
     if (!self->__pencilSqueezeInteraction)
     {
-      v11 = [v4 window];
-      v12 = [v11 windowScene];
-      v13 = [PKPencilSqueezeInteraction _existingInteractionForWindowScene:v12];
+      window = [viewCopy window];
+      windowScene = [window windowScene];
+      v13 = [PKPencilSqueezeInteraction _existingInteractionForWindowScene:windowScene];
       v14 = v13;
       v15 = v13 ? v13 : objc_alloc_init(PKPencilSqueezeInteraction);
       pencilSqueezeInteraction = self->__pencilSqueezeInteraction;
@@ -286,36 +286,36 @@
           v26 = 134218243;
           v27 = v25;
           v28 = 2113;
-          v29 = v4;
+          v29 = viewCopy;
           _os_log_impl(&dword_1C7CCA000, v24, OS_LOG_TYPE_DEFAULT, "Adding pencil squeeze interaction: %p, to view: %{private}@", &v26, 0x16u);
         }
 
-        [v4 addInteraction:self->__pencilSqueezeInteraction];
+        [viewCopy addInteraction:self->__pencilSqueezeInteraction];
       }
     }
   }
 
-  else if (!v4)
+  else if (!viewCopy)
   {
     if (self->__pencilSqueezeInteraction)
     {
-      v16 = [(PKTextInputInteraction *)self view];
-      v17 = [v16 interactions];
-      v18 = [v17 indexOfObject:self->__pencilSqueezeInteraction];
+      view2 = [(PKTextInputInteraction *)self view];
+      interactions = [view2 interactions];
+      v18 = [interactions indexOfObject:self->__pencilSqueezeInteraction];
 
       if (v18 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v19 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [(PKTextInputInteraction *)self view];
+          view3 = [(PKTextInputInteraction *)self view];
           v26 = 138477827;
-          v27 = v20;
+          v27 = view3;
           _os_log_impl(&dword_1C7CCA000, v19, OS_LOG_TYPE_DEFAULT, "Removing pencil squeeze interaction from view: %{private}@", &v26, 0xCu);
         }
 
-        v21 = [(PKTextInputInteraction *)self view];
-        [v21 removeInteraction:self->__pencilSqueezeInteraction];
+        view4 = [(PKTextInputInteraction *)self view];
+        [view4 removeInteraction:self->__pencilSqueezeInteraction];
 
         v22 = self->__pencilSqueezeInteraction;
         self->__pencilSqueezeInteraction = 0;
@@ -324,13 +324,13 @@
   }
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v5 = os_log_create("com.apple.pencilkit", "PencilTextInput");
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (viewCopy)
   {
     if (!v6)
     {
@@ -372,25 +372,25 @@ LABEL_10:
 
   if (self->_shouldBeActive)
   {
-    v11 = [v4 window];
-    v12 = [v11 windowScene];
-    [(PKTextInputInteraction *)self saveInteractionForScene:v12];
+    window = [viewCopy window];
+    windowScene = [window windowScene];
+    [(PKTextInputInteraction *)self saveInteractionForScene:windowScene];
 
-    [(PKTextInputInteraction *)self setView:v4];
-    v13 = [(PKTextInputInteraction *)self view];
+    [(PKTextInputInteraction *)self setView:viewCopy];
+    view = [(PKTextInputInteraction *)self view];
 
-    if (v13)
+    if (view)
     {
       v14 = [PKTextInputElementsController alloc];
-      v15 = [(PKTextInputInteraction *)self view];
-      v16 = [(PKTextInputElementsController *)&v14->super.isa initWithContainerView:v15];
+      view2 = [(PKTextInputInteraction *)self view];
+      v16 = [(PKTextInputElementsController *)&v14->super.isa initWithContainerView:view2];
       [(PKTextInputInteraction *)self set_elementsController:v16];
 
-      v17 = [(PKTextInputInteraction *)self _elementsController];
-      v18 = v17;
-      if (v17)
+      _elementsController = [(PKTextInputInteraction *)self _elementsController];
+      v18 = _elementsController;
+      if (_elementsController)
       {
-        objc_storeWeak((v17 + 32), self);
+        objc_storeWeak((_elementsController + 32), self);
       }
 
       v19 = +[PKTextInputLanguageSelectionController sharedInstance];
@@ -408,21 +408,21 @@ LABEL_10:
     }
 
     v20 = PK_UIApplicationIsSystemShell___result;
-    v21 = [(PKTextInputInteraction *)self view];
-    v22 = v21;
+    view3 = [(PKTextInputInteraction *)self view];
+    v22 = view3;
     if (v20)
     {
-      v23 = [v21 superview];
-      [v23 bounds];
+      superview = [view3 superview];
+      [superview bounds];
       [(PKTextInputInteraction *)self setEditingOverlayContainerSceneBounds:?];
     }
 
     else
     {
-      v23 = [v21 window];
-      v24 = [v23 windowScene];
-      v25 = [v24 coordinateSpace];
-      [v25 bounds];
+      superview = [view3 window];
+      windowScene2 = [superview windowScene];
+      coordinateSpace = [windowScene2 coordinateSpace];
+      [coordinateSpace bounds];
       [(PKTextInputInteraction *)self setEditingOverlayContainerSceneBounds:?];
     }
 
@@ -431,7 +431,7 @@ LABEL_10:
     [(PKTextInputInteraction *)self _updateElementsController];
     [(PKTextInputInteraction *)self _updatePaletteController];
     [(PKTextInputInteraction *)self _updateContainerView];
-    if (v4)
+    if (viewCopy)
     {
       objc_initWeak(buf, self);
       block[0] = MEMORY[0x1E69E9820];
@@ -440,10 +440,10 @@ LABEL_10:
       block[3] = &unk_1E82D69B8;
       objc_copyWeak(&v37, buf);
       dispatch_async(MEMORY[0x1E69E96A0], block);
-      v26 = [v4 window];
-      v27 = [v26 screen];
-      v28 = [v27 displayIdentity];
-      v29 = [v28 expectsSecureRendering];
+      window2 = [viewCopy window];
+      screen = [window2 screen];
+      displayIdentity = [screen displayIdentity];
+      expectsSecureRendering = [displayIdentity expectsSecureRendering];
 
       v30 = _PKSignpostLog();
       if (os_signpost_enabled(v30))
@@ -464,7 +464,7 @@ LABEL_10:
       v33[1] = 3221225472;
       v33[2] = __40__PKTextInputInteraction_didMoveToView___block_invoke_32;
       v33[3] = &__block_descriptor_33_e5_v8__0l;
-      v34 = v29;
+      v34 = expectsSecureRendering;
       dispatch_async(v32, v33);
 
       objc_destroyWeak(&v37);
@@ -607,52 +607,52 @@ void __40__PKTextInputInteraction_didMoveToView___block_invoke_32(uint64_t a1)
   }
 }
 
-- (void)saveInteractionForScene:(id)a3
+- (void)saveInteractionForScene:(id)scene
 {
-  v15 = a3;
-  v4 = [(PKTextInputInteraction *)self view];
-  v5 = [v4 window];
-  v6 = [v5 windowScene];
+  sceneCopy = scene;
+  view = [(PKTextInputInteraction *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
 
-  if (v6)
+  if (windowScene)
   {
     v7 = _perSceneTextInputInteraction;
-    v8 = [(PKTextInputInteraction *)self view];
-    v9 = [v8 window];
-    v10 = [v9 windowScene];
-    [v7 removeObjectForKey:v10];
+    view2 = [(PKTextInputInteraction *)self view];
+    window2 = [view2 window];
+    windowScene2 = [window2 windowScene];
+    [v7 removeObjectForKey:windowScene2];
   }
 
-  v11 = v15;
-  if (v15)
+  v11 = sceneCopy;
+  if (sceneCopy)
   {
     v12 = _perSceneTextInputInteraction;
     if (!_perSceneTextInputInteraction)
     {
-      v13 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+      weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
       v14 = _perSceneTextInputInteraction;
-      _perSceneTextInputInteraction = v13;
+      _perSceneTextInputInteraction = weakToWeakObjectsMapTable;
 
       v12 = _perSceneTextInputInteraction;
     }
 
-    [v12 setObject:self forKey:v15];
-    v11 = v15;
+    [v12 setObject:self forKey:sceneCopy];
+    v11 = sceneCopy;
   }
 }
 
-- (void)_setHandwritingInteractionEnabled:(BOOL)a3
+- (void)_setHandwritingInteractionEnabled:(BOOL)enabled
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (self->__handwritingInteractionEnabled != a3)
+  if (self->__handwritingInteractionEnabled != enabled)
   {
-    v3 = a3;
-    self->__handwritingInteractionEnabled = a3;
+    enabledCopy = enabled;
+    self->__handwritingInteractionEnabled = enabled;
     v5 = os_log_create("com.apple.pencilkit", "PencilTextInput");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"Off";
-      if (v3)
+      if (enabledCopy)
       {
         v6 = @"On";
       }
@@ -670,9 +670,9 @@ void __40__PKTextInputInteraction_didMoveToView___block_invoke_32(uint64_t a1)
   }
 }
 
-- (void)_setLastHandwritingEventTimestamp:(double)a3
+- (void)_setLastHandwritingEventTimestamp:(double)timestamp
 {
-  self->__lastHandwritingEventTimestamp = a3;
+  self->__lastHandwritingEventTimestamp = timestamp;
   [(PKTextInputInteraction *)self _updateCanvasController];
   [(PKTextInputInteraction *)self _updateContainerView];
   [(PKTextInputInteraction *)self _updateInteractionEnabled];
@@ -680,13 +680,13 @@ void __40__PKTextInputInteraction_didMoveToView___block_invoke_32(uint64_t a1)
   +[PKTextInputDebugStateIntrospector debugStateDidChange];
 }
 
-- (void)setEditingOverlayContainerSceneBounds:(CGRect)a3
+- (void)setEditingOverlayContainerSceneBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(self->_editingOverlayContainerSceneBounds, a3))
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if (!CGRectEqualToRect(self->_editingOverlayContainerSceneBounds, bounds))
   {
     self->_editingOverlayContainerSceneBounds.origin.x = x;
     self->_editingOverlayContainerSceneBounds.origin.y = y;
@@ -697,12 +697,12 @@ void __40__PKTextInputInteraction_didMoveToView___block_invoke_32(uint64_t a1)
   }
 }
 
-- (void)editingOverlayContainerDidChangeToSceneBounds:(CGRect)a3
+- (void)editingOverlayContainerDidChangeToSceneBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if (PK_UIApplicationIsSystemShell_onceToken != -1)
   {
     dispatch_once(&PK_UIApplicationIsSystemShell_onceToken, &__block_literal_global_71);
@@ -724,38 +724,38 @@ void __40__PKTextInputInteraction_didMoveToView___block_invoke_32(uint64_t a1)
   }
 
   [(PKTextInputInteraction *)self setEditingOverlayContainerSceneBounds:x, y, v8, height];
-  v9 = [(PKTextInputInteraction *)self _paletteController];
-  [v9 editingOverlayContainerDidChangeToSceneBounds:{x, y, v8, height}];
+  _paletteController = [(PKTextInputInteraction *)self _paletteController];
+  [_paletteController editingOverlayContainerDidChangeToSceneBounds:{x, y, v8, height}];
 }
 
 - (void)_updateInteractionEnabled
 {
-  v3 = [(PKTextInputInteraction *)self view];
-  v4 = v3 != 0;
+  view = [(PKTextInputInteraction *)self view];
+  v4 = view != 0;
 
-  v5 = [(PKTextInputInteraction *)self _canvasController];
-  v6 = v5;
-  if (v5 && ([*(v5 + 96) isDrawing] & 1) != 0)
+  _canvasController = [(PKTextInputInteraction *)self _canvasController];
+  v6 = _canvasController;
+  if (_canvasController && ([*(_canvasController + 96) isDrawing] & 1) != 0)
   {
-    v7 = 1;
+    isReserveSpaceActive = 1;
   }
 
   else
   {
-    v8 = [(PKTextInputInteraction *)self _reserveSpaceController];
-    v7 = [v8 isReserveSpaceActive];
+    _reserveSpaceController = [(PKTextInputInteraction *)self _reserveSpaceController];
+    isReserveSpaceActive = [_reserveSpaceController isReserveSpaceActive];
   }
 
-  v9 = [(PKTextInputInteraction *)self _handwritingController];
-  if (v9)
+  _handwritingController = [(PKTextInputInteraction *)self _handwritingController];
+  if (_handwritingController)
   {
-    v10 = [(PKTextInputInteraction *)self _handwritingController];
-    v11 = [v10 writingState] == 1;
+    _handwritingController2 = [(PKTextInputInteraction *)self _handwritingController];
+    v11 = [_handwritingController2 writingState] == 1;
 
-    v7 |= v11;
+    isReserveSpaceActive |= v11;
   }
 
-  if (v3 && (v7 & 1) == 0)
+  if (view && (isReserveSpaceActive & 1) == 0)
   {
     v12 = +[PKTextInputSettings sharedSettings];
     [v12 interactionDisablingDelay];
@@ -768,12 +768,12 @@ void __40__PKTextInputInteraction_didMoveToView___block_invoke_32(uint64_t a1)
   }
 
   [(PKTextInputInteraction *)self _setHandwritingInteractionEnabled:v4];
-  v18 = [(PKTextInputInteraction *)self _canvasController];
-  v19 = v18;
-  if (v18 && *(v18 + 65) != v4)
+  _canvasController2 = [(PKTextInputInteraction *)self _canvasController];
+  v19 = _canvasController2;
+  if (_canvasController2 && *(_canvasController2 + 65) != v4)
   {
-    *(v18 + 65) = v4;
-    [(PKTextInputCanvasController *)v18 _updateCanvasView];
+    *(_canvasController2 + 65) = v4;
+    [(PKTextInputCanvasController *)_canvasController2 _updateCanvasView];
   }
 
   if (v4)
@@ -790,20 +790,20 @@ void __40__PKTextInputInteraction_didMoveToView___block_invoke_32(uint64_t a1)
 
 - (void)_updateGestureRecognizers
 {
-  v3 = [(PKTextInputInteraction *)self view];
+  view = [(PKTextInputInteraction *)self view];
 
-  v4 = [(PKTextInputInteraction *)self drawingGestureRecognizer];
+  drawingGestureRecognizer = [(PKTextInputInteraction *)self drawingGestureRecognizer];
 
-  if (!v3 || v4)
+  if (!view || drawingGestureRecognizer)
   {
-    if (!v3 && v4)
+    if (!view && drawingGestureRecognizer)
     {
-      v7 = [(PKTextInputInteraction *)self drawingGestureRecognizer];
-      [v7 setDelegate:0];
+      drawingGestureRecognizer2 = [(PKTextInputInteraction *)self drawingGestureRecognizer];
+      [drawingGestureRecognizer2 setDelegate:0];
 
-      v8 = [(PKTextInputInteraction *)self view];
-      v9 = [(PKTextInputInteraction *)self drawingGestureRecognizer];
-      [v8 removeGestureRecognizer:v9];
+      view2 = [(PKTextInputInteraction *)self view];
+      drawingGestureRecognizer3 = [(PKTextInputInteraction *)self drawingGestureRecognizer];
+      [view2 removeGestureRecognizer:drawingGestureRecognizer3];
 
       [(PKTextInputInteraction *)self setDrawingGestureRecognizer:0];
     }
@@ -814,29 +814,29 @@ void __40__PKTextInputInteraction_didMoveToView___block_invoke_32(uint64_t a1)
     v5 = objc_alloc_init(PKTextInputDrawingGestureRecognizer);
     [(PKTextInputInteraction *)self setDrawingGestureRecognizer:v5];
     [(PKTextInputDrawingGestureRecognizer *)v5 setDelegate:self];
-    v6 = [(PKTextInputInteraction *)self view];
-    [v6 addGestureRecognizer:v5];
+    view3 = [(PKTextInputInteraction *)self view];
+    [view3 addGestureRecognizer:v5];
   }
 
-  v10 = [(PKTextInputInteraction *)self view];
-  if (v10)
+  view4 = [(PKTextInputInteraction *)self view];
+  if (view4)
   {
-    v11 = [(PKTextInputInteraction *)self reserveSpaceController];
-    v12 = [v11 isReserveSpaceActive];
+    reserveSpaceController = [(PKTextInputInteraction *)self reserveSpaceController];
+    isReserveSpaceActive = [reserveSpaceController isReserveSpaceActive];
   }
 
   else
   {
-    v12 = 0;
+    isReserveSpaceActive = 0;
   }
 
-  v13 = [(PKTextInputInteraction *)self _touchDetectionGestureRecognizer];
+  _touchDetectionGestureRecognizer = [(PKTextInputInteraction *)self _touchDetectionGestureRecognizer];
 
-  if (!v12 || v13)
+  if (!isReserveSpaceActive || _touchDetectionGestureRecognizer)
   {
-    if (v13)
+    if (_touchDetectionGestureRecognizer)
     {
-      v16 = v12;
+      v16 = isReserveSpaceActive;
     }
 
     else
@@ -846,12 +846,12 @@ void __40__PKTextInputInteraction_didMoveToView___block_invoke_32(uint64_t a1)
 
     if ((v16 & 1) == 0)
     {
-      v17 = [(PKTextInputInteraction *)self view];
-      v18 = [(PKTextInputInteraction *)self _touchDetectionGestureRecognizer];
-      [v17 removeGestureRecognizer:v18];
+      view5 = [(PKTextInputInteraction *)self view];
+      _touchDetectionGestureRecognizer2 = [(PKTextInputInteraction *)self _touchDetectionGestureRecognizer];
+      [view5 removeGestureRecognizer:_touchDetectionGestureRecognizer2];
 
-      v19 = [(PKTextInputInteraction *)self _touchDetectionGestureRecognizer];
-      [v19 setDelegate:0];
+      _touchDetectionGestureRecognizer3 = [(PKTextInputInteraction *)self _touchDetectionGestureRecognizer];
+      [_touchDetectionGestureRecognizer3 setDelegate:0];
 
       [(PKTextInputInteraction *)self set_touchDetectionGestureRecognizer:0];
     }
@@ -862,8 +862,8 @@ void __40__PKTextInputInteraction_didMoveToView___block_invoke_32(uint64_t a1)
     v14 = objc_alloc_init(PKTextInputTouchDetectionGestureRecognizer);
     [(PKTextInputTouchDetectionGestureRecognizer *)v14 setDelegate:self];
     [(PKTextInputInteraction *)self set_touchDetectionGestureRecognizer:v14];
-    v15 = [(PKTextInputInteraction *)self view];
-    [v15 addGestureRecognizer:v14];
+    view6 = [(PKTextInputInteraction *)self view];
+    [view6 addGestureRecognizer:v14];
   }
 
   [(PKTextInputInteraction *)self _updateCanvasController];
@@ -872,13 +872,13 @@ void __40__PKTextInputInteraction_didMoveToView___block_invoke_32(uint64_t a1)
 - (void)_updateContainerView
 {
   v52[4] = *MEMORY[0x1E69E9840];
-  v3 = [(PKTextInputInteraction *)self view];
+  view = [(PKTextInputInteraction *)self view];
 
-  v4 = [(PKTextInputInteraction *)self _containerView];
+  _containerView = [(PKTextInputInteraction *)self _containerView];
 
-  if (v3 && !v4)
+  if (view && !_containerView)
   {
-    v47 = v3;
+    v47 = view;
     v5 = [PKTContainerView alloc];
     v6 = [(PKTContainerView *)v5 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -889,76 +889,76 @@ void __40__PKTextInputInteraction_didMoveToView___block_invoke_32(uint64_t a1)
     }
 
     [(PKTextInputInteraction *)self set_containerView:v6];
-    v7 = [(PKTextInputInteraction *)self view];
-    [v7 addSubview:v6];
+    view2 = [(PKTextInputInteraction *)self view];
+    [view2 addSubview:v6];
 
-    v45 = [v6 topAnchor];
-    v46 = [(PKTextInputInteraction *)self view];
-    v44 = [v46 topAnchor];
-    v43 = [v45 constraintEqualToAnchor:v44];
+    topAnchor = [v6 topAnchor];
+    view3 = [(PKTextInputInteraction *)self view];
+    topAnchor2 = [view3 topAnchor];
+    v43 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v52[0] = v43;
-    v41 = [v6 bottomAnchor];
-    v42 = [(PKTextInputInteraction *)self view];
-    v40 = [v42 bottomAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40];
+    bottomAnchor = [v6 bottomAnchor];
+    view4 = [(PKTextInputInteraction *)self view];
+    bottomAnchor2 = [view4 bottomAnchor];
+    v39 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v52[1] = v39;
-    v38 = [v6 leadingAnchor];
-    v8 = [(PKTextInputInteraction *)self view];
-    v9 = [v8 leadingAnchor];
-    v10 = [v38 constraintEqualToAnchor:v9];
+    leadingAnchor = [v6 leadingAnchor];
+    view5 = [(PKTextInputInteraction *)self view];
+    leadingAnchor2 = [view5 leadingAnchor];
+    v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v52[2] = v10;
-    v11 = [v6 trailingAnchor];
-    v12 = [(PKTextInputInteraction *)self view];
-    v13 = [v12 trailingAnchor];
-    v14 = [v11 constraintEqualToAnchor:v13];
+    trailingAnchor = [v6 trailingAnchor];
+    view6 = [(PKTextInputInteraction *)self view];
+    trailingAnchor2 = [view6 trailingAnchor];
+    v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v52[3] = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:4];
 
     [MEMORY[0x1E696ACD8] activateConstraints:v15];
-    v4 = 0;
-    v3 = v47;
+    _containerView = 0;
+    view = v47;
     goto LABEL_10;
   }
 
-  if (!v3 && v4)
+  if (!view && _containerView)
   {
-    v16 = [(PKTextInputInteraction *)self _containerView];
-    [v16 removeFromSuperview];
+    _containerView2 = [(PKTextInputInteraction *)self _containerView];
+    [_containerView2 removeFromSuperview];
 
     [(PKTextInputInteraction *)self set_containerView:0];
     goto LABEL_25;
   }
 
-  if (v3)
+  if (view)
   {
 LABEL_10:
-    v17 = [(PKTextInputInteraction *)self _containerView];
-    v18 = [v17 isHidden];
+    _containerView3 = [(PKTextInputInteraction *)self _containerView];
+    isHidden = [_containerView3 isHidden];
 
-    v19 = [(PKTextInputInteraction *)self _handwritingController];
-    if (v19)
+    _handwritingController = [(PKTextInputInteraction *)self _handwritingController];
+    if (_handwritingController)
     {
-      v20 = v19;
-      v21 = [(PKTextInputInteraction *)self _handwritingController];
-      v22 = [v21 writingState];
+      v20 = _handwritingController;
+      _handwritingController2 = [(PKTextInputInteraction *)self _handwritingController];
+      writingState = [_handwritingController2 writingState];
 
-      if (v22 == 1)
+      if (writingState == 1)
       {
         v24 = 1;
         goto LABEL_17;
       }
 
-      if (v22)
+      if (writingState)
       {
         v24 = 0;
         goto LABEL_21;
       }
     }
 
-    v23 = [(PKTextInputInteraction *)self canvasController];
-    if (v23)
+    canvasController = [(PKTextInputInteraction *)self canvasController];
+    if (canvasController)
     {
-      v24 = v23[64];
+      v24 = canvasController[64];
     }
 
     else
@@ -967,13 +967,13 @@ LABEL_10:
     }
 
 LABEL_17:
-    if (v24 & v18)
+    if (v24 & isHidden)
     {
       v25 = os_log_create("com.apple.pencilkit", "PencilTextInput");
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
-        v30 = [(PKTextInputInteraction *)self _handwritingController];
-        if (v30)
+        _handwritingController3 = [(PKTextInputInteraction *)self _handwritingController];
+        if (_handwritingController3)
         {
           v31 = @"Y";
         }
@@ -983,8 +983,8 @@ LABEL_17:
           v31 = @"N";
         }
 
-        v32 = [(PKTextInputInteraction *)self _handwritingController];
-        v33 = PKTextInputDescriptionForWritingState([v32 writingState]);
+        _handwritingController4 = [(PKTextInputInteraction *)self _handwritingController];
+        v33 = PKTextInputDescriptionForWritingState([_handwritingController4 writingState]);
         *buf = 138412546;
         v49 = v31;
         v50 = 2112;
@@ -992,18 +992,18 @@ LABEL_17:
         _os_log_debug_impl(&dword_1C7CCA000, v25, OS_LOG_TYPE_DEBUG, "Showing container view. Has handwritingController: %@, writingState: %@", buf, 0x16u);
       }
 
-      v26 = [(PKTextInputInteraction *)self _containerView];
-      v27 = v26;
+      _containerView4 = [(PKTextInputInteraction *)self _containerView];
+      v27 = _containerView4;
       v28 = 0;
 LABEL_24:
-      [v26 setHidden:v28];
+      [_containerView4 setHidden:v28];
 
       +[PKTextInputDebugStateIntrospector debugStateDidChange];
       goto LABEL_25;
     }
 
 LABEL_21:
-    if ((v24 | v18))
+    if ((v24 | isHidden))
     {
       goto LABEL_25;
     }
@@ -1011,8 +1011,8 @@ LABEL_21:
     v29 = os_log_create("com.apple.pencilkit", "PencilTextInput");
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
     {
-      v34 = [(PKTextInputInteraction *)self _handwritingController];
-      if (v34)
+      _handwritingController5 = [(PKTextInputInteraction *)self _handwritingController];
+      if (_handwritingController5)
       {
         v35 = @"Y";
       }
@@ -1022,8 +1022,8 @@ LABEL_21:
         v35 = @"N";
       }
 
-      v36 = [(PKTextInputInteraction *)self _handwritingController];
-      v37 = PKTextInputDescriptionForWritingState([v36 writingState]);
+      _handwritingController6 = [(PKTextInputInteraction *)self _handwritingController];
+      v37 = PKTextInputDescriptionForWritingState([_handwritingController6 writingState]);
       *buf = 138412546;
       v49 = v35;
       v50 = 2112;
@@ -1031,14 +1031,14 @@ LABEL_21:
       _os_log_debug_impl(&dword_1C7CCA000, v29, OS_LOG_TYPE_DEBUG, "Hiding container view. Has handwritingController: %@, writingState: %@", buf, 0x16u);
     }
 
-    v26 = [(PKTextInputInteraction *)self _containerView];
-    v27 = v26;
+    _containerView4 = [(PKTextInputInteraction *)self _containerView];
+    v27 = _containerView4;
     v28 = 1;
     goto LABEL_24;
   }
 
 LABEL_25:
-  if ((v3 != 0) != (v4 != 0))
+  if ((view != 0) != (_containerView != 0))
   {
     [(PKTextInputInteraction *)self _updateCanvasController];
     +[PKTextInputDebugStateIntrospector debugStateDidChange];
@@ -1048,10 +1048,10 @@ LABEL_25:
 - (void)_updateCanvasController
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [(PKTextInputInteraction *)self _canvasController];
-  if (v3)
+  _canvasController = [(PKTextInputInteraction *)self _canvasController];
+  if (_canvasController)
   {
-    v4 = v3[64];
+    v4 = _canvasController[64];
   }
 
   else
@@ -1059,70 +1059,70 @@ LABEL_25:
     v4 = 0;
   }
 
-  v5 = [(PKTextInputInteraction *)self _reserveSpaceController];
-  v6 = [v5 isReserveSpaceActive];
+  _reserveSpaceController = [(PKTextInputInteraction *)self _reserveSpaceController];
+  isReserveSpaceActive = [_reserveSpaceController isReserveSpaceActive];
 
-  if (v6)
+  if (isReserveSpaceActive)
   {
     goto LABEL_4;
   }
 
-  v8 = [(PKTextInputInteraction *)self _handwritingController];
-  if (v8)
+  _handwritingController = [(PKTextInputInteraction *)self _handwritingController];
+  if (_handwritingController)
   {
-    v9 = v8;
-    v10 = [(PKTextInputInteraction *)self _handwritingController];
-    v11 = [v10 writingState];
+    v9 = _handwritingController;
+    _handwritingController2 = [(PKTextInputInteraction *)self _handwritingController];
+    writingState = [_handwritingController2 writingState];
 
-    if (v11 == 1)
+    if (writingState == 1)
     {
 LABEL_4:
-      v7 = 1;
+      drawingTargetIsDrawing = 1;
       goto LABEL_13;
     }
 
-    if (v11)
+    if (writingState)
     {
-      v7 = 0;
+      drawingTargetIsDrawing = 0;
       goto LABEL_13;
     }
   }
 
-  v12 = [(PKTextInputInteraction *)self _canvasController];
-  if (([(PKTextInputCanvasController *)v12 canvasHasVisibleStrokes]& 1) != 0)
+  _canvasController2 = [(PKTextInputInteraction *)self _canvasController];
+  if (([(PKTextInputCanvasController *)_canvasController2 canvasHasVisibleStrokes]& 1) != 0)
   {
-    v7 = 1;
+    drawingTargetIsDrawing = 1;
   }
 
   else
   {
-    v13 = [(PKTextInputInteraction *)self drawingGestureRecognizer];
-    v7 = [v13 drawingTargetIsDrawing];
+    drawingGestureRecognizer = [(PKTextInputInteraction *)self drawingGestureRecognizer];
+    drawingTargetIsDrawing = [drawingGestureRecognizer drawingTargetIsDrawing];
   }
 
 LABEL_13:
-  v14 = [(PKTextInputInteraction *)self _canvasController];
-  v15 = v14;
-  if (v14 && *(v14 + 64) != v7)
+  _canvasController3 = [(PKTextInputInteraction *)self _canvasController];
+  v15 = _canvasController3;
+  if (_canvasController3 && *(_canvasController3 + 64) != drawingTargetIsDrawing)
   {
-    *(v14 + 64) = v7;
-    [(PKTextInputCanvasController *)v14 _updateCanvasView];
+    *(_canvasController3 + 64) = drawingTargetIsDrawing;
+    [(PKTextInputCanvasController *)_canvasController3 _updateCanvasView];
   }
 
-  if ((v4 & 1) != v7)
+  if ((v4 & 1) != drawingTargetIsDrawing)
   {
     [(PKTextInputInteraction *)self _updateContainerView];
   }
 
-  if (!(v4 & 1 | ((v7 & 1) == 0)))
+  if (!(v4 & 1 | ((drawingTargetIsDrawing & 1) == 0)))
   {
     v17 = os_log_create("com.apple.pencilkit", "PencilTextInput");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v18 = [(PKTextInputInteraction *)self _handwritingController];
-      v19 = PKTextInputDescriptionForWritingState([v18 writingState]);
-      v20 = [(PKTextInputInteraction *)self _canvasController];
-      if ([(PKTextInputCanvasController *)v20 canvasHasVisibleStrokes])
+      _handwritingController3 = [(PKTextInputInteraction *)self _handwritingController];
+      v19 = PKTextInputDescriptionForWritingState([_handwritingController3 writingState]);
+      _canvasController4 = [(PKTextInputInteraction *)self _canvasController];
+      if ([(PKTextInputCanvasController *)_canvasController4 canvasHasVisibleStrokes])
       {
         v21 = @"Yes";
       }
@@ -1132,9 +1132,9 @@ LABEL_13:
         v21 = @"No";
       }
 
-      v22 = [(PKTextInputInteraction *)self drawingGestureRecognizer];
+      drawingGestureRecognizer2 = [(PKTextInputInteraction *)self drawingGestureRecognizer];
       v30 = 138412802;
-      if ([v22 drawingTargetIsDrawing])
+      if ([drawingGestureRecognizer2 drawingTargetIsDrawing])
       {
         v23 = @"Yes";
       }
@@ -1152,20 +1152,20 @@ LABEL_13:
       _os_log_debug_impl(&dword_1C7CCA000, v17, OS_LOG_TYPE_DEBUG, "Showing canvas view. writingState: %@, canvas has strokes: %@, gesture is drawing: %@", &v30, 0x20u);
     }
 
-    v16 = [(PKTextInputInteraction *)self view];
-    [v16 layoutIfNeeded];
+    view = [(PKTextInputInteraction *)self view];
+    [view layoutIfNeeded];
     goto LABEL_25;
   }
 
-  if ((v7 & 1) == 0 && ((v4 ^ 1) & 1) == 0)
+  if ((drawingTargetIsDrawing & 1) == 0 && ((v4 ^ 1) & 1) == 0)
   {
-    v16 = os_log_create("com.apple.pencilkit", "PencilTextInput");
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+    view = os_log_create("com.apple.pencilkit", "PencilTextInput");
+    if (os_log_type_enabled(view, OS_LOG_TYPE_DEBUG))
     {
-      v24 = [(PKTextInputInteraction *)self _handwritingController];
-      v25 = PKTextInputDescriptionForWritingState([v24 writingState]);
-      v26 = [(PKTextInputInteraction *)self _canvasController];
-      if ([(PKTextInputCanvasController *)v26 canvasHasVisibleStrokes])
+      _handwritingController4 = [(PKTextInputInteraction *)self _handwritingController];
+      v25 = PKTextInputDescriptionForWritingState([_handwritingController4 writingState]);
+      _canvasController5 = [(PKTextInputInteraction *)self _canvasController];
+      if ([(PKTextInputCanvasController *)_canvasController5 canvasHasVisibleStrokes])
       {
         v27 = @"Yes";
       }
@@ -1175,9 +1175,9 @@ LABEL_13:
         v27 = @"No";
       }
 
-      v28 = [(PKTextInputInteraction *)self drawingGestureRecognizer];
+      drawingGestureRecognizer3 = [(PKTextInputInteraction *)self drawingGestureRecognizer];
       v30 = 138412802;
-      if ([v28 drawingTargetIsDrawing])
+      if ([drawingGestureRecognizer3 drawingTargetIsDrawing])
       {
         v29 = @"Yes";
       }
@@ -1192,7 +1192,7 @@ LABEL_13:
       v33 = v27;
       v34 = 2112;
       v35 = v29;
-      _os_log_debug_impl(&dword_1C7CCA000, v16, OS_LOG_TYPE_DEBUG, "Hiding canvas view. writingState: %@, canvas has strokes: %@, gesture is drawing: %@", &v30, 0x20u);
+      _os_log_debug_impl(&dword_1C7CCA000, view, OS_LOG_TYPE_DEBUG, "Hiding canvas view. writingState: %@, canvas has strokes: %@, gesture is drawing: %@", &v30, 0x20u);
     }
 
 LABEL_25:
@@ -1203,8 +1203,8 @@ LABEL_25:
 {
   if ([(PKTextInputInteraction *)self _handwritingInteractionEnabled])
   {
-    v3 = [(PKTextInputInteraction *)self _elementsController];
-    v4 = v3 != 0;
+    _elementsController = [(PKTextInputInteraction *)self _elementsController];
+    v4 = _elementsController != 0;
   }
 
   else
@@ -1212,11 +1212,11 @@ LABEL_25:
     v4 = 0;
   }
 
-  v5 = [(PKTextInputInteraction *)self _handwritingController];
+  _handwritingController = [(PKTextInputInteraction *)self _handwritingController];
 
-  if (!v4 || v5)
+  if (!v4 || _handwritingController)
   {
-    if (v5)
+    if (_handwritingController)
     {
       v15 = v4;
     }
@@ -1228,8 +1228,8 @@ LABEL_25:
 
     if ((v15 & 1) == 0)
     {
-      v16 = [(PKTextInputInteraction *)self _handwritingController];
-      [v16 setDelegate:0];
+      _handwritingController2 = [(PKTextInputInteraction *)self _handwritingController];
+      [_handwritingController2 setDelegate:0];
 
       [(PKTextInputInteraction *)self set_handwritingController:0];
     }
@@ -1238,20 +1238,20 @@ LABEL_25:
   else
   {
     v6 = [PKTextInputHandwritingController alloc];
-    v7 = [(PKTextInputInteraction *)self _canvasController];
-    v8 = [(PKTextInputInteraction *)self _elementsController];
-    v9 = [(PKTextInputInteraction *)self _feedbackController];
-    v10 = [(PKTextInputInteraction *)self _reserveSpaceController];
-    v11 = [(PKTextInputInteraction *)self _debugLogController];
-    v12 = [(PKTextInputInteraction *)self _cursorController];
-    v13 = [(PKTextInputHandwritingController *)v6 initWithCanvasController:v7 elementsController:v8 feedbackController:v9 reserveSpaceController:v10 debugLogController:v11 cursorController:v12];
+    _canvasController = [(PKTextInputInteraction *)self _canvasController];
+    _elementsController2 = [(PKTextInputInteraction *)self _elementsController];
+    _feedbackController = [(PKTextInputInteraction *)self _feedbackController];
+    _reserveSpaceController = [(PKTextInputInteraction *)self _reserveSpaceController];
+    _debugLogController = [(PKTextInputInteraction *)self _debugLogController];
+    _cursorController = [(PKTextInputInteraction *)self _cursorController];
+    v13 = [(PKTextInputHandwritingController *)v6 initWithCanvasController:_canvasController elementsController:_elementsController2 feedbackController:_feedbackController reserveSpaceController:_reserveSpaceController debugLogController:_debugLogController cursorController:_cursorController];
     [(PKTextInputInteraction *)self set_handwritingController:v13];
 
-    v14 = [(PKTextInputInteraction *)self _handwritingController];
-    [v14 setDelegate:self];
+    _handwritingController3 = [(PKTextInputInteraction *)self _handwritingController];
+    [_handwritingController3 setDelegate:self];
   }
 
-  if (v4 != (v5 != 0))
+  if (v4 != (_handwritingController != 0))
   {
 
     [(PKTextInputInteraction *)self _updateContainerView];
@@ -1262,8 +1262,8 @@ LABEL_25:
 {
   if (![(PKTextInputInteraction *)self _handwritingInteractionEnabled]|| ([(PKTextInputInteraction *)self view], v3 = objc_claimAutoreleasedReturnValue(), v3, !v3))
   {
-    v4 = [(PKTextInputInteraction *)self _elementsController];
-    [(PKTextInputElementsController *)v4 flushDiscoveredElements];
+    _elementsController = [(PKTextInputInteraction *)self _elementsController];
+    [(PKTextInputElementsController *)_elementsController flushDiscoveredElements];
   }
 
   [(PKTextInputInteraction *)self _updateDebugController];
@@ -1276,34 +1276,34 @@ LABEL_25:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PKTextInputInteraction *)self _paletteController];
-  [v11 setEditingOverlayContainerSceneBounds:{v4, v6, v8, v10}];
+  _paletteController = [(PKTextInputInteraction *)self _paletteController];
+  [_paletteController setEditingOverlayContainerSceneBounds:{v4, v6, v8, v10}];
 }
 
-- (void)_setDebugControllerAnchorCorner:(unint64_t)a3
+- (void)_setDebugControllerAnchorCorner:(unint64_t)corner
 {
-  if (self->__debugControllerAnchorCorner != a3)
+  if (self->__debugControllerAnchorCorner != corner)
   {
-    self->__debugControllerAnchorCorner = a3;
+    self->__debugControllerAnchorCorner = corner;
     [(PKTextInputInteraction *)self _updateDebugController];
   }
 }
 
-- (void)_handlePotentialDebugOverlayGestureAtPoint:(CGPoint)a3
+- (void)_handlePotentialDebugOverlayGestureAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (!os_variant_has_internal_diagnostics())
   {
     return;
   }
 
-  v6 = [(PKTextInputInteraction *)self view];
-  [v6 bounds];
+  view = [(PKTextInputInteraction *)self view];
+  [view bounds];
   MaxX = CGRectGetMaxX(v18);
 
-  v8 = [(PKTextInputInteraction *)self view];
-  [v8 bounds];
+  view2 = [(PKTextInputInteraction *)self view];
+  [view2 bounds];
   MaxY = CGRectGetMaxY(v19);
 
   if (x > 20.0 || x < 0.0 || y > 20.0 || y < 0.0)
@@ -1365,28 +1365,28 @@ LABEL_20:
 
 - (void)_updateDebugController
 {
-  v3 = [(PKTextInputInteraction *)self _debugControllerAnchorCorner];
-  v4 = [(PKTextInputInteraction *)self _debugViewController];
+  _debugControllerAnchorCorner = [(PKTextInputInteraction *)self _debugControllerAnchorCorner];
+  _debugViewController = [(PKTextInputInteraction *)self _debugViewController];
 
-  if (!v3 || v4)
+  if (!_debugControllerAnchorCorner || _debugViewController)
   {
-    if (!v3 && v4)
+    if (!_debugControllerAnchorCorner && _debugViewController)
     {
-      v14 = [(PKTextInputInteraction *)self _debugViewController];
-      v15 = [v14 view];
-      [v15 removeFromSuperview];
+      _debugViewController2 = [(PKTextInputInteraction *)self _debugViewController];
+      view = [_debugViewController2 view];
+      [view removeFromSuperview];
 
-      v16 = [(PKTextInputInteraction *)self _debugViewController];
-      [v16 willMoveToParentViewController:0];
+      _debugViewController3 = [(PKTextInputInteraction *)self _debugViewController];
+      [_debugViewController3 willMoveToParentViewController:0];
 
-      v17 = [(PKTextInputInteraction *)self _debugViewController];
-      [v17 removeFromParentViewController];
+      _debugViewController4 = [(PKTextInputInteraction *)self _debugViewController];
+      [_debugViewController4 removeFromParentViewController];
 
-      v18 = [(PKTextInputInteraction *)self _debugViewController];
-      [v18 setIntrospectorDataSource:0];
+      _debugViewController5 = [(PKTextInputInteraction *)self _debugViewController];
+      [_debugViewController5 setIntrospectorDataSource:0];
 
-      v19 = [(PKTextInputInteraction *)self _debugStateIntrospector];
-      [v19 setDelegate:0];
+      _debugStateIntrospector = [(PKTextInputInteraction *)self _debugStateIntrospector];
+      [_debugStateIntrospector setDelegate:0];
 
       [(PKTextInputInteraction *)self set_debugStateIntrospector:0];
       [(PKTextInputInteraction *)self set_debugViewController:0];
@@ -1398,186 +1398,186 @@ LABEL_20:
     v5 = objc_alloc_init(PKTextInputDebugViewController);
     [(PKTextInputInteraction *)self set_debugViewController:v5];
     [(PKTextInputDebugViewController *)v5 setDelegate:self];
-    v6 = [(PKTextInputInteraction *)self _debugLogController];
-    [(PKTextInputDebugViewController *)v5 setDebugLogController:v6];
+    _debugLogController = [(PKTextInputInteraction *)self _debugLogController];
+    [(PKTextInputDebugViewController *)v5 setDebugLogController:_debugLogController];
 
-    v7 = [(PKTextInputDebugViewController *)v5 view];
-    v8 = [(PKTextInputInteraction *)self view];
-    [v8 bounds];
-    [v7 setFrame:?];
+    view2 = [(PKTextInputDebugViewController *)v5 view];
+    view3 = [(PKTextInputInteraction *)self view];
+    [view3 bounds];
+    [view2 setFrame:?];
 
-    [v7 setAutoresizingMask:18];
-    v9 = [(PKTextInputInteraction *)self view];
-    [v9 addSubview:v7];
+    [view2 setAutoresizingMask:18];
+    view4 = [(PKTextInputInteraction *)self view];
+    [view4 addSubview:view2];
 
     v10 = [[PKTextInputDebugStateIntrospector alloc] initWithInteraction:self];
     [(PKTextInputInteraction *)self set_debugStateIntrospector:v10];
 
-    v11 = [(PKTextInputInteraction *)self _debugStateIntrospector];
-    [v11 setDelegate:v5];
+    _debugStateIntrospector2 = [(PKTextInputInteraction *)self _debugStateIntrospector];
+    [_debugStateIntrospector2 setDelegate:v5];
 
-    v12 = [(PKTextInputInteraction *)self _debugStateIntrospector];
-    [(PKTextInputDebugViewController *)v5 setIntrospectorDataSource:v12];
+    _debugStateIntrospector3 = [(PKTextInputInteraction *)self _debugStateIntrospector];
+    [(PKTextInputDebugViewController *)v5 setIntrospectorDataSource:_debugStateIntrospector3];
 
-    v13 = [(PKTextInputInteraction *)self _debugViewController];
-    [v13 setNeedsReloadDebugStateData];
+    _debugViewController6 = [(PKTextInputInteraction *)self _debugViewController];
+    [_debugViewController6 setNeedsReloadDebugStateData];
   }
 
-  v20 = [(PKTextInputInteraction *)self elementsController];
-  v21 = [(PKTextInputInteraction *)self _debugViewController];
-  [v21 setElementsController:v20];
+  elementsController = [(PKTextInputInteraction *)self elementsController];
+  _debugViewController7 = [(PKTextInputInteraction *)self _debugViewController];
+  [_debugViewController7 setElementsController:elementsController];
 
-  v22 = [(PKTextInputInteraction *)self _debugControllerAnchorCorner];
-  v23 = [(PKTextInputInteraction *)self _debugViewController];
-  [v23 setStatusViewAnchorCorner:v22];
+  _debugControllerAnchorCorner2 = [(PKTextInputInteraction *)self _debugControllerAnchorCorner];
+  _debugViewController8 = [(PKTextInputInteraction *)self _debugViewController];
+  [_debugViewController8 setStatusViewAnchorCorner:_debugControllerAnchorCorner2];
 }
 
-- (id)paletteControllerDebugSharpenerLog:(id)a3
+- (id)paletteControllerDebugSharpenerLog:(id)log
 {
-  v3 = [(PKTextInputInteraction *)self debugLogController];
-  v4 = [(PKTextInputDebugLogController *)v3 sharpenerLogWithCurrentContent];
+  debugLogController = [(PKTextInputInteraction *)self debugLogController];
+  sharpenerLogWithCurrentContent = [(PKTextInputDebugLogController *)debugLogController sharpenerLogWithCurrentContent];
 
-  return v4;
+  return sharpenerLogWithCurrentContent;
 }
 
-- (void)textInputPaletteControllerFloatingKeyboardWillHide:(id)a3
+- (void)textInputPaletteControllerFloatingKeyboardWillHide:(id)hide
 {
-  v3 = [(PKTextInputInteraction *)self _keyboardSuppressionPolicyDelegate];
-  [v3 setIsFloatingKeyboardVisible:0];
+  _keyboardSuppressionPolicyDelegate = [(PKTextInputInteraction *)self _keyboardSuppressionPolicyDelegate];
+  [_keyboardSuppressionPolicyDelegate setIsFloatingKeyboardVisible:0];
 }
 
-- (void)textInputPaletteControllerFloatingKeyboardWillShow:(id)a3
+- (void)textInputPaletteControllerFloatingKeyboardWillShow:(id)show
 {
-  v4 = [(PKTextInputInteraction *)self _cursorController];
-  [v4 makeCursorStrong];
+  _cursorController = [(PKTextInputInteraction *)self _cursorController];
+  [_cursorController makeCursorStrong];
 
-  v5 = [(PKTextInputInteraction *)self _keyboardSuppressionPolicyDelegate];
-  [v5 setIsFloatingKeyboardVisible:1];
+  _keyboardSuppressionPolicyDelegate = [(PKTextInputInteraction *)self _keyboardSuppressionPolicyDelegate];
+  [_keyboardSuppressionPolicyDelegate setIsFloatingKeyboardVisible:1];
 }
 
-- (id)canvasControllerDrawingGestureRecognizer:(id)a3
+- (id)canvasControllerDrawingGestureRecognizer:(id)recognizer
 {
   [(PKTextInputInteraction *)self _updateGestureRecognizers];
 
   return [(PKTextInputInteraction *)self drawingGestureRecognizer];
 }
 
-- (void)canvasControllerCanvasDidFinishAnimatingStrokes:(id)a3
+- (void)canvasControllerCanvasDidFinishAnimatingStrokes:(id)strokes
 {
-  v7 = a3;
-  v4 = [(PKTextInputInteraction *)self handwritingController];
-  v5 = [v4 writingState];
+  strokesCopy = strokes;
+  handwritingController = [(PKTextInputInteraction *)self handwritingController];
+  writingState = [handwritingController writingState];
 
-  v6 = v7;
-  if (v7 && !v5)
+  v6 = strokesCopy;
+  if (strokesCopy && !writingState)
   {
-    [v7[12] removeStuckStrokesAndSimulateCrashIfNecessary];
-    v6 = v7;
+    [strokesCopy[12] removeStuckStrokesAndSimulateCrashIfNecessary];
+    v6 = strokesCopy;
   }
 }
 
-- (void)canvasControllerDidEndDrawing:(id)a3
+- (void)canvasControllerDidEndDrawing:(id)drawing
 {
   v4 = MEMORY[0x1E695DF00];
-  v5 = a3;
+  drawingCopy = drawing;
   [v4 timeIntervalSinceReferenceDate];
   [(PKTextInputInteraction *)self _setLastHandwritingEventTimestamp:?];
-  v6 = [(PKTextInputInteraction *)self _handwritingController];
-  [v6 canvasControllerDidEndDrawing:v5];
+  _handwritingController = [(PKTextInputInteraction *)self _handwritingController];
+  [_handwritingController canvasControllerDidEndDrawing:drawingCopy];
 
-  v7 = [(PKTextInputInteraction *)self _reserveSpaceController];
-  [v7 setCanvasControllerIsDrawing:0];
+  _reserveSpaceController = [(PKTextInputInteraction *)self _reserveSpaceController];
+  [_reserveSpaceController setCanvasControllerIsDrawing:0];
 
   [(PKTextInputInteraction *)self _updateCanvasController];
 
   [(PKTextInputInteraction *)self _updateInteractionEnabled];
 }
 
-- (void)canvasControllerInProgressStrokeDidChange:(id)a3
+- (void)canvasControllerInProgressStrokeDidChange:(id)change
 {
-  v9 = a3;
-  v4 = [(PKTextInputInteraction *)self _hoverController];
-  [(PKTextInputHoverController *)v4 didReceiveNormalTouch:?];
+  changeCopy = change;
+  _hoverController = [(PKTextInputInteraction *)self _hoverController];
+  [(PKTextInputHoverController *)_hoverController didReceiveNormalTouch:?];
 
-  v5 = [(PKTextInputInteraction *)self drawingGestureRecognizer];
-  if ([v5 strokeAcceptanceState] == 1)
+  drawingGestureRecognizer = [(PKTextInputInteraction *)self drawingGestureRecognizer];
+  if ([drawingGestureRecognizer strokeAcceptanceState] == 1)
   {
-    v6 = [(PKTextInputInteraction *)self canvasController];
-    if (v6)
+    canvasController = [(PKTextInputInteraction *)self canvasController];
+    if (canvasController)
     {
-      v7 = v6;
-      v8 = [*(v6 + 96) isDrawing];
+      v7 = canvasController;
+      isDrawing = [*(canvasController + 96) isDrawing];
 
-      if (!v8)
+      if (!isDrawing)
       {
         goto LABEL_6;
       }
 
-      v5 = [(PKTextInputInteraction *)self _handwritingController];
-      [v5 canvasControllerInProgressStrokeDidChange:v9];
+      drawingGestureRecognizer = [(PKTextInputInteraction *)self _handwritingController];
+      [drawingGestureRecognizer canvasControllerInProgressStrokeDidChange:changeCopy];
     }
   }
 
 LABEL_6:
 }
 
-- (void)canvasControllerDidCancelStroke:(id)a3 strokeAcceptanceState:(int64_t)a4
+- (void)canvasControllerDidCancelStroke:(id)stroke strokeAcceptanceState:(int64_t)state
 {
-  v6 = a3;
-  v7 = [(PKTextInputInteraction *)self _handwritingController];
-  [v7 canvasControllerDidCancelStroke:v6 strokeAcceptanceState:a4];
+  strokeCopy = stroke;
+  _handwritingController = [(PKTextInputInteraction *)self _handwritingController];
+  [_handwritingController canvasControllerDidCancelStroke:strokeCopy strokeAcceptanceState:state];
 
-  v8 = [(PKTextInputInteraction *)self _reserveSpaceController];
-  [v8 setCanvasControllerIsDrawing:0];
+  _reserveSpaceController = [(PKTextInputInteraction *)self _reserveSpaceController];
+  [_reserveSpaceController setCanvasControllerIsDrawing:0];
 
   [(PKTextInputInteraction *)self _updateCanvasController];
 }
 
-- (void)canvasControllerEndedStroke:(id)a3
+- (void)canvasControllerEndedStroke:(id)stroke
 {
   v4 = MEMORY[0x1E695DF00];
-  v5 = a3;
+  strokeCopy = stroke;
   [v4 timeIntervalSinceReferenceDate];
   [(PKTextInputInteraction *)self _setLastHandwritingEventTimestamp:?];
-  v6 = [(PKTextInputInteraction *)self _handwritingController];
-  [v6 canvasControllerEndedStroke:v5];
+  _handwritingController = [(PKTextInputInteraction *)self _handwritingController];
+  [_handwritingController canvasControllerEndedStroke:strokeCopy];
 
-  v7 = [(PKTextInputInteraction *)self _reserveSpaceController];
-  [v7 setCanvasControllerIsDrawing:0];
-
-  [(PKTextInputInteraction *)self _updateCanvasController];
-}
-
-- (void)canvasController:(id)a3 drawingDidChange:(id)a4
-{
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKTextInputInteraction *)self _handwritingController];
-  [v8 canvasController:v7 drawingDidChange:v6];
+  _reserveSpaceController = [(PKTextInputInteraction *)self _reserveSpaceController];
+  [_reserveSpaceController setCanvasControllerIsDrawing:0];
 
   [(PKTextInputInteraction *)self _updateCanvasController];
 }
 
-- (id)canvasControllerPreferredStrokeColor:(id)a3 animated:(BOOL *)a4
+- (void)canvasController:(id)controller drawingDidChange:(id)change
 {
-  v6 = [(PKTextInputInteraction *)self _canvasController];
-  v7 = [(PKTextInputCanvasController *)v6 defaultStrokeColor];
+  changeCopy = change;
+  controllerCopy = controller;
+  _handwritingController = [(PKTextInputInteraction *)self _handwritingController];
+  [_handwritingController canvasController:controllerCopy drawingDidChange:changeCopy];
 
-  v8 = [(PKTextInputInteraction *)self handwritingController];
-  [v8 strokeAlphaOverride];
+  [(PKTextInputInteraction *)self _updateCanvasController];
+}
+
+- (id)canvasControllerPreferredStrokeColor:(id)color animated:(BOOL *)animated
+{
+  _canvasController = [(PKTextInputInteraction *)self _canvasController];
+  defaultStrokeColor = [(PKTextInputCanvasController *)_canvasController defaultStrokeColor];
+
+  handwritingController = [(PKTextInputInteraction *)self handwritingController];
+  [handwritingController strokeAlphaOverride];
   v10 = v9;
 
-  v11 = [(PKTextInputInteraction *)self drawingGestureRecognizer];
-  if ([v11 strokeAcceptanceState])
+  drawingGestureRecognizer = [(PKTextInputInteraction *)self drawingGestureRecognizer];
+  if ([drawingGestureRecognizer strokeAcceptanceState])
   {
   }
 
   else
   {
-    v12 = [(PKTextInputInteraction *)self _handwritingController];
-    v13 = [v12 writingState];
+    _handwritingController = [(PKTextInputInteraction *)self _handwritingController];
+    writingState = [_handwritingController writingState];
 
-    if (!v13)
+    if (!writingState)
     {
       v14 = 0;
       v10 = 0.2;
@@ -1593,127 +1593,127 @@ LABEL_6:
 
   v14 = 1;
 LABEL_8:
-  v15 = [v7 colorWithAlphaComponent:v10];
+  v15 = [defaultStrokeColor colorWithAlphaComponent:v10];
 
-  v7 = v15;
+  defaultStrokeColor = v15;
 LABEL_9:
-  *a4 = v14;
+  *animated = v14;
 
-  return v7;
+  return defaultStrokeColor;
 }
 
 - (void)_updateCanvasStrokeColor
 {
-  v2 = [(PKTextInputInteraction *)self _canvasController];
-  [(PKTextInputCanvasController *)v2 reloadPreferredStrokeColor];
+  _canvasController = [(PKTextInputInteraction *)self _canvasController];
+  [(PKTextInputCanvasController *)_canvasController reloadPreferredStrokeColor];
 }
 
 - (BOOL)isCursorWeak
 {
-  v2 = [(PKTextInputInteraction *)self cursorController];
-  v3 = [v2 isCursorWeak];
+  cursorController = [(PKTextInputInteraction *)self cursorController];
+  isCursorWeak = [cursorController isCursorWeak];
 
-  return v3;
+  return isCursorWeak;
 }
 
-- (BOOL)cursorControllerCustomHighlightFeedbackIsVisible:(id)a3
+- (BOOL)cursorControllerCustomHighlightFeedbackIsVisible:(id)visible
 {
-  v4 = [(PKTextInputInteraction *)self _feedbackController];
-  v5 = [v4 showingCustomFeedback];
+  _feedbackController = [(PKTextInputInteraction *)self _feedbackController];
+  showingCustomFeedback = [_feedbackController showingCustomFeedback];
 
-  if (!v5)
+  if (!showingCustomFeedback)
   {
     return 0;
   }
 
-  v6 = [(PKTextInputInteraction *)self _feedbackController];
-  v7 = [v6 feedbackType];
+  _feedbackController2 = [(PKTextInputInteraction *)self _feedbackController];
+  feedbackType = [_feedbackController2 feedbackType];
 
-  return (v7 - 1) < 2;
+  return (feedbackType - 1) < 2;
 }
 
-- (int64_t)cursorControllerWritingState:(id)a3
+- (int64_t)cursorControllerWritingState:(id)state
 {
-  v4 = [(PKTextInputInteraction *)self _handwritingController];
-  if (v4)
+  _handwritingController = [(PKTextInputInteraction *)self _handwritingController];
+  if (_handwritingController)
   {
-    v5 = [(PKTextInputInteraction *)self _handwritingController];
-    v6 = [v5 writingState];
+    _handwritingController2 = [(PKTextInputInteraction *)self _handwritingController];
+    writingState = [_handwritingController2 writingState];
   }
 
   else
   {
-    v6 = 0;
+    writingState = 0;
   }
 
-  return v6;
+  return writingState;
 }
 
-- (id)windowSceneForController:(id)a3
+- (id)windowSceneForController:(id)controller
 {
-  v3 = [(PKTextInputInteraction *)self _containerView];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
+  _containerView = [(PKTextInputInteraction *)self _containerView];
+  window = [_containerView window];
+  windowScene = [window windowScene];
 
-  return v5;
+  return windowScene;
 }
 
-- (void)hoverControllerDidLift:(id)a3
+- (void)hoverControllerDidLift:(id)lift
 {
   v4 = +[PKHoverSettings sharedSettings];
-  v5 = [v4 scribbleCommitOnLift];
+  scribbleCommitOnLift = [v4 scribbleCommitOnLift];
 
-  if (v5)
+  if (scribbleCommitOnLift)
   {
-    v6 = [(PKTextInputInteraction *)self _handwritingController];
-    [v6 quickCommitIfPossible];
+    _handwritingController = [(PKTextInputInteraction *)self _handwritingController];
+    [_handwritingController quickCommitIfPossible];
   }
 }
 
-- (void)feedbackControllerShowingCustomFeedbackDidChange:(id)a3
+- (void)feedbackControllerShowingCustomFeedbackDidChange:(id)change
 {
-  v3 = [(PKTextInputInteraction *)self _cursorController];
-  [v3 customHighlightFeedbackVisibilityDidChange];
+  _cursorController = [(PKTextInputInteraction *)self _cursorController];
+  [_cursorController customHighlightFeedbackVisibilityDidChange];
 }
 
-- (void)handwritingControllerWritingStateDidChange:(id)a3
+- (void)handwritingControllerWritingStateDidChange:(id)change
 {
   v4 = MEMORY[0x1E695DF00];
-  v5 = a3;
+  changeCopy = change;
   [v4 timeIntervalSinceReferenceDate];
   [(PKTextInputInteraction *)self _setLastHandwritingEventTimestamp:?];
-  v6 = [v5 writingState];
+  writingState = [changeCopy writingState];
 
-  v7 = [(PKTextInputInteraction *)self _paletteController];
-  [v7 _setWritingStateActive:v6 == 1];
+  _paletteController = [(PKTextInputInteraction *)self _paletteController];
+  [_paletteController _setWritingStateActive:writingState == 1];
 
-  v8 = [(PKTextInputInteraction *)self _cursorController];
-  [v8 writingStateDidChange];
+  _cursorController = [(PKTextInputInteraction *)self _cursorController];
+  [_cursorController writingStateDidChange];
 
   [(PKTextInputInteraction *)self _updateCanvasStrokeColor];
 }
 
-- (void)handwritingControllerDidFinishActiveCommands:(id)a3
+- (void)handwritingControllerDidFinishActiveCommands:(id)commands
 {
-  v3 = [(PKTextInputInteraction *)self _keyboardSuppressionPolicyDelegate];
-  [v3 updateKeyboardSuppressionPolicy];
+  _keyboardSuppressionPolicyDelegate = [(PKTextInputInteraction *)self _keyboardSuppressionPolicyDelegate];
+  [_keyboardSuppressionPolicyDelegate updateKeyboardSuppressionPolicy];
 }
 
-- (void)elementsControllerLastDiscoveredElementsDidChange:(id)a3
+- (void)elementsControllerLastDiscoveredElementsDidChange:(id)change
 {
-  v3 = [(PKTextInputInteraction *)self _debugViewController];
-  [v3 setNeedsReloadTargetsVisualization];
+  _debugViewController = [(PKTextInputInteraction *)self _debugViewController];
+  [_debugViewController setNeedsReloadTargetsVisualization];
 }
 
-- (id)containerView:(id)a3 hitTest:(CGPoint)a4 withEvent:(id)a5
+- (id)containerView:(id)view hitTest:(CGPoint)test withEvent:(id)event
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (v8 && [v8 type] != 11)
+  viewCopy = view;
+  eventCopy = event;
+  v9 = eventCopy;
+  if (eventCopy && [eventCopy type] != 11)
   {
-    v10 = [(PKTextInputInteraction *)self _hoverController];
-    [(PKTextInputHoverController *)v10 didReceiveNormalTouch:?];
+    _hoverController = [(PKTextInputInteraction *)self _hoverController];
+    [(PKTextInputHoverController *)_hoverController didReceiveNormalTouch:?];
   }
 
   if (![v9 PK_isEventFromPencil])
@@ -1730,10 +1730,10 @@ LABEL_7:
   v11 = +[PKTextInputSettings sharedSettings];
   if ([v11 isScribbleActive])
   {
-    v12 = [(PKTextInputInteraction *)self _containerView];
-    v13 = [v12 isHidden];
+    _containerView = [(PKTextInputInteraction *)self _containerView];
+    isHidden = [_containerView isHidden];
 
-    if (!v13)
+    if (!isHidden)
     {
       goto LABEL_12;
     }
@@ -1749,43 +1749,43 @@ LABEL_10:
       goto LABEL_13;
     }
 
-    v14 = [(PKTextInputInteraction *)self handwritingController];
-    v15 = [v14 writingState];
+    handwritingController = [(PKTextInputInteraction *)self handwritingController];
+    writingState = [handwritingController writingState];
 
-    if (v15 != 1)
+    if (writingState != 1)
     {
       goto LABEL_13;
     }
 
 LABEL_12:
-    v16 = [(PKTextInputInteraction *)self _containerView];
+    _containerView2 = [(PKTextInputInteraction *)self _containerView];
     goto LABEL_14;
   }
 
 LABEL_13:
-  v16 = 0;
+  _containerView2 = 0;
 LABEL_14:
 
-  return v16;
+  return _containerView2;
 }
 
-- (id)_topLevelHitViewForContainerViewPosition:(CGPoint)a3 event:(id)a4
+- (id)_topLevelHitViewForContainerViewPosition:(CGPoint)position event:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [(PKTextInputInteraction *)self view];
-  v9 = [v8 window];
+  eventCopy = event;
+  view = [(PKTextInputInteraction *)self view];
+  window = [view window];
 
-  v10 = [v9 windowScene];
-  v11 = [v10 _visibleWindows];
+  windowScene = [window windowScene];
+  _visibleWindows = [windowScene _visibleWindows];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v12 = v11;
+  v12 = _visibleWindows;
   v13 = [v12 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v13)
   {
@@ -1803,8 +1803,8 @@ LABEL_14:
         }
 
         v19 = *(*(&v34 + 1) + 8 * i);
-        v20 = [(PKTextInputInteraction *)self _containerView];
-        [v20 PK_convertPoint:v19 toView:{x, y}];
+        _containerView = [(PKTextInputInteraction *)self _containerView];
+        [_containerView PK_convertPoint:v19 toView:{x, y}];
         v22 = v21;
         v24 = v23;
 
@@ -1812,16 +1812,16 @@ LABEL_14:
         v26 = v25;
         if (v25)
         {
-          v27 = [v25 window];
-          [v27 windowLevel];
+          window2 = [v25 window];
+          [window2 windowLevel];
           v29 = v28;
 
           if (v29 > v17)
           {
             v30 = v26;
 
-            v31 = [v30 window];
-            [v31 windowLevel];
+            window3 = [v30 window];
+            [window3 windowLevel];
             v17 = v32;
 
             v15 = v30;
@@ -1843,17 +1843,17 @@ LABEL_14:
   return v15;
 }
 
-- (BOOL)_shouldAvoidStartingDrawingOnView:(id)a3 location:(CGPoint)a4
+- (BOOL)_shouldAvoidStartingDrawingOnView:(id)view location:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  viewCopy = view;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([PKTextInputElementsFinder responderSupportsPencilTextInput:v6]& 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([PKTextInputElementsFinder responderSupportsPencilTextInput:viewCopy]& 1) == 0)
   {
-    v7 = [(PKTextInputElementsFinder *)x shouldConsiderTextInputSearchForView:PKTextInputElementsFinder referenceHitPoint:v6 referenceCoordSpace:v6];
-    v8 = v6;
+    v7 = [(PKTextInputElementsFinder *)x shouldConsiderTextInputSearchForView:PKTextInputElementsFinder referenceHitPoint:viewCopy referenceCoordSpace:viewCopy];
+    v8 = viewCopy;
     v9 = v8;
     if (v8)
     {
@@ -1866,10 +1866,10 @@ LABEL_14:
           break;
         }
 
-        v12 = [v10 superview];
+        superview = [v10 superview];
 
-        v10 = v12;
-        if (!v12)
+        v10 = superview;
+        if (!superview)
         {
           goto LABEL_7;
         }
@@ -1884,9 +1884,9 @@ LABEL_7:
         v13 = os_log_create("com.apple.pencilkit", "PencilTextInput");
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [v9 _pkDebugStringRepresentation];
+          _pkDebugStringRepresentation = [v9 _pkDebugStringRepresentation];
           v26 = 138412290;
-          v27 = v14;
+          v27 = _pkDebugStringRepresentation;
           _os_log_impl(&dword_1C7CCA000, v13, OS_LOG_TYPE_DEFAULT, "Avoid starting to draw on view %@ because it's a control and is not an editable text view", &v26, 0xCu);
         }
 
@@ -1895,21 +1895,21 @@ LABEL_7:
     }
   }
 
-  v15 = PKScribbleInteractionInView(v6);
+  v15 = PKScribbleInteractionInView(viewCopy);
   v16 = v15;
   if (v15 && ([v15 shouldBeginAtLocation:x, y]& 1) == 0)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v6 set_textInputSource:0];
+      [viewCopy set_textInputSource:0];
     }
 
     v23 = os_log_create("com.apple.pencilkit", "PencilTextInput");
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [v6 _pkDebugStringRepresentation];
+      _pkDebugStringRepresentation2 = [viewCopy _pkDebugStringRepresentation];
       v26 = 138412290;
-      v27 = v24;
+      v27 = _pkDebugStringRepresentation2;
       _os_log_impl(&dword_1C7CCA000, v23, OS_LOG_TYPE_DEFAULT, "Avoid starting to draw on view %@ because interaction delegate shouldBeginAtLocation: N", &v26, 0xCu);
     }
 
@@ -1917,11 +1917,11 @@ LABEL_7:
   }
 
   v17 = +[PKTextInputSettings sharedSettings];
-  v18 = [v17 enableOnRemoteViews];
+  enableOnRemoteViews = [v17 enableOnRemoteViews];
 
-  if ((v18 & 1) == 0)
+  if ((enableOnRemoteViews & 1) == 0)
   {
-    v19 = [v6 window];
+    window = [viewCopy window];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1930,9 +1930,9 @@ LABEL_7:
       v16 = os_log_create("com.apple.pencilkit", "PencilTextInput");
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [v6 _pkDebugStringRepresentation];
+        _pkDebugStringRepresentation3 = [viewCopy _pkDebugStringRepresentation];
         v26 = 138412290;
-        v27 = v21;
+        v27 = _pkDebugStringRepresentation3;
         _os_log_impl(&dword_1C7CCA000, v16, OS_LOG_TYPE_DEFAULT, "Avoid starting to draw on view %@ because it is in a hosted window", &v26, 0xCu);
       }
 
@@ -1943,23 +1943,23 @@ LABEL_26:
     }
   }
 
-  v22 = [PKTextInputElementsFinder shouldAvoidElementWithHitView:v6];
+  v22 = [PKTextInputElementsFinder shouldAvoidElementWithHitView:viewCopy];
 LABEL_27:
 
   return v22;
 }
 
-- (BOOL)_isTapAwayFromCurrentStrokesAtCanvasViewLocation:(CGPoint)a3
+- (BOOL)_isTapAwayFromCurrentStrokesAtCanvasViewLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(PKTextInputInteraction *)self _canvasController];
-  v6 = [(PKTextInputCanvasController *)v5 renderedStrokesBounds];
+  y = location.y;
+  x = location.x;
+  _canvasController = [(PKTextInputInteraction *)self _canvasController];
+  renderedStrokesBounds = [(PKTextInputCanvasController *)_canvasController renderedStrokesBounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v22.origin.x = v6;
+  v22.origin.x = renderedStrokesBounds;
   v22.origin.y = v8;
   v22.size.width = v10;
   v22.size.height = v12;
@@ -1968,12 +1968,12 @@ LABEL_27:
     return 0;
   }
 
-  if (x >= v6)
+  if (x >= renderedStrokesBounds)
   {
-    v6 = v6 + v10;
-    if (x <= v6)
+    renderedStrokesBounds = renderedStrokesBounds + v10;
+    if (x <= renderedStrokesBounds)
     {
-      v6 = x;
+      renderedStrokesBounds = x;
     }
   }
 
@@ -1988,14 +1988,14 @@ LABEL_27:
     v8 = v14;
   }
 
-  if (v6 - x >= 0.0)
+  if (renderedStrokesBounds - x >= 0.0)
   {
-    v15 = v6 - x;
+    v15 = renderedStrokesBounds - x;
   }
 
   else
   {
-    v15 = -(v6 - x);
+    v15 = -(renderedStrokesBounds - x);
   }
 
   v16 = +[PKTextInputSettings sharedSettings];
@@ -2029,12 +2029,12 @@ LABEL_27:
   return 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a3;
-  v6 = [(PKTextInputInteraction *)self _touchDetectionGestureRecognizer];
+  recognizerCopy = recognizer;
+  _touchDetectionGestureRecognizer = [(PKTextInputInteraction *)self _touchDetectionGestureRecognizer];
 
-  if (v6 != v5)
+  if (_touchDetectionGestureRecognizer != recognizerCopy)
   {
     [(PKTextInputInteraction *)self _touchDetectionGestureRecognizer];
   }
@@ -2044,28 +2044,28 @@ LABEL_27:
 
 - (void)touchesDetected
 {
-  v3 = [(PKTextInputInteraction *)self _handwritingController];
-  v4 = [v3 writingState];
+  _handwritingController = [(PKTextInputInteraction *)self _handwritingController];
+  writingState = [_handwritingController writingState];
 
-  if (v4 != 1)
+  if (writingState != 1)
   {
-    v5 = [(PKTextInputInteraction *)self _reserveSpaceController];
-    [v5 finishReserveSpaceAndInsertWhitespace:0];
+    _reserveSpaceController = [(PKTextInputInteraction *)self _reserveSpaceController];
+    [_reserveSpaceController finishReserveSpaceAndInsertWhitespace:0];
   }
 }
 
-- (void)reserveSpaceControllerIsActiveChanged:(id)a3
+- (void)reserveSpaceControllerIsActiveChanged:(id)changed
 {
   [(PKTextInputInteraction *)self _updateCanvasController];
   [(PKTextInputInteraction *)self _updateInteractionEnabled];
   [(PKTextInputInteraction *)self _updateGestureRecognizers];
-  v4 = [(PKTextInputInteraction *)self _handwritingController];
-  [v4 reserveSpaceControllerIsActiveChanged];
+  _handwritingController = [(PKTextInputInteraction *)self _handwritingController];
+  [_handwritingController reserveSpaceControllerIsActiveChanged];
 
-  v5 = [(PKTextInputInteraction *)self _reserveSpaceController];
-  v6 = [v5 isReserveSpaceActive];
+  _reserveSpaceController = [(PKTextInputInteraction *)self _reserveSpaceController];
+  isReserveSpaceActive = [_reserveSpaceController isReserveSpaceActive];
 
-  if (v6)
+  if (isReserveSpaceActive)
   {
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
 
@@ -2073,50 +2073,50 @@ LABEL_27:
   }
 }
 
-- (void)reserveSpaceControllerIsPlaceholderVisibleChanged:(id)a3
+- (void)reserveSpaceControllerIsPlaceholderVisibleChanged:(id)changed
 {
-  v4 = [(PKTextInputInteraction *)self reserveSpaceController];
-  v5 = [v4 isReserveSpacePlaceholderVisible];
+  reserveSpaceController = [(PKTextInputInteraction *)self reserveSpaceController];
+  isReserveSpacePlaceholderVisible = [reserveSpaceController isReserveSpacePlaceholderVisible];
 
-  if (v5)
+  if (isReserveSpacePlaceholderVisible)
   {
-    v6 = [(PKTextInputInteraction *)self cursorController];
-    [v6 makeCursorStrong];
+    cursorController = [(PKTextInputInteraction *)self cursorController];
+    [cursorController makeCursorStrong];
 
-    v7 = [(PKTextInputInteraction *)self drawingGestureRecognizer];
-    [v7 cancelDrawing];
+    drawingGestureRecognizer = [(PKTextInputInteraction *)self drawingGestureRecognizer];
+    [drawingGestureRecognizer cancelDrawing];
   }
 }
 
-- (void)reserveSpaceController:(id)a3 willFocusElement:(id)a4
+- (void)reserveSpaceController:(id)controller willFocusElement:(id)element
 {
-  v5 = a4;
-  v6 = [(PKTextInputInteraction *)self handwritingController];
-  [v6 reserveSpaceControllerWillFocusElement:v5];
+  elementCopy = element;
+  handwritingController = [(PKTextInputInteraction *)self handwritingController];
+  [handwritingController reserveSpaceControllerWillFocusElement:elementCopy];
 }
 
-- (BOOL)drawingGestureRecognizer:(id)a3 shouldBeginDrawingWithTouches:(id)a4 event:(id)a5
+- (BOOL)drawingGestureRecognizer:(id)recognizer shouldBeginDrawingWithTouches:(id)touches event:(id)event
 {
   v121 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PKTextInputInteraction *)self _containerView];
-  v104 = v8;
-  [v8 locationInView:v11];
+  recognizerCopy = recognizer;
+  touchesCopy = touches;
+  eventCopy = event;
+  _containerView = [(PKTextInputInteraction *)self _containerView];
+  v104 = recognizerCopy;
+  [recognizerCopy locationInView:_containerView];
   v13 = v12;
   v15 = v14;
 
-  v16 = [(PKTextInputInteraction *)self _containerView];
-  v17 = [v16 window];
-  v18 = [v17 windowScene];
-  v19 = [PKPencilSqueezeInteraction _existingInteractionForWindowScene:v18];
+  _containerView2 = [(PKTextInputInteraction *)self _containerView];
+  window = [_containerView2 window];
+  windowScene = [window windowScene];
+  v19 = [PKPencilSqueezeInteraction _existingInteractionForWindowScene:windowScene];
 
-  v20 = v10;
-  v21 = [(PKTextInputInteraction *)self _containerView];
-  LOBYTE(v17) = [v19 _isPointInsidePaletteView:v21 fromView:v10 withEvent:{v13, v15}];
+  v20 = eventCopy;
+  _containerView3 = [(PKTextInputInteraction *)self _containerView];
+  LOBYTE(window) = [v19 _isPointInsidePaletteView:_containerView3 fromView:eventCopy withEvent:{v13, v15}];
 
-  if (v17)
+  if (window)
   {
     v22 = 0;
     v23 = v104;
@@ -2125,11 +2125,11 @@ LABEL_27:
 
   [(PKTextInputInteraction *)self set_beginGestureElement:0];
   [(PKTextInputInteraction *)self set_beginGestureElementContentForLineBreak:0];
-  v24 = [(PKTextInputInteraction *)self _hoverController];
-  [(PKTextInputHoverController *)v24 didReceiveNormalTouch:?];
+  _hoverController = [(PKTextInputInteraction *)self _hoverController];
+  [(PKTextInputHoverController *)_hoverController didReceiveNormalTouch:?];
 
   v102 = v19;
-  if (![v10 PK_isEventFromPencil])
+  if (![eventCopy PK_isEventFromPencil])
   {
 LABEL_12:
     v32 = 1;
@@ -2137,34 +2137,34 @@ LABEL_12:
   }
 
   v25 = +[PKTextInputSettings sharedSettings];
-  v26 = [v25 isScribbleActive];
+  isScribbleActive = [v25 isScribbleActive];
 
-  if ((v26 & 1) == 0)
+  if ((isScribbleActive & 1) == 0)
   {
     v33 = os_log_create("com.apple.pencilkit", "PencilTextInput");
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
-      v34 = [v104 drawingTouch];
+      drawingTouch = [v104 drawingTouch];
       *buf = 134217984;
-      v117 = v34;
+      v117 = drawingTouch;
       _os_log_impl(&dword_1C7CCA000, v33, OS_LOG_TYPE_DEFAULT, "Delegate to gesture touch %p, shouldBeginDrawing: N, because there is no active locale.", buf, 0xCu);
     }
 
     goto LABEL_12;
   }
 
-  v99 = v10;
-  v27 = [(PKTextInputInteraction *)self view];
-  v28 = [v27 window];
+  v99 = eventCopy;
+  view = [(PKTextInputInteraction *)self view];
+  window2 = [view window];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v29 = MEMORY[0x1E69DD0A8];
-    v30 = [v28 windowScene];
-    v31 = [v29 activeTextEffectsWindowForWindowScene:v30];
+    windowScene2 = [window2 windowScene];
+    v31 = [v29 activeTextEffectsWindowForWindowScene:windowScene2];
 
-    if (v31 != v28)
+    if (v31 != window2)
     {
 
 LABEL_8:
@@ -2177,16 +2177,16 @@ LABEL_50:
     }
   }
 
-  v100 = v9;
-  v35 = [v9 anyObject];
-  v36 = [v35 view];
-  v37 = [v36 window];
-  v38 = [v37 windowScene];
+  v100 = touchesCopy;
+  anyObject = [touchesCopy anyObject];
+  view2 = [anyObject view];
+  window3 = [view2 window];
+  windowScene3 = [window3 windowScene];
 
-  if (v38)
+  if (windowScene3)
   {
-    v39 = [(PKTextInputInteraction *)self view];
-    [v104 locationInView:v39];
+    view3 = [(PKTextInputInteraction *)self view];
+    [v104 locationInView:view3];
     v41 = v40;
     v43 = v42;
 
@@ -2197,7 +2197,7 @@ LABEL_50:
   v115 = 0u;
   v112 = 0u;
   v113 = 0u;
-  v9 = v100;
+  touchesCopy = v100;
   obj = v100;
   v44 = [obj countByEnumeratingWithState:&v112 objects:v120 count:16];
   if (!v44)
@@ -2217,22 +2217,22 @@ LABEL_50:
       }
 
       v47 = *(*(&v112 + 1) + 8 * i);
-      v48 = [v47 window];
-      v49 = [(PKTextInputInteraction *)self view];
-      v50 = [v49 window];
-      v51 = v50;
-      if (v48 == v50)
+      window4 = [v47 window];
+      view4 = [(PKTextInputInteraction *)self view];
+      window5 = [view4 window];
+      v51 = window5;
+      if (window4 == window5)
       {
       }
 
       else
       {
-        v52 = [v47 window];
-        [v52 windowLevel];
+        window6 = [v47 window];
+        [window6 windowLevel];
         v54 = v53;
-        v55 = [(PKTextInputInteraction *)self view];
-        v56 = [v55 window];
-        [v56 windowLevel];
+        view5 = [(PKTextInputInteraction *)self view];
+        window7 = [view5 window];
+        [window7 windowLevel];
         v58 = v57;
 
         if (v54 > v58)
@@ -2242,43 +2242,43 @@ LABEL_50:
           v23 = v104;
           if (v72)
           {
-            v73 = [v104 drawingTouch];
-            v74 = [v47 window];
-            v75 = [v74 _pkDebugStringRepresentation];
+            drawingTouch2 = [v104 drawingTouch];
+            window8 = [v47 window];
+            _pkDebugStringRepresentation = [window8 _pkDebugStringRepresentation];
             *buf = 134218242;
-            v117 = v73;
+            v117 = drawingTouch2;
             v118 = 2112;
-            v119 = v75;
+            v119 = _pkDebugStringRepresentation;
             _os_log_impl(&dword_1C7CCA000, v71, OS_LOG_TYPE_DEFAULT, "Delegate to gesture touch %p, shouldBeginDrawing: N, because the touch is on a higher level window %@", buf, 0x16u);
           }
 
 LABEL_49:
-          v9 = v100;
+          touchesCopy = v100;
 
           v32 = 1;
           goto LABEL_50;
         }
       }
 
-      v59 = [v47 window];
-      v60 = [v59 windowScene];
-      v61 = [(PKTextInputInteraction *)self view];
-      v62 = [v61 window];
-      v63 = [v62 windowScene];
+      window9 = [v47 window];
+      windowScene4 = [window9 windowScene];
+      view6 = [(PKTextInputInteraction *)self view];
+      window10 = [view6 window];
+      windowScene5 = [window10 windowScene];
 
-      if (v60 != v63)
+      if (windowScene4 != windowScene5)
       {
         v71 = os_log_create("com.apple.pencilkit", "PencilTextInput");
         v23 = v104;
         if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
         {
-          v68 = [v104 drawingTouch];
-          v69 = [v47 window];
-          v70 = [v69 windowScene];
+          drawingTouch3 = [v104 drawingTouch];
+          window11 = [v47 window];
+          windowScene6 = [window11 windowScene];
           *buf = 134218242;
-          v117 = v68;
+          v117 = drawingTouch3;
           v118 = 2112;
-          v119 = v70;
+          v119 = windowScene6;
           _os_log_impl(&dword_1C7CCA000, v71, OS_LOG_TYPE_DEFAULT, "Delegate to gesture touch %p, shouldBeginDrawing: N, because the touch is on a different scene %@", buf, 0x16u);
         }
 
@@ -2287,7 +2287,7 @@ LABEL_49:
     }
 
     v45 = [obj countByEnumeratingWithState:&v112 objects:v120 count:16];
-    v9 = v100;
+    touchesCopy = v100;
     if (v45)
     {
       continue;
@@ -2298,14 +2298,14 @@ LABEL_49:
 
 LABEL_28:
 
-  v64 = [(PKTextInputInteraction *)self _handwritingController];
-  if (v64)
+  _handwritingController = [(PKTextInputInteraction *)self _handwritingController];
+  if (_handwritingController)
   {
-    v65 = v64;
-    v66 = [(PKTextInputInteraction *)self _handwritingController];
-    v67 = [v66 writingState];
+    v65 = _handwritingController;
+    _handwritingController2 = [(PKTextInputInteraction *)self _handwritingController];
+    writingState = [_handwritingController2 writingState];
 
-    if (v67)
+    if (writingState)
     {
       v32 = 0;
       goto LABEL_31;
@@ -2315,20 +2315,20 @@ LABEL_28:
   v76 = [(PKTextInputInteraction *)self _topLevelHitViewForContainerViewPosition:0 event:v13, v15];
   if (v76)
   {
-    v77 = [(PKTextInputInteraction *)self _containerView];
-    v78 = [(PKTextInputInteraction *)self _shouldAvoidStartingDrawingOnView:v76 location:PK_convertRectFromCoordinateSpaceToCoordinateSpace(v77, v76, v13, v15, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8))];
+    _containerView4 = [(PKTextInputInteraction *)self _containerView];
+    v78 = [(PKTextInputInteraction *)self _shouldAvoidStartingDrawingOnView:v76 location:PK_convertRectFromCoordinateSpaceToCoordinateSpace(_containerView4, v76, v13, v15, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8))];
 
     if (v78)
     {
       v79 = os_log_create("com.apple.pencilkit", "PencilTextInput");
       if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
       {
-        v80 = [v104 drawingTouch];
-        v81 = [v76 _pkDebugStringRepresentation];
+        drawingTouch4 = [v104 drawingTouch];
+        _pkDebugStringRepresentation2 = [v76 _pkDebugStringRepresentation];
         *buf = 134218242;
-        v117 = v80;
+        v117 = drawingTouch4;
         v118 = 2112;
-        v119 = v81;
+        v119 = _pkDebugStringRepresentation2;
         _os_log_impl(&dword_1C7CCA000, v79, OS_LOG_TYPE_DEFAULT, "Delegate to gesture touch %p, shouldBeginDrawing: N, because should avoid drawing on hit view %@", buf, 0x16u);
       }
 
@@ -2336,15 +2336,15 @@ LABEL_28:
     }
   }
 
-  v82 = [(PKTextInputInteraction *)self view];
-  v83 = [v82 window];
-  v84 = [v83 windowScene];
-  v85 = [v84 _visibleWindows];
-  v86 = v85;
+  view7 = [(PKTextInputInteraction *)self view];
+  window12 = [view7 window];
+  windowScene7 = [window12 windowScene];
+  _visibleWindows = [windowScene7 _visibleWindows];
+  v86 = _visibleWindows;
   v87 = MEMORY[0x1E695E0F0];
-  if (v85)
+  if (_visibleWindows)
   {
-    v87 = v85;
+    v87 = _visibleWindows;
   }
 
   v88 = v87;
@@ -2355,8 +2355,8 @@ LABEL_28:
   {
     if (v89[9] == 1)
     {
-      v90 = [(PKTextInputInteraction *)self _hoverController];
-      if (!v90 || (v91 = v90, v92 = CACurrentMediaTime() - *(v90 + 136), v91, v92 >= 0.1))
+      _hoverController2 = [(PKTextInputInteraction *)self _hoverController];
+      if (!_hoverController2 || (v91 = _hoverController2, v92 = CACurrentMediaTime() - *(_hoverController2 + 136), v91, v92 >= 0.1))
       {
         v89[9] = 0;
       }
@@ -2365,20 +2365,20 @@ LABEL_28:
 
   [(PKTextInputInteraction *)self set_drawingGestureElementFinder:v89];
   v93 = [obj copy];
-  v94 = [(PKTextInputInteraction *)self _containerView];
+  _containerView5 = [(PKTextInputInteraction *)self _containerView];
   v105[0] = MEMORY[0x1E69E9820];
   v105[1] = 3221225472;
   v105[2] = __87__PKTextInputInteraction_drawingGestureRecognizer_shouldBeginDrawingWithTouches_event___block_invoke;
   v105[3] = &unk_1E82D7CD0;
   v106 = v89;
-  v107 = self;
+  selfCopy = self;
   v108 = v93;
   v109 = v99;
   v110 = v13;
   v111 = v15;
   v95 = v93;
   v96 = v89;
-  [v96 findSingleElementCloseToPosition:v94 coordinateSpace:v105 completion:{v13, v15}];
+  [v96 findSingleElementCloseToPosition:_containerView5 coordinateSpace:v105 completion:{v13, v15}];
 
   v32 = 0;
 LABEL_13:
@@ -2417,15 +2417,15 @@ void __87__PKTextInputInteraction_drawingGestureRecognizer_shouldBeginDrawingWit
   }
 }
 
-- (BOOL)drawingGestureRecognizerRequiresTargetElementToBegin:(id)a3
+- (BOOL)drawingGestureRecognizerRequiresTargetElementToBegin:(id)begin
 {
-  v4 = [(PKTextInputInteraction *)self _handwritingController];
-  if (v4)
+  _handwritingController = [(PKTextInputInteraction *)self _handwritingController];
+  if (_handwritingController)
   {
-    v5 = [(PKTextInputInteraction *)self _handwritingController];
-    v6 = [v5 writingState];
+    _handwritingController2 = [(PKTextInputInteraction *)self _handwritingController];
+    writingState = [_handwritingController2 writingState];
 
-    v7 = v6 == 0;
+    v7 = writingState == 0;
   }
 
   else
@@ -2436,26 +2436,26 @@ void __87__PKTextInputInteraction_drawingGestureRecognizer_shouldBeginDrawingWit
   return v7;
 }
 
-- (BOOL)drawingGestureRecognizerRequiresPastTapToBegin:(id)a3
+- (BOOL)drawingGestureRecognizerRequiresPastTapToBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(PKTextInputInteraction *)self _handwritingController];
-  if (v5)
+  beginCopy = begin;
+  _handwritingController = [(PKTextInputInteraction *)self _handwritingController];
+  if (_handwritingController)
   {
-    v6 = v5;
-    v7 = [(PKTextInputInteraction *)self _handwritingController];
-    v8 = [v7 writingState];
+    v6 = _handwritingController;
+    _handwritingController2 = [(PKTextInputInteraction *)self _handwritingController];
+    writingState = [_handwritingController2 writingState];
 
-    if (v8 == 1)
+    if (writingState == 1)
     {
-      v10 = [(PKTextInputInteraction *)self _containerView];
-      [v4 locationInView:v10];
+      _containerView = [(PKTextInputInteraction *)self _containerView];
+      [beginCopy locationInView:_containerView];
       v9 = [(PKTextInputInteraction *)self _isTapAwayFromCurrentStrokesAtCanvasViewLocation:?];
 
       goto LABEL_7;
     }
 
-    if (v8)
+    if (writingState)
     {
       v9 = 0;
       goto LABEL_7;
@@ -2468,21 +2468,21 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)drawingGestureRecognizerLongPressShouldBegin:(id)a3
+- (BOOL)drawingGestureRecognizerLongPressShouldBegin:(id)begin
 {
   v4 = +[PKTextInputSettings sharedSettings];
-  v5 = [v4 enableReserveSpace];
+  enableReserveSpace = [v4 enableReserveSpace];
 
-  if (!v5)
+  if (!enableReserveSpace)
   {
     return 0;
   }
 
-  v6 = [(PKTextInputInteraction *)self _handwritingController];
-  if (v6)
+  _handwritingController = [(PKTextInputInteraction *)self _handwritingController];
+  if (_handwritingController)
   {
-    v7 = [(PKTextInputInteraction *)self _handwritingController];
-    v8 = [v7 writingState] == 0;
+    _handwritingController2 = [(PKTextInputInteraction *)self _handwritingController];
+    v8 = [_handwritingController2 writingState] == 0;
   }
 
   else
@@ -2493,104 +2493,104 @@ LABEL_7:
   return v8;
 }
 
-- (void)drawingGestureRecognizerLongPressStateDidChange:(id)a3
+- (void)drawingGestureRecognizerLongPressStateDidChange:(id)change
 {
-  v13 = a3;
-  v4 = [v13 longPressState];
-  if (v4 > 1)
+  changeCopy = change;
+  longPressState = [changeCopy longPressState];
+  if (longPressState > 1)
   {
-    if (v4 == 2)
+    if (longPressState == 2)
     {
-      v5 = [(PKTextInputInteraction *)self _reserveSpaceController];
-      [v5 reserveSpaceWhenReady];
+      _reserveSpaceController = [(PKTextInputInteraction *)self _reserveSpaceController];
+      [_reserveSpaceController reserveSpaceWhenReady];
       goto LABEL_9;
     }
 
-    if (v4 != 3)
+    if (longPressState != 3)
     {
       goto LABEL_10;
     }
   }
 
-  else if (v4)
+  else if (longPressState)
   {
-    if (v4 != 1)
+    if (longPressState != 1)
     {
       goto LABEL_10;
     }
 
-    v5 = [v13 targetElement];
-    v6 = [(PKTextInputInteraction *)self view];
-    [v13 locationInView:v6];
+    _reserveSpaceController = [changeCopy targetElement];
+    view = [(PKTextInputInteraction *)self view];
+    [changeCopy locationInView:view];
     v8 = v7;
     v10 = v9;
 
-    v11 = [(PKTextInputInteraction *)self _reserveSpaceController];
-    v12 = [(PKTextInputInteraction *)self view];
-    [v11 beginIfPossibleWithElement:v5 atLocation:v12 coordinateSpace:{v8, v10}];
+    _reserveSpaceController2 = [(PKTextInputInteraction *)self _reserveSpaceController];
+    view2 = [(PKTextInputInteraction *)self view];
+    [_reserveSpaceController2 beginIfPossibleWithElement:_reserveSpaceController atLocation:view2 coordinateSpace:{v8, v10}];
 
     goto LABEL_9;
   }
 
-  v5 = [(PKTextInputInteraction *)self _reserveSpaceController];
-  [v5 cancelReserveSpaceIntro];
+  _reserveSpaceController = [(PKTextInputInteraction *)self _reserveSpaceController];
+  [_reserveSpaceController cancelReserveSpaceIntro];
 LABEL_9:
 
 LABEL_10:
 }
 
-- (void)drawingGestureStrokeAcceptanceStateDidChange:(id)a3
+- (void)drawingGestureStrokeAcceptanceStateDidChange:(id)change
 {
-  v8 = a3;
-  v4 = [v8 strokeAcceptanceState];
-  if (v4 == 2)
+  changeCopy = change;
+  strokeAcceptanceState = [changeCopy strokeAcceptanceState];
+  if (strokeAcceptanceState == 2)
   {
-    [v8 cancel];
+    [changeCopy cancel];
   }
 
-  else if (v4 == 1)
+  else if (strokeAcceptanceState == 1)
   {
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     [(PKTextInputInteraction *)self _setLastHandwritingEventTimestamp:?];
-    v5 = [(PKTextInputInteraction *)self _handwritingController];
-    v6 = [(PKTextInputInteraction *)self _canvasController];
-    [v5 canvasControllerDidBeginDrawing:v6];
+    _handwritingController = [(PKTextInputInteraction *)self _handwritingController];
+    _canvasController = [(PKTextInputInteraction *)self _canvasController];
+    [_handwritingController canvasControllerDidBeginDrawing:_canvasController];
 
-    v7 = [(PKTextInputInteraction *)self _reserveSpaceController];
-    [v7 setCanvasControllerIsDrawing:1];
+    _reserveSpaceController = [(PKTextInputInteraction *)self _reserveSpaceController];
+    [_reserveSpaceController setCanvasControllerIsDrawing:1];
   }
 
   [(PKTextInputInteraction *)self _updateCanvasStrokeColor];
   [(PKTextInputInteraction *)self _updateCanvasController];
 }
 
-- (void)drawingGestureRecognizerDrawingTargetIsDrawingDidChange:(id)a3
+- (void)drawingGestureRecognizerDrawingTargetIsDrawingDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   [(PKTextInputInteraction *)self _updateCanvasController];
-  LODWORD(self) = [v4 drawingTargetIsDrawing];
+  LODWORD(self) = [changeCopy drawingTargetIsDrawing];
 
   if (self)
   {
-    v5 = [MEMORY[0x1E69DCC68] sharedMenuController];
-    [v5 hideMenu];
+    mEMORY[0x1E69DCC68] = [MEMORY[0x1E69DCC68] sharedMenuController];
+    [mEMORY[0x1E69DCC68] hideMenu];
   }
 }
 
-- (BOOL)drawingGestureRecognizer:(id)a3 shouldFinishGestureWithTouch:(id)a4
+- (BOOL)drawingGestureRecognizer:(id)recognizer shouldFinishGestureWithTouch:(id)touch
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 strokeAcceptanceState] != 1)
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  if ([recognizerCopy strokeAcceptanceState] != 1)
   {
-    v9 = [v6 targetElement];
-    if (!v9 || [v6 state] || (objc_msgSend(v6, "hasMovedPastTapUseTimestampFromTouch:", 1) & 1) != 0)
+    targetElement = [recognizerCopy targetElement];
+    if (!targetElement || [recognizerCopy state] || (objc_msgSend(recognizerCopy, "hasMovedPastTapUseTimestampFromTouch:", 1) & 1) != 0)
     {
-      v10 = [(PKTextInputInteraction *)self _containerView];
-      v11 = [v10 isHidden];
+      _containerView = [(PKTextInputInteraction *)self _containerView];
+      isHidden = [_containerView isHidden];
 
-      if (v11)
+      if (isHidden)
       {
         v8 = 0;
 LABEL_14:
@@ -2598,8 +2598,8 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v12 = [(PKTextInputInteraction *)self _containerView];
-      [v6 locationInView:v12];
+      _containerView2 = [(PKTextInputInteraction *)self _containerView];
+      [recognizerCopy locationInView:_containerView2];
       v13 = [(PKTextInputInteraction *)self _topLevelHitViewForContainerViewPosition:0 event:?];
 
       objc_opt_class();
@@ -2609,9 +2609,9 @@ LABEL_14:
         v14 = os_log_create("com.apple.pencilkit", "PencilTextInput");
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = [v13 _pkDebugStringRepresentation];
+          _pkDebugStringRepresentation = [v13 _pkDebugStringRepresentation];
           v17 = 138412290;
-          v18 = v15;
+          v18 = _pkDebugStringRepresentation;
           _os_log_impl(&dword_1C7CCA000, v14, OS_LOG_TYPE_DEFAULT, "Using drawing gesture as touch up inside control: %@", &v17, 0xCu);
         }
       }
@@ -2621,12 +2621,12 @@ LABEL_14:
 
     else
     {
-      v8 = [(PKTextInputInteraction *)self _handleDrawingGestureTapInElement:v9 gesture:v6 touch:v7];
+      v8 = [(PKTextInputInteraction *)self _handleDrawingGestureTapInElement:targetElement gesture:recognizerCopy touch:touchCopy];
       v13 = os_log_create("com.apple.pencilkit", "PencilTextInput");
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 138412290;
-        v18 = v9;
+        v18 = targetElement;
         _os_log_impl(&dword_1C7CCA000, v13, OS_LOG_TYPE_DEFAULT, "Using drawing gesture as tap instead. element: %@", &v17, 0xCu);
       }
     }
@@ -2640,61 +2640,61 @@ LABEL_15:
   return v8;
 }
 
-- (void)_notifyTargetElementOfTouches:(id)a3 event:(id)a4
+- (void)_notifyTargetElementOfTouches:(id)touches event:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(PKTextInputInteraction *)self _drawingGestureElementFinder];
-  v8 = [v9 foundElement];
-  [(PKTextInputElement *)v8 didTargetElementForTouches:v7 event:v6];
+  eventCopy = event;
+  touchesCopy = touches;
+  _drawingGestureElementFinder = [(PKTextInputInteraction *)self _drawingGestureElementFinder];
+  foundElement = [_drawingGestureElementFinder foundElement];
+  [(PKTextInputElement *)foundElement didTargetElementForTouches:touchesCopy event:eventCopy];
 }
 
-- (void)_drawingGestureElementFinderDidFinishWithLocationInContainerView:(CGPoint)a3
+- (void)_drawingGestureElementFinderDidFinishWithLocationInContainerView:(CGPoint)view
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(PKTextInputInteraction *)self _drawingGestureElementFinder];
+  y = view.y;
+  x = view.x;
+  _drawingGestureElementFinder = [(PKTextInputInteraction *)self _drawingGestureElementFinder];
   [(PKTextInputInteraction *)self set_drawingGestureElementFinder:0];
-  v7 = [(PKTextInputInteraction *)self drawingGestureRecognizer];
-  v8 = [v6 foundElement];
-  v9 = [v6 candidateElements];
-  [v7 finishedElementFindingWithElement:v8 candidateElements:v9];
+  drawingGestureRecognizer = [(PKTextInputInteraction *)self drawingGestureRecognizer];
+  foundElement = [_drawingGestureElementFinder foundElement];
+  candidateElements = [_drawingGestureElementFinder candidateElements];
+  [drawingGestureRecognizer finishedElementFindingWithElement:foundElement candidateElements:candidateElements];
 
   [(PKTextInputInteraction *)self _updateCanvasStrokeColor];
-  v10 = [(PKTextInputInteraction *)self _handwritingController];
-  if (!v10 || (v11 = v10, -[PKTextInputInteraction _handwritingController](self, "_handwritingController"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 writingState], v12, v11, !v13))
+  _handwritingController = [(PKTextInputInteraction *)self _handwritingController];
+  if (!_handwritingController || (v11 = _handwritingController, -[PKTextInputInteraction _handwritingController](self, "_handwritingController"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 writingState], v12, v11, !v13))
   {
     v14 = +[PKTextInputSettings sharedSettings];
-    v15 = [v14 lineBreakOnTapEnabled];
+    lineBreakOnTapEnabled = [v14 lineBreakOnTapEnabled];
 
-    if (v15)
+    if (lineBreakOnTapEnabled)
     {
       [(PKTextInputInteraction *)self set_beginGestureElementContentForLineBreak:0];
       [(PKTextInputInteraction *)self set_beginGestureElement:0];
-      v16 = [v6 foundElement];
-      v17 = [(PKTextInputElement *)v16 isFocused];
+      foundElement2 = [_drawingGestureElementFinder foundElement];
+      isFocused = [(PKTextInputElement *)foundElement2 isFocused];
 
-      if (v17)
+      if (isFocused)
       {
-        v18 = [v6 foundElement];
-        [(PKTextInputInteraction *)self set_beginGestureElement:v18];
+        foundElement3 = [_drawingGestureElementFinder foundElement];
+        [(PKTextInputInteraction *)self set_beginGestureElement:foundElement3];
 
-        v19 = [(PKTextInputInteraction *)self _containerView];
-        v20 = [(PKTextInputInteraction *)self _beginGestureElement];
-        v21 = [(PKTextInputElement *)v20 coordinateSpace];
-        v22 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v19, v21, x, y, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8));
+        _containerView = [(PKTextInputInteraction *)self _containerView];
+        _beginGestureElement = [(PKTextInputInteraction *)self _beginGestureElement];
+        coordinateSpace = [(PKTextInputElement *)_beginGestureElement coordinateSpace];
+        v22 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(_containerView, coordinateSpace, x, y, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8));
         v24 = v23;
 
         objc_initWeak(&location, self);
-        v25 = [(PKTextInputInteraction *)self _beginGestureElement];
-        v26 = [(PKTextInputInteraction *)self _cursorController];
-        LOBYTE(v20) = [v26 isCursorWeak];
+        _beginGestureElement2 = [(PKTextInputInteraction *)self _beginGestureElement];
+        _cursorController = [(PKTextInputInteraction *)self _cursorController];
+        LOBYTE(_beginGestureElement) = [_cursorController isCursorWeak];
         v27[0] = MEMORY[0x1E69E9820];
         v27[1] = 3221225472;
         v27[2] = __91__PKTextInputInteraction__drawingGestureElementFinderDidFinishWithLocationInContainerView___block_invoke;
         v27[3] = &unk_1E82D7CF8;
         objc_copyWeak(&v28, &location);
-        [(PKTextInputElement *)v25 evaluateLineBreakForTapAtLocation:v20 weakCursor:0 allowTrailingWhitespace:v27 completion:v22, v24];
+        [(PKTextInputElement *)_beginGestureElement2 evaluateLineBreakForTapAtLocation:_beginGestureElement weakCursor:0 allowTrailingWhitespace:v27 completion:v22, v24];
 
         objc_destroyWeak(&v28);
         objc_destroyWeak(&location);
@@ -2710,18 +2710,18 @@ void __91__PKTextInputInteraction__drawingGestureElementFinderDidFinishWithLocat
   [WeakRetained set_beginGestureElementContentForLineBreak:v3];
 }
 
-- (BOOL)_beginGestureIfPossible:(id)a3
+- (BOOL)_beginGestureIfPossible:(id)possible
 {
-  v4 = a3;
-  if ([v4 state])
+  possibleCopy = possible;
+  if ([possibleCopy state])
   {
     v5 = 0;
   }
 
   else
   {
-    [v4 setState:1];
-    v5 = [v4 state] == 1;
+    [possibleCopy setState:1];
+    v5 = [possibleCopy state] == 1;
   }
 
   [(PKTextInputInteraction *)self set_beginGestureElement:0];
@@ -2730,15 +2730,15 @@ void __91__PKTextInputInteraction__drawingGestureElementFinderDidFinishWithLocat
   return v5;
 }
 
-- (id)_findControlFromHitView:(id)a3 referenceView:(id)a4
+- (id)_findControlFromHitView:(id)view referenceView:(id)referenceView
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  viewCopy = view;
+  referenceViewCopy = referenceView;
+  v7 = viewCopy;
   v8 = v7;
   v9 = 0;
-  v10 = v7;
-  if (v7 && v7 != v6)
+  superview = v7;
+  if (v7 && v7 != referenceViewCopy)
   {
     v11 = v7;
     while (1)
@@ -2749,13 +2749,13 @@ void __91__PKTextInputInteraction__drawingGestureElementFinderDidFinishWithLocat
         break;
       }
 
-      v10 = [v11 superview];
+      superview = [v11 superview];
 
       v9 = 0;
-      if (v10)
+      if (superview)
       {
-        v11 = v10;
-        if (v10 != v6)
+        v11 = superview;
+        if (superview != referenceViewCopy)
         {
           continue;
         }
@@ -2764,8 +2764,8 @@ void __91__PKTextInputInteraction__drawingGestureElementFinderDidFinishWithLocat
       goto LABEL_9;
     }
 
-    v10 = v11;
-    v9 = v10;
+    superview = v11;
+    v9 = superview;
   }
 
 LABEL_9:
@@ -2773,20 +2773,20 @@ LABEL_9:
   return v9;
 }
 
-- (BOOL)_handleDrawingGestureTapInElement:(id)a3 gesture:(id)a4 touch:(id)a5
+- (BOOL)_handleDrawingGestureTapInElement:(id)element gesture:(id)gesture touch:(id)touch
 {
   v51 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  elementCopy = element;
+  gestureCopy = gesture;
+  touchCopy = touch;
+  if (elementCopy)
   {
-    v11 = [(PKTextInputElement *)v8 coordinateSpace];
+    coordinateSpace = [(PKTextInputElement *)elementCopy coordinateSpace];
 
-    if (v11)
+    if (coordinateSpace)
     {
-      v12 = [(PKTextInputInteraction *)self _containerView];
-      [v10 PK_locationInView:v12];
+      _containerView = [(PKTextInputInteraction *)self _containerView];
+      [touchCopy PK_locationInView:_containerView];
       v14 = v13;
       v16 = v15;
 
@@ -2796,105 +2796,105 @@ LABEL_9:
         goto LABEL_8;
       }
 
-      v18 = [(PKTextInputElement *)v8 referenceView];
-      if (!v18)
+      referenceView = [(PKTextInputElement *)elementCopy referenceView];
+      if (!referenceView)
       {
         goto LABEL_8;
       }
 
-      v19 = v18;
-      v20 = [(PKTextInputElement *)v8 referenceView];
+      v19 = referenceView;
+      referenceView2 = [(PKTextInputElement *)elementCopy referenceView];
 
-      if (v17 == v20)
+      if (v17 == referenceView2)
       {
         goto LABEL_8;
       }
 
-      v21 = [(PKTextInputElement *)v8 referenceView];
-      LODWORD(v22) = [v17 isDescendantOfView:v21];
+      referenceView3 = [(PKTextInputElement *)elementCopy referenceView];
+      LODWORD(_beginGestureElementContentForLineBreak) = [v17 isDescendantOfView:referenceView3];
 
-      if (!v22)
+      if (!_beginGestureElementContentForLineBreak)
       {
 LABEL_27:
 
         goto LABEL_28;
       }
 
-      v23 = [(PKTextInputElement *)v8 referenceView];
-      v24 = [(PKTextInputInteraction *)self _findControlFromHitView:v17 referenceView:v23];
+      referenceView4 = [(PKTextInputElement *)elementCopy referenceView];
+      v24 = [(PKTextInputInteraction *)self _findControlFromHitView:v17 referenceView:referenceView4];
 
       if (!v24)
       {
 LABEL_8:
-        v25 = [(PKTextInputInteraction *)self _containerView];
-        v26 = [(PKTextInputElement *)v8 coordinateSpace];
-        [v25 PK_convertPoint:v26 toCoordinateSpace:{v14, v16}];
+        _containerView2 = [(PKTextInputInteraction *)self _containerView];
+        coordinateSpace2 = [(PKTextInputElement *)elementCopy coordinateSpace];
+        [_containerView2 PK_convertPoint:coordinateSpace2 toCoordinateSpace:{v14, v16}];
         v28 = v27;
         v30 = v29;
 
-        if ([(PKTextInputElement *)v8 isFocused])
+        if ([(PKTextInputElement *)elementCopy isFocused])
         {
           v31 = os_log_create("com.apple.pencilkit", "PencilTextInput");
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
           {
             v49 = 138412290;
-            v50 = v8;
+            v50 = elementCopy;
             _os_log_impl(&dword_1C7CCA000, v31, OS_LOG_TYPE_DEFAULT, "Detected a pencil tap on focused element: %@", &v49, 0xCu);
           }
 
-          v32 = [(PKTextInputInteraction *)self _cursorController];
-          [v32 makeCursorStrong];
+          _cursorController = [(PKTextInputInteraction *)self _cursorController];
+          [_cursorController makeCursorStrong];
 
-          v33 = +[PKTextInputSettings sharedSettings];
-          if ([v33 enableReserveSpaceTapForNewlines])
+          _reserveSpaceController3 = +[PKTextInputSettings sharedSettings];
+          if ([_reserveSpaceController3 enableReserveSpaceTapForNewlines])
           {
-            v34 = [(PKTextInputElement *)v8 coordinateSpace];
-            if (v34)
+            coordinateSpace3 = [(PKTextInputElement *)elementCopy coordinateSpace];
+            if (coordinateSpace3)
             {
-              v35 = [(PKTextInputInteraction *)self _reserveSpaceController];
-              v36 = [v35 isReserveSpaceActive];
+              _reserveSpaceController = [(PKTextInputInteraction *)self _reserveSpaceController];
+              isReserveSpaceActive = [_reserveSpaceController isReserveSpaceActive];
 
-              if (!v36)
+              if (!isReserveSpaceActive)
               {
                 goto LABEL_22;
               }
 
-              v37 = [(PKTextInputInteraction *)self _reserveSpaceController];
-              LODWORD(v34) = [v37 tapPointIsInPlaceholder:{v28, v30}];
+              _reserveSpaceController2 = [(PKTextInputInteraction *)self _reserveSpaceController];
+              LODWORD(coordinateSpace3) = [_reserveSpaceController2 tapPointIsInPlaceholder:{v28, v30}];
 
-              if (!v34)
+              if (!coordinateSpace3)
               {
                 goto LABEL_23;
               }
 
-              if (![(PKTextInputInteraction *)self _beginGestureIfPossible:v9])
+              if (![(PKTextInputInteraction *)self _beginGestureIfPossible:gestureCopy])
               {
 LABEL_22:
-                LOBYTE(v34) = 0;
+                LOBYTE(coordinateSpace3) = 0;
 LABEL_23:
-                v41 = [MEMORY[0x1E69DCC68] sharedMenuController];
-                [v41 hideMenu];
-                if (v34 & 1) != 0 || ([(PKTextInputInteraction *)self _hoverController], v42 = objc_claimAutoreleasedReturnValue(), v43 = [(PKTextInputHoverController *)v42 performLineBreakAfterTapIfPossibleForElement:v8 location:v28, v30], v42, (v43))
+                mEMORY[0x1E69DCC68] = [MEMORY[0x1E69DCC68] sharedMenuController];
+                [mEMORY[0x1E69DCC68] hideMenu];
+                if (coordinateSpace3 & 1) != 0 || ([(PKTextInputInteraction *)self _hoverController], v42 = objc_claimAutoreleasedReturnValue(), v43 = [(PKTextInputHoverController *)v42 performLineBreakAfterTapIfPossibleForElement:elementCopy location:v28, v30], v42, (v43))
                 {
-                  LOBYTE(v22) = 1;
+                  LOBYTE(_beginGestureElementContentForLineBreak) = 1;
                 }
 
                 else
                 {
-                  v22 = [(PKTextInputInteraction *)self _beginGestureElementContentForLineBreak];
-                  if (v22)
+                  _beginGestureElementContentForLineBreak = [(PKTextInputInteraction *)self _beginGestureElementContentForLineBreak];
+                  if (_beginGestureElementContentForLineBreak)
                   {
-                    v45 = [(PKTextInputInteraction *)self _beginGestureElement];
-                    v46 = [(PKTextInputElement *)v8 isEquivalentToElement:v45];
+                    _beginGestureElement = [(PKTextInputInteraction *)self _beginGestureElement];
+                    v46 = [(PKTextInputElement *)elementCopy isEquivalentToElement:_beginGestureElement];
 
                     if (v46)
                     {
-                      v47 = [(PKTextInputInteraction *)self _beginGestureElementContentForLineBreak];
-                      v48 = [(PKTextInputElementContent *)v47 contentLength];
-                      [(PKTextInputElementContent *)v47 insertTextsToCommit:&unk_1F47C19D0 withAlternatives:0 activePreviewText:v48 replacingRange:0 completion:&__block_literal_global_22];
+                      _beginGestureElementContentForLineBreak2 = [(PKTextInputInteraction *)self _beginGestureElementContentForLineBreak];
+                      contentLength = [(PKTextInputElementContent *)_beginGestureElementContentForLineBreak2 contentLength];
+                      [(PKTextInputElementContent *)_beginGestureElementContentForLineBreak2 insertTextsToCommit:&unk_1F47C19D0 withAlternatives:0 activePreviewText:contentLength replacingRange:0 completion:&__block_literal_global_22];
                     }
 
-                    LOBYTE(v22) = 0;
+                    LOBYTE(_beginGestureElementContentForLineBreak) = 0;
                   }
                 }
 
@@ -2904,15 +2904,15 @@ LABEL_23:
                 goto LABEL_27;
               }
 
-              v33 = [(PKTextInputInteraction *)self _reserveSpaceController];
-              LOBYTE(v34) = 1;
-              [v33 finishReserveSpaceAndInsertWhitespace:1];
+              _reserveSpaceController3 = [(PKTextInputInteraction *)self _reserveSpaceController];
+              LOBYTE(coordinateSpace3) = 1;
+              [_reserveSpaceController3 finishReserveSpaceAndInsertWhitespace:1];
             }
           }
 
           else
           {
-            LOBYTE(v34) = 0;
+            LOBYTE(coordinateSpace3) = 0;
           }
 
           goto LABEL_23;
@@ -2920,30 +2920,30 @@ LABEL_23:
 
         [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
         v39 = v38;
-        v40 = [(PKTextInputInteraction *)self cursorController];
-        [v40 setLastElementTapToFocusTimestamp:v39];
+        cursorController = [(PKTextInputInteraction *)self cursorController];
+        [cursorController setLastElementTapToFocusTimestamp:v39];
       }
 
-      LOBYTE(v22) = 0;
+      LOBYTE(_beginGestureElementContentForLineBreak) = 0;
       goto LABEL_27;
     }
   }
 
-  LOBYTE(v22) = 0;
+  LOBYTE(_beginGestureElementContentForLineBreak) = 0;
 LABEL_28:
 
-  return v22;
+  return _beginGestureElementContentForLineBreak;
 }
 
 - (BOOL)isFloatingKeyboardVisible
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = [(PKTextInputInteraction *)self _paletteController];
-    v4 = [v3 _floatingKeyboardController];
-    v5 = [(PKPaletteFloatingKeyboardController *)v4 isPresentingKeyboard];
+    _paletteController = [(PKTextInputInteraction *)self _paletteController];
+    _floatingKeyboardController = [_paletteController _floatingKeyboardController];
+    isPresentingKeyboard = [(PKPaletteFloatingKeyboardController *)_floatingKeyboardController isPresentingKeyboard];
 
-    return v5;
+    return isPresentingKeyboard;
   }
 
   else
@@ -2965,9 +2965,9 @@ LABEL_28:
   {
     if (![(PKTextInputInteraction *)self isFloatingKeyboardVisible])
     {
-      v5 = [(PKTextInputInteraction *)self _paletteController];
-      v3 = [v5 _floatingKeyboardController];
-      [(PKPaletteFloatingKeyboardController *)v3 presentOrDismissIfPresented];
+      _paletteController = [(PKTextInputInteraction *)self _paletteController];
+      _floatingKeyboardController = [_paletteController _floatingKeyboardController];
+      [(PKPaletteFloatingKeyboardController *)_floatingKeyboardController presentOrDismissIfPresented];
     }
   }
 
@@ -2986,28 +2986,28 @@ LABEL_28:
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = [(PKTextInputInteraction *)self _paletteController];
-    v4 = [v3 _floatingKeyboardController];
-    [(PKPaletteFloatingKeyboardController *)v4 dismissWithReason:?];
+    _paletteController = [(PKTextInputInteraction *)self _paletteController];
+    _floatingKeyboardController = [_paletteController _floatingKeyboardController];
+    [(PKPaletteFloatingKeyboardController *)_floatingKeyboardController dismissWithReason:?];
   }
 
   else
   {
-    v3 = os_log_create("com.apple.pencilkit", "PencilTextInput");
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+    _paletteController = os_log_create("com.apple.pencilkit", "PencilTextInput");
+    if (os_log_type_enabled(_paletteController, OS_LOG_TYPE_INFO))
     {
       *v10 = 0;
-      _os_log_impl(&dword_1C7CCA000, v3, OS_LOG_TYPE_INFO, "Feature Flag is not enabled.", v10, 2u);
+      _os_log_impl(&dword_1C7CCA000, _paletteController, OS_LOG_TYPE_INFO, "Feature Flag is not enabled.", v10, 2u);
     }
   }
 
-  v5 = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
-  v6 = [v5 scene];
-  v7 = [PKPaletteViewInteraction existingPaletteViewInteractionForWindowScene:v6];
+  activeKeyboardSceneDelegate = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
+  scene = [activeKeyboardSceneDelegate scene];
+  v7 = [PKPaletteViewInteraction existingPaletteViewInteractionForWindowScene:scene];
 
-  v8 = [v7 paletteView];
-  v9 = [v8 floatingKeyboardController];
-  [(PKPaletteFloatingKeyboardController *)v9 dismissWithReason:?];
+  paletteView = [v7 paletteView];
+  floatingKeyboardController = [paletteView floatingKeyboardController];
+  [(PKPaletteFloatingKeyboardController *)floatingKeyboardController dismissWithReason:?];
 }
 
 - (NSArray)enabledLanguageIdentifiers
@@ -3037,8 +3037,8 @@ LABEL_28:
   if (_os_feature_enabled_impl())
   {
     v2 = +[PKTextInputLanguageSelectionController sharedInstance];
-    v3 = [v2 currentLanguageIdentifiers];
-    v4 = [v3 firstObject];
+    currentLanguageIdentifiers = [v2 currentLanguageIdentifiers];
+    firstObject = [currentLanguageIdentifiers firstObject];
   }
 
   else
@@ -3050,19 +3050,19 @@ LABEL_28:
       _os_log_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_INFO, "Feature Flag is not enabled.", v7, 2u);
     }
 
-    v4 = 0;
+    firstObject = 0;
   }
 
-  return v4;
+  return firstObject;
 }
 
-- (void)setCurrentLanguageIdentifier:(id)a3
+- (void)setCurrentLanguageIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (_os_feature_enabled_impl())
   {
     v4 = +[PKTextInputLanguageSelectionController sharedInstance];
-    v5 = [v3 copy];
+    v5 = [identifierCopy copy];
     [v4 _switchToLanguageIfSupported:v5];
   }
 
@@ -3082,70 +3082,70 @@ LABEL_28:
   v13 = *MEMORY[0x1E69E9840];
   if (_os_feature_enabled_impl() && (os_variant_has_internal_diagnostics() & 1) != 0)
   {
-    v4 = [(PKTextInputInteraction *)self view];
-    v5 = [v4 window];
-    v3 = [v5 rootViewController];
+    view = [(PKTextInputInteraction *)self view];
+    window = [view window];
+    rootViewController = [window rootViewController];
 
-    if (v3)
+    if (rootViewController)
     {
-      v6 = [(PKTextInputInteraction *)self debugLogController];
-      v7 = [(PKTextInputDebugLogController *)v6 sharpenerLogWithCurrentContent];
+      debugLogController = [(PKTextInputInteraction *)self debugLogController];
+      sharpenerLogWithCurrentContent = [(PKTextInputDebugLogController *)debugLogController sharpenerLogWithCurrentContent];
 
-      v8 = [[PKTextInputDebugRadarViewController alloc] initWithSharpenerLog:v7];
+      v8 = [[PKTextInputDebugRadarViewController alloc] initWithSharpenerLog:sharpenerLogWithCurrentContent];
       v9 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v8];
       [v9 setModalPresentationStyle:2];
-      [v3 presentViewController:v9 animated:1 completion:0];
+      [rootViewController presentViewController:v9 animated:1 completion:0];
       v10 = os_log_create("com.apple.pencilkit", "PencilTextInput");
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v11 = 138412290;
-        v12 = v3;
+        v12 = rootViewController;
         _os_log_impl(&dword_1C7CCA000, v10, OS_LOG_TYPE_INFO, "Problem reporting UI presented from view controller %@", &v11, 0xCu);
       }
     }
 
     else
     {
-      v7 = os_log_create("com.apple.pencilkit", "PencilTextInput");
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      sharpenerLogWithCurrentContent = os_log_create("com.apple.pencilkit", "PencilTextInput");
+      if (os_log_type_enabled(sharpenerLogWithCurrentContent, OS_LOG_TYPE_ERROR))
       {
         v11 = 138412290;
         v12 = 0;
-        _os_log_error_impl(&dword_1C7CCA000, v7, OS_LOG_TYPE_ERROR, "Can't present internal-only problem reporting UI from view controller %@", &v11, 0xCu);
+        _os_log_error_impl(&dword_1C7CCA000, sharpenerLogWithCurrentContent, OS_LOG_TYPE_ERROR, "Can't present internal-only problem reporting UI from view controller %@", &v11, 0xCu);
       }
     }
   }
 
   else
   {
-    v3 = os_log_create("com.apple.pencilkit", "PencilTextInput");
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+    rootViewController = os_log_create("com.apple.pencilkit", "PencilTextInput");
+    if (os_log_type_enabled(rootViewController, OS_LOG_TYPE_INFO))
     {
       LOWORD(v11) = 0;
-      _os_log_impl(&dword_1C7CCA000, v3, OS_LOG_TYPE_INFO, "Feature Flag is not enabled or not an internal build.", &v11, 2u);
+      _os_log_impl(&dword_1C7CCA000, rootViewController, OS_LOG_TYPE_INFO, "Feature Flag is not enabled or not an internal build.", &v11, 2u);
     }
   }
 }
 
-- (void)textInputLanguageSelectionControllerDidChangeLanguage:(id)a3
+- (void)textInputLanguageSelectionControllerDidChangeLanguage:(id)language
 {
   v11[1] = *MEMORY[0x1E69E9840];
   if (_os_feature_enabled_impl())
   {
     v10 = @"UITextInputUpdateKeyboardLanguageKey";
-    v4 = [(PKTextInputInteraction *)self currentLanguageIdentifier];
-    v5 = v4;
+    currentLanguageIdentifier = [(PKTextInputInteraction *)self currentLanguageIdentifier];
+    v5 = currentLanguageIdentifier;
     v6 = &stru_1F476BD20;
-    if (v4)
+    if (currentLanguageIdentifier)
     {
-      v6 = v4;
+      v6 = currentLanguageIdentifier;
     }
 
     v11[0] = v6;
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 postNotificationName:@"UITextInputUpdateKeyboardLanguageNotification" object:self userInfo:v7];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"UITextInputUpdateKeyboardLanguageNotification" object:self userInfo:v7];
   }
 
   else
@@ -3181,15 +3181,15 @@ LABEL_28:
 
 - (void)_updateKeyboardSuppressionPolicy
 {
-  v2 = [(PKTextInputInteraction *)self _keyboardSuppressionPolicyDelegate];
-  [v2 updateKeyboardSuppressionPolicy];
+  _keyboardSuppressionPolicyDelegate = [(PKTextInputInteraction *)self _keyboardSuppressionPolicyDelegate];
+  [_keyboardSuppressionPolicyDelegate updateKeyboardSuppressionPolicy];
 }
 
-- (void)reportDebugStateDescription:(id)a3
+- (void)reportDebugStateDescription:(id)description
 {
-  v5 = a3;
-  v6 = [(PKTextInputInteraction *)self view];
-  if (v6)
+  descriptionCopy = description;
+  view = [(PKTextInputInteraction *)self view];
+  if (view)
   {
     v7 = @"Yes";
   }
@@ -3199,9 +3199,9 @@ LABEL_28:
     v7 = @"No";
   }
 
-  v9 = *(a3 + 2);
-  v8 = (a3 + 16);
-  v9(v5, @"Installed in view", v7);
+  v9 = *(description + 2);
+  v8 = (description + 16);
+  v9(descriptionCopy, @"Installed in view", v7);
 
   if ([(PKTextInputInteraction *)self _handwritingInteractionEnabled])
   {
@@ -3213,9 +3213,9 @@ LABEL_28:
     v10 = @"No";
   }
 
-  (*v8)(v5, @"Interaction enabled", v10);
-  v11 = [(PKTextInputInteraction *)self _containerView];
-  if ([v11 isHidden])
+  (*v8)(descriptionCopy, @"Interaction enabled", v10);
+  _containerView = [(PKTextInputInteraction *)self _containerView];
+  if ([_containerView isHidden])
   {
     v12 = @"No";
   }
@@ -3225,27 +3225,27 @@ LABEL_28:
     v12 = @"Yes";
   }
 
-  (*v8)(v5, @"Container view visible", v12);
+  (*v8)(descriptionCopy, @"Container view visible", v12);
 
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v14 = v13;
   [(PKTextInputInteraction *)self _lastHandwritingEventTimestamp];
   v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%0.1fs ago", v14 - v15];
-  (*v8)(v5, @"Last pencil event", v16);
+  (*v8)(descriptionCopy, @"Last pencil event", v16);
 }
 
-- (void)simulateReserveSpaceForTextInputView:(id)a3 location:(CGPoint)a4 completion:(id)a5
+- (void)simulateReserveSpaceForTextInputView:(id)view location:(CGPoint)location completion:(id)completion
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v10 = a5;
+  y = location.y;
+  x = location.x;
+  viewCopy = view;
+  completionCopy = completion;
   self->_replayCancelled = 0;
-  v11 = [[PKTextInputElement alloc] initWithTextInput:v9];
+  v11 = [[PKTextInputElement alloc] initWithTextInput:viewCopy];
   objc_initWeak(&location, self);
-  v12 = [(PKTextInputInteraction *)self _reserveSpaceController];
-  v13 = [(PKTextInputElement *)v11 coordinateSpace];
-  [v12 beginIfPossibleWithElement:v11 atLocation:v13 coordinateSpace:{x, y}];
+  _reserveSpaceController = [(PKTextInputInteraction *)self _reserveSpaceController];
+  coordinateSpace = [(PKTextInputElement *)v11 coordinateSpace];
+  [_reserveSpaceController beginIfPossibleWithElement:v11 atLocation:coordinateSpace coordinateSpace:{x, y}];
 
   v14 = dispatch_time(0, 500000000);
   block[0] = MEMORY[0x1E69E9820];
@@ -3253,8 +3253,8 @@ LABEL_28:
   block[2] = __93__PKTextInputInteraction_Internal__simulateReserveSpaceForTextInputView_location_completion___block_invoke;
   block[3] = &unk_1E82D7D20;
   objc_copyWeak(&v18, &location);
-  v17 = v10;
-  v15 = v10;
+  v17 = completionCopy;
+  v15 = completionCopy;
   dispatch_after(v14, MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v18);
@@ -3289,8 +3289,8 @@ void __93__PKTextInputInteraction_Internal__simulateReserveSpaceForTextInputView
 - (void)cancelReplay
 {
   self->_replayCancelled = 1;
-  v2 = [(PKTextInputInteraction *)self handwritingController];
-  [v2 cleanUpFromCancelledReplay];
+  handwritingController = [(PKTextInputInteraction *)self handwritingController];
+  [handwritingController cleanUpFromCancelledReplay];
 }
 
 @end

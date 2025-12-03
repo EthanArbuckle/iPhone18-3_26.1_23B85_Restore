@@ -1,27 +1,27 @@
 @interface RTLocalSinglePOIBluePOIResolver
-- (double)_getConfidence:(double)a3 distribution:()chi_squared_distribution<double std:()boost:()default_policy :()default_policy math:()default_policy :()default_policy policies:()default_policy :()default_policy policy<default_policy;
-- (id)inferLocalSinglePOIBluePOIsWithReferenceLocation:(id)a3 bluePOITile:(id)a4 signalEnv:(int)a5 queryTime:(id)a6;
+- (double)_getConfidence:(double)confidence distribution:()chi_squared_distribution<double std:()boost:()default_policy :()default_policy math:()default_policy :()default_policy policies:()default_policy :()default_policy policy<default_policy;
+- (id)inferLocalSinglePOIBluePOIsWithReferenceLocation:(id)location bluePOITile:(id)tile signalEnv:(int)env queryTime:(id)time;
 @end
 
 @implementation RTLocalSinglePOIBluePOIResolver
 
-- (id)inferLocalSinglePOIBluePOIsWithReferenceLocation:(id)a3 bluePOITile:(id)a4 signalEnv:(int)a5 queryTime:(id)a6
+- (id)inferLocalSinglePOIBluePOIsWithReferenceLocation:(id)location bluePOITile:(id)tile signalEnv:(int)env queryTime:(id)time
 {
-  v52 = a3;
-  v51 = a4;
+  locationCopy = location;
+  tileCopy = tile;
   v50 = objc_opt_new();
-  if (![v51 singlePOIMuid])
+  if (![tileCopy singlePOIMuid])
   {
     goto LABEL_21;
   }
 
-  v9 = [v51 pointsOfInterest];
-  if (!v9)
+  pointsOfInterest = [tileCopy pointsOfInterest];
+  if (!pointsOfInterest)
   {
     goto LABEL_21;
   }
 
-  [v52 horizontalUncertainty];
+  [locationCopy horizontalUncertainty];
   v11 = v10;
 
   if (v11 > 100.0)
@@ -33,8 +33,8 @@
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v12 = [v51 pointsOfInterest];
-  v13 = [v12 countByEnumeratingWithState:&v57 objects:v63 count:16];
+  pointsOfInterest2 = [tileCopy pointsOfInterest];
+  v13 = [pointsOfInterest2 countByEnumeratingWithState:&v57 objects:v63 count:16];
   if (!v13)
   {
     goto LABEL_13;
@@ -47,12 +47,12 @@
     {
       if (*v58 != v14)
       {
-        objc_enumerationMutation(v12);
+        objc_enumerationMutation(pointsOfInterest2);
       }
 
       v16 = *(*(&v57 + 1) + 8 * i);
-      v17 = [v51 singlePOIMuid];
-      if (v17 == [v16 muid] && (objc_msgSend(v16, "filtered") & 1) == 0)
+      singlePOIMuid = [tileCopy singlePOIMuid];
+      if (singlePOIMuid == [v16 muid] && (objc_msgSend(v16, "filtered") & 1) == 0)
       {
         v18 = v16;
 
@@ -61,23 +61,23 @@
           goto LABEL_21;
         }
 
-        [v52 latitude];
-        [v52 longitude];
-        v19 = [v18 location];
-        [v19 latitude];
-        v20 = [v18 location];
-        [v20 longitude];
+        [locationCopy latitude];
+        [locationCopy longitude];
+        location = [v18 location];
+        [location latitude];
+        location2 = [v18 location];
+        [location2 longitude];
         RTCommonCalculateDistanceHighPrecision();
         v22 = v21;
 
         [(RTLocalSinglePOIBluePOIResolver *)self _getConfidence:v22 distribution:2.0 std:17.8885438];
         v24 = v23;
-        v25 = [v51 pointsOfInterest];
-        v26 = [v25 count] == 1;
+        pointsOfInterest3 = [tileCopy pointsOfInterest];
+        v26 = [pointsOfInterest3 count] == 1;
 
         if (v26)
         {
-          if (a5 == 6 || a5 == 1)
+          if (env == 6 || env == 1)
           {
             v24 = v24 * 0.1 + 0.9;
           }
@@ -95,8 +95,8 @@
           v56 = 0u;
           v53 = 0u;
           v54 = 0u;
-          v31 = [v51 pointsOfInterest];
-          v32 = [v31 countByEnumeratingWithState:&v53 objects:v62 count:16];
+          pointsOfInterest4 = [tileCopy pointsOfInterest];
+          v32 = [pointsOfInterest4 countByEnumeratingWithState:&v53 objects:v62 count:16];
           if (v32)
           {
             v33 = *v54;
@@ -106,19 +106,19 @@
               {
                 if (*v54 != v33)
                 {
-                  objc_enumerationMutation(v31);
+                  objc_enumerationMutation(pointsOfInterest4);
                 }
 
                 v35 = *(*(&v53 + 1) + 8 * j);
-                v36 = [v35 muid];
-                if (v36 != [v18 muid])
+                muid = [v35 muid];
+                if (muid != [v18 muid])
                 {
-                  [v52 latitude];
-                  [v52 longitude];
-                  v37 = [v35 location];
-                  [v37 latitude];
-                  v38 = [v35 location];
-                  [v38 longitude];
+                  [locationCopy latitude];
+                  [locationCopy longitude];
+                  location3 = [v35 location];
+                  [location3 latitude];
+                  location4 = [v35 location];
+                  [location4 longitude];
                   RTCommonCalculateDistanceHighPrecision();
                   v40 = v39;
 
@@ -128,7 +128,7 @@
                 }
               }
 
-              v32 = [v31 countByEnumeratingWithState:&v53 objects:v62 count:16];
+              v32 = [pointsOfInterest4 countByEnumeratingWithState:&v53 objects:v62 count:16];
             }
 
             while (v32);
@@ -139,8 +139,8 @@
           v43 = [NSArray arrayWithObjects:&v61 count:1];
           [v30 sortUsingDescriptors:v43];
 
-          v44 = [v30 firstObject];
-          [v44 doubleValue];
+          firstObject = [v30 firstObject];
+          [firstObject doubleValue];
           v46 = v45;
 
           if (v24 - v46 < 0.4)
@@ -161,7 +161,7 @@ LABEL_36:
       }
     }
 
-    v13 = [v12 countByEnumeratingWithState:&v57 objects:v63 count:16];
+    v13 = [pointsOfInterest2 countByEnumeratingWithState:&v57 objects:v63 count:16];
     if (v13)
     {
       continue;
@@ -180,16 +180,16 @@ LABEL_22:
   return v50;
 }
 
-- (double)_getConfidence:(double)a3 distribution:()chi_squared_distribution<double std:()boost:()default_policy :()default_policy math:()default_policy :()default_policy policies:()default_policy :()default_policy policy<default_policy
+- (double)_getConfidence:(double)confidence distribution:()chi_squared_distribution<double std:()boost:()default_policy :()default_policy math:()default_policy :()default_policy policies:()default_policy :()default_policy policy<default_policy
 {
-  v9 = a3;
+  confidenceCopy = confidence;
   result = 0.0;
   if (a5 == 0.0)
   {
     return result;
   }
 
-  v11 = v9 / a5 * (v9 / a5);
+  v11 = confidenceCopy / a5 * (confidenceCopy / a5);
   v77 = v11;
   var0 = a4.var0;
   if ((a4.var0 <= -1 || ((a4.var0 & 0x7FFFFFFFFFFFFFFFLL) - 0x10000000000000) >> 53 >= 0x3FF) && (*&a4.var0 - 1) >= 0xFFFFFFFFFFFFFLL)
@@ -261,7 +261,7 @@ LABEL_22:
 LABEL_29:
     if (v14 > 1.0 && v15 < 0.0000000149011612)
     {
-      sub_100086ED8(v14 + 1.0, v16, v17, v9, v5, v6, v7, v8);
+      sub_100086ED8(v14 + 1.0, v16, v17, confidenceCopy, v5, v6, v7, v8);
       if (fabs(v26) > 1.79769313e308)
       {
         sub_100086A38("boost::math::tgamma<%1%>(%1%)", "numeric overflow");
@@ -327,7 +327,7 @@ LABEL_51:
       v41 = v14 + 1.0;
       if (v14 >= 2.0)
       {
-        sub_100086ED8(v41, 2.0, v17, v9, v5, v6, v7, v8);
+        sub_100086ED8(v41, 2.0, v17, confidenceCopy, v5, v6, v7, v8);
         if (fabs(v46) > 1.79769313e308)
         {
           v53 = "boost::math::tgamma<%1%>(%1%)";

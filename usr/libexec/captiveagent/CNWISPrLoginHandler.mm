@@ -1,43 +1,43 @@
 @interface CNWISPrLoginHandler
 + (id)sessionConfiguration;
-- (CNWISPrLoginHandler)initWithURLString:(id)a3 queue:(id)a4 responseHandler:(id)a5;
-- (id)authReplyDictionary:(id)a3;
-- (unsigned)resultCodeFromError:(id)a3;
+- (CNWISPrLoginHandler)initWithURLString:(id)string queue:(id)queue responseHandler:(id)handler;
+- (id)authReplyDictionary:(id)dictionary;
+- (unsigned)resultCodeFromError:(id)error;
 - (void)cancel;
 - (void)dealloc;
 - (void)handleAuthReply;
-- (void)handleAuthenticationPollReply:(id)a3;
-- (void)handleAuthenticationReply:(id)a3;
-- (void)loginWithURL:(id)a3 data:(id)a4;
-- (void)parseReceivedData:(id)a3;
+- (void)handleAuthenticationPollReply:(id)reply;
+- (void)handleAuthenticationReply:(id)reply;
+- (void)loginWithURL:(id)l data:(id)data;
+- (void)parseReceivedData:(id)data;
 - (void)poll;
-- (void)pollAfter:(int)a3;
-- (void)sendResponseCode:(unsigned int)a3 dictionary:(id)a4;
-- (void)start:(id)a3;
+- (void)pollAfter:(int)after;
+- (void)sendResponseCode:(unsigned int)code dictionary:(id)dictionary;
+- (void)start:(id)start;
 @end
 
 @implementation CNWISPrLoginHandler
 
-- (CNWISPrLoginHandler)initWithURLString:(id)a3 queue:(id)a4 responseHandler:(id)a5
+- (CNWISPrLoginHandler)initWithURLString:(id)string queue:(id)queue responseHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stringCopy = string;
+  queueCopy = queue;
+  handlerCopy = handler;
   v17.receiver = self;
   v17.super_class = CNWISPrLoginHandler;
   v11 = [(CNWISPrLoginHandler *)&v17 init];
   if (v11)
   {
-    v12 = [NSURL URLWithString:v8];
+    v12 = [NSURL URLWithString:stringCopy];
     [(CNWISPrLoginHandler *)v11 setUrl:v12];
 
     v13 = objc_alloc_init(NSOperationQueue);
     [(CNWISPrLoginHandler *)v11 setOpQueue:v13];
 
-    v14 = [(CNWISPrLoginHandler *)v11 opQueue];
-    [v14 setUnderlyingQueue:v9];
+    opQueue = [(CNWISPrLoginHandler *)v11 opQueue];
+    [opQueue setUnderlyingQueue:queueCopy];
 
-    [(CNWISPrLoginHandler *)v11 setResponseHandler:v10];
+    [(CNWISPrLoginHandler *)v11 setResponseHandler:handlerCopy];
     v15 = v11;
   }
 
@@ -59,14 +59,14 @@
   [(CNWISPrLoginHandler *)&v5 dealloc];
 }
 
-- (void)start:(id)a3
+- (void)start:(id)start
 {
-  v9 = a3;
+  startCopy = start;
   if (!self->_session)
   {
     v4 = +[CNWISPrLoginHandler sessionConfiguration];
-    v5 = [(CNWISPrLoginHandler *)self opQueue];
-    v6 = [NSURLSession sessionWithConfiguration:v4 delegate:0 delegateQueue:v5];
+    opQueue = [(CNWISPrLoginHandler *)self opQueue];
+    v6 = [NSURLSession sessionWithConfiguration:v4 delegate:0 delegateQueue:opQueue];
     session = self->_session;
     self->_session = v6;
   }
@@ -75,21 +75,21 @@
   pollURL = self->_pollURL;
   self->_pollURL = 0;
 
-  [(CNWISPrLoginHandler *)self loginWithURL:self->_url data:v9];
+  [(CNWISPrLoginHandler *)self loginWithURL:self->_url data:startCopy];
 }
 
 - (void)handleAuthReply
 {
   objc_initWeak(&location, self);
-  v3 = [(CNWISPrLoginHandler *)self opQueue];
-  v4 = [v3 underlyingQueue];
+  opQueue = [(CNWISPrLoginHandler *)self opQueue];
+  underlyingQueue = [opQueue underlyingQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000114C;
   block[3] = &unk_10001C740;
   objc_copyWeak(&v6, &location);
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(underlyingQueue, block);
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -100,11 +100,11 @@
   v3 = [(CNWISPrLoginHandler *)self url];
   v4 = [NSMutableURLRequest requestWithURL:v3 cachePolicy:4 timeoutInterval:10.0];
 
-  v5 = [(CNWISPrLoginHandler *)self userAgent];
-  [v4 setValue:v5 forHTTPHeaderField:off_1000224E0];
+  userAgent = [(CNWISPrLoginHandler *)self userAgent];
+  [v4 setValue:userAgent forHTTPHeaderField:off_1000224E0];
 
-  v6 = [(CNWISPrLoginHandler *)self interfaceName];
-  [v4 setBoundInterfaceIdentifier:v6];
+  interfaceName = [(CNWISPrLoginHandler *)self interfaceName];
+  [v4 setBoundInterfaceIdentifier:interfaceName];
 
   objc_initWeak(&location, self);
   session = self->_session;
@@ -118,49 +118,49 @@
   loginDataTask = self->_loginDataTask;
   self->_loginDataTask = v8;
 
-  v10 = [(CNWISPrLoginHandler *)self loginDataTask];
-  [v10 resume];
+  loginDataTask = [(CNWISPrLoginHandler *)self loginDataTask];
+  [loginDataTask resume];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
 }
 
-- (void)pollAfter:(int)a3
+- (void)pollAfter:(int)after
 {
-  v4 = dispatch_time(0, 1000000000 * a3);
+  v4 = dispatch_time(0, 1000000000 * after);
   objc_initWeak(&location, self);
-  v5 = [(CNWISPrLoginHandler *)self opQueue];
-  v6 = [v5 underlyingQueue];
+  opQueue = [(CNWISPrLoginHandler *)self opQueue];
+  underlyingQueue = [opQueue underlyingQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000168C;
   block[3] = &unk_10001C740;
   objc_copyWeak(&v8, &location);
   block[4] = self;
-  dispatch_after(v4, v6, block);
+  dispatch_after(v4, underlyingQueue, block);
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 }
 
-- (void)loginWithURL:(id)a3 data:(id)a4
+- (void)loginWithURL:(id)l data:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  dataCopy = data;
   v8 = [(CNWISPrLoginHandler *)self url];
   v9 = [NSMutableURLRequest requestWithURL:v8 cachePolicy:4 timeoutInterval:60.0];
 
   [v9 setHTTPMethod:@"POST"];
-  [v9 setHTTPBody:v7];
+  [v9 setHTTPBody:dataCopy];
   [v9 setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-  v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lu", [v7 length]);
+  v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lu", [dataCopy length]);
   [v9 setValue:v10 forHTTPHeaderField:@"Content-Length"];
 
-  v11 = [(CNWISPrLoginHandler *)self userAgent];
-  [v9 setValue:v11 forHTTPHeaderField:off_1000224E0];
+  userAgent = [(CNWISPrLoginHandler *)self userAgent];
+  [v9 setValue:userAgent forHTTPHeaderField:off_1000224E0];
 
-  v12 = [(CNWISPrLoginHandler *)self interfaceName];
-  [v9 setBoundInterfaceIdentifier:v12];
+  interfaceName = [(CNWISPrLoginHandler *)self interfaceName];
+  [v9 setBoundInterfaceIdentifier:interfaceName];
 
   interfaceName = self->_interfaceName;
   v14 = CFDictionaryCreate(kCFAllocatorDefault, &kSCProxiesNoGlobal, &kCFBooleanTrue, 1, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
@@ -206,8 +206,8 @@ LABEL_13:
     {
       if (CFDictionaryGetCount(ValueAtIndex) >= 1)
       {
-        v21 = [(NSURLSession *)self->_session configuration];
-        [v21 setConnectionProxyDictionary:ValueAtIndex];
+        configuration = [(NSURLSession *)self->_session configuration];
+        [configuration setConnectionProxyDictionary:ValueAtIndex];
       }
 
       goto LABEL_13;
@@ -227,8 +227,8 @@ LABEL_14:
   loginDataTask = self->_loginDataTask;
   self->_loginDataTask = v23;
 
-  v25 = [(CNWISPrLoginHandler *)self loginDataTask];
-  [v25 resume];
+  loginDataTask = [(CNWISPrLoginHandler *)self loginDataTask];
+  [loginDataTask resume];
 
   objc_destroyWeak(&v27);
   objc_destroyWeak(&location);
@@ -262,33 +262,33 @@ LABEL_14:
   return v2;
 }
 
-- (unsigned)resultCodeFromError:(id)a3
+- (unsigned)resultCodeFromError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (!errorCopy)
   {
     v8 = 0;
     goto LABEL_9;
   }
 
-  v5 = [v3 domain];
-  v6 = [v5 isEqualToString:NSURLErrorDomain];
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:NSURLErrorDomain];
 
   if (v6)
   {
-    v7 = [v4 code];
-    if (v7 > -1006)
+    code = [v4 code];
+    if (code > -1006)
     {
-      if (v7 != -1005)
+      if (code != -1005)
       {
-        if (v7 == -1001)
+        if (code == -1001)
         {
           v8 = 6;
           goto LABEL_9;
         }
 
-        if (v7 != -1003)
+        if (code != -1003)
         {
           goto LABEL_7;
         }
@@ -299,15 +299,15 @@ LABEL_14:
 
     else
     {
-      if (v7 == -1202)
+      if (code == -1202)
       {
         v8 = 15;
         goto LABEL_9;
       }
 
-      if (v7 != -1009)
+      if (code != -1009)
       {
-        if (v7 != -1006)
+        if (code != -1006)
         {
           goto LABEL_7;
         }
@@ -329,9 +329,9 @@ LABEL_9:
   return v8;
 }
 
-- (id)authReplyDictionary:(id)a3
+- (id)authReplyDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v4 = [NSMutableDictionary dictionaryWithDictionary:?];
     [v4 setObject:self->_userAgent forKeyedSubscript:off_1000224E0];
@@ -345,33 +345,33 @@ LABEL_9:
   return v4;
 }
 
-- (void)sendResponseCode:(unsigned int)a3 dictionary:(id)a4
+- (void)sendResponseCode:(unsigned int)code dictionary:(id)dictionary
 {
-  v7 = a4;
-  v5 = [(CNWISPrLoginHandler *)self responseHandler];
+  dictionaryCopy = dictionary;
+  responseHandler = [(CNWISPrLoginHandler *)self responseHandler];
 
-  if (v5)
+  if (responseHandler)
   {
-    v6 = [(CNWISPrLoginHandler *)self responseHandler];
-    (v6)[2](v6, v7);
+    responseHandler2 = [(CNWISPrLoginHandler *)self responseHandler];
+    (responseHandler2)[2](responseHandler2, dictionaryCopy);
   }
 }
 
-- (void)handleAuthenticationReply:(id)a3
+- (void)handleAuthenticationReply:(id)reply
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:off_100022460];
-  v6 = [v4 objectForKey:off_100022468];
+  replyCopy = reply;
+  v5 = [replyCopy objectForKey:off_100022460];
+  v6 = [replyCopy objectForKey:off_100022468];
   if (v5 && ([v5 intValue] == 120 ? (v7 = v6 == 0) : (v7 = 1), !v7 && objc_msgSend(v6, "intValue") == 201))
   {
-    v8 = [v4 objectForKeyedSubscript:off_1000224B0];
+    v8 = [replyCopy objectForKeyedSubscript:off_1000224B0];
     if (v8)
     {
       v9 = [[NSURL alloc] initWithString:v8];
       pollURL = self->_pollURL;
       self->_pollURL = v9;
 
-      v11 = [v4 objectForKeyedSubscript:off_1000224A0];
+      v11 = [replyCopy objectForKeyedSubscript:off_1000224A0];
       if (v11)
       {
         v12 = sub_100002A8C();
@@ -379,21 +379,21 @@ LABEL_9:
         if (os_log_type_enabled(v12, v13))
         {
           v17 = 138412546;
-          v18 = self;
+          selfCopy2 = self;
           v19 = 2112;
           v20 = v11;
           _os_log_impl(&_mh_execute_header, v12, v13, "%@ received authentication reply with Authentication Pending with delay: %@", &v17, 0x16u);
         }
 
-        v14 = [(__CFString *)v11 intValue];
+        intValue = [(__CFString *)v11 intValue];
       }
 
       else
       {
-        v14 = 0;
+        intValue = 0;
       }
 
-      [(CNWISPrLoginHandler *)self pollAfter:v14];
+      [(CNWISPrLoginHandler *)self pollAfter:intValue];
     }
 
     else
@@ -403,36 +403,36 @@ LABEL_9:
       if (os_log_type_enabled(v15, v16))
       {
         v17 = 138412546;
-        v18 = self;
+        selfCopy2 = self;
         v19 = 2112;
         v20 = off_1000224B0;
         _os_log_impl(&_mh_execute_header, v15, v16, "%@ received authentication reply with Authentication Pending without %@", &v17, 0x16u);
       }
 
-      v11 = [(CNWISPrLoginHandler *)self authReplyDictionary:v4];
+      v11 = [(CNWISPrLoginHandler *)self authReplyDictionary:replyCopy];
       [(CNWISPrLoginHandler *)self sendResponseCode:1 dictionary:v11];
     }
   }
 
   else
   {
-    v8 = [(CNWISPrLoginHandler *)self authReplyDictionary:v4];
+    v8 = [(CNWISPrLoginHandler *)self authReplyDictionary:replyCopy];
     [(CNWISPrLoginHandler *)self sendResponseCode:0 dictionary:v8];
   }
 }
 
-- (void)handleAuthenticationPollReply:(id)a3
+- (void)handleAuthenticationPollReply:(id)reply
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:off_100022460];
-  v6 = [v4 objectForKey:off_100022468];
+  replyCopy = reply;
+  v5 = [replyCopy objectForKey:off_100022460];
+  v6 = [replyCopy objectForKey:off_100022468];
   if (!v5 || ([v5 intValue] == 140 ? (v7 = v6 == 0) : (v7 = 1), v7 || objc_msgSend(v6, "intValue") != 201))
   {
-    v11 = [(CNWISPrLoginHandler *)self authReplyDictionary:v4];
-    v12 = self;
+    v11 = [(CNWISPrLoginHandler *)self authReplyDictionary:replyCopy];
+    selfCopy3 = self;
     v13 = 0;
 LABEL_12:
-    [(CNWISPrLoginHandler *)v12 sendResponseCode:v13 dictionary:v11];
+    [(CNWISPrLoginHandler *)selfCopy3 sendResponseCode:v13 dictionary:v11];
     goto LABEL_13;
   }
 
@@ -444,19 +444,19 @@ LABEL_12:
     {
       pollURL = self->_pollURL;
       v17 = 138412546;
-      v18 = self;
+      selfCopy4 = self;
       v19 = 2112;
       v20 = pollURL;
       _os_log_impl(&_mh_execute_header, v8, v9, "%@ reached max limit of authentication poll with [%@]", &v17, 0x16u);
     }
 
-    v11 = [(CNWISPrLoginHandler *)self authReplyDictionary:v4];
-    v12 = self;
+    v11 = [(CNWISPrLoginHandler *)self authReplyDictionary:replyCopy];
+    selfCopy3 = self;
     v13 = 6;
     goto LABEL_12;
   }
 
-  v11 = [v4 objectForKeyedSubscript:off_1000224A0];
+  v11 = [replyCopy objectForKeyedSubscript:off_1000224A0];
   if (v11)
   {
     v14 = sub_100002A8C();
@@ -464,27 +464,27 @@ LABEL_12:
     if (os_log_type_enabled(v14, v15))
     {
       v17 = 138412546;
-      v18 = self;
+      selfCopy4 = self;
       v19 = 2112;
       v20 = v11;
       _os_log_impl(&_mh_execute_header, v14, v15, "%@ received authentication poll reply with Authentication Pending with delay: %@", &v17, 0x16u);
     }
 
-    v16 = [(NSURL *)v11 intValue];
+    intValue = [(NSURL *)v11 intValue];
   }
 
   else
   {
-    v16 = 0;
+    intValue = 0;
   }
 
-  [(CNWISPrLoginHandler *)self pollAfter:v16];
+  [(CNWISPrLoginHandler *)self pollAfter:intValue];
 LABEL_13:
 }
 
-- (void)parseReceivedData:(id)a3
+- (void)parseReceivedData:(id)data
 {
-  v4 = [CNHTMLParser parserReadyData:a3];
+  v4 = [CNHTMLParser parserReadyData:data];
   if (v4)
   {
     if (self->_pollAttempts <= 0)
@@ -516,7 +516,7 @@ LABEL_13:
       if (os_log_type_enabled(v10, v11))
       {
         *buf = 138412290;
-        v14 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v10, v11, "%@ failed to create HTML parser", buf, 0xCu);
       }
 
@@ -531,7 +531,7 @@ LABEL_13:
     if (os_log_type_enabled(v8, v9))
     {
       *buf = 138412290;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v8, v9, "%@ failed to extract parseable data from the received data", buf, 0xCu);
     }
 

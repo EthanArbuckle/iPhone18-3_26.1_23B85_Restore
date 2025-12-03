@@ -1,11 +1,11 @@
 @interface MapsThrottler
-- (MapsThrottler)initWithInitialValue:(id)a3 throttlingInterval:(double)a4 queue:(id)a5 updateHandler:(id)a6;
+- (MapsThrottler)initWithInitialValue:(id)value throttlingInterval:(double)interval queue:(id)queue updateHandler:(id)handler;
 - (NSDate)valueTimestamp;
 - (id)description;
 - (id)value;
 - (void)_dispatchIfNeeded;
 - (void)_run;
-- (void)setValue:(id)a3;
+- (void)setValue:(id)value;
 @end
 
 @implementation MapsThrottler
@@ -38,25 +38,25 @@ LABEL_17:
       return;
     }
 
-    v4 = self;
+    selfCopy = self;
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(MapsThrottler *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(MapsThrottler *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_10;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_10:
 
-    if (v4->_dispatched)
+    if (selfCopy->_dispatched)
     {
       v10 = @"YES";
     }
@@ -67,7 +67,7 @@ LABEL_10:
     }
 
     v11 = v10;
-    if (v4->_running)
+    if (selfCopy->_running)
     {
       v12 = @"YES";
     }
@@ -79,7 +79,7 @@ LABEL_10:
 
     v13 = v12;
     *buf = 138543874;
-    v29 = v9;
+    v29 = selfCopy;
     v30 = 2114;
     v31 = *&v11;
     v32 = 2114;
@@ -104,26 +104,26 @@ LABEL_10:
   v17 = sub_10000BDF8();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    v18 = self;
+    selfCopy2 = self;
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
     if (objc_opt_respondsToSelector())
     {
-      v21 = [(MapsThrottler *)v18 performSelector:"accessibilityIdentifier"];
+      v21 = [(MapsThrottler *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v22 = v21;
       if (v21 && ![v21 isEqualToString:v20])
       {
-        v23 = [NSString stringWithFormat:@"%@<%p, %@>", v20, v18, v22];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v20, selfCopy2, v22];
 
         goto LABEL_28;
       }
     }
 
-    v23 = [NSString stringWithFormat:@"%@<%p>", v20, v18];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v20, selfCopy2];
 LABEL_28:
 
     *buf = 138543618;
-    v29 = v23;
+    v29 = selfCopy2;
     v30 = 2048;
     v31 = v16;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "[%{public}@] will dispatch after %#.2lfs", buf, 0x16u);
@@ -156,7 +156,7 @@ LABEL_28:
   v24 = 3221225472;
   v25 = sub_10000D4C8;
   v26 = &unk_101661600;
-  v27 = self;
+  selfCopy = self;
   v28 = &v29;
   geo_isolate_sync();
   v21[0] = 0;
@@ -175,19 +175,19 @@ LABEL_28:
   v4 = sub_10000BDF8();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    v5 = self;
+    selfCopy2 = self;
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     if (objc_opt_respondsToSelector())
     {
-      v8 = [(MapsThrottler *)v5 performSelector:"accessibilityIdentifier"];
+      v8 = [(MapsThrottler *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v9 = v8;
       if (v8 && ([v8 isEqualToString:v7] & 1) == 0)
       {
-        v10 = [NSString stringWithFormat:@"%@<%p, %@>", v7, v5, v9];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v7, selfCopy2, v9];
 
 LABEL_7:
-        v11 = v10;
+        v11 = selfCopy2;
         v12 = v30[5];
         if (!v12)
         {
@@ -223,7 +223,7 @@ LABEL_15:
       }
     }
 
-    v10 = [NSString stringWithFormat:@"%@<%p>", v7, v5];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v7, selfCopy2];
     goto LABEL_7;
   }
 
@@ -236,10 +236,10 @@ LABEL_16:
   _Block_object_dispose(&v29, 8);
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v4 = a3;
-  v3 = v4;
+  valueCopy = value;
+  v3 = valueCopy;
   geo_isolate_sync();
 }
 
@@ -296,21 +296,21 @@ LABEL_9:
   return v12;
 }
 
-- (MapsThrottler)initWithInitialValue:(id)a3 throttlingInterval:(double)a4 queue:(id)a5 updateHandler:(id)a6
+- (MapsThrottler)initWithInitialValue:(id)value throttlingInterval:(double)interval queue:(id)queue updateHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  valueCopy = value;
+  queueCopy = queue;
+  handlerCopy = handler;
   v21.receiver = self;
   v21.super_class = MapsThrottler;
   v14 = [(MapsThrottler *)&v21 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_value, a3);
-    v15->_throttlingInterval = fmax(a4, 0.0);
-    objc_storeStrong(&v15->_queue, a5);
-    v16 = objc_retainBlock(v13);
+    objc_storeStrong(&v14->_value, value);
+    v15->_throttlingInterval = fmax(interval, 0.0);
+    objc_storeStrong(&v15->_queue, queue);
+    v16 = objc_retainBlock(handlerCopy);
     updateHandler = v15->_updateHandler;
     v15->_updateHandler = v16;
 

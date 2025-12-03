@@ -1,23 +1,23 @@
 @interface FIUINavigationController
 - (BOOL)shouldAutorotate;
-- (FIUINavigationController)initWithRootViewController:(id)a3;
+- (FIUINavigationController)initWithRootViewController:(id)controller;
 - (int64_t)preferredInterfaceOrientationForPresentation;
 - (unint64_t)supportedInterfaceOrientations;
 @end
 
 @implementation FIUINavigationController
 
-- (FIUINavigationController)initWithRootViewController:(id)a3
+- (FIUINavigationController)initWithRootViewController:(id)controller
 {
   v8.receiver = self;
   v8.super_class = FIUINavigationController;
-  v3 = [(FIUINavigationController *)&v8 initWithRootViewController:a3];
+  v3 = [(FIUINavigationController *)&v8 initWithRootViewController:controller];
   if (v3)
   {
     v4 = [MEMORY[0x1E69DB878] fu_sausageFontOfSize:18.0];
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v4, *MEMORY[0x1E69DB648], 0}];
-    v6 = [(FIUINavigationController *)v3 navigationBar];
-    [v6 setTitleTextAttributes:v5];
+    navigationBar = [(FIUINavigationController *)v3 navigationBar];
+    [navigationBar setTitleTextAttributes:v5];
   }
 
   return v3;
@@ -25,26 +25,26 @@
 
 - (BOOL)shouldAutorotate
 {
-  v2 = [(FIUINavigationController *)self topViewController];
-  v3 = [v2 shouldAutorotate];
+  topViewController = [(FIUINavigationController *)self topViewController];
+  shouldAutorotate = [topViewController shouldAutorotate];
 
-  return v3;
+  return shouldAutorotate;
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(FIUINavigationController *)self topViewController];
-  v3 = [v2 supportedInterfaceOrientations];
+  topViewController = [(FIUINavigationController *)self topViewController];
+  supportedInterfaceOrientations = [topViewController supportedInterfaceOrientations];
 
-  return v3;
+  return supportedInterfaceOrientations;
 }
 
 - (int64_t)preferredInterfaceOrientationForPresentation
 {
-  v2 = [(FIUINavigationController *)self topViewController];
-  v3 = [v2 preferredInterfaceOrientationForPresentation];
+  topViewController = [(FIUINavigationController *)self topViewController];
+  preferredInterfaceOrientationForPresentation = [topViewController preferredInterfaceOrientationForPresentation];
 
-  return v3;
+  return preferredInterfaceOrientationForPresentation;
 }
 
 @end

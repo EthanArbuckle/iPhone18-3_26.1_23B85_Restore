@@ -9,52 +9,52 @@
 
 - (void)wk_setIgnoreProductTypesForWallpaperBundle:()WKAdditions
 {
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
-  v6 = [v5 sf_isInternalInstall];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  sf_isInternalInstall = [currentDevice sf_isInternalInstall];
 
-  if (v6)
+  if (sf_isInternalInstall)
   {
 
-    [a1 setBool:a3 forKey:@"ignoreProductTypesForWallpaperBundle"];
+    [self setBool:a3 forKey:@"ignoreProductTypesForWallpaperBundle"];
   }
 }
 
 - (uint64_t)wk_ignoreProductTypesForWallpaperBundle
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 sf_isInternalInstall];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  sf_isInternalInstall = [currentDevice sf_isInternalInstall];
 
-  if (!v3)
+  if (!sf_isInternalInstall)
   {
     return 0;
   }
 
-  return [a1 BOOLForKey:@"ignoreProductTypesForWallpaperBundle"];
+  return [self BOOLForKey:@"ignoreProductTypesForWallpaperBundle"];
 }
 
 - (void)wk_setIgnoreLogicalScreenClassForWallpaperBundle:()WKAdditions
 {
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
-  v6 = [v5 sf_isInternalInstall];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  sf_isInternalInstall = [currentDevice sf_isInternalInstall];
 
-  if (v6)
+  if (sf_isInternalInstall)
   {
 
-    [a1 setBool:a3 forKey:@"ignoreLogicalScreenClassForWallpaperBundle"];
+    [self setBool:a3 forKey:@"ignoreLogicalScreenClassForWallpaperBundle"];
   }
 }
 
 - (uint64_t)wk_ignoreLogicalScreenClassForWallpaperBundle
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 sf_isInternalInstall];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  sf_isInternalInstall = [currentDevice sf_isInternalInstall];
 
-  if (!v3)
+  if (!sf_isInternalInstall)
   {
     return 0;
   }
 
-  return [a1 BOOLForKey:@"ignoreLogicalScreenClassForWallpaperBundle"];
+  return [self BOOLForKey:@"ignoreLogicalScreenClassForWallpaperBundle"];
 }
 
 @end

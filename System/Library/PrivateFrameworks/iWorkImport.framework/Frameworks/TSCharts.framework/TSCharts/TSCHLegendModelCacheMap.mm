@@ -1,24 +1,24 @@
 @interface TSCHLegendModelCacheMap
-- (TSCHLegendModelCacheMap)initWithChartModel:(id)a3 textEditingSelectionPair:(id)a4;
+- (TSCHLegendModelCacheMap)initWithChartModel:(id)model textEditingSelectionPair:(id)pair;
 - (id)mainCache;
-- (id)newLegendModelCacheForStyleProvidingSource:(id)a3;
-- (id)textCacheForStyleProvidingSource:(id)a3;
+- (id)newLegendModelCacheForStyleProvidingSource:(id)source;
+- (id)textCacheForStyleProvidingSource:(id)source;
 @end
 
 @implementation TSCHLegendModelCacheMap
 
-- (TSCHLegendModelCacheMap)initWithChartModel:(id)a3 textEditingSelectionPair:(id)a4
+- (TSCHLegendModelCacheMap)initWithChartModel:(id)model textEditingSelectionPair:(id)pair
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  pairCopy = pair;
   v23.receiver = self;
   v23.super_class = TSCHLegendModelCacheMap;
   v8 = [(TSCHLegendModelCacheMap *)&v23 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_model, v6);
-    v14 = objc_msgSend_copy(v7, v10, v11, v12, v13);
+    objc_storeWeak(&v8->_model, modelCopy);
+    v14 = objc_msgSend_copy(pairCopy, v10, v11, v12, v13);
     selectionPair = v9->_selectionPair;
     v9->_selectionPair = v14;
 
@@ -30,12 +30,12 @@
   return v9;
 }
 
-- (id)newLegendModelCacheForStyleProvidingSource:(id)a3
+- (id)newLegendModelCacheForStyleProvidingSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = [TSCHLegendModelCache alloc];
   WeakRetained = objc_loadWeakRetained(&self->_model);
-  v11 = objc_msgSend_initWithChartModel_textEditingSelectionPair_styleProvidingSource_(v5, v7, v8, v9, v10, WeakRetained, self->_selectionPair, v4);
+  v11 = objc_msgSend_initWithChartModel_textEditingSelectionPair_styleProvidingSource_(v5, v7, v8, v9, v10, WeakRetained, self->_selectionPair, sourceCopy);
 
   return v11;
 }
@@ -55,19 +55,19 @@
   return mainCache;
 }
 
-- (id)textCacheForStyleProvidingSource:(id)a3
+- (id)textCacheForStyleProvidingSource:(id)source
 {
-  v5 = a3;
-  if (v5)
+  sourceCopy = source;
+  if (sourceCopy)
   {
     objc_opt_class();
-    v13 = objc_msgSend_objectForKey_(self->_map, v9, v10, v11, v12, v5);
+    v13 = objc_msgSend_objectForKey_(self->_map, v9, v10, v11, v12, sourceCopy);
     v14 = TSUCheckedDynamicCast();
 
     if (!v14)
     {
-      v14 = objc_msgSend_newLegendModelCacheForStyleProvidingSource_(self, v15, v16, v17, v18, v5);
-      objc_msgSend_setObject_forKey_(self->_map, v19, v20, v21, v22, v14, v5);
+      v14 = objc_msgSend_newLegendModelCacheForStyleProvidingSource_(self, v15, v16, v17, v18, sourceCopy);
+      objc_msgSend_setObject_forKey_(self->_map, v19, v20, v21, v22, v14, sourceCopy);
       if (!v14)
       {
         v27 = MEMORY[0x277D81150];

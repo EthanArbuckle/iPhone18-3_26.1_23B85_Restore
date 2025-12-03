@@ -1,7 +1,7 @@
 @interface _MKUILabel
 - (void)didMoveToWindow;
 - (void)infoCardThemeChanged;
-- (void)set_mapkit_themeColorProvider:(id)a3;
+- (void)set_mapkit_themeColorProvider:(id)provider;
 @end
 
 @implementation _MKUILabel
@@ -25,15 +25,15 @@
   mapkit_themeColorProvider = self->__mapkit_themeColorProvider;
   if (mapkit_themeColorProvider)
   {
-    v4 = [(UIView *)self mk_theme];
-    v5 = mapkit_themeColorProvider[2](mapkit_themeColorProvider, v4);
+    mk_theme = [(UIView *)self mk_theme];
+    v5 = mapkit_themeColorProvider[2](mapkit_themeColorProvider, mk_theme);
     [(_MKUILabel *)self setTextColor:v5];
   }
 }
 
-- (void)set_mapkit_themeColorProvider:(id)a3
+- (void)set_mapkit_themeColorProvider:(id)provider
 {
-  v4 = [a3 copy];
+  v4 = [provider copy];
   mapkit_themeColorProvider = self->__mapkit_themeColorProvider;
   self->__mapkit_themeColorProvider = v4;
 

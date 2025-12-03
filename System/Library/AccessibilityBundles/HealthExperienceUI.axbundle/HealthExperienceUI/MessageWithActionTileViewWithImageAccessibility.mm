@@ -9,19 +9,19 @@
 - (id)accessibilityLabel
 {
   v2 = [(MessageWithActionTileViewWithImageAccessibility *)self safeUIViewForKey:@"messageTileView"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
   v3 = [(MessageWithActionTileViewWithImageAccessibility *)self _accessibilityFindSubviewDescendantsPassingTest:&__block_literal_global_1];
-  v4 = [v3 firstObject];
-  v5 = v4;
-  if (v4)
+  firstObject = [v3 firstObject];
+  v5 = firstObject;
+  if (firstObject)
   {
-    [v4 accessibilityActivationPoint];
+    [firstObject accessibilityActivationPoint];
   }
 
   else

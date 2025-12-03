@@ -1,7 +1,7 @@
 @interface SPUISTopHitAppWithEntitiesSectionBuilder
-+ (BOOL)supportsAppTopHitWithoutIndexFor:(id)a3;
-+ (BOOL)supportsFileProviderFor:(id)a3;
-+ (BOOL)supportsSection:(id)a3 queryContext:(id)a4;
++ (BOOL)supportsAppTopHitWithoutIndexFor:(id)for;
++ (BOOL)supportsFileProviderFor:(id)for;
++ (BOOL)supportsSection:(id)section queryContext:(id)context;
 - (id)buildBridgedResult;
 - (id)buildCardSections;
 - (id)buildCollectionStyle;
@@ -10,17 +10,17 @@
 
 @implementation SPUISTopHitAppWithEntitiesSectionBuilder
 
-+ (BOOL)supportsSection:(id)a3 queryContext:(id)a4
++ (BOOL)supportsSection:(id)section queryContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 results];
-  v6 = [v4 bundleIdentifier];
+  sectionCopy = section;
+  results = [sectionCopy results];
+  bundleIdentifier = [sectionCopy bundleIdentifier];
 
-  if ([v6 isEqualToString:@"com.apple.spotlight.tophits"])
+  if ([bundleIdentifier isEqualToString:@"com.apple.spotlight.tophits"])
   {
-    v7 = [v5 firstObject];
-    v8 = [v7 sectionBundleIdentifier];
-    v9 = [v8 isEqualToString:@"com.apple.application"];
+    firstObject = [results firstObject];
+    sectionBundleIdentifier = [firstObject sectionBundleIdentifier];
+    v9 = [sectionBundleIdentifier isEqualToString:@"com.apple.application"];
 
     v10 = v9 ^ 1;
   }
@@ -31,50 +31,50 @@
   }
 
   LOBYTE(v11) = 0;
-  if ([v5 count] == 1 && (v10 & 1) == 0)
+  if ([results count] == 1 && (v10 & 1) == 0)
   {
-    v12 = [v5 firstObject];
-    if ([v12 isAppClip])
+    firstObject2 = [results firstObject];
+    if ([firstObject2 isAppClip])
     {
       LOBYTE(v11) = 0;
     }
 
     else
     {
-      v13 = [v5 firstObject];
-      v11 = [v13 isWebClip] ^ 1;
+      firstObject3 = [results firstObject];
+      v11 = [firstObject3 isWebClip] ^ 1;
     }
   }
 
   return v11;
 }
 
-+ (BOOL)supportsAppTopHitWithoutIndexFor:(id)a3
++ (BOOL)supportsAppTopHitWithoutIndexFor:(id)for
 {
-  v3 = a3;
-  if ([objc_opt_class() supportsFileProviderFor:v3])
+  forCopy = for;
+  if ([objc_opt_class() supportsFileProviderFor:forCopy])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [objc_opt_class() supportsBonusSPI:v3];
+    v4 = [objc_opt_class() supportsBonusSPI:forCopy];
   }
 
   return v4;
 }
 
-+ (BOOL)supportsFileProviderFor:(id)a3
++ (BOOL)supportsFileProviderFor:(id)for
 {
   v3 = supportsFileProviderFor__onceToken;
-  v4 = a3;
+  forCopy = for;
   if (v3 != -1)
   {
     +[SPUISTopHitAppWithEntitiesSectionBuilder supportsFileProviderFor:];
   }
 
-  v5 = [supportsFileProviderFor__supportedBundleIdentifiers containsObject:v4];
+  v5 = [supportsFileProviderFor__supportedBundleIdentifiers containsObject:forCopy];
 
   return v5;
 }
@@ -97,44 +97,44 @@ void __68__SPUISTopHitAppWithEntitiesSectionBuilder_supportsFileProviderFor___bl
 
 - (id)buildBridgedResult
 {
-  v3 = [(SPUISSectionBuilder *)self section];
-  v4 = [v3 results];
-  v5 = [v4 firstObject];
+  section = [(SPUISSectionBuilder *)self section];
+  results = [section results];
+  firstObject = [results firstObject];
 
-  v6 = [[SPUISApplicationResultBuilder alloc] initWithResult:v5];
+  v6 = [[SPUISApplicationResultBuilder alloc] initWithResult:firstObject];
   [(SPUISTopHitAppWithEntitiesSectionBuilder *)self setAppResultBuilder:v6];
 
-  v7 = [(SPUISSectionBuilder *)self queryContext];
-  v8 = [(SPUISTopHitAppWithEntitiesSectionBuilder *)self appResultBuilder];
-  [v8 setQueryContext:v7];
+  queryContext = [(SPUISSectionBuilder *)self queryContext];
+  appResultBuilder = [(SPUISTopHitAppWithEntitiesSectionBuilder *)self appResultBuilder];
+  [appResultBuilder setQueryContext:queryContext];
 
-  v9 = [(SPUISTopHitAppWithEntitiesSectionBuilder *)self appResultBuilder];
-  v10 = [v9 buildResult];
+  appResultBuilder2 = [(SPUISTopHitAppWithEntitiesSectionBuilder *)self appResultBuilder];
+  buildResult = [appResultBuilder2 buildResult];
 
   v21.receiver = self;
   v21.super_class = SPUISTopHitAppWithEntitiesSectionBuilder;
-  v11 = [(SPUISSectionBuilder *)&v21 buildBridgedResult];
-  v12 = [v11 inlineCard];
-  [v5 setInlineCard:v12];
+  buildBridgedResult = [(SPUISSectionBuilder *)&v21 buildBridgedResult];
+  inlineCard = [buildBridgedResult inlineCard];
+  [firstObject setInlineCard:inlineCard];
 
-  v13 = [v11 compactCard];
-  [v5 setCompactCard:v13];
+  compactCard = [buildBridgedResult compactCard];
+  [firstObject setCompactCard:compactCard];
 
-  [v5 setQueryId:{objc_msgSend(v11, "queryId")}];
-  v14 = [v11 sectionBundleIdentifier];
-  [v5 setSectionBundleIdentifier:v14];
+  [firstObject setQueryId:{objc_msgSend(buildBridgedResult, "queryId")}];
+  sectionBundleIdentifier = [buildBridgedResult sectionBundleIdentifier];
+  [firstObject setSectionBundleIdentifier:sectionBundleIdentifier];
 
-  v15 = [v11 resultBundleId];
-  [v5 setResultBundleId:v15];
+  resultBundleId = [buildBridgedResult resultBundleId];
+  [firstObject setResultBundleId:resultBundleId];
 
-  v16 = [v11 applicationBundleIdentifier];
-  [v5 setApplicationBundleIdentifier:v16];
+  applicationBundleIdentifier = [buildBridgedResult applicationBundleIdentifier];
+  [firstObject setApplicationBundleIdentifier:applicationBundleIdentifier];
 
-  v17 = [(SPUISTopHitAppWithEntitiesSectionBuilder *)self appResultBuilder];
-  v18 = [v17 matchedAlternateName];
-  [v5 setCompletion:v18];
+  appResultBuilder3 = [(SPUISTopHitAppWithEntitiesSectionBuilder *)self appResultBuilder];
+  matchedAlternateName = [appResultBuilder3 matchedAlternateName];
+  [firstObject setCompletion:matchedAlternateName];
 
-  v19 = [objc_alloc(objc_opt_class()) initWithResult:v5];
+  v19 = [objc_alloc(objc_opt_class()) initWithResult:firstObject];
 
   return v19;
 }
@@ -166,24 +166,24 @@ void __68__SPUISTopHitAppWithEntitiesSectionBuilder_supportsFileProviderFor___bl
 {
   v18[1] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(SPUISTopHitAppWithEntitiesSectionBuilder *)self appResultBuilder];
-  v5 = [v4 bundleId];
-  [v3 setApplicationBundleIdentifier:v5];
+  appResultBuilder = [(SPUISTopHitAppWithEntitiesSectionBuilder *)self appResultBuilder];
+  bundleId = [appResultBuilder bundleId];
+  [v3 setApplicationBundleIdentifier:bundleId];
 
-  v6 = [(SPUISTopHitAppWithEntitiesSectionBuilder *)self appResultBuilder];
-  v7 = [v6 name];
-  [v3 setTitle:v7];
+  appResultBuilder2 = [(SPUISTopHitAppWithEntitiesSectionBuilder *)self appResultBuilder];
+  name = [appResultBuilder2 name];
+  [v3 setTitle:name];
 
   v8 = objc_alloc(MEMORY[0x277D65850]);
-  v9 = [(SPUISSectionBuilder *)self section];
-  v10 = [v9 results];
-  v11 = [v10 firstObject];
-  v12 = [v8 initWithResult:v11];
+  section = [(SPUISSectionBuilder *)self section];
+  results = [section results];
+  firstObject = [results firstObject];
+  v12 = [v8 initWithResult:firstObject];
   [v3 setSpotlightBackingResult:v12];
 
   v13 = objc_opt_new();
-  v14 = [v3 applicationBundleIdentifier];
-  [v13 setApplicationBundleIdentifier:v14];
+  applicationBundleIdentifier = [v3 applicationBundleIdentifier];
+  [v13 setApplicationBundleIdentifier:applicationBundleIdentifier];
 
   [v3 setCommand:v13];
   v18[0] = v3;

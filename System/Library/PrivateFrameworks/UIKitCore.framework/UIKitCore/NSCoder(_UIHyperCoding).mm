@@ -10,7 +10,7 @@
 - (uint64_t)_ui_encodeVector:()_UIHyperCoding count:forKey:
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v5 = MEMORY[0x1EEE9AC00](a1);
+  v5 = MEMORY[0x1EEE9AC00](self);
   if (v3)
   {
     v6 = (v9 - ((v4 + 15) & 0xFFFFFFFFFFFFFFF0));
@@ -30,12 +30,12 @@
 - (id)_ui_decodeVectorForKey:()_UIHyperCoding returnedCount:
 {
   v14 = 0;
-  v7 = [a1 decodeBytesForKey:a3 returnedLength:&v14];
+  v7 = [self decodeBytesForKey:a3 returnedLength:&v14];
   v8 = v14;
   if ((v14 & 7) != 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"_UIHyperBase.m" lineNumber:353 description:{@"length (%lu) must be a multiple of the size of CFSwappedFloat64 (%lu)", v14, 8}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIHyperBase.m" lineNumber:353 description:{@"length (%lu) must be a multiple of the size of CFSwappedFloat64 (%lu)", v14, 8}];
 
     v8 = v14;
   }
@@ -57,7 +57,7 @@
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v7 = 8 * a4;
-  MEMORY[0x1EEE9AC00](a1);
+  MEMORY[0x1EEE9AC00](self);
   v9 = v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   if (v10)
   {
@@ -69,18 +69,18 @@
     v7 = 0;
   }
 
-  return [a1 encodeBytes:v9 length:v7 forKey:a5];
+  return [self encodeBytes:v9 length:v7 forKey:a5];
 }
 
 - (id)_ui_decodeNSUIntegerVectorForKey:()_UIHyperCoding returnedCount:
 {
   v14 = 0;
-  v7 = [a1 decodeBytesForKey:a3 returnedLength:&v14];
+  v7 = [self decodeBytesForKey:a3 returnedLength:&v14];
   v8 = v14;
   if ((v14 & 7) != 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"_UIHyperBase.m" lineNumber:376 description:{@"length (%lu) must be a multiple of the size of uint64_t (%lu)", v14, 8}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIHyperBase.m" lineNumber:376 description:{@"length (%lu) must be a multiple of the size of uint64_t (%lu)", v14, 8}];
 
     v8 = v14;
   }

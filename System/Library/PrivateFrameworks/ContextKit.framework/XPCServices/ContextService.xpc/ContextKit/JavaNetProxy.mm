@@ -1,6 +1,6 @@
 @interface JavaNetProxy
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -36,9 +36,9 @@
   return [(JavaLangStringBuilder *)v3 description];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -50,7 +50,7 @@
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_13;
   }
@@ -60,7 +60,7 @@
     JreThrowClassCastException();
   }
 
-  if (self->type_ != *(a3 + 1))
+  if (self->type_ != *(equal + 1))
   {
     return 0;
   }
@@ -72,7 +72,7 @@ LABEL_13:
     JreThrowNullPointerException();
   }
 
-  v7 = *(a3 + 2);
+  v7 = *(equal + 2);
 
   return [(JavaNetSocketAddress *)address isEqual:v7];
 }
@@ -104,7 +104,7 @@ LABEL_13:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [JavaNetProxy alloc];
     sub_1001A770C(v2);

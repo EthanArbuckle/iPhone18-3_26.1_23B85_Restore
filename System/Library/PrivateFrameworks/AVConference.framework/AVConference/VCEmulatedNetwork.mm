@@ -1,14 +1,14 @@
 @interface VCEmulatedNetwork
-- (VCEmulatedNetwork)initWithPolicies:(id)a3;
+- (VCEmulatedNetwork)initWithPolicies:(id)policies;
 - (id)copyPacketFromPop;
 - (unsigned)numberOfPacketsWaitingInOutputQueue;
 - (void)dealloc;
-- (void)push:(id)a3;
+- (void)push:(id)push;
 @end
 
 @implementation VCEmulatedNetwork
 
-- (VCEmulatedNetwork)initWithPolicies:(id)a3
+- (VCEmulatedNetwork)initWithPolicies:(id)policies
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -16,7 +16,7 @@
   v4 = [(VCEmulatedNetwork *)&v9 init];
   if (v4)
   {
-    v4->_policies = a3;
+    v4->_policies = policies;
     v5 = [(VCEmulatedNetworkElement *)[VCEmulatedOutputQueue alloc] initWithPolicies:0];
     v4->_outputQueue = v5;
     if (!v5)
@@ -59,7 +59,7 @@
   [(VCEmulatedNetwork *)&v5 dealloc];
 }
 
-- (void)push:(id)a3
+- (void)push:(id)push
 {
   [(VCEmulatedNetworkElement *)self->_outputQueue write:?];
   pushCompletionHandler = self->_pushCompletionHandler;
@@ -78,11 +78,11 @@
     return 0;
   }
 
-  v3 = [(VCEmulatedOutputQueue *)self->_outputQueue copyPacketFromPop];
+  copyPacketFromPop = [(VCEmulatedOutputQueue *)self->_outputQueue copyPacketFromPop];
   popCompletionHandler = self->_popCompletionHandler;
   if (popCompletionHandler)
   {
-    v5 = v3 == 0;
+    v5 = copyPacketFromPop == 0;
   }
 
   else
@@ -92,10 +92,10 @@
 
   if (!v5)
   {
-    popCompletionHandler[2](popCompletionHandler, v3);
+    popCompletionHandler[2](popCompletionHandler, copyPacketFromPop);
   }
 
-  return v3;
+  return copyPacketFromPop;
 }
 
 - (unsigned)numberOfPacketsWaitingInOutputQueue

@@ -1,7 +1,7 @@
 @interface AMSAccountStoreCache
 + (AMSThreadSafeDictionary)cache;
-+ (id)accountStoreForMediaType:(id)a3;
-+ (id)mediaTypeForAccountStore:(id)a3;
++ (id)accountStoreForMediaType:(id)type;
++ (id)mediaTypeForAccountStore:(id)store;
 + (void)_resetAccountStoreCache;
 @end
 
@@ -26,11 +26,11 @@ uint64_t __29__AMSAccountStoreCache_cache__block_invoke()
   return v3;
 }
 
-+ (id)accountStoreForMediaType:(id)a3
++ (id)accountStoreForMediaType:(id)type
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  typeCopy = type;
+  if (typeCopy)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -38,15 +38,15 @@ uint64_t __29__AMSAccountStoreCache_cache__block_invoke()
     v23 = __Block_byref_object_copy__2;
     v24 = __Block_byref_object_dispose__2;
     v25 = 0;
-    v6 = [a1 cache];
+    cache = [self cache];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __49__AMSAccountStoreCache_accountStoreForMediaType___block_invoke;
     v18[3] = &unk_1E73B3720;
     v20 = buf;
-    v19 = v5;
-    v21 = a1;
-    [v6 readWrite:v18];
+    v19 = typeCopy;
+    selfCopy = self;
+    [cache readWrite:v18];
 
     v7 = *(*&buf[8] + 40);
     _Block_object_dispose(buf, 8);
@@ -60,8 +60,8 @@ uint64_t __29__AMSAccountStoreCache_cache__block_invoke()
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v10 = AMSLogKey();
       v11 = MEMORY[0x1E696AEC0];
@@ -84,7 +84,7 @@ uint64_t __29__AMSAccountStoreCache_cache__block_invoke()
       *&buf[4] = v15;
       *&buf[12] = 2114;
       *&buf[14] = v16;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_ERROR, "%{public}@%{public}@ was passed a nil media type. Returning an ACAccountStore that isn't associated with any media type.", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@%{public}@ was passed a nil media type. Returning an ACAccountStore that isn't associated with any media type.", buf, 0x16u);
       if (v10)
       {
       }
@@ -206,18 +206,18 @@ void __49__AMSAccountStoreCache_accountStoreForMediaType___block_invoke(uint64_t
   }
 }
 
-+ (id)mediaTypeForAccountStore:(id)a3
++ (id)mediaTypeForAccountStore:(id)store
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [a1 cache];
-  v6 = [v5 allKeys];
+  cache = [self cache];
+  allKeys = [cache allKeys];
 
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v7 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -228,21 +228,21 @@ LABEL_3:
     {
       if (*v17 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(allKeys);
       }
 
       v11 = *(*(&v16 + 1) + 8 * v10);
-      v12 = [a1 cache];
-      v13 = [v12 objectForKeyedSubscript:v11];
+      cache2 = [self cache];
+      v13 = [cache2 objectForKeyedSubscript:v11];
 
-      if (v13 == v4)
+      if (v13 == storeCopy)
       {
         break;
       }
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -273,8 +273,8 @@ LABEL_12:
 
 + (void)_resetAccountStoreCache
 {
-  v2 = [a1 cache];
-  [v2 removeAllObjects];
+  cache = [self cache];
+  [cache removeAllObjects];
 }
 
 @end

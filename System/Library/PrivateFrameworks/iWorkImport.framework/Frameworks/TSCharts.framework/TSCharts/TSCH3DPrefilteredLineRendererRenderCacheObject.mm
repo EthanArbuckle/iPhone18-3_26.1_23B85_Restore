@@ -6,9 +6,9 @@
 - (id)p_normals;
 - (id)p_originalGeometry;
 - (id)p_texcoords;
-- (void)allocateDynamicResourcesIntoArray:(id)a3;
-- (void)renderWithLineRenderer:(id)a3 setting:(id)a4 fromVertex:(const void *)a5 toVertex:(const void *)a6;
-- (void)submitResourcesWithLineRenderer:(id)a3 setting:(id)a4;
+- (void)allocateDynamicResourcesIntoArray:(id)array;
+- (void)renderWithLineRenderer:(id)renderer setting:(id)setting fromVertex:(const void *)vertex toVertex:(const void *)toVertex;
+- (void)submitResourcesWithLineRenderer:(id)renderer setting:(id)setting;
 @end
 
 @implementation TSCH3DPrefilteredLineRendererRenderCacheObject
@@ -20,10 +20,10 @@
   return [(TSCH3DSceneRenderCacheObject *)&v3 init];
 }
 
-- (void)allocateDynamicResourcesIntoArray:(id)a3
+- (void)allocateDynamicResourcesIntoArray:(id)array
 {
-  v3 = a3;
-  if (objc_msgSend_count(v3, v4, v5, v6, v7, v3))
+  arrayCopy = array;
+  if (objc_msgSend_count(arrayCopy, v4, v5, v6, v7, arrayCopy))
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, v9, v10, v11, "[TSCH3DPrefilteredLineRendererRenderCacheObject allocateDynamicResourcesIntoArray:]");
@@ -34,7 +34,7 @@
   }
 
   v27 = objc_msgSend_null(MEMORY[0x277CBEB68], v8, v9, v10, v11);
-  v83 = v3;
+  v83 = arrayCopy;
   v28 = v27;
   v33 = objc_msgSend_count(v83, v29, v30, v31, v32);
   if (v33 <= 5)
@@ -174,17 +174,17 @@
   return v6;
 }
 
-- (void)submitResourcesWithLineRenderer:(id)a3 setting:(id)a4
+- (void)submitResourcesWithLineRenderer:(id)renderer setting:(id)setting
 {
-  v6 = a3;
-  v7 = a4;
-  v370 = v6;
-  v374 = v7;
-  v369 = objc_msgSend_pipeline(v6, v8, v9, v10, v11);
+  rendererCopy = renderer;
+  settingCopy = setting;
+  v370 = rendererCopy;
+  v374 = settingCopy;
+  v369 = objc_msgSend_pipeline(rendererCopy, v8, v9, v10, v11);
   v17 = objc_msgSend_processor(v369, v12, v13, v14, v15);
-  if (v7)
+  if (settingCopy)
   {
-    objc_msgSend_strokeColor(v7, v16, v18, v19, v20);
+    objc_msgSend_strokeColor(settingCopy, v16, v18, v19, v20);
   }
 
   else
@@ -193,7 +193,7 @@
     v380 = 0;
   }
 
-  objc_msgSend_lineWidth(v7, v16, v18, v19, v20);
+  objc_msgSend_lineWidth(settingCopy, v16, v18, v19, v20);
   *&v24 = *&v24 * 0.83337;
   if (*&v24 > 1.0)
   {
@@ -209,9 +209,9 @@
 
   memset(&v378[12], 0, 13);
   memset(v378, 0, 11);
-  if (v7)
+  if (settingCopy)
   {
-    objc_msgSend_filterRadius(v7, v31, v32, v33, v34);
+    objc_msgSend_filterRadius(settingCopy, v31, v32, v33, v34);
   }
 
   else
@@ -404,17 +404,17 @@ LABEL_18:
   }
 }
 
-- (void)renderWithLineRenderer:(id)a3 setting:(id)a4 fromVertex:(const void *)a5 toVertex:(const void *)a6
+- (void)renderWithLineRenderer:(id)renderer setting:(id)setting fromVertex:(const void *)vertex toVertex:(const void *)toVertex
 {
-  v9 = a3;
-  v10 = a4;
-  if ((sub_2762139C0(a5, a6) & 1) == 0)
+  rendererCopy = renderer;
+  settingCopy = setting;
+  if ((sub_2762139C0(vertex, toVertex) & 1) == 0)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, v12, v13, v14, "[TSCH3DPrefilteredLineRendererRenderCacheObject renderWithLineRenderer:setting:fromVertex:toVertex:]");
     v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v17, v18, v19, v20, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DPrefilteredLineRenderer.mm");
-    v29 = sub_276213A5C(a5, v22, v23, v24, v25, v26, v27, v28);
-    v37 = sub_276213A5C(a6, v30, v31, v32, v33, v34, v35, v36);
+    v29 = sub_276213A5C(vertex, v22, v23, v24, v25, v26, v27, v28);
+    v37 = sub_276213A5C(toVertex, v30, v31, v32, v33, v34, v35, v36);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v15, v38, v39, v40, v41, v16, v21, 529, 0, "inconsistent state for v0 %@ v1 %@", v29, v37);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v42, v43, v44, v45);
@@ -425,16 +425,16 @@ LABEL_18:
   v558 = 0.0;
   v555 = 0;
   v556 = 0.0;
-  v47 = *(a5 + 1);
+  v47 = *(vertex + 1);
   if (v47)
   {
-    v48 = *(a6 + 1);
+    v48 = *(toVertex + 1);
     if (v48)
     {
-      if (v9)
+      if (rendererCopy)
       {
-        objc_msgSend_normalMatrix(v9, v11, 0.0, v13, v14);
-        v47 = *(a5 + 1);
+        objc_msgSend_normalMatrix(rendererCopy, v11, 0.0, v13, v14);
+        v47 = *(vertex + 1);
         v49 = *(&__y + 1);
         v50 = *&__y;
         v51 = *(&v550 + 3);
@@ -444,7 +444,7 @@ LABEL_18:
         LODWORD(v55) = DWORD1(v550);
         v56 = *&v550;
         LODWORD(v57) = v551;
-        v48 = *(a6 + 1);
+        v48 = *(toVertex + 1);
       }
 
       else
@@ -480,7 +480,7 @@ LABEL_18:
       v555.f32[0] = v63 + (v52 * v64);
       v555.f32[1] = v65;
       v556 = *&v57;
-      if (objc_msgSend_cullBackfaces(v10, v11, v57, v54, v55))
+      if (objc_msgSend_cullBackfaces(settingCopy, v11, v57, v54, v55))
       {
         *&v67 = v558;
         if (v558 < 0.0)
@@ -499,12 +499,12 @@ LABEL_18:
     }
   }
 
-  if (*(a5 + 2) && *(a5 + 6) != 1 && *(a6 + 2) && *(a6 + 6) != 1)
+  if (*(vertex + 2) && *(vertex + 6) != 1 && *(toVertex + 2) && *(toVertex + 6) != 1)
   {
     v72 = objc_msgSend_p_diffuseTexcoords(self, v11, v46, v13, v14);
     v73 = sub_27618C374(v72);
-    v74 = *(a5 + 2);
-    v75 = *(a6 + 2);
+    v74 = *(vertex + 2);
+    v75 = *(toVertex + 2);
     sub_276161E1C(v73, v74);
     sub_276161E1C(v73, v75);
     sub_276161E1C(v73, v75);
@@ -513,10 +513,10 @@ LABEL_18:
     sub_276161E1C(v73, v74);
   }
 
-  v76 = *a5;
-  if (v9)
+  v76 = *vertex;
+  if (rendererCopy)
   {
-    objc_msgSend_modelMatrix(v9, v11, v46, v13, v14);
+    objc_msgSend_modelMatrix(rendererCopy, v11, v46, v13, v14);
   }
 
   else
@@ -528,10 +528,10 @@ LABEL_18:
   }
 
   *&v78 = sub_276154744(v76, &__y, &v553, v14);
-  v81 = *a6;
-  if (v9)
+  v81 = *toVertex;
+  if (rendererCopy)
   {
-    objc_msgSend_modelMatrix(v9, v77, v78, v79, v80);
+    objc_msgSend_modelMatrix(rendererCopy, v77, v78, v79, v80);
   }
 
   else
@@ -560,9 +560,9 @@ LABEL_18:
   v97 = 0.0;
   v98 = 0.0;
   v99 = 0.0;
-  if (v9)
+  if (rendererCopy)
   {
-    objc_msgSend_normalizedProjection(v9, v82, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    objc_msgSend_normalizedProjection(rendererCopy, v82, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
     v95 = *(&__y + 1);
     v99 = *&__y;
     v94 = *(&v550 + 1);
@@ -611,9 +611,9 @@ LABEL_18:
   v110 = 0.0;
   v111 = 0.0;
   v112 = 0.0;
-  if (v9)
+  if (rendererCopy)
   {
-    objc_msgSend_normalizedProjection(v9, v82, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    objc_msgSend_normalizedProjection(rendererCopy, v82, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
     v541 = *(&__y + 4);
     v112 = *&__y;
     v539 = *(&v550 + 1);
@@ -645,9 +645,9 @@ LABEL_18:
   v113 = v547;
   v114 = v548;
   v546 = 0uLL;
-  objc_msgSend_lineWidth(v10, v82, v107, v104, v109);
+  objc_msgSend_lineWidth(settingCopy, v82, v107, v104, v109);
   v496 = *&v115;
-  v119 = objc_msgSend_pipeline(v9, v116, v115, v117, v118);
+  v119 = objc_msgSend_pipeline(rendererCopy, v116, v115, v117, v118);
 
   if (!v119)
   {
@@ -659,13 +659,13 @@ LABEL_18:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v135, v136, v137, v138);
   }
 
-  v139 = objc_msgSend_pipeline(v9, v120, v121, v122, v123);
+  v139 = objc_msgSend_pipeline(rendererCopy, v120, v121, v122, v123);
   objc_msgSend_superSamples(v139, v140, v141, v142, v143);
   v495 = v144;
 
-  if (v10)
+  if (settingCopy)
   {
-    objc_msgSend_filterRadius(v10, v145, v146, v147, v148);
+    objc_msgSend_filterRadius(settingCopy, v145, v146, v147, v148);
     v147 = *(&__y + 1);
     v494 = vcvtq_f64_f32(*&__y);
     v149 = vcvtq_f64_f32(*(&__y + 8));
@@ -679,13 +679,13 @@ LABEL_18:
   }
 
   v493 = v149;
-  v150 = objc_msgSend_pipeline(v9, v145, v149.f64[0], v147, v148);
+  v150 = objc_msgSend_pipeline(rendererCopy, v145, v149.f64[0], v147, v148);
   objc_msgSend_superSamples(v150, v151, v152, v153, v154);
   v492 = v155;
 
-  if (v9)
+  if (rendererCopy)
   {
-    objc_msgSend_viewport(v9, v156, v157, v158, v159);
+    objc_msgSend_viewport(rendererCopy, v156, v157, v158, v159);
     v158 = *&__y;
     v160 = COERCE_DOUBLE(vcvt_f32_s32(vsub_s32(*(&__y + 8), *&__y)));
   }
@@ -701,12 +701,12 @@ LABEL_18:
 
   v163 = v162[1] - *v162;
   sub_2761EDA00(v162, 0xAAAAAAAAAAAAAAABLL * (v163 >> 2) + 6);
-  v169 = objc_msgSend_stroke(v10, v164, v165, v166, v167);
+  v169 = objc_msgSend_stroke(settingCopy, v164, v165, v166, v167);
   if (v169)
   {
-    v173 = objc_msgSend_stroke(v10, v168, v170, v171, v172);
+    v173 = objc_msgSend_stroke(settingCopy, v168, v170, v171, v172);
     v174 = sub_276213BE8(v173);
-    v179 = objc_msgSend_pipeline(v9, v175, v176, v177, v178);
+    v179 = objc_msgSend_pipeline(rendererCopy, v175, v176, v177, v178);
     objc_msgSend_superSamples(v179, v180, v181, v182, v183);
     v536 = (v184 * v174);
   }
@@ -732,9 +732,9 @@ LABEL_18:
   v542 = v194;
   v538 = v190;
   v540 = v191;
-  if (*(a5 + 1) && *(a6 + 1))
+  if (*(vertex + 1) && *(toVertex + 1))
   {
-    if ((objc_msgSend_disableColorOutput(v10, v196, v197, v198, v199) & 1) == 0)
+    if ((objc_msgSend_disableColorOutput(settingCopy, v196, v197, v198, v199) & 1) == 0)
     {
       v204 = MEMORY[0x277D81150];
       v205 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v200, v201, v202, v203, "[TSCH3DPrefilteredLineRendererRenderCacheObject renderWithLineRenderer:setting:fromVertex:toVertex:]");
@@ -952,7 +952,7 @@ LABEL_18:
 
   else
   {
-    v254 = objc_msgSend_stroke(v10, v196, v197, v198, v199);
+    v254 = objc_msgSend_stroke(settingCopy, v196, v197, v198, v199);
     isRoundDash = objc_msgSend_isRoundDash(v254, v255, v256, v257, v258);
     v262 = 0.0;
     if (isRoundDash)
@@ -961,7 +961,7 @@ LABEL_18:
     }
 
     v535 = v262;
-    v263 = objc_msgSend_pipeline(v9, v260, v262, v536, v261);
+    v263 = objc_msgSend_pipeline(rendererCopy, v260, v262, v536, v261);
     objc_msgSend_superSamples(v263, v264, v265, v266, v267);
     v269 = fmaxf(v496, 1.0);
     v270 = vmulq_n_f64(v494, v492);
@@ -1202,17 +1202,17 @@ LABEL_18:
     v395 = v543;
   }
 
-  if (*(a5 + 6) == 1 && *(a6 + 6) == 1)
+  if (*(vertex + 6) == 1 && *(toVertex + 6) == 1)
   {
     v532 = v324;
-    if (v9)
+    if (rendererCopy)
     {
-      objc_msgSend_viewport(v9, v200, v401, v399, v400);
+      objc_msgSend_viewport(rendererCopy, v200, v401, v399, v400);
       v425 = DWORD2(__y);
       v426 = HIDWORD(__y);
       v427 = __y;
       v428 = DWORD1(__y);
-      objc_msgSend_viewport(v9, v429, v430, v431, v432);
+      objc_msgSend_viewport(rendererCopy, v429, v430, v431, v432);
       v433 = (v426 - v428);
       v434 = (v425 - v427);
       v435 = __y;
@@ -1264,23 +1264,23 @@ LABEL_18:
     *&v453 = v444;
     *&v454 = v445;
     v545 = __PAIR64__(v454, v453);
-    sub_2761B63E0(&v545, (a5 + 28), &__y);
+    sub_2761B63E0(&v545, (vertex + 28), &__y);
     v456 = DWORD1(__y);
     v455 = __y;
     *&v457 = v442;
     *&v458 = v443;
     v545 = __PAIR64__(v458, v457);
-    sub_2761B63E0(&v545, (a6 + 28), &__y);
+    sub_2761B63E0(&v545, (toVertex + 28), &__y);
     v459 = __y;
     *&v460 = v448;
     *&v461 = v449;
     v545 = __PAIR64__(v461, v460);
-    sub_2761B63E0(&v545, (a6 + 28), &__y);
+    sub_2761B63E0(&v545, (toVertex + 28), &__y);
     v462 = __y;
     *&v463 = v446;
     *&v464 = v447;
     v545 = __PAIR64__(v464, v463);
-    sub_2761B63E0(&v545, (a5 + 28), &__y);
+    sub_2761B63E0(&v545, (vertex + 28), &__y);
     v401 = *&__y;
     v465 = *v451 + v452;
     *v465 = __PAIR64__(v456, v455);
@@ -1299,7 +1299,7 @@ LABEL_18:
     v324 = v532;
   }
 
-  v466 = objc_msgSend_stroke(v10, v200, v401, v399, v400);
+  v466 = objc_msgSend_stroke(settingCopy, v200, v401, v399, v400);
   v467 = v324;
 
   if (v466)
@@ -1343,7 +1343,7 @@ LABEL_18:
   sub_276213D54(v480, &__y);
   __y = xmmword_2764D62A0;
   sub_276213D54(v480, &__y);
-  if (objc_msgSend_disableColorOutput(v10, v482, v483, v484, v485))
+  if (objc_msgSend_disableColorOutput(settingCopy, v482, v483, v484, v485))
   {
     v490 = objc_msgSend_p_originalGeometry(self, v486, v487, v488, v489);
     v491 = sub_27618C648(v490);

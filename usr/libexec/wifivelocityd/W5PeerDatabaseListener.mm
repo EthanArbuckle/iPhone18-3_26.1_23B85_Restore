@@ -1,18 +1,18 @@
 @interface W5PeerDatabaseListener
-- (BOOL)handleClientRequest:(id)a3;
-- (W5PeerDatabaseListener)initWithDatabaseAccessManager:(id)a3;
+- (BOOL)handleClientRequest:(id)request;
+- (W5PeerDatabaseListener)initWithDatabaseAccessManager:(id)manager;
 @end
 
 @implementation W5PeerDatabaseListener
 
-- (W5PeerDatabaseListener)initWithDatabaseAccessManager:(id)a3
+- (W5PeerDatabaseListener)initWithDatabaseAccessManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = W5PeerDatabaseListener;
   v6 = [(W5PeerDatabaseListener *)&v10 init];
   v7 = v6;
-  if (!v6 || (objc_storeStrong(&v6->_databaseManager, a3), !v7->_databaseManager))
+  if (!v6 || (objc_storeStrong(&v6->_databaseManager, manager), !v7->_databaseManager))
   {
 
     v8 = sub_100098A04();
@@ -27,25 +27,25 @@
   return v7;
 }
 
-- (BOOL)handleClientRequest:(id)a3
+- (BOOL)handleClientRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 payload];
-  v6 = v5;
-  if (v5)
+  requestCopy = request;
+  payload = [requestCopy payload];
+  v6 = payload;
+  if (payload)
   {
-    v7 = [v5 version];
+    version = [payload version];
     v8 = sub_100098A04();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *v21 = 136315906;
       *&v21[4] = "[W5PeerDatabaseListener handleClientRequest:]";
       *&v21[12] = 2112;
-      *&v21[14] = v4;
+      *&v21[14] = requestCopy;
       *&v21[22] = 2112;
       v22 = v6;
       v23 = 2112;
-      v24 = v7;
+      v24 = version;
       LODWORD(v20) = 42;
       v19 = v21;
       _os_log_send_and_compose_impl();
@@ -56,24 +56,24 @@
     [(W5PeerDatabaseResponsePayload *)v9 setVersion:v10];
 
     [(W5PeerDatabaseResponsePayload *)v9 setStatus:1];
-    if ([v7 integerValue] == 1 || objc_msgSend(v7, "integerValue") == 2)
+    if ([version integerValue] == 1 || objc_msgSend(version, "integerValue") == 2)
     {
-      v11 = [v6 fetchRequest];
+      fetchRequest = [v6 fetchRequest];
 
-      if (v11)
+      if (fetchRequest)
       {
-        v12 = [v6 fetchRequest];
-        [v12 setResultType:2];
+        fetchRequest2 = [v6 fetchRequest];
+        [fetchRequest2 setResultType:2];
 
         databaseManager = self->_databaseManager;
-        v14 = [v6 fetchRequest];
-        v15 = [(W5DatabaseManager *)databaseManager performFetch:v14];
+        fetchRequest3 = [v6 fetchRequest];
+        v15 = [(W5DatabaseManager *)databaseManager performFetch:fetchRequest3];
         [(W5PeerDatabaseResponsePayload *)v9 setFetchedResults:v15];
 
         [(W5DatabaseManager *)self->_databaseManager releaseMoc];
 LABEL_14:
-        v17 = [v4 handler];
-        (v17)[2](v17, v9, 0);
+        handler = [requestCopy handler];
+        (handler)[2](handler, v9, 0);
 
         goto LABEL_15;
       }
@@ -84,7 +84,7 @@ LABEL_14:
         *v21 = 136315394;
         *&v21[4] = "[W5PeerDatabaseListener handleClientRequest:]";
         *&v21[12] = 2112;
-        *&v21[14] = v4;
+        *&v21[14] = requestCopy;
         LODWORD(v20) = 22;
         v19 = v21;
 LABEL_12:
@@ -100,7 +100,7 @@ LABEL_12:
         *v21 = 136315394;
         *&v21[4] = "[W5PeerDatabaseListener handleClientRequest:]";
         *&v21[12] = 2112;
-        *&v21[14] = v7;
+        *&v21[14] = version;
         LODWORD(v20) = 22;
         v19 = v21;
         goto LABEL_12;

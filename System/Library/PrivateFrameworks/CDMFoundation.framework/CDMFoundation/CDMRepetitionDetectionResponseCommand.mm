@@ -1,18 +1,18 @@
 @interface CDMRepetitionDetectionResponseCommand
-- (CDMRepetitionDetectionResponseCommand)initWithResponse:(id)a3;
+- (CDMRepetitionDetectionResponseCommand)initWithResponse:(id)response;
 @end
 
 @implementation CDMRepetitionDetectionResponseCommand
 
-- (CDMRepetitionDetectionResponseCommand)initWithResponse:(id)a3
+- (CDMRepetitionDetectionResponseCommand)initWithResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v9.receiver = self;
   v9.super_class = CDMRepetitionDetectionResponseCommand;
   v5 = [(CDMBaseCommand *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [responseCopy copy];
     response = v5->_response;
     v5->_response = v6;
   }

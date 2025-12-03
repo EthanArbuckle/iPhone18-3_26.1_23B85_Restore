@@ -1,12 +1,12 @@
 @interface MGRemoteQueryClientBrowser
-- (MGRemoteQueryClientBrowser)initWithDelegate:(id)a3 dispatchQueue:(id)a4;
+- (MGRemoteQueryClientBrowser)initWithDelegate:(id)delegate dispatchQueue:(id)queue;
 - (MGRemoteQueryClientBrowserDelegate)delegate;
 - (id)_prepareBrowseDescriptor;
 - (id)_prepareBrowseParameters;
-- (id)_targetForBrowseResult:(id)a3;
+- (id)_targetForBrowseResult:(id)result;
 - (id)description;
 - (void)_applyUpdates;
-- (void)_handleBrowseChangeFromTarget:(id)a3 toTarget:(id)a4 applyBatch:(BOOL)a5;
+- (void)_handleBrowseChangeFromTarget:(id)target toTarget:(id)toTarget applyBatch:(BOOL)batch;
 - (void)_invalidate;
 - (void)_invalidated;
 - (void)_prepareBrowserHandlers;
@@ -16,24 +16,24 @@
 
 @implementation MGRemoteQueryClientBrowser
 
-- (MGRemoteQueryClientBrowser)initWithDelegate:(id)a3 dispatchQueue:(id)a4
+- (MGRemoteQueryClientBrowser)initWithDelegate:(id)delegate dispatchQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = MGRemoteQueryClientBrowser;
   v8 = [(MGRemoteQueryClientBrowser *)&v20 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v9->_dispatchQueue, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v9->_dispatchQueue, queue);
     v10 = [MEMORY[0x277CBEB98] set];
     knownTargets = v9->_knownTargets;
     v9->_knownTargets = v10;
 
-    v12 = [(MGRemoteQueryClientBrowser *)v9 knownTargets];
-    v13 = [v12 copy];
+    knownTargets = [(MGRemoteQueryClientBrowser *)v9 knownTargets];
+    v13 = [knownTargets copy];
     updatedTargets = v9->_updatedTargets;
     v9->_updatedTargets = v13;
 
@@ -41,13 +41,13 @@
     error = v9->_error;
     v9->_error = 0;
 
-    v16 = [(MGRemoteQueryClientBrowser *)v9 dispatchQueue];
+    dispatchQueue = [(MGRemoteQueryClientBrowser *)v9 dispatchQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __61__MGRemoteQueryClientBrowser_initWithDelegate_dispatchQueue___block_invoke;
     block[3] = &unk_27989ED90;
     v19 = v9;
-    dispatch_async(v16, block);
+    dispatch_async(dispatchQueue, block);
   }
 
   return v9;
@@ -66,16 +66,16 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MGRemoteQueryClientBrowser *)self knownTargets];
-  v7 = [(MGRemoteQueryClientBrowser *)self browser];
-  v8 = [(MGRemoteQueryClientBrowser *)self invalidated];
+  knownTargets = [(MGRemoteQueryClientBrowser *)self knownTargets];
+  browser = [(MGRemoteQueryClientBrowser *)self browser];
+  invalidated = [(MGRemoteQueryClientBrowser *)self invalidated];
   v9 = 78;
-  if (v8)
+  if (invalidated)
   {
     v9 = 89;
   }
 
-  v10 = [v3 stringWithFormat:@"<%@: %p, _targets = %@, _browser = %@, _invalidated = %c>", v5, self, v6, v7, v9];
+  v10 = [v3 stringWithFormat:@"<%@: %p, _targets = %@, _browser = %@, _invalidated = %c>", v5, self, knownTargets, browser, v9];
 
   return v10;
 }
@@ -83,21 +83,21 @@
 - (void)_startBrowsing
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(MGRemoteQueryClientBrowser *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(MGRemoteQueryClientBrowser *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v4 = [(MGRemoteQueryClientBrowser *)self browser];
+  browser = [(MGRemoteQueryClientBrowser *)self browser];
 
-  if (v4)
+  if (browser)
   {
     v5 = MGLogForCategory(6);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [(MGRemoteQueryClientBrowser *)self browser];
+      browser2 = [(MGRemoteQueryClientBrowser *)self browser];
       *buf = 134218242;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2112;
-      v16 = v6;
+      v16 = browser2;
       _os_log_error_impl(&dword_25863A000, v5, OS_LOG_TYPE_ERROR, "%p browser already browsing %@", buf, 0x16u);
     }
 
@@ -113,7 +113,7 @@ LABEL_7:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_error_impl(&dword_25863A000, v5, OS_LOG_TYPE_ERROR, "%p browser invalidated, not starting", buf, 0xCu);
     }
 
@@ -121,11 +121,11 @@ LABEL_7:
   }
 
   descriptor = [(MGRemoteQueryClientBrowser *)self _prepareBrowseDescriptor];
-  v8 = [(MGRemoteQueryClientBrowser *)self _prepareBrowseParameters];
-  v9 = nw_browser_create(descriptor, v8);
+  _prepareBrowseParameters = [(MGRemoteQueryClientBrowser *)self _prepareBrowseParameters];
+  v9 = nw_browser_create(descriptor, _prepareBrowseParameters);
   [(MGRemoteQueryClientBrowser *)self setBrowser:v9];
-  v10 = [(MGRemoteQueryClientBrowser *)self dispatchQueue];
-  nw_browser_set_queue(v9, v10);
+  dispatchQueue2 = [(MGRemoteQueryClientBrowser *)self dispatchQueue];
+  nw_browser_set_queue(v9, dispatchQueue2);
 
   [(MGRemoteQueryClientBrowser *)self _prepareBrowserHandlers];
   nw_browser_start(v9);
@@ -142,22 +142,22 @@ LABEL_7:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v10 = self;
+      selfCopy = self;
       _os_log_impl(&dword_25863A000, v3, OS_LOG_TYPE_DEFAULT, "%p browser invalidating", buf, 0xCu);
     }
 
     [(MGRemoteQueryClientBrowser *)self setInvalidated:1];
-    v4 = [(MGRemoteQueryClientBrowser *)self browser];
+    browser = [(MGRemoteQueryClientBrowser *)self browser];
     [(MGRemoteQueryClientBrowser *)self setBrowser:0];
-    v5 = [(MGRemoteQueryClientBrowser *)self dispatchQueue];
-    if (v4)
+    dispatchQueue = [(MGRemoteQueryClientBrowser *)self dispatchQueue];
+    if (browser)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __41__MGRemoteQueryClientBrowser__invalidate__block_invoke;
       block[3] = &unk_27989ED90;
-      v8 = v4;
-      dispatch_async(v5, block);
+      v8 = browser;
+      dispatch_async(dispatchQueue, block);
     }
 
     else
@@ -176,17 +176,17 @@ LABEL_7:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25863A000, v3, OS_LOG_TYPE_DEFAULT, "%p browser invalidated", buf, 0xCu);
   }
 
-  v4 = [(MGRemoteQueryClientBrowser *)self dispatchQueue];
+  dispatchQueue = [(MGRemoteQueryClientBrowser *)self dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__MGRemoteQueryClientBrowser__invalidated__block_invoke;
   block[3] = &unk_27989ED90;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(dispatchQueue, block);
 
   v5 = *MEMORY[0x277D85DE8];
 }
@@ -207,8 +207,8 @@ void __42__MGRemoteQueryClientBrowser__invalidated__block_invoke(uint64_t a1)
 
 - (id)_prepareBrowseDescriptor
 {
-  v2 = [(MGRemoteQueryClientBrowser *)self dispatchQueue];
-  dispatch_assert_queue_V2(v2);
+  dispatchQueue = [(MGRemoteQueryClientBrowser *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   bonjour_service = nw_browse_descriptor_create_bonjour_service([@"_mediagroups._tcp" UTF8String], objc_msgSend(@"local.", "UTF8String"));
   nw_browse_descriptor_set_include_txt_record(bonjour_service, 1);
@@ -218,8 +218,8 @@ void __42__MGRemoteQueryClientBrowser__invalidated__block_invoke(uint64_t a1)
 
 - (id)_prepareBrowseParameters
 {
-  v2 = [(MGRemoteQueryClientBrowser *)self dispatchQueue];
-  dispatch_assert_queue_V2(v2);
+  dispatchQueue = [(MGRemoteQueryClientBrowser *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v3 = MEMORY[0x259C85C70]();
   nw_parameters_prohibit_interface_type(v3, nw_interface_type_cellular);
@@ -231,8 +231,8 @@ void __42__MGRemoteQueryClientBrowser__invalidated__block_invoke(uint64_t a1)
 
 - (void)_prepareBrowserHandlers
 {
-  v3 = [(MGRemoteQueryClientBrowser *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(MGRemoteQueryClientBrowser *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   objc_initWeak(&location, self);
   v10 = 0;
@@ -240,7 +240,7 @@ void __42__MGRemoteQueryClientBrowser__invalidated__block_invoke(uint64_t a1)
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy_;
   v14 = __Block_byref_object_dispose_;
-  v15 = [(MGRemoteQueryClientBrowser *)self browser];
+  browser = [(MGRemoteQueryClientBrowser *)self browser];
   v4 = v11[5];
   state_changed_handler[0] = MEMORY[0x277D85DD0];
   state_changed_handler[1] = 3221225472;
@@ -365,50 +365,50 @@ LABEL_14:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleBrowseChangeFromTarget:(id)a3 toTarget:(id)a4 applyBatch:(BOOL)a5
+- (void)_handleBrowseChangeFromTarget:(id)target toTarget:(id)toTarget applyBatch:(BOOL)batch
 {
-  v5 = a5;
+  batchCopy = batch;
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(MGRemoteQueryClientBrowser *)self dispatchQueue];
-  dispatch_assert_queue_V2(v10);
+  targetCopy = target;
+  toTargetCopy = toTarget;
+  dispatchQueue = [(MGRemoteQueryClientBrowser *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v11 = [(MGRemoteQueryClientBrowser *)self updatedTargets];
-  v12 = [v11 mutableCopy];
+  updatedTargets = [(MGRemoteQueryClientBrowser *)self updatedTargets];
+  v12 = [updatedTargets mutableCopy];
 
-  if (v8)
+  if (targetCopy)
   {
     v13 = MGLogForCategory(6);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       v16 = 134218242;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2112;
-      v19 = v8;
+      v19 = targetCopy;
       _os_log_debug_impl(&dword_25863A000, v13, OS_LOG_TYPE_DEBUG, "%p browser losing target %@", &v16, 0x16u);
     }
 
-    [v12 removeObject:v8];
+    [v12 removeObject:targetCopy];
   }
 
-  if (v9)
+  if (toTargetCopy)
   {
     v14 = MGLogForCategory(6);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       v16 = 134218242;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2112;
-      v19 = v9;
+      v19 = toTargetCopy;
       _os_log_debug_impl(&dword_25863A000, v14, OS_LOG_TYPE_DEBUG, "%p browser adding target %@", &v16, 0x16u);
     }
 
-    [v12 addObject:v9];
+    [v12 addObject:toTargetCopy];
   }
 
   [(MGRemoteQueryClientBrowser *)self setUpdatedTargets:v12];
-  if (v5)
+  if (batchCopy)
   {
     [(MGRemoteQueryClientBrowser *)self _applyUpdates];
   }
@@ -419,34 +419,34 @@ LABEL_14:
 - (void)_applyUpdates
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = [(MGRemoteQueryClientBrowser *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(MGRemoteQueryClientBrowser *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v4 = [(MGRemoteQueryClientBrowser *)self knownTargets];
-  v5 = [(MGRemoteQueryClientBrowser *)self updatedTargets];
-  if (([v4 isEqualToSet:v5] & 1) == 0)
+  knownTargets = [(MGRemoteQueryClientBrowser *)self knownTargets];
+  updatedTargets = [(MGRemoteQueryClientBrowser *)self updatedTargets];
+  if (([knownTargets isEqualToSet:updatedTargets] & 1) == 0)
   {
-    v6 = [v5 copy];
+    v6 = [updatedTargets copy];
     [(MGRemoteQueryClientBrowser *)self setKnownTargets:v6];
 
-    v7 = [(MGRemoteQueryClientBrowser *)self delegate];
-    if (v7)
+    delegate = [(MGRemoteQueryClientBrowser *)self delegate];
+    if (delegate)
     {
-      v8 = [v5 mutableCopy];
-      [v8 minusSet:v4];
-      v9 = [v4 mutableCopy];
-      [v9 minusSet:v5];
+      v8 = [updatedTargets mutableCopy];
+      [v8 minusSet:knownTargets];
+      v9 = [knownTargets mutableCopy];
+      [v9 minusSet:updatedTargets];
       v10 = MGLogForCategory(6);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218752;
-        v33 = self;
+        selfCopy = self;
         v34 = 2048;
         v35 = [v8 count];
         v36 = 2048;
         v37 = [v9 count];
         v38 = 2048;
-        v39 = [v5 count];
+        v39 = [updatedTargets count];
         _os_log_impl(&dword_25863A000, v10, OS_LOG_TYPE_DEFAULT, "%p browser updated, found(%lu) lost(%lu) now(%lu)", buf, 0x2Au);
       }
 
@@ -470,7 +470,7 @@ LABEL_14:
               objc_enumerationMutation(v11);
             }
 
-            [v7 browser:self foundTarget:*(*(&v26 + 1) + 8 * v15++)];
+            [delegate browser:self foundTarget:*(*(&v26 + 1) + 8 * v15++)];
           }
 
           while (v13 != v15);
@@ -500,7 +500,7 @@ LABEL_14:
               objc_enumerationMutation(v16);
             }
 
-            [v7 browser:self lostTarget:{*(*(&v22 + 1) + 8 * v20++), v22}];
+            [delegate browser:self lostTarget:{*(*(&v22 + 1) + 8 * v20++), v22}];
           }
 
           while (v18 != v20);
@@ -515,14 +515,14 @@ LABEL_14:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_targetForBrowseResult:(id)a3
+- (id)_targetForBrowseResult:(id)result
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MGRemoteQueryClientBrowser *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  resultCopy = result;
+  dispatchQueue = [(MGRemoteQueryClientBrowser *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  if (v4 && nw_browse_result_get_interfaces_count(v4))
+  if (resultCopy && nw_browse_result_get_interfaces_count(resultCopy))
   {
     v13 = 0;
     v14 = &v13;
@@ -533,16 +533,16 @@ LABEL_14:
     enumerator[2] = __53__MGRemoteQueryClientBrowser__targetForBrowseResult___block_invoke;
     enumerator[3] = &unk_27989EE08;
     enumerator[4] = &v13;
-    nw_browse_result_enumerate_interfaces(v4, enumerator);
+    nw_browse_result_enumerate_interfaces(resultCopy, enumerator);
     if (v14[3])
     {
       v6 = MGLogForCategory(6);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134218242;
-        v18 = self;
+        selfCopy = self;
         v19 = 2112;
-        v20 = v4;
+        v20 = resultCopy;
         _os_log_debug_impl(&dword_25863A000, v6, OS_LOG_TYPE_DEBUG, "%p browser ignoring loopback result %@", buf, 0x16u);
       }
 
@@ -551,8 +551,8 @@ LABEL_14:
 
     else
     {
-      v6 = nw_browse_result_copy_endpoint(v4);
-      v8 = nw_browse_result_copy_txt_record_object(v4);
+      v6 = nw_browse_result_copy_endpoint(resultCopy);
+      v8 = nw_browse_result_copy_txt_record_object(resultCopy);
       v9 = v8;
       v7 = 0;
       if (v6 && v8)

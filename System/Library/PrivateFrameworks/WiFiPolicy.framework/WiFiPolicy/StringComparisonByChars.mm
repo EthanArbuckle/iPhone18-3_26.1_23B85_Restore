@@ -1,29 +1,29 @@
 @interface StringComparisonByChars
-+ (id)stringComparisonByCharsWithString1:(id)a3 string2:(id)a4 reference:(id)a5;
-- (StringComparisonByChars)initWithString1:(id)a3 string2:(id)a4 reference:(id)a5;
++ (id)stringComparisonByCharsWithString1:(id)string1 string2:(id)string2 reference:(id)reference;
+- (StringComparisonByChars)initWithString1:(id)string1 string2:(id)string2 reference:(id)reference;
 @end
 
 @implementation StringComparisonByChars
 
-+ (id)stringComparisonByCharsWithString1:(id)a3 string2:(id)a4 reference:(id)a5
++ (id)stringComparisonByCharsWithString1:(id)string1 string2:(id)string2 reference:(id)reference
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithString1:v10 string2:v9 reference:v8];
+  referenceCopy = reference;
+  string2Copy = string2;
+  string1Copy = string1;
+  v11 = [[self alloc] initWithString1:string1Copy string2:string2Copy reference:referenceCopy];
 
   return v11;
 }
 
-- (StringComparisonByChars)initWithString1:(id)a3 string2:(id)a4 reference:(id)a5
+- (StringComparisonByChars)initWithString1:(id)string1 string2:(id)string2 reference:(id)reference
 {
-  v8 = a3;
-  v9 = a4;
+  string1Copy = string1;
+  string2Copy = string2;
   v19.receiver = self;
   v19.super_class = StringComparisonByChars;
-  v10 = [(ObjectComparisonByTokens *)&v19 initWithObj1:v8 obj2:v9 reference:a5];
-  v11 = [v8 length];
-  v12 = [v9 length];
+  v10 = [(ObjectComparisonByTokens *)&v19 initWithObj1:string1Copy obj2:string2Copy reference:reference];
+  v11 = [string1Copy length];
+  v12 = [string2Copy length];
   if (v11 >= v12)
   {
     v13 = v12;
@@ -39,10 +39,10 @@
     v14 = 0;
     do
     {
-      -[ObjectComparisonByTokens incrementTokensWith:](v10, "incrementTokensWith:", [v8 characterAtIndex:v14] == objc_msgSend(v9, "characterAtIndex:", v14));
+      -[ObjectComparisonByTokens incrementTokensWith:](v10, "incrementTokensWith:", [string1Copy characterAtIndex:v14] == objc_msgSend(string2Copy, "characterAtIndex:", v14));
       ++v14;
-      v15 = [v8 length];
-      v16 = [v9 length];
+      v15 = [string1Copy length];
+      v16 = [string2Copy length];
       if (v15 >= v16)
       {
         v17 = v16;

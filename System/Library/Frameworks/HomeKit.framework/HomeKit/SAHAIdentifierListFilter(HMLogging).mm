@@ -6,12 +6,12 @@
 
 - (id)hm_shortDescription
 {
-  v2 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v3 = *MEMORY[0x1E69C7E40];
-  v4 = [a1 identifiers];
-  appendToShortDescription(v2, v3, v4);
+  identifiers = [self identifiers];
+  appendToShortDescription(string, v3, identifiers);
 
-  return v2;
+  return string;
 }
 
 @end

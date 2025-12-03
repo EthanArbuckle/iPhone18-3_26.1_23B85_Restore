@@ -1,40 +1,40 @@
 @interface CNUIUserActionListDataSource
-+ (BOOL)isSupportedActionType:(id)a3;
++ (BOOL)isSupportedActionType:(id)type;
 + (id)allActionTypes;
 + (id)allSupportedActionTypes;
 + (id)allSupportedActionTypesForBlockedContact;
-+ (id)allSupportedActionTypesWithCapabilities:(id)a3;
++ (id)allSupportedActionTypesWithCapabilities:(id)capabilities;
 + (id)descriptorForRequiredKeys;
-+ (id)displayNameForButtonForActionType:(id)a3;
-+ (id)displayNameForDisambiguationForActionType:(id)a3;
-+ (id)makeCacheWithCapacity:(unint64_t)a3 expirationAge:(double)a4 timeProvider:(id)a5;
++ (id)displayNameForButtonForActionType:(id)type;
++ (id)displayNameForDisambiguationForActionType:(id)type;
++ (id)makeCacheWithCapacity:(unint64_t)capacity expirationAge:(double)age timeProvider:(id)provider;
 + (id)os_log;
-- (CNUIUserActionListDataSource)initWithDiscoveringEnvironment:(id)a3;
-- (id)actionTypesForConsumer:(id)a3;
-- (id)actionTypesToUpdateForSelectedItem:(id)a3;
-- (id)consumer:(id)a3 actionModelsForContact:(id)a4 actionType:(id)a5 handler:(id)a6;
-- (id)consumer:(id)a3 currentActionModelForContact:(id)a4 actionType:(id)a5;
-- (id)consumer:(id)a3 localizedButtonDisplayNameForActionType:(id)a4;
-- (id)consumer:(id)a3 localizedDisplayNameForActionType:(id)a4;
+- (CNUIUserActionListDataSource)initWithDiscoveringEnvironment:(id)environment;
+- (id)actionTypesForConsumer:(id)consumer;
+- (id)actionTypesToUpdateForSelectedItem:(id)item;
+- (id)consumer:(id)consumer actionModelsForContact:(id)contact actionType:(id)type handler:(id)handler;
+- (id)consumer:(id)consumer currentActionModelForContact:(id)contact actionType:(id)type;
+- (id)consumer:(id)consumer localizedButtonDisplayNameForActionType:(id)type;
+- (id)consumer:(id)consumer localizedDisplayNameForActionType:(id)type;
 - (id)makeCacheWithCurrentSettings;
-- (id)makeModelObservableForContact:(id)a3 actionType:(id)a4 defaultActionItem:(id)a5;
-- (id)modelsForContact:(id)a3 actionType:(id)a4;
-- (id)thirdPartyActionsForContact:(id)a3 propertyKey:(id)a4 identifier:(id)a5;
-- (id)thirdPartyActionsForContactProperty:(id)a3;
-- (id)thirdPartyTargetsForActionTypes:(id)a3;
-- (void)_invalidateModelsOnExternalChange:(id)a3;
+- (id)makeModelObservableForContact:(id)contact actionType:(id)type defaultActionItem:(id)item;
+- (id)modelsForContact:(id)contact actionType:(id)type;
+- (id)thirdPartyActionsForContact:(id)contact propertyKey:(id)key identifier:(id)identifier;
+- (id)thirdPartyActionsForContactProperty:(id)property;
+- (id)thirdPartyTargetsForActionTypes:(id)types;
+- (void)_invalidateModelsOnExternalChange:(id)change;
 - (void)_safeEmptyModels;
-- (void)consumer:(id)a3 didSelectItem:(id)a4 forContact:(id)a5 actionType:(id)a6;
+- (void)consumer:(id)consumer didSelectItem:(id)item forContact:(id)contact actionType:(id)type;
 - (void)dealloc;
 - (void)makeCacheAndTransferContents;
-- (void)performFirstResolutionForEntry:(id)a3 contact:(id)a4 actionType:(id)a5;
-- (void)refreshEntry:(id)a3 contact:(id)a4 actionType:(id)a5;
-- (void)registerDelegate:(id)a3 withContactIdentifier:(id)a4;
-- (void)resolveCacheEntry:(id)a3 contact:(id)a4 actionType:(id)a5 defaultActionItem:(id)a6 qualityOfService:(unint64_t)a7;
-- (void)setCacheEntryExpirationAge:(double)a3;
-- (void)setCacheEntryRefreshAge:(double)a3;
-- (void)setContactStore:(id)a3;
-- (void)unregisterDelegate:(id)a3;
+- (void)performFirstResolutionForEntry:(id)entry contact:(id)contact actionType:(id)type;
+- (void)refreshEntry:(id)entry contact:(id)contact actionType:(id)type;
+- (void)registerDelegate:(id)delegate withContactIdentifier:(id)identifier;
+- (void)resolveCacheEntry:(id)entry contact:(id)contact actionType:(id)type defaultActionItem:(id)item qualityOfService:(unint64_t)service;
+- (void)setCacheEntryExpirationAge:(double)age;
+- (void)setCacheEntryRefreshAge:(double)age;
+- (void)setContactStore:(id)store;
+- (void)unregisterDelegate:(id)delegate;
 @end
 
 @implementation CNUIUserActionListDataSource
@@ -71,9 +71,9 @@ uint64_t __38__CNUIUserActionListDataSource_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (CNUIUserActionListDataSource)initWithDiscoveringEnvironment:(id)a3
+- (CNUIUserActionListDataSource)initWithDiscoveringEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v22.receiver = self;
   v22.super_class = CNUIUserActionListDataSource;
   v5 = [(CNUIUserActionListDataSource *)&v22 init];
@@ -82,17 +82,17 @@ uint64_t __38__CNUIUserActionListDataSource_os_log__block_invoke()
   {
     v5->_cacheCapacity = 100;
     *&v5->_cacheEntryRefreshAge = xmmword_1A34D9300;
-    v7 = [[CNUIUserActionDisambiguationModeler alloc] initWithDiscoveringEnvironment:v4];
+    v7 = [[CNUIUserActionDisambiguationModeler alloc] initWithDiscoveringEnvironment:environmentCopy];
     modeler = v6->_modeler;
     v6->_modeler = v7;
 
-    v9 = [(CNUIUserActionListDataSource *)v6 makeCacheWithCurrentSettings];
+    makeCacheWithCurrentSettings = [(CNUIUserActionListDataSource *)v6 makeCacheWithCurrentSettings];
     models = v6->_models;
-    v6->_models = v9;
+    v6->_models = makeCacheWithCurrentSettings;
 
-    v11 = [v4 schedulerProvider];
+    schedulerProvider = [environmentCopy schedulerProvider];
     schedulerProvider = v6->_schedulerProvider;
-    v6->_schedulerProvider = v11;
+    v6->_schedulerProvider = schedulerProvider;
 
     if (initWithDiscoveringEnvironment__cn_once_token_2 != -1)
     {
@@ -101,18 +101,18 @@ uint64_t __38__CNUIUserActionListDataSource_os_log__block_invoke()
 
     objc_storeStrong(&v6->_resolutionScheduler, initWithDiscoveringEnvironment__cn_once_object_2);
     v6->_tracksChanges = 1;
-    v13 = [MEMORY[0x1E6996660] atomicCache];
+    atomicCache = [MEMORY[0x1E6996660] atomicCache];
     delegates = v6->_delegates;
-    v6->_delegates = v13;
+    v6->_delegates = atomicCache;
 
-    v15 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v16 = [v15 notificationCenter];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    notificationCenter = [currentEnvironment notificationCenter];
     v17 = getTUCallCapabilitiesFaceTimeAvailabilityChangedNotification();
-    [v16 addObserver:v6 selector:sel__invalidateModelsOnExternalChange_ name:v17 object:0];
+    [notificationCenter addObserver:v6 selector:sel__invalidateModelsOnExternalChange_ name:v17 object:0];
 
-    v18 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v19 = [v18 distributedNotificationCenter];
-    [v19 addObserver:v6 selector:sel__invalidateModelsOnExternalChange_ name:*MEMORY[0x1E695C3E8] object:0];
+    currentEnvironment2 = [MEMORY[0x1E69966E8] currentEnvironment];
+    distributedNotificationCenter = [currentEnvironment2 distributedNotificationCenter];
+    [distributedNotificationCenter addObserver:v6 selector:sel__invalidateModelsOnExternalChange_ name:*MEMORY[0x1E695C3E8] object:0];
 
     v20 = v6;
   }
@@ -132,39 +132,39 @@ uint64_t __63__CNUIUserActionListDataSource_initWithDiscoveringEnvironment___blo
   v3 = objc_opt_class();
   cacheCapacity = self->_cacheCapacity;
   cacheEntryExpirationAge = self->_cacheEntryExpirationAge;
-  v6 = [(CNSchedulerProvider *)self->_schedulerProvider immediateScheduler];
-  v7 = [v3 makeCacheWithCapacity:cacheCapacity expirationAge:v6 timeProvider:cacheEntryExpirationAge];
+  immediateScheduler = [(CNSchedulerProvider *)self->_schedulerProvider immediateScheduler];
+  v7 = [v3 makeCacheWithCapacity:cacheCapacity expirationAge:immediateScheduler timeProvider:cacheEntryExpirationAge];
 
   return v7;
 }
 
-+ (id)makeCacheWithCapacity:(unint64_t)a3 expirationAge:(double)a4 timeProvider:(id)a5
++ (id)makeCacheWithCapacity:(unint64_t)capacity expirationAge:(double)age timeProvider:(id)provider
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  providerCopy = provider;
   v8 = [CNUIUserActionListModelCache alloc];
-  v9 = [MEMORY[0x1E6996660] boundingStrategyWithCapacity:a3];
+  v9 = [MEMORY[0x1E6996660] boundingStrategyWithCapacity:capacity];
   v15[0] = v9;
-  v10 = [MEMORY[0x1E6996660] boundingStrategyWithTTL:2 renewalOptions:v7 timeProvider:a4];
+  v10 = [MEMORY[0x1E6996660] boundingStrategyWithTTL:2 renewalOptions:providerCopy timeProvider:age];
 
   v15[1] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
-  v12 = [MEMORY[0x1E6996660] nonatomicCacheScheduler];
-  v13 = [(CNCache *)v8 initWithBoundingStrategies:v11 resourceScheduler:v12];
+  nonatomicCacheScheduler = [MEMORY[0x1E6996660] nonatomicCacheScheduler];
+  v13 = [(CNCache *)v8 initWithBoundingStrategies:v11 resourceScheduler:nonatomicCacheScheduler];
 
   return v13;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 notificationCenter];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  notificationCenter = [currentEnvironment notificationCenter];
   v5 = getTUCallCapabilitiesFaceTimeAvailabilityChangedNotification();
-  [v4 removeObserver:self name:v5 object:0];
+  [notificationCenter removeObserver:self name:v5 object:0];
 
-  v6 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v7 = [v6 distributedNotificationCenter];
-  [v7 removeObserver:self name:*MEMORY[0x1E695C3E8] object:0];
+  currentEnvironment2 = [MEMORY[0x1E69966E8] currentEnvironment];
+  distributedNotificationCenter = [currentEnvironment2 distributedNotificationCenter];
+  [distributedNotificationCenter removeObserver:self name:*MEMORY[0x1E695C3E8] object:0];
 
   [(CNUIUserActionListDataSource *)self _safeEmptyModels];
   v8.receiver = self;
@@ -172,53 +172,53 @@ uint64_t __63__CNUIUserActionListDataSource_initWithDiscoveringEnvironment___blo
   [(CNUIUserActionListDataSource *)&v8 dealloc];
 }
 
-- (void)_invalidateModelsOnExternalChange:(id)a3
+- (void)_invalidateModelsOnExternalChange:(id)change
 {
-  v4 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEFAULT))
   {
     *v6 = 0;
-    _os_log_impl(&dword_1A31E6000, v4, OS_LOG_TYPE_DEFAULT, "Invalidating contact actions in reaction to external change (FaceTime availability or Settings Default Apps)", v6, 2u);
+    _os_log_impl(&dword_1A31E6000, os_log, OS_LOG_TYPE_DEFAULT, "Invalidating contact actions in reaction to external change (FaceTime availability or Settings Default Apps)", v6, 2u);
   }
 
-  v5 = [(CNUIUserActionListDataSource *)self modeler];
-  [v5 emptyDefaultAppsCaches];
+  modeler = [(CNUIUserActionListDataSource *)self modeler];
+  [modeler emptyDefaultAppsCaches];
 
   [(CNUIUserActionListDataSource *)self _safeEmptyModels];
 }
 
 - (void)_safeEmptyModels
 {
-  v7 = [MEMORY[0x1E695DF70] array];
-  v3 = self;
-  objc_sync_enter(v3);
-  v4 = [(CNUIUserActionListDataSource *)v3 models];
-  v5 = [v4 allObjects];
-  [v7 setArray:v5];
+  array = [MEMORY[0x1E695DF70] array];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  models = [(CNUIUserActionListDataSource *)selfCopy models];
+  allObjects = [models allObjects];
+  [array setArray:allObjects];
 
-  v6 = [(CNUIUserActionListDataSource *)v3 models];
-  [v6 removeAllObjects];
+  models2 = [(CNUIUserActionListDataSource *)selfCopy models];
+  [models2 removeAllObjects];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setCacheEntryRefreshAge:(double)a3
+- (void)setCacheEntryRefreshAge:(double)age
 {
-  self->_cacheEntryRefreshAge = a3;
-  if (self->_cacheEntryExpirationAge < a3)
+  self->_cacheEntryRefreshAge = age;
+  if (self->_cacheEntryExpirationAge < age)
   {
-    self->_cacheEntryExpirationAge = a3;
+    self->_cacheEntryExpirationAge = age;
   }
 
   [(CNUIUserActionListDataSource *)self makeCacheAndTransferContents];
 }
 
-- (void)setCacheEntryExpirationAge:(double)a3
+- (void)setCacheEntryExpirationAge:(double)age
 {
-  self->_cacheEntryExpirationAge = a3;
-  if (self->_cacheEntryRefreshAge > a3)
+  self->_cacheEntryExpirationAge = age;
+  if (self->_cacheEntryRefreshAge > age)
   {
-    self->_cacheEntryRefreshAge = a3;
+    self->_cacheEntryRefreshAge = age;
   }
 
   [(CNUIUserActionListDataSource *)self makeCacheAndTransferContents];
@@ -227,11 +227,11 @@ uint64_t __63__CNUIUserActionListDataSource_initWithDiscoveringEnvironment___blo
 - (void)makeCacheAndTransferContents
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CNUIUserActionListDataSource *)v2 makeCacheWithCurrentSettings];
-  v4 = [(CNCache *)v2->_models allKeys];
-  v5 = [v4 _cn_take:v2->_cacheCapacity];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  makeCacheWithCurrentSettings = [(CNUIUserActionListDataSource *)selfCopy makeCacheWithCurrentSettings];
+  allKeys = [(CNCache *)selfCopy->_models allKeys];
+  v5 = [allKeys _cn_take:selfCopy->_cacheCapacity];
 
   v15 = 0u;
   v16 = 0u;
@@ -252,8 +252,8 @@ uint64_t __63__CNUIUserActionListDataSource_initWithDiscoveringEnvironment___blo
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [(CNCache *)v2->_models objectForKeyedSubscript:v10, v13];
-        [(CNCache *)v3 setObject:v11 forKeyedSubscript:v10];
+        v11 = [(CNCache *)selfCopy->_models objectForKeyedSubscript:v10, v13];
+        [(CNCache *)makeCacheWithCurrentSettings setObject:v11 forKeyedSubscript:v10];
       }
 
       v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -262,24 +262,24 @@ uint64_t __63__CNUIUserActionListDataSource_initWithDiscoveringEnvironment___blo
     while (v7);
   }
 
-  models = v2->_models;
-  v2->_models = v3;
+  models = selfCopy->_models;
+  selfCopy->_models = makeCacheWithCurrentSettings;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setContactStore:(id)a3
+- (void)setContactStore:(id)store
 {
-  v4 = a3;
-  v5 = [(CNUIUserActionListDataSource *)self modeler];
-  [v5 setContactStore:v4];
+  storeCopy = store;
+  modeler = [(CNUIUserActionListDataSource *)self modeler];
+  [modeler setContactStore:storeCopy];
 }
 
 + (id)allActionTypes
 {
-  v2 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v3 = [v2 featureFlags];
-  v4 = [v3 isFeatureEnabled:29];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v4 = [featureFlags isFeatureEnabled:29];
 
   if (v4)
   {
@@ -364,22 +364,22 @@ void __72__CNUIUserActionListDataSource_allSupportedActionTypesForBlockedContact
 + (id)allSupportedActionTypes
 {
   v3 = objc_alloc_init(CNCapabilities);
-  v4 = [a1 allSupportedActionTypesWithCapabilities:v3];
+  v4 = [self allSupportedActionTypesWithCapabilities:v3];
 
   return v4;
 }
 
-+ (id)allSupportedActionTypesWithCapabilities:(id)a3
++ (id)allSupportedActionTypesWithCapabilities:(id)capabilities
 {
-  v4 = a3;
-  v5 = [a1 allActionTypes];
+  capabilitiesCopy = capabilities;
+  allActionTypes = [self allActionTypes];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __72__CNUIUserActionListDataSource_allSupportedActionTypesWithCapabilities___block_invoke;
   v9[3] = &unk_1E76E7B00;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 _cn_filter:v9];
+  v10 = capabilitiesCopy;
+  v6 = capabilitiesCopy;
+  v7 = [allActionTypes _cn_filter:v9];
 
   return v7;
 }
@@ -414,33 +414,33 @@ LABEL_8:
   return v5;
 }
 
-- (id)actionTypesForConsumer:(id)a3
+- (id)actionTypesForConsumer:(id)consumer
 {
   v3 = objc_opt_class();
 
   return [v3 allActionTypes];
 }
 
-- (id)consumer:(id)a3 localizedDisplayNameForActionType:(id)a4
+- (id)consumer:(id)consumer localizedDisplayNameForActionType:(id)type
 {
-  v4 = a4;
-  v5 = [objc_opt_class() displayNameForDisambiguationForActionType:v4];
+  typeCopy = type;
+  v5 = [objc_opt_class() displayNameForDisambiguationForActionType:typeCopy];
 
   return v5;
 }
 
-- (id)consumer:(id)a3 localizedButtonDisplayNameForActionType:(id)a4
+- (id)consumer:(id)consumer localizedButtonDisplayNameForActionType:(id)type
 {
-  v4 = a4;
-  v5 = [objc_opt_class() displayNameForButtonForActionType:v4];
+  typeCopy = type;
+  v5 = [objc_opt_class() displayNameForButtonForActionType:typeCopy];
 
   return v5;
 }
 
-+ (id)displayNameForButtonForActionType:(id)a3
++ (id)displayNameForButtonForActionType:(id)type
 {
-  v3 = a3;
-  if ([*MEMORY[0x1E695C170] isEqualToString:v3])
+  typeCopy = type;
+  if ([*MEMORY[0x1E695C170] isEqualToString:typeCopy])
   {
     v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v5 = v4;
@@ -453,7 +453,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ([*MEMORY[0x1E695C178] isEqualToString:v3])
+  if ([*MEMORY[0x1E695C178] isEqualToString:typeCopy])
   {
     v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v5 = v4;
@@ -461,7 +461,7 @@ LABEL_10:
     goto LABEL_9;
   }
 
-  if ([*MEMORY[0x1E695C1B8] isEqualToString:v3])
+  if ([*MEMORY[0x1E695C1B8] isEqualToString:typeCopy])
   {
     v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v5 = v4;
@@ -469,7 +469,7 @@ LABEL_10:
     goto LABEL_9;
   }
 
-  if ([*MEMORY[0x1E695C150] isEqualToString:v3])
+  if ([*MEMORY[0x1E695C150] isEqualToString:typeCopy])
   {
     v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v5 = v4;
@@ -477,7 +477,7 @@ LABEL_10:
     goto LABEL_9;
   }
 
-  if ([*MEMORY[0x1E695C188] isEqualToString:v3])
+  if ([*MEMORY[0x1E695C188] isEqualToString:typeCopy])
   {
     v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v5 = v4;
@@ -486,7 +486,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if ([*MEMORY[0x1E695C160] isEqualToString:v3])
+  if ([*MEMORY[0x1E695C160] isEqualToString:typeCopy])
   {
     v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v5 = v4;
@@ -494,7 +494,7 @@ LABEL_10:
     goto LABEL_9;
   }
 
-  if ([*MEMORY[0x1E695C168] isEqualToString:v3])
+  if ([*MEMORY[0x1E695C168] isEqualToString:typeCopy])
   {
     v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v5 = v4;
@@ -508,10 +508,10 @@ LABEL_11:
   return v8;
 }
 
-+ (id)displayNameForDisambiguationForActionType:(id)a3
++ (id)displayNameForDisambiguationForActionType:(id)type
 {
-  v3 = a3;
-  if ([*MEMORY[0x1E695C170] isEqualToString:v3])
+  typeCopy = type;
+  if ([*MEMORY[0x1E695C170] isEqualToString:typeCopy])
   {
     v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v5 = v4;
@@ -524,7 +524,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ([*MEMORY[0x1E695C178] isEqualToString:v3])
+  if ([*MEMORY[0x1E695C178] isEqualToString:typeCopy])
   {
     v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v5 = v4;
@@ -532,7 +532,7 @@ LABEL_10:
     goto LABEL_9;
   }
 
-  if ([*MEMORY[0x1E695C1B8] isEqualToString:v3])
+  if ([*MEMORY[0x1E695C1B8] isEqualToString:typeCopy])
   {
     v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v5 = v4;
@@ -540,7 +540,7 @@ LABEL_10:
     goto LABEL_9;
   }
 
-  if ([*MEMORY[0x1E695C150] isEqualToString:v3])
+  if ([*MEMORY[0x1E695C150] isEqualToString:typeCopy])
   {
     v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v5 = v4;
@@ -548,7 +548,7 @@ LABEL_10:
     goto LABEL_9;
   }
 
-  if ([*MEMORY[0x1E695C188] isEqualToString:v3])
+  if ([*MEMORY[0x1E695C188] isEqualToString:typeCopy])
   {
     v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v5 = v4;
@@ -557,7 +557,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if ([*MEMORY[0x1E695C160] isEqualToString:v3])
+  if ([*MEMORY[0x1E695C160] isEqualToString:typeCopy])
   {
     v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v5 = v4;
@@ -565,7 +565,7 @@ LABEL_10:
     goto LABEL_9;
   }
 
-  if ([*MEMORY[0x1E695C168] isEqualToString:v3])
+  if ([*MEMORY[0x1E695C168] isEqualToString:typeCopy])
   {
     v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v5 = v4;
@@ -579,125 +579,125 @@ LABEL_11:
   return v8;
 }
 
-- (id)consumer:(id)a3 currentActionModelForContact:(id)a4 actionType:(id)a5
+- (id)consumer:(id)consumer currentActionModelForContact:(id)contact actionType:(id)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([objc_opt_class() isSupportedActionType:v10])
+  consumerCopy = consumer;
+  contactCopy = contact;
+  typeCopy = type;
+  if ([objc_opt_class() isSupportedActionType:typeCopy])
   {
-    v11 = [CNUIUserActionCacheKeyGenerator keyForContact:v9 actionType:v10];
-    v12 = self;
-    objc_sync_enter(v12);
-    v13 = [(CNUIUserActionListDataSource *)v12 models];
-    v14 = [v13 objectForKeyedSubscript:v11];
-    v15 = [v14 currentValue];
+    v11 = [CNUIUserActionCacheKeyGenerator keyForContact:contactCopy actionType:typeCopy];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    models = [(CNUIUserActionListDataSource *)selfCopy models];
+    v14 = [models objectForKeyedSubscript:v11];
+    currentValue = [v14 currentValue];
 
-    objc_sync_exit(v12);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v15 = 0;
+    currentValue = 0;
   }
 
-  return v15;
+  return currentValue;
 }
 
-- (id)consumer:(id)a3 actionModelsForContact:(id)a4 actionType:(id)a5 handler:(id)a6
+- (id)consumer:(id)consumer actionModelsForContact:(id)contact actionType:(id)type handler:(id)handler
 {
-  v9 = a6;
-  v10 = [(CNUIUserActionListDataSource *)self modelsForContact:a4 actionType:a5];
-  v11 = [MEMORY[0x1E69967A0] observerWithResultBlock:v9];
+  handlerCopy = handler;
+  v10 = [(CNUIUserActionListDataSource *)self modelsForContact:contact actionType:type];
+  v11 = [MEMORY[0x1E69967A0] observerWithResultBlock:handlerCopy];
 
   v12 = [v10 subscribe:v11];
 
   return v12;
 }
 
-- (id)modelsForContact:(id)a3 actionType:(id)a4
+- (id)modelsForContact:(id)contact actionType:(id)type
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([objc_opt_class() isSupportedActionType:v7])
+  contactCopy = contact;
+  typeCopy = type;
+  if ([objc_opt_class() isSupportedActionType:typeCopy])
   {
-    v8 = [CNUIUserActionCacheKeyGenerator keyForContact:v6 actionType:v7];
+    v8 = [CNUIUserActionCacheKeyGenerator keyForContact:contactCopy actionType:typeCopy];
     v9 = (*(*MEMORY[0x1E6996570] + 16))();
-    v10 = [objc_opt_class() os_log];
-    v11 = v10;
+    os_log = [objc_opt_class() os_log];
+    v11 = os_log;
     if (v9)
     {
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+      if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
       {
-        [CNUIUserActionListDataSource modelsForContact:v6 actionType:?];
+        [CNUIUserActionListDataSource modelsForContact:contactCopy actionType:?];
       }
 
-      v12 = [objc_opt_class() os_log];
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+      os_log2 = [objc_opt_class() os_log];
+      if (os_log_type_enabled(os_log2, OS_LOG_TYPE_DEBUG))
       {
         [CNUIUserActionListDataSource modelsForContact:actionType:];
       }
 
-      v13 = objc_alloc_init(MEMORY[0x1E6996628]);
+      emptyObservable = objc_alloc_init(MEMORY[0x1E6996628]);
       *&buf = 0;
       *(&buf + 1) = &buf;
       v43 = 0x2020000000;
       v44 = 0;
-      v14 = self;
-      objc_sync_enter(v14);
-      v15 = [(CNUIUserActionListDataSource *)v14 models];
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      models = [(CNUIUserActionListDataSource *)selfCopy models];
       v33 = MEMORY[0x1E69E9820];
       v34 = 3221225472;
       v35 = __60__CNUIUserActionListDataSource_modelsForContact_actionType___block_invoke;
       v36 = &unk_1E76E8D20;
-      v37 = v14;
+      v37 = selfCopy;
       v38 = v8;
-      v16 = v6;
+      v16 = contactCopy;
       v39 = v16;
       p_buf = &buf;
-      v17 = [v15 objectForKey:v38 onCacheMiss:&v33];
+      v17 = [models objectForKey:v38 onCacheMiss:&v33];
 
-      [v17 addDelegate:{v13, v33, v34, v35, v36, v37}];
-      objc_sync_exit(v14);
+      [v17 addDelegate:{emptyObservable, v33, v34, v35, v36, v37}];
+      objc_sync_exit(selfCopy);
 
       if (*(*(&buf + 1) + 24) == 1)
       {
-        v18 = [objc_opt_class() os_log];
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+        os_log3 = [objc_opt_class() os_log];
+        if (os_log_type_enabled(os_log3, OS_LOG_TYPE_DEBUG))
         {
           [CNUIUserActionListDataSource modelsForContact:actionType:];
         }
 
-        [(CNUIUserActionListDataSource *)v14 performFirstResolutionForEntry:v17 contact:v16 actionType:v7];
+        [(CNUIUserActionListDataSource *)selfCopy performFirstResolutionForEntry:v17 contact:v16 actionType:typeCopy];
       }
 
       else
       {
-        v22 = [(CNUIUserActionListDataSource *)v14 schedulerProvider];
-        v23 = [v22 immediateScheduler];
-        [v23 timestamp];
+        schedulerProvider = [(CNUIUserActionListDataSource *)selfCopy schedulerProvider];
+        immediateScheduler = [schedulerProvider immediateScheduler];
+        [immediateScheduler timestamp];
         v25 = v24;
         [v17 timestampOfCurrentValue];
         v27 = v26;
 
-        v28 = [objc_opt_class() os_log];
+        os_log4 = [objc_opt_class() os_log];
         v29 = v25 - v27;
-        if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
+        if (os_log_type_enabled(os_log4, OS_LOG_TYPE_DEBUG))
         {
           v30 = [MEMORY[0x1E6996858] stringForTimeInterval:v29];
-          [(CNUIUserActionListDataSource *)v30 modelsForContact:v41 actionType:v28];
+          [(CNUIUserActionListDataSource *)v30 modelsForContact:v41 actionType:os_log4];
         }
 
-        if (v14->_tracksChanges && v29 > v14->_cacheEntryRefreshAge)
+        if (selfCopy->_tracksChanges && v29 > selfCopy->_cacheEntryRefreshAge)
         {
-          v31 = [objc_opt_class() os_log];
-          if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
+          os_log5 = [objc_opt_class() os_log];
+          if (os_log_type_enabled(os_log5, OS_LOG_TYPE_DEBUG))
           {
             [CNUIUserActionListDataSource modelsForContact:actionType:];
           }
 
-          [(CNUIUserActionListDataSource *)v14 refreshEntry:v17 contact:v16 actionType:v7];
+          [(CNUIUserActionListDataSource *)selfCopy refreshEntry:v17 contact:v16 actionType:typeCopy];
         }
       }
 
@@ -706,26 +706,26 @@ LABEL_11:
 
     else
     {
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(os_log, OS_LOG_TYPE_INFO))
       {
-        v19 = [v6 shortDebugDescription];
+        shortDebugDescription = [contactCopy shortDebugDescription];
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v19;
+        *(&buf + 4) = shortDebugDescription;
         _os_log_impl(&dword_1A31E6000, v11, OS_LOG_TYPE_INFO, "Nil or empty cache key for contact: %@", &buf, 0xCu);
       }
 
       v20 = MEMORY[0x1E6996798];
       v21 = +[CNUIUserActionListModel emptyModel];
-      v13 = [v20 observableWithResult:v21];
+      emptyObservable = [v20 observableWithResult:v21];
     }
   }
 
   else
   {
-    v13 = [MEMORY[0x1E6996798] emptyObservable];
+    emptyObservable = [MEMORY[0x1E6996798] emptyObservable];
   }
 
-  return v13;
+  return emptyObservable;
 }
 
 id __60__CNUIUserActionListDataSource_modelsForContact_actionType___block_invoke(uint64_t a1)
@@ -744,118 +744,118 @@ id __60__CNUIUserActionListDataSource_modelsForContact_actionType___block_invoke
   return v5;
 }
 
-- (void)performFirstResolutionForEntry:(id)a3 contact:(id)a4 actionType:(id)a5
+- (void)performFirstResolutionForEntry:(id)entry contact:(id)contact actionType:(id)type
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 identifier];
-  v12 = [(CNUIUserActionListDataSource *)self delegates];
-  v13 = [v12 objectForKeyedSubscript:v11];
+  entryCopy = entry;
+  contactCopy = contact;
+  typeCopy = type;
+  identifier = [contactCopy identifier];
+  delegates = [(CNUIUserActionListDataSource *)self delegates];
+  v13 = [delegates objectForKeyedSubscript:identifier];
 
   if (v13)
   {
-    v14 = [(CNUIUserActionListDataSource *)self delegates];
-    v15 = [v14 objectForKeyedSubscript:v11];
-    v16 = [v15 allObjects];
+    delegates2 = [(CNUIUserActionListDataSource *)self delegates];
+    v15 = [delegates2 objectForKeyedSubscript:identifier];
+    allObjects = [v15 allObjects];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __82__CNUIUserActionListDataSource_performFirstResolutionForEntry_contact_actionType___block_invoke;
     v20[3] = &unk_1E76E8D48;
     v20[4] = self;
-    v21 = v10;
-    v22 = v11;
-    [v16 _cn_each:v20];
+    v21 = typeCopy;
+    v22 = identifier;
+    [allObjects _cn_each:v20];
   }
 
-  v17 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_INFO))
   {
-    v18 = [v9 shortDebugDescription];
+    shortDebugDescription = [contactCopy shortDebugDescription];
     *buf = 138543874;
-    v24 = v10;
+    v24 = typeCopy;
     v25 = 2112;
-    v26 = v8;
+    v26 = entryCopy;
     v27 = 2112;
-    v28 = v18;
-    _os_log_impl(&dword_1A31E6000, v17, OS_LOG_TYPE_INFO, "Will perform initial resolution of %{public}@ actions for %@ (%@)", buf, 0x20u);
+    v28 = shortDebugDescription;
+    _os_log_impl(&dword_1A31E6000, os_log, OS_LOG_TYPE_INFO, "Will perform initial resolution of %{public}@ actions for %@ (%@)", buf, 0x20u);
   }
 
-  v19 = [MEMORY[0x1E695DFB0] null];
-  [(CNUIUserActionListDataSource *)self resolveCacheEntry:v8 contact:v9 actionType:v10 defaultActionItem:v19 qualityOfService:4];
+  null = [MEMORY[0x1E695DFB0] null];
+  [(CNUIUserActionListDataSource *)self resolveCacheEntry:entryCopy contact:contactCopy actionType:typeCopy defaultActionItem:null qualityOfService:4];
 }
 
-- (void)refreshEntry:(id)a3 contact:(id)a4 actionType:(id)a5
+- (void)refreshEntry:(id)entry contact:(id)contact actionType:(id)type
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+  entryCopy = entry;
+  contactCopy = contact;
+  typeCopy = type;
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_INFO))
   {
-    v12 = [v9 shortDebugDescription];
+    shortDebugDescription = [contactCopy shortDebugDescription];
     v14 = 138543874;
-    v15 = v10;
+    v15 = typeCopy;
     v16 = 2112;
-    v17 = v8;
+    v17 = entryCopy;
     v18 = 2112;
-    v19 = v12;
-    _os_log_impl(&dword_1A31E6000, v11, OS_LOG_TYPE_INFO, "Will refresh %{public}@ actions for %@ (%@)", &v14, 0x20u);
+    v19 = shortDebugDescription;
+    _os_log_impl(&dword_1A31E6000, os_log, OS_LOG_TYPE_INFO, "Will refresh %{public}@ actions for %@ (%@)", &v14, 0x20u);
   }
 
-  v13 = [MEMORY[0x1E695DFB0] null];
-  [(CNUIUserActionListDataSource *)self resolveCacheEntry:v8 contact:v9 actionType:v10 defaultActionItem:v13 qualityOfService:0];
+  null = [MEMORY[0x1E695DFB0] null];
+  [(CNUIUserActionListDataSource *)self resolveCacheEntry:entryCopy contact:contactCopy actionType:typeCopy defaultActionItem:null qualityOfService:0];
 }
 
-- (id)thirdPartyTargetsForActionTypes:(id)a3
+- (id)thirdPartyTargetsForActionTypes:(id)types
 {
-  v4 = a3;
-  v5 = [(CNUIUserActionListDataSource *)self modeler];
-  v6 = [v5 thirdPartyTargetsForActionTypes:v4];
+  typesCopy = types;
+  modeler = [(CNUIUserActionListDataSource *)self modeler];
+  v6 = [modeler thirdPartyTargetsForActionTypes:typesCopy];
 
   return v6;
 }
 
-- (id)thirdPartyActionsForContactProperty:(id)a3
+- (id)thirdPartyActionsForContactProperty:(id)property
 {
-  v4 = a3;
-  v5 = [(CNUIUserActionListDataSource *)self modeler];
-  v6 = [v5 thirdPartyActionsForContactProperty:v4];
+  propertyCopy = property;
+  modeler = [(CNUIUserActionListDataSource *)self modeler];
+  v6 = [modeler thirdPartyActionsForContactProperty:propertyCopy];
 
   return v6;
 }
 
-- (id)thirdPartyActionsForContact:(id)a3 propertyKey:(id)a4 identifier:(id)a5
+- (id)thirdPartyActionsForContact:(id)contact propertyKey:(id)key identifier:(id)identifier
 {
-  v6 = [MEMORY[0x1E695CE08] contactPropertyWithContactNoCopy:a3 propertyKey:a4 identifier:a5];
+  v6 = [MEMORY[0x1E695CE08] contactPropertyWithContactNoCopy:contact propertyKey:key identifier:identifier];
   v7 = [(CNUIUserActionListDataSource *)self thirdPartyActionsForContactProperty:v6];
 
   return v7;
 }
 
-+ (BOOL)isSupportedActionType:(id)a3
++ (BOOL)isSupportedActionType:(id)type
 {
-  v3 = a3;
-  if ([*MEMORY[0x1E695C170] isEqualToString:v3] & 1) != 0 || (objc_msgSend(*MEMORY[0x1E695C178], "isEqualToString:", v3) & 1) != 0 || (objc_msgSend(*MEMORY[0x1E695C150], "isEqualToString:", v3) & 1) != 0 || (objc_msgSend(*MEMORY[0x1E695C1B8], "isEqualToString:", v3) & 1) != 0 || (objc_msgSend(*MEMORY[0x1E695C190], "isEqualToString:", v3) & 1) != 0 || (objc_msgSend(*MEMORY[0x1E695C1A8], "isEqualToString:", v3) & 1) != 0 || (objc_msgSend(*MEMORY[0x1E695C188], "isEqualToString:", v3) & 1) != 0 || (objc_msgSend(*MEMORY[0x1E695C160], "isEqualToString:", v3))
+  typeCopy = type;
+  if ([*MEMORY[0x1E695C170] isEqualToString:typeCopy] & 1) != 0 || (objc_msgSend(*MEMORY[0x1E695C178], "isEqualToString:", typeCopy) & 1) != 0 || (objc_msgSend(*MEMORY[0x1E695C150], "isEqualToString:", typeCopy) & 1) != 0 || (objc_msgSend(*MEMORY[0x1E695C1B8], "isEqualToString:", typeCopy) & 1) != 0 || (objc_msgSend(*MEMORY[0x1E695C190], "isEqualToString:", typeCopy) & 1) != 0 || (objc_msgSend(*MEMORY[0x1E695C1A8], "isEqualToString:", typeCopy) & 1) != 0 || (objc_msgSend(*MEMORY[0x1E695C188], "isEqualToString:", typeCopy) & 1) != 0 || (objc_msgSend(*MEMORY[0x1E695C160], "isEqualToString:", typeCopy))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [*MEMORY[0x1E695C168] isEqualToString:v3];
+    v4 = [*MEMORY[0x1E695C168] isEqualToString:typeCopy];
   }
 
   return v4;
 }
 
-- (id)actionTypesToUpdateForSelectedItem:(id)a3
+- (id)actionTypesToUpdateForSelectedItem:(id)item
 {
   v9[3] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 shouldCurateIfPerformed])
+  itemCopy = item;
+  if ([itemCopy shouldCurateIfPerformed])
   {
     v4 = *MEMORY[0x1E695C150];
     v9[0] = *MEMORY[0x1E695C178];
@@ -866,24 +866,24 @@ id __60__CNUIUserActionListDataSource_modelsForContact_actionType___block_invoke
 
   else
   {
-    v6 = [v3 type];
-    v8 = v6;
+    type = [itemCopy type];
+    v8 = type;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v8 count:1];
   }
 
   return v5;
 }
 
-- (void)consumer:(id)a3 didSelectItem:(id)a4 forContact:(id)a5 actionType:(id)a6
+- (void)consumer:(id)consumer didSelectItem:(id)item forContact:(id)contact actionType:(id)type
 {
   v42 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  if ([objc_opt_class() isSupportedActionType:v11])
+  itemCopy = item;
+  contactCopy = contact;
+  typeCopy = type;
+  if ([objc_opt_class() isSupportedActionType:typeCopy])
   {
-    v25 = v11;
-    v12 = [(CNUIUserActionListDataSource *)self actionTypesToUpdateForSelectedItem:v9];
+    v25 = typeCopy;
+    v12 = [(CNUIUserActionListDataSource *)self actionTypesToUpdateForSelectedItem:itemCopy];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -892,7 +892,7 @@ id __60__CNUIUserActionListDataSource_modelsForContact_actionType___block_invoke
     if (v28)
     {
       v27 = *v30;
-      v26 = self;
+      selfCopy = self;
       do
       {
         for (i = 0; i != v28; ++i)
@@ -903,24 +903,24 @@ id __60__CNUIUserActionListDataSource_modelsForContact_actionType___block_invoke
           }
 
           v14 = *(*(&v29 + 1) + 8 * i);
-          v15 = [CNUIUserActionCacheKeyGenerator keyForContact:v10 actionType:v14];
-          v16 = [(CNUIUserActionListDataSource *)self models];
-          v17 = [v16 objectForKey:v15];
+          v15 = [CNUIUserActionCacheKeyGenerator keyForContact:contactCopy actionType:v14];
+          models = [(CNUIUserActionListDataSource *)self models];
+          v17 = [models objectForKey:v15];
 
           if (v17)
           {
-            v18 = [v17 currentValue];
-            v19 = [v18 defaultAction];
+            currentValue = [v17 currentValue];
+            defaultAction = [currentValue defaultAction];
 
-            if (v19 != v9)
+            if (defaultAction != itemCopy)
             {
-              v20 = [objc_opt_class() os_log];
-              if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
+              os_log = [objc_opt_class() os_log];
+              if (os_log_type_enabled(os_log, OS_LOG_TYPE_INFO))
               {
-                [v10 shortDebugDescription];
-                v21 = v10;
+                [contactCopy shortDebugDescription];
+                v21 = contactCopy;
                 v22 = v12;
-                v24 = v23 = v9;
+                v24 = v23 = itemCopy;
                 *buf = 138544130;
                 v34 = v14;
                 v35 = 2112;
@@ -929,15 +929,15 @@ id __60__CNUIUserActionListDataSource_modelsForContact_actionType___block_invoke
                 v38 = v24;
                 v39 = 2112;
                 v40 = v23;
-                _os_log_impl(&dword_1A31E6000, v20, OS_LOG_TYPE_INFO, "Will refresh cache of %{public}@ actions for %@ (%@) in response to user selecting %@ action", buf, 0x2Au);
+                _os_log_impl(&dword_1A31E6000, os_log, OS_LOG_TYPE_INFO, "Will refresh cache of %{public}@ actions for %@ (%@) in response to user selecting %@ action", buf, 0x2Au);
 
-                v9 = v23;
+                itemCopy = v23;
                 v12 = v22;
-                v10 = v21;
-                self = v26;
+                contactCopy = v21;
+                self = selfCopy;
               }
 
-              [(CNUIUserActionListDataSource *)self resolveCacheEntry:v17 contact:v10 actionType:v14 defaultActionItem:v9 qualityOfService:4];
+              [(CNUIUserActionListDataSource *)self resolveCacheEntry:v17 contact:contactCopy actionType:v14 defaultActionItem:itemCopy qualityOfService:4];
             }
           }
         }
@@ -948,20 +948,20 @@ id __60__CNUIUserActionListDataSource_modelsForContact_actionType___block_invoke
       while (v28);
     }
 
-    v11 = v25;
+    typeCopy = v25;
   }
 }
 
-- (void)resolveCacheEntry:(id)a3 contact:(id)a4 actionType:(id)a5 defaultActionItem:(id)a6 qualityOfService:(unint64_t)a7
+- (void)resolveCacheEntry:(id)entry contact:(id)contact actionType:(id)type defaultActionItem:(id)item qualityOfService:(unint64_t)service
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  entryCopy = entry;
+  contactCopy = contact;
+  typeCopy = type;
+  itemCopy = item;
   v16 = self->_resolutionScheduler;
   [(CNScheduler *)v16 timestamp];
   v18 = v17;
-  v19 = [v13 identifier];
+  identifier = [contactCopy identifier];
   resolutionScheduler = self->_resolutionScheduler;
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
@@ -969,20 +969,20 @@ id __60__CNUIUserActionListDataSource_modelsForContact_actionType___block_invoke
   v27[3] = &unk_1E76E8D98;
   v35 = v18;
   v28 = v16;
-  v29 = self;
-  v30 = v14;
-  v31 = v12;
-  v32 = v13;
-  v33 = v15;
-  v36 = a7 == 4;
-  v34 = v19;
-  v21 = v19;
-  v22 = v15;
-  v23 = v13;
-  v24 = v12;
-  v25 = v14;
+  selfCopy = self;
+  v30 = typeCopy;
+  v31 = entryCopy;
+  v32 = contactCopy;
+  v33 = itemCopy;
+  v36 = service == 4;
+  v34 = identifier;
+  v21 = identifier;
+  v22 = itemCopy;
+  v23 = contactCopy;
+  v24 = entryCopy;
+  v25 = typeCopy;
   v26 = v16;
-  [(CNScheduler *)resolutionScheduler performBlock:v27 qualityOfService:a7];
+  [(CNScheduler *)resolutionScheduler performBlock:v27 qualityOfService:service];
 }
 
 void __104__CNUIUserActionListDataSource_resolveCacheEntry_contact_actionType_defaultActionItem_qualityOfService___block_invoke(uint64_t a1)
@@ -1082,15 +1082,15 @@ void __104__CNUIUserActionListDataSource_resolveCacheEntry_contact_actionType_de
   [*(a1 + 56) updateValue:v3];
 }
 
-- (id)makeModelObservableForContact:(id)a3 actionType:(id)a4 defaultActionItem:(id)a5
+- (id)makeModelObservableForContact:(id)contact actionType:(id)type defaultActionItem:(id)item
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contactCopy = contact;
+  typeCopy = type;
+  itemCopy = item;
   if ((*(*MEMORY[0x1E6996550] + 16))())
   {
-    v11 = [(CNUIUserActionListDataSource *)self modeler];
-    v12 = [v11 modelsWithContact:v8 actionType:v9 defaultActionItem:v10];
+    modeler = [(CNUIUserActionListDataSource *)self modeler];
+    v12 = [modeler modelsWithContact:contactCopy actionType:typeCopy defaultActionItem:itemCopy];
 
     v13 = MEMORY[0x1E6996798];
     v14 = +[CNUIUserActionListModel emptyModel];
@@ -1105,21 +1105,21 @@ void __104__CNUIUserActionListDataSource_resolveCacheEntry_contact_actionType_de
     v16 = [v17 observableWithResult:v14];
   }
 
-  v18 = [(CNUIUserActionListDataSource *)self schedulerProvider];
-  v19 = [v18 backgroundScheduler];
-  v20 = [v16 subscribeOn:v19];
+  schedulerProvider = [(CNUIUserActionListDataSource *)self schedulerProvider];
+  backgroundScheduler = [schedulerProvider backgroundScheduler];
+  v20 = [v16 subscribeOn:backgroundScheduler];
 
   return v20;
 }
 
-- (void)registerDelegate:(id)a3 withContactIdentifier:(id)a4
+- (void)registerDelegate:(id)delegate withContactIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNUIUserActionListDataSource *)self delegates];
-  v9 = [v8 objectForKey:v6 onCacheMiss:&__block_literal_global_119];
+  identifierCopy = identifier;
+  delegateCopy = delegate;
+  delegates = [(CNUIUserActionListDataSource *)self delegates];
+  v9 = [delegates objectForKey:identifierCopy onCacheMiss:&__block_literal_global_119];
 
-  [v9 addObject:v7];
+  [v9 addObject:delegateCopy];
 }
 
 id __71__CNUIUserActionListDataSource_registerDelegate_withContactIdentifier___block_invoke()
@@ -1129,18 +1129,18 @@ id __71__CNUIUserActionListDataSource_registerDelegate_withContactIdentifier___b
   return v0;
 }
 
-- (void)unregisterDelegate:(id)a3
+- (void)unregisterDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(CNUIUserActionListDataSource *)self delegates];
-  v6 = [v5 allObjects];
+  delegateCopy = delegate;
+  delegates = [(CNUIUserActionListDataSource *)self delegates];
+  allObjects = [delegates allObjects];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __51__CNUIUserActionListDataSource_unregisterDelegate___block_invoke;
   v8[3] = &unk_1E76E8DE0;
-  v9 = v4;
-  v7 = v4;
-  [v6 _cn_each:v8];
+  v9 = delegateCopy;
+  v7 = delegateCopy;
+  [allObjects _cn_each:v8];
 }
 
 - (void)modelsForContact:(void *)a1 actionType:.cold.1(void *a1)

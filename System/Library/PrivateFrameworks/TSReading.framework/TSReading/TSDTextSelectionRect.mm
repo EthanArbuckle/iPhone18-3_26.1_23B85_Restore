@@ -1,17 +1,17 @@
 @interface TSDTextSelectionRect
 - (CGRect)rect;
-- (TSDTextSelectionRect)initWithRect:(CGRect)a3 direction:(int64_t)a4 range:(id)a5 containsStart:(BOOL)a6 containsEnd:(BOOL)a7 isVertical:(BOOL)a8;
+- (TSDTextSelectionRect)initWithRect:(CGRect)rect direction:(int64_t)direction range:(id)range containsStart:(BOOL)start containsEnd:(BOOL)end isVertical:(BOOL)vertical;
 - (void)dealloc;
 @end
 
 @implementation TSDTextSelectionRect
 
-- (TSDTextSelectionRect)initWithRect:(CGRect)a3 direction:(int64_t)a4 range:(id)a5 containsStart:(BOOL)a6 containsEnd:(BOOL)a7 isVertical:(BOOL)a8
+- (TSDTextSelectionRect)initWithRect:(CGRect)rect direction:(int64_t)direction range:(id)range containsStart:(BOOL)start containsEnd:(BOOL)end isVertical:(BOOL)vertical
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v20.receiver = self;
   v20.super_class = TSDTextSelectionRect;
   v17 = [(TSDTextSelectionRect *)&v20 init];
@@ -22,11 +22,11 @@
     v17->_rect.origin.y = y;
     v17->_rect.size.width = width;
     v17->_rect.size.height = height;
-    v17->_writingDirection = a4;
-    v17->_range = a5;
-    v18->_containsStart = a6;
-    v18->_containsEnd = a7;
-    v18->_isVertical = a8;
+    v17->_writingDirection = direction;
+    v17->_range = range;
+    v18->_containsStart = start;
+    v18->_containsEnd = end;
+    v18->_isVertical = vertical;
   }
 
   return v18;

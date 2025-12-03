@@ -1,93 +1,93 @@
 @interface IMRuntimeUtil
-+ (BOOL)associatedBoolValueForKey:(id)a3 onObject:(id)a4 withDefault:(BOOL)a5;
-+ (double)associatedDoubleValueForKey:(id)a3 onObject:(id)a4 withDefault:(double)a5;
-+ (float)associatedFloatValueForKey:(id)a3 onObject:(id)a4 withDefault:(float)a5;
-+ (id)associatedValueForKey:(id)a3 onObject:(id)a4 withDefault:(id)a5;
-+ (int64_t)associatedIntValueForKey:(id)a3 onObject:(id)a4 withDefault:(int64_t)a5;
-+ (void)associateDoubleValue:(double)a3 forKey:(id)a4 onObject:(id)a5 withPolicy:(unint64_t)a6;
-+ (void)associateFloatValue:(float)a3 forKey:(id)a4 onObject:(id)a5 withPolicy:(unint64_t)a6;
-+ (void)associateIntValue:(int64_t)a3 forKey:(id)a4 onObject:(id)a5 withPolicy:(unint64_t)a6;
-+ (void)swizzleClassMethod:(SEL)a3 onClass:(Class)a4 withReplacementBlock:(id)a5;
-+ (void)swizzleMethod:(SEL)a3 onClass:(Class)a4 withReplacementBlock:(id)a5;
++ (BOOL)associatedBoolValueForKey:(id)key onObject:(id)object withDefault:(BOOL)default;
++ (double)associatedDoubleValueForKey:(id)key onObject:(id)object withDefault:(double)default;
++ (float)associatedFloatValueForKey:(id)key onObject:(id)object withDefault:(float)default;
++ (id)associatedValueForKey:(id)key onObject:(id)object withDefault:(id)default;
++ (int64_t)associatedIntValueForKey:(id)key onObject:(id)object withDefault:(int64_t)default;
++ (void)associateDoubleValue:(double)value forKey:(id)key onObject:(id)object withPolicy:(unint64_t)policy;
++ (void)associateFloatValue:(float)value forKey:(id)key onObject:(id)object withPolicy:(unint64_t)policy;
++ (void)associateIntValue:(int64_t)value forKey:(id)key onObject:(id)object withPolicy:(unint64_t)policy;
++ (void)swizzleClassMethod:(SEL)method onClass:(Class)class withReplacementBlock:(id)block;
++ (void)swizzleMethod:(SEL)method onClass:(Class)class withReplacementBlock:(id)block;
 @end
 
 @implementation IMRuntimeUtil
 
-+ (void)swizzleMethod:(SEL)a3 onClass:(Class)a4 withReplacementBlock:(id)a5
++ (void)swizzleMethod:(SEL)method onClass:(Class)class withReplacementBlock:(id)block
 {
-  v7 = a5;
-  if (a3)
+  blockCopy = block;
+  if (method)
   {
-    if (a4)
+    if (class)
     {
-      v12 = v7;
-      InstanceMethod = class_getInstanceMethod(a4, a3);
-      v7 = v12;
+      v12 = blockCopy;
+      InstanceMethod = class_getInstanceMethod(class, method);
+      blockCopy = v12;
       if (InstanceMethod)
       {
         Implementation = method_getImplementation(InstanceMethod);
         v10 = (*(v12 + 2))(v12, Implementation);
         TypeEncoding = method_getTypeEncoding(InstanceMethod);
-        class_replaceMethod(a4, a3, v10, TypeEncoding);
-        v7 = v12;
+        class_replaceMethod(class, method, v10, TypeEncoding);
+        blockCopy = v12;
       }
     }
   }
 }
 
-+ (void)swizzleClassMethod:(SEL)a3 onClass:(Class)a4 withReplacementBlock:(id)a5
++ (void)swizzleClassMethod:(SEL)method onClass:(Class)class withReplacementBlock:(id)block
 {
-  v7 = a5;
-  if (a3)
+  blockCopy = block;
+  if (method)
   {
-    if (a4)
+    if (class)
     {
-      v11 = v7;
-      ClassMethod = class_getClassMethod(a4, a3);
-      v7 = v11;
+      v11 = blockCopy;
+      ClassMethod = class_getClassMethod(class, method);
+      blockCopy = v11;
       if (ClassMethod)
       {
         Implementation = method_getImplementation(ClassMethod);
         v10 = (*(v11 + 2))(v11, Implementation);
         method_setImplementation(ClassMethod, v10);
-        v7 = v11;
+        blockCopy = v11;
       }
     }
   }
 }
 
-+ (void)associateIntValue:(int64_t)a3 forKey:(id)a4 onObject:(id)a5 withPolicy:(unint64_t)a6
++ (void)associateIntValue:(int64_t)value forKey:(id)key onObject:(id)object withPolicy:(unint64_t)policy
 {
   v10 = MEMORY[0x1E696AD98];
-  v11 = a5;
-  v12 = a4;
-  v13 = [v10 numberWithInteger:a3];
-  [a1 associateValue:v13 forKey:v12 onObject:v11 withPolicy:a6];
+  objectCopy = object;
+  keyCopy = key;
+  v13 = [v10 numberWithInteger:value];
+  [self associateValue:v13 forKey:keyCopy onObject:objectCopy withPolicy:policy];
 }
 
-+ (void)associateFloatValue:(float)a3 forKey:(id)a4 onObject:(id)a5 withPolicy:(unint64_t)a6
++ (void)associateFloatValue:(float)value forKey:(id)key onObject:(id)object withPolicy:(unint64_t)policy
 {
   v10 = MEMORY[0x1E696AD98];
-  v11 = a5;
-  v12 = a4;
-  *&v13 = a3;
+  objectCopy = object;
+  keyCopy = key;
+  *&v13 = value;
   v14 = [v10 numberWithFloat:v13];
-  [a1 associateValue:v14 forKey:v12 onObject:v11 withPolicy:a6];
+  [self associateValue:v14 forKey:keyCopy onObject:objectCopy withPolicy:policy];
 }
 
-+ (void)associateDoubleValue:(double)a3 forKey:(id)a4 onObject:(id)a5 withPolicy:(unint64_t)a6
++ (void)associateDoubleValue:(double)value forKey:(id)key onObject:(id)object withPolicy:(unint64_t)policy
 {
   v10 = MEMORY[0x1E696AD98];
-  v11 = a5;
-  v12 = a4;
-  v13 = [v10 numberWithDouble:a3];
-  [a1 associateValue:v13 forKey:v12 onObject:v11 withPolicy:a6];
+  objectCopy = object;
+  keyCopy = key;
+  v13 = [v10 numberWithDouble:value];
+  [self associateValue:v13 forKey:keyCopy onObject:objectCopy withPolicy:policy];
 }
 
-+ (id)associatedValueForKey:(id)a3 onObject:(id)a4 withDefault:(id)a5
++ (id)associatedValueForKey:(id)key onObject:(id)object withDefault:(id)default
 {
-  v7 = a5;
-  v8 = objc_getAssociatedObject(a4, a3);
+  defaultCopy = default;
+  v8 = objc_getAssociatedObject(object, key);
   v9 = v8;
   if (v8)
   {
@@ -96,7 +96,7 @@
 
   else
   {
-    v10 = v7;
+    v10 = defaultCopy;
   }
 
   v11 = v10;
@@ -104,54 +104,54 @@
   return v11;
 }
 
-+ (BOOL)associatedBoolValueForKey:(id)a3 onObject:(id)a4 withDefault:(BOOL)a5
++ (BOOL)associatedBoolValueForKey:(id)key onObject:(id)object withDefault:(BOOL)default
 {
-  v6 = [a1 associatedValueForKey:a3 onObject:a4];
+  v6 = [self associatedValueForKey:key onObject:object];
   v7 = v6;
   if (v6)
   {
-    a5 = [v6 BOOLValue];
+    default = [v6 BOOLValue];
   }
 
-  return a5;
+  return default;
 }
 
-+ (int64_t)associatedIntValueForKey:(id)a3 onObject:(id)a4 withDefault:(int64_t)a5
++ (int64_t)associatedIntValueForKey:(id)key onObject:(id)object withDefault:(int64_t)default
 {
-  v6 = [a1 associatedValueForKey:a3 onObject:a4];
+  v6 = [self associatedValueForKey:key onObject:object];
   v7 = v6;
   if (v6)
   {
-    a5 = [v6 integerValue];
+    default = [v6 integerValue];
   }
 
-  return a5;
+  return default;
 }
 
-+ (float)associatedFloatValueForKey:(id)a3 onObject:(id)a4 withDefault:(float)a5
++ (float)associatedFloatValueForKey:(id)key onObject:(id)object withDefault:(float)default
 {
-  v6 = [a1 associatedValueForKey:a3 onObject:a4];
+  v6 = [self associatedValueForKey:key onObject:object];
   v7 = v6;
   if (v6)
   {
     [v6 floatValue];
-    a5 = v8;
+    default = v8;
   }
 
-  return a5;
+  return default;
 }
 
-+ (double)associatedDoubleValueForKey:(id)a3 onObject:(id)a4 withDefault:(double)a5
++ (double)associatedDoubleValueForKey:(id)key onObject:(id)object withDefault:(double)default
 {
-  v6 = [a1 associatedValueForKey:a3 onObject:a4];
+  v6 = [self associatedValueForKey:key onObject:object];
   v7 = v6;
   if (v6)
   {
     [v6 doubleValue];
-    a5 = v8;
+    default = v8;
   }
 
-  return a5;
+  return default;
 }
 
 @end

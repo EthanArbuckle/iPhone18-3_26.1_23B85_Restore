@@ -1,20 +1,20 @@
 @interface HKHRFeatureStatusTestUtilities
-+ (id)evaluationWithRequirementIdentifiers:(id)a3 unsatisfiedRequirementIdentifiers:(id)a4;
++ (id)evaluationWithRequirementIdentifiers:(id)identifiers unsatisfiedRequirementIdentifiers:(id)requirementIdentifiers;
 @end
 
 @implementation HKHRFeatureStatusTestUtilities
 
-+ (id)evaluationWithRequirementIdentifiers:(id)a3 unsatisfiedRequirementIdentifiers:(id)a4
++ (id)evaluationWithRequirementIdentifiers:(id)identifiers unsatisfiedRequirementIdentifiers:(id)requirementIdentifiers
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
+  identifiersCopy = identifiers;
+  requirementIdentifiersCopy = requirementIdentifiers;
+  v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v8 = v5;
+  v8 = identifiersCopy;
   v9 = [v8 countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v9)
   {
@@ -39,13 +39,13 @@
     while (v10);
   }
 
-  if ([v6 count])
+  if ([requirementIdentifiersCopy count])
   {
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v14 = v6;
+    v14 = requirementIdentifiersCopy;
     v15 = [v14 countByEnumeratingWithState:&v28 objects:v36 count:16];
     if (v15)
     {
@@ -78,8 +78,8 @@
   }
 
   v22 = MEMORY[0x277CBEB70];
-  v23 = [v7 allKeys];
-  v24 = [v22 orderedSetWithArray:v23];
+  allKeys = [v7 allKeys];
+  v24 = [v22 orderedSetWithArray:allKeys];
 
   v25 = [objc_alloc(MEMORY[0x277CCD430]) initWithRequirementIdentifiersOrderedByPriority:v24 satisfactionByRequirementIdentifier:v7];
   v26 = *MEMORY[0x277D85DE8];

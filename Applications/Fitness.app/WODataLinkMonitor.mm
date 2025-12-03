@@ -1,8 +1,8 @@
 @interface WODataLinkMonitor
 + (WODataLinkMonitor)shared;
 - (WODataLinkMonitor)init;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation WODataLinkMonitor
@@ -19,19 +19,19 @@
   return v3;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1002C8FCC(a3, v5);
+  selfCopy = self;
+  sub_1002C8FCC(observer, selfCopy);
   swift_unknownObjectRelease();
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1002C86F8(a3);
+  selfCopy = self;
+  sub_1002C86F8(observer);
   swift_unknownObjectRelease();
 }
 

@@ -1,14 +1,14 @@
 @interface _UIMaterial
 + (_UIMaterial)_labelMaterial;
-+ (id)_solariumMaterialForColor:(id)a3 traitCollection:(id)a4;
++ (id)_solariumMaterialForColor:(id)color traitCollection:(id)collection;
 + (id)_systemGreenEffect;
-+ (id)materialForSystemColorName:(id)a3;
-+ (id)vibrancyEffectWithA:(double)a1 B:(double)a2 C:(double)a3 D:(double)a4 E:(double)a5 F:(double)a6;
-- (_UIMaterial)initWithVibrancy:(int64_t)a3 forBlurEffectStyle:(int64_t)a4;
-- (_UIMaterial)initWithVibrantVisualEffect:(id)a3;
++ (id)materialForSystemColorName:(id)name;
++ (id)vibrancyEffectWithA:(double)a B:(double)b C:(double)c D:(double)d E:(double)e F:(double)f;
+- (_UIMaterial)initWithVibrancy:(int64_t)vibrancy forBlurEffectStyle:(int64_t)style;
+- (_UIMaterial)initWithVibrantVisualEffect:(id)effect;
 - (id)description;
-- (id)initWithBlur:(id *)a1;
-- (id)initWithVisualEffect:(id *)a1;
+- (id)initWithBlur:(id *)blur;
+- (id)initWithVisualEffect:(id *)effect;
 @end
 
 @implementation _UIMaterial
@@ -38,18 +38,18 @@
   return v2;
 }
 
-+ (id)_solariumMaterialForColor:(id)a3 traitCollection:(id)a4
++ (id)_solariumMaterialForColor:(id)color traitCollection:(id)collection
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = sub_189050FD0(v5, v6);
+  colorCopy = color;
+  collectionCopy = collection;
+  v7 = sub_189050FD0(colorCopy, collectionCopy);
 
   return v7;
 }
 
-+ (id)materialForSystemColorName:(id)a3
++ (id)materialForSystemColorName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   objc_opt_self();
   if (qword_1ED49B920 != -1)
   {
@@ -57,31 +57,31 @@
   }
 
   v4 = qword_1ED49B918;
-  v5 = [v4 objectForKeyedSubscript:v3];
+  v5 = [v4 objectForKeyedSubscript:nameCopy];
 
   return v5;
 }
 
-- (id)initWithBlur:(id *)a1
+- (id)initWithBlur:(id *)blur
 {
-  v2 = a1;
-  if (a1)
+  blurCopy = blur;
+  if (blur)
   {
     v3 = [UIBlurEffect effectWithStyle:a2];
-    v2 = [(_UIMaterial *)v2 initWithVisualEffect:v3];
+    blurCopy = [(_UIMaterial *)blurCopy initWithVisualEffect:v3];
   }
 
-  return v2;
+  return blurCopy;
 }
 
-+ (id)vibrancyEffectWithA:(double)a1 B:(double)a2 C:(double)a3 D:(double)a4 E:(double)a5 F:(double)a6
++ (id)vibrancyEffectWithA:(double)a B:(double)b C:(double)c D:(double)d E:(double)e F:(double)f
 {
   objc_opt_self();
-  v12 = a1 / 100.0;
-  v13 = a2 / 100.0;
-  v14 = a3 / 100.0;
-  v15 = a4 / 100.0;
-  v16 = a5 / 100.0;
+  v12 = a / 100.0;
+  v13 = b / 100.0;
+  v14 = c / 100.0;
+  v15 = d / 100.0;
+  v16 = e / 100.0;
   v29 = v12;
   v28 = xmmword_18A67C7A0;
   v31 = v13;
@@ -95,7 +95,7 @@
   v22 = xmmword_18A67C820;
   v23 = v16;
   v24 = xmmword_18A67C830;
-  v17 = a6 / 100.0;
+  v17 = f / 100.0;
   v25 = v17;
   v26 = xmmword_18A65AB30;
   v27 = 0;
@@ -104,47 +104,47 @@
   return v18;
 }
 
-- (id)initWithVisualEffect:(id *)a1
+- (id)initWithVisualEffect:(id *)effect
 {
   v3 = a2;
-  if (a1)
+  if (effect)
   {
-    v7.receiver = a1;
+    v7.receiver = effect;
     v7.super_class = _UIMaterial;
-    a1 = objc_msgSendSuper2(&v7, sel_init);
-    if (a1)
+    effect = objc_msgSendSuper2(&v7, sel_init);
+    if (effect)
     {
       obj = 0;
       v6 = 0;
       _UIVisualEffectViewUpgradeLegacyEffect(v3, &v6, &obj);
-      objc_storeStrong(a1 + 3, obj);
-      objc_storeStrong(a1 + 2, v6);
+      objc_storeStrong(effect + 3, obj);
+      objc_storeStrong(effect + 2, v6);
     }
   }
 
-  return a1;
+  return effect;
 }
 
-- (_UIMaterial)initWithVibrancy:(int64_t)a3 forBlurEffectStyle:(int64_t)a4
+- (_UIMaterial)initWithVibrancy:(int64_t)vibrancy forBlurEffectStyle:(int64_t)style
 {
-  v6 = [UIBlurEffect effectWithStyle:a4];
-  v7 = [UIVibrancyEffect effectForBlurEffect:v6 style:a3];
+  v6 = [UIBlurEffect effectWithStyle:style];
+  v7 = [UIVibrancyEffect effectForBlurEffect:v6 style:vibrancy];
 
   v8 = [(_UIMaterial *)self initWithVibrantVisualEffect:v7];
   return v8;
 }
 
-- (_UIMaterial)initWithVibrantVisualEffect:(id)a3
+- (_UIMaterial)initWithVibrantVisualEffect:(id)effect
 {
-  v4 = a3;
+  effectCopy = effect;
   if ((_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_VibrancyDebug, @"VibrancyDebug") & 1) == 0 && byte_1ED48B1BC)
   {
     v5 = +[_UIMaterial _systemGreenEffect];
 
-    v4 = v5;
+    effectCopy = v5;
   }
 
-  v6 = [(_UIMaterial *)&self->super.isa initWithVisualEffect:v4];
+  v6 = [(_UIMaterial *)&self->super.isa initWithVisualEffect:effectCopy];
   v7 = v6;
   if (v6)
   {
@@ -159,9 +159,9 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_UIMaterial *)self contentEffects];
-  v7 = [(_UIMaterial *)self backgroundEffects];
-  v8 = [v3 stringWithFormat:@"<%@: %p contentEffects: %@, backgroundEffects: %@>", v5, self, v6, v7];;
+  contentEffects = [(_UIMaterial *)self contentEffects];
+  backgroundEffects = [(_UIMaterial *)self backgroundEffects];
+  v8 = [v3 stringWithFormat:@"<%@: %p contentEffects: %@, backgroundEffects: %@>", v5, self, contentEffects, backgroundEffects];;
 
   return v8;
 }

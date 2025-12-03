@@ -1,16 +1,16 @@
 @interface FASettingsPresetConfiguration
 + (id)BOOLKeys;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isValidBoolValue:(id)a3;
-- (BOOL)isValidTriState:(id)a3;
-- (FASettingsPresetConfiguration)initWithCoder:(id)a3;
-- (FASettingsPresetConfiguration)initWithDictionary:(id)a3;
-- (FASettingsPresetConfiguration)initWithValues:(id)a3 computedProperties:(id)a4;
-- (id)allValuesWithUserValueProvider:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isValidBoolValue:(id)value;
+- (BOOL)isValidTriState:(id)state;
+- (FASettingsPresetConfiguration)initWithCoder:(id)coder;
+- (FASettingsPresetConfiguration)initWithDictionary:(id)dictionary;
+- (FASettingsPresetConfiguration)initWithValues:(id)values computedProperties:(id)properties;
+- (id)allValuesWithUserValueProvider:(id)provider;
 - (id)description;
-- (id)presetValueForKey:(id)a3 userValueProvider:(id)a4;
-- (id)validatedValuesFromValues:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)presetValueForKey:(id)key userValueProvider:(id)provider;
+- (id)validatedValuesFromValues:(id)values;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FASettingsPresetConfiguration
@@ -34,16 +34,16 @@ uint64_t __41__FASettingsPresetConfiguration_BOOLKeys__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (FASettingsPresetConfiguration)initWithValues:(id)a3 computedProperties:(id)a4
+- (FASettingsPresetConfiguration)initWithValues:(id)values computedProperties:(id)properties
 {
-  v6 = a3;
-  v7 = a4;
+  valuesCopy = values;
+  propertiesCopy = properties;
   v17.receiver = self;
   v17.super_class = FASettingsPresetConfiguration;
   v8 = [(FASettingsPresetConfiguration *)&v17 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [valuesCopy copy];
     v10 = v9;
     v11 = MEMORY[0x1E695E0F8];
     if (v9)
@@ -58,7 +58,7 @@ uint64_t __41__FASettingsPresetConfiguration_BOOLKeys__block_invoke()
 
     objc_storeStrong(&v8->_values, v12);
 
-    v13 = [v7 copy];
+    v13 = [propertiesCopy copy];
     v14 = v13;
     if (v13)
     {
@@ -76,49 +76,49 @@ uint64_t __41__FASettingsPresetConfiguration_BOOLKeys__block_invoke()
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     values = self->_values;
-    v6 = [v4 values];
-    [(NSDictionary *)values isEqualToDictionary:v6];
+    values = [equalCopy values];
+    [(NSDictionary *)values isEqualToDictionary:values];
   }
 
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   values = self->_values;
-  v5 = a3;
-  [v5 encodeObject:values forKey:@"values"];
-  [v5 encodeObject:self->_computedProperties forKey:@"computedProperties"];
+  coderCopy = coder;
+  [coderCopy encodeObject:values forKey:@"values"];
+  [coderCopy encodeObject:self->_computedProperties forKey:@"computedProperties"];
 }
 
-- (FASettingsPresetConfiguration)initWithCoder:(id)a3
+- (FASettingsPresetConfiguration)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 setWithObject:objc_opt_class()];
   v7 = MEMORY[0x1E695DFD8];
   v8 = objc_opt_class();
   v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-  v10 = [v5 decodeDictionaryWithKeysOfClasses:v6 objectsOfClasses:v9 forKey:@"values"];
+  v10 = [coderCopy decodeDictionaryWithKeysOfClasses:v6 objectsOfClasses:v9 forKey:@"values"];
 
   v11 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
   v12 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-  v13 = [v5 decodeDictionaryWithKeysOfClasses:v11 objectsOfClasses:v12 forKey:@"computedProperties"];
+  v13 = [coderCopy decodeDictionaryWithKeysOfClasses:v11 objectsOfClasses:v12 forKey:@"computedProperties"];
 
   v14 = [(FASettingsPresetConfiguration *)self initWithValues:v10 computedProperties:v13];
   return v14;
 }
 
-- (FASettingsPresetConfiguration)initWithDictionary:(id)a3
+- (FASettingsPresetConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -129,11 +129,11 @@ uint64_t __41__FASettingsPresetConfiguration_BOOLKeys__block_invoke()
     }
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"values"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"values"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v4 objectForKeyedSubscript:@"computedProperties"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"computedProperties"];
     v8 = v7;
     v9 = MEMORY[0x1E695E0F8];
     if (v7)
@@ -150,7 +150,7 @@ uint64_t __41__FASettingsPresetConfiguration_BOOLKeys__block_invoke()
       v12 = [(FASettingsPresetConfiguration *)self validatedValuesFromValues:v6];
       self = [(FASettingsPresetConfiguration *)self initWithValues:v12 computedProperties:v11];
 
-      v13 = self;
+      selfCopy = self;
     }
 
     else
@@ -161,7 +161,7 @@ uint64_t __41__FASettingsPresetConfiguration_BOOLKeys__block_invoke()
         [FASettingsPresetConfiguration initWithDictionary:];
       }
 
-      v13 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -173,10 +173,10 @@ uint64_t __41__FASettingsPresetConfiguration_BOOLKeys__block_invoke()
       [FASettingsPresetConfiguration initWithDictionary:];
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 FASettingsPresetComputedProperty *__52__FASettingsPresetConfiguration_initWithDictionary___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -187,16 +187,16 @@ FASettingsPresetComputedProperty *__52__FASettingsPresetConfiguration_initWithDi
   return v4;
 }
 
-- (id)validatedValuesFromValues:(id)a3
+- (id)validatedValuesFromValues:(id)values
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  valuesCopy = values;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = valuesCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -246,24 +246,24 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)isValidTriState:(id)a3
+- (BOOL)isValidTriState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   objc_opt_class();
-  v4 = (objc_opt_isKindOfClass() & 1) != 0 && (![v3 integerValue] || objc_msgSend(v3, "integerValue") == 1 || objc_msgSend(v3, "integerValue") == 2);
+  v4 = (objc_opt_isKindOfClass() & 1) != 0 && (![stateCopy integerValue] || objc_msgSend(stateCopy, "integerValue") == 1 || objc_msgSend(stateCopy, "integerValue") == 2);
 
   return v4;
 }
 
-- (BOOL)isValidBoolValue:(id)a3
+- (BOOL)isValidBoolValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v3 integerValue])
+    if ([valueCopy integerValue])
     {
-      v4 = [v3 integerValue] == 1;
+      v4 = [valueCopy integerValue] == 1;
     }
 
     else
@@ -284,17 +284,17 @@ LABEL_11:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(FASettingsPresetConfiguration *)self values];
-  v6 = [v3 stringWithFormat:@"<%@: %p> ({\n values: %@\n)}", v4, self, v5];
+  values = [(FASettingsPresetConfiguration *)self values];
+  v6 = [v3 stringWithFormat:@"<%@: %p> ({\n values: %@\n)}", v4, self, values];
 
   return v6;
 }
 
-- (id)presetValueForKey:(id)a3 userValueProvider:(id)a4
+- (id)presetValueForKey:(id)key userValueProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7[2](v7, v6);
+  keyCopy = key;
+  providerCopy = provider;
+  v8 = providerCopy[2](providerCopy, keyCopy);
   v9 = v8;
   if (v8)
   {
@@ -303,8 +303,8 @@ LABEL_11:
 
   else
   {
-    v11 = [(FASettingsPresetConfiguration *)self computedProperties];
-    v12 = [v11 objectForKeyedSubscript:v6];
+    computedProperties = [(FASettingsPresetConfiguration *)self computedProperties];
+    v12 = [computedProperties objectForKeyedSubscript:keyCopy];
 
     if (v12)
     {
@@ -313,74 +313,74 @@ LABEL_11:
       v15[2] = __69__FASettingsPresetConfiguration_presetValueForKey_userValueProvider___block_invoke;
       v15[3] = &unk_1E7CA4868;
       v15[4] = self;
-      v16 = v7;
+      v16 = providerCopy;
       v10 = [v12 computedValueWithValueProvider:v15];
     }
 
     else
     {
-      v13 = [(FASettingsPresetConfiguration *)self values];
-      v10 = [v13 objectForKeyedSubscript:v6];
+      values = [(FASettingsPresetConfiguration *)self values];
+      v10 = [values objectForKeyedSubscript:keyCopy];
     }
   }
 
   return v10;
 }
 
-- (id)allValuesWithUserValueProvider:(id)a3
+- (id)allValuesWithUserValueProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  providerCopy = provider;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v6 = [MEMORY[0x1E695DFA8] set];
   v7 = MEMORY[0x1E695DFD8];
-  v8 = [(FASettingsPresetConfiguration *)self values];
-  v9 = [v8 allKeys];
-  v10 = [v7 setWithArray:v9];
-  v11 = [(FASettingsPresetConfiguration *)self computedProperties];
-  v12 = [v11 allKeys];
-  v13 = [v10 setByAddingObjectsFromArray:v12];
+  values = [(FASettingsPresetConfiguration *)self values];
+  allKeys = [values allKeys];
+  v10 = [v7 setWithArray:allKeys];
+  computedProperties = [(FASettingsPresetConfiguration *)self computedProperties];
+  allKeys2 = [computedProperties allKeys];
+  v13 = [v10 setByAddingObjectsFromArray:allKeys2];
 
-  v14 = [(FASettingsPresetConfiguration *)self values];
+  values2 = [(FASettingsPresetConfiguration *)self values];
   v31 = MEMORY[0x1E69E9820];
   v32 = 3221225472;
   v33 = __64__FASettingsPresetConfiguration_allValuesWithUserValueProvider___block_invoke;
   v34 = &unk_1E7CA4890;
-  v15 = v5;
+  v15 = dictionary;
   v35 = v15;
-  v36 = self;
-  v16 = v4;
+  selfCopy = self;
+  v16 = providerCopy;
   v38 = v16;
   v17 = v6;
   v37 = v17;
-  [v14 enumerateKeysAndObjectsUsingBlock:&v31];
+  [values2 enumerateKeysAndObjectsUsingBlock:&v31];
 
   v18 = [(FASettingsPresetConfiguration *)self computedProperties:v31];
-  v19 = [v18 allKeys];
-  v20 = [v19 mutableCopy];
+  allKeys3 = [v18 allKeys];
+  v20 = [allKeys3 mutableCopy];
 
   if ([v20 aaf_hasObjects])
   {
     do
     {
-      v21 = [v20 aaf_removeFirstObject];
-      v22 = [(FASettingsPresetConfiguration *)self computedProperties];
-      v23 = [v22 objectForKeyedSubscript:v21];
+      aaf_removeFirstObject = [v20 aaf_removeFirstObject];
+      computedProperties2 = [(FASettingsPresetConfiguration *)self computedProperties];
+      v23 = [computedProperties2 objectForKeyedSubscript:aaf_removeFirstObject];
 
-      v24 = [v23 dependencies];
-      v25 = [v24 mutableCopy];
+      dependencies = [v23 dependencies];
+      v25 = [dependencies mutableCopy];
 
       [v25 intersectSet:v13];
       v26 = [v25 isSubsetOfSet:v17];
       v27 = v20;
       if (v26)
       {
-        v28 = [(FASettingsPresetConfiguration *)self presetValueForKey:v21 userValueProvider:v16];
-        [v15 setObject:v28 forKeyedSubscript:v21];
+        v28 = [(FASettingsPresetConfiguration *)self presetValueForKey:aaf_removeFirstObject userValueProvider:v16];
+        [v15 setObject:v28 forKeyedSubscript:aaf_removeFirstObject];
 
         v27 = v17;
       }
 
-      [v27 addObject:v21];
+      [v27 addObject:aaf_removeFirstObject];
     }
 
     while (([v20 aaf_hasObjects] & 1) != 0);

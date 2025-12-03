@@ -1,13 +1,13 @@
 @interface PXRunNode
-+ (id)_defaultNodeRunnerWithQualityOfService:(int64_t)a3;
-+ (void)processGraphForRunNode:(id)a3 withQualityOfService:(int64_t)a4;
-- (PXRunNode)initWithDependencies:(id)a3;
++ (id)_defaultNodeRunnerWithQualityOfService:(int64_t)service;
++ (void)processGraphForRunNode:(id)node withQualityOfService:(int64_t)service;
+- (PXRunNode)initWithDependencies:(id)dependencies;
 - (PXRunNodeDelegate)delegate;
 - (id)newOperation;
 - (unint64_t)state;
-- (void)_performChangesToOperation:(id)a3;
-- (void)cancelWithError:(id)a3;
-- (void)completeWithError:(id)a3;
+- (void)_performChangesToOperation:(id)operation;
+- (void)cancelWithError:(id)error;
+- (void)completeWithError:(id)error;
 - (void)run;
 @end
 
@@ -20,10 +20,10 @@
   return WeakRetained;
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(PXRunNode *)self delegate];
+  errorCopy = error;
+  delegate = [(PXRunNode *)self delegate];
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -39,8 +39,8 @@
     [(PXRunNode *)self didCancel];
     if (objc_opt_respondsToSelector())
     {
-      v6 = [(PXRunNode *)self delegate];
-      [v6 runNode:self didCancelWithError:v4];
+      delegate2 = [(PXRunNode *)self delegate];
+      [delegate2 runNode:self didCancelWithError:errorCopy];
     }
   }
 
@@ -70,17 +70,17 @@ void *__29__PXRunNode_cancelWithError___block_invoke(uint64_t a1, void *a2)
 {
   if (([(PXRunNode *)self isMemberOfClass:objc_opt_class()]& 1) == 0)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PXRunNode.m" lineNumber:153 description:{@"%@ should override %s", objc_opt_class(), "-[PXRunNode run]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXRunNode.m" lineNumber:153 description:{@"%@ should override %s", objc_opt_class(), "-[PXRunNode run]"}];
   }
 
   [(PXRunNode *)self complete];
 }
 
-- (void)completeWithError:(id)a3
+- (void)completeWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(PXRunNode *)self delegate];
+  errorCopy = error;
+  delegate = [(PXRunNode *)self delegate];
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -93,7 +93,7 @@ void *__29__PXRunNode_cancelWithError___block_invoke(uint64_t a1, void *a2)
   [(PXRunNode *)self _performChangesToOperation:v6];
   if (*(v8 + 24) == 1 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v5 runNode:self didCompleteWithError:v4];
+    [delegate runNode:self didCompleteWithError:errorCopy];
   }
 
   _Block_object_dispose(&v7, 8);
@@ -147,18 +147,18 @@ id __18__PXRunNode_state__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (void)_performChangesToOperation:(id)a3
+- (void)_performChangesToOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [(PXRunNode *)self _operationLock];
-  [v5 lock];
+  operationCopy = operation;
+  _operationLock = [(PXRunNode *)self _operationLock];
+  [_operationLock lock];
 
   WeakRetained = objc_loadWeakRetained(&self->_operation);
-  v6 = v4[2](v4, WeakRetained);
+  v6 = operationCopy[2](operationCopy, WeakRetained);
 
   objc_storeWeak(&self->_operation, v6);
-  v7 = [(PXRunNode *)self _operationLock];
-  [v7 unlock];
+  _operationLock2 = [(PXRunNode *)self _operationLock];
+  [_operationLock2 unlock];
 }
 
 - (id)newOperation
@@ -200,9 +200,9 @@ id __25__PXRunNode_newOperation__block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (PXRunNode)initWithDependencies:(id)a3
+- (PXRunNode)initWithDependencies:(id)dependencies
 {
-  v4 = a3;
+  dependenciesCopy = dependencies;
   v15.receiver = self;
   v15.super_class = PXRunNode;
   v5 = [(PXRunNode *)&v15 init];
@@ -212,20 +212,20 @@ id __25__PXRunNode_newOperation__block_invoke(uint64_t a1, void *a2)
     operationLock = v5->__operationLock;
     v5->__operationLock = v6;
 
-    if (v4)
+    if (dependenciesCopy)
     {
-      v8 = [v4 copy];
+      v8 = [dependenciesCopy copy];
       dependencies = v5->_dependencies;
       v5->_dependencies = v8;
 
-      [MEMORY[0x1E695DFD8] setWithArray:v4];
+      [MEMORY[0x1E695DFD8] setWithArray:dependenciesCopy];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DEC8] array];
+      array = [MEMORY[0x1E695DEC8] array];
       v12 = v5->_dependencies;
-      v5->_dependencies = v11;
+      v5->_dependencies = array;
 
       [MEMORY[0x1E695DFD8] set];
     }
@@ -237,14 +237,14 @@ id __25__PXRunNode_newOperation__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (void)processGraphForRunNode:(id)a3 withQualityOfService:(int64_t)a4
++ (void)processGraphForRunNode:(id)node withQualityOfService:(int64_t)service
 {
-  v5 = a3;
-  v6 = [objc_opt_class() _defaultNodeRunnerWithQualityOfService:a4];
-  [v6 processGraphForRunNode:v5];
+  nodeCopy = node;
+  v6 = [objc_opt_class() _defaultNodeRunnerWithQualityOfService:service];
+  [v6 processGraphForRunNode:nodeCopy];
 }
 
-+ (id)_defaultNodeRunnerWithQualityOfService:(int64_t)a3
++ (id)_defaultNodeRunnerWithQualityOfService:(int64_t)service
 {
   if (_defaultNodeRunnerWithQualityOfService__onceToken != -1)
   {
@@ -252,15 +252,15 @@ id __25__PXRunNode_newOperation__block_invoke(uint64_t a1, void *a2)
   }
 
   v4 = _defaultNodeRunnerWithQualityOfService__nodeRunnersByQOS;
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:service];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   if (!v6)
   {
     v6 = objc_alloc_init(PXNodeRunner);
-    [(PXNodeRunner *)v6 setQualityOfService:a3];
+    [(PXNodeRunner *)v6 setQualityOfService:service];
     v7 = _defaultNodeRunnerWithQualityOfService__nodeRunnersByQOS;
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:service];
     [v7 setObject:v6 forKeyedSubscript:v8];
   }
 

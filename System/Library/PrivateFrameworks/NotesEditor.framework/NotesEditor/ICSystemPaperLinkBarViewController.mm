@@ -1,6 +1,6 @@
 @interface ICSystemPaperLinkBarViewController
-- (ICSystemPaperLinkBarViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didTapAddLinkButtonWithButton:(id)a3;
+- (ICSystemPaperLinkBarViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didTapAddLinkButtonWithButton:(id)button;
 - (void)refresh;
 - (void)viewDidLoad;
 @end
@@ -9,24 +9,24 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_215425410();
 }
 
-- (void)didTapAddLinkButtonWithButton:(id)a3
+- (void)didTapAddLinkButtonWithButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
-  sub_215426728(v4);
+  buttonCopy = button;
+  selfCopy = self;
+  sub_215426728(buttonCopy);
 }
 
 - (void)refresh
 {
-  v2 = self;
+  selfCopy = self;
   sub_2154287FC();
 }
 
-- (ICSystemPaperLinkBarViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ICSystemPaperLinkBarViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

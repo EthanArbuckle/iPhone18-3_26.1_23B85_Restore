@@ -1,18 +1,18 @@
 @interface LockdownModeManager
 - (_TtC5Setup19LockdownModeManager)init;
-- (void)acknowledgeWithCompletionHandler:(id)a3;
-- (void)enableWithStrategy:(int64_t)a3 completionHandler:(id)a4;
-- (void)fetchAccountStateWithCompletionHandler:(id)a3;
+- (void)acknowledgeWithCompletionHandler:(id)handler;
+- (void)enableWithStrategy:(int64_t)strategy completionHandler:(id)handler;
+- (void)fetchAccountStateWithCompletionHandler:(id)handler;
 @end
 
 @implementation LockdownModeManager
 
-- (void)fetchAccountStateWithCompletionHandler:(id)a3
+- (void)fetchAccountStateWithCompletionHandler:(id)handler
 {
   v5 = sub_100006410(&qword_1003A0110);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -28,18 +28,18 @@
   v12[3] = 0;
   v12[4] = &unk_100298E90;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_100063A28(0, 0, v7, &unk_100298E98, v12);
 }
 
-- (void)enableWithStrategy:(int64_t)a3 completionHandler:(id)a4
+- (void)enableWithStrategy:(int64_t)strategy completionHandler:(id)handler
 {
   v7 = sub_100006410(&qword_1003A0110);
   __chkstk_darwin(v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = strategy;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -54,16 +54,16 @@
   v14[3] = 0;
   v14[4] = &unk_100298E70;
   v14[5] = v13;
-  v15 = self;
+  selfCopy = self;
   sub_100063A28(0, 0, v9, &unk_100298E78, v14);
 }
 
-- (void)acknowledgeWithCompletionHandler:(id)a3
+- (void)acknowledgeWithCompletionHandler:(id)handler
 {
   v5 = sub_100006410(&qword_1003A0110);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -79,7 +79,7 @@
   v12[3] = 0;
   v12[4] = &unk_100297310;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_100063A28(0, 0, v7, &unk_1002979A0, v12);
 }
 

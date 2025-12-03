@@ -1,15 +1,15 @@
 @interface ASDTIOPAudioLPMicStream
-+ (id)ioServiceDependenciesForConfig:(id)a3;
-- (ASDTIOPAudioLPMicStream)initWithConfig:(id)a3 withDevice:(id)a4;
++ (id)ioServiceDependenciesForConfig:(id)config;
+- (ASDTIOPAudioLPMicStream)initWithConfig:(id)config withDevice:(id)device;
 - (BOOL)mapIOBuffer;
-- (BOOL)updateFromStreamDescription:(StreamDescription *)a3;
+- (BOOL)updateFromStreamDescription:(StreamDescription *)description;
 - (char)ioBufferRef;
 - (id).cxx_construct;
 - (id)exclavesReadInput;
 - (id)readIsolatedInputBlock;
-- (int)pmPrewarmStream:(int)a3;
-- (int)teardownIsolatedIOForUseCase:(unint64_t)a3;
-- (void)ioThreadStateChange:(id)a3;
+- (int)pmPrewarmStream:(int)stream;
+- (int)teardownIsolatedIOForUseCase:(unint64_t)case;
+- (void)ioThreadStateChange:(id)change;
 - (void)releaseIOBuffer;
 - (void)startStream;
 - (void)stopStream;
@@ -17,19 +17,19 @@
 
 @implementation ASDTIOPAudioLPMicStream
 
-+ (id)ioServiceDependenciesForConfig:(id)a3
++ (id)ioServiceDependenciesForConfig:(id)config
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 asdtExclavesBufferName];
-  v5 = [v3 asdtServiceID];
+  configCopy = config;
+  asdtExclavesBufferName = [configCopy asdtExclavesBufferName];
+  asdtServiceID = [configCopy asdtServiceID];
   v6 = off_278CE9AB8;
-  if (v4)
+  if (asdtExclavesBufferName)
   {
     v6 = off_278CE9AC8;
   }
 
-  v7 = [(__objc2_class *)*v6 dependencyForID:v5 andConfiguration:v3];
+  v7 = [(__objc2_class *)*v6 dependencyForID:asdtServiceID andConfiguration:configCopy];
   v8 = v7;
   if (v7)
   {
@@ -47,12 +47,12 @@
   return v9;
 }
 
-- (ASDTIOPAudioLPMicStream)initWithConfig:(id)a3 withDevice:(id)a4
+- (ASDTIOPAudioLPMicStream)initWithConfig:(id)config withDevice:(id)device
 {
   v74[5] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 mutableCopy];
+  configCopy = config;
+  deviceCopy = device;
+  v8 = [configCopy mutableCopy];
   v73[0] = *MEMORY[0x277CEFC58];
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
@@ -83,20 +83,20 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v19 = [v6 asdtServiceID];
-    v20 = [v6 asdtExclavesBufferName];
-    v64 = v20;
+    asdtServiceID = [configCopy asdtServiceID];
+    asdtExclavesBufferName = [configCopy asdtExclavesBufferName];
+    v64 = asdtExclavesBufferName;
     v21 = 0;
-    if (v19)
+    if (asdtServiceID)
     {
-      if (v20)
+      if (asdtExclavesBufferName)
       {
-        v22 = [(ASDTIOServiceManager *)ASDTIOPAudioIsolatedIOBufferServiceManager matchedIOServiceForID:v19];
+        v22 = [(ASDTIOServiceManager *)ASDTIOPAudioIsolatedIOBufferServiceManager matchedIOServiceForID:asdtServiceID];
       }
 
       else
       {
-        v25 = [(ASDTIOServiceManager *)ASDTIOPAudioIOBufferServiceManager matchedIOServiceForID:v19];
+        v25 = [(ASDTIOServiceManager *)ASDTIOPAudioIOBufferServiceManager matchedIOServiceForID:asdtServiceID];
         v22 = 0;
         v21 = v25;
       }
@@ -126,34 +126,34 @@
 
     v65.receiver = self;
     v65.super_class = ASDTIOPAudioLPMicStream;
-    v26 = [(ASDTExclavesStream *)&v65 initWithConfig:v8 withDevice:v7];
+    v26 = [(ASDTExclavesStream *)&v65 initWithConfig:v8 withDevice:deviceCopy];
     self = v26;
     if (v26)
     {
       [(ASDTIOPAudioLPMicStream *)v26 setIoBufferDevice:v23];
       [(ASDTIOPAudioLPMicStream *)self setIsolatedIOBufferDevice:v21];
-      v27 = [(ASDTIOPAudioLPMicStream *)self ioBufferDevice];
-      if (v27)
+      ioBufferDevice = [(ASDTIOPAudioLPMicStream *)self ioBufferDevice];
+      if (ioBufferDevice)
       {
       }
 
       else
       {
-        v31 = [(ASDTIOPAudioLPMicStream *)self isolatedIOBufferDevice];
-        v32 = v31 == 0;
+        isolatedIOBufferDevice = [(ASDTIOPAudioLPMicStream *)self isolatedIOBufferDevice];
+        v32 = isolatedIOBufferDevice == 0;
 
         if (v32)
         {
           v46 = ASDTIOPLogType();
           if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
           {
-            v59 = [(ASDTStream *)self device];
-            v63 = [v59 deviceUID];
-            v60 = [(ASDStream *)self streamName];
+            device = [(ASDTStream *)self device];
+            deviceUID = [device deviceUID];
+            streamName = [(ASDStream *)self streamName];
             *buf = 138412546;
-            v67 = v63;
+            v67 = deviceUID;
             v68 = 2112;
-            v69 = v60;
+            v69 = streamName;
             _os_log_error_impl(&dword_2416E9000, v46, OS_LOG_TYPE_ERROR, "%@:%@: No (Isolated)IOBuffer defined for this stream.", buf, 0x16u);
           }
 
@@ -161,24 +161,24 @@
         }
       }
 
-      v33 = [(ASDTIOPAudioLPMicStream *)self ioBufferDevice];
-      if (v33)
+      ioBufferDevice2 = [(ASDTIOPAudioLPMicStream *)self ioBufferDevice];
+      if (ioBufferDevice2)
       {
-        v34 = [(ASDTIOPAudioLPMicStream *)self ioBufferDevice];
-        v35 = [v34 open];
+        ioBufferDevice3 = [(ASDTIOPAudioLPMicStream *)self ioBufferDevice];
+        open = [ioBufferDevice3 open];
 
-        if ((v35 & 1) == 0)
+        if ((open & 1) == 0)
         {
           v46 = ASDTIOPLogType();
           if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
           {
-            v55 = [(ASDTStream *)self device];
-            v61 = [v55 deviceUID];
-            v56 = [(ASDStream *)self streamName];
+            device2 = [(ASDTStream *)self device];
+            deviceUID2 = [device2 deviceUID];
+            streamName2 = [(ASDStream *)self streamName];
             *buf = 138412546;
-            v67 = v61;
+            v67 = deviceUID2;
             v68 = 2112;
-            v69 = v56;
+            v69 = streamName2;
             _os_log_error_impl(&dword_2416E9000, v46, OS_LOG_TYPE_ERROR, "%@:%@: Failed to open connection to IOBuffer user client", buf, 0x16u);
           }
 
@@ -186,33 +186,33 @@
         }
       }
 
-      v36 = [(ASDTIOPAudioLPMicStream *)self isolatedIOBufferDevice];
-      v37 = v36 == 0;
+      isolatedIOBufferDevice2 = [(ASDTIOPAudioLPMicStream *)self isolatedIOBufferDevice];
+      v37 = isolatedIOBufferDevice2 == 0;
 
       if (!v37)
       {
-        v38 = [(ASDTIOPAudioLPMicStream *)self isolatedIOBufferDevice];
-        v39 = [v38 open];
+        isolatedIOBufferDevice3 = [(ASDTIOPAudioLPMicStream *)self isolatedIOBufferDevice];
+        open2 = [isolatedIOBufferDevice3 open];
 
-        if (v39)
+        if (open2)
         {
           if (![(ASDTStream *)self isolatedUseCaseID])
           {
-            v40 = [v19 identifier];
-            v41 = v40;
-            v42 = [v40 UTF8String];
-            if (v42)
+            identifier = [asdtServiceID identifier];
+            v41 = identifier;
+            uTF8String = [identifier UTF8String];
+            if (uTF8String)
             {
               v43 = 0;
               v44 = 0;
               do
               {
-                if (!*(v42 + v43))
+                if (!*(uTF8String + v43))
                 {
                   break;
                 }
 
-                v44 = *(v42 + v43++) | (v44 << 8);
+                v44 = *(uTF8String + v43++) | (v44 << 8);
               }
 
               while (v43 != 4);
@@ -227,29 +227,29 @@
             [(ASDTStream *)self setIsolatedUseCaseID:v45];
           }
 
-          v51 = [(ASDTIOPAudioLPMicStream *)self parent];
-          v52 = [v51 setupExclavesStatusTracker];
+          parent = [(ASDTIOPAudioLPMicStream *)self parent];
+          setupExclavesStatusTracker = [parent setupExclavesStatusTracker];
 
-          if (v52)
+          if (setupExclavesStatusTracker)
           {
             goto LABEL_40;
           }
 
 LABEL_41:
-          v24 = 0;
+          selfCopy = 0;
           goto LABEL_42;
         }
 
         v46 = ASDTIOPLogType();
         if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
         {
-          v57 = [(ASDTStream *)self device];
-          v62 = [v57 deviceUID];
-          v58 = [(ASDStream *)self streamName];
+          device3 = [(ASDTStream *)self device];
+          deviceUID3 = [device3 deviceUID];
+          streamName3 = [(ASDStream *)self streamName];
           *buf = 138412546;
-          v67 = v62;
+          v67 = deviceUID3;
           v68 = 2112;
-          v69 = v58;
+          v69 = streamName3;
           _os_log_error_impl(&dword_2416E9000, v46, OS_LOG_TYPE_ERROR, "%@:%@: Failed to open connection to IsolatedIOBuffer user client", buf, 0x16u);
         }
 
@@ -261,7 +261,7 @@ LABEL_36:
 
 LABEL_40:
     self = self;
-    v24 = self;
+    selfCopy = self;
 LABEL_42:
 
     goto LABEL_43;
@@ -281,60 +281,60 @@ LABEL_42:
     _os_log_error_impl(&dword_2416E9000, v23, OS_LOG_TYPE_ERROR, "%@: Bad parent device class: %@", buf, 0x16u);
   }
 
-  v24 = 0;
+  selfCopy = 0;
 LABEL_43:
 
   v53 = *MEMORY[0x277D85DE8];
-  return v24;
+  return selfCopy;
 }
 
-- (BOOL)updateFromStreamDescription:(StreamDescription *)a3
+- (BOOL)updateFromStreamDescription:(StreamDescription *)description
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [objc_alloc(MEMORY[0x277CEFB78]) initWithAudioStreamBasicDescription:a3];
-  v6 = [(ASDTIOPAudioLPMicStream *)self isolatedIOBufferDevice];
+  v5 = [objc_alloc(MEMORY[0x277CEFB78]) initWithAudioStreamBasicDescription:description];
+  isolatedIOBufferDevice = [(ASDTIOPAudioLPMicStream *)self isolatedIOBufferDevice];
 
-  if (v6)
+  if (isolatedIOBufferDevice)
   {
-    v7 = [v5 asdtEquivalentNativeFloatPacked];
+    asdtEquivalentNativeFloatPacked = [v5 asdtEquivalentNativeFloatPacked];
 
-    v5 = v7;
+    v5 = asdtEquivalentNativeFloatPacked;
   }
 
   if (v5)
   {
-    [(ASDStream *)self setLatency:a3->var9];
-    [(ASDTStream *)self setSafetyOffset:a3->var10];
+    [(ASDStream *)self setLatency:description->var9];
+    [(ASDTStream *)self setSafetyOffset:description->var10];
     v18 = v5;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v18 count:1];
     [(ASDStream *)self setPhysicalFormats:v8];
 
     [(ASDTStream *)self setPhysicalFormat:v5];
-    v9 = [(ASDTIOPAudioLPMicStream *)self isolatedIOBufferDevice];
-    if (!v9)
+    isolatedIOBufferDevice2 = [(ASDTIOPAudioLPMicStream *)self isolatedIOBufferDevice];
+    if (!isolatedIOBufferDevice2)
     {
       v12 = 1;
       goto LABEL_11;
     }
 
-    v10 = [(ASDTIOPAudioLPMicStream *)self isolatedIOBufferDevice];
-    v11 = [(ASDTIOPAudioLPMicStream *)self parent];
-    v12 = [v10 setStreamDescription:a3 withBufferFrameSize:{objc_msgSend(v11, "ioBufferSizeFrames")}];
+    isolatedIOBufferDevice3 = [(ASDTIOPAudioLPMicStream *)self isolatedIOBufferDevice];
+    parent = [(ASDTIOPAudioLPMicStream *)self parent];
+    v12 = [isolatedIOBufferDevice3 setStreamDescription:description withBufferFrameSize:{objc_msgSend(parent, "ioBufferSizeFrames")}];
   }
 
   else
   {
-    v9 = ASDTIOPLogType();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    isolatedIOBufferDevice2 = ASDTIOPLogType();
+    if (os_log_type_enabled(isolatedIOBufferDevice2, OS_LOG_TYPE_ERROR))
     {
-      v15 = [(ASDTStream *)self device];
-      v16 = [v15 deviceUID];
-      v17 = [(ASDStream *)self streamName];
+      device = [(ASDTStream *)self device];
+      deviceUID = [device deviceUID];
+      streamName = [(ASDStream *)self streamName];
       *buf = 138412546;
-      v20 = v16;
+      v20 = deviceUID;
       v21 = 2112;
-      v22 = v17;
-      _os_log_error_impl(&dword_2416E9000, v9, OS_LOG_TYPE_ERROR, "%@:%@: Failed to allocate stream format.", buf, 0x16u);
+      v22 = streamName;
+      _os_log_error_impl(&dword_2416E9000, isolatedIOBufferDevice2, OS_LOG_TYPE_ERROR, "%@:%@: Failed to allocate stream format.", buf, 0x16u);
     }
 
     v12 = 0;
@@ -347,44 +347,44 @@ LABEL_11:
 
 - (char)ioBufferRef
 {
-  v2 = [(ASDTIOPAudioLPMicStream *)self ioBufferDevice];
-  v3 = [v2 ioBufferRef];
+  ioBufferDevice = [(ASDTIOPAudioLPMicStream *)self ioBufferDevice];
+  ioBufferRef = [ioBufferDevice ioBufferRef];
 
-  return v3;
+  return ioBufferRef;
 }
 
 - (BOOL)mapIOBuffer
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [(ASDTIOPAudioLPMicStream *)self parent];
-  v4 = [v3 ioBufferSizeFrames];
+  parent = [(ASDTIOPAudioLPMicStream *)self parent];
+  ioBufferSizeFrames = [parent ioBufferSizeFrames];
 
-  v5 = [(ASDTExclavesStream *)self exclavesBufferName];
+  exclavesBufferName = [(ASDTExclavesStream *)self exclavesBufferName];
 
-  if (!v5)
+  if (!exclavesBufferName)
   {
-    v9 = [(ASDTIOPAudioLPMicStream *)self ioBufferDevice];
+    ioBufferDevice = [(ASDTIOPAudioLPMicStream *)self ioBufferDevice];
 
-    if (!v9)
+    if (!ioBufferDevice)
     {
 LABEL_17:
       result = 0;
       goto LABEL_18;
     }
 
-    v10 = [(ASDTIOPAudioLPMicStream *)self ioBufferDevice];
-    v11 = [v10 mapIOBuffer];
+    ioBufferDevice2 = [(ASDTIOPAudioLPMicStream *)self ioBufferDevice];
+    mapIOBuffer = [ioBufferDevice2 mapIOBuffer];
 
-    if (v11)
+    if (mapIOBuffer)
     {
-      v12 = [(ASDStream *)self physicalFormat];
-      v13 = [v12 bytesPerFrame];
+      physicalFormat = [(ASDStream *)self physicalFormat];
+      bytesPerFrame = [physicalFormat bytesPerFrame];
 
-      v14 = [(ASDTIOPAudioLPMicStream *)self ioBufferDevice];
-      v15 = [v14 ioBufferSize];
-      v16 = v13 * v4;
+      ioBufferDevice3 = [(ASDTIOPAudioLPMicStream *)self ioBufferDevice];
+      ioBufferSize = [ioBufferDevice3 ioBufferSize];
+      v16 = bytesPerFrame * ioBufferSizeFrames;
 
-      if (v15 >= v13 * v4)
+      if (ioBufferSize >= bytesPerFrame * ioBufferSizeFrames)
       {
         self->_ioBufferSize = v16;
         goto LABEL_4;
@@ -393,16 +393,16 @@ LABEL_17:
       v17 = ASDTIOPLogType();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v25 = [(ASDTStream *)self device];
-        v26 = [v25 deviceUID];
-        v27 = [(ASDStream *)self streamName];
-        v28 = [(ASDTIOPAudioLPMicStream *)self ioBufferDevice];
+        device = [(ASDTStream *)self device];
+        deviceUID = [device deviceUID];
+        streamName = [(ASDStream *)self streamName];
+        ioBufferDevice4 = [(ASDTIOPAudioLPMicStream *)self ioBufferDevice];
         v29 = 138413058;
-        v30 = v26;
+        v30 = deviceUID;
         v31 = 2112;
-        v32 = v27;
+        v32 = streamName;
         v33 = 1024;
-        v34 = [v28 ioBufferSize];
+        ioBufferSize2 = [ioBufferDevice4 ioBufferSize];
         v35 = 1024;
         v36 = v16;
         _os_log_error_impl(&dword_2416E9000, v17, OS_LOG_TYPE_ERROR, "%@:%@: Mapped IO buffer is too small: %u < %u", &v29, 0x22u);
@@ -414,13 +414,13 @@ LABEL_17:
       v17 = ASDTIOPLogType();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v22 = [(ASDTStream *)self device];
-        v23 = [v22 deviceUID];
-        v24 = [(ASDStream *)self streamName];
+        device2 = [(ASDTStream *)self device];
+        deviceUID2 = [device2 deviceUID];
+        streamName2 = [(ASDStream *)self streamName];
         v29 = 138412546;
-        v30 = v23;
+        v30 = deviceUID2;
         v31 = 2112;
-        v32 = v24;
+        v32 = streamName2;
         _os_log_error_impl(&dword_2416E9000, v17, OS_LOG_TYPE_ERROR, "%@:%@: Failed to map IO buffer", &v29, 0x16u);
       }
     }
@@ -430,21 +430,21 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v6 = [(ASDStream *)self physicalFormat];
-  v7 = [v6 bytesPerFrame] << 12;
+  physicalFormat2 = [(ASDStream *)self physicalFormat];
+  v7 = [physicalFormat2 bytesPerFrame] << 12;
 
   if (![(ASDTExclavesStream *)self allocExclavesAudioBuffer:v7])
   {
     v17 = ASDTIOPLogType();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v19 = [(ASDTStream *)self device];
-      v20 = [v19 deviceUID];
-      v21 = [(ASDStream *)self streamName];
+      device3 = [(ASDTStream *)self device];
+      deviceUID3 = [device3 deviceUID];
+      streamName3 = [(ASDStream *)self streamName];
       v29 = 138412546;
-      v30 = v20;
+      v30 = deviceUID3;
       v31 = 2112;
-      v32 = v21;
+      v32 = streamName3;
       _os_log_error_impl(&dword_2416E9000, v17, OS_LOG_TYPE_ERROR, "%@:%@: Failed to map exclaves named buffer", &v29, 0x16u);
     }
 
@@ -461,34 +461,34 @@ LABEL_18:
 
 - (void)releaseIOBuffer
 {
-  v3 = [(ASDTExclavesStream *)self exclavesBufferName];
+  exclavesBufferName = [(ASDTExclavesStream *)self exclavesBufferName];
 
-  if (v3)
+  if (exclavesBufferName)
   {
     [(ASDTExclavesStream *)self freeExclavesAudioBuffer];
   }
 
-  v4 = [(ASDTIOPAudioLPMicStream *)self ioBufferDevice];
+  ioBufferDevice = [(ASDTIOPAudioLPMicStream *)self ioBufferDevice];
 
-  if (v4)
+  if (ioBufferDevice)
   {
-    v5 = [(ASDTIOPAudioLPMicStream *)self ioBufferDevice];
-    [v5 releaseIOBuffer];
+    ioBufferDevice2 = [(ASDTIOPAudioLPMicStream *)self ioBufferDevice];
+    [ioBufferDevice2 releaseIOBuffer];
   }
 
   self->_ioBufferSize = 0;
 }
 
-- (int)pmPrewarmStream:(int)a3
+- (int)pmPrewarmStream:(int)stream
 {
   v9.receiver = self;
   v9.super_class = ASDTIOPAudioLPMicStream;
   result = [(ASDTStream *)&v9 pmPrewarmStream:?];
-  if (a3 == 1970304877 && !result)
+  if (stream == 1970304877 && !result)
   {
-    v6 = [(ASDTIOPAudioLPMicStream *)self isolatedIOBufferDevice];
+    isolatedIOBufferDevice = [(ASDTIOPAudioLPMicStream *)self isolatedIOBufferDevice];
 
-    if (v6 && (-[ASDTIOPAudioLPMicStream isolatedIOBufferDevice](self, "isolatedIOBufferDevice"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 setupIO], v7, (v8 & 1) == 0))
+    if (isolatedIOBufferDevice && (-[ASDTIOPAudioLPMicStream isolatedIOBufferDevice](self, "isolatedIOBufferDevice"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 setupIO], v7, (v8 & 1) == 0))
     {
       return 1852990585;
     }
@@ -502,57 +502,57 @@ LABEL_18:
   return result;
 }
 
-- (void)ioThreadStateChange:(id)a3
+- (void)ioThreadStateChange:(id)change
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 asdtIOThreadChangeIsolatedUseCase];
-  v6 = [(ASDTIOPAudioLPMicStream *)self isolatedIOBufferDevice];
+  changeCopy = change;
+  asdtIOThreadChangeIsolatedUseCase = [changeCopy asdtIOThreadChangeIsolatedUseCase];
+  isolatedIOBufferDevice = [(ASDTIOPAudioLPMicStream *)self isolatedIOBufferDevice];
 
-  if (!v6 || v5)
+  if (!isolatedIOBufferDevice || asdtIOThreadChangeIsolatedUseCase)
   {
     v24.receiver = self;
     v24.super_class = ASDTIOPAudioLPMicStream;
-    [(ASDTExclavesStream *)&v24 ioThreadStateChange:v4];
+    [(ASDTExclavesStream *)&v24 ioThreadStateChange:changeCopy];
   }
 
   else
   {
-    v7 = [(ASDTIOPAudioLPMicStream *)self parent];
-    v8 = [v7 nonSecureInputEnabled];
+    parent = [(ASDTIOPAudioLPMicStream *)self parent];
+    nonSecureInputEnabled = [parent nonSecureInputEnabled];
 
-    if (v8)
+    if (nonSecureInputEnabled)
     {
-      v9 = [v4 asdtIOThreadUseCaseIsFirstOrWasLast];
-      v10 = [v4 asdtIOThreadChangeEvent];
-      if (v10 == 1937010544)
+      asdtIOThreadUseCaseIsFirstOrWasLast = [changeCopy asdtIOThreadUseCaseIsFirstOrWasLast];
+      asdtIOThreadChangeEvent = [changeCopy asdtIOThreadChangeEvent];
+      if (asdtIOThreadChangeEvent == 1937010544)
       {
-        if (v9)
+        if (asdtIOThreadUseCaseIsFirstOrWasLast)
         {
-          v15 = [(ASDTIOPAudioLPMicStream *)self isolatedIOBufferDevice];
-          [v15 teardownClientIO:{-[ASDTStream isolatedUseCaseID](self, "isolatedUseCaseID")}];
+          isolatedIOBufferDevice2 = [(ASDTIOPAudioLPMicStream *)self isolatedIOBufferDevice];
+          [isolatedIOBufferDevice2 teardownClientIO:{-[ASDTStream isolatedUseCaseID](self, "isolatedUseCaseID")}];
         }
       }
 
-      else if (v10 == 1937011316)
+      else if (asdtIOThreadChangeEvent == 1937011316)
       {
-        if (v9)
+        if (asdtIOThreadUseCaseIsFirstOrWasLast)
         {
-          v11 = [(ASDTIOPAudioLPMicStream *)self isolatedIOBufferDevice];
-          v12 = [v11 setupClientIO:-[ASDTStream isolatedUseCaseID](self withBufferFrameSize:{"isolatedUseCaseID"), 0}];
+          isolatedIOBufferDevice3 = [(ASDTIOPAudioLPMicStream *)self isolatedIOBufferDevice];
+          v12 = [isolatedIOBufferDevice3 setupClientIO:-[ASDTStream isolatedUseCaseID](self withBufferFrameSize:{"isolatedUseCaseID"), 0}];
 
           if ((v12 & 1) == 0)
           {
             v13 = ASDTIOPLogType();
             if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
             {
-              v20 = [(ASDTStream *)self device];
-              v21 = [v20 deviceUID];
-              v22 = [(ASDStream *)self streamName];
+              device = [(ASDTStream *)self device];
+              deviceUID = [device deviceUID];
+              streamName = [(ASDStream *)self streamName];
               *buf = 138412546;
-              v26 = v21;
+              v26 = deviceUID;
               v27 = 2112;
-              v28 = v22;
+              v28 = streamName;
               _os_log_error_impl(&dword_2416E9000, v13, OS_LOG_TYPE_ERROR, "%@:%@: Failed to setup non-secure input path.", buf, 0x16u);
             }
           }
@@ -561,7 +561,7 @@ LABEL_18:
 
       v23.receiver = self;
       v23.super_class = ASDTIOPAudioLPMicStream;
-      [(ASDTExclavesStream *)&v23 ioThreadStateChange:v4];
+      [(ASDTExclavesStream *)&v23 ioThreadStateChange:changeCopy];
     }
 
     else
@@ -569,13 +569,13 @@ LABEL_18:
       v14 = ASDTIOPLogType();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v17 = [(ASDTStream *)self device];
-        v18 = [v17 deviceUID];
-        v19 = [(ASDStream *)self streamName];
+        device2 = [(ASDTStream *)self device];
+        deviceUID2 = [device2 deviceUID];
+        streamName2 = [(ASDStream *)self streamName];
         *buf = 138412546;
-        v26 = v18;
+        v26 = deviceUID2;
         v27 = 2112;
-        v28 = v19;
+        v28 = streamName2;
         _os_log_error_impl(&dword_2416E9000, v14, OS_LOG_TYPE_ERROR, "%@:%@: Non-secure input is disabled.", buf, 0x16u);
       }
     }
@@ -602,55 +602,55 @@ LABEL_18:
 - (id)exclavesReadInput
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = [(ASDStream *)self physicalFormat];
-  v4 = [v3 bytesPerFrame];
+  physicalFormat = [(ASDStream *)self physicalFormat];
+  bytesPerFrame = [physicalFormat bytesPerFrame];
 
-  v5 = [(ASDTStream *)self isolatedUseCaseID];
-  v6 = [(ASDTStream *)self device];
-  v7 = [v6 timestampPeriod];
+  isolatedUseCaseID = [(ASDTStream *)self isolatedUseCaseID];
+  device = [(ASDTStream *)self device];
+  timestampPeriod = [device timestampPeriod];
 
-  if (!v7 || !v4)
+  if (!timestampPeriod || !bytesPerFrame)
   {
     v18 = ASDTIOPLogType();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v21 = [(ASDTStream *)self device];
-      v22 = [v21 deviceUID];
-      v23 = [(ASDStream *)self streamName];
+      device2 = [(ASDTStream *)self device];
+      deviceUID = [device2 deviceUID];
+      streamName = [(ASDStream *)self streamName];
       *buf = 138413058;
-      v33 = v22;
+      v33 = deviceUID;
       v34 = 2112;
-      v35 = v23;
+      v35 = streamName;
       v36 = 1024;
-      v37 = v4;
+      v37 = bytesPerFrame;
       v38 = 1024;
-      v39 = v7;
+      v39 = timestampPeriod;
       _os_log_error_impl(&dword_2416E9000, v18, OS_LOG_TYPE_ERROR, "%@:%@: Bad stream format: Bbf: %u, period: %u", buf, 0x22u);
     }
 
     goto LABEL_13;
   }
 
-  v8 = [(ASDTExclavesStream *)self exclavesAudioBuffer];
-  if (!v8)
+  exclavesAudioBuffer = [(ASDTExclavesStream *)self exclavesAudioBuffer];
+  if (!exclavesAudioBuffer)
   {
     goto LABEL_15;
   }
 
-  v9 = v8;
-  v10 = [(ASDTExclavesStream *)self ramper];
-  if (!v10 || (v11 = v10, !v10[9]))
+  v9 = exclavesAudioBuffer;
+  ramper = [(ASDTExclavesStream *)self ramper];
+  if (!ramper || (v11 = ramper, !ramper[9]))
   {
     v18 = ASDTIOPLogType();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v24 = [(ASDTStream *)self device];
-      v25 = [v24 deviceUID];
-      v26 = [(ASDStream *)self streamName];
+      device3 = [(ASDTStream *)self device];
+      deviceUID2 = [device3 deviceUID];
+      streamName2 = [(ASDStream *)self streamName];
       *buf = 138412546;
-      v33 = v25;
+      v33 = deviceUID2;
       v34 = 2112;
-      v35 = v26;
+      v35 = streamName2;
       _os_log_error_impl(&dword_2416E9000, v18, OS_LOG_TYPE_ERROR, "%@:%@: Bad physical format; ramper is nil.", buf, 0x16u);
     }
 
@@ -659,41 +659,41 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v27 = [(ASDTStream *)self ioBufferFramesSizeMax];
-  v12 = [(ASDTStream *)self ioBufferFramesUnexpectedSizeCount];
-  v13 = [(ASDTIOPAudioLPMicStream *)self isolatedIOBufferDevice];
-  v14 = [v13 userClient];
+  ioBufferFramesSizeMax = [(ASDTStream *)self ioBufferFramesSizeMax];
+  ioBufferFramesUnexpectedSizeCount = [(ASDTStream *)self ioBufferFramesUnexpectedSizeCount];
+  isolatedIOBufferDevice = [(ASDTIOPAudioLPMicStream *)self isolatedIOBufferDevice];
+  userClient = [isolatedIOBufferDevice userClient];
 
-  if (v14)
+  if (userClient)
   {
-    v15 = [(ASDTExclavesStream *)self exclavesStatusTracker];
-    v16 = [(ASDTIOPAudioLPMicStream *)self parent];
-    v17 = [v16 nonSecureInputEnabled];
+    exclavesStatusTracker = [(ASDTExclavesStream *)self exclavesStatusTracker];
+    parent = [(ASDTIOPAudioLPMicStream *)self parent];
+    nonSecureInputEnabled = [parent nonSecureInputEnabled];
 
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __44__ASDTIOPAudioLPMicStream_exclavesReadInput__block_invoke;
     aBlock[3] = &__block_descriptor_97_e195_i40__0I8r__AudioServerPlugInIOCycleInfo_QI_AudioTimeStamp_dQdQ_SMPTETime_ssIIIssss_II__AudioTimeStamp_dQdQ_SMPTETime_ssIIIssss_II__AudioTimeStamp_dQdQ_SMPTETime_ssIIIssss_II____dd_d_12_v20_v28I36l;
-    v31 = v17;
-    aBlock[4] = v27;
+    v31 = nonSecureInputEnabled;
+    aBlock[4] = ioBufferFramesSizeMax;
     aBlock[5] = v11;
-    aBlock[6] = v12;
-    aBlock[7] = v14;
-    aBlock[8] = v5;
+    aBlock[6] = ioBufferFramesUnexpectedSizeCount;
+    aBlock[7] = userClient;
+    aBlock[8] = isolatedUseCaseID;
     aBlock[9] = v9;
-    v29 = v7;
-    v30 = v4;
-    aBlock[10] = v15;
-    v8 = _Block_copy(aBlock);
+    v29 = timestampPeriod;
+    v30 = bytesPerFrame;
+    aBlock[10] = exclavesStatusTracker;
+    exclavesAudioBuffer = _Block_copy(aBlock);
     goto LABEL_15;
   }
 
 LABEL_14:
-  v8 = 0;
+  exclavesAudioBuffer = 0;
 LABEL_15:
   v19 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return exclavesAudioBuffer;
 }
 
 uint64_t __44__ASDTIOPAudioLPMicStream_exclavesReadInput__block_invoke(uint64_t a1, unsigned int a2, uint64_t a3, uint64_t a4)
@@ -795,16 +795,16 @@ uint64_t __44__ASDTIOPAudioLPMicStream_exclavesReadInput__block_invoke(uint64_t 
 
 - (id)readIsolatedInputBlock
 {
-  v2 = [(ASDTIOPAudioLPMicStream *)self isolatedIOBufferDevice];
-  v3 = [v2 userClient];
+  isolatedIOBufferDevice = [(ASDTIOPAudioLPMicStream *)self isolatedIOBufferDevice];
+  userClient = [isolatedIOBufferDevice userClient];
 
-  if (v3)
+  if (userClient)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __49__ASDTIOPAudioLPMicStream_readIsolatedInputBlock__block_invoke;
     aBlock[3] = &__block_descriptor_40_e187_i28__0Q8I16r__AudioServerPlugInIOCycleInfo_QI_AudioTimeStamp_dQdQ_SMPTETime_ssIIIssss_II__AudioTimeStamp_dQdQ_SMPTETime_ssIIIssss_II__AudioTimeStamp_dQdQ_SMPTETime_ssIIIssss_II____dd_d_20l;
-    aBlock[4] = v3;
+    aBlock[4] = userClient;
     v4 = _Block_copy(aBlock);
   }
 
@@ -835,12 +835,12 @@ uint64_t __49__ASDTIOPAudioLPMicStream_readIsolatedInputBlock__block_invoke(uint
   }
 }
 
-- (int)teardownIsolatedIOForUseCase:(unint64_t)a3
+- (int)teardownIsolatedIOForUseCase:(unint64_t)case
 {
-  v4 = [(ASDTIOPAudioLPMicStream *)self isolatedIOBufferDevice];
-  LODWORD(a3) = [v4 teardownClientIO:a3];
+  isolatedIOBufferDevice = [(ASDTIOPAudioLPMicStream *)self isolatedIOBufferDevice];
+  LODWORD(case) = [isolatedIOBufferDevice teardownClientIO:case];
 
-  if (a3)
+  if (case)
   {
     return 0;
   }

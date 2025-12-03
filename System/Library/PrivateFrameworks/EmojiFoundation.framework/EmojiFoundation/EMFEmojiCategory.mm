@@ -1,16 +1,16 @@
 @interface EMFEmojiCategory
-+ (BOOL)_isBaseHandshakeOrHandshakeWithSkintonesEmoji:(id)a3;
-+ (BOOL)_isComposedCoupleMultiSkinToneEmoji:(id)a3;
-+ (BOOL)_isCoupleMultiSkinToneEmoji:(id)a3;
-+ (BOOL)_isDingbatsVariantEmoji:(id)a3;
-+ (BOOL)_isFlagEmoji:(id)a3;
-+ (BOOL)_isGenderEmoji:(id)a3;
-+ (BOOL)_isHandholdingCoupleEmoji:(id)a3;
-+ (BOOL)_isMultiPersonFamilySkinToneEmoji:(id)a3;
-+ (BOOL)_isNoneVariantEmoji:(id)a3;
-+ (BOOL)_isProfessionEmoji:(id)a3;
-+ (BOOL)_isSkinToneEmoji:(id)a3;
-+ (BOOL)_supportsCoupleSkinToneSelection:(id)a3;
++ (BOOL)_isBaseHandshakeOrHandshakeWithSkintonesEmoji:(id)emoji;
++ (BOOL)_isComposedCoupleMultiSkinToneEmoji:(id)emoji;
++ (BOOL)_isCoupleMultiSkinToneEmoji:(id)emoji;
++ (BOOL)_isDingbatsVariantEmoji:(id)emoji;
++ (BOOL)_isFlagEmoji:(id)emoji;
++ (BOOL)_isGenderEmoji:(id)emoji;
++ (BOOL)_isHandholdingCoupleEmoji:(id)emoji;
++ (BOOL)_isMultiPersonFamilySkinToneEmoji:(id)emoji;
++ (BOOL)_isNoneVariantEmoji:(id)emoji;
++ (BOOL)_isProfessionEmoji:(id)emoji;
++ (BOOL)_isSkinToneEmoji:(id)emoji;
++ (BOOL)_supportsCoupleSkinToneSelection:(id)selection;
 + (id)CoupleMultiSkinToneEmoji;
 + (id)DingbatsVariantEmoji;
 + (id)ExtendedCoupleMultiSkinToneEmoji;
@@ -21,21 +21,21 @@
 + (id)ProfessionEmoji;
 + (id)ProfessionWithoutSkinToneEmoji;
 + (id)SkinToneEmoji;
-+ (id)_baseLocalizationKeyForIdentifier:(id)a3;
-+ (id)_emojiSetForIdentifier:(id)a3;
++ (id)_baseLocalizationKeyForIdentifier:(id)identifier;
++ (id)_emojiSetForIdentifier:(id)identifier;
 + (id)categoryIdentifierList;
-+ (id)categoryWithIdentifier:(id)a3;
++ (id)categoryWithIdentifier:(id)identifier;
 + (id)computeEmojiFlagsSortedByLanguage;
-+ (id)extraFlagsForCountryCode:(id)a3;
-+ (id)insertionFlagsForCountryCodes:(id)a3 inSortedCountryCodes:(id)a4;
++ (id)extraFlagsForCountryCode:(id)code;
++ (id)insertionFlagsForCountryCodes:(id)codes inSortedCountryCodes:(id)countryCodes;
 + (id)localizedRecentsDescription;
 + (id)localizedSkinToneEmojiDescription;
-+ (id)stringToRegionalIndicatorString:(id)a3;
-+ (void)insertToSortedCountries:(id)a3 withAdditionalFlags:(id)a4;
-- (EMFEmojiCategory)initWithIdentifier:(id)a3;
++ (id)stringToRegionalIndicatorString:(id)string;
++ (void)insertToSortedCountries:(id)countries withAdditionalFlags:(id)flags;
+- (EMFEmojiCategory)initWithIdentifier:(id)identifier;
 - (NSString)localizedName;
 - (NSString)shortLocalizedName;
-- (id)emojiTokensForLocaleData:(id)a3;
+- (id)emojiTokensForLocaleData:(id)data;
 - (void)dealloc;
 @end
 
@@ -137,8 +137,8 @@ uint64_t __52__EMFEmojiCategory_ExtendedCoupleMultiSkinToneEmoji__block_invoke()
 - (NSString)localizedName
 {
   v3 = objc_opt_class();
-  v4 = [(EMFEmojiCategory *)self identifier];
-  v5 = [v3 _baseLocalizationKeyForIdentifier:v4];
+  identifier = [(EMFEmojiCategory *)self identifier];
+  v5 = [v3 _baseLocalizationKeyForIdentifier:identifier];
   v6 = [v5 stringByAppendingString:@" Category"];
 
   v7 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -200,72 +200,72 @@ uint64_t __40__EMFEmojiCategory_DingbatsVariantEmoji__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)categoryWithIdentifier:(id)a3
++ (id)categoryWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[self alloc] initWithIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (EMFEmojiCategory)initWithIdentifier:(id)a3
+- (EMFEmojiCategory)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = EMFEmojiCategory;
   v6 = [(EMFEmojiCategory *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
   }
 
   return v7;
 }
 
-+ (id)_baseLocalizationKeyForIdentifier:(id)a3
++ (id)_baseLocalizationKeyForIdentifier:(id)identifier
 {
-  if (a3 == @"EMFEmojiCategoryRecents")
+  if (identifier == @"EMFEmojiCategoryRecents")
   {
     return @"Frequently Used";
   }
 
-  if (a3 == @"EMFEmojiCategoryPeople")
+  if (identifier == @"EMFEmojiCategoryPeople")
   {
     return @"People";
   }
 
-  if (a3 == @"EMFEmojiCategoryNature")
+  if (identifier == @"EMFEmojiCategoryNature")
   {
     return @"Nature";
   }
 
-  if (a3 == @"EMFEmojiCategoryFoodAndDrink")
+  if (identifier == @"EMFEmojiCategoryFoodAndDrink")
   {
     return @"Food & Drink";
   }
 
-  if (a3 == @"EMFEmojiCategoryActivity")
+  if (identifier == @"EMFEmojiCategoryActivity")
   {
     return @"Activity";
   }
 
-  if (a3 == @"EMFEmojiCategoryTravelAndPlaces")
+  if (identifier == @"EMFEmojiCategoryTravelAndPlaces")
   {
     return @"Travel & Places";
   }
 
-  if (a3 == @"EMFEmojiCategoryObjects")
+  if (identifier == @"EMFEmojiCategoryObjects")
   {
     return @"Objects";
   }
 
-  if (a3 == @"EMFEmojiCategorySymbols")
+  if (identifier == @"EMFEmojiCategorySymbols")
   {
     return @"Symbols";
   }
 
-  if (a3 == @"EMFEmojiCategoryFlags")
+  if (identifier == @"EMFEmojiCategoryFlags")
   {
     return @"Flags";
   }
@@ -273,72 +273,72 @@ uint64_t __40__EMFEmojiCategory_DingbatsVariantEmoji__block_invoke()
   return 0;
 }
 
-+ (id)_emojiSetForIdentifier:(id)a3
++ (id)_emojiSetForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == @"EMFEmojiCategoryPrepopulated")
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy == @"EMFEmojiCategoryPrepopulated")
   {
-    v7 = [a1 PrepopulatedEmoji];
+    prepopulatedEmoji = [self PrepopulatedEmoji];
   }
 
-  else if (v4 == @"EMFEmojiCategoryPeople")
+  else if (identifierCopy == @"EMFEmojiCategoryPeople")
   {
-    v7 = [a1 PeopleEmoji];
+    prepopulatedEmoji = [self PeopleEmoji];
   }
 
-  else if (v4 == @"EMFEmojiCategoryNature")
+  else if (identifierCopy == @"EMFEmojiCategoryNature")
   {
-    v7 = [a1 NatureEmoji];
+    prepopulatedEmoji = [self NatureEmoji];
   }
 
-  else if (v4 == @"EMFEmojiCategoryFoodAndDrink")
+  else if (identifierCopy == @"EMFEmojiCategoryFoodAndDrink")
   {
-    v7 = [a1 FoodAndDrinkEmoji];
+    prepopulatedEmoji = [self FoodAndDrinkEmoji];
   }
 
-  else if (v4 == @"EMFEmojiCategoryActivity")
+  else if (identifierCopy == @"EMFEmojiCategoryActivity")
   {
-    v7 = [a1 ActivityEmoji];
+    prepopulatedEmoji = [self ActivityEmoji];
   }
 
-  else if (v4 == @"EMFEmojiCategoryTravelAndPlaces")
+  else if (identifierCopy == @"EMFEmojiCategoryTravelAndPlaces")
   {
-    v7 = [a1 TravelAndPlacesEmoji];
+    prepopulatedEmoji = [self TravelAndPlacesEmoji];
   }
 
-  else if (v4 == @"EMFEmojiCategoryObjects")
+  else if (identifierCopy == @"EMFEmojiCategoryObjects")
   {
-    v7 = [a1 ObjectsEmoji];
+    prepopulatedEmoji = [self ObjectsEmoji];
   }
 
-  else if (v4 == @"EMFEmojiCategorySymbols")
+  else if (identifierCopy == @"EMFEmojiCategorySymbols")
   {
-    v7 = [a1 SymbolsEmoji];
+    prepopulatedEmoji = [self SymbolsEmoji];
   }
 
-  else if (v4 == @"EMFEmojiCategoryFlags")
+  else if (identifierCopy == @"EMFEmojiCategoryFlags")
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __43__EMFEmojiCategory__emojiSetForIdentifier___block_invoke;
     v9[3] = &__block_descriptor_40_e14___NSArray_8__0l;
-    v9[4] = a1;
-    v7 = [EMFEmojiPreferences _cachedFlagCategoryEmoji:v9];
+    v9[4] = self;
+    prepopulatedEmoji = [EMFEmojiPreferences _cachedFlagCategoryEmoji:v9];
   }
 
   else
   {
-    if (v4 != @"EMFEmojiCategoryRecents")
+    if (identifierCopy != @"EMFEmojiCategoryRecents")
     {
       v6 = 0;
       goto LABEL_23;
     }
 
-    v7 = +[EMFEmojiPreferences _recentEmojiStrings];
+    prepopulatedEmoji = +[EMFEmojiPreferences _recentEmojiStrings];
   }
 
-  v6 = v7;
+  v6 = prepopulatedEmoji;
 LABEL_23:
 
   return v6;
@@ -351,48 +351,48 @@ uint64_t __43__EMFEmojiCategory__emojiSetForIdentifier___block_invoke()
   return [v0 computeEmojiFlagsSortedByLanguage];
 }
 
-+ (id)stringToRegionalIndicatorString:(id)a3
++ (id)stringToRegionalIndicatorString:(id)string
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AEC0] string];
-  if ([v3 length])
+  stringCopy = string;
+  string = [MEMORY[0x1E696AEC0] string];
+  if ([stringCopy length])
   {
     v5 = 0;
     do
     {
-      v6 = +[EMFStringUtilities _stringWithUnichar:](EMFStringUtilities, "_stringWithUnichar:", [v3 characterAtIndex:v5] + 127397);
-      v7 = [v4 stringByAppendingString:v6];
+      v6 = +[EMFStringUtilities _stringWithUnichar:](EMFStringUtilities, "_stringWithUnichar:", [stringCopy characterAtIndex:v5] + 127397);
+      v7 = [string stringByAppendingString:v6];
 
       ++v5;
-      v4 = v7;
+      string = v7;
     }
 
-    while (v5 < [v3 length]);
+    while (v5 < [stringCopy length]);
   }
 
   else
   {
-    v7 = v4;
+    v7 = string;
   }
 
   return v7;
 }
 
-+ (void)insertToSortedCountries:(id)a3 withAdditionalFlags:(id)a4
++ (void)insertToSortedCountries:(id)countries withAdditionalFlags:(id)flags
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v22 = a4;
-  v6 = [v22 allKeys];
-  v7 = [v6 sortedArrayUsingSelector:sel_compare_];
-  v8 = [v7 reverseObjectEnumerator];
-  v9 = [v8 allObjects];
+  countriesCopy = countries;
+  flagsCopy = flags;
+  allKeys = [flagsCopy allKeys];
+  v7 = [allKeys sortedArrayUsingSelector:sel_compare_];
+  reverseObjectEnumerator = [v7 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = v9;
+  v10 = allObjects;
   v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v11)
   {
@@ -408,13 +408,13 @@ uint64_t __43__EMFEmojiCategory__emojiSetForIdentifier___block_invoke()
         }
 
         v15 = *(*(&v23 + 1) + 8 * i);
-        v16 = [v15 integerValue];
-        if (v16 != 0x7FFFFFFFFFFFFFFFLL)
+        integerValue = [v15 integerValue];
+        if (integerValue != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v17 = v16;
-          if (v16 < [v5 count])
+          v17 = integerValue;
+          if (integerValue < [countriesCopy count])
           {
-            v18 = [v22 objectForKey:v15];
+            v18 = [flagsCopy objectForKey:v15];
             if ([v18 count])
             {
               v19 = 0;
@@ -422,7 +422,7 @@ uint64_t __43__EMFEmojiCategory__emojiSetForIdentifier___block_invoke()
               do
               {
                 v21 = [v18 objectAtIndex:v19];
-                [v5 insertObject:v21 atIndex:v20 + v19];
+                [countriesCopy insertObject:v21 atIndex:v20 + v19];
 
                 ++v19;
               }
@@ -440,15 +440,15 @@ uint64_t __43__EMFEmojiCategory__emojiSetForIdentifier___block_invoke()
   }
 }
 
-+ (id)extraFlagsForCountryCode:(id)a3
++ (id)extraFlagsForCountryCode:(id)code
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"JP"])
+  codeCopy = code;
+  if ([codeCopy isEqualToString:@"JP"])
   {
     v4 = &unk_1F24DF400;
   }
 
-  else if ([v3 isEqualToString:@"GB"])
+  else if ([codeCopy isEqualToString:@"GB"])
   {
     v4 = &unk_1F24DF418;
   }
@@ -461,17 +461,17 @@ uint64_t __43__EMFEmojiCategory__emojiSetForIdentifier___block_invoke()
   return v4;
 }
 
-+ (id)insertionFlagsForCountryCodes:(id)a3 inSortedCountryCodes:(id)a4
++ (id)insertionFlagsForCountryCodes:(id)codes inSortedCountryCodes:(id)countryCodes
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v20 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
+  codesCopy = codes;
+  countryCodesCopy = countryCodes;
+  v20 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(codesCopy, "count")}];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v5;
+  obj = codesCopy;
   v7 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
@@ -488,9 +488,9 @@ uint64_t __43__EMFEmojiCategory__emojiSetForIdentifier___block_invoke()
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
-        v13 = [MEMORY[0x1E695DF58] currentLocale];
-        v14 = [v13 displayNameForKey:v10 value:v12];
-        v15 = [v6 indexOfObject:v14];
+        currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+        v14 = [currentLocale displayNameForKey:v10 value:v12];
+        v15 = [countryCodesCopy indexOfObject:v14];
 
         v16 = [EMFEmojiCategory extraFlagsForCountryCode:v12];
         if (v16)
@@ -523,7 +523,7 @@ uint64_t __43__EMFEmojiCategory__emojiSetForIdentifier___block_invoke()
 
   v6 = [v5 count];
   v7 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:v6];
-  v8 = [MEMORY[0x1E695DF58] currentLocale];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -545,7 +545,7 @@ uint64_t __43__EMFEmojiCategory__emojiSetForIdentifier___block_invoke()
         }
 
         v14 = *(*(&v28 + 1) + 8 * i);
-        v15 = [v8 displayNameForKey:v12 value:v14];
+        v15 = [currentLocale displayNameForKey:v12 value:v14];
         if (v15)
         {
           v16 = v15;
@@ -556,10 +556,10 @@ uint64_t __43__EMFEmojiCategory__emojiSetForIdentifier___block_invoke()
           v17 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:@"en_US"];
 
           v16 = [v17 displayNameForKey:v12 value:v14];
-          v8 = v17;
+          currentLocale = v17;
         }
 
-        v18 = [a1 stringToRegionalIndicatorString:v14];
+        v18 = [self stringToRegionalIndicatorString:v14];
         [v7 setValue:v18 forKey:v16];
       }
 
@@ -569,16 +569,16 @@ uint64_t __43__EMFEmojiCategory__emojiSetForIdentifier___block_invoke()
     while (v10);
   }
 
-  v19 = [v7 allKeys];
-  v20 = [v19 sortedArrayUsingSelector:sel_localizedStandardCompare_];
+  allKeys = [v7 allKeys];
+  v20 = [allKeys sortedArrayUsingSelector:sel_localizedStandardCompare_];
 
   v21 = [EMFEmojiCategory insertionFlagsForCountryCodes:&unk_1F24DF430 inSortedCountryCodes:v20];
   v22 = [v7 objectsForKeys:v20 notFoundMarker:&stru_1F24C94E8];
   v23 = [v22 mutableCopy];
 
   [EMFEmojiCategory insertToSortedCountries:v23 withAdditionalFlags:v21];
-  v24 = [objc_opt_class() FlagsEmoji];
-  v25 = [v24 arrayByAddingObjectsFromArray:v23];
+  flagsEmoji = [objc_opt_class() FlagsEmoji];
+  v25 = [flagsEmoji arrayByAddingObjectsFromArray:v23];
 
   return v25;
 }
@@ -586,8 +586,8 @@ uint64_t __43__EMFEmojiCategory__emojiSetForIdentifier___block_invoke()
 - (NSString)shortLocalizedName
 {
   v3 = objc_opt_class();
-  v4 = [(EMFEmojiCategory *)self identifier];
-  v5 = [v3 _baseLocalizationKeyForIdentifier:v4];
+  identifier = [(EMFEmojiCategory *)self identifier];
+  v5 = [v3 _baseLocalizationKeyForIdentifier:identifier];
   v6 = [v5 stringByAppendingString:@" Category Fallback"];
 
   v7 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -612,15 +612,15 @@ uint64_t __43__EMFEmojiCategory__emojiSetForIdentifier___block_invoke()
   return v3;
 }
 
-- (id)emojiTokensForLocaleData:(id)a3
+- (id)emojiTokensForLocaleData:(id)data
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_opt_class();
-  v6 = [(EMFEmojiCategory *)self identifier];
-  v7 = [v5 _emojiSetForIdentifier:v6];
+  identifier = [(EMFEmojiCategory *)self identifier];
+  v7 = [v5 _emojiSetForIdentifier:identifier];
 
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -640,8 +640,8 @@ uint64_t __43__EMFEmojiCategory__emojiSetForIdentifier___block_invoke()
           objc_enumerationMutation(v9);
         }
 
-        v14 = [EMFEmojiToken emojiTokenWithString:*(*(&v16 + 1) + 8 * i) localeData:v4, v16];
-        [v8 addObject:v14];
+        v14 = [EMFEmojiToken emojiTokenWithString:*(*(&v16 + 1) + 8 * i) localeData:dataCopy, v16];
+        [array addObject:v14];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -650,122 +650,122 @@ uint64_t __43__EMFEmojiCategory__emojiSetForIdentifier___block_invoke()
     while (v11);
   }
 
-  return v8;
+  return array;
 }
 
-+ (BOOL)_isDingbatsVariantEmoji:(id)a3
++ (BOOL)_isDingbatsVariantEmoji:(id)emoji
 {
-  v4 = a3;
-  v5 = [a1 DingbatsVariantEmoji];
-  v6 = [v5 containsObject:v4];
+  emojiCopy = emoji;
+  dingbatsVariantEmoji = [self DingbatsVariantEmoji];
+  v6 = [dingbatsVariantEmoji containsObject:emojiCopy];
 
   return v6;
 }
 
-+ (BOOL)_isNoneVariantEmoji:(id)a3
++ (BOOL)_isNoneVariantEmoji:(id)emoji
 {
-  v4 = a3;
-  v5 = [a1 NoneVariantEmoji];
-  v6 = [v5 containsObject:v4];
+  emojiCopy = emoji;
+  noneVariantEmoji = [self NoneVariantEmoji];
+  v6 = [noneVariantEmoji containsObject:emojiCopy];
 
   return v6;
 }
 
-+ (BOOL)_isSkinToneEmoji:(id)a3
++ (BOOL)_isSkinToneEmoji:(id)emoji
 {
-  v4 = a3;
-  v5 = [a1 SkinToneEmoji];
-  v6 = [v5 containsObject:v4];
+  emojiCopy = emoji;
+  skinToneEmoji = [self SkinToneEmoji];
+  v6 = [skinToneEmoji containsObject:emojiCopy];
 
   return v6;
 }
 
-+ (BOOL)_isGenderEmoji:(id)a3
++ (BOOL)_isGenderEmoji:(id)emoji
 {
-  v4 = a3;
-  v5 = [a1 GenderEmoji];
-  v6 = [v5 containsObject:v4];
+  emojiCopy = emoji;
+  genderEmoji = [self GenderEmoji];
+  v6 = [genderEmoji containsObject:emojiCopy];
 
   return v6;
 }
 
-+ (BOOL)_isProfessionEmoji:(id)a3
++ (BOOL)_isProfessionEmoji:(id)emoji
 {
-  v4 = a3;
-  v5 = [a1 ProfessionEmoji];
-  v6 = [v5 containsObject:v4];
+  emojiCopy = emoji;
+  professionEmoji = [self ProfessionEmoji];
+  v6 = [professionEmoji containsObject:emojiCopy];
 
   return v6;
 }
 
-+ (BOOL)_isFlagEmoji:(id)a3
++ (BOOL)_isFlagEmoji:(id)emoji
 {
-  v4 = a3;
-  v5 = [a1 FlagsEmoji];
-  v6 = [v5 containsObject:v4];
+  emojiCopy = emoji;
+  flagsEmoji = [self FlagsEmoji];
+  v6 = [flagsEmoji containsObject:emojiCopy];
 
   return v6;
 }
 
-+ (BOOL)_supportsCoupleSkinToneSelection:(id)a3
++ (BOOL)_supportsCoupleSkinToneSelection:(id)selection
 {
-  v3 = a3;
-  v4 = ([objc_opt_class() _isHandholdingCoupleEmoji:v3] & 1) != 0 || (objc_msgSend(objc_opt_class(), "_isCoupleMultiSkinToneEmoji:", v3) & 1) != 0 || objc_msgSend(v3, "rangeOfString:options:", @"‍❤️‍", 2) != 0x7FFFFFFFFFFFFFFFLL;
+  selectionCopy = selection;
+  v4 = ([objc_opt_class() _isHandholdingCoupleEmoji:selectionCopy] & 1) != 0 || (objc_msgSend(objc_opt_class(), "_isCoupleMultiSkinToneEmoji:", selectionCopy) & 1) != 0 || objc_msgSend(selectionCopy, "rangeOfString:options:", @"‍❤️‍", 2) != 0x7FFFFFFFFFFFFFFFLL;
 
   return v4;
 }
 
-+ (BOOL)_isCoupleMultiSkinToneEmoji:(id)a3
++ (BOOL)_isCoupleMultiSkinToneEmoji:(id)emoji
 {
-  v4 = a3;
-  v5 = [a1 CoupleMultiSkinToneEmoji];
-  if ([v5 containsObject:v4])
+  emojiCopy = emoji;
+  coupleMultiSkinToneEmoji = [self CoupleMultiSkinToneEmoji];
+  if ([coupleMultiSkinToneEmoji containsObject:emojiCopy])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [a1 ExtendedCoupleMultiSkinToneEmoji];
-    if ([v7 containsObject:v4])
+    extendedCoupleMultiSkinToneEmoji = [self ExtendedCoupleMultiSkinToneEmoji];
+    if ([extendedCoupleMultiSkinToneEmoji containsObject:emojiCopy])
     {
       v6 = 1;
     }
 
     else
     {
-      v6 = [a1 _isBaseHandshakeOrHandshakeWithSkintonesEmoji:v4];
+      v6 = [self _isBaseHandshakeOrHandshakeWithSkintonesEmoji:emojiCopy];
     }
   }
 
   return v6;
 }
 
-+ (BOOL)_isHandholdingCoupleEmoji:(id)a3
++ (BOOL)_isHandholdingCoupleEmoji:(id)emoji
 {
-  v4 = a3;
-  v5 = [a1 CoupleMultiSkinToneEmoji];
-  v6 = [EMFStringUtilities _stringWithUnichar:[EMFStringUtilities _firstLongCharacterOfString:v4]];
-  v7 = ([v5 containsObject:v6] & 1) != 0 || objc_msgSend(v4, "rangeOfString:options:", @"‍🤝‍", 2) != 0x7FFFFFFFFFFFFFFFLL;
+  emojiCopy = emoji;
+  coupleMultiSkinToneEmoji = [self CoupleMultiSkinToneEmoji];
+  v6 = [EMFStringUtilities _stringWithUnichar:[EMFStringUtilities _firstLongCharacterOfString:emojiCopy]];
+  v7 = ([coupleMultiSkinToneEmoji containsObject:v6] & 1) != 0 || objc_msgSend(emojiCopy, "rangeOfString:options:", @"‍🤝‍", 2) != 0x7FFFFFFFFFFFFFFFLL;
 
   return v7;
 }
 
-+ (BOOL)_isComposedCoupleMultiSkinToneEmoji:(id)a3
++ (BOOL)_isComposedCoupleMultiSkinToneEmoji:(id)emoji
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"‍🤝‍" options:2] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v3, "rangeOfString:options:", @"‍❤️‍", 2) != 0x7FFFFFFFFFFFFFFFLL;
+  emojiCopy = emoji;
+  v4 = [emojiCopy rangeOfString:@"‍🤝‍" options:2] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(emojiCopy, "rangeOfString:options:", @"‍❤️‍", 2) != 0x7FFFFFFFFFFFFFFFLL;
 
   return v4;
 }
 
-+ (BOOL)_isBaseHandshakeOrHandshakeWithSkintonesEmoji:(id)a3
++ (BOOL)_isBaseHandshakeOrHandshakeWithSkintonesEmoji:(id)emoji
 {
-  v3 = a3;
-  if ([v3 rangeOfString:@"🤝" options:2])
+  emojiCopy = emoji;
+  if ([emojiCopy rangeOfString:@"🤝" options:2])
   {
-    v4 = [v3 rangeOfString:@"🫱" options:2];
-    v5 = [v3 rangeOfString:@"🫲" options:2];
+    v4 = [emojiCopy rangeOfString:@"🫱" options:2];
+    v5 = [emojiCopy rangeOfString:@"🫲" options:2];
     v7 = v4 != 0x7FFFFFFFFFFFFFFFLL && v5 != 0x7FFFFFFFFFFFFFFFLL;
   }
 
@@ -777,11 +777,11 @@ uint64_t __43__EMFEmojiCategory__emojiSetForIdentifier___block_invoke()
   return v7;
 }
 
-+ (BOOL)_isMultiPersonFamilySkinToneEmoji:(id)a3
++ (BOOL)_isMultiPersonFamilySkinToneEmoji:(id)emoji
 {
-  v4 = a3;
-  v5 = [a1 MultiPersonFamilySkinToneEmoji];
-  v6 = [v5 containsObject:v4];
+  emojiCopy = emoji;
+  multiPersonFamilySkinToneEmoji = [self MultiPersonFamilySkinToneEmoji];
+  v6 = [multiPersonFamilySkinToneEmoji containsObject:emojiCopy];
 
   return v6;
 }

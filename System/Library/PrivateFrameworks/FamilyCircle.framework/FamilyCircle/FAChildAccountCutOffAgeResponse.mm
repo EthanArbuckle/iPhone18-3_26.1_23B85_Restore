@@ -1,8 +1,8 @@
 @interface FAChildAccountCutOffAgeResponse
 - (FAChildAccountCutOffAgeResponse)init;
-- (FAChildAccountCutOffAgeResponse)initWithHTTPResponse:(id)a3 data:(id)a4;
-- (FAChildAccountCutOffAgeResponse)initWithHTTPResponse:(id)a3 data:(id)a4 bodyIsPlist:(BOOL)a5;
-- (FAChildAccountCutOffAgeResponse)initWithHTTPResponse:(id)a3 data:(id)a4 mediaType:(id)a5;
+- (FAChildAccountCutOffAgeResponse)initWithHTTPResponse:(id)response data:(id)data;
+- (FAChildAccountCutOffAgeResponse)initWithHTTPResponse:(id)response data:(id)data bodyIsPlist:(BOOL)plist;
+- (FAChildAccountCutOffAgeResponse)initWithHTTPResponse:(id)response data:(id)data mediaType:(id)type;
 - (NSString)childCutOffAgeLocalized;
 - (int64_t)childCutOffAge;
 @end
@@ -11,7 +11,7 @@
 
 - (NSString)childCutOffAgeLocalized
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B7104A6C();
 
   v3 = sub_1B715E070();
@@ -21,61 +21,61 @@
 
 - (int64_t)childCutOffAge
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B7104BC4();
 
   return v3;
 }
 
-- (FAChildAccountCutOffAgeResponse)initWithHTTPResponse:(id)a3 data:(id)a4
+- (FAChildAccountCutOffAgeResponse)initWithHTTPResponse:(id)response data:(id)data
 {
-  v4 = a4;
-  if (a4)
+  dataCopy = data;
+  if (data)
   {
-    v6 = a3;
-    v7 = v4;
-    v4 = sub_1B715DB50();
+    responseCopy = response;
+    v7 = dataCopy;
+    dataCopy = sub_1B715DB50();
     v9 = v8;
   }
 
   else
   {
-    v10 = a3;
+    responseCopy2 = response;
     v9 = 0xF000000000000000;
   }
 
-  return FAChildAccountCutOffAgeResponse.init(httpResponse:data:)(a3, v4, v9);
+  return FAChildAccountCutOffAgeResponse.init(httpResponse:data:)(response, dataCopy, v9);
 }
 
-- (FAChildAccountCutOffAgeResponse)initWithHTTPResponse:(id)a3 data:(id)a4 bodyIsPlist:(BOOL)a5
+- (FAChildAccountCutOffAgeResponse)initWithHTTPResponse:(id)response data:(id)data bodyIsPlist:(BOOL)plist
 {
-  v6 = a4;
-  if (a4)
+  dataCopy = data;
+  if (data)
   {
-    v8 = a3;
-    v9 = v6;
-    v6 = sub_1B715DB50();
+    responseCopy = response;
+    v9 = dataCopy;
+    dataCopy = sub_1B715DB50();
     v11 = v10;
   }
 
   else
   {
-    v12 = a3;
+    responseCopy2 = response;
     v11 = 0xF000000000000000;
   }
 
-  return FAChildAccountCutOffAgeResponse.init(httpResponse:data:bodyIsPlist:)(a3, v6, v11, a5);
+  return FAChildAccountCutOffAgeResponse.init(httpResponse:data:bodyIsPlist:)(response, dataCopy, v11, plist);
 }
 
-- (FAChildAccountCutOffAgeResponse)initWithHTTPResponse:(id)a3 data:(id)a4 mediaType:(id)a5
+- (FAChildAccountCutOffAgeResponse)initWithHTTPResponse:(id)response data:(id)data mediaType:(id)type
 {
-  v6 = a4;
-  if (!a4)
+  dataCopy = data;
+  if (!data)
   {
-    v16 = a3;
-    v17 = a5;
+    responseCopy = response;
+    typeCopy = type;
     v12 = 0xF000000000000000;
-    if (a5)
+    if (type)
     {
       goto LABEL_3;
     }
@@ -83,16 +83,16 @@
 LABEL_5:
     v13 = 0;
     v15 = 0;
-    return FAChildAccountCutOffAgeResponse.init(httpResponse:data:mediaType:)(a3, v6, v12, v13, v15);
+    return FAChildAccountCutOffAgeResponse.init(httpResponse:data:mediaType:)(response, dataCopy, v12, v13, v15);
   }
 
-  v8 = a3;
-  v9 = a5;
-  v10 = v6;
-  v6 = sub_1B715DB50();
+  responseCopy2 = response;
+  typeCopy2 = type;
+  v10 = dataCopy;
+  dataCopy = sub_1B715DB50();
   v12 = v11;
 
-  if (!a5)
+  if (!type)
   {
     goto LABEL_5;
   }
@@ -101,7 +101,7 @@ LABEL_3:
   v13 = sub_1B715E0A0();
   v15 = v14;
 
-  return FAChildAccountCutOffAgeResponse.init(httpResponse:data:mediaType:)(a3, v6, v12, v13, v15);
+  return FAChildAccountCutOffAgeResponse.init(httpResponse:data:mediaType:)(response, dataCopy, v12, v13, v15);
 }
 
 - (FAChildAccountCutOffAgeResponse)init

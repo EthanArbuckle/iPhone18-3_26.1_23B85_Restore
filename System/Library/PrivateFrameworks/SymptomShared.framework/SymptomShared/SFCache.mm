@@ -1,13 +1,13 @@
 @interface SFCache
 - (SFCache)init;
-- (SFCache)initWithPolicy:(unint64_t)a3;
-- (SFCache)initWithPolicy:(unint64_t)a3 timeToLive:(double)a4 size:(unint64_t)a5;
-- (id)_entryForKey:(id)a3;
-- (id)entryForKey:(id)a3;
+- (SFCache)initWithPolicy:(unint64_t)policy;
+- (SFCache)initWithPolicy:(unint64_t)policy timeToLive:(double)live size:(unint64_t)size;
+- (id)_entryForKey:(id)key;
+- (id)entryForKey:(id)key;
 - (unint64_t)count;
-- (void)_insertCacheEntry:(id)a3 forKey:(id)a4;
-- (void)_removeCacheEntryWithKey:(id)a3;
-- (void)addEntry:(id)a3 forKey:(id)a4;
+- (void)_insertCacheEntry:(id)entry forKey:(id)key;
+- (void)_removeCacheEntryWithKey:(id)key;
+- (void)addEntry:(id)entry forKey:(id)key;
 @end
 
 @implementation SFCache
@@ -19,17 +19,17 @@
   return v3;
 }
 
-- (SFCache)initWithPolicy:(unint64_t)a3
+- (SFCache)initWithPolicy:(unint64_t)policy
 {
-  v4 = [[SFCache alloc] initWithPolicy:a3 timeToLive:10 size:0.0];
+  v4 = [[SFCache alloc] initWithPolicy:policy timeToLive:10 size:0.0];
 
   return v4;
 }
 
-- (SFCache)initWithPolicy:(unint64_t)a3 timeToLive:(double)a4 size:(unint64_t)a5
+- (SFCache)initWithPolicy:(unint64_t)policy timeToLive:(double)live size:(unint64_t)size
 {
-  v5 = a5;
-  if (a5)
+  selfCopy = size;
+  if (size)
   {
     v13.receiver = self;
     v13.super_class = SFCache;
@@ -37,39 +37,39 @@
     v9 = v8;
     if (v8)
     {
-      v8->_cachePolicy = a3;
-      v8->_cacheSize = v5;
-      v8->_entryTimeToLive = a4;
+      v8->_cachePolicy = policy;
+      v8->_cacheSize = selfCopy;
+      v8->_entryTimeToLive = live;
       v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
       cacheEntries = v9->_cacheEntries;
       v9->_cacheEntries = v10;
     }
 
     self = v9;
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)_entryForKey:(id)a3
+- (id)_entryForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = self->_cacheEntries;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_cacheEntries objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->_cacheEntries objectForKeyedSubscript:keyCopy];
   v7 = v6;
   if (v6)
   {
     if (self->_entryTimeToLive == 0.0 || ([v6 lastUsed], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "timeIntervalSinceNow"), v10 = v9, v11 = -self->_entryTimeToLive, v8, v10 > v11))
     {
-      v12 = [MEMORY[0x277CBEAA8] date];
-      [v7 setLastUsed:v12];
+      date = [MEMORY[0x277CBEAA8] date];
+      [v7 setLastUsed:date];
     }
 
     else
     {
-      v12 = v7;
+      date = v7;
       v7 = 0;
     }
   }
@@ -79,10 +79,10 @@
   return v7;
 }
 
-- (void)_insertCacheEntry:(id)a3 forKey:(id)a4
+- (void)_insertCacheEntry:(id)entry forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  entryCopy = entry;
+  keyCopy = key;
   v8 = self->_cacheEntries;
   objc_sync_enter(v8);
   if ([(NSMutableDictionary *)self->_cacheEntries count]>= self->_cacheSize)
@@ -100,7 +100,7 @@
       v15 = 3221225472;
       v16 = __36__SFCache__insertCacheEntry_forKey___block_invoke;
       v17 = &unk_278986860;
-      v18 = self;
+      selfCopy = self;
       v11 = v9;
       v19 = v11;
       [(NSMutableDictionary *)cacheEntries enumerateKeysAndObjectsUsingBlock:&v14];
@@ -125,7 +125,7 @@
     }
   }
 
-  [(NSMutableDictionary *)self->_cacheEntries setObject:v6 forKeyedSubscript:v7, v14, v15, v16, v17, v18];
+  [(NSMutableDictionary *)self->_cacheEntries setObject:entryCopy forKeyedSubscript:keyCopy, v14, v15, v16, v17, selfCopy];
   objc_sync_exit(v8);
 }
 
@@ -153,12 +153,12 @@ uint64_t __36__SFCache__insertCacheEntry_forKey___block_invoke_2(uint64_t a1, vo
   return v7;
 }
 
-- (void)_removeCacheEntryWithKey:(id)a3
+- (void)_removeCacheEntryWithKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v4 = self->_cacheEntries;
   objc_sync_enter(v4);
-  [(NSMutableDictionary *)self->_cacheEntries setObject:0 forKeyedSubscript:v5];
+  [(NSMutableDictionary *)self->_cacheEntries setObject:0 forKeyedSubscript:keyCopy];
   objc_sync_exit(v4);
 }
 
@@ -172,42 +172,42 @@ uint64_t __36__SFCache__insertCacheEntry_forKey___block_invoke_2(uint64_t a1, vo
   return v4;
 }
 
-- (id)entryForKey:(id)a3
+- (id)entryForKey:(id)key
 {
-  v3 = [(SFCache *)self _entryForKey:a3];
+  v3 = [(SFCache *)self _entryForKey:key];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 item];
+    item = [v3 item];
   }
 
   else
   {
-    v5 = 0;
+    item = 0;
   }
 
-  return v5;
+  return item;
 }
 
-- (void)addEntry:(id)a3 forKey:(id)a4
+- (void)addEntry:(id)entry forKey:(id)key
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(SFCache *)self _entryForKey:v6];
+  entryCopy = entry;
+  keyCopy = key;
+  v7 = [(SFCache *)self _entryForKey:keyCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 item];
-    v10 = [v12 isEqual:v9];
+    item = [v7 item];
+    v10 = [entryCopy isEqual:item];
 
     if ((v10 & 1) == 0)
     {
-      [(SFCache *)self _removeCacheEntryWithKey:v6];
+      [(SFCache *)self _removeCacheEntryWithKey:keyCopy];
     }
   }
 
-  v11 = [[SFCacheEntry alloc] initWithCacheItem:v12];
-  [(SFCache *)self _insertCacheEntry:v11 forKey:v6];
+  v11 = [[SFCacheEntry alloc] initWithCacheItem:entryCopy];
+  [(SFCache *)self _insertCacheEntry:v11 forKey:keyCopy];
 }
 
 @end

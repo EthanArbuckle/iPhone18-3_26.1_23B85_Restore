@@ -1,9 +1,9 @@
 @interface TSUIndexedStringStore
 - (TSUIndexedStringStore)init;
 - (id).cxx_construct;
-- (id)stringForIndex:(unint64_t)a3;
+- (id)stringForIndex:(unint64_t)index;
 - (unint64_t)count;
-- (unint64_t)indexForString:(id)a3;
+- (unint64_t)indexForString:(id)string;
 @end
 
 @implementation TSUIndexedStringStore
@@ -26,23 +26,23 @@
   return v3;
 }
 
-- (unint64_t)indexForString:(id)a3
+- (unint64_t)indexForString:(id)string
 {
-  v4 = a3;
-  v8 = v4;
-  if ([v4 length])
+  stringCopy = string;
+  v8 = stringCopy;
+  if ([stringCopy length])
   {
-    if (v4)
+    if (stringCopy)
     {
       os_unfair_lock_lock(&self->_lock);
-      v5 = [(NSMutableDictionary *)self->_indexByString objectForKeyedSubscript:v4];
-      v4 = [v5 unsignedLongValue];
+      v5 = [(NSMutableDictionary *)self->_indexByString objectForKeyedSubscript:stringCopy];
+      stringCopy = [v5 unsignedLongValue];
 
-      if (!v4)
+      if (!stringCopy)
       {
         sub_277028728(&self->_stringByIndex.__begin_, &v8);
-        v4 = (self->_stringByIndex.var0 - self->_stringByIndex.__begin_);
-        v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v4];
+        stringCopy = (self->_stringByIndex.var0 - self->_stringByIndex.__begin_);
+        v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:stringCopy];
         [(NSMutableDictionary *)self->_indexByString setObject:v6 forKeyedSubscript:v8];
       }
 
@@ -57,30 +57,30 @@
     return 0;
   }
 
-  return v4;
+  return stringCopy;
 }
 
-- (id)stringForIndex:(unint64_t)a3
+- (id)stringForIndex:(unint64_t)index
 {
-  v3 = a3;
-  if (a3)
+  indexCopy = index;
+  if (index)
   {
     os_unfair_lock_lock(&self->_lock);
     begin = self->_stringByIndex.__begin_;
-    if (v3 <= self->_stringByIndex.var0 - begin)
+    if (indexCopy <= self->_stringByIndex.var0 - begin)
     {
-      v3 = begin[v3 - 1];
+      indexCopy = begin[indexCopy - 1];
     }
 
     else
     {
-      v3 = 0;
+      indexCopy = 0;
     }
 
     os_unfair_lock_unlock(&self->_lock);
   }
 
-  return v3;
+  return indexCopy;
 }
 
 - (unint64_t)count

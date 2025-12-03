@@ -1,22 +1,22 @@
 @interface ARCoreRESkeletonResult
 + (NSArray)jointNames;
 + (NSArray)jointParentIndices;
-- (ARCoreRESkeletonResult)initWithCoder:(id)a3;
-- (ARCoreRESkeletonResult)initWithModelJointTransforms:(id *)a3 localJointTransformsSRT:(id *)a4 numberOfTransforms:(unint64_t)a5 liftedSkeletonData:(id)a6 identifier:(id)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isJointTracked:(int64_t)a3;
-- (__n128)setVisionTransform:(__n128)a3;
+- (ARCoreRESkeletonResult)initWithCoder:(id)coder;
+- (ARCoreRESkeletonResult)initWithModelJointTransforms:(id *)transforms localJointTransformsSRT:(id *)t numberOfTransforms:(unint64_t)ofTransforms liftedSkeletonData:(id)data identifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isJointTracked:(int64_t)tracked;
+- (__n128)setVisionTransform:(__n128)transform;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARCoreRESkeletonResult
 
-- (ARCoreRESkeletonResult)initWithModelJointTransforms:(id *)a3 localJointTransformsSRT:(id *)a4 numberOfTransforms:(unint64_t)a5 liftedSkeletonData:(id)a6 identifier:(id)a7
+- (ARCoreRESkeletonResult)initWithModelJointTransforms:(id *)transforms localJointTransformsSRT:(id *)t numberOfTransforms:(unint64_t)ofTransforms liftedSkeletonData:(id)data identifier:(id)identifier
 {
-  v13 = a6;
-  v14 = a7;
+  dataCopy = data;
+  identifierCopy = identifier;
   v45.receiver = self;
   v45.super_class = ARCoreRESkeletonResult;
   v15 = [(ARCoreRESkeletonResult *)&v45 init];
@@ -24,7 +24,7 @@
   {
     v43 = 0uLL;
     v44 = 0;
-    std::vector<simd_float4x4>::__init_with_size[abi:ne200100]<simd_float4x4 const*,simd_float4x4 const*>(&v43, a3, a3 + 64 * a5, a5);
+    std::vector<simd_float4x4>::__init_with_size[abi:ne200100]<simd_float4x4 const*,simd_float4x4 const*>(&v43, transforms, transforms + 64 * ofTransforms, ofTransforms);
     begin = v15->_modelTransforms.__begin_;
     if (begin)
     {
@@ -39,7 +39,7 @@
     v15->_modelTransforms.__cap_ = v44;
     v43 = 0uLL;
     v44 = 0;
-    std::vector<ARSRT>::__init_with_size[abi:ne200100]<ARSRT const*,ARSRT const*>(&v43, a4, a4 + 48 * a5, a5);
+    std::vector<ARSRT>::__init_with_size[abi:ne200100]<ARSRT const*,ARSRT const*>(&v43, t, t + 48 * ofTransforms, ofTransforms);
     p_localTransformsSRT = &v15->_localTransformsSRT;
     v17 = v15->_localTransformsSRT.__begin_;
     if (v17)
@@ -53,8 +53,8 @@
 
     *&v15->_localTransformsSRT.__begin_ = v43;
     v15->_localTransformsSRT.__cap_ = v44;
-    std::vector<simd_float4x4>::resize(&v15->_localTransforms.__begin_, a5);
-    if (a5)
+    std::vector<simd_float4x4>::resize(&v15->_localTransforms.__begin_, ofTransforms);
+    if (ofTransforms)
     {
       v19 = 0;
       v20 = 0;
@@ -85,33 +85,33 @@
         v37[3] = v41;
         v20 += 64;
         v19 += 48;
-        --a5;
+        --ofTransforms;
       }
 
-      while (a5);
+      while (ofTransforms);
     }
 
-    objc_storeStrong(&v15->_liftingResult, a6);
-    objc_storeStrong(&v15->_identifier, a7);
+    objc_storeStrong(&v15->_liftingResult, data);
+    objc_storeStrong(&v15->_identifier, identifier);
   }
 
   return v15;
 }
 
-- (BOOL)isJointTracked:(int64_t)a3
+- (BOOL)isJointTracked:(int64_t)tracked
 {
-  if (a3 < 0)
+  if (tracked < 0)
   {
     return 0;
   }
 
-  if (((self->_modelTransforms.__end_ - self->_modelTransforms.__begin_) >> 6) - 1 < a3)
+  if (((self->_modelTransforms.__end_ - self->_modelTransforms.__begin_) >> 6) - 1 < tracked)
   {
     return 0;
   }
 
   v4 = 0;
-  v5 = &ARRigDependencyTable + 72 * a3;
+  v5 = &ARRigDependencyTable + 72 * tracked;
   v6 = 1;
   while (*&v5[4 * v4] != -1)
   {
@@ -126,44 +126,44 @@
   return v6 && v4 != 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeObject:self->_liftingResult forKey:@"liftingResult"];
-  [v7 encodeObject:self->_identifier forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_liftingResult forKey:@"liftingResult"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
   v4 = [MEMORY[0x1E695DEF0] dataWithBytes:self->_modelTransforms.__begin_ length:self->_modelTransforms.__end_ - self->_modelTransforms.__begin_];
-  [v7 encodeObject:v4 forKey:@"modelTransformData"];
+  [coderCopy encodeObject:v4 forKey:@"modelTransformData"];
   v5 = [MEMORY[0x1E695DEF0] dataWithBytes:self->_localTransforms.__begin_ length:self->_localTransforms.__end_ - self->_localTransforms.__begin_];
-  [v7 encodeObject:v5 forKey:@"localTransformData"];
+  [coderCopy encodeObject:v5 forKey:@"localTransformData"];
   v6 = [MEMORY[0x1E695DEF0] dataWithBytes:self->_localTransformsSRT.__begin_ length:self->_localTransformsSRT.__end_ - self->_localTransformsSRT.__begin_];
-  [v7 encodeObject:v6 forKey:@"localTransformSRTData"];
+  [coderCopy encodeObject:v6 forKey:@"localTransformSRTData"];
 }
 
-- (ARCoreRESkeletonResult)initWithCoder:(id)a3
+- (ARCoreRESkeletonResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = ARCoreRESkeletonResult;
   v5 = [(ARCoreRESkeletonResult *)&v27 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"identifier"];
+    v6 = [coderCopy decodeObjectForKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectForKey:@"liftingResult"];
+    v8 = [coderCopy decodeObjectForKey:@"liftingResult"];
     liftingResult = v5->_liftingResult;
     v5->_liftingResult = v8;
 
-    v10 = [v4 decodeObjectForKey:@"modelTransformData"];
+    v10 = [coderCopy decodeObjectForKey:@"modelTransformData"];
     v11 = v10;
     if (v10)
     {
       v12 = [v10 length];
-      v13 = [v11 bytes];
+      bytes = [v11 bytes];
       v25 = 0uLL;
       v26 = 0;
-      std::vector<simd_float4x4>::__init_with_size[abi:ne200100]<simd_float4x4 const*,simd_float4x4 const*>(&v25, v13, v13 + ((v12 >> 6) << 6), (v12 >> 6));
+      std::vector<simd_float4x4>::__init_with_size[abi:ne200100]<simd_float4x4 const*,simd_float4x4 const*>(&v25, bytes, bytes + ((v12 >> 6) << 6), (v12 >> 6));
       begin = v5->_modelTransforms.__begin_;
       if (begin)
       {
@@ -178,15 +178,15 @@
       v5->_modelTransforms.__cap_ = v26;
     }
 
-    v15 = [v4 decodeObjectForKey:@"localTransformData"];
+    v15 = [coderCopy decodeObjectForKey:@"localTransformData"];
     v16 = v15;
     if (v15)
     {
       v17 = [v15 length];
-      v18 = [v16 bytes];
+      bytes2 = [v16 bytes];
       v25 = 0uLL;
       v26 = 0;
-      std::vector<simd_float4x4>::__init_with_size[abi:ne200100]<simd_float4x4 const*,simd_float4x4 const*>(&v25, v18, v18 + ((v17 >> 6) << 6), (v17 >> 6));
+      std::vector<simd_float4x4>::__init_with_size[abi:ne200100]<simd_float4x4 const*,simd_float4x4 const*>(&v25, bytes2, bytes2 + ((v17 >> 6) << 6), (v17 >> 6));
       v19 = v5->_localTransforms.__begin_;
       if (v19)
       {
@@ -201,14 +201,14 @@
       v5->_localTransforms.__cap_ = v26;
     }
 
-    v20 = [v4 decodeObjectForKey:@"localTransformSRTData"];
+    v20 = [coderCopy decodeObjectForKey:@"localTransformSRTData"];
     if (v20)
     {
       v21 = [v16 length];
-      v22 = [v20 bytes];
+      bytes3 = [v20 bytes];
       v25 = 0uLL;
       v26 = 0;
-      std::vector<ARSRT>::__init_with_size[abi:ne200100]<ARSRT const*,ARSRT const*>(&v25, v22, v22 + 48 * (v21 / 0x30), (v21 / 0x30));
+      std::vector<ARSRT>::__init_with_size[abi:ne200100]<ARSRT const*,ARSRT const*>(&v25, bytes3, bytes3 + 48 * (v21 / 0x30), (v21 / 0x30));
       v23 = v5->_localTransformsSRT.__begin_;
       if (v23)
       {
@@ -227,17 +227,17 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [v5 identifier];
-    v7 = [v6 UUIDString];
-    v8 = [(ARCoreRESkeletonResult *)self identifier];
-    v9 = [v8 UUIDString];
-    v10 = [v7 isEqualToString:v9];
+    v5 = equalCopy;
+    identifier = [v5 identifier];
+    uUIDString = [identifier UUIDString];
+    identifier2 = [(ARCoreRESkeletonResult *)self identifier];
+    uUIDString2 = [identifier2 UUIDString];
+    v10 = [uUIDString isEqualToString:uUIDString2];
 
     if (v10)
     {
@@ -292,9 +292,9 @@ LABEL_15:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (v5 != self)
   {
@@ -303,11 +303,11 @@ LABEL_15:
     std::vector<simd_float4x4>::__assign_with_size[abi:ne200100]<simd_float4x4*,simd_float4x4*>(&v6->_localTransforms.__begin_, self->_localTransforms.__begin_, self->_localTransforms.__end_, (self->_localTransforms.__end_ - self->_localTransforms.__begin_) >> 6);
   }
 
-  v7 = [(AR3DSkeletonDetectionResult *)self->_liftingResult copyWithZone:a3];
+  v7 = [(AR3DSkeletonDetectionResult *)self->_liftingResult copyWithZone:zone];
   liftingResult = v6->_liftingResult;
   v6->_liftingResult = v7;
 
-  v9 = [(NSUUID *)self->_identifier copyWithZone:a3];
+  v9 = [(NSUUID *)self->_identifier copyWithZone:zone];
   identifier = v6->_identifier;
   v6->_identifier = v9;
 
@@ -317,23 +317,23 @@ LABEL_15:
 + (NSArray)jointNames
 {
   v2 = +[ARSkeletonDefinition defaultBody3DSkeletonDefinition];
-  v3 = [v2 jointNames];
+  jointNames = [v2 jointNames];
 
-  return v3;
+  return jointNames;
 }
 
 + (NSArray)jointParentIndices
 {
   v2 = +[ARSkeletonDefinition defaultBody3DSkeletonDefinition];
-  v3 = [v2 parentIndices];
+  parentIndices = [v2 parentIndices];
 
-  return v3;
+  return parentIndices;
 }
 
-- (__n128)setVisionTransform:(__n128)a3
+- (__n128)setVisionTransform:(__n128)transform
 {
   result[7] = a2;
-  result[8] = a3;
+  result[8] = transform;
   result[9] = a4;
   result[10] = a5;
   return result;

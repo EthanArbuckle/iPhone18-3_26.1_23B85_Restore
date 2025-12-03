@@ -1,34 +1,34 @@
 @interface EKFrozenReminderObject
-+ (id)uniqueIdentifierForREMObject:(id)a3;
-- (BOOL)_applyChangesToSaveRequest:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)uniqueIdentifierForREMObject:(id)object;
+- (BOOL)_applyChangesToSaveRequest:(id)request error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isNew;
-- (EKFrozenReminderObject)initWithREMObject:(id)a3 inStore:(id)a4 withChanges:(id)a5;
-- (id)updateParentToCommitSelf:(id)a3;
-- (id)updatedFrozenObjectWithChanges:(id)a3 updatedChildren:(id)a4;
-- (id)valueForSingleValueKey:(id)a3 backingValue:(id)a4;
+- (EKFrozenReminderObject)initWithREMObject:(id)object inStore:(id)store withChanges:(id)changes;
+- (id)updateParentToCommitSelf:(id)self;
+- (id)updatedFrozenObjectWithChanges:(id)changes updatedChildren:(id)children;
+- (id)valueForSingleValueKey:(id)key backingValue:(id)value;
 - (unint64_t)hash;
 @end
 
 @implementation EKFrozenReminderObject
 
-- (EKFrozenReminderObject)initWithREMObject:(id)a3 inStore:(id)a4 withChanges:(id)a5
+- (EKFrozenReminderObject)initWithREMObject:(id)object inStore:(id)store withChanges:(id)changes
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  objectCopy = object;
+  storeCopy = store;
+  changesCopy = changes;
   v18.receiver = self;
   v18.super_class = EKFrozenReminderObject;
   v13 = [(EKPersistentObject *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_remObject, a3);
-    objc_storeWeak(&v14->_reminderStore, v11);
-    v15 = [v11 eventStore];
-    [(EKPersistentObject *)v14 _setEventStore:v15];
+    objc_storeStrong(&v13->_remObject, object);
+    objc_storeWeak(&v14->_reminderStore, storeCopy);
+    eventStore = [storeCopy eventStore];
+    [(EKPersistentObject *)v14 _setEventStore:eventStore];
 
-    objc_storeStrong(&v14->_changeSet, a5);
+    objc_storeStrong(&v14->_changeSet, changes);
     changeSet = v14->_changeSet;
     if (changeSet)
     {
@@ -42,24 +42,24 @@
   return v14;
 }
 
-- (id)updatedFrozenObjectWithChanges:(id)a3 updatedChildren:(id)a4
+- (id)updatedFrozenObjectWithChanges:(id)changes updatedChildren:(id)children
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  changesCopy = changes;
+  childrenCopy = children;
+  v8 = childrenCopy;
+  if (changesCopy)
   {
     changeSet = self->_changeSet;
     if (!changeSet)
     {
-      v10 = [v6 copy];
+      v10 = [changesCopy copy];
       [v10 setSkipsPersistentObjectCopy:1];
 LABEL_8:
       [v10 replaceUniqueMultiValueObjectsWithUpdatedObjects:v8];
       v11 = objc_alloc(objc_opt_class());
-      v12 = [(EKFrozenReminderObject *)self REMObject];
+      rEMObject = [(EKFrozenReminderObject *)self REMObject];
       WeakRetained = objc_loadWeakRetained(&self->_reminderStore);
-      v14 = [v11 initWithREMObject:v12 inStore:WeakRetained withChanges:v10];
+      selfCopy = [v11 initWithREMObject:rEMObject inStore:WeakRetained withChanges:v10];
 
       goto LABEL_10;
     }
@@ -67,15 +67,15 @@ LABEL_8:
 LABEL_6:
     v10 = [(EKChangeSet *)changeSet copy];
     [v10 setSkipsPersistentObjectCopy:1];
-    if (v6)
+    if (changesCopy)
     {
-      [v10 addChangesAndUpdateUniqueMultiValueObjects:v6];
+      [v10 addChangesAndUpdateUniqueMultiValueObjects:changesCopy];
     }
 
     goto LABEL_8;
   }
 
-  if (v7)
+  if (childrenCopy)
   {
     changeSet = self->_changeSet;
     if (changeSet)
@@ -84,33 +84,33 @@ LABEL_6:
     }
   }
 
-  v14 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v14;
+  return selfCopy;
 }
 
-- (id)valueForSingleValueKey:(id)a3 backingValue:(id)a4
+- (id)valueForSingleValueKey:(id)key backingValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(EKChangeSet *)self->_changeSet hasUnsavedChangeForKey:v6])
+  keyCopy = key;
+  valueCopy = value;
+  if ([(EKChangeSet *)self->_changeSet hasUnsavedChangeForKey:keyCopy])
   {
-    [(EKChangeSet *)self->_changeSet valueForSingleValueKey:v6 basedOn:0];
+    [(EKChangeSet *)self->_changeSet valueForSingleValueKey:keyCopy basedOn:0];
   }
 
   else
   {
-    v7[2](v7);
+    valueCopy[2](valueCopy);
   }
   v8 = ;
 
   return v8;
 }
 
-- (BOOL)_applyChangesToSaveRequest:(id)a3 error:(id *)a4
+- (BOOL)_applyChangesToSaveRequest:(id)request error:(id *)error
 {
-  v6 = [EKReminderStore log:a3];
+  v6 = [EKReminderStore log:request];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     [EKFrozenReminderObject _applyChangesToSaveRequest:v6 error:?];
@@ -120,39 +120,39 @@ LABEL_10:
   return 0;
 }
 
-+ (id)uniqueIdentifierForREMObject:(id)a3
++ (id)uniqueIdentifierForREMObject:(id)object
 {
-  v3 = [a3 objectID];
-  v4 = [v3 uuid];
-  v5 = [v4 UUIDString];
+  objectID = [object objectID];
+  uuid = [objectID uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v5;
+  return uUIDString;
 }
 
-- (id)updateParentToCommitSelf:(id)a3
+- (id)updateParentToCommitSelf:(id)self
 {
-  v4 = a3;
+  selfCopy = self;
   v5 = +[EKReminderStore log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(EKFrozenReminderObject *)self updateParentToCommitSelf:v4, v5];
+    [(EKFrozenReminderObject *)self updateParentToCommitSelf:selfCopy, v5];
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (BOOL)isNew
 {
-  v2 = [(EKFrozenReminderObject *)self REMObject];
-  v3 = v2 == 0;
+  rEMObject = [(EKFrozenReminderObject *)self REMObject];
+  v3 = rEMObject == 0;
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
     goto LABEL_12;
@@ -161,15 +161,15 @@ LABEL_10:
   v6 = objc_opt_class();
   if (v6 == objc_opt_class())
   {
-    v8 = v5;
-    v9 = [(EKFrozenReminderObject *)self uniqueIdentifier];
-    if (v9 || ([(EKFrozenReminderObject *)v8 uniqueIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    v8 = equalCopy;
+    uniqueIdentifier = [(EKFrozenReminderObject *)self uniqueIdentifier];
+    if (uniqueIdentifier || ([(EKFrozenReminderObject *)v8 uniqueIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v10 = [(EKFrozenReminderObject *)self uniqueIdentifier];
-      v11 = [(EKFrozenReminderObject *)v8 uniqueIdentifier];
-      v7 = [v10 isEqual:v11];
+      uniqueIdentifier2 = [(EKFrozenReminderObject *)self uniqueIdentifier];
+      uniqueIdentifier3 = [(EKFrozenReminderObject *)v8 uniqueIdentifier];
+      v7 = [uniqueIdentifier2 isEqual:uniqueIdentifier3];
 
-      if (v9)
+      if (uniqueIdentifier)
       {
 LABEL_11:
 
@@ -193,8 +193,8 @@ LABEL_12:
 
 - (unint64_t)hash
 {
-  v2 = [(EKFrozenReminderObject *)self uniqueIdentifier];
-  v3 = [v2 hash];
+  uniqueIdentifier = [(EKFrozenReminderObject *)self uniqueIdentifier];
+  v3 = [uniqueIdentifier hash];
 
   return v3;
 }

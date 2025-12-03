@@ -1,26 +1,26 @@
 @interface CBSpacerView
-+ (id)spacerViewWithHeight:(double)a3;
-- (CBSpacerView)initWithHeight:(double)a3;
++ (id)spacerViewWithHeight:(double)height;
+- (CBSpacerView)initWithHeight:(double)height;
 - (CGSize)intrinsicContentSize;
 @end
 
 @implementation CBSpacerView
 
-+ (id)spacerViewWithHeight:(double)a3
++ (id)spacerViewWithHeight:(double)height
 {
-  v3 = [[CBSpacerView alloc] initWithHeight:a3];
+  v3 = [[CBSpacerView alloc] initWithHeight:height];
 
   return v3;
 }
 
-- (CBSpacerView)initWithHeight:(double)a3
+- (CBSpacerView)initWithHeight:(double)height
 {
   v5.receiver = self;
   v5.super_class = CBSpacerView;
   result = [(CBSpacerView *)&v5 init];
   if (result)
   {
-    result->_height = a3;
+    result->_height = height;
   }
 
   return result;

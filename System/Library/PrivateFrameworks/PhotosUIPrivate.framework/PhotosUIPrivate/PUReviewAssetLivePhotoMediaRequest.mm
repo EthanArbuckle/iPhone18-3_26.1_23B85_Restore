@@ -1,5 +1,5 @@
 @interface PUReviewAssetLivePhotoMediaRequest
-- (id)initLivePhotoRequestID:(int)a3;
+- (id)initLivePhotoRequestID:(int)d;
 - (void)cancelRequest;
 @end
 
@@ -7,20 +7,20 @@
 
 - (void)cancelRequest
 {
-  v2 = [(PUReviewAssetLivePhotoMediaRequest *)self _liveRequestID];
+  _liveRequestID = [(PUReviewAssetLivePhotoMediaRequest *)self _liveRequestID];
   v3 = MEMORY[0x1E69788C8];
 
-  [v3 cancelLivePhotoRequestWithRequestID:v2];
+  [v3 cancelLivePhotoRequestWithRequestID:_liveRequestID];
 }
 
-- (id)initLivePhotoRequestID:(int)a3
+- (id)initLivePhotoRequestID:(int)d
 {
   v5.receiver = self;
   v5.super_class = PUReviewAssetLivePhotoMediaRequest;
   result = [(PUReviewAssetLivePhotoMediaRequest *)&v5 init];
   if (result)
   {
-    *(result + 2) = a3;
+    *(result + 2) = d;
   }
 
   return result;

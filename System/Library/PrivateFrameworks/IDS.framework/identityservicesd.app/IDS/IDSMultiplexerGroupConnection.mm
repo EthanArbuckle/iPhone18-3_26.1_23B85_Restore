@@ -1,10 +1,10 @@
 @interface IDSMultiplexerGroupConnection
-- (BOOL)tryConsumePacketBuffer:(id *)a3;
+- (BOOL)tryConsumePacketBuffer:(id *)buffer;
 - (OS_nw_framer)framer;
 - (id)getProtocolDefinition;
-- (void)callPacketBufferReadHandler:(id *)a3;
+- (void)callPacketBufferReadHandler:(id *)handler;
 - (void)invalidate;
-- (void)writePacketBuffer:(id *)a3;
+- (void)writePacketBuffer:(id *)buffer;
 @end
 
 @implementation IDSMultiplexerGroupConnection
@@ -43,7 +43,7 @@
   return v6;
 }
 
-- (void)callPacketBufferReadHandler:(id *)a3
+- (void)callPacketBufferReadHandler:(id *)handler
 {
   os_unfair_lock_lock(&self->super._lock);
   if (self->super._invalidated)
@@ -53,7 +53,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = self;
+      selfCopy3 = self;
       v6 = "readPacketBuffer called but invalidated - %@";
 LABEL_13:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, v6, buf, 0xCu);
@@ -72,7 +72,7 @@ LABEL_13:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = self;
+      selfCopy3 = self;
       v6 = "readPacketBuffer called but framer is nil - %@";
       goto LABEL_13;
     }
@@ -90,7 +90,7 @@ LABEL_14:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = self;
+      selfCopy3 = self;
       v6 = "readPacketBuffer called but readHandler is nil - %@";
       goto LABEL_13;
     }
@@ -100,10 +100,10 @@ LABEL_14:
 
   v9 = objc_retainBlock(readHandler);
   os_unfair_lock_unlock(&self->super._lock);
-  v9[2](v9, a3);
+  v9[2](v9, handler);
 }
 
-- (void)writePacketBuffer:(id *)a3
+- (void)writePacketBuffer:(id *)buffer
 {
   os_unfair_lock_lock(&self->super._lock);
   if (!self->super._invalidated)
@@ -111,16 +111,16 @@ LABEL_14:
     WeakRetained = objc_loadWeakRetained(&self->_framer);
     if (WeakRetained)
     {
-      if (a3->var2 > 7)
+      if (buffer->var2 > 7)
       {
-        var0 = a3->var0;
+        var0 = buffer->var0;
         *var0 = __rev16([(IDSMultiplexerConnection *)self remotePort]);
         *(var0 + 1) = __rev16([(IDSMultiplexerConnection *)self localPort]);
-        v10 = [(IDSMultiplexerConnection *)self localEndpoint];
-        address = nw_endpoint_get_address(v10);
+        localEndpoint = [(IDSMultiplexerConnection *)self localEndpoint];
+        address = nw_endpoint_get_address(localEndpoint);
 
-        v12 = [(IDSMultiplexerConnection *)self remoteEndpoint];
-        v13 = nw_endpoint_get_address(v12);
+        remoteEndpoint = [(IDSMultiplexerConnection *)self remoteEndpoint];
+        v13 = nw_endpoint_get_address(remoteEndpoint);
 
         if (address->sa_family != 30)
         {
@@ -132,21 +132,21 @@ LABEL_14:
           sub_100933008();
         }
 
-        udp6checksum(&address->sa_data[6], &v13->sa_data[6], a3->var0, a3->var2);
+        udp6checksum(&address->sa_data[6], &v13->sa_data[6], buffer->var0, buffer->var2);
         if (self->_verboseFunctionalLogging)
         {
           v14 = +[IDSFoundationLog Multiplexer];
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = sub_10050F958(a3->var0, a3->var2);
+            v15 = sub_10050F958(buffer->var0, buffer->var2);
             *buf = 136315138;
-            v21 = v15;
+            selfCopy2 = v15;
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "writePacketBuffer whole packet:\n%s", buf, 0xCu);
           }
         }
 
         os_unfair_lock_unlock(&self->super._lock);
-        v16 = dispatch_data_create(a3->var0, a3->var2, 0, 0);
+        v16 = dispatch_data_create(buffer->var0, buffer->var2, 0, 0);
         v17[0] = _NSConcreteStackBlock;
         v17[1] = 3221225472;
         v17[2] = sub_1006D5534;
@@ -163,9 +163,9 @@ LABEL_14:
       v6 = +[IDSFoundationLog Multiplexer];
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        var2 = a3->var2;
+        var2 = buffer->var2;
         *buf = 134217984;
-        v21 = var2;
+        selfCopy2 = var2;
         v8 = "packet doest not have enough bytes for header %ld";
 LABEL_10:
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, v8, buf, 0xCu);
@@ -179,7 +179,7 @@ LABEL_10:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v21 = self;
+        selfCopy2 = self;
         v8 = "writePacketBuffer called but framer is nil - %@";
         goto LABEL_10;
       }
@@ -195,14 +195,14 @@ LABEL_18:
   if (os_log_type_enabled(WeakRetained, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, WeakRetained, OS_LOG_TYPE_DEFAULT, "writePacketBuffer called but invalidated - %@", buf, 0xCu);
   }
 
 LABEL_19:
 }
 
-- (BOOL)tryConsumePacketBuffer:(id *)a3
+- (BOOL)tryConsumePacketBuffer:(id *)buffer
 {
   os_unfair_lock_lock(&self->super._lock);
   if (self->super._invalidated)
@@ -241,20 +241,20 @@ LABEL_12:
     return 0;
   }
 
-  if (a3->var2 > 3)
+  if (buffer->var2 > 3)
   {
-    v11 = __rev16(*a3->var0);
-    v12 = __rev16(*(a3->var0 + 1));
+    v11 = __rev16(*buffer->var0);
+    v12 = __rev16(*(buffer->var0 + 1));
     v13 = +[IDSFoundationLog Multiplexer];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(IDSMultiplexerConnection *)self localPort];
-      v15 = [(IDSMultiplexerConnection *)self remotePort];
-      var2 = a3->var2;
+      localPort = [(IDSMultiplexerConnection *)self localPort];
+      remotePort = [(IDSMultiplexerConnection *)self remotePort];
+      var2 = buffer->var2;
       v17 = 67110144;
-      *v18 = v14;
+      *v18 = localPort;
       *&v18[4] = 1024;
-      *&v18[6] = v15;
+      *&v18[6] = remotePort;
       v19 = 1024;
       v20 = v12;
       v21 = 1024;
@@ -267,7 +267,7 @@ LABEL_12:
     if ([(IDSMultiplexerConnection *)self localPort]== v12 && (![(IDSMultiplexerConnection *)self remotePort]|| [(IDSMultiplexerConnection *)self remotePort]== v11))
     {
       os_unfair_lock_unlock(&self->super._lock);
-      [(IDSMultiplexerGroupConnection *)self writePacketBuffer:a3];
+      [(IDSMultiplexerGroupConnection *)self writePacketBuffer:buffer];
       return 1;
     }
 
@@ -280,7 +280,7 @@ LABEL_12:
     v8 = +[IDSFoundationLog Multiplexer];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = a3->var2;
+      v9 = buffer->var2;
       v17 = 134217984;
       *v18 = v9;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Connection cannot retrieve port signature, invalid packetBuffer size: %ld", &v17, 0xCu);

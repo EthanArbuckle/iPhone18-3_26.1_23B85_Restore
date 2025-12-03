@@ -7,12 +7,12 @@
 
 - (id)__ck_indexPathForLastRow
 {
-  v2 = [a1 numberOfSections];
-  v3 = [a1 numberOfRowsInSection:v2 - 1];
+  numberOfSections = [self numberOfSections];
+  v3 = [self numberOfRowsInSection:numberOfSections - 1];
   v4 = 0;
-  if (v2 >= 1 && v3 >= 1)
+  if (numberOfSections >= 1 && v3 >= 1)
   {
-    v4 = [MEMORY[0x1E696AC88] indexPathForRow:v3 - 1 inSection:v2 - 1];
+    v4 = [MEMORY[0x1E696AC88] indexPathForRow:v3 - 1 inSection:numberOfSections - 1];
   }
 
   return v4;
@@ -20,11 +20,11 @@
 
 - (double)__ck_contentSize
 {
-  v2 = [a1 __ck_indexPathForLastRow];
-  if (v2)
+  __ck_indexPathForLastRow = [self __ck_indexPathForLastRow];
+  if (__ck_indexPathForLastRow)
   {
-    v3 = [a1 __ck_indexPathForLastRow];
-    [a1 rectForRowAtIndexPath:v3];
+    __ck_indexPathForLastRow2 = [self __ck_indexPathForLastRow];
+    [self rectForRowAtIndexPath:__ck_indexPathForLastRow2];
     v5 = v4;
     v7 = v6;
     v9 = v8;

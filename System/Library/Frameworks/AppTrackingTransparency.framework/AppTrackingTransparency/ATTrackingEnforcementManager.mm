@@ -1,5 +1,5 @@
 @interface ATTrackingEnforcementManager
-+ (BOOL)shouldEnforceTrackingWithReasonCode:(int64_t *)a3;
++ (BOOL)shouldEnforceTrackingWithReasonCode:(int64_t *)code;
 + (void)_refreshEnforcementStatusInBackground;
 @end
 
@@ -15,7 +15,7 @@
   v24[1] = 3221225472;
   v24[2] = __69__ATTrackingEnforcementManager__refreshEnforcementStatusInBackground__block_invoke;
   v24[3] = &unk_278A06FB0;
-  v26 = a1;
+  selfCopy = self;
   v5 = v3;
   v25 = v5;
   v6 = MEMORY[0x2383B6A10](v24);
@@ -23,7 +23,7 @@
   v21[1] = 3221225472;
   v21[2] = __69__ATTrackingEnforcementManager__refreshEnforcementStatusInBackground__block_invoke_2;
   v21[3] = &unk_278A06FD8;
-  v23 = a1;
+  selfCopy2 = self;
   v7 = v6;
   v22 = v7;
   [v5 setInterruptionHandler:v21];
@@ -31,7 +31,7 @@
   v18[1] = 3221225472;
   v18[2] = __69__ATTrackingEnforcementManager__refreshEnforcementStatusInBackground__block_invoke_4;
   v18[3] = &unk_278A06FD8;
-  v20 = a1;
+  selfCopy3 = self;
   v8 = v7;
   v19 = v8;
   [v5 setInvalidationHandler:v18];
@@ -41,7 +41,7 @@
   v15[2] = __69__ATTrackingEnforcementManager__refreshEnforcementStatusInBackground__block_invoke_5;
   v15[3] = &unk_278A07000;
   v16 = v8;
-  v17 = a1;
+  selfCopy4 = self;
   v9 = v8;
   v10 = [v5 remoteObjectProxyWithErrorHandler:v15];
   v12[0] = MEMORY[0x277D85DD0];
@@ -49,7 +49,7 @@
   v12[2] = __69__ATTrackingEnforcementManager__refreshEnforcementStatusInBackground__block_invoke_7;
   v12[3] = &unk_278A07028;
   v13 = v5;
-  v14 = a1;
+  selfCopy5 = self;
   v11 = v5;
   [v10 appTrackingEnforcement:v12];
 }
@@ -143,12 +143,12 @@ uint64_t __69__ATTrackingEnforcementManager__refreshEnforcementStatusInBackgroun
   return result;
 }
 
-+ (BOOL)shouldEnforceTrackingWithReasonCode:(int64_t *)a3
++ (BOOL)shouldEnforceTrackingWithReasonCode:(int64_t *)code
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a1;
-  objc_sync_enter(v4);
-  *a3 = _lastReasonCode;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  *code = _lastReasonCode;
   v5 = _lastEnforcement;
   if (!_lastBagLookup || (!_isDefaultReturned ? (v6 = 7200.0) : (v6 = 300.0), [MEMORY[0x277CBEAA8] date], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "timeIntervalSinceDate:", _lastBagLookup), v9 = v8, v7, v9 > v6))
   {
@@ -165,11 +165,11 @@ uint64_t __69__ATTrackingEnforcementManager__refreshEnforcementStatusInBackgroun
       }
 
       _shouldEnforceTrackingInProgress = 1;
-      [v4 _refreshEnforcementStatusInBackground];
+      [selfCopy _refreshEnforcementStatusInBackground];
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   v13 = *MEMORY[0x277D85DE8];
   return v5;

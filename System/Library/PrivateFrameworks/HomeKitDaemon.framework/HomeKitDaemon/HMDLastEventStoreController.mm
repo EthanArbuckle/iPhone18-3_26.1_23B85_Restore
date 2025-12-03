@@ -1,19 +1,19 @@
 @interface HMDLastEventStoreController
 + (id)logCategory;
-- (HMDLastEventStoreController)initWithWithEventStore:(id)a3;
-- (void)didRemoveAccessory:(id)a3;
-- (void)didRemoveHome:(id)a3;
-- (void)didRemoveMediaSystem:(id)a3;
+- (HMDLastEventStoreController)initWithWithEventStore:(id)store;
+- (void)didRemoveAccessory:(id)accessory;
+- (void)didRemoveHome:(id)home;
+- (void)didRemoveMediaSystem:(id)system;
 @end
 
 @implementation HMDLastEventStoreController
 
-- (void)didRemoveAccessory:(id)a3
+- (void)didRemoveAccessory:(id)accessory
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoryCopy = accessory;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -21,26 +21,26 @@
     *buf = 138543618;
     v15 = v8;
     v16 = 2112;
-    v17 = v4;
+    v17 = accessoryCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@Removing accessory events, accessory: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDLastEventStoreController *)v6 eventStore];
+  eventStore = [(HMDLastEventStoreController *)selfCopy eventStore];
   v10 = MEMORY[0x277CCACA8];
-  v11 = [v4 UUIDString];
-  v12 = [v10 stringWithFormat:@"accessory.%@", v11];
-  [v9 resetWildcardTopics:v12];
+  uUIDString = [accessoryCopy UUIDString];
+  v12 = [v10 stringWithFormat:@"accessory.%@", uUIDString];
+  [eventStore resetWildcardTopics:v12];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didRemoveMediaSystem:(id)a3
+- (void)didRemoveMediaSystem:(id)system
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  systemCopy = system;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -48,26 +48,26 @@
     *buf = 138543618;
     v15 = v8;
     v16 = 2112;
-    v17 = v4;
+    v17 = systemCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@Removing media system events, media system: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDLastEventStoreController *)v6 eventStore];
+  eventStore = [(HMDLastEventStoreController *)selfCopy eventStore];
   v10 = MEMORY[0x277CCACA8];
-  v11 = [v4 UUIDString];
-  v12 = [v10 stringWithFormat:@"stereo.%@", v11];
-  [v9 resetWildcardTopics:v12];
+  uUIDString = [systemCopy UUIDString];
+  v12 = [v10 stringWithFormat:@"stereo.%@", uUIDString];
+  [eventStore resetWildcardTopics:v12];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didRemoveHome:(id)a3
+- (void)didRemoveHome:(id)home
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -75,30 +75,30 @@
     *buf = 138543618;
     v15 = v8;
     v16 = 2112;
-    v17 = v4;
+    v17 = homeCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@Removing home events, home: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDLastEventStoreController *)v6 eventStore];
+  eventStore = [(HMDLastEventStoreController *)selfCopy eventStore];
   v10 = MEMORY[0x277CCACA8];
-  v11 = [v4 UUIDString];
-  v12 = [v10 stringWithFormat:@"home.%@", v11];
-  [v9 resetWildcardTopics:v12];
+  uUIDString = [homeCopy UUIDString];
+  v12 = [v10 stringWithFormat:@"home.%@", uUIDString];
+  [eventStore resetWildcardTopics:v12];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDLastEventStoreController)initWithWithEventStore:(id)a3
+- (HMDLastEventStoreController)initWithWithEventStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = HMDLastEventStoreController;
   v6 = [(HMDLastEventStoreController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_eventStore, a3);
+    objc_storeStrong(&v6->_eventStore, store);
   }
 
   return v7;

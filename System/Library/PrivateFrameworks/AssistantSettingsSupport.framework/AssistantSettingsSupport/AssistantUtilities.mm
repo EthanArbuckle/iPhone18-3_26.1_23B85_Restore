@@ -1,17 +1,17 @@
 @interface AssistantUtilities
 + (BOOL)assistantEnabled;
-+ (BOOL)deviceIsClass:(__CFString *)a3;
-+ (BOOL)isAppWithBundleIDPresent:(id)a3;
++ (BOOL)deviceIsClass:(__CFString *)class;
++ (BOOL)isAppWithBundleIDPresent:(id)present;
 + (BOOL)isAssistantLockScreenAccessRestricted;
 + (BOOL)isHardwareButtonTrigger;
 + (BOOL)isPasscodeSet;
 + (BOOL)isQuickTypeGestureEnabled;
 + (BOOL)isRpiOnDeviceDeletionEnabled;
 + (BOOL)isVoiceTriggerEnabled;
-+ (BOOL)needsTrainingData:(BOOL)a3;
++ (BOOL)needsTrainingData:(BOOL)data;
 + (BOOL)shouldShowCompactVoiceTriggerSpecifier;
 + (id)assistantLanguage;
-+ (id)nameForApplicationWithBundleID:(id)a3;
++ (id)nameForApplicationWithBundleID:(id)d;
 + (id)numberFormatter;
 + (void)disableVoiceTrigger;
 + (void)disableVoiceTriggerAndSiriEnrollmentForCurrentLanguage;
@@ -20,22 +20,22 @@
 
 @implementation AssistantUtilities
 
-+ (BOOL)deviceIsClass:(__CFString *)a3
++ (BOOL)deviceIsClass:(__CFString *)class
 {
   v4 = MGCopyAnswer();
-  LOBYTE(a3) = CFEqual(v4, a3) != 0;
+  LOBYTE(class) = CFEqual(v4, class) != 0;
   CFRelease(v4);
-  return a3;
+  return class;
 }
 
 + (BOOL)assistantEnabled
 {
-  v3 = [MEMORY[0x277CEF368] sharedPreferences];
-  if ([v3 assistantIsEnabled])
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  if ([mEMORY[0x277CEF368] assistantIsEnabled])
   {
     v4 = MEMORY[0x277CEF218];
-    v5 = [a1 assistantLanguage];
-    v6 = [v4 assistantIsSupportedForLanguageCode:v5 error:0];
+    assistantLanguage = [self assistantLanguage];
+    v6 = [v4 assistantIsSupportedForLanguageCode:assistantLanguage error:0];
   }
 
   else
@@ -48,10 +48,10 @@
 
 + (id)assistantLanguage
 {
-  v2 = [MEMORY[0x277CEF368] sharedPreferences];
-  v3 = [v2 languageCode];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  languageCode = [mEMORY[0x277CEF368] languageCode];
 
-  return v3;
+  return languageCode;
 }
 
 + (id)numberFormatter
@@ -79,21 +79,21 @@ uint64_t __37__AssistantUtilities_numberFormatter__block_invoke()
 
 + (BOOL)isHardwareButtonTrigger
 {
-  v2 = [a1 assistantEnabled];
-  if (v2)
+  assistantEnabled = [self assistantEnabled];
+  if (assistantEnabled)
   {
-    LOBYTE(v2) = _AXSHomeButtonAssistant() == 0;
+    LOBYTE(assistantEnabled) = _AXSHomeButtonAssistant() == 0;
   }
 
-  return v2;
+  return assistantEnabled;
 }
 
 + (BOOL)isAssistantLockScreenAccessRestricted
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  if ([v2 isPasscodeSet])
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  if ([mEMORY[0x277D262A0] isPasscodeSet])
   {
-    v3 = [v2 isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25D48]];
+    v3 = [mEMORY[0x277D262A0] isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25D48]];
   }
 
   else
@@ -106,54 +106,54 @@ uint64_t __37__AssistantUtilities_numberFormatter__block_invoke()
 
 + (BOOL)isPasscodeSet
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isPasscodeSet];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isPasscodeSet = [mEMORY[0x277D262A0] isPasscodeSet];
 
-  return v3;
+  return isPasscodeSet;
 }
 
 + (BOOL)isVoiceTriggerEnabled
 {
-  v2 = [MEMORY[0x277D7A8D0] sharedPreferences];
-  v3 = [v2 voiceTriggerEnabled];
+  mEMORY[0x277D7A8D0] = [MEMORY[0x277D7A8D0] sharedPreferences];
+  voiceTriggerEnabled = [mEMORY[0x277D7A8D0] voiceTriggerEnabled];
 
-  return v3;
+  return voiceTriggerEnabled;
 }
 
 + (void)enableVoiceTrigger
 {
-  v2 = [MEMORY[0x277D7A8D0] sharedPreferences];
-  [v2 setVoiceTriggerEnabled:1];
+  mEMORY[0x277D7A8D0] = [MEMORY[0x277D7A8D0] sharedPreferences];
+  [mEMORY[0x277D7A8D0] setVoiceTriggerEnabled:1];
 }
 
 + (void)disableVoiceTrigger
 {
-  v2 = [MEMORY[0x277D7A8D0] sharedPreferences];
-  [v2 setVoiceTriggerEnabled:0];
+  mEMORY[0x277D7A8D0] = [MEMORY[0x277D7A8D0] sharedPreferences];
+  [mEMORY[0x277D7A8D0] setVoiceTriggerEnabled:0];
 }
 
 + (void)disableVoiceTriggerAndSiriEnrollmentForCurrentLanguage
 {
-  v3 = [MEMORY[0x277D653F8] sharedInstance];
-  v4 = [a1 assistantLanguage];
-  [v3 discardSiriEnrollmentForLanguageCode:v4];
+  mEMORY[0x277D653F8] = [MEMORY[0x277D653F8] sharedInstance];
+  assistantLanguage = [self assistantLanguage];
+  [mEMORY[0x277D653F8] discardSiriEnrollmentForLanguageCode:assistantLanguage];
 
-  [a1 disableVoiceTrigger];
+  [self disableVoiceTrigger];
 }
 
-+ (BOOL)needsTrainingData:(BOOL)a3
++ (BOOL)needsTrainingData:(BOOL)data
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277D653F8] sharedInstance];
-  v6 = [v5 isSpeakerRecognitionAvailable];
+  dataCopy = data;
+  mEMORY[0x277D653F8] = [MEMORY[0x277D653F8] sharedInstance];
+  isSpeakerRecognitionAvailable = [mEMORY[0x277D653F8] isSpeakerRecognitionAvailable];
 
-  v7 = [MEMORY[0x277D653F8] sharedInstance];
-  v8 = [a1 assistantLanguage];
-  v9 = [v7 isSATEnrolledForSiriProfileId:0 forLanguageCode:v8];
+  mEMORY[0x277D653F8]2 = [MEMORY[0x277D653F8] sharedInstance];
+  assistantLanguage = [self assistantLanguage];
+  v9 = [mEMORY[0x277D653F8]2 isSATEnrolledForSiriProfileId:0 forLanguageCode:assistantLanguage];
 
-  if (v3)
+  if (dataCopy)
   {
-    return v6 & (v9 ^ 1);
+    return isSpeakerRecognitionAvailable & (v9 ^ 1);
   }
 
   else
@@ -164,15 +164,15 @@ uint64_t __37__AssistantUtilities_numberFormatter__block_invoke()
 
 + (BOOL)shouldShowCompactVoiceTriggerSpecifier
 {
-  v2 = [a1 assistantLanguage];
-  if (!v2)
+  assistantLanguage = [self assistantLanguage];
+  if (!assistantLanguage)
   {
-    v3 = [MEMORY[0x277CEF368] sharedPreferences];
-    v2 = [v3 bestSupportedLanguageCodeForLanguageCode:0];
+    mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+    assistantLanguage = [mEMORY[0x277CEF368] bestSupportedLanguageCodeForLanguageCode:0];
   }
 
-  v4 = [MEMORY[0x277D7A8D0] sharedPreferences];
-  if ([v4 isCompactVoiceTriggerAvailableForLanguageCode:v2])
+  mEMORY[0x277D7A8D0] = [MEMORY[0x277D7A8D0] sharedPreferences];
+  if ([mEMORY[0x277D7A8D0] isCompactVoiceTriggerAvailableForLanguageCode:assistantLanguage])
   {
     v5 = AFDeviceSupportsANE();
   }
@@ -186,34 +186,34 @@ uint64_t __37__AssistantUtilities_numberFormatter__block_invoke()
   return v6 & v5;
 }
 
-+ (id)nameForApplicationWithBundleID:(id)a3
++ (id)nameForApplicationWithBundleID:(id)d
 {
   v3 = MEMORY[0x277CC1E70];
-  v4 = a3;
+  dCopy = d;
   v9 = 0;
-  v5 = [[v3 alloc] initWithBundleIdentifier:v4 allowPlaceholder:1 error:&v9];
+  v5 = [[v3 alloc] initWithBundleIdentifier:dCopy allowPlaceholder:1 error:&v9];
 
-  v6 = 0;
+  localizedName = 0;
   if (!v9)
   {
-    v6 = [v5 localizedName];
-    if (![v6 length])
+    localizedName = [v5 localizedName];
+    if (![localizedName length])
     {
-      v7 = [v5 localizedShortName];
+      localizedShortName = [v5 localizedShortName];
 
-      v6 = v7;
+      localizedName = localizedShortName;
     }
   }
 
-  return v6;
+  return localizedName;
 }
 
-+ (BOOL)isAppWithBundleIDPresent:(id)a3
++ (BOOL)isAppWithBundleIDPresent:(id)present
 {
   v3 = MEMORY[0x277CC1E70];
-  v4 = a3;
+  presentCopy = present;
   v9 = 0;
-  v5 = [[v3 alloc] initWithBundleIdentifier:v4 allowPlaceholder:1 error:&v9];
+  v5 = [[v3 alloc] initWithBundleIdentifier:presentCopy allowPlaceholder:1 error:&v9];
 
   if (v9)
   {
@@ -222,10 +222,10 @@ uint64_t __37__AssistantUtilities_numberFormatter__block_invoke()
 
   else
   {
-    v7 = [v5 applicationState];
-    if ([v7 isInstalled])
+    applicationState = [v5 applicationState];
+    if ([applicationState isInstalled])
     {
-      v6 = [v7 isPlaceholder] ^ 1;
+      v6 = [applicationState isPlaceholder] ^ 1;
     }
 
     else
@@ -239,33 +239,33 @@ uint64_t __37__AssistantUtilities_numberFormatter__block_invoke()
 
 + (BOOL)isRpiOnDeviceDeletionEnabled
 {
-  v2 = [MEMORY[0x277CEF2A8] isOnDeviceHistoryDeletionEnabled];
-  v3 = [MEMORY[0x277CEF368] sharedPreferences];
-  v4 = [v3 longLivedIdentifierUploadingEnabled] ^ 1;
+  isOnDeviceHistoryDeletionEnabled = [MEMORY[0x277CEF2A8] isOnDeviceHistoryDeletionEnabled];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  v4 = [mEMORY[0x277CEF368] longLivedIdentifierUploadingEnabled] ^ 1;
 
-  return v2 & v4;
+  return isOnDeviceHistoryDeletionEnabled & v4;
 }
 
 + (BOOL)isQuickTypeGestureEnabled
 {
-  if (![a1 assistantEnabled])
+  if (![self assistantEnabled])
   {
     return 0;
   }
 
-  v2 = [MEMORY[0x277CEF368] sharedPreferences];
-  if ([v2 quickTypeGestureEnabled])
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  if ([mEMORY[0x277CEF368] quickTypeGestureEnabled])
   {
     v3 = +[_TtC24AssistantSettingsSupport21GMEligibilityProvider shared];
-    v4 = [v3 activeEnabled];
+    activeEnabled = [v3 activeEnabled];
   }
 
   else
   {
-    v4 = 0;
+    activeEnabled = 0;
   }
 
-  return v4;
+  return activeEnabled;
 }
 
 @end

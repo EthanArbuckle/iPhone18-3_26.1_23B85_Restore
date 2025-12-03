@@ -1,24 +1,24 @@
 @interface CarAdvisoryView
 - (CarAdvisoryView)init;
-- (CarAdvisoryView)initWithAdvisory:(id)a3;
+- (CarAdvisoryView)initWithAdvisory:(id)advisory;
 - (void)_setupViews;
 - (void)_updateContent;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CarAdvisoryView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = CarAdvisoryView;
-  v4 = a3;
-  [(CarAdvisoryView *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(CarAdvisoryView *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(CarAdvisoryView *)self traitCollection:v8.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(CarAdvisoryView *)self _updateContent];
   }
@@ -26,12 +26,12 @@
 
 - (void)_updateContent
 {
-  v3 = [(GEOComposedRouteAdvisory *)self->_advisory titleString];
-  v4 = [v3 stringWithDefaultOptions];
-  [(UILabel *)self->_advisoryLabel setText:v4];
+  titleString = [(GEOComposedRouteAdvisory *)self->_advisory titleString];
+  stringWithDefaultOptions = [titleString stringWithDefaultOptions];
+  [(UILabel *)self->_advisoryLabel setText:stringWithDefaultOptions];
 
-  v5 = [(GEOComposedRouteAdvisory *)self->_advisory artwork];
-  v6 = [(CarAdvisoryView *)self traitCollection];
+  artwork = [(GEOComposedRouteAdvisory *)self->_advisory artwork];
+  traitCollection = [(CarAdvisoryView *)self traitCollection];
   v8 = ImageForArtwork();
 
   if (v8)
@@ -84,59 +84,59 @@
   v15 = [UIImage warningImageOfSize:13.0];
   [(UIImageView *)self->_advisoryImage setImage:v15];
 
-  v16 = [(UILabel *)self->_advisoryLabel font];
-  [v16 lineHeight];
+  font = [(UILabel *)self->_advisoryLabel font];
+  [font lineHeight];
   v18 = v17;
 
   v19 = fmin(v18, 13.0);
-  v45 = [(UIImageView *)self->_advisoryImage leadingAnchor];
-  v44 = [(CarAdvisoryView *)self leadingAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44];
+  leadingAnchor = [(UIImageView *)self->_advisoryImage leadingAnchor];
+  leadingAnchor2 = [(CarAdvisoryView *)self leadingAnchor];
+  v43 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v47[0] = v43;
-  v42 = [(UIImageView *)self->_advisoryImage widthAnchor];
-  v41 = [v42 constraintEqualToConstant:v19];
+  widthAnchor = [(UIImageView *)self->_advisoryImage widthAnchor];
+  v41 = [widthAnchor constraintEqualToConstant:v19];
   v47[1] = v41;
-  v40 = [(UIImageView *)self->_advisoryImage heightAnchor];
-  v39 = [v40 constraintEqualToConstant:v19];
+  heightAnchor = [(UIImageView *)self->_advisoryImage heightAnchor];
+  v39 = [heightAnchor constraintEqualToConstant:v19];
   v47[2] = v39;
-  v38 = [(UIImageView *)self->_advisoryImage centerYAnchor];
-  v37 = [(UILabel *)self->_advisoryLabel firstBaselineAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37 constant:-3.0];
+  centerYAnchor = [(UIImageView *)self->_advisoryImage centerYAnchor];
+  firstBaselineAnchor = [(UILabel *)self->_advisoryLabel firstBaselineAnchor];
+  v36 = [centerYAnchor constraintEqualToAnchor:firstBaselineAnchor constant:-3.0];
   v47[3] = v36;
-  v35 = [(UIImageView *)self->_advisoryImage bottomAnchor];
-  v34 = [(CarAdvisoryView *)self bottomAnchor];
-  v33 = [v35 constraintLessThanOrEqualToAnchor:v34];
+  bottomAnchor = [(UIImageView *)self->_advisoryImage bottomAnchor];
+  bottomAnchor2 = [(CarAdvisoryView *)self bottomAnchor];
+  v33 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v47[4] = v33;
-  v32 = [(UILabel *)self->_advisoryLabel topAnchor];
-  v31 = [(CarAdvisoryView *)self topAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  topAnchor = [(UILabel *)self->_advisoryLabel topAnchor];
+  topAnchor2 = [(CarAdvisoryView *)self topAnchor];
+  v30 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v47[5] = v30;
-  v20 = [(UILabel *)self->_advisoryLabel trailingAnchor];
-  v21 = [(CarAdvisoryView *)self trailingAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  trailingAnchor = [(UILabel *)self->_advisoryLabel trailingAnchor];
+  trailingAnchor2 = [(CarAdvisoryView *)self trailingAnchor];
+  v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v47[6] = v22;
-  v23 = [(UILabel *)self->_advisoryLabel leadingAnchor];
-  v24 = [(UIImageView *)self->_advisoryImage trailingAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24 constant:3.0];
+  leadingAnchor3 = [(UILabel *)self->_advisoryLabel leadingAnchor];
+  trailingAnchor3 = [(UIImageView *)self->_advisoryImage trailingAnchor];
+  v25 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor3 constant:3.0];
   v47[7] = v25;
-  v26 = [(UILabel *)self->_advisoryLabel bottomAnchor];
-  v27 = [(CarAdvisoryView *)self bottomAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  bottomAnchor3 = [(UILabel *)self->_advisoryLabel bottomAnchor];
+  bottomAnchor4 = [(CarAdvisoryView *)self bottomAnchor];
+  v28 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v47[8] = v28;
   v29 = [NSArray arrayWithObjects:v47 count:9];
   [NSLayoutConstraint activateConstraints:v29];
 }
 
-- (CarAdvisoryView)initWithAdvisory:(id)a3
+- (CarAdvisoryView)initWithAdvisory:(id)advisory
 {
-  v5 = a3;
+  advisoryCopy = advisory;
   v9.receiver = self;
   v9.super_class = CarAdvisoryView;
   v6 = [(CarAdvisoryView *)&v9 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_advisory, a3);
+    objc_storeStrong(&v6->_advisory, advisory);
     [(CarAdvisoryView *)v7 setAccessibilityIdentifier:@"CarAdvisoryView"];
     [(CarAdvisoryView *)v7 _setupViews];
     [(CarAdvisoryView *)v7 _updateContent];

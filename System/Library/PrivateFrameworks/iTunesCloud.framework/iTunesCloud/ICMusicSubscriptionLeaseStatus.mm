@@ -1,13 +1,13 @@
 @interface ICMusicSubscriptionLeaseStatus
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation ICMusicSubscriptionLeaseStatus
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = v4;
@@ -27,10 +27,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v17 = 1;
     goto LABEL_14;
@@ -43,59 +43,59 @@
   }
 
   shouldPlaybackRequireOnlineKeys = self->_shouldPlaybackRequireOnlineKeys;
-  if (shouldPlaybackRequireOnlineKeys != [(ICMusicSubscriptionLeaseStatus *)v4 shouldPlaybackRequireOnlineKeys])
+  if (shouldPlaybackRequireOnlineKeys != [(ICMusicSubscriptionLeaseStatus *)equalCopy shouldPlaybackRequireOnlineKeys])
   {
     goto LABEL_12;
   }
 
   hasOnlinePlaybackKeys = self->_hasOnlinePlaybackKeys;
-  if (hasOnlinePlaybackKeys != [(ICMusicSubscriptionLeaseStatus *)v4 hasOnlinePlaybackKeys])
+  if (hasOnlinePlaybackKeys != [(ICMusicSubscriptionLeaseStatus *)equalCopy hasOnlinePlaybackKeys])
   {
     goto LABEL_12;
   }
 
   hasOfflinePlaybackKeys = self->_hasOfflinePlaybackKeys;
-  if (hasOfflinePlaybackKeys != [(ICMusicSubscriptionLeaseStatus *)v4 hasOfflinePlaybackKeys])
+  if (hasOfflinePlaybackKeys != [(ICMusicSubscriptionLeaseStatus *)equalCopy hasOfflinePlaybackKeys])
   {
     goto LABEL_12;
   }
 
   hasPendingLeaseAcquisition = self->_hasPendingLeaseAcquisition;
-  if (hasPendingLeaseAcquisition != [(ICMusicSubscriptionLeaseStatus *)v4 hasPendingLeaseAcquisition])
+  if (hasPendingLeaseAcquisition != [(ICMusicSubscriptionLeaseStatus *)equalCopy hasPendingLeaseAcquisition])
   {
     goto LABEL_12;
   }
 
   hasInflightLeaseAcquisition = self->_hasInflightLeaseAcquisition;
-  if (hasInflightLeaseAcquisition != [(ICMusicSubscriptionLeaseStatus *)v4 hasInflightLeaseAcquisition])
+  if (hasInflightLeaseAcquisition != [(ICMusicSubscriptionLeaseStatus *)equalCopy hasInflightLeaseAcquisition])
   {
     goto LABEL_12;
   }
 
   takenDueToLeasePrevention = self->_takenDueToLeasePrevention;
-  if (takenDueToLeasePrevention != [(ICMusicSubscriptionLeaseStatus *)v4 isTakenDueToLeasePrevention])
+  if (takenDueToLeasePrevention != [(ICMusicSubscriptionLeaseStatus *)equalCopy isTakenDueToLeasePrevention])
   {
     goto LABEL_12;
   }
 
   leaseState = self->_leaseState;
-  if (leaseState != [(ICMusicSubscriptionLeaseStatus *)v4 leaseState])
+  if (leaseState != [(ICMusicSubscriptionLeaseStatus *)equalCopy leaseState])
   {
     goto LABEL_12;
   }
 
   stateReasonDialog = self->_stateReasonDialog;
-  v13 = [(ICMusicSubscriptionLeaseStatus *)v4 stateReasonDialog];
-  v14 = v13;
-  if (stateReasonDialog == v13)
+  stateReasonDialog = [(ICMusicSubscriptionLeaseStatus *)equalCopy stateReasonDialog];
+  v14 = stateReasonDialog;
+  if (stateReasonDialog == stateReasonDialog)
   {
   }
 
   else
   {
     v15 = self->_stateReasonDialog;
-    v16 = [(ICMusicSubscriptionLeaseStatus *)v4 stateReasonDialog];
-    LODWORD(v15) = [(ICStoreDialogResponse *)v15 isEqual:v16];
+    stateReasonDialog2 = [(ICMusicSubscriptionLeaseStatus *)equalCopy stateReasonDialog];
+    LODWORD(v15) = [(ICStoreDialogResponse *)v15 isEqual:stateReasonDialog2];
 
     if (!v15)
     {
@@ -106,8 +106,8 @@ LABEL_12:
   }
 
   stateReasonDialogMetricsDictionary = self->_stateReasonDialogMetricsDictionary;
-  v20 = [(ICMusicSubscriptionLeaseStatus *)v4 stateReasonDialogMetricsDictionary];
-  if (stateReasonDialogMetricsDictionary == v20)
+  stateReasonDialogMetricsDictionary = [(ICMusicSubscriptionLeaseStatus *)equalCopy stateReasonDialogMetricsDictionary];
+  if (stateReasonDialogMetricsDictionary == stateReasonDialogMetricsDictionary)
   {
     v17 = 1;
   }
@@ -115,8 +115,8 @@ LABEL_12:
   else
   {
     v21 = self->_stateReasonDialogMetricsDictionary;
-    v22 = [(ICMusicSubscriptionLeaseStatus *)v4 stateReasonDialogMetricsDictionary];
-    v17 = [(NSDictionary *)v21 isEqualToDictionary:v22];
+    stateReasonDialogMetricsDictionary2 = [(ICMusicSubscriptionLeaseStatus *)equalCopy stateReasonDialogMetricsDictionary];
+    v17 = [(NSDictionary *)v21 isEqualToDictionary:stateReasonDialogMetricsDictionary2];
   }
 
 LABEL_14:

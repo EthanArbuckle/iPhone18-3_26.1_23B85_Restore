@@ -1,20 +1,20 @@
 @interface BLTPBIntelligentSummaryBulletinRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasUpdateType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasUpdateType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BLTPBIntelligentSummaryBulletinRequest
 
-- (void)setHasUpdateType:(BOOL)a3
+- (void)setHasUpdateType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -33,27 +33,27 @@
   v8.receiver = self;
   v8.super_class = BLTPBIntelligentSummaryBulletinRequest;
   v4 = [(BLTPBIntelligentSummaryBulletinRequest *)&v8 description];
-  v5 = [(BLTPBIntelligentSummaryBulletinRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BLTPBIntelligentSummaryBulletinRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   bulletin = self->_bulletin;
   if (bulletin)
   {
-    v5 = [(BLTPBBulletin *)bulletin dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"bulletin"];
+    dictionaryRepresentation = [(BLTPBBulletin *)bulletin dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"bulletin"];
   }
 
   has = self->_has;
   if (has)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_date];
-    [v3 setObject:v7 forKey:@"date"];
+    [dictionary setObject:v7 forKey:@"date"];
 
     has = self->_has;
   }
@@ -61,20 +61,20 @@
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_updateType];
-    [v3 setObject:v8 forKey:@"updateType"];
+    [dictionary setObject:v8 forKey:@"updateType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_bulletin)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -82,7 +82,7 @@
   {
     date = self->_date;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -90,39 +90,39 @@
   {
     updateType = self->_updateType;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_bulletin)
   {
-    v6 = v4;
-    [v4 setBulletin:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setBulletin:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = *&self->_date;
-    *(v4 + 28) |= 1u;
+    *(toCopy + 1) = *&self->_date;
+    *(toCopy + 28) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 6) = self->_updateType;
-    *(v4 + 28) |= 2u;
+    *(toCopy + 6) = self->_updateType;
+    *(toCopy + 28) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(BLTPBBulletin *)self->_bulletin copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(BLTPBBulletin *)self->_bulletin copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -143,16 +143,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   bulletin = self->_bulletin;
-  if (bulletin | *(v4 + 2))
+  if (bulletin | *(equalCopy + 2))
   {
     if (![(BLTPBBulletin *)bulletin isEqual:?])
     {
@@ -162,23 +162,23 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_date != *(v4 + 1))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_date != *(equalCopy + 1))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
 LABEL_13:
     v6 = 0;
     goto LABEL_14;
   }
 
-  v6 = (*(v4 + 28) & 2) == 0;
+  v6 = (*(equalCopy + 28) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_updateType != *(v4 + 6))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_updateType != *(equalCopy + 6))
     {
       goto LABEL_13;
     }
@@ -240,11 +240,11 @@ LABEL_14:
   return v6 ^ v3 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   bulletin = self->_bulletin;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (bulletin)
   {
     if (!v6)
@@ -252,7 +252,7 @@ LABEL_14:
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     [(BLTPBBulletin *)bulletin mergeFrom:?];
   }
 
@@ -263,23 +263,23 @@ LABEL_14:
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     [(BLTPBIntelligentSummaryBulletinRequest *)self setBulletin:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_7:
-  v7 = *(v4 + 28);
+  v7 = *(fromCopy + 28);
   if (v7)
   {
-    self->_date = *(v4 + 1);
+    self->_date = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v7 = *(v4 + 28);
+    v7 = *(fromCopy + 28);
   }
 
   if ((v7 & 2) != 0)
   {
-    self->_updateType = *(v4 + 6);
+    self->_updateType = *(fromCopy + 6);
     *&self->_has |= 2u;
   }
 

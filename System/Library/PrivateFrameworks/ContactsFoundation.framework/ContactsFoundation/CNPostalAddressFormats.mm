@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __41__CNPostalAddressFormats_sharedLocalizer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedLocalizer_cn_once_token_2 != -1)
   {
     dispatch_once(&sharedLocalizer_cn_once_token_2, block);
@@ -34,10 +34,10 @@ uint64_t __41__CNPostalAddressFormats_sharedLocalizer__block_invoke(uint64_t a1)
 + (id)makeLocalizer
 {
   v2 = +[(CNEnvironmentBase *)CNEnvironment];
-  v3 = [v2 isExtendedGreenTeaDevice];
+  isExtendedGreenTeaDevice = [v2 isExtendedGreenTeaDevice];
 
   v4 = off_1E6ED4B20;
-  if (!v3)
+  if (!isExtendedGreenTeaDevice)
   {
     v4 = &off_1E6ED4B28;
   }

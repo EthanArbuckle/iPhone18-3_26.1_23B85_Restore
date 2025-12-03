@@ -1,10 +1,10 @@
 @interface _NTKDComplicationCollectionManifest
 + (id)emptyManifest;
-- (BOOL)addKey:(id)a3 supportForSampleTemplateForFamily:(int64_t)a4;
-- (BOOL)removeSampleTemplatesForKey:(id)a3;
+- (BOOL)addKey:(id)key supportForSampleTemplateForFamily:(int64_t)family;
+- (BOOL)removeSampleTemplatesForKey:(id)key;
 - (_NTKDComplicationCollectionManifest)init;
-- (_NTKDComplicationCollectionManifest)initWithContentsOfFile:(id)a3;
-- (void)setClientId:(id)a3 supportForComplicationDescriptorIdentifiers:(id)a4;
+- (_NTKDComplicationCollectionManifest)initWithContentsOfFile:(id)file;
+- (void)setClientId:(id)id supportForComplicationDescriptorIdentifiers:(id)identifiers;
 @end
 
 @implementation _NTKDComplicationCollectionManifest
@@ -39,82 +39,82 @@
   return v2;
 }
 
-- (BOOL)addKey:(id)a3 supportForSampleTemplateForFamily:(int64_t)a4
+- (BOOL)addKey:(id)key supportForSampleTemplateForFamily:(int64_t)family
 {
-  v6 = a3;
+  keyCopy = key;
   clients = self->_clients;
-  v8 = [v6 clientIdentifier];
-  [(NSMutableSet *)clients addObject:v8];
+  clientIdentifier = [keyCopy clientIdentifier];
+  [(NSMutableSet *)clients addObject:clientIdentifier];
 
-  v9 = [(NSMutableDictionary *)self->_clientToSampleTemplateFamilies objectForKey:v6];
+  v9 = [(NSMutableDictionary *)self->_clientToSampleTemplateFamilies objectForKey:keyCopy];
   if (!v9)
   {
     v9 = +[NSMutableArray array];
-    [(NSMutableDictionary *)self->_clientToSampleTemplateFamilies setObject:v9 forKey:v6];
+    [(NSMutableDictionary *)self->_clientToSampleTemplateFamilies setObject:v9 forKey:keyCopy];
   }
 
-  v10 = [NSNumber numberWithInteger:a4];
+  v10 = [NSNumber numberWithInteger:family];
   v11 = [v9 containsObject:v10];
 
   if ((v11 & 1) == 0)
   {
-    v12 = [NSNumber numberWithInteger:a4];
+    v12 = [NSNumber numberWithInteger:family];
     [v9 addObject:v12];
   }
 
   return v11 ^ 1;
 }
 
-- (void)setClientId:(id)a3 supportForComplicationDescriptorIdentifiers:(id)a4
+- (void)setClientId:(id)id supportForComplicationDescriptorIdentifiers:(id)identifiers
 {
-  v9 = a3;
-  v6 = a4;
-  [(NSMutableSet *)self->_clients addObject:v9];
+  idCopy = id;
+  identifiersCopy = identifiers;
+  [(NSMutableSet *)self->_clients addObject:idCopy];
   clientToComplicationDescriptorIdentifiers = self->_clientToComplicationDescriptorIdentifiers;
-  if (v6)
+  if (identifiersCopy)
   {
-    v8 = [v6 copy];
-    [(NSMutableDictionary *)clientToComplicationDescriptorIdentifiers setObject:v8 forKey:v9];
+    v8 = [identifiersCopy copy];
+    [(NSMutableDictionary *)clientToComplicationDescriptorIdentifiers setObject:v8 forKey:idCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)clientToComplicationDescriptorIdentifiers removeObjectForKey:v9];
+    [(NSMutableDictionary *)clientToComplicationDescriptorIdentifiers removeObjectForKey:idCopy];
   }
 }
 
-- (BOOL)removeSampleTemplatesForKey:(id)a3
+- (BOOL)removeSampleTemplatesForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_clientToSampleTemplateFamilies objectForKey:v4];
+  keyCopy = key;
+  v5 = [(NSMutableDictionary *)self->_clientToSampleTemplateFamilies objectForKey:keyCopy];
 
   if (v5)
   {
     v6 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v4 clientIdentifier];
-      v8 = [v4 complicationIdentifier];
+      clientIdentifier = [keyCopy clientIdentifier];
+      complicationIdentifier = [keyCopy complicationIdentifier];
       v10 = 138412546;
-      v11 = v7;
+      v11 = clientIdentifier;
       v12 = 2112;
-      v13 = v8;
+      v13 = complicationIdentifier;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "_NTKDComplicationCollectionManifest, removing sample data for %@, %@", &v10, 0x16u);
     }
 
-    [(NSMutableDictionary *)self->_clientToSampleTemplateFamilies removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_clientToSampleTemplateFamilies removeObjectForKey:keyCopy];
   }
 
   return v5 != 0;
 }
 
-- (_NTKDComplicationCollectionManifest)initWithContentsOfFile:(id)a3
+- (_NTKDComplicationCollectionManifest)initWithContentsOfFile:(id)file
 {
-  v26 = a3;
+  fileCopy = file;
   v4 = [(_NTKDComplicationCollectionManifest *)self init];
   if (v4)
   {
-    v5 = [[NSDictionary alloc] initWithContentsOfFile:v26];
+    v5 = [[NSDictionary alloc] initWithContentsOfFile:fileCopy];
     if (v5)
     {
       v6 = v5;
@@ -132,8 +132,8 @@
         v40 = 0u;
         v37 = 0u;
         v38 = 0u;
-        v7 = [v30 allKeys];
-        v8 = [v7 countByEnumeratingWithState:&v37 objects:v44 count:16];
+        allKeys = [v30 allKeys];
+        v8 = [allKeys countByEnumeratingWithState:&v37 objects:v44 count:16];
         if (v8)
         {
           v9 = *v38;
@@ -143,7 +143,7 @@
             {
               if (*v38 != v9)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(allKeys);
               }
 
               v11 = *(*(&v37 + 1) + 8 * i);
@@ -156,7 +156,7 @@
               [v12 addObjectsFromArray:v13];
             }
 
-            v8 = [v7 countByEnumeratingWithState:&v37 objects:v44 count:16];
+            v8 = [allKeys countByEnumeratingWithState:&v37 objects:v44 count:16];
           }
 
           while (v8);
@@ -172,7 +172,7 @@
         v35[3] = &unk_10005DED0;
         v36 = v4;
         [v29 enumerateKeysAndObjectsUsingBlock:v35];
-        v14 = v36;
+        allKeys2 = v36;
       }
 
       else
@@ -185,12 +185,12 @@
         v34 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v14 = [v29 allKeys];
-        v15 = [v14 countByEnumeratingWithState:&v31 objects:v43 count:16];
+        allKeys2 = [v29 allKeys];
+        v15 = [allKeys2 countByEnumeratingWithState:&v31 objects:v43 count:16];
         if (v15)
         {
           v28 = *v32;
-          obj = v14;
+          obj = allKeys2;
           do
           {
             for (j = 0; j != v15; j = j + 1)
@@ -213,7 +213,7 @@
               [(NSMutableDictionary *)v4->_clientToComplicationDescriptorIdentifiers setObject:v21 forKey:v17];
             }
 
-            v14 = obj;
+            allKeys2 = obj;
             v15 = [obj countByEnumeratingWithState:&v31 objects:v43 count:16];
           }
 

@@ -1,20 +1,20 @@
 @interface SUUINavigationBarSegmentsController
-- (SUUINavigationBarSegmentsController)initWithViewElement:(id)a3;
-- (void)reloadAfterDocumentUpdateWithNavigationItem:(id)a3;
+- (SUUINavigationBarSegmentsController)initWithViewElement:(id)element;
+- (void)reloadAfterDocumentUpdateWithNavigationItem:(id)item;
 - (void)willAppearInNavigationBar;
 @end
 
 @implementation SUUINavigationBarSegmentsController
 
-- (SUUINavigationBarSegmentsController)initWithViewElement:(id)a3
+- (SUUINavigationBarSegmentsController)initWithViewElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v9.receiver = self;
   v9.super_class = SUUINavigationBarSegmentsController;
   v5 = [(SUUINavigationBarSegmentsController *)&v9 init];
   if (v5)
   {
-    v6 = [[SUUISegmentedControlViewElementController alloc] initWithViewElement:v4];
+    v6 = [[SUUISegmentedControlViewElementController alloc] initWithViewElement:elementCopy];
     underlyingController = v5->_underlyingController;
     v5->_underlyingController = v6;
 
@@ -24,26 +24,26 @@
   return v5;
 }
 
-- (void)reloadAfterDocumentUpdateWithNavigationItem:(id)a3
+- (void)reloadAfterDocumentUpdateWithNavigationItem:(id)item
 {
   underlyingController = self->_underlyingController;
-  v5 = a3;
+  itemCopy = item;
   [(SUUISegmentedControlViewElementController *)underlyingController reloadAfterDocumentUpdate];
   v6.receiver = self;
   v6.super_class = SUUINavigationBarSegmentsController;
-  [(SUUINavigationBarSectionController *)&v6 reloadAfterDocumentUpdateWithNavigationItem:v5];
+  [(SUUINavigationBarSectionController *)&v6 reloadAfterDocumentUpdateWithNavigationItem:itemCopy];
 }
 
 - (void)willAppearInNavigationBar
 {
-  v3 = [(SUUINavigationBarSectionController *)self context];
-  [v3 maximumNavigationBarWidth];
+  context = [(SUUINavigationBarSectionController *)self context];
+  [context maximumNavigationBarWidth];
   v5 = v4;
-  v6 = [v3 parentViewController];
-  if ([v6 isViewLoaded])
+  parentViewController = [context parentViewController];
+  if ([parentViewController isViewLoaded])
   {
-    v7 = [v6 view];
-    [v7 bounds];
+    view = [parentViewController view];
+    [view bounds];
     v5 = v8;
   }
 

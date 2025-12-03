@@ -1,27 +1,27 @@
 @interface BuddySIMActivationController
 - (BOOL)controllerNeedsToRun;
 - (id)viewController;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
-- (void)simSetupFlowCompleted:(unint64_t)a3;
-- (void)updateSourceProxCardState:(BOOL)a3;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
+- (void)simSetupFlowCompleted:(unint64_t)completed;
+- (void)updateSourceProxCardState:(BOOL)state;
 @end
 
 @implementation BuddySIMActivationController
 
 - (BOOL)controllerNeedsToRun
 {
-  v2 = [(BuddySIMActivationController *)self runState];
-  v3 = [(BYRunState *)v2 hasCompletedInitialRun];
+  runState = [(BuddySIMActivationController *)self runState];
+  hasCompletedInitialRun = [(BYRunState *)runState hasCompletedInitialRun];
   v8 = 0;
   v6 = 0;
   v4 = 0;
-  if ((v3 & 1) == 0)
+  if ((hasCompletedInitialRun & 1) == 0)
   {
-    v9 = [(BuddySIMActivationController *)self miscState];
+    miscState = [(BuddySIMActivationController *)self miscState];
     v8 = 1;
-    v7 = [(BuddyMiscState *)v9 activationPlanRequest];
+    activationPlanRequest = [(BuddyMiscState *)miscState activationPlanRequest];
     v6 = 1;
-    v4 = v7 != 0;
+    v4 = activationPlanRequest != 0;
   }
 
   v11 = v4;
@@ -36,12 +36,12 @@
   return v11;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v21 = _BYLoggingFacility();
   v20 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -56,12 +56,12 @@
   v5 = [CoreTelephonyClient alloc];
   v6 = &_dispatch_main_q;
   v7 = [v5 initWithQueue:v6];
-  [(BuddySIMActivationController *)v23 setTelephonyClient:v7];
+  [(BuddySIMActivationController *)selfCopy setTelephonyClient:v7];
 
-  objc_initWeak(&from, v23);
-  v8 = [(BuddySIMActivationController *)v23 telephonyClient];
-  v9 = [(BuddySIMActivationController *)v23 miscState];
-  v10 = [(BuddyMiscState *)v9 activationPlanRequest];
+  objc_initWeak(&from, selfCopy);
+  telephonyClient = [(BuddySIMActivationController *)selfCopy telephonyClient];
+  miscState = [(BuddySIMActivationController *)selfCopy miscState];
+  activationPlanRequest = [(BuddyMiscState *)miscState activationPlanRequest];
   v11 = _NSConcreteStackBlock;
   v12 = -1073741824;
   v13 = 0;
@@ -69,7 +69,7 @@
   v15 = &unk_10032F7E8;
   objc_copyWeak(v17, &from);
   v16 = location[0];
-  [(CoreTelephonyClient *)v8 addPlanWith:v10 completionHandler:&v11];
+  [(CoreTelephonyClient *)telephonyClient addPlanWith:activationPlanRequest completionHandler:&v11];
 
   objc_storeStrong(&v16, 0);
   objc_destroyWeak(v17);
@@ -80,48 +80,48 @@
 - (id)viewController
 {
   v2 = [(BuddySIMActivationController *)self setupFlow:a2];
-  v3 = [(TSSIMSetupFlow *)v2 rootViewController];
+  rootViewController = [(TSSIMSetupFlow *)v2 rootViewController];
 
-  return v3;
+  return rootViewController;
 }
 
-- (void)simSetupFlowCompleted:(unint64_t)a3
+- (void)simSetupFlowCompleted:(unint64_t)completed
 {
-  v16 = self;
+  selfCopy = self;
   v15[2] = a2;
-  v15[1] = a3;
-  v3 = [(BuddySIMActivationController *)self viewController];
-  v15[0] = [v3 navigationController];
+  v15[1] = completed;
+  viewController = [(BuddySIMActivationController *)self viewController];
+  v15[0] = [viewController navigationController];
 
-  v4 = [v15[0] viewControllers];
-  v5 = [(BuddySIMActivationController *)v16 viewController];
-  v6 = [v4 indexOfObject:v5];
+  viewControllers = [v15[0] viewControllers];
+  viewController2 = [(BuddySIMActivationController *)selfCopy viewController];
+  v6 = [viewControllers indexOfObject:viewController2];
 
   v14 = v6;
-  v7 = [v15[0] viewControllers];
+  viewControllers2 = [v15[0] viewControllers];
   v8 = v6;
-  v9 = [v15[0] viewControllers];
+  viewControllers3 = [v15[0] viewControllers];
   v18 = v8;
-  v17 = ([v9 count] - v14);
+  v17 = ([viewControllers3 count] - v14);
   v19 = v8;
   v20 = v17;
   v10 = [NSIndexSet indexSetWithIndexesInRange:v8, v17, v8, v17];
-  location = [v7 objectsAtIndexes:v10];
+  location = [viewControllers2 objectsAtIndexes:v10];
 
-  v11 = [(BuddySIMActivationController *)v16 delegate];
-  [(BFFFlowItemDelegate *)v11 removeViewControllersOnNextPush:location];
+  delegate = [(BuddySIMActivationController *)selfCopy delegate];
+  [(BFFFlowItemDelegate *)delegate removeViewControllersOnNextPush:location];
 
-  v12 = [(BuddySIMActivationController *)v16 delegate];
-  [(BFFFlowItemDelegate *)v12 flowItemDone:v16];
+  delegate2 = [(BuddySIMActivationController *)selfCopy delegate];
+  [(BFFFlowItemDelegate *)delegate2 flowItemDone:selfCopy];
 
   objc_storeStrong(&location, 0);
   objc_storeStrong(v15, 0);
 }
 
-- (void)updateSourceProxCardState:(BOOL)a3
+- (void)updateSourceProxCardState:(BOOL)state
 {
-  v3 = [(BuddySIMActivationController *)self proximitySetupController];
-  [(ProximitySetupController *)v3 setSourceProxCardVisibliityForSIMSetupExternalAuthentication:a3];
+  proximitySetupController = [(BuddySIMActivationController *)self proximitySetupController];
+  [(ProximitySetupController *)proximitySetupController setSourceProxCardVisibliityForSIMSetupExternalAuthentication:state];
 }
 
 @end

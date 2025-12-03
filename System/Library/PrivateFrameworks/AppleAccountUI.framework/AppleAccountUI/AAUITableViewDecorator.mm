@@ -1,30 +1,30 @@
 @interface AAUITableViewDecorator
-- (AAUITableViewDecorator)initWithTableView:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (AAUITableViewDecorator)initWithTableView:(id)view;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (UITableViewDataSource)dataSource;
 - (UITableViewDelegate)delegate;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 @end
 
 @implementation AAUITableViewDecorator
 
-- (AAUITableViewDecorator)initWithTableView:(id)a3
+- (AAUITableViewDecorator)initWithTableView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = AAUITableViewDecorator;
   v6 = [(AAUITableViewDecorator *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tableView, a3);
-    v8 = [v5 dataSource];
-    objc_storeWeak(&v7->_dataSource, v8);
+    objc_storeStrong(&v6->_tableView, view);
+    dataSource = [viewCopy dataSource];
+    objc_storeWeak(&v7->_dataSource, dataSource);
 
-    v9 = [v5 delegate];
-    objc_storeWeak(&v7->_delegate, v9);
+    delegate = [viewCopy delegate];
+    objc_storeWeak(&v7->_delegate, delegate);
 
     [(AAUITableViewDecoratorProtocol *)v7->_tableView setDelegate:v7];
     [(AAUITableViewDecoratorProtocol *)v7->_tableView setDataSource:v7];
@@ -33,7 +33,7 @@
   return v7;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v5 = objc_opt_respondsToSelector();
@@ -51,7 +51,7 @@
   return v8;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v9.receiver = self;
   v9.super_class = AAUITableViewDecorator;
@@ -69,21 +69,21 @@
   return v6 & 1;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v8 = [WeakRetained tableView:v6 numberOfRowsInSection:a4];
+  v8 = [WeakRetained tableView:viewCopy numberOfRowsInSection:section];
 
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v9 = [WeakRetained tableView:v7 cellForRowAtIndexPath:v6];
+  v9 = [WeakRetained tableView:viewCopy cellForRowAtIndexPath:pathCopy];
 
   return v9;
 }

@@ -1,5 +1,5 @@
 @interface TSPContainedObject
-- (TSPContainedObject)initWithOwner:(id)a3;
+- (TSPContainedObject)initWithOwner:(id)owner;
 - (TSPObject)owner;
 - (void)willModify;
 - (void)willModifyForUpgrade;
@@ -7,16 +7,16 @@
 
 @implementation TSPContainedObject
 
-- (TSPContainedObject)initWithOwner:(id)a3
+- (TSPContainedObject)initWithOwner:(id)owner
 {
-  v4 = a3;
+  ownerCopy = owner;
   v8.receiver = self;
   v8.super_class = TSPContainedObject;
   v5 = [(TSPContainedObject *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_owner, v4);
+    objc_storeWeak(&v5->_owner, ownerCopy);
   }
 
   return v6;

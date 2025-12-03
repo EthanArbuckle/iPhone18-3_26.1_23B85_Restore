@@ -1,12 +1,12 @@
 @interface NFPromiseSeal
 - (NFPromiseSeal)init;
-- (NFPromiseSeal)initWithError:(id)a3;
-- (NFPromiseSeal)initWithValue:(id)a3;
-- (void)alwaysOn:(id)a3 always:(id)a4;
+- (NFPromiseSeal)initWithError:(id)error;
+- (NFPromiseSeal)initWithValue:(id)value;
+- (void)alwaysOn:(id)on always:(id)always;
 - (void)dealloc;
-- (void)registerHandler:(id)a3;
-- (void)resolveOn:(id)a3 reject:(id)a4 resolve:(id)a5;
-- (void)seal:(id)a3 error:(id)a4 resolution:(unint64_t)a5;
+- (void)registerHandler:(id)handler;
+- (void)resolveOn:(id)on reject:(id)reject resolve:(id)resolve;
+- (void)seal:(id)seal error:(id)error resolution:(unint64_t)resolution;
 @end
 
 @implementation NFPromiseSeal
@@ -44,53 +44,53 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (NFPromiseSeal)initWithValue:(id)a3
+- (NFPromiseSeal)initWithValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v9.receiver = self;
   v9.super_class = NFPromiseSeal;
   v6 = [(NFPromiseSeal *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_value, a3);
+    objc_storeStrong(&v6->_value, value);
     v7->_state = 1;
   }
 
   return v7;
 }
 
-- (NFPromiseSeal)initWithError:(id)a3
+- (NFPromiseSeal)initWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   v9.receiver = self;
   v9.super_class = NFPromiseSeal;
   v6 = [(NFPromiseSeal *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_error, a3);
+    objc_storeStrong(&v6->_error, error);
     v7->_state = 1;
   }
 
   return v7;
 }
 
-- (void)resolveOn:(id)a3 reject:(id)a4 resolve:(id)a5
+- (void)resolveOn:(id)on reject:(id)reject resolve:(id)resolve
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  onCopy = on;
+  rejectCopy = reject;
+  resolveCopy = resolve;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __42__NFPromiseSeal_resolveOn_reject_resolve___block_invoke;
   v14[3] = &unk_27997DE60;
-  v15 = v8;
-  v16 = v10;
-  v17 = v9;
-  v11 = v9;
-  v12 = v10;
-  v13 = v8;
+  v15 = onCopy;
+  v16 = resolveCopy;
+  v17 = rejectCopy;
+  v11 = rejectCopy;
+  v12 = resolveCopy;
+  v13 = onCopy;
   [(NFPromiseSeal *)self registerHandler:v14];
 }
 
@@ -130,18 +130,18 @@ LABEL_5:
   }
 }
 
-- (void)alwaysOn:(id)a3 always:(id)a4
+- (void)alwaysOn:(id)on always:(id)always
 {
-  v6 = a3;
-  v7 = a4;
+  onCopy = on;
+  alwaysCopy = always;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __33__NFPromiseSeal_alwaysOn_always___block_invoke;
   v10[3] = &unk_27997DEB0;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = onCopy;
+  v12 = alwaysCopy;
+  v8 = alwaysCopy;
+  v9 = onCopy;
   [(NFPromiseSeal *)self registerHandler:v10];
 }
 
@@ -156,47 +156,47 @@ void __33__NFPromiseSeal_alwaysOn_always___block_invoke(uint64_t a1)
   NFPromiseInvokeOnQueue(v1, v2);
 }
 
-- (void)registerHandler:(id)a3
+- (void)registerHandler:(id)handler
 {
-  v11 = a3;
-  v4 = [(NFPromiseSeal *)self lock];
-  [v4 lock];
+  handlerCopy = handler;
+  lock = [(NFPromiseSeal *)self lock];
+  [lock lock];
 
-  v5 = [(NFPromiseSeal *)self state];
-  if (v5)
+  state = [(NFPromiseSeal *)self state];
+  if (state)
   {
-    if (v5 != 1)
+    if (state != 1)
     {
       goto LABEL_6;
     }
 
-    v6 = [(NFPromiseSeal *)self error];
-    v7 = v6 != 0;
+    error = [(NFPromiseSeal *)self error];
+    v7 = error != 0;
 
-    v8 = [(NFPromiseSeal *)self value];
-    v9 = [(NFPromiseSeal *)self error];
-    v11[2](v11, v7, v8, v9);
+    value = [(NFPromiseSeal *)self value];
+    error2 = [(NFPromiseSeal *)self error];
+    handlerCopy[2](handlerCopy, v7, value, error2);
   }
 
   else
   {
-    v8 = [(NFPromiseSeal *)self handlers];
-    v9 = MEMORY[0x25F880B10](v11);
-    [v8 addObject:v9];
+    value = [(NFPromiseSeal *)self handlers];
+    error2 = MEMORY[0x25F880B10](handlerCopy);
+    [value addObject:error2];
   }
 
 LABEL_6:
-  v10 = [(NFPromiseSeal *)self lock];
-  [v10 unlock];
+  lock2 = [(NFPromiseSeal *)self lock];
+  [lock2 unlock];
 }
 
-- (void)seal:(id)a3 error:(id)a4 resolution:(unint64_t)a5
+- (void)seal:(id)seal error:(id)error resolution:(unint64_t)resolution
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(NFPromiseSeal *)self lock];
-  [v10 lock];
+  sealCopy = seal;
+  errorCopy = error;
+  lock = [(NFPromiseSeal *)self lock];
+  [lock lock];
 
   if ([(NFPromiseSeal *)self state]&& os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -206,15 +206,15 @@ LABEL_6:
   if (![(NFPromiseSeal *)self state])
   {
     [(NFPromiseSeal *)self setState:1];
-    v22 = v8;
-    [(NFPromiseSeal *)self setValue:v8];
-    [(NFPromiseSeal *)self setError:v9];
+    v22 = sealCopy;
+    [(NFPromiseSeal *)self setValue:sealCopy];
+    [(NFPromiseSeal *)self setError:errorCopy];
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v11 = [(NFPromiseSeal *)self handlers];
-    v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    handlers = [(NFPromiseSeal *)self handlers];
+    v12 = [handlers countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v12)
     {
       v13 = v12;
@@ -226,32 +226,32 @@ LABEL_6:
         {
           if (*v24 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(handlers);
           }
 
           v16 = *(*(&v23 + 1) + 8 * v15);
-          v17 = [(NFPromiseSeal *)self value];
-          v18 = [(NFPromiseSeal *)self error];
-          (*(v16 + 16))(v16, a5, v17, v18);
+          value = [(NFPromiseSeal *)self value];
+          error = [(NFPromiseSeal *)self error];
+          (*(v16 + 16))(v16, resolution, value, error);
 
           ++v15;
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v13 = [handlers countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v13);
     }
 
-    v19 = [(NFPromiseSeal *)self handlers];
-    [v19 removeAllObjects];
+    handlers2 = [(NFPromiseSeal *)self handlers];
+    [handlers2 removeAllObjects];
 
-    v8 = v22;
+    sealCopy = v22;
   }
 
-  v20 = [(NFPromiseSeal *)self lock];
-  [v20 unlock];
+  lock2 = [(NFPromiseSeal *)self lock];
+  [lock2 unlock];
 
   v21 = *MEMORY[0x277D85DE8];
 }

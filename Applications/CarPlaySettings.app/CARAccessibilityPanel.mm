@@ -1,24 +1,24 @@
 @interface CARAccessibilityPanel
 - (BOOL)isBoldTextEnabled;
-- (CARAccessibilityPanel)initWithPanelController:(id)a3;
+- (CARAccessibilityPanel)initWithPanelController:(id)controller;
 - (id)cellSpecifier;
 - (id)specifierSections;
 - (void)_updateSpecifiers;
-- (void)_vehicleDidChange:(id)a3;
+- (void)_vehicleDidChange:(id)change;
 - (void)boldTextChanged;
-- (void)boldTextToggleChanged:(BOOL)a3;
+- (void)boldTextToggleChanged:(BOOL)changed;
 - (void)systemVoiceControlStatusChanged;
-- (void)voiceControlToggleChanged:(BOOL)a3;
+- (void)voiceControlToggleChanged:(BOOL)changed;
 @end
 
 @implementation CARAccessibilityPanel
 
-- (CARAccessibilityPanel)initWithPanelController:(id)a3
+- (CARAccessibilityPanel)initWithPanelController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v52.receiver = self;
   v52.super_class = CARAccessibilityPanel;
-  v5 = [(CARSettingsPanel *)&v52 initWithPanelController:v4];
+  v5 = [(CARSettingsPanel *)&v52 initWithPanelController:controllerCopy];
   if (v5)
   {
     objc_initWeak(&location, v5);
@@ -94,8 +94,8 @@
       objc_copyWeak(&v42, &location);
       [(CARSettingsCellSpecifier *)v5->_textSizeSpecifier setActionBlock:v41];
       v22 = [CARTextSizePanel alloc];
-      v23 = [(CARSettingsPanel *)v5 panelController];
-      v24 = [(CARTextSizePanel *)v22 initWithPanelController:v23 textSizeSpecifier:v5->_textSizeSpecifier];
+      panelController = [(CARSettingsPanel *)v5 panelController];
+      v24 = [(CARTextSizePanel *)v22 initWithPanelController:panelController textSizeSpecifier:v5->_textSizeSpecifier];
       textSizePanel = v5->_textSizePanel;
       v5->_textSizePanel = v24;
 
@@ -104,12 +104,12 @@
 
     if (_os_feature_enabled_impl())
     {
-      v26 = [(CARSettingsPanel *)v5 panelController];
-      v27 = [v26 carSession];
-      v28 = [v27 configuration];
-      v29 = [v28 videoPlaybackSupported];
+      panelController2 = [(CARSettingsPanel *)v5 panelController];
+      carSession = [panelController2 carSession];
+      configuration = [carSession configuration];
+      videoPlaybackSupported = [configuration videoPlaybackSupported];
 
-      if (v29)
+      if (videoPlaybackSupported)
       {
         v30 = [CARSettingsCellSpecifier alloc];
         v31 = sub_10001C80C(@"SUBTITLES_AND_CAPTIONING");
@@ -172,19 +172,19 @@
 
 - (id)specifierSections
 {
-  v3 = [(CARAccessibilityPanel *)self colorFiltersSpecifier];
-  v27 = v3;
+  colorFiltersSpecifier = [(CARAccessibilityPanel *)self colorFiltersSpecifier];
+  v27 = colorFiltersSpecifier;
   v4 = [NSArray arrayWithObjects:&v27 count:1];
   v5 = [NSMutableArray arrayWithArray:v4];
 
   if (_os_feature_enabled_impl())
   {
-    v6 = [(CARAccessibilityPanel *)self textSizeSpecifier];
-    [v5 addObject:v6];
+    textSizeSpecifier = [(CARAccessibilityPanel *)self textSizeSpecifier];
+    [v5 addObject:textSizeSpecifier];
   }
 
-  v7 = [(CARAccessibilityPanel *)self boldTextSpecifier];
-  [v5 addObject:v7];
+  boldTextSpecifier = [(CARAccessibilityPanel *)self boldTextSpecifier];
+  [v5 addObject:boldTextSpecifier];
 
   v8 = [CARSettingsCellSpecifierSection alloc];
   v9 = sub_10001C80C(@"ACCESSIBILITY_HEADER_VISION");
@@ -193,8 +193,8 @@
   v11 = [CARSettingsCellSpecifierSection alloc];
   v12 = sub_10001C80C(@"ACCESSIBILITY_HEADER_PHYSICAL_AND_MOTOR");
   v13 = sub_10001C80C(@"ACCESSIBILITY_VOICE_CONTROL_FOOTER");
-  v14 = [(CARAccessibilityPanel *)self voiceControlSpecifier];
-  v26 = v14;
+  voiceControlSpecifier = [(CARAccessibilityPanel *)self voiceControlSpecifier];
+  v26 = voiceControlSpecifier;
   v15 = [NSArray arrayWithObjects:&v26 count:1];
   v16 = [(CARSettingsCellSpecifierSection *)v11 initWithTitle:v12 footer:v13 specifiers:v15];
 
@@ -202,16 +202,16 @@
   v18 = objc_alloc_init(NSMutableArray);
   if (CPUIDeviceSupportsSoundRecognition())
   {
-    v19 = [(CARAccessibilityPanel *)self soundRecognitionSpecifier];
-    [v18 addObject:v19];
+    soundRecognitionSpecifier = [(CARAccessibilityPanel *)self soundRecognitionSpecifier];
+    [v18 addObject:soundRecognitionSpecifier];
   }
 
-  v20 = [(CARAccessibilityPanel *)self subtitlesSpecifier];
+  subtitlesSpecifier = [(CARAccessibilityPanel *)self subtitlesSpecifier];
 
-  if (v20)
+  if (subtitlesSpecifier)
   {
-    v21 = [(CARAccessibilityPanel *)self subtitlesSpecifier];
-    [v18 addObject:v21];
+    subtitlesSpecifier2 = [(CARAccessibilityPanel *)self subtitlesSpecifier];
+    [v18 addObject:subtitlesSpecifier2];
   }
 
   if ([v18 count])
@@ -227,20 +227,20 @@
 
 - (BOOL)isBoldTextEnabled
 {
-  v2 = [(CARSettingsPanel *)self panelController];
-  v3 = [v2 vehicle];
-  v4 = [v3 boldTextPreference] == 1;
+  panelController = [(CARSettingsPanel *)self panelController];
+  vehicle = [panelController vehicle];
+  v4 = [vehicle boldTextPreference] == 1;
 
   return v4;
 }
 
-- (void)boldTextToggleChanged:(BOOL)a3
+- (void)boldTextToggleChanged:(BOOL)changed
 {
-  v3 = a3;
-  v5 = [(CARSettingsPanel *)self panelController];
-  v11 = [v5 vehicle];
+  changedCopy = changed;
+  panelController = [(CARSettingsPanel *)self panelController];
+  vehicle = [panelController vehicle];
 
-  if (v3)
+  if (changedCopy)
   {
     v6 = 1;
   }
@@ -250,25 +250,25 @@
     v6 = 2;
   }
 
-  [v11 setBoldTextPreference:v6];
-  v7 = [(CARSettingsPanel *)self panelController];
-  [v7 saveVehicle:v11];
+  [vehicle setBoldTextPreference:v6];
+  panelController2 = [(CARSettingsPanel *)self panelController];
+  [panelController2 saveVehicle:vehicle];
 
-  if (_AXSCarPlayEnhanceTextLegibilityEnabled() != v3)
+  if (_AXSCarPlayEnhanceTextLegibilityEnabled() != changedCopy)
   {
     _AXSSetCarPlayEnhanceTextLegibilityEnabled();
     v8 = +[CARSettingsAnalytics sharedInstance];
-    v9 = [(CARSettingsPanel *)self panelController];
-    v10 = [v9 carSession];
-    [v8 axBoldTextPrefChangedForVehicle:v11 session:v10];
+    panelController3 = [(CARSettingsPanel *)self panelController];
+    carSession = [panelController3 carSession];
+    [v8 axBoldTextPrefChangedForVehicle:vehicle session:carSession];
   }
 }
 
 - (void)boldTextChanged
 {
-  v3 = [(CARAccessibilityPanel *)self boldTextSpecifier];
+  boldTextSpecifier = [(CARAccessibilityPanel *)self boldTextSpecifier];
   v4 = [NSNumber numberWithBool:[(CARAccessibilityPanel *)self isBoldTextEnabled]];
-  [v3 setCellValue:v4];
+  [boldTextSpecifier setCellValue:v4];
 
   [(CARSettingsTablePanel *)self reloadSpecifiers];
 }
@@ -282,14 +282,14 @@
   [(CARSettingsTablePanel *)self reloadSpecifiers];
 }
 
-- (void)voiceControlToggleChanged:(BOOL)a3
+- (void)voiceControlToggleChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   _AXSCommandAndControlCarPlaySetEnabled();
-  v5 = [(CARSettingsPanel *)self panelController];
-  v13 = [v5 vehicle];
+  panelController = [(CARSettingsPanel *)self panelController];
+  vehicle = [panelController vehicle];
 
-  if (v3)
+  if (changedCopy)
   {
     v6 = 1;
   }
@@ -299,24 +299,24 @@
     v6 = 2;
   }
 
-  [v13 setVoiceControlPreference:v6];
-  v7 = [(CARSettingsPanel *)self panelController];
-  [v7 saveVehicle:v13];
+  [vehicle setVoiceControlPreference:v6];
+  panelController2 = [(CARSettingsPanel *)self panelController];
+  [panelController2 saveVehicle:vehicle];
 
   v8 = +[CARSettingsAnalytics sharedInstance];
-  v9 = [(CARSettingsPanel *)self panelController];
-  v10 = [v9 vehicle];
-  v11 = [(CARSettingsPanel *)self panelController];
-  v12 = [v11 carSession];
-  [v8 axVoiceControlPrefChanged:v3 forVehicle:v10 session:v12];
+  panelController3 = [(CARSettingsPanel *)self panelController];
+  vehicle2 = [panelController3 vehicle];
+  panelController4 = [(CARSettingsPanel *)self panelController];
+  carSession = [panelController4 carSession];
+  [v8 axVoiceControlPrefChanged:changedCopy forVehicle:vehicle2 session:carSession];
 }
 
 - (void)_updateSpecifiers
 {
-  v3 = [(CARSettingsPanel *)self panelController];
-  v10 = [v3 vehicle];
+  panelController = [(CARSettingsPanel *)self panelController];
+  vehicle = [panelController vehicle];
 
-  if ([v10 colorFilterPreference] >= 2)
+  if ([vehicle colorFilterPreference] >= 2)
   {
     v4 = @"ACCESSIBILITY_SETTING_ON";
   }
@@ -327,10 +327,10 @@
   }
 
   v5 = sub_10001C80C(v4);
-  v6 = [(CARAccessibilityPanel *)self colorFiltersSpecifier];
-  [v6 setDetail:v5];
+  colorFiltersSpecifier = [(CARAccessibilityPanel *)self colorFiltersSpecifier];
+  [colorFiltersSpecifier setDetail:v5];
 
-  if ([v10 soundRecognitionPreference])
+  if ([vehicle soundRecognitionPreference])
   {
     v7 = @"ACCESSIBILITY_SETTING_ON";
   }
@@ -341,11 +341,11 @@
   }
 
   v8 = sub_10001C80C(v7);
-  v9 = [(CARAccessibilityPanel *)self soundRecognitionSpecifier];
-  [v9 setDetail:v8];
+  soundRecognitionSpecifier = [(CARAccessibilityPanel *)self soundRecognitionSpecifier];
+  [soundRecognitionSpecifier setDetail:v8];
 }
 
-- (void)_vehicleDidChange:(id)a3
+- (void)_vehicleDidChange:(id)change
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;

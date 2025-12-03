@@ -1,19 +1,19 @@
 @interface PLChangeNotificationCenter
-+ (id)allManagedObjectKeysStrategyWithContext:(id)a3;
++ (id)allManagedObjectKeysStrategyWithContext:(id)context;
 + (id)defaultCenter;
-+ (void)assertIsCompatibleWithObjectModel:(id)a3;
++ (void)assertIsCompatibleWithObjectModel:(id)model;
 + (void)forceFetchingAlbumReload;
-+ (void)getInsertedAssetCount:(unint64_t *)a3 deletedAssetCount:(unint64_t *)a4 updatedAssets:(id)a5 fromContextDidChangeNotification:(id)a6;
-- (BOOL)_isInterestedInUpdatesOfObject:(id)a3;
++ (void)getInsertedAssetCount:(unint64_t *)count deletedAssetCount:(unint64_t *)assetCount updatedAssets:(id)assets fromContextDidChangeNotification:(id)notification;
+- (BOOL)_isInterestedInUpdatesOfObject:(id)object;
 - (BOOL)_shouldForceFetchingAlbumsToReload;
 - (PLChangeNotificationCenter)init;
-- (id)_attributesOfInterestForObject:(id)a3;
-- (id)_keysOfInterestForObject:(id)a3;
-- (id)_orderedRelationshipsOfInterestForObject:(id)a3;
-- (id)_snapshotForObject:(id)a3;
-- (id)_takeSnapshotOfObject:(id)a3 useCommitedValues:(BOOL)a4;
-- (id)_toOneRelationshipsOfInterestForObject:(id)a3;
-- (id)addObserverForName:(id)a3 object:(id)a4 queue:(id)a5 usingBlock:(id)a6;
+- (id)_attributesOfInterestForObject:(id)object;
+- (id)_keysOfInterestForObject:(id)object;
+- (id)_orderedRelationshipsOfInterestForObject:(id)object;
+- (id)_snapshotForObject:(id)object;
+- (id)_takeSnapshotOfObject:(id)object useCommitedValues:(BOOL)values;
+- (id)_toOneRelationshipsOfInterestForObject:(id)object;
+- (id)addObserverForName:(id)name object:(id)object queue:(id)queue usingBlock:(id)block;
 - (id)descriptionOfSplitChanges;
 - (void)_cleanupState;
 - (void)_enqueueAlbumListNotifications;
@@ -22,34 +22,34 @@
 - (void)_enqueueCloudCommentsNotifications;
 - (void)_enqueueCloudFeedEntriesChangeNotifications;
 - (void)_enqueueMomentChangeNotifications;
-- (void)_enqueueNotification:(id)a3 object:(id)a4 userInfo:(id)a5;
-- (void)_enqueueNotification:(id)a3 object:(id)a4 userInfoWithObjects:(const void *)a5 forKeys:(const void *)a6 count:(unint64_t)a7;
+- (void)_enqueueNotification:(id)notification object:(id)object userInfo:(id)info;
+- (void)_enqueueNotification:(id)notification object:(id)object userInfoWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count;
 - (void)_enqueuePhotoLibraryNotifications;
 - (void)_evaluateContainersWithUpdatedContent;
 - (void)_evaluateUpdatedAssets;
 - (void)_postEnqueuedNotifications;
 - (void)_registerForCameraPreviewWellChanges;
 - (void)_sendNotificationsForSplitChanges;
-- (void)_splitContextDidChangeNotification:(id)a3;
-- (void)_takeSnapshotsFromContext:(id)a3 forRemoteContextSaveNotification:(id)a4 usingObjectIDs:(BOOL)a5;
+- (void)_splitContextDidChangeNotification:(id)notification;
+- (void)_takeSnapshotsFromContext:(id)context forRemoteContextSaveNotification:(id)notification usingObjectIDs:(BOOL)ds;
 - (void)_unregisterForCameraPreviewWellChanges;
-- (void)addCameraPreviewWellImageChangeObserver:(id)a3;
-- (void)addObserver:(id)a3 selector:(SEL)a4 name:(id)a5 object:(id)a6;
-- (void)addShouldReloadObserver:(id)a3;
+- (void)addCameraPreviewWellImageChangeObserver:(id)observer;
+- (void)addObserver:(id)observer selector:(SEL)selector name:(id)name object:(id)object;
+- (void)addShouldReloadObserver:(id)observer;
 - (void)dealloc;
-- (void)enqueueNotification:(id)a3;
-- (void)enumerateIndexMappingCachesForObject:(id)a3 withBlock:(id)a4;
-- (void)managedObjectContext:(id)a3 didProcessRemoteContextSave:(id)a4 usingObjectIDs:(BOOL)a5;
-- (void)managedObjectContext:(id)a3 willProcessRemoteContextSave:(id)a4 usingObjectIDs:(BOOL)a5 isCoalescedEvent:(BOOL)a6;
-- (void)managedObjectContextWasOverloaded:(id)a3 withNotificationData:(id)a4 usingObjectIDs:(BOOL)a5;
-- (void)managedObjectContextWillBeOverloaded:(id)a3 withNotificationData:(id)a4 usingObjectIDs:(BOOL)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)postShouldReloadNotificationWithPhotoLibrary:(id)a3;
-- (void)processContextDidChangeNotification:(id)a3;
-- (void)removeCameraPreviewWellImageChangeObserver:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)removeObserver:(id)a3 name:(id)a4 object:(id)a5;
-- (void)removeShouldReloadObserver:(id)a3;
+- (void)enqueueNotification:(id)notification;
+- (void)enumerateIndexMappingCachesForObject:(id)object withBlock:(id)block;
+- (void)managedObjectContext:(id)context didProcessRemoteContextSave:(id)save usingObjectIDs:(BOOL)ds;
+- (void)managedObjectContext:(id)context willProcessRemoteContextSave:(id)save usingObjectIDs:(BOOL)ds isCoalescedEvent:(BOOL)event;
+- (void)managedObjectContextWasOverloaded:(id)overloaded withNotificationData:(id)data usingObjectIDs:(BOOL)ds;
+- (void)managedObjectContextWillBeOverloaded:(id)overloaded withNotificationData:(id)data usingObjectIDs:(BOOL)ds;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)postShouldReloadNotificationWithPhotoLibrary:(id)library;
+- (void)processContextDidChangeNotification:(id)notification;
+- (void)removeCameraPreviewWellImageChangeObserver:(id)observer;
+- (void)removeObserver:(id)observer;
+- (void)removeObserver:(id)observer name:(id)name object:(id)object;
+- (void)removeShouldReloadObserver:(id)observer;
 @end
 
 @implementation PLChangeNotificationCenter
@@ -130,32 +130,32 @@ void __43__PLChangeNotificationCenter_defaultCenter__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)removeCameraPreviewWellImageChangeObserver:(id)a3
+- (void)removeCameraPreviewWellImageChangeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   [(PLChangeNotificationCenter *)self _unregisterForCameraPreviewWellChanges];
-  [(PLChangeNotificationCenter *)self removeObserver:v4 name:@"PLCameraPreviewImageWellChanged" object:0];
+  [(PLChangeNotificationCenter *)self removeObserver:observerCopy name:@"PLCameraPreviewImageWellChanged" object:0];
 }
 
-- (void)addCameraPreviewWellImageChangeObserver:(id)a3
+- (void)addCameraPreviewWellImageChangeObserver:(id)observer
 {
-  [(PLChangeNotificationCenter *)self addObserver:a3 selector:sel_cameraPreviewWellImageDidChange_ name:@"PLCameraPreviewImageWellChanged" object:0];
+  [(PLChangeNotificationCenter *)self addObserver:observer selector:sel_cameraPreviewWellImageDidChange_ name:@"PLCameraPreviewImageWellChanged" object:0];
 
   [(PLChangeNotificationCenter *)self _registerForCameraPreviewWellChanges];
 }
 
 - (void)_unregisterForCameraPreviewWellChanges
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_cameraPreviewChangeListenerCount == 1)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_cameraPreviewChangeListenerCount == 1)
   {
-    notify_cancel([(NSNumber *)v2->_cameraPreviewChangedToken intValue]);
-    cameraPreviewChangedToken = v2->_cameraPreviewChangedToken;
-    v2->_cameraPreviewChangedToken = 0;
+    notify_cancel([(NSNumber *)selfCopy->_cameraPreviewChangedToken intValue]);
+    cameraPreviewChangedToken = selfCopy->_cameraPreviewChangedToken;
+    selfCopy->_cameraPreviewChangedToken = 0;
   }
 
-  if ([(NSNumber *)v2->_cameraPreviewChangedToken integerValue]< 1)
+  if ([(NSNumber *)selfCopy->_cameraPreviewChangedToken integerValue]< 1)
   {
     v4 = PLBackendGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -167,19 +167,19 @@ void __43__PLChangeNotificationCenter_defaultCenter__block_invoke(uint64_t a1)
 
   else
   {
-    --v2->_cameraPreviewChangeListenerCount;
+    --selfCopy->_cameraPreviewChangeListenerCount;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_registerForCameraPreviewWellChanges
 {
   v9 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  ++v2->_cameraPreviewChangeListenerCount;
-  if (!v2->_cameraPreviewChangedToken)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  ++selfCopy->_cameraPreviewChangeListenerCount;
+  if (!selfCopy->_cameraPreviewChangedToken)
   {
     v6 = MEMORY[0x1E69E9820];
     v3 = pl_notify_register_dispatch();
@@ -196,13 +196,13 @@ void __43__PLChangeNotificationCenter_defaultCenter__block_invoke(uint64_t a1)
 
     else
     {
-      v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:{0, v6, 3221225472, __66__PLChangeNotificationCenter__registerForCameraPreviewWellChanges__block_invoke, &unk_1E756B898, v2}];
-      p_super = &v2->_cameraPreviewChangedToken->super.super;
-      v2->_cameraPreviewChangedToken = v5;
+      v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:{0, v6, 3221225472, __66__PLChangeNotificationCenter__registerForCameraPreviewWellChanges__block_invoke, &unk_1E756B898, selfCopy}];
+      p_super = &selfCopy->_cameraPreviewChangedToken->super.super;
+      selfCopy->_cameraPreviewChangedToken = v5;
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 void __66__PLChangeNotificationCenter__registerForCameraPreviewWellChanges__block_invoke(uint64_t a1)
@@ -212,41 +212,41 @@ void __66__PLChangeNotificationCenter__registerForCameraPreviewWellChanges__bloc
   [v2 postNotification:v3];
 }
 
-- (void)managedObjectContext:(id)a3 didProcessRemoteContextSave:(id)a4 usingObjectIDs:(BOOL)a5
+- (void)managedObjectContext:(id)context didProcessRemoteContextSave:(id)save usingObjectIDs:(BOOL)ds
 {
-  [a3 processPendingChanges];
+  [context processPendingChanges];
   [(PLChangeNotificationCenter *)self _sendNotificationsForSplitChanges];
   self->_isProcessingRemoteDidSave = 0;
   remoteNotificationData = self->_remoteNotificationData;
   self->_remoteNotificationData = 0;
 }
 
-- (void)managedObjectContext:(id)a3 willProcessRemoteContextSave:(id)a4 usingObjectIDs:(BOOL)a5 isCoalescedEvent:(BOOL)a6
+- (void)managedObjectContext:(id)context willProcessRemoteContextSave:(id)save usingObjectIDs:(BOOL)ds isCoalescedEvent:(BOOL)event
 {
-  v6 = a6;
-  v7 = a5;
+  eventCopy = event;
+  dsCopy = ds;
   self->_isProcessingRemoteDidSave = 1;
-  v10 = a4;
-  v15 = a3;
-  v11 = [v10 mutableCopy];
-  v12 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  saveCopy = save;
+  contextCopy = context;
+  v11 = [saveCopy mutableCopy];
+  v12 = [MEMORY[0x1E696AD98] numberWithBool:dsCopy];
   [(NSDictionary *)v11 setObject:v12 forKey:@"usingObjectIDs"];
 
-  v13 = [MEMORY[0x1E696AD98] numberWithBool:v6];
+  v13 = [MEMORY[0x1E696AD98] numberWithBool:eventCopy];
   [(NSDictionary *)v11 setObject:v13 forKey:@"coalescedEvent"];
 
   remoteNotificationData = self->_remoteNotificationData;
   self->_remoteNotificationData = v11;
 
-  [(PLChangeNotificationCenter *)self _takeSnapshotsFromContext:v15 forRemoteContextSaveNotification:v10 usingObjectIDs:v7];
+  [(PLChangeNotificationCenter *)self _takeSnapshotsFromContext:contextCopy forRemoteContextSaveNotification:saveCopy usingObjectIDs:dsCopy];
 }
 
-- (void)managedObjectContextWasOverloaded:(id)a3 withNotificationData:(id)a4 usingObjectIDs:(BOOL)a5
+- (void)managedObjectContextWasOverloaded:(id)overloaded withNotificationData:(id)data usingObjectIDs:(BOOL)ds
 {
-  v8 = a3;
+  overloadedCopy = overloaded;
   if (!self->_moc)
   {
-    objc_storeStrong(&self->_moc, a3);
+    objc_storeStrong(&self->_moc, overloaded);
   }
 
   [(PLChangeNotificationCenter *)self _sendNotificationsForSplitChanges];
@@ -257,11 +257,11 @@ void __66__PLChangeNotificationCenter__registerForCameraPreviewWellChanges__bloc
   self->_isProcessingRemoteDidSave = 0;
 }
 
-- (void)managedObjectContextWillBeOverloaded:(id)a3 withNotificationData:(id)a4 usingObjectIDs:(BOOL)a5
+- (void)managedObjectContextWillBeOverloaded:(id)overloaded withNotificationData:(id)data usingObjectIDs:(BOOL)ds
 {
   v47 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v30 = a4;
+  overloadedCopy = overloaded;
+  dataCopy = data;
   self->_isOverloaded = 1;
   self->_isProcessingRemoteDidSave = 1;
   v9 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -292,7 +292,7 @@ void __66__PLChangeNotificationCenter__registerForCameraPreviewWellChanges__bloc
         v37 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v14 = [v30 objectForKey:v12];
+        v14 = [dataCopy objectForKey:v12];
         v15 = [v14 countByEnumeratingWithState:&v36 objects:v45 count:16];
         if (v15)
         {
@@ -308,9 +308,9 @@ void __66__PLChangeNotificationCenter__registerForCameraPreviewWellChanges__bloc
               }
 
               v19 = *(*(&v36 + 1) + 8 * j);
-              if (a5)
+              if (ds)
               {
-                v20 = [v8 objectRegisteredForID:v19];
+                v20 = [overloadedCopy objectRegisteredForID:v19];
               }
 
               else
@@ -344,8 +344,8 @@ void __66__PLChangeNotificationCenter__registerForCameraPreviewWellChanges__bloc
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v22 = [v8 registeredObjects];
-  v23 = [v22 countByEnumeratingWithState:&v32 objects:v44 count:16];
+  registeredObjects = [overloadedCopy registeredObjects];
+  v23 = [registeredObjects countByEnumeratingWithState:&v32 objects:v44 count:16];
   if (v23)
   {
     v24 = v23;
@@ -356,19 +356,19 @@ void __66__PLChangeNotificationCenter__registerForCameraPreviewWellChanges__bloc
       {
         if (*v33 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(registeredObjects);
         }
 
         v27 = *(*(&v32 + 1) + 8 * k);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v8 refreshObject:v27 mergeChanges:{objc_msgSend(v27, "hasChanges")}];
+          [overloadedCopy refreshObject:v27 mergeChanges:{objc_msgSend(v27, "hasChanges")}];
           [(NSMutableSet *)self->_overloadedObjects addObject:v27];
         }
       }
 
-      v24 = [v22 countByEnumeratingWithState:&v32 objects:v44 count:16];
+      v24 = [registeredObjects countByEnumeratingWithState:&v32 objects:v44 count:16];
     }
 
     while (v24);
@@ -404,13 +404,13 @@ void __66__PLChangeNotificationCenter__registerForCameraPreviewWellChanges__bloc
   return v5;
 }
 
-- (id)_takeSnapshotOfObject:(id)a3 useCommitedValues:(BOOL)a4
+- (id)_takeSnapshotOfObject:(id)object useCommitedValues:(BOOL)values
 {
-  v4 = a4;
+  valuesCopy = values;
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v6 && ([v6 isFault] & 1) == 0)
+  objectCopy = object;
+  v7 = objectCopy;
+  if (objectCopy && ([objectCopy isFault] & 1) == 0)
   {
     v22 = 0u;
     v23 = 0u;
@@ -432,9 +432,9 @@ void __66__PLChangeNotificationCenter__registerForCameraPreviewWellChanges__bloc
           }
 
           v14 = *(*(&v20 + 1) + 8 * i);
-          v15 = [v14 managedObject];
+          managedObject = [v14 managedObject];
 
-          if (v15 == v7)
+          if (managedObject == v7)
           {
             v8 = v14;
 
@@ -452,7 +452,7 @@ void __66__PLChangeNotificationCenter__registerForCameraPreviewWellChanges__bloc
       }
     }
 
-    v8 = [PLObjectSnapshot snapshotForManagedObject:v7 changeNotificationCenter:self useCommitedValues:v4];
+    v8 = [PLObjectSnapshot snapshotForManagedObject:v7 changeNotificationCenter:self useCommitedValues:valuesCopy];
     if (v8)
     {
       snapshots = self->_snapshots;
@@ -479,11 +479,11 @@ LABEL_17:
   return v8;
 }
 
-- (void)_takeSnapshotsFromContext:(id)a3 forRemoteContextSaveNotification:(id)a4 usingObjectIDs:(BOOL)a5
+- (void)_takeSnapshotsFromContext:(id)context forRemoteContextSaveNotification:(id)notification usingObjectIDs:(BOOL)ds
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v23 = a4;
+  contextCopy = context;
+  notificationCopy = notification;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -505,7 +505,7 @@ LABEL_17:
 
         v10 = *(*(&v29 + 1) + 8 * v9);
         v11 = objc_autoreleasePoolPush();
-        v12 = [v23 objectForKey:v10];
+        v12 = [notificationCopy objectForKey:v10];
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
@@ -526,9 +526,9 @@ LABEL_17:
               }
 
               v17 = *(*(&v25 + 1) + 8 * v16);
-              if (a5)
+              if (ds)
               {
-                v18 = [v8 objectRegisteredForID:v17];
+                v18 = [contextCopy objectRegisteredForID:v17];
               }
 
               else
@@ -561,10 +561,10 @@ LABEL_17:
   }
 }
 
-- (id)_snapshotForObject:(id)a3
+- (id)_snapshotForObject:(id)object
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -584,9 +584,9 @@ LABEL_17:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 managedObject];
+        managedObject = [v9 managedObject];
 
-        if (v10 == v4)
+        if (managedObject == objectCopy)
         {
           v6 = v9;
           goto LABEL_11;
@@ -610,18 +610,18 @@ LABEL_11:
 
 - (id)descriptionOfSplitChanges
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __55__PLChangeNotificationCenter_descriptionOfSplitChanges__block_invoke;
   aBlock[3] = &unk_1E756A370;
-  v4 = v3;
+  v4 = string;
   v14 = v4;
   v5 = _Block_copy(aBlock);
   v5[2](v5, @"album list(s)", self->_changedAlbumLists);
   v5[2](v5, @"album(s)", self->_changedAlbums);
   v5[2](v5, @"asset(s)", self->_changedAssets);
-  v6 = [(PLContentChanges *)self->_albumsContent container];
+  container = [(PLContentChanges *)self->_albumsContent container];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __55__PLChangeNotificationCenter_descriptionOfSplitChanges__block_invoke_3;
@@ -629,7 +629,7 @@ LABEL_11:
   v11[4] = self;
   v7 = v4;
   v12 = v7;
-  [v6 enumerateObjectsUsingBlock:v11];
+  [container enumerateObjectsUsingBlock:v11];
 
   v8 = v12;
   v9 = v7;
@@ -765,21 +765,21 @@ void __55__PLChangeNotificationCenter_descriptionOfSplitChanges__block_invoke_2(
   }
 }
 
-- (id)_keysOfInterestForObject:(id)a3
+- (id)_keysOfInterestForObject:(id)object
 {
-  v3 = entityKindOfObject(a3);
+  v3 = entityKindOfObject(object);
 
   return _keysOfInterestForEntityKind(v3);
 }
 
-- (BOOL)_isInterestedInUpdatesOfObject:(id)a3
+- (BOOL)_isInterestedInUpdatesOfObject:(id)object
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 changedValuesForCurrentEvent];
-  v7 = [v6 allKeys];
+  objectCopy = object;
+  changedValuesForCurrentEvent = [objectCopy changedValuesForCurrentEvent];
+  allKeys = [changedValuesForCurrentEvent allKeys];
 
-  v8 = indexOfObjectEntity(v5);
+  v8 = indexOfObjectEntity(objectCopy);
   v9 = _isInterestedInUpdatesOfObject__myInterests[v8];
   if (!v9)
   {
@@ -788,28 +788,28 @@ void __55__PLChangeNotificationCenter_descriptionOfSplitChanges__block_invoke_2(
     _isInterestedInUpdatesOfObject__myInterests[v8] = v9;
   }
 
-  v11 = [(PLInterest *)v9 allKeysMappingStrategy];
+  allKeysMappingStrategy = [(PLInterest *)v9 allKeysMappingStrategy];
 
-  if (!v11)
+  if (!allKeysMappingStrategy)
   {
     context = objc_autoreleasePoolPush();
-    v12 = [(PLChangeNotificationCenter *)self _keysOfInterestForObject:v5];
-    v13 = [v12 allObjects];
+    v12 = [(PLChangeNotificationCenter *)self _keysOfInterestForObject:objectCopy];
+    allObjects = [v12 allObjects];
 
-    if ([v13 count] >= 0x40)
+    if ([allObjects count] >= 0x40)
     {
-      v28 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v28 handleFailureInMethod:a2 object:self file:@"PLChangeNotificationCenter.m" lineNumber:1218 description:@"Not enough bits in bit mask."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLChangeNotificationCenter.m" lineNumber:1218 description:@"Not enough bits in bit mask."];
     }
 
-    v14 = [objc_alloc(MEMORY[0x1E695D610]) initForKeys:v13];
+    v14 = [objc_alloc(MEMORY[0x1E695D610]) initForKeys:allObjects];
     [(PLInterest *)v9 setAllKeysMappingStrategy:v14];
     [(PLInterest *)v9 setIndexesOfInterest:0];
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v15 = v13;
+    v15 = allObjects;
     v16 = [v15 countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v16)
     {
@@ -840,12 +840,12 @@ void __55__PLChangeNotificationCenter_descriptionOfSplitChanges__block_invoke_2(
     objc_autoreleasePoolPop(context);
   }
 
-  v21 = [(PLInterest *)v9 allKeysMappingStrategy];
+  allKeysMappingStrategy2 = [(PLInterest *)v9 allKeysMappingStrategy];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v22 = v7;
+  v22 = allKeys;
   v23 = [v22 countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v23)
   {
@@ -859,7 +859,7 @@ void __55__PLChangeNotificationCenter_descriptionOfSplitChanges__block_invoke_2(
           objc_enumerationMutation(v22);
         }
 
-        v26 = [v21 indexForKey:*(*(&v30 + 1) + 8 * j)];
+        v26 = [allKeysMappingStrategy2 indexForKey:*(*(&v30 + 1) + 8 * j)];
         if (v26 != 0x7FFFFFFFFFFFFFFFLL && (([(PLInterest *)v9 indexesOfInterest]>> v26) & 1) != 0)
         {
           LOBYTE(v23) = 1;
@@ -914,8 +914,8 @@ LABEL_27:
 
           v12 = *(*(&v16 + 1) + 8 * v11);
           v13 = objc_autoreleasePoolPush();
-          v14 = [(PLChangeNotificationCenter *)self backingCenter];
-          [v14 postNotification:v12];
+          backingCenter = [(PLChangeNotificationCenter *)self backingCenter];
+          [backingCenter postNotification:v12];
 
           objc_autoreleasePoolPop(v13);
           ++v11;
@@ -931,45 +931,45 @@ LABEL_27:
     objc_autoreleasePoolPop(v4);
   }
 
-  v15 = [(PLChangeNotificationCenter *)self backingCenter];
-  [v15 postNotificationName:@"PLChangeNotificationCenterDidFinishPostingNotifications" object:self];
+  backingCenter2 = [(PLChangeNotificationCenter *)self backingCenter];
+  [backingCenter2 postNotificationName:@"PLChangeNotificationCenterDidFinishPostingNotifications" object:self];
 }
 
-- (void)_enqueueNotification:(id)a3 object:(id)a4 userInfoWithObjects:(const void *)a5 forKeys:(const void *)a6 count:(unint64_t)a7
+- (void)_enqueueNotification:(id)notification object:(id)object userInfoWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  if (a7)
+  notificationCopy = notification;
+  objectCopy = object;
+  if (count)
   {
     v19[0] = v19;
-    v14 = 8 * a7;
-    v15 = v19 - ((8 * a7 + 15) & 0xFFFFFFFFFFFFFFF0);
-    bzero(v15, 8 * a7);
-    bzero(v15, 8 * a7);
+    v14 = 8 * count;
+    v15 = v19 - ((8 * count + 15) & 0xFFFFFFFFFFFFFFF0);
+    bzero(v15, 8 * count);
+    bzero(v15, 8 * count);
     v16 = 0;
     do
     {
-      if (*a5 && *a6)
+      if (*objects && *keys)
       {
-        objc_storeStrong(&v15[8 * v16], *a5);
-        objc_storeStrong(&v15[8 * v16++], *a6);
+        objc_storeStrong(&v15[8 * v16], *objects);
+        objc_storeStrong(&v15[8 * v16++], *keys);
       }
 
-      ++a6;
-      ++a5;
-      --a7;
+      ++keys;
+      ++objects;
+      --count;
     }
 
-    while (a7);
+    while (count);
     if (v16)
     {
-      a7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v15 count:v16];
+      count = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v15 count:v16];
     }
 
     else
     {
-      a7 = 0;
+      count = 0;
     }
 
     v17 = v14;
@@ -990,20 +990,20 @@ LABEL_27:
     while (v14);
   }
 
-  [(PLChangeNotificationCenter *)self _enqueueNotification:v12 object:v13 userInfo:a7];
+  [(PLChangeNotificationCenter *)self _enqueueNotification:notificationCopy object:objectCopy userInfo:count];
 }
 
-- (void)_enqueueNotification:(id)a3 object:(id)a4 userInfo:(id)a5
+- (void)_enqueueNotification:(id)notification object:(id)object userInfo:(id)info
 {
-  v6 = [MEMORY[0x1E696AD80] notificationWithName:a3 object:a4 userInfo:a5];
+  v6 = [MEMORY[0x1E696AD80] notificationWithName:notification object:object userInfo:info];
   [(PLChangeNotificationCenter *)self enqueueNotification:v6];
 }
 
 - (void)_evaluateUpdatedAssets
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [(PLChangeList *)self->_changedAssets updated];
-  v4 = [v3 count];
+  updated = [(PLChangeList *)self->_changedAssets updated];
+  v4 = [updated count];
 
   if (v4)
   {
@@ -1049,14 +1049,14 @@ LABEL_20:
 
           else
           {
-            v11 = [v10 changedValuesForCurrentEvent];
-            v12 = [v11 allKeys];
+            changedValuesForCurrentEvent = [v10 changedValuesForCurrentEvent];
+            allKeys = [changedValuesForCurrentEvent allKeys];
 
             v24 = 0u;
             v25 = 0u;
             v22 = 0u;
             v23 = 0u;
-            v13 = v12;
+            v13 = allKeys;
             v14 = [v13 countByEnumeratingWithState:&v22 objects:v30 count:16];
             if (v14)
             {
@@ -1101,8 +1101,8 @@ LABEL_20:
 - (void)_evaluateContainersWithUpdatedContent
 {
   v128 = *MEMORY[0x1E69E9840];
-  v3 = [(PLChangeList *)self->_changedAssets updated];
-  v4 = [v3 count];
+  updated = [(PLChangeList *)self->_changedAssets updated];
+  v4 = [updated count];
 
   if (v4 >= 2)
   {
@@ -1111,8 +1111,8 @@ LABEL_20:
     v7 = [v5 fetchRequestWithEntityName:v6];
 
     v8 = MEMORY[0x1E696AE18];
-    v9 = [(PLChangeList *)self->_changedAssets updated];
-    v10 = [v8 predicateWithFormat:@"self IN %@", v9];
+    updated2 = [(PLChangeList *)self->_changedAssets updated];
+    v10 = [v8 predicateWithFormat:@"self IN %@", updated2];
     [v7 setPredicate:v10];
 
     [v7 setRelationshipKeyPathsForPrefetching:&unk_1F0FBFA18];
@@ -1144,8 +1144,8 @@ LABEL_20:
         v115 = 0u;
         v116 = 0u;
         v117 = 0u;
-        v14 = [v13 albums];
-        v15 = [v14 countByEnumeratingWithState:&v114 objects:v126 count:16];
+        albums = [v13 albums];
+        v15 = [albums countByEnumeratingWithState:&v114 objects:v126 count:16];
         if (v15)
         {
           v16 = v15;
@@ -1156,22 +1156,22 @@ LABEL_20:
             {
               if (*v115 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(albums);
               }
 
               v19 = *(*(&v114 + 1) + 8 * i);
               if ([v19 isFault])
               {
-                v20 = [(PLChangeList *)self->_changedAlbums updated];
-                if ([v20 containsObject:v19])
+                updated3 = [(PLChangeList *)self->_changedAlbums updated];
+                if ([updated3 containsObject:v19])
                 {
                 }
 
                 else
                 {
-                  v21 = [v19 hasDerivedIndexMappers];
+                  hasDerivedIndexMappers = [v19 hasDerivedIndexMappers];
 
-                  if (!v21)
+                  if (!hasDerivedIndexMappers)
                   {
                     continue;
                   }
@@ -1183,9 +1183,9 @@ LABEL_20:
                 v22 = [(PLChangeNotificationCenter *)self _takeSnapshotOfObject:v19];
               }
 
-              v23 = [(PLContentChanges *)self->_albumsContent container];
+              container = [(PLContentChanges *)self->_albumsContent container];
 
-              if (!v23)
+              if (!container)
               {
                 v24 = objc_alloc_init(MEMORY[0x1E695DF70]);
                 [(PLContentChanges *)self->_albumsContent setContainer:v24];
@@ -1194,29 +1194,29 @@ LABEL_20:
                 [(PLContentChanges *)self->_albumsContent setUpdatedContent:v25];
               }
 
-              v26 = [(PLContentChanges *)self->_albumsContent container];
-              v27 = [v26 indexOfObjectIdenticalTo:v19];
+              container2 = [(PLContentChanges *)self->_albumsContent container];
+              v27 = [container2 indexOfObjectIdenticalTo:v19];
 
               if (v27 == 0x7FFFFFFFFFFFFFFFLL)
               {
-                v28 = [(PLContentChanges *)self->_albumsContent container];
-                v27 = [v28 count];
+                container3 = [(PLContentChanges *)self->_albumsContent container];
+                v27 = [container3 count];
 
-                v29 = [(PLContentChanges *)self->_albumsContent container];
-                [v29 addObject:v19];
+                container4 = [(PLContentChanges *)self->_albumsContent container];
+                [container4 addObject:v19];
 
-                v30 = [(PLContentChanges *)self->_albumsContent updatedContent];
-                v31 = [MEMORY[0x1E695DF70] array];
-                [v30 addObject:v31];
+                updatedContent = [(PLContentChanges *)self->_albumsContent updatedContent];
+                array = [MEMORY[0x1E695DF70] array];
+                [updatedContent addObject:array];
               }
 
-              v32 = [(PLContentChanges *)self->_albumsContent updatedContent];
-              v33 = [v32 objectAtIndex:v27];
+              updatedContent2 = [(PLContentChanges *)self->_albumsContent updatedContent];
+              v33 = [updatedContent2 objectAtIndex:v27];
 
               [v33 addObject:v13];
             }
 
-            v16 = [v14 countByEnumeratingWithState:&v114 objects:v126 count:16];
+            v16 = [albums countByEnumeratingWithState:&v114 objects:v126 count:16];
           }
 
           while (v16);
@@ -1257,8 +1257,8 @@ LABEL_20:
         v107 = 0u;
         v108 = 0u;
         v109 = 0u;
-        v36 = [v35 albumLists];
-        v37 = [v36 countByEnumeratingWithState:&v106 objects:v124 count:16];
+        albumLists = [v35 albumLists];
+        v37 = [albumLists countByEnumeratingWithState:&v106 objects:v124 count:16];
         if (v37)
         {
           v38 = v37;
@@ -1269,16 +1269,16 @@ LABEL_20:
             {
               if (*v107 != v39)
               {
-                objc_enumerationMutation(v36);
+                objc_enumerationMutation(albumLists);
               }
 
               v41 = *(*(&v106 + 1) + 8 * j);
               if (![v41 isFault] || objc_msgSend(v41, "hasDerivedIndexMappers"))
               {
                 v42 = [(PLChangeNotificationCenter *)self _takeSnapshotOfObject:v41];
-                v43 = [(PLContentChanges *)self->_albumListsContent container];
+                container5 = [(PLContentChanges *)self->_albumListsContent container];
 
-                if (!v43)
+                if (!container5)
                 {
                   v44 = objc_alloc_init(MEMORY[0x1E695DF70]);
                   [(PLContentChanges *)self->_albumListsContent setContainer:v44];
@@ -1287,30 +1287,30 @@ LABEL_20:
                   [(PLContentChanges *)self->_albumListsContent setUpdatedContent:v45];
                 }
 
-                v46 = [(PLContentChanges *)self->_albumListsContent container];
-                v47 = [v46 indexOfObjectIdenticalTo:v41];
+                container6 = [(PLContentChanges *)self->_albumListsContent container];
+                v47 = [container6 indexOfObjectIdenticalTo:v41];
 
                 if (v47 == 0x7FFFFFFFFFFFFFFFLL)
                 {
-                  v48 = [(PLContentChanges *)self->_albumListsContent container];
-                  v47 = [v48 count];
+                  container7 = [(PLContentChanges *)self->_albumListsContent container];
+                  v47 = [container7 count];
 
-                  v49 = [(PLContentChanges *)self->_albumListsContent container];
-                  [v49 addObject:v41];
+                  container8 = [(PLContentChanges *)self->_albumListsContent container];
+                  [container8 addObject:v41];
 
-                  v50 = [(PLContentChanges *)self->_albumListsContent updatedContent];
-                  v51 = [MEMORY[0x1E695DF70] array];
-                  [v50 addObject:v51];
+                  updatedContent3 = [(PLContentChanges *)self->_albumListsContent updatedContent];
+                  array2 = [MEMORY[0x1E695DF70] array];
+                  [updatedContent3 addObject:array2];
                 }
 
-                v52 = [(PLContentChanges *)self->_albumListsContent updatedContent];
-                v53 = [v52 objectAtIndex:v47];
+                updatedContent4 = [(PLContentChanges *)self->_albumListsContent updatedContent];
+                v53 = [updatedContent4 objectAtIndex:v47];
 
                 [v53 addObject:v35];
               }
             }
 
-            v38 = [v36 countByEnumeratingWithState:&v106 objects:v124 count:16];
+            v38 = [albumLists countByEnumeratingWithState:&v106 objects:v124 count:16];
           }
 
           while (v38);
@@ -1330,8 +1330,8 @@ LABEL_20:
   v105 = 0u;
   v102 = 0u;
   v103 = 0u;
-  v54 = [(PLChangeList *)self->_changedAssets updated];
-  v55 = [v54 countByEnumeratingWithState:&v102 objects:v123 count:16];
+  updated4 = [(PLChangeList *)self->_changedAssets updated];
+  v55 = [updated4 countByEnumeratingWithState:&v102 objects:v123 count:16];
   if (v55)
   {
     v56 = v55;
@@ -1342,24 +1342,24 @@ LABEL_20:
       {
         if (*v103 != v57)
         {
-          objc_enumerationMutation(v54);
+          objc_enumerationMutation(updated4);
         }
 
         v59 = *(*(&v102 + 1) + 8 * k);
-        v60 = [v59 moment];
-        v61 = v60;
-        if (v60)
+        moment = [v59 moment];
+        v61 = moment;
+        if (moment)
         {
-          if (![v60 isFault] || (-[PLChangeList updated](self->_changedMoments, "updated"), v62 = objc_claimAutoreleasedReturnValue(), v63 = objc_msgSend(v62, "containsObject:", v61), v62, v63))
+          if (![moment isFault] || (-[PLChangeList updated](self->_changedMoments, "updated"), v62 = objc_claimAutoreleasedReturnValue(), v63 = objc_msgSend(v62, "containsObject:", v61), v62, v63))
           {
             if (([v61 isFault] & 1) == 0)
             {
               v64 = [(PLChangeNotificationCenter *)self _takeSnapshotOfObject:v61];
             }
 
-            v65 = [(PLContentChanges *)self->_momentsContent container];
+            container9 = [(PLContentChanges *)self->_momentsContent container];
 
-            if (!v65)
+            if (!container9)
             {
               v66 = objc_alloc_init(MEMORY[0x1E695DF70]);
               [(PLContentChanges *)self->_momentsContent setContainer:v66];
@@ -1368,31 +1368,31 @@ LABEL_20:
               [(PLContentChanges *)self->_momentsContent setUpdatedContent:v67];
             }
 
-            v68 = [(PLContentChanges *)self->_momentsContent container];
-            v69 = [v68 indexOfObjectIdenticalTo:v61];
+            container10 = [(PLContentChanges *)self->_momentsContent container];
+            v69 = [container10 indexOfObjectIdenticalTo:v61];
 
             if (v69 == 0x7FFFFFFFFFFFFFFFLL)
             {
-              v70 = [(PLContentChanges *)self->_momentsContent container];
-              v69 = [v70 count];
+              container11 = [(PLContentChanges *)self->_momentsContent container];
+              v69 = [container11 count];
 
-              v71 = [(PLContentChanges *)self->_momentsContent container];
-              [v71 addObject:v61];
+              container12 = [(PLContentChanges *)self->_momentsContent container];
+              [container12 addObject:v61];
 
-              v72 = [(PLContentChanges *)self->_momentsContent updatedContent];
-              v73 = [MEMORY[0x1E695DF70] array];
-              [v72 addObject:v73];
+              updatedContent5 = [(PLContentChanges *)self->_momentsContent updatedContent];
+              array3 = [MEMORY[0x1E695DF70] array];
+              [updatedContent5 addObject:array3];
             }
 
-            v74 = [(PLContentChanges *)self->_momentsContent updatedContent];
-            v75 = [v74 objectAtIndex:v69];
+            updatedContent6 = [(PLContentChanges *)self->_momentsContent updatedContent];
+            v75 = [updatedContent6 objectAtIndex:v69];
 
             [v75 addObject:v59];
           }
         }
       }
 
-      v56 = [v54 countByEnumeratingWithState:&v102 objects:v123 count:16];
+      v56 = [updated4 countByEnumeratingWithState:&v102 objects:v123 count:16];
     }
 
     while (v56);
@@ -1402,8 +1402,8 @@ LABEL_20:
   v101 = 0u;
   v98 = 0u;
   v99 = 0u;
-  v76 = [(PLContentChanges *)self->_momentsContent container];
-  v77 = [v76 countByEnumeratingWithState:&v98 objects:v122 count:16];
+  container13 = [(PLContentChanges *)self->_momentsContent container];
+  v77 = [container13 countByEnumeratingWithState:&v98 objects:v122 count:16];
   if (v77)
   {
     v78 = v77;
@@ -1417,27 +1417,27 @@ LABEL_20:
       {
         if (*v99 != v79)
         {
-          objc_enumerationMutation(v76);
+          objc_enumerationMutation(container13);
         }
 
         v81 = *(*(&v98 + 1) + 8 * v80);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v82 = [(PLChangeList *)self->_changedMoments updated];
-          if ([v82 containsObject:v81])
+          updated5 = [(PLChangeList *)self->_changedMoments updated];
+          if ([updated5 containsObject:v81])
           {
           }
 
           else
           {
             v83 = v79;
-            v84 = v76;
-            v85 = [(PLChangeList *)self->_changedAssets updated];
-            v86 = [v81 bestAsset];
-            v87 = [v85 containsObject:v86];
+            v84 = container13;
+            updated6 = [(PLChangeList *)self->_changedAssets updated];
+            bestAsset = [v81 bestAsset];
+            v87 = [updated6 containsObject:bestAsset];
 
-            v76 = v84;
+            container13 = v84;
             if (v87)
             {
               v79 = v83;
@@ -1465,7 +1465,7 @@ LABEL_20:
       }
 
       while (v78 != v80);
-      v78 = [v76 countByEnumeratingWithState:&v98 objects:v122 count:16];
+      v78 = [container13 countByEnumeratingWithState:&v98 objects:v122 count:16];
     }
 
     while (v78);
@@ -1477,17 +1477,17 @@ LABEL_20:
   }
 }
 
-- (void)_splitContextDidChangeNotification:(id)a3
+- (void)_splitContextDidChangeNotification:(id)notification
 {
   v86 = *MEMORY[0x1E69E9840];
-  v58 = a3;
+  notificationCopy = notification;
   context = objc_autoreleasePoolPush();
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
   obj = +[PLManagedObjectContext changeNotificationObjectKeys];
-  v68 = self;
+  selfCopy = self;
   v59 = [obj countByEnumeratingWithState:&v79 objects:v85 count:16];
   if (v59)
   {
@@ -1519,8 +1519,8 @@ LABEL_20:
         v76 = 0u;
         v77 = 0u;
         v78 = 0u;
-        v10 = [v58 userInfo];
-        v11 = [v10 objectForKey:v6];
+        userInfo = [notificationCopy userInfo];
+        v11 = [userInfo objectForKey:v6];
 
         v69 = v11;
         v12 = [v11 countByEnumeratingWithState:&v75 objects:v84 count:16];
@@ -1586,8 +1586,8 @@ LABEL_33:
                     v22 = v21;
                     if ([v18 isEqualToString:v67])
                     {
-                      v23 = [v22 inserted];
-                      if (!v23)
+                      inserted = [v22 inserted];
+                      if (!inserted)
                       {
                         v24 = objc_alloc_init(MEMORY[0x1E695DFA8]);
                         [v22 setInserted:v24];
@@ -1603,14 +1603,14 @@ LABEL_45:
                       }
 
 LABEL_44:
-                      v24 = v23;
+                      v24 = inserted;
                       goto LABEL_45;
                     }
 
                     if (v9)
                     {
-                      v23 = [v22 updated];
-                      if (v23)
+                      inserted = [v22 updated];
+                      if (inserted)
                       {
                         goto LABEL_44;
                       }
@@ -1630,8 +1630,8 @@ LABEL_44:
                         goto LABEL_46;
                       }
 
-                      v23 = [v22 deleted];
-                      if (v23)
+                      inserted = [v22 deleted];
+                      if (inserted)
                       {
                         goto LABEL_44;
                       }
@@ -1646,7 +1646,7 @@ LABEL_44:
 
 LABEL_46:
 
-                    self = v68;
+                    self = selfCopy;
                   }
                 }
 
@@ -1674,17 +1674,17 @@ LABEL_47:
     while (v59);
   }
 
-  v26 = self;
+  selfCopy2 = self;
   if (![(PLChangeNotificationCenter *)self _shouldForceFetchingAlbumsToReload])
   {
-    v27 = [(PLChangeList *)self->_changedAssets inserted];
-    if (![v27 count])
+    inserted2 = [(PLChangeList *)self->_changedAssets inserted];
+    if (![inserted2 count])
     {
-      v28 = [(PLChangeList *)self->_changedAssets updated];
-      if (![v28 count])
+      updated = [(PLChangeList *)self->_changedAssets updated];
+      if (![updated count])
       {
-        v51 = [(PLChangeList *)self->_changedAssets deleted];
-        v52 = [v51 count];
+        deleted = [(PLChangeList *)self->_changedAssets deleted];
+        v52 = [deleted count];
 
         if (!v52)
         {
@@ -1697,7 +1697,7 @@ LABEL_47:
   }
 
 LABEL_60:
-  [(PLGenericAlbum *)PLFetchingAlbum allAlbumsRegisteredWithManagedObjectContext:v26->_moc];
+  [(PLGenericAlbum *)PLFetchingAlbum allAlbumsRegisteredWithManagedObjectContext:selfCopy2->_moc];
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
@@ -1719,26 +1719,26 @@ LABEL_60:
         v33 = *(*(&v71 + 1) + 8 * i);
         if ([v33 hasAssetsCache])
         {
-          v34 = [v33 fetchRequest];
-          v35 = [v34 predicate];
-          v36 = [(PLChangeList *)v68->_changedAssets inserted];
-          v37 = [v36 filteredSetUsingPredicate:v35];
+          fetchRequest = [v33 fetchRequest];
+          predicate = [fetchRequest predicate];
+          inserted3 = [(PLChangeList *)selfCopy->_changedAssets inserted];
+          v37 = [inserted3 filteredSetUsingPredicate:predicate];
           v38 = [v37 count];
 
-          if (v38 || (-[PLChangeList deleted](v68->_changedAssets, "deleted"), v39 = objc_claimAutoreleasedReturnValue(), v40 = [v33 mayHaveAssetsInCommon:v39], v39, (v40 & 1) != 0) || (-[PLChangeList updated](v68->_changedAssets, "updated"), v41 = objc_claimAutoreleasedReturnValue(), v42 = objc_msgSend(v33, "mayHaveAssetsInCommon:", v41), v41, (v42 & 1) != 0) || (-[PLChangeList updated](v68->_changedAssets, "updated"), v43 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v43, "filteredSetUsingPredicate:", v35), v44 = objc_claimAutoreleasedReturnValue(), v45 = objc_msgSend(v44, "count"), v44, v43, v45))
+          if (v38 || (-[PLChangeList deleted](selfCopy->_changedAssets, "deleted"), v39 = objc_claimAutoreleasedReturnValue(), v40 = [v33 mayHaveAssetsInCommon:v39], v39, (v40 & 1) != 0) || (-[PLChangeList updated](selfCopy->_changedAssets, "updated"), v41 = objc_claimAutoreleasedReturnValue(), v42 = objc_msgSend(v33, "mayHaveAssetsInCommon:", v41), v41, (v42 & 1) != 0) || (-[PLChangeList updated](selfCopy->_changedAssets, "updated"), v43 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v43, "filteredSetUsingPredicate:", predicate), v44 = objc_claimAutoreleasedReturnValue(), v45 = objc_msgSend(v44, "count"), v44, v43, v45))
           {
-            v46 = [(PLChangeList *)v68->_changedAlbums updated];
+            updated2 = [(PLChangeList *)selfCopy->_changedAlbums updated];
 
-            if (!v46)
+            if (!updated2)
             {
               v47 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-              [(PLChangeList *)v68->_changedAlbums setUpdated:v47];
+              [(PLChangeList *)selfCopy->_changedAlbums setUpdated:v47];
             }
 
-            v48 = [(PLChangeList *)v68->_changedAlbums updated];
-            [v48 addObject:v33];
+            updated3 = [(PLChangeList *)selfCopy->_changedAlbums updated];
+            [updated3 addObject:v33];
 
-            v49 = [(PLChangeNotificationCenter *)v68 _takeSnapshotOfObject:v33];
+            v49 = [(PLChangeNotificationCenter *)selfCopy _takeSnapshotOfObject:v33];
             if ([v49 hasSnapshotValueForProperty:@"assets"])
             {
               v50 = 0;
@@ -1760,10 +1760,10 @@ LABEL_60:
     while (v30);
   }
 
-  v26 = v68;
+  selfCopy2 = selfCopy;
 LABEL_80:
-  [(PLChangeNotificationCenter *)v26 _evaluateContainersWithUpdatedContent];
-  [(PLChangeNotificationCenter *)v26 _evaluateUpdatedAssets];
+  [(PLChangeNotificationCenter *)selfCopy2 _evaluateContainersWithUpdatedContent];
+  [(PLChangeNotificationCenter *)selfCopy2 _evaluateUpdatedAssets];
   objc_autoreleasePoolPop(context);
 }
 
@@ -1787,13 +1787,13 @@ LABEL_80:
 - (void)_enqueueAssetChangeNotification
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(PLChangeList *)self->_changedAssets updated];
-  v4 = [v3 count];
+  updated = [(PLChangeList *)self->_changedAssets updated];
+  v4 = [updated count];
 
   if (v4)
   {
-    v5 = [(PLChangeList *)self->_changedAssets updated];
-    v14 = [PLAssetChangeNotification notificationWithChangedAssets:v5];
+    updated2 = [(PLChangeList *)self->_changedAssets updated];
+    v14 = [PLAssetChangeNotification notificationWithChangedAssets:updated2];
 
     [(PLChangeNotificationCenter *)self enqueueNotification:v14];
   }
@@ -1845,30 +1845,30 @@ LABEL_80:
 - (void)_enqueueMomentChangeNotifications
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = [(PLChangeList *)self->_changedMoments updated];
-  if ([v3 count])
+  updated = [(PLChangeList *)self->_changedMoments updated];
+  if ([updated count])
   {
 
 LABEL_4:
-    v6 = [(PLChangeList *)self->_changedMoments updated];
-    v7 = [(PLContentChanges *)self->_momentsContent container];
-    v8 = [v7 count];
+    updated2 = [(PLChangeList *)self->_changedMoments updated];
+    container = [(PLContentChanges *)self->_momentsContent container];
+    v8 = [container count];
 
     if (v8)
     {
-      if (v6)
+      if (updated2)
       {
-        v9 = [(PLContentChanges *)self->_momentsContent container];
-        v10 = [v6 setByAddingObjectsFromArray:v9];
+        container2 = [(PLContentChanges *)self->_momentsContent container];
+        v10 = [updated2 setByAddingObjectsFromArray:container2];
 
-        v6 = v10;
+        updated2 = v10;
       }
 
       else
       {
         v11 = MEMORY[0x1E695DFD8];
-        v9 = [(PLContentChanges *)self->_momentsContent container];
-        v6 = [v11 setWithArray:v9];
+        container2 = [(PLContentChanges *)self->_momentsContent container];
+        updated2 = [v11 setWithArray:container2];
       }
     }
 
@@ -1876,7 +1876,7 @@ LABEL_4:
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v12 = v6;
+    v12 = updated2;
     v13 = [(NSMutableSet *)v12 countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v13)
     {
@@ -1892,26 +1892,26 @@ LABEL_4:
           }
 
           v17 = *(*(&v34 + 1) + 8 * i);
-          v18 = [(PLContentChanges *)self->_momentsContent container];
-          if (v18)
+          container3 = [(PLContentChanges *)self->_momentsContent container];
+          if (container3)
           {
-            v19 = [(PLContentChanges *)self->_momentsContent container];
-            v20 = [v19 indexOfObjectIdenticalTo:v17];
+            container4 = [(PLContentChanges *)self->_momentsContent container];
+            v20 = [container4 indexOfObjectIdenticalTo:v17];
 
             if (v20 == 0x7FFFFFFFFFFFFFFFLL)
             {
-              v18 = 0;
+              container3 = 0;
             }
 
             else
             {
-              v21 = [(PLContentChanges *)self->_momentsContent updatedContent];
-              v18 = [v21 objectAtIndex:v20];
+              updatedContent = [(PLContentChanges *)self->_momentsContent updatedContent];
+              container3 = [updatedContent objectAtIndex:v20];
             }
           }
 
           v22 = [(PLChangeNotificationCenter *)self _snapshotForObject:v17];
-          v23 = [PLAssetContainerChangeNotification notificationWithContainer:v17 snapshot:v22 changedAssets:v18];
+          v23 = [PLAssetContainerChangeNotification notificationWithContainer:v17 snapshot:v22 changedAssets:container3];
           [(PLChangeNotificationCenter *)self _enqueueAssetContainerChangeNotification:v23];
         }
 
@@ -1925,8 +1925,8 @@ LABEL_21:
     return;
   }
 
-  v4 = [(PLContentChanges *)self->_momentsContent container];
-  v5 = [v4 count];
+  container5 = [(PLContentChanges *)self->_momentsContent container];
+  v5 = [container5 count];
 
   if (v5)
   {
@@ -1988,27 +1988,27 @@ LABEL_21:
   v6 = PLCloudFeedGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(PLChangeList *)self->_changedCloudFeedEntries inserted];
+    inserted = [(PLChangeList *)self->_changedCloudFeedEntries inserted];
     *buf = 138412290;
-    v32 = v7;
+    v32 = inserted;
     _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEBUG, "inserted=%@", buf, 0xCu);
   }
 
   v8 = PLCloudFeedGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [(PLChangeList *)self->_changedCloudFeedEntries updated];
+    updated = [(PLChangeList *)self->_changedCloudFeedEntries updated];
     *buf = 138412290;
-    v32 = v9;
+    v32 = updated;
     _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEBUG, "updated=%@", buf, 0xCu);
   }
 
   v10 = PLCloudFeedGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v11 = [(PLChangeList *)self->_changedCloudFeedEntries deleted];
+    deleted = [(PLChangeList *)self->_changedCloudFeedEntries deleted];
     *buf = 138412290;
-    v32 = v11;
+    v32 = deleted;
     _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEBUG, "deleted=%@", buf, 0xCu);
   }
 
@@ -2021,22 +2021,22 @@ LABEL_21:
     _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEBUG, "_isOverloaded=%i", buf, 8u);
   }
 
-  v14 = [(PLChangeList *)self->_changedCloudFeedEntries inserted];
-  if ([v14 count])
+  inserted2 = [(PLChangeList *)self->_changedCloudFeedEntries inserted];
+  if ([inserted2 count])
   {
     goto LABEL_14;
   }
 
-  v15 = [(PLChangeList *)self->_changedCloudFeedEntries updated];
-  if ([v15 count])
+  updated2 = [(PLChangeList *)self->_changedCloudFeedEntries updated];
+  if ([updated2 count])
   {
 
 LABEL_14:
 LABEL_15:
-    v16 = [(PLChangeList *)self->_changedCloudFeedEntries inserted];
-    v17 = [(PLChangeList *)self->_changedCloudFeedEntries updated];
-    v18 = [(PLChangeList *)self->_changedCloudFeedEntries deleted];
-    v19 = [PLCloudFeedEntriesChangeNotification notificationWithInsertedEntries:v16 updatedEntries:v17 deletedEntries:v18];
+    inserted3 = [(PLChangeList *)self->_changedCloudFeedEntries inserted];
+    updated3 = [(PLChangeList *)self->_changedCloudFeedEntries updated];
+    deleted2 = [(PLChangeList *)self->_changedCloudFeedEntries deleted];
+    v19 = [PLCloudFeedEntriesChangeNotification notificationWithInsertedEntries:inserted3 updatedEntries:updated3 deletedEntries:deleted2];
 
 LABEL_16:
     if (v19)
@@ -2050,8 +2050,8 @@ LABEL_18:
     return;
   }
 
-  v20 = [(PLChangeList *)self->_changedCloudFeedEntries deleted];
-  v21 = [v20 count];
+  deleted3 = [(PLChangeList *)self->_changedCloudFeedEntries deleted];
+  v21 = [deleted3 count];
 
   if (v21)
   {
@@ -2064,8 +2064,8 @@ LABEL_18:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v16 = self->_overloadedObjects;
-    v22 = [(NSMutableSet *)v16 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    inserted3 = self->_overloadedObjects;
+    v22 = [(NSMutableSet *)inserted3 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v22)
     {
       v23 = v22;
@@ -2077,7 +2077,7 @@ LABEL_18:
         {
           if (*v27 != v24)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(inserted3);
           }
 
           objc_opt_class();
@@ -2091,7 +2091,7 @@ LABEL_18:
         }
 
         while (v23 != v25);
-        v23 = [(NSMutableSet *)v16 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v23 = [(NSMutableSet *)inserted3 countByEnumeratingWithState:&v26 objects:v30 count:16];
         if (v23)
         {
           continue;
@@ -2101,14 +2101,14 @@ LABEL_18:
       }
     }
 
-    v19 = v16;
+    v19 = inserted3;
     goto LABEL_18;
   }
 }
 
 - (void)_enqueueCloudCommentsNotifications
 {
-  v2 = self;
+  selfCopy = self;
   v37 = *MEMORY[0x1E69E9840];
   if ([(NSMutableSet *)self->_assetsWithCloudCommentChanges count])
   {
@@ -2116,7 +2116,7 @@ LABEL_18:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    obj = v2->_assetsWithCloudCommentChanges;
+    obj = selfCopy->_assetsWithCloudCommentChanges;
     v3 = [(NSMutableSet *)obj countByEnumeratingWithState:&v24 objects:v36 count:16];
     if (v3)
     {
@@ -2125,7 +2125,7 @@ LABEL_18:
       v7 = 0x1E755F000uLL;
       *&v4 = 138544130;
       v20 = v4;
-      v21 = v2;
+      v21 = selfCopy;
       do
       {
         for (i = 0; i != v5; ++i)
@@ -2136,7 +2136,7 @@ LABEL_18:
           }
 
           v9 = *(*(&v24 + 1) + 8 * i);
-          v10 = [(PLChangeNotificationCenter *)v2 _snapshotForObject:v9, v20];
+          v10 = [(PLChangeNotificationCenter *)selfCopy _snapshotForObject:v9, v20];
           v11 = [*(v7 + 2400) notificationWithAsset:v9 snapshot:v10];
           v12 = PLChangeHandlingGetLog();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -2145,13 +2145,13 @@ LABEL_18:
             v13 = v5;
             v14 = v6;
             v16 = v15 = v7;
-            v17 = [v9 uuid];
-            v18 = [v9 orderedLikeComments];
-            v19 = [v18 count];
+            uuid = [v9 uuid];
+            orderedLikeComments = [v9 orderedLikeComments];
+            v19 = [orderedLikeComments count];
             *buf = v20;
             v29 = v16;
             v30 = 2114;
-            v31 = v17;
+            v31 = uuid;
             v32 = 2048;
             v33 = v19;
             v34 = 2112;
@@ -2161,10 +2161,10 @@ LABEL_18:
             v7 = v15;
             v6 = v14;
             v5 = v13;
-            v2 = v21;
+            selfCopy = v21;
           }
 
-          [(PLChangeNotificationCenter *)v2 enqueueNotification:v11];
+          [(PLChangeNotificationCenter *)selfCopy enqueueNotification:v11];
         }
 
         v5 = [(NSMutableSet *)obj countByEnumeratingWithState:&v24 objects:v36 count:16];
@@ -2178,30 +2178,30 @@ LABEL_18:
 - (void)_enqueueAlbumNotifications
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = [(PLChangeList *)self->_changedAlbums updated];
-  if ([v3 count])
+  updated = [(PLChangeList *)self->_changedAlbums updated];
+  if ([updated count])
   {
 
 LABEL_4:
-    v6 = [(PLChangeList *)self->_changedAlbums updated];
-    v7 = [(PLContentChanges *)self->_albumsContent container];
-    v8 = [v7 count];
+    updated2 = [(PLChangeList *)self->_changedAlbums updated];
+    container = [(PLContentChanges *)self->_albumsContent container];
+    v8 = [container count];
 
     if (v8)
     {
-      if (v6)
+      if (updated2)
       {
-        v9 = [(PLContentChanges *)self->_albumsContent container];
-        v10 = [v6 setByAddingObjectsFromArray:v9];
+        container2 = [(PLContentChanges *)self->_albumsContent container];
+        v10 = [updated2 setByAddingObjectsFromArray:container2];
 
-        v6 = v10;
+        updated2 = v10;
       }
 
       else
       {
         v11 = MEMORY[0x1E695DFD8];
-        v9 = [(PLContentChanges *)self->_albumsContent container];
-        v6 = [v11 setWithArray:v9];
+        container2 = [(PLContentChanges *)self->_albumsContent container];
+        updated2 = [v11 setWithArray:container2];
       }
     }
 
@@ -2209,7 +2209,7 @@ LABEL_4:
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v12 = v6;
+    v12 = updated2;
     v13 = [(NSMutableSet *)v12 countByEnumeratingWithState:&v37 objects:v42 count:16];
     if (v13)
     {
@@ -2228,36 +2228,36 @@ LABEL_4:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v18 = [(PLChangeList *)self->_changedAssets updated];
-            v19 = [v18 allObjects];
+            updated3 = [(PLChangeList *)self->_changedAssets updated];
+            allObjects = [updated3 allObjects];
           }
 
           else
           {
-            v20 = [(PLContentChanges *)self->_albumsContent container];
-            if (!v20)
+            container3 = [(PLContentChanges *)self->_albumsContent container];
+            if (!container3)
             {
               goto LABEL_21;
             }
 
-            v21 = [(PLContentChanges *)self->_albumsContent container];
-            v22 = [v21 indexOfObjectIdenticalTo:v17];
+            container4 = [(PLContentChanges *)self->_albumsContent container];
+            v22 = [container4 indexOfObjectIdenticalTo:v17];
 
             if (v22 == 0x7FFFFFFFFFFFFFFFLL)
             {
-              v20 = 0;
+              container3 = 0;
               goto LABEL_21;
             }
 
-            v18 = [(PLContentChanges *)self->_albumsContent updatedContent];
-            v19 = [v18 objectAtIndex:v22];
+            updated3 = [(PLContentChanges *)self->_albumsContent updatedContent];
+            allObjects = [updated3 objectAtIndex:v22];
           }
 
-          v20 = v19;
+          container3 = allObjects;
 
 LABEL_21:
           v23 = [(PLChangeNotificationCenter *)self _snapshotForObject:v17];
-          v24 = [PLAssetContainerChangeNotification notificationWithContainer:v17 snapshot:v23 changedAssets:v20];
+          v24 = [PLAssetContainerChangeNotification notificationWithContainer:v17 snapshot:v23 changedAssets:container3];
           v25 = [PLInvitationRecordsChangeNotification notificationWithAlbum:v17 snapshot:v23];
           [(PLChangeNotificationCenter *)self _enqueueAlbumChangeNotification:v24];
           [(PLChangeNotificationCenter *)self _enqueueInvitationRecordsChangeNotification:v25];
@@ -2272,8 +2272,8 @@ LABEL_21:
     goto LABEL_24;
   }
 
-  v4 = [(PLContentChanges *)self->_albumsContent container];
-  v5 = [v4 count];
+  container5 = [(PLContentChanges *)self->_albumsContent container];
+  v5 = [container5 count];
 
   if (v5)
   {
@@ -2325,30 +2325,30 @@ LABEL_24:
 - (void)_enqueueAlbumListNotifications
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = [(PLChangeList *)self->_changedAlbumLists updated];
-  if ([v3 count])
+  updated = [(PLChangeList *)self->_changedAlbumLists updated];
+  if ([updated count])
   {
 
 LABEL_4:
-    v6 = [(PLChangeList *)self->_changedAlbumLists updated];
-    v7 = [(PLContentChanges *)self->_albumListsContent container];
-    v8 = [v7 count];
+    updated2 = [(PLChangeList *)self->_changedAlbumLists updated];
+    container = [(PLContentChanges *)self->_albumListsContent container];
+    v8 = [container count];
 
     if (v8)
     {
-      if (v6)
+      if (updated2)
       {
-        v9 = [(PLContentChanges *)self->_albumListsContent container];
-        v10 = [v6 setByAddingObjectsFromArray:v9];
+        container2 = [(PLContentChanges *)self->_albumListsContent container];
+        v10 = [updated2 setByAddingObjectsFromArray:container2];
 
-        v6 = v10;
+        updated2 = v10;
       }
 
       else
       {
         v11 = MEMORY[0x1E695DFD8];
-        v9 = [(PLContentChanges *)self->_albumListsContent container];
-        v6 = [v11 setWithArray:v9];
+        container2 = [(PLContentChanges *)self->_albumListsContent container];
+        updated2 = [v11 setWithArray:container2];
       }
     }
 
@@ -2356,7 +2356,7 @@ LABEL_4:
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v12 = v6;
+    v12 = updated2;
     v13 = [(NSMutableSet *)v12 countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v13)
     {
@@ -2372,26 +2372,26 @@ LABEL_4:
           }
 
           v17 = *(*(&v34 + 1) + 8 * i);
-          v18 = [(PLContentChanges *)self->_albumListsContent container];
-          if (v18)
+          container3 = [(PLContentChanges *)self->_albumListsContent container];
+          if (container3)
           {
-            v19 = [(PLContentChanges *)self->_albumListsContent container];
-            v20 = [v19 indexOfObjectIdenticalTo:v17];
+            container4 = [(PLContentChanges *)self->_albumListsContent container];
+            v20 = [container4 indexOfObjectIdenticalTo:v17];
 
             if (v20 == 0x7FFFFFFFFFFFFFFFLL)
             {
-              v18 = 0;
+              container3 = 0;
             }
 
             else
             {
-              v21 = [(PLContentChanges *)self->_albumListsContent updatedContent];
-              v18 = [v21 objectAtIndex:v20];
+              updatedContent = [(PLContentChanges *)self->_albumListsContent updatedContent];
+              container3 = [updatedContent objectAtIndex:v20];
             }
           }
 
           v22 = [(PLChangeNotificationCenter *)self _snapshotForObject:v17];
-          v23 = [PLAssetContainerListChangeNotification notificationWithContainerList:v17 snapshot:v22 changedContainers:v18];
+          v23 = [PLAssetContainerListChangeNotification notificationWithContainerList:v17 snapshot:v22 changedContainers:container3];
           [(PLChangeNotificationCenter *)self _enqueueAssetContainerListChangeNotification:v23];
         }
 
@@ -2405,8 +2405,8 @@ LABEL_21:
     return;
   }
 
-  v4 = [(PLContentChanges *)self->_albumListsContent container];
-  v5 = [v4 count];
+  container5 = [(PLContentChanges *)self->_albumListsContent container];
+  v5 = [container5 count];
 
   if (v5)
   {
@@ -2456,27 +2456,27 @@ LABEL_21:
 - (void)_enqueuePhotoLibraryNotifications
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PLChangeList *)self->_changedAlbums inserted];
-  if ([v3 count])
+  inserted = [(PLChangeList *)self->_changedAlbums inserted];
+  if ([inserted count])
   {
 
 LABEL_4:
-    v6 = [(PLManagedObjectContext *)self->_moc photoLibrary];
-    v7 = [(PLChangeList *)self->_changedAlbums inserted];
-    v8 = [v7 allObjects];
-    v13[0] = v8;
-    v9 = [(PLChangeList *)self->_changedAlbums deleted];
-    v10 = [v9 allObjects];
-    v13[1] = v10;
+    photoLibrary = [(PLManagedObjectContext *)self->_moc photoLibrary];
+    inserted2 = [(PLChangeList *)self->_changedAlbums inserted];
+    allObjects = [inserted2 allObjects];
+    v13[0] = allObjects;
+    deleted = [(PLChangeList *)self->_changedAlbums deleted];
+    allObjects2 = [deleted allObjects];
+    v13[1] = allObjects2;
     v12[0] = @"AddedItemsKey";
     v12[1] = @"DeletedItemsKey";
-    [(PLChangeNotificationCenter *)self _enqueueNotification:@"PLPhotoLibraryDidChangeNotification" object:v6 userInfoWithObjects:v13 forKeys:v12 count:2];
+    [(PLChangeNotificationCenter *)self _enqueueNotification:@"PLPhotoLibraryDidChangeNotification" object:photoLibrary userInfoWithObjects:v13 forKeys:v12 count:2];
 
     goto LABEL_5;
   }
 
-  v4 = [(PLChangeList *)self->_changedAlbums deleted];
-  v5 = [v4 count];
+  deleted2 = [(PLChangeList *)self->_changedAlbums deleted];
+  v5 = [deleted2 count];
 
   if (v5)
   {
@@ -2488,8 +2488,8 @@ LABEL_4:
     goto LABEL_6;
   }
 
-  v6 = [(PLManagedObjectContext *)self->_moc photoLibrary];
-  [(PLChangeNotificationCenter *)self _enqueueNotification:@"PLPhotoLibraryDidChangeNotification" object:v6 userInfoWithObjects:0 forKeys:0 count:0];
+  photoLibrary = [(PLManagedObjectContext *)self->_moc photoLibrary];
+  [(PLChangeNotificationCenter *)self _enqueueNotification:@"PLPhotoLibraryDidChangeNotification" object:photoLibrary userInfoWithObjects:0 forKeys:0 count:0];
 LABEL_5:
 
 LABEL_6:
@@ -2503,9 +2503,9 @@ LABEL_6:
   v3 = PLChangeHandlingGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(PLChangeNotificationCenter *)self descriptionOfSplitChanges];
+    descriptionOfSplitChanges = [(PLChangeNotificationCenter *)self descriptionOfSplitChanges];
     v6 = 138412290;
-    v7 = v4;
+    v7 = descriptionOfSplitChanges;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "Change split into:\n%@", &v6, 0xCu);
   }
 
@@ -2523,26 +2523,26 @@ LABEL_6:
   [(PLChangeNotificationCenter *)self _postEnqueuedNotifications];
 }
 
-- (void)postShouldReloadNotificationWithPhotoLibrary:(id)a3
+- (void)postShouldReloadNotificationWithPhotoLibrary:(id)library
 {
-  v7 = a3;
+  libraryCopy = library;
   v4 = objc_autoreleasePoolPush();
-  v5 = [[PLPhotoLibraryShouldReloadNotification alloc] initNotificationWithPhotoLibrary:v7];
-  v6 = [(PLChangeNotificationCenter *)self backingCenter];
-  [v6 postNotification:v5];
+  v5 = [[PLPhotoLibraryShouldReloadNotification alloc] initNotificationWithPhotoLibrary:libraryCopy];
+  backingCenter = [(PLChangeNotificationCenter *)self backingCenter];
+  [backingCenter postNotification:v5];
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)enumerateIndexMappingCachesForObject:(id)a3 withBlock:(id)a4
+- (void)enumerateIndexMappingCachesForObject:(id)object withBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  objectCopy = object;
+  blockCopy = block;
+  v7 = objectCopy;
   pl_dispatch_once();
   if (enumerateIndexMappingCachesForObject_withBlock__isIndexMappersDataOrigin[indexOfObjectEntity(v7)] == 1)
   {
-    [v7 enumerateDerivedIndexMappers:v6];
+    [v7 enumerateDerivedIndexMappers:blockCopy];
   }
 }
 
@@ -2569,10 +2569,10 @@ uint64_t __77__PLChangeNotificationCenter_enumerateIndexMappingCachesForObject_w
   return result;
 }
 
-- (id)_toOneRelationshipsOfInterestForObject:(id)a3
+- (id)_toOneRelationshipsOfInterestForObject:(id)object
 {
-  v7 = a3;
-  v3 = v7;
+  objectCopy = object;
+  v3 = objectCopy;
   pl_dispatch_once();
   v4 = _toOneRelationshipsOfInterestForObject__myKeys[indexOfObjectEntity(v3)];
   v5 = v4;
@@ -2618,10 +2618,10 @@ void __69__PLChangeNotificationCenter__toOneRelationshipsOfInterestForObject___b
   }
 }
 
-- (id)_attributesOfInterestForObject:(id)a3
+- (id)_attributesOfInterestForObject:(id)object
 {
-  v7 = a3;
-  v3 = v7;
+  objectCopy = object;
+  v3 = objectCopy;
   pl_dispatch_once();
   v4 = _attributesOfInterestForObject__myKeys[indexOfObjectEntity(v3)];
   v5 = v4;
@@ -2666,16 +2666,16 @@ void __61__PLChangeNotificationCenter__attributesOfInterestForObject___block_inv
   }
 }
 
-- (id)_orderedRelationshipsOfInterestForObject:(id)a3
+- (id)_orderedRelationshipsOfInterestForObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   pl_dispatch_once();
-  v4 = indexOfObjectEntity(v3);
+  v4 = indexOfObjectEntity(objectCopy);
   if (v4 >= 76)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLChangeNotificationCenter _orderedRelationshipsOfInterestForObject:]"];
-    [v8 handleFailureInFunction:v9 file:@"PLChangeNotificationCenter.m" lineNumber:445 description:@"Out of bounds."];
+    [currentHandler handleFailureInFunction:v9 file:@"PLChangeNotificationCenter.m" lineNumber:445 description:@"Out of bounds."];
   }
 
   v5 = _orderedRelationshipsOfInterestForObject__myKeys[v4];
@@ -2726,26 +2726,26 @@ void __71__PLChangeNotificationCenter__orderedRelationshipsOfInterestForObject__
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6 == &PLChangeNotificationCenterKVOContext)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (context == &PLChangeNotificationCenterKVOContext)
   {
     if (!self->_isProcessingRemoteDidSave)
     {
-      v13 = v11;
+      v13 = objectCopy;
       if (![v13 faultingState] && (objc_msgSend(v13, "isDeleted") & 1) == 0)
       {
-        v14 = [v13 managedObjectContext];
+        managedObjectContext = [v13 managedObjectContext];
 
-        if (v14)
+        if (managedObjectContext)
         {
-          v15 = [v12 objectForKey:*MEMORY[0x1E696A4F8]];
-          v16 = [v15 BOOLValue];
+          v15 = [changeCopy objectForKey:*MEMORY[0x1E696A4F8]];
+          bOOLValue = [v15 BOOLValue];
 
-          if (v16)
+          if (bOOLValue)
           {
             v17 = [(PLChangeNotificationCenter *)self _takeSnapshotOfObject:v13];
           }
@@ -2758,32 +2758,32 @@ void __71__PLChangeNotificationCenter__orderedRelationshipsOfInterestForObject__
   {
     v18.receiver = self;
     v18.super_class = PLChangeNotificationCenter;
-    [(PLChangeNotificationCenter *)&v18 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(PLChangeNotificationCenter *)&v18 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)processContextDidChangeNotification:(id)a3
+- (void)processContextDidChangeNotification:(id)notification
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = objc_autoreleasePoolPush();
   v6 = PLChangeHandlingGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [v4 name];
-    v8 = [v4 userInfo];
+    name = [notificationCopy name];
+    userInfo = [notificationCopy userInfo];
     *buf = 138412546;
-    v15 = v7;
+    v15 = name;
     v16 = 2112;
-    v17 = v8;
+    v17 = userInfo;
     _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEBUG, "Transforming local %@ with %@", buf, 0x16u);
   }
 
-  if (v4)
+  if (notificationCopy)
   {
-    v9 = [v4 object];
+    object = [notificationCopy object];
     moc = self->_moc;
-    self->_moc = v9;
+    self->_moc = object;
 
     v11 = self->_moc;
     v12[0] = MEMORY[0x1E69E9820];
@@ -2791,71 +2791,71 @@ void __71__PLChangeNotificationCenter__orderedRelationshipsOfInterestForObject__
     v12[2] = __66__PLChangeNotificationCenter_processContextDidChangeNotification___block_invoke;
     v12[3] = &unk_1E7578848;
     v12[4] = self;
-    v13 = v4;
+    v13 = notificationCopy;
     [(NSManagedObjectContext *)v11 pl_performBlockAndWait:v12];
   }
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)removeObserver:(id)a3 name:(id)a4 object:(id)a5
+- (void)removeObserver:(id)observer name:(id)name object:(id)object
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PLChangeNotificationCenter *)self backingCenter];
-  [v11 removeObserver:v10 name:v9 object:v8];
+  objectCopy = object;
+  nameCopy = name;
+  observerCopy = observer;
+  backingCenter = [(PLChangeNotificationCenter *)self backingCenter];
+  [backingCenter removeObserver:observerCopy name:nameCopy object:objectCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PLChangeNotificationCenter *)self backingCenter];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  backingCenter = [(PLChangeNotificationCenter *)self backingCenter];
+  [backingCenter removeObserver:observerCopy];
 }
 
-- (id)addObserverForName:(id)a3 object:(id)a4 queue:(id)a5 usingBlock:(id)a6
+- (id)addObserverForName:(id)name object:(id)object queue:(id)queue usingBlock:(id)block
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(PLChangeNotificationCenter *)self backingCenter];
-  v15 = [v14 addObserverForName:v13 object:v12 queue:v11 usingBlock:v10];
+  blockCopy = block;
+  queueCopy = queue;
+  objectCopy = object;
+  nameCopy = name;
+  backingCenter = [(PLChangeNotificationCenter *)self backingCenter];
+  v15 = [backingCenter addObserverForName:nameCopy object:objectCopy queue:queueCopy usingBlock:blockCopy];
 
   return v15;
 }
 
-- (void)addObserver:(id)a3 selector:(SEL)a4 name:(id)a5 object:(id)a6
+- (void)addObserver:(id)observer selector:(SEL)selector name:(id)name object:(id)object
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [(PLChangeNotificationCenter *)self backingCenter];
-  [v13 addObserver:v12 selector:a4 name:v11 object:v10];
+  objectCopy = object;
+  nameCopy = name;
+  observerCopy = observer;
+  backingCenter = [(PLChangeNotificationCenter *)self backingCenter];
+  [backingCenter addObserver:observerCopy selector:selector name:nameCopy object:objectCopy];
 }
 
-- (void)removeShouldReloadObserver:(id)a3
+- (void)removeShouldReloadObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PLChangeNotificationCenter *)self backingCenter];
-  [v5 removeObserver:v4 name:@"PLPhotoLibraryShouldReload" object:0];
+  observerCopy = observer;
+  backingCenter = [(PLChangeNotificationCenter *)self backingCenter];
+  [backingCenter removeObserver:observerCopy name:@"PLPhotoLibraryShouldReload" object:0];
 }
 
-- (void)addShouldReloadObserver:(id)a3
+- (void)addShouldReloadObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PLChangeNotificationCenter *)self backingCenter];
-  [v5 addObserver:v4 selector:sel_shouldReload_ name:@"PLPhotoLibraryShouldReload" object:0];
+  observerCopy = observer;
+  backingCenter = [(PLChangeNotificationCenter *)self backingCenter];
+  [backingCenter addObserver:observerCopy selector:sel_shouldReload_ name:@"PLPhotoLibraryShouldReload" object:0];
 }
 
-- (void)enqueueNotification:(id)a3
+- (void)enqueueNotification:(id)notification
 {
-  v4 = a3;
-  if (v4)
+  notificationCopy = notification;
+  if (notificationCopy)
   {
     enqueuedNotifications = self->_enqueuedNotifications;
-    v8 = v4;
+    v8 = notificationCopy;
     if (!enqueuedNotifications)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -2866,7 +2866,7 @@ void __71__PLChangeNotificationCenter__orderedRelationshipsOfInterestForObject__
     }
 
     [(NSMutableArray *)enqueuedNotifications addObject:v8];
-    v4 = v8;
+    notificationCopy = v8;
   }
 }
 
@@ -2883,16 +2883,16 @@ void __71__PLChangeNotificationCenter__orderedRelationshipsOfInterestForObject__
   [(PLChangeNotificationCenter *)&v4 dealloc];
 }
 
-+ (void)assertIsCompatibleWithObjectModel:(id)a3
++ (void)assertIsCompatibleWithObjectModel:(id)model
 {
-  v5 = [a3 entitiesByName];
-  v6 = [v5 allKeys];
-  v7 = [v6 count];
+  entitiesByName = [model entitiesByName];
+  allKeys = [entitiesByName allKeys];
+  v7 = [allKeys count];
 
   if (v7 >= 0x4C)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"PLChangeNotificationCenter.m" lineNumber:1427 description:{@"Need to increase maxEntityCount (%tu < %d)", v7, 76}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLChangeNotificationCenter.m" lineNumber:1427 description:{@"Need to increase maxEntityCount (%tu < %d)", v7, 76}];
   }
 }
 
@@ -2938,14 +2938,14 @@ LABEL_7:
   }
 }
 
-+ (void)getInsertedAssetCount:(unint64_t *)a3 deletedAssetCount:(unint64_t *)a4 updatedAssets:(id)a5 fromContextDidChangeNotification:(id)a6
++ (void)getInsertedAssetCount:(unint64_t *)count deletedAssetCount:(unint64_t *)assetCount updatedAssets:(id)assets fromContextDidChangeNotification:(id)notification
 {
   v44 = *MEMORY[0x1E69E9840];
-  v31 = a5;
-  v28 = a6;
-  *a3 = 0;
-  v32 = a4;
-  *a4 = 0;
+  assetsCopy = assets;
+  notificationCopy = notification;
+  *count = 0;
+  assetCountCopy = assetCount;
+  *assetCount = 0;
   context = objc_autoreleasePoolPush();
   v37 = 0u;
   v38 = 0u;
@@ -2981,8 +2981,8 @@ LABEL_7:
         v34 = 0u;
         v35 = 0u;
         v36 = 0u;
-        v14 = [v28 userInfo];
-        v15 = [v14 objectForKey:v13];
+        userInfo = [notificationCopy userInfo];
+        v15 = [userInfo objectForKey:v13];
 
         v16 = [v15 countByEnumeratingWithState:&v33 objects:v41 count:16];
         if (v16)
@@ -3004,17 +3004,17 @@ LABEL_7:
               {
                 if (v13 == v9)
                 {
-                  ++*a3;
+                  ++*count;
                 }
 
                 else if (v13 == v10)
                 {
-                  ++*v32;
+                  ++*assetCountCopy;
                 }
 
                 else if (v20)
                 {
-                  [v31 addObject:v22];
+                  [assetsCopy addObject:v22];
                 }
               }
             }
@@ -3038,10 +3038,10 @@ LABEL_7:
   objc_autoreleasePoolPop(context);
 }
 
-+ (id)allManagedObjectKeysStrategyWithContext:(id)a3
++ (id)allManagedObjectKeysStrategyWithContext:(id)context
 {
-  v7 = a3;
-  v3 = v7;
+  contextCopy = context;
+  v3 = contextCopy;
   pl_dispatch_once();
   v4 = allManagedObjectKeysStrategyWithContext__myStrategy;
   v5 = allManagedObjectKeysStrategyWithContext__myStrategy;

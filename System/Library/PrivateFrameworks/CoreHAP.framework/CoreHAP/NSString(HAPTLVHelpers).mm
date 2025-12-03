@@ -7,7 +7,7 @@
 
 - (id)serializeWithError:()HAPTLVHelpers
 {
-  v4 = [a1 dataUsingEncoding:4 allowLossyConversion:0];
+  v4 = [self dataUsingEncoding:4 allowLossyConversion:0];
   v5 = v4;
   if (a3 && !v4)
   {
@@ -22,10 +22,10 @@
   v5 = MEMORY[0x277CCACA8];
   v6 = a3;
   v7 = [v5 alloc];
-  v8 = [v6 bytes];
+  bytes = [v6 bytes];
   v9 = [v6 length];
 
-  v10 = [v7 initWithBytes:v8 length:v9 encoding:4];
+  v10 = [v7 initWithBytes:bytes length:v9 encoding:4];
   v11 = v10;
   if (a4 && !v10)
   {

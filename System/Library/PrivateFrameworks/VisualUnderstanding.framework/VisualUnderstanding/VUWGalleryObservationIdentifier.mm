@@ -7,8 +7,8 @@
 
 - (uint64_t)hash
 {
-  v1 = a1;
-  [v1 value];
+  selfCopy = self;
+  [selfCopy value];
   v2 = sub_1D2250C3C();
 
   return v2;

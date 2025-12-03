@@ -1,16 +1,16 @@
 @interface IMSharedUtilitiesProtoCloudKitEncryptedMessageP4
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasScheduleState:(BOOL)a3;
-- (void)setHasScheduleType:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasScheduleState:(BOOL)state;
+- (void)setHasScheduleType:(BOOL)type;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IMSharedUtilitiesProtoCloudKitEncryptedMessageP4
@@ -26,9 +26,9 @@
   [(IMSharedUtilitiesProtoCloudKitEncryptedMessageP4 *)&v3 dealloc];
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 8;
   }
@@ -41,9 +41,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasScheduleType:(BOOL)a3
+- (void)setHasScheduleType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -56,9 +56,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasScheduleState:(BOOL)a3
+- (void)setHasScheduleState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }
@@ -80,57 +80,57 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 8) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_version), @"version"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_version), @"version"}];
   }
 
   associatedMessageEmoji = self->_associatedMessageEmoji;
   if (associatedMessageEmoji)
   {
-    [v3 setObject:associatedMessageEmoji forKey:@"associated_message_emoji"];
+    [dictionary setObject:associatedMessageEmoji forKey:@"associated_message_emoji"];
   }
 
   padding = self->_padding;
   if (padding)
   {
-    [v3 setObject:padding forKey:@"padding"];
+    [dictionary setObject:padding forKey:@"padding"];
   }
 
   actualService = self->_actualService;
   if (actualService)
   {
-    [v3 setObject:actualService forKey:@"actual_service"];
+    [dictionary setObject:actualService forKey:@"actual_service"];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_scheduleType), @"schedule_type"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_scheduleType), @"schedule_type"}];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_scheduleState), @"schedule_state"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_scheduleState), @"schedule_state"}];
   }
 
   actualParentChatId = self->_actualParentChatId;
   if (actualParentChatId)
   {
-    [v3 setObject:actualParentChatId forKey:@"actual_parent_chat_id"];
+    [dictionary setObject:actualParentChatId forKey:@"actual_parent_chat_id"];
   }
 
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", self->_timeRecovered), @"time_recovered"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", self->_timeRecovered), @"time_recovered"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if ((*&self->_has & 8) != 0)
   {
@@ -176,58 +176,58 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ((*&self->_has & 8) != 0)
   {
-    *(a3 + 14) = self->_version;
-    *(a3 + 60) |= 8u;
+    *(to + 14) = self->_version;
+    *(to + 60) |= 8u;
   }
 
   if (self->_associatedMessageEmoji)
   {
-    [a3 setAssociatedMessageEmoji:?];
+    [to setAssociatedMessageEmoji:?];
   }
 
   if (self->_padding)
   {
-    [a3 setPadding:?];
+    [to setPadding:?];
   }
 
   if (self->_actualService)
   {
-    [a3 setActualService:?];
+    [to setActualService:?];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(a3 + 13) = self->_scheduleType;
-    *(a3 + 60) |= 4u;
+    *(to + 13) = self->_scheduleType;
+    *(to + 60) |= 4u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(a3 + 12) = self->_scheduleState;
-    *(a3 + 60) |= 2u;
+    *(to + 12) = self->_scheduleState;
+    *(to + 60) |= 2u;
   }
 
   if (self->_actualParentChatId)
   {
-    [a3 setActualParentChatId:?];
+    [to setActualParentChatId:?];
   }
 
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timeRecovered;
-    *(a3 + 60) |= 1u;
+    *(to + 1) = self->_timeRecovered;
+    *(to + 60) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 8) != 0)
   {
@@ -235,10 +235,10 @@
     *(v5 + 60) |= 8u;
   }
 
-  *(v6 + 32) = [(NSString *)self->_associatedMessageEmoji copyWithZone:a3];
-  *(v6 + 40) = [(NSData *)self->_padding copyWithZone:a3];
+  *(v6 + 32) = [(NSString *)self->_associatedMessageEmoji copyWithZone:zone];
+  *(v6 + 40) = [(NSData *)self->_padding copyWithZone:zone];
 
-  *(v6 + 24) = [(NSString *)self->_actualService copyWithZone:a3];
+  *(v6 + 24) = [(NSString *)self->_actualService copyWithZone:zone];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -253,7 +253,7 @@
     *(v6 + 60) |= 2u;
   }
 
-  *(v6 + 16) = [(NSString *)self->_actualParentChatId copyWithZone:a3];
+  *(v6 + 16) = [(NSString *)self->_actualParentChatId copyWithZone:zone];
   if (*&self->_has)
   {
     *(v6 + 8) = self->_timeRecovered;
@@ -263,20 +263,20 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 60) & 8) == 0 || self->_version != *(a3 + 14))
+      if ((*(equal + 60) & 8) == 0 || self->_version != *(equal + 14))
       {
         goto LABEL_30;
       }
     }
 
-    else if ((*(a3 + 60) & 8) != 0)
+    else if ((*(equal + 60) & 8) != 0)
     {
 LABEL_30:
       LOBYTE(v5) = 0;
@@ -284,43 +284,43 @@ LABEL_30:
     }
 
     associatedMessageEmoji = self->_associatedMessageEmoji;
-    if (!(associatedMessageEmoji | *(a3 + 4)) || (v5 = [(NSString *)associatedMessageEmoji isEqual:?]) != 0)
+    if (!(associatedMessageEmoji | *(equal + 4)) || (v5 = [(NSString *)associatedMessageEmoji isEqual:?]) != 0)
     {
       padding = self->_padding;
-      if (!(padding | *(a3 + 5)) || (v5 = [(NSData *)padding isEqual:?]) != 0)
+      if (!(padding | *(equal + 5)) || (v5 = [(NSData *)padding isEqual:?]) != 0)
       {
         actualService = self->_actualService;
-        if (!(actualService | *(a3 + 3)) || (v5 = [(NSString *)actualService isEqual:?]) != 0)
+        if (!(actualService | *(equal + 3)) || (v5 = [(NSString *)actualService isEqual:?]) != 0)
         {
           has = self->_has;
           if ((has & 4) != 0)
           {
-            if ((*(a3 + 60) & 4) == 0 || self->_scheduleType != *(a3 + 13))
+            if ((*(equal + 60) & 4) == 0 || self->_scheduleType != *(equal + 13))
             {
               goto LABEL_30;
             }
           }
 
-          else if ((*(a3 + 60) & 4) != 0)
+          else if ((*(equal + 60) & 4) != 0)
           {
             goto LABEL_30;
           }
 
           if ((*&self->_has & 2) != 0)
           {
-            if ((*(a3 + 60) & 2) == 0 || self->_scheduleState != *(a3 + 12))
+            if ((*(equal + 60) & 2) == 0 || self->_scheduleState != *(equal + 12))
             {
               goto LABEL_30;
             }
           }
 
-          else if ((*(a3 + 60) & 2) != 0)
+          else if ((*(equal + 60) & 2) != 0)
           {
             goto LABEL_30;
           }
 
           actualParentChatId = self->_actualParentChatId;
-          if (actualParentChatId | *(a3 + 2))
+          if (actualParentChatId | *(equal + 2))
           {
             v5 = [(NSString *)actualParentChatId isEqual:?];
             if (!v5)
@@ -331,10 +331,10 @@ LABEL_30:
             has = self->_has;
           }
 
-          LOBYTE(v5) = (*(a3 + 60) & 1) == 0;
+          LOBYTE(v5) = (*(equal + 60) & 1) == 0;
           if (has)
           {
-            if ((*(a3 + 60) & 1) == 0 || self->_timeRecovered != *(a3 + 1))
+            if ((*(equal + 60) & 1) == 0 || self->_timeRecovered != *(equal + 1))
             {
               goto LABEL_30;
             }
@@ -400,51 +400,51 @@ LABEL_9:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if ((*(a3 + 60) & 8) != 0)
+  if ((*(from + 60) & 8) != 0)
   {
-    self->_version = *(a3 + 14);
+    self->_version = *(from + 14);
     *&self->_has |= 8u;
   }
 
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
     [(IMSharedUtilitiesProtoCloudKitEncryptedMessageP4 *)self setAssociatedMessageEmoji:?];
   }
 
-  if (*(a3 + 5))
+  if (*(from + 5))
   {
     [(IMSharedUtilitiesProtoCloudKitEncryptedMessageP4 *)self setPadding:?];
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(IMSharedUtilitiesProtoCloudKitEncryptedMessageP4 *)self setActualService:?];
   }
 
-  v5 = *(a3 + 60);
+  v5 = *(from + 60);
   if ((v5 & 4) != 0)
   {
-    self->_scheduleType = *(a3 + 13);
+    self->_scheduleType = *(from + 13);
     *&self->_has |= 4u;
-    v5 = *(a3 + 60);
+    v5 = *(from + 60);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_scheduleState = *(a3 + 12);
+    self->_scheduleState = *(from + 12);
     *&self->_has |= 2u;
   }
 
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(IMSharedUtilitiesProtoCloudKitEncryptedMessageP4 *)self setActualParentChatId:?];
   }
 
-  if (*(a3 + 60))
+  if (*(from + 60))
   {
-    self->_timeRecovered = *(a3 + 1);
+    self->_timeRecovered = *(from + 1);
     *&self->_has |= 1u;
   }
 }

@@ -1,29 +1,29 @@
 @interface MODaemonUniverse
 + (BOOL)isExtendedLogEnabled;
-- (MODaemonUniverse)initWithUniverseDictionary:(id)a3;
-- (id)createService:(id)a3;
-- (id)getService:(id)a3;
+- (MODaemonUniverse)initWithUniverseDictionary:(id)dictionary;
+- (id)createService:(id)service;
+- (id)getService:(id)service;
 - (void)_registerForLaunchEvents;
-- (void)checkAndUpdatePushNotificationStateForNotifications:(id)a3 onboardingPersistence:(id)a4 daemonClient:(id)a5;
+- (void)checkAndUpdatePushNotificationStateForNotifications:(id)notifications onboardingPersistence:(id)persistence daemonClient:(id)client;
 - (void)dealloc;
 - (void)run;
-- (void)setService:(id)a3 forName:(id)a4;
+- (void)setService:(id)service forName:(id)name;
 - (void)setupServices;
 @end
 
 @implementation MODaemonUniverse
 
-- (void)checkAndUpdatePushNotificationStateForNotifications:(id)a3 onboardingPersistence:(id)a4 daemonClient:(id)a5
+- (void)checkAndUpdatePushNotificationStateForNotifications:(id)notifications onboardingPersistence:(id)persistence daemonClient:(id)client
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __122__MODaemonUniverse_SetupServices__checkAndUpdatePushNotificationStateForNotifications_onboardingPersistence_daemonClient___block_invoke;
   v9[3] = &unk_100338208;
-  v10 = a4;
-  v11 = a5;
-  v7 = v11;
-  v8 = v10;
-  [a3 checkAndUpdateStateWithHandler:v9];
+  persistenceCopy = persistence;
+  clientCopy = client;
+  v7 = clientCopy;
+  v8 = persistenceCopy;
+  [notifications checkAndUpdateStateWithHandler:v9];
 }
 
 void __122__MODaemonUniverse_SetupServices__checkAndUpdatePushNotificationStateForNotifications_onboardingPersistence_daemonClient___block_invoke(uint64_t a1, void *a2)
@@ -123,158 +123,158 @@ void __122__MODaemonUniverse_SetupServices__checkAndUpdatePushNotificationStateF
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Daemon initialized, Lock", buf, 2u);
   }
 
-  v4 = [(MODaemonUniverse *)self serviceDictLock];
-  [v4 lock];
+  serviceDictLock = [(MODaemonUniverse *)self serviceDictLock];
+  [serviceDictLock lock];
 
   v119 = [[MODefaultsManager alloc] initWithUniverse:self];
-  v5 = [(MODaemonUniverse *)self universe];
+  universe = [(MODaemonUniverse *)self universe];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v5 setObject:v119 forKeyedSubscript:v7];
+  [universe setObject:v119 forKeyedSubscript:v7];
 
   v118 = [[MOConfigurationManager alloc] initWithUniverse:self];
-  v8 = [(MODaemonUniverse *)self universe];
+  universe2 = [(MODaemonUniverse *)self universe];
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  [v8 setObject:v118 forKeyedSubscript:v10];
+  [universe2 setObject:v118 forKeyedSubscript:v10];
 
   v117 = [[MODarwinNotifier alloc] initWithUniverse:self];
-  v11 = [(MODaemonUniverse *)self universe];
+  universe3 = [(MODaemonUniverse *)self universe];
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
-  [v11 setObject:v117 forKeyedSubscript:v13];
+  [universe3 setObject:v117 forKeyedSubscript:v13];
 
   v116 = [[MOPersistenceManager alloc] initWithUniverse:self];
-  v14 = [(MODaemonUniverse *)self universe];
+  universe4 = [(MODaemonUniverse *)self universe];
   v15 = objc_opt_class();
   v16 = NSStringFromClass(v15);
-  [v14 setObject:v116 forKeyedSubscript:v16];
+  [universe4 setObject:v116 forKeyedSubscript:v16];
 
   v115 = [[MODataAccessManager alloc] initWithUniverse:self];
-  v17 = [(MODaemonUniverse *)self universe];
+  universe5 = [(MODaemonUniverse *)self universe];
   v18 = objc_opt_class();
   v19 = NSStringFromClass(v18);
-  [v17 setObject:v115 forKeyedSubscript:v19];
+  [universe5 setObject:v115 forKeyedSubscript:v19];
 
   v114 = [[MOTimeZoneManager alloc] initWithUniverse:self];
-  v20 = [(MODaemonUniverse *)self universe];
+  universe6 = [(MODaemonUniverse *)self universe];
   v21 = objc_opt_class();
   v22 = NSStringFromClass(v21);
-  [v20 setObject:v114 forKeyedSubscript:v22];
+  [universe6 setObject:v114 forKeyedSubscript:v22];
 
   v113 = [[MOEventBundleStore alloc] initWithUniverse:self];
-  v23 = [(MODaemonUniverse *)self universe];
+  universe7 = [(MODaemonUniverse *)self universe];
   v24 = objc_opt_class();
   v25 = NSStringFromClass(v24);
-  [v23 setObject:v113 forKeyedSubscript:v25];
+  [universe7 setObject:v113 forKeyedSubscript:v25];
 
   v112 = [[MOFSMStore alloc] initWithUniverse:self];
-  v26 = [(MODaemonUniverse *)self universe];
+  universe8 = [(MODaemonUniverse *)self universe];
   v27 = objc_opt_class();
   v28 = NSStringFromClass(v27);
-  [v26 setObject:v112 forKeyedSubscript:v28];
+  [universe8 setObject:v112 forKeyedSubscript:v28];
 
   v111 = [[MOEventStore alloc] initWithUniverse:self];
-  v29 = [(MODaemonUniverse *)self universe];
+  universe9 = [(MODaemonUniverse *)self universe];
   v30 = objc_opt_class();
   v31 = NSStringFromClass(v30);
-  [v29 setObject:v111 forKeyedSubscript:v31];
+  [universe9 setObject:v111 forKeyedSubscript:v31];
 
   v110 = [[MOEventManager alloc] initWithUniverse:self];
-  v32 = [(MODaemonUniverse *)self universe];
+  universe10 = [(MODaemonUniverse *)self universe];
   v33 = objc_opt_class();
   v34 = NSStringFromClass(v33);
-  [v32 setObject:v110 forKeyedSubscript:v34];
+  [universe10 setObject:v110 forKeyedSubscript:v34];
 
   v109 = [[MOEngagementHistoryManager alloc] initWithUniverse:self];
-  v35 = [(MODaemonUniverse *)self universe];
+  universe11 = [(MODaemonUniverse *)self universe];
   v36 = objc_opt_class();
   v37 = NSStringFromClass(v36);
-  [v35 setObject:v109 forKeyedSubscript:v37];
+  [universe11 setObject:v109 forKeyedSubscript:v37];
 
   v108 = [[MOEventBundleRanking alloc] initWithUniverse:self];
-  v38 = [(MODaemonUniverse *)self universe];
+  universe12 = [(MODaemonUniverse *)self universe];
   v39 = objc_opt_class();
   v40 = NSStringFromClass(v39);
-  [v38 setObject:v108 forKeyedSubscript:v40];
+  [universe12 setObject:v108 forKeyedSubscript:v40];
 
   v107 = [[MOEventBundleManager alloc] initWithUniverse:self];
-  v41 = [(MODaemonUniverse *)self universe];
+  universe13 = [(MODaemonUniverse *)self universe];
   v42 = objc_opt_class();
   v43 = NSStringFromClass(v42);
-  [v41 setObject:v107 forKeyedSubscript:v43];
+  [universe13 setObject:v107 forKeyedSubscript:v43];
 
   v106 = [[MONotificationsManager alloc] initWithUniverse:self];
-  v44 = [(MODaemonUniverse *)self universe];
+  universe14 = [(MODaemonUniverse *)self universe];
   v45 = objc_opt_class();
   v46 = NSStringFromClass(v45);
-  [v44 setObject:v106 forKeyedSubscript:v46];
+  [universe14 setObject:v106 forKeyedSubscript:v46];
 
   v105 = [[MOBundleClusteringManager alloc] initWithUniverse:self];
-  v47 = [(MODaemonUniverse *)self universe];
+  universe15 = [(MODaemonUniverse *)self universe];
   v48 = objc_opt_class();
   v49 = NSStringFromClass(v48);
-  [v47 setObject:v105 forKeyedSubscript:v49];
+  [universe15 setObject:v105 forKeyedSubscript:v49];
 
   v104 = [[MOAvailabilityPredictionManager alloc] initWithUniverse:self];
-  v50 = [(MODaemonUniverse *)self universe];
+  universe16 = [(MODaemonUniverse *)self universe];
   v51 = objc_opt_class();
   v52 = NSStringFromClass(v51);
-  [v50 setObject:v104 forKeyedSubscript:v52];
+  [universe16 setObject:v104 forKeyedSubscript:v52];
 
   v120 = [[MOOnboardingAndSettingsPersistence alloc] initWithUniverse:self];
-  v53 = [(MODaemonUniverse *)self universe];
+  universe17 = [(MODaemonUniverse *)self universe];
   v54 = objc_opt_class();
   v55 = NSStringFromClass(v54);
-  [v53 setObject:v120 forKeyedSubscript:v55];
+  [universe17 setObject:v120 forKeyedSubscript:v55];
 
   v56 = [[MOManageServer alloc] initWithUniverse:self];
-  v57 = [(MODaemonUniverse *)self universe];
+  universe18 = [(MODaemonUniverse *)self universe];
   v58 = objc_opt_class();
   v59 = NSStringFromClass(v58);
-  [v57 setObject:v56 forKeyedSubscript:v59];
+  [universe18 setObject:v56 forKeyedSubscript:v59];
 
-  v60 = [(MOManageServer *)v56 client];
-  v61 = [(MODaemonUniverse *)self universe];
-  [v61 setObject:v60 forKeyedSubscript:@"DaemonClient"];
+  client = [(MOManageServer *)v56 client];
+  universe19 = [(MODaemonUniverse *)self universe];
+  [universe19 setObject:client forKeyedSubscript:@"DaemonClient"];
 
-  v62 = [(MOManageServer *)v56 getNotifier];
-  v63 = [(MODaemonUniverse *)self universe];
-  [v63 setObject:v62 forKeyedSubscript:@"DaemonClientNotifier"];
+  getNotifier = [(MOManageServer *)v56 getNotifier];
+  universe20 = [(MODaemonUniverse *)self universe];
+  [universe20 setObject:getNotifier forKeyedSubscript:@"DaemonClientNotifier"];
 
   v64 = [[MOEventRefreshScheduler alloc] initWithUniverse:self];
-  v65 = [(MODaemonUniverse *)self universe];
+  universe21 = [(MODaemonUniverse *)self universe];
   v66 = objc_opt_class();
   v67 = NSStringFromClass(v66);
-  [v65 setObject:v64 forKeyedSubscript:v67];
+  [universe21 setObject:v64 forKeyedSubscript:v67];
 
-  v68 = [(MOEventRefreshScheduler *)v64 notifier];
-  v69 = [(MODaemonUniverse *)self universe];
-  [v69 setObject:v68 forKeyedSubscript:@"EventRefreshSchedulerNotifier"];
+  notifier = [(MOEventRefreshScheduler *)v64 notifier];
+  universe22 = [(MODaemonUniverse *)self universe];
+  [universe22 setObject:notifier forKeyedSubscript:@"EventRefreshSchedulerNotifier"];
 
   v103 = [[MODaemonAnalyticsManager alloc] initWithUniverse:self];
-  v70 = [(MODaemonUniverse *)self universe];
+  universe23 = [(MODaemonUniverse *)self universe];
   v71 = objc_opt_class();
   v72 = NSStringFromClass(v71);
-  [v70 setObject:v103 forKeyedSubscript:v72];
+  [universe23 setObject:v103 forKeyedSubscript:v72];
 
   v102 = [[MOEngagementAndSuggestionAnalyticsManager alloc] initWithUniverse:self];
-  v73 = [(MODaemonUniverse *)self universe];
+  universe24 = [(MODaemonUniverse *)self universe];
   v74 = objc_opt_class();
   v75 = NSStringFromClass(v74);
-  [v73 setObject:v102 forKeyedSubscript:v75];
+  [universe24 setObject:v102 forKeyedSubscript:v75];
 
   v76 = [[MONotificationAnalyticsManager alloc] initWithUniverse:self];
-  v77 = [(MODaemonUniverse *)self universe];
+  universe25 = [(MODaemonUniverse *)self universe];
   v78 = objc_opt_class();
   v79 = NSStringFromClass(v78);
-  [v77 setObject:v76 forKeyedSubscript:v79];
+  [universe25 setObject:v76 forKeyedSubscript:v79];
 
   v80 = [[MOEventPatternManager alloc] initWithUniverse:self];
-  v81 = [(MODaemonUniverse *)self universe];
+  universe26 = [(MODaemonUniverse *)self universe];
   v82 = objc_opt_class();
   v83 = NSStringFromClass(v82);
-  [v81 setObject:v80 forKeyedSubscript:v83];
+  [universe26 setObject:v80 forKeyedSubscript:v83];
 
   v128 = 0;
   v84 = MGCopyAnswerWithError();
@@ -288,13 +288,13 @@ void __122__MODaemonUniverse_SetupServices__checkAndUpdatePushNotificationStateF
     v86 = v56;
     v127 = v86;
     v87 = [(MOCloudKitPushNotifications *)v85 initWithNamedDelegatePort:@"com.apple.aps.momentsd" apsTopics:&off_10036DB00 subscriptionID:@"momentsd-feed-changes" onNotification:v126 deviceType:v84];
-    v88 = [(MODaemonUniverse *)self universe];
+    universe27 = [(MODaemonUniverse *)self universe];
     v89 = objc_opt_class();
     v90 = NSStringFromClass(v89);
-    [v88 setObject:v87 forKeyedSubscript:v90];
+    [universe27 setObject:v87 forKeyedSubscript:v90];
 
-    v91 = [(MOManageServer *)v86 client];
-    [(MODaemonUniverse *)self checkAndUpdatePushNotificationStateForNotifications:v87 onboardingPersistence:v120 daemonClient:v91];
+    client2 = [(MOManageServer *)v86 client];
+    [(MODaemonUniverse *)self checkAndUpdatePushNotificationStateForNotifications:v87 onboardingPersistence:v120 daemonClient:client2];
 
     v92 = +[NSNotificationCenter defaultCenter];
     v122[0] = _NSConcreteStackBlock;
@@ -314,8 +314,8 @@ void __122__MODaemonUniverse_SetupServices__checkAndUpdatePushNotificationStateF
     CFNotificationCenterAddObserver(v96, v93, onUIActiveStatusUpdate, @"com.apple.momentsd.ui-active-status-updated", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
   }
 
-  v97 = [(MODaemonUniverse *)self serviceDictLock];
-  [v97 unlock];
+  serviceDictLock2 = [(MODaemonUniverse *)self serviceDictLock];
+  [serviceDictLock2 unlock];
 
   v98 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v99 = dispatch_queue_create("MOFeatureDisabledExit", v98);
@@ -430,17 +430,17 @@ BOOL __40__MODaemonUniverse_isExtendedLogEnabled__block_invoke(uint64_t a1)
   return result;
 }
 
-- (MODaemonUniverse)initWithUniverseDictionary:(id)a3
+- (MODaemonUniverse)initWithUniverseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = MODaemonUniverse;
   v5 = [(MODaemonUniverse *)&v16 init];
   if (v5)
   {
-    if (v4)
+    if (dictionaryCopy)
     {
-      v6 = [v4 mutableCopy];
+      v6 = [dictionaryCopy mutableCopy];
     }
 
     else
@@ -471,37 +471,37 @@ BOOL __40__MODaemonUniverse_isExtendedLogEnabled__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [(MODaemonUniverse *)self serviceCreationCondition];
-  [v3 lock];
+  serviceCreationCondition = [(MODaemonUniverse *)self serviceCreationCondition];
+  [serviceCreationCondition lock];
 
-  v4 = [(MODaemonUniverse *)self universe];
-  [v4 removeAllObjects];
+  universe = [(MODaemonUniverse *)self universe];
+  [universe removeAllObjects];
 
-  v5 = [(MODaemonUniverse *)self servicesBeingCreated];
-  [v5 removeAllObjects];
+  servicesBeingCreated = [(MODaemonUniverse *)self servicesBeingCreated];
+  [servicesBeingCreated removeAllObjects];
 
-  v6 = [(MODaemonUniverse *)self serviceCreationCondition];
-  [v6 broadcast];
+  serviceCreationCondition2 = [(MODaemonUniverse *)self serviceCreationCondition];
+  [serviceCreationCondition2 broadcast];
 
-  v7 = [(MODaemonUniverse *)self serviceCreationCondition];
-  [v7 unlock];
+  serviceCreationCondition3 = [(MODaemonUniverse *)self serviceCreationCondition];
+  [serviceCreationCondition3 unlock];
 
   v8.receiver = self;
   v8.super_class = MODaemonUniverse;
   [(MODaemonUniverse *)&v8 dealloc];
 }
 
-- (id)getService:(id)a3
+- (id)getService:(id)service
 {
-  v5 = a3;
-  v6 = [(MODaemonUniverse *)self serviceDictLock];
-  [v6 lock];
+  serviceCopy = service;
+  serviceDictLock = [(MODaemonUniverse *)self serviceDictLock];
+  [serviceDictLock lock];
 
-  v7 = [(MODaemonUniverse *)self universe];
-  v8 = [v7 valueForKey:v5];
+  universe = [(MODaemonUniverse *)self universe];
+  v8 = [universe valueForKey:serviceCopy];
 
-  v9 = [(MODaemonUniverse *)self serviceDictLock];
-  [v9 unlock];
+  serviceDictLock2 = [(MODaemonUniverse *)self serviceDictLock];
+  [serviceDictLock2 unlock];
 
   if (v8)
   {
@@ -510,8 +510,8 @@ BOOL __40__MODaemonUniverse_isExtendedLogEnabled__block_invoke(uint64_t a1)
       goto LABEL_8;
     }
 
-    v10 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+    serviceCreationCondition2 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
+    if (os_log_type_enabled(serviceCreationCondition2, OS_LOG_TYPE_DEBUG))
     {
       [MODaemonUniverse getService:];
     }
@@ -519,29 +519,29 @@ BOOL __40__MODaemonUniverse_isExtendedLogEnabled__block_invoke(uint64_t a1)
     goto LABEL_7;
   }
 
-  v11 = [(MODaemonUniverse *)self serviceCreationCondition];
-  [v11 lock];
+  serviceCreationCondition = [(MODaemonUniverse *)self serviceCreationCondition];
+  [serviceCreationCondition lock];
 
-  v12 = [(MODaemonUniverse *)self serviceDictLock];
-  [v12 lock];
+  serviceDictLock3 = [(MODaemonUniverse *)self serviceDictLock];
+  [serviceDictLock3 lock];
 
-  v13 = [(MODaemonUniverse *)self universe];
-  v8 = [v13 valueForKey:v5];
+  universe2 = [(MODaemonUniverse *)self universe];
+  v8 = [universe2 valueForKey:serviceCopy];
 
-  v14 = [(MODaemonUniverse *)self serviceDictLock];
-  [v14 unlock];
+  serviceDictLock4 = [(MODaemonUniverse *)self serviceDictLock];
+  [serviceDictLock4 unlock];
 
   if (v8)
   {
-    v10 = [(MODaemonUniverse *)self serviceCreationCondition];
-    [v10 unlock];
+    serviceCreationCondition2 = [(MODaemonUniverse *)self serviceCreationCondition];
+    [serviceCreationCondition2 unlock];
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  v16 = [(MODaemonUniverse *)self servicesBeingCreated];
-  v17 = [v16 containsObject:v5];
+  servicesBeingCreated = [(MODaemonUniverse *)self servicesBeingCreated];
+  v17 = [servicesBeingCreated containsObject:serviceCopy];
 
   if (v17)
   {
@@ -556,8 +556,8 @@ LABEL_7:
     }
 
     v20 = +[NSDate date];
-    v21 = [(MODaemonUniverse *)self servicesBeingCreated];
-    v22 = [v21 containsObject:v5];
+    servicesBeingCreated2 = [(MODaemonUniverse *)self servicesBeingCreated];
+    v22 = [servicesBeingCreated2 containsObject:serviceCopy];
 
     if (v22)
     {
@@ -565,8 +565,8 @@ LABEL_7:
       do
       {
         v24 = [NSDate dateWithTimeIntervalSinceNow:5.0];
-        v25 = [(MODaemonUniverse *)self serviceCreationCondition];
-        v26 = [v25 waitUntilDate:v24];
+        serviceCreationCondition3 = [(MODaemonUniverse *)self serviceCreationCondition];
+        v26 = [serviceCreationCondition3 waitUntilDate:v24];
 
         if ((v26 & 1) == 0)
         {
@@ -578,24 +578,24 @@ LABEL_7:
           v30 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
           if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
           {
-            v33 = [(MODaemonUniverse *)self servicesBeingCreated];
-            v34 = [v33 allObjects];
+            servicesBeingCreated3 = [(MODaemonUniverse *)self servicesBeingCreated];
+            allObjects = [servicesBeingCreated3 allObjects];
             *buf = 134218754;
             v59 = v23;
             v60 = 2112;
-            v61 = v5;
+            v61 = serviceCopy;
             v62 = 2048;
             v63 = v29;
             v64 = 2112;
-            v65 = v34;
+            v65 = allObjects;
             _os_log_error_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "Service creation timeout #%lu for [%@] - waited %.1f seconds. Services being created: %@", buf, 0x2Au);
 
             p_cache = (&OBJC_METACLASS___MOEngagementHistoryManager + 16);
           }
         }
 
-        v31 = [(MODaemonUniverse *)self servicesBeingCreated];
-        v32 = [v31 containsObject:v5];
+        servicesBeingCreated4 = [(MODaemonUniverse *)self servicesBeingCreated];
+        v32 = [servicesBeingCreated4 containsObject:serviceCopy];
       }
 
       while ((v32 & 1) != 0);
@@ -609,7 +609,7 @@ LABEL_7:
         if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412802;
-          v59 = v5;
+          v59 = serviceCopy;
           v60 = 2048;
           v61 = v50;
           v62 = 2048;
@@ -619,17 +619,17 @@ LABEL_7:
       }
     }
 
-    v52 = [(MODaemonUniverse *)self serviceCreationCondition];
-    [v52 unlock];
+    serviceCreationCondition4 = [(MODaemonUniverse *)self serviceCreationCondition];
+    [serviceCreationCondition4 unlock];
 
-    v53 = [(MODaemonUniverse *)self serviceDictLock];
-    [v53 lock];
+    serviceDictLock5 = [(MODaemonUniverse *)self serviceDictLock];
+    [serviceDictLock5 lock];
 
-    v54 = [(MODaemonUniverse *)self universe];
-    v55 = [v54 valueForKey:v5];
+    universe3 = [(MODaemonUniverse *)self universe];
+    v55 = [universe3 valueForKey:serviceCopy];
 
-    v56 = [(MODaemonUniverse *)self serviceDictLock];
-    [v56 unlock];
+    serviceDictLock6 = [(MODaemonUniverse *)self serviceDictLock];
+    [serviceDictLock6 unlock];
 
     if ([p_cache + 123 isExtendedLogEnabled])
     {
@@ -645,52 +645,52 @@ LABEL_7:
 
   else
   {
-    v35 = [(MODaemonUniverse *)self servicesBeingCreated];
-    [v35 addObject:v5];
+    servicesBeingCreated5 = [(MODaemonUniverse *)self servicesBeingCreated];
+    [servicesBeingCreated5 addObject:serviceCopy];
 
-    v36 = [(MODaemonUniverse *)self serviceCreationCondition];
-    [v36 unlock];
+    serviceCreationCondition5 = [(MODaemonUniverse *)self serviceCreationCondition];
+    [serviceCreationCondition5 unlock];
 
     v37 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v59 = v5;
+      v59 = serviceCopy;
       _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "No service named [%@] is initiated, look for it in classes", buf, 0xCu);
     }
 
-    v8 = [(MODaemonUniverse *)self createService:v5];
-    v38 = [(MODaemonUniverse *)self serviceDictLock];
-    [v38 lock];
+    v8 = [(MODaemonUniverse *)self createService:serviceCopy];
+    serviceDictLock7 = [(MODaemonUniverse *)self serviceDictLock];
+    [serviceDictLock7 lock];
 
     if (v8)
     {
-      v39 = [(MODaemonUniverse *)self universe];
-      [v39 setObject:v8 forKeyedSubscript:v5];
+      universe4 = [(MODaemonUniverse *)self universe];
+      [universe4 setObject:v8 forKeyedSubscript:serviceCopy];
 
       v40 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v59 = v5;
+        v59 = serviceCopy;
         _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "Successfully created and stored service [%@]", buf, 0xCu);
       }
     }
 
-    v41 = [(MODaemonUniverse *)self serviceDictLock];
-    [v41 unlock];
+    serviceDictLock8 = [(MODaemonUniverse *)self serviceDictLock];
+    [serviceDictLock8 unlock];
 
-    v42 = [(MODaemonUniverse *)self serviceCreationCondition];
-    [v42 lock];
+    serviceCreationCondition6 = [(MODaemonUniverse *)self serviceCreationCondition];
+    [serviceCreationCondition6 lock];
 
-    v43 = [(MODaemonUniverse *)self servicesBeingCreated];
-    [v43 removeObject:v5];
+    servicesBeingCreated6 = [(MODaemonUniverse *)self servicesBeingCreated];
+    [servicesBeingCreated6 removeObject:serviceCopy];
 
-    v44 = [(MODaemonUniverse *)self serviceCreationCondition];
-    [v44 broadcast];
+    serviceCreationCondition7 = [(MODaemonUniverse *)self serviceCreationCondition];
+    [serviceCreationCondition7 broadcast];
 
-    v45 = [(MODaemonUniverse *)self serviceCreationCondition];
-    [v45 unlock];
+    serviceCreationCondition8 = [(MODaemonUniverse *)self serviceCreationCondition];
+    [serviceCreationCondition8 unlock];
 
     if (!v8)
     {
@@ -701,13 +701,13 @@ LABEL_7:
       }
 
       v47 = +[NSAssertionHandler currentHandler];
-      [v47 handleFailureInMethod:a2 object:self file:@"MODaemonUniverse.m" lineNumber:162 description:{@"service named [%@] failed to be initiated (in %s:%d)", v5, "-[MODaemonUniverse getService:]", 162}];
+      [v47 handleFailureInMethod:a2 object:self file:@"MODaemonUniverse.m" lineNumber:162 description:{@"service named [%@] failed to be initiated (in %s:%d)", serviceCopy, "-[MODaemonUniverse getService:]", 162}];
     }
 
     if (+[MODaemonUniverse isExtendedLogEnabled])
     {
-      v10 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+      serviceCreationCondition2 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
+      if (os_log_type_enabled(serviceCreationCondition2, OS_LOG_TYPE_DEBUG))
       {
         [MODaemonUniverse getService:];
       }
@@ -721,10 +721,10 @@ LABEL_8:
   return v8;
 }
 
-- (id)createService:(id)a3
+- (id)createService:(id)service
 {
-  v5 = a3;
-  v6 = NSClassFromString(v5);
+  serviceCopy = service;
+  v6 = NSClassFromString(serviceCopy);
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
   v8 = v7;
   if (v6)
@@ -732,7 +732,7 @@ LABEL_8:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v17 = v5;
+      v17 = serviceCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Find corresponding class and will initiate the service [%@]", buf, 0xCu);
     }
 
@@ -746,7 +746,7 @@ LABEL_8:
       }
 
       v11 = +[NSAssertionHandler currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"MODaemonUniverse.m" lineNumber:189 description:@"service named [%@] does not conform the protocol. (in %s:%d)", v5, "[MODaemonUniverse createService:]", 189];
+      [v11 handleFailureInMethod:a2 object:self file:@"MODaemonUniverse.m" lineNumber:189 description:@"service named [%@] does not conform the protocol. (in %s:%d)", serviceCopy, "[MODaemonUniverse createService:]", 189];
       v10 = 0;
       goto LABEL_17;
     }
@@ -759,7 +759,7 @@ LABEL_8:
       if (v12)
       {
         *buf = 138412290;
-        v17 = v5;
+        v17 = serviceCopy;
         v13 = "successfully initiated the service [%@]";
 LABEL_16:
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, v13, buf, 0xCu);
@@ -769,7 +769,7 @@ LABEL_16:
     else if (v12)
     {
       *buf = 138412290;
-      v17 = v5;
+      v17 = serviceCopy;
       v13 = "failed to initiate the service [%@]";
       goto LABEL_16;
     }
@@ -785,39 +785,39 @@ LABEL_17:
   }
 
   v9 = +[NSAssertionHandler currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"MODaemonUniverse.m" lineNumber:176 description:{@"No class named [%@] (in %s:%d)", v5, "-[MODaemonUniverse createService:]", 176}];
+  [v9 handleFailureInMethod:a2 object:self file:@"MODaemonUniverse.m" lineNumber:176 description:{@"No class named [%@] (in %s:%d)", serviceCopy, "-[MODaemonUniverse createService:]", 176}];
   v10 = 0;
 LABEL_18:
 
   return v10;
 }
 
-- (void)setService:(id)a3 forName:(id)a4
+- (void)setService:(id)service forName:(id)name
 {
-  if (a4)
+  if (name)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(MODaemonUniverse *)self serviceDictLock];
-    [v8 lock];
+    nameCopy = name;
+    serviceCopy = service;
+    serviceDictLock = [(MODaemonUniverse *)self serviceDictLock];
+    [serviceDictLock lock];
 
-    v9 = [(MODaemonUniverse *)self universe];
-    [v9 setObject:v7 forKeyedSubscript:v6];
+    universe = [(MODaemonUniverse *)self universe];
+    [universe setObject:serviceCopy forKeyedSubscript:nameCopy];
 
-    v10 = [(MODaemonUniverse *)self serviceDictLock];
-    [v10 unlock];
+    serviceDictLock2 = [(MODaemonUniverse *)self serviceDictLock];
+    [serviceDictLock2 unlock];
 
-    v11 = [(MODaemonUniverse *)self serviceCreationCondition];
-    [v11 lock];
+    serviceCreationCondition = [(MODaemonUniverse *)self serviceCreationCondition];
+    [serviceCreationCondition lock];
 
-    v12 = [(MODaemonUniverse *)self servicesBeingCreated];
-    [v12 removeObject:v6];
+    servicesBeingCreated = [(MODaemonUniverse *)self servicesBeingCreated];
+    [servicesBeingCreated removeObject:nameCopy];
 
-    v13 = [(MODaemonUniverse *)self serviceCreationCondition];
-    [v13 broadcast];
+    serviceCreationCondition2 = [(MODaemonUniverse *)self serviceCreationCondition];
+    [serviceCreationCondition2 broadcast];
 
-    v14 = [(MODaemonUniverse *)self serviceCreationCondition];
-    [v14 unlock];
+    serviceCreationCondition3 = [(MODaemonUniverse *)self serviceCreationCondition];
+    [serviceCreationCondition3 unlock];
   }
 }
 

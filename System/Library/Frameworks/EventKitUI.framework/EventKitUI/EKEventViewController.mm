@@ -1,27 +1,27 @@
 @interface EKEventViewController
 - (CGSize)preferredContentSize;
-- (EKEventViewController)initWithIsReminder:(BOOL)a3;
-- (EKEventViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (EKEventViewController)initWithRemoteUI:(BOOL)a3;
+- (EKEventViewController)initWithIsReminder:(BOOL)reminder;
+- (EKEventViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (EKEventViewController)initWithRemoteUI:(BOOL)i;
 - (id)actionButtonSymbol;
 - (id)eventForDockedView;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)actionButtonTapped;
 - (void)commonInit;
 - (void)loadView;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation EKEventViewController
 
-- (EKEventViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (EKEventViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = EKEventViewController;
-  v4 = [(EKEventViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(EKEventViewController *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = [SwappableViewControllerImplementationFactory eventViewControllerImplAndIsReminder:0];
@@ -36,15 +36,15 @@
   return v4;
 }
 
-- (EKEventViewController)initWithIsReminder:(BOOL)a3
+- (EKEventViewController)initWithIsReminder:(BOOL)reminder
 {
-  v3 = a3;
+  reminderCopy = reminder;
   v8.receiver = self;
   v8.super_class = EKEventViewController;
   v4 = [(EKEventViewController *)&v8 initWithNibName:0 bundle:0];
   if (v4)
   {
-    v5 = [SwappableViewControllerImplementationFactory eventViewControllerImplAndIsReminder:v3];
+    v5 = [SwappableViewControllerImplementationFactory eventViewControllerImplAndIsReminder:reminderCopy];
     impl = v4->_impl;
     v4->_impl = v5;
 
@@ -56,15 +56,15 @@
   return v4;
 }
 
-- (EKEventViewController)initWithRemoteUI:(BOOL)a3
+- (EKEventViewController)initWithRemoteUI:(BOOL)i
 {
-  v3 = a3;
+  iCopy = i;
   v8.receiver = self;
   v8.super_class = EKEventViewController;
   v4 = [(EKEventViewController *)&v8 initWithNibName:0 bundle:0];
   if (v4)
   {
-    v5 = [SwappableViewControllerImplementationFactory eventViewControllerImplWithRemoteUI:v3 isReminder:0];
+    v5 = [SwappableViewControllerImplementationFactory eventViewControllerImplWithRemoteUI:iCopy isReminder:0];
     impl = v4->_impl;
     v4->_impl = v5;
 
@@ -95,37 +95,37 @@
   v28.receiver = self;
   v28.super_class = EKEventViewController;
   [(EKEventViewController *)&v28 loadView];
-  v3 = [(EKEventViewController *)self view];
-  v4 = [(EKEventViewControllerImpl *)self->_impl view];
-  [v3 addSubview:v4];
+  view = [(EKEventViewController *)self view];
+  view2 = [(EKEventViewControllerImpl *)self->_impl view];
+  [view addSubview:view2];
 
-  v5 = [(EKEventViewControllerImpl *)self->_impl view];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view3 = [(EKEventViewControllerImpl *)self->_impl view];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v18 = MEMORY[0x1E696ACD8];
-  v27 = [(EKEventViewControllerImpl *)self->_impl view];
-  v25 = [v27 leadingAnchor];
-  v26 = [(EKEventViewController *)self view];
-  v24 = [v26 leadingAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  view4 = [(EKEventViewControllerImpl *)self->_impl view];
+  leadingAnchor = [view4 leadingAnchor];
+  view5 = [(EKEventViewController *)self view];
+  leadingAnchor2 = [view5 leadingAnchor];
+  v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v29[0] = v23;
-  v22 = [(EKEventViewControllerImpl *)self->_impl view];
-  v20 = [v22 trailingAnchor];
-  v21 = [(EKEventViewController *)self view];
-  v19 = [v21 trailingAnchor];
-  v17 = [v20 constraintEqualToAnchor:v19];
+  view6 = [(EKEventViewControllerImpl *)self->_impl view];
+  trailingAnchor = [view6 trailingAnchor];
+  view7 = [(EKEventViewController *)self view];
+  trailingAnchor2 = [view7 trailingAnchor];
+  v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v29[1] = v17;
-  v16 = [(EKEventViewControllerImpl *)self->_impl view];
-  v6 = [v16 topAnchor];
-  v7 = [(EKEventViewController *)self view];
-  v8 = [v7 topAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8];
+  view8 = [(EKEventViewControllerImpl *)self->_impl view];
+  topAnchor = [view8 topAnchor];
+  view9 = [(EKEventViewController *)self view];
+  topAnchor2 = [view9 topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v29[2] = v9;
-  v10 = [(EKEventViewControllerImpl *)self->_impl view];
-  v11 = [v10 bottomAnchor];
-  v12 = [(EKEventViewController *)self view];
-  v13 = [v12 bottomAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  view10 = [(EKEventViewControllerImpl *)self->_impl view];
+  bottomAnchor = [view10 bottomAnchor];
+  view11 = [(EKEventViewController *)self view];
+  bottomAnchor2 = [view11 bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v29[3] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:4];
   [v18 activateConstraints:v15];
@@ -138,23 +138,23 @@
   [(EKEventViewController *)&v2 viewDidLoad];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v11.receiver = self;
   v11.super_class = EKEventViewController;
-  [(EKEventViewController *)&v11 viewIsAppearing:a3];
-  v4 = [MEMORY[0x1E69933F8] shared];
-  v5 = [v4 isCurrentProcessAnApplicationExtension];
+  [(EKEventViewController *)&v11 viewIsAppearing:appearing];
+  mEMORY[0x1E69933F8] = [MEMORY[0x1E69933F8] shared];
+  isCurrentProcessAnApplicationExtension = [mEMORY[0x1E69933F8] isCurrentProcessAnApplicationExtension];
 
-  if (v5)
+  if (isCurrentProcessAnApplicationExtension)
   {
     v6 = +[EKUIApplicationExtensionOverrides shared];
-    v7 = [v6 viewHierarchyOrOverride];
+    viewHierarchyOrOverride = [v6 viewHierarchyOrOverride];
 
-    v8 = [v7 ekui_tintColor];
-    v9 = [(EKEventViewController *)self view];
-    v10 = [v9 window];
-    [v10 setTintColor:v8];
+    ekui_tintColor = [viewHierarchyOrOverride ekui_tintColor];
+    view = [(EKEventViewController *)self view];
+    window = [view window];
+    [window setTintColor:ekui_tintColor];
   }
 
   if ([MEMORY[0x1E6992FA0] currentProcessIsFirstPartyCalendarApp])
@@ -166,11 +166,11 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = EKEventViewController;
-  [(EKEventViewController *)&v3 viewDidAppear:a3];
+  [(EKEventViewController *)&v3 viewDidAppear:appear];
   if ([*MEMORY[0x1E69DDA98] isRunningTest])
   {
     dispatch_async(MEMORY[0x1E69E96A0], &__block_literal_global_57);
@@ -191,13 +191,13 @@ void __39__EKEventViewController_viewDidAppear___block_invoke()
   return result;
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v9.receiver = self;
   v9.super_class = EKEventViewController;
-  v4 = a3;
-  [(EKEventViewController *)&v9 preferredContentSizeDidChangeForChildContentContainer:v4];
-  [v4 preferredContentSize];
+  containerCopy = container;
+  [(EKEventViewController *)&v9 preferredContentSizeDidChangeForChildContentContainer:containerCopy];
+  [containerCopy preferredContentSize];
   v6 = v5;
   v8 = v7;
 
@@ -206,8 +206,8 @@ void __39__EKEventViewController_viewDidAppear___block_invoke()
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(EKEventViewController *)self view];
-  IsRegularInViewHierarchy = EKUICurrentWidthSizeClassIsRegularInViewHierarchy(v2);
+  view = [(EKEventViewController *)self view];
+  IsRegularInViewHierarchy = EKUICurrentWidthSizeClassIsRegularInViewHierarchy(view);
 
   if (IsRegularInViewHierarchy)
   {

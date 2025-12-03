@@ -1,28 +1,28 @@
 @interface WatchTransferManager
-- (WatchTransferManager)initWithServiceRegistry:(id)a3;
+- (WatchTransferManager)initWithServiceRegistry:(id)registry;
 - (id)_retrieveWatchesStagedForTransferFromKeychain;
 - (id)retrieveWatchesStagedForTransfer;
 - (void)dealloc;
-- (void)stageDeviceToTransferForTransferWithType:(unsigned int)a3 device:(id)a4 completion:(id)a5;
-- (void)unstageDevice:(id)a3 completion:(id)a4;
+- (void)stageDeviceToTransferForTransferWithType:(unsigned int)type device:(id)device completion:(id)completion;
+- (void)unstageDevice:(id)device completion:(id)completion;
 @end
 
 @implementation WatchTransferManager
 
-- (WatchTransferManager)initWithServiceRegistry:(id)a3
+- (WatchTransferManager)initWithServiceRegistry:(id)registry
 {
-  v5 = a3;
+  registryCopy = registry;
   v12.receiver = self;
   v12.super_class = WatchTransferManager;
   v6 = [(WatchTransferManager *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serviceRegistry, a3);
+    objc_storeStrong(&v6->_serviceRegistry, registry);
     v9 = +[NRQueue registryDaemonQueue];
-    v10 = [v9 queue];
+    queue = [v9 queue];
     queue = v7->_queue;
-    v7->_queue = v10;
+    v7->_queue = queue;
 
     v7->_keychainViewHintToken = -1;
     sub_100103D5C(v7);
@@ -76,14 +76,14 @@
     }
   }
 
-  v6 = [(WatchTransferManager *)self _retrieveWatchesStagedForTransferFromKeychain];
+  _retrieveWatchesStagedForTransferFromKeychain = [(WatchTransferManager *)self _retrieveWatchesStagedForTransferFromKeychain];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000DE454;
   v10[3] = &unk_100179928;
   v11 = objc_alloc_init(NSMutableArray);
   v7 = v11;
-  [v6 enumerateObjectsUsingBlock:v10];
+  [_retrieveWatchesStagedForTransferFromKeychain enumerateObjectsUsingBlock:v10];
   v8 = [v7 copy];
 
   return v8;
@@ -106,28 +106,28 @@
   [(WatchTransferManager *)&v4 dealloc];
 }
 
-- (void)stageDeviceToTransferForTransferWithType:(unsigned int)a3 device:(id)a4 completion:(id)a5
+- (void)stageDeviceToTransferForTransferWithType:(unsigned int)type device:(id)device completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  deviceCopy = device;
+  completionCopy = completion;
   v10 = sub_100103FE8(&self->super.isa);
   sub_100021C84();
   v13[1] = 3221225472;
   v13[2] = sub_1000DDBB0;
   v13[3] = &unk_1001798D8;
-  v17 = a3;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
+  typeCopy = type;
+  v14 = deviceCopy;
+  selfCopy = self;
+  v16 = completionCopy;
+  v11 = completionCopy;
+  v12 = deviceCopy;
   [v10 grabRegistryWithReadBlockAsync:v13];
 }
 
-- (void)unstageDevice:(id)a3 completion:(id)a4
+- (void)unstageDevice:(id)device completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   v8 = nr_daemon_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -147,10 +147,10 @@
   v14[1] = 3221225472;
   v14[2] = sub_1000DF350;
   v14[3] = &unk_1001768D8;
-  v15 = v6;
-  v16 = v7;
-  v12 = v7;
-  v13 = v6;
+  v15 = deviceCopy;
+  v16 = completionCopy;
+  v12 = completionCopy;
+  v13 = deviceCopy;
   [v11 grabRegistryWithReadBlockAsync:v14];
 }
 

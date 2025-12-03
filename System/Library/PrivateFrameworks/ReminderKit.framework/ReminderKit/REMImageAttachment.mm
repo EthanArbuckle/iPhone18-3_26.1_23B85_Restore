@@ -1,47 +1,47 @@
 @interface REMImageAttachment
-- (BOOL)isEqual:(id)a3;
-- (REMImageAttachment)initWithCoder:(id)a3;
-- (REMImageAttachment)initWithObjectID:(id)a3 accountID:(id)a4 reminderID:(id)a5 UTI:(id)a6 fileSize:(unint64_t)a7 fileURL:(id)a8 data:(id)a9 width:(unint64_t)a10 height:(unint64_t)a11;
+- (BOOL)isEqual:(id)equal;
+- (REMImageAttachment)initWithCoder:(id)coder;
+- (REMImageAttachment)initWithObjectID:(id)d accountID:(id)iD reminderID:(id)reminderID UTI:(id)i fileSize:(unint64_t)size fileURL:(id)l data:(id)data width:(unint64_t)self0 height:(unint64_t)self1;
 - (id)_deepCopy;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMImageAttachment
 
-- (REMImageAttachment)initWithObjectID:(id)a3 accountID:(id)a4 reminderID:(id)a5 UTI:(id)a6 fileSize:(unint64_t)a7 fileURL:(id)a8 data:(id)a9 width:(unint64_t)a10 height:(unint64_t)a11
+- (REMImageAttachment)initWithObjectID:(id)d accountID:(id)iD reminderID:(id)reminderID UTI:(id)i fileSize:(unint64_t)size fileURL:(id)l data:(id)data width:(unint64_t)self0 height:(unint64_t)self1
 {
   v12.receiver = self;
   v12.super_class = REMImageAttachment;
-  result = [(REMFileAttachment *)&v12 initWithObjectID:a3 accountID:a4 reminderID:a5 UTI:a6 fileSize:a7 fileURL:a8 data:a9];
+  result = [(REMFileAttachment *)&v12 initWithObjectID:d accountID:iD reminderID:reminderID UTI:i fileSize:size fileURL:l data:data];
   if (result)
   {
-    result->_width = a10;
-    result->_height = a11;
+    result->_width = width;
+    result->_height = height;
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = REMImageAttachment;
-  v4 = a3;
-  [(REMFileAttachment *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:-[REMImageAttachment width](self forKey:{"width", v5.receiver, v5.super_class), @"width"}];
-  [v4 encodeInteger:-[REMImageAttachment height](self forKey:{"height"), @"height"}];
+  coderCopy = coder;
+  [(REMFileAttachment *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[REMImageAttachment width](self forKey:{"width", v5.receiver, v5.super_class), @"width"}];
+  [coderCopy encodeInteger:-[REMImageAttachment height](self forKey:{"height"), @"height"}];
 }
 
-- (REMImageAttachment)initWithCoder:(id)a3
+- (REMImageAttachment)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = REMImageAttachment;
-  v5 = [(REMFileAttachment *)&v7 initWithCoder:v4];
+  v5 = [(REMFileAttachment *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_width = [v4 decodeIntegerForKey:@"width"];
-    v5->_height = [v4 decodeIntegerForKey:@"height"];
+    v5->_width = [coderCopy decodeIntegerForKey:@"width"];
+    v5->_height = [coderCopy decodeIntegerForKey:@"height"];
   }
 
   return v5;
@@ -51,26 +51,26 @@
 {
   v5.receiver = self;
   v5.super_class = REMImageAttachment;
-  v3 = [(REMFileAttachment *)&v5 _deepCopy];
-  [v3 setWidth:{-[REMImageAttachment width](self, "width")}];
-  [v3 setHeight:{-[REMImageAttachment height](self, "height")}];
+  _deepCopy = [(REMFileAttachment *)&v5 _deepCopy];
+  [_deepCopy setWidth:{-[REMImageAttachment width](self, "width")}];
+  [_deepCopy setHeight:{-[REMImageAttachment height](self, "height")}];
 
-  return v3;
+  return _deepCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10.receiver = self;
   v10.super_class = REMImageAttachment;
-  if ([(REMFileAttachment *)&v10 isEqual:v4])
+  if ([(REMFileAttachment *)&v10 isEqual:equalCopy])
   {
-    v5 = v4;
-    v6 = [v5 width];
-    if (v6 == [(REMImageAttachment *)self width])
+    v5 = equalCopy;
+    width = [v5 width];
+    if (width == [(REMImageAttachment *)self width])
     {
-      v7 = [v5 height];
-      v8 = v7 == [(REMImageAttachment *)self height];
+      height = [v5 height];
+      v8 = height == [(REMImageAttachment *)self height];
     }
 
     else

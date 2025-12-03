@@ -22,7 +22,7 @@
   v5 = v4;
   v9 = v5;
   v10 = &v11;
-  [a1 enumerateObjectsUsingBlock:v8];
+  [self enumerateObjectsUsingBlock:v8];
   v6 = v12[5];
 
   _Block_object_dispose(&v11, 8);
@@ -33,7 +33,7 @@
 - (id)npkSafeObjectAtIndex:()NPK
 {
   v17 = *MEMORY[0x277D85DE8];
-  if ([a1 count] <= a3)
+  if ([self count] <= a3)
   {
     v6 = pk_General_log();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_ERROR);
@@ -46,9 +46,9 @@
         v11 = 134218498;
         v12 = a3;
         v13 = 2112;
-        v14 = a1;
+        selfCopy = self;
         v15 = 2048;
-        v16 = [a1 count];
+        v16 = [self count];
         _os_log_impl(&dword_25B300000, v8, OS_LOG_TYPE_ERROR, "Error: Tried to access invalid object at index %lu in array %@ with %lu elements", &v11, 0x20u);
       }
     }
@@ -58,7 +58,7 @@
 
   else
   {
-    v5 = [a1 objectAtIndex:a3];
+    v5 = [self objectAtIndex:a3];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -69,16 +69,16 @@
 - (id)npkComprehension:()NPK
 {
   v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __33__NSArray_NPK__npkComprehension___block_invoke;
   v13 = &unk_27994B598;
-  v14 = v5;
+  v14 = array;
   v15 = v4;
-  v6 = v5;
+  v6 = array;
   v7 = v4;
-  [a1 enumerateObjectsUsingBlock:&v10];
+  [self enumerateObjectsUsingBlock:&v10];
   v8 = [MEMORY[0x277CBEA60] arrayWithArray:{v6, v10, v11, v12, v13}];
 
   return v8;

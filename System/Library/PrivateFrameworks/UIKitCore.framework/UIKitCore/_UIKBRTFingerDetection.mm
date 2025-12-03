@@ -1,21 +1,21 @@
 @interface _UIKBRTFingerDetection
-- (BOOL)_linkTouchesInArray:(id)a3 withIndexes:(id)a4 opposingHandIndexes:(id)a5 unassignedIndexes:(id)a6 thumb:(id)a7;
-- (CGPoint)touchLocationForFingerId:(unint64_t)a3;
+- (BOOL)_linkTouchesInArray:(id)array withIndexes:(id)indexes opposingHandIndexes:(id)handIndexes unassignedIndexes:(id)unassignedIndexes thumb:(id)thumb;
+- (CGPoint)touchLocationForFingerId:(unint64_t)id;
 - (_UIKBRTFingerDetection)init;
-- (_UIKBRTFingerDetection)initWithParentView:(id)a3;
-- (id)fingerIdsRelatedToTouchWithIdentifier:(id)a3 sinceTimestamp:(double)a4 includeThumbs:(BOOL)a5;
-- (id)touchIdentifiersForFingerId:(unint64_t)a3;
-- (unint64_t)fingerIdForTouchWithIdentifier:(id)a3;
+- (_UIKBRTFingerDetection)initWithParentView:(id)view;
+- (id)fingerIdsRelatedToTouchWithIdentifier:(id)identifier sinceTimestamp:(double)timestamp includeThumbs:(BOOL)thumbs;
+- (id)touchIdentifiersForFingerId:(unint64_t)id;
+- (unint64_t)fingerIdForTouchWithIdentifier:(id)identifier;
 - (void)_updateFingerFeedback;
-- (void)_updateFingerFeedback:(id)a3;
-- (void)_updateTouchInfoForFingerID:(unint64_t)a3;
-- (void)_updateTouchInfoFromOutsideInWithArray:(id)a3 indexes:(id)a4 newIdentityDict:(id)a5 fakeIndex:(id)a6;
-- (void)addTouchLocation:(CGPoint)a3 withRadius:(double)a4 withTouchTime:(double)a5 withIdentifier:(id)a6;
+- (void)_updateFingerFeedback:(id)feedback;
+- (void)_updateTouchInfoForFingerID:(unint64_t)d;
+- (void)_updateTouchInfoFromOutsideInWithArray:(id)array indexes:(id)indexes newIdentityDict:(id)dict fakeIndex:(id)index;
+- (void)addTouchLocation:(CGPoint)location withRadius:(double)radius withTouchTime:(double)time withIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)moveTouchWithIdentifier:(id)a3 toLocation:(CGPoint)a4 withRadius:(double)a5 atTouchTime:(double)a6;
-- (void)removeTouchWithIdentifier:(id)a3 touchCancelled:(BOOL)a4;
+- (void)moveTouchWithIdentifier:(id)identifier toLocation:(CGPoint)location withRadius:(double)radius atTouchTime:(double)time;
+- (void)removeTouchWithIdentifier:(id)identifier touchCancelled:(BOOL)cancelled;
 - (void)reset;
-- (void)updateWithFCenter:(CGPoint)a3 jCenter:(CGPoint)a4 keySize:(CGSize)a5 rowOffsets:(id)a6 homeRowOffsetIndex:(int)a7;
+- (void)updateWithFCenter:(CGPoint)center jCenter:(CGPoint)jCenter keySize:(CGSize)size rowOffsets:(id)offsets homeRowOffsetIndex:(int)index;
 @end
 
 @implementation _UIKBRTFingerDetection
@@ -35,12 +35,12 @@
   return v2;
 }
 
-- (_UIKBRTFingerDetection)initWithParentView:(id)a3
+- (_UIKBRTFingerDetection)initWithParentView:(id)view
 {
   result = [(_UIKBRTFingerDetection *)self init];
   if (result)
   {
-    result->_feedbackParentView = a3;
+    result->_feedbackParentView = view;
   }
 
   return result;
@@ -64,94 +64,94 @@
   [(_UIKBRTFingerDetection *)self _updateTouchInfoForFingerID:0];
 }
 
-- (void)updateWithFCenter:(CGPoint)a3 jCenter:(CGPoint)a4 keySize:(CGSize)a5 rowOffsets:(id)a6 homeRowOffsetIndex:(int)a7
+- (void)updateWithFCenter:(CGPoint)center jCenter:(CGPoint)jCenter keySize:(CGSize)size rowOffsets:(id)offsets homeRowOffsetIndex:(int)index
 {
   v8.receiver = self;
   v8.super_class = _UIKBRTFingerDetection;
-  [(_UIKBRTKeyboardTouchObserver *)&v8 updateWithFCenter:a6 jCenter:*&a7 keySize:a3.x rowOffsets:a3.y homeRowOffsetIndex:a4.x, a4.y, a5.width, a5.height];
+  [(_UIKBRTKeyboardTouchObserver *)&v8 updateWithFCenter:offsets jCenter:*&index keySize:center.x rowOffsets:center.y homeRowOffsetIndex:jCenter.x, jCenter.y, size.width, size.height];
   [(NSMutableDictionary *)self->_touches removeAllObjects];
   [(_UIKBRTFingerDetection *)self _updateTouchInfoForFingerID:0];
 }
 
-- (void)addTouchLocation:(CGPoint)a3 withRadius:(double)a4 withTouchTime:(double)a5 withIdentifier:(id)a6
+- (void)addTouchLocation:(CGPoint)location withRadius:(double)radius withTouchTime:(double)time withIdentifier:(id)identifier
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   touches = self->_touches;
-  v13 = a6;
-  v14 = [(NSMutableDictionary *)touches objectForKey:v13];
+  identifierCopy = identifier;
+  v14 = [(NSMutableDictionary *)touches objectForKey:identifierCopy];
 
   if (v14)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"_UIKBRTFingerDetection.m" lineNumber:224 description:@"Touch already in dictionary!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIKBRTFingerDetection.m" lineNumber:224 description:@"Touch already in dictionary!"];
   }
 
   v16 = objc_alloc_init(_UIKBRTFingerInfo);
   [(_UIKBRTFingerInfo *)v16 setLocation:x, y];
-  [(_UIKBRTFingerInfo *)v16 setRadius:a4];
-  [(_UIKBRTFingerInfo *)v16 setLastSeenTimestamp:a5];
-  [(NSMutableDictionary *)self->_touches setObject:v16 forKey:v13];
+  [(_UIKBRTFingerInfo *)v16 setRadius:radius];
+  [(_UIKBRTFingerInfo *)v16 setLastSeenTimestamp:time];
+  [(NSMutableDictionary *)self->_touches setObject:v16 forKey:identifierCopy];
 
   [(_UIKBRTFingerDetection *)self _updateTouchInfoForFingerID:0];
 }
 
-- (void)moveTouchWithIdentifier:(id)a3 toLocation:(CGPoint)a4 withRadius:(double)a5 atTouchTime:(double)a6
+- (void)moveTouchWithIdentifier:(id)identifier toLocation:(CGPoint)location withRadius:(double)radius atTouchTime:(double)time
 {
-  y = a4.y;
-  x = a4.x;
-  v11 = [(NSMutableDictionary *)self->_touches objectForKey:a3];
+  y = location.y;
+  x = location.x;
+  v11 = [(NSMutableDictionary *)self->_touches objectForKey:identifier];
   if (v11)
   {
     v12 = v11;
     [v11 setLocation:{x, y}];
-    [v12 setRadius:a5];
-    [v12 setLastSeenTimestamp:a6];
+    [v12 setRadius:radius];
+    [v12 setLastSeenTimestamp:time];
     -[_UIKBRTFingerDetection _updateTouchInfoForFingerID:](self, "_updateTouchInfoForFingerID:", [v12 identity]);
     v11 = v12;
   }
 }
 
-- (void)removeTouchWithIdentifier:(id)a3 touchCancelled:(BOOL)a4
+- (void)removeTouchWithIdentifier:(id)identifier touchCancelled:(BOOL)cancelled
 {
-  v12 = a3;
+  identifierCopy = identifier;
   v5 = [(NSMutableDictionary *)self->_touches objectForKey:?];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 identity];
+    identity = [v5 identity];
     if ([(NSMutableDictionary *)self->_touches count]< 4)
     {
       goto LABEL_14;
     }
 
-    if (v7 != 9 && v7 != 6)
+    if (identity != 9 && identity != 6)
     {
       goto LABEL_14;
     }
 
     v9 = objc_alloc_init(_UIKBRTFakeFingerInfo);
-    [(_UIKBRTFingerInfo *)v9 setIdentity:v7];
+    [(_UIKBRTFingerInfo *)v9 setIdentity:identity];
     [(_UIKBRTFingerInfo *)v9 setUnknownSeen:0];
     [v6 radius];
     [(_UIKBRTFingerInfo *)v9 setRadius:?];
     [v6 location];
     [(_UIKBRTFingerInfo *)v9 setLocation:?];
-    v10 = [v6 identity];
-    if (v10 == 6)
+    identity2 = [v6 identity];
+    if (identity2 == 6)
     {
       v11 = &OBJC_IVAR____UIKBRTFingerDetection__fakeLeftIndex;
     }
 
     else
     {
-      if (v10 != 9)
+      if (identity2 != 9)
       {
 LABEL_13:
 
 LABEL_14:
-        [(NSMutableDictionary *)self->_touches removeObjectForKey:v12];
-        [(_UIKBRTFingerDetection *)self _updateTouchInfoForFingerID:v7];
+        [(NSMutableDictionary *)self->_touches removeObjectForKey:identifierCopy];
+        [(_UIKBRTFingerDetection *)self _updateTouchInfoForFingerID:identity];
         goto LABEL_15;
       }
 
@@ -165,24 +165,24 @@ LABEL_14:
 LABEL_15:
 }
 
-- (unint64_t)fingerIdForTouchWithIdentifier:(id)a3
+- (unint64_t)fingerIdForTouchWithIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_touches objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_touches objectForKey:identifier];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 identity];
+    identity = [v3 identity];
   }
 
   else
   {
-    v5 = 0;
+    identity = 0;
   }
 
-  return v5;
+  return identity;
 }
 
-- (id)touchIdentifiersForFingerId:(unint64_t)a3
+- (id)touchIdentifiersForFingerId:(unint64_t)id
 {
   v18 = 0;
   v19 = &v18;
@@ -190,7 +190,7 @@ LABEL_15:
   v21 = __Block_byref_object_copy__142;
   v22 = __Block_byref_object_dispose__142;
   v23 = 0;
-  if (a3 - 3 < 0xA)
+  if (id - 3 < 0xA)
   {
     touches = self->_touches;
     v17[0] = MEMORY[0x1E69E9820];
@@ -198,7 +198,7 @@ LABEL_15:
     v17[2] = __54___UIKBRTFingerDetection_touchIdentifiersForFingerId___block_invoke;
     v17[3] = &unk_1E71188D8;
     v17[4] = &v18;
-    v17[5] = a3;
+    v17[5] = id;
     [(NSMutableDictionary *)touches enumerateKeysAndObjectsUsingBlock:v17];
 LABEL_4:
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -207,7 +207,7 @@ LABEL_4:
     v14[1] = 3221225472;
     v14[2] = __54___UIKBRTFingerDetection_touchIdentifiersForFingerId___block_invoke_2;
     v14[3] = &unk_1E7118900;
-    v16 = a3;
+    idCopy = id;
     v8 = v6;
     v15 = v8;
     [(NSMutableDictionary *)v7 enumerateKeysAndObjectsUsingBlock:v14];
@@ -219,7 +219,7 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if (a3 < 3)
+  if (id < 3)
   {
     goto LABEL_4;
   }
@@ -232,7 +232,7 @@ LABEL_5:
   return v12;
 }
 
-- (CGPoint)touchLocationForFingerId:(unint64_t)a3
+- (CGPoint)touchLocationForFingerId:(unint64_t)id
 {
   v15 = 0;
   v16 = &v15;
@@ -240,7 +240,7 @@ LABEL_5:
   v18 = __Block_byref_object_copy__142;
   v19 = __Block_byref_object_dispose__142;
   v20 = 0;
-  if (a3 - 3 > 9)
+  if (id - 3 > 9)
   {
 LABEL_6:
     v6 = 0;
@@ -253,18 +253,18 @@ LABEL_6:
   v14[2] = __51___UIKBRTFingerDetection_touchLocationForFingerId___block_invoke;
   v14[3] = &unk_1E71188D8;
   v14[4] = &v15;
-  v14[5] = a3;
+  v14[5] = id;
   [(NSMutableDictionary *)touches enumerateKeysAndObjectsUsingBlock:v14];
   v6 = v16[5];
   if (!v6)
   {
-    if (a3 == 6)
+    if (id == 6)
     {
       v7 = &OBJC_IVAR____UIKBRTFingerDetection__fakeLeftIndex;
       goto LABEL_9;
     }
 
-    if (a3 == 9)
+    if (id == 9)
     {
       v7 = &OBJC_IVAR____UIKBRTFingerDetection__fakeRightIndex;
 LABEL_9:
@@ -289,10 +289,10 @@ LABEL_7:
   return result;
 }
 
-- (id)fingerIdsRelatedToTouchWithIdentifier:(id)a3 sinceTimestamp:(double)a4 includeThumbs:(BOOL)a5
+- (id)fingerIdsRelatedToTouchWithIdentifier:(id)identifier sinceTimestamp:(double)timestamp includeThumbs:(BOOL)thumbs
 {
-  v5 = a5;
-  v8 = [(NSMutableDictionary *)self->_touches objectForKey:a3];
+  thumbsCopy = thumbs;
+  v8 = [(NSMutableDictionary *)self->_touches objectForKey:identifier];
   v9 = v8;
   if (!v8)
   {
@@ -300,19 +300,19 @@ LABEL_7:
     goto LABEL_24;
   }
 
-  v10 = [v8 identity];
-  v11 = v10;
+  identity = [v8 identity];
+  v11 = identity;
   v12 = 0;
-  if (v10 > 6)
+  if (identity > 6)
   {
-    if ((v10 - 9) < 4)
+    if ((identity - 9) < 4)
     {
       goto LABEL_8;
     }
 
-    if (v10 == 8)
+    if (identity == 8)
     {
-      if (v5)
+      if (thumbsCopy)
       {
 LABEL_9:
         v13 = &unk_1EFE2CE08;
@@ -323,12 +323,12 @@ LABEL_9:
 
     else
     {
-      if (v10 != 7)
+      if (identity != 7)
       {
         goto LABEL_23;
       }
 
-      if (v5)
+      if (thumbsCopy)
       {
         goto LABEL_5;
       }
@@ -338,22 +338,22 @@ LABEL_9:
     goto LABEL_23;
   }
 
-  if (v10 <= 2)
+  if (identity <= 2)
   {
-    if (!v10)
+    if (!identity)
     {
       goto LABEL_24;
     }
 
-    if (v10 != 1)
+    if (identity != 1)
     {
-      if (v10 != 2)
+      if (identity != 2)
       {
         goto LABEL_23;
       }
 
 LABEL_8:
-      if (!v5)
+      if (!thumbsCopy)
       {
         v12 = &unk_1EFE2CE08;
         goto LABEL_23;
@@ -363,7 +363,7 @@ LABEL_8:
     }
   }
 
-  if (!v5)
+  if (!thumbsCopy)
   {
     v12 = &unk_1EFE2CDF0;
     goto LABEL_23;
@@ -375,17 +375,17 @@ LABEL_5:
 LABEL_10:
   v12 = [v13 arrayByAddingObject:v14];
 LABEL_23:
-  v15 = [(NSMutableDictionary *)self->_touches allValues];
+  allValues = [(NSMutableDictionary *)self->_touches allValues];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __93___UIKBRTFingerDetection_fingerIdsRelatedToTouchWithIdentifier_sinceTimestamp_includeThumbs___block_invoke;
   v22[3] = &unk_1E7118928;
   v23 = v12;
   v24 = v11;
-  v25 = a4;
+  timestampCopy = timestamp;
   v16 = v12;
-  v17 = [v15 indexesOfObjectsPassingTest:v22];
-  v18 = [v15 objectsAtIndexes:v17];
+  v17 = [allValues indexesOfObjectsPassingTest:v22];
+  v18 = [allValues objectsAtIndexes:v17];
 
   v19 = MEMORY[0x1E695DFD8];
   v20 = [v18 valueForKey:@"identity"];
@@ -396,16 +396,16 @@ LABEL_24:
   return v12;
 }
 
-- (BOOL)_linkTouchesInArray:(id)a3 withIndexes:(id)a4 opposingHandIndexes:(id)a5 unassignedIndexes:(id)a6 thumb:(id)a7
+- (BOOL)_linkTouchesInArray:(id)array withIndexes:(id)indexes opposingHandIndexes:(id)handIndexes unassignedIndexes:(id)unassignedIndexes thumb:(id)thumb
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  arrayCopy = array;
+  indexesCopy = indexes;
+  handIndexesCopy = handIndexes;
+  unassignedIndexesCopy = unassignedIndexes;
+  thumbCopy = thumb;
   [(_UIKBRTKeyboardTouchObserver *)self keySize];
   v18 = v17;
-  if ([v13 count] >= 2)
+  if ([indexesCopy count] >= 2)
   {
     v45 = 0;
     v46 = &v45;
@@ -415,8 +415,8 @@ LABEL_24:
     v44[1] = v44;
     v44[2] = 0x2020000000;
     v44[3] = 0;
-    v19 = [v13 indexSet];
-    v20 = [v12 objectsAtIndexes:v19];
+    indexSet = [indexesCopy indexSet];
+    v20 = [arrayCopy objectsAtIndexes:indexSet];
     v43[0] = MEMORY[0x1E69E9820];
     v43[1] = 3221225472;
     v43[2] = __102___UIKBRTFingerDetection__linkTouchesInArray_withIndexes_opposingHandIndexes_unassignedIndexes_thumb___block_invoke;
@@ -426,19 +426,19 @@ LABEL_24:
     [v20 enumerateObjectsUsingBlock:v43];
 
     v21 = v46[3];
-    v18 = v21 / ([v13 count] - 1);
+    v18 = v21 / ([indexesCopy count] - 1);
     _Block_object_dispose(v44, 8);
     _Block_object_dispose(&v45, 8);
   }
 
-  if ([v13 count])
+  if ([indexesCopy count])
   {
-    v22 = [v12 objectAtIndex:{objc_msgSend(v13, "beginningIndex")}];
+    v22 = [arrayCopy objectAtIndex:{objc_msgSend(indexesCopy, "beginningIndex")}];
     [v22 location];
     v24 = v23;
   }
 
-  else if ([v15 reversed])
+  else if ([unassignedIndexesCopy reversed])
   {
     v24 = 0.0;
   }
@@ -448,27 +448,27 @@ LABEL_24:
     v24 = 1.79769313e308;
   }
 
-  v25 = [v15 count];
-  if (v25 + [v14 count])
+  v25 = [unassignedIndexesCopy count];
+  if (v25 + [handIndexesCopy count])
   {
-    v28 = [v15 count];
-    if (v28 + [v14 count])
+    v28 = [unassignedIndexesCopy count];
+    if (v28 + [handIndexesCopy count])
     {
       v29 = 0;
       v30 = v18 * 0.5;
-      while ([v13 count] <= 3)
+      while ([indexesCopy count] <= 3)
       {
-        if ([v15 count])
+        if ([unassignedIndexesCopy count])
         {
-          v31 = [v13 count];
-          v32 = [v15 endingIndex];
+          v31 = [indexesCopy count];
+          endingIndex = [unassignedIndexesCopy endingIndex];
           if (v31)
           {
-            v33 = [v12 objectAtIndex:v32];
+            v33 = [arrayCopy objectAtIndex:endingIndex];
             [v33 location];
             v35 = v34;
             v36 = vabdd_f64(v24, v34);
-            if ([v13 count] == 3)
+            if ([indexesCopy count] == 3)
             {
               v37 = 2.0;
             }
@@ -483,15 +483,15 @@ LABEL_24:
               goto LABEL_34;
             }
 
-            if ([v13 count] != 1)
+            if ([indexesCopy count] != 1)
             {
-              v38 = v36 + v18 * ([v13 count] - 1);
-              v36 = v38 / [v13 count];
+              v38 = v36 + v18 * ([indexesCopy count] - 1);
+              v36 = v38 / [indexesCopy count];
             }
 
-            [v13 addIndex:{objc_msgSend(v15, "endingIndex")}];
-            [v15 removeIndex:{objc_msgSend(v15, "endingIndex")}];
-            if (v16)
+            [indexesCopy addIndex:{objc_msgSend(unassignedIndexesCopy, "endingIndex")}];
+            [unassignedIndexesCopy removeIndex:{objc_msgSend(unassignedIndexesCopy, "endingIndex")}];
+            if (thumbCopy)
             {
 LABEL_34:
 
@@ -503,9 +503,9 @@ LABEL_34:
 
           else
           {
-            [v13 addIndex:v32];
-            [v15 removeIndex:{objc_msgSend(v15, "endingIndex")}];
-            v33 = [v12 objectAtIndex:{objc_msgSend(v13, "beginningIndex")}];
+            [indexesCopy addIndex:endingIndex];
+            [unassignedIndexesCopy removeIndex:{objc_msgSend(unassignedIndexesCopy, "endingIndex")}];
+            v33 = [arrayCopy objectAtIndex:{objc_msgSend(indexesCopy, "beginningIndex")}];
             [v33 location];
             v35 = v39;
           }
@@ -513,9 +513,9 @@ LABEL_34:
           v24 = v35;
         }
 
-        if ([v15 count] || !objc_msgSend(v14, "count"))
+        if ([unassignedIndexesCopy count] || !objc_msgSend(handIndexesCopy, "count"))
         {
-          if (![v15 count])
+          if (![unassignedIndexesCopy count])
           {
             break;
           }
@@ -523,14 +523,14 @@ LABEL_34:
 
         else
         {
-          [v15 addIndex:{objc_msgSend(v14, "endingIndex")}];
-          [v14 removeIndex:{objc_msgSend(v14, "endingIndex")}];
+          [unassignedIndexesCopy addIndex:{objc_msgSend(handIndexesCopy, "endingIndex")}];
+          [handIndexesCopy removeIndex:{objc_msgSend(handIndexesCopy, "endingIndex")}];
           ++v29;
           v30 = v30 * 0.75;
         }
 
-        v40 = [v15 count];
-        if (!(v40 + [v14 count]))
+        v40 = [unassignedIndexesCopy count];
+        if (!(v40 + [handIndexesCopy count]))
         {
           break;
         }
@@ -542,16 +542,16 @@ LABEL_34:
       v29 = 0;
     }
 
-    v26 = [v15 count] < v29;
-    if ([v15 count] && v29)
+    v26 = [unassignedIndexesCopy count] < v29;
+    if ([unassignedIndexesCopy count] && v29)
     {
       v41 = v29 - 1;
       do
       {
         v42 = v41;
-        [v14 addIndex:{objc_msgSend(v15, "beginningIndex")}];
-        [v15 removeIndex:{objc_msgSend(v15, "beginningIndex")}];
-        if (![v15 count])
+        [handIndexesCopy addIndex:{objc_msgSend(unassignedIndexesCopy, "beginningIndex")}];
+        [unassignedIndexesCopy removeIndex:{objc_msgSend(unassignedIndexesCopy, "beginningIndex")}];
+        if (![unassignedIndexesCopy count])
         {
           break;
         }
@@ -571,15 +571,15 @@ LABEL_34:
   return v26;
 }
 
-- (void)_updateTouchInfoFromOutsideInWithArray:(id)a3 indexes:(id)a4 newIdentityDict:(id)a5 fakeIndex:(id)a6
+- (void)_updateTouchInfoFromOutsideInWithArray:(id)array indexes:(id)indexes newIdentityDict:(id)dict fakeIndex:(id)index
 {
   v129[5] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 reversed];
-  if (v13)
+  arrayCopy = array;
+  indexesCopy = indexes;
+  dictCopy = dict;
+  indexCopy = index;
+  reversed = [indexesCopy reversed];
+  if (reversed)
   {
     v14 = 2;
   }
@@ -589,7 +589,7 @@ LABEL_34:
     v14 = 1;
   }
 
-  if (v13)
+  if (reversed)
   {
     v15 = 12;
   }
@@ -600,7 +600,7 @@ LABEL_34:
   }
 
   v16 = 4;
-  if (v13)
+  if (reversed)
   {
     v16 = 11;
   }
@@ -608,13 +608,13 @@ LABEL_34:
   v104 = v16;
   v105 = v15;
   v17 = 5;
-  if (v13)
+  if (reversed)
   {
     v17 = 10;
   }
 
   v102 = v17;
-  if (v13)
+  if (reversed)
   {
     v18 = 9;
   }
@@ -624,7 +624,7 @@ LABEL_34:
     v18 = 6;
   }
 
-  if (v13)
+  if (reversed)
   {
     v19 = 8;
   }
@@ -634,33 +634,33 @@ LABEL_34:
     v19 = 7;
   }
 
-  v20 = [v10 indexSet];
-  v21 = [v9 objectsAtIndexes:v20];
+  indexSet = [indexesCopy indexSet];
+  v21 = [arrayCopy objectsAtIndexes:indexSet];
 
   v106 = v18;
-  if ([v10 reversed])
+  if ([indexesCopy reversed])
   {
-    v22 = [v21 reverseObjectEnumerator];
-    v23 = [v22 allObjects];
+    reverseObjectEnumerator = [v21 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
 
-    v21 = v23;
+    v21 = allObjects;
   }
 
   v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v14];
-  v25 = [v11 objectForKey:v24];
+  v25 = [dictCopy objectForKey:v24];
 
-  v26 = [v11 objectForKey:&unk_1EFE31F90];
-  v27 = [v10 indexSet];
-  [v26 removeIndexes:v27];
+  v26 = [dictCopy objectForKey:&unk_1EFE31F90];
+  indexSet2 = [indexesCopy indexSet];
+  [v26 removeIndexes:indexSet2];
 
-  v28 = [v10 indexSet];
+  indexSet3 = [indexesCopy indexSet];
   v107 = v25;
-  [v25 addIndexes:v28];
+  [v25 addIndexes:indexSet3];
 
-  v108 = v12;
-  if ([v10 count] >= 4)
+  v108 = indexCopy;
+  if ([indexesCopy count] >= 4)
   {
-    v103 = v9;
+    v103 = arrayCopy;
     v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v105];
     v129[0] = v29;
     v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v104];
@@ -674,18 +674,18 @@ LABEL_34:
     v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v129 count:5];
 
 LABEL_64:
-    v9 = v103;
+    arrayCopy = v103;
     goto LABEL_65;
   }
 
-  if ([v10 count] == 3)
+  if ([indexesCopy count] == 3)
   {
-    v103 = v9;
+    v103 = arrayCopy;
     v35 = [v21 objectAtIndex:0];
     v30 = [v21 objectAtIndex:1];
     v31 = [v21 objectAtIndex:2];
     v101 = v35;
-    if (v12 && ([v12 unknownSeen] & 1) == 0)
+    if (indexCopy && ([indexCopy unknownSeen] & 1) == 0)
     {
       v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v105];
       v128 = v32;
@@ -806,9 +806,9 @@ LABEL_57:
     goto LABEL_64;
   }
 
-  if ([v10 count] == 2)
+  if ([indexesCopy count] == 2)
   {
-    v103 = v9;
+    v103 = arrayCopy;
     v29 = [v21 objectAtIndex:0];
     v30 = [v21 objectAtIndex:1];
     [v30 radius];
@@ -903,23 +903,23 @@ LABEL_65:
   v109[2] = __99___UIKBRTFingerDetection__updateTouchInfoFromOutsideInWithArray_indexes_newIdentityDict_fakeIndex___block_invoke;
   v109[3] = &unk_1E7118978;
   v110 = v34;
-  v111 = v9;
-  v112 = v11;
+  v111 = arrayCopy;
+  v112 = dictCopy;
   v113 = v107;
   v97 = v107;
-  v98 = v11;
-  v99 = v9;
+  v98 = dictCopy;
+  v99 = arrayCopy;
   v100 = v34;
   [v21 enumerateObjectsUsingBlock:v109];
 }
 
-- (void)_updateTouchInfoForFingerID:(unint64_t)a3
+- (void)_updateTouchInfoForFingerID:(unint64_t)d
 {
   if ([(NSMutableDictionary *)self->_touches count])
   {
     *&v235.origin.y = self;
-    v5 = [(NSMutableDictionary *)self->_touches allValues];
-    v6 = [v5 mutableCopy];
+    allValues = [(NSMutableDictionary *)self->_touches allValues];
+    v6 = [allValues mutableCopy];
 
     [v6 sortUsingComparator:&__block_literal_global_411];
     v266 = 0;
@@ -947,8 +947,8 @@ LABEL_65:
     _Block_object_dispose(&v266, 8);
     v11 = objc_alloc_init(MEMORY[0x1E696AC90]);
     y = v235.origin.y;
-    v13 = [*&v235.origin.y rowOffsets];
-    v14 = [v13 count];
+    rowOffsets = [*&v235.origin.y rowOffsets];
+    v14 = [rowOffsets count];
     v15 = v14 - [*&v235.origin.y homeRowOffsetIndex];
 
     if (v15 < 2)
@@ -988,14 +988,14 @@ LABEL_10:
     {
       if ([v11 count] == 1)
       {
-        v22 = [v11 firstIndex];
-        [v6 objectAtIndex:v22];
+        firstIndex = [v11 firstIndex];
+        [v6 objectAtIndex:firstIndex];
         v23 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
         [*&v23 location];
         v25 = v24;
-        if (v22)
+        if (firstIndex)
         {
-          v26 = [v6 objectAtIndex:v22 - 1];
+          v26 = [v6 objectAtIndex:firstIndex - 1];
           [v26 location];
           v28 = v25 - v27;
         }
@@ -1005,7 +1005,7 @@ LABEL_10:
           v28 = 1.79769313e308;
         }
 
-        v35 = v22 + 1;
+        v35 = firstIndex + 1;
         if (v35 >= [v6 count])
         {
           v38 = 1.79769313e308;
@@ -1210,7 +1210,7 @@ LABEL_141:
       return;
     }
 
-    rect1_24 = a3;
+    rect1_24 = d;
     v234 = v30;
     v44 = objc_alloc_init(_UIKBRTMutableOrderIndexSet);
     v45 = objc_alloc_init(_UIKBRTMutableOrderIndexSet);
@@ -1275,11 +1275,11 @@ LABEL_141:
     }
 
     v56 = -[_UIKBRTMutableOrderIndexSet initWithIndexesInRange:]([_UIKBRTMutableOrderIndexSet alloc], "initWithIndexesInRange:", 0, [v6 count]);
-    v57 = [(_UIKBRTMutableOrderIndexSet *)v44 indexSet];
-    [(_UIKBRTMutableOrderIndexSet *)v56 removeIndexes:v57];
+    indexSet = [(_UIKBRTMutableOrderIndexSet *)v44 indexSet];
+    [(_UIKBRTMutableOrderIndexSet *)v56 removeIndexes:indexSet];
 
-    v58 = [(_UIKBRTMutableOrderIndexSet *)v45 indexSet];
-    [(_UIKBRTMutableOrderIndexSet *)v56 removeIndexes:v58];
+    indexSet2 = [(_UIKBRTMutableOrderIndexSet *)v45 indexSet];
+    [(_UIKBRTMutableOrderIndexSet *)v56 removeIndexes:indexSet2];
 
     if (![(_UIKBRTMutableOrderIndexSet *)v56 count])
     {
@@ -1416,9 +1416,9 @@ LABEL_55:
               {
 LABEL_77:
                 [(_UIKBRTMutableOrderIndexSet *)v44 addIndex:[(_UIKBRTMutableOrderIndexSet *)v56 lowestIndex]];
-                v84 = [(_UIKBRTMutableOrderIndexSet *)v56 lowestIndex];
+                lowestIndex = [(_UIKBRTMutableOrderIndexSet *)v56 lowestIndex];
 LABEL_82:
-                [(_UIKBRTMutableOrderIndexSet *)v56 removeIndex:v84];
+                [(_UIKBRTMutableOrderIndexSet *)v56 removeIndex:lowestIndex];
                 goto LABEL_83;
               }
 
@@ -1429,7 +1429,7 @@ LABEL_82:
 
 LABEL_81:
               [(_UIKBRTMutableOrderIndexSet *)v45 addIndex:[(_UIKBRTMutableOrderIndexSet *)v56 highestIndex]];
-              v84 = [(_UIKBRTMutableOrderIndexSet *)v56 highestIndex];
+              lowestIndex = [(_UIKBRTMutableOrderIndexSet *)v56 highestIndex];
               goto LABEL_82;
             }
           }
@@ -1522,8 +1522,8 @@ LABEL_102:
 
               else
               {
-                v118 = [(_UIKBRTMutableOrderIndexSet *)v45 indexSet];
-                v119 = [v6 objectsAtIndexes:v118];
+                indexSet3 = [(_UIKBRTMutableOrderIndexSet *)v45 indexSet];
+                v119 = [v6 objectsAtIndexes:indexSet3];
 
                 v120 = [v119 objectAtIndex:0];
                 rect1a = [v119 objectAtIndex:1];
@@ -1722,8 +1722,8 @@ LABEL_118:
 
           else
           {
-            v95 = [(_UIKBRTMutableOrderIndexSet *)v44 indexSet];
-            v96 = [v6 objectsAtIndexes:v95];
+            indexSet4 = [(_UIKBRTMutableOrderIndexSet *)v44 indexSet];
+            v96 = [v6 objectsAtIndexes:indexSet4];
 
             v221 = [v96 objectAtIndex:0];
             rect1 = [v96 objectAtIndex:1];
@@ -1839,8 +1839,8 @@ LABEL_4:
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v6 = [(NSMutableDictionary *)self->_touches allValues];
-      v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      allValues = [(NSMutableDictionary *)self->_touches allValues];
+      v7 = [allValues countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v7)
       {
         v8 = v7;
@@ -1853,7 +1853,7 @@ LABEL_4:
           {
             if (*v24 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(allValues);
             }
 
             v12 = *(*(&v23 + 1) + 8 * v10);
@@ -1866,7 +1866,7 @@ LABEL_4:
           }
 
           while (v8 != v10);
-          v8 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+          v8 = [allValues countByEnumeratingWithState:&v23 objects:v27 count:16];
         }
 
         while (v8);
@@ -1899,8 +1899,8 @@ LABEL_4:
     [(UIView *)self->_feedbackParentView bounds];
     [(UIView *)self->_feedbackView setFrame:?];
     [(UIView *)self->_feedbackParentView bringSubviewToFront:self->_feedbackView];
-    v21 = [(NSMutableDictionary *)self->_touches allValues];
-    v22 = [v21 mutableCopy];
+    allValues2 = [(NSMutableDictionary *)self->_touches allValues];
+    v22 = [allValues2 mutableCopy];
 
     if (self->_fakeLeftIndex)
     {
@@ -1916,18 +1916,18 @@ LABEL_4:
   }
 }
 
-- (void)_updateFingerFeedback:(id)a3
+- (void)_updateFingerFeedback:(id)feedback
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIView *)self->_feedbackView subviews];
-  v6 = [v5 mutableCopy];
+  feedbackCopy = feedback;
+  subviews = [(UIView *)self->_feedbackView subviews];
+  v6 = [subviews mutableCopy];
 
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v7 = v4;
+  v7 = feedbackCopy;
   v8 = [v7 countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v8)
   {

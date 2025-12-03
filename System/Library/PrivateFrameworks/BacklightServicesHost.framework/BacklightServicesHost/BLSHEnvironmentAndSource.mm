@@ -1,21 +1,21 @@
 @interface BLSHEnvironmentAndSource
-- (BLSHEnvironmentAndSource)initWithEnvironment:(id)a3 environmentSource:(id)a4;
+- (BLSHEnvironmentAndSource)initWithEnvironment:(id)environment environmentSource:(id)source;
 @end
 
 @implementation BLSHEnvironmentAndSource
 
-- (BLSHEnvironmentAndSource)initWithEnvironment:(id)a3 environmentSource:(id)a4
+- (BLSHEnvironmentAndSource)initWithEnvironment:(id)environment environmentSource:(id)source
 {
-  v7 = a3;
-  v8 = a4;
+  environmentCopy = environment;
+  sourceCopy = source;
   v12.receiver = self;
   v12.super_class = BLSHEnvironmentAndSource;
   v9 = [(BLSHEnvironmentAndSource *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_environment, a3);
-    objc_storeStrong(&v10->_environmentSource, a4);
+    objc_storeStrong(&v9->_environment, environment);
+    objc_storeStrong(&v10->_environmentSource, source);
   }
 
   return v10;

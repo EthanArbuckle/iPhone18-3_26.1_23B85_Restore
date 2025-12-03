@@ -1,27 +1,27 @@
 @interface MultilineStackView
-- (BOOL)_justifiedLayoutWouldCrushWhenAddingView:(id)a3 toRowViews:(id)a4 availableRowWidth:(double)a5;
+- (BOOL)_justifiedLayoutWouldCrushWhenAddingView:(id)view toRowViews:(id)views availableRowWidth:(double)width;
 - (CGSize)intrinsicContentSize;
-- (MultilineStackView)initWithHorizontalArrangement:(unint64_t)a3 verticalArrangement:(unint64_t)a4;
+- (MultilineStackView)initWithHorizontalArrangement:(unint64_t)arrangement verticalArrangement:(unint64_t)verticalArrangement;
 - (UIEdgeInsets)edgeInsets;
-- (id)_appendRowViewWithViews:(id)a3 topAnchor:(id)a4 topInset:(double)a5 rowContentWidth:(double)a6 availableRowWidth:(double)a7 rowHeight:(double)a8 constraints:(id)a9;
-- (void)_computeJustifiedRowWithViews:(id)a3 itemWidth:(double)a4 rowView:(id)a5 constraints:(id)a6;
+- (id)_appendRowViewWithViews:(id)views topAnchor:(id)anchor topInset:(double)inset rowContentWidth:(double)width availableRowWidth:(double)rowWidth rowHeight:(double)height constraints:(id)constraints;
+- (void)_computeJustifiedRowWithViews:(id)views itemWidth:(double)width rowView:(id)view constraints:(id)constraints;
 - (void)_computeLayout;
 - (void)_computeLayoutIfNeeded;
-- (void)_computeLeadingRowWithViews:(id)a3 rowView:(id)a4 constraints:(id)a5;
-- (void)_computeMaximumRowWithViews:(id)a3 interItemSpace:(double)a4 rowView:(id)a5 constraints:(id)a6;
-- (void)_computeTrailingRowWithViews:(id)a3 rowView:(id)a4 constraints:(id)a5;
-- (void)_prepareSubviewsForReuse:(id)a3;
-- (void)addArrangedSubview:(id)a3;
-- (void)insertArrangedSubview:(id)a3 atIndex:(unint64_t)a4;
-- (void)removeArrangedSubview:(id)a3;
-- (void)setArrangedSubviews:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setCalculatedHeight:(double)a3;
-- (void)setEdgeInsets:(UIEdgeInsets)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setInterItemHorizontalPadding:(double)a3;
-- (void)setInterItemVerticalPadding:(double)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)_computeLeadingRowWithViews:(id)views rowView:(id)view constraints:(id)constraints;
+- (void)_computeMaximumRowWithViews:(id)views interItemSpace:(double)space rowView:(id)view constraints:(id)constraints;
+- (void)_computeTrailingRowWithViews:(id)views rowView:(id)view constraints:(id)constraints;
+- (void)_prepareSubviewsForReuse:(id)reuse;
+- (void)addArrangedSubview:(id)subview;
+- (void)insertArrangedSubview:(id)subview atIndex:(unint64_t)index;
+- (void)removeArrangedSubview:(id)subview;
+- (void)setArrangedSubviews:(id)subviews;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCalculatedHeight:(double)height;
+- (void)setEdgeInsets:(UIEdgeInsets)insets;
+- (void)setFrame:(CGRect)frame;
+- (void)setInterItemHorizontalPadding:(double)padding;
+- (void)setInterItemVerticalPadding:(double)padding;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MultilineStackView
@@ -39,362 +39,362 @@
   return result;
 }
 
-- (void)_computeJustifiedRowWithViews:(id)a3 itemWidth:(double)a4 rowView:(id)a5 constraints:(id)a6
+- (void)_computeJustifiedRowWithViews:(id)views itemWidth:(double)width rowView:(id)view constraints:(id)constraints
 {
-  v40 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v10 leadingAnchor];
-  if ([v40 count])
+  viewsCopy = views;
+  viewCopy = view;
+  constraintsCopy = constraints;
+  leadingAnchor = [viewCopy leadingAnchor];
+  if ([viewsCopy count])
   {
     v13 = 0;
     v14 = 0.0;
     v15 = @"MapsWidthConstraint";
     while (1)
     {
-      v16 = [v40 objectAtIndexedSubscript:v13];
-      [v10 addSubview:v16];
-      v17 = [v16 leadingAnchor];
-      v18 = [v17 constraintEqualToAnchor:v12 constant:v14];
-      [v11 addObject:v18];
+      v16 = [viewsCopy objectAtIndexedSubscript:v13];
+      [viewCopy addSubview:v16];
+      leadingAnchor2 = [v16 leadingAnchor];
+      v18 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor constant:v14];
+      [constraintsCopy addObject:v18];
 
-      v19 = [(MultilineStackView *)self verticalArrangement];
-      if (v19 == 2)
+      verticalArrangement = [(MultilineStackView *)self verticalArrangement];
+      if (verticalArrangement == 2)
       {
-        v22 = [v16 topAnchor];
-        v23 = [v10 topAnchor];
-        v24 = [v22 constraintEqualToAnchor:v23];
-        [v11 addObject:v24];
+        topAnchor = [v16 topAnchor];
+        topAnchor2 = [viewCopy topAnchor];
+        v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
+        [constraintsCopy addObject:v24];
 
-        v20 = [v16 bottomAnchor];
-        v21 = [v10 bottomAnchor];
+        bottomAnchor = [v16 bottomAnchor];
+        bottomAnchor2 = [viewCopy bottomAnchor];
         goto LABEL_9;
       }
 
-      if (v19 == 1)
+      if (verticalArrangement == 1)
       {
         break;
       }
 
-      if (!v19)
+      if (!verticalArrangement)
       {
-        v20 = [v16 topAnchor];
-        v21 = [v10 topAnchor];
+        bottomAnchor = [v16 topAnchor];
+        bottomAnchor2 = [viewCopy topAnchor];
 LABEL_9:
-        v25 = v21;
-        v26 = [v20 constraintEqualToAnchor:v21];
-        [v11 addObject:v26];
+        v25 = bottomAnchor2;
+        v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+        [constraintsCopy addObject:v26];
       }
 
-      v27 = [v16 widthAnchor];
-      v28 = [v27 constraintEqualToConstant:a4];
+      widthAnchor = [v16 widthAnchor];
+      v28 = [widthAnchor constraintEqualToConstant:width];
 
       [v28 setIdentifier:v15];
-      [v11 addObject:v28];
-      if (v13 == [v40 count] - 1)
+      [constraintsCopy addObject:v28];
+      if (v13 == [viewsCopy count] - 1)
       {
-        v29 = [v16 trailingAnchor];
-        v30 = [v10 trailingAnchor];
-        [v29 constraintEqualToAnchor:v30];
+        trailingAnchor = [v16 trailingAnchor];
+        trailingAnchor2 = [viewCopy trailingAnchor];
+        [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         v39 = v13;
         v31 = v16;
-        v32 = v12;
-        v33 = v10;
-        v34 = self;
+        v32 = leadingAnchor;
+        v33 = viewCopy;
+        selfCopy = self;
         v36 = v35 = v15;
-        [v11 addObject:v36];
+        [constraintsCopy addObject:v36];
 
         v15 = v35;
-        self = v34;
-        v10 = v33;
-        v12 = v32;
+        self = selfCopy;
+        viewCopy = v33;
+        leadingAnchor = v32;
         v16 = v31;
         v13 = v39;
       }
 
-      v37 = [v16 trailingAnchor];
+      trailingAnchor3 = [v16 trailingAnchor];
 
       [(MultilineStackView *)self interItemHorizontalPadding];
       v14 = v38;
 
       ++v13;
-      v12 = v37;
-      if (v13 >= [v40 count])
+      leadingAnchor = trailingAnchor3;
+      if (v13 >= [viewsCopy count])
       {
         goto LABEL_15;
       }
     }
 
-    v20 = [v16 centerYAnchor];
-    v21 = [v10 centerYAnchor];
+    bottomAnchor = [v16 centerYAnchor];
+    bottomAnchor2 = [viewCopy centerYAnchor];
     goto LABEL_9;
   }
 
-  v37 = v12;
+  trailingAnchor3 = leadingAnchor;
 LABEL_15:
 }
 
-- (void)_computeMaximumRowWithViews:(id)a3 interItemSpace:(double)a4 rowView:(id)a5 constraints:(id)a6
+- (void)_computeMaximumRowWithViews:(id)views interItemSpace:(double)space rowView:(id)view constraints:(id)constraints
 {
-  v39 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v39 count];
-  v13 = v39;
+  viewsCopy = views;
+  viewCopy = view;
+  constraintsCopy = constraints;
+  v12 = [viewsCopy count];
+  v13 = viewsCopy;
   if (v12)
   {
-    v14 = [v39 firstObject];
-    [v10 addSubview:v14];
-    v15 = [v14 leadingAnchor];
-    v16 = [v10 leadingAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
-    [v11 addObject:v17];
+    firstObject = [viewsCopy firstObject];
+    [viewCopy addSubview:firstObject];
+    leadingAnchor = [firstObject leadingAnchor];
+    leadingAnchor2 = [viewCopy leadingAnchor];
+    v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+    [constraintsCopy addObject:v17];
 
     if ([(MultilineStackView *)self verticalArrangement])
     {
-      v18 = [v14 centerYAnchor];
-      [v10 centerYAnchor];
+      centerYAnchor = [firstObject centerYAnchor];
+      [viewCopy centerYAnchor];
     }
 
     else
     {
-      v18 = [v14 topAnchor];
-      [v10 topAnchor];
+      centerYAnchor = [firstObject topAnchor];
+      [viewCopy topAnchor];
     }
     v19 = ;
-    v20 = [v18 constraintEqualToAnchor:v19];
-    [v11 addObject:v20];
+    v20 = [centerYAnchor constraintEqualToAnchor:v19];
+    [constraintsCopy addObject:v20];
 
-    v13 = v39;
+    v13 = viewsCopy;
   }
 
   v21 = [v13 count];
-  v22 = v39;
+  v22 = viewsCopy;
   if (v21 >= 2)
   {
-    v23 = [v39 lastObject];
-    [v10 addSubview:v23];
-    v24 = [v23 trailingAnchor];
-    v25 = [v10 trailingAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
-    [v11 addObject:v26];
+    lastObject = [viewsCopy lastObject];
+    [viewCopy addSubview:lastObject];
+    trailingAnchor = [lastObject trailingAnchor];
+    trailingAnchor2 = [viewCopy trailingAnchor];
+    v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+    [constraintsCopy addObject:v26];
 
     if ([(MultilineStackView *)self verticalArrangement])
     {
-      v27 = [v23 centerYAnchor];
-      [v10 centerYAnchor];
+      centerYAnchor2 = [lastObject centerYAnchor];
+      [viewCopy centerYAnchor];
     }
 
     else
     {
-      v27 = [v23 topAnchor];
-      [v10 topAnchor];
+      centerYAnchor2 = [lastObject topAnchor];
+      [viewCopy topAnchor];
     }
     v28 = ;
-    v29 = [v27 constraintEqualToAnchor:v28];
-    [v11 addObject:v29];
+    v29 = [centerYAnchor2 constraintEqualToAnchor:v28];
+    [constraintsCopy addObject:v29];
 
-    v22 = v39;
+    v22 = viewsCopy;
   }
 
   if ([v22 count] >= 3)
   {
-    v30 = [v39 firstObject];
-    v31 = [v30 trailingAnchor];
+    firstObject2 = [viewsCopy firstObject];
+    trailingAnchor3 = [firstObject2 trailingAnchor];
 
-    if ([v39 count] - 3 <= 0xFFFFFFFFFFFFFFFDLL)
+    if ([viewsCopy count] - 3 <= 0xFFFFFFFFFFFFFFFDLL)
     {
       v32 = 1;
       do
       {
-        v33 = [v39 objectAtIndexedSubscript:v32];
-        [v10 addSubview:v33];
-        v34 = [v33 leadingAnchor];
-        v35 = [v34 constraintEqualToAnchor:v31 constant:a4];
-        [v11 addObject:v35];
+        v33 = [viewsCopy objectAtIndexedSubscript:v32];
+        [viewCopy addSubview:v33];
+        leadingAnchor3 = [v33 leadingAnchor];
+        v35 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor3 constant:space];
+        [constraintsCopy addObject:v35];
 
         if ([(MultilineStackView *)self verticalArrangement])
         {
-          v36 = [v33 centerYAnchor];
-          [v10 centerYAnchor];
+          centerYAnchor3 = [v33 centerYAnchor];
+          [viewCopy centerYAnchor];
         }
 
         else
         {
-          v36 = [v33 topAnchor];
-          [v10 topAnchor];
+          centerYAnchor3 = [v33 topAnchor];
+          [viewCopy topAnchor];
         }
         v37 = ;
-        v38 = [v36 constraintEqualToAnchor:v37];
-        [v11 addObject:v38];
+        v38 = [centerYAnchor3 constraintEqualToAnchor:v37];
+        [constraintsCopy addObject:v38];
 
         ++v32;
       }
 
-      while (v32 < [v39 count] - 1);
+      while (v32 < [viewsCopy count] - 1);
     }
   }
 }
 
-- (void)_computeTrailingRowWithViews:(id)a3 rowView:(id)a4 constraints:(id)a5
+- (void)_computeTrailingRowWithViews:(id)views rowView:(id)view constraints:(id)constraints
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewsCopy = views;
+  viewCopy = view;
+  constraintsCopy = constraints;
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x3032000000;
   v24[3] = sub_100007430;
   v24[4] = sub_100010EB8;
-  v25 = [v9 trailingAnchor];
+  trailingAnchor = [viewCopy trailingAnchor];
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x2020000000;
   v23[3] = 0;
-  v11 = [v8 reverseObjectEnumerator];
-  v12 = [v11 allObjects];
+  reverseObjectEnumerator = [viewsCopy reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100570C44;
   v16[3] = &unk_101621F88;
-  v13 = v9;
+  v13 = viewCopy;
   v17 = v13;
-  v14 = v10;
+  v14 = constraintsCopy;
   v21 = v24;
   v22 = v23;
   v18 = v14;
-  v19 = self;
-  v15 = v8;
+  selfCopy = self;
+  v15 = viewsCopy;
   v20 = v15;
-  [v12 enumerateObjectsUsingBlock:v16];
+  [allObjects enumerateObjectsUsingBlock:v16];
 
   _Block_object_dispose(v23, 8);
   _Block_object_dispose(v24, 8);
 }
 
-- (void)_computeLeadingRowWithViews:(id)a3 rowView:(id)a4 constraints:(id)a5
+- (void)_computeLeadingRowWithViews:(id)views rowView:(id)view constraints:(id)constraints
 {
-  v24 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 leadingAnchor];
-  if ([v24 count])
+  viewsCopy = views;
+  viewCopy = view;
+  constraintsCopy = constraints;
+  leadingAnchor = [viewCopy leadingAnchor];
+  if ([viewsCopy count])
   {
     v11 = 0;
     v12 = 0.0;
     do
     {
-      v13 = [v24 objectAtIndexedSubscript:v11];
-      [v8 addSubview:v13];
-      v14 = [v13 leadingAnchor];
-      v15 = [v14 constraintEqualToAnchor:v10 constant:v12];
-      [v9 addObject:v15];
+      v13 = [viewsCopy objectAtIndexedSubscript:v11];
+      [viewCopy addSubview:v13];
+      leadingAnchor2 = [v13 leadingAnchor];
+      v15 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor constant:v12];
+      [constraintsCopy addObject:v15];
 
       if ([(MultilineStackView *)self verticalArrangement])
       {
-        v16 = [v13 centerYAnchor];
-        [v8 centerYAnchor];
+        centerYAnchor = [v13 centerYAnchor];
+        [viewCopy centerYAnchor];
       }
 
       else
       {
-        v16 = [v13 topAnchor];
-        [v8 topAnchor];
+        centerYAnchor = [v13 topAnchor];
+        [viewCopy topAnchor];
       }
       v17 = ;
-      v18 = [v16 constraintEqualToAnchor:v17];
-      [v9 addObject:v18];
+      v18 = [centerYAnchor constraintEqualToAnchor:v17];
+      [constraintsCopy addObject:v18];
 
-      if (v11 == [v24 count] - 1)
+      if (v11 == [viewsCopy count] - 1)
       {
-        v19 = [v13 trailingAnchor];
-        v20 = [v8 trailingAnchor];
-        v21 = [v19 constraintLessThanOrEqualToAnchor:v20];
-        [v9 addObject:v21];
+        trailingAnchor = [v13 trailingAnchor];
+        trailingAnchor2 = [viewCopy trailingAnchor];
+        v21 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
+        [constraintsCopy addObject:v21];
       }
 
-      v22 = [v13 trailingAnchor];
+      trailingAnchor3 = [v13 trailingAnchor];
 
       [(MultilineStackView *)self interItemHorizontalPadding];
       v12 = v23;
 
       ++v11;
-      v10 = v22;
+      leadingAnchor = trailingAnchor3;
     }
 
-    while (v11 < [v24 count]);
+    while (v11 < [viewsCopy count]);
   }
 
   else
   {
-    v22 = v10;
+    trailingAnchor3 = leadingAnchor;
   }
 }
 
-- (id)_appendRowViewWithViews:(id)a3 topAnchor:(id)a4 topInset:(double)a5 rowContentWidth:(double)a6 availableRowWidth:(double)a7 rowHeight:(double)a8 constraints:(id)a9
+- (id)_appendRowViewWithViews:(id)views topAnchor:(id)anchor topInset:(double)inset rowContentWidth:(double)width availableRowWidth:(double)rowWidth rowHeight:(double)height constraints:(id)constraints
 {
-  v16 = a3;
-  v17 = a9;
-  v18 = a4;
+  viewsCopy = views;
+  constraintsCopy = constraints;
+  anchorCopy = anchor;
   v19 = objc_opt_new();
   [v19 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(MultilineStackView *)self addSubview:v19];
-  v20 = [(MultilineStackView *)self horizontalArrangement];
-  if (v20 > 1)
+  horizontalArrangement = [(MultilineStackView *)self horizontalArrangement];
+  if (horizontalArrangement > 1)
   {
-    if (v20 == 2)
+    if (horizontalArrangement == 2)
     {
-      -[MultilineStackView _computeMaximumRowWithViews:interItemSpace:rowView:constraints:](self, "_computeMaximumRowWithViews:interItemSpace:rowView:constraints:", v16, v19, v17, (a7 - a6) / ([v16 count] - 1));
+      -[MultilineStackView _computeMaximumRowWithViews:interItemSpace:rowView:constraints:](self, "_computeMaximumRowWithViews:interItemSpace:rowView:constraints:", viewsCopy, v19, constraintsCopy, (rowWidth - width) / ([viewsCopy count] - 1));
     }
 
-    else if (v20 == 3)
+    else if (horizontalArrangement == 3)
     {
-      v21 = ([v16 count] - 1);
+      v21 = ([viewsCopy count] - 1);
       [(MultilineStackView *)self interItemHorizontalPadding];
-      -[MultilineStackView _computeJustifiedRowWithViews:itemWidth:rowView:constraints:](self, "_computeJustifiedRowWithViews:itemWidth:rowView:constraints:", v16, v19, v17, (a7 - v22 * v21) / [v16 count]);
+      -[MultilineStackView _computeJustifiedRowWithViews:itemWidth:rowView:constraints:](self, "_computeJustifiedRowWithViews:itemWidth:rowView:constraints:", viewsCopy, v19, constraintsCopy, (rowWidth - v22 * v21) / [viewsCopy count]);
     }
   }
 
-  else if (v20)
+  else if (horizontalArrangement)
   {
-    if (v20 == 1)
+    if (horizontalArrangement == 1)
     {
-      [(MultilineStackView *)self _computeTrailingRowWithViews:v16 rowView:v19 constraints:v17];
+      [(MultilineStackView *)self _computeTrailingRowWithViews:viewsCopy rowView:v19 constraints:constraintsCopy];
     }
   }
 
   else
   {
-    [(MultilineStackView *)self _computeLeadingRowWithViews:v16 rowView:v19 constraints:v17];
+    [(MultilineStackView *)self _computeLeadingRowWithViews:viewsCopy rowView:v19 constraints:constraintsCopy];
   }
 
-  v23 = [v19 leadingAnchor];
-  v24 = [(MultilineStackView *)self leadingAnchor];
+  leadingAnchor = [v19 leadingAnchor];
+  leadingAnchor2 = [(MultilineStackView *)self leadingAnchor];
   [(MultilineStackView *)self edgeInsets];
-  v26 = [v23 constraintEqualToAnchor:v24 constant:v25];
-  [v17 addObject:v26];
+  v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v25];
+  [constraintsCopy addObject:v26];
 
-  v27 = [v19 trailingAnchor];
-  v28 = [(MultilineStackView *)self trailingAnchor];
+  trailingAnchor = [v19 trailingAnchor];
+  trailingAnchor2 = [(MultilineStackView *)self trailingAnchor];
   [(MultilineStackView *)self edgeInsets];
-  v30 = [v27 constraintEqualToAnchor:v28 constant:v29];
-  [v17 addObject:v30];
+  v30 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:v29];
+  [constraintsCopy addObject:v30];
 
-  v31 = [v19 topAnchor];
-  v32 = [v31 constraintEqualToAnchor:v18 constant:a5];
+  topAnchor = [v19 topAnchor];
+  v32 = [topAnchor constraintEqualToAnchor:anchorCopy constant:inset];
 
-  [v17 addObject:v32];
-  v33 = [v19 heightAnchor];
-  v34 = [v33 constraintEqualToConstant:a8];
-  [v17 addObject:v34];
+  [constraintsCopy addObject:v32];
+  heightAnchor = [v19 heightAnchor];
+  v34 = [heightAnchor constraintEqualToConstant:height];
+  [constraintsCopy addObject:v34];
 
   return v19;
 }
 
 - (void)_computeLayout
 {
-  v3 = [(MultilineStackView *)self subviews];
-  [(MultilineStackView *)self _prepareSubviewsForReuse:v3];
+  subviews = [(MultilineStackView *)self subviews];
+  [(MultilineStackView *)self _prepareSubviewsForReuse:subviews];
 
   [(MultilineStackView *)self _prepareSubviewsForReuse:self->_arrangedSubviews];
   [(MultilineStackView *)self frame];
@@ -422,7 +422,7 @@ LABEL_15:
     v13 = objc_opt_new();
     v58 = objc_opt_new();
     v59 = +[NSMapTable strongToStrongObjectsMapTable];
-    v14 = [(MultilineStackView *)self topAnchor];
+    topAnchor = [(MultilineStackView *)self topAnchor];
     [(MultilineStackView *)self edgeInsets];
     v16 = v15;
     v70 = 0u;
@@ -482,23 +482,23 @@ LABEL_15:
           v31 = v25 + v21 + v29;
           if ([v13 count] && (v31 >= v9) | v30 & 1)
           {
-            v32 = [(MultilineStackView *)self rowHeightBlock];
+            rowHeightBlock = [(MultilineStackView *)self rowHeightBlock];
 
-            if (v32)
+            if (rowHeightBlock)
             {
-              v33 = [(MultilineStackView *)self rowHeightBlock];
-              v20 = (v33)[2](v33, v13, v20);
+              rowHeightBlock2 = [(MultilineStackView *)self rowHeightBlock];
+              v20 = (rowHeightBlock2)[2](rowHeightBlock2, v13, v20);
             }
 
             v62 = v20 + v62;
-            v34 = [(MultilineStackView *)self _appendRowViewWithViews:v13 topAnchor:v14 topInset:v58 rowContentWidth:v16 availableRowWidth:v21 rowHeight:v9 constraints:v20];
+            v34 = [(MultilineStackView *)self _appendRowViewWithViews:v13 topAnchor:topAnchor topInset:v58 rowContentWidth:v16 availableRowWidth:v21 rowHeight:v9 constraints:v20];
             ++v61;
-            v35 = v14;
+            v35 = topAnchor;
             v36 = [v13 copy];
             [v59 setObject:v36 forKey:v34];
 
             [v13 removeAllObjects];
-            v14 = [v34 bottomAnchor];
+            topAnchor = [v34 bottomAnchor];
 
             [(MultilineStackView *)self interItemVerticalPadding];
             v16 = v37;
@@ -530,17 +530,17 @@ LABEL_15:
 
     if ([v13 count])
     {
-      v40 = [(MultilineStackView *)self rowHeightBlock];
+      rowHeightBlock3 = [(MultilineStackView *)self rowHeightBlock];
 
       v41 = v58;
-      if (v40)
+      if (rowHeightBlock3)
       {
-        v42 = [(MultilineStackView *)self rowHeightBlock];
-        v20 = (v42)[2](v42, v13, v20);
+        rowHeightBlock4 = [(MultilineStackView *)self rowHeightBlock];
+        v20 = (rowHeightBlock4)[2](rowHeightBlock4, v13, v20);
       }
 
       v62 = v20 + v62;
-      v43 = [(MultilineStackView *)self _appendRowViewWithViews:v13 topAnchor:v14 topInset:v58 rowContentWidth:v16 availableRowWidth:v21 rowHeight:v9 constraints:v20];
+      v43 = [(MultilineStackView *)self _appendRowViewWithViews:v13 topAnchor:topAnchor topInset:v58 rowContentWidth:v16 availableRowWidth:v21 rowHeight:v9 constraints:v20];
       v44 = [v13 copy];
       [v59 setObject:v44 forKey:v43];
 
@@ -557,9 +557,9 @@ LABEL_15:
     v46 = self->_computedWidth;
     self->_computedWidth = v45;
 
-    v47 = [(MultilineStackView *)self customizationBlock];
+    customizationBlock = [(MultilineStackView *)self customizationBlock];
 
-    if (v47)
+    if (customizationBlock)
     {
       v68 = 0u;
       v66 = 0u;
@@ -621,14 +621,14 @@ LABEL_15:
   }
 }
 
-- (void)_prepareSubviewsForReuse:(id)a3
+- (void)_prepareSubviewsForReuse:(id)reuse
 {
-  v3 = a3;
+  reuseCopy = reuse;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v4 = [reuseCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
     v5 = v4;
@@ -639,24 +639,24 @@ LABEL_15:
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(reuseCopy);
         }
 
         v8 = *(*(&v18 + 1) + 8 * i);
         [v8 removeFromSuperview];
-        v9 = [v8 constraints];
-        v10 = [v9 count];
+        constraints = [v8 constraints];
+        v10 = [constraints count];
 
         if (v10)
         {
           v11 = 0;
           do
           {
-            v12 = [v8 constraints];
-            v13 = [v12 objectAtIndexedSubscript:v11];
+            constraints2 = [v8 constraints];
+            v13 = [constraints2 objectAtIndexedSubscript:v11];
 
-            v14 = [v13 identifier];
-            v15 = [v14 isEqualToString:@"MapsWidthConstraint"];
+            identifier = [v13 identifier];
+            v15 = [identifier isEqualToString:@"MapsWidthConstraint"];
 
             if (v15)
             {
@@ -668,33 +668,33 @@ LABEL_15:
               ++v11;
             }
 
-            v16 = [v8 constraints];
-            v17 = [v16 count];
+            constraints3 = [v8 constraints];
+            v17 = [constraints3 count];
           }
 
           while (v11 < v17);
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v5 = [reuseCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v5);
   }
 }
 
-- (BOOL)_justifiedLayoutWouldCrushWhenAddingView:(id)a3 toRowViews:(id)a4 availableRowWidth:(double)a5
+- (BOOL)_justifiedLayoutWouldCrushWhenAddingView:(id)view toRowViews:(id)views availableRowWidth:(double)width
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 count];
+  viewCopy = view;
+  viewsCopy = views;
+  v10 = [viewsCopy count];
   [(MultilineStackView *)self interItemHorizontalPadding];
   v22 = 0u;
   v23 = 0u;
-  v12 = (a5 - v11 * v10) / ([v9 count] + 1);
+  v12 = (width - v11 * v10) / ([viewsCopy count] + 1);
   v24 = 0u;
   v25 = 0u;
-  v13 = v9;
+  v13 = viewsCopy;
   v14 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v14)
   {
@@ -728,7 +728,7 @@ LABEL_15:
     }
   }
 
-  [v8 _maps_intrinsicContentSize];
+  [viewCopy _maps_intrinsicContentSize];
   v20 = v19 > v12;
 LABEL_11:
 
@@ -755,65 +755,65 @@ LABEL_11:
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = MultilineStackView;
-  [(MultilineStackView *)&v4 traitCollectionDidChange:a3];
+  [(MultilineStackView *)&v4 traitCollectionDidChange:change];
   [(MultilineStackView *)self _computeLayout];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = MultilineStackView;
-  [(MultilineStackView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(MultilineStackView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(MultilineStackView *)self _computeLayoutIfNeeded];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = MultilineStackView;
-  [(MultilineStackView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(MultilineStackView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(MultilineStackView *)self _computeLayoutIfNeeded];
 }
 
-- (void)removeArrangedSubview:(id)a3
+- (void)removeArrangedSubview:(id)subview
 {
-  v4 = a3;
+  subviewCopy = subview;
   if ([(NSMutableArray *)self->_arrangedSubviews containsObject:?])
   {
-    [(NSMutableArray *)self->_arrangedSubviews removeObject:v4];
+    [(NSMutableArray *)self->_arrangedSubviews removeObject:subviewCopy];
     [(MultilineStackView *)self _computeLayout];
   }
 }
 
-- (void)insertArrangedSubview:(id)a3 atIndex:(unint64_t)a4
+- (void)insertArrangedSubview:(id)subview atIndex:(unint64_t)index
 {
-  v6 = a3;
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(NSMutableArray *)self->_arrangedSubviews removeObject:v6];
-  [(NSMutableArray *)self->_arrangedSubviews insertObject:v6 atIndex:a4];
+  subviewCopy = subview;
+  [subviewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(NSMutableArray *)self->_arrangedSubviews removeObject:subviewCopy];
+  [(NSMutableArray *)self->_arrangedSubviews insertObject:subviewCopy atIndex:index];
 
   [(MultilineStackView *)self _computeLayout];
 }
 
-- (void)addArrangedSubview:(id)a3
+- (void)addArrangedSubview:(id)subview
 {
-  v4 = a3;
+  subviewCopy = subview;
   if (([(NSMutableArray *)self->_arrangedSubviews containsObject:?]& 1) == 0)
   {
-    [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(NSMutableArray *)self->_arrangedSubviews addObject:v4];
+    [subviewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(NSMutableArray *)self->_arrangedSubviews addObject:subviewCopy];
     [(MultilineStackView *)self _computeLayout];
   }
 }
 
-- (void)setArrangedSubviews:(id)a3
+- (void)setArrangedSubviews:(id)subviews
 {
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  subviewsCopy = subviews;
+  v5 = [subviewsCopy mutableCopy];
   arrangedSubviews = self->_arrangedSubviews;
   self->_arrangedSubviews = v5;
 
@@ -821,7 +821,7 @@ LABEL_11:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = v4;
+  v7 = subviewsCopy;
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
@@ -851,47 +851,47 @@ LABEL_11:
   [(MultilineStackView *)self _computeLayout];
 }
 
-- (void)setCalculatedHeight:(double)a3
+- (void)setCalculatedHeight:(double)height
 {
-  if (vabdd_f64(self->_calculatedHeight, a3) > 2.22044605e-16)
+  if (vabdd_f64(self->_calculatedHeight, height) > 2.22044605e-16)
   {
-    self->_calculatedHeight = a3;
+    self->_calculatedHeight = height;
     [(MultilineStackView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)setEdgeInsets:(UIEdgeInsets)a3
+- (void)setEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vcltz_s16(vshl_n_s16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_edgeInsets.top, v3), vceqq_f64(*&self->_edgeInsets.bottom, v4))), 0xFuLL))) & 1) == 0)
   {
-    self->_edgeInsets = a3;
+    self->_edgeInsets = insets;
     [(MultilineStackView *)self invalidateLayout];
   }
 }
 
-- (void)setInterItemVerticalPadding:(double)a3
+- (void)setInterItemVerticalPadding:(double)padding
 {
-  if (vabdd_f64(self->_interItemVerticalPadding, a3) >= 2.22044605e-16)
+  if (vabdd_f64(self->_interItemVerticalPadding, padding) >= 2.22044605e-16)
   {
-    self->_interItemVerticalPadding = a3;
+    self->_interItemVerticalPadding = padding;
     [(MultilineStackView *)self invalidateLayout];
   }
 }
 
-- (void)setInterItemHorizontalPadding:(double)a3
+- (void)setInterItemHorizontalPadding:(double)padding
 {
-  if (vabdd_f64(self->_interItemHorizontalPadding, a3) >= 2.22044605e-16)
+  if (vabdd_f64(self->_interItemHorizontalPadding, padding) >= 2.22044605e-16)
   {
-    self->_interItemHorizontalPadding = a3;
+    self->_interItemHorizontalPadding = padding;
     [(MultilineStackView *)self invalidateLayout];
   }
 }
 
-- (MultilineStackView)initWithHorizontalArrangement:(unint64_t)a3 verticalArrangement:(unint64_t)a4
+- (MultilineStackView)initWithHorizontalArrangement:(unint64_t)arrangement verticalArrangement:(unint64_t)verticalArrangement
 {
   v11.receiver = self;
   v11.super_class = MultilineStackView;
@@ -899,8 +899,8 @@ LABEL_11:
   v7 = v6;
   if (v6)
   {
-    v6->_horizontalArrangement = a3;
-    v6->_verticalArrangement = a4;
+    v6->_horizontalArrangement = arrangement;
+    v6->_verticalArrangement = verticalArrangement;
     v8 = objc_opt_new();
     arrangedSubviews = v7->_arrangedSubviews;
     v7->_arrangedSubviews = v8;

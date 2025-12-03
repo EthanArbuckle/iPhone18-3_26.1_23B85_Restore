@@ -6,31 +6,31 @@
 
 - (id)_placeTitle
 {
-  v2 = [(PGPlaceMemoryTitleGenerator *)self placeNode];
-  v3 = [v2 label];
+  placeNode = [(PGPlaceMemoryTitleGenerator *)self placeNode];
+  label = [placeNode label];
 
-  if ([v3 isEqualToString:@"Urban"])
+  if ([label isEqualToString:@"Urban"])
   {
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v5 = v4;
     v6 = @"PGPlaceMemoryTitleFormatCity";
   }
 
-  else if ([v3 isEqualToString:@"Beach"])
+  else if ([label isEqualToString:@"Beach"])
   {
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v5 = v4;
     v6 = @"PGPlaceMemoryTitleFormatBeach";
   }
 
-  else if ([v3 isEqualToString:@"Mountain"])
+  else if ([label isEqualToString:@"Mountain"])
   {
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v5 = v4;
     v6 = @"PGPlaceMemoryTitleFormatMountain";
   }
 
-  else if ([v3 isEqualToString:@"Nature"])
+  else if ([label isEqualToString:@"Nature"])
   {
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v5 = v4;
@@ -39,7 +39,7 @@
 
   else
   {
-    if (![v3 isEqualToString:@"Water"])
+    if (![label isEqualToString:@"Water"])
     {
       v7 = 0;
       goto LABEL_14;

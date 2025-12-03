@@ -1,22 +1,22 @@
 @interface NowPlayingTransportControlsView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
 @implementation NowPlayingTransportControlsView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v4 = MEMORY[0x1E69E7D40];
   v5 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.isa) + 0xD0);
-  v6 = self;
+  selfCopy = self;
   v7 = v5(&v17);
   if (v18)
   {
     v8 = (v5)(v19, v7);
     v9 = *&v19[3];
-    v10 = (*((*v4 & v6->super.super.super.isa) + 0xE8))(v8);
+    v10 = (*((*v4 & selfCopy->super.super.super.isa) + 0xE8))(v8);
 
     v11 = v9 * v10;
   }
@@ -24,7 +24,7 @@
   else
   {
     v12 = (v5)(v19, v7);
-    (*((*v4 & v6->super.super.super.isa) + 0xE8))(v12);
+    (*((*v4 & selfCopy->super.super.super.isa) + 0xE8))(v12);
     sub_1A22E6BF8();
     width = v13;
     v15 = v14;
@@ -40,7 +40,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A221F42C();
 }
 

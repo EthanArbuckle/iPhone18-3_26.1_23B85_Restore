@@ -16,7 +16,7 @@
   v5[2] = __35__NSData_VFAdditions__vf_md5Digest__block_invoke;
   v5[3] = &__block_descriptor_40_e29_v40__0r_v8__NSRange_QQ_16_B32l;
   v5[4] = &c;
-  [a1 enumerateByteRangesUsingBlock:v5];
+  [self enumerateByteRangesUsingBlock:v5];
   *md = 0;
   v8 = 0;
   CC_MD5_Final(md, &c);
@@ -28,12 +28,12 @@
 
 - (id)vf_hexString
 {
-  v2 = [a1 length];
+  v2 = [self length];
   v3 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:2 * v2];
-  v4 = [a1 bytes];
+  bytes = [self bytes];
   if (v2)
   {
-    v5 = v4;
+    v5 = bytes;
     do
     {
       v6 = *v5++;
@@ -85,7 +85,7 @@
     while (v7);
   }
 
-  CC_SHA256_Update(&c, [a1 bytes], objc_msgSend(a1, "length"));
+  CC_SHA256_Update(&c, [self bytes], objc_msgSend(self, "length"));
   CC_SHA256_Final(md, &c);
   v11 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:md length:32];
 

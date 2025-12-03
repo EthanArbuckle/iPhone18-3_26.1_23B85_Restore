@@ -1,20 +1,20 @@
 @interface ICLinesAndGridsNoteActivity
-- (ICLinesAndGridsNoteActivity)initWithNote:(id)a3 presentingViewController:(id)a4 eventReporter:(id)a5 shouldCreateNewNoteBlock:(id)a6;
+- (ICLinesAndGridsNoteActivity)initWithNote:(id)note presentingViewController:(id)controller eventReporter:(id)reporter shouldCreateNewNoteBlock:(id)block;
 - (UIViewController)presentingViewController;
 - (id)activityTitle;
-- (void)paperStyleSheetCollectionViewController:(id)a3 didFinishWithPaperStyleType:(unint64_t)a4;
+- (void)paperStyleSheetCollectionViewController:(id)controller didFinishWithPaperStyleType:(unint64_t)type;
 @end
 
 @implementation ICLinesAndGridsNoteActivity
 
-- (ICLinesAndGridsNoteActivity)initWithNote:(id)a3 presentingViewController:(id)a4 eventReporter:(id)a5 shouldCreateNewNoteBlock:(id)a6
+- (ICLinesAndGridsNoteActivity)initWithNote:(id)note presentingViewController:(id)controller eventReporter:(id)reporter shouldCreateNewNoteBlock:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  noteCopy = note;
+  controllerCopy = controller;
+  reporterCopy = reporter;
+  blockCopy = block;
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v12);
+  objc_initWeak(&from, controllerCopy);
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_1000BEA70;
@@ -27,10 +27,10 @@
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_note, a3);
-    objc_storeWeak(&v16->_presentingViewController, v12);
-    objc_storeStrong(&v16->_eventReporter, a5);
-    v17 = objc_retainBlock(v14);
+    objc_storeStrong(&v15->_note, note);
+    objc_storeWeak(&v16->_presentingViewController, controllerCopy);
+    objc_storeStrong(&v16->_eventReporter, reporter);
+    v17 = objc_retainBlock(blockCopy);
     shouldCreateNewNoteBlock = v16->_shouldCreateNewNoteBlock;
     v16->_shouldCreateNewNoteBlock = v17;
   }
@@ -51,42 +51,42 @@
   return v3;
 }
 
-- (void)paperStyleSheetCollectionViewController:(id)a3 didFinishWithPaperStyleType:(unint64_t)a4
+- (void)paperStyleSheetCollectionViewController:(id)controller didFinishWithPaperStyleType:(unint64_t)type
 {
-  v6 = [(ICLinesAndGridsNoteActivity *)self note];
-  if (!v6)
+  note = [(ICLinesAndGridsNoteActivity *)self note];
+  if (!note)
   {
-    v7 = [(ICLinesAndGridsNoteActivity *)self shouldCreateNewNoteBlock];
+    shouldCreateNewNoteBlock = [(ICLinesAndGridsNoteActivity *)self shouldCreateNewNoteBlock];
 
-    if (!v7)
+    if (!shouldCreateNewNoteBlock)
     {
       goto LABEL_5;
     }
 
-    v6 = [(ICLinesAndGridsNoteActivity *)self shouldCreateNewNoteBlock];
-    v8 = v6[2]();
+    note = [(ICLinesAndGridsNoteActivity *)self shouldCreateNewNoteBlock];
+    v8 = note[2]();
     [(ICLinesAndGridsNoteActivity *)self setNote:v8];
   }
 
 LABEL_5:
-  v9 = [(ICLinesAndGridsNoteActivity *)self note];
-  v10 = [v9 paperStyleType];
+  note2 = [(ICLinesAndGridsNoteActivity *)self note];
+  paperStyleType = [note2 paperStyleType];
 
-  if (v10 != a4)
+  if (paperStyleType != type)
   {
-    v11 = [(ICLinesAndGridsNoteActivity *)self note];
-    [v11 setPaperStyleType:a4];
+    note3 = [(ICLinesAndGridsNoteActivity *)self note];
+    [note3 setPaperStyleType:type];
 
-    v12 = [(ICLinesAndGridsNoteActivity *)self note];
-    [v12 updateChangeCountWithReason:@"Changed paper style"];
+    note4 = [(ICLinesAndGridsNoteActivity *)self note];
+    [note4 updateChangeCountWithReason:@"Changed paper style"];
 
-    v13 = [(ICLinesAndGridsNoteActivity *)self note];
-    v14 = [v13 managedObjectContext];
-    [v14 ic_save];
+    note5 = [(ICLinesAndGridsNoteActivity *)self note];
+    managedObjectContext = [note5 managedObjectContext];
+    [managedObjectContext ic_save];
 
-    v15 = [(ICLinesAndGridsNoteActivity *)self eventReporter];
-    v16 = [(ICLinesAndGridsNoteActivity *)self activityType];
-    [v15 submitNoteActionMenuEventForNoteEditorWithUsageType:3 activityType:v16];
+    eventReporter = [(ICLinesAndGridsNoteActivity *)self eventReporter];
+    activityType = [(ICLinesAndGridsNoteActivity *)self activityType];
+    [eventReporter submitNoteActionMenuEventForNoteEditorWithUsageType:3 activityType:activityType];
   }
 
   [(ICLinesAndGridsNoteActivity *)self activityDidFinish:1];

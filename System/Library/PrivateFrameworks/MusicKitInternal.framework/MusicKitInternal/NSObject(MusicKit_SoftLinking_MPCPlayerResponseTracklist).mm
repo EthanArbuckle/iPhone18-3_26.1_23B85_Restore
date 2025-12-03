@@ -23,134 +23,134 @@
   getMPCPlayerResponseTracklistClass();
   if (objc_opt_isKindOfClass())
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = 0;
+    selfCopy = 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)musicKit_responseTracklist_playingItem
 {
-  v1 = [a1 _musicKit_self_responseTracklist];
-  v2 = [v1 playingItem];
+  _musicKit_self_responseTracklist = [self _musicKit_self_responseTracklist];
+  playingItem = [_musicKit_self_responseTracklist playingItem];
 
-  return v2;
+  return playingItem;
 }
 
 - (uint64_t)musicKit_responseTracklist_repeatType
 {
-  v1 = [a1 _musicKit_self_responseTracklist];
-  v2 = [v1 repeatType];
+  _musicKit_self_responseTracklist = [self _musicKit_self_responseTracklist];
+  repeatType = [_musicKit_self_responseTracklist repeatType];
 
-  if (v2 == 2)
+  if (repeatType == 2)
   {
     return 2;
   }
 
   else
   {
-    return v2 == 1;
+    return repeatType == 1;
   }
 }
 
 - (uint64_t)musicKit_responseTracklist_shuffleType
 {
-  v1 = [a1 _musicKit_self_responseTracklist];
-  v2 = [v1 shuffleType];
+  _musicKit_self_responseTracklist = [self _musicKit_self_responseTracklist];
+  shuffleType = [_musicKit_self_responseTracklist shuffleType];
 
-  if (v2 == 2)
+  if (shuffleType == 2)
   {
     return 2;
   }
 
   else
   {
-    return v2 == 1;
+    return shuffleType == 1;
   }
 }
 
 - (uint64_t)musicKit_responseTracklist_actionAtQueueEnd
 {
-  v1 = [a1 _musicKit_self_responseTracklist];
-  v2 = [v1 actionAtQueueEnd];
+  _musicKit_self_responseTracklist = [self _musicKit_self_responseTracklist];
+  actionAtQueueEnd = [_musicKit_self_responseTracklist actionAtQueueEnd];
 
-  if ((v2 - 1) >= 3)
+  if ((actionAtQueueEnd - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return v2;
+    return actionAtQueueEnd;
   }
 }
 
 - (id)musicKit_responseTracklist_resetCommand
 {
-  v1 = [a1 _musicKit_self_responseTracklist];
-  v2 = [v1 resetCommand];
+  _musicKit_self_responseTracklist = [self _musicKit_self_responseTracklist];
+  resetCommand = [_musicKit_self_responseTracklist resetCommand];
 
-  return v2;
+  return resetCommand;
 }
 
 - (id)musicKit_responseTracklist_insertCommand
 {
-  v1 = [a1 _musicKit_self_responseTracklist];
-  v2 = [v1 insertCommand];
+  _musicKit_self_responseTracklist = [self _musicKit_self_responseTracklist];
+  insertCommand = [_musicKit_self_responseTracklist insertCommand];
 
-  return v2;
+  return insertCommand;
 }
 
 - (id)musicKit_responseTracklist_reorderCommand
 {
-  v1 = [a1 _musicKit_self_responseTracklist];
-  v2 = [v1 reorderCommand];
+  _musicKit_self_responseTracklist = [self _musicKit_self_responseTracklist];
+  reorderCommand = [_musicKit_self_responseTracklist reorderCommand];
 
-  return v2;
+  return reorderCommand;
 }
 
 - (id)musicKit_responseTracklist_changeItemCommand
 {
-  v1 = [a1 _musicKit_self_responseTracklist];
-  v2 = [v1 changeItemCommand];
+  _musicKit_self_responseTracklist = [self _musicKit_self_responseTracklist];
+  changeItemCommand = [_musicKit_self_responseTracklist changeItemCommand];
 
-  return v2;
+  return changeItemCommand;
 }
 
 - (id)musicKit_responseTracklist_repeatCommand
 {
-  v1 = [a1 _musicKit_self_responseTracklist];
-  v2 = [v1 repeatCommand];
+  _musicKit_self_responseTracklist = [self _musicKit_self_responseTracklist];
+  repeatCommand = [_musicKit_self_responseTracklist repeatCommand];
 
-  return v2;
+  return repeatCommand;
 }
 
 - (id)musicKit_responseTracklist_shuffleCommand
 {
-  v1 = [a1 _musicKit_self_responseTracklist];
-  v2 = [v1 shuffleCommand];
+  _musicKit_self_responseTracklist = [self _musicKit_self_responseTracklist];
+  shuffleCommand = [_musicKit_self_responseTracklist shuffleCommand];
 
-  return v2;
+  return shuffleCommand;
 }
 
 - (id)musicKit_responseTracklist_actionAtQueueEndCommand
 {
-  v1 = [a1 _musicKit_self_responseTracklist];
-  v2 = [v1 actionAtQueueEndCommand];
+  _musicKit_self_responseTracklist = [self _musicKit_self_responseTracklist];
+  actionAtQueueEndCommand = [_musicKit_self_responseTracklist actionAtQueueEndCommand];
 
-  return v2;
+  return actionAtQueueEndCommand;
 }
 
 - (id)musicKit_responseTracklist_sectionedCollection
 {
-  v1 = [a1 _musicKit_self_responseTracklist];
-  v2 = [v1 displayItems];
-  v3 = [objc_alloc(MEMORY[0x1E69776C8]) initWithUnderlyingSectionedCollection:v2];
+  _musicKit_self_responseTracklist = [self _musicKit_self_responseTracklist];
+  displayItems = [_musicKit_self_responseTracklist displayItems];
+  v3 = [objc_alloc(MEMORY[0x1E69776C8]) initWithUnderlyingSectionedCollection:displayItems];
 
   return v3;
 }
@@ -161,7 +161,7 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __127__NSObject_MusicKit_SoftLinking_MPCPlayerResponseTracklist__musicKit_responseTracklist_underlyingSectionObjectAtIndexPathBlock__block_invoke;
   aBlock[3] = &unk_1E84C3DD0;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   v1 = _Block_copy(aBlock);
 
   return v1;
@@ -169,10 +169,10 @@
 
 - (uint64_t)musicKit_globalItemCount
 {
-  v1 = [a1 _musicKit_self_responseTracklist];
-  v2 = [v1 globalItemCount];
+  _musicKit_self_responseTracklist = [self _musicKit_self_responseTracklist];
+  globalItemCount = [_musicKit_self_responseTracklist globalItemCount];
 
-  return v2;
+  return globalItemCount;
 }
 
 @end

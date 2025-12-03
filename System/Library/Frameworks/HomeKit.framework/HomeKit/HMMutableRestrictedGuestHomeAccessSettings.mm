@@ -1,17 +1,17 @@
 @interface HMMutableRestrictedGuestHomeAccessSettings
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMMutableRestrictedGuestHomeAccessSettings
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[HMRestrictedGuestHomeAccessSettings allocWithZone:?]];
-  v5 = [(HMRestrictedGuestHomeAccessSettings *)self accessAllowedToAccessories];
-  [(HMRestrictedGuestHomeAccessSettings *)v4 setAccessAllowedToAccessories:v5];
+  accessAllowedToAccessories = [(HMRestrictedGuestHomeAccessSettings *)self accessAllowedToAccessories];
+  [(HMRestrictedGuestHomeAccessSettings *)v4 setAccessAllowedToAccessories:accessAllowedToAccessories];
 
-  v6 = [(HMRestrictedGuestHomeAccessSettings *)self guestAccessSchedule];
-  [(HMRestrictedGuestHomeAccessSettings *)v4 setGuestAccessSchedule:v6];
+  guestAccessSchedule = [(HMRestrictedGuestHomeAccessSettings *)self guestAccessSchedule];
+  [(HMRestrictedGuestHomeAccessSettings *)v4 setGuestAccessSchedule:guestAccessSchedule];
 
   return v4;
 }

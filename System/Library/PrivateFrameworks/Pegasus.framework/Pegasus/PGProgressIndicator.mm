@@ -1,30 +1,30 @@
 @interface PGProgressIndicator
-- (PGProgressIndicator)initWithFrame:(CGRect)a3 wantsGlassBackground:(BOOL)a4;
+- (PGProgressIndicator)initWithFrame:(CGRect)frame wantsGlassBackground:(BOOL)background;
 - (void)_applyPulseState;
 - (void)_performLayout;
-- (void)_transitionToPulseStateIfNeeded:(int64_t)a3;
+- (void)_transitionToPulseStateIfNeeded:(int64_t)needed;
 - (void)_updateElapsedTrackTintColor;
 - (void)_updatePulseAnimatorIfNeeded;
 - (void)layoutSubviews;
-- (void)setCustomElapsedTrackTintColor:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setProgress:(double)a3;
+- (void)setCustomElapsedTrackTintColor:(id)color;
+- (void)setFrame:(CGRect)frame;
+- (void)setProgress:(double)progress;
 @end
 
 @implementation PGProgressIndicator
 
-- (PGProgressIndicator)initWithFrame:(CGRect)a3 wantsGlassBackground:(BOOL)a4
+- (PGProgressIndicator)initWithFrame:(CGRect)frame wantsGlassBackground:(BOOL)background
 {
-  v4 = a4;
+  backgroundCopy = background;
   v23.receiver = self;
   v23.super_class = PGProgressIndicator;
-  v5 = [(PGMaterialView *)&v23 initWithFrame:a3.origin.x wantsGlassBackground:a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(PGMaterialView *)&v23 initWithFrame:frame.origin.x wantsGlassBackground:frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
     [(PGProgressIndicator *)v5 setUserInteractionEnabled:0];
-    v6->_wantsGlassBackground = v4;
-    if (v4)
+    v6->_wantsGlassBackground = backgroundCopy;
+    if (backgroundCopy)
     {
       v7 = [PGCABackdropLayerView alloc];
       [(PGProgressIndicator *)v6 bounds];
@@ -49,8 +49,8 @@
     v15 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.1];
     [(PGVibrantFillView *)v14 setTintColor:v15];
 
-    v16 = [(PGMaterialView *)v6 contentView];
-    [v16 addSubview:v6->_completeTrack];
+    contentView = [(PGMaterialView *)v6 contentView];
+    [contentView addSubview:v6->_completeTrack];
 
     v17 = [PGVibrantFillView alloc];
     [(PGProgressIndicator *)v6 bounds];
@@ -61,8 +61,8 @@
     v20 = v6->_elapsedTrack;
     [(PGProgressIndicator *)v6 bounds];
     [(PGVibrantFillView *)v20 setFrame:?];
-    v21 = [(PGMaterialView *)v6 contentView];
-    [v21 addSubview:v6->_elapsedTrack];
+    contentView2 = [(PGMaterialView *)v6 contentView];
+    [contentView2 addSubview:v6->_elapsedTrack];
 
     [(PGProgressIndicator *)v6 _updateElapsedTrackTintColor];
   }
@@ -70,14 +70,14 @@
   return v6;
 }
 
-- (void)setCustomElapsedTrackTintColor:(id)a3
+- (void)setCustomElapsedTrackTintColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   customElapsedTrackTintColor = self->_customElapsedTrackTintColor;
-  if (customElapsedTrackTintColor != v4)
+  if (customElapsedTrackTintColor != colorCopy)
   {
-    v8 = v4;
-    if (([(UIColor *)customElapsedTrackTintColor isEqual:v4]& 1) == 0)
+    v8 = colorCopy;
+    if (([(UIColor *)customElapsedTrackTintColor isEqual:colorCopy]& 1) == 0)
     {
       v6 = [(UIColor *)v8 copy];
       v7 = self->_customElapsedTrackTintColor;
@@ -90,11 +90,11 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
   IsValid = CGFloatIsValid();
   v6 = 0.0;
-  v7 = fmin(fmax(a3, 0.0), 1.0);
+  v7 = fmin(fmax(progress, 0.0), 1.0);
   if (IsValid)
   {
     v6 = v7;
@@ -108,11 +108,11 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = PGProgressIndicator;
-  [(PGProgressIndicator *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PGProgressIndicator *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(PGProgressIndicator *)self _performLayout];
 }
 
@@ -128,8 +128,8 @@
 {
   if (self->_wantsGlassBackground)
   {
-    v3 = [(PGMaterialView *)self contentView];
-    [v3 bounds];
+    contentView = [(PGMaterialView *)self contentView];
+    [contentView bounds];
     v5 = v4;
     v7 = v6;
 
@@ -160,12 +160,12 @@
   {
     p_elapsedTrack = &self->_completeTrack;
     v22 = self->_completeTrack;
-    v23 = [(PGMaterialView *)self contentView];
-    [v23 bounds];
+    contentView2 = [(PGMaterialView *)self contentView];
+    [contentView2 bounds];
     [(PGVibrantFillView *)v22 setFrame:?];
 
-    v24 = [(PGMaterialView *)self contentView];
-    [v24 bounds];
+    contentView3 = [(PGMaterialView *)self contentView];
+    [contentView3 bounds];
     v26 = v25;
     v28 = v27;
     v30 = v29;
@@ -190,39 +190,39 @@
 {
   wantsGlassBackground = self->_wantsGlassBackground;
   elapsedTrack = self->_elapsedTrack;
-  v4 = [(PGProgressIndicator *)self customElapsedTrackTintColor];
-  v7 = v4;
+  customElapsedTrackTintColor = [(PGProgressIndicator *)self customElapsedTrackTintColor];
+  v7 = customElapsedTrackTintColor;
   if (!wantsGlassBackground)
   {
-    if (!v4)
+    if (!customElapsedTrackTintColor)
     {
-      v5 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.35];
+      whiteColor = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.35];
       goto LABEL_7;
     }
 
 LABEL_5:
-    [(PGVibrantFillView *)elapsedTrack setTintColor:v4];
+    [(PGVibrantFillView *)elapsedTrack setTintColor:customElapsedTrackTintColor];
     goto LABEL_8;
   }
 
-  if (v4)
+  if (customElapsedTrackTintColor)
   {
     goto LABEL_5;
   }
 
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
 LABEL_7:
-  v6 = v5;
-  [(PGVibrantFillView *)elapsedTrack setTintColor:v5];
+  v6 = whiteColor;
+  [(PGVibrantFillView *)elapsedTrack setTintColor:whiteColor];
 
 LABEL_8:
 }
 
 - (void)_updatePulseAnimatorIfNeeded
 {
-  v3 = [(PGProgressIndicator *)self includesWaitingToPlayIndicator];
+  includesWaitingToPlayIndicator = [(PGProgressIndicator *)self includesWaitingToPlayIndicator];
   pulseState = self->_pulseState;
-  if (v3 && !pulseState)
+  if (includesWaitingToPlayIndicator && !pulseState)
   {
     v5 = 1;
 LABEL_9:
@@ -233,7 +233,7 @@ LABEL_9:
 
   if (pulseState)
   {
-    v6 = v3;
+    v6 = includesWaitingToPlayIndicator;
   }
 
   else
@@ -248,11 +248,11 @@ LABEL_9:
   }
 }
 
-- (void)_transitionToPulseStateIfNeeded:(int64_t)a3
+- (void)_transitionToPulseStateIfNeeded:(int64_t)needed
 {
-  if (self->_pulseState != a3)
+  if (self->_pulseState != needed)
   {
-    self->_pulseState = a3;
+    self->_pulseState = needed;
     WeakRetained = objc_loadWeakRetained(&self->_pulseAnimator);
     if ([WeakRetained isRunning] && objc_msgSend(WeakRetained, "isInterruptible"))
     {
@@ -260,7 +260,7 @@ LABEL_9:
       [WeakRetained finishAnimationAtPosition:2];
     }
 
-    if (a3)
+    if (needed)
     {
       v6 = 1.0;
     }
@@ -290,7 +290,7 @@ LABEL_9:
     v9[3] = &unk_1E7F327B0;
     objc_copyWeak(v10, &location);
     v9[4] = &v13;
-    v10[1] = a3;
+    v10[1] = needed;
     [v8 addCompletion:v9];
     objc_storeWeak(&self->_pulseAnimator, v14[5]);
     [v14[5] startAnimation];
@@ -369,10 +369,10 @@ LABEL_11:
     if (!self->_wantsGlassBackground)
     {
       elapsedTrack = self->_elapsedTrack;
-      v12 = [(PGProgressIndicator *)self customElapsedTrackTintColor];
-      if (v12)
+      customElapsedTrackTintColor = [(PGProgressIndicator *)self customElapsedTrackTintColor];
+      if (customElapsedTrackTintColor)
       {
-        [(PGVibrantFillView *)elapsedTrack setTintColor:v12];
+        [(PGVibrantFillView *)elapsedTrack setTintColor:customElapsedTrackTintColor];
       }
 
       else
@@ -392,10 +392,10 @@ LABEL_11:
     if (!self->_wantsGlassBackground)
     {
       v9 = self->_elapsedTrack;
-      v10 = [(PGProgressIndicator *)self customElapsedTrackTintColor];
-      if (v10)
+      customElapsedTrackTintColor2 = [(PGProgressIndicator *)self customElapsedTrackTintColor];
+      if (customElapsedTrackTintColor2)
       {
-        [(PGVibrantFillView *)v9 setTintColor:v10];
+        [(PGVibrantFillView *)v9 setTintColor:customElapsedTrackTintColor2];
       }
 
       else
@@ -420,10 +420,10 @@ LABEL_21:
   if (!self->_wantsGlassBackground)
   {
     v7 = self->_elapsedTrack;
-    v8 = [(PGProgressIndicator *)self customElapsedTrackTintColor];
-    if (v8)
+    customElapsedTrackTintColor3 = [(PGProgressIndicator *)self customElapsedTrackTintColor];
+    if (customElapsedTrackTintColor3)
     {
-      [(PGVibrantFillView *)v7 setTintColor:v8];
+      [(PGVibrantFillView *)v7 setTintColor:customElapsedTrackTintColor3];
     }
 
     else
@@ -443,16 +443,16 @@ LABEL_26:
   if (self->_wantsGlassBackground)
   {
     v19 = self->_elapsedTrack;
-    v20 = [(PGProgressIndicator *)self customElapsedTrackTintColor];
-    if (v20)
+    customElapsedTrackTintColor4 = [(PGProgressIndicator *)self customElapsedTrackTintColor];
+    if (customElapsedTrackTintColor4)
     {
-      [(PGVibrantFillView *)v19 setTintColor:v20];
+      [(PGVibrantFillView *)v19 setTintColor:customElapsedTrackTintColor4];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E69DC888] whiteColor];
-      [(PGVibrantFillView *)v19 setTintColor:v21];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [(PGVibrantFillView *)v19 setTintColor:whiteColor];
     }
   }
 

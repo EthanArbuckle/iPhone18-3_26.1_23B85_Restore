@@ -8,9 +8,9 @@
 - (id)ekmsuidGMTDateToDateInTimeZone:()EKMSUIDAdditions
 {
   v4 = a3;
-  v5 = [a1 dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:{-objc_msgSend(v4, "secondsFromGMTForDate:", a1)}];
+  v5 = [self dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:{-objc_msgSend(v4, "secondsFromGMTForDate:", self)}];
   [v5 setTimeZone:v4];
-  [v4 daylightSavingTimeOffsetForDate:a1];
+  [v4 daylightSavingTimeOffsetForDate:self];
   v7 = v6;
   [v4 daylightSavingTimeOffsetForDate:v5];
   v9 = v8;
@@ -28,7 +28,7 @@
 - (id)ekmsuidStringForYearMonthDay
 {
   v2 = [MEMORY[0x1E695DFE8] timeZoneWithAbbreviation:@"GMT"];
-  v3 = [a1 descriptionWithCalendarFormat:@"%Y%m%d" timeZone:v2 locale:0];
+  v3 = [self descriptionWithCalendarFormat:@"%Y%m%d" timeZone:v2 locale:0];
 
   return v3;
 }

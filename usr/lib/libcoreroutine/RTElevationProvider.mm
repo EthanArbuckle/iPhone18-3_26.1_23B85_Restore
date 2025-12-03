@@ -1,14 +1,14 @@
 @interface RTElevationProvider
-- (RTElevationProvider)initWithAltimeter:(id)a3;
-- (void)_fetchElevations:(id)a3 handler:(id)a4;
-- (void)fetchElevations:(id)a3 handler:(id)a4;
+- (RTElevationProvider)initWithAltimeter:(id)altimeter;
+- (void)_fetchElevations:(id)elevations handler:(id)handler;
+- (void)fetchElevations:(id)elevations handler:(id)handler;
 @end
 
 @implementation RTElevationProvider
 
-- (RTElevationProvider)initWithAltimeter:(id)a3
+- (RTElevationProvider)initWithAltimeter:(id)altimeter
 {
-  v5 = a3;
+  altimeterCopy = altimeter;
   v15.receiver = self;
   v15.super_class = RTElevationProvider;
   v6 = [(RTElevationProvider *)&v15 init];
@@ -20,38 +20,38 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [(RTElevationProvider *)v8 UTF8String];
+      uTF8String = [(RTElevationProvider *)v8 UTF8String];
     }
 
     else
     {
       v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), v8];
-      v10 = [v11 UTF8String];
+      uTF8String = [v11 UTF8String];
     }
 
-    v12 = dispatch_queue_create(v10, v9);
+    v12 = dispatch_queue_create(uTF8String, v9);
 
     queue = v8->_queue;
     v8->_queue = v12;
 
-    objc_storeStrong(&v8->_altimeter, a3);
+    objc_storeStrong(&v8->_altimeter, altimeter);
   }
 
   return v7;
 }
 
-- (void)_fetchElevations:(id)a3 handler:(id)a4
+- (void)_fetchElevations:(id)elevations handler:(id)handler
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  elevationsCopy = elevations;
+  handlerCopy = handler;
   if ([(RTElevationProvider *)self hasAltimeter])
   {
     v8 = dispatch_semaphore_create(0);
-    v9 = [v6 batchSize];
-    if (v9)
+    batchSize = [elevationsCopy batchSize];
+    if (batchSize)
     {
-      v10 = v9;
+      v10 = batchSize;
     }
 
     else
@@ -60,20 +60,20 @@
     }
 
     altimeter = self->_altimeter;
-    v12 = [v6 dateInterval];
-    v13 = [v12 startDate];
-    v14 = [v6 dateInterval];
-    v15 = [v14 endDate];
+    dateInterval = [elevationsCopy dateInterval];
+    startDate = [dateInterval startDate];
+    dateInterval2 = [elevationsCopy dateInterval];
+    endDate = [dateInterval2 endDate];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __48__RTElevationProvider__fetchElevations_handler___block_invoke;
     v35[3] = &unk_2788C5EB8;
     v35[4] = self;
-    v37 = v7;
+    v37 = handlerCopy;
     v16 = v8;
     v36 = v16;
     v38 = v10;
-    [(CMAltimeter *)altimeter queryElevationProfileFromDate:v13 toDate:v15 withBatchSize:v10 withHandler:v35];
+    [(CMAltimeter *)altimeter queryElevationProfileFromDate:startDate toDate:endDate withBatchSize:v10 withHandler:v35];
 
     v17 = v16;
     v18 = [MEMORY[0x277CBEAA8] now];
@@ -85,11 +85,11 @@
       v21 = v20;
       v22 = objc_opt_new();
       v23 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_13];
-      v24 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v25 = [v24 filteredArrayUsingPredicate:v23];
-      v26 = [v25 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v25 = [callStackSymbols filteredArrayUsingPredicate:v23];
+      firstObject = [v25 firstObject];
 
-      [v22 submitToCoreAnalytics:v26 type:1 duration:v21];
+      [v22 submitToCoreAnalytics:firstObject type:1 duration:v21];
       v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
       {
@@ -115,7 +115,7 @@
   {
     v33 = objc_alloc(MEMORY[0x277CCA9B8]);
     v17 = [v33 initWithDomain:*MEMORY[0x277D01448] code:1 userInfo:0];
-    (*(v7 + 2))(v7, MEMORY[0x277CBEBF8], v17);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x277CBEBF8], v17);
   }
 }
 
@@ -244,21 +244,21 @@ void __48__RTElevationProvider__fetchElevations_handler___block_invoke(uint64_t 
   }
 }
 
-- (void)fetchElevations:(id)a3 handler:(id)a4
+- (void)fetchElevations:(id)elevations handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTElevationProvider *)self queue];
+  elevationsCopy = elevations;
+  handlerCopy = handler;
+  queue = [(RTElevationProvider *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__RTElevationProvider_fetchElevations_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = elevationsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = elevationsCopy;
+  dispatch_async(queue, block);
 }
 
 @end

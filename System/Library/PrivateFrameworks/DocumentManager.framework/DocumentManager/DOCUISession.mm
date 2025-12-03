@@ -1,7 +1,7 @@
 @interface DOCUISession
 + (UIWindow)anyWindowPreferingKeyWindow;
 + (id)shared;
-+ (id)windowWithRootViewController:(id)a3;
++ (id)windowWithRootViewController:(id)controller;
 @end
 
 @implementation DOCUISession
@@ -25,32 +25,32 @@ uint64_t __22__DOCUISession_shared__block_invoke()
 
 + (UIWindow)anyWindowPreferingKeyWindow
 {
-  v2 = [a1 keyWindow];
-  v3 = v2;
-  if (v2)
+  keyWindow = [self keyWindow];
+  v3 = keyWindow;
+  if (keyWindow)
   {
-    v4 = v2;
+    firstObject = keyWindow;
   }
 
   else
   {
-    v5 = [*MEMORY[0x1E69DDA98] windows];
-    v4 = [v5 firstObject];
+    windows = [*MEMORY[0x1E69DDA98] windows];
+    firstObject = [windows firstObject];
   }
 
-  return v4;
+  return firstObject;
 }
 
-+ (id)windowWithRootViewController:(id)a3
++ (id)windowWithRootViewController:(id)controller
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  controllerCopy = controller;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [*MEMORY[0x1E69DDA98] windows];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  windows = [*MEMORY[0x1E69DDA98] windows];
+  v5 = [windows countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = *v12;
@@ -60,20 +60,20 @@ uint64_t __22__DOCUISession_shared__block_invoke()
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(windows);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        v9 = [v8 rootViewController];
+        rootViewController = [v8 rootViewController];
 
-        if (v9 == v3)
+        if (rootViewController == controllerCopy)
         {
           v5 = v8;
           goto LABEL_11;
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [windows countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;

@@ -1,39 +1,39 @@
 @interface MRDAVSystemEndpointController
-- (BOOL)_hasPersonalDeviceForContext:(id)a3;
-- (BOOL)_requiresConnectionToUpdate:(id)a3;
-- (MRDAVSystemEndpointController)initWithRoutingController:(id)a3;
+- (BOOL)_hasPersonalDeviceForContext:(id)context;
+- (BOOL)_requiresConnectionToUpdate:(id)update;
+- (MRDAVSystemEndpointController)initWithRoutingController:(id)controller;
 - (MRDAVSystemEndpointControllerDelegate)delegate;
 - (NSArray)recentlyDismissedRecommendationsInfo;
 - (NSDictionary)systemEndpointInfo;
-- (id)_isAllowedToUpdateRecommendationForOutputDevice:(id)a3 recentlyDismissed:(id)a4;
-- (id)_onSerialQueue_calculateActiveEndpoint:(int64_t)a3 event:(int64_t)a4 reason:(id *)a5 suppressPairedDeviceSync:(BOOL *)a6;
-- (id)_onSerialQueue_calculateProactiveEndpointForEvent:(int64_t)a3 reason:(id *)a4;
-- (id)_onSerialQueue_calculateProactiveRecommendedEndpoint:(id *)a3;
-- (id)_onSerialQueue_calculateProactiveRecommendedEndpointForWatch:(id *)a3;
-- (id)_onSerialQueue_calculateRecommendedEndpointForEvent:(int64_t)a3 reason:(id *)a4;
-- (id)_onSerialQueue_calculateUserSelectedEndpointForEvent:(int64_t)a3 reason:(id *)a4 suppressPairedDeviceSync:(BOOL *)a5;
-- (id)_onSerialQueue_updateSystemEndpoint:(id)a3 event:(int64_t)a4 eventReason:(id)a5;
-- (id)_validate:(id)a3;
-- (id)activeOutputDeviceUID:(int64_t)a3;
-- (id)originClientForDeviceUID:(id)a3;
-- (void)_deviceInfoDidChange:(id)a3;
-- (void)_handleIsPlayingDidChangeNotification:(id)a3;
-- (void)_handleOriginDidRegisterNotification:(id)a3;
-- (void)_handleOriginDidUnregisterNotification:(id)a3;
-- (void)_handleOutputContextDidAddOutputDeviceNotification:(id)a3;
+- (id)_isAllowedToUpdateRecommendationForOutputDevice:(id)device recentlyDismissed:(id)dismissed;
+- (id)_onSerialQueue_calculateActiveEndpoint:(int64_t)endpoint event:(int64_t)event reason:(id *)reason suppressPairedDeviceSync:(BOOL *)sync;
+- (id)_onSerialQueue_calculateProactiveEndpointForEvent:(int64_t)event reason:(id *)reason;
+- (id)_onSerialQueue_calculateProactiveRecommendedEndpoint:(id *)endpoint;
+- (id)_onSerialQueue_calculateProactiveRecommendedEndpointForWatch:(id *)watch;
+- (id)_onSerialQueue_calculateRecommendedEndpointForEvent:(int64_t)event reason:(id *)reason;
+- (id)_onSerialQueue_calculateUserSelectedEndpointForEvent:(int64_t)event reason:(id *)reason suppressPairedDeviceSync:(BOOL *)sync;
+- (id)_onSerialQueue_updateSystemEndpoint:(id)endpoint event:(int64_t)event eventReason:(id)reason;
+- (id)_validate:(id)_validate;
+- (id)activeOutputDeviceUID:(int64_t)d;
+- (id)originClientForDeviceUID:(id)d;
+- (void)_deviceInfoDidChange:(id)change;
+- (void)_handleIsPlayingDidChangeNotification:(id)notification;
+- (void)_handleOriginDidRegisterNotification:(id)notification;
+- (void)_handleOriginDidUnregisterNotification:(id)notification;
+- (void)_handleOutputContextDidAddOutputDeviceNotification:(id)notification;
 - (void)_initializeSystemEndpointInfo;
-- (void)_onSerialQueue_clearActiveEndpointType:(int64_t)a3 outputDeviceUID:(id)a4 event:(int64_t)a5 reason:(id)a6 clientBundleIdentifier:(id)a7;
-- (void)_onSerialQueue_maybeSetupPlaybackTimerForEvent:(int64_t)a3;
-- (void)_onSerialQueue_maybeSetupUserSelectedTimerForEvent:(int64_t)a3;
-- (void)_onSerialQueue_reconnectToOutputDevice:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)_onSerialQueue_reevaluateActiveEndpoint:(int64_t)a3 event:(int64_t)a4 changeType:(int64_t)a5 eventReason:(id)a6 clientBundleIdentifier:(id)a7;
-- (void)_storeRecentlyDismissedRecommendationForOutputDeviceUID:(id)a3 disableDuration:(double)a4;
-- (void)_writeSystemEndpointInfo:(id)a3 recentlyDismissedRecommendationsInfo:(id)a4;
-- (void)clearActiveEndpointType:(int64_t)a3 outputDeviceUID:(id)a4 event:(int64_t)a5 reason:(id)a6 clientBundleIdentifier:(id)a7;
+- (void)_onSerialQueue_clearActiveEndpointType:(int64_t)type outputDeviceUID:(id)d event:(int64_t)event reason:(id)reason clientBundleIdentifier:(id)identifier;
+- (void)_onSerialQueue_maybeSetupPlaybackTimerForEvent:(int64_t)event;
+- (void)_onSerialQueue_maybeSetupUserSelectedTimerForEvent:(int64_t)event;
+- (void)_onSerialQueue_reconnectToOutputDevice:(id)device queue:(id)queue completion:(id)completion;
+- (void)_onSerialQueue_reevaluateActiveEndpoint:(int64_t)endpoint event:(int64_t)event changeType:(int64_t)type eventReason:(id)reason clientBundleIdentifier:(id)identifier;
+- (void)_storeRecentlyDismissedRecommendationForOutputDeviceUID:(id)d disableDuration:(double)duration;
+- (void)_writeSystemEndpointInfo:(id)info recentlyDismissedRecommendationsInfo:(id)recommendationsInfo;
+- (void)clearActiveEndpointType:(int64_t)type outputDeviceUID:(id)d event:(int64_t)event reason:(id)reason clientBundleIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)updateSystemEndpointForRequest:(id)a3 completion:(id)a4;
-- (void)updateSystemEndpointForRequest:(id)a3 event:(int64_t)a4 completion:(id)a5;
-- (void)updateSystemEndpointForRequest:(id)a3 event:(int64_t)a4 eventReason:(id)a5 completion:(id)a6;
+- (void)updateSystemEndpointForRequest:(id)request completion:(id)completion;
+- (void)updateSystemEndpointForRequest:(id)request event:(int64_t)event completion:(id)completion;
+- (void)updateSystemEndpointForRequest:(id)request event:(int64_t)event eventReason:(id)reason completion:(id)completion;
 @end
 
 @implementation MRDAVSystemEndpointController
@@ -65,20 +65,20 @@
   return v3;
 }
 
-- (MRDAVSystemEndpointController)initWithRoutingController:(id)a3
+- (MRDAVSystemEndpointController)initWithRoutingController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v31.receiver = self;
   v31.super_class = MRDAVSystemEndpointController;
   v6 = [(MRDAVSystemEndpointController *)&v31 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_routingController, a3);
+    objc_storeStrong(&v6->_routingController, controller);
     v8 = +[MRDMediaRemoteServer server];
-    v9 = [v8 nowPlayingServer];
+    nowPlayingServer = [v8 nowPlayingServer];
     nowPlayingServer = v7->_nowPlayingServer;
-    v7->_nowPlayingServer = v9;
+    v7->_nowPlayingServer = nowPlayingServer;
 
     v11 = objc_opt_class();
     Name = class_getName(v11);
@@ -88,9 +88,9 @@
     v7->_serialQueue = v14;
 
     v16 = +[MRDSettings currentSettings];
-    v17 = [v16 userDefaults];
+    userDefaults = [v16 userDefaults];
     userDefaults = v7->_userDefaults;
-    v7->_userDefaults = v17;
+    v7->_userDefaults = userDefaults;
 
     v19 = +[MRAVOutputContext sharedSystemAudioContext];
     v7->_cachedHasPersonalDevices = [(MRDAVSystemEndpointController *)v7 _hasPersonalDeviceForContext:v19];
@@ -134,7 +134,7 @@
   [(MRDAVSystemEndpointController *)&v4 dealloc];
 }
 
-- (id)activeOutputDeviceUID:(int64_t)a3
+- (id)activeOutputDeviceUID:(int64_t)d
 {
   v6 = 0;
   v7 = &v6;
@@ -150,13 +150,13 @@
   return v4;
 }
 
-- (BOOL)_requiresConnectionToUpdate:(id)a3
+- (BOOL)_requiresConnectionToUpdate:(id)update
 {
-  v3 = a3;
-  if ([v3 type] == 2)
+  updateCopy = update;
+  if ([updateCopy type] == 2)
   {
-    v4 = [v3 outputDeviceUID];
-    v5 = v4 != 0;
+    outputDeviceUID = [updateCopy outputDeviceUID];
+    v5 = outputDeviceUID != 0;
   }
 
   else
@@ -167,52 +167,52 @@
   return v5;
 }
 
-- (id)_validate:(id)a3
+- (id)_validate:(id)_validate
 {
-  v3 = a3;
-  if ([v3 type] != 2)
+  _validateCopy = _validate;
+  if ([_validateCopy type] != 2)
   {
     goto LABEL_4;
   }
 
-  v4 = [v3 outputDeviceUID];
-  if (!v4)
+  outputDeviceUID = [_validateCopy outputDeviceUID];
+  if (!outputDeviceUID)
   {
     goto LABEL_5;
   }
 
   v5 = +[MRUserSettings currentSettings];
-  v6 = [v5 enableRouteRecommendations];
+  enableRouteRecommendations = [v5 enableRouteRecommendations];
 
-  if ((v6 & 1) == 0)
+  if ((enableRouteRecommendations & 1) == 0)
   {
     v8 = [NSError alloc];
     active = MRMediaRemoteActiveEndpointTypeCopyDescription();
-    v4 = [v8 initWithMRError:3 format:{@"%@ is disabled via Settings", active}];
+    outputDeviceUID = [v8 initWithMRError:3 format:{@"%@ is disabled via Settings", active}];
   }
 
   else
   {
 LABEL_4:
-    v4 = 0;
+    outputDeviceUID = 0;
   }
 
 LABEL_5:
 
-  return v4;
+  return outputDeviceUID;
 }
 
-- (void)updateSystemEndpointForRequest:(id)a3 event:(int64_t)a4 eventReason:(id)a5 completion:(id)a6
+- (void)updateSystemEndpointForRequest:(id)request event:(int64_t)event eventReason:(id)reason completion:(id)completion
 {
-  v9 = a3;
-  v46 = a5;
-  v10 = a6;
-  v43 = v9;
-  v11 = [v9 copy];
+  requestCopy = request;
+  reasonCopy = reason;
+  completionCopy = completion;
+  v43 = requestCopy;
+  v11 = [requestCopy copy];
   v45 = +[MRDeviceInfoRequest localDeviceInfo];
-  v12 = [v11 outputDeviceUID];
-  v13 = [v45 WHAIdentifier];
-  v14 = [v12 isEqualToString:v13];
+  outputDeviceUID = [v11 outputDeviceUID];
+  wHAIdentifier = [v45 WHAIdentifier];
+  v14 = [outputDeviceUID isEqualToString:wHAIdentifier];
 
   if (v14)
   {
@@ -223,21 +223,21 @@ LABEL_5:
   v16 = [NSString alloc];
   [v11 type];
   active = MRMediaRemoteActiveEndpointTypeCopyDescription();
-  v18 = [v16 initWithFormat:@"SystemEndpointController.update%@", active];
+  active = [v16 initWithFormat:@"SystemEndpointController.update%@", active];
 
-  v44 = v18;
-  v19 = [[MRRequestDetails alloc] initWithName:v18 requestID:0 reason:v46];
+  v44 = active;
+  v19 = [[MRRequestDetails alloc] initWithName:active requestID:0 reason:reasonCopy];
   v20 = [NSMutableString alloc];
-  v21 = [v19 name];
-  v22 = [v19 requestID];
-  v23 = [v20 initWithFormat:@"%@<%@>", v21, v22];
+  name = [v19 name];
+  requestID = [v19 requestID];
+  v23 = [v20 initWithFormat:@"%@<%@>", name, requestID];
 
-  v24 = [v11 outputDeviceUID];
+  outputDeviceUID2 = [v11 outputDeviceUID];
 
-  if (v24)
+  if (outputDeviceUID2)
   {
-    v25 = [v11 outputDeviceUID];
-    [v23 appendFormat:@" for %@", v25];
+    outputDeviceUID3 = [v11 outputDeviceUID];
+    [v23 appendFormat:@" for %@", outputDeviceUID3];
   }
 
   v26 = _MRLogForCategory();
@@ -258,7 +258,7 @@ LABEL_5:
   v61 = v28;
   v42 = v15;
   v62 = v42;
-  v41 = v10;
+  v41 = completionCopy;
   v63 = v41;
   v29 = objc_retainBlock(v59);
   v30 = [(MRDAVSystemEndpointController *)self _validate:v27];
@@ -286,7 +286,7 @@ LABEL_5:
     if ([(MRDAVSystemEndpointController *)self _requiresPlaybackToUpdate:v33])
     {
       dispatch_group_enter(v35);
-      v36 = [v33 outputDeviceUID];
+      outputDeviceUID4 = [v33 outputDeviceUID];
       v37 = v55;
       v55[0] = _NSConcreteStackBlock;
       v55[1] = 3221225472;
@@ -294,7 +294,7 @@ LABEL_5:
       v55[3] = &unk_1004B6A20;
       v55[5] = &buf;
       v55[4] = v35;
-      [MRAVEndpoint connectToEndpointContainingOutputDeviceUID:v36 options:0 details:v28 completion:v55];
+      [MRAVEndpoint connectToEndpointContainingOutputDeviceUID:outputDeviceUID4 options:0 details:v28 completion:v55];
     }
 
     else
@@ -311,8 +311,8 @@ LABEL_14:
         v47[4] = self;
         v48 = v33;
         v49 = v34;
-        v53 = a4;
-        v50 = v46;
+        eventCopy = event;
+        v50 = reasonCopy;
         v51 = v29;
         v39 = v34;
         dispatch_group_notify(v35, v38, v47);
@@ -322,7 +322,7 @@ LABEL_14:
       }
 
       dispatch_group_enter(v35);
-      v36 = [v33 outputDeviceUID];
+      outputDeviceUID4 = [v33 outputDeviceUID];
       v37 = v54;
       v54[0] = _NSConcreteStackBlock;
       v54[1] = 3221225472;
@@ -330,7 +330,7 @@ LABEL_14:
       v54[3] = &unk_1004B6A20;
       v54[5] = &buf;
       v54[4] = v35;
-      [MRAVEndpoint connectToEndpointContainingOutputDeviceUID:v36 options:0 details:v28 completion:v54];
+      [MRAVEndpoint connectToEndpointContainingOutputDeviceUID:outputDeviceUID4 options:0 details:v28 completion:v54];
     }
 
     goto LABEL_14;
@@ -340,64 +340,64 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)updateSystemEndpointForRequest:(id)a3 event:(int64_t)a4 completion:(id)a5
+- (void)updateSystemEndpointForRequest:(id)request event:(int64_t)event completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 reason];
-  [(MRDAVSystemEndpointController *)self updateSystemEndpointForRequest:v9 event:a4 eventReason:v10 completion:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  reason = [requestCopy reason];
+  [(MRDAVSystemEndpointController *)self updateSystemEndpointForRequest:requestCopy event:event eventReason:reason completion:completionCopy];
 }
 
-- (void)updateSystemEndpointForRequest:(id)a3 completion:(id)a4
+- (void)updateSystemEndpointForRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 reason];
-  [(MRDAVSystemEndpointController *)self updateSystemEndpointForRequest:v7 event:1 eventReason:v8 completion:v6];
+  completionCopy = completion;
+  requestCopy = request;
+  reason = [requestCopy reason];
+  [(MRDAVSystemEndpointController *)self updateSystemEndpointForRequest:requestCopy event:1 eventReason:reason completion:completionCopy];
 }
 
-- (void)clearActiveEndpointType:(int64_t)a3 outputDeviceUID:(id)a4 event:(int64_t)a5 reason:(id)a6 clientBundleIdentifier:(id)a7
+- (void)clearActiveEndpointType:(int64_t)type outputDeviceUID:(id)d event:(int64_t)event reason:(id)reason clientBundleIdentifier:(id)identifier
 {
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  dCopy = d;
+  reasonCopy = reason;
+  identifierCopy = identifier;
   serialQueue = self->_serialQueue;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10004732C;
   v19[3] = &unk_1004B6A70;
   v19[4] = self;
-  v20 = v12;
-  v23 = a3;
-  v24 = a5;
-  v21 = v13;
-  v22 = v14;
-  v16 = v14;
-  v17 = v13;
-  v18 = v12;
+  v20 = dCopy;
+  typeCopy = type;
+  eventCopy = event;
+  v21 = reasonCopy;
+  v22 = identifierCopy;
+  v16 = identifierCopy;
+  v17 = reasonCopy;
+  v18 = dCopy;
   dispatch_sync(serialQueue, v19);
 }
 
-- (void)_onSerialQueue_clearActiveEndpointType:(int64_t)a3 outputDeviceUID:(id)a4 event:(int64_t)a5 reason:(id)a6 clientBundleIdentifier:(id)a7
+- (void)_onSerialQueue_clearActiveEndpointType:(int64_t)type outputDeviceUID:(id)d event:(int64_t)event reason:(id)reason clientBundleIdentifier:(id)identifier
 {
-  v17 = a4;
-  v12 = a6;
-  v13 = a7;
+  dCopy = d;
+  reasonCopy = reason;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_serialQueue);
-  v14 = [(MRDAVSystemEndpointController *)self activeOutputDeviceUID:a3];
-  if (v14 == v17 || [v17 isEqualToString:v14])
+  v14 = [(MRDAVSystemEndpointController *)self activeOutputDeviceUID:type];
+  if (v14 == dCopy || [dCopy isEqualToString:v14])
   {
-    v15 = [[MRUpdateActiveSystemEndpointRequest alloc] initWithOutputDeviceUID:0 reason:v12];
-    [v15 setClientBundleIdentifier:v13];
-    [v15 setType:a3];
-    v16 = [(MRDAVSystemEndpointController *)self _onSerialQueue_updateSystemEndpoint:v15 event:a5 eventReason:v12];
+    v15 = [[MRUpdateActiveSystemEndpointRequest alloc] initWithOutputDeviceUID:0 reason:reasonCopy];
+    [v15 setClientBundleIdentifier:identifierCopy];
+    [v15 setType:type];
+    v16 = [(MRDAVSystemEndpointController *)self _onSerialQueue_updateSystemEndpoint:v15 event:event eventReason:reasonCopy];
   }
 }
 
-- (id)originClientForDeviceUID:(id)a3
+- (id)originClientForDeviceUID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v27 = 0u;
     v28 = 0u;
@@ -408,9 +408,9 @@ LABEL_15:
     if (v5)
     {
       v6 = v5;
-      v7 = 0;
+      localOriginClient = 0;
       v8 = *v26;
-      v23 = v4;
+      v23 = dCopy;
       do
       {
         for (i = 0; i != v6; i = i + 1)
@@ -421,23 +421,23 @@ LABEL_15:
           }
 
           v10 = *(*(&v25 + 1) + 8 * i);
-          if ([v10 containsOutputDeviceWithUID:{v4, v23}])
+          if ([v10 containsOutputDeviceWithUID:{dCopy, v23}])
           {
-            v11 = [v10 externalDevice];
-            v12 = [v11 customOrigin];
+            externalDevice = [v10 externalDevice];
+            customOrigin = [externalDevice customOrigin];
 
-            v13 = [(MRDNowPlayingServer *)self->_nowPlayingServer originClientForOrigin:v12];
-            if (!v7)
+            v13 = [(MRDNowPlayingServer *)self->_nowPlayingServer originClientForOrigin:customOrigin];
+            if (!localOriginClient)
             {
               goto LABEL_11;
             }
 
-            v14 = [v7 registrationDate];
+            registrationDate = [localOriginClient registrationDate];
             [v13 registrationDate];
             v16 = v15 = self;
             v17 = v6;
             v18 = v8;
-            v19 = [v14 compare:v16];
+            v19 = [registrationDate compare:v16];
 
             self = v15;
             v20 = v19 == 1;
@@ -448,10 +448,10 @@ LABEL_15:
 LABEL_11:
               v21 = v13;
 
-              v7 = v21;
+              localOriginClient = v21;
             }
 
-            v4 = v23;
+            dCopy = v23;
           }
         }
 
@@ -463,48 +463,48 @@ LABEL_11:
 
     else
     {
-      v7 = 0;
+      localOriginClient = 0;
     }
   }
 
   else
   {
-    v7 = [(MRDNowPlayingServer *)self->_nowPlayingServer localOriginClient];
+    localOriginClient = [(MRDNowPlayingServer *)self->_nowPlayingServer localOriginClient];
   }
 
-  return v7;
+  return localOriginClient;
 }
 
-- (void)_handleOriginDidRegisterNotification:(id)a3
+- (void)_handleOriginDidRegisterNotification:(id)notification
 {
-  v4 = [a3 userInfo];
+  userInfo = [notification userInfo];
   v15 = MRGetDeviceInfoFromUserInfo();
 
   v5 = [(MRDAVSystemEndpointController *)self activeOutputDeviceUID:0];
   v6 = [NSString alloc];
   active = MRMediaRemoteActiveEndpointTypeCopyDescription();
-  v8 = [v15 deviceUID];
-  v9 = [v15 name];
-  v10 = [v6 initWithFormat:@"%@ origin registered <%@> (<%@>) ", active, v8, v9];
+  deviceUID = [v15 deviceUID];
+  name = [v15 name];
+  v10 = [v6 initWithFormat:@"%@ origin registered <%@> (<%@>) ", active, deviceUID, name];
 
-  v11 = [v15 deviceUID];
-  LODWORD(v8) = [v5 isEqualToString:v11];
+  deviceUID2 = [v15 deviceUID];
+  LODWORD(deviceUID) = [v5 isEqualToString:deviceUID2];
 
-  if (v8)
+  if (deviceUID)
   {
     v12 = [[MRUpdateActiveSystemEndpointRequest alloc] initWithOutputDeviceUID:v5 reason:v10];
     [v12 setChangeType:1];
     v13 = +[NSBundle mainBundle];
-    v14 = [v13 bundleIdentifier];
-    [v12 setClientBundleIdentifier:v14];
+    bundleIdentifier = [v13 bundleIdentifier];
+    [v12 setClientBundleIdentifier:bundleIdentifier];
 
     [(MRDAVSystemEndpointController *)self updateSystemEndpointForRequest:v12 event:3 eventReason:v10 completion:0];
   }
 }
 
-- (void)_handleOriginDidUnregisterNotification:(id)a3
+- (void)_handleOriginDidUnregisterNotification:(id)notification
 {
-  v4 = [a3 userInfo];
+  userInfo = [notification userInfo];
   v5 = MRGetOriginFromUserInfo();
 
   serialQueue = self->_serialQueue;
@@ -513,22 +513,22 @@ LABEL_11:
   v8[2] = sub_10004789C;
   v8[3] = &unk_1004B68F0;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v7 = v5;
   dispatch_sync(serialQueue, v8);
 }
 
-- (void)_handleOutputContextDidAddOutputDeviceNotification:(id)a3
+- (void)_handleOutputContextDidAddOutputDeviceNotification:(id)notification
 {
-  v9 = [a3 object];
+  object = [notification object];
   v4 = [(MRDAVSystemEndpointController *)self _hasPersonalDeviceForContext:?];
   v5 = v4;
   if (v4 && !self->_cachedHasPersonalDevices)
   {
     v6 = [[MRUpdateActiveSystemEndpointRequest alloc] initWithOutputDeviceUID:0 reason:@"personal device was attached"];
     v7 = +[NSBundle mainBundle];
-    v8 = [v7 bundleIdentifier];
-    [v6 setClientBundleIdentifier:v8];
+    bundleIdentifier = [v7 bundleIdentifier];
+    [v6 setClientBundleIdentifier:bundleIdentifier];
 
     [(MRDAVSystemEndpointController *)self updateSystemEndpointForRequest:v6];
   }
@@ -536,11 +536,11 @@ LABEL_11:
   self->_cachedHasPersonalDevices = v5;
 }
 
-- (void)_handleIsPlayingDidChangeNotification:(id)a3
+- (void)_handleIsPlayingDidChangeNotification:(id)notification
 {
-  v4 = [a3 playerPath];
-  v5 = [v4 client];
-  v6 = [v5 processIdentifier];
+  playerPath = [notification playerPath];
+  client = [playerPath client];
+  processIdentifier = [client processIdentifier];
 
   v7 = 5;
   serialQueue = self->_serialQueue;
@@ -548,75 +548,75 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = sub_100047D5C;
   block[3] = &unk_1004B6AC0;
-  if (!v6)
+  if (!processIdentifier)
   {
     v7 = 7;
   }
 
-  v11 = v4;
-  v12 = self;
+  v11 = playerPath;
+  selfCopy = self;
   v13 = v7;
-  v9 = v4;
+  v9 = playerPath;
   dispatch_sync(serialQueue, block);
 }
 
-- (void)_onSerialQueue_reevaluateActiveEndpoint:(int64_t)a3 event:(int64_t)a4 changeType:(int64_t)a5 eventReason:(id)a6 clientBundleIdentifier:(id)a7
+- (void)_onSerialQueue_reevaluateActiveEndpoint:(int64_t)endpoint event:(int64_t)event changeType:(int64_t)type eventReason:(id)reason clientBundleIdentifier:(id)identifier
 {
-  v12 = a6;
-  v13 = a7;
+  reasonCopy = reason;
+  identifierCopy = identifier;
   v14 = _MRLogForCategory();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    sub_1003A48D0(a3, v12, v14);
+    sub_1003A48D0(endpoint, reasonCopy, v14);
   }
 
   v20 = 0;
   v19 = 0;
-  v15 = [(MRDAVSystemEndpointController *)self _onSerialQueue_calculateActiveEndpoint:a3 event:a4 reason:&v19 suppressPairedDeviceSync:&v20];
+  v15 = [(MRDAVSystemEndpointController *)self _onSerialQueue_calculateActiveEndpoint:endpoint event:event reason:&v19 suppressPairedDeviceSync:&v20];
   v16 = v19;
   v17 = [[MRUpdateActiveSystemEndpointRequest alloc] initWithOutputDeviceUID:v15 reason:v16];
-  [v17 setChangeType:a5];
-  [v17 setClientBundleIdentifier:v13];
+  [v17 setChangeType:type];
+  [v17 setClientBundleIdentifier:identifierCopy];
 
-  [v17 setType:a3];
+  [v17 setType:endpoint];
   [v17 setSuppressPairedDeviceSync:v20];
-  v18 = [(MRDAVSystemEndpointController *)self _onSerialQueue_updateSystemEndpoint:v17 event:a4 eventReason:v12];
+  v18 = [(MRDAVSystemEndpointController *)self _onSerialQueue_updateSystemEndpoint:v17 event:event eventReason:reasonCopy];
 }
 
-- (id)_onSerialQueue_calculateActiveEndpoint:(int64_t)a3 event:(int64_t)a4 reason:(id *)a5 suppressPairedDeviceSync:(BOOL *)a6
+- (id)_onSerialQueue_calculateActiveEndpoint:(int64_t)endpoint event:(int64_t)event reason:(id *)reason suppressPairedDeviceSync:(BOOL *)sync
 {
   dispatch_assert_queue_V2(self->_serialQueue);
   v11 = 0;
-  if (a3 > 1)
+  if (endpoint > 1)
   {
-    if (a3 == 2)
+    if (endpoint == 2)
     {
-      v11 = [(MRDAVSystemEndpointController *)self _onSerialQueue_calculateRecommendedEndpointForEvent:a4 reason:a5];
+      v11 = [(MRDAVSystemEndpointController *)self _onSerialQueue_calculateRecommendedEndpointForEvent:event reason:reason];
     }
 
-    else if (a3 == 3)
+    else if (endpoint == 3)
     {
-      v11 = [(MRDAVSystemEndpointController *)self _onSerialQueue_calculateProactiveRecommendedEndpoint:a5];
+      v11 = [(MRDAVSystemEndpointController *)self _onSerialQueue_calculateProactiveRecommendedEndpoint:reason];
     }
   }
 
-  else if (a3)
+  else if (endpoint)
   {
-    if (a3 == 1)
+    if (endpoint == 1)
     {
-      v11 = [(MRDAVSystemEndpointController *)self _onSerialQueue_calculateProactiveEndpointForEvent:a4 reason:a5];
+      v11 = [(MRDAVSystemEndpointController *)self _onSerialQueue_calculateProactiveEndpointForEvent:event reason:reason];
     }
   }
 
   else
   {
-    v11 = [(MRDAVSystemEndpointController *)self _onSerialQueue_calculateUserSelectedEndpointForEvent:a4 reason:a5 suppressPairedDeviceSync:a6];
+    v11 = [(MRDAVSystemEndpointController *)self _onSerialQueue_calculateUserSelectedEndpointForEvent:event reason:reason suppressPairedDeviceSync:sync];
   }
 
   return v11;
 }
 
-- (id)_onSerialQueue_calculateUserSelectedEndpointForEvent:(int64_t)a3 reason:(id *)a4 suppressPairedDeviceSync:(BOOL *)a5
+- (id)_onSerialQueue_calculateUserSelectedEndpointForEvent:(int64_t)event reason:(id *)reason suppressPairedDeviceSync:(BOOL *)sync
 {
   dispatch_assert_queue_V2(self->_serialQueue);
   v8 = [(NSMutableDictionary *)self->_systemEndpointEntries objectForKeyedSubscript:&off_1004E04A0];
@@ -625,33 +625,33 @@ LABEL_11:
   {
     v18 = [NSString alloc];
     active = MRMediaRemoteActiveEndpointTypeCopyDescription();
-    v17 = [v18 initWithFormat:@"No %@SystemEndpoint", active];
+    active = [v18 initWithFormat:@"No %@SystemEndpoint", active];
     goto LABEL_7;
   }
 
-  v10 = [v8 outputDeviceUID];
-  active = [(MRDAVSystemEndpointController *)self originClientForDeviceUID:v10];
+  outputDeviceUID = [v8 outputDeviceUID];
+  active = [(MRDAVSystemEndpointController *)self originClientForDeviceUID:outputDeviceUID];
 
   [active timeSincePlaying];
   v13 = v12;
-  v14 = [v9 date];
-  [v14 timeIntervalSinceNow];
+  date = [v9 date];
+  [date timeIntervalSinceNow];
   v16 = v15;
 
   if (([v9 supportsIdleReset] & 1) == 0)
   {
-    *a4 = @"doesn't participate in idle reset";
+    *reason = @"doesn't participate in idle reset";
 LABEL_9:
-    v19 = [v9 outputDeviceUID];
+    outputDeviceUID2 = [v9 outputDeviceUID];
     goto LABEL_10;
   }
 
-  if (a3 == 6 && active)
+  if (event == 6 && active)
   {
-    v17 = [[NSString alloc] initWithFormat:@"was not playing sort of recently <%lf> seconds ago", *&v13];
+    active = [[NSString alloc] initWithFormat:@"was not playing sort of recently <%lf> seconds ago", *&v13];
 LABEL_7:
-    v19 = 0;
-    *a4 = v17;
+    outputDeviceUID2 = 0;
+    *reason = active;
     goto LABEL_10;
   }
 
@@ -663,16 +663,16 @@ LABEL_7:
 
     if (v13 < v23)
     {
-      *a4 = [[NSString alloc] initWithFormat:@"was playing recently <%lf> seconds ago", *&v13];
+      *reason = [[NSString alloc] initWithFormat:@"was playing recently <%lf> seconds ago", *&v13];
       goto LABEL_9;
     }
   }
 
-  if (a3 == 2)
+  if (event == 2)
   {
     v24 = [NSString alloc];
-    v25 = MRMediaRemoteActiveEndpointTypeCopyDescription();
-    v26 = [v24 initWithFormat:@"was not <%@> sort of recently <%lf> seconds ago", v25, *&v13];
+    outputDeviceUID3 = MRMediaRemoteActiveEndpointTypeCopyDescription();
+    v26 = [v24 initWithFormat:@"was not <%@> sort of recently <%lf> seconds ago", outputDeviceUID3, *&v13];
   }
 
   else
@@ -686,7 +686,7 @@ LABEL_7:
     if (v30 > v27)
     {
       v32 = MRMediaRemoteActiveEndpointTypeCopyDescription();
-      *a4 = [v31 initWithFormat:@"was <%@> recently <%lf> seconds ago", v32, *&v27];
+      *reason = [v31 initWithFormat:@"was <%@> recently <%lf> seconds ago", v32, *&v27];
 
       goto LABEL_9;
     }
@@ -695,57 +695,57 @@ LABEL_7:
     {
       [active timeSincePlaying];
       v34 = v33;
-      v25 = MRMediaRemoteActiveEndpointTypeCopyDescription();
-      v35 = [v9 date];
-      [v35 timeIntervalSinceNow];
-      *a4 = [v31 initWithFormat:@"was not playing recently <%lf> ago and was not <%@> recently <%lf> seconds ago", v34, v25, -v36];
+      outputDeviceUID3 = MRMediaRemoteActiveEndpointTypeCopyDescription();
+      date2 = [v9 date];
+      [date2 timeIntervalSinceNow];
+      *reason = [v31 initWithFormat:@"was not playing recently <%lf> ago and was not <%@> recently <%lf> seconds ago", v34, outputDeviceUID3, -v36];
 
       goto LABEL_23;
     }
 
-    v25 = [v9 outputDeviceUID];
-    v26 = [v31 initWithFormat:@"Could not find origin with deviceUID = <%@>", v25, v37];
+    outputDeviceUID3 = [v9 outputDeviceUID];
+    v26 = [v31 initWithFormat:@"Could not find origin with deviceUID = <%@>", outputDeviceUID3, v37];
   }
 
-  *a4 = v26;
+  *reason = v26;
 LABEL_23:
 
-  v19 = 0;
+  outputDeviceUID2 = 0;
 LABEL_10:
 
-  return v19;
+  return outputDeviceUID2;
 }
 
-- (id)_onSerialQueue_calculateProactiveEndpointForEvent:(int64_t)a3 reason:(id *)a4
+- (id)_onSerialQueue_calculateProactiveEndpointForEvent:(int64_t)event reason:(id *)reason
 {
   dispatch_assert_queue_V2(self->_serialQueue);
-  v6 = [(MRDNowPlayingServer *)self->_nowPlayingServer localOriginClient];
-  v7 = [v6 activeNowPlayingClient];
-  v8 = [v7 activePlayerClient];
+  localOriginClient = [(MRDNowPlayingServer *)self->_nowPlayingServer localOriginClient];
+  activeNowPlayingClient = [localOriginClient activeNowPlayingClient];
+  activePlayerClient = [activeNowPlayingClient activePlayerClient];
 
-  if ([v8 isPlaying])
+  if ([activePlayerClient isPlaying])
   {
     v9 = [NSString alloc];
-    v10 = [v8 playerPath];
-    v11 = [v9 initWithFormat:@"local activePlayer %@ is playing", v10];
+    playerPath = [activePlayerClient playerPath];
+    v11 = [v9 initWithFormat:@"local activePlayer %@ is playing", playerPath];
     v12 = 0;
-    *a4 = v11;
+    *reason = v11;
   }
 
   else
   {
-    v10 = [(NSMutableDictionary *)self->_systemEndpointEntries objectForKeyedSubscript:&off_1004E04A0];
-    v13 = [v10 outputDeviceUID];
-    v14 = [(MRDAVSystemEndpointController *)self originClientForDeviceUID:v13];
+    playerPath = [(NSMutableDictionary *)self->_systemEndpointEntries objectForKeyedSubscript:&off_1004E04A0];
+    outputDeviceUID = [playerPath outputDeviceUID];
+    v14 = [(MRDAVSystemEndpointController *)self originClientForDeviceUID:outputDeviceUID];
     if (v14)
     {
-      *a4 = MRMediaRemoteActiveEndpointTypeCopyDescription();
-      v15 = v13;
+      *reason = MRMediaRemoteActiveEndpointTypeCopyDescription();
+      v15 = outputDeviceUID;
     }
 
     else
     {
-      *a4 = @"Fallback to previous";
+      *reason = @"Fallback to previous";
       v15 = [(MRDAVSystemEndpointController *)self activeOutputDeviceUID:1];
     }
 
@@ -755,7 +755,7 @@ LABEL_10:
   return v12;
 }
 
-- (id)_onSerialQueue_calculateRecommendedEndpointForEvent:(int64_t)a3 reason:(id *)a4
+- (id)_onSerialQueue_calculateRecommendedEndpointForEvent:(int64_t)event reason:(id *)reason
 {
   dispatch_assert_queue_V2(self->_serialQueue);
   systemEndpointEntries = self->_systemEndpointEntries;
@@ -764,28 +764,28 @@ LABEL_10:
 
   if (v8)
   {
-    v9 = [v8 outputDeviceUID];
-    active = [(MRDAVSystemEndpointController *)self originClientForDeviceUID:v9];
+    outputDeviceUID = [v8 outputDeviceUID];
+    active = [(MRDAVSystemEndpointController *)self originClientForDeviceUID:outputDeviceUID];
 
-    v11 = [active activeNowPlayingClient];
-    v12 = [v11 activePlayerClient];
+    activeNowPlayingClient = [active activeNowPlayingClient];
+    activePlayerClient = [activeNowPlayingClient activePlayerClient];
 
-    if ([v12 isPlaying])
+    if ([activePlayerClient isPlaying])
     {
       v13 = [NSString alloc];
-      v14 = [v12 playerPath];
-      *a4 = [v13 initWithFormat:@"%@ is playing", v14];
+      playerPath = [activePlayerClient playerPath];
+      *reason = [v13 initWithFormat:@"%@ is playing", playerPath];
 
-      v15 = [v8 outputDeviceUID];
+      outputDeviceUID2 = [v8 outputDeviceUID];
     }
 
     else
     {
-      if (v12)
+      if (activePlayerClient)
       {
         v17 = [NSString alloc];
-        v18 = [v12 playerPath];
-        v19 = [v17 initWithFormat:@"%@ is not playing", v18];
+        playerPath2 = [activePlayerClient playerPath];
+        v19 = [v17 initWithFormat:@"%@ is not playing", playerPath2];
       }
 
       else
@@ -793,20 +793,20 @@ LABEL_10:
         v20 = [NSString alloc];
         if (active)
         {
-          v18 = [active playerPath];
-          v19 = [v20 initWithFormat:@"%@ does not have a now playing app", v18];
+          playerPath2 = [active playerPath];
+          v19 = [v20 initWithFormat:@"%@ does not have a now playing app", playerPath2];
         }
 
         else
         {
-          v18 = [v8 outputDeviceUID];
-          v19 = [v20 initWithFormat:@"Could not find origin with deviceUID = <%@>", v18];
+          playerPath2 = [v8 outputDeviceUID];
+          v19 = [v20 initWithFormat:@"Could not find origin with deviceUID = <%@>", playerPath2];
         }
       }
 
-      *a4 = v19;
+      *reason = v19;
 
-      v15 = 0;
+      outputDeviceUID2 = 0;
     }
   }
 
@@ -814,60 +814,60 @@ LABEL_10:
   {
     v16 = [NSString alloc];
     active = MRMediaRemoteActiveEndpointTypeCopyDescription();
-    v15 = 0;
-    *a4 = [v16 initWithFormat:@"No %@SystemEndpoint", active];
+    outputDeviceUID2 = 0;
+    *reason = [v16 initWithFormat:@"No %@SystemEndpoint", active];
   }
 
-  return v15;
+  return outputDeviceUID2;
 }
 
-- (id)_onSerialQueue_calculateProactiveRecommendedEndpoint:(id *)a3
+- (id)_onSerialQueue_calculateProactiveRecommendedEndpoint:(id *)endpoint
 {
   dispatch_assert_queue_V2(self->_serialQueue);
-  v5 = [(MRDNowPlayingServer *)self->_nowPlayingServer localOriginClient];
-  v6 = [v5 activeNowPlayingClient];
-  v7 = [v6 activePlayerClient];
+  localOriginClient = [(MRDNowPlayingServer *)self->_nowPlayingServer localOriginClient];
+  activeNowPlayingClient = [localOriginClient activeNowPlayingClient];
+  activePlayerClient = [activeNowPlayingClient activePlayerClient];
 
-  if ([v7 isPlaying])
+  if ([activePlayerClient isPlaying])
   {
     v8 = [NSString alloc];
-    v9 = [v7 playerPath];
-    v10 = [v8 initWithFormat:@"local activePlayer %@ is playing", v9];
-    v11 = 0;
-    *a3 = v10;
+    playerPath = [activePlayerClient playerPath];
+    v10 = [v8 initWithFormat:@"local activePlayer %@ is playing", playerPath];
+    outputDeviceUID = 0;
+    *endpoint = v10;
   }
 
   else
   {
-    *a3 = @"Fallback to recommended";
-    v9 = [(NSMutableDictionary *)self->_systemEndpointEntries objectForKeyedSubscript:&off_1004E04B8];
-    v11 = [v9 outputDeviceUID];
+    *endpoint = @"Fallback to recommended";
+    playerPath = [(NSMutableDictionary *)self->_systemEndpointEntries objectForKeyedSubscript:&off_1004E04B8];
+    outputDeviceUID = [playerPath outputDeviceUID];
   }
 
-  return v11;
+  return outputDeviceUID;
 }
 
-- (id)_onSerialQueue_calculateProactiveRecommendedEndpointForWatch:(id *)a3
+- (id)_onSerialQueue_calculateProactiveRecommendedEndpointForWatch:(id *)watch
 {
   v5 = [MRDWatchRSECandidate alloc];
-  v6 = [(MRDNowPlayingServer *)self->_nowPlayingServer localOriginClient];
-  v7 = [(MRDWatchRSECandidate *)v5 initWithOriginClient:v6 namePrefix:@"LOCAL" isLocal:1];
+  localOriginClient = [(MRDNowPlayingServer *)self->_nowPlayingServer localOriginClient];
+  v7 = [(MRDWatchRSECandidate *)v5 initWithOriginClient:localOriginClient namePrefix:@"LOCAL" isLocal:1];
 
-  v8 = [(MRDNowPlayingServer *)self->_nowPlayingServer companionOriginClient];
+  companionOriginClient = [(MRDNowPlayingServer *)self->_nowPlayingServer companionOriginClient];
 
-  v9 = _MRLogForCategory();
-  v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  companionOriginClient2 = _MRLogForCategory();
+  v10 = os_log_type_enabled(companionOriginClient2, OS_LOG_TYPE_DEFAULT);
+  if (companionOriginClient)
   {
     if (v10)
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[SystemEndpointController] Adding companionOriginClient", buf, 2u);
+      _os_log_impl(&_mh_execute_header, companionOriginClient2, OS_LOG_TYPE_DEFAULT, "[SystemEndpointController] Adding companionOriginClient", buf, 2u);
     }
 
     v11 = [MRDWatchRSECandidate alloc];
-    v9 = [(MRDNowPlayingServer *)self->_nowPlayingServer companionOriginClient];
-    v12 = [(MRDWatchRSECandidate *)v11 initWithOriginClient:v9 namePrefix:@"CMPN" isLocal:0];
+    companionOriginClient2 = [(MRDNowPlayingServer *)self->_nowPlayingServer companionOriginClient];
+    v12 = [(MRDWatchRSECandidate *)v11 initWithOriginClient:companionOriginClient2 namePrefix:@"CMPN" isLocal:0];
   }
 
   else
@@ -875,18 +875,18 @@ LABEL_10:
     if (v10)
     {
       *v23 = 0;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[SystemEndpointController] companionOriginClient not present", v23, 2u);
+      _os_log_impl(&_mh_execute_header, companionOriginClient2, OS_LOG_TYPE_DEFAULT, "[SystemEndpointController] companionOriginClient not present", v23, 2u);
     }
 
     v12 = 0;
   }
 
   v13 = [(NSMutableDictionary *)self->_systemEndpointEntries objectForKeyedSubscript:&off_1004E04A0];
-  v14 = [v13 outputDeviceUID];
+  outputDeviceUID = [v13 outputDeviceUID];
 
-  if (v14)
+  if (outputDeviceUID)
   {
-    v15 = [(MRDAVSystemEndpointController *)self originClientForDeviceUID:v14];
+    v15 = [(MRDAVSystemEndpointController *)self originClientForDeviceUID:outputDeviceUID];
     if (v15)
     {
       v16 = [[MRDWatchRSECandidate alloc] initWithOriginClient:v15 namePrefix:@"UserSelected" isLocal:0];
@@ -904,11 +904,11 @@ LABEL_10:
   }
 
   v17 = [(NSMutableDictionary *)self->_systemEndpointEntries objectForKeyedSubscript:&off_1004E04B8];
-  v18 = [v17 outputDeviceUID];
+  outputDeviceUID2 = [v17 outputDeviceUID];
 
-  if (v18)
+  if (outputDeviceUID2)
   {
-    v19 = [(MRDAVSystemEndpointController *)self originClientForDeviceUID:v18];
+    v19 = [(MRDAVSystemEndpointController *)self originClientForDeviceUID:outputDeviceUID2];
     if (v19)
     {
       v20 = [[MRDWatchRSECandidate alloc] initWithOriginClient:v19 namePrefix:@"RSE" isLocal:0];
@@ -925,16 +925,16 @@ LABEL_10:
     v20 = 0;
   }
 
-  v21 = [MRDWatchRSECandidatePicker proactiveRecommendedWithLocal:v7 companion:v12 userSelected:v16 rse:v20 selectionReason:a3];
+  v21 = [MRDWatchRSECandidatePicker proactiveRecommendedWithLocal:v7 companion:v12 userSelected:v16 rse:v20 selectionReason:watch];
 
   return v21;
 }
 
-- (id)_isAllowedToUpdateRecommendationForOutputDevice:(id)a3 recentlyDismissed:(id)a4
+- (id)_isAllowedToUpdateRecommendationForOutputDevice:(id)device recentlyDismissed:(id)dismissed
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  deviceCopy = device;
+  v6 = deviceCopy;
+  if (!deviceCopy)
   {
     v26 = 0;
     goto LABEL_13;
@@ -944,15 +944,15 @@ LABEL_10:
   v33 = 3221225472;
   v34 = sub_100048D90;
   v35 = &unk_1004B6AE8;
-  v7 = v5;
+  v7 = deviceCopy;
   v36 = v7;
-  v8 = [a4 msv_firstWhere:&v32];
+  v8 = [dismissed msv_firstWhere:&v32];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 date];
+    date = [v8 date];
     [v9 disableDuration];
-    v11 = [v10 dateByAddingTimeInterval:?];
+    v11 = [date dateByAddingTimeInterval:?];
 
     v12 = +[NSDate now];
     v13 = [v12 compare:v11];
@@ -961,23 +961,23 @@ LABEL_10:
     {
       v27 = [NSError alloc];
       active = MRMediaRemoteActiveEndpointTypeCopyDescription();
-      v21 = [v9 date];
-      v22 = [v9 date];
-      [v22 timeIntervalSinceNow];
+      date2 = [v9 date];
+      date3 = [v9 date];
+      [date3 timeIntervalSinceNow];
       v29 = v28;
       [v11 timeIntervalSinceNow];
-      v26 = [v27 initWithMRError:3 format:{@"Cannot update the %@ yet. Was last dismissed at %@ (%lf seconds ago). Cannot set until %@ (%lf more seconds)", active, v21, v29, v11, v30, v32, v33, v34, v35}];
+      v26 = [v27 initWithMRError:3 format:{@"Cannot update the %@ yet. Was last dismissed at %@ (%lf seconds ago). Cannot set until %@ (%lf more seconds)", active, date2, v29, v11, v30, v32, v33, v34, v35}];
     }
 
     else
     {
       v14 = +[MRDMediaRemoteServer server];
-      v15 = [v14 nowPlayingServer];
-      active = [v15 originClientForDeviceUID:v7];
+      nowPlayingServer = [v14 nowPlayingServer];
+      active = [nowPlayingServer originClientForDeviceUID:v7];
 
-      v17 = [active devicePlaybackSessionID];
-      v18 = [v9 devicePlaybackSessionID];
-      v19 = [v17 isEqualToString:v18];
+      devicePlaybackSessionID = [active devicePlaybackSessionID];
+      devicePlaybackSessionID2 = [v9 devicePlaybackSessionID];
+      v19 = [devicePlaybackSessionID isEqualToString:devicePlaybackSessionID2];
 
       if (!v19)
       {
@@ -986,12 +986,12 @@ LABEL_10:
       }
 
       v20 = [NSError alloc];
-      v21 = MRMediaRemoteActiveEndpointTypeCopyDescription();
-      v22 = [v9 devicePlaybackSessionID];
-      v23 = [v9 date];
-      v24 = [v9 date];
-      [v24 timeIntervalSinceNow];
-      v26 = [v20 initWithMRError:3 format:{@"Cannot update the %@ to outputDeviceUID=%@ while devicePlaybackSessionID=%@, it was already dismissed at %@ (%lf seconds ago)", v21, v7, v22, v23, v25, v32, v33, v34, v35}];
+      date2 = MRMediaRemoteActiveEndpointTypeCopyDescription();
+      date3 = [v9 devicePlaybackSessionID];
+      date4 = [v9 date];
+      date5 = [v9 date];
+      [date5 timeIntervalSinceNow];
+      v26 = [v20 initWithMRError:3 format:{@"Cannot update the %@ to outputDeviceUID=%@ while devicePlaybackSessionID=%@, it was already dismissed at %@ (%lf seconds ago)", date2, v7, date3, date4, v25, v32, v33, v34, v35}];
     }
 
 LABEL_11:
@@ -1006,18 +1006,18 @@ LABEL_13:
   return v26;
 }
 
-- (void)_storeRecentlyDismissedRecommendationForOutputDeviceUID:(id)a3 disableDuration:(double)a4
+- (void)_storeRecentlyDismissedRecommendationForOutputDeviceUID:(id)d disableDuration:(double)duration
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 && a4 > 0.0)
+  dCopy = d;
+  v7 = dCopy;
+  if (dCopy && duration > 0.0)
   {
     recentlyDismissedRecommendations = self->_recentlyDismissedRecommendations;
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_100048F74;
     v18[3] = &unk_1004B6AE8;
-    v9 = v6;
+    v9 = dCopy;
     v19 = v9;
     v10 = [(NSMutableArray *)recentlyDismissedRecommendations msv_firstWhere:v18];
     if (v10)
@@ -1026,114 +1026,114 @@ LABEL_13:
     }
 
     v11 = +[MRDMediaRemoteServer server];
-    v12 = [v11 nowPlayingServer];
-    v13 = [v12 originClientForDeviceUID:v9];
+    nowPlayingServer = [v11 nowPlayingServer];
+    v13 = [nowPlayingServer originClientForDeviceUID:v9];
 
     v14 = [MRDSystemEndpointControllerRecentlyDismissedRecommendation alloc];
     v15 = +[NSDate now];
-    v16 = [v13 devicePlaybackSessionID];
-    v17 = [(MRDSystemEndpointControllerRecentlyDismissedRecommendation *)v14 initWithOutputDevice:v9 date:v15 disableDuration:v16 devicePlaybackSessionID:a4];
+    devicePlaybackSessionID = [v13 devicePlaybackSessionID];
+    v17 = [(MRDSystemEndpointControllerRecentlyDismissedRecommendation *)v14 initWithOutputDevice:v9 date:v15 disableDuration:devicePlaybackSessionID devicePlaybackSessionID:duration];
 
     [(NSMutableArray *)self->_recentlyDismissedRecommendations addObject:v17];
   }
 }
 
-- (id)_onSerialQueue_updateSystemEndpoint:(id)a3 event:(int64_t)a4 eventReason:(id)a5
+- (id)_onSerialQueue_updateSystemEndpoint:(id)endpoint event:(int64_t)event eventReason:(id)reason
 {
-  v7 = a3;
-  v8 = a5;
+  endpointCopy = endpoint;
+  reasonCopy = reason;
   dispatch_assert_queue_V2(self->_serialQueue);
-  v9 = [v7 type];
+  type = [endpointCopy type];
   systemEndpointEntries = self->_systemEndpointEntries;
-  v11 = [NSNumber numberWithInteger:v9];
+  v11 = [NSNumber numberWithInteger:type];
   v12 = [(NSMutableDictionary *)systemEndpointEntries objectForKeyedSubscript:v11];
 
-  v13 = [v12 outputDeviceUID];
-  v14 = [v7 outputDeviceUID];
+  outputDeviceUID = [v12 outputDeviceUID];
+  outputDeviceUID2 = [endpointCopy outputDeviceUID];
   v15 = +[MRDMediaRemoteServer server];
-  v16 = [v15 groupSessionServer];
-  v17 = [v16 sessionManager];
+  groupSessionServer = [v15 groupSessionServer];
+  sessionManager = [groupSessionServer sessionManager];
 
-  v95 = v17;
-  v18 = [v17 session];
-  v19 = [v18 identifier];
-  v20 = [v19 isEqualToString:v14];
+  v95 = sessionManager;
+  session = [sessionManager session];
+  identifier = [session identifier];
+  v20 = [identifier isEqualToString:outputDeviceUID2];
 
-  v21 = v9;
-  if (v9 == 2)
+  v21 = type;
+  if (type == 2)
   {
-    [v7 disableDuration];
-    [(MRDAVSystemEndpointController *)self _storeRecentlyDismissedRecommendationForOutputDeviceUID:v13 disableDuration:?];
-    v22 = [(MRDAVSystemEndpointController *)self _isAllowedToUpdateRecommendationForOutputDevice:v14 recentlyDismissed:self->_recentlyDismissedRecommendations];
+    [endpointCopy disableDuration];
+    [(MRDAVSystemEndpointController *)self _storeRecentlyDismissedRecommendationForOutputDeviceUID:outputDeviceUID disableDuration:?];
+    v22 = [(MRDAVSystemEndpointController *)self _isAllowedToUpdateRecommendationForOutputDevice:outputDeviceUID2 recentlyDismissed:self->_recentlyDismissedRecommendations];
     if (v22)
     {
       goto LABEL_48;
     }
   }
 
-  v23 = [v7 changeType];
+  changeType = [endpointCopy changeType];
   v24 = 0;
   v99 = v21;
-  if (v21 == 1 && v23)
+  if (v21 == 1 && changeType)
   {
-    if (a4 == 5)
+    if (event == 5)
     {
-      if (v13)
+      if (outputDeviceUID)
       {
         v24 = 0;
         goto LABEL_13;
       }
 
-      v25 = [v7 outputDeviceUID];
+      outputDeviceUID3 = [endpointCopy outputDeviceUID];
       goto LABEL_12;
     }
 
     v24 = 0;
-    if ((a4 & 0xFFFFFFFFFFFFFFFBLL) == 2 && v13)
+    if ((event & 0xFFFFFFFFFFFFFFFBLL) == 2 && outputDeviceUID)
     {
-      v25 = [(MRDAVSystemEndpointController *)self originClientForDeviceUID:v13];
+      outputDeviceUID3 = [(MRDAVSystemEndpointController *)self originClientForDeviceUID:outputDeviceUID];
 LABEL_12:
-      v24 = v25 != 0;
+      v24 = outputDeviceUID3 != 0;
     }
   }
 
 LABEL_13:
-  v92 = self;
-  v26 = v14 != 0;
+  selfCopy = self;
+  v26 = outputDeviceUID2 != 0;
   v27 = objc_alloc_init(MRDSystemEndpointEntry);
-  v90 = v14;
-  [(MRDSystemEndpointEntry *)v27 setOutputDeviceUID:v14];
+  v90 = outputDeviceUID2;
+  [(MRDSystemEndpointEntry *)v27 setOutputDeviceUID:outputDeviceUID2];
   [(MRDSystemEndpointEntry *)v27 setType:v99];
-  [(MRDSystemEndpointEntry *)v27 setEvent:a4];
-  v28 = [v7 reason];
-  [(MRDSystemEndpointEntry *)v27 setSelectionReason:v28];
+  [(MRDSystemEndpointEntry *)v27 setEvent:event];
+  reason = [endpointCopy reason];
+  [(MRDSystemEndpointEntry *)v27 setSelectionReason:reason];
 
-  v29 = v8;
-  [(MRDSystemEndpointEntry *)v27 setEventReason:v8];
+  v29 = reasonCopy;
+  [(MRDSystemEndpointEntry *)v27 setEventReason:reasonCopy];
   [(MRDSystemEndpointEntry *)v27 setChangeType:v24];
   v94 = v27;
   [(MRDSystemEndpointEntry *)v27 setSupportsIdleReset:v26 & (v20 ^ 1)];
-  v30 = [v7 demoteWhenSyncingToCompanion];
+  demoteWhenSyncingToCompanion = [endpointCopy demoteWhenSyncingToCompanion];
   v31 = +[NSDate date];
-  v96 = v7;
-  v32 = [v7 outputDeviceUID];
-  v33 = v32;
-  v97 = v13;
+  v96 = endpointCopy;
+  outputDeviceUID4 = [endpointCopy outputDeviceUID];
+  v33 = outputDeviceUID4;
+  v97 = outputDeviceUID;
   v98 = v29;
-  if (v32 == v13)
+  if (outputDeviceUID4 == outputDeviceUID)
   {
 
-    v35 = v92;
+    v35 = selfCopy;
   }
 
   else
   {
-    v34 = [v32 isEqual:v13];
+    v34 = [outputDeviceUID4 isEqual:outputDeviceUID];
 
-    v35 = v92;
+    v35 = selfCopy;
     if (!v34)
     {
-      v36 = a4;
+      eventCopy2 = event;
       v37 = v24;
 LABEL_20:
       v38 = v99;
@@ -1141,10 +1141,10 @@ LABEL_20:
     }
   }
 
-  v30 = (v30 | [v12 demoteWhenSyncingToCompanion]);
-  v36 = a4;
+  demoteWhenSyncingToCompanion = (demoteWhenSyncingToCompanion | [v12 demoteWhenSyncingToCompanion]);
+  eventCopy2 = event;
   v37 = v24;
-  if (a4 == 1)
+  if (event == 1)
   {
     goto LABEL_20;
   }
@@ -1152,29 +1152,29 @@ LABEL_20:
   v38 = v99;
   if (v12)
   {
-    v39 = [v12 date];
+    date = [v12 date];
 
-    v31 = v39;
+    v31 = date;
   }
 
 LABEL_21:
   v40 = v94;
-  [(MRDSystemEndpointEntry *)v94 setDemoteWhenSyncingToCompanion:v30];
+  [(MRDSystemEndpointEntry *)v94 setDemoteWhenSyncingToCompanion:demoteWhenSyncingToCompanion];
   v89 = v31;
   [(MRDSystemEndpointEntry *)v94 setDate:v31];
   v41 = v35->_systemEndpointEntries;
   v42 = [NSNumber numberWithInteger:v38];
   [(NSMutableDictionary *)v41 setObject:v94 forKeyedSubscript:v42];
 
-  v43 = [(MRDAVSystemEndpointController *)v35 systemEndpointInfo];
-  v44 = [(MRDAVSystemEndpointController *)v35 recentlyDismissedRecommendationsInfo];
-  [(MRDAVSystemEndpointController *)v35 _writeSystemEndpointInfo:v43 recentlyDismissedRecommendationsInfo:v44];
+  systemEndpointInfo = [(MRDAVSystemEndpointController *)v35 systemEndpointInfo];
+  recentlyDismissedRecommendationsInfo = [(MRDAVSystemEndpointController *)v35 recentlyDismissedRecommendationsInfo];
+  [(MRDAVSystemEndpointController *)v35 _writeSystemEndpointInfo:systemEndpointInfo recentlyDismissedRecommendationsInfo:recentlyDismissedRecommendationsInfo];
 
   v112[0] = _NSConcreteStackBlock;
   v112[1] = 3221225472;
   v112[2] = sub_100049A50;
   v112[3] = &unk_1004B6B10;
-  v116 = v36;
+  v116 = eventCopy2;
   v117 = v37;
   v91 = v12;
   v45 = v12;
@@ -1191,12 +1191,12 @@ LABEL_21:
     v48 = MRMediaRemoteActiveEndpointChangeTypeCopyDescription();
     active = MRMediaRemoteActiveEndpointTypeCopyDescription();
     v50 = [NSString alloc];
-    v51 = [v46 outputDeviceUID];
-    v52 = sub_100035750(v36);
-    v53 = [v46 reason];
+    outputDeviceUID5 = [v46 outputDeviceUID];
+    v52 = sub_100035750(eventCopy2);
+    reason2 = [v46 reason];
     v101 = v48;
     v88 = active;
-    v54 = [v50 initWithFormat:@"%@SystemEndpoint changed from <%@> to <%@> with changeType = <%@>, eventType = <%@>, eventReason = <%@>, selectionReason = <%@>", active, v47, v51, v48, v52, v98, v53];
+    v54 = [v50 initWithFormat:@"%@SystemEndpoint changed from <%@> to <%@> with changeType = <%@>, eventType = <%@>, eventReason = <%@>, selectionReason = <%@>", active, v47, outputDeviceUID5, v48, v52, v98, reason2];
 
     v55 = _MRLogForCategory();
     if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
@@ -1232,7 +1232,7 @@ LABEL_21:
 
       else
       {
-        v65 = sub_100035750(v36);
+        v65 = sub_100035750(eventCopy2);
         v66 = v65;
         v67 = @"unknown";
         if (v65)
@@ -1261,39 +1261,39 @@ LABEL_21:
   if (!os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
   {
 LABEL_34:
-    v8 = v98;
+    reasonCopy = v98;
     goto LABEL_35;
   }
 
   v61 = MRMediaRemoteActiveEndpointTypeCopyDescription();
-  v62 = [v46 outputDeviceUID];
-  v63 = sub_100035750(v36);
-  v64 = [v46 reason];
+  outputDeviceUID6 = [v46 outputDeviceUID];
+  v63 = sub_100035750(eventCopy2);
+  reason3 = [v46 reason];
   *buf = 138413314;
   v119 = v61;
   v120 = 2112;
-  v121 = v62;
+  v121 = outputDeviceUID6;
   v122 = 2112;
   v123 = v63;
   v124 = 2112;
   v125 = v98;
   v126 = 2112;
-  v127 = v64;
+  v127 = reason3;
   _os_log_impl(&_mh_execute_header, v60, OS_LOG_TYPE_DEFAULT, "[SystemEndpointController] %@SystemEndpoint remains <%@>, eventType = <%@>, eventReason = <%@>, selectionReason = <%@>", buf, 0x34u);
 
-  v8 = v98;
+  reasonCopy = v98;
   v40 = v94;
 
   v38 = v99;
 LABEL_35:
 
-  v69 = [v46 outputDeviceUID];
-  v70 = [(MRDAVSystemEndpointController *)v35 originClientForDeviceUID:v69];
+  outputDeviceUID7 = [v46 outputDeviceUID];
+  v70 = [(MRDAVSystemEndpointController *)v35 originClientForDeviceUID:outputDeviceUID7];
 
   if (v38 == 1)
   {
     v77 = v93;
-    if (v36 == 5)
+    if (eventCopy2 == 5)
     {
       notify_post(kMRMediaRemoteProactiveSystemEndpointDidStartPlayingNotifyName);
     }
@@ -1304,8 +1304,8 @@ LABEL_35:
     v77 = v93;
     if (v38 == 2)
     {
-      v78 = [v70 origin];
-      v79 = [v78 copy];
+      origin = [v70 origin];
+      v79 = [origin copy];
 
       v80 = _MRLogForCategory();
       if (os_log_type_enabled(v80, OS_LOG_TYPE_DEFAULT))
@@ -1321,9 +1321,9 @@ LABEL_35:
       v82 = v35->_activeRecommendedOrigin;
       v35->_activeRecommendedOrigin = v79;
 
-      v83 = [v46 clientBundleIdentifier];
-      v8 = v98;
-      [(MRDAVSystemEndpointController *)v35 _onSerialQueue_reevaluateActiveEndpoint:3 event:v36 changeType:v37 eventReason:v98 clientBundleIdentifier:v83];
+      clientBundleIdentifier = [v46 clientBundleIdentifier];
+      reasonCopy = v98;
+      [(MRDAVSystemEndpointController *)v35 _onSerialQueue_reevaluateActiveEndpoint:3 event:eventCopy2 changeType:v37 eventReason:v98 clientBundleIdentifier:clientBundleIdentifier];
 
       v77 = v93;
     }
@@ -1331,8 +1331,8 @@ LABEL_35:
 
   else
   {
-    v71 = [v70 origin];
-    v72 = [v71 copy];
+    origin2 = [v70 origin];
+    v72 = [origin2 copy];
 
     v73 = _MRLogForCategory();
     if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
@@ -1348,9 +1348,9 @@ LABEL_35:
     v75 = v35->_activeOrigin;
     v35->_activeOrigin = v72;
 
-    v76 = [v46 clientBundleIdentifier];
-    v8 = v98;
-    [(MRDAVSystemEndpointController *)v35 _onSerialQueue_reevaluateActiveEndpoint:1 event:v36 changeType:v37 eventReason:v98 clientBundleIdentifier:v76];
+    clientBundleIdentifier2 = [v46 clientBundleIdentifier];
+    reasonCopy = v98;
+    [(MRDAVSystemEndpointController *)v35 _onSerialQueue_reevaluateActiveEndpoint:1 event:eventCopy2 changeType:v37 eventReason:v98 clientBundleIdentifier:clientBundleIdentifier2];
 
     v77 = v93;
     if ((v93[2])(v93))
@@ -1361,44 +1361,44 @@ LABEL_35:
   }
 
   v22 = 0;
-  v14 = v90;
+  outputDeviceUID2 = v90;
   v12 = v91;
-  v7 = v96;
-  v13 = v97;
+  endpointCopy = v96;
+  outputDeviceUID = v97;
 LABEL_48:
 
   return v22;
 }
 
-- (void)_onSerialQueue_reconnectToOutputDevice:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)_onSerialQueue_reconnectToOutputDevice:(id)device queue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  queueCopy = queue;
+  completionCopy = completion;
   v11 = [NSString alloc];
   active = MRMediaRemoteActiveEndpointTypeCopyDescription();
-  v13 = [v11 initWithFormat:@"%@ endpoint disconnected and attempting to reconnect", active];
+  active = [v11 initWithFormat:@"%@ endpoint disconnected and attempting to reconnect", active];
 
-  [MRDAutoConnectionControllerReason reasonWithType:3 string:v13];
+  [MRDAutoConnectionControllerReason reasonWithType:3 string:active];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_100049FE4;
   v22[3] = &unk_1004B6BD8;
-  v23 = v9;
-  v25 = v24 = v8;
-  v26 = self;
+  v23 = queueCopy;
+  v25 = v24 = deviceCopy;
+  selfCopy = self;
   v14 = v25;
-  v15 = v8;
-  v16 = v9;
+  v15 = deviceCopy;
+  v16 = queueCopy;
   v20 = objc_retainBlock(v22);
-  v21 = v10;
+  v21 = completionCopy;
   v17 = v20[2];
-  v18 = v10;
+  v18 = completionCopy;
   v19 = v20;
   v17(0.0);
 }
 
-- (void)_onSerialQueue_maybeSetupUserSelectedTimerForEvent:(int64_t)a3
+- (void)_onSerialQueue_maybeSetupUserSelectedTimerForEvent:(int64_t)event
 {
   v5 = [(NSMutableDictionary *)self->_systemEndpointEntries objectForKeyedSubscript:&off_1004E04A0];
   v6 = v5;
@@ -1406,21 +1406,21 @@ LABEL_48:
   {
     if ([v5 supportsIdleReset])
     {
-      v7 = [v6 outputDeviceUID];
-      v8 = [(MRDAVSystemEndpointController *)self originClientForDeviceUID:v7];
+      outputDeviceUID = [v6 outputDeviceUID];
+      v8 = [(MRDAVSystemEndpointController *)self originClientForDeviceUID:outputDeviceUID];
 
       if ([v8 isPlaying])
       {
         userSelectedTimer = self->_userSelectedTimer;
         v10 = [NSString alloc];
         active = MRMediaRemoteActiveEndpointTypeCopyDescription();
-        v12 = [v10 initWithFormat:@"%@Endpoint is playing", active];
+        active = [v10 initWithFormat:@"%@Endpoint is playing", active];
       }
 
       else
       {
-        v17 = [v6 date];
-        [v17 timeIntervalSinceNow];
+        date = [v6 date];
+        [date timeIntervalSinceNow];
         v19 = v18;
         v20 = -v18;
 
@@ -1444,7 +1444,7 @@ LABEL_48:
           v34[3] = &unk_1004B6C50;
           *&v34[6] = v23;
           v34[4] = self;
-          v34[5] = a3;
+          v34[5] = event;
           v30 = [v28 initWithInterval:@"com.apple.mediaremote.systemendpointcontroller.userselectedtimer" name:serialQueue queue:v34 block:v19 + v23];
           v31 = self->_userSelectedTimer;
           self->_userSelectedTimer = v30;
@@ -1456,11 +1456,11 @@ LABEL_10:
         userSelectedTimer = self->_userSelectedTimer;
         v32 = [NSString alloc];
         active = MRMediaRemoteActiveEndpointTypeCopyDescription();
-        v12 = [v32 initWithFormat:@"%@Endpoint timeout imminent", active];
+        active = [v32 initWithFormat:@"%@Endpoint timeout imminent", active];
       }
 
-      v33 = v12;
-      [(MRPersistentTimer *)userSelectedTimer invalidateWithReason:v12];
+      v33 = active;
+      [(MRPersistentTimer *)userSelectedTimer invalidateWithReason:active];
 
       goto LABEL_10;
     }
@@ -1475,7 +1475,7 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)_onSerialQueue_maybeSetupPlaybackTimerForEvent:(int64_t)a3
+- (void)_onSerialQueue_maybeSetupPlaybackTimerForEvent:(int64_t)event
 {
   v5 = [(NSMutableDictionary *)self->_systemEndpointEntries objectForKeyedSubscript:&off_1004E04A0];
   v6 = v5;
@@ -1483,16 +1483,16 @@ LABEL_11:
   {
     if ([v5 supportsIdleReset])
     {
-      v7 = [v6 outputDeviceUID];
-      v8 = [(MRDAVSystemEndpointController *)self originClientForDeviceUID:v7];
+      outputDeviceUID = [v6 outputDeviceUID];
+      v8 = [(MRDAVSystemEndpointController *)self originClientForDeviceUID:outputDeviceUID];
 
       if ([v8 isPlaying])
       {
-        [(MRDAVSystemEndpointController *)self _onSerialQueue_maybeSetupUserSelectedTimerForEvent:a3];
+        [(MRDAVSystemEndpointController *)self _onSerialQueue_maybeSetupUserSelectedTimerForEvent:event];
         playbackTimer = self->_playbackTimer;
         v10 = [NSString alloc];
         active = MRMediaRemoteActiveEndpointTypeCopyDescription();
-        v12 = [v10 initWithFormat:@"%@Endpoint is playing", active];
+        active = [v10 initWithFormat:@"%@Endpoint is playing", active];
       }
 
       else
@@ -1511,8 +1511,8 @@ LABEL_11:
           v28[1] = 3221225472;
           v28[2] = sub_10004A950;
           v28[3] = &unk_1004B6C78;
-          v30 = self;
-          v31 = a3;
+          selfCopy = self;
+          eventCopy = event;
           v32 = v21;
           v29 = v8;
           v24 = [v22 initWithInterval:@"com.apple.mediaremote.systemendpointcontroller.playbacktimer" name:serialQueue queue:v28 block:v21 - v18];
@@ -1526,11 +1526,11 @@ LABEL_10:
         playbackTimer = self->_playbackTimer;
         v26 = [NSString alloc];
         active = MRMediaRemoteActiveEndpointTypeCopyDescription();
-        v12 = [v26 initWithFormat:@"%@Endpoint timeout imminent", active];
+        active = [v26 initWithFormat:@"%@Endpoint timeout imminent", active];
       }
 
-      v27 = v12;
-      [(MRPersistentTimer *)playbackTimer invalidateWithReason:v12];
+      v27 = active;
+      [(MRPersistentTimer *)playbackTimer invalidateWithReason:active];
 
       goto LABEL_10;
     }
@@ -1545,14 +1545,14 @@ LABEL_10:
 LABEL_11:
 }
 
-- (BOOL)_hasPersonalDeviceForContext:(id)a3
+- (BOOL)_hasPersonalDeviceForContext:(id)context
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [a3 outputDevices];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  outputDevices = [context outputDevices];
+  v4 = [outputDevices countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -1562,7 +1562,7 @@ LABEL_11:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(outputDevices);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
@@ -1573,7 +1573,7 @@ LABEL_11:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [outputDevices countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -1588,10 +1588,10 @@ LABEL_13:
   return v4;
 }
 
-- (void)_writeSystemEndpointInfo:(id)a3 recentlyDismissedRecommendationsInfo:(id)a4
+- (void)_writeSystemEndpointInfo:(id)info recentlyDismissedRecommendationsInfo:(id)recommendationsInfo
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  recommendationsInfoCopy = recommendationsInfo;
   if (qword_1005291C8 != -1)
   {
     sub_1003A497C();
@@ -1602,11 +1602,11 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = sub_10004ACC0;
   block[3] = &unk_1004B69D0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = infoCopy;
+  selfCopy = self;
+  v14 = recommendationsInfoCopy;
+  v9 = recommendationsInfoCopy;
+  v10 = infoCopy;
   dispatch_async(v8, block);
 }
 
@@ -1650,8 +1650,8 @@ LABEL_13:
   }
 
   v11 = [(NSMutableDictionary *)self->_systemEndpointEntries objectForKeyedSubscript:&off_1004E04A0];
-  v12 = [v11 outputDeviceUID];
-  if (v12)
+  outputDeviceUID = [v11 outputDeviceUID];
+  if (outputDeviceUID)
   {
     v13 = +[MRUserSettings currentSettings];
     [v13 activeSystemEndpointStartupDelayToAllowAllPreviousClientsTimeToInitializeInterval];
@@ -1673,14 +1673,14 @@ LABEL_13:
   dispatch_after(v16, serialQueue, block);
 }
 
-- (void)_deviceInfoDidChange:(id)a3
+- (void)_deviceInfoDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = [(MRDAVSystemEndpointController *)self activeOutputDeviceUID:0];
-  v6 = [v4 userInfo];
+  userInfo = [changeCopy userInfo];
   v7 = MRGetDeviceInfoFromUserInfo();
 
-  v8 = [v4 userInfo];
+  userInfo2 = [changeCopy userInfo];
   v9 = MRGetOriginFromUserInfo();
 
   v33 = 0;
@@ -1699,79 +1699,79 @@ LABEL_13:
   dispatch_sync(serialQueue, block);
   if ([v34[5] isLocal] & 1) == 0 && (objc_msgSend(v9, "isEqual:", v34[5]))
   {
-    v11 = [v7 deviceClass];
-    if (v11 > 0xD || ((1 << v11) & 0x224E) == 0)
+    deviceClass = [v7 deviceClass];
+    if (deviceClass > 0xD || ((1 << deviceClass) & 0x224E) == 0)
     {
-      v12 = [v7 deviceUID];
-      if (([v12 isEqual:v5] & 1) == 0)
+      deviceUID = [v7 deviceUID];
+      if (([deviceUID isEqual:v5] & 1) == 0)
       {
-        v13 = [v7 clusterID];
-        v14 = [v13 isEqual:v5];
+        clusterID = [v7 clusterID];
+        v14 = [clusterID isEqual:v5];
 
         if (v14)
         {
           goto LABEL_5;
         }
 
-        v15 = [v7 groupedDevices];
+        groupedDevices = [v7 groupedDevices];
         v30[0] = _NSConcreteStackBlock;
         v30[1] = 3221225472;
         v30[2] = sub_10004B6AC;
         v30[3] = &unk_1004B6D58;
         v16 = v5;
         v31 = v16;
-        v17 = [v15 mr_any:v30];
+        v17 = [groupedDevices mr_any:v30];
 
         if ((v17 & 1) == 0)
         {
-          v18 = [v7 deviceUID];
-          v19 = [v18 isEqual:v16];
+          deviceUID2 = [v7 deviceUID];
+          v19 = [deviceUID2 isEqual:v16];
 
           if ((v19 & 1) == 0)
           {
-            v20 = [v7 deviceUID];
-            if (v20)
+            deviceUID3 = [v7 deviceUID];
+            if (deviceUID3)
             {
               goto LABEL_12;
             }
           }
 
-          v21 = [v7 groupedDevices];
+          groupedDevices2 = [v7 groupedDevices];
           v25 = _NSConcreteStackBlock;
           v26 = 3221225472;
           v27 = sub_10004B6F0;
           v28 = &unk_1004B6D58;
           v29 = v16;
-          v22 = [v21 mr_first:&v25];
-          v20 = [v22 deviceUID];
+          v22 = [groupedDevices2 mr_first:&v25];
+          deviceUID3 = [v22 deviceUID];
 
-          if (v20)
+          if (deviceUID3)
           {
 LABEL_12:
             v23 = _MRLogForCategory();
             if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              v40 = v20;
+              v40 = deviceUID3;
               _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "[SystemEndpointController] Requesting to move ASE to deviceUID: %{public}@ because the old ASE changed groups", buf, 0xCu);
             }
 
-            v24 = [[MRUpdateActiveSystemEndpointRequest alloc] initWithOutputDeviceUID:v20 reason:@"ASE moved to another endpoint"];
+            v24 = [[MRUpdateActiveSystemEndpointRequest alloc] initWithOutputDeviceUID:deviceUID3 reason:@"ASE moved to another endpoint"];
             [(MRDAVSystemEndpointController *)self updateSystemEndpointForRequest:v24 event:9 completion:0];
           }
 
           else
           {
-            v20 = _MRLogForCategory();
-            if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+            deviceUID3 = _MRLogForCategory();
+            if (os_log_type_enabled(deviceUID3, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 0;
-              _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "[SystemEndpointController] ASE changed groups, but no other devices found in old group", buf, 2u);
+              _os_log_impl(&_mh_execute_header, deviceUID3, OS_LOG_TYPE_DEFAULT, "[SystemEndpointController] ASE changed groups, but no other devices found in old group", buf, 2u);
             }
           }
         }
 
-        v12 = v31;
+        deviceUID = v31;
       }
     }
   }

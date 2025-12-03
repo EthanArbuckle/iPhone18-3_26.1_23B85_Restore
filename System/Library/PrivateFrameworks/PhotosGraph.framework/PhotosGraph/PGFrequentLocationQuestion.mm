@@ -1,22 +1,22 @@
 @interface PGFrequentLocationQuestion
-- (PGFrequentLocationQuestion)initWithAssetUUID:(id)a3 location:(id)a4 locationTypeName:(id)a5;
+- (PGFrequentLocationQuestion)initWithAssetUUID:(id)d location:(id)location locationTypeName:(id)name;
 @end
 
 @implementation PGFrequentLocationQuestion
 
-- (PGFrequentLocationQuestion)initWithAssetUUID:(id)a3 location:(id)a4 locationTypeName:(id)a5
+- (PGFrequentLocationQuestion)initWithAssetUUID:(id)d location:(id)location locationTypeName:(id)name
 {
   v31[5] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  locationCopy = location;
+  nameCopy = name;
   v28.receiver = self;
   v28.super_class = PGFrequentLocationQuestion;
   v12 = [(PGFrequentLocationQuestion *)&v28 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_entityIdentifier, a3);
+    objc_storeStrong(&v12->_entityIdentifier, d);
     [*MEMORY[0x277D3C8C8] doubleValue];
     v13->_localFactoryScore = v14;
     v13->_state = 0;
@@ -28,7 +28,7 @@
     v31[3] = v16;
     v31[4] = *MEMORY[0x277D3C918];
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:5];
-    [v10 coordinate];
+    [locationCopy coordinate];
     v19 = v18;
     v20 = *MEMORY[0x277D3C8F8];
     v30[0] = v17;
@@ -41,7 +41,7 @@
     v23 = [MEMORY[0x277CCABB0] numberWithDouble:v19];
     v29[3] = *MEMORY[0x277D3C920];
     v30[2] = v23;
-    v30[3] = v11;
+    v30[3] = nameCopy;
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:4];
     additionalInfo = v13->_additionalInfo;
     v13->_additionalInfo = v24;

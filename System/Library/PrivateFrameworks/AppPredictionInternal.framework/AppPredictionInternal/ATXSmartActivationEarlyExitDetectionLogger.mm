@@ -1,8 +1,8 @@
 @interface ATXSmartActivationEarlyExitDetectionLogger
 + (id)sharedInstance;
 - (ATXSmartActivationEarlyExitDetectionLogger)init;
-- (BOOL)_logEventIfEarlyExit:(id)a3;
-- (void)_processNewUserFocusComputedModeEvent:(id)a3;
+- (BOOL)_logEventIfEarlyExit:(id)exit;
+- (void)_processNewUserFocusComputedModeEvent:(id)event;
 - (void)_registerForModeChangeNotifications;
 - (void)stopListening;
 @end
@@ -68,10 +68,10 @@ void __60__ATXSmartActivationEarlyExitDetectionLogger_sharedInstance__block_invo
 
   objc_initWeak(buf, self);
   v9 = BiomeLibrary();
-  v10 = [v9 UserFocus];
-  v11 = [v10 ComputedMode];
-  v12 = [v11 atx_DSLPublisher];
-  v13 = [v12 subscribeOn:self->_scheduler];
+  userFocus = [v9 UserFocus];
+  computedMode = [userFocus ComputedMode];
+  atx_DSLPublisher = [computedMode atx_DSLPublisher];
+  v13 = [atx_DSLPublisher subscribeOn:self->_scheduler];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __81__ATXSmartActivationEarlyExitDetectionLogger__registerForModeChangeNotifications__block_invoke_19;
@@ -125,74 +125,74 @@ void __81__ATXSmartActivationEarlyExitDetectionLogger__registerForModeChangeNoti
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processNewUserFocusComputedModeEvent:(id)a3
+- (void)_processNewUserFocusComputedModeEvent:(id)event
 {
-  v6 = a3;
-  v4 = [v6 eventBody];
+  eventCopy = event;
+  eventBody = [eventCopy eventBody];
 
-  if (v4)
+  if (eventBody)
   {
-    v5 = [v6 eventBody];
-    [(ATXSmartActivationEarlyExitDetectionLogger *)self _logEventIfEarlyExit:v5];
+    eventBody2 = [eventCopy eventBody];
+    [(ATXSmartActivationEarlyExitDetectionLogger *)self _logEventIfEarlyExit:eventBody2];
   }
 }
 
-- (BOOL)_logEventIfEarlyExit:(id)a3
+- (BOOL)_logEventIfEarlyExit:(id)exit
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (([v3 starting] & 1) != 0 || objc_msgSend(v3, "updateReason") != 1)
+  exitCopy = exit;
+  if (([exitCopy starting] & 1) != 0 || objc_msgSend(exitCopy, "updateReason") != 1)
   {
-    LOBYTE(v5) = 0;
+    LOBYTE(modeIdentifier) = 0;
   }
 
   else
   {
-    v4 = [MEMORY[0x277D41C68] currentMode];
-    v5 = [v4 modeIdentifier];
+    currentMode = [MEMORY[0x277D41C68] currentMode];
+    modeIdentifier = [currentMode modeIdentifier];
 
-    if (v5)
+    if (modeIdentifier)
     {
-      v6 = [v4 modeIdentifier];
-      v7 = [v3 mode];
-      v8 = [v6 isEqualToString:v7];
+      modeIdentifier2 = [currentMode modeIdentifier];
+      mode = [exitCopy mode];
+      v8 = [modeIdentifier2 isEqualToString:mode];
 
       if (v8)
       {
-        v5 = [objc_alloc(MEMORY[0x277CEB308]) initWithBiomeInferredModeEvent:v4];
+        modeIdentifier = [objc_alloc(MEMORY[0x277CEB308]) initWithBiomeInferredModeEvent:currentMode];
         v9 = objc_alloc(MEMORY[0x277CEB320]);
         v10 = [MEMORY[0x277CBEAA8] now];
-        v11 = [v9 initWithEventDate:v10 activity:v5 acceptedTriggers:MEMORY[0x277CBEBF8] eventType:5 suggestionType:1 location:2];
+        v11 = [v9 initWithEventDate:v10 activity:modeIdentifier acceptedTriggers:MEMORY[0x277CBEBF8] eventType:5 suggestionType:1 location:2];
 
         v12 = __atxlog_handle_modes();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
-          v13 = [v4 modeIdentifier];
+          modeIdentifier3 = [currentMode modeIdentifier];
           v18 = 138543874;
-          v19 = v13;
+          v19 = modeIdentifier3;
           v20 = 2048;
-          v21 = [v4 modeType];
+          modeType = [currentMode modeType];
           v22 = 2112;
           v23 = v11;
           _os_log_impl(&dword_2263AA000, v12, OS_LOG_TYPE_DEFAULT, "ATXSmartActivationEarlyExitDetectionLogger: Early exit detected for modeUUID: %{public}@, type:%ld. Sending feedback event to Biome: %@", &v18, 0x20u);
         }
 
         v14 = objc_opt_new();
-        v15 = [v14 source];
-        [v15 sendEvent:v11];
+        source = [v14 source];
+        [source sendEvent:v11];
 
-        LOBYTE(v5) = 1;
+        LOBYTE(modeIdentifier) = 1;
       }
 
       else
       {
-        LOBYTE(v5) = 0;
+        LOBYTE(modeIdentifier) = 0;
       }
     }
   }
 
   v16 = *MEMORY[0x277D85DE8];
-  return v5;
+  return modeIdentifier;
 }
 
 - (void)stopListening

@@ -5,7 +5,7 @@
 - (id)demoScheduleModel;
 - (id)demoSleepSchedule;
 - (id)demoSleepSettings;
-- (id)notificationListener:(id)a3 didReceiveNotificationWithName:(id)a4;
+- (id)notificationListener:(id)listener didReceiveNotificationWithName:(id)name;
 - (void)environmentDidBecomeReady;
 - (void)resetDemoMode;
 - (void)setInitialSchedule;
@@ -15,29 +15,29 @@
 
 - (HDSPDemoModeEnvironment)init
 {
-  v3 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v4 = [objc_opt_class() _sleepModeManagerProvider];
-  v5 = [v3 hksp_supportsSleepAlarms];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  _sleepModeManagerProvider = [objc_opt_class() _sleepModeManagerProvider];
+  hksp_supportsSleepAlarms = [mEMORY[0x277CCDD30] hksp_supportsSleepAlarms];
   v6 = &__block_literal_global_322;
-  if (!v5)
+  if (!hksp_supportsSleepAlarms)
   {
     v6 = 0;
   }
 
   v17 = v6;
-  v18 = [v3 hksp_supportsHealthData];
-  v19 = v4;
-  if (v18)
+  hksp_supportsHealthData = [mEMORY[0x277CCDD30] hksp_supportsHealthData];
+  v19 = _sleepModeManagerProvider;
+  if (hksp_supportsHealthData)
   {
-    v7 = [objc_alloc(MEMORY[0x277D62468]) initWithLocalDeviceHealthStore];
+    initWithLocalDeviceHealthStore = [objc_alloc(MEMORY[0x277D62468]) initWithLocalDeviceHealthStore];
   }
 
   else
   {
-    v7 = 0;
+    initWithLocalDeviceHealthStore = 0;
   }
 
-  if ([v3 hksp_supportsSleepLockScreen])
+  if ([mEMORY[0x277CCDD30] hksp_supportsSleepLockScreen])
   {
     v8 = &__block_literal_global_343;
   }
@@ -47,7 +47,7 @@
     v8 = 0;
   }
 
-  if ([v3 hksp_supportsSleepWidget])
+  if ([mEMORY[0x277CCDD30] hksp_supportsSleepWidget])
   {
     v9 = &__block_literal_global_347;
   }
@@ -58,13 +58,13 @@
   }
 
   v10 = objc_alloc_init(HDSPAssertionManager);
-  v11 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v12 = [MEMORY[0x277CCAA00] defaultManager];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v13 = HKSPCurrentDateProvider();
   v14 = HKSPUnfairLockGenerator();
-  v15 = [(HDSPEnvironment *)self initWithBehavior:v3 sleepStorageProvider:&__block_literal_global_0 sleepScheduleModelManagerProvider:&__block_literal_global_302 sleepSchedulerProvider:&__block_literal_global_306 sleepServerProvider:&__block_literal_global_310 sleepCoordinatorProvider:&__block_literal_global_314 sleepModeManagerProvider:v19 sleepTrackingManagerProvider:0 goodMorningAlertManagerProvider:0 chargingReminderManagerProvider:0 wakeDetectionManagerProvider:0 wakeUpResultsNotificationManagerProvider:0 actionManagerProvider:&__block_literal_global_318 sleepAlarmManagerProvider:v17 healthStoreProvider:v7 contextStoreManagerProvider:&__block_literal_global_327 biomeManagerProvider:&__block_literal_global_331 migrationManagerProvider:&__block_literal_global_335 notificationManagerProvider:0 notificationListenerProvider:&__block_literal_global_339 sleepLockScreenManagerProvider:v8 sleepWidgetManagerProvider:v9 idsServiceManagerProvider:&__block_literal_global_351 diagnosticsProvider:&__block_literal_global_355 systemMonitorProvider:&__block_literal_global_359 assertionManager:v10 timeChangeListenerProvider:&__block_literal_global_364 sensitiveUIMonitorProvider:&__block_literal_global_368 analyticsManagerProvider:0 userDefaults:v11 fileManager:v12 currentDateProvider:v13 defaultCallbackScheduler:0 mutexGenerator:v14];
+  v15 = [(HDSPEnvironment *)self initWithBehavior:mEMORY[0x277CCDD30] sleepStorageProvider:&__block_literal_global_0 sleepScheduleModelManagerProvider:&__block_literal_global_302 sleepSchedulerProvider:&__block_literal_global_306 sleepServerProvider:&__block_literal_global_310 sleepCoordinatorProvider:&__block_literal_global_314 sleepModeManagerProvider:v19 sleepTrackingManagerProvider:0 goodMorningAlertManagerProvider:0 chargingReminderManagerProvider:0 wakeDetectionManagerProvider:0 wakeUpResultsNotificationManagerProvider:0 actionManagerProvider:&__block_literal_global_318 sleepAlarmManagerProvider:v17 healthStoreProvider:initWithLocalDeviceHealthStore contextStoreManagerProvider:&__block_literal_global_327 biomeManagerProvider:&__block_literal_global_331 migrationManagerProvider:&__block_literal_global_335 notificationManagerProvider:0 notificationListenerProvider:&__block_literal_global_339 sleepLockScreenManagerProvider:v8 sleepWidgetManagerProvider:v9 idsServiceManagerProvider:&__block_literal_global_351 diagnosticsProvider:&__block_literal_global_355 systemMonitorProvider:&__block_literal_global_359 assertionManager:v10 timeChangeListenerProvider:&__block_literal_global_364 sensitiveUIMonitorProvider:&__block_literal_global_368 analyticsManagerProvider:0 userDefaults:standardUserDefaults fileManager:defaultManager currentDateProvider:v13 defaultCallbackScheduler:0 mutexGenerator:v14];
 
-  if (v18)
+  if (hksp_supportsHealthData)
   {
   }
 
@@ -244,9 +244,9 @@ id __52__HDSPDemoModeEnvironment__sleepModeManagerProvider__block_invoke(uint64_
   [(HDSPDemoModeEnvironment *)self setInitialSchedule];
 }
 
-- (id)notificationListener:(id)a3 didReceiveNotificationWithName:(id)a4
+- (id)notificationListener:(id)listener didReceiveNotificationWithName:(id)name
 {
-  [(HDSPDemoModeEnvironment *)self resetDemoMode:a3];
+  [(HDSPDemoModeEnvironment *)self resetDemoMode:listener];
   v4 = MEMORY[0x277D2C900];
 
   return [v4 futureWithNoResult];
@@ -255,10 +255,10 @@ id __52__HDSPDemoModeEnvironment__sleepModeManagerProvider__block_invoke(uint64_
 - (void)setInitialSchedule
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(HDSPEnvironment *)self sleepScheduleModelManager];
-  v4 = [v3 sleepSchedule];
+  sleepScheduleModelManager = [(HDSPEnvironment *)self sleepScheduleModelManager];
+  sleepSchedule = [sleepScheduleModelManager sleepSchedule];
 
-  if (!v4)
+  if (!sleepSchedule)
   {
     v5 = HKSPLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -287,8 +287,8 @@ id __52__HDSPDemoModeEnvironment__sleepModeManagerProvider__block_invoke(uint64_
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] resetDemoMode", buf, 0xCu);
   }
 
-  v5 = [(HDSPEnvironment *)self sleepModeManager];
-  [v5 setSleepMode:0];
+  sleepModeManager = [(HDSPEnvironment *)self sleepModeManager];
+  [sleepModeManager setSleepMode:0];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -358,10 +358,10 @@ LABEL_8:
 - (id)demoScheduleModel
 {
   v3 = MEMORY[0x277D62500];
-  v4 = [(HDSPDemoModeEnvironment *)self demoSleepSchedule];
-  v5 = [(HDSPDemoModeEnvironment *)self demoSleepSettings];
-  v6 = [(HDSPDemoModeEnvironment *)self demoEventRecord];
-  v7 = [v3 sleepScheduleModelWithSleepSchedule:v4 sleepSettings:v5 sleepEventRecord:v6];
+  demoSleepSchedule = [(HDSPDemoModeEnvironment *)self demoSleepSchedule];
+  demoSleepSettings = [(HDSPDemoModeEnvironment *)self demoSleepSettings];
+  demoEventRecord = [(HDSPDemoModeEnvironment *)self demoEventRecord];
+  v7 = [v3 sleepScheduleModelWithSleepSchedule:demoSleepSchedule sleepSettings:demoSleepSettings sleepEventRecord:demoEventRecord];
 
   return v7;
 }
@@ -392,8 +392,8 @@ LABEL_8:
   [v4 setMinute:0];
   [v2 setWakeUpComponents:v3];
   [v2 setBedtimeComponents:v4];
-  v5 = [v2 alarmConfiguration];
-  v6 = [v5 mutableCopy];
+  alarmConfiguration = [v2 alarmConfiguration];
+  v6 = [alarmConfiguration mutableCopy];
 
   [v6 setEnabled:0];
   [v2 setAlarmConfiguration:v6];
@@ -407,8 +407,8 @@ LABEL_8:
   [v9 setMinute:0];
   [v7 setWakeUpComponents:v8];
   [v7 setBedtimeComponents:v9];
-  v10 = [v7 alarmConfiguration];
-  v11 = [v10 mutableCopy];
+  alarmConfiguration2 = [v7 alarmConfiguration];
+  v11 = [alarmConfiguration2 mutableCopy];
 
   [v11 setEnabled:0];
   [v7 setAlarmConfiguration:v11];
@@ -423,9 +423,9 @@ LABEL_8:
 
 - (id)demoEventRecord
 {
-  v3 = [(HDSPEnvironment *)self sleepScheduleModelManager];
-  v4 = [v3 sleepEventRecord];
-  v5 = [v4 mutableCopy];
+  sleepScheduleModelManager = [(HDSPEnvironment *)self sleepScheduleModelManager];
+  sleepEventRecord = [sleepScheduleModelManager sleepEventRecord];
+  v5 = [sleepEventRecord mutableCopy];
   v6 = v5;
   if (v5)
   {
@@ -442,42 +442,42 @@ LABEL_8:
   [v8 setSleepCoachingOnboardingCompletedVersion:3];
   [v8 setSleepTrackingOnboardingCompletedVersion:3];
   [v8 setSleepWindDownShortcutsOnboardingCompletedVersion:2];
-  v9 = [v8 sleepCoachingOnboardingFirstCompletedDate];
-  if (v9)
+  sleepCoachingOnboardingFirstCompletedDate = [v8 sleepCoachingOnboardingFirstCompletedDate];
+  if (sleepCoachingOnboardingFirstCompletedDate)
   {
-    [v8 setSleepCoachingOnboardingFirstCompletedDate:v9];
+    [v8 setSleepCoachingOnboardingFirstCompletedDate:sleepCoachingOnboardingFirstCompletedDate];
   }
 
   else
   {
-    v10 = [(HDSPEnvironment *)self currentDateProvider];
-    v11 = v10[2]();
+    currentDateProvider = [(HDSPEnvironment *)self currentDateProvider];
+    v11 = currentDateProvider[2]();
     [v8 setSleepCoachingOnboardingFirstCompletedDate:v11];
   }
 
-  v12 = [v8 sleepTrackingOnboardingFirstCompletedDate];
-  if (v12)
+  sleepTrackingOnboardingFirstCompletedDate = [v8 sleepTrackingOnboardingFirstCompletedDate];
+  if (sleepTrackingOnboardingFirstCompletedDate)
   {
-    [v8 setSleepTrackingOnboardingFirstCompletedDate:v12];
+    [v8 setSleepTrackingOnboardingFirstCompletedDate:sleepTrackingOnboardingFirstCompletedDate];
   }
 
   else
   {
-    v13 = [(HDSPEnvironment *)self currentDateProvider];
-    v14 = v13[2]();
+    currentDateProvider2 = [(HDSPEnvironment *)self currentDateProvider];
+    v14 = currentDateProvider2[2]();
     [v8 setSleepTrackingOnboardingFirstCompletedDate:v14];
   }
 
-  v15 = [v8 sleepWindDownShortcutsOnboardingFirstCompletedDate];
-  if (v15)
+  sleepWindDownShortcutsOnboardingFirstCompletedDate = [v8 sleepWindDownShortcutsOnboardingFirstCompletedDate];
+  if (sleepWindDownShortcutsOnboardingFirstCompletedDate)
   {
-    [v8 setSleepWindDownShortcutsOnboardingFirstCompletedDate:v15];
+    [v8 setSleepWindDownShortcutsOnboardingFirstCompletedDate:sleepWindDownShortcutsOnboardingFirstCompletedDate];
   }
 
   else
   {
-    v16 = [(HDSPEnvironment *)self currentDateProvider];
-    v17 = v16[2]();
+    currentDateProvider3 = [(HDSPEnvironment *)self currentDateProvider];
+    v17 = currentDateProvider3[2]();
     [v8 setSleepWindDownShortcutsOnboardingFirstCompletedDate:v17];
   }
 

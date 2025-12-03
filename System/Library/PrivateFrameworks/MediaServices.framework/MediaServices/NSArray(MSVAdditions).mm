@@ -14,35 +14,35 @@
 {
   if (a3 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = [a1 subarrayWithRange:{a3 + 1, objc_msgSend(a1, "count") + ~a3}];
+    selfCopy = [self subarrayWithRange:{a3 + 1, objc_msgSend(self, "count") + ~a3}];
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)msv_subarrayToIndex:()MSVAdditions
 {
-  if ([a1 count] <= a3)
+  if ([self count] <= a3)
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
   else if ((a3 & 0x8000000000000000) != 0)
   {
-    v5 = MEMORY[0x1E695E0F0];
+    selfCopy = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v5 = [a1 subarrayWithRange:{0, a3}];
+    selfCopy = [self subarrayWithRange:{0, a3}];
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (uint64_t)msv_lastIndexOfObjectEqualTo:()MSVAdditions
@@ -54,7 +54,7 @@
   v8[3] = &unk_1E7981D80;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 msv_lastIndexOfObjectsPassingTest:v8];
+  v6 = [self msv_lastIndexOfObjectsPassingTest:v8];
 
   return v6;
 }
@@ -62,9 +62,9 @@
 - (uint64_t)msv_lastIndexOfObjectsPassingTest:()MSVAdditions
 {
   v4 = a3;
-  if ([a1 count])
+  if ([self count])
   {
-    v5 = [a1 count] - 1;
+    v5 = [self count] - 1;
     do
     {
       if (v5 < 0)
@@ -73,7 +73,7 @@
       }
 
       v9 = 0;
-      v6 = [a1 objectAtIndexedSubscript:v5];
+      v6 = [self objectAtIndexedSubscript:v5];
       v7 = v4[2](v4, v6, v5, &v9);
 
       if (v7)
@@ -102,7 +102,7 @@ LABEL_7:
   v8[3] = &unk_1E7981D80;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 msv_firstIndexOfObjectsPassingTest:v8];
+  v6 = [self msv_firstIndexOfObjectsPassingTest:v8];
 
   return v6;
 }
@@ -110,13 +110,13 @@ LABEL_7:
 - (uint64_t)msv_firstIndexOfObjectsPassingTest:()MSVAdditions
 {
   v4 = a3;
-  if ([a1 count])
+  if ([self count])
   {
     v5 = 0;
     while (1)
     {
       v9 = 0;
-      v6 = [a1 objectAtIndexedSubscript:v5];
+      v6 = [self objectAtIndexedSubscript:v5];
       v7 = v4[2](v4, v6, v5, &v9);
 
       if (v7)
@@ -124,7 +124,7 @@ LABEL_7:
         break;
       }
 
-      if ((v9 & 1) == 0 && ++v5 < [a1 count])
+      if ((v9 & 1) == 0 && ++v5 < [self count])
       {
         continue;
       }
@@ -151,7 +151,7 @@ LABEL_6:
   v8[3] = &unk_1E7981D80;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 indexesOfObjectsPassingTest:v8];
+  v6 = [self indexesOfObjectsPassingTest:v8];
 
   return v6;
 }

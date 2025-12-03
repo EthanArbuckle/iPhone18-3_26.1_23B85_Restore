@@ -1,20 +1,20 @@
 @interface PKPaymentAuthorizationCoordinator
-+ (BOOL)_canMakePaymentsUsingNetworks:(id)a3 capabilities:(unint64_t)a4 webDomain:(id)a5 paymentRequestType:(id)a6;
++ (BOOL)_canMakePaymentsUsingNetworks:(id)networks capabilities:(unint64_t)capabilities webDomain:(id)domain paymentRequestType:(id)type;
 + (BOOL)canMakePayments;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (PKInAppPaymentService)inAppPaymentService;
-- (PKPaymentAuthorizationCoordinator)initWithDisbursementRequest:(id)a3;
-- (PKPaymentAuthorizationCoordinator)initWithPaymentRequest:(id)a3 remotePaymentRequestPromised:(BOOL)a4;
+- (PKPaymentAuthorizationCoordinator)initWithDisbursementRequest:(id)request;
+- (PKPaymentAuthorizationCoordinator)initWithPaymentRequest:(id)request remotePaymentRequestPromised:(BOOL)promised;
 - (PKPaymentAuthorizationCoordinator)initWithRemotePaymentRequestPromised;
 - (PKPaymentAuthorizationServiceProtocol)serviceProxy;
-- (id)_remoteObjectProxyWithFailureHandler:(id)a3;
-- (void)_invokeCallbackWithSuccess:(BOOL)a3;
+- (id)_remoteObjectProxyWithFailureHandler:(id)handler;
+- (void)_invokeCallbackWithSuccess:(BOOL)success;
 - (void)dealloc;
-- (void)dismissWithCompletion:(id)a3;
-- (void)fulfillRemotePaymentRequestPromise:(id)a3 completion:(id)a4;
-- (void)presentWithOrientation:(id)a3 completion:(id)a4;
-- (void)rejectRemotePaymentRequestPromiseWithFailure:(unint64_t)a3;
-- (void)setServiceProxy:(id)a3;
+- (void)dismissWithCompletion:(id)completion;
+- (void)fulfillRemotePaymentRequestPromise:(id)promise completion:(id)completion;
+- (void)presentWithOrientation:(id)orientation completion:(id)completion;
+- (void)rejectRemotePaymentRequestPromiseWithFailure:(unint64_t)failure;
+- (void)setServiceProxy:(id)proxy;
 @end
 
 @implementation PKPaymentAuthorizationCoordinator
@@ -30,12 +30,12 @@
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v6 = [v3 dictionaryWithDictionary:v5];
 
-  v7 = [MEMORY[0x1E696AAE8] mainBundle];
-  v8 = [v7 PKSanitizedBundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  pKSanitizedBundleIdentifier = [mainBundle PKSanitizedBundleIdentifier];
 
-  if (v8)
+  if (pKSanitizedBundleIdentifier)
   {
-    [v6 setObject:v8 forKeyedSubscript:@"bundle"];
+    [v6 setObject:pKSanitizedBundleIdentifier forKeyedSubscript:@"bundle"];
   }
 
   AnalyticsSendEvent();
@@ -43,18 +43,18 @@
   return Payments;
 }
 
-+ (BOOL)_canMakePaymentsUsingNetworks:(id)a3 capabilities:(unint64_t)a4 webDomain:(id)a5 paymentRequestType:(id)a6
++ (BOOL)_canMakePaymentsUsingNetworks:(id)networks capabilities:(unint64_t)capabilities webDomain:(id)domain paymentRequestType:(id)type
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  networksCopy = networks;
+  domainCopy = domain;
+  typeCopy = type;
   PKCanMakePayments();
-  PaymentsUsingNetworksIssuerCountryCodesWithCapabilitiesAndRequestType = PKCanMakePaymentsUsingNetworksIssuerCountryCodesWithCapabilitiesAndRequestType(v9, 0, a4, v10, v11);
-  v13 = PKMerchantCapabilityToStrings(a4);
-  v14 = v9;
+  PaymentsUsingNetworksIssuerCountryCodesWithCapabilitiesAndRequestType = PKCanMakePaymentsUsingNetworksIssuerCountryCodesWithCapabilitiesAndRequestType(networksCopy, 0, capabilities, domainCopy, typeCopy);
+  v13 = PKMerchantCapabilityToStrings(capabilities);
+  v14 = networksCopy;
   v15 = v13;
-  v16 = v10;
+  v16 = domainCopy;
   v17 = MEMORY[0x1E695DF90];
   v26 = @"result";
   v18 = [MEMORY[0x1E696AD98] numberWithBool:PaymentsUsingNetworksIssuerCountryCodesWithCapabilitiesAndRequestType];
@@ -62,12 +62,12 @@
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
   v20 = [v17 dictionaryWithDictionary:v19];
 
-  v21 = [MEMORY[0x1E696AAE8] mainBundle];
-  v22 = [v21 PKSanitizedBundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  pKSanitizedBundleIdentifier = [mainBundle PKSanitizedBundleIdentifier];
 
-  if (v22)
+  if (pKSanitizedBundleIdentifier)
   {
-    [v20 setObject:v22 forKeyedSubscript:@"bundle"];
+    [v20 setObject:pKSanitizedBundleIdentifier forKeyedSubscript:@"bundle"];
   }
 
   if (v14 && [v14 count])
@@ -92,10 +92,10 @@
   return PaymentsUsingNetworksIssuerCountryCodesWithCapabilitiesAndRequestType;
 }
 
-- (PKPaymentAuthorizationCoordinator)initWithDisbursementRequest:(id)a3
+- (PKPaymentAuthorizationCoordinator)initWithDisbursementRequest:(id)request
 {
-  v4 = a3;
-  v5 = [[PKDisbursementPaymentRequest alloc] initWithDisbursementRequest:v4];
+  requestCopy = request;
+  v5 = [[PKDisbursementPaymentRequest alloc] initWithDisbursementRequest:requestCopy];
 
   v6 = [(PKPaymentAuthorizationCoordinator *)self initWithPaymentRequest:v5];
   return v6;
@@ -109,13 +109,13 @@
   return v4;
 }
 
-- (PKPaymentAuthorizationCoordinator)initWithPaymentRequest:(id)a3 remotePaymentRequestPromised:(BOOL)a4
+- (PKPaymentAuthorizationCoordinator)initWithPaymentRequest:(id)request remotePaymentRequestPromised:(BOOL)promised
 {
-  v4 = a4;
+  promisedCopy = promised;
   v43 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (v4)
+  requestCopy = request;
+  v8 = requestCopy;
+  if (promisedCopy)
   {
     v9 = PKLogFacilityTypeGetObject(8uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -128,7 +128,7 @@
     goto LABEL_18;
   }
 
-  if ([v7 requestType] == 10 && objc_msgSend(v8, "APIType") == 2)
+  if ([requestCopy requestType] == 10 && objc_msgSend(v8, "APIType") == 2)
   {
     v11 = PKLogFacilityTypeGetObject(8uLL);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -178,18 +178,18 @@
 LABEL_22:
 
 LABEL_23:
-      v32 = 0;
+      selfCopy = 0;
       goto LABEL_24;
     }
   }
 
   if (![v8 requestType] && (objc_msgSend(v8, "isPeerPaymentRequest") & 1) == 0)
   {
-    v16 = [v8 supportedNetworks];
-    v17 = [v8 merchantCapabilities];
-    v18 = [v8 originatingURL];
-    v19 = [v18 host];
-    v20 = [PKPaymentAuthorizationCoordinator canMakePaymentsUsingNetworks:v16 capabilities:v17 webDomain:v19];
+    supportedNetworks = [v8 supportedNetworks];
+    merchantCapabilities = [v8 merchantCapabilities];
+    originatingURL = [v8 originatingURL];
+    host = [originatingURL host];
+    v20 = [PKPaymentAuthorizationCoordinator canMakePaymentsUsingNetworks:supportedNetworks capabilities:merchantCapabilities webDomain:host];
 
     if (!v20 && !+[PKPaymentAuthorizationCoordinator canMakePayments])
     {
@@ -216,20 +216,20 @@ LABEL_18:
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_paymentRequest, a3);
-    v22->_remotePaymentRequestPromised = v4;
+    objc_storeStrong(&v21->_paymentRequest, request);
+    v22->_remotePaymentRequestPromised = promisedCopy;
     v23 = dispatch_queue_create("com.apple.passkit.PaymentAuthorization", 0);
     queue = v22->_queue;
     v22->_queue = v23;
 
-    v25 = [MEMORY[0x1E696AFB0] UUID];
-    v26 = [v25 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     hostIdentifier = v22->_hostIdentifier;
-    v22->_hostIdentifier = v26;
+    v22->_hostIdentifier = uUIDString;
 
-    v28 = [MEMORY[0x1E696B0D8] anonymousListener];
+    anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
     listener = v22->_listener;
-    v22->_listener = v28;
+    v22->_listener = anonymousListener;
 
     [(NSXPCListener *)v22->_listener setDelegate:v22];
     v30 = [[PKPaymentAuthorizationCoordinatorExportedObject alloc] initWithController:v22];
@@ -240,10 +240,10 @@ LABEL_18:
   }
 
   self = v22;
-  v32 = self;
+  selfCopy = self;
 LABEL_24:
 
-  return v32;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -271,18 +271,18 @@ LABEL_24:
   return inAppPaymentService;
 }
 
-- (void)setServiceProxy:(id)a3
+- (void)setServiceProxy:(id)proxy
 {
-  v4 = a3;
-  objc_storeWeak(&self->_serviceProxy, v4);
-  [(PKPaymentAuthorizationCoordinatorExportedObject *)self->_exportedObject setServiceProxy:v4];
+  proxyCopy = proxy;
+  objc_storeWeak(&self->_serviceProxy, proxyCopy);
+  [(PKPaymentAuthorizationCoordinatorExportedObject *)self->_exportedObject setServiceProxy:proxyCopy];
 }
 
-- (void)presentWithOrientation:(id)a3 completion:(id)a4
+- (void)presentWithOrientation:(id)orientation completion:(id)completion
 {
   v50 = *MEMORY[0x1E69E9840];
-  v40 = a3;
-  v6 = a4;
+  orientationCopy = orientation;
+  completionCopy = completion;
   if (self->_didPresent)
   {
     v7 = MEMORY[0x1E695DF30];
@@ -293,14 +293,14 @@ LABEL_24:
   }
 
   self->_didPresent = 1;
-  v11 = [v6 copy];
+  v11 = [completionCopy copy];
   presentationCompletionBlock = self->_presentationCompletionBlock;
   self->_presentationCompletionBlock = v11;
 
-  v13 = [(PKPaymentAuthorizationCoordinator *)self delegate];
+  delegate = [(PKPaymentAuthorizationCoordinator *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v14 = [v13 presentationSceneIdentifierForPaymentAuthorizationCoordinator:self];
+    v14 = [delegate presentationSceneIdentifierForPaymentAuthorizationCoordinator:self];
   }
 
   else
@@ -310,7 +310,7 @@ LABEL_24:
 
   if (objc_opt_respondsToSelector())
   {
-    v15 = [v13 presentationSceneBundleIdentifierForPaymentAuthorizationCoordinator:self];
+    v15 = [delegate presentationSceneBundleIdentifierForPaymentAuthorizationCoordinator:self];
   }
 
   else
@@ -320,7 +320,7 @@ LABEL_24:
 
   if (objc_opt_respondsToSelector())
   {
-    v16 = [v13 analyticsSessionSubjectForPaymentAuthorizationCoordinator:self];
+    v16 = [delegate analyticsSessionSubjectForPaymentAuthorizationCoordinator:self];
   }
 
   else
@@ -331,7 +331,7 @@ LABEL_24:
   v39 = v16;
   if (objc_opt_respondsToSelector())
   {
-    v17 = [v13 analyticsSessionTokenForPaymentAuthorizationCoordinator:self];
+    v17 = [delegate analyticsSessionTokenForPaymentAuthorizationCoordinator:self];
   }
 
   else
@@ -339,13 +339,13 @@ LABEL_24:
     v17 = 0;
   }
 
-  v18 = [getLNClientConnectionClass[0]() currentAuditToken];
-  v19 = v18 != 0;
+  currentAuditToken = [getLNClientConnectionClass[0]() currentAuditToken];
+  v19 = currentAuditToken != 0;
   v20 = PKLogFacilityTypeGetObject(8uLL);
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
     v37 = @"not present";
-    if (v18)
+    if (currentAuditToken)
     {
       v37 = @"present";
     }
@@ -371,7 +371,7 @@ LABEL_24:
     else
     {
       v21 = v15;
-      v22 = v6;
+      v22 = completionCopy;
       v23 = v14;
       v24 = [(BSProcessHandle *)self->_remoteNetworkPaymentInvokingProcess hasEntitlement:@"com.apple.private.payment.remote-network-payment-initiate"];
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -387,9 +387,9 @@ LABEL_24:
         _os_log_debug_impl(&dword_1AD337000, v20, OS_LOG_TYPE_DEBUG, "Presentation: Remote network payment universal link: %@", buf, 0xCu);
       }
 
-      v19 = (v18 != 0) | v24;
+      v19 = (currentAuditToken != 0) | v24;
       v14 = v23;
-      v6 = v22;
+      completionCopy = v22;
       v15 = v21;
     }
   }
@@ -400,15 +400,15 @@ LABEL_24:
   {
     [(PKPaymentAuthorizationCoordinator *)self _invokeCallbackWithSuccess:0];
     v35 = v39;
-    v34 = v40;
+    v34 = orientationCopy;
   }
 
   else
   {
-    v26 = [(NSXPCListener *)self->_listener endpoint];
-    if (v26)
+    endpoint = [(NSXPCListener *)self->_listener endpoint];
+    if (endpoint)
     {
-      v27 = v6;
+      v27 = completionCopy;
       v28 = v14;
       v29 = MEMORY[0x1E695DFF0];
       [(PKPaymentAuthorizationCoordinator *)self connectionTimeout];
@@ -416,7 +416,7 @@ LABEL_24:
       timer = self->_timer;
       self->_timer = v30;
 
-      v32 = [(PKPaymentAuthorizationCoordinator *)self inAppPaymentService];
+      inAppPaymentService = [(PKPaymentAuthorizationCoordinator *)self inAppPaymentService];
       hostIdentifier = self->_hostIdentifier;
       v41[0] = MEMORY[0x1E69E9820];
       v41[1] = 3221225472;
@@ -425,23 +425,23 @@ LABEL_24:
       v41[4] = self;
       v42 = v28;
       v43 = v15;
-      v34 = v40;
-      v44 = v40;
+      v34 = orientationCopy;
+      v44 = orientationCopy;
       v47 = v19 & 1;
       v35 = v39;
       v45 = v39;
       v46 = v17;
       v36 = hostIdentifier;
       v14 = v28;
-      v6 = v27;
-      [v32 registerPaymentListenerEndpoint:v26 forHostIdentifier:v36 completion:v41];
+      completionCopy = v27;
+      [inAppPaymentService registerPaymentListenerEndpoint:endpoint forHostIdentifier:v36 completion:v41];
     }
 
     else
     {
       [(PKPaymentAuthorizationCoordinator *)self _invokeCallbackWithSuccess:0];
       v35 = v39;
-      v34 = v40;
+      v34 = orientationCopy;
     }
   }
 }
@@ -532,9 +532,9 @@ LABEL_9:
   }
 }
 
-- (void)dismissWithCompletion:(id)a3
+- (void)dismissWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PKLogFacilityTypeGetObject(8uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -548,14 +548,14 @@ LABEL_9:
   v9[2] = __59__PKPaymentAuthorizationCoordinator_dismissWithCompletion___block_invoke;
   v9[3] = &unk_1E79C4A40;
   v9[4] = self;
-  v10 = v4;
+  v10 = completionCopy;
   v7 = v9;
   *buf = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __dispatch_async_ar_block_invoke_7;
   v14 = &unk_1E79C4428;
   v15 = v7;
-  v8 = v4;
+  v8 = completionCopy;
   dispatch_async(queue, buf);
 }
 
@@ -611,10 +611,10 @@ void __59__PKPaymentAuthorizationCoordinator_dismissWithCompletion___block_invok
   }
 }
 
-- (void)fulfillRemotePaymentRequestPromise:(id)a3 completion:(id)a4
+- (void)fulfillRemotePaymentRequestPromise:(id)promise completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  promiseCopy = promise;
+  completionCopy = completion;
   v8 = PKLogFacilityTypeGetObject(0x31uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -622,7 +622,7 @@ void __59__PKPaymentAuthorizationCoordinator_dismissWithCompletion___block_invok
     _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "AuthorizationCoordinator: fulfillRemotePaymentRequestPromise", buf, 2u);
   }
 
-  v9 = [v7 copy];
+  v9 = [completionCopy copy];
   remoteRequestPromisePresentationCompletionBlock = self->_remoteRequestPromisePresentationCompletionBlock;
   self->_remoteRequestPromisePresentationCompletionBlock = v9;
 
@@ -632,16 +632,16 @@ void __59__PKPaymentAuthorizationCoordinator_dismissWithCompletion___block_invok
   v15[2] = __83__PKPaymentAuthorizationCoordinator_fulfillRemotePaymentRequestPromise_completion___block_invoke;
   v15[3] = &unk_1E79C4D60;
   v15[4] = self;
-  v16 = v6;
-  v17 = v7;
+  v16 = promiseCopy;
+  v17 = completionCopy;
   v12 = v15;
   *buf = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __dispatch_async_ar_block_invoke_7;
   v21 = &unk_1E79C4428;
   v22 = v12;
-  v13 = v7;
-  v14 = v6;
+  v13 = completionCopy;
+  v14 = promiseCopy;
   dispatch_async(queue, buf);
 }
 
@@ -681,13 +681,13 @@ void __83__PKPaymentAuthorizationCoordinator_fulfillRemotePaymentRequestPromise_
   *(v3 + 40) = 0;
 }
 
-- (void)rejectRemotePaymentRequestPromiseWithFailure:(unint64_t)a3
+- (void)rejectRemotePaymentRequestPromiseWithFailure:(unint64_t)failure
 {
   v14 = *MEMORY[0x1E69E9840];
   v5 = PKLogFacilityTypeGetObject(0x31uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:failure];
     LODWORD(buf) = 138412290;
     *(&buf + 4) = v6;
     _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "AuthorizationCoordinator: rejectRemotePaymentRequestPromiseWithFailure: %@", &buf, 0xCu);
@@ -699,7 +699,7 @@ void __83__PKPaymentAuthorizationCoordinator_fulfillRemotePaymentRequestPromise_
   v9[2] = __82__PKPaymentAuthorizationCoordinator_rejectRemotePaymentRequestPromiseWithFailure___block_invoke;
   v9[3] = &unk_1E79CAED8;
   v9[4] = self;
-  v9[5] = a3;
+  v9[5] = failure;
   v8 = v9;
   *&buf = MEMORY[0x1E69E9820];
   *(&buf + 1) = 3221225472;
@@ -745,10 +745,10 @@ void __82__PKPaymentAuthorizationCoordinator_rejectRemotePaymentRequestPromiseWi
   *(v3 + 40) = 0;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = v5;
+  connectionCopy = connection;
+  v6 = connectionCopy;
   connection = self->_connection;
   if (!connection)
   {
@@ -758,7 +758,7 @@ void __82__PKPaymentAuthorizationCoordinator_rejectRemotePaymentRequestPromiseWi
     v11[2] = __72__PKPaymentAuthorizationCoordinator_listener_shouldAcceptNewConnection___block_invoke;
     v11[3] = &unk_1E79C4DD8;
     v11[4] = self;
-    v12 = v5;
+    v12 = connectionCopy;
     v9 = v11;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -825,37 +825,37 @@ void __72__PKPaymentAuthorizationCoordinator_listener_shouldAcceptNewConnection_
   [*(*(a1 + 32) + 72) authorizationDidFinishWithError:v2];
 }
 
-- (id)_remoteObjectProxyWithFailureHandler:(id)a3
+- (id)_remoteObjectProxyWithFailureHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     connection = self->_connection;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __74__PKPaymentAuthorizationCoordinator__remoteObjectProxyWithFailureHandler___block_invoke;
     v9[3] = &unk_1E79C4450;
-    v10 = v4;
-    v7 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v9];
+    v10 = handlerCopy;
+    _remoteObjectProxy = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v9];
   }
 
   else
   {
-    v7 = [(PKPaymentAuthorizationCoordinator *)self _remoteObjectProxy];
+    _remoteObjectProxy = [(PKPaymentAuthorizationCoordinator *)self _remoteObjectProxy];
   }
 
-  return v7;
+  return _remoteObjectProxy;
 }
 
-- (void)_invokeCallbackWithSuccess:(BOOL)a3
+- (void)_invokeCallbackWithSuccess:(BOOL)success
 {
   queue = self->_queue;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __64__PKPaymentAuthorizationCoordinator__invokeCallbackWithSuccess___block_invoke;
   v5[3] = &unk_1E79C4EC8;
-  v6 = a3;
+  successCopy = success;
   v5[4] = self;
   v4 = v5;
   block[0] = MEMORY[0x1E69E9820];

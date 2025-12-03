@@ -1,23 +1,23 @@
 @interface PHCarPlayInCallButton
 - (CGSize)intrinsicContentSize;
-- (id)initForButtonType:(int)a3 callState:(int64_t)a4;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (id)initForButtonType:(int)type callState:(int64_t)state;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHasRingView:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setToggledOn:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHasRingView:(BOOL)view;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
+- (void)setToggledOn:(BOOL)on;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateToProperIconColor;
 @end
 
 @implementation PHCarPlayInCallButton
 
-- (id)initForButtonType:(int)a3 callState:(int64_t)a4
+- (id)initForButtonType:(int)type callState:(int64_t)state
 {
   v80.receiver = self;
   v80.super_class = PHCarPlayInCallButton;
@@ -28,8 +28,8 @@
     goto LABEL_63;
   }
 
-  v6->_callState = a4;
-  v6->_inCallButtonType = a3;
+  v6->_callState = state;
+  v6->_inCallButtonType = type;
   [(PHCarPlayInCallButton *)v6 intrinsicContentSize];
   v9 = [NSLayoutConstraint constraintWithItem:v7 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v8];
   [(PHCarPlayInCallButton *)v7 addConstraint:v9];
@@ -62,17 +62,17 @@
   v15 = +[UIColor whiteColor];
   [(PHCarPlayInCallButton *)v7 setTintColor:v15];
 
-  v16 = [(PHCarPlayInCallButton *)v7 buttonLabel];
+  buttonLabel = [(PHCarPlayInCallButton *)v7 buttonLabel];
   LODWORD(v17) = 1132068864;
-  [v16 setContentCompressionResistancePriority:0 forAxis:v17];
+  [buttonLabel setContentCompressionResistancePriority:0 forAxis:v17];
 
-  if (a3 > 0x13)
+  if (type > 0x13)
   {
     goto LABEL_10;
   }
 
   v18 = 10.0;
-  if (((1 << a3) & 0x3C000) != 0)
+  if (((1 << type) & 0x3C000) != 0)
   {
     v20 = 0.0;
     v21 = 20.0;
@@ -80,7 +80,7 @@
     goto LABEL_7;
   }
 
-  if (((1 << a3) & 0x83800) == 0)
+  if (((1 << type) & 0x83800) == 0)
   {
 LABEL_10:
     v20 = 0.0;
@@ -99,10 +99,10 @@ LABEL_7:
   [v12 setFont:v22];
 
   [(PHCarPlayInCallButton *)v7 setHasRingView:v19];
-  switch(a3)
+  switch(type)
   {
     case 0:
-      if (a4 == 1)
+      if (state == 1)
       {
         v38 = [UIImage phCarPlayImageNamed:@"carplay_incall_button_end_voip"];
         v24 = [v38 imageWithRenderingMode:2];
@@ -115,7 +115,7 @@ LABEL_7:
 
       [(PHCarPlayInCallButton *)v7 setImage:v24 forState:0];
       v25 = +[NSBundle mainBundle];
-      v26 = v25;
+      specialRingView4 = v25;
       v27 = @"CARPLAY_END_BUTTON";
       goto LABEL_56;
     case 1:
@@ -143,7 +143,7 @@ LABEL_7:
       v33 = @"CARPLAY_ADD_CALL_BUTTON";
       goto LABEL_40;
     case 4:
-      if (a4 == 1)
+      if (state == 1)
       {
         v30 = [UIImage phCarPlayImageNamed:@"carplay_incall_button_decline_glyph_voip"];
         v24 = [v30 imageWithRenderingMode:2];
@@ -156,7 +156,7 @@ LABEL_7:
 
       [(PHCarPlayInCallButton *)v7 setImage:v24 forState:0];
       v25 = +[NSBundle mainBundle];
-      v26 = v25;
+      specialRingView4 = v25;
       v27 = @"CARPLAY_DECLINE_BUTTON";
       goto LABEL_56;
     case 5:
@@ -185,7 +185,7 @@ LABEL_7:
       goto LABEL_40;
     case 8:
     case 9:
-      if (a4 == 1)
+      if (state == 1)
       {
         v23 = [UIImage phCarPlayImageNamed:@"carplay_incall_button_answer_glyph_voip"];
         v24 = [v23 imageWithRenderingMode:2];
@@ -197,13 +197,13 @@ LABEL_7:
       }
 
       [(PHCarPlayInCallButton *)v7 setImage:v24 forState:0];
-      if (a3 != 8)
+      if (type != 8)
       {
         goto LABEL_59;
       }
 
       v25 = +[NSBundle mainBundle];
-      v26 = v25;
+      specialRingView4 = v25;
       v27 = @"CARPLAY_ANSWER_BUTTON";
       goto LABEL_56;
     case 10:
@@ -215,14 +215,14 @@ LABEL_7:
       v33 = @"CARPLAY_DECLINE_WITH_MESSAGE";
       goto LABEL_40;
     case 11:
-      if ((a4 - 1) > 3)
+      if ((state - 1) > 3)
       {
         v28 = 0;
       }
 
       else
       {
-        v28 = off_100286890[a4 - 1];
+        v28 = off_100286890[state - 1];
       }
 
       v24 = [NSString stringWithFormat:@"%@_selected", v28];
@@ -236,18 +236,18 @@ LABEL_7:
       [(PHCarPlayInCallButton *)v7 setImage:v63 forState:4];
 
       v25 = +[NSBundle mainBundle];
-      v26 = v25;
+      specialRingView4 = v25;
       v27 = @"CARPLAY_END_CALL_AND_ANSWER_BUTTON";
       goto LABEL_56;
     case 12:
-      if ((a4 - 1) > 3)
+      if ((state - 1) > 3)
       {
         v29 = 0;
       }
 
       else
       {
-        v29 = off_1002868B0[a4 - 1];
+        v29 = off_1002868B0[state - 1];
       }
 
       v24 = [NSString stringWithFormat:@"%@_selected", v29];
@@ -261,18 +261,18 @@ LABEL_7:
       [(PHCarPlayInCallButton *)v7 setImage:v66 forState:4];
 
       v25 = +[NSBundle mainBundle];
-      v26 = v25;
+      specialRingView4 = v25;
       v27 = @"CARPLAY_HOLD_CALL_AND_ANSWER_BUTTON";
       goto LABEL_56;
     case 13:
-      if ((a4 - 1) > 3)
+      if ((state - 1) > 3)
       {
         v37 = 0;
       }
 
       else
       {
-        v37 = off_1002868D0[a4 - 1];
+        v37 = off_1002868D0[state - 1];
       }
 
       v24 = [NSString stringWithFormat:@"%@_selected", v37];
@@ -286,19 +286,19 @@ LABEL_7:
       [(PHCarPlayInCallButton *)v7 setImage:v69 forState:4];
 
       v25 = +[NSBundle mainBundle];
-      v26 = v25;
+      specialRingView4 = v25;
       v27 = @"CARPLAY_END_HOLD_CALL_AND_ANSWER_BUTTON";
       goto LABEL_56;
     case 14:
       v24 = 0;
-      if (a4 > 2)
+      if (state > 2)
       {
-        if (a4 == 4)
+        if (state == 4)
         {
           goto LABEL_54;
         }
 
-        if (a4 != 3)
+        if (state != 3)
         {
           goto LABEL_55;
         }
@@ -310,12 +310,12 @@ LABEL_53:
         goto LABEL_55;
       }
 
-      if (a4 == 1)
+      if (state == 1)
       {
         goto LABEL_53;
       }
 
-      if (a4 != 2)
+      if (state != 2)
       {
         goto LABEL_55;
       }
@@ -328,26 +328,26 @@ LABEL_55:
       [(PHCarPlayInCallButton *)v7 setImage:v72 forState:0];
 
       v25 = +[NSBundle mainBundle];
-      v26 = v25;
+      specialRingView4 = v25;
       v27 = @"CARPLAY_IGNORE_BUTTON";
 LABEL_56:
-      v60 = [v25 localizedStringForKey:v27 value:&stru_10028F310 table:@"PHCarPlay"];
-      v73 = [(PHCarPlayInCallButton *)v7 buttonLabel];
-      [v73 setText:v60];
+      buttonLabel5 = [v25 localizedStringForKey:v27 value:&stru_10028F310 table:@"PHCarPlay"];
+      buttonLabel2 = [(PHCarPlayInCallButton *)v7 buttonLabel];
+      [buttonLabel2 setText:buttonLabel5];
 
 LABEL_57:
 LABEL_58:
 
 LABEL_59:
 LABEL_60:
-      v74 = [(PHCarPlayInCallButton *)v7 buttonLabel];
-      v75 = [v74 text];
+      buttonLabel3 = [(PHCarPlayInCallButton *)v7 buttonLabel];
+      text = [buttonLabel3 text];
 
-      if (v75)
+      if (text)
       {
-        v76 = [(PHCarPlayInCallButton *)v7 buttonLabel];
-        v77 = [v76 text];
-        v81 = v77;
+        buttonLabel4 = [(PHCarPlayInCallButton *)v7 buttonLabel];
+        text2 = [buttonLabel4 text];
+        v81 = text2;
         v78 = [NSArray arrayWithObjects:&v81 count:1];
         [(PHCarPlayInCallButton *)v7 setAccessibilityUserInputLabels:v78];
       }
@@ -391,9 +391,9 @@ LABEL_63:
       v24 = v32;
       v33 = @"CARPLAY_HOLD_BUTTON";
 LABEL_40:
-      v26 = [v32 localizedStringForKey:v33 value:&stru_10028F310 table:@"PHCarPlay"];
-      v60 = [(PHCarPlayInCallButton *)v7 buttonLabel];
-      [v60 setText:v26];
+      specialRingView4 = [v32 localizedStringForKey:v33 value:&stru_10028F310 table:@"PHCarPlay"];
+      buttonLabel5 = [(PHCarPlayInCallButton *)v7 buttonLabel];
+      [buttonLabel5 setText:specialRingView4];
       goto LABEL_57;
     case 19:
       v47 = [UIImage phCarPlayImageNamed:@"text_sos_icon_CarPlay"];
@@ -401,8 +401,8 @@ LABEL_40:
 
       v48 = +[NSBundle mainBundle];
       v49 = [v48 localizedStringForKey:@"ALERT_ACTION_TEXT_BUTTON_LABEL" value:&stru_10028F310 table:@"Localizable-Stewie"];
-      v50 = [(PHCarPlayInCallButton *)v7 buttonLabel];
-      [v50 setText:v49];
+      buttonLabel6 = [(PHCarPlayInCallButton *)v7 buttonLabel];
+      [buttonLabel6 setText:v49];
 
       v51 = [UIImage phCarPlayImageNamed:@"text_sos_icon_CarPlay_Focus_Ring"];
       v24 = [v51 imageWithRenderingMode:2];
@@ -411,17 +411,17 @@ LABEL_40:
       [(PHCarPlayInCallButton *)v7 setSpecialRingView:v52];
 
       v53 = +[UIColor dynamicCarFocusedColor];
-      v54 = [(PHCarPlayInCallButton *)v7 specialRingView];
-      [v54 setTintColor:v53];
+      specialRingView = [(PHCarPlayInCallButton *)v7 specialRingView];
+      [specialRingView setTintColor:v53];
 
-      v55 = [(PHCarPlayInCallButton *)v7 specialRingView];
-      [v55 setUserInteractionEnabled:0];
+      specialRingView2 = [(PHCarPlayInCallButton *)v7 specialRingView];
+      [specialRingView2 setUserInteractionEnabled:0];
 
-      v56 = [(PHCarPlayInCallButton *)v7 specialRingView];
-      [v56 setHidden:1];
+      specialRingView3 = [(PHCarPlayInCallButton *)v7 specialRingView];
+      [specialRingView3 setHidden:1];
 
-      v26 = [(PHCarPlayInCallButton *)v7 specialRingView];
-      [(PHCarPlayInCallButton *)v7 addSubview:v26];
+      specialRingView4 = [(PHCarPlayInCallButton *)v7 specialRingView];
+      [(PHCarPlayInCallButton *)v7 addSubview:specialRingView4];
       goto LABEL_58;
     default:
       goto LABEL_60;
@@ -430,14 +430,14 @@ LABEL_40:
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(PHCarPlayInCallButton *)self inCallButtonType];
+  inCallButtonType = [(PHCarPlayInCallButton *)self inCallButtonType];
   v3 = 75.0;
-  if (v2 - 8 < 7 || v2 == 4)
+  if (inCallButtonType - 8 < 7 || inCallButtonType == 4)
   {
     v5 = 104.0;
   }
 
-  else if (v2 == 19)
+  else if (inCallButtonType == 19)
   {
     v5 = 92.5;
   }
@@ -453,19 +453,19 @@ LABEL_40:
   return result;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v15.receiver = self;
   v15.super_class = PHCarPlayInCallButton;
   [(PHCarPlayInCallButton *)&v15 setHighlighted:?];
-  v5 = [(PHCarPlayInCallButton *)self ringView];
-  [v5 setHighlighted:v3];
+  ringView = [(PHCarPlayInCallButton *)self ringView];
+  [ringView setHighlighted:highlightedCopy];
 
   [(PHCarPlayInCallButton *)self updateToProperIconColor];
-  v6 = [(PHCarPlayInCallButton *)self unhighlightedBackgroundColor];
+  unhighlightedBackgroundColor = [(PHCarPlayInCallButton *)self unhighlightedBackgroundColor];
 
-  if (v6)
+  if (unhighlightedBackgroundColor)
   {
     if ([(PHCarPlayInCallButton *)self isHighlighted])
     {
@@ -473,8 +473,8 @@ LABEL_40:
       v14 = 0.0;
       v11 = 0.0;
       v12 = 0.0;
-      v7 = [(PHCarPlayInCallButton *)self unhighlightedBackgroundColor];
-      v8 = [v7 getHue:&v14 saturation:&v13 brightness:&v12 alpha:&v11];
+      unhighlightedBackgroundColor2 = [(PHCarPlayInCallButton *)self unhighlightedBackgroundColor];
+      v8 = [unhighlightedBackgroundColor2 getHue:&v14 saturation:&v13 brightness:&v12 alpha:&v11];
 
       v9 = 0;
       if (!v8)
@@ -485,27 +485,27 @@ LABEL_7:
         return;
       }
 
-      v10 = [UIColor colorWithHue:v14 saturation:v13 brightness:v12 * 0.7 alpha:v11];
+      unhighlightedBackgroundColor3 = [UIColor colorWithHue:v14 saturation:v13 brightness:v12 * 0.7 alpha:v11];
     }
 
     else
     {
-      v10 = [(PHCarPlayInCallButton *)self unhighlightedBackgroundColor];
+      unhighlightedBackgroundColor3 = [(PHCarPlayInCallButton *)self unhighlightedBackgroundColor];
     }
 
-    v9 = v10;
+    v9 = unhighlightedBackgroundColor3;
     goto LABEL_7;
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v8.receiver = self;
   v8.super_class = PHCarPlayInCallButton;
   [(PHCarPlayInCallButton *)&v8 setEnabled:?];
-  v5 = [(PHCarPlayInCallButton *)self ringView];
-  [v5 setDimmed:!v3];
+  ringView = [(PHCarPlayInCallButton *)self ringView];
+  [ringView setDimmed:!enabledCopy];
 
   if ([(PHCarPlayInCallButton *)self isEnabled])
   {
@@ -517,35 +517,35 @@ LABEL_7:
     +[UIColor lightGrayColor];
   }
   v6 = ;
-  v7 = [(PHCarPlayInCallButton *)self buttonLabel];
-  [v7 setTextColor:v6];
+  buttonLabel = [(PHCarPlayInCallButton *)self buttonLabel];
+  [buttonLabel setTextColor:v6];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v7.receiver = self;
   v7.super_class = PHCarPlayInCallButton;
   [(PHCarPlayInCallButton *)&v7 setSelected:?];
-  v5 = [(PHCarPlayInCallButton *)self ringView];
+  ringView = [(PHCarPlayInCallButton *)self ringView];
 
-  if (v5)
+  if (ringView)
   {
-    v6 = [(PHCarPlayInCallButton *)self ringView];
-    [v6 setSelected:v3];
+    ringView2 = [(PHCarPlayInCallButton *)self ringView];
+    [ringView2 setSelected:selectedCopy];
 
     [(PHCarPlayInCallButton *)self updateToProperIconColor];
   }
 }
 
-- (void)setHasRingView:(BOOL)a3
+- (void)setHasRingView:(BOOL)view
 {
-  v3 = a3;
-  v5 = [(PHCarPlayInCallButton *)self ringView];
+  viewCopy = view;
+  ringView = [(PHCarPlayInCallButton *)self ringView];
 
-  if (v3)
+  if (viewCopy)
   {
-    if (v5)
+    if (ringView)
     {
       return;
     }
@@ -553,39 +553,39 @@ LABEL_7:
     v6 = [[PHCarPlayInCallButtonRing alloc] initWithFrame:0.0, 0.0, 54.0, 54.0];
     [(PHCarPlayInCallButton *)self setRingView:v6];
 
-    v7 = [(PHCarPlayInCallButton *)self ringView];
-    [v7 setUserInteractionEnabled:0];
+    ringView2 = [(PHCarPlayInCallButton *)self ringView];
+    [ringView2 setUserInteractionEnabled:0];
 
-    v8 = [(PHCarPlayInCallButton *)self ringView];
-    [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+    ringView3 = [(PHCarPlayInCallButton *)self ringView];
+    [ringView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v9 = +[UIColor clearColor];
-    v10 = [(PHCarPlayInCallButton *)self ringView];
-    [v10 setBackgroundColor:v9];
+    ringView4 = [(PHCarPlayInCallButton *)self ringView];
+    [ringView4 setBackgroundColor:v9];
 
-    v11 = [(PHCarPlayInCallButton *)self ringView];
-    [v11 setOpaque:0];
+    ringView5 = [(PHCarPlayInCallButton *)self ringView];
+    [ringView5 setOpaque:0];
 
-    v12 = [(PHCarPlayInCallButton *)self ringView];
-    [(PHCarPlayInCallButton *)self addSubview:v12];
+    ringView6 = [(PHCarPlayInCallButton *)self ringView];
+    [(PHCarPlayInCallButton *)self addSubview:ringView6];
 
-    v13 = [(PHCarPlayInCallButton *)self inCallButtonType];
-    if (v13 > 14)
+    inCallButtonType = [(PHCarPlayInCallButton *)self inCallButtonType];
+    if (inCallButtonType > 14)
     {
-      if (v13 > 16)
+      if (inCallButtonType > 16)
       {
-        if (v13 == 19)
+        if (inCallButtonType == 19)
         {
           goto LABEL_29;
         }
 
-        if (v13 == 17)
+        if (inCallButtonType == 17)
         {
           v15 = +[UIColor whiteColor];
 LABEL_30:
           v18 = v15;
-          v16 = [(PHCarPlayInCallButton *)self ringView];
-          [v16 setFillColor:v18];
+          ringView7 = [(PHCarPlayInCallButton *)self ringView];
+          [ringView7 setFillColor:v18];
 
 LABEL_31:
 
@@ -604,16 +604,16 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      if (v13 == 15)
+      if (inCallButtonType == 15)
       {
         v15 = +[UIColor externalSystemGreenColor];
         goto LABEL_30;
       }
     }
 
-    else if (v13 <= 7)
+    else if (inCallButtonType <= 7)
     {
-      if (v13 && v13 != 4)
+      if (inCallButtonType && inCallButtonType != 4)
       {
         goto LABEL_26;
       }
@@ -621,7 +621,7 @@ LABEL_29:
 
     else
     {
-      if ((v13 - 8) < 2)
+      if ((inCallButtonType - 8) < 2)
       {
         if ([(PHCarPlayInCallButton *)self callState]== 1)
         {
@@ -633,13 +633,13 @@ LABEL_29:
           +[UIColor externalSystemGreenColor];
         }
         v18 = ;
-        v17 = [(PHCarPlayInCallButton *)self ringView];
-        [v17 setFillColor:v18];
+        ringView8 = [(PHCarPlayInCallButton *)self ringView];
+        [ringView8 setFillColor:v18];
 
         goto LABEL_31;
       }
 
-      if (v13 != 14)
+      if (inCallButtonType != 14)
       {
         goto LABEL_26;
       }
@@ -658,10 +658,10 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  if (v5)
+  if (ringView)
   {
-    v14 = [(PHCarPlayInCallButton *)self ringView];
-    [v14 removeFromSuperview];
+    ringView9 = [(PHCarPlayInCallButton *)self ringView];
+    [ringView9 removeFromSuperview];
 
     [(PHCarPlayInCallButton *)self setRingView:0];
   }
@@ -674,8 +674,8 @@ LABEL_29:
   [(PHCarPlayInCallButton *)&v42 layoutSubviews];
   [(PHCarPlayInCallButton *)self bounds];
   Width = CGRectGetWidth(v43);
-  v4 = [(PHCarPlayInCallButton *)self imageView];
-  [v4 sizeThatFits:{Width, 58.0}];
+  imageView = [(PHCarPlayInCallButton *)self imageView];
+  [imageView sizeThatFits:{Width, 58.0}];
 
   [(PHCarPlayInCallButton *)self inCallButtonType];
   UIRectCenteredIntegralRect();
@@ -683,51 +683,51 @@ LABEL_29:
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(PHCarPlayInCallButton *)self imageView];
-  [v13 setFrame:{v6, v8, v10, v12}];
+  imageView2 = [(PHCarPlayInCallButton *)self imageView];
+  [imageView2 setFrame:{v6, v8, v10, v12}];
 
-  v14 = [(PHCarPlayInCallButton *)self specialRingView];
+  specialRingView = [(PHCarPlayInCallButton *)self specialRingView];
 
-  if (v14)
+  if (specialRingView)
   {
-    v15 = [(PHCarPlayInCallButton *)self specialRingView];
-    [v15 sizeThatFits:{Width, 58.0}];
+    specialRingView2 = [(PHCarPlayInCallButton *)self specialRingView];
+    [specialRingView2 sizeThatFits:{Width, 58.0}];
 
     UIRectCenteredIntegralRect();
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
-    v24 = [(PHCarPlayInCallButton *)self specialRingView];
-    [v24 setFrame:{v17, v19, v21, v23}];
+    specialRingView3 = [(PHCarPlayInCallButton *)self specialRingView];
+    [specialRingView3 setFrame:{v17, v19, v21, v23}];
   }
 
   [(PHCarPlayInCallButton *)self bounds];
   v25 = CGRectGetHeight(v44) + -58.0;
-  v26 = [(PHCarPlayInCallButton *)self buttonLabel];
-  [v26 sizeThatFits:{Width, v25}];
+  buttonLabel = [(PHCarPlayInCallButton *)self buttonLabel];
+  [buttonLabel sizeThatFits:{Width, v25}];
   v28 = v27;
 
-  v29 = [(PHCarPlayInCallButton *)self buttonLabel];
-  [v29 setFrame:{0.0, 58.0, Width, v28}];
+  buttonLabel2 = [(PHCarPlayInCallButton *)self buttonLabel];
+  [buttonLabel2 setFrame:{0.0, 58.0, Width, v28}];
 
-  v30 = [(PHCarPlayInCallButton *)self ringView];
+  ringView = [(PHCarPlayInCallButton *)self ringView];
 
-  if (v30)
+  if (ringView)
   {
-    v31 = [(PHCarPlayInCallButton *)self ringView];
-    [(PHCarPlayInCallButton *)self sendSubviewToBack:v31];
+    ringView2 = [(PHCarPlayInCallButton *)self ringView];
+    [(PHCarPlayInCallButton *)self sendSubviewToBack:ringView2];
 
-    v32 = [(PHCarPlayInCallButton *)self ringView];
-    [v32 sizeThatFits:{Width, 58.0}];
+    ringView3 = [(PHCarPlayInCallButton *)self ringView];
+    [ringView3 sizeThatFits:{Width, 58.0}];
 
     UIRectCenteredIntegralRect();
     v34 = v33;
     v36 = v35;
     v38 = v37;
     v40 = v39;
-    v41 = [(PHCarPlayInCallButton *)self ringView];
-    [v41 setFrame:{v34, v36, v38, v40}];
+    ringView4 = [(PHCarPlayInCallButton *)self ringView];
+    [ringView4 setFrame:{v34, v36, v38, v40}];
   }
 }
 
@@ -738,9 +738,9 @@ LABEL_29:
     return;
   }
 
-  v3 = [(PHCarPlayInCallButton *)self ringView];
+  ringView = [(PHCarPlayInCallButton *)self ringView];
 
-  if (!v3)
+  if (!ringView)
   {
     return;
   }
@@ -757,10 +757,10 @@ LABEL_8:
     goto LABEL_15;
   }
 
-  v4 = [(PHCarPlayInCallButton *)self isHighlighted];
+  isHighlighted = [(PHCarPlayInCallButton *)self isHighlighted];
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    if (!v4)
+    if (!isHighlighted)
     {
       v6 = +[UIColor whiteColor];
 LABEL_23:
@@ -783,7 +783,7 @@ LABEL_10:
     goto LABEL_23;
   }
 
-  if (v4)
+  if (isHighlighted)
   {
     goto LABEL_8;
   }
@@ -791,9 +791,9 @@ LABEL_10:
   v5 = +[UIColor whiteColor];
 LABEL_15:
   v7 = v5;
-  v8 = [(PHCarPlayInCallButton *)self ringView];
-  v9 = [v8 glassView];
-  [v9 setTintColor:v7];
+  ringView2 = [(PHCarPlayInCallButton *)self ringView];
+  glassView = [ringView2 glassView];
+  [glassView setTintColor:v7];
 
   if ([(PHCarPlayInCallButton *)self inCallButtonType]!= 1)
   {
@@ -815,95 +815,95 @@ LABEL_19:
   v10 = +[UIColor redColor];
 LABEL_20:
   v12 = v10;
-  v11 = [(PHCarPlayInCallButton *)self imageView];
-  [v11 setTintColor:v12];
+  imageView = [(PHCarPlayInCallButton *)self imageView];
+  [imageView setTintColor:v12];
 
 LABEL_24:
 }
 
-- (void)setToggledOn:(BOOL)a3
+- (void)setToggledOn:(BOOL)on
 {
-  if (self->_toggledOn != a3)
+  if (self->_toggledOn != on)
   {
-    v3 = a3;
-    self->_toggledOn = a3;
+    onCopy = on;
+    self->_toggledOn = on;
     if ([(PHCarPlayInCallButton *)self inCallButtonType]== 1 || [(PHCarPlayInCallButton *)self inCallButtonType]== 18)
     {
-      v5 = [(PHCarPlayInCallButton *)self ringView];
-      [v5 setToggledOn:v3];
+      ringView = [(PHCarPlayInCallButton *)self ringView];
+      [ringView setToggledOn:onCopy];
 
       [(PHCarPlayInCallButton *)self updateToProperIconColor];
     }
   }
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if (_pressesContainSelect(v6))
+  beganCopy = began;
+  eventCopy = event;
+  if (_pressesContainSelect(beganCopy))
   {
     [(PHCarPlayInCallButton *)self setHighlighted:1];
   }
 
   v8.receiver = self;
   v8.super_class = PHCarPlayInCallButton;
-  [(PHCarPlayInCallButton *)&v8 pressesBegan:v6 withEvent:v7];
+  [(PHCarPlayInCallButton *)&v8 pressesBegan:beganCopy withEvent:eventCopy];
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if (_pressesContainSelect(v6))
+  endedCopy = ended;
+  eventCopy = event;
+  if (_pressesContainSelect(endedCopy))
   {
     [(PHCarPlayInCallButton *)self setHighlighted:0];
   }
 
   v8.receiver = self;
   v8.super_class = PHCarPlayInCallButton;
-  [(PHCarPlayInCallButton *)&v8 pressesEnded:v6 withEvent:v7];
+  [(PHCarPlayInCallButton *)&v8 pressesEnded:endedCopy withEvent:eventCopy];
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if (_pressesContainSelect(v6))
+  cancelledCopy = cancelled;
+  eventCopy = event;
+  if (_pressesContainSelect(cancelledCopy))
   {
     [(PHCarPlayInCallButton *)self setHighlighted:0];
   }
 
   v8.receiver = self;
   v8.super_class = PHCarPlayInCallButton;
-  [(PHCarPlayInCallButton *)&v8 pressesCancelled:v6 withEvent:v7];
+  [(PHCarPlayInCallButton *)&v8 pressesCancelled:cancelledCopy withEvent:eventCopy];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v16 = a3;
-  v5 = [(PHCarPlayInCallButton *)self ringView];
+  contextCopy = context;
+  ringView = [(PHCarPlayInCallButton *)self ringView];
 
-  if (v5)
+  if (ringView)
   {
-    v6 = [v16 nextFocusedItem];
-    [(PHCarPlayInCallButton *)self setSelected:v6 == self];
+    nextFocusedItem = [contextCopy nextFocusedItem];
+    [(PHCarPlayInCallButton *)self setSelected:nextFocusedItem == self];
   }
 
-  v7 = [(PHCarPlayInCallButton *)self specialRingView];
-  if (v7)
+  specialRingView = [(PHCarPlayInCallButton *)self specialRingView];
+  if (specialRingView)
   {
-    v8 = v7;
-    v9 = [(PHCarPlayInCallButton *)self inCallButtonType];
+    v8 = specialRingView;
+    inCallButtonType = [(PHCarPlayInCallButton *)self inCallButtonType];
 
-    if (v9 == 19)
+    if (inCallButtonType == 19)
     {
-      v10 = [v16 nextFocusedItem];
+      nextFocusedItem2 = [contextCopy nextFocusedItem];
 
-      v11 = [(PHCarPlayInCallButton *)self specialRingView];
-      v12 = v11;
-      v13 = v10 != self;
-      if (v10 == self)
+      specialRingView2 = [(PHCarPlayInCallButton *)self specialRingView];
+      v12 = specialRingView2;
+      v13 = nextFocusedItem2 != self;
+      if (nextFocusedItem2 == self)
       {
         v14 = @"text_sos_icon_CarPlay_Focused";
       }
@@ -913,7 +913,7 @@ LABEL_24:
         v14 = @"text_sos_icon_CarPlay";
       }
 
-      [v11 setHidden:v13];
+      [specialRingView2 setHidden:v13];
 
       v15 = [UIImage phCarPlayImageNamed:v14];
       [(PHCarPlayInCallButton *)self setImage:v15 forState:0];
@@ -921,11 +921,11 @@ LABEL_24:
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = PHCarPlayInCallButton;
-  [(PHCarPlayInCallButton *)&v4 traitCollectionDidChange:a3];
+  [(PHCarPlayInCallButton *)&v4 traitCollectionDidChange:change];
   [(PHCarPlayInCallButton *)self updateToProperIconColor];
 }
 

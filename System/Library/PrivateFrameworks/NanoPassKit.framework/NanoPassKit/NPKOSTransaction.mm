@@ -1,22 +1,22 @@
 @interface NPKOSTransaction
-+ (NPKOSTransaction)transactionWithName:(id)a3;
-- (id)_initWithName:(id)a3;
++ (NPKOSTransaction)transactionWithName:(id)name;
+- (id)_initWithName:(id)name;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation NPKOSTransaction
 
-- (id)_initWithName:(id)a3
+- (id)_initWithName:(id)name
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v21.receiver = self;
   v21.super_class = NPKOSTransaction;
   v5 = [(NPKOSTransaction *)&v21 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     name = v5->_name;
     v5->_name = v6;
 
@@ -24,7 +24,7 @@
     internalQueue = v5->_internalQueue;
     v5->_internalQueue = v8;
 
-    v10 = [@"com.apple.nanopasskit." stringByAppendingString:v4];
+    v10 = [@"com.apple.nanopasskit." stringByAppendingString:nameCopy];
     [v10 UTF8String];
     v11 = os_transaction_create();
     transaction = v5->_transaction;
@@ -93,10 +93,10 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (NPKOSTransaction)transactionWithName:(id)a3
++ (NPKOSTransaction)transactionWithName:(id)name
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithName:v4];
+  nameCopy = name;
+  v5 = [[self alloc] _initWithName:nameCopy];
 
   return v5;
 }

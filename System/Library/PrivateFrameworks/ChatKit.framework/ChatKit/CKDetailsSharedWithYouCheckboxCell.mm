@@ -1,6 +1,6 @@
 @interface CKDetailsSharedWithYouCheckboxCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKDetailsSharedWithYouCheckboxCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKDetailsSharedWithYouCheckboxCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UISwitch)controlSwitch;
 - (void)_configureNewControlSwitch;
 - (void)_configureNewTitleLabel;
@@ -10,36 +10,36 @@
 
 @implementation CKDetailsSharedWithYouCheckboxCell
 
-- (CKDetailsSharedWithYouCheckboxCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CKDetailsSharedWithYouCheckboxCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v13.receiver = self;
   v13.super_class = CKDetailsSharedWithYouCheckboxCell;
-  v4 = [(CKTranscriptDetailsResizableCell *)&v13 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CKTranscriptDetailsResizableCell *)&v13 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(CKDetailsSharedWithYouCheckboxCell *)v4 _configureNewControlSwitch];
     v6 = +[CKUIBehavior sharedBehaviors];
-    v7 = [v6 theme];
-    v8 = [v7 detailsCellStaticTextColor];
-    v9 = [(CKDetailsSharedWithYouCheckboxCell *)v5 controlSwitch];
-    [v9 setOnTintColor:v8];
+    theme = [v6 theme];
+    detailsCellStaticTextColor = [theme detailsCellStaticTextColor];
+    controlSwitch = [(CKDetailsSharedWithYouCheckboxCell *)v5 controlSwitch];
+    [controlSwitch setOnTintColor:detailsCellStaticTextColor];
 
     [(CKDetailsSharedWithYouCheckboxCell *)v5 _configureNewTitleLabel];
-    v10 = [(CKDetailsCell *)v5 topSeperator];
-    [v10 setHidden:1];
+    topSeperator = [(CKDetailsCell *)v5 topSeperator];
+    [topSeperator setHidden:1];
 
-    v11 = [(CKDetailsCell *)v5 bottomSeperator];
-    [v11 setHidden:1];
+    bottomSeperator = [(CKDetailsCell *)v5 bottomSeperator];
+    [bottomSeperator setHidden:1];
   }
 
   return v5;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if (CKIsRunningInMacCatalyst())
   {
     v6 = +[CKUIBehavior sharedBehaviors];
@@ -90,8 +90,8 @@
   self->_controlSwitch = v5;
 
   [(UISwitch *)self->_controlSwitch setPreferredStyle:1];
-  v7 = [(CKDetailsSharedWithYouCheckboxCell *)self contentView];
-  [v7 addSubview:self->_controlSwitch];
+  contentView = [(CKDetailsSharedWithYouCheckboxCell *)self contentView];
+  [contentView addSubview:self->_controlSwitch];
 }
 
 - (void)_configureNewTitleLabel
@@ -109,24 +109,24 @@
 
   v7 = CKFrameworkBundle();
   v8 = [v7 localizedStringForKey:@"SHARED_WITH_YOU_TITLE" value:&stru_1F04268F8 table:@"ChatKit"];
-  v9 = [v8 localizedUppercaseString];
-  [(UILabel *)self->_titleLabel setText:v9];
+  localizedUppercaseString = [v8 localizedUppercaseString];
+  [(UILabel *)self->_titleLabel setText:localizedUppercaseString];
 
   v10 = self->_titleLabel;
-  v11 = [MEMORY[0x1E69DC888] clearColor];
-  [(UILabel *)v10 setBackgroundColor:v11];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UILabel *)v10 setBackgroundColor:clearColor];
 
   v12 = self->_titleLabel;
-  v13 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)v12 setTextColor:v13];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)v12 setTextColor:secondaryLabelColor];
 
   v14 = self->_titleLabel;
   v15 = +[CKUIBehavior sharedBehaviors];
-  v16 = [v15 headerFont];
-  [(UILabel *)v14 setFont:v16];
+  headerFont = [v15 headerFont];
+  [(UILabel *)v14 setFont:headerFont];
 
-  v17 = [(CKDetailsSharedWithYouCheckboxCell *)self contentView];
-  [v17 addSubview:self->_titleLabel];
+  contentView = [(CKDetailsSharedWithYouCheckboxCell *)self contentView];
+  [contentView addSubview:self->_titleLabel];
 }
 
 - (void)layoutSubviews
@@ -134,8 +134,8 @@
   v31.receiver = self;
   v31.super_class = CKDetailsSharedWithYouCheckboxCell;
   [(CKDetailsCell *)&v31 layoutSubviews];
-  v3 = [(CKDetailsSharedWithYouCheckboxCell *)self contentView];
-  [v3 bounds];
+  contentView = [(CKDetailsSharedWithYouCheckboxCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -147,8 +147,8 @@
   v19 = v11 - (v14 + v18);
 
   v20 = v13 + -2.0;
-  v21 = [(CKDetailsSharedWithYouCheckboxCell *)self controlSwitch];
-  [v21 setFrame:{v20, v15 + 8.0, v17, v19}];
+  controlSwitch = [(CKDetailsSharedWithYouCheckboxCell *)self controlSwitch];
+  [controlSwitch setFrame:{v20, v15 + 8.0, v17, v19}];
   [(UILabel *)self->_titleLabel sizeToFit];
   if ([*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection])
   {

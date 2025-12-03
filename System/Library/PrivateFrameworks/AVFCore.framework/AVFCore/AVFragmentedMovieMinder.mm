@@ -44,9 +44,9 @@
 {
   v4.receiver = self;
   v4.super_class = AVFragmentedMovieMinder;
-  v2 = [(AVFragmentedAssetMinder *)&v4 assets];
+  assets = [(AVFragmentedAssetMinder *)&v4 assets];
 
-  return v2;
+  return assets;
 }
 
 - (void)addFragmentedMovie:(AVFragmentedMovie *)movie

@@ -1,40 +1,40 @@
 @interface DNDSApplicationConfigurationRecord
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)_initWithMinimumBreakthroughUrgency:(id)a3 allowedThreads:(id)a4 deniedThreads:(id)a5;
-- (id)_initWithRecord:(id)a3;
-- (id)dictionaryRepresentationWithContext:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithMinimumBreakthroughUrgency:(id)urgency allowedThreads:(id)threads deniedThreads:(id)deniedThreads;
+- (id)_initWithRecord:(id)record;
+- (id)dictionaryRepresentationWithContext:(id)context;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation DNDSApplicationConfigurationRecord
 
-- (id)_initWithRecord:(id)a3
+- (id)_initWithRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 minimumBreakthroughUrgency];
-  v6 = [v4 allowedThreads];
-  v7 = [v4 deniedThreads];
+  recordCopy = record;
+  minimumBreakthroughUrgency = [recordCopy minimumBreakthroughUrgency];
+  allowedThreads = [recordCopy allowedThreads];
+  deniedThreads = [recordCopy deniedThreads];
 
-  v8 = [(DNDSApplicationConfigurationRecord *)self _initWithMinimumBreakthroughUrgency:v5 allowedThreads:v6 deniedThreads:v7];
+  v8 = [(DNDSApplicationConfigurationRecord *)self _initWithMinimumBreakthroughUrgency:minimumBreakthroughUrgency allowedThreads:allowedThreads deniedThreads:deniedThreads];
   return v8;
 }
 
-- (id)_initWithMinimumBreakthroughUrgency:(id)a3 allowedThreads:(id)a4 deniedThreads:(id)a5
+- (id)_initWithMinimumBreakthroughUrgency:(id)urgency allowedThreads:(id)threads deniedThreads:(id)deniedThreads
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  urgencyCopy = urgency;
+  threadsCopy = threads;
+  deniedThreadsCopy = deniedThreads;
   v19.receiver = self;
   v19.super_class = DNDSApplicationConfigurationRecord;
   v11 = [(DNDSApplicationConfigurationRecord *)&v19 init];
   if (v11)
   {
-    if (v9)
+    if (threadsCopy)
     {
-      v12 = v9;
+      v12 = threadsCopy;
     }
 
     else
@@ -45,9 +45,9 @@
     allowedThreads = v11->_allowedThreads;
     v11->_allowedThreads = v12;
 
-    if (v10)
+    if (deniedThreadsCopy)
     {
-      v14 = v10;
+      v14 = deniedThreadsCopy;
     }
 
     else
@@ -64,9 +64,9 @@
       v16 = &unk_285C534F0;
     }
 
-    if (v8)
+    if (urgencyCopy)
     {
-      v17 = v8;
+      v17 = urgencyCopy;
     }
 
     else
@@ -82,20 +82,20 @@
 
 - (unint64_t)hash
 {
-  v3 = [(DNDSApplicationConfigurationRecord *)self minimumBreakthroughUrgency];
-  v4 = [v3 hash];
-  v5 = [(DNDSApplicationConfigurationRecord *)self allowedThreads];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(DNDSApplicationConfigurationRecord *)self deniedThreads];
-  v8 = [v7 hash];
+  minimumBreakthroughUrgency = [(DNDSApplicationConfigurationRecord *)self minimumBreakthroughUrgency];
+  v4 = [minimumBreakthroughUrgency hash];
+  allowedThreads = [(DNDSApplicationConfigurationRecord *)self allowedThreads];
+  v6 = [allowedThreads hash] ^ v4;
+  deniedThreads = [(DNDSApplicationConfigurationRecord *)self deniedThreads];
+  v8 = [deniedThreads hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -105,21 +105,21 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(DNDSApplicationConfigurationRecord *)self minimumBreakthroughUrgency];
-      v8 = [(DNDSApplicationConfigurationRecord *)v6 minimumBreakthroughUrgency];
-      if (v7 != v8)
+      v6 = equalCopy;
+      minimumBreakthroughUrgency = [(DNDSApplicationConfigurationRecord *)self minimumBreakthroughUrgency];
+      minimumBreakthroughUrgency2 = [(DNDSApplicationConfigurationRecord *)v6 minimumBreakthroughUrgency];
+      if (minimumBreakthroughUrgency != minimumBreakthroughUrgency2)
       {
-        v9 = [(DNDSApplicationConfigurationRecord *)self minimumBreakthroughUrgency];
-        if (!v9)
+        minimumBreakthroughUrgency3 = [(DNDSApplicationConfigurationRecord *)self minimumBreakthroughUrgency];
+        if (!minimumBreakthroughUrgency3)
         {
           v13 = 0;
           goto LABEL_37;
         }
 
-        v10 = v9;
-        v11 = [(DNDSApplicationConfigurationRecord *)v6 minimumBreakthroughUrgency];
-        if (!v11)
+        v10 = minimumBreakthroughUrgency3;
+        minimumBreakthroughUrgency4 = [(DNDSApplicationConfigurationRecord *)v6 minimumBreakthroughUrgency];
+        if (!minimumBreakthroughUrgency4)
         {
           v13 = 0;
 LABEL_36:
@@ -127,9 +127,9 @@ LABEL_36:
           goto LABEL_37;
         }
 
-        v12 = [(DNDSApplicationConfigurationRecord *)self minimumBreakthroughUrgency];
-        v3 = [(DNDSApplicationConfigurationRecord *)v6 minimumBreakthroughUrgency];
-        if (![v12 isEqual:v3])
+        minimumBreakthroughUrgency5 = [(DNDSApplicationConfigurationRecord *)self minimumBreakthroughUrgency];
+        minimumBreakthroughUrgency6 = [(DNDSApplicationConfigurationRecord *)v6 minimumBreakthroughUrgency];
+        if (![minimumBreakthroughUrgency5 isEqual:minimumBreakthroughUrgency6])
         {
           v13 = 0;
 LABEL_35:
@@ -137,36 +137,36 @@ LABEL_35:
           goto LABEL_36;
         }
 
-        v36 = v3;
-        v37 = v12;
-        v38 = v11;
+        v36 = minimumBreakthroughUrgency6;
+        v37 = minimumBreakthroughUrgency5;
+        v38 = minimumBreakthroughUrgency4;
         v39 = v10;
       }
 
-      v14 = [(DNDSApplicationConfigurationRecord *)self allowedThreads];
-      v15 = [(DNDSApplicationConfigurationRecord *)v6 allowedThreads];
-      if (v14 != v15)
+      allowedThreads = [(DNDSApplicationConfigurationRecord *)self allowedThreads];
+      allowedThreads2 = [(DNDSApplicationConfigurationRecord *)v6 allowedThreads];
+      if (allowedThreads != allowedThreads2)
       {
-        v16 = [(DNDSApplicationConfigurationRecord *)self allowedThreads];
-        if (v16)
+        allowedThreads3 = [(DNDSApplicationConfigurationRecord *)self allowedThreads];
+        if (allowedThreads3)
         {
-          v17 = v16;
-          v18 = [(DNDSApplicationConfigurationRecord *)v6 allowedThreads];
-          if (v18)
+          v17 = allowedThreads3;
+          allowedThreads4 = [(DNDSApplicationConfigurationRecord *)v6 allowedThreads];
+          if (allowedThreads4)
           {
-            v35 = v14;
-            v19 = [(DNDSApplicationConfigurationRecord *)self allowedThreads];
-            v3 = [(DNDSApplicationConfigurationRecord *)v6 allowedThreads];
-            if ([v19 isEqual:v3])
+            v35 = allowedThreads;
+            allowedThreads5 = [(DNDSApplicationConfigurationRecord *)self allowedThreads];
+            minimumBreakthroughUrgency6 = [(DNDSApplicationConfigurationRecord *)v6 allowedThreads];
+            if ([allowedThreads5 isEqual:minimumBreakthroughUrgency6])
             {
-              v31 = v19;
-              v32 = v18;
+              v31 = allowedThreads5;
+              v32 = allowedThreads4;
               v33 = v17;
 LABEL_17:
-              v20 = [(DNDSApplicationConfigurationRecord *)self deniedThreads];
-              v21 = [(DNDSApplicationConfigurationRecord *)v6 deniedThreads];
-              v22 = v21;
-              if (v20 == v21)
+              deniedThreads = [(DNDSApplicationConfigurationRecord *)self deniedThreads];
+              deniedThreads2 = [(DNDSApplicationConfigurationRecord *)v6 deniedThreads];
+              v22 = deniedThreads2;
+              if (deniedThreads == deniedThreads2)
               {
 
                 v13 = 1;
@@ -175,20 +175,20 @@ LABEL_17:
 
               else
               {
-                v34 = v3;
-                v23 = [(DNDSApplicationConfigurationRecord *)self deniedThreads];
-                if (v23)
+                v34 = minimumBreakthroughUrgency6;
+                deniedThreads3 = [(DNDSApplicationConfigurationRecord *)self deniedThreads];
+                if (deniedThreads3)
                 {
-                  v24 = v23;
-                  v25 = [(DNDSApplicationConfigurationRecord *)v6 deniedThreads];
-                  if (v25)
+                  v24 = deniedThreads3;
+                  deniedThreads4 = [(DNDSApplicationConfigurationRecord *)v6 deniedThreads];
+                  if (deniedThreads4)
                   {
-                    v30 = v25;
-                    v29 = [(DNDSApplicationConfigurationRecord *)self deniedThreads];
-                    v26 = [(DNDSApplicationConfigurationRecord *)v6 deniedThreads];
-                    v13 = [v29 isEqual:v26];
+                    v30 = deniedThreads4;
+                    deniedThreads5 = [(DNDSApplicationConfigurationRecord *)self deniedThreads];
+                    deniedThreads6 = [(DNDSApplicationConfigurationRecord *)v6 deniedThreads];
+                    v13 = [deniedThreads5 isEqual:deniedThreads6];
 
-                    v25 = v30;
+                    deniedThreads4 = v30;
                   }
 
                   else
@@ -203,20 +203,20 @@ LABEL_17:
                   v13 = 0;
                 }
 
-                v3 = v34;
+                minimumBreakthroughUrgency6 = v34;
                 v27 = v35;
               }
 
-              if (v27 != v15)
+              if (v27 != allowedThreads2)
               {
               }
 
 LABEL_34:
-              v11 = v38;
+              minimumBreakthroughUrgency4 = v38;
               v10 = v39;
-              v3 = v36;
-              v12 = v37;
-              if (v7 != v8)
+              minimumBreakthroughUrgency6 = v36;
+              minimumBreakthroughUrgency5 = v37;
+              if (minimumBreakthroughUrgency != minimumBreakthroughUrgency2)
               {
                 goto LABEL_35;
               }
@@ -226,7 +226,7 @@ LABEL_37:
               goto LABEL_38;
             }
 
-            v14 = v35;
+            allowedThreads = v35;
           }
         }
 
@@ -234,7 +234,7 @@ LABEL_37:
         goto LABEL_34;
       }
 
-      v35 = v14;
+      v35 = allowedThreads;
       goto LABEL_17;
     }
 
@@ -250,65 +250,65 @@ LABEL_38:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(DNDSApplicationConfigurationRecord *)self minimumBreakthroughUrgency];
-  v6 = [(DNDSApplicationConfigurationRecord *)self allowedThreads];
-  v7 = [(DNDSApplicationConfigurationRecord *)self deniedThreads];
-  v8 = [v3 stringWithFormat:@"<%@: %p minimumBreakthroughUrgency: %@; ; allowedThreads: %@; ; deniedThreads: %@; >", v4, self, v5, v6, v7];;
+  minimumBreakthroughUrgency = [(DNDSApplicationConfigurationRecord *)self minimumBreakthroughUrgency];
+  allowedThreads = [(DNDSApplicationConfigurationRecord *)self allowedThreads];
+  deniedThreads = [(DNDSApplicationConfigurationRecord *)self deniedThreads];
+  v8 = [v3 stringWithFormat:@"<%@: %p minimumBreakthroughUrgency: %@; ; allowedThreads: %@; ; deniedThreads: %@; >", v4, self, minimumBreakthroughUrgency, allowedThreads, deniedThreads];;
 
   return v8;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [DNDSMutableApplicationConfigurationRecord alloc];
 
   return [(DNDSApplicationConfigurationRecord *)v4 _initWithRecord:self];
 }
 
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context
 {
-  v5 = a3;
-  v6 = [v5 bs_safeObjectForKey:@"minimumBreakthroughUrgency" ofType:objc_opt_class()];
+  representationCopy = representation;
+  v6 = [representationCopy bs_safeObjectForKey:@"minimumBreakthroughUrgency" ofType:objc_opt_class()];
   v7 = MEMORY[0x277CBEB98];
-  v8 = [v5 bs_safeArrayForKey:@"allowedThreads"];
+  v8 = [representationCopy bs_safeArrayForKey:@"allowedThreads"];
   v9 = [v7 setWithArray:v8];
 
   v10 = MEMORY[0x277CBEB98];
-  v11 = [v5 bs_safeArrayForKey:@"deniedThreads"];
+  v11 = [representationCopy bs_safeArrayForKey:@"deniedThreads"];
 
   v12 = [v10 setWithArray:v11];
 
-  v13 = [[a1 alloc] _initWithMinimumBreakthroughUrgency:v6 allowedThreads:v9 deniedThreads:v12];
+  v13 = [[self alloc] _initWithMinimumBreakthroughUrgency:v6 allowedThreads:v9 deniedThreads:v12];
   return v13;
 }
 
-- (id)dictionaryRepresentationWithContext:(id)a3
+- (id)dictionaryRepresentationWithContext:(id)context
 {
-  v4 = [a3 healingSource];
-  v5 = [v4 mutableCopy];
+  healingSource = [context healingSource];
+  v5 = [healingSource mutableCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    dictionary = v5;
   }
 
   else
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v8 = v7;
+  v8 = dictionary;
 
-  v9 = [(DNDSApplicationConfigurationRecord *)self minimumBreakthroughUrgency];
-  [v8 bs_setSafeObject:v9 forKey:@"minimumBreakthroughUrgency"];
+  minimumBreakthroughUrgency = [(DNDSApplicationConfigurationRecord *)self minimumBreakthroughUrgency];
+  [v8 bs_setSafeObject:minimumBreakthroughUrgency forKey:@"minimumBreakthroughUrgency"];
 
-  v10 = [(DNDSApplicationConfigurationRecord *)self allowedThreads];
-  v11 = [v10 allObjects];
-  [v8 bs_setSafeObject:v11 forKey:@"allowedThreads"];
+  allowedThreads = [(DNDSApplicationConfigurationRecord *)self allowedThreads];
+  allObjects = [allowedThreads allObjects];
+  [v8 bs_setSafeObject:allObjects forKey:@"allowedThreads"];
 
-  v12 = [(DNDSApplicationConfigurationRecord *)self deniedThreads];
-  v13 = [v12 allObjects];
-  [v8 bs_setSafeObject:v13 forKey:@"deniedThreads"];
+  deniedThreads = [(DNDSApplicationConfigurationRecord *)self deniedThreads];
+  allObjects2 = [deniedThreads allObjects];
+  [v8 bs_setSafeObject:allObjects2 forKey:@"deniedThreads"];
 
   return v8;
 }

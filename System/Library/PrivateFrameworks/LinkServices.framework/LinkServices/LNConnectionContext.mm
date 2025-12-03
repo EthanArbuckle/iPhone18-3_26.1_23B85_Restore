@@ -1,21 +1,21 @@
 @interface LNConnectionContext
-- (BOOL)isEqual:(id)a3;
-- (LNConnectionContext)initWithCoder:(id)a3;
-- (LNConnectionContext)initWithUserIdentity:(id)a3 effectiveBundleIdentifier:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (LNConnectionContext)initWithCoder:(id)coder;
+- (LNConnectionContext)initWithUserIdentity:(id)identity effectiveBundleIdentifier:(id)identifier;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNConnectionContext
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -24,10 +24,10 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v7 = [(LNConnectionContext *)self userIdentity];
-    v8 = [(LNConnectionContext *)v6 userIdentity];
-    v9 = v7;
-    v10 = v8;
+    userIdentity = [(LNConnectionContext *)self userIdentity];
+    userIdentity2 = [(LNConnectionContext *)v6 userIdentity];
+    v9 = userIdentity;
+    v10 = userIdentity2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -54,10 +54,10 @@ LABEL_19:
       }
     }
 
-    v15 = [(LNConnectionContext *)self effectiveBundleIdentifier];
-    v16 = [(LNConnectionContext *)v6 effectiveBundleIdentifier];
-    v14 = v15;
-    v17 = v16;
+    effectiveBundleIdentifier = [(LNConnectionContext *)self effectiveBundleIdentifier];
+    effectiveBundleIdentifier2 = [(LNConnectionContext *)v6 effectiveBundleIdentifier];
+    v14 = effectiveBundleIdentifier;
+    v17 = effectiveBundleIdentifier2;
     v13 = v17;
     if (v14 == v17)
     {
@@ -84,32 +84,32 @@ LABEL_21:
 
 - (unint64_t)hash
 {
-  v3 = [(LNConnectionContext *)self userIdentity];
-  v4 = [v3 hash];
-  v5 = [(LNConnectionContext *)self effectiveBundleIdentifier];
-  v6 = [v5 hash];
+  userIdentity = [(LNConnectionContext *)self userIdentity];
+  v4 = [userIdentity hash];
+  effectiveBundleIdentifier = [(LNConnectionContext *)self effectiveBundleIdentifier];
+  v6 = [effectiveBundleIdentifier hash];
 
   return v6 ^ v4;
 }
 
-- (LNConnectionContext)initWithCoder:(id)a3
+- (LNConnectionContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userIdentity"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"effectiveBundleIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userIdentity"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"effectiveBundleIdentifier"];
 
   v7 = [(LNConnectionContext *)self initWithUserIdentity:v5 effectiveBundleIdentifier:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNConnectionContext *)self userIdentity];
-  [v4 encodeObject:v5 forKey:@"userIdentity"];
+  coderCopy = coder;
+  userIdentity = [(LNConnectionContext *)self userIdentity];
+  [coderCopy encodeObject:userIdentity forKey:@"userIdentity"];
 
-  v6 = [(LNConnectionContext *)self effectiveBundleIdentifier];
-  [v4 encodeObject:v6 forKey:@"effectiveBundleIdentifier"];
+  effectiveBundleIdentifier = [(LNConnectionContext *)self effectiveBundleIdentifier];
+  [coderCopy encodeObject:effectiveBundleIdentifier forKey:@"effectiveBundleIdentifier"];
 }
 
 - (id)description
@@ -117,27 +117,27 @@ LABEL_21:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNConnectionContext *)self userIdentity];
-  v7 = [(LNConnectionContext *)self effectiveBundleIdentifier];
-  v8 = [v3 stringWithFormat:@"<%@: %p, userIdentity: %@, effectiveBundleIdentifier: %@>", v5, self, v6, v7];
+  userIdentity = [(LNConnectionContext *)self userIdentity];
+  effectiveBundleIdentifier = [(LNConnectionContext *)self effectiveBundleIdentifier];
+  v8 = [v3 stringWithFormat:@"<%@: %p, userIdentity: %@, effectiveBundleIdentifier: %@>", v5, self, userIdentity, effectiveBundleIdentifier];
 
   return v8;
 }
 
-- (LNConnectionContext)initWithUserIdentity:(id)a3 effectiveBundleIdentifier:(id)a4
+- (LNConnectionContext)initWithUserIdentity:(id)identity effectiveBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = LNConnectionContext;
   v8 = [(LNConnectionContext *)&v13 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identityCopy copy];
     userIdentity = v8->_userIdentity;
     v8->_userIdentity = v9;
 
-    objc_storeStrong(&v8->_effectiveBundleIdentifier, a4);
+    objc_storeStrong(&v8->_effectiveBundleIdentifier, identifier);
     v11 = v8;
   }
 

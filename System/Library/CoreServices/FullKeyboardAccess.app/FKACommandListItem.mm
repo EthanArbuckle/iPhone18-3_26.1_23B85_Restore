@@ -1,31 +1,31 @@
 @interface FKACommandListItem
-+ (id)itemWithName:(id)a3 keyDescription:(id)a4;
-- (FKACommandListItem)initWithName:(id)a3 keyDescription:(id)a4;
++ (id)itemWithName:(id)name keyDescription:(id)description;
+- (FKACommandListItem)initWithName:(id)name keyDescription:(id)description;
 @end
 
 @implementation FKACommandListItem
 
-+ (id)itemWithName:(id)a3 keyDescription:(id)a4
++ (id)itemWithName:(id)name keyDescription:(id)description
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithName:v7 keyDescription:v6];
+  descriptionCopy = description;
+  nameCopy = name;
+  v8 = [[self alloc] initWithName:nameCopy keyDescription:descriptionCopy];
 
   return v8;
 }
 
-- (FKACommandListItem)initWithName:(id)a3 keyDescription:(id)a4
+- (FKACommandListItem)initWithName:(id)name keyDescription:(id)description
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  descriptionCopy = description;
   v12.receiver = self;
   v12.super_class = FKACommandListItem;
   v9 = [(FKACommandListItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v10->_keyDescription, a4);
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v10->_keyDescription, description);
   }
 
   return v10;

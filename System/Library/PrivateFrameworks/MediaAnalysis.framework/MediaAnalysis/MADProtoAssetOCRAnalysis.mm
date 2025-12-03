@@ -1,14 +1,14 @@
 @interface MADProtoAssetOCRAnalysis
-+ (id)protoFromPhotosAsset:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)protoFromPhotosAsset:(id)asset;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)persistToPhotosAsset:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)persistToPhotosAsset:(id)asset;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MADProtoAssetOCRAnalysis
@@ -19,20 +19,20 @@
   v8.receiver = self;
   v8.super_class = MADProtoAssetOCRAnalysis;
   v4 = [(MADProtoAssetOCRAnalysis *)&v8 description];
-  v5 = [(MADProtoAssetOCRAnalysis *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MADProtoAssetOCRAnalysis *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   assetCloudIdentifier = self->_assetCloudIdentifier;
   if (assetCloudIdentifier)
   {
-    [v3 setObject:assetCloudIdentifier forKey:@"assetCloudIdentifier"];
+    [dictionary setObject:assetCloudIdentifier forKey:@"assetCloudIdentifier"];
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_assetAdjustmentTimestamp];
@@ -59,9 +59,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteStringField();
   PBDataWriterWriteDoubleField();
   PBDataWriterWriteInt32Field();
@@ -77,55 +77,55 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setAssetCloudIdentifier:self->_assetCloudIdentifier];
-  v4 = v5;
-  *(v5 + 2) = *&self->_assetAdjustmentTimestamp;
-  *(v5 + 6) = self->_algorithmVersion;
-  *(v5 + 1) = *&self->_adjustmentVersion;
+  toCopy = to;
+  [toCopy setAssetCloudIdentifier:self->_assetCloudIdentifier];
+  v4 = toCopy;
+  *(toCopy + 2) = *&self->_assetAdjustmentTimestamp;
+  *(toCopy + 6) = self->_algorithmVersion;
+  *(toCopy + 1) = *&self->_adjustmentVersion;
   if (self->_characterRecognitionData)
   {
-    [v5 setCharacterRecognitionData:?];
-    v4 = v5;
+    [toCopy setCharacterRecognitionData:?];
+    v4 = toCopy;
   }
 
   if (self->_machineReadableCodeData)
   {
-    [v5 setMachineReadableCodeData:?];
-    v4 = v5;
+    [toCopy setMachineReadableCodeData:?];
+    v4 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_assetCloudIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_assetCloudIdentifier copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
   *(v5 + 16) = self->_assetAdjustmentTimestamp;
   *(v5 + 24) = self->_algorithmVersion;
   *(v5 + 8) = self->_adjustmentVersion;
-  v8 = [(NSData *)self->_characterRecognitionData copyWithZone:a3];
+  v8 = [(NSData *)self->_characterRecognitionData copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
-  v10 = [(NSData *)self->_machineReadableCodeData copyWithZone:a3];
+  v10 = [(NSData *)self->_machineReadableCodeData copyWithZone:zone];
   v11 = *(v5 + 48);
   *(v5 + 48) = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((assetCloudIdentifier = self->_assetCloudIdentifier, !(assetCloudIdentifier | v4[4])) || -[NSString isEqual:](assetCloudIdentifier, "isEqual:")) && self->_assetAdjustmentTimestamp == *(v4 + 2) && self->_algorithmVersion == *(v4 + 6) && self->_adjustmentVersion == *(v4 + 1) && ((characterRecognitionData = self->_characterRecognitionData, !(characterRecognitionData | v4[5])) || -[NSData isEqual:](characterRecognitionData, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((assetCloudIdentifier = self->_assetCloudIdentifier, !(assetCloudIdentifier | equalCopy[4])) || -[NSString isEqual:](assetCloudIdentifier, "isEqual:")) && self->_assetAdjustmentTimestamp == *(equalCopy + 2) && self->_algorithmVersion == *(equalCopy + 6) && self->_adjustmentVersion == *(equalCopy + 1) && ((characterRecognitionData = self->_characterRecognitionData, !(characterRecognitionData | equalCopy[5])) || -[NSData isEqual:](characterRecognitionData, "isEqual:")))
   {
     machineReadableCodeData = self->_machineReadableCodeData;
-    if (machineReadableCodeData | v4[6])
+    if (machineReadableCodeData | equalCopy[6])
     {
       v8 = [(NSData *)machineReadableCodeData isEqual:?];
     }
@@ -201,63 +201,63 @@
   return v21 ^ v22 ^ [(NSData *)self->_machineReadableCodeData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(MADProtoAssetOCRAnalysis *)self setAssetCloudIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  self->_assetAdjustmentTimestamp = *(v4 + 2);
-  self->_algorithmVersion = *(v4 + 6);
-  self->_adjustmentVersion = *(v4 + 1);
-  if (*(v4 + 5))
+  self->_assetAdjustmentTimestamp = *(fromCopy + 2);
+  self->_algorithmVersion = *(fromCopy + 6);
+  self->_adjustmentVersion = *(fromCopy + 1);
+  if (*(fromCopy + 5))
   {
     [(MADProtoAssetOCRAnalysis *)self setCharacterRecognitionData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(MADProtoAssetOCRAnalysis *)self setMachineReadableCodeData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
-+ (id)protoFromPhotosAsset:(id)a3
++ (id)protoFromPhotosAsset:(id)asset
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  assetCopy = asset;
   v4 = objc_alloc_init(MADProtoAssetOCRAnalysis);
-  v5 = [v3 photoLibrary];
-  v6 = [v3 localIdentifier];
+  photoLibrary = [assetCopy photoLibrary];
+  localIdentifier = [assetCopy localIdentifier];
   v18 = 0;
-  v7 = [v5 mad_cloudIdentifierForLocalIdentifier:v6 error:&v18];
+  v7 = [photoLibrary mad_cloudIdentifierForLocalIdentifier:localIdentifier error:&v18];
   v8 = v18;
   [(MADProtoAssetOCRAnalysis *)v4 setAssetCloudIdentifier:v7];
 
-  v9 = [(MADProtoAssetOCRAnalysis *)v4 assetCloudIdentifier];
+  assetCloudIdentifier = [(MADProtoAssetOCRAnalysis *)v4 assetCloudIdentifier];
 
-  if (v9)
+  if (assetCloudIdentifier)
   {
-    v10 = [v3 adjustmentTimestamp];
-    [v10 timeIntervalSinceReferenceDate];
+    adjustmentTimestamp = [assetCopy adjustmentTimestamp];
+    [adjustmentTimestamp timeIntervalSinceReferenceDate];
     [(MADProtoAssetOCRAnalysis *)v4 setAssetAdjustmentTimestamp:?];
 
-    v11 = [v3 characterRecognitionProperties];
-    -[MADProtoAssetOCRAnalysis setAlgorithmVersion:](v4, "setAlgorithmVersion:", [v11 algorithmVersion]);
-    v12 = [v11 adjustmentVersion];
-    [v12 timeIntervalSinceReferenceDate];
+    characterRecognitionProperties = [assetCopy characterRecognitionProperties];
+    -[MADProtoAssetOCRAnalysis setAlgorithmVersion:](v4, "setAlgorithmVersion:", [characterRecognitionProperties algorithmVersion]);
+    adjustmentVersion = [characterRecognitionProperties adjustmentVersion];
+    [adjustmentVersion timeIntervalSinceReferenceDate];
     [(MADProtoAssetOCRAnalysis *)v4 setAdjustmentVersion:?];
 
-    v13 = [v11 characterRecognitionData];
-    [(MADProtoAssetOCRAnalysis *)v4 setCharacterRecognitionData:v13];
+    characterRecognitionData = [characterRecognitionProperties characterRecognitionData];
+    [(MADProtoAssetOCRAnalysis *)v4 setCharacterRecognitionData:characterRecognitionData];
 
-    v14 = [v11 machineReadableCodeData];
-    [(MADProtoAssetOCRAnalysis *)v4 setMachineReadableCodeData:v14];
+    machineReadableCodeData = [characterRecognitionProperties machineReadableCodeData];
+    [(MADProtoAssetOCRAnalysis *)v4 setMachineReadableCodeData:machineReadableCodeData];
 
     v15 = v4;
   }
@@ -266,9 +266,9 @@
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v16 = [v3 localIdentifier];
+      localIdentifier2 = [assetCopy localIdentifier];
       *buf = 138412546;
-      v20 = v16;
+      v20 = localIdentifier2;
       v21 = 2112;
       v22 = v8;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Failed to fetch asset's cloud identifier: %@", buf, 0x16u);
@@ -280,24 +280,24 @@
   return v15;
 }
 
-- (void)persistToPhotosAsset:(id)a3
+- (void)persistToPhotosAsset:(id)asset
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E6978640] changeRequestForAsset:v4];
-  v6 = [(MADProtoAssetOCRAnalysis *)self characterRecognitionData];
-  v7 = [(MADProtoAssetOCRAnalysis *)self machineReadableCodeData];
-  v8 = [(MADProtoAssetOCRAnalysis *)self algorithmVersion];
+  assetCopy = asset;
+  v5 = [MEMORY[0x1E6978640] changeRequestForAsset:assetCopy];
+  characterRecognitionData = [(MADProtoAssetOCRAnalysis *)self characterRecognitionData];
+  machineReadableCodeData = [(MADProtoAssetOCRAnalysis *)self machineReadableCodeData];
+  algorithmVersion = [(MADProtoAssetOCRAnalysis *)self algorithmVersion];
   v9 = MEMORY[0x1E695DF00];
   [(MADProtoAssetOCRAnalysis *)self adjustmentVersion];
   v10 = [v9 dateWithTimeIntervalSinceReferenceDate:?];
-  [v5 setCharacterRecognitionData:v6 machineReadableCodeData:v7 algorithmVersion:v8 adjustmentVersion:v10];
+  [v5 setCharacterRecognitionData:characterRecognitionData machineReadableCodeData:machineReadableCodeData algorithmVersion:algorithmVersion adjustmentVersion:v10];
 
-  if ([v4 mad_isEligibleForComputeSync])
+  if ([assetCopy mad_isEligibleForComputeSync])
   {
-    v11 = [v4 mad_analysisStageAfterCompletingAnalysis:10];
+    v11 = [assetCopy mad_analysisStageAfterCompletingAnalysis:10];
     [v5 setLocalAnalysisStage:v11];
-    v12 = [MADComputeSyncPayloadResults payloadDataForAsset:v4 targetStage:v11 embeddingResults:0 fullAnalysisResults:0];
+    v12 = [MADComputeSyncPayloadResults payloadDataForAsset:assetCopy targetStage:v11 embeddingResults:0 fullAnalysisResults:0];
     if (v12)
     {
       [v5 setComputeSyncMediaAnalysisPayload:v12];
@@ -305,14 +305,14 @@
 
     else if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v4 localIdentifier];
-      v14 = [v4 mediaAnalysisProperties];
+      localIdentifier = [assetCopy localIdentifier];
+      mediaAnalysisProperties = [assetCopy mediaAnalysisProperties];
       v15 = 138412802;
-      v16 = v13;
+      v16 = localIdentifier;
       v17 = 1024;
       v18 = v11;
       v19 = 1024;
-      v20 = [v14 localAnalysisStage];
+      localAnalysisStage = [mediaAnalysisProperties localAnalysisStage];
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%@] No compute sync payload generated for target stage %d (current stage %d)", &v15, 0x18u);
     }
   }

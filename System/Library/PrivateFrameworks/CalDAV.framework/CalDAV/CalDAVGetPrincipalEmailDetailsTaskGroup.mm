@@ -1,24 +1,24 @@
 @interface CalDAVGetPrincipalEmailDetailsTaskGroup
-- (CalDAVGetPrincipalEmailDetailsTaskGroup)initWithAccountInfoProvider:(id)a3 principalURL:(id)a4 taskManager:(id)a5;
+- (CalDAVGetPrincipalEmailDetailsTaskGroup)initWithAccountInfoProvider:(id)provider principalURL:(id)l taskManager:(id)manager;
 - (NSSet)addresses;
 - (NSString)displayName;
-- (void)_processPropFind:(id)a3;
+- (void)_processPropFind:(id)find;
 - (void)startTaskGroup;
-- (void)task:(id)a3 didFinishWithError:(id)a4;
+- (void)task:(id)task didFinishWithError:(id)error;
 @end
 
 @implementation CalDAVGetPrincipalEmailDetailsTaskGroup
 
-- (CalDAVGetPrincipalEmailDetailsTaskGroup)initWithAccountInfoProvider:(id)a3 principalURL:(id)a4 taskManager:(id)a5
+- (CalDAVGetPrincipalEmailDetailsTaskGroup)initWithAccountInfoProvider:(id)provider principalURL:(id)l taskManager:(id)manager
 {
-  v8 = a4;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = CalDAVGetPrincipalEmailDetailsTaskGroup;
-  v9 = [(CoreDAVTaskGroup *)&v12 initWithAccountInfoProvider:a3 taskManager:a5];
+  v9 = [(CoreDAVTaskGroup *)&v12 initWithAccountInfoProvider:provider taskManager:manager];
   v10 = v9;
   if (v9)
   {
-    [(CalDAVGetPrincipalEmailDetailsTaskGroup *)v9 setPrincipalURL:v8];
+    [(CalDAVGetPrincipalEmailDetailsTaskGroup *)v9 setPrincipalURL:lCopy];
   }
 
   return v10;
@@ -41,18 +41,18 @@
   v8 = objc_opt_class();
   v5[2](v5, 4, v8);
   v9 = objc_alloc(MEMORY[0x277CFDC68]);
-  v10 = [(CalDAVGetPrincipalEmailDetailsTaskGroup *)self principalURL];
-  v11 = [v9 initWithPropertiesToFind:v4 atURL:v10 withDepth:2];
+  principalURL = [(CalDAVGetPrincipalEmailDetailsTaskGroup *)self principalURL];
+  v11 = [v9 initWithPropertiesToFind:v4 atURL:principalURL withDepth:2];
 
-  v12 = [(CoreDAVTaskGroup *)self outstandingTasks];
-  [v12 addObject:v11];
+  outstandingTasks = [(CoreDAVTaskGroup *)self outstandingTasks];
+  [outstandingTasks addObject:v11];
 
-  v13 = [(CoreDAVTaskGroup *)self accountInfoProvider];
-  [v11 setAccountInfoProvider:v13];
+  accountInfoProvider = [(CoreDAVTaskGroup *)self accountInfoProvider];
+  [v11 setAccountInfoProvider:accountInfoProvider];
 
   [v11 setDelegate:self];
-  v14 = [(CoreDAVTaskGroup *)self taskManager];
-  [v14 submitQueuedCoreDAVTask:v11];
+  taskManager = [(CoreDAVTaskGroup *)self taskManager];
+  [taskManager submitQueuedCoreDAVTask:v11];
 }
 
 void __57__CalDAVGetPrincipalEmailDetailsTaskGroup_startTaskGroup__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -63,54 +63,54 @@ void __57__CalDAVGetPrincipalEmailDetailsTaskGroup_startTaskGroup__block_invoke(
   [*(a1 + 32) addObject:v7];
 }
 
-- (void)_processPropFind:(id)a3
+- (void)_processPropFind:(id)find
 {
-  v4 = [a3 multiStatus];
-  v5 = [v4 responses];
-  v7 = [v5 anyObject];
+  multiStatus = [find multiStatus];
+  responses = [multiStatus responses];
+  anyObject = [responses anyObject];
 
-  v6 = [CalDAVPrincipalEmailDetailsResult resultFromResponseItem:v7];
+  v6 = [CalDAVPrincipalEmailDetailsResult resultFromResponseItem:anyObject];
   [(CalDAVGetPrincipalEmailDetailsTaskGroup *)self setPrincipalResult:v6];
 }
 
-- (void)task:(id)a3 didFinishWithError:(id)a4
+- (void)task:(id)task didFinishWithError:(id)error
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  taskCopy = task;
+  errorCopy = error;
+  v7 = errorCopy;
+  if (errorCopy)
   {
-    v8 = v6;
+    getTotalFailureError = errorCopy;
   }
 
   else
   {
-    v8 = [v10 getTotalFailureError];
-    if (!v8)
+    getTotalFailureError = [taskCopy getTotalFailureError];
+    if (!getTotalFailureError)
     {
-      [(CalDAVGetPrincipalEmailDetailsTaskGroup *)self _processPropFind:v10];
+      [(CalDAVGetPrincipalEmailDetailsTaskGroup *)self _processPropFind:taskCopy];
     }
   }
 
-  [(CalDAVGetPrincipalEmailDetailsTaskGroup *)self _finishWithError:v8];
-  v9 = [(CoreDAVTaskGroup *)self outstandingTasks];
-  [v9 removeObject:v10];
+  [(CalDAVGetPrincipalEmailDetailsTaskGroup *)self _finishWithError:getTotalFailureError];
+  outstandingTasks = [(CoreDAVTaskGroup *)self outstandingTasks];
+  [outstandingTasks removeObject:taskCopy];
 }
 
 - (NSSet)addresses
 {
-  v2 = [(CalDAVGetPrincipalEmailDetailsTaskGroup *)self principalResult];
-  v3 = [v2 addresses];
+  principalResult = [(CalDAVGetPrincipalEmailDetailsTaskGroup *)self principalResult];
+  addresses = [principalResult addresses];
 
-  return v3;
+  return addresses;
 }
 
 - (NSString)displayName
 {
-  v2 = [(CalDAVGetPrincipalEmailDetailsTaskGroup *)self principalResult];
-  v3 = [v2 displayName];
+  principalResult = [(CalDAVGetPrincipalEmailDetailsTaskGroup *)self principalResult];
+  displayName = [principalResult displayName];
 
-  return v3;
+  return displayName;
 }
 
 @end

@@ -1,69 +1,69 @@
 @interface TSUtilities
 + (BOOL)areAnyPlansOnDevice;
 + (BOOL)hasCellularBaseband;
-+ (BOOL)isBackAllowed:(id)a3;
-+ (BOOL)isCaseInsensitiveEqual:(id)a3 withString:(id)a4;
++ (BOOL)isBackAllowed:(id)allowed;
++ (BOOL)isCaseInsensitiveEqual:(id)equal withString:(id)string;
 + (BOOL)isDeviceLocked;
 + (BOOL)isGreenTeaCapable;
-+ (BOOL)isIccidForPhySlot:(id)a3;
++ (BOOL)isIccidForPhySlot:(id)slot;
 + (BOOL)isLanguageRightToLeft;
 + (BOOL)isOnBootstrap;
 + (BOOL)isPad;
 + (BOOL)isPhone;
-+ (BOOL)isRegRestActiveLocationAuthorizedOff:(id)a3;
-+ (BOOL)isRegRestActiveLocationServiceOff:(id)a3;
-+ (BOOL)isRegRestLocationUnavailable:(id)a3;
-+ (BOOL)isRegulatoryRestrictionActive:(id)a3;
-+ (BOOL)isSecureIntentUIRequired:(id)a3;
++ (BOOL)isRegRestActiveLocationAuthorizedOff:(id)off;
++ (BOOL)isRegRestActiveLocationServiceOff:(id)off;
++ (BOOL)isRegRestLocationUnavailable:(id)unavailable;
++ (BOOL)isRegulatoryRestrictionActive:(id)active;
++ (BOOL)isSecureIntentUIRequired:(id)required;
 + (BOOL)isWifiAvailable;
 + (BOOL)needsCustomMemoryError;
-+ (BOOL)openPrefsURL:(id)a3;
++ (BOOL)openPrefsURL:(id)l;
 + (BOOL)transferOptions;
-+ (id)FormattedCarrierListFromSet:(id)a3;
-+ (id)_findPPRItem:(id)a3;
-+ (id)_isAnyRequireStoreVisitPlan:(id)a3;
-+ (id)_isAnySourceNeedsSoftwareUpdatePlan:(id)a3;
-+ (id)allPlansRequireSoftwareUpdate:(id)a3;
-+ (id)alsPlanCarriers:(id)a3;
-+ (id)appendLeftToRightMark:(id)a3;
-+ (id)backgroundColorForRemotePlan:(BOOL)a3;
-+ (id)concatenateDescriptors:(id)a3;
-+ (id)displayPlanFromObject:(id)a3;
-+ (id)findSubscriptionContextForCellularPlanItem:(id)a3 fromSubscriptionContexts:(id)a4;
-+ (id)formatLocAndConcatenateDescriptors:(id)a3;
-+ (id)formattedPhoneNumber:(id)a3 withCountryCode:(id)a4;
-+ (id)getByteRepresentationOf:(id)a3;
-+ (id)getCellularPlanItem:(id)a3 withIccid:(id)a4;
-+ (id)getErrorDescription:(id)a3;
-+ (id)getErrorTitleDetail:(id)a3 forCarrier:(id)a4;
-+ (id)getPlanByID:(id)a3 fromPlans:(id)a4;
++ (id)FormattedCarrierListFromSet:(id)set;
++ (id)_findPPRItem:(id)item;
++ (id)_isAnyRequireStoreVisitPlan:(id)plan;
++ (id)_isAnySourceNeedsSoftwareUpdatePlan:(id)plan;
++ (id)allPlansRequireSoftwareUpdate:(id)update;
++ (id)alsPlanCarriers:(id)carriers;
++ (id)appendLeftToRightMark:(id)mark;
++ (id)backgroundColorForRemotePlan:(BOOL)plan;
++ (id)concatenateDescriptors:(id)descriptors;
++ (id)displayPlanFromObject:(id)object;
++ (id)findSubscriptionContextForCellularPlanItem:(id)item fromSubscriptionContexts:(id)contexts;
++ (id)formatLocAndConcatenateDescriptors:(id)descriptors;
++ (id)formattedPhoneNumber:(id)number withCountryCode:(id)code;
++ (id)getByteRepresentationOf:(id)of;
++ (id)getCellularPlanItem:(id)item withIccid:(id)iccid;
++ (id)getErrorDescription:(id)description;
++ (id)getErrorTitleDetail:(id)detail forCarrier:(id)carrier;
++ (id)getPlanByID:(id)d fromPlans:(id)plans;
 + (id)getSpinnerBusyText;
-+ (id)getStoreVisitStatusForPlan:(id)a3 cache:(id)a4;
-+ (id)getStringWithFirstCharacterUppercase:(id)a3;
-+ (id)odaPlanCarriers:(id)a3;
-+ (id)planItemText:(id)a3;
-+ (id)preinstallPPRAlertControllerWithItems:(id)a3 completion:(id)a4;
++ (id)getStoreVisitStatusForPlan:(id)plan cache:(id)cache;
++ (id)getStringWithFirstCharacterUppercase:(id)uppercase;
++ (id)odaPlanCarriers:(id)carriers;
++ (id)planItemText:(id)text;
++ (id)preinstallPPRAlertControllerWithItems:(id)items completion:(id)completion;
 + (id)productClass;
 + (id)secureIntentAccessControlItem;
-+ (id)skEventFromDictionary:(id)a3;
-+ (id)textColorForRemotePlan:(BOOL)a3;
-+ (id)transferablePlanCarriers:(id)a3;
-+ (int64_t)compareProductVersion:(id)a3 toProductVersion:(id)a4;
-+ (int64_t)numActivePlansOnDeviceExcept:(id)a3;
-+ (unint64_t)odaPlans:(id)a3;
-+ (unint64_t)sourceDevicesCount:(id)a3;
-+ (unint64_t)transferablePlans:(id)a3;
-+ (void)launchURL:(id)a3;
++ (id)skEventFromDictionary:(id)dictionary;
++ (id)textColorForRemotePlan:(BOOL)plan;
++ (id)transferablePlanCarriers:(id)carriers;
++ (int64_t)compareProductVersion:(id)version toProductVersion:(id)productVersion;
++ (int64_t)numActivePlansOnDeviceExcept:(id)except;
++ (unint64_t)odaPlans:(id)plans;
++ (unint64_t)sourceDevicesCount:(id)count;
++ (unint64_t)transferablePlans:(id)plans;
++ (void)launchURL:(id)l;
 + (void)secureIntentAccessControlItem;
 @end
 
 @implementation TSUtilities
 
-+ (id)getByteRepresentationOf:(id)a3
++ (id)getByteRepresentationOf:(id)of
 {
-  v3 = a3;
-  v4 = [v3 UTF8String];
-  v5 = [v3 length];
+  ofCopy = of;
+  uTF8String = [ofCopy UTF8String];
+  v5 = [ofCopy length];
   v6 = [MEMORY[0x277CBEB28] dataWithCapacity:v5 >> 1];
   v13 = 0;
   v11 = 0;
@@ -80,7 +80,7 @@
   if (v5)
   {
     v8 = 0;
-    v9 = v4 + 1;
+    v9 = uTF8String + 1;
     do
     {
       *__str = *(v9 - 1);
@@ -96,54 +96,54 @@
   return v6;
 }
 
-+ (id)formattedPhoneNumber:(id)a3 withCountryCode:(id)a4
++ (id)formattedPhoneNumber:(id)number withCountryCode:(id)code
 {
-  v4 = a3;
+  numberCopy = number;
   v5 = *MEMORY[0x277CBECE8];
   v6 = CFPhoneNumberCreate();
   if (!v6 || (v7 = v6, String = CFPhoneNumberCreateString(), CFRelease(v7), !String))
   {
-    String = v4;
+    String = numberCopy;
   }
 
   return String;
 }
 
-+ (id)getStringWithFirstCharacterUppercase:(id)a3
++ (id)getStringWithFirstCharacterUppercase:(id)uppercase
 {
-  v3 = a3;
-  if ([v3 length])
+  uppercaseCopy = uppercase;
+  if ([uppercaseCopy length])
   {
-    v4 = [v3 substringToIndex:1];
-    v5 = [MEMORY[0x277CBEAF8] currentLocale];
-    v6 = [v4 uppercaseStringWithLocale:v5];
+    v4 = [uppercaseCopy substringToIndex:1];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v6 = [v4 uppercaseStringWithLocale:currentLocale];
 
     if (([v4 isEqualToString:v6] & 1) == 0)
     {
-      if ([v3 length] < 2)
+      if ([uppercaseCopy length] < 2)
       {
         v7 = &stru_28753DF48;
       }
 
       else
       {
-        v7 = [v3 substringFromIndex:1];
+        v7 = [uppercaseCopy substringFromIndex:1];
       }
 
       v8 = [v6 stringByAppendingString:v7];
       v9 = [v8 mutableCopy];
 
-      v3 = v9;
+      uppercaseCopy = v9;
     }
   }
 
-  return v3;
+  return uppercaseCopy;
 }
 
-+ (id)getErrorTitleDetail:(id)a3 forCarrier:(id)a4
++ (id)getErrorTitleDetail:(id)detail forCarrier:(id)carrier
 {
-  v5 = a3;
-  v6 = a4;
+  detailCopy = detail;
+  carrierCopy = carrier;
   v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:3];
   v8 = +[TSUtilities inBuddy];
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -161,13 +161,13 @@
   v12 = [v9 localizedStringForKey:v11 value:&stru_28753DF48 table:@"Localizable"];
   [v7 setObject:v12 forKeyedSubscript:@"ErrorButton"];
 
-  v13 = [v5 domain];
-  v14 = [v13 isEqualToString:*MEMORY[0x277CF9680]];
+  domain = [detailCopy domain];
+  v14 = [domain isEqualToString:*MEMORY[0x277CF9680]];
 
   if (v14)
   {
-    v15 = [v5 code];
-    switch(v15)
+    code = [detailCopy code];
+    switch(code)
     {
       case 2:
         v76 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -273,7 +273,7 @@ LABEL_47:
         v33 = [v32 localizedStringForKey:@"CTCELLULARPLANERROR_CARRIER_ERROR_TITLE" value:&stru_28753DF48 table:@"Localizable"];
         [v7 setObject:v33 forKeyedSubscript:@"ErrorHeader"];
 
-        if (v6 && [v6 length])
+        if (carrierCopy && [carrierCopy length])
         {
           v34 = MEMORY[0x277CCACA8];
           v35 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -291,7 +291,7 @@ LABEL_47:
         v88 = [v87 localizedStringForKey:@"CTCELLULARPLANERROR_INVALID_PPR_TITLE" value:&stru_28753DF48 table:@"Localizable"];
         [v7 setObject:v88 forKeyedSubscript:@"ErrorHeader"];
 
-        if (![v6 length])
+        if (![carrierCopy length])
         {
           v27 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v23 = v27;
@@ -305,14 +305,14 @@ LABEL_47:
         v75 = @"CTCELLULARPLANERROR_INVALID_PPR_MESSAGE_%@_%@";
 LABEL_70:
         v29 = [v74 localizedStringForKey:v75 value:&stru_28753DF48 table:@"Localizable"];
-        [v73 stringWithFormat:v29, v6, v6];
+        [v73 stringWithFormat:v29, carrierCopy, carrierCopy];
         goto LABEL_112;
       case 26:
         v85 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v86 = [v85 localizedStringForKey:@"CTCELLULARPLANERROR_INVALID_FAUX_CARD_TITLE" value:&stru_28753DF48 table:@"Localizable"];
         [v7 setObject:v86 forKeyedSubscript:@"ErrorHeader"];
 
-        if ([v6 length])
+        if ([carrierCopy length])
         {
           v34 = MEMORY[0x277CCACA8];
           v35 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -327,13 +327,13 @@ LABEL_70:
         goto LABEL_12;
       case 34:
       case 46:
-        if (v6 && [v6 length])
+        if (carrierCopy && [carrierCopy length])
         {
           v37 = MEMORY[0x277CCACA8];
           v38 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v39 = [v38 localizedStringForKey:@"ESIM_NOT_SUPPORT_TITLE_ADD_PLAN_%@" value:&stru_28753DF48 table:@"Localizable"];
-          v40 = [v37 stringWithFormat:v39, v6];
-          [v7 setObject:v40 forKeyedSubscript:@"ErrorHeader"];
+          carrierCopy = [v37 stringWithFormat:v39, carrierCopy];
+          [v7 setObject:carrierCopy forKeyedSubscript:@"ErrorHeader"];
         }
 
         else
@@ -370,7 +370,7 @@ LABEL_70:
         v58 = [v57 localizedStringForKey:@"CTCELLULARPLANERROR_CARRIER_ERROR_TITLE" value:&stru_28753DF48 table:@"Localizable"];
         [v7 setObject:v58 forKeyedSubscript:@"ErrorHeader"];
 
-        if (v6 && [v6 length])
+        if (carrierCopy && [carrierCopy length])
         {
           v34 = MEMORY[0x277CCACA8];
           v35 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -388,7 +388,7 @@ LABEL_70:
         v68 = [v67 localizedStringForKey:@"ERROR_TRANSFER_ITEM_WEBSHEET_IN_BUDDY_TITLE" value:&stru_28753DF48 table:@"Localizable"];
         [v7 setObject:v68 forKeyedSubscript:@"ErrorHeader"];
 
-        if (v6 && [v6 length])
+        if (carrierCopy && [carrierCopy length])
         {
           v34 = MEMORY[0x277CCACA8];
           v35 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -425,7 +425,7 @@ LABEL_70:
         v101 = [v100 localizedStringForKey:@"CTCELLULARPLANERROR_CARRIER_ERROR_TITLE" value:&stru_28753DF48 table:@"Localizable"];
         [v7 setObject:v101 forKeyedSubscript:@"ErrorHeader"];
 
-        if (v6 && [v6 length])
+        if (carrierCopy && [carrierCopy length])
         {
           v102 = +[TSUtilities inBuddy];
           v34 = MEMORY[0x277CCACA8];
@@ -461,7 +461,7 @@ LABEL_70:
         v81 = [v80 localizedStringForKey:@"CTCELLULARPLANERROR_CARRIER_ERROR_TITLE" value:&stru_28753DF48 table:@"Localizable"];
         [v7 setObject:v81 forKeyedSubscript:@"ErrorHeader"];
 
-        if (v6 && [v6 length])
+        if (carrierCopy && [carrierCopy length])
         {
           v82 = +[TSUtilities inBuddy];
           v34 = MEMORY[0x277CCACA8];
@@ -497,7 +497,7 @@ LABEL_70:
         v60 = [v59 localizedStringForKey:@"CTCELLULARPLANERROR_CARRIER_ERROR_TITLE" value:&stru_28753DF48 table:@"Localizable"];
         [v7 setObject:v60 forKeyedSubscript:@"ErrorHeader"];
 
-        if (v6 && [v6 length])
+        if (carrierCopy && [carrierCopy length])
         {
           v34 = MEMORY[0x277CCACA8];
           v35 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -524,7 +524,7 @@ LABEL_70:
         v96 = [v95 localizedStringForKey:@"CTCELLULARPLANERROR_DELAYED_ACTIVATION_TITLE" value:&stru_28753DF48 table:@"Localizable"];
         [v7 setObject:v96 forKeyedSubscript:@"ErrorHeader"];
 
-        if (!v6 || ![v6 length])
+        if (!carrierCopy || ![carrierCopy length])
         {
           v112 = +[TSUtilities inBuddy];
           v23 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -593,7 +593,7 @@ LABEL_110:
         v110 = [v109 localizedStringForKey:@"CTCELLULARPLANERROR_CARRIER_ERROR_TITLE" value:&stru_28753DF48 table:@"Localizable"];
         [v7 setObject:v110 forKeyedSubscript:@"ErrorHeader"];
 
-        if (v6 && [v6 length])
+        if (carrierCopy && [carrierCopy length])
         {
           v34 = MEMORY[0x277CCACA8];
           v35 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -611,7 +611,7 @@ LABEL_110:
         v84 = [v83 localizedStringForKey:@"CTCELLULARPLANERROR_CARRIER_ERROR_TITLE" value:&stru_28753DF48 table:@"Localizable"];
         [v7 setObject:v84 forKeyedSubscript:@"ErrorHeader"];
 
-        if (!v6 || ![v6 length])
+        if (!carrierCopy || ![carrierCopy length])
         {
           v27 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v23 = v27;
@@ -625,7 +625,7 @@ LABEL_110:
         v36 = @"TRANSFER_ERROR_MAX_PIN_ATTEMPTS_EXHAUSTED_DETAIL_%@";
 LABEL_111:
         v29 = [v35 localizedStringForKey:v36 value:&stru_28753DF48 table:@"Localizable"];
-        [v34 stringWithFormat:v29, v6, v115];
+        [v34 stringWithFormat:v29, carrierCopy, v115];
         v114 = LABEL_112:;
         [v7 setObject:v114 forKeyedSubscript:@"ErrorDetail"];
 
@@ -662,12 +662,12 @@ LABEL_111:
         v50 = [v49 localizedStringForKey:@"CTCELLULARPLANERROR_CARRIER_ERROR_TITLE" value:&stru_28753DF48 table:@"Localizable"];
         [v7 setObject:v50 forKeyedSubscript:@"ErrorHeader"];
 
-        if (!v6 || ![v6 length])
+        if (!carrierCopy || ![carrierCopy length])
         {
           v51 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v52 = [v51 localizedStringForKey:@"YOUR_CARRIER" value:&stru_28753DF48 table:@"Localizable"];
 
-          v6 = v52;
+          carrierCopy = v52;
         }
 
         v34 = MEMORY[0x277CCACA8];
@@ -680,12 +680,12 @@ LABEL_111:
         v70 = [v69 localizedStringForKey:@"CTCELLULARPLANERROR_CARRIER_ERROR_TITLE" value:&stru_28753DF48 table:@"Localizable"];
         [v7 setObject:v70 forKeyedSubscript:@"ErrorHeader"];
 
-        if (!v6 || ![v6 length])
+        if (!carrierCopy || ![carrierCopy length])
         {
           v71 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v72 = [v71 localizedStringForKey:@"YOUR_CARRIER" value:&stru_28753DF48 table:@"Localizable"];
 
-          v6 = v72;
+          carrierCopy = v72;
         }
 
         v73 = MEMORY[0x277CCACA8];
@@ -703,7 +703,7 @@ LABEL_111:
         v28 = @"ESIM_COUNT_RESTRICTION_WARNING_DETAIL";
         goto LABEL_12;
       default:
-        if (v15 == 4097)
+        if (code == 4097)
         {
           if (!+[TSUtilities inBuddy])
           {
@@ -769,17 +769,17 @@ LABEL_15:
   return v7;
 }
 
-+ (id)getErrorDescription:(id)a3
++ (id)getErrorDescription:(id)description
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:*MEMORY[0x277CF9680]];
+  descriptionCopy = description;
+  domain = [descriptionCopy domain];
+  v5 = [domain isEqualToString:*MEMORY[0x277CF9680]];
 
   if (v5)
   {
-    v6 = [v3 code];
+    code = [descriptionCopy code];
     v7 = &stru_28753DF48;
-    if ((v6 - 45) <= 0x1B && ((1 << (v6 - 45)) & 0x8200001) != 0)
+    if ((code - 45) <= 0x1B && ((1 << (code - 45)) & 0x8200001) != 0)
     {
       v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v7 = [v8 localizedStringForKey:@"CANCELED" value:&stru_28753DF48 table:@"Localizable"];
@@ -794,12 +794,12 @@ LABEL_15:
   return v7;
 }
 
-+ (id)preinstallPPRAlertControllerWithItems:(id)a3 completion:(id)a4
++ (id)preinstallPPRAlertControllerWithItems:(id)items completion:(id)completion
 {
   v68 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [TSUtilities _findPPRItem:v5];
+  itemsCopy = items;
+  completionCopy = completion;
+  v7 = [TSUtilities _findPPRItem:itemsCopy];
   if (!v7)
   {
     v10 = _TSLogDomain();
@@ -813,13 +813,13 @@ LABEL_15:
 
 LABEL_9:
 
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
     v12 = 0;
     goto LABEL_29;
   }
 
   v8 = +[TSCellularPlanManagerCache sharedInstance];
-  v9 = [v8 calculateInstallConsentTextTypeFor:v5];
+  v9 = [v8 calculateInstallConsentTextTypeFor:itemsCopy];
 
   if (v9 > 7)
   {
@@ -847,17 +847,17 @@ LABEL_8:
 
     if (v9 == 4)
     {
-      v13 = [v7 carrierName];
-      v14 = [v13 length];
+      carrierName = [v7 carrierName];
+      v14 = [carrierName length];
 
       if (v14)
       {
         v15 = MEMORY[0x277CCACA8];
         v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v17 = [v16 localizedStringForKey:@"CONSENT_CURRENT_PLAN_CANNOT_BE_DISABLED_IPHONE_%@_%@" value:&stru_28753DF48 table:@"Localizable"];
-        v18 = [v7 carrierName];
-        v19 = [v7 carrierName];
-        v50 = [v15 stringWithFormat:v17, v18, v19];
+        carrierName2 = [v7 carrierName];
+        carrierName3 = [v7 carrierName];
+        v50 = [v15 stringWithFormat:v17, carrierName2, carrierName3];
       }
 
       else
@@ -874,7 +874,7 @@ LABEL_8:
       v57[2] = __64__TSUtilities_preinstallPPRAlertControllerWithItems_completion___block_invoke_3;
       v57[3] = &unk_279B44878;
       v48 = &v58;
-      v30 = v6;
+      v30 = completionCopy;
       v58 = v30;
       v31 = [v28 actionWithTitle:v29 style:1 handler:v57];
       v64[0] = v31;
@@ -894,16 +894,16 @@ LABEL_8:
 
     else
     {
-      v20 = [v7 carrierName];
-      v21 = [v20 length];
+      carrierName4 = [v7 carrierName];
+      v21 = [carrierName4 length];
 
       if (v21)
       {
         v22 = MEMORY[0x277CCACA8];
         v23 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v24 = [v23 localizedStringForKey:@"CONSENT_CURRENT_PLAN_CANNOT_BE_DELETED_IPHONE_PLAN_LOCK%@" value:&stru_28753DF48 table:@"Localizable"];
-        v25 = [v7 carrierName];
-        v50 = [v22 stringWithFormat:v24, v25];
+        carrierName5 = [v7 carrierName];
+        v50 = [v22 stringWithFormat:v24, carrierName5];
       }
 
       else
@@ -920,7 +920,7 @@ LABEL_8:
       v61[2] = __64__TSUtilities_preinstallPPRAlertControllerWithItems_completion___block_invoke;
       v61[3] = &unk_279B44878;
       v48 = &v62;
-      v39 = v6;
+      v39 = completionCopy;
       v62 = v39;
       v31 = [v38 actionWithTitle:v29 style:2 handler:v61];
       v65[0] = v31;
@@ -978,15 +978,15 @@ LABEL_29:
   return v12;
 }
 
-+ (id)_findPPRItem:(id)a3
++ (id)_findPPRItem:(id)item
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  itemCopy = item;
+  v4 = [itemCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -998,15 +998,15 @@ LABEL_29:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemCopy);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
         if ([v9 type] == 2)
         {
-          v10 = [v9 plan];
+          plan = [v9 plan];
 
-          if (v10)
+          if (plan)
           {
             if (v6)
             {
@@ -1019,7 +1019,7 @@ LABEL_29:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [itemCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v5)
       {
         continue;
@@ -1030,18 +1030,18 @@ LABEL_29:
 
     if (v6)
     {
-      v11 = [v6 plan];
-      if ([v11 isDeleteNotAllowed])
+      plan2 = [v6 plan];
+      if ([plan2 isDeleteNotAllowed])
       {
         goto LABEL_18;
       }
 
-      v12 = [v6 plan];
-      v13 = [v12 isDisableNotAllowed];
+      plan3 = [v6 plan];
+      isDisableNotAllowed = [plan3 isDisableNotAllowed];
 
-      if ((v13 & 1) == 0)
+      if ((isDisableNotAllowed & 1) == 0)
       {
-        v11 = v6;
+        plan2 = v6;
         v6 = 0;
         goto LABEL_18;
       }
@@ -1052,7 +1052,7 @@ LABEL_29:
   {
 LABEL_17:
     v6 = 0;
-    v11 = v3;
+    plan2 = itemCopy;
 LABEL_18:
   }
 
@@ -1061,11 +1061,11 @@ LABEL_18:
   return v6;
 }
 
-+ (id)backgroundColorForRemotePlan:(BOOL)a3
++ (id)backgroundColorForRemotePlan:(BOOL)plan
 {
-  v4 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-  v5 = v4;
-  if (a3)
+  secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+  v5 = secondarySystemBackgroundColor;
+  if (plan)
   {
     v6 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:2];
     v7 = [v5 resolvedColorWithTraitCollection:v6];
@@ -1073,15 +1073,15 @@ LABEL_18:
 
   else
   {
-    v7 = v4;
+    v7 = secondarySystemBackgroundColor;
   }
 
   return v7;
 }
 
-+ (id)textColorForRemotePlan:(BOOL)a3
++ (id)textColorForRemotePlan:(BOOL)plan
 {
-  if (a3)
+  if (plan)
   {
     BPSTextColor();
   }
@@ -1095,13 +1095,13 @@ LABEL_18:
   return v3;
 }
 
-+ (id)displayPlanFromObject:(id)a3
++ (id)displayPlanFromObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 objectForKeyedSubscript:@"planItem"];
+    v4 = [objectCopy objectForKeyedSubscript:@"planItem"];
 LABEL_5:
     v5 = v4;
     goto LABEL_7;
@@ -1110,7 +1110,7 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = objectCopy;
     goto LABEL_5;
   }
 
@@ -1120,16 +1120,16 @@ LABEL_7:
   return v5;
 }
 
-+ (unint64_t)sourceDevicesCount:(id)a3
++ (unint64_t)sourceDevicesCount:(id)count
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  countCopy = count;
   v5 = [MEMORY[0x277CBEB58] set];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = countCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -1145,16 +1145,16 @@ LABEL_7:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 displayPlanFromObject:{*(*(&v18 + 1) + 8 * v10), v18}];
+        v11 = [self displayPlanFromObject:{*(*(&v18 + 1) + 8 * v10), v18}];
         if ([v11 isTransferablePlan])
         {
-          v12 = [v11 plan];
-          v13 = [v12 deviceID];
+          plan = [v11 plan];
+          deviceID = [plan deviceID];
 
-          if (v13)
+          if (deviceID)
           {
-            v14 = [v12 deviceID];
-            [v5 addObject:v14];
+            deviceID2 = [plan deviceID];
+            [v5 addObject:deviceID2];
           }
         }
 
@@ -1173,15 +1173,15 @@ LABEL_7:
   return v15;
 }
 
-+ (unint64_t)transferablePlans:(id)a3
++ (unint64_t)transferablePlans:(id)plans
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  plansCopy = plans;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [plansCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1193,16 +1193,16 @@ LABEL_7:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(plansCopy);
         }
 
         v9 = [*(*(&v13 + 1) + 8 * i) objectForKeyedSubscript:@"planItem"];
-        v10 = [v9 isTransferablePlan];
+        isTransferablePlan = [v9 isTransferablePlan];
 
-        v6 += v10;
+        v6 += isTransferablePlan;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [plansCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -1217,15 +1217,15 @@ LABEL_7:
   return v6;
 }
 
-+ (id)transferablePlanCarriers:(id)a3
++ (id)transferablePlanCarriers:(id)carriers
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  carriersCopy = carriers;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v5 = [carriersCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1237,22 +1237,22 @@ LABEL_7:
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(carriersCopy);
         }
 
-        v10 = [a1 displayPlanFromObject:*(*(&v18 + 1) + 8 * i)];
+        v10 = [self displayPlanFromObject:*(*(&v18 + 1) + 8 * i)];
         if ([v10 isTransferablePlan])
         {
           v11 = MEMORY[0x277CCACA8];
-          v12 = [v10 carrierName];
-          v13 = [v11 stringWithFormat:@"%@_", v12];
+          carrierName = [v10 carrierName];
+          v13 = [v11 stringWithFormat:@"%@_", carrierName];
           v14 = [(__CFString *)v8 stringByAppendingString:v13];
 
           v8 = v14;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [carriersCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
@@ -1275,15 +1275,15 @@ LABEL_7:
   return v8;
 }
 
-+ (unint64_t)odaPlans:(id)a3
++ (unint64_t)odaPlans:(id)plans
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  plansCopy = plans;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [plansCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1295,14 +1295,14 @@ LABEL_7:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(plansCopy);
         }
 
-        v10 = [a1 displayPlanFromObject:*(*(&v13 + 1) + 8 * i)];
+        v10 = [self displayPlanFromObject:*(*(&v13 + 1) + 8 * i)];
         v7 += [v10 isOnDeviceTransferredPlan];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [plansCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -1317,15 +1317,15 @@ LABEL_7:
   return v7;
 }
 
-+ (id)odaPlanCarriers:(id)a3
++ (id)odaPlanCarriers:(id)carriers
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  carriersCopy = carriers;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v5 = [carriersCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1337,22 +1337,22 @@ LABEL_7:
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(carriersCopy);
         }
 
-        v10 = [a1 displayPlanFromObject:*(*(&v18 + 1) + 8 * i)];
+        v10 = [self displayPlanFromObject:*(*(&v18 + 1) + 8 * i)];
         if ([v10 isOnDeviceTransferredPlan])
         {
           v11 = MEMORY[0x277CCACA8];
-          v12 = [v10 carrierName];
-          v13 = [v11 stringWithFormat:@"%@_", v12];
+          carrierName = [v10 carrierName];
+          v13 = [v11 stringWithFormat:@"%@_", carrierName];
           v14 = [(__CFString *)v8 stringByAppendingString:v13];
 
           v8 = v14;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [carriersCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
@@ -1375,15 +1375,15 @@ LABEL_7:
   return v8;
 }
 
-+ (id)alsPlanCarriers:(id)a3
++ (id)alsPlanCarriers:(id)carriers
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  carriersCopy = carriers;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v4 = [carriersCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1395,26 +1395,26 @@ LABEL_7:
       {
         if (*v20 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(carriersCopy);
         }
 
         v9 = *(*(&v19 + 1) + 8 * i);
-        v10 = [v9 plan];
+        plan = [v9 plan];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
           v12 = MEMORY[0x277CCACA8];
-          v13 = [v9 carrierName];
-          v14 = [v12 stringWithFormat:@"%@_", v13];
+          carrierName = [v9 carrierName];
+          v14 = [v12 stringWithFormat:@"%@_", carrierName];
           v15 = [(__CFString *)v7 stringByAppendingString:v14];
 
           v7 = v15;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v5 = [carriersCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v5);
@@ -1456,16 +1456,16 @@ uint64_t __34__TSUtilities_hasCellularBaseband__block_invoke()
 
 + (BOOL)isPad
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 1;
 
   return v3;
 }
 
 + (BOOL)isPhone
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 0;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 0;
 
   return v3;
 }
@@ -1485,14 +1485,14 @@ uint64_t __34__TSUtilities_hasCellularBaseband__block_invoke()
 
 + (BOOL)isOnBootstrap
 {
-  v2 = [MEMORY[0x277CD9200] sharedDefaultEvaluator];
-  v3 = [v2 path];
-  v4 = [v3 usesInterfaceType:1];
+  mEMORY[0x277CD9200] = [MEMORY[0x277CD9200] sharedDefaultEvaluator];
+  path = [mEMORY[0x277CD9200] path];
+  v4 = [path usesInterfaceType:1];
 
   v5 = +[TSCoreTelephonyClientCache sharedInstance];
-  LOBYTE(v3) = [v5 usingBootstrapDataService];
+  LOBYTE(path) = [v5 usingBootstrapDataService];
 
-  return (v4 ^ 1) & v3;
+  return (v4 ^ 1) & path;
 }
 
 + (BOOL)isDeviceLocked
@@ -1518,12 +1518,12 @@ uint64_t __34__TSUtilities_hasCellularBaseband__block_invoke()
 
 + (BOOL)isWifiAvailable
 {
-  v2 = [MEMORY[0x277CD9200] sharedDefaultEvaluator];
-  v3 = [v2 path];
+  mEMORY[0x277CD9200] = [MEMORY[0x277CD9200] sharedDefaultEvaluator];
+  path = [mEMORY[0x277CD9200] path];
 
-  if ([v3 status] == 1)
+  if ([path status] == 1)
   {
-    v4 = [v3 usesInterfaceType:1];
+    v4 = [path usesInterfaceType:1];
   }
 
   else
@@ -1579,10 +1579,10 @@ uint64_t __34__TSUtilities_hasCellularBaseband__block_invoke()
   return v9;
 }
 
-+ (BOOL)isSecureIntentUIRequired:(id)a3
++ (BOOL)isSecureIntentUIRequired:(id)required
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  requiredCopy = required;
   v4 = +[TSUtilities secureIntentAccessControlItem];
   if (v4)
   {
@@ -1604,7 +1604,7 @@ uint64_t __34__TSUtilities_hasCellularBaseband__block_invoke()
 
     v6 = v5;
     _Block_object_dispose(&v18, 8);
-    v7 = [[v5 alloc] initWithExternalizedContext:v3];
+    v7 = [[v5 alloc] initWithExternalizedContext:requiredCopy];
     v22 = &unk_287583E38;
     v23 = MEMORY[0x277CBEC38];
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
@@ -1628,9 +1628,9 @@ uint64_t __34__TSUtilities_hasCellularBaseband__block_invoke()
     if (v9)
     {
       v12 = [v9 objectForKeyedSubscript:&unk_287583E50];
-      v13 = [v12 BOOLValue];
+      bOOLValue = [v12 BOOLValue];
 
-      if (v13)
+      if (bOOLValue)
       {
         v14 = 0;
       }
@@ -1652,14 +1652,14 @@ uint64_t __34__TSUtilities_hasCellularBaseband__block_invoke()
   return v14;
 }
 
-+ (void)launchURL:(id)a3
++ (void)launchURL:(id)l
 {
   v3 = MEMORY[0x277D75128];
-  v4 = a3;
-  v6 = [v3 sharedApplication];
-  v5 = [MEMORY[0x277CBEBC0] URLWithString:v4];
+  lCopy = l;
+  sharedApplication = [v3 sharedApplication];
+  v5 = [MEMORY[0x277CBEBC0] URLWithString:lCopy];
 
-  [v6 openURL:v5 options:MEMORY[0x277CBEC10] completionHandler:&__block_literal_global_710];
+  [sharedApplication openURL:v5 options:MEMORY[0x277CBEC10] completionHandler:&__block_literal_global_710];
 }
 
 void __25__TSUtilities_launchURL___block_invoke(uint64_t a1, char a2)
@@ -1674,14 +1674,14 @@ void __25__TSUtilities_launchURL___block_invoke(uint64_t a1, char a2)
   }
 }
 
-+ (BOOL)isBackAllowed:(id)a3
++ (BOOL)isBackAllowed:(id)allowed
 {
-  v4 = [a3 navigationController];
-  v5 = [v4 viewControllers];
+  navigationController = [allowed navigationController];
+  viewControllers = [navigationController viewControllers];
 
-  if ([v5 count] >= 2)
+  if ([viewControllers count] >= 2)
   {
-    v7 = [v5 count];
+    v7 = [viewControllers count];
     if (v7 - 2 < 0)
     {
 LABEL_10:
@@ -1694,7 +1694,7 @@ LABEL_10:
       v8 = v7 - 1;
       while (1)
       {
-        v9 = [v5 objectAtIndex:--v8];
+        v9 = [viewControllers objectAtIndex:--v8];
         if (![v9 conformsToProtocol:&unk_28758ABD0] || (objc_opt_respondsToSelector() & 1) == 0 || (v10 = objc_msgSend(v9, "backOption")) == 0)
         {
           LOBYTE(v3) = 1;
@@ -1746,108 +1746,108 @@ uint64_t __32__TSUtilities_isGreenTeaCapable__block_invoke()
   return result;
 }
 
-+ (BOOL)isRegulatoryRestrictionActive:(id)a3
++ (BOOL)isRegulatoryRestrictionActive:(id)active
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  activeCopy = active;
+  v5 = activeCopy;
+  if (activeCopy)
   {
-    v6 = [v4 domain];
-    if ([v6 isEqualToString:*MEMORY[0x277CF9680]] && (objc_msgSend(v5, "code") == 58 || objc_msgSend(v5, "code") == 62 || objc_msgSend(v5, "code") == 63 || objc_msgSend(v5, "code") == 12))
+    domain = [activeCopy domain];
+    if ([domain isEqualToString:*MEMORY[0x277CF9680]] && (objc_msgSend(v5, "code") == 58 || objc_msgSend(v5, "code") == 62 || objc_msgSend(v5, "code") == 63 || objc_msgSend(v5, "code") == 12))
     {
-      v7 = [a1 isGreenTeaCapable];
+      isGreenTeaCapable = [self isGreenTeaCapable];
     }
 
     else
     {
-      v7 = 0;
+      isGreenTeaCapable = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    isGreenTeaCapable = 0;
   }
 
-  return v7;
+  return isGreenTeaCapable;
 }
 
-+ (BOOL)isRegRestLocationUnavailable:(id)a3
++ (BOOL)isRegRestLocationUnavailable:(id)unavailable
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  unavailableCopy = unavailable;
+  v5 = unavailableCopy;
+  if (unavailableCopy)
   {
-    v6 = [v4 domain];
-    if ([v6 isEqualToString:*MEMORY[0x277CF9680]] && objc_msgSend(v5, "code") == 12)
+    domain = [unavailableCopy domain];
+    if ([domain isEqualToString:*MEMORY[0x277CF9680]] && objc_msgSend(v5, "code") == 12)
     {
-      v7 = [a1 isGreenTeaCapable];
+      isGreenTeaCapable = [self isGreenTeaCapable];
     }
 
     else
     {
-      v7 = 0;
+      isGreenTeaCapable = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    isGreenTeaCapable = 0;
   }
 
-  return v7;
+  return isGreenTeaCapable;
 }
 
-+ (BOOL)isRegRestActiveLocationServiceOff:(id)a3
++ (BOOL)isRegRestActiveLocationServiceOff:(id)off
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  offCopy = off;
+  v5 = offCopy;
+  if (offCopy)
   {
-    v6 = [v4 domain];
-    if ([v6 isEqualToString:*MEMORY[0x277CF9680]] && objc_msgSend(v5, "code") == 62)
+    domain = [offCopy domain];
+    if ([domain isEqualToString:*MEMORY[0x277CF9680]] && objc_msgSend(v5, "code") == 62)
     {
-      v7 = [a1 isGreenTeaCapable];
+      isGreenTeaCapable = [self isGreenTeaCapable];
     }
 
     else
     {
-      v7 = 0;
+      isGreenTeaCapable = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    isGreenTeaCapable = 0;
   }
 
-  return v7;
+  return isGreenTeaCapable;
 }
 
-+ (BOOL)isRegRestActiveLocationAuthorizedOff:(id)a3
++ (BOOL)isRegRestActiveLocationAuthorizedOff:(id)off
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  offCopy = off;
+  v5 = offCopy;
+  if (offCopy)
   {
-    v6 = [v4 domain];
-    if ([v6 isEqualToString:*MEMORY[0x277CF9680]] && objc_msgSend(v5, "code") == 63)
+    domain = [offCopy domain];
+    if ([domain isEqualToString:*MEMORY[0x277CF9680]] && objc_msgSend(v5, "code") == 63)
     {
-      v7 = [a1 isGreenTeaCapable];
+      isGreenTeaCapable = [self isGreenTeaCapable];
     }
 
     else
     {
-      v7 = 0;
+      isGreenTeaCapable = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    isGreenTeaCapable = 0;
   }
 
-  return v7;
+  return isGreenTeaCapable;
 }
 
 + (BOOL)transferOptions
@@ -1863,24 +1863,24 @@ uint64_t __32__TSUtilities_isGreenTeaCapable__block_invoke()
   }
 
   v3 = _os_feature_enabled_impl();
-  if ([a1 isGreenTeaCapable])
+  if ([self isGreenTeaCapable])
   {
-    v4 = [MEMORY[0x277CF96D8] sharedManager];
-    v5 = [v4 getSupportedFlowTypes];
+    mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
+    getSupportedFlowTypes = [mEMORY[0x277CF96D8] getSupportedFlowTypes];
 
-    return (v5 != 2) & v3;
+    return (getSupportedFlowTypes != 2) & v3;
   }
 
   return v3;
 }
 
-+ (BOOL)openPrefsURL:(id)a3
++ (BOOL)openPrefsURL:(id)l
 {
   v23[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CC1E80];
-  v4 = a3;
+  lCopy = l;
   v5 = objc_alloc_init(v3);
-  v6 = [MEMORY[0x277CBEBC0] URLWithString:v4];
+  v6 = [MEMORY[0x277CBEBC0] URLWithString:lCopy];
 
   v22 = *MEMORY[0x277D0AC58];
   v23[0] = MEMORY[0x277CBEC38];
@@ -1893,10 +1893,10 @@ uint64_t __32__TSUtilities_isGreenTeaCapable__block_invoke()
     v10 = _TSLogDomain();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v9 localizedDescription];
-      v12 = [v11 UTF8String];
+      localizedDescription = [v9 localizedDescription];
+      uTF8String = [localizedDescription UTF8String];
       *buf = 136315650;
-      v17 = v12;
+      v17 = uTF8String;
       v18 = 1024;
       v19 = v8;
       v20 = 2080;
@@ -1909,12 +1909,12 @@ uint64_t __32__TSUtilities_isGreenTeaCapable__block_invoke()
   return v8;
 }
 
-+ (BOOL)isCaseInsensitiveEqual:(id)a3 withString:(id)a4
++ (BOOL)isCaseInsensitiveEqual:(id)equal withString:(id)string
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 == v6)
+  equalCopy = equal;
+  stringCopy = string;
+  v7 = stringCopy;
+  if (equalCopy == stringCopy)
   {
     v8 = 1;
   }
@@ -1922,25 +1922,25 @@ uint64_t __32__TSUtilities_isGreenTeaCapable__block_invoke()
   else
   {
     v8 = 0;
-    if (v5 && v6)
+    if (equalCopy && stringCopy)
     {
-      v8 = [v5 caseInsensitiveCompare:v6] == 0;
+      v8 = [equalCopy caseInsensitiveCompare:stringCopy] == 0;
     }
   }
 
   return v8;
 }
 
-+ (id)findSubscriptionContextForCellularPlanItem:(id)a3 fromSubscriptionContexts:(id)a4
++ (id)findSubscriptionContextForCellularPlanItem:(id)item fromSubscriptionContexts:(id)contexts
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && [v6 count])
+  itemCopy = item;
+  contextsCopy = contexts;
+  v7 = contextsCopy;
+  if (itemCopy && [contextsCopy count])
   {
     v8 = +[TSCellularPlanManagerCache sharedInstance];
-    v9 = [v8 getSubscriptionContextUUIDforPlan:v5];
+    v9 = [v8 getSubscriptionContextUUIDforPlan:itemCopy];
 
     v23 = 0u;
     v24 = 0u;
@@ -1962,9 +1962,9 @@ uint64_t __32__TSUtilities_isGreenTeaCapable__block_invoke()
           }
 
           v14 = *(*(&v21 + 1) + 8 * i);
-          v15 = [v14 uuid];
-          v16 = [v15 UUIDString];
-          v17 = [v16 isEqualToString:v9];
+          uuid = [v14 uuid];
+          uUIDString = [uuid UUIDString];
+          v17 = [uUIDString isEqualToString:v9];
 
           if (v17)
           {
@@ -1999,18 +1999,18 @@ LABEL_14:
 
 + (BOOL)needsCustomMemoryError
 {
-  v2 = [a1 getHardwareModelName];
-  v3 = [v2 isEqualToString:@"V59AP"];
+  getHardwareModelName = [self getHardwareModelName];
+  v3 = [getHardwareModelName isEqualToString:@"V59AP"];
 
   return v3;
 }
 
 + (id)getSpinnerBusyText
 {
-  v2 = [a1 needsCustomMemoryError];
+  needsCustomMemoryError = [self needsCustomMemoryError];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = v3;
-  if (v2)
+  if (needsCustomMemoryError)
   {
     v5 = @"CONTINUE_BUTTON_STATE_PREPARING";
   }
@@ -2025,16 +2025,16 @@ LABEL_14:
   return v6;
 }
 
-+ (id)getPlanByID:(id)a3 fromPlans:(id)a4
++ (id)getPlanByID:(id)d fromPlans:(id)plans
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dCopy = d;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  plansCopy = plans;
+  v7 = [plansCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -2044,12 +2044,12 @@ LABEL_14:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(plansCopy);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [v11 isEqualToString:v5];
+        identifier = [v10 identifier];
+        v12 = [identifier isEqualToString:dCopy];
 
         if (v12)
         {
@@ -2058,7 +2058,7 @@ LABEL_14:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [plansCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -2075,19 +2075,19 @@ LABEL_11:
   return v7;
 }
 
-+ (int64_t)compareProductVersion:(id)a3 toProductVersion:(id)a4
++ (int64_t)compareProductVersion:(id)version toProductVersion:(id)productVersion
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:v6])
+  versionCopy = version;
+  productVersionCopy = productVersion;
+  if ([versionCopy isEqualToString:productVersionCopy])
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [v5 componentsSeparatedByString:@"."];
-    v9 = [v6 componentsSeparatedByString:@"."];
+    v8 = [versionCopy componentsSeparatedByString:@"."];
+    v9 = [productVersionCopy componentsSeparatedByString:@"."];
     v10 = [v8 count];
     if (v10 | [v9 count])
     {
@@ -2097,32 +2097,32 @@ LABEL_11:
       {
         if ([v8 count] <= v11)
         {
-          v13 = 0;
+          intValue = 0;
         }
 
         else
         {
           v12 = [v8 objectAtIndexedSubscript:v11];
-          v13 = [v12 intValue];
+          intValue = [v12 intValue];
         }
 
         if ([v9 count] <= v11)
         {
-          v15 = 0;
+          intValue2 = 0;
         }
 
         else
         {
           v14 = [v9 objectAtIndexedSubscript:v11];
-          v15 = [v14 intValue];
+          intValue2 = [v14 intValue];
         }
 
-        if (v13 > v15)
+        if (intValue > intValue2)
         {
           break;
         }
 
-        if (v13 < v15)
+        if (intValue < intValue2)
         {
           v7 = -1;
           break;
@@ -2158,10 +2158,10 @@ LABEL_17:
   return v7;
 }
 
-+ (id)skEventFromDictionary:(id)a3
++ (id)skEventFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"eventType"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"eventType"];
   if (!v4)
   {
     v9 = 0;
@@ -2169,64 +2169,64 @@ LABEL_17:
   }
 
   v5 = v4;
-  v6 = [v4 intValue];
-  v7 = [v3 objectForKeyedSubscript:@"error"];
+  intValue = [v4 intValue];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"error"];
   if (v7)
   {
-    v8 = [objc_alloc(MEMORY[0x277D4DAC0]) initWithEventType:v6 error:v7];
+    v8 = [objc_alloc(MEMORY[0x277D4DAC0]) initWithEventType:intValue error:v7];
   }
 
   else
   {
-    if (v6 > 119)
+    if (intValue > 119)
     {
-      if (v6 <= 199)
+      if (intValue <= 199)
       {
-        if (v6 == 120)
+        if (intValue == 120)
         {
-          v14 = [v3 objectForKeyedSubscript:@"pairingFlags"];
+          v14 = [dictionaryCopy objectForKeyedSubscript:@"pairingFlags"];
 
           if (v14)
           {
-            v15 = [v14 intValue];
+            intValue2 = [v14 intValue];
           }
 
           else
           {
-            v15 = 0;
+            intValue2 = 0;
           }
 
-          v17 = [v3 objectForKeyedSubscript:@"passwordType"];
+          v17 = [dictionaryCopy objectForKeyedSubscript:@"passwordType"];
 
           if (v17)
           {
-            v18 = [v17 intValue];
+            intValue3 = [v17 intValue];
           }
 
           else
           {
-            v18 = 0;
+            intValue3 = 0;
           }
 
-          v5 = [v3 objectForKeyedSubscript:@"throttleSeconds"];
+          v5 = [dictionaryCopy objectForKeyedSubscript:@"throttleSeconds"];
 
           if (v5)
           {
-            v19 = [v5 intValue];
+            intValue4 = [v5 intValue];
           }
 
           else
           {
-            v19 = 0;
+            intValue4 = 0;
           }
 
-          v8 = [objc_alloc(getSKAuthenticationRequestEventClass()) initWithPasswordType:v18 pairingFlags:v15 throttleSeconds:v19];
+          v8 = [objc_alloc(getSKAuthenticationRequestEventClass()) initWithPasswordType:intValue3 pairingFlags:intValue2 throttleSeconds:intValue4];
           goto LABEL_13;
         }
 
-        if (v6 == 130)
+        if (intValue == 130)
         {
-          v16 = [v3 objectForKeyedSubscript:@"password"];
+          v16 = [dictionaryCopy objectForKeyedSubscript:@"password"];
           v9 = [objc_alloc(getSKAuthenticationResponseEventClass()) initWithPassword:v16];
 
           goto LABEL_14;
@@ -2234,28 +2234,28 @@ LABEL_17:
       }
     }
 
-    else if ((v6 > 0x2A || ((1 << v6) & 0x70040100401) == 0) && v6 == 110)
+    else if ((intValue > 0x2A || ((1 << intValue) & 0x70040100401) == 0) && intValue == 110)
     {
-      v10 = [v3 objectForKeyedSubscript:@"password"];
-      v11 = [v3 objectForKeyedSubscript:@"passwordType"];
+      v10 = [dictionaryCopy objectForKeyedSubscript:@"password"];
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"passwordType"];
 
       if (v11)
       {
-        v12 = [v11 intValue];
+        intValue5 = [v11 intValue];
       }
 
       else
       {
-        v12 = 0;
+        intValue5 = 0;
       }
 
-      v9 = [objc_alloc(getSKAuthenticationPresentEventClass()) initWithPasswordType:v12 password:v10];
+      v9 = [objc_alloc(getSKAuthenticationPresentEventClass()) initWithPasswordType:intValue5 password:v10];
 
       v5 = v11;
       goto LABEL_14;
     }
 
-    v8 = [objc_alloc(MEMORY[0x277D4DAC0]) initWithEventType:v6];
+    v8 = [objc_alloc(MEMORY[0x277D4DAC0]) initWithEventType:intValue];
   }
 
 LABEL_13:
@@ -2267,18 +2267,18 @@ LABEL_15:
   return v9;
 }
 
-+ (int64_t)numActivePlansOnDeviceExcept:(id)a3
++ (int64_t)numActivePlansOnDeviceExcept:(id)except
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  exceptCopy = except;
   v4 = +[TSCellularPlanManagerCache sharedInstance];
-  v5 = [v4 planItems];
+  planItems = [v4 planItems];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v5;
+  v6 = planItems;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v28 count:16];
   if (v7)
   {
@@ -2297,10 +2297,10 @@ LABEL_15:
         v12 = *(*(&v18 + 1) + 8 * i);
         if ([v12 isSelected])
         {
-          if (v3)
+          if (exceptCopy)
           {
-            v13 = [v12 iccid];
-            v14 = [v13 isEqualToString:v3];
+            iccid = [v12 iccid];
+            v14 = [iccid isEqualToString:exceptCopy];
 
             v9 += v14 ^ 1u;
           }
@@ -2327,7 +2327,7 @@ LABEL_15:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v23 = v3;
+    v23 = exceptCopy;
     v24 = 2048;
     v25 = v9;
     v26 = 2080;
@@ -2339,24 +2339,24 @@ LABEL_15:
   return v9;
 }
 
-+ (id)concatenateDescriptors:(id)a3
++ (id)concatenateDescriptors:(id)descriptors
 {
-  v3 = a3;
+  descriptorsCopy = descriptors;
   v4 = objc_opt_new();
-  if ([v3 count])
+  if ([descriptorsCopy count])
   {
     v5 = 0;
     do
     {
-      v6 = [v3 objectAtIndexedSubscript:v5];
+      v6 = [descriptorsCopy objectAtIndexedSubscript:v5];
       [v4 appendString:v6];
 
-      if (v5 == [v3 count] - 1)
+      if (v5 == [descriptorsCopy count] - 1)
       {
         break;
       }
 
-      if (v5 == [v3 count] - 2)
+      if (v5 == [descriptorsCopy count] - 2)
       {
         [v4 appendString:@" "];
         v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -2376,31 +2376,31 @@ LABEL_15:
       ++v5;
     }
 
-    while (v5 < [v3 count]);
+    while (v5 < [descriptorsCopy count]);
   }
 
   return v4;
 }
 
-+ (id)formatLocAndConcatenateDescriptors:(id)a3
++ (id)formatLocAndConcatenateDescriptors:(id)descriptors
 {
-  v3 = a3;
+  descriptorsCopy = descriptors;
   v4 = objc_opt_new();
-  if ([v3 count])
+  if ([descriptorsCopy count])
   {
     v5 = 0;
     do
     {
-      v6 = [v3 objectAtIndexedSubscript:v5];
+      v6 = [descriptorsCopy objectAtIndexedSubscript:v5];
       v7 = [TSUtilities formattedPhoneNumber:v6 withCountryCode:0];
       [v4 appendString:v7];
 
-      if (v5 == [v3 count] - 1)
+      if (v5 == [descriptorsCopy count] - 1)
       {
         break;
       }
 
-      if (v5 == [v3 count] - 2)
+      if (v5 == [descriptorsCopy count] - 2)
       {
         [v4 appendString:@" "];
         v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -2420,7 +2420,7 @@ LABEL_15:
       ++v5;
     }
 
-    while (v5 < [v3 count]);
+    while (v5 < [descriptorsCopy count]);
   }
 
   return v4;
@@ -2428,8 +2428,8 @@ LABEL_15:
 
 + (BOOL)areAnyPlansOnDevice
 {
-  v2 = [MEMORY[0x277CF96D8] sharedManager];
-  v3 = [v2 planItemsShouldUpdate:0];
+  mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
+  v3 = [mEMORY[0x277CF96D8] planItemsShouldUpdate:0];
 
   if (v3)
   {
@@ -2444,16 +2444,16 @@ LABEL_15:
   return v4;
 }
 
-+ (id)getCellularPlanItem:(id)a3 withIccid:(id)a4
++ (id)getCellularPlanItem:(id)item withIccid:(id)iccid
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  itemCopy = item;
+  iccidCopy = iccid;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v5;
+  v7 = itemCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -2468,8 +2468,8 @@ LABEL_15:
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 iccid];
-        v13 = [v12 isEqualToString:v6];
+        iccid = [v11 iccid];
+        v13 = [iccid isEqualToString:iccidCopy];
 
         if (v13)
         {
@@ -2495,12 +2495,12 @@ LABEL_11:
   return v8;
 }
 
-+ (BOOL)isIccidForPhySlot:(id)a3
++ (BOOL)isIccidForPhySlot:(id)slot
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CF96D8] sharedManager];
-  v5 = [v4 planItemsShouldUpdate:0];
+  slotCopy = slot;
+  mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
+  v5 = [mEMORY[0x277CF96D8] planItemsShouldUpdate:0];
 
   v17 = 0u;
   v18 = 0u;
@@ -2521,8 +2521,8 @@ LABEL_11:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 iccid];
-        v12 = [v11 isEqualToString:v3];
+        iccid = [v10 iccid];
+        v12 = [iccid isEqualToString:slotCopy];
 
         if (v12 && ![v10 type])
         {
@@ -2547,49 +2547,49 @@ LABEL_12:
   return v7;
 }
 
-+ (id)planItemText:(id)a3
++ (id)planItemText:(id)text
 {
-  v3 = a3;
-  if (v3)
+  textCopy = text;
+  if (textCopy)
   {
     if (+[TSUtilities isPad])
     {
       goto LABEL_3;
     }
 
-    v9 = [v3 phoneNumber];
-    v10 = [v9 length];
+    phoneNumber = [textCopy phoneNumber];
+    v10 = [phoneNumber length];
 
     if (v10)
     {
-      v11 = [v3 phoneNumber];
+      phoneNumber2 = [textCopy phoneNumber];
     }
 
     else
     {
-      v12 = [v3 cachedPhoneNumber];
-      v13 = [v12 length];
+      cachedPhoneNumber = [textCopy cachedPhoneNumber];
+      v13 = [cachedPhoneNumber length];
 
       if (!v13)
       {
 LABEL_3:
-        v4 = [v3 carrierName];
-        v5 = [v4 length];
+        carrierName = [textCopy carrierName];
+        v5 = [carrierName length];
 
         if (v5)
         {
-          v6 = [v3 carrierName];
+          carrierName2 = [textCopy carrierName];
           goto LABEL_12;
         }
 
         goto LABEL_5;
       }
 
-      v11 = [v3 cachedPhoneNumber];
+      phoneNumber2 = [textCopy cachedPhoneNumber];
     }
 
-    v7 = v11;
-    v8 = [TSUtilities formattedPhoneNumber:v11 withCountryCode:0];
+    v7 = phoneNumber2;
+    v8 = [TSUtilities formattedPhoneNumber:phoneNumber2 withCountryCode:0];
     goto LABEL_11;
   }
 
@@ -2597,56 +2597,56 @@ LABEL_5:
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v8 = [v7 localizedStringForKey:@"NEW_CELLULAR_PLAN_DETAIL" value:&stru_28753DF48 table:@"Localizable"];
 LABEL_11:
-  v6 = v8;
+  carrierName2 = v8;
 
 LABEL_12:
 
-  return v6;
+  return carrierName2;
 }
 
 + (BOOL)isLanguageRightToLeft
 {
-  v2 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  v3 = [v2 firstObject];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  firstObject = [preferredLanguages firstObject];
 
-  LOBYTE(v2) = [MEMORY[0x277CBEAF8] characterDirectionForLanguage:v3] == 2;
-  return v2;
+  LOBYTE(preferredLanguages) = [MEMORY[0x277CBEAF8] characterDirectionForLanguage:firstObject] == 2;
+  return preferredLanguages;
 }
 
-+ (id)appendLeftToRightMark:(id)a3
++ (id)appendLeftToRightMark:(id)mark
 {
-  v3 = a3;
+  markCopy = mark;
   if (+[TSUtilities isLanguageRightToLeft])
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"\u202B%@\u202C", v3];
+    markCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"\u202B%@\u202C", markCopy];
   }
 
   else
   {
-    v4 = v3;
+    markCopy = markCopy;
   }
 
-  v5 = v4;
+  v5 = markCopy;
 
   return v5;
 }
 
-+ (id)getStoreVisitStatusForPlan:(id)a3 cache:(id)a4
++ (id)getStoreVisitStatusForPlan:(id)plan cache:(id)cache
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 carrierName];
+  planCopy = plan;
+  cacheCopy = cache;
+  carrierName = [planCopy carrierName];
 
-  if (v7)
+  if (carrierName)
   {
-    v8 = [v5 carrierName];
-    v9 = [v6 objectForKey:v8];
+    carrierName2 = [planCopy carrierName];
+    v9 = [cacheCopy objectForKey:carrierName2];
 
     if (v9)
     {
-      v10 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
 
-      if (v9 == v10)
+      if (v9 == null)
       {
         v11 = 0;
 LABEL_13:
@@ -2658,20 +2658,20 @@ LABEL_13:
     else
     {
       v13 = +[TSCoreTelephonyClientCache sharedInstance];
-      v14 = [v5 carrierName];
-      v9 = [v13 getStoreVisitStatusForCarrier:v14];
+      carrierName3 = [planCopy carrierName];
+      v9 = [v13 getStoreVisitStatusForCarrier:carrierName3];
 
       if (v9)
       {
-        v15 = [v5 carrierName];
-        [v6 setObject:v9 forKeyedSubscript:v15];
+        carrierName4 = [planCopy carrierName];
+        [cacheCopy setObject:v9 forKeyedSubscript:carrierName4];
       }
 
       else
       {
-        v15 = [MEMORY[0x277CBEB68] null];
-        v16 = [v5 carrierName];
-        [v6 setObject:v15 forKeyedSubscript:v16];
+        carrierName4 = [MEMORY[0x277CBEB68] null];
+        carrierName5 = [planCopy carrierName];
+        [cacheCopy setObject:carrierName4 forKeyedSubscript:carrierName5];
       }
     }
 
@@ -2683,7 +2683,7 @@ LABEL_13:
   v12 = _TSLogDomain();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    [TSUtilities getStoreVisitStatusForPlan:v5 cache:v12];
+    [TSUtilities getStoreVisitStatusForPlan:planCopy cache:v12];
   }
 
   v11 = 0;
@@ -2692,10 +2692,10 @@ LABEL_14:
   return v11;
 }
 
-+ (id)FormattedCarrierListFromSet:(id)a3
++ (id)FormattedCarrierListFromSet:(id)set
 {
-  v3 = [a3 allObjects];
-  v4 = [v3 sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
+  allObjects = [set allObjects];
+  v4 = [allObjects sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
 
   v5 = [v4 count];
   if (v5)
@@ -2729,8 +2729,8 @@ LABEL_14:
       v18 = [v17 localizedStringForKey:@"COMMA" value:&stru_28753DF48 table:@"Localizable"];
       v19 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v20 = [v19 localizedStringForKey:@"OR" value:&stru_28753DF48 table:@"Localizable"];
-      v21 = [v4 lastObject];
-      v7 = [v16 stringWithFormat:@"%@%@%@ %@", v9, v18, v20, v21];
+      lastObject = [v4 lastObject];
+      v7 = [v16 stringWithFormat:@"%@%@%@ %@", v9, v18, v20, lastObject];
     }
   }
 
@@ -2744,15 +2744,15 @@ LABEL_9:
   return v7;
 }
 
-+ (id)_isAnyRequireStoreVisitPlan:(id)a3
++ (id)_isAnyRequireStoreVisitPlan:(id)plan
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  planCopy = plan;
+  v4 = [planCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -2762,7 +2762,7 @@ LABEL_9:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(planCopy);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -2773,7 +2773,7 @@ LABEL_9:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [planCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -2790,15 +2790,15 @@ LABEL_11:
   return v4;
 }
 
-+ (id)_isAnySourceNeedsSoftwareUpdatePlan:(id)a3
++ (id)_isAnySourceNeedsSoftwareUpdatePlan:(id)plan
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  planCopy = plan;
+  v4 = [planCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -2808,7 +2808,7 @@ LABEL_11:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(planCopy);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -2819,7 +2819,7 @@ LABEL_11:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [planCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -2836,18 +2836,18 @@ LABEL_11:
   return v4;
 }
 
-+ (id)allPlansRequireSoftwareUpdate:(id)a3
++ (id)allPlansRequireSoftwareUpdate:(id)update
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  updateCopy = update;
+  if ([updateCopy count])
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v3;
+    v5 = updateCopy;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -2865,7 +2865,7 @@ LABEL_11:
           v10 = *(*(&v13 + 1) + 8 * i);
           if ([v10 transferCapability] == 15)
           {
-            [v4 addObject:v10];
+            [array addObject:v10];
           }
         }
 
@@ -2878,19 +2878,19 @@ LABEL_11:
 
   else
   {
-    v4 = 0;
+    array = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return array;
 }
 
 + (void)secureIntentAccessControlItem
 {
   v6 = *MEMORY[0x277D85DE8];
   v3[0] = 67109378;
-  v3[1] = a1;
+  v3[1] = self;
   v4 = 2080;
   v5 = "+[TSUtilities secureIntentAccessControlItem]";
   _os_log_error_impl(&dword_262AA8000, a2, OS_LOG_TYPE_ERROR, "[E]No euicc key!!, status code : %d @%s", v3, 0x12u);

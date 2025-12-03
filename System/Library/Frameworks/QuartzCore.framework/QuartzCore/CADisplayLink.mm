@@ -1,13 +1,13 @@
 @interface CADisplayLink
 + (CADisplayLink)displayLinkWithTarget:(id)target selector:(SEL)sel;
 + (double)earlyWakeupOffset;
-+ (double)expectedWakeupBeforeCommitDeadline:(double)a3;
-+ (void)dispatchDeferredDisplayLink:(unint64_t)a3;
++ (double)expectedWakeupBeforeCommitDeadline:(double)deadline;
++ (void)dispatchDeferredDisplayLink:(unint64_t)link;
 + (void)dispatchDeferredDisplayLinks;
-+ (void)dispatchDeferredDisplayLinksWithDisplayId:(unsigned int)a3;
-+ (void)notifyDisplayChange:(unint64_t)a3;
-+ (void)setEarlyWakeupOffset:(double)a3;
-+ (void)setWillFireHandler:(id)a3;
++ (void)dispatchDeferredDisplayLinksWithDisplayId:(unsigned int)id;
++ (void)notifyDisplayChange:(unint64_t)change;
++ (void)setEarlyWakeupOffset:(double)offset;
++ (void)setWillFireHandler:(id)handler;
 - (BOOL)active;
 - (CADisplay)display;
 - (CAFrameRateRange)preferredFrameRateRange;
@@ -16,19 +16,19 @@
 - (double)heartbeatRate;
 - (double)localEarlyWakeupOffset;
 - (double)maximumRefreshRate;
-- (id)_initWithDisplayLinkItem:(void *)a3;
+- (id)_initWithDisplayLinkItem:(void *)item;
 - (int64_t)actualFramesPerSecond;
 - (int64_t)minimumFrameDuration;
 - (void)addToRunLoop:(NSRunLoop *)runloop forMode:(NSRunLoopMode)mode;
 - (void)dealloc;
 - (void)removeFromRunLoop:(NSRunLoop *)runloop forMode:(NSRunLoopMode)mode;
 - (void)setFrameInterval:(NSInteger)frameInterval;
-- (void)setHighFrameRateReason:(unsigned int)a3;
-- (void)setLocalEarlyWakeupOffset:(double)a3;
+- (void)setHighFrameRateReason:(unsigned int)reason;
+- (void)setLocalEarlyWakeupOffset:(double)offset;
 - (void)setPreferredFrameRateRange:(CAFrameRateRange)preferredFrameRateRange;
 - (void)setPreferredFramesPerSecond:(NSInteger)preferredFramesPerSecond;
-- (void)setPriority:(int64_t)a3;
-- (void)setUserInfo:(id)a3;
+- (void)setPriority:(int64_t)priority;
+- (void)setUserInfo:(id)info;
 @end
 
 @implementation CADisplayLink
@@ -201,8 +201,8 @@ LABEL_24:
   minimum = preferredFrameRateRange.minimum;
   if (!CAFrameRateRangeIsValid(preferredFrameRateRange.minimum, preferredFrameRateRange.maximum, preferredFrameRateRange.preferred))
   {
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid range (minimum: %.2f maximum: %.2f preferred: %.2f)", minimum, maximum, preferred];
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v11 userInfo:0]);
+    preferred = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid range (minimum: %.2f maximum: %.2f preferred: %.2f)", minimum, maximum, preferred];
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:preferred userInfo:0]);
   }
 
   impl = self->_impl;
@@ -287,13 +287,13 @@ LABEL_24:
   CA::Display::DisplayLinkItem::set_preferred_fps_range(impl, v5, 1, 0);
 }
 
-- (void)setPriority:(int64_t)a3
+- (void)setPriority:(int64_t)priority
 {
   v12 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
-  if (*(impl + 6) != a3)
+  if (*(impl + 6) != priority)
   {
-    *(impl + 6) = a3;
+    *(impl + 6) = priority;
     if (*(impl + 33))
     {
       pthread_mutex_lock((impl + 136));
@@ -366,20 +366,20 @@ LABEL_24:
 - (void)removeFromRunLoop:(NSRunLoop *)runloop forMode:(NSRunLoopMode)mode
 {
   impl = self->_impl;
-  v6 = [(NSRunLoop *)runloop getCFRunLoop];
+  getCFRunLoop = [(NSRunLoop *)runloop getCFRunLoop];
 
-  CA::Display::DisplayLinkItem::unschedule(impl, v6, mode);
+  CA::Display::DisplayLinkItem::unschedule(impl, getCFRunLoop, mode);
 }
 
 - (void)addToRunLoop:(NSRunLoop *)runloop forMode:(NSRunLoopMode)mode
 {
   impl = self->_impl;
-  v6 = [(NSRunLoop *)runloop getCFRunLoop];
+  getCFRunLoop = [(NSRunLoop *)runloop getCFRunLoop];
 
-  CA::Display::DisplayLinkItem::schedule(impl, v6, mode);
+  CA::Display::DisplayLinkItem::schedule(impl, getCFRunLoop, mode);
 }
 
-- (id)_initWithDisplayLinkItem:(void *)a3
+- (id)_initWithDisplayLinkItem:(void *)item
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -388,13 +388,13 @@ LABEL_24:
   v5 = v4;
   if (v4)
   {
-    v4->_impl = a3;
-    *(a3 + 32) = v4;
+    v4->_impl = item;
+    *(item + 32) = v4;
   }
 
-  else if (a3)
+  else if (item)
   {
-    (*(*a3 + 8))(a3);
+    (*(*item + 8))(item);
   }
 
   return v5;
@@ -406,24 +406,24 @@ LABEL_24:
   if (result)
   {
 
-    return [a1 displayLinkWithDisplay:result target:target selector:sel];
+    return [self displayLinkWithDisplay:result target:target selector:sel];
   }
 
   return result;
 }
 
-- (void)setLocalEarlyWakeupOffset:(double)a3
+- (void)setLocalEarlyWakeupOffset:(double)offset
 {
   if (!_CFRunLoopCurrentIsMain() && CA::Render::Server::_thread)
   {
     impl = self->_impl;
-    v6 = 0.0;
-    if (a3 >= 0.0)
+    offsetCopy = 0.0;
+    if (offset >= 0.0)
     {
-      v6 = a3;
+      offsetCopy = offset;
     }
 
-    impl[39] = CAHostTimeWithTime(v6);
+    impl[39] = CAHostTimeWithTime(offsetCopy);
   }
 }
 
@@ -439,11 +439,11 @@ LABEL_24:
   return CATimeWithHostTime(v3);
 }
 
-- (void)setHighFrameRateReason:(unsigned int)a3
+- (void)setHighFrameRateReason:(unsigned int)reason
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Display::DisplayLinkItem::set_reasons(self->_impl, &v3, 1u);
+  reasonCopy = reason;
+  CA::Display::DisplayLinkItem::set_reasons(self->_impl, &reasonCopy, 1u);
 }
 
 - (BOOL)active
@@ -530,7 +530,7 @@ LABEL_24:
   return v5;
 }
 
-- (void)setUserInfo:(id)a3
+- (void)setUserInfo:(id)info
 {
   impl = self->_impl;
   pthread_mutex_lock((impl + 136));
@@ -546,34 +546,34 @@ LABEL_24:
   }
 
   v6 = *(impl + 5);
-  if (v6 != a3)
+  if (v6 != info)
   {
     if (v6)
     {
       CFRelease(v6);
     }
 
-    *(impl + 5) = a3;
-    if (a3)
+    *(impl + 5) = info;
+    if (info)
     {
-      CFRetain(a3);
+      CFRetain(info);
     }
   }
 
   pthread_mutex_unlock((impl + 136));
 }
 
-+ (void)setEarlyWakeupOffset:(double)a3
++ (void)setEarlyWakeupOffset:(double)offset
 {
   if (_CFRunLoopCurrentIsMain())
   {
-    v4 = 0.0;
-    if (a3 >= 0.0)
+    offsetCopy = 0.0;
+    if (offset >= 0.0)
     {
-      v4 = a3;
+      offsetCopy = offset;
     }
 
-    v5 = CAHostTimeWithTime(v4);
+    v5 = CAHostTimeWithTime(offsetCopy);
     v6 = CA::Display::MaxEarlyWakeupOffset(v5);
     if (v6 >= v5)
     {
@@ -595,9 +595,9 @@ LABEL_24:
   }
 }
 
-+ (void)dispatchDeferredDisplayLinksWithDisplayId:(unsigned int)a3
++ (void)dispatchDeferredDisplayLinksWithDisplayId:(unsigned int)id
 {
-  v3 = *&a3;
+  v3 = *&id;
   if (_CFRunLoopCurrentIsMain())
   {
 
@@ -611,12 +611,12 @@ LABEL_24:
   }
 }
 
-+ (void)setWillFireHandler:(id)a3
++ (void)setWillFireHandler:(id)handler
 {
   if (_CFRunLoopCurrentIsMain())
   {
     _Block_release(CA::Display::DisplayLink::_will_fire_handler_external);
-    CA::Display::DisplayLink::_will_fire_handler_external = _Block_copy(a3);
+    CA::Display::DisplayLink::_will_fire_handler_external = _Block_copy(handler);
   }
 
   else
@@ -626,9 +626,9 @@ LABEL_24:
   }
 }
 
-+ (double)expectedWakeupBeforeCommitDeadline:(double)a3
++ (double)expectedWakeupBeforeCommitDeadline:(double)deadline
 {
-  v3 = CAHostTimeWithTime(a3);
+  v3 = CAHostTimeWithTime(deadline);
   v4 = +[CADisplay mainDisplay];
   if (v4)
   {
@@ -727,13 +727,13 @@ LABEL_16:
   return CATimeWithHostTime(v19);
 }
 
-+ (void)notifyDisplayChange:(unint64_t)a3
++ (void)notifyDisplayChange:(unint64_t)change
 {
   os_unfair_lock_lock(&CA::Display::MetalLinkItem::_list_lock);
   for (i = CA::Display::MetalLinkItem::_list; i != qword_1EA84E840; ++i)
   {
     v5 = *i;
-    if (*i == a3)
+    if (*i == change)
     {
       if (v5)
       {
@@ -784,7 +784,7 @@ LABEL_16:
   os_unfair_lock_unlock(&CA::Display::MetalLinkItem::_list_lock);
 }
 
-+ (void)dispatchDeferredDisplayLink:(unint64_t)a3
++ (void)dispatchDeferredDisplayLink:(unint64_t)link
 {
   v10[5] = *MEMORY[0x1E69E9840];
   kdebug_trace();
@@ -797,7 +797,7 @@ LABEL_16:
       v5 = *(v4 + 232);
       if (v5)
       {
-        if ((*(v5 + 16))(v5, a3))
+        if ((*(v5 + 16))(v5, link))
         {
           break;
         }

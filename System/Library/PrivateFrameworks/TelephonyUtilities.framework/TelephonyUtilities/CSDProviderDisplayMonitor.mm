@@ -6,7 +6,7 @@
 
 - (BOOL)isVisible
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1002C820C();
 
   return v3 & 1;

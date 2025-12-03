@@ -18,10 +18,10 @@
   v11 = 0;
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 buttonType];
-  if (v4 <= 9991)
+  buttonType = [v3 buttonType];
+  if (buttonType <= 9991)
   {
-    switch(v4)
+    switch(buttonType)
     {
       case 0:
       case 17:
@@ -116,14 +116,14 @@
     goto LABEL_43;
   }
 
-  if (v4 <= 9994)
+  if (buttonType <= 9994)
   {
-    if (v4 == 9992)
+    if (buttonType == 9992)
     {
       v6 = @"tv.remote.media.information.button";
     }
 
-    else if (v4 == 9993)
+    else if (buttonType == 9993)
     {
       v6 = @"tv.button.only.play.label";
     }
@@ -136,16 +136,16 @@
     goto LABEL_43;
   }
 
-  if (v4 > 9997)
+  if (buttonType > 9997)
   {
-    if (v4 == 9998)
+    if (buttonType == 9998)
     {
 LABEL_30:
       v6 = @"tv.button.search.label";
       goto LABEL_43;
     }
 
-    if (v4 == 9999)
+    if (buttonType == 9999)
     {
       v6 = @"tv.button.keyboard.label";
       goto LABEL_43;
@@ -154,14 +154,14 @@ LABEL_30:
 
   else
   {
-    if (v4 == 9995)
+    if (buttonType == 9995)
     {
 LABEL_17:
       v6 = @"tv.button.fast.forward.label";
       goto LABEL_43;
     }
 
-    if (v4 == 9996)
+    if (buttonType == 9996)
     {
 LABEL_9:
       v6 = @"tv.button.rewind.label";
@@ -199,17 +199,17 @@ LABEL_44:
       v4 = @"tv.button.search.hint";
     }
 
-    v5 = accessibilityLocalizedString(v4);
+    accessibilityHint = accessibilityLocalizedString(v4);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = TVRUIButtonAccessibility;
-    v5 = [(TVRUIButtonAccessibility *)&v8 accessibilityHint];
+    accessibilityHint = [(TVRUIButtonAccessibility *)&v8 accessibilityHint];
   }
 
-  v6 = v5;
+  v6 = accessibilityHint;
 
   return v6;
 }

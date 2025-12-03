@@ -1,20 +1,20 @@
 @interface JavaUtilGregorianCalendar
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isLeapYearWithInt:(int)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isLeapYearWithInt:(int)int;
 - (JavaUtilGregorianCalendar)init;
-- (JavaUtilGregorianCalendar)initWithJavaUtilLocale:(id)a3;
-- (JavaUtilGregorianCalendar)initWithJavaUtilTimeZone:(id)a3;
-- (JavaUtilGregorianCalendar)initWithLong:(int64_t)a3;
+- (JavaUtilGregorianCalendar)initWithJavaUtilLocale:(id)locale;
+- (JavaUtilGregorianCalendar)initWithJavaUtilTimeZone:(id)zone;
+- (JavaUtilGregorianCalendar)initWithLong:(int64_t)long;
 - (id)getGregorianChange;
-- (int)mod7WithLong:(int64_t)a3;
+- (int)mod7WithLong:(int64_t)long;
 - (unint64_t)hash;
-- (void)addWithInt:(int)a3 withInt:(int)a4;
+- (void)addWithInt:(int)int withInt:(int)withInt;
 - (void)computeFields;
 - (void)computeTime;
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3;
-- (void)setGregorianChangeWithJavaUtilDate:(id)a3;
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3;
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream;
+- (void)setGregorianChangeWithJavaUtilDate:(id)date;
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream;
 @end
 
 @implementation JavaUtilGregorianCalendar
@@ -27,47 +27,47 @@
   return self;
 }
 
-- (JavaUtilGregorianCalendar)initWithLong:(int64_t)a3
+- (JavaUtilGregorianCalendar)initWithLong:(int64_t)long
 {
   JavaUtilGregorianCalendar_initWithBoolean_(self);
-  [(JavaUtilCalendar *)self setTimeInMillisWithLong:a3];
+  [(JavaUtilCalendar *)self setTimeInMillisWithLong:long];
   return self;
 }
 
-- (JavaUtilGregorianCalendar)initWithJavaUtilLocale:(id)a3
+- (JavaUtilGregorianCalendar)initWithJavaUtilLocale:(id)locale
 {
   Default = JavaUtilTimeZone_getDefault();
-  JavaUtilGregorianCalendar_initWithJavaUtilTimeZone_withJavaUtilLocale_(self, Default, a3);
+  JavaUtilGregorianCalendar_initWithJavaUtilTimeZone_withJavaUtilLocale_(self, Default, locale);
   return self;
 }
 
-- (JavaUtilGregorianCalendar)initWithJavaUtilTimeZone:(id)a3
+- (JavaUtilGregorianCalendar)initWithJavaUtilTimeZone:(id)zone
 {
   Default = JavaUtilLocale_getDefault();
-  JavaUtilGregorianCalendar_initWithJavaUtilTimeZone_withJavaUtilLocale_(self, a3, Default);
+  JavaUtilGregorianCalendar_initWithJavaUtilTimeZone_withJavaUtilLocale_(self, zone, Default);
   return self;
 }
 
-- (void)addWithInt:(int)a3 withInt:(int)a4
+- (void)addWithInt:(int)int withInt:(int)withInt
 {
-  if (!a4)
+  if (!withInt)
   {
     return;
   }
 
-  if (a3 >= 0xF)
+  if (int >= 0xF)
   {
     v34 = new_JavaLangIllegalArgumentException_init();
     objc_exception_throw(v34);
   }
 
-  v5 = a4;
-  if (a3)
+  withIntCopy = withInt;
+  if (int)
   {
-    if (a3 <= 2)
+    if (int <= 2)
     {
       [(JavaUtilCalendar *)self complete];
-      if (a3 == 2)
+      if (int == 2)
       {
         fields = self->super.fields_;
         if (!fields)
@@ -81,16 +81,16 @@
           IOSArray_throwOutOfBoundsWithMsg(size, 2);
         }
 
-        v9 = fields->buffer_[1] + v5;
+        v9 = fields->buffer_[1] + withIntCopy;
         if (v9 < 0)
         {
-          v5 = (v9 - 11) / 12;
+          withIntCopy = (v9 - 11) / 12;
           v9 += 12 * (-v9 / 0xCu) + 12;
         }
 
         else
         {
-          v5 = v9 / 0xCu;
+          withIntCopy = v9 / 0xCu;
         }
 
         [(JavaUtilCalendar *)self setWithInt:2 withInt:v9 % 0xCu];
@@ -105,7 +105,7 @@
           IOSArray_throwOutOfBoundsWithMsg(v18, 1);
         }
 
-        [(JavaUtilCalendar *)self setWithInt:1 withInt:(v17->buffer_[0] + v5)];
+        [(JavaUtilCalendar *)self setWithInt:1 withInt:(v17->buffer_[0] + withIntCopy)];
         v19 = self->super.fields_;
         v20 = v19->super.size_;
         if (v20 < 2)
@@ -134,7 +134,7 @@
           goto LABEL_49;
         }
 
-        v14 = self;
+        selfCopy2 = self;
         v15 = 5;
         v12 = v24;
         goto LABEL_38;
@@ -145,9 +145,9 @@ LABEL_53:
     }
 
     [(JavaUtilCalendar *)self getTimeInMillis];
-    if (a3 <= 8)
+    if (int <= 8)
     {
-      if ((a3 - 5) >= 3)
+      if ((int - 5) >= 3)
       {
         v13 = 604800000;
       }
@@ -160,18 +160,18 @@ LABEL_53:
       goto LABEL_40;
     }
 
-    if (a3 > 11)
+    if (int > 11)
     {
-      if (a3 == 12)
+      if (int == 12)
       {
         v16 = 60000;
       }
 
       else
       {
-        if (a3 != 13)
+        if (int != 13)
         {
-          v33 = v5;
+          v33 = withIntCopy;
           goto LABEL_47;
         }
 
@@ -181,22 +181,22 @@ LABEL_53:
 
     else
     {
-      if ((a3 - 10) >= 2)
+      if ((int - 10) >= 2)
       {
         v13 = 43200000;
 LABEL_40:
-        v27 = [(JavaUtilCalendar *)self getTimeZone];
-        if (!v27)
+        getTimeZone = [(JavaUtilCalendar *)self getTimeZone];
+        if (!getTimeZone)
         {
           goto LABEL_53;
         }
 
-        v28 = [v27 getRawOffset];
-        v29 = sub_10019C450(self, self->super.time_ + v28);
-        v30 = v28 + v13 * v5;
-        LODWORD(v28) = sub_10019C450(self, v30 + self->super.time_);
-        v31 = (v29 - v28);
-        if (sub_10019C450(self, v30 + self->super.time_ + v31) == v28)
+        getRawOffset = [getTimeZone getRawOffset];
+        v29 = sub_10019C450(self, self->super.time_ + getRawOffset);
+        v30 = getRawOffset + v13 * withIntCopy;
+        LODWORD(getRawOffset) = sub_10019C450(self, v30 + self->super.time_);
+        v31 = (v29 - getRawOffset);
+        if (sub_10019C450(self, v30 + self->super.time_ + v31) == getRawOffset)
         {
           v32 = v31;
         }
@@ -206,7 +206,7 @@ LABEL_40:
           v32 = 0;
         }
 
-        self->super.time_ += v13 * v5 + v32;
+        self->super.time_ += v13 * withIntCopy + v32;
 LABEL_48:
         self->super.areFieldsSet_ = 0;
         goto LABEL_49;
@@ -215,7 +215,7 @@ LABEL_48:
       v16 = 3600000;
     }
 
-    v33 = v5 * v16;
+    v33 = withIntCopy * v16;
 LABEL_47:
     self->super.time_ += v33;
     goto LABEL_48;
@@ -236,7 +236,7 @@ LABEL_47:
 
   if (*(&v10->super.size_ + 1) == 1)
   {
-    if ((v5 & 0x80000000) == 0)
+    if ((withIntCopy & 0x80000000) == 0)
     {
       return;
     }
@@ -246,7 +246,7 @@ LABEL_47:
 
   else
   {
-    if (v5 < 1)
+    if (withIntCopy < 1)
     {
       return;
     }
@@ -254,10 +254,10 @@ LABEL_47:
     v12 = 1;
   }
 
-  v14 = self;
+  selfCopy2 = self;
   v15 = 0;
 LABEL_38:
-  [(JavaUtilCalendar *)v14 setWithInt:v15 withInt:v12];
+  [(JavaUtilCalendar *)selfCopy2 setWithInt:v15 withInt:v12];
 LABEL_49:
 
   [(JavaUtilCalendar *)self complete];
@@ -265,8 +265,8 @@ LABEL_49:
 
 - (void)computeFields
 {
-  v3 = [(JavaUtilCalendar *)self getTimeZone];
-  if (!v3 || ((v4 = v3, ![v3 inDaylightTimeWithJavaUtilDate:new_JavaUtilDate_initWithLong_(self->super.time_)]) ? (v5 = 0) : (v5 = objc_msgSend(v4, "getDSTSavings")), v6 = objc_msgSend(v4, "getRawOffset"), (fields = self->super.fields_) == 0))
+  getTimeZone = [(JavaUtilCalendar *)self getTimeZone];
+  if (!getTimeZone || ((v4 = getTimeZone, ![getTimeZone inDaylightTimeWithJavaUtilDate:new_JavaUtilDate_initWithLong_(self->super.time_)]) ? (v5 = 0) : (v5 = objc_msgSend(v4, "getDSTSavings")), v6 = objc_msgSend(v4, "getRawOffset"), (fields = self->super.fields_) == 0))
   {
 LABEL_14:
     JreThrowNullPointerException();
@@ -1309,12 +1309,12 @@ LABEL_397:
             IOSArray_throwOutOfBoundsWithMsg(v161, 7);
           }
 
-          v162 = v160->buffer_[6];
+          getFirstDayOfWeek = v160->buffer_[6];
         }
 
         else
         {
-          v162 = [(JavaUtilCalendar *)self getFirstDayOfWeek];
+          getFirstDayOfWeek = [(JavaUtilCalendar *)self getFirstDayOfWeek];
         }
 
         v186 = self->super.isSet_;
@@ -1323,7 +1323,7 @@ LABEL_397:
           IOSArray_throwOutOfBoundsWithMsg(v186->super.size_, 4);
         }
 
-        v187 = v162 - 1;
+        v187 = getFirstDayOfWeek - 1;
         if (v186->buffer_[0] && self->super.lastDateFieldSet_ != 8)
         {
           v220 = v154 - 3 - ([(JavaUtilCalendar *)self getFirstDayOfWeek]- 1);
@@ -1574,12 +1574,12 @@ LABEL_194:
         IOSArray_throwOutOfBoundsWithMsg(v218, 7);
       }
 
-      v219 = v217->buffer_[6];
+      getFirstDayOfWeek2 = v217->buffer_[6];
     }
 
     else
     {
-      v219 = [(JavaUtilCalendar *)self getFirstDayOfWeek];
+      getFirstDayOfWeek2 = [(JavaUtilCalendar *)self getFirstDayOfWeek];
     }
 
     v227 = v154 - 3 - ([(JavaUtilCalendar *)self getFirstDayOfWeek]- 1);
@@ -1599,7 +1599,7 @@ LABEL_194:
       goto LABEL_296;
     }
 
-    v230 = v219 - 1;
+    v230 = getFirstDayOfWeek2 - 1;
     v231 = v229->super.size_;
     if (v231 <= 3)
     {
@@ -1738,13 +1738,13 @@ LABEL_289:
   }
 
   v241 = sub_10019C450(self, v239);
-  v242 = [(JavaUtilCalendar *)self getTimeZone];
-  if (!v242)
+  getTimeZone = [(JavaUtilCalendar *)self getTimeZone];
+  if (!getTimeZone)
   {
     goto LABEL_296;
   }
 
-  v243 = v239 - v241 + [v242 getRawOffset];
+  v243 = v239 - v241 + [getTimeZone getRawOffset];
   v244 = v239 - sub_10019C450(self, v243);
   self->super.time_ = v244;
   if (v243 != v244)
@@ -1754,12 +1754,12 @@ LABEL_289:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (a3 == self)
+    if (equal == self)
     {
       LOBYTE(v5) = 1;
     }
@@ -1768,12 +1768,12 @@ LABEL_289:
     {
       v8.receiver = self;
       v8.super_class = JavaUtilGregorianCalendar;
-      v5 = [(JavaUtilCalendar *)&v8 isEqual:a3];
+      v5 = [(JavaUtilCalendar *)&v8 isEqual:equal];
       if (v5)
       {
         gregorianCutover = self->gregorianCutover_;
         objc_opt_class();
-        if (!a3)
+        if (!equal)
         {
           JreThrowNullPointerException();
         }
@@ -1783,7 +1783,7 @@ LABEL_289:
           JreThrowClassCastException();
         }
 
-        LOBYTE(v5) = gregorianCutover == *(a3 + 10);
+        LOBYTE(v5) = gregorianCutover == *(equal + 10);
       }
     }
   }
@@ -1810,22 +1810,22 @@ LABEL_289:
   return ((HIDWORD(self->gregorianCutover_) ^ LODWORD(self->gregorianCutover_)) + [(JavaUtilCalendar *)&v3 hash]);
 }
 
-- (BOOL)isLeapYearWithInt:(int)a3
+- (BOOL)isLeapYearWithInt:(int)int
 {
   changeYear = self->changeYear_;
-  v4 = changeYear >= a3;
-  if ((a3 & 3) != 0)
+  v4 = changeYear >= int;
+  if ((int & 3) != 0)
   {
     v4 = 0;
   }
 
-  HIDWORD(v6) = -1030792151 * a3 + 85899344;
+  HIDWORD(v6) = -1030792151 * int + 85899344;
   LODWORD(v6) = HIDWORD(v6);
   v5 = v6 >> 2;
   LODWORD(v6) = HIDWORD(v6);
   v7 = (v6 >> 4) < 0xA3D70B;
   v8 = v5 > 0x28F5C28 || v7;
-  if (changeYear < a3 && (a3 & 3) == 0)
+  if (changeYear < int && (int & 3) == 0)
   {
     return v8;
   }
@@ -1836,33 +1836,33 @@ LABEL_289:
   }
 }
 
-- (int)mod7WithLong:(int64_t)a3
+- (int)mod7WithLong:(int64_t)long
 {
-  if (((a3 % 7) & a3) < 0 != v3)
+  if (((long % 7) & long) < 0 != v3)
   {
-    return a3 % 7 + 7;
+    return long % 7 + 7;
   }
 
   else
   {
-    return a3 % 7;
+    return long % 7;
   }
 }
 
-- (void)setGregorianChangeWithJavaUtilDate:(id)a3
+- (void)setGregorianChangeWithJavaUtilDate:(id)date
 {
-  if (!a3)
+  if (!date)
   {
     JreThrowNullPointerException();
   }
 
-  self->gregorianCutover_ = [a3 getTime];
+  self->gregorianCutover_ = [date getTime];
   TimeZoneWithNSString = JavaUtilTimeZone_getTimeZoneWithNSString_(@"GMT");
   v6 = [JavaUtilGregorianCalendar alloc];
   Default = JavaUtilLocale_getDefault();
   JavaUtilGregorianCalendar_initWithJavaUtilTimeZone_withJavaUtilLocale_(v6, TimeZoneWithNSString, Default);
   v8 = v6;
-  [(JavaUtilCalendar *)v8 setTimeWithJavaUtilDate:a3];
+  [(JavaUtilCalendar *)v8 setTimeWithJavaUtilDate:date];
   self->changeYear_ = [(JavaUtilCalendar *)v8 getWithInt:1];
   v9 = [(JavaUtilCalendar *)v8 getWithInt:0];
   changeYear = self->changeYear_;
@@ -1891,24 +1891,24 @@ LABEL_289:
   *(&self->super.super.isa + *v13) = julianSkew;
 }
 
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 defaultWriteObject];
+  [stream defaultWriteObject];
 }
 
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 defaultReadObject];
+  [stream defaultReadObject];
   v4 = new_JavaUtilDate_initWithLong_(self->gregorianCutover_);
 
   [(JavaUtilGregorianCalendar *)self setGregorianChangeWithJavaUtilDate:v4];
@@ -1916,7 +1916,7 @@ LABEL_289:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v9 = 0x1F1F1E1F1E1F1C1FLL;
     v10 = 522067742;

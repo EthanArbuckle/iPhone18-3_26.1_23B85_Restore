@@ -1,7 +1,7 @@
 @interface VCIDRScheduler
-+ (unsigned)computeGcdForX:(unsigned int)a3 y:(unsigned int)a4;
++ (unsigned)computeGcdForX:(unsigned int)x y:(unsigned int)y;
 - (BOOL)computeCaptureFramerate;
-- (VCIDRScheduler)initWithStreams:(id)a3 captureFramerate:(unsigned int)a4;
+- (VCIDRScheduler)initWithStreams:(id)streams captureFramerate:(unsigned int)framerate;
 - (void)computeBasePeriod;
 - (void)computeCaptureFramerate;
 - (void)computeGroupList;
@@ -10,13 +10,13 @@
 - (void)computeSchedulerItemsPosition;
 - (void)computeStreamsIDRPosition;
 - (void)dealloc;
-- (void)placeRemainingItems:(id)a3 placedItems:(id)a4 leftItem:(id)a5 rightItem:(id)a6;
+- (void)placeRemainingItems:(id)items placedItems:(id)placedItems leftItem:(id)item rightItem:(id)rightItem;
 - (void)realignStreams;
 @end
 
 @implementation VCIDRScheduler
 
-- (VCIDRScheduler)initWithStreams:(id)a3 captureFramerate:(unsigned int)a4
+- (VCIDRScheduler)initWithStreams:(id)streams captureFramerate:(unsigned int)framerate
 {
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
@@ -24,8 +24,8 @@
   v6 = [(VCIDRScheduler *)&v10 init];
   if (v6)
   {
-    v6->_streams = a3;
-    v6->_captureFramerate = a4;
+    v6->_streams = streams;
+    v6->_captureFramerate = framerate;
     v6->_schedulerGroups = objc_alloc_init(MEMORY[0x1E695DF90]);
     v6->_schedulerItems = objc_alloc_init(MEMORY[0x1E695DF70]);
     [(VCIDRScheduler *)v6 computeBasePeriod];
@@ -64,21 +64,21 @@
   [(VCIDRScheduler *)&v3 dealloc];
 }
 
-+ (unsigned)computeGcdForX:(unsigned int)a3 y:(unsigned int)a4
++ (unsigned)computeGcdForX:(unsigned int)x y:(unsigned int)y
 {
-  if (!a3)
+  if (!x)
   {
-    return a4;
+    return y;
   }
 
   do
   {
-    result = a3;
-    a3 = a4 % a3;
-    a4 = result;
+    result = x;
+    x = y % x;
+    y = result;
   }
 
-  while (a3);
+  while (x);
   return result;
 }
 
@@ -156,7 +156,7 @@ LABEL_7:
         v25 = 1024;
         v26 = v17;
         v27 = 1024;
-        v28 = [v10 framerate];
+        framerate = [v10 framerate];
         _os_log_error_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_ERROR, " [%s] %s:%d Configured max capture frame _captureFramerate=%d is incompatible with streamInfo.framerate=%d", &v19, 0x28u);
         goto LABEL_20;
       }
@@ -358,7 +358,7 @@ LABEL_20:
         }
 
         [v21 setBudgetInCaptureFrames:{v24, v31}];
-        v25 = [v21 budgetInCaptureFrames];
+        budgetInCaptureFrames = [v21 budgetInCaptureFrames];
         if (VRTraceGetErrorLogLevelForModule() >= 8)
         {
           v26 = VRTraceErrorLogLevelToCSTR();
@@ -394,7 +394,7 @@ LABEL_20:
           }
         }
 
-        framesPerBasePeriod -= v25;
+        framesPerBasePeriod -= budgetInCaptureFrames;
       }
 
       v18 = [(NSMutableArray *)obj countByEnumeratingWithState:&v34 objects:v33 count:16];
@@ -404,19 +404,19 @@ LABEL_20:
   }
 }
 
-- (void)placeRemainingItems:(id)a3 placedItems:(id)a4 leftItem:(id)a5 rightItem:(id)a6
+- (void)placeRemainingItems:(id)items placedItems:(id)placedItems leftItem:(id)item rightItem:(id)rightItem
 {
   v69 = *MEMORY[0x1E69E9840];
-  v8 = [a3 objectAtIndexedSubscript:0];
-  v9 = [a5 framePosition];
-  v51 = [a5 budgetInCaptureFrames] + v9;
-  [a3 removeObject:v8];
-  v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a3, "count")}];
-  obj = a3;
-  v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a3, "count")}];
-  v47 = a5;
-  v12 = [a5 budgetInCaptureFrames];
-  v13 = [v8 budgetInCaptureFrames];
+  v8 = [items objectAtIndexedSubscript:0];
+  framePosition = [item framePosition];
+  v51 = [item budgetInCaptureFrames] + framePosition;
+  [items removeObject:v8];
+  v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(items, "count")}];
+  obj = items;
+  v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(items, "count")}];
+  itemCopy = item;
+  budgetInCaptureFrames = [item budgetInCaptureFrames];
+  budgetInCaptureFrames2 = [v8 budgetInCaptureFrames];
   if (VRTraceGetErrorLogLevelForModule() >= 8)
   {
     v14 = VRTraceErrorLogLevelToCSTR();
@@ -435,9 +435,9 @@ LABEL_20:
         v63 = 1024;
         *v64 = v51;
         *&v64[4] = 1024;
-        *&v64[6] = v12;
+        *&v64[6] = budgetInCaptureFrames;
         v65 = 1024;
-        v66 = v13;
+        v66 = budgetInCaptureFrames2;
         v67 = 2112;
         v68 = v8;
         _os_log_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Position next item (start position=%d leftDist=%d rightDist=%d): %@", buf, 0x38u);
@@ -455,9 +455,9 @@ LABEL_20:
       v63 = 1024;
       *v64 = v51;
       *&v64[4] = 1024;
-      *&v64[6] = v12;
+      *&v64[6] = budgetInCaptureFrames;
       v65 = 1024;
-      v66 = v13;
+      v66 = budgetInCaptureFrames2;
       v67 = 2112;
       v68 = v8;
       _os_log_debug_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_DEBUG, " [%s] %s:%d Position next item (start position=%d leftDist=%d rightDist=%d): %@", buf, 0x38u);
@@ -480,7 +480,7 @@ LABEL_20:
         v61 = 1024;
         v62 = 157;
         v63 = 2112;
-        *v64 = v47;
+        *v64 = itemCopy;
         _os_log_impl(&dword_1DB56E000, v18, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Left item: %@", buf, 0x26u);
       }
     }
@@ -507,7 +507,7 @@ LABEL_20:
         v61 = 1024;
         v62 = 158;
         v63 = 2112;
-        *v64 = a6;
+        *v64 = rightItem;
         _os_log_impl(&dword_1DB56E000, v21, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Right item: %@", buf, 0x26u);
       }
     }
@@ -568,10 +568,10 @@ LABEL_20:
         }
 
         v31 = *(*(&v53 + 1) + 8 * v30);
-        if (v12 > v13 || v12 == v13 && (v37 = [a6 weightFactor], v37 < objc_msgSend(v47, "weightFactor")))
+        if (budgetInCaptureFrames > budgetInCaptureFrames2 || budgetInCaptureFrames == budgetInCaptureFrames2 && (v37 = [rightItem weightFactor], v37 < objc_msgSend(itemCopy, "weightFactor")))
         {
           [v11 addObject:v31];
-          v13 += [v31 budgetInCaptureFrames];
+          budgetInCaptureFrames2 += [v31 budgetInCaptureFrames];
           if (VRTraceGetErrorLogLevelForModule() < 8)
           {
             goto LABEL_46;
@@ -593,9 +593,9 @@ LABEL_20:
               v63 = 1024;
               *v64 = v51;
               *&v64[4] = 1024;
-              *&v64[6] = v12;
+              *&v64[6] = budgetInCaptureFrames;
               v65 = 1024;
-              v66 = v13;
+              v66 = budgetInCaptureFrames2;
               v67 = 2112;
               v68 = v31;
               v35 = v33;
@@ -616,9 +616,9 @@ LABEL_41:
             v63 = 1024;
             *v64 = v51;
             *&v64[4] = 1024;
-            *&v64[6] = v12;
+            *&v64[6] = budgetInCaptureFrames;
             v65 = 1024;
-            v66 = v13;
+            v66 = budgetInCaptureFrames2;
             v67 = 2112;
             v68 = v31;
             v41 = v33;
@@ -631,7 +631,7 @@ LABEL_49:
         else
         {
           [v49 addObject:v31];
-          v12 += [v31 budgetInCaptureFrames];
+          budgetInCaptureFrames += [v31 budgetInCaptureFrames];
           v51 += [v31 budgetInCaptureFrames];
           if (VRTraceGetErrorLogLevelForModule() < 8)
           {
@@ -654,9 +654,9 @@ LABEL_49:
               v63 = 1024;
               *v64 = v51;
               *&v64[4] = 1024;
-              *&v64[6] = v12;
+              *&v64[6] = budgetInCaptureFrames;
               v65 = 1024;
-              v66 = v13;
+              v66 = budgetInCaptureFrames2;
               v67 = 2112;
               v68 = v31;
               v35 = v39;
@@ -676,9 +676,9 @@ LABEL_49:
             v63 = 1024;
             *v64 = v51;
             *&v64[4] = 1024;
-            *&v64[6] = v12;
+            *&v64[6] = budgetInCaptureFrames;
             v65 = 1024;
-            v66 = v13;
+            v66 = budgetInCaptureFrames2;
             v67 = 2112;
             v68 = v31;
             v41 = v39;
@@ -701,15 +701,15 @@ LABEL_46:
   }
 
   [v44 setFramePosition:v51];
-  [a4 addObject:v44];
+  [placedItems addObject:v44];
   if ([v49 count])
   {
-    [(VCIDRScheduler *)self placeRemainingItems:v49 placedItems:a4 leftItem:v47 rightItem:v44];
+    [(VCIDRScheduler *)self placeRemainingItems:v49 placedItems:placedItems leftItem:itemCopy rightItem:v44];
   }
 
   if ([v11 count])
   {
-    [(VCIDRScheduler *)self placeRemainingItems:v11 placedItems:a4 leftItem:v44 rightItem:a6];
+    [(VCIDRScheduler *)self placeRemainingItems:v11 placedItems:placedItems leftItem:v44 rightItem:rightItem];
   }
 }
 
@@ -729,8 +729,8 @@ LABEL_46:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(NSMutableDictionary *)self->_schedulerGroups allValues];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v7 count:16];
+  allValues = [(NSMutableDictionary *)self->_schedulerGroups allValues];
+  v3 = [allValues countByEnumeratingWithState:&v8 objects:v7 count:16];
   if (v3)
   {
     v4 = v3;
@@ -742,14 +742,14 @@ LABEL_46:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) computeStreamsIDRPosition];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v7 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v8 objects:v7 count:16];
     }
 
     while (v4);
@@ -768,9 +768,9 @@ LABEL_46:
   if (v4)
   {
     v5 = v4;
-    v6 = 0;
+    framePosition = 0;
     v7 = *v27;
-    v8 = -1;
+    weightFactor = -1;
     do
     {
       for (i = 0; i != v5; ++i)
@@ -781,10 +781,10 @@ LABEL_46:
         }
 
         v10 = *(*(&v26 + 1) + 8 * i);
-        if ([v10 weightFactor] < v8)
+        if ([v10 weightFactor] < weightFactor)
         {
-          v8 = [v10 weightFactor];
-          v6 = [v10 framePosition];
+          weightFactor = [v10 weightFactor];
+          framePosition = [v10 framePosition];
         }
       }
 
@@ -796,7 +796,7 @@ LABEL_46:
 
   else
   {
-    v6 = 0;
+    framePosition = 0;
   }
 
   v23 = 0u;
@@ -819,16 +819,16 @@ LABEL_46:
         }
 
         v16 = *(*(&v21 + 1) + 8 * j);
-        v17 = [v16 framePosition];
-        v18 = [v16 framePosition];
-        if (v17 >= v6)
+        framePosition2 = [v16 framePosition];
+        framePosition3 = [v16 framePosition];
+        if (framePosition2 >= framePosition)
         {
-          v19 = v18 - v6;
+          v19 = framePosition3 - framePosition;
         }
 
         else
         {
-          v19 = v18 - v6 + [v16 framesPerIdrPeriod];
+          v19 = framePosition3 - framePosition + [v16 framesPerIdrPeriod];
         }
 
         [v16 setFramePosition:v19];

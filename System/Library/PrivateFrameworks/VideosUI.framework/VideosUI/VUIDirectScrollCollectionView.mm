@@ -1,28 +1,28 @@
 @interface VUIDirectScrollCollectionView
-- (VUIDirectScrollCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
+- (VUIDirectScrollCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
 - (double)_tapScrollDelta;
-- (void)_downArrowAction:(id)a3;
-- (void)_upArrowAction:(id)a3;
+- (void)_downArrowAction:(id)action;
+- (void)_upArrowAction:(id)action;
 @end
 
 @implementation VUIDirectScrollCollectionView
 
-- (VUIDirectScrollCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (VUIDirectScrollCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = VUIDirectScrollCollectionView;
-  v4 = [(VUIDirectScrollCollectionView *)&v13 initWithFrame:a4 collectionViewLayout:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(VUIDirectScrollCollectionView *)&v13 initWithFrame:layout collectionViewLayout:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
-    v6 = [(VUIDirectScrollCollectionView *)v4 panGestureRecognizer];
+    panGestureRecognizer = [(VUIDirectScrollCollectionView *)v4 panGestureRecognizer];
     v7 = [MEMORY[0x1E696AD98] numberWithInteger:1];
     v14[0] = v7;
     v8 = [MEMORY[0x1E696AD98] numberWithInteger:0];
     v14[1] = v8;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
-    [v6 setAllowedTouchTypes:v9];
+    [panGestureRecognizer setAllowedTouchTypes:v9];
 
     [(VUIDirectScrollCollectionView *)v5 setBounces:1];
     [(VUIDirectScrollCollectionView *)v5 setShowsVerticalScrollIndicator:0];
@@ -37,10 +37,10 @@
   return v5;
 }
 
-- (void)_downArrowAction:(id)a3
+- (void)_downArrowAction:(id)action
 {
-  v16 = a3;
-  if ([v16 state] == 1 || objc_msgSend(v16, "state") == 2)
+  actionCopy = action;
+  if ([actionCopy state] == 1 || objc_msgSend(actionCopy, "state") == 2)
   {
     [(VUIDirectScrollCollectionView *)self contentOffset];
     v5 = v4;
@@ -67,10 +67,10 @@
   }
 }
 
-- (void)_upArrowAction:(id)a3
+- (void)_upArrowAction:(id)action
 {
-  v9 = a3;
-  if ([v9 state] == 1 || objc_msgSend(v9, "state") == 2)
+  actionCopy = action;
+  if ([actionCopy state] == 1 || objc_msgSend(actionCopy, "state") == 2)
   {
     [(VUIDirectScrollCollectionView *)self contentOffset];
     v5 = v4;
@@ -82,10 +82,10 @@
 
 - (double)_tapScrollDelta
 {
-  v2 = [(VUIDirectScrollCollectionView *)self collectionViewLayout];
-  [v2 itemSize];
+  collectionViewLayout = [(VUIDirectScrollCollectionView *)self collectionViewLayout];
+  [collectionViewLayout itemSize];
   v4 = v3;
-  [v2 minimumLineSpacing];
+  [collectionViewLayout minimumLineSpacing];
   v6 = fmax(v4 + v5, 150.0);
 
   return v6;

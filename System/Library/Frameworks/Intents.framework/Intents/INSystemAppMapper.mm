@@ -1,16 +1,16 @@
 @interface INSystemAppMapper
-+ (id)supportedIntentsOverridesForBundleIdentifier:(id)a3;
++ (id)supportedIntentsOverridesForBundleIdentifier:(id)identifier;
 - (INSystemAppMapper)init;
 - (id).cxx_construct;
-- (id)bundleIdentifiersForIntentExecutionMatchingBundleIdentifier:(id)a3;
+- (id)bundleIdentifiersForIntentExecutionMatchingBundleIdentifier:(id)identifier;
 - (id)extensionToDisplayableAppBundleIdentifierMapping;
 - (id)extensionToLaunchableAppBundleIdentifierMapping;
-- (id)matchForBundleIdentifier:(id)a3;
-- (id)matchForBundleIdentifier:(id)a3 intentName:(id)a4;
-- (id)resolvedAppMatchingExtensionBundleIdentifier:(id)a3;
-- (id)resolvedIntentForAccessibilityActionWithBundleIdentifier:(id)a3 intentClassName:(id)a4;
-- (id)resolvedIntentMatchingAppBundleIdentifier:(id)a3 preferredCallProvider:(int64_t)a4 intentClassName:(id)a5;
-- (id)resolvedIntentMatchingExtensionBundleIdentifier:(id)a3 preferredCallProvider:(int64_t)a4 intentClassName:(id)a5;
+- (id)matchForBundleIdentifier:(id)identifier;
+- (id)matchForBundleIdentifier:(id)identifier intentName:(id)name;
+- (id)resolvedAppMatchingExtensionBundleIdentifier:(id)identifier;
+- (id)resolvedIntentForAccessibilityActionWithBundleIdentifier:(id)identifier intentClassName:(id)name;
+- (id)resolvedIntentMatchingAppBundleIdentifier:(id)identifier preferredCallProvider:(int64_t)provider intentClassName:(id)name;
+- (id)resolvedIntentMatchingExtensionBundleIdentifier:(id)identifier preferredCallProvider:(int64_t)provider intentClassName:(id)name;
 @end
 
 @implementation INSystemAppMapper
@@ -292,20 +292,20 @@
   return self;
 }
 
-- (id)resolvedIntentForAccessibilityActionWithBundleIdentifier:(id)a3 intentClassName:(id)a4
+- (id)resolvedIntentForAccessibilityActionWithBundleIdentifier:(id)identifier intentClassName:(id)name
 {
-  v5 = a4;
+  nameCopy = name;
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.Preferences"];
   v7 = [(INSystemAppMapper *)self matchForBundleIdentifier:v6];
-  v8 = [v7 bundleIdentifierForCurrentPlatform];
+  bundleIdentifierForCurrentPlatform = [v7 bundleIdentifierForCurrentPlatform];
 
-  v9 = [v5 stringByReplacingCharactersInRange:0 withString:{2, @"AX"}];
-  v10 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v8 allowPlaceholder:0 error:0];
+  v9 = [nameCopy stringByReplacingCharactersInRange:0 withString:{2, @"AX"}];
+  v10 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:bundleIdentifierForCurrentPlatform allowPlaceholder:0 error:0];
   v11 = [INIntentDescriptor alloc];
-  v12 = [v10 localizedName];
-  v13 = [v10 teamIdentifier];
+  localizedName = [v10 localizedName];
+  teamIdentifier = [v10 teamIdentifier];
   v14 = [MEMORY[0x1E695DFD8] setWithObject:v9];
-  v15 = [(INIntentDescriptor *)v11 initWithIntentClassName:v9 localizedName:v12 bundleIdentifier:v8 displayableBundleIdentifier:v8 extensionBundleIdentifier:@"com.apple.AccessibilityUtilities.AXSettingsShortcuts" uiExtensionBundleIdentifier:0 counterpartIdentifiers:0 teamIdentifier:v13 preferredCallProvider:0 supportedIntents:v14 bundleURL:0 documentTypes:0];
+  v15 = [(INIntentDescriptor *)v11 initWithIntentClassName:v9 localizedName:localizedName bundleIdentifier:bundleIdentifierForCurrentPlatform displayableBundleIdentifier:bundleIdentifierForCurrentPlatform extensionBundleIdentifier:@"com.apple.AccessibilityUtilities.AXSettingsShortcuts" uiExtensionBundleIdentifier:0 counterpartIdentifiers:0 teamIdentifier:teamIdentifier preferredCallProvider:0 supportedIntents:v14 bundleURL:0 documentTypes:0];
 
   return v15;
 }
@@ -316,33 +316,33 @@
   v24[0] = @"com.apple.ActionKit.BundledIntentHandler";
   v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.shortcuts"];
   v22 = [(INSystemAppMapper *)self matchForBundleIdentifier:v23];
-  v21 = [v22 bundleIdentifierForCurrentPlatform];
-  v25[0] = v21;
+  bundleIdentifierForCurrentPlatform = [v22 bundleIdentifierForCurrentPlatform];
+  v25[0] = bundleIdentifierForCurrentPlatform;
   v24[1] = @"com.apple.TelephonyUtilities.PhoneIntentHandler";
   v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.mobilephone"];
   v19 = [(INSystemAppMapper *)self matchForBundleIdentifier:?];
-  v18 = [v19 bundleIdentifierForCurrentPlatform];
-  v25[1] = v18;
+  bundleIdentifierForCurrentPlatform2 = [v19 bundleIdentifierForCurrentPlatform];
+  v25[1] = bundleIdentifierForCurrentPlatform2;
   v24[2] = @"com.apple.PassKit.PassKitIntentsExtension";
   v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.Passbook"];
   v16 = [(INSystemAppMapper *)self matchForBundleIdentifier:?];
-  v15 = [v16 bundleIdentifierForCurrentPlatform];
-  v25[2] = v15;
+  bundleIdentifierForCurrentPlatform3 = [v16 bundleIdentifierForCurrentPlatform];
+  v25[2] = bundleIdentifierForCurrentPlatform3;
   v24[3] = @"com.apple.HomeKit.HomeKitIntentExtension";
   v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.Home"];
   v4 = [(INSystemAppMapper *)self matchForBundleIdentifier:v3];
-  v5 = [v4 bundleIdentifierForCurrentPlatform];
-  v25[3] = v5;
+  bundleIdentifierForCurrentPlatform4 = [v4 bundleIdentifierForCurrentPlatform];
+  v25[3] = bundleIdentifierForCurrentPlatform4;
   v24[4] = @"com.apple.DoNotDisturb.Intents";
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.Preferences"];
   v7 = [(INSystemAppMapper *)self matchForBundleIdentifier:v6];
-  v8 = [v7 bundleIdentifierForCurrentPlatform];
-  v25[4] = v8;
+  bundleIdentifierForCurrentPlatform5 = [v7 bundleIdentifierForCurrentPlatform];
+  v25[4] = bundleIdentifierForCurrentPlatform5;
   v24[5] = @"com.apple.AccessibilityUtilities.AXSettingsShortcuts";
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.Preferences"];
   v10 = [(INSystemAppMapper *)self matchForBundleIdentifier:v9];
-  v11 = [v10 bundleIdentifierForCurrentPlatform];
-  v25[5] = v11;
+  bundleIdentifierForCurrentPlatform6 = [v10 bundleIdentifierForCurrentPlatform];
+  v25[5] = bundleIdentifierForCurrentPlatform6;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:6];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -356,53 +356,53 @@
   v36[0] = @"com.apple.WorkflowKit.ShortcutsIntents";
   v35 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.shortcuts"];
   v34 = [(INSystemAppMapper *)self matchForBundleIdentifier:v35];
-  v33 = [v34 bundleIdentifierForCurrentPlatform];
-  v37[0] = v33;
+  bundleIdentifierForCurrentPlatform = [v34 bundleIdentifierForCurrentPlatform];
+  v37[0] = bundleIdentifierForCurrentPlatform;
   v36[1] = @"com.apple.TelephonyUtilities.PhoneIntentHandler";
   v32 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.InCallService"];
   v31 = [(INSystemAppMapper *)self matchForBundleIdentifier:?];
-  v30 = [v31 bundleIdentifierForCurrentPlatform];
-  v37[1] = v30;
+  bundleIdentifierForCurrentPlatform2 = [v31 bundleIdentifierForCurrentPlatform];
+  v37[1] = bundleIdentifierForCurrentPlatform2;
   v36[2] = @"com.apple.AccessibilityUtilities.AXSettingsShortcuts";
   v29 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.Preferences"];
   v28 = [(INSystemAppMapper *)self matchForBundleIdentifier:?];
-  v27 = [v28 bundleIdentifierForCurrentPlatform];
-  v37[2] = v27;
+  bundleIdentifierForCurrentPlatform3 = [v28 bundleIdentifierForCurrentPlatform];
+  v37[2] = bundleIdentifierForCurrentPlatform3;
   v36[3] = @"com.apple.ActionKit.BundledIntentHandler";
   v26 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.shortcuts"];
   v25 = [(INSystemAppMapper *)self matchForBundleIdentifier:?];
-  v24 = [v25 bundleIdentifierForCurrentPlatform];
-  v37[3] = v24;
+  bundleIdentifierForCurrentPlatform4 = [v25 bundleIdentifierForCurrentPlatform];
+  v37[3] = bundleIdentifierForCurrentPlatform4;
   v36[4] = @"com.apple.UniversalAccess.UASettingsShortcuts";
   v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.systempreferences"];
   v22 = [(INSystemAppMapper *)self matchForBundleIdentifier:?];
-  v21 = [v22 bundleIdentifierForCurrentPlatform];
-  v37[4] = v21;
+  bundleIdentifierForCurrentPlatform5 = [v22 bundleIdentifierForCurrentPlatform];
+  v37[4] = bundleIdentifierForCurrentPlatform5;
   v36[5] = @"com.apple.mobiletimer-framework.MobileTimerIntents";
   v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.mobiletimer"];
   v19 = [(INSystemAppMapper *)self matchForBundleIdentifier:?];
-  v18 = [v19 bundleIdentifierForCurrentPlatform];
-  v37[5] = v18;
+  bundleIdentifierForCurrentPlatform6 = [v19 bundleIdentifierForCurrentPlatform];
+  v37[5] = bundleIdentifierForCurrentPlatform6;
   v36[6] = @"com.apple.PBBridgeSupport.BridgeIntents";
   v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.Bridge"];
   v16 = [(INSystemAppMapper *)self matchForBundleIdentifier:?];
-  v3 = [v16 bundleIdentifierForCurrentPlatform];
-  v37[6] = v3;
+  bundleIdentifierForCurrentPlatform7 = [v16 bundleIdentifierForCurrentPlatform];
+  v37[6] = bundleIdentifierForCurrentPlatform7;
   v36[7] = @"com.apple.PassKit.PassKitIntentsExtension";
   v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.MobileSMS"];
   v5 = [(INSystemAppMapper *)self matchForBundleIdentifier:v4];
-  v6 = [v5 bundleIdentifierForCurrentPlatform];
-  v37[7] = v6;
+  bundleIdentifierForCurrentPlatform8 = [v5 bundleIdentifierForCurrentPlatform];
+  v37[7] = bundleIdentifierForCurrentPlatform8;
   v36[8] = @"com.apple.HomeKit.HomeKitIntentExtension";
   v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.Home"];
   v8 = [(INSystemAppMapper *)self matchForBundleIdentifier:v7];
-  v9 = [v8 bundleIdentifierForCurrentPlatform];
-  v37[8] = v9;
+  bundleIdentifierForCurrentPlatform9 = [v8 bundleIdentifierForCurrentPlatform];
+  v37[8] = bundleIdentifierForCurrentPlatform9;
   v36[9] = @"com.apple.DoNotDisturb.Intents";
   v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.Preferences"];
   v11 = [(INSystemAppMapper *)self matchForBundleIdentifier:v10];
-  v12 = [v11 bundleIdentifierForCurrentPlatform];
-  v37[9] = v12;
+  bundleIdentifierForCurrentPlatform10 = [v11 bundleIdentifierForCurrentPlatform];
+  v37[9] = bundleIdentifierForCurrentPlatform10;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:10];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -410,11 +410,11 @@
   return v15;
 }
 
-- (id)bundleIdentifiersForIntentExecutionMatchingBundleIdentifier:(id)a3
+- (id)bundleIdentifiersForIntentExecutionMatchingBundleIdentifier:(id)identifier
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_bundleIdentifierGroupingForIntentExecution objectForKey:v4];
+  identifierCopy = identifier;
+  v5 = [(NSDictionary *)self->_bundleIdentifierGroupingForIntentExecution objectForKey:identifierCopy];
   v6 = v5;
   if (v5)
   {
@@ -423,12 +423,12 @@
 
   else
   {
-    v8 = [(INSystemAppMapper *)self matchForBundleIdentifier:v4];
-    v9 = [v8 bundleIdentifierForCurrentPlatform];
+    v8 = [(INSystemAppMapper *)self matchForBundleIdentifier:identifierCopy];
+    bundleIdentifierForCurrentPlatform = [v8 bundleIdentifierForCurrentPlatform];
 
-    if (v9)
+    if (bundleIdentifierForCurrentPlatform)
     {
-      v12[0] = v9;
+      v12[0] = bundleIdentifierForCurrentPlatform;
       v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
     }
 
@@ -443,19 +443,19 @@
   return v7;
 }
 
-- (id)matchForBundleIdentifier:(id)a3 intentName:(id)a4
+- (id)matchForBundleIdentifier:(id)identifier intentName:(id)name
 {
-  v4 = [(INSystemAppMapper *)self matchForBundleIdentifier:a3, a4];
+  name = [(INSystemAppMapper *)self matchForBundleIdentifier:identifier, name];
 
-  return v4;
+  return name;
 }
 
-- (id)matchForBundleIdentifier:(id)a3
+- (id)matchForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    std::string::basic_string[abi:ne200100]<0>(__p, [v4 UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(__p, [identifierCopy UTF8String]);
     left = self->_mapping.__tree_.__end_node_.__left_;
     p_end_node = &self->_mapping.__tree_.__end_node_;
     v6 = left;
@@ -661,17 +661,17 @@ LABEL_41:
   return v6;
 }
 
-- (id)resolvedIntentMatchingAppBundleIdentifier:(id)a3 preferredCallProvider:(int64_t)a4 intentClassName:(id)a5
+- (id)resolvedIntentMatchingAppBundleIdentifier:(id)identifier preferredCallProvider:(int64_t)provider intentClassName:(id)name
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  nameCopy = name;
   v26[0] = @"com.apple.AccessibilityUtilities.AXSettingsShortcuts";
   v26[1] = @"com.apple.UniversalAccess.UASettingsShortcuts";
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
-  if ([v10 containsObject:v8])
+  if ([v10 containsObject:identifierCopy])
   {
-    v11 = [(INSystemAppMapper *)self resolvedIntentForAccessibilityActionWithBundleIdentifier:v8 intentClassName:v9];
+    v11 = [(INSystemAppMapper *)self resolvedIntentForAccessibilityActionWithBundleIdentifier:identifierCopy intentClassName:nameCopy];
   }
 
   else
@@ -682,7 +682,7 @@ LABEL_41:
     v25 = v13;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
 
-    v15 = [v14 objectForKey:v8];
+    v15 = [v14 objectForKey:identifierCopy];
     if (v15)
     {
       v16 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v15 allowPlaceholder:0 error:0];
@@ -690,7 +690,7 @@ LABEL_41:
       if (v16 && ([v16 applicationState], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "isInstalled"), v18, (v19 & 1) != 0))
       {
         v20 = [[INAppDescriptor alloc] initWithApplicationRecord:v17];
-        v21 = [[INIntentDescriptor alloc] initWithIntentClassName:v9 localizedName:0 bundleIdentifier:0 displayableBundleIdentifier:0 extensionBundleIdentifier:0 uiExtensionBundleIdentifier:0 counterpartIdentifiers:0 teamIdentifier:0 preferredCallProvider:a4 supportedIntents:0 bundleURL:0 documentTypes:0];
+        v21 = [[INIntentDescriptor alloc] initWithIntentClassName:nameCopy localizedName:0 bundleIdentifier:0 displayableBundleIdentifier:0 extensionBundleIdentifier:0 uiExtensionBundleIdentifier:0 counterpartIdentifiers:0 teamIdentifier:0 preferredCallProvider:provider supportedIntents:0 bundleURL:0 documentTypes:0];
         v11 = [(INIntentDescriptor *)v21 descriptorWithAppDescriptor:v20];
       }
 
@@ -711,36 +711,36 @@ LABEL_41:
   return v11;
 }
 
-- (id)resolvedIntentMatchingExtensionBundleIdentifier:(id)a3 preferredCallProvider:(int64_t)a4 intentClassName:(id)a5
+- (id)resolvedIntentMatchingExtensionBundleIdentifier:(id)identifier preferredCallProvider:(int64_t)provider intentClassName:(id)name
 {
   v31[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v30 = a5;
+  identifierCopy = identifier;
+  nameCopy = name;
   v31[0] = @"com.apple.AccessibilityUtilities.AXSettingsShortcuts";
   v31[1] = @"com.apple.UniversalAccess.UASettingsShortcuts";
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:2];
-  if ([v9 containsObject:v8])
+  if ([v9 containsObject:identifierCopy])
   {
-    v10 = [(INSystemAppMapper *)self resolvedIntentForAccessibilityActionWithBundleIdentifier:v8 intentClassName:v30];
+    v10 = [(INSystemAppMapper *)self resolvedIntentForAccessibilityActionWithBundleIdentifier:identifierCopy intentClassName:nameCopy];
   }
 
   else
   {
-    v11 = [(INSystemAppMapper *)self extensionToLaunchableAppBundleIdentifierMapping];
-    v12 = [v11 objectForKey:v8];
+    extensionToLaunchableAppBundleIdentifierMapping = [(INSystemAppMapper *)self extensionToLaunchableAppBundleIdentifierMapping];
+    v12 = [extensionToLaunchableAppBundleIdentifierMapping objectForKey:identifierCopy];
 
-    v13 = [(INSystemAppMapper *)self extensionToDisplayableAppBundleIdentifierMapping];
-    v14 = [v13 objectForKey:v8];
+    extensionToDisplayableAppBundleIdentifierMapping = [(INSystemAppMapper *)self extensionToDisplayableAppBundleIdentifierMapping];
+    v14 = [extensionToDisplayableAppBundleIdentifierMapping objectForKey:identifierCopy];
 
     if (v12 | v14)
     {
-      if (a4 == 2)
+      if (provider == 2)
       {
         v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.facetime"];
         v16 = [(INSystemAppMapper *)self matchForBundleIdentifier:v15];
-        v17 = [v16 bundleIdentifierForCurrentPlatform];
+        bundleIdentifierForCurrentPlatform = [v16 bundleIdentifierForCurrentPlatform];
 
-        v14 = v17;
+        v14 = bundleIdentifierForCurrentPlatform;
       }
 
       v18 = objc_alloc(MEMORY[0x1E69635F8]);
@@ -755,20 +755,20 @@ LABEL_41:
       }
 
       v20 = [v18 initWithBundleIdentifier:v19 allowPlaceholder:0 error:0];
-      v29 = [v20 localizedName];
+      localizedName = [v20 localizedName];
       if (v14 && ([v12 isEqualToString:v14] & 1) == 0)
       {
         v21 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v14 allowPlaceholder:0 error:0];
-        v22 = [v21 localizedName];
+        localizedName2 = [v21 localizedName];
 
-        v29 = v22;
+        localizedName = localizedName2;
       }
 
       v23 = [INIntentDescriptor alloc];
-      v24 = [v20 in_counterpartIdentifiers];
-      v25 = [v20 teamIdentifier];
-      v26 = [v20 in_supportedIntents];
-      v10 = [(INIntentDescriptor *)v23 initWithIntentClassName:v30 localizedName:v29 bundleIdentifier:v12 displayableBundleIdentifier:v14 extensionBundleIdentifier:v8 uiExtensionBundleIdentifier:0 counterpartIdentifiers:v24 teamIdentifier:v25 preferredCallProvider:a4 supportedIntents:v26 bundleURL:0 documentTypes:0];
+      in_counterpartIdentifiers = [v20 in_counterpartIdentifiers];
+      teamIdentifier = [v20 teamIdentifier];
+      in_supportedIntents = [v20 in_supportedIntents];
+      v10 = [(INIntentDescriptor *)v23 initWithIntentClassName:nameCopy localizedName:localizedName bundleIdentifier:v12 displayableBundleIdentifier:v14 extensionBundleIdentifier:identifierCopy uiExtensionBundleIdentifier:0 counterpartIdentifiers:in_counterpartIdentifiers teamIdentifier:teamIdentifier preferredCallProvider:provider supportedIntents:in_supportedIntents bundleURL:0 documentTypes:0];
     }
 
     else
@@ -782,14 +782,14 @@ LABEL_41:
   return v10;
 }
 
-- (id)resolvedAppMatchingExtensionBundleIdentifier:(id)a3
+- (id)resolvedAppMatchingExtensionBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(INSystemAppMapper *)self extensionToLaunchableAppBundleIdentifierMapping];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  extensionToLaunchableAppBundleIdentifierMapping = [(INSystemAppMapper *)self extensionToLaunchableAppBundleIdentifierMapping];
+  v6 = [extensionToLaunchableAppBundleIdentifierMapping objectForKey:identifierCopy];
 
-  v7 = [(INSystemAppMapper *)self extensionToDisplayableAppBundleIdentifierMapping];
-  v8 = [v7 objectForKey:v4];
+  extensionToDisplayableAppBundleIdentifierMapping = [(INSystemAppMapper *)self extensionToDisplayableAppBundleIdentifierMapping];
+  v8 = [extensionToDisplayableAppBundleIdentifierMapping objectForKey:identifierCopy];
 
   if (!(v6 | v8))
   {
@@ -828,13 +828,13 @@ LABEL_41:
     v8 = v6;
 LABEL_14:
     v13 = [INAppDescriptor alloc];
-    v20 = [v11 localizedName];
-    v19 = [v11 in_counterpartIdentifiers];
-    v18 = [v11 teamIdentifier];
-    v17 = [v11 in_supportedIntents];
+    localizedName = [v11 localizedName];
+    in_counterpartIdentifiers = [v11 in_counterpartIdentifiers];
+    teamIdentifier = [v11 teamIdentifier];
+    in_supportedIntents = [v11 in_supportedIntents];
     v14 = [v11 URL];
-    v15 = [v11 in_documentTypes];
-    v12 = [(INAppDescriptor *)v13 initWithLocalizedName:v20 bundleIdentifier:v6 extensionBundleIdentifier:v4 counterpartIdentifiers:v19 teamIdentifier:v18 supportedIntents:v17 bundleURL:v14 documentTypes:v15];
+    in_documentTypes = [v11 in_documentTypes];
+    v12 = [(INAppDescriptor *)v13 initWithLocalizedName:localizedName bundleIdentifier:v6 extensionBundleIdentifier:identifierCopy counterpartIdentifiers:in_counterpartIdentifiers teamIdentifier:teamIdentifier supportedIntents:in_supportedIntents bundleURL:v14 documentTypes:in_documentTypes];
 
     goto LABEL_15;
   }
@@ -847,10 +847,10 @@ LABEL_16:
   return v12;
 }
 
-+ (id)supportedIntentsOverridesForBundleIdentifier:(id)a3
++ (id)supportedIntentsOverridesForBundleIdentifier:(id)identifier
 {
   v17[4] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.NanoAlarm"];
   v5 = [MEMORY[0x1E695DFD8] setWithObjects:{@"MTCreateAlarmIntent", @"MTDeleteAlarmIntent", @"MTDisableAlarmIntent", @"MTEnableAlarmIntent", @"MTGetAlarmsIntent", @"MTToggleAlarmIntent", @"MTUpdateAlarmIntent", 0, v4}];
   v17[0] = v5;
@@ -868,7 +868,7 @@ LABEL_16:
   v17[3] = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:4];
 
-  v13 = [v12 objectForKey:v3];
+  v13 = [v12 objectForKey:identifierCopy];
 
   v14 = *MEMORY[0x1E69E9840];
 

@@ -1,13 +1,13 @@
 @interface CGDrawingLayer
 - (_TtC7SwiftUIP33_65A81BD07F0108B0485D2E15DE104A7514CGDrawingLayer)init;
-- (_TtC7SwiftUIP33_65A81BD07F0108B0485D2E15DE104A7514CGDrawingLayer)initWithCoder:(id)a3;
-- (_TtC7SwiftUIP33_65A81BD07F0108B0485D2E15DE104A7514CGDrawingLayer)initWithLayer:(id)a3;
-- (void)drawInContext:(CGContext *)a3;
+- (_TtC7SwiftUIP33_65A81BD07F0108B0485D2E15DE104A7514CGDrawingLayer)initWithCoder:(id)coder;
+- (_TtC7SwiftUIP33_65A81BD07F0108B0485D2E15DE104A7514CGDrawingLayer)initWithLayer:(id)layer;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation CGDrawingLayer
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC7SwiftUIP33_65A81BD07F0108B0485D2E15DE104A7514CGDrawingLayer_content);
   v5 = *(&self->super._attr.refcount + OBJC_IVAR____TtC7SwiftUIP33_65A81BD07F0108B0485D2E15DE104A7514CGDrawingLayer_content);
@@ -15,11 +15,11 @@
   v7 = *(&self->super._attr._objc_observation_info + OBJC_IVAR____TtC7SwiftUIP33_65A81BD07F0108B0485D2E15DE104A7514CGDrawingLayer_content);
   v8 = *(&self->super._wantsDynamicContentScaling + OBJC_IVAR____TtC7SwiftUIP33_65A81BD07F0108B0485D2E15DE104A7514CGDrawingLayer_content);
   v9 = *(&self->super._layoutManager + OBJC_IVAR____TtC7SwiftUIP33_65A81BD07F0108B0485D2E15DE104A7514CGDrawingLayer_content);
-  v10 = a3;
-  v11 = self;
+  contextCopy = context;
+  selfCopy = self;
   outlined copy of PlatformDrawableContent.Storage(v4, v5, v6, v7, v8, v9);
-  [(CGDrawingLayer *)v11 bounds];
-  [(CGDrawingLayer *)v11 contentsScale];
+  [(CGDrawingLayer *)selfCopy bounds];
+  [(CGDrawingLayer *)selfCopy contentsScale];
   swift_beginAccess();
   PlatformDrawableContent.draw(in:size:contentsScale:state:)();
   swift_endAccess();
@@ -39,7 +39,7 @@
   return [(CGDrawingLayer *)&v6 init];
 }
 
-- (_TtC7SwiftUIP33_65A81BD07F0108B0485D2E15DE104A7514CGDrawingLayer)initWithLayer:(id)a3
+- (_TtC7SwiftUIP33_65A81BD07F0108B0485D2E15DE104A7514CGDrawingLayer)initWithLayer:(id)layer
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectRetain();
@@ -59,17 +59,17 @@
   return v7;
 }
 
-- (_TtC7SwiftUIP33_65A81BD07F0108B0485D2E15DE104A7514CGDrawingLayer)initWithCoder:(id)a3
+- (_TtC7SwiftUIP33_65A81BD07F0108B0485D2E15DE104A7514CGDrawingLayer)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
-  v6 = a3;
+  coderCopy = coder;
   PlatformDrawableContent.init()();
   v7 = self + OBJC_IVAR____TtC7SwiftUIP33_65A81BD07F0108B0485D2E15DE104A7514CGDrawingLayer_state;
   *v7 = 3;
   *(v7 + 1) = 0;
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v8 = [(CGDrawingLayer *)&v10 initWithCoder:v6];
+  v8 = [(CGDrawingLayer *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

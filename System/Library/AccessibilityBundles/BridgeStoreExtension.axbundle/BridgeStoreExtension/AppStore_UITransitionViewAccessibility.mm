@@ -7,7 +7,7 @@
 
 - (BOOL)_isSuperviewOfSearchControllerView
 {
-  v2 = [(AppStore_UITransitionViewAccessibility *)self subviews];
+  subviews = [(AppStore_UITransitionViewAccessibility *)self subviews];
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
@@ -17,7 +17,7 @@
   v5[2] = __76__AppStore_UITransitionViewAccessibility__isSuperviewOfSearchControllerView__block_invoke;
   v5[3] = &unk_29F2A9618;
   v5[4] = &v6;
-  [v2 enumerateObjectsUsingBlock:v5];
+  [subviews enumerateObjectsUsingBlock:v5];
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
 

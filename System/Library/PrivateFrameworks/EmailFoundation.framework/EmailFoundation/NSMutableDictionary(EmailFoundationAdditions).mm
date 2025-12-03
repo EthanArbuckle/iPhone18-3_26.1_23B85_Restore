@@ -11,7 +11,7 @@
   v6 = a4;
   if (v7)
   {
-    [a1 setObject:v7 forKey:v6];
+    [self setObject:v7 forKey:v6];
   }
 }
 
@@ -24,10 +24,10 @@
   v8[3] = &unk_1E8248FC8;
   v5 = v4;
   v9 = v5;
-  v6 = [a1 keysOfEntriesPassingTest:v8];
-  v7 = [v6 allObjects];
+  v6 = [self keysOfEntriesPassingTest:v8];
+  allObjects = [v6 allObjects];
 
-  [a1 removeObjectsForKeys:v7];
+  [self removeObjectsForKeys:allObjects];
 }
 
 @end

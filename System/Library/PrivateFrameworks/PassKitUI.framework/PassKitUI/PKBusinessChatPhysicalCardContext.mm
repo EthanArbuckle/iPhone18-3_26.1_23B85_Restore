@@ -1,5 +1,5 @@
 @interface PKBusinessChatPhysicalCardContext
-- (PKBusinessChatPhysicalCardContext)initWithPaymentPass:(id)a3 intent:(int64_t)a4;
+- (PKBusinessChatPhysicalCardContext)initWithPaymentPass:(id)pass intent:(int64_t)intent;
 - (id)bodyText;
 - (id)groupParameters;
 - (id)intentParameters;
@@ -7,17 +7,17 @@
 
 @implementation PKBusinessChatPhysicalCardContext
 
-- (PKBusinessChatPhysicalCardContext)initWithPaymentPass:(id)a3 intent:(int64_t)a4
+- (PKBusinessChatPhysicalCardContext)initWithPaymentPass:(id)pass intent:(int64_t)intent
 {
-  v7 = a3;
+  passCopy = pass;
   v11.receiver = self;
   v11.super_class = PKBusinessChatPhysicalCardContext;
   v8 = [(PKBusinessChatPhysicalCardContext *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_paymentPass, a3);
-    v9->_intent = a4;
+    objc_storeStrong(&v8->_paymentPass, pass);
+    v9->_intent = intent;
   }
 
   return v9;
@@ -38,8 +38,8 @@
 
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v5 setObject:v4 forKeyedSubscript:@"targetDialog"];
-  v6 = [(PKPaymentPass *)self->_paymentPass associatedAccountServiceAccountIdentifier];
-  [v5 setObject:v6 forKeyedSubscript:@"accountID"];
+  associatedAccountServiceAccountIdentifier = [(PKPaymentPass *)self->_paymentPass associatedAccountServiceAccountIdentifier];
+  [v5 setObject:associatedAccountServiceAccountIdentifier forKeyedSubscript:@"accountID"];
 
   v7 = [v5 copy];
 

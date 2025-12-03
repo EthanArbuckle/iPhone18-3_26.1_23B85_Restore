@@ -1,17 +1,17 @@
 @interface CALogger
-+ (void)postCAEventFor:(id)a3 eventInput:(id)a4;
++ (void)postCAEventFor:(id)for eventInput:(id)input;
 @end
 
 @implementation CALogger
 
-+ (void)postCAEventFor:(id)a3 eventInput:(id)a4
++ (void)postCAEventFor:(id)for eventInput:(id)input
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  forCopy = for;
+  inputCopy = input;
+  if ([inputCopy count])
   {
-    v11 = v5;
-    v12 = v6;
+    v11 = forCopy;
+    v12 = inputCopy;
     AnalyticsSendEventLazy();
   }
 

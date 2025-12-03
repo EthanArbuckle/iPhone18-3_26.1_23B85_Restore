@@ -1,21 +1,21 @@
 @interface SBSwitcherSnapshotImageView
 - (CGAffineTransform)scalingTransform;
-- (SBSwitcherSnapshotImageView)initWithImage:(id)a3;
+- (SBSwitcherSnapshotImageView)initWithImage:(id)image;
 - (double)_transformHorizontalScale;
 - (double)_transformScale;
 - (double)_transformVerticalScale;
 - (void)_updateCornerRadius;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAllowsEdgeAntialiasing:(BOOL)a3;
-- (void)setContentMode:(int64_t)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setHasOpaqueContents:(BOOL)a3;
-- (void)setImage:(id)a3;
-- (void)setMaskedCorners:(unint64_t)a3;
-- (void)setOrientationForClassicLayout:(int64_t)a3;
-- (void)setStretchToFillBounds:(BOOL)a3;
-- (void)setUsesNonuniformScaling:(BOOL)a3;
+- (void)setAllowsEdgeAntialiasing:(BOOL)antialiasing;
+- (void)setContentMode:(int64_t)mode;
+- (void)setCornerRadius:(double)radius;
+- (void)setHasOpaqueContents:(BOOL)contents;
+- (void)setImage:(id)image;
+- (void)setMaskedCorners:(unint64_t)corners;
+- (void)setOrientationForClassicLayout:(int64_t)layout;
+- (void)setStretchToFillBounds:(BOOL)bounds;
+- (void)setUsesNonuniformScaling:(BOOL)scaling;
 @end
 
 @implementation SBSwitcherSnapshotImageView
@@ -169,14 +169,14 @@
   else
   {
     [(UIImageView *)self->_imageView _setContinuousCornerRadius:v6];
-    v9 = [(UIImageView *)self->_imageView layer];
-    [v9 setMaskedCorners:self->_maskedCorners];
+    layer = [(UIImageView *)self->_imageView layer];
+    [layer setMaskedCorners:self->_maskedCorners];
   }
 }
 
-- (SBSwitcherSnapshotImageView)initWithImage:(id)a3
+- (SBSwitcherSnapshotImageView)initWithImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v15.receiver = self;
   v15.super_class = SBSwitcherSnapshotImageView;
   v5 = *MEMORY[0x277CBF3A0];
@@ -198,103 +198,103 @@
     [(SBSwitcherSnapshotImageView *)v9 addSubview:v9->_scalingView];
     [(UIView *)v9->_scalingView addSubview:v9->_imageView];
     [(SBSwitcherSnapshotImageView *)v9 prepareForReuse];
-    [(UIImageView *)v9->_imageView setImage:v4];
+    [(UIImageView *)v9->_imageView setImage:imageCopy];
     [(SBSwitcherSnapshotImageView *)v9 layoutSubviews];
   }
 
   return v9;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  [(UIImageView *)self->_imageView setImage:a3];
+  [(UIImageView *)self->_imageView setImage:image];
   [(UIImageView *)self->_imageView sizeToFit];
 
   [(SBSwitcherSnapshotImageView *)self setNeedsLayout];
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
-  if (a3 >= 2)
+  if (mode >= 2)
   {
     [(SBSwitcherSnapshotImageView *)a2 setContentMode:?];
   }
 
-  if (self->_contentMode != a3)
+  if (self->_contentMode != mode)
   {
-    self->_contentMode = a3;
-    [(UIImageView *)self->_imageView setContentMode:a3];
+    self->_contentMode = mode;
+    [(UIImageView *)self->_imageView setContentMode:mode];
 
     [(SBSwitcherSnapshotImageView *)self setNeedsLayout];
   }
 }
 
-- (void)setUsesNonuniformScaling:(BOOL)a3
+- (void)setUsesNonuniformScaling:(BOOL)scaling
 {
-  if (self->_usesNonuniformScaling != a3)
+  if (self->_usesNonuniformScaling != scaling)
   {
-    self->_usesNonuniformScaling = a3;
+    self->_usesNonuniformScaling = scaling;
     [(SBSwitcherSnapshotImageView *)self setNeedsLayout];
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(SBSwitcherSnapshotImageView *)self _updateCornerRadius];
   }
 }
 
-- (void)setMaskedCorners:(unint64_t)a3
+- (void)setMaskedCorners:(unint64_t)corners
 {
-  if (self->_maskedCorners != a3)
+  if (self->_maskedCorners != corners)
   {
-    self->_maskedCorners = a3;
+    self->_maskedCorners = corners;
     [(SBSwitcherSnapshotImageView *)self _updateCornerRadius];
   }
 }
 
-- (void)setHasOpaqueContents:(BOOL)a3
+- (void)setHasOpaqueContents:(BOOL)contents
 {
-  if (self->_hasOpaqueContents != a3)
+  if (self->_hasOpaqueContents != contents)
   {
-    v3 = a3;
-    self->_hasOpaqueContents = a3;
-    v5 = [(SBSwitcherSnapshotImageView *)self layer];
-    [v5 setContentsOpaque:self->_hasOpaqueContents];
+    contentsCopy = contents;
+    self->_hasOpaqueContents = contents;
+    layer = [(SBSwitcherSnapshotImageView *)self layer];
+    [layer setContentsOpaque:self->_hasOpaqueContents];
 
-    v6 = [(UIImageView *)self->_imageView layer];
-    [v6 setContentsOpaque:v3];
+    layer2 = [(UIImageView *)self->_imageView layer];
+    [layer2 setContentsOpaque:contentsCopy];
   }
 }
 
-- (void)setAllowsEdgeAntialiasing:(BOOL)a3
+- (void)setAllowsEdgeAntialiasing:(BOOL)antialiasing
 {
-  if (self->_allowsEdgeAntialiasing != a3)
+  if (self->_allowsEdgeAntialiasing != antialiasing)
   {
-    v4 = a3;
-    self->_allowsEdgeAntialiasing = a3;
-    v5 = [(UIImageView *)self->_imageView layer];
-    [v5 setAllowsEdgeAntialiasing:v4];
+    antialiasingCopy = antialiasing;
+    self->_allowsEdgeAntialiasing = antialiasing;
+    layer = [(UIImageView *)self->_imageView layer];
+    [layer setAllowsEdgeAntialiasing:antialiasingCopy];
   }
 }
 
-- (void)setOrientationForClassicLayout:(int64_t)a3
+- (void)setOrientationForClassicLayout:(int64_t)layout
 {
-  if (self->_orientationForClassicLayout != a3)
+  if (self->_orientationForClassicLayout != layout)
   {
-    self->_orientationForClassicLayout = a3;
+    self->_orientationForClassicLayout = layout;
     [(SBSwitcherSnapshotImageView *)self _updateCornerRadius];
   }
 }
 
-- (void)setStretchToFillBounds:(BOOL)a3
+- (void)setStretchToFillBounds:(BOOL)bounds
 {
-  if (self->_stretchToFillBounds != a3)
+  if (self->_stretchToFillBounds != bounds)
   {
-    self->_stretchToFillBounds = a3;
+    self->_stretchToFillBounds = bounds;
     [(SBSwitcherSnapshotImageView *)self setNeedsLayout];
   }
 }

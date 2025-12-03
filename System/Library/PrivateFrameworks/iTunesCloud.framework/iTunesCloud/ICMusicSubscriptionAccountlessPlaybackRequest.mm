@@ -1,13 +1,13 @@
 @interface ICMusicSubscriptionAccountlessPlaybackRequest
-- (ICMusicSubscriptionAccountlessPlaybackRequest)initWithRequestContext:(id)a3 storeSubscriptionAdamID:(int64_t)a4;
-- (id)performWithResponseHandler:(id)a3;
+- (ICMusicSubscriptionAccountlessPlaybackRequest)initWithRequestContext:(id)context storeSubscriptionAdamID:(int64_t)d;
+- (id)performWithResponseHandler:(id)handler;
 @end
 
 @implementation ICMusicSubscriptionAccountlessPlaybackRequest
 
-- (id)performWithResponseHandler:(id)a3
+- (id)performWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
   v6 = objc_alloc_init(ICMusicSubscriptionPlaybackRequestOperation);
   v17[0] = MEMORY[0x1E69E9820];
@@ -27,8 +27,8 @@
   v14[3] = &unk_1E7BF4550;
   v8 = v5;
   v15 = v8;
-  v16 = v4;
-  v9 = v4;
+  v16 = handlerCopy;
+  v9 = handlerCopy;
   [(ICMusicSubscriptionPlaybackRequestOperation *)v7 setResponseHandler:v14];
   [(ICMusicSubscriptionPlaybackRequestOperation *)v7 setStoreSubscriptionAdamID:self->_storeSubscriptionAdamID];
   v10 = [MEMORY[0x1E696ADC8] ic_sharedRequestOperationQueueWithQualityOfService:self->_qualityOfService];
@@ -51,20 +51,20 @@ void __76__ICMusicSubscriptionAccountlessPlaybackRequest_performWithResponseHand
   (*(*(a1 + 40) + 16))();
 }
 
-- (ICMusicSubscriptionAccountlessPlaybackRequest)initWithRequestContext:(id)a3 storeSubscriptionAdamID:(int64_t)a4
+- (ICMusicSubscriptionAccountlessPlaybackRequest)initWithRequestContext:(id)context storeSubscriptionAdamID:(int64_t)d
 {
-  v6 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = ICMusicSubscriptionAccountlessPlaybackRequest;
   v7 = [(ICMusicSubscriptionAccountlessPlaybackRequest *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [contextCopy copy];
     requestContext = v7->_requestContext;
     v7->_requestContext = v8;
 
     v7->_qualityOfService = 25;
-    v7->_storeSubscriptionAdamID = a4;
+    v7->_storeSubscriptionAdamID = d;
   }
 
   return v7;

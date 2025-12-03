@@ -1,21 +1,21 @@
 @interface MXRoutingContextCallbackHelper
 + (id)_sharedLock;
-- (MXRoutingContextCallbackHelper)initWithRoutingContext:(OpaqueFigRoutingContext *)a3 routeConfigUpdateID:(id)a4 correlationID:(id)a5 callback:(void *)a6 context:(void *)a7;
-- (void)_routeConfigUpdated:(id)a3;
+- (MXRoutingContextCallbackHelper)initWithRoutingContext:(OpaqueFigRoutingContext *)context routeConfigUpdateID:(id)d correlationID:(id)iD callback:(void *)callback context:(void *)a7;
+- (void)_routeConfigUpdated:(id)updated;
 - (void)dealloc;
 @end
 
 @implementation MXRoutingContextCallbackHelper
 
-- (MXRoutingContextCallbackHelper)initWithRoutingContext:(OpaqueFigRoutingContext *)a3 routeConfigUpdateID:(id)a4 correlationID:(id)a5 callback:(void *)a6 context:(void *)a7
+- (MXRoutingContextCallbackHelper)initWithRoutingContext:(OpaqueFigRoutingContext *)context routeConfigUpdateID:(id)d correlationID:(id)iD callback:(void *)callback context:(void *)a7
 {
   v24.receiver = self;
   v24.super_class = MXRoutingContextCallbackHelper;
   v12 = [(MXRoutingContextCallbackHelper *)&v24 init];
-  v12->mRouteConfigUpdateID = a4;
-  if (a3)
+  v12->mRouteConfigUpdateID = d;
+  if (context)
   {
-    v13 = CFRetain(a3);
+    v13 = CFRetain(context);
   }
 
   else
@@ -24,9 +24,9 @@
   }
 
   v12->mFigRoutingContext = v13;
-  v12->mCallback = a6;
+  v12->mCallback = callback;
   v12->mContext = a7;
-  v12->mCorrelationID = a5;
+  v12->mCorrelationID = iD;
   v14 = [[MXRoutingContextModificationMetrics alloc] initWithCorrelationID:v12->mCorrelationID];
   v12->mRoutingContextModificationMetrics = v14;
   -[MXRoutingContextModificationMetrics setServerModificationStartedTimestamp:](v14, "setServerModificationStartedTimestamp:", [MEMORY[0x1E696AD98] numberWithLongLong:FigGetUpTimeNanoseconds()]);
@@ -40,13 +40,13 @@
   }
 
   objc_initWeak(&location, v12);
-  v19 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __108__MXRoutingContextCallbackHelper_initWithRoutingContext_routeConfigUpdateID_correlationID_callback_context___block_invoke;
   v21[3] = &unk_1E7AEB980;
   objc_copyWeak(&v22, &location);
-  v12->mFigRoutingContextToken = [v19 addObserverForName:@"routeConfigUpdated" object:a3 queue:0 usingBlock:v21];
+  v12->mFigRoutingContextToken = [defaultCenter addObserverForName:@"routeConfigUpdated" object:context queue:0 usingBlock:v21];
   objc_destroyWeak(&v22);
   objc_destroyWeak(&location);
   return v12;
@@ -94,12 +94,12 @@ id __45__MXRoutingContextCallbackHelper__sharedLock__block_invoke()
   [(MXRoutingContextCallbackHelper *)&v4 dealloc];
 }
 
-- (void)_routeConfigUpdated:(id)a3
+- (void)_routeConfigUpdated:(id)updated
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"routeConfigUpdateID"];
-  v6 = [v4 objectForKey:@"routeConfigUpdateReason"];
+  userInfo = [updated userInfo];
+  v5 = [userInfo objectForKey:@"routeConfigUpdateID"];
+  v6 = [userInfo objectForKey:@"routeConfigUpdateReason"];
   v7 = [v6 isEqualToString:@"configUpdateReasonEndedFailed"];
   if ([v5 isEqualToString:self->mRouteConfigUpdateID] && -[MXRoutingContextCallbackHelper _didRouteChangeFinish:](self, "_didRouteChangeFinish:", v6) && self->mCallback)
   {

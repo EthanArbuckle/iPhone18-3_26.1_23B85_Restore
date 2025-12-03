@@ -8,43 +8,43 @@
 - (id)initWithPosterBoardRepresentation:()PRSAdditions
 {
   v4 = a3;
-  v17.receiver = a1;
+  v17.receiver = self;
   v17.super_class = &off_1F4282AF8;
   v5 = objc_msgSendSuper2(&v17, sel_init);
   if (v5)
   {
-    v6 = [v4 localizedTitle];
-    [v5 setLocalizedTitle:v6];
+    localizedTitle = [v4 localizedTitle];
+    [v5 setLocalizedTitle:localizedTitle];
 
-    v7 = [v4 symbolImageName];
-    [v5 setSymbolImageName:v7];
+    symbolImageName = [v4 symbolImageName];
+    [v5 setSymbolImageName:symbolImageName];
 
-    v8 = [v4 symbolColorName];
-    [v5 setSymbolColorName:v8];
+    symbolColorName = [v4 symbolColorName];
+    [v5 setSymbolColorName:symbolColorName];
 
-    v9 = [v4 localizedSubtitle];
-    [v5 setLocalizedSubtitle:v9];
+    localizedSubtitle = [v4 localizedSubtitle];
+    [v5 setLocalizedSubtitle:localizedSubtitle];
 
-    v10 = [v4 localizedDescriptiveText];
-    [v5 setLocalizedDescriptiveText:v10];
+    localizedDescriptiveText = [v4 localizedDescriptiveText];
+    [v5 setLocalizedDescriptiveText:localizedDescriptiveText];
 
-    v11 = [v4 unityDescription];
-    [v5 setUnityDescription:v11];
+    unityDescription = [v4 unityDescription];
+    [v5 setUnityDescription:unityDescription];
 
-    v12 = [v4 type];
-    if ((v12 - 1) >= 4)
+    type = [v4 type];
+    if ((type - 1) >= 4)
     {
       v13 = 0;
     }
 
     else
     {
-      v13 = v12;
+      v13 = type;
     }
 
     [v5 setType:v13];
-    v14 = [v4 items];
-    v15 = [v14 bs_map:&__block_literal_global_13];
+    items = [v4 items];
+    v15 = [items bs_map:&__block_literal_global_13];
     [v5 setItems:v15];
   }
 
@@ -53,7 +53,7 @@
 
 - (PRSPosterGallerySection)posterBoardRepresentation
 {
-  v1 = [[PRSPosterGallerySection alloc] initWithProactiveRepresentation:a1];
+  v1 = [[PRSPosterGallerySection alloc] initWithProactiveRepresentation:self];
 
   return v1;
 }

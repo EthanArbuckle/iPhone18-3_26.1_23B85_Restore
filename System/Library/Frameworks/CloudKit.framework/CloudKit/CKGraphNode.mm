@@ -1,5 +1,5 @@
 @interface CKGraphNode
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CKGraphNode)init;
 - (NSSecureCoding)itemID;
 - (id)CKPropertiesDescription;
@@ -63,10 +63,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqual = 1;
   }
@@ -76,7 +76,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_itemID(self, v6, v7);
       v11 = objc_msgSend_itemID(v5, v9, v10);
 

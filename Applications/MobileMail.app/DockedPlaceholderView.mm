@@ -1,41 +1,41 @@
 @interface DockedPlaceholderView
-- (DockedPlaceholderView)initWithFrame:(CGRect)a3;
+- (DockedPlaceholderView)initWithFrame:(CGRect)frame;
 - (id)backgroundColor;
 - (id)preferredSpringLoadingEffect;
 - (void)_updateShadow;
-- (void)_updateShadowPathIfNeededForChangeFromRect:(CGRect)a3 toRect:(CGRect)a4;
-- (void)installMaskCutoutView:(id)a3;
+- (void)_updateShadowPathIfNeededForChangeFromRect:(CGRect)rect toRect:(CGRect)toRect;
+- (void)installMaskCutoutView:(id)view;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setDimmingAmount:(double)a3;
-- (void)setFalseShadowEdge:(unint64_t)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setShadowOpacity:(double)a3;
-- (void)setShadowRadius:(double)a3;
-- (void)setShadowVisible:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCornerRadius:(double)radius;
+- (void)setDimmingAmount:(double)amount;
+- (void)setFalseShadowEdge:(unint64_t)edge;
+- (void)setFrame:(CGRect)frame;
+- (void)setShadowOpacity:(double)opacity;
+- (void)setShadowRadius:(double)radius;
+- (void)setShadowVisible:(BOOL)visible;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateCornerRadii;
 @end
 
 @implementation DockedPlaceholderView
 
-- (DockedPlaceholderView)initWithFrame:(CGRect)a3
+- (DockedPlaceholderView)initWithFrame:(CGRect)frame
 {
   v27.receiver = self;
   v27.super_class = DockedPlaceholderView;
-  v3 = [(DockedPlaceholderView *)&v27 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DockedPlaceholderView *)&v27 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UITraitCollection traitCollectionWithUserInterfaceLevel:1];
     [(DockedPlaceholderView *)v3 _setLocalOverrideTraitCollection:v4];
 
-    v5 = [(DockedPlaceholderView *)v3 layer];
-    [v5 setShadowOffset:{CGSizeZero.width, CGSizeZero.height}];
+    layer = [(DockedPlaceholderView *)v3 layer];
+    [layer setShadowOffset:{CGSizeZero.width, CGSizeZero.height}];
 
-    v6 = [(DockedPlaceholderView *)v3 layer];
-    [v6 setAllowsGroupOpacity:1];
+    layer2 = [(DockedPlaceholderView *)v3 layer];
+    [layer2 setAllowsGroupOpacity:1];
 
     v3->_falseShadowEdge = 0;
     if (MUISolariumFeatureEnabled())
@@ -55,8 +55,8 @@
     v3->_headerView = v9;
 
     [(DockedHeaderView *)v3->_headerView setAutoresizingMask:2];
-    v11 = [(DockedPlaceholderView *)v3 headerView];
-    [(DockedPlaceholderView *)v3 addSubview:v11];
+    headerView = [(DockedPlaceholderView *)v3 headerView];
+    [(DockedPlaceholderView *)v3 addSubview:headerView];
 
     v12 = [UIView alloc];
     [(DockedPlaceholderView *)v3 bounds];
@@ -69,11 +69,11 @@
 
     [(UIView *)v3->_roundedBackgroundView setAutoresizingMask:18];
     [(UIView *)v3->_roundedBackgroundView setClipsToBounds:1];
-    v16 = [(UIView *)v3->_roundedBackgroundView layer];
-    [v16 setMaskedCorners:10];
+    layer3 = [(UIView *)v3->_roundedBackgroundView layer];
+    [layer3 setMaskedCorners:10];
 
-    v17 = [(UIView *)v3->_roundedBackgroundView layer];
-    [v17 setAllowsGroupOpacity:1];
+    layer4 = [(UIView *)v3->_roundedBackgroundView layer];
+    [layer4 setAllowsGroupOpacity:1];
 
     [(DockedPlaceholderView *)v3 insertSubview:v3->_roundedBackgroundView below:v3->_headerView];
     v18 = [UIView alloc];
@@ -84,8 +84,8 @@
 
     [(UIView *)v3->_overlayView setAutoresizingMask:18];
     [(UIView *)v3->_overlayView setClipsToBounds:1];
-    v21 = [(UIView *)v3->_overlayView layer];
-    [v21 setAllowsGroupOpacity:1];
+    layer5 = [(UIView *)v3->_overlayView layer];
+    [layer5 setAllowsGroupOpacity:1];
 
     v22 = objc_alloc_init(CALayer);
     dimmingLayer = v3->_dimmingLayer;
@@ -96,8 +96,8 @@
     v24 = +[UIColor _dimmingViewColor];
     -[CALayer setBackgroundColor:](v3->_dimmingLayer, "setBackgroundColor:", [v24 CGColor]);
 
-    v25 = [(UIView *)v3->_overlayView layer];
-    [v25 addSublayer:v3->_dimmingLayer];
+    layer6 = [(UIView *)v3->_overlayView layer];
+    [layer6 addSublayer:v3->_dimmingLayer];
 
     [(DockedPlaceholderView *)v3 insertSubview:v3->_overlayView above:v3->_headerView];
     [objc_opt_class() defaultCornerRadius];
@@ -111,12 +111,12 @@
   return v3;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(DockedPlaceholderView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -129,12 +129,12 @@
   [(DockedPlaceholderView *)self _updateShadowPathIfNeededForChangeFromRect:v9 toRect:v11, v13, v15, v16, v17, v18, v19];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(DockedPlaceholderView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -152,17 +152,17 @@
   v15.receiver = self;
   v15.super_class = DockedPlaceholderView;
   [(DockedPlaceholderView *)&v15 layoutSubviews];
-  v3 = [(DockedPlaceholderView *)self falseEdgeShadowView];
-  if (v3)
+  falseEdgeShadowView = [(DockedPlaceholderView *)self falseEdgeShadowView];
+  if (falseEdgeShadowView)
   {
-    v4 = v3;
-    v5 = [(DockedPlaceholderView *)self falseEdgeShadowView];
-    v6 = [v5 superview];
+    v4 = falseEdgeShadowView;
+    falseEdgeShadowView2 = [(DockedPlaceholderView *)self falseEdgeShadowView];
+    superview = [falseEdgeShadowView2 superview];
 
-    if (v6 == self)
+    if (superview == self)
     {
-      v7 = [(DockedPlaceholderView *)self falseEdgeShadowView];
-      [(DockedPlaceholderView *)self bringSubviewToFront:v7];
+      falseEdgeShadowView3 = [(DockedPlaceholderView *)self falseEdgeShadowView];
+      [(DockedPlaceholderView *)self bringSubviewToFront:falseEdgeShadowView3];
     }
   }
 
@@ -172,97 +172,97 @@
   v10 = CGRectGetHeight(v16) - v9;
   [(DockedPlaceholderView *)self bounds];
   Width = CGRectGetWidth(v17);
-  v12 = [(DockedPlaceholderView *)self roundedBackgroundView];
-  [v12 setFrame:{0.0, v9, Width, v10}];
+  roundedBackgroundView = [(DockedPlaceholderView *)self roundedBackgroundView];
+  [roundedBackgroundView setFrame:{0.0, v9, Width, v10}];
 
-  v13 = [(DockedPlaceholderView *)self headerView];
-  [(DockedPlaceholderView *)self bringSubviewToFront:v13];
+  headerView = [(DockedPlaceholderView *)self headerView];
+  [(DockedPlaceholderView *)self bringSubviewToFront:headerView];
 
-  v14 = [(DockedPlaceholderView *)self overlayView];
-  [(DockedPlaceholderView *)self bringSubviewToFront:v14];
+  overlayView = [(DockedPlaceholderView *)self overlayView];
+  [(DockedPlaceholderView *)self bringSubviewToFront:overlayView];
 }
 
 - (id)backgroundColor
 {
-  v2 = [(DockedPlaceholderView *)self roundedBackgroundView];
-  v3 = [v2 backgroundColor];
+  roundedBackgroundView = [(DockedPlaceholderView *)self roundedBackgroundView];
+  backgroundColor = [roundedBackgroundView backgroundColor];
 
-  return v3;
+  return backgroundColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v6 = a3;
-  v4 = [(DockedPlaceholderView *)self roundedBackgroundView];
-  [v4 setBackgroundColor:v6];
+  colorCopy = color;
+  roundedBackgroundView = [(DockedPlaceholderView *)self roundedBackgroundView];
+  [roundedBackgroundView setBackgroundColor:colorCopy];
 
-  v5 = [(DockedPlaceholderView *)self headerView];
-  [v5 setBackgroundColor:v6];
+  headerView = [(DockedPlaceholderView *)self headerView];
+  [headerView setBackgroundColor:colorCopy];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v10 = a3;
-  v4 = [(DockedPlaceholderView *)self traitCollection];
-  v5 = [v4 userInterfaceStyle];
-  v6 = [v10 userInterfaceStyle];
+  changeCopy = change;
+  traitCollection = [(DockedPlaceholderView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v5 != v6)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     v7 = +[UIColor _dimmingViewColor];
-    v8 = [v7 CGColor];
-    v9 = [(DockedPlaceholderView *)self dimmingLayer];
-    [v9 setBackgroundColor:v8];
+    cGColor = [v7 CGColor];
+    dimmingLayer = [(DockedPlaceholderView *)self dimmingLayer];
+    [dimmingLayer setBackgroundColor:cGColor];
   }
 }
 
-- (void)setDimmingAmount:(double)a3
+- (void)setDimmingAmount:(double)amount
 {
-  v3 = a3;
-  v5 = [(DockedPlaceholderView *)self dimmingLayer];
-  *&v4 = v3;
-  [v5 setOpacity:v4];
+  amountCopy = amount;
+  dimmingLayer = [(DockedPlaceholderView *)self dimmingLayer];
+  *&v4 = amountCopy;
+  [dimmingLayer setOpacity:v4];
 }
 
 - (id)preferredSpringLoadingEffect
 {
   v3 = [TargetedSpringLoadedBlinkEffect alloc];
-  v4 = [(DockedPlaceholderView *)self overlayView];
-  v5 = [(TargetedSpringLoadedBlinkEffect *)v3 initWithTargetView:v4];
+  overlayView = [(DockedPlaceholderView *)self overlayView];
+  v5 = [(TargetedSpringLoadedBlinkEffect *)v3 initWithTargetView:overlayView];
 
   return v5;
 }
 
-- (void)setShadowRadius:(double)a3
+- (void)setShadowRadius:(double)radius
 {
-  if (self->_shadowRadius != a3)
+  if (self->_shadowRadius != radius)
   {
-    self->_shadowRadius = a3;
+    self->_shadowRadius = radius;
     [(DockedPlaceholderView *)self _updateShadow];
   }
 }
 
-- (void)setShadowOpacity:(double)a3
+- (void)setShadowOpacity:(double)opacity
 {
-  if (self->_shadowOpacity != a3)
+  if (self->_shadowOpacity != opacity)
   {
-    self->_shadowOpacity = a3;
+    self->_shadowOpacity = opacity;
     [(DockedPlaceholderView *)self _updateShadow];
   }
 }
 
-- (void)setFalseShadowEdge:(unint64_t)a3
+- (void)setFalseShadowEdge:(unint64_t)edge
 {
-  if (self->_falseShadowEdge != a3)
+  if (self->_falseShadowEdge != edge)
   {
-    self->_falseShadowEdge = a3;
+    self->_falseShadowEdge = edge;
     [(DockedPlaceholderView *)self _updateShadow];
   }
 }
 
-- (void)_updateShadowPathIfNeededForChangeFromRect:(CGRect)a3 toRect:(CGRect)a4
+- (void)_updateShadowPathIfNeededForChangeFromRect:(CGRect)rect toRect:(CGRect)toRect
 {
-  if (!CGRectEqualToRect(a3, a4))
+  if (!CGRectEqualToRect(rect, toRect))
   {
     [(DockedPlaceholderView *)self shadowOpacity];
     if (v5 > 0.00000011920929)
@@ -273,11 +273,11 @@
   }
 }
 
-- (void)setShadowVisible:(BOOL)a3
+- (void)setShadowVisible:(BOOL)visible
 {
-  if (self->_shadowVisible != a3)
+  if (self->_shadowVisible != visible)
   {
-    self->_shadowVisible = a3;
+    self->_shadowVisible = visible;
     [(DockedPlaceholderView *)self _updateShadow];
   }
 }
@@ -286,18 +286,18 @@
 {
   if ([(DockedPlaceholderView *)self falseShadowEdge])
   {
-    v3 = [(DockedPlaceholderView *)self layer];
-    [v3 setShadowOpacity:0.0];
+    layer = [(DockedPlaceholderView *)self layer];
+    [layer setShadowOpacity:0.0];
 
-    v4 = [(DockedPlaceholderView *)self layer];
-    [v4 setShadowRadius:0.0];
+    layer2 = [(DockedPlaceholderView *)self layer];
+    [layer2 setShadowRadius:0.0];
 
-    v5 = [(DockedPlaceholderView *)self layer];
-    [v5 setShadowPath:0];
+    layer3 = [(DockedPlaceholderView *)self layer];
+    [layer3 setShadowPath:0];
 
-    v6 = [(DockedPlaceholderView *)self falseEdgeShadowView];
+    falseEdgeShadowView = [(DockedPlaceholderView *)self falseEdgeShadowView];
 
-    if (v6)
+    if (falseEdgeShadowView)
     {
       y = CGRectZero.origin.y;
       x = CGRectZero.origin.x;
@@ -322,11 +322,11 @@
       v30 = [UIColor colorWithWhite:0.0 alpha:0.0];
       v69[2] = v30;
       v31 = [NSArray arrayWithObjects:v69 count:3];
-      v32 = [(DockedPlaceholderView *)self falseEdgeShadowView];
-      [v32 setGradientColors:v31];
+      falseEdgeShadowView2 = [(DockedPlaceholderView *)self falseEdgeShadowView];
+      [falseEdgeShadowView2 setGradientColors:v31];
 
-      v33 = [(DockedPlaceholderView *)self falseEdgeShadowView];
-      [v33 setLocations:&off_100674EE0];
+      falseEdgeShadowView3 = [(DockedPlaceholderView *)self falseEdgeShadowView];
+      [falseEdgeShadowView3 setLocations:&off_100674EE0];
     }
 
     [(DockedPlaceholderView *)self bounds];
@@ -336,14 +336,14 @@
     v41 = v40;
     [(DockedPlaceholderView *)self shadowRadius];
     v43 = v42;
-    v44 = [(DockedPlaceholderView *)self falseShadowEdge];
+    falseShadowEdge = [(DockedPlaceholderView *)self falseShadowEdge];
     v45 = 0;
     v46 = CGPointZero.x;
     v47 = CGPointZero.y;
     v48 = v43 + v43;
-    if (v44 <= 3)
+    if (falseShadowEdge <= 3)
     {
-      if (v44 == 1)
+      if (falseShadowEdge == 1)
       {
         v74.origin.x = v35;
         v74.origin.y = v37;
@@ -372,7 +372,7 @@
         v62 = v48;
         v49 = CGPointZero.x;
         v50 = CGPointZero.y;
-        if (v44 == 2)
+        if (falseShadowEdge == 2)
         {
           v71.origin.x = v35;
           v71.origin.y = v37;
@@ -394,33 +394,33 @@ LABEL_19:
 LABEL_20:
       [(DockedPlaceholderView *)self shadowOpacity];
       v55 = v54;
-      v56 = [(DockedPlaceholderView *)self falseEdgeShadowView];
-      [v56 setAlpha:v55];
+      falseEdgeShadowView4 = [(DockedPlaceholderView *)self falseEdgeShadowView];
+      [falseEdgeShadowView4 setAlpha:v55];
 
-      v57 = [(DockedPlaceholderView *)self falseEdgeShadowView];
-      [v57 setStartPoint:{v49, v50}];
+      falseEdgeShadowView5 = [(DockedPlaceholderView *)self falseEdgeShadowView];
+      [falseEdgeShadowView5 setStartPoint:{v49, v50}];
 
-      v58 = [(DockedPlaceholderView *)self falseEdgeShadowView];
-      [v58 setEndPoint:{v46, v47}];
+      falseEdgeShadowView6 = [(DockedPlaceholderView *)self falseEdgeShadowView];
+      [falseEdgeShadowView6 setEndPoint:{v46, v47}];
 
-      v59 = [(DockedPlaceholderView *)self falseEdgeShadowView];
-      [v59 setFrame:{x, y, width, height}];
+      falseEdgeShadowView7 = [(DockedPlaceholderView *)self falseEdgeShadowView];
+      [falseEdgeShadowView7 setFrame:{x, y, width, height}];
 
-      v60 = [(DockedPlaceholderView *)self falseEdgeShadowView];
-      [v60 setAutoresizingMask:v45];
+      falseEdgeShadowView8 = [(DockedPlaceholderView *)self falseEdgeShadowView];
+      [falseEdgeShadowView8 setAutoresizingMask:v45];
 
-      v61 = [(DockedPlaceholderView *)self falseEdgeShadowView];
-      [(DockedPlaceholderView *)self addSubview:v61];
+      falseEdgeShadowView9 = [(DockedPlaceholderView *)self falseEdgeShadowView];
+      [(DockedPlaceholderView *)self addSubview:falseEdgeShadowView9];
 
       return;
     }
 
-    if (v44 != 8)
+    if (falseShadowEdge != 8)
     {
       v63 = v48;
       v49 = CGPointZero.x;
       v50 = CGPointZero.y;
-      if (v44 == 4)
+      if (falseShadowEdge == 4)
       {
         v72.origin.x = v35;
         v72.origin.y = v37;
@@ -470,9 +470,9 @@ LABEL_20:
   v14 = v13;
   [(DockedPlaceholderView *)self cornerRadius];
   v68 = [UIBezierPath bezierPathWithRoundedRect:v8 cornerRadius:v10, v12, v14, v15];
-  v16 = [v68 CGPath];
-  v17 = [(DockedPlaceholderView *)self layer];
-  [v17 setShadowPath:v16];
+  cGPath = [v68 CGPath];
+  layer4 = [(DockedPlaceholderView *)self layer];
+  [layer4 setShadowPath:cGPath];
 
   v18 = 0.0;
   if ([(DockedPlaceholderView *)self shadowVisible])
@@ -481,24 +481,24 @@ LABEL_20:
     v18 = v19;
   }
 
-  v20 = [(DockedPlaceholderView *)self layer];
+  layer5 = [(DockedPlaceholderView *)self layer];
   *&v21 = v18;
-  [v20 setShadowOpacity:v21];
+  [layer5 setShadowOpacity:v21];
 
   [(DockedPlaceholderView *)self shadowRadius];
   v23 = v22;
-  v24 = [(DockedPlaceholderView *)self layer];
-  [v24 setShadowRadius:v23];
+  layer6 = [(DockedPlaceholderView *)self layer];
+  [layer6 setShadowRadius:v23];
 
-  v25 = [(DockedPlaceholderView *)self falseEdgeShadowView];
-  [v25 removeFromSuperview];
+  falseEdgeShadowView10 = [(DockedPlaceholderView *)self falseEdgeShadowView];
+  [falseEdgeShadowView10 removeFromSuperview];
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(DockedPlaceholderView *)self updateCornerRadii];
   }
 }
@@ -507,27 +507,27 @@ LABEL_20:
 {
   [(DockedPlaceholderView *)self cornerRadius];
   v4 = v3;
-  v9 = [(DockedPlaceholderView *)self headerView];
-  [v9 setCornerRadius:v4];
+  headerView = [(DockedPlaceholderView *)self headerView];
+  [headerView setCornerRadius:v4];
 
   [(DockedPlaceholderView *)self cornerRadius];
   v6 = v5;
-  v10 = [(DockedPlaceholderView *)self roundedBackgroundView];
-  [v10 _setContinuousCornerRadius:v6];
+  roundedBackgroundView = [(DockedPlaceholderView *)self roundedBackgroundView];
+  [roundedBackgroundView _setContinuousCornerRadius:v6];
 
   [(DockedPlaceholderView *)self cornerRadius];
   v8 = v7;
-  v11 = [(DockedPlaceholderView *)self overlayView];
-  [v11 _setContinuousCornerRadius:v8];
+  overlayView = [(DockedPlaceholderView *)self overlayView];
+  [overlayView _setContinuousCornerRadius:v8];
 }
 
-- (void)installMaskCutoutView:(id)a3
+- (void)installMaskCutoutView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(DockedPlaceholderView *)self setClipsToBounds:0];
   [(DockedPlaceholderView *)self bounds];
-  [v4 setFrame:?];
-  [(DockedPlaceholderView *)self addSubview:v4];
+  [viewCopy setFrame:?];
+  [(DockedPlaceholderView *)self addSubview:viewCopy];
 }
 
 @end

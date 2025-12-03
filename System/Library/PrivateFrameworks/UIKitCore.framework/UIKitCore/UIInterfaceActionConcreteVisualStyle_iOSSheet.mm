@@ -4,15 +4,15 @@
 - (double)_systemFontSize;
 - (id)_preferredActionFont;
 - (id)_regularActionFont;
-- (id)newActionBackgroundViewForViewState:(id)a3;
+- (id)newActionBackgroundViewForViewState:(id)state;
 @end
 
 @implementation UIInterfaceActionConcreteVisualStyle_iOSSheet
 
 - (UIEdgeInsets)contentMargin
 {
-  v3 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -56,19 +56,19 @@
   return result;
 }
 
-- (id)newActionBackgroundViewForViewState:(id)a3
+- (id)newActionBackgroundViewForViewState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 action];
-  if (_shouldUseSolariumDesign(v4))
+  stateCopy = state;
+  action = [stateCopy action];
+  if (_shouldUseSolariumDesign(stateCopy))
   {
-    v6 = [v4 action];
-    v7 = objc_alloc_init(_UIAlertControllerFilledBackgroundView);
-    v8 = [(UIInterfaceActionConcreteVisualStyle_iOS *)self actionBackgroundColorForViewState:v4];
-    [(_UIAlertControllerFilledBackgroundView *)v7 setFillColor:v8];
+    action2 = [stateCopy action];
+    _highlightedView = objc_alloc_init(_UIAlertControllerFilledBackgroundView);
+    v8 = [(UIInterfaceActionConcreteVisualStyle_iOS *)self actionBackgroundColorForViewState:stateCopy];
+    [(_UIAlertControllerFilledBackgroundView *)_highlightedView setFillColor:v8];
   }
 
-  else if ([v5 type] == 1)
+  else if ([action type] == 1)
   {
     v9 = objc_alloc_init(_UIAlertControlleriOSActionSheetCancelBackgroundView);
     v13[0] = MEMORY[0x1E69E9820];
@@ -77,23 +77,23 @@
     v13[3] = &unk_1E70F35B8;
     v10 = v9;
     v14 = v10;
-    v15 = v4;
+    v15 = stateCopy;
     [UIView performWithoutAnimation:v13];
     v11 = v15;
-    v7 = v10;
+    _highlightedView = v10;
   }
 
-  else if ([v4 isHighlighted])
+  else if ([stateCopy isHighlighted])
   {
-    v7 = [(UIInterfaceActionConcreteVisualStyle_iOS *)self _highlightedView];
+    _highlightedView = [(UIInterfaceActionConcreteVisualStyle_iOS *)self _highlightedView];
   }
 
   else
   {
-    v7 = 0;
+    _highlightedView = 0;
   }
 
-  return v7;
+  return _highlightedView;
 }
 
 - (double)_systemFontSize
@@ -124,8 +124,8 @@
   v2 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:11];
   v3 = UIApp;
   v4 = v2;
-  v5 = [v3 preferredContentSizeCategory];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  preferredContentSizeCategory = [v3 preferredContentSizeCategory];
+  v6 = [v4 objectForKeyedSubscript:preferredContentSizeCategory];
 
   if (v6)
   {
@@ -147,16 +147,16 @@
   {
     v5.receiver = self;
     v5.super_class = UIInterfaceActionConcreteVisualStyle_iOSSheet;
-    v3 = [(UIInterfaceActionConcreteVisualStyle_iOS *)&v5 _regularActionFont];
+    _regularActionFont = [(UIInterfaceActionConcreteVisualStyle_iOS *)&v5 _regularActionFont];
   }
 
   else
   {
     [(UIInterfaceActionConcreteVisualStyle_iOSSheet *)self _systemFontSize];
-    v3 = [off_1E70ECC18 systemFontOfSize:?];
+    _regularActionFont = [off_1E70ECC18 systemFontOfSize:?];
   }
 
-  return v3;
+  return _regularActionFont;
 }
 
 - (id)_preferredActionFont
@@ -165,16 +165,16 @@
   {
     v5.receiver = self;
     v5.super_class = UIInterfaceActionConcreteVisualStyle_iOSSheet;
-    v3 = [(UIInterfaceActionConcreteVisualStyle_iOS *)&v5 _preferredActionFont];
+    _preferredActionFont = [(UIInterfaceActionConcreteVisualStyle_iOS *)&v5 _preferredActionFont];
   }
 
   else
   {
     [(UIInterfaceActionConcreteVisualStyle_iOSSheet *)self _systemFontSize];
-    v3 = [off_1E70ECC18 boldSystemFontOfSize:?];
+    _preferredActionFont = [off_1E70ECC18 boldSystemFontOfSize:?];
   }
 
-  return v3;
+  return _preferredActionFont;
 }
 
 @end

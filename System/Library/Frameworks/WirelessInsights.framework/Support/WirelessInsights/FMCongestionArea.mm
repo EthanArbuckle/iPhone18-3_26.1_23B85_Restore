@@ -2,20 +2,20 @@
 - (NSArray)badCells;
 - (NSArray)goodCells;
 - (id)description;
-- (id)init:(id)a3 prevCells:(id)a4;
-- (void)addBadCell:(id)a3;
-- (void)addGoodCell:(id)a3;
-- (void)exitedAt:(id)a3;
+- (id)init:(id)init prevCells:(id)cells;
+- (void)addBadCell:(id)cell;
+- (void)addGoodCell:(id)cell;
+- (void)exitedAt:(id)at;
 - (void)finalize;
 - (void)invalidate;
 @end
 
 @implementation FMCongestionArea
 
-- (id)init:(id)a3 prevCells:(id)a4
+- (id)init:(id)init prevCells:(id)cells
 {
-  v7 = a3;
-  v8 = a4;
+  initCopy = init;
+  cellsCopy = cells;
   v17.receiver = self;
   v17.super_class = FMCongestionArea;
   v9 = [(FMCongestionArea *)&v17 init];
@@ -23,8 +23,8 @@
   if (v9)
   {
     v9->_curState = 0;
-    objc_storeStrong(&v9->_startTimestamp, a3);
-    objc_storeStrong(&v10->_prevCells, a4);
+    objc_storeStrong(&v9->_startTimestamp, init);
+    objc_storeStrong(&v10->_prevCells, cells);
     v11 = objc_alloc_init(NSMutableArray);
     badCells = v10->_badCells;
     v10->_badCells = v11;
@@ -46,13 +46,13 @@
   return v10;
 }
 
-- (void)exitedAt:(id)a3
+- (void)exitedAt:(id)at
 {
-  v5 = a3;
+  atCopy = at;
   if (![(FMCongestionArea *)self curState])
   {
     self->_curState = 1;
-    objc_storeStrong(&self->_endTimestamp, a3);
+    objc_storeStrong(&self->_endTimestamp, at);
     v6 = objc_alloc_init(NSMutableArray);
     goodCells = self->_goodCells;
     self->_goodCells = v6;
@@ -64,16 +64,16 @@
   }
 }
 
-- (void)addBadCell:(id)a3
+- (void)addBadCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   if (![(FMCongestionArea *)self curState])
   {
-    v5 = [v4 congestionMetric];
+    congestionMetric = [cellCopy congestionMetric];
 
-    if (v5)
+    if (congestionMetric)
     {
-      [(NSMutableArray *)self->_badCells addObject:v4];
+      [(NSMutableArray *)self->_badCells addObject:cellCopy];
       if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
       {
         sub_1002085D8();
@@ -91,25 +91,25 @@
   }
 }
 
-- (void)addGoodCell:(id)a3
+- (void)addGoodCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   if ([(FMCongestionArea *)self curState]== 1)
   {
-    [(NSMutableArray *)self->_goodCells addObject:v4];
+    [(NSMutableArray *)self->_goodCells addObject:cellCopy];
     if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
     {
       sub_1002086B4();
     }
 
-    if ([(NSMutableArray *)self->_badCells containsObject:v4])
+    if ([(NSMutableArray *)self->_badCells containsObject:cellCopy])
     {
       if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
       {
         sub_10020871C();
       }
 
-      [(NSMutableArray *)self->_badCells removeObject:v4];
+      [(NSMutableArray *)self->_badCells removeObject:cellCopy];
     }
   }
 }
@@ -154,13 +154,13 @@
 
 - (id)description
 {
-  v3 = [(FMCongestionArea *)self curState];
-  v4 = [(FMCongestionArea *)self startTimestamp];
-  v5 = [(FMCongestionArea *)self prevCells];
-  v6 = [(FMCongestionArea *)self endTimestamp];
-  v7 = [(FMCongestionArea *)self badCells];
-  v8 = [(FMCongestionArea *)self goodCells];
-  v9 = [NSString stringWithFormat:@"curState %u, startTimestamp %@, prevCells %@, endTimestamp %@, badCells %@, goodCells %@", v3, v4, v5, v6, v7, v8];
+  curState = [(FMCongestionArea *)self curState];
+  startTimestamp = [(FMCongestionArea *)self startTimestamp];
+  prevCells = [(FMCongestionArea *)self prevCells];
+  endTimestamp = [(FMCongestionArea *)self endTimestamp];
+  badCells = [(FMCongestionArea *)self badCells];
+  goodCells = [(FMCongestionArea *)self goodCells];
+  v9 = [NSString stringWithFormat:@"curState %u, startTimestamp %@, prevCells %@, endTimestamp %@, badCells %@, goodCells %@", curState, startTimestamp, prevCells, endTimestamp, badCells, goodCells];
 
   return v9;
 }

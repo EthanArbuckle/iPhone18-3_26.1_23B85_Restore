@@ -1,17 +1,17 @@
 @interface SBBannerPanGestureRecognizer
-- (BOOL)_shouldReceiveTouch:(id)a3 withEvent:(id)a4;
-- (SBBannerPanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (BOOL)_shouldReceiveTouch:(id)touch withEvent:(id)event;
+- (SBBannerPanGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (SBBannerPanGestureSystemDragCancellingDelegate)systemDragCancellingDelegate;
 - (SBWindowScene)windowScene;
-- (void)_actuallySetCancelsTouchesInView:(BOOL)a3;
-- (void)_addTouchDisablingTouchCancellation:(id)a3;
-- (void)_removeTouchDisablingTouchCancellation:(id)a3;
-- (void)_removeTouchesDisablingTouchCancellation:(id)a3;
+- (void)_actuallySetCancelsTouchesInView:(BOOL)view;
+- (void)_addTouchDisablingTouchCancellation:(id)cancellation;
+- (void)_removeTouchDisablingTouchCancellation:(id)cancellation;
+- (void)_removeTouchesDisablingTouchCancellation:(id)cancellation;
 - (void)_updateCancelsTouchesInView;
-- (void)setEnabled:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)setEnabled:(BOOL)enabled;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation SBBannerPanGestureRecognizer
@@ -37,11 +37,11 @@
   [(SBBannerPanGestureRecognizer *)self _actuallySetCancelsTouchesInView:v3];
 }
 
-- (SBBannerPanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (SBBannerPanGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v9.receiver = self;
   v9.super_class = SBBannerPanGestureRecognizer;
-  v4 = [(SBBannerPanGestureRecognizer *)&v9 initWithTarget:a3 action:a4];
+  v4 = [(SBBannerPanGestureRecognizer *)&v9 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -54,40 +54,40 @@
   return v5;
 }
 
-- (void)_actuallySetCancelsTouchesInView:(BOOL)a3
+- (void)_actuallySetCancelsTouchesInView:(BOOL)view
 {
   v3.receiver = self;
   v3.super_class = SBBannerPanGestureRecognizer;
-  [(SBBannerPanGestureRecognizer *)&v3 setCancelsTouchesInView:a3];
+  [(SBBannerPanGestureRecognizer *)&v3 setCancelsTouchesInView:view];
 }
 
-- (void)_addTouchDisablingTouchCancellation:(id)a3
+- (void)_addTouchDisablingTouchCancellation:(id)cancellation
 {
   identifiersForTouchesDisablingTouchCancellation = self->_identifiersForTouchesDisablingTouchCancellation;
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(a3, "_touchIdentifier")}];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(cancellation, "_touchIdentifier")}];
   [(NSMutableSet *)identifiersForTouchesDisablingTouchCancellation addObject:v5];
 
   [(SBBannerPanGestureRecognizer *)self _updateCancelsTouchesInView];
 }
 
-- (void)_removeTouchDisablingTouchCancellation:(id)a3
+- (void)_removeTouchDisablingTouchCancellation:(id)cancellation
 {
   identifiersForTouchesDisablingTouchCancellation = self->_identifiersForTouchesDisablingTouchCancellation;
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(a3, "_touchIdentifier")}];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(cancellation, "_touchIdentifier")}];
   [(NSMutableSet *)identifiersForTouchesDisablingTouchCancellation removeObject:v5];
 
   [(SBBannerPanGestureRecognizer *)self _updateCancelsTouchesInView];
 }
 
-- (void)_removeTouchesDisablingTouchCancellation:(id)a3
+- (void)_removeTouchesDisablingTouchCancellation:(id)cancellation
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cancellationCopy = cancellation;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [cancellationCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -99,46 +99,46 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(cancellationCopy);
         }
 
         [(SBBannerPanGestureRecognizer *)self _removeTouchDisablingTouchCancellation:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [cancellationCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (BOOL)_shouldReceiveTouch:(id)a3 withEvent:(id)a4
+- (BOOL)_shouldReceiveTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  touchCopy = touch;
+  eventCopy = event;
   v12.receiver = self;
   v12.super_class = SBBannerPanGestureRecognizer;
-  v8 = [(SBBannerPanGestureRecognizer *)&v12 _shouldReceiveTouch:v6 withEvent:v7];
-  if (v8 && (-[SBBannerPanGestureRecognizer systemDragCancellingDelegate](self, "systemDragCancellingDelegate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 bannerPanGestureRecognizer:self shouldDisableTouchCancellationForTouch:v6 event:v7], v9, v10))
+  v8 = [(SBBannerPanGestureRecognizer *)&v12 _shouldReceiveTouch:touchCopy withEvent:eventCopy];
+  if (v8 && (-[SBBannerPanGestureRecognizer systemDragCancellingDelegate](self, "systemDragCancellingDelegate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 bannerPanGestureRecognizer:self shouldDisableTouchCancellationForTouch:touchCopy event:eventCopy], v9, v10))
   {
-    [(SBBannerPanGestureRecognizer *)self _addTouchDisablingTouchCancellation:v6];
+    [(SBBannerPanGestureRecognizer *)self _addTouchDisablingTouchCancellation:touchCopy];
   }
 
   else
   {
-    [(SBBannerPanGestureRecognizer *)self _removeTouchDisablingTouchCancellation:v6];
+    [(SBBannerPanGestureRecognizer *)self _removeTouchDisablingTouchCancellation:touchCopy];
   }
 
   return v8;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBBannerPanGestureRecognizer *)self systemDragCancellingDelegate];
-  v9 = [v8 bannerPanGestureRecognizer:self shouldCancelSystemDragGestureWithTouches:v6 event:v7];
+  beganCopy = began;
+  eventCopy = event;
+  systemDragCancellingDelegate = [(SBBannerPanGestureRecognizer *)self systemDragCancellingDelegate];
+  v9 = [systemDragCancellingDelegate bannerPanGestureRecognizer:self shouldCancelSystemDragGestureWithTouches:beganCopy event:eventCopy];
 
   if (v9)
   {
@@ -149,37 +149,37 @@
   {
     v10.receiver = self;
     v10.super_class = SBBannerPanGestureRecognizer;
-    [(SBBannerPanGestureRecognizer *)&v10 touchesBegan:v6 withEvent:v7];
+    [(SBBannerPanGestureRecognizer *)&v10 touchesBegan:beganCopy withEvent:eventCopy];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = SBBannerPanGestureRecognizer;
-  v6 = a3;
-  [(SBBannerPanGestureRecognizer *)&v7 touchesEnded:v6 withEvent:a4];
-  [(SBBannerPanGestureRecognizer *)self _removeTouchesDisablingTouchCancellation:v6, v7.receiver, v7.super_class];
+  endedCopy = ended;
+  [(SBBannerPanGestureRecognizer *)&v7 touchesEnded:endedCopy withEvent:event];
+  [(SBBannerPanGestureRecognizer *)self _removeTouchesDisablingTouchCancellation:endedCopy, v7.receiver, v7.super_class];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = SBBannerPanGestureRecognizer;
-  v6 = a3;
-  [(SBBannerPanGestureRecognizer *)&v7 touchesCancelled:v6 withEvent:a4];
-  [(SBBannerPanGestureRecognizer *)self _removeTouchesDisablingTouchCancellation:v6, v7.receiver, v7.super_class];
+  cancelledCopy = cancelled;
+  [(SBBannerPanGestureRecognizer *)&v7 touchesCancelled:cancelledCopy withEvent:event];
+  [(SBBannerPanGestureRecognizer *)self _removeTouchesDisablingTouchCancellation:cancelledCopy, v7.receiver, v7.super_class];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(SBBannerPanGestureRecognizer *)self isEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(SBBannerPanGestureRecognizer *)self isEnabled]!= enabled)
   {
     v5.receiver = self;
     v5.super_class = SBBannerPanGestureRecognizer;
-    [(SBBannerPanGestureRecognizer *)&v5 setEnabled:v3];
-    if (!v3)
+    [(SBBannerPanGestureRecognizer *)&v5 setEnabled:enabledCopy];
+    if (!enabledCopy)
     {
       [(NSMutableSet *)self->_identifiersForTouchesDisablingTouchCancellation removeAllObjects];
     }

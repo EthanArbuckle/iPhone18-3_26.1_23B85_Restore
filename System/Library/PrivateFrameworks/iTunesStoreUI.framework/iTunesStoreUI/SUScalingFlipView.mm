@@ -1,22 +1,22 @@
 @interface SUScalingFlipView
-- (SUScalingFlipView)initWithFrontView:(id)a3 backView:(id)a4;
+- (SUScalingFlipView)initWithFrontView:(id)view backView:(id)backView;
 - (id)_backLayerAnimation;
-- (id)_fixedAnimationForAnimation:(id)a3;
+- (id)_fixedAnimationForAnimation:(id)animation;
 - (id)_frontLayerAnimation;
 - (id)_inputColorAnimation;
 - (id)_positionAnimation;
-- (id)_transformAnimationWithStart:(CATransform3D *)a3 middle:(CATransform3D *)a4 end:(CATransform3D *)a5;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (id)_transformAnimationWithStart:(CATransform3D *)start middle:(CATransform3D *)middle end:(CATransform3D *)end;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)dealloc;
 - (void)performFlip;
 @end
 
 @implementation SUScalingFlipView
 
-- (SUScalingFlipView)initWithFrontView:(id)a3 backView:(id)a4
+- (SUScalingFlipView)initWithFrontView:(id)view backView:(id)backView
 {
   p_fromFrame = &self->_fromFrame;
-  [a3 frame];
+  [view frame];
   p_fromFrame->origin.x = v8;
   p_fromFrame->origin.y = v9;
   p_fromFrame->size.width = v10;
@@ -24,8 +24,8 @@
   v12 = [(SUScalingFlipView *)self initWithFrame:?];
   if (v12)
   {
-    v12->_backView = a4;
-    v12->_frontView = a3;
+    v12->_backView = backView;
+    v12->_frontView = view;
     [(UIView *)v12->_backView frame];
     v12->_toFrame.origin.x = v13;
     v12->_toFrame.origin.y = v14;
@@ -45,8 +45,8 @@
     v22 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CB0]];
     [v22 setName:@"multiply"];
     [v22 setValue:objc_msgSend(objc_msgSend(MEMORY[0x1E69DC888] forKeyPath:{"whiteColor"), "CGColor"), @"inputColor"}];
-    v23 = [(SUScalingFlipView *)v12 layer];
-    [v23 setFilters:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObject:", v22)}];
+    layer = [(SUScalingFlipView *)v12 layer];
+    [layer setFilters:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObject:", v22)}];
   }
 
   return v12;
@@ -67,21 +67,21 @@
   [objc_msgSend(MEMORY[0x1E69DC668] "sharedApplication")];
   [(CALayer *)[(UIView *)self->_frontView layer] addAnimation:[(SUScalingFlipView *)self _fixedAnimationForAnimation:[(SUScalingFlipView *)self _frontLayerAnimation]] forKey:@"flipAnimation"];
   [(CALayer *)[(UIView *)self->_backView layer] addAnimation:[(SUScalingFlipView *)self _fixedAnimationForAnimation:[(SUScalingFlipView *)self _backLayerAnimation]] forKey:@"flipAnimation"];
-  v3 = [MEMORY[0x1E6979308] animation];
-  [v3 setAnimations:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:", -[SUScalingFlipView _inputColorAnimation](self, "_inputColorAnimation"), -[SUScalingFlipView _positionAnimation](self, "_positionAnimation"), 0)}];
-  [v3 setDelegate:self];
-  v4 = [(SUScalingFlipView *)self layer];
-  v5 = [(SUScalingFlipView *)self _fixedAnimationForAnimation:v3];
+  animation = [MEMORY[0x1E6979308] animation];
+  [animation setAnimations:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:", -[SUScalingFlipView _inputColorAnimation](self, "_inputColorAnimation"), -[SUScalingFlipView _positionAnimation](self, "_positionAnimation"), 0)}];
+  [animation setDelegate:self];
+  layer = [(SUScalingFlipView *)self layer];
+  v5 = [(SUScalingFlipView *)self _fixedAnimationForAnimation:animation];
 
-  [v4 addAnimation:v5 forKey:@"multiplyAndPositionAnimation"];
+  [layer addAnimation:v5 forKey:@"multiplyAndPositionAnimation"];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
   [-[SUScalingFlipView layer](self layer];
   [(CALayer *)[(UIView *)self->_backView layer] removeAllAnimations];
   [(CALayer *)[(UIView *)self->_frontView layer] removeAllAnimations];
-  v5 = [(UIView *)self->_backView layer];
+  layer = [(UIView *)self->_backView layer];
   v6 = *(MEMORY[0x1E69792E8] + 80);
   *&v20.m31 = *(MEMORY[0x1E69792E8] + 64);
   *&v20.m33 = v6;
@@ -94,10 +94,10 @@
   v9 = *(MEMORY[0x1E69792E8] + 48);
   *&v20.m21 = *(MEMORY[0x1E69792E8] + 32);
   *&v20.m23 = v9;
-  [(CALayer *)v5 setTransform:&v20];
-  v10 = [(UIView *)self->_frontView layer];
+  [(CALayer *)layer setTransform:&v20];
+  layer2 = [(UIView *)self->_frontView layer];
   CATransform3DMakeRotation(&v20, 3.14159265, 0.0, 1.0, 0.0);
-  [(CALayer *)v10 setTransform:&v20];
+  [(CALayer *)layer2 setTransform:&v20];
   [(SUScalingFlipView *)self setFrame:self->_toFrame.origin.x, self->_toFrame.origin.y, self->_toFrame.size.width, self->_toFrame.size.height];
   [(SUScalingFlipView *)self bounds];
   v12 = v11;
@@ -109,7 +109,7 @@
   [(UIView *)self->_backView setNeedsDisplay];
   if (objc_opt_respondsToSelector())
   {
-    v19 = self;
+    selfCopy = self;
     [(SUScalingFlipViewDelegate *)self->_delegate scalingFlipViewDidFinish:self];
   }
 
@@ -261,15 +261,15 @@
   return [(SUScalingFlipView *)self _transformAnimationWithStart:&v31 middle:&v30 end:v25];
 }
 
-- (id)_fixedAnimationForAnimation:(id)a3
+- (id)_fixedAnimationForAnimation:(id)animation
 {
   duration = self->_duration;
   UIAnimationDragCoefficient();
-  [a3 setDuration:duration * v5];
-  [a3 setFillMode:*MEMORY[0x1E69797E8]];
-  [a3 setRemovedOnCompletion:0];
-  [a3 setTimingFunction:{objc_msgSend(MEMORY[0x1E69793D0], "functionWithName:", *MEMORY[0x1E6979EB8])}];
-  return a3;
+  [animation setDuration:duration * v5];
+  [animation setFillMode:*MEMORY[0x1E69797E8]];
+  [animation setRemovedOnCompletion:0];
+  [animation setTimingFunction:{objc_msgSend(MEMORY[0x1E69793D0], "functionWithName:", *MEMORY[0x1E6979EB8])}];
+  return animation;
 }
 
 - (id)_frontLayerAnimation
@@ -426,7 +426,7 @@
   return v10;
 }
 
-- (id)_transformAnimationWithStart:(CATransform3D *)a3 middle:(CATransform3D *)a4 end:(CATransform3D *)a5
+- (id)_transformAnimationWithStart:(CATransform3D *)start middle:(CATransform3D *)middle end:(CATransform3D *)end
 {
   v8 = [MEMORY[0x1E6979390] animationWithKeyPath:@"transform"];
   v9 = MEMORY[0x1E695DEC8];
@@ -436,43 +436,43 @@
   LODWORD(v13) = 1.0;
   [v8 setKeyTimes:{objc_msgSend(v9, "arrayWithObjects:", v10, v12, objc_msgSend(MEMORY[0x1E696AD98], "numberWithFloat:", v13), 0)}];
   v14 = MEMORY[0x1E695DEC8];
-  v15 = *&a3->m33;
-  v34 = *&a3->m31;
+  v15 = *&start->m33;
+  v34 = *&start->m31;
   v35 = v15;
-  v16 = *&a3->m43;
-  v36 = *&a3->m41;
+  v16 = *&start->m43;
+  v36 = *&start->m41;
   v37 = v16;
-  v17 = *&a3->m13;
-  v30 = *&a3->m11;
+  v17 = *&start->m13;
+  v30 = *&start->m11;
   v31 = v17;
-  v18 = *&a3->m23;
-  v32 = *&a3->m21;
+  v18 = *&start->m23;
+  v32 = *&start->m21;
   v33 = v18;
   v19 = [MEMORY[0x1E696B098] valueWithCATransform3D:&v30];
-  v20 = *&a4->m33;
-  v34 = *&a4->m31;
+  v20 = *&middle->m33;
+  v34 = *&middle->m31;
   v35 = v20;
-  v21 = *&a4->m43;
-  v36 = *&a4->m41;
+  v21 = *&middle->m43;
+  v36 = *&middle->m41;
   v37 = v21;
-  v22 = *&a4->m13;
-  v30 = *&a4->m11;
+  v22 = *&middle->m13;
+  v30 = *&middle->m11;
   v31 = v22;
-  v23 = *&a4->m23;
-  v32 = *&a4->m21;
+  v23 = *&middle->m23;
+  v32 = *&middle->m21;
   v33 = v23;
   v24 = [MEMORY[0x1E696B098] valueWithCATransform3D:&v30];
-  v25 = *&a5->m33;
-  v34 = *&a5->m31;
+  v25 = *&end->m33;
+  v34 = *&end->m31;
   v35 = v25;
-  v26 = *&a5->m43;
-  v36 = *&a5->m41;
+  v26 = *&end->m43;
+  v36 = *&end->m41;
   v37 = v26;
-  v27 = *&a5->m13;
-  v30 = *&a5->m11;
+  v27 = *&end->m13;
+  v30 = *&end->m11;
   v31 = v27;
-  v28 = *&a5->m23;
-  v32 = *&a5->m21;
+  v28 = *&end->m23;
+  v32 = *&end->m21;
   v33 = v28;
   [v8 setValues:{objc_msgSend(v14, "arrayWithObjects:", v19, v24, objc_msgSend(MEMORY[0x1E696B098], "valueWithCATransform3D:", &v30), 0)}];
   return v8;

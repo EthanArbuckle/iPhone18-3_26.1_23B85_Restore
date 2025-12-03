@@ -1,11 +1,11 @@
 @interface Pride2025StripeLayerController
 - (_TtC22NTKPride2025FaceBundle30Pride2025StripeLayerController)init;
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
+- (id)actionForLayer:(id)layer forKey:(id)key;
 @end
 
 @implementation Pride2025StripeLayerController
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
   v4 = [objc_allocWithZone(NSNull) init];
 

@@ -1,26 +1,26 @@
 @interface _MFTiltedTabItemView
 + (id)_newContentShadowView;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (CATransform3D)contentTransform;
 - (CGRect)closeButtonHitRect;
 - (ComposePlaceholderView)composePlaceholderView;
 - (UIEdgeInsets)contentClippingInsets;
 - (_MFTiltedTabItemView)init;
-- (void)installMaskCutoutView:(id)a3;
-- (void)layoutHeaderViewAnimated:(BOOL)a3 closeButton:(BOOL)a4;
+- (void)installMaskCutoutView:(id)view;
+- (void)layoutHeaderViewAnimated:(BOOL)animated closeButton:(BOOL)button;
 - (void)layoutSubviews;
-- (void)setBorrowedContentScale:(double)a3;
-- (void)setBorrowedContentView:(id)a3;
-- (void)setContentTransform:(CATransform3D *)a3;
+- (void)setBorrowedContentScale:(double)scale;
+- (void)setBorrowedContentView:(id)view;
+- (void)setContentTransform:(CATransform3D *)transform;
 - (void)uninstallMaskCutoutView;
 @end
 
 @implementation _MFTiltedTabItemView
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"zPosition"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"zPosition"])
   {
     v5 = 1;
   }
@@ -29,7 +29,7 @@
   {
     v7.receiver = self;
     v7.super_class = _MFTiltedTabItemView;
-    v5 = [(_MFTiltedTabItemView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(_MFTiltedTabItemView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;
@@ -52,14 +52,14 @@
     closeButtonWrapperView = v4->_closeButtonWrapperView;
     v4->_closeButtonWrapperView = v5;
 
-    v7 = [(UIView *)v4->_closeButtonWrapperView layer];
-    [v7 setAnchorPoint:{0.5, 0.0}];
+    layer = [(UIView *)v4->_closeButtonWrapperView layer];
+    [layer setAnchorPoint:{0.5, 0.0}];
 
-    v8 = [(_MFTiltedTabItemView *)v4 layer];
-    [v8 setAnchorPoint:{0.5, 0.0}];
+    layer2 = [(_MFTiltedTabItemView *)v4 layer];
+    [layer2 setAnchorPoint:{0.5, 0.0}];
 
-    v9 = [(_MFTiltedTabItemView *)v4 layer];
-    [v9 setAllowsGroupOpacity:0];
+    layer3 = [(_MFTiltedTabItemView *)v4 layer];
+    [layer3 setAllowsGroupOpacity:0];
 
     v10 = [UIView alloc];
     [(_MFTiltedTabItemView *)v4 bounds];
@@ -67,16 +67,16 @@
     contentClipperView = v4->_contentClipperView;
     v4->_contentClipperView = v11;
 
-    v13 = [(UIView *)v4->_contentClipperView layer];
-    [v13 setAnchorPoint:{CGPointZero.x, CGPointZero.y}];
+    layer4 = [(UIView *)v4->_contentClipperView layer];
+    [layer4 setAnchorPoint:{CGPointZero.x, CGPointZero.y}];
 
     [(UIView *)v4->_contentClipperView _setContinuousCornerRadius:10.0];
     [(UIView *)v4->_contentClipperView setPreservesSuperviewLayoutMargins:1];
     [(UIView *)v4->_contentClipperView setClipsToBounds:1];
     [(_MFTiltedTabItemView *)v4 addSubview:v4->_contentClipperView];
-    v14 = [objc_opt_class() _newContentShadowView];
+    _newContentShadowView = [objc_opt_class() _newContentShadowView];
     contentShadowView = v4->_contentShadowView;
-    v4->_contentShadowView = v14;
+    v4->_contentShadowView = _newContentShadowView;
 
     [(_MFTiltedTabItemView *)v4 addSubview:v4->_contentShadowView];
     if ((sub_10020B844() & 1) == 0)
@@ -101,28 +101,28 @@
 + (id)_newContentShadowView
 {
   v2 = objc_alloc_init(_TabGradientView);
-  v3 = [(_TabGradientView *)v2 gradientLayer];
-  [MFSafariTabsClassConstants configureTabContentGradientLayer:v3];
+  gradientLayer = [(_TabGradientView *)v2 gradientLayer];
+  [MFSafariTabsClassConstants configureTabContentGradientLayer:gradientLayer];
 
   return v2;
 }
 
-- (void)layoutHeaderViewAnimated:(BOOL)a3 closeButton:(BOOL)a4
+- (void)layoutHeaderViewAnimated:(BOOL)animated closeButton:(BOOL)button
 {
-  v5 = a3;
-  v7 = a4;
+  animatedCopy = animated;
+  buttonCopy = button;
   [(UIButton *)self->_closeButton alpha];
-  if (v8 != v7)
+  if (v8 != buttonCopy)
   {
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_10021D65C;
     v20[3] = &unk_10064D9D8;
     v20[4] = self;
-    v21 = a4;
+    buttonCopy2 = button;
     v9 = objc_retainBlock(v20);
     v10 = v9;
-    if (v5)
+    if (animatedCopy)
     {
       [UIView animateWithDuration:327680 delay:v9 options:0 animations:0.22 completion:0.0];
     }
@@ -133,29 +133,29 @@
     }
   }
 
-  v11 = [(_MFTiltedTabItemView *)self composePlaceholderView];
-  v12 = v11;
-  if (v11)
+  composePlaceholderView = [(_MFTiltedTabItemView *)self composePlaceholderView];
+  v12 = composePlaceholderView;
+  if (composePlaceholderView)
   {
-    [v11 layoutIfNeeded];
+    [composePlaceholderView layoutIfNeeded];
     [(UIView *)self->_closeButtonWrapperView frame];
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v19 = [v12 navigationBar];
-    [v19 bounds];
-    [v19 convertRect:self->_closeButtonWrapperView toView:?];
+    navigationBar = [v12 navigationBar];
+    [navigationBar bounds];
+    [navigationBar convertRect:self->_closeButtonWrapperView toView:?];
     [(UIView *)self->_closeButtonWrapperView setFrame:v14, v16, v18];
   }
 }
 
 - (CATransform3D)contentTransform
 {
-  v4 = [(UIView *)self->_contentClipperView layer];
-  v6 = v4;
-  if (v4)
+  layer = [(UIView *)self->_contentClipperView layer];
+  v6 = layer;
+  if (layer)
   {
-    [v4 transform];
+    [layer transform];
   }
 
   else
@@ -173,42 +173,42 @@
   return result;
 }
 
-- (void)setContentTransform:(CATransform3D *)a3
+- (void)setContentTransform:(CATransform3D *)transform
 {
-  v3 = [(UIView *)self->_contentClipperView layer:*&a3->m11];
+  v3 = [(UIView *)self->_contentClipperView layer:*&transform->m11];
   [v3 setTransform:&v4];
 }
 
-- (void)setBorrowedContentScale:(double)a3
+- (void)setBorrowedContentScale:(double)scale
 {
-  if (self->_borrowedContentScale != a3)
+  if (self->_borrowedContentScale != scale)
   {
     v7 = v3;
     v8 = v4;
-    self->_borrowedContentScale = a3;
+    self->_borrowedContentScale = scale;
     borrowedContentView = self->_borrowedContentView;
-    CGAffineTransformMakeScale(&v6, a3, a3);
+    CGAffineTransformMakeScale(&v6, scale, scale);
     [(UIView *)borrowedContentView setTransform:&v6];
   }
 }
 
-- (void)setBorrowedContentView:(id)a3
+- (void)setBorrowedContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   borrowedContentView = self->_borrowedContentView;
-  if (borrowedContentView != v5)
+  if (borrowedContentView != viewCopy)
   {
-    v22 = v5;
-    v7 = [(UIView *)borrowedContentView superview];
+    v22 = viewCopy;
+    superview = [(UIView *)borrowedContentView superview];
     contentClipperView = self->_contentClipperView;
 
-    if (v7 == contentClipperView)
+    if (superview == contentClipperView)
     {
       [(UIView *)self->_borrowedContentView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_borrowedContentView, a3);
-    v5 = v22;
+    objc_storeStrong(&self->_borrowedContentView, view);
+    viewCopy = v22;
     if (v22)
     {
       [(UIView *)self->_contentClipperView insertSubview:v22 belowSubview:self->_contentShadowView];
@@ -222,33 +222,33 @@
       [(UIView *)v22 setCenter:MidX - v12, MidY - v13];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      v5 = v22;
+      viewCopy = v22;
       if (isKindOfClass)
       {
         v15 = v22;
         if (MUISolariumFeatureEnabled())
         {
           v16 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:24 target:0 action:0];
-          v17 = [(UIView *)v15 navigationBar];
-          v18 = [v17 topItem];
-          [v18 setLeftBarButtonItem:v16];
+          navigationBar = [(UIView *)v15 navigationBar];
+          topItem = [navigationBar topItem];
+          [topItem setLeftBarButtonItem:v16];
         }
 
         else
         {
           v16 = [UIImage systemImageNamed:MFImageGlyphXMark];
-          v17 = [[UIImageView alloc] initWithFrame:{0.0, 0.0, 13.0, 13.0}];
+          navigationBar = [[UIImageView alloc] initWithFrame:{0.0, 0.0, 13.0, 13.0}];
           v19 = +[UIColor mailTiltedTabCloseButtonTintColor];
-          [v17 setTintColor:v19];
+          [navigationBar setTintColor:v19];
 
-          [v17 setImage:v16];
-          v18 = [[UIBarButtonItem alloc] initWithCustomView:v17];
-          v20 = [(UIView *)v15 navigationBar];
-          v21 = [v20 topItem];
-          [v21 setLeftBarButtonItem:v18];
+          [navigationBar setImage:v16];
+          topItem = [[UIBarButtonItem alloc] initWithCustomView:navigationBar];
+          navigationBar2 = [(UIView *)v15 navigationBar];
+          topItem2 = [navigationBar2 topItem];
+          [topItem2 setLeftBarButtonItem:topItem];
         }
 
-        v5 = v22;
+        viewCopy = v22;
       }
     }
   }
@@ -278,20 +278,20 @@
   }
 }
 
-- (void)installMaskCutoutView:(id)a3
+- (void)installMaskCutoutView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(_MFTiltedTabItemView *)self setMaskCutoutView:?];
   [(UIView *)self->_contentClipperView frame];
-  [v4 setFrame:?];
-  [(_MFTiltedTabItemView *)self addSubview:v4];
+  [viewCopy setFrame:?];
+  [(_MFTiltedTabItemView *)self addSubview:viewCopy];
 }
 
 - (void)uninstallMaskCutoutView
 {
   [(_MFTiltedTabItemView *)self setMaskCutoutView:0];
-  v3 = [(_MFTiltedTabItemView *)self maskCutoutView];
-  [v3 removeFromSuperview];
+  maskCutoutView = [(_MFTiltedTabItemView *)self maskCutoutView];
+  [maskCutoutView removeFromSuperview];
 }
 
 - (ComposePlaceholderView)composePlaceholderView

@@ -6,12 +6,12 @@
 - (CKTapbackPickerBalloonDisplayConfiguration)init;
 - (double)horizontalMarginBetweenBubbleAndEmojiTail;
 - (double)sourceX;
-- (void)setHorizontalMarginBetweenBubbleAndEmojiTail:(double)a3;
-- (void)setIsWidthConstrained:(BOOL)a3;
-- (void)setPickerPillPreferredContentSize:(CGSize)a3;
-- (void)setSourceX:(double)a3;
-- (void)setWantsBottomTail:(BOOL)a3;
-- (void)setWantsRightTail:(BOOL)a3;
+- (void)setHorizontalMarginBetweenBubbleAndEmojiTail:(double)tail;
+- (void)setIsWidthConstrained:(BOOL)constrained;
+- (void)setPickerPillPreferredContentSize:(CGSize)size;
+- (void)setSourceX:(double)x;
+- (void)setWantsBottomTail:(BOOL)tail;
+- (void)setWantsRightTail:(BOOL)tail;
 @end
 
 @implementation CKTapbackPickerBalloonDisplayConfiguration
@@ -23,11 +23,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setSourceX:(double)a3
+- (void)setSourceX:(double)x
 {
   v5 = OBJC_IVAR___CKTapbackPickerBalloonDisplayConfiguration_sourceX;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = x;
 }
 
 - (BOOL)wantsRightTail
@@ -37,11 +37,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setWantsRightTail:(BOOL)a3
+- (void)setWantsRightTail:(BOOL)tail
 {
   v5 = OBJC_IVAR___CKTapbackPickerBalloonDisplayConfiguration_wantsRightTail;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = tail;
 }
 
 - (BOOL)wantsBottomTail
@@ -51,11 +51,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setWantsBottomTail:(BOOL)a3
+- (void)setWantsBottomTail:(BOOL)tail
 {
   v5 = OBJC_IVAR___CKTapbackPickerBalloonDisplayConfiguration_wantsBottomTail;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = tail;
 }
 
 - (BOOL)isWidthConstrained
@@ -65,11 +65,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsWidthConstrained:(BOOL)a3
+- (void)setIsWidthConstrained:(BOOL)constrained
 {
   v5 = OBJC_IVAR___CKTapbackPickerBalloonDisplayConfiguration_isWidthConstrained;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = constrained;
 }
 
 - (double)horizontalMarginBetweenBubbleAndEmojiTail
@@ -79,11 +79,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setHorizontalMarginBetweenBubbleAndEmojiTail:(double)a3
+- (void)setHorizontalMarginBetweenBubbleAndEmojiTail:(double)tail
 {
   v5 = OBJC_IVAR___CKTapbackPickerBalloonDisplayConfiguration_horizontalMarginBetweenBubbleAndEmojiTail;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = tail;
 }
 
 - (CGSize)pickerPillPreferredContentSize
@@ -97,10 +97,10 @@
   return result;
 }
 
-- (void)setPickerPillPreferredContentSize:(CGSize)a3
+- (void)setPickerPillPreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = (self + OBJC_IVAR___CKTapbackPickerBalloonDisplayConfiguration_pickerPillPreferredContentSize);
   swift_beginAccess();
   *v5 = width;

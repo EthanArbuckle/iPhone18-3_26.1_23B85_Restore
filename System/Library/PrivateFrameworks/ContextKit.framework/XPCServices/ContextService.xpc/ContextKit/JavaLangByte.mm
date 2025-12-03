@@ -1,16 +1,16 @@
 @interface JavaLangByte
-+ (int)compareWithByte:(char)a3 withByte:(char)a4;
++ (int)compareWithByte:(char)byte withByte:(char)withByte;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (int)compareToWithId:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (int)compareToWithId:(id)id;
 @end
 
 @implementation JavaLangByte
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
@@ -21,7 +21,7 @@
   }
 
   value = self->value_;
-  v6 = *(a3 + 8);
+  v6 = *(id + 8);
   if ((atomic_load_explicit(JavaLangByte__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10015CB98();
@@ -48,16 +48,16 @@
   }
 }
 
-+ (int)compareWithByte:(char)a3 withByte:(char)a4
++ (int)compareWithByte:(char)byte withByte:(char)withByte
 {
-  v4 = a4;
-  v5 = a3;
+  withByteCopy = withByte;
+  byteCopy = byte;
   if ((atomic_load_explicit(JavaLangByte__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10015CB98();
   }
 
-  if (v5 >= v4)
+  if (byteCopy >= withByteCopy)
   {
     v6 = 0;
   }
@@ -67,7 +67,7 @@
     v6 = -1;
   }
 
-  if (v5 > v4)
+  if (byteCopy > withByteCopy)
   {
     return 1;
   }
@@ -78,9 +78,9 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -92,7 +92,7 @@
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     JreThrowNullPointerException();
   }
@@ -102,12 +102,12 @@
     JreThrowClassCastException();
   }
 
-  return *(a3 + 8) == self->value_;
+  return *(equal + 8) == self->value_;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [IOSClass_arrayType(+[IOSClass byteClass](IOSClass "byteClass")];
     objc_opt_class();

@@ -1,21 +1,21 @@
 @interface BKIOHIDServiceSimplePersistentPropertySupport
-- (BKIOHIDServiceSimplePersistentPropertySupport)initWithSenderDescriptor:(id)a3 matcherDataProvider:(id)a4 persistentPropertyController:(id)a5;
-- (int64_t)setPersistentProperties:(id)a3 forServicesMatchingDescriptor:(id)a4;
+- (BKIOHIDServiceSimplePersistentPropertySupport)initWithSenderDescriptor:(id)descriptor matcherDataProvider:(id)provider persistentPropertyController:(id)controller;
+- (int64_t)setPersistentProperties:(id)properties forServicesMatchingDescriptor:(id)descriptor;
 - (void)invalidate;
-- (void)matcher:(id)a3 servicesDidMatch:(id)a4;
+- (void)matcher:(id)matcher servicesDidMatch:(id)match;
 @end
 
 @implementation BKIOHIDServiceSimplePersistentPropertySupport
 
-- (void)matcher:(id)a3 servicesDidMatch:(id)a4
+- (void)matcher:(id)matcher servicesDidMatch:(id)match
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  matchCopy = match;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v29 count:16];
+  v6 = [matchCopy countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v6)
   {
     v8 = v6;
@@ -28,13 +28,13 @@
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(matchCopy);
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
         persistentPropertyController = self->_persistentPropertyController;
-        v13 = [v11 senderDescriptor];
-        v14 = [(BKIOHIDServicePersistentPropertyController *)persistentPropertyController allPersistentPropertiesForServicesMatchingDescriptor:v13];
+        senderDescriptor = [v11 senderDescriptor];
+        v14 = [(BKIOHIDServicePersistentPropertyController *)persistentPropertyController allPersistentPropertiesForServicesMatchingDescriptor:senderDescriptor];
 
         v15 = [v14 count];
         v16 = BKLogHID();
@@ -65,7 +65,7 @@
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v21 objects:v29 count:16];
+      v8 = [matchCopy countByEnumeratingWithState:&v21 objects:v29 count:16];
     }
 
     while (v8);
@@ -74,16 +74,16 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)setPersistentProperties:(id)a3 forServicesMatchingDescriptor:(id)a4
+- (int64_t)setPersistentProperties:(id)properties forServicesMatchingDescriptor:(id)descriptor
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(BKIOHIDServiceMatcher *)self->_matcher existingServices];
+  propertiesCopy = properties;
+  existingServices = [(BKIOHIDServiceMatcher *)self->_matcher existingServices];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [existingServices countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -95,14 +95,14 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(existingServices);
         }
 
-        [*(*(&v13 + 1) + 8 * v10++) setProperties:v5];
+        [*(*(&v13 + 1) + 8 * v10++) setProperties:propertiesCopy];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [existingServices countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -119,20 +119,20 @@
   self->_matcher = 0;
 }
 
-- (BKIOHIDServiceSimplePersistentPropertySupport)initWithSenderDescriptor:(id)a3 matcherDataProvider:(id)a4 persistentPropertyController:(id)a5
+- (BKIOHIDServiceSimplePersistentPropertySupport)initWithSenderDescriptor:(id)descriptor matcherDataProvider:(id)provider persistentPropertyController:(id)controller
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  descriptorCopy = descriptor;
+  providerCopy = provider;
+  controllerCopy = controller;
   v17.receiver = self;
   v17.super_class = BKIOHIDServiceSimplePersistentPropertySupport;
   v12 = [(BKIOHIDServiceSimplePersistentPropertySupport *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_senderDescriptor, a3);
-    objc_storeStrong(&v13->_persistentPropertyController, a5);
-    v14 = [[BKIOHIDServiceMatcher alloc] initWithSenderDescriptor:v9 dataProvider:v10];
+    objc_storeStrong(&v12->_senderDescriptor, descriptor);
+    objc_storeStrong(&v13->_persistentPropertyController, controller);
+    v14 = [[BKIOHIDServiceMatcher alloc] initWithSenderDescriptor:descriptorCopy dataProvider:providerCopy];
     matcher = v13->_matcher;
     v13->_matcher = v14;
 

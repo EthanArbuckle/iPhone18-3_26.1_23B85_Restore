@@ -1,5 +1,5 @@
 @interface PPSBasebandRecipeHandler
-+ (id)formatBins:(id)a3;
++ (id)formatBins:(id)bins;
 + (id)timeSeriesRecipes;
 @end
 
@@ -9,11 +9,11 @@
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v8[0] = @"BasebandMetrics::Events";
-  v3 = [a1 basebandEventRecipe];
+  basebandEventRecipe = [self basebandEventRecipe];
   v8[1] = @"BasebandMetrics::Histogram";
-  v9[0] = v3;
-  v4 = [a1 basebandHistogramRecipe];
-  v9[1] = v4;
+  v9[0] = basebandEventRecipe;
+  basebandHistogramRecipe = [self basebandHistogramRecipe];
+  v9[1] = basebandHistogramRecipe;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -235,22 +235,22 @@ PPSTimeSeries *__51__PPSBasebandRecipeHandler_basebandHistogramRecipe__block_inv
   return v40;
 }
 
-+ (id)formatBins:(id)a3
++ (id)formatBins:(id)bins
 {
   v19[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
-  v5 = [v3 array];
+  binsCopy = bins;
+  array = [v3 array];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __39__PPSBasebandRecipeHandler_formatBins___block_invoke;
   v16[3] = &unk_279A115F8;
-  v17 = v5;
-  v6 = v5;
-  [v4 enumerateObjectsUsingBlock:v16];
+  v17 = array;
+  v6 = array;
+  [binsCopy enumerateObjectsUsingBlock:v16];
   v18[0] = @"bin_size";
   v7 = MEMORY[0x277CCABB0];
-  v8 = [v4 count];
+  v8 = [binsCopy count];
 
   v9 = [v7 numberWithUnsignedInteger:v8];
   v18[1] = @"duration_bins";

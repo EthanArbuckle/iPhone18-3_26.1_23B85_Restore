@@ -1,21 +1,21 @@
 @interface _HDDeletedSampleInsertionJournalEntry
-+ (void)applyEntries:(id)a3 withProfile:(id)a4;
-- (_HDDeletedSampleInsertionJournalEntry)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (void)applyEntries:(id)entries withProfile:(id)profile;
+- (_HDDeletedSampleInsertionJournalEntry)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HDDeletedSampleInsertionJournalEntry
 
-+ (void)applyEntries:(id)a3 withProfile:(id)a4
++ (void)applyEntries:(id)entries withProfile:(id)profile
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  entriesCopy = entries;
+  profileCopy = profile;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v5;
+  obj = entriesCopy;
   v7 = [obj countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v7)
   {
@@ -47,7 +47,7 @@
 
         v29 = 0;
         v14 = v13;
-        v15 = [HDDeletedSampleEntity insertCodableDeletedSamples:v12 provenance:v14 profile:v6 error:&v29];
+        v15 = [HDDeletedSampleEntity insertCodableDeletedSamples:v12 provenance:v14 profile:profileCopy error:&v29];
         v16 = v29;
 
         if (!v15)
@@ -68,8 +68,8 @@
           }
 
           v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", objc_opt_class()];
-          v19 = [v6 daemon];
-          v20 = [v19 autoBugCaptureReporter];
+          daemon = [profileCopy daemon];
+          autoBugCaptureReporter = [daemon autoBugCaptureReporter];
           if (v11)
           {
             v21 = *(v11 + 24);
@@ -83,7 +83,7 @@
           v22 = MEMORY[0x277CCABB0];
           v23 = v21;
           v24 = [v22 numberWithLongLong:{objc_msgSend(v23, "syncProvenance")}];
-          [v20 reportJournalFailureWithErrorDescription:v18 provenance:v24 error:v16];
+          [autoBugCaptureReporter reportJournalFailureWithErrorDescription:v18 provenance:v24 error:v16];
 
           v9 = v27;
         }
@@ -104,35 +104,35 @@ LABEL_22:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7 = objc_alloc_init(HDCodableObjectCollection);
   v5 = [(NSArray *)self->_samples mutableCopy];
   [(HDCodableObjectCollection *)v7 setDeletedSamples:v5];
 
-  v6 = [(HDCodableObjectCollection *)v7 data];
-  [v4 encodeObject:v6 forKey:@"codable_objects"];
+  data = [(HDCodableObjectCollection *)v7 data];
+  [coderCopy encodeObject:data forKey:@"codable_objects"];
 
-  [v4 encodeObject:self->_provenance forKey:@"provenance"];
+  [coderCopy encodeObject:self->_provenance forKey:@"provenance"];
 }
 
-- (_HDDeletedSampleInsertionJournalEntry)initWithCoder:(id)a3
+- (_HDDeletedSampleInsertionJournalEntry)initWithCoder:(id)coder
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = _HDDeletedSampleInsertionJournalEntry;
-  v5 = [(HDJournalEntry *)&v17 initWithCoder:v4];
+  v5 = [(HDJournalEntry *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"codable_objects"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"codable_objects"];
     if (v6)
     {
       v7 = [[HDCodableObjectCollection alloc] initWithData:v6];
-      v8 = [(HDCodableObjectCollection *)v7 deletedSamples];
+      deletedSamples = [(HDCodableObjectCollection *)v7 deletedSamples];
       samples = v5->_samples;
-      v5->_samples = v8;
+      v5->_samples = deletedSamples;
     }
 
     else
@@ -142,12 +142,12 @@ LABEL_22:
       v18[1] = objc_opt_class();
       v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
       samples = [v10 setWithArray:v7];
-      v11 = [v4 decodeObjectOfClasses:samples forKey:@"deleted_samples"];
+      v11 = [coderCopy decodeObjectOfClasses:samples forKey:@"deleted_samples"];
       v12 = v5->_samples;
       v5->_samples = v11;
     }
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"provenance"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"provenance"];
     provenance = v5->_provenance;
     v5->_provenance = v13;
   }

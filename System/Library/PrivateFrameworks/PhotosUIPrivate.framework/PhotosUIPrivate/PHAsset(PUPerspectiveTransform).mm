@@ -9,10 +9,10 @@
   v25 = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E69E9B10];
   v17 = *MEMORY[0x1E69E9B10];
-  if (([a1 hasAdjustments] & 1) == 0)
+  if (([self hasAdjustments] & 1) == 0)
   {
-    v3 = [a1 originalImageProperties];
-    v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
+    originalImageProperties = [self originalImageProperties];
+    v4 = [originalImageProperties objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
     v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6986898]];
 
     if (v5)

@@ -1,20 +1,20 @@
 @interface CSGeoServicesListener
-- (CSGeoServicesListener)initWithDispatchSilo:(id)a3;
-- (void)navigationListener:(id)a3 didChangeNavigationState:(unint64_t)a4 transportType:(int)a5;
+- (CSGeoServicesListener)initWithDispatchSilo:(id)silo;
+- (void)navigationListener:(id)listener didChangeNavigationState:(unint64_t)state transportType:(int)type;
 @end
 
 @implementation CSGeoServicesListener
 
-- (CSGeoServicesListener)initWithDispatchSilo:(id)a3
+- (CSGeoServicesListener)initWithDispatchSilo:(id)silo
 {
-  v5 = a3;
+  siloCopy = silo;
   v12.receiver = self;
   v12.super_class = CSGeoServicesListener;
   v6 = [(CSGeoServicesListener *)&v12 init];
-  objc_storeStrong(&v6->_silo, a3);
+  objc_storeStrong(&v6->_silo, silo);
   v7 = [GEONavigationListener alloc];
-  v8 = [(CLDispatchSilo *)v6->_silo queue];
-  v9 = [v7 initWithQueue:v8];
+  queue = [(CLDispatchSilo *)v6->_silo queue];
+  v9 = [v7 initWithQueue:queue];
   navigationListener = v6->_navigationListener;
   v6->_navigationListener = v9;
 
@@ -25,21 +25,21 @@
   return v6;
 }
 
-- (void)navigationListener:(id)a3 didChangeNavigationState:(unint64_t)a4 transportType:(int)a5
+- (void)navigationListener:(id)listener didChangeNavigationState:(unint64_t)state transportType:(int)type
 {
-  v8 = a3;
-  if (a4 == 2)
+  listenerCopy = listener;
+  if (state == 2)
   {
-    v9 = a5;
+    typeCopy = type;
   }
 
   else
   {
-    v9 = 4;
+    typeCopy = 4;
   }
 
-  self->_navigationTransportTypeAvailable = a4 == 2;
-  self->_navigationTransportType = v9;
+  self->_navigationTransportTypeAvailable = state == 2;
+  self->_navigationTransportType = typeCopy;
   if (qword_1004567D8 != -1)
   {
     sub_100358560();

@@ -1,8 +1,8 @@
 @interface JSSocialProfileModelRequest
 - (_TtC16MusicApplication27JSSocialProfileModelRequest)init;
-- (_TtC16MusicApplication27JSSocialProfileModelRequest)initWithCoder:(id)a3;
-- (id)copyWithZone:(void *)a3;
-- (id)newOperationWithResponseHandler:(id)a3;
+- (_TtC16MusicApplication27JSSocialProfileModelRequest)initWithCoder:(id)coder;
+- (id)copyWithZone:(void *)zone;
+- (id)newOperationWithResponseHandler:(id)handler;
 @end
 
 @implementation JSSocialProfileModelRequest
@@ -17,7 +17,7 @@
   return [(JSSocialProfileModelRequest *)&v5 init];
 }
 
-- (_TtC16MusicApplication27JSSocialProfileModelRequest)initWithCoder:(id)a3
+- (_TtC16MusicApplication27JSSocialProfileModelRequest)initWithCoder:(id)coder
 {
   swift_getObjectType();
   *&self->MPModelRequest_opaque[OBJC_IVAR____TtC16MusicApplication27JSSocialProfileModelRequest_profile] = 0;
@@ -26,10 +26,10 @@
   return 0;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v4 = self;
-  sub_4EB56C(a3, v7);
+  selfCopy = self;
+  sub_4EB56C(zone, v7);
 
   __swift_project_boxed_opaque_existential_1(v7, v7[3]);
   v5 = sub_ABB3A0();
@@ -37,13 +37,13 @@
   return v5;
 }
 
-- (id)newOperationWithResponseHandler:(id)a3
+- (id)newOperationWithResponseHandler:(id)handler
 {
   swift_getObjectType();
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(handler);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = JSViewModelRequestCoordinator.sharedCoordinator.unsafeMutableAddressor();
   v9 = *v8;
   v10 = *(**v8 + 144);
@@ -56,7 +56,7 @@
   *(v13 + 5) = v6;
   v14 = type metadata accessor for JSSocialProfileModelRequestOperation();
   v15 = objc_allocWithZone(v14);
-  [(JSSocialProfileModelRequest *)v7 copy];
+  [(JSSocialProfileModelRequest *)selfCopy copy];
   sub_ABAB50();
   swift_dynamicCast();
   *&v15[OBJC_IVAR____TtC16MusicApplication36JSSocialProfileModelRequestOperation_request] = v20;

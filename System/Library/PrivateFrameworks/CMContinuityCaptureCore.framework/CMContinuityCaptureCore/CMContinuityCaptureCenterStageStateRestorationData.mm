@@ -1,20 +1,20 @@
 @interface CMContinuityCaptureCenterStageStateRestorationData
-- (CMContinuityCaptureCenterStageStateRestorationData)initWithPreferencesDomain:(id)a3;
+- (CMContinuityCaptureCenterStageStateRestorationData)initWithPreferencesDomain:(id)domain;
 - (id)description;
 @end
 
 @implementation CMContinuityCaptureCenterStageStateRestorationData
 
-- (CMContinuityCaptureCenterStageStateRestorationData)initWithPreferencesDomain:(id)a3
+- (CMContinuityCaptureCenterStageStateRestorationData)initWithPreferencesDomain:(id)domain
 {
-  v5 = a3;
+  domainCopy = domain;
   v9.receiver = self;
   v9.super_class = CMContinuityCaptureCenterStageStateRestorationData;
   v6 = [(CMContinuityCaptureCenterStageStateRestorationData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_preferencesDomain, a3);
+    objc_storeStrong(&v6->_preferencesDomain, domain);
   }
 
   return v7;

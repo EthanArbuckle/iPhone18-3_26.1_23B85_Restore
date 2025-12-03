@@ -16,7 +16,7 @@
 
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 performSelector:sel_view];
+    v2 = [self performSelector:sel_view];
   }
 
   else
@@ -30,23 +30,23 @@
 - (void)ic_setTitleTextAttributesForAllStates:()IC
 {
   v4 = a3;
-  [a1 setTitleTextAttributes:v4 forState:0];
-  [a1 setTitleTextAttributes:v4 forState:2];
-  [a1 setTitleTextAttributes:v4 forState:1];
-  [a1 setTitleTextAttributes:v4 forState:8];
+  [self setTitleTextAttributes:v4 forState:0];
+  [self setTitleTextAttributes:v4 forState:2];
+  [self setTitleTextAttributes:v4 forState:1];
+  [self setTitleTextAttributes:v4 forState:8];
 }
 
 - (void)setIc_titleAndAccessibilityLabel:()IC
 {
-  [a1 setTitle:?];
-  v2 = [a1 accessibilityLabel];
-  [a1 setAccessibilityLabel:v2];
+  [self setTitle:?];
+  accessibilityLabel = [self accessibilityLabel];
+  [self setAccessibilityLabel:accessibilityLabel];
 }
 
 + (id)ic_itemWithFixedWidth:()IC
 {
   v2 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:6 target:0 action:0];
-  [v2 setWidth:a1];
+  [v2 setWidth:self];
 
   return v2;
 }

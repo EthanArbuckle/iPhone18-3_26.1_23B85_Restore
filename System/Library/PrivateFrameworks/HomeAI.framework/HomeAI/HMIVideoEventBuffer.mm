@@ -1,28 +1,28 @@
 @interface HMIVideoEventBuffer
-- (HMIVideoEventBuffer)initWithMaxCapacity:(int64_t)a3;
+- (HMIVideoEventBuffer)initWithMaxCapacity:(int64_t)capacity;
 - (id)description;
-- (id)extractObjectsInTimeRange:(id *)a3;
-- (id)neighborsOfObject:(id)a3;
-- (id)objectsInTimeRange:(id *)a3 includeEnd:(BOOL)a4;
-- (void)addObject:(id)a3;
+- (id)extractObjectsInTimeRange:(id *)range;
+- (id)neighborsOfObject:(id)object;
+- (id)objectsInTimeRange:(id *)range includeEnd:(BOOL)end;
+- (void)addObject:(id)object;
 - (void)removeAllObjects;
 @end
 
 @implementation HMIVideoEventBuffer
 
-- (HMIVideoEventBuffer)initWithMaxCapacity:(int64_t)a3
+- (HMIVideoEventBuffer)initWithMaxCapacity:(int64_t)capacity
 {
   v8.receiver = self;
   v8.super_class = HMIVideoEventBuffer;
   v4 = [(HMIVideoEventBuffer *)&v8 init];
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     data = v4->_data;
-    v4->_data = v5;
+    v4->_data = array;
 
     v4->_lock._os_unfair_lock_opaque = 0;
-    v4->_maxCapacity = a3;
+    v4->_maxCapacity = capacity;
   }
 
   return v4;
@@ -36,25 +36,25 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v6 = a3;
+  objectCopy = object;
   os_unfair_lock_lock_with_options();
   if ([(NSMutableArray *)self->_data count]>= self->_maxCapacity)
   {
     [(NSMutableArray *)self->_data hmf_removeFirstObject];
   }
 
-  v4 = [(NSMutableArray *)self->_data indexOfObject:v6 inSortedRange:0 options:[(NSMutableArray *)self->_data count] usingComparator:1024, &__block_literal_global_148];
+  v4 = [(NSMutableArray *)self->_data indexOfObject:objectCopy inSortedRange:0 options:[(NSMutableArray *)self->_data count] usingComparator:1024, &__block_literal_global_148];
   data = self->_data;
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(NSMutableArray *)data addObject:v6];
+    [(NSMutableArray *)data addObject:objectCopy];
   }
 
   else
   {
-    [(NSMutableArray *)data insertObject:v6 atIndex:?];
+    [(NSMutableArray *)data insertObject:objectCopy atIndex:?];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -92,7 +92,7 @@ LABEL_6:
   return v7;
 }
 
-- (id)objectsInTimeRange:(id *)a3 includeEnd:(BOOL)a4
+- (id)objectsInTimeRange:(id *)range includeEnd:(BOOL)end
 {
   os_unfair_lock_lock_with_options();
   data = self->_data;
@@ -100,11 +100,11 @@ LABEL_6:
   v11[1] = 3221225472;
   v11[2] = __53__HMIVideoEventBuffer_objectsInTimeRange_includeEnd___block_invoke;
   v11[3] = &__block_descriptor_81_e32_B32__0___HMIVideoEvent__8Q16_B24l;
-  v15 = a4;
-  v8 = *&a3->var0.var3;
-  v12 = *&a3->var0.var0;
+  endCopy = end;
+  v8 = *&range->var0.var3;
+  v12 = *&range->var0.var0;
   v13 = v8;
-  v14 = *&a3->var1.var1;
+  v14 = *&range->var1.var1;
   v9 = [(NSMutableArray *)data hmf_objectsPassingTest:v11];
   os_unfair_lock_unlock(&self->_lock);
 
@@ -162,7 +162,7 @@ LABEL_6:
   return v6;
 }
 
-- (id)extractObjectsInTimeRange:(id *)a3
+- (id)extractObjectsInTimeRange:(id *)range
 {
   os_unfair_lock_lock_with_options();
   data = self->_data;
@@ -170,10 +170,10 @@ LABEL_6:
   v10[1] = 3221225472;
   v10[2] = __49__HMIVideoEventBuffer_extractObjectsInTimeRange___block_invoke;
   v10[3] = &__block_descriptor_80_e32_B32__0___HMIVideoEvent__8Q16_B24l;
-  v6 = *&a3->var0.var3;
-  v11 = *&a3->var0.var0;
+  v6 = *&range->var0.var3;
+  v11 = *&range->var0.var0;
   v12 = v6;
-  v13 = *&a3->var1.var1;
+  v13 = *&range->var1.var1;
   v7 = [(NSMutableArray *)data indexesOfObjectsPassingTest:v10];
   v8 = [(NSMutableArray *)self->_data objectsAtIndexes:v7];
   [(NSMutableArray *)self->_data removeObjectsAtIndexes:v7];
@@ -202,12 +202,12 @@ BOOL __49__HMIVideoEventBuffer_extractObjectsInTimeRange___block_invoke(_OWORD *
   return CMTimeRangeContainsTime(&v5, &time) != 0;
 }
 
-- (id)neighborsOfObject:(id)a3
+- (id)neighborsOfObject:(id)object
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   os_unfair_lock_lock_with_options();
-  v5 = [(NSMutableArray *)self->_data indexOfObject:v4 inSortedRange:0 options:[(NSMutableArray *)self->_data count] usingComparator:1024, &__block_literal_global_153];
+  v5 = [(NSMutableArray *)self->_data indexOfObject:objectCopy inSortedRange:0 options:[(NSMutableArray *)self->_data count] usingComparator:1024, &__block_literal_global_153];
   if (v5 && v5 < [(NSMutableArray *)self->_data count])
   {
     v6 = [(NSMutableArray *)self->_data objectAtIndex:v5 - 1];

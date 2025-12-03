@@ -1,15 +1,15 @@
 @interface HMCache
 + (id)shortDescription;
-- (HMCache)initWithCachedObjects:(id)a3 name:(id)a4;
+- (HMCache)initWithCachedObjects:(id)objects name:(id)name;
 - (HMCacheDelegate)delegate;
 - (NSDictionary)cachedObjects;
-- (id)dataForKey:(id)a3;
-- (id)numberForKey:(id)a3;
-- (id)stringForKey:(id)a3;
-- (void)_setData:(id)a3 forKey:(id)a4;
-- (void)setData:(id)a3 forKey:(id)a4;
-- (void)setNumber:(id)a3 forKey:(id)a4;
-- (void)setString:(id)a3 forKey:(id)a4;
+- (id)dataForKey:(id)key;
+- (id)numberForKey:(id)key;
+- (id)stringForKey:(id)key;
+- (void)_setData:(id)data forKey:(id)key;
+- (void)setData:(id)data forKey:(id)key;
+- (void)setNumber:(id)number forKey:(id)key;
+- (void)setString:(id)string forKey:(id)key;
 @end
 
 @implementation HMCache
@@ -21,11 +21,11 @@
   return WeakRetained;
 }
 
-- (void)setString:(id)a3 forKey:(id)a4
+- (void)setString:(id)string forKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v10 requiringSecureCoding:1 error:0];
+  stringCopy = string;
+  keyCopy = key;
+  v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:stringCopy requiringSecureCoding:1 error:0];
   if (!v7)
   {
     v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"String cannot be nil" userInfo:0];
@@ -33,12 +33,12 @@
   }
 
   v8 = v7;
-  [(HMCache *)self setData:v7 forKey:v6];
+  [(HMCache *)self setData:v7 forKey:keyCopy];
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v3 = [(HMCache *)self dataForKey:a3];
+  v3 = [(HMCache *)self dataForKey:key];
   if (v3)
   {
     v4 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v3 error:0];
@@ -52,11 +52,11 @@
   return v4;
 }
 
-- (void)setNumber:(id)a3 forKey:(id)a4
+- (void)setNumber:(id)number forKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v10 requiringSecureCoding:1 error:0];
+  numberCopy = number;
+  keyCopy = key;
+  v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:numberCopy requiringSecureCoding:1 error:0];
   if (!v7)
   {
     v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Number cannot be nil" userInfo:0];
@@ -64,12 +64,12 @@
   }
 
   v8 = v7;
-  [(HMCache *)self setData:v7 forKey:v6];
+  [(HMCache *)self setData:v7 forKey:keyCopy];
 }
 
-- (id)numberForKey:(id)a3
+- (id)numberForKey:(id)key
 {
-  v3 = [(HMCache *)self dataForKey:a3];
+  v3 = [(HMCache *)self dataForKey:key];
   if (v3)
   {
     v4 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v3 error:0];
@@ -83,58 +83,58 @@
   return v4;
 }
 
-- (void)_setData:(id)a3 forKey:(id)a4
+- (void)_setData:(id)data forKey:(id)key
 {
-  v11 = a3;
-  v6 = a4;
-  if (v11)
+  dataCopy = data;
+  keyCopy = key;
+  if (dataCopy)
   {
     v7 = [HMCacheEntry alloc];
-    v8 = [MEMORY[0x1E695DF00] date];
-    v9 = [(HMCacheEntry *)v7 initWithData:v11 lastModificationDate:v8];
+    date = [MEMORY[0x1E695DF00] date];
+    v9 = [(HMCacheEntry *)v7 initWithData:dataCopy lastModificationDate:date];
 
     os_unfair_lock_lock_with_options();
-    [(NSMutableDictionary *)self->_cachedItems setObject:v9 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_cachedItems setObject:v9 forKeyedSubscript:keyCopy];
     os_unfair_lock_unlock(&self->_lock);
   }
 
   else
   {
     os_unfair_lock_lock_with_options();
-    [(NSMutableDictionary *)self->_cachedItems setObject:0 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_cachedItems setObject:0 forKeyedSubscript:keyCopy];
     os_unfair_lock_unlock(&self->_lock);
   }
 
-  v10 = [(HMCache *)self delegate];
-  [v10 cacheDidUpdate:self];
+  delegate = [(HMCache *)self delegate];
+  [delegate cacheDidUpdate:self];
 }
 
-- (void)setData:(id)a3 forKey:(id)a4
+- (void)setData:(id)data forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  if (!v8)
+  dataCopy = data;
+  keyCopy = key;
+  if (!dataCopy)
   {
     v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Data cannot be nil" userInfo:0];
     objc_exception_throw(v7);
   }
 
-  [(HMCache *)self _setData:v8 forKey:v6];
+  [(HMCache *)self _setData:dataCopy forKey:keyCopy];
 }
 
-- (id)dataForKey:(id)a3
+- (id)dataForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock_with_options();
-  v5 = [(NSMutableDictionary *)self->_cachedItems objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_cachedItems objectForKeyedSubscript:keyCopy];
   v6 = v5;
   if (v5 && [v5 isExpired])
   {
-    [(NSMutableDictionary *)self->_cachedItems setObject:0 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_cachedItems setObject:0 forKeyedSubscript:keyCopy];
 
     os_unfair_lock_unlock(&self->_lock);
-    v7 = [(HMCache *)self delegate];
-    [v7 cacheDidUpdate:self];
+    delegate = [(HMCache *)self delegate];
+    [delegate cacheDidUpdate:self];
 
     v6 = 0;
   }
@@ -144,9 +144,9 @@
     os_unfair_lock_unlock(&self->_lock);
   }
 
-  v8 = [v6 data];
+  data = [v6 data];
 
-  return v8;
+  return data;
 }
 
 - (NSDictionary)cachedObjects
@@ -176,10 +176,10 @@
 
         v8 = *(*(&v19 + 1) + 8 * i);
         v9 = [(NSMutableDictionary *)self->_cachedItems objectForKeyedSubscript:v8, v17];
-        v10 = [v9 isExpired];
+        isExpired = [v9 isExpired];
 
         cachedItems = self->_cachedItems;
-        if (v10)
+        if (isExpired)
         {
           [(NSMutableDictionary *)cachedItems setObject:0 forKeyedSubscript:v8];
           v5 = 1;
@@ -200,8 +200,8 @@
     os_unfair_lock_unlock((self + v17));
     if (v5)
     {
-      v13 = [(HMCache *)self delegate];
-      [v13 cacheDidUpdate:self];
+      delegate = [(HMCache *)self delegate];
+      [delegate cacheDidUpdate:self];
     }
   }
 
@@ -218,10 +218,10 @@
   return v14;
 }
 
-- (HMCache)initWithCachedObjects:(id)a3 name:(id)a4
+- (HMCache)initWithCachedObjects:(id)objects name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  objectsCopy = objects;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = HMCache;
   v8 = [(HMCache *)&v13 init];
@@ -229,11 +229,11 @@
   if (v8)
   {
     v8->_lock._os_unfair_lock_opaque = 0;
-    v10 = [v6 mutableCopy];
+    v10 = [objectsCopy mutableCopy];
     cachedItems = v9->_cachedItems;
     v9->_cachedItems = v10;
 
-    objc_storeStrong(&v9->_cacheName, a4);
+    objc_storeStrong(&v9->_cacheName, name);
   }
 
   return v9;

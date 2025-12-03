@@ -1,10 +1,10 @@
 @interface AMMotionDetectionSettings
-+ (id)_keyPathForTriggerTypeName:(id)a3;
++ (id)_keyPathForTriggerTypeName:(id)name;
 + (id)settingsControllerModule;
-+ (void)_enumerateTriggerTypes:(id)a3;
++ (void)_enumerateTriggerTypes:(id)types;
 - (unint64_t)enabledTriggers;
 - (void)setDefaultValues;
-- (void)setEnabledTriggers:(unint64_t)a3;
+- (void)setEnabledTriggers:(unint64_t)triggers;
 @end
 
 @implementation AMMotionDetectionSettings
@@ -20,15 +20,15 @@
 + (id)settingsControllerModule
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = objc_opt_class();
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __53__AMMotionDetectionSettings_settingsControllerModule__block_invoke;
   v21 = &unk_278C73638;
-  v22 = v3;
-  v23 = a1;
-  v5 = v3;
+  v22 = array;
+  selfCopy = self;
+  v5 = array;
   [v4 _enumerateTriggerTypes:&v18];
   v6 = [MEMORY[0x277D43218] sectionWithRows:v5 title:{@"Enabled Triggers", v18, v19, v20, v21}];
   v7 = MEMORY[0x277D431A8];
@@ -62,12 +62,12 @@ void __53__AMMotionDetectionSettings_settingsControllerModule__block_invoke(uint
   [*(a1 + 32) addObject:v7];
 }
 
-+ (id)_keyPathForTriggerTypeName:(id)a3
++ (id)_keyPathForTriggerTypeName:(id)name
 {
   v3 = MEMORY[0x277CCA900];
-  v4 = a3;
-  v5 = [v3 whitespaceCharacterSet];
-  v6 = [v4 componentsSeparatedByCharactersInSet:v5];
+  nameCopy = name;
+  whitespaceCharacterSet = [v3 whitespaceCharacterSet];
+  v6 = [nameCopy componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
 
   v7 = [v6 componentsJoinedByString:&stru_285176190];
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"triggerType%@", v7];
@@ -110,7 +110,7 @@ void __44__AMMotionDetectionSettings_enabledTriggers__block_invoke(uint64_t a1, 
   }
 }
 
-- (void)setEnabledTriggers:(unint64_t)a3
+- (void)setEnabledTriggers:(unint64_t)triggers
 {
   v5 = objc_opt_class();
   v6[0] = MEMORY[0x277D85DD0];
@@ -118,7 +118,7 @@ void __44__AMMotionDetectionSettings_enabledTriggers__block_invoke(uint64_t a1, 
   v6[2] = __48__AMMotionDetectionSettings_setEnabledTriggers___block_invoke;
   v6[3] = &unk_278C73638;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = triggers;
   [v5 _enumerateTriggerTypes:v6];
 }
 
@@ -135,10 +135,10 @@ void __48__AMMotionDetectionSettings_setEnabledTriggers___block_invoke(uint64_t 
   [v8 setValue:v11 forKey:v10];
 }
 
-+ (void)_enumerateTriggerTypes:(id)a3
++ (void)_enumerateTriggerTypes:(id)types
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  typesCopy = types;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -160,7 +160,7 @@ void __48__AMMotionDetectionSettings_setEnabledTriggers___block_invoke(uint64_t 
         v8 = *(*(&v12 + 1) + 8 * i);
         v9 = [v8 objectForKeyedSubscript:@"name"];
         v10 = [v8 objectForKeyedSubscript:@"value"];
-        v3[2](v3, v9, v10);
+        typesCopy[2](typesCopy, v9, v10);
       }
 
       v5 = [&unk_285177BB0 countByEnumeratingWithState:&v12 objects:v16 count:16];

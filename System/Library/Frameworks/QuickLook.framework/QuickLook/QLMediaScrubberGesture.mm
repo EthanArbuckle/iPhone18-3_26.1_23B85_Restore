@@ -1,23 +1,23 @@
 @interface QLMediaScrubberGesture
-- (QLMediaScrubberGesture)initWithPlayer:(id)a3;
+- (QLMediaScrubberGesture)initWithPlayer:(id)player;
 - (QLMediaScrubberGestureDelegate)scrubberDelegate;
 - (float)clampedEstimatedFrameRate;
 - (float)nominalFrameRate;
-- (void)scrubbGestureDidChange:(id)a3;
+- (void)scrubbGestureDidChange:(id)change;
 @end
 
 @implementation QLMediaScrubberGesture
 
-- (QLMediaScrubberGesture)initWithPlayer:(id)a3
+- (QLMediaScrubberGesture)initWithPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   v10.receiver = self;
   v10.super_class = QLMediaScrubberGesture;
   v6 = [(QLMediaScrubberGesture *)&v10 initWithTarget:self action:sel_scrubbGestureDidChange_];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_player, a3);
+    objc_storeStrong(&v6->_player, player);
     v8 = v7;
   }
 
@@ -27,9 +27,9 @@
 - (float)nominalFrameRate
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(AVPlayer *)self->_player currentItem];
-  v4 = [v3 asset];
-  v5 = [v4 tracksWithMediaType:*MEMORY[0x277CE5EA8]];
+  currentItem = [(AVPlayer *)self->_player currentItem];
+  asset = [currentItem asset];
+  v5 = [asset tracksWithMediaType:*MEMORY[0x277CE5EA8]];
 
   memset(&v23, 0, sizeof(v23));
   player = self->_player;
@@ -106,15 +106,15 @@ LABEL_16:
   return result;
 }
 
-- (void)scrubbGestureDidChange:(id)a3
+- (void)scrubbGestureDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(QLMediaScrubberGesture *)self view];
-  [(QLMediaScrubberGesture *)self locationInView:v5];
+  changeCopy = change;
+  view = [(QLMediaScrubberGesture *)self view];
+  [(QLMediaScrubberGesture *)self locationInView:view];
   v7 = v6;
   v9 = v8;
 
-  if ([v4 state] == 1)
+  if ([changeCopy state] == 1)
   {
     [(QLMediaScrubberGesture *)self nominalFrameRate];
     self->_estimatedFrameRate = v10;
@@ -130,12 +130,12 @@ LABEL_16:
     }
 
     Seconds = CMTimeGetSeconds(&time);
-    v34 = [(AVPlayer *)self->_player currentItem];
-    v35 = [v34 asset];
-    v36 = v35;
-    if (v35)
+    currentItem = [(AVPlayer *)self->_player currentItem];
+    asset = [currentItem asset];
+    v36 = asset;
+    if (asset)
     {
-      [v35 duration];
+      [asset duration];
     }
 
     else
@@ -148,20 +148,20 @@ LABEL_16:
 
     self->_startTouchLocationInView.x = v7;
     self->_startTouchLocationInView.y = v9;
-    v12 = [(QLMediaScrubberGesture *)self scrubberDelegate];
-    [v12 scrubberDidStartScrubbing:self];
+    scrubberDelegate = [(QLMediaScrubberGesture *)self scrubberDelegate];
+    [scrubberDelegate scrubberDidStartScrubbing:self];
   }
 
-  else if ([v4 state] == 3)
+  else if ([changeCopy state] == 3)
   {
-    v12 = [(QLMediaScrubberGesture *)self scrubberDelegate];
-    [v12 scrubberDidEndScrubbing:self];
+    scrubberDelegate = [(QLMediaScrubberGesture *)self scrubberDelegate];
+    [scrubberDelegate scrubberDidEndScrubbing:self];
   }
 
   else
   {
-    v13 = [(QLMediaScrubberGesture *)self view];
-    [v13 bounds];
+    view2 = [(QLMediaScrubberGesture *)self view];
+    [view2 bounds];
     v15 = v14 + -40.0;
 
     [(QLMediaScrubberGesture *)self maximumValue];
@@ -169,8 +169,8 @@ LABEL_16:
     [(QLMediaScrubberGesture *)self minimumValue];
     v19 = v17 - v18;
     v20 = v7 - self->_previousTouchLocationInView.x;
-    v21 = [(QLMediaScrubberGesture *)self view];
-    [v21 center];
+    view3 = [(QLMediaScrubberGesture *)self view];
+    [view3 center];
 
     y = self->_startTouchLocationInView.y;
     v23 = v9 <= y;
@@ -226,9 +226,9 @@ LABEL_16:
     self->_value = v41;
     self->_previousTouchLocationInView.x = v7;
     self->_previousTouchLocationInView.y = v9;
-    v12 = [(QLMediaScrubberGesture *)self scrubberDelegate];
+    scrubberDelegate = [(QLMediaScrubberGesture *)self scrubberDelegate];
     *&v42 = v41;
-    [v12 scrubber:self didChangeValue:v42];
+    [scrubberDelegate scrubber:self didChangeValue:v42];
   }
 }
 

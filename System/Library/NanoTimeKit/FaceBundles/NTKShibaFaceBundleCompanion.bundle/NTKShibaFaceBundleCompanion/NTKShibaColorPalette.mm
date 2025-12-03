@@ -8,9 +8,9 @@
 
 - (BOOL)_usesOverrideTickColors
 {
-  v3 = [(NTKShibaColorPalette *)self pigmentEditOption];
-  v4 = [v3 fullname];
-  v5 = [v4 isEqualToString:ntk_victory_fall2025_voltSplash];
+  pigmentEditOption = [(NTKShibaColorPalette *)self pigmentEditOption];
+  fullname = [pigmentEditOption fullname];
+  v5 = [fullname isEqualToString:ntk_victory_fall2025_voltSplash];
 
   if (v5)
   {
@@ -24,9 +24,9 @@
 
   v6 = 1;
   v7 = [(NTKShibaColorPalette *)self paletteAtIndex:1];
-  v8 = [v7 isBlackColor];
+  isBlackColor = [v7 isBlackColor];
 
-  if ((v8 & 1) == 0)
+  if ((isBlackColor & 1) == 0)
   {
     return 0;
   }
@@ -54,8 +54,8 @@
 {
   if ([(NTKShibaColorPalette *)self _usesOverrideTickColors])
   {
-    v3 = [(NTKShibaColorPalette *)self activeTickColor];
-    v4 = [v3 colorWithAlphaComponent:0.3];
+    activeTickColor = [(NTKShibaColorPalette *)self activeTickColor];
+    v4 = [activeTickColor colorWithAlphaComponent:0.3];
   }
 
   else

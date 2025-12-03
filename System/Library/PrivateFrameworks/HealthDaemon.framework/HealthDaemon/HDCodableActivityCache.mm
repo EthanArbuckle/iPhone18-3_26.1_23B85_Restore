@@ -1,42 +1,42 @@
 @interface HDCodableActivityCache
-- (BOOL)applyToObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)applyToObject:(id)object;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)_decodeCodableActivityStatisticsQuantityInfos:(uint64_t)a1;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_decodeCodableActivityStatisticsQuantityInfos:(uint64_t)infos;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)decodedEnergyBurnedGoalQuantity;
 - (id)decodedEnergyBurnedQuantity;
 - (id)decodedWalkingAndRunningDistanceQuantity;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addDailyBriskMinutesStatistics:(id)a3;
-- (void)addDailyEnergyBurnedStatistics:(id)a3;
-- (void)addDailyMoveMinutesStatistics:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasActiveHoursGoal:(BOOL)a3;
-- (void)setHasActiveHoursGoalDate:(BOOL)a3;
-- (void)setHasActivityMoveMode:(BOOL)a3;
-- (void)setHasBriskMinutes:(BOOL)a3;
-- (void)setHasBriskMinutesGoal:(BOOL)a3;
-- (void)setHasBriskMinutesGoalDate:(BOOL)a3;
-- (void)setHasCacheIndex:(BOOL)a3;
-- (void)setHasDeepBreathingDuration:(BOOL)a3;
-- (void)setHasEnergyBurned:(BOOL)a3;
-- (void)setHasEnergyBurnedGoal:(BOOL)a3;
-- (void)setHasEnergyBurnedGoalDate:(BOOL)a3;
-- (void)setHasFlightsClimbed:(BOOL)a3;
-- (void)setHasMoveMinutes:(BOOL)a3;
-- (void)setHasMoveMinutesGoal:(BOOL)a3;
-- (void)setHasMoveMinutesGoalDate:(BOOL)a3;
-- (void)setHasPaused:(BOOL)a3;
-- (void)setHasPushCount:(BOOL)a3;
-- (void)setHasSequence:(BOOL)a3;
-- (void)setHasStepCount:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)setHasWalkingAndRunningDistance:(BOOL)a3;
-- (void)setHasWheelchairUse:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addDailyBriskMinutesStatistics:(id)statistics;
+- (void)addDailyEnergyBurnedStatistics:(id)statistics;
+- (void)addDailyMoveMinutesStatistics:(id)statistics;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasActiveHoursGoal:(BOOL)goal;
+- (void)setHasActiveHoursGoalDate:(BOOL)date;
+- (void)setHasActivityMoveMode:(BOOL)mode;
+- (void)setHasBriskMinutes:(BOOL)minutes;
+- (void)setHasBriskMinutesGoal:(BOOL)goal;
+- (void)setHasBriskMinutesGoalDate:(BOOL)date;
+- (void)setHasCacheIndex:(BOOL)index;
+- (void)setHasDeepBreathingDuration:(BOOL)duration;
+- (void)setHasEnergyBurned:(BOOL)burned;
+- (void)setHasEnergyBurnedGoal:(BOOL)goal;
+- (void)setHasEnergyBurnedGoalDate:(BOOL)date;
+- (void)setHasFlightsClimbed:(BOOL)climbed;
+- (void)setHasMoveMinutes:(BOOL)minutes;
+- (void)setHasMoveMinutesGoal:(BOOL)goal;
+- (void)setHasMoveMinutesGoalDate:(BOOL)date;
+- (void)setHasPaused:(BOOL)paused;
+- (void)setHasPushCount:(BOOL)count;
+- (void)setHasSequence:(BOOL)sequence;
+- (void)setHasStepCount:(BOOL)count;
+- (void)setHasVersion:(BOOL)version;
+- (void)setHasWalkingAndRunningDistance:(BOOL)distance;
+- (void)setHasWheelchairUse:(BOOL)use;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableActivityCache
@@ -63,8 +63,8 @@
   if ((*(&self->_has + 2) & 0x10) != 0)
   {
     v4 = MEMORY[0x277CCD7E8];
-    v5 = [MEMORY[0x277CCDAB0] meterUnit];
-    v2 = [v4 quantityWithUnit:v5 doubleValue:self->_walkingAndRunningDistance];
+    meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+    v2 = [v4 quantityWithUnit:meterUnit doubleValue:self->_walkingAndRunningDistance];
   }
 
   else
@@ -92,34 +92,34 @@
   return v2;
 }
 
-- (BOOL)applyToObject:(id)a3
+- (BOOL)applyToObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (-[HDCodableActivityCache sample](self, "sample"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 applyToObject:v4], v5, v6))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (-[HDCodableActivityCache sample](self, "sample"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 applyToObject:objectCopy], v5, v6))
   {
-    v7 = [MEMORY[0x277CCD8D8] activityCacheType];
-    [v4 _setSampleType:v7];
+    activityCacheType = [MEMORY[0x277CCD8D8] activityCacheType];
+    [objectCopy _setSampleType:activityCacheType];
 
-    [v4 _setCacheIndex:{-[HDCodableActivityCache cacheIndex](self, "cacheIndex")}];
+    [objectCopy _setCacheIndex:{-[HDCodableActivityCache cacheIndex](self, "cacheIndex")}];
     if ([(HDCodableActivityCache *)self hasSequence])
     {
-      [v4 _setSequence:{-[HDCodableActivityCache sequence](self, "sequence")}];
+      [objectCopy _setSequence:{-[HDCodableActivityCache sequence](self, "sequence")}];
     }
 
-    v8 = [(HDCodableActivityCache *)self decodedEnergyBurnedQuantity];
-    [v4 _setEnergyBurned:v8];
+    decodedEnergyBurnedQuantity = [(HDCodableActivityCache *)self decodedEnergyBurnedQuantity];
+    [objectCopy _setEnergyBurned:decodedEnergyBurnedQuantity];
 
-    v9 = [(HDCodableActivityCache *)self decodedWalkingAndRunningDistanceQuantity];
-    [v4 _setWalkingAndRunningDistance:v9];
+    decodedWalkingAndRunningDistanceQuantity = [(HDCodableActivityCache *)self decodedWalkingAndRunningDistanceQuantity];
+    [objectCopy _setWalkingAndRunningDistance:decodedWalkingAndRunningDistanceQuantity];
 
-    v10 = [(HDCodableActivityCache *)self decodedEnergyBurnedGoalQuantity];
-    [v4 _setEnergyBurnedGoal:v10];
+    decodedEnergyBurnedGoalQuantity = [(HDCodableActivityCache *)self decodedEnergyBurnedGoalQuantity];
+    [objectCopy _setEnergyBurnedGoal:decodedEnergyBurnedGoalQuantity];
 
     if ([(HDCodableActivityCache *)self hasMoveMinutes])
     {
       [(HDCodableActivityCache *)self moveMinutes];
-      [v4 _setMoveMinutes:?];
+      [objectCopy _setMoveMinutes:?];
     }
 
     if ([(HDCodableActivityCache *)self hasMoveMinutesGoal])
@@ -136,20 +136,20 @@
         v11 = 0;
       }
 
-      [v4 _setMoveMinutesGoalOnly:v11];
+      [objectCopy _setMoveMinutesGoalOnly:v11];
     }
 
     if ([(HDCodableActivityCache *)self hasMoveMinutesGoalDate])
     {
       [(HDCodableActivityCache *)self moveMinutesGoalDate];
       v15 = HDDecodeDateForValue();
-      [v4 _setMoveMinutesGoalDateOnly:v15];
+      [objectCopy _setMoveMinutesGoalDateOnly:v15];
     }
 
     if ([(HDCodableActivityCache *)self hasBriskMinutes])
     {
       [(HDCodableActivityCache *)self briskMinutes];
-      [v4 _setBriskMinutes:?];
+      [objectCopy _setBriskMinutes:?];
     }
 
     if ([(HDCodableActivityCache *)self hasBriskMinutesGoal])
@@ -166,20 +166,20 @@
         v16 = 0;
       }
 
-      [v4 _setBriskMinutesGoalOnly:v16];
+      [objectCopy _setBriskMinutesGoalOnly:v16];
     }
 
     if ([(HDCodableActivityCache *)self hasBriskMinutesGoalDate])
     {
       [(HDCodableActivityCache *)self briskMinutesGoalDate];
       v19 = HDDecodeDateForValue();
-      [v4 _setBriskMinutesGoalDateOnly:v19];
+      [objectCopy _setBriskMinutesGoalDateOnly:v19];
     }
 
     if ([(HDCodableActivityCache *)self hasActiveHours])
     {
       [(HDCodableActivityCache *)self activeHours];
-      [v4 _setActiveHours:?];
+      [objectCopy _setActiveHours:?];
     }
 
     if ([(HDCodableActivityCache *)self hasActiveHoursGoal])
@@ -196,96 +196,96 @@
         v20 = 0;
       }
 
-      [v4 _setActiveHoursGoalOnly:v20];
+      [objectCopy _setActiveHoursGoalOnly:v20];
     }
 
     if ([(HDCodableActivityCache *)self hasActiveHoursGoalDate])
     {
       [(HDCodableActivityCache *)self activeHoursGoalDate];
       v23 = HDDecodeDateForValue();
-      [v4 _setActiveHoursGoalDateOnly:v23];
+      [objectCopy _setActiveHoursGoalDateOnly:v23];
     }
 
     if ([(HDCodableActivityCache *)self hasStepCount])
     {
-      [v4 _setStepCount:{-[HDCodableActivityCache stepCount](self, "stepCount")}];
+      [objectCopy _setStepCount:{-[HDCodableActivityCache stepCount](self, "stepCount")}];
     }
 
     if ([(HDCodableActivityCache *)self hasPushCount])
     {
-      [v4 _setPushCount:{-[HDCodableActivityCache pushCount](self, "pushCount")}];
+      [objectCopy _setPushCount:{-[HDCodableActivityCache pushCount](self, "pushCount")}];
     }
 
     if ([(HDCodableActivityCache *)self hasWheelchairUse])
     {
-      [v4 _setWheelchairUse:{-[HDCodableActivityCache wheelchairUse](self, "wheelchairUse")}];
+      [objectCopy _setWheelchairUse:{-[HDCodableActivityCache wheelchairUse](self, "wheelchairUse")}];
     }
 
     if ([(HDCodableActivityCache *)self hasEnergyBurnedGoalDate])
     {
-      v24 = [(HDCodableActivityCache *)self decodedEnergyBurnedGoalQuantity];
+      decodedEnergyBurnedGoalQuantity2 = [(HDCodableActivityCache *)self decodedEnergyBurnedGoalQuantity];
       [(HDCodableActivityCache *)self energyBurnedGoalDate];
       v25 = HDDecodeDateForValue();
-      [v4 _setEnergyBurnedGoal:v24 date:v25];
+      [objectCopy _setEnergyBurnedGoal:decodedEnergyBurnedGoalQuantity2 date:v25];
     }
 
     if ([(HDCodableActivityCache *)self hasFlightsClimbed])
     {
-      [v4 _setFlightsClimbed:{-[HDCodableActivityCache flightsClimbed](self, "flightsClimbed")}];
+      [objectCopy _setFlightsClimbed:{-[HDCodableActivityCache flightsClimbed](self, "flightsClimbed")}];
     }
 
     if ([(HDCodableActivityCache *)self hasDeepBreathingDuration])
     {
       [(HDCodableActivityCache *)self deepBreathingDuration];
-      [v4 _setDeepBreathingDuration:?];
+      [objectCopy _setDeepBreathingDuration:?];
     }
 
     if ([(HDCodableActivityCache *)self activityMoveMode])
     {
-      v26 = [(HDCodableActivityCache *)self activityMoveMode];
+      activityMoveMode = [(HDCodableActivityCache *)self activityMoveMode];
     }
 
     else
     {
-      v26 = 1;
+      activityMoveMode = 1;
     }
 
-    [v4 _setActivityMoveMode:v26];
-    [v4 _setVersion:{-[HDCodableActivityCache version](self, "version")}];
-    v27 = [(HDCodableActivityCache *)self dailyEnergyBurnedStatistics];
-    v28 = [v27 count];
+    [objectCopy _setActivityMoveMode:activityMoveMode];
+    [objectCopy _setVersion:{-[HDCodableActivityCache version](self, "version")}];
+    dailyEnergyBurnedStatistics = [(HDCodableActivityCache *)self dailyEnergyBurnedStatistics];
+    v28 = [dailyEnergyBurnedStatistics count];
 
     if (v28)
     {
-      v29 = [(HDCodableActivityCache *)self dailyEnergyBurnedStatistics];
-      v30 = [(HDCodableActivityCache *)self _decodeCodableActivityStatisticsQuantityInfos:v29];
+      dailyEnergyBurnedStatistics2 = [(HDCodableActivityCache *)self dailyEnergyBurnedStatistics];
+      v30 = [(HDCodableActivityCache *)self _decodeCodableActivityStatisticsQuantityInfos:dailyEnergyBurnedStatistics2];
 
-      [v4 _setDailyEnergyBurnedStatistics:v30];
+      [objectCopy _setDailyEnergyBurnedStatistics:v30];
     }
 
-    v31 = [(HDCodableActivityCache *)self dailyMoveMinutesStatistics];
-    v32 = [v31 count];
+    dailyMoveMinutesStatistics = [(HDCodableActivityCache *)self dailyMoveMinutesStatistics];
+    v32 = [dailyMoveMinutesStatistics count];
 
     if (v32)
     {
-      v33 = [(HDCodableActivityCache *)self dailyMoveMinutesStatistics];
-      v34 = [(HDCodableActivityCache *)self _decodeCodableActivityStatisticsQuantityInfos:v33];
+      dailyMoveMinutesStatistics2 = [(HDCodableActivityCache *)self dailyMoveMinutesStatistics];
+      v34 = [(HDCodableActivityCache *)self _decodeCodableActivityStatisticsQuantityInfos:dailyMoveMinutesStatistics2];
 
-      [v4 _setDailyMoveMinutesStatistics:v34];
+      [objectCopy _setDailyMoveMinutesStatistics:v34];
     }
 
-    v35 = [(HDCodableActivityCache *)self dailyBriskMinutesStatistics];
-    v36 = [v35 count];
+    dailyBriskMinutesStatistics = [(HDCodableActivityCache *)self dailyBriskMinutesStatistics];
+    v36 = [dailyBriskMinutesStatistics count];
 
     if (v36)
     {
-      v37 = [(HDCodableActivityCache *)self dailyBriskMinutesStatistics];
-      v38 = [(HDCodableActivityCache *)self _decodeCodableActivityStatisticsQuantityInfos:v37];
+      dailyBriskMinutesStatistics2 = [(HDCodableActivityCache *)self dailyBriskMinutesStatistics];
+      v38 = [(HDCodableActivityCache *)self _decodeCodableActivityStatisticsQuantityInfos:dailyBriskMinutesStatistics2];
 
-      [v4 _setDailyBriskMinutesStatistics:v38];
+      [objectCopy _setDailyBriskMinutesStatistics:v38];
     }
 
-    [v4 _setPaused:{-[HDCodableActivityCache paused](self, "paused")}];
+    [objectCopy _setPaused:{-[HDCodableActivityCache paused](self, "paused")}];
     v12 = 1;
   }
 
@@ -297,13 +297,13 @@
   return v12;
 }
 
-- (id)_decodeCodableActivityStatisticsQuantityInfos:(uint64_t)a1
+- (id)_decodeCodableActivityStatisticsQuantityInfos:(uint64_t)infos
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (infos)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -326,7 +326,7 @@
           v10 = [MEMORY[0x277CCDD10] createWithCodable:{*(*(&v14 + 1) + 8 * i), v14}];
           if (v10)
           {
-            [v4 addObject:v10];
+            [array addObject:v10];
           }
         }
 
@@ -336,7 +336,7 @@
       while (v7);
     }
 
-    v11 = [v4 copy];
+    v11 = [array copy];
   }
 
   else
@@ -349,9 +349,9 @@
   return v11;
 }
 
-- (void)setHasCacheIndex:(BOOL)a3
+- (void)setHasCacheIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 128;
   }
@@ -364,9 +364,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasEnergyBurned:(BOOL)a3
+- (void)setHasEnergyBurned:(BOOL)burned
 {
-  if (a3)
+  if (burned)
   {
     v3 = 512;
   }
@@ -379,9 +379,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasBriskMinutes:(BOOL)a3
+- (void)setHasBriskMinutes:(BOOL)minutes
 {
-  if (a3)
+  if (minutes)
   {
     v3 = 16;
   }
@@ -394,9 +394,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasStepCount:(BOOL)a3
+- (void)setHasStepCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x40000;
   }
@@ -409,9 +409,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasEnergyBurnedGoal:(BOOL)a3
+- (void)setHasEnergyBurnedGoal:(BOOL)goal
 {
-  if (a3)
+  if (goal)
   {
     v3 = 1024;
   }
@@ -424,9 +424,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasWalkingAndRunningDistance:(BOOL)a3
+- (void)setHasWalkingAndRunningDistance:(BOOL)distance
 {
-  if (a3)
+  if (distance)
   {
     v3 = 0x100000;
   }
@@ -439,9 +439,9 @@
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasEnergyBurnedGoalDate:(BOOL)a3
+- (void)setHasEnergyBurnedGoalDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2048;
   }
@@ -454,9 +454,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasDeepBreathingDuration:(BOOL)a3
+- (void)setHasDeepBreathingDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 256;
   }
@@ -469,9 +469,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasPushCount:(BOOL)a3
+- (void)setHasPushCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x10000;
   }
@@ -484,9 +484,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasFlightsClimbed:(BOOL)a3
+- (void)setHasFlightsClimbed:(BOOL)climbed
 {
-  if (a3)
+  if (climbed)
   {
     v3 = 4096;
   }
@@ -499,9 +499,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasWheelchairUse:(BOOL)a3
+- (void)setHasWheelchairUse:(BOOL)use
 {
-  if (a3)
+  if (use)
   {
     v3 = 0x200000;
   }
@@ -514,45 +514,45 @@
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)addDailyEnergyBurnedStatistics:(id)a3
+- (void)addDailyEnergyBurnedStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   dailyEnergyBurnedStatistics = self->_dailyEnergyBurnedStatistics;
-  v8 = v4;
+  v8 = statisticsCopy;
   if (!dailyEnergyBurnedStatistics)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_dailyEnergyBurnedStatistics;
     self->_dailyEnergyBurnedStatistics = v6;
 
-    v4 = v8;
+    statisticsCopy = v8;
     dailyEnergyBurnedStatistics = self->_dailyEnergyBurnedStatistics;
   }
 
-  [(NSMutableArray *)dailyEnergyBurnedStatistics addObject:v4];
+  [(NSMutableArray *)dailyEnergyBurnedStatistics addObject:statisticsCopy];
 }
 
-- (void)addDailyBriskMinutesStatistics:(id)a3
+- (void)addDailyBriskMinutesStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   dailyBriskMinutesStatistics = self->_dailyBriskMinutesStatistics;
-  v8 = v4;
+  v8 = statisticsCopy;
   if (!dailyBriskMinutesStatistics)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_dailyBriskMinutesStatistics;
     self->_dailyBriskMinutesStatistics = v6;
 
-    v4 = v8;
+    statisticsCopy = v8;
     dailyBriskMinutesStatistics = self->_dailyBriskMinutesStatistics;
   }
 
-  [(NSMutableArray *)dailyBriskMinutesStatistics addObject:v4];
+  [(NSMutableArray *)dailyBriskMinutesStatistics addObject:statisticsCopy];
 }
 
-- (void)setHasSequence:(BOOL)a3
+- (void)setHasSequence:(BOOL)sequence
 {
-  if (a3)
+  if (sequence)
   {
     v3 = 0x20000;
   }
@@ -565,9 +565,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasBriskMinutesGoal:(BOOL)a3
+- (void)setHasBriskMinutesGoal:(BOOL)goal
 {
-  if (a3)
+  if (goal)
   {
     v3 = 32;
   }
@@ -580,9 +580,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasActiveHoursGoal:(BOOL)a3
+- (void)setHasActiveHoursGoal:(BOOL)goal
 {
-  if (a3)
+  if (goal)
   {
     v3 = 2;
   }
@@ -595,9 +595,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasMoveMinutes:(BOOL)a3
+- (void)setHasMoveMinutes:(BOOL)minutes
 {
-  if (a3)
+  if (minutes)
   {
     v3 = 0x2000;
   }
@@ -610,9 +610,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasMoveMinutesGoal:(BOOL)a3
+- (void)setHasMoveMinutesGoal:(BOOL)goal
 {
-  if (a3)
+  if (goal)
   {
     v3 = 0x4000;
   }
@@ -625,9 +625,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasMoveMinutesGoalDate:(BOOL)a3
+- (void)setHasMoveMinutesGoalDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 0x8000;
   }
@@ -640,27 +640,27 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)addDailyMoveMinutesStatistics:(id)a3
+- (void)addDailyMoveMinutesStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   dailyMoveMinutesStatistics = self->_dailyMoveMinutesStatistics;
-  v8 = v4;
+  v8 = statisticsCopy;
   if (!dailyMoveMinutesStatistics)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_dailyMoveMinutesStatistics;
     self->_dailyMoveMinutesStatistics = v6;
 
-    v4 = v8;
+    statisticsCopy = v8;
     dailyMoveMinutesStatistics = self->_dailyMoveMinutesStatistics;
   }
 
-  [(NSMutableArray *)dailyMoveMinutesStatistics addObject:v4];
+  [(NSMutableArray *)dailyMoveMinutesStatistics addObject:statisticsCopy];
 }
 
-- (void)setHasBriskMinutesGoalDate:(BOOL)a3
+- (void)setHasBriskMinutesGoalDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 64;
   }
@@ -673,9 +673,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasActiveHoursGoalDate:(BOOL)a3
+- (void)setHasActiveHoursGoalDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 4;
   }
@@ -688,9 +688,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasActivityMoveMode:(BOOL)a3
+- (void)setHasActivityMoveMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 8;
   }
@@ -703,9 +703,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 0x80000;
   }
@@ -718,9 +718,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasPaused:(BOOL)a3
+- (void)setHasPaused:(BOOL)paused
 {
-  if (a3)
+  if (paused)
   {
     v3 = 0x400000;
   }
@@ -739,8 +739,8 @@
   v8.receiver = self;
   v8.super_class = HDCodableActivityCache;
   v4 = [(HDCodableActivityCache *)&v8 description];
-  v5 = [(HDCodableActivityCache *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableActivityCache *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -748,19 +748,19 @@
 - (id)dictionaryRepresentation
 {
   v70 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   sample = self->_sample;
   if (sample)
   {
-    v5 = [(HDCodableSample *)sample dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"sample"];
+    dictionaryRepresentation = [(HDCodableSample *)sample dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"sample"];
   }
 
   has = self->_has;
   if ((*&has & 0x80) != 0)
   {
     v35 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_cacheIndex];
-    [v3 setObject:v35 forKey:@"cacheIndex"];
+    [dictionary setObject:v35 forKey:@"cacheIndex"];
 
     has = self->_has;
     if ((*&has & 0x200) == 0)
@@ -781,7 +781,7 @@ LABEL_5:
   }
 
   v36 = [MEMORY[0x277CCABB0] numberWithDouble:self->_energyBurned];
-  [v3 setObject:v36 forKey:@"energyBurned"];
+  [dictionary setObject:v36 forKey:@"energyBurned"];
 
   has = self->_has;
   if ((*&has & 0x10) == 0)
@@ -797,7 +797,7 @@ LABEL_6:
 
 LABEL_61:
   v37 = [MEMORY[0x277CCABB0] numberWithDouble:self->_briskMinutes];
-  [v3 setObject:v37 forKey:@"briskMinutes"];
+  [dictionary setObject:v37 forKey:@"briskMinutes"];
 
   has = self->_has;
   if ((*&has & 1) == 0)
@@ -813,7 +813,7 @@ LABEL_7:
 
 LABEL_62:
   v38 = [MEMORY[0x277CCABB0] numberWithDouble:self->_activeHours];
-  [v3 setObject:v38 forKey:@"activeHours"];
+  [dictionary setObject:v38 forKey:@"activeHours"];
 
   has = self->_has;
   if ((*&has & 0x40000) == 0)
@@ -829,7 +829,7 @@ LABEL_8:
 
 LABEL_63:
   v39 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_stepCount];
-  [v3 setObject:v39 forKey:@"stepCount"];
+  [dictionary setObject:v39 forKey:@"stepCount"];
 
   has = self->_has;
   if ((*&has & 0x400) == 0)
@@ -845,7 +845,7 @@ LABEL_9:
 
 LABEL_64:
   v40 = [MEMORY[0x277CCABB0] numberWithDouble:self->_energyBurnedGoal];
-  [v3 setObject:v40 forKey:@"energyBurnedGoal"];
+  [dictionary setObject:v40 forKey:@"energyBurnedGoal"];
 
   has = self->_has;
   if ((*&has & 0x100000) == 0)
@@ -861,7 +861,7 @@ LABEL_10:
 
 LABEL_65:
   v41 = [MEMORY[0x277CCABB0] numberWithDouble:self->_walkingAndRunningDistance];
-  [v3 setObject:v41 forKey:@"walkingAndRunningDistance"];
+  [dictionary setObject:v41 forKey:@"walkingAndRunningDistance"];
 
   has = self->_has;
   if ((*&has & 0x800) == 0)
@@ -877,7 +877,7 @@ LABEL_11:
 
 LABEL_66:
   v42 = [MEMORY[0x277CCABB0] numberWithDouble:self->_energyBurnedGoalDate];
-  [v3 setObject:v42 forKey:@"energyBurnedGoalDate"];
+  [dictionary setObject:v42 forKey:@"energyBurnedGoalDate"];
 
   has = self->_has;
   if ((*&has & 0x100) == 0)
@@ -893,7 +893,7 @@ LABEL_12:
 
 LABEL_67:
   v43 = [MEMORY[0x277CCABB0] numberWithDouble:self->_deepBreathingDuration];
-  [v3 setObject:v43 forKey:@"deepBreathingDuration"];
+  [dictionary setObject:v43 forKey:@"deepBreathingDuration"];
 
   has = self->_has;
   if ((*&has & 0x10000) == 0)
@@ -909,7 +909,7 @@ LABEL_13:
 
 LABEL_68:
   v44 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_pushCount];
-  [v3 setObject:v44 forKey:@"pushCount"];
+  [dictionary setObject:v44 forKey:@"pushCount"];
 
   has = self->_has;
   if ((*&has & 0x1000) == 0)
@@ -925,13 +925,13 @@ LABEL_14:
 
 LABEL_69:
   v45 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_flightsClimbed];
-  [v3 setObject:v45 forKey:@"flightsClimbed"];
+  [dictionary setObject:v45 forKey:@"flightsClimbed"];
 
   if ((*&self->_has & 0x200000) != 0)
   {
 LABEL_15:
     v7 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_wheelchairUse];
-    [v3 setObject:v7 forKey:@"wheelchairUse"];
+    [dictionary setObject:v7 forKey:@"wheelchairUse"];
   }
 
 LABEL_16:
@@ -957,8 +957,8 @@ LABEL_16:
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v63 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation2 = [*(*(&v63 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation2];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v63 objects:v69 count:16];
@@ -967,7 +967,7 @@ LABEL_16:
       while (v11);
     }
 
-    [v3 setObject:v8 forKey:@"dailyEnergyBurnedStatistics"];
+    [dictionary setObject:v8 forKey:@"dailyEnergyBurnedStatistics"];
   }
 
   if ([(NSMutableArray *)self->_dailyBriskMinutesStatistics count])
@@ -992,8 +992,8 @@ LABEL_16:
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v59 + 1) + 8 * j) dictionaryRepresentation];
-          [v15 addObject:v21];
+          dictionaryRepresentation3 = [*(*(&v59 + 1) + 8 * j) dictionaryRepresentation];
+          [v15 addObject:dictionaryRepresentation3];
         }
 
         v18 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v59 objects:v68 count:16];
@@ -1002,14 +1002,14 @@ LABEL_16:
       while (v18);
     }
 
-    [v3 setObject:v15 forKey:@"dailyBriskMinutesStatistics"];
+    [dictionary setObject:v15 forKey:@"dailyBriskMinutesStatistics"];
   }
 
   v22 = self->_has;
   if ((*&v22 & 0x20000) != 0)
   {
     v46 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_sequence];
-    [v3 setObject:v46 forKey:@"sequence"];
+    [dictionary setObject:v46 forKey:@"sequence"];
 
     v22 = self->_has;
     if ((*&v22 & 0x20) == 0)
@@ -1030,7 +1030,7 @@ LABEL_36:
   }
 
   v47 = [MEMORY[0x277CCABB0] numberWithDouble:self->_briskMinutesGoal];
-  [v3 setObject:v47 forKey:@"briskMinutesGoal"];
+  [dictionary setObject:v47 forKey:@"briskMinutesGoal"];
 
   v22 = self->_has;
   if ((*&v22 & 2) == 0)
@@ -1046,7 +1046,7 @@ LABEL_37:
 
 LABEL_73:
   v48 = [MEMORY[0x277CCABB0] numberWithDouble:self->_activeHoursGoal];
-  [v3 setObject:v48 forKey:@"activeHoursGoal"];
+  [dictionary setObject:v48 forKey:@"activeHoursGoal"];
 
   v22 = self->_has;
   if ((*&v22 & 0x2000) == 0)
@@ -1062,7 +1062,7 @@ LABEL_38:
 
 LABEL_74:
   v49 = [MEMORY[0x277CCABB0] numberWithDouble:self->_moveMinutes];
-  [v3 setObject:v49 forKey:@"moveMinutes"];
+  [dictionary setObject:v49 forKey:@"moveMinutes"];
 
   v22 = self->_has;
   if ((*&v22 & 0x4000) == 0)
@@ -1078,13 +1078,13 @@ LABEL_39:
 
 LABEL_75:
   v50 = [MEMORY[0x277CCABB0] numberWithDouble:self->_moveMinutesGoal];
-  [v3 setObject:v50 forKey:@"moveMinutesGoal"];
+  [dictionary setObject:v50 forKey:@"moveMinutesGoal"];
 
   if ((*&self->_has & 0x8000) != 0)
   {
 LABEL_40:
     v23 = [MEMORY[0x277CCABB0] numberWithDouble:self->_moveMinutesGoalDate];
-    [v3 setObject:v23 forKey:@"moveMinutesGoalDate"];
+    [dictionary setObject:v23 forKey:@"moveMinutesGoalDate"];
   }
 
 LABEL_41:
@@ -1110,8 +1110,8 @@ LABEL_41:
             objc_enumerationMutation(v25);
           }
 
-          v30 = [*(*(&v55 + 1) + 8 * k) dictionaryRepresentation];
-          [v24 addObject:v30];
+          dictionaryRepresentation4 = [*(*(&v55 + 1) + 8 * k) dictionaryRepresentation];
+          [v24 addObject:dictionaryRepresentation4];
         }
 
         v27 = [(NSMutableArray *)v25 countByEnumeratingWithState:&v55 objects:v67 count:16];
@@ -1120,14 +1120,14 @@ LABEL_41:
       while (v27);
     }
 
-    [v3 setObject:v24 forKey:@"dailyMoveMinutesStatistics"];
+    [dictionary setObject:v24 forKey:@"dailyMoveMinutesStatistics"];
   }
 
   v31 = self->_has;
   if ((*&v31 & 0x40) != 0)
   {
     v51 = [MEMORY[0x277CCABB0] numberWithDouble:self->_briskMinutesGoalDate];
-    [v3 setObject:v51 forKey:@"briskMinutesGoalDate"];
+    [dictionary setObject:v51 forKey:@"briskMinutesGoalDate"];
 
     v31 = self->_has;
     if ((*&v31 & 4) == 0)
@@ -1148,7 +1148,7 @@ LABEL_52:
   }
 
   v52 = [MEMORY[0x277CCABB0] numberWithDouble:{self->_activeHoursGoalDate, v55}];
-  [v3 setObject:v52 forKey:@"activeHoursGoalDate"];
+  [dictionary setObject:v52 forKey:@"activeHoursGoalDate"];
 
   v31 = self->_has;
   if ((*&v31 & 8) == 0)
@@ -1164,7 +1164,7 @@ LABEL_53:
 
 LABEL_79:
   v53 = [MEMORY[0x277CCABB0] numberWithLongLong:{self->_activityMoveMode, v55}];
-  [v3 setObject:v53 forKey:@"activityMoveMode"];
+  [dictionary setObject:v53 forKey:@"activityMoveMode"];
 
   v31 = self->_has;
   if ((*&v31 & 0x80000) == 0)
@@ -1180,25 +1180,25 @@ LABEL_54:
 
 LABEL_80:
   v54 = [MEMORY[0x277CCABB0] numberWithLongLong:{self->_version, v55}];
-  [v3 setObject:v54 forKey:@"version"];
+  [dictionary setObject:v54 forKey:@"version"];
 
   if ((*&self->_has & 0x400000) != 0)
   {
 LABEL_55:
     v32 = [MEMORY[0x277CCABB0] numberWithBool:{self->_paused, v55}];
-    [v3 setObject:v32 forKey:@"paused"];
+    [dictionary setObject:v32 forKey:@"paused"];
   }
 
 LABEL_56:
   v33 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v65 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_sample)
   {
     PBDataWriterWriteSubmessage();
@@ -1613,21 +1613,21 @@ LABEL_50:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v20 = v4;
+  toCopy = to;
+  v20 = toCopy;
   if (self->_sample)
   {
-    [v4 setSample:?];
-    v4 = v20;
+    [toCopy setSample:?];
+    toCopy = v20;
   }
 
   has = self->_has;
   if ((*&has & 0x80) != 0)
   {
-    *(v4 + 8) = self->_cacheIndex;
-    *(v4 + 55) |= 0x80u;
+    *(toCopy + 8) = self->_cacheIndex;
+    *(toCopy + 55) |= 0x80u;
     has = self->_has;
     if ((*&has & 0x200) == 0)
     {
@@ -1646,8 +1646,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 10) = *&self->_energyBurned;
-  *(v4 + 55) |= 0x200u;
+  *(toCopy + 10) = *&self->_energyBurned;
+  *(toCopy + 55) |= 0x200u;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -1661,8 +1661,8 @@ LABEL_6:
   }
 
 LABEL_46:
-  *(v4 + 5) = *&self->_briskMinutes;
-  *(v4 + 55) |= 0x10u;
+  *(toCopy + 5) = *&self->_briskMinutes;
+  *(toCopy + 55) |= 0x10u;
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -1676,8 +1676,8 @@ LABEL_7:
   }
 
 LABEL_47:
-  *(v4 + 1) = *&self->_activeHours;
-  *(v4 + 55) |= 1u;
+  *(toCopy + 1) = *&self->_activeHours;
+  *(toCopy + 55) |= 1u;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -1691,8 +1691,8 @@ LABEL_8:
   }
 
 LABEL_48:
-  *(v4 + 19) = self->_stepCount;
-  *(v4 + 55) |= 0x40000u;
+  *(toCopy + 19) = self->_stepCount;
+  *(toCopy + 55) |= 0x40000u;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -1706,8 +1706,8 @@ LABEL_9:
   }
 
 LABEL_49:
-  *(v4 + 11) = *&self->_energyBurnedGoal;
-  *(v4 + 55) |= 0x400u;
+  *(toCopy + 11) = *&self->_energyBurnedGoal;
+  *(toCopy + 55) |= 0x400u;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -1721,8 +1721,8 @@ LABEL_10:
   }
 
 LABEL_50:
-  *(v4 + 21) = *&self->_walkingAndRunningDistance;
-  *(v4 + 55) |= 0x100000u;
+  *(toCopy + 21) = *&self->_walkingAndRunningDistance;
+  *(toCopy + 55) |= 0x100000u;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -1736,8 +1736,8 @@ LABEL_11:
   }
 
 LABEL_51:
-  *(v4 + 12) = *&self->_energyBurnedGoalDate;
-  *(v4 + 55) |= 0x800u;
+  *(toCopy + 12) = *&self->_energyBurnedGoalDate;
+  *(toCopy + 55) |= 0x800u;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -1751,8 +1751,8 @@ LABEL_12:
   }
 
 LABEL_52:
-  *(v4 + 9) = *&self->_deepBreathingDuration;
-  *(v4 + 55) |= 0x100u;
+  *(toCopy + 9) = *&self->_deepBreathingDuration;
+  *(toCopy + 55) |= 0x100u;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -1763,8 +1763,8 @@ LABEL_13:
     }
 
 LABEL_54:
-    *(v4 + 13) = self->_flightsClimbed;
-    *(v4 + 55) |= 0x1000u;
+    *(toCopy + 13) = self->_flightsClimbed;
+    *(toCopy + 55) |= 0x1000u;
     if ((*&self->_has & 0x200000) == 0)
     {
       goto LABEL_16;
@@ -1774,8 +1774,8 @@ LABEL_54:
   }
 
 LABEL_53:
-  *(v4 + 17) = self->_pushCount;
-  *(v4 + 55) |= 0x10000u;
+  *(toCopy + 17) = self->_pushCount;
+  *(toCopy + 55) |= 0x10000u;
   has = self->_has;
   if ((*&has & 0x1000) != 0)
   {
@@ -1786,18 +1786,18 @@ LABEL_14:
   if ((*&has & 0x200000) != 0)
   {
 LABEL_15:
-    *(v4 + 22) = self->_wheelchairUse;
-    *(v4 + 55) |= 0x200000u;
+    *(toCopy + 22) = self->_wheelchairUse;
+    *(toCopy + 55) |= 0x200000u;
   }
 
 LABEL_16:
   if ([(HDCodableActivityCache *)self dailyEnergyBurnedStatisticsCount])
   {
     [v20 clearDailyEnergyBurnedStatistics];
-    v6 = [(HDCodableActivityCache *)self dailyEnergyBurnedStatisticsCount];
-    if (v6)
+    dailyEnergyBurnedStatisticsCount = [(HDCodableActivityCache *)self dailyEnergyBurnedStatisticsCount];
+    if (dailyEnergyBurnedStatisticsCount)
     {
-      v7 = v6;
+      v7 = dailyEnergyBurnedStatisticsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(HDCodableActivityCache *)self dailyEnergyBurnedStatisticsAtIndex:i];
@@ -1809,10 +1809,10 @@ LABEL_16:
   if ([(HDCodableActivityCache *)self dailyBriskMinutesStatisticsCount])
   {
     [v20 clearDailyBriskMinutesStatistics];
-    v10 = [(HDCodableActivityCache *)self dailyBriskMinutesStatisticsCount];
-    if (v10)
+    dailyBriskMinutesStatisticsCount = [(HDCodableActivityCache *)self dailyBriskMinutesStatisticsCount];
+    if (dailyBriskMinutesStatisticsCount)
     {
-      v11 = v10;
+      v11 = dailyBriskMinutesStatisticsCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(HDCodableActivityCache *)self dailyBriskMinutesStatisticsAtIndex:j];
@@ -1902,10 +1902,10 @@ LABEL_31:
   if ([(HDCodableActivityCache *)self dailyMoveMinutesStatisticsCount])
   {
     [v20 clearDailyMoveMinutesStatistics];
-    v15 = [(HDCodableActivityCache *)self dailyMoveMinutesStatisticsCount];
-    if (v15)
+    dailyMoveMinutesStatisticsCount = [(HDCodableActivityCache *)self dailyMoveMinutesStatisticsCount];
+    if (dailyMoveMinutesStatisticsCount)
     {
-      v16 = v15;
+      v16 = dailyMoveMinutesStatisticsCount;
       for (k = 0; k != v16; ++k)
       {
         v18 = [(HDCodableActivityCache *)self dailyMoveMinutesStatisticsAtIndex:k];
@@ -1979,11 +1979,11 @@ LABEL_40:
 LABEL_41:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HDCodableSample *)self->_sample copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HDCodableSample *)self->_sample copyWithZone:zone];
   v7 = *(v5 + 208);
   *(v5 + 208) = v6;
 
@@ -2175,7 +2175,7 @@ LABEL_14:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v39 + 1) + 8 * v13) copyWithZone:a3];
+        v14 = [*(*(&v39 + 1) + 8 * v13) copyWithZone:zone];
         [v5 addDailyEnergyBurnedStatistics:v14];
 
         ++v13;
@@ -2208,7 +2208,7 @@ LABEL_14:
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v35 + 1) + 8 * v19) copyWithZone:a3];
+        v20 = [*(*(&v35 + 1) + 8 * v19) copyWithZone:zone];
         [v5 addDailyBriskMinutesStatistics:v20];
 
         ++v19;
@@ -2319,7 +2319,7 @@ LABEL_35:
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v31 + 1) + 8 * v26) copyWithZone:{a3, v31}];
+        v27 = [*(*(&v31 + 1) + 8 * v26) copyWithZone:{zone, v31}];
         [v5 addDailyMoveMinutesStatistics:v27];
 
         ++v26;
@@ -2399,16 +2399,16 @@ LABEL_48:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_128;
   }
 
   sample = self->_sample;
-  if (sample | *(v4 + 26))
+  if (sample | *(equalCopy + 26))
   {
     if (![(HDCodableSample *)sample isEqual:?])
     {
@@ -2417,10 +2417,10 @@ LABEL_48:
   }
 
   has = self->_has;
-  v7 = *(v4 + 55);
+  v7 = *(equalCopy + 55);
   if ((*&has & 0x80) != 0)
   {
-    if ((v7 & 0x80) == 0 || self->_cacheIndex != *(v4 + 8))
+    if ((v7 & 0x80) == 0 || self->_cacheIndex != *(equalCopy + 8))
     {
       goto LABEL_128;
     }
@@ -2433,7 +2433,7 @@ LABEL_48:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v7 & 0x200) == 0 || self->_energyBurned != *(v4 + 10))
+    if ((v7 & 0x200) == 0 || self->_energyBurned != *(equalCopy + 10))
     {
       goto LABEL_128;
     }
@@ -2446,7 +2446,7 @@ LABEL_48:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_briskMinutes != *(v4 + 5))
+    if ((v7 & 0x10) == 0 || self->_briskMinutes != *(equalCopy + 5))
     {
       goto LABEL_128;
     }
@@ -2459,7 +2459,7 @@ LABEL_48:
 
   if (*&has)
   {
-    if ((v7 & 1) == 0 || self->_activeHours != *(v4 + 1))
+    if ((v7 & 1) == 0 || self->_activeHours != *(equalCopy + 1))
     {
       goto LABEL_128;
     }
@@ -2472,7 +2472,7 @@ LABEL_48:
 
   if ((*&has & 0x40000) != 0)
   {
-    if ((v7 & 0x40000) == 0 || self->_stepCount != *(v4 + 19))
+    if ((v7 & 0x40000) == 0 || self->_stepCount != *(equalCopy + 19))
     {
       goto LABEL_128;
     }
@@ -2485,7 +2485,7 @@ LABEL_48:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v7 & 0x400) == 0 || self->_energyBurnedGoal != *(v4 + 11))
+    if ((v7 & 0x400) == 0 || self->_energyBurnedGoal != *(equalCopy + 11))
     {
       goto LABEL_128;
     }
@@ -2498,7 +2498,7 @@ LABEL_48:
 
   if ((*&has & 0x100000) != 0)
   {
-    if ((v7 & 0x100000) == 0 || self->_walkingAndRunningDistance != *(v4 + 21))
+    if ((v7 & 0x100000) == 0 || self->_walkingAndRunningDistance != *(equalCopy + 21))
     {
       goto LABEL_128;
     }
@@ -2511,7 +2511,7 @@ LABEL_48:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v7 & 0x800) == 0 || self->_energyBurnedGoalDate != *(v4 + 12))
+    if ((v7 & 0x800) == 0 || self->_energyBurnedGoalDate != *(equalCopy + 12))
     {
       goto LABEL_128;
     }
@@ -2524,7 +2524,7 @@ LABEL_48:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v7 & 0x100) == 0 || self->_deepBreathingDuration != *(v4 + 9))
+    if ((v7 & 0x100) == 0 || self->_deepBreathingDuration != *(equalCopy + 9))
     {
       goto LABEL_128;
     }
@@ -2537,7 +2537,7 @@ LABEL_48:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v7 & 0x10000) == 0 || self->_pushCount != *(v4 + 17))
+    if ((v7 & 0x10000) == 0 || self->_pushCount != *(equalCopy + 17))
     {
       goto LABEL_128;
     }
@@ -2550,7 +2550,7 @@ LABEL_48:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v7 & 0x1000) == 0 || self->_flightsClimbed != *(v4 + 13))
+    if ((v7 & 0x1000) == 0 || self->_flightsClimbed != *(equalCopy + 13))
     {
       goto LABEL_128;
     }
@@ -2563,7 +2563,7 @@ LABEL_48:
 
   if ((*&has & 0x200000) != 0)
   {
-    if ((v7 & 0x200000) == 0 || self->_wheelchairUse != *(v4 + 22))
+    if ((v7 & 0x200000) == 0 || self->_wheelchairUse != *(equalCopy + 22))
     {
       goto LABEL_128;
     }
@@ -2575,13 +2575,13 @@ LABEL_48:
   }
 
   dailyEnergyBurnedStatistics = self->_dailyEnergyBurnedStatistics;
-  if (dailyEnergyBurnedStatistics | *(v4 + 24) && ![(NSMutableArray *)dailyEnergyBurnedStatistics isEqual:?])
+  if (dailyEnergyBurnedStatistics | *(equalCopy + 24) && ![(NSMutableArray *)dailyEnergyBurnedStatistics isEqual:?])
   {
     goto LABEL_128;
   }
 
   dailyBriskMinutesStatistics = self->_dailyBriskMinutesStatistics;
-  if (dailyBriskMinutesStatistics | *(v4 + 23))
+  if (dailyBriskMinutesStatistics | *(equalCopy + 23))
   {
     if (![(NSMutableArray *)dailyBriskMinutesStatistics isEqual:?])
     {
@@ -2590,10 +2590,10 @@ LABEL_48:
   }
 
   v10 = self->_has;
-  v11 = *(v4 + 55);
+  v11 = *(equalCopy + 55);
   if ((*&v10 & 0x20000) != 0)
   {
-    if ((v11 & 0x20000) == 0 || self->_sequence != *(v4 + 18))
+    if ((v11 & 0x20000) == 0 || self->_sequence != *(equalCopy + 18))
     {
       goto LABEL_128;
     }
@@ -2606,7 +2606,7 @@ LABEL_48:
 
   if ((*&v10 & 0x20) != 0)
   {
-    if ((v11 & 0x20) == 0 || self->_briskMinutesGoal != *(v4 + 6))
+    if ((v11 & 0x20) == 0 || self->_briskMinutesGoal != *(equalCopy + 6))
     {
       goto LABEL_128;
     }
@@ -2619,7 +2619,7 @@ LABEL_48:
 
   if ((*&v10 & 2) != 0)
   {
-    if ((v11 & 2) == 0 || self->_activeHoursGoal != *(v4 + 2))
+    if ((v11 & 2) == 0 || self->_activeHoursGoal != *(equalCopy + 2))
     {
       goto LABEL_128;
     }
@@ -2632,7 +2632,7 @@ LABEL_48:
 
   if ((*&v10 & 0x2000) != 0)
   {
-    if ((v11 & 0x2000) == 0 || self->_moveMinutes != *(v4 + 14))
+    if ((v11 & 0x2000) == 0 || self->_moveMinutes != *(equalCopy + 14))
     {
       goto LABEL_128;
     }
@@ -2645,7 +2645,7 @@ LABEL_48:
 
   if ((*&v10 & 0x4000) != 0)
   {
-    if ((v11 & 0x4000) == 0 || self->_moveMinutesGoal != *(v4 + 15))
+    if ((v11 & 0x4000) == 0 || self->_moveMinutesGoal != *(equalCopy + 15))
     {
       goto LABEL_128;
     }
@@ -2658,7 +2658,7 @@ LABEL_48:
 
   if ((*&v10 & 0x8000) != 0)
   {
-    if ((v11 & 0x8000) == 0 || self->_moveMinutesGoalDate != *(v4 + 16))
+    if ((v11 & 0x8000) == 0 || self->_moveMinutesGoalDate != *(equalCopy + 16))
     {
       goto LABEL_128;
     }
@@ -2670,7 +2670,7 @@ LABEL_48:
   }
 
   dailyMoveMinutesStatistics = self->_dailyMoveMinutesStatistics;
-  if (dailyMoveMinutesStatistics | *(v4 + 25))
+  if (dailyMoveMinutesStatistics | *(equalCopy + 25))
   {
     if (![(NSMutableArray *)dailyMoveMinutesStatistics isEqual:?])
     {
@@ -2678,12 +2678,12 @@ LABEL_48:
     }
 
     v10 = self->_has;
-    v11 = *(v4 + 55);
+    v11 = *(equalCopy + 55);
   }
 
   if ((*&v10 & 0x40) != 0)
   {
-    if ((v11 & 0x40) == 0 || self->_briskMinutesGoalDate != *(v4 + 7))
+    if ((v11 & 0x40) == 0 || self->_briskMinutesGoalDate != *(equalCopy + 7))
     {
       goto LABEL_128;
     }
@@ -2696,7 +2696,7 @@ LABEL_48:
 
   if ((*&v10 & 4) != 0)
   {
-    if ((v11 & 4) == 0 || self->_activeHoursGoalDate != *(v4 + 3))
+    if ((v11 & 4) == 0 || self->_activeHoursGoalDate != *(equalCopy + 3))
     {
       goto LABEL_128;
     }
@@ -2709,7 +2709,7 @@ LABEL_48:
 
   if ((*&v10 & 8) != 0)
   {
-    if ((v11 & 8) == 0 || self->_activityMoveMode != *(v4 + 4))
+    if ((v11 & 8) == 0 || self->_activityMoveMode != *(equalCopy + 4))
     {
       goto LABEL_128;
     }
@@ -2722,7 +2722,7 @@ LABEL_48:
 
   if ((*&v10 & 0x80000) != 0)
   {
-    if ((v11 & 0x80000) == 0 || self->_version != *(v4 + 20))
+    if ((v11 & 0x80000) == 0 || self->_version != *(equalCopy + 20))
     {
       goto LABEL_128;
     }
@@ -2739,7 +2739,7 @@ LABEL_48:
     {
       if (self->_paused)
       {
-        if (*(v4 + 216))
+        if (*(equalCopy + 216))
         {
 LABEL_126:
           v13 = 1;
@@ -2747,7 +2747,7 @@ LABEL_126:
         }
       }
 
-      else if (!*(v4 + 216))
+      else if (!*(equalCopy + 216))
       {
         goto LABEL_126;
       }
@@ -3360,12 +3360,12 @@ LABEL_130:
   return v86 ^ v87 ^ v85 ^ v84 ^ v83 ^ v82 ^ v81 ^ v80 ^ v26 ^ v30 ^ v79 ^ v78 ^ v77 ^ v76 ^ v75 ^ v74 ^ v40 ^ v41 ^ v45 ^ v49 ^ v53 ^ v57 ^ v61 ^ v65 ^ v69 ^ v70 ^ v71;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   sample = self->_sample;
-  v6 = *(v4 + 26);
+  v6 = *(fromCopy + 26);
   if (sample)
   {
     if (v6)
@@ -3379,12 +3379,12 @@ LABEL_130:
     [(HDCodableActivityCache *)self setSample:?];
   }
 
-  v7 = *(v4 + 55);
+  v7 = *(fromCopy + 55);
   if ((v7 & 0x80) != 0)
   {
-    self->_cacheIndex = *(v4 + 8);
+    self->_cacheIndex = *(fromCopy + 8);
     *&self->_has |= 0x80u;
-    v7 = *(v4 + 55);
+    v7 = *(fromCopy + 55);
     if ((v7 & 0x200) == 0)
     {
 LABEL_8:
@@ -3402,9 +3402,9 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  self->_energyBurned = *(v4 + 10);
+  self->_energyBurned = *(fromCopy + 10);
   *&self->_has |= 0x200u;
-  v7 = *(v4 + 55);
+  v7 = *(fromCopy + 55);
   if ((v7 & 0x10) == 0)
   {
 LABEL_9:
@@ -3417,9 +3417,9 @@ LABEL_9:
   }
 
 LABEL_56:
-  self->_briskMinutes = *(v4 + 5);
+  self->_briskMinutes = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  v7 = *(v4 + 55);
+  v7 = *(fromCopy + 55);
   if ((v7 & 1) == 0)
   {
 LABEL_10:
@@ -3432,9 +3432,9 @@ LABEL_10:
   }
 
 LABEL_57:
-  self->_activeHours = *(v4 + 1);
+  self->_activeHours = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v7 = *(v4 + 55);
+  v7 = *(fromCopy + 55);
   if ((v7 & 0x40000) == 0)
   {
 LABEL_11:
@@ -3447,9 +3447,9 @@ LABEL_11:
   }
 
 LABEL_58:
-  self->_stepCount = *(v4 + 19);
+  self->_stepCount = *(fromCopy + 19);
   *&self->_has |= 0x40000u;
-  v7 = *(v4 + 55);
+  v7 = *(fromCopy + 55);
   if ((v7 & 0x400) == 0)
   {
 LABEL_12:
@@ -3462,9 +3462,9 @@ LABEL_12:
   }
 
 LABEL_59:
-  self->_energyBurnedGoal = *(v4 + 11);
+  self->_energyBurnedGoal = *(fromCopy + 11);
   *&self->_has |= 0x400u;
-  v7 = *(v4 + 55);
+  v7 = *(fromCopy + 55);
   if ((v7 & 0x100000) == 0)
   {
 LABEL_13:
@@ -3477,9 +3477,9 @@ LABEL_13:
   }
 
 LABEL_60:
-  self->_walkingAndRunningDistance = *(v4 + 21);
+  self->_walkingAndRunningDistance = *(fromCopy + 21);
   *&self->_has |= 0x100000u;
-  v7 = *(v4 + 55);
+  v7 = *(fromCopy + 55);
   if ((v7 & 0x800) == 0)
   {
 LABEL_14:
@@ -3492,9 +3492,9 @@ LABEL_14:
   }
 
 LABEL_61:
-  self->_energyBurnedGoalDate = *(v4 + 12);
+  self->_energyBurnedGoalDate = *(fromCopy + 12);
   *&self->_has |= 0x800u;
-  v7 = *(v4 + 55);
+  v7 = *(fromCopy + 55);
   if ((v7 & 0x100) == 0)
   {
 LABEL_15:
@@ -3507,9 +3507,9 @@ LABEL_15:
   }
 
 LABEL_62:
-  self->_deepBreathingDuration = *(v4 + 9);
+  self->_deepBreathingDuration = *(fromCopy + 9);
   *&self->_has |= 0x100u;
-  v7 = *(v4 + 55);
+  v7 = *(fromCopy + 55);
   if ((v7 & 0x10000) == 0)
   {
 LABEL_16:
@@ -3522,9 +3522,9 @@ LABEL_16:
   }
 
 LABEL_63:
-  self->_pushCount = *(v4 + 17);
+  self->_pushCount = *(fromCopy + 17);
   *&self->_has |= 0x10000u;
-  v7 = *(v4 + 55);
+  v7 = *(fromCopy + 55);
   if ((v7 & 0x1000) == 0)
   {
 LABEL_17:
@@ -3537,12 +3537,12 @@ LABEL_17:
   }
 
 LABEL_64:
-  self->_flightsClimbed = *(v4 + 13);
+  self->_flightsClimbed = *(fromCopy + 13);
   *&self->_has |= 0x1000u;
-  if ((*(v4 + 55) & 0x200000) != 0)
+  if ((*(fromCopy + 55) & 0x200000) != 0)
   {
 LABEL_18:
-    self->_wheelchairUse = *(v4 + 22);
+    self->_wheelchairUse = *(fromCopy + 22);
     *&self->_has |= 0x200000u;
   }
 
@@ -3551,7 +3551,7 @@ LABEL_19:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v8 = *(v4 + 24);
+  v8 = *(fromCopy + 24);
   v9 = [v8 countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v9)
   {
@@ -3579,7 +3579,7 @@ LABEL_19:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v13 = *(v4 + 23);
+  v13 = *(fromCopy + 23);
   v14 = [v13 countByEnumeratingWithState:&v30 objects:v39 count:16];
   if (v14)
   {
@@ -3603,12 +3603,12 @@ LABEL_19:
     while (v15);
   }
 
-  v18 = *(v4 + 55);
+  v18 = *(fromCopy + 55);
   if ((v18 & 0x20000) != 0)
   {
-    self->_sequence = *(v4 + 18);
+    self->_sequence = *(fromCopy + 18);
     *&self->_has |= 0x20000u;
-    v18 = *(v4 + 55);
+    v18 = *(fromCopy + 55);
     if ((v18 & 0x20) == 0)
     {
 LABEL_35:
@@ -3626,9 +3626,9 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  self->_briskMinutesGoal = *(v4 + 6);
+  self->_briskMinutesGoal = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  v18 = *(v4 + 55);
+  v18 = *(fromCopy + 55);
   if ((v18 & 2) == 0)
   {
 LABEL_36:
@@ -3641,9 +3641,9 @@ LABEL_36:
   }
 
 LABEL_68:
-  self->_activeHoursGoal = *(v4 + 2);
+  self->_activeHoursGoal = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v18 = *(v4 + 55);
+  v18 = *(fromCopy + 55);
   if ((v18 & 0x2000) == 0)
   {
 LABEL_37:
@@ -3656,9 +3656,9 @@ LABEL_37:
   }
 
 LABEL_69:
-  self->_moveMinutes = *(v4 + 14);
+  self->_moveMinutes = *(fromCopy + 14);
   *&self->_has |= 0x2000u;
-  v18 = *(v4 + 55);
+  v18 = *(fromCopy + 55);
   if ((v18 & 0x4000) == 0)
   {
 LABEL_38:
@@ -3671,12 +3671,12 @@ LABEL_38:
   }
 
 LABEL_70:
-  self->_moveMinutesGoal = *(v4 + 15);
+  self->_moveMinutesGoal = *(fromCopy + 15);
   *&self->_has |= 0x4000u;
-  if ((*(v4 + 55) & 0x8000) != 0)
+  if ((*(fromCopy + 55) & 0x8000) != 0)
   {
 LABEL_39:
-    self->_moveMinutesGoalDate = *(v4 + 16);
+    self->_moveMinutesGoalDate = *(fromCopy + 16);
     *&self->_has |= 0x8000u;
   }
 
@@ -3685,7 +3685,7 @@ LABEL_40:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v19 = *(v4 + 25);
+  v19 = *(fromCopy + 25);
   v20 = [v19 countByEnumeratingWithState:&v26 objects:v38 count:16];
   if (v20)
   {
@@ -3709,12 +3709,12 @@ LABEL_40:
     while (v21);
   }
 
-  v24 = *(v4 + 55);
+  v24 = *(fromCopy + 55);
   if ((v24 & 0x40) != 0)
   {
-    self->_briskMinutesGoalDate = *(v4 + 7);
+    self->_briskMinutesGoalDate = *(fromCopy + 7);
     *&self->_has |= 0x40u;
-    v24 = *(v4 + 55);
+    v24 = *(fromCopy + 55);
     if ((v24 & 4) == 0)
     {
 LABEL_49:
@@ -3732,9 +3732,9 @@ LABEL_49:
     goto LABEL_49;
   }
 
-  self->_activeHoursGoalDate = *(v4 + 3);
+  self->_activeHoursGoalDate = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v24 = *(v4 + 55);
+  v24 = *(fromCopy + 55);
   if ((v24 & 8) == 0)
   {
 LABEL_50:
@@ -3744,9 +3744,9 @@ LABEL_50:
     }
 
 LABEL_75:
-    self->_version = *(v4 + 20);
+    self->_version = *(fromCopy + 20);
     *&self->_has |= 0x80000u;
-    if ((*(v4 + 55) & 0x400000) == 0)
+    if ((*(fromCopy + 55) & 0x400000) == 0)
     {
       goto LABEL_53;
     }
@@ -3755,9 +3755,9 @@ LABEL_75:
   }
 
 LABEL_74:
-  self->_activityMoveMode = *(v4 + 4);
+  self->_activityMoveMode = *(fromCopy + 4);
   *&self->_has |= 8u;
-  v24 = *(v4 + 55);
+  v24 = *(fromCopy + 55);
   if ((v24 & 0x80000) != 0)
   {
     goto LABEL_75;
@@ -3767,7 +3767,7 @@ LABEL_51:
   if ((v24 & 0x400000) != 0)
   {
 LABEL_52:
-    self->_paused = *(v4 + 216);
+    self->_paused = *(fromCopy + 216);
     *&self->_has |= 0x400000u;
   }
 

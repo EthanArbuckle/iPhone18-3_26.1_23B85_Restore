@@ -1,7 +1,7 @@
 @interface JavaNioSelectionKeyImpl
 - (BOOL)isConnected;
 - (id)checkValid;
-- (id)interestOpsWithInt:(int)a3;
+- (id)interestOpsWithInt:(int)int;
 - (int)interestOps;
 - (int)interestOpsNoCheck;
 - (void)dealloc;
@@ -27,7 +27,7 @@
 
 - (id)checkValid
 {
-  result = [a1 isValid];
+  result = [self isValid];
   if ((result & 1) == 0)
   {
     v2 = new_JavaNioChannelsCancelledKeyException_init();
@@ -45,24 +45,24 @@
     JreThrowNullPointerException();
   }
 
-  v3 = self;
+  selfCopy = self;
   v4 = *(v2 + 40);
   objc_sync_enter(v4);
-  LODWORD(v3) = *(&v3->channel_ + 1);
+  LODWORD(selfCopy) = *(&selfCopy->channel_ + 1);
   objc_sync_exit(v4);
-  return v3;
+  return selfCopy;
 }
 
-- (id)interestOpsWithInt:(int)a3
+- (id)interestOpsWithInt:(int)int
 {
   [JavaNioSelectionKeyImpl checkValid]_0(self);
-  v5 = [(JavaNioSelectionKeyImpl *)self channel];
-  if (!v5)
+  channel = [(JavaNioSelectionKeyImpl *)self channel];
+  if (!channel)
   {
     goto LABEL_5;
   }
 
-  if ((a3 & ~[v5 validOps]) != 0)
+  if ((int & ~[channel validOps]) != 0)
   {
     v9 = new_JavaLangIllegalArgumentException_init();
     objc_exception_throw(v9);
@@ -77,7 +77,7 @@ LABEL_5:
 
   v7 = *(v6 + 40);
   objc_sync_enter(v7);
-  *(&self->channel_ + 1) = a3;
+  *(&self->channel_ + 1) = int;
   objc_sync_exit(v7);
   return self;
 }

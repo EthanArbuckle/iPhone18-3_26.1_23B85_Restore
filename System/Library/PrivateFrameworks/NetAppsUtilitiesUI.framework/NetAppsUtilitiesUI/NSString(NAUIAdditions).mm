@@ -6,7 +6,7 @@
 
 - (BOOL)naui_containsCJKScripts
 {
-  if (![a1 length])
+  if (![self length])
   {
     return 0;
   }
@@ -14,7 +14,7 @@
   v2 = 0;
   do
   {
-    [a1 characterAtIndex:v2];
+    [self characterAtIndex:v2];
     v3 = NAUIIsCJKCharacter();
     if (v3)
     {
@@ -24,7 +24,7 @@
     ++v2;
   }
 
-  while (v2 < [a1 length]);
+  while (v2 < [self length]);
   return v3;
 }
 

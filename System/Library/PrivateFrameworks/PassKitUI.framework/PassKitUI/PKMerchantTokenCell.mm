@@ -1,5 +1,5 @@
 @interface PKMerchantTokenCell
-- (PKMerchantTokenCell)initWithFrame:(CGRect)a3;
+- (PKMerchantTokenCell)initWithFrame:(CGRect)frame;
 - (void)_setUpConstraints;
 - (void)_setUpIconView;
 - (void)_setUpIconViewConstraints;
@@ -9,12 +9,12 @@
 - (void)_setUpStackView;
 - (void)_setUpStackViewConstraints;
 - (void)_setUpViews;
-- (void)updateCellWithMerchantToken:(id)a3 showMerchantIcon:(BOOL)a4;
+- (void)updateCellWithMerchantToken:(id)token showMerchantIcon:(BOOL)icon;
 @end
 
 @implementation PKMerchantTokenCell
 
-- (PKMerchantTokenCell)initWithFrame:(CGRect)a3
+- (PKMerchantTokenCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PKMerchantTokenCell;
@@ -29,26 +29,26 @@
   return v4;
 }
 
-- (void)updateCellWithMerchantToken:(id)a3 showMerchantIcon:(BOOL)a4
+- (void)updateCellWithMerchantToken:(id)token showMerchantIcon:(BOOL)icon
 {
-  v4 = a4;
-  v6 = a3;
-  v19 = v6;
-  if (!v4)
+  iconCopy = icon;
+  tokenCopy = token;
+  v19 = tokenCopy;
+  if (!iconCopy)
   {
     [(UIStackView *)self->_stackView removeFromSuperview];
-    v11 = [(PKMerchantTokenCell *)self defaultContentConfiguration];
-    v12 = [v19 merchantName];
-    [v11 setText:v12];
+    defaultContentConfiguration = [(PKMerchantTokenCell *)self defaultContentConfiguration];
+    merchantName = [v19 merchantName];
+    [defaultContentConfiguration setText:merchantName];
 
-    [(PKMerchantTokenCell *)self setContentConfiguration:v11];
+    [(PKMerchantTokenCell *)self setContentConfiguration:defaultContentConfiguration];
     goto LABEL_10;
   }
 
-  if ([v6 isAMPPaymentToken])
+  if ([tokenCopy isAMPPaymentToken])
   {
     iconView = self->_iconView;
-    v8 = PKUIImageNamed(@"MerchantTokenAppleMerchantIcon45");
+    merchantIconURL = PKUIImageNamed(@"MerchantTokenAppleMerchantIcon45");
     v9 = 4.0;
     v10 = iconView;
   }
@@ -58,9 +58,9 @@
     if (![v19 isAppleCashPaymentToken])
     {
       v16 = self->_iconView;
-      v8 = [v19 merchantIconURL];
-      v17 = [v19 merchantName];
-      [(PKMerchantTokenIconView *)v16 updateWithImageURL:v8 monogramText:v17 cornerRadius:4.0];
+      merchantIconURL = [v19 merchantIconURL];
+      merchantName2 = [v19 merchantName];
+      [(PKMerchantTokenIconView *)v16 updateWithImageURL:merchantIconURL monogramText:merchantName2 cornerRadius:4.0];
 
       goto LABEL_9;
     }
@@ -68,18 +68,18 @@
     v13 = PKPassKitUIBundle();
     v14 = [v13 URLForResource:@"AppleCashIcon" withExtension:@"pdf"];
     v15 = PKUIScreenScale();
-    v8 = PKUIImageFromPDF(v14, 45.0, 45.0, v15);
+    merchantIconURL = PKUIImageFromPDF(v14, 45.0, 45.0, v15);
 
     v10 = self->_iconView;
     v9 = 4.0;
   }
 
-  [(PKMerchantTokenIconView *)v10 updateWithImage:v8 cornerRadius:v9];
+  [(PKMerchantTokenIconView *)v10 updateWithImage:merchantIconURL cornerRadius:v9];
 LABEL_9:
 
   nameLabel = self->_nameLabel;
-  v11 = [v19 merchantName];
-  [(UILabel *)nameLabel setText:v11];
+  defaultContentConfiguration = [v19 merchantName];
+  [(UILabel *)nameLabel setText:defaultContentConfiguration];
 LABEL_10:
 }
 
@@ -111,8 +111,8 @@ LABEL_10:
   [(UIStackView *)self->_stackView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIStackView *)self->_stackView setAlignment:3];
   [(UIStackView *)self->_stackView setSpacing:12.0];
-  v6 = [(PKMerchantTokenCell *)self contentView];
-  [v6 addSubview:self->_stackView];
+  contentView = [(PKMerchantTokenCell *)self contentView];
+  [contentView addSubview:self->_stackView];
 }
 
 - (void)_setUpIconView
@@ -157,24 +157,24 @@ LABEL_10:
 - (void)_setUpStackViewConstraints
 {
   v19[4] = *MEMORY[0x1E69E9840];
-  v3 = [(PKMerchantTokenCell *)self contentView];
-  v13 = [v3 layoutMarginsGuide];
+  contentView = [(PKMerchantTokenCell *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
   v14 = MEMORY[0x1E696ACD8];
-  v18 = [(UIStackView *)self->_stackView topAnchor];
-  v17 = [v3 topAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17 constant:15.0];
+  topAnchor = [(UIStackView *)self->_stackView topAnchor];
+  topAnchor2 = [contentView topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:15.0];
   v19[0] = v16;
-  v15 = [(UIStackView *)self->_stackView bottomAnchor];
-  v4 = [v3 bottomAnchor];
-  v5 = [v15 constraintEqualToAnchor:v4 constant:-16.0];
+  bottomAnchor = [(UIStackView *)self->_stackView bottomAnchor];
+  bottomAnchor2 = [contentView bottomAnchor];
+  v5 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-16.0];
   v19[1] = v5;
-  v6 = [(UIStackView *)self->_stackView leadingAnchor];
-  v7 = [v3 leadingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7 constant:13.0];
+  leadingAnchor = [(UIStackView *)self->_stackView leadingAnchor];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:13.0];
   v19[2] = v8;
-  v9 = [(UIStackView *)self->_stackView trailingAnchor];
-  v10 = [v13 trailingAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  trailingAnchor = [(UIStackView *)self->_stackView trailingAnchor];
+  trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v19[3] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:4];
   [v14 activateConstraints:v12];
@@ -184,11 +184,11 @@ LABEL_10:
 {
   v9[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696ACD8];
-  v4 = [(PKMerchantTokenIconView *)self->_iconView widthAnchor];
-  v5 = [v4 constraintEqualToConstant:45.0];
+  widthAnchor = [(PKMerchantTokenIconView *)self->_iconView widthAnchor];
+  v5 = [widthAnchor constraintEqualToConstant:45.0];
   v9[0] = v5;
-  v6 = [(PKMerchantTokenIconView *)self->_iconView heightAnchor];
-  v7 = [v6 constraintEqualToConstant:45.0];
+  heightAnchor = [(PKMerchantTokenIconView *)self->_iconView heightAnchor];
+  v7 = [heightAnchor constraintEqualToConstant:45.0];
   v9[1] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   [v3 activateConstraints:v8];
@@ -196,10 +196,10 @@ LABEL_10:
 
 - (void)_setUpSeparatorConstraints
 {
-  v6 = [(PKMerchantTokenCell *)self separatorLayoutGuide];
-  v3 = [v6 leadingAnchor];
-  v4 = [(UIStackView *)self->_stackView leadingAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4];
+  separatorLayoutGuide = [(PKMerchantTokenCell *)self separatorLayoutGuide];
+  leadingAnchor = [separatorLayoutGuide leadingAnchor];
+  leadingAnchor2 = [(UIStackView *)self->_stackView leadingAnchor];
+  v5 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v5 setActive:1];
 }
 

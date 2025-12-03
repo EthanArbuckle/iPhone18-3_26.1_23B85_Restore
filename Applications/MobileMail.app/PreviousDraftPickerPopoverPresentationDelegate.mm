@@ -1,15 +1,15 @@
 @interface PreviousDraftPickerPopoverPresentationDelegate
-- (id)presentationController:(id)a3 viewControllerForAdaptivePresentationStyle:(int64_t)a4;
+- (id)presentationController:(id)controller viewControllerForAdaptivePresentationStyle:(int64_t)style;
 @end
 
 @implementation PreviousDraftPickerPopoverPresentationDelegate
 
-- (id)presentationController:(id)a3 viewControllerForAdaptivePresentationStyle:(int64_t)a4
+- (id)presentationController:(id)controller viewControllerForAdaptivePresentationStyle:(int64_t)style
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [UINavigationController alloc];
-  v6 = [v4 presentedViewController];
-  v7 = [v5 initWithRootViewController:v6];
+  presentedViewController = [controllerCopy presentedViewController];
+  v7 = [v5 initWithRootViewController:presentedViewController];
 
   return v7;
 }

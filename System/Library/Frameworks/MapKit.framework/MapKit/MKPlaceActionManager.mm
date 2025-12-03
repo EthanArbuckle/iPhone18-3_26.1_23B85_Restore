@@ -12,7 +12,7 @@
 - (BOOL)_showReportAProblem;
 - (BOOL)_showReportAProblemFooterAction;
 - (BOOL)_showWebsite;
-- (MKPlaceActionManager)initWithDataProvider:(id)a3;
+- (MKPlaceActionManager)initWithDataProvider:(id)provider;
 - (MKPlaceCardActionItem)callActionItem;
 - (MKPlaceCardActionItem)collectionActionItem;
 - (MKPlaceCardActionItem)favoriteActionItem;
@@ -26,8 +26,8 @@
 - (MKPlaceCardActionItem)reportAProblemFooterAction;
 - (MKPlaceCardActionItem)websiteActionItem;
 - (_MKInfoCardAnalyticsDelegate)analyticsDelegate;
-- (id)actionItemForButtonItem:(id)a3;
-- (id)actionItemForButtonType:(int)a3;
+- (id)actionItemForButtonItem:(id)item;
+- (id)actionItemForButtonType:(int)type;
 - (id)addToFavoritesGuideActionItem;
 - (id)addToHomeItem;
 - (id)contact;
@@ -35,7 +35,7 @@
 - (id)createCustomRouteActionItem;
 - (id)createFooterActions;
 - (id)createMenuActions;
-- (id)createRowActionsWithStyle:(unint64_t)a3;
+- (id)createRowActionsWithStyle:(unint64_t)style;
 - (id)createSearchAlongRouteActions;
 - (id)delegate;
 - (id)developerPlaceCardGetDirectionsFooterAction;
@@ -43,24 +43,24 @@
 - (id)favoriteItemForFooter;
 - (id)mapItem;
 - (id)placeCardDelegate;
-- (id)placeIDForAppearance:(id)a3;
+- (id)placeIDForAppearance:(id)appearance;
 - (id)placeItem;
 - (id)rateActionItem;
 - (id)shortPlacecardFooterActions;
 - (unint64_t)options;
-- (unint64_t)placeMUIDForAppearance:(id)a3;
-- (void)_addInternalOnlyActions:(id)a3;
-- (void)_canMakeCalls:(id)a3;
+- (unint64_t)placeMUIDForAppearance:(id)appearance;
+- (void)_addInternalOnlyActions:(id)actions;
+- (void)_canMakeCalls:(id)calls;
 - (void)_launchMaps;
-- (void)addLayoutInfoIfNeeded:(id)a3;
-- (void)performAction:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)setPlaceHasNote:(unint64_t)a3;
-- (void)setPlaceHasRating:(BOOL)a3;
-- (void)setPlaceInBookmarks:(BOOL)a3;
-- (void)setPlaceInCollections:(BOOL)a3;
-- (void)setPlaceInFavoritesGuide:(BOOL)a3;
-- (void)setPlaceInLibrary:(unint64_t)a3;
-- (void)setPlaceInShortcuts:(BOOL)a3;
+- (void)addLayoutInfoIfNeeded:(id)needed;
+- (void)performAction:(id)action options:(id)options completion:(id)completion;
+- (void)setPlaceHasNote:(unint64_t)note;
+- (void)setPlaceHasRating:(BOOL)rating;
+- (void)setPlaceInBookmarks:(BOOL)bookmarks;
+- (void)setPlaceInCollections:(BOOL)collections;
+- (void)setPlaceInFavoritesGuide:(BOOL)guide;
+- (void)setPlaceInLibrary:(unint64_t)library;
+- (void)setPlaceInShortcuts:(BOOL)shortcuts;
 @end
 
 @implementation MKPlaceActionManager
@@ -82,34 +82,34 @@
 - (MKPlaceCardActionItem)removeMarkerItem
 {
   v3 = +[MKSystemController sharedInstance];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
   v5 = [MKPlaceCardActionItem actionItemWithType:19 actionDataProvider:self enabled:1];
-  if (v4 != 2)
+  if (userInterfaceIdiom != 2)
   {
-    v6 = [MEMORY[0x1E69DC888] systemRedColor];
-    [v5 setGlyphColor:v6];
+    systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+    [v5 setGlyphColor:systemRedColor];
   }
 
   return v5;
 }
 
-- (void)performAction:(id)a3 options:(id)a4 completion:(id)a5
+- (void)performAction:(id)action options:(id)options completion:(id)completion
 {
   v191[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[MKPlaceActionEnvironment alloc] initWithOptions:v9];
-  v190 = [(MKPlaceActionEnvironment *)v11 analyticsModuleMetadata];
-  v12 = [(MKPlaceActionEnvironment *)v11 isQuickAction];
-  v13 = [(MKPlaceActionEnvironment *)v11 isActionBar];
-  v14 = v13;
+  actionCopy = action;
+  optionsCopy = options;
+  completionCopy = completion;
+  v11 = [[MKPlaceActionEnvironment alloc] initWithOptions:optionsCopy];
+  analyticsModuleMetadata = [(MKPlaceActionEnvironment *)v11 analyticsModuleMetadata];
+  isQuickAction = [(MKPlaceActionEnvironment *)v11 isQuickAction];
+  isActionBar = [(MKPlaceActionEnvironment *)v11 isActionBar];
+  v14 = isActionBar;
   v15 = 201;
-  if (v12)
+  if (isQuickAction)
   {
-    v16 = !v13;
-    v17 = [(MKPlaceActionEnvironment *)v11 isActionBar];
+    v16 = !isActionBar;
+    isActionBar2 = [(MKPlaceActionEnvironment *)v11 isActionBar];
     if (v14)
     {
       v15 = 201;
@@ -120,7 +120,7 @@
       v15 = 30;
     }
 
-    v14 = v17;
+    v14 = isActionBar2;
   }
 
   else
@@ -145,79 +145,79 @@
 
   else
   {
-    v20 = [(MKPlaceActionEnvironment *)v11 isActionBar];
+    isActionBar3 = [(MKPlaceActionEnvironment *)v11 isActionBar];
     v19 = @"PRIMARY";
-    if (!v20)
+    if (!isActionBar3)
     {
       v19 = 0;
     }
   }
 
   v21 = v19;
-  switch([v8 type])
+  switch([actionCopy type])
   {
     case 1:
-      v101 = [(MKPlaceActionManager *)self analyticsDelegate];
-      [v101 infoCardAnalyticsDidSelectAction:5013 target:v18 eventValue:0 moduleMetadata:v190 feedbackDelegateSelector:62 actionRichProviderId:0 classification:v21];
+      analyticsDelegate = [(MKPlaceActionManager *)self analyticsDelegate];
+      [analyticsDelegate infoCardAnalyticsDidSelectAction:5013 target:v18 eventValue:0 moduleMetadata:analyticsModuleMetadata feedbackDelegateSelector:62 actionRichProviderId:0 classification:v21];
 
-      v22 = [v9 objectForKeyedSubscript:@"MKPlaceActionManagerSourceViewKey"];
-      v79 = [(MKPlaceActionManager *)self delegate];
-      [v79 placeCardActionControllerDidSelectReportAProblem:0 fromView:v22 isQuickAction:v16];
+      delegate3 = [optionsCopy objectForKeyedSubscript:@"MKPlaceActionManagerSourceViewKey"];
+      delegate = [(MKPlaceActionManager *)self delegate];
+      [delegate placeCardActionControllerDidSelectReportAProblem:0 fromView:delegate3 isQuickAction:v16];
       goto LABEL_87;
     case 2:
-      v81 = [(MKPlaceActionManager *)self analyticsDelegate];
-      [v81 infoCardAnalyticsDidSelectAction:222 target:v18 eventValue:0 moduleMetadata:v190 feedbackDelegateSelector:62 actionRichProviderId:0 classification:v21];
+      analyticsDelegate2 = [(MKPlaceActionManager *)self analyticsDelegate];
+      [analyticsDelegate2 infoCardAnalyticsDidSelectAction:222 target:v18 eventValue:0 moduleMetadata:analyticsModuleMetadata feedbackDelegateSelector:62 actionRichProviderId:0 classification:v21];
 
-      v45 = [(MKPlaceActionManager *)self delegate];
-      [v45 placeCardActionControllerDidSelectReportAProblemAddNewPlace:0 isQuickAction:v16];
+      delegate2 = [(MKPlaceActionManager *)self delegate];
+      [delegate2 placeCardActionControllerDidSelectReportAProblemAddNewPlace:0 isQuickAction:v16];
       goto LABEL_81;
     case 3:
-      v103 = [(MKPlaceActionManager *)self analyticsDelegate];
-      [v103 infoCardAnalyticsDidSelectAction:290 target:v18 eventValue:@"Unresolved" moduleMetadata:v190 feedbackDelegateSelector:62 actionRichProviderId:0 classification:v21];
+      analyticsDelegate3 = [(MKPlaceActionManager *)self analyticsDelegate];
+      [analyticsDelegate3 infoCardAnalyticsDidSelectAction:290 target:v18 eventValue:@"Unresolved" moduleMetadata:analyticsModuleMetadata feedbackDelegateSelector:62 actionRichProviderId:0 classification:v21];
 
-      v45 = [(MKPlaceActionManager *)self delegate];
-      [v45 placeCardActionControllerDidSelectReportAProblemViewReport:0];
+      delegate2 = [(MKPlaceActionManager *)self delegate];
+      [delegate2 placeCardActionControllerDidSelectReportAProblemViewReport:0];
       goto LABEL_81;
     case 4:
-      v80 = [(MKPlaceActionManager *)self analyticsDelegate];
-      [v80 infoCardAnalyticsDidSelectAction:6016 target:v18 eventValue:0 moduleMetadata:v190 feedbackDelegateSelector:5 actionRichProviderId:0 classification:v21];
+      analyticsDelegate4 = [(MKPlaceActionManager *)self analyticsDelegate];
+      [analyticsDelegate4 infoCardAnalyticsDidSelectAction:6016 target:v18 eventValue:0 moduleMetadata:analyticsModuleMetadata feedbackDelegateSelector:5 actionRichProviderId:0 classification:v21];
 
-      v22 = [(MKPlaceActionManager *)self delegate];
-      [v22 placeActionManager:self didSelectAddToContactsUsingEnvironment:v11];
+      delegate3 = [(MKPlaceActionManager *)self delegate];
+      [delegate3 placeActionManager:self didSelectAddToContactsUsingEnvironment:v11];
       goto LABEL_88;
     case 7:
-      v93 = [(MKPlaceActionManager *)self analyticsDelegate];
-      [v93 infoCardAnalyticsDidSelectAction:0 target:v18 eventValue:0 moduleMetadata:v190 feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
+      analyticsDelegate5 = [(MKPlaceActionManager *)self analyticsDelegate];
+      [analyticsDelegate5 infoCardAnalyticsDidSelectAction:0 target:v18 eventValue:0 moduleMetadata:analyticsModuleMetadata feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
 
-      [(MKPlaceActionManager *)self openURL:v8];
+      [(MKPlaceActionManager *)self openURL:actionCopy];
       goto LABEL_89;
     case 8:
-      v77 = [(MKPlaceActionManager *)self analyticsDelegate];
-      [v77 infoCardAnalyticsDidSelectAction:6023 target:v18 eventValue:0 moduleMetadata:v190 feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
+      analyticsDelegate6 = [(MKPlaceActionManager *)self analyticsDelegate];
+      [analyticsDelegate6 infoCardAnalyticsDidSelectAction:6023 target:v18 eventValue:0 moduleMetadata:analyticsModuleMetadata feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
 
-      v45 = [(MKPlaceActionManager *)self delegate];
-      [v45 placeCardActionControllerDidSelectViewAllPhotos:0 presentingViewController:0];
+      delegate2 = [(MKPlaceActionManager *)self delegate];
+      [delegate2 placeCardActionControllerDidSelectViewAllPhotos:0 presentingViewController:0];
       goto LABEL_81;
     case 9:
-      v78 = [(MKPlaceActionManager *)self analyticsDelegate];
-      [v78 infoCardAnalyticsDidSelectAction:6025 target:v18 eventValue:0 moduleMetadata:v190 feedbackDelegateSelector:174 actionRichProviderId:0 classification:v21];
+      analyticsDelegate7 = [(MKPlaceActionManager *)self analyticsDelegate];
+      [analyticsDelegate7 infoCardAnalyticsDidSelectAction:6025 target:v18 eventValue:0 moduleMetadata:analyticsModuleMetadata feedbackDelegateSelector:174 actionRichProviderId:0 classification:v21];
 
-      v22 = [v9 objectForKeyedSubscript:@"MKPlaceActionManagerSourceViewKey"];
-      v79 = [(MKPlaceActionManager *)self delegate];
-      [v79 placeCardActionControllerDidSelectAddPhoto:0 presentingViewController:0 sourceView:v22];
+      delegate3 = [optionsCopy objectForKeyedSubscript:@"MKPlaceActionManagerSourceViewKey"];
+      delegate = [(MKPlaceActionManager *)self delegate];
+      [delegate placeCardActionControllerDidSelectAddPhoto:0 presentingViewController:0 sourceView:delegate3];
       goto LABEL_87;
     case 10:
-      v58 = [(MKPlaceActionManager *)self analyticsDelegate];
-      [v58 infoCardAnalyticsDidSelectAction:6009 target:v18 eventValue:0 moduleMetadata:v190 feedbackDelegateSelector:2 actionRichProviderId:0 classification:v21];
+      analyticsDelegate8 = [(MKPlaceActionManager *)self analyticsDelegate];
+      [analyticsDelegate8 infoCardAnalyticsDidSelectAction:6009 target:v18 eventValue:0 moduleMetadata:analyticsModuleMetadata feedbackDelegateSelector:2 actionRichProviderId:0 classification:v21];
 
-      v59 = [MEMORY[0x1E69A2208] sharedService];
-      v60 = [(MKPlaceActionManager *)self mapItem];
-      v61 = [v60 _geoMapItem];
-      [v59 trackMapItem:v61];
+      mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+      mapItem = [(MKPlaceActionManager *)self mapItem];
+      _geoMapItem = [mapItem _geoMapItem];
+      [mEMORY[0x1E69A2208] trackMapItem:_geoMapItem];
 
       if (self->_callProvider)
       {
-        v62 = [v9 objectForKeyedSubscript:@"CNLabeledValue"];
+        v62 = [optionsCopy objectForKeyedSubscript:@"CNLabeledValue"];
         v63 = v62;
         if (v62)
         {
@@ -226,25 +226,25 @@
 
         else
         {
-          v151 = [(MKPlaceActionManager *)self contact];
-          v152 = [v151 phoneNumbers];
-          v64 = [v152 objectAtIndexedSubscript:0];
+          contact = [(MKPlaceActionManager *)self contact];
+          phoneNumbers = [contact phoneNumbers];
+          v64 = [phoneNumbers objectAtIndexedSubscript:0];
         }
 
         v187 = v64;
 
-        v153 = [v64 value];
+        value = [v64 value];
         v181 = [objc_alloc(getTUDialRequestClass()) initWithProvider:self->_callProvider];
         v154 = objc_alloc(getTUHandleClass());
-        v155 = [v153 stringValue];
-        v156 = mk_TUConvertDestinationIDToLatinNumbers(v155);
+        stringValue = [value stringValue];
+        v156 = mk_TUConvertDestinationIDToLatinNumbers(stringValue);
         v157 = [v154 initWithType:2 value:v156];
 
         [v181 setHandle:v157];
         [v181 setShowUIPrompt:1];
-        v158 = [(MKPlaceActionManager *)self contact];
-        v159 = [v158 identifier];
-        [v181 setContactIdentifier:v159];
+        contact2 = [(MKPlaceActionManager *)self contact];
+        identifier = [contact2 identifier];
+        [v181 setContactIdentifier:identifier];
 
         v160 = +[MKSystemController sharedInstance];
         [v160 placeDialRequest:v181 completionHandler:0];
@@ -252,42 +252,42 @@
 
       goto LABEL_89;
     case 11:
-      v72 = [(MKPlaceActionManager *)self analyticsDelegate];
-      [v72 infoCardAnalyticsDidSelectAction:6045 target:v18 eventValue:0 moduleMetadata:v190 feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
+      analyticsDelegate9 = [(MKPlaceActionManager *)self analyticsDelegate];
+      [analyticsDelegate9 infoCardAnalyticsDidSelectAction:6045 target:v18 eventValue:0 moduleMetadata:analyticsModuleMetadata feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
 
-      v73 = [(MKPlaceActionManager *)self mapItem];
-      v74 = [v73 _messageURLString];
+      mapItem2 = [(MKPlaceActionManager *)self mapItem];
+      _messageURLString = [mapItem2 _messageURLString];
 
-      if (!v74)
+      if (!_messageURLString)
       {
         goto LABEL_89;
       }
 
-      v45 = [(MKPlaceActionManager *)self mapItem];
-      v75 = [v45 _messageURLString];
-      v191[0] = v75;
+      delegate2 = [(MKPlaceActionManager *)self mapItem];
+      _messageURLString2 = [delegate2 _messageURLString];
+      v191[0] = _messageURLString2;
       v76 = [MEMORY[0x1E695DEC8] arrayWithObjects:v191 count:1];
       [MKAppLaunchController launchAttributionURLs:v76 withAttribution:0 completionHandler:0];
 
       goto LABEL_81;
     case 12:
-      [v9 objectForKeyedSubscript:@"CNLabeledValue"];
+      [optionsCopy objectForKeyedSubscript:@"CNLabeledValue"];
       v46 = v185 = v21;
       v47 = MEMORY[0x1E695DFF8];
       v48 = MEMORY[0x1E696AEC0];
-      v49 = [v46 value];
-      v50 = [v48 stringWithFormat:@"mailto:%@", v49];
+      value2 = [v46 value];
+      v50 = [v48 stringWithFormat:@"mailto:%@", value2];
       v51 = [v47 URLWithString:v50];
 
-      v52 = v49;
+      value3 = value2;
       v39 = v46;
       v21 = v185;
       goto LABEL_108;
     case 13:
-      v65 = [(MKPlaceActionManager *)self analyticsDelegate];
-      [v65 infoCardAnalyticsDidSelectAction:6010 target:v18 eventValue:0 moduleMetadata:v190 feedbackDelegateSelector:3 actionRichProviderId:0 classification:v21];
+      analyticsDelegate10 = [(MKPlaceActionManager *)self analyticsDelegate];
+      [analyticsDelegate10 infoCardAnalyticsDidSelectAction:6010 target:v18 eventValue:0 moduleMetadata:analyticsModuleMetadata feedbackDelegateSelector:3 actionRichProviderId:0 classification:v21];
 
-      v66 = [v9 objectForKeyedSubscript:@"CNLabeledValue"];
+      v66 = [optionsCopy objectForKeyedSubscript:@"CNLabeledValue"];
       v67 = v66;
       if (v66)
       {
@@ -296,21 +296,21 @@
 
       else
       {
-        v142 = [(MKPlaceActionManager *)self contact];
-        v143 = [v142 urlAddresses];
-        v39 = [v143 objectAtIndexedSubscript:0];
+        contact3 = [(MKPlaceActionManager *)self contact];
+        urlAddresses = [contact3 urlAddresses];
+        v39 = [urlAddresses objectAtIndexedSubscript:0];
       }
 
-      v144 = [(MKPlaceActionManager *)self delegate];
-      v145 = [v144 placeViewControllerDelegate];
+      delegate4 = [(MKPlaceActionManager *)self delegate];
+      placeViewControllerDelegate = [delegate4 placeViewControllerDelegate];
       v146 = objc_opt_respondsToSelector();
 
       if (v146)
       {
-        v147 = [(MKPlaceActionManager *)self delegate];
-        v148 = [v147 placeViewControllerDelegate];
-        v149 = [(MKPlaceActionManager *)self delegate];
-        v186 = [v148 placeViewController:v149 shouldOpenHomePage:v39];
+        delegate5 = [(MKPlaceActionManager *)self delegate];
+        placeViewControllerDelegate2 = [delegate5 placeViewControllerDelegate];
+        delegate6 = [(MKPlaceActionManager *)self delegate];
+        v186 = [placeViewControllerDelegate2 placeViewController:delegate6 shouldOpenHomePage:v39];
 
         if ((v186 & 1) == 0)
         {
@@ -319,23 +319,23 @@
       }
 
       v150 = MEMORY[0x1E695DFF8];
-      v52 = [v39 value];
-      v51 = [v150 URLWithString:v52];
+      value3 = [v39 value];
+      v51 = [v150 URLWithString:value3];
       goto LABEL_108;
     case 14:
-      v97 = [(MKPlaceActionManager *)self analyticsDelegate];
-      [v97 infoCardAnalyticsDidSelectAction:6008 target:v18 eventValue:0 moduleMetadata:v190 feedbackDelegateSelector:201 actionRichProviderId:0 classification:v21];
+      analyticsDelegate11 = [(MKPlaceActionManager *)self analyticsDelegate];
+      [analyticsDelegate11 infoCardAnalyticsDidSelectAction:6008 target:v18 eventValue:0 moduleMetadata:analyticsModuleMetadata feedbackDelegateSelector:201 actionRichProviderId:0 classification:v21];
 
-      v98 = [(MKPlaceActionManager *)self delegate];
-      v99 = [v98 placeViewControllerDelegate];
+      delegate7 = [(MKPlaceActionManager *)self delegate];
+      placeViewControllerDelegate3 = [delegate7 placeViewControllerDelegate];
       v100 = objc_opt_respondsToSelector();
 
       if (v100)
       {
-        v22 = [(MKPlaceActionManager *)self delegate];
-        v56 = [v22 placeViewControllerDelegate];
-        v57 = [(MKPlaceActionManager *)self delegate];
-        [v56 placeViewControllerDidSelectDisplayedAddress:v57];
+        delegate3 = [(MKPlaceActionManager *)self delegate];
+        placeViewControllerDelegate4 = [delegate3 placeViewControllerDelegate];
+        delegate8 = [(MKPlaceActionManager *)self delegate];
+        [placeViewControllerDelegate4 placeViewControllerDidSelectDisplayedAddress:delegate8];
 LABEL_71:
 
 LABEL_88:
@@ -343,12 +343,12 @@ LABEL_88:
 
       else
       {
-        v138 = [(MKPlaceActionManager *)self mapItem];
-        v139 = [v138 _isEmptyContactMapItem];
+        mapItem3 = [(MKPlaceActionManager *)self mapItem];
+        _isEmptyContactMapItem = [mapItem3 _isEmptyContactMapItem];
 
-        if (v139)
+        if (_isEmptyContactMapItem)
         {
-          v140 = [v9 objectForKeyedSubscript:@"CNLabeledValue"];
+          v140 = [optionsCopy objectForKeyedSubscript:@"CNLabeledValue"];
           v141 = v140;
           if (v140)
           {
@@ -357,39 +357,39 @@ LABEL_88:
 
           else
           {
-            v162 = [(MKPlaceActionManager *)self contact];
-            v163 = [v162 urlAddresses];
-            v39 = [v163 objectAtIndexedSubscript:0];
+            contact4 = [(MKPlaceActionManager *)self contact];
+            urlAddresses2 = [contact4 urlAddresses];
+            v39 = [urlAddresses2 objectAtIndexedSubscript:0];
           }
 
-          v52 = [v39 value];
+          value3 = [v39 value];
           v188 = MEMORY[0x1E695CE08];
-          v164 = [(MKPlaceActionManager *)self contact];
+          contact5 = [(MKPlaceActionManager *)self contact];
           v182 = *MEMORY[0x1E695CC20];
-          v165 = [v39 identifier];
-          v189 = [v188 contactPropertyWithContactNoCopy:v164 propertyKey:v182 identifier:v165];
+          identifier2 = [v39 identifier];
+          v189 = [v188 contactPropertyWithContactNoCopy:contact5 propertyKey:v182 identifier:identifier2];
 
-          v166 = [MEMORY[0x1E695CF68] singleLineStringFromPostalAddress:v52 addCountryName:0];
-          v167 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-          v183 = [v166 stringByAddingPercentEncodingWithAllowedCharacters:v167];
+          v166 = [MEMORY[0x1E695CF68] singleLineStringFromPostalAddress:value3 addCountryName:0];
+          uRLPathAllowedCharacterSet = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+          v183 = [v166 stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
 
           v177 = MEMORY[0x1E695DFF8];
           v175 = MEMORY[0x1E696AEC0];
-          v179 = [(MKPlaceActionManager *)self contact];
-          v173 = [v179 iOSLegacyIdentifier];
-          v168 = [v189 multiValueIdentifier];
-          v176 = [(MKPlaceActionManager *)self contact];
-          v174 = [v176 identifier];
-          v172 = [v39 identifier];
-          v169 = [v175 stringWithFormat:@"maps:?address=%@&abPersonID=%d&abAddressID=%d&cncontactidentifier=%@&cnaddressidentifier=%@", v183, v173, v168, v174, v172];
-          v51 = [v177 URLWithString:v169];
+          contact6 = [(MKPlaceActionManager *)self contact];
+          iOSLegacyIdentifier = [contact6 iOSLegacyIdentifier];
+          multiValueIdentifier = [v189 multiValueIdentifier];
+          contact7 = [(MKPlaceActionManager *)self contact];
+          identifier3 = [contact7 identifier];
+          identifier4 = [v39 identifier];
+          v172 = [v175 stringWithFormat:@"maps:?address=%@&abPersonID=%d&abAddressID=%d&cncontactidentifier=%@&cnaddressidentifier=%@", v183, iOSLegacyIdentifier, multiValueIdentifier, identifier3, identifier4];
+          v51 = [v177 URLWithString:v172];
 
 LABEL_108:
           if (v51)
           {
-            v170 = [v9 objectForKeyedSubscript:@"MKPlaceActionManagerSourceViewKey"];
-            v171 = [(MKPlaceActionManager *)self placeCardDelegate];
-            [v171 placeCardActionController:0 openURL:v51 fromView:v170];
+            v170 = [optionsCopy objectForKeyedSubscript:@"MKPlaceActionManagerSourceViewKey"];
+            placeCardDelegate = [(MKPlaceActionManager *)self placeCardDelegate];
+            [placeCardDelegate placeCardActionController:0 openURL:v51 fromView:v170];
           }
         }
 
@@ -401,38 +401,38 @@ LABEL_95:
       }
 
 LABEL_89:
-      if (v10)
+      if (completionCopy)
       {
-        v10[2](v10);
+        completionCopy[2](completionCopy);
       }
 
       return;
     case 15:
-      v94 = [(MKPlaceActionManager *)self mapItem];
-      v95 = [v94 _isEmptyContactMapItem];
+      mapItem4 = [(MKPlaceActionManager *)self mapItem];
+      _isEmptyContactMapItem2 = [mapItem4 _isEmptyContactMapItem];
 
-      if ((v95 & 1) == 0)
+      if ((_isEmptyContactMapItem2 & 1) == 0)
       {
         goto LABEL_95;
       }
 
       goto LABEL_89;
     case 16:
-      v114 = [(MKPlaceActionManager *)self analyticsDelegate];
-      [v114 infoCardAnalyticsDidSelectAction:6013 target:v18 eventValue:0 moduleMetadata:v190 feedbackDelegateSelector:6 actionRichProviderId:0 classification:v21];
+      analyticsDelegate12 = [(MKPlaceActionManager *)self analyticsDelegate];
+      [analyticsDelegate12 infoCardAnalyticsDidSelectAction:6013 target:v18 eventValue:0 moduleMetadata:analyticsModuleMetadata feedbackDelegateSelector:6 actionRichProviderId:0 classification:v21];
 
       goto LABEL_69;
     case 17:
-      v115 = [(MKPlaceActionManager *)self analyticsDelegate];
-      [v115 infoCardAnalyticsDidSelectAction:6004 target:v18 eventValue:0 moduleMetadata:v190 feedbackDelegateSelector:127 actionRichProviderId:0 classification:v21];
+      analyticsDelegate13 = [(MKPlaceActionManager *)self analyticsDelegate];
+      [analyticsDelegate13 infoCardAnalyticsDidSelectAction:6004 target:v18 eventValue:0 moduleMetadata:analyticsModuleMetadata feedbackDelegateSelector:127 actionRichProviderId:0 classification:v21];
 
-      v22 = [(MKPlaceActionManager *)self delegate];
-      v56 = [v22 placeViewControllerDelegate];
-      v57 = [(MKPlaceActionManager *)self delegate];
-      [v56 placeViewControllerDidSelectFlyover:v57];
+      delegate3 = [(MKPlaceActionManager *)self delegate];
+      placeViewControllerDelegate4 = [delegate3 placeViewControllerDelegate];
+      delegate8 = [(MKPlaceActionManager *)self delegate];
+      [placeViewControllerDelegate4 placeViewControllerDidSelectFlyover:delegate8];
       goto LABEL_71;
     case 18:
-      v125 = [(MKPlaceActionManager *)self delegate];
+      delegate9 = [(MKPlaceActionManager *)self delegate];
       v126 = objc_opt_respondsToSelector();
 
       if ((v126 & 1) == 0)
@@ -440,124 +440,124 @@ LABEL_89:
         goto LABEL_89;
       }
 
-      v127 = [(MKPlaceActionManager *)self analyticsDelegate];
-      [v127 infoCardAnalyticsDidSelectAction:6016 target:v18 eventValue:@"Add to Existing Contact" moduleMetadata:v190 feedbackDelegateSelector:124 actionRichProviderId:0 classification:v21];
+      analyticsDelegate14 = [(MKPlaceActionManager *)self analyticsDelegate];
+      [analyticsDelegate14 infoCardAnalyticsDidSelectAction:6016 target:v18 eventValue:@"Add to Existing Contact" moduleMetadata:analyticsModuleMetadata feedbackDelegateSelector:124 actionRichProviderId:0 classification:v21];
 
-      v22 = [(MKPlaceActionManager *)self delegate];
-      [v22 placeActionManager:self didSelectAddToExistingContactWithEnvironment:v11];
+      delegate3 = [(MKPlaceActionManager *)self delegate];
+      [delegate3 placeActionManager:self didSelectAddToExistingContactWithEnvironment:v11];
       goto LABEL_88;
     case 19:
-      v120 = [(MKPlaceActionManager *)self analyticsDelegate];
-      [v120 infoCardAnalyticsDidSelectAction:6005 target:v18 eventValue:0 moduleMetadata:v190 feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
+      analyticsDelegate15 = [(MKPlaceActionManager *)self analyticsDelegate];
+      [analyticsDelegate15 infoCardAnalyticsDidSelectAction:6005 target:v18 eventValue:0 moduleMetadata:analyticsModuleMetadata feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
 
-      v45 = [(MKPlaceActionManager *)self delegate];
-      [v45 placeCardActionControllerDidSelectRemoveMarker:0];
+      delegate2 = [(MKPlaceActionManager *)self delegate];
+      [delegate2 placeCardActionControllerDidSelectRemoveMarker:0];
       goto LABEL_81;
     case 20:
-      v44 = [(MKPlaceActionManager *)self analyticsDelegate];
-      [v44 infoCardAnalyticsDidSelectAction:6046 target:v18 eventValue:0 moduleMetadata:v190 feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
+      analyticsDelegate16 = [(MKPlaceActionManager *)self analyticsDelegate];
+      [analyticsDelegate16 infoCardAnalyticsDidSelectAction:6046 target:v18 eventValue:0 moduleMetadata:analyticsModuleMetadata feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
 
-      v45 = [(MKPlaceActionManager *)self mapItem];
-      [v45 _launchActivityForBrandItem];
+      delegate2 = [(MKPlaceActionManager *)self mapItem];
+      [delegate2 _launchActivityForBrandItem];
       goto LABEL_81;
     case 21:
-      v96 = [(MKPlaceActionManager *)self analyticsDelegate];
-      [v96 infoCardAnalyticsDidSelectAction:0 target:v18 eventValue:0 moduleMetadata:v190 feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
+      analyticsDelegate17 = [(MKPlaceActionManager *)self analyticsDelegate];
+      [analyticsDelegate17 infoCardAnalyticsDidSelectAction:0 target:v18 eventValue:0 moduleMetadata:analyticsModuleMetadata feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
 
-      v22 = [(MKPlaceActionManager *)self delegate];
-      [v22 placeActionManager:self didSelectAddToGuidesWithEnvironment:v11];
+      delegate3 = [(MKPlaceActionManager *)self delegate];
+      [delegate3 placeActionManager:self didSelectAddToGuidesWithEnvironment:v11];
       goto LABEL_88;
     case 22:
-      v128 = [(MKPlaceActionManager *)self analyticsDelegate];
-      [v128 infoCardAnalyticsDidSelectAction:2059 target:v18 eventValue:0 moduleMetadata:v190 feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
+      analyticsDelegate18 = [(MKPlaceActionManager *)self analyticsDelegate];
+      [analyticsDelegate18 infoCardAnalyticsDidSelectAction:2059 target:v18 eventValue:0 moduleMetadata:analyticsModuleMetadata feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
 
-      v129 = [(MKPlaceActionManager *)self analyticsDelegate];
-      [v129 infoCardAnalyticsDidSelectAction:17099 target:v18 eventValue:0 moduleMetadata:v190 feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
+      analyticsDelegate19 = [(MKPlaceActionManager *)self analyticsDelegate];
+      [analyticsDelegate19 infoCardAnalyticsDidSelectAction:17099 target:v18 eventValue:0 moduleMetadata:analyticsModuleMetadata feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
 
-      v45 = [(MKPlaceActionManager *)self delegate];
-      [v45 placeCardActionControllerDidSelectAddToMapsHome:0];
+      delegate2 = [(MKPlaceActionManager *)self delegate];
+      [delegate2 placeCardActionControllerDidSelectAddToMapsHome:0];
       goto LABEL_81;
     case 23:
-      v53 = [(MKPlaceActionManager *)self analyticsDelegate];
-      [v53 infoCardAnalyticsDidSelectAction:2060 target:v18 eventValue:0 moduleMetadata:v190 feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
+      analyticsDelegate20 = [(MKPlaceActionManager *)self analyticsDelegate];
+      [analyticsDelegate20 infoCardAnalyticsDidSelectAction:2060 target:v18 eventValue:0 moduleMetadata:analyticsModuleMetadata feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
 
-      v54 = [(MKPlaceActionManager *)self analyticsDelegate];
-      [v54 infoCardAnalyticsDidSelectAction:17099 target:v18 eventValue:0 moduleMetadata:v190 feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
+      analyticsDelegate21 = [(MKPlaceActionManager *)self analyticsDelegate];
+      [analyticsDelegate21 infoCardAnalyticsDidSelectAction:17099 target:v18 eventValue:0 moduleMetadata:analyticsModuleMetadata feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
 
-      v45 = [(MKPlaceActionManager *)self delegate];
-      [v45 placeCardActionControllerDidSelectRemoveFromMapsHome:0];
+      delegate2 = [(MKPlaceActionManager *)self delegate];
+      [delegate2 placeCardActionControllerDidSelectRemoveFromMapsHome:0];
       goto LABEL_81;
     case 24:
-      v92 = [(MKPlaceActionManager *)self analyticsDelegate];
-      [v92 infoCardAnalyticsDidSelectAction:2063 target:253 eventValue:0 moduleMetadata:v190 feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
+      analyticsDelegate22 = [(MKPlaceActionManager *)self analyticsDelegate];
+      [analyticsDelegate22 infoCardAnalyticsDidSelectAction:2063 target:253 eventValue:0 moduleMetadata:analyticsModuleMetadata feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
 
-      v45 = [(MKPlaceActionManager *)self delegate];
-      [v45 placeCardActionControllerDidSelectRefineLocation:0];
+      delegate2 = [(MKPlaceActionManager *)self delegate];
+      [delegate2 placeCardActionControllerDidSelectRefineLocation:0];
       goto LABEL_81;
     case 25:
-      v45 = [(MKPlaceActionManager *)self delegate];
-      [v45 placeCardActionControllerDidSelectChangeAddress:0];
+      delegate2 = [(MKPlaceActionManager *)self delegate];
+      [delegate2 placeCardActionControllerDidSelectChangeAddress:0];
       goto LABEL_81;
     case 27:
       v104 = MEMORY[0x1E696AEC0];
-      v105 = [(MKPlaceActionManager *)self mapItem];
-      [v105 _coordinate];
+      mapItem5 = [(MKPlaceActionManager *)self mapItem];
+      [mapItem5 _coordinate];
       v107 = v106;
-      v108 = [(MKPlaceActionManager *)self mapItem];
-      [v108 _coordinate];
-      v22 = [v104 stringWithFormat:@"%.6lf, %.6lf", v107, v109];
+      mapItem6 = [(MKPlaceActionManager *)self mapItem];
+      [mapItem6 _coordinate];
+      delegate3 = [v104 stringWithFormat:@"%.6lf, %.6lf", v107, v109];
 
-      v79 = [MEMORY[0x1E69DCD50] generalPasteboard];
-      [v79 setString:v22];
+      delegate = [MEMORY[0x1E69DCD50] generalPasteboard];
+      [delegate setString:delegate3];
       goto LABEL_87;
     case 28:
-      v55 = [(MKPlaceActionManager *)self analyticsDelegate];
-      [v55 infoCardAnalyticsDidSelectAction:1030 target:v18 eventValue:0 moduleMetadata:v190 feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
+      analyticsDelegate23 = [(MKPlaceActionManager *)self analyticsDelegate];
+      [analyticsDelegate23 infoCardAnalyticsDidSelectAction:1030 target:v18 eventValue:0 moduleMetadata:analyticsModuleMetadata feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
 
-      v22 = [(MKPlaceActionManager *)self delegate];
-      v56 = [v22 placeViewControllerDelegate];
-      v57 = [(MKPlaceActionManager *)self delegate];
-      [v56 placeViewControllerDidSelectDropPin:v57];
+      delegate3 = [(MKPlaceActionManager *)self delegate];
+      placeViewControllerDelegate4 = [delegate3 placeViewControllerDelegate];
+      delegate8 = [(MKPlaceActionManager *)self delegate];
+      [placeViewControllerDelegate4 placeViewControllerDidSelectDropPin:delegate8];
       goto LABEL_71;
     case 30:
-      v22 = [(MKPlaceActionManager *)self delegate];
-      [v22 placeActionManager:self didSelectDirectionsWithEnvironment:v11];
+      delegate3 = [(MKPlaceActionManager *)self delegate];
+      [delegate3 placeActionManager:self didSelectDirectionsWithEnvironment:v11];
       goto LABEL_88;
     case 31:
-      v130 = [(MKPlaceActionManager *)self analyticsDelegate];
-      [v130 infoCardAnalyticsDidSelectAction:288 target:v18 eventValue:0 moduleMetadata:v190 feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
+      analyticsDelegate24 = [(MKPlaceActionManager *)self analyticsDelegate];
+      [analyticsDelegate24 infoCardAnalyticsDidSelectAction:288 target:v18 eventValue:0 moduleMetadata:analyticsModuleMetadata feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
 
-      v131 = [(MKPlaceActionManager *)self mapItem];
-      v132 = [v131 _poiClaim];
-      v45 = [v132 claimURL];
+      mapItem7 = [(MKPlaceActionManager *)self mapItem];
+      _poiClaim = [mapItem7 _poiClaim];
+      delegate2 = [_poiClaim claimURL];
 
-      if (v45)
+      if (delegate2)
       {
         v133 = +[MKSystemController sharedInstance];
-        [v133 openURL:v45 completionHandler:0];
+        [v133 openURL:delegate2 completionHandler:0];
       }
 
       goto LABEL_81;
     case 32:
-      v68 = [(MKPlaceActionManager *)self analyticsDelegate];
+      analyticsDelegate25 = [(MKPlaceActionManager *)self analyticsDelegate];
       v69 = MEMORY[0x1E696AEC0];
-      v70 = [(MKPlaceActionManager *)self mapItem];
-      v71 = [v69 stringWithFormat:@"%llu", objc_msgSend(v70, "_muid")];
-      [v68 infoCardAnalyticsDidSelectAction:282 target:v18 eventValue:v71 moduleMetadata:v190 feedbackDelegateSelector:62 actionRichProviderId:0 classification:v21];
+      mapItem8 = [(MKPlaceActionManager *)self mapItem];
+      v71 = [v69 stringWithFormat:@"%llu", objc_msgSend(mapItem8, "_muid")];
+      [analyticsDelegate25 infoCardAnalyticsDidSelectAction:282 target:v18 eventValue:v71 moduleMetadata:analyticsModuleMetadata feedbackDelegateSelector:62 actionRichProviderId:0 classification:v21];
 
-      v45 = [(MKPlaceActionManager *)self delegate];
-      [v45 placeCardActionControllerDidSelectPlaceEnrichementReportAProblem];
+      delegate2 = [(MKPlaceActionManager *)self delegate];
+      [delegate2 placeCardActionControllerDidSelectPlaceEnrichementReportAProblem];
       goto LABEL_81;
     case 33:
 LABEL_69:
-      v22 = [(MKPlaceActionManager *)self delegate];
-      [v22 placeActionManager:self didSelectShareWithEnvironment:v11];
+      delegate3 = [(MKPlaceActionManager *)self delegate];
+      [delegate3 placeActionManager:self didSelectShareWithEnvironment:v11];
       goto LABEL_88;
     case 34:
-      v82 = [(MKPlaceActionManager *)self placeItem];
-      v83 = [v82 options];
+      placeItem = [(MKPlaceActionManager *)self placeItem];
+      options = [placeItem options];
 
-      if ((v83 & 8) != 0)
+      if ((options & 8) != 0)
       {
         v84 = 394;
       }
@@ -567,17 +567,17 @@ LABEL_69:
         v84 = 381;
       }
 
-      v85 = [(MKPlaceActionManager *)self analyticsDelegate];
-      [v85 infoCardAnalyticsDidSelectAction:v84 target:v18 eventValue:0 moduleMetadata:v190 feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
+      analyticsDelegate26 = [(MKPlaceActionManager *)self analyticsDelegate];
+      [analyticsDelegate26 infoCardAnalyticsDidSelectAction:v84 target:v18 eventValue:0 moduleMetadata:analyticsModuleMetadata feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
 
-      v45 = [(MKPlaceActionManager *)self delegate];
-      [v45 placeCardActionControllerDidSelectDownloadOffline:0 isQuickAction:v16];
+      delegate2 = [(MKPlaceActionManager *)self delegate];
+      [delegate2 placeCardActionControllerDidSelectDownloadOffline:0 isQuickAction:v16];
       goto LABEL_81;
     case 35:
-      v110 = [(MKPlaceActionManager *)self placeItem];
-      v111 = [v110 options];
+      placeItem2 = [(MKPlaceActionManager *)self placeItem];
+      options2 = [placeItem2 options];
 
-      if ((v111 & 8) != 0)
+      if ((options2 & 8) != 0)
       {
         v112 = 394;
       }
@@ -587,17 +587,17 @@ LABEL_69:
         v112 = 381;
       }
 
-      v113 = [(MKPlaceActionManager *)self analyticsDelegate];
-      [v113 infoCardAnalyticsDidSelectAction:v112 target:v18 eventValue:0 moduleMetadata:v190 feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
+      analyticsDelegate27 = [(MKPlaceActionManager *)self analyticsDelegate];
+      [analyticsDelegate27 infoCardAnalyticsDidSelectAction:v112 target:v18 eventValue:0 moduleMetadata:analyticsModuleMetadata feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
 
-      v45 = [(MKPlaceActionManager *)self delegate];
-      [v45 placeCardActionControllerDidSelectPauseOfflineDownload:0];
+      delegate2 = [(MKPlaceActionManager *)self delegate];
+      [delegate2 placeCardActionControllerDidSelectPauseOfflineDownload:0];
       goto LABEL_81;
     case 36:
-      v86 = [(MKPlaceActionManager *)self placeItem];
-      v87 = [v86 options];
+      placeItem3 = [(MKPlaceActionManager *)self placeItem];
+      options3 = [placeItem3 options];
 
-      if ((v87 & 8) != 0)
+      if ((options3 & 8) != 0)
       {
         v88 = 394;
       }
@@ -607,46 +607,46 @@ LABEL_69:
         v88 = 381;
       }
 
-      v89 = [(MKPlaceActionManager *)self analyticsDelegate];
-      [v89 infoCardAnalyticsDidSelectAction:v88 target:v18 eventValue:0 moduleMetadata:v190 feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
+      analyticsDelegate28 = [(MKPlaceActionManager *)self analyticsDelegate];
+      [analyticsDelegate28 infoCardAnalyticsDidSelectAction:v88 target:v18 eventValue:0 moduleMetadata:analyticsModuleMetadata feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
 
-      v45 = [(MKPlaceActionManager *)self delegate];
-      [v45 placeCardActionControllerDidSelectOfflineManagement:0];
+      delegate2 = [(MKPlaceActionManager *)self delegate];
+      [delegate2 placeCardActionControllerDidSelectOfflineManagement:0];
       goto LABEL_81;
     case 37:
-      v23 = [(MKPlaceActionManager *)self delegate];
-      v22 = v23;
-      v24 = self;
+      delegate10 = [(MKPlaceActionManager *)self delegate];
+      delegate3 = delegate10;
+      selfCopy2 = self;
       v25 = v11;
       v26 = 1;
       goto LABEL_27;
     case 38:
-      v23 = [(MKPlaceActionManager *)self delegate];
-      v22 = v23;
-      v24 = self;
+      delegate10 = [(MKPlaceActionManager *)self delegate];
+      delegate3 = delegate10;
+      selfCopy2 = self;
       v25 = v11;
       v26 = 0;
 LABEL_27:
-      [v23 placeActionManager:v24 didSelectAddOrRemoveFromLibraryWithEnvironment:v25 selectedAdd:v26];
+      [delegate10 placeActionManager:selfCopy2 didSelectAddOrRemoveFromLibraryWithEnvironment:v25 selectedAdd:v26];
       goto LABEL_88;
     case 39:
-      v116 = [(MKPlaceActionManager *)self delegate];
-      v22 = v116;
-      v117 = self;
+      delegate11 = [(MKPlaceActionManager *)self delegate];
+      delegate3 = delegate11;
+      selfCopy4 = self;
       v118 = v11;
       v119 = 1;
       goto LABEL_83;
     case 40:
-      v116 = [(MKPlaceActionManager *)self delegate];
-      v22 = v116;
-      v117 = self;
+      delegate11 = [(MKPlaceActionManager *)self delegate];
+      delegate3 = delegate11;
+      selfCopy4 = self;
       v118 = v11;
       v119 = 0;
 LABEL_83:
-      [v116 placeActionManager:v117 didSelectAddOrEditNoteWithEnvironment:v118 selectedAdd:v119];
+      [delegate11 placeActionManager:selfCopy4 didSelectAddOrEditNoteWithEnvironment:v118 selectedAdd:v119];
       goto LABEL_88;
     case 41:
-      v27 = [(MKPlaceActionManager *)self delegate];
+      delegate12 = [(MKPlaceActionManager *)self delegate];
       v28 = objc_opt_respondsToSelector();
 
       if ((v28 & 1) == 0)
@@ -654,23 +654,23 @@ LABEL_83:
         goto LABEL_89;
       }
 
-      v29 = [(MKPlaceActionManager *)self analyticsDelegate];
-      [v29 infoCardAnalyticsDidSelectAction:465 target:v18 eventValue:0 feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
+      analyticsDelegate29 = [(MKPlaceActionManager *)self analyticsDelegate];
+      [analyticsDelegate29 infoCardAnalyticsDidSelectAction:465 target:v18 eventValue:0 feedbackDelegateSelector:0 actionRichProviderId:0 classification:v21];
 
-      v30 = [(MKPlaceActionManager *)self mapItem];
-      v31 = [v30 _geoMapItem];
-      v32 = [v31 _tooltip];
-      if (v32)
+      mapItem9 = [(MKPlaceActionManager *)self mapItem];
+      _geoMapItem2 = [mapItem9 _geoMapItem];
+      _tooltip = [_geoMapItem2 _tooltip];
+      if (_tooltip)
       {
-        v178 = [(MKPlaceActionManager *)self mapItem];
-        [v178 _geoMapItem];
-        v33 = v184 = v30;
+        mapItem10 = [(MKPlaceActionManager *)self mapItem];
+        [mapItem10 _geoMapItem];
+        v33 = v184 = mapItem9;
         [v33 _tooltip];
-        v34 = v180 = v31;
+        v34 = v180 = _geoMapItem2;
         v35 = [v34 usesOriginMapItem] ^ 1;
 
-        v31 = v180;
-        v30 = v184;
+        _geoMapItem2 = v180;
+        mapItem9 = v184;
       }
 
       else
@@ -678,84 +678,84 @@ LABEL_83:
         v35 = 0;
       }
 
-      v161 = [(MKPlaceActionManager *)self delegate];
-      v22 = v161;
+      delegate13 = [(MKPlaceActionManager *)self delegate];
+      delegate3 = delegate13;
       if (v35)
       {
-        [v161 placeCardActionControllerDidSelectCreateCustomRoute:0 originMapItem:0];
+        [delegate13 placeCardActionControllerDidSelectCreateCustomRoute:0 originMapItem:0];
       }
 
       else
       {
-        v79 = [(MKPlaceActionManager *)self mapItem];
-        [v22 placeCardActionControllerDidSelectCreateCustomRoute:0 originMapItem:v79];
+        delegate = [(MKPlaceActionManager *)self mapItem];
+        [delegate3 placeCardActionControllerDidSelectCreateCustomRoute:0 originMapItem:delegate];
 LABEL_87:
       }
 
       goto LABEL_88;
     case 42:
     case 43:
-      v22 = [(MKPlaceActionManager *)self delegate];
-      [v22 placeActionManager:self didSelectRateWithEnvironment:v11];
+      delegate3 = [(MKPlaceActionManager *)self delegate];
+      [delegate3 placeActionManager:self didSelectRateWithEnvironment:v11];
       goto LABEL_88;
     case 44:
     case 45:
-      v22 = [(MKPlaceActionManager *)self delegate];
-      [v22 placeActionManager:self didSelectAddToFavoritesGuideWithEnvironment:v11];
+      delegate3 = [(MKPlaceActionManager *)self delegate];
+      [delegate3 placeActionManager:self didSelectAddToFavoritesGuideWithEnvironment:v11];
       goto LABEL_88;
     case 46:
-      v90 = [(MKPlaceActionManager *)self delegate];
+      delegate14 = [(MKPlaceActionManager *)self delegate];
       v91 = objc_opt_respondsToSelector();
 
       if (v91)
       {
-        v45 = [(MKPlaceActionManager *)self delegate];
-        [v45 placeCardActionControllerDidSelectSimulateLocation:0];
+        delegate2 = [(MKPlaceActionManager *)self delegate];
+        [delegate2 placeCardActionControllerDidSelectSimulateLocation:0];
 LABEL_81:
       }
 
       goto LABEL_89;
     case 47:
-      v121 = [(MKPlaceActionManager *)self mapItem];
-      v122 = [v121 _muid];
+      mapItem11 = [(MKPlaceActionManager *)self mapItem];
+      _muid = [mapItem11 _muid];
 
-      if (!v122)
+      if (!_muid)
       {
         goto LABEL_89;
       }
 
-      v22 = [MEMORY[0x1E69DCD50] generalPasteboard];
+      delegate3 = [MEMORY[0x1E69DCD50] generalPasteboard];
       v123 = MEMORY[0x1E696AEC0];
-      v79 = [(MKPlaceActionManager *)self mapItem];
-      v124 = [v123 stringWithFormat:@"%llu", objc_msgSend(v79, "_muid")];
-      [v22 setString:v124];
+      delegate = [(MKPlaceActionManager *)self mapItem];
+      identifier6 = [v123 stringWithFormat:@"%llu", objc_msgSend(delegate, "_muid")];
+      [delegate3 setString:identifier6];
       goto LABEL_86;
     case 48:
-      v134 = [(MKPlaceActionManager *)self mapItem];
-      v135 = [v134 identifier];
-      v136 = [v135 identifierString];
+      mapItem12 = [(MKPlaceActionManager *)self mapItem];
+      identifier5 = [mapItem12 identifier];
+      identifierString = [identifier5 identifierString];
 
-      if (!v136)
+      if (!identifierString)
       {
         goto LABEL_89;
       }
 
-      v22 = [MEMORY[0x1E69DCD50] generalPasteboard];
-      v79 = [(MKPlaceActionManager *)self mapItem];
-      v124 = [v79 identifier];
-      v137 = [v124 identifierString];
-      [v22 setString:v137];
+      delegate3 = [MEMORY[0x1E69DCD50] generalPasteboard];
+      delegate = [(MKPlaceActionManager *)self mapItem];
+      identifier6 = [delegate identifier];
+      identifierString2 = [identifier6 identifierString];
+      [delegate3 setString:identifierString2];
 
 LABEL_86:
       goto LABEL_87;
     case 49:
       v36 = MEMORY[0x1E69A21E0];
-      v37 = [(MKPlaceActionManager *)self mapItem];
-      v38 = [v37 _geoMapItem];
-      v39 = [v36 mapItemStorageForGEOMapItem:v38];
+      mapItem13 = [(MKPlaceActionManager *)self mapItem];
+      _geoMapItem3 = [mapItem13 _geoMapItem];
+      v39 = [v36 mapItemStorageForGEOMapItem:_geoMapItem3];
 
-      v40 = [v39 jsonRepresentation];
-      v41 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v40 options:1 error:0];
+      jsonRepresentation = [v39 jsonRepresentation];
+      v41 = [MEMORY[0x1E696ACB0] dataWithJSONObject:jsonRepresentation options:1 error:0];
       v42 = NSTemporaryDirectory();
       v43 = [v42 stringByAppendingPathComponent:@"SavedMapItem.json"];
 
@@ -765,10 +765,10 @@ LABEL_23:
       goto LABEL_89;
     case 50:
       v102 = NSTemporaryDirectory();
-      v22 = [v102 stringByAppendingPathComponent:@"SavedMapItem.json"];
+      delegate3 = [v102 stringByAppendingPathComponent:@"SavedMapItem.json"];
 
-      v79 = [MEMORY[0x1E696AC08] defaultManager];
-      [v79 removeItemAtPath:v22 error:0];
+      delegate = [MEMORY[0x1E696AC08] defaultManager];
+      [delegate removeItemAtPath:delegate3 error:0];
       goto LABEL_87;
     default:
       goto LABEL_89;
@@ -777,32 +777,32 @@ LABEL_23:
 
 - (BOOL)_isCurrentLocationOrDroppedPin
 {
-  v3 = [(MKPlaceActionManager *)self placeItem];
-  if (([v3 options] & 2) != 0)
+  placeItem = [(MKPlaceActionManager *)self placeItem];
+  if (([placeItem options] & 2) != 0)
   {
     LOBYTE(v5) = 1;
   }
 
   else
   {
-    v4 = [(MKPlaceActionManager *)self placeItem];
-    v5 = [v4 options] & 1;
+    placeItem2 = [(MKPlaceActionManager *)self placeItem];
+    v5 = [placeItem2 options] & 1;
   }
 
   return v5;
 }
 
-- (void)_canMakeCalls:(id)a3
+- (void)_canMakeCalls:(id)calls
 {
-  v3 = a3;
-  if (v3)
+  callsCopy = calls;
+  if (callsCopy)
   {
     v4 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __38__MKPlaceActionManager__canMakeCalls___block_invoke;
     block[3] = &unk_1E76CD4D0;
-    v6 = v3;
+    v6 = callsCopy;
     dispatch_async(v4, block);
   }
 }
@@ -869,8 +869,8 @@ void __38__MKPlaceActionManager__canMakeCalls___block_invoke(uint64_t a1)
 
 - (void)_launchMaps
 {
-  v2 = [(MKPlaceActionManager *)self mapItem];
-  [v2 openInMapsWithLaunchOptions:0 completionHandler:&__block_literal_global_13764];
+  mapItem = [(MKPlaceActionManager *)self mapItem];
+  [mapItem openInMapsWithLaunchOptions:0 completionHandler:&__block_literal_global_13764];
 }
 
 void __35__MKPlaceActionManager__launchMaps__block_invoke(uint64_t a1, char a2)
@@ -917,12 +917,12 @@ void __35__MKPlaceActionManager__launchMaps__block_invoke(uint64_t a1, char a2)
 {
   if ([(MKPlaceActionManager *)self _showReportAProblemFooterAction])
   {
-    v3 = [MEMORY[0x1E695DF70] array];
-    v4 = [(MKPlaceActionManager *)self reportAProblemFooterAction];
-    [v3 addObject:v4];
+    array = [MEMORY[0x1E695DF70] array];
+    reportAProblemFooterAction = [(MKPlaceActionManager *)self reportAProblemFooterAction];
+    [array addObject:reportAProblemFooterAction];
 
-    [(MKPlaceActionManager *)self addLayoutInfoIfNeeded:v3];
-    v5 = [v3 copy];
+    [(MKPlaceActionManager *)self addLayoutInfoIfNeeded:array];
+    v5 = [array copy];
   }
 
   else
@@ -998,8 +998,8 @@ void __35__MKPlaceActionManager__launchMaps__block_invoke(uint64_t a1, char a2)
       self->_libraryActionItem = v4;
 
       v6 = [MKPlaceCardActionItem actionItemWithType:38 actionDataProvider:self enabled:1];
-      v7 = [MEMORY[0x1E69DC888] systemRedColor];
-      [v6 setGlyphColor:v7];
+      systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+      [v6 setGlyphColor:systemRedColor];
 
       [(MKPlaceCardActionItem *)self->_libraryActionItem setSelectedItem:v6];
       libraryActionItem = self->_libraryActionItem;
@@ -1022,9 +1022,9 @@ void __35__MKPlaceActionManager__launchMaps__block_invoke(uint64_t a1, char a2)
   favoriteActionItem = self->_favoriteActionItem;
   if (!favoriteActionItem)
   {
-    v4 = [(MKPlaceActionManager *)self favoriteItemForFooter];
+    favoriteItemForFooter = [(MKPlaceActionManager *)self favoriteItemForFooter];
     v5 = self->_favoriteActionItem;
-    self->_favoriteActionItem = v4;
+    self->_favoriteActionItem = favoriteItemForFooter;
 
     favoriteActionItem = self->_favoriteActionItem;
   }
@@ -1037,9 +1037,9 @@ void __35__MKPlaceActionManager__launchMaps__block_invoke(uint64_t a1, char a2)
   homeActionItem = self->_homeActionItem;
   if (!homeActionItem)
   {
-    v4 = [(MKPlaceActionManager *)self addToHomeItem];
+    addToHomeItem = [(MKPlaceActionManager *)self addToHomeItem];
     v5 = self->_homeActionItem;
-    self->_homeActionItem = v4;
+    self->_homeActionItem = addToHomeItem;
 
     homeActionItem = self->_homeActionItem;
   }
@@ -1047,34 +1047,34 @@ void __35__MKPlaceActionManager__launchMaps__block_invoke(uint64_t a1, char a2)
   return homeActionItem;
 }
 
-- (void)_addInternalOnlyActions:(id)a3
+- (void)_addInternalOnlyActions:(id)actions
 {
-  v9 = a3;
+  actionsCopy = actions;
   if (([(MKPlaceActionManager *)self options]& 0x2000) != 0)
   {
     v4 = [MKPlaceCardActionItem actionItemWithType:46 actionDataProvider:self enabled:1];
-    [v9 addObject:v4];
+    [actionsCopy addObject:v4];
   }
 
-  [(MKPlaceActionManager *)self addLayoutInfoIfNeeded:v9];
+  [(MKPlaceActionManager *)self addLayoutInfoIfNeeded:actionsCopy];
   if ([(MKPlaceActionManager *)self _showMapItemIdentifier])
   {
     v5 = [MKPlaceCardActionItem actionItemWithType:47 actionDataProvider:self enabled:1];
-    [v9 addObject:v5];
+    [actionsCopy addObject:v5];
   }
 
   if ([(MKPlaceActionManager *)self _showPlaceID])
   {
     v6 = [MKPlaceCardActionItem actionItemWithType:48 actionDataProvider:self enabled:1];
-    [v9 addObject:v6];
+    [actionsCopy addObject:v6];
   }
 
   if (GEOConfigGetBOOL())
   {
     v7 = [MKPlaceCardActionItem actionItemWithType:49 actionDataProvider:self enabled:1];
-    [v9 addObject:v7];
+    [actionsCopy addObject:v7];
     v8 = [MKPlaceCardActionItem actionItemWithType:50 actionDataProvider:self enabled:1];
-    [v9 addObject:v8];
+    [actionsCopy addObject:v8];
   }
 }
 
@@ -1085,10 +1085,10 @@ void __35__MKPlaceActionManager__launchMaps__block_invoke(uint64_t a1, char a2)
     return 0;
   }
 
-  v3 = [(MKPlaceActionManager *)self mapItem];
-  v4 = [v3 _canBeClaimed];
+  mapItem = [(MKPlaceActionManager *)self mapItem];
+  _canBeClaimed = [mapItem _canBeClaimed];
 
-  return v4;
+  return _canBeClaimed;
 }
 
 - (MKPlaceCardActionItem)collectionActionItem
@@ -1134,11 +1134,11 @@ void __35__MKPlaceActionManager__launchMaps__block_invoke(uint64_t a1, char a2)
 
 - (MKPlaceCardActionItem)flyoverActionItem
 {
-  v3 = [(MKPlaceActionManager *)self placeItem];
-  v4 = [v3 mapItem];
-  v5 = [v4 _flyover];
+  placeItem = [(MKPlaceActionManager *)self placeItem];
+  mapItem = [placeItem mapItem];
+  _flyover = [mapItem _flyover];
 
-  if (v5 && ([(MKPlaceActionManager *)self options]& 0x20000000) != 0)
+  if (_flyover && ([(MKPlaceActionManager *)self options]& 0x20000000) != 0)
   {
     v6 = [MKPlaceCardActionItem actionItemWithType:17 actionDataProvider:self enabled:1];
   }
@@ -1169,12 +1169,12 @@ void __35__MKPlaceActionManager__launchMaps__block_invoke(uint64_t a1, char a2)
 
 - (id)createFooterActions
 {
-  v3 = [(MKPlaceActionManager *)self mapItem];
-  v4 = [v3 _placeDisplayStyle];
+  mapItem = [(MKPlaceActionManager *)self mapItem];
+  _placeDisplayStyle = [mapItem _placeDisplayStyle];
 
-  if (v4 == 2)
+  if (_placeDisplayStyle == 2)
   {
-    v5 = [(MKPlaceActionManager *)self shortPlacecardFooterActions];
+    shortPlacecardFooterActions = [(MKPlaceActionManager *)self shortPlacecardFooterActions];
   }
 
   else
@@ -1184,8 +1184,8 @@ void __35__MKPlaceActionManager__launchMaps__block_invoke(uint64_t a1, char a2)
     {
       if ([(MKPlaceActionManager *)self _showHomeShortcutItem])
       {
-        v14 = [(MKPlaceActionManager *)self homeActionItem];
-        [v6 addObject:v14];
+        homeActionItem = [(MKPlaceActionManager *)self homeActionItem];
+        [v6 addObject:homeActionItem];
       }
 
       if (([(MKPlaceActionManager *)self options]& 0x80000) != 0)
@@ -1200,81 +1200,81 @@ void __35__MKPlaceActionManager__launchMaps__block_invoke(uint64_t a1, char a2)
         [v6 addObject:v16];
       }
 
-      v17 = [MEMORY[0x1E69A1CD8] sharedConfiguration];
-      v18 = [v17 countryCode];
-      v19 = [v18 isEqualToString:@"KR"];
+      mEMORY[0x1E69A1CD8] = [MEMORY[0x1E69A1CD8] sharedConfiguration];
+      countryCode = [mEMORY[0x1E69A1CD8] countryCode];
+      v19 = [countryCode isEqualToString:@"KR"];
 
       if ((([(MKPlaceActionManager *)self options]& 0x80000) != 0 || ([(MKPlaceActionManager *)self options]& 0x40000) != 0) && !(v19 & 1 | ((_MKRAPIsAvailable() & 1) == 0)))
       {
-        v20 = [(MKPlaceActionManager *)self reportAProblemFooterAction];
-        [v6 addObject:v20];
+        reportAProblemFooterAction = [(MKPlaceActionManager *)self reportAProblemFooterAction];
+        [v6 addObject:reportAProblemFooterAction];
       }
     }
 
-    v7 = [(MKPlaceActionManager *)self createContactActions];
-    if ([v7 count])
+    createContactActions = [(MKPlaceActionManager *)self createContactActions];
+    if ([createContactActions count])
     {
-      [v6 addObjectsFromArray:v7];
+      [v6 addObjectsFromArray:createContactActions];
     }
 
     if ([(MKPlaceActionManager *)self _showAddPlaceFooterAction])
     {
-      v8 = [(MKPlaceActionManager *)self reportAProblemAddPlaceFooterAction];
-      [v6 addObject:v8];
+      reportAProblemAddPlaceFooterAction = [(MKPlaceActionManager *)self reportAProblemAddPlaceFooterAction];
+      [v6 addObject:reportAProblemAddPlaceFooterAction];
     }
 
     if ([(MKPlaceActionManager *)self _canShowCreateCustomRouteAction])
     {
-      v9 = [(MKPlaceActionManager *)self createCustomRouteActionItem];
+      createCustomRouteActionItem = [(MKPlaceActionManager *)self createCustomRouteActionItem];
 
-      if (v9)
+      if (createCustomRouteActionItem)
       {
-        v10 = [(MKPlaceActionManager *)self createCustomRouteActionItem];
-        [v6 addObject:v10];
+        createCustomRouteActionItem2 = [(MKPlaceActionManager *)self createCustomRouteActionItem];
+        [v6 addObject:createCustomRouteActionItem2];
       }
     }
 
     if ([(MKPlaceActionManager *)self _showReportAProblemFooterAction])
     {
-      v11 = [(MKPlaceActionManager *)self reportAProblemFooterAction];
-      [v6 addObject:v11];
+      reportAProblemFooterAction2 = [(MKPlaceActionManager *)self reportAProblemFooterAction];
+      [v6 addObject:reportAProblemFooterAction2];
     }
 
     if ([(MKPlaceActionManager *)self _canShowClaimThisBusiness])
     {
-      v12 = [(MKPlaceActionManager *)self claimBusinessActionItem];
-      [v6 addObject:v12];
+      claimBusinessActionItem = [(MKPlaceActionManager *)self claimBusinessActionItem];
+      [v6 addObject:claimBusinessActionItem];
     }
 
     [(MKPlaceActionManager *)self _addInternalOnlyActions:v6];
-    v5 = [v6 copy];
+    shortPlacecardFooterActions = [v6 copy];
   }
 
-  return v5;
+  return shortPlacecardFooterActions;
 }
 
-- (void)addLayoutInfoIfNeeded:(id)a3
+- (void)addLayoutInfoIfNeeded:(id)needed
 {
-  v12 = a3;
+  neededCopy = needed;
   if (GEOConfigGetBOOL())
   {
     if (GEOConfigGetBOOL())
     {
-      v4 = [(MKPlaceActionManager *)self mapItem];
-      v5 = [v4 _placecardLayout];
+      mapItem = [(MKPlaceActionManager *)self mapItem];
+      _placecardLayout = [mapItem _placecardLayout];
 
-      if (v5)
+      if (_placecardLayout)
       {
         v6 = [MKPlaceCardActionItem alloc];
-        v7 = [(MKPlaceActionManager *)self mapItem];
-        v8 = [v7 _placecardLayout];
-        v9 = [v8 debugName];
-        v10 = [(MKPlaceCardActionItem *)v6 initWithType:0 displayString:v9 glyph:0 enabled:0];
+        mapItem2 = [(MKPlaceActionManager *)self mapItem];
+        _placecardLayout2 = [mapItem2 _placecardLayout];
+        debugName = [_placecardLayout2 debugName];
+        v10 = [(MKPlaceCardActionItem *)v6 initWithType:0 displayString:debugName glyph:0 enabled:0];
 
-        v11 = [MEMORY[0x1E69DC888] lightGrayColor];
-        [(MKPlaceCardActionItem *)v10 setGlyphColor:v11];
+        lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
+        [(MKPlaceCardActionItem *)v10 setGlyphColor:lightGrayColor];
 
-        [v12 addObject:v10];
+        [neededCopy addObject:v10];
       }
     }
   }
@@ -1285,8 +1285,8 @@ void __35__MKPlaceActionManager__launchMaps__block_invoke(uint64_t a1, char a2)
   v7[1] = *MEMORY[0x1E69E9840];
   if ([(MKPlaceActionManager *)self _canShowCallAction]&& ([(MKPlaceActionManager *)self callActionItem], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v4 = [(MKPlaceActionManager *)self callActionItem];
-    v7[0] = v4;
+    callActionItem = [(MKPlaceActionManager *)self callActionItem];
+    v7[0] = callActionItem;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   }
 
@@ -1298,136 +1298,136 @@ void __35__MKPlaceActionManager__launchMaps__block_invoke(uint64_t a1, char a2)
   return v5;
 }
 
-- (id)createRowActionsWithStyle:(unint64_t)a3
+- (id)createRowActionsWithStyle:(unint64_t)style
 {
   v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:4];
   v5 = +[MKSystemController sharedInstance];
-  v6 = [v5 userInterfaceIdiom];
+  userInterfaceIdiom = [v5 userInterfaceIdiom];
 
-  v7 = [(MKPlaceActionManager *)self mapItem];
-  if (([v7 _isMapItemTypeBrand] & 1) == 0)
+  mapItem = [(MKPlaceActionManager *)self mapItem];
+  if (([mapItem _isMapItemTypeBrand] & 1) == 0)
   {
-    v8 = [(MKPlaceActionManager *)self placeItem];
-    v9 = [v8 options];
+    placeItem = [(MKPlaceActionManager *)self placeItem];
+    options = [placeItem options];
 
-    if ((v9 & 2) == 0)
+    if ((options & 2) == 0)
     {
       goto LABEL_5;
     }
 
-    v7 = [(MKPlaceActionManager *)self removeMarkerItem];
-    [v4 addObject:v7];
+    mapItem = [(MKPlaceActionManager *)self removeMarkerItem];
+    [v4 addObject:mapItem];
   }
 
 LABEL_5:
-  v10 = [(MKPlaceActionManager *)self dataProvider];
-  v11 = [v10 supportsMessagesForBusiness];
+  dataProvider = [(MKPlaceActionManager *)self dataProvider];
+  supportsMessagesForBusiness = [dataProvider supportsMessagesForBusiness];
 
-  if (v11)
+  if (supportsMessagesForBusiness)
   {
-    v12 = [(MKPlaceActionManager *)self messageActionItem];
-    [v4 addObject:v12];
+    messageActionItem = [(MKPlaceActionManager *)self messageActionItem];
+    [v4 addObject:messageActionItem];
   }
 
   if ([(MKPlaceActionManager *)self _canShowCallAction])
   {
-    v13 = [(MKPlaceActionManager *)self callActionItem];
+    callActionItem = [(MKPlaceActionManager *)self callActionItem];
 
-    if (v13)
+    if (callActionItem)
     {
-      v14 = [(MKPlaceActionManager *)self callActionItem];
-      [v4 addObject:v14];
+      callActionItem2 = [(MKPlaceActionManager *)self callActionItem];
+      [v4 addObject:callActionItem2];
     }
   }
 
   if ([(MKPlaceActionManager *)self _showWebsite])
   {
-    v15 = [(MKPlaceActionManager *)self websiteActionItem];
+    websiteActionItem = [(MKPlaceActionManager *)self websiteActionItem];
 
-    if (v15)
+    if (websiteActionItem)
     {
-      v16 = [(MKPlaceActionManager *)self websiteActionItem];
-      [v4 addObject:v16];
+      websiteActionItem2 = [(MKPlaceActionManager *)self websiteActionItem];
+      [v4 addObject:websiteActionItem2];
     }
   }
 
   if ([(MKPlaceActionManager *)self _canShowLibraryAction])
   {
-    v17 = [(MKPlaceActionManager *)self libraryActionItem];
+    libraryActionItem = [(MKPlaceActionManager *)self libraryActionItem];
 
-    if (v17)
+    if (libraryActionItem)
     {
-      v18 = [(MKPlaceActionManager *)self libraryActionItem];
-      [v4 addObject:v18];
+      libraryActionItem2 = [(MKPlaceActionManager *)self libraryActionItem];
+      [v4 addObject:libraryActionItem2];
     }
   }
 
   if ([(MKPlaceActionManager *)self _canShowAddOrEditNoteAction])
   {
-    v19 = [(MKPlaceActionManager *)self noteActionItem];
+    noteActionItem = [(MKPlaceActionManager *)self noteActionItem];
 
-    if (v19)
+    if (noteActionItem)
     {
-      v20 = [(MKPlaceActionManager *)self noteActionItem];
-      [v4 addObject:v20];
+      noteActionItem2 = [(MKPlaceActionManager *)self noteActionItem];
+      [v4 addObject:noteActionItem2];
     }
   }
 
   if ([(MKPlaceActionManager *)self _showCollectionItem])
   {
-    v21 = [(MKPlaceActionManager *)self collectionActionItem];
+    collectionActionItem = [(MKPlaceActionManager *)self collectionActionItem];
 
-    if (v21)
+    if (collectionActionItem)
     {
-      v22 = [(MKPlaceActionManager *)self collectionActionItem];
-      [v4 addObject:v22];
+      collectionActionItem2 = [(MKPlaceActionManager *)self collectionActionItem];
+      [v4 addObject:collectionActionItem2];
     }
   }
 
-  v23 = [(MKPlaceActionManager *)self addToFavoritesGuideActionItem];
-  v24 = v23;
-  if (v23 && [v23 enabled])
+  addToFavoritesGuideActionItem = [(MKPlaceActionManager *)self addToFavoritesGuideActionItem];
+  v24 = addToFavoritesGuideActionItem;
+  if (addToFavoritesGuideActionItem && [addToFavoritesGuideActionItem enabled])
   {
     [v4 addObject:v24];
   }
 
-  v25 = v6 != 2 && self->_isCurrentLocation;
-  v26 = [(MKPlaceActionManager *)self mapItem];
-  v27 = [v26 _isMapItemTypeBrand];
-  if (v25 || (v27 & 1) != 0)
+  v25 = userInterfaceIdiom != 2 && self->_isCurrentLocation;
+  mapItem2 = [(MKPlaceActionManager *)self mapItem];
+  _isMapItemTypeBrand = [mapItem2 _isMapItemTypeBrand];
+  if (v25 || (_isMapItemTypeBrand & 1) != 0)
   {
     goto LABEL_32;
   }
 
-  v28 = [(MKPlaceActionManager *)self options];
+  options2 = [(MKPlaceActionManager *)self options];
 
-  if ((v28 & 0x200000) == 0)
+  if ((options2 & 0x200000) == 0)
   {
-    v26 = [(MKPlaceActionManager *)self shareActionItem];
-    [v4 addObject:v26];
+    mapItem2 = [(MKPlaceActionManager *)self shareActionItem];
+    [v4 addObject:mapItem2];
 LABEL_32:
   }
 
-  if (v6 == 2 && self->_isCurrentLocation)
+  if (userInterfaceIdiom == 2 && self->_isCurrentLocation)
   {
     v29 = [MKPlaceCardActionItem actionItemWithType:28 actionDataProvider:self enabled:1];
     [v4 addObject:v29];
   }
 
-  v30 = [(MKPlaceActionManager *)self mapItem];
-  if ([v30 _isMapItemTypeBrand])
+  mapItem3 = [(MKPlaceActionManager *)self mapItem];
+  if ([mapItem3 _isMapItemTypeBrand])
   {
-    v31 = [(MKPlaceActionManager *)self mapItem];
-    v32 = [v31 _isStandAloneBrand];
+    mapItem4 = [(MKPlaceActionManager *)self mapItem];
+    _isStandAloneBrand = [mapItem4 _isStandAloneBrand];
 
-    if ((v32 & 1) == 0)
+    if ((_isStandAloneBrand & 1) == 0)
     {
       brandStoreActionItem = self->_brandStoreActionItem;
       if (!brandStoreActionItem)
       {
         v34 = [MKPlaceCardActionItem actionItemWithType:20 actionDataProvider:self enabled:0];
-        v35 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v35 addObserver:self selector:sel__enableStoreAction name:@"MKPlaceActionManagerBrandStoresEnableNotification" object:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter addObserver:self selector:sel__enableStoreAction name:@"MKPlaceActionManagerBrandStoresEnableNotification" object:0];
 
         v36 = self->_brandStoreActionItem;
         self->_brandStoreActionItem = v34;
@@ -1443,14 +1443,14 @@ LABEL_32:
   {
   }
 
-  if (v6 == 2)
+  if (userInterfaceIdiom == 2)
   {
     v37 = [MKPlaceCardActionItem actionItemWithType:29 actionDataProvider:self enabled:1];
     [v4 addObject:v37];
     v38 = MEMORY[0x1E69A1E80];
-    v39 = [(MKPlaceActionManager *)self mapItem];
-    v40 = [v39 _geoMapItem];
-    [v40 coordinate];
+    mapItem5 = [(MKPlaceActionManager *)self mapItem];
+    _geoMapItem = [mapItem5 _geoMapItem];
+    [_geoMapItem coordinate];
     if ([v38 isLocationShiftRequiredForCoordinate:?])
     {
       v41 = 0;
@@ -1458,13 +1458,13 @@ LABEL_32:
 
     else
     {
-      v42 = [(MKPlaceActionManager *)self mapItem];
-      v43 = [v42 _geoMapItem];
-      v41 = [v43 referenceFrame] != 2;
+      mapItem6 = [(MKPlaceActionManager *)self mapItem];
+      _geoMapItem2 = [mapItem6 _geoMapItem];
+      v41 = [_geoMapItem2 referenceFrame] != 2;
     }
 
-    v44 = [(MKPlaceActionManager *)self mapItem];
-    [v44 _coordinate];
+    mapItem7 = [(MKPlaceActionManager *)self mapItem];
+    [mapItem7 _coordinate];
     v46 = v45;
     v48 = fabs(v47);
 
@@ -1482,14 +1482,14 @@ LABEL_32:
 
 - (id)createMenuActions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = [(MKPlaceActionManager *)self createRowActionsWithStyle:0];
-  [v3 addObjectsFromArray:v4];
+  [array addObjectsFromArray:v4];
 
-  v5 = [(MKPlaceActionManager *)self createFooterActions];
-  [v3 addObjectsFromArray:v5];
+  createFooterActions = [(MKPlaceActionManager *)self createFooterActions];
+  [array addObjectsFromArray:createFooterActions];
 
-  v6 = [v3 copy];
+  v6 = [array copy];
 
   return v6;
 }
@@ -1502,8 +1502,8 @@ LABEL_32:
     v4 = [MKPlaceCardActionItem actionItemWithType:42 actionDataProvider:self enabled:1];
     v5 = [MKPlaceCardActionItem actionItemWithType:43 actionDataProvider:self enabled:1];
     [(MKPlaceCardActionItem *)v4 setSelectedItem:v5];
-    v6 = [(MKPlaceActionManager *)self delegate];
-    -[MKPlaceCardActionItem setSelected:](v4, "setSelected:", [v6 placeHasRating]);
+    delegate = [(MKPlaceActionManager *)self delegate];
+    -[MKPlaceCardActionItem setSelected:](v4, "setSelected:", [delegate placeHasRating]);
 
     v7 = self->_rateActionItem;
     self->_rateActionItem = v4;
@@ -1590,8 +1590,8 @@ LABEL_32:
     v3 = [MKPlaceCardActionItem actionItemWithType:23 actionDataProvider:self enabled:1];
     v4 = [MKPlaceCardActionItem actionItemWithType:22 actionDataProvider:self enabled:1];
     [v4 setSelectedItem:v3];
-    v5 = [(MKPlaceActionManager *)self delegate];
-    [v4 setSelected:{objc_msgSend(v5, "placeInShortcuts")}];
+    delegate = [(MKPlaceActionManager *)self delegate];
+    [v4 setSelected:{objc_msgSend(delegate, "placeInShortcuts")}];
   }
 
   else
@@ -1605,48 +1605,48 @@ LABEL_32:
 - (id)favoriteItemForFooter
 {
   v3 = [MKPlaceCardActionItem actionItemWithType:6 actionDataProvider:self enabled:1];
-  v4 = [MEMORY[0x1E69DC888] systemRedColor];
-  [v3 setGlyphColor:v4];
+  systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+  [v3 setGlyphColor:systemRedColor];
 
   v5 = [MKPlaceCardActionItem actionItemWithType:5 actionDataProvider:self enabled:1];
   [v5 setSelectedItem:v3];
-  v6 = [(MKPlaceActionManager *)self delegate];
-  [v5 setSelected:{objc_msgSend(v6, "placeInBookmarks")}];
+  delegate = [(MKPlaceActionManager *)self delegate];
+  [v5 setSelected:{objc_msgSend(delegate, "placeInBookmarks")}];
 
   return v5;
 }
 
 - (BOOL)_showHomeShortcutItem
 {
-  v3 = [(MKPlaceActionManager *)self mapItem];
-  v4 = [v3 _isMapItemTypeBrand];
+  mapItem = [(MKPlaceActionManager *)self mapItem];
+  _isMapItemTypeBrand = [mapItem _isMapItemTypeBrand];
 
-  return (v4 & 1) == 0 && ([(MKPlaceActionManager *)self options]& 0x10000000) != 0 && !self->_isCurrentLocation;
+  return (_isMapItemTypeBrand & 1) == 0 && ([(MKPlaceActionManager *)self options]& 0x10000000) != 0 && !self->_isCurrentLocation;
 }
 
 - (BOOL)_canShowCreateCustomRouteAction
 {
-  v3 = [(MKPlaceActionManager *)self dataProvider];
-  v4 = [v3 isInSupportedCustomRouteRegion];
+  dataProvider = [(MKPlaceActionManager *)self dataProvider];
+  isInSupportedCustomRouteRegion = [dataProvider isInSupportedCustomRouteRegion];
 
-  if (v4)
+  if (isInSupportedCustomRouteRegion)
   {
     if ([(MKPlaceActionManager *)self _isCurrentLocationOrDroppedPin])
     {
-      v5 = 1;
+      _isMapItemTypeAddress = 1;
     }
 
     else
     {
-      v7 = [(MKPlaceActionManager *)self placeItem];
-      v8 = [v7 mapItem];
-      v5 = [v8 _isMapItemTypeAddress];
+      placeItem = [(MKPlaceActionManager *)self placeItem];
+      mapItem = [placeItem mapItem];
+      _isMapItemTypeAddress = [mapItem _isMapItemTypeAddress];
     }
 
-    v9 = [(MKPlaceActionManager *)self mapItem];
-    v10 = [v9 _geoMapItem];
-    v11 = [v10 _tooltip];
-    v6 = (v11 != 0) | v5;
+    mapItem2 = [(MKPlaceActionManager *)self mapItem];
+    _geoMapItem = [mapItem2 _geoMapItem];
+    _tooltip = [_geoMapItem _tooltip];
+    v6 = (_tooltip != 0) | _isMapItemTypeAddress;
   }
 
   else
@@ -1659,26 +1659,26 @@ LABEL_32:
 
 - (BOOL)_canShowAddOrEditNoteAction
 {
-  v3 = [(MKPlaceActionManager *)self mapItem];
-  v4 = [v3 _isMapItemTypeBrand];
+  mapItem = [(MKPlaceActionManager *)self mapItem];
+  _isMapItemTypeBrand = [mapItem _isMapItemTypeBrand];
 
-  return (v4 & 1) == 0 && ([(MKPlaceActionManager *)self options]& 0x20000000000) != 0 && !self->_isCurrentLocation;
+  return (_isMapItemTypeBrand & 1) == 0 && ([(MKPlaceActionManager *)self options]& 0x20000000000) != 0 && !self->_isCurrentLocation;
 }
 
 - (BOOL)_canShowLibraryAction
 {
-  v3 = [(MKPlaceActionManager *)self mapItem];
-  v4 = [v3 _isMapItemTypeBrand];
+  mapItem = [(MKPlaceActionManager *)self mapItem];
+  _isMapItemTypeBrand = [mapItem _isMapItemTypeBrand];
 
-  return (v4 & 1) == 0 && ([(MKPlaceActionManager *)self options]& 0x10000000000) != 0 && !self->_isCurrentLocation;
+  return (_isMapItemTypeBrand & 1) == 0 && ([(MKPlaceActionManager *)self options]& 0x10000000000) != 0 && !self->_isCurrentLocation;
 }
 
 - (BOOL)_showCollectionItem
 {
-  v3 = [(MKPlaceActionManager *)self mapItem];
-  v4 = [v3 _isMapItemTypeBrand];
+  mapItem = [(MKPlaceActionManager *)self mapItem];
+  _isMapItemTypeBrand = [mapItem _isMapItemTypeBrand];
 
-  return (v4 & 1) == 0 && ([(MKPlaceActionManager *)self options]& 0x8000) != 0 && !self->_isCurrentLocation;
+  return (_isMapItemTypeBrand & 1) == 0 && ([(MKPlaceActionManager *)self options]& 0x8000) != 0 && !self->_isCurrentLocation;
 }
 
 - (BOOL)_showWebsite
@@ -1686,12 +1686,12 @@ LABEL_32:
   v3 = +[MKSystemController sharedInstance];
   if ([v3 userInterfaceIdiom] == 2)
   {
-    v4 = [(MKPlaceActionManager *)self contact];
-    v5 = [v4 urlAddresses];
-    if ([v5 count])
+    contact = [(MKPlaceActionManager *)self contact];
+    urlAddresses = [contact urlAddresses];
+    if ([urlAddresses count])
     {
-      v6 = [(MKPlaceActionManager *)self placeItem];
-      v7 = ([v6 options] & 8) == 0;
+      placeItem = [(MKPlaceActionManager *)self placeItem];
+      v7 = ([placeItem options] & 8) == 0;
     }
 
     else
@@ -1712,33 +1712,33 @@ LABEL_32:
 {
   if ([(MKPlaceActionManager *)self _showReportAProblem])
   {
-    v3 = [(MKPlaceActionManager *)self placeItem];
-    v4 = [v3 options];
+    placeItem = [(MKPlaceActionManager *)self placeItem];
+    options = [placeItem options];
 
-    v5 = [(MKPlaceActionManager *)self placeItem];
-    if (([v5 options] & 8) != 0)
+    placeItem2 = [(MKPlaceActionManager *)self placeItem];
+    if (([placeItem2 options] & 8) != 0)
     {
       v9 = 1;
     }
 
     else
     {
-      v6 = [(MKPlaceActionManager *)self placeItem];
-      if (([v6 options] & 4) != 0)
+      placeItem3 = [(MKPlaceActionManager *)self placeItem];
+      if (([placeItem3 options] & 4) != 0)
       {
         v9 = 1;
       }
 
       else
       {
-        v7 = [(MKPlaceActionManager *)self placeItem];
-        v8 = [v7 contact];
-        v9 = v8 != 0;
+        placeItem4 = [(MKPlaceActionManager *)self placeItem];
+        contact = [placeItem4 contact];
+        v9 = contact != 0;
       }
     }
 
-    v11 = [(MKPlaceActionManager *)self mapItem];
-    v12 = ((v4 & 2) == 0) & ~[v11 _isMapItemTypeAddress];
+    mapItem = [(MKPlaceActionManager *)self mapItem];
+    v12 = ((options & 2) == 0) & ~[mapItem _isMapItemTypeAddress];
 
     v10 = (v12 | v9) ^ 1;
   }
@@ -1753,52 +1753,52 @@ LABEL_32:
 
 - (BOOL)_showReportAProblemFooterAction
 {
-  v3 = [(MKPlaceActionManager *)self _showReportAProblem];
-  if (v3)
+  _showReportAProblem = [(MKPlaceActionManager *)self _showReportAProblem];
+  if (_showReportAProblem)
   {
-    LOBYTE(v3) = ![(MKPlaceActionManager *)self _isCurrentLocationOrDroppedPin];
+    LOBYTE(_showReportAProblem) = ![(MKPlaceActionManager *)self _isCurrentLocationOrDroppedPin];
   }
 
-  return v3;
+  return _showReportAProblem;
 }
 
 - (BOOL)_showReportAProblem
 {
   if (_MKRAPIsAvailable())
   {
-    v3 = [(MKPlaceActionManager *)self placeItem];
-    if (([v3 options] & 4) != 0)
+    placeItem = [(MKPlaceActionManager *)self placeItem];
+    if (([placeItem options] & 4) != 0)
     {
       goto LABEL_8;
     }
 
-    v4 = [(MKPlaceActionManager *)self placeItem];
-    v5 = [v4 options];
+    placeItem2 = [(MKPlaceActionManager *)self placeItem];
+    options = [placeItem2 options];
 
-    if ((v5 & 8) == 0)
+    if ((options & 8) == 0)
     {
-      v3 = [(MKPlaceActionManager *)self mapItem];
-      if (v3)
+      placeItem = [(MKPlaceActionManager *)self mapItem];
+      if (placeItem)
       {
         if (([(MKPlaceActionManager *)self options]& 0x40) != 0)
         {
-          v8 = [(MKPlaceActionManager *)self placeItem];
-          v6 = [v8 hasContactOnly];
+          placeItem3 = [(MKPlaceActionManager *)self placeItem];
+          hasContactOnly = [placeItem3 hasContactOnly];
         }
 
         else
         {
-          v6 = 1;
+          hasContactOnly = 1;
         }
 
         goto LABEL_9;
       }
 
 LABEL_8:
-      v6 = 0;
+      hasContactOnly = 0;
 LABEL_9:
 
-      return v6;
+      return hasContactOnly;
     }
   }
 
@@ -1807,10 +1807,10 @@ LABEL_9:
 
 - (BOOL)_showPlaceID
 {
-  v3 = [(MKPlaceActionManager *)self mapItem];
-  v4 = [v3 identifier];
-  v5 = [v4 identifierString];
-  if (v5)
+  mapItem = [(MKPlaceActionManager *)self mapItem];
+  identifier = [mapItem identifier];
+  identifierString = [identifier identifierString];
+  if (identifierString)
   {
     v6 = ([(MKPlaceActionManager *)self options]>> 50) & 1;
   }
@@ -1825,8 +1825,8 @@ LABEL_9:
 
 - (BOOL)_showMapItemIdentifier
 {
-  v3 = [(MKPlaceActionManager *)self mapItem];
-  if ([v3 _muid])
+  mapItem = [(MKPlaceActionManager *)self mapItem];
+  if ([mapItem _muid])
   {
     v4 = ([(MKPlaceActionManager *)self options]>> 24) & 1;
   }
@@ -1841,34 +1841,34 @@ LABEL_9:
 
 - (unint64_t)options
 {
-  v2 = [(MKPlaceActionManager *)self delegate];
-  v3 = [v2 options];
+  delegate = [(MKPlaceActionManager *)self delegate];
+  options = [delegate options];
 
-  return v3;
+  return options;
 }
 
 - (id)placeItem
 {
-  v2 = [(MKPlaceActionManager *)self delegate];
-  v3 = [v2 placeItem];
+  delegate = [(MKPlaceActionManager *)self delegate];
+  placeItem = [delegate placeItem];
 
-  return v3;
+  return placeItem;
 }
 
 - (id)mapItem
 {
-  v2 = [(MKPlaceActionManager *)self delegate];
-  v3 = [v2 mapItem];
+  delegate = [(MKPlaceActionManager *)self delegate];
+  mapItem = [delegate mapItem];
 
-  return v3;
+  return mapItem;
 }
 
 - (id)contact
 {
-  v2 = [(MKPlaceActionManager *)self delegate];
-  v3 = [v2 contact];
+  delegate = [(MKPlaceActionManager *)self delegate];
+  contact = [delegate contact];
 
-  return v3;
+  return contact;
 }
 
 - (id)delegate
@@ -1878,123 +1878,123 @@ LABEL_9:
   return WeakRetained;
 }
 
-- (void)setPlaceInFavoritesGuide:(BOOL)a3
+- (void)setPlaceInFavoritesGuide:(BOOL)guide
 {
-  self->_placeInFavoritesGuide = a3;
+  self->_placeInFavoritesGuide = guide;
   [(MKPlaceCardActionItem *)self->_addToFavoritesGuideActionItem setSelected:?];
   addToFavoritesGuideActionItem = self->_addToFavoritesGuideActionItem;
 
   [(MKPlaceCardActionItem *)addToFavoritesGuideActionItem setEnabled:1];
 }
 
-- (void)setPlaceHasRating:(BOOL)a3
+- (void)setPlaceHasRating:(BOOL)rating
 {
-  self->_placeHasRating = a3;
+  self->_placeHasRating = rating;
   [(MKPlaceCardActionItem *)self->_rateActionItem setSelected:?];
   rateActionItem = self->_rateActionItem;
 
   [(MKPlaceCardActionItem *)rateActionItem setEnabled:1];
 }
 
-- (void)setPlaceHasNote:(unint64_t)a3
+- (void)setPlaceHasNote:(unint64_t)note
 {
-  self->_placeHasNote = a3;
-  v3 = [(MKPlaceActionManager *)self noteActionItem];
-  [v3 setEnabled:1];
+  self->_placeHasNote = note;
+  noteActionItem = [(MKPlaceActionManager *)self noteActionItem];
+  [noteActionItem setEnabled:1];
 }
 
-- (void)setPlaceInLibrary:(unint64_t)a3
+- (void)setPlaceInLibrary:(unint64_t)library
 {
-  self->_placeInLibrary = a3;
-  v3 = [(MKPlaceActionManager *)self libraryActionItem];
-  [v3 setEnabled:1];
+  self->_placeInLibrary = library;
+  libraryActionItem = [(MKPlaceActionManager *)self libraryActionItem];
+  [libraryActionItem setEnabled:1];
 }
 
-- (void)setPlaceInShortcuts:(BOOL)a3
+- (void)setPlaceInShortcuts:(BOOL)shortcuts
 {
-  v3 = a3;
-  self->_placeInShortcuts = a3;
-  v5 = [(MKPlaceActionManager *)self homeActionItem];
-  [v5 setSelected:v3];
+  shortcutsCopy = shortcuts;
+  self->_placeInShortcuts = shortcuts;
+  homeActionItem = [(MKPlaceActionManager *)self homeActionItem];
+  [homeActionItem setSelected:shortcutsCopy];
 
-  v6 = [(MKPlaceActionManager *)self homeActionItem];
-  [v6 setEnabled:1];
+  homeActionItem2 = [(MKPlaceActionManager *)self homeActionItem];
+  [homeActionItem2 setEnabled:1];
 }
 
-- (void)setPlaceInCollections:(BOOL)a3
+- (void)setPlaceInCollections:(BOOL)collections
 {
-  self->_placeInCollections = a3;
+  self->_placeInCollections = collections;
   [(MKPlaceCardActionItem *)self->_collectionActionItem setSelected:?];
   collectionActionItem = self->_collectionActionItem;
 
   [(MKPlaceCardActionItem *)collectionActionItem setEnabled:1];
 }
 
-- (void)setPlaceInBookmarks:(BOOL)a3
+- (void)setPlaceInBookmarks:(BOOL)bookmarks
 {
-  self->_placeInBookmarks = a3;
+  self->_placeInBookmarks = bookmarks;
   [(MKPlaceCardActionItem *)self->_favoriteActionItem setSelected:?];
   favoriteActionItem = self->_favoriteActionItem;
 
   [(MKPlaceCardActionItem *)favoriteActionItem setEnabled:1];
 }
 
-- (id)placeIDForAppearance:(id)a3
+- (id)placeIDForAppearance:(id)appearance
 {
-  v3 = [(MKPlaceActionManager *)self mapItem];
-  v4 = [v3 identifier];
-  v5 = [v4 identifierString];
+  mapItem = [(MKPlaceActionManager *)self mapItem];
+  identifier = [mapItem identifier];
+  identifierString = [identifier identifierString];
 
-  return v5;
+  return identifierString;
 }
 
-- (unint64_t)placeMUIDForAppearance:(id)a3
+- (unint64_t)placeMUIDForAppearance:(id)appearance
 {
-  v3 = [(MKPlaceActionManager *)self mapItem];
-  v4 = [v3 _muid];
+  mapItem = [(MKPlaceActionManager *)self mapItem];
+  _muid = [mapItem _muid];
 
-  return v4;
+  return _muid;
 }
 
-- (id)actionItemForButtonItem:(id)a3
+- (id)actionItemForButtonItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = [(MKPlaceActionManager *)self createRowActionsWithStyle:0];
-  v6 = [v4 buttonType];
+  buttonType = [itemCopy buttonType];
 
-  return [(MKPlaceActionManager *)self actionItemForButtonType:v6];
+  return [(MKPlaceActionManager *)self actionItemForButtonType:buttonType];
 }
 
-- (id)actionItemForButtonType:(int)a3
+- (id)actionItemForButtonType:(int)type
 {
-  switch(a3)
+  switch(type)
   {
     case 0:
     case 7:
     case 8:
     case 15:
-      v5 = [(MKPlaceActionManager *)self rateActionItem];
+      rateActionItem = [(MKPlaceActionManager *)self rateActionItem];
       goto LABEL_23;
     case 1:
-      v5 = [(MKPlaceActionManager *)self collectionActionItem];
+      rateActionItem = [(MKPlaceActionManager *)self collectionActionItem];
       goto LABEL_23;
     case 2:
-      v5 = [(MKPlaceActionManager *)self reportAProblemFooterAction];
+      rateActionItem = [(MKPlaceActionManager *)self reportAProblemFooterAction];
       goto LABEL_23;
     case 3:
-      v5 = [(MKPlaceActionManager *)self shareActionItem];
+      rateActionItem = [(MKPlaceActionManager *)self shareActionItem];
       goto LABEL_23;
     case 4:
-      v5 = [(MKPlaceActionManager *)self callActionItem];
+      rateActionItem = [(MKPlaceActionManager *)self callActionItem];
       goto LABEL_23;
     case 5:
-      v5 = [(MKPlaceActionManager *)self messageActionItem];
+      rateActionItem = [(MKPlaceActionManager *)self messageActionItem];
       goto LABEL_23;
     case 6:
-      v5 = [(MKPlaceActionManager *)self websiteActionItem];
+      rateActionItem = [(MKPlaceActionManager *)self websiteActionItem];
       goto LABEL_23;
     case 9:
-      v5 = [(MKPlaceActionManager *)self flyoverActionItem];
+      rateActionItem = [(MKPlaceActionManager *)self flyoverActionItem];
       goto LABEL_23;
     case 10:
       if (!GEOSupportsOfflineMaps() || ([(MKPlaceActionManager *)self options]& 0x1000000000) != 0)
@@ -2002,57 +2002,57 @@ LABEL_9:
         goto LABEL_14;
       }
 
-      v5 = [MKPlaceCardActionItem actionItemWithType:34];
+      rateActionItem = [MKPlaceCardActionItem actionItemWithType:34];
       goto LABEL_23;
     case 11:
-      v6 = [(MKPlaceActionManager *)self dataProvider];
-      v7 = [v6 supportsAddingPhotos];
+      dataProvider = [(MKPlaceActionManager *)self dataProvider];
+      supportsAddingPhotos = [dataProvider supportsAddingPhotos];
 
-      if (v7)
+      if (supportsAddingPhotos)
       {
-        v5 = [MKPlaceCardActionItem actionItemWithType:9 actionDataProvider:self enabled:1];
+        rateActionItem = [MKPlaceCardActionItem actionItemWithType:9 actionDataProvider:self enabled:1];
       }
 
       else
       {
 LABEL_14:
-        v5 = 0;
+        rateActionItem = 0;
       }
 
       goto LABEL_23;
     case 12:
-      v5 = [(MKPlaceActionManager *)self homeActionItem];
+      rateActionItem = [(MKPlaceActionManager *)self homeActionItem];
       goto LABEL_23;
     case 13:
-      v5 = [(MKPlaceActionManager *)self libraryActionItem];
+      rateActionItem = [(MKPlaceActionManager *)self libraryActionItem];
       goto LABEL_23;
     case 14:
-      v5 = [(MKPlaceActionManager *)self noteActionItem];
+      rateActionItem = [(MKPlaceActionManager *)self noteActionItem];
       goto LABEL_23;
     case 16:
-      v5 = [(MKPlaceActionManager *)self addToFavoritesGuideActionItem];
+      rateActionItem = [(MKPlaceActionManager *)self addToFavoritesGuideActionItem];
 LABEL_23:
 
       break;
     default:
-      v5 = 0;
+      rateActionItem = 0;
 
       break;
   }
 
-  return v5;
+  return rateActionItem;
 }
 
-- (MKPlaceActionManager)initWithDataProvider:(id)a3
+- (MKPlaceActionManager)initWithDataProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = MKPlaceActionManager;
   v6 = [(MKPlaceActionManager *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataProvider, a3);
+    objc_storeStrong(&v6->_dataProvider, provider);
     objc_initWeak(&location, v7);
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;

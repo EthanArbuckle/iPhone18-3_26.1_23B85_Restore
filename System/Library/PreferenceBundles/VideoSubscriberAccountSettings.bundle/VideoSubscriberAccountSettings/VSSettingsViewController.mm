@@ -1,47 +1,47 @@
 @interface VSSettingsViewController
-- (VSSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (VSSettingsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)_appWillForeground;
-- (void)_confirmDeletionOfAccount:(id)a3 withAccountInfoViewController:(id)a4;
-- (void)_forciblySignOutOfAccount:(id)a3;
-- (void)_handleDestination:(id)a3 completion:(id)a4;
+- (void)_confirmDeletionOfAccount:(id)account withAccountInfoViewController:(id)controller;
+- (void)_forciblySignOutOfAccount:(id)account;
+- (void)_handleDestination:(id)destination completion:(id)completion;
 - (void)_loadAppropriateChildViewController;
-- (void)_presentAlertForError:(id)a3 offeringToDeleteAccount:(id)a4;
-- (void)_presentError:(id)a3;
-- (void)_presentError:(id)a3 withAccount:(id)a4;
+- (void)_presentAlertForError:(id)error offeringToDeleteAccount:(id)account;
+- (void)_presentError:(id)error;
+- (void)_presentError:(id)error withAccount:(id)account;
 - (void)_removeCurrentChildViewControllerIfNecessary;
 - (void)_setupAppropriateChildViewController;
-- (void)_startSigningOutOfAccount:(id)a3 withAccountInfoViewController:(id)a4;
-- (void)_updateChildViewController:(id)a3 searchController:(id)a4 rightBarButtonItem:(id)a5;
-- (void)accountInfoViewController:(id)a3 didSelectEditAccountForAccount:(id)a4 identityProvider:(id)a5;
-- (void)accountInfoViewControllerWantsMoreApps:(id)a3;
+- (void)_startSigningOutOfAccount:(id)account withAccountInfoViewController:(id)controller;
+- (void)_updateChildViewController:(id)controller searchController:(id)searchController rightBarButtonItem:(id)item;
+- (void)accountInfoViewController:(id)controller didSelectEditAccountForAccount:(id)account identityProvider:(id)provider;
+- (void)accountInfoViewControllerWantsMoreApps:(id)apps;
 - (void)dealloc;
-- (void)dismissIdentityProviderViewController:(id)a3;
-- (void)enqueueOperation:(id)a3;
-- (void)handleDestination:(id)a3 completion:(id)a4;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
-- (void)identityProviderPickerViewController:(id)a3 didPickIdentityProvider:(id)a4;
-- (void)identityProviderRequestManager:(id)a3 finishedRequest:(id)a4 withResult:(id)a5;
-- (void)identityProviderViewController:(id)a3 didFinishRequest:(id)a4 withResult:(id)a5;
-- (void)identityProviderViewControllerDidCancel:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)presentAccountsViewController:(id)a3;
+- (void)dismissIdentityProviderViewController:(id)controller;
+- (void)enqueueOperation:(id)operation;
+- (void)handleDestination:(id)destination completion:(id)completion;
+- (void)handleURL:(id)l withCompletion:(id)completion;
+- (void)identityProviderPickerViewController:(id)controller didPickIdentityProvider:(id)provider;
+- (void)identityProviderRequestManager:(id)manager finishedRequest:(id)request withResult:(id)result;
+- (void)identityProviderViewController:(id)controller didFinishRequest:(id)request withResult:(id)result;
+- (void)identityProviderViewControllerDidCancel:(id)cancel;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)presentAccountsViewController:(id)controller;
 - (void)presentIdentityProvidersViewController;
-- (void)remoteNotifier:(id)a3 didReceiveRemoteNotificationWithUserInfo:(id)a4;
-- (void)setCurrentChildViewController:(id)a3;
-- (void)setCurrentOperation:(id)a3;
-- (void)setSpecifier:(id)a3;
+- (void)remoteNotifier:(id)notifier didReceiveRemoteNotificationWithUserInfo:(id)info;
+- (void)setCurrentChildViewController:(id)controller;
+- (void)setCurrentOperation:(id)operation;
+- (void)setSpecifier:(id)specifier;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation VSSettingsViewController
 
-- (VSSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (VSSettingsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v18.receiver = self;
   v18.super_class = VSSettingsViewController;
-  v4 = [(VSSettingsViewController *)&v18 initWithNibName:a3 bundle:a4];
+  v4 = [(VSSettingsViewController *)&v18 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_alloc_init(VSPersistentStorage);
@@ -78,12 +78,12 @@
   return v4;
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = VSSettingsViewController;
   [(VSSettingsViewController *)&v4 willMoveToParentViewController:?];
-  if (a3)
+  if (controller)
   {
     [VSMetricsManagerObjC recordEnterEventWithPage:VSMetricPageSettingsHome pageType:VSMetricPageTypeSettings];
   }
@@ -100,8 +100,8 @@
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 removeObserver:self];
 
-  v4 = [(VSSettingsViewController *)self dialogObserver];
-  [v4 stopListening];
+  dialogObserver = [(VSSettingsViewController *)self dialogObserver];
+  [dialogObserver stopListening];
 
   v5.receiver = self;
   v5.super_class = VSSettingsViewController;
@@ -110,10 +110,10 @@
 
 - (void)_appWillForeground
 {
-  v3 = [(VSSettingsViewController *)self navigationController];
-  v4 = [v3 visibleViewController];
+  navigationController = [(VSSettingsViewController *)self navigationController];
+  visibleViewController = [navigationController visibleViewController];
 
-  if (v4 == self)
+  if (visibleViewController == self)
   {
     v5 = VSMetricPageSettingsHome;
     v6 = VSMetricPageTypeSettings;
@@ -122,18 +122,18 @@
   }
 }
 
-- (void)identityProviderPickerViewController:(id)a3 didPickIdentityProvider:(id)a4
+- (void)identityProviderPickerViewController:(id)controller didPickIdentityProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  providerCopy = provider;
   VSRequireMainThread();
   [VSMetricsManagerObjC recordClickEventWithPage:VSMetricPageSettingsPicker pageType:VSMetricPageTypeSettings target:VSMetricClickTargetIdentityProvider];
-  if ([v7 isFullySupportedForRequestsExpectingAuthenticationSchemes:0])
+  if ([providerCopy isFullySupportedForRequestsExpectingAuthenticationSchemes:0])
   {
-    v8 = [(VSSettingsViewController *)self storage];
-    v9 = [VSIdentityProviderRequest makeAccountRequestWithStorage:v8];
+    storage = [(VSSettingsViewController *)self storage];
+    v9 = [VSIdentityProviderRequest makeAccountRequestWithStorage:storage];
 
-    v10 = [[VSIdentityProviderViewController alloc] initWithIdentityProvider:v7];
+    v10 = [[VSIdentityProviderViewController alloc] initWithIdentityProvider:providerCopy];
     [v10 setDelegate:self];
     [v10 setCanIssuePrivacyVouchers:1];
     [v10 enqueueRequest:v9];
@@ -143,73 +143,73 @@
   else
   {
     v11 = +[VSViewControllerFactory sharedFactory];
-    v12 = [(VSSettingsViewController *)self storage];
+    storage2 = [(VSSettingsViewController *)self storage];
     v15 = _NSConcreteStackBlock;
     v16 = 3221225472;
     v17 = sub_4D70;
     v18 = &unk_18828;
-    v19 = self;
-    v20 = v6;
-    v13 = [v11 viewControllerForUnsupportedProvider:v7 withRequestingAppDisplayName:0 storage:v12 acknowledgementHandler:&v15];
+    selfCopy = self;
+    v20 = controllerCopy;
+    v13 = [v11 viewControllerForUnsupportedProvider:providerCopy withRequestingAppDisplayName:0 storage:storage2 acknowledgementHandler:&v15];
 
-    v14 = [v13 forceUnwrapObject];
-    [(VSSettingsViewController *)self presentViewController:v14 animated:1 completion:0];
+    forceUnwrapObject = [v13 forceUnwrapObject];
+    [(VSSettingsViewController *)self presentViewController:forceUnwrapObject animated:1 completion:0];
   }
 }
 
-- (void)remoteNotifier:(id)a3 didReceiveRemoteNotificationWithUserInfo:(id)a4
+- (void)remoteNotifier:(id)notifier didReceiveRemoteNotificationWithUserInfo:(id)info
 {
-  [(VSSettingsViewController *)self _setupAppropriateChildViewController:a3];
-  v6 = [(VSSettingsViewController *)self navigationController];
-  v5 = [v6 popToViewController:self animated:1];
+  [(VSSettingsViewController *)self _setupAppropriateChildViewController:notifier];
+  navigationController = [(VSSettingsViewController *)self navigationController];
+  v5 = [navigationController popToViewController:self animated:1];
 }
 
-- (void)accountInfoViewControllerWantsMoreApps:(id)a3
+- (void)accountInfoViewControllerWantsMoreApps:(id)apps
 {
-  v3 = [a3 identityProvider];
-  v5 = [v3 appStoreRoomURL];
+  identityProvider = [apps identityProvider];
+  appStoreRoomURL = [identityProvider appStoreRoomURL];
 
-  v4 = v5;
-  if (v5)
+  v4 = appStoreRoomURL;
+  if (appStoreRoomURL)
   {
     VSOpenURL();
-    v4 = v5;
+    v4 = appStoreRoomURL;
   }
 }
 
-- (void)accountInfoViewController:(id)a3 didSelectEditAccountForAccount:(id)a4 identityProvider:(id)a5
+- (void)accountInfoViewController:(id)controller didSelectEditAccountForAccount:(id)account identityProvider:(id)provider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 isFullySupportedForRequestsExpectingAuthenticationSchemes:0])
+  controllerCopy = controller;
+  accountCopy = account;
+  providerCopy = provider;
+  if ([providerCopy isFullySupportedForRequestsExpectingAuthenticationSchemes:0])
   {
-    [(VSSettingsViewController *)self _confirmDeletionOfAccount:v9 withAccountInfoViewController:v8];
+    [(VSSettingsViewController *)self _confirmDeletionOfAccount:accountCopy withAccountInfoViewController:controllerCopy];
   }
 
   else
   {
-    v11 = objc_initWeak(&location, v8);
-    [(VSSettingsViewController *)self _startSigningOutOfAccount:v9 withAccountInfoViewController:v8];
+    v11 = objc_initWeak(&location, controllerCopy);
+    [(VSSettingsViewController *)self _startSigningOutOfAccount:accountCopy withAccountInfoViewController:controllerCopy];
 
     objc_destroyWeak(&location);
   }
 }
 
-- (void)identityProviderRequestManager:(id)a3 finishedRequest:(id)a4 withResult:(id)a5
+- (void)identityProviderRequestManager:(id)manager finishedRequest:(id)request withResult:(id)result
 {
-  v7 = a4;
-  v8 = a5;
+  requestCopy = request;
+  resultCopy = result;
   VSRequireMainThread();
   [(VSSettingsViewController *)self setRequestManager:0];
-  v9 = [v7 account];
+  account = [requestCopy account];
 
-  if (!v9)
+  if (!account)
   {
     [NSException raise:NSInvalidArgumentException format:@"The [request account] parameter must not be nil."];
   }
 
-  [v7 account];
+  [requestCopy account];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_5324;
@@ -221,51 +221,51 @@
   v11[3] = &unk_18878;
   v12 = v11[4] = self;
   v10 = v12;
-  [v8 unwrapObject:v13 error:v11];
+  [resultCopy unwrapObject:v13 error:v11];
 }
 
-- (void)dismissIdentityProviderViewController:(id)a3
+- (void)dismissIdentityProviderViewController:(id)controller
 {
-  v7 = [a3 navigationController];
-  v3 = [v7 viewControllers];
-  v4 = [v3 count];
+  navigationController = [controller navigationController];
+  viewControllers = [navigationController viewControllers];
+  v4 = [viewControllers count];
 
   if (v4 < 2)
   {
-    v6 = [v7 presentingViewController];
-    [v6 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [navigationController presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 
   else
   {
-    v5 = [v7 popViewControllerAnimated:1];
+    v5 = [navigationController popViewControllerAnimated:1];
   }
 }
 
-- (void)identityProviderViewControllerDidCancel:(id)a3
+- (void)identityProviderViewControllerDidCancel:(id)cancel
 {
-  v7 = [a3 navigationController];
-  v3 = [v7 viewControllers];
-  v4 = [v3 count];
+  navigationController = [cancel navigationController];
+  viewControllers = [navigationController viewControllers];
+  v4 = [viewControllers count];
 
   if (v4 < 2)
   {
-    v6 = [v7 presentingViewController];
-    [v6 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [navigationController presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 
   else
   {
-    v5 = [v7 popViewControllerAnimated:1];
+    v5 = [navigationController popViewControllerAnimated:1];
   }
 }
 
-- (void)identityProviderViewController:(id)a3 didFinishRequest:(id)a4 withResult:(id)a5
+- (void)identityProviderViewController:(id)controller didFinishRequest:(id)request withResult:(id)result
 {
-  v6 = a5;
-  v7 = [v6 object];
+  resultCopy = result;
+  object = [resultCopy object];
 
-  if (v7)
+  if (object)
   {
     [(VSSettingsViewController *)self _setupAppropriateChildViewController];
     [(VSSettingsViewController *)self setShouldShowMVPDAppInstallPrompt:1];
@@ -275,13 +275,13 @@
   v15[1] = 3221225472;
   v15[2] = sub_56C4;
   v15[3] = &unk_188E0;
-  v8 = v6;
+  v8 = resultCopy;
   v16 = v8;
-  v17 = self;
+  selfCopy = self;
   v9 = objc_retainBlock(v15);
-  v10 = [(VSSettingsViewController *)self presentedViewController];
+  presentedViewController = [(VSSettingsViewController *)self presentedViewController];
 
-  if (v10)
+  if (presentedViewController)
   {
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
@@ -293,60 +293,60 @@
 
   else
   {
-    v11 = [(VSSettingsViewController *)self navigationController];
-    v12 = [v11 popToViewController:self animated:1];
+    navigationController = [(VSSettingsViewController *)self navigationController];
+    v12 = [navigationController popToViewController:self animated:1];
 
     (v9[2])(v9);
   }
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v6.receiver = self;
   v6.super_class = VSSettingsViewController;
-  v4 = a3;
-  [(VSSettingsViewController *)&v6 setSpecifier:v4];
-  v5 = [v4 objectForKeyedSubscript:{@"VSSettingsViewModelKVOString", v6.receiver, v6.super_class}];
+  specifierCopy = specifier;
+  [(VSSettingsViewController *)&v6 setSpecifier:specifierCopy];
+  v5 = [specifierCopy objectForKeyedSubscript:{@"VSSettingsViewModelKVOString", v6.receiver, v6.super_class}];
 
   [(VSSettingsViewController *)self setSettingsVM:v5];
 }
 
-- (void)_forciblySignOutOfAccount:(id)a3
+- (void)_forciblySignOutOfAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   VSRequireMainThread();
-  v5 = [(VSSettingsViewController *)self storage];
-  v6 = [v5 channelsCenter];
-  [v6 _removeSavedAccountChannelsWithCompletionHandler:0];
+  storage = [(VSSettingsViewController *)self storage];
+  channelsCenter = [storage channelsCenter];
+  [channelsCenter _removeSavedAccountChannelsWithCompletionHandler:0];
 
-  v7 = [v5 privacyFacade];
-  [v7 reset];
+  privacyFacade = [storage privacyFacade];
+  [privacyFacade reset];
 
-  v8 = [v5 accountStore];
-  v11 = v4;
+  accountStore = [storage accountStore];
+  v11 = accountCopy;
   v9 = [NSArray arrayWithObjects:&v11 count:1];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_5988;
   v10[3] = &unk_18908;
   v10[4] = self;
-  [v8 removeAccounts:v9 withCompletionHandler:v10];
+  [accountStore removeAccounts:v9 withCompletionHandler:v10];
 }
 
-- (void)_startSigningOutOfAccount:(id)a3 withAccountInfoViewController:(id)a4
+- (void)_startSigningOutOfAccount:(id)account withAccountInfoViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VSSettingsViewController *)self privateQueue];
+  accountCopy = account;
+  controllerCopy = controller;
+  privateQueue = [(VSSettingsViewController *)self privateQueue];
   v9 = [VSIdentityProviderFetchOperation alloc];
-  v10 = [v6 identityProviderID];
-  v11 = [v10 forceUnwrapObject];
-  v12 = [v9 initWithIdentityProviderID:v11];
+  identityProviderID = [accountCopy identityProviderID];
+  forceUnwrapObject = [identityProviderID forceUnwrapObject];
+  v12 = [v9 initWithIdentityProviderID:forceUnwrapObject];
 
-  [v8 addOperation:v12];
+  [privateQueue addOperation:v12];
   v18 = v12;
-  v19 = v6;
-  v13 = v6;
+  v19 = accountCopy;
+  v13 = accountCopy;
   v14 = v12;
   v15 = VSMainThreadOperationWithBlock();
   [v15 addDependency:v14];
@@ -355,41 +355,41 @@
   v17 = [v16 localizedStringForKey:@"SIGNING_OUT_TITLE" value:0 table:0];
   [(VSSettingsViewController *)self _showLoadingViewControllerWithTitle:v17];
 
-  [v7 disableAccountSignOutButton];
+  [controllerCopy disableAccountSignOutButton];
 }
 
-- (void)_confirmDeletionOfAccount:(id)a3 withAccountInfoViewController:(id)a4
+- (void)_confirmDeletionOfAccount:(id)account withAccountInfoViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  objc_initWeak(&location, v7);
+  accountCopy = account;
+  controllerCopy = controller;
+  objc_initWeak(&location, controllerCopy);
   v8 = +[VSViewControllerFactory sharedFactory];
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_5FC8;
   v14 = &unk_18980;
-  v15 = self;
-  v9 = v6;
+  selfCopy = self;
+  v9 = accountCopy;
   v16 = v9;
   objc_copyWeak(&v17, &location);
   v10 = [v8 viewControllerToConfirmAccountDeletionForAccount:v9 preferredStyle:1 confirmationHandler:&v11];
 
-  [(VSSettingsViewController *)self presentViewController:v10 animated:1 completion:0, v11, v12, v13, v14, v15];
+  [(VSSettingsViewController *)self presentViewController:v10 animated:1 completion:0, v11, v12, v13, v14, selfCopy];
   objc_destroyWeak(&v17);
 
   objc_destroyWeak(&location);
 }
 
-- (void)_presentAlertForError:(id)a3 offeringToDeleteAccount:(id)a4
+- (void)_presentAlertForError:(id)error offeringToDeleteAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  errorCopy = error;
+  accountCopy = account;
+  v8 = accountCopy;
+  if (accountCopy)
   {
-    v9 = v7;
-    v10 = [v6 userInfo];
-    v11 = [v10 mutableCopy];
+    v9 = accountCopy;
+    userInfo = [errorCopy userInfo];
+    v11 = [userInfo mutableCopy];
 
     v12 = objc_alloc_init(VSErrorRecoveryOption);
     v13 = +[NSBundle vs_frameworkBundle];
@@ -416,10 +416,10 @@
     v20 = VSUserInfoForErrorRecoveryOptions();
     [v11 addEntriesFromDictionary:v20];
 
-    v21 = [v6 domain];
-    v22 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", v21, [v6 code], v11);
+    domain = [errorCopy domain];
+    v22 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", domain, [errorCopy code], v11);
 
-    v6 = v22;
+    errorCopy = v22;
   }
 
   v23 = VSErrorLogObject();
@@ -432,17 +432,17 @@
   [(VSSettingsViewController *)self presentViewController:v24 animated:1 completion:0];
 }
 
-- (void)_presentError:(id)a3
+- (void)_presentError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = objc_alloc_init(VSOptional);
-  [(VSSettingsViewController *)self _presentError:v4 withAccount:v5];
+  [(VSSettingsViewController *)self _presentError:errorCopy withAccount:v5];
 }
 
-- (void)_presentError:(id)a3 withAccount:(id)a4
+- (void)_presentError:(id)error withAccount:(id)account
 {
-  v6 = a4;
-  v7 = a3;
+  accountCopy = account;
+  errorCopy = error;
   IsPrivateError = VSErrorIsPrivateError();
   v9 = objc_alloc_init(VSErrorViewController);
   [v9 setRecoveryDestructive:IsPrivateError];
@@ -451,30 +451,30 @@
   v17[2] = sub_658C;
   v17[3] = &unk_189D0;
   v20 = IsPrivateError;
-  v10 = v6;
+  v10 = accountCopy;
   v18 = v10;
-  v19 = self;
+  selfCopy = self;
   v11 = objc_retainBlock(v17);
   v12 = VSPrivateAccountLoadingErrorWithRecoveryHandler();
 
   [v9 setError:v12];
   [(VSSettingsViewController *)self _updateChildViewController:v9 searchController:0 rightBarButtonItem:0];
-  v13 = [(VSSettingsViewController *)self settingsVM];
-  v14 = [v13 specifierID];
+  settingsVM = [(VSSettingsViewController *)self settingsVM];
+  specifierID = [settingsVM specifierID];
 
-  if (v14)
+  if (specifierID)
   {
-    v15 = [(VSSettingsViewController *)self accountInfoViewController];
+    accountInfoViewController = [(VSSettingsViewController *)self accountInfoViewController];
 
-    if (v15)
+    if (accountInfoViewController)
     {
-      if (([v14 isEqualToString:@"signIn"] & 1) == 0 && (objc_msgSend(v14, "isEqualToString:", @"signOut") & 1) == 0)
+      if (([specifierID isEqualToString:@"signIn"] & 1) == 0 && (objc_msgSend(specifierID, "isEqualToString:", @"signOut") & 1) == 0)
       {
         v16 = VSDefaultLogObject();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v22 = v14;
+          v22 = specifierID;
           _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "Unhandled Deeplink SpecifierID: %@", buf, 0xCu);
         }
       }
@@ -484,29 +484,29 @@
   }
 }
 
-- (void)presentAccountsViewController:(id)a3
+- (void)presentAccountsViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(VSSettingsViewController *)self storage];
-  v6 = [(VSSettingsViewController *)self privateQueue];
-  v7 = [(VSSettingsViewController *)self restrictionsCenter];
-  v8 = [[VSAccountInfoViewController alloc] initWithAccount:v4 storage:v5 restrictionsCenter:v7];
+  controllerCopy = controller;
+  storage = [(VSSettingsViewController *)self storage];
+  privateQueue = [(VSSettingsViewController *)self privateQueue];
+  restrictionsCenter = [(VSSettingsViewController *)self restrictionsCenter];
+  v8 = [[VSAccountInfoViewController alloc] initWithAccount:controllerCopy storage:storage restrictionsCenter:restrictionsCenter];
   accountInfoViewController = self->_accountInfoViewController;
   self->_accountInfoViewController = v8;
 
   [(VSAccountInfoViewController *)self->_accountInfoViewController setDelegate:self];
   [(VSSettingsViewController *)self _updateChildViewController:self->_accountInfoViewController searchController:0 rightBarButtonItem:0];
   v10 = [VSIdentityProviderFetchOperation alloc];
-  v11 = [v4 identityProviderID];
-  v12 = [v11 forceUnwrapObject];
-  v13 = [v10 initWithIdentityProviderID:v12];
+  identityProviderID = [controllerCopy identityProviderID];
+  forceUnwrapObject = [identityProviderID forceUnwrapObject];
+  v13 = [v10 initWithIdentityProviderID:forceUnwrapObject];
 
   v17 = v13;
-  v18 = v4;
-  v14 = v4;
+  v18 = controllerCopy;
+  v14 = controllerCopy;
   v15 = v13;
   v16 = VSMainThreadOperationWithBlock();
-  [v6 addOperation:v15];
+  [privateQueue addOperation:v15];
   [v16 addDependency:v15];
   VSEnqueueCompletionOperation();
 }
@@ -535,10 +535,10 @@
   [v9 addDependency:v5];
   [v7 addDependency:v5];
   [v6 addDependency:v7];
-  v8 = [(VSSettingsViewController *)self privateQueue];
-  [v8 addOperation:v4];
-  [v8 addOperation:v5];
-  [v8 addOperation:v7];
+  privateQueue = [(VSSettingsViewController *)self privateQueue];
+  [privateQueue addOperation:v4];
+  [privateQueue addOperation:v5];
+  [privateQueue addOperation:v7];
   VSEnqueueCompletionOperation();
 
   objc_destroyWeak(&v12);
@@ -553,44 +553,44 @@
 
 - (void)_loadAppropriateChildViewController
 {
-  v3 = [(VSSettingsViewController *)self storage];
-  v4 = [v3 accountStore];
-  v5 = [v4 firstAccountIfLoaded];
+  storage = [(VSSettingsViewController *)self storage];
+  accountStore = [storage accountStore];
+  firstAccountIfLoaded = [accountStore firstAccountIfLoaded];
 
-  if (v5)
+  if (firstAccountIfLoaded)
   {
-    [(VSSettingsViewController *)self presentAccountsViewController:v5];
+    [(VSSettingsViewController *)self presentAccountsViewController:firstAccountIfLoaded];
   }
 
   else
   {
-    v6 = [v3 accountStore];
+    accountStore2 = [storage accountStore];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_7560;
     v7[3] = &unk_18800;
     v7[4] = self;
-    [v6 fetchAccountsWithCompletionHandler:v7];
+    [accountStore2 fetchAccountsWithCompletionHandler:v7];
   }
 }
 
 - (void)_setupAppropriateChildViewController
 {
   VSRequireMainThread();
-  v3 = [(VSSettingsViewController *)self storage];
-  v4 = [v3 accountStore];
-  v5 = [v4 firstAccountIfLoaded];
+  storage = [(VSSettingsViewController *)self storage];
+  accountStore = [storage accountStore];
+  firstAccountIfLoaded = [accountStore firstAccountIfLoaded];
 
-  [(VSSettingsViewController *)self _showLoadingViewControllerWithTitle:0 andSpinner:v5 == 0];
+  [(VSSettingsViewController *)self _showLoadingViewControllerWithTitle:0 andSpinner:firstAccountIfLoaded == 0];
   [(VSSettingsViewController *)self _loadAppropriateChildViewController];
 }
 
-- (void)_updateChildViewController:(id)a3 searchController:(id)a4 rightBarButtonItem:(id)a5
+- (void)_updateChildViewController:(id)controller searchController:(id)searchController rightBarButtonItem:(id)item
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v15)
+  controllerCopy = controller;
+  searchControllerCopy = searchController;
+  itemCopy = item;
+  if (!controllerCopy)
   {
     [NSException raise:NSInvalidArgumentException format:@"The newChildViewController parameter must not be nil."];
   }
@@ -599,66 +599,66 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && ([(VSSettingsViewController *)self currentChildViewController], v10 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v10, (isKindOfClass))
   {
-    v12 = v15;
-    v13 = [(VSSettingsViewController *)self currentChildViewController];
-    v14 = [v12 loadingTitle];
+    v12 = controllerCopy;
+    currentChildViewController = [(VSSettingsViewController *)self currentChildViewController];
+    loadingTitle = [v12 loadingTitle];
 
-    [v13 setLoadingTitle:v14];
+    [currentChildViewController setLoadingTitle:loadingTitle];
   }
 
   else
   {
     [(VSSettingsViewController *)self _removeCurrentChildViewControllerIfNecessary];
-    [(VSSettingsViewController *)self addChildViewController:v15];
-    v13 = [v15 view];
-    v14 = [(VSSettingsViewController *)self view];
-    [v14 bounds];
-    [v13 setFrame:?];
-    [v13 setAutoresizingMask:18];
-    [v14 addSubview:v13];
-    [v15 didMoveToParentViewController:self];
-    [(VSSettingsViewController *)self setCurrentChildViewController:v15];
-    [(VSSettingsViewController *)self vs_updateNavigationItemAndForceViewReloadWithSearchController:v8 rightBarButtonItem:v9];
+    [(VSSettingsViewController *)self addChildViewController:controllerCopy];
+    currentChildViewController = [controllerCopy view];
+    loadingTitle = [(VSSettingsViewController *)self view];
+    [loadingTitle bounds];
+    [currentChildViewController setFrame:?];
+    [currentChildViewController setAutoresizingMask:18];
+    [loadingTitle addSubview:currentChildViewController];
+    [controllerCopy didMoveToParentViewController:self];
+    [(VSSettingsViewController *)self setCurrentChildViewController:controllerCopy];
+    [(VSSettingsViewController *)self vs_updateNavigationItemAndForceViewReloadWithSearchController:searchControllerCopy rightBarButtonItem:itemCopy];
   }
 }
 
-- (void)setCurrentChildViewController:(id)a3
+- (void)setCurrentChildViewController:(id)controller
 {
-  v4 = a3;
-  if ([(UIViewController *)v4 conformsToProtocol:&OBJC_PROTOCOL___VSDestinationHandler])
+  controllerCopy = controller;
+  if ([(UIViewController *)controllerCopy conformsToProtocol:&OBJC_PROTOCOL___VSDestinationHandler])
   {
-    v5 = [(VSSettingsViewController *)self currentChildViewController];
-    [v5 removeObserver:self forKeyPath:@"readyToHandleDeepLinks" context:0];
+    currentChildViewController = [(VSSettingsViewController *)self currentChildViewController];
+    [currentChildViewController removeObserver:self forKeyPath:@"readyToHandleDeepLinks" context:0];
   }
 
   [(VSSettingsViewController *)self setReadyToHandleDeepLinks:0];
   currentChildViewController = self->_currentChildViewController;
-  self->_currentChildViewController = v4;
-  v7 = v4;
+  self->_currentChildViewController = controllerCopy;
+  v7 = controllerCopy;
 
   LODWORD(currentChildViewController) = [(UIViewController *)v7 conformsToProtocol:&OBJC_PROTOCOL___VSDestinationHandler];
   if (currentChildViewController)
   {
-    v8 = [(VSSettingsViewController *)self currentChildViewController];
-    [v8 addObserver:self forKeyPath:@"readyToHandleDeepLinks" options:5 context:0];
+    currentChildViewController2 = [(VSSettingsViewController *)self currentChildViewController];
+    [currentChildViewController2 addObserver:self forKeyPath:@"readyToHandleDeepLinks" options:5 context:0];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"readyToHandleDeepLinks"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"readyToHandleDeepLinks"])
   {
-    v13 = [(VSSettingsViewController *)self currentChildViewController];
+    currentChildViewController = [(VSSettingsViewController *)self currentChildViewController];
 
-    if (v13 == v11)
+    if (currentChildViewController == objectCopy)
     {
-      v14 = [v12 objectForKeyedSubscript:NSKeyValueChangeNewKey];
-      v15 = [v14 BOOLValue];
+      v14 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
+      bOOLValue = [v14 BOOLValue];
 
-      [(VSSettingsViewController *)self setReadyToHandleDeepLinks:v15];
+      [(VSSettingsViewController *)self setReadyToHandleDeepLinks:bOOLValue];
     }
   }
 
@@ -666,33 +666,33 @@
   {
     v16.receiver = self;
     v16.super_class = VSSettingsViewController;
-    [(VSSettingsViewController *)&v16 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(VSSettingsViewController *)&v16 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)enqueueOperation:(id)a3
+- (void)enqueueOperation:(id)operation
 {
-  v3 = a3;
+  operationCopy = operation;
   v4 = +[NSOperationQueue mainQueue];
-  if (v3)
+  if (operationCopy)
   {
-    if (([v3 isFinished] & 1) == 0 && (objc_msgSend(v3, "isExecuting") & 1) == 0)
+    if (([operationCopy isFinished] & 1) == 0 && (objc_msgSend(operationCopy, "isExecuting") & 1) == 0)
     {
-      v5 = [v4 operations];
-      v6 = [v5 containsObject:v3];
+      operations = [v4 operations];
+      v6 = [operations containsObject:operationCopy];
 
       if ((v6 & 1) == 0)
       {
         v7 = VSDefaultLogObject();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
-          v8 = [v3 debugDescription];
+          v8 = [operationCopy debugDescription];
           v9 = 138412290;
           v10 = v8;
           _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Enqueing operation %@", &v9, 0xCu);
         }
 
-        [v4 addOperation:v3];
+        [v4 addOperation:operationCopy];
       }
     }
   }
@@ -700,17 +700,17 @@
 
 - (void)_removeCurrentChildViewControllerIfNecessary
 {
-  v3 = [(VSSettingsViewController *)self currentChildViewController];
-  if (v3)
+  currentChildViewController = [(VSSettingsViewController *)self currentChildViewController];
+  if (currentChildViewController)
   {
-    v5 = v3;
-    [v3 willMoveToParentViewController:0];
-    v4 = [v5 view];
-    [v4 removeFromSuperview];
+    v5 = currentChildViewController;
+    [currentChildViewController willMoveToParentViewController:0];
+    view = [v5 view];
+    [view removeFromSuperview];
 
     [v5 removeFromParentViewController];
     [(VSSettingsViewController *)self setCurrentChildViewController:0];
-    v3 = v5;
+    currentChildViewController = v5;
   }
 }
 
@@ -724,10 +724,10 @@
   [(VSSettingsViewController *)self setTitle:v4];
 
   [(VSSettingsViewController *)self _setupAppropriateChildViewController];
-  v5 = [(VSSettingsViewController *)self navigationItem];
-  [v5 setLargeTitleDisplayMode:2];
-  v6 = [(VSSettingsViewController *)self dialogObserver];
-  [v6 startListening];
+  navigationItem = [(VSSettingsViewController *)self navigationItem];
+  [navigationItem setLargeTitleDisplayMode:2];
+  dialogObserver = [(VSSettingsViewController *)self dialogObserver];
+  [dialogObserver startListening];
 }
 
 - (void)viewDidLayoutSubviews
@@ -738,14 +738,14 @@
   [(VSSettingsViewController *)self vs_adjustContentScrollViewInsets];
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v8 = VSDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 description];
+    v9 = [lCopy description];
     v11 = 138412290;
     v12 = v9;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Received URL resource dictionary: %@", &v11, 0xCu);
@@ -754,19 +754,19 @@
   v10 = VSDestinationFromResourceDictionary();
   if (v10)
   {
-    [(VSSettingsViewController *)self _handleDestination:v10 completion:v7];
+    [(VSSettingsViewController *)self _handleDestination:v10 completion:completionCopy];
   }
 }
 
-- (void)setCurrentOperation:(id)a3
+- (void)setCurrentOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   if (![(VSSettingsViewController *)self isReadyToHandleDeepLinks])
   {
     v8 = VSDefaultLogObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(VSDestinationOperation *)v4 debugDescription];
+      v9 = [(VSDestinationOperation *)operationCopy debugDescription];
       v10 = v9;
       if (!v9)
       {
@@ -782,19 +782,19 @@
     }
 
     currentOperation = self->_currentOperation;
-    self->_currentOperation = v4;
+    self->_currentOperation = operationCopy;
     goto LABEL_15;
   }
 
   if (self->_currentOperation)
   {
-    [(VSDestinationOperation *)v4 addDependency:?];
+    [(VSDestinationOperation *)operationCopy addDependency:?];
   }
 
   v5 = self->_currentOperation;
-  self->_currentOperation = v4;
+  self->_currentOperation = operationCopy;
 
-  if (v4)
+  if (operationCopy)
   {
     v6 = VSDefaultLogObject();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -809,20 +809,20 @@ LABEL_15:
   }
 }
 
-- (void)_handleDestination:(id)a3 completion:(id)a4
+- (void)_handleDestination:(id)destination completion:(id)completion
 {
-  v5 = a3;
-  v6 = [[VSDestinationOperation alloc] initWithDestination:v5 viewController:self];
+  destinationCopy = destination;
+  v6 = [[VSDestinationOperation alloc] initWithDestination:destinationCopy viewController:self];
 
   [(VSSettingsViewController *)self setCurrentOperation:v6];
 }
 
-- (void)handleDestination:(id)a3 completion:(id)a4
+- (void)handleDestination:(id)destination completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VSSettingsViewController *)self currentChildViewController];
-  v9 = [v8 conformsToProtocol:&OBJC_PROTOCOL___VSDestinationHandler];
+  destinationCopy = destination;
+  completionCopy = completion;
+  currentChildViewController = [(VSSettingsViewController *)self currentChildViewController];
+  v9 = [currentChildViewController conformsToProtocol:&OBJC_PROTOCOL___VSDestinationHandler];
 
   if (v9)
   {
@@ -831,15 +831,15 @@ LABEL_15:
     v15[2] = sub_8800;
     v15[3] = &unk_18B50;
     v15[4] = self;
-    v16 = v6;
-    v17 = v7;
+    v16 = destinationCopy;
+    v17 = completionCopy;
     [(VSSettingsViewController *)self vs_makeFrontmostAnimated:1 completion:v15];
   }
 
   else
   {
-    v10 = [(VSSettingsViewController *)self currentChildViewController];
-    v11 = [v10 debugDescription];
+    currentChildViewController2 = [(VSSettingsViewController *)self currentChildViewController];
+    v11 = [currentChildViewController2 debugDescription];
     v12 = v11;
     if (!v11)
     {
@@ -848,7 +848,7 @@ LABEL_15:
 
     v13 = [NSString stringWithFormat:@"Invalid childViewController %@", v12];
     v14 = VSDestinationError();
-    (*(v7 + 2))(v7, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
 
     if (!v11)
     {

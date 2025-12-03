@@ -1,18 +1,18 @@
 @interface _TUIElementFocusItemBuilder
 - (id)finalizeLinkEntities;
 - (id)finalizeTriggers;
-- (void)addLinkEntity:(id)a3;
-- (void)addTrigger:(id)a3 withBehavior:(id)a4;
-- (void)addTrigger:(id)a3 withRefId:(id)a4;
+- (void)addLinkEntity:(id)entity;
+- (void)addTrigger:(id)trigger withBehavior:(id)behavior;
+- (void)addTrigger:(id)trigger withRefId:(id)id;
 @end
 
 @implementation _TUIElementFocusItemBuilder
 
-- (void)addTrigger:(id)a3 withBehavior:(id)a4
+- (void)addTrigger:(id)trigger withBehavior:(id)behavior
 {
-  v10 = a3;
-  v6 = a4;
-  if (v10)
+  triggerCopy = trigger;
+  behaviorCopy = behavior;
+  if (triggerCopy)
   {
     actions = self->_actions;
     if (!actions)
@@ -24,16 +24,16 @@
       actions = self->_actions;
     }
 
-    [(NSMutableDictionary *)actions setObject:v6 forKeyedSubscript:v10];
-    [(NSMutableDictionary *)self->_actionsWithRefId setObject:0 forKeyedSubscript:v10];
+    [(NSMutableDictionary *)actions setObject:behaviorCopy forKeyedSubscript:triggerCopy];
+    [(NSMutableDictionary *)self->_actionsWithRefId setObject:0 forKeyedSubscript:triggerCopy];
   }
 }
 
-- (void)addTrigger:(id)a3 withRefId:(id)a4
+- (void)addTrigger:(id)trigger withRefId:(id)id
 {
-  v10 = a3;
-  v6 = a4;
-  if (v10)
+  triggerCopy = trigger;
+  idCopy = id;
+  if (triggerCopy)
   {
     actionsWithRefId = self->_actionsWithRefId;
     if (!actionsWithRefId)
@@ -45,8 +45,8 @@
       actionsWithRefId = self->_actionsWithRefId;
     }
 
-    [(NSMutableDictionary *)actionsWithRefId setObject:v6 forKeyedSubscript:v10];
-    [(NSMutableDictionary *)self->_actions setObject:0 forKeyedSubscript:v10];
+    [(NSMutableDictionary *)actionsWithRefId setObject:idCopy forKeyedSubscript:triggerCopy];
+    [(NSMutableDictionary *)self->_actions setObject:0 forKeyedSubscript:triggerCopy];
   }
 }
 
@@ -57,22 +57,22 @@
   return v2;
 }
 
-- (void)addLinkEntity:(id)a3
+- (void)addLinkEntity:(id)entity
 {
-  v4 = a3;
+  entityCopy = entity;
   linkEntities = self->_linkEntities;
-  v8 = v4;
+  v8 = entityCopy;
   if (!linkEntities)
   {
     v6 = objc_opt_new();
     v7 = self->_linkEntities;
     self->_linkEntities = v6;
 
-    v4 = v8;
+    entityCopy = v8;
     linkEntities = self->_linkEntities;
   }
 
-  [(NSMutableArray *)linkEntities addObject:v4];
+  [(NSMutableArray *)linkEntities addObject:entityCopy];
 }
 
 - (id)finalizeLinkEntities

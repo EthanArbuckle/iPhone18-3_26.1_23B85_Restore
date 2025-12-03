@@ -1,14 +1,14 @@
 @interface RecentsDataFilter
-- (RecentsDataFilter)initWithSearchMode:(unsigned int)a3 filterPredicate:(id)a4;
-- (id)filteredRecents:(id)a3 excludingDuplicatesOfEntries:(id)a4;
+- (RecentsDataFilter)initWithSearchMode:(unsigned int)mode filterPredicate:(id)predicate;
+- (id)filteredRecents:(id)recents excludingDuplicatesOfEntries:(id)entries;
 @end
 
 @implementation RecentsDataFilter
 
-- (id)filteredRecents:(id)a3 excludingDuplicatesOfEntries:(id)a4
+- (id)filteredRecents:(id)recents excludingDuplicatesOfEntries:(id)entries
 {
-  v5 = a3;
-  v50 = a4;
+  recentsCopy = recents;
+  entriesCopy = entries;
   v6 = sub_1000410AC();
   if (os_signpost_enabled(v6))
   {
@@ -16,19 +16,19 @@
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v6, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "Filter", "", buf, 2u);
   }
 
-  v7 = [(RecentsDataFilter *)self filterPredicate];
+  filterPredicate = [(RecentsDataFilter *)self filterPredicate];
 
-  if (v7)
+  if (filterPredicate)
   {
-    v8 = [(RecentsDataFilter *)self filterPredicate];
-    v9 = [v5 filteredArrayUsingPredicate:v8];
+    filterPredicate2 = [(RecentsDataFilter *)self filterPredicate];
+    v9 = [recentsCopy filteredArrayUsingPredicate:filterPredicate2];
 
     v10 = v9;
   }
 
   else
   {
-    v10 = v5;
+    v10 = recentsCopy;
   }
 
   v51 = v10;
@@ -51,7 +51,7 @@
   v109 = 0u;
   v106 = 0u;
   v107 = 0u;
-  v12 = v50;
+  v12 = entriesCopy;
   v13 = [v12 countByEnumeratingWithState:&v106 objects:v116 count:16];
   if (v13)
   {
@@ -69,7 +69,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v17 = [v16 MKMapItem];
+          mKMapItem = [v16 MKMapItem];
         }
 
         else
@@ -80,14 +80,14 @@
             continue;
           }
 
-          v17 = [v16 mapItem];
+          mKMapItem = [v16 mapItem];
         }
 
-        v18 = v17;
-        if (v17)
+        v18 = mKMapItem;
+        if (mKMapItem)
         {
-          v19 = [v17 _geoMapItem];
-          v20 = (v61[2])(v61, v19);
+          _geoMapItem = [mKMapItem _geoMapItem];
+          v20 = (v61[2])(v61, _geoMapItem);
 
           [v55 addObject:v20];
         }
@@ -141,7 +141,7 @@
       v27 = v26;
       if (v26)
       {
-        v28 = [v26 historyEntry];
+        historyEntry = [v26 historyEntry];
         v89[0] = _NSConcreteStackBlock;
         v89[1] = 3221225472;
         v89[2] = sub_100666F7C;
@@ -151,7 +151,7 @@
         v91 = v58;
         v92 = v27;
         v93 = v59;
-        [v28 ifSearch:&stru_1016250D0 ifRoute:&stru_101625110 ifPlaceDisplay:v89 ifTransitLineItem:&stru_101625158];
+        [historyEntry ifSearch:&stru_1016250D0 ifRoute:&stru_101625110 ifPlaceDisplay:v89 ifTransitLineItem:&stru_101625158];
 
         v29 = v94;
       }
@@ -165,9 +165,9 @@
         }
 
         v29 = v25;
-        v30 = [v29 mapItem];
-        v31 = [v30 _geoMapItem];
-        v32 = (v61[2])(v61, v31);
+        mapItem = [v29 mapItem];
+        _geoMapItem2 = [mapItem _geoMapItem];
+        v32 = (v61[2])(v61, _geoMapItem2);
 
         [v60 addObject:v32];
       }
@@ -218,7 +218,7 @@ LABEL_32:
       v37 = v36;
       if (v36)
       {
-        v38 = [v36 historyEntry];
+        historyEntry2 = [v36 historyEntry];
         v72[0] = _NSConcreteStackBlock;
         v72[1] = 3221225472;
         v72[2] = sub_100667050;
@@ -243,7 +243,7 @@ LABEL_32:
         v62[3] = &unk_10162B030;
         v64 = v75;
         v63 = v39;
-        [v38 ifSearch:v72 ifRoute:v65 ifPlaceDisplay:v62 ifTransitLineItem:&stru_1016251A0];
+        [historyEntry2 ifSearch:v72 ifRoute:v65 ifPlaceDisplay:v62 ifTransitLineItem:&stru_1016251A0];
 
         v40 = v73;
         goto LABEL_41;
@@ -253,9 +253,9 @@ LABEL_32:
       if (objc_opt_isKindOfClass())
       {
         v40 = v35;
-        v41 = [v40 mapItem];
-        v42 = [v41 _geoMapItem];
-        v43 = (v61[2])(v61, v42);
+        mapItem2 = [v40 mapItem];
+        _geoMapItem3 = [mapItem2 _geoMapItem];
+        v43 = (v61[2])(v61, _geoMapItem3);
         v44 = *(v76 + 5);
         *(v76 + 5) = v43;
 
@@ -336,17 +336,17 @@ LABEL_58:
   return v47;
 }
 
-- (RecentsDataFilter)initWithSearchMode:(unsigned int)a3 filterPredicate:(id)a4
+- (RecentsDataFilter)initWithSearchMode:(unsigned int)mode filterPredicate:(id)predicate
 {
-  v7 = a4;
+  predicateCopy = predicate;
   v11.receiver = self;
   v11.super_class = RecentsDataFilter;
   v8 = [(RecentsDataFilter *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_searchMode = a3;
-    objc_storeStrong(&v8->_filterPredicate, a4);
+    v8->_searchMode = mode;
+    objc_storeStrong(&v8->_filterPredicate, predicate);
   }
 
   return v9;

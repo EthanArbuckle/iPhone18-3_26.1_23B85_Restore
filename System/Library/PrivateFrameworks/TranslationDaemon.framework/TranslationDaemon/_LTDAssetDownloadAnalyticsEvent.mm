@@ -1,27 +1,27 @@
 @interface _LTDAssetDownloadAnalyticsEvent
-- (_LTDAssetDownloadAnalyticsEvent)initWithNSLocale:(id)a3 connectionType:(unint64_t)a4 downloadTriggerSource:(unint64_t)a5;
+- (_LTDAssetDownloadAnalyticsEvent)initWithNSLocale:(id)locale connectionType:(unint64_t)type downloadTriggerSource:(unint64_t)source;
 - (void)_timeoutEvent;
 - (void)startTimer;
 @end
 
 @implementation _LTDAssetDownloadAnalyticsEvent
 
-- (_LTDAssetDownloadAnalyticsEvent)initWithNSLocale:(id)a3 connectionType:(unint64_t)a4 downloadTriggerSource:(unint64_t)a5
+- (_LTDAssetDownloadAnalyticsEvent)initWithNSLocale:(id)locale connectionType:(unint64_t)type downloadTriggerSource:(unint64_t)source
 {
-  v8 = a3;
+  localeCopy = locale;
   v14.receiver = self;
   v14.super_class = _LTDAssetDownloadAnalyticsEvent;
   v9 = [(_LTDAssetDownloadAnalyticsEvent *)&v14 init];
   if (v9)
   {
-    v10 = [v8 _ltLocaleIdentifier];
+    _ltLocaleIdentifier = [localeCopy _ltLocaleIdentifier];
     localeIdentifier = v9->_localeIdentifier;
-    v9->_localeIdentifier = v10;
+    v9->_localeIdentifier = _ltLocaleIdentifier;
 
     v9->_downloadOutcome = 0;
-    v9->_downloadTriggerSource = a5;
+    v9->_downloadTriggerSource = source;
     v9->_completionTime = 0.0;
-    v9->_connectionType = a4;
+    v9->_connectionType = type;
     *&v9->_hasClientReportedError = 0;
     v12 = v9;
   }

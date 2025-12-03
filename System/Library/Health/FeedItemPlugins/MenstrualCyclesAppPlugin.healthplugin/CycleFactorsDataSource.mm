@@ -1,11 +1,11 @@
 @interface CycleFactorsDataSource
-- (void)analysisProvider:(id)a3 didUpdateAnalysis:(id)a4;
-- (void)pregnancyModelDidUpdate:(id)a3;
+- (void)analysisProvider:(id)provider didUpdateAnalysis:(id)analysis;
+- (void)pregnancyModelDidUpdate:(id)update;
 @end
 
 @implementation CycleFactorsDataSource
 
-- (void)pregnancyModelDidUpdate:(id)a3
+- (void)pregnancyModelDidUpdate:(id)update
 {
   isa = self->super.super.isa;
   sub_29DFD861C(0, &qword_2A1A5E2F0, MEMORY[0x29EDCA398], MEMORY[0x29EDC9C68]);
@@ -14,9 +14,9 @@
   v9 = sub_29E2C3734();
   (*(*(v9 - 8) + 56))(v8, 1, 1, v9);
   sub_29E2C3714();
-  v10 = a3;
+  updateCopy = update;
   swift_retain_n();
-  v11 = v10;
+  v11 = updateCopy;
   v12 = sub_29E2C3704();
   v13 = swift_allocObject();
   v14 = MEMORY[0x29EDCA390];
@@ -28,12 +28,12 @@
   sub_29E13C63C(0, 0, v8, &unk_29E2D7E28, v13);
 }
 
-- (void)analysisProvider:(id)a3 didUpdateAnalysis:(id)a4
+- (void)analysisProvider:(id)provider didUpdateAnalysis:(id)analysis
 {
-  v5 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  analysisCopy = analysis;
 
-  sub_29DFD71FC(v5, v6);
+  sub_29DFD71FC(providerCopy, analysisCopy);
 }
 
 @end

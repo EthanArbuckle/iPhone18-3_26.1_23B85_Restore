@@ -1,6 +1,6 @@
 @interface CDMBaseRequestHandler
 - (CDMBaseRequestHandler)init;
-- (CDMBaseRequestHandler)initWithId:(id)a3 serviceGraph:(id)a4;
+- (CDMBaseRequestHandler)initWithId:(id)id serviceGraph:(id)graph;
 - (unint64_t)getHandlerState;
 @end
 
@@ -10,13 +10,13 @@
 {
   if (self->_handlerState == 1)
   {
-    v3 = [(CDMServiceGraph *)self->_serviceGraph getEndNode];
-    if ([v3 isFinished])
+    getEndNode = [(CDMServiceGraph *)self->_serviceGraph getEndNode];
+    if ([getEndNode isFinished])
     {
-      v4 = [(CDMServiceGraph *)self->_serviceGraph getEndNode];
-      v5 = [v4 isCancelled];
+      getEndNode2 = [(CDMServiceGraph *)self->_serviceGraph getEndNode];
+      isCancelled = [getEndNode2 isCancelled];
 
-      if ((v5 & 1) == 0)
+      if ((isCancelled & 1) == 0)
       {
         self->_handlerState = 2;
       }
@@ -30,10 +30,10 @@
   return self->_handlerState;
 }
 
-- (CDMBaseRequestHandler)initWithId:(id)a3 serviceGraph:(id)a4
+- (CDMBaseRequestHandler)initWithId:(id)id serviceGraph:(id)graph
 {
-  v7 = a3;
-  v8 = a4;
+  idCopy = id;
+  graphCopy = graph;
   v12.receiver = self;
   v12.super_class = CDMBaseRequestHandler;
   v9 = [(CDMBaseRequestHandler *)&v12 init];
@@ -41,8 +41,8 @@
   if (v9)
   {
     v9->_handlerState = 0;
-    objc_storeStrong(&v9->_serviceGraph, a4);
-    objc_storeStrong(&v10->_handlerId, a3);
+    objc_storeStrong(&v9->_serviceGraph, graph);
+    objc_storeStrong(&v10->_handlerId, id);
   }
 
   return v10;

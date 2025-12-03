@@ -2,45 +2,45 @@
 - (BOOL)isButtonLayoutEnabled;
 - (CGSize)intrinsicContentSize;
 - (CGSize)trackSize;
-- (PHSlidingButton)initWithSlidingButtonType:(int)a3 appearanceType:(int)a4 callState:(int64_t)a5;
-- (PHSlidingButton)initWithSlidingButtonType:(int)a3 appearanceType:(int)a4 callState:(int64_t)a5 usesLargeFormatUI:(BOOL)a6;
+- (PHSlidingButton)initWithSlidingButtonType:(int)type appearanceType:(int)appearanceType callState:(int64_t)state;
+- (PHSlidingButton)initWithSlidingButtonType:(int)type appearanceType:(int)appearanceType callState:(int64_t)state usesLargeFormatUI:(BOOL)i;
 - (PHSlidingButtonDelegateProtocol)delegate;
 - (double)knobWidth;
-- (void)actionSlider:(id)a3 didUpdateSlideWithValue:(double)a4;
-- (void)actionSliderDidCompleteSlide:(id)a3;
+- (void)actionSlider:(id)slider didUpdateSlideWithValue:(double)value;
+- (void)actionSliderDidCompleteSlide:(id)slide;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation PHSlidingButton
 
-- (PHSlidingButton)initWithSlidingButtonType:(int)a3 appearanceType:(int)a4 callState:(int64_t)a5 usesLargeFormatUI:(BOOL)a6
+- (PHSlidingButton)initWithSlidingButtonType:(int)type appearanceType:(int)appearanceType callState:(int64_t)state usesLargeFormatUI:(BOOL)i
 {
-  v7 = *&a4;
-  v8 = *&a3;
-  [(PHSlidingButton *)self setUsesLargeFormatUI:a6];
+  v7 = *&appearanceType;
+  v8 = *&type;
+  [(PHSlidingButton *)self setUsesLargeFormatUI:i];
 
-  return [(PHSlidingButton *)self initWithSlidingButtonType:v8 appearanceType:v7 callState:a5];
+  return [(PHSlidingButton *)self initWithSlidingButtonType:v8 appearanceType:v7 callState:state];
 }
 
-- (PHSlidingButton)initWithSlidingButtonType:(int)a3 appearanceType:(int)a4 callState:(int64_t)a5
+- (PHSlidingButton)initWithSlidingButtonType:(int)type appearanceType:(int)appearanceType callState:(int64_t)state
 {
   v64.receiver = self;
   v64.super_class = PHSlidingButton;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v11 = [(PHSlidingButton *)&v64 initWithFrame:CGRectZero.origin.x, y, width, height];
-  v12 = v11;
-  if (!v11)
+  height = [(PHSlidingButton *)&v64 initWithFrame:CGRectZero.origin.x, y, width, height];
+  v12 = height;
+  if (!height)
   {
     return v12;
   }
 
-  v11->_type = a3;
-  v11->_callState = a5;
-  if (a5 == 1)
+  height->_type = type;
+  height->_callState = state;
+  if (state == 1)
   {
     v13 = @"end_call_voip";
   }
@@ -50,8 +50,8 @@
     v13 = @"phone_dial";
   }
 
-  objc_storeStrong(&v11->_endDialImageName, v13);
-  if ((a3 - 7) >= 3)
+  objc_storeStrong(&height->_endDialImageName, v13);
+  if ((type - 7) >= 3)
   {
     v14 = +[PHUIConfiguration inCallSlideToAnswerSize]== 3 || [(PHSlidingButton *)v12 isButtonLayoutEnabled];
   }
@@ -65,20 +65,20 @@
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109632;
-    v66 = a3;
+    typeCopy = type;
     v67 = 1024;
-    v68 = a4;
+    appearanceTypeCopy = appearanceType;
     v69 = 1024;
     v70 = v14;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Making slider with type: %d, appearance: %d, large: %d", buf, 0x14u);
   }
 
-  switch(a4)
+  switch(appearanceType)
   {
     case 0:
-      v22 = [[PHActionSlider alloc] initWithFrame:0 vibrantSettings:v14 large:v12->_usesLargeFormatUI usesLargeFormatUI:CGRectZero.origin.x, y, width, height];
+      height2 = [[PHActionSlider alloc] initWithFrame:0 vibrantSettings:v14 large:v12->_usesLargeFormatUI usesLargeFormatUI:CGRectZero.origin.x, y, width, height];
       acceptButton = v12->_acceptButton;
-      v12->_acceptButton = v22;
+      v12->_acceptButton = height2;
 
       [(PHActionSlider *)v12->_acceptButton setStyle:3];
 LABEL_25:
@@ -91,16 +91,16 @@ LABEL_25:
       v17 = [_UILegibilitySettings sharedInstanceForStyle:1];
       v18 = [_UIVibrantSettings vibrantSettingsWithReferenceColor:v16 referenceContrast:v17 legibilitySettings:0.3];
 
-      v19 = [[PHActionSlider alloc] initWithFrame:v18 vibrantSettings:v14 large:v12->_usesLargeFormatUI usesLargeFormatUI:CGRectZero.origin.x, y, width, height];
+      height3 = [[PHActionSlider alloc] initWithFrame:v18 vibrantSettings:v14 large:v12->_usesLargeFormatUI usesLargeFormatUI:CGRectZero.origin.x, y, width, height];
       v20 = v12->_acceptButton;
-      v12->_acceptButton = v19;
+      v12->_acceptButton = height3;
 
-      if (a3 <= 6 && ((1 << a3) & 0x46) != 0)
+      if (type <= 6 && ((1 << type) & 0x46) != 0)
       {
         v21 = 2;
       }
 
-      else if (a3 == 3)
+      else if (type == 3)
       {
         v21 = 2;
       }
@@ -115,9 +115,9 @@ LABEL_25:
       goto LABEL_24;
     case 2:
 LABEL_24:
-      v24 = [[PHActionSlider alloc] initWithFrame:0 vibrantSettings:v14 large:v12->_usesLargeFormatUI usesLargeFormatUI:CGRectZero.origin.x, y, width, height];
+      height4 = [[PHActionSlider alloc] initWithFrame:0 vibrantSettings:v14 large:v12->_usesLargeFormatUI usesLargeFormatUI:CGRectZero.origin.x, y, width, height];
       v25 = v12->_acceptButton;
-      v12->_acceptButton = v24;
+      v12->_acceptButton = height4;
 
       [(PHActionSlider *)v12->_acceptButton setStyle:4];
       [(PHActionSlider *)v12->_acceptButton setTextStyle:4];
@@ -129,7 +129,7 @@ LABEL_24:
 
   [(PHActionSlider *)v12->_acceptButton setDragStyle:1];
   [(PHActionSlider *)v12->_acceptButton setTextStyle:1];
-  if (a4 == 2)
+  if (appearanceType == 2)
   {
     [(PHActionSlider *)v12->_acceptButton setTextStyle:4];
     [(PHActionSlider *)v12->_acceptButton setStyle:4];
@@ -156,7 +156,7 @@ LABEL_24:
     v30 = [UIImage tpImageForSymbolType:1 textStyle:UIFontTextStyleLargeTitle scale:2 isStaticSize:1];
   }
 
-  if (a3 == 9)
+  if (type == 9)
   {
     v38 = [UIImage imageNamed:@"medicalid-slider-button"];
     v39 = [v38 imageWithRenderingMode:2];
@@ -170,9 +170,9 @@ LABEL_24:
 
   else
   {
-    if (a3 != 8)
+    if (type != 8)
     {
-      if (a3 == 7)
+      if (type == 7)
       {
         v31 = [UIImage imageNamed:@"sos-slider-button"];
         v32 = [v31 imageWithRenderingMode:2];
@@ -221,13 +221,13 @@ LABEL_44:
   if (!v12->_usesLargeFormatUI)
   {
     v45 = +[UIScreen mainScreen];
-    v46 = [v45 currentMode];
-    [v46 size];
+    currentMode = [v45 currentMode];
+    [currentMode size];
     if (v47 >= 2208.0)
     {
-      v48 = [(PHSlidingButton *)v12 isButtonLayoutEnabled];
+      isButtonLayoutEnabled = [(PHSlidingButton *)v12 isButtonLayoutEnabled];
 
-      if ((v48 & 1) == 0)
+      if ((isButtonLayoutEnabled & 1) == 0)
       {
         [(PHActionSlider *)v12->_acceptButton trackSize];
         [(PHActionSlider *)v12->_acceptButton setTrackSize:300.0];
@@ -242,23 +242,23 @@ LABEL_44:
   v49 = [NSBundle bundleForClass:objc_opt_class()];
   v50 = v49;
   v51 = @"SLIDE_TO_SOS";
-  if ((a3 - 5) < 2)
+  if ((type - 5) < 2)
   {
     v51 = @"SLIDE_TO_UNLOCK";
   }
 
   v52 = @"SLIDE_TO_ANSWER";
-  if (a3 == 9)
+  if (type == 9)
   {
     v52 = @"MEDICAL_ID";
   }
 
-  if (a3 == 8)
+  if (type == 8)
   {
     v52 = @"POWER_OFF";
   }
 
-  if ((a3 - 5) >= 3)
+  if ((type - 5) >= 3)
   {
     v53 = v52;
   }
@@ -286,8 +286,8 @@ LABEL_44:
   v61 = +[UIColor whiteColor];
   [(UIButton *)v60 setBackgroundColor:v61];
 
-  v62 = [(UIButton *)v12->_sideButtonRight layer];
-  [v62 setCornerRadius:33.0];
+  layer = [(UIButton *)v12->_sideButtonRight layer];
+  [layer setCornerRadius:33.0];
 
   [(UIButton *)v12->_sideButtonRight setUserInteractionEnabled:0];
   [(UIImageView *)v12->_dialImageView setClipsToBounds:0];
@@ -315,13 +315,13 @@ LABEL_44:
   [(PHActionSlider *)self->_acceptButton setFrame:?];
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(PHSlidingButton *)self isUserInteractionEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(PHSlidingButton *)self isUserInteractionEnabled]!= enabled)
   {
     v5 = 0.0500000007;
-    if (v3)
+    if (enabledCopy)
     {
       v5 = 1.0;
     }
@@ -331,13 +331,13 @@ LABEL_44:
 
   v6.receiver = self;
   v6.super_class = PHSlidingButton;
-  [(PHSlidingButton *)&v6 setUserInteractionEnabled:v3];
+  [(PHSlidingButton *)&v6 setUserInteractionEnabled:enabledCopy];
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(PHSlidingButton *)self acceptButton];
-  [v2 trackSize];
+  acceptButton = [(PHSlidingButton *)self acceptButton];
+  [acceptButton trackSize];
   v4 = v3;
   v6 = v5;
 
@@ -350,8 +350,8 @@ LABEL_44:
 
 - (double)knobWidth
 {
-  v2 = [(PHSlidingButton *)self acceptButton];
-  [v2 knobWidth];
+  acceptButton = [(PHSlidingButton *)self acceptButton];
+  [acceptButton knobWidth];
   v4 = v3;
 
   return v4;
@@ -360,11 +360,11 @@ LABEL_44:
 - (BOOL)isButtonLayoutEnabled
 {
   v3 = +[TUCallCenter sharedInstance];
-  v4 = [v3 frontmostAudioOrVideoCall];
+  frontmostAudioOrVideoCall = [v3 frontmostAudioOrVideoCall];
 
   if (self->_usesLargeFormatUI)
   {
-    v5 = [v4 isVideo] ^ 1;
+    v5 = [frontmostAudioOrVideoCall isVideo] ^ 1;
   }
 
   else
@@ -377,43 +377,43 @@ LABEL_44:
 
     else
     {
-      v5 = [v4 isVideo] ^ 1;
+      v5 = [frontmostAudioOrVideoCall isVideo] ^ 1;
     }
   }
 
   return v5;
 }
 
-- (void)actionSlider:(id)a3 didUpdateSlideWithValue:(double)a4
+- (void)actionSlider:(id)slider didUpdateSlideWithValue:(double)value
 {
-  v6 = [(PHSlidingButton *)self delegate];
-  if (v6)
+  delegate = [(PHSlidingButton *)self delegate];
+  if (delegate)
   {
-    v7 = v6;
-    v8 = [(PHSlidingButton *)self delegate];
+    v7 = delegate;
+    delegate2 = [(PHSlidingButton *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(PHSlidingButton *)self delegate];
-      [v10 slidingButton:self didSlideToProportion:a4];
+      delegate3 = [(PHSlidingButton *)self delegate];
+      [delegate3 slidingButton:self didSlideToProportion:value];
     }
   }
 }
 
-- (void)actionSliderDidCompleteSlide:(id)a3
+- (void)actionSliderDidCompleteSlide:(id)slide
 {
-  v4 = [(PHSlidingButton *)self delegate];
-  if (v4)
+  delegate = [(PHSlidingButton *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
-    v6 = [(PHSlidingButton *)self delegate];
+    v5 = delegate;
+    delegate2 = [(PHSlidingButton *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(PHSlidingButton *)self delegate];
-      [v8 willFinishSlideForSlidingButton:self];
+      delegate3 = [(PHSlidingButton *)self delegate];
+      [delegate3 willFinishSlideForSlidingButton:self];
     }
   }
 
@@ -442,9 +442,9 @@ LABEL_44:
     [v20 setFillMode:kCAFillModeForwards];
     v84 = v20;
     [v20 setRemovedOnCompletion:0];
-    v21 = [(PHSlidingButton *)self acceptButton];
-    v22 = [v21 layer];
-    [v22 position];
+    acceptButton = [(PHSlidingButton *)self acceptButton];
+    layer = [acceptButton layer];
+    [layer position];
     v23 = [NSNumber numberWithDouble:?];
 
     v24 = [CASpringAnimation animationWithKeyPath:@"position.x"];
@@ -502,9 +502,9 @@ LABEL_44:
     {
       v37 = [CABasicAnimation animationWithKeyPath:@"contents"];
       [v37 setDuration:0.300000012];
-      v38 = [(UIImageView *)self->_dialImageView image];
+      image = [(UIImageView *)self->_dialImageView image];
       v39 = +[UIColor whiteColor];
-      v40 = [v38 _flatImageWithColor:v39];
+      v40 = [image _flatImageWithColor:v39];
       [v37 setFromValue:{objc_msgSend(v40, "CGImage")}];
 
       v41 = [PHBottomBarButtonConfiguration imageForAction:15 callState:1];
@@ -533,17 +533,17 @@ LABEL_44:
       v48 = v49 * 0.5;
     }
 
-    v50 = [(PHSlidingButton *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(PHSlidingButton *)self _shouldReverseLayoutDirection];
     v51 = -1.0;
-    if (v50)
+    if (_shouldReverseLayoutDirection)
     {
       v51 = 1.0;
     }
 
     v52 = v48 + v51;
-    v53 = [(PHSlidingButton *)self sideButtonRight];
-    v54 = [v53 layer];
-    [v54 position];
+    sideButtonRight = [(PHSlidingButton *)self sideButtonRight];
+    layer2 = [sideButtonRight layer];
+    [layer2 position];
     v81 = [NSNumber numberWithDouble:?];
 
     v85 = [CASpringAnimation animationWithKeyPath:@"position.x"];
@@ -557,9 +557,9 @@ LABEL_44:
     [v85 setDuration:0.50999999];
     [v85 setFillMode:v36];
     [v85 setRemovedOnCompletion:0];
-    v56 = [(PHSlidingButton *)self dialImageView];
-    v57 = [v56 layer];
-    [v57 position];
+    dialImageView = [(PHSlidingButton *)self dialImageView];
+    layer3 = [dialImageView layer];
+    [layer3 position];
     v80 = [NSNumber numberWithDouble:?];
 
     v58 = [CASpringAnimation animationWithKeyPath:@"position.x"];
@@ -585,8 +585,8 @@ LABEL_44:
     [v60 setRemovedOnCompletion:0];
     +[PHBottomBarButtonConfiguration defaultHeight];
     v66 = v65 * 0.5;
-    v67 = [(UIButton *)self->_sideButtonRight layer];
-    [v67 setCornerRadius:v66];
+    layer4 = [(UIButton *)self->_sideButtonRight layer];
+    [layer4 setCornerRadius:v66];
 
     v68 = [CABasicAnimation animationWithKeyPath:@"backgroundColor"];
     [v68 setDuration:0.144999996];
@@ -608,29 +608,29 @@ LABEL_44:
     v86[3] = &unk_100356988;
     v86[4] = self;
     [CATransaction setCompletionBlock:v86];
-    v72 = [(UIImageView *)self->_dialImageView layer];
-    [v72 addAnimation:v71 forKey:kCATransition];
+    layer5 = [(UIImageView *)self->_dialImageView layer];
+    [layer5 addAnimation:v71 forKey:kCATransition];
 
-    v73 = [(UIButton *)self->_sideButtonRight layer];
-    [v73 addAnimation:v68 forKey:@"backgroundColor"];
+    layer6 = [(UIButton *)self->_sideButtonRight layer];
+    [layer6 addAnimation:v68 forKey:@"backgroundColor"];
 
-    v74 = [(UIButton *)self->_sideButtonRight layer];
-    [v74 addAnimation:v60 forKey:@"bounds"];
+    layer7 = [(UIButton *)self->_sideButtonRight layer];
+    [layer7 addAnimation:v60 forKey:@"bounds"];
 
-    v75 = [(UIButton *)self->_sideButtonRight layer];
-    [v75 addAnimation:v85 forKey:@"position"];
+    layer8 = [(UIButton *)self->_sideButtonRight layer];
+    [layer8 addAnimation:v85 forKey:@"position"];
 
-    v76 = [(UIImageView *)self->_dialImageView layer];
-    [v76 addAnimation:v82 forKey:@"transform"];
+    layer9 = [(UIImageView *)self->_dialImageView layer];
+    [layer9 addAnimation:v82 forKey:@"transform"];
 
-    v77 = [(PHActionSlider *)self->_acceptButton layer];
-    [v77 addAnimation:v84 forKey:@"opacity"];
+    layer10 = [(PHActionSlider *)self->_acceptButton layer];
+    [layer10 addAnimation:v84 forKey:@"opacity"];
 
-    v78 = [(PHActionSlider *)self->_acceptButton layer];
-    [v78 addAnimation:v24 forKey:@"position"];
+    layer11 = [(PHActionSlider *)self->_acceptButton layer];
+    [layer11 addAnimation:v24 forKey:@"position"];
 
-    v79 = [(UIImageView *)self->_dialImageView layer];
-    [v79 addAnimation:v58 forKey:@"position"];
+    layer12 = [(UIImageView *)self->_dialImageView layer];
+    [layer12 addAnimation:v58 forKey:@"position"];
 
     +[CATransaction commit];
   }
@@ -653,8 +653,8 @@ LABEL_44:
 
 - (CGSize)trackSize
 {
-  v2 = [(PHSlidingButton *)self acceptButton];
-  [v2 trackSize];
+  acceptButton = [(PHSlidingButton *)self acceptButton];
+  [acceptButton trackSize];
   v4 = v3;
   v6 = v5;
 

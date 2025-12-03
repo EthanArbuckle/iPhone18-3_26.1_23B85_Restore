@@ -1,55 +1,55 @@
 @interface DOCSidebarViewController
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)collectionView:(id)a3 canHandleDropSession:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSpringLoadItemAtIndexPath:(id)a4 withContext:(id)a5;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)collectionView:(id)view canHandleDropSession:(id)session;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldSpringLoadItemAtIndexPath:(id)path withContext:(id)context;
 - (BOOL)isEditing;
-- (BOOL)scrollViewShouldScrollToTop:(id)a3;
+- (BOOL)scrollViewShouldScrollToTop:(id)top;
 - (BOOL)sidebarHasActiveFocus;
 - (DOCItemCollectionObserver)trashObserver;
 - (DOCItemCollectionSubscriber)trashSubscriber;
 - (DOCPickerContext)pickerContext;
-- (DOCSidebarViewController)initWithCollectionViewLayout:(id)a3;
+- (DOCSidebarViewController)initWithCollectionViewLayout:(id)layout;
 - (UICollectionView)collectionView;
 - (UICollectionViewCompositionalLayout)collectionViewLayout;
 - (_TtC26DocumentManagerExecutables19DOCSearchController)searchController;
 - (_TtP26DocumentManagerExecutables27DOCScannedDocumentReceiving_)doc_documentScannerReceivingTarget;
 - (_TtP26DocumentManagerExecutables32DOCSidebarViewControllerDelegate_)sidebarDelegate;
 - (id)_multitaskingDragExclusionRects;
-- (id)_newCollectionViewWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5;
-- (id)collectionView:(id)a3 targetIndexPathForMoveFromItemAtIndexPath:(id)a4 toProposedIndexPath:(id)a5;
-- (id)indexPathForPreferredFocusedViewInCollectionView:(id)a3;
-- (id)targetForAction:(SEL)a3 withSender:(id)a4;
-- (int64_t)_collectionView:(id)a3 dataOwnerForDropSession:(id)a4 withDestinationIndexPath:(id)a5;
+- (id)_newCollectionViewWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point;
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path;
+- (id)collectionView:(id)view targetIndexPathForMoveFromItemAtIndexPath:(id)path toProposedIndexPath:(id)indexPath;
+- (id)indexPathForPreferredFocusedViewInCollectionView:(id)view;
+- (id)targetForAction:(SEL)action withSender:(id)sender;
+- (int64_t)_collectionView:(id)view dataOwnerForDropSession:(id)session withDestinationIndexPath:(id)path;
 - (void)_doc_performLiveResizeSkipped_updateNavigationButtons;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5;
-- (void)collectionView:(id)a3 dropSessionDidEnd:(id)a4;
-- (void)collectionView:(id)a3 dropSessionDidEnter:(id)a4;
-- (void)collectionView:(id)a3 dropSessionDidExit:(id)a4;
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4;
-- (void)documentCameraViewController:(id)a3 didFinishWithScan:(id)a4;
-- (void)effectiveAppearanceDidChange:(id)a3;
-- (void)noteBrowserDidUpdateHierarchy:(id)a3 displayedRootLocation:(id)a4;
-- (void)performFind:(id)a3;
-- (void)revealWithNodes:(id)a3 selectEvenIfVisible:(BOOL)a4 completionBlock:(id)a5;
-- (void)setAdditionalTrailingNavigationBarButtonItems:(id)a3;
-- (void)setCollectionView:(id)a3;
-- (void)setCustomActions:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setPickerContext:(id)a3;
-- (void)setSidebarHasActiveFocus:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateSelectionToMatchBrowsedLocation:(id)a3 scrollToVisible:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)collectionView:(id)view dropSessionDidEnd:(id)end;
+- (void)collectionView:(id)view dropSessionDidEnter:(id)enter;
+- (void)collectionView:(id)view dropSessionDidExit:(id)exit;
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator;
+- (void)documentCameraViewController:(id)controller didFinishWithScan:(id)scan;
+- (void)effectiveAppearanceDidChange:(id)change;
+- (void)noteBrowserDidUpdateHierarchy:(id)hierarchy displayedRootLocation:(id)location;
+- (void)performFind:(id)find;
+- (void)revealWithNodes:(id)nodes selectEvenIfVisible:(BOOL)visible completionBlock:(id)block;
+- (void)setAdditionalTrailingNavigationBarButtonItems:(id)items;
+- (void)setCollectionView:(id)view;
+- (void)setCustomActions:(id)actions;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setPickerContext:(id)context;
+- (void)setSidebarHasActiveFocus:(BOOL)focus;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateSelectionToMatchBrowsedLocation:(id)location scrollToVisible:(BOOL)visible;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)withLocationChangePacingDisabled:(id)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)withLocationChangePacingDisabled:(id)disabled;
 @end
 
 @implementation DOCSidebarViewController
@@ -82,33 +82,33 @@
 - (_TtP26DocumentManagerExecutables27DOCScannedDocumentReceiving_)doc_documentScannerReceivingTarget
 {
   v2 = *((*MEMORY[0x277D85000] & *self) + 0x1E8);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
 
   return v4;
 }
 
-- (void)documentCameraViewController:(id)a3 didFinishWithScan:(id)a4
+- (void)documentCameraViewController:(id)controller didFinishWithScan:(id)scan
 {
   v7 = swift_allocObject();
   *(v7 + 16) = self;
-  *(v7 + 24) = a3;
-  v8 = a3;
-  v11 = self;
-  v9 = v8;
-  v10 = a4;
-  specialized DOCDocumentScannerWriter.convertToPDFAndWrite(document:completionHandler:)(v10, closure #1 in UIViewController.doc_documentCameraViewController(_:didFinishWith:)partial apply, v7);
+  *(v7 + 24) = controller;
+  controllerCopy = controller;
+  selfCopy = self;
+  v9 = controllerCopy;
+  scanCopy = scan;
+  specialized DOCDocumentScannerWriter.convertToPDFAndWrite(document:completionHandler:)(scanCopy, closure #1 in UIViewController.doc_documentCameraViewController(_:didFinishWith:)partial apply, v7);
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point
 {
   v7 = type metadata accessor for IndexPath();
   v8 = *(v7 - 8);
   MEMORY[0x28223BE20](v7, v9);
   v11 = &v16 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a3;
-  v13 = self;
+  viewCopy = view;
+  selfCopy = self;
   v14 = specialized DOCSidebarViewController.collectionView(_:contextMenuConfigurationForItemAt:point:)(v11);
 
   (*(v8 + 8))(v11, v7);
@@ -116,27 +116,27 @@
   return v14;
 }
 
-- (id)_newCollectionViewWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (id)_newCollectionViewWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
-  v11 = self;
-  v12 = specialized DOCSidebarViewController._newCollectionView(withFrame:collectionViewLayout:)(a4, x, y, width, height);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layoutCopy = layout;
+  selfCopy = self;
+  v12 = specialized DOCSidebarViewController._newCollectionView(withFrame:collectionViewLayout:)(layout, x, y, width, height);
 
   return v12;
 }
 
-- (id)indexPathForPreferredFocusedViewInCollectionView:(id)a3
+- (id)indexPathForPreferredFocusedViewInCollectionView:(id)view
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation9IndexPathVSgMd);
   MEMORY[0x28223BE20](v5 - 8, v6);
   v8 = &v17 - v7;
-  v9 = a3;
-  v10 = self;
-  DOCSidebarViewController.indexPathForPreferredFocusedView(in:)(v9, v8);
+  viewCopy = view;
+  selfCopy = self;
+  DOCSidebarViewController.indexPathForPreferredFocusedView(in:)(viewCopy, v8);
 
   v11 = type metadata accessor for IndexPath();
   v12 = *(v11 - 8);
@@ -152,13 +152,13 @@
   return v14;
 }
 
-- (void)collectionView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5
+- (void)collectionView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  specialized DOCSidebarViewController.collectionView(_:didUpdateFocusIn:with:)(v8, v9);
+  viewCopy = view;
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  specialized DOCSidebarViewController.collectionView(_:didUpdateFocusIn:with:)(viewCopy, contextCopy);
 }
 
 - (BOOL)sidebarHasActiveFocus
@@ -168,11 +168,11 @@
   return *(self + v3);
 }
 
-- (void)setSidebarHasActiveFocus:(BOOL)a3
+- (void)setSidebarHasActiveFocus:(BOOL)focus
 {
   v5 = OBJC_IVAR___DOCSidebarViewController_sidebarHasActiveFocus;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = focus;
 }
 
 - (_TtP26DocumentManagerExecutables32DOCSidebarViewControllerDelegate_)sidebarDelegate
@@ -190,14 +190,14 @@
   return *(self + v3);
 }
 
-- (void)setPickerContext:(id)a3
+- (void)setPickerContext:(id)context
 {
   v5 = OBJC_IVAR___DOCSidebarViewController_pickerContext;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(self + v5) = context;
+  contextCopy = context;
+  selfCopy = self;
 
   DOCSidebarViewController.updateRecentlyUsedSection()();
 }
@@ -223,28 +223,28 @@
   return *(self + v3);
 }
 
-- (void)setAdditionalTrailingNavigationBarButtonItems:(id)a3
+- (void)setAdditionalTrailingNavigationBarButtonItems:(id)items
 {
   type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for UIBarButtonItem);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = OBJC_IVAR___DOCSidebarViewController_additionalTrailingNavigationBarButtonItems;
   swift_beginAccess();
   *(self + v5) = v4;
-  v6 = self;
+  selfCopy = self;
 
   DOCSidebarViewController.updateNavigationButtons()();
 }
 
-- (void)setCustomActions:(id)a3
+- (void)setCustomActions:(id)actions
 {
   type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for UIDocumentBrowserAction);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = OBJC_IVAR___DOCSidebarViewController_customActions;
   swift_beginAccess();
   *(self + v5) = v4;
-  v6 = self;
+  selfCopy = self;
 
-  v7 = *(v6 + OBJC_IVAR___DOCSidebarViewController_actionManager);
+  v7 = *(selfCopy + OBJC_IVAR___DOCSidebarViewController_actionManager);
 
   isa = Array._bridgeToObjectiveC()().super.isa;
 
@@ -255,32 +255,32 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for DOCSidebarViewController(0);
-  v2 = [(DOCSidebarViewController *)&v4 collectionView];
+  collectionView = [(DOCSidebarViewController *)&v4 collectionView];
 
-  return v2;
+  return collectionView;
 }
 
-- (void)setCollectionView:(id)a3
+- (void)setCollectionView:(id)view
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for DOCSidebarViewController(0);
-  [(DOCSidebarViewController *)&v4 setCollectionView:a3];
+  [(DOCSidebarViewController *)&v4 setCollectionView:view];
 }
 
-- (DOCSidebarViewController)initWithCollectionViewLayout:(id)a3
+- (DOCSidebarViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)effectiveAppearanceDidChange:(id)a3
+- (void)effectiveAppearanceDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for DOCSidebarViewController(0);
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(DOCSidebarViewController *)&v6 effectiveAppearanceDidChange:v4];
+  [(DOCSidebarViewController *)&v6 effectiveAppearanceDidChange:changeCopy];
   if ([v5 isViewLoaded])
   {
     DOCSidebarViewController.updateBackgroundColor()();
@@ -289,59 +289,59 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   DOCSidebarViewController.viewDidLoad()();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   DOCSidebarViewController.viewDidLayoutSubviews()();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   DOCSidebarViewController.traitCollectionDidChange(_:)(v9);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  DOCSidebarViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  DOCSidebarViewController.viewWillAppear(_:)(appear);
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = a3;
+  appearingCopy = appearing;
   v6.receiver = self;
   v6.super_class = type metadata accessor for DOCSidebarViewController(0);
   v4 = v6.receiver;
-  v5 = [(DOCSidebarViewController *)&v6 viewIsAppearing:v3];
+  v5 = [(DOCSidebarViewController *)&v6 viewIsAppearing:appearingCopy];
   if ((*((*MEMORY[0x277D85000] & *v4) + 0x358))(v5))
   {
-    DOCSidebarViewController.coalescedReloadOutlineDiffableData(animatingDifferences:reflectSelection:)(v3, 1);
+    DOCSidebarViewController.coalescedReloadOutlineDiffableData(animatingDifferences:reflectSelection:)(appearingCopy, 1);
   }
 
   DOCSidebarViewController.reflectCurrentLocationToSelectedInSidebar(scrollToVisible:forAppearance:)(0, 1);
   if (DOCSidebarViewController.currentPresentationContext.getter() == 2)
   {
-    DOCSidebarViewController.performAlongsideTransitionDeselection(animated:coordinator:)(v3, [v4 transitionCoordinator]);
+    DOCSidebarViewController.performAlongsideTransitionDeselection(animated:coordinator:)(appearingCopy, [v4 transitionCoordinator]);
     swift_unknownObjectRelease();
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for DOCSidebarViewController(0);
   v4 = v7.receiver;
-  [(DOCSidebarViewController *)&v7 viewDidAppear:v3];
+  [(DOCSidebarViewController *)&v7 viewDidAppear:appearCopy];
   v5 = MEMORY[0x277D85000];
   v6 = (*((*MEMORY[0x277D85000] & *v4) + 0x390))(0);
   if ((*((*v5 & *v4) + 0x358))(v6))
@@ -352,7 +352,7 @@
 
 - (id)_multitaskingDragExclusionRects
 {
-  v2 = self;
+  selfCopy = self;
   DOCSidebarViewController._multitaskingDragExclusionRects()();
 
   type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for NSValue);
@@ -363,15 +363,15 @@
 
 - (void)_doc_performLiveResizeSkipped_updateNavigationButtons
 {
-  v2 = self;
+  selfCopy = self;
   DOCSidebarViewController.updateNavigationButtons()();
 }
 
-- (id)targetForAction:(SEL)a3 withSender:(id)a4
+- (id)targetForAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -380,10 +380,10 @@
   else
   {
     memset(v16, 0, sizeof(v16));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  DOCSidebarViewController.target(forAction:withSender:)(a3, v16, v17);
+  DOCSidebarViewController.target(forAction:withSender:)(action, v16, v17);
 
   outlined destroy of CharacterSet?(v16, &_sypSgMd);
   v8 = v18;
@@ -407,11 +407,11 @@
   return v14;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -420,44 +420,44 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = DOCSidebarViewController.canPerformAction(_:withSender:)(a3, v10);
+  v8 = DOCSidebarViewController.canPerformAction(_:withSender:)(action, v10);
 
   outlined destroy of CharacterSet?(v10, &_sypSgMd);
   return v8 & 1;
 }
 
-- (void)performFind:(id)a3
+- (void)performFind:(id)find
 {
-  v6 = self;
-  v3 = [(DOCSidebarViewController *)v6 navigationItem];
-  v4 = [v3 searchController];
+  selfCopy = self;
+  navigationItem = [(DOCSidebarViewController *)selfCopy navigationItem];
+  searchController = [navigationItem searchController];
 
-  if (v4)
+  if (searchController)
   {
-    [v4 setActive_];
-    v5 = [v4 searchBar];
-    [v5 becomeFirstResponder];
+    [searchController setActive_];
+    searchBar = [searchController searchBar];
+    [searchBar becomeFirstResponder];
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6, v8);
   v10 = &v13 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
+  viewCopy = view;
+  selfCopy = self;
   specialized DOCSidebarViewController.collectionView(_:didSelectItemAt:)(v10);
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s5UIKit28NSDiffableDataSourceSnapshotVy26DocumentManagerExecutables24DOCSidebarViewControllerC14OutlineSectionVAF0L4ItemVGMd);
   v7 = *(v6 - 8);
@@ -468,8 +468,8 @@
   MEMORY[0x28223BE20](v11, v13);
   v15 = v21 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v16 = a3;
-  v17 = self;
+  viewCopy = view;
+  selfCopy = self;
   DOCSidebarViewController.diffableSnapshot()();
   specialized NSDiffableDataSourceSnapshot<>.itemIdentifier(for:)(v21);
   (*(v7 + 8))(v10, v6);
@@ -491,17 +491,17 @@
   }
 
   isa = IndexPath._bridgeToObjectiveC()().super.isa;
-  v19 = [(DOCSidebarViewController *)v17 collectionView:v16 shouldHighlightItemAtIndexPath:isa];
+  v19 = [(DOCSidebarViewController *)selfCopy collectionView:viewCopy shouldHighlightItemAtIndexPath:isa];
 
-  v16 = v17;
-  v17 = isa;
+  viewCopy = selfCopy;
+  selfCopy = isa;
 LABEL_6:
 
   (*(v12 + 8))(v15, v11);
   return v19;
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s5UIKit28NSDiffableDataSourceSnapshotVy26DocumentManagerExecutables24DOCSidebarViewControllerC14OutlineSectionVAF0L4ItemVGMd);
   v6 = *(v5 - 8);
@@ -512,7 +512,7 @@ LABEL_6:
   MEMORY[0x28223BE20](v10, v12);
   v14 = v18 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v15 = self;
+  selfCopy = self;
   DOCSidebarViewController.diffableSnapshot()();
   specialized NSDiffableDataSourceSnapshot<>.itemIdentifier(for:)(v18);
   (*(v6 + 8))(v9, v5);
@@ -555,11 +555,11 @@ LABEL_8:
   return v16 & 1;
 }
 
-- (void)withLocationChangePacingDisabled:(id)a3
+- (void)withLocationChangePacingDisabled:(id)disabled
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(disabled);
   v5 = *((*MEMORY[0x277D85000] & *self) + 0x488);
-  v7 = self;
+  selfCopy = self;
   v6 = *v5();
   (*(v6 + 320))();
 
@@ -567,34 +567,34 @@ LABEL_8:
   _Block_release(v4);
 }
 
-- (void)updateSelectionToMatchBrowsedLocation:(id)a3 scrollToVisible:(BOOL)a4
+- (void)updateSelectionToMatchBrowsedLocation:(id)location scrollToVisible:(BOOL)visible
 {
-  v7 = a3;
-  v8 = self;
-  DOCSidebarViewController.updateSelectionToMatchBrowsedLocation(_:scrollToVisible:)(a3, a4);
+  locationCopy = location;
+  selfCopy = self;
+  DOCSidebarViewController.updateSelectionToMatchBrowsedLocation(_:scrollToVisible:)(location, visible);
 }
 
-- (void)noteBrowserDidUpdateHierarchy:(id)a3 displayedRootLocation:(id)a4
+- (void)noteBrowserDidUpdateHierarchy:(id)hierarchy displayedRootLocation:(id)location
 {
-  v5 = a4;
-  v6 = self;
-  [(DOCSidebarViewController *)v6 updateSelectionToMatchBrowsedLocation:v5 scrollToVisible:0];
+  locationCopy = location;
+  selfCopy = self;
+  [(DOCSidebarViewController *)selfCopy updateSelectionToMatchBrowsedLocation:locationCopy scrollToVisible:0];
   DOCSidebarViewController.updatePreferredFocusIndexPath()();
 }
 
-- (BOOL)scrollViewShouldScrollToTop:(id)a3
+- (BOOL)scrollViewShouldScrollToTop:(id)top
 {
   v8.receiver = self;
   v8.super_class = type metadata accessor for DOCSidebarViewController(0);
   v3 = v8.receiver;
-  v4 = [(DOCSidebarViewController *)&v8 collectionView];
-  if (v4)
+  collectionView = [(DOCSidebarViewController *)&v8 collectionView];
+  if (collectionView)
   {
-    v5 = v4;
+    v5 = collectionView;
     type metadata accessor for DOCSidebarCollectionView();
-    v6 = [swift_dynamicCastClassUnconditional() hasUncommittedUpdates];
+    hasUncommittedUpdates = [swift_dynamicCastClassUnconditional() hasUncommittedUpdates];
 
-    LOBYTE(v4) = v6 ^ 1;
+    LOBYTE(collectionView) = hasUncommittedUpdates ^ 1;
   }
 
   else
@@ -602,19 +602,19 @@ LABEL_8:
     __break(1u);
   }
 
-  return v4;
+  return collectionView;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSpringLoadItemAtIndexPath:(id)a4 withContext:(id)a5
+- (BOOL)collectionView:(id)view shouldSpringLoadItemAtIndexPath:(id)path withContext:(id)context
 {
   v7 = type metadata accessor for IndexPath();
   v8 = *(v7 - 8);
   MEMORY[0x28223BE20](v7, v9);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v13 = self;
+  selfCopy = self;
   LOBYTE(self) = specialized DOCSidebarViewController.collectionView(_:shouldSpringLoadItemAt:with:)(v11);
 
   swift_unknownObjectRelease();
@@ -622,7 +622,7 @@ LABEL_8:
   return self & 1;
 }
 
-- (id)collectionView:(id)a3 targetIndexPathForMoveFromItemAtIndexPath:(id)a4 toProposedIndexPath:(id)a5
+- (id)collectionView:(id)view targetIndexPathForMoveFromItemAtIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
   v7 = type metadata accessor for IndexPath();
   v8 = *(v7 - 8);
@@ -634,9 +634,9 @@ LABEL_8:
   v19 = &v25 - v18;
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v20 = a3;
-  v21 = self;
-  DOCSidebarViewController.collectionView(_:targetIndexPathForMoveFromItemAt:toProposedIndexPath:)(v20, v15, v11, v19);
+  viewCopy = view;
+  selfCopy = self;
+  DOCSidebarViewController.collectionView(_:targetIndexPathForMoveFromItemAt:toProposedIndexPath:)(viewCopy, v15, v11, v19);
 
   v22 = *(v8 + 8);
   v22(v11, v7);
@@ -647,43 +647,43 @@ LABEL_8:
   return v23.super.isa;
 }
 
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator
 {
-  v6 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v7 = self;
-  DOCSidebarViewController.performDrop(in:with:)(v6, a4);
+  selfCopy = self;
+  DOCSidebarViewController.performDrop(in:with:)(viewCopy, coordinator);
 
   swift_unknownObjectRelease();
 }
 
-- (BOOL)collectionView:(id)a3 canHandleDropSession:(id)a4
+- (BOOL)collectionView:(id)view canHandleDropSession:(id)session
 {
-  v6 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = specialized DOCSidebarViewController.collectionView(_:canHandle:)(a4);
+  selfCopy = self;
+  v8 = specialized DOCSidebarViewController.collectionView(_:canHandle:)(session);
 
   swift_unknownObjectRelease();
   return v8 & 1;
 }
 
-- (void)collectionView:(id)a3 dropSessionDidEnter:(id)a4
+- (void)collectionView:(id)view dropSessionDidEnter:(id)enter
 {
-  v6 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v7 = self;
-  specialized DOCSidebarViewController.collectionView(_:dropSessionDidEnter:)(a4);
+  selfCopy = self;
+  specialized DOCSidebarViewController.collectionView(_:dropSessionDidEnter:)(enter);
 
   swift_unknownObjectRelease();
 }
 
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation9IndexPathVSgMd);
   MEMORY[0x28223BE20](v9 - 8, v10);
   v12 = &v19 - v11;
-  if (a5)
+  if (path)
   {
     static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
     v13 = type metadata accessor for IndexPath();
@@ -696,10 +696,10 @@ LABEL_8:
     (*(*(v14 - 8) + 56))(v12, 1, 1, v14);
   }
 
-  v15 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v16 = self;
-  v17 = specialized DOCSidebarViewController.collectionView(_:dropSessionDidUpdate:withDestinationIndexPath:)(a4, v12);
+  selfCopy = self;
+  v17 = specialized DOCSidebarViewController.collectionView(_:dropSessionDidUpdate:withDestinationIndexPath:)(update, v12);
 
   swift_unknownObjectRelease();
   outlined destroy of CharacterSet?(v12, &_s10Foundation9IndexPathVSgMd);
@@ -707,12 +707,12 @@ LABEL_8:
   return v17;
 }
 
-- (void)collectionView:(id)a3 dropSessionDidExit:(id)a4
+- (void)collectionView:(id)view dropSessionDidExit:(id)exit
 {
   v5 = one-time initialization token for shared;
-  v6 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v8 = self;
+  selfCopy = self;
   if (v5 != -1)
   {
     swift_once();
@@ -722,18 +722,18 @@ LABEL_8:
 
   v7(0xD00000000000001BLL, 0x8000000249BFB910);
 
-  (*((*MEMORY[0x277D85000] & *v8) + 0x3E0))(0);
+  (*((*MEMORY[0x277D85000] & *selfCopy) + 0x3E0))(0);
   DOCSidebarViewController.updateDropPointIndicatorView()();
 
   swift_unknownObjectRelease();
 }
 
-- (void)collectionView:(id)a3 dropSessionDidEnd:(id)a4
+- (void)collectionView:(id)view dropSessionDidEnd:(id)end
 {
   v5 = one-time initialization token for shared;
-  v6 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v8 = self;
+  selfCopy = self;
   if (v5 != -1)
   {
     swift_once();
@@ -743,20 +743,20 @@ LABEL_8:
 
   v7(0xD000000000000026, 0x8000000249BFB930);
 
-  (*((*MEMORY[0x277D85000] & *v8) + 0x3E0))(0);
+  (*((*MEMORY[0x277D85000] & *selfCopy) + 0x3E0))(0);
   DOCSidebarViewController.updateDropPointIndicatorView()();
 
   swift_unknownObjectRelease();
 }
 
-- (int64_t)_collectionView:(id)a3 dataOwnerForDropSession:(id)a4 withDestinationIndexPath:(id)a5
+- (int64_t)_collectionView:(id)view dataOwnerForDropSession:(id)session withDestinationIndexPath:(id)path
 {
   v8 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation9IndexPathVSgMd);
   MEMORY[0x28223BE20](v8 - 8, v9);
   v11 = &v22 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x28223BE20](v12, v13);
   v15 = &v22 - v14;
-  if (!a5)
+  if (!path)
   {
     v21 = type metadata accessor for IndexPath();
     (*(*(v21 - 8) + 56))(v15, 1, 1, v21);
@@ -767,7 +767,7 @@ LABEL_8:
   v16 = type metadata accessor for IndexPath();
   v17 = *(v16 - 8);
   (*(v17 + 56))(v15, 0, 1, v16);
-  if (!a4)
+  if (!session)
   {
 LABEL_6:
     v20 = 0;
@@ -779,7 +779,7 @@ LABEL_6:
   if (result != 1)
   {
     swift_unknownObjectRetain();
-    v19 = self;
+    selfCopy = self;
     v20 = specialized DOCSidebarViewController.dataOwnerForSession(_:at:)(v11);
     swift_unknownObjectRelease();
 
@@ -796,26 +796,26 @@ LABEL_7:
 - (BOOL)isEditing
 {
   v2 = *((*MEMORY[0x277D85000] & *self) + 0x440);
-  v3 = self;
+  selfCopy = self;
   LOBYTE(v2) = v2();
 
   return v2 != 0;
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v6 = self;
-  DOCSidebarViewController.setEditing(_:animated:)(a3, a4);
+  selfCopy = self;
+  DOCSidebarViewController.setEditing(_:animated:)(editing, animated);
 }
 
-- (void)revealWithNodes:(id)a3 selectEvenIfVisible:(BOOL)a4 completionBlock:(id)a5
+- (void)revealWithNodes:(id)nodes selectEvenIfVisible:(BOOL)visible completionBlock:(id)block
 {
-  v5 = a4;
-  v8 = _Block_copy(a5);
+  visibleCopy = visible;
+  v8 = _Block_copy(block);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  v10 = a3;
-  v11 = self;
+  nodesCopy = nodes;
+  selfCopy = self;
   v12 = DOCSidebarViewController.effectiveTransitionableController.getter();
   v14[4] = partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned Bool) -> ();
   v14[5] = v9;
@@ -825,7 +825,7 @@ LABEL_7:
   v14[3] = &block_descriptor_94_2;
   v13 = _Block_copy(v14);
 
-  [v12 revealWithNodes:v10 selectEvenIfVisible:v5 completionBlock:v13];
+  [v12 revealWithNodes:nodesCopy selectEvenIfVisible:visibleCopy completionBlock:v13];
 
   _Block_release(v13);
   swift_unknownObjectRelease();

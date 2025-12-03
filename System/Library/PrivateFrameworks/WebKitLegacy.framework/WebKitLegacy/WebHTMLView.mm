@@ -1,45 +1,45 @@
 @interface WebHTMLView
-- (BOOL)_beginPrintModeWithMinimumPageWidth:(double)a3 height:(double)a4 maximumPageWidth:(double)a5;
-- (BOOL)_beginPrintModeWithPageWidth:(float)a3 height:(float)a4 shrinkToFit:(BOOL)a5;
-- (BOOL)_beginScreenPaginationModeWithPageSize:(CGSize)a3 shrinkToFit:(BOOL)a4;
+- (BOOL)_beginPrintModeWithMinimumPageWidth:(double)width height:(double)height maximumPageWidth:(double)pageWidth;
+- (BOOL)_beginPrintModeWithPageWidth:(float)width height:(float)height shrinkToFit:(BOOL)fit;
+- (BOOL)_beginScreenPaginationModeWithPageSize:(CGSize)size shrinkToFit:(BOOL)fit;
 - (BOOL)_canAlterCurrentSelection;
 - (BOOL)_canDecreaseSelectionListLevel;
 - (BOOL)_canEdit;
 - (BOOL)_canEditRichly;
 - (BOOL)_canIncreaseSelectionListLevel;
 - (BOOL)_canSmartCopyOrDelete;
-- (BOOL)_findString:(id)a3 options:(unint64_t)a4;
-- (BOOL)_handleEditingKeyEvent:(void *)a3;
+- (BOOL)_findString:(id)string options:(unint64_t)options;
+- (BOOL)_handleEditingKeyEvent:(void *)event;
 - (BOOL)_hasInsertionPoint;
 - (BOOL)_hasSelection;
 - (BOOL)_hasSelectionOrInsertionPoint;
 - (BOOL)_isEditable;
-- (BOOL)_isSelectionEvent:(id)a3;
+- (BOOL)_isSelectionEvent:(id)event;
 - (BOOL)_needsLayout;
-- (BOOL)_shouldInsertFragment:(id)a3 replacingDOMRange:(id)a4 givenAction:(int64_t)a5;
-- (BOOL)_shouldInsertText:(id)a3 replacingDOMRange:(id)a4 givenAction:(int64_t)a5;
-- (BOOL)_shouldReplaceSelectionWithText:(id)a3 givenAction:(int64_t)a4;
-- (BOOL)_wantsKeyDownForEvent:(id)a3;
+- (BOOL)_shouldInsertFragment:(id)fragment replacingDOMRange:(id)range givenAction:(int64_t)action;
+- (BOOL)_shouldInsertText:(id)text replacingDOMRange:(id)range givenAction:(int64_t)action;
+- (BOOL)_shouldReplaceSelectionWithText:(id)text givenAction:(int64_t)action;
+- (BOOL)_wantsKeyDownForEvent:(id)event;
 - (BOOL)acceptsFirstResponder;
 - (BOOL)becomeFirstResponder;
-- (BOOL)callDelegateDoCommandBySelectorIfNeeded:(SEL)a3;
+- (BOOL)callDelegateDoCommandBySelectorIfNeeded:(SEL)needed;
 - (BOOL)hasMarkedText;
 - (BOOL)isOpaque;
 - (BOOL)maintainsInactiveSelection;
 - (BOOL)markedTextMatchesAreHighlighted;
 - (BOOL)resignFirstResponder;
-- (BOOL)searchFor:(id)a3 direction:(BOOL)a4 caseSensitive:(BOOL)a5 wrap:(BOOL)a6 startInSelection:(BOOL)a7;
-- (CGImage)selectionImageForcingBlackText:(BOOL)a3;
-- (CGRect)firstRectForCharacterRange:(_NSRange)a3;
+- (BOOL)searchFor:(id)for direction:(BOOL)direction caseSensitive:(BOOL)sensitive wrap:(BOOL)wrap startInSelection:(BOOL)selection;
+- (CGImage)selectionImageForcingBlackText:(BOOL)text;
+- (CGRect)firstRectForCharacterRange:(_NSRange)range;
 - (CGRect)selectionImageRect;
 - (CGRect)selectionRect;
-- (Command)coreCommandByName:(SEL)a3;
-- (Command)coreCommandBySelector:(SEL)a3;
-- (WebHTMLView)initWithFrame:(CGRect)a3;
+- (Command)coreCommandByName:(SEL)name;
+- (Command)coreCommandBySelector:(SEL)selector;
+- (WebHTMLView)initWithFrame:(CGRect)frame;
 - (_NSRange)markedRange;
 - (_NSRange)selectedRange;
-- (double)_adjustedBottomOfPageWithTop:(double)a3 bottom:(double)a4 limit:(double)a5;
-- (id)_accessibilityParentForSubview:(id)a3;
+- (double)_adjustedBottomOfPageWithTop:(double)top bottom:(double)bottom limit:(double)limit;
+- (id)_accessibilityParentForSubview:(id)subview;
 - (id)_documentRange;
 - (id)_emptyStyle;
 - (id)_frameView;
@@ -51,20 +51,20 @@
 - (id)_selectedRange;
 - (id)_topHTMLView;
 - (id)accessibilityFocusedUIElement;
-- (id)accessibilityHitTest:(CGPoint)a3;
+- (id)accessibilityHitTest:(CGPoint)test;
 - (id)accessibilityRootElement;
-- (id)elementAtPoint:(CGPoint)a3 allowShadowContent:(BOOL)a4;
-- (id)hitTest:(CGPoint)a3;
+- (id)elementAtPoint:(CGPoint)point allowShadowContent:(BOOL)content;
+- (id)hitTest:(CGPoint)test;
 - (id)rectsForTextMatches;
 - (id)selectedString;
 - (id)selectionTextRects;
 - (id)string;
-- (unint64_t)characterIndexForPoint:(CGPoint)a3;
-- (unint64_t)countMatchesForText:(id)a3 inDOMRange:(id)a4 options:(unint64_t)a5 limit:(unint64_t)a6 markMatches:(BOOL)a7;
+- (unint64_t)characterIndexForPoint:(CGPoint)point;
+- (unint64_t)countMatchesForText:(id)text inDOMRange:(id)range options:(unint64_t)options limit:(unint64_t)limit markMatches:(BOOL)matches;
 - (unsigned)_scrollbarWidthStyle;
-- (void)_applyEditingStyleToSelection:(void *)a3 withUndoAction:(unsigned __int8)a4;
-- (void)_applyStyleToSelection:(id)a3 withUndoAction:(unsigned __int8)a4;
-- (void)_changeWordCaseWithSelector:(SEL)a3;
+- (void)_applyEditingStyleToSelection:(void *)selection withUndoAction:(unsigned __int8)action;
+- (void)_applyStyleToSelection:(id)selection withUndoAction:(unsigned __int8)action;
+- (void)_changeWordCaseWithSelector:(SEL)selector;
 - (void)_decreaseSelectionListLevel;
 - (void)_destroyAllWebPlugins;
 - (void)_endPrintMode;
@@ -72,50 +72,50 @@
 - (void)_executeSavedKeypressCommands;
 - (void)_frameOrBoundsChanged;
 - (void)_layoutIfNeeded;
-- (void)_setMouseDownEvent:(id)a3;
-- (void)_setPrinting:(BOOL)a3 minimumPageLogicalWidth:(float)a4 logicalHeight:(float)a5 originalPageWidth:(float)a6 originalPageHeight:(float)a7 maximumShrinkRatio:(float)a8 adjustViewSize:(BOOL)a9 paginateScreenContent:(BOOL)a10;
+- (void)_setMouseDownEvent:(id)event;
+- (void)_setPrinting:(BOOL)printing minimumPageLogicalWidth:(float)width logicalHeight:(float)height originalPageWidth:(float)pageWidth originalPageHeight:(float)pageHeight maximumShrinkRatio:(float)ratio adjustViewSize:(BOOL)size paginateScreenContent:(BOOL)self0;
 - (void)_web_updateLayoutAndStyleIfNeededRecursive;
-- (void)addSubview:(id)a3;
-- (void)capitalizeWord:(id)a3;
-- (void)centerSelectionInVisibleArea:(id)a3;
+- (void)addSubview:(id)subview;
+- (void)capitalizeWord:(id)word;
+- (void)centerSelectionInVisibleArea:(id)area;
 - (void)clearFocus;
 - (void)close;
 - (void)closeIfNotCurrentView;
 - (void)dealloc;
 - (void)deselectAll;
-- (void)doCommandBySelector:(SEL)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)drawSingleRect:(CGRect)a3;
-- (void)executeCoreCommandByName:(const char *)a3;
-- (void)executeCoreCommandBySelector:(SEL)a3;
-- (void)insertText:(id)a3;
-- (void)jumpToSelection:(id)a3;
-- (void)keyDown:(id)a3;
-- (void)keyUp:(id)a3;
-- (void)layoutToMinimumPageWidth:(float)a3 height:(float)a4 originalPageWidth:(float)a5 originalPageHeight:(float)a6 maximumShrinkRatio:(float)a7 adjustingViewSize:(BOOL)a8;
-- (void)lowercaseWord:(id)a3;
-- (void)markedTextUpdate:(id)a3;
-- (void)mouseDown:(id)a3;
-- (void)mouseMoved:(id)a3;
-- (void)mouseUp:(id)a3;
+- (void)doCommandBySelector:(SEL)selector;
+- (void)drawRect:(CGRect)rect;
+- (void)drawSingleRect:(CGRect)rect;
+- (void)executeCoreCommandByName:(const char *)name;
+- (void)executeCoreCommandBySelector:(SEL)selector;
+- (void)insertText:(id)text;
+- (void)jumpToSelection:(id)selection;
+- (void)keyDown:(id)down;
+- (void)keyUp:(id)up;
+- (void)layoutToMinimumPageWidth:(float)width height:(float)height originalPageWidth:(float)pageWidth originalPageHeight:(float)pageHeight maximumShrinkRatio:(float)ratio adjustingViewSize:(BOOL)size;
+- (void)lowercaseWord:(id)word;
+- (void)markedTextUpdate:(id)update;
+- (void)mouseDown:(id)down;
+- (void)mouseMoved:(id)moved;
+- (void)mouseUp:(id)up;
 - (void)reapplyStyles;
-- (void)scrollWheel:(id)a3;
+- (void)scrollWheel:(id)wheel;
 - (void)selectAll;
-- (void)setDataSource:(id)a3;
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4;
-- (void)setMarkedTextMatchesAreHighlighted:(BOOL)a3;
-- (void)setNeedsDisplayInRect:(CGRect)a3;
-- (void)setNeedsLayout:(BOOL)a3;
-- (void)setNeedsToApplyStyles:(BOOL)a3;
-- (void)setScale:(float)a3;
-- (void)touch:(id)a3;
+- (void)setDataSource:(id)source;
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range;
+- (void)setMarkedTextMatchesAreHighlighted:(BOOL)highlighted;
+- (void)setNeedsDisplayInRect:(CGRect)rect;
+- (void)setNeedsLayout:(BOOL)layout;
+- (void)setNeedsToApplyStyles:(BOOL)styles;
+- (void)setScale:(float)scale;
+- (void)touch:(id)touch;
 - (void)unmarkAllTextMatches;
 - (void)unmarkText;
-- (void)uppercaseWord:(id)a3;
+- (void)uppercaseWord:(id)word;
 - (void)viewDidMoveToWindow;
 - (void)viewWillDraw;
-- (void)viewWillMoveToWindow:(id)a3;
-- (void)willRemoveSubview:(id)a3;
+- (void)viewWillMoveToWindow:(id)window;
+- (void)willRemoveSubview:(id)subview;
 @end
 
 @implementation WebHTMLView
@@ -129,44 +129,44 @@
 
 - (id)_frameView
 {
-  v2 = [(WebDataSource *)self->_private->dataSource.m_ptr webFrame];
+  webFrame = [(WebDataSource *)self->_private->dataSource.m_ptr webFrame];
 
-  return [(WebFrame *)v2 frameView];
+  return [(WebFrame *)webFrame frameView];
 }
 
-- (BOOL)_shouldInsertFragment:(id)a3 replacingDOMRange:(id)a4 givenAction:(int64_t)a5
+- (BOOL)_shouldInsertFragment:(id)fragment replacingDOMRange:(id)range givenAction:(int64_t)action
 {
-  v8 = [(WebHTMLView *)self _webView];
-  v9 = [a3 firstChild];
-  if ([a3 lastChild] == v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  _webView = [(WebHTMLView *)self _webView];
+  firstChild = [fragment firstChild];
+  if ([fragment lastChild] == firstChild && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v10 = [v8 _editingDelegateForwarder];
-    v11 = [v9 data];
+    _editingDelegateForwarder = [_webView _editingDelegateForwarder];
+    data = [firstChild data];
 
-    return [v10 webView:v8 shouldInsertText:v11 replacingDOMRange:a4 givenAction:a5];
+    return [_editingDelegateForwarder webView:_webView shouldInsertText:data replacingDOMRange:range givenAction:action];
   }
 
   else
   {
-    v13 = [v8 _editingDelegateForwarder];
+    _editingDelegateForwarder2 = [_webView _editingDelegateForwarder];
 
-    return [v13 webView:v8 shouldInsertNode:a3 replacingDOMRange:a4 givenAction:a5];
+    return [_editingDelegateForwarder2 webView:_webView shouldInsertNode:fragment replacingDOMRange:range givenAction:action];
   }
 }
 
-- (BOOL)_shouldInsertText:(id)a3 replacingDOMRange:(id)a4 givenAction:(int64_t)a5
+- (BOOL)_shouldInsertText:(id)text replacingDOMRange:(id)range givenAction:(int64_t)action
 {
-  v8 = [(WebHTMLView *)self _webView];
-  v9 = [v8 _editingDelegateForwarder];
+  _webView = [(WebHTMLView *)self _webView];
+  _editingDelegateForwarder = [_webView _editingDelegateForwarder];
 
-  return [v9 webView:v8 shouldInsertText:a3 replacingDOMRange:a4 givenAction:a5];
+  return [_editingDelegateForwarder webView:_webView shouldInsertText:text replacingDOMRange:range givenAction:action];
 }
 
-- (BOOL)_shouldReplaceSelectionWithText:(id)a3 givenAction:(int64_t)a4
+- (BOOL)_shouldReplaceSelectionWithText:(id)text givenAction:(int64_t)action
 {
-  v7 = [(WebHTMLView *)self _selectedRange];
+  _selectedRange = [(WebHTMLView *)self _selectedRange];
 
-  return [(WebHTMLView *)self _shouldInsertText:a3 replacingDOMRange:v7 givenAction:a4];
+  return [(WebHTMLView *)self _shouldInsertText:text replacingDOMRange:_selectedRange givenAction:action];
 }
 
 - (id)_selectedRange
@@ -231,16 +231,16 @@ LABEL_8:
   return result;
 }
 
-- (void)_setMouseDownEvent:(id)a3
+- (void)_setMouseDownEvent:(id)event
 {
   v4 = self->_private;
-  if (a3)
+  if (event)
   {
-    v5 = a3;
+    eventCopy = event;
   }
 
   m_ptr = v4->mouseDownEvent.m_ptr;
-  v4->mouseDownEvent.m_ptr = a3;
+  v4->mouseDownEvent.m_ptr = event;
   if (m_ptr)
   {
   }
@@ -253,25 +253,25 @@ LABEL_8:
   return [v2 documentView];
 }
 
-- (void)mouseMoved:(id)a3
+- (void)mouseMoved:(id)moved
 {
-  v4 = [(WebHTMLView *)self _frame];
-  if (v4)
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame)
   {
-    v5 = *(v4[1] + 8);
+    v5 = *(_frame[1] + 8);
     if (v5)
     {
       v6 = *(v5 + 336);
 
-      MEMORY[0x1EEE54AB0](v6, a3);
+      MEMORY[0x1EEE54AB0](v6, moved);
     }
   }
 }
 
 - (void)_frameOrBoundsChanged
 {
-  v3 = [(WebHTMLView *)self _webView];
-  v4 = [objc_msgSend(objc_msgSend(v3 "mainFrame")];
+  _webView = [(WebHTMLView *)self _webView];
+  v4 = [objc_msgSend(objc_msgSend(_webView "mainFrame")];
   [-[WebHTMLView superview](self "superview")];
   v13.x = v5;
   v13.y = v6;
@@ -279,10 +279,10 @@ LABEL_8:
   v12.y = v6;
   if (!NSEqualPoints(self->_private->lastScrollPosition, v13) && ([v4 inProgrammaticScroll] & 1) == 0)
   {
-    v7 = [(WebHTMLView *)self _frame];
-    if (v7)
+    _frame = [(WebHTMLView *)self _frame];
+    if (_frame)
     {
-      v8 = *(v7[1] + 8);
+      v8 = *(_frame[1] + 8);
       if (v8)
       {
         v9 = *(v8 + 216);
@@ -297,7 +297,7 @@ LABEL_8:
       }
     }
 
-    [v3 _didScrollDocumentInFrameView:{-[WebHTMLView _frameView](self, "_frameView")}];
+    [_webView _didScrollDocumentInFrameView:{-[WebHTMLView _frameView](self, "_frameView")}];
   }
 
   self->_private->lastScrollPosition = v12;
@@ -316,18 +316,18 @@ LABEL_8:
   [(WebHTMLView *)&v3 viewWillDraw];
 }
 
-- (id)hitTest:(CGPoint)a3
+- (id)hitTest:(CGPoint)test
 {
   if (self->_private->closed)
   {
     return 0;
   }
 
-  y = a3.y;
-  x = a3.x;
-  v7 = [(WebHTMLView *)self superview];
+  y = test.y;
+  x = test.x;
+  superview = [(WebHTMLView *)self superview];
   [(WebHTMLView *)self frame];
-  if ([v7 mouse:x inRect:{y, v8, v9, v10, v11}])
+  if ([superview mouse:x inRect:{y, v8, v9, v10, v11}])
   {
     return self;
   }
@@ -338,15 +338,15 @@ LABEL_8:
   }
 }
 
-- (void)setScale:(float)a3
+- (void)setScale:(float)scale
 {
   v10.receiver = self;
   v10.super_class = WebHTMLView;
   [(WebHTMLView *)&v10 setScale:?];
-  v5 = [(WebHTMLView *)self _frame];
-  if (v5)
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame)
   {
-    v6 = *(v5[1] + 8);
+    v6 = *(_frame[1] + 8);
     if (v6)
     {
       v7 = *(v6 + 24);
@@ -356,7 +356,7 @@ LABEL_8:
         if (v8)
         {
           v9 = 0;
-          WebCore::Page::setPageScaleFactor(v8, a3, &v9);
+          WebCore::Page::setPageScaleFactor(v8, scale, &v9);
         }
       }
 
@@ -367,10 +367,10 @@ LABEL_8:
 
 - (BOOL)_canEdit
 {
-  v2 = [(WebHTMLView *)self _frame];
-  if (v2)
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame)
   {
-    v3 = *(v2[1] + 8);
+    v3 = *(_frame[1] + 8);
     if (v3)
     {
       v4 = *(v3 + 224);
@@ -403,13 +403,13 @@ LABEL_8:
 
 - (BOOL)_canEditRichly
 {
-  v2 = [(WebHTMLView *)self _frame];
-  if (!v2)
+  _frame = [(WebHTMLView *)self _frame];
+  if (!_frame)
   {
     return 0;
   }
 
-  v3 = *(v2[1] + 8);
+  v3 = *(_frame[1] + 8);
   if (!v3)
   {
     return 0;
@@ -441,85 +441,85 @@ LABEL_8:
 
 - (BOOL)_canAlterCurrentSelection
 {
-  v3 = [(WebHTMLView *)self _hasSelectionOrInsertionPoint];
-  if (v3)
+  _hasSelectionOrInsertionPoint = [(WebHTMLView *)self _hasSelectionOrInsertionPoint];
+  if (_hasSelectionOrInsertionPoint)
   {
 
-    LOBYTE(v3) = [(WebHTMLView *)self _isEditable];
+    LOBYTE(_hasSelectionOrInsertionPoint) = [(WebHTMLView *)self _isEditable];
   }
 
-  return v3;
+  return _hasSelectionOrInsertionPoint;
 }
 
 - (BOOL)_hasSelection
 {
-  v2 = [(WebHTMLView *)self _frame];
-  if (v2)
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame)
   {
-    v3 = *(v2[1] + 8);
+    v3 = *(_frame[1] + 8);
     if (v3)
     {
-      LOBYTE(v2) = *(*(*(v3 + 224) + 3208) + 153) == 2;
+      LOBYTE(_frame) = *(*(*(v3 + 224) + 3208) + 153) == 2;
     }
 
     else
     {
-      LOBYTE(v2) = 0;
+      LOBYTE(_frame) = 0;
     }
   }
 
-  return v2;
+  return _frame;
 }
 
 - (BOOL)_hasSelectionOrInsertionPoint
 {
-  v2 = [(WebHTMLView *)self _frame];
-  if (v2)
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame)
   {
-    v3 = *(v2[1] + 8);
+    v3 = *(_frame[1] + 8);
     if (v3)
     {
-      LOBYTE(v2) = *(*(*(v3 + 224) + 3208) + 153) != 0;
+      LOBYTE(_frame) = *(*(*(v3 + 224) + 3208) + 153) != 0;
     }
 
     else
     {
-      LOBYTE(v2) = 0;
+      LOBYTE(_frame) = 0;
     }
   }
 
-  return v2;
+  return _frame;
 }
 
 - (BOOL)_hasInsertionPoint
 {
-  v2 = [(WebHTMLView *)self _frame];
-  if (v2)
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame)
   {
-    v3 = *(v2[1] + 8);
+    v3 = *(_frame[1] + 8);
     if (v3)
     {
-      LOBYTE(v2) = *(*(*(v3 + 224) + 3208) + 153) == 1;
+      LOBYTE(_frame) = *(*(*(v3 + 224) + 3208) + 153) == 1;
     }
 
     else
     {
-      LOBYTE(v2) = 0;
+      LOBYTE(_frame) = 0;
     }
   }
 
-  return v2;
+  return _frame;
 }
 
 - (BOOL)_isEditable
 {
-  v2 = [(WebHTMLView *)self _frame];
-  if (!v2)
+  _frame = [(WebHTMLView *)self _frame];
+  if (!_frame)
   {
     return 0;
   }
 
-  v3 = *(v2[1] + 8);
+  v3 = *(_frame[1] + 8);
   if (!v3)
   {
     return 0;
@@ -650,13 +650,13 @@ LABEL_8:
 
 - (BOOL)_canIncreaseSelectionListLevel
 {
-  v2 = [(WebHTMLView *)self _frame];
-  if (!v2)
+  _frame = [(WebHTMLView *)self _frame];
+  if (!_frame)
   {
     return 0;
   }
 
-  v3 = *(v2[1] + 8);
+  v3 = *(_frame[1] + 8);
   if (!v3)
   {
     return 0;
@@ -688,13 +688,13 @@ LABEL_8:
 
 - (BOOL)_canDecreaseSelectionListLevel
 {
-  v2 = [(WebHTMLView *)self _frame];
-  if (!v2)
+  _frame = [(WebHTMLView *)self _frame];
+  if (!_frame)
   {
     return 0;
   }
 
-  v3 = *(v2[1] + 8);
+  v3 = *(_frame[1] + 8);
   if (!v3)
   {
     return 0;
@@ -903,10 +903,10 @@ LABEL_8:
 
 - (void)_decreaseSelectionListLevel
 {
-  v2 = [(WebHTMLView *)self _frame];
-  if (v2)
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame)
   {
-    v3 = *(v2[1] + 8);
+    v3 = *(_frame[1] + 8);
     if (v3)
     {
       v4 = *(v3 + 224);
@@ -944,15 +944,15 @@ LABEL_8:
   }
 }
 
-- (BOOL)_beginPrintModeWithMinimumPageWidth:(double)a3 height:(double)a4 maximumPageWidth:(double)a5
+- (BOOL)_beginPrintModeWithMinimumPageWidth:(double)width height:(double)height maximumPageWidth:(double)pageWidth
 {
-  v9 = [(WebHTMLView *)self _frame];
-  if (!v9)
+  _frame = [(WebHTMLView *)self _frame];
+  if (!_frame)
   {
     return 0;
   }
 
-  v10 = *(v9[1] + 8);
+  v10 = *(_frame[1] + 8);
   if (!v10)
   {
     return 0;
@@ -962,48 +962,48 @@ LABEL_8:
   if (v11 && ((*(*v11 + 384))(v11) & 1) != 0)
   {
     v12 = 0.0;
-    a3 = 0.0;
-    a4 = 0.0;
+    width = 0.0;
+    height = 0.0;
   }
 
   else
   {
     v12 = 0.0;
-    if (a3 > 0.0)
+    if (width > 0.0)
     {
-      v12 = a5 / a3;
+      v12 = pageWidth / width;
     }
   }
 
-  v14 = a3;
-  v15 = a4;
-  v16 = [(WebHTMLView *)self _isInScreenPaginationMode];
-  *&v17 = v14;
-  *&v18 = v15;
-  *&v19 = v14;
-  *&v20 = v15;
+  widthCopy = width;
+  heightCopy = height;
+  _isInScreenPaginationMode = [(WebHTMLView *)self _isInScreenPaginationMode];
+  *&v17 = widthCopy;
+  *&v18 = heightCopy;
+  *&v19 = widthCopy;
+  *&v20 = heightCopy;
   *&v21 = v12;
-  [(WebHTMLView *)self _setPrinting:1 minimumPageLogicalWidth:1 logicalHeight:v16 originalPageWidth:v17 originalPageHeight:v18 maximumShrinkRatio:v19 adjustViewSize:v20 paginateScreenContent:v21];
+  [(WebHTMLView *)self _setPrinting:1 minimumPageLogicalWidth:1 logicalHeight:_isInScreenPaginationMode originalPageWidth:v17 originalPageHeight:v18 maximumShrinkRatio:v19 adjustViewSize:v20 paginateScreenContent:v21];
   return 1;
 }
 
-- (BOOL)_beginPrintModeWithPageWidth:(float)a3 height:(float)a4 shrinkToFit:(BOOL)a5
+- (BOOL)_beginPrintModeWithPageWidth:(float)width height:(float)height shrinkToFit:(BOOL)fit
 {
-  v5 = a5;
-  v9 = [(WebHTMLView *)self _frame];
-  if (v9)
+  fitCopy = fit;
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame)
   {
-    v10 = *(v9[1] + 8);
+    v10 = *(_frame[1] + 8);
     if (v10)
     {
       v11 = *(v10 + 28);
       if (!v11)
       {
         v13 = 1.0;
-        v15 = a4;
-        v14 = a3;
-        v16 = a4;
-        if (!v5)
+        heightCopy6 = height;
+        widthCopy5 = width;
+        heightCopy5 = height;
+        if (!fitCopy)
         {
           goto LABEL_14;
         }
@@ -1015,11 +1015,11 @@ LABEL_8:
       if (v12 && (*(v12 + 120) & 1) != 0)
       {
         v13 = 1.0;
-        v14 = a4;
-        v15 = a3;
-        v16 = a3;
-        a3 = a4;
-        if (!v5)
+        widthCopy5 = height;
+        heightCopy6 = width;
+        heightCopy5 = width;
+        width = height;
+        if (!fitCopy)
         {
           goto LABEL_14;
         }
@@ -1028,42 +1028,42 @@ LABEL_8:
       else
       {
         v13 = 1.0;
-        v14 = a3;
-        v15 = a4;
-        v16 = a4;
-        if (!v5)
+        widthCopy5 = width;
+        heightCopy6 = height;
+        heightCopy5 = height;
+        if (!fitCopy)
         {
           goto LABEL_14;
         }
       }
 
-      a3 = v14;
-      a4 = v15;
-      v16 = v15;
+      width = widthCopy5;
+      height = heightCopy6;
+      heightCopy5 = heightCopy6;
       if (((*(*v11 + 384))(v11) & 1) == 0)
       {
 LABEL_13:
-        v27.var0 = a3;
-        v27.var1 = a4;
-        v26.var0 = a3 * 1.25;
-        v26.var1 = a4 * 1.25;
+        v27.var0 = width;
+        v27.var1 = height;
+        v26.var0 = width * 1.25;
+        v26.var1 = height * 1.25;
         WebCore::LocalFrame::resizePageRectsKeepingRatio(v10, &v27, &v26);
-        v16 = v17;
-        v14 = a3;
+        heightCopy5 = v17;
+        widthCopy5 = width;
         v13 = 1.6;
-        v15 = a4;
-        a3 = v18;
+        heightCopy6 = height;
+        width = v18;
       }
 
 LABEL_14:
-      v19 = [(WebHTMLView *)self _isInScreenPaginationMode];
+      _isInScreenPaginationMode = [(WebHTMLView *)self _isInScreenPaginationMode];
       LOBYTE(v10) = 1;
-      *&v20 = a3;
-      *&v21 = v16;
-      *&v22 = v14;
-      *&v23 = v15;
+      *&v20 = width;
+      *&v21 = heightCopy5;
+      *&v22 = widthCopy5;
+      *&v23 = heightCopy6;
       *&v24 = v13;
-      [(WebHTMLView *)self _setPrinting:1 minimumPageLogicalWidth:1 logicalHeight:v19 originalPageWidth:v20 originalPageHeight:v21 maximumShrinkRatio:v22 adjustViewSize:v23 paginateScreenContent:v24];
+      [(WebHTMLView *)self _setPrinting:1 minimumPageLogicalWidth:1 logicalHeight:_isInScreenPaginationMode originalPageWidth:v20 originalPageHeight:v21 maximumShrinkRatio:v22 adjustViewSize:v23 paginateScreenContent:v24];
     }
   }
 
@@ -1077,19 +1077,19 @@ LABEL_14:
 
 - (void)_endPrintMode
 {
-  v3 = [(WebHTMLView *)self _isInScreenPaginationMode];
+  _isInScreenPaginationMode = [(WebHTMLView *)self _isInScreenPaginationMode];
 
-  [(WebHTMLView *)self _setPrinting:0 minimumPageLogicalWidth:1 logicalHeight:v3 originalPageWidth:0.0 originalPageHeight:0.0 maximumShrinkRatio:0.0 adjustViewSize:0.0 paginateScreenContent:0.0];
+  [(WebHTMLView *)self _setPrinting:0 minimumPageLogicalWidth:1 logicalHeight:_isInScreenPaginationMode originalPageWidth:0.0 originalPageHeight:0.0 maximumShrinkRatio:0.0 adjustViewSize:0.0 paginateScreenContent:0.0];
 }
 
-- (BOOL)_beginScreenPaginationModeWithPageSize:(CGSize)a3 shrinkToFit:(BOOL)a4
+- (BOOL)_beginScreenPaginationModeWithPageSize:(CGSize)size shrinkToFit:(BOOL)fit
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = [(WebHTMLView *)self _frame];
-  if (v8)
+  height = size.height;
+  width = size.width;
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame)
   {
-    v9 = *(v8[1] + 8);
+    v9 = *(_frame[1] + 8);
     if (v9)
     {
       v10 = *(v9 + 28);
@@ -1100,7 +1100,7 @@ LABEL_14:
         v14 = 1.0;
         v15 = v13;
         v16 = v12;
-        if (!a4)
+        if (!fit)
         {
           goto LABEL_14;
         }
@@ -1116,7 +1116,7 @@ LABEL_14:
         v14 = 1.0;
         v15 = v13;
         v16 = v12;
-        if (!a4)
+        if (!fit)
         {
           goto LABEL_14;
         }
@@ -1129,7 +1129,7 @@ LABEL_14:
         v14 = 1.0;
         v15 = v13;
         v16 = v12;
-        if (!a4)
+        if (!fit)
         {
           goto LABEL_14;
         }
@@ -1151,15 +1151,15 @@ LABEL_13:
       }
 
 LABEL_14:
-      v19 = [(WebHTMLView *)self _isInPrintMode];
-      v20 = [(WebHTMLView *)self _isInScreenPaginationMode];
+      _isInPrintMode = [(WebHTMLView *)self _isInPrintMode];
+      _isInScreenPaginationMode = [(WebHTMLView *)self _isInScreenPaginationMode];
       LOBYTE(v9) = 1;
       *&v21 = v16;
       *&v22 = v15;
       *&v23 = v12;
       *&v24 = v13;
       *&v25 = v14;
-      [(WebHTMLView *)self _setPrinting:v19 minimumPageLogicalWidth:1 logicalHeight:v20 originalPageWidth:v21 originalPageHeight:v22 maximumShrinkRatio:v23 adjustViewSize:v24 paginateScreenContent:v25];
+      [(WebHTMLView *)self _setPrinting:_isInPrintMode minimumPageLogicalWidth:1 logicalHeight:_isInScreenPaginationMode originalPageWidth:v21 originalPageHeight:v22 maximumShrinkRatio:v23 adjustViewSize:v24 paginateScreenContent:v25];
     }
   }
 
@@ -1173,37 +1173,37 @@ LABEL_14:
 
 - (void)_endScreenPaginationMode
 {
-  v3 = [(WebHTMLView *)self _isInPrintMode];
+  _isInPrintMode = [(WebHTMLView *)self _isInPrintMode];
 
-  [(WebHTMLView *)self _setPrinting:v3 minimumPageLogicalWidth:1 logicalHeight:0 originalPageWidth:0.0 originalPageHeight:0.0 maximumShrinkRatio:0.0 adjustViewSize:0.0 paginateScreenContent:0.0];
+  [(WebHTMLView *)self _setPrinting:_isInPrintMode minimumPageLogicalWidth:1 logicalHeight:0 originalPageWidth:0.0 originalPageHeight:0.0 maximumShrinkRatio:0.0 adjustViewSize:0.0 paginateScreenContent:0.0];
 }
 
-- (double)_adjustedBottomOfPageWithTop:(double)a3 bottom:(double)a4 limit:(double)a5
+- (double)_adjustedBottomOfPageWithTop:(double)top bottom:(double)bottom limit:(double)limit
 {
-  v8 = [(WebHTMLView *)self _frame];
-  if (v8 && (v9 = *(v8[1] + 8)) != 0 && (v10 = *(v9 + 216)) != 0 && (v23 = 0.0, v11 = a3, v12 = a4, v13 = a5, WebCore::LocalFrameView::adjustPageHeightDeprecated(v10, &v23, v11, v12, v13), v23 != v12) && ((v15 = vabds_f32(v12, v23), v16 = fabsf(v12), v16 < 1.0) ? (v17 = (v16 * 3.4028e38) < v15) : (v17 = 0), v17 || ((v16 * 1.1755e-38) > v15 ? (v18 = v16 <= 1.0) : (v18 = 1), v18 ? (v19 = 0) : (v19 = 1), (v19 & 1) == 0 && (v15 / v16) > 0.00000011921 || ((v20 = fabsf(v23), v20 < 1.0) ? (v21 = (v20 * 3.4028e38) < v15) : (v21 = 0), v21 || (v20 > 1.0 ? (v22 = (v20 * 1.1755e-38) <= v15) : (v22 = 1), v22 && (v15 / v20) > 0.00000011921)))))
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame && (v9 = *(_frame[1] + 8)) != 0 && (v10 = *(v9 + 216)) != 0 && (v23 = 0.0, v11 = top, v12 = bottom, v13 = limit, WebCore::LocalFrameView::adjustPageHeightDeprecated(v10, &v23, v11, v12, v13), v23 != v12) && ((v15 = vabds_f32(v12, v23), v16 = fabsf(v12), v16 < 1.0) ? (v17 = (v16 * 3.4028e38) < v15) : (v17 = 0), v17 || ((v16 * 1.1755e-38) > v15 ? (v18 = v16 <= 1.0) : (v18 = 1), v18 ? (v19 = 0) : (v19 = 1), (v19 & 1) == 0 && (v15 / v16) > 0.00000011921 || ((v20 = fabsf(v23), v20 < 1.0) ? (v21 = (v20 * 3.4028e38) < v15) : (v21 = 0), v21 || (v20 > 1.0 ? (v22 = (v20 * 1.1755e-38) <= v15) : (v22 = 1), v22 && (v15 / v20) > 0.00000011921)))))
   {
     return v23;
   }
 
   else
   {
-    return a4;
+    return bottom;
   }
 }
 
 - (id)accessibilityRootElement
 {
-  v2 = [(WebHTMLView *)self _frame];
+  _frame = [(WebHTMLView *)self _frame];
 
-  return [v2 accessibilityRoot];
+  return [_frame accessibilityRoot];
 }
 
-- (WebHTMLView)initWithFrame:(CGRect)a3
+- (WebHTMLView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = WebHTMLView;
-  v3 = [(WebHTMLView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WebHTMLView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -1252,26 +1252,26 @@ LABEL_14:
   }
 }
 
-- (BOOL)callDelegateDoCommandBySelectorIfNeeded:(SEL)a3
+- (BOOL)callDelegateDoCommandBySelectorIfNeeded:(SEL)needed
 {
   v4 = self->_private;
   selectorForDoCommandBySelector = v4->selectorForDoCommandBySelector;
   v4->selectorForDoCommandBySelector = 0;
-  if (selectorForDoCommandBySelector == a3)
+  if (selectorForDoCommandBySelector == needed)
   {
     return 0;
   }
 
-  v6 = [(WebHTMLView *)self _webView];
-  v7 = [v6 _editingDelegateForwarder];
+  _webView = [(WebHTMLView *)self _webView];
+  _editingDelegateForwarder = [_webView _editingDelegateForwarder];
 
-  return [v7 webView:v6 doCommandBySelector:a3];
+  return [_editingDelegateForwarder webView:_webView doCommandBySelector:needed];
 }
 
-- (Command)coreCommandBySelector:(SEL)a3
+- (Command)coreCommandBySelector:(SEL)selector
 {
-  v6 = [(WebHTMLView *)self _frame];
-  if (!v6 || (v10 = *(v6[1] + 8)) == 0)
+  _frame = [(WebHTMLView *)self _frame];
+  if (!_frame || (v10 = *(_frame[1] + 8)) == 0)
   {
     v21 = retstr;
 
@@ -1406,10 +1406,10 @@ LABEL_30:
   return result;
 }
 
-- (Command)coreCommandByName:(SEL)a3
+- (Command)coreCommandByName:(SEL)name
 {
-  v6 = [(WebHTMLView *)self _frame];
-  if (v6 && (v10 = *(v6[1] + 8)) != 0)
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame && (v10 = *(_frame[1] + 8)) != 0)
   {
     v11 = *(v10 + 224);
     if (v11)
@@ -1453,13 +1453,13 @@ LABEL_30:
   return result;
 }
 
-- (void)executeCoreCommandBySelector:(SEL)a3
+- (void)executeCoreCommandBySelector:(SEL)selector
 {
   if (![(WebHTMLView *)self callDelegateDoCommandBySelectorIfNeeded:?])
   {
     if (self)
     {
-      [(WebHTMLView *)self coreCommandBySelector:a3];
+      [(WebHTMLView *)self coreCommandBySelector:selector];
     }
 
     else
@@ -1483,11 +1483,11 @@ LABEL_30:
   }
 }
 
-- (void)executeCoreCommandByName:(const char *)a3
+- (void)executeCoreCommandByName:(const char *)name
 {
   if (self)
   {
-    [(WebHTMLView *)self coreCommandByName:a3];
+    [(WebHTMLView *)self coreCommandByName:name];
   }
 
   else
@@ -1510,14 +1510,14 @@ LABEL_30:
   }
 }
 
-- (void)jumpToSelection:(id)a3
+- (void)jumpToSelection:(id)selection
 {
   if (![(WebHTMLView *)self callDelegateDoCommandBySelectorIfNeeded:a2])
   {
-    v4 = [(WebHTMLView *)self _frame];
-    if (v4)
+    _frame = [(WebHTMLView *)self _frame];
+    if (_frame)
     {
-      v5 = *(v4[1] + 8);
+      v5 = *(_frame[1] + 8);
       if (v5)
       {
         v6 = *(*(v5 + 224) + 3208);
@@ -1531,12 +1531,12 @@ LABEL_30:
 
 - (BOOL)acceptsFirstResponder
 {
-  v3 = [MEMORY[0x1E69E2188] currentEvent];
+  currentEvent = [MEMORY[0x1E69E2188] currentEvent];
   result = 1;
-  if (v3)
+  if (currentEvent)
   {
-    v4 = v3;
-    if (![v3 type] && !self->_private->handlingMouseDownEvent)
+    v4 = currentEvent;
+    if (![currentEvent type] && !self->_private->handlingMouseDownEvent)
     {
       [v4 locationInWindow];
       v6 = v5;
@@ -1567,44 +1567,44 @@ LABEL_30:
 {
   if ([-[WebHTMLView _webView](self "_webView")])
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(_frame) = 1;
   }
 
   else if ([-[WebHTMLView window](self "window")] == self)
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(_frame) = 1;
   }
 
   else
   {
-    v3 = [(WebHTMLView *)self _frame];
-    if (v3)
+    _frame = [(WebHTMLView *)self _frame];
+    if (_frame)
     {
-      v4 = *(v3[1] + 8);
+      v4 = *(_frame[1] + 8);
       if (v4)
       {
         v5 = (*(*(v4 + 224) + 3208) + 56);
 
-        LOBYTE(v3) = WebCore::VisibleSelection::isContentEditable(v5);
+        LOBYTE(_frame) = WebCore::VisibleSelection::isContentEditable(v5);
       }
 
       else
       {
-        LOBYTE(v3) = 0;
+        LOBYTE(_frame) = 0;
       }
     }
   }
 
-  return v3;
+  return _frame;
 }
 
-- (void)viewWillMoveToWindow:(id)a3
+- (void)viewWillMoveToWindow:(id)window
 {
   if (self->_private)
   {
-    v3 = [(WebHTMLView *)self _pluginController];
+    _pluginController = [(WebHTMLView *)self _pluginController];
 
-    [v3 stopAllPlugins];
+    [_pluginController stopAllPlugins];
   }
 }
 
@@ -1626,20 +1626,20 @@ LABEL_30:
   }
 }
 
-- (void)addSubview:(id)a3
+- (void)addSubview:(id)subview
 {
   v6.receiver = self;
   v6.super_class = WebHTMLView;
   [(WebHTMLView *)&v6 addSubview:?];
-  if ([WebPluginController isPlugInView:a3])
+  if ([WebPluginController isPlugInView:subview])
   {
-    v5 = [(WebHTMLView *)self _webView];
-    [objc_msgSend(v5 "_UIKitDelegateForwarder")];
+    _webView = [(WebHTMLView *)self _webView];
+    [objc_msgSend(_webView "_UIKitDelegateForwarder")];
     [-[WebHTMLView _pluginController](self "_pluginController")];
   }
 }
 
-- (void)willRemoveSubview:(id)a3
+- (void)willRemoveSubview:(id)subview
 {
   if ([WebPluginController isPlugInView:?])
   {
@@ -1648,15 +1648,15 @@ LABEL_30:
 
   v5.receiver = self;
   v5.super_class = WebHTMLView;
-  [(WebHTMLView *)&v5 willRemoveSubview:a3];
+  [(WebHTMLView *)&v5 willRemoveSubview:subview];
 }
 
 - (void)reapplyStyles
 {
-  v2 = [(WebHTMLView *)self _frame];
-  if (v2)
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame)
   {
-    v3 = *(v2[1] + 8);
+    v3 = *(_frame[1] + 8);
     if (v3)
     {
       WebCore::Style::Scope::didChangeStyleSheetEnvironment(*(*(v3 + 224) + 1400));
@@ -1667,12 +1667,12 @@ LABEL_30:
   }
 }
 
-- (void)layoutToMinimumPageWidth:(float)a3 height:(float)a4 originalPageWidth:(float)a5 originalPageHeight:(float)a6 maximumShrinkRatio:(float)a7 adjustingViewSize:(BOOL)a8
+- (void)layoutToMinimumPageWidth:(float)width height:(float)height originalPageWidth:(float)pageWidth originalPageHeight:(float)pageHeight maximumShrinkRatio:(float)ratio adjustingViewSize:(BOOL)size
 {
-  v11 = [(WebHTMLView *)self _frame];
-  if (v11)
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame)
   {
-    v12 = *(v11[1] + 8);
+    v12 = *(_frame[1] + 8);
     if (v12)
     {
       v13 = *(v12 + 224);
@@ -1691,10 +1691,10 @@ LABEL_30:
         v14 = *(v12 + 216);
         if (v14)
         {
-          if (a3 <= 0.0)
+          if (width <= 0.0)
           {
             WebCore::LocalFrameView::forceLayout(*(v12 + 216));
-            if (a8)
+            if (size)
             {
 
               MEMORY[0x1EEE556E0](v14);
@@ -1713,10 +1713,10 @@ LABEL_30:
 
 - (void)clearFocus
 {
-  v2 = [(WebHTMLView *)self _frame];
-  if (v2)
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame)
   {
-    v3 = *(v2[1] + 8);
+    v3 = *(_frame[1] + 8);
     if (v3)
     {
       v4 = *(v3 + 224);
@@ -1731,39 +1731,39 @@ LABEL_30:
 
 - (BOOL)isOpaque
 {
-  v2 = [(WebHTMLView *)self _webView];
+  _webView = [(WebHTMLView *)self _webView];
 
-  return [v2 drawsBackground];
+  return [_webView drawsBackground];
 }
 
-- (void)setNeedsDisplayInRect:(CGRect)a3
+- (void)setNeedsDisplayInRect:(CGRect)rect
 {
   if (self->_private->inScrollPositionChanged)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
+    height = rect.size.height;
+    width = rect.size.width;
+    y = rect.origin.y;
+    x = rect.origin.x;
     [(WebHTMLView *)self superview];
-    a3.origin.x = x;
-    a3.origin.y = y;
-    a3.size.width = width;
-    a3.size.height = height;
+    rect.origin.x = x;
+    rect.origin.y = y;
+    rect.size.width = width;
+    rect.size.height = height;
   }
 
   v8.receiver = self;
   v8.super_class = WebHTMLView;
-  [(WebHTMLView *)&v8 setNeedsDisplayInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(WebHTMLView *)&v8 setNeedsDisplayInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
 }
 
-- (void)setNeedsLayout:(BOOL)a3
+- (void)setNeedsLayout:(BOOL)layout
 {
-  if (a3)
+  if (layout)
   {
-    v3 = [(WebHTMLView *)self _frame];
-    if (v3)
+    _frame = [(WebHTMLView *)self _frame];
+    if (_frame)
     {
-      v5 = *(v3[1] + 8);
+      v5 = *(_frame[1] + 8);
       if (v5)
       {
         v6 = *(v5 + 224);
@@ -1781,14 +1781,14 @@ LABEL_30:
   }
 }
 
-- (void)setNeedsToApplyStyles:(BOOL)a3
+- (void)setNeedsToApplyStyles:(BOOL)styles
 {
-  if (a3)
+  if (styles)
   {
-    v3 = [(WebHTMLView *)self _frame];
-    if (v3)
+    _frame = [(WebHTMLView *)self _frame];
+    if (_frame)
     {
-      v4 = *(v3[1] + 8);
+      v4 = *(_frame[1] + 8);
       if (v4)
       {
         v5 = *(v4 + 224);
@@ -1802,52 +1802,52 @@ LABEL_30:
   }
 }
 
-- (void)drawSingleRect:(CGRect)a3
+- (void)drawSingleRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(WebHTMLView *)self _frame];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  _frame = [(WebHTMLView *)self _frame];
 
-  [v7 _drawRect:1 contentsOnly:{x, y, width, height}];
+  [_frame _drawRect:1 contentsOnly:{x, y, width, height}];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   kdebug_trace();
   [(WebHTMLView *)self drawSingleRect:x, y, width, height];
-  v8 = [(WebHTMLView *)self _webView];
-  if (v8)
+  _webView = [(WebHTMLView *)self _webView];
+  if (_webView)
   {
-    CallUIDelegate(v8, sel_webView_didDrawFrame_, [(WebHTMLView *)self _frame]);
+    CallUIDelegate(_webView, sel_webView_didDrawFrame_, [(WebHTMLView *)self _frame]);
   }
 
   kdebug_trace();
 }
 
-- (void)scrollWheel:(id)a3
+- (void)scrollWheel:(id)wheel
 {
-  v4 = [(WebHTMLView *)self _frame];
-  if (v4)
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame)
   {
-    v5 = *(v4[1] + 8);
+    v5 = *(_frame[1] + 8);
     if (v5)
     {
       v6 = *(v5 + 336);
 
-      MEMORY[0x1EEE54AC8](v6, a3);
+      MEMORY[0x1EEE54AC8](v6, wheel);
     }
   }
 }
 
-- (BOOL)_isSelectionEvent:(id)a3
+- (BOOL)_isSelectionEvent:(id)event
 {
-  [a3 locationInWindow];
+  [event locationInWindow];
   [(WebHTMLView *)self convertPoint:0 fromView:?];
   v4 = [(WebHTMLView *)self elementAtPoint:0 allowShadowContent:?];
   v5 = [v4 objectForKey:WebElementIsSelectedKey];
@@ -1855,66 +1855,66 @@ LABEL_30:
   return [v5 BOOLValue];
 }
 
-- (void)mouseDown:(id)a3
+- (void)mouseDown:(id)down
 {
   [-[WebHTMLView _webView](self "_webView")];
-  v4 = self;
+  selfCopy3 = self;
   if (self)
   {
-    v5 = self;
-    v4 = self;
+    selfCopy2 = self;
+    selfCopy3 = self;
   }
 
-  v4->_private->handlingMouseDownEvent = 1;
-  [(WebHTMLView *)v4 _setMouseDownEvent:a3];
+  selfCopy3->_private->handlingMouseDownEvent = 1;
+  [(WebHTMLView *)selfCopy3 _setMouseDownEvent:down];
   self->_private->ignoringMouseDraggedEvents = 0;
-  v6 = [(WebHTMLView *)self _frame];
-  if (v6)
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame)
   {
-    v7 = *(v6[1] + 8);
+    v7 = *(_frame[1] + 8);
     if (v7)
     {
-      WebCore::EventHandler::mouseDown(*(v7 + 336), a3);
+      WebCore::EventHandler::mouseDown(*(v7 + 336), down);
     }
   }
 
   self->_private->handlingMouseDownEvent = 0;
 }
 
-- (void)touch:(id)a3
+- (void)touch:(id)touch
 {
-  v7 = self;
+  selfCopy = self;
   if (self)
   {
-    v4 = self;
-    self = v7;
+    selfCopy2 = self;
+    self = selfCopy;
   }
 
-  v5 = [(WebHTMLView *)self _frame];
-  if (v5)
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame)
   {
-    v6 = *(v5[1] + 8);
+    v6 = *(_frame[1] + 8);
     if (v6)
     {
-      WebCore::EventHandler::touchEvent(*(v6 + 336), a3);
+      WebCore::EventHandler::touchEvent(*(v6 + 336), touch);
     }
   }
 
-  if (v7)
+  if (selfCopy)
   {
   }
 }
 
-- (void)mouseUp:(id)a3
+- (void)mouseUp:(id)up
 {
   [-[WebHTMLView _webView](self "_webView")];
   [(WebHTMLView *)self _setMouseDownEvent:0];
-  v4 = self;
+  selfCopy = self;
   [(WebHTMLView *)self _stopAutoscrollTimer];
-  v5 = [(WebHTMLView *)self _frame];
-  if (v5)
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame)
   {
-    v6 = *(v5[1] + 8);
+    v6 = *(_frame[1] + 8);
     if (v6)
     {
       v7 = *(v6 + 24);
@@ -1928,7 +1928,7 @@ LABEL_30:
           {
             if ((*(v9 + 136) & 1) == 0)
             {
-              WebCore::EventHandler::mouseUp(*(v9 + 336), a3);
+              WebCore::EventHandler::mouseUp(*(v9 + 336), up);
             }
           }
         }
@@ -1943,8 +1943,8 @@ LABEL_30:
   if ([-[WebHTMLView _webView](self "_webView")])
   {
     v3 = 0;
-    v4 = [(WebHTMLView *)self _frame];
-    if (!v4)
+    _frame = [(WebHTMLView *)self _frame];
+    if (!_frame)
     {
       return 1;
     }
@@ -1953,14 +1953,14 @@ LABEL_30:
   else
   {
     v3 = [-[WebHTMLView window](self "window")];
-    v4 = [(WebHTMLView *)self _frame];
-    if (!v4)
+    _frame = [(WebHTMLView *)self _frame];
+    if (!_frame)
     {
       return 1;
     }
   }
 
-  v5 = *(v4[1] + 8);
+  v5 = *(_frame[1] + 8);
   if (!v5)
   {
     return 1;
@@ -2017,8 +2017,8 @@ LABEL_14:
         WebCore::Document::setFocusedElement(v11, 0);
       }
 
-      v12 = [MEMORY[0x1E69E2188] currentEvent];
-      if (v12 && (v13 = v12, ([(WebCore::PlatformEventFactory *)v12 type]& 0xFFFFFFFE) == 4))
+      currentEvent = [MEMORY[0x1E69E2188] currentEvent];
+      if (currentEvent && (v13 = currentEvent, ([(WebCore::PlatformEventFactory *)currentEvent type]& 0xFFFFFFFE) == 4))
       {
         v15 = *(v5 + 224);
         WebCore::PlatformEventFactory::createPlatformKeyboardEvent(v30, v13, v14);
@@ -2123,13 +2123,13 @@ LABEL_14:
 {
   v11.receiver = self;
   v11.super_class = WebHTMLView;
-  v3 = [(WAKResponder *)&v11 resignFirstResponder];
-  if (v3)
+  resignFirstResponder = [(WAKResponder *)&v11 resignFirstResponder];
+  if (resignFirstResponder)
   {
-    v4 = [(WebHTMLView *)self _frame];
-    if (v4)
+    _frame = [(WebHTMLView *)self _frame];
+    if (_frame)
     {
-      v5 = *(v4[1] + 8);
+      v5 = *(_frame[1] + 8);
       if (v5)
       {
         v6 = *(v5 + 224);
@@ -2176,39 +2176,39 @@ LABEL_14:
     }
   }
 
-  return v3;
+  return resignFirstResponder;
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
   v3 = self->_private;
   m_ptr = v3->dataSource.m_ptr;
-  if (m_ptr != a3)
+  if (m_ptr != source)
   {
-    if (a3)
+    if (source)
     {
-      v7 = a3;
+      sourceCopy = source;
       m_ptr = v3->dataSource.m_ptr;
     }
 
-    v3->dataSource.m_ptr = a3;
+    v3->dataSource.m_ptr = source;
     if (m_ptr)
     {
     }
 
     v8 = self->_private->pluginController.m_ptr;
 
-    [(WebPluginController *)v8 setDataSource:a3];
+    [(WebPluginController *)v8 setDataSource:source];
   }
 }
 
-- (void)_setPrinting:(BOOL)a3 minimumPageLogicalWidth:(float)a4 logicalHeight:(float)a5 originalPageWidth:(float)a6 originalPageHeight:(float)a7 maximumShrinkRatio:(float)a8 adjustViewSize:(BOOL)a9 paginateScreenContent:(BOOL)a10
+- (void)_setPrinting:(BOOL)printing minimumPageLogicalWidth:(float)width logicalHeight:(float)height originalPageWidth:(float)pageWidth originalPageHeight:(float)pageHeight maximumShrinkRatio:(float)ratio adjustViewSize:(BOOL)size paginateScreenContent:(BOOL)self0
 {
-  v10 = a10;
-  v11 = a9;
-  v17 = a3;
+  contentCopy = content;
+  sizeCopy = size;
+  printingCopy = printing;
   v51 = *MEMORY[0x1E69E9840];
-  if (__PAIR64__(self->_private->paginateScreenContent, self->_private->printing) != __PAIR64__(a10, a3))
+  if (__PAIR64__(self->_private->paginateScreenContent, self->_private->printing) != __PAIR64__(content, printing))
   {
     v48 = 0u;
     v49 = 0u;
@@ -2229,10 +2229,10 @@ LABEL_14:
           }
 
           v23 = *(*(&v46 + 1) + 8 * i);
-          v24 = [v23 frameView];
+          frameView = [v23 frameView];
           if ([objc_msgSend(v23 "_dataSource")])
           {
-            [objc_msgSend(v24 "documentView")];
+            [objc_msgSend(frameView "documentView")];
           }
         }
 
@@ -2249,15 +2249,15 @@ LABEL_14:
     {
     }
 
-    self->_private->printing = v17;
-    self->_private->paginateScreenContent = v10;
-    v27 = [(WebHTMLView *)self _frame];
-    if (!v27)
+    self->_private->printing = printingCopy;
+    self->_private->paginateScreenContent = contentCopy;
+    _frame = [(WebHTMLView *)self _frame];
+    if (!_frame)
     {
       goto LABEL_31;
     }
 
-    v28 = *(v27[1] + 8);
+    v28 = *(_frame[1] + 8);
     if (!v28)
     {
       goto LABEL_31;
@@ -2329,31 +2329,31 @@ LABEL_24:
 
 LABEL_31:
     [(WebHTMLView *)self setNeedsLayout:1];
-    *&v40 = a4;
-    *&v41 = a5;
-    *&v42 = a6;
-    *&v43 = a7;
-    *&v44 = a8;
-    [(WebHTMLView *)self layoutToMinimumPageWidth:v11 height:v40 originalPageWidth:v41 originalPageHeight:v42 maximumShrinkRatio:v43 adjustingViewSize:v44];
-    if (!v17)
+    *&v40 = width;
+    *&v41 = height;
+    *&v42 = pageWidth;
+    *&v43 = pageHeight;
+    *&v44 = ratio;
+    [(WebHTMLView *)self layoutToMinimumPageWidth:sizeCopy height:v40 originalPageWidth:v41 originalPageHeight:v42 maximumShrinkRatio:v43 adjustingViewSize:v44];
+    if (!printingCopy)
     {
       [(WebHTMLView *)self setNeedsDisplay:0];
     }
   }
 }
 
-- (void)keyDown:(id)a3
+- (void)keyDown:(id)down
 {
-  v12 = self;
+  selfCopy = self;
   if (self)
   {
-    v4 = self;
-    self = v12;
+    selfCopy2 = self;
+    self = selfCopy;
   }
 
   v5 = self->_private;
   m_ptr = v5->keyDownEvent.m_ptr;
-  if (!a3)
+  if (!down)
   {
     v8 = v5->keyDownEvent.m_ptr;
     v5->keyDownEvent.m_ptr = 0;
@@ -2365,41 +2365,41 @@ LABEL_31:
     goto LABEL_5;
   }
 
-  v7 = a3;
+  downCopy = down;
   v8 = v5->keyDownEvent.m_ptr;
-  v5->keyDownEvent.m_ptr = a3;
+  v5->keyDownEvent.m_ptr = down;
   if (v8)
   {
 LABEL_5:
   }
 
 LABEL_6:
-  v9 = [(WebHTMLView *)v12 _frame];
-  if (v9)
+  _frame = [(WebHTMLView *)selfCopy _frame];
+  if (_frame)
   {
-    v10 = *(*(v9 + 8) + 8);
-    if (m_ptr != a3 && v10 != 0)
+    v10 = *(*(_frame + 8) + 8);
+    if (m_ptr != down && v10 != 0)
     {
-      WebCore::EventHandler::keyEvent(*(v10 + 336), a3);
+      WebCore::EventHandler::keyEvent(*(v10 + 336), down);
     }
   }
 }
 
-- (void)keyUp:(id)a3
+- (void)keyUp:(id)up
 {
   m_ptr = self->_private->keyDownEvent.m_ptr;
-  v6 = self;
-  v7 = [(WebHTMLView *)self _frame];
-  if (!v7 || ((v8 = *(v7[1] + 8)) != 0 ? (v9 = m_ptr == a3) : (v9 = 1), v9))
+  selfCopy = self;
+  _frame = [(WebHTMLView *)self _frame];
+  if (!_frame || ((v8 = *(_frame[1] + 8)) != 0 ? (v9 = m_ptr == up) : (v9 = 1), v9))
   {
     v10.receiver = self;
     v10.super_class = WebHTMLView;
-    [(WAKResponder *)&v10 keyUp:a3];
+    [(WAKResponder *)&v10 keyUp:up];
   }
 
   else
   {
-    WebCore::EventHandler::keyEvent(*(v8 + 336), a3);
+    WebCore::EventHandler::keyEvent(*(v8 + 336), up);
   }
 }
 
@@ -2414,10 +2414,10 @@ LABEL_6:
   return [v3 accessibilityFocusedUIElement];
 }
 
-- (id)accessibilityHitTest:(CGPoint)a3
+- (id)accessibilityHitTest:(CGPoint)test
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v6 = [-[WebHTMLView _frame](self "_frame")];
   if (!v6)
   {
@@ -2427,30 +2427,30 @@ LABEL_6:
   return [v6 accessibilityHitTest:{x, y}];
 }
 
-- (id)_accessibilityParentForSubview:(id)a3
+- (id)_accessibilityParentForSubview:(id)subview
 {
-  v4 = self;
+  selfCopy = self;
   v5 = [-[WebHTMLView _frame](self "_frame")];
   if (v5)
   {
-    v6 = [v5 _accessibilityParentForSubview:a3];
+    v6 = [v5 _accessibilityParentForSubview:subview];
     if (v6)
     {
       return v6;
     }
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (void)centerSelectionInVisibleArea:(id)a3
+- (void)centerSelectionInVisibleArea:(id)area
 {
   if (![(WebHTMLView *)self callDelegateDoCommandBySelectorIfNeeded:a2])
   {
-    v4 = [(WebHTMLView *)self _frame];
-    if (v4)
+    _frame = [(WebHTMLView *)self _frame];
+    if (_frame)
     {
-      v5 = *(v4[1] + 8);
+      v5 = *(_frame[1] + 8);
       if (v5)
       {
         v6 = *(*(v5 + 224) + 3208);
@@ -2469,21 +2469,21 @@ LABEL_6:
   return [v2 createCSSStyleDeclaration];
 }
 
-- (void)_applyStyleToSelection:(id)a3 withUndoAction:(unsigned __int8)a4
+- (void)_applyStyleToSelection:(id)selection withUndoAction:(unsigned __int8)action
 {
-  if (a3)
+  if (selection)
   {
-    v4 = *(a3 + 2);
+    v4 = *(selection + 2);
     if (v4)
     {
-      v5 = a4;
-      if (!(*(*v4 + 32))(*(a3 + 2), a2))
+      actionCopy = action;
+      if (!(*(*v4 + 32))(*(selection + 2), a2))
       {
         (**v4)(v4);
         v7 = WTF::fastMalloc(0x18);
         WebCore::EditingStyle::EditingStyle();
         v11 = v7;
-        [(WebHTMLView *)self _applyEditingStyleToSelection:&v11 withUndoAction:v5];
+        [(WebHTMLView *)self _applyEditingStyleToSelection:&v11 withUndoAction:actionCopy];
         v8 = v11;
         v11 = 0;
         if (v8)
@@ -2506,13 +2506,13 @@ LABEL_6:
   }
 }
 
-- (void)_applyEditingStyleToSelection:(void *)a3 withUndoAction:(unsigned __int8)a4
+- (void)_applyEditingStyleToSelection:(void *)selection withUndoAction:(unsigned __int8)action
 {
-  v4 = a4;
-  v6 = [(WebHTMLView *)self _frame];
-  if (v6)
+  actionCopy = action;
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame)
   {
-    v7 = *(v6[1] + 8);
+    v7 = *(_frame[1] + 8);
     if (v7)
     {
       v8 = *(v7 + 224);
@@ -2537,27 +2537,27 @@ LABEL_6:
         }
       }
 
-      MEMORY[0x1EEE5AC78](v9, a3, v4, 0);
+      MEMORY[0x1EEE5AC78](v9, selection, actionCopy, 0);
     }
   }
 }
 
-- (void)_changeWordCaseWithSelector:(SEL)a3
+- (void)_changeWordCaseWithSelector:(SEL)selector
 {
   if ([(WebHTMLView *)self _canEdit])
   {
-    v5 = [(WebHTMLView *)self _frame];
+    _frame = [(WebHTMLView *)self _frame];
     [(WebHTMLView *)self selectWord:0];
-    v6 = [objc_msgSend(v5 "_selectedString")];
+    v6 = [objc_msgSend(_frame "_selectedString")];
     if ([(WebHTMLView *)self _shouldReplaceSelectionWithText:v6 givenAction:0])
     {
 
-      [v5 _replaceSelectionWithText:v6 selectReplacement:0 smartReplace:0];
+      [_frame _replaceSelectionWithText:v6 selectReplacement:0 smartReplace:0];
     }
   }
 }
 
-- (void)uppercaseWord:(id)a3
+- (void)uppercaseWord:(id)word
 {
   if (![(WebHTMLView *)self callDelegateDoCommandBySelectorIfNeeded:a2])
   {
@@ -2566,7 +2566,7 @@ LABEL_6:
   }
 }
 
-- (void)lowercaseWord:(id)a3
+- (void)lowercaseWord:(id)word
 {
   if (![(WebHTMLView *)self callDelegateDoCommandBySelectorIfNeeded:a2])
   {
@@ -2575,7 +2575,7 @@ LABEL_6:
   }
 }
 
-- (void)capitalizeWord:(id)a3
+- (void)capitalizeWord:(id)word
 {
   if (![(WebHTMLView *)self callDelegateDoCommandBySelectorIfNeeded:a2])
   {
@@ -2584,47 +2584,47 @@ LABEL_6:
   }
 }
 
-- (BOOL)_wantsKeyDownForEvent:(id)a3
+- (BOOL)_wantsKeyDownForEvent:(id)event
 {
-  v3 = [(WebHTMLView *)self _frame];
-  if (v3)
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame)
   {
-    LOBYTE(v3) = *(v3[1] + 8) != 0;
+    LOBYTE(_frame) = *(_frame[1] + 8) != 0;
   }
 
-  return v3;
+  return _frame;
 }
 
-- (void)markedTextUpdate:(id)a3
+- (void)markedTextUpdate:(id)update
 {
-  v4 = [a3 object];
-  v5 = [v4 length];
+  object = [update object];
+  v5 = [object length];
 
-  [(WebHTMLView *)self setMarkedText:v4 selectedRange:0, v5];
+  [(WebHTMLView *)self setMarkedText:object selectedRange:0, v5];
 }
 
 - (BOOL)_canSmartCopyOrDelete
 {
-  LODWORD(v3) = [-[WebHTMLView _webView](self "_webView")];
-  if (v3)
+  LODWORD(_frame) = [-[WebHTMLView _webView](self "_webView")];
+  if (_frame)
   {
-    v3 = [(WebHTMLView *)self _frame];
-    if (v3)
+    _frame = [(WebHTMLView *)self _frame];
+    if (_frame)
     {
-      v4 = *(v3[1] + 8);
+      v4 = *(_frame[1] + 8);
       if (v4)
       {
-        LOBYTE(v3) = *(*(*(v4 + 224) + 3208) + 184) == 1;
+        LOBYTE(_frame) = *(*(*(v4 + 224) + 3208) + 184) == 1;
       }
 
       else
       {
-        LOBYTE(v3) = 0;
+        LOBYTE(_frame) = 0;
       }
     }
   }
 
-  return v3;
+  return _frame;
 }
 
 - (void)closeIfNotCurrentView
@@ -2766,9 +2766,9 @@ LABEL_5:
   interpretKeyEventsParameters->var4 = 0;
 }
 
-- (BOOL)_handleEditingKeyEvent:(void *)a3
+- (BOOL)_handleEditingKeyEvent:(void *)event
 {
-  v3 = *(a3 + 12);
+  v3 = *(event + 12);
   if (!v3)
   {
     goto LABEL_22;
@@ -2780,30 +2780,30 @@ LABEL_5:
     goto LABEL_22;
   }
 
-  v6 = [(WebHTMLView *)self _webView];
-  if (([v6 isEditable] & 1) != 0 || (objc_msgSend(v5, "isTabKey") & 1) == 0)
+  _webView = [(WebHTMLView *)self _webView];
+  if (([_webView isEditable] & 1) != 0 || (objc_msgSend(v5, "isTabKey") & 1) == 0)
   {
     v8 = *(v3 + 8);
-    v9 = [v6 _UIKitDelegateForwarder];
+    _UIKitDelegateForwarder = [_webView _UIKitDelegateForwarder];
     if (v8 == 4)
     {
-      if (([v9 handleKeyAppCommandForCurrentEvent] & 1) == 0)
+      if (([_UIKitDelegateForwarder handleKeyAppCommandForCurrentEvent] & 1) == 0)
       {
         goto LABEL_8;
       }
     }
 
-    else if (([v9 handleKeyTextCommandForCurrentEvent] & 1) == 0)
+    else if (([_UIKitDelegateForwarder handleKeyTextCommandForCurrentEvent] & 1) == 0)
     {
 LABEL_8:
-      v10 = [v5 characters];
-      v7 = [v10 length];
+      characters = [v5 characters];
+      v7 = [characters length];
       if (!v7)
       {
         return v7;
       }
 
-      v11 = [v10 characterAtIndex:0];
+      v11 = [characters characterAtIndex:0];
       if (v11 > 12)
       {
         if (v11 != 13)
@@ -2813,7 +2813,7 @@ LABEL_8:
 LABEL_12:
             if (v8 == 4)
             {
-              [objc_msgSend(v6 "_UIKitDelegateForwarder")];
+              [objc_msgSend(_webView "_UIKitDelegateForwarder")];
               LOBYTE(v7) = 1;
               return v7;
             }
@@ -2824,7 +2824,7 @@ LABEL_22:
           }
 
 LABEL_19:
-          [objc_msgSend(v6 "_UIKitDelegateForwarder")];
+          [objc_msgSend(_webView "_UIKitDelegateForwarder")];
           LOBYTE(v7) = 1;
           return v7;
         }
@@ -2842,7 +2842,7 @@ LABEL_19:
 
       if (v8 == 4)
       {
-        [objc_msgSend(v6 "_UIKitDelegateForwarder")];
+        [objc_msgSend(_webView "_UIKitDelegateForwarder")];
         LOBYTE(v7) = 1;
         return v7;
       }
@@ -2869,10 +2869,10 @@ LABEL_19:
 
 - (void)_web_updateLayoutAndStyleIfNeededRecursive
 {
-  v2 = [(WebHTMLView *)self _frame];
-  if (v2)
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame)
   {
-    v3 = *(v2[1] + 8);
+    v3 = *(_frame[1] + 8);
     if (v3)
     {
       if (*(v3 + 216))
@@ -2886,85 +2886,85 @@ LABEL_19:
 
 - (void)_destroyAllWebPlugins
 {
-  v2 = [(WebHTMLView *)self _pluginController];
+  _pluginController = [(WebHTMLView *)self _pluginController];
 
-  [v2 destroyAllPlugins];
+  [_pluginController destroyAllPlugins];
 }
 
 - (BOOL)_needsLayout
 {
-  v2 = [(WebHTMLView *)self _frame];
+  _frame = [(WebHTMLView *)self _frame];
 
-  return [v2 _needsLayout];
+  return [_frame _needsLayout];
 }
 
 - (unsigned)_scrollbarWidthStyle
 {
-  v2 = [(WebHTMLView *)self _frame];
-  if (v2)
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame)
   {
-    v3 = *(v2[1] + 8);
+    v3 = *(_frame[1] + 8);
     if (v3 && (v4 = *(v3 + 224)) != 0 && (v5 = *(v4 + 1336)) != 0 && (v6 = *(v5 + 72)) != 0)
     {
       if ((*(v6 + 45) & 2) != 0)
       {
-        LOBYTE(v2) = 105;
+        LOBYTE(_frame) = 105;
         __break(0xC471u);
       }
 
       else
       {
-        LODWORD(v2) = (*(*(*(v6 + 88) + 40) + 692) >> 5) & 3;
+        LODWORD(_frame) = (*(*(*(v6 + 88) + 40) + 692) >> 5) & 3;
       }
     }
 
     else
     {
-      LOBYTE(v2) = 0;
+      LOBYTE(_frame) = 0;
     }
   }
 
-  return v2;
+  return _frame;
 }
 
-- (unint64_t)characterIndexForPoint:(CGPoint)a3
+- (unint64_t)characterIndexForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(WebHTMLView *)self _executeSavedKeypressCommands];
-  v6 = [(WebHTMLView *)self window];
-  v7 = [(WebHTMLView *)self _frame];
-  if (v6)
+  window = [(WebHTMLView *)self window];
+  _frame = [(WebHTMLView *)self _frame];
+  if (window)
   {
-    [v6 convertRectFromScreen:{x, y, *MEMORY[0x1E696AA88], *(MEMORY[0x1E696AA88] + 8)}];
+    [window convertRectFromScreen:{x, y, *MEMORY[0x1E696AA88], *(MEMORY[0x1E696AA88] + 8)}];
     [(WebHTMLView *)self convertPoint:0 fromView:?];
-    v8 = [v7 _characterRangeAtPoint:?];
+    v8 = [_frame _characterRangeAtPoint:?];
     if (v8)
     {
-      return [v7 _convertDOMRangeToNSRange:v8];
+      return [_frame _convertDOMRangeToNSRange:v8];
     }
   }
 
   else
   {
     [(WebHTMLView *)self convertPoint:0 fromView:x, y];
-    v8 = [v7 _characterRangeAtPoint:?];
+    v8 = [_frame _characterRangeAtPoint:?];
     if (v8)
     {
-      return [v7 _convertDOMRangeToNSRange:v8];
+      return [_frame _convertDOMRangeToNSRange:v8];
     }
   }
 
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (CGRect)firstRectForCharacterRange:(_NSRange)a3
+- (CGRect)firstRectForCharacterRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   [(WebHTMLView *)self _executeSavedKeypressCommands];
-  v6 = [(WebHTMLView *)self _frame];
-  v7 = v6;
+  _frame = [(WebHTMLView *)self _frame];
+  v7 = _frame;
   if (location + length)
   {
     v8 = location + length >= location;
@@ -2985,7 +2985,7 @@ LABEL_19:
     v9 = 0;
   }
 
-  v10 = [v6 _convertNSRangeToDOMRange:{location, v9}];
+  v10 = [_frame _convertNSRangeToDOMRange:{location, v9}];
   if (v10)
   {
     [v7 _firstRectForDOMRange:v10];
@@ -2994,12 +2994,12 @@ LABEL_19:
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v19 = [(WebHTMLView *)self window];
+    window = [(WebHTMLView *)self window];
     v20 = v12;
     v21 = v14;
-    if (v19)
+    if (window)
     {
-      [v19 convertRectToScreen:{v12, v14, v16, v18}];
+      [window convertRectToScreen:{v12, v14, v16, v18}];
     }
   }
 
@@ -3023,40 +3023,40 @@ LABEL_19:
 - (_NSRange)selectedRange
 {
   [(WebHTMLView *)self _executeSavedKeypressCommands];
-  v3 = [(WebHTMLView *)self _frame];
-  if (v3 && (v4 = *(v3[1] + 8)) != 0 && (v5 = *(*(v4 + 224) + 3208), *(v5 + 153)) && WebCore::VisibleSelection::isContentEditable((v5 + 56)))
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame && (v4 = *(_frame[1] + 8)) != 0 && (v5 = *(*(v4 + 224) + 3208), *(v5 + 153)) && WebCore::VisibleSelection::isContentEditable((v5 + 56)))
   {
-    v6 = [(WebHTMLView *)self _frame];
+    _frame2 = [(WebHTMLView *)self _frame];
 
-    v7 = [v6 _selectedNSRange];
+    _selectedNSRange = [_frame2 _selectedNSRange];
   }
 
   else
   {
-    v7 = 0x7FFFFFFFFFFFFFFFLL;
+    _selectedNSRange = 0x7FFFFFFFFFFFFFFFLL;
     v8 = 0;
   }
 
   result.length = v8;
-  result.location = v7;
+  result.location = _selectedNSRange;
   return result;
 }
 
 - (_NSRange)markedRange
 {
   [(WebHTMLView *)self _executeSavedKeypressCommands];
-  v3 = [(WebHTMLView *)self _frame];
-  if (!v3)
+  _frame = [(WebHTMLView *)self _frame];
+  if (!_frame)
   {
     v8 = 0;
     goto LABEL_24;
   }
 
-  v4 = v3;
-  v5 = *(*(v3 + 8) + 8);
+  v4 = _frame;
+  v5 = *(*(_frame + 8) + 8);
   if (!v5)
   {
-    v3 = 0;
+    _frame = 0;
     v8 = 0;
     goto LABEL_24;
   }
@@ -3079,7 +3079,7 @@ LABEL_8:
 
 LABEL_20:
     v8 = 0;
-    v3 = 0x7FFFFFFFFFFFFFFFLL;
+    _frame = 0x7FFFFFFFFFFFFFFFLL;
     goto LABEL_24;
   }
 
@@ -3098,7 +3098,7 @@ LABEL_20:
   }
 
 LABEL_9:
-  v3 = [v4 _convertToNSRange:v16];
+  _frame = [v4 _convertToNSRange:v16];
   if ((v18 & 1) == 0)
   {
     goto LABEL_24;
@@ -3125,10 +3125,10 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v12 = v3;
+  v12 = _frame;
   v13 = v8;
   WebCore::Node::removedLastRef(v9);
-  v3 = v12;
+  _frame = v12;
   v8 = v13;
   v10 = v16[0];
   v16[0] = 0;
@@ -3140,10 +3140,10 @@ LABEL_13:
 LABEL_14:
   if (*(v10 + 7) == 2)
   {
-    v14 = v3;
+    v14 = _frame;
     v15 = v8;
     WebCore::Node::removedLastRef(v10);
-    v3 = v14;
+    _frame = v14;
     v8 = v15;
   }
 
@@ -3154,23 +3154,23 @@ LABEL_14:
 
 LABEL_24:
   result.length = v8;
-  result.location = v3;
+  result.location = _frame;
   return result;
 }
 
 - (BOOL)hasMarkedText
 {
-  v3 = [(WebHTMLView *)self _frame];
-  if (!v3)
+  _frame = [(WebHTMLView *)self _frame];
+  if (!_frame)
   {
-    return v3;
+    return _frame;
   }
 
-  v4 = *(v3[1] + 8);
+  v4 = *(_frame[1] + 8);
   if (!v4)
   {
-    LOBYTE(v3) = 0;
-    return v3;
+    LOBYTE(_frame) = 0;
+    return _frame;
   }
 
   v5 = *(v4 + 224);
@@ -3192,8 +3192,8 @@ LABEL_24:
       }
 
 LABEL_17:
-      LOBYTE(v3) = 0;
-      return v3;
+      LOBYTE(_frame) = 0;
+      return _frame;
     }
 
     *(v5 + 7) -= 2;
@@ -3212,14 +3212,14 @@ LABEL_9:
     *(v7 + 7) += 2;
   }
 
-  v3 = WebCore::Document::editor(v7);
+  _frame = WebCore::Document::editor(v7);
   if (v7)
   {
     if (*(v7 + 7) == 2)
     {
-      v9 = v3;
+      v9 = _frame;
       WebCore::Node::removedLastRef(v7);
-      v3 = v9;
+      _frame = v9;
     }
 
     else
@@ -3228,8 +3228,8 @@ LABEL_9:
     }
   }
 
-  LOBYTE(v3) = v3[4] != 0;
-  return v3;
+  LOBYTE(_frame) = _frame[4] != 0;
+  return _frame;
 }
 
 - (void)unmarkText
@@ -3242,10 +3242,10 @@ LABEL_9:
     interpretKeyEventsParameters->var3 = 0;
   }
 
-  v4 = [(WebHTMLView *)self _frame];
-  if (v4)
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame)
   {
-    v5 = *(v4[1] + 8);
+    v5 = *(_frame[1] + 8);
     if (v5)
     {
       v6 = *(v5 + 224);
@@ -3269,7 +3269,7 @@ LABEL_9:
         *(v6 + 7) -= 2;
       }
 
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range
 {
   [(WebHTMLView *)self _executeSavedKeypressCommands];
   interpretKeyEventsParameters = self->_private->interpretKeyEventsParameters;
@@ -3279,10 +3279,10 @@ LABEL_9:
     interpretKeyEventsParameters->var3 = 0;
   }
 
-  v7 = [(WebHTMLView *)self _frame];
-  if (v7)
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame)
   {
-    v8 = *(v7[1] + 8);
+    v8 = *(_frame[1] + 8);
     if (v8)
     {
       if ([(WebHTMLView *)self _isEditable])
@@ -3309,7 +3309,7 @@ LABEL_9:
           }
         }
 
-        MEMORY[0x1CCA63A40](&v18, a3);
+        MEMORY[0x1CCA63A40](&v18, text);
         WebCore::Editor::setComposition();
         v11 = v18;
         v18 = 0;
@@ -3356,7 +3356,7 @@ LABEL_9:
   }
 }
 
-- (void)doCommandBySelector:(SEL)a3
+- (void)doCommandBySelector:(SEL)selector
 {
   interpretKeyEventsParameters = self->_private->interpretKeyEventsParameters;
   if (interpretKeyEventsParameters)
@@ -3364,8 +3364,8 @@ LABEL_9:
     interpretKeyEventsParameters->var3 = 0;
     var0 = interpretKeyEventsParameters->var0;
     v7 = !interpretKeyEventsParameters->var2;
-    v8 = [(WebHTMLView *)self _frame];
-    if (v8)
+    _frame = [(WebHTMLView *)self _frame];
+    if (_frame)
     {
       goto LABEL_3;
     }
@@ -3382,8 +3382,8 @@ LABEL_11:
 
 LABEL_20:
     self->_private->interpretKeyEventsParameters = 0;
-    v22 = [(WebHTMLView *)self _webView];
-    if ([objc_msgSend(v22 "_editingDelegateForwarder")])
+    _webView = [(WebHTMLView *)self _webView];
+    if ([objc_msgSend(_webView "_editingDelegateForwarder")])
     {
       v23 = 1;
       if (!interpretKeyEventsParameters)
@@ -3394,7 +3394,7 @@ LABEL_20:
       goto LABEL_34;
     }
 
-    [(WebHTMLView *)self coreCommandBySelector:a3];
+    [(WebHTMLView *)self coreCommandBySelector:selector];
     if (WebCore::Editor::Command::isSupported(&v32))
     {
       v23 = WebCore::Editor::Command::execute();
@@ -3437,14 +3437,14 @@ LABEL_34:
 
   var0 = 0;
   v7 = 1;
-  v8 = [(WebHTMLView *)self _frame];
-  if (!v8)
+  _frame = [(WebHTMLView *)self _frame];
+  if (!_frame)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  v9 = *(v8[1] + 8);
+  v9 = *(_frame[1] + 8);
   if (!v9)
   {
     goto LABEL_11;
@@ -3486,7 +3486,7 @@ LABEL_15:
     goto LABEL_20;
   }
 
-  v15 = NSStringFromSelector(a3);
+  v15 = NSStringFromSelector(selector);
   MEMORY[0x1CCA63A40](&v31, v15);
   v17 = v31;
   if (v31)
@@ -3570,7 +3570,7 @@ LABEL_36:
   }
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
   interpretKeyEventsParameters = self->_private->interpretKeyEventsParameters;
   if (interpretKeyEventsParameters)
@@ -3578,8 +3578,8 @@ LABEL_36:
     interpretKeyEventsParameters->var3 = 0;
   }
 
-  v5 = [(WebHTMLView *)self _frame];
-  if (!v5)
+  _frame = [(WebHTMLView *)self _frame];
+  if (!_frame)
   {
     v6 = 0;
 LABEL_19:
@@ -3593,7 +3593,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v6 = *(v5[1] + 8);
+  v6 = *(_frame[1] + 8);
   if (!v6)
   {
     goto LABEL_19;
@@ -3657,7 +3657,7 @@ LABEL_20:
       goto LABEL_70;
     }
 
-    MEMORY[0x1CCA63A40](&v41, a3);
+    MEMORY[0x1CCA63A40](&v41, text);
     if (v41)
     {
       WTF::StringImpl::replace();
@@ -3784,7 +3784,7 @@ LABEL_11:
 
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v12 = v48;
-  MEMORY[0x1CCA63A40](&v48, a3);
+  MEMORY[0x1CCA63A40](&v48, text);
   if (v12)
   {
     atomic_fetch_add_explicit(v12, 2u, memory_order_relaxed);
@@ -3911,8 +3911,8 @@ LABEL_70:
     return 0;
   }
 
-  v3 = [(WebHTMLView *)self _frame];
-  if (v3 && *(v3[1] + 8))
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame && *(_frame[1] + 8))
   {
     WebCore::FrameSelection::getClippedVisibleTextRectangles();
   }
@@ -3926,20 +3926,20 @@ LABEL_70:
   return v4;
 }
 
-- (CGImage)selectionImageForcingBlackText:(BOOL)a3
+- (CGImage)selectionImageForcingBlackText:(BOOL)text
 {
   if (![(WebHTMLView *)self _hasSelection])
   {
     return 0;
   }
 
-  v4 = [(WebHTMLView *)self _frame];
-  if (!v4)
+  _frame = [(WebHTMLView *)self _frame];
+  if (!_frame)
   {
     return 0;
   }
 
-  v5 = *(v4[1] + 8);
+  v5 = *(_frame[1] + 8);
   if (!v5)
   {
     return 0;
@@ -4070,10 +4070,10 @@ LABEL_16:
 
 - (void)selectAll
 {
-  v2 = [(WebHTMLView *)self _frame];
-  if (v2)
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame)
   {
-    v4 = *(v2[1] + 8);
+    v4 = *(_frame[1] + 8);
     if (v4)
     {
       v5 = *(*(v4 + 224) + 3208);
@@ -4085,10 +4085,10 @@ LABEL_16:
 
 - (void)deselectAll
 {
-  v2 = [(WebHTMLView *)self _frame];
-  if (v2)
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame)
   {
-    v3 = *(v2[1] + 8);
+    v3 = *(_frame[1] + 8);
     if (v3)
     {
       v4 = *(*(v3 + 224) + 3208);
@@ -4100,54 +4100,54 @@ LABEL_16:
 
 - (id)string
 {
-  v3 = [(WebHTMLView *)self _frame];
-  v4 = [(WebHTMLView *)self _documentRange];
+  _frame = [(WebHTMLView *)self _frame];
+  _documentRange = [(WebHTMLView *)self _documentRange];
 
-  return [v3 _stringForRange:v4];
+  return [_frame _stringForRange:_documentRange];
 }
 
 - (id)selectedString
 {
-  v2 = [(WebHTMLView *)self _frame];
+  _frame = [(WebHTMLView *)self _frame];
 
-  return [v2 _selectedString];
+  return [_frame _selectedString];
 }
 
-- (BOOL)searchFor:(id)a3 direction:(BOOL)a4 caseSensitive:(BOOL)a5 wrap:(BOOL)a6 startInSelection:(BOOL)a7
+- (BOOL)searchFor:(id)for direction:(BOOL)direction caseSensitive:(BOOL)sensitive wrap:(BOOL)wrap startInSelection:(BOOL)selection
 {
   v7 = 8;
-  if (a4)
+  if (direction)
   {
     v7 = 0;
   }
 
   v8 = 16;
-  if (!a6)
+  if (!wrap)
   {
     v8 = 0;
   }
 
-  v9 = v7 | v8 | !a5;
+  v9 = v7 | v8 | !sensitive;
   v10 = 32;
-  if (!a7)
+  if (!selection)
   {
     v10 = 0;
   }
 
-  return [(WebHTMLView *)self _findString:a3 options:v9 | v10];
+  return [(WebHTMLView *)self _findString:for options:v9 | v10];
 }
 
-- (id)elementAtPoint:(CGPoint)a3 allowShadowContent:(BOOL)a4
+- (id)elementAtPoint:(CGPoint)point allowShadowContent:(BOOL)content
 {
-  v13 = a3;
-  v4 = [(WebHTMLView *)self _frame];
-  if (!v4 || !*(v4[1] + 8))
+  pointCopy = point;
+  _frame = [(WebHTMLView *)self _frame];
+  if (!_frame || !*(_frame[1] + 8))
   {
     return 0;
   }
 
   v5 = [WebElementDictionary alloc];
-  WebCore::IntPoint::IntPoint(v11, &v13);
+  WebCore::IntPoint::IntPoint(v11, &pointCopy);
   v6 = vcgt_s32(v11[0], 0xFE000000FE000000);
   v11[1] = vorr_s8((*&v6 & 0x7FFFFFFF7FFFFFFFLL), vbic_s8(vbsl_s8(vcgt_s32(0xFE000000FE000000, v11[0]), 0x8000000080000000, vshl_n_s32(v11[0], 6uLL)), v6));
   WebCore::EventHandler::hitTestResultAtPoint();
@@ -4162,7 +4162,7 @@ LABEL_16:
   return v8;
 }
 
-- (unint64_t)countMatchesForText:(id)a3 inDOMRange:(id)a4 options:(unint64_t)a5 limit:(unint64_t)a6 markMatches:(BOOL)a7
+- (unint64_t)countMatchesForText:(id)text inDOMRange:(id)range options:(unint64_t)options limit:(unint64_t)limit markMatches:(BOOL)matches
 {
   result = [(WebHTMLView *)self _frame];
   if (!result)
@@ -4192,12 +4192,12 @@ LABEL_16:
   {
     *(v10 + 7) -= 2;
 LABEL_8:
-    MEMORY[0x1CCA63A40](&v20, a3);
+    MEMORY[0x1CCA63A40](&v20, text);
     goto LABEL_11;
   }
 
   WebCore::Node::removedLastRef(v10);
-  MEMORY[0x1CCA63A40](&v20, a3);
+  MEMORY[0x1CCA63A40](&v20, text);
 LABEL_11:
   WebCore::makeSimpleRange();
   LODWORD(result) = WebCore::Editor::countMatchesForText();
@@ -4261,13 +4261,13 @@ LABEL_21:
   return result;
 }
 
-- (void)setMarkedTextMatchesAreHighlighted:(BOOL)a3
+- (void)setMarkedTextMatchesAreHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v4 = [(WebHTMLView *)self _frame];
-  if (v4)
+  highlightedCopy = highlighted;
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame)
   {
-    v5 = *(v4[1] + 8);
+    v5 = *(_frame[1] + 8);
     if (v5)
     {
       v6 = *(v5 + 224);
@@ -4284,7 +4284,7 @@ LABEL_21:
           v9 = v7;
           WebCore::Node::removedLastRef(v6);
           v7 = v9;
-          v8 = v3;
+          v8 = highlightedCopy;
 
           goto __ZN7WebCore6Editor34setMarkedTextMatchesAreHighlightedEb;
         }
@@ -4292,18 +4292,18 @@ LABEL_21:
         *(v6 + 7) -= 2;
       }
 
-      v8 = v3;
+      v8 = highlightedCopy;
 
 - (BOOL)markedTextMatchesAreHighlighted
 {
-  v2 = [(WebHTMLView *)self _frame];
-  if (!v2)
+  _frame = [(WebHTMLView *)self _frame];
+  if (!_frame)
   {
     LOBYTE(v3) = 0;
     return v3;
   }
 
-  v3 = *(v2[1] + 8);
+  v3 = *(_frame[1] + 8);
   if (!v3)
   {
     return v3;
@@ -4334,10 +4334,10 @@ LABEL_21:
 
 - (void)unmarkAllTextMatches
 {
-  v2 = [(WebHTMLView *)self _frame];
-  if (v2)
+  _frame = [(WebHTMLView *)self _frame];
+  if (_frame)
   {
-    v3 = *(v2[1] + 8);
+    v3 = *(_frame[1] + 8);
     if (v3)
     {
       v4 = *(v3 + 224);
@@ -4360,13 +4360,13 @@ LABEL_21:
 
 - (id)rectsForTextMatches
 {
-  v2 = [(WebHTMLView *)self _frame];
-  if (!v2)
+  _frame = [(WebHTMLView *)self _frame];
+  if (!_frame)
   {
     return MEMORY[0x1E695E0F0];
   }
 
-  v3 = *(v2[1] + 8);
+  v3 = *(_frame[1] + 8);
   if (!v3)
   {
     return MEMORY[0x1E695E0F0];
@@ -4418,15 +4418,15 @@ LABEL_21:
   return v6;
 }
 
-- (BOOL)_findString:(id)a3 options:(unint64_t)a4
+- (BOOL)_findString:(id)string options:(unint64_t)options
 {
-  v6 = [a3 length];
-  if (v6)
+  _frame = [string length];
+  if (_frame)
   {
-    v6 = [(WebHTMLView *)self _frame];
-    if (v6)
+    _frame = [(WebHTMLView *)self _frame];
+    if (_frame)
     {
-      v7 = *(v6[1] + 8);
+      v7 = *(_frame[1] + 8);
       if (v7)
       {
         v8 = *(v7 + 224);
@@ -4449,26 +4449,26 @@ LABEL_21:
           }
         }
 
-        MEMORY[0x1CCA63A40](&v13, a3);
-        LOBYTE(v6) = WebCore::Editor::findString();
+        MEMORY[0x1CCA63A40](&v13, string);
+        LOBYTE(_frame) = WebCore::Editor::findString();
         v10 = v13;
         v13 = 0;
         if (v10 && atomic_fetch_add_explicit(v10, 0xFFFFFFFE, memory_order_relaxed) == 2)
         {
-          v11 = v6;
+          v11 = _frame;
           WTF::StringImpl::destroy(v10, v9);
-          LOBYTE(v6) = v11;
+          LOBYTE(_frame) = v11;
         }
       }
 
       else
       {
-        LOBYTE(v6) = 0;
+        LOBYTE(_frame) = 0;
       }
     }
   }
 
-  return v6;
+  return _frame;
 }
 
 @end

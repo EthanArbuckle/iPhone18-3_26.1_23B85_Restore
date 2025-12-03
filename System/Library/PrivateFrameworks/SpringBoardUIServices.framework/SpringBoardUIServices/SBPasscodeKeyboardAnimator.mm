@@ -1,51 +1,51 @@
 @interface SBPasscodeKeyboardAnimator
 - (SBPasscodeKeyboardAnimatorDelegate)delegate;
-- (void)completeAnimationWithState:(id)a3;
-- (void)performAnimation:(id)a3 afterStarted:(id)a4 onCompletion:(id)a5;
-- (void)prepareForAnimationWithState:(id)a3;
-- (void)runAnimationWithState:(id)a3;
+- (void)completeAnimationWithState:(id)state;
+- (void)performAnimation:(id)animation afterStarted:(id)started onCompletion:(id)completion;
+- (void)prepareForAnimationWithState:(id)state;
+- (void)runAnimationWithState:(id)state;
 @end
 
 @implementation SBPasscodeKeyboardAnimator
 
-- (void)performAnimation:(id)a3 afterStarted:(id)a4 onCompletion:(id)a5
+- (void)performAnimation:(id)animation afterStarted:(id)started onCompletion:(id)completion
 {
-  v12 = a4;
+  startedCopy = started;
   v8 = MEMORY[0x1E69DD250];
-  v9 = a5;
-  v10 = a3;
+  completionCopy = completion;
+  animationCopy = animation;
   if ([v8 _isInAnimationBlock])
   {
-    [MEMORY[0x1E698E7D0] addAlongsideAnimations:v10 completion:v9];
+    [MEMORY[0x1E698E7D0] addAlongsideAnimations:animationCopy completion:completionCopy];
   }
 
   else
   {
-    [MEMORY[0x1E698E7D0] animateWithSettings:self->_animationSettings actions:v10 completion:v9];
+    [MEMORY[0x1E698E7D0] animateWithSettings:self->_animationSettings actions:animationCopy completion:completionCopy];
   }
 
-  v11 = v12;
-  if (v12)
+  v11 = startedCopy;
+  if (startedCopy)
   {
-    (*(v12 + 2))(v12);
-    v11 = v12;
+    (*(startedCopy + 2))(startedCopy);
+    v11 = startedCopy;
   }
 }
 
-- (void)prepareForAnimationWithState:(id)a3
+- (void)prepareForAnimationWithState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v26.receiver = self;
   v26.super_class = SBPasscodeKeyboardAnimator;
-  [(_UIKeyboardAnimator *)&v26 prepareForAnimationWithState:v4];
-  v5 = [v4 animatingView];
-  v6 = [v5 window];
-  [v6 bounds];
+  [(_UIKeyboardAnimator *)&v26 prepareForAnimationWithState:stateCopy];
+  animatingView = [stateCopy animatingView];
+  window = [animatingView window];
+  [window bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  [v4 startFrame];
+  [stateCopy startFrame];
   v28.origin.x = v15;
   v28.origin.y = v16;
   v28.size.width = v17;
@@ -58,8 +58,8 @@
 
   if (v19)
   {
-    v20 = [v4 animatingView];
-    [v20 setAlpha:1.0];
+    animatingView2 = [stateCopy animatingView];
+    [animatingView2 setAlpha:1.0];
   }
 
   else
@@ -69,13 +69,13 @@
     v24[1] = 3221225472;
     v24[2] = __59__SBPasscodeKeyboardAnimator_prepareForAnimationWithState___block_invoke;
     v24[3] = &unk_1E789DA38;
-    v22 = v4;
+    v22 = stateCopy;
     v25 = v22;
     [v21 performWithoutAnimation:v24];
-    v23 = [v22 animatingView];
-    [v23 setAlpha:0.0];
+    animatingView3 = [v22 animatingView];
+    [animatingView3 setAlpha:0.0];
 
-    v20 = v25;
+    animatingView2 = v25;
   }
 }
 
@@ -90,20 +90,20 @@ void __59__SBPasscodeKeyboardAnimator_prepareForAnimationWithState___block_invok
   [v10 setFrame:{v3, v5, v7, v9}];
 }
 
-- (void)runAnimationWithState:(id)a3
+- (void)runAnimationWithState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v25.receiver = self;
   v25.super_class = SBPasscodeKeyboardAnimator;
-  [(_UIKeyboardAnimator *)&v25 runAnimationWithState:v4];
-  v5 = [v4 animatingView];
-  v6 = [v5 window];
-  [v6 bounds];
+  [(_UIKeyboardAnimator *)&v25 runAnimationWithState:stateCopy];
+  animatingView = [stateCopy animatingView];
+  window = [animatingView window];
+  [window bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  [v4 endFrame];
+  [stateCopy endFrame];
   v27.origin.x = v15;
   v27.origin.y = v16;
   v27.size.width = v17;
@@ -114,23 +114,23 @@ void __59__SBPasscodeKeyboardAnimator_prepareForAnimationWithState___block_invok
   v26.size.height = v14;
   v19 = CGRectContainsRect(v26, v27);
 
-  v20 = [v4 animatingView];
-  v21 = v20;
+  animatingView2 = [stateCopy animatingView];
+  v21 = animatingView2;
   if (v19)
   {
-    [v20 setAlpha:1.0];
+    [animatingView2 setAlpha:1.0];
   }
 
   else
   {
-    [v20 setAlpha:0.0];
+    [animatingView2 setAlpha:0.0];
 
     v22 = MEMORY[0x1E69DD250];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __52__SBPasscodeKeyboardAnimator_runAnimationWithState___block_invoke;
     v23[3] = &unk_1E789DA38;
-    v24 = v4;
+    v24 = stateCopy;
     [v22 performWithoutAnimation:v23];
     v21 = v24;
   }
@@ -147,20 +147,20 @@ void __52__SBPasscodeKeyboardAnimator_runAnimationWithState___block_invoke(uint6
   [v10 setFrame:{v3, v5, v7, v9}];
 }
 
-- (void)completeAnimationWithState:(id)a3
+- (void)completeAnimationWithState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v7.receiver = self;
   v7.super_class = SBPasscodeKeyboardAnimator;
-  [(_UIKeyboardAnimator *)&v7 completeAnimationWithState:v4];
-  v5 = [(SBPasscodeKeyboardAnimator *)self delegate];
+  [(_UIKeyboardAnimator *)&v7 completeAnimationWithState:stateCopy];
+  delegate = [(SBPasscodeKeyboardAnimator *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 passcodeKeyboardAnimatorAnimationDidComplete:self];
+    [delegate passcodeKeyboardAnimatorAnimationDidComplete:self];
   }
 
-  v6 = [v4 animatingView];
-  [v6 setAlpha:1.0];
+  animatingView = [stateCopy animatingView];
+  [animatingView setAlpha:1.0];
 }
 
 - (SBPasscodeKeyboardAnimatorDelegate)delegate

@@ -1,12 +1,12 @@
 @interface MusicKit_SoftLinking_MPContentTasteController
 + (MusicKit_SoftLinking_MPContentTasteController)sharedContentTasteController;
-- (id)_initWithUnderlyingContentTasteController:(id)a3;
-- (int64_t)_contentTasteTypeFromUnderlyingTasteType:(int64_t)a3;
-- (int64_t)_underlyingTasteTypeFromContentTasteType:(int64_t)a3;
-- (int64_t)tasteTypeForModelObject:(id)a3;
-- (void)_handleContentTasteControllerDidChangeNotification:(id)a3;
+- (id)_initWithUnderlyingContentTasteController:(id)controller;
+- (int64_t)_contentTasteTypeFromUnderlyingTasteType:(int64_t)type;
+- (int64_t)_underlyingTasteTypeFromContentTasteType:(int64_t)type;
+- (int64_t)tasteTypeForModelObject:(id)object;
+- (void)_handleContentTasteControllerDidChangeNotification:(id)notification;
 - (void)dealloc;
-- (void)setTasteType:(int64_t)a3 forModelObject:(id)a4 completionHandler:(id)a5;
+- (void)setTasteType:(int64_t)type forModelObject:(id)object completionHandler:(id)handler;
 @end
 
 @implementation MusicKit_SoftLinking_MPContentTasteController
@@ -23,19 +23,19 @@
   return v3;
 }
 
-- (id)_initWithUnderlyingContentTasteController:(id)a3
+- (id)_initWithUnderlyingContentTasteController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = MusicKit_SoftLinking_MPContentTasteController;
   v6 = [(MusicKit_SoftLinking_MPContentTasteController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingContentTasteController, a3);
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
+    objc_storeStrong(&v6->_underlyingContentTasteController, controller);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v9 = getMPContentTasteControllerDidChangeNotification();
-    [v8 addObserver:v7 selector:sel__handleContentTasteControllerDidChangeNotification_ name:v9 object:v7->_underlyingContentTasteController];
+    [defaultCenter addObserver:v7 selector:sel__handleContentTasteControllerDidChangeNotification_ name:v9 object:v7->_underlyingContentTasteController];
   }
 
   return v7;
@@ -43,67 +43,67 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = getMPContentTasteControllerDidChangeNotification();
-  [v3 removeObserver:self name:v4 object:self->_underlyingContentTasteController];
+  [defaultCenter removeObserver:self name:v4 object:self->_underlyingContentTasteController];
 
   v5.receiver = self;
   v5.super_class = MusicKit_SoftLinking_MPContentTasteController;
   [(MusicKit_SoftLinking_MPContentTasteController *)&v5 dealloc];
 }
 
-- (int64_t)tasteTypeForModelObject:(id)a3
+- (int64_t)tasteTypeForModelObject:(id)object
 {
-  v4 = [a3 _underlyingModelObject];
-  v5 = [(MusicKit_SoftLinking_MPContentTasteController *)self _contentTasteTypeFromUnderlyingTasteType:[(MPContentTasteController *)self->_underlyingContentTasteController tasteTypeForModel:v4]];
+  _underlyingModelObject = [object _underlyingModelObject];
+  v5 = [(MusicKit_SoftLinking_MPContentTasteController *)self _contentTasteTypeFromUnderlyingTasteType:[(MPContentTasteController *)self->_underlyingContentTasteController tasteTypeForModel:_underlyingModelObject]];
 
   return v5;
 }
 
-- (void)setTasteType:(int64_t)a3 forModelObject:(id)a4 completionHandler:(id)a5
+- (void)setTasteType:(int64_t)type forModelObject:(id)object completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(MusicKit_SoftLinking_MPContentTasteController *)self _underlyingTasteTypeFromContentTasteType:a3];
-  v11 = [v9 _underlyingModelObject];
+  handlerCopy = handler;
+  objectCopy = object;
+  v10 = [(MusicKit_SoftLinking_MPContentTasteController *)self _underlyingTasteTypeFromContentTasteType:type];
+  _underlyingModelObject = [objectCopy _underlyingModelObject];
 
-  [(MPContentTasteController *)self->_underlyingContentTasteController setTasteType:v10 forModel:v11 withCompletionHandler:v8];
+  [(MPContentTasteController *)self->_underlyingContentTasteController setTasteType:v10 forModel:_underlyingModelObject withCompletionHandler:handlerCopy];
 }
 
-- (int64_t)_contentTasteTypeFromUnderlyingTasteType:(int64_t)a3
+- (int64_t)_contentTasteTypeFromUnderlyingTasteType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return type == 1;
   }
 }
 
-- (int64_t)_underlyingTasteTypeFromContentTasteType:(int64_t)a3
+- (int64_t)_underlyingTasteTypeFromContentTasteType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return type == 1;
   }
 }
 
-- (void)_handleContentTasteControllerDidChangeNotification:(id)a3
+- (void)_handleContentTasteControllerDidChangeNotification:(id)notification
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v7 = [v4 defaultCenter];
-  v6 = [v5 userInfo];
+  notificationCopy = notification;
+  defaultCenter = [v4 defaultCenter];
+  userInfo = [notificationCopy userInfo];
 
-  [v7 postNotificationName:@"MusicKit_SoftLinking_MPContentTasteControllerDidChangeNotification" object:self userInfo:v6];
+  [defaultCenter postNotificationName:@"MusicKit_SoftLinking_MPContentTasteControllerDidChangeNotification" object:self userInfo:userInfo];
 }
 
 @end

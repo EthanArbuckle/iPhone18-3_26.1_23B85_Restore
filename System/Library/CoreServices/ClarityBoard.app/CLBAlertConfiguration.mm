@@ -1,22 +1,22 @@
 @interface CLBAlertConfiguration
-- (CLBAlertConfiguration)initWithDictionary:(id)a3 replyPort:(unsigned int)a4 requestFlags:(int)a5 usesCriticalAlertUI:(BOOL)a6;
+- (CLBAlertConfiguration)initWithDictionary:(id)dictionary replyPort:(unsigned int)port requestFlags:(int)flags usesCriticalAlertUI:(BOOL)i;
 @end
 
 @implementation CLBAlertConfiguration
 
-- (CLBAlertConfiguration)initWithDictionary:(id)a3 replyPort:(unsigned int)a4 requestFlags:(int)a5 usesCriticalAlertUI:(BOOL)a6
+- (CLBAlertConfiguration)initWithDictionary:(id)dictionary replyPort:(unsigned int)port requestFlags:(int)flags usesCriticalAlertUI:(BOOL)i
 {
-  v11 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = CLBAlertConfiguration;
   v12 = [(CLBAlertConfiguration *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_dictionary, a3);
-    v13->_replyPort = a4;
-    v13->_requestFlags = a5;
-    v13->_usesCriticalAlertUI = a6;
+    objc_storeStrong(&v12->_dictionary, dictionary);
+    v13->_replyPort = port;
+    v13->_requestFlags = flags;
+    v13->_usesCriticalAlertUI = i;
   }
 
   return v13;

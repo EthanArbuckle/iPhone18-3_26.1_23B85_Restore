@@ -1,39 +1,39 @@
 @interface SBHomeScreenPreviewView
-- (SBHomeScreenPreviewView)initWithFrame:(CGRect)a3 iconManager:(id)a4 wallpaperController:(id)a5 options:(unint64_t)a6 wallpaperImage:(id)a7 listView:(id)a8;
-- (id)iconView:(id)a3 backgroundViewForComponentsOfType:(int64_t)a4;
-- (id)makeFolderContentWithWallpaperController:(id)a3 legibilitySettings:(id)a4 options:(unint64_t)a5;
-- (id)makeIconFolderContentWithWallpaperController:(id)a3 legibilitySettings:(id)a4 options:(unint64_t)a5;
+- (SBHomeScreenPreviewView)initWithFrame:(CGRect)frame iconManager:(id)manager wallpaperController:(id)controller options:(unint64_t)options wallpaperImage:(id)image listView:(id)view;
+- (id)iconView:(id)view backgroundViewForComponentsOfType:(int64_t)type;
+- (id)makeFolderContentWithWallpaperController:(id)controller legibilitySettings:(id)settings options:(unint64_t)options;
+- (id)makeIconFolderContentWithWallpaperController:(id)controller legibilitySettings:(id)settings options:(unint64_t)options;
 - (id)makeSilhouetteFolderContent;
-- (void)configureIconView:(id)a3 forIcon:(id)a4;
+- (void)configureIconView:(id)view forIcon:(id)icon;
 - (void)dealloc;
 - (void)layoutSubviews;
 @end
 
 @implementation SBHomeScreenPreviewView
 
-- (SBHomeScreenPreviewView)initWithFrame:(CGRect)a3 iconManager:(id)a4 wallpaperController:(id)a5 options:(unint64_t)a6 wallpaperImage:(id)a7 listView:(id)a8
+- (SBHomeScreenPreviewView)initWithFrame:(CGRect)frame iconManager:(id)manager wallpaperController:(id)controller options:(unint64_t)options wallpaperImage:(id)image listView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v70 = *MEMORY[0x277D85DE8];
-  v18 = a4;
-  v19 = a5;
-  v20 = a7;
-  v21 = a8;
+  managerCopy = manager;
+  controllerCopy = controller;
+  imageCopy = image;
+  viewCopy = view;
   v67.receiver = self;
   v67.super_class = SBHomeScreenPreviewView;
-  v22 = [(SBHomeScreenPreviewView *)&v67 initWithFrame:x, y, width, height];
-  v23 = v22;
-  if (!v22)
+  height = [(SBHomeScreenPreviewView *)&v67 initWithFrame:x, y, width, height];
+  v23 = height;
+  if (!height)
   {
     goto LABEL_41;
   }
 
-  objc_storeStrong(&v22->_iconManager, a4);
-  v23->_snapshotOptions = a6;
-  if ((a6 & 0x400) != 0)
+  objc_storeStrong(&height->_iconManager, manager);
+  v23->_snapshotOptions = options;
+  if ((options & 0x400) != 0)
   {
     v27 = objc_alloc(MEMORY[0x277D760A8]);
     v28 = 2;
@@ -42,18 +42,18 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  if ((a6 & 0x800) != 0)
+  if ((options & 0x800) != 0)
   {
     v27 = objc_alloc(MEMORY[0x277D760A8]);
     v28 = 1;
     goto LABEL_8;
   }
 
-  v24 = [v18 legibilitySettings];
-  v25 = v24;
-  if (v24)
+  legibilitySettings = [managerCopy legibilitySettings];
+  v25 = legibilitySettings;
+  if (legibilitySettings)
   {
-    v26 = v24;
+    v26 = legibilitySettings;
   }
 
   else
@@ -69,10 +69,10 @@ LABEL_11:
   v33 = v32;
   v35 = v34;
   v37 = v36;
-  if ((a6 & 0x40) != 0)
+  if ((options & 0x40) != 0)
   {
     v66 = 0;
-    if (!v21)
+    if (!viewCopy)
     {
       goto LABEL_26;
     }
@@ -80,25 +80,25 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  if (v20)
+  if (imageCopy)
   {
     v66 = 0;
 LABEL_24:
     v43 = MEMORY[0x277D755E8];
-    v20 = v20;
-    v44 = [[v43 alloc] initWithImage:v20];
+    imageCopy = imageCopy;
+    v44 = [[v43 alloc] initWithImage:imageCopy];
     [(SBWallpaperEffectView *)v44 setContentMode:2];
 
     goto LABEL_25;
   }
 
-  if (!v19)
+  if (!controllerCopy)
   {
-    v19 = +[SBWallpaperController sharedInstance];
+    controllerCopy = +[SBWallpaperController sharedInstance];
   }
 
-  v38 = [v19 wallpaperConfigurationManager];
-  v39 = [v38 homeScreenWallpaperConfigurationIncludingValuesForTypes:4];
+  wallpaperConfigurationManager = [controllerCopy wallpaperConfigurationManager];
+  v39 = [wallpaperConfigurationManager homeScreenWallpaperConfigurationIncludingValuesForTypes:4];
   v66 = v39;
   if (_os_feature_enabled_impl())
   {
@@ -111,19 +111,19 @@ LABEL_24:
 
   else
   {
-    v41 = [v39 proceduralWallpaperInfo];
+    proceduralWallpaperInfo = [v39 proceduralWallpaperInfo];
 
-    if (!v41)
+    if (!proceduralWallpaperInfo)
     {
 
       goto LABEL_43;
     }
   }
 
-  v42 = [v66 wallpaperThumbnailImage];
-  v20 = [v42 resizableImageWithCapInsets:1 resizingMode:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
+  wallpaperThumbnailImage = [v66 wallpaperThumbnailImage];
+  imageCopy = [wallpaperThumbnailImage resizableImageWithCapInsets:1 resizingMode:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
 
-  if (v20)
+  if (imageCopy)
   {
     goto LABEL_24;
   }
@@ -132,20 +132,20 @@ LABEL_43:
   v44 = [[SBWallpaperEffectView alloc] initWithWallpaperVariant:1 transformOptions:2];
   [(PBUIWallpaperEffectViewBase *)v44 setForcesOpaque:1];
   [(PBUIWallpaperEffectViewBase *)v44 setStyle:0];
-  v20 = 0;
+  imageCopy = 0;
 LABEL_25:
   [(SBWallpaperEffectView *)v44 setFrame:v31, v33, v35, v37];
   [(SBHomeScreenPreviewView *)v23 addSubview:v44];
 
-  if (!v21)
+  if (!viewCopy)
   {
 LABEL_26:
-    v45 = [SBApp userSessionController];
-    v46 = [v45 isLoginSession];
+    userSessionController = [SBApp userSessionController];
+    isLoginSession = [userSessionController isLoginSession];
 
-    if (!v46)
+    if (!isLoginSession)
     {
-      v47 = [(SBHomeScreenPreviewView *)v23 makeFolderContentWithWallpaperController:v19 legibilitySettings:v29 options:a6];
+      v47 = [(SBHomeScreenPreviewView *)v23 makeFolderContentWithWallpaperController:controllerCopy legibilitySettings:v29 options:options];
       folderContent = v23->_folderContent;
       v23->_folderContent = v47;
     }
@@ -154,54 +154,54 @@ LABEL_26:
   }
 
 LABEL_15:
-  objc_storeStrong(&v23->_folderContent, a8);
+  objc_storeStrong(&v23->_folderContent, view);
 LABEL_28:
   v49 = *MEMORY[0x277D76F08];
   [(UIView *)v23->_folderContent setFrame:0.0, *MEMORY[0x277D76F08], v35, v37 - *MEMORY[0x277D76F08]];
   [(SBHomeScreenPreviewView *)v23 addSubview:v23->_folderContent];
-  v50 = [v18 isFloatingDockSupported];
-  if ((a6 & 0x2000) == 0 && v50)
+  isFloatingDockSupported = [managerCopy isFloatingDockSupported];
+  if ((options & 0x2000) == 0 && isFloatingDockSupported)
   {
-    v51 = [(SBFloatingDockViewController *)[SBPreviewFloatingDockViewController alloc] initWithIconManager:v18 iconViewProvider:v23];
+    v51 = [(SBFloatingDockViewController *)[SBPreviewFloatingDockViewController alloc] initWithIconManager:managerCopy iconViewProvider:v23];
     floatingDockViewController = v23->_floatingDockViewController;
     v23->_floatingDockViewController = &v51->super;
 
-    v53 = [(SBFloatingDockViewController *)v23->_floatingDockViewController view];
-    [v53 setFrame:{v31, v33, v35, v37}];
-    [v53 layoutIfNeeded];
+    view = [(SBFloatingDockViewController *)v23->_floatingDockViewController view];
+    [view setFrame:{v31, v33, v35, v37}];
+    [view layoutIfNeeded];
     [(SBFloatingDockViewController *)v23->_floatingDockViewController layoutUserControlledIconListsWithAnimationType:-1 forceRelayout:1];
-    [(SBHomeScreenPreviewView *)v23 addSubview:v53];
-    objc_storeStrong(&v23->_floatingDock, v53);
-    if ((a6 & 0x200) != 0)
+    [(SBHomeScreenPreviewView *)v23 addSubview:view];
+    objc_storeStrong(&v23->_floatingDock, view);
+    if ((options & 0x200) != 0)
     {
-      v54 = [v53 layer];
-      [v54 setAllowsGroupOpacity:1];
+      layer = [view layer];
+      [layer setAllowsGroupOpacity:1];
 
-      [v53 setAlpha:0.5];
+      [view setAlpha:0.5];
     }
   }
 
-  if ((a6 & 1) == 0)
+  if ((options & 1) == 0)
   {
-    v55 = [v18 rootFolderController];
-    v56 = [v55 _sbWindowScene];
-    v57 = [v56 statusBarManager];
+    rootFolderController = [managerCopy rootFolderController];
+    _sbWindowScene = [rootFolderController _sbWindowScene];
+    statusBarManager = [_sbWindowScene statusBarManager];
     windowSceneStatusBarManager = v23->_windowSceneStatusBarManager;
-    v23->_windowSceneStatusBarManager = v57;
+    v23->_windowSceneStatusBarManager = statusBarManager;
 
-    v59 = [(SBWindowSceneStatusBarManager *)v23->_windowSceneStatusBarManager reusePool];
-    v60 = [v59 getReusableStatusBarWithReason:@"Settings HomeScreen Preview View" withFrame:{0.0, 0.0, v35, v49}];
+    reusePool = [(SBWindowSceneStatusBarManager *)v23->_windowSceneStatusBarManager reusePool];
+    v60 = [reusePool getReusableStatusBarWithReason:@"Settings HomeScreen Preview View" withFrame:{0.0, 0.0, v35, v49}];
 
     [v60 requestResolvedStyle:0];
     [v60 setManager:0];
     [v60 setLegibilityStyle:{objc_msgSend(v29, "style")}];
-    v61 = [v29 primaryColor];
-    [v60 setForegroundColor:v61];
+    primaryColor = [v29 primaryColor];
+    [v60 setForegroundColor:primaryColor];
 
-    if ((a6 & 4) != 0)
+    if ((options & 4) != 0)
     {
-      v62 = [MEMORY[0x277CBEAA8] date];
-      [v60 sb_setSnapshotOverridesWithTimeEnabled:1 overriddenDate:v62];
+      date = [MEMORY[0x277CBEAA8] date];
+      [v60 sb_setSnapshotOverridesWithTimeEnabled:1 overriddenDate:date];
     }
 
     else
@@ -230,8 +230,8 @@ LABEL_41:
 {
   if (self->_statusBar)
   {
-    v3 = [(SBWindowSceneStatusBarManager *)self->_windowSceneStatusBarManager reusePool];
-    [v3 recycleStatusBar:self->_statusBar];
+    reusePool = [(SBWindowSceneStatusBarManager *)self->_windowSceneStatusBarManager reusePool];
+    [reusePool recycleStatusBar:self->_statusBar];
   }
 
   v4.receiver = self;
@@ -239,36 +239,36 @@ LABEL_41:
   [(SBHomeScreenPreviewView *)&v4 dealloc];
 }
 
-- (id)makeFolderContentWithWallpaperController:(id)a3 legibilitySettings:(id)a4 options:(unint64_t)a5
+- (id)makeFolderContentWithWallpaperController:(id)controller legibilitySettings:(id)settings options:(unint64_t)options
 {
-  if ((a5 & 0x4000) != 0)
+  if ((options & 0x4000) != 0)
   {
-    [(SBHomeScreenPreviewView *)self makeSilhouetteFolderContent:a3];
+    [(SBHomeScreenPreviewView *)self makeSilhouetteFolderContent:controller];
   }
 
   else
   {
-    [(SBHomeScreenPreviewView *)self makeIconFolderContentWithWallpaperController:a3 legibilitySettings:a4 options:?];
+    [(SBHomeScreenPreviewView *)self makeIconFolderContentWithWallpaperController:controller legibilitySettings:settings options:?];
   }
   v5 = ;
 
   return v5;
 }
 
-- (id)makeIconFolderContentWithWallpaperController:(id)a3 legibilitySettings:(id)a4 options:(unint64_t)a5
+- (id)makeIconFolderContentWithWallpaperController:(id)controller legibilitySettings:(id)settings options:(unint64_t)options
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(SBHomeScreenPreviewView *)self iconManager];
-  v11 = [[_SBHomeScreenFolderDelegate alloc] initWithForwardingTarget:v10];
+  settingsCopy = settings;
+  controllerCopy = controller;
+  iconManager = [(SBHomeScreenPreviewView *)self iconManager];
+  v11 = [[_SBHomeScreenFolderDelegate alloc] initWithForwardingTarget:iconManager];
   v12 = v11;
   v13 = 1;
-  if ((a5 & 0x800) == 0)
+  if ((options & 0x800) == 0)
   {
-    v13 = (a5 >> 9) & 2;
+    v13 = (options >> 9) & 2;
   }
 
-  if ((a5 & 0x200) != 0)
+  if ((options & 0x200) != 0)
   {
     v14 = v13;
   }
@@ -281,29 +281,29 @@ LABEL_41:
   [(_SBHomeScreenFolderDelegate *)v11 setDockStyle:v14];
   objc_storeStrong(&self->_folderDelegate, v12);
   v15 = objc_alloc_init(MEMORY[0x277D66428]);
-  v16 = [v10 rootFolder];
-  [v15 setFolder:v16];
+  rootFolder = [iconManager rootFolder];
+  [v15 setFolder:rootFolder];
 
-  v17 = [v10 listLayoutProvider];
-  [v15 setListLayoutProvider:v17];
+  listLayoutProvider = [iconManager listLayoutProvider];
+  [v15 setListLayoutProvider:listLayoutProvider];
 
-  [v15 setLegibilitySettings:v8];
+  [v15 setLegibilitySettings:settingsCopy];
   [v15 setDockExternal:{+[SBFloatingDockController isFloatingDockSupported](SBFloatingDockController, "isFloatingDockSupported")}];
   [v15 setFolderDelegate:v12];
   [v15 setIconViewProvider:self];
-  v18 = [v10 folderIconImageCache];
-  [v15 setFolderIconImageCache:v18];
+  folderIconImageCache = [iconManager folderIconImageCache];
+  [v15 setFolderIconImageCache:folderIconImageCache];
 
-  v19 = [v10 iconImageCache];
-  [v15 setIconImageCache:v19];
+  iconImageCache = [iconManager iconImageCache];
+  [v15 setIconImageCache:iconImageCache];
 
   v20 = [objc_alloc(MEMORY[0x277D66420]) initWithConfiguration:v15];
-  v21 = [v9 averageColorForVariant:1];
+  v21 = [controllerCopy averageColorForVariant:1];
 
   [v20 setDefaultAccessibilityTintColor:v21];
-  [v20 setPageControlHidden:(a5 >> 1) & 1];
+  [v20 setPageControlHidden:(options >> 1) & 1];
   objc_storeStrong(&self->_rootFolderController, v20);
-  if ((a5 & 0x2000) != 0)
+  if ((options & 0x2000) != 0)
   {
     v22 = [v20 beginModifyingDockOffscreenFractionForReason:@"Preview"];
     dockOffscreenModifier = self->_dockOffscreenModifier;
@@ -312,26 +312,26 @@ LABEL_41:
     [(SBDockOffscreenFractionModifying *)self->_dockOffscreenModifier setDockOffscreenFraction:1.0];
   }
 
-  v24 = [v20 view];
+  view = [v20 view];
 
-  return v24;
+  return view;
 }
 
 - (id)makeSilhouetteFolderContent
 {
-  v3 = [(SBHomeScreenPreviewView *)self iconManager];
-  v4 = [v3 silhouetteLayoutForPageAtIndex:0];
+  iconManager = [(SBHomeScreenPreviewView *)self iconManager];
+  v4 = [iconManager silhouetteLayoutForPageAtIndex:0];
   v5 = objc_alloc(MEMORY[0x277D67B80]);
   [(SBHomeScreenPreviewView *)self bounds];
   v8 = [v5 initWithSilhouetteLayout:v4 viewSize:{v6, v7}];
-  v9 = [MEMORY[0x277CCAD78] UUID];
-  v10 = [v9 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __54__SBHomeScreenPreviewView_makeSilhouetteFolderContent__block_invoke;
   v20[3] = &unk_2783BF018;
-  v11 = v10;
+  v11 = uUIDString;
   v21 = v11;
   [v8 setIconViewBuilder:v20];
   v15 = MEMORY[0x277D85DD0];
@@ -341,9 +341,9 @@ LABEL_41:
   v19 = v11;
   v12 = v11;
   [v8 setDockViewBuilder:&v15];
-  v13 = [v8 buildView];
+  buildView = [v8 buildView];
 
-  return v13;
+  return buildView;
 }
 
 id __54__SBHomeScreenPreviewView_makeSilhouetteFolderContent__block_invoke(uint64_t a1)
@@ -396,26 +396,26 @@ id __54__SBHomeScreenPreviewView_makeSilhouetteFolderContent__block_invoke_2(uin
   [(UIView *)self->_folderContent setFrame:v7, v8, v9, v10];
 }
 
-- (void)configureIconView:(id)a3 forIcon:(id)a4
+- (void)configureIconView:(id)view forIcon:(id)icon
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(SBHomeScreenPreviewView *)self iconManager];
-  [v7 configureIconView:v8 forIcon:v6];
+  viewCopy = view;
+  iconCopy = icon;
+  iconManager = [(SBHomeScreenPreviewView *)self iconManager];
+  [iconManager configureIconView:viewCopy forIcon:iconCopy];
 
-  [v8 setDelegate:self];
-  [v8 setLabelAccessoryHidden:1];
-  [v8 setAllowsBlockedForScreenTimeExpiration:0];
-  [v8 setImageLoadingBehavior:0];
+  [viewCopy setDelegate:self];
+  [viewCopy setLabelAccessoryHidden:1];
+  [viewCopy setAllowsBlockedForScreenTimeExpiration:0];
+  [viewCopy setImageLoadingBehavior:0];
   if (([(SBHomeScreenPreviewView *)self snapshotOptions]& 0x1000) != 0)
   {
-    [v8 setHidden:1];
+    [viewCopy setHidden:1];
   }
 }
 
-- (id)iconView:(id)a3 backgroundViewForComponentsOfType:(int64_t)a4
+- (id)iconView:(id)view backgroundViewForComponentsOfType:(int64_t)type
 {
-  v4 = [a3 location];
+  location = [view location];
   v5 = SBIconLocationGroupContainsLocation();
 
   if (v5)

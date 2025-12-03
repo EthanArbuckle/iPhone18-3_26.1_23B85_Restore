@@ -1,47 +1,47 @@
 @interface NTKSiderealCachedMTLTexture
-- (NTKSiderealCachedMTLTexture)initWithCachedImageKey:(id)a3 isAlphaOnly:(BOOL)a4 imageGenerationBlock:(id)a5;
+- (NTKSiderealCachedMTLTexture)initWithCachedImageKey:(id)key isAlphaOnly:(BOOL)only imageGenerationBlock:(id)block;
 - (id)_alphaOnlyTexture;
-- (id)_loadTexture:(id)a3 WithCommandBuffer:(id)a4;
+- (id)_loadTexture:(id)texture WithCommandBuffer:(id)buffer;
 - (id)_rgbaTexture;
-- (id)loadTextureWithCommandBuffer:(id)a3 usingBlitEncoder:(id)a4;
+- (id)loadTextureWithCommandBuffer:(id)buffer usingBlitEncoder:(id)encoder;
 @end
 
 @implementation NTKSiderealCachedMTLTexture
 
-- (NTKSiderealCachedMTLTexture)initWithCachedImageKey:(id)a3 isAlphaOnly:(BOOL)a4 imageGenerationBlock:(id)a5
+- (NTKSiderealCachedMTLTexture)initWithCachedImageKey:(id)key isAlphaOnly:(BOOL)only imageGenerationBlock:(id)block
 {
-  v9 = a3;
-  v10 = a5;
+  keyCopy = key;
+  blockCopy = block;
   v17.receiver = self;
   v17.super_class = NTKSiderealCachedMTLTexture;
   v11 = [(NTKSiderealCachedMTLTexture *)&v17 init];
   if (v11)
   {
-    v12 = objc_retainBlock(v10);
+    v12 = objc_retainBlock(blockCopy);
     generateImageBlock = v11->_generateImageBlock;
     v11->_generateImageBlock = v12;
 
-    v11->_isAlphaOnly = a4;
+    v11->_isAlphaOnly = only;
     v14 = +[CLKUIMetalResourceManager sharedDevice];
     device = v11->_device;
     v11->_device = v14;
 
-    objc_storeStrong(&v11->_cacheKey, a3);
+    objc_storeStrong(&v11->_cacheKey, key);
   }
 
   return v11;
 }
 
-- (id)loadTextureWithCommandBuffer:(id)a3 usingBlitEncoder:(id)a4
+- (id)loadTextureWithCommandBuffer:(id)buffer usingBlitEncoder:(id)encoder
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  bufferCopy = buffer;
+  encoderCopy = encoder;
+  blitCommandEncoder = encoderCopy;
   if (!self->_mtlTexture)
   {
-    if (!v7)
+    if (!encoderCopy)
     {
-      v8 = [v6 blitCommandEncoder];
+      blitCommandEncoder = [bufferCopy blitCommandEncoder];
     }
 
     if (self->_isAlphaOnly)
@@ -54,7 +54,7 @@
       [(NTKSiderealCachedMTLTexture *)self _rgbaTexture];
     }
     v9 = ;
-    v10 = (v9)[2](v9, v8);
+    v10 = (v9)[2](v9, blitCommandEncoder);
     mtlTexture = self->_mtlTexture;
     self->_mtlTexture = v10;
 
@@ -62,19 +62,19 @@
     self->_generateImageBlock = 0;
   }
 
-  v13 = v8;
+  v13 = blitCommandEncoder;
 
-  return v8;
+  return blitCommandEncoder;
 }
 
-- (id)_loadTexture:(id)a3 WithCommandBuffer:(id)a4
+- (id)_loadTexture:(id)texture WithCommandBuffer:(id)buffer
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  textureCopy = texture;
+  bufferCopy = buffer;
+  commandBuffer = bufferCopy;
+  if (textureCopy)
   {
-    if (v6)
+    if (bufferCopy)
     {
       v8 = 1;
     }
@@ -82,19 +82,19 @@
     else
     {
       v10 = +[CLKUIMetalResourceManager sharedCommandQueue];
-      v7 = [v10 commandBuffer];
-      [CLKUIMetalResourceManager addCompletedErrorCheckToCommandBuffer:v7 forCase:@"SiderealLoadTexture"];
+      commandBuffer = [v10 commandBuffer];
+      [CLKUIMetalResourceManager addCompletedErrorCheckToCommandBuffer:commandBuffer forCase:@"SiderealLoadTexture"];
 
       v8 = v10 == 0;
     }
 
-    v11 = [v7 blitCommandEncoder];
-    v9 = v5[2](v5, v11);
-    [v11 endEncoding];
+    blitCommandEncoder = [commandBuffer blitCommandEncoder];
+    v9 = textureCopy[2](textureCopy, blitCommandEncoder);
+    [blitCommandEncoder endEncoding];
     if (!v8)
     {
-      [v7 commit];
-      [v7 waitUntilScheduled];
+      [commandBuffer commit];
+      [commandBuffer waitUntilScheduled];
     }
   }
 
@@ -141,10 +141,10 @@
     {
       if (!v34[5])
       {
-        v6 = [v5 bytes];
+        bytes = [v5 bytes];
         v7 = v30;
-        v30[3] = *v6;
-        v8 = v6[1];
+        v30[3] = *bytes;
+        v8 = bytes[1];
         v26[3] = v8;
         if (!(v7[3] | v8))
         {
@@ -167,7 +167,7 @@ LABEL_15:
           goto LABEL_16;
         }
 
-        v12 = -[MTLDevice newBufferWithBytes:length:options:](self->_device, "newBufferWithBytes:length:options:", v6 + 2, ([v5 length] + -16.0), 0);
+        v12 = -[MTLDevice newBufferWithBytes:length:options:](self->_device, "newBufferWithBytes:length:options:", bytes + 2, ([v5 length] + -16.0), 0);
         v13 = v34[5];
         v34[5] = v12;
       }
@@ -246,10 +246,10 @@ LABEL_16:
     {
       if (!v34[5])
       {
-        v6 = [v5 bytes];
+        bytes = [v5 bytes];
         v7 = v30;
-        v30[3] = *v6;
-        v8 = v6[1];
+        v30[3] = *bytes;
+        v8 = bytes[1];
         v26[3] = v8;
         if (!(v7[3] | v8))
         {
@@ -272,7 +272,7 @@ LABEL_15:
           goto LABEL_16;
         }
 
-        v12 = -[MTLDevice newBufferWithBytes:length:options:](self->_device, "newBufferWithBytes:length:options:", v6 + 2, ([v5 length] + -16.0), 0);
+        v12 = -[MTLDevice newBufferWithBytes:length:options:](self->_device, "newBufferWithBytes:length:options:", bytes + 2, ([v5 length] + -16.0), 0);
         v13 = v34[5];
         v34[5] = v12;
       }

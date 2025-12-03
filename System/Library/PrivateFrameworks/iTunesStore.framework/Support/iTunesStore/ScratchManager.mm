@@ -1,46 +1,46 @@
 @interface ScratchManager
 + (id)_baseDirectoryPath;
 + (id)_containerDirectoryPath;
-+ (id)_directoryPathForDownloadID:(int64_t)a3 createIfNeeded:(BOOL)a4 atBasePath:(id)a5;
++ (id)_directoryPathForDownloadID:(int64_t)d createIfNeeded:(BOOL)needed atBasePath:(id)path;
 + (id)baseDirectoryPath;
 + (id)containerDirectoryPath;
-+ (id)directoryPathForDownloadID:(int64_t)a3 assetID:(int64_t)a4 kind:(id)a5 createIfNeeded:(BOOL)a6;
-+ (id)directoryPathForDownloadID:(int64_t)a3 kind:(id)a4 createIfNeeded:(BOOL)a5;
++ (id)directoryPathForDownloadID:(int64_t)d assetID:(int64_t)iD kind:(id)kind createIfNeeded:(BOOL)needed;
++ (id)directoryPathForDownloadID:(int64_t)d kind:(id)kind createIfNeeded:(BOOL)needed;
 @end
 
 @implementation ScratchManager
 
 + (id)baseDirectoryPath
 {
-  v2 = [a1 _baseDirectoryPath];
+  _baseDirectoryPath = [self _baseDirectoryPath];
   v3 = objc_alloc_init(NSFileManager);
-  [v3 createDirectoryAtPath:v2 withIntermediateDirectories:1 attributes:0 error:0];
+  [v3 createDirectoryAtPath:_baseDirectoryPath withIntermediateDirectories:1 attributes:0 error:0];
 
-  return v2;
+  return _baseDirectoryPath;
 }
 
 + (id)containerDirectoryPath
 {
-  v2 = [a1 _containerDirectoryPath];
+  _containerDirectoryPath = [self _containerDirectoryPath];
   v3 = objc_alloc_init(NSFileManager);
-  [v3 createDirectoryAtPath:v2 withIntermediateDirectories:1 attributes:0 error:0];
+  [v3 createDirectoryAtPath:_containerDirectoryPath withIntermediateDirectories:1 attributes:0 error:0];
 
-  return v2;
+  return _containerDirectoryPath;
 }
 
-+ (id)directoryPathForDownloadID:(int64_t)a3 assetID:(int64_t)a4 kind:(id)a5 createIfNeeded:(BOOL)a6
++ (id)directoryPathForDownloadID:(int64_t)d assetID:(int64_t)iD kind:(id)kind createIfNeeded:(BOOL)needed
 {
-  v7 = [a1 directoryPathForDownloadID:a3 kind:a5 createIfNeeded:a6];
-  v8 = [NSString stringWithFormat:@"%lld", a4];
+  v7 = [self directoryPathForDownloadID:d kind:kind createIfNeeded:needed];
+  v8 = [NSString stringWithFormat:@"%lld", iD];
   v9 = [v7 stringByAppendingPathComponent:v8];
 
   return v9;
 }
 
-+ (id)directoryPathForDownloadID:(int64_t)a3 kind:(id)a4 createIfNeeded:(BOOL)a5
++ (id)directoryPathForDownloadID:(int64_t)d kind:(id)kind createIfNeeded:(BOOL)needed
 {
-  v5 = a5;
-  v8 = a4;
+  neededCopy = needed;
+  kindCopy = kind;
   v9 = +[ApplicationWorkspace defaultWorkspace];
   if ([v9 isMultiUser])
   {
@@ -48,7 +48,7 @@
 
     if (IsEBookKind)
     {
-      v11 = [a1 _containerDirectoryPath];
+      _containerDirectoryPath = [self _containerDirectoryPath];
       goto LABEL_6;
     }
   }
@@ -57,15 +57,15 @@
   {
   }
 
-  v11 = [a1 _baseDirectoryPath];
+  _containerDirectoryPath = [self _baseDirectoryPath];
 LABEL_6:
-  v12 = v11;
-  if (!v11)
+  _baseDirectoryPath = _containerDirectoryPath;
+  if (!_containerDirectoryPath)
   {
-    v12 = [a1 _baseDirectoryPath];
+    _baseDirectoryPath = [self _baseDirectoryPath];
   }
 
-  v13 = [a1 _directoryPathForDownloadID:a3 createIfNeeded:v5 atBasePath:v12];
+  v13 = [self _directoryPathForDownloadID:d createIfNeeded:neededCopy atBasePath:_baseDirectoryPath];
 
   return v13;
 }
@@ -88,7 +88,7 @@ LABEL_6:
   block[1] = 3221225472;
   block[2] = sub_10018B664;
   block[3] = &unk_100327170;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100383FB0 != -1)
   {
     dispatch_once(&qword_100383FB0, block);
@@ -99,14 +99,14 @@ LABEL_6:
   return v2;
 }
 
-+ (id)_directoryPathForDownloadID:(int64_t)a3 createIfNeeded:(BOOL)a4 atBasePath:(id)a5
++ (id)_directoryPathForDownloadID:(int64_t)d createIfNeeded:(BOOL)needed atBasePath:(id)path
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = [NSString stringWithFormat:@"%lld", a3];
-  v9 = [v7 stringByAppendingPathComponent:v8];
+  neededCopy = needed;
+  pathCopy = path;
+  v8 = [NSString stringWithFormat:@"%lld", d];
+  v9 = [pathCopy stringByAppendingPathComponent:v8];
 
-  if (v5 && v9)
+  if (neededCopy && v9)
   {
     v10 = objc_alloc_init(NSFileManager);
     [v10 createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:0];

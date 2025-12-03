@@ -1,8 +1,8 @@
 @interface BKAudioLocation
-+ (id)deserializeLocationFromDictionary:(id)a3;
-- (BKAudioLocation)initWithLocationDictionary:(id)a3;
-- (BKAudioLocation)initWithOrdinal:(int64_t)a3 offset:(double)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)deserializeLocationFromDictionary:(id)dictionary;
+- (BKAudioLocation)initWithLocationDictionary:(id)dictionary;
+- (BKAudioLocation)initWithOrdinal:(int64_t)ordinal offset:(double)offset;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (id)serializeLocationToDictionary;
 - (id)stringValue;
@@ -11,29 +11,29 @@
 
 @implementation BKAudioLocation
 
-- (BKAudioLocation)initWithOrdinal:(int64_t)a3 offset:(double)a4
+- (BKAudioLocation)initWithOrdinal:(int64_t)ordinal offset:(double)offset
 {
   v6.receiver = self;
   v6.super_class = BKAudioLocation;
-  result = [(BKLocation *)&v6 initWithOrdinal:a3];
+  result = [(BKLocation *)&v6 initWithOrdinal:ordinal];
   if (result)
   {
-    result->_offset = a4;
+    result->_offset = offset;
   }
 
   return result;
 }
 
-- (BKAudioLocation)initWithLocationDictionary:(id)a3
+- (BKAudioLocation)initWithLocationDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"super"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"super"];
   v10.receiver = self;
   v10.super_class = BKAudioLocation;
   v6 = [(BKLocation *)&v10 initWithLocationDictionary:v5];
   if (v6)
   {
-    v7 = [v4 objectForKey:@"offset"];
+    v7 = [dictionaryCopy objectForKey:@"offset"];
     [v7 doubleValue];
     v6->_offset = v8;
   }
@@ -52,13 +52,13 @@
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v8.receiver = self, v8.super_class = BKAudioLocation, [(BKLocation *)&v8 isEqual:v4]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v8.receiver = self, v8.super_class = BKAudioLocation, [(BKLocation *)&v8 isEqual:equalCopy]))
   {
-    [v4 offset];
+    [equalCopy offset];
     v6 = v5 == self->_offset;
   }
 
@@ -74,8 +74,8 @@
 {
   v6.receiver = self;
   v6.super_class = BKAudioLocation;
-  v3 = [(BKLocation *)&v6 stringValue];
-  v4 = [NSString stringWithFormat:@"{ %@, offset:%f }", v3, *&self->_offset];
+  stringValue = [(BKLocation *)&v6 stringValue];
+  v4 = [NSString stringWithFormat:@"{ %@, offset:%f }", stringValue, *&self->_offset];
 
   return v4;
 }
@@ -94,20 +94,20 @@
 {
   v7.receiver = self;
   v7.super_class = BKAudioLocation;
-  v3 = [(BKLocation *)&v7 serializeLocationToDictionary];
+  serializeLocationToDictionary = [(BKLocation *)&v7 serializeLocationToDictionary];
   v4 = [NSNumber numberWithDouble:self->_offset];
-  v5 = [NSDictionary dictionaryWithObjectsAndKeys:v3, @"super", v4, @"offset", @"BKAudioLocation", @"class", 0];
+  v5 = [NSDictionary dictionaryWithObjectsAndKeys:serializeLocationToDictionary, @"super", v4, @"offset", @"BKAudioLocation", @"class", 0];
 
   return v5;
 }
 
-+ (id)deserializeLocationFromDictionary:(id)a3
++ (id)deserializeLocationFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"class"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:@"class"];
   if ([v4 isEqualToString:@"BKAudioLocation"])
   {
-    v5 = [[BKAudioLocation alloc] initWithLocationDictionary:v3];
+    v5 = [[BKAudioLocation alloc] initWithLocationDictionary:dictionaryCopy];
   }
 
   else

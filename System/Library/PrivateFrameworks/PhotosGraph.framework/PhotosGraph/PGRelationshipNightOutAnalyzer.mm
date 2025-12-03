@@ -1,29 +1,29 @@
 @interface PGRelationshipNightOutAnalyzer
-- (PGRelationshipNightOutAnalyzer)initWithRelationshipProcessor:(id)a3;
-- (void)runAnalysisWithProgressBlock:(id)a3;
+- (PGRelationshipNightOutAnalyzer)initWithRelationshipProcessor:(id)processor;
+- (void)runAnalysisWithProgressBlock:(id)block;
 @end
 
 @implementation PGRelationshipNightOutAnalyzer
 
-- (void)runAnalysisWithProgressBlock:(id)a3
+- (void)runAnalysisWithProgressBlock:(id)block
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   v5 = 0.0;
   if (!v4 || (v6 = CFAbsoluteTimeGetCurrent(), v6 < 0.01))
   {
 LABEL_7:
     WeakRetained = objc_loadWeakRetained(&self->_processor);
-    v8 = [WeakRetained graph];
-    v9 = [v8 momentNodesWithMeaning:8];
+    graph = [WeakRetained graph];
+    v9 = [graph momentNodesWithMeaning:8];
 
     v10 = [v9 count];
     v11 = [PGGraphMomentNodeCollection alloc];
-    v12 = [WeakRetained graph];
-    v13 = [(MAElementCollection *)v11 initWithSet:v9 graph:v12];
+    graph2 = [WeakRetained graph];
+    v13 = [(MAElementCollection *)v11 initWithSet:v9 graph:graph2];
 
-    v14 = [WeakRetained personNodes];
-    v15 = [PGPeopleInferencesConveniences countedPersonNodesFromMomentNodes:v13 amongPersonNodes:v14];
+    personNodes = [WeakRetained personNodes];
+    v15 = [PGPeopleInferencesConveniences countedPersonNodesFromMomentNodes:v13 amongPersonNodes:personNodes];
 
     v16 = [v15 count];
     if (v16)
@@ -54,8 +54,8 @@ LABEL_7:
             }
 
             v25 = *(*(&v34 + 1) + 8 * i);
-            v26 = [v25 localIdentifier];
-            v27 = [WeakRetained relationshipAnalyzerPropertiesForPersonLocalIdentifier:v26];
+            localIdentifier = [v25 localIdentifier];
+            v27 = [WeakRetained relationshipAnalyzerPropertiesForPersonLocalIdentifier:localIdentifier];
             if (v27)
             {
               [v27 registerNumberOfNightsOut:objc_msgSend(v18 amongNightsOut:{"countForObject:", v25), v10}];
@@ -183,16 +183,16 @@ LABEL_36:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (PGRelationshipNightOutAnalyzer)initWithRelationshipProcessor:(id)a3
+- (PGRelationshipNightOutAnalyzer)initWithRelationshipProcessor:(id)processor
 {
-  v4 = a3;
+  processorCopy = processor;
   v8.receiver = self;
   v8.super_class = PGRelationshipNightOutAnalyzer;
   v5 = [(PGRelationshipNightOutAnalyzer *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_processor, v4);
+    objc_storeWeak(&v5->_processor, processorCopy);
   }
 
   return v6;

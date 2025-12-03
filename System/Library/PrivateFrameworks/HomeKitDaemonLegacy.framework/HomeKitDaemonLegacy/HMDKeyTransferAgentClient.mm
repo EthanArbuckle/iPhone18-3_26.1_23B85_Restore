@@ -1,71 +1,71 @@
 @interface HMDKeyTransferAgentClient
 + (id)logCategory;
-- (BOOL)_newDeviceSeen:(id)a3;
-- (HMDKeyTransferAgentClient)initWithHomeManager:(id)a3;
-- (id)_deviceWithUUID:(id)a3;
-- (void)__accessoryIsReachable:(id)a3;
-- (void)__accountChanged:(id)a3;
-- (void)__deviceAddedToAccount:(id)a3;
-- (void)__deviceRemovedFromAccount:(id)a3;
-- (void)__deviceUpdated:(id)a3;
-- (void)_beginBonjourResolution:(BOOL)a3;
-- (void)_device:(id)a3 addedToAccount:(id)a4;
-- (void)_device:(id)a3 removedFromAccount:(id)a4;
-- (void)_endPairingWithError:(id)a3 suspendingTimer:(BOOL)a4;
-- (void)_handleKeyTransferAgentMessage:(id)a3;
-- (void)_handleResidentProvisioningStatusChanged:(id)a3;
-- (void)_havePairVerifiedAccessoryWithKeyUUID:(id)a3 forDevice:(id)a4;
-- (void)_haveVerifiedTwoFactorAuthenticationWithKeyUUID:(id)a3 forTarget:(id)a4;
+- (BOOL)_newDeviceSeen:(id)seen;
+- (HMDKeyTransferAgentClient)initWithHomeManager:(id)manager;
+- (id)_deviceWithUUID:(id)d;
+- (void)__accessoryIsReachable:(id)reachable;
+- (void)__accountChanged:(id)changed;
+- (void)__deviceAddedToAccount:(id)account;
+- (void)__deviceRemovedFromAccount:(id)account;
+- (void)__deviceUpdated:(id)updated;
+- (void)_beginBonjourResolution:(BOOL)resolution;
+- (void)_device:(id)_device addedToAccount:(id)account;
+- (void)_device:(id)_device removedFromAccount:(id)account;
+- (void)_endPairingWithError:(id)error suspendingTimer:(BOOL)timer;
+- (void)_handleKeyTransferAgentMessage:(id)message;
+- (void)_handleResidentProvisioningStatusChanged:(id)changed;
+- (void)_havePairVerifiedAccessoryWithKeyUUID:(id)d forDevice:(id)device;
+- (void)_haveVerifiedTwoFactorAuthenticationWithKeyUUID:(id)d forTarget:(id)target;
 - (void)_reallyBeginBonjourResolution;
-- (void)_restartKeyTransfer:(id)a3;
+- (void)_restartKeyTransfer:(id)transfer;
 - (void)_saveKeyPlist;
-- (void)_sendATVPrivateKey:(id)a3 withDevice:(id)a4 retry:(unint64_t)a5;
-- (void)_sendIOSPublicKey:(id)a3 withDevice:(id)a4;
+- (void)_sendATVPrivateKey:(id)key withDevice:(id)device retry:(unint64_t)retry;
+- (void)_sendIOSPublicKey:(id)key withDevice:(id)device;
 - (void)_startBrowser;
-- (void)_startPairingWithKeyUUID:(id)a3 forTarget:(id)a4;
+- (void)_startPairingWithKeyUUID:(id)d forTarget:(id)target;
 - (void)_stopBrowser;
-- (void)_tfaVerificationCompleteForKeyUUID:(id)a3 forTarget:(id)a4;
-- (void)_tryPairingWithAccessories:(id)a3 completionHandler:(id)a4;
+- (void)_tfaVerificationCompleteForKeyUUID:(id)d forTarget:(id)target;
+- (void)_tryPairingWithAccessories:(id)accessories completionHandler:(id)handler;
 - (void)dealloc;
-- (void)netService:(id)a3 didUpdateTXTRecord:(id)a4;
-- (void)netServiceBrowser:(id)a3 didAddService:(id)a4;
-- (void)netServiceBrowser:(id)a3 didStopBrowsingWithError:(id)a4;
-- (void)networkMonitorIsReachable:(id)a3;
+- (void)netService:(id)service didUpdateTXTRecord:(id)record;
+- (void)netServiceBrowser:(id)browser didAddService:(id)service;
+- (void)netServiceBrowser:(id)browser didStopBrowsingWithError:(id)error;
+- (void)networkMonitorIsReachable:(id)reachable;
 - (void)queryPlistDevices;
-- (void)receivedBonjourTXTFrom:(id)a3 withUUIDData:(id)a4;
+- (void)receivedBonjourTXTFrom:(id)from withUUIDData:(id)data;
 - (void)resetConfig;
-- (void)setResidentProvisioningStatus:(unint64_t)a3;
-- (void)timerDidFire:(id)a3;
+- (void)setResidentProvisioningStatus:(unint64_t)status;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDKeyTransferAgentClient
 
-- (void)netServiceBrowser:(id)a3 didAddService:(id)a4
+- (void)netServiceBrowser:(id)browser didAddService:(id)service
 {
-  v5 = a4;
-  [v5 setDelegate:self];
-  v7 = [v5 TXTRecord];
-  v6 = [v7 objectForKey:@"uuid"];
-  [(HMDKeyTransferAgentClient *)self receivedBonjourTXTFrom:v5 withUUIDData:v6];
+  serviceCopy = service;
+  [serviceCopy setDelegate:self];
+  tXTRecord = [serviceCopy TXTRecord];
+  v6 = [tXTRecord objectForKey:@"uuid"];
+  [(HMDKeyTransferAgentClient *)self receivedBonjourTXTFrom:serviceCopy withUUIDData:v6];
 }
 
-- (void)netService:(id)a3 didUpdateTXTRecord:(id)a4
+- (void)netService:(id)service didUpdateTXTRecord:(id)record
 {
-  v6 = a3;
-  v7 = [a4 objectForKey:@"uuid"];
-  [(HMDKeyTransferAgentClient *)self receivedBonjourTXTFrom:v6 withUUIDData:v7];
+  serviceCopy = service;
+  v7 = [record objectForKey:@"uuid"];
+  [(HMDKeyTransferAgentClient *)self receivedBonjourTXTFrom:serviceCopy withUUIDData:v7];
 }
 
-- (void)netServiceBrowser:(id)a3 didStopBrowsingWithError:(id)a4
+- (void)netServiceBrowser:(id)browser didStopBrowsingWithError:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  browserCopy = browser;
+  errorCopy = error;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   v11 = v10;
-  if (v7)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
@@ -73,18 +73,18 @@
       *buf = 138543618;
       v18 = v12;
       v19 = 2112;
-      v20 = v7;
+      v20 = errorCopy;
       _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_DEBUG, "%{public}@Browsing got stop delegate with error: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
-    v13 = [(HMDKeyTransferAgent *)v9 workQueue];
+    workQueue = [(HMDKeyTransferAgent *)selfCopy workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __72__HMDKeyTransferAgentClient_netServiceBrowser_didStopBrowsingWithError___block_invoke;
     block[3] = &unk_279735D00;
-    block[4] = v9;
-    dispatch_async(v13, block);
+    block[4] = selfCopy;
+    dispatch_async(workQueue, block);
   }
 
   else
@@ -103,21 +103,21 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receivedBonjourTXTFrom:(id)a3 withUUIDData:(id)a4
+- (void)receivedBonjourTXTFrom:(id)from withUUIDData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDKeyTransferAgent *)self workQueue];
+  fromCopy = from;
+  dataCopy = data;
+  workQueue = [(HMDKeyTransferAgent *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__HMDKeyTransferAgentClient_receivedBonjourTXTFrom_withUUIDData___block_invoke;
   block[3] = &unk_279734960;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = fromCopy;
+  v13 = dataCopy;
+  selfCopy = self;
+  v9 = dataCopy;
+  v10 = fromCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __65__HMDKeyTransferAgentClient_receivedBonjourTXTFrom_withUUIDData___block_invoke(uint64_t a1)
@@ -172,15 +172,15 @@ void __65__HMDKeyTransferAgentClient_receivedBonjourTXTFrom_withUUIDData___block
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleResidentProvisioningStatusChanged:(id)a3
+- (void)_handleResidentProvisioningStatusChanged:(id)changed
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 stringForKey:@"data"];
+  changedCopy = changed;
+  v5 = [changedCopy stringForKey:@"data"];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -193,78 +193,78 @@ void __65__HMDKeyTransferAgentClient_receivedBonjourTXTFrom_withUUIDData___block
     }
 
     objc_autoreleasePoolPop(v6);
-    v10 = [(HMDKeyTransferAgentClient *)v7 idsKeys];
-    [v10 removeObjectForKey:v5];
+    idsKeys = [(HMDKeyTransferAgentClient *)selfCopy idsKeys];
+    [idsKeys removeObjectForKey:v5];
 
     v11 = objc_autoreleasePoolPush();
-    v12 = v7;
+    v12 = selfCopy;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [(HMDKeyTransferAgentClient *)v12 idsKeys];
+      idsKeys2 = [(HMDKeyTransferAgentClient *)v12 idsKeys];
       v21 = 138543618;
       v22 = v14;
       v23 = 2112;
-      v24 = v15;
+      v24 = idsKeys2;
       _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@Current list of IDS received keys:%@", &v21, 0x16u);
     }
 
     objc_autoreleasePoolPop(v11);
     [(HMDKeyTransferAgentClient *)v12 _saveKeyPlist];
-    v16 = [(HMDKeyTransferAgentClient *)v12 idsKeys];
-    v17 = [v16 count];
+    idsKeys3 = [(HMDKeyTransferAgentClient *)v12 idsKeys];
+    v17 = [idsKeys3 count];
 
     if (v17)
     {
-      v18 = [(HMDKeyTransferAgentClient *)v12 atHomeRetryTimer];
-      [v18 reset];
+      atHomeRetryTimer = [(HMDKeyTransferAgentClient *)v12 atHomeRetryTimer];
+      [atHomeRetryTimer reset];
 
-      v19 = [(HMDKeyTransferAgentClient *)v12 atHomeRetryTimer];
-      [v19 resume];
+      atHomeRetryTimer2 = [(HMDKeyTransferAgentClient *)v12 atHomeRetryTimer];
+      [atHomeRetryTimer2 resume];
     }
   }
 
-  [v4 respondWithPayload:0];
+  [changedCopy respondWithPayload:0];
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleKeyTransferAgentMessage:(id)a3
+- (void)_handleKeyTransferAgentMessage:(id)message
 {
   v57 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [(__CFString *)v4 stringForKey:@"phase"];
+    v9 = [(__CFString *)messageCopy stringForKey:@"phase"];
     *buf = 138543874;
     v52 = v8;
     v53 = 2112;
-    v54 = v4;
+    v54 = messageCopy;
     v55 = 2112;
     v56 = v9;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@Got Message: %@ / %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v10 = [MEMORY[0x277D0F8C0] sharedPowerLogger];
-  v11 = [(__CFString *)v4 stringForKey:@"phase"];
-  [v10 reportIncomingLoxyMessage:v11];
+  mEMORY[0x277D0F8C0] = [MEMORY[0x277D0F8C0] sharedPowerLogger];
+  v11 = [(__CFString *)messageCopy stringForKey:@"phase"];
+  [mEMORY[0x277D0F8C0] reportIncomingLoxyMessage:v11];
 
-  v12 = [(__CFString *)v4 stringForKey:@"phase"];
+  v12 = [(__CFString *)messageCopy stringForKey:@"phase"];
   v13 = [v12 isEqualToString:@"broadcast"];
 
   if (v13)
   {
-    v14 = [(__CFString *)v4 destination];
+    destination = [(__CFString *)messageCopy destination];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = v14;
+      v15 = destination;
     }
 
     else
@@ -276,19 +276,19 @@ void __65__HMDKeyTransferAgentClient_receivedBonjourTXTFrom_withUUIDData___block
 
     if (v16)
     {
-      v17 = [v16 device];
-      v18 = [v17 identifier];
-      v19 = [v18 UUIDString];
+      device = [v16 device];
+      identifier = [device identifier];
+      uUIDString = [identifier UUIDString];
 
-      v20 = [(__CFString *)v4 messagePayload];
-      v21 = [v20 hmf_UUIDForKey:@"data"];
-      v22 = [v21 UUIDString];
+      messagePayload = [(__CFString *)messageCopy messagePayload];
+      v21 = [messagePayload hmf_UUIDForKey:@"data"];
+      uUIDString2 = [v21 UUIDString];
 
       v23 = objc_autoreleasePoolPush();
-      v24 = v6;
+      v24 = selfCopy;
       v25 = HMFGetOSLogHandle();
       v26 = os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT);
-      if (v22)
+      if (uUIDString2)
       {
         if (v26)
         {
@@ -296,23 +296,23 @@ void __65__HMDKeyTransferAgentClient_receivedBonjourTXTFrom_withUUIDData___block
           *buf = 138543874;
           v52 = v27;
           v53 = 2112;
-          v54 = v19;
+          v54 = uUIDString;
           v55 = 2112;
-          v56 = v22;
+          v56 = uUIDString2;
           _os_log_impl(&dword_2531F8000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@HMDHomeManager %@ advertised key transfer UUID %@ (IDS)", buf, 0x20u);
         }
 
         objc_autoreleasePoolPop(v23);
-        v28 = [(HMDKeyTransferAgentClient *)v24 idsKeys];
-        [v28 setObject:v22 forKey:v19];
+        idsKeys = [(HMDKeyTransferAgentClient *)v24 idsKeys];
+        [idsKeys setObject:uUIDString2 forKey:uUIDString];
 
-        v29 = [(HMDKeyTransferAgent *)v24 workQueue];
+        workQueue = [(HMDKeyTransferAgent *)v24 workQueue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __60__HMDKeyTransferAgentClient__handleKeyTransferAgentMessage___block_invoke;
         block[3] = &unk_279735D00;
         block[4] = v24;
-        dispatch_async(v29, block);
+        dispatch_async(workQueue, block);
       }
 
       else
@@ -323,17 +323,17 @@ void __65__HMDKeyTransferAgentClient_receivedBonjourTXTFrom_withUUIDData___block
           *buf = 138543618;
           v52 = v35;
           v53 = 2112;
-          v54 = v19;
+          v54 = uUIDString;
           _os_log_impl(&dword_2531F8000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@HMDHomeManager %@ no longer advertising key transfer UUID (IDS)", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v23);
-        v29 = [(HMDKeyTransferAgentClient *)v24 idsKeys];
-        [v29 removeObjectForKey:v19];
+        workQueue = [(HMDKeyTransferAgentClient *)v24 idsKeys];
+        [workQueue removeObjectForKey:uUIDString];
       }
 
-      v36 = [(HMDKeyTransferAgentClient *)v24 idsKeys];
-      v37 = [v36 writeToFile:@"/var/mobile/Library/homed/com.apple.atvpair.plist" atomically:1];
+      idsKeys2 = [(HMDKeyTransferAgentClient *)v24 idsKeys];
+      v37 = [idsKeys2 writeToFile:@"/var/mobile/Library/homed/com.apple.atvpair.plist" atomically:1];
 
       if ((v37 & 1) == 0)
       {
@@ -353,15 +353,15 @@ void __65__HMDKeyTransferAgentClient_receivedBonjourTXTFrom_withUUIDData___block
         objc_autoreleasePoolPop(v38);
       }
 
-      if (v22)
+      if (uUIDString2)
       {
-        [(HMDKeyTransferAgentClient *)v24 _newDeviceSeen:v19];
+        [(HMDKeyTransferAgentClient *)v24 _newDeviceSeen:uUIDString];
       }
 
       else
       {
-        v42 = [(HMDKeyTransferAgentClient *)v24 pairingWithUUID];
-        v43 = [v42 isEqual:v19];
+        pairingWithUUID = [(HMDKeyTransferAgentClient *)v24 pairingWithUUID];
+        v43 = [pairingWithUUID isEqual:uUIDString];
 
         if (v43)
         {
@@ -383,18 +383,18 @@ void __65__HMDKeyTransferAgentClient_receivedBonjourTXTFrom_withUUIDData___block
       }
     }
 
-    [(__CFString *)v4 respondWithPayload:0];
+    [(__CFString *)messageCopy respondWithPayload:0];
   }
 
   else
   {
     v30 = objc_autoreleasePoolPush();
-    v31 = v6;
+    v31 = selfCopy;
     v32 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
       v33 = HMFGetLogIdentifier();
-      v34 = [(__CFString *)v4 stringForKey:@"phase"];
+      v34 = [(__CFString *)messageCopy stringForKey:@"phase"];
       *buf = 138543618;
       v52 = v33;
       v53 = 2112;
@@ -404,22 +404,22 @@ void __65__HMDKeyTransferAgentClient_receivedBonjourTXTFrom_withUUIDData___block
 
     objc_autoreleasePoolPop(v30);
     v16 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-    [(__CFString *)v4 respondWithError:v16];
+    [(__CFString *)messageCopy respondWithError:v16];
   }
 
   v49 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_restartKeyTransfer:(id)a3
+- (void)_restartKeyTransfer:(id)transfer
 {
   v29 = *MEMORY[0x277D85DE8];
-  v19 = a3;
+  transferCopy = transfer;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [(HMDKeyTransferAgentClient *)self bonjourKeys];
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  bonjourKeys = [(HMDKeyTransferAgentClient *)self bonjourKeys];
+  v5 = [bonjourKeys countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v5)
   {
     v6 = v5;
@@ -430,12 +430,12 @@ void __65__HMDKeyTransferAgentClient_receivedBonjourTXTFrom_withUUIDData___block
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(bonjourKeys);
         }
 
         v9 = *(*(&v20 + 1) + 8 * i);
         v10 = objc_autoreleasePoolPush();
-        v11 = self;
+        selfCopy = self;
         v12 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
@@ -448,10 +448,10 @@ void __65__HMDKeyTransferAgentClient_receivedBonjourTXTFrom_withUUIDData___block
         }
 
         objc_autoreleasePoolPop(v10);
-        if ([(HMDKeyTransferAgentClient *)v11 _newDeviceSeen:v9])
+        if ([(HMDKeyTransferAgentClient *)selfCopy _newDeviceSeen:v9])
         {
           v14 = objc_autoreleasePoolPush();
-          v15 = v11;
+          v15 = selfCopy;
           v16 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
@@ -466,7 +466,7 @@ void __65__HMDKeyTransferAgentClient_receivedBonjourTXTFrom_withUUIDData___block
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v6 = [bonjourKeys countByEnumeratingWithState:&v20 objects:v28 count:16];
       if (v6)
       {
         continue;
@@ -481,18 +481,18 @@ LABEL_15:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__accountChanged:(id)a3
+- (void)__accountChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(HMDKeyTransferAgent *)self workQueue];
+  changedCopy = changed;
+  workQueue = [(HMDKeyTransferAgent *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__HMDKeyTransferAgentClient___accountChanged___block_invoke;
   v7[3] = &unk_2797359B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changedCopy;
+  v6 = changedCopy;
+  dispatch_async(workQueue, v7);
 }
 
 uint64_t __46__HMDKeyTransferAgentClient___accountChanged___block_invoke(uint64_t a1)
@@ -522,19 +522,19 @@ uint64_t __46__HMDKeyTransferAgentClient___accountChanged___block_invoke(uint64_
   return result;
 }
 
-- (void)__accessoryIsReachable:(id)a3
+- (void)__accessoryIsReachable:(id)reachable
 {
-  v4 = a3;
+  reachableCopy = reachable;
   objc_initWeak(&location, self);
-  v5 = [(HMDKeyTransferAgent *)self workQueue];
+  workQueue = [(HMDKeyTransferAgent *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__HMDKeyTransferAgentClient___accessoryIsReachable___block_invoke;
   block[3] = &unk_279732E78;
-  v8 = v4;
-  v6 = v4;
+  v8 = reachableCopy;
+  v6 = reachableCopy;
   objc_copyWeak(&v9, &location);
-  dispatch_async(v5, block);
+  dispatch_async(workQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -560,19 +560,19 @@ void __52__HMDKeyTransferAgentClient___accessoryIsReachable___block_invoke(uint6
   [WeakRetained _restartKeyTransfer:v4];
 }
 
-- (void)__deviceRemovedFromAccount:(id)a3
+- (void)__deviceRemovedFromAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   objc_initWeak(&location, self);
-  v5 = [(HMDKeyTransferAgent *)self workQueue];
+  workQueue = [(HMDKeyTransferAgent *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__HMDKeyTransferAgentClient___deviceRemovedFromAccount___block_invoke;
   block[3] = &unk_279732E78;
-  v8 = v4;
-  v6 = v4;
+  v8 = accountCopy;
+  v6 = accountCopy;
   objc_copyWeak(&v9, &location);
-  dispatch_async(v5, block);
+  dispatch_async(workQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -614,37 +614,37 @@ void __56__HMDKeyTransferAgentClient___deviceRemovedFromAccount___block_invoke(u
   [WeakRetained _device:v5 removedFromAccount:v8];
 }
 
-- (void)_device:(id)a3 removedFromAccount:(id)a4
+- (void)_device:(id)_device removedFromAccount:(id)account
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
-  v9 = [v8 UUIDString];
+  _deviceCopy = _device;
+  accountCopy = account;
+  identifier = [_deviceCopy identifier];
+  uUIDString = [identifier UUIDString];
 
-  if (v6 && v7 && (+[HMDAppleAccountManager sharedManager](HMDAppleAccountManager, "sharedManager"), v10 = objc_claimAutoreleasedReturnValue(), [v10 account], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v7, "isEqual:", v11), v11, v10, (v12 & 1) != 0))
+  if (_deviceCopy && accountCopy && (+[HMDAppleAccountManager sharedManager](HMDAppleAccountManager, "sharedManager"), v10 = objc_claimAutoreleasedReturnValue(), [v10 account], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(accountCopy, "isEqual:", v11), v11, v10, (v12 & 1) != 0))
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [v6 identifier];
-      v18 = [v17 UUIDString];
+      identifier2 = [_deviceCopy identifier];
+      uUIDString2 = [identifier2 UUIDString];
       v35 = 138543618;
       v36 = v16;
       v37 = 2112;
-      v38 = v18;
+      v38 = uUIDString2;
       _os_log_impl(&dword_2531F8000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@Got notification that %@ was removed from the current account", &v35, 0x16u);
     }
 
     objc_autoreleasePoolPop(v13);
-    v19 = [(HMDKeyTransferAgentClient *)v14 pairingWithUUID];
-    v20 = [v19 isEqual:v9];
+    pairingWithUUID = [(HMDKeyTransferAgentClient *)selfCopy pairingWithUUID];
+    v20 = [pairingWithUUID isEqual:uUIDString];
 
     v21 = objc_autoreleasePoolPush();
-    v22 = v14;
+    v22 = selfCopy;
     v23 = HMFGetOSLogHandle();
     v24 = os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT);
     if (v20)
@@ -673,8 +673,8 @@ void __56__HMDKeyTransferAgentClient___deviceRemovedFromAccount___block_invoke(u
       }
 
       objc_autoreleasePoolPop(v21);
-      v34 = [(HMDKeyTransferAgentClient *)v22 idsKeys];
-      [v34 removeObjectForKey:v9];
+      idsKeys = [(HMDKeyTransferAgentClient *)v22 idsKeys];
+      [idsKeys removeObjectForKey:uUIDString];
 
       [(HMDKeyTransferAgentClient *)v22 _saveKeyPlist];
     }
@@ -683,18 +683,18 @@ void __56__HMDKeyTransferAgentClient___deviceRemovedFromAccount___block_invoke(u
   else
   {
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy2 = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
       v30 = HMFGetLogIdentifier();
-      v31 = [v7 shortDescription];
+      shortDescription = [accountCopy shortDescription];
       v35 = 138543874;
       v36 = v30;
       v37 = 2112;
-      v38 = v9;
+      v38 = uUIDString;
       v39 = 2112;
-      v40 = v31;
+      v40 = shortDescription;
       _os_log_impl(&dword_2531F8000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@Device %@ not removed from current account %@.", &v35, 0x20u);
     }
 
@@ -704,19 +704,19 @@ void __56__HMDKeyTransferAgentClient___deviceRemovedFromAccount___block_invoke(u
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__deviceUpdated:(id)a3
+- (void)__deviceUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   objc_initWeak(&location, self);
-  v5 = [(HMDKeyTransferAgent *)self workQueue];
+  workQueue = [(HMDKeyTransferAgent *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__HMDKeyTransferAgentClient___deviceUpdated___block_invoke;
   block[3] = &unk_279732E78;
-  v8 = v4;
-  v6 = v4;
+  v8 = updatedCopy;
+  v6 = updatedCopy;
   objc_copyWeak(&v9, &location);
-  dispatch_async(v5, block);
+  dispatch_async(workQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -743,19 +743,19 @@ void __45__HMDKeyTransferAgentClient___deviceUpdated___block_invoke(uint64_t a1)
   [WeakRetained _device:v4 addedToAccount:v5];
 }
 
-- (void)__deviceAddedToAccount:(id)a3
+- (void)__deviceAddedToAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   objc_initWeak(&location, self);
-  v5 = [(HMDKeyTransferAgent *)self workQueue];
+  workQueue = [(HMDKeyTransferAgent *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__HMDKeyTransferAgentClient___deviceAddedToAccount___block_invoke;
   block[3] = &unk_279732E78;
-  v8 = v4;
-  v6 = v4;
+  v8 = accountCopy;
+  v6 = accountCopy;
   objc_copyWeak(&v9, &location);
-  dispatch_async(v5, block);
+  dispatch_async(workQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -797,18 +797,18 @@ void __52__HMDKeyTransferAgentClient___deviceAddedToAccount___block_invoke(uint6
   [WeakRetained _device:v5 addedToAccount:v8];
 }
 
-- (void)_device:(id)a3 addedToAccount:(id)a4
+- (void)_device:(id)_device addedToAccount:(id)account
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
-  v9 = [v8 UUIDString];
+  _deviceCopy = _device;
+  accountCopy = account;
+  identifier = [_deviceCopy identifier];
+  uUIDString = [identifier UUIDString];
 
-  if (v6 && v7 && (+[HMDAppleAccountManager sharedManager](HMDAppleAccountManager, "sharedManager"), v10 = objc_claimAutoreleasedReturnValue(), [v10 account], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v7, "isEqual:", v11), v11, v10, (v12 & 1) != 0))
+  if (_deviceCopy && accountCopy && (+[HMDAppleAccountManager sharedManager](HMDAppleAccountManager, "sharedManager"), v10 = objc_claimAutoreleasedReturnValue(), [v10 account], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(accountCopy, "isEqual:", v11), v11, v10, (v12 & 1) != 0))
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
@@ -816,29 +816,29 @@ void __52__HMDKeyTransferAgentClient___deviceAddedToAccount___block_invoke(uint6
       v23 = 138543618;
       v24 = v16;
       v25 = 2112;
-      v26 = v9;
+      v26 = uUIDString;
       _os_log_impl(&dword_2531F8000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@Got notification that %@ was added to the current account", &v23, 0x16u);
     }
 
     objc_autoreleasePoolPop(v13);
-    [(HMDKeyTransferAgentClient *)v14 _newDeviceSeen:v9];
+    [(HMDKeyTransferAgentClient *)selfCopy _newDeviceSeen:uUIDString];
   }
 
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy2 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       v20 = HMFGetLogIdentifier();
-      v21 = [v7 shortDescription];
+      shortDescription = [accountCopy shortDescription];
       v23 = 138543874;
       v24 = v20;
       v25 = 2112;
-      v26 = v9;
+      v26 = uUIDString;
       v27 = 2112;
-      v28 = v21;
+      v28 = shortDescription;
       _os_log_impl(&dword_2531F8000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@Device %@ not added / updated from current account %@.", &v23, 0x20u);
     }
 
@@ -848,18 +848,18 @@ void __52__HMDKeyTransferAgentClient___deviceAddedToAccount___block_invoke(uint6
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_newDeviceSeen:(id)a3
+- (BOOL)_newDeviceSeen:(id)seen
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDKeyTransferAgentClient *)self bonjourKeys];
-  v6 = [v5 objectForKey:v4];
+  seenCopy = seen;
+  bonjourKeys = [(HMDKeyTransferAgentClient *)self bonjourKeys];
+  v6 = [bonjourKeys objectForKey:seenCopy];
 
-  v7 = [(HMDKeyTransferAgentClient *)self idsKeys];
-  v8 = [v7 objectForKey:v4];
+  idsKeys = [(HMDKeyTransferAgentClient *)self idsKeys];
+  v8 = [idsKeys objectForKey:seenCopy];
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
   if (!v6)
@@ -875,7 +875,7 @@ void __52__HMDKeyTransferAgentClient___deviceAddedToAccount___block_invoke(uint6
     objc_autoreleasePoolPop(v9);
     if (v8)
     {
-      [(HMDKeyTransferAgentClient *)v10 setResidentProvisioningStatus:2];
+      [(HMDKeyTransferAgentClient *)selfCopy setResidentProvisioningStatus:2];
     }
 
     goto LABEL_19;
@@ -891,7 +891,7 @@ void __52__HMDKeyTransferAgentClient___deviceAddedToAccount___block_invoke(uint6
 
   objc_autoreleasePoolPop(v9);
   v14 = objc_autoreleasePoolPush();
-  v15 = v10;
+  v15 = selfCopy;
   v16 = HMFGetOSLogHandle();
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
   if (!v8)
@@ -948,7 +948,7 @@ LABEL_19:
     goto LABEL_18;
   }
 
-  [(HMDKeyTransferAgentClient *)v15 _startPairingWithKeyUUID:v8 forTarget:v4];
+  [(HMDKeyTransferAgentClient *)v15 _startPairingWithKeyUUID:v8 forTarget:seenCopy];
   v19 = 1;
 LABEL_20:
 
@@ -956,25 +956,25 @@ LABEL_20:
   return v19;
 }
 
-- (void)_sendATVPrivateKey:(id)a3 withDevice:(id)a4 retry:(unint64_t)a5
+- (void)_sendATVPrivateKey:(id)key withDevice:(id)device retry:(unint64_t)retry
 {
   v50 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v36 = [v7 hmf_stringForKey:@"kControllerPairingNameKey"];
-  v35 = [v7 hmf_dataForKey:@"kControllerKeyPairKey"];
+  keyCopy = key;
+  deviceCopy = device;
+  v36 = [keyCopy hmf_stringForKey:@"kControllerPairingNameKey"];
+  v35 = [keyCopy hmf_dataForKey:@"kControllerKeyPairKey"];
   v9 = [objc_alloc(MEMORY[0x277D0F8B0]) initWithPairingKeyData:v35];
   v10 = [objc_alloc(MEMORY[0x277CFEC20]) initWithIdentifier:v36 publicKey:v9 privateKey:0 permissions:0];
   if (v10)
   {
     v11 = +[HMDIdentityRegistry sharedRegistry];
-    [v11 registerIdentity:v10 device:v8 object:self];
+    [v11 registerIdentity:v10 device:deviceCopy object:self];
 
-    v12 = [MEMORY[0x277CFEC78] systemStore];
+    systemStore = [MEMORY[0x277CFEC78] systemStore];
     v43 = 0;
     v44 = 0;
     v42 = 0;
-    v13 = [v12 getControllerPublicKey:0 secretKey:0 keyPair:&v44 username:&v43 allowCreation:0 error:&v42];
+    v13 = [systemStore getControllerPublicKey:0 secretKey:0 keyPair:&v44 username:&v43 allowCreation:0 error:&v42];
     v33 = v44;
     v14 = v43;
     v34 = v42;
@@ -982,8 +982,8 @@ LABEL_20:
     if (v13)
     {
       v15 = [HMDRemoteDeviceMessageDestination alloc];
-      v16 = [(HMDKeyTransferAgent *)self uuid];
-      v31 = [(HMDRemoteDeviceMessageDestination *)v15 initWithTarget:v16 device:v8];
+      uuid = [(HMDKeyTransferAgent *)self uuid];
+      v31 = [(HMDRemoteDeviceMessageDestination *)v15 initWithTarget:uuid device:deviceCopy];
 
       v17 = [HMDRemoteMessage alloc];
       v45[0] = @"phase";
@@ -1002,14 +1002,14 @@ LABEL_20:
       v37[3] = &unk_2797282E8;
       v37[4] = self;
       objc_copyWeak(v41, location);
-      v41[1] = a5;
-      v38 = v8;
-      v39 = v7;
+      v41[1] = retry;
+      v38 = deviceCopy;
+      v39 = keyCopy;
       v40 = v10;
       [(HMDRemoteMessage *)v19 setResponseHandler:v37];
-      v20 = [(HMDKeyTransferAgent *)self homeManager];
-      v21 = [v20 messageDispatcher];
-      [v21 sendMessage:v19 completionHandler:0];
+      homeManager = [(HMDKeyTransferAgent *)self homeManager];
+      messageDispatcher = [homeManager messageDispatcher];
+      [messageDispatcher sendMessage:v19 completionHandler:0];
 
       [(HMDKeyTransferAgentClient *)self setResidentProvisioningStatus:0];
       objc_destroyWeak(v41);
@@ -1019,7 +1019,7 @@ LABEL_20:
     else
     {
       v26 = objc_autoreleasePoolPush();
-      v27 = self;
+      selfCopy = self;
       v28 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
@@ -1032,14 +1032,14 @@ LABEL_20:
       }
 
       objc_autoreleasePoolPop(v26);
-      [(HMDKeyTransferAgentClient *)v27 _endPairingWithError:v34 suspendingTimer:1];
+      [(HMDKeyTransferAgentClient *)selfCopy _endPairingWithError:v34 suspendingTimer:1];
     }
   }
 
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy2 = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
@@ -1051,7 +1051,7 @@ LABEL_20:
 
     objc_autoreleasePoolPop(v22);
     v14 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:3 userInfo:0];
-    [(HMDKeyTransferAgentClient *)v23 _endPairingWithError:v14 suspendingTimer:1];
+    [(HMDKeyTransferAgentClient *)selfCopy2 _endPairingWithError:v14 suspendingTimer:1];
   }
 
   v30 = *MEMORY[0x277D85DE8];
@@ -1167,24 +1167,24 @@ void __65__HMDKeyTransferAgentClient__sendATVPrivateKey_withDevice_retry___block
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendIOSPublicKey:(id)a3 withDevice:(id)a4
+- (void)_sendIOSPublicKey:(id)key withDevice:(id)device
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDKeyTransferAgent *)self homeManager];
+  keyCopy = key;
+  deviceCopy = device;
+  homeManager = [(HMDKeyTransferAgent *)self homeManager];
   v33 = 0;
   v34 = 0;
   v32 = 0;
-  v9 = [v8 getOrCreateControllerPublicKey:&v34 controllerUsername:&v33 error:&v32];
+  v9 = [homeManager getOrCreateControllerPublicKey:&v34 controllerUsername:&v33 error:&v32];
   v10 = v34;
   v11 = v33;
   v12 = v32;
   if (v9)
   {
     v13 = [HMDRemoteDeviceMessageDestination alloc];
-    v14 = [(HMDKeyTransferAgent *)self uuid];
-    v15 = [(HMDRemoteDeviceMessageDestination *)v13 initWithTarget:v14 device:v7];
+    uuid = [(HMDKeyTransferAgent *)self uuid];
+    v15 = [(HMDRemoteDeviceMessageDestination *)v13 initWithTarget:uuid device:deviceCopy];
 
     v16 = [HMDRemoteMessage alloc];
     v35[0] = @"phase";
@@ -1201,12 +1201,12 @@ void __65__HMDKeyTransferAgentClient__sendATVPrivateKey_withDevice_retry___block
     v26 = 3221225472;
     v27 = __58__HMDKeyTransferAgentClient__sendIOSPublicKey_withDevice___block_invoke;
     v28 = &unk_279735248;
-    v29 = self;
+    selfCopy = self;
     objc_copyWeak(&v31, location);
-    v30 = v7;
+    v30 = deviceCopy;
     [(HMDRemoteMessage *)v18 setResponseHandler:&v25];
-    v19 = [v8 messageDispatcher];
-    [v19 sendMessage:v18];
+    messageDispatcher = [homeManager messageDispatcher];
+    [messageDispatcher sendMessage:v18];
 
     objc_destroyWeak(&v31);
     objc_destroyWeak(location);
@@ -1215,7 +1215,7 @@ void __65__HMDKeyTransferAgentClient__sendATVPrivateKey_withDevice_retry___block
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy2 = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -1228,7 +1228,7 @@ void __65__HMDKeyTransferAgentClient__sendATVPrivateKey_withDevice_retry___block
     }
 
     objc_autoreleasePoolPop(v20);
-    [(HMDKeyTransferAgentClient *)v21 _endPairingWithError:v12 suspendingTimer:1];
+    [(HMDKeyTransferAgentClient *)selfCopy2 _endPairingWithError:v12 suspendingTimer:1];
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -1295,20 +1295,20 @@ void __58__HMDKeyTransferAgentClient__sendIOSPublicKey_withDevice___block_invoke
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_havePairVerifiedAccessoryWithKeyUUID:(id)a3 forDevice:(id)a4
+- (void)_havePairVerifiedAccessoryWithKeyUUID:(id)d forDevice:(id)device
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  deviceCopy = device;
   v8 = [HMDRemoteDeviceMessageDestination alloc];
-  v9 = [(HMDKeyTransferAgent *)self uuid];
-  v10 = [(HMDRemoteDeviceMessageDestination *)v8 initWithTarget:v9 device:v7];
+  uuid = [(HMDKeyTransferAgent *)self uuid];
+  v10 = [(HMDRemoteDeviceMessageDestination *)v8 initWithTarget:uuid device:deviceCopy];
 
   v11 = [HMDRemoteMessage alloc];
   v25[0] = @"phase";
   v25[1] = @"data";
   v26[0] = @"ping";
-  v26[1] = v6;
+  v26[1] = dCopy;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:2];
   v13 = [(HMDRemoteMessage *)v11 initWithName:@"kKeyTransferAgentKey" destination:v10 payload:v12 type:0 timeout:0 secure:2 restriction:0.0];
 
@@ -1318,12 +1318,12 @@ void __58__HMDKeyTransferAgentClient__sendIOSPublicKey_withDevice___block_invoke
   v20 = __77__HMDKeyTransferAgentClient__havePairVerifiedAccessoryWithKeyUUID_forDevice___block_invoke;
   v21 = &unk_279733AE8;
   objc_copyWeak(&v23, &location);
-  v14 = v7;
+  v14 = deviceCopy;
   v22 = v14;
   [(HMDRemoteMessage *)v13 setResponseHandler:&v18];
   v15 = [(HMDKeyTransferAgent *)self homeManager:v18];
-  v16 = [v15 messageDispatcher];
-  [v16 sendMessage:v13 completionHandler:0];
+  messageDispatcher = [v15 messageDispatcher];
+  [messageDispatcher sendMessage:v13 completionHandler:0];
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(&location);
@@ -1393,45 +1393,45 @@ void __77__HMDKeyTransferAgentClient__havePairVerifiedAccessoryWithKeyUUID_forDe
   }
 }
 
-- (void)_haveVerifiedTwoFactorAuthenticationWithKeyUUID:(id)a3 forTarget:(id)a4
+- (void)_haveVerifiedTwoFactorAuthenticationWithKeyUUID:(id)d forTarget:(id)target
 {
   v113 = *MEMORY[0x277D85DE8];
-  v83 = a3;
-  v86 = a4;
-  v85 = [MEMORY[0x277CBEB18] array];
-  v84 = [MEMORY[0x277CBEB18] array];
+  dCopy = d;
+  targetCopy = target;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v102 = 0u;
   v103 = 0u;
   v104 = 0u;
   v105 = 0u;
   v5 = +[HMDAppleAccountManager sharedManager];
-  v6 = [v5 account];
-  v7 = [v6 devices];
+  account = [v5 account];
+  devices = [account devices];
 
-  obj = v7;
-  v8 = [v7 countByEnumeratingWithState:&v102 objects:v112 count:16];
+  obj = devices;
+  v8 = [devices countByEnumeratingWithState:&v102 objects:v112 count:16];
   if (!v8)
   {
 LABEL_14:
 
 LABEL_52:
     v67 = objc_autoreleasePoolPush();
-    v68 = self;
+    selfCopy = self;
     v69 = HMFGetOSLogHandle();
-    v33 = v83;
+    v33 = dCopy;
     if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
     {
       v70 = HMFGetLogIdentifier();
       *buf = 138543618;
       v109 = v70;
       v110 = 2112;
-      v111 = v86;
+      v111 = targetCopy;
       _os_log_impl(&dword_2531F8000, v69, OS_LOG_TYPE_ERROR, "%{public}@The device with uuid %@ does not belong to the current user (waiting for IDS notification).", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v67);
     v65 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:10 userInfo:0];
-    [(HMDKeyTransferAgentClient *)v68 _endPairingWithError:v65 suspendingTimer:1];
+    [(HMDKeyTransferAgentClient *)selfCopy _endPairingWithError:v65 suspendingTimer:1];
     goto LABEL_59;
   }
 
@@ -1448,31 +1448,31 @@ LABEL_3:
 
     v12 = *(*(&v102 + 1) + 8 * v11);
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [v12 identifier];
-      v18 = [v17 UUIDString];
+      identifier = [v12 identifier];
+      uUIDString = [identifier UUIDString];
       *buf = 138543618;
       v109 = v16;
       v110 = 2112;
-      v111 = v18;
+      v111 = uUIDString;
       _os_log_impl(&dword_2531F8000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@Checking ownership of %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v13);
-    v19 = [v12 capabilities];
-    if (([v19 supportsKeyTransferServer] & 1) == 0)
+    capabilities = [v12 capabilities];
+    if (([capabilities supportsKeyTransferServer] & 1) == 0)
     {
 
       goto LABEL_12;
     }
 
-    v20 = [v12 identifier];
-    v21 = [v20 UUIDString];
-    v22 = [v86 isEqual:v21];
+    identifier2 = [v12 identifier];
+    uUIDString2 = [identifier2 UUIDString];
+    v22 = [targetCopy isEqual:uUIDString2];
 
     if (v22)
     {
@@ -1493,17 +1493,17 @@ LABEL_12:
   }
 
   v23 = objc_autoreleasePoolPush();
-  v24 = v14;
+  v24 = selfCopy2;
   v25 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
     v27 = HMFGetLogIdentifier();
-    v28 = [v12 identifier];
-    v29 = [v28 UUIDString];
+    identifier3 = [v12 identifier];
+    uUIDString3 = [identifier3 UUIDString];
     *buf = 138543618;
     v109 = v27;
     v110 = 2112;
-    v111 = v29;
+    v111 = uUIDString3;
     _os_log_impl(&dword_2531F8000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@We own device %@", buf, 0x16u);
   }
 
@@ -1519,15 +1519,15 @@ LABEL_12:
   v101 = 0u;
   v99 = 0u;
   v98 = 0u;
-  v31 = [(HMDKeyTransferAgent *)v24 homeManager];
-  v32 = [v31 homes];
+  homeManager = [(HMDKeyTransferAgent *)v24 homeManager];
+  homes = [homeManager homes];
 
-  v33 = v83;
-  v81 = [v32 countByEnumeratingWithState:&v98 objects:v107 count:16];
+  v33 = dCopy;
+  v81 = [homes countByEnumeratingWithState:&v98 objects:v107 count:16];
   if (v81)
   {
     v82 = *v99;
-    v79 = v32;
+    v79 = homes;
     v80 = v30;
     v78 = v24;
     do
@@ -1537,27 +1537,27 @@ LABEL_12:
       {
         if (*v99 != v82)
         {
-          objc_enumerationMutation(v32);
+          objc_enumerationMutation(homes);
         }
 
         obja = v34;
         v35 = *(*(&v98 + 1) + 8 * v34);
-        v36 = [v35 isOwnerUser];
+        isOwnerUser = [v35 isOwnerUser];
         v37 = objc_autoreleasePoolPush();
         v38 = v24;
         v39 = HMFGetOSLogHandle();
         v40 = os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT);
-        if ((v36 & 1) == 0)
+        if ((isOwnerUser & 1) == 0)
         {
           if (v40)
           {
             v62 = HMFGetLogIdentifier();
-            v63 = [v35 uuid];
-            v64 = [v63 UUIDString];
+            uuid = [v35 uuid];
+            uUIDString4 = [uuid UUIDString];
             *buf = 138543618;
             v109 = v62;
             v110 = 2112;
-            v111 = v64;
+            v111 = uUIDString4;
             _os_log_impl(&dword_2531F8000, v39, OS_LOG_TYPE_DEFAULT, "%{public}@We do not own the home %@", buf, 0x16u);
           }
 
@@ -1568,12 +1568,12 @@ LABEL_12:
         if (v40)
         {
           v41 = HMFGetLogIdentifier();
-          v42 = [v35 uuid];
-          v43 = [v42 UUIDString];
+          uuid2 = [v35 uuid];
+          uUIDString5 = [uuid2 UUIDString];
           *buf = 138543618;
           v109 = v41;
           v110 = 2112;
-          v111 = v43;
+          v111 = uUIDString5;
           _os_log_impl(&dword_2531F8000, v39, OS_LOG_TYPE_DEFAULT, "%{public}@We own the home %@", buf, 0x16u);
         }
 
@@ -1582,8 +1582,8 @@ LABEL_12:
         v97 = 0u;
         v94 = 0u;
         v95 = 0u;
-        v44 = [v35 accessories];
-        v45 = [v44 copy];
+        accessories = [v35 accessories];
+        v45 = [accessories copy];
 
         v90 = v45;
         v46 = [v45 countByEnumeratingWithState:&v94 objects:v106 count:16];
@@ -1627,19 +1627,19 @@ LABEL_12:
                 if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
                 {
                   v74 = HMFGetLogIdentifier();
-                  v75 = [v52 uuid];
-                  v76 = [v75 UUIDString];
+                  uuid3 = [v52 uuid];
+                  uUIDString6 = [uuid3 UUIDString];
                   *buf = 138543618;
                   v109 = v74;
                   v110 = 2112;
-                  v111 = v76;
+                  v111 = uUIDString6;
                   _os_log_impl(&dword_2531F8000, v73, OS_LOG_TYPE_DEFAULT, "%{public}@%@ has an open pair verify session (how lucky).", buf, 0x16u);
                 }
 
                 objc_autoreleasePoolPop(v71);
-                v33 = v83;
+                v33 = dCopy;
                 v65 = v80;
-                [(HMDKeyTransferAgentClient *)v72 _havePairVerifiedAccessoryWithKeyUUID:v83 forDevice:v80];
+                [(HMDKeyTransferAgentClient *)v72 _havePairVerifiedAccessoryWithKeyUUID:dCopy forDevice:v80];
 
                 v66 = v79;
                 goto LABEL_58;
@@ -1647,19 +1647,19 @@ LABEL_12:
 
               if ([v52 linkSpeed] < 0)
               {
-                [v84 addObject:v52];
+                [array2 addObject:v52];
                 v53 = objc_autoreleasePoolPush();
                 v61 = v38;
                 v55 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
                 {
                   v56 = HMFGetLogIdentifier();
-                  v57 = [v50 uuid];
-                  v58 = [v57 UUIDString];
+                  uuid4 = [v50 uuid];
+                  uUIDString7 = [uuid4 UUIDString];
                   *buf = 138543618;
                   v109 = v56;
                   v110 = 2112;
-                  v111 = v58;
+                  v111 = uUIDString7;
                   v59 = v55;
                   v60 = "%{public}@%@ is a slow accessory.";
 LABEL_41:
@@ -1669,19 +1669,19 @@ LABEL_41:
 
               else
               {
-                [v85 addObject:v52];
+                [array addObject:v52];
                 v53 = objc_autoreleasePoolPush();
                 v54 = v38;
                 v55 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
                 {
                   v56 = HMFGetLogIdentifier();
-                  v57 = [v50 uuid];
-                  v58 = [v57 UUIDString];
+                  uuid4 = [v50 uuid];
+                  uUIDString7 = [uuid4 UUIDString];
                   *buf = 138543618;
                   v109 = v56;
                   v110 = 2112;
-                  v111 = v58;
+                  v111 = uUIDString7;
                   v59 = v55;
                   v60 = "%{public}@%@ is a fast accessory.";
                   goto LABEL_41;
@@ -1703,8 +1703,8 @@ LABEL_41:
 
 LABEL_45:
 
-        v33 = v83;
-        v32 = v79;
+        v33 = dCopy;
+        homes = v79;
         v30 = v80;
         v24 = v78;
 LABEL_49:
@@ -1712,13 +1712,13 @@ LABEL_49:
       }
 
       while (obja + 1 != v81);
-      v81 = [v32 countByEnumeratingWithState:&v98 objects:v107 count:16];
+      v81 = [homes countByEnumeratingWithState:&v98 objects:v107 count:16];
     }
 
     while (v81);
   }
 
-  [v85 addObjectsFromArray:v84];
+  [array addObjectsFromArray:array2];
   v91[0] = MEMORY[0x277D85DD0];
   v91[1] = 3221225472;
   v91[2] = __87__HMDKeyTransferAgentClient__haveVerifiedTwoFactorAuthenticationWithKeyUUID_forTarget___block_invoke;
@@ -1727,7 +1727,7 @@ LABEL_49:
   v92 = v33;
   v93 = v30;
   v65 = v30;
-  [(HMDKeyTransferAgentClient *)v24 _tryPairingWithAccessories:v85 completionHandler:v91];
+  [(HMDKeyTransferAgentClient *)v24 _tryPairingWithAccessories:array completionHandler:v91];
 
   v66 = v92;
 LABEL_58:
@@ -1790,29 +1790,29 @@ void __87__HMDKeyTransferAgentClient__haveVerifiedTwoFactorAuthenticationWithKey
   }
 }
 
-- (void)_tryPairingWithAccessories:(id)a3 completionHandler:(id)a4
+- (void)_tryPairingWithAccessories:(id)accessories completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 firstObject];
-  if (v8)
+  accessoriesCopy = accessories;
+  handlerCopy = handler;
+  firstObject = [accessoriesCopy firstObject];
+  if (firstObject)
   {
-    [v6 removeObject:v8];
+    [accessoriesCopy removeObject:firstObject];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __74__HMDKeyTransferAgentClient__tryPairingWithAccessories_completionHandler___block_invoke;
     v10[3] = &unk_279728298;
     v10[4] = self;
-    v11 = v8;
-    v12 = v6;
-    v13 = v7;
+    v11 = firstObject;
+    v12 = accessoriesCopy;
+    v13 = handlerCopy;
     [v11 verifyPairingWithCompletionHandler:v10];
   }
 
   else
   {
     v9 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D0F1A0] code:2 userInfo:0];
-    (*(v7 + 2))(v7, v9);
+    (*(handlerCopy + 2))(handlerCopy, v9);
   }
 }
 
@@ -1876,82 +1876,82 @@ void __74__HMDKeyTransferAgentClient__tryPairingWithAccessories_completionHandle
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_tfaVerificationCompleteForKeyUUID:(id)a3 forTarget:(id)a4
+- (void)_tfaVerificationCompleteForKeyUUID:(id)d forTarget:(id)target
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  targetCopy = target;
   if ([(HMDKeyTransferAgentClient *)self tfaState]== 1)
   {
-    v8 = [(HMDKeyTransferAgentClient *)self atHomeRetryTimer];
-    [v8 suspend];
+    atHomeRetryTimer = [(HMDKeyTransferAgentClient *)self atHomeRetryTimer];
+    [atHomeRetryTimer suspend];
 
-    v9 = [(HMDKeyTransferAgent *)self homeManager];
-    [v9 startLocalTransport];
+    homeManager = [(HMDKeyTransferAgent *)self homeManager];
+    [homeManager startLocalTransport];
 
     [(HMDKeyTransferAgentClient *)self setResidentProvisioningStatus:[(HMDKeyTransferAgentClient *)self residentProvisioningStatus]& 0xFFFFFFFFFFFFFFFELL];
     v10 = dispatch_time(0, 20000000000);
-    v11 = [(HMDKeyTransferAgent *)self workQueue];
+    workQueue = [(HMDKeyTransferAgent *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __74__HMDKeyTransferAgentClient__tfaVerificationCompleteForKeyUUID_forTarget___block_invoke;
     block[3] = &unk_279734960;
     block[4] = self;
-    v15 = v6;
-    v16 = v7;
-    dispatch_after(v10, v11, block);
+    v15 = dCopy;
+    v16 = targetCopy;
+    dispatch_after(v10, workQueue, block);
   }
 
   else
   {
     [(HMDKeyTransferAgentClient *)self setResidentProvisioningStatus:[(HMDKeyTransferAgentClient *)self residentProvisioningStatus]| 1];
-    v12 = [(HMDKeyTransferAgentClient *)self atHomeRetryTimer];
-    [v12 resume];
+    atHomeRetryTimer2 = [(HMDKeyTransferAgentClient *)self atHomeRetryTimer];
+    [atHomeRetryTimer2 resume];
 
     v13 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:10 userInfo:0];
     [(HMDKeyTransferAgentClient *)self _endPairingWithError:v13 suspendingTimer:0];
   }
 }
 
-- (void)_startPairingWithKeyUUID:(id)a3 forTarget:(id)a4
+- (void)_startPairingWithKeyUUID:(id)d forTarget:(id)target
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDKeyTransferAgentClient *)self pairingWithUUID];
+  dCopy = d;
+  targetCopy = target;
+  pairingWithUUID = [(HMDKeyTransferAgentClient *)self pairingWithUUID];
 
-  if (v8)
+  if (pairingWithUUID)
   {
-    v9 = [(HMDKeyTransferAgentClient *)self pairingWithUUID];
-    v10 = [v9 isEqual:v7];
+    pairingWithUUID2 = [(HMDKeyTransferAgentClient *)self pairingWithUUID];
+    v10 = [pairingWithUUID2 isEqual:targetCopy];
 
     if ((v10 & 1) == 0)
     {
       v11 = objc_autoreleasePoolPush();
-      v12 = self;
+      selfCopy = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         v14 = HMFGetLogIdentifier();
-        v15 = [(HMDKeyTransferAgentClient *)v12 pairingWithUUID];
+        pairingWithUUID3 = [(HMDKeyTransferAgentClient *)selfCopy pairingWithUUID];
         *buf = 138543874;
         v28 = v14;
         v29 = 2112;
-        v30 = v15;
+        v30 = pairingWithUUID3;
         v31 = 2112;
-        v32 = v7;
+        v32 = targetCopy;
         _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_ERROR, "%{public}@Currently in the middle of processing a request from %@ (queueing request from %@)", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v11);
-      v16 = [(HMDKeyTransferAgentClient *)v12 targetsToProcess];
-      [v16 addObject:v7];
+      targetsToProcess = [(HMDKeyTransferAgentClient *)selfCopy targetsToProcess];
+      [targetsToProcess addObject:targetCopy];
     }
   }
 
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy2 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
@@ -1962,25 +1962,25 @@ void __74__HMDKeyTransferAgentClient__tryPairingWithAccessories_completionHandle
     }
 
     objc_autoreleasePoolPop(v17);
-    [(HMDKeyTransferAgentClient *)v18 setPairingWithUUID:v7];
-    if ([(HMDKeyTransferAgentClient *)v18 tfaState])
+    [(HMDKeyTransferAgentClient *)selfCopy2 setPairingWithUUID:targetCopy];
+    if ([(HMDKeyTransferAgentClient *)selfCopy2 tfaState])
     {
-      [(HMDKeyTransferAgentClient *)v18 _tfaVerificationCompleteForKeyUUID:v6 forTarget:v7];
+      [(HMDKeyTransferAgentClient *)selfCopy2 _tfaVerificationCompleteForKeyUUID:dCopy forTarget:targetCopy];
     }
 
     else
     {
-      v21 = [(HMDKeyTransferAgentClient *)v18 atHomeRetryTimer];
-      [v21 suspend];
+      atHomeRetryTimer = [(HMDKeyTransferAgentClient *)selfCopy2 atHomeRetryTimer];
+      [atHomeRetryTimer suspend];
 
-      objc_initWeak(buf, v18);
+      objc_initWeak(buf, selfCopy2);
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __64__HMDKeyTransferAgentClient__startPairingWithKeyUUID_forTarget___block_invoke;
       v23[3] = &unk_27972F0B8;
       objc_copyWeak(&v26, buf);
-      v24 = v6;
-      v25 = v7;
+      v24 = dCopy;
+      v25 = targetCopy;
       [HMDRemoteLoginUtilities fetchIsTwoFactorAuthenticationEnabledForAccountWithReason:@"Pairing with Apple TV" completionHandler:v23];
 
       objc_destroyWeak(&v26);
@@ -2032,15 +2032,15 @@ uint64_t __64__HMDKeyTransferAgentClient__startPairingWithKeyUUID_forTarget___bl
   return [v5 _tfaVerificationCompleteForKeyUUID:v6 forTarget:v7];
 }
 
-- (void)_endPairingWithError:(id)a3 suspendingTimer:(BOOL)a4
+- (void)_endPairingWithError:(id)error suspendingTimer:(BOOL)timer
 {
-  v4 = a4;
+  timerCopy = timer;
   v45 = *MEMORY[0x277D85DE8];
-  v35 = a3;
-  if (v35)
+  errorCopy = error;
+  if (errorCopy)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -2048,7 +2048,7 @@ uint64_t __64__HMDKeyTransferAgentClient__startPairingWithKeyUUID_forTarget___bl
       *buf = 138543618;
       v42 = v9;
       v43 = 2112;
-      v44 = v35;
+      v44 = errorCopy;
       _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@Pairing ended in failure: %@", buf, 0x16u);
     }
 
@@ -2057,11 +2057,11 @@ uint64_t __64__HMDKeyTransferAgentClient__startPairingWithKeyUUID_forTarget___bl
 
   else
   {
-    v10 = [(HMDKeyTransferAgentClient *)self atHomeRetryTimer];
-    [v10 reset];
+    atHomeRetryTimer = [(HMDKeyTransferAgentClient *)self atHomeRetryTimer];
+    [atHomeRetryTimer reset];
 
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -2072,44 +2072,44 @@ uint64_t __64__HMDKeyTransferAgentClient__startPairingWithKeyUUID_forTarget___bl
     }
 
     objc_autoreleasePoolPop(v11);
-    v15 = [(HMDKeyTransferAgentClient *)v12 pairingWithUUID];
+    pairingWithUUID = [(HMDKeyTransferAgentClient *)selfCopy2 pairingWithUUID];
 
-    if (v15)
+    if (pairingWithUUID)
     {
-      v16 = [(HMDKeyTransferAgentClient *)v12 bonjourKeys];
-      v17 = [(HMDKeyTransferAgentClient *)v12 pairingWithUUID];
-      [v16 removeObjectForKey:v17];
+      bonjourKeys = [(HMDKeyTransferAgentClient *)selfCopy2 bonjourKeys];
+      pairingWithUUID2 = [(HMDKeyTransferAgentClient *)selfCopy2 pairingWithUUID];
+      [bonjourKeys removeObjectForKey:pairingWithUUID2];
 
-      v18 = [(HMDKeyTransferAgentClient *)v12 idsKeys];
-      v19 = [(HMDKeyTransferAgentClient *)v12 pairingWithUUID];
-      [v18 removeObjectForKey:v19];
+      idsKeys = [(HMDKeyTransferAgentClient *)selfCopy2 idsKeys];
+      pairingWithUUID3 = [(HMDKeyTransferAgentClient *)selfCopy2 pairingWithUUID];
+      [idsKeys removeObjectForKey:pairingWithUUID3];
     }
 
-    [(HMDKeyTransferAgentClient *)v12 _saveKeyPlist];
+    [(HMDKeyTransferAgentClient *)selfCopy2 _saveKeyPlist];
   }
 
-  v20 = [(HMDKeyTransferAgentClient *)self pairingWithUUID];
+  pairingWithUUID4 = [(HMDKeyTransferAgentClient *)self pairingWithUUID];
 
-  if (v20)
+  if (pairingWithUUID4)
   {
-    v21 = [(HMDKeyTransferAgentClient *)self targetsToProcess];
-    v22 = [(HMDKeyTransferAgentClient *)self pairingWithUUID];
-    [v21 removeObject:v22];
+    targetsToProcess = [(HMDKeyTransferAgentClient *)self targetsToProcess];
+    pairingWithUUID5 = [(HMDKeyTransferAgentClient *)self pairingWithUUID];
+    [targetsToProcess removeObject:pairingWithUUID5];
   }
 
   [(HMDKeyTransferAgentClient *)self setPairingWithUUID:0];
-  if (v4)
+  if (timerCopy)
   {
-    v23 = [(HMDKeyTransferAgentClient *)self atHomeRetryTimer];
-    [v23 suspend];
+    atHomeRetryTimer2 = [(HMDKeyTransferAgentClient *)self atHomeRetryTimer];
+    [atHomeRetryTimer2 suspend];
   }
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v24 = [(HMDKeyTransferAgentClient *)self targetsToProcess];
-  v25 = [v24 countByEnumeratingWithState:&v36 objects:v40 count:16];
+  targetsToProcess2 = [(HMDKeyTransferAgentClient *)self targetsToProcess];
+  v25 = [targetsToProcess2 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v25)
   {
     v26 = v25;
@@ -2120,12 +2120,12 @@ LABEL_16:
     {
       if (*v37 != v27)
       {
-        objc_enumerationMutation(v24);
+        objc_enumerationMutation(targetsToProcess2);
       }
 
       v29 = *(*(&v36 + 1) + 8 * v28);
       v30 = objc_autoreleasePoolPush();
-      v31 = self;
+      selfCopy3 = self;
       v32 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
@@ -2138,14 +2138,14 @@ LABEL_16:
       }
 
       objc_autoreleasePoolPop(v30);
-      if ([(HMDKeyTransferAgentClient *)v31 _newDeviceSeen:v29])
+      if ([(HMDKeyTransferAgentClient *)selfCopy3 _newDeviceSeen:v29])
       {
         break;
       }
 
       if (v26 == ++v28)
       {
-        v26 = [v24 countByEnumeratingWithState:&v36 objects:v40 count:16];
+        v26 = [targetsToProcess2 countByEnumeratingWithState:&v36 objects:v40 count:16];
         if (v26)
         {
           goto LABEL_16;
@@ -2159,14 +2159,14 @@ LABEL_16:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_beginBonjourResolution:(BOOL)a3
+- (void)_beginBonjourResolution:(BOOL)resolution
 {
-  v3 = a3;
+  resolutionCopy = resolution;
   v27 = *MEMORY[0x277D85DE8];
   if ([(HMDKeyTransferAgentClient *)self resolutionInProgress])
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy2 = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
@@ -2185,12 +2185,12 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v12 = [(HMDKeyTransferAgentClient *)self serviceBrowser];
+  serviceBrowser = [(HMDKeyTransferAgentClient *)self serviceBrowser];
 
-  if (!v12)
+  if (!serviceBrowser)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy2 = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -2211,10 +2211,10 @@ LABEL_12:
 
   [(HMDKeyTransferAgentClient *)self setResolutionInProgress:1];
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy3 = self;
   v15 = HMFGetOSLogHandle();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG);
-  if (v3)
+  if (resolutionCopy)
   {
     if (v16)
     {
@@ -2228,13 +2228,13 @@ LABEL_12:
 
     objc_autoreleasePoolPop(v13);
     v18 = dispatch_time(0, 600000000000);
-    v19 = [(HMDKeyTransferAgent *)v14 workQueue];
+    workQueue = [(HMDKeyTransferAgent *)selfCopy3 workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __53__HMDKeyTransferAgentClient__beginBonjourResolution___block_invoke;
     block[3] = &unk_279735D00;
-    block[4] = v14;
-    dispatch_after(v18, v19, block);
+    block[4] = selfCopy3;
+    dispatch_after(v18, workQueue, block);
   }
 
   else
@@ -2248,7 +2248,7 @@ LABEL_12:
     }
 
     objc_autoreleasePoolPop(v13);
-    [(HMDKeyTransferAgentClient *)v14 _reallyBeginBonjourResolution];
+    [(HMDKeyTransferAgentClient *)selfCopy3 _reallyBeginBonjourResolution];
   }
 
 LABEL_13:
@@ -2258,14 +2258,14 @@ LABEL_13:
 - (void)_reallyBeginBonjourResolution
 {
   objc_initWeak(&location, self);
-  v3 = [(HMDKeyTransferAgentClient *)self serviceBrowser];
+  serviceBrowser = [(HMDKeyTransferAgentClient *)self serviceBrowser];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __58__HMDKeyTransferAgentClient__reallyBeginBonjourResolution__block_invoke;
   v4[3] = &unk_2797338E8;
   v4[4] = self;
   objc_copyWeak(&v5, &location);
-  [v3 startBrowsingWithCompletionHandler:v4];
+  [serviceBrowser startBrowsingWithCompletionHandler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -2338,7 +2338,7 @@ void __58__HMDKeyTransferAgentClient__reallyBeginBonjourResolution__block_invoke
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2349,23 +2349,23 @@ void __58__HMDKeyTransferAgentClient__reallyBeginBonjourResolution__block_invoke
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDKeyTransferAgentClient *)v4 serviceBrowser];
-  [v7 stopBrowsing];
+  serviceBrowser = [(HMDKeyTransferAgentClient *)selfCopy serviceBrowser];
+  [serviceBrowser stopBrowsing];
 
-  [(HMDKeyTransferAgentClient *)v4 setServiceBrowser:0];
-  [(HMDKeyTransferAgentClient *)v4 setResolutionInProgress:0];
+  [(HMDKeyTransferAgentClient *)selfCopy setServiceBrowser:0];
+  [(HMDKeyTransferAgentClient *)selfCopy setResolutionInProgress:0];
   v8 = *MEMORY[0x277D85DE8];
 }
 
 - (void)_startBrowser
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDKeyTransferAgentClient *)self serviceBrowser];
+  serviceBrowser = [(HMDKeyTransferAgentClient *)self serviceBrowser];
 
-  if (!v3)
+  if (!serviceBrowser)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -2377,26 +2377,26 @@ void __58__HMDKeyTransferAgentClient__reallyBeginBonjourResolution__block_invoke
 
     objc_autoreleasePoolPop(v4);
     v8 = [objc_alloc(MEMORY[0x277D0F878]) initWithDomain:@"local." serviceType:@"_homekit._tcp."];
-    [(HMDKeyTransferAgentClient *)v5 setServiceBrowser:v8];
+    [(HMDKeyTransferAgentClient *)selfCopy setServiceBrowser:v8];
 
-    v9 = [(HMDKeyTransferAgentClient *)v5 serviceBrowser];
-    [v9 setDelegate:v5];
+    serviceBrowser2 = [(HMDKeyTransferAgentClient *)selfCopy serviceBrowser];
+    [serviceBrowser2 setDelegate:selfCopy];
 
-    v10 = [(HMDKeyTransferAgentClient *)v5 serviceBrowser];
-    [v10 setShouldCache:1];
+    serviceBrowser3 = [(HMDKeyTransferAgentClient *)selfCopy serviceBrowser];
+    [serviceBrowser3 setShouldCache:1];
 
-    [(HMDKeyTransferAgentClient *)v5 setResolutionInProgress:0];
-    [(HMDKeyTransferAgentClient *)v5 _beginBonjourResolution:0];
+    [(HMDKeyTransferAgentClient *)selfCopy setResolutionInProgress:0];
+    [(HMDKeyTransferAgentClient *)selfCopy _beginBonjourResolution:0];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setResidentProvisioningStatus:(unint64_t)a3
+- (void)setResidentProvisioningStatus:(unint64_t)status
 {
   v23 = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -2404,22 +2404,22 @@ void __58__HMDKeyTransferAgentClient__reallyBeginBonjourResolution__block_invoke
     *buf = 138543618;
     v20 = v8;
     v21 = 2048;
-    v22 = a3;
+    statusCopy = status;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@Updating Resident Provisioning Status: %lx", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   v9 = MEMORY[0x277D0F818];
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{a3, @"kProvisioningStatusKey"}];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{status, @"kProvisioningStatusKey"}];
   v18 = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
   v12 = [v9 entitledMessageWithName:@"kResidentProvisioningStatusChangedNotificationKey" messagePayload:v11];
 
-  v6->_residentProvisioningStatus = a3;
-  v13 = [(HMDKeyTransferAgent *)v6 homeManager];
-  v14 = [v13 messageDispatcher];
-  v15 = [v13 uuid];
-  [v14 sendMessage:v12 target:v15];
+  selfCopy->_residentProvisioningStatus = status;
+  homeManager = [(HMDKeyTransferAgent *)selfCopy homeManager];
+  messageDispatcher = [homeManager messageDispatcher];
+  uuid = [homeManager uuid];
+  [messageDispatcher sendMessage:v12 target:uuid];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -2428,7 +2428,7 @@ void __58__HMDKeyTransferAgentClient__reallyBeginBonjourResolution__block_invoke
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2439,13 +2439,13 @@ void __58__HMDKeyTransferAgentClient__reallyBeginBonjourResolution__block_invoke
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDKeyTransferAgent *)v4 workQueue];
+  workQueue = [(HMDKeyTransferAgent *)selfCopy workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__HMDKeyTransferAgentClient_resetConfig__block_invoke;
   block[3] = &unk_279735D00;
-  block[4] = v4;
-  dispatch_async(v7, block);
+  block[4] = selfCopy;
+  dispatch_async(workQueue, block);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -2467,14 +2467,14 @@ void __40__HMDKeyTransferAgentClient_resetConfig__block_invoke(uint64_t a1)
 - (void)queryPlistDevices
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDKeyTransferAgent *)self homeManager];
-  v4 = [v3 homes];
+  homeManager = [(HMDKeyTransferAgent *)self homeManager];
+  homes = [homeManager homes];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v4;
+  v5 = homes;
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v6)
   {
@@ -2492,19 +2492,19 @@ void __40__HMDKeyTransferAgentClient_resetConfig__block_invoke(uint64_t a1)
         v10 = *(*(&v20 + 1) + 8 * i);
         if ([v10 isOwnerUser])
         {
-          v11 = [v10 accessories];
-          v12 = [v11 count];
+          accessories = [v10 accessories];
+          v12 = [accessories count];
 
           if (v12)
           {
 
-            v17 = [(HMDKeyTransferAgent *)self workQueue];
+            workQueue = [(HMDKeyTransferAgent *)self workQueue];
             block[0] = MEMORY[0x277D85DD0];
             block[1] = 3221225472;
             block[2] = __46__HMDKeyTransferAgentClient_queryPlistDevices__block_invoke;
             block[3] = &unk_279735D00;
             block[4] = self;
-            dispatch_async(v17, block);
+            dispatch_async(workQueue, block);
 
             goto LABEL_14;
           }
@@ -2522,7 +2522,7 @@ void __40__HMDKeyTransferAgentClient_resetConfig__block_invoke(uint64_t a1)
   }
 
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -2788,18 +2788,18 @@ void __46__HMDKeyTransferAgentClient_queryPlistDevices__block_invoke_2(uint64_t 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_deviceWithUUID:(id)a3
+- (id)_deviceWithUUID:(id)d
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v5 = +[HMDAppleAccountManager sharedManager];
-  v6 = [v5 account];
-  v7 = [v6 devices];
-  v8 = [v7 copy];
+  account = [v5 account];
+  devices = [account devices];
+  v8 = [devices copy];
 
   v9 = [v8 countByEnumeratingWithState:&v35 objects:v43 count:16];
   if (v9)
@@ -2816,9 +2816,9 @@ LABEL_3:
       }
 
       v13 = *(*(&v35 + 1) + 8 * v12);
-      v14 = [v13 identifier];
-      v15 = [v14 UUIDString];
-      v16 = [v4 isEqual:v15];
+      identifier = [v13 identifier];
+      uUIDString = [identifier UUIDString];
+      v16 = [dCopy isEqual:uUIDString];
 
       if (v16)
       {
@@ -2840,7 +2840,7 @@ LABEL_3:
     if ([v13 isCurrentDevice])
     {
       v22 = objc_autoreleasePoolPush();
-      v23 = self;
+      selfCopy = self;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
@@ -2855,10 +2855,10 @@ LABEL_3:
 
     else
     {
-      v27 = [v13 capabilities];
-      v28 = [v27 supportsKeyTransferServer];
+      capabilities = [v13 capabilities];
+      supportsKeyTransferServer = [capabilities supportsKeyTransferServer];
 
-      if (v28)
+      if (supportsKeyTransferServer)
       {
         v21 = v13;
 LABEL_22:
@@ -2867,7 +2867,7 @@ LABEL_22:
       }
 
       v29 = objc_autoreleasePoolPush();
-      v30 = self;
+      selfCopy2 = self;
       v31 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
@@ -2890,7 +2890,7 @@ LABEL_22:
 LABEL_9:
 
   v17 = objc_autoreleasePoolPush();
-  v18 = self;
+  selfCopy3 = self;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
@@ -2898,7 +2898,7 @@ LABEL_9:
     *buf = 138543618;
     v40 = v20;
     v41 = 2112;
-    v42 = v4;
+    v42 = dCopy;
     _os_log_impl(&dword_2531F8000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@Unable to find device with UUID %@", buf, 0x16u);
   }
 
@@ -2914,13 +2914,13 @@ LABEL_23:
 - (void)_saveKeyPlist
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDKeyTransferAgentClient *)self idsKeys];
-  v4 = [v3 writeToFile:@"/var/mobile/Library/homed/com.apple.atvpair.plist" atomically:1];
+  idsKeys = [(HMDKeyTransferAgentClient *)self idsKeys];
+  v4 = [idsKeys writeToFile:@"/var/mobile/Library/homed/com.apple.atvpair.plist" atomically:1];
 
   if ((v4 & 1) == 0)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -2935,8 +2935,8 @@ LABEL_23:
     objc_autoreleasePoolPop(v5);
   }
 
-  v9 = [(HMDKeyTransferAgentClient *)self idsKeys];
-  v10 = [v9 count];
+  idsKeys2 = [(HMDKeyTransferAgentClient *)self idsKeys];
+  v10 = [idsKeys2 count];
 
   if (v10)
   {
@@ -2953,15 +2953,15 @@ LABEL_23:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)networkMonitorIsReachable:(id)a3
+- (void)networkMonitorIsReachable:(id)reachable
 {
-  v4 = [(HMDKeyTransferAgent *)self workQueue];
+  workQueue = [(HMDKeyTransferAgent *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__HMDKeyTransferAgentClient_networkMonitorIsReachable___block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __55__HMDKeyTransferAgentClient_networkMonitorIsReachable___block_invoke(uint64_t a1)
@@ -2978,20 +2978,20 @@ uint64_t __55__HMDKeyTransferAgentClient_networkMonitorIsReachable___block_invok
   return result;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v4 = a3;
-  v5 = [(HMDKeyTransferAgentClient *)self atHomeRetryTimer];
+  fireCopy = fire;
+  atHomeRetryTimer = [(HMDKeyTransferAgentClient *)self atHomeRetryTimer];
 
-  if (v5 == v4)
+  if (atHomeRetryTimer == fireCopy)
   {
-    v6 = [(HMDKeyTransferAgent *)self workQueue];
+    workQueue = [(HMDKeyTransferAgent *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __42__HMDKeyTransferAgentClient_timerDidFire___block_invoke;
     block[3] = &unk_279735D00;
     block[4] = self;
-    dispatch_async(v6, block);
+    dispatch_async(workQueue, block);
   }
 }
 
@@ -3036,25 +3036,25 @@ void __42__HMDKeyTransferAgentClient_timerDidFire___block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [(HMDKeyTransferAgent *)self homeManager];
-  v4 = [v3 messageDispatcher];
-  [v4 deregisterReceiver:self];
+  homeManager = [(HMDKeyTransferAgent *)self homeManager];
+  messageDispatcher = [homeManager messageDispatcher];
+  [messageDispatcher deregisterReceiver:self];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v6.receiver = self;
   v6.super_class = HMDKeyTransferAgentClient;
   [(HMDKeyTransferAgentClient *)&v6 dealloc];
 }
 
-- (HMDKeyTransferAgentClient)initWithHomeManager:(id)a3
+- (HMDKeyTransferAgentClient)initWithHomeManager:(id)manager
 {
   v57[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  managerCopy = manager;
   v51.receiver = self;
   v51.super_class = HMDKeyTransferAgentClient;
-  v5 = [(HMDKeyTransferAgent *)&v51 initWithHomeManager:v4];
+  v5 = [(HMDKeyTransferAgent *)&v51 initWithHomeManager:managerCopy];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
@@ -3070,32 +3070,32 @@ void __42__HMDKeyTransferAgentClient_timerDidFire___block_invoke(uint64_t a1)
 
     objc_autoreleasePoolPop(v6);
     v10 = [HMDRemoteAccountMessageFilter alloc];
-    v11 = [(HMDKeyTransferAgent *)v7 messageDestination];
-    v12 = [(HMDRemoteAccountMessageFilter *)v10 initWithTarget:v11];
+    messageDestination = [(HMDKeyTransferAgent *)v7 messageDestination];
+    v12 = [(HMDRemoteAccountMessageFilter *)v10 initWithTarget:messageDestination];
 
-    v13 = [v4 msgFilterChain];
-    [v13 addMessageFilter:v12];
+    msgFilterChain = [managerCopy msgFilterChain];
+    [msgFilterChain addMessageFilter:v12];
 
     v14 = +[(HMDRemoteMessagePolicy *)HMDMutableRemoteMessagePolicy];
     [v14 setRequiresSecureMessage:0];
     [v14 setRequiresAccountMessage:1];
     [v14 setTransportRestriction:1];
     v15 = [v14 copy];
-    v16 = [v4 messageDispatcher];
+    messageDispatcher = [managerCopy messageDispatcher];
     v48 = v15;
     v57[0] = v15;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v57 count:1];
-    [v16 registerForMessage:@"kKeyTransferAgentKey" receiver:v7 policies:v17 selector:sel__handleKeyTransferAgentMessage_];
+    [messageDispatcher registerForMessage:@"kKeyTransferAgentKey" receiver:v7 policies:v17 selector:sel__handleKeyTransferAgentMessage_];
 
     v18 = +[(HMDRemoteMessagePolicy *)HMDMutableRemoteMessagePolicy];
     [v18 setRequiresSecureMessage:1];
     [v18 setRequiresAccountMessage:1];
     [v18 setTransportRestriction:-1];
     v19 = [v18 copy];
-    v20 = [v4 messageDispatcher];
+    messageDispatcher2 = [managerCopy messageDispatcher];
     v56 = v19;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:&v56 count:1];
-    [v20 registerForMessage:@"kResidentProvisioningStatusChangedNotificationKey" receiver:v7 policies:v21 selector:sel__handleResidentProvisioningStatusChanged_];
+    [messageDispatcher2 registerForMessage:@"kResidentProvisioningStatusChangedNotificationKey" receiver:v7 policies:v21 selector:sel__handleResidentProvisioningStatusChanged_];
 
     v22 = [MEMORY[0x277CBEB38] dictionaryWithContentsOfFile:@"/var/mobile/Library/homed/com.apple.atvpair.plist"];
     idsKeys = v7->_idsKeys;
@@ -3103,9 +3103,9 @@ void __42__HMDKeyTransferAgentClient_timerDidFire___block_invoke(uint64_t a1)
 
     if (!v7->_idsKeys)
     {
-      v24 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v25 = v7->_idsKeys;
-      v7->_idsKeys = v24;
+      v7->_idsKeys = dictionary;
 
       if (([(NSMutableDictionary *)v7->_idsKeys writeToFile:@"/var/mobile/Library/homed/com.apple.atvpair.plist" atomically:1]& 1) == 0)
       {
@@ -3130,14 +3130,14 @@ void __42__HMDKeyTransferAgentClient_timerDidFire___block_invoke(uint64_t a1)
 
     if ([(NSMutableDictionary *)v7->_idsKeys count])
     {
-      v28 = [(HMDKeyTransferAgent *)v7 workQueue];
+      workQueue = [(HMDKeyTransferAgent *)v7 workQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __49__HMDKeyTransferAgentClient_initWithHomeManager___block_invoke;
       block[3] = &unk_279735D00;
       v29 = v7;
       v50 = v29;
-      dispatch_async(v28, block);
+      dispatch_async(workQueue, block);
 
       [(HMDKeyTransferAgentClient *)v29 setResidentProvisioningStatus:2];
     }
@@ -3152,28 +3152,28 @@ void __42__HMDKeyTransferAgentClient_timerDidFire___block_invoke(uint64_t a1)
     v7->_atHomeRetryTimer = v30;
 
     [(HMFExponentialBackoffTimer *)v7->_atHomeRetryTimer setDelegate:v7];
-    v32 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     bonjourKeys = v7->_bonjourKeys;
-    v7->_bonjourKeys = v32;
+    v7->_bonjourKeys = dictionary2;
 
     v34 = [MEMORY[0x277CBEB58] set];
     targetsToProcess = v7->_targetsToProcess;
     v7->_targetsToProcess = v34;
 
-    v36 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v36 addObserver:v7 selector:sel___accessoryIsReachable_ name:@"HMDAccessoryIsReachableNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel___accessoryIsReachable_ name:@"HMDAccessoryIsReachableNotification" object:0];
 
-    v37 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v37 addObserver:v7 selector:sel___deviceAddedToAccount_ name:@"HMDAccountAddedDeviceNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v7 selector:sel___deviceAddedToAccount_ name:@"HMDAccountAddedDeviceNotification" object:0];
 
-    v38 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v38 addObserver:v7 selector:sel___deviceUpdated_ name:@"HMDDeviceUpdatedNotification" object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v7 selector:sel___deviceUpdated_ name:@"HMDDeviceUpdatedNotification" object:0];
 
-    v39 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v39 addObserver:v7 selector:sel___deviceRemovedFromAccount_ name:@"HMDAccountRemovedDeviceNotification" object:0];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:v7 selector:sel___deviceRemovedFromAccount_ name:@"HMDAccountRemovedDeviceNotification" object:0];
 
-    v40 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v40 addObserver:v7 selector:sel___accountChanged_ name:@"HMDAppleAccountManagerAccountModifiedNotification" object:0];
+    defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter5 addObserver:v7 selector:sel___accountChanged_ name:@"HMDAppleAccountManagerAccountModifiedNotification" object:0];
 
     v7->_haveCulledPlist = 0;
     v41 = [objc_alloc(MEMORY[0x277D0F868]) initWithNetAddress:0];

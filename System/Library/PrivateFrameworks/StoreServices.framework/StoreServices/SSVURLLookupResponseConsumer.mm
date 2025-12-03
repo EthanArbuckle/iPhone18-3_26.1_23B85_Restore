@@ -1,14 +1,14 @@
 @interface SSVURLLookupResponseConsumer
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5;
+- (id)objectForData:(id)data response:(id)response error:(id *)error;
 @end
 
 @implementation SSVURLLookupResponseConsumer
 
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5
+- (id)objectForData:(id)data response:(id)response error:(id *)error
 {
-  v7 = a4;
+  responseCopy = response;
   v16 = 0;
-  v8 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v16];
+  v8 = [MEMORY[0x1E696ACB0] JSONObjectWithData:data options:0 error:&v16];
   v9 = v16;
   objc_opt_class();
   v10 = 0;
@@ -27,17 +27,17 @@
     }
 
     v10 = v12;
-    if (SSURLResponseExpirationInterval(v7) >= 0.0)
+    if (SSURLResponseExpirationInterval(responseCopy) >= 0.0)
     {
       v13 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:?];
       [(SSLookupResponse *)v10 setExpirationDate:v13];
     }
   }
 
-  if (!v7 && a5)
+  if (!responseCopy && error)
   {
     v14 = v9;
-    *a5 = v9;
+    *error = v9;
   }
 
   return v10;

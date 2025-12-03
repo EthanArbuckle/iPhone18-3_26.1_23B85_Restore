@@ -1,5 +1,5 @@
 @interface DDScannerObject
-- (id)scanString:(uint64_t)a3 range:(uint64_t)a4 query:(void *)a5 configuration:(void *)a6 completionBlock:(void *)a7;
+- (id)scanString:(uint64_t)string range:(uint64_t)range query:(void *)query configuration:(void *)configuration completionBlock:(void *)block;
 - (void)dealloc;
 @end
 
@@ -18,21 +18,21 @@
   [(DDScannerObject *)&v4 dealloc];
 }
 
-- (id)scanString:(uint64_t)a3 range:(uint64_t)a4 query:(void *)a5 configuration:(void *)a6 completionBlock:(void *)a7
+- (id)scanString:(uint64_t)string range:(uint64_t)range query:(void *)query configuration:(void *)configuration completionBlock:(void *)block
 {
   v13 = a2;
-  v14 = a6;
-  v15 = a7;
-  if (!a1)
+  configurationCopy = configuration;
+  blockCopy = block;
+  if (!self)
   {
     v37 = 0;
     goto LABEL_22;
   }
 
-  v16 = [v14 remoteScannerEnabled];
-  if (!a5 && v16)
+  remoteScannerEnabled = [configurationCopy remoteScannerEnabled];
+  if (!query && remoteScannerEnabled)
   {
-    v42 = a4;
+    rangeCopy = range;
     v17 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F3B81BA8];
     v18 = MEMORY[0x1E695DFD8];
     v19 = objc_opt_class();
@@ -40,9 +40,9 @@
     [v17 setClasses:v20 forSelector:sel_scanString_range_configuration_withReply_ argumentIndex:0 ofReply:1];
 
     v21 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithServiceName:@"com.apple.internal.DataDetectorsRemoteScanner"];
-    objc_storeStrong((a1 + 32), v21);
-    [*(a1 + 32) setRemoteObjectInterface:v17];
-    [*(a1 + 32) resume];
+    objc_storeStrong((self + 32), v21);
+    [*(self + 32) setRemoteObjectInterface:v17];
+    [*(self + 32) resume];
     v52 = 0;
     v53 = &v52;
     v54 = 0x3032000000;
@@ -53,14 +53,14 @@
     aBlock[1] = 3221225472;
     aBlock[2] = __72__DDScannerObject_scanString_range_query_configuration_completionBlock___block_invoke;
     aBlock[3] = &unk_1E8001AE0;
-    v51 = v15 != 0;
-    v22 = v15;
+    v51 = blockCopy != 0;
+    v22 = blockCopy;
     v50 = v22;
     v23 = v21;
     v49 = v23;
     v24 = _Block_copy(aBlock);
-    v25 = *(a1 + 32);
-    if (v15)
+    v25 = *(self + 32);
+    if (blockCopy)
     {
       [v25 remoteObjectProxyWithErrorHandler:v24];
     }
@@ -74,32 +74,32 @@
     v43[1] = 3221225472;
     v43[2] = __72__DDScannerObject_scanString_range_query_configuration_completionBlock___block_invoke_2;
     v43[3] = &unk_1E8001B08;
-    v47 = v15 != 0;
+    v47 = blockCopy != 0;
     v45 = v22;
     v46 = &v52;
     v39 = v23;
     v44 = v39;
-    [v38 scanString:v13 range:a3 configuration:v42 withReply:{v14, v43}];
+    [v38 scanString:v13 range:string configuration:rangeCopy withReply:{configurationCopy, v43}];
     v37 = v53[5];
 
     _Block_object_dispose(&v52, 8);
     goto LABEL_22;
   }
 
-  DDScannerSetOptions(*(a1 + 8), [v14 scannerOptions]);
-  v26 = *(a1 + 8);
-  [v14 timeout];
+  DDScannerSetOptions(*(self + 8), [configurationCopy scannerOptions]);
+  v26 = *(self + 8);
+  [configurationCopy timeout];
   *(v26 + 224) = v27;
-  v28 = *(a1 + 8);
-  v29 = [v14 mockMLResults];
-  DDScannerSetMockMLResults(v28, v29);
+  v28 = *(self + 8);
+  mockMLResults = [configurationCopy mockMLResults];
+  DDScannerSetMockMLResults(v28, mockMLResults);
 
-  v30 = *(a1 + 8);
-  v31 = [v14 supportedMLResults];
-  DDScannerSetMLSupportedTypes(v30, v31);
+  v30 = *(self + 8);
+  supportedMLResults = [configurationCopy supportedMLResults];
+  DDScannerSetMLSupportedTypes(v30, supportedMLResults);
 
-  v32 = *(a1 + 8);
-  v33 = [v14 qos];
+  v32 = *(self + 8);
+  v33 = [configurationCopy qos];
   if (DDScannerSetQOS_onceToken != -1)
   {
     dispatch_once(&DDScannerSetQOS_onceToken, &__block_literal_global_327);
@@ -110,41 +110,41 @@
     *(v32 + 248) = v33;
   }
 
-  v34 = *(a1 + 8);
-  *(v34 + 252) = [v14 script];
-  v35 = *(a1 + 8);
+  v34 = *(self + 8);
+  *(v34 + 252) = [configurationCopy script];
+  v35 = *(self + 8);
   if (v13)
   {
-    if (!DDScannerScanStringWithRangeAndContextOffset(v35, v13, a3, a4, 0))
+    if (!DDScannerScanStringWithRangeAndContextOffset(v35, v13, string, range, 0))
     {
 LABEL_18:
       v37 = MEMORY[0x1E695E0F0];
-      if (v15)
+      if (blockCopy)
       {
-        (*(v15 + 2))(v15, MEMORY[0x1E695E0F0]);
+        (*(blockCopy + 2))(blockCopy, MEMORY[0x1E695E0F0]);
       }
 
       goto LABEL_22;
     }
   }
 
-  else if (!DDScannerScanQuery(v35, a5))
+  else if (!DDScannerScanQuery(v35, query))
   {
     goto LABEL_18;
   }
 
-  v36 = DDScannerCopyResultsWithOptions(*(a1 + 8), [v14 resultsOptions]);
+  v36 = DDScannerCopyResultsWithOptions(*(self + 8), [configurationCopy resultsOptions]);
   if (!v36)
   {
     goto LABEL_18;
   }
 
   v37 = v36;
-  if ([v14 noObjC])
+  if ([configurationCopy noObjC])
   {
-    if (v15)
+    if (blockCopy)
     {
-      (*(v15 + 2))(v15, v37);
+      (*(blockCopy + 2))(blockCopy, v37);
     }
   }
 
@@ -152,9 +152,9 @@ LABEL_18:
   {
     v41 = [DDScannerResult resultsFromCoreResults:v37];
     CFRelease(v37);
-    if (v15)
+    if (blockCopy)
     {
-      (*(v15 + 2))(v15, v41);
+      (*(blockCopy + 2))(blockCopy, v41);
     }
 
     v37 = v41;

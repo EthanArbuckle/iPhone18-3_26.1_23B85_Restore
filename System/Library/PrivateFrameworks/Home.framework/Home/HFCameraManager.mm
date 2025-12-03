@@ -3,7 +3,7 @@
 - (BOOL)_hasStreamRequesters;
 - (BOOL)arePeriodicSnapshotsEnabled;
 - (BOOL)isContinuousStreamingEnabled;
-- (HFCameraManager)initWithCameraProfile:(id)a3;
+- (HFCameraManager)initWithCameraProfile:(id)profile;
 - (HMCameraProfile)cameraProfile;
 - (id)_nextSnapshotDate;
 - (void)_beginContinuousStreaming;
@@ -12,37 +12,37 @@
 - (void)_dispatchStreamStateUpdate;
 - (void)_endContinuousStreaming;
 - (void)_endPeriodicSnapshots;
-- (void)_scheduleNextSnapshotEventWithPreviousError:(id)a3;
+- (void)_scheduleNextSnapshotEventWithPreviousError:(id)error;
 - (void)_startStreaming;
 - (void)_stopStreaming;
 - (void)_updateEventRegistration;
-- (void)accessoryDidUpdateReachability:(id)a3;
-- (void)beginContinuousStreamingWithRequester:(id)a3;
-- (void)beginPeriodicSnapshotsWithRequester:(id)a3;
-- (void)cameraSnapshotControl:(id)a3 didTakeSnapshot:(id)a4 error:(id)a5;
-- (void)cameraSnapshotControlDidUpdateMostRecentSnapshot:(id)a3;
-- (void)cameraStreamControl:(id)a3 didStopStreamWithError:(id)a4;
-- (void)cameraStreamControlDidStartStream:(id)a3;
-- (void)cameraUserSettingsDidUpdate:(id)a3;
+- (void)accessoryDidUpdateReachability:(id)reachability;
+- (void)beginContinuousStreamingWithRequester:(id)requester;
+- (void)beginPeriodicSnapshotsWithRequester:(id)requester;
+- (void)cameraSnapshotControl:(id)control didTakeSnapshot:(id)snapshot error:(id)error;
+- (void)cameraSnapshotControlDidUpdateMostRecentSnapshot:(id)snapshot;
+- (void)cameraStreamControl:(id)control didStopStreamWithError:(id)error;
+- (void)cameraStreamControlDidStartStream:(id)stream;
+- (void)cameraUserSettingsDidUpdate:(id)update;
 - (void)dealloc;
-- (void)endContinuousStreamingWithRequester:(id)a3;
-- (void)endPeriodicSnapshotsWithRequester:(id)a3;
-- (void)executionEnvironmentDidBecomeActive:(id)a3;
-- (void)setCachedStreamError:(id)a3;
+- (void)endContinuousStreamingWithRequester:(id)requester;
+- (void)endPeriodicSnapshotsWithRequester:(id)requester;
+- (void)executionEnvironmentDidBecomeActive:(id)active;
+- (void)setCachedStreamError:(id)error;
 @end
 
 @implementation HFCameraManager
 
-- (HFCameraManager)initWithCameraProfile:(id)a3
+- (HFCameraManager)initWithCameraProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v14.receiver = self;
   v14.super_class = HFCameraManager;
   v5 = [(HFCameraManager *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_cameraProfile, v4);
+    objc_storeWeak(&v5->_cameraProfile, profileCopy);
     v7 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:2 valueOptions:0 capacity:0];
     snapshotRequesters = v6->_snapshotRequesters;
     v6->_snapshotRequesters = v7;
@@ -61,19 +61,19 @@
 
 - (void)dealloc
 {
-  v3 = [(HFCameraManager *)self nextSnapshotEvent];
-  [v3 cancel];
+  nextSnapshotEvent = [(HFCameraManager *)self nextSnapshotEvent];
+  [nextSnapshotEvent cancel];
 
   v4.receiver = self;
   v4.super_class = HFCameraManager;
   [(HFCameraManager *)&v4 dealloc];
 }
 
-- (void)beginPeriodicSnapshotsWithRequester:(id)a3
+- (void)beginPeriodicSnapshotsWithRequester:(id)requester
 {
-  v4 = a3;
-  v5 = [(HFCameraManager *)self snapshotRequesters];
-  v6 = [v5 objectForKey:v4];
+  requesterCopy = requester;
+  snapshotRequesters = [(HFCameraManager *)self snapshotRequesters];
+  v6 = [snapshotRequesters objectForKey:requesterCopy];
 
   if (!v6)
   {
@@ -84,12 +84,12 @@
     v14 = __55__HFCameraManager_beginPeriodicSnapshotsWithRequester___block_invoke;
     v15 = &unk_277DFF118;
     objc_copyWeak(&v16, &location);
-    v8 = [v7 initWithTargetObject:v4 finalizer:&v12];
+    v8 = [v7 initWithTargetObject:requesterCopy finalizer:&v12];
     v9 = [(HFCameraManager *)self snapshotRequesters:v12];
-    [v9 setObject:v8 forKey:v4];
+    [v9 setObject:v8 forKey:requesterCopy];
 
-    v10 = [(HFCameraManager *)self snapshotRequesters];
-    v11 = [v10 count];
+    snapshotRequesters2 = [(HFCameraManager *)self snapshotRequesters];
+    v11 = [snapshotRequesters2 count];
 
     if (v11 == 1)
     {
@@ -108,19 +108,19 @@ void __55__HFCameraManager_beginPeriodicSnapshotsWithRequester___block_invoke(ui
   [WeakRetained endPeriodicSnapshotsWithRequester:a2];
 }
 
-- (void)endPeriodicSnapshotsWithRequester:(id)a3
+- (void)endPeriodicSnapshotsWithRequester:(id)requester
 {
-  v9 = a3;
-  v4 = [(HFCameraManager *)self snapshotRequesters];
-  v5 = [v4 objectForKey:v9];
+  requesterCopy = requester;
+  snapshotRequesters = [(HFCameraManager *)self snapshotRequesters];
+  v5 = [snapshotRequesters objectForKey:requesterCopy];
 
   if (v5)
   {
-    v6 = [(HFCameraManager *)self snapshotRequesters];
-    [v6 removeObjectForKey:v9];
+    snapshotRequesters2 = [(HFCameraManager *)self snapshotRequesters];
+    [snapshotRequesters2 removeObjectForKey:requesterCopy];
 
-    v7 = [(HFCameraManager *)self snapshotRequesters];
-    v8 = [v7 count];
+    snapshotRequesters3 = [(HFCameraManager *)self snapshotRequesters];
+    v8 = [snapshotRequesters3 count];
 
     if (!v8)
     {
@@ -132,17 +132,17 @@ void __55__HFCameraManager_beginPeriodicSnapshotsWithRequester___block_invoke(ui
 
 - (BOOL)arePeriodicSnapshotsEnabled
 {
-  v2 = [(HFCameraManager *)self snapshotRequesters];
-  v3 = [v2 count] != 0;
+  snapshotRequesters = [(HFCameraManager *)self snapshotRequesters];
+  v3 = [snapshotRequesters count] != 0;
 
   return v3;
 }
 
-- (void)beginContinuousStreamingWithRequester:(id)a3
+- (void)beginContinuousStreamingWithRequester:(id)requester
 {
-  v4 = a3;
-  v5 = [(HFCameraManager *)self streamRequesters];
-  v6 = [v5 objectForKey:v4];
+  requesterCopy = requester;
+  streamRequesters = [(HFCameraManager *)self streamRequesters];
+  v6 = [streamRequesters objectForKey:requesterCopy];
 
   if (!v6)
   {
@@ -153,12 +153,12 @@ void __55__HFCameraManager_beginPeriodicSnapshotsWithRequester___block_invoke(ui
     v14 = __57__HFCameraManager_beginContinuousStreamingWithRequester___block_invoke;
     v15 = &unk_277DFF118;
     objc_copyWeak(&v16, &location);
-    v8 = [v7 initWithTargetObject:v4 finalizer:&v12];
+    v8 = [v7 initWithTargetObject:requesterCopy finalizer:&v12];
     v9 = [(HFCameraManager *)self streamRequesters:v12];
-    [v9 setObject:v8 forKey:v4];
+    [v9 setObject:v8 forKey:requesterCopy];
 
-    v10 = [(HFCameraManager *)self streamRequesters];
-    v11 = [v10 count];
+    streamRequesters2 = [(HFCameraManager *)self streamRequesters];
+    v11 = [streamRequesters2 count];
 
     if (v11 == 1)
     {
@@ -177,19 +177,19 @@ void __57__HFCameraManager_beginContinuousStreamingWithRequester___block_invoke(
   [WeakRetained endContinuousStreamingWithRequester:a2];
 }
 
-- (void)endContinuousStreamingWithRequester:(id)a3
+- (void)endContinuousStreamingWithRequester:(id)requester
 {
-  v9 = a3;
-  v4 = [(HFCameraManager *)self streamRequesters];
-  v5 = [v4 objectForKey:v9];
+  requesterCopy = requester;
+  streamRequesters = [(HFCameraManager *)self streamRequesters];
+  v5 = [streamRequesters objectForKey:requesterCopy];
 
   if (v5)
   {
-    v6 = [(HFCameraManager *)self streamRequesters];
-    [v6 removeObjectForKey:v9];
+    streamRequesters2 = [(HFCameraManager *)self streamRequesters];
+    [streamRequesters2 removeObjectForKey:requesterCopy];
 
-    v7 = [(HFCameraManager *)self streamRequesters];
-    v8 = [v7 count];
+    streamRequesters3 = [(HFCameraManager *)self streamRequesters];
+    v8 = [streamRequesters3 count];
 
     if (!v8)
     {
@@ -201,8 +201,8 @@ void __57__HFCameraManager_beginContinuousStreamingWithRequester___block_invoke(
 
 - (BOOL)isContinuousStreamingEnabled
 {
-  v2 = [(HFCameraManager *)self streamRequesters];
-  v3 = [v2 count] != 0;
+  streamRequesters = [(HFCameraManager *)self streamRequesters];
+  v3 = [streamRequesters count] != 0;
 
   return v3;
 }
@@ -213,10 +213,10 @@ void __57__HFCameraManager_beginContinuousStreamingWithRequester___block_invoke(
   v3 = HFLogForCategory(0x1BuLL);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(HFCameraManager *)self cameraProfile];
-    v5 = [v4 hf_prettyDescription];
+    cameraProfile = [(HFCameraManager *)self cameraProfile];
+    hf_prettyDescription = [cameraProfile hf_prettyDescription];
     v7 = 138412290;
-    v8 = v5;
+    v8 = hf_prettyDescription;
     _os_log_impl(&dword_20D9BF000, v3, OS_LOG_TYPE_DEFAULT, "Beginning periodic snapshots for %@", &v7, 0xCu);
   }
 
@@ -230,10 +230,10 @@ void __57__HFCameraManager_beginContinuousStreamingWithRequester___block_invoke(
   v3 = HFLogForCategory(0x1BuLL);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(HFCameraManager *)self cameraProfile];
-    v5 = [v4 hf_prettyDescription];
+    cameraProfile = [(HFCameraManager *)self cameraProfile];
+    hf_prettyDescription = [cameraProfile hf_prettyDescription];
     v7 = 138412290;
-    v8 = v5;
+    v8 = hf_prettyDescription;
     _os_log_impl(&dword_20D9BF000, v3, OS_LOG_TYPE_DEFAULT, "Ending periodic snapshots for %@", &v7, 0xCu);
   }
 
@@ -243,11 +243,11 @@ void __57__HFCameraManager_beginContinuousStreamingWithRequester___block_invoke(
 
 - (id)_nextSnapshotDate
 {
-  v3 = [(HFCameraManager *)self snapshotErrorDate];
+  snapshotErrorDate = [(HFCameraManager *)self snapshotErrorDate];
 
-  if (v3)
+  if (snapshotErrorDate)
   {
-    v4 = [(HFCameraManager *)self snapshotErrorDate];
+    snapshotErrorDate2 = [(HFCameraManager *)self snapshotErrorDate];
     if (![(HFCameraManager *)self snapshotErrorCount])
     {
       v5 = HFLogForCategory(0x1BuLL);
@@ -260,11 +260,11 @@ void __57__HFCameraManager_beginContinuousStreamingWithRequester___block_invoke(
 
     [(HFCameraManager *)self _snapshotTimeInterval];
     v7 = v6;
-    v8 = [(HFCameraManager *)self snapshotErrorCount];
+    snapshotErrorCount = [(HFCameraManager *)self snapshotErrorCount];
     v9 = 10;
-    if (v8 < 0xA)
+    if (snapshotErrorCount < 0xA)
     {
-      v9 = v8;
+      v9 = snapshotErrorCount;
     }
 
     v10 = v7 * v9;
@@ -272,58 +272,58 @@ void __57__HFCameraManager_beginContinuousStreamingWithRequester___block_invoke(
 
   else
   {
-    v11 = [(HFCameraManager *)self cameraProfile];
-    v12 = [v11 snapshotControl];
-    v13 = [v12 mostRecentSnapshot];
-    v4 = [v13 captureDate];
+    cameraProfile = [(HFCameraManager *)self cameraProfile];
+    snapshotControl = [cameraProfile snapshotControl];
+    mostRecentSnapshot = [snapshotControl mostRecentSnapshot];
+    snapshotErrorDate2 = [mostRecentSnapshot captureDate];
 
     [(HFCameraManager *)self _snapshotTimeInterval];
   }
 
-  v14 = [v4 dateByAddingTimeInterval:v10];
+  v14 = [snapshotErrorDate2 dateByAddingTimeInterval:v10];
 
   return v14;
 }
 
-- (void)_scheduleNextSnapshotEventWithPreviousError:(id)a3
+- (void)_scheduleNextSnapshotEventWithPreviousError:(id)error
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if (+[HFUtilities isPressDemoModeEnabled])
   {
-    v5 = HFLogForCategory(0x21uLL);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    _nextSnapshotDate = HFLogForCategory(0x21uLL);
+    if (os_log_type_enabled(_nextSnapshotDate, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(HFCameraManager *)self cameraProfile];
-      v7 = [v6 hf_prettyDescription];
+      cameraProfile = [(HFCameraManager *)self cameraProfile];
+      hf_prettyDescription = [cameraProfile hf_prettyDescription];
       *buf = 138412290;
-      v41 = v7;
-      _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "Not scheduling snapshot for %@ because demo mode is enabled", buf, 0xCu);
+      v41 = hf_prettyDescription;
+      _os_log_impl(&dword_20D9BF000, _nextSnapshotDate, OS_LOG_TYPE_DEFAULT, "Not scheduling snapshot for %@ because demo mode is enabled", buf, 0xCu);
     }
   }
 
   else
   {
-    [(HFCameraManager *)self setCachedSnapshotError:v4];
-    if (v4)
+    [(HFCameraManager *)self setCachedSnapshotError:errorCopy];
+    if (errorCopy)
     {
-      v8 = [MEMORY[0x277CBEAA8] date];
-      [(HFCameraManager *)self setSnapshotErrorDate:v8];
+      date = [MEMORY[0x277CBEAA8] date];
+      [(HFCameraManager *)self setSnapshotErrorDate:date];
 
       [(HFCameraManager *)self setSnapshotErrorCount:[(HFCameraManager *)self snapshotErrorCount]+ 1];
       v9 = HFLogForCategory(0x1BuLL);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v34 = [(HFCameraManager *)self cameraProfile];
-        v35 = [v34 hf_prettyDescription];
-        v36 = [(HFCameraManager *)self snapshotErrorDate];
+        cameraProfile2 = [(HFCameraManager *)self cameraProfile];
+        hf_prettyDescription2 = [cameraProfile2 hf_prettyDescription];
+        snapshotErrorDate = [(HFCameraManager *)self snapshotErrorDate];
         v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HFCameraManager snapshotErrorCount](self, "snapshotErrorCount")}];
         *buf = 138413058;
-        v41 = v35;
+        v41 = hf_prettyDescription2;
         v42 = 2112;
-        *v43 = v4;
+        *v43 = errorCopy;
         *&v43[8] = 2112;
-        v44 = v36;
+        v44 = snapshotErrorDate;
         v45 = 2112;
         v46 = v37;
         _os_log_error_impl(&dword_20D9BF000, v9, OS_LOG_TYPE_ERROR, "Snapshot failed for %@; error: %@; snapshotErrorDate: %@; snapshotErrorCount: %@", buf, 0x2Au);
@@ -338,38 +338,38 @@ void __57__HFCameraManager_beginContinuousStreamingWithRequester___block_invoke(
 
     if (-[HFCameraManager _hasSnapshotRequesters](self, "_hasSnapshotRequesters") && (-[HFCameraManager cameraProfile](self, "cameraProfile"), v10 = objc_claimAutoreleasedReturnValue(), [v10 accessory], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isReachable"), v11, v10, (v12 & 1) != 0))
     {
-      v5 = [(HFCameraManager *)self _nextSnapshotDate];
+      _nextSnapshotDate = [(HFCameraManager *)self _nextSnapshotDate];
       v13 = HFLogForCategory(0x1BuLL);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(HFCameraManager *)self cameraProfile];
-        v15 = [v14 hf_prettyDescription];
+        cameraProfile3 = [(HFCameraManager *)self cameraProfile];
+        hf_prettyDescription3 = [cameraProfile3 hf_prettyDescription];
         v16 = MEMORY[0x277CCABB0];
-        v17 = [(HFCameraManager *)self cameraProfile];
-        v18 = [v17 accessory];
-        v19 = [v16 numberWithInteger:{objc_msgSend(v18, "reachableTransports")}];
+        cameraProfile4 = [(HFCameraManager *)self cameraProfile];
+        accessory = [cameraProfile4 accessory];
+        v19 = [v16 numberWithInteger:{objc_msgSend(accessory, "reachableTransports")}];
         *buf = 138412802;
-        v41 = v5;
+        v41 = _nextSnapshotDate;
         v42 = 2112;
-        *v43 = v15;
+        *v43 = hf_prettyDescription3;
         *&v43[8] = 2112;
         v44 = v19;
         _os_log_impl(&dword_20D9BF000, v13, OS_LOG_TYPE_DEFAULT, "Scheduling next snapshot at %@ for %@ (reachable transports: %@)", buf, 0x20u);
       }
 
-      v20 = [(HFCameraManager *)self nextSnapshotEvent];
-      [v20 cancel];
+      nextSnapshotEvent = [(HFCameraManager *)self nextSnapshotEvent];
+      [nextSnapshotEvent cancel];
 
       objc_initWeak(buf, self);
-      v21 = [MEMORY[0x277D2C938] mainThreadScheduler];
-      [v5 timeIntervalSinceNow];
+      mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+      [_nextSnapshotDate timeIntervalSinceNow];
       v23 = v22;
       v38[0] = MEMORY[0x277D85DD0];
       v38[1] = 3221225472;
       v38[2] = __63__HFCameraManager__scheduleNextSnapshotEventWithPreviousError___block_invoke;
       v38[3] = &unk_277DF4460;
       objc_copyWeak(&v39, buf);
-      v24 = [v21 afterDelay:v38 performBlock:v23];
+      v24 = [mainThreadScheduler afterDelay:v38 performBlock:v23];
       [(HFCameraManager *)self setNextSnapshotEvent:v24];
 
       objc_destroyWeak(&v39);
@@ -378,26 +378,26 @@ void __57__HFCameraManager_beginContinuousStreamingWithRequester___block_invoke(
 
     else
     {
-      v5 = HFLogForCategory(0x1BuLL);
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+      _nextSnapshotDate = HFLogForCategory(0x1BuLL);
+      if (os_log_type_enabled(_nextSnapshotDate, OS_LOG_TYPE_DEFAULT))
       {
-        v25 = [(HFCameraManager *)self cameraProfile];
-        v26 = [v25 hf_prettyDescription];
-        v27 = [(HFCameraManager *)self _hasSnapshotRequesters];
-        v28 = [(HFCameraManager *)self cameraProfile];
-        v29 = [v28 accessory];
-        v30 = [v29 isReachable];
-        v31 = [(HFCameraManager *)self executionEnvironment];
-        v32 = [v31 isActive];
+        cameraProfile5 = [(HFCameraManager *)self cameraProfile];
+        hf_prettyDescription4 = [cameraProfile5 hf_prettyDescription];
+        _hasSnapshotRequesters = [(HFCameraManager *)self _hasSnapshotRequesters];
+        cameraProfile6 = [(HFCameraManager *)self cameraProfile];
+        accessory2 = [cameraProfile6 accessory];
+        isReachable = [accessory2 isReachable];
+        executionEnvironment = [(HFCameraManager *)self executionEnvironment];
+        isActive = [executionEnvironment isActive];
         *buf = 138413058;
-        v41 = v26;
+        v41 = hf_prettyDescription4;
         v42 = 1024;
-        *v43 = v27;
+        *v43 = _hasSnapshotRequesters;
         *&v43[4] = 1024;
-        *&v43[6] = v30;
+        *&v43[6] = isReachable;
         LOWORD(v44) = 1024;
-        *(&v44 + 2) = v32;
-        _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "Not scheduling another snapshot for %@ (has requesters: %d, reachable: %d, execution active: %d", buf, 0x1Eu);
+        *(&v44 + 2) = isActive;
+        _os_log_impl(&dword_20D9BF000, _nextSnapshotDate, OS_LOG_TYPE_DEFAULT, "Not scheduling another snapshot for %@ (has requesters: %d, reachable: %d, execution active: %d", buf, 0x1Eu);
       }
     }
   }
@@ -462,40 +462,40 @@ void __63__HFCameraManager__scheduleNextSnapshotEventWithPreviousError___block_i
   v3 = HFLogForCategory(0x1BuLL);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(HFCameraManager *)self cameraProfile];
-    v5 = [v4 hf_prettyDescription];
+    cameraProfile = [(HFCameraManager *)self cameraProfile];
+    hf_prettyDescription = [cameraProfile hf_prettyDescription];
     v8 = 138412290;
-    v9 = v5;
+    v9 = hf_prettyDescription;
     _os_log_impl(&dword_20D9BF000, v3, OS_LOG_TYPE_DEFAULT, "Cancelling next snapshot event for %@", &v8, 0xCu);
   }
 
-  v6 = [(HFCameraManager *)self nextSnapshotEvent];
-  [v6 cancel];
+  nextSnapshotEvent = [(HFCameraManager *)self nextSnapshotEvent];
+  [nextSnapshotEvent cancel];
 
   [(HFCameraManager *)self setNextSnapshotEvent:0];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cameraSnapshotControl:(id)a3 didTakeSnapshot:(id)a4 error:(id)a5
+- (void)cameraSnapshotControl:(id)control didTakeSnapshot:(id)snapshot error:(id)error
 {
-  v10 = a5;
-  v7 = a3;
-  v8 = [(HFCameraManager *)self cameraProfile];
-  v9 = [v8 snapshotControl];
+  errorCopy = error;
+  controlCopy = control;
+  cameraProfile = [(HFCameraManager *)self cameraProfile];
+  snapshotControl = [cameraProfile snapshotControl];
 
-  if (v9 == v7)
+  if (snapshotControl == controlCopy)
   {
-    [(HFCameraManager *)self _scheduleNextSnapshotEventWithPreviousError:v10];
+    [(HFCameraManager *)self _scheduleNextSnapshotEventWithPreviousError:errorCopy];
   }
 }
 
-- (void)cameraSnapshotControlDidUpdateMostRecentSnapshot:(id)a3
+- (void)cameraSnapshotControlDidUpdateMostRecentSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v5 = [(HFCameraManager *)self cameraProfile];
-  v6 = [v5 snapshotControl];
+  snapshotCopy = snapshot;
+  cameraProfile = [(HFCameraManager *)self cameraProfile];
+  snapshotControl = [cameraProfile snapshotControl];
 
-  if (v6 == v4)
+  if (snapshotControl == snapshotCopy)
   {
 
     [(HFCameraManager *)self _scheduleNextSnapshotEventWithPreviousError:0];
@@ -508,10 +508,10 @@ void __63__HFCameraManager__scheduleNextSnapshotEventWithPreviousError___block_i
   v3 = HFLogForCategory(0x1CuLL);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(HFCameraManager *)self cameraProfile];
-    v5 = [v4 hf_prettyDescription];
+    cameraProfile = [(HFCameraManager *)self cameraProfile];
+    hf_prettyDescription = [cameraProfile hf_prettyDescription];
     v7 = 138412290;
-    v8 = v5;
+    v8 = hf_prettyDescription;
     _os_log_impl(&dword_20D9BF000, v3, OS_LOG_TYPE_DEFAULT, "Beginning continuous streaming for %@", &v7, 0xCu);
   }
 
@@ -525,10 +525,10 @@ void __63__HFCameraManager__scheduleNextSnapshotEventWithPreviousError___block_i
   v3 = HFLogForCategory(0x1CuLL);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(HFCameraManager *)self cameraProfile];
-    v5 = [v4 hf_prettyDescription];
+    cameraProfile = [(HFCameraManager *)self cameraProfile];
+    hf_prettyDescription = [cameraProfile hf_prettyDescription];
     v7 = 138412290;
-    v8 = v5;
+    v8 = hf_prettyDescription;
     _os_log_impl(&dword_20D9BF000, v3, OS_LOG_TYPE_DEFAULT, "Ending continuous streaming for %@", &v7, 0xCu);
   }
 
@@ -542,28 +542,28 @@ void __63__HFCameraManager__scheduleNextSnapshotEventWithPreviousError___block_i
   if ([(HFCameraManager *)self _hasStreamRequesters])
   {
     [(HFCameraManager *)self setCachedStreamError:0];
-    v3 = [(HFCameraManager *)self cameraProfile];
-    v4 = [v3 streamControl];
-    v5 = [v4 streamState];
+    cameraProfile = [(HFCameraManager *)self cameraProfile];
+    streamControl = [cameraProfile streamControl];
+    streamState = [streamControl streamState];
 
     v6 = HFLogForCategory(0x1CuLL);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(HFCameraManager *)self cameraProfile];
-      v8 = [v7 hf_prettyDescription];
-      v9 = NSStringFromHMCameraStreamState(v5);
+      cameraProfile2 = [(HFCameraManager *)self cameraProfile];
+      hf_prettyDescription = [cameraProfile2 hf_prettyDescription];
+      v9 = NSStringFromHMCameraStreamState(streamState);
       v13 = 138412546;
-      v14 = v8;
+      v14 = hf_prettyDescription;
       v15 = 2112;
       v16 = v9;
       _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "Starting stream for %@, current stream state: %@", &v13, 0x16u);
     }
 
-    if ((v5 - 3) <= 1)
+    if ((streamState - 3) <= 1)
     {
-      v10 = [(HFCameraManager *)self cameraProfile];
-      v11 = [v10 streamControl];
-      [v11 startStream];
+      cameraProfile3 = [(HFCameraManager *)self cameraProfile];
+      streamControl2 = [cameraProfile3 streamControl];
+      [streamControl2 startStream];
 
       [(HFCameraManager *)self _dispatchStreamStateUpdate];
     }
@@ -575,28 +575,28 @@ void __63__HFCameraManager__scheduleNextSnapshotEventWithPreviousError___block_i
 - (void)_stopStreaming
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(HFCameraManager *)self cameraProfile];
-  v4 = [v3 streamControl];
-  v5 = [v4 streamState];
+  cameraProfile = [(HFCameraManager *)self cameraProfile];
+  streamControl = [cameraProfile streamControl];
+  streamState = [streamControl streamState];
 
   v6 = HFLogForCategory(0x1CuLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(HFCameraManager *)self cameraProfile];
-    v8 = [v7 hf_prettyDescription];
-    v9 = NSStringFromHMCameraStreamState(v5);
+    cameraProfile2 = [(HFCameraManager *)self cameraProfile];
+    hf_prettyDescription = [cameraProfile2 hf_prettyDescription];
+    v9 = NSStringFromHMCameraStreamState(streamState);
     v13 = 138412546;
-    v14 = v8;
+    v14 = hf_prettyDescription;
     v15 = 2112;
     v16 = v9;
     _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "Stopping stream for %@, current stream state: %@", &v13, 0x16u);
   }
 
-  if ((v5 - 1) <= 1)
+  if ((streamState - 1) <= 1)
   {
-    v10 = [(HFCameraManager *)self cameraProfile];
-    v11 = [v10 streamControl];
-    [v11 stopStream];
+    cameraProfile3 = [(HFCameraManager *)self cameraProfile];
+    streamControl2 = [cameraProfile3 streamControl];
+    [streamControl2 stopStream];
 
     [(HFCameraManager *)self _dispatchStreamStateUpdate];
   }
@@ -658,12 +658,12 @@ void __45__HFCameraManager__dispatchStreamStateUpdate__block_invoke_2(uint64_t a
   }
 }
 
-- (void)cameraUserSettingsDidUpdate:(id)a3
+- (void)cameraUserSettingsDidUpdate:(id)update
 {
-  v4 = [(HFCameraManager *)self cameraProfile];
-  v5 = [v4 hf_shouldDisableLiveStream];
+  cameraProfile = [(HFCameraManager *)self cameraProfile];
+  hf_shouldDisableLiveStream = [cameraProfile hf_shouldDisableLiveStream];
 
-  if ((v5 & 1) == 0)
+  if ((hf_shouldDisableLiveStream & 1) == 0)
   {
     [(HFCameraManager *)self _scheduleNextSnapshotEventWithPreviousError:0];
 
@@ -671,13 +671,13 @@ void __45__HFCameraManager__dispatchStreamStateUpdate__block_invoke_2(uint64_t a
   }
 }
 
-- (void)cameraStreamControlDidStartStream:(id)a3
+- (void)cameraStreamControlDidStartStream:(id)stream
 {
-  v4 = a3;
-  v5 = [(HFCameraManager *)self cameraProfile];
-  v6 = [v5 streamControl];
+  streamCopy = stream;
+  cameraProfile = [(HFCameraManager *)self cameraProfile];
+  streamControl = [cameraProfile streamControl];
 
-  if (v6 == v4)
+  if (streamControl == streamCopy)
   {
     [(HFCameraManager *)self setCachedStreamError:0];
 
@@ -685,25 +685,25 @@ void __45__HFCameraManager__dispatchStreamStateUpdate__block_invoke_2(uint64_t a
   }
 }
 
-- (void)cameraStreamControl:(id)a3 didStopStreamWithError:(id)a4
+- (void)cameraStreamControl:(id)control didStopStreamWithError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = v6;
+  errorCopy = error;
+  controlCopy = control;
+  v8 = errorCopy;
   if (+[HFExecutionEnvironment isHomeNotification])
   {
-    v8 = v6;
-    if ([v6 code] == 23)
+    v8 = errorCopy;
+    if ([errorCopy code] == 23)
     {
 
       v8 = 0;
     }
   }
 
-  v9 = [(HFCameraManager *)self cameraProfile];
-  v10 = [v9 streamControl];
+  cameraProfile = [(HFCameraManager *)self cameraProfile];
+  streamControl = [cameraProfile streamControl];
 
-  if (v10 == v7)
+  if (streamControl == controlCopy)
   {
     if (!v8)
     {
@@ -737,8 +737,8 @@ void __45__HFCameraManager__dispatchStreamStateUpdate__block_invoke_2(uint64_t a
     v4 = +[HFHomeKitDispatcher sharedDispatcher];
     [v4 addAccessoryObserver:self];
 
-    v5 = [(HFCameraManager *)self executionEnvironment];
-    [v5 addObserver:self];
+    executionEnvironment = [(HFCameraManager *)self executionEnvironment];
+    [executionEnvironment addObserver:self];
     v6 = 1;
   }
 
@@ -755,24 +755,24 @@ void __45__HFCameraManager__dispatchStreamStateUpdate__block_invoke_2(uint64_t a
     v8 = +[HFHomeKitDispatcher sharedDispatcher];
     [v8 removeAccessoryObserver:self];
 
-    v5 = [(HFCameraManager *)self executionEnvironment];
-    [v5 removeObserver:self];
+    executionEnvironment = [(HFCameraManager *)self executionEnvironment];
+    [executionEnvironment removeObserver:self];
     v6 = 0;
   }
 
   [(HFCameraManager *)self setIsRegisteredForEvents:v6];
 }
 
-- (void)accessoryDidUpdateReachability:(id)a3
+- (void)accessoryDidUpdateReachability:(id)reachability
 {
-  v7 = a3;
-  v4 = [(HFCameraManager *)self cameraProfile];
-  v5 = [v4 accessory];
+  reachabilityCopy = reachability;
+  cameraProfile = [(HFCameraManager *)self cameraProfile];
+  accessory = [cameraProfile accessory];
 
-  v6 = v7;
-  if (v5 == v7)
+  v6 = reachabilityCopy;
+  if (accessory == reachabilityCopy)
   {
-    if ([v7 isReachable])
+    if ([reachabilityCopy isReachable])
     {
       [(HFCameraManager *)self _scheduleNextSnapshotEventWithPreviousError:0];
       [(HFCameraManager *)self _startStreaming];
@@ -783,23 +783,23 @@ void __45__HFCameraManager__dispatchStreamStateUpdate__block_invoke_2(uint64_t a
       [(HFCameraManager *)self _cancelNextSnapshotEvent];
     }
 
-    v6 = v7;
+    v6 = reachabilityCopy;
   }
 }
 
-- (void)executionEnvironmentDidBecomeActive:(id)a3
+- (void)executionEnvironmentDidBecomeActive:(id)active
 {
   [(HFCameraManager *)self _scheduleNextSnapshotEventWithPreviousError:0];
 
   [(HFCameraManager *)self _startStreaming];
 }
 
-- (void)setCachedStreamError:(id)a3
+- (void)setCachedStreamError:(id)error
 {
-  v5 = a3;
-  if (self->_cachedStreamError != v5)
+  errorCopy = error;
+  if (self->_cachedStreamError != errorCopy)
   {
-    objc_storeStrong(&self->_cachedStreamError, a3);
+    objc_storeStrong(&self->_cachedStreamError, error);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __40__HFCameraManager_setCachedStreamError___block_invoke;
@@ -833,16 +833,16 @@ void __40__HFCameraManager_setCachedStreamError___block_invoke_2(uint64_t a1, vo
 
 - (BOOL)_hasSnapshotRequesters
 {
-  v2 = [(HFCameraManager *)self snapshotRequesters];
-  v3 = [v2 count] != 0;
+  snapshotRequesters = [(HFCameraManager *)self snapshotRequesters];
+  v3 = [snapshotRequesters count] != 0;
 
   return v3;
 }
 
 - (BOOL)_hasStreamRequesters
 {
-  v2 = [(HFCameraManager *)self streamRequesters];
-  v3 = [v2 count] != 0;
+  streamRequesters = [(HFCameraManager *)self streamRequesters];
+  v3 = [streamRequesters count] != 0;
 
   return v3;
 }

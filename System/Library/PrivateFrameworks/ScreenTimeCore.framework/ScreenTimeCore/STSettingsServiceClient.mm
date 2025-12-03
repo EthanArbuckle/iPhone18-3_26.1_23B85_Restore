@@ -1,12 +1,12 @@
 @interface STSettingsServiceClient
-- (BOOL)isCloudSyncEnabled:(id *)a3;
-- (BOOL)isRestrictAdultContentEnabled:(id *)a3;
-- (BOOL)requestLegacyUsageForUser:(id)a3 withError:(id *)a4;
-- (BOOL)updateLegacyUsageWithError:(id *)a3;
+- (BOOL)isCloudSyncEnabled:(id *)enabled;
+- (BOOL)isRestrictAdultContentEnabled:(id *)enabled;
+- (BOOL)requestLegacyUsageForUser:(id)user withError:(id *)error;
+- (BOOL)updateLegacyUsageWithError:(id *)error;
 - (STSettingsServiceClient)init;
-- (id)startCoreDataServerWithError:(id *)a3;
+- (id)startCoreDataServerWithError:(id *)error;
 - (void)dealloc;
-- (void)processSettingsChangesSinceHistoryToken:(id)a3 withCompletion:(id)a4;
+- (void)processSettingsChangesSinceHistoryToken:(id)token withCompletion:(id)completion;
 @end
 
 @implementation STSettingsServiceClient
@@ -56,7 +56,7 @@ void __31__STSettingsServiceClient_init__block_invoke_18()
   [(STSettingsServiceClient *)&v4 dealloc];
 }
 
-- (id)startCoreDataServerWithError:(id *)a3
+- (id)startCoreDataServerWithError:(id *)error
 {
   v5 = _os_activity_create(&dword_1B831F000, "STSettingsServiceClient.startCoreDataServer", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
@@ -74,13 +74,13 @@ void __31__STSettingsServiceClient_init__block_invoke_18()
   v16 = __Block_byref_object_copy__8;
   v17 = __Block_byref_object_dispose__8;
   v18 = 0;
-  v6 = [(STSettingsServiceClient *)self connection];
+  connection = [(STSettingsServiceClient *)self connection];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __56__STSettingsServiceClient_startCoreDataServerWithError___block_invoke;
   v12[3] = &unk_1E7CE6BA8;
   v12[4] = &v13;
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v12];
+  v7 = [connection synchronousRemoteObjectProxyWithErrorHandler:v12];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -89,12 +89,12 @@ void __31__STSettingsServiceClient_init__block_invoke_18()
   v11[4] = &v19;
   v11[5] = &v13;
   [v7 startCoreDataServerWithCompletionHandler:v11];
-  if (a3)
+  if (error)
   {
     v8 = v14[5];
     if (v8)
     {
-      *a3 = v8;
+      *error = v8;
     }
   }
 
@@ -139,24 +139,24 @@ void __56__STSettingsServiceClient_startCoreDataServerWithError___block_invoke_2
   }
 }
 
-- (void)processSettingsChangesSinceHistoryToken:(id)a3 withCompletion:(id)a4
+- (void)processSettingsChangesSinceHistoryToken:(id)token withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1B831F000, "STSettingsServiceClient.processSettingsChangesSinceHistoryToken", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v8, &state);
-  v9 = [(STSettingsServiceClient *)self connection];
+  connection = [(STSettingsServiceClient *)self connection];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __82__STSettingsServiceClient_processSettingsChangesSinceHistoryToken_withCompletion___block_invoke;
   v12[3] = &unk_1E7CE6CE8;
-  v10 = v7;
+  v10 = completionCopy;
   v13 = v10;
-  v11 = [v9 remoteObjectProxyWithErrorHandler:v12];
+  v11 = [connection remoteObjectProxyWithErrorHandler:v12];
 
-  [v11 processSettingsChangesSinceHistoryToken:v6 completionHandler:v10];
+  [v11 processSettingsChangesSinceHistoryToken:tokenCopy completionHandler:v10];
   os_activity_scope_leave(&state);
 }
 
@@ -176,7 +176,7 @@ void __82__STSettingsServiceClient_processSettingsChangesSinceHistoryToken_withC
   }
 }
 
-- (BOOL)updateLegacyUsageWithError:(id *)a3
+- (BOOL)updateLegacyUsageWithError:(id *)error
 {
   v5 = _os_activity_create(&dword_1B831F000, "STSettingsServiceClient.updateLegacyUsage", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
@@ -192,14 +192,14 @@ void __82__STSettingsServiceClient_processSettingsChangesSinceHistoryToken_withC
   v16 = __Block_byref_object_copy__8;
   v17 = __Block_byref_object_dispose__8;
   v18 = 0;
-  v6 = [(STSettingsServiceClient *)self connection];
+  connection = [(STSettingsServiceClient *)self connection];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __54__STSettingsServiceClient_updateLegacyUsageWithError___block_invoke;
   v12[3] = &unk_1E7CE71C8;
   v12[4] = &v13;
   v12[5] = &v19;
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v12];
+  v7 = [connection synchronousRemoteObjectProxyWithErrorHandler:v12];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -208,12 +208,12 @@ void __82__STSettingsServiceClient_processSettingsChangesSinceHistoryToken_withC
   v11[4] = &v13;
   v11[5] = &v19;
   [v7 updateLegacyUsageWithCompletionHandler:v11];
-  if (a3)
+  if (error)
   {
     v8 = v14[5];
     if (v8)
     {
-      *a3 = v8;
+      *error = v8;
     }
   }
 
@@ -259,9 +259,9 @@ void __54__STSettingsServiceClient_updateLegacyUsageWithError___block_invoke_26(
   }
 }
 
-- (BOOL)requestLegacyUsageForUser:(id)a3 withError:(id *)a4
+- (BOOL)requestLegacyUsageForUser:(id)user withError:(id *)error
 {
-  v6 = a3;
+  userCopy = user;
   v7 = _os_activity_create(&dword_1B831F000, "STSettingsServiceClient.updateLegacyUsage", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -276,14 +276,14 @@ void __54__STSettingsServiceClient_updateLegacyUsageWithError___block_invoke_26(
   v18 = __Block_byref_object_copy__8;
   v19 = __Block_byref_object_dispose__8;
   v20 = 0;
-  v8 = [(STSettingsServiceClient *)self connection];
+  connection = [(STSettingsServiceClient *)self connection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __63__STSettingsServiceClient_requestLegacyUsageForUser_withError___block_invoke;
   v14[3] = &unk_1E7CE71C8;
   v14[4] = &v15;
   v14[5] = &v21;
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v14];
+  v9 = [connection synchronousRemoteObjectProxyWithErrorHandler:v14];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -291,13 +291,13 @@ void __54__STSettingsServiceClient_updateLegacyUsageWithError___block_invoke_26(
   v13[3] = &unk_1E7CE6BD0;
   v13[4] = &v15;
   v13[5] = &v21;
-  [v9 requestLegacyUsageForUser:v6 withCompletionHandler:v13];
-  if (a4)
+  [v9 requestLegacyUsageForUser:userCopy withCompletionHandler:v13];
+  if (error)
   {
     v10 = v16[5];
     if (v10)
     {
-      *a4 = v10;
+      *error = v10;
     }
   }
 
@@ -360,7 +360,7 @@ void __55__STSettingsServiceClient_setCloudSync_withCompletion___block_invoke(ui
   *(*(*(a1 + 40) + 8) + 24) = 0;
 }
 
-- (BOOL)isCloudSyncEnabled:(id *)a3
+- (BOOL)isCloudSyncEnabled:(id *)enabled
 {
   v17 = 0;
   v18 = &v17;
@@ -372,14 +372,14 @@ void __55__STSettingsServiceClient_setCloudSync_withCompletion___block_invoke(ui
   v14 = __Block_byref_object_copy__8;
   v15 = __Block_byref_object_dispose__8;
   v16 = 0;
-  v4 = [(STSettingsServiceClient *)self connection];
+  connection = [(STSettingsServiceClient *)self connection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __46__STSettingsServiceClient_isCloudSyncEnabled___block_invoke;
   v10[3] = &unk_1E7CE71C8;
   v10[4] = &v11;
   v10[5] = &v17;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v10];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -388,12 +388,12 @@ void __55__STSettingsServiceClient_setCloudSync_withCompletion___block_invoke(ui
   v9[4] = &v11;
   v9[5] = &v17;
   [v5 isCloudSyncEnabled:v9];
-  if (a3)
+  if (enabled)
   {
     v6 = v12[5];
     if (v6)
     {
-      *a3 = v6;
+      *enabled = v6;
     }
   }
 
@@ -428,7 +428,7 @@ void __46__STSettingsServiceClient_isCloudSyncEnabled___block_invoke_29(uint64_t
   *(*(*(a1 + 40) + 8) + 24) = a2;
 }
 
-- (BOOL)isRestrictAdultContentEnabled:(id *)a3
+- (BOOL)isRestrictAdultContentEnabled:(id *)enabled
 {
   v17 = 0;
   v18 = &v17;
@@ -440,14 +440,14 @@ void __46__STSettingsServiceClient_isCloudSyncEnabled___block_invoke_29(uint64_t
   v14 = __Block_byref_object_copy__8;
   v15 = __Block_byref_object_dispose__8;
   v16 = 0;
-  v4 = [(STSettingsServiceClient *)self connection];
+  connection = [(STSettingsServiceClient *)self connection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __57__STSettingsServiceClient_isRestrictAdultContentEnabled___block_invoke;
   v10[3] = &unk_1E7CE71C8;
   v10[4] = &v11;
   v10[5] = &v17;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v10];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -456,12 +456,12 @@ void __46__STSettingsServiceClient_isCloudSyncEnabled___block_invoke_29(uint64_t
   v9[4] = &v11;
   v9[5] = &v17;
   [v5 isRestrictAdultContentEnabled:v9];
-  if (a3)
+  if (enabled)
   {
     v6 = v12[5];
     if (v6)
     {
-      *a3 = v6;
+      *enabled = v6;
     }
   }
 

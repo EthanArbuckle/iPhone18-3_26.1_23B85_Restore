@@ -3,17 +3,17 @@
 - (id)voiceOverDescriptions;
 - (void)hide;
 - (void)hideWithoutAnimation;
-- (void)setDelegate:(id)a3;
-- (void)showNamesForElements:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)showNamesForElements:(id)elements;
 - (void)startDelayedDimmingOfNumbers;
 - (void)stopDelayedDimmingOfNumbers;
 @end
 
 @implementation CACElementNamesOverlayManager
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -23,15 +23,15 @@
   }
 }
 
-- (void)showNamesForElements:(id)a3
+- (void)showNamesForElements:(id)elements
 {
-  v4 = a3;
+  elementsCopy = elements;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__CACElementNamesOverlayManager_showNamesForElements___block_invoke_2;
   v6[3] = &unk_279CECB38;
-  v7 = v4;
-  v5 = v4;
+  v7 = elementsCopy;
+  v5 = elementsCopy;
   [(CACSimpleContentViewManager *)self showViewControllerWithCreationHandler:&__block_literal_global_45 updateHandler:v6];
 }
 
@@ -44,13 +44,13 @@ CACElementNamesOverlayViewController *__54__CACElementNamesOverlayManager_showNa
 
 - (id)voiceOverDescriptions
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CACSimpleContentViewManager *)v2 viewController];
-  v4 = [v3 items];
-  v5 = [v4 copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  viewController = [(CACSimpleContentViewManager *)selfCopy viewController];
+  items = [viewController items];
+  v5 = [items copy];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v6 = +[CACVoiceOverShortDescriptionGenerator sharedInstance];
   v7 = [v6 shortDescriptionsForItems:v5 style:1];
 
@@ -75,20 +75,20 @@ CACElementNamesOverlayViewController *__54__CACElementNamesOverlayManager_showNa
 {
   [(CACSimpleContentViewManager *)self setPendingDimmingTransactionID:[(CACSimpleContentViewManager *)self pendingDimmingTransactionID]+ 1];
   [(CACSimpleContentViewManager *)self setActiveDimmingTransactionID:[(CACSimpleContentViewManager *)self pendingDimmingTransactionID]];
-  v3 = [(CACSimpleContentViewManager *)self viewController];
-  v4 = [v3 view];
-  [v4 setAlpha:1.0];
+  viewController = [(CACSimpleContentViewManager *)self viewController];
+  view = [viewController view];
+  [view setAlpha:1.0];
 
-  v10 = [(CACElementNamesOverlayManager *)self delegate];
-  if ([v10 isOverlayFadingEnabledForElementNamesOverlayManager:self])
+  delegate = [(CACElementNamesOverlayManager *)self delegate];
+  if ([delegate isOverlayFadingEnabledForElementNamesOverlayManager:self])
   {
-    v5 = [(CACElementNamesOverlayManager *)self delegate];
-    v6 = [v5 isAlwaysShowingElementNamesOverlayManager:self];
+    delegate2 = [(CACElementNamesOverlayManager *)self delegate];
+    v6 = [delegate2 isAlwaysShowingElementNamesOverlayManager:self];
 
     if (v6)
     {
-      v7 = [(CACElementNamesOverlayManager *)self delegate];
-      [v7 overlayFadeDelayForElementNamesOverlayManager:self];
+      delegate3 = [(CACElementNamesOverlayManager *)self delegate];
+      [delegate3 overlayFadeDelayForElementNamesOverlayManager:self];
       v9 = dispatch_time(0, (v8 * 1000000000.0));
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
@@ -134,9 +134,9 @@ void __61__CACElementNamesOverlayManager_startDelayedDimmingOfNumbers__block_inv
 - (void)stopDelayedDimmingOfNumbers
 {
   [(CACSimpleContentViewManager *)self setPendingDimmingTransactionID:[(CACSimpleContentViewManager *)self pendingDimmingTransactionID]+ 1];
-  v4 = [(CACSimpleContentViewManager *)self viewController];
-  v3 = [v4 view];
-  [v3 setAlpha:1.0];
+  viewController = [(CACSimpleContentViewManager *)self viewController];
+  view = [viewController view];
+  [view setAlpha:1.0];
 }
 
 - (CACElementNamesOverlayManagerDelegate)delegate

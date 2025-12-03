@@ -6,9 +6,9 @@
 
 - (id)description
 {
-  v3 = [(StaticKeyValidation *)self publicID];
-  v4 = [(StaticKeyValidation *)self idsURI];
-  v5 = [NSString stringWithFormat:@"<StaticKeyValidation: %@ ids: %@ result: %d>", v3, v4, [(StaticKeyValidation *)self ktResult]];
+  publicID = [(StaticKeyValidation *)self publicID];
+  idsURI = [(StaticKeyValidation *)self idsURI];
+  v5 = [NSString stringWithFormat:@"<StaticKeyValidation: %@ ids: %@ result: %d>", publicID, idsURI, [(StaticKeyValidation *)self ktResult]];
 
   return v5;
 }

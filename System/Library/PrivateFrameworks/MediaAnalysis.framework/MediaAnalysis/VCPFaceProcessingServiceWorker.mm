@@ -1,44 +1,44 @@
 @interface VCPFaceProcessingServiceWorker
-+ (id)allPersonsWithAtLeastOneFaceFetchOptionsWithPhotoLibrary:(id)a3;
-+ (id)workerWithPhotoLibrary:(id)a3 andContext:(id)a4;
-- (VCPFaceProcessingServiceWorker)initWithPhotoLibrary:(id)a3 andContext:(id)a4;
-- (id)_suggestionsForPersonWithLocalIdentifier:(id)a3 toBeConfirmedPersonSuggestions:(id)a4 toBeRejectedPersonSuggestions:(id)a5 cancelOrExtendTimeoutBlock:(id)a6 error:(id *)a7;
-- (void)faceCandidatesforKeyFaceForPersonsWithLocalIdentifiers:(id)a3 context:(id)a4 reply:(id)a5;
-- (void)personPromoterStatusWithContext:(id)a3 reply:(id)a4;
-- (void)rebuildPersonsWithContext:(id)a3 reply:(id)a4 extendTimeout:(id)a5 cancel:(id)a6;
-- (void)reclusterFacesWithContext:(id)a3 reply:(id)a4 extendTimeout:(id)a5 cancel:(id)a6;
-- (void)requestSuggestedMePersonIdentifierWithContext:(id)a3 reply:(id)a4;
-- (void)resetFaceClusteringStateWithContext:(id)a3 reply:(id)a4;
-- (void)resetPersonPromoterStatusWithReply:(id)a3;
-- (void)resetPersonsModelWithReply:(id)a3;
-- (void)resetPetsModelWithReply:(id)a3;
-- (void)suggestPersonsForPersonWithLocalIdentifier:(id)a3 toBeConfirmedPersonSuggestions:(id)a4 toBeRejectedPersonSuggestions:(id)a5 context:(id)a6 cancelOrExtendTimeoutBlock:(id)a7 reply:(id)a8;
-- (void)updateKeyFacesOfPersonsWithLocalIdentifiers:(id)a3 forceUpdate:(BOOL)a4 context:(id)a5 cancelOrExtendTimeoutBlock:(id)a6 reply:(id)a7;
-- (void)validateClusterCacheWithContext:(id)a3 cancelOrExtendTimeoutBlock:(id)a4 reply:(id)a5;
++ (id)allPersonsWithAtLeastOneFaceFetchOptionsWithPhotoLibrary:(id)library;
++ (id)workerWithPhotoLibrary:(id)library andContext:(id)context;
+- (VCPFaceProcessingServiceWorker)initWithPhotoLibrary:(id)library andContext:(id)context;
+- (id)_suggestionsForPersonWithLocalIdentifier:(id)identifier toBeConfirmedPersonSuggestions:(id)suggestions toBeRejectedPersonSuggestions:(id)personSuggestions cancelOrExtendTimeoutBlock:(id)block error:(id *)error;
+- (void)faceCandidatesforKeyFaceForPersonsWithLocalIdentifiers:(id)identifiers context:(id)context reply:(id)reply;
+- (void)personPromoterStatusWithContext:(id)context reply:(id)reply;
+- (void)rebuildPersonsWithContext:(id)context reply:(id)reply extendTimeout:(id)timeout cancel:(id)cancel;
+- (void)reclusterFacesWithContext:(id)context reply:(id)reply extendTimeout:(id)timeout cancel:(id)cancel;
+- (void)requestSuggestedMePersonIdentifierWithContext:(id)context reply:(id)reply;
+- (void)resetFaceClusteringStateWithContext:(id)context reply:(id)reply;
+- (void)resetPersonPromoterStatusWithReply:(id)reply;
+- (void)resetPersonsModelWithReply:(id)reply;
+- (void)resetPetsModelWithReply:(id)reply;
+- (void)suggestPersonsForPersonWithLocalIdentifier:(id)identifier toBeConfirmedPersonSuggestions:(id)suggestions toBeRejectedPersonSuggestions:(id)personSuggestions context:(id)context cancelOrExtendTimeoutBlock:(id)block reply:(id)reply;
+- (void)updateKeyFacesOfPersonsWithLocalIdentifiers:(id)identifiers forceUpdate:(BOOL)update context:(id)context cancelOrExtendTimeoutBlock:(id)block reply:(id)reply;
+- (void)validateClusterCacheWithContext:(id)context cancelOrExtendTimeoutBlock:(id)block reply:(id)reply;
 @end
 
 @implementation VCPFaceProcessingServiceWorker
 
-- (VCPFaceProcessingServiceWorker)initWithPhotoLibrary:(id)a3 andContext:(id)a4
+- (VCPFaceProcessingServiceWorker)initWithPhotoLibrary:(id)library andContext:(id)context
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  libraryCopy = library;
+  contextCopy = context;
   v21.receiver = self;
   v21.super_class = VCPFaceProcessingServiceWorker;
   v9 = [(VCPFaceProcessingServiceWorker *)&v21 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_photoLibrary, a3);
-    objc_storeStrong(&v10->_context, a4);
-    v11 = [[VCPPhotosPersistenceDelegate alloc] initWithPhotoLibrary:v7];
+    objc_storeStrong(&v9->_photoLibrary, library);
+    objc_storeStrong(&v10->_context, context);
+    v11 = [[VCPPhotosPersistenceDelegate alloc] initWithPhotoLibrary:libraryCopy];
     persistenceDelegate = v10->_persistenceDelegate;
     v10->_persistenceDelegate = v11;
 
-    v13 = [v7 vcp_visionCacheStorageDirectoryURL];
+    vcp_visionCacheStorageDirectoryURL = [libraryCopy vcp_visionCacheStorageDirectoryURL];
     v20 = 0;
-    v14 = [objc_alloc(MEMORY[0x1E69E0678]) initWithClient:0 path:v13 error:&v20];
+    v14 = [objc_alloc(MEMORY[0x1E69E0678]) initWithClient:0 path:vcp_visionCacheStorageDirectoryURL error:&v20];
     v15 = v20;
     gallery = v10->_gallery;
     v10->_gallery = v14;
@@ -67,54 +67,54 @@
   return v18;
 }
 
-+ (id)workerWithPhotoLibrary:(id)a3 andContext:(id)a4
++ (id)workerWithPhotoLibrary:(id)library andContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithPhotoLibrary:v6 andContext:v5];
+  contextCopy = context;
+  libraryCopy = library;
+  v7 = [objc_alloc(objc_opt_class()) initWithPhotoLibrary:libraryCopy andContext:contextCopy];
 
   return v7;
 }
 
-+ (id)allPersonsWithAtLeastOneFaceFetchOptionsWithPhotoLibrary:(id)a3
++ (id)allPersonsWithAtLeastOneFaceFetchOptionsWithPhotoLibrary:(id)library
 {
-  v3 = [a3 librarySpecificFetchOptions];
-  [v3 setMinimumUnverifiedFaceCount:1];
-  [v3 setMinimumVerifiedFaceCount:1];
-  [v3 setIncludedDetectionTypes:&unk_1F49BEDB8];
+  librarySpecificFetchOptions = [library librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setMinimumUnverifiedFaceCount:1];
+  [librarySpecificFetchOptions setMinimumVerifiedFaceCount:1];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_1F49BEDB8];
 
-  return v3;
+  return librarySpecificFetchOptions;
 }
 
-- (void)updateKeyFacesOfPersonsWithLocalIdentifiers:(id)a3 forceUpdate:(BOOL)a4 context:(id)a5 cancelOrExtendTimeoutBlock:(id)a6 reply:(id)a7
+- (void)updateKeyFacesOfPersonsWithLocalIdentifiers:(id)identifiers forceUpdate:(BOOL)update context:(id)context cancelOrExtendTimeoutBlock:(id)block reply:(id)reply
 {
-  v9 = a4;
+  updateCopy = update;
   v20 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a6;
-  v13 = a7;
+  identifiersCopy = identifiers;
+  blockCopy = block;
+  replyCopy = reply;
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v19 = v11;
+    v19 = identifiersCopy;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "UpdateKeyFaces for: '%@'", buf, 0xCu);
   }
 
   persistenceDelegate = self->_persistenceDelegate;
   v17 = 0;
-  v15 = [(VCPPhotosPersistenceDelegate *)persistenceDelegate updateKeyFacesOfPersonsWithLocalIdentifiers:v11 forceUpdate:v9 cancelOrExtendTimeoutBlock:v12 error:&v17];
+  v15 = [(VCPPhotosPersistenceDelegate *)persistenceDelegate updateKeyFacesOfPersonsWithLocalIdentifiers:identifiersCopy forceUpdate:updateCopy cancelOrExtendTimeoutBlock:blockCopy error:&v17];
   v16 = v17;
-  v13[2](v13, v15, v16);
+  replyCopy[2](replyCopy, v15, v16);
 }
 
-- (id)_suggestionsForPersonWithLocalIdentifier:(id)a3 toBeConfirmedPersonSuggestions:(id)a4 toBeRejectedPersonSuggestions:(id)a5 cancelOrExtendTimeoutBlock:(id)a6 error:(id *)a7
+- (id)_suggestionsForPersonWithLocalIdentifier:(id)identifier toBeConfirmedPersonSuggestions:(id)suggestions toBeRejectedPersonSuggestions:(id)personSuggestions cancelOrExtendTimeoutBlock:(id)block error:(id *)error
 {
   v147[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (!(v15[2])())
+  identifierCopy = identifier;
+  suggestionsCopy = suggestions;
+  personSuggestionsCopy = personSuggestions;
+  blockCopy = block;
+  if (!(blockCopy[2])())
   {
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
@@ -126,87 +126,87 @@
     [v23 setMinimumUnverifiedFaceCount:1];
     [v23 setMinimumVerifiedFaceCount:1];
     v24 = MEMORY[0x1E6978978];
-    v145 = v12;
+    v145 = identifierCopy;
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v145 count:1];
     v121 = v23;
     v26 = [v24 fetchPersonsWithLocalIdentifiers:v25 options:v23];
-    v22 = [v26 firstObject];
+    firstObject = [v26 firstObject];
 
-    v21 = v22;
-    if (!v22)
+    v21 = firstObject;
+    if (!firstObject)
     {
       goto LABEL_24;
     }
 
-    if (v15[2](v15))
+    if (blockCopy[2](blockCopy))
     {
-      if (a7)
+      if (error)
       {
         v27 = MEMORY[0x1E696ABC0];
-        v28 = v22;
+        v28 = firstObject;
         v29 = *MEMORY[0x1E696A768];
         v143 = *MEMORY[0x1E696A578];
         [MEMORY[0x1E696AEC0] stringWithFormat:@"_suggestionsForPersonWithLocalIdentifier cancelled"];
-        v31 = v30 = v14;
+        v31 = v30 = personSuggestionsCopy;
         v144 = v31;
         [MEMORY[0x1E695DF20] dictionaryWithObjects:&v144 forKeys:&v143 count:1];
-        v32 = v13;
-        v34 = v33 = v12;
+        v32 = suggestionsCopy;
+        v34 = v33 = identifierCopy;
         v35 = v29;
         v21 = v28;
-        *a7 = [v27 errorWithDomain:v35 code:-128 userInfo:v34];
+        *error = [v27 errorWithDomain:v35 code:-128 userInfo:v34];
 
-        v12 = v33;
-        v13 = v32;
+        identifierCopy = v33;
+        suggestionsCopy = v32;
 
-        v14 = v30;
+        personSuggestionsCopy = v30;
       }
 
 LABEL_23:
-      v22 = 0;
+      firstObject = 0;
 LABEL_24:
       v18 = v121;
       goto LABEL_99;
     }
 
-    v36 = [v22 mdID];
+    mdID = [firstObject mdID];
 
-    if (!v36)
+    if (!mdID)
     {
       if (MediaAnalysisLogLevel() >= 3)
       {
         v18 = v121;
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
-          v49 = [v22 localIdentifier];
+          localIdentifier = [firstObject localIdentifier];
           *buf = 138412290;
-          v140 = v49;
+          v140 = localIdentifier;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[PersonSuggestionVU] Person %@ does not have mdID", buf, 0xCu);
 
-          v21 = v22;
+          v21 = firstObject;
         }
 
-        v22 = 0;
+        firstObject = 0;
         goto LABEL_99;
       }
 
       goto LABEL_23;
     }
 
-    v117 = v14;
-    v37 = [MEMORY[0x1E695DF90] dictionary];
+    v117 = personSuggestionsCopy;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __169__VCPFaceProcessingServiceWorker__suggestionsForPersonWithLocalIdentifier_toBeConfirmedPersonSuggestions_toBeRejectedPersonSuggestions_cancelOrExtendTimeoutBlock_error___block_invoke;
     aBlock[3] = &unk_1E834FEE0;
     aBlock[4] = self;
-    v118 = v37;
+    v118 = dictionary;
     v132 = v118;
-    context = v15;
+    context = blockCopy;
     v133 = context;
     v116 = _Block_copy(aBlock);
-    v114 = v22;
-    v38 = [v22 mdID];
+    v114 = firstObject;
+    mdID2 = [firstObject mdID];
     v134 = 0;
     v39 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:@"\\d+?" options:0 error:&v134];
     v40 = v134;
@@ -214,26 +214,26 @@ LABEL_24:
     if (v39)
     {
       *v113 = v40;
-      v42 = [v39 firstMatchInString:v38 options:0 range:{0, objc_msgSend(v38, "length")}];
+      v42 = [v39 firstMatchInString:mdID2 options:0 range:{0, objc_msgSend(mdID2, "length")}];
       v43 = v42;
       if (v42)
       {
-        v110 = v13;
-        v44 = v12;
+        v110 = suggestionsCopy;
+        v44 = identifierCopy;
         v45 = [v42 rangeAtIndex:0];
-        v47 = [v38 substringWithRange:{v45, v46}];
-        v48 = [v47 integerValue];
+        v47 = [mdID2 substringWithRange:{v45, v46}];
+        integerValue = [v47 integerValue];
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
         {
           *buf = 134217984;
-          v140 = v48;
+          v140 = integerValue;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MADParseEntityIdentifier] Parsing %ld", buf, 0xCu);
         }
 
-        type = [objc_alloc(MEMORY[0x1E69E0688]) initWithValue:v48];
+        type = [objc_alloc(MEMORY[0x1E69E0688]) initWithValue:integerValue];
 
-        v12 = v44;
-        v13 = v110;
+        identifierCopy = v44;
+        suggestionsCopy = v110;
       }
 
       else if (MediaAnalysisLogLevel() < 3)
@@ -246,7 +246,7 @@ LABEL_24:
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v140 = v38;
+          v140 = mdID2;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MADParseEntityIdentifier] No valid EntityIdentifier - %@", buf, 0xCu);
         }
 
@@ -278,9 +278,9 @@ LABEL_34:
 
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
-      v50 = [v114 localIdentifier];
+      localIdentifier2 = [v114 localIdentifier];
       *buf = 138412290;
-      v140 = v50;
+      v140 = localIdentifier2;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[PersonSuggestionVU] Retrieving similar entities to %@", buf, 0xCu);
     }
 
@@ -289,7 +289,7 @@ LABEL_34:
     v52 = [(VUWGallery *)gallery similarEntitiesTo:type error:&v130 body:v116];
     v112 = v130;
     v53 = MediaAnalysisLogLevel();
-    v14 = v117;
+    personSuggestionsCopy = v117;
     v21 = v114;
     if (v52)
     {
@@ -301,10 +301,10 @@ LABEL_34:
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[PersonSuggestionVU] Retrieved %lu similar entitiy(ies)", buf, 0xCu);
       }
 
-      if (v15[2](context))
+      if (blockCopy[2](context))
       {
         v18 = v121;
-        if (a7)
+        if (error)
         {
           v55 = MEMORY[0x1E696ABC0];
           v56 = *MEMORY[0x1E696A768];
@@ -312,31 +312,31 @@ LABEL_34:
           v57 = [MEMORY[0x1E696AEC0] stringWithFormat:@"_suggestionsForPersonWithLocalIdentifier cancelled"];
           v138 = v57;
           [MEMORY[0x1E695DF20] dictionaryWithObjects:&v138 forKeys:&v137 count:1];
-          v58 = v13;
-          v60 = v59 = v12;
+          v58 = suggestionsCopy;
+          v60 = v59 = identifierCopy;
           v61 = v56;
           v21 = v114;
-          *a7 = [v55 errorWithDomain:v61 code:-128 userInfo:v60];
+          *error = [v55 errorWithDomain:v61 code:-128 userInfo:v60];
 
-          v12 = v59;
-          v13 = v58;
+          identifierCopy = v59;
+          suggestionsCopy = v58;
 
-          v14 = v117;
+          personSuggestionsCopy = v117;
         }
 
-        v22 = 0;
+        firstObject = 0;
         goto LABEL_97;
       }
 
       if ([v118 count])
       {
-        v108 = v12;
+        v108 = identifierCopy;
         v64 = objc_alloc_init(MEMORY[0x1E695DFA8]);
         v126 = 0u;
         v127 = 0u;
         v128 = 0u;
         v129 = 0u;
-        v65 = v13;
+        v65 = suggestionsCopy;
         v66 = [v65 countByEnumeratingWithState:&v126 objects:v136 count:16];
         if (v66)
         {
@@ -396,7 +396,7 @@ LABEL_34:
           while (v73);
         }
 
-        v107 = [(PHPhotoLibrary *)self->_photoLibrary mad_allFacesFetchOptions];
+        mad_allFacesFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary mad_allFacesFetchOptions];
         v77 = [MEMORY[0x1E69787D0] fetchRejectedFacesForPerson:v114 options:?];
         if ([v77 count])
         {
@@ -405,11 +405,11 @@ LABEL_34:
           {
             v79 = objc_autoreleasePoolPush();
             v80 = [v77 objectAtIndexedSubscript:v78];
-            v81 = [v80 personLocalIdentifier];
+            personLocalIdentifier = [v80 personLocalIdentifier];
 
-            if (v81)
+            if (personLocalIdentifier)
             {
-              [v64 addObject:v81];
+              [v64 addObject:personLocalIdentifier];
             }
 
             objc_autoreleasePoolPop(v79);
@@ -420,28 +420,28 @@ LABEL_34:
         }
 
         v106 = v77;
-        v22 = [MEMORY[0x1E695DF70] array];
-        v82 = [(PHPhotoLibrary *)self->_photoLibrary mad_allPersonsFetchOptions];
+        firstObject = [MEMORY[0x1E695DF70] array];
+        mad_allPersonsFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary mad_allPersonsFetchOptions];
         v83 = [MEMORY[0x1E696AE18] predicateWithFormat:@"verifiedType = %@", &unk_1F49BD870];
-        [v82 setInternalPredicate:v83];
+        [mad_allPersonsFetchOptions setInternalPredicate:v83];
 
         v84 = MEMORY[0x1E6978978];
-        v85 = [v118 allKeys];
-        v105 = v82;
-        v86 = [v84 fetchPersonsWithMdIDs:v85 options:v82];
+        allKeys = [v118 allKeys];
+        v105 = mad_allPersonsFetchOptions;
+        v86 = [v84 fetchPersonsWithMdIDs:allKeys options:mad_allPersonsFetchOptions];
 
-        v14 = v117;
+        personSuggestionsCopy = v117;
         if ([v86 count])
         {
           v87 = 0;
           v109 = v86;
-          v111 = v13;
+          v111 = suggestionsCopy;
           do
           {
             contexta = objc_autoreleasePoolPush();
             v88 = [v86 objectAtIndexedSubscript:v87];
-            v89 = [v88 localIdentifier];
-            v90 = [v64 containsObject:v89];
+            localIdentifier3 = [v88 localIdentifier];
+            v90 = [v64 containsObject:localIdentifier3];
 
             if (v90)
             {
@@ -450,35 +450,35 @@ LABEL_34:
                 goto LABEL_90;
               }
 
-              v91 = [v88 localIdentifier];
+              localIdentifier4 = [v88 localIdentifier];
               *buf = 138412290;
-              v140 = v91;
+              v140 = localIdentifier4;
               _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[PersonSuggestionVU] Ignoring person %@ from the exclusion list", buf, 0xCu);
             }
 
             else
             {
               v92 = [MEMORY[0x1E69787D0] fetchKeyFaceForPerson:v88 options:0];
-              v91 = [v92 firstObject];
+              localIdentifier4 = [v92 firstObject];
 
-              if (v91)
+              if (localIdentifier4)
               {
-                v93 = [MEMORY[0x1E695DF90] dictionary];
-                v94 = [v88 localIdentifier];
-                [v93 setObject:v94 forKeyedSubscript:@"personIdentifier"];
+                dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+                localIdentifier5 = [v88 localIdentifier];
+                [dictionary2 setObject:localIdentifier5 forKeyedSubscript:@"personIdentifier"];
 
                 v95 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v88, "faceCount")}];
-                [v93 setObject:v95 forKeyedSubscript:@"personFaceCount"];
+                [dictionary2 setObject:v95 forKeyedSubscript:@"personFaceCount"];
 
-                [v93 setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"confirmed"];
-                v96 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v91, "vuObservationID")}];
-                [v93 setObject:v96 forKeyedSubscript:@"faceCSN"];
+                [dictionary2 setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"confirmed"];
+                v96 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(localIdentifier4, "vuObservationID")}];
+                [dictionary2 setObject:v96 forKeyedSubscript:@"faceCSN"];
 
-                v97 = [v91 localIdentifier];
-                [v93 setObject:v97 forKeyedSubscript:@"faceIdentifier"];
+                v91LocalIdentifier = [localIdentifier4 localIdentifier];
+                [dictionary2 setObject:v91LocalIdentifier forKeyedSubscript:@"faceIdentifier"];
 
-                v98 = [v88 mdID];
-                v99 = [v118 objectForKeyedSubscript:v98];
+                mdID3 = [v88 mdID];
+                v99 = [v118 objectForKeyedSubscript:mdID3];
                 v100 = v99;
                 v101 = &unk_1F49BD888;
                 if (v99)
@@ -488,25 +488,25 @@ LABEL_34:
 
                 v102 = v101;
 
-                [v93 setObject:v102 forKeyedSubscript:@"similarityScore"];
-                [v22 addObject:v93];
+                [dictionary2 setObject:v102 forKeyedSubscript:@"similarityScore"];
+                [firstObject addObject:dictionary2];
                 if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
                 {
                   *buf = 138412290;
-                  v140 = v93;
+                  v140 = dictionary2;
                   _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[PersonSuggestionVU] Adding suggestion %@", buf, 0xCu);
                 }
 
                 v86 = v109;
-                v13 = v111;
-                v14 = v117;
+                suggestionsCopy = v111;
+                personSuggestionsCopy = v117;
               }
 
               else if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
               {
-                v103 = [v88 localIdentifier];
+                localIdentifier6 = [v88 localIdentifier];
                 *buf = 138412290;
-                v140 = v103;
+                v140 = localIdentifier6;
                 _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[PersonSuggestionVU] Ignoring person %@ without keyface", buf, 0xCu);
               }
             }
@@ -519,9 +519,9 @@ LABEL_90:
           while (v87 < [v86 count]);
         }
 
-        [v22 sortUsingComparator:&__block_literal_global_48];
+        [firstObject sortUsingComparator:&__block_literal_global_48];
 
-        v12 = v108;
+        identifierCopy = v108;
         v18 = v121;
         v21 = v114;
 LABEL_97:
@@ -531,7 +531,7 @@ LABEL_98:
         goto LABEL_99;
       }
 
-      v22 = MEMORY[0x1E695E0F0];
+      firstObject = MEMORY[0x1E695E0F0];
     }
 
     else
@@ -542,9 +542,9 @@ LABEL_98:
         v62 = v112;
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
-          v63 = [v114 localIdentifier];
+          localIdentifier7 = [v114 localIdentifier];
           *buf = 138412546;
-          v140 = v63;
+          v140 = localIdentifier7;
           v141 = 2112;
           v142 = v112;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[PersonSuggestionVU] Failed to retrieve similar entities to %@ - %@", buf, 0x16u);
@@ -552,20 +552,20 @@ LABEL_98:
           v21 = v114;
         }
 
-        v22 = 0;
+        firstObject = 0;
         goto LABEL_98;
       }
 
-      v22 = 0;
+      firstObject = 0;
     }
 
     v18 = v121;
     goto LABEL_97;
   }
 
-  if (!a7)
+  if (!error)
   {
-    v22 = 0;
+    firstObject = 0;
     goto LABEL_100;
   }
 
@@ -578,12 +578,12 @@ LABEL_98:
   v20 = v17;
   v21 = v19;
   [v16 errorWithDomain:v20 code:-128 userInfo:v19];
-  *a7 = v22 = 0;
+  *error = firstObject = 0;
 LABEL_99:
 
 LABEL_100:
 
-  return v22;
+  return firstObject;
 }
 
 uint64_t __169__VCPFaceProcessingServiceWorker__suggestionsForPersonWithLocalIdentifier_toBeConfirmedPersonSuggestions_toBeRejectedPersonSuggestions_cancelOrExtendTimeoutBlock_error___block_invoke(uint64_t a1, void *a2, float a3)
@@ -656,28 +656,28 @@ uint64_t __169__VCPFaceProcessingServiceWorker__suggestionsForPersonWithLocalIde
   }
 }
 
-- (void)suggestPersonsForPersonWithLocalIdentifier:(id)a3 toBeConfirmedPersonSuggestions:(id)a4 toBeRejectedPersonSuggestions:(id)a5 context:(id)a6 cancelOrExtendTimeoutBlock:(id)a7 reply:(id)a8
+- (void)suggestPersonsForPersonWithLocalIdentifier:(id)identifier toBeConfirmedPersonSuggestions:(id)suggestions toBeRejectedPersonSuggestions:(id)personSuggestions context:(id)context cancelOrExtendTimeoutBlock:(id)block reply:(id)reply
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v18 && v18[2](v18))
+  identifierCopy = identifier;
+  suggestionsCopy = suggestions;
+  personSuggestionsCopy = personSuggestions;
+  contextCopy = context;
+  blockCopy = block;
+  replyCopy = reply;
+  if (blockCopy && blockCopy[2](blockCopy))
   {
     v20 = MEMORY[0x1E696ABC0];
-    v21 = v17;
+    v21 = contextCopy;
     v22 = *MEMORY[0x1E696A768];
     v44 = *MEMORY[0x1E696A578];
     v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"suggestPersonsForPersonWithLocalIdentifier cancelled"];
     v45[0] = v23;
     v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:&v44 count:1];
     v25 = v22;
-    v17 = v21;
+    contextCopy = v21;
     v26 = [v20 errorWithDomain:v25 code:-128 userInfo:v24];
-    v19[2](v19, 0, v26);
+    replyCopy[2](replyCopy, 0, v26);
   }
 
   else
@@ -685,16 +685,16 @@ uint64_t __169__VCPFaceProcessingServiceWorker__suggestionsForPersonWithLocalIde
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      v39 = v14;
+      v39 = identifierCopy;
       v40 = 2112;
-      v41 = v15;
+      v41 = suggestionsCopy;
       v42 = 2112;
-      v43 = v16;
+      v43 = personSuggestionsCopy;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "Querying suggestions for person %@ (Photos: %@ to-be-confirmed, %@ to-be-rejected suggestions)", buf, 0x20u);
     }
 
     v35 = 0;
-    v24 = [(VCPFaceProcessingServiceWorker *)self _suggestionsForPersonWithLocalIdentifier:v14 toBeConfirmedPersonSuggestions:v15 toBeRejectedPersonSuggestions:v16 cancelOrExtendTimeoutBlock:v18 error:&v35];
+    v24 = [(VCPFaceProcessingServiceWorker *)self _suggestionsForPersonWithLocalIdentifier:identifierCopy toBeConfirmedPersonSuggestions:suggestionsCopy toBeRejectedPersonSuggestions:personSuggestionsCopy cancelOrExtendTimeoutBlock:blockCopy error:&v35];
     v23 = v35;
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
@@ -702,23 +702,23 @@ uint64_t __169__VCPFaceProcessingServiceWorker__suggestionsForPersonWithLocalIde
       *buf = 134218242;
       v39 = v27;
       v40 = 2112;
-      v41 = v14;
+      v41 = identifierCopy;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "Returning %lu suggestions for person %@", buf, 0x16u);
     }
 
-    if (v18 && v18[2](v18))
+    if (blockCopy && blockCopy[2](blockCopy))
     {
       v33 = MEMORY[0x1E696ABC0];
-      v34 = v17;
+      v34 = contextCopy;
       v28 = *MEMORY[0x1E696A768];
       v36 = *MEMORY[0x1E696A578];
       v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"suggestPersonsForPersonWithLocalIdentifier cancelled"];
       v37 = v29;
       v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
       v31 = [v33 errorWithDomain:v28 code:-128 userInfo:v30];
-      v19[2](v19, 0, v31);
+      replyCopy[2](replyCopy, 0, v31);
 
-      v17 = v34;
+      contextCopy = v34;
     }
 
     else
@@ -733,38 +733,38 @@ uint64_t __169__VCPFaceProcessingServiceWorker__suggestionsForPersonWithLocalIde
         v32 = v23;
       }
 
-      (v19)[2](v19, v24, v32);
+      (replyCopy)[2](replyCopy, v24, v32);
     }
   }
 }
 
-- (void)faceCandidatesforKeyFaceForPersonsWithLocalIdentifiers:(id)a3 context:(id)a4 reply:(id)a5
+- (void)faceCandidatesforKeyFaceForPersonsWithLocalIdentifiers:(id)identifiers context:(id)context reply:(id)reply
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696ABC0];
   v7 = *MEMORY[0x1E696A768];
   v13 = *MEMORY[0x1E696A578];
   v8 = MEMORY[0x1E696AEC0];
-  v9 = a5;
+  replyCopy = reply;
   v10 = [v8 stringWithFormat:@"Unimplemented method %s", "-[VCPFaceProcessingServiceWorker faceCandidatesforKeyFaceForPersonsWithLocalIdentifiers:context:reply:]", v13];
   v14[0] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
   v12 = [v6 errorWithDomain:v7 code:-4 userInfo:v11];
-  (*(a5 + 2))(v9, 0, v12);
+  (*(reply + 2))(replyCopy, 0, v12);
 }
 
-- (void)resetPersonsModelWithReply:(id)a3
+- (void)resetPersonsModelWithReply:(id)reply
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   photoLibrary = self->_photoLibrary;
-  v6 = [MEMORY[0x1E695DF00] distantPast];
-  [(PHPhotoLibrary *)photoLibrary vcp_setAnalysisPreferencesValue:v6 forKey:@"FaceIDModelLastGenerationKey"];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  [(PHPhotoLibrary *)photoLibrary vcp_setAnalysisPreferencesValue:distantPast forKey:@"FaceIDModelLastGenerationKey"];
 
   v7 = [(PHPhotoLibrary *)self->_photoLibrary vcp_vipModelFilepathForVIPType:0];
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v15 = 0;
-  v9 = [v8 removeItemAtPath:v7 error:&v15];
+  v9 = [defaultManager removeItemAtPath:v7 error:&v15];
   v10 = v15;
   v11 = v10;
   if (v9)
@@ -774,8 +774,8 @@ uint64_t __169__VCPFaceProcessingServiceWorker__suggestionsForPersonWithLocalIde
 
   if ([v10 code] == 4)
   {
-    v13 = [v11 domain];
-    v14 = [v13 isEqualToString:*MEMORY[0x1E696A250]];
+    domain = [v11 domain];
+    v14 = [domain isEqualToString:*MEMORY[0x1E696A250]];
 
     if (v14)
     {
@@ -798,22 +798,22 @@ LABEL_2:
 
   v12 = 0;
 LABEL_10:
-  v4[2](v4, v12, v11);
+  replyCopy[2](replyCopy, v12, v11);
 }
 
-- (void)resetPetsModelWithReply:(id)a3
+- (void)resetPetsModelWithReply:(id)reply
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   photoLibrary = self->_photoLibrary;
-  v6 = [MEMORY[0x1E695DF00] distantPast];
-  [(PHPhotoLibrary *)photoLibrary vcp_setAnalysisPreferencesValue:v6 forKey:@"PetIDModelLastGenerationKey"];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  [(PHPhotoLibrary *)photoLibrary vcp_setAnalysisPreferencesValue:distantPast forKey:@"PetIDModelLastGenerationKey"];
 
   v7 = 1;
   v8 = [(PHPhotoLibrary *)self->_photoLibrary vcp_vipModelFilepathForVIPType:1];
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v15 = 0;
-  v10 = [v9 removeItemAtPath:v8 error:&v15];
+  v10 = [defaultManager removeItemAtPath:v8 error:&v15];
   v11 = v15;
   v12 = v11;
   if ((v10 & 1) == 0)
@@ -840,13 +840,13 @@ LABEL_10:
     }
   }
 
-  v4[2](v4, v7, v12);
+  replyCopy[2](replyCopy, v7, v12);
 }
 
-- (void)requestSuggestedMePersonIdentifierWithContext:(id)a3 reply:(id)a4
+- (void)requestSuggestedMePersonIdentifierWithContext:(id)context reply:(id)reply
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  replyCopy = reply;
   photoLibrary = self->_photoLibrary;
   if (!photoLibrary)
   {
@@ -857,23 +857,23 @@ LABEL_10:
     v17[0] = v9;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v11 = [v7 errorWithDomain:v8 code:-50 userInfo:v10];
-    v5[2](v5, 0, v11);
+    replyCopy[2](replyCopy, 0, v11);
 
     photoLibrary = self->_photoLibrary;
   }
 
-  v12 = [(PHPhotoLibrary *)photoLibrary vcp_visionCacheStorageDirectoryURL];
+  vcp_visionCacheStorageDirectoryURL = [(PHPhotoLibrary *)photoLibrary vcp_visionCacheStorageDirectoryURL];
   v15 = 0;
-  v13 = [MEMORY[0x1E69C1588] requestSuggestedMePersonIdentifierAtURL:v12 withError:&v15];
+  v13 = [MEMORY[0x1E69C1588] requestSuggestedMePersonIdentifierAtURL:vcp_visionCacheStorageDirectoryURL withError:&v15];
   v14 = v15;
-  (v5)[2](v5, v13, v14);
+  (replyCopy)[2](replyCopy, v13, v14);
 }
 
-- (void)personPromoterStatusWithContext:(id)a3 reply:(id)a4
+- (void)personPromoterStatusWithContext:(id)context reply:(id)reply
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  replyCopy = reply;
   if (!self->_photoLibrary)
   {
     v8 = MEMORY[0x1E696ABC0];
@@ -883,7 +883,7 @@ LABEL_10:
     v21[0] = v10;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
     v12 = [v8 errorWithDomain:v9 code:-50 userInfo:v11];
-    v7[2](v7, 0, v12);
+    replyCopy[2](replyCopy, 0, v12);
   }
 
   v13 = objc_opt_new();
@@ -891,83 +891,83 @@ LABEL_10:
   v15 = [MEMORY[0x1E696AD98] numberWithBool:v14];
   [v13 setObject:v15 forKey:@"status"];
 
-  v16 = [v6 objectForKeyedSubscript:@"requestAdvancedStatus"];
-  v17 = [v16 BOOLValue];
+  v16 = [contextCopy objectForKeyedSubscript:@"requestAdvancedStatus"];
+  bOOLValue = [v16 BOOLValue];
 
-  if (v17)
+  if (bOOLValue)
   {
     v18 = [objc_alloc(MEMORY[0x1E69C1588]) initWithPhotoLibrary:self->_photoLibrary andDelegate:self->_persistenceDelegate];
-    v19 = [v18 advancedStatus];
-    [v13 setObject:v19 forKey:@"advancedStatus"];
+    advancedStatus = [v18 advancedStatus];
+    [v13 setObject:advancedStatus forKey:@"advancedStatus"];
   }
 
-  (v7)[2](v7, v13, 0);
+  (replyCopy)[2](replyCopy, v13, 0);
 }
 
-- (void)validateClusterCacheWithContext:(id)a3 cancelOrExtendTimeoutBlock:(id)a4 reply:(id)a5
+- (void)validateClusterCacheWithContext:(id)context cancelOrExtendTimeoutBlock:(id)block reply:(id)reply
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696ABC0];
   v7 = *MEMORY[0x1E696A768];
   v13 = *MEMORY[0x1E696A578];
   v8 = MEMORY[0x1E696AEC0];
-  v9 = a5;
+  replyCopy = reply;
   v10 = [v8 stringWithFormat:@"Unimplemented method %s", "-[VCPFaceProcessingServiceWorker validateClusterCacheWithContext:cancelOrExtendTimeoutBlock:reply:]", v13];
   v14[0] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
   v12 = [v6 errorWithDomain:v7 code:-4 userInfo:v11];
-  (*(a5 + 2))(v9, 0, v12);
+  (*(reply + 2))(replyCopy, 0, v12);
 }
 
-- (void)resetFaceClusteringStateWithContext:(id)a3 reply:(id)a4
+- (void)resetFaceClusteringStateWithContext:(id)context reply:(id)reply
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696ABC0];
   v6 = *MEMORY[0x1E696A768];
   v12 = *MEMORY[0x1E696A578];
   v7 = MEMORY[0x1E696AEC0];
-  v8 = a4;
+  replyCopy = reply;
   v9 = [v7 stringWithFormat:@"Unimplemented method %s", "-[VCPFaceProcessingServiceWorker resetFaceClusteringStateWithContext:reply:]", v12];
   v13[0] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   v11 = [v5 errorWithDomain:v6 code:-4 userInfo:v10];
-  (*(a4 + 2))(v8, 0, v11);
+  (*(reply + 2))(replyCopy, 0, v11);
 }
 
-- (void)reclusterFacesWithContext:(id)a3 reply:(id)a4 extendTimeout:(id)a5 cancel:(id)a6
+- (void)reclusterFacesWithContext:(id)context reply:(id)reply extendTimeout:(id)timeout cancel:(id)cancel
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E696ABC0];
   v8 = *MEMORY[0x1E696A768];
   v14 = *MEMORY[0x1E696A578];
   v9 = MEMORY[0x1E696AEC0];
-  v10 = a4;
+  replyCopy = reply;
   v11 = [v9 stringWithFormat:@"Unimplemented method %s", "-[VCPFaceProcessingServiceWorker reclusterFacesWithContext:reply:extendTimeout:cancel:]", v14];
   v15[0] = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
   v13 = [v7 errorWithDomain:v8 code:-4 userInfo:v12];
-  (*(a4 + 2))(v10, 0, v13);
+  (*(reply + 2))(replyCopy, 0, v13);
 }
 
-- (void)rebuildPersonsWithContext:(id)a3 reply:(id)a4 extendTimeout:(id)a5 cancel:(id)a6
+- (void)rebuildPersonsWithContext:(id)context reply:(id)reply extendTimeout:(id)timeout cancel:(id)cancel
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E696ABC0];
   v8 = *MEMORY[0x1E696A768];
   v14 = *MEMORY[0x1E696A578];
   v9 = MEMORY[0x1E696AEC0];
-  v10 = a4;
+  replyCopy = reply;
   v11 = [v9 stringWithFormat:@"Unimplemented method %s", "-[VCPFaceProcessingServiceWorker rebuildPersonsWithContext:reply:extendTimeout:cancel:]", v14];
   v15[0] = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
   v13 = [v7 errorWithDomain:v8 code:-4 userInfo:v12];
-  (*(a4 + 2))(v10, 0, v13);
+  (*(reply + 2))(replyCopy, 0, v13);
 }
 
-- (void)resetPersonPromoterStatusWithReply:(id)a3
+- (void)resetPersonPromoterStatusWithReply:(id)reply
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   photoLibrary = self->_photoLibrary;
   if (!photoLibrary)
   {
@@ -978,13 +978,13 @@ LABEL_10:
     v12[0] = v8;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
     v10 = [v6 errorWithDomain:v7 code:-50 userInfo:v9];
-    v4[2](v4, 0, v10);
+    replyCopy[2](replyCopy, 0, v10);
 
     photoLibrary = self->_photoLibrary;
   }
 
   [MEMORY[0x1E69C1588] setProcessed:0 forLibrary:photoLibrary];
-  v4[2](v4, 1, 0);
+  replyCopy[2](replyCopy, 1, 0);
 }
 
 @end

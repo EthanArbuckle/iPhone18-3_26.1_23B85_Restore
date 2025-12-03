@@ -1,8 +1,8 @@
 @interface SBSpuriousScreenUndimmingAssertion
 + (BOOL)isAnyActive;
 + (id)debugDescription;
-+ (void)_accessListWithBlock:(id)a3;
-- (SBSpuriousScreenUndimmingAssertion)initWithIdentifier:(id)a3;
++ (void)_accessListWithBlock:(id)block;
+- (SBSpuriousScreenUndimmingAssertion)initWithIdentifier:(id)identifier;
 - (id)description;
 - (void)dealloc;
 - (void)invalidate;
@@ -10,10 +10,10 @@
 
 @implementation SBSpuriousScreenUndimmingAssertion
 
-+ (void)_accessListWithBlock:(id)a3
++ (void)_accessListWithBlock:(id)block
 {
-  v3 = a3;
-  if (v3)
+  blockCopy = block;
+  if (blockCopy)
   {
     if (_accessListWithBlock__onceToken != -1)
     {
@@ -25,7 +25,7 @@
     block[1] = 3221225472;
     block[2] = __59__SBSpuriousScreenUndimmingAssertion__accessListWithBlock___block_invoke_2;
     block[3] = &unk_2783A9348;
-    v6 = v3;
+    v6 = blockCopy;
     dispatch_sync(v4, block);
   }
 }
@@ -67,13 +67,13 @@ uint64_t __49__SBSpuriousScreenUndimmingAssertion_isAnyActive__block_invoke(uint
 
 + (id)debugDescription
 {
-  v2 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v6 = MEMORY[0x277D85DD0];
   v7 = 3221225472;
   v8 = __54__SBSpuriousScreenUndimmingAssertion_debugDescription__block_invoke;
   v9 = &unk_2783C2BE8;
-  v10 = v2;
-  v3 = v2;
+  v10 = string;
+  v3 = string;
   [SBSpuriousScreenUndimmingAssertion _accessListWithBlock:&v6];
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]", v3, v6, v7, v8, v9];
 
@@ -119,15 +119,15 @@ void __54__SBSpuriousScreenUndimmingAssertion_debugDescription__block_invoke(uin
   }
 }
 
-- (SBSpuriousScreenUndimmingAssertion)initWithIdentifier:(id)a3
+- (SBSpuriousScreenUndimmingAssertion)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = SBSpuriousScreenUndimmingAssertion;
   v5 = [(SBSpuriousScreenUndimmingAssertion *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 

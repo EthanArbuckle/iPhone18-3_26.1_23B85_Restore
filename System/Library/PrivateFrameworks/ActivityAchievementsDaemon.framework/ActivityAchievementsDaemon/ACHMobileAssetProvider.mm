@@ -1,36 +1,36 @@
 @interface ACHMobileAssetProvider
 - (ACHMobileAssetProvider)init;
-- (ACHMobileAssetProvider)initWithMobileAssetDownloadManager:(id)a3;
-- (BOOL)_assetIsInstalled:(id)a3;
+- (ACHMobileAssetProvider)initWithMobileAssetDownloadManager:(id)manager;
+- (BOOL)_assetIsInstalled:(id)installed;
 - (double)_downloadDelay;
-- (id)_assetsGroupedByUniqueNameAndType:(id)a3;
+- (id)_assetsGroupedByUniqueNameAndType:(id)type;
 - (id)_compatibilityVersionQueryParameters;
 - (int64_t)downloadedAssetDiskUsageInBytes;
 - (int64_t)purgeAllDownloadedAssets;
-- (void)_downloadAssets:(id)a3 withCompletion:(id)a4;
+- (void)_downloadAssets:(id)assets withCompletion:(id)completion;
 - (void)_downloadDelay;
-- (void)_downloadRemoteAssets:(id)a3 installedAssets:(id)a4;
+- (void)_downloadRemoteAssets:(id)assets installedAssets:(id)installedAssets;
 - (void)_downloadRemoteCatalogAndAssets;
-- (void)_fetchLocalAssetsWithCompletion:(id)a3;
-- (void)_getCurrentAsssetAndOlderAssetsFromAssets:(id)a3 completion:(id)a4;
-- (void)_processAssets:(id)a3 completion:(id)a4;
-- (void)_removeAssets:(id)a3;
-- (void)availableAssetsWithCompletion:(id)a3;
+- (void)_fetchLocalAssetsWithCompletion:(id)completion;
+- (void)_getCurrentAsssetAndOlderAssetsFromAssets:(id)assets completion:(id)completion;
+- (void)_processAssets:(id)assets completion:(id)completion;
+- (void)_removeAssets:(id)assets;
+- (void)availableAssetsWithCompletion:(id)completion;
 - (void)downloadRemoteCatalog;
 @end
 
 @implementation ACHMobileAssetProvider
 
-- (ACHMobileAssetProvider)initWithMobileAssetDownloadManager:(id)a3
+- (ACHMobileAssetProvider)initWithMobileAssetDownloadManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = ACHMobileAssetProvider;
   v6 = [(ACHMobileAssetProvider *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mobileAssetDownloadManager, a3);
+    objc_storeStrong(&v6->_mobileAssetDownloadManager, manager);
     v8 = objc_alloc(MEMORY[0x277CBEBD0]);
     v9 = [v8 initWithSuiteName:*MEMORY[0x277CE8C00]];
     nanoUserDefaults = v7->_nanoUserDefaults;
@@ -76,9 +76,9 @@ void __30__ACHMobileAssetProvider_init__block_invoke_297(uint64_t a1, void *a2)
   }
 }
 
-- (void)availableAssetsWithCompletion:(id)a3
+- (void)availableAssetsWithCompletion:(id)completion
 {
-  [(ACHMobileAssetProvider *)self _fetchLocalAssetsWithCompletion:a3];
+  [(ACHMobileAssetProvider *)self _fetchLocalAssetsWithCompletion:completion];
 
   [(ACHMobileAssetProvider *)self _downloadRemoteCatalogAndAssets];
 }
@@ -89,9 +89,9 @@ void __30__ACHMobileAssetProvider_init__block_invoke_297(uint64_t a1, void *a2)
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v3 = [(ACHMobileAssetProvider *)self _compatibilityVersionQueryParameters];
+  _compatibilityVersionQueryParameters = [(ACHMobileAssetProvider *)self _compatibilityVersionQueryParameters];
   v4 = dispatch_semaphore_create(0);
-  v5 = [(ACHMobileAssetProvider *)self mobileAssetDownloadManager];
+  mobileAssetDownloadManager = [(ACHMobileAssetProvider *)self mobileAssetDownloadManager];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__ACHMobileAssetProvider_downloadedAssetDiskUsageInBytes__block_invoke;
@@ -100,7 +100,7 @@ void __30__ACHMobileAssetProvider_init__block_invoke_297(uint64_t a1, void *a2)
   v11 = &v12;
   v6 = v4;
   v10 = v6;
-  [v5 fetchAssetsWithQueryParams:v3 onlyLocal:1 completion:v9];
+  [mobileAssetDownloadManager fetchAssetsWithQueryParams:_compatibilityVersionQueryParameters onlyLocal:1 completion:v9];
 
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   v7 = v13[3];
@@ -189,9 +189,9 @@ void __57__ACHMobileAssetProvider_downloadedAssetDiskUsageInBytes__block_invoke(
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v3 = [(ACHMobileAssetProvider *)self _compatibilityVersionQueryParameters];
+  _compatibilityVersionQueryParameters = [(ACHMobileAssetProvider *)self _compatibilityVersionQueryParameters];
   v4 = dispatch_semaphore_create(0);
-  v5 = [(ACHMobileAssetProvider *)self mobileAssetDownloadManager];
+  mobileAssetDownloadManager = [(ACHMobileAssetProvider *)self mobileAssetDownloadManager];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __50__ACHMobileAssetProvider_purgeAllDownloadedAssets__block_invoke;
@@ -200,7 +200,7 @@ void __57__ACHMobileAssetProvider_downloadedAssetDiskUsageInBytes__block_invoke(
   v11 = &v12;
   v6 = v4;
   v10 = v6;
-  [v5 fetchAssetsWithQueryParams:v3 onlyLocal:1 completion:v9];
+  [mobileAssetDownloadManager fetchAssetsWithQueryParams:_compatibilityVersionQueryParameters onlyLocal:1 completion:v9];
 
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   v7 = v13[3];
@@ -313,10 +313,10 @@ void __50__ACHMobileAssetProvider_purgeAllDownloadedAssets__block_invoke_302(uin
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)_assetIsInstalled:(id)a3
+- (BOOL)_assetIsInstalled:(id)installed
 {
-  v3 = a3;
-  v4 = [v3 state] == 2 || objc_msgSend(v3, "state") == 3 || objc_msgSend(v3, "state") == 4;
+  installedCopy = installed;
+  v4 = [installedCopy state] == 2 || objc_msgSend(installedCopy, "state") == 3 || objc_msgSend(installedCopy, "state") == 4;
 
   return v4;
 }
@@ -364,19 +364,19 @@ void __50__ACHMobileAssetProvider_purgeAllDownloadedAssets__block_invoke_302(uin
   return downloadDelayOverride;
 }
 
-- (void)_fetchLocalAssetsWithCompletion:(id)a3
+- (void)_fetchLocalAssetsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ACHMobileAssetProvider *)self _compatibilityVersionQueryParameters];
-  v6 = [(ACHMobileAssetProvider *)self mobileAssetDownloadManager];
+  completionCopy = completion;
+  _compatibilityVersionQueryParameters = [(ACHMobileAssetProvider *)self _compatibilityVersionQueryParameters];
+  mobileAssetDownloadManager = [(ACHMobileAssetProvider *)self mobileAssetDownloadManager];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__ACHMobileAssetProvider__fetchLocalAssetsWithCompletion___block_invoke;
   v8[3] = &unk_278490AF8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 fetchAssetsWithQueryParams:v5 onlyLocal:1 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [mobileAssetDownloadManager fetchAssetsWithQueryParams:_compatibilityVersionQueryParameters onlyLocal:1 completion:v8];
 }
 
 void __58__ACHMobileAssetProvider__fetchLocalAssetsWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -445,15 +445,15 @@ void __58__ACHMobileAssetProvider__fetchLocalAssetsWithCompletion___block_invoke
 
 - (void)downloadRemoteCatalog
 {
-  v3 = [(ACHMobileAssetProvider *)self _compatibilityVersionQueryParameters];
+  _compatibilityVersionQueryParameters = [(ACHMobileAssetProvider *)self _compatibilityVersionQueryParameters];
   objc_initWeak(&location, self);
-  v4 = [(ACHMobileAssetProvider *)self mobileAssetDownloadManager];
+  mobileAssetDownloadManager = [(ACHMobileAssetProvider *)self mobileAssetDownloadManager];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __47__ACHMobileAssetProvider_downloadRemoteCatalog__block_invoke;
   v5[3] = &unk_278490B48;
   objc_copyWeak(&v6, &location);
-  [v4 fetchAssetsWithQueryParams:v3 onlyLocal:0 completion:v5];
+  [mobileAssetDownloadManager fetchAssetsWithQueryParams:_compatibilityVersionQueryParameters onlyLocal:0 completion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -538,10 +538,10 @@ void __47__ACHMobileAssetProvider_downloadRemoteCatalog__block_invoke_308(uint64
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_downloadRemoteAssets:(id)a3 installedAssets:(id)a4
+- (void)_downloadRemoteAssets:(id)assets installedAssets:(id)installedAssets
 {
-  v6 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  installedAssetsCopy = installedAssets;
   [(ACHMobileAssetProvider *)self _downloadDelay];
   v9 = dispatch_time(0, (v8 * 1000000000.0));
   v10 = dispatch_get_global_queue(21, 0);
@@ -550,10 +550,10 @@ void __47__ACHMobileAssetProvider_downloadRemoteCatalog__block_invoke_308(uint64
   block[2] = __64__ACHMobileAssetProvider__downloadRemoteAssets_installedAssets___block_invoke;
   block[3] = &unk_278490B98;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = assetsCopy;
+  v15 = installedAssetsCopy;
+  v11 = installedAssetsCopy;
+  v12 = assetsCopy;
   dispatch_after(v9, v10, block);
 }
 
@@ -598,19 +598,19 @@ void __64__ACHMobileAssetProvider__downloadRemoteAssets_installedAssets___block_
   }
 }
 
-- (void)_downloadAssets:(id)a3 withCompletion:(id)a4
+- (void)_downloadAssets:(id)assets withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  assetsCopy = assets;
+  completionCopy = completion;
+  if ([assetsCopy count])
   {
-    v8 = [(ACHMobileAssetProvider *)self mobileAssetDownloadManager];
+    mobileAssetDownloadManager = [(ACHMobileAssetProvider *)self mobileAssetDownloadManager];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __57__ACHMobileAssetProvider__downloadAssets_withCompletion___block_invoke;
     v10[3] = &unk_278490BC0;
-    v11 = v7;
-    [v8 downloadMobileAssets:v6 completion:v10];
+    v11 = completionCopy;
+    [mobileAssetDownloadManager downloadMobileAssets:assetsCopy completion:v10];
   }
 
   else
@@ -621,7 +621,7 @@ void __64__ACHMobileAssetProvider__downloadRemoteAssets_installedAssets___block_
       [ACHMobileAssetProvider _downloadAssets:v9 withCompletion:?];
     }
 
-    (*(v7 + 2))(v7, MEMORY[0x277CBEBF8], 0);
+    (*(completionCopy + 2))(completionCopy, MEMORY[0x277CBEBF8], 0);
   }
 }
 
@@ -638,13 +638,13 @@ void __57__ACHMobileAssetProvider__downloadAssets_withCompletion___block_invoke(
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_removeAssets:(id)a3
+- (void)_removeAssets:(id)assets
 {
-  v5 = a3;
-  if ([v5 count])
+  assetsCopy = assets;
+  if ([assetsCopy count])
   {
-    v4 = [(ACHMobileAssetProvider *)self mobileAssetDownloadManager];
-    [v4 removeMobileAssets:v5 completion:&__block_literal_global_310];
+    mobileAssetDownloadManager = [(ACHMobileAssetProvider *)self mobileAssetDownloadManager];
+    [mobileAssetDownloadManager removeMobileAssets:assetsCopy completion:&__block_literal_global_310];
   }
 }
 
@@ -661,13 +661,13 @@ void __40__ACHMobileAssetProvider__removeAssets___block_invoke(uint64_t a1, char
   }
 }
 
-- (void)_processAssets:(id)a3 completion:(id)a4
+- (void)_processAssets:(id)assets completion:(id)completion
 {
   v48 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v20 = self;
-  v23 = [(ACHMobileAssetProvider *)self _assetsGroupedByUniqueNameAndType:v16];
+  assetsCopy = assets;
+  completionCopy = completion;
+  selfCopy = self;
+  v23 = [(ACHMobileAssetProvider *)self _assetsGroupedByUniqueNameAndType:assetsCopy];
   v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v21 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -708,7 +708,7 @@ void __40__ACHMobileAssetProvider__removeAssets___block_invoke(uint64_t a1, char
         v29[3] = &unk_278490C08;
         v29[4] = &v36;
         v29[5] = &v30;
-        [(ACHMobileAssetProvider *)v20 _getCurrentAsssetAndOlderAssetsFromAssets:v8 completion:v29];
+        [(ACHMobileAssetProvider *)selfCopy _getCurrentAsssetAndOlderAssetsFromAssets:v8 completion:v29];
         if ([v37[5] state] == 2)
         {
           v9 = v21;
@@ -761,9 +761,9 @@ void __40__ACHMobileAssetProvider__removeAssets___block_invoke(uint64_t a1, char
     while (v24);
   }
 
-  if (v17)
+  if (completionCopy)
   {
-    v17[2](v17, v22, v6, v21);
+    completionCopy[2](completionCopy, v22, v6, v21);
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -783,16 +783,16 @@ void __52__ACHMobileAssetProvider__processAssets_completion___block_invoke(uint6
   *(v9 + 40) = v6;
 }
 
-- (id)_assetsGroupedByUniqueNameAndType:(id)a3
+- (id)_assetsGroupedByUniqueNameAndType:(id)type
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  typeCopy = type;
+  v4 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(typeCopy, "count")}];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v3;
+  obj = typeCopy;
   v5 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v5)
   {
@@ -810,11 +810,11 @@ void __52__ACHMobileAssetProvider__processAssets_completion___block_invoke(uint6
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
-        v11 = [v10 attributes];
-        v12 = [v11 objectForKeyedSubscript:v7];
+        attributes = [v10 attributes];
+        v12 = [attributes objectForKeyedSubscript:v7];
 
-        v13 = [v10 attributes];
-        v14 = [v13 objectForKeyedSubscript:v8];
+        attributes2 = [v10 attributes];
+        v14 = [attributes2 objectForKeyedSubscript:v8];
 
         v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v12, v14];
         v16 = [v4 objectForKeyedSubscript:v15];
@@ -838,23 +838,23 @@ void __52__ACHMobileAssetProvider__processAssets_completion___block_invoke(uint6
   return v4;
 }
 
-- (void)_getCurrentAsssetAndOlderAssetsFromAssets:(id)a3 completion:(id)a4
+- (void)_getCurrentAsssetAndOlderAssetsFromAssets:(id)assets completion:(id)completion
 {
-  v10 = a4;
-  v5 = a3;
-  v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_319];
-  v7 = [MEMORY[0x277CBEB58] setWithArray:v5];
+  completionCopy = completion;
+  assetsCopy = assets;
+  v6 = [assetsCopy sortedArrayUsingComparator:&__block_literal_global_319];
+  v7 = [MEMORY[0x277CBEB58] setWithArray:assetsCopy];
 
-  v8 = [v6 lastObject];
-  if (v8)
+  lastObject = [v6 lastObject];
+  if (lastObject)
   {
-    [v7 removeObject:v8];
+    [v7 removeObject:lastObject];
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v9 = [v7 allObjects];
-    v10[2](v10, v8, v9);
+    allObjects = [v7 allObjects];
+    completionCopy[2](completionCopy, lastObject, allObjects);
   }
 }
 
@@ -926,8 +926,8 @@ uint64_t __79__ACHMobileAssetProvider__getCurrentAsssetAndOlderAssetsFromAssets_
   for (i = 3; i != 9; ++i)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithInteger:i];
-    v5 = [v4 stringValue];
-    [v2 addObject:v5];
+    stringValue = [v4 stringValue];
+    [v2 addObject:stringValue];
   }
 
   v9 = *MEMORY[0x277D288E8];

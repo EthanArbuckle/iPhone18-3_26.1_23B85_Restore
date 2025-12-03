@@ -1,19 +1,19 @@
 @interface FudUtilities
 + (BOOL)isFirstLaunchSinceBoot;
-+ (BOOL)logFudAggd:(id)a3 status:(id)a4 info:(id)a5 value:(int64_t)a6;
-+ (BOOL)postNotification:(id)a3;
-+ (id)copyPluginAtURL:(id)a3 forFilter:(id)a4 delegate:(id)a5 info:(id *)a6 options:(id)a7 bundleVersion:(id *)a8;
-+ (id)getLocalizedString:(id)a3 withBundle:(id)a4 defaultValue:(id)a5;
-+ (id)getStringFromBundleLocalizationTable:(id)a3 withBundle:(id)a4 inLocalization:(id)a5 fromTable:(id)a6;
-+ (id)getURLForServiceIdentifier:(id)a3;
++ (BOOL)logFudAggd:(id)aggd status:(id)status info:(id)info value:(int64_t)value;
++ (BOOL)postNotification:(id)notification;
++ (id)copyPluginAtURL:(id)l forFilter:(id)filter delegate:(id)delegate info:(id *)info options:(id)options bundleVersion:(id *)version;
++ (id)getLocalizedString:(id)string withBundle:(id)bundle defaultValue:(id)value;
++ (id)getStringFromBundleLocalizationTable:(id)table withBundle:(id)bundle inLocalization:(id)localization fromTable:(id)fromTable;
++ (id)getURLForServiceIdentifier:(id)identifier;
 @end
 
 @implementation FudUtilities
 
-+ (BOOL)postNotification:(id)a3
++ (BOOL)postNotification:(id)notification
 {
   FudLog();
-  v4 = notify_post([a3 cStringUsingEncoding:{4, a3}]);
+  v4 = notify_post([notification cStringUsingEncoding:{4, notification}]);
   if (v4)
   {
     FudLog();
@@ -22,16 +22,16 @@
   return v4 == 0;
 }
 
-+ (BOOL)logFudAggd:(id)a3 status:(id)a4 info:(id)a5 value:(int64_t)a6
++ (BOOL)logFudAggd:(id)aggd status:(id)status info:(id)info value:(int64_t)value
 {
-  if (a5)
+  if (info)
   {
-    v6 = CFStringCreateWithFormat(0, 0, @"com.apple.MobileAccessoryUpdater.%@.%@.%@", a4, a3, a5);
+    v6 = CFStringCreateWithFormat(0, 0, @"com.apple.MobileAccessoryUpdater.%@.%@.%@", status, aggd, info);
   }
 
   else
   {
-    v6 = CFStringCreateWithFormat(0, 0, @"com.apple.MobileAccessoryUpdater.%@.%@", a4, a3);
+    v6 = CFStringCreateWithFormat(0, 0, @"com.apple.MobileAccessoryUpdater.%@.%@", status, aggd);
   }
 
   v7 = v6;
@@ -54,41 +54,41 @@
   return byte_100099800;
 }
 
-+ (id)getStringFromBundleLocalizationTable:(id)a3 withBundle:(id)a4 inLocalization:(id)a5 fromTable:(id)a6
++ (id)getStringFromBundleLocalizationTable:(id)table withBundle:(id)bundle inLocalization:(id)localization fromTable:(id)fromTable
 {
-  result = +[NSDictionary dictionaryWithContentsOfFile:](NSDictionary, "dictionaryWithContentsOfFile:", [a4 pathForResource:a6 ofType:@"strings" inDirectory:0 forLocalization:a5]);
+  result = +[NSDictionary dictionaryWithContentsOfFile:](NSDictionary, "dictionaryWithContentsOfFile:", [bundle pathForResource:fromTable ofType:@"strings" inDirectory:0 forLocalization:localization]);
   if (result)
   {
 
-    return [result objectForKey:a3];
+    return [result objectForKey:table];
   }
 
   return result;
 }
 
-+ (id)getLocalizedString:(id)a3 withBundle:(id)a4 defaultValue:(id)a5
++ (id)getLocalizedString:(id)string withBundle:(id)bundle defaultValue:(id)value
 {
-  v5 = [a4 localizedStringForKey:a3 value:a5 table:@"Localizable"];
+  v5 = [bundle localizedStringForKey:string value:value table:@"Localizable"];
   [v5 UTF8String];
   FudLog();
   return v5;
 }
 
-+ (id)copyPluginAtURL:(id)a3 forFilter:(id)a4 delegate:(id)a5 info:(id *)a6 options:(id)a7 bundleVersion:(id *)a8
++ (id)copyPluginAtURL:(id)l forFilter:(id)filter delegate:(id)delegate info:(id *)info options:(id)options bundleVersion:(id *)version
 {
-  if (a3)
+  if (l)
   {
     v13 = [NSBundle bundleWithURL:?];
-    v14 = [a7 mutableCopy];
-    v15 = [(NSBundle *)v13 bundleIdentifier];
+    v14 = [options mutableCopy];
+    bundleIdentifier = [(NSBundle *)v13 bundleIdentifier];
     FudLog();
     FudLog();
-    [v14 setObject:v15 forKey:{@"AUServiceName", a4, a5, a7}];
+    [v14 setObject:bundleIdentifier forKey:{@"AUServiceName", filter, delegate, options}];
     FudLog();
-    v16 = [[AUServiceShim alloc] initWithDeviceClass:a4 delegate:a5 info:a6 options:v14, v15, a4, a5, a7];
-    if (v16)
+    options = [[AUServiceShim alloc] initWithDeviceClass:filter delegate:delegate info:info options:v14, bundleIdentifier, filter, delegate, options];
+    if (options)
     {
-      v17 = v16;
+      v17 = options;
     }
 
     else
@@ -100,7 +100,7 @@
         goto LABEL_8;
       }
 
-      v17 = [[0 alloc] initWithDeviceClass:a4 delegate:a5 info:a6 options:a7];
+      v17 = [[0 alloc] initWithDeviceClass:filter delegate:delegate info:info options:options];
       if (!v17)
       {
         FudLog();
@@ -108,9 +108,9 @@
       }
     }
 
-    if (a8)
+    if (version)
     {
-      *a8 = [(NSDictionary *)[(NSBundle *)v13 infoDictionary] objectForKey:kCFBundleVersionKey];
+      *version = [(NSDictionary *)[(NSBundle *)v13 infoDictionary] objectForKey:kCFBundleVersionKey];
     }
   }
 
@@ -125,7 +125,7 @@ LABEL_8:
   return v17;
 }
 
-+ (id)getURLForServiceIdentifier:(id)a3
++ (id)getURLForServiceIdentifier:(id)identifier
 {
   v4 = [NSURL fileURLWithPath:@"/System/Library/PrivateFrameworks/MobileAccessoryUpdater.framework/XPCServices/"];
   if (!v4)
@@ -158,7 +158,7 @@ LABEL_4:
     }
 
     v10 = *(*(&v12 + 1) + 8 * v9);
-    if ([(NSString *)[[NSBundle bundleWithURL:?]] isEqualToString:a3])
+    if ([(NSString *)[[NSBundle bundleWithURL:?]] isEqualToString:identifier])
     {
       break;
     }

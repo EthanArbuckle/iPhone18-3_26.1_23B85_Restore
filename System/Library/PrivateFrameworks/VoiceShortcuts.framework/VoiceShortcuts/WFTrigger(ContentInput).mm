@@ -8,8 +8,8 @@
 {
   if (!a3)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"WFTrigger+ContentInput.m" lineNumber:93 description:@"eventInfo should never be nil"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTrigger+ContentInput.m" lineNumber:93 description:@"eventInfo should never be nil"];
   }
 }
 

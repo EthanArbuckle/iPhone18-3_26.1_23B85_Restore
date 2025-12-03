@@ -1,8 +1,8 @@
 @interface NTKFoghornFaceColorPalette
-+ (id)_canonicalMonochromePaletteNameForBezelStyle:(int64_t)a3;
-+ (id)_colorFromColor:(id)a3 alpha:(double)a4;
-+ (id)_colorFromColorSetColor:(id)a3 fallbackRootColor:(id)a4 alpha:(double)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)_canonicalMonochromePaletteNameForBezelStyle:(int64_t)style;
++ (id)_colorFromColor:(id)color alpha:(double)alpha;
++ (id)_colorFromColorSetColor:(id)color fallbackRootColor:(id)rootColor alpha:(double)alpha;
+- (BOOL)isEqual:(id)equal;
 - (NTKFoghornFaceColorPalette)nightModeColorPalette;
 - (UIColor)bezelCompassCardinalTickColor;
 - (UIColor)bezelCompassLabelledTickColor;
@@ -42,22 +42,22 @@
 - (UIColor)simpleTextComplicationColor;
 - (UIColor)timeMinutesColor;
 - (UIColor)timeSecondsColor;
-- (id)_canonicalMonochromePaletteForBezelStyle:(int64_t)a3;
+- (id)_canonicalMonochromePaletteForBezelStyle:(int64_t)style;
 - (id)_proxyPalette;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)identifier;
 - (id)isMulticolorF;
 - (id)isNightModeF;
-- (void)configurationDidChange:(id)a3;
-- (void)setBezelStyle:(int64_t)a3;
+- (void)configurationDidChange:(id)change;
+- (void)setBezelStyle:(int64_t)style;
 @end
 
 @implementation NTKFoghornFaceColorPalette
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -66,9 +66,9 @@
   {
     v13.receiver = self;
     v13.super_class = NTKFoghornFaceColorPalette;
-    if ([(NTKFaceColorPalette *)&v13 isEqual:v4])
+    if ([(NTKFaceColorPalette *)&v13 isEqual:equalCopy])
     {
-      v5 = v4;
+      v5 = equalCopy;
       isMulticolor = objc_msgSend_isMulticolor(self, v6, v7);
       v11 = isMulticolor == objc_msgSend_isMulticolor(v5, v9, v10) && (!isMulticolor || v5->_bezelStyle == self->_bezelStyle) && v5->_nightMode == self->_nightMode;
     }
@@ -82,11 +82,11 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = NTKFoghornFaceColorPalette;
-  result = [(NTKFaceColorPalette *)&v5 copyWithZone:a3];
+  result = [(NTKFaceColorPalette *)&v5 copyWithZone:zone];
   *(result + 14) = self->_bezelStyle;
   *(result + 104) = self->_nightMode;
   return result;
@@ -110,8 +110,8 @@
     v7 = MEMORY[0x277CCACA8];
     v14.receiver = self;
     v14.super_class = NTKFoghornFaceColorPalette;
-    v8 = [(NTKFaceColorPalette *)&v14 identifier];
-    v11 = objc_msgSend_stringWithFormat_(v7, v9, v10, @"%@-%@-%u", v8, v6, self->_nightMode);
+    identifier = [(NTKFaceColorPalette *)&v14 identifier];
+    v11 = objc_msgSend_stringWithFormat_(v7, v9, v10, @"%@-%@-%u", identifier, v6, self->_nightMode);
     v12 = self->_cachedIdentifier;
     self->_cachedIdentifier = v11;
 
@@ -121,27 +121,27 @@
   return cachedIdentifier;
 }
 
-- (void)configurationDidChange:(id)a3
+- (void)configurationDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = NTKFoghornFaceColorPalette;
-  [(NTKFaceColorPalette *)&v5 configurationDidChange:a3];
+  [(NTKFaceColorPalette *)&v5 configurationDidChange:change];
   cachedIdentifier = self->_cachedIdentifier;
   self->_cachedIdentifier = 0;
 }
 
-+ (id)_colorFromColor:(id)a3 alpha:(double)a4
++ (id)_colorFromColor:(id)color alpha:(double)alpha
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 >= 0.0 && a4 < 1.0)
+  colorCopy = color;
+  v6 = colorCopy;
+  if (alpha >= 0.0 && alpha < 1.0)
   {
     v8 = NTKColorByPremultiplyingAlpha();
   }
 
   else
   {
-    v8 = v5;
+    v8 = colorCopy;
   }
 
   v9 = v8;
@@ -149,18 +149,18 @@
   return v9;
 }
 
-+ (id)_colorFromColorSetColor:(id)a3 fallbackRootColor:(id)a4 alpha:(double)a5
++ (id)_colorFromColorSetColor:(id)color fallbackRootColor:(id)rootColor alpha:(double)alpha
 {
-  v8 = a3;
-  v10 = v8;
-  if (!v8 || *MEMORY[0x277D2BF30] == v8)
+  colorCopy = color;
+  v10 = colorCopy;
+  if (!colorCopy || *MEMORY[0x277D2BF30] == colorCopy)
   {
-    v11 = objc_msgSend__colorFromColor_alpha_(a1, v9, a5, a4);
+    v11 = objc_msgSend__colorFromColor_alpha_(self, v9, alpha, rootColor);
   }
 
   else
   {
-    v11 = v8;
+    v11 = colorCopy;
   }
 
   v12 = v11;
@@ -168,26 +168,26 @@
   return v12;
 }
 
-+ (id)_canonicalMonochromePaletteNameForBezelStyle:(int64_t)a3
++ (id)_canonicalMonochromePaletteNameForBezelStyle:(int64_t)style
 {
-  if (a3 > 5)
+  if (style > 5)
   {
     return @"foghorn";
   }
 
   else
   {
-    return off_278BA0DE0[a3];
+    return off_278BA0DE0[style];
   }
 }
 
-- (id)_canonicalMonochromePaletteForBezelStyle:(int64_t)a3
+- (id)_canonicalMonochromePaletteForBezelStyle:(int64_t)style
 {
   v5 = objc_opt_class();
-  v8 = objc_msgSend__canonicalMonochromePaletteNameForBezelStyle_(v5, v6, v7, a3);
+  v8 = objc_msgSend__canonicalMonochromePaletteNameForBezelStyle_(v5, v6, v7, style);
   v11 = objc_msgSend_pigmentNamed_(MEMORY[0x277D2C0B0], v9, v10, v8);
   v14 = objc_msgSend_copyWithOption_(self, v12, v13, v11);
-  v14[14] = a3;
+  v14[14] = style;
 
   return v14;
 }
@@ -217,11 +217,11 @@
   return v9;
 }
 
-- (void)setBezelStyle:(int64_t)a3
+- (void)setBezelStyle:(int64_t)style
 {
-  if (self->_bezelStyle != a3)
+  if (self->_bezelStyle != style)
   {
-    self->_bezelStyle = a3;
+    self->_bezelStyle = style;
     monochromeProxyPalette = self->_monochromeProxyPalette;
     self->_monochromeProxyPalette = 0;
 
@@ -236,17 +236,17 @@
   v7 = v4;
   if (v4)
   {
-    v8 = objc_msgSend_primaryColor(v4, v5, v6);
+    primaryColor = objc_msgSend_primaryColor(v4, v5, v6);
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = NTKFoghornFaceColorPalette;
-    v8 = [(NTKFoghornFaceColorPalette *)&v11 primaryColor];
+    primaryColor = [(NTKFoghornFaceColorPalette *)&v11 primaryColor];
   }
 
-  v9 = v8;
+  v9 = primaryColor;
 
   return v9;
 }

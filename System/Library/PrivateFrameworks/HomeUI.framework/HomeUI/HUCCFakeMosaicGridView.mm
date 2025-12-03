@@ -1,22 +1,22 @@
 @interface HUCCFakeMosaicGridView
 - (CGRect)contentBounds;
-- (HUCCFakeMosaicGridView)initWithFrame:(CGRect)a3;
+- (HUCCFakeMosaicGridView)initWithFrame:(CGRect)frame;
 - (HUProvidesMosaicFrames)frameDelegate;
-- (void)layoutSublayersOfLayer:(id)a3;
+- (void)layoutSublayersOfLayer:(id)layer;
 @end
 
 @implementation HUCCFakeMosaicGridView
 
-- (HUCCFakeMosaicGridView)initWithFrame:(CGRect)a3
+- (HUCCFakeMosaicGridView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = HUCCFakeMosaicGridView;
-  v3 = [(HUCCFakeMosaicGridView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUCCFakeMosaicGridView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     fakeCellLayers = v3->_fakeCellLayers;
-    v3->_fakeCellLayers = v4;
+    v3->_fakeCellLayers = array;
 
     [(HUCCFakeMosaicGridView *)v3 setNeedsDisplayOnBoundsChange:1];
   }
@@ -24,11 +24,11 @@
   return v3;
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
   v56 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 bounds];
+  layerCopy = layer;
+  [layerCopy bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -47,19 +47,19 @@
     goto LABEL_23;
   }
 
-  [v4 bounds];
+  [layerCopy bounds];
   [(HUCCFakeMosaicGridView *)self setContentBounds:?];
-  v17 = [(HUCCFakeMosaicGridView *)self frameDelegate];
+  frameDelegate = [(HUCCFakeMosaicGridView *)self frameDelegate];
 
-  if (v17)
+  if (frameDelegate)
   {
-    v18 = [(HUCCFakeMosaicGridView *)self frameDelegate];
-    v19 = [v18 currentMosaicFrames];
+    frameDelegate2 = [(HUCCFakeMosaicGridView *)self frameDelegate];
+    currentMosaicFrames = [frameDelegate2 currentMosaicFrames];
 
-    if (v19)
+    if (currentMosaicFrames)
     {
-      v20 = v19;
-      if ([v19 count] > 1)
+      v20 = currentMosaicFrames;
+      if ([currentMosaicFrames count] > 1)
       {
         goto LABEL_8;
       }
@@ -68,20 +68,20 @@
 
   else
   {
-    v19 = 0;
+    currentMosaicFrames = 0;
   }
 
-  v21 = [(HUCCFakeMosaicGridView *)self mosaicLayoutGeometry];
+  mosaicLayoutGeometry = [(HUCCFakeMosaicGridView *)self mosaicLayoutGeometry];
   [(HUCCFakeMosaicGridView *)self contentBounds];
-  v20 = [HUMosaicLayoutHelper fakeFramesForGeometry:v21 inBounds:?];
+  v20 = [HUMosaicLayoutHelper fakeFramesForGeometry:mosaicLayoutGeometry inBounds:?];
 
 LABEL_8:
   v52 = 0u;
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v22 = [(HUCCFakeMosaicGridView *)self fakeCellLayers];
-  v23 = [v22 countByEnumeratingWithState:&v50 objects:v55 count:16];
+  fakeCellLayers = [(HUCCFakeMosaicGridView *)self fakeCellLayers];
+  v23 = [fakeCellLayers countByEnumeratingWithState:&v50 objects:v55 count:16];
   if (v23)
   {
     v24 = v23;
@@ -93,21 +93,21 @@ LABEL_8:
       {
         if (*v51 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(fakeCellLayers);
         }
 
         [*(*(&v50 + 1) + 8 * v26++) removeFromSuperlayer];
       }
 
       while (v24 != v26);
-      v24 = [v22 countByEnumeratingWithState:&v50 objects:v55 count:16];
+      v24 = [fakeCellLayers countByEnumeratingWithState:&v50 objects:v55 count:16];
     }
 
     while (v24);
   }
 
-  v27 = [(HUCCFakeMosaicGridView *)self fakeCellLayers];
-  [v27 removeAllObjects];
+  fakeCellLayers2 = [(HUCCFakeMosaicGridView *)self fakeCellLayers];
+  [fakeCellLayers2 removeAllObjects];
 
   v48 = 0u;
   v49 = 0u;
@@ -134,20 +134,20 @@ LABEL_8:
         v36 = v35;
         v38 = v37;
         v40 = v39;
-        v41 = [MEMORY[0x277CD9ED0] layer];
-        v42 = [MEMORY[0x277D75348] systemWhiteColor];
-        [v41 setBackgroundColor:{objc_msgSend(v42, "CGColor")}];
+        layer = [MEMORY[0x277CD9ED0] layer];
+        systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+        [layer setBackgroundColor:{objc_msgSend(systemWhiteColor, "CGColor")}];
 
         CCUICompactModuleContinuousCornerRadius();
-        [v41 setCornerRadius:?];
+        [layer setCornerRadius:?];
         LODWORD(v43) = 1025758986;
-        [v41 setOpacity:v43];
-        [v41 setFrame:{v34, v36, v38, v40}];
-        v44 = [(HUCCFakeMosaicGridView *)self layer];
-        [v44 addSublayer:v41];
+        [layer setOpacity:v43];
+        [layer setFrame:{v34, v36, v38, v40}];
+        layer2 = [(HUCCFakeMosaicGridView *)self layer];
+        [layer2 addSublayer:layer];
 
-        v45 = [(HUCCFakeMosaicGridView *)self fakeCellLayers];
-        [v45 addObject:v41];
+        fakeCellLayers3 = [(HUCCFakeMosaicGridView *)self fakeCellLayers];
+        [fakeCellLayers3 addObject:layer];
 
         ++v32;
       }

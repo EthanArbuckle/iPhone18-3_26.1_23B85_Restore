@@ -1,31 +1,31 @@
 @interface SXExperimentationStoreItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation SXExperimentationStoreItem
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(SXExperimentationStoreItem *)self experimentIdentifier];
-    v7 = [v5 experimentIdentifier];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    experimentIdentifier = [(SXExperimentationStoreItem *)self experimentIdentifier];
+    experimentIdentifier2 = [v5 experimentIdentifier];
+    if ([experimentIdentifier isEqualToString:experimentIdentifier2])
     {
-      v8 = [(SXExperimentationStoreItem *)self treatmentGroup];
-      v9 = [v5 treatmentGroup];
-      if ([v8 isEqualToString:v9])
+      treatmentGroup = [(SXExperimentationStoreItem *)self treatmentGroup];
+      treatmentGroup2 = [v5 treatmentGroup];
+      if ([treatmentGroup isEqualToString:treatmentGroup2])
       {
-        v10 = [(SXExperimentationStoreItem *)self startDate];
-        v11 = [v5 startDate];
-        if ([v10 isEqualToDate:v11])
+        startDate = [(SXExperimentationStoreItem *)self startDate];
+        startDate2 = [v5 startDate];
+        if ([startDate isEqualToDate:startDate2])
         {
-          v15 = [(SXExperimentationStoreItem *)self expiryDate];
-          v12 = [v5 expiryDate];
-          v13 = [v15 isEqualToDate:v12];
+          expiryDate = [(SXExperimentationStoreItem *)self expiryDate];
+          expiryDate2 = [v5 expiryDate];
+          v13 = [expiryDate isEqualToDate:expiryDate2];
         }
 
         else

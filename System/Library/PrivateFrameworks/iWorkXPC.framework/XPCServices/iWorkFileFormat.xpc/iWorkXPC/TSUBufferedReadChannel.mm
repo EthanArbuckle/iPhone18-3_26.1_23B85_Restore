@@ -1,31 +1,31 @@
 @interface TSUBufferedReadChannel
-- (TSUBufferedReadChannel)initWithReadChannel:(id)a3 sourceReadBufferSize:(unint64_t)a4 blockInfos:(id)a5 streamReadChannelBlock:(id)a6;
-- (id)_currentDataIntersectionWithOffset:(int64_t)a3 length:(unint64_t)a4 isReadDone:(BOOL *)a5;
+- (TSUBufferedReadChannel)initWithReadChannel:(id)channel sourceReadBufferSize:(unint64_t)size blockInfos:(id)infos streamReadChannelBlock:(id)block;
+- (id)_currentDataIntersectionWithOffset:(int64_t)offset length:(unint64_t)length isReadDone:(BOOL *)done;
 - (void)_close;
 - (void)_closeStreamReadChannel;
-- (void)_readFromOffset:(int64_t)a3 length:(unint64_t)a4 handler:(id)a5;
-- (void)_resetStreamReadChannelIfNeededForOffset:(int64_t)a3 length:(unint64_t)a4;
+- (void)_readFromOffset:(int64_t)offset length:(unint64_t)length handler:(id)handler;
+- (void)_resetStreamReadChannelIfNeededForOffset:(int64_t)offset length:(unint64_t)length;
 - (void)close;
 - (void)dealloc;
-- (void)readFromOffset:(int64_t)a3 length:(unint64_t)a4 handler:(id)a5;
-- (void)setStreamReadChannelSourceHandler:(id)a3;
+- (void)readFromOffset:(int64_t)offset length:(unint64_t)length handler:(id)handler;
+- (void)setStreamReadChannelSourceHandler:(id)handler;
 @end
 
 @implementation TSUBufferedReadChannel
 
-- (TSUBufferedReadChannel)initWithReadChannel:(id)a3 sourceReadBufferSize:(unint64_t)a4 blockInfos:(id)a5 streamReadChannelBlock:(id)a6
+- (TSUBufferedReadChannel)initWithReadChannel:(id)channel sourceReadBufferSize:(unint64_t)size blockInfos:(id)infos streamReadChannelBlock:(id)block
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  channelCopy = channel;
+  infosCopy = infos;
+  blockCopy = block;
   v29.receiver = self;
   v29.super_class = TSUBufferedReadChannel;
   v14 = [(TSUBufferedReadChannel *)&v29 init];
   if (v14)
   {
-    if (v11)
+    if (channelCopy)
     {
-      if (v13)
+      if (blockCopy)
       {
         goto LABEL_4;
       }
@@ -49,10 +49,10 @@
       [TSUAssertionHandler handleFailureInFunction:v22 file:v23 lineNumber:70 isFatal:0 description:"invalid nil value for '%{public}s'", "sourceReadChannel"];
 
       +[TSUAssertionHandler logBacktraceThrottled];
-      if (v13)
+      if (blockCopy)
       {
 LABEL_4:
-        if (a4)
+        if (size)
         {
           goto LABEL_5;
         }
@@ -77,10 +77,10 @@ LABEL_4:
     [TSUAssertionHandler handleFailureInFunction:v24 file:v25 lineNumber:71 isFatal:0 description:"invalid nil value for '%{public}s'", "streamReadChannelBlock"];
 
     +[TSUAssertionHandler logBacktraceThrottled];
-    if (a4)
+    if (size)
     {
 LABEL_5:
-      if (v11 && v13)
+      if (channelCopy && blockCopy)
       {
         v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
         v16 = dispatch_queue_create("TSUBufferedReadChannel.Read", v15);
@@ -88,14 +88,14 @@ LABEL_5:
         *(v14 + 1) = v16;
 
         dispatch_queue_set_specific(*(v14 + 1), off_1001E9BC0, off_1001E9BC0, 0);
-        objc_storeStrong(v14 + 2, a3);
-        *(v14 + 3) = a4;
+        objc_storeStrong(v14 + 2, channel);
+        *(v14 + 3) = size;
         *(v14 + 4) = 0x7FFFFFFFFFFFFFFFLL;
-        v18 = [v12 copy];
+        v18 = [infosCopy copy];
         v19 = *(v14 + 7);
         *(v14 + 7) = v18;
 
-        v20 = objc_retainBlock(v13);
+        v20 = objc_retainBlock(blockCopy);
         v21 = *(v14 + 8);
         *(v14 + 8) = v20;
 
@@ -152,12 +152,12 @@ LABEL_24:
 
   v4 = objc_opt_class();
   v5 = +[NSThread currentThread];
-  v6 = [v5 threadDictionary];
-  v7 = [v6 objectForKeyedSubscript:@"TSUBufferedReadChannelInvokingHandler"];
+  threadDictionary = [v5 threadDictionary];
+  v7 = [threadDictionary objectForKeyedSubscript:@"TSUBufferedReadChannelInvokingHandler"];
   v8 = TSUDynamicCast(v4, v7);
-  v9 = [v8 BOOLValue];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
 LABEL_3:
 
@@ -194,15 +194,15 @@ LABEL_3:
   self->_streamReadChannel = 0;
 }
 
-- (void)_resetStreamReadChannelIfNeededForOffset:(int64_t)a3 length:(unint64_t)a4
+- (void)_resetStreamReadChannelIfNeededForOffset:(int64_t)offset length:(unint64_t)length
 {
-  v5 = a3;
+  offsetCopy = offset;
   streamOutputOffset = self->_streamOutputOffset;
-  if (streamOutputOffset <= a3)
+  if (streamOutputOffset <= offset)
   {
     streamOutputOutstandingLength = self->_streamOutputOutstandingLength;
     v9 = streamOutputOutstandingLength + streamOutputOffset;
-    if (streamOutputOutstandingLength == -1 || v9 > a3)
+    if (streamOutputOutstandingLength == -1 || v9 > offset)
     {
       return;
     }
@@ -233,12 +233,12 @@ LABEL_3:
   }
 
   v14 = v13;
-  v15 = 0;
+  decodedLength = 0;
   v16 = 0;
   v17 = 0;
   v37 = *v40;
-  v34 = a4;
-  v35 = v5;
+  lengthCopy = length;
+  v35 = offsetCopy;
   do
   {
     v18 = 0;
@@ -251,20 +251,20 @@ LABEL_3:
 
       v19 = *(*(&v39 + 1) + 8 * v18);
       v16 += [v19 decodedLength];
-      if (v15)
+      if (decodedLength)
       {
         [v17 addObject:v19];
         self->_sourceLength += [v19 encodedLength];
-        v15 = &v15[[v19 decodedLength]];
-        v20 = [v19 decodedLength] + self->_streamOutputOutstandingLength;
+        decodedLength = &decodedLength[[v19 decodedLength]];
+        decodedLength2 = [v19 decodedLength] + self->_streamOutputOutstandingLength;
       }
 
       else
       {
-        if (v16 <= v5)
+        if (v16 <= offsetCopy)
         {
           self->_sourceOffset += [v19 encodedLength];
-          v15 = 0;
+          decodedLength = 0;
           self->_streamOutputOffset += [v19 decodedLength];
           goto LABEL_23;
         }
@@ -298,21 +298,21 @@ LABEL_3:
           [TSUAssertionHandler handleFailureInFunction:v23 file:v24 lineNumber:149 isFatal:0 description:"expected nil value for '%{public}s'", "blockInfos"];
 
           +[TSUAssertionHandler logBacktraceThrottled];
-          a4 = v34;
+          length = lengthCopy;
         }
 
         v25 = [[NSMutableArray alloc] initWithCapacity:v12];
 
         [v25 addObject:v19];
         self->_sourceLength = [v19 encodedLength];
-        v15 = [v19 decodedLength];
-        v20 = [v19 decodedLength];
+        decodedLength = [v19 decodedLength];
+        decodedLength2 = [v19 decodedLength];
         v17 = v25;
-        v5 = v35;
+        offsetCopy = v35;
       }
 
-      self->_streamOutputOutstandingLength = v20;
-      if (v15 > a4)
+      self->_streamOutputOutstandingLength = decodedLength2;
+      if (decodedLength > length)
       {
         goto LABEL_32;
       }
@@ -358,36 +358,36 @@ LABEL_33:
   [(TSUStreamReadChannel *)v33 readWithHandler:v38];
 }
 
-- (void)setStreamReadChannelSourceHandler:(id)a3
+- (void)setStreamReadChannelSourceHandler:(id)handler
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(handler);
   streamReadChannelSourceHandler = self->_streamReadChannelSourceHandler;
   self->_streamReadChannelSourceHandler = v4;
 
   _objc_release_x1(v4, streamReadChannelSourceHandler);
 }
 
-- (void)readFromOffset:(int64_t)a3 length:(unint64_t)a4 handler:(id)a5
+- (void)readFromOffset:(int64_t)offset length:(unint64_t)length handler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   readQueue = self->_readQueue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10008F8B4;
   v11[3] = &unk_1001C59F0;
-  v13 = a3;
-  v14 = a4;
+  offsetCopy = offset;
+  lengthCopy = length;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
   dispatch_async(readQueue, v11);
 }
 
-- (void)_readFromOffset:(int64_t)a3 length:(unint64_t)a4 handler:(id)a5
+- (void)_readFromOffset:(int64_t)offset length:(unint64_t)length handler:(id)handler
 {
-  v8 = a5;
-  v9 = (a3 & (a3 >> 63)) + a4;
-  v10 = a3 & ~(a3 >> 63);
+  handlerCopy = handler;
+  v9 = (offset & (offset >> 63)) + length;
+  v10 = offset & ~(offset >> 63);
   [(TSUBufferedReadChannel *)self _resetStreamReadChannelIfNeededForOffset:v10 length:v9];
   v31 = 0;
   v11 = [(TSUBufferedReadChannel *)self _currentDataIntersectionWithOffset:v10 length:v9 isReadDone:&v31];
@@ -405,13 +405,13 @@ LABEL_33:
   }
 
   v14 = +[NSThread currentThread];
-  v15 = [v14 threadDictionary];
-  [v15 setObject:&__kCFBooleanTrue forKeyedSubscript:@"TSUBufferedReadChannelInvokingHandler"];
+  threadDictionary = [v14 threadDictionary];
+  [threadDictionary setObject:&__kCFBooleanTrue forKeyedSubscript:@"TSUBufferedReadChannelInvokingHandler"];
 
-  (*(v8 + 2))(v8, v31, v12, 0);
+  (*(handlerCopy + 2))(handlerCopy, v31, v12, 0);
   v16 = +[NSThread currentThread];
-  v17 = [v16 threadDictionary];
-  [v17 setObject:&__kCFBooleanFalse forKeyedSubscript:@"TSUBufferedReadChannelInvokingHandler"];
+  threadDictionary2 = [v16 threadDictionary];
+  [threadDictionary2 setObject:&__kCFBooleanFalse forKeyedSubscript:@"TSUBufferedReadChannelInvokingHandler"];
 
   if (v31)
   {
@@ -454,7 +454,7 @@ LABEL_6:
   v24[2] = sub_10008FC74;
   v24[3] = &unk_1001CD530;
   v24[4] = self;
-  v25 = v8;
+  v25 = handlerCopy;
   v26 = v30;
   v27 = sourceReadBufferSize;
   v28 = v10;
@@ -465,16 +465,16 @@ LABEL_6:
 LABEL_12:
 }
 
-- (id)_currentDataIntersectionWithOffset:(int64_t)a3 length:(unint64_t)a4 isReadDone:(BOOL *)a5
+- (id)_currentDataIntersectionWithOffset:(int64_t)offset length:(unint64_t)length isReadDone:(BOOL *)done
 {
-  if (__CFADD__(a3, a4))
+  if (__CFADD__(offset, length))
   {
     v8 = -1;
   }
 
   else
   {
-    v8 = a3 + a4;
+    v8 = offset + length;
   }
 
   streamOutputOffset = self->_streamOutputOffset;
@@ -517,14 +517,14 @@ LABEL_12:
     streamOutputLength = self->_streamOutputLength;
   }
 
-  if (streamOutputOffset <= a3)
+  if (streamOutputOffset <= offset)
   {
-    v16 = a3;
+    offsetCopy = offset;
   }
 
   else
   {
-    v16 = streamOutputOffset;
+    offsetCopy = streamOutputOffset;
   }
 
   v17 = streamOutputLength + streamOutputOffset;
@@ -538,10 +538,10 @@ LABEL_12:
     v18 = v8;
   }
 
-  if (v18 <= v16)
+  if (v18 <= offsetCopy)
   {
     subrange = 0;
-    if (!a5)
+    if (!done)
     {
       goto LABEL_21;
     }
@@ -549,11 +549,11 @@ LABEL_12:
     goto LABEL_20;
   }
 
-  subrange = dispatch_data_create_subrange(self->_currentStreamOutputData, v16 - streamOutputOffset, v18 - v16);
-  if (a5)
+  subrange = dispatch_data_create_subrange(self->_currentStreamOutputData, offsetCopy - streamOutputOffset, v18 - offsetCopy);
+  if (done)
   {
 LABEL_20:
-    *a5 = v8 <= v17 || self->_isStreamOutputDone;
+    *done = v8 <= v17 || self->_isStreamOutputDone;
   }
 
 LABEL_21:

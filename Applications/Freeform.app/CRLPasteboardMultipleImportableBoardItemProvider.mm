@@ -1,24 +1,24 @@
 @interface CRLPasteboardMultipleImportableBoardItemProvider
-- (BOOL)p_validateSizeOfImportWithTotalSize:(unint64_t)a3 totalEmbeddedDataSize:(unint64_t)a4 insertedImage:(BOOL)a5 insertedMovie:(BOOL)a6 insertedAudio:(BOOL)a7 preexistingTooLargeErrors:(id)a8 error:(id *)a9;
+- (BOOL)p_validateSizeOfImportWithTotalSize:(unint64_t)size totalEmbeddedDataSize:(unint64_t)dataSize insertedImage:(BOOL)image insertedMovie:(BOOL)movie insertedAudio:(BOOL)audio preexistingTooLargeErrors:(id)errors error:(id *)error;
 - (BOOL)producesValidGeometry;
 - (CRLMediaCompatibilityAlertPresenter)alertPresenter;
-- (CRLPasteboardMultipleImportableBoardItemProvider)initWithImportableBoardItemProviders:(id)a3;
+- (CRLPasteboardMultipleImportableBoardItemProvider)initWithImportableBoardItemProviders:(id)providers;
 - (NSString)localizedErrorDescription;
 - (void)cancel;
-- (void)importableBoardItemProvider:(id)a3 needsMediaCompatibilityFeedbackWithReasons:(int64_t)a4 forMediaType:(int64_t)a5 usingBlock:(id)a6;
-- (void)importableBoardItemProviderWillIgnoreMediaCompatibilityOnAllDevicesRequirement:(id)a3;
-- (void)p_boardItemProviderDidRequestMediaCompatibilityRequirement:(id)a3;
-- (void)provideBoardItemsWithFactory:(id)a3 completionHandler:(id)a4;
+- (void)importableBoardItemProvider:(id)provider needsMediaCompatibilityFeedbackWithReasons:(int64_t)reasons forMediaType:(int64_t)type usingBlock:(id)block;
+- (void)importableBoardItemProviderWillIgnoreMediaCompatibilityOnAllDevicesRequirement:(id)requirement;
+- (void)p_boardItemProviderDidRequestMediaCompatibilityRequirement:(id)requirement;
+- (void)provideBoardItemsWithFactory:(id)factory completionHandler:(id)handler;
 @end
 
 @implementation CRLPasteboardMultipleImportableBoardItemProvider
 
-- (CRLPasteboardMultipleImportableBoardItemProvider)initWithImportableBoardItemProviders:(id)a3
+- (CRLPasteboardMultipleImportableBoardItemProvider)initWithImportableBoardItemProviders:(id)providers
 {
-  v4 = a3;
-  v5 = [v4 count];
+  providersCopy = providers;
+  v5 = [providersCopy count];
   v6 = v5;
-  if (!v4 || !v5)
+  if (!providersCopy || !v5)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -56,7 +56,7 @@
     mProviderQueue = v10->mProviderQueue;
     v10->mProviderQueue = v11;
 
-    v13 = [[CRLMultipleImporterHelper alloc] initWithImporters:v4];
+    v13 = [[CRLMultipleImporterHelper alloc] initWithImporters:providersCopy];
     mImporterHelper = v10->mImporterHelper;
     v10->mImporterHelper = v13;
 
@@ -65,7 +65,7 @@
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v16 = v4;
+    v16 = providersCopy;
     v17 = [v16 countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v17)
     {
@@ -81,10 +81,10 @@
           }
 
           v21 = *(*(&v26 + 1) + 8 * i);
-          v22 = [v21 progress];
-          if (v22)
+          progress = [v21 progress];
+          if (progress)
           {
-            [v15 addObject:v22];
+            [v15 addObject:progress];
           }
 
           [v21 setDelegate:v10];
@@ -104,21 +104,21 @@
   return v10;
 }
 
-- (BOOL)p_validateSizeOfImportWithTotalSize:(unint64_t)a3 totalEmbeddedDataSize:(unint64_t)a4 insertedImage:(BOOL)a5 insertedMovie:(BOOL)a6 insertedAudio:(BOOL)a7 preexistingTooLargeErrors:(id)a8 error:(id *)a9
+- (BOOL)p_validateSizeOfImportWithTotalSize:(unint64_t)size totalEmbeddedDataSize:(unint64_t)dataSize insertedImage:(BOOL)image insertedMovie:(BOOL)movie insertedAudio:(BOOL)audio preexistingTooLargeErrors:(id)errors error:(id *)error
 {
-  if (a9)
+  if (error)
   {
-    *a9 = 0;
+    *error = 0;
   }
 
   return 1;
 }
 
-- (void)provideBoardItemsWithFactory:(id)a3 completionHandler:(id)a4
+- (void)provideBoardItemsWithFactory:(id)factory completionHandler:(id)handler
 {
-  v6 = a3;
-  v20 = a4;
-  if (!v20)
+  factoryCopy = factory;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -148,13 +148,13 @@
   }
 
   v10 = dispatch_group_create();
-  v21 = self;
-  v11 = [(CRLMultipleImporterHelper *)self->mImporterHelper importers];
+  selfCopy = self;
+  importers = [(CRLMultipleImporterHelper *)self->mImporterHelper importers];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v12 = [v11 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  v12 = [importers countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v12)
   {
     v13 = v12;
@@ -165,7 +165,7 @@
       {
         if (*v29 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(importers);
         }
 
         v16 = *(*(&v28 + 1) + 8 * i);
@@ -175,25 +175,25 @@
         v26[2] = sub_1005098E4;
         v26[3] = &unk_10183AB38;
         v27 = v10;
-        [v16 provideBoardItemWithFactory:v6 completionHandler:v26];
+        [v16 provideBoardItemWithFactory:factoryCopy completionHandler:v26];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v13 = [importers countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v13);
   }
 
-  mProviderQueue = v21->mProviderQueue;
+  mProviderQueue = selfCopy->mProviderQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1005098EC;
   block[3] = &unk_101842CD8;
-  v23 = v11;
-  v24 = v21;
-  v25 = v20;
-  v18 = v20;
-  v19 = v11;
+  v23 = importers;
+  v24 = selfCopy;
+  v25 = handlerCopy;
+  v18 = handlerCopy;
+  v19 = importers;
   dispatch_group_notify(v10, mProviderQueue, block);
 }
 
@@ -210,16 +210,16 @@
 
 - (BOOL)producesValidGeometry
 {
-  v2 = [(CRLPasteboardMultipleImportableBoardItemProvider *)self boardItemProviders];
-  v3 = [v2 crl_allObjectsPassTest:&stru_10186B010];
+  boardItemProviders = [(CRLPasteboardMultipleImportableBoardItemProvider *)self boardItemProviders];
+  v3 = [boardItemProviders crl_allObjectsPassTest:&stru_10186B010];
 
   return v3;
 }
 
 - (NSString)localizedErrorDescription
 {
-  v2 = [(CRLPasteboardMultipleImportableBoardItemProvider *)self errors];
-  v3 = [v2 count];
+  errors = [(CRLPasteboardMultipleImportableBoardItemProvider *)self errors];
+  v3 = [errors count];
 
   if (v3)
   {
@@ -231,50 +231,50 @@
   return v3;
 }
 
-- (void)importableBoardItemProvider:(id)a3 needsMediaCompatibilityFeedbackWithReasons:(int64_t)a4 forMediaType:(int64_t)a5 usingBlock:(id)a6
+- (void)importableBoardItemProvider:(id)provider needsMediaCompatibilityFeedbackWithReasons:(int64_t)reasons forMediaType:(int64_t)type usingBlock:(id)block
 {
-  v10 = a3;
-  v11 = a6;
+  providerCopy = provider;
+  blockCopy = block;
   mProviderQueue = self->mProviderQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10050A088;
   block[3] = &unk_10186B038;
   block[4] = self;
-  v16 = v10;
-  v18 = a4;
-  v19 = a5;
-  v17 = v11;
-  v13 = v11;
-  v14 = v10;
+  v16 = providerCopy;
+  reasonsCopy = reasons;
+  typeCopy = type;
+  v17 = blockCopy;
+  v13 = blockCopy;
+  v14 = providerCopy;
   dispatch_async(mProviderQueue, block);
 }
 
-- (void)importableBoardItemProviderWillIgnoreMediaCompatibilityOnAllDevicesRequirement:(id)a3
+- (void)importableBoardItemProviderWillIgnoreMediaCompatibilityOnAllDevicesRequirement:(id)requirement
 {
-  v4 = a3;
+  requirementCopy = requirement;
   mProviderQueue = self->mProviderQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10050A178;
   v7[3] = &unk_10183AE28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requirementCopy;
+  v6 = requirementCopy;
   dispatch_async(mProviderQueue, v7);
 }
 
-- (void)p_boardItemProviderDidRequestMediaCompatibilityRequirement:(id)a3
+- (void)p_boardItemProviderDidRequestMediaCompatibilityRequirement:(id)requirement
 {
-  [(CRLMultipleImporterHelper *)self->mImporterHelper mediaCompatibilityCheckHasBeenHandledForImporter:a3];
+  [(CRLMultipleImporterHelper *)self->mImporterHelper mediaCompatibilityCheckHasBeenHandledForImporter:requirement];
   if ([(CRLMultipleImporterHelper *)self->mImporterHelper allImportersHaveGivenCompatibilityResponse]&& [(CRLMultipleImporterHelper *)self->mImporterHelper numberOfImportersRequiringCompatibilityConversion])
   {
-    v4 = [(CRLPasteboardMultipleImportableBoardItemProvider *)self alertPresenter];
+    alertPresenter = [(CRLPasteboardMultipleImportableBoardItemProvider *)self alertPresenter];
     mImporterHelper = self->mImporterHelper;
-    if (v4)
+    if (alertPresenter)
     {
-      v6 = [(CRLMultipleImporterHelper *)mImporterHelper mediaTypeForConversion];
-      if (!v6)
+      mediaTypeForConversion = [(CRLMultipleImporterHelper *)mImporterHelper mediaTypeForConversion];
+      if (!mediaTypeForConversion)
       {
         +[CRLAssertionHandler _atomicIncrementAssertCount];
         if (qword_101AD5A10 != -1)
@@ -302,17 +302,17 @@
         v9 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLPasteboardMultipleImportableBoardItemProvider.m"];
         [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:254 isFatal:0 description:"No media types were specified! Falling back to Mixed to have understandable strings."];
 
-        v6 = 3;
+        mediaTypeForConversion = 3;
       }
 
-      v10 = [(CRLMultipleImporterHelper *)self->mImporterHelper reasonsForMediaConversion];
+      reasonsForMediaConversion = [(CRLMultipleImporterHelper *)self->mImporterHelper reasonsForMediaConversion];
       v11 = [(CRLMultipleImporterHelper *)self->mImporterHelper numberOfImportersRequiringCompatibilityConversion]== 1;
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_10050A450;
       v12[3] = &unk_10186B0C8;
       v12[4] = self;
-      [v4 presentMediaCompatibilityAlertWithReasons:v10 forMediaType:v6 forSingleMediaObject:v11 completionHandler:v12];
+      [alertPresenter presentMediaCompatibilityAlertWithReasons:reasonsForMediaConversion forMediaType:mediaTypeForConversion forSingleMediaObject:v11 completionHandler:v12];
     }
 
     else

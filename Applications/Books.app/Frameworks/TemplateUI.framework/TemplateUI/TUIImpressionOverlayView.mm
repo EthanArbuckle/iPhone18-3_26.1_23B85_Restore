@@ -1,15 +1,15 @@
 @interface TUIImpressionOverlayView
-- (TUIImpressionOverlayView)initWithFrame:(CGRect)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (TUIImpressionOverlayView)initWithFrame:(CGRect)frame;
+- (void)applyLayoutAttributes:(id)attributes;
 @end
 
 @implementation TUIImpressionOverlayView
 
-- (TUIImpressionOverlayView)initWithFrame:(CGRect)a3
+- (TUIImpressionOverlayView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TUIImpressionOverlayView;
-  v3 = [(TUIImpressionOverlayView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TUIImpressionOverlayView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -19,16 +19,16 @@
   return v4;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v10.receiver = self;
   v10.super_class = TUIImpressionOverlayView;
-  v4 = a3;
-  [(TUIReusableBaseView *)&v10 applyLayoutAttributes:v4];
+  attributesCopy = attributes;
+  [(TUIReusableBaseView *)&v10 applyLayoutAttributes:attributesCopy];
   v5 = objc_opt_class();
-  v6 = [v4 generic];
+  generic = [attributesCopy generic];
 
-  v7 = TUIDynamicCast(v5, v6);
+  v7 = TUIDynamicCast(v5, generic);
 
   if ([v7 timingCount])
   {

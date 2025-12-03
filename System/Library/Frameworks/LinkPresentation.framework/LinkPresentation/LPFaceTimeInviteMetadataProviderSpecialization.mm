@@ -1,20 +1,20 @@
 @interface LPFaceTimeInviteMetadataProviderSpecialization
-+ (id)specializedMetadataProviderForURLWithContext:(id)a3;
-- (void)completeWithMetadata:(id)a3;
++ (id)specializedMetadataProviderForURLWithContext:(id)context;
+- (void)completeWithMetadata:(id)metadata;
 - (void)start;
 @end
 
 @implementation LPFaceTimeInviteMetadataProviderSpecialization
 
-+ (id)specializedMetadataProviderForURLWithContext:(id)a3
++ (id)specializedMetadataProviderForURLWithContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 postRedirectURL];
-  v5 = [v4 _lp_isFaceTimeInviteURL];
+  contextCopy = context;
+  postRedirectURL = [contextCopy postRedirectURL];
+  _lp_isFaceTimeInviteURL = [postRedirectURL _lp_isFaceTimeInviteURL];
 
-  if (v5)
+  if (_lp_isFaceTimeInviteURL)
   {
-    v6 = [(LPMetadataProviderSpecialization *)[LPFaceTimeInviteMetadataProviderSpecialization alloc] initWithContext:v3];
+    v6 = [(LPMetadataProviderSpecialization *)[LPFaceTimeInviteMetadataProviderSpecialization alloc] initWithContext:contextCopy];
   }
 
   else
@@ -27,26 +27,26 @@
 
 - (void)start
 {
-  v8 = [(LPMetadataProviderSpecialization *)self context];
-  v3 = [v8 originalURL];
-  v4 = [v3 _lp_isFaceTimeInviteURL];
+  context = [(LPMetadataProviderSpecialization *)self context];
+  originalURL = [context originalURL];
+  _lp_isFaceTimeInviteURL = [originalURL _lp_isFaceTimeInviteURL];
 
-  if (v4)
+  if (_lp_isFaceTimeInviteURL)
   {
     v9 = objc_alloc_init(LPFaceTimeInviteMetadata);
-    v5 = [(LPMetadataProviderSpecialization *)self context];
-    v6 = [v5 originalURL];
-    v7 = [v6 _lp_faceTimeInviteTitle];
-    [(LPFaceTimeInviteMetadata *)v9 setTitle:v7];
+    context2 = [(LPMetadataProviderSpecialization *)self context];
+    originalURL2 = [context2 originalURL];
+    _lp_faceTimeInviteTitle = [originalURL2 _lp_faceTimeInviteTitle];
+    [(LPFaceTimeInviteMetadata *)v9 setTitle:_lp_faceTimeInviteTitle];
 
     [(LPFaceTimeInviteMetadataProviderSpecialization *)self completeWithMetadata:v9];
   }
 }
 
-- (void)completeWithMetadata:(id)a3
+- (void)completeWithMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(LPMetadataProviderSpecialization *)self createMetadataWithSpecialization:v4];
+  metadataCopy = metadata;
+  v5 = [(LPMetadataProviderSpecialization *)self createMetadataWithSpecialization:metadataCopy];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __71__LPFaceTimeInviteMetadataProviderSpecialization_completeWithMetadata___block_invoke;

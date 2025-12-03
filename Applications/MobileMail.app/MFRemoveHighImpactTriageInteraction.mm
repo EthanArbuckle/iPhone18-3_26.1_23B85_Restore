@@ -11,8 +11,8 @@
   if (!triageAction)
   {
     v4 = [MSRemoveHighImpactTriageAction alloc];
-    v5 = [(MFTriageInteraction *)self messageListItemSelection];
-    v6 = [v4 initWithMessageListSelection:v5 origin:-[MFTriageInteraction origin](self actor:"origin") delegate:-[MFTriageInteraction actor](self highImpactChange:{"actor"), 0, 0}];
+    messageListItemSelection = [(MFTriageInteraction *)self messageListItemSelection];
+    v6 = [v4 initWithMessageListSelection:messageListItemSelection origin:-[MFTriageInteraction origin](self actor:"origin") delegate:-[MFTriageInteraction actor](self highImpactChange:{"actor"), 0, 0}];
     v7 = self->_triageAction;
     self->_triageAction = v6;
 
@@ -28,10 +28,10 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(MFTriageInteraction *)self messageListItemSelection];
-  v3 = [v2 messageListItems];
+  messageListItemSelection = [(MFTriageInteraction *)self messageListItemSelection];
+  messageListItems = [messageListItemSelection messageListItems];
 
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [messageListItems countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -41,20 +41,20 @@
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(messageListItems);
         }
 
-        v7 = [*(*(&v10 + 1) + 8 * i) category];
-        v8 = [v7 isHighImpact];
+        category = [*(*(&v10 + 1) + 8 * i) category];
+        isHighImpact = [category isHighImpact];
 
-        if (v8)
+        if (isHighImpact)
         {
           LOBYTE(v4) = 1;
           goto LABEL_11;
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [messageListItems countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;

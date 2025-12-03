@@ -12,13 +12,13 @@
     goto LABEL_11;
   }
 
-  v5 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v6 = objc_opt_class();
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __56__NSObject_MSVDebugUtilities____msv_inspectWithOptions___block_invoke;
   v26[3] = &unk_1E7981A28;
-  v7 = v5;
+  v7 = string;
   v27 = v7;
   v28 = a3;
   _MSVEnumerateClassHierarchy(v6, 1, v26);
@@ -30,7 +30,7 @@
     v24[1] = 3221225472;
     v24[2] = __56__NSObject_MSVDebugUtilities____msv_inspectWithOptions___block_invoke_3;
     v24[3] = &unk_1E7981A78;
-    v24[4] = a1;
+    v24[4] = self;
     v13 = v7;
     v25 = v13;
     _MSVEnumerateClassHierarchy(v12, 0, v24);
@@ -47,7 +47,7 @@ LABEL_4:
       v20[2] = __56__NSObject_MSVDebugUtilities____msv_inspectWithOptions___block_invoke_5;
       v20[3] = &unk_1E7981AC8;
       v23 = a3;
-      v20[4] = a1;
+      v20[4] = self;
       v10 = v8;
       v21 = v10;
       v22 = v7;

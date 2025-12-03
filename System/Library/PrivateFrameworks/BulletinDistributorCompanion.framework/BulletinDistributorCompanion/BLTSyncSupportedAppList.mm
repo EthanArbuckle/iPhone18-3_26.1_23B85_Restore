@@ -1,17 +1,17 @@
 @interface BLTSyncSupportedAppList
 - (BLTSyncSupportedAppList)init;
 - (BLTSyncSupportedAppListDelegate)delegate;
-- (BOOL)_handleAppListInstalled:(id)a3 removed:(id)a4;
+- (BOOL)_handleAppListInstalled:(id)installed removed:(id)removed;
 - (NSDictionary)installed;
 - (NSSet)removed;
 - (id)_syncSupportedAppListStoreURL;
-- (id)supportedBundleIDsFromRecords:(id)a3 nonSyncSupportedBundleIDs:(id *)a4;
-- (void)applicationIconDidChange:(id)a3;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
+- (id)supportedBundleIDsFromRecords:(id)records nonSyncSupportedBundleIDs:(id *)ds;
+- (void)applicationIconDidChange:(id)change;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
 - (void)dealloc;
 - (void)init;
-- (void)updateStoreWithInstalled:(id)a3 removed:(id)a4;
+- (void)updateStoreWithInstalled:(id)installed removed:(id)removed;
 @end
 
 @implementation BLTSyncSupportedAppList
@@ -43,15 +43,15 @@
   CFPreferencesAppSynchronize(@"com.apple.bulletindistributor");
   keyExistsAndHasValidFormat = 0;
   CFPreferencesGetAppIntegerValue(@"BLTSiriActionAppListVersion", @"com.apple.bulletindistributor", &keyExistsAndHasValidFormat);
-  v10 = [(BLTSyncSupportedAppList *)v2 _syncSupportedAppListStoreURL];
-  v11 = v10;
+  _syncSupportedAppListStoreURL = [(BLTSyncSupportedAppList *)v2 _syncSupportedAppListStoreURL];
+  v11 = _syncSupportedAppListStoreURL;
   v12 = 0x277CBE000uLL;
-  v43 = v10;
+  v43 = _syncSupportedAppListStoreURL;
   if (keyExistsAndHasValidFormat)
   {
     v13 = MEMORY[0x277CBEB58];
     v50 = 0;
-    v14 = [MEMORY[0x277CBEA60] arrayWithContentsOfURL:v10 error:&v50];
+    v14 = [MEMORY[0x277CBEA60] arrayWithContentsOfURL:_syncSupportedAppListStoreURL error:&v50];
     v15 = v50;
     v16 = [v13 setWithArray:v14];
     appListStore = v2->_appListStore;
@@ -69,17 +69,17 @@
 
   else
   {
-    if (v10)
+    if (_syncSupportedAppListStoreURL)
     {
-      v19 = [MEMORY[0x277CCAA00] defaultManager];
-      v20 = [v11 path];
-      v21 = [v19 fileExistsAtPath:v20];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      path = [v11 path];
+      v21 = [defaultManager fileExistsAtPath:path];
 
       if (v21)
       {
-        v22 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
         v51 = 0;
-        v23 = [v22 removeItemAtURL:v11 error:&v51];
+        v23 = [defaultManager2 removeItemAtURL:v11 error:&v51];
         v24 = v51;
 
         if (!v23)
@@ -100,8 +100,8 @@
   }
 
 LABEL_13:
-  v25 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v25 addObserver:v2];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace addObserver:v2];
 
   v26 = [MEMORY[0x277CBEB58] set];
   [MEMORY[0x277CC1E70] enumeratorWithOptions:0];
@@ -125,8 +125,8 @@ LABEL_13:
 
         v31 = *(*(&v46 + 1) + 8 * i);
         v32 = objc_autoreleasePoolPush();
-        v33 = [v31 bundleIdentifier];
-        [v26 addObject:v33];
+        bundleIdentifier = [v31 bundleIdentifier];
+        [v26 addObject:bundleIdentifier];
 
         v54 = v31;
         v34 = [*(v12 + 2656) arrayWithObjects:&v54 count:1];
@@ -151,8 +151,8 @@ LABEL_13:
   [v38 minusSet:v26];
   if ([v38 count])
   {
-    v39 = [v38 allObjects];
-    [(BLTSyncSupportedAppList *)v2 _handleAppListInstalled:0 removed:v39];
+    allObjects = [v38 allObjects];
+    [(BLTSyncSupportedAppList *)v2 _handleAppListInstalled:0 removed:allObjects];
   }
 
 LABEL_23:
@@ -160,16 +160,16 @@ LABEL_23:
   return v2;
 }
 
-- (id)supportedBundleIDsFromRecords:(id)a3 nonSyncSupportedBundleIDs:(id *)a4
+- (id)supportedBundleIDsFromRecords:(id)records nonSyncSupportedBundleIDs:(id *)ds
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB38] dictionary];
+  recordsCopy = records;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v5;
+  obj = recordsCopy;
   v7 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v7)
   {
@@ -187,23 +187,23 @@ LABEL_23:
 
         v11 = *(*(&v28 + 1) + 8 * v10);
         v12 = [MEMORY[0x277CD3A68] appInfoWithApplicationRecord:v11];
-        v13 = [v12 supportedActions];
-        if ([v13 count])
+        supportedActions = [v12 supportedActions];
+        if ([supportedActions count])
         {
 
 LABEL_9:
-          v16 = [v11 localizedName];
-          v17 = v16;
-          if (!v16)
+          localizedName = [v11 localizedName];
+          v17 = localizedName;
+          if (!localizedName)
           {
-            v4 = [MEMORY[0x277CBEB68] null];
-            v17 = v4;
+            null = [MEMORY[0x277CBEB68] null];
+            v17 = null;
           }
 
-          v18 = [v11 bundleIdentifier];
-          [v6 setObject:v17 forKeyedSubscript:v18];
+          bundleIdentifier = [v11 bundleIdentifier];
+          [dictionary setObject:v17 forKeyedSubscript:bundleIdentifier];
 
-          if (!v16)
+          if (!localizedName)
           {
           }
 
@@ -212,8 +212,8 @@ LABEL_13:
           goto LABEL_14;
         }
 
-        v14 = [v12 supportedActionsByExtensions];
-        v15 = [v14 count];
+        supportedActionsByExtensions = [v12 supportedActionsByExtensions];
+        v15 = [supportedActionsByExtensions count];
 
         if (v15)
         {
@@ -222,35 +222,35 @@ LABEL_13:
 
         if ([v11 supportsLiveActivities])
         {
-          v16 = [v11 localizedName];
-          v19 = v16;
-          if (!v16)
+          localizedName = [v11 localizedName];
+          null2 = localizedName;
+          if (!localizedName)
           {
-            v19 = [MEMORY[0x277CBEB68] null];
-            v25 = v19;
+            null2 = [MEMORY[0x277CBEB68] null];
+            v25 = null2;
           }
 
-          v20 = [v11 bundleIdentifier];
-          [v6 setObject:v19 forKeyedSubscript:v20];
+          bundleIdentifier2 = [v11 bundleIdentifier];
+          [dictionary setObject:null2 forKeyedSubscript:bundleIdentifier2];
 
-          if (!v16)
+          if (!localizedName)
           {
           }
 
           goto LABEL_13;
         }
 
-        if (a4)
+        if (ds)
         {
-          v21 = *a4;
-          if (!*a4)
+          array = *ds;
+          if (!*ds)
           {
-            v21 = [MEMORY[0x277CBEB18] array];
-            *a4 = v21;
+            array = [MEMORY[0x277CBEB18] array];
+            *ds = array;
           }
 
-          v16 = [v11 bundleIdentifier];
-          [v21 addObject:v16];
+          localizedName = [v11 bundleIdentifier];
+          [array addObject:localizedName];
           goto LABEL_13;
         }
 
@@ -269,7 +269,7 @@ LABEL_14:
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return dictionary;
 }
 
 - (id)_syncSupportedAppListStoreURL
@@ -289,8 +289,8 @@ LABEL_14:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v3 removeObserver:self];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = BLTSyncSupportedAppList;
@@ -361,10 +361,10 @@ uint64_t __34__BLTSyncSupportedAppList_removed__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)_handleAppListInstalled:(id)a3 removed:(id)a4
+- (BOOL)_handleAppListInstalled:(id)installed removed:(id)removed
 {
-  v6 = a3;
-  v7 = a4;
+  installedCopy = installed;
+  removedCopy = removed;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -374,12 +374,12 @@ uint64_t __34__BLTSyncSupportedAppList_removed__block_invoke(uint64_t a1)
   v12[1] = 3221225472;
   v12[2] = __59__BLTSyncSupportedAppList__handleAppListInstalled_removed___block_invoke;
   v12[3] = &unk_278D31E38;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
+  v13 = installedCopy;
+  selfCopy = self;
+  v15 = removedCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = removedCopy;
+  v10 = installedCopy;
   dispatch_sync(appListQueue, v12);
   LOBYTE(appListQueue) = *(v18 + 24);
 
@@ -454,34 +454,34 @@ void __59__BLTSyncSupportedAppList__handleAppListInstalled_removed___block_invok
   }
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v7 = 0;
-  v4 = BLTSyncSupportedBundleIDsFromProxies(a3, &v7);
+  v4 = BLTSyncSupportedBundleIDsFromProxies(install, &v7);
   v5 = v7;
   if ([(BLTSyncSupportedAppList *)self _handleAppListInstalled:v4 removed:v5])
   {
-    v6 = [(BLTSyncSupportedAppList *)self delegate];
-    [v6 syncSupportedAppListUpdated:self];
+    delegate = [(BLTSyncSupportedAppList *)self delegate];
+    [delegate syncSupportedAppListUpdated:self];
   }
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
-  v7 = BLTSyncSupportedBundleIDsFromProxies(a3, 0);
-  v4 = [v7 allKeys];
-  v5 = [(BLTSyncSupportedAppList *)self _handleAppListInstalled:0 removed:v4];
+  v7 = BLTSyncSupportedBundleIDsFromProxies(uninstall, 0);
+  allKeys = [v7 allKeys];
+  v5 = [(BLTSyncSupportedAppList *)self _handleAppListInstalled:0 removed:allKeys];
 
   if (v5)
   {
-    v6 = [(BLTSyncSupportedAppList *)self delegate];
-    [v6 syncSupportedAppListUpdated:self];
+    delegate = [(BLTSyncSupportedAppList *)self delegate];
+    [delegate syncSupportedAppListUpdated:self];
   }
 }
 
-- (void)applicationIconDidChange:(id)a3
+- (void)applicationIconDidChange:(id)change
 {
-  v4 = BLTSyncSupportedBundleIDsFromProxies(a3, 0);
+  v4 = BLTSyncSupportedBundleIDsFromProxies(change, 0);
   if ([v4 count])
   {
     appListQueue = self->_appListQueue;
@@ -489,7 +489,7 @@ void __59__BLTSyncSupportedAppList__handleAppListInstalled_removed___block_invok
     v8 = 3221225472;
     v9 = __52__BLTSyncSupportedAppList_applicationIconDidChange___block_invoke;
     v10 = &unk_278D31400;
-    v11 = self;
+    selfCopy = self;
     v12 = v4;
     dispatch_sync(appListQueue, &v7);
     v6 = [(BLTSyncSupportedAppList *)self delegate:v7];
@@ -497,20 +497,20 @@ void __59__BLTSyncSupportedAppList__handleAppListInstalled_removed___block_invok
   }
 }
 
-- (void)updateStoreWithInstalled:(id)a3 removed:(id)a4
+- (void)updateStoreWithInstalled:(id)installed removed:(id)removed
 {
-  v6 = a3;
-  v7 = a4;
+  installedCopy = installed;
+  removedCopy = removed;
   appListQueue = self->_appListQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__BLTSyncSupportedAppList_updateStoreWithInstalled_removed___block_invoke;
   block[3] = &unk_278D316C8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = installedCopy;
+  v13 = removedCopy;
+  v9 = removedCopy;
+  v10 = installedCopy;
   dispatch_sync(appListQueue, block);
 }
 
@@ -596,7 +596,7 @@ LABEL_11:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_241FB3000, a2, OS_LOG_TYPE_ERROR, "Error removing sync supported store: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

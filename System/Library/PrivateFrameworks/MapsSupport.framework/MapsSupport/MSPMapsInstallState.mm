@@ -5,17 +5,17 @@
 - (BOOL)_isMapsAppInstalled;
 - (MSPMapsInstallState)init;
 - (void)dealloc;
-- (void)receivedChangeNotification:(id)a3;
+- (void)receivedChangeNotification:(id)notification;
 @end
 
 @implementation MSPMapsInstallState
 
 + (BOOL)isMapsAppInstalled
 {
-  v2 = [a1 sharedState];
-  v3 = [v2 _isMapsAppInstalled];
+  sharedState = [self sharedState];
+  _isMapsAppInstalled = [sharedState _isMapsAppInstalled];
 
-  return v3;
+  return _isMapsAppInstalled;
 }
 
 + (id)sharedState
@@ -56,11 +56,11 @@ uint64_t __34__MSPMapsInstallState_sharedState__block_invoke()
     else
     {
       *&v2->_mapsInstalled = 0;
-      v5 = [MEMORY[0x277CCA9A0] defaultCenter];
-      [v5 addObserver:v2 selector:sel_receivedChangeNotification_ name:@"com.apple.LaunchServices.applicationRegistered" object:0];
+      defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+      [defaultCenter addObserver:v2 selector:sel_receivedChangeNotification_ name:@"com.apple.LaunchServices.applicationRegistered" object:0];
 
-      v6 = [MEMORY[0x277CCA9A0] defaultCenter];
-      [v6 addObserver:v2 selector:sel_receivedChangeNotification_ name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
+      defaultCenter2 = [MEMORY[0x277CCA9A0] defaultCenter];
+      [defaultCenter2 addObserver:v2 selector:sel_receivedChangeNotification_ name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
     }
   }
 
@@ -69,32 +69,32 @@ uint64_t __34__MSPMapsInstallState_sharedState__block_invoke()
 
 - (BOOL)_isMapsAppInstalled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_hasState)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_hasState)
   {
-    mapsInstalled = v2->_mapsInstalled;
+    mapsInstalled = selfCopy->_mapsInstalled;
   }
 
   else
   {
-    mapsInstalled = [(MSPMapsInstallState *)v2 _fetchMapsAppInstallState];
-    v2->_mapsInstalled = mapsInstalled;
-    v2->_hasState = 1;
+    mapsInstalled = [(MSPMapsInstallState *)selfCopy _fetchMapsAppInstallState];
+    selfCopy->_mapsInstalled = mapsInstalled;
+    selfCopy->_hasState = 1;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return mapsInstalled;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v3 removeObserver:self name:@"com.apple.LaunchServices.applicationRegistered" object:0];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self name:@"com.apple.LaunchServices.applicationRegistered" object:0];
 
-  v4 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v4 removeObserver:self name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
+  defaultCenter2 = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter2 removeObserver:self name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
 
   v5.receiver = self;
   v5.super_class = MSPMapsInstallState;
@@ -105,23 +105,23 @@ uint64_t __34__MSPMapsInstallState_sharedState__block_invoke()
 {
   v2 = objc_alloc(MEMORY[0x277CC1E70]);
   v3 = [v2 initWithBundleIdentifier:*MEMORY[0x277D0EA88] allowPlaceholder:0 error:0];
-  v4 = [v3 applicationState];
+  applicationState = [v3 applicationState];
   LOBYTE(v5) = 0;
-  if ([v4 isInstalled])
+  if ([applicationState isInstalled])
   {
-    v6 = [v3 applicationState];
-    if ([v6 isValid])
+    applicationState2 = [v3 applicationState];
+    if ([applicationState2 isValid])
     {
-      v7 = [v3 applicationState];
-      if ([v7 isRestricted])
+      applicationState3 = [v3 applicationState];
+      if ([applicationState3 isRestricted])
       {
         LOBYTE(v5) = 0;
       }
 
       else
       {
-        v8 = [v3 applicationState];
-        v5 = [v8 isPlaceholder] ^ 1;
+        applicationState4 = [v3 applicationState];
+        v5 = [applicationState4 isPlaceholder] ^ 1;
       }
     }
 
@@ -134,25 +134,25 @@ uint64_t __34__MSPMapsInstallState_sharedState__block_invoke()
   return v5;
 }
 
-- (void)receivedChangeNotification:(id)a3
+- (void)receivedChangeNotification:(id)notification
 {
-  v11 = a3;
-  v4 = [v11 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"bundleIDs"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"bundleIDs"];
   v6 = [v5 copy];
 
-  v7 = [v4 objectForKeyedSubscript:@"isPlaceholder"];
-  v8 = [v7 BOOLValue];
+  v7 = [userInfo objectForKeyedSubscript:@"isPlaceholder"];
+  bOOLValue = [v7 BOOLValue];
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && !(v8 & 1 | (([v6 containsObject:*MEMORY[0x277D0EA88]] & 1) == 0)))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && !(bOOLValue & 1 | (([v6 containsObject:*MEMORY[0x277D0EA88]] & 1) == 0)))
   {
-    v9 = self;
-    objc_sync_enter(v9);
-    v10 = [(MSPMapsInstallState *)v9 _fetchMapsAppInstallState];
-    v9->_mapsInstalled = v10;
-    [(GEOObserverHashTable *)v9->_installStateObservers mapsInstallStateDidChange:v10];
-    objc_sync_exit(v9);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    _fetchMapsAppInstallState = [(MSPMapsInstallState *)selfCopy _fetchMapsAppInstallState];
+    selfCopy->_mapsInstalled = _fetchMapsAppInstallState;
+    [(GEOObserverHashTable *)selfCopy->_installStateObservers mapsInstallStateDidChange:_fetchMapsAppInstallState];
+    objc_sync_exit(selfCopy);
   }
 }
 

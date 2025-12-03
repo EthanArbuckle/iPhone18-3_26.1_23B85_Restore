@@ -1,18 +1,18 @@
 @interface DDActionNaturalLanguageContext
 - (void)dealloc;
-- (void)setResult:(__DDResult *)a3;
+- (void)setResult:(__DDResult *)result;
 @end
 
 @implementation DDActionNaturalLanguageContext
 
-- (void)setResult:(__DDResult *)a3
+- (void)setResult:(__DDResult *)result
 {
   result = self->_result;
-  if (result != a3)
+  if (result != result)
   {
-    if (a3)
+    if (result)
     {
-      CFRetain(a3);
+      CFRetain(result);
       result = self->_result;
     }
 
@@ -21,7 +21,7 @@
       CFRelease(result);
     }
 
-    self->_result = a3;
+    self->_result = result;
   }
 }
 

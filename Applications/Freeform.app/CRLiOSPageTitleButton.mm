@@ -1,11 +1,11 @@
 @interface CRLiOSPageTitleButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (UIEdgeInsets)hitTestingInsets;
 - (UIEdgeInsets)insets;
-- (_TtC8Freeform21CRLiOSPageTitleButton)initWithFrame:(CGRect)a3;
-- (_TtC8Freeform21CRLiOSPageTitleButton)initWithTitle:(id)a3 insets:(UIEdgeInsets)a4;
+- (_TtC8Freeform21CRLiOSPageTitleButton)initWithFrame:(CGRect)frame;
+- (_TtC8Freeform21CRLiOSPageTitleButton)initWithTitle:(id)title insets:(UIEdgeInsets)insets;
 - (void)dealloc;
-- (void)setAttributedTitle:(id)a3 forState:(unint64_t)a4;
+- (void)setAttributedTitle:(id)title forState:(unint64_t)state;
 - (void)updateConfiguration;
 @end
 
@@ -31,12 +31,12 @@
   return result;
 }
 
-- (_TtC8Freeform21CRLiOSPageTitleButton)initWithTitle:(id)a3 insets:(UIEdgeInsets)a4
+- (_TtC8Freeform21CRLiOSPageTitleButton)initWithTitle:(id)title insets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   return CRLiOSPageTitleButton.init(title:insets:)(v8, v9, top, left, bottom, right);
 }
@@ -44,56 +44,56 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 sharedHelper];
-  [v5 stopHandlingTouchUpDownAnimationsForControl:v4];
+  selfCopy = self;
+  sharedHelper = [v3 sharedHelper];
+  [sharedHelper stopHandlingTouchUpDownAnimationsForControl:selfCopy];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for CRLiOSPageTitleButton();
   [(CRLiOSPageTitleButton *)&v6 dealloc];
 }
 
-- (void)setAttributedTitle:(id)a3 forState:(unint64_t)a4
+- (void)setAttributedTitle:(id)title forState:(unint64_t)state
 {
-  v7 = self;
-  if (a3)
+  selfCopy = self;
+  if (title)
   {
-    v6 = [a3 string];
-    if (!v6)
+    string = [title string];
+    if (!string)
     {
       static String._unconditionallyBridgeFromObjectiveC(_:)();
-      v6 = String._bridgeToObjectiveC()();
+      string = String._bridgeToObjectiveC()();
     }
   }
 
   else
   {
-    v6 = 0;
+    string = 0;
   }
 
-  [(CRLiOSPageTitleButton *)v7 setTitle:v6 forState:a4];
+  [(CRLiOSPageTitleButton *)selfCopy setTitle:string forState:state];
 }
 
 - (void)updateConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   CRLiOSPageTitleButton.updateConfiguration()();
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = self;
-  if ([(CRLiOSPageTitleButton *)v8 isEnabled]&& ([(CRLiOSPageTitleButton *)v8 isHidden]& 1) == 0)
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  selfCopy = self;
+  if ([(CRLiOSPageTitleButton *)selfCopy isEnabled]&& ([(CRLiOSPageTitleButton *)selfCopy isHidden]& 1) == 0)
   {
-    [(CRLiOSPageTitleButton *)v8 bounds];
+    [(CRLiOSPageTitleButton *)selfCopy bounds];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = (v8 + OBJC_IVAR____TtC8Freeform21CRLiOSPageTitleButton_hitTestingInsets);
+    v18 = (selfCopy + OBJC_IVAR____TtC8Freeform21CRLiOSPageTitleButton_hitTestingInsets);
     swift_beginAccess();
     v23.origin.x = sub_100BDDE50(v11, v13, v15, v17, *v18, v18[1]);
     v22.x = x;
@@ -103,9 +103,9 @@
 
   else
   {
-    v21.receiver = v8;
+    v21.receiver = selfCopy;
     v21.super_class = type metadata accessor for CRLiOSPageTitleButton();
-    v9 = [(CRLiOSPageTitleButton *)&v21 pointInside:v7 withEvent:x, y];
+    v9 = [(CRLiOSPageTitleButton *)&v21 pointInside:eventCopy withEvent:x, y];
   }
 
   v19 = v9;
@@ -113,7 +113,7 @@
   return v19;
 }
 
-- (_TtC8Freeform21CRLiOSPageTitleButton)initWithFrame:(CGRect)a3
+- (_TtC8Freeform21CRLiOSPageTitleButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -15,78 +15,78 @@
   spinner = self->_spinner;
   self->_spinner = v3;
 
-  v5 = [(SSSDebugUICatalogWaitingForImageIdentifierUpdatesViewController *)self view];
-  [v5 addSubview:self->_spinner];
+  view = [(SSSDebugUICatalogWaitingForImageIdentifierUpdatesViewController *)self view];
+  [view addSubview:self->_spinner];
 
   v6 = [UIButton buttonWithType:1];
   [v6 setTitle:@"+" forState:0];
-  v7 = [v6 titleLabel];
+  titleLabel = [v6 titleLabel];
   v8 = [UIFont boldSystemFontOfSize:36.0];
-  [v7 setFont:v8];
+  [titleLabel setFont:v8];
 
   [v6 addTarget:self action:"_addProgress" forControlEvents:64];
-  v9 = [(SSSDebugUICatalogWaitingForImageIdentifierUpdatesViewController *)self view];
-  [v9 addSubview:v6];
+  view2 = [(SSSDebugUICatalogWaitingForImageIdentifierUpdatesViewController *)self view];
+  [view2 addSubview:v6];
 
   v10 = [UIButton buttonWithType:1];
   [v10 setTitle:@"-" forState:0];
   [v10 addTarget:self action:"_removeProgress" forControlEvents:64];
-  v11 = [v10 titleLabel];
-  v12 = [v6 titleLabel];
-  v13 = [v12 font];
-  [v11 setFont:v13];
+  titleLabel2 = [v10 titleLabel];
+  titleLabel3 = [v6 titleLabel];
+  font = [titleLabel3 font];
+  [titleLabel2 setFont:font];
 
-  v14 = [(SSSDebugUICatalogWaitingForImageIdentifierUpdatesViewController *)self view];
-  [v14 addSubview:v10];
+  view3 = [(SSSDebugUICatalogWaitingForImageIdentifierUpdatesViewController *)self view];
+  [view3 addSubview:v10];
 
   [(SSSWaitingForImageIdentifierUpdatesAlertContentView *)self->_spinner setTranslatesAutoresizingMaskIntoConstraints:0];
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
   v15 = +[NSMutableArray array];
-  v16 = [(SSSDebugUICatalogWaitingForImageIdentifierUpdatesViewController *)self view];
-  v17 = [v16 centerXAnchor];
+  view4 = [(SSSDebugUICatalogWaitingForImageIdentifierUpdatesViewController *)self view];
+  centerXAnchor = [view4 centerXAnchor];
 
-  v18 = [(SSSDebugUICatalogWaitingForImageIdentifierUpdatesViewController *)self view];
-  v19 = [v18 centerYAnchor];
+  view5 = [(SSSDebugUICatalogWaitingForImageIdentifierUpdatesViewController *)self view];
+  centerYAnchor = [view5 centerYAnchor];
 
-  v20 = [(SSSWaitingForImageIdentifierUpdatesAlertContentView *)self->_spinner centerXAnchor];
-  v21 = [v20 constraintEqualToAnchor:v17];
+  centerXAnchor2 = [(SSSWaitingForImageIdentifierUpdatesAlertContentView *)self->_spinner centerXAnchor];
+  v21 = [centerXAnchor2 constraintEqualToAnchor:centerXAnchor];
   [v15 addObject:v21];
 
-  v22 = [(SSSWaitingForImageIdentifierUpdatesAlertContentView *)self->_spinner centerYAnchor];
-  v23 = [v22 constraintEqualToAnchor:v19];
+  centerYAnchor2 = [(SSSWaitingForImageIdentifierUpdatesAlertContentView *)self->_spinner centerYAnchor];
+  v23 = [centerYAnchor2 constraintEqualToAnchor:centerYAnchor];
   [v15 addObject:v23];
 
-  v24 = [v10 leadingAnchor];
-  v25 = [(SSSDebugUICatalogWaitingForImageIdentifierUpdatesViewController *)self view];
-  v26 = [v25 leadingAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26];
+  leadingAnchor = [v10 leadingAnchor];
+  view6 = [(SSSDebugUICatalogWaitingForImageIdentifierUpdatesViewController *)self view];
+  leadingAnchor2 = [view6 leadingAnchor];
+  v27 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v15 addObject:v27];
 
-  v28 = [v10 trailingAnchor];
-  v29 = [v28 constraintEqualToAnchor:v17];
+  trailingAnchor = [v10 trailingAnchor];
+  v29 = [trailingAnchor constraintEqualToAnchor:centerXAnchor];
   [v15 addObject:v29];
 
-  v30 = [v6 leadingAnchor];
-  v31 = [v30 constraintEqualToAnchor:v17];
+  leadingAnchor3 = [v6 leadingAnchor];
+  v31 = [leadingAnchor3 constraintEqualToAnchor:centerXAnchor];
   [v15 addObject:v31];
 
-  v32 = [v6 trailingAnchor];
-  v33 = [(SSSDebugUICatalogWaitingForImageIdentifierUpdatesViewController *)self view];
-  v34 = [v33 trailingAnchor];
-  v35 = [v32 constraintEqualToAnchor:v34];
+  trailingAnchor2 = [v6 trailingAnchor];
+  view7 = [(SSSDebugUICatalogWaitingForImageIdentifierUpdatesViewController *)self view];
+  trailingAnchor3 = [view7 trailingAnchor];
+  v35 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   [v15 addObject:v35];
 
-  v36 = [v6 bottomAnchor];
-  v37 = [(SSSDebugUICatalogWaitingForImageIdentifierUpdatesViewController *)self view];
-  v38 = [v37 bottomAnchor];
-  v39 = [v36 constraintEqualToAnchor:v38];
+  bottomAnchor = [v6 bottomAnchor];
+  view8 = [(SSSDebugUICatalogWaitingForImageIdentifierUpdatesViewController *)self view];
+  bottomAnchor2 = [view8 bottomAnchor];
+  v39 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v15 addObject:v39];
 
-  v40 = [v10 bottomAnchor];
-  v41 = [(SSSDebugUICatalogWaitingForImageIdentifierUpdatesViewController *)self view];
-  v42 = [v41 bottomAnchor];
-  v43 = [v40 constraintEqualToAnchor:v42];
+  bottomAnchor3 = [v10 bottomAnchor];
+  view9 = [(SSSDebugUICatalogWaitingForImageIdentifierUpdatesViewController *)self view];
+  bottomAnchor4 = [view9 bottomAnchor];
+  v43 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   [v15 addObject:v43];
 
   [NSLayoutConstraint activateConstraints:v15];

@@ -10,9 +10,9 @@
   v3 = self->_icon;
   if (!v3 && !self->_fetchingIcon)
   {
-    v4 = [(NTKCompanionApp *)self watchApplicationIdentifier];
+    watchApplicationIdentifier = [(NTKCompanionApp *)self watchApplicationIdentifier];
 
-    if (v4)
+    if (watchApplicationIdentifier)
     {
       [(NTKCompanionApp *)self setFetchingIcon:1];
       v5 = dispatch_get_global_queue(0, 0);

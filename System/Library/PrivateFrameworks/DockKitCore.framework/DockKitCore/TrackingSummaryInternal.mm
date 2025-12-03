@@ -1,5 +1,5 @@
 @interface TrackingSummaryInternal
-+ (id)decodeWithData:(id)a3;
++ (id)decodeWithData:(id)data;
 - (CGSize)referenceDimension;
 - (NSString)description;
 - (id)encode;
@@ -16,9 +16,9 @@
   return result;
 }
 
-+ (id)decodeWithData:(id)a3
++ (id)decodeWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = sub_224627038();
   v6 = v5;
 

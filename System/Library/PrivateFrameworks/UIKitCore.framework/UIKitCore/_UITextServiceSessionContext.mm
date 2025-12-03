@@ -1,45 +1,45 @@
 @interface _UITextServiceSessionContext
-+ (CGRect)selectionBoundingBoxForTextInput:(id)a3;
-+ (id)selectedTextRangeForTextInput:(id)a3;
-+ (id)sessionContextForType:(int64_t)a3 withTextInput:(id)a4;
-+ (id)sessionContextWithText:(id)a3 withRect:(CGRect)a4 withRange:(_NSRange)a5 withView:(id)a6;
-+ (id)sessionContextWithText:(id)a3 withRect:(CGRect)a4 withView:(id)a5;
++ (CGRect)selectionBoundingBoxForTextInput:(id)input;
++ (id)selectedTextRangeForTextInput:(id)input;
++ (id)sessionContextForType:(int64_t)type withTextInput:(id)input;
++ (id)sessionContextWithText:(id)text withRect:(CGRect)rect withRange:(_NSRange)range withView:(id)view;
++ (id)sessionContextWithText:(id)text withRect:(CGRect)rect withView:(id)view;
 - (CGRect)presentationRect;
 - (_NSRange)selectedRange;
-- (_UITextServiceSessionContext)initWithCoder:(id)a3;
-- (id)initForType:(int64_t)a3 withText:(id)a4 withTextInput:(id)a5 withView:(id)a6;
+- (_UITextServiceSessionContext)initWithCoder:(id)coder;
+- (id)initForType:(int64_t)type withText:(id)text withTextInput:(id)input withView:(id)view;
 - (void)_gatherAdditionalContext;
-- (void)convertRectToView:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)convertRectToView:(id)view;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UITextServiceSessionContext
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   textWithContext = self->_textWithContext;
   if (textWithContext)
   {
-    [v7 encodeObject:textWithContext forKey:@"textWithContext"];
+    [coderCopy encodeObject:textWithContext forKey:@"textWithContext"];
   }
 
   v5 = [MEMORY[0x1E696B098] valueWithRange:{self->_selectedRange.location, self->_selectedRange.length}];
-  [v7 encodeObject:v5 forKey:@"selectedRange"];
+  [coderCopy encodeObject:v5 forKey:@"selectedRange"];
 
   v6 = [MEMORY[0x1E696B098] valueWithCGRect:{self->_presentationRect.origin.x, self->_presentationRect.origin.y, self->_presentationRect.size.width, self->_presentationRect.size.height}];
-  [v7 encodeObject:v6 forKey:@"presentationRect"];
+  [coderCopy encodeObject:v6 forKey:@"presentationRect"];
 }
 
-- (_UITextServiceSessionContext)initWithCoder:(id)a3
+- (_UITextServiceSessionContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = _UITextServiceSessionContext;
   v5 = [(_UITextServiceSessionContext *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"textWithContext"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textWithContext"];
     v7 = v6;
     if (v6)
     {
@@ -53,11 +53,11 @@
 
     objc_storeStrong(&v5->_textWithContext, v8);
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"selectedRange"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selectedRange"];
     v5->_selectedRange.location = [v9 rangeValue];
     v5->_selectedRange.length = v10;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"presentationRect"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"presentationRect"];
     [v11 CGRectValue];
     v5->_presentationRect.origin.x = v12;
     v5->_presentationRect.origin.y = v13;
@@ -68,15 +68,15 @@
   return v5;
 }
 
-+ (id)sessionContextWithText:(id)a3 withRect:(CGRect)a4 withView:(id)a5
++ (id)sessionContextWithText:(id)text withRect:(CGRect)rect withView:(id)view
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a5;
-  v12 = a3;
-  v13 = [[a1 alloc] initForType:0 withText:v12 withTextInput:0 withView:v11];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  textCopy = text;
+  v13 = [[self alloc] initForType:0 withText:textCopy withTextInput:0 withView:viewCopy];
 
   v13[7] = x;
   v13[8] = y;
@@ -86,17 +86,17 @@
   return v13;
 }
 
-+ (id)sessionContextWithText:(id)a3 withRect:(CGRect)a4 withRange:(_NSRange)a5 withView:(id)a6
++ (id)sessionContextWithText:(id)text withRect:(CGRect)rect withRange:(_NSRange)range withView:(id)view
 {
-  length = a5.length;
-  location = a5.location;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v14 = a6;
-  v15 = a3;
-  v16 = [[a1 alloc] initForType:0 withText:v15 withTextInput:0 withView:v14];
+  length = range.length;
+  location = range.location;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  textCopy = text;
+  v16 = [[self alloc] initForType:0 withText:textCopy withTextInput:0 withView:viewCopy];
 
   v16[7] = x;
   v16[8] = y;
@@ -108,19 +108,19 @@
   return v16;
 }
 
-+ (id)sessionContextForType:(int64_t)a3 withTextInput:(id)a4
++ (id)sessionContextForType:(int64_t)type withTextInput:(id)input
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initForType:a3 withText:0 withTextInput:v6 withView:0];
+  inputCopy = input;
+  v7 = [[self alloc] initForType:type withText:0 withTextInput:inputCopy withView:0];
 
   return v7;
 }
 
-- (id)initForType:(int64_t)a3 withText:(id)a4 withTextInput:(id)a5 withView:(id)a6
+- (id)initForType:(int64_t)type withText:(id)text withTextInput:(id)input withView:(id)view
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  textCopy = text;
+  inputCopy = input;
+  viewCopy = view;
   v34.receiver = self;
   v34.super_class = _UITextServiceSessionContext;
   v13 = [(_UITextServiceSessionContext *)&v34 init];
@@ -130,50 +130,50 @@
     goto LABEL_23;
   }
 
-  objc_storeStrong(&v13->_textInput, a5);
-  if (v12)
+  objc_storeStrong(&v13->_textInput, input);
+  if (viewCopy)
   {
-    v15 = v12;
+    textInputView = viewCopy;
   }
 
   else
   {
-    v15 = [v11 textInputView];
+    textInputView = [inputCopy textInputView];
   }
 
   view = v14->_view;
-  v14->_view = v15;
+  v14->_view = textInputView;
 
-  if (!v10)
+  if (!textCopy)
   {
-    v18 = [objc_opt_class() selectedTextRangeForTextInput:v11];
+    v18 = [objc_opt_class() selectedTextRangeForTextInput:inputCopy];
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
       goto LABEL_15;
     }
 
-    v19 = [v11 _rvItemForSelectedRange];
-    if (v19)
+    _rvItemForSelectedRange = [inputCopy _rvItemForSelectedRange];
+    if (_rvItemForSelectedRange)
     {
-      objc_storeStrong(&v14->_rvItemWithContext, v19);
-      if ([v19 type] == 3)
+      objc_storeStrong(&v14->_rvItemWithContext, _rvItemForSelectedRange);
+      if ([_rvItemForSelectedRange type] == 3)
       {
-        v20 = [v19 ddResult];
-        v21 = [v20 matchedString];
+        ddResult = [_rvItemForSelectedRange ddResult];
+        matchedString = [ddResult matchedString];
 LABEL_13:
         textWithContext = v14->_textWithContext;
-        v14->_textWithContext = v21;
+        v14->_textWithContext = matchedString;
 
         goto LABEL_14;
       }
 
-      v22 = [v19 text];
+      text = [_rvItemForSelectedRange text];
 
-      if (v22)
+      if (text)
       {
-        v20 = [v19 text];
-        v23 = [v19 highlightRange];
-        v21 = [v20 substringWithRange:{v23, v24}];
+        ddResult = [_rvItemForSelectedRange text];
+        highlightRange = [_rvItemForSelectedRange highlightRange];
+        matchedString = [ddResult substringWithRange:{highlightRange, v24}];
         goto LABEL_13;
       }
     }
@@ -183,7 +183,7 @@ LABEL_14:
 LABEL_15:
     if (!v14->_textWithContext)
     {
-      v26 = [v11 textInRange:v18];
+      v26 = [inputCopy textInRange:v18];
       v27 = v14->_textWithContext;
       v14->_textWithContext = v26;
     }
@@ -191,7 +191,7 @@ LABEL_15:
     goto LABEL_17;
   }
 
-  v17 = v10;
+  v17 = textCopy;
   v18 = v14->_textWithContext;
   v14->_textWithContext = v17;
 LABEL_17:
@@ -206,14 +206,14 @@ LABEL_17:
 
   else
   {
-    [objc_opt_class() selectionBoundingBoxForTextInput:v11];
+    [objc_opt_class() selectionBoundingBoxForTextInput:inputCopy];
   }
 
   v14->_presentationRect.origin.x = v29;
   v14->_presentationRect.origin.y = v30;
   v14->_presentationRect.size.width = v31;
   v14->_presentationRect.size.height = v32;
-  if (v14->_textInput && [(_UITextServiceSessionContext *)v14 _typeRequiresContext:a3])
+  if (v14->_textInput && [(_UITextServiceSessionContext *)v14 _typeRequiresContext:type])
   {
     [(_UITextServiceSessionContext *)v14 _gatherAdditionalContext];
   }
@@ -223,36 +223,36 @@ LABEL_23:
   return v14;
 }
 
-+ (id)selectedTextRangeForTextInput:(id)a3
++ (id)selectedTextRangeForTextInput:(id)input
 {
-  v3 = a3;
-  v4 = [v3 selectedTextRange];
-  if ([v4 isEmpty] && (objc_opt_respondsToSelector() & 1) != 0)
+  inputCopy = input;
+  selectedTextRange = [inputCopy selectedTextRange];
+  if ([selectedTextRange isEmpty] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v5 = [v3 textRangeForServicesInteraction];
+    textRangeForServicesInteraction = [inputCopy textRangeForServicesInteraction];
 
-    v4 = v5;
+    selectedTextRange = textRangeForServicesInteraction;
   }
 
-  return v4;
+  return selectedTextRange;
 }
 
-+ (CGRect)selectionBoundingBoxForTextInput:(id)a3
++ (CGRect)selectionBoundingBoxForTextInput:(id)input
 {
-  v3 = a3;
-  v4 = [v3 interactionAssistant];
-  v5 = [v4 _editMenuAssistant];
+  inputCopy = input;
+  interactionAssistant = [inputCopy interactionAssistant];
+  _editMenuAssistant = [interactionAssistant _editMenuAssistant];
 
-  [v5 selectionBoundingBox];
+  [_editMenuAssistant selectionBoundingBox];
   x = v20.origin.x;
   y = v20.origin.y;
   width = v20.size.width;
   height = v20.size.height;
   if (CGRectIsEmpty(v20) && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v10 = [v3 textRangeForServicesInteraction];
-    v11 = [v3 selectionRectsForRange:v10];
-    [v5 selectionBoundingBoxForRects:v11];
+    textRangeForServicesInteraction = [inputCopy textRangeForServicesInteraction];
+    v11 = [inputCopy selectionRectsForRange:textRangeForServicesInteraction];
+    [_editMenuAssistant selectionBoundingBoxForRects:v11];
     x = v12;
     y = v13;
     width = v14;
@@ -272,20 +272,20 @@ LABEL_23:
 
 - (void)_gatherAdditionalContext
 {
-  v3 = [(UITextInput *)self->_textInput selectedTextRange];
+  selectedTextRange = [(UITextInput *)self->_textInput selectedTextRange];
   textInput = self->_textInput;
-  v38 = v3;
-  v5 = [v3 start];
-  v6 = [(UITextInput *)textInput positionFromPosition:v5 inDirection:3 offset:250];
+  v38 = selectedTextRange;
+  start = [selectedTextRange start];
+  beginningOfDocument = [(UITextInput *)textInput positionFromPosition:start inDirection:3 offset:250];
 
-  if (!v6 || (-[UITextInput tokenizer](self->_textInput, "tokenizer"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isPosition:v6 atBoundary:1 inDirection:1], v7, (v8 & 1) == 0) && (-[UITextInput tokenizer](self->_textInput, "tokenizer"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "positionFromPosition:toBoundary:inDirection:", v6, 1, 1), v10 = objc_claimAutoreleasedReturnValue(), v6, v9, (v6 = v10) == 0))
+  if (!beginningOfDocument || (-[UITextInput tokenizer](self->_textInput, "tokenizer"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isPosition:beginningOfDocument atBoundary:1 inDirection:1], v7, (v8 & 1) == 0) && (-[UITextInput tokenizer](self->_textInput, "tokenizer"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "positionFromPosition:toBoundary:inDirection:", beginningOfDocument, 1, 1), v10 = objc_claimAutoreleasedReturnValue(), beginningOfDocument, v9, (beginningOfDocument = v10) == 0))
   {
-    v6 = [(UITextInput *)self->_textInput beginningOfDocument];
+    beginningOfDocument = [(UITextInput *)self->_textInput beginningOfDocument];
   }
 
   v11 = self->_textInput;
-  v12 = [v38 start];
-  v13 = [(UITextInput *)v11 textRangeFromPosition:v6 toPosition:v12];
+  start2 = [v38 start];
+  v13 = [(UITextInput *)v11 textRangeFromPosition:beginningOfDocument toPosition:start2];
   v14 = [(UITextInput *)v11 textInRange:v13];
   v15 = v14;
   if (v14)
@@ -302,16 +302,16 @@ LABEL_23:
 
   v18 = self->_textInput;
   v19 = [v38 end];
-  v20 = [(UITextInput *)v18 positionFromPosition:v19 inDirection:2 offset:250];
+  endOfDocument = [(UITextInput *)v18 positionFromPosition:v19 inDirection:2 offset:250];
 
-  if (!v20 || (-[UITextInput tokenizer](self->_textInput, "tokenizer"), v21 = objc_claimAutoreleasedReturnValue(), v22 = [v21 isPosition:v20 atBoundary:1 inDirection:0], v21, (v22 & 1) == 0) && (-[UITextInput tokenizer](self->_textInput, "tokenizer"), v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v23, "positionFromPosition:toBoundary:inDirection:", v20, 1, 0), v24 = objc_claimAutoreleasedReturnValue(), v20, v23, (v20 = v24) == 0))
+  if (!endOfDocument || (-[UITextInput tokenizer](self->_textInput, "tokenizer"), v21 = objc_claimAutoreleasedReturnValue(), v22 = [v21 isPosition:endOfDocument atBoundary:1 inDirection:0], v21, (v22 & 1) == 0) && (-[UITextInput tokenizer](self->_textInput, "tokenizer"), v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v23, "positionFromPosition:toBoundary:inDirection:", endOfDocument, 1, 0), v24 = objc_claimAutoreleasedReturnValue(), endOfDocument, v23, (endOfDocument = v24) == 0))
   {
-    v20 = [(UITextInput *)self->_textInput endOfDocument];
+    endOfDocument = [(UITextInput *)self->_textInput endOfDocument];
   }
 
   v25 = self->_textInput;
   v26 = [v38 end];
-  v27 = [(UITextInput *)v25 textRangeFromPosition:v26 toPosition:v20];
+  v27 = [(UITextInput *)v25 textRangeFromPosition:v26 toPosition:endOfDocument];
   v28 = [(UITextInput *)v25 textInRange:v27];
   v29 = v28;
   if (v28)
@@ -344,12 +344,12 @@ LABEL_23:
   self->_selectedRange.length = v37;
 }
 
-- (void)convertRectToView:(id)a3
+- (void)convertRectToView:(id)view
 {
   textInput = self->_textInput;
-  v5 = a3;
-  v14 = [(UITextInput *)textInput textInputView];
-  [v5 convertRect:v14 fromView:{self->_presentationRect.origin.x, self->_presentationRect.origin.y, self->_presentationRect.size.width, self->_presentationRect.size.height}];
+  viewCopy = view;
+  textInputView = [(UITextInput *)textInput textInputView];
+  [viewCopy convertRect:textInputView fromView:{self->_presentationRect.origin.x, self->_presentationRect.origin.y, self->_presentationRect.size.width, self->_presentationRect.size.height}];
   v7 = v6;
   v9 = v8;
   v11 = v10;

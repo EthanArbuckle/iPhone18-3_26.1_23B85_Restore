@@ -1,11 +1,11 @@
 @interface VNCompoundRequest
-+ (id)compoundRequestsForOriginalRequests:(id)a3 withPerformingContext:(id)a4 error:(id *)a5;
-+ (id)computeStageDeviceAssignmentsForOriginalRequests:(id)a3;
-+ (unint64_t)planPriorityForOriginalRequests:(id)a3;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
++ (id)compoundRequestsForOriginalRequests:(id)requests withPerformingContext:(id)context error:(id *)error;
++ (id)computeStageDeviceAssignmentsForOriginalRequests:(id)requests;
++ (unint64_t)planPriorityForOriginalRequests:(id)requests;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
 - (BOOL)usesCPUOnly;
 - (CGRect)regionOfInterest;
-- (VNCompoundRequest)initWithOriginalRequests:(id)a3;
+- (VNCompoundRequest)initWithOriginalRequests:(id)requests;
 - (id)compoundResults;
 - (id)description;
 - (int64_t)dependencyProcessingOrdinality;
@@ -18,8 +18,8 @@
 - (id)description
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(VNCompoundRequest *)self originalRequests];
-  v4 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:{objc_msgSend(v3, "count") << 6}];
+  originalRequests = [(VNCompoundRequest *)self originalRequests];
+  v4 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:{objc_msgSend(originalRequests, "count") << 6}];
   v16.receiver = self;
   v16.super_class = VNCompoundRequest;
   v5 = [(VNRequest *)&v16 description];
@@ -29,7 +29,7 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = v3;
+  v6 = originalRequests;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v7)
   {
@@ -66,14 +66,14 @@
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v2 = [(VNCompoundRequest *)self originalRequests];
+  originalRequests = [(VNCompoundRequest *)self originalRequests];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __42__VNCompoundRequest_ioSurfaceMemoryPoolId__block_invoke;
   v11[3] = &unk_1E77B6510;
   v11[4] = &v16;
   v11[5] = &v12;
-  [v2 enumerateObjectsUsingBlock:v11];
+  [originalRequests enumerateObjectsUsingBlock:v11];
 
   if (*(v13 + 24) == 1)
   {
@@ -128,8 +128,8 @@ void __42__VNCompoundRequest_ioSurfaceMemoryPoolId__block_invoke(uint64_t a1, vo
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(VNCompoundRequest *)self originalRequests];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  originalRequests = [(VNCompoundRequest *)self originalRequests];
+  v3 = [originalRequests countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -140,7 +140,7 @@ void __42__VNCompoundRequest_ioSurfaceMemoryPoolId__block_invoke(uint64_t a1, vo
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(originalRequests);
         }
 
         if (![*(*(&v9 + 1) + 8 * i) usesCPUOnly])
@@ -150,7 +150,7 @@ void __42__VNCompoundRequest_ioSurfaceMemoryPoolId__block_invoke(uint64_t a1, vo
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [originalRequests countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -168,15 +168,15 @@ LABEL_11:
 
 - (void)recordWarningsInOriginalRequests
 {
-  v3 = [(VNCompoundRequest *)self originalRequests];
-  v4 = [(VNRequest *)self warnings];
+  originalRequests = [(VNCompoundRequest *)self originalRequests];
+  warnings = [(VNRequest *)self warnings];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__VNCompoundRequest_recordWarningsInOriginalRequests__block_invoke;
   v6[3] = &unk_1E77B64E8;
-  v7 = v3;
-  v5 = v3;
-  [v4 enumerateKeysAndObjectsUsingBlock:v6];
+  v7 = originalRequests;
+  v5 = originalRequests;
+  [warnings enumerateKeysAndObjectsUsingBlock:v6];
 }
 
 void __53__VNCompoundRequest_recordWarningsInOriginalRequests__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -226,8 +226,8 @@ void __53__VNCompoundRequest_recordWarningsInOriginalRequests__block_invoke(uint
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(VNCompoundRequest *)self originalRequests];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  originalRequests = [(VNCompoundRequest *)self originalRequests];
+  v7 = [originalRequests countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -239,7 +239,7 @@ void __53__VNCompoundRequest_recordWarningsInOriginalRequests__block_invoke(uint
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(originalRequests);
         }
 
         v11 = *(*(&v16 + 1) + 8 * v10);
@@ -266,7 +266,7 @@ void __53__VNCompoundRequest_recordWarningsInOriginalRequests__block_invoke(uint
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [originalRequests countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -283,14 +283,14 @@ void __53__VNCompoundRequest_recordWarningsInOriginalRequests__block_invoke(uint
   return CGRectIntersection(v24, v27);
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
-  v7 = a4;
-  v8 = [v7 requestPerformerAndReturnError:a5];
+  contextCopy = context;
+  v8 = [contextCopy requestPerformerAndReturnError:error];
   if (v8)
   {
-    v9 = [(VNCompoundRequest *)self originalRequests];
-    v10 = [v8 performDependentRequests:v9 onBehalfOfRequest:self inContext:v7 error:a5];
+    originalRequests = [(VNCompoundRequest *)self originalRequests];
+    v10 = [v8 performDependentRequests:originalRequests onBehalfOfRequest:self inContext:contextCopy error:error];
   }
 
   else
@@ -311,8 +311,8 @@ void __53__VNCompoundRequest_recordWarningsInOriginalRequests__block_invoke(uint
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = [(VNCompoundRequest *)self originalRequests];
-    v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    originalRequests = [(VNCompoundRequest *)self originalRequests];
+    v5 = [originalRequests countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v5)
     {
       v6 = v5;
@@ -324,17 +324,17 @@ void __53__VNCompoundRequest_recordWarningsInOriginalRequests__block_invoke(uint
         {
           if (*v16 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(originalRequests);
           }
 
-          v10 = [*(*(&v15 + 1) + 8 * i) dependencyProcessingOrdinality];
-          if (v10 < v8)
+          dependencyProcessingOrdinality = [*(*(&v15 + 1) + 8 * i) dependencyProcessingOrdinality];
+          if (dependencyProcessingOrdinality < v8)
           {
-            v8 = v10;
+            v8 = dependencyProcessingOrdinality;
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v6 = [originalRequests countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v6);
@@ -374,8 +374,8 @@ void __53__VNCompoundRequest_recordWarningsInOriginalRequests__block_invoke(uint
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(VNCompoundRequest *)self originalRequests];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  originalRequests = [(VNCompoundRequest *)self originalRequests];
+  v5 = [originalRequests countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -386,17 +386,17 @@ void __53__VNCompoundRequest_recordWarningsInOriginalRequests__block_invoke(uint
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(originalRequests);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) results];
-        if (v9)
+        results = [*(*(&v11 + 1) + 8 * i) results];
+        if (results)
         {
-          [v3 addObjectsFromArray:v9];
+          [v3 addObjectsFromArray:results];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [originalRequests countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -405,20 +405,20 @@ void __53__VNCompoundRequest_recordWarningsInOriginalRequests__block_invoke(uint
   return v3;
 }
 
-- (VNCompoundRequest)initWithOriginalRequests:(id)a3
+- (VNCompoundRequest)initWithOriginalRequests:(id)requests
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestsCopy = requests;
   v21.receiver = self;
   v21.super_class = VNCompoundRequest;
   v5 = [(VNRequest *)&v21 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [requestsCopy copy];
     originalRequests = v5->_originalRequests;
     v5->_originalRequests = v6;
 
-    v8 = [(VNRequest *)v5 configuration];
+    configuration = [(VNRequest *)v5 configuration];
     v9 = [objc_opt_class() computeStageDeviceAssignmentsForOriginalRequests:v5->_originalRequests];
     v17 = 0u;
     v18 = 0u;
@@ -440,7 +440,7 @@ void __53__VNCompoundRequest_recordWarningsInOriginalRequests__block_invoke(uint
 
           v14 = *(*(&v17 + 1) + 8 * i);
           v15 = [v9 objectForKeyedSubscript:v14];
-          [v8 setComputeDevice:v15 forComputeStage:v14];
+          [configuration setComputeDevice:v15 forComputeStage:v14];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v17 objects:v22 count:16];
@@ -449,20 +449,20 @@ void __53__VNCompoundRequest_recordWarningsInOriginalRequests__block_invoke(uint
       while (v11);
     }
 
-    [v8 setModelExecutionPriority:{objc_msgSend(objc_opt_class(), "planPriorityForOriginalRequests:", v5->_originalRequests)}];
+    [configuration setModelExecutionPriority:{objc_msgSend(objc_opt_class(), "planPriorityForOriginalRequests:", v5->_originalRequests)}];
   }
 
   return v5;
 }
 
-+ (id)computeStageDeviceAssignmentsForOriginalRequests:(id)a3
++ (id)computeStageDeviceAssignmentsForOriginalRequests:(id)requests
 {
   v29 = *MEMORY[0x1E69E9840];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = a3;
+  obj = requests;
   v3 = [obj countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v3)
   {
@@ -478,15 +478,15 @@ void __53__VNCompoundRequest_recordWarningsInOriginalRequests__block_invoke(uint
           objc_enumerationMutation(obj);
         }
 
-        v8 = [*(*(&v23 + 1) + 8 * i) resolvedComputeStageDeviceAssignments];
-        v9 = v8;
+        resolvedComputeStageDeviceAssignments = [*(*(&v23 + 1) + 8 * i) resolvedComputeStageDeviceAssignments];
+        v9 = resolvedComputeStageDeviceAssignments;
         if (v5)
         {
           v21 = 0u;
           v22 = 0u;
           v19 = 0u;
           v20 = 0u;
-          v10 = [v8 countByEnumeratingWithState:&v19 objects:v27 count:16];
+          v10 = [resolvedComputeStageDeviceAssignments countByEnumeratingWithState:&v19 objects:v27 count:16];
           if (v10)
           {
             v11 = v10;
@@ -519,7 +519,7 @@ void __53__VNCompoundRequest_recordWarningsInOriginalRequests__block_invoke(uint
 
         else
         {
-          v5 = [v8 mutableCopy];
+          v5 = [resolvedComputeStageDeviceAssignments mutableCopy];
         }
       }
 
@@ -537,9 +537,9 @@ void __53__VNCompoundRequest_recordWarningsInOriginalRequests__block_invoke(uint
   return v5;
 }
 
-+ (id)compoundRequestsForOriginalRequests:(id)a3 withPerformingContext:(id)a4 error:(id *)a5
++ (id)compoundRequestsForOriginalRequests:(id)requests withPerformingContext:(id)context error:(id *)error
 {
-  if (a5)
+  if (error)
   {
     v7 = MEMORY[0x1E696AEC0];
     v8 = objc_opt_class();
@@ -547,21 +547,21 @@ void __53__VNCompoundRequest_recordWarningsInOriginalRequests__block_invoke(uint
     v10 = NSStringFromSelector(a2);
     v11 = [v7 stringWithFormat:@"%@ must implement %@", v9, v10];
 
-    *a5 = [VNError errorForUnimplementedFunctionWithLocalizedDescription:v11];
+    *error = [VNError errorForUnimplementedFunctionWithLocalizedDescription:v11];
   }
 
   return 0;
 }
 
-+ (unint64_t)planPriorityForOriginalRequests:(id)a3
++ (unint64_t)planPriorityForOriginalRequests:(id)requests
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  requestsCopy = requests;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [requestsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -573,17 +573,17 @@ void __53__VNCompoundRequest_recordWarningsInOriginalRequests__block_invoke(uint
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(requestsCopy);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) modelExecutionPriority];
-        if (v9 - 1 < v6 - 1)
+        modelExecutionPriority = [*(*(&v11 + 1) + 8 * i) modelExecutionPriority];
+        if (modelExecutionPriority - 1 < v6 - 1)
         {
-          v6 = v9;
+          v6 = modelExecutionPriority;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [requestsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);

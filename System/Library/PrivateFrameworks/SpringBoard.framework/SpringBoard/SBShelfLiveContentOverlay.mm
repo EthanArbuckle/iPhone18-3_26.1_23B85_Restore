@@ -1,32 +1,32 @@
 @interface SBShelfLiveContentOverlay
-- (SBShelfLiveContentOverlay)initWithSceneHandle:(id)a3 referenceSize:(CGSize)a4 contentOrientation:(int64_t)a5 containerOrientation:(int64_t)a6 livePortalView:(id)a7;
+- (SBShelfLiveContentOverlay)initWithSceneHandle:(id)handle referenceSize:(CGSize)size contentOrientation:(int64_t)orientation containerOrientation:(int64_t)containerOrientation livePortalView:(id)view;
 - (SBSwitcherLiveContentOverlayDelegate)delegate;
 - (UIRectCornerRadii)cornerRadii;
 - (void)_updateSceneViewInSideSizeObservingViewIfNecessary;
-- (void)setDisplayMode:(unint64_t)a3;
-- (void)sizeObservingView:(id)a3 didChangeSize:(CGSize)a4;
+- (void)setDisplayMode:(unint64_t)mode;
+- (void)sizeObservingView:(id)view didChangeSize:(CGSize)size;
 @end
 
 @implementation SBShelfLiveContentOverlay
 
-- (SBShelfLiveContentOverlay)initWithSceneHandle:(id)a3 referenceSize:(CGSize)a4 contentOrientation:(int64_t)a5 containerOrientation:(int64_t)a6 livePortalView:(id)a7
+- (SBShelfLiveContentOverlay)initWithSceneHandle:(id)handle referenceSize:(CGSize)size contentOrientation:(int64_t)orientation containerOrientation:(int64_t)containerOrientation livePortalView:(id)view
 {
-  height = a4.height;
-  width = a4.width;
-  v14 = a3;
-  v15 = a7;
+  height = size.height;
+  width = size.width;
+  handleCopy = handle;
+  viewCopy = view;
   v24.receiver = self;
   v24.super_class = SBShelfLiveContentOverlay;
   v16 = [(SBShelfLiveContentOverlay *)&v24 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_sceneHandle, a3);
-    v18 = [(SBDeviceApplicationSceneHandle *)v17->_sceneHandle newSceneViewWithReferenceSize:a5 contentOrientation:a6 containerOrientation:v17 hostRequester:width, height];
+    objc_storeStrong(&v16->_sceneHandle, handle);
+    height = [(SBDeviceApplicationSceneHandle *)v17->_sceneHandle newSceneViewWithReferenceSize:orientation contentOrientation:containerOrientation containerOrientation:v17 hostRequester:width, height];
     sceneView = v17->_sceneView;
-    v17->_sceneView = v18;
+    v17->_sceneView = height;
 
-    [(SBSceneView *)v17->_sceneView setCustomContentView:v15];
+    [(SBSceneView *)v17->_sceneView setCustomContentView:viewCopy];
     [(SBSceneView *)v17->_sceneView setDisplayMode:1 animationFactory:0 completion:0];
     v20 = objc_alloc(MEMORY[0x277D67DB0]);
     v21 = [v20 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -41,11 +41,11 @@
   return v17;
 }
 
-- (void)setDisplayMode:(unint64_t)a3
+- (void)setDisplayMode:(unint64_t)mode
 {
-  if (a3)
+  if (mode)
   {
-    if (a3 != 1)
+    if (mode != 1)
     {
       return;
     }
@@ -63,11 +63,11 @@
   [(SBSceneView *)sceneView setDisplayMode:v3 animationFactory:v5 completion:0];
 }
 
-- (void)sizeObservingView:(id)a3 didChangeSize:(CGSize)a4
+- (void)sizeObservingView:(id)view didChangeSize:(CGSize)size
 {
-  if (self->_sizeObservingView == a3)
+  if (self->_sizeObservingView == view)
   {
-    [(SBShelfLiveContentOverlay *)self _updateSceneViewInSideSizeObservingViewIfNecessary:a4.width];
+    [(SBShelfLiveContentOverlay *)self _updateSceneViewInSideSizeObservingViewIfNecessary:size.width];
   }
 }
 

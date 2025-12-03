@@ -1,23 +1,23 @@
 @interface AXFocusManager
 - (AXElement)currentApplication;
 - (AXFocusManager)init;
-- (BOOL)_focusOnFocusContainer:(id)a3;
-- (BOOL)_moveFocusInFocusContainer:(id)a3 withHeading:(unint64_t)a4 queryString:(id)a5;
-- (BOOL)_recursiveMoveFocusInFocusContainer:(id)a3 withHeading:(unint64_t)a4 queryString:(id)a5;
+- (BOOL)_focusOnFocusContainer:(id)container;
+- (BOOL)_moveFocusInFocusContainer:(id)container withHeading:(unint64_t)heading queryString:(id)string;
+- (BOOL)_recursiveMoveFocusInFocusContainer:(id)container withHeading:(unint64_t)heading queryString:(id)string;
 - (id)_currentFocusContainers;
-- (id)_moveFocusContainerFocusInDirection:(int64_t)a3;
+- (id)_moveFocusContainerFocusInDirection:(int64_t)direction;
 - (id)currentElement;
 - (id)currentFocusContainer;
-- (unint64_t)_indexOfTypeaheadPIDInFocusContainers:(id)a3;
+- (unint64_t)_indexOfTypeaheadPIDInFocusContainers:(id)containers;
 - (void)_currentFocusContainers;
-- (void)_enumerateObservers:(id)a3;
-- (void)_moveToElementWithHeading:(unint64_t)a3 queryString:(id)a4;
+- (void)_enumerateObservers:(id)observers;
+- (void)_moveToElementWithHeading:(unint64_t)heading queryString:(id)string;
 - (void)_verifyPIDForTypeahead;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)focusOnSceneForTypeahead;
-- (void)moveFocusInsideForward:(BOOL)a3 shouldWrap:(BOOL)a4;
-- (void)moveFocusWithHeading:(unint64_t)a3 byGroup:(BOOL)a4;
-- (void)removeObserver:(id)a3;
+- (void)moveFocusInsideForward:(BOOL)forward shouldWrap:(BOOL)wrap;
+- (void)moveFocusWithHeading:(unint64_t)heading byGroup:(BOOL)group;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation AXFocusManager
@@ -33,8 +33,8 @@
     v4 = dispatch_queue_create("AXFocusMovementQueue", v3);
     [(AXFocusManager *)v2 setMovementQueue:v4];
 
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    [(AXFocusManager *)v2 setObservers:v5];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    [(AXFocusManager *)v2 setObservers:weakObjectsHashTable];
 
     [(AXFocusManager *)v2 setObserversLock:0];
     v6 = dispatch_queue_create("com.apple.AXFocusManager.ObserversQueue", v3);
@@ -44,31 +44,31 @@
   return v2;
 }
 
-- (id)_moveFocusContainerFocusInDirection:(int64_t)a3
+- (id)_moveFocusContainerFocusInDirection:(int64_t)direction
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [(AXFocusManager *)self currentFocusContainer];
-  v6 = [(AXFocusManager *)self _currentFocusContainers];
+  currentFocusContainer = [(AXFocusManager *)self currentFocusContainer];
+  _currentFocusContainers = [(AXFocusManager *)self _currentFocusContainers];
   v7 = AXLogFocusEngine();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [(AXFocusManager *)a3 _moveFocusContainerFocusInDirection:v6, v7];
+    [(AXFocusManager *)direction _moveFocusContainerFocusInDirection:_currentFocusContainers, v7];
   }
 
-  if ([v6 count]< 2)
+  if ([_currentFocusContainers count]< 2)
   {
     v9 = AXLogFocusEngine();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v22 = v6;
+      v22 = _currentFocusContainers;
       _os_log_impl(&dword_23D73A000, v9, OS_LOG_TYPE_INFO, "Not able to switch native focused container because we didn't have more than 1: %@", buf, 0xCu);
     }
 
     goto LABEL_9;
   }
 
-  v8 = [v6 indexOfObject:v5];
+  v8 = [_currentFocusContainers indexOfObject:currentFocusContainer];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = AXLogFocusEngine();
@@ -78,7 +78,7 @@
     }
 
 LABEL_9:
-    v10 = v5;
+    v10 = currentFocusContainer;
     goto LABEL_34;
   }
 
@@ -86,9 +86,9 @@ LABEL_9:
   v12 = v8;
   while (1)
   {
-    v13 = v6;
+    v13 = _currentFocusContainers;
     v14 = v13;
-    if (a3 == 1)
+    if (direction == 1)
     {
       if ([v13 count]- 1 == v12)
       {
@@ -127,7 +127,7 @@ LABEL_9:
         _os_log_impl(&dword_23D73A000, v16, OS_LOG_TYPE_DEFAULT, "Giving up on switching focus containers, because we wrapped around to our original.", buf, 2u);
       }
 
-      v10 = v5;
+      v10 = currentFocusContainer;
       goto LABEL_33;
     }
 
@@ -139,7 +139,7 @@ LABEL_9:
     }
   }
 
-  if (([v5 isEqual:v9]& 1) == 0)
+  if (([currentFocusContainer isEqual:v9]& 1) == 0)
   {
     v17 = AXLogFocusEngine();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -147,7 +147,7 @@ LABEL_9:
       [AXFocusManager _moveFocusContainerFocusInDirection:];
     }
 
-    [v5 disableFocus];
+    [currentFocusContainer disableFocus];
   }
 
   v18 = AXLogFocusEngine();
@@ -157,7 +157,7 @@ LABEL_9:
   }
 
   v10 = v9;
-  v16 = v5;
+  v16 = currentFocusContainer;
 LABEL_33:
 
 LABEL_34:
@@ -166,17 +166,17 @@ LABEL_34:
   return v10;
 }
 
-- (void)moveFocusWithHeading:(unint64_t)a3 byGroup:(BOOL)a4
+- (void)moveFocusWithHeading:(unint64_t)heading byGroup:(BOOL)group
 {
-  v7 = [(AXFocusManager *)self movementQueue];
+  movementQueue = [(AXFocusManager *)self movementQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__AXFocusManager_moveFocusWithHeading_byGroup___block_invoke;
   block[3] = &unk_278BE5830;
   block[4] = self;
-  block[5] = a3;
-  v9 = a4;
-  dispatch_async(v7, block);
+  block[5] = heading;
+  groupCopy = group;
+  dispatch_async(movementQueue, block);
 }
 
 uint64_t __47__AXFocusManager_moveFocusWithHeading_byGroup___block_invoke(uint64_t a1)
@@ -191,9 +191,9 @@ uint64_t __47__AXFocusManager_moveFocusWithHeading_byGroup___block_invoke(uint64
   return MEMORY[0x2821390A0]();
 }
 
-- (void)moveFocusInsideForward:(BOOL)a3 shouldWrap:(BOOL)a4
+- (void)moveFocusInsideForward:(BOOL)forward shouldWrap:(BOOL)wrap
 {
-  if (a3)
+  if (forward)
   {
     v6 = 16;
   }
@@ -203,15 +203,15 @@ uint64_t __47__AXFocusManager_moveFocusWithHeading_byGroup___block_invoke(uint64
     v6 = 32;
   }
 
-  v7 = [(AXFocusManager *)self movementQueue];
+  movementQueue = [(AXFocusManager *)self movementQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__AXFocusManager_moveFocusInsideForward_shouldWrap___block_invoke;
   block[3] = &unk_278BE5830;
   block[4] = self;
   block[5] = v6;
-  v9 = a4;
-  dispatch_async(v7, block);
+  wrapCopy = wrap;
+  dispatch_async(movementQueue, block);
 }
 
 uint64_t __52__AXFocusManager_moveFocusInsideForward_shouldWrap___block_invoke(uint64_t a1)
@@ -247,73 +247,73 @@ void __71__AXFocusManager__moveFocusWithHeading_byGroup_queryString_shouldWrap__
 {
   [(AXFocusManager *)self setTypeaheadString:0];
   [(AXFocusManager *)self _verifyPIDForTypeahead];
-  v3 = [(AXFocusManager *)self focusContainerForSuccessfulTypeaheadMovement];
+  focusContainerForSuccessfulTypeaheadMovement = [(AXFocusManager *)self focusContainerForSuccessfulTypeaheadMovement];
 
-  if (v3)
+  if (focusContainerForSuccessfulTypeaheadMovement)
   {
-    v4 = [(AXFocusManager *)self focusContainerForSuccessfulTypeaheadMovement];
-    [(AXFocusManager *)self _focusOnFocusContainer:v4];
+    focusContainerForSuccessfulTypeaheadMovement2 = [(AXFocusManager *)self focusContainerForSuccessfulTypeaheadMovement];
+    [(AXFocusManager *)self _focusOnFocusContainer:focusContainerForSuccessfulTypeaheadMovement2];
   }
 }
 
-- (BOOL)_focusOnFocusContainer:(id)a3
+- (BOOL)_focusOnFocusContainer:(id)container
 {
-  v3 = a3;
-  if (![v3 hasNativeFocusElements])
+  containerCopy = container;
+  if (![containerCopy hasNativeFocusElements])
   {
     goto LABEL_7;
   }
 
-  v4 = [MEMORY[0x277CE6BA0] systemWideElement];
-  v5 = [v4 systemApplication];
+  systemWideElement = [MEMORY[0x277CE6BA0] systemWideElement];
+  systemApplication = [systemWideElement systemApplication];
   v6 = MEMORY[0x277CBEA60];
-  v7 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v3, "pid")}];
-  v8 = [v3 fbSceneIdentifier];
-  v9 = [v6 axArrayByIgnoringNilElementsWithCount:{2, v7, v8}];
-  v10 = [v5 performAction:5303 withValue:v9];
+  v7 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(containerCopy, "pid")}];
+  fbSceneIdentifier = [containerCopy fbSceneIdentifier];
+  v9 = [v6 axArrayByIgnoringNilElementsWithCount:{2, v7, fbSceneIdentifier}];
+  v10 = [systemApplication performAction:5303 withValue:v9];
 
   if (v10)
   {
-    v11 = [v3 currentFocusElement];
-    if ([v11 hasRemoteFocusSystem])
+    currentFocusElement = [containerCopy currentFocusElement];
+    if ([currentFocusElement hasRemoteFocusSystem])
     {
-      v12 = [v11 elementForRemoteFocusSystem];
-      v13 = [v12 hasNativeFocusElements];
-      if (v13)
+      elementForRemoteFocusSystem = [currentFocusElement elementForRemoteFocusSystem];
+      hasNativeFocusElements = [elementForRemoteFocusSystem hasNativeFocusElements];
+      if (hasNativeFocusElements)
       {
-        [v11 focusOnApplication];
+        [currentFocusElement focusOnApplication];
       }
     }
 
     else
     {
-      [v3 didFocus];
-      LOBYTE(v13) = 1;
+      [containerCopy didFocus];
+      LOBYTE(hasNativeFocusElements) = 1;
     }
   }
 
   else
   {
 LABEL_7:
-    LOBYTE(v13) = 0;
+    LOBYTE(hasNativeFocusElements) = 0;
   }
 
-  return v13;
+  return hasNativeFocusElements;
 }
 
-- (unint64_t)_indexOfTypeaheadPIDInFocusContainers:(id)a3
+- (unint64_t)_indexOfTypeaheadPIDInFocusContainers:(id)containers
 {
-  v4 = a3;
-  v5 = [(AXFocusManager *)self focusContainerForSuccessfulTypeaheadMovement];
+  containersCopy = containers;
+  focusContainerForSuccessfulTypeaheadMovement = [(AXFocusManager *)self focusContainerForSuccessfulTypeaheadMovement];
 
-  if (v5)
+  if (focusContainerForSuccessfulTypeaheadMovement)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __56__AXFocusManager__indexOfTypeaheadPIDInFocusContainers___block_invoke;
     v8[3] = &unk_278BE58A8;
     v8[4] = self;
-    v6 = [v4 indexOfObjectPassingTest:v8];
+    v6 = [containersCopy indexOfObjectPassingTest:v8];
   }
 
   else
@@ -336,9 +336,9 @@ uint64_t __56__AXFocusManager__indexOfTypeaheadPIDInFocusContainers___block_invo
 
 - (void)_verifyPIDForTypeahead
 {
-  v3 = [(AXFocusManager *)self _currentFocusContainers];
-  v4 = [(AXFocusManager *)self focusContainerForSuccessfulTypeaheadMovement];
-  v5 = [v3 containsObject:v4];
+  _currentFocusContainers = [(AXFocusManager *)self _currentFocusContainers];
+  focusContainerForSuccessfulTypeaheadMovement = [(AXFocusManager *)self focusContainerForSuccessfulTypeaheadMovement];
+  v5 = [_currentFocusContainers containsObject:focusContainerForSuccessfulTypeaheadMovement];
 
   if ((v5 & 1) == 0)
   {
@@ -350,69 +350,69 @@ uint64_t __56__AXFocusManager__indexOfTypeaheadPIDInFocusContainers___block_invo
 - (id)_currentFocusContainers
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CE6BA0] systemWideElement];
-  v4 = [v3 systemApplication];
-  v5 = [v4 currentApplications];
+  systemWideElement = [MEMORY[0x277CE6BA0] systemWideElement];
+  systemApplication = [systemWideElement systemApplication];
+  currentApplications = [systemApplication currentApplications];
 
-  v6 = [MEMORY[0x277CE6BA0] systemWideElement];
-  v7 = [v6 elementForAttribute:1006 shouldFetchAttributes:0];
+  systemWideElement2 = [MEMORY[0x277CE6BA0] systemWideElement];
+  v7 = [systemWideElement2 elementForAttribute:1006 shouldFetchAttributes:0];
 
   if (v7 && [v7 pid])
   {
-    v8 = [v5 arrayByAddingObject:v7];
+    v8 = [currentApplications arrayByAddingObject:v7];
 
-    v5 = v8;
+    currentApplications = v8;
   }
 
-  v9 = [MEMORY[0x277CE6BA0] systemWideElement];
-  v10 = [v9 elementForAttribute:1010 shouldFetchAttributes:0];
+  systemWideElement3 = [MEMORY[0x277CE6BA0] systemWideElement];
+  v10 = [systemWideElement3 elementForAttribute:1010 shouldFetchAttributes:0];
 
   if (v10 && [v10 pid])
   {
-    v11 = [v5 arrayByAddingObject:v10];
+    v11 = [currentApplications arrayByAddingObject:v10];
 
-    v5 = v11;
+    currentApplications = v11;
   }
 
-  v12 = [MEMORY[0x277CE6BA0] systemWideElement];
-  v13 = [v12 elementForAttribute:1005 shouldFetchAttributes:0];
+  systemWideElement4 = [MEMORY[0x277CE6BA0] systemWideElement];
+  v13 = [systemWideElement4 elementForAttribute:1005 shouldFetchAttributes:0];
 
   if (v13 && [v13 pid])
   {
-    v14 = [v5 arrayByAddingObject:v13];
+    v14 = [currentApplications arrayByAddingObject:v13];
 
-    v5 = v14;
+    currentApplications = v14;
   }
 
-  v15 = [MEMORY[0x277CE6BA0] systemWideElement];
-  v16 = [v15 elementForAttribute:1000 shouldFetchAttributes:0];
+  systemWideElement5 = [MEMORY[0x277CE6BA0] systemWideElement];
+  v16 = [systemWideElement5 elementForAttribute:1000 shouldFetchAttributes:0];
 
   v37 = v10;
   v38 = v7;
   v34 = v16;
   v36 = v13;
-  if (([v5 containsObject:v16] & 1) == 0)
+  if (([currentApplications containsObject:v16] & 1) == 0)
   {
-    v17 = [MEMORY[0x277CE7E40] server];
-    v18 = [v17 isPIPWindowVisible];
+    server = [MEMORY[0x277CE7E40] server];
+    isPIPWindowVisible = [server isPIPWindowVisible];
 
-    if (v18)
+    if (isPIPWindowVisible)
     {
-      v19 = [v5 arrayByAddingObject:v16];
+      v19 = [currentApplications arrayByAddingObject:v16];
 
-      v5 = v19;
+      currentApplications = v19;
     }
   }
 
-  v20 = [(AXFocusManager *)self currentFocusContainer];
-  v21 = [v20 windowSceneIdentifier];
+  currentFocusContainer = [(AXFocusManager *)self currentFocusContainer];
+  windowSceneIdentifier = [currentFocusContainer windowSceneIdentifier];
 
   v22 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v23 = v5;
+  v23 = currentApplications;
   v24 = [v23 countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v24)
   {
@@ -427,7 +427,7 @@ uint64_t __56__AXFocusManager__indexOfTypeaheadPIDInFocusContainers___block_invo
           objc_enumerationMutation(v23);
         }
 
-        v28 = [*(*(&v43 + 1) + 8 * i) focusContainersForCurrentSceneIdentifier:v21];
+        v28 = [*(*(&v43 + 1) + 8 * i) focusContainersForCurrentSceneIdentifier:windowSceneIdentifier];
         v41[0] = MEMORY[0x277D85DD0];
         v41[1] = 3221225472;
         v41[2] = __41__AXFocusManager__currentFocusContainers__block_invoke;
@@ -480,18 +480,18 @@ void __41__AXFocusManager__currentFocusContainers__block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)_moveToElementWithHeading:(unint64_t)a3 queryString:(id)a4
+- (void)_moveToElementWithHeading:(unint64_t)heading queryString:(id)string
 {
-  v27 = a4;
+  stringCopy = string;
   [(AXFocusManager *)self _verifyPIDForTypeahead];
-  v6 = [(AXFocusManager *)self _currentFocusContainers];
-  v7 = v6;
-  if ((a3 & 0x110) == 0)
+  _currentFocusContainers = [(AXFocusManager *)self _currentFocusContainers];
+  v7 = _currentFocusContainers;
+  if ((heading & 0x110) == 0)
   {
-    v8 = [v6 reverseObjectEnumerator];
-    v9 = [v8 allObjects];
+    reverseObjectEnumerator = [_currentFocusContainers reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
 
-    v7 = v9;
+    v7 = allObjects;
   }
 
   v10 = [(AXFocusManager *)self _indexOfTypeaheadPIDInFocusContainers:v7];
@@ -505,11 +505,11 @@ void __41__AXFocusManager__currentFocusContainers__block_invoke(uint64_t a1, voi
     v11 = v10;
   }
 
-  v12 = [(AXFocusManager *)self focusContainerForSuccessfulTypeaheadMovement];
+  focusContainerForSuccessfulTypeaheadMovement = [(AXFocusManager *)self focusContainerForSuccessfulTypeaheadMovement];
   [(AXFocusManager *)self setFocusContainerForSuccessfulTypeaheadMovement:0];
   if (v11 < [v7 count])
   {
-    if ((a3 & 0x110) != 0)
+    if ((heading & 0x110) != 0)
     {
       v13 = 256;
     }
@@ -519,30 +519,30 @@ void __41__AXFocusManager__currentFocusContainers__block_invoke(uint64_t a1, voi
       v13 = 512;
     }
 
-    if ((a3 & 0x300) != 0)
+    if ((heading & 0x300) != 0)
     {
-      v14 = v13;
+      headingCopy = v13;
     }
 
     else
     {
-      v14 = a3;
+      headingCopy = heading;
     }
 
     v15 = v11;
     while (1)
     {
       v16 = [v7 objectAtIndex:v15];
-      v17 = [v16 currentFocusElement];
-      v18 = [(AXFocusManager *)self _moveFocusInFocusContainer:v16 withHeading:v14 queryString:v27];
-      v19 = [v16 currentFocusElement];
-      if (v18 && (![v17 isEqual:v19] || objc_msgSend(v19, "hasRemoteFocusSystem")))
+      currentFocusElement = [v16 currentFocusElement];
+      v18 = [(AXFocusManager *)self _moveFocusInFocusContainer:v16 withHeading:headingCopy queryString:stringCopy];
+      currentFocusElement2 = [v16 currentFocusElement];
+      if (v18 && (![currentFocusElement isEqual:currentFocusElement2] || objc_msgSend(currentFocusElement2, "hasRemoteFocusSystem")))
       {
         break;
       }
 
       ++v15;
-      v14 = v13;
+      headingCopy = v13;
       if (v15 >= [v7 count])
       {
         goto LABEL_20;
@@ -553,16 +553,16 @@ void __41__AXFocusManager__currentFocusContainers__block_invoke(uint64_t a1, voi
   }
 
 LABEL_20:
-  v20 = [(AXFocusManager *)self focusContainerForSuccessfulTypeaheadMovement];
-  v21 = v20;
-  if (v20)
+  focusContainerForSuccessfulTypeaheadMovement2 = [(AXFocusManager *)self focusContainerForSuccessfulTypeaheadMovement];
+  v21 = focusContainerForSuccessfulTypeaheadMovement2;
+  if (focusContainerForSuccessfulTypeaheadMovement2)
   {
-    v22 = v20;
+    v22 = focusContainerForSuccessfulTypeaheadMovement2;
   }
 
   else
   {
-    v22 = v12;
+    v22 = focusContainerForSuccessfulTypeaheadMovement;
   }
 
   [(AXFocusManager *)self setFocusContainerForSuccessfulTypeaheadMovement:v22];
@@ -571,8 +571,8 @@ LABEL_20:
   {
     v23 = [v7 objectAtIndex:v11];
     v24 = [v23 pid];
-    v25 = [(AXFocusManager *)self focusContainerForSuccessfulTypeaheadMovement];
-    v26 = [v25 pid];
+    focusContainerForSuccessfulTypeaheadMovement3 = [(AXFocusManager *)self focusContainerForSuccessfulTypeaheadMovement];
+    v26 = [focusContainerForSuccessfulTypeaheadMovement3 pid];
 
     if (v24 != v26)
     {
@@ -583,27 +583,27 @@ LABEL_20:
   }
 }
 
-- (BOOL)_moveFocusInFocusContainer:(id)a3 withHeading:(unint64_t)a4 queryString:(id)a5
+- (BOOL)_moveFocusInFocusContainer:(id)container withHeading:(unint64_t)heading queryString:(id)string
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 currentFocusElement];
-  if (![v10 hasRemoteFocusSystem])
+  containerCopy = container;
+  stringCopy = string;
+  currentFocusElement = [containerCopy currentFocusElement];
+  if (![currentFocusElement hasRemoteFocusSystem])
   {
     goto LABEL_5;
   }
 
-  [v10 focusOnRemoteSceneID];
-  v11 = [v10 elementForRemoteFocusSystem];
-  if (![(AXFocusManager *)self _recursiveMoveFocusInFocusContainer:v11 withHeading:a4 queryString:v9])
+  [currentFocusElement focusOnRemoteSceneID];
+  elementForRemoteFocusSystem = [currentFocusElement elementForRemoteFocusSystem];
+  if (![(AXFocusManager *)self _recursiveMoveFocusInFocusContainer:elementForRemoteFocusSystem withHeading:heading queryString:stringCopy])
   {
 
 LABEL_5:
-    v12 = [(AXFocusManager *)self _recursiveMoveFocusInFocusContainer:v8 withHeading:a4 queryString:v9];
+    v12 = [(AXFocusManager *)self _recursiveMoveFocusInFocusContainer:containerCopy withHeading:heading queryString:stringCopy];
     goto LABEL_6;
   }
 
-  [v10 focusOnApplication];
+  [currentFocusElement focusOnApplication];
 
   v12 = 1;
 LABEL_6:
@@ -611,24 +611,24 @@ LABEL_6:
   return v12;
 }
 
-- (BOOL)_recursiveMoveFocusInFocusContainer:(id)a3 withHeading:(unint64_t)a4 queryString:(id)a5
+- (BOOL)_recursiveMoveFocusInFocusContainer:(id)container withHeading:(unint64_t)heading queryString:(id)string
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 currentFocusElement];
-  v11 = [v8 moveFocusWithHeading:a4 withQueryString:v9];
-  v12 = [v8 currentFocusElement];
+  containerCopy = container;
+  stringCopy = string;
+  currentFocusElement = [containerCopy currentFocusElement];
+  v11 = [containerCopy moveFocusWithHeading:heading withQueryString:stringCopy];
+  currentFocusElement2 = [containerCopy currentFocusElement];
   if (v11)
   {
-    if (([v10 isEqual:v12] & 1) != 0 || !objc_msgSend(v12, "hasRemoteFocusSystem"))
+    if (([currentFocusElement isEqual:currentFocusElement2] & 1) != 0 || !objc_msgSend(currentFocusElement2, "hasRemoteFocusSystem"))
     {
       v16 = 1;
     }
 
     else
     {
-      v13 = a4 & 0x220;
-      if ((a4 & 0x220) != 0)
+      v13 = heading & 0x220;
+      if ((heading & 0x220) != 0)
       {
         v14 = 512;
       }
@@ -638,18 +638,18 @@ LABEL_6:
         v14 = 256;
       }
 
-      v15 = [v12 elementForRemoteFocusSystem];
-      [v12 focusOnRemoteSceneID];
-      if ([v15 moveFocusWithHeading:v14 withQueryString:v9])
+      elementForRemoteFocusSystem = [currentFocusElement2 elementForRemoteFocusSystem];
+      [currentFocusElement2 focusOnRemoteSceneID];
+      if ([elementForRemoteFocusSystem moveFocusWithHeading:v14 withQueryString:stringCopy])
       {
         v16 = 1;
       }
 
       else
       {
-        v17 = [v15 currentFocusElement];
+        currentFocusElement3 = [elementForRemoteFocusSystem currentFocusElement];
 
-        if (v17)
+        if (currentFocusElement3)
         {
           v16 = 0;
         }
@@ -666,7 +666,7 @@ LABEL_6:
             v18 = 16;
           }
 
-          v16 = [(AXFocusManager *)self _recursiveMoveFocusInFocusContainer:v8 withHeading:v18 queryString:v9];
+          v16 = [(AXFocusManager *)self _recursiveMoveFocusInFocusContainer:containerCopy withHeading:v18 queryString:stringCopy];
         }
       }
     }
@@ -712,37 +712,37 @@ BOOL __64__AXFocusManager__handleFailedFocusMovementWithHeading_byGroup___block_
 
 - (id)currentElement
 {
-  v2 = [(AXFocusManager *)self currentApplication];
-  v3 = [v2 currentFocusElement];
+  currentApplication = [(AXFocusManager *)self currentApplication];
+  currentFocusElement = [currentApplication currentFocusElement];
 
-  return v3;
+  return currentFocusElement;
 }
 
 - (AXElement)currentApplication
 {
   v45 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CE6BA0] systemWideElement];
-  v3 = [v2 elementForAttribute:1007 shouldFetchAttributes:0];
-  v4 = [v2 systemApplication];
-  v5 = [v4 uiElement];
+  systemWideElement = [MEMORY[0x277CE6BA0] systemWideElement];
+  v3 = [systemWideElement elementForAttribute:1007 shouldFetchAttributes:0];
+  systemApplication = [systemWideElement systemApplication];
+  uiElement = [systemApplication uiElement];
 
-  v6 = [MEMORY[0x277CE7E40] server];
-  v7 = [v6 isContinuitySessionActive];
+  server = [MEMORY[0x277CE7E40] server];
+  isContinuitySessionActive = [server isContinuitySessionActive];
 
-  if (v7)
+  if (isContinuitySessionActive)
   {
     v8 = MEMORY[0x277CBEB18];
-    v9 = [v5 arrayWithAXAttribute:1109];
+    v9 = [uiElement arrayWithAXAttribute:1109];
     v10 = [v8 arrayWithArray:v9];
 
-    v11 = [v5 arrayWithAXAttribute:1111];
-    if (([v10 isEqualToArray:v11] & 1) == 0)
+    firstObject2 = [uiElement arrayWithAXAttribute:1111];
+    if (([v10 isEqualToArray:firstObject2] & 1) == 0)
     {
-      [v10 removeObjectsInArray:v11];
+      [v10 removeObjectsInArray:firstObject2];
     }
 
-    v12 = [v10 firstObject];
-    [v12 intValue];
+    firstObject = [v10 firstObject];
+    [firstObject intValue];
     AppElementWithPid = _AXUIElementCreateAppElementWithPid();
     v14 = [MEMORY[0x277CE6BA0] elementWithAXUIElement:AppElementWithPid];
     if (AppElementWithPid)
@@ -755,19 +755,19 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v15 = [v2 uiElement];
-  v10 = [v15 numberWithAXAttribute:1110];
+  uiElement2 = [systemWideElement uiElement];
+  v10 = [uiElement2 numberWithAXAttribute:1110];
 
-  v16 = [v5 arrayWithAXAttribute:1108];
-  v11 = [v16 firstObject];
+  v16 = [uiElement arrayWithAXAttribute:1108];
+  firstObject2 = [v16 firstObject];
 
-  if (([v11 isEqualToString:*MEMORY[0x277CE6818]] & 1) != 0 || (v17 = objc_msgSend(v3, "pid"), v17 == objc_msgSend(v10, "intValue")) && v10)
+  if (([firstObject2 isEqualToString:*MEMORY[0x277CE6818]] & 1) != 0 || (v17 = objc_msgSend(v3, "pid"), v17 == objc_msgSend(v10, "intValue")) && v10)
   {
 LABEL_9:
-    v18 = [v5 arrayWithAXAttribute:1109];
-    v12 = [v18 firstObject];
+    v18 = [uiElement arrayWithAXAttribute:1109];
+    firstObject = [v18 firstObject];
 
-    [v12 intValue];
+    [firstObject intValue];
     v19 = _AXUIElementCreateAppElementWithPid();
     v20 = [MEMORY[0x277CE6BA0] elementWithAXUIElement:v19];
     if (v19)
@@ -791,11 +791,11 @@ LABEL_9:
     goto LABEL_15;
   }
 
-  v24 = [v3 bundleId];
+  bundleId = [v3 bundleId];
   v25 = *MEMORY[0x277CE7C70];
-  if ([v24 isEqualToString:*MEMORY[0x277CE7C70]])
+  if ([bundleId isEqualToString:*MEMORY[0x277CE7C70]])
   {
-    v26 = [v11 isEqualToString:v25];
+    v26 = [firstObject2 isEqualToString:v25];
 
     if ((v26 & 1) == 0)
     {
@@ -807,8 +807,8 @@ LABEL_9:
   {
   }
 
-  v27 = [v3 bundleId];
-  v28 = [v27 isEqualToString:@"com.apple.AccessibilityUIServer"];
+  bundleId2 = [v3 bundleId];
+  v28 = [bundleId2 isEqualToString:@"com.apple.AccessibilityUIServer"];
 
   if (v28)
   {
@@ -818,7 +818,7 @@ LABEL_9:
     v29 = [v3 safeValueForKey:@"pid"];
     v30 = __UIAccessibilityCastAsClass();
 
-    [v5 arrayWithAXAttribute:1109];
+    [uiElement arrayWithAXAttribute:1109];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
@@ -876,43 +876,43 @@ LABEL_16:
 
 - (id)currentFocusContainer
 {
-  v2 = [(AXFocusManager *)self currentApplication];
-  v3 = [v2 currentFocusContainer];
+  currentApplication = [(AXFocusManager *)self currentApplication];
+  currentFocusContainer = [currentApplication currentFocusContainer];
 
-  return v3;
+  return currentFocusContainer;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observersLock);
-  [(NSHashTable *)self->_observers addObject:v4];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_observersLock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observersLock);
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_observersLock);
 }
 
-- (void)_enumerateObservers:(id)a3
+- (void)_enumerateObservers:(id)observers
 {
-  v4 = a3;
-  if (v4)
+  observersCopy = observers;
+  if (observersCopy)
   {
-    v5 = [(AXFocusManager *)self observersQueue];
+    observersQueue = [(AXFocusManager *)self observersQueue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __38__AXFocusManager__enumerateObservers___block_invoke;
     v6[3] = &unk_278BE5970;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = observersCopy;
+    dispatch_async(observersQueue, v6);
   }
 }
 

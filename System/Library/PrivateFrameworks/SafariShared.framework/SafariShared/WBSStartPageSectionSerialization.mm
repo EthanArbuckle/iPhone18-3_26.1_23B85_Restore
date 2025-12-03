@@ -1,29 +1,29 @@
 @interface WBSStartPageSectionSerialization
-+ (id)decodeSectionsFromData:(id)a3 expectedFormat:(int64_t)a4 allowingFallbackFormats:(BOOL)a5 error:(id *)a6;
-+ (id)decodeSectionsWithData:(id)a3 format:(int64_t)a4 error:(id *)a5;
-+ (id)encodeSectionsAsSyncableData:(id)a3 existingSyncableData:(id)a4 error:(id *)a5;
++ (id)decodeSectionsFromData:(id)data expectedFormat:(int64_t)format allowingFallbackFormats:(BOOL)formats error:(id *)error;
++ (id)decodeSectionsWithData:(id)data format:(int64_t)format error:(id *)error;
++ (id)encodeSectionsAsSyncableData:(id)data existingSyncableData:(id)syncableData error:(id *)error;
 @end
 
 @implementation WBSStartPageSectionSerialization
 
-+ (id)decodeSectionsFromData:(id)a3 expectedFormat:(int64_t)a4 allowingFallbackFormats:(BOOL)a5 error:(id *)a6
++ (id)decodeSectionsFromData:(id)data expectedFormat:(int64_t)format allowingFallbackFormats:(BOOL)formats error:(id *)error
 {
-  v7 = a5;
-  v10 = a3;
-  if (v10)
+  formatsCopy = formats;
+  dataCopy = data;
+  if (dataCopy)
   {
     v15 = 0;
-    v11 = [a1 decodeSectionsWithData:v10 format:a4 error:&v15];
+    v11 = [self decodeSectionsWithData:dataCopy format:format error:&v15];
     v12 = v15;
-    if (!v11 && v7)
+    if (!v11 && formatsCopy)
     {
-      v11 = [a1 decodeSectionsWithData:v10 format:a4 == 0 error:0];
+      v11 = [self decodeSectionsWithData:dataCopy format:format == 0 error:0];
     }
 
-    if (a6 && !v11)
+    if (error && !v11)
     {
       v13 = v12;
-      *a6 = v12;
+      *error = v12;
     }
   }
 
@@ -35,12 +35,12 @@
   return v11;
 }
 
-+ (id)decodeSectionsWithData:(id)a3 format:(int64_t)a4 error:(id *)a5
++ (id)decodeSectionsWithData:(id)data format:(int64_t)format error:(id *)error
 {
-  v8 = a3;
-  if (a4 == 1)
+  dataCopy = data;
+  if (format == 1)
   {
-    v9 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v8 options:0 error:a5];
+    v9 = [MEMORY[0x1E696ACB0] JSONObjectWithData:dataCopy options:0 error:error];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,10 +48,10 @@
       v5 = [v10 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_106];
     }
 
-    else if (a5)
+    else if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:3840 userInfo:0];
-      *a5 = v5 = 0;
+      *error = v5 = 0;
     }
 
     else
@@ -60,9 +60,9 @@
     }
   }
 
-  else if (!a4)
+  else if (!format)
   {
-    v5 = [MEMORY[0x1E696ACD0] unarchivedArrayOfObjectsOfClass:objc_opt_class() fromData:v8 error:a5];
+    v5 = [MEMORY[0x1E696ACD0] unarchivedArrayOfObjectsOfClass:objc_opt_class() fromData:dataCopy error:error];
   }
 
   return v5;
@@ -85,17 +85,17 @@ WBSStartPageSectionDescriptor *__72__WBSStartPageSectionSerialization_decodeSect
   return v3;
 }
 
-+ (id)encodeSectionsAsSyncableData:(id)a3 existingSyncableData:(id)a4 error:(id *)a5
++ (id)encodeSectionsAsSyncableData:(id)data existingSyncableData:(id)syncableData error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  if ([v7 length])
+  syncableDataCopy = syncableData;
+  dataCopy = data;
+  if ([syncableDataCopy length])
   {
-    v9 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v7 options:1 error:a5];
+    dictionary = [MEMORY[0x1E696ACB0] JSONObjectWithData:syncableDataCopy options:1 error:error];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (v9)
+      if (dictionary)
       {
         goto LABEL_7;
       }
@@ -106,17 +106,17 @@ WBSStartPageSectionDescriptor *__72__WBSStartPageSectionSerialization_decodeSect
     }
   }
 
-  v9 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
 LABEL_7:
-  v10 = [v9 objectForKeyedSubscript:@"Sections"];
-  v11 = [v8 valueForKey:@"identifier"];
+  v10 = [dictionary objectForKeyedSubscript:@"Sections"];
+  v11 = [dataCopy valueForKey:@"identifier"];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __92__WBSStartPageSectionSerialization_encodeSectionsAsSyncableData_existingSyncableData_error___block_invoke;
   v24[3] = &unk_1E7FCACF0;
   v25 = v10;
   v12 = v10;
-  v13 = [v8 safari_mapObjectsUsingBlock:v24];
+  v13 = [dataCopy safari_mapObjectsUsingBlock:v24];
 
   v19 = MEMORY[0x1E69E9820];
   v20 = 3221225472;
@@ -126,9 +126,9 @@ LABEL_7:
   v14 = v11;
   v15 = [v12 safari_mapAndFilterObjectsUsingBlock:&v19];
   v16 = [v13 arrayByAddingObjectsFromArray:{v15, v19, v20, v21, v22}];
-  [v9 setObject:v16 forKeyedSubscript:@"Sections"];
+  [dictionary setObject:v16 forKeyedSubscript:@"Sections"];
 
-  v17 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v9 options:0 error:a5];
+  v17 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionary options:0 error:error];
 
   return v17;
 }

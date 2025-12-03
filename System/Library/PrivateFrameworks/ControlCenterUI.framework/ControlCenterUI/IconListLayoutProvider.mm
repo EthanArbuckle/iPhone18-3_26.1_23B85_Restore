@@ -1,10 +1,10 @@
 @interface IconListLayoutProvider
-- (_TtC15ControlCenterUI22IconListLayoutProvider)initWithListLayouts:(id)a3 defaultLayout:(id)a4;
+- (_TtC15ControlCenterUI22IconListLayoutProvider)initWithListLayouts:(id)layouts defaultLayout:(id)layout;
 @end
 
 @implementation IconListLayoutProvider
 
-- (_TtC15ControlCenterUI22IconListLayoutProvider)initWithListLayouts:(id)a3 defaultLayout:(id)a4
+- (_TtC15ControlCenterUI22IconListLayoutProvider)initWithListLayouts:(id)layouts defaultLayout:(id)layout
 {
   type metadata accessor for SBIconLocation(0);
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27CEDDC18);
@@ -15,7 +15,7 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for IconListLayoutProvider();
-  v7 = [(SBHCustomIconListLayoutProvider *)&v9 initWithListLayouts:v6 defaultLayout:a4];
+  v7 = [(SBHCustomIconListLayoutProvider *)&v9 initWithListLayouts:v6 defaultLayout:layout];
 
   swift_unknownObjectRelease();
   return v7;

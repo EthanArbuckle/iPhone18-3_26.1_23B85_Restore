@@ -1,38 +1,38 @@
 @interface NTKMetallicColorEditOption
-+ (id)_localizedNameForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_localizedNameForValue:(unint64_t)value forDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 @end
 
 @implementation NTKMetallicColorEditOption
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 3)
+  if (value > 3)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_8248 + a3);
+    return *(&off_8248 + value);
   }
 }
 
-+ (id)_localizedNameForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_localizedNameForValue:(unint64_t)value forDevice:(id)device
 {
-  v6 = a4;
-  if (a3 >= 4)
+  deviceCopy = device;
+  if (value >= 4)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = &OBJC_METACLASS___NTKMetallicColorEditOption;
-    v10 = objc_msgSendSuper2(&v12, "_localizedNameForValue:forDevice:", a3, v6);
+    v10 = objc_msgSendSuper2(&v12, "_localizedNameForValue:forDevice:", value, deviceCopy);
     v8 = @"LiquidMetal";
   }
 
   else
   {
-    v7 = *(&off_8268 + a3);
+    v7 = *(&off_8268 + value);
     v8 = [@"LiquidMetal" stringByAppendingString:@"-Companion"];
     v9 = [v7 stringByAppendingString:@"_COMPANION"];
     v10 = [NTKLiquidMetalFaceBundle localizedStringForKey:v9 table:v8 comment:@"Color"];

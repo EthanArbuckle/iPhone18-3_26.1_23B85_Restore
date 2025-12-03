@@ -1,31 +1,31 @@
 @interface RTPlaceInferenceQueryStore
-- (void)_fetchPlaceInferenceQueriesWithDateInterval:(id)a3 ascending:(BOOL)a4 limit:(id)a5 handler:(id)a6;
-- (void)_purgePlaceInferenceQueriesPredating:(id)a3 handler:(id)a4;
-- (void)_storePlaceInferenceQuery:(id)a3 handler:(id)a4;
-- (void)fetchPlaceInferenceQueriesWithDateInterval:(id)a3 ascending:(BOOL)a4 handler:(id)a5;
-- (void)fetchPlaceInferenceQueriesWithDateInterval:(id)a3 ascending:(BOOL)a4 limit:(id)a5 handler:(id)a6;
-- (void)purgePlaceInferenceQueriesPredating:(id)a3 handler:(id)a4;
-- (void)storePlaceInferenceQuery:(id)a3 handler:(id)a4;
+- (void)_fetchPlaceInferenceQueriesWithDateInterval:(id)interval ascending:(BOOL)ascending limit:(id)limit handler:(id)handler;
+- (void)_purgePlaceInferenceQueriesPredating:(id)predating handler:(id)handler;
+- (void)_storePlaceInferenceQuery:(id)query handler:(id)handler;
+- (void)fetchPlaceInferenceQueriesWithDateInterval:(id)interval ascending:(BOOL)ascending handler:(id)handler;
+- (void)fetchPlaceInferenceQueriesWithDateInterval:(id)interval ascending:(BOOL)ascending limit:(id)limit handler:(id)handler;
+- (void)purgePlaceInferenceQueriesPredating:(id)predating handler:(id)handler;
+- (void)storePlaceInferenceQuery:(id)query handler:(id)handler;
 @end
 
 @implementation RTPlaceInferenceQueryStore
 
-- (void)_fetchPlaceInferenceQueriesWithDateInterval:(id)a3 ascending:(BOOL)a4 limit:(id)a5 handler:(id)a6
+- (void)_fetchPlaceInferenceQueriesWithDateInterval:(id)interval ascending:(BOOL)ascending limit:(id)limit handler:(id)handler
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  intervalCopy = interval;
+  limitCopy = limit;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __98__RTPlaceInferenceQueryStore__fetchPlaceInferenceQueriesWithDateInterval_ascending_limit_handler___block_invoke;
     aBlock[3] = &unk_2788CB788;
-    v19 = v11;
-    v23 = a4;
-    v20 = v12;
+    v19 = intervalCopy;
+    ascendingCopy = ascending;
+    v20 = limitCopy;
     v22 = a2;
-    v14 = v13;
+    v14 = handlerCopy;
     v21 = v14;
     v15 = _Block_copy(aBlock);
     v16[0] = MEMORY[0x277D85DD0];
@@ -138,103 +138,103 @@ void __98__RTPlaceInferenceQueryStore__fetchPlaceInferenceQueriesWithDateInterva
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)fetchPlaceInferenceQueriesWithDateInterval:(id)a3 ascending:(BOOL)a4 limit:(id)a5 handler:(id)a6
+- (void)fetchPlaceInferenceQueriesWithDateInterval:(id)interval ascending:(BOOL)ascending limit:(id)limit handler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(RTNotifier *)self queue];
+  intervalCopy = interval;
+  limitCopy = limit;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __97__RTPlaceInferenceQueryStore_fetchPlaceInferenceQueriesWithDateInterval_ascending_limit_handler___block_invoke;
   block[3] = &unk_2788C6440;
   block[4] = self;
-  v18 = v10;
-  v21 = a4;
-  v19 = v11;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v18 = intervalCopy;
+  ascendingCopy = ascending;
+  v19 = limitCopy;
+  v20 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = limitCopy;
+  v16 = intervalCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)fetchPlaceInferenceQueriesWithDateInterval:(id)a3 ascending:(BOOL)a4 handler:(id)a5
+- (void)fetchPlaceInferenceQueriesWithDateInterval:(id)interval ascending:(BOOL)ascending handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(RTNotifier *)self queue];
+  intervalCopy = interval;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __91__RTPlaceInferenceQueryStore_fetchPlaceInferenceQueriesWithDateInterval_ascending_handler___block_invoke;
   v13[3] = &unk_2788C4690;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = intervalCopy;
+  ascendingCopy = ascending;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = intervalCopy;
+  dispatch_async(queue, v13);
 }
 
-- (void)_storePlaceInferenceQuery:(id)a3 handler:(id)a4
+- (void)_storePlaceInferenceQuery:(id)query handler:(id)handler
 {
   v11 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  queryCopy = query;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v10 count:1];
+  handlerCopy = handler;
+  queryCopy2 = query;
+  v9 = [v6 arrayWithObjects:&queryCopy count:1];
 
-  [(RTStore *)self storeWritableObjects:v9 handler:v7, v10, v11];
+  [(RTStore *)self storeWritableObjects:v9 handler:handlerCopy, queryCopy, v11];
 }
 
-- (void)storePlaceInferenceQuery:(id)a3 handler:(id)a4
+- (void)storePlaceInferenceQuery:(id)query handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  queryCopy = query;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__RTPlaceInferenceQueryStore_storePlaceInferenceQuery_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = queryCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = queryCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_purgePlaceInferenceQueriesPredating:(id)a3 handler:(id)a4
+- (void)_purgePlaceInferenceQueriesPredating:(id)predating handler:(id)handler
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v11 = @"date";
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  predatingCopy = predating;
   v10 = objc_opt_class();
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v10 count:1];
   v12[0] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
-  [(RTStore *)self purgePredating:v7 predicateMappings:v9 handler:v6];
+  [(RTStore *)self purgePredating:predatingCopy predicateMappings:v9 handler:handlerCopy];
 }
 
-- (void)purgePlaceInferenceQueriesPredating:(id)a3 handler:(id)a4
+- (void)purgePlaceInferenceQueriesPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  predatingCopy = predating;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__RTPlaceInferenceQueryStore_purgePlaceInferenceQueriesPredating_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = predatingCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = predatingCopy;
+  dispatch_async(queue, block);
 }
 
 @end

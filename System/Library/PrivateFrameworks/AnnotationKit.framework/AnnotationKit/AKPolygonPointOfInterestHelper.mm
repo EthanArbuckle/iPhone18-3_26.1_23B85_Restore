@@ -1,41 +1,41 @@
 @interface AKPolygonPointOfInterestHelper
-+ (CGPoint)_concreteValidatePoint:(CGPoint)a3 ofDraggableArea:(unint64_t)a4 forAnnotation:(id)a5 onPageController:(id)a6;
-+ (CGPoint)_pointForPointsControlOfPolygonWithNumberOfPoints:(unint64_t)a3 inAnnotation:(id)a4 onPageController:(id)a5;
-+ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)a3 ofAnnotation:(id)a4 onPageController:(id)a5;
-+ (unint64_t)numberOfPolygonPointsForControlPoint:(CGPoint)a3 inAnnotation:(id)a4 onPageController:(id)a5;
-+ (void)_concretePointsOfInterest:(id *)a3 withVisualStyle:(id *)a4 ofAnnotation:(id)a5 pageControllerForPixelAlignment:(id)a6;
++ (CGPoint)_concreteValidatePoint:(CGPoint)point ofDraggableArea:(unint64_t)area forAnnotation:(id)annotation onPageController:(id)controller;
++ (CGPoint)_pointForPointsControlOfPolygonWithNumberOfPoints:(unint64_t)points inAnnotation:(id)annotation onPageController:(id)controller;
++ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)index ofAnnotation:(id)annotation onPageController:(id)controller;
++ (unint64_t)numberOfPolygonPointsForControlPoint:(CGPoint)point inAnnotation:(id)annotation onPageController:(id)controller;
++ (void)_concretePointsOfInterest:(id *)interest withVisualStyle:(id *)style ofAnnotation:(id)annotation pageControllerForPixelAlignment:(id)alignment;
 @end
 
 @implementation AKPolygonPointOfInterestHelper
 
-+ (void)_concretePointsOfInterest:(id *)a3 withVisualStyle:(id *)a4 ofAnnotation:(id)a5 pageControllerForPixelAlignment:(id)a6
++ (void)_concretePointsOfInterest:(id *)interest withVisualStyle:(id *)style ofAnnotation:(id)annotation pageControllerForPixelAlignment:(id)alignment
 {
   v40 = 0;
   v41 = 0;
-  v39.receiver = a1;
+  v39.receiver = self;
   v39.super_class = &OBJC_METACLASS___AKPolygonPointOfInterestHelper;
-  v10 = a6;
-  v11 = a5;
-  objc_msgSendSuper2(&v39, sel__concretePointsOfInterest_withVisualStyle_ofAnnotation_pageControllerForPixelAlignment_, &v41, &v40, v11, v10);
+  alignmentCopy = alignment;
+  annotationCopy = annotation;
+  objc_msgSendSuper2(&v39, sel__concretePointsOfInterest_withVisualStyle_ofAnnotation_pageControllerForPixelAlignment_, &v41, &v40, annotationCopy, alignmentCopy);
   v12 = v41;
   v13 = v40;
   v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v12, "count") + 1}];
   v15 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v13, "count") + 1}];
-  [a1 _pointForPointsControlOfPolygonWithNumberOfPoints:objc_msgSend(v11 inAnnotation:"pointCount") onPageController:{v11, v10}];
+  [self _pointForPointsControlOfPolygonWithNumberOfPoints:objc_msgSend(annotationCopy inAnnotation:"pointCount") onPageController:{annotationCopy, alignmentCopy}];
   v37 = v17;
   v38 = v16;
-  [v11 rectangle];
+  [annotationCopy rectangle];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
-  [v11 rotationAngle];
+  [annotationCopy rotationAngle];
   v27 = v26;
 
   [AKGeometryHelper rotationTransformForRect:v19 withAngle:v21, v23, v25, v27];
-  v28 = [v10 geometryHelper];
+  geometryHelper = [alignmentCopy geometryHelper];
 
-  [v28 screenPixelAlignedPointForPoint:{vaddq_f64(0, vmlaq_n_f64(vmulq_n_f64(0, v37), 0, v38))}];
+  [geometryHelper screenPixelAlignedPointForPoint:{vaddq_f64(0, vmlaq_n_f64(vmulq_n_f64(0, v37), 0, v38))}];
   v30 = v29;
   v32 = v31;
 
@@ -48,37 +48,37 @@
   [v14 addObjectsFromArray:v12];
   [v15 addObjectsFromArray:v13];
   v35 = v14;
-  *a3 = v14;
+  *interest = v14;
   v36 = v15;
-  *a4 = v15;
+  *style = v15;
 }
 
-+ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)a3 ofAnnotation:(id)a4 onPageController:(id)a5
++ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)index ofAnnotation:(id)annotation onPageController:(id)controller
 {
-  if (!a3)
+  if (!index)
   {
     return 17;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___AKPolygonPointOfInterestHelper;
-  return objc_msgSendSuper2(&v6, sel__concreteDraggableAreaForPointOfInterestWithIndex_ofAnnotation_onPageController_, a3 - 1, a4, a5);
+  return objc_msgSendSuper2(&v6, sel__concreteDraggableAreaForPointOfInterestWithIndex_ofAnnotation_onPageController_, index - 1, annotation, controller);
 }
 
-+ (CGPoint)_concreteValidatePoint:(CGPoint)a3 ofDraggableArea:(unint64_t)a4 forAnnotation:(id)a5 onPageController:(id)a6
++ (CGPoint)_concreteValidatePoint:(CGPoint)point ofDraggableArea:(unint64_t)area forAnnotation:(id)annotation onPageController:(id)controller
 {
-  y = a3.y;
-  x = a3.x;
-  v11 = a5;
-  v12 = a6;
-  if (a4 == 17)
+  y = point.y;
+  x = point.x;
+  annotationCopy = annotation;
+  controllerCopy = controller;
+  if (area == 17)
   {
-    v13 = [a1 numberOfPolygonPointsForControlPoint:v11 inAnnotation:v12 onPageController:{x, y}];
-    v14 = [a1 minPolygonPoints];
-    v15 = [a1 maxPolygonPoints];
-    if (v13 >= v15)
+    v13 = [self numberOfPolygonPointsForControlPoint:annotationCopy inAnnotation:controllerCopy onPageController:{x, y}];
+    minPolygonPoints = [self minPolygonPoints];
+    maxPolygonPoints = [self maxPolygonPoints];
+    if (v13 >= maxPolygonPoints)
     {
-      v16 = v15;
+      v16 = maxPolygonPoints;
     }
 
     else
@@ -86,36 +86,36 @@
       v16 = v13;
     }
 
-    if (v13 >= v14)
+    if (v13 >= minPolygonPoints)
     {
       v17 = v16;
     }
 
     else
     {
-      v17 = v14;
+      v17 = minPolygonPoints;
     }
 
-    v18 = [v11 pointCount];
-    if (v18 == [a1 minPolygonPoints] && v17 != objc_msgSend(a1, "minPolygonPoints") + 1)
+    pointCount = [annotationCopy pointCount];
+    if (pointCount == [self minPolygonPoints] && v17 != objc_msgSend(self, "minPolygonPoints") + 1)
     {
-      v20 = [a1 minPolygonPoints];
+      minPolygonPoints2 = [self minPolygonPoints];
     }
 
     else
     {
-      v19 = [v11 pointCount];
-      if (v19 != [a1 maxPolygonPoints] || v17 == objc_msgSend(a1, "maxPolygonPoints") - 1)
+      pointCount2 = [annotationCopy pointCount];
+      if (pointCount2 != [self maxPolygonPoints] || v17 == objc_msgSend(self, "maxPolygonPoints") - 1)
       {
         goto LABEL_15;
       }
 
-      v20 = [a1 maxPolygonPoints];
+      minPolygonPoints2 = [self maxPolygonPoints];
     }
 
-    v17 = v20;
+    v17 = minPolygonPoints2;
 LABEL_15:
-    [a1 _pointForPointsControlOfPolygonWithNumberOfPoints:v17 inAnnotation:v11 onPageController:v12];
+    [self _pointForPointsControlOfPolygonWithNumberOfPoints:v17 inAnnotation:annotationCopy onPageController:controllerCopy];
     x = v21;
     y = v22;
   }
@@ -127,32 +127,32 @@ LABEL_15:
   return result;
 }
 
-+ (unint64_t)numberOfPolygonPointsForControlPoint:(CGPoint)a3 inAnnotation:(id)a4 onPageController:(id)a5
++ (unint64_t)numberOfPolygonPointsForControlPoint:(CGPoint)point inAnnotation:(id)annotation onPageController:(id)controller
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a5;
-  v8 = a4;
-  [v8 rectangle];
+  y = point.y;
+  x = point.x;
+  controllerCopy = controller;
+  annotationCopy = annotation;
+  [annotationCopy rectangle];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  LODWORD(a4) = [v8 verticallyFlipped];
+  LODWORD(annotation) = [annotationCopy verticallyFlipped];
 
-  [AKGeometryHelper convertModelToScreenOrientationForRect:v7 withPageController:v10, v12, v14, v16];
+  [AKGeometryHelper convertModelToScreenOrientationForRect:controllerCopy withPageController:v10, v12, v14, v16];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  [AKGeometryHelper convertModelToScreenOrientationForPoint:v7 relativeToRect:x withPageController:y, v10, v12, v14, v16];
+  [AKGeometryHelper convertModelToScreenOrientationForPoint:controllerCopy relativeToRect:x withPageController:y, v10, v12, v14, v16];
   v43 = v26;
   v45 = v25;
 
   [AKGeometryHelper ellipseToCenteredCircleTransform:v18, v20, v22, v24];
   v27 = vaddq_f64(0, vmlaq_n_f64(vmulq_n_f64(0, v43), 0, v45));
   v28 = v27.f64[1];
-  if (a4)
+  if (annotation)
   {
     v46 = v27.f64[0];
     [AKGeometryHelper radiusOfCenteredCircleFor:v18, v20, v22, v24];
@@ -183,13 +183,13 @@ LABEL_15:
     v35 = v34;
   }
 
-  [a1 _degreesBetweenPointsForPointsControl];
+  [self _degreesBetweenPointsForPointsControl];
   v37 = vcvtad_u64_f64(v35 / v36) + 3;
-  v38 = [a1 minPolygonPoints];
-  v39 = [a1 maxPolygonPoints];
-  if (v37 >= v39)
+  minPolygonPoints = [self minPolygonPoints];
+  maxPolygonPoints = [self maxPolygonPoints];
+  if (v37 >= maxPolygonPoints)
   {
-    v40 = v39;
+    v40 = maxPolygonPoints;
   }
 
   else
@@ -197,41 +197,41 @@ LABEL_15:
     v40 = v37;
   }
 
-  if (v37 >= v38)
+  if (v37 >= minPolygonPoints)
   {
     return v40;
   }
 
   else
   {
-    return v38;
+    return minPolygonPoints;
   }
 }
 
-+ (CGPoint)_pointForPointsControlOfPolygonWithNumberOfPoints:(unint64_t)a3 inAnnotation:(id)a4 onPageController:(id)a5
++ (CGPoint)_pointForPointsControlOfPolygonWithNumberOfPoints:(unint64_t)points inAnnotation:(id)annotation onPageController:(id)controller
 {
-  v8 = a5;
-  v9 = a4;
-  [v9 rectangle];
+  controllerCopy = controller;
+  annotationCopy = annotation;
+  [annotationCopy rectangle];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  LODWORD(a4) = [v9 verticallyFlipped];
+  LODWORD(annotation) = [annotationCopy verticallyFlipped];
 
-  [AKGeometryHelper convertModelToScreenOrientationForRect:v8 withPageController:v11, v13, v15, v17];
+  [AKGeometryHelper convertModelToScreenOrientationForRect:controllerCopy withPageController:v11, v13, v15, v17];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
-  [a1 pointsControlPointDistanceFactor];
+  [self pointsControlPointDistanceFactor];
   v27 = v26;
   [AKGeometryHelper radiusOfCenteredCircleFor:v19, v21, v23, v25];
   v29 = v27 * v28;
-  [a1 _degreesForPointsControlGivenPolygonWithNumberOfPoints:a3];
+  [self _degreesForPointsControlGivenPolygonWithNumberOfPoints:points];
   v32 = __sincos_stret(v30 * 3.14159265 / 180.0);
   v33 = v29 * v32.__sinval;
-  if (a4)
+  if (annotation)
   {
     [AKGeometryHelper flipPointVertically:v29 * v32.__cosval inRect:v33, -v29, -v29, v29 + v29, v29 + v29];
     v42 = v34;
@@ -243,7 +243,7 @@ LABEL_15:
   }
 
   [AKGeometryHelper centeredCircleToEllipseTransform:v19, v21, v23, v25, *&v33, v31];
-  [AKGeometryHelper convertScreenToModelOrientationForPoint:v8 relativeToRect:vaddq_f64(0 withPageController:vmlaq_n_f64(vmulq_n_f64(0, v41), 0, v42)), v19, v21, v23, v25];
+  [AKGeometryHelper convertScreenToModelOrientationForPoint:controllerCopy relativeToRect:vaddq_f64(0 withPageController:vmlaq_n_f64(vmulq_n_f64(0, v41), 0, v42)), v19, v21, v23, v25];
   v36 = v35;
   v38 = v37;
 

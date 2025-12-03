@@ -1,32 +1,32 @@
 @interface TIReporter
-+ (id)detailedResultFileURLForTrial:(unint64_t)a3 withOptions:(id)a4;
-+ (id)fileURLForTrial:(unint64_t)a3 withOptions:(id)a4;
-+ (id)languageForOptions:(id)a3;
-+ (id)textCorpusForOptions:(id)a3;
++ (id)detailedResultFileURLForTrial:(unint64_t)trial withOptions:(id)options;
++ (id)fileURLForTrial:(unint64_t)trial withOptions:(id)options;
++ (id)languageForOptions:(id)options;
++ (id)textCorpusForOptions:(id)options;
 - (BOOL)shouldConcatenateTokensAtBoundaryError;
 - (NSString)language;
 - (NSString)localeIdentifierForLanguage;
 - (NSString)textCorpus;
-- (TIReporter)initWithBuildVersion:(id)a3;
-- (id)alignedTypingSequenceForResult:(id)a3 keystrokeSegmentationMode:(unint64_t)a4;
-- (id)alignedTypingSequenceForTransliteratedResult:(id)a3;
-- (id)reportForTrial:(unint64_t)a3;
-- (id)resultsForTrial:(unint64_t)a3;
-- (id)summaryForTrial:(unint64_t)a3 dumpResultsToFile:(id)a4;
-- (id)summaryOfAutocorrectionResultsFor:(id)a3 withBlock:(id)a4;
+- (TIReporter)initWithBuildVersion:(id)version;
+- (id)alignedTypingSequenceForResult:(id)result keystrokeSegmentationMode:(unint64_t)mode;
+- (id)alignedTypingSequenceForTransliteratedResult:(id)result;
+- (id)reportForTrial:(unint64_t)trial;
+- (id)resultsForTrial:(unint64_t)trial;
+- (id)summaryForTrial:(unint64_t)trial dumpResultsToFile:(id)file;
+- (id)summaryOfAutocorrectionResultsFor:(id)for withBlock:(id)block;
 - (void)beginLogTrial;
-- (void)collectAggdStatisticsForResult:(id)a3;
-- (void)logResult:(id)a3;
+- (void)collectAggdStatisticsForResult:(id)result;
+- (void)logResult:(id)result;
 @end
 
 @implementation TIReporter
 
-- (id)summaryOfAutocorrectionResultsFor:(id)a3 withBlock:(id)a4
+- (id)summaryOfAutocorrectionResultsFor:(id)for withBlock:(id)block
 {
   v158[24] = *MEMORY[0x277D85DE8];
-  v89 = a3;
-  v86 = a4;
-  v88 = [MEMORY[0x277CBEB38] dictionary];
+  forCopy = for;
+  blockCopy = block;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v153 = 0;
   v154 = &v153;
   v155 = 0x2020000000;
@@ -72,8 +72,8 @@
   v115 = 0x2020000000;
   v116 = 0;
   v6 = objc_opt_new();
-  v7 = [(TIReporter *)self options];
-  v8 = [v7 objectForKey:@"MAX_PREDICTIONS_REPORTED"];
+  options = [(TIReporter *)self options];
+  v8 = [options objectForKey:@"MAX_PREDICTIONS_REPORTED"];
   v9 = v8;
   if (!v8)
   {
@@ -82,8 +82,8 @@
 
   v10 = [(__CFString *)v8 intValue]> 0;
 
-  v11 = [(TIReporter *)self options];
-  v12 = [v11 objectForKey:@"MAX_INLINE_COMPLETIONS_REPORTED"];
+  options2 = [(TIReporter *)self options];
+  v12 = [options2 objectForKey:@"MAX_INLINE_COMPLETIONS_REPORTED"];
   v13 = v12;
   if (!v12)
   {
@@ -92,28 +92,28 @@
 
   v14 = [(__CFString *)v12 intValue]> 0;
 
-  v15 = [(TIReporter *)self options];
-  v16 = [v15 objectForKey:@"REPORT_AGGD_STATISTICS"];
+  options3 = [(TIReporter *)self options];
+  v16 = [options3 objectForKey:@"REPORT_AGGD_STATISTICS"];
   v17 = v16;
   if (!v16)
   {
     v16 = @"0";
   }
 
-  v18 = [(__CFString *)v16 BOOLValue];
+  bOOLValue = [(__CFString *)v16 BOOLValue];
 
-  v19 = [(TIReporter *)self options];
-  v20 = [v19 objectForKey:@"LOG_DOCUMENT_CONTEXT"];
+  options4 = [(TIReporter *)self options];
+  v20 = [options4 objectForKey:@"LOG_DOCUMENT_CONTEXT"];
   v21 = v20;
   if (!v20)
   {
     v20 = MEMORY[0x277CBEC28];
   }
 
-  v22 = [v20 BOOLValue];
+  bOOLValue2 = [v20 BOOLValue];
 
-  v23 = [(TIReporter *)self options];
-  v24 = [v23 objectForKey:@"PREFERS_TRANSLITERATION"];
+  options5 = [(TIReporter *)self options];
+  v24 = [options5 objectForKey:@"PREFERS_TRANSLITERATION"];
   v25 = v24;
   if (!v24)
   {
@@ -122,17 +122,17 @@
 
   self->_isTransliterating = [(__CFString *)v24 BOOLValue];
 
-  v26 = [(TIReporter *)self options];
-  v27 = [v26 objectForKey:@"KEYSTROKE_SEGMENTATION_MODE"];
+  options6 = [(TIReporter *)self options];
+  v27 = [options6 objectForKey:@"KEYSTROKE_SEGMENTATION_MODE"];
 
   if (v27)
   {
-    v28 = [(TIReporter *)self options];
-    v29 = [v28 objectForKey:@"KEYSTROKE_SEGMENTATION_MODE"];
+    options7 = [(TIReporter *)self options];
+    v29 = [options7 objectForKey:@"KEYSTROKE_SEGMENTATION_MODE"];
 
-    v30 = [v29 lowercaseString];
-    v31 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v32 = [v30 stringByTrimmingCharactersInSet:v31];
+    lowercaseString = [v29 lowercaseString];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v32 = [lowercaseString stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
     if ([v32 isEqualToString:@"none"])
     {
@@ -176,17 +176,17 @@
   v107 = v33;
   v103 = &v125;
   v109 = v10;
-  v110 = v22;
+  v110 = bOOLValue2;
   v111 = v14;
   v34 = v6;
   v94 = v34;
   v104 = &v121;
   v105 = &v117;
   v106 = &v113;
-  v112 = v18;
-  v73 = v86;
+  v112 = bOOLValue;
+  v73 = blockCopy;
   v95 = v73;
-  [v89 enumerateResultsWithBlock:v93];
+  [forCopy enumerateResultsWithBlock:v93];
   fputc(10, *MEMORY[0x277D85DF8]);
   v35 = v134[3];
   v36 = v150[3];
@@ -248,50 +248,50 @@
     v48 = v118[3] / v47;
   }
 
-  v49 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v90[0] = MEMORY[0x277D85DD0];
   v90[1] = 3221225472;
   v90[2] = __58__TIReporter_summaryOfAutocorrectionResultsFor_withBlock___block_invoke_2;
   v90[3] = &unk_279DA0BC8;
   v91 = v34;
-  v74 = v49;
+  v74 = dictionary2;
   v92 = v74;
   v72 = v91;
   [v91 enumerateObjectsUsingBlock:v90];
   v157[0] = @"Language";
-  v87 = [(TIReporter *)self language];
-  v50 = v87;
-  if (!v87)
+  language = [(TIReporter *)self language];
+  v50 = language;
+  if (!language)
   {
     v50 = &stru_287EC4808;
   }
 
   v158[0] = v50;
   v157[1] = @"TextCorpus";
-  v85 = [(TIReporter *)self textCorpus];
-  v51 = v85;
-  if (!v85)
+  textCorpus = [(TIReporter *)self textCorpus];
+  v51 = textCorpus;
+  if (!textCorpus)
   {
     v51 = &stru_287EC4808;
   }
 
   v158[1] = v51;
   v157[2] = @"BuildVersion";
-  v84 = [(TIReporter *)self buildVersion];
-  v52 = v84;
-  if (!v84)
+  buildVersion = [(TIReporter *)self buildVersion];
+  v52 = buildVersion;
+  if (!buildVersion)
   {
     v52 = &stru_287EC4808;
   }
 
   v158[2] = v52;
   v157[3] = @"Options";
-  v53 = [(TIReporter *)self options];
-  v83 = v53;
+  options8 = [(TIReporter *)self options];
+  v83 = options8;
   v54 = MEMORY[0x277CBEC10];
-  if (v53)
+  if (options8)
   {
-    v54 = v53;
+    v54 = options8;
   }
 
   v158[3] = v54;
@@ -359,7 +359,7 @@
   v69 = [MEMORY[0x277CCABB0] numberWithFloat:v68];
   v158[23] = v69;
   v70 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v158 forKeys:v157 count:24];
-  [v88 addEntriesFromDictionary:v70];
+  [dictionary addEntriesFromDictionary:v70];
 
   _Block_object_dispose(&v113, 8);
   _Block_object_dispose(&v117, 8);
@@ -373,7 +373,7 @@
   _Block_object_dispose(&v149, 8);
   _Block_object_dispose(&v153, 8);
 
-  return v88;
+  return dictionary;
 }
 
 void __58__TIReporter_summaryOfAutocorrectionResultsFor_withBlock___block_invoke(uint64_t a1, void *a2)
@@ -1009,18 +1009,18 @@ void __58__TIReporter_summaryOfAutocorrectionResultsFor_withBlock___block_invoke
   [*(a1 + 40) setObject:v6 forKeyedSubscript:v4];
 }
 
-- (id)summaryForTrial:(unint64_t)a3 dumpResultsToFile:(id)a4
+- (id)summaryForTrial:(unint64_t)trial dumpResultsToFile:(id)file
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(TIReporter *)self resultLoggers];
-  v8 = [v7 objectAtIndex:a3];
+  fileCopy = file;
+  resultLoggers = [(TIReporter *)self resultLoggers];
+  v8 = [resultLoggers objectAtIndex:trial];
 
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
   v36 = 1;
-  v9 = [v6 URLByDeletingLastPathComponent];
+  uRLByDeletingLastPathComponent = [fileCopy URLByDeletingLastPathComponent];
   v10 = v34;
   if (*(v34 + 24) != 1)
   {
@@ -1029,9 +1029,9 @@ void __58__TIReporter_summaryOfAutocorrectionResultsFor_withBlock___block_invoke
     goto LABEL_7;
   }
 
-  v11 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v32 = 0;
-  v12 = [v11 createDirectoryAtURL:v9 withIntermediateDirectories:1 attributes:0 error:&v32];
+  v12 = [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v32];
   v13 = v32;
   *(v34 + 24) = v12;
 
@@ -1043,25 +1043,25 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v14 = [MEMORY[0x277CCAA00] defaultManager];
-  v15 = [v6 path];
-  v16 = [MEMORY[0x277CBEA90] data];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+  path = [fileCopy path];
+  data = [MEMORY[0x277CBEA90] data];
   v39 = *MEMORY[0x277CCA1B0];
   v40[0] = *MEMORY[0x277CCA1B8];
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:&v39 count:1];
-  v18 = [v14 createFileAtPath:v15 contents:v16 attributes:v17];
+  v18 = [defaultManager2 createFileAtPath:path contents:data attributes:v17];
   *(v34 + 24) = v18;
 
   if (v34[3])
   {
-    v19 = [MEMORY[0x277CBEB78] outputStreamWithURL:v6 append:1];
-    [v19 open];
-    v20 = [v19 streamError];
+    path3 = [MEMORY[0x277CBEB78] outputStreamWithURL:fileCopy append:1];
+    [path3 open];
+    streamError = [path3 streamError];
 
-    if (v20)
+    if (streamError)
     {
-      v21 = [v6 path];
-      NSLog(&cfstr_ErrorOpeningTh.isa, v21, v20);
+      path2 = [fileCopy path];
+      NSLog(&cfstr_ErrorOpeningTh.isa, path2, streamError);
       v22 = MEMORY[0x277CBEC10];
     }
 
@@ -1072,28 +1072,28 @@ LABEL_7:
       v27[2] = __48__TIReporter_summaryForTrial_dumpResultsToFile___block_invoke;
       v27[3] = &unk_279DA0B78;
       v31 = &v33;
-      v24 = v19;
+      v24 = path3;
       v28 = v24;
-      v29 = v6;
+      v29 = fileCopy;
       v30 = 0;
       v22 = [(TIReporter *)self summaryOfAutocorrectionResultsFor:v8 withBlock:v27];
       [v24 close];
       v37 = @"TrialIndex";
-      v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+      v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:trial];
       v38 = v25;
       v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
       [v22 addEntriesFromDictionary:v26];
 
-      v21 = v28;
+      path2 = v28;
     }
 
     goto LABEL_9;
   }
 
 LABEL_8:
-  v20 = v13;
-  v19 = [v6 path];
-  NSLog(&cfstr_ErrorCreatingT.isa, v19, v13);
+  streamError = v13;
+  path3 = [fileCopy path];
+  NSLog(&cfstr_ErrorCreatingT.isa, path3, v13);
   v22 = MEMORY[0x277CBEC10];
 LABEL_9:
 
@@ -1134,23 +1134,23 @@ void __48__TIReporter_summaryForTrial_dumpResultsToFile___block_invoke(uint64_t 
   }
 }
 
-- (id)reportForTrial:(unint64_t)a3
+- (id)reportForTrial:(unint64_t)trial
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v5 = [(TIReporter *)self resultLoggers];
-  v6 = [v5 objectAtIndex:a3];
+  resultLoggers = [(TIReporter *)self resultLoggers];
+  v6 = [resultLoggers objectAtIndex:trial];
 
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __29__TIReporter_reportForTrial___block_invoke;
   v16 = &unk_279DA0B50;
-  v17 = v7;
-  v8 = v7;
+  v17 = array;
+  v8 = array;
   v9 = [(TIReporter *)self summaryOfAutocorrectionResultsFor:v6 withBlock:&v13];
   [v9 setObject:v8 forKeyedSubscript:{@"Results", v13, v14, v15, v16}];
   v18 = @"TrialIndex";
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:trial];
   v19[0] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
   [v9 addEntriesFromDictionary:v11];
@@ -1158,12 +1158,12 @@ void __48__TIReporter_summaryForTrial_dumpResultsToFile___block_invoke(uint64_t 
   return v9;
 }
 
-- (id)alignedTypingSequenceForTransliteratedResult:(id)a3
+- (id)alignedTypingSequenceForTransliteratedResult:(id)result
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [v3 intended];
-  v6 = [v5 count];
+  resultCopy = result;
+  array = [MEMORY[0x277CBEB18] array];
+  intended = [resultCopy intended];
+  v6 = [intended count];
 
   if (v6)
   {
@@ -1171,72 +1171,72 @@ void __48__TIReporter_summaryForTrial_dumpResultsToFile___block_invoke(uint64_t 
     do
     {
       v8 = objc_alloc_init(TIAlignedTyping);
-      v9 = [v3 intendedTransliteration];
-      v10 = [v9 objectAtIndex:v7];
+      intendedTransliteration = [resultCopy intendedTransliteration];
+      v10 = [intendedTransliteration objectAtIndex:v7];
       [(TIAlignedTokens *)v8 setSource:v10];
 
-      v11 = [v3 intended];
-      v12 = [v11 objectAtIndex:v7];
+      intended2 = [resultCopy intended];
+      v12 = [intended2 objectAtIndex:v7];
       [(TIAlignedTokens *)v8 setSourceTransliteration:v12];
 
-      v13 = [v3 touched];
-      v14 = [v13 objectAtIndex:v7];
+      touched = [resultCopy touched];
+      v14 = [touched objectAtIndex:v7];
       [(TIAlignedTyping *)v8 setTouched:v14];
 
-      v15 = [v3 inserted];
-      v16 = [v15 objectAtIndex:v7];
+      inserted = [resultCopy inserted];
+      v16 = [inserted objectAtIndex:v7];
       [(TIAlignedTyping *)v8 setInserted:v16];
 
-      v17 = [v3 corrected];
-      v18 = [v17 objectAtIndex:v7];
+      corrected = [resultCopy corrected];
+      v18 = [corrected objectAtIndex:v7];
       [(TIAlignedTokens *)v8 setTarget:v18];
 
-      v19 = [v3 predicted];
-      v20 = [v19 objectAtIndex:v7];
+      predicted = [resultCopy predicted];
+      v20 = [predicted objectAtIndex:v7];
       [(TIAlignedTyping *)v8 setPredicted:v20];
 
-      v21 = [v3 inlineCompletions];
-      v22 = [v21 objectAtIndex:v7];
+      inlineCompletions = [resultCopy inlineCompletions];
+      v22 = [inlineCompletions objectAtIndex:v7];
       [(TIAlignedTyping *)v8 setInlineCompletions:v22];
 
       v23 = [MEMORY[0x277CCABB0] numberWithInteger:v7];
-      v24 = [v3 pathsForWords];
-      v25 = [v24 objectForKey:v23];
+      pathsForWords = [resultCopy pathsForWords];
+      v25 = [pathsForWords objectForKey:v23];
 
       if (v25)
       {
-        v26 = [v3 pathsForWords];
-        v27 = [v26 objectForKeyedSubscript:v23];
+        pathsForWords2 = [resultCopy pathsForWords];
+        v27 = [pathsForWords2 objectForKeyedSubscript:v23];
 
         [(TIAlignedTyping *)v8 setPath:v27];
       }
 
-      [v4 addObject:v8];
+      [array addObject:v8];
 
       ++v7;
-      v28 = [v3 intended];
-      v29 = [v28 count];
+      intended3 = [resultCopy intended];
+      v29 = [intended3 count];
     }
 
     while (v7 < v29);
   }
 
-  return v4;
+  return array;
 }
 
-- (id)alignedTypingSequenceForResult:(id)a3 keystrokeSegmentationMode:(unint64_t)a4
+- (id)alignedTypingSequenceForResult:(id)result keystrokeSegmentationMode:(unint64_t)mode
 {
   v130 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 intended];
-  v8 = TICharSequenceForTokenSequence(v7);
+  resultCopy = result;
+  intended = [resultCopy intended];
+  v8 = TICharSequenceForTokenSequence(intended);
 
-  v9 = [v6 corrected];
-  v10 = TICharSequenceForTokenSequence(v9);
+  corrected = [resultCopy corrected];
+  v10 = TICharSequenceForTokenSequence(corrected);
 
   v11 = MEMORY[0x277CBEAF8];
-  v12 = [(TIReporter *)self language];
-  v13 = [v11 localeWithLocaleIdentifier:v12];
+  language = [(TIReporter *)self language];
+  v13 = [v11 localeWithLocaleIdentifier:language];
 
   v123[0] = MEMORY[0x277D85DD0];
   v123[1] = 3221225472;
@@ -1246,25 +1246,25 @@ void __48__TIReporter_summaryForTrial_dumpResultsToFile___block_invoke(uint64_t 
   v124 = v14;
   v15 = MEMORY[0x26D6C0D70](v123);
   v16 = TIOptimalSequenceAlignment(v8, v10, v15);
-  v17 = [v6 intended];
-  v88 = [v6 corrected];
-  TITokenAlignmentForKeyAlignment(v16, v8, v10, v17, v88);
-  v94 = v93 = v6;
+  intended2 = [resultCopy intended];
+  corrected2 = [resultCopy corrected];
+  TITokenAlignmentForKeyAlignment(v16, v8, v10, intended2, corrected2);
+  v94 = v93 = resultCopy;
   v91 = v14;
   v92 = v8;
   v89 = v16;
   v90 = v15;
-  if (a4 == 2)
+  if (mode == 2)
   {
-    v86 = self;
+    selfCopy = self;
     v87 = v10;
-    v27 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v119 = 0u;
     v120 = 0u;
     v121 = 0u;
     v122 = 0u;
-    v28 = [v6 inserted];
-    v29 = [v28 countByEnumeratingWithState:&v119 objects:v129 count:16];
+    inserted = [resultCopy inserted];
+    v29 = [inserted countByEnumeratingWithState:&v119 objects:v129 count:16];
     if (v29)
     {
       v30 = v29;
@@ -1275,32 +1275,32 @@ void __48__TIReporter_summaryForTrial_dumpResultsToFile___block_invoke(uint64_t 
         {
           if (*v120 != v31)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(inserted);
           }
 
-          [v27 addObjectsFromArray:*(*(&v119 + 1) + 8 * i)];
+          [array addObjectsFromArray:*(*(&v119 + 1) + 8 * i)];
         }
 
-        v30 = [v28 countByEnumeratingWithState:&v119 objects:v129 count:16];
+        v30 = [inserted countByEnumeratingWithState:&v119 objects:v129 count:16];
       }
 
       while (v30);
     }
 
-    v33 = TICharSequenceForTokenSequence(v27);
+    v33 = TICharSequenceForTokenSequence(array);
     v34 = TIOptimalSequenceAlignment(v8, v33, v15);
     v83 = &v81;
     v84 = v33;
     v85 = v34;
-    v102 = (&v81 - ((16 * [v17 count] + 31) & 0xFFFFFFFFFFFFFFF0));
-    TITargetKeyRangesForSourceTokens(v34, v8, v84, v17, v84, v102);
-    v35 = [MEMORY[0x277CBEB18] array];
+    v102 = (&v81 - ((16 * [intended2 count] + 31) & 0xFFFFFFFFFFFFFFF0));
+    TITargetKeyRangesForSourceTokens(v34, v8, v84, intended2, v84, v102);
+    array2 = [MEMORY[0x277CBEB18] array];
     v115 = 0u;
     v116 = 0u;
     v117 = 0u;
     v118 = 0u;
-    v36 = [v6 touched];
-    v37 = [v36 countByEnumeratingWithState:&v115 objects:v128 count:16];
+    touched = [resultCopy touched];
+    v37 = [touched countByEnumeratingWithState:&v115 objects:v128 count:16];
     if (v37)
     {
       v38 = v37;
@@ -1311,25 +1311,25 @@ void __48__TIReporter_summaryForTrial_dumpResultsToFile___block_invoke(uint64_t 
         {
           if (*v116 != v39)
           {
-            objc_enumerationMutation(v36);
+            objc_enumerationMutation(touched);
           }
 
-          [v35 addObjectsFromArray:*(*(&v115 + 1) + 8 * j)];
+          [array2 addObjectsFromArray:*(*(&v115 + 1) + 8 * j)];
         }
 
-        v38 = [v36 countByEnumeratingWithState:&v115 objects:v128 count:16];
+        v38 = [touched countByEnumeratingWithState:&v115 objects:v128 count:16];
       }
 
       while (v38);
     }
 
-    v41 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     v111 = 0u;
     v112 = 0u;
     v113 = 0u;
     v114 = 0u;
-    v42 = [v6 predicted];
-    v43 = [v42 countByEnumeratingWithState:&v111 objects:v127 count:16];
+    predicted = [resultCopy predicted];
+    v43 = [predicted countByEnumeratingWithState:&v111 objects:v127 count:16];
     if (v43)
     {
       v44 = v43;
@@ -1340,27 +1340,27 @@ void __48__TIReporter_summaryForTrial_dumpResultsToFile___block_invoke(uint64_t 
         {
           if (*v112 != v45)
           {
-            objc_enumerationMutation(v42);
+            objc_enumerationMutation(predicted);
           }
 
-          [v41 addObjectsFromArray:*(*(&v111 + 1) + 8 * k)];
+          [array3 addObjectsFromArray:*(*(&v111 + 1) + 8 * k)];
         }
 
-        v44 = [v42 countByEnumeratingWithState:&v111 objects:v127 count:16];
+        v44 = [predicted countByEnumeratingWithState:&v111 objects:v127 count:16];
       }
 
       while (v44);
     }
 
-    v96 = v17;
+    v96 = intended2;
 
-    v47 = [MEMORY[0x277CBEB18] array];
+    array4 = [MEMORY[0x277CBEB18] array];
     v107 = 0u;
     v108 = 0u;
     v109 = 0u;
     v110 = 0u;
-    v48 = [v6 inlineCompletions];
-    v49 = [v48 countByEnumeratingWithState:&v107 objects:v126 count:16];
+    inlineCompletions = [resultCopy inlineCompletions];
+    v49 = [inlineCompletions countByEnumeratingWithState:&v107 objects:v126 count:16];
     if (v49)
     {
       v50 = v49;
@@ -1371,25 +1371,25 @@ void __48__TIReporter_summaryForTrial_dumpResultsToFile___block_invoke(uint64_t 
         {
           if (*v108 != v51)
           {
-            objc_enumerationMutation(v48);
+            objc_enumerationMutation(inlineCompletions);
           }
 
-          [v47 addObjectsFromArray:*(*(&v107 + 1) + 8 * m)];
+          [array4 addObjectsFromArray:*(*(&v107 + 1) + 8 * m)];
         }
 
-        v50 = [v48 countByEnumeratingWithState:&v107 objects:v126 count:16];
+        v50 = [inlineCompletions countByEnumeratingWithState:&v107 objects:v126 count:16];
       }
 
       while (v50);
     }
 
-    v53 = [MEMORY[0x277CBEB18] array];
+    array5 = [MEMORY[0x277CBEB18] array];
     v103 = 0u;
     v104 = 0u;
     v105 = 0u;
     v106 = 0u;
-    v54 = [v93 documentStates];
-    v55 = [v54 countByEnumeratingWithState:&v103 objects:v125 count:16];
+    documentStates = [v93 documentStates];
+    v55 = [documentStates countByEnumeratingWithState:&v103 objects:v125 count:16];
     if (v55)
     {
       v56 = v55;
@@ -1400,101 +1400,101 @@ void __48__TIReporter_summaryForTrial_dumpResultsToFile___block_invoke(uint64_t 
         {
           if (*v104 != v57)
           {
-            objc_enumerationMutation(v54);
+            objc_enumerationMutation(documentStates);
           }
 
-          [v53 addObjectsFromArray:*(*(&v103 + 1) + 8 * n)];
+          [array5 addObjectsFromArray:*(*(&v103 + 1) + 8 * n)];
         }
 
-        v56 = [v54 countByEnumeratingWithState:&v103 objects:v125 count:16];
+        v56 = [documentStates countByEnumeratingWithState:&v103 objects:v125 count:16];
       }
 
       while (v56);
     }
 
-    v101 = [MEMORY[0x277CBEB18] array];
-    v100 = [MEMORY[0x277CBEB18] array];
-    v99 = [MEMORY[0x277CBEB18] array];
-    v98 = [MEMORY[0x277CBEB18] array];
-    v97 = [MEMORY[0x277CBEB18] array];
-    v17 = v96;
+    array6 = [MEMORY[0x277CBEB18] array];
+    array7 = [MEMORY[0x277CBEB18] array];
+    array8 = [MEMORY[0x277CBEB18] array];
+    array9 = [MEMORY[0x277CBEB18] array];
+    array10 = [MEMORY[0x277CBEB18] array];
+    intended2 = v96;
     if ([v96 count])
     {
       v59 = 0;
       v60 = v102 + 1;
-      v95 = v27;
+      v95 = array;
       do
       {
         v61 = *(v60 - 1);
         if (v61 == 0x7FFFFFFFFFFFFFFFLL)
         {
           v62 = MEMORY[0x277CBEBF8];
-          [v101 addObject:MEMORY[0x277CBEBF8]];
-          [v100 addObject:v62];
-          [v99 addObject:v62];
-          [v97 addObject:v62];
-          [v98 addObject:v62];
+          [array6 addObject:MEMORY[0x277CBEBF8]];
+          [array7 addObject:v62];
+          [array8 addObject:v62];
+          [array10 addObject:v62];
+          [array9 addObject:v62];
         }
 
         else
         {
           v102 = *v60;
-          v63 = [v27 subarrayWithRange:v61];
-          [v101 addObject:v63];
+          v63 = [array subarrayWithRange:v61];
+          [array6 addObject:v63];
 
-          v64 = [v35 subarrayWithRange:{v61, v102}];
-          [v100 addObject:v64];
+          v64 = [array2 subarrayWithRange:{v61, v102}];
+          [array7 addObject:v64];
 
           v65 = v102;
-          v66 = [v41 subarrayWithRange:{v61, v102}];
-          [v99 addObject:v66];
+          v66 = [array3 subarrayWithRange:{v61, v102}];
+          [array8 addObject:v66];
 
-          v67 = [v47 subarrayWithRange:{v61, v65}];
-          [v98 addObject:v67];
+          v67 = [array4 subarrayWithRange:{v61, v65}];
+          [array9 addObject:v67];
 
           v68 = v65;
-          v27 = v95;
-          v17 = v96;
-          v69 = [v53 subarrayWithRange:{v61, v68}];
-          [v97 addObject:v69];
+          array = v95;
+          intended2 = v96;
+          v69 = [array5 subarrayWithRange:{v61, v68}];
+          [array10 addObject:v69];
         }
 
         ++v59;
         v60 += 2;
       }
 
-      while (v59 < [v17 count]);
+      while (v59 < [intended2 count]);
     }
 
-    v102 = [v101 copy];
-    v96 = [v100 copy];
-    v82 = [v99 copy];
-    v70 = v98;
-    v81 = [v98 copy];
-    v71 = v97;
-    v26 = [v97 copy];
+    v102 = [array6 copy];
+    v96 = [array7 copy];
+    v82 = [array8 copy];
+    v70 = array9;
+    v81 = [array9 copy];
+    v71 = array10;
+    v26 = [array10 copy];
 
     v72 = v84;
-    v18 = v102;
+    inserted2 = v102;
 
     v23 = v81;
     v24 = v82;
     v25 = v96;
-    self = v86;
+    self = selfCopy;
     v10 = v87;
   }
 
-  else if (a4 == 1)
+  else if (mode == 1)
   {
-    v18 = [v6 inserted];
-    v19 = [v6 touched];
-    v20 = [v6 predicted];
-    v21 = [v6 inlineCompletions];
-    v22 = [v6 documentStates];
-    v23 = v21;
-    v24 = v20;
-    v25 = v19;
-    v26 = v22;
+    inserted2 = [resultCopy inserted];
+    touched2 = [resultCopy touched];
+    predicted2 = [resultCopy predicted];
+    inlineCompletions2 = [resultCopy inlineCompletions];
+    documentStates2 = [resultCopy documentStates];
+    v23 = inlineCompletions2;
+    v24 = predicted2;
+    v25 = touched2;
+    v26 = documentStates2;
   }
 
   else
@@ -1503,21 +1503,21 @@ void __48__TIReporter_summaryForTrial_dumpResultsToFile___block_invoke(uint64_t 
     v23 = MEMORY[0x277CBEBF8];
     v24 = MEMORY[0x277CBEBF8];
     v25 = MEMORY[0x277CBEBF8];
-    v18 = MEMORY[0x277CBEBF8];
+    inserted2 = MEMORY[0x277CBEBF8];
   }
 
-  v73 = v18;
+  v73 = inserted2;
   v74 = v25;
   v75 = v24;
   v76 = v23;
-  v77 = TIAlignedTypingSequenceForAlignedTokenSequence(v94, v18, v25, v24, v23, v26);
+  v77 = TIAlignedTypingSequenceForAlignedTokenSequence(v94, inserted2, v25, v24, v23, v26);
   if (v77 && [(TIReporter *)self shouldConcatenateTokensAtBoundaryError])
   {
     TIConcatenateAlignedTypingAtBoundaryErrors(v77);
-    v79 = v78 = v17;
+    v79 = v78 = intended2;
 
     v77 = v79;
-    v17 = v78;
+    intended2 = v78;
   }
 
   return v77;
@@ -1534,77 +1534,77 @@ BOOL __71__TIReporter_alignedTypingSequenceForResult_keystrokeSegmentationMode__
 
 - (BOOL)shouldConcatenateTokensAtBoundaryError
 {
-  v2 = [(TIReporter *)self localeIdentifierForLanguage];
+  localeIdentifierForLanguage = [(TIReporter *)self localeIdentifierForLanguage];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__TIReporter_shouldConcatenateTokensAtBoundaryError__block_invoke;
   v7[3] = &unk_279DA0B00;
-  v8 = v2;
-  v3 = v2;
+  v8 = localeIdentifierForLanguage;
+  v3 = localeIdentifierForLanguage;
   v4 = [&unk_287ED4AC0 indexesOfObjectsPassingTest:v7];
   v5 = [v4 count] == 0;
 
   return v5;
 }
 
-- (id)resultsForTrial:(unint64_t)a3
+- (id)resultsForTrial:(unint64_t)trial
 {
-  v4 = [(TIReporter *)self resultLoggers];
-  v5 = [v4 objectAtIndex:a3];
-  v6 = [v5 allResults];
+  resultLoggers = [(TIReporter *)self resultLoggers];
+  v5 = [resultLoggers objectAtIndex:trial];
+  allResults = [v5 allResults];
 
-  return v6;
+  return allResults;
 }
 
-- (void)collectAggdStatisticsForResult:(id)a3
+- (void)collectAggdStatisticsForResult:(id)result
 {
   v3 = MEMORY[0x277CCAAC8];
-  v4 = a3;
+  resultCopy = result;
   v5 = objc_opt_class();
   v6 = MEMORY[0x277CCAAB0];
-  v7 = [__aggdReportMock toDictionary];
-  v8 = [v6 archivedDataWithRootObject:v7 requiringSecureCoding:0 error:0];
+  toDictionary = [__aggdReportMock toDictionary];
+  v8 = [v6 archivedDataWithRootObject:toDictionary requiringSecureCoding:0 error:0];
   v9 = [v3 unarchivedObjectOfClass:v5 fromData:v8 error:0];
-  [v4 setAggdStatistics:v9];
+  [resultCopy setAggdStatistics:v9];
 
   v10 = __aggdReportMock;
 
   [v10 clear];
 }
 
-- (void)logResult:(id)a3
+- (void)logResult:(id)result
 {
-  v9 = a3;
-  v4 = [(TIReporter *)self options];
-  v5 = [v4 objectForKey:@"REPORT_AGGD_STATISTICS"];
-  v6 = [v5 BOOLValue];
+  resultCopy = result;
+  options = [(TIReporter *)self options];
+  v5 = [options objectForKey:@"REPORT_AGGD_STATISTICS"];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
-    [(TIReporter *)self collectAggdStatisticsForResult:v9];
+    [(TIReporter *)self collectAggdStatisticsForResult:resultCopy];
   }
 
-  v7 = [(TIReporter *)self resultLoggers];
-  v8 = [v7 lastObject];
+  resultLoggers = [(TIReporter *)self resultLoggers];
+  lastObject = [resultLoggers lastObject];
 
-  [v8 addResult:v9];
+  [lastObject addResult:resultCopy];
 }
 
 - (void)beginLogTrial
 {
-  v3 = [(TIReporter *)self options];
-  v4 = [v3 valueForKey:@"USE_PARTFILE"];
-  v5 = [v4 BOOLValue];
+  options = [(TIReporter *)self options];
+  v4 = [options valueForKey:@"USE_PARTFILE"];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
-    v6 = [(TIReporter *)self options];
-    v7 = [v6 valueForKey:@"PARTFILE_FLUSH_THRESHOLD"];
+    options2 = [(TIReporter *)self options];
+    v7 = [options2 valueForKey:@"PARTFILE_FLUSH_THRESHOLD"];
 
     v8 = objc_opt_class();
     v9 = [(NSMutableArray *)self->_resultLoggers count];
-    v10 = [(TIReporter *)self options];
-    v11 = [v8 fileURLForTrial:v9 withOptions:v10];
+    options3 = [(TIReporter *)self options];
+    v11 = [v8 fileURLForTrial:v9 withOptions:options3];
 
     v14 = [[TISerializingResultLogger alloc] initWithOutputURL:v11 flushThreshold:v7];
   }
@@ -1623,49 +1623,49 @@ BOOL __71__TIReporter_alignedTypingSequenceForResult_keystrokeSegmentationMode__
 - (NSString)textCorpus
 {
   v3 = objc_opt_class();
-  v4 = [(TIReporter *)self options];
-  v5 = [v3 textCorpusForOptions:v4];
+  options = [(TIReporter *)self options];
+  v5 = [v3 textCorpusForOptions:options];
 
   return v5;
 }
 
 - (NSString)localeIdentifierForLanguage
 {
-  v2 = [(TIReporter *)self language];
-  v3 = [v2 rangeOfString:@"-"];
+  language = [(TIReporter *)self language];
+  v3 = [language rangeOfString:@"-"];
   if (v3 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [v2 substringToIndex:v3];
+    v4 = [language substringToIndex:v3];
 
-    v2 = v4;
+    language = v4;
   }
 
-  if ([v2 hasPrefix:@"zh"])
+  if ([language hasPrefix:@"zh"])
   {
-    v5 = [v2 rangeOfString:@"_"];
+    v5 = [language rangeOfString:@"_"];
     if (v5 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v7 = [v2 stringByReplacingOccurrencesOfString:@"_" withString:@"-" options:0 range:{v5, v6}];
+      v7 = [language stringByReplacingOccurrencesOfString:@"_" withString:@"-" options:0 range:{v5, v6}];
 
-      v2 = v7;
+      language = v7;
     }
   }
 
-  return v2;
+  return language;
 }
 
 - (NSString)language
 {
   v3 = objc_opt_class();
-  v4 = [(TIReporter *)self options];
-  v5 = [v3 languageForOptions:v4];
+  options = [(TIReporter *)self options];
+  v5 = [v3 languageForOptions:options];
 
   return v5;
 }
 
-- (TIReporter)initWithBuildVersion:(id)a3
+- (TIReporter)initWithBuildVersion:(id)version
 {
-  v5 = a3;
+  versionCopy = version;
   v10.receiver = self;
   v10.super_class = TIReporter;
   v6 = [(TIReporter *)&v10 init];
@@ -1675,18 +1675,18 @@ BOOL __71__TIReporter_alignedTypingSequenceForResult_keystrokeSegmentationMode__
     resultLoggers = v6->_resultLoggers;
     v6->_resultLoggers = v7;
 
-    objc_storeStrong(&v6->_buildVersion, a3);
+    objc_storeStrong(&v6->_buildVersion, version);
   }
 
   return v6;
 }
 
-+ (id)detailedResultFileURLForTrial:(unint64_t)a3 withOptions:(id)a4
++ (id)detailedResultFileURLForTrial:(unint64_t)trial withOptions:(id)options
 {
-  v5 = a4;
-  v6 = [objc_opt_class() languageForOptions:v5];
-  v7 = [objc_opt_class() textCorpusForOptions:v5];
-  v8 = [v5 valueForKey:@"OUTPATH"];
+  optionsCopy = options;
+  v6 = [objc_opt_class() languageForOptions:optionsCopy];
+  v7 = [objc_opt_class() textCorpusForOptions:optionsCopy];
+  v8 = [optionsCopy valueForKey:@"OUTPATH"];
 
   v9 = @"./";
   if (v8)
@@ -1696,20 +1696,20 @@ BOOL __71__TIReporter_alignedTypingSequenceForResult_keystrokeSegmentationMode__
 
   v10 = v9;
 
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"test-typer-%@-%@-trial%03lu-detailed-results.jsonl", v6, v7, a3];
-  v12 = [(__CFString *)v10 stringByAppendingPathComponent:v11];
+  trial = [MEMORY[0x277CCACA8] stringWithFormat:@"test-typer-%@-%@-trial%03lu-detailed-results.jsonl", v6, v7, trial];
+  v12 = [(__CFString *)v10 stringByAppendingPathComponent:trial];
 
   v13 = [MEMORY[0x277CBEBC0] fileURLWithPath:v12];
 
   return v13;
 }
 
-+ (id)fileURLForTrial:(unint64_t)a3 withOptions:(id)a4
++ (id)fileURLForTrial:(unint64_t)trial withOptions:(id)options
 {
-  v5 = a4;
-  v6 = [objc_opt_class() languageForOptions:v5];
-  v7 = [objc_opt_class() textCorpusForOptions:v5];
-  v8 = [v5 valueForKey:@"OUTPATH"];
+  optionsCopy = options;
+  v6 = [objc_opt_class() languageForOptions:optionsCopy];
+  v7 = [objc_opt_class() textCorpusForOptions:optionsCopy];
+  v8 = [optionsCopy valueForKey:@"OUTPATH"];
 
   v9 = @"./";
   if (v8)
@@ -1719,45 +1719,45 @@ BOOL __71__TIReporter_alignedTypingSequenceForResult_keystrokeSegmentationMode__
 
   v10 = v9;
 
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"test-typer-%@-%@-trial%03lu.json", v6, v7, a3];
-  v12 = [(__CFString *)v10 stringByAppendingPathComponent:v11];
+  trial = [MEMORY[0x277CCACA8] stringWithFormat:@"test-typer-%@-%@-trial%03lu.json", v6, v7, trial];
+  v12 = [(__CFString *)v10 stringByAppendingPathComponent:trial];
 
   v13 = [MEMORY[0x277CBEBC0] fileURLWithPath:v12];
 
   return v13;
 }
 
-+ (id)textCorpusForOptions:(id)a3
++ (id)textCorpusForOptions:(id)options
 {
-  v3 = a3;
-  v4 = [v3 valueForKey:@"TEXT"];
-  if (v4 || ([v3 valueForKey:@"CANDIDATE_SENTENCES"], (v4 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v3, "valueForKey:", @"CANDIDATE_PHRASES"), (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  optionsCopy = options;
+  v4 = [optionsCopy valueForKey:@"TEXT"];
+  if (v4 || ([optionsCopy valueForKey:@"CANDIDATE_SENTENCES"], (v4 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(optionsCopy, "valueForKey:", @"CANDIDATE_PHRASES"), (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v5 = v4;
+    lastPathComponent = v4;
   }
 
   else
   {
-    v10 = [v3 valueForKey:@"TESTCASE"];
-    v5 = [v10 lastPathComponent];
+    v10 = [optionsCopy valueForKey:@"TESTCASE"];
+    lastPathComponent = [v10 lastPathComponent];
   }
 
-  v6 = [v5 lastPathComponent];
+  v5LastPathComponent = [lastPathComponent lastPathComponent];
 
-  v7 = [v6 rangeOfString:@"." options:4];
+  v7 = [v5LastPathComponent rangeOfString:@"." options:4];
   if (v7 && v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [v6 substringToIndex:v7];
+    v8 = [v5LastPathComponent substringToIndex:v7];
 
-    v6 = v8;
+    v5LastPathComponent = v8;
   }
 
-  return v6;
+  return v5LastPathComponent;
 }
 
-+ (id)languageForOptions:(id)a3
++ (id)languageForOptions:(id)options
 {
-  v3 = [a3 objectForKey:@"KEYBOARD_LANGUAGE"];
+  v3 = [options objectForKey:@"KEYBOARD_LANGUAGE"];
   v4 = v3;
   if (v3)
   {

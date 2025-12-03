@@ -1,29 +1,29 @@
 @interface _NFTrustSession
-+ (id)validateEntitlements:(id)a3;
++ (id)validateEntitlements:(id)entitlements;
 - (BOOL)willStartSession;
-- (_NFTrustSession)initWithRemoteObject:(id)a3 workQueue:(id)a4;
-- (id)deleteDBKey:(id)a3;
-- (id)getListOfKeysWithError:(id *)a3;
+- (_NFTrustSession)initWithRemoteObject:(id)object workQueue:(id)queue;
+- (id)deleteDBKey:(id)key;
+- (id)getListOfKeysWithError:(id *)error;
 - (id)selectInstance;
-- (unint64_t)getNumberOfKeys:(id *)a3;
-- (void)createKey:(id)a3 cresteKeyRequest:(id)a4 completion:(id)a5;
-- (void)deleteKey:(id)a3 completion:(id)a4;
+- (unint64_t)getNumberOfKeys:(id *)keys;
+- (void)createKey:(id)key cresteKeyRequest:(id)request completion:(id)completion;
+- (void)deleteKey:(id)key completion:(id)completion;
 - (void)deselectInstance;
-- (void)didStartSession:(id)a3;
-- (void)listKeysWithCompletion:(id)a3;
-- (void)signWithKey:(id)a3 signRequest:(id)a4 paymentRequest:(id)a5 authorization:(id)a6 completion:(id)a7;
+- (void)didStartSession:(id)session;
+- (void)listKeysWithCompletion:(id)completion;
+- (void)signWithKey:(id)key signRequest:(id)request paymentRequest:(id)paymentRequest authorization:(id)authorization completion:(id)completion;
 @end
 
 @implementation _NFTrustSession
 
-+ (id)validateEntitlements:(id)a3
++ (id)validateEntitlements:(id)entitlements
 {
-  v5 = a3;
-  v6 = [v5 applicationIdentifier];
+  entitlementsCopy = entitlements;
+  applicationIdentifier = [entitlementsCopy applicationIdentifier];
 
-  if (v6)
+  if (applicationIdentifier)
   {
-    if ([v5 purpleTrustAccess])
+    if ([entitlementsCopy purpleTrustAccess])
     {
       v7 = 0;
       goto LABEL_25;
@@ -34,9 +34,9 @@
     if (Logger)
     {
       v21 = Logger;
-      Class = object_getClass(a1);
+      Class = object_getClass(self);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(a1);
+      ClassName = object_getClassName(self);
       Name = sel_getName(a2);
       v25 = 45;
       if (isMetaClass)
@@ -51,7 +51,7 @@
     v26 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      v27 = object_getClass(a1);
+      v27 = object_getClass(self);
       if (class_isMetaClass(v27))
       {
         v28 = 43;
@@ -65,7 +65,7 @@
       *buf = 67109890;
       v41 = v28;
       v42 = 2082;
-      v43 = object_getClassName(a1);
+      v43 = object_getClassName(self);
       v44 = 2082;
       v45 = sel_getName(a2);
       v46 = 1024;
@@ -97,9 +97,9 @@
     if (v8)
     {
       v9 = v8;
-      v10 = object_getClass(a1);
+      v10 = object_getClass(self);
       v11 = class_isMetaClass(v10);
-      v33 = object_getClassName(a1);
+      v33 = object_getClassName(self);
       v34 = sel_getName(a2);
       v12 = 45;
       if (v11)
@@ -114,7 +114,7 @@
     v13 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = object_getClass(a1);
+      v14 = object_getClass(self);
       if (class_isMetaClass(v14))
       {
         v15 = 43;
@@ -128,7 +128,7 @@
       *buf = 67110146;
       v41 = v15;
       v42 = 2082;
-      v43 = object_getClassName(a1);
+      v43 = object_getClassName(self);
       v44 = 2082;
       v45 = sel_getName(a2);
       v46 = 1024;
@@ -152,11 +152,11 @@ LABEL_25:
   return v7;
 }
 
-- (_NFTrustSession)initWithRemoteObject:(id)a3 workQueue:(id)a4
+- (_NFTrustSession)initWithRemoteObject:(id)object workQueue:(id)queue
 {
   v50.receiver = self;
   v50.super_class = _NFTrustSession;
-  v5 = [(_NFXPCSession *)&v50 initWithRemoteObject:a3 workQueue:a4];
+  v5 = [(_NFXPCSession *)&v50 initWithRemoteObject:object workQueue:queue];
   if (!v5)
   {
     goto LABEL_27;
@@ -165,9 +165,9 @@ LABEL_25:
   v6 = sub_10001F6E4();
   [(_NFTrustSession *)v5 setTrustDB:v6];
 
-  v7 = [(_NFTrustSession *)v5 trustDB];
+  trustDB = [(_NFTrustSession *)v5 trustDB];
 
-  if (!v7)
+  if (!trustDB)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
@@ -218,17 +218,17 @@ LABEL_25:
     goto LABEL_24;
   }
 
-  v8 = [(_NFTrustSession *)v5 trustDB];
+  trustDB2 = [(_NFTrustSession *)v5 trustDB];
   v49 = 0;
-  v9 = sub_10001E1AC(v8, @"A000000704C0000000000002", &v49);
+  v9 = sub_10001E1AC(trustDB2, @"A000000704C0000000000002", &v49);
   v10 = v49;
 
   if (!v9)
   {
     [(_NFTrustSession *)v5 setTrustDBApplet:v10];
-    v33 = [(_NFTrustSession *)v5 trustDBApplet];
+    trustDBApplet = [(_NFTrustSession *)v5 trustDBApplet];
 
-    if (!v33)
+    if (!trustDBApplet)
     {
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v35 = NFLogGetLogger();
@@ -347,15 +347,15 @@ LABEL_28:
   return v32;
 }
 
-- (void)didStartSession:(id)a3
+- (void)didStartSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = +[_NFHardwareManager sharedHardwareManager];
-  v6 = [v5 secureElementWrapper];
+  secureElementWrapper = [v5 secureElementWrapper];
   secureElementWrapper = self->_secureElementWrapper;
-  self->_secureElementWrapper = v6;
+  self->_secureElementWrapper = secureElementWrapper;
 
-  if (v4)
+  if (sessionCopy)
   {
     v8 = 0;
   }
@@ -370,9 +370,9 @@ LABEL_28:
 
   v11.receiver = self;
   v11.super_class = _NFTrustSession;
-  [(_NFXPCSession *)&v11 didStartSession:v4];
-  v10 = [(_NFXPCSession *)self remoteObject];
-  [v10 didStartSession:v4];
+  [(_NFXPCSession *)&v11 didStartSession:sessionCopy];
+  remoteObject = [(_NFXPCSession *)self remoteObject];
+  [remoteObject didStartSession:sessionCopy];
 }
 
 - (BOOL)willStartSession
@@ -385,9 +385,9 @@ LABEL_28:
 
 - (id)selectInstance
 {
-  v4 = [(_NFTrustSession *)self trustDBApplet];
+  trustDBApplet = [(_NFTrustSession *)self trustDBApplet];
 
-  if (!v4)
+  if (!trustDBApplet)
   {
     v5 = sub_10013DE50();
     goto LABEL_30;
@@ -399,9 +399,9 @@ LABEL_28:
     goto LABEL_30;
   }
 
-  v6 = [(_NFTrustSession *)self secureElementWrapper];
+  secureElementWrapper = [(_NFTrustSession *)self secureElementWrapper];
 
-  if (!v6)
+  if (!secureElementWrapper)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
@@ -458,12 +458,12 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v7 = [(_NFTrustSession *)self secureElementWrapper];
-  v8 = [(_NFTrustSession *)self trustDBApplet];
-  v9 = [v8 instanceAID];
-  v10 = [NSData NF_dataWithHexString:v9];
+  secureElementWrapper2 = [(_NFTrustSession *)self secureElementWrapper];
+  trustDBApplet2 = [(_NFTrustSession *)self trustDBApplet];
+  instanceAID = [trustDBApplet2 instanceAID];
+  v10 = [NSData NF_dataWithHexString:instanceAID];
   v90 = 0;
-  v11 = sub_100158A6C(v7, v10, &v90);
+  v11 = sub_100158A6C(secureElementWrapper2, v10, &v90);
   v12 = v90;
 
   if (v12)
@@ -479,14 +479,14 @@ LABEL_28:
       v18 = sel_getName(a2);
       [(_NFTrustSession *)self trustDBApplet];
       v20 = v19 = v11;
-      v21 = [v20 instanceAID];
+      instanceAID2 = [v20 instanceAID];
       v22 = 45;
       if (v16)
       {
         v22 = 43;
       }
 
-      v14(3, "%c[%{public}s %{public}s]:%i Could not select instance (AID: %{public}@): %{public}@", v22, v17, v18, 152, v21, v12);
+      v14(3, "%c[%{public}s %{public}s]:%i Could not select instance (AID: %{public}@): %{public}@", v22, v17, v18, 152, instanceAID2, v12);
 
       v11 = v19;
     }
@@ -508,8 +508,8 @@ LABEL_28:
 
       v26 = object_getClassName(self);
       v27 = sel_getName(a2);
-      v28 = [(_NFTrustSession *)self trustDBApplet];
-      v29 = [v28 instanceAID];
+      trustDBApplet3 = [(_NFTrustSession *)self trustDBApplet];
+      instanceAID3 = [trustDBApplet3 instanceAID];
       *buf = 67110402;
       v100 = v25;
       v101 = 2082;
@@ -519,7 +519,7 @@ LABEL_28:
       v105 = 1024;
       v106 = 152;
       v107 = 2114;
-      v108 = v29;
+      v108 = instanceAID3;
       v109 = 2114;
       v110 = v12;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Could not select instance (AID: %{public}@): %{public}@", buf, 0x36u);
@@ -584,8 +584,8 @@ LABEL_28:
         _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Failed to select instance, instance not found on device, erase database for this instance", buf, 0x22u);
       }
 
-      v60 = [(_NFTrustSession *)self trustDB];
-      v61 = sub_10001F2CC(v60);
+      trustDB = [(_NFTrustSession *)self trustDB];
+      v61 = sub_10001F2CC(trustDB);
 
       v30 = [NSError alloc];
       v31 = [NSString stringWithUTF8String:"nfcd"];
@@ -614,14 +614,14 @@ LABEL_28:
         v76 = class_isMetaClass(v75);
         v77 = object_getClassName(self);
         v78 = sel_getName(a2);
-        v89 = [v11 status];
+        status = [v11 status];
         v79 = 45;
         if (v76)
         {
           v79 = 43;
         }
 
-        v74(3, "%c[%{public}s %{public}s]:%i Failed to select instance %u", v79, v77, v78, 168, v89);
+        v74(3, "%c[%{public}s %{public}s]:%i Failed to select instance %u", v79, v77, v78, 168, status);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -641,7 +641,7 @@ LABEL_28:
 
         v83 = object_getClassName(self);
         v84 = sel_getName(a2);
-        v85 = [v11 status];
+        status2 = [v11 status];
         *buf = 67110146;
         v100 = v82;
         v101 = 2082;
@@ -651,7 +651,7 @@ LABEL_28:
         v105 = 1024;
         v106 = 168;
         v107 = 1024;
-        LODWORD(v108) = v85;
+        LODWORD(v108) = status2;
         _os_log_impl(&_mh_execute_header, v80, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Failed to select instance %u", buf, 0x28u);
       }
 
@@ -735,9 +735,9 @@ LABEL_30:
 
 - (void)deselectInstance
 {
-  v4 = [(_NFTrustSession *)self trustDBApplet];
+  trustDBApplet = [(_NFTrustSession *)self trustDBApplet];
 
-  if (!v4)
+  if (!trustDBApplet)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
@@ -785,14 +785,14 @@ LABEL_30:
   }
 
   [(_NFTrustSession *)self setIsInstanceSelected:0];
-  v14 = [(_NFTrustSession *)self secureElementWrapper];
+  secureElementWrapper = [(_NFTrustSession *)self secureElementWrapper];
 
-  if (v14)
+  if (secureElementWrapper)
   {
-    v15 = [(_NFTrustSession *)self secureElementWrapper];
+    secureElementWrapper2 = [(_NFTrustSession *)self secureElementWrapper];
     v16 = [[NSData alloc] initWithBytes:&unk_100296F16 length:8];
     v76 = 0;
-    v17 = sub_100158A6C(v15, v16, &v76);
+    v17 = sub_100158A6C(secureElementWrapper2, v16, &v76);
     v18 = v76;
 
     if (v18)
@@ -809,14 +809,14 @@ LABEL_30:
         [(_NFTrustSession *)self trustDBApplet];
         v25 = a2;
         v27 = v26 = v17;
-        v28 = [v27 instanceAID];
+        instanceAID = [v27 instanceAID];
         v29 = 45;
         if (v22)
         {
           v29 = 43;
         }
 
-        v20(3, "%c[%{public}s %{public}s]:%i Could not deselect instance (AID: %{public}@): %{public}@", v29, v23, v24, 196, v28, v18);
+        v20(3, "%c[%{public}s %{public}s]:%i Could not deselect instance (AID: %{public}@): %{public}@", v29, v23, v24, 196, instanceAID, v18);
 
         v17 = v26;
         a2 = v25;
@@ -839,8 +839,8 @@ LABEL_30:
 
         v33 = object_getClassName(self);
         v34 = sel_getName(a2);
-        v35 = [(_NFTrustSession *)self trustDBApplet];
-        v36 = [v35 instanceAID];
+        trustDBApplet2 = [(_NFTrustSession *)self trustDBApplet];
+        instanceAID2 = [trustDBApplet2 instanceAID];
         *buf = 67110402;
         v78 = v32;
         v79 = 2082;
@@ -850,7 +850,7 @@ LABEL_30:
         v83 = 1024;
         v84 = 196;
         v85 = 2114;
-        v86 = v36;
+        v86 = instanceAID2;
         v87 = 2114;
         v88 = v18;
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Could not deselect instance (AID: %{public}@): %{public}@", buf, 0x36u);
@@ -877,14 +877,14 @@ LABEL_54:
         v50 = class_isMetaClass(v49);
         v51 = object_getClassName(self);
         v52 = sel_getName(a2);
-        v75 = [v17 status];
+        status = [v17 status];
         v53 = 45;
         if (v50)
         {
           v53 = 43;
         }
 
-        v48(3, "%c[%{public}s %{public}s]:%i Failed to deselect instance %u", v53, v51, v52, 206, v75);
+        v48(3, "%c[%{public}s %{public}s]:%i Failed to deselect instance %u", v53, v51, v52, 206, status);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -909,7 +909,7 @@ LABEL_53:
 
       v56 = object_getClassName(self);
       v57 = sel_getName(a2);
-      v58 = [v17 status];
+      status2 = [v17 status];
       *buf = 67110146;
       v78 = v55;
       v79 = 2082;
@@ -919,7 +919,7 @@ LABEL_53:
       v83 = 1024;
       v84 = 206;
       v85 = 1024;
-      LODWORD(v86) = v58;
+      LODWORD(v86) = status2;
       v59 = "%c[%{public}s %{public}s]:%i Failed to deselect instance %u";
       v60 = v30;
       v61 = 40;
@@ -1031,7 +1031,7 @@ LABEL_53:
 LABEL_55:
 }
 
-- (id)getListOfKeysWithError:(id *)a3
+- (id)getListOfKeysWithError:(id *)error
 {
   v33 = 0;
   v34 = &v33;
@@ -1045,7 +1045,7 @@ LABEL_55:
   v30 = sub_100006A7C;
   v31 = sub_1000C87CC;
   v32 = 0;
-  if (!a3)
+  if (!error)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
@@ -1098,15 +1098,15 @@ LABEL_15:
     goto LABEL_17;
   }
 
-  v6 = [(_NFTrustSession *)self trustDB];
+  trustDB = [(_NFTrustSession *)self trustDB];
 
-  if (v6)
+  if (trustDB)
   {
-    v7 = [(_NFTrustSession *)self selectInstance];
-    *a3 = v7;
-    if (!v7)
+    selectInstance = [(_NFTrustSession *)self selectInstance];
+    *error = selectInstance;
+    if (!selectInstance)
     {
-      v8 = [(_NFTrustSession *)self trustDB];
+      trustDB2 = [(_NFTrustSession *)self trustDB];
       v9 = objc_opt_class();
       v26[0] = _NSConcreteStackBlock;
       v26[1] = 3221225472;
@@ -1116,7 +1116,7 @@ LABEL_15:
       v26[5] = &v27;
       v26[6] = &v33;
       v26[7] = a2;
-      sub_10001FBBC(v8, v9, v26);
+      sub_10001FBBC(trustDB2, v9, v26);
 
       v39 = @"totalPurpleTrustKeys";
       v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v34[5] count]);
@@ -1124,7 +1124,7 @@ LABEL_15:
       v11 = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
       [NFGeneralStatisticsCALogger updateGeneralDeviceStatistic:v11];
 
-      *a3 = v28[5];
+      *error = v28[5];
       v12 = v34[5];
       goto LABEL_17;
     }
@@ -1133,7 +1133,7 @@ LABEL_15:
   }
 
   sub_10013DE50();
-  *a3 = v12 = 0;
+  *error = v12 = 0;
 LABEL_17:
   _Block_object_dispose(&v27, 8);
 
@@ -1142,42 +1142,42 @@ LABEL_17:
   return v12;
 }
 
-- (void)listKeysWithCompletion:(id)a3
+- (void)listKeysWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v11.receiver = self;
   v11.super_class = _NFTrustSession;
-  v6 = [(_NFSession *)&v11 workQueue];
+  workQueue = [(_NFSession *)&v11 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000C9190;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = completionCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (unint64_t)getNumberOfKeys:(id *)a3
+- (unint64_t)getNumberOfKeys:(id *)keys
 {
-  v3 = [(_NFTrustSession *)self keys];
-  v4 = [v3 count];
+  keys = [(_NFTrustSession *)self keys];
+  v4 = [keys count];
 
   return v4;
 }
 
-- (id)deleteDBKey:(id)a3
+- (id)deleteDBKey:(id)key
 {
-  v5 = a3;
-  if (!v5)
+  keyCopy = key;
+  if (!keyCopy)
   {
     v10 = sub_10013E33C(@"Could not delete Key with nil DB Key");
     goto LABEL_17;
   }
 
-  v6 = [(_NFTrustSession *)self trustDB];
-  if (!v6 || (v7 = v6, [(_NFTrustSession *)self trustDBApplet], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, !v8))
+  trustDB = [(_NFTrustSession *)self trustDB];
+  if (!trustDB || (v7 = trustDB, [(_NFTrustSession *)self trustDBApplet], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, !v8))
   {
     v19 = sub_10013DE50();
     v127[0] = @"purpleTrustOperationType";
@@ -1200,10 +1200,10 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v9 = [(_NFTrustSession *)self selectInstance];
-  if (v9)
+  selectInstance = [(_NFTrustSession *)self selectInstance];
+  if (selectInstance)
   {
-    v10 = v9;
+    v10 = selectInstance;
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
     if (Logger)
@@ -1253,11 +1253,11 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v22 = v5[4];
+  v22 = keyCopy[4];
   if (v22)
   {
-    v24 = [(_NFTrustSession *)self trustDBApplet];
-    v10 = sub_100021094(v24, v22);
+    trustDBApplet = [(_NFTrustSession *)self trustDBApplet];
+    v10 = sub_100021094(trustDBApplet, v22);
 
     if (v10)
     {
@@ -1330,15 +1330,15 @@ LABEL_47:
     }
   }
 
-  v36 = v5[3];
+  v36 = keyCopy[3];
 
   if (v36)
   {
-    objc_storeStrong(v5 + 3, 0);
+    objc_storeStrong(keyCopy + 3, 0);
   }
 
-  v37 = [(_NFTrustSession *)self trustDB];
-  v10 = sub_10001EE48(v37);
+  trustDB2 = [(_NFTrustSession *)self trustDB];
+  v10 = sub_10001EE48(trustDB2);
 
   if (v10)
   {
@@ -1404,7 +1404,7 @@ LABEL_47:
     goto LABEL_46;
   }
 
-  objc_storeStrong(v5 + 4, 0);
+  objc_storeStrong(keyCopy + 4, 0);
   v48 = NFSharedSignpostLog();
   if (os_signpost_enabled(v48))
   {
@@ -1421,12 +1421,12 @@ LABEL_47:
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v51, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "deleteKeyInSlot", "failed", buf, 2u);
     }
 
-    v52 = [v50 domain];
-    if ([v52 isEqualToString:@"GP"])
+    domain = [v50 domain];
+    if ([domain isEqualToString:@"GP"])
     {
-      v53 = [v50 code];
+      code = [v50 code];
 
-      if (v53 != 27272)
+      if (code != 27272)
       {
         goto LABEL_70;
       }
@@ -1440,7 +1440,7 @@ LABEL_47:
         v57 = class_isMetaClass(v56);
         v103 = object_getClassName(self);
         v58 = sel_getName(a2);
-        v59 = v5[1];
+        v59 = keyCopy[1];
         v60 = 45;
         if (v57)
         {
@@ -1468,7 +1468,7 @@ LABEL_47:
         v104 = v63;
         v64 = object_getClassName(self);
         v65 = sel_getName(a2);
-        v66 = v5[1];
+        v66 = keyCopy[1];
         *buf = 67110402;
         v112 = v104;
         v113 = 2082;
@@ -1493,28 +1493,28 @@ LABEL_47:
       v109[3] = @"purpleTrustOperationErrorCode";
       v67 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v50 code]);
       v110[3] = v67;
-      v52 = [NSDictionary dictionaryWithObjects:v110 forKeys:v109 count:4];
+      domain = [NSDictionary dictionaryWithObjects:v110 forKeys:v109 count:4];
 
-      sub_1002085BC(NFPeerPaymentAndPurpleTrustCALogger, v52);
+      sub_1002085BC(NFPeerPaymentAndPurpleTrustCALogger, domain);
       [NFGeneralStatisticsCALogger updateAnalyticsGeneralTransactionStatistics:&off_1003394E0];
     }
   }
 
   else
   {
-    v52 = NFSharedSignpostLog();
-    if (os_signpost_enabled(v52))
+    domain = NFSharedSignpostLog();
+    if (os_signpost_enabled(domain))
     {
       *buf = 0;
-      _os_signpost_emit_with_name_impl(&_mh_execute_header, v52, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "deleteKeyInSlot", &unk_1002E8B7A, buf, 2u);
+      _os_signpost_emit_with_name_impl(&_mh_execute_header, domain, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "deleteKeyInSlot", &unk_1002E8B7A, buf, 2u);
     }
 
     v50 = 0;
   }
 
 LABEL_70:
-  v68 = [(_NFTrustSession *)self trustDB];
-  v69 = sub_10001E890(v68, v5);
+  trustDB3 = [(_NFTrustSession *)self trustDB];
+  v69 = sub_10001E890(trustDB3, keyCopy);
 
   if (v69)
   {
@@ -1583,8 +1583,8 @@ LABEL_70:
     goto LABEL_47;
   }
 
-  v81 = [(_NFTrustSession *)self trustDB];
-  v10 = sub_10001EE48(v81);
+  trustDB4 = [(_NFTrustSession *)self trustDB];
+  v10 = sub_10001EE48(trustDB4);
 
   if (v10)
   {
@@ -1657,74 +1657,74 @@ LABEL_18:
   return v10;
 }
 
-- (void)deleteKey:(id)a3 completion:(id)a4
+- (void)deleteKey:(id)key completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   v16.receiver = self;
   v16.super_class = _NFTrustSession;
-  v9 = [(_NFSession *)&v16 workQueue];
+  workQueue = [(_NFSession *)&v16 workQueue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000CA958;
   v12[3] = &unk_1003182B8;
-  v14 = v8;
+  v14 = completionCopy;
   v15 = a2;
   v12[4] = self;
-  v13 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v13 = keyCopy;
+  v10 = keyCopy;
+  v11 = completionCopy;
+  dispatch_async(workQueue, v12);
 }
 
-- (void)createKey:(id)a3 cresteKeyRequest:(id)a4 completion:(id)a5
+- (void)createKey:(id)key cresteKeyRequest:(id)request completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  completionCopy = completion;
   v19.receiver = self;
   v19.super_class = _NFTrustSession;
-  v11 = a3;
-  v12 = [(_NFSession *)&v19 workQueue];
+  keyCopy = key;
+  workQueue = [(_NFSession *)&v19 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000CB4C4;
   block[3] = &unk_1003182E0;
-  v17 = v10;
+  v17 = completionCopy;
   v18 = a2;
   block[4] = self;
-  block[5] = v11;
-  v16 = v9;
-  v13 = v9;
-  v14 = v10;
-  dispatch_async(v12, block);
+  block[5] = keyCopy;
+  v16 = requestCopy;
+  v13 = requestCopy;
+  v14 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)signWithKey:(id)a3 signRequest:(id)a4 paymentRequest:(id)a5 authorization:(id)a6 completion:(id)a7
+- (void)signWithKey:(id)key signRequest:(id)request paymentRequest:(id)paymentRequest authorization:(id)authorization completion:(id)completion
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  keyCopy = key;
+  paymentRequestCopy = paymentRequest;
+  authorizationCopy = authorization;
+  completionCopy = completion;
   v30.receiver = self;
   v30.super_class = _NFTrustSession;
-  v17 = a4;
-  v18 = [(_NFSession *)&v30 workQueue];
+  requestCopy = request;
+  workQueue = [(_NFSession *)&v30 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000CD9B0;
   block[3] = &unk_100318308;
-  v28 = v16;
+  v28 = completionCopy;
   v29 = a2;
   block[4] = self;
-  v24 = v13;
-  v25 = v17;
-  v26 = v15;
-  v27 = v14;
-  v19 = v14;
-  v20 = v15;
-  v21 = v13;
-  v22 = v16;
-  dispatch_async(v18, block);
+  v24 = keyCopy;
+  v25 = requestCopy;
+  v26 = authorizationCopy;
+  v27 = paymentRequestCopy;
+  v19 = paymentRequestCopy;
+  v20 = authorizationCopy;
+  v21 = keyCopy;
+  v22 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
 @end

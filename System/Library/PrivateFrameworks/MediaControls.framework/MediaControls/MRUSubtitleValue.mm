@@ -1,26 +1,26 @@
 @interface MRUSubtitleValue
-- (BOOL)isEqualToSubtitleValue:(id)a3;
-- (MRUSubtitleValue)initWithText:(id)a3 icon:(id)a4 accessory:(int64_t)a5;
+- (BOOL)isEqualToSubtitleValue:(id)value;
+- (MRUSubtitleValue)initWithText:(id)text icon:(id)icon accessory:(int64_t)accessory;
 - (id)description;
 @end
 
 @implementation MRUSubtitleValue
 
-- (MRUSubtitleValue)initWithText:(id)a3 icon:(id)a4 accessory:(int64_t)a5
+- (MRUSubtitleValue)initWithText:(id)text icon:(id)icon accessory:(int64_t)accessory
 {
-  v8 = a3;
-  v9 = a4;
+  textCopy = text;
+  iconCopy = icon;
   v14.receiver = self;
   v14.super_class = MRUSubtitleValue;
   v10 = [(MRUSubtitleValue *)&v14 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [textCopy copy];
     text = v10->_text;
     v10->_text = v11;
 
-    objc_storeStrong(&v10->_icon, a4);
-    v10->_accessory = a5;
+    objc_storeStrong(&v10->_icon, icon);
+    v10->_accessory = accessory;
   }
 
   return v10;
@@ -30,26 +30,26 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MRUSubtitleValue *)self text];
+  text = [(MRUSubtitleValue *)self text];
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:{-[MRUSubtitleValue accessory](self, "accessory")}];
-  v7 = [v3 stringWithFormat:@"<%@: %p text=%@ accessory=%@ >", v4, self, v5, v6];
+  v7 = [v3 stringWithFormat:@"<%@: %p text=%@ accessory=%@ >", v4, self, text, v6];
 
   return v7;
 }
 
-- (BOOL)isEqualToSubtitleValue:(id)a3
+- (BOOL)isEqualToSubtitleValue:(id)value
 {
-  v4 = a3;
-  v5 = [(MRUSubtitleValue *)self text];
-  v6 = [v4 text];
-  if ([v5 isEqual:v6])
+  valueCopy = value;
+  text = [(MRUSubtitleValue *)self text];
+  text2 = [valueCopy text];
+  if ([text isEqual:text2])
   {
-    v7 = [(MRUSubtitleValue *)self icon];
-    v8 = [v4 icon];
-    if (v7 == v8)
+    icon = [(MRUSubtitleValue *)self icon];
+    icon2 = [valueCopy icon];
+    if (icon == icon2)
     {
-      v10 = [(MRUSubtitleValue *)self accessory];
-      v9 = v10 == [v4 accessory];
+      accessory = [(MRUSubtitleValue *)self accessory];
+      v9 = accessory == [valueCopy accessory];
     }
 
     else

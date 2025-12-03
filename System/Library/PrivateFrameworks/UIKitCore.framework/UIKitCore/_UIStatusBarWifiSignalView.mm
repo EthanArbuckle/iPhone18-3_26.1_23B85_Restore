@@ -1,10 +1,10 @@
 @interface _UIStatusBarWifiSignalView
-+ (CGSize)_intrinsicContentSizeForNumberOfBars:(int64_t)a3 iconSize:(int64_t)a4;
-+ (double)_barThicknessAtIndex:(unint64_t)a3 iconSize:(int64_t)a4;
-+ (double)_interspaceForIconSize:(int64_t)a3;
-+ (double)_totalWidthForIconSize:(int64_t)a3;
-+ (double)widthForIconSize:(int64_t)a3;
-+ (id)_barImageWithSize:(CGSize)a3 forScale:(double)a4 distance:(double)a5 angle:(double)a6 centerPoint:(CGPoint)a7 cornerRadius:(double)a8 thickness:(double)a9 rounded:(BOOL)a10;
++ (CGSize)_intrinsicContentSizeForNumberOfBars:(int64_t)bars iconSize:(int64_t)size;
++ (double)_barThicknessAtIndex:(unint64_t)index iconSize:(int64_t)size;
++ (double)_interspaceForIconSize:(int64_t)size;
++ (double)_totalWidthForIconSize:(int64_t)size;
++ (double)widthForIconSize:(int64_t)size;
++ (id)_barImageWithSize:(CGSize)size forScale:(double)scale distance:(double)distance angle:(double)angle centerPoint:(CGPoint)point cornerRadius:(double)radius thickness:(double)thickness rounded:(BOOL)self0;
 - (CGSize)intrinsicContentSize;
 - (double)_barCornerRadius;
 - (id)accessibilityHUDRepresentation;
@@ -15,7 +15,7 @@
 - (void)_updateBars;
 - (void)_updateCycleAnimationIfNeeded;
 - (void)_updateCycleAnimationNow;
-- (void)_updateFromMode:(int64_t)a3;
+- (void)_updateFromMode:(int64_t)mode;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
 @end
@@ -24,13 +24,13 @@
 
 - (double)_barCornerRadius
 {
-  v4 = [(_UIStatusBarSignalView *)self iconSize];
+  iconSize = [(_UIStatusBarSignalView *)self iconSize];
   result = 0.5;
-  switch(v4)
+  switch(iconSize)
   {
     case 0:
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"_UIStatusBarWifiSignalView.m" lineNumber:66 description:@"Undefined icon size"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStatusBarWifiSignalView.m" lineNumber:66 description:@"Undefined icon size"];
 
       result = 0.0;
       break;
@@ -60,18 +60,18 @@
   return result;
 }
 
-+ (double)_barThicknessAtIndex:(unint64_t)a3 iconSize:(int64_t)a4
++ (double)_barThicknessAtIndex:(unint64_t)index iconSize:(int64_t)size
 {
-  if (a3)
+  if (index)
   {
     result = 2.25;
-    switch(a4)
+    switch(size)
     {
       case 0:
-        v7 = [MEMORY[0x1E696AAA8] currentHandler];
-        v8 = v7;
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        v8 = currentHandler;
         v9 = a2;
-        v10 = a1;
+        selfCopy2 = self;
         v11 = 151;
         goto LABEL_19;
       case 2:
@@ -111,16 +111,16 @@
   else
   {
     result = 3.25;
-    switch(a4)
+    switch(size)
     {
       case 0:
-        v7 = [MEMORY[0x1E696AAA8] currentHandler];
-        v8 = v7;
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        v8 = currentHandler;
         v9 = a2;
-        v10 = a1;
+        selfCopy2 = self;
         v11 = 110;
 LABEL_19:
-        [v7 handleFailureInMethod:v9 object:v10 file:@"_UIStatusBarWifiSignalView.m" lineNumber:v11 description:@"Undefined icon size"];
+        [currentHandler handleFailureInMethod:v9 object:selfCopy2 file:@"_UIStatusBarWifiSignalView.m" lineNumber:v11 description:@"Undefined icon size"];
 
         result = 0.0;
         break;
@@ -162,45 +162,45 @@ LABEL_19:
   return result;
 }
 
-+ (double)_interspaceForIconSize:(int64_t)a3
++ (double)_interspaceForIconSize:(int64_t)size
 {
   result = 1.5;
-  if (a3 > 8)
+  if (size > 8)
   {
-    if (a3 > 11)
+    if (size > 11)
     {
-      if (a3 == 12 || a3 == 13)
+      if (size == 12 || size == 13)
       {
         return 1.83333333;
       }
 
-      v5 = a3 == 15;
+      v5 = size == 15;
     }
 
     else
     {
-      if (a3 == 9)
+      if (size == 9)
       {
         return 1.75;
       }
 
-      if (a3 == 10)
+      if (size == 10)
       {
         return 1.66666667;
       }
 
-      v5 = a3 == 11;
+      v5 = size == 11;
     }
 
     v4 = 1.75;
     goto LABEL_18;
   }
 
-  if (a3 > 5)
+  if (size > 5)
   {
-    if (a3 != 6)
+    if (size != 6)
     {
-      if (a3 != 7)
+      if (size != 7)
       {
         return 1.91666667;
       }
@@ -211,21 +211,21 @@ LABEL_19:
     return 1.66666667;
   }
 
-  if (!a3)
+  if (!size)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"_UIStatusBarWifiSignalView.m" lineNumber:195 description:@"Undefined icon size"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStatusBarWifiSignalView.m" lineNumber:195 description:@"Undefined icon size"];
 
     return 0.0;
   }
 
   v4 = 1.75;
-  if (a3 == 5)
+  if (size == 5)
   {
     result = 1.75;
   }
 
-  v5 = a3 == 4;
+  v5 = size == 4;
 LABEL_18:
   if (v5)
   {
@@ -235,14 +235,14 @@ LABEL_18:
   return result;
 }
 
-+ (double)_totalWidthForIconSize:(int64_t)a3
++ (double)_totalWidthForIconSize:(int64_t)size
 {
   result = 15.5;
-  switch(a3)
+  switch(size)
   {
     case 0:
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:a2 object:a1 file:@"_UIStatusBarWifiSignalView.m" lineNumber:238 description:@"Undefined icon size"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStatusBarWifiSignalView.m" lineNumber:238 description:@"Undefined icon size"];
 
       result = 0.0;
       break;
@@ -290,14 +290,14 @@ LABEL_18:
   return result;
 }
 
-+ (double)widthForIconSize:(int64_t)a3
++ (double)widthForIconSize:(int64_t)size
 {
-  if (!a3)
+  if (!size)
   {
     return 0.0;
   }
 
-  [a1 _totalWidthForIconSize:?];
+  [self _totalWidthForIconSize:?];
   return result;
 }
 
@@ -311,9 +311,9 @@ LABEL_18:
     v3 = 0;
     do
     {
-      v4 = [MEMORY[0x1E6979398] layer];
-      v5 = [(UIView *)self layer];
-      [v5 addSublayer:v4];
+      layer = [MEMORY[0x1E6979398] layer];
+      layer2 = [(UIView *)self layer];
+      [layer2 addSublayer:layer];
 
       ++v3;
     }
@@ -326,8 +326,8 @@ LABEL_18:
 
 - (void)layoutSubviews
 {
-  v36 = [(UIView *)self layer];
-  v3 = [v36 sublayers];
+  layer = [(UIView *)self layer];
+  sublayers = [layer sublayers];
   [(_UIStatusBarWifiSignalView *)self _barCornerRadius];
   v5 = v4;
   [(UIView *)self bounds];
@@ -347,7 +347,7 @@ LABEL_18:
   v48.size.width = v11;
   v48.size.height = v13;
   MaxY = CGRectGetMaxY(v48);
-  v16 = [(_UIStatusBarSignalView *)self rounded];
+  rounded = [(_UIStatusBarSignalView *)self rounded];
   v37 = v9;
   v38 = v7;
   v49.origin.x = v7;
@@ -359,12 +359,12 @@ LABEL_18:
   Height = CGRectGetHeight(v49);
   v45 = MidX;
   v20 = acos(MidX / Height);
-  v21 = [(UIView *)self traitCollection];
-  v22 = v21;
-  if (!v21 || ([v21 displayScale], v23 == 0.0))
+  traitCollection = [(UIView *)self traitCollection];
+  v22 = traitCollection;
+  if (!traitCollection || ([traitCollection displayScale], v23 == 0.0))
   {
-    v25 = [(UIView *)self _screen];
-    [v25 scale];
+    _screen = [(UIView *)self _screen];
+    [_screen scale];
     v44 = v26;
   }
 
@@ -384,11 +384,11 @@ LABEL_18:
     v29 = 0.0;
     do
     {
-      v30 = [v3 objectAtIndexedSubscript:v27];
+      v30 = [sublayers objectAtIndexedSubscript:v27];
       [objc_opt_class() _barThicknessAtIndex:v27 iconSize:{-[_UIStatusBarSignalView iconSize](self, "iconSize")}];
       v32 = v31 - v5;
       v33 = v20;
-      if (v16)
+      if (rounded)
       {
         v50.origin.y = v37;
         v50.origin.x = v38;
@@ -398,7 +398,7 @@ LABEL_18:
         v33 = v20 + atan(v32 * 0.5 / v34);
       }
 
-      v35 = [objc_opt_class() _barImageWithSize:v16 forScale:v17 distance:v18 angle:v44 centerPoint:v29 cornerRadius:v33 thickness:v45 rounded:{v41, v5, *&v32}];
+      v35 = [objc_opt_class() _barImageWithSize:rounded forScale:v17 distance:v18 angle:v44 centerPoint:v29 cornerRadius:v33 thickness:v45 rounded:{v41, v5, *&v32}];
       [v30 setContents:{objc_msgSend(v35, "CGImage")}];
       [(UIView *)self bounds];
       [v30 setBounds:?];
@@ -414,19 +414,19 @@ LABEL_18:
   [(_UIStatusBarWifiSignalView *)self _updateActiveBars];
 }
 
-+ (id)_barImageWithSize:(CGSize)a3 forScale:(double)a4 distance:(double)a5 angle:(double)a6 centerPoint:(CGPoint)a7 cornerRadius:(double)a8 thickness:(double)a9 rounded:(BOOL)a10
++ (id)_barImageWithSize:(CGSize)size forScale:(double)scale distance:(double)distance angle:(double)angle centerPoint:(CGPoint)point cornerRadius:(double)radius thickness:(double)thickness rounded:(BOOL)self0
 {
-  v10 = a10;
-  y = a7.y;
-  x = a7.x;
-  height = a3.height;
-  width = a3.width;
+  roundedCopy = rounded;
+  y = point.y;
+  x = point.x;
+  height = size.height;
+  width = size.width;
   if (qword_1ED49ACA8 != -1)
   {
     dispatch_once(&qword_1ED49ACA8, &__block_literal_global_520);
   }
 
-  v18 = [[_UIStatusBarSignalViewCacheKey alloc] initWithClass:objc_opt_class() size:v10 rect:width radius:height lineWidth:x alternate:y scale:a5, a6, a8, a9, *&a4];
+  v18 = [[_UIStatusBarSignalViewCacheKey alloc] initWithClass:objc_opt_class() size:roundedCopy rect:width radius:height lineWidth:x alternate:y scale:distance, angle, radius, thickness, *&scale];
   v19 = [_MergedGlobals_7_4 objectForKey:v18];
   if (!v19)
   {
@@ -436,10 +436,10 @@ LABEL_18:
     aBlock[3] = &__block_descriptor_80_e19__CGPoint_dd_16__0d8l;
     *&aBlock[4] = x;
     *&aBlock[5] = y;
-    *&aBlock[6] = a6;
+    *&aBlock[6] = angle;
     *&aBlock[7] = width;
     *&aBlock[8] = height;
-    *&aBlock[9] = a8;
+    *&aBlock[9] = radius;
     v20 = _Block_copy(aBlock);
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
@@ -449,26 +449,26 @@ LABEL_18:
     *&v38[5] = height;
     v21 = _Block_copy(v38);
     v22 = +[UIGraphicsImageRendererFormat defaultFormat];
-    [v22 setScale:a4];
+    [v22 setScale:scale];
     [v22 setOpaque:0];
     [v22 setPreferredRange:0x7FFFLL];
-    v23 = [[UIGraphicsImageRenderer alloc] initWithSize:v22 format:width, height];
+    height = [[UIGraphicsImageRenderer alloc] initWithSize:v22 format:width, height];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __115___UIStatusBarWifiSignalView__barImageWithSize_forScale_distance_angle_centerPoint_cornerRadius_thickness_rounded___block_invoke_4;
     v28[3] = &unk_1E71201D8;
-    v37 = v10;
-    v31 = a5;
+    v37 = roundedCopy;
+    distanceCopy = distance;
     v32 = x;
     v33 = y;
-    v34 = a9;
+    thicknessCopy = thickness;
     v29 = v20;
     v30 = v21;
-    v35 = a6;
-    v36 = a8;
+    angleCopy = angle;
+    radiusCopy = radius;
     v24 = v21;
     v25 = v20;
-    v19 = [(UIGraphicsImageRenderer *)v23 imageWithActions:v28];
+    v19 = [(UIGraphicsImageRenderer *)height imageWithActions:v28];
     [_MergedGlobals_7_4 setObject:v19 forKey:v18];
   }
 
@@ -509,40 +509,40 @@ LABEL_18:
 - (void)_updateCycleAnimationNow
 {
   v44[4] = *MEMORY[0x1E69E9840];
-  v3 = [(_UIStatusBarSignalView *)self activeColor];
-  v4 = [(_UIStatusBarSignalView *)self inactiveColor];
-  v5 = v4;
-  if (v3 && v4 && [(_UIStatusBarSignalView *)self numberOfBars])
+  activeColor = [(_UIStatusBarSignalView *)self activeColor];
+  inactiveColor = [(_UIStatusBarSignalView *)self inactiveColor];
+  v5 = inactiveColor;
+  if (activeColor && inactiveColor && [(_UIStatusBarSignalView *)self numberOfBars])
   {
-    v6 = [(UIView *)self layer];
-    v7 = [v6 sublayers];
+    layer = [(UIView *)self layer];
+    sublayers = [layer sublayers];
 
-    v8 = [MEMORY[0x1E695DF70] array];
-    v9 = [(_UIStatusBarSignalView *)self numberOfBars];
+    array = [MEMORY[0x1E695DF70] array];
+    numberOfBars = [(_UIStatusBarSignalView *)self numberOfBars];
     if ([(_UIStatusBarSignalView *)self numberOfBars]>= 1)
     {
       v10 = 0;
-      v11 = (v9 + 2);
+      v11 = (numberOfBars + 2);
       v12 = v11 * 0.2;
       v36 = *MEMORY[0x1E69795C0];
       v13 = v11 + 0.5;
       v14 = 1.0 / v11;
       v15 = 3.0 / v11;
       v35 = *MEMORY[0x1E6979590];
-      v38 = v7;
-      v39 = v3;
-      v37 = v8;
+      v38 = sublayers;
+      v39 = activeColor;
+      v37 = array;
       do
       {
-        v41 = [v7 objectAtIndexedSubscript:{v10, v35}];
-        v16 = [MEMORY[0x1E6979308] animation];
-        [v16 setDuration:v12];
+        v41 = [sublayers objectAtIndexedSubscript:{v10, v35}];
+        animation = [MEMORY[0x1E6979308] animation];
+        [animation setDuration:v12];
         LODWORD(v17) = 2139095040;
-        [v16 setRepeatCount:v17];
-        [v16 setAutoreverses:0];
-        [v16 setBeginTimeMode:v36];
-        [v16 duration];
-        [v16 setBeginTime:v10 / v13 * v18];
+        [animation setRepeatCount:v17];
+        [animation setAutoreverses:0];
+        [animation setBeginTimeMode:v36];
+        [animation duration];
+        [animation setBeginTime:v10 / v13 * v18];
         v44[0] = &unk_1EFE2EBD8;
         v19 = [MEMORY[0x1E696AD98] numberWithDouble:v14];
         v44[1] = v19;
@@ -560,7 +560,7 @@ LABEL_18:
         v23 = [v22 numberWithDouble:?];
         v43[0] = v23;
         v24 = MEMORY[0x1E696AD98];
-        [v3 alphaComponent];
+        [activeColor alphaComponent];
         v25 = [v24 numberWithDouble:?];
         v43[1] = v25;
         v26 = MEMORY[0x1E696AD98];
@@ -576,16 +576,16 @@ LABEL_18:
         [v21 setValues:v31];
 
         v5 = v30;
-        v8 = v37;
+        array = v37;
         v42 = v21;
         v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v42 count:1];
-        [v16 setAnimations:v32];
+        [animation setAnimations:v32];
 
-        v33 = [_UIStatusBarCycleLayerAnimation cycleAnimationWithLayer:v41 animation:v16 key:@"searching"];
+        v33 = [_UIStatusBarCycleLayerAnimation cycleAnimationWithLayer:v41 animation:animation key:@"searching"];
         [v37 addObject:v33];
 
-        v3 = v39;
-        v7 = v38;
+        activeColor = v39;
+        sublayers = v38;
 
         ++v10;
       }
@@ -593,7 +593,7 @@ LABEL_18:
       while (v10 < [(_UIStatusBarSignalView *)self numberOfBars]);
     }
 
-    v34 = [[_UIStatusBarCycleAnimation alloc] initWithLayerAnimations:v8];
+    v34 = [[_UIStatusBarCycleAnimation alloc] initWithLayerAnimations:array];
     [(_UIStatusBarWifiSignalView *)self setCycleAnimation:v34];
   }
 }
@@ -606,32 +606,32 @@ LABEL_18:
   cycleAnimation = self->_cycleAnimation;
   if (!cycleAnimation || ![(_UIStatusBarCycleAnimation *)cycleAnimation state])
   {
-    v4 = [(UIView *)self layer];
-    v5 = [v4 sublayers];
+    layer = [(UIView *)self layer];
+    sublayers = [layer sublayers];
 
     if ([(_UIStatusBarSignalView *)self numberOfBars]>= 1)
     {
       v6 = 0;
       do
       {
-        v7 = [v5 objectAtIndexedSubscript:v6];
+        v7 = [sublayers objectAtIndexedSubscript:v6];
         if ([(_UIStatusBarSignalView *)self signalMode]== 2 && v6 < [(_UIStatusBarSignalView *)self numberOfActiveBars])
         {
-          v8 = [(_UIStatusBarSignalView *)self activeColor];
+          activeColor = [(_UIStatusBarSignalView *)self activeColor];
         }
 
         else
         {
-          v8 = [(_UIStatusBarSignalView *)self inactiveColor];
+          activeColor = [(_UIStatusBarSignalView *)self inactiveColor];
         }
 
-        v9 = v8;
-        v10 = [v8 colorWithAlphaComponent:1.0];
-        v11 = [v10 CGColor];
+        v9 = activeColor;
+        v10 = [activeColor colorWithAlphaComponent:1.0];
+        cGColor = [v10 CGColor];
 
         [v9 alphaComponent];
         v13 = v12;
-        [v7 setContentsMultiplyColor:v11];
+        [v7 setContentsMultiplyColor:cGColor];
         *&v14 = v13;
         [v7 setOpacity:v14];
 
@@ -643,7 +643,7 @@ LABEL_18:
   }
 }
 
-- (void)_updateFromMode:(int64_t)a3
+- (void)_updateFromMode:(int64_t)mode
 {
   cycleAnimation = self->_cycleAnimation;
   if (!cycleAnimation || ![(_UIStatusBarCycleAnimation *)cycleAnimation state])
@@ -676,9 +676,9 @@ LABEL_18:
   v4.receiver = self;
   v4.super_class = _UIStatusBarWifiSignalView;
   [(UIView *)&v4 didMoveToWindow];
-  v3 = [(UIView *)self window];
+  window = [(UIView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(_UIStatusBarWifiSignalView *)self _updateActiveBars];
   }
@@ -692,20 +692,20 @@ LABEL_18:
   [(_UIStatusBarWifiSignalView *)self _setNeedsUpdateCycleAnimation];
 }
 
-+ (CGSize)_intrinsicContentSizeForNumberOfBars:(int64_t)a3 iconSize:(int64_t)a4
++ (CGSize)_intrinsicContentSizeForNumberOfBars:(int64_t)bars iconSize:(int64_t)size
 {
-  if (a3)
+  if (bars)
   {
     v7 = 0;
     v8 = 0.0;
     do
     {
-      [a1 _barThicknessAtIndex:v7 iconSize:a4];
+      [self _barThicknessAtIndex:v7 iconSize:size];
       v8 = v8 + v9;
       ++v7;
     }
 
-    while (a3 != v7);
+    while (bars != v7);
   }
 
   else
@@ -713,27 +713,27 @@ LABEL_18:
     v8 = 0.0;
   }
 
-  [a1 _interspaceForIconSize:a4];
+  [self _interspaceForIconSize:size];
   v11 = v10;
   v12 = 2.0;
-  if (a4 <= 0x11)
+  if (size <= 0x11)
   {
-    if (((1 << a4) & 0x235DC) != 0)
+    if (((1 << size) & 0x235DC) != 0)
     {
       v12 = 3.0;
     }
 
-    else if (!a4)
+    else if (!size)
     {
-      v18 = [objc_opt_self() mainScreen];
-      [v18 scale];
+      mainScreen = [objc_opt_self() mainScreen];
+      [mainScreen scale];
       v12 = v19;
     }
   }
 
-  [a1 _totalWidthForIconSize:a4];
+  [self _totalWidthForIconSize:size];
   v14 = v13;
-  UICeilToScale(v8 + v11 * (a3 - 1), v12);
+  UICeilToScale(v8 + v11 * (bars - 1), v12);
   v16 = v15;
   v17 = v14;
   result.height = v16;
@@ -744,10 +744,10 @@ LABEL_18:
 - (CGSize)intrinsicContentSize
 {
   v3 = objc_opt_class();
-  v4 = [(_UIStatusBarSignalView *)self numberOfBars];
-  v5 = [(_UIStatusBarSignalView *)self iconSize];
+  numberOfBars = [(_UIStatusBarSignalView *)self numberOfBars];
+  iconSize = [(_UIStatusBarSignalView *)self iconSize];
 
-  [v3 _intrinsicContentSizeForNumberOfBars:v4 iconSize:v5];
+  [v3 _intrinsicContentSizeForNumberOfBars:numberOfBars iconSize:iconSize];
   result.height = v7;
   result.width = v6;
   return result;
@@ -758,15 +758,15 @@ LABEL_18:
   v3 = MEMORY[0x1E696AEC0];
   if ([(_UIStatusBarSignalView *)self signalMode]== 2)
   {
-    v4 = [(_UIStatusBarSignalView *)self numberOfActiveBars];
+    numberOfActiveBars = [(_UIStatusBarSignalView *)self numberOfActiveBars];
   }
 
   else
   {
-    v4 = 0;
+    numberOfActiveBars = 0;
   }
 
-  v5 = [v3 stringWithFormat:@"AXHUD_WiFi_%d", v4];
+  v5 = [v3 stringWithFormat:@"AXHUD_WiFi_%d", numberOfActiveBars];
   v6 = [UIImage kitImageNamed:v5];
   v7 = [[UIAccessibilityHUDItem alloc] initWithTitle:0 image:v6 imageInsets:0.0, 0.0, 0.0, 0.0];
   [(UIAccessibilityHUDItem *)v7 setScaleImage:1];

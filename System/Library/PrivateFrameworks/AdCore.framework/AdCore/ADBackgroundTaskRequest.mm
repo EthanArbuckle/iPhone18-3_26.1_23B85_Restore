@@ -1,44 +1,44 @@
 @interface ADBackgroundTaskRequest
-- (ADBackgroundTaskRequest)initWithCriteria:(id)a3 ID:(id)a4 activity:(id)a5;
-- (ADBackgroundTaskRequest)initWithID:(id)a3;
+- (ADBackgroundTaskRequest)initWithCriteria:(id)criteria ID:(id)d activity:(id)activity;
+- (ADBackgroundTaskRequest)initWithID:(id)d;
 - (BOOL)continueTask;
 - (BOOL)deferTask;
 - (BOOL)finishTask;
 - (BOOL)shouldDefer;
-- (BOOL)taskCanContinueForTime:(id)a3;
+- (BOOL)taskCanContinueForTime:(id)time;
 - (BOOL)taskIsContinuing;
 - (BOOL)taskIsDeferred;
 - (NSString)priority;
-- (double)getPropertyAsDouble:(id)a3;
+- (double)getPropertyAsDouble:(id)double;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)getPropertyAsDate:(id)a3;
-- (id)getPropertyAsString:(id)a3;
+- (id)getPropertyAsDate:(id)date;
+- (id)getPropertyAsString:(id)string;
 - (int64_t)backgroundTaskRetryCount;
-- (int64_t)getPropertyAsInteger:(id)a3;
-- (void)_backgroundDeferralCheck:(id)a3 completion:(id)a4;
+- (int64_t)getPropertyAsInteger:(id)integer;
+- (void)_backgroundDeferralCheck:(id)check completion:(id)completion;
 - (void)endBackgroundDeferralCheck;
-- (void)setBackgroundTaskRetryCount:(int64_t)a3;
-- (void)setPriority:(id)a3;
-- (void)setPropertyAsDate:(id)a3 value:(id)a4;
-- (void)setPropertyAsDouble:(id)a3 value:(double)a4;
-- (void)setPropertyAsInteger:(id)a3 value:(int64_t)a4;
-- (void)setPropertyAsString:(id)a3 value:(id)a4;
-- (void)startBackgroundDeferralCheckForTime:(id)a3 completionHandler:(id)a4;
+- (void)setBackgroundTaskRetryCount:(int64_t)count;
+- (void)setPriority:(id)priority;
+- (void)setPropertyAsDate:(id)date value:(id)value;
+- (void)setPropertyAsDouble:(id)double value:(double)value;
+- (void)setPropertyAsInteger:(id)integer value:(int64_t)value;
+- (void)setPropertyAsString:(id)string value:(id)value;
+- (void)startBackgroundDeferralCheckForTime:(id)time completionHandler:(id)handler;
 @end
 
 @implementation ADBackgroundTaskRequest
 
-- (ADBackgroundTaskRequest)initWithID:(id)a3
+- (ADBackgroundTaskRequest)initWithID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = ADBackgroundTaskRequest;
   v6 = [(ADBackgroundTaskRequest *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_requestIdentifier, a3);
+    objc_storeStrong(&v6->_requestIdentifier, d);
     v8 = xpc_dictionary_create(0, 0, 0);
     criteria = v7->_criteria;
     v7->_criteria = v8;
@@ -62,34 +62,34 @@
   return v7;
 }
 
-- (ADBackgroundTaskRequest)initWithCriteria:(id)a3 ID:(id)a4 activity:(id)a5
+- (ADBackgroundTaskRequest)initWithCriteria:(id)criteria ID:(id)d activity:(id)activity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  criteriaCopy = criteria;
+  dCopy = d;
+  activityCopy = activity;
   v15.receiver = self;
   v15.super_class = ADBackgroundTaskRequest;
   v11 = [(ADBackgroundTaskRequest *)&v15 init];
   if (v11)
   {
-    v12 = xpc_copy(v8);
+    v12 = xpc_copy(criteriaCopy);
     criteria = v11->_criteria;
     v11->_criteria = v12;
 
-    objc_storeStrong(&v11->_requestIdentifier, a4);
-    objc_storeStrong(&v11->_activity, a5);
+    objc_storeStrong(&v11->_requestIdentifier, d);
+    objc_storeStrong(&v11->_activity, activity);
     v11->_performDeferralCheck = 0;
   }
 
   return v11;
 }
 
-- (void)setBackgroundTaskRetryCount:(int64_t)a3
+- (void)setBackgroundTaskRetryCount:(int64_t)count
 {
   criteria = self->_criteria;
   v5 = [@"kBackgroundTaskProperty_RetryCount" cStringUsingEncoding:4];
 
-  xpc_dictionary_set_int64(criteria, v5, a3);
+  xpc_dictionary_set_int64(criteria, v5, count);
 }
 
 - (int64_t)backgroundTaskRetryCount
@@ -108,21 +108,21 @@
   return [v3 stringWithCString:string encoding:4];
 }
 
-- (void)setPriority:(id)a3
+- (void)setPriority:(id)priority
 {
   criteria = self->_criteria;
   v5 = *MEMORY[0x277D86340];
-  v6 = a3;
-  v7 = [a3 cStringUsingEncoding:4];
+  priorityCopy = priority;
+  v7 = [priority cStringUsingEncoding:4];
 
   xpc_dictionary_set_string(criteria, v5, v7);
 }
 
 - (BOOL)continueTask
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  activity = v2->_activity;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  activity = selfCopy->_activity;
   if (activity)
   {
     v4 = xpc_activity_set_state(activity, 4);
@@ -133,17 +133,17 @@
     v4 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 - (BOOL)taskIsContinuing
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = xpc_activity_get_state(v2->_activity) == 4;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = xpc_activity_get_state(selfCopy->_activity) == 4;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -161,9 +161,9 @@
 
 - (BOOL)shouldDefer
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  activity = v2->_activity;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  activity = selfCopy->_activity;
   if (activity)
   {
     should_defer = xpc_activity_should_defer(activity);
@@ -174,16 +174,16 @@
     should_defer = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return should_defer;
 }
 
 - (BOOL)deferTask
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  activity = v2->_activity;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  activity = selfCopy->_activity;
   if (activity)
   {
     v4 = xpc_activity_set_state(activity, 3);
@@ -194,35 +194,35 @@
     v4 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 - (BOOL)taskIsDeferred
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = xpc_activity_get_state(v2->_activity) == 3;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = xpc_activity_get_state(selfCopy->_activity) == 3;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_backgroundDeferralCheck:(id)a3 completion:(id)a4
+- (void)_backgroundDeferralCheck:(id)check completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  checkCopy = check;
+  completionCopy = completion;
   v8 = dispatch_time(0, 1000000000);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__ADBackgroundTaskRequest__backgroundDeferralCheck_completion___block_invoke;
   block[3] = &unk_278C55330;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = checkCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = checkCopy;
   dispatch_after(v8, MEMORY[0x277D85CD0], block);
 }
 
@@ -285,28 +285,28 @@ void __63__ADBackgroundTaskRequest__backgroundDeferralCheck_completion___block_i
   }
 }
 
-- (void)startBackgroundDeferralCheckForTime:(id)a3 completionHandler:(id)a4
+- (void)startBackgroundDeferralCheckForTime:(id)time completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = self;
-  v10 = a4;
-  objc_sync_enter(v7);
-  v7->_performDeferralCheck = 1;
-  startDate = v7->_startDate;
-  v7->_startDate = v6;
-  v9 = v6;
+  timeCopy = time;
+  selfCopy = self;
+  handlerCopy = handler;
+  objc_sync_enter(selfCopy);
+  selfCopy->_performDeferralCheck = 1;
+  startDate = selfCopy->_startDate;
+  selfCopy->_startDate = timeCopy;
+  v9 = timeCopy;
 
-  objc_sync_exit(v7);
-  [(ADBackgroundTaskRequest *)v7 _backgroundDeferralCheck:v7->_startDate completion:v10];
+  objc_sync_exit(selfCopy);
+  [(ADBackgroundTaskRequest *)selfCopy _backgroundDeferralCheck:selfCopy->_startDate completion:handlerCopy];
 }
 
-- (BOOL)taskCanContinueForTime:(id)a3
+- (BOOL)taskCanContinueForTime:(id)time
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = ([v4 isEqualToDate:v5->_startDate] & 1) != 0 && -[ADBackgroundTaskRequest taskIsContinuing](v5, "taskIsContinuing");
-  objc_sync_exit(v5);
+  timeCopy = time;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = ([timeCopy isEqualToDate:selfCopy->_startDate] & 1) != 0 && -[ADBackgroundTaskRequest taskIsContinuing](selfCopy, "taskIsContinuing");
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -365,81 +365,81 @@ void __63__ADBackgroundTaskRequest__backgroundDeferralCheck_completion___block_i
   v12 = [MEMORY[0x277CCABB0] numberWithBool:{-[ADBackgroundTaskRequest allowBattery](self, "allowBattery")}];
   [v5 setObject:v12 forKey:@"AllowBattery"];
 
-  v13 = [(ADBackgroundTaskRequest *)self priority];
-  [v5 setObject:v13 forKey:@"Priority"];
+  priority = [(ADBackgroundTaskRequest *)self priority];
+  [v5 setObject:priority forKey:@"Priority"];
 
   [v4 setObject:v5 forKey:@"job"];
 
   return v4;
 }
 
-- (void)setPropertyAsString:(id)a3 value:(id)a4
+- (void)setPropertyAsString:(id)string value:(id)value
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [a3 cStringUsingEncoding:4];
-  v10 = [v8 cStringUsingEncoding:4];
+  stringCopy = string;
+  valueCopy = value;
+  v9 = [string cStringUsingEncoding:4];
+  v10 = [valueCopy cStringUsingEncoding:4];
 
   criteria = self->_criteria;
 
   xpc_dictionary_set_string(criteria, v9, v10);
 }
 
-- (id)getPropertyAsString:(id)a3
+- (id)getPropertyAsString:(id)string
 {
-  v5 = a3;
-  string = xpc_dictionary_get_string(self->_criteria, [a3 cStringUsingEncoding:4]);
+  stringCopy = string;
+  string = xpc_dictionary_get_string(self->_criteria, [string cStringUsingEncoding:4]);
   v7 = MEMORY[0x277CCACA8];
 
   return [v7 stringWithCString:string encoding:4];
 }
 
-- (void)setPropertyAsInteger:(id)a3 value:(int64_t)a4
+- (void)setPropertyAsInteger:(id)integer value:(int64_t)value
 {
-  v7 = a3;
-  v8 = [a3 cStringUsingEncoding:4];
+  integerCopy = integer;
+  v8 = [integer cStringUsingEncoding:4];
   criteria = self->_criteria;
 
-  xpc_dictionary_set_int64(criteria, v8, a4);
+  xpc_dictionary_set_int64(criteria, v8, value);
 }
 
-- (int64_t)getPropertyAsInteger:(id)a3
+- (int64_t)getPropertyAsInteger:(id)integer
 {
-  v5 = a3;
-  v6 = [a3 cStringUsingEncoding:4];
+  integerCopy = integer;
+  v6 = [integer cStringUsingEncoding:4];
   criteria = self->_criteria;
 
   return xpc_dictionary_get_int64(criteria, v6);
 }
 
-- (void)setPropertyAsDouble:(id)a3 value:(double)a4
+- (void)setPropertyAsDouble:(id)double value:(double)value
 {
-  v7 = a3;
-  v8 = [a3 cStringUsingEncoding:4];
+  doubleCopy = double;
+  v8 = [double cStringUsingEncoding:4];
   criteria = self->_criteria;
 
-  xpc_dictionary_set_double(criteria, v8, a4);
+  xpc_dictionary_set_double(criteria, v8, value);
 }
 
-- (double)getPropertyAsDouble:(id)a3
+- (double)getPropertyAsDouble:(id)double
 {
-  v5 = a3;
-  v6 = [a3 cStringUsingEncoding:4];
+  doubleCopy = double;
+  v6 = [double cStringUsingEncoding:4];
   criteria = self->_criteria;
 
   return xpc_dictionary_get_double(criteria, v6);
 }
 
-- (void)setPropertyAsDate:(id)a3 value:(id)a4
+- (void)setPropertyAsDate:(id)date value:(id)value
 {
-  v6 = a3;
-  [a4 timeIntervalSinceReferenceDate];
-  [(ADBackgroundTaskRequest *)self setPropertyAsDouble:v6 value:?];
+  dateCopy = date;
+  [value timeIntervalSinceReferenceDate];
+  [(ADBackgroundTaskRequest *)self setPropertyAsDouble:dateCopy value:?];
 }
 
-- (id)getPropertyAsDate:(id)a3
+- (id)getPropertyAsDate:(id)date
 {
-  [(ADBackgroundTaskRequest *)self getPropertyAsDouble:a3];
+  [(ADBackgroundTaskRequest *)self getPropertyAsDouble:date];
   v3 = MEMORY[0x277CBEAA8];
 
   return [v3 dateWithTimeIntervalSinceReferenceDate:?];

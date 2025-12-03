@@ -4,17 +4,17 @@
 - (NSArray)optionalFields;
 - (NSString)constructorName;
 - (RWIProtocolRuntimeStructureDescription)prototypeStructure;
-- (void)setConstructorName:(id)a3;
-- (void)setFields:(id)a3;
-- (void)setOptionalFields:(id)a3;
-- (void)setPrototypeStructure:(id)a3;
+- (void)setConstructorName:(id)name;
+- (void)setFields:(id)fields;
+- (void)setOptionalFields:(id)fields;
+- (void)setPrototypeStructure:(id)structure;
 @end
 
 @implementation RWIProtocolRuntimeStructureDescription
 
-- (void)setFields:(id)a3
+- (void)setFields:(id)fields
 {
-  Inspector::toJSONStringArray(a3, &v6);
+  Inspector::toJSONStringArray(fields, &v6);
   v5.receiver = self;
   v5.super_class = RWIProtocolRuntimeStructureDescription;
   [(RWIProtocolJSONObject *)&v5 setJSONArray:&v6 forKey:@"fields"];
@@ -44,9 +44,9 @@
   return v2;
 }
 
-- (void)setOptionalFields:(id)a3
+- (void)setOptionalFields:(id)fields
 {
-  Inspector::toJSONStringArray(a3, &v6);
+  Inspector::toJSONStringArray(fields, &v6);
   v5.receiver = self;
   v5.super_class = RWIProtocolRuntimeStructureDescription;
   [(RWIProtocolJSONObject *)&v5 setJSONArray:&v6 forKey:@"optionalFields"];
@@ -76,11 +76,11 @@
   return v2;
 }
 
-- (void)setConstructorName:(id)a3
+- (void)setConstructorName:(id)name
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolRuntimeStructureDescription;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"constructorName"];
+  [(RWIProtocolJSONObject *)&v3 setString:name forKey:@"constructorName"];
 }
 
 - (NSString)constructorName
@@ -92,11 +92,11 @@
   return v2;
 }
 
-- (void)setPrototypeStructure:(id)a3
+- (void)setPrototypeStructure:(id)structure
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolRuntimeStructureDescription;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"prototypeStructure"];
+  [(RWIProtocolJSONObject *)&v3 setObject:structure forKey:@"prototypeStructure"];
 }
 
 - (RWIProtocolRuntimeStructureDescription)prototypeStructure

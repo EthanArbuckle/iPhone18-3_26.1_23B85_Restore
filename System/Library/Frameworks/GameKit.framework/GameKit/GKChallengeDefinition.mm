@@ -1,27 +1,27 @@
 @interface GKChallengeDefinition
-+ (void)loadChallengeDefinitionsWithCompletionHandler:(id)a3;
++ (void)loadChallengeDefinitionsWithCompletionHandler:(id)handler;
 - (GKChallengeDefinition)init;
-- (GKChallengeDefinition)initWithIdentifier:(id)a3 groupIdentifier:(id)a4 title:(id)a5 details:(id)a6 isRepeatable:(BOOL)a7 durationOptions:(id)a8 leaderboard:(id)a9 imageUrl:(id)a10 releaseState:(unint64_t)a11;
+- (GKChallengeDefinition)initWithIdentifier:(id)identifier groupIdentifier:(id)groupIdentifier title:(id)title details:(id)details isRepeatable:(BOOL)repeatable durationOptions:(id)options leaderboard:(id)leaderboard imageUrl:(id)self0 releaseState:(unint64_t)self1;
 - (NSArray)durationOptions;
-- (void)hasActiveChallengesWithCompletionHandler:(id)a3;
-- (void)loadImageWithCompletionHandler:(id)a3;
+- (void)hasActiveChallengesWithCompletionHandler:(id)handler;
+- (void)loadImageWithCompletionHandler:(id)handler;
 @end
 
 @implementation GKChallengeDefinition
 
-+ (void)loadChallengeDefinitionsWithCompletionHandler:(id)a3
++ (void)loadChallengeDefinitionsWithCompletionHandler:(id)handler
 {
   v4 = +[_TtC7GameKit28GKChallengeDefinitionSupport shared];
 
-  [(GKChallengeDefinitionSupport *)v4 loadChallengeDefinitionsWithCompletionHandler:a3];
+  [(GKChallengeDefinitionSupport *)v4 loadChallengeDefinitionsWithCompletionHandler:handler];
 }
 
-- (void)hasActiveChallengesWithCompletionHandler:(id)a3
+- (void)hasActiveChallengesWithCompletionHandler:(id)handler
 {
   v5 = +[_TtC7GameKit28GKChallengeDefinitionSupport shared];
-  v6 = [(GKChallengeDefinition *)self identifier];
+  identifier = [(GKChallengeDefinition *)self identifier];
 
-  [(GKChallengeDefinitionSupport *)v5 hasActiveChallengesWithDefinitionID:v6 completionHandler:a3];
+  [(GKChallengeDefinitionSupport *)v5 hasActiveChallengesWithDefinitionID:identifier completionHandler:handler];
 }
 
 - (NSArray)durationOptions
@@ -34,14 +34,14 @@
   return v3;
 }
 
-- (GKChallengeDefinition)initWithIdentifier:(id)a3 groupIdentifier:(id)a4 title:(id)a5 details:(id)a6 isRepeatable:(BOOL)a7 durationOptions:(id)a8 leaderboard:(id)a9 imageUrl:(id)a10 releaseState:(unint64_t)a11
+- (GKChallengeDefinition)initWithIdentifier:(id)identifier groupIdentifier:(id)groupIdentifier title:(id)title details:(id)details isRepeatable:(BOOL)repeatable durationOptions:(id)options leaderboard:(id)leaderboard imageUrl:(id)self0 releaseState:(unint64_t)self1
 {
   v13 = sub_2186B7A0C();
   v26 = v14;
   v27 = v13;
-  if (a4)
+  if (groupIdentifier)
   {
-    a4 = sub_2186B7A0C();
+    groupIdentifier = sub_2186B7A0C();
     v16 = v15;
   }
 
@@ -52,9 +52,9 @@
 
   v17 = sub_2186B7A0C();
   v19 = v18;
-  if (a6)
+  if (details)
   {
-    a6 = sub_2186B7A0C();
+    details = sub_2186B7A0C();
     v21 = v20;
   }
 
@@ -65,26 +65,26 @@
 
   sub_2186B6EEC();
   v22 = sub_2186B7AAC();
-  v23 = a9;
-  v24 = a10;
-  return sub_2186AF718(v27, v26, a4, v16, v17, v19, a6, v21, a7, v22, a9, a10, a11);
+  leaderboardCopy = leaderboard;
+  urlCopy = url;
+  return sub_2186AF718(v27, v26, groupIdentifier, v16, v17, v19, details, v21, repeatable, v22, leaderboard, url, state);
 }
 
-- (void)loadImageWithCompletionHandler:(id)a3
+- (void)loadImageWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CC06D70, &qword_2186B92A0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
-  v16 = self;
+  selfCopy = self;
   _Block_copy(v9);
-  v11 = [(GKChallengeDefinition *)v16 imageUrl];
-  if (v11)
+  imageUrl = [(GKChallengeDefinition *)selfCopy imageUrl];
+  if (imageUrl)
   {
-    v12 = v11;
+    v12 = imageUrl;
     sub_2186804FC(0, &qword_27CC07158, off_278236500);
     sub_2186B6F9C();
     v13 = sub_2186B6FAC();
@@ -101,7 +101,7 @@
     (*(v9 + 2))(v9, 0, 0);
 
     _Block_release(v9);
-    v14 = v16;
+    v14 = selfCopy;
   }
 }
 

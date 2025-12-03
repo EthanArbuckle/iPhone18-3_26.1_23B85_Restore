@@ -1,23 +1,23 @@
 @interface UARPManifestEntry
 - (NSDictionary)personalizationDictionary;
-- (UARPManifestEntry)initWithName:(id)a3 digest:(id)a4 trusted:(BOOL)a5 productionMode:(BOOL)a6 securityMode:(BOOL)a7;
-- (id)descriptionWithTabDepth:(unint64_t)a3;
+- (UARPManifestEntry)initWithName:(id)name digest:(id)digest trusted:(BOOL)trusted productionMode:(BOOL)mode securityMode:(BOOL)securityMode;
+- (id)descriptionWithTabDepth:(unint64_t)depth;
 @end
 
 @implementation UARPManifestEntry
 
-- (UARPManifestEntry)initWithName:(id)a3 digest:(id)a4 trusted:(BOOL)a5 productionMode:(BOOL)a6 securityMode:(BOOL)a7
+- (UARPManifestEntry)initWithName:(id)name digest:(id)digest trusted:(BOOL)trusted productionMode:(BOOL)mode securityMode:(BOOL)securityMode
 {
   v14.receiver = self;
   v14.super_class = UARPManifestEntry;
   v12 = [(UARPManifestEntry *)&v14 init];
   if (v12)
   {
-    v12->_name = [a3 copy];
-    v12->_digest = [a4 copy];
-    v12->_trusted = a5;
-    v12->_productionMode = a6;
-    v12->_securityMode = a7;
+    v12->_name = [name copy];
+    v12->_digest = [digest copy];
+    v12->_trusted = trusted;
+    v12->_productionMode = mode;
+    v12->_securityMode = securityMode;
   }
 
   return v12;
@@ -36,10 +36,10 @@
   return [NSDictionary dictionaryWithObjects:v5 forKeys:v4 count:4];
 }
 
-- (id)descriptionWithTabDepth:(unint64_t)a3
+- (id)descriptionWithTabDepth:(unint64_t)depth
 {
-  v5 = sub_10002D978(a3);
-  v6 = sub_10002D978(a3 + 1);
+  v5 = sub_10002D978(depth);
+  v6 = sub_10002D978(depth + 1);
   v7 = +[NSMutableString string];
   v8 = objc_opt_class();
   [v7 appendFormat:@"%@%@\n", v5, NSStringFromClass(v8)];

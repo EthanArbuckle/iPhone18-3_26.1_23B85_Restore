@@ -4,43 +4,43 @@
 - (BOOL)containsPoint:(NSPoint)point;
 - (BOOL)isSimpleRectangularTextContainer;
 - (CGPoint)textContainerOrigin;
-- (CGRect)lineFragmentRectForProposedRect:(CGRect)a3 remainingRect:(CGRect *)a4;
 - (CGRect)lineFragmentRectForProposedRect:(CGRect)proposedRect atIndex:(NSUInteger)characterIndex writingDirection:(NSWritingDirection)baseWritingDirection remainingRect:(CGRect *)remainingRect;
+- (CGRect)lineFragmentRectForProposedRect:(CGRect)rect remainingRect:(CGRect *)remainingRect;
 - (CGSize)size;
 - (NSArray)exclusionPaths;
-- (NSEdgeInsets)textContainerInsetsForView:(id)a3;
-- (NSEdgeInsets)textContainerInsetsForView_iOS:(id)a3;
+- (NSEdgeInsets)textContainerInsetsForView:(id)view;
+- (NSEdgeInsets)textContainerInsetsForView_iOS:(id)s;
 - (NSLayoutManager)layoutManager;
 - (NSTextContainer)initWithCoder:(NSCoder *)coder;
 - (NSTextContainer)initWithSize:(CGSize)size;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)defaultParagraphStyle;
 - (id)description;
 - (id)linkTextAttributes;
-- (id)markedTextAttributesAtCharacterIndex:(int64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)renderingColorForDocumentColor:(id)a3;
+- (id)markedTextAttributesAtCharacterIndex:(int64_t)index effectiveRange:(_NSRange *)range;
+- (id)renderingColorForDocumentColor:(id)color;
 - (id)selectedTextAttributes;
-- (id)textHighlightRenderingAttributesForAttributes:(id)a3;
+- (id)textHighlightRenderingAttributesForAttributes:(id)attributes;
 - (id)textViewportLayoutController;
 - (int64_t)layoutOrientation;
 - (unint64_t)_textLength;
-- (void)_appendTemporaryExclusionPathsForRects_iOS:(id)a3;
+- (void)_appendTemporaryExclusionPathsForRects_iOS:(id)s;
 - (void)_commonInit;
-- (void)_containerTextViewFrameChanged:(id)a3;
-- (void)_resizeAccordingToTextView:(id)a3;
+- (void)_containerTextViewFrameChanged:(id)changed;
+- (void)_resizeAccordingToTextView:(id)view;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)replaceLayoutManager:(NSLayoutManager *)newLayoutManager;
-- (void)setAttributesForExtraLineFragment:(id)a3;
-- (void)setExclusionPaths:(id)a3 temporarily:(BOOL)a4;
+- (void)setAttributesForExtraLineFragment:(id)fragment;
+- (void)setExclusionPaths:(id)paths temporarily:(BOOL)temporarily;
 - (void)setHeightTracksTextView:(BOOL)heightTracksTextView;
 - (void)setLayoutManager:(NSLayoutManager *)layoutManager;
-- (void)setLayoutOrientation:(int64_t)a3;
+- (void)setLayoutOrientation:(int64_t)orientation;
 - (void)setLineBreakMode:(NSLineBreakMode)lineBreakMode;
 - (void)setLineFragmentPadding:(CGFloat)lineFragmentPadding;
 - (void)setMaximumNumberOfLines:(NSUInteger)maximumNumberOfLines;
 - (void)setSize:(CGSize)size;
-- (void)setTextLayoutManager:(id)a3;
+- (void)setTextLayoutManager:(id)manager;
 - (void)setTextView:(NSTextView *)textView;
 @end
 
@@ -57,10 +57,10 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    [a1 setVersion:1];
-    __NSBaseLineFragmentIMP = [a1 instanceMethodForSelector:sel_lineFragmentRectForProposedRect_atIndex_writingDirection_remainingRect_];
+    [self setVersion:1];
+    __NSBaseLineFragmentIMP = [self instanceMethodForSelector:sel_lineFragmentRectForProposedRect_atIndex_writingDirection_remainingRect_];
   }
 }
 
@@ -81,9 +81,9 @@
     return self->_layoutOrientation;
   }
 
-  v3 = [(NSTextContainer *)self textView];
+  textView = [(NSTextContainer *)self textView];
 
-  return [(NSTextView *)v3 layoutOrientation];
+  return [(NSTextView *)textView layoutOrientation];
 }
 
 - (NSArray)exclusionPaths
@@ -184,16 +184,16 @@
 
 - (CGPoint)textContainerOrigin
 {
-  v2 = [(NSTextContainer *)self textView];
+  textView = [(NSTextContainer *)self textView];
   if (objc_opt_respondsToSelector())
   {
-    [(NSTextView *)v2 bounds];
-    [(NSTextView *)v2 textContainerFrameForBounds:?];
+    [(NSTextView *)textView bounds];
+    [(NSTextView *)textView textContainerFrameForBounds:?];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [(NSTextView *)v2 textContainerOrigin];
+    [(NSTextView *)textView textContainerOrigin];
   }
 
   else
@@ -207,16 +207,16 @@
   return result;
 }
 
-- (NSEdgeInsets)textContainerInsetsForView_iOS:(id)a3
+- (NSEdgeInsets)textContainerInsetsForView_iOS:(id)s
 {
   if (objc_opt_respondsToSelector())
   {
-    [a3 textContainerInsets];
+    [s textContainerInsets];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [a3 textContainerInset];
+    [s textContainerInset];
   }
 
   else
@@ -234,10 +234,10 @@
   return result;
 }
 
-- (void)_appendTemporaryExclusionPathsForRects_iOS:(id)a3
+- (void)_appendTemporaryExclusionPathsForRects_iOS:(id)s
 {
   v18 = *MEMORY[0x1E69E9840];
-  if ([a3 count])
+  if ([s count])
   {
     UIBezierPathClass = getUIBezierPathClass();
     if (UIBezierPathClass)
@@ -249,7 +249,7 @@
       v14 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v9 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [s countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v9)
       {
         v10 = v9;
@@ -261,7 +261,7 @@
           {
             if (*v14 != v11)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(s);
             }
 
             [*(*(&v13 + 1) + 8 * v12) rectValue];
@@ -270,7 +270,7 @@
           }
 
           while (v10 != v12);
-          v10 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+          v10 = [s countByEnumeratingWithState:&v13 objects:v17 count:16];
         }
 
         while (v10);
@@ -300,36 +300,36 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
     tcFlags = self->_tcFlags;
-    [a3 encodeObject:self->_layoutManager forKey:@"NSLayoutManager"];
-    [a3 encodeObject:self->_textLayoutManager forKey:@"NSTextLayoutManager"];
+    [coder encodeObject:self->_layoutManager forKey:@"NSLayoutManager"];
+    [coder encodeObject:self->_textLayoutManager forKey:@"NSTextLayoutManager"];
     width = self->_size.width;
     height = self->_size.height;
     if (width > 0.0 && width < 10000000.0)
     {
-      [a3 encodeDouble:@"NSWidth" forKey:?];
+      [coder encodeDouble:@"NSWidth" forKey:?];
     }
 
     if (height > 0.0 && height < 10000000.0)
     {
-      [a3 encodeDouble:@"NSHeight" forKey:height];
+      [coder encodeDouble:@"NSHeight" forKey:height];
     }
 
     if (self->_lineFragmentPadding != 5.0)
     {
-      [a3 encodeDouble:@"NSPadding" forKey:?];
+      [coder encodeDouble:@"NSPadding" forKey:?];
     }
 
     if (self->_minimumWidth != 0.0)
     {
-      [a3 encodeDouble:@"NSMinWidth" forKey:?];
+      [coder encodeDouble:@"NSMinWidth" forKey:?];
     }
 
-    [a3 encodeInt:tcFlags & 3 forKey:@"NSTCFlags"];
+    [coder encodeInt:tcFlags & 3 forKey:@"NSTCFlags"];
   }
 
   else
@@ -385,25 +385,25 @@
   return self;
 }
 
-- (void)setTextLayoutManager:(id)a3
+- (void)setTextLayoutManager:(id)manager
 {
   textLayoutManager = self->_textLayoutManager;
   p_textLayoutManager = &self->_textLayoutManager;
-  if (textLayoutManager != a3)
+  if (textLayoutManager != manager)
   {
-    objc_storeWeak(p_textLayoutManager, a3);
-    if (a3)
+    objc_storeWeak(p_textLayoutManager, manager);
+    if (manager)
     {
-      v7 = [a3 applicationFrameworkContext];
+      applicationFrameworkContext = [manager applicationFrameworkContext];
       self->_layoutManager = 0;
     }
 
     else
     {
-      v7 = _NSTextScalingTypeForCurrentEnvironment();
+      applicationFrameworkContext = _NSTextScalingTypeForCurrentEnvironment();
     }
 
-    self->_applicationFrameworkContext = v7;
+    self->_applicationFrameworkContext = applicationFrameworkContext;
     objc_sync_enter(self);
     textViewportLayoutController = self->_textViewportLayoutController;
     self->_textViewportLayoutController = 0;
@@ -456,13 +456,13 @@
   layoutManager = self->_layoutManager;
   if (layoutManager)
   {
-    v6 = [(NSLayoutManager *)layoutManager textContainers];
-    v7 = [(NSArray *)v6 count];
-    v8 = [(NSLayoutManager *)self->_layoutManager textStorage];
-    if (v8)
+    textContainers = [(NSLayoutManager *)layoutManager textContainers];
+    v7 = [(NSArray *)textContainers count];
+    textStorage = [(NSLayoutManager *)self->_layoutManager textStorage];
+    if (textStorage)
     {
-      v9 = v8;
-      v10 = v8;
+      v9 = textStorage;
+      v10 = textStorage;
       [(NSTextStorage *)v9 removeLayoutManager:self->_layoutManager];
       [(NSTextStorage *)v9 addLayoutManager:newLayoutManager];
     }
@@ -470,7 +470,7 @@
     while (v7)
     {
       --v7;
-      v11 = [(NSArray *)v6 objectAtIndex:0];
+      v11 = [(NSArray *)textContainers objectAtIndex:0];
       [(NSLayoutManager *)self->_layoutManager removeTextContainerAtIndex:0];
       [(NSLayoutManager *)newLayoutManager addTextContainer:v11];
     }
@@ -487,9 +487,9 @@
 
     else
     {
-      v13 = [(NSTextLayoutManager *)self->_textLayoutManager textContentManager];
-      v14 = self;
-      if (!v13 || (objc_opt_respondsToSelector() & 1) == 0 || (v15 = [(NSTextContentManager *)v13 textStorage]) == 0)
+      textContentManager = [(NSTextLayoutManager *)self->_textLayoutManager textContentManager];
+      selfCopy = self;
+      if (!textContentManager || (objc_opt_respondsToSelector() & 1) == 0 || (v15 = [(NSTextContentManager *)textContentManager textStorage]) == 0)
       {
         v15 = objc_alloc_init(NSTextStorage);
       }
@@ -561,17 +561,17 @@
   width = size.width;
   if (!NSEqualSizes(self->_size, size))
   {
-    v6 = [(NSTextContainer *)self textLayoutManager];
-    if (v6)
+    textLayoutManager = [(NSTextContainer *)self textLayoutManager];
+    if (textLayoutManager)
     {
-      v7 = 0;
-      v8 = 0;
+      delegate = 0;
+      layoutManager = 0;
     }
 
     else
     {
-      v8 = [(NSTextContainer *)self layoutManager];
-      v7 = [(NSLayoutManager *)v8 delegate];
+      layoutManager = [(NSTextContainer *)self layoutManager];
+      delegate = [(NSLayoutManager *)layoutManager delegate];
     }
 
     v9 = self->_size.width;
@@ -592,16 +592,16 @@
       self->_cachedBounds = 0;
     }
 
-    if (!v6)
+    if (!textLayoutManager)
     {
-      [(NSLayoutManager *)v8 textContainerChangedGeometry:self];
+      [(NSLayoutManager *)layoutManager textContainerChangedGeometry:self];
     }
 
     [(NSTextLayoutManager *)[(NSTextContainer *)self textLayoutManager] textContainerChangedGeometry:self];
-    if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
 
-      [v7 layoutManager:v8 textContainer:self didChangeGeometryFromSize:{v9, v10}];
+      [delegate layoutManager:layoutManager textContainer:self didChangeGeometryFromSize:{v9, v10}];
     }
   }
 }
@@ -613,15 +613,15 @@
     self->_lineFragmentPadding = lineFragmentPadding;
     if ([(NSTextContainer *)self textLayoutManager])
     {
-      v5 = [(NSTextContainer *)self textLayoutManager];
+      textLayoutManager = [(NSTextContainer *)self textLayoutManager];
     }
 
     else
     {
-      v5 = [(NSTextContainer *)self layoutManager];
+      textLayoutManager = [(NSTextContainer *)self layoutManager];
     }
 
-    [(NSTextLayoutManager *)v5 textContainerChangedGeometry:self];
+    [(NSTextLayoutManager *)textLayoutManager textContainerChangedGeometry:self];
   }
 }
 
@@ -629,15 +629,15 @@
 {
   if (((*&self->_tcFlags >> 3) & 0xF) != lineBreakMode)
   {
-    v5 = [(NSTextContainer *)self textLayoutManager];
-    if (v5)
+    textLayoutManager = [(NSTextContainer *)self textLayoutManager];
+    if (textLayoutManager)
     {
-      v6 = 0;
+      layoutManager = 0;
     }
 
     else
     {
-      v6 = [(NSTextContainer *)self layoutManager];
+      layoutManager = [(NSTextContainer *)self layoutManager];
     }
 
     v7 = 8 * (lineBreakMode & 0xF);
@@ -647,29 +647,29 @@
     }
 
     *&self->_tcFlags = *&self->_tcFlags & 0xFF87 | v7;
-    if (v5)
+    if (textLayoutManager)
     {
 
-      [(NSTextLayoutManager *)v5 textContainerChangedGeometry:self];
+      [(NSTextLayoutManager *)textLayoutManager textContainerChangedGeometry:self];
     }
 
     else
     {
-      if ([(NSTextStorage *)[(NSLayoutManager *)v6 textStorage] length])
+      if ([(NSTextStorage *)[(NSLayoutManager *)layoutManager textStorage] length])
       {
-        v8 = [(NSLayoutManager *)v6 textContainers];
+        textContainers = [(NSLayoutManager *)layoutManager textContainers];
         v15 = 0;
         v16 = 0;
-        v9 = [(NSLayoutManager *)v6 textContainerForGlyphAtIndex:0 effectiveRange:&v15 withoutAdditionalLayout:1];
+        v9 = [(NSLayoutManager *)layoutManager textContainerForGlyphAtIndex:0 effectiveRange:&v15 withoutAdditionalLayout:1];
         if (v9)
         {
           v10 = v9;
-          if ([(NSArray *)v8 count]&& v10 != self)
+          if ([(NSArray *)textContainers count]&& v10 != self)
           {
             v11 = v15;
             do
             {
-              v12 = [(NSLayoutManager *)v6 textContainerForGlyphAtIndex:v11 effectiveRange:&v15 withoutAdditionalLayout:1];
+              v12 = [(NSLayoutManager *)layoutManager textContainerForGlyphAtIndex:v11 effectiveRange:&v15 withoutAdditionalLayout:1];
               v10 = v12;
               v11 = v16 + v15;
               v15 += v16;
@@ -678,30 +678,30 @@
             while (v12 && v12 != self);
           }
 
-          v13 = [(NSTextContainer *)v10 textView];
-          if (v13)
+          textView = [(NSTextContainer *)v10 textView];
+          if (textView)
           {
-            v14 = v13;
-            [(NSTextView *)v13 bounds];
+            v14 = textView;
+            [(NSTextView *)textView bounds];
             [(NSTextView *)v14 setNeedsDisplayInRect:0 avoidAdditionalLayout:?];
           }
         }
       }
 
-      [(NSLayoutManager *)v6 textContainerChangedGeometry:self];
+      [(NSLayoutManager *)layoutManager textContainerChangedGeometry:self];
     }
   }
 }
 
-- (void)setAttributesForExtraLineFragment:(id)a3
+- (void)setAttributesForExtraLineFragment:(id)fragment
 {
-  if (([a3 isEqualToDictionary:self->_attributesForExtraLineFragment] & 1) == 0)
+  if (([fragment isEqualToDictionary:self->_attributesForExtraLineFragment] & 1) == 0)
   {
-    v5 = [(NSTextContainer *)self textLayoutManager];
-    v6 = v5;
-    v7 = v5 ? [(NSTextLayoutManager *)v5 textContainer]: [(NSLayoutManager *)self->_layoutManager extraLineFragmentTextContainer];
+    textLayoutManager = [(NSTextContainer *)self textLayoutManager];
+    v6 = textLayoutManager;
+    v7 = textLayoutManager ? [(NSTextLayoutManager *)textLayoutManager textContainer]: [(NSLayoutManager *)self->_layoutManager extraLineFragmentTextContainer];
     v8 = v7;
-    v9 = [a3 copyWithZone:0];
+    v9 = [fragment copyWithZone:0];
 
     self->_attributesForExtraLineFragment = v9;
     if (v8 == self)
@@ -710,13 +710,13 @@
       {
         if (![(NSArray *)[(NSTextLayoutManager *)v6 textSelections] count])
         {
-          v10 = [(NSTextRange *)[(NSTextContentManager *)[(NSTextLayoutManager *)v6 textContentManager] documentRange] endLocation];
+          endLocation = [(NSTextRange *)[(NSTextContentManager *)[(NSTextLayoutManager *)v6 textContentManager] documentRange] endLocation];
           v12[0] = MEMORY[0x1E69E9820];
           v12[1] = 3221225472;
           v12[2] = __53__NSTextContainer_setAttributesForExtraLineFragment___block_invoke;
           v12[3] = &unk_1E72660A8;
           v12[4] = self;
-          [(NSTextLayoutManager *)v6 enumerateTextLayoutFragmentsFromLocation:v10 options:1 usingBlock:v12];
+          [(NSTextLayoutManager *)v6 enumerateTextLayoutFragmentsFromLocation:endLocation options:1 usingBlock:v12];
           [(NSTextLayoutManager *)v6 _invalidateTextParagraphForEmptyDocument];
         }
       }
@@ -752,22 +752,22 @@ uint64_t __53__NSTextContainer_setAttributesForExtraLineFragment___block_invoke(
   return 0;
 }
 
-- (void)setExclusionPaths:(id)a3 temporarily:(BOOL)a4
+- (void)setExclusionPaths:(id)paths temporarily:(BOOL)temporarily
 {
   if (![(NSArray *)self->_exclusionPaths isEqualToArray:?])
   {
-    v7 = [(NSTextContainer *)self textLayoutManager];
-    if (v7)
+    textLayoutManager = [(NSTextContainer *)self textLayoutManager];
+    if (textLayoutManager)
     {
-      v8 = 0;
+      layoutManager = 0;
     }
 
     else
     {
-      v8 = [(NSTextContainer *)self layoutManager];
+      layoutManager = [(NSTextContainer *)self layoutManager];
     }
 
-    self->_exclusionPaths = [a3 copy];
+    self->_exclusionPaths = [paths copy];
     cachedClippingAttributes = self->_cachedClippingAttributes;
     if (cachedClippingAttributes)
     {
@@ -782,31 +782,31 @@ uint64_t __53__NSTextContainer_setAttributesForExtraLineFragment___block_invoke(
       self->_cachedBounds = 0;
     }
 
-    if (!a4)
+    if (!temporarily)
     {
-      if (v7)
+      if (textLayoutManager)
       {
 
-        [(NSTextLayoutManager *)v7 textContainerChangedGeometry:self];
+        [(NSTextLayoutManager *)textLayoutManager textContainerChangedGeometry:self];
       }
 
       else
       {
-        if ([(NSTextStorage *)[(NSLayoutManager *)v8 textStorage] length])
+        if ([(NSTextStorage *)[(NSLayoutManager *)layoutManager textStorage] length])
         {
-          v11 = [(NSLayoutManager *)v8 textContainers];
+          textContainers = [(NSLayoutManager *)layoutManager textContainers];
           v18 = 0;
           v19 = 0;
-          v12 = [(NSLayoutManager *)v8 textContainerForGlyphAtIndex:0 effectiveRange:&v18 withoutAdditionalLayout:1];
+          v12 = [(NSLayoutManager *)layoutManager textContainerForGlyphAtIndex:0 effectiveRange:&v18 withoutAdditionalLayout:1];
           if (v12)
           {
             v13 = v12;
-            if ([(NSArray *)v11 count]&& v13 != self)
+            if ([(NSArray *)textContainers count]&& v13 != self)
             {
               v14 = v18;
               do
               {
-                v15 = [(NSLayoutManager *)v8 textContainerForGlyphAtIndex:v14 effectiveRange:&v18 withoutAdditionalLayout:1];
+                v15 = [(NSLayoutManager *)layoutManager textContainerForGlyphAtIndex:v14 effectiveRange:&v18 withoutAdditionalLayout:1];
                 v13 = v15;
                 v14 = v19 + v18;
                 v18 += v19;
@@ -815,17 +815,17 @@ uint64_t __53__NSTextContainer_setAttributesForExtraLineFragment___block_invoke(
               while (v15 && v15 != self);
             }
 
-            v16 = [(NSTextContainer *)v13 textView];
-            if (v16)
+            textView = [(NSTextContainer *)v13 textView];
+            if (textView)
             {
-              v17 = v16;
-              [(NSTextView *)v16 bounds];
+              v17 = textView;
+              [(NSTextView *)textView bounds];
               [(NSTextView *)v17 setNeedsDisplayInRect:0 avoidAdditionalLayout:?];
             }
           }
         }
 
-        [(NSLayoutManager *)v8 textContainerChangedGeometry:self];
+        [(NSLayoutManager *)layoutManager textContainerChangedGeometry:self];
       }
     }
   }
@@ -836,13 +836,13 @@ uint64_t __53__NSTextContainer_setAttributesForExtraLineFragment___block_invoke(
   if (self->_maximumLines != maximumNumberOfLines)
   {
     self->_maximumLines = maximumNumberOfLines;
-    v4 = [(NSTextContainer *)self textLayoutManager];
-    if (!v4)
+    textLayoutManager = [(NSTextContainer *)self textLayoutManager];
+    if (!textLayoutManager)
     {
-      v4 = [(NSTextContainer *)self layoutManager];
+      textLayoutManager = [(NSTextContainer *)self layoutManager];
     }
 
-    [(NSTextLayoutManager *)v4 textContainerChangedGeometry:self];
+    [(NSTextLayoutManager *)textLayoutManager textContainerChangedGeometry:self];
   }
 }
 
@@ -1030,8 +1030,8 @@ LABEL_80:
 
         if (!self->_cachedClippingAttributes)
         {
-          v51 = [(NSTextContainer *)self exclusionPaths];
-          Count = CFArrayGetCount(v51);
+          exclusionPaths = [(NSTextContainer *)self exclusionPaths];
+          Count = CFArrayGetCount(exclusionPaths);
           v83 = 0.0;
           v84 = &v83;
           v85 = 0x3052000000;
@@ -1045,7 +1045,7 @@ LABEL_80:
           v82[3] = &unk_1E7267E38;
           v82[4] = &v83;
           v82[5] = Mutable;
-          [(NSArray *)v51 enumerateObjectsUsingBlock:v82];
+          [(NSArray *)exclusionPaths enumerateObjectsUsingBlock:v82];
 
           _Block_object_dispose(&v83, 8);
           self->_cachedClippingAttributes = Mutable;
@@ -1229,9 +1229,9 @@ LABEL_81:
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [NSTextContainer allocWithZone:a3];
+  v4 = [NSTextContainer allocWithZone:zone];
   [(NSTextContainer *)self size];
   v5 = [(NSTextContainer *)v4 initWithSize:?];
   [(NSTextContainer *)v5 setExclusionPaths:[(NSTextContainer *)self exclusionPaths]];
@@ -1244,9 +1244,9 @@ LABEL_81:
   return v5;
 }
 
-- (CGRect)lineFragmentRectForProposedRect:(CGRect)a3 remainingRect:(CGRect *)a4
+- (CGRect)lineFragmentRectForProposedRect:(CGRect)rect remainingRect:(CGRect *)remainingRect
 {
-  [(NSTextContainer *)self lineFragmentRectForProposedRect:0 atIndex:0 writingDirection:a4 remainingRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(NSTextContainer *)self lineFragmentRectForProposedRect:0 atIndex:0 writingDirection:remainingRect remainingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -1296,27 +1296,27 @@ LABEL_81:
   }
 }
 
-- (void)setLayoutOrientation:(int64_t)a3
+- (void)setLayoutOrientation:(int64_t)orientation
 {
   [(NSTextContainer *)self textView];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(NSTextContainer *)self textView];
+    textView = [(NSTextContainer *)self textView];
 
-    [(NSTextView *)v5 setLayoutOrientation:a3];
+    [(NSTextView *)textView setLayoutOrientation:orientation];
   }
 
   else
   {
-    self->_layoutOrientation = a3;
+    self->_layoutOrientation = orientation;
   }
 }
 
-- (id)renderingColorForDocumentColor:(id)a3
+- (id)renderingColorForDocumentColor:(id)color
 {
   if (self->_textViewSupportsAdaptiveColor)
   {
-    result = [(NSTextContainerView *)self->_textView renderingColorForDocumentColor:a3];
+    result = [(NSTextContainerView *)self->_textView renderingColorForDocumentColor:color];
   }
 
   else
@@ -1326,7 +1326,7 @@ LABEL_81:
 
   if (!result)
   {
-    return a3;
+    return color;
   }
 
   return result;
@@ -1334,10 +1334,10 @@ LABEL_81:
 
 - (id)selectedTextAttributes
 {
-  v2 = [(NSTextContainer *)self textView];
+  textView = [(NSTextContainer *)self textView];
   if (objc_opt_respondsToSelector())
   {
-    result = [(NSTextView *)v2 selectedTextAttributes];
+    result = [(NSTextView *)textView selectedTextAttributes];
   }
 
   else
@@ -1357,19 +1357,19 @@ LABEL_81:
 {
   if ([(NSTextContainer *)self textLayoutManager])
   {
-    v3 = [(NSTextContentManager *)[(NSTextLayoutManager *)[(NSTextContainer *)self textLayoutManager] textContentManager] documentRange];
-    v4 = [(NSTextLayoutManager *)[(NSTextContainer *)self textLayoutManager] textContentManager];
-    v5 = [(NSTextRange *)v3 location];
-    v6 = [(NSTextRange *)v3 endLocation];
+    documentRange = [(NSTextContentManager *)[(NSTextLayoutManager *)[(NSTextContainer *)self textLayoutManager] textContentManager] documentRange];
+    textContentManager = [(NSTextLayoutManager *)[(NSTextContainer *)self textLayoutManager] textContentManager];
+    location = [(NSTextRange *)documentRange location];
+    endLocation = [(NSTextRange *)documentRange endLocation];
 
-    return [(NSTextContentManager *)v4 offsetFromLocation:v5 toLocation:v6];
+    return [(NSTextContentManager *)textContentManager offsetFromLocation:location toLocation:endLocation];
   }
 
   else if ([(NSTextContainer *)self layoutManager])
   {
-    v8 = [(NSLayoutManager *)[(NSTextContainer *)self layoutManager] textStorage];
+    textStorage = [(NSLayoutManager *)[(NSTextContainer *)self layoutManager] textStorage];
 
-    return [(NSTextStorage *)v8 length];
+    return [(NSTextStorage *)textStorage length];
   }
 
   else
@@ -1378,42 +1378,42 @@ LABEL_81:
   }
 }
 
-- (id)markedTextAttributesAtCharacterIndex:(int64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)markedTextAttributesAtCharacterIndex:(int64_t)index effectiveRange:(_NSRange *)range
 {
-  v7 = [(NSTextContainer *)self textView];
+  textView = [(NSTextContainer *)self textView];
   v19 = 0;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     goto LABEL_19;
   }
 
-  v8 = [(NSTextView *)v7 markedRange];
+  markedRange = [(NSTextView *)textView markedRange];
   if (!v9)
   {
     goto LABEL_19;
   }
 
-  v10 = v8;
+  v10 = markedRange;
   v11 = v9;
-  v12 = a3 - v8;
-  if (a3 < v8 || v12 >= v9)
+  v12 = index - markedRange;
+  if (index < markedRange || v12 >= v9)
   {
-    v16 = v8 - a3;
-    if (v8 > a3)
+    v16 = markedRange - index;
+    if (markedRange > index)
     {
       result = 0;
-      v19.location = a3;
+      v19.location = index;
     }
 
     else
     {
-      v17 = [(NSTextContainer *)self _textLength];
-      if (v17 == 0x7FFFFFFFFFFFFFFFLL)
+      _textLength = [(NSTextContainer *)self _textLength];
+      if (_textLength == 0x7FFFFFFFFFFFFFFFLL)
       {
         goto LABEL_19;
       }
 
-      v18 = v17;
+      v18 = _textLength;
       result = 0;
       v16 = v18 - (v10 + v11);
       v19.location = v10 + v11;
@@ -1425,11 +1425,11 @@ LABEL_81:
 
   if (objc_opt_respondsToSelector())
   {
-    v13 = [(NSTextView *)v7 attributedSubstringForMarkedRange];
-    if (v13)
+    attributedSubstringForMarkedRange = [(NSTextView *)textView attributedSubstringForMarkedRange];
+    if (attributedSubstringForMarkedRange)
     {
-      v14 = v13;
-      if (v11 == [v13 length])
+      v14 = attributedSubstringForMarkedRange;
+      if (v11 == [attributedSubstringForMarkedRange length])
       {
         result = [v14 attributesAtIndex:v12 effectiveRange:&v19];
         v19.location += v10;
@@ -1440,7 +1440,7 @@ LABEL_81:
 
   if (objc_opt_respondsToSelector())
   {
-    result = [(NSTextView *)v7 markedTextAttributes];
+    result = [(NSTextView *)textView markedTextAttributes];
 LABEL_18:
     v19.location = v10;
     v19.length = v11;
@@ -1449,16 +1449,16 @@ LABEL_18:
 
   if (objc_opt_respondsToSelector())
   {
-    result = [(NSTextView *)v7 markedTextStyle];
+    result = [(NSTextView *)textView markedTextStyle];
     goto LABEL_18;
   }
 
 LABEL_19:
   result = 0;
 LABEL_20:
-  if (a4)
+  if (range)
   {
-    *a4 = v19;
+    *range = v19;
   }
 
   if (!result)
@@ -1482,11 +1482,11 @@ LABEL_20:
   }
 }
 
-- (id)textHighlightRenderingAttributesForAttributes:(id)a3
+- (id)textHighlightRenderingAttributesForAttributes:(id)attributes
 {
   if (self->_textViewHasHighlightAttributes)
   {
-    return [(NSTextContainerView *)self->_textView textHighlightRenderingAttributesForAttributes:a3];
+    return [(NSTextContainerView *)self->_textView textHighlightRenderingAttributesForAttributes:attributes];
   }
 
   else
@@ -1495,7 +1495,7 @@ LABEL_20:
   }
 }
 
-- (void)_resizeAccordingToTextView:(id)a3
+- (void)_resizeAccordingToTextView:(id)view
 {
   if ((*&self->_tcFlags & 3) != 0)
   {
@@ -1509,14 +1509,14 @@ LABEL_20:
     {
       v15 = v8;
       v16 = v9;
-      [a3 bounds];
+      [view bounds];
       width = v17 - (v15 + v16);
       tcFlags = self->_tcFlags;
     }
 
     if ((tcFlags & 2) != 0)
     {
-      [a3 bounds];
+      [view bounds];
       height = v18 - (v11 + v13);
     }
 
@@ -1571,7 +1571,7 @@ LABEL_20:
   return v2;
 }
 
-- (void)_containerTextViewFrameChanged:(id)a3
+- (void)_containerTextViewFrameChanged:(id)changed
 {
   if (self->_applicationFrameworkContext == 2)
   {
@@ -1582,16 +1582,16 @@ LABEL_20:
   }
 }
 
-- (NSEdgeInsets)textContainerInsetsForView:(id)a3
+- (NSEdgeInsets)textContainerInsetsForView:(id)view
 {
   if (self->_applicationFrameworkContext == 2)
   {
-    [(NSTextContainer *)self textContainerInsetsForView_macOS:a3];
+    [(NSTextContainer *)self textContainerInsetsForView_macOS:view];
   }
 
   else
   {
-    [(NSTextContainer *)self textContainerInsetsForView_iOS:a3];
+    [(NSTextContainer *)self textContainerInsetsForView_iOS:view];
   }
 
   result.right = v6;

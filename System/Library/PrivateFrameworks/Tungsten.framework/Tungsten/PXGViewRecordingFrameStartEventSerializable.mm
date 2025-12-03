@@ -1,7 +1,7 @@
 @interface PXGViewRecordingFrameStartEventSerializable
 - (CGPoint)renderOrigin;
 - (CGSize)viewSize;
-- (PXGViewRecordingFrameStartEventSerializable)initWithSerializableObject:(id)a3;
+- (PXGViewRecordingFrameStartEventSerializable)initWithSerializableObject:(id)object;
 - (id)createSerializableObject;
 @end
 
@@ -57,15 +57,15 @@
   return v14;
 }
 
-- (PXGViewRecordingFrameStartEventSerializable)initWithSerializableObject:(id)a3
+- (PXGViewRecordingFrameStartEventSerializable)initWithSerializableObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v26.receiver = self;
   v26.super_class = PXGViewRecordingFrameStartEventSerializable;
   v5 = [(PXGViewRecordingFrameStartEventSerializable *)&v26 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = objectCopy;
     v7 = [v6 objectForKeyedSubscript:@"viewSize"];
     v8 = [v7 objectAtIndexedSubscript:0];
     [v8 floatValue];

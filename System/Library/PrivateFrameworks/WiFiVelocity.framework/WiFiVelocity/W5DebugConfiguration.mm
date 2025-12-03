@@ -1,35 +1,35 @@
 @interface W5DebugConfiguration
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDebugConfiguration:(id)a3;
-- (W5DebugConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDebugConfiguration:(id)configuration;
+- (W5DebugConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initDiagnosticsMode:(id)a3 wifiState:(int64_t)a4 megaWiFiProfileState:(int64_t)a5 noLoggingWiFiProfileState:(int64_t)a6 eapolState:(int64_t)a7 bluetoothState:(int64_t)a8;
-- (id)initDiagnosticsMode:(id)a3 wifiState:(int64_t)a4 megaWiFiProfileState:(int64_t)a5 noLoggingWiFiProfileState:(int64_t)a6 eapolState:(int64_t)a7 bluetoothState:(int64_t)a8 stbcState:(int64_t)a9;
+- (id)initDiagnosticsMode:(id)mode wifiState:(int64_t)state megaWiFiProfileState:(int64_t)profileState noLoggingWiFiProfileState:(int64_t)fiProfileState eapolState:(int64_t)eapolState bluetoothState:(int64_t)bluetoothState;
+- (id)initDiagnosticsMode:(id)mode wifiState:(int64_t)state megaWiFiProfileState:(int64_t)profileState noLoggingWiFiProfileState:(int64_t)fiProfileState eapolState:(int64_t)eapolState bluetoothState:(int64_t)bluetoothState stbcState:(int64_t)stbcState;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation W5DebugConfiguration
 
-- (id)initDiagnosticsMode:(id)a3 wifiState:(int64_t)a4 megaWiFiProfileState:(int64_t)a5 noLoggingWiFiProfileState:(int64_t)a6 eapolState:(int64_t)a7 bluetoothState:(int64_t)a8
+- (id)initDiagnosticsMode:(id)mode wifiState:(int64_t)state megaWiFiProfileState:(int64_t)profileState noLoggingWiFiProfileState:(int64_t)fiProfileState eapolState:(int64_t)eapolState bluetoothState:(int64_t)bluetoothState
 {
   v28 = *MEMORY[0x277D85DE8];
-  v14 = a3;
+  modeCopy = mode;
   v21.receiver = self;
   v21.super_class = W5DebugConfiguration;
   v15 = [(W5DebugConfiguration *)&v21 init];
   if (v15)
   {
-    v16 = [v14 copy];
+    v16 = [modeCopy copy];
     diagnosticsMode = v15->_diagnosticsMode;
     v15->_diagnosticsMode = v16;
 
-    v15->_wifi = a4;
-    v15->_megaWiFiProfile = a5;
-    v15->_noLoggingWiFiProfile = a6;
-    v15->_eapol = a7;
-    v15->_bluetooth = a8;
+    v15->_wifi = state;
+    v15->_megaWiFiProfile = profileState;
+    v15->_noLoggingWiFiProfile = fiProfileState;
+    v15->_eapol = eapolState;
+    v15->_bluetooth = bluetoothState;
     v15->_stbc = 0;
   }
 
@@ -52,25 +52,25 @@
   return v15;
 }
 
-- (id)initDiagnosticsMode:(id)a3 wifiState:(int64_t)a4 megaWiFiProfileState:(int64_t)a5 noLoggingWiFiProfileState:(int64_t)a6 eapolState:(int64_t)a7 bluetoothState:(int64_t)a8 stbcState:(int64_t)a9
+- (id)initDiagnosticsMode:(id)mode wifiState:(int64_t)state megaWiFiProfileState:(int64_t)profileState noLoggingWiFiProfileState:(int64_t)fiProfileState eapolState:(int64_t)eapolState bluetoothState:(int64_t)bluetoothState stbcState:(int64_t)stbcState
 {
   v29 = *MEMORY[0x277D85DE8];
-  v15 = a3;
+  modeCopy = mode;
   v22.receiver = self;
   v22.super_class = W5DebugConfiguration;
   v16 = [(W5DebugConfiguration *)&v22 init];
   if (v16)
   {
-    v17 = [v15 copy];
+    v17 = [modeCopy copy];
     diagnosticsMode = v16->_diagnosticsMode;
     v16->_diagnosticsMode = v17;
 
-    v16->_wifi = a4;
-    v16->_megaWiFiProfile = a5;
-    v16->_noLoggingWiFiProfile = a6;
-    v16->_eapol = a7;
-    v16->_bluetooth = a8;
-    v16->_stbc = a9;
+    v16->_wifi = state;
+    v16->_megaWiFiProfile = profileState;
+    v16->_noLoggingWiFiProfile = fiProfileState;
+    v16->_eapol = eapolState;
+    v16->_bluetooth = bluetoothState;
+    v16->_stbc = stbcState;
   }
 
   else
@@ -121,14 +121,14 @@
   return v11;
 }
 
-- (BOOL)isEqualToDebugConfiguration:(id)a3
+- (BOOL)isEqualToDebugConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   wifi = self->_wifi;
-  if (wifi == [v4 wifi] && (megaWiFiProfile = self->_megaWiFiProfile, megaWiFiProfile == objc_msgSend(v4, "megaWiFiProfile")) && (noLoggingWiFiProfile = self->_noLoggingWiFiProfile, noLoggingWiFiProfile == objc_msgSend(v4, "noLoggingWiFiProfile")) && (eapol = self->_eapol, eapol == objc_msgSend(v4, "eapol")) && (bluetooth = self->_bluetooth, bluetooth == objc_msgSend(v4, "bluetooth")))
+  if (wifi == [configurationCopy wifi] && (megaWiFiProfile = self->_megaWiFiProfile, megaWiFiProfile == objc_msgSend(configurationCopy, "megaWiFiProfile")) && (noLoggingWiFiProfile = self->_noLoggingWiFiProfile, noLoggingWiFiProfile == objc_msgSend(configurationCopy, "noLoggingWiFiProfile")) && (eapol = self->_eapol, eapol == objc_msgSend(configurationCopy, "eapol")) && (bluetooth = self->_bluetooth, bluetooth == objc_msgSend(configurationCopy, "bluetooth")))
   {
     stbc = self->_stbc;
-    v11 = stbc == [v4 stbc];
+    v11 = stbc == [configurationCopy stbc];
   }
 
   else
@@ -139,18 +139,18 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(W5DebugConfiguration *)self isEqualToDebugConfiguration:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(W5DebugConfiguration *)self isEqualToDebugConfiguration:v5];
   }
 
   return v6;
@@ -175,7 +175,7 @@
   return v10 ^ v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[W5DebugConfiguration allocWithZone:?]];
   [(W5DebugConfiguration *)v4 setWifi:self->_wifi];
@@ -188,33 +188,33 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   wifi = self->_wifi;
-  v5 = a3;
-  [v5 encodeInteger:wifi forKey:@"_wifi"];
-  [v5 encodeInteger:self->_megaWiFiProfile forKey:@"_megaWiFiProfile"];
-  [v5 encodeInteger:self->_noLoggingWiFiProfile forKey:@"_noLoggingWiFiProfile"];
-  [v5 encodeInteger:self->_eapol forKey:@"_eapol"];
-  [v5 encodeInteger:self->_bluetooth forKey:@"_bluetooth"];
-  [v5 encodeInteger:self->_stbc forKey:@"_stbc"];
-  [v5 encodeObject:self->_diagnosticsMode forKey:@"_diagnosticsMode"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:wifi forKey:@"_wifi"];
+  [coderCopy encodeInteger:self->_megaWiFiProfile forKey:@"_megaWiFiProfile"];
+  [coderCopy encodeInteger:self->_noLoggingWiFiProfile forKey:@"_noLoggingWiFiProfile"];
+  [coderCopy encodeInteger:self->_eapol forKey:@"_eapol"];
+  [coderCopy encodeInteger:self->_bluetooth forKey:@"_bluetooth"];
+  [coderCopy encodeInteger:self->_stbc forKey:@"_stbc"];
+  [coderCopy encodeObject:self->_diagnosticsMode forKey:@"_diagnosticsMode"];
 }
 
-- (W5DebugConfiguration)initWithCoder:(id)a3
+- (W5DebugConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = W5DebugConfiguration;
   v5 = [(W5DebugConfiguration *)&v16 init];
   if (v5)
   {
-    v5->_wifi = [v4 decodeIntegerForKey:@"_wifi"];
-    v5->_megaWiFiProfile = [v4 decodeIntegerForKey:@"_megaWiFiProfile"];
-    v5->_noLoggingWiFiProfile = [v4 decodeIntegerForKey:@"_noLoggingWiFiProfile"];
-    v5->_eapol = [v4 decodeIntegerForKey:@"_eapol"];
-    v5->_bluetooth = [v4 decodeIntegerForKey:@"_bluetooth"];
-    v5->_stbc = [v4 decodeIntegerForKey:@"_stbc"];
+    v5->_wifi = [coderCopy decodeIntegerForKey:@"_wifi"];
+    v5->_megaWiFiProfile = [coderCopy decodeIntegerForKey:@"_megaWiFiProfile"];
+    v5->_noLoggingWiFiProfile = [coderCopy decodeIntegerForKey:@"_noLoggingWiFiProfile"];
+    v5->_eapol = [coderCopy decodeIntegerForKey:@"_eapol"];
+    v5->_bluetooth = [coderCopy decodeIntegerForKey:@"_bluetooth"];
+    v5->_stbc = [coderCopy decodeIntegerForKey:@"_stbc"];
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
@@ -222,7 +222,7 @@
     v10 = objc_opt_class();
     v11 = objc_opt_class();
     v12 = [v6 setWithObjects:{v7, v8, v9, v10, v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"_diagnosticsMode"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"_diagnosticsMode"];
     diagnosticsMode = v5->_diagnosticsMode;
     v5->_diagnosticsMode = v13;
   }

@@ -1,24 +1,24 @@
 @interface XADEventManager
 + (id)sharedManager;
 - (BOOL)_initializeAXObserverIfNeeded;
-- (BOOL)_iosEventFilter:(id)a3;
+- (BOOL)_iosEventFilter:(id)filter;
 - (XADEventManager)init;
 - (XADEventManagerDelegate)delegate;
 - (XADEventManagerDelegate)delegateForInspectorManager;
-- (__AXUIElement)_axUIElementForNativeFocusItemChangedNotification:(id)a3;
-- (id)_localizedNotificationString:(int)a3;
-- (id)_preprocessEventForSimulator:(id)a3;
-- (void)_handleAccessibilityNotification:(int)a3 forElement:(__AXUIElement *)a4;
-- (void)_handleFocusMovedToElement:(id)a3;
-- (void)_handleIOHIDEvent:(id)a3;
-- (void)_registerForAXNotifications:(BOOL)a3;
-- (void)_setLockScreenDimTimerEnabled:(BOOL)a3;
+- (__AXUIElement)_axUIElementForNativeFocusItemChangedNotification:(id)notification;
+- (id)_localizedNotificationString:(int)string;
+- (id)_preprocessEventForSimulator:(id)simulator;
+- (void)_handleAccessibilityNotification:(int)notification forElement:(__AXUIElement *)element;
+- (void)_handleFocusMovedToElement:(id)element;
+- (void)_handleIOHIDEvent:(id)event;
+- (void)_registerForAXNotifications:(BOOL)notifications;
+- (void)_setLockScreenDimTimerEnabled:(BOOL)enabled;
 - (void)_startListening;
 - (void)_stopListening;
-- (void)_touchedElementAtPoint:(CGPoint)a3;
+- (void)_touchedElementAtPoint:(CGPoint)point;
 - (void)connectionInterrupted;
 - (void)dealloc;
-- (void)setSnarfingEvents:(BOOL)a3;
+- (void)setSnarfingEvents:(BOOL)events;
 @end
 
 @implementation XADEventManager
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = sub_100001550;
   block[3] = &unk_100018878;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10001DD48 != -1)
   {
     dispatch_once(&qword_10001DD48, block);
@@ -67,23 +67,23 @@
   [(XADEventManager *)&v3 dealloc];
 }
 
-- (void)_touchedElementAtPoint:(CGPoint)a3
+- (void)_touchedElementAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(XADEventManager *)self delegate];
-  [v6 eventManager:self eventToHighlightPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  delegate = [(XADEventManager *)self delegate];
+  [delegate eventManager:self eventToHighlightPoint:{x, y}];
 }
 
-- (void)_setLockScreenDimTimerEnabled:(BOOL)a3
+- (void)_setLockScreenDimTimerEnabled:(BOOL)enabled
 {
-  if (byte_10001DB48 != a3)
+  if (byte_10001DB48 != enabled)
   {
-    byte_10001DB48 = a3;
-    if (a3)
+    byte_10001DB48 = enabled;
+    if (enabled)
     {
-      v4 = [(XADEventManager *)self _disableIdleTimerAssertion];
-      [v4 invalidate];
+      _disableIdleTimerAssertion = [(XADEventManager *)self _disableIdleTimerAssertion];
+      [_disableIdleTimerAssertion invalidate];
 
       [(XADEventManager *)self set_disableIdleTimerAssertion:0];
     }
@@ -99,37 +99,37 @@
   }
 }
 
-- (void)_handleIOHIDEvent:(id)a3
+- (void)_handleIOHIDEvent:(id)event
 {
   v5 = objc_autoreleasePoolPush();
-  v20 = [a3 denormalizedEventRepresentation:0 descale:1];
+  v20 = [event denormalizedEventRepresentation:0 descale:1];
   if ([v20 type] == 3001)
   {
     if (-[XADEventManager stopSnarfingOnTouchUp](self, "stopSnarfingOnTouchUp") && ([v20 handInfo], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "currentFingerCount"), v6, !v7))
     {
       [(XADEventManager *)self setSnarfingEvents:0];
-      v19 = [(XADEventManager *)self delegate];
-      [v19 eventManager:self stoppedSnarfingEvents:1];
+      delegate = [(XADEventManager *)self delegate];
+      [delegate eventManager:self stoppedSnarfingEvents:1];
     }
 
     else
     {
-      v8 = [v20 handInfo];
-      v9 = [v8 eventType];
+      handInfo = [v20 handInfo];
+      eventType = [handInfo eventType];
 
-      if (v9 != 10)
+      if (eventType != 10)
       {
-        v10 = [v20 handInfo];
-        v11 = [v10 eventType];
+        handInfo2 = [v20 handInfo];
+        eventType2 = [handInfo2 eventType];
 
-        if (v11 != 11)
+        if (eventType2 != 11)
         {
           [v20 neuterUpdates];
           [(XADEventManager *)self _setLockScreenDimTimerEnabled:0];
-          v12 = [v20 handInfo];
-          v13 = [v12 paths];
-          v14 = [v13 firstPath];
-          [v14 pathLocation];
+          handInfo3 = [v20 handInfo];
+          paths = [handInfo3 paths];
+          firstPath = [paths firstPath];
+          [firstPath pathLocation];
           v16 = v15;
           v18 = v17;
 
@@ -142,13 +142,13 @@
   objc_autoreleasePoolPop(v5);
 }
 
-- (id)_preprocessEventForSimulator:(id)a3
+- (id)_preprocessEventForSimulator:(id)simulator
 {
-  v3 = [a3 denormalizedEventRepresentation:1 descale:1];
-  v4 = [v3 handInfo];
-  v5 = [v4 paths];
-  v6 = [v5 firstPath];
-  [v6 pathLocation];
+  v3 = [simulator denormalizedEventRepresentation:1 descale:1];
+  handInfo = [v3 handInfo];
+  paths = [handInfo paths];
+  firstPath = [paths firstPath];
+  [firstPath pathLocation];
   v8 = v7;
   v10 = v9;
 
@@ -160,16 +160,16 @@
   return v3;
 }
 
-- (BOOL)_iosEventFilter:(id)a3
+- (BOOL)_iosEventFilter:(id)filter
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 type] && (objc_msgSend(v5, "type"), (AXEventTypeIsVolumeButtonPress() & 1) == 0) && objc_msgSend(v5, "senderID") != 0x8000000817319375 && objc_msgSend(v5, "type") == 3001)
+  filterCopy = filter;
+  v5 = filterCopy;
+  if (filterCopy && [filterCopy type] && (objc_msgSend(v5, "type"), (AXEventTypeIsVolumeButtonPress() & 1) == 0) && objc_msgSend(v5, "senderID") != 0x8000000817319375 && objc_msgSend(v5, "type") == 3001)
   {
-    v6 = [v5 handInfo];
-    v7 = [v6 paths];
+    handInfo = [v5 handInfo];
+    paths = [handInfo paths];
 
-    if ([v7 count])
+    if ([paths count])
     {
       [(XADEventManager *)self performSelectorOnMainThread:"_handleIOHIDEvent:" withObject:v5 waitUntilDone:0];
     }
@@ -187,13 +187,13 @@
 
 - (void)_stopListening
 {
-  v4 = [(XADEventManager *)self _eventProcessor];
-  v3 = [(XADEventManager *)self _eventProcessor];
+  _eventProcessor = [(XADEventManager *)self _eventProcessor];
+  _eventProcessor2 = [(XADEventManager *)self _eventProcessor];
 
-  if (v3)
+  if (_eventProcessor2)
   {
     [(XADEventManager *)self set_eventProcessor:0];
-    [v4 endHandlingHIDEventsForReason:@"AccessibilityAudit"];
+    [_eventProcessor endHandlingHIDEventsForReason:@"AccessibilityAudit"];
   }
 }
 
@@ -204,10 +204,10 @@
   [(XADEventManager *)self _registerForNotifications:0];
 }
 
-- (void)setSnarfingEvents:(BOOL)a3
+- (void)setSnarfingEvents:(BOOL)events
 {
-  self->_snarfingEvents = a3;
-  if (a3)
+  self->_snarfingEvents = events;
+  if (events)
   {
     [(XADEventManager *)self _startListening];
   }
@@ -223,33 +223,33 @@
 
 - (void)_startListening
 {
-  v3 = [(XADEventManager *)self _eventProcessor];
+  _eventProcessor = [(XADEventManager *)self _eventProcessor];
 
-  if (!v3)
+  if (!_eventProcessor)
   {
     v4 = [[AXEventProcessor alloc] initWithHIDTapIdentifier:@"AccessibilityAudit" HIDEventTapPriority:30 systemEventTapIdentifier:0 systemEventTapPriority:30];
     [(XADEventManager *)self set_eventProcessor:v4];
 
-    v5 = [(XADEventManager *)self _eventProcessor];
-    [v5 setHIDEventFilterMask:9];
+    _eventProcessor2 = [(XADEventManager *)self _eventProcessor];
+    [_eventProcessor2 setHIDEventFilterMask:9];
 
     v10[0] = 0;
     v10[1] = v10;
     v10[2] = 0x3032000000;
     v10[3] = sub_100001DDC;
     v10[4] = sub_100001DEC;
-    v6 = self;
-    v11 = v6;
+    selfCopy = self;
+    v11 = selfCopy;
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100001DF4;
     v9[3] = &unk_1000188C8;
     v9[4] = v10;
-    v7 = [(XADEventManager *)v6 _eventProcessor];
-    [v7 setHIDEventHandler:v9];
+    _eventProcessor3 = [(XADEventManager *)selfCopy _eventProcessor];
+    [_eventProcessor3 setHIDEventHandler:v9];
 
-    v8 = [(XADEventManager *)v6 _eventProcessor];
-    [v8 beginHandlingHIDEventsForReason:@"AccessibilityAudit"];
+    _eventProcessor4 = [(XADEventManager *)selfCopy _eventProcessor];
+    [_eventProcessor4 beginHandlingHIDEventsForReason:@"AccessibilityAudit"];
 
     _Block_object_dispose(v10, 8);
   }
@@ -290,10 +290,10 @@ LABEL_5:
   return RunLoopSource;
 }
 
-- (void)_registerForAXNotifications:(BOOL)a3
+- (void)_registerForAXNotifications:(BOOL)notifications
 {
-  v3 = a3;
-  if (a3)
+  notificationsCopy = notifications;
+  if (notifications)
   {
     [(XADEventManager *)self _initializeAXObserverIfNeeded];
   }
@@ -305,14 +305,14 @@ LABEL_5:
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v6 = [(XADEventManager *)self _accessibilityNotificationsToObserve];
-    v7 = [v6 countByEnumeratingWithState:&v21 objects:v33 count:16];
+    _accessibilityNotificationsToObserve = [(XADEventManager *)self _accessibilityNotificationsToObserve];
+    v7 = [_accessibilityNotificationsToObserve countByEnumeratingWithState:&v21 objects:v33 count:16];
     if (v7)
     {
       v9 = v7;
       v10 = *v22;
       v11 = @"unregister";
-      if (v3)
+      if (notificationsCopy)
       {
         v11 = @"register";
       }
@@ -326,20 +326,20 @@ LABEL_5:
         {
           if (*v22 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(_accessibilityNotificationsToObserve);
           }
 
           v13 = *(*(&v21 + 1) + 8 * i);
-          v14 = [v13 intValue];
-          v15 = [(XADEventManager *)self _axEventObserver];
-          if (v3)
+          intValue = [v13 intValue];
+          _axEventObserver = [(XADEventManager *)self _axEventObserver];
+          if (notificationsCopy)
           {
-            v16 = AXObserverAddNotification(v15, v5, v14, self);
+            v16 = AXObserverAddNotification(_axEventObserver, v5, intValue, self);
           }
 
           else
           {
-            v16 = AXObserverRemoveNotification(v15, v5, v14);
+            v16 = AXObserverRemoveNotification(_axEventObserver, v5, intValue);
           }
 
           v17 = v16;
@@ -361,7 +361,7 @@ LABEL_5:
           }
         }
 
-        v9 = [v6 countByEnumeratingWithState:&v21 objects:v33 count:16];
+        v9 = [_accessibilityNotificationsToObserve countByEnumeratingWithState:&v21 objects:v33 count:16];
       }
 
       while (v9);
@@ -369,23 +369,23 @@ LABEL_5:
   }
 }
 
-- (void)_handleFocusMovedToElement:(id)a3
+- (void)_handleFocusMovedToElement:(id)element
 {
-  v4 = a3;
-  v5 = [(XADEventManager *)self delegate];
-  [v5 eventManager:self systemFocusDidMoveToElement:v4];
+  elementCopy = element;
+  delegate = [(XADEventManager *)self delegate];
+  [delegate eventManager:self systemFocusDidMoveToElement:elementCopy];
 }
 
-- (__AXUIElement)_axUIElementForNativeFocusItemChangedNotification:(id)a3
+- (__AXUIElement)_axUIElementForNativeFocusItemChangedNotification:(id)notification
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  notificationCopy = notification;
+  v4 = notificationCopy;
+  if (!notificationCopy)
   {
     goto LABEL_8;
   }
 
-  v5 = CFGetTypeID(v3);
+  v5 = CFGetTypeID(notificationCopy);
   v6 = v4;
   if (v5 == AXUIElementGetTypeID())
   {
@@ -425,7 +425,7 @@ LABEL_11:
   return v6;
 }
 
-- (void)_handleAccessibilityNotification:(int)a3 forElement:(__AXUIElement *)a4
+- (void)_handleAccessibilityNotification:(int)notification forElement:(__AXUIElement *)element
 {
   v15 = [(XADEventManager *)self _localizedNotificationString:?];
   v58[0] = 0;
@@ -483,7 +483,7 @@ LABEL_11:
   v22 = &v34;
   v23 = v26;
   v24 = &v28;
-  v25 = a4;
+  elementCopy = element;
   v7 = v5;
   v17 = v7;
   dispatch_async(v6, block);
@@ -494,13 +494,13 @@ LABEL_11:
     sub_10000D4D8();
   }
 
-  v9 = [(XADEventManager *)self delegate];
+  delegate = [(XADEventManager *)self delegate];
   v10 = v41[5];
-  [v9 eventManager:self notificationReceived:a3 notification:v15 traits:v29[5] label:v53[5] value:v47[5] hint:v10 identifier:v35[5]];
+  [delegate eventManager:self notificationReceived:notification notification:v15 traits:v29[5] label:v53[5] value:v47[5] hint:v10 identifier:v35[5]];
 
-  v11 = [(XADEventManager *)self delegateForInspectorManager];
+  delegateForInspectorManager = [(XADEventManager *)self delegateForInspectorManager];
   v12 = v41[5];
-  [v11 eventManager:self notificationReceived:a3 notification:v15 traits:v29[5] label:v53[5] value:v47[5] hint:v12 identifier:v35[5]];
+  [delegateForInspectorManager eventManager:self notificationReceived:notification notification:v15 traits:v29[5] label:v53[5] value:v47[5] hint:v12 identifier:v35[5]];
 
   _Block_object_dispose(v26, 8);
   _Block_object_dispose(&v28, 8);
@@ -514,16 +514,16 @@ LABEL_11:
   _Block_object_dispose(v58, 8);
 }
 
-- (id)_localizedNotificationString:(int)a3
+- (id)_localizedNotificationString:(int)string
 {
-  if ((a3 - 1000) > 9)
+  if ((string - 1000) > 9)
   {
     return 0;
   }
 
   else
   {
-    return off_100018910[a3 - 1000];
+    return off_100018910[string - 1000];
   }
 }
 

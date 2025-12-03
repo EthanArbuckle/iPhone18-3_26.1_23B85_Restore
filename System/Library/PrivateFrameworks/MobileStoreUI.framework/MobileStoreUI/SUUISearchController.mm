@@ -1,16 +1,16 @@
 @interface SUUISearchController
 - (SUUISearchBar)searchBar;
-- (void)_setSuffix:(id)a3;
-- (void)setActive:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)_setSuffix:(id)suffix;
+- (void)setActive:(BOOL)active;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SUUISearchController
 
-- (void)_setSuffix:(id)a3
+- (void)_setSuffix:(id)suffix
 {
   v62[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  suffixCopy = suffix;
   if (!self->_suffixLabel)
   {
     v5 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -27,39 +27,39 @@
     [(UILabel *)v9 setFont:v10];
 
     v11 = self->_suffixLabel;
-    v12 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v11 setBackgroundColor:v12];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v11 setBackgroundColor:clearColor];
 
     [(UILabel *)self->_suffixLabel setHidden:[(SUUISearchController *)self isActive]];
-    v13 = [MEMORY[0x277D75418] currentDevice];
-    if ([v13 userInterfaceIdiom] == 1)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom] == 1)
     {
-      v14 = [MEMORY[0x277D75128] sharedApplication];
-      v15 = [v14 keyWindow];
-      [v15 bounds];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      keyWindow = [mEMORY[0x277D75128] keyWindow];
+      [keyWindow bounds];
       if (v16 > SUUICompactThreshold())
       {
         [(SUUISearchController *)self delegate];
-        v18 = v17 = v4;
+        v18 = v17 = suffixCopy;
         v19 = [v18 searchControllerClientContext:self];
-        v20 = [v19 shouldForceTransientSearchControllerBahavior];
+        shouldForceTransientSearchControllerBahavior = [v19 shouldForceTransientSearchControllerBahavior];
 
-        v4 = v17;
-        if ((v20 & 1) == 0)
+        suffixCopy = v17;
+        if ((shouldForceTransientSearchControllerBahavior & 1) == 0)
         {
-          v21 = [(SUUISearchController *)self searchBar];
-          v22 = [v21 searchField];
-          [v22 addSubview:self->_suffixLabel];
+          searchBar = [(SUUISearchController *)self searchBar];
+          searchField = [searchBar searchField];
+          [searchField addSubview:self->_suffixLabel];
 LABEL_9:
 
           goto LABEL_10;
         }
 
 LABEL_8:
-        v21 = [(SUUISearchController *)self searchBar];
-        v22 = [v21 searchField];
-        v23 = [v22 _clearButton];
-        [v23 addSubview:self->_suffixLabel];
+        searchBar = [(SUUISearchController *)self searchBar];
+        searchField = [searchBar searchField];
+        _clearButton = [searchField _clearButton];
+        [_clearButton addSubview:self->_suffixLabel];
 
         goto LABEL_9;
       }
@@ -69,22 +69,22 @@ LABEL_8:
   }
 
 LABEL_10:
-  [(UILabel *)self->_suffixLabel setText:v4];
+  [(UILabel *)self->_suffixLabel setText:suffixCopy];
   [(UILabel *)self->_suffixLabel sizeToFit];
   [(UILabel *)self->_suffixLabel frame];
   v25 = v24;
   v27 = v26;
-  v28 = [MEMORY[0x277D75418] currentDevice];
-  if ([v28 userInterfaceIdiom] != 1)
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice2 userInterfaceIdiom] != 1)
   {
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  v29 = [MEMORY[0x277D75128] sharedApplication];
-  v30 = [v29 keyWindow];
-  [v30 bounds];
+  mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+  keyWindow2 = [mEMORY[0x277D75128]2 keyWindow];
+  [keyWindow2 bounds];
   if (v31 <= SUUICompactThreshold())
   {
 
@@ -92,15 +92,15 @@ LABEL_15:
   }
 
   [(SUUISearchController *)self delegate];
-  v33 = v32 = v4;
+  v33 = v32 = suffixCopy;
   v34 = [v33 searchControllerClientContext:self];
-  v35 = [v34 shouldForceTransientSearchControllerBahavior];
+  shouldForceTransientSearchControllerBahavior2 = [v34 shouldForceTransientSearchControllerBahavior];
 
-  v4 = v32;
-  if ((v35 & 1) == 0)
+  suffixCopy = v32;
+  if ((shouldForceTransientSearchControllerBahavior2 & 1) == 0)
   {
-    v36 = [(UILabel *)self->_suffixLabel superview];
-    [v36 frame];
+    superview = [(UILabel *)self->_suffixLabel superview];
+    [superview frame];
     v38 = v37 - v25 + -30.0;
 
     v39 = 8.0;
@@ -112,25 +112,25 @@ LABEL_16:
   v39 = 3.0;
 LABEL_17:
   [(UILabel *)self->_suffixLabel setFrame:v38, v39, v25, v27];
-  v40 = [(SUUISearchController *)self searchBar];
-  v59 = [v40 searchField];
+  searchBar2 = [(SUUISearchController *)self searchBar];
+  searchField2 = [searchBar2 searchField];
 
   v41 = objc_alloc_init(MEMORY[0x277CCAB68]);
   paddingString = self->_paddingString;
   self->_paddingString = v41;
 
-  v43 = v4;
-  if ([v4 length])
+  v43 = suffixCopy;
+  if ([suffixCopy length])
   {
     v44 = 0;
     v45 = *MEMORY[0x277D740A8];
     do
     {
-      [(NSMutableString *)self->_paddingString appendString:@"_", v59];
+      [(NSMutableString *)self->_paddingString appendString:@"_", searchField2];
       v46 = self->_paddingString;
       v61 = v45;
-      v47 = [v59 font];
-      v62[0] = v47;
+      font = [searchField2 font];
+      v62[0] = font;
       v48 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v62 forKeys:&v61 count:1];
       [(NSMutableString *)v46 sizeWithAttributes:v48];
       v50 = v49;
@@ -146,15 +146,15 @@ LABEL_17:
     while (v44 < [v43 length]);
   }
 
-  v51 = [(SUUISearchController *)self searchBar];
-  v52 = [v51 searchField];
-  v53 = [v52 text];
-  v54 = [v53 isNaturallyRTL];
+  searchBar3 = [(SUUISearchController *)self searchBar];
+  searchField3 = [searchBar3 searchField];
+  text = [searchField3 text];
+  isNaturallyRTL = [text isNaturallyRTL];
 
-  if ((v54 & 1) == 0)
+  if ((isNaturallyRTL & 1) == 0)
   {
-    v55 = [(SUUISearchController *)self searchBar];
-    v56 = [v55 searchField];
+    searchBar4 = [(SUUISearchController *)self searchBar];
+    searchField4 = [searchBar4 searchField];
     if (([(SUUISearchController *)self isActive]& 1) != 0)
     {
       v57 = 0;
@@ -165,25 +165,25 @@ LABEL_17:
       v57 = self->_paddingString;
     }
 
-    v58 = [MEMORY[0x277D75348] clearColor];
-    [v56 _setSuffix:v57 withColor:v58];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [searchField4 _setSuffix:v57 withColor:clearColor2];
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v3 = a3;
-  v5 = [(SUUISearchController *)self searchBar];
-  v6 = [v5 text];
+  activeCopy = active;
+  searchBar = [(SUUISearchController *)self searchBar];
+  text = [searchBar text];
   v15.receiver = self;
   v15.super_class = SUUISearchController;
-  [(SUUISearchController *)&v15 setActive:v3];
-  v7 = [v5 searchField];
-  [v7 setText:v6];
+  [(SUUISearchController *)&v15 setActive:activeCopy];
+  searchField = [searchBar searchField];
+  [searchField setText:text];
 
-  [v5 setShowsSearchResultsButton:0];
-  [(UILabel *)self->_suffixLabel setHidden:v3];
-  v8 = [v5 searchField];
+  [searchBar setShowsSearchResultsButton:0];
+  [(UILabel *)self->_suffixLabel setHidden:activeCopy];
+  searchField2 = [searchBar searchField];
   if (([(SUUISearchController *)self isActive]& 1) != 0)
   {
     paddingString = 0;
@@ -194,18 +194,18 @@ LABEL_17:
     paddingString = self->_paddingString;
   }
 
-  v10 = [MEMORY[0x277D75348] clearColor];
-  [v8 _setSuffix:paddingString withColor:v10];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [searchField2 _setSuffix:paddingString withColor:clearColor];
 
-  if (!v3)
+  if (!activeCopy)
   {
     v11 = dispatch_time(0, 300000000);
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __34__SUUISearchController_setActive___block_invoke;
     v12[3] = &unk_2798F5AF8;
-    v13 = v5;
-    v14 = self;
+    v13 = searchBar;
+    selfCopy = self;
     dispatch_after(v11, MEMORY[0x277D85CD0], v12);
   }
 }
@@ -242,16 +242,16 @@ void __34__SUUISearchController_setActive___block_invoke(uint64_t a1)
   return searchBar;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = SUUISearchController;
-  v7 = a4;
-  [(SUUISearchController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(SUUISearchController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8 = [(SUUISearchController *)self delegate:v9.receiver];
-  [v8 searchControllerWillTransitionToSize:v7 withTransitionCoordinator:{width, height}];
+  [v8 searchControllerWillTransitionToSize:coordinatorCopy withTransitionCoordinator:{width, height}];
 }
 
 @end

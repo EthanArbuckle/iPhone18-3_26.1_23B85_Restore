@@ -1,25 +1,25 @@
 @interface SBIconListViewCaptureOnlyBackgroundAssertion
 - (SBIcon)icon;
-- (SBIconListViewCaptureOnlyBackgroundAssertion)initWithIcon:(id)a3 groupName:(id)a4 invalidation:(id)a5;
+- (SBIconListViewCaptureOnlyBackgroundAssertion)initWithIcon:(id)icon groupName:(id)name invalidation:(id)invalidation;
 - (void)invalidate;
 @end
 
 @implementation SBIconListViewCaptureOnlyBackgroundAssertion
 
-- (SBIconListViewCaptureOnlyBackgroundAssertion)initWithIcon:(id)a3 groupName:(id)a4 invalidation:(id)a5
+- (SBIconListViewCaptureOnlyBackgroundAssertion)initWithIcon:(id)icon groupName:(id)name invalidation:(id)invalidation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  iconCopy = icon;
+  nameCopy = name;
+  invalidationCopy = invalidation;
   v16.receiver = self;
   v16.super_class = SBIconListViewCaptureOnlyBackgroundAssertion;
   v11 = [(SBIconListViewCaptureOnlyBackgroundAssertion *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_icon, v8);
-    objc_storeStrong(&v12->_groupName, a4);
-    v13 = [v10 copy];
+    objc_storeWeak(&v11->_icon, iconCopy);
+    objc_storeStrong(&v12->_groupName, name);
+    v13 = [invalidationCopy copy];
     invalidationBlock = v12->_invalidationBlock;
     v12->_invalidationBlock = v13;
   }

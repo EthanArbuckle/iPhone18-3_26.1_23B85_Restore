@@ -1,57 +1,57 @@
 @interface TRINamespaceDescriptorSetStorage
-- (BOOL)hasNamespaceDescriptorsForTreatmentWithId:(id)a3 path:(id *)a4;
-- (BOOL)overwriteNamespaceDescriptors:(id)a3 forTreatmentId:(id)a4;
-- (BOOL)removeUnreferencedNamespaceDescriptorSetsWithServerContext:(id)a3 removedCount:(unsigned int *)a4;
-- (TRINamespaceDescriptorSetStorage)initWithPaths:(id)a3;
+- (BOOL)hasNamespaceDescriptorsForTreatmentWithId:(id)id path:(id *)path;
+- (BOOL)overwriteNamespaceDescriptors:(id)descriptors forTreatmentId:(id)id;
+- (BOOL)removeUnreferencedNamespaceDescriptorSetsWithServerContext:(id)context removedCount:(unsigned int *)count;
+- (TRINamespaceDescriptorSetStorage)initWithPaths:(id)paths;
 - (id)_collectNamespaceDescriptorSets;
 - (id)parentDirForNamespaceDescriptorSets;
-- (id)pathForNamespaceDescriptorsWithTreatmentId:(id)a3;
+- (id)pathForNamespaceDescriptorsWithTreatmentId:(id)id;
 @end
 
 @implementation TRINamespaceDescriptorSetStorage
 
-- (TRINamespaceDescriptorSetStorage)initWithPaths:(id)a3
+- (TRINamespaceDescriptorSetStorage)initWithPaths:(id)paths
 {
-  v5 = a3;
+  pathsCopy = paths;
   v9.receiver = self;
   v9.super_class = TRINamespaceDescriptorSetStorage;
   v6 = [(TRINamespaceDescriptorSetStorage *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_paths, a3);
+    objc_storeStrong(&v6->_paths, paths);
   }
 
   return v7;
 }
 
-- (BOOL)overwriteNamespaceDescriptors:(id)a3 forTreatmentId:(id)a4
+- (BOOL)overwriteNamespaceDescriptors:(id)descriptors forTreatmentId:(id)id
 {
   v54 = *MEMORY[0x277D85DE8];
-  v36 = a3;
-  v35 = a4;
+  descriptorsCopy = descriptors;
+  idCopy = id;
   v37 = [(TRINamespaceDescriptorSetStorage *)self pathForNamespaceDescriptorsWithTreatmentId:?];
   if (v37)
   {
     v6 = [TRITempDirScopeGuard alloc];
-    v7 = [(TRIPaths *)self->_paths localTempDir];
-    v8 = [(TRITempDirScopeGuard *)v6 initWithPath:v7];
+    localTempDir = [(TRIPaths *)self->_paths localTempDir];
+    v8 = [(TRITempDirScopeGuard *)v6 initWithPath:localTempDir];
 
     if (v8)
     {
-      v9 = [(TRITempDirScopeGuard *)v8 path];
+      path = [(TRITempDirScopeGuard *)v8 path];
       v10 = objc_alloc(MEMORY[0x277CCACA8]);
       v11 = objc_opt_new();
-      v12 = [v11 UUIDString];
-      v13 = [v10 initWithFormat:@"ns-desc-set-%@", v12];
-      v38 = [v9 stringByAppendingPathComponent:v13];
+      uUIDString = [v11 UUIDString];
+      v13 = [v10 initWithFormat:@"ns-desc-set-%@", uUIDString];
+      v38 = [path stringByAppendingPathComponent:v13];
 
       v45 = 0u;
       v46 = 0u;
       v43 = 0u;
       v44 = 0u;
-      v14 = [v37 stringByDeletingLastPathComponent];
-      v52[0] = v14;
+      stringByDeletingLastPathComponent = [v37 stringByDeletingLastPathComponent];
+      v52[0] = stringByDeletingLastPathComponent;
       v15 = [v38 stringByAppendingPathComponent:@"legacyNamespaceDescriptors"];
       v52[1] = v15;
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:2];
@@ -91,7 +91,7 @@
       v42 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v20 = v36;
+      v20 = descriptorsCopy;
       v21 = [v20 countByEnumeratingWithState:&v39 objects:v51 count:16];
       if (v21)
       {
@@ -116,7 +116,7 @@
               if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412290;
-                v48 = v35;
+                v48 = idCopy;
                 _os_log_error_impl(&dword_26F567000, v28, OS_LOG_TYPE_ERROR, "Failed to save namespace descriptor set for treatment %@.", buf, 0xCu);
               }
             }
@@ -145,7 +145,7 @@
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v48 = v35;
+          v48 = idCopy;
           v49 = 2112;
           v50 = v37;
           _os_log_impl(&dword_26F567000, v30, OS_LOG_TYPE_DEFAULT, "Wrote namespace descriptor set %@ --> %@", buf, 0x16u);
@@ -160,8 +160,8 @@ LABEL_32:
         v31 = 0;
       }
 
-      v32 = [MEMORY[0x277CCAA00] defaultManager];
-      [v32 triForceRemoveItemAtPath:v38 error:0];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      [defaultManager triForceRemoveItemAtPath:v38 error:0];
 
 LABEL_34:
     }
@@ -181,15 +181,15 @@ LABEL_34:
   return v31;
 }
 
-- (id)pathForNamespaceDescriptorsWithTreatmentId:(id)a3
+- (id)pathForNamespaceDescriptorsWithTreatmentId:(id)id
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 triIsPathSafePlausibleUniqueId])
+  idCopy = id;
+  if ([idCopy triIsPathSafePlausibleUniqueId])
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = [(TRINamespaceDescriptorSetStorage *)self parentDirForNamespaceDescriptorSets];
-    v7 = [v6 stringByAppendingPathComponent:v4];
+    parentDirForNamespaceDescriptorSets = [(TRINamespaceDescriptorSetStorage *)self parentDirForNamespaceDescriptorSets];
+    v7 = [parentDirForNamespaceDescriptorSets stringByAppendingPathComponent:idCopy];
 
     objc_autoreleasePoolPop(v5);
   }
@@ -200,7 +200,7 @@ LABEL_34:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = idCopy;
       _os_log_error_impl(&dword_26F567000, v8, OS_LOG_TYPE_ERROR, "Rejecting use of bad treatmentId: %@", &v11, 0xCu);
     }
 
@@ -215,33 +215,33 @@ LABEL_34:
 - (id)parentDirForNamespaceDescriptorSets
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(TRIPaths *)self->_paths namespaceDescriptorsDir];
-  v5 = [v4 stringByAppendingPathComponent:@"v2/namespaceDescriptorSets"];
+  namespaceDescriptorsDir = [(TRIPaths *)self->_paths namespaceDescriptorsDir];
+  v5 = [namespaceDescriptorsDir stringByAppendingPathComponent:@"v2/namespaceDescriptorSets"];
 
   objc_autoreleasePoolPop(v3);
 
   return v5;
 }
 
-- (BOOL)hasNamespaceDescriptorsForTreatmentWithId:(id)a3 path:(id *)a4
+- (BOOL)hasNamespaceDescriptorsForTreatmentWithId:(id)id path:(id *)path
 {
-  v7 = a3;
-  if (!v7)
+  idCopy = id;
+  if (!idCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"TRINamespaceDescriptorSetStorage.m" lineNumber:171 description:{@"Invalid parameter not satisfying: %@", @"treatmentId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRINamespaceDescriptorSetStorage.m" lineNumber:171 description:{@"Invalid parameter not satisfying: %@", @"treatmentId"}];
   }
 
-  v8 = [(TRINamespaceDescriptorSetStorage *)self pathForNamespaceDescriptorsWithTreatmentId:v7];
+  v8 = [(TRINamespaceDescriptorSetStorage *)self pathForNamespaceDescriptorsWithTreatmentId:idCopy];
   if (v8)
   {
-    if (a4)
+    if (path)
     {
-      objc_storeStrong(a4, v8);
+      objc_storeStrong(path, v8);
     }
 
-    v9 = [MEMORY[0x277CCAA00] defaultManager];
-    v10 = [v9 fileExistsAtPath:v8];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v10 = [defaultManager fileExistsAtPath:v8];
   }
 
   else
@@ -257,27 +257,27 @@ LABEL_34:
   v4 = objc_opt_new();
   if (v4)
   {
-    v5 = [(TRINamespaceDescriptorSetStorage *)self parentDirForNamespaceDescriptorSets];
+    parentDirForNamespaceDescriptorSets = [(TRINamespaceDescriptorSetStorage *)self parentDirForNamespaceDescriptorSets];
     v6 = objc_autoreleasePoolPush();
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    v8 = [MEMORY[0x277CBEBC0] fileURLWithPath:v5 isDirectory:1];
-    v9 = [v7 enumeratorAtURL:v8 includingPropertiesForKeys:0 options:1 errorHandler:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v8 = [MEMORY[0x277CBEBC0] fileURLWithPath:parentDirForNamespaceDescriptorSets isDirectory:1];
+    v9 = [defaultManager enumeratorAtURL:v8 includingPropertiesForKeys:0 options:1 errorHandler:0];
 
     v10 = objc_autoreleasePoolPush();
-    v11 = [v9 nextObject];
-    if (v11)
+    nextObject = [v9 nextObject];
+    if (nextObject)
     {
-      v12 = v11;
+      nextObject2 = nextObject;
       while (1)
       {
-        v13 = [v12 path];
-        if (!v13)
+        path = [nextObject2 path];
+        if (!path)
         {
-          v15 = [MEMORY[0x277CCA890] currentHandler];
-          [v15 handleFailureInMethod:a2 object:self file:@"TRINamespaceDescriptorSetStorage.m" lineNumber:199 description:{@"Expression was unexpectedly nil/false: %@", @"url.path"}];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"TRINamespaceDescriptorSetStorage.m" lineNumber:199 description:{@"Expression was unexpectedly nil/false: %@", @"url.path"}];
         }
 
-        v14 = [v4 addString:v13];
+        v14 = [v4 addString:path];
 
         objc_autoreleasePoolPop(v10);
         if (!v14)
@@ -286,8 +286,8 @@ LABEL_34:
         }
 
         v10 = objc_autoreleasePoolPush();
-        v12 = [v9 nextObject];
-        if (!v12)
+        nextObject2 = [v9 nextObject];
+        if (!nextObject2)
         {
           goto LABEL_8;
         }
@@ -315,25 +315,25 @@ LABEL_8:
   return v16;
 }
 
-- (BOOL)removeUnreferencedNamespaceDescriptorSetsWithServerContext:(id)a3 removedCount:(unsigned int *)a4
+- (BOOL)removeUnreferencedNamespaceDescriptorSetsWithServerContext:(id)context removedCount:(unsigned int *)count
 {
-  v7 = a3;
-  if (!v7)
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"TRINamespaceDescriptorSetStorage.m" lineNumber:211 description:{@"Invalid parameter not satisfying: %@", @"serverContext"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRINamespaceDescriptorSetStorage.m" lineNumber:211 description:{@"Invalid parameter not satisfying: %@", @"serverContext"}];
   }
 
-  v8 = [(TRINamespaceDescriptorSetStorage *)self _collectNamespaceDescriptorSets];
-  if (v8)
+  _collectNamespaceDescriptorSets = [(TRINamespaceDescriptorSetStorage *)self _collectNamespaceDescriptorSets];
+  if (_collectNamespaceDescriptorSets)
   {
     v9 = [TRITempDirScopeGuard alloc];
-    v10 = [(TRIPaths *)self->_paths localTempDir];
-    v11 = [(TRITempDirScopeGuard *)v9 initWithPath:v10];
+    localTempDir = [(TRIPaths *)self->_paths localTempDir];
+    v11 = [(TRITempDirScopeGuard *)v9 initWithPath:localTempDir];
 
     if (v11)
     {
-      v12 = [[TRINamespaceDescriptorSetExternalRefStore alloc] initWithServerContext:v7];
+      v12 = [[TRINamespaceDescriptorSetExternalRefStore alloc] initWithServerContext:contextCopy];
       v27 = 0;
       v28 = &v27;
       v29 = 0x2020000000;
@@ -351,10 +351,10 @@ LABEL_8:
       v19 = v13;
       v20 = v11;
       v22 = &v27;
-      v14 = [v8 enumerateStringsWithBlock:v18];
-      if (a4)
+      v14 = [_collectNamespaceDescriptorSets enumerateStringsWithBlock:v18];
+      if (count)
       {
-        *a4 = *(v28 + 6);
+        *count = *(v28 + 6);
       }
 
       if (v14)

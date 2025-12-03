@@ -1,20 +1,20 @@
 @interface UISearchDisplayControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)searchResultsTableView;
-- (void)_setTableViewVisible:(BOOL)a3 inView:(id)a4;
-- (void)setActive:(BOOL)a3 animated:(BOOL)a4;
+- (void)_setTableViewVisible:(BOOL)visible inView:(id)view;
+- (void)setActive:(BOOL)active animated:(BOOL)animated;
 @end
 
 @implementation UISearchDisplayControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"UITableView";
   v4 = "v";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
@@ -22,23 +22,23 @@
   objc_storeStrong(v6, obj);
 }
 
-- (void)_setTableViewVisible:(BOOL)a3 inView:(id)a4
+- (void)_setTableViewVisible:(BOOL)visible inView:(id)view
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
+  visibleCopy = visible;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v9 = [(UISearchDisplayControllerAccessibility *)v15 safeValueForKey:@"_dimmingView"];
+  objc_storeStrong(&location, view);
+  v9 = [(UISearchDisplayControllerAccessibility *)selfCopy safeValueForKey:@"_dimmingView"];
   v11 = _containerForDimmingView(v9);
   *&v4 = MEMORY[0x29EDC9740](v9).n128_u64[0];
-  v10.receiver = v15;
+  v10.receiver = selfCopy;
   v10.super_class = UISearchDisplayControllerAccessibility;
-  [(UISearchDisplayControllerAccessibility *)&v10 _setTableViewVisible:v13 inView:location, v4];
+  [(UISearchDisplayControllerAccessibility *)&v10 _setTableViewVisible:visibleCopy inView:location, v4];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v13)
+    if (visibleCopy)
     {
       v5 = [location safeValueForKey:@"_setAccessibilitySearchTableViewVisible"];
     }
@@ -51,7 +51,7 @@
     v6 = [location safeValueForKey:@"_setAccessibilitySearchControllerDimmingViewHidden"];
   }
 
-  v8 = [(UISearchDisplayControllerAccessibility *)v15 safeValueForKey:@"_dimmingView"];
+  v8 = [(UISearchDisplayControllerAccessibility *)selfCopy safeValueForKey:@"_dimmingView"];
   _toggleDimmingView(v8, v11);
   MEMORY[0x29EDC9740](v8);
   objc_storeStrong(&v11, 0);
@@ -72,27 +72,27 @@
   return v3;
 }
 
-- (void)setActive:(BOOL)a3 animated:(BOOL)a4
+- (void)setActive:(BOOL)active animated:(BOOL)animated
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
-  v14 = a4;
+  activeCopy = active;
+  animatedCopy = animated;
   v7 = [(UISearchDisplayControllerAccessibility *)self safeValueForKey:?];
   v13 = _containerForDimmingView(v7);
   *&v4 = MEMORY[0x29EDC9740](v7).n128_u64[0];
-  v12.receiver = v17;
+  v12.receiver = selfCopy;
   v12.super_class = UISearchDisplayControllerAccessibility;
-  [(UISearchDisplayControllerAccessibility *)&v12 setActive:v15 animated:v14, v4];
-  v8 = [(UISearchDisplayControllerAccessibility *)v17 safeValueForKey:@"_dimmingView"];
+  [(UISearchDisplayControllerAccessibility *)&v12 setActive:activeCopy animated:animatedCopy, v4];
+  v8 = [(UISearchDisplayControllerAccessibility *)selfCopy safeValueForKey:@"_dimmingView"];
   [v8 accessibilitySetIdentification:@"UISearchControlDimmingView"];
   *&v5 = MEMORY[0x29EDC9740](v8).n128_u64[0];
-  v10 = [(UISearchDisplayControllerAccessibility *)v17 safeValueForKey:@"_dimmingView", v5];
+  v10 = [(UISearchDisplayControllerAccessibility *)selfCopy safeValueForKey:@"_dimmingView", v5];
   v9 = accessibilityLocalizedString(@"double.tap.dismiss");
   [v10 setAccessibilityLabel:?];
   MEMORY[0x29EDC9740](v9);
   *&v6 = MEMORY[0x29EDC9740](v10).n128_u64[0];
-  v11 = [(UISearchDisplayControllerAccessibility *)v17 safeValueForKey:@"_dimmingView", v6];
+  v11 = [(UISearchDisplayControllerAccessibility *)selfCopy safeValueForKey:@"_dimmingView", v6];
   _toggleDimmingView(v11, v13);
   MEMORY[0x29EDC9740](v11);
   objc_storeStrong(&v13, 0);

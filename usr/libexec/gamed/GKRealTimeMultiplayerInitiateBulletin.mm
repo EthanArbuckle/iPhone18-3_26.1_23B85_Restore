@@ -1,37 +1,37 @@
 @interface GKRealTimeMultiplayerInitiateBulletin
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4;
-- (GKRealTimeMultiplayerInitiateBulletin)initWithCoder:(id)a3;
-- (GKRealTimeMultiplayerInitiateBulletin)initWithPushNotification:(id)a3;
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler;
+- (GKRealTimeMultiplayerInitiateBulletin)initWithCoder:(id)coder;
+- (GKRealTimeMultiplayerInitiateBulletin)initWithPushNotification:(id)notification;
 - (void)assembleBulletin;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)handleAcceptAction;
-- (void)handleAction:(id)a3;
+- (void)handleAction:(id)action;
 - (void)handleDeclineAction;
-- (void)loadDataWithHandler:(id)a3;
-- (void)parseClientData:(id)a3;
+- (void)loadDataWithHandler:(id)handler;
+- (void)parseClientData:(id)data;
 @end
 
 @implementation GKRealTimeMultiplayerInitiateBulletin
 
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  notificationCopy = notification;
+  handlerCopy = handler;
   v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s:%d %s", "GKRealTimeMultiplayerBulletin.m", 300, "+[GKRealTimeMultiplayerInitiateBulletin loadBulletinsForPushNotification:withHandler:]");
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10018F684;
   v10[3] = &unk_100361270;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = notificationCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = notificationCopy;
   [GKActivity named:v7 execute:v10];
 }
 
-- (GKRealTimeMultiplayerInitiateBulletin)initWithPushNotification:(id)a3
+- (GKRealTimeMultiplayerInitiateBulletin)initWithPushNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -46,19 +46,19 @@
 
   v10.receiver = self;
   v10.super_class = GKRealTimeMultiplayerInitiateBulletin;
-  v7 = [(GKRealTimeMultiplayerBulletin *)&v10 initWithPushNotification:v4];
+  v7 = [(GKRealTimeMultiplayerBulletin *)&v10 initWithPushNotification:notificationCopy];
   if (v7)
   {
-    v8 = [v4 objectForKeyedSubscript:GKInviteIsReinvite];
+    v8 = [notificationCopy objectForKeyedSubscript:GKInviteIsReinvite];
     v7->_isReconnect = [v8 BOOLValue];
   }
 
   return v7;
 }
 
-- (GKRealTimeMultiplayerInitiateBulletin)initWithCoder:(id)a3
+- (GKRealTimeMultiplayerInitiateBulletin)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -73,19 +73,19 @@
 
   v10.receiver = self;
   v10.super_class = GKRealTimeMultiplayerInitiateBulletin;
-  v7 = [(GKRealTimeMultiplayerBulletin *)&v10 initWithCoder:v4];
+  v7 = [(GKRealTimeMultiplayerBulletin *)&v10 initWithCoder:coderCopy];
   if (v7)
   {
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isReconnect"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isReconnect"];
     v7->_isReconnect = [v8 BOOLValue];
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -100,14 +100,14 @@
 
   v8.receiver = self;
   v8.super_class = GKRealTimeMultiplayerInitiateBulletin;
-  [(GKRealTimeMultiplayerBulletin *)&v8 encodeWithCoder:v4];
+  [(GKRealTimeMultiplayerBulletin *)&v8 encodeWithCoder:coderCopy];
   v7 = [NSNumber numberWithBool:[(GKRealTimeMultiplayerInitiateBulletin *)self isReconnect]];
-  [v4 encodeObject:v7 forKey:@"isReconnect"];
+  [coderCopy encodeObject:v7 forKey:@"isReconnect"];
 }
 
-- (void)parseClientData:(id)a3
+- (void)parseClientData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -120,11 +120,11 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "GKRealTimeMultiplayerInitiateBulletin parseClientData:", v13, 2u);
   }
 
-  if ([v4 length] >= 2)
+  if ([dataCopy length] >= 2)
   {
-    -[GKRealTimeMultiplayerBulletin setServerHosted:](self, "setServerHosted:", *([v4 bytes] + 1));
-    v7 = [v4 length];
-    v8 = [(GKRealTimeMultiplayerBulletin *)self inviteVersionFromMessage:v4];
+    -[GKRealTimeMultiplayerBulletin setServerHosted:](self, "setServerHosted:", *([dataCopy bytes] + 1));
+    v7 = [dataCopy length];
+    v8 = [(GKRealTimeMultiplayerBulletin *)self inviteVersionFromMessage:dataCopy];
     if (!v8)
     {
       v9 = v7 - 2;
@@ -143,7 +143,7 @@
     if (v9)
     {
 LABEL_8:
-      v11 = [v4 subdataWithRange:{2, v9}];
+      v11 = [dataCopy subdataWithRange:{2, v9}];
       v12 = [[NSString alloc] initWithData:v11 encoding:4];
       [(GKBulletin *)self setMessage:v12];
     }
@@ -168,13 +168,13 @@ LABEL_9:
 
   v5 = objc_alloc_init(GKBulletinAction);
   [(GKBulletinAction *)v5 setType:1];
-  v6 = [(GKBulletin *)self gameDescriptor];
-  v7 = [v6 adamID];
-  [(GKBulletinAction *)v5 setAdamID:v7];
+  gameDescriptor = [(GKBulletin *)self gameDescriptor];
+  adamID = [gameDescriptor adamID];
+  [(GKBulletinAction *)v5 setAdamID:adamID];
 
-  v8 = [(GKBulletin *)self gameDescriptor];
-  v9 = [v8 bundleIdentifier];
-  [(GKBulletinAction *)v5 setBundleID:v9];
+  gameDescriptor2 = [(GKBulletin *)self gameDescriptor];
+  bundleIdentifier = [gameDescriptor2 bundleIdentifier];
+  [(GKBulletinAction *)v5 setBundleID:bundleIdentifier];
 
   if ([(GKGameplayBulletin *)self gameLocation]== 2)
   {
@@ -225,9 +225,9 @@ LABEL_10:
   }
 
   [(GKBulletin *)self setHasSound:1];
-  v18 = [(GKBulletin *)self gameDescriptor];
-  v19 = [v18 bundleIdentifier];
-  v20 = [(GKRealTimeMultiplayerBulletin *)self customInviteSoundPathForBundleID:v19];
+  gameDescriptor3 = [(GKBulletin *)self gameDescriptor];
+  bundleIdentifier2 = [gameDescriptor3 bundleIdentifier];
+  v20 = [(GKRealTimeMultiplayerBulletin *)self customInviteSoundPathForBundleID:bundleIdentifier2];
   [(GKBulletin *)self setSoundPath:v20];
 
   v21 = [NSDate dateWithTimeIntervalSinceNow:600.0];
@@ -262,14 +262,14 @@ LABEL_10:
     +[_TtC20GameCenterFoundation19GCFLocalizedStrings KETTLE_GAME_INVITE_NOTIFICATION_TITLE];
   }
   v25 = ;
-  v26 = [(GKBulletin *)self gameName];
-  v27 = [NSString localizedStringWithFormat:v25, v26];
+  gameName = [(GKBulletin *)self gameName];
+  v27 = [NSString localizedStringWithFormat:v25, gameName];
   [(GKBulletin *)self setTitle:v27];
 }
 
-- (void)handleAction:(id)a3
+- (void)handleAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -284,7 +284,7 @@ LABEL_10:
 
   v10.receiver = self;
   v10.super_class = GKRealTimeMultiplayerInitiateBulletin;
-  [(GKBulletin *)&v10 handleAction:v4];
+  [(GKBulletin *)&v10 handleAction:actionCopy];
   if (!os_log_GKGeneral)
   {
     v7 = GKOSLoggers();
@@ -294,23 +294,23 @@ LABEL_10:
   if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v12 = v4;
+    v12 = actionCopy;
     v13 = 2112;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "bulletin handle multiplayer action: %@ bulletin: %@", buf, 0x16u);
   }
 
-  if (([v4 isEqualToString:@"GKAccepted"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"GKDefault"))
+  if (([actionCopy isEqualToString:@"GKAccepted"] & 1) != 0 || objc_msgSend(actionCopy, "isEqualToString:", @"GKDefault"))
   {
     [(GKRealTimeMultiplayerInitiateBulletin *)self handleAcceptAction];
   }
 
-  else if (([v4 isEqualToString:@"GKDeclined"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"GKDismissed"))
+  else if (([actionCopy isEqualToString:@"GKDeclined"] & 1) != 0 || objc_msgSend(actionCopy, "isEqualToString:", @"GKDismissed"))
   {
     [(GKRealTimeMultiplayerInitiateBulletin *)self handleDeclineAction];
   }
 
-  else if ([v4 isEqualToString:@"GKExpired"])
+  else if ([actionCopy isEqualToString:@"GKExpired"])
   {
     v9 = +[GKBulletinController sharedController];
     [v9 expireBulletin:self];
@@ -331,23 +331,23 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "GKRealTimeMultiplayerInitiateBulletin handleAcceptAction", &v20, 2u);
   }
 
-  v5 = [(GKBulletin *)self gameDescriptor];
-  v6 = [v5 bundleIdentifier];
-  v7 = [GKClientProxy clientForBundleID:v6];
+  gameDescriptor = [(GKBulletin *)self gameDescriptor];
+  bundleIdentifier = [gameDescriptor bundleIdentifier];
+  v7 = [GKClientProxy clientForBundleID:bundleIdentifier];
 
   v8 = +[GKBulletinController sharedController];
-  v9 = [v8 acceptedInviteManager];
+  acceptedInviteManager = [v8 acceptedInviteManager];
 
   if ([(GKGameplayBulletin *)self gameLocation]== 1)
   {
-    v10 = [(GKRealTimeMultiplayerBulletin *)self inviteVersion];
-    v11 = [v10 integerValue];
+    inviteVersion = [(GKRealTimeMultiplayerBulletin *)self inviteVersion];
+    integerValue = [inviteVersion integerValue];
     v12 = +[GKPreferences shared];
-    v13 = [v12 maximumInviteVersionSupported];
+    maximumInviteVersionSupported = [v12 maximumInviteVersionSupported];
 
-    if (v11 <= v13)
+    if (integerValue <= maximumInviteVersionSupported)
     {
-      [v9 addMultiplayerInvite:self];
+      [acceptedInviteManager addMultiplayerInvite:self];
       v19 = +[GKReporter reporter];
       [v19 reportEvent:GKReporterDomainInvite type:GKReporterInviteAcceptUser];
 
@@ -357,8 +357,8 @@ LABEL_10:
     else
     {
       [(GKRealTimeMultiplayerBulletin *)self declineInviteWithReason:5];
-      v14 = [(GKRealTimeMultiplayerBulletin *)self clientNotification];
-      [v7 declineInviteWithNotification:v14];
+      clientNotification = [(GKRealTimeMultiplayerBulletin *)self clientNotification];
+      [v7 declineInviteWithNotification:clientNotification];
 
       if (!os_log_GKGeneral)
       {
@@ -369,13 +369,13 @@ LABEL_10:
       if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
       {
         v17 = v16;
-        v18 = [(GKRealTimeMultiplayerBulletin *)self inviteVersion];
+        inviteVersion2 = [(GKRealTimeMultiplayerBulletin *)self inviteVersion];
         v20 = 138412290;
-        v21 = v18;
+        v21 = inviteVersion2;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Cannot handle an invite with invite version: (%@).", &v20, 0xCu);
       }
 
-      [v9 declineMultiplayerInvite:self];
+      [acceptedInviteManager declineMultiplayerInvite:self];
     }
   }
 }
@@ -397,9 +397,9 @@ LABEL_10:
   [(GKRealTimeMultiplayerBulletin *)self declineInviteWithReason:1];
 }
 
-- (void)loadDataWithHandler:(id)a3
+- (void)loadDataWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -432,16 +432,16 @@ LABEL_10:
   v11 = v10;
   v19 = v11;
   [v11 perform:v18];
-  v12 = [v9 replyQueue];
+  replyQueue = [v9 replyQueue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1001917F8;
   v15[3] = &unk_100360EB0;
   v16 = v11;
-  v17 = v4;
+  v17 = handlerCopy;
   v13 = v11;
-  v14 = v4;
-  [v13 notifyOnQueue:v12 block:v15];
+  v14 = handlerCopy;
+  [v13 notifyOnQueue:replyQueue block:v15];
 }
 
 @end

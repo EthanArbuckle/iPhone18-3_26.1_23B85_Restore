@@ -1,28 +1,28 @@
 @interface RMSTouchRemoteSocket
-- (BOOL)sendTouchCode:(int64_t)a3 timeInMilliseconds:(unsigned int)a4 location:(CGPoint)a5;
-- (RMSTouchRemoteSocket)initWithHost:(id)a3 port:(int)a4 encryptionKey:(int)a5;
+- (BOOL)sendTouchCode:(int64_t)code timeInMilliseconds:(unsigned int)milliseconds location:(CGPoint)location;
+- (RMSTouchRemoteSocket)initWithHost:(id)host port:(int)port encryptionKey:(int)key;
 - (RMSTouchRemoteSocketDelegate)delegate;
-- (id)_encryptData:(id)a3;
+- (id)_encryptData:(id)data;
 - (void)connect;
 - (void)dealloc;
 - (void)disconnect;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 @end
 
 @implementation RMSTouchRemoteSocket
 
-- (RMSTouchRemoteSocket)initWithHost:(id)a3 port:(int)a4 encryptionKey:(int)a5
+- (RMSTouchRemoteSocket)initWithHost:(id)host port:(int)port encryptionKey:(int)key
 {
-  v9 = a3;
+  hostCopy = host;
   v13.receiver = self;
   v13.super_class = RMSTouchRemoteSocket;
   v10 = [(RMSTouchRemoteSocket *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_host, a3);
-    v11->_port = a4;
-    v11->_encryptionKey = a5;
+    objc_storeStrong(&v10->_host, host);
+    v11->_port = port;
+    v11->_encryptionKey = key;
   }
 
   return v11;
@@ -47,8 +47,8 @@
 
   [(NSOutputStream *)self->_outputStream close];
   outputStream = self->_outputStream;
-  v5 = [MEMORY[0x277CBEB88] currentRunLoop];
-  [(NSOutputStream *)outputStream removeFromRunLoop:v5 forMode:*MEMORY[0x277CBE640]];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+  [(NSOutputStream *)outputStream removeFromRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE640]];
 
   v6 = self->_outputStream;
   self->_outputStream = 0;
@@ -63,44 +63,44 @@
 
   [(NSOutputStream *)self->_outputStream setDelegate:self];
   v4 = self->_outputStream;
-  v5 = [MEMORY[0x277CBEB88] currentRunLoop];
-  [(NSOutputStream *)v4 scheduleInRunLoop:v5 forMode:*MEMORY[0x277CBE640]];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+  [(NSOutputStream *)v4 scheduleInRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE640]];
 
   [(NSOutputStream *)self->_outputStream open];
 }
 
-- (BOOL)sendTouchCode:(int64_t)a3 timeInMilliseconds:(unsigned int)a4 location:(CGPoint)a5
+- (BOOL)sendTouchCode:(int64_t)code timeInMilliseconds:(unsigned int)milliseconds location:(CGPoint)location
 {
-  y = a5.y;
-  x = a5.x;
-  v7 = *&a4;
-  v8 = a3;
+  y = location.y;
+  x = location.x;
+  v7 = *&milliseconds;
+  codeCopy = code;
   v35 = *MEMORY[0x277D85DE8];
-  v10 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v7];
-  [v10 addObject:v11];
+  [array addObject:v11];
 
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:1];
-  [v10 addObject:v12];
+  [array addObject:v12];
 
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:y | (x << 16)];
-  [v10 addObject:v13];
+  [array addObject:v13];
 
-  v14 = [v10 count];
+  v14 = [array count];
   v15 = v14;
   if (v14 < 0x15)
   {
     v18 = 4 * v14 + 20;
     v34[0] = v18 << 24;
     v34[1] = 256;
-    v34[2] = bswap32(v8);
+    v34[2] = bswap32(codeCopy);
     v34[3] = 0;
     v34[4] = v14 << 26;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v19 = v10;
+    v19 = array;
     v20 = [v19 countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v20)
     {
@@ -148,11 +148,11 @@
   return v17;
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 == 8)
+  streamCopy = stream;
+  v7 = streamCopy;
+  if (event == 8)
   {
     v10 = RMSLogger();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -164,7 +164,7 @@
     goto LABEL_13;
   }
 
-  if (a4 == 1)
+  if (event == 1)
   {
     v8 = RMSLogger();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -178,7 +178,7 @@
     goto LABEL_14;
   }
 
-  if ([v6 streamStatus] == 6)
+  if ([streamCopy streamStatus] == 6)
   {
     v11 = RMSLogger();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -194,12 +194,12 @@ LABEL_14:
   }
 }
 
-- (id)_encryptData:(id)a3
+- (id)_encryptData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 bytes];
-  v6 = [v4 length];
-  v7 = malloc_type_malloc([v4 length], 0x100004052888210uLL);
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v6 = [dataCopy length];
+  v7 = malloc_type_malloc([dataCopy length], 0x100004052888210uLL);
   v8 = v7;
   if (v6 >= 4)
   {
@@ -207,7 +207,7 @@ LABEL_14:
     v10 = v7;
     do
     {
-      v11 = *v5++;
+      v11 = *bytes++;
       *v10++ = self->_encryptionKey ^ v11;
       --v9;
     }

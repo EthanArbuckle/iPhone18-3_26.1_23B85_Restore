@@ -1,25 +1,25 @@
 @interface FIUIWorkoutDefaultMetricsProvider
-- (BOOL)isMetricTypeSupported:(unint64_t)a3 isMachineWorkout:(BOOL)a4 activityType:(id)a5;
-- (FIUIWorkoutDefaultMetricsProvider)initWithMetricsVersion:(int64_t)a3 activityType:(id)a4 activityMoveMode:(int64_t)a5 deviceSupportsElevationMetrics:(BOOL)a6 deviceSupportsGroundElevationMetrics:(BOOL)a7;
-- (id)appendMachineMetricsToMetrics:(id)a3 maxNumMetrics:(int64_t)a4 activityType:(id)a5;
-- (id)supportedMetricsWithIsMachineWorkout:(BOOL)a3 activityType:(id)a4;
+- (BOOL)isMetricTypeSupported:(unint64_t)supported isMachineWorkout:(BOOL)workout activityType:(id)type;
+- (FIUIWorkoutDefaultMetricsProvider)initWithMetricsVersion:(int64_t)version activityType:(id)type activityMoveMode:(int64_t)mode deviceSupportsElevationMetrics:(BOOL)metrics deviceSupportsGroundElevationMetrics:(BOOL)elevationMetrics;
+- (id)appendMachineMetricsToMetrics:(id)metrics maxNumMetrics:(int64_t)numMetrics activityType:(id)type;
+- (id)supportedMetricsWithIsMachineWorkout:(BOOL)workout activityType:(id)type;
 @end
 
 @implementation FIUIWorkoutDefaultMetricsProvider
 
-- (FIUIWorkoutDefaultMetricsProvider)initWithMetricsVersion:(int64_t)a3 activityType:(id)a4 activityMoveMode:(int64_t)a5 deviceSupportsElevationMetrics:(BOOL)a6 deviceSupportsGroundElevationMetrics:(BOOL)a7
+- (FIUIWorkoutDefaultMetricsProvider)initWithMetricsVersion:(int64_t)version activityType:(id)type activityMoveMode:(int64_t)mode deviceSupportsElevationMetrics:(BOOL)metrics deviceSupportsGroundElevationMetrics:(BOOL)elevationMetrics
 {
-  v7 = a7;
-  v8 = a6;
-  v12 = a4;
+  elevationMetricsCopy = elevationMetrics;
+  metricsCopy = metrics;
+  typeCopy = type;
   v19.receiver = self;
   v19.super_class = FIUIWorkoutDefaultMetricsProvider;
   v13 = [(FIUIWorkoutDefaultMetricsProvider *)&v19 init];
   if (v13)
   {
     v14 = objc_alloc(MEMORY[0x1E699C9F8]);
-    v15 = [v12 workoutActivityType];
-    v16 = [v14 initWithMetricsVersion:a3 activityType:v15 activityMoveMode:a5 deviceSupportsElevationMetrics:v8 deviceSupportsGroundElevationMetrics:v7];
+    workoutActivityType = [typeCopy workoutActivityType];
+    v16 = [v14 initWithMetricsVersion:version activityType:workoutActivityType activityMoveMode:mode deviceSupportsElevationMetrics:metricsCopy deviceSupportsGroundElevationMetrics:elevationMetricsCopy];
     defaultMetricsProvider = v13->_defaultMetricsProvider;
     v13->_defaultMetricsProvider = v16;
   }
@@ -27,32 +27,32 @@
   return v13;
 }
 
-- (BOOL)isMetricTypeSupported:(unint64_t)a3 isMachineWorkout:(BOOL)a4 activityType:(id)a5
+- (BOOL)isMetricTypeSupported:(unint64_t)supported isMachineWorkout:(BOOL)workout activityType:(id)type
 {
-  v5 = a4;
+  workoutCopy = workout;
   defaultMetricsProvider = self->_defaultMetricsProvider;
-  v8 = [a5 workoutActivityType];
-  LOBYTE(v5) = [(FIWorkoutDefaultMetricsProvider *)defaultMetricsProvider isMetricTypeSupported:a3 isMachineWorkout:v5 activityType:v8];
+  workoutActivityType = [type workoutActivityType];
+  LOBYTE(workoutCopy) = [(FIWorkoutDefaultMetricsProvider *)defaultMetricsProvider isMetricTypeSupported:supported isMachineWorkout:workoutCopy activityType:workoutActivityType];
 
-  return v5;
+  return workoutCopy;
 }
 
-- (id)supportedMetricsWithIsMachineWorkout:(BOOL)a3 activityType:(id)a4
+- (id)supportedMetricsWithIsMachineWorkout:(BOOL)workout activityType:(id)type
 {
-  v4 = a3;
+  workoutCopy = workout;
   defaultMetricsProvider = self->_defaultMetricsProvider;
-  v6 = [a4 workoutActivityType];
-  v7 = [(FIWorkoutDefaultMetricsProvider *)defaultMetricsProvider supportedMetricsWithIsMachineWorkout:v4 activityType:v6];
+  workoutActivityType = [type workoutActivityType];
+  v7 = [(FIWorkoutDefaultMetricsProvider *)defaultMetricsProvider supportedMetricsWithIsMachineWorkout:workoutCopy activityType:workoutActivityType];
 
   return v7;
 }
 
-- (id)appendMachineMetricsToMetrics:(id)a3 maxNumMetrics:(int64_t)a4 activityType:(id)a5
+- (id)appendMachineMetricsToMetrics:(id)metrics maxNumMetrics:(int64_t)numMetrics activityType:(id)type
 {
   defaultMetricsProvider = self->_defaultMetricsProvider;
-  v8 = a3;
-  v9 = [a5 workoutActivityType];
-  v10 = [(FIWorkoutDefaultMetricsProvider *)defaultMetricsProvider appendMachineMetricsToMetrics:v8 maxNumMetrics:a4 activityType:v9];
+  metricsCopy = metrics;
+  workoutActivityType = [type workoutActivityType];
+  v10 = [(FIWorkoutDefaultMetricsProvider *)defaultMetricsProvider appendMachineMetricsToMetrics:metricsCopy maxNumMetrics:numMetrics activityType:workoutActivityType];
 
   return v10;
 }

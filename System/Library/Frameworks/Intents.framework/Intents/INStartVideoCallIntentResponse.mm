@@ -1,18 +1,18 @@
 @interface INStartVideoCallIntentResponse
-+ (int)_errorCodeFromCode:(int64_t)a3;
-+ (int)_typeFromCode:(int64_t)a3;
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5;
-- (INStartVideoCallIntentResponse)initWithBackingStore:(id)a3;
++ (int)_errorCodeFromCode:(int64_t)code;
++ (int)_typeFromCode:(int64_t)code;
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested;
+- (INStartVideoCallIntentResponse)initWithBackingStore:(id)store;
 - (INStartVideoCallIntentResponse)initWithCode:(INStartVideoCallIntentResponseCode)code userActivity:(NSUserActivity *)userActivity;
-- (INStartVideoCallIntentResponse)initWithCoder:(id)a3;
+- (INStartVideoCallIntentResponse)initWithCoder:(id)coder;
 - (INStartVideoCallIntentResponseCode)code;
 - (double)timeToEstablishCall;
 - (id)_dictionaryRepresentation;
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (int64_t)_codeWithName:(id)a3;
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity;
+- (int64_t)_codeWithName:(id)name;
 - (int64_t)_intentResponseCode;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTimeToEstablishCall:(double)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTimeToEstablishCall:(double)call;
 @end
 
 @implementation INStartVideoCallIntentResponse
@@ -21,21 +21,21 @@
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v9 = @"code";
-  v2 = [(INStartVideoCallIntentResponse *)self code];
-  v3 = v2;
-  if (v2 < (INStartVideoCallIntentResponseCodeFailureInvalidNumber|INStartVideoCallIntentResponseCodeReady))
+  code = [(INStartVideoCallIntentResponse *)self code];
+  v3 = code;
+  if (code < (INStartVideoCallIntentResponseCodeFailureInvalidNumber|INStartVideoCallIntentResponseCodeReady))
   {
-    v4 = off_1E7281130[v2];
-    v5 = v4;
+    null = off_1E7281130[code];
+    v5 = null;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v5 = 0;
   }
 
-  v10[0] = v4;
+  v10[0] = null;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   if (v3 >= 9)
   {
@@ -46,63 +46,63 @@
   return v6;
 }
 
-- (void)setTimeToEstablishCall:(double)a3
+- (void)setTimeToEstablishCall:(double)call
 {
   v9 = objc_alloc_init(_INPBCallMetricsValue);
-  [(_INPBCallMetricsValue *)v9 setTimeToEstablish:a3];
+  [(_INPBCallMetricsValue *)v9 setTimeToEstablish:call];
   v5 = objc_alloc_init(_INPBCallMetrics);
   [(_INPBCallMetrics *)v5 setValue:v9];
-  v6 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  [v6 setMetrics:v5];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  [_responseMessagePBRepresentation setMetrics:v5];
 
-  v7 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v8 = [v7 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v8];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (double)timeToEstablishCall
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 metrics];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  metrics = [_responseMessagePBRepresentation metrics];
 
-  v4 = [v3 value];
-  [v4 timeToEstablish];
+  value = [metrics value];
+  [value timeToEstablish];
   v6 = v5;
 
   return v6;
 }
 
-- (int64_t)_codeWithName:(id)a3
+- (int64_t)_codeWithName:(id)name
 {
-  v3 = a3;
-  [v3 isEqualToString:@"INStartVideoCallIntentResponseCodeUnspecified"];
-  v4 = [v3 isEqualToString:@"INStartVideoCallIntentResponseCodeReady"];
-  if ([v3 isEqualToString:@"INStartVideoCallIntentResponseCodeContinueInApp"])
+  nameCopy = name;
+  [nameCopy isEqualToString:@"INStartVideoCallIntentResponseCodeUnspecified"];
+  v4 = [nameCopy isEqualToString:@"INStartVideoCallIntentResponseCodeReady"];
+  if ([nameCopy isEqualToString:@"INStartVideoCallIntentResponseCodeContinueInApp"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"INStartVideoCallIntentResponseCodeFailure"])
+  if ([nameCopy isEqualToString:@"INStartVideoCallIntentResponseCodeFailure"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"INStartVideoCallIntentResponseCodeFailureRequiringAppLaunch"])
+  if ([nameCopy isEqualToString:@"INStartVideoCallIntentResponseCodeFailureRequiringAppLaunch"])
   {
     v4 = 4;
   }
 
-  if ([v3 isEqualToString:@"INStartVideoCallIntentResponseCodeFailureAppConfigurationRequired"])
+  if ([nameCopy isEqualToString:@"INStartVideoCallIntentResponseCodeFailureAppConfigurationRequired"])
   {
     v4 = 5;
   }
 
-  if ([v3 isEqualToString:@"INStartVideoCallIntentResponseCodeFailureCallingServiceNotAvailable"])
+  if ([nameCopy isEqualToString:@"INStartVideoCallIntentResponseCodeFailureCallingServiceNotAvailable"])
   {
     v4 = 6;
   }
 
-  if ([v3 isEqualToString:@"INStartVideoCallIntentResponseCodeFailureContactNotSupportedByApp"])
+  if ([nameCopy isEqualToString:@"INStartVideoCallIntentResponseCodeFailureContactNotSupportedByApp"])
   {
     v5 = 7;
   }
@@ -112,7 +112,7 @@
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"INStartVideoCallIntentResponseCodeFailureInvalidNumber"];
+  v6 = [nameCopy isEqualToString:@"INStartVideoCallIntentResponseCodeFailureInvalidNumber"];
 
   if (v6)
   {
@@ -127,30 +127,30 @@
 
 - (int64_t)_intentResponseCode
 {
-  v2 = [(INStartVideoCallIntentResponse *)self code];
-  if ((v2 - 1) > 7)
+  code = [(INStartVideoCallIntentResponse *)self code];
+  if ((code - 1) > 7)
   {
     return 0;
   }
 
   else
   {
-    return qword_18EE5ED90[v2 - 1];
+    return qword_18EE5ED90[code - 1];
   }
 }
 
-- (INStartVideoCallIntentResponse)initWithCoder:(id)a3
+- (INStartVideoCallIntentResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = INStartVideoCallIntentResponse;
-  return [(INIntentResponse *)&v4 initWithCoder:a3];
+  return [(INIntentResponse *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = INStartVideoCallIntentResponse;
-  [(INIntentResponse *)&v3 encodeWithCoder:a3];
+  [(INIntentResponse *)&v3 encodeWithCoder:coder];
 }
 
 - (INStartVideoCallIntentResponseCode)code
@@ -160,18 +160,18 @@
   return [(INIntentResponse *)&v3 code];
 }
 
-- (INStartVideoCallIntentResponse)initWithBackingStore:(id)a3
+- (INStartVideoCallIntentResponse)initWithBackingStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = INStartVideoCallIntentResponse;
-  return [(INIntentResponse *)&v4 initWithBackingStore:a3];
+  return [(INIntentResponse *)&v4 initWithBackingStore:store];
 }
 
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = INStartVideoCallIntentResponse;
-  return [(INIntentResponse *)&v5 _initWithCode:a3 userActivity:a4];
+  return [(INIntentResponse *)&v5 _initWithCode:code userActivity:activity];
 }
 
 - (INStartVideoCallIntentResponse)initWithCode:(INStartVideoCallIntentResponseCode)code userActivity:(NSUserActivity *)userActivity
@@ -212,11 +212,11 @@
   return v11;
 }
 
-+ (int)_errorCodeFromCode:(int64_t)a3
++ (int)_errorCodeFromCode:(int64_t)code
 {
-  if ((a3 - 5) < 4)
+  if ((code - 5) < 4)
   {
-    return a3 - 4;
+    return code - 4;
   }
 
   else
@@ -225,44 +225,44 @@
   }
 }
 
-+ (int)_typeFromCode:(int64_t)a3
++ (int)_typeFromCode:(int64_t)code
 {
-  if ((a3 - 1) > 7)
+  if ((code - 1) > 7)
   {
     return 3;
   }
 
   else
   {
-    return dword_18EE5ED70[a3 - 1];
+    return dword_18EE5ED70[code - 1];
   }
 }
 
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested
 {
   v5 = 3;
-  if (a5)
+  if (requested)
   {
     v5 = 4;
   }
 
-  if ((a4 - 1) >= 4)
+  if ((code - 1) >= 4)
   {
     v6 = v5;
   }
 
   else
   {
-    v6 = (a4 + 4);
+    v6 = (code + 4);
   }
 
   v7 = 2;
-  if (a3 != 4)
+  if (type != 4)
   {
-    v7 = a3 == 5;
+    v7 = type == 5;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     return v6;
   }

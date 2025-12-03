@@ -6,7 +6,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   JSSettingsAuthenticationSection.description.getter();
 
   v3 = String._bridgeToObjectiveC()();

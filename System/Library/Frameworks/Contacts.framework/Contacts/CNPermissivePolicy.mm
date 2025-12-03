@@ -1,7 +1,7 @@
 @interface CNPermissivePolicy
 + (id)sharedPermissivePolicy;
-- (CNPermissivePolicy)initWithCoder:(id)a3;
-- (unint64_t)maximumCountOfValuesForContactProperty:(id)a3;
+- (CNPermissivePolicy)initWithCoder:(id)coder;
+- (unint64_t)maximumCountOfValuesForContactProperty:(id)property;
 @end
 
 @implementation CNPermissivePolicy
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __44__CNPermissivePolicy_sharedPermissivePolicy__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedPermissivePolicy_cn_once_token_0 != -1)
   {
     dispatch_once(&sharedPermissivePolicy_cn_once_token_0, block);
@@ -32,11 +32,11 @@ uint64_t __44__CNPermissivePolicy_sharedPermissivePolicy__block_invoke(uint64_t 
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-- (unint64_t)maximumCountOfValuesForContactProperty:(id)a3
+- (unint64_t)maximumCountOfValuesForContactProperty:(id)property
 {
-  v3 = a3;
+  propertyCopy = property;
   v4 = +[CN contactPropertiesByKey];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:propertyCopy];
 
   if (v5)
   {
@@ -59,11 +59,11 @@ uint64_t __44__CNPermissivePolicy_sharedPermissivePolicy__block_invoke(uint64_t 
   return v6;
 }
 
-- (CNPermissivePolicy)initWithCoder:(id)a3
+- (CNPermissivePolicy)initWithCoder:(id)coder
 {
-  v4 = [objc_opt_class() sharedPermissivePolicy];
+  sharedPermissivePolicy = [objc_opt_class() sharedPermissivePolicy];
 
-  return v4;
+  return sharedPermissivePolicy;
 }
 
 @end

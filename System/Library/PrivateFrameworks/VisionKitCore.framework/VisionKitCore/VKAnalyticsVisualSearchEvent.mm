@@ -1,31 +1,31 @@
 @interface VKAnalyticsVisualSearchEvent
 - (BOOL)itemHasFocalPoint;
 - (NSString)itemDomain;
-- (VKAnalyticsVisualSearchEvent)initWithType:(int64_t)a3 items:(id)a4 interactedItem:(id)a5 serverProcessingTime:(double)a6 customIdentifier:(id)a7;
+- (VKAnalyticsVisualSearchEvent)initWithType:(int64_t)type items:(id)items interactedItem:(id)item serverProcessingTime:(double)time customIdentifier:(id)identifier;
 - (id)coreAnalyticsDictionary;
 - (id)description;
 - (id)eventKey;
-- (void)processItems:(id)a3;
+- (void)processItems:(id)items;
 @end
 
 @implementation VKAnalyticsVisualSearchEvent
 
-- (VKAnalyticsVisualSearchEvent)initWithType:(int64_t)a3 items:(id)a4 interactedItem:(id)a5 serverProcessingTime:(double)a6 customIdentifier:(id)a7
+- (VKAnalyticsVisualSearchEvent)initWithType:(int64_t)type items:(id)items interactedItem:(id)item serverProcessingTime:(double)time customIdentifier:(id)identifier
 {
-  v12 = a4;
-  v13 = a5;
+  itemsCopy = items;
+  itemCopy = item;
   v19.receiver = self;
   v19.super_class = VKAnalyticsVisualSearchEvent;
-  v14 = [(VKAnalyticsEvent *)&v19 initWithCustomIdentifier:a7];
+  v14 = [(VKAnalyticsEvent *)&v19 initWithCustomIdentifier:identifier];
   v15 = v14;
   if (v14)
   {
-    v14->_eventType = a3;
-    v14->_serverProcessingTime = a6;
-    objc_storeStrong(&v14->_interactedItem, a5);
-    v17 = a6 == 0.0 && v15->_eventType == 2;
+    v14->_eventType = type;
+    v14->_serverProcessingTime = time;
+    objc_storeStrong(&v14->_interactedItem, item);
+    v17 = time == 0.0 && v15->_eventType == 2;
     v15->_serverResultWasCached = v17;
-    [(VKAnalyticsVisualSearchEvent *)v15 processItems:v12];
+    [(VKAnalyticsVisualSearchEvent *)v15 processItems:itemsCopy];
   }
 
   return v15;
@@ -33,14 +33,14 @@
 
 - (id)eventKey
 {
-  v2 = [(VKAnalyticsVisualSearchEvent *)self eventType];
+  eventType = [(VKAnalyticsVisualSearchEvent *)self eventType];
   v3 = @"VisualSearchEvent.items.activated";
-  if (v2 != 2)
+  if (eventType != 2)
   {
     v3 = 0;
   }
 
-  if (v2 == 1)
+  if (eventType == 1)
   {
     return @"VisualSearchEvent.items.hidden";
   }
@@ -57,17 +57,17 @@
   v4 = VKMUIStringForVKAnalyticsVisualSearchEventType([(VKAnalyticsVisualSearchEvent *)self eventType]);
   [v3 vk_addKey:@"eventType" forNonNilObject:v4];
 
-  v5 = [(VKAnalyticsEvent *)self bundleIdentifier];
-  [v3 setObject:v5 forKeyedSubscript:@"bundleIdentifier"];
+  bundleIdentifier = [(VKAnalyticsEvent *)self bundleIdentifier];
+  [v3 setObject:bundleIdentifier forKeyedSubscript:@"bundleIdentifier"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[VKAnalyticsEvent isPerformingAutomatedTest](self, "isPerformingAutomatedTest")}];
   [v3 setObject:v6 forKeyedSubscript:@"automatedTest"];
 
-  v7 = [(VKAnalyticsVisualSearchEvent *)self eventType];
-  if (v7 == 2)
+  eventType = [(VKAnalyticsVisualSearchEvent *)self eventType];
+  if (eventType == 2)
   {
-    v14 = [(VKAnalyticsVisualSearchEvent *)self itemDomain];
-    [v3 vk_addKey:@"domain" forNonNilObject:v14];
+    itemDomain = [(VKAnalyticsVisualSearchEvent *)self itemDomain];
+    [v3 vk_addKey:@"domain" forNonNilObject:itemDomain];
 
     v15 = MEMORY[0x1E696AD98];
     [(VKAnalyticsVisualSearchEvent *)self serverProcessingTime];
@@ -77,14 +77,14 @@
     v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[VKAnalyticsVisualSearchEvent serverResultWasCached](self, "serverResultWasCached")}];
     [v3 vk_addKey:@"serverResultWasCached" forNonNilObject:v17];
 
-    v11 = [(VKAnalyticsVisualSearchEvent *)self itemDomain];
+    itemDomain2 = [(VKAnalyticsVisualSearchEvent *)self itemDomain];
     v13 = v3;
     v12 = @"domain";
   }
 
   else
   {
-    if (v7 != 1)
+    if (eventType != 1)
     {
       goto LABEL_6;
     }
@@ -98,28 +98,28 @@
     v10 = [MEMORY[0x1E696AD98] numberWithInteger:{-[VKAnalyticsVisualSearchEvent focalPointItemCount](self, "focalPointItemCount")}];
     [v3 vk_addKey:@"focalPointItemCount" forNonNilObject:v10];
 
-    v11 = [MEMORY[0x1E696AD98] numberWithInteger:{-[VKAnalyticsVisualSearchEvent itemCount](self, "itemCount") - -[VKAnalyticsVisualSearchEvent focalPointItemCount](self, "focalPointItemCount")}];
+    itemDomain2 = [MEMORY[0x1E696AD98] numberWithInteger:{-[VKAnalyticsVisualSearchEvent itemCount](self, "itemCount") - -[VKAnalyticsVisualSearchEvent focalPointItemCount](self, "focalPointItemCount")}];
     v12 = @"nonFocalPointItemCount";
     v13 = v3;
   }
 
-  [v13 vk_addKey:v12 forNonNilObject:v11];
+  [v13 vk_addKey:v12 forNonNilObject:itemDomain2];
 
 LABEL_6:
 
   return v3;
 }
 
-- (void)processItems:(id)a3
+- (void)processItems:(id)items
 {
-  v4 = a3;
-  -[VKAnalyticsVisualSearchEvent setItemCount:](self, "setItemCount:", [v4 count]);
+  itemsCopy = items;
+  -[VKAnalyticsVisualSearchEvent setItemCount:](self, "setItemCount:", [itemsCopy count]);
   v5 = objc_alloc(MEMORY[0x1E696AB50]);
-  v6 = [v4 vk_compactMap:&__block_literal_global_19];
+  v6 = [itemsCopy vk_compactMap:&__block_literal_global_19];
   v7 = [v5 initWithArray:v6];
   [(VKAnalyticsVisualSearchEvent *)self setAllItemDomains:v7];
 
-  v8 = [v4 vk_countOfObjectsPassingTest:&__block_literal_global_183];
+  v8 = [itemsCopy vk_countOfObjectsPassingTest:&__block_literal_global_183];
 
   [(VKAnalyticsVisualSearchEvent *)self setFocalPointItemCount:v8];
 }
@@ -142,33 +142,33 @@ uint64_t __45__VKAnalyticsVisualSearchEvent_processItems___block_invoke_2(uint64
 
 - (NSString)itemDomain
 {
-  v2 = [(VKAnalyticsVisualSearchEvent *)self interactedItem];
-  v3 = [v2 domainInfo];
-  v4 = [v3 domain];
+  interactedItem = [(VKAnalyticsVisualSearchEvent *)self interactedItem];
+  domainInfo = [interactedItem domainInfo];
+  domain = [domainInfo domain];
 
-  return v4;
+  return domain;
 }
 
 - (BOOL)itemHasFocalPoint
 {
-  v2 = [(VKAnalyticsVisualSearchEvent *)self interactedItem];
-  v3 = [v2 domainInfo];
-  v4 = [v3 hasFocalPoint];
+  interactedItem = [(VKAnalyticsVisualSearchEvent *)self interactedItem];
+  domainInfo = [interactedItem domainInfo];
+  hasFocalPoint = [domainInfo hasFocalPoint];
 
-  return v4;
+  return hasFocalPoint;
 }
 
 - (id)description
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v4 = [(VKAnalyticsVisualSearchEvent *)self allItemDomains];
+  allItemDomains = [(VKAnalyticsVisualSearchEvent *)self allItemDomains];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __43__VKAnalyticsVisualSearchEvent_description__block_invoke;
   v24[3] = &unk_1E7BE5D60;
   v25 = v3;
-  v26 = v4;
-  v22 = v4;
+  v26 = allItemDomains;
+  v22 = allItemDomains;
   v5 = v3;
   [v22 enumerateObjectsUsingBlock:v24];
   v21 = MEMORY[0x1E696AEC0];
@@ -176,18 +176,18 @@ uint64_t __45__VKAnalyticsVisualSearchEvent_processItems___block_invoke_2(uint64
   v23.super_class = VKAnalyticsVisualSearchEvent;
   v20 = [(VKAnalyticsVisualSearchEvent *)&v23 description];
   v6 = VKMUIStringForVKAnalyticsVisualSearchEventType([(VKAnalyticsVisualSearchEvent *)self eventType]);
-  v19 = [(VKAnalyticsVisualSearchEvent *)self itemCount];
-  v7 = [(VKAnalyticsVisualSearchEvent *)self focalPointItemCount];
-  v8 = [(VKAnalyticsVisualSearchEvent *)self nonFocalPointItemCount];
+  itemCount = [(VKAnalyticsVisualSearchEvent *)self itemCount];
+  focalPointItemCount = [(VKAnalyticsVisualSearchEvent *)self focalPointItemCount];
+  nonFocalPointItemCount = [(VKAnalyticsVisualSearchEvent *)self nonFocalPointItemCount];
   v9 = VKMUIStringForBool([(VKAnalyticsVisualSearchEvent *)self didInteractWithResultItem]);
-  v10 = [(VKAnalyticsVisualSearchEvent *)self itemDomain];
+  itemDomain = [(VKAnalyticsVisualSearchEvent *)self itemDomain];
   v11 = VKMUIStringForBool([(VKAnalyticsVisualSearchEvent *)self itemHasFocalPoint]);
   [(VKAnalyticsVisualSearchEvent *)self serverProcessingTime];
   v13 = v12;
   v14 = VKMUIStringForBool([(VKAnalyticsVisualSearchEvent *)self serverResultWasCached]);
   v15 = VKMUIStringForBool([(VKAnalyticsEvent *)self isPerformingAutomatedTest]);
-  v16 = [(VKAnalyticsEvent *)self bundleIdentifier];
-  v17 = [v21 stringWithFormat:@"%@ \n eventType: %@ \n itemCount: %lu \n focalPointItemCount: %ld \n nonFocalPointItemCount: %ld \n didInteractWithResultItem: %@ \n allDomains: \n %@itemDomain: %@ \n itemHasFocalPoint: %@ \n serverProcessingTime: %f \n serverResultWasCached: %@ \n automatedTest: %@ \n bundleIdentifier: %@ \n ", v20, v6, v19, v7, v8, v9, v5, v10, v11, v13, v14, v15, v16];
+  bundleIdentifier = [(VKAnalyticsEvent *)self bundleIdentifier];
+  v17 = [v21 stringWithFormat:@"%@ \n eventType: %@ \n itemCount: %lu \n focalPointItemCount: %ld \n nonFocalPointItemCount: %ld \n didInteractWithResultItem: %@ \n allDomains: \n %@itemDomain: %@ \n itemHasFocalPoint: %@ \n serverProcessingTime: %f \n serverResultWasCached: %@ \n automatedTest: %@ \n bundleIdentifier: %@ \n ", v20, v6, itemCount, focalPointItemCount, nonFocalPointItemCount, v9, v5, itemDomain, v11, v13, v14, v15, bundleIdentifier];
 
   return v17;
 }

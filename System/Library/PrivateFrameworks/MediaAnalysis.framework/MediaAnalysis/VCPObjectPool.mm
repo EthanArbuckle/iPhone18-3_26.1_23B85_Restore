@@ -1,59 +1,59 @@
 @interface VCPObjectPool
-+ (VCPObjectPool)objectPoolWithAllocator:(id)a3;
-- (VCPObjectPool)initWithAllocator:(id)a3;
++ (VCPObjectPool)objectPoolWithAllocator:(id)allocator;
+- (VCPObjectPool)initWithAllocator:(id)allocator;
 - (id)getObject;
-- (void)returnObject:(id)a3;
+- (void)returnObject:(id)object;
 @end
 
 @implementation VCPObjectPool
 
-- (VCPObjectPool)initWithAllocator:(id)a3
+- (VCPObjectPool)initWithAllocator:(id)allocator
 {
-  v4 = a3;
+  allocatorCopy = allocator;
   v11.receiver = self;
   v11.super_class = VCPObjectPool;
   v5 = [(VCPObjectPool *)&v11 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(allocatorCopy);
     allocator = v5->_allocator;
     v5->_allocator = v6;
 
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     objects = v5->_objects;
-    v5->_objects = v8;
+    v5->_objects = array;
   }
 
   return v5;
 }
 
-+ (VCPObjectPool)objectPoolWithAllocator:(id)a3
++ (VCPObjectPool)objectPoolWithAllocator:(id)allocator
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithAllocator:v3];
+  allocatorCopy = allocator;
+  v4 = [objc_alloc(objc_opt_class()) initWithAllocator:allocatorCopy];
 
   return v4;
 }
 
 - (id)getObject
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(NSMutableArray *)v2->_objects count])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NSMutableArray *)selfCopy->_objects count])
   {
     v3 = [VCPLoaned alloc];
-    v4 = [(NSMutableArray *)v2->_objects objectAtIndexedSubscript:0];
-    v5 = [(VCPLoaned *)v3 initWithObject:v4 fromPool:v2];
+    v4 = [(NSMutableArray *)selfCopy->_objects objectAtIndexedSubscript:0];
+    v5 = [(VCPLoaned *)v3 initWithObject:v4 fromPool:selfCopy];
 
-    [(NSMutableArray *)v2->_objects removeObjectAtIndex:0];
+    [(NSMutableArray *)selfCopy->_objects removeObjectAtIndex:0];
   }
 
   else
   {
-    v6 = (*(v2->_allocator + 2))();
+    v6 = (*(selfCopy->_allocator + 2))();
     if (v6)
     {
-      v5 = [[VCPLoaned alloc] initWithObject:v6 fromPool:v2];
+      v5 = [[VCPLoaned alloc] initWithObject:v6 fromPool:selfCopy];
     }
 
     else
@@ -68,17 +68,17 @@
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
-- (void)returnObject:(id)a3
+- (void)returnObject:(id)object
 {
   obj = self;
-  v4 = a3;
+  objectCopy = object;
   objc_sync_enter(obj);
-  [(NSMutableArray *)obj->_objects addObject:v4];
+  [(NSMutableArray *)obj->_objects addObject:objectCopy];
 
   objc_sync_exit(obj);
 }

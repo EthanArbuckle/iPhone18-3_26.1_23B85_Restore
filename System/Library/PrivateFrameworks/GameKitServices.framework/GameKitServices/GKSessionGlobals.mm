@@ -1,10 +1,10 @@
 @interface GKSessionGlobals
-- (BOOL)hasActivePID:(unsigned int)a3;
+- (BOOL)hasActivePID:(unsigned int)d;
 - (GKSessionGlobals)init;
 - (void)lock;
-- (void)registerPID:(unsigned int)a3;
+- (void)registerPID:(unsigned int)d;
 - (void)unlock;
-- (void)unregisterPID:(unsigned int)a3;
+- (void)unregisterPID:(unsigned int)d;
 @end
 
 @implementation GKSessionGlobals
@@ -33,7 +33,7 @@
   return v3;
 }
 
-- (void)registerPID:(unsigned int)a3
+- (void)registerPID:(unsigned int)d
 {
   activePIDListCount = self->_activePIDListCount;
   if (activePIDListCount == self->_activePIDListSize)
@@ -56,10 +56,10 @@
   }
 
   self->_activePIDListCount = activePIDListCount + 1;
-  activePIDList[activePIDListCount] = a3;
+  activePIDList[activePIDListCount] = d;
 }
 
-- (void)unregisterPID:(unsigned int)a3
+- (void)unregisterPID:(unsigned int)d
 {
   activePIDListCount = self->_activePIDListCount;
   if (!activePIDListCount)
@@ -69,7 +69,7 @@
 
   activePIDList = self->_activePIDList;
   v6 = self->_activePIDListCount;
-  for (i = activePIDList; *i != a3; ++i)
+  for (i = activePIDList; *i != d; ++i)
   {
     if (!--v6)
     {
@@ -89,7 +89,7 @@ LABEL_7:
   }
 }
 
-- (BOOL)hasActivePID:(unsigned int)a3
+- (BOOL)hasActivePID:(unsigned int)d
 {
   activePIDListCount = self->_activePIDListCount;
   if (!activePIDListCount)
@@ -98,7 +98,7 @@ LABEL_7:
   }
 
   activePIDList = self->_activePIDList;
-  if (*activePIDList == a3)
+  if (*activePIDList == d)
   {
     return 1;
   }
@@ -115,7 +115,7 @@ LABEL_7:
     v8 = activePIDList[v6++];
   }
 
-  while (v8 != a3);
+  while (v8 != d);
   return v7 < activePIDListCount;
 }
 

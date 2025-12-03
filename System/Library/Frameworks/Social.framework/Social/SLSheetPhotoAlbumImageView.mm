@@ -1,21 +1,21 @@
 @interface SLSheetPhotoAlbumImageView
 - (BOOL)_shouldDisplayImageCountLabel;
 - (CGSize)intrinsicContentSize;
-- (SLSheetPhotoAlbumImageView)initWithPrincipalAttachments:(id)a3;
+- (SLSheetPhotoAlbumImageView)initWithPrincipalAttachments:(id)attachments;
 - (UIEdgeInsets)alignmentRectInsets;
 - (id)_itemCountString;
-- (void)addPreviewImage:(id)a3;
+- (void)addPreviewImage:(id)image;
 - (void)layoutSubviews;
 - (void)sizeToFit;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SLSheetPhotoAlbumImageView
 
-- (SLSheetPhotoAlbumImageView)initWithPrincipalAttachments:(id)a3
+- (SLSheetPhotoAlbumImageView)initWithPrincipalAttachments:(id)attachments
 {
   v54 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  attachmentsCopy = attachments;
   v52.receiver = self;
   v52.super_class = SLSheetPhotoAlbumImageView;
   v5 = *MEMORY[0x1E695F058];
@@ -25,13 +25,13 @@
   v9 = [(SLSheetImagePreviewView *)&v52 initWithFrame:*MEMORY[0x1E695F058], v6, v7, v8];
   if (v9)
   {
-    v9->_imageQuantity = [v4 count];
+    v9->_imageQuantity = [attachmentsCopy count];
     v9->_allAttachmentsAreImages = 1;
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v10 = v4;
+    v10 = attachmentsCopy;
     v11 = [v10 countByEnumeratingWithState:&v48 objects:v53 count:16];
     if (v11)
     {
@@ -89,8 +89,8 @@ LABEL_13:
     [(SLSheetImagePreviewView *)&v47 intrinsicContentSize];
     v22 = v21;
     v24 = v23;
-    v25 = [(SLSheetImagePreviewView *)v9 principalAttachments];
-    v26 = [v25 count];
+    principalAttachments = [(SLSheetImagePreviewView *)v9 principalAttachments];
+    v26 = [principalAttachments count];
 
     if (v26)
     {
@@ -110,8 +110,8 @@ LABEL_13:
         ++v27;
         [v29 _setVisualAltitudeBias:{v27 * 0.333339989, v27 * 0.333339989}];
 
-        v31 = [(SLSheetImagePreviewView *)v9 principalAttachments];
-        v32 = [v31 count];
+        principalAttachments2 = [(SLSheetImagePreviewView *)v9 principalAttachments];
+        v32 = [principalAttachments2 count];
       }
 
       while (v32 > v27);
@@ -124,14 +124,14 @@ LABEL_13:
     v35 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD10]];
     [(UILabel *)v9->_imageCountLabel setFont:v35];
 
-    v36 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v9->_imageCountLabel setTextColor:v36];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v9->_imageCountLabel setTextColor:secondaryLabelColor];
 
-    v37 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v9->_imageCountLabel setBackgroundColor:v37];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v9->_imageCountLabel setBackgroundColor:clearColor];
 
-    v38 = [(SLSheetPhotoAlbumImageView *)v9 _itemCountString];
-    [(UILabel *)v9->_imageCountLabel setText:v38];
+    _itemCountString = [(SLSheetPhotoAlbumImageView *)v9 _itemCountString];
+    [(UILabel *)v9->_imageCountLabel setText:_itemCountString];
 
     [(UILabel *)v9->_imageCountLabel setTextAlignment:1];
     [(UILabel *)v9->_imageCountLabel sizeToFit];
@@ -144,13 +144,13 @@ LABEL_13:
     LODWORD(v42) = 1144750080;
     [(SLSheetPhotoAlbumImageView *)v9 setContentCompressionResistancePriority:1 forAxis:v42];
     [(SLSheetPhotoAlbumImageView *)v9 sizeToFit];
-    v43 = [(SLSheetPhotoAlbumImageView *)v9 layer];
-    [v43 setShouldRasterize:1];
+    layer = [(SLSheetPhotoAlbumImageView *)v9 layer];
+    [layer setShouldRasterize:1];
 
-    v44 = [(SLSheetPhotoAlbumImageView *)v9 layer];
-    v45 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v45 scale];
-    [v44 setRasterizationScale:?];
+    layer2 = [(SLSheetPhotoAlbumImageView *)v9 layer];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
+    [layer2 setRasterizationScale:?];
 
     [(SLSheetPhotoAlbumImageView *)v9 setNeedsLayout];
   }
@@ -158,22 +158,22 @@ LABEL_13:
   return v9;
 }
 
-- (void)addPreviewImage:(id)a3
+- (void)addPreviewImage:(id)image
 {
-  v6 = a3;
+  imageCopy = image;
   numPreviewImagesAdded = self->_numPreviewImagesAdded;
   if (numPreviewImagesAdded < [(NSMutableArray *)self->_frameViews count])
   {
     v5 = [(NSMutableArray *)self->_frameViews objectAtIndexedSubscript:[(NSMutableArray *)self->_frameViews count]+ ~self->_numPreviewImagesAdded];
-    [v5 setImage:v6];
+    [v5 setImage:imageCopy];
     ++self->_numPreviewImagesAdded;
   }
 }
 
 - (BOOL)_shouldDisplayImageCountLabel
 {
-  v3 = [(SLSheetPhotoAlbumImageView *)self traitCollection];
-  v4 = [v3 verticalSizeClass] == 2 && -[NSMutableArray count](self->_frameViews, "count") > 1;
+  traitCollection = [(SLSheetPhotoAlbumImageView *)self traitCollection];
+  v4 = [traitCollection verticalSizeClass] == 2 && -[NSMutableArray count](self->_frameViews, "count") > 1;
 
   return v4;
 }
@@ -196,8 +196,8 @@ LABEL_13:
 
   v8 = [v5 localizedStringForKey:v7 value:&stru_1F41EC300 table:@"Localizable"];
   v9 = [MEMORY[0x1E696AD98] numberWithInteger:self->_imageQuantity];
-  v10 = [MEMORY[0x1E695DF58] currentLocale];
-  v11 = [v9 descriptionWithLocale:v10];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v11 = [v9 descriptionWithLocale:currentLocale];
   v12 = [v4 stringWithFormat:v8, v11];
 
   return v12;
@@ -217,8 +217,8 @@ LABEL_13:
 
   else
   {
-    v9 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v9 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v11 = v10;
 
     if (v11 <= 1.0)
@@ -246,33 +246,33 @@ LABEL_13:
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   v17.receiver = self;
   v17.super_class = SLSheetPhotoAlbumImageView;
-  [(SLSheetImagePreviewView *)&v17 traitCollectionDidChange:v5];
+  [(SLSheetImagePreviewView *)&v17 traitCollectionDidChange:changeCopy];
   if ([(NSMutableArray *)self->_frameViews count]>= 2)
   {
-    v6 = [(SLSheetPhotoAlbumImageView *)self traitCollection];
-    v7 = [v6 verticalSizeClass];
-    v8 = [v5 verticalSizeClass];
+    traitCollection = [(SLSheetPhotoAlbumImageView *)self traitCollection];
+    verticalSizeClass = [traitCollection verticalSizeClass];
+    verticalSizeClass2 = [changeCopy verticalSizeClass];
 
-    if (v7 != v8)
+    if (verticalSizeClass != verticalSizeClass2)
     {
       v9 = MEMORY[0x1E696AD98];
-      v10 = [(SLSheetPhotoAlbumImageView *)self traitCollection];
-      v16 = [v9 numberWithInteger:{objc_msgSend(v10, "verticalSizeClass")}];
+      traitCollection2 = [(SLSheetPhotoAlbumImageView *)self traitCollection];
+      v16 = [v9 numberWithInteger:{objc_msgSend(traitCollection2, "verticalSizeClass")}];
       _SLLog(v3, 7, @"SLSheetPhotoAlbumImageView will invalidateIntrinsicContentSize new verticalSizeClass %@");
 
       [(SLSheetPhotoAlbumImageView *)self invalidateIntrinsicContentSize];
     }
   }
 
-  v11 = [(SLSheetPhotoAlbumImageView *)self traitCollection];
-  v12 = [v11 preferredContentSizeCategory];
-  v13 = [v5 preferredContentSizeCategory];
-  v14 = [v12 isEqualToString:v13];
+  traitCollection3 = [(SLSheetPhotoAlbumImageView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection3 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+  v14 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
   if ((v14 & 1) == 0)
   {
@@ -306,19 +306,19 @@ LABEL_13:
   v26[6] = v6;
   v26[4] = self;
   [(NSMutableArray *)frameViews enumerateObjectsUsingBlock:v26];
-  v7 = [(SLSheetPhotoAlbumImageView *)self _shouldDisplayImageCountLabel];
+  _shouldDisplayImageCountLabel = [(SLSheetPhotoAlbumImageView *)self _shouldDisplayImageCountLabel];
   imageCountLabel = self->_imageCountLabel;
-  if (v7)
+  if (_shouldDisplayImageCountLabel)
   {
-    v9 = [(UILabel *)imageCountLabel superview];
+    superview = [(UILabel *)imageCountLabel superview];
 
-    if (!v9)
+    if (!superview)
     {
       [(SLSheetPhotoAlbumImageView *)self addSubview:self->_imageCountLabel];
     }
 
-    v10 = [(NSMutableArray *)self->_frameViews lastObject];
-    [v10 frame];
+    lastObject = [(NSMutableArray *)self->_frameViews lastObject];
+    [lastObject frame];
     v12 = v11;
     v14 = v13;
     v16 = v15;

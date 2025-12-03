@@ -21,7 +21,7 @@
 
   else
   {
-    [a1 invalidationDuration];
+    [self invalidationDuration];
     v11 = v10;
     [v7 invalidationDuration];
     if (v11 > v12)
@@ -29,7 +29,7 @@
       [v7 setInvalidationDuration:v11];
     }
 
-    [a1 warningDuration];
+    [self warningDuration];
     v14 = v13;
     [v7 warningDuration];
     if (v14 > v15)
@@ -37,16 +37,16 @@
       [v7 setWarningDuration:v14];
     }
 
-    v16 = [a1 startPolicy];
-    if (v16 > [v7 startPolicy])
+    startPolicy = [self startPolicy];
+    if (startPolicy > [v7 startPolicy])
     {
-      [v7 setStartPolicy:v16];
+      [v7 setStartPolicy:startPolicy];
     }
 
-    v17 = [a1 endPolicy];
-    if (v17 > [v7 endPolicy])
+    endPolicy = [self endPolicy];
+    if (endPolicy > [v7 endPolicy])
     {
-      [v7 setEndPolicy:v17];
+      [v7 setEndPolicy:endPolicy];
     }
   }
 }
@@ -55,9 +55,9 @@
 {
   v19[1] = *MEMORY[0x277D85DE8];
   v6 = a3;
-  if ([a1 startPolicy] == 1 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if ([self startPolicy] == 1 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    if ([a1 startPolicy] != 3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    if ([self startPolicy] != 3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       a4 = 1;
       goto LABEL_14;
@@ -65,7 +65,7 @@
 
     if (a4)
     {
-      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Attribute conflict: attribute %@ conflicts with attribute %@", a1, v6];
+      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Attribute conflict: attribute %@ conflicts with attribute %@", self, v6];
       v8 = MEMORY[0x277CCA9B8];
       v9 = *MEMORY[0x277D47050];
       v16 = *MEMORY[0x277CCA470];
@@ -79,7 +79,7 @@
 
   else if (a4)
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Attribute conflict: attribute %@ conflicts with attribute %@", a1, v6];
+    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Attribute conflict: attribute %@ conflicts with attribute %@", self, v6];
     v8 = MEMORY[0x277CCA9B8];
     v9 = *MEMORY[0x277D47050];
     v18 = *MEMORY[0x277CCA470];
@@ -104,10 +104,10 @@ LABEL_14:
 {
   v24[2] = *MEMORY[0x277D85DE8];
   v6 = a3;
-  v7 = [v6 originatorEntitlements];
-  if ([v6 ignoreRestrictions] & 1) != 0 || (objc_msgSend(v7, "rb_hasEntitlement:", @"com.apple.runningboard.primitiveattribute") & 1) != 0 || (objc_msgSend(v7, "rb_hasEntitlementDomain:", 2))
+  originatorEntitlements = [v6 originatorEntitlements];
+  if ([v6 ignoreRestrictions] & 1) != 0 || (objc_msgSend(originatorEntitlements, "rb_hasEntitlement:", @"com.apple.runningboard.primitiveattribute") & 1) != 0 || (objc_msgSend(originatorEntitlements, "rb_hasEntitlementDomain:", 2))
   {
-    if ([a1 startPolicy] == 1 || !objc_msgSend(v6, "targetIsSystem"))
+    if ([self startPolicy] == 1 || !objc_msgSend(v6, "targetIsSystem"))
     {
       a4 = 1;
     }
@@ -121,7 +121,7 @@ LABEL_14:
       v11 = *MEMORY[0x277D47048];
       v21[0] = v10;
       v21[1] = v11;
-      v12 = [a1 description];
+      v12 = [self description];
       v22[1] = v12;
       v13 = MEMORY[0x277CBEAC0];
       v14 = v22;
@@ -143,7 +143,7 @@ LABEL_11:
     v17 = *MEMORY[0x277D47048];
     v23[0] = v16;
     v23[1] = v17;
-    v12 = [a1 description];
+    v12 = [self description];
     v24[1] = v12;
     v13 = MEMORY[0x277CBEAC0];
     v14 = v24;

@@ -1,29 +1,29 @@
 @interface AVTAvatarAttributeEditorPreloader
-- (AVTAvatarAttributeEditorPreloader)initWithResourceLoader:(id)a3 logger:(id)a4;
+- (AVTAvatarAttributeEditorPreloader)initWithResourceLoader:(id)loader logger:(id)logger;
 - (void)cancelAllPreloading;
-- (void)cancelPreloadForSectionItemIndexPath:(id)a3;
+- (void)cancelPreloadForSectionItemIndexPath:(id)path;
 - (void)dealloc;
-- (void)preloadCategory:(id)a3;
-- (void)preloadSectionItem:(id)a3 atIndexPath:(id)a4;
+- (void)preloadCategory:(id)category;
+- (void)preloadSectionItem:(id)item atIndexPath:(id)path;
 @end
 
 @implementation AVTAvatarAttributeEditorPreloader
 
-- (AVTAvatarAttributeEditorPreloader)initWithResourceLoader:(id)a3 logger:(id)a4
+- (AVTAvatarAttributeEditorPreloader)initWithResourceLoader:(id)loader logger:(id)logger
 {
-  v7 = a3;
-  v8 = a4;
+  loaderCopy = loader;
+  loggerCopy = logger;
   v14.receiver = self;
   v14.super_class = AVTAvatarAttributeEditorPreloader;
   v9 = [(AVTAvatarAttributeEditorPreloader *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_resourceLoader, a3);
-    objc_storeStrong(&v10->_logger, a4);
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v9->_resourceLoader, loader);
+    objc_storeStrong(&v10->_logger, logger);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     cancelationTokens = v10->_cancelationTokens;
-    v10->_cancelationTokens = v11;
+    v10->_cancelationTokens = dictionary;
   }
 
   return v10;
@@ -36,10 +36,10 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(AVTAvatarAttributeEditorPreloader *)self cancelationTokens];
-  v4 = [v3 allValues];
+  cancelationTokens = [(AVTAvatarAttributeEditorPreloader *)self cancelationTokens];
+  allValues = [cancelationTokens allValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -51,27 +51,27 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
-        v10 = [(AVTAvatarAttributeEditorPreloader *)self logger];
+        logger = [(AVTAvatarAttributeEditorPreloader *)self logger];
         v11 = [v9 description];
-        [v10 logCancelingPreLoadingTask:v11];
+        [logger logCancelingPreLoadingTask:v11];
 
         [v9 cancel];
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 
-  v12 = [(AVTAvatarAttributeEditorPreloader *)self cancelationTokens];
-  [v12 removeAllObjects];
+  cancelationTokens2 = [(AVTAvatarAttributeEditorPreloader *)self cancelationTokens];
+  [cancelationTokens2 removeAllObjects];
 }
 
 - (void)dealloc
@@ -82,35 +82,35 @@
   [(AVTAvatarAttributeEditorPreloader *)&v3 dealloc];
 }
 
-- (void)preloadSectionItem:(id)a3 atIndexPath:(id)a4
+- (void)preloadSectionItem:(id)item atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTAvatarAttributeEditorPreloader *)self logger];
-  [v8 logPreLoadingNeededForIndex:objc_msgSend(v7 section:{"item"), objc_msgSend(v7, "section")}];
+  itemCopy = item;
+  pathCopy = path;
+  logger = [(AVTAvatarAttributeEditorPreloader *)self logger];
+  [logger logPreLoadingNeededForIndex:objc_msgSend(pathCopy section:{"item"), objc_msgSend(pathCopy, "section")}];
 
-  v9 = [(AVTAvatarAttributeEditorPreloader *)self cancelationTokens];
-  v10 = [v9 objectForKeyedSubscript:v7];
+  cancelationTokens = [(AVTAvatarAttributeEditorPreloader *)self cancelationTokens];
+  v10 = [cancelationTokens objectForKeyedSubscript:pathCopy];
 
   if (!v10)
   {
     objc_initWeak(&location, self);
-    v11 = [(AVTAvatarAttributeEditorPreloader *)self resourceLoader];
+    resourceLoader = [(AVTAvatarAttributeEditorPreloader *)self resourceLoader];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __68__AVTAvatarAttributeEditorPreloader_preloadSectionItem_atIndexPath___block_invoke;
     v16[3] = &unk_1E7F3A858;
     objc_copyWeak(&v18, &location);
-    v12 = v7;
+    v12 = pathCopy;
     v17 = v12;
-    v10 = [v11 preLoadResourcesForSectionItem:v6 completionHandler:v16];
+    v10 = [resourceLoader preLoadResourcesForSectionItem:itemCopy completionHandler:v16];
 
-    v13 = [(AVTAvatarAttributeEditorPreloader *)self cancelationTokens];
-    [v13 setObject:v10 forKeyedSubscript:v12];
+    cancelationTokens2 = [(AVTAvatarAttributeEditorPreloader *)self cancelationTokens];
+    [cancelationTokens2 setObject:v10 forKeyedSubscript:v12];
 
-    v14 = [(AVTAvatarAttributeEditorPreloader *)self logger];
+    logger2 = [(AVTAvatarAttributeEditorPreloader *)self logger];
     v15 = [v10 description];
-    [v14 logRequestingPreLoadingTask:v15 forIndex:objc_msgSend(v12 section:{"item"), objc_msgSend(v12, "section")}];
+    [logger2 logRequestingPreLoadingTask:v15 forIndex:objc_msgSend(v12 section:{"item"), objc_msgSend(v12, "section")}];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
@@ -131,37 +131,37 @@ void __68__AVTAvatarAttributeEditorPreloader_preloadSectionItem_atIndexPath___bl
   }
 }
 
-- (void)cancelPreloadForSectionItemIndexPath:(id)a3
+- (void)cancelPreloadForSectionItemIndexPath:(id)path
 {
-  v9 = a3;
-  v4 = [(AVTAvatarAttributeEditorPreloader *)self cancelationTokens];
-  v5 = [v4 objectForKeyedSubscript:v9];
+  pathCopy = path;
+  cancelationTokens = [(AVTAvatarAttributeEditorPreloader *)self cancelationTokens];
+  v5 = [cancelationTokens objectForKeyedSubscript:pathCopy];
 
   if (v5)
   {
-    v6 = [(AVTAvatarAttributeEditorPreloader *)self cancelationTokens];
-    [v6 setObject:0 forKeyedSubscript:v9];
+    cancelationTokens2 = [(AVTAvatarAttributeEditorPreloader *)self cancelationTokens];
+    [cancelationTokens2 setObject:0 forKeyedSubscript:pathCopy];
 
-    v7 = [(AVTAvatarAttributeEditorPreloader *)self logger];
+    logger = [(AVTAvatarAttributeEditorPreloader *)self logger];
     v8 = [v5 description];
-    [v7 logCancelingPreLoadingTask:v8];
+    [logger logCancelingPreLoadingTask:v8];
 
     [v5 cancel];
   }
 }
 
-- (void)preloadCategory:(id)a3
+- (void)preloadCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   [(AVTAvatarAttributeEditorPreloader *)self cancelAllPreloading];
   objc_initWeak(&location, self);
-  v5 = [(AVTAvatarAttributeEditorPreloader *)self resourceLoader];
+  resourceLoader = [(AVTAvatarAttributeEditorPreloader *)self resourceLoader];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __53__AVTAvatarAttributeEditorPreloader_preloadCategory___block_invoke;
   v11 = &unk_1E7F3A880;
   objc_copyWeak(&v12, &location);
-  v6 = [v5 preLoadResourcesForPresetResourcesProvider:v4 completionHandler:&v8];
+  v6 = [resourceLoader preLoadResourcesForPresetResourcesProvider:categoryCopy completionHandler:&v8];
 
   v7 = [(AVTAvatarAttributeEditorPreloader *)self cancelationTokens:v8];
   [v7 setObject:v6 forKeyedSubscript:@"categoryPreload"];

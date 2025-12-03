@@ -1,15 +1,15 @@
 @interface SCATSwitchActionsController
 - (BOOL)_popToActionTypeController;
-- (SCATSwitchActionsController)initWithSwitch:(id)a3;
-- (id)_actionSpecifiersWithActions:(id)a3;
+- (SCATSwitchActionsController)initWithSwitch:(id)switch;
+- (id)_actionSpecifiersWithActions:(id)actions;
 - (id)_rootSwitchesController;
 - (id)_shortcutSpecifiers;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)_cellAccessoryTypeForSpecifier:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)_cellAccessoryTypeForSpecifier:(id)specifier;
 - (void)_rootSwitchesController;
 - (void)dealloc;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation SCATSwitchActionsController
@@ -28,13 +28,13 @@
 {
   v3 = objc_opt_new();
   v4 = +[AXSiriShortcutsManager sharedManager];
-  v5 = [v4 shortcuts];
+  shortcuts = [v4 shortcuts];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  obj = v5;
+  obj = shortcuts;
   v6 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -51,11 +51,11 @@
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 shortcutName];
-        v13 = [PSSpecifier preferenceSpecifierNamed:v12 target:self set:0 get:0 detail:0 cell:3 edit:0];
+        shortcutName = [v11 shortcutName];
+        v13 = [PSSpecifier preferenceSpecifierNamed:shortcutName target:self set:0 get:0 detail:0 cell:3 edit:0];
 
-        v14 = [v11 identifier];
-        [v13 setProperty:v14 forKey:@"ShortcutActionKey"];
+        identifier = [v11 identifier];
+        [v13 setProperty:identifier forKey:@"ShortcutActionKey"];
 
         [v13 setProperty:&__kCFBooleanTrue forKey:v9];
         [v3 addObject:v13];
@@ -70,17 +70,17 @@
   return v3;
 }
 
-- (id)_actionSpecifiersWithActions:(id)a3
+- (id)_actionSpecifiersWithActions:(id)actions
 {
-  v4 = a3;
-  +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+  actionsCopy = actions;
+  +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [actionsCopy count]);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __60__SCATSwitchActionsController__actionSpecifiersWithActions___block_invoke;
   v9[3] = &unk_257CD0;
   v5 = v9[4] = self;
   v10 = v5;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [actionsCopy enumerateObjectsUsingBlock:v9];
 
   v6 = v10;
   v7 = v5;
@@ -108,22 +108,22 @@ void __60__SCATSwitchActionsController__actionSpecifiersWithActions___block_invo
 
 - (id)_rootSwitchesController
 {
-  v2 = self;
-  v3 = [(SCATSwitchActionsController *)self navigationController];
-  v4 = [v3 viewControllers];
+  selfCopy = self;
+  navigationController = [(SCATSwitchActionsController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v5 = [v4 reverseObjectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  reverseObjectEnumerator = [viewControllers reverseObjectEnumerator];
+  v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = *v32;
-    v25 = v3;
-    v26 = v4;
-    v23 = v2;
+    v25 = navigationController;
+    v26 = viewControllers;
+    v23 = selfCopy;
     v24 = *v32;
     while (2)
     {
@@ -131,7 +131,7 @@ void __60__SCATSwitchActionsController__actionSpecifiersWithActions___block_invo
       {
         if (*v32 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v10 = *(*(&v31 + 1) + 8 * i);
@@ -140,12 +140,12 @@ void __60__SCATSwitchActionsController__actionSpecifiersWithActions___block_invo
           v22 = v10;
 LABEL_22:
 
-          v3 = v25;
+          navigationController = v25;
           goto LABEL_27;
         }
 
-        v11 = [(SCATSwitchActionsController *)v10 childViewControllers];
-        v12 = [v11 count];
+        childViewControllers = [(SCATSwitchActionsController *)v10 childViewControllers];
+        v12 = [childViewControllers count];
 
         if (v12)
         {
@@ -153,8 +153,8 @@ LABEL_22:
           v30 = 0u;
           v27 = 0u;
           v28 = 0u;
-          v13 = [(SCATSwitchActionsController *)v10 childViewControllers];
-          v14 = [v13 countByEnumeratingWithState:&v27 objects:v35 count:16];
+          childViewControllers2 = [(SCATSwitchActionsController *)v10 childViewControllers];
+          v14 = [childViewControllers2 countByEnumeratingWithState:&v27 objects:v35 count:16];
           if (v14)
           {
             v15 = v14;
@@ -165,19 +165,19 @@ LABEL_22:
               {
                 if (*v28 != v16)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(childViewControllers2);
                 }
 
                 if ([*(*(&v27 + 1) + 8 * j) isMemberOfClass:objc_opt_class()])
                 {
                   v19 = v10;
 
-                  v4 = v26;
+                  viewControllers = v26;
                   goto LABEL_22;
                 }
               }
 
-              v15 = [v13 countByEnumeratingWithState:&v27 objects:v35 count:16];
+              v15 = [childViewControllers2 countByEnumeratingWithState:&v27 objects:v35 count:16];
               if (v15)
               {
                 continue;
@@ -187,14 +187,14 @@ LABEL_22:
             }
           }
 
-          v4 = v26;
+          viewControllers = v26;
           v8 = v24;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v31 objects:v36 count:16];
-      v3 = v25;
-      v2 = v23;
+      v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v31 objects:v36 count:16];
+      navigationController = v25;
+      selfCopy = v23;
       if (v7)
       {
         continue;
@@ -204,20 +204,20 @@ LABEL_22:
     }
   }
 
-  if ([v4 count] < 3)
+  if ([viewControllers count] < 3)
   {
     v20 = AXLogSettings();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      [(SCATSwitchActionsController *)v2 _rootSwitchesController];
+      [(SCATSwitchActionsController *)selfCopy _rootSwitchesController];
     }
 
-    v18 = v2;
+    v18 = selfCopy;
   }
 
   else
   {
-    v18 = [v4 objectAtIndexedSubscript:2];
+    v18 = [viewControllers objectAtIndexedSubscript:2];
   }
 
   v10 = v18;
@@ -228,28 +228,28 @@ LABEL_27:
 
 - (BOOL)_popToActionTypeController
 {
-  v3 = [(SCATSwitchActionsController *)self navigationController];
-  v4 = [v3 viewControllers];
-  v5 = [v4 indexOfObjectPassingTest:&__block_literal_global_77];
+  navigationController = [(SCATSwitchActionsController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  v5 = [viewControllers indexOfObjectPassingTest:&__block_literal_global_77];
 
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [v3 viewControllers];
-    v7 = [v6 mutableCopy];
+    viewControllers2 = [navigationController viewControllers];
+    v7 = [viewControllers2 mutableCopy];
 
     v8 = [SCATSwitchActionTypeController alloc];
-    v9 = [(SCATSwitchActionsController *)self storedSwitch];
-    v10 = [(SCATSwitchActionTypeController *)v8 initWithSwitch:v9];
+    storedSwitch = [(SCATSwitchActionsController *)self storedSwitch];
+    v10 = [(SCATSwitchActionTypeController *)v8 initWithSwitch:storedSwitch];
 
-    v11 = [(SCATSwitchActionsController *)self storedSwitch];
-    v12 = [v11 name];
-    v13 = [PSSpecifier preferenceSpecifierNamed:v12 target:self set:0 get:0 detail:0 cell:-1 edit:0];
+    storedSwitch2 = [(SCATSwitchActionsController *)self storedSwitch];
+    name = [storedSwitch2 name];
+    v13 = [PSSpecifier preferenceSpecifierNamed:name target:self set:0 get:0 detail:0 cell:-1 edit:0];
     [(SCATSwitchActionTypeController *)v10 setSpecifier:v13];
 
     [v7 insertObject:v10 atIndex:v5 + 1];
-    [v3 setViewControllers:v7 animated:0];
-    v14 = [(SCATSwitchActionsController *)self navigationController];
-    v15 = [v14 popToViewController:v10 animated:1];
+    [navigationController setViewControllers:v7 animated:0];
+    navigationController2 = [(SCATSwitchActionsController *)self navigationController];
+    v15 = [navigationController2 popToViewController:v10 animated:1];
   }
 
   return v5 != 0x7FFFFFFFFFFFFFFFLL;
@@ -269,9 +269,9 @@ BOOL __57__SCATSwitchActionsController__popToActionTypeController__block_invoke(
   return isKindOfClass & 1;
 }
 
-- (SCATSwitchActionsController)initWithSwitch:(id)a3
+- (SCATSwitchActionsController)initWithSwitch:(id)switch
 {
-  v4 = a3;
+  switchCopy = switch;
   v14.receiver = self;
   v14.super_class = SCATSwitchActionsController;
   v5 = [(SCATSwitchActionsController *)&v14 init];
@@ -279,7 +279,7 @@ BOOL __57__SCATSwitchActionsController__popToActionTypeController__block_invoke(
   if (v5)
   {
     [(SCATSwitchActionsController *)v5 setPopToRootSwitchViewControlAfterSelection:1];
-    [(SCATSwitchActionsController *)v6 setStoredSwitch:v4];
+    [(SCATSwitchActionsController *)v6 setStoredSwitch:switchCopy];
     objc_initWeak(&location, v6);
     v7 = +[AXSiriShortcutsManager sharedManager];
     v11[0] = _NSConcreteStackBlock;
@@ -311,9 +311,9 @@ void __46__SCATSwitchActionsController_initWithSwitch___block_invoke(uint64_t a1
   {
     v38 = OBJC_IVAR___PSListController__specifiers;
     v4 = objc_opt_new();
-    v5 = [(SCATSwitchActionsController *)self storedSwitch];
-    v6 = [v5 source];
-    v7 = [v6 isEqualToString:SCATSwitchSourceSound];
+    storedSwitch = [(SCATSwitchActionsController *)self storedSwitch];
+    source = [storedSwitch source];
+    v7 = [source isEqualToString:SCATSwitchSourceSound];
 
     if (v7)
     {
@@ -329,9 +329,9 @@ void __46__SCATSwitchActionsController_initWithSwitch___block_invoke(uint64_t a1
       [v4 addObject:v11];
     }
 
-    v12 = [(SCATSwitchActionsController *)self footerTextSpecifier];
+    footerTextSpecifier = [(SCATSwitchActionsController *)self footerTextSpecifier];
 
-    if (!v12)
+    if (!footerTextSpecifier)
     {
       v13 = +[PSSpecifier emptyGroupSpecifier];
       v14 = AXParameterizedLocalizedString();
@@ -344,9 +344,9 @@ void __46__SCATSwitchActionsController_initWithSwitch___block_invoke(uint64_t a1
     if ([(SCATSwitchActionsController *)self selectLongPress])
     {
       v15 = +[AXSettings sharedInstance];
-      v16 = [v15 assistiveTouchLongPressEnabled];
+      assistiveTouchLongPressEnabled = [v15 assistiveTouchLongPressEnabled];
 
-      if (v16)
+      if (assistiveTouchLongPressEnabled)
       {
         v17 = AXParameterizedLocalizedString();
         v18 = [PSSpecifier groupSpecifierWithName:v17];
@@ -389,8 +389,8 @@ void __46__SCATSwitchActionsController_initWithSwitch___block_invoke(uint64_t a1
     v34 = [PSSpecifier groupSpecifierWithName:v33];
 
     [v4 addObject:v34];
-    v35 = [(SCATSwitchActionsController *)self _shortcutSpecifiers];
-    [v4 addObjectsFromArray:v35];
+    _shortcutSpecifiers = [(SCATSwitchActionsController *)self _shortcutSpecifiers];
+    [v4 addObjectsFromArray:_shortcutSpecifiers];
 
     v36 = *&self->super.AXUISettingsSetupCapableListController_opaque[v38];
     *&self->super.AXUISettingsSetupCapableListController_opaque[v38] = v4;
@@ -401,54 +401,54 @@ void __46__SCATSwitchActionsController_initWithSwitch___block_invoke(uint64_t a1
   return v3;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v8.receiver = self;
   v8.super_class = SCATSwitchActionsController;
-  v5 = [(SCATSwitchActionsController *)&v8 tableView:a3 cellForRowAtIndexPath:a4];
-  v6 = [v5 specifier];
-  [v5 setAccessoryType:{-[SCATSwitchActionsController _cellAccessoryTypeForSpecifier:](self, "_cellAccessoryTypeForSpecifier:", v6)}];
+  v5 = [(SCATSwitchActionsController *)&v8 tableView:view cellForRowAtIndexPath:path];
+  specifier = [v5 specifier];
+  [v5 setAccessoryType:{-[SCATSwitchActionsController _cellAccessoryTypeForSpecifier:](self, "_cellAccessoryTypeForSpecifier:", specifier)}];
 
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v38.receiver = self;
   v38.super_class = SCATSwitchActionsController;
-  [(SCATSwitchActionsController *)&v38 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(SCATSwitchActionsController *)&v38 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   v37.receiver = self;
   v37.super_class = SCATSwitchActionsController;
-  v8 = [(SCATSwitchActionsController *)&v37 tableView:v6 cellForRowAtIndexPath:v7];
-  v9 = [(SCATSwitchActionsController *)self storedSwitch];
-  v10 = [v8 specifier];
-  v11 = [v10 identifier];
-  v12 = [v11 isEqualToString:@"SOUND_ACTION_PRACTICE_ID"];
+  v8 = [(SCATSwitchActionsController *)&v37 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+  storedSwitch = [(SCATSwitchActionsController *)self storedSwitch];
+  specifier = [v8 specifier];
+  identifier = [specifier identifier];
+  v12 = [identifier isEqualToString:@"SOUND_ACTION_PRACTICE_ID"];
 
   if (v12)
   {
     v13 = [SoundActionsPracticeNavigationController alloc];
-    v14 = [(SCATSwitchActionsController *)self assetURL];
-    v15 = -[SoundActionsPracticeNavigationController initWithAssetURL:usage:](v13, "initWithAssetURL:usage:", v14, [v9 accessibilityEventUsage]);
+    assetURL = [(SCATSwitchActionsController *)self assetURL];
+    v15 = -[SoundActionsPracticeNavigationController initWithAssetURL:usage:](v13, "initWithAssetURL:usage:", assetURL, [storedSwitch accessibilityEventUsage]);
 
     [(SCATSwitchActionsController *)self presentModalViewController:v15 withTransition:3];
-    [v6 deselectRowAtIndexPath:v7 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   }
 
   else
   {
-    v16 = [v8 specifier];
-    v17 = [v16 propertyForKey:@"ActionKey"];
+    specifier2 = [v8 specifier];
+    v17 = [specifier2 propertyForKey:@"ActionKey"];
     if (v17)
     {
     }
 
     else
     {
-      v18 = [v8 specifier];
-      v19 = [v18 propertyForKey:@"ShortcutActionKey"];
+      specifier3 = [v8 specifier];
+      v19 = [specifier3 propertyForKey:@"ShortcutActionKey"];
 
       if (!v19)
       {
@@ -457,71 +457,71 @@ void __46__SCATSwitchActionsController_initWithSwitch___block_invoke(uint64_t a1
       }
     }
 
-    v20 = [v8 specifier];
-    v21 = [v20 propertyForKey:@"ActionKey"];
+    specifier4 = [v8 specifier];
+    v21 = [specifier4 propertyForKey:@"ActionKey"];
 
     if (v21)
     {
-      v22 = [v21 integerValue];
-      v23 = [(SCATSwitchActionsController *)self selectLongPress];
-      v24 = [(SCATSwitchActionsController *)self storedSwitch];
-      v25 = v24;
-      if (v23)
+      integerValue = [v21 integerValue];
+      selectLongPress = [(SCATSwitchActionsController *)self selectLongPress];
+      storedSwitch2 = [(SCATSwitchActionsController *)self storedSwitch];
+      v25 = storedSwitch2;
+      if (selectLongPress)
       {
-        [v24 setLongPressShortcutIdentifier:0];
+        [storedSwitch2 setLongPressShortcutIdentifier:0];
 
-        v26 = [(SCATSwitchActionsController *)self storedSwitch];
-        [v26 setLongPressAction:v22];
+        storedSwitch3 = [(SCATSwitchActionsController *)self storedSwitch];
+        [storedSwitch3 setLongPressAction:integerValue];
       }
 
       else
       {
-        [v24 setShortcutIdentifier:0];
+        [storedSwitch2 setShortcutIdentifier:0];
 
-        v26 = [(SCATSwitchActionsController *)self storedSwitch];
-        [v26 setAction:v22];
+        storedSwitch3 = [(SCATSwitchActionsController *)self storedSwitch];
+        [storedSwitch3 setAction:integerValue];
       }
     }
 
-    v27 = [v8 specifier];
-    v28 = [v27 propertyForKey:@"ShortcutActionKey"];
+    specifier5 = [v8 specifier];
+    v28 = [specifier5 propertyForKey:@"ShortcutActionKey"];
 
     if (v28)
     {
-      v29 = [(SCATSwitchActionsController *)self selectLongPress];
-      v30 = [(SCATSwitchActionsController *)self storedSwitch];
-      v31 = v30;
-      if (v29)
+      selectLongPress2 = [(SCATSwitchActionsController *)self selectLongPress];
+      storedSwitch4 = [(SCATSwitchActionsController *)self storedSwitch];
+      v31 = storedSwitch4;
+      if (selectLongPress2)
       {
-        [v30 setLongPressShortcutIdentifier:v28];
+        [storedSwitch4 setLongPressShortcutIdentifier:v28];
 
-        v32 = [(SCATSwitchActionsController *)self storedSwitch];
-        [v32 setLongPressAction:0];
+        storedSwitch5 = [(SCATSwitchActionsController *)self storedSwitch];
+        [storedSwitch5 setLongPressAction:0];
       }
 
       else
       {
-        [v30 setShortcutIdentifier:v28];
+        [storedSwitch4 setShortcutIdentifier:v28];
 
-        v32 = [(SCATSwitchActionsController *)self storedSwitch];
-        [v32 setAction:0];
+        storedSwitch5 = [(SCATSwitchActionsController *)self storedSwitch];
+        [storedSwitch5 setAction:0];
       }
     }
 
-    [(SCATSwitchActionsController *)self saveSwitchToSettings:v9];
+    [(SCATSwitchActionsController *)self saveSwitchToSettings:storedSwitch];
     if ([(SCATSwitchActionsController *)self popToRootSwitchViewControlAfterSelection])
     {
-      v33 = [(SCATSettingsCompletionController *)self completion];
+      completion = [(SCATSettingsCompletionController *)self completion];
 
-      if (v33)
+      if (completion)
       {
-        v34 = [(SCATSettingsCompletionController *)self completion];
-        v34[2]();
+        completion2 = [(SCATSettingsCompletionController *)self completion];
+        completion2[2]();
       }
 
       v36.receiver = self;
       v36.super_class = SCATSwitchActionsController;
-      [(SCATSwitchActionsController *)&v36 tableView:v6 didSelectRowAtIndexPath:v7];
+      [(SCATSwitchActionsController *)&v36 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
     }
 
     else
@@ -538,21 +538,21 @@ void __46__SCATSwitchActionsController_initWithSwitch___block_invoke(uint64_t a1
 LABEL_22:
 }
 
-- (int64_t)_cellAccessoryTypeForSpecifier:(id)a3
+- (int64_t)_cellAccessoryTypeForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:@"ShortcutActionKey"];
-  v6 = [(SCATSwitchActionsController *)self selectLongPress];
-  v7 = [(SCATSwitchActionsController *)self storedSwitch];
-  v8 = v7;
-  if (v6)
+  specifierCopy = specifier;
+  v5 = [specifierCopy propertyForKey:@"ShortcutActionKey"];
+  selectLongPress = [(SCATSwitchActionsController *)self selectLongPress];
+  storedSwitch = [(SCATSwitchActionsController *)self storedSwitch];
+  v8 = storedSwitch;
+  if (selectLongPress)
   {
-    [v7 longPressShortcutIdentifier];
+    [storedSwitch longPressShortcutIdentifier];
   }
 
   else
   {
-    [v7 shortcutIdentifier];
+    [storedSwitch shortcutIdentifier];
   }
   v9 = ;
 
@@ -568,22 +568,22 @@ LABEL_22:
 
   else
   {
-    v11 = [(SCATSwitchActionsController *)self selectLongPress];
-    v12 = [(SCATSwitchActionsController *)self storedSwitch];
-    v13 = v12;
-    if (v11)
+    selectLongPress2 = [(SCATSwitchActionsController *)self selectLongPress];
+    storedSwitch2 = [(SCATSwitchActionsController *)self storedSwitch];
+    v13 = storedSwitch2;
+    if (selectLongPress2)
     {
-      v14 = [v12 longPressAction];
+      longPressAction = [storedSwitch2 longPressAction];
     }
 
     else
     {
-      v14 = [v12 action];
+      longPressAction = [storedSwitch2 action];
     }
 
-    v15 = v14;
+    v15 = longPressAction;
 
-    v16 = [v4 propertyForKey:@"ActionKey"];
+    v16 = [specifierCopy propertyForKey:@"ActionKey"];
     v17 = v16;
     if (v16 && [v16 integerValue] == v15)
     {
@@ -602,7 +602,7 @@ LABEL_22:
 - (void)_rootSwitchesController
 {
   v3 = 138412546;
-  v4 = a1;
+  selfCopy = self;
   v5 = 2112;
   v6 = a2;
   _os_log_error_impl(&dword_0, log, OS_LOG_TYPE_ERROR, "%@ Failed to find rootswitchController for rootVC: %@", &v3, 0x16u);

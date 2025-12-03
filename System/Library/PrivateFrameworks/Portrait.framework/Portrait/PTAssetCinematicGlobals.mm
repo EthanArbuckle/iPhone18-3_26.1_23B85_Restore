@@ -1,68 +1,68 @@
 @interface PTAssetCinematicGlobals
-- (PTAssetCinematicGlobals)initWithAssetReader:(id)a3;
-- (void)_assignGlobalsFromAssetReader:(id)a3;
+- (PTAssetCinematicGlobals)initWithAssetReader:(id)reader;
+- (void)_assignGlobalsFromAssetReader:(id)reader;
 - (void)dealloc;
 @end
 
 @implementation PTAssetCinematicGlobals
 
-- (PTAssetCinematicGlobals)initWithAssetReader:(id)a3
+- (PTAssetCinematicGlobals)initWithAssetReader:(id)reader
 {
-  v4 = a3;
+  readerCopy = reader;
   v8.receiver = self;
   v8.super_class = PTAssetCinematicGlobals;
   v5 = [(PTAssetCinematicGlobals *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(PTAssetCinematicGlobals *)v5 _assignGlobalsFromAssetReader:v4];
+    [(PTAssetCinematicGlobals *)v5 _assignGlobalsFromAssetReader:readerCopy];
   }
 
   return v6;
 }
 
-- (void)_assignGlobalsFromAssetReader:(id)a3
+- (void)_assignGlobalsFromAssetReader:(id)reader
 {
-  v4 = a3;
-  v5 = [v4 globalCinematographyMetadata];
+  readerCopy = reader;
+  globalCinematographyMetadata = [readerCopy globalCinematographyMetadata];
   globalCinematographyMetadata = self->_globalCinematographyMetadata;
-  self->_globalCinematographyMetadata = v5;
+  self->_globalCinematographyMetadata = globalCinematographyMetadata;
 
-  v7 = [v4 globalRenderingMetadata];
+  globalRenderingMetadata = [readerCopy globalRenderingMetadata];
   globalRenderingMetadata = self->_globalRenderingMetadata;
-  self->_globalRenderingMetadata = v7;
+  self->_globalRenderingMetadata = globalRenderingMetadata;
 
-  v9 = [v4 globalStabilizationMetadata];
+  globalStabilizationMetadata = [readerCopy globalStabilizationMetadata];
   globalStabilizationMetadata = self->_globalStabilizationMetadata;
-  self->_globalStabilizationMetadata = v9;
+  self->_globalStabilizationMetadata = globalStabilizationMetadata;
 
-  v11 = [v4 globalVideoHeaderMetadata];
+  globalVideoHeaderMetadata = [readerCopy globalVideoHeaderMetadata];
   globalVideoHeaderMetadata = self->_globalVideoHeaderMetadata;
-  self->_globalVideoHeaderMetadata = v11;
+  self->_globalVideoHeaderMetadata = globalVideoHeaderMetadata;
 
-  v13 = [v4 colorPrimaries];
+  colorPrimaries = [readerCopy colorPrimaries];
   colorPrimaries = self->_colorPrimaries;
-  self->_colorPrimaries = v13;
+  self->_colorPrimaries = colorPrimaries;
 
-  v15 = [v4 transferFunction];
+  transferFunction = [readerCopy transferFunction];
   transferFunction = self->_transferFunction;
-  self->_transferFunction = v15;
+  self->_transferFunction = transferFunction;
 
-  v17 = [v4 YCbCrMatrix];
+  yCbCrMatrix = [readerCopy YCbCrMatrix];
   YCbCrMatrix = self->_YCbCrMatrix;
-  self->_YCbCrMatrix = v17;
+  self->_YCbCrMatrix = yCbCrMatrix;
 
-  self->_estimatedDataRate = [v4 estimatedDataRate];
-  v19 = [v4 formatDescription];
-  self->_formatDescription = v19;
-  if (v19)
+  self->_estimatedDataRate = [readerCopy estimatedDataRate];
+  formatDescription = [readerCopy formatDescription];
+  self->_formatDescription = formatDescription;
+  if (formatDescription)
   {
-    CFRetain(v19);
+    CFRetain(formatDescription);
   }
 
-  if (v4)
+  if (readerCopy)
   {
-    [v4 frameDuration];
+    [readerCopy frameDuration];
   }
 
   else

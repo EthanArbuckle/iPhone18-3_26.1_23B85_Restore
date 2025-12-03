@@ -1,68 +1,68 @@
 @interface IDSPreflightMessage
 - (id)additionalMessageHeaders;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
-- (void)handleResponseDictionary:(id)a3;
+- (void)handleResponseDictionary:(id)dictionary;
 @end
 
 @implementation IDSPreflightMessage
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23.receiver = self;
   v23.super_class = IDSPreflightMessage;
-  v4 = [(IDSPreflightMessage *)&v23 copyWithZone:a3];
-  v5 = [(IDSPreflightMessage *)self protocolVersion];
-  [v4 setProtocolVersion:v5];
+  v4 = [(IDSPreflightMessage *)&v23 copyWithZone:zone];
+  protocolVersion = [(IDSPreflightMessage *)self protocolVersion];
+  [v4 setProtocolVersion:protocolVersion];
 
-  v6 = [(IDSPreflightMessage *)self hardwareVersion];
-  [v4 setHardwareVersion:v6];
+  hardwareVersion = [(IDSPreflightMessage *)self hardwareVersion];
+  [v4 setHardwareVersion:hardwareVersion];
 
-  v7 = [(IDSPreflightMessage *)self osVersion];
-  [v4 setOsVersion:v7];
+  osVersion = [(IDSPreflightMessage *)self osVersion];
+  [v4 setOsVersion:osVersion];
 
-  v8 = [(IDSPreflightMessage *)self softwareVersion];
-  [v4 setSoftwareVersion:v8];
+  softwareVersion = [(IDSPreflightMessage *)self softwareVersion];
+  [v4 setSoftwareVersion:softwareVersion];
 
-  v9 = [(IDSPreflightMessage *)self deviceName];
-  [v4 setDeviceName:v9];
+  deviceName = [(IDSPreflightMessage *)self deviceName];
+  [v4 setDeviceName:deviceName];
 
-  v10 = [(IDSPreflightMessage *)self hostHardwareVersion];
-  [v4 setHostHardwareVersion:v10];
+  hostHardwareVersion = [(IDSPreflightMessage *)self hostHardwareVersion];
+  [v4 setHostHardwareVersion:hostHardwareVersion];
 
-  v11 = [(IDSPreflightMessage *)self hostOsVersion];
-  [v4 setHostOsVersion:v11];
+  hostOsVersion = [(IDSPreflightMessage *)self hostOsVersion];
+  [v4 setHostOsVersion:hostOsVersion];
 
-  v12 = [(IDSPreflightMessage *)self hostSoftwareVersion];
-  [v4 setHostSoftwareVersion:v12];
+  hostSoftwareVersion = [(IDSPreflightMessage *)self hostSoftwareVersion];
+  [v4 setHostSoftwareVersion:hostSoftwareVersion];
 
-  v13 = [(IDSPreflightMessage *)self hostDeviceName];
-  [v4 setHostDeviceName:v13];
+  hostDeviceName = [(IDSPreflightMessage *)self hostDeviceName];
+  [v4 setHostDeviceName:hostDeviceName];
 
-  v14 = [(IDSPreflightMessage *)self IMSI];
-  [v4 setIMSI:v14];
+  iMSI = [(IDSPreflightMessage *)self IMSI];
+  [v4 setIMSI:iMSI];
 
-  v15 = [(IDSPreflightMessage *)self PLMN];
-  [v4 setPLMN:v15];
+  pLMN = [(IDSPreflightMessage *)self PLMN];
+  [v4 setPLMN:pLMN];
 
-  v16 = [(IDSPreflightMessage *)self testData];
-  [v4 setTestData:v16];
+  testData = [(IDSPreflightMessage *)self testData];
+  [v4 setTestData:testData];
 
-  v17 = [(IDSPreflightMessage *)self pnrReason];
-  [v4 setPnrReason:v17];
+  pnrReason = [(IDSPreflightMessage *)self pnrReason];
+  [v4 setPnrReason:pnrReason];
 
-  v18 = [(IDSPreflightMessage *)self simHardwareType];
-  [v4 setSimHardwareType:v18];
+  simHardwareType = [(IDSPreflightMessage *)self simHardwareType];
+  [v4 setSimHardwareType:simHardwareType];
 
-  v19 = [(IDSPreflightMessage *)self responseSessionID];
-  [v4 setResponseSessionID:v19];
+  responseSessionID = [(IDSPreflightMessage *)self responseSessionID];
+  [v4 setResponseSessionID:responseSessionID];
 
-  v20 = [(IDSPreflightMessage *)self responseStatus];
-  [v4 setResponseStatus:v20];
+  responseStatus = [(IDSPreflightMessage *)self responseStatus];
+  [v4 setResponseStatus:responseStatus];
 
-  v21 = [(IDSPreflightMessage *)self responseMechanisms];
-  [v4 setResponseMechanisms:v21];
+  responseMechanisms = [(IDSPreflightMessage *)self responseMechanisms];
+  [v4 setResponseMechanisms:responseMechanisms];
 
   return v4;
 }
@@ -71,20 +71,20 @@
 {
   v8.receiver = self;
   v8.super_class = IDSPreflightMessage;
-  v3 = [(IDSPreflightMessage *)&v8 additionalMessageHeaders];
-  Mutable = [v3 mutableCopy];
+  additionalMessageHeaders = [(IDSPreflightMessage *)&v8 additionalMessageHeaders];
+  Mutable = [additionalMessageHeaders mutableCopy];
 
   if (!Mutable)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   }
 
-  v5 = [(IDSPreflightMessage *)self pushCertificate];
-  v6 = [v5 _FTStringFromBaseData];
+  pushCertificate = [(IDSPreflightMessage *)self pushCertificate];
+  _FTStringFromBaseData = [pushCertificate _FTStringFromBaseData];
 
-  if (v6)
+  if (_FTStringFromBaseData)
   {
-    CFDictionarySetValue(Mutable, @"x-push-cert", v6);
+    CFDictionarySetValue(Mutable, @"x-push-cert", _FTStringFromBaseData);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -99,18 +99,18 @@
 {
   v20.receiver = self;
   v20.super_class = IDSPreflightMessage;
-  v3 = [(IDSPreflightMessage *)&v20 messageBody];
-  Mutable = [v3 mutableCopy];
+  messageBody = [(IDSPreflightMessage *)&v20 messageBody];
+  Mutable = [messageBody mutableCopy];
 
   if (!Mutable)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   }
 
-  v5 = [(IDSPreflightMessage *)self phoneNumberValidationRetryCount];
-  if (v5)
+  phoneNumberValidationRetryCount = [(IDSPreflightMessage *)self phoneNumberValidationRetryCount];
+  if (phoneNumberValidationRetryCount)
   {
-    CFDictionarySetValue(Mutable, @"pnv-retry-count", v5);
+    CFDictionarySetValue(Mutable, @"pnv-retry-count", phoneNumberValidationRetryCount);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -118,10 +118,10 @@
     sub_100915154();
   }
 
-  v6 = [(IDSPreflightMessage *)self hardwareVersion];
-  if (v6)
+  hardwareVersion = [(IDSPreflightMessage *)self hardwareVersion];
+  if (hardwareVersion)
   {
-    CFDictionarySetValue(Mutable, @"hardware-version", v6);
+    CFDictionarySetValue(Mutable, @"hardware-version", hardwareVersion);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -129,10 +129,10 @@
     sub_1009151DC();
   }
 
-  v7 = [(IDSPreflightMessage *)self osVersion];
-  if (v7)
+  osVersion = [(IDSPreflightMessage *)self osVersion];
+  if (osVersion)
   {
-    CFDictionarySetValue(Mutable, @"os-version", v7);
+    CFDictionarySetValue(Mutable, @"os-version", osVersion);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -140,10 +140,10 @@
     sub_100915264();
   }
 
-  v8 = [(IDSPreflightMessage *)self softwareVersion];
-  if (v8)
+  softwareVersion = [(IDSPreflightMessage *)self softwareVersion];
+  if (softwareVersion)
   {
-    CFDictionarySetValue(Mutable, @"software-version", v8);
+    CFDictionarySetValue(Mutable, @"software-version", softwareVersion);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -151,10 +151,10 @@
     sub_1009152EC();
   }
 
-  v9 = [(IDSPreflightMessage *)self deviceName];
-  if (v9)
+  deviceName = [(IDSPreflightMessage *)self deviceName];
+  if (deviceName)
   {
-    CFDictionarySetValue(Mutable, @"device-name", v9);
+    CFDictionarySetValue(Mutable, @"device-name", deviceName);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -162,34 +162,34 @@
     sub_100915374();
   }
 
-  v10 = [(IDSPreflightMessage *)self hostHardwareVersion];
-  if (v10)
+  hostHardwareVersion = [(IDSPreflightMessage *)self hostHardwareVersion];
+  if (hostHardwareVersion)
   {
-    CFDictionarySetValue(Mutable, @"host-hardware-version", v10);
+    CFDictionarySetValue(Mutable, @"host-hardware-version", hostHardwareVersion);
   }
 
-  v11 = [(IDSPreflightMessage *)self hostOsVersion];
-  if (v11)
+  hostOsVersion = [(IDSPreflightMessage *)self hostOsVersion];
+  if (hostOsVersion)
   {
-    CFDictionarySetValue(Mutable, @"host-os-version", v11);
+    CFDictionarySetValue(Mutable, @"host-os-version", hostOsVersion);
   }
 
-  v12 = [(IDSPreflightMessage *)self hostSoftwareVersion];
-  if (v12)
+  hostSoftwareVersion = [(IDSPreflightMessage *)self hostSoftwareVersion];
+  if (hostSoftwareVersion)
   {
-    CFDictionarySetValue(Mutable, @"host-software-version", v12);
+    CFDictionarySetValue(Mutable, @"host-software-version", hostSoftwareVersion);
   }
 
-  v13 = [(IDSPreflightMessage *)self hostDeviceName];
-  if (v13)
+  hostDeviceName = [(IDSPreflightMessage *)self hostDeviceName];
+  if (hostDeviceName)
   {
-    CFDictionarySetValue(Mutable, @"host-device-name", v13);
+    CFDictionarySetValue(Mutable, @"host-device-name", hostDeviceName);
   }
 
-  v14 = [(IDSPreflightMessage *)self IMSI];
-  if (v14)
+  iMSI = [(IDSPreflightMessage *)self IMSI];
+  if (iMSI)
   {
-    CFDictionarySetValue(Mutable, @"IMSI", v14);
+    CFDictionarySetValue(Mutable, @"IMSI", iMSI);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -197,10 +197,10 @@
     sub_1009153FC();
   }
 
-  v15 = [(IDSPreflightMessage *)self PLMN];
-  if (v15)
+  pLMN = [(IDSPreflightMessage *)self PLMN];
+  if (pLMN)
   {
-    CFDictionarySetValue(Mutable, @"PLMN", v15);
+    CFDictionarySetValue(Mutable, @"PLMN", pLMN);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -208,22 +208,22 @@
     sub_100915484();
   }
 
-  v16 = [(IDSPreflightMessage *)self pnrReason];
-  if (v16)
+  pnrReason = [(IDSPreflightMessage *)self pnrReason];
+  if (pnrReason)
   {
-    CFDictionarySetValue(Mutable, @"pnr-reason", v16);
+    CFDictionarySetValue(Mutable, @"pnr-reason", pnrReason);
   }
 
-  v17 = [(IDSPreflightMessage *)self simHardwareType];
-  if (v17)
+  simHardwareType = [(IDSPreflightMessage *)self simHardwareType];
+  if (simHardwareType)
   {
-    CFDictionarySetValue(Mutable, @"sim-hardware-type", v17);
+    CFDictionarySetValue(Mutable, @"sim-hardware-type", simHardwareType);
   }
 
-  v18 = [(IDSPreflightMessage *)self testData];
-  if (v18)
+  testData = [(IDSPreflightMessage *)self testData];
+  if (testData)
   {
-    CFDictionarySetValue(Mutable, @"test-data", v18);
+    CFDictionarySetValue(Mutable, @"test-data", testData);
   }
 
   return Mutable;
@@ -236,19 +236,19 @@
   return v2;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 _numberForKey:@"status"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy _numberForKey:@"status"];
   [(IDSPreflightMessage *)self setResponseStatus:v5];
 
-  v6 = [v4 _stringForKey:@"session-id"];
-  v17 = self;
+  v6 = [dictionaryCopy _stringForKey:@"session-id"];
+  selfCopy = self;
   [(IDSPreflightMessage *)self setResponseSessionID:v6];
 
   v7 = objc_alloc_init(NSMutableArray);
-  v18 = v4;
-  [v4 objectForKey:@"mechanisms"];
+  v18 = dictionaryCopy;
+  [dictionaryCopy objectForKey:@"mechanisms"];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -300,7 +300,7 @@
     while (v9);
   }
 
-  [(IDSPreflightMessage *)v17 setResponseMechanisms:v7];
+  [(IDSPreflightMessage *)selfCopy setResponseMechanisms:v7];
 }
 
 @end

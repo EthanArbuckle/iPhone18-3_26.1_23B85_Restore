@@ -13,11 +13,11 @@
 - (id)_mapkit_attributedStringByApplyingBindingFormatReplacements:()MKAttributedFormat
 {
   v9 = 0;
-  v4 = [a1 _mapkit_attributedStringByApplyingBindingFormatReplacements:a3 error:&v9];
+  v4 = [self _mapkit_attributedStringByApplyingBindingFormatReplacements:a3 error:&v9];
   v5 = v9;
   v6 = objc_opt_class();
-  v7 = [a1 string];
-  [v6 _handleFormattingError:v5 forString:v7];
+  string = [self string];
+  [v6 _handleFormattingError:v5 forString:string];
 
   return v4;
 }
@@ -25,11 +25,11 @@
 - (id)_mapkit_attributedStringByApplyingBindingFormatReplacements:()MKAttributedFormat defaultReplacementAttributes:
 {
   v10 = 0;
-  v5 = [a1 _mapkit_attributedStringByApplyingBindingFormatReplacements:a3 defaultReplacementAttributes:a4 error:&v10];
+  v5 = [self _mapkit_attributedStringByApplyingBindingFormatReplacements:a3 defaultReplacementAttributes:a4 error:&v10];
   v6 = v10;
   v7 = objc_opt_class();
-  v8 = [a1 string];
-  [v7 _handleFormattingError:v6 forString:v8];
+  string = [self string];
+  [v7 _handleFormattingError:v6 forString:string];
 
   return v5;
 }
@@ -53,8 +53,8 @@
   v17 = [v13 substringFromIndex:1];
   v18 = objc_alloc_init(MEMORY[0x1E696AD40]);
   v19 = objc_alloc(MEMORY[0x1E696AE88]);
-  v20 = [a1 string];
-  v21 = [v19 initWithString:v20];
+  string = [self string];
+  v21 = [v19 initWithString:string];
 
   [v21 setCharactersToBeSkipped:0];
   if ([v21 isAtEnd])
@@ -64,14 +64,14 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v22 = 0;
+  scanLocation2 = 0;
   while (1)
   {
     [v21 scanUpToString:v16 intoString:0];
-    v23 = [v21 scanLocation];
-    if (v23 != v22)
+    scanLocation = [v21 scanLocation];
+    if (scanLocation != scanLocation2)
     {
-      v24 = [a1 attributedSubstringFromRange:{v22, v23 - v22}];
+      v24 = [self attributedSubstringFromRange:{scanLocation2, scanLocation - scanLocation2}];
       [v18 appendAttributedString:v24];
     }
 
@@ -85,12 +85,12 @@ LABEL_21:
       break;
     }
 
-    v25 = [a1 attributedSubstringFromRange:{objc_msgSend(v21, "scanLocation") - 1, 1}];
+    v25 = [self attributedSubstringFromRange:{objc_msgSend(v21, "scanLocation") - 1, 1}];
     [v18 appendAttributedString:v25];
 LABEL_19:
 
 LABEL_20:
-    v22 = [v21 scanLocation];
+    scanLocation2 = [v21 scanLocation];
     if ([v21 isAtEnd])
     {
       goto LABEL_21;
@@ -146,7 +146,7 @@ LABEL_20:
   }
 
   v38 = @"MKStringAttributedFormatErrorReplacementTokensKey";
-  v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v23];
+  v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:scanLocation];
   v39 = v32;
   v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
 
@@ -173,19 +173,19 @@ LABEL_22:
         goto LABEL_7;
       }
 
-      v6 = [v11 userInfo];
-      v7 = [v6 objectForKeyedSubscript:@"MKStringAttributedFormatErrorReplacementTokensKey"];
+      userInfo = [v11 userInfo];
+      v7 = [userInfo objectForKeyedSubscript:@"MKStringAttributedFormatErrorReplacementTokensKey"];
 
       [MEMORY[0x1E695DF30] raise:@"MapsBindingFormatStringException" format:{@"The format string '%@' has an unterminated replacement marker starting at %@.", v5, v7}];
     }
 
     else
     {
-      v8 = [v11 userInfo];
-      v7 = [v8 objectForKeyedSubscript:@"MKStringAttributedFormatErrorReplacementTokensKey"];
+      userInfo2 = [v11 userInfo];
+      v7 = [userInfo2 objectForKeyedSubscript:@"MKStringAttributedFormatErrorReplacementTokensKey"];
 
-      v9 = [v11 userInfo];
-      v10 = [v9 objectForKeyedSubscript:@"MKStringAttributedFormatErrorReplacementTokensKey"];
+      userInfo3 = [v11 userInfo];
+      v10 = [userInfo3 objectForKeyedSubscript:@"MKStringAttributedFormatErrorReplacementTokensKey"];
 
       [MEMORY[0x1E695DF30] raise:@"MapsBindingFormatArgumentException" format:{@"The format string '%@' has specified a key '%@', but that key is not present or not a string or attributed string in the replacements dictionary (value: %@)", v5, v7, v10}];
     }
@@ -198,9 +198,9 @@ LABEL_7:
 {
   v12 = 0;
   v8 = a3;
-  v9 = [a1 _mapkit_attributedStringWithBindingFormat:v8 replacements:a4 attributes:a5 error:&v12];
+  v9 = [self _mapkit_attributedStringWithBindingFormat:v8 replacements:a4 attributes:a5 error:&v12];
   v10 = v12;
-  [a1 _handleFormattingError:v10 forString:v8];
+  [self _handleFormattingError:v10 forString:v8];
 
   return v9;
 }
@@ -212,7 +212,7 @@ LABEL_7:
   v16 = a5;
   v17 = a4;
   v18 = a3;
-  v19 = [[a1 alloc] initWithString:v18 attributes:v16];
+  v19 = [[self alloc] initWithString:v18 attributes:v16];
 
   v20 = [v19 _mapkit_attributedStringByApplyingBindingFormatReplacements:v17 defaultReplacementAttributes:v16 startTokenDelimiter:v15 endTokenDelimiter:v14 error:a8];
 
@@ -224,7 +224,7 @@ LABEL_7:
   v10 = a5;
   v11 = a4;
   v12 = a3;
-  v13 = [[a1 alloc] initWithString:v12 attributes:v10];
+  v13 = [[self alloc] initWithString:v12 attributes:v10];
 
   v14 = [v13 _mapkit_attributedStringByApplyingBindingFormatReplacements:v11 defaultReplacementAttributes:v10 error:a6];
 

@@ -1,21 +1,21 @@
 @interface MACollectionInterface
 + (id)copyIngestURL;
-- (BOOL)processSUInfo:(id)a3 withError:(id *)a4;
-- (MACollectionInterface)initWithContext:(id)a3;
+- (BOOL)processSUInfo:(id)info withError:(id *)error;
+- (MACollectionInterface)initWithContext:(id)context;
 - (__SecKey)signingKey;
-- (id)collectPCRT:(id *)a3;
-- (id)collectSIK:(id *)a3;
-- (id)collectSigningAttestation:(id *)a3;
-- (id)copyIngestData:(id *)a3;
-- (id)copyIngestHeaders:(id)a3 withError:(id *)a4;
-- (id)signatureForData:(id)a3 error:(id *)a4;
-- (id)signingKeyPublicKeyWithError:(id *)a3;
+- (id)collectPCRT:(id *)t;
+- (id)collectSIK:(id *)k;
+- (id)collectSigningAttestation:(id *)attestation;
+- (id)copyIngestData:(id *)data;
+- (id)copyIngestHeaders:(id)headers withError:(id *)error;
+- (id)signatureForData:(id)data error:(id *)error;
+- (id)signingKeyPublicKeyWithError:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation MACollectionInterface
 
-- (MACollectionInterface)initWithContext:(id)a3
+- (MACollectionInterface)initWithContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = MACollectionInterface;
@@ -24,13 +24,13 @@
   if (!v4)
   {
 LABEL_5:
-    a3 = v5;
+    context = v5;
     goto LABEL_6;
   }
 
-  if (a3)
+  if (context)
   {
-    v4->_dark = a3;
+    v4->_dark = context;
     if (libInFieldCollectionLibraryCore())
     {
       v5->_collectionLibraryLoaded = 1;
@@ -41,7 +41,7 @@ LABEL_5:
 
 LABEL_6:
 
-  return a3;
+  return context;
 }
 
 - (void)dealloc
@@ -156,7 +156,7 @@ LABEL_15:
   return signingKey;
 }
 
-- (id)collectSigningAttestation:(id *)a3
+- (id)collectSigningAttestation:(id *)attestation
 {
   if ([(MACollectionInterface *)self signingKey])
   {
@@ -172,7 +172,7 @@ LABEL_15:
     v9 = createMobileActivationError("[MACollectionInterface collectSigningAttestation:]", 160, @"com.apple.MobileActivation.ErrorDomain", -11, v6, @"Failed to attest RK to SIK.");
 
     v6 = v9;
-    if (!a3)
+    if (!attestation)
     {
       goto LABEL_7;
     }
@@ -180,12 +180,12 @@ LABEL_15:
 LABEL_5:
     v8 = v6;
     v7 = 0;
-    *a3 = v6;
+    *attestation = v6;
     goto LABEL_8;
   }
 
   v6 = createMobileActivationError("[MACollectionInterface collectSigningAttestation:]", 154, @"com.apple.MobileActivation.ErrorDomain", -2, 0, @"Invalid input");
-  if (a3)
+  if (attestation)
   {
     goto LABEL_5;
   }
@@ -197,7 +197,7 @@ LABEL_8:
   return v7;
 }
 
-- (id)collectSIK:(id *)a3
+- (id)collectSIK:(id *)k
 {
   v22 = 0;
   v23 = 0;
@@ -283,16 +283,16 @@ LABEL_16:
   }
 
   v21 = 0;
-  if (a3 && !v11)
+  if (k && !v11)
   {
     v16 = v7;
-    *a3 = v7;
+    *k = v7;
   }
 
   return v11;
 }
 
-- (id)collectPCRT:(id *)a3
+- (id)collectPCRT:(id *)t
 {
   v20 = 0;
   v19 = 0;
@@ -350,11 +350,11 @@ LABEL_16:
 
   v8 = MobileActivationError;
   v9 = v8;
-  if (a3)
+  if (t)
   {
     v10 = v8;
     v11 = 0;
-    *a3 = v9;
+    *t = v9;
   }
 
   else
@@ -397,7 +397,7 @@ LABEL_13:
   return v11;
 }
 
-- (id)signingKeyPublicKeyWithError:(id *)a3
+- (id)signingKeyPublicKeyWithError:(id *)error
 {
   error = 0;
   v4 = SecKeyCopyPublicKey([(MACollectionInterface *)self signingKey]);
@@ -422,11 +422,11 @@ LABEL_13:
 
   v10 = MobileActivationError;
   v8 = v10;
-  if (a3)
+  if (error)
   {
     v11 = v10;
     v7 = 0;
-    *a3 = v8;
+    *error = v8;
   }
 
   else
@@ -449,11 +449,11 @@ LABEL_9:
   return v7;
 }
 
-- (id)signatureForData:(id)a3 error:(id *)a4
+- (id)signatureForData:(id)data error:(id *)error
 {
   error = 0;
-  v6 = a3;
-  v7 = SecKeyCreateSignature([(MACollectionInterface *)self signingKey], kSecKeyAlgorithmECDSASignatureMessageX962SHA256, v6, &error);
+  dataCopy = data;
+  v7 = SecKeyCreateSignature([(MACollectionInterface *)self signingKey], kSecKeyAlgorithmECDSASignatureMessageX962SHA256, dataCopy, &error);
 
   if (v7)
   {
@@ -472,22 +472,22 @@ LABEL_9:
   }
 
   error = 0;
-  if (a4 && !v7)
+  if (error && !v7)
   {
     v10 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   return v7;
 }
 
-- (id)copyIngestHeaders:(id)a3 withError:(id *)a4
+- (id)copyIngestHeaders:(id)headers withError:(id *)error
 {
-  v6 = a3;
+  headersCopy = headers;
   if ([(MACollectionInterface *)self collectionLibraryLoaded])
   {
     v22 = 0;
-    v7 = [(MACollectionInterface *)self signatureForData:v6 error:&v22];
+    v7 = [(MACollectionInterface *)self signatureForData:headersCopy error:&v22];
     v8 = v22;
     v9 = v8;
     if (v7)
@@ -513,11 +513,11 @@ LABEL_9:
           v24[3] = @"iOS Device Activator (MobileActivation-1068.42.2)";
           v23[4] = @"X-Apple-AL-ID";
           v15 = +[NSUUID UUID];
-          v16 = [(NSUUID *)v15 UUIDString];
-          v24[4] = v16;
+          uUIDString = [(NSUUID *)v15 UUIDString];
+          v24[4] = uUIDString;
           v17 = [NSDictionary dictionaryWithObjects:v24 forKeys:v23 count:5];
 
-          if (!a4)
+          if (!error)
           {
             goto LABEL_17;
           }
@@ -538,7 +538,7 @@ LABEL_9:
 
       v17 = 0;
       v11 = v18;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_17;
       }
@@ -562,7 +562,7 @@ LABEL_9:
 
   v10 = 0;
   v17 = 0;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_17;
   }
@@ -571,7 +571,7 @@ LABEL_15:
   if (!v17)
   {
     v19 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
 LABEL_17:
@@ -579,7 +579,7 @@ LABEL_17:
   return v17;
 }
 
-- (id)copyIngestData:(id *)a3
+- (id)copyIngestData:(id *)data
 {
   v76[0] = 0;
   v76[1] = v76;
@@ -607,9 +607,9 @@ LABEL_17:
   v67 = 0;
   if (copyIngestData__onceToken != -1)
   {
-    v45 = self;
+    selfCopy = self;
     [MACollectionInterface copyIngestData:];
-    self = v45;
+    self = selfCopy;
   }
 
   if (!copyIngestData__queue)
@@ -708,9 +708,9 @@ LABEL_33:
     v31 = v26;
 LABEL_34:
     v36 = 0;
-    if (a3)
+    if (data)
     {
-      *a3 = v63[5];
+      *data = v63[5];
     }
 
     goto LABEL_36;
@@ -865,9 +865,9 @@ LABEL_64:
 
   if ([v40 length] > 0xFA0)
   {
-    v41 = [(MACollectionInterface *)location dark];
+    dark = [(MACollectionInterface *)location dark];
     [v33 length];
-    writeSplunkLog(v41, 14, -1, "[MACollectionInterface copyIngestData:]", 539, 0, @"%@ is too long: %ld > 4000", v42, @"scrt-part2");
+    writeSplunkLog(dark, 14, -1, "[MACollectionInterface copyIngestData:]", 539, 0, @"%@ is too long: %ld > 4000", v42, @"scrt-part2");
   }
 
   v78[0] = @"scrt-part1";
@@ -1015,12 +1015,12 @@ LABEL_12:
   }
 }
 
-- (BOOL)processSUInfo:(id)a3 withError:(id *)a4
+- (BOOL)processSUInfo:(id)info withError:(id *)error
 {
-  v6 = a3;
+  infoCopy = info;
   if ([(MACollectionInterface *)self collectionLibraryLoaded])
   {
-    v7 = NAAB([v6 bytes], objc_msgSend(v6, "length"));
+    v7 = NAAB([infoCopy bytes], objc_msgSend(infoCopy, "length"));
     if (!v7)
     {
       v9 = 0;
@@ -1037,11 +1037,11 @@ LABEL_12:
   }
 
   v9 = MobileActivationError;
-  if (a4)
+  if (error)
   {
     v9 = v9;
     v10 = 0;
-    *a4 = v9;
+    *error = v9;
   }
 
   else

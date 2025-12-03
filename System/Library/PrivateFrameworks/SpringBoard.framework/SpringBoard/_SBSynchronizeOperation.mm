@@ -1,6 +1,6 @@
 @interface _SBSynchronizeOperation
 - (_SBSynchronizeOperation)init;
-- (void)addTask:(id)a3;
+- (void)addTask:(id)task;
 - (void)main;
 @end
 
@@ -25,16 +25,16 @@
   return v2;
 }
 
-- (void)addTask:(id)a3
+- (void)addTask:(id)task
 {
-  v7 = a3;
+  taskCopy = task;
   if (([(_SBSynchronizeOperation *)self isFinished]& 1) != 0 || [(_SBSynchronizeOperation *)self isExecuting])
   {
     [(_SBSynchronizeOperation *)a2 addTask:?];
   }
 
   tasks = self->_tasks;
-  v6 = MEMORY[0x223D6F7F0](v7);
+  v6 = MEMORY[0x223D6F7F0](taskCopy);
   [(NSMutableArray *)tasks addObject:v6];
 }
 
@@ -47,9 +47,9 @@
   v6 = SBLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(_SBSynchronizeOperation *)self name];
+    name = [(_SBSynchronizeOperation *)self name];
     *buf = 138543362;
-    v22 = v7;
+    v22 = name;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "SynchronizeCloudCriticalData - operation started: %{public}@", buf, 0xCu);
   }
 
@@ -90,9 +90,9 @@
   v15 = SBLogCommon();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(_SBSynchronizeOperation *)self name];
+    name2 = [(_SBSynchronizeOperation *)self name];
     *buf = 138543618;
-    v22 = v16;
+    v22 = name2;
     v23 = 2048;
     v24 = v14 - v5;
     _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "SynchronizeCloudCriticalData - operation ended: %{public}@ (duration: %fs)", buf, 0x16u);

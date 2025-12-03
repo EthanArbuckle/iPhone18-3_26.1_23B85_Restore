@@ -1,23 +1,23 @@
 @interface AAAdvertisementPayload
-+ (id)advertisementPayloadWithData:(id)a3;
-- (AAAdvertisementPayload)initWithData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPayload:(id)a3;
++ (id)advertisementPayloadWithData:(id)data;
+- (AAAdvertisementPayload)initWithData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPayload:(id)payload;
 - (id)describeProperties;
 - (id)description;
 - (unint64_t)hash;
-- (void)initLogParseError:(char *)a3;
+- (void)initLogParseError:(char *)error;
 @end
 
 @implementation AAAdvertisementPayload
 
-+ (id)advertisementPayloadWithData:(id)a3
++ (id)advertisementPayloadWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[AAAdvertisementPayload alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[AAAdvertisementPayload alloc] initWithData:dataCopy];
   if ([(AAAdvertisementPayload *)v4 type]== 7)
   {
-    v5 = [AAProximityPairingPayload proximityPairingPayloadWithData:v3];
+    v5 = [AAProximityPairingPayload proximityPairingPayloadWithData:dataCopy];
   }
 
   else
@@ -30,9 +30,9 @@
   return v6;
 }
 
-- (AAAdvertisementPayload)initWithData:(id)a3
+- (AAAdvertisementPayload)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = AAAdvertisementPayload;
   v5 = [(AAAdvertisementPayload *)&v12 init];
@@ -41,7 +41,7 @@
     goto LABEL_9;
   }
 
-  if (![v4 length])
+  if (![dataCopy length])
   {
     v10 = "missing data from Payload Type byte.";
 LABEL_8:
@@ -51,23 +51,23 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v5->_type = *[v4 bytes];
-  if ([v4 length] <= 1)
+  v5->_type = *[dataCopy bytes];
+  if ([dataCopy length] <= 1)
   {
     v10 = "missing data from Payload Length byte.";
     goto LABEL_8;
   }
 
-  v6 = *([v4 bytes] + 1) + 2;
-  if ([v4 length] < v6)
+  v6 = *([dataCopy bytes] + 1) + 2;
+  if ([dataCopy length] < v6)
   {
-    [(AAAdvertisementPayload *)v5 initWithData:v4, v6, &v13];
+    [(AAAdvertisementPayload *)v5 initWithData:dataCopy, v6, &v13];
     v9 = v13;
   }
 
   else
   {
-    v7 = [v4 subdataWithRange:{0, v6}];
+    v7 = [dataCopy subdataWithRange:{0, v6}];
     payloadData = v5->_payloadData;
     v5->_payloadData = v7;
 
@@ -85,13 +85,13 @@ LABEL_10:
   NSAppendPrintF_safe();
   v3 = 0;
 
-  v10 = [(AAAdvertisementPayload *)self describeProperties];
+  describeProperties = [(AAAdvertisementPayload *)self describeProperties];
   NSAppendPrintF_safe();
   v4 = v3;
 
-  v5 = [(AAAdvertisementPayload *)self payloadData];
-  v6 = [(AAAdvertisementPayload *)self payloadData];
-  [v6 length];
+  payloadData = [(AAAdvertisementPayload *)self payloadData];
+  payloadData2 = [(AAAdvertisementPayload *)self payloadData];
+  [payloadData2 length];
   v11 = CUPrintNSDataHex();
   NSAppendPrintF_safe();
   v7 = v4;
@@ -115,7 +115,7 @@ LABEL_10:
   return v2;
 }
 
-- (void)initLogParseError:(char *)a3
+- (void)initLogParseError:(char *)error
 {
   if (gLogCategory_AAManufacturerDataAdvertisement <= 90 && (gLogCategory_AAManufacturerDataAdvertisement != -1 || _LogCategory_Initialize()))
   {
@@ -123,26 +123,26 @@ LABEL_10:
   }
 }
 
-- (BOOL)isEqualToPayload:(id)a3
+- (BOOL)isEqualToPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [(AAAdvertisementPayload *)self payloadData];
-  v6 = [v4 payloadData];
+  payloadCopy = payload;
+  payloadData = [(AAAdvertisementPayload *)self payloadData];
+  payloadData2 = [payloadCopy payloadData];
 
-  LOBYTE(v4) = [v5 isEqualToData:v6];
-  return v4;
+  LOBYTE(payloadCopy) = [payloadData isEqualToData:payloadData2];
+  return payloadCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v6 = 1;
     goto LABEL_7;
@@ -167,8 +167,8 @@ LABEL_7:
 
 - (unint64_t)hash
 {
-  v2 = [(AAAdvertisementPayload *)self payloadData];
-  v3 = [v2 hash];
+  payloadData = [(AAAdvertisementPayload *)self payloadData];
+  v3 = [payloadData hash];
 
   return v3;
 }

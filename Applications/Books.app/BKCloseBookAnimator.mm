@@ -1,13 +1,13 @@
 @interface BKCloseBookAnimator
 - (BKCloseBookAnimator)init;
-- (BKCloseBookAnimator)initWithContentHelper:(id)a3 coverSource:(id)a4;
+- (BKCloseBookAnimator)initWithContentHelper:(id)helper coverSource:(id)source;
 - (UIImage)coverImage;
 - (id)animationComplete;
 - (id)spreadSnapshot;
-- (void)animateTransition:(id)a3;
-- (void)setAnimationComplete:(id)a3;
-- (void)setCoverImage:(id)a3;
-- (void)setSpreadSnapshot:(id)a3;
+- (void)animateTransition:(id)transition;
+- (void)setAnimationComplete:(id)complete;
+- (void)setCoverImage:(id)image;
+- (void)setSpreadSnapshot:(id)snapshot;
 @end
 
 @implementation BKCloseBookAnimator
@@ -27,19 +27,19 @@
   return v3;
 }
 
-- (void)setCoverImage:(id)a3
+- (void)setCoverImage:(id)image
 {
-  if (a3)
+  if (image)
   {
     v3 = self + OBJC_IVAR___BKCloseBookAnimator_crossFadeContent;
     v4 = *(self + OBJC_IVAR___BKCloseBookAnimator_crossFadeContent);
     v5 = *(self + OBJC_IVAR___BKCloseBookAnimator_crossFadeContent + 8);
-    *v3 = a3;
+    *v3 = image;
     *(v3 + 1) = 0;
     v6 = v3[16];
     v3[16] = 0;
-    v9 = self;
-    v8 = a3;
+    selfCopy = self;
+    imageCopy = image;
     sub_100427848(v4, v5, v6);
   }
 }
@@ -71,9 +71,9 @@
   return v7;
 }
 
-- (void)setSpreadSnapshot:(id)a3
+- (void)setSpreadSnapshot:(id)snapshot
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(snapshot);
   if (v4)
   {
     v5 = v4;
@@ -86,7 +86,7 @@
     *(v7 + 1) = v6;
     v10 = v7[16];
     v7[16] = 1;
-    v11 = self;
+    selfCopy = self;
     sub_100427848(v8, v9, v10);
   }
 }
@@ -115,9 +115,9 @@
   return v4;
 }
 
-- (void)setAnimationComplete:(id)a3
+- (void)setAnimationComplete:(id)complete
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(complete);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -135,11 +135,11 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_100007020(v7);
 }
 
-- (BKCloseBookAnimator)initWithContentHelper:(id)a3 coverSource:(id)a4
+- (BKCloseBookAnimator)initWithContentHelper:(id)helper coverSource:(id)source
 {
   v4 = self + OBJC_IVAR___BKCloseBookAnimator_crossFadeContent;
   *v4 = 0;
@@ -148,8 +148,8 @@
   v5 = (self + OBJC_IVAR___BKCloseBookAnimator_animationComplete);
   *v5 = 0;
   v5[1] = 0;
-  *(self + OBJC_IVAR___BKCloseBookAnimator_contentHelper) = a3;
-  *(self + OBJC_IVAR___BKCloseBookAnimator_coverSource) = a4;
+  *(self + OBJC_IVAR___BKCloseBookAnimator_contentHelper) = helper;
+  *(self + OBJC_IVAR___BKCloseBookAnimator_coverSource) = source;
   v7.receiver = self;
   v7.super_class = type metadata accessor for CloseBookAnimator();
   swift_unknownObjectRetain();
@@ -157,11 +157,11 @@
   return [(BKCloseBookAnimator *)&v7 init];
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  CloseBookAnimator.animateTransition(using:)(a3);
+  selfCopy = self;
+  CloseBookAnimator.animateTransition(using:)(transition);
   swift_unknownObjectRelease();
 }
 

@@ -1,28 +1,28 @@
 @interface IAMPresentingModalMessageContext
-- (IAMPresentingModalMessageContext)initWithMessage:(id)a3 messageGroup:(id)a4 presentingViewController:(id)a5 presentationExpirationTimer:(id)a6 presentationHandler:(id)a7;
+- (IAMPresentingModalMessageContext)initWithMessage:(id)message messageGroup:(id)group presentingViewController:(id)controller presentationExpirationTimer:(id)timer presentationHandler:(id)handler;
 - (UIViewController)presentingViewController;
 @end
 
 @implementation IAMPresentingModalMessageContext
 
-- (IAMPresentingModalMessageContext)initWithMessage:(id)a3 messageGroup:(id)a4 presentingViewController:(id)a5 presentationExpirationTimer:(id)a6 presentationHandler:(id)a7
+- (IAMPresentingModalMessageContext)initWithMessage:(id)message messageGroup:(id)group presentingViewController:(id)controller presentationExpirationTimer:(id)timer presentationHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  messageCopy = message;
+  groupCopy = group;
+  controllerCopy = controller;
+  timerCopy = timer;
+  handlerCopy = handler;
   v23.receiver = self;
   v23.super_class = IAMPresentingModalMessageContext;
   v18 = [(IAMPresentingModalMessageContext *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_message, a3);
-    objc_storeStrong(&v19->_messageGroup, a4);
-    objc_storeWeak(&v19->_presentingViewController, v15);
-    objc_storeStrong(&v19->_presentationExpirationTimer, a6);
-    v20 = MEMORY[0x259C23D00](v17);
+    objc_storeStrong(&v18->_message, message);
+    objc_storeStrong(&v19->_messageGroup, group);
+    objc_storeWeak(&v19->_presentingViewController, controllerCopy);
+    objc_storeStrong(&v19->_presentationExpirationTimer, timer);
+    v20 = MEMORY[0x259C23D00](handlerCopy);
     presentationHandler = v19->_presentationHandler;
     v19->_presentationHandler = v20;
   }

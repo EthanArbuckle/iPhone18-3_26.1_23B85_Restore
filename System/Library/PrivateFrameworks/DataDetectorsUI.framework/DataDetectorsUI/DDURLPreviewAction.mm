@@ -1,6 +1,6 @@
 @interface DDURLPreviewAction
-+ (BOOL)handlesUrl:(id)a3 result:(__DDResult *)a4;
-+ (id)validatedURLWithURL:(id)a3 result:(__DDResult *)a4;
++ (BOOL)handlesUrl:(id)url result:(__DDResult *)result;
++ (id)validatedURLWithURL:(id)l result:(__DDResult *)result;
 - (id)createViewController;
 - (id)menuActions;
 @end
@@ -70,10 +70,10 @@
   return v15;
 }
 
-+ (id)validatedURLWithURL:(id)a3 result:(__DDResult *)a4
++ (id)validatedURLWithURL:(id)l result:(__DDResult *)result
 {
-  v5 = a3;
-  if (a4)
+  lCopy = l;
+  if (result)
   {
     v6 = DDShipmentTrackingUrlForResult();
     if (v6)
@@ -97,17 +97,17 @@ LABEL_17:
       v9 = 0;
     }
 
-    v5 = v9;
+    lCopy = v9;
   }
 
-  if (v5)
+  if (lCopy)
   {
-    v10 = [v5 scheme];
-    v11 = [v10 lowercaseString];
+    scheme = [lCopy scheme];
+    lowercaseString = [scheme lowercaseString];
 
-    if (dd_schemeIsHttp(v11) && ([v5 dd_isMaps:1] & 1) == 0)
+    if (dd_schemeIsHttp(lowercaseString) && ([lCopy dd_isMaps:1] & 1) == 0)
     {
-      v7 = v5;
+      v7 = lCopy;
     }
 
     else
@@ -123,9 +123,9 @@ LABEL_17:
   return v12;
 }
 
-+ (BOOL)handlesUrl:(id)a3 result:(__DDResult *)a4
++ (BOOL)handlesUrl:(id)url result:(__DDResult *)result
 {
-  if (!(a3 | a4))
+  if (!(url | result))
   {
     v4 = 0;
 LABEL_14:
@@ -133,27 +133,27 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v4 = [a1 validatedURLWithURL:? result:?];
+  v4 = [self validatedURLWithURL:? result:?];
   if (!v4 || (applicationWithBundleIdentifierIsRestricted(@"com.apple.mobilesafari") & 1) != 0)
   {
     goto LABEL_14;
   }
 
   v5 = [MEMORY[0x277CCACE0] componentsWithURL:v4 resolvingAgainstBaseURL:0];
-  v6 = [v5 host];
-  v7 = [v6 lowercaseString];
+  host = [v5 host];
+  lowercaseString = [host lowercaseString];
 
-  if (([v7 isEqualToString:@"www.icloud.com"] & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"icloud.com") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"icloud-sharing") & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"icloud-vetting"))
+  if (([lowercaseString isEqualToString:@"www.icloud.com"] & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"icloud.com") & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"icloud-sharing") & 1) != 0 || objc_msgSend(lowercaseString, "isEqualToString:", @"icloud-vetting"))
   {
-    v8 = [v5 scheme];
-    v9 = [v8 lowercaseString];
+    scheme = [v5 scheme];
+    lowercaseString2 = [scheme lowercaseString];
 
-    if (dd_schemeIsHttp(v9))
+    if (dd_schemeIsHttp(lowercaseString2))
     {
-      v10 = [v5 path];
-      v11 = [v10 lowercaseString];
+      path = [v5 path];
+      lowercaseString3 = [path lowercaseString];
 
-      v12 = !v11 || [v11 rangeOfString:@"^/(pages|numbers|keynote|iclouddrive|share|notes|photos|reminders)/.+" options:1033] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v11, "rangeOfString:options:", @"^/(v)/.+", 1033) == 0x7FFFFFFFFFFFFFFFLL;
+      v12 = !lowercaseString3 || [lowercaseString3 rangeOfString:@"^/(pages|numbers|keynote|iclouddrive|share|notes|photos|reminders)/.+" options:1033] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(lowercaseString3, "rangeOfString:options:", @"^/(v)/.+", 1033) == 0x7FFFFFFFFFFFFFFFLL;
     }
 
     else

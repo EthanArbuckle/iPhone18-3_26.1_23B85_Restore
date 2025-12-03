@@ -18,7 +18,7 @@
   v5[1] = 3221225472;
   v5[2] = __46__UIColor_VideosUI__vui_opacityColorWithType___block_invoke;
   v5[3] = &__block_descriptor_48_e36___UIColor_16__0__UITraitCollection_8l;
-  v5[4] = a1;
+  v5[4] = self;
   v5[5] = a3;
   v3 = [MEMORY[0x1E69DC888] colorWithDynamicProvider:v5];
 
@@ -57,8 +57,8 @@
 
 + (id)vui_keyBlueHighlightedColor
 {
-  v0 = [MEMORY[0x1E69DC888] vui_keyColor];
-  v1 = [v0 colorWithAlphaComponent:0.8];
+  vui_keyColor = [MEMORY[0x1E69DC888] vui_keyColor];
+  v1 = [vui_keyColor colorWithAlphaComponent:0.8];
 
   return v1;
 }
@@ -121,7 +121,7 @@
   v12 = 0.0;
   v10 = 0.0;
   v7 = a4;
-  [a1 getRed:&v17 green:&v16 blue:&v15 alpha:&v14];
+  [self getRed:&v17 green:&v16 blue:&v15 alpha:&v14];
   [v7 getRed:&v13 green:&v12 blue:&v11 alpha:&v10];
 
   v8 = [MEMORY[0x1E69DC888] colorWithRed:v6 * v13 + v17 * (1.0 - v6) green:v6 * v12 + v16 * (1.0 - v6) blue:v6 * v11 + v15 * (1.0 - v6) alpha:v6 * v10 + v14 * (1.0 - v6)];

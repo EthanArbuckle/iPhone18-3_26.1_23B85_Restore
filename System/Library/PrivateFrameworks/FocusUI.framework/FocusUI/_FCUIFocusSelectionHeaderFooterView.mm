@@ -1,24 +1,24 @@
 @interface _FCUIFocusSelectionHeaderFooterView
-+ (id)_preferredFont:(BOOL)a3 textStyle:(id)a4 weight:(double)a5 additionalTraits:(unsigned int)a6;
++ (id)_preferredFont:(BOOL)font textStyle:(id)style weight:(double)weight additionalTraits:(unsigned int)traits;
 - (BOOL)adjustForContentSizeCategoryChange;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_FCUIFocusSelectionHeaderFooterView)initWithText:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_FCUIFocusSelectionHeaderFooterView)initWithText:(id)text;
 - (id)_labelFont;
-- (void)_configureLabel:(id)a3;
+- (void)_configureLabel:(id)label;
 - (void)_configureLabelIfNecessary;
 - (void)_setNeedsTextAttributesUpdate;
 - (void)_updateTextAttributes;
-- (void)_updateTextAttributesForLabel:(id)a3;
+- (void)_updateTextAttributesForLabel:(id)label;
 - (void)_updateTextAttributesIfNecessary;
 - (void)layoutSubviews;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
 @end
 
 @implementation _FCUIFocusSelectionHeaderFooterView
 
-- (_FCUIFocusSelectionHeaderFooterView)initWithText:(id)a3
+- (_FCUIFocusSelectionHeaderFooterView)initWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v10.receiver = self;
   v10.super_class = _FCUIFocusSelectionHeaderFooterView;
   v5 = [(_FCUIFocusSelectionHeaderFooterView *)&v10 init];
@@ -27,7 +27,7 @@
   {
     [(_FCUIFocusSelectionHeaderFooterView *)v5 setAdjustsFontForContentSizeCategory:1];
     [(_FCUIFocusSelectionHeaderFooterView *)v6 _configureLabelIfNecessary];
-    v7 = [(_FCUIFocusSelectionHeaderFooterView *)v6 _attributedTextForText:v4];
+    v7 = [(_FCUIFocusSelectionHeaderFooterView *)v6 _attributedTextForText:textCopy];
     label = v6->_label;
     if (v7)
     {
@@ -36,14 +36,14 @@
 
     else
     {
-      [(UILabel *)label setText:v4];
+      [(UILabel *)label setText:textCopy];
     }
   }
 
   return v6;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v6 = *MEMORY[0x277CBF3A8];
   BSRectWithSize();
@@ -65,20 +65,20 @@
   [(_FCUIFocusSelectionHeaderFooterView *)self _layoutSubviewsInBounds:0 measuringOnly:?];
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  if (self->_adjustsFontForContentSizeCategory != a3)
+  if (self->_adjustsFontForContentSizeCategory != category)
   {
-    self->_adjustsFontForContentSizeCategory = a3;
+    self->_adjustsFontForContentSizeCategory = category;
     [(_FCUIFocusSelectionHeaderFooterView *)self _setNeedsTextAttributesUpdate];
   }
 }
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
-  v3 = [(_FCUIFocusSelectionHeaderFooterView *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  v5 = UIContentSizeCategoryCompareToCategory(v4, self->_preferredContentSizeCategory);
+  traitCollection = [(_FCUIFocusSelectionHeaderFooterView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v5 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, self->_preferredContentSizeCategory);
 
   if (v5)
   {
@@ -88,22 +88,22 @@
   return v5 != NSOrderedSame;
 }
 
-+ (id)_preferredFont:(BOOL)a3 textStyle:(id)a4 weight:(double)a5 additionalTraits:(unsigned int)a6
++ (id)_preferredFont:(BOOL)font textStyle:(id)style weight:(double)weight additionalTraits:(unsigned int)traits
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (font)
   {
-    [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:a4 addingSymbolicTraits:*&a6 options:0];
+    [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:style addingSymbolicTraits:*&traits options:0];
   }
 
   else
   {
-    [MEMORY[0x277D74310] defaultFontDescriptorWithTextStyle:a4 addingSymbolicTraits:*&a6 options:0];
+    [MEMORY[0x277D74310] defaultFontDescriptorWithTextStyle:style addingSymbolicTraits:*&traits options:0];
   }
   v7 = ;
   v16 = *MEMORY[0x277D74380];
   v14 = *MEMORY[0x277D74430];
-  v8 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+  v8 = [MEMORY[0x277CCABB0] numberWithDouble:weight];
   v15 = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
   v17[0] = v9;
@@ -124,13 +124,13 @@
   return [v2 _preferredFont:1 textStyle:v3 weight:0 additionalTraits:v4];
 }
 
-- (void)_updateTextAttributesForLabel:(id)a3
+- (void)_updateTextAttributesForLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
-    v4 = a3;
-    v5 = [(_FCUIFocusSelectionHeaderFooterView *)self _labelFont];
-    [v4 setFont:v5];
+    labelCopy = label;
+    _labelFont = [(_FCUIFocusSelectionHeaderFooterView *)self _labelFont];
+    [labelCopy setFont:_labelFont];
 
     [(_FCUIFocusSelectionHeaderFooterView *)self setNeedsLayout];
   }
@@ -146,10 +146,10 @@
 
 - (void)_updateTextAttributes
 {
-  v3 = [(_FCUIFocusSelectionHeaderFooterView *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(_FCUIFocusSelectionHeaderFooterView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
   preferredContentSizeCategory = self->_preferredContentSizeCategory;
-  self->_preferredContentSizeCategory = v4;
+  self->_preferredContentSizeCategory = preferredContentSizeCategory;
 
   label = self->_label;
 
@@ -165,15 +165,15 @@
   }
 }
 
-- (void)_configureLabel:(id)a3
+- (void)_configureLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     [(UILabel *)self->_label setNumberOfLines:0];
     [(UILabel *)self->_label setTextAlignment:1];
     label = self->_label;
-    v5 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)label setTextColor:v5];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)label setTextColor:secondaryLabelColor];
   }
 }
 

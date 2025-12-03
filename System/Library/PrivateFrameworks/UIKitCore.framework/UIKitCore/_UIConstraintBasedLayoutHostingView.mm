@@ -1,16 +1,16 @@
 @interface _UIConstraintBasedLayoutHostingView
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)a3;
-- (CGSize)_layoutSizeThatFits:(CGSize)a3 fixedAxes:(unint64_t)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)size;
+- (CGSize)_layoutSizeThatFits:(CGSize)fits fixedAxes:(unint64_t)axes;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)alignmentRectInsets;
-- (_UIConstraintBasedLayoutHostingView)initWithHostedView:(id)a3;
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3;
-- (void)_scheduleUpdateConstraintsPassAsEngineHostNeedingLayout:(BOOL)a3;
-- (void)_setFrameWithAlignmentRect:(CGRect)a3;
-- (void)constraintsDidChangeInEngine:(id)a3;
-- (void)setHostedView:(id)a3;
+- (_UIConstraintBasedLayoutHostingView)initWithHostedView:(id)view;
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view;
+- (void)_scheduleUpdateConstraintsPassAsEngineHostNeedingLayout:(BOOL)layout;
+- (void)_setFrameWithAlignmentRect:(CGRect)rect;
+- (void)constraintsDidChangeInEngine:(id)engine;
+- (void)setHostedView:(id)view;
 - (void)updateConstraints;
-- (void)willRemoveSubview:(id)a3;
+- (void)willRemoveSubview:(id)subview;
 @end
 
 @implementation _UIConstraintBasedLayoutHostingView
@@ -36,11 +36,11 @@
   }
 }
 
-- (_UIConstraintBasedLayoutHostingView)initWithHostedView:(id)a3
+- (_UIConstraintBasedLayoutHostingView)initWithHostedView:(id)view
 {
   v5 = *MEMORY[0x1E695EFF8];
   v6 = *(MEMORY[0x1E695EFF8] + 8);
-  [a3 frame];
+  [view frame];
   v10.receiver = self;
   v10.super_class = _UIConstraintBasedLayoutHostingView;
   v7 = [(UIView *)&v10 initWithFrame:v5, v6];
@@ -48,82 +48,82 @@
   if (v7)
   {
     [(UIView *)v7 _setHostsLayoutEngine:1];
-    [(_UIConstraintBasedLayoutHostingView *)v8 setHostedView:a3];
+    [(_UIConstraintBasedLayoutHostingView *)v8 setHostedView:view];
   }
 
   return v8;
 }
 
-- (void)setHostedView:(id)a3
+- (void)setHostedView:(id)view
 {
   hostedView = self->_hostedView;
-  if (hostedView != a3)
+  if (hostedView != view)
   {
     if (hostedView)
     {
       [(UIView *)hostedView removeFromSuperview];
     }
 
-    self->_hostedView = a3;
+    self->_hostedView = view;
     self->_hasAddedConstraints = 0;
-    if (a3)
+    if (view)
     {
       [(UIView *)self bounds];
-      [a3 setFrame:?];
-      [a3 setAutoresizingMask:18];
+      [view setFrame:?];
+      [view setAutoresizingMask:18];
 
-      [(UIView *)self addSubview:a3];
+      [(UIView *)self addSubview:view];
     }
   }
 }
 
-- (void)willRemoveSubview:(id)a3
+- (void)willRemoveSubview:(id)subview
 {
   v5.receiver = self;
   v5.super_class = _UIConstraintBasedLayoutHostingView;
   [(UIView *)&v5 willRemoveSubview:?];
-  if (self->_hostedView == a3)
+  if (self->_hostedView == subview)
   {
     self->_hostedView = 0;
   }
 }
 
-- (void)_setFrameWithAlignmentRect:(CGRect)a3
+- (void)_setFrameWithAlignmentRect:(CGRect)rect
 {
   v3.receiver = self;
   v3.super_class = _UIConstraintBasedLayoutHostingView;
-  [(UIView *)&v3 _setFrameWithAlignmentRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIView *)&v3 _setFrameWithAlignmentRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
 }
 
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view
 {
   v5.receiver = self;
   v5.super_class = _UIConstraintBasedLayoutHostingView;
   [(UIView *)&v5 _intrinsicContentSizeInvalidatedForChildView:?];
-  if (self->_hostedView == a3 && (*(&self->super._viewFlags + 9) & 0x10) == 0)
+  if (self->_hostedView == view && (*(&self->super._viewFlags + 9) & 0x10) == 0)
   {
     [(_UIConstraintBasedLayoutHostingView *)self _layoutMetricsInvalidatedForHostedView];
   }
 }
 
-- (void)constraintsDidChangeInEngine:(id)a3
+- (void)constraintsDidChangeInEngine:(id)engine
 {
   v4.receiver = self;
   v4.super_class = _UIConstraintBasedLayoutHostingView;
-  [(UIView *)&v4 constraintsDidChangeInEngine:a3];
+  [(UIView *)&v4 constraintsDidChangeInEngine:engine];
   if ((*(&self->super._viewFlags + 8) & 4) == 0)
   {
     [(_UIConstraintBasedLayoutHostingView *)self _layoutMetricsInvalidatedForHostedView];
   }
 }
 
-- (void)_scheduleUpdateConstraintsPassAsEngineHostNeedingLayout:(BOOL)a3
+- (void)_scheduleUpdateConstraintsPassAsEngineHostNeedingLayout:(BOOL)layout
 {
-  v3 = a3;
+  layoutCopy = layout;
   v5.receiver = self;
   v5.super_class = _UIConstraintBasedLayoutHostingView;
   [(UIView *)&v5 _scheduleUpdateConstraintsPassAsEngineHostNeedingLayout:?];
-  if (v3 && (*(&self->super._viewFlags + 9) & 0x10) == 0)
+  if (layoutCopy && (*(&self->super._viewFlags + 9) & 0x10) == 0)
   {
     [(_UIConstraintBasedLayoutHostingView *)self _layoutMetricsInvalidatedForHostedView];
   }
@@ -139,30 +139,30 @@
   return result;
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)a3
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)size
 {
-  [(UIView *)self->_hostedView _baselineOffsetsAtSize:a3.width, a3.height];
+  [(UIView *)self->_hostedView _baselineOffsetsAtSize:size.width, size.height];
   result.var1 = v4;
   result.var0 = v3;
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   height = 1.79769313e308;
-  if (a3.width == 0.0)
+  if (fits.width == 0.0)
   {
     width = 1.79769313e308;
   }
 
   else
   {
-    width = a3.width;
+    width = fits.width;
   }
 
-  if (a3.height != 0.0)
+  if (fits.height != 0.0)
   {
-    height = a3.height;
+    height = fits.height;
   }
 
   [(UIView *)self alignmentRectForFrame:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), width, height];
@@ -177,10 +177,10 @@
   return result;
 }
 
-- (CGSize)_layoutSizeThatFits:(CGSize)a3 fixedAxes:(unint64_t)a4
+- (CGSize)_layoutSizeThatFits:(CGSize)fits fixedAxes:(unint64_t)axes
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   p_viewFlags = &self->super._viewFlags;
   if ((*(&self->super._viewFlags + 8) & 4) == 0)
   {
@@ -191,8 +191,8 @@
   {
     v9 = fmax(fmin(width, 50000.0), 0.0);
     v10 = fmin(height, 50000.0);
-    v11 = [MEMORY[0x1E695DF70] array];
-    if (a4)
+    array = [MEMORY[0x1E695DF70] array];
+    if (axes)
     {
       v14 = @"_UI-fixedSizeH";
       v15 = 1144586240;
@@ -207,7 +207,7 @@
         LODWORD(v13) = 1144586240;
         [v12 setPriority:v13];
         [v12 setIdentifier:@"_UI-fittingSizeHLimit"];
-        [v11 addObject:v12];
+        [array addObject:v12];
       }
 
       v14 = @"_UI-fittingSizeHCompression";
@@ -220,8 +220,8 @@
     LODWORD(v23) = v15;
     [v22 setPriority:v23];
     [v22 setIdentifier:v14];
-    [v11 addObject:v22];
-    if ((a4 & 2) != 0)
+    [array addObject:v22];
+    if ((axes & 2) != 0)
     {
       v27 = [MEMORY[0x1E69977A0] constraintWithItem:self attribute:8 relatedBy:0 constant:v21];
       LODWORD(v30) = 1144586240;
@@ -237,7 +237,7 @@
         LODWORD(v25) = 1144586240;
         [v24 setPriority:v25];
         [v24 setIdentifier:@"_UI-fittingSizeVLimit"];
-        [v11 addObject:v24];
+        [array addObject:v24];
       }
 
       v26 = [MEMORY[0x1E69977A0] constraintWithItem:self attribute:8 relatedBy:0 constant:0.0];
@@ -253,7 +253,7 @@
     }
 
     [v27 setIdentifier:v29];
-    [v11 addObject:v27];
+    [array addObject:v27];
     v34 = 0;
     v35 = &v34;
     v36 = 0x3010000000;
@@ -266,7 +266,7 @@
     v33[3] = &unk_1E71156A0;
     v33[4] = self;
     v33[5] = &v34;
-    [(UIView *)self _measureViewWithSize:v11 temporaryConstraints:1 suspendingSystemConstraints:v33 withOptimizedEngineBlock:v9, v21];
+    [(UIView *)self _measureViewWithSize:array temporaryConstraints:1 suspendingSystemConstraints:v33 withOptimizedEngineBlock:v9, v21];
     v18 = v35[4];
     v20 = v35[5];
     _Block_object_dispose(&v34, 8);
@@ -275,7 +275,7 @@
   else
   {
     *(p_viewFlags + 1) &= ~0x1000uLL;
-    [(UIView *)self->_hostedView _layoutSizeThatFits:a4 fixedAxes:width, height];
+    [(UIView *)self->_hostedView _layoutSizeThatFits:axes fixedAxes:width, height];
     v18 = v17;
     v20 = v19;
   }

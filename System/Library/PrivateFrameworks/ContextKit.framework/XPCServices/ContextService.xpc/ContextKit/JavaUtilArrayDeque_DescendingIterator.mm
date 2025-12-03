@@ -1,5 +1,5 @@
 @interface JavaUtilArrayDeque_DescendingIterator
-- (JavaUtilArrayDeque_DescendingIterator)initWithJavaUtilArrayDeque:(id)a3;
+- (JavaUtilArrayDeque_DescendingIterator)initWithJavaUtilArrayDeque:(id)deque;
 - (id)next;
 - (void)dealloc;
 - (void)remove;
@@ -71,11 +71,11 @@ LABEL_16:
   self->lastRet_ = -1;
 }
 
-- (JavaUtilArrayDeque_DescendingIterator)initWithJavaUtilArrayDeque:(id)a3
+- (JavaUtilArrayDeque_DescendingIterator)initWithJavaUtilArrayDeque:(id)deque
 {
-  JreStrongAssign(&self->this$0_, a3);
-  self->cursor_ = *(a3 + 5);
-  self->fence_ = *(a3 + 4);
+  JreStrongAssign(&self->this$0_, deque);
+  self->cursor_ = *(deque + 5);
+  self->fence_ = *(deque + 4);
   self->lastRet_ = -1;
   return self;
 }

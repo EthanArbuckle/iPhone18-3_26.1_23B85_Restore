@@ -1,14 +1,14 @@
 @interface EPTableStyleFlattener
-- (BOOL)isObjectSupported:(id)a3;
-- (id)collectionFromWorksheet:(id)a3;
+- (BOOL)isObjectSupported:(id)supported;
+- (id)collectionFromWorksheet:(id)worksheet;
 - (id)keysInTheOrderTheyShouldBeApplied;
-- (id)newExtractedCellStyleElements:(id)a3 parentScope:(id)a4 row:(int)a5 column:(int)a6;
-- (id)newExtractedGlobalStyleElements:(id)a3;
-- (id)newExtractedRowStyleElements:(id)a3 parentScope:(id)a4 row:(int)a5;
-- (id)styleFromObject:(id)a3;
-- (int)borderFlagsForStyleType:(int)a3 row:(int)a4 column:(int)a5;
-- (int)stripeOffset:(int)a3 row:(BOOL)a4;
-- (void)cacheSizes:(id)a3 inObject:(id)a4;
+- (id)newExtractedCellStyleElements:(id)elements parentScope:(id)scope row:(int)row column:(int)column;
+- (id)newExtractedGlobalStyleElements:(id)elements;
+- (id)newExtractedRowStyleElements:(id)elements parentScope:(id)scope row:(int)row;
+- (id)styleFromObject:(id)object;
+- (int)borderFlagsForStyleType:(int)type row:(int)row column:(int)column;
+- (int)stripeOffset:(int)offset row:(BOOL)row;
+- (void)cacheSizes:(id)sizes inObject:(id)object;
 - (void)clearCache;
 @end
 
@@ -52,66 +52,66 @@
   [(EPStyleFlattener *)&v4 clearCache];
 }
 
-- (BOOL)isObjectSupported:(id)a3
+- (BOOL)isObjectSupported:(id)supported
 {
-  v3 = a3;
+  supportedCopy = supported;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (id)collectionFromWorksheet:(id)a3
+- (id)collectionFromWorksheet:(id)worksheet
 {
-  v3 = [a3 tables];
+  tables = [worksheet tables];
 
-  return v3;
+  return tables;
 }
 
-- (id)styleFromObject:(id)a3
+- (id)styleFromObject:(id)object
 {
-  v4 = a3;
-  v5 = [v4 style];
-  v6 = [v4 tableBorderDxf];
-  if (v6)
+  objectCopy = object;
+  style = [objectCopy style];
+  tableBorderDxf = [objectCopy tableBorderDxf];
+  if (tableBorderDxf)
   {
-    if (v5)
+    if (style)
     {
-      v7 = [v5 copy];
+      v7 = [style copy];
 
-      v5 = v7;
+      style = v7;
     }
 
     else
     {
-      v5 = +[EDTableStyle tableStyle];
+      style = +[EDTableStyle tableStyle];
     }
 
-    v8 = [v5 tableStyleElements];
-    v9 = [(EPStyleFlattener *)self wrapDifferentialStyleInATableStyleElement:v6 type:14];
-    [v8 addObject:v9];
+    tableStyleElements = [style tableStyleElements];
+    v9 = [(EPStyleFlattener *)self wrapDifferentialStyleInATableStyleElement:tableBorderDxf type:14];
+    [tableStyleElements addObject:v9];
   }
 
-  return v5;
+  return style;
 }
 
-- (id)newExtractedGlobalStyleElements:(id)a3
+- (id)newExtractedGlobalStyleElements:(id)elements
 {
-  v4 = a3;
+  elementsCopy = elements;
   v5 = objc_alloc(MEMORY[0x277CBEA60]);
   v6 = [MEMORY[0x277CCABB0] numberWithInt:1];
   v7 = [MEMORY[0x277CCABB0] numberWithInt:14];
   v8 = [v5 initWithObjects:{v6, v7, 0}];
 
-  v9 = [(EPStyleFlattener *)self newExtractedKeys:v8 from:v4 parent:0];
+  v9 = [(EPStyleFlattener *)self newExtractedKeys:v8 from:elementsCopy parent:0];
   return v9;
 }
 
-- (id)newExtractedRowStyleElements:(id)a3 parentScope:(id)a4 row:(int)a5
+- (id)newExtractedRowStyleElements:(id)elements parentScope:(id)scope row:(int)row
 {
-  v5 = *&a5;
-  v8 = a3;
-  v9 = a4;
+  v5 = *&row;
+  elementsCopy = elements;
+  scopeCopy = scope;
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if (v5 - self->super.mFirstRow >= SLODWORD(self->mHeaderRowCount))
   {
@@ -154,28 +154,28 @@
     [v10 addObject:v11];
   }
 
-  v15 = [(EPStyleFlattener *)self newExtractedKeys:v10 from:v8 parent:v9];
+  v15 = [(EPStyleFlattener *)self newExtractedKeys:v10 from:elementsCopy parent:scopeCopy];
 
   return v15;
 }
 
-- (id)newExtractedCellStyleElements:(id)a3 parentScope:(id)a4 row:(int)a5 column:(int)a6
+- (id)newExtractedCellStyleElements:(id)elements parentScope:(id)scope row:(int)row column:(int)column
 {
-  v29 = a3;
-  v28 = a4;
+  elementsCopy = elements;
+  scopeCopy = scope;
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v10 = [(EDTable *)self->mTable showFirstColumn];
-  v11 = [(EDTable *)self->mTable showLastColumn];
-  v12 = v11;
+  showFirstColumn = [(EDTable *)self->mTable showFirstColumn];
+  showLastColumn = [(EDTable *)self->mTable showLastColumn];
+  v12 = showLastColumn;
   if (!self->mHeaderRowCount)
   {
-    if (!self->mTotalsRowCount || self->super.mLastRow != a5)
+    if (!self->mTotalsRowCount || self->super.mLastRow != row)
     {
 LABEL_11:
       v17 = 0;
       v15 = 0;
       v18 = 0;
-      if (v10)
+      if (showFirstColumn)
       {
 LABEL_12:
         v19 = v18;
@@ -194,11 +194,11 @@ LABEL_26:
   if (!self->mTotalsRowCount)
   {
     v17 = 0;
-    if (mFirstRow != a5)
+    if (mFirstRow != row)
     {
       v18 = 0;
       v15 = 0;
-      if (v10)
+      if (showFirstColumn)
       {
         goto LABEL_12;
       }
@@ -211,13 +211,13 @@ LABEL_26:
   }
 
   mLastRow = self->super.mLastRow;
-  v15 = mLastRow == a5;
-  if (mFirstRow == a5)
+  v15 = mLastRow == row;
+  if (mFirstRow == row)
   {
 LABEL_15:
-    if (!v10 || self->super.mFirstColumn != a6)
+    if (!showFirstColumn || self->super.mFirstColumn != column)
     {
-      if (v11 && self->super.mLastColumn == a6)
+      if (showLastColumn && self->super.mLastColumn == column)
       {
         v18 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:11];
         [v9 addObject:v18];
@@ -229,7 +229,7 @@ LABEL_15:
       }
 
       v17 = 1;
-      if (v10)
+      if (showFirstColumn)
       {
         goto LABEL_12;
       }
@@ -243,15 +243,15 @@ LABEL_15:
     goto LABEL_18;
   }
 
-  if (mLastRow != a5)
+  if (mLastRow != row)
   {
     goto LABEL_11;
   }
 
 LABEL_8:
-  if (!v10 || self->super.mFirstColumn != a6)
+  if (!showFirstColumn || self->super.mFirstColumn != column)
   {
-    if (v11 && self->super.mLastColumn == a6)
+    if (showLastColumn && self->super.mLastColumn == column)
     {
       v18 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:13];
       [v9 addObject:v18];
@@ -265,7 +265,7 @@ LABEL_8:
     }
 
     v15 = 1;
-    if (v10)
+    if (showFirstColumn)
     {
       goto LABEL_12;
     }
@@ -280,7 +280,7 @@ LABEL_8:
 LABEL_18:
   v19 = v16;
 LABEL_19:
-  if (self->super.mFirstColumn == a6)
+  if (self->super.mFirstColumn == column)
   {
     v20 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:4];
 
@@ -290,7 +290,7 @@ LABEL_19:
   }
 
 LABEL_27:
-  if (v12 && self->super.mLastColumn == a6)
+  if (v12 && self->super.mLastColumn == column)
   {
     v21 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:5];
 
@@ -301,7 +301,7 @@ LABEL_27:
 LABEL_30:
   if (!(v17 & 1 | ![(EDTable *)self->mTable showColumnStripes]| v15))
   {
-    v22 = [(EPTableStyleFlattener *)self stripeOffset:a6 row:0];
+    v22 = [(EPTableStyleFlattener *)self stripeOffset:column row:0];
     v23 = objc_alloc(MEMORY[0x277CCABB0]);
     if (v22 < self->super.mFirstColumnStripeSize)
     {
@@ -319,16 +319,16 @@ LABEL_30:
     [v9 addObject:v25];
   }
 
-  v26 = [(EPStyleFlattener *)self newExtractedKeys:v9 from:v29 parent:v28];
+  v26 = [(EPStyleFlattener *)self newExtractedKeys:v9 from:elementsCopy parent:scopeCopy];
 
   return v26;
 }
 
-- (int)borderFlagsForStyleType:(int)a3 row:(int)a4 column:(int)a5
+- (int)borderFlagsForStyleType:(int)type row:(int)row column:(int)column
 {
   mFirstColumn = self->super.mFirstColumn;
   mLastColumn = self->super.mLastColumn;
-  if (mFirstColumn == a5)
+  if (mFirstColumn == column)
   {
     v9 = 3;
   }
@@ -338,13 +338,13 @@ LABEL_30:
     v9 = 2;
   }
 
-  if (mLastColumn != a5)
+  if (mLastColumn != column)
   {
-    v9 = mFirstColumn == a5;
+    v9 = mFirstColumn == column;
   }
 
   mFirstRow = self->super.mFirstRow;
-  if (mFirstRow == a4)
+  if (mFirstRow == row)
   {
     v11 = v9 | 4;
   }
@@ -354,7 +354,7 @@ LABEL_30:
     v11 = v9;
   }
 
-  v12 = self->super.mLastRow - a4;
+  v12 = self->super.mLastRow - row;
   if (v12)
   {
     v13 = v11;
@@ -365,11 +365,11 @@ LABEL_30:
     v13 = v11 | 8;
   }
 
-  if (a3 <= 5)
+  if (type <= 5)
   {
-    if (a3 > 2)
+    if (type > 2)
     {
-      if (a3 == 3)
+      if (type == 3)
       {
         if (v12 + 1 == LODWORD(self->mTotalsRowCount))
         {
@@ -377,9 +377,9 @@ LABEL_30:
         }
       }
 
-      else if (a3 == 4)
+      else if (type == 4)
       {
-        if (mFirstColumn == a5)
+        if (mFirstColumn == column)
         {
           return v13 | 2;
         }
@@ -387,20 +387,20 @@ LABEL_30:
 
       else
       {
-        return v13 | (mLastColumn == a5);
+        return v13 | (mLastColumn == column);
       }
 
       return v13;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       return v13;
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
-      if (a4 - mFirstRow + 1 == LODWORD(self->mHeaderRowCount))
+      if (row - mFirstRow + 1 == LODWORD(self->mHeaderRowCount))
       {
         return v11 | 8;
       }
@@ -411,9 +411,9 @@ LABEL_30:
     return 15;
   }
 
-  if ((a3 - 6) < 2)
+  if ((type - 6) < 2)
   {
-    v17 = [(EPTableStyleFlattener *)self stripeOffset:*&a4 row:1];
+    v17 = [(EPTableStyleFlattener *)self stripeOffset:*&row row:1];
     mFirstRowStripeSize = self->super.mFirstRowStripeSize;
     v19 = v17 - mFirstRowStripeSize;
     if (v17 >= mFirstRowStripeSize)
@@ -428,7 +428,7 @@ LABEL_30:
       v20 = v13;
     }
 
-    if (v17 + 1 == mFirstRowStripeSize || self->super.mLastRow - a4 == LODWORD(self->mTotalsRowCount))
+    if (v17 + 1 == mFirstRowStripeSize || self->super.mLastRow - row == LODWORD(self->mTotalsRowCount))
     {
       return v20 | 8;
     }
@@ -441,9 +441,9 @@ LABEL_30:
 
   else
   {
-    if ((a3 - 8) >= 2)
+    if ((type - 8) >= 2)
     {
-      if (a3 == 14)
+      if (type == 14)
       {
         return v13;
       }
@@ -451,7 +451,7 @@ LABEL_30:
       return 15;
     }
 
-    v14 = [(EPTableStyleFlattener *)self stripeOffset:*&a5 row:0];
+    v14 = [(EPTableStyleFlattener *)self stripeOffset:*&column row:0];
     mFirstColumnStripeSize = self->super.mFirstColumnStripeSize;
     v16 = v14 - mFirstColumnStripeSize;
     if (v14 >= mFirstColumnStripeSize)
@@ -472,26 +472,26 @@ LABEL_30:
   }
 }
 
-- (void)cacheSizes:(id)a3 inObject:(id)a4
+- (void)cacheSizes:(id)sizes inObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
-  objc_storeStrong(&self->mTable, a4);
-  v8 = [(EDTable *)self->mTable tableRange];
+  sizesCopy = sizes;
+  objectCopy = object;
+  objc_storeStrong(&self->mTable, object);
+  tableRange = [(EDTable *)self->mTable tableRange];
   v10.receiver = self;
   v10.super_class = EPTableStyleFlattener;
-  [(EPStyleFlattener *)&v10 cacheRange:v8];
+  [(EPStyleFlattener *)&v10 cacheRange:tableRange];
 
   self->mHeaderRowCount = [(EDTable *)self->mTable headerRowCount];
   self->mTotalsRowCount = [(EDTable *)self->mTable totalsRowCount];
   v9.receiver = self;
   v9.super_class = EPTableStyleFlattener;
-  [(EPStyleFlattener *)&v9 cacheSizes:v6 inObject:v7];
+  [(EPStyleFlattener *)&v9 cacheSizes:sizesCopy inObject:objectCopy];
 }
 
-- (int)stripeOffset:(int)a3 row:(BOOL)a4
+- (int)stripeOffset:(int)offset row:(BOOL)row
 {
-  if (a4)
+  if (row)
   {
     mFirstColumn = self->super.mFirstRow + LODWORD(self->mHeaderRowCount);
     v5 = &OBJC_IVAR___EPStyleFlattener_mSecondRowStripeSize;
@@ -505,7 +505,7 @@ LABEL_30:
     v6 = &OBJC_IVAR___EPStyleFlattener_mFirstColumnStripeSize;
   }
 
-  return (a3 - mFirstColumn) % (*(&self->super.super.super.isa + *v5) + *(&self->super.super.super.isa + *v6));
+  return (offset - mFirstColumn) % (*(&self->super.super.super.isa + *v5) + *(&self->super.super.super.isa + *v6));
 }
 
 @end

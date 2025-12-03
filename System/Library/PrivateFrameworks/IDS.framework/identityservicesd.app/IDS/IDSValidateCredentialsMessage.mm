@@ -1,38 +1,38 @@
 @interface IDSValidateCredentialsMessage
 - (id)additionalMessageHeaders;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
-- (void)handleResponseDictionary:(id)a3;
+- (void)handleResponseDictionary:(id)dictionary;
 @end
 
 @implementation IDSValidateCredentialsMessage
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v13.receiver = self;
   v13.super_class = IDSValidateCredentialsMessage;
-  v4 = [(IDSValidateCredentialsMessage *)&v13 copyWithZone:a3];
-  v5 = [(IDSValidateCredentialsMessage *)self authenticationDataSig];
-  [v4 setAuthenticationDataSig:v5];
+  v4 = [(IDSValidateCredentialsMessage *)&v13 copyWithZone:zone];
+  authenticationDataSig = [(IDSValidateCredentialsMessage *)self authenticationDataSig];
+  [v4 setAuthenticationDataSig:authenticationDataSig];
 
-  v6 = [(IDSValidateCredentialsMessage *)self authenticationDataAuthToken];
-  [v4 setAuthenticationDataAuthToken:v6];
+  authenticationDataAuthToken = [(IDSValidateCredentialsMessage *)self authenticationDataAuthToken];
+  [v4 setAuthenticationDataAuthToken:authenticationDataAuthToken];
 
-  v7 = [(IDSValidateCredentialsMessage *)self authenticationDataUserID];
-  [v4 setAuthenticationDataUserID:v7];
+  authenticationDataUserID = [(IDSValidateCredentialsMessage *)self authenticationDataUserID];
+  [v4 setAuthenticationDataUserID:authenticationDataUserID];
 
-  v8 = [(IDSValidateCredentialsMessage *)self responseMessage];
-  [v4 setResponseMessage:v8];
+  responseMessage = [(IDSValidateCredentialsMessage *)self responseMessage];
+  [v4 setResponseMessage:responseMessage];
 
-  v9 = [(IDSValidateCredentialsMessage *)self responseUserID];
-  [v4 setResponseUserID:v9];
+  responseUserID = [(IDSValidateCredentialsMessage *)self responseUserID];
+  [v4 setResponseUserID:responseUserID];
 
-  v10 = [(IDSValidateCredentialsMessage *)self responseStatus];
-  [v4 setResponseStatus:v10];
+  responseStatus = [(IDSValidateCredentialsMessage *)self responseStatus];
+  [v4 setResponseStatus:responseStatus];
 
-  v11 = [(IDSValidateCredentialsMessage *)self responseOrigin];
-  [v4 setResponseOrigin:v11];
+  responseOrigin = [(IDSValidateCredentialsMessage *)self responseOrigin];
+  [v4 setResponseOrigin:responseOrigin];
 
   return v4;
 }
@@ -41,20 +41,20 @@
 {
   v8.receiver = self;
   v8.super_class = IDSValidateCredentialsMessage;
-  v3 = [(IDSValidateCredentialsMessage *)&v8 additionalMessageHeaders];
-  Mutable = [v3 mutableCopy];
+  additionalMessageHeaders = [(IDSValidateCredentialsMessage *)&v8 additionalMessageHeaders];
+  Mutable = [additionalMessageHeaders mutableCopy];
 
   if (!Mutable)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   }
 
-  v5 = [(IDSValidateCredentialsMessage *)self pushCertificate];
-  v6 = [v5 _FTStringFromBaseData];
+  pushCertificate = [(IDSValidateCredentialsMessage *)self pushCertificate];
+  _FTStringFromBaseData = [pushCertificate _FTStringFromBaseData];
 
-  if (v6)
+  if (_FTStringFromBaseData)
   {
-    CFDictionarySetValue(Mutable, @"x-push-cert", v6);
+    CFDictionarySetValue(Mutable, @"x-push-cert", _FTStringFromBaseData);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -68,10 +68,10 @@
 - (id)messageBody
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(IDSValidateCredentialsMessage *)self authenticationDataUserID];
-  if (v4)
+  authenticationDataUserID = [(IDSValidateCredentialsMessage *)self authenticationDataUserID];
+  if (authenticationDataUserID)
   {
-    CFDictionarySetValue(v3, @"user-id", v4);
+    CFDictionarySetValue(v3, @"user-id", authenticationDataUserID);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -79,16 +79,16 @@
     sub_10091D2E0();
   }
 
-  v5 = [(IDSValidateCredentialsMessage *)self authenticationDataSig];
-  if (v5)
+  authenticationDataSig = [(IDSValidateCredentialsMessage *)self authenticationDataSig];
+  if (authenticationDataSig)
   {
-    CFDictionarySetValue(v3, @"sig", v5);
+    CFDictionarySetValue(v3, @"sig", authenticationDataSig);
   }
 
-  v6 = [(IDSValidateCredentialsMessage *)self authenticationDataAuthToken];
-  if (v6)
+  authenticationDataAuthToken = [(IDSValidateCredentialsMessage *)self authenticationDataAuthToken];
+  if (authenticationDataAuthToken)
   {
-    CFDictionarySetValue(v3, @"auth-token", v6);
+    CFDictionarySetValue(v3, @"auth-token", authenticationDataAuthToken);
   }
 
   v7 = [[NSDictionary alloc] initWithObjectsAndKeys:{v3, @"authentication-data", 0}];
@@ -103,19 +103,19 @@
   return v2;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 _stringForKey:@"message"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy _stringForKey:@"message"];
   [(IDSValidateCredentialsMessage *)self setResponseMessage:v5];
 
-  v6 = [v4 _stringForKey:@"user-id"];
+  v6 = [dictionaryCopy _stringForKey:@"user-id"];
   [(IDSValidateCredentialsMessage *)self setResponseUserID:v6];
 
-  v7 = [v4 _numberForKey:@"status"];
+  v7 = [dictionaryCopy _numberForKey:@"status"];
   [(IDSValidateCredentialsMessage *)self setResponseStatus:v7];
 
-  v8 = [v4 _numberForKey:@"origin"];
+  v8 = [dictionaryCopy _numberForKey:@"origin"];
 
   [(IDSValidateCredentialsMessage *)self setResponseOrigin:v8];
 }

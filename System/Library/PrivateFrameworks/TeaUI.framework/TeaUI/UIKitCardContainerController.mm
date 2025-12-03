@@ -1,6 +1,6 @@
 @interface UIKitCardContainerController
-- (_TtC5TeaUI28UIKitCardContainerController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC5TeaUI28UIKitCardContainerController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewLayoutMarginsDidChange;
@@ -12,48 +12,48 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   UIKitCardContainerController.viewDidLoad()();
 }
 
 - (void)viewLayoutMarginsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   UIKitCardContainerController.viewLayoutMarginsDidChange()();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   UIKitCardContainerController.viewWillLayoutSubviews()();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   UIKitCardContainerController.viewDidLayoutSubviews()();
 }
 
-- (_TtC5TeaUI28UIKitCardContainerController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5TeaUI28UIKitCardContainerController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1D8190F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   UIKitCardContainerController.init(nibName:bundle:)();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  UIKitCardContainerController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  UIKitCardContainerController.viewDidAppear(_:)(appear);
 }
 
 - (void)viewSafeAreaInsetsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   UIKitCardContainerController.viewSafeAreaInsetsDidChange()();
 }
 

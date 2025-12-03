@@ -1,6 +1,6 @@
 @interface FCAssetHandleDownloadRequest
 - (void)cancel;
-- (void)setRelativePriority:(int64_t)a3;
+- (void)setRelativePriority:(int64_t)priority;
 @end
 
 @implementation FCAssetHandleDownloadRequest
@@ -17,9 +17,9 @@
   }
 }
 
-- (void)setRelativePriority:(int64_t)a3
+- (void)setRelativePriority:(int64_t)priority
 {
-  self->_relativePriority = a3;
+  self->_relativePriority = priority;
   priorityHandler = self->_priorityHandler;
   if (priorityHandler)
   {

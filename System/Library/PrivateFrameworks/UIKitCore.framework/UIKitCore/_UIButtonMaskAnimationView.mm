@@ -1,21 +1,21 @@
 @interface _UIButtonMaskAnimationView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (CGRect)_frameForLine;
 - (UIColor)borderColor;
 - (_UIButtonMaskAnimationView)init;
 - (double)borderWidth;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)layoutSubviews;
-- (void)setBorderColor:(id)a3;
-- (void)setBorderWidth:(double)a3;
+- (void)setBorderColor:(id)color;
+- (void)setBorderWidth:(double)width;
 @end
 
 @implementation _UIButtonMaskAnimationView
 
 - (double)borderWidth
 {
-  v2 = [(UIView *)self layer];
-  [v2 borderWidth];
+  layer = [(UIView *)self layer];
+  [layer borderWidth];
   v4 = v3;
 
   return v4;
@@ -27,20 +27,20 @@
   v3 = *(MEMORY[0x1E695F058] + 8);
   v6 = *(MEMORY[0x1E695F058] + 16);
   v5 = *(MEMORY[0x1E695F058] + 24);
-  v7 = [(_UIButtonMaskAnimationView *)self hardEdge];
-  v8 = [(UIView *)self layer];
-  [v8 cornerRadius];
+  hardEdge = [(_UIButtonMaskAnimationView *)self hardEdge];
+  layer = [(UIView *)self layer];
+  [layer cornerRadius];
   v10 = v9;
 
-  if (v7)
+  if (hardEdge)
   {
     [(_UIButtonMaskAnimationView *)self borderWidth];
     v12 = v11;
-    if (v7 <= 3)
+    if (hardEdge <= 3)
     {
-      if (v7 != 1)
+      if (hardEdge != 1)
       {
-        if (v7 != 2)
+        if (hardEdge != 2)
         {
           goto LABEL_12;
         }
@@ -51,7 +51,7 @@
       goto LABEL_9;
     }
 
-    if (v7 == 8)
+    if (hardEdge == 8)
     {
       [(UIView *)self bounds];
       v10 = v15 - v12 - v10;
@@ -64,7 +64,7 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    if (v7 == 4)
+    if (hardEdge == 4)
     {
       [(UIView *)self bounds];
       v10 = v13 - v12 - v10;
@@ -91,13 +91,13 @@ LABEL_12:
 
 - (UIColor)borderColor
 {
-  v3 = [(UIView *)self layer];
-  v4 = [v3 borderColor];
+  layer = [(UIView *)self layer];
+  borderColor = [layer borderColor];
 
-  if (v4)
+  if (borderColor)
   {
-    v5 = [(UIView *)self layer];
-    v6 = +[UIColor colorWithCGColor:](UIColor, "colorWithCGColor:", [v5 borderColor]);
+    layer2 = [(UIView *)self layer];
+    v6 = +[UIColor colorWithCGColor:](UIColor, "colorWithCGColor:", [layer2 borderColor]);
   }
 
   else
@@ -136,55 +136,55 @@ LABEL_12:
   return v2;
 }
 
-- (void)setBorderWidth:(double)a3
+- (void)setBorderWidth:(double)width
 {
-  v5 = [(UIView *)self layer];
-  [v5 setBorderWidth:a3];
+  layer = [(UIView *)self layer];
+  [layer setBorderWidth:width];
 
   [(UIView *)self setNeedsLayout];
 }
 
-- (void)setBorderColor:(id)a3
+- (void)setBorderColor:(id)color
 {
-  v6 = a3;
-  v4 = [(UIView *)self layer];
-  v5 = v6;
-  [v4 setBorderColor:{objc_msgSend(v6, "CGColor")}];
+  colorCopy = color;
+  layer = [(UIView *)self layer];
+  v5 = colorCopy;
+  [layer setBorderColor:{objc_msgSend(colorCopy, "CGColor")}];
 
-  [(UIView *)self->_hardEdgeLine setBackgroundColor:v6];
+  [(UIView *)self->_hardEdgeLine setBackgroundColor:colorCopy];
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7.receiver = self;
   v7.super_class = _UIButtonMaskAnimationView;
-  if ([(UIView *)&v7 _shouldAnimatePropertyWithKey:v4])
+  if ([(UIView *)&v7 _shouldAnimatePropertyWithKey:keyCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:@"borderColor"];
+    v5 = [keyCopy isEqualToString:@"borderColor"];
   }
 
   return v5;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v8 = a3;
+  stopCopy = stop;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v8 keyPath];
-    v6 = [v5 isEqualToString:@"opacity"];
+    keyPath = [stopCopy keyPath];
+    v6 = [keyPath isEqualToString:@"opacity"];
 
     if (v6)
     {
-      v7 = [(UIView *)self layer];
-      [v7 removeAnimationForKey:@"borderWidth"];
+      layer = [(UIView *)self layer];
+      [layer removeAnimationForKey:@"borderWidth"];
     }
   }
 

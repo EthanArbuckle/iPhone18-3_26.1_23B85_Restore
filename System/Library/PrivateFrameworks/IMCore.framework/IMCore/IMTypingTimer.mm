@@ -1,6 +1,6 @@
 @interface IMTypingTimer
 - (BOOL)isValid;
-- (IMTypingTimer)initWithHandle:(id)a3 beginDate:(id)a4 timeoutInterval:(double)a5 delegate:(id)a6;
+- (IMTypingTimer)initWithHandle:(id)handle beginDate:(id)date timeoutInterval:(double)interval delegate:(id)delegate;
 - (IMTypingTimerDelegate)delegate;
 - (void)invalidate;
 - (void)timerCallback;
@@ -9,21 +9,21 @@
 
 @implementation IMTypingTimer
 
-- (IMTypingTimer)initWithHandle:(id)a3 beginDate:(id)a4 timeoutInterval:(double)a5 delegate:(id)a6
+- (IMTypingTimer)initWithHandle:(id)handle beginDate:(id)date timeoutInterval:(double)interval delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  handleCopy = handle;
+  dateCopy = date;
+  delegateCopy = delegate;
   v34.receiver = self;
   v34.super_class = IMTypingTimer;
   v14 = [(IMTypingTimer *)&v34 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_handle, a3);
-    objc_storeStrong(&v15->_beginDate, a4);
-    v15->_timeoutInterval = a5;
-    objc_storeWeak(&v15->_delegate, v13);
+    objc_storeStrong(&v14->_handle, handle);
+    objc_storeStrong(&v15->_beginDate, date);
+    v15->_timeoutInterval = interval;
+    objc_storeWeak(&v15->_delegate, delegateCopy);
     if (objc_msgSend_shouldAdjustTimeoutIntervalForBeginDate(IMTypingTimer, v16, v17) && v15->_beginDate)
     {
       v20 = objc_msgSend_date(MEMORY[0x1E695DF00], v18, v19);
@@ -33,18 +33,18 @@
         objc_msgSend_timeIntervalSinceReferenceDate(v20, v21, v22);
         v25 = v24;
         objc_msgSend_timeIntervalSinceReferenceDate(v15->_beginDate, v26, v27);
-        a5 = a5 - (v25 - v28);
+        interval = interval - (v25 - v28);
       }
     }
 
-    if (a5 <= 0.0)
+    if (interval <= 0.0)
     {
       objc_msgSend_triggerTimeout(v15, v18, v19);
     }
 
     else
     {
-      v29 = objc_msgSend_scheduledTimerWithTimeInterval_target_selector_userInfo_repeats_(MEMORY[0x1E695DFF0], v18, v15, sel_timerCallback, 0, 0, a5);
+      v29 = objc_msgSend_scheduledTimerWithTimeInterval_target_selector_userInfo_repeats_(MEMORY[0x1E695DFF0], v18, v15, sel_timerCallback, 0, 0, interval);
       timer = v15->_timer;
       v15->_timer = v29;
 

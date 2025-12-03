@@ -38,19 +38,19 @@
     v8 = [v5 initWithTitle:v7 detailText:0 symbolName:0];
     [(PSTrackingWelcomeController *)v2 setController:v8];
 
-    v9 = [(PSTrackingWelcomeController *)v2 controller];
-    v10 = [(PSTrackingWelcomeController *)v2 aboutText];
-    [v9 addSectionWithHeader:0 content:v10];
+    controller = [(PSTrackingWelcomeController *)v2 controller];
+    aboutText = [(PSTrackingWelcomeController *)v2 aboutText];
+    [controller addSectionWithHeader:0 content:aboutText];
 
-    v11 = [(PSTrackingWelcomeController *)v2 controller];
-    v23[0] = v11;
+    controller2 = [(PSTrackingWelcomeController *)v2 controller];
+    v23[0] = controller2;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
     [(PSTrackingWelcomeController *)v2 setViewControllers:v12];
 
     v13 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:v2 action:sel_donePressed];
-    v14 = [(PSTrackingWelcomeController *)v2 controller];
-    v15 = [v14 navigationItem];
-    [v15 setRightBarButtonItem:v13];
+    controller3 = [(PSTrackingWelcomeController *)v2 controller];
+    navigationItem = [controller3 navigationItem];
+    [navigationItem setRightBarButtonItem:v13];
   }
 
   return v2;
@@ -103,9 +103,9 @@
 
 - (void)donePressed
 {
-  v3 = [(PSTrackingWelcomeController *)self controller];
-  v2 = [v3 presentingViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  controller = [(PSTrackingWelcomeController *)self controller];
+  presentingViewController = [controller presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 @end

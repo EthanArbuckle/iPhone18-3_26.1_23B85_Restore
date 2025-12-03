@@ -1,14 +1,14 @@
 @interface MapsAppTestVenues
 - (BOOL)runTest;
-- (void)displayCategoryResultsWithMapItem:(id)a3 searchCategory:(id)a4 completion:(id)a5;
-- (void)displayPlacecardWithWillDisplayBlock:(id)a3 didDisplayBlock:(id)a4;
-- (void)jumpToWestfieldSF:(id)a3;
-- (void)performScrollTestOnScrollView:(id)a3;
+- (void)displayCategoryResultsWithMapItem:(id)item searchCategory:(id)category completion:(id)completion;
+- (void)displayPlacecardWithWillDisplayBlock:(id)block didDisplayBlock:(id)displayBlock;
+- (void)jumpToWestfieldSF:(id)f;
+- (void)performScrollTestOnScrollView:(id)view;
 - (void)runBrowseTest;
 - (void)runScrollCategoryResultsTest;
 - (void)runScrollSearchResultPlacecardTest;
-- (void)selectSearchResult:(id)a3 completion:(id)a4;
-- (void)selectSubCategory:(id)a3 venueCategoryViewController:(id)a4 completion:(id)a5;
+- (void)selectSearchResult:(id)result completion:(id)completion;
+- (void)selectSubCategory:(id)category venueCategoryViewController:(id)controller completion:(id)completion;
 @end
 
 @implementation MapsAppTestVenues
@@ -49,49 +49,49 @@
   [(MapsAppTestVenues *)self displayPlacecardWithWillDisplayBlock:v4 didDisplayBlock:v3];
 }
 
-- (void)selectSubCategory:(id)a3 venueCategoryViewController:(id)a4 completion:(id)a5
+- (void)selectSubCategory:(id)category venueCategoryViewController:(id)controller completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100B2AA38;
   v17[3] = &unk_101650D20;
   v17[4] = self;
-  v9 = a4;
-  v10 = a3;
+  controllerCopy = controller;
+  categoryCopy = category;
   [PPTNotificationCenter addOnceObserverForName:@"VenueBrowseDidFailToSelectSubcategory" object:0 usingBlock:v17];
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_100B2AA40;
   v15 = &unk_10164FAC0;
-  v16 = v8;
-  v11 = v8;
+  v16 = completionCopy;
+  v11 = completionCopy;
   [PPTNotificationCenter addOnceObserverForName:@"VenueBrowseDidDisplayCategoryResults" object:0 usingBlock:&v12];
-  [v9 selectSubcategory:{v10, v12, v13, v14, v15}];
+  [controllerCopy selectSubcategory:{categoryCopy, v12, v13, v14, v15}];
 }
 
-- (void)selectSearchResult:(id)a3 completion:(id)a4
+- (void)selectSearchResult:(id)result completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = MKPlaceViewControllerDidShowNotification;
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_100B2AB44;
   v14 = &unk_101638770;
-  v15 = self;
-  v16 = v6;
-  v8 = v6;
-  v9 = a3;
+  selfCopy = self;
+  v16 = completionCopy;
+  v8 = completionCopy;
+  resultCopy = result;
   [PPTNotificationCenter addOnceObserverForName:v7 object:0 usingBlock:&v11];
   v10 = [(MapsAppTest *)self testCoordinator:v11];
-  [v10 pptTestSelectVenueSearchResult:v9];
+  [v10 pptTestSelectVenueSearchResult:resultCopy];
 }
 
-- (void)performScrollTestOnScrollView:(id)a3
+- (void)performScrollTestOnScrollView:(id)view
 {
-  v4 = a3;
-  v5 = [(MapsAppTest *)self testName];
-  v6 = [v5 stringByAppendingString:@" - scroll"];
+  viewCopy = view;
+  testName = [(MapsAppTest *)self testName];
+  v6 = [testName stringByAppendingString:@" - scroll"];
 
   [(MapsAppTest *)self startedSubTest:v6];
   objc_initWeak(&location, self);
@@ -116,26 +116,26 @@
   objc_destroyWeak(&location);
 }
 
-- (void)displayCategoryResultsWithMapItem:(id)a3 searchCategory:(id)a4 completion:(id)a5
+- (void)displayCategoryResultsWithMapItem:(id)item searchCategory:(id)category completion:(id)completion
 {
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_100B2AF58;
   v15 = &unk_101638770;
-  v16 = self;
-  v17 = a5;
-  v8 = v17;
-  v9 = a4;
-  v10 = a3;
+  selfCopy = self;
+  completionCopy = completion;
+  v8 = completionCopy;
+  categoryCopy = category;
+  itemCopy = item;
   [PPTNotificationCenter addOnceObserverForName:@"VenueBrowseDidDisplayCategoryResults" object:0 usingBlock:&v12];
   v11 = [(MapsAppTest *)self testCoordinator:v12];
-  [v11 pptTestPresentVenueForMapItem:v10 searchCategory:v9];
+  [v11 pptTestPresentVenueForMapItem:itemCopy searchCategory:categoryCopy];
 }
 
-- (void)displayPlacecardWithWillDisplayBlock:(id)a3 didDisplayBlock:(id)a4
+- (void)displayPlacecardWithWillDisplayBlock:(id)block didDisplayBlock:(id)displayBlock
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  displayBlockCopy = displayBlock;
   v8 = [MKMapItemIdentifier alloc];
   v9 = [v8 initWithMUID:0xCB37502B5BA58FCCLL resultProviderID:0 coordinate:{MKCoordinateInvalid[0], MKCoordinateInvalid[1]}];
   if (v9)
@@ -150,8 +150,8 @@
     v13[2] = sub_100B2B170;
     v13[3] = &unk_101638748;
     v13[4] = self;
-    v14 = v6;
-    v15 = v7;
+    v14 = blockCopy;
+    v15 = displayBlockCopy;
     [v12 submitWithHandler:v13 networkActivity:0];
   }
 
@@ -161,27 +161,27 @@
   }
 }
 
-- (void)jumpToWestfieldSF:(id)a3
+- (void)jumpToWestfieldSF:(id)f
 {
-  if (a3)
+  if (f)
   {
-    v4 = a3;
+    fCopy = f;
     v6 = objc_alloc_init(GEOMapRegion);
     [v6 setWestLng:-122.409078];
     [v6 setEastLng:-122.403764];
     [v6 setSouthLat:37.7806008];
     [v6 setNorthLat:37.7871745];
-    v5 = [(MapsAppTest *)self mainVKMapView];
-    [v5 setMapRegion:v6 pitch:0.0 yaw:0.0];
+    mainVKMapView = [(MapsAppTest *)self mainVKMapView];
+    [mainVKMapView setMapRegion:v6 pitch:0.0 yaw:0.0];
 
-    [(MapsAppTest *)self addFullyDrawnCallback:v4];
+    [(MapsAppTest *)self addFullyDrawnCallback:fCopy];
   }
 }
 
 - (BOOL)runTest
 {
-  v3 = [(MapsAppTest *)self testCoordinator];
-  [v3 pptTestResetForLaunchURL];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestResetForLaunchURL];
 
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;

@@ -1,14 +1,14 @@
 @interface RPScreenCaptureManager
-- (RPScreenCaptureManager)initWithDelegate:(id)a3;
-- (void)startSessionWithPID:(int)a3 windowSize:(CGSize)a4 captureType:(int)a5 contextIDs:(id)a6 mixedRealityCamera:(BOOL)a7 systemCapture:(BOOL)a8 outputHandler:(id)a9 didStartHandler:(id)a10;
+- (RPScreenCaptureManager)initWithDelegate:(id)delegate;
+- (void)startSessionWithPID:(int)d windowSize:(CGSize)size captureType:(int)type contextIDs:(id)ds mixedRealityCamera:(BOOL)camera systemCapture:(BOOL)capture outputHandler:(id)handler didStartHandler:(id)self0;
 - (void)stop;
 @end
 
 @implementation RPScreenCaptureManager
 
-- (RPScreenCaptureManager)initWithDelegate:(id)a3
+- (RPScreenCaptureManager)initWithDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v6 = +[RPScreenCaptureManager newInstance];
 
   if (v6)
@@ -30,18 +30,18 @@
     didStartScreenCaptureHandler = v6->_didStartScreenCaptureHandler;
     v6->_didStartScreenCaptureHandler = 0;
 
-    objc_storeStrong(&v6->_delegate, a3);
+    objc_storeStrong(&v6->_delegate, delegate);
     v6->_screenCaptureDidStart = 0;
   }
 
   return v6;
 }
 
-- (void)startSessionWithPID:(int)a3 windowSize:(CGSize)a4 captureType:(int)a5 contextIDs:(id)a6 mixedRealityCamera:(BOOL)a7 systemCapture:(BOOL)a8 outputHandler:(id)a9 didStartHandler:(id)a10
+- (void)startSessionWithPID:(int)d windowSize:(CGSize)size captureType:(int)type contextIDs:(id)ds mixedRealityCamera:(BOOL)camera systemCapture:(BOOL)capture outputHandler:(id)handler didStartHandler:(id)self0
 {
-  v12 = a6;
-  v13 = a9;
-  v14 = a10;
+  dsCopy = ds;
+  handlerCopy = handler;
+  startHandlerCopy = startHandler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 136446722;
@@ -49,7 +49,7 @@
     v17 = 1024;
     v18 = 39;
     v19 = 2048;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", &v15, 0x1Cu);
   }
 }
@@ -63,7 +63,7 @@
     v5 = 1024;
     v6 = 43;
     v7 = 2048;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", &v3, 0x1Cu);
   }
 }

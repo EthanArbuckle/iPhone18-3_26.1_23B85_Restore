@@ -2,19 +2,19 @@
 + (void)createInstallJournalDirectoryIfRequired;
 - (BOOL)applicableForCurrentDatabase;
 - (BOOL)entityExists;
-- (BOOL)isApplicationRegisteredWithbundleID:(id)a3 placeholder:(BOOL)a4;
+- (BOOL)isApplicationRegisteredWithbundleID:(id)d placeholder:(BOOL)placeholder;
 - (BOOL)shouldExpectEntityToExist;
-- (_LSInstallNotificationJournaller)initWithCoder:(id)a3;
-- (_LSInstallNotificationJournaller)initWithPrimaryBundleID:(id)a3 operation:(unint64_t)a4;
+- (_LSInstallNotificationJournaller)initWithCoder:(id)coder;
+- (_LSInstallNotificationJournaller)initWithPrimaryBundleID:(id)d operation:(unint64_t)operation;
 - (id)journalURL;
 - (id)journalledNotifications;
 - (id)synthesizedPreliminaryJournalledNotifications;
 - (void)_writeJournalUnconditionally;
 - (void)applicableForCurrentDatabase;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)removeJournalAfterNotificationFence;
 - (void)removeJournalFile;
-- (void)setPrimaryBundleID:(id)a3;
+- (void)setPrimaryBundleID:(id)d;
 - (void)shouldExpectEntityToExist;
 - (void)writeFinalJournal;
 - (void)writePreliminaryJournal;
@@ -31,48 +31,48 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (_LSInstallNotificationJournaller)initWithCoder:(id)a3
+- (_LSInstallNotificationJournaller)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = _LSInstallNotificationJournaller;
   v5 = [(_LSInstallNotificationJournaller *)&v15 init];
   if (v5)
   {
-    v5->_preliminary = [v4 decodeBoolForKey:@"_preliminary"];
-    v6 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"_primaryBundleID"];
+    v5->_preliminary = [coderCopy decodeBoolForKey:@"_preliminary"];
+    v6 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"_primaryBundleID"];
     primaryBundleID = v5->_primaryBundleID;
     v5->_primaryBundleID = v6;
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 ls_decodeObjectOfClasses:v10 forKey:@"_journalledNotifications"];
+    v11 = [coderCopy ls_decodeObjectOfClasses:v10 forKey:@"_journalledNotifications"];
     journalledNotifications = v5->_journalledNotifications;
     v5->_journalledNotifications = v11;
 
-    v5->_operationType = [v4 decodeIntegerForKey:@"_operationType"];
-    [v4 decodeDoubleForKey:@"_timestamp"];
+    v5->_operationType = [coderCopy decodeIntegerForKey:@"_operationType"];
+    [coderCopy decodeDoubleForKey:@"_timestamp"];
     v5->_timestamp = v13;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   preliminary = self->_preliminary;
-  v5 = a3;
-  [v5 encodeBool:preliminary forKey:@"_preliminary"];
-  [v5 encodeObject:self->_primaryBundleID forKey:@"_primaryBundleID"];
-  [v5 encodeObject:self->_journalledNotifications forKey:@"_journalledNotifications"];
-  [v5 encodeInteger:self->_operationType forKey:@"_operationType"];
-  [v5 encodeDouble:@"_timestamp" forKey:self->_timestamp];
+  coderCopy = coder;
+  [coderCopy encodeBool:preliminary forKey:@"_preliminary"];
+  [coderCopy encodeObject:self->_primaryBundleID forKey:@"_primaryBundleID"];
+  [coderCopy encodeObject:self->_journalledNotifications forKey:@"_journalledNotifications"];
+  [coderCopy encodeInteger:self->_operationType forKey:@"_operationType"];
+  [coderCopy encodeDouble:@"_timestamp" forKey:self->_timestamp];
 }
 
-- (_LSInstallNotificationJournaller)initWithPrimaryBundleID:(id)a3 operation:(unint64_t)a4
+- (_LSInstallNotificationJournaller)initWithPrimaryBundleID:(id)d operation:(unint64_t)operation
 {
-  v6 = a3;
+  dCopy = d;
   v15.receiver = self;
   v15.super_class = _LSInstallNotificationJournaller;
   v7 = [(_LSInstallNotificationJournaller *)&v15 init];
@@ -80,15 +80,15 @@
   if (v7)
   {
     v7->_preliminary = 1;
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     journalledNotifications = v8->_journalledNotifications;
-    v8->_journalledNotifications = v9;
+    v8->_journalledNotifications = array;
 
-    v11 = [v6 copy];
+    v11 = [dCopy copy];
     primaryBundleID = v8->_primaryBundleID;
     v8->_primaryBundleID = v11;
 
-    v8->_operationType = a4;
+    v8->_operationType = operation;
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v8->_timestamp = v13;
   }
@@ -96,9 +96,9 @@
   return v8;
 }
 
-- (BOOL)isApplicationRegisteredWithbundleID:(id)a3 placeholder:(BOOL)a4
+- (BOOL)isApplicationRegisteredWithbundleID:(id)d placeholder:(BOOL)placeholder
 {
-  v5 = a3;
+  dCopy = d;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -108,8 +108,8 @@
   v10[1] = 3221225472;
   v10[2] = __84___LSInstallNotificationJournaller_isApplicationRegisteredWithbundleID_placeholder___block_invoke;
   v10[3] = &unk_1E6A1F430;
-  v7 = v5;
-  v13 = a4;
+  v7 = dCopy;
+  placeholderCopy = placeholder;
   v11 = v7;
   v12 = &v14;
   [(LSDBExecutionContext *)v6 syncRead:v10];
@@ -122,8 +122,8 @@
 
 - (BOOL)shouldExpectEntityToExist
 {
-  v3 = [(_LSInstallNotificationJournaller *)self installOperation];
-  if (v3 >= 9)
+  installOperation = [(_LSInstallNotificationJournaller *)self installOperation];
+  if (installOperation >= 9)
   {
     v5 = _LSInstallLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -136,7 +136,7 @@
 
   else
   {
-    v4 = 0x7Fu >> v3;
+    v4 = 0x7Fu >> installOperation;
   }
 
   return v4 & 1;
@@ -144,27 +144,27 @@
 
 - (BOOL)entityExists
 {
-  v2 = self;
+  selfCopy = self;
   v3 = (([(_LSInstallNotificationJournaller *)self installOperation]- 2) & 0xFFFFFFFFFFFFFFFALL) == 0;
-  v4 = [(_LSInstallNotificationJournaller *)v2 primaryBundleID];
-  LOBYTE(v2) = [(_LSInstallNotificationJournaller *)v2 isApplicationRegisteredWithbundleID:v4 placeholder:v3];
+  primaryBundleID = [(_LSInstallNotificationJournaller *)selfCopy primaryBundleID];
+  LOBYTE(selfCopy) = [(_LSInstallNotificationJournaller *)selfCopy isApplicationRegisteredWithbundleID:primaryBundleID placeholder:v3];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)applicableForCurrentDatabase
 {
-  v3 = [(_LSInstallNotificationJournaller *)self shouldExpectEntityToExist];
-  v4 = [(_LSInstallNotificationJournaller *)self entityExists];
-  v5 = !v4;
-  if (v3)
+  shouldExpectEntityToExist = [(_LSInstallNotificationJournaller *)self shouldExpectEntityToExist];
+  entityExists = [(_LSInstallNotificationJournaller *)self entityExists];
+  v5 = !entityExists;
+  if (shouldExpectEntityToExist)
   {
-    v6 = v4;
+    v6 = entityExists;
   }
 
   else
   {
-    v6 = !v4;
+    v6 = !entityExists;
   }
 
   if (v6 != 1)
@@ -172,14 +172,14 @@
     return 0;
   }
 
-  v7 = v4;
+  v7 = entityExists;
   result = 1;
-  if ((!v3 | v5) == 1 && (v3 || v7))
+  if ((!shouldExpectEntityToExist | v5) == 1 && (shouldExpectEntityToExist || v7))
   {
     v9 = _LSInstallLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      [(_LSInstallNotificationJournaller *)v3 applicableForCurrentDatabase];
+      [(_LSInstallNotificationJournaller *)shouldExpectEntityToExist applicableForCurrentDatabase];
     }
 
     return 0;
@@ -194,8 +194,8 @@
   v3 = [(_LSInstallNotificationJournaller *)self installOperation]== 8;
   v4 = [_LSInstallProgressService notificationTypeForOperation:[(_LSInstallNotificationJournaller *)self installOperation]];
   v5 = [_LSJournalledNotification alloc];
-  v6 = [(_LSInstallNotificationJournaller *)self primaryBundleID];
-  v12 = v6;
+  primaryBundleID = [(_LSInstallNotificationJournaller *)self primaryBundleID];
+  v12 = primaryBundleID;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v12 count:1];
   v8 = [(_LSJournalledNotification *)v5 initWithNotification:v4 bundleIDs:v7 plugins:v3 options:0];
   v13[0] = v8;
@@ -210,22 +210,22 @@
 {
   if (self->_preliminary)
   {
-    v2 = [(_LSInstallNotificationJournaller *)self synthesizedPreliminaryJournalledNotifications];
+    synthesizedPreliminaryJournalledNotifications = [(_LSInstallNotificationJournaller *)self synthesizedPreliminaryJournalledNotifications];
   }
 
   else
   {
-    v2 = self->_journalledNotifications;
+    synthesizedPreliminaryJournalledNotifications = self->_journalledNotifications;
   }
 
-  return v2;
+  return synthesizedPreliminaryJournalledNotifications;
 }
 
 - (id)journalURL
 {
-  v3 = [__LSDefaultsGetSharedInstance() installJournalDirectoryURL];
+  installJournalDirectoryURL = [__LSDefaultsGetSharedInstance() installJournalDirectoryURL];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%f.%d", self->_primaryBundleID, *&self->_timestamp, self->_operationType];
-  v5 = [v3 URLByAppendingPathComponent:v4];
+  v5 = [installJournalDirectoryURL URLByAppendingPathComponent:v4];
   v6 = [v5 URLByAppendingPathExtension:@"notejournal"];
 
   return v6;
@@ -234,7 +234,7 @@
 - (void)removeJournalFile
 {
   v7 = *MEMORY[0x1E69E9840];
-  v1 = [a1 journalURL];
+  journalURL = [self journalURL];
   OUTLINED_FUNCTION_4_0();
   OUTLINED_FUNCTION_20();
   _os_log_fault_impl(v2, v3, OS_LOG_TYPE_FAULT, v4, v5, 0xCu);
@@ -253,8 +253,8 @@
 
 - (void)writePreliminaryJournal
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"_LSInstallProgressService.m" lineNumber:2236 description:@"writing preliminary journal but more than 0 journalled notifications?"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"_LSInstallProgressService.m" lineNumber:2236 description:@"writing preliminary journal but more than 0 journalled notifications?"];
 }
 
 - (void)writeFinalJournal
@@ -301,10 +301,10 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPrimaryBundleID:(id)a3
+- (void)setPrimaryBundleID:(id)d
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   primaryBundleID = self->_primaryBundleID;
   v6 = _LSInstallLog();
   v7 = v6;
@@ -321,11 +321,11 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = dCopy;
       _os_log_impl(&dword_18162D000, v7, OS_LOG_TYPE_DEFAULT, "Setting bundleID of journaller to %@", &v10, 0xCu);
     }
 
-    v8 = [v4 copy];
+    v8 = [dCopy copy];
     v7 = self->_primaryBundleID;
     self->_primaryBundleID = v8;
   }
@@ -350,7 +350,7 @@
 - (void)shouldExpectEntityToExist
 {
   v6 = *MEMORY[0x1E69E9840];
-  [a1 installOperation];
+  [self installOperation];
   OUTLINED_FUNCTION_4_0();
   OUTLINED_FUNCTION_20();
   _os_log_fault_impl(v1, v2, OS_LOG_TYPE_FAULT, v3, v4, 0xCu);
@@ -361,7 +361,7 @@
 {
   v7 = *MEMORY[0x1E69E9840];
   v4[0] = 67109376;
-  v4[1] = a1 & 1;
+  v4[1] = self & 1;
   v5 = 1024;
   v6 = a2 & 1;
   _os_log_fault_impl(&dword_18162D000, log, OS_LOG_TYPE_FAULT, "Unreachable code reached. This is a bug. %d %d", v4, 0xEu);

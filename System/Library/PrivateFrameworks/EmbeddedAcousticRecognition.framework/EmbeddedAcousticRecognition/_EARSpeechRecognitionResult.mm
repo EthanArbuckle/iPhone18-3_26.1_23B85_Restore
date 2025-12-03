@@ -1,8 +1,8 @@
 @interface _EARSpeechRecognitionResult
 - (id).cxx_construct;
-- (id)_initWithTokens:()vector<quasar:(std:()vector<quasar:(std:(double)a5 :(id)a6 allocator<quasar:(id)a7 :(double)a8 Token>> *)a4 :(BOOL)a9 Token :(const void *)a10 allocator<quasar::Token>> *)a3 :Token preITNTokens:confidence:voiceCommandInterpretations:preITNVoiceCommandInterpretations:utteranceStart:preITNUseHatText:formattingInfo:;
-- (id)_initWithTokens:()vector<quasar:(std:()vector<quasar:(std:(double)a5 :allocator<quasar::Token>> *)a4 :Token :allocator<quasar::Token>> *)a3 :Token preITNTokens:confidence:;
-- (id)_initWithTokens:()vector<quasar:(std:()vector<quasar:(std::allocator<quasar::Token>> *)a4 :Token :allocator<quasar::Token>> *)a3 :Token preITNTokens:;
+- (id)_initWithTokens:()vector<quasar:(std:()vector<quasar:(std:(double)quasar :(id)a6 allocator<quasar:(id)a7 :(double)a8 Token>> *)a4 :(BOOL)a9 Token :(const void *)self0 allocator<quasar::Token>> *)a3 :Token preITNTokens:confidence:voiceCommandInterpretations:preITNVoiceCommandInterpretations:utteranceStart:preITNUseHatText:formattingInfo:;
+- (id)_initWithTokens:()vector<quasar:(std:()vector<quasar:(std:(double)quasar :allocator<quasar::Token>> *)a4 :Token :allocator<quasar::Token>> *)a3 :Token preITNTokens:confidence:;
+- (id)_initWithTokens:()vector<quasar:(std:()vector<quasar:(std::allocator<quasar::Token>> *)quasar :Token :allocator<quasar::Token>> *)a3 :Token preITNTokens:;
 - (id)description;
 - (vector<quasar::Token,)quasarPreItnTokens;
 - (vector<quasar::Token,)quasarTokens;
@@ -10,12 +10,12 @@
 
 @implementation _EARSpeechRecognitionResult
 
-- (id)_initWithTokens:()vector<quasar:(std:()vector<quasar:(std::allocator<quasar::Token>> *)a4 :Token :allocator<quasar::Token>> *)a3 :Token preITNTokens:
+- (id)_initWithTokens:()vector<quasar:(std:()vector<quasar:(std::allocator<quasar::Token>> *)quasar :Token :allocator<quasar::Token>> *)a3 :Token preITNTokens:
 {
   memset(v9, 0, sizeof(v9));
   std::vector<quasar::Token>::__init_with_size[abi:ne200100]<quasar::Token*,quasar::Token*>(v9, a3->__begin_, a3->__end_, 0x6DB6DB6DB6DB6DB7 * (a3->__end_ - a3->__begin_));
   memset(v8, 0, sizeof(v8));
-  std::vector<quasar::Token>::__init_with_size[abi:ne200100]<quasar::Token*,quasar::Token*>(v8, a4->__begin_, a4->__end_, 0x6DB6DB6DB6DB6DB7 * (a4->__end_ - a4->__begin_));
+  std::vector<quasar::Token>::__init_with_size[abi:ne200100]<quasar::Token*,quasar::Token*>(v8, quasar->__begin_, quasar->__end_, 0x6DB6DB6DB6DB6DB7 * (quasar->__end_ - quasar->__begin_));
   v6 = [(_EARSpeechRecognitionResult *)self _initWithTokens:v9 preITNTokens:v8 confidence:0.0];
   v10 = v8;
   std::vector<quasar::Token>::__destroy_vector::operator()[abi:ne200100](&v10);
@@ -24,7 +24,7 @@
   return v6;
 }
 
-- (id)_initWithTokens:()vector<quasar:(std:()vector<quasar:(std:(double)a5 :allocator<quasar::Token>> *)a4 :Token :allocator<quasar::Token>> *)a3 :Token preITNTokens:confidence:
+- (id)_initWithTokens:()vector<quasar:(std:()vector<quasar:(std:(double)quasar :allocator<quasar::Token>> *)a4 :Token :allocator<quasar::Token>> *)a3 :Token preITNTokens:confidence:
 {
   memset(v14, 0, sizeof(v14));
   std::vector<quasar::Token>::__init_with_size[abi:ne200100]<quasar::Token*,quasar::Token*>(v14, a3->__begin_, a3->__end_, 0x6DB6DB6DB6DB6DB7 * (a3->__end_ - a3->__begin_));
@@ -35,7 +35,7 @@
   v11 = 0u;
   std::string::basic_string[abi:ne200100]<0>(&__p[1], "▁");
   LOBYTE(v12) = 0;
-  v8 = [(_EARSpeechRecognitionResult *)self _initWithTokens:v14 preITNTokens:v13 confidence:0 voiceCommandInterpretations:0 preITNVoiceCommandInterpretations:0 utteranceStart:__p preITNUseHatText:a5 formattingInfo:0.0];
+  v8 = [(_EARSpeechRecognitionResult *)self _initWithTokens:v14 preITNTokens:v13 confidence:0 voiceCommandInterpretations:0 preITNVoiceCommandInterpretations:0 utteranceStart:__p preITNUseHatText:quasar formattingInfo:0.0];
   if (SHIBYTE(v11) < 0)
   {
     operator delete(__p[1]);
@@ -48,7 +48,7 @@
   return v8;
 }
 
-- (id)_initWithTokens:()vector<quasar:(std:()vector<quasar:(std:(double)a5 :(id)a6 allocator<quasar:(id)a7 :(double)a8 Token>> *)a4 :(BOOL)a9 Token :(const void *)a10 allocator<quasar::Token>> *)a3 :Token preITNTokens:confidence:voiceCommandInterpretations:preITNVoiceCommandInterpretations:utteranceStart:preITNUseHatText:formattingInfo:
+- (id)_initWithTokens:()vector<quasar:(std:()vector<quasar:(std:(double)quasar :(id)a6 allocator<quasar:(id)a7 :(double)a8 Token>> *)a4 :(BOOL)a9 Token :(const void *)self0 allocator<quasar::Token>> *)a3 :Token preITNTokens:confidence:voiceCommandInterpretations:preITNVoiceCommandInterpretations:utteranceStart:preITNUseHatText:formattingInfo:
 {
   v11 = a9;
   v18 = a6;
@@ -107,7 +107,7 @@
       std::vector<quasar::Token>::__assign_with_size[abi:ne200100]<quasar::Token*,quasar::Token*>(&v21->_quasarPreItnTokens, a4->__begin_, a4->__end_, 0x6DB6DB6DB6DB6DB7 * (a4->__end_ - a4->__begin_));
     }
 
-    v22->_confidence = a5;
+    v22->_confidence = quasar;
     v27 = [v18 copy];
     voiceCommandInterpretations = v22->_voiceCommandInterpretations;
     v22->_voiceCommandInterpretations = v27;
@@ -127,9 +127,9 @@
   v8.receiver = self;
   v8.super_class = _EARSpeechRecognitionResult;
   v3 = [(_EARSpeechRecognitionResult *)&v8 description];
-  v4 = [(_EARSpeechRecognitionResult *)self tokens];
-  v5 = [(_EARSpeechRecognitionResult *)self preITNTokens];
-  v6 = [v3 stringByAppendingFormat:@" tokens=%@, preITNTokens=%@", v4, v5];
+  tokens = [(_EARSpeechRecognitionResult *)self tokens];
+  preITNTokens = [(_EARSpeechRecognitionResult *)self preITNTokens];
+  v6 = [v3 stringByAppendingFormat:@" tokens=%@, preITNTokens=%@", tokens, preITNTokens];
 
   return v6;
 }

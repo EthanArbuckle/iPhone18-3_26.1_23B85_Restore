@@ -1,47 +1,47 @@
 @interface PSUISatelliteSubgroup
-- (PSUISatelliteSubgroup)initWithHostController:(id)a3 context:(id)a4 planReference:(id)a5 mode:(unint64_t)a6;
-- (PSUISatelliteSubgroup)initWithListController:(id)a3 groupSpecifier:(id)a4;
+- (PSUISatelliteSubgroup)initWithHostController:(id)controller context:(id)context planReference:(id)reference mode:(unint64_t)mode;
+- (PSUISatelliteSubgroup)initWithListController:(id)controller groupSpecifier:(id)specifier;
 - (id)getLogger;
-- (id)getSatelliteEnabled:(id)a3;
-- (id)getSatelliteEnabledString:(id)a3;
+- (id)getSatelliteEnabled:(id)enabled;
+- (id)getSatelliteEnabledString:(id)string;
 - (id)specifiers;
 - (void)checkLocationServicesSatelliteAuthorization;
 - (void)setGroupFooterText;
-- (void)setSatelliteEnabled:(id)a3 specifier:(id)a4;
+- (void)setSatelliteEnabled:(id)enabled specifier:(id)specifier;
 - (void)setUpGroupSpecifierIfRequired;
 - (void)setUpSatelliteSpecifierIfRequired;
-- (void)turnOnLocationServicesPressed:(id)a3;
+- (void)turnOnLocationServicesPressed:(id)pressed;
 @end
 
 @implementation PSUISatelliteSubgroup
 
-- (PSUISatelliteSubgroup)initWithHostController:(id)a3 context:(id)a4 planReference:(id)a5 mode:(unint64_t)a6
+- (PSUISatelliteSubgroup)initWithHostController:(id)controller context:(id)context planReference:(id)reference mode:(unint64_t)mode
 {
   v25 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  controllerCopy = controller;
+  contextCopy = context;
+  referenceCopy = reference;
   v22.receiver = self;
   v22.super_class = PSUISatelliteSubgroup;
   v13 = [(PSUISatelliteSubgroup *)&v22 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_hostController, v10);
-    objc_storeStrong(&v14->_subscriptionContext, a4);
+    objc_storeWeak(&v13->_hostController, controllerCopy);
+    objc_storeStrong(&v14->_subscriptionContext, context);
     v15 = [MEMORY[0x277CC3718] descriptorWithSubscriptionContext:v14->_subscriptionContext];
     serviceDescriptor = v14->_serviceDescriptor;
     v14->_serviceDescriptor = v15;
 
-    objc_storeStrong(&v14->_planReference, a5);
-    v14->_mode = a6;
-    v17 = [(PSUISatelliteSubgroup *)v14 getLogger];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    objc_storeStrong(&v14->_planReference, reference);
+    v14->_mode = mode;
+    getLogger = [(PSUISatelliteSubgroup *)v14 getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
       v18 = [(PSUISatelliteSubgroup *)v14 getSatelliteEnabledString:0];
       *buf = 138412290;
       v24 = v18;
-      _os_log_impl(&dword_2658DE000, v17, OS_LOG_TYPE_DEFAULT, "Is satellite enabled: %@", buf, 0xCu);
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Is satellite enabled: %@", buf, 0xCu);
     }
 
     v19 = v14;
@@ -51,10 +51,10 @@
   return v14;
 }
 
-- (PSUISatelliteSubgroup)initWithListController:(id)a3 groupSpecifier:(id)a4
+- (PSUISatelliteSubgroup)initWithListController:(id)controller groupSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  specifierCopy = specifier;
   objc_exception_throw([objc_alloc(MEMORY[0x277CBEAD8]) initWithName:@"Unsupported initializer called" reason:@"Unsupported initializer called" userInfo:0]);
 }
 
@@ -94,10 +94,10 @@
 
   v7 = v4();
   v8 = [v7 objectForKey:@"/System/Library/Frameworks/CoreTelephony.framework"];
-  v9 = [getCLLocationManagerClass() locationServicesEnabled];
+  locationServicesEnabled = [getCLLocationManagerClass() locationServicesEnabled];
   if (([getCLLocationManagerClass() entityAuthorizationForLocationDictionary:v8] & 6) != 0)
   {
-    v10 = v9;
+    v10 = locationServicesEnabled;
   }
 
   else
@@ -110,7 +110,7 @@
     self->_shouldDisable = 1;
     v11 = @"settings-navigation://com.apple.Settings.PrivacyAndSecurity/LOCATION";
     v12 = self->_locationServicesURL;
-    if (v9)
+    if (locationServicesEnabled)
     {
       v11 = @"settings-navigation://com.apple.Settings.PrivacyAndSecurity/LOCATION/SYSTEM_SERVICES";
     }
@@ -118,13 +118,13 @@
     self->_locationServicesURL = &v11->isa;
   }
 
-  v13 = [(PSUISatelliteSubgroup *)self getLogger];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUISatelliteSubgroup *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v14 = [MEMORY[0x277CCABB0] numberWithBool:self->_shouldDisable];
     LODWORD(buf) = 138412290;
     *(&buf + 4) = v14;
-    _os_log_impl(&dword_2658DE000, v13, OS_LOG_TYPE_DEFAULT, "Disable satellite specifier due to location services: %@", &buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Disable satellite specifier due to location services: %@", &buf, 0xCu);
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -284,7 +284,7 @@
   return v6;
 }
 
-- (id)getSatelliteEnabledString:(id)a3
+- (id)getSatelliteEnabledString:(id)string
 {
   v4 = +[PSUICoreTelephonyCapabilitiesCache sharedInstance];
   v5 = [v4 getSatelliteCapability:self->_subscriptionContext];
@@ -306,19 +306,19 @@
   return v9;
 }
 
-- (void)setSatelliteEnabled:(id)a3 specifier:(id)a4
+- (void)setSatelliteEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[PSUICoreTelephonyCapabilitiesCache sharedInstance];
   subscriptionContext = self->_subscriptionContext;
-  v8 = [v5 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v6 setSatelliteCapability:subscriptionContext enabled:v8];
+  [v6 setSatelliteCapability:subscriptionContext enabled:bOOLValue];
   WeakRetained = objc_loadWeakRetained(&self->_hostController);
   [WeakRetained reloadSpecifier:self->_satelliteSpecifier];
 }
 
-- (id)getSatelliteEnabled:(id)a3
+- (id)getSatelliteEnabled:(id)enabled
 {
   v4 = MEMORY[0x277CCABB0];
   v5 = +[PSUICoreTelephonyCapabilitiesCache sharedInstance];
@@ -327,22 +327,22 @@
   return v6;
 }
 
-- (void)turnOnLocationServicesPressed:(id)a3
+- (void)turnOnLocationServicesPressed:(id)pressed
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PSUISatelliteSubgroup *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  pressedCopy = pressed;
+  getLogger = [(PSUISatelliteSubgroup *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 URL];
+    v6 = [pressedCopy URL];
     v10 = 138412290;
     v11 = v6;
-    _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_DEFAULT, "turnOnLocationServicesPressed: %@", &v10, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "turnOnLocationServicesPressed: %@", &v10, 0xCu);
   }
 
-  v7 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  v8 = [v4 URL];
-  [v7 openSensitiveURL:v8 withOptions:0];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  v8 = [pressedCopy URL];
+  [defaultWorkspace openSensitiveURL:v8 withOptions:0];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -350,9 +350,9 @@
 - (id)getLogger
 {
   v2 = MEMORY[0x277D4D830];
-  v3 = [(CTServiceDescriptor *)self->_serviceDescriptor instance];
-  v4 = [v3 stringValue];
-  v5 = [v2 loggerWithCategory:@"SAT" instance:v4];
+  instance = [(CTServiceDescriptor *)self->_serviceDescriptor instance];
+  stringValue = [instance stringValue];
+  v5 = [v2 loggerWithCategory:@"SAT" instance:stringValue];
 
   return v5;
 }

@@ -36,7 +36,7 @@
 - (float)vn_decodeValidatedScoreForKey:()VNAdditions
 {
   v4 = a3;
-  [a1 decodeFloatForKey:v4];
+  [self decodeFloatForKey:v4];
   v6 = v5;
   v17 = 0;
   v7 = [VNValidationUtilities validateScoreRange:v4 named:&v17 error:?];
@@ -44,12 +44,12 @@
   if (!v7)
   {
     [v4 UTF8String];
-    v9 = [v8 localizedDescription];
-    [v9 UTF8String];
+    localizedDescription = [v8 localizedDescription];
+    [localizedDescription UTF8String];
     VNValidatedLog(4, @"unable to accept decoded score of %f for %s - %s", v10, v11, v12, v13, v14, v15, COERCE__INT64(v6));
 
     v6 = 0.0;
-    [a1 failWithError:v8];
+    [self failWithError:v8];
   }
 
   return v6;
@@ -65,24 +65,24 @@
   if (v8)
   {
     *&v10 = a2;
-    [a1 encodeFloat:v6 forKey:v10];
+    [self encodeFloat:v6 forKey:v10];
   }
 
   else
   {
     [v6 UTF8String];
-    v11 = [v9 localizedDescription];
-    [v11 UTF8String];
+    localizedDescription = [v9 localizedDescription];
+    [localizedDescription UTF8String];
     VNValidatedLog(4, @"unable to encode score of %f for %s - %s", v12, v13, v14, v15, v16, v17, COERCE__INT64(a2));
 
-    [a1 failWithError:v9];
+    [self failWithError:v9];
   }
 }
 
 - (float)vn_decodeValidatedConfidenceForKey:()VNAdditions
 {
   v4 = a3;
-  [a1 decodeFloatForKey:v4];
+  [self decodeFloatForKey:v4];
   v6 = v5;
   v17 = 0;
   v7 = [VNValidationUtilities validateVNConfidenceRange:&v17 error:?];
@@ -90,12 +90,12 @@
   if (!v7)
   {
     [v4 UTF8String];
-    v9 = [v8 localizedDescription];
-    [v9 UTF8String];
+    localizedDescription = [v8 localizedDescription];
+    [localizedDescription UTF8String];
     VNValidatedLog(4, @"unable to accept decoded confidence of %f for %s - %s", v10, v11, v12, v13, v14, v15, COERCE__INT64(v6));
 
     v6 = 0.0;
-    [a1 failWithError:v8];
+    [self failWithError:v8];
   }
 
   return v6;
@@ -111,17 +111,17 @@
   if (v8)
   {
     *&v10 = a2;
-    [a1 encodeFloat:v6 forKey:v10];
+    [self encodeFloat:v6 forKey:v10];
   }
 
   else
   {
     [v6 UTF8String];
-    v11 = [v9 localizedDescription];
-    [v11 UTF8String];
+    localizedDescription = [v9 localizedDescription];
+    [localizedDescription UTF8String];
     VNValidatedLog(4, @"unable to encode confidence of %f for %s - %s", v12, v13, v14, v15, v16, v17, COERCE__INT64(a2));
 
-    [a1 failWithError:v9];
+    [self failWithError:v9];
   }
 }
 
@@ -129,7 +129,7 @@
 {
   v4 = a3;
   v5 = +[VNCVPixelBufferConversionHelpers dictionaryRepresentationClassesSet];
-  v6 = [a1 decodeObjectOfClasses:v5 forKey:v4];
+  v6 = [self decodeObjectOfClasses:v5 forKey:v4];
   if (v6)
   {
     v7 = [VNCVPixelBufferConversionHelpers createCVPixelBufferRefFromDictionaryRepresentation:v6];
@@ -147,18 +147,18 @@
 {
   v7 = a4;
   v6 = [VNCVPixelBufferConversionHelpers createDictionaryRepresentationOfCVPixelBuffer:a3];
-  [a1 encodeObject:v6 forKey:v7];
+  [self encodeObject:v6 forKey:v7];
 }
 
 - (double)vn_decodeRectForKey:()VNAdditions
 {
   v4 = a3;
   v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@.or", v4];
-  [a1 vn_decodePointForKey:v5];
+  [self vn_decodePointForKey:v5];
   v7 = v6;
 
   v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@.sz", v4];
-  [a1 vn_decodeSizeForKey:v8];
+  [self vn_decodeSizeForKey:v8];
 
   return v7;
 }
@@ -167,21 +167,21 @@
 {
   v14 = a7;
   v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@.or", v14];
-  [a1 vn_encodePoint:v12 forKey:{a2, a3}];
+  [self vn_encodePoint:v12 forKey:{a2, a3}];
 
   v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@.sz", v14];
-  [a1 vn_encodeSize:v13 forKey:{a4, a5}];
+  [self vn_encodeSize:v13 forKey:{a4, a5}];
 }
 
 - (double)vn_decodeSizeForKey:()VNAdditions
 {
   v4 = a3;
   v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@.w", v4];
-  [a1 decodeDoubleForKey:v5];
+  [self decodeDoubleForKey:v5];
   v7 = v6;
 
   v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@.h", v4];
-  [a1 decodeDoubleForKey:v8];
+  [self decodeDoubleForKey:v8];
 
   return v7;
 }
@@ -190,21 +190,21 @@
 {
   v10 = a5;
   v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@.w", v10];
-  [a1 encodeDouble:v8 forKey:a2];
+  [self encodeDouble:v8 forKey:a2];
 
   v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@.h", v10];
-  [a1 encodeDouble:v9 forKey:a3];
+  [self encodeDouble:v9 forKey:a3];
 }
 
 - (double)vn_decodePointForKey:()VNAdditions
 {
   v4 = a3;
   v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@.x", v4];
-  [a1 decodeDoubleForKey:v5];
+  [self decodeDoubleForKey:v5];
   v7 = v6;
 
   v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@.y", v4];
-  [a1 decodeDoubleForKey:v8];
+  [self decodeDoubleForKey:v8];
 
   return v7;
 }
@@ -213,10 +213,10 @@
 {
   v10 = a5;
   v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@.x", v10];
-  [a1 encodeDouble:v8 forKey:a2];
+  [self encodeDouble:v8 forKey:a2];
 
   v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@.y", v10];
-  [a1 encodeDouble:v9 forKey:a3];
+  [self encodeDouble:v9 forKey:a3];
 }
 
 - (void)vn_decodeTimeRangeForKey:()VNAdditions
@@ -232,7 +232,7 @@
     dispatch_once(&[NSCoder(VNAdditions) vn_decodeTimeRangeForKey:]::ourCMTimeRangeRepresentationClassesSetOnceToken, &__block_literal_global_3119);
   }
 
-  v8 = [a1 decodeObjectOfClasses:-[NSCoder(VNAdditions) vn_decodeTimeRangeForKey:]::ourCMTimeRangeRepresentationClassesSet forKey:v5];
+  v8 = [self decodeObjectOfClasses:-[NSCoder(VNAdditions) vn_decodeTimeRangeForKey:]::ourCMTimeRangeRepresentationClassesSet forKey:v5];
   v9 = v8;
   if (v8)
   {
@@ -252,19 +252,19 @@
   *&v9.start.epoch = v7;
   *&v9.duration.timescale = a3[2];
   v8 = CMTimeRangeCopyAsDictionary(&v9, *MEMORY[0x1E695E480]);
-  [a1 encodeObject:v8 forKey:v6];
+  [self encodeObject:v8 forKey:v6];
 }
 
 - (__n128)vn_decodeSimdFloat3ForKey:()VNAdditions
 {
   v4 = a3;
   v5 = _stringOrDataCodingClassesSet();
-  v6 = [a1 decodeObjectOfClasses:v5 forKey:v4];
+  v6 = [self decodeObjectOfClasses:v5 forKey:v4];
 
   if (!v6)
   {
     v8 = missingRequiredCodingKeyError(v4);
-    [a1 failWithError:v8];
+    [self failWithError:v8];
     goto LABEL_8;
   }
 
@@ -274,19 +274,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a1 _vn_decodeSimdFloat3FromStringRepresentation:v6];
+      [self _vn_decodeSimdFloat3FromStringRepresentation:v6];
       goto LABEL_9;
     }
 
     v8 = unknownDataForCodingKeyError(v4);
-    [a1 failWithError:v8];
+    [self failWithError:v8];
 LABEL_8:
 
     v7 = 0uLL;
     goto LABEL_9;
   }
 
-  [a1 _vn_decodeSimdFloat3FromDataRepresentation:v6 forKey:v4];
+  [self _vn_decodeSimdFloat3FromDataRepresentation:v6 forKey:v4];
 LABEL_9:
   v10 = v7;
 
@@ -346,7 +346,7 @@ LABEL_10:
 LABEL_12:
     v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"'%@' is not a valid simd_flloat3 encoding", v4];
     v14 = [VNError errorForInvalidFormatErrorWithLocalizedDescription:v13];
-    [a1 failWithError:v14];
+    [self failWithError:v14];
 
     v16 = 0u;
   }
@@ -367,7 +367,7 @@ LABEL_12:
   v8[2] = __74__NSCoder_VNAdditions___vn_decodeSimdFloat3FromDataRepresentation_forKey___block_invoke;
   v8[3] = &unk_1E77B2830;
   v8[4] = &v9;
-  v4 = [a1 _vn_decodeFloatsFromEncodedData:a3 withExpectedMagicNumber:1935631923 valueCount:3 forKey:a4 usingBlock:v8];
+  v4 = [self _vn_decodeFloatsFromEncodedData:a3 withExpectedMagicNumber:1935631923 valueCount:3 forKey:a4 usingBlock:v8];
   v5 = 0uLL;
   if (v4)
   {
@@ -390,12 +390,12 @@ LABEL_12:
   v7 = v9;
   if (v6)
   {
-    [a1 encodeObject:v6 forKey:v5];
+    [self encodeObject:v6 forKey:v5];
   }
 
   else
   {
-    [a1 failWithError:v7];
+    [self failWithError:v7];
   }
 }
 
@@ -403,12 +403,12 @@ LABEL_12:
 {
   v4 = a3;
   v5 = _stringOrDataCodingClassesSet();
-  v6 = [a1 decodeObjectOfClasses:v5 forKey:v4];
+  v6 = [self decodeObjectOfClasses:v5 forKey:v4];
 
   if (!v6)
   {
     v8 = missingRequiredCodingKeyError(v4);
-    [a1 failWithError:v8];
+    [self failWithError:v8];
     goto LABEL_9;
   }
 
@@ -418,19 +418,19 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a1 _vn_decode4x4MatrixFromStringRepresentation:v6];
+      [self _vn_decode4x4MatrixFromStringRepresentation:v6];
       goto LABEL_7;
     }
 
     v8 = unknownDataForCodingKeyError(v4);
-    [a1 failWithError:v8];
+    [self failWithError:v8];
 LABEL_9:
 
     v10 = *MEMORY[0x1E69E9B18];
     goto LABEL_10;
   }
 
-  [a1 _vn_decode4x4MatrixFromDataRepresentation:v6 forKey:v4];
+  [self _vn_decode4x4MatrixFromDataRepresentation:v6 forKey:v4];
 LABEL_7:
   v10 = v7;
 LABEL_10:
@@ -470,7 +470,7 @@ LABEL_10:
   v9[2] = __73__NSCoder_VNAdditions___vn_decode4x4MatrixFromDataRepresentation_forKey___block_invoke;
   v9[3] = &unk_1E77B2830;
   v9[4] = &v10;
-  if ([a1 _vn_decodeFloatsFromEncodedData:a3 withExpectedMagicNumber:1714714676 valueCount:16 forKey:a4 usingBlock:v9])
+  if ([self _vn_decodeFloatsFromEncodedData:a3 withExpectedMagicNumber:1714714676 valueCount:16 forKey:a4 usingBlock:v9])
   {
     v4 = (v11 + 6);
   }
@@ -493,12 +493,12 @@ LABEL_10:
   v10 = v15;
   if (v9)
   {
-    [a1 encodeObject:v9 forKey:v8];
+    [self encodeObject:v9 forKey:v8];
   }
 
   else
   {
-    [a1 failWithError:v10];
+    [self failWithError:v10];
   }
 }
 
@@ -506,12 +506,12 @@ LABEL_10:
 {
   v4 = a3;
   v5 = _stringOrDataCodingClassesSet();
-  v6 = [a1 decodeObjectOfClasses:v5 forKey:v4];
+  v6 = [self decodeObjectOfClasses:v5 forKey:v4];
 
   if (!v6)
   {
     v8 = missingRequiredCodingKeyError(v4);
-    [a1 failWithError:v8];
+    [self failWithError:v8];
     goto LABEL_9;
   }
 
@@ -521,19 +521,19 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a1 _vn_decode3x3MatrixFromStringRepresentation:v6];
+      [self _vn_decode3x3MatrixFromStringRepresentation:v6];
       goto LABEL_7;
     }
 
     v8 = unknownDataForCodingKeyError(v4);
-    [a1 failWithError:v8];
+    [self failWithError:v8];
 LABEL_9:
 
     v10 = *MEMORY[0x1E69E9B10];
     goto LABEL_10;
   }
 
-  [a1 _vn_decode3x3MatrixFromDataRepresentation:v6 forKey:v4];
+  [self _vn_decode3x3MatrixFromDataRepresentation:v6 forKey:v4];
 LABEL_7:
   v10 = v7;
 LABEL_10:
@@ -571,7 +571,7 @@ LABEL_10:
   v10[2] = __73__NSCoder_VNAdditions___vn_decode3x3MatrixFromDataRepresentation_forKey___block_invoke;
   v10[3] = &unk_1E77B2830;
   v10[4] = &v11;
-  v6 = [a1 _vn_decodeFloatsFromEncodedData:a3 withExpectedMagicNumber:1714649139 valueCount:9 forKey:a4 usingBlock:v10];
+  v6 = [self _vn_decodeFloatsFromEncodedData:a3 withExpectedMagicNumber:1714649139 valueCount:9 forKey:a4 usingBlock:v10];
   v7 = (v12 + 6);
   if (!v6)
   {
@@ -597,24 +597,24 @@ LABEL_10:
   v10 = v14;
   if (v9)
   {
-    [a1 encodeObject:v9 forKey:v7];
+    [self encodeObject:v9 forKey:v7];
   }
 
   else
   {
-    [a1 failWithError:v10];
+    [self failWithError:v10];
   }
 }
 
 - (void)vn_decodeCGAffineTransformForKey:()VNAdditions
 {
   v11 = a2;
-  v5 = [a1 decodeObjectOfClass:objc_opt_class() forKey:v11];
+  v5 = [self decodeObjectOfClass:objc_opt_class() forKey:v11];
   if ([v5 length] < 0xD || ((v6 = objc_autoreleasePoolPush(), objc_msgSend(MEMORY[0x1E696AE88], "scannerWithString:", v5), v7 = objc_claimAutoreleasedReturnValue(), !objc_msgSend(v7, "scanString:intoString:", @"[", 0)) || !objc_msgSend(v7, "scanDouble:", a3) || !objc_msgSend(v7, "scanDouble:", a3 + 8) || !objc_msgSend(v7, "scanDouble:", a3 + 16) || !objc_msgSend(v7, "scanDouble:", a3 + 24) || !objc_msgSend(v7, "scanDouble:", a3 + 32) || !objc_msgSend(v7, "scanDouble:", a3 + 40) || !objc_msgSend(v7, "scanString:intoString:", @"]", 0) ? (v8 = 0) : (v8 = objc_msgSend(v7, "isAtEnd")), v7, objc_autoreleasePoolPop(v6), (v8 & 1) == 0))
   {
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"'%@' is not a valid CGAffineTransform encoding", v5];
     v10 = [VNError errorForInvalidFormatErrorWithLocalizedDescription:v9];
-    [a1 failWithError:v10];
+    [self failWithError:v10];
   }
 }
 
@@ -622,7 +622,7 @@ LABEL_10:
 {
   v7 = a4;
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%g %g %g %g %g %g]", *a3, a3[1], a3[2], a3[3], a3[4], a3[5]];
-  [a1 encodeObject:v6 forKey:v7];
+  [self encodeObject:v6 forKey:v7];
 }
 
 - (uint64_t)_vn_decodeFloatsFromEncodedData:()VNAdditions withExpectedMagicNumber:valueCount:forKey:usingBlock:
@@ -633,7 +633,7 @@ LABEL_10:
   if ([v12 length] != 4 * a5 + 4 || (v15 = objc_msgSend(v12, "bytes"), bswap32(*v15) != a4))
   {
     v17 = unknownDataForCodingKeyError(v13);
-    [a1 failWithError:v17];
+    [self failWithError:v17];
 LABEL_11:
     v22 = 0;
     goto LABEL_12;
@@ -644,17 +644,17 @@ LABEL_11:
   if (!v16)
   {
     v23 = +[VNError errorForMemoryAllocationFailure];
-    [a1 failWithError:v23];
+    [self failWithError:v23];
 
     v17 = 0;
     goto LABEL_11;
   }
 
-  v18 = [v16 mutableBytes];
+  mutableBytes = [v16 mutableBytes];
   if (a5)
   {
     v19 = v15 + 1;
-    v20 = v18;
+    v20 = mutableBytes;
     do
     {
       v21 = *v19++;
@@ -665,7 +665,7 @@ LABEL_11:
     while (a5);
   }
 
-  v14[2](v14, v18);
+  v14[2](v14, mutableBytes);
   v22 = 1;
 LABEL_12:
 
@@ -679,11 +679,11 @@ LABEL_12:
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 mutableBytes];
-    *v12 = bswap32(a3);
+    mutableBytes = [v10 mutableBytes];
+    *mutableBytes = bswap32(a3);
     if (v8)
     {
-      v13 = v12 + 1;
+      v13 = mutableBytes + 1;
       do
       {
         v14 = *a5++;

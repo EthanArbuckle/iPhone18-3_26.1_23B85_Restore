@@ -36,11 +36,11 @@
   v7 = [v6 localizedStringForKey:@"CONTINUE" value:&stru_28753DF48 table:@"Localizable"];
   [(SSOBBoldTrayButton *)v5 setTitle:v7 forState:0];
 
-  v8 = [(TSSourceAutoReconnectTransferredViewController *)self buttonTray];
-  [v8 addButton:self->_continueButton];
+  buttonTray = [(TSSourceAutoReconnectTransferredViewController *)self buttonTray];
+  [buttonTray addButton:self->_continueButton];
 
-  v9 = [(OBBaseWelcomeController *)self navigationItem];
-  [v9 setHidesBackButton:1 animated:0];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setHidesBackButton:1 animated:0];
 }
 
 - (void)_continueButtonTapped

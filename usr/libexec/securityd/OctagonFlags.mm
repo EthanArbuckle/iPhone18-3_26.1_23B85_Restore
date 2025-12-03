@@ -1,78 +1,78 @@
 @interface OctagonFlags
-- (BOOL)_onqueueContains:(id)a3;
-- (OctagonFlags)initWithQueue:(id)a3 flags:(id)a4;
-- (id)conditionForFlag:(id)a3;
-- (id)conditionForFlagIfPresent:(id)a3;
+- (BOOL)_onqueueContains:(id)contains;
+- (OctagonFlags)initWithQueue:(id)queue flags:(id)flags;
+- (id)conditionForFlag:(id)flag;
+- (id)conditionForFlagIfPresent:(id)present;
 - (id)contentsAsString;
 - (id)description;
 - (id)dumpFlags;
-- (void)_onqueueRemoveFlag:(id)a3;
-- (void)_onqueueSetFlag:(id)a3;
-- (void)setFlag:(id)a3;
+- (void)_onqueueRemoveFlag:(id)flag;
+- (void)_onqueueSetFlag:(id)flag;
+- (void)setFlag:(id)flag;
 @end
 
 @implementation OctagonFlags
 
-- (void)_onqueueRemoveFlag:(id)a3
+- (void)_onqueueRemoveFlag:(id)flag
 {
-  v14 = a3;
-  v5 = [(OctagonFlags *)self queue];
-  dispatch_assert_queue_V2(v5);
+  flagCopy = flag;
+  queue = [(OctagonFlags *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(OctagonFlags *)self allowableFlags];
-  v7 = [v6 containsObject:v14];
+  allowableFlags = [(OctagonFlags *)self allowableFlags];
+  v7 = [allowableFlags containsObject:flagCopy];
 
   if ((v7 & 1) == 0)
   {
     v13 = +[NSAssertionHandler currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"OctagonFlags.m" lineNumber:85 description:{@"state machine tried to handle unknown flag %@", v14}];
+    [v13 handleFailureInMethod:a2 object:self file:@"OctagonFlags.m" lineNumber:85 description:{@"state machine tried to handle unknown flag %@", flagCopy}];
   }
 
-  v8 = [(OctagonFlags *)self flags];
-  [v8 removeObject:v14];
+  flags = [(OctagonFlags *)self flags];
+  [flags removeObject:flagCopy];
 
-  v9 = [(OctagonFlags *)self flagConditions];
-  v10 = [v9 objectForKeyedSubscript:v14];
+  flagConditions = [(OctagonFlags *)self flagConditions];
+  v10 = [flagConditions objectForKeyedSubscript:flagCopy];
   [v10 fulfill];
 
   v11 = objc_alloc_init(CKKSCondition);
-  v12 = [(OctagonFlags *)self flagConditions];
-  [v12 setObject:v11 forKeyedSubscript:v14];
+  flagConditions2 = [(OctagonFlags *)self flagConditions];
+  [flagConditions2 setObject:v11 forKeyedSubscript:flagCopy];
 }
 
-- (void)setFlag:(id)a3
+- (void)setFlag:(id)flag
 {
-  v4 = a3;
-  v5 = [(OctagonFlags *)self queue];
+  flagCopy = flag;
+  queue = [(OctagonFlags *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100108BD4;
   v7[3] = &unk_100343E38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = flagCopy;
+  v6 = flagCopy;
+  dispatch_sync(queue, v7);
 }
 
-- (id)conditionForFlagIfPresent:(id)a3
+- (id)conditionForFlagIfPresent:(id)present
 {
-  v4 = a3;
+  presentCopy = present;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_100108D24;
   v16 = sub_100108D34;
   v17 = 0;
-  v5 = [(OctagonFlags *)self queue];
+  queue = [(OctagonFlags *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100108D3C;
   block[3] = &unk_100344920;
   block[4] = self;
-  v10 = v4;
+  v10 = presentCopy;
   v11 = &v12;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = presentCopy;
+  dispatch_sync(queue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -80,55 +80,55 @@
   return v7;
 }
 
-- (id)conditionForFlag:(id)a3
+- (id)conditionForFlag:(id)flag
 {
-  v4 = a3;
-  v5 = [(OctagonFlags *)self flagConditions];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  flagCopy = flag;
+  flagConditions = [(OctagonFlags *)self flagConditions];
+  v6 = [flagConditions objectForKeyedSubscript:flagCopy];
 
   return v6;
 }
 
-- (void)_onqueueSetFlag:(id)a3
+- (void)_onqueueSetFlag:(id)flag
 {
-  v4 = a3;
-  v5 = [(OctagonFlags *)self queue];
-  dispatch_assert_queue_V2(v5);
+  flagCopy = flag;
+  queue = [(OctagonFlags *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(OctagonFlags *)self flags];
-  [v6 addObject:v4];
+  flags = [(OctagonFlags *)self flags];
+  [flags addObject:flagCopy];
 }
 
-- (BOOL)_onqueueContains:(id)a3
+- (BOOL)_onqueueContains:(id)contains
 {
-  v4 = a3;
-  v5 = [(OctagonFlags *)self queue];
-  dispatch_assert_queue_V2(v5);
+  containsCopy = contains;
+  queue = [(OctagonFlags *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(OctagonFlags *)self flags];
-  LOBYTE(v5) = [v6 containsObject:v4];
+  flags = [(OctagonFlags *)self flags];
+  LOBYTE(queue) = [flags containsObject:containsCopy];
 
-  return v5;
+  return queue;
 }
 
 - (id)dumpFlags
 {
-  v2 = [(OctagonFlags *)self flags];
-  v3 = [v2 allObjects];
+  flags = [(OctagonFlags *)self flags];
+  allObjects = [flags allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (id)contentsAsString
 {
-  v3 = [(OctagonFlags *)self flags];
-  v4 = [v3 count];
+  flags = [(OctagonFlags *)self flags];
+  v4 = [flags count];
 
   if (v4)
   {
-    v5 = [(OctagonFlags *)self flags];
-    v6 = [v5 allObjects];
-    v7 = [v6 componentsJoinedByString:{@", "}];
+    flags2 = [(OctagonFlags *)self flags];
+    allObjects = [flags2 allObjects];
+    v7 = [allObjects componentsJoinedByString:{@", "}];
   }
 
   else
@@ -141,24 +141,24 @@
 
 - (id)description
 {
-  v2 = [(OctagonFlags *)self contentsAsString];
-  v3 = [NSString stringWithFormat:@"<OctagonFlags: %@>", v2];
+  contentsAsString = [(OctagonFlags *)self contentsAsString];
+  v3 = [NSString stringWithFormat:@"<OctagonFlags: %@>", contentsAsString];
 
   return v3;
 }
 
-- (OctagonFlags)initWithQueue:(id)a3 flags:(id)a4
+- (OctagonFlags)initWithQueue:(id)queue flags:(id)flags
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  flagsCopy = flags;
   v29.receiver = self;
   v29.super_class = OctagonFlags;
   v9 = [(OctagonFlags *)&v29 init];
   v10 = v9;
   if (v9)
   {
-    v24 = v7;
-    objc_storeStrong(&v9->_queue, a3);
+    v24 = queueCopy;
+    objc_storeStrong(&v9->_queue, queue);
     v11 = +[NSMutableSet set];
     flags = v10->_flags;
     v10->_flags = v11;
@@ -167,12 +167,12 @@
     flagConditions = v10->_flagConditions;
     v10->_flagConditions = v13;
 
-    objc_storeStrong(&v10->_allowableFlags, a4);
+    objc_storeStrong(&v10->_allowableFlags, flags);
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v15 = v8;
+    v15 = flagsCopy;
     v16 = [v15 countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v16)
     {
@@ -190,8 +190,8 @@
 
           v20 = *(*(&v25 + 1) + 8 * v19);
           v21 = objc_alloc_init(CKKSCondition);
-          v22 = [(OctagonFlags *)v10 flagConditions];
-          [v22 setObject:v21 forKeyedSubscript:v20];
+          flagConditions = [(OctagonFlags *)v10 flagConditions];
+          [flagConditions setObject:v21 forKeyedSubscript:v20];
 
           v19 = v19 + 1;
         }
@@ -203,7 +203,7 @@
       while (v17);
     }
 
-    v7 = v24;
+    queueCopy = v24;
   }
 
   return v10;

@@ -1,15 +1,15 @@
 @interface TTRIButtonCellTableCell
-- (_TtC15RemindersUICore23TTRIButtonCellTableCell)initWithCoder:(id)a3;
-- (_TtC15RemindersUICore23TTRIButtonCellTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC15RemindersUICore23TTRIButtonCellTableCell)initWithCoder:(id)coder;
+- (_TtC15RemindersUICore23TTRIButtonCellTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation TTRIButtonCellTableCell
 
-- (_TtC15RemindersUICore23TTRIButtonCellTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC15RemindersUICore23TTRIButtonCellTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_21DBFA16C();
+    identifier = sub_21DBFA16C();
     v6 = v5;
   }
 
@@ -18,10 +18,10 @@
     v6 = 0;
   }
 
-  return TTRIButtonCellTableCell.init(style:reuseIdentifier:)(a3, a4, v6);
+  return TTRIButtonCellTableCell.init(style:reuseIdentifier:)(style, identifier, v6);
 }
 
-- (_TtC15RemindersUICore23TTRIButtonCellTableCell)initWithCoder:(id)a3
+- (_TtC15RemindersUICore23TTRIButtonCellTableCell)initWithCoder:(id)coder
 {
   result = sub_21DBFC31C();
   __break(1u);

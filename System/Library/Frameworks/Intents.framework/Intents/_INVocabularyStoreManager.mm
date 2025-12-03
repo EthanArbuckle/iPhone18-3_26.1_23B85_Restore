@@ -1,68 +1,68 @@
 @interface _INVocabularyStoreManager
 + (id)_customVocabularyDirectory;
 + (id)_globalClassQueue;
-+ (id)_hashOfAppPath:(id)a3;
-+ (id)_latestVocabularyStringsAt:(id)a3;
-+ (id)appDatastoreDirectoryForAppBundleID:(id)a3 bundlePath:(id)a4;
-+ (id)managerForBundleID:(id)a3 bundlePath:(id)a4;
++ (id)_hashOfAppPath:(id)path;
++ (id)_latestVocabularyStringsAt:(id)at;
++ (id)appDatastoreDirectoryForAppBundleID:(id)d bundlePath:(id)path;
++ (id)managerForBundleID:(id)d bundlePath:(id)path;
 + (id)savedCustomVocabularyOverviewDictionary;
-+ (void)_iterateVocabularyWithSummary:(id)a3 optionalBlock:(id)a4;
++ (void)_iterateVocabularyWithSummary:(id)summary optionalBlock:(id)block;
 + (void)deleteAllUserVocabularyFromAllAppsAsync;
-+ (void)enumerateVocabularyUsingBlock:(id)a3;
-- (_INVocabularyStoreManager)initWithBaseDirectory:(id)a3 appBundleID:(id)a4 appBundlePath:(id)a5;
-- (id)_baseDirectoryPathForIntentSlot:(id)a3;
-- (id)_documentWithItems:(id)a3 forIntentSlot:(id)a4;
++ (void)enumerateVocabularyUsingBlock:(id)block;
+- (_INVocabularyStoreManager)initWithBaseDirectory:(id)directory appBundleID:(id)d appBundlePath:(id)path;
+- (id)_baseDirectoryPathForIntentSlot:(id)slot;
+- (id)_documentWithItems:(id)items forIntentSlot:(id)slot;
 - (id)_validator;
 - (id)deleteEverything;
-- (id)deleteIntentSlot:(id)a3;
-- (id)deleteVocabularyStoreItemAt:(id)a3;
-- (id)getPathToLatestVocabulary:(id *)a3 pathDuringReading:(id *)a4 sentVocabulary:(id *)a5 forIntentSlot:(id)a6;
-- (void)_writeLatestVocabularyItems:(id)a3 forIntentSlot:(id)a4 completion:(id)a5;
-- (void)checkIfSyncSlot:(id)a3 isAllowedWithCompletion:(id)a4;
-- (void)writeLatestVocabularyItems:(id)a3 forIntentSlot:(id)a4 completion:(id)a5;
+- (id)deleteIntentSlot:(id)slot;
+- (id)deleteVocabularyStoreItemAt:(id)at;
+- (id)getPathToLatestVocabulary:(id *)vocabulary pathDuringReading:(id *)reading sentVocabulary:(id *)sentVocabulary forIntentSlot:(id)slot;
+- (void)_writeLatestVocabularyItems:(id)items forIntentSlot:(id)slot completion:(id)completion;
+- (void)checkIfSyncSlot:(id)slot isAllowedWithCompletion:(id)completion;
+- (void)writeLatestVocabularyItems:(id)items forIntentSlot:(id)slot completion:(id)completion;
 @end
 
 @implementation _INVocabularyStoreManager
 
-- (void)writeLatestVocabularyItems:(id)a3 forIntentSlot:(id)a4 completion:(id)a5
+- (void)writeLatestVocabularyItems:(id)items forIntentSlot:(id)slot completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemsCopy = items;
+  slotCopy = slot;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __81___INVocabularyStoreManager_writeLatestVocabularyItems_forIntentSlot_completion___block_invoke;
   v15[3] = &unk_1E7285680;
-  v16 = v9;
-  v17 = self;
-  v18 = v8;
-  v19 = v10;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v16 = slotCopy;
+  selfCopy = self;
+  v18 = itemsCopy;
+  v19 = completionCopy;
+  v12 = itemsCopy;
+  v13 = completionCopy;
+  v14 = slotCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)checkIfSyncSlot:(id)a3 isAllowedWithCompletion:(id)a4
+- (void)checkIfSyncSlot:(id)slot isAllowedWithCompletion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  slotCopy = slot;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = _INVocabularyStringTypeFromSlotName(v6);
+    v8 = _INVocabularyStringTypeFromSlotName(slotCopy);
     if (v8)
     {
-      v9 = [(_INVocabularyStoreManager *)self _validator];
+      _validator = [(_INVocabularyStoreManager *)self _validator];
       appBundleID = self->_appBundleID;
-      v11 = [v8 integerValue];
+      integerValue = [v8 integerValue];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __69___INVocabularyStoreManager_checkIfSyncSlot_isAllowedWithCompletion___block_invoke;
       v14[3] = &unk_1E727FA90;
-      v15 = v7;
-      [v9 determineIfBundleID:appBundleID canProvideVocabularyOfType:v11 completion:v14];
+      v15 = completionCopy;
+      [_validator determineIfBundleID:appBundleID canProvideVocabularyOfType:integerValue completion:v14];
     }
 
     else
@@ -73,27 +73,27 @@
         *buf = 136315394;
         v17 = "[_INVocabularyStoreManager checkIfSyncSlot:isAllowedWithCompletion:]";
         v18 = 2114;
-        v19 = v6;
+        v19 = slotCopy;
         _os_log_error_impl(&dword_18E991000, v12, OS_LOG_TYPE_ERROR, "%s '%{public}@' is not a valid slot", buf, 0x16u);
       }
 
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_writeLatestVocabularyItems:(id)a3 forIntentSlot:(id)a4 completion:(id)a5
+- (void)_writeLatestVocabularyItems:(id)items forIntentSlot:(id)slot completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(_INVocabularyStoreManager *)self _baseDirectoryPathForIntentSlot:v9];
-  if ([v8 count] || (buf[0] = 0, objc_msgSend(MEMORY[0x1E696AC08], "defaultManager"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "fileExistsAtPath:isDirectory:", v11, buf), v12, (buf[0] & 1) != 0))
+  itemsCopy = items;
+  slotCopy = slot;
+  completionCopy = completion;
+  v11 = [(_INVocabularyStoreManager *)self _baseDirectoryPathForIntentSlot:slotCopy];
+  if ([itemsCopy count] || (buf[0] = 0, objc_msgSend(MEMORY[0x1E696AC08], "defaultManager"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "fileExistsAtPath:isDirectory:", v11, buf), v12, (buf[0] & 1) != 0))
   {
-    v13 = [(_INVocabularyStoreManager *)self _documentWithItems:v8 forIntentSlot:v9];
+    v13 = [(_INVocabularyStoreManager *)self _documentWithItems:itemsCopy forIntentSlot:slotCopy];
     v14 = [v11 stringByAppendingPathComponent:@"LatestVocabulary.plist"];
     v15 = [v13 writeToFile:v14 createIntermediateDirectories:1];
     if (v15)
@@ -109,7 +109,7 @@
       }
 
       v17 = v15;
-      v18 = 0;
+      hasChanges = 0;
     }
 
     else
@@ -117,15 +117,15 @@
       v22 = [v11 stringByAppendingPathComponent:@"SentVocabulary.plist"];
       v19 = [[_INVocabularyGenerationDocument alloc] initWithContentsOfFile:v22];
       v20 = [v13 diffFromPreviousDocument:v19];
-      v18 = [v20 hasChanges];
+      hasChanges = [v20 hasChanges];
     }
 
-    v10[2](v10, v18, v15);
+    completionCopy[2](completionCopy, hasChanges, v15);
   }
 
   else
   {
-    v10[2](v10, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 
   v21 = *MEMORY[0x1E69E9840];
@@ -145,8 +145,8 @@
     _os_log_impl(&dword_18E991000, v3, OS_LOG_TYPE_INFO, "%s deleting user-vocabulary for %@", &v11, 0x16u);
   }
 
-  v5 = [(_INVocabularyStoreManager *)self baseDirectoryPath];
-  v6 = [(_INVocabularyStoreManager *)self deleteVocabularyStoreItemAt:v5];
+  baseDirectoryPath = [(_INVocabularyStoreManager *)self baseDirectoryPath];
+  v6 = [(_INVocabularyStoreManager *)self deleteVocabularyStoreItemAt:baseDirectoryPath];
 
   notify_post("INVoocabularyChangedNotification");
   if (v6)
@@ -170,51 +170,51 @@
   return v6;
 }
 
-- (id)getPathToLatestVocabulary:(id *)a3 pathDuringReading:(id *)a4 sentVocabulary:(id *)a5 forIntentSlot:(id)a6
+- (id)getPathToLatestVocabulary:(id *)vocabulary pathDuringReading:(id *)reading sentVocabulary:(id *)sentVocabulary forIntentSlot:(id)slot
 {
-  v9 = [(_INVocabularyStoreManager *)self _baseDirectoryPathForIntentSlot:a6];
+  v9 = [(_INVocabularyStoreManager *)self _baseDirectoryPathForIntentSlot:slot];
   v10 = v9;
-  if (a3)
+  if (vocabulary)
   {
-    *a3 = [v9 stringByAppendingPathComponent:@"LatestVocabulary.plist"];
+    *vocabulary = [v9 stringByAppendingPathComponent:@"LatestVocabulary.plist"];
   }
 
-  if (a4)
+  if (reading)
   {
-    *a4 = [v10 stringByAppendingPathComponent:@"StagedVocabulary.plist"];
+    *reading = [v10 stringByAppendingPathComponent:@"StagedVocabulary.plist"];
   }
 
-  if (a5)
+  if (sentVocabulary)
   {
-    *a5 = [v10 stringByAppendingPathComponent:@"SentVocabulary.plist"];
+    *sentVocabulary = [v10 stringByAppendingPathComponent:@"SentVocabulary.plist"];
   }
 
   return 0;
 }
 
-- (id)deleteIntentSlot:(id)a3
+- (id)deleteIntentSlot:(id)slot
 {
-  v4 = a3;
-  v5 = [(_INVocabularyStoreManager *)self baseDirectoryPath];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  slotCopy = slot;
+  baseDirectoryPath = [(_INVocabularyStoreManager *)self baseDirectoryPath];
+  v6 = [baseDirectoryPath stringByAppendingPathComponent:slotCopy];
 
   v7 = [(_INVocabularyStoreManager *)self deleteVocabularyStoreItemAt:v6];
 
   return v7;
 }
 
-- (id)deleteVocabularyStoreItemAt:(id)a3
+- (id)deleteVocabularyStoreItemAt:(id)at
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_opt_class() _customVocabularyDirectory];
-  if ([v3 hasPrefix:v4])
+  atCopy = at;
+  _customVocabularyDirectory = [objc_opt_class() _customVocabularyDirectory];
+  if ([atCopy hasPrefix:_customVocabularyDirectory])
   {
-    v5 = INRemoveItemAtPath(v3);
+    v5 = INRemoveItemAtPath(atCopy);
     if (!v5)
     {
-      v6 = [v3 stringByDeletingLastPathComponent];
-      _CleanUpDirectoryAsNeeded(v6, v4);
+      stringByDeletingLastPathComponent = [atCopy stringByDeletingLastPathComponent];
+      _CleanUpDirectoryAsNeeded(stringByDeletingLastPathComponent, _customVocabularyDirectory);
 
       v5 = 0;
     }
@@ -228,13 +228,13 @@
       *buf = 136315394;
       v15 = "[_INVocabularyStoreManager deleteVocabularyStoreItemAt:]";
       v16 = 2112;
-      v17 = v3;
+      v17 = atCopy;
       _os_log_error_impl(&dword_18E991000, v7, OS_LOG_TYPE_ERROR, "%s Attempt to delete a files outside of the vocabulary-directory we manage. Offending file: %@", buf, 0x16u);
     }
 
     v8 = MEMORY[0x1E696ABC0];
     v12 = *MEMORY[0x1E696A368];
-    v13 = v3;
+    v13 = atCopy;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v13 forKeys:&v12 count:1];
     v5 = [v8 errorWithDomain:@"IntentsErrorDomain" code:4000 userInfo:v9];
   }
@@ -259,25 +259,25 @@
   return validator;
 }
 
-- (_INVocabularyStoreManager)initWithBaseDirectory:(id)a3 appBundleID:(id)a4 appBundlePath:(id)a5
+- (_INVocabularyStoreManager)initWithBaseDirectory:(id)directory appBundleID:(id)d appBundlePath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  directoryCopy = directory;
+  dCopy = d;
+  pathCopy = path;
   v24.receiver = self;
   v24.super_class = _INVocabularyStoreManager;
   v11 = [(_INVocabularyStoreManager *)&v24 init];
   if (v11)
   {
-    v12 = [v9 copy];
+    v12 = [dCopy copy];
     appBundleID = v11->_appBundleID;
     v11->_appBundleID = v12;
 
-    v14 = [v10 copy];
+    v14 = [pathCopy copy];
     appBundlePath = v11->_appBundlePath;
     v11->_appBundlePath = v14;
 
-    v16 = [v8 copy];
+    v16 = [directoryCopy copy];
     baseDirectoryPath = v11->_baseDirectoryPath;
     v11->_baseDirectoryPath = v16;
 
@@ -293,10 +293,10 @@
   return v11;
 }
 
-- (id)_baseDirectoryPathForIntentSlot:(id)a3
+- (id)_baseDirectoryPathForIntentSlot:(id)slot
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"VoiceCommandNameType"])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:@"VoiceCommandNameType"])
   {
     [objc_opt_class() appDatastoreDirectoryForAppBundleID:@"com.apple.siriVoiceShortcuts" bundlePath:0];
   }
@@ -306,30 +306,30 @@
     [(_INVocabularyStoreManager *)self baseDirectoryPath];
   }
   v5 = ;
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  v6 = [v5 stringByAppendingPathComponent:slotCopy];
 
   return v6;
 }
 
-- (id)_documentWithItems:(id)a3 forIntentSlot:(id)a4
+- (id)_documentWithItems:(id)items forIntentSlot:(id)slot
 {
-  v6 = a4;
-  v7 = a3;
+  slotCopy = slot;
+  itemsCopy = items;
   v8 = objc_alloc_init(_INVocabularyGenerationDocument);
-  if ([v6 isEqualToString:@"VoiceCommandNameType"])
+  if ([slotCopy isEqualToString:@"VoiceCommandNameType"])
   {
     [(_INVocabularyGenerationDocument *)v8 setAppBundleID:@"com.apple.siriVoiceShortcuts"];
   }
 
   else
   {
-    v9 = [(_INVocabularyStoreManager *)self appBundleID];
-    [(_INVocabularyGenerationDocument *)v8 setAppBundleID:v9];
+    appBundleID = [(_INVocabularyStoreManager *)self appBundleID];
+    [(_INVocabularyGenerationDocument *)v8 setAppBundleID:appBundleID];
   }
 
-  [(_INVocabularyGenerationDocument *)v8 setVocabularyItems:v7];
+  [(_INVocabularyGenerationDocument *)v8 setVocabularyItems:itemsCopy];
 
-  [(_INVocabularyGenerationDocument *)v8 setIntentSlot:v6];
+  [(_INVocabularyGenerationDocument *)v8 setIntentSlot:slotCopy];
 
   return v8;
 }
@@ -345,23 +345,23 @@
     _os_log_impl(&dword_18E991000, v3, OS_LOG_TYPE_INFO, "%s ", buf, 0xCu);
   }
 
-  v4 = [a1 _globalClassQueue];
+  _globalClassQueue = [self _globalClassQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68___INVocabularyStoreManager_deleteAllUserVocabularyFromAllAppsAsync__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
-  dispatch_async(v4, block);
+  block[4] = self;
+  dispatch_async(_globalClassQueue, block);
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_iterateVocabularyWithSummary:(id)a3 optionalBlock:(id)a4
++ (void)_iterateVocabularyWithSummary:(id)summary optionalBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 _customVocabularyDirectory];
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
+  summaryCopy = summary;
+  blockCopy = block;
+  _customVocabularyDirectory = [self _customVocabularyDirectory];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v10 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:&unk_1F02DB958];
   v11 = MEMORY[0x1E695DFD8];
   v12 = +[_INVocabulary supportedVocabularyStringTypes];
@@ -376,7 +376,7 @@
   v32[2] = __73___INVocabularyStoreManager__iterateVocabularyWithSummary_optionalBlock___block_invoke;
   v32[3] = &unk_1E727DE78;
   v35 = v36;
-  v14 = v9;
+  v14 = defaultManager;
   v33 = v14;
   v15 = v10;
   v34 = v15;
@@ -385,17 +385,17 @@
   v23[1] = 3221225472;
   v23[2] = __73___INVocabularyStoreManager__iterateVocabularyWithSummary_optionalBlock___block_invoke_50;
   v23[3] = &unk_1E727DEF0;
-  v17 = v8;
+  v17 = _customVocabularyDirectory;
   v24 = v17;
   v18 = v16;
   v28 = v18;
-  v19 = v6;
+  v19 = summaryCopy;
   v25 = v19;
   v20 = v13;
   v26 = v20;
-  v21 = v7;
+  v21 = blockCopy;
   v30 = v36;
-  v31 = a1;
+  selfCopy = self;
   v29 = v21;
   v22 = v14;
   v27 = v22;
@@ -406,24 +406,24 @@
 
 + (id)savedCustomVocabularyOverviewDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [a1 _iterateVocabularyWithSummary:v3 optionalBlock:0];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [self _iterateVocabularyWithSummary:dictionary optionalBlock:0];
 
-  return v3;
+  return dictionary;
 }
 
-+ (void)enumerateVocabularyUsingBlock:(id)a3
++ (void)enumerateVocabularyUsingBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    [a1 _iterateVocabularyWithSummary:0 optionalBlock:a3];
+    [self _iterateVocabularyWithSummary:0 optionalBlock:block];
   }
 }
 
-+ (id)_latestVocabularyStringsAt:(id)a3
++ (id)_latestVocabularyStringsAt:(id)at
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  atCopy = at;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -447,7 +447,7 @@
 
         v8 = *(*(&v24 + 1) + 8 * i);
         v9 = [_INVocabularyGenerationDocument alloc];
-        v10 = [v3 stringByAppendingPathComponent:v8];
+        v10 = [atCopy stringByAppendingPathComponent:v8];
         v11 = [(_INVocabularyGenerationDocument *)v9 initWithContentsOfFile:v10];
 
         if (v11)
@@ -457,8 +457,8 @@
           v21 = 0u;
           v22 = 0u;
           v23 = 0u;
-          v12 = [(_INVocabularyGenerationDocument *)v11 vocabularyItems];
-          v13 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
+          vocabularyItems = [(_INVocabularyGenerationDocument *)v11 vocabularyItems];
+          v13 = [vocabularyItems countByEnumeratingWithState:&v20 objects:v28 count:16];
           if (v13)
           {
             v14 = v13;
@@ -469,17 +469,17 @@
               {
                 if (*v21 != v15)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(vocabularyItems);
                 }
 
-                v17 = [*(*(&v20 + 1) + 8 * j) string];
-                if (v17)
+                string = [*(*(&v20 + 1) + 8 * j) string];
+                if (string)
                 {
-                  [v5 addObject:v17];
+                  [v5 addObject:string];
                 }
               }
 
-              v14 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
+              v14 = [vocabularyItems countByEnumeratingWithState:&v20 objects:v28 count:16];
             }
 
             while (v14);
@@ -506,57 +506,57 @@ LABEL_20:
   return v5;
 }
 
-+ (id)managerForBundleID:(id)a3 bundlePath:(id)a4
++ (id)managerForBundleID:(id)d bundlePath:(id)path
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  pathCopy = path;
+  if (pathCopy)
   {
-    v8 = v7;
+    v8 = pathCopy;
     v9 = INSiriLogContextIntents;
     if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_ERROR))
     {
       v14 = 136315650;
       v15 = "+[_INVocabularyStoreManager managerForBundleID:bundlePath:]";
       v16 = 2114;
-      v17 = v6;
+      v17 = dCopy;
       v18 = 2114;
       v19 = v8;
       _os_log_error_impl(&dword_18E991000, v9, OS_LOG_TYPE_ERROR, "%s radar://24597826 ignoring that %{public}@ is installed at '%{public}@'. All installed instances will share the same vocabulary.", &v14, 0x20u);
     }
   }
 
-  v10 = [_INVocabularyStoreManager appDatastoreDirectoryForAppBundleID:v6 bundlePath:0];
-  v11 = [[a1 alloc] initWithBaseDirectory:v10 appBundleID:v6 appBundlePath:0];
+  v10 = [_INVocabularyStoreManager appDatastoreDirectoryForAppBundleID:dCopy bundlePath:0];
+  v11 = [[self alloc] initWithBaseDirectory:v10 appBundleID:dCopy appBundlePath:0];
 
   v12 = *MEMORY[0x1E69E9840];
 
   return v11;
 }
 
-+ (id)appDatastoreDirectoryForAppBundleID:(id)a3 bundlePath:(id)a4
++ (id)appDatastoreDirectoryForAppBundleID:(id)d bundlePath:(id)path
 {
-  v6 = a3;
-  v7 = [a1 _hashOfAppPath:a4];
-  v8 = [a1 _customVocabularyDirectory];
-  v9 = [v8 stringByAppendingPathComponent:v6];
+  dCopy = d;
+  v7 = [self _hashOfAppPath:path];
+  _customVocabularyDirectory = [self _customVocabularyDirectory];
+  v9 = [_customVocabularyDirectory stringByAppendingPathComponent:dCopy];
 
   v10 = [v9 stringByAppendingPathComponent:v7];
 
   return v10;
 }
 
-+ (id)_hashOfAppPath:(id)a3
++ (id)_hashOfAppPath:(id)path
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  pathCopy = path;
   *md = 0;
   v10 = 0;
   v11 = 0;
-  if ([v3 length])
+  if ([pathCopy length])
   {
-    v4 = [v3 dataUsingEncoding:4];
+    v4 = [pathCopy dataUsingEncoding:4];
     CC_SHA1([v4 bytes], objc_msgSend(v4, "length"), md);
   }
 
@@ -585,7 +585,7 @@ LABEL_20:
   block[1] = 3221225472;
   block[2] = __46___INVocabularyStoreManager__globalClassQueue__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_globalClassQueue_onceToken != -1)
   {
     dispatch_once(&_globalClassQueue_onceToken, block);

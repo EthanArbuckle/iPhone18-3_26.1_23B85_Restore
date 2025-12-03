@@ -18,14 +18,14 @@
     }
   }
 
-  v11 = [(SKUICompressedImage *)self cornerType];
+  cornerType = [(SKUICompressedImage *)self cornerType];
   v12 = @"SKUICornerTypeArc";
-  if (v11 != 1)
+  if (cornerType != 1)
   {
     v12 = 0;
   }
 
-  if (v11)
+  if (cornerType)
   {
     v13 = v12;
   }
@@ -43,8 +43,8 @@
   v17 = v16;
   [(SKUICompressedImage *)self borderWidth];
   v19 = v18;
-  v20 = [(SKUICompressedImage *)self borderColor];
-  v21 = [v14 stringWithFormat:@"%@: {%@, %f} {%f, %@};", v15, v13, v17, v19, v20];;
+  borderColor = [(SKUICompressedImage *)self borderColor];
+  v21 = [v14 stringWithFormat:@"%@: {%@, %f} {%f, %@};", v15, v13, v17, v19, borderColor];;
 
   return v21;
 }

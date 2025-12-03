@@ -11,27 +11,27 @@
 + (MapsRadarComponent)mapsShareETAiOSComponent;
 + (MapsRadarComponent)mapsSuggestionsComponent;
 + (MapsRadarComponent)mapsVisualLocalizationComponent;
-- (MapsRadarComponent)initWithName:(id)a3 version:(id)a4 ID:(id)a5;
+- (MapsRadarComponent)initWithName:(id)name version:(id)version ID:(id)d;
 - (NSString)debugDescription;
 - (NSString)description;
-- (void)_maps_buildDescriptionWithBlock:(id)a3;
+- (void)_maps_buildDescriptionWithBlock:(id)block;
 @end
 
 @implementation MapsRadarComponent
 
-- (void)_maps_buildDescriptionWithBlock:(id)a3
+- (void)_maps_buildDescriptionWithBlock:(id)block
 {
-  v4 = (a3 + 16);
-  v5 = *(a3 + 2);
-  v6 = a3;
+  v4 = (block + 16);
+  v5 = *(block + 2);
+  blockCopy = block;
   v5();
-  (*v4)(v6, @"version", self->_version);
-  (*v4)(v6, @"id", &self->_ID->super.super.isa);
+  (*v4)(blockCopy, @"version", self->_version);
+  (*v4)(blockCopy, @"id", &self->_ID->super.super.isa);
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100881D84;
@@ -39,8 +39,8 @@
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(MapsRadarComponent *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(MapsRadarComponent *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -74,7 +74,7 @@ LABEL_9:
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100881FD4;
@@ -82,8 +82,8 @@ LABEL_9:
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(MapsRadarComponent *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(MapsRadarComponent *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -115,12 +115,12 @@ LABEL_9:
   return v12;
 }
 
-- (MapsRadarComponent)initWithName:(id)a3 version:(id)a4 ID:(id)a5
+- (MapsRadarComponent)initWithName:(id)name version:(id)version ID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  nameCopy = name;
+  versionCopy = version;
+  dCopy = d;
+  if (!nameCopy)
   {
     v19 = sub_10006D178();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -149,7 +149,7 @@ LABEL_9:
     }
   }
 
-  if (!v9)
+  if (!versionCopy)
   {
     v22 = sub_10006D178();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -178,7 +178,7 @@ LABEL_9:
     }
   }
 
-  if (!v10)
+  if (!dCopy)
   {
     v25 = sub_10006D178();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -212,15 +212,15 @@ LABEL_9:
   v11 = [(MapsRadarComponent *)&v28 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v12;
 
-    v14 = [v9 copy];
+    v14 = [versionCopy copy];
     version = v11->_version;
     v11->_version = v14;
 
-    v16 = [v10 copy];
+    v16 = [dCopy copy];
     ID = v11->_ID;
     v11->_ID = v16;
   }

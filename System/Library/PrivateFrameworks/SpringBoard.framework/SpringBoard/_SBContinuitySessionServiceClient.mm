@@ -1,28 +1,28 @@
 @interface _SBContinuitySessionServiceClient
 - (NSSet)externallyBlockedReasons;
-- (_SBContinuitySessionServiceClient)initWithConnection:(id)a3 pid:(int)a4;
+- (_SBContinuitySessionServiceClient)initWithConnection:(id)connection pid:(int)pid;
 - (_SBContinuitySessionServiceClientDelegate)delegate;
 - (id)succinctDescription;
 - (void)_connectionQueue_didInvalidate;
 - (void)_connectionQueue_handleActivated;
-- (void)_connectionQueue_handleContinuityButtonEvent:(unint64_t)a3;
-- (void)_connectionQueue_handleLaunchEventOfType:(id)a3 payload:(id)a4;
-- (void)_connectionQueue_handleUpdatedExternallyBlockedReasons:(id)a3;
-- (void)_connectionQueue_setHostedInterfaceOrientation:(int64_t)a3;
-- (void)_connectionQueue_updatedAppearanceSettings:(id)a3 transitionContext:(id)a4 completion:(id)a5;
+- (void)_connectionQueue_handleContinuityButtonEvent:(unint64_t)event;
+- (void)_connectionQueue_handleLaunchEventOfType:(id)type payload:(id)payload;
+- (void)_connectionQueue_handleUpdatedExternallyBlockedReasons:(id)reasons;
+- (void)_connectionQueue_setHostedInterfaceOrientation:(int64_t)orientation;
+- (void)_connectionQueue_updatedAppearanceSettings:(id)settings transitionContext:(id)context completion:(id)completion;
 - (void)_pushLatestOrientationToClient;
 - (void)_pushLatestStateToClient;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)continuitySession:(id)a3 didUpdateInterfaceOrientation:(int64_t)a4 supportedInterfaceOrientations:(unint64_t)a5;
-- (void)continuitySessionDidUpdateState:(id)a3;
-- (void)setSession:(id)a3;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)continuitySession:(id)session didUpdateInterfaceOrientation:(int64_t)orientation supportedInterfaceOrientations:(unint64_t)orientations;
+- (void)continuitySessionDidUpdateState:(id)state;
+- (void)setSession:(id)session;
 @end
 
 @implementation _SBContinuitySessionServiceClient
 
-- (_SBContinuitySessionServiceClient)initWithConnection:(id)a3 pid:(int)a4
+- (_SBContinuitySessionServiceClient)initWithConnection:(id)connection pid:(int)pid
 {
-  v7 = a3;
+  connectionCopy = connection;
   v15.receiver = self;
   v15.super_class = _SBContinuitySessionServiceClient;
   v8 = [(_SBContinuitySessionServiceClient *)&v15 init];
@@ -30,8 +30,8 @@
   if (v8)
   {
     v8->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v8->_connection, a3);
-    v9->_pid = a4;
+    objc_storeStrong(&v8->_connection, connection);
+    v9->_pid = pid;
     v10 = [MEMORY[0x277CBEB98] set];
     clientExternallyBlockedReasons = v9->_clientExternallyBlockedReasons;
     v9->_clientExternallyBlockedReasons = v10;
@@ -48,19 +48,19 @@
   return v9;
 }
 
-- (void)setSession:(id)a3
+- (void)setSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   session = self->_session;
-  if (session != v5)
+  if (session != sessionCopy)
   {
-    v7 = v5;
+    v7 = sessionCopy;
     [(SBContinuitySession *)session removeStateObserver:self];
     [(SBContinuitySession *)self->_session removeOrientationObserver:self];
-    objc_storeStrong(&self->_session, a3);
+    objc_storeStrong(&self->_session, session);
     [(SBContinuitySession *)self->_session addStateObserver:self];
     [(SBContinuitySession *)self->_session addOrientationObserver:self];
-    v5 = v7;
+    sessionCopy = v7;
   }
 }
 
@@ -79,16 +79,16 @@
   return v3;
 }
 
-- (void)_connectionQueue_handleLaunchEventOfType:(id)a3 payload:(id)a4
+- (void)_connectionQueue_handleLaunchEventOfType:(id)type payload:(id)payload
 {
-  v5 = a3;
-  v8 = a4;
-  v6 = v8;
-  v7 = v5;
+  typeCopy = type;
+  payloadCopy = payload;
+  v6 = payloadCopy;
+  v7 = typeCopy;
   BSDispatchMain();
 }
 
-- (void)_connectionQueue_handleContinuityButtonEvent:(unint64_t)a3
+- (void)_connectionQueue_handleContinuityButtonEvent:(unint64_t)event
 {
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_waitingForClientActivation)
@@ -100,7 +100,7 @@
   BSDispatchMain();
 }
 
-- (void)_connectionQueue_setHostedInterfaceOrientation:(int64_t)a3
+- (void)_connectionQueue_setHostedInterfaceOrientation:(int64_t)orientation
 {
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_waitingForClientActivation)
@@ -118,30 +118,30 @@
   v3 = SBLogContinuitySessionService();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(_SBContinuitySessionServiceClient *)self succinctDescription];
+    succinctDescription = [(_SBContinuitySessionServiceClient *)self succinctDescription];
     *buf = 138543362;
-    v6 = v4;
+    v6 = succinctDescription;
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] received activation message (not handled yet)", buf, 0xCu);
   }
 
   BSDispatchMain();
 }
 
-- (void)_connectionQueue_handleUpdatedExternallyBlockedReasons:(id)a3
+- (void)_connectionQueue_handleUpdatedExternallyBlockedReasons:(id)reasons
 {
-  v4 = a3;
-  v3 = v4;
+  reasonsCopy = reasons;
+  v3 = reasonsCopy;
   BSDispatchMain();
 }
 
-- (void)_connectionQueue_updatedAppearanceSettings:(id)a3 transitionContext:(id)a4 completion:(id)a5
+- (void)_connectionQueue_updatedAppearanceSettings:(id)settings transitionContext:(id)context completion:(id)completion
 {
-  v7 = a3;
-  v11 = a4;
-  v12 = a5;
-  v8 = v12;
-  v9 = v11;
-  v10 = v7;
+  settingsCopy = settings;
+  contextCopy = context;
+  completionCopy = completion;
+  v8 = completionCopy;
+  v9 = contextCopy;
+  v10 = settingsCopy;
   BSDispatchMain();
 }
 
@@ -151,9 +151,9 @@
   v3 = SBLogContinuitySessionService();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(_SBContinuitySessionServiceClient *)self succinctDescription];
+    succinctDescription = [(_SBContinuitySessionServiceClient *)self succinctDescription];
     v5 = 138543362;
-    v6 = v4;
+    v6 = succinctDescription;
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] connection did invalidate", &v5, 0xCu);
   }
 
@@ -165,8 +165,8 @@
 - (void)_pushLatestStateToClient
 {
   OUTLINED_FUNCTION_3_0();
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:v3 object:v2 file:@"_SBContinuitySessionServiceClient.m" lineNumber:364 description:@"don't have a display hardware identifier set"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:v3 object:v2 file:@"_SBContinuitySessionServiceClient.m" lineNumber:364 description:@"don't have a display hardware identifier set"];
 
   *v0 = *v1;
 }
@@ -183,11 +183,11 @@
     v11 = SBLogContinuitySessionService();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(_SBContinuitySessionServiceClient *)self succinctDescription];
+      succinctDescription = [(_SBContinuitySessionServiceClient *)self succinctDescription];
       v13 = BSInterfaceOrientationDescription();
       v14 = BSInterfaceOrientationMaskDescription();
       v19 = 138543874;
-      v20 = v12;
+      v20 = succinctDescription;
       v21 = 2114;
       v22 = v13;
       v23 = 2114;
@@ -211,8 +211,8 @@
   v4 = SBLogContinuitySessionService();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(_SBContinuitySessionServiceClient *)self succinctDescription];
-    v6 = v5;
+    succinctDescription2 = [(_SBContinuitySessionServiceClient *)self succinctDescription];
+    v6 = succinctDescription2;
     v7 = &stru_283094718;
     v8 = @"INVALIDATED";
     if (!lock_invalidated)
@@ -228,7 +228,7 @@
     }
 
     v19 = 138544130;
-    v20 = v5;
+    v20 = succinctDescription2;
     v22 = v8;
     v21 = 2114;
     v23 = 2114;
@@ -245,34 +245,34 @@ LABEL_14:
   }
 }
 
-- (void)continuitySessionDidUpdateState:(id)a3
+- (void)continuitySessionDidUpdateState:(id)state
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  if (self->_session != v4)
+  if (self->_session != stateCopy)
   {
     [_SBContinuitySessionServiceClient continuitySessionDidUpdateState:];
   }
 
-  self->_state = [(SBContinuitySession *)v4 state];
-  v5 = [(SBContinuitySession *)v4 reasons];
+  self->_state = [(SBContinuitySession *)stateCopy state];
+  reasons = [(SBContinuitySession *)stateCopy reasons];
   stateReasons = self->_stateReasons;
-  self->_stateReasons = v5;
+  self->_stateReasons = reasons;
 
-  v7 = [(SBContinuitySession *)v4 displayHardwareIdentifier];
-  v8 = [v7 copy];
+  displayHardwareIdentifier = [(SBContinuitySession *)stateCopy displayHardwareIdentifier];
+  v8 = [displayHardwareIdentifier copy];
   displayHardwareIdentifier = self->_displayHardwareIdentifier;
   self->_displayHardwareIdentifier = v8;
 
   v10 = SBLogContinuitySessionService();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [(_SBContinuitySessionServiceClient *)self succinctDescription];
+    succinctDescription = [(_SBContinuitySessionServiceClient *)self succinctDescription];
     v13 = NSStringFromSBContinuitySessionState(self->_state);
     v14 = self->_stateReasons;
     v15 = 138543874;
-    v16 = v12;
+    v16 = succinctDescription;
     v17 = 2114;
     v18 = v13;
     v19 = 2114;
@@ -299,50 +299,50 @@ LABEL_14:
   }
 }
 
-- (void)continuitySession:(id)a3 didUpdateInterfaceOrientation:(int64_t)a4 supportedInterfaceOrientations:(unint64_t)a5
+- (void)continuitySession:(id)session didUpdateInterfaceOrientation:(int64_t)orientation supportedInterfaceOrientations:(unint64_t)orientations
 {
-  v8 = a3;
+  sessionCopy = session;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  if (self->_session != v8)
+  if (self->_session != sessionCopy)
   {
     [_SBContinuitySessionServiceClient continuitySession:didUpdateInterfaceOrientation:supportedInterfaceOrientations:];
   }
 
-  [(_SBContinuitySessionServiceClient *)self setInterfaceOrientation:a4];
-  [(_SBContinuitySessionServiceClient *)self setSupportedInterfaceOrientations:a5];
+  [(_SBContinuitySessionServiceClient *)self setInterfaceOrientation:orientation];
+  [(_SBContinuitySessionServiceClient *)self setSupportedInterfaceOrientations:orientations];
   [(_SBContinuitySessionServiceClient *)self _pushLatestOrientationToClient];
 }
 
 - (id)succinctDescription
 {
   v3 = MEMORY[0x277CF0C08];
-  v4 = [MEMORY[0x277CF0C10] succinctStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  succinctStyle = [MEMORY[0x277CF0C10] succinctStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:succinctStyle];
 
   return v5;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __63___SBContinuitySessionServiceClient_appendDescriptionToStream___block_invoke;
   v10[3] = &unk_2783A92D8;
-  v5 = v4;
+  v5 = streamCopy;
   v11 = v5;
-  v12 = self;
+  selfCopy = self;
   [v5 appendProem:self block:v10];
   if (([v5 hasSuccinctStyle] & 1) == 0)
   {
-    v6 = [MEMORY[0x277CF0C10] collectionLineBreakNoneStyle];
+    collectionLineBreakNoneStyle = [MEMORY[0x277CF0C10] collectionLineBreakNoneStyle];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __63___SBContinuitySessionServiceClient_appendDescriptionToStream___block_invoke_2;
     v7[3] = &unk_2783A92D8;
     v8 = v5;
-    v9 = self;
-    [v8 overlayStyle:v6 block:v7];
+    selfCopy2 = self;
+    [v8 overlayStyle:collectionLineBreakNoneStyle block:v7];
   }
 }
 

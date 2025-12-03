@@ -1,8 +1,8 @@
 @interface NCNotificationCellHeight
 - (NCNotificationCellHeight)init;
-- (id)heightForContentConfiguration:(id)a3;
-- (void)removeHeightForContentConfiguration:(id)a3;
-- (void)setHeight:(double)a3 forContentConfiguration:(id)a4;
+- (id)heightForContentConfiguration:(id)configuration;
+- (void)removeHeightForContentConfiguration:(id)configuration;
+- (void)setHeight:(double)height forContentConfiguration:(id)configuration;
 @end
 
 @implementation NCNotificationCellHeight
@@ -21,30 +21,30 @@
   return v2;
 }
 
-- (id)heightForContentConfiguration:(id)a3
+- (id)heightForContentConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(NCNotificationCellHeight *)self cellHeightForConfigurationDictionary];
-  v6 = [v5 objectForKey:v4];
+  configurationCopy = configuration;
+  cellHeightForConfigurationDictionary = [(NCNotificationCellHeight *)self cellHeightForConfigurationDictionary];
+  v6 = [cellHeightForConfigurationDictionary objectForKey:configurationCopy];
 
   return v6;
 }
 
-- (void)setHeight:(double)a3 forContentConfiguration:(id)a4
+- (void)setHeight:(double)height forContentConfiguration:(id)configuration
 {
-  v6 = a4;
-  v8 = [(NCNotificationCellHeight *)self cellHeightForConfigurationDictionary];
-  v7 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [v8 setObject:v7 forKey:v6];
+  configurationCopy = configuration;
+  cellHeightForConfigurationDictionary = [(NCNotificationCellHeight *)self cellHeightForConfigurationDictionary];
+  v7 = [MEMORY[0x277CCABB0] numberWithDouble:height];
+  [cellHeightForConfigurationDictionary setObject:v7 forKey:configurationCopy];
 }
 
-- (void)removeHeightForContentConfiguration:(id)a3
+- (void)removeHeightForContentConfiguration:(id)configuration
 {
-  if (a3)
+  if (configuration)
   {
-    v4 = a3;
-    v5 = [(NCNotificationCellHeight *)self cellHeightForConfigurationDictionary];
-    [v5 removeObjectForKey:v4];
+    configurationCopy = configuration;
+    cellHeightForConfigurationDictionary = [(NCNotificationCellHeight *)self cellHeightForConfigurationDictionary];
+    [cellHeightForConfigurationDictionary removeObjectForKey:configurationCopy];
   }
 }
 

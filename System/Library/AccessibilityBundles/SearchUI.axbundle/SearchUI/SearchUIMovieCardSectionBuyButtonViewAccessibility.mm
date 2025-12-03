@@ -1,16 +1,16 @@
 @interface SearchUIMovieCardSectionBuyButtonViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation SearchUIMovieCardSectionBuyButtonViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SearchUIMovieCardSectionBuyButtonView" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SearchUIMovieCardSectionBuyButtonView" hasInstanceMethod:@"button" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TLKStoreButton" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SearchUIMovieCardSectionBuyButtonView" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SearchUIMovieCardSectionBuyButtonView" hasInstanceMethod:@"button" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TLKStoreButton" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -18,7 +18,7 @@
   v3 = [(SearchUIMovieCardSectionBuyButtonViewAccessibility *)self safeValueForKey:@"subtitleLabel"];
   v4 = [(SearchUIMovieCardSectionBuyButtonViewAccessibility *)self safeValueForKey:@"button"];
   v5 = [v4 safeValueForKey:@"title"];
-  v8 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
   v6 = __AXStringForVariables();
 
   return v6;

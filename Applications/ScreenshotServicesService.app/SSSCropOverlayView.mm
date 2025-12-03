@@ -1,31 +1,31 @@
 @interface SSSCropOverlayView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGRect)_frameForGrabberAtEdge:(unint64_t)a3 inSize:(CGSize)a4 dimension:(double)a5;
-- (CGRect)_frameForLineAtEdge:(unint64_t)a3 inSize:(CGSize)a4 dimension:(double)a5;
-- (CGRect)_frameForViewInCorner:(unint64_t)a3 inSize:(CGSize)a4 cornerSize:(CGSize)a5;
-- (SSSCropOverlayGrabPosition)grabPositionForLocation:(CGPoint)a3;
-- (SSSCropOverlayView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGRect)_frameForGrabberAtEdge:(unint64_t)edge inSize:(CGSize)size dimension:(double)dimension;
+- (CGRect)_frameForLineAtEdge:(unint64_t)edge inSize:(CGSize)size dimension:(double)dimension;
+- (CGRect)_frameForViewInCorner:(unint64_t)corner inSize:(CGSize)size cornerSize:(CGSize)cornerSize;
+- (SSSCropOverlayGrabPosition)grabPositionForLocation:(CGPoint)location;
+- (SSSCropOverlayView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_updateCropOverlayVisibility;
 - (void)_updateUI;
 - (void)layoutSubviews;
-- (void)setCornerGrabberAlpha:(double)a3;
-- (void)setEditMode:(int64_t)a3;
-- (void)setLineAlpha:(double)a3;
-- (void)setLineGrabberAlpha:(double)a3;
-- (void)setShowRoundedCorners:(BOOL)a3;
+- (void)setCornerGrabberAlpha:(double)alpha;
+- (void)setEditMode:(int64_t)mode;
+- (void)setLineAlpha:(double)alpha;
+- (void)setLineGrabberAlpha:(double)alpha;
+- (void)setShowRoundedCorners:(BOOL)corners;
 @end
 
 @implementation SSSCropOverlayView
 
-- (SSSCropOverlayView)initWithFrame:(CGRect)a3
+- (SSSCropOverlayView)initWithFrame:(CGRect)frame
 {
   v55.receiver = self;
   v55.super_class = SSSCropOverlayView;
-  v3 = [(SSSCropOverlayView *)&v55 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SSSCropOverlayView *)&v55 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(SSSCropOverlayView *)v3 setClipsToBounds:0];
-  v4 = [(SSSCropOverlayView *)v3 layer];
-  [v4 setAllowsGroupOpacity:0];
+  layer = [(SSSCropOverlayView *)v3 layer];
+  [layer setAllowsGroupOpacity:0];
 
   v3->_cornerGrabberAlpha = 1.0;
   v3->_lineGrabberAlpha = 1.0;
@@ -35,8 +35,8 @@
   containerView = v3->_containerView;
   v3->_containerView = v5;
 
-  v7 = [(UIView *)v3->_containerView layer];
-  [v7 setAllowsGroupOpacity:0];
+  layer2 = [(UIView *)v3->_containerView layer];
+  [layer2 setAllowsGroupOpacity:0];
 
   [(SSSCropOverlayView *)v3 addSubview:v3->_containerView];
   v46 = +[NSMutableArray array];
@@ -45,8 +45,8 @@
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v8 = [(SSSCropOverlayView *)v3 _orderedRectEdges];
-  v9 = [v8 countByEnumeratingWithState:&v51 objects:v58 count:16];
+  _orderedRectEdges = [(SSSCropOverlayView *)v3 _orderedRectEdges];
+  v9 = [_orderedRectEdges countByEnumeratingWithState:&v51 objects:v58 count:16];
   if (v9)
   {
     v10 = v9;
@@ -58,12 +58,12 @@
       {
         if (*v52 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(_orderedRectEdges);
         }
 
-        v13 = [*(*(&v51 + 1) + 8 * v12) integerValue];
-        v14 = [[SSSCropOverlayLineView alloc] initWithEdge:v13];
-        v15 = [[SSSCropOverlayGrabberView alloc] initWithEdge:v13];
+        integerValue = [*(*(&v51 + 1) + 8 * v12) integerValue];
+        v14 = [[SSSCropOverlayLineView alloc] initWithEdge:integerValue];
+        v15 = [[SSSCropOverlayGrabberView alloc] initWithEdge:integerValue];
         [v46 addObject:v14];
         [v45 addObject:v15];
         [(UIView *)v3->_containerView addSubview:v14];
@@ -73,7 +73,7 @@
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v51 objects:v58 count:16];
+      v10 = [_orderedRectEdges countByEnumeratingWithState:&v51 objects:v58 count:16];
     }
 
     while (v10);
@@ -92,8 +92,8 @@
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v21 = [(SSSCropOverlayView *)v3 _orderedRectCorners];
-  v22 = [v21 countByEnumeratingWithState:&v47 objects:v57 count:16];
+  _orderedRectCorners = [(SSSCropOverlayView *)v3 _orderedRectCorners];
+  v22 = [_orderedRectCorners countByEnumeratingWithState:&v47 objects:v57 count:16];
   if (v22)
   {
     v23 = v22;
@@ -105,7 +105,7 @@
       {
         if (*v48 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(_orderedRectCorners);
         }
 
         v26 = -[SSSCropOverlayCornerView initForCorner:]([SSSCropOverlayCornerView alloc], "initForCorner:", [*(*(&v47 + 1) + 8 * v25) integerValue]);
@@ -116,7 +116,7 @@
       }
 
       while (v23 != v25);
-      v23 = [v21 countByEnumeratingWithState:&v47 objects:v57 count:16];
+      v23 = [_orderedRectCorners countByEnumeratingWithState:&v47 objects:v57 count:16];
     }
 
     while (v23);
@@ -126,12 +126,12 @@
   cornerViews = v3->_cornerViews;
   v3->_cornerViews = v27;
 
-  v29 = [(UIView *)v3->_containerView layer];
+  layer3 = [(UIView *)v3->_containerView layer];
   v30 = +[SSMaterial cropHandle];
-  v31 = [v30 filter];
-  v56 = v31;
+  filter = [v30 filter];
+  v56 = filter;
   v32 = [NSArray arrayWithObjects:&v56 count:1];
-  [v29 setFilters:v32];
+  [layer3 setFilters:v32];
 
   v33 = v3->_containerView;
   v34 = +[SSMaterial cropHandle];
@@ -139,8 +139,8 @@
   [(UIView *)v33 setAlpha:?];
 
   v35 = +[SSMaterial cropHandle];
-  v36 = [v35 color];
-  v37 = [v36 colorWithAlphaComponent:1.0];
+  color = [v35 color];
+  v37 = [color colorWithAlphaComponent:1.0];
   [(SSSCropOverlayView *)v3 setTintColor:v37];
 
   if (_SSScreenshotsRedesign2025Enabled())
@@ -154,8 +154,8 @@
     [(SSSRoundedCropOverlayView *)v40 setBorderWidth:?];
     v41 = v3->_overlayWithRoundedResizeHandlesView;
     v42 = +[SSMaterial cropHandle];
-    v43 = [v42 color];
-    [(SSSRoundedCropOverlayView *)v41 setBorderColor:v43];
+    color2 = [v42 color];
+    [(SSSRoundedCropOverlayView *)v41 setBorderColor:color2];
 
     [(SSSCropOverlayView *)v3 addSubview:v3->_overlayWithRoundedResizeHandlesView];
     [(SSSCropOverlayView *)v3 _updateUI];
@@ -166,11 +166,11 @@
   return v3;
 }
 
-- (void)setEditMode:(int64_t)a3
+- (void)setEditMode:(int64_t)mode
 {
-  if (self->_editMode != a3)
+  if (self->_editMode != mode)
   {
-    self->_editMode = a3;
+    self->_editMode = mode;
     [(SSSCropOverlayView *)self _updateCropOverlayVisibility];
 
     [(SSSCropOverlayView *)self setNeedsLayout];
@@ -225,12 +225,12 @@
   }
 }
 
-- (void)setShowRoundedCorners:(BOOL)a3
+- (void)setShowRoundedCorners:(BOOL)corners
 {
-  v3 = a3;
-  if (_SSScreenshotsRedesign2025Enabled() && self->_showRoundedCorners != v3)
+  cornersCopy = corners;
+  if (_SSScreenshotsRedesign2025Enabled() && self->_showRoundedCorners != cornersCopy)
   {
-    self->_showRoundedCorners = v3;
+    self->_showRoundedCorners = cornersCopy;
 
     [(SSSCropOverlayView *)self setNeedsLayout];
   }
@@ -255,8 +255,8 @@
 
       else
       {
-        v8 = [(SSSCropOverlayView *)self traitCollection];
-        [v8 displayCornerRadius];
+        traitCollection = [(SSSCropOverlayView *)self traitCollection];
+        [traitCollection displayCornerRadius];
         v3 = v9;
       }
     }
@@ -267,17 +267,17 @@
   }
 }
 
-- (CGRect)_frameForViewInCorner:(unint64_t)a3 inSize:(CGSize)a4 cornerSize:(CGSize)a5
+- (CGRect)_frameForViewInCorner:(unint64_t)corner inSize:(CGSize)size cornerSize:(CGSize)cornerSize
 {
-  height = a5.height;
-  width = a5.width;
-  v7 = a4.height;
-  v8 = a4.width;
+  height = cornerSize.height;
+  width = cornerSize.width;
+  v7 = size.height;
+  v8 = size.width;
   +[SSSCropOverlayGrabberView preferredDimension];
   v11 = v10;
   [objc_opt_class() _outsetAmountForHandles];
   v13 = v11 + v12;
-  if (a3 == 4 || a3 == 1)
+  if (corner == 4 || corner == 1)
   {
     v14 = -v13;
     v15 = -v13;
@@ -290,7 +290,7 @@
   }
 
   v16 = v7 - height + v13;
-  if (a3 - 1 < 2)
+  if (corner - 1 < 2)
   {
     v16 = v14;
   }
@@ -304,54 +304,54 @@
   return result;
 }
 
-- (CGRect)_frameForLineAtEdge:(unint64_t)a3 inSize:(CGSize)a4 dimension:(double)a5
+- (CGRect)_frameForLineAtEdge:(unint64_t)edge inSize:(CGSize)size dimension:(double)dimension
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   [objc_opt_class() _outsetAmountForHandles];
   v10 = v9;
-  v11 = -a5;
+  v11 = -dimension;
   IsHorizontal = SSRectEdgeIsHorizontal();
   v13 = height + v10;
   v14 = width + v10;
-  if (a3 != 8)
+  if (edge != 8)
   {
-    v14 = -a5;
+    v14 = -dimension;
   }
 
-  if (a3 == 4)
+  if (edge == 4)
   {
-    v15 = -a5;
+    v15 = -dimension;
   }
 
   else
   {
-    v13 = -a5;
+    v13 = -dimension;
     v15 = v14;
   }
 
   v16 = v11 - v10;
-  if (a3 == 2)
+  if (edge == 2)
   {
     v17 = v11 - v10;
   }
 
   else
   {
-    v17 = -a5;
+    v17 = -dimension;
   }
 
-  if (a3 == 1)
+  if (edge == 1)
   {
-    v17 = -a5;
+    v17 = -dimension;
   }
 
   else
   {
-    v16 = -a5;
+    v16 = -dimension;
   }
 
-  if (a3 <= 3)
+  if (edge <= 3)
   {
     v18 = v17;
   }
@@ -362,28 +362,28 @@
     v18 = v15;
   }
 
-  v19 = width + a5 * 2.0;
+  dimensionCopy = width + dimension * 2.0;
   if (!IsHorizontal)
   {
-    v19 = a5;
+    dimensionCopy = dimension;
   }
 
-  v20 = height + a5 * 2.0;
+  dimensionCopy2 = height + dimension * 2.0;
   if (IsHorizontal)
   {
-    v20 = a5;
+    dimensionCopy2 = dimension;
   }
 
-  result.size.height = v20;
-  result.size.width = v19;
+  result.size.height = dimensionCopy2;
+  result.size.width = dimensionCopy;
   result.origin.y = v16;
   result.origin.x = v18;
   return result;
 }
 
-- (CGRect)_frameForGrabberAtEdge:(unint64_t)a3 inSize:(CGSize)a4 dimension:(double)a5
+- (CGRect)_frameForGrabberAtEdge:(unint64_t)edge inSize:(CGSize)size dimension:(double)dimension
 {
-  [(SSSCropOverlayView *)self _frameForLineAtEdge:a4.width inSize:a4.height dimension:?];
+  [(SSSCropOverlayView *)self _frameForLineAtEdge:size.width inSize:size.height dimension:?];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -399,11 +399,11 @@
   }
 
   height = v16;
-  if (a3 > 3)
+  if (edge > 3)
   {
-    if (a3 != 4)
+    if (edge != 4)
     {
-      if (a3 == 8)
+      if (edge == 8)
       {
         v24.origin.x = v9;
         v24.origin.y = v11;
@@ -433,11 +433,11 @@ LABEL_13:
     y = CGRectGetMinY(v29);
 LABEL_16:
     width = height;
-    height = a5;
+    height = dimension;
     goto LABEL_17;
   }
 
-  if (a3 == 1)
+  if (edge == 1)
   {
     v26.origin.x = v9;
     v26.origin.y = v11;
@@ -448,11 +448,11 @@ LABEL_16:
     v27.origin.y = v11;
     v27.size.width = v13;
     v27.size.height = v15;
-    y = CGRectGetMaxY(v27) - a5;
+    y = CGRectGetMaxY(v27) - dimension;
     goto LABEL_16;
   }
 
-  if (a3 != 2)
+  if (edge != 2)
   {
     goto LABEL_13;
   }
@@ -461,14 +461,14 @@ LABEL_16:
   v23.origin.y = v11;
   v23.size.width = v13;
   v23.size.height = v15;
-  MinX = CGRectGetMaxX(v23) - a5;
+  MinX = CGRectGetMaxX(v23) - dimension;
 LABEL_12:
   v25.origin.x = v9;
   v25.origin.y = v11;
   v25.size.width = v13;
   v25.size.height = v15;
   y = CGRectGetMidY(v25) + height * -0.5;
-  width = a5;
+  width = dimension;
 LABEL_17:
   v21 = MinX;
   v22 = height;
@@ -491,18 +491,18 @@ LABEL_17:
   v5 = floor(v4);
   [(SSSCropOverlayView *)self bounds];
   v7 = floor(v6);
-  v8 = [(SSSCropOverlayView *)self _orderedRectCorners];
+  _orderedRectCorners = [(SSSCropOverlayView *)self _orderedRectCorners];
   if ([(NSArray *)self->_cornerViews count])
   {
     v9 = 0;
     do
     {
       v10 = [(NSArray *)self->_cornerViews objectAtIndex:v9];
-      v11 = [v8 objectAtIndex:v9];
-      v12 = [v11 integerValue];
+      v11 = [_orderedRectCorners objectAtIndex:v9];
+      integerValue = [v11 integerValue];
 
       [v10 intrinsicContentSize];
-      [(SSSCropOverlayView *)self _frameForViewInCorner:v12 inSize:v5 cornerSize:v7, v13, v14];
+      [(SSSCropOverlayView *)self _frameForViewInCorner:integerValue inSize:v5 cornerSize:v7, v13, v14];
       [v10 sss_setFrameUnanimatingIfChangingFromCGSizeZero:?];
 
       ++v9;
@@ -511,8 +511,8 @@ LABEL_17:
     while (v9 < [(NSArray *)self->_cornerViews count]);
   }
 
-  v41 = v8;
-  v15 = [(SSSCropOverlayView *)self _orderedRectEdges];
+  v41 = _orderedRectCorners;
+  _orderedRectEdges = [(SSSCropOverlayView *)self _orderedRectEdges];
   if ([(NSArray *)self->_grabberViews count])
   {
     v16 = 0;
@@ -520,17 +520,17 @@ LABEL_17:
     {
       v17 = [(NSArray *)self->_grabberViews objectAtIndex:v16];
       v18 = [(NSArray *)self->_lineViews objectAtIndex:v16];
-      v19 = [v15 objectAtIndex:v16];
-      v20 = [v19 integerValue];
+      v19 = [_orderedRectEdges objectAtIndex:v16];
+      integerValue2 = [v19 integerValue];
 
       +[SSSCropOverlayGrabberView preferredDimension];
-      [(SSSCropOverlayView *)self _frameForGrabberAtEdge:v20 inSize:v5 dimension:v7, v21];
+      [(SSSCropOverlayView *)self _frameForGrabberAtEdge:integerValue2 inSize:v5 dimension:v7, v21];
       v42 = v23;
       v43 = v22;
       v25 = v24;
       v27 = v26;
       +[SSSCropOverlayLineView preferredDimension];
-      [(SSSCropOverlayView *)self _frameForLineAtEdge:v20 inSize:v5 dimension:v7, v28];
+      [(SSSCropOverlayView *)self _frameForLineAtEdge:integerValue2 inSize:v5 dimension:v7, v28];
       v30 = v29;
       v32 = v31;
       v34 = v33;
@@ -554,47 +554,47 @@ LABEL_17:
   [(SSSCropOverlayView *)self _updateUI];
 }
 
-- (SSSCropOverlayGrabPosition)grabPositionForLocation:(CGPoint)a3
+- (SSSCropOverlayGrabPosition)grabPositionForLocation:(CGPoint)location
 {
-  v3 = [(SSSCropOverlayView *)self hitTest:0 withEvent:a3.x, a3.y];
+  v3 = [(SSSCropOverlayView *)self hitTest:0 withEvent:location.x, location.y];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 corner];
+    corner = [v3 corner];
 LABEL_6:
-    v5 = 0;
+    edge = 0;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v4 = 0;
+    corner = 0;
     goto LABEL_6;
   }
 
-  v5 = [v3 edge];
-  v4 = 0;
+  edge = [v3 edge];
+  corner = 0;
 LABEL_7:
 
-  v6 = v5;
-  v7 = v4;
+  v6 = edge;
+  v7 = corner;
   result.corner = v7;
   result.edge = v6;
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [(SSSCropOverlayView *)self _viewsToHitTest];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  _viewsToHitTest = [(SSSCropOverlayView *)self _viewsToHitTest];
+  v9 = [_viewsToHitTest countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -605,12 +605,12 @@ LABEL_7:
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(_viewsToHitTest);
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
         [v13 convertPoint:self fromView:{x, y}];
-        if ([v13 pointInside:v7 withEvent:?])
+        if ([v13 pointInside:eventCopy withEvent:?])
         {
 
           v14 = 1;
@@ -618,7 +618,7 @@ LABEL_7:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [_viewsToHitTest countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v10)
       {
         continue;
@@ -630,17 +630,17 @@ LABEL_7:
 
   v16.receiver = self;
   v16.super_class = SSSCropOverlayView;
-  v14 = [(SSSCropOverlayView *)&v16 pointInside:v7 withEvent:x, y];
+  v14 = [(SSSCropOverlayView *)&v16 pointInside:eventCopy withEvent:x, y];
 LABEL_11:
 
   return v14;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   if (UIViewIgnoresTouchEvents())
   {
     v8 = 0;
@@ -651,8 +651,8 @@ LABEL_11:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [(SSSCropOverlayView *)self _viewsToHitTest];
-  v10 = [(SSSCropOverlayView *)v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  _viewsToHitTest = [(SSSCropOverlayView *)self _viewsToHitTest];
+  v10 = [(SSSCropOverlayView *)_viewsToHitTest countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -663,19 +663,19 @@ LABEL_5:
     {
       if (*v18 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(_viewsToHitTest);
       }
 
       v14 = *(*(&v17 + 1) + 8 * v13);
       [(SSSCropOverlayView *)v14 convertPoint:self fromView:x, y];
-      if ([(SSSCropOverlayView *)v14 pointInside:v7 withEvent:?])
+      if ([(SSSCropOverlayView *)v14 pointInside:eventCopy withEvent:?])
       {
         goto LABEL_15;
       }
 
       if (v11 == ++v13)
       {
-        v11 = [(SSSCropOverlayView *)v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v11 = [(SSSCropOverlayView *)_viewsToHitTest countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v11)
         {
           goto LABEL_5;
@@ -688,13 +688,13 @@ LABEL_5:
 
   v16.receiver = self;
   v16.super_class = SSSCropOverlayView;
-  v14 = [(SSSCropOverlayView *)&v16 hitTest:v7 withEvent:x, y];
+  v14 = [(SSSCropOverlayView *)&v16 hitTest:eventCopy withEvent:x, y];
   if (v14 != self && ([(SSSCropOverlayView *)self containsView:v14]& 1) == 0)
   {
-    v9 = v14;
+    _viewsToHitTest = v14;
 LABEL_15:
     v8 = v14;
-    v14 = v9;
+    v14 = _viewsToHitTest;
     goto LABEL_16;
   }
 
@@ -706,9 +706,9 @@ LABEL_17:
   return v8;
 }
 
-- (void)setCornerGrabberAlpha:(double)a3
+- (void)setCornerGrabberAlpha:(double)alpha
 {
-  self->_cornerGrabberAlpha = a3;
+  self->_cornerGrabberAlpha = alpha;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -729,7 +729,7 @@ LABEL_17:
           objc_enumerationMutation(v4);
         }
 
-        [*(*(&v9 + 1) + 8 * v8) setAlpha:{a3, v9}];
+        [*(*(&v9 + 1) + 8 * v8) setAlpha:{alpha, v9}];
         v8 = v8 + 1;
       }
 
@@ -741,9 +741,9 @@ LABEL_17:
   }
 }
 
-- (void)setLineAlpha:(double)a3
+- (void)setLineAlpha:(double)alpha
 {
-  self->_lineAlpha = a3;
+  self->_lineAlpha = alpha;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -764,7 +764,7 @@ LABEL_17:
           objc_enumerationMutation(v4);
         }
 
-        [*(*(&v9 + 1) + 8 * v8) setAlpha:{a3, v9}];
+        [*(*(&v9 + 1) + 8 * v8) setAlpha:{alpha, v9}];
         v8 = v8 + 1;
       }
 
@@ -776,9 +776,9 @@ LABEL_17:
   }
 }
 
-- (void)setLineGrabberAlpha:(double)a3
+- (void)setLineGrabberAlpha:(double)alpha
 {
-  self->_lineGrabberAlpha = a3;
+  self->_lineGrabberAlpha = alpha;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -799,7 +799,7 @@ LABEL_17:
           objc_enumerationMutation(v4);
         }
 
-        [*(*(&v9 + 1) + 8 * v8) setAlpha:{a3, v9}];
+        [*(*(&v9 + 1) + 8 * v8) setAlpha:{alpha, v9}];
         v8 = v8 + 1;
       }
 

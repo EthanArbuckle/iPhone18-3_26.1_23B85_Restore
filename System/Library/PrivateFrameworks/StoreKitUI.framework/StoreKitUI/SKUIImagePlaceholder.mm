@@ -1,30 +1,30 @@
 @interface SKUIImagePlaceholder
-- (SKUIImagePlaceholder)initWithBackgroundColor:(id)a3 borderColor:(id)a4 borderWidth:(double)a5 cornerPathBlock:(id)a6;
-- (SKUIImagePlaceholder)initWithBackgroundColor:(id)a3 borderColor:(id)a4 borderWidth:(double)a5 cornerRadius:(double)a6;
+- (SKUIImagePlaceholder)initWithBackgroundColor:(id)color borderColor:(id)borderColor borderWidth:(double)width cornerPathBlock:(id)block;
+- (SKUIImagePlaceholder)initWithBackgroundColor:(id)color borderColor:(id)borderColor borderWidth:(double)width cornerRadius:(double)radius;
 @end
 
 @implementation SKUIImagePlaceholder
 
-- (SKUIImagePlaceholder)initWithBackgroundColor:(id)a3 borderColor:(id)a4 borderWidth:(double)a5 cornerRadius:(double)a6
+- (SKUIImagePlaceholder)initWithBackgroundColor:(id)color borderColor:(id)borderColor borderWidth:(double)width cornerRadius:(double)radius
 {
-  v10 = a3;
-  v11 = a4;
+  colorCopy = color;
+  borderColorCopy = borderColor;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIImagePlaceholder initWithBackgroundColor:borderColor:borderWidth:cornerRadius:];
   }
 
-  if (a6 >= 0.00000011920929)
+  if (radius >= 0.00000011920929)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __SKUIImagePlaceholderCornerPathBlockCreate_block_invoke_2;
     aBlock[3] = &__block_descriptor_40_e53___UIBezierPath_40__0_CGRect__CGPoint_dd__CGSize_dd__8l;
-    *&aBlock[4] = a6;
+    *&aBlock[4] = radius;
     v12 = _Block_copy(aBlock);
   }
 
-  else if (a5 >= 0.00000011920929)
+  else if (width >= 0.00000011920929)
   {
     v12 = &__block_literal_global_55;
   }
@@ -34,16 +34,16 @@
     v12 = 0;
   }
 
-  v13 = [(SKUIImagePlaceholder *)self initWithBackgroundColor:v10 borderColor:v11 borderWidth:v12 cornerPathBlock:a5];
+  v13 = [(SKUIImagePlaceholder *)self initWithBackgroundColor:colorCopy borderColor:borderColorCopy borderWidth:v12 cornerPathBlock:width];
 
   return v13;
 }
 
-- (SKUIImagePlaceholder)initWithBackgroundColor:(id)a3 borderColor:(id)a4 borderWidth:(double)a5 cornerPathBlock:(id)a6
+- (SKUIImagePlaceholder)initWithBackgroundColor:(id)color borderColor:(id)borderColor borderWidth:(double)width cornerPathBlock:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  colorCopy = color;
+  borderColorCopy = borderColor;
+  blockCopy = block;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIImagePlaceholder initWithBackgroundColor:borderColor:borderWidth:cornerPathBlock:];
@@ -55,10 +55,10 @@
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_backgroundColor, a3);
-    objc_storeStrong(&v15->_borderColor, a4);
-    v15->_borderWidth = a5;
-    v16 = [v13 copy];
+    objc_storeStrong(&v14->_backgroundColor, color);
+    objc_storeStrong(&v15->_borderColor, borderColor);
+    v15->_borderWidth = width;
+    v16 = [blockCopy copy];
     cornerPathBlock = v15->_cornerPathBlock;
     v15->_cornerPathBlock = v16;
   }

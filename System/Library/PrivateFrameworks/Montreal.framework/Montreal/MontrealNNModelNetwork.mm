@@ -1,18 +1,18 @@
 @interface MontrealNNModelNetwork
 - (MontrealNNModelNetwork)init;
-- (MontrealNNModelNetwork)initWithDictionary:(id)a3 tensors:(id)a4 quantization:(id)a5 optimizerParams:(id)a6 jsonDir:(id)a7 optimization:(unint64_t)a8;
-- (MontrealNNModelNetwork)initWithJSONDir:(id)a3;
-- (MontrealNNModelNetwork)initWithModelContainer:(void *)a3 tensors:(id)a4;
+- (MontrealNNModelNetwork)initWithDictionary:(id)dictionary tensors:(id)tensors quantization:(id)quantization optimizerParams:(id)params jsonDir:(id)dir optimization:(unint64_t)optimization;
+- (MontrealNNModelNetwork)initWithJSONDir:(id)dir;
+- (MontrealNNModelNetwork)initWithModelContainer:(void *)container tensors:(id)tensors;
 - (id)checkForValidity;
 - (id)createDataContainer;
 - (id)jsonDescription;
 - (void)collapseNodes;
-- (void)collapsePackUnpack:(id)a3 nodesToRemove:(id)a4;
-- (void)description:(id)a3 indent:(id)a4;
-- (void)generateJSONAtPath:(id)a3;
+- (void)collapsePackUnpack:(id)unpack nodesToRemove:(id)remove;
+- (void)description:(id)description indent:(id)indent;
+- (void)generateJSONAtPath:(id)path;
 - (void)generateModelContainer;
-- (void)removeView:(id)a3 nodesToRemove:(id)a4;
-- (void)validateNetworkTensors:(id)a3;
+- (void)removeView:(id)view nodesToRemove:(id)remove;
+- (void)validateNetworkTensors:(id)tensors;
 - (void)validateNodeTensors;
 @end
 
@@ -64,9 +64,9 @@
   return v3;
 }
 
-- (MontrealNNModelNetwork)initWithJSONDir:(id)a3
+- (MontrealNNModelNetwork)initWithJSONDir:(id)dir
 {
-  v4 = a3;
+  dirCopy = dir;
   v55.receiver = self;
   v55.super_class = MontrealNNModelNetwork;
   v8 = [(MontrealNNModelNetwork *)&v55 init];
@@ -81,7 +81,7 @@
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      sub_19D2C78CC(@"Failed to extract network JSON", v16, v17, v18, v19, v20, v21, v22, v4);
+      sub_19D2C78CC(@"Failed to extract network JSON", v16, v17, v18, v19, v20, v21, v22, dirCopy);
     }
 
     v23 = MEMORY[0x1E695DEF0];
@@ -92,7 +92,7 @@
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      sub_19D2C78CC(@"Failed to extract description JSON", v30, v31, v32, v33, v34, v35, v36, v4);
+      sub_19D2C78CC(@"Failed to extract description JSON", v30, v31, v32, v33, v34, v35, v36, dirCopy);
     }
 
     v37 = v29;
@@ -101,7 +101,7 @@
     v42 = [MontrealNNModelOptimizerParam alloc];
     v45 = objc_msgSend_initWithDictionary_(v42, v43, v37, v44);
     v49 = objc_msgSend_set(MEMORY[0x1E695DFA8], v46, v47, v48);
-    v51 = objc_msgSend_initWithDictionary_tensors_quantization_optimizerParams_jsonDir_optimization_(v8, v50, v15, v49, v41, v45, v4, 0);
+    v51 = objc_msgSend_initWithDictionary_tensors_quantization_optimizerParams_jsonDir_optimization_(v8, v50, v15, v49, v41, v45, dirCopy, 0);
   }
 
   else
@@ -114,10 +114,10 @@
   return v52;
 }
 
-- (MontrealNNModelNetwork)initWithModelContainer:(void *)a3 tensors:(id)a4
+- (MontrealNNModelNetwork)initWithModelContainer:(void *)container tensors:(id)tensors
 {
-  v6 = a4;
-  v7 = off_1EB014878(a3, 0);
+  tensorsCopy = tensors;
+  v7 = off_1EB014878(container, 0);
   v9 = objc_msgSend_JSONObjectWithData_options_error_(MEMORY[0x1E696ACB0], v8, v7, 0, 0);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -125,25 +125,25 @@
     sub_19D2C78CC(@"Failed to extract network JSON from model container", v10, v11, v12, v13, v14, v15, v16, v33);
   }
 
-  v17 = off_1EB014880(a3);
+  v17 = off_1EB014880(container);
   v18 = [MontrealNNModelOptimizerParam alloc];
   v21 = objc_msgSend_initWithDictionary_(v18, v19, v17, v20);
   v24 = objc_msgSend_exMRL_numberForKey_(v17, v22, off_1EB013710, v23);
   v28 = objc_msgSend_unsignedIntegerValue(v24, v25, v26, v27);
 
   v29 = [MontrealNNModelNetwork alloc];
-  v31 = objc_msgSend_initWithDictionary_tensors_quantization_optimizerParams_jsonDir_optimization_(v29, v30, v9, v6, 0, v21, 0, v28);
+  v31 = objc_msgSend_initWithDictionary_tensors_quantization_optimizerParams_jsonDir_optimization_(v29, v30, v9, tensorsCopy, 0, v21, 0, v28);
 
   return v31;
 }
 
-- (MontrealNNModelNetwork)initWithDictionary:(id)a3 tensors:(id)a4 quantization:(id)a5 optimizerParams:(id)a6 jsonDir:(id)a7 optimization:(unint64_t)a8
+- (MontrealNNModelNetwork)initWithDictionary:(id)dictionary tensors:(id)tensors quantization:(id)quantization optimizerParams:(id)params jsonDir:(id)dir optimization:(unint64_t)optimization
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  dictionaryCopy = dictionary;
+  tensorsCopy = tensors;
+  quantizationCopy = quantization;
+  paramsCopy = params;
+  dirCopy = dir;
   v40.receiver = self;
   v40.super_class = MontrealNNModelNetwork;
   v18 = [(MontrealNNModelNetwork *)&v40 init];
@@ -151,21 +151,21 @@
   if (v18)
   {
     v23 = v18;
-    objc_storeStrong(&v18->_optimizerParams, a6);
-    objc_storeStrong(&v23->_jsonDir, a7);
-    v24 = sub_19D39991C(v13, off_1EB0136A0, v14, v15, v17);
+    objc_storeStrong(&v18->_optimizerParams, params);
+    objc_storeStrong(&v23->_jsonDir, dir);
+    v24 = sub_19D39991C(dictionaryCopy, off_1EB0136A0, tensorsCopy, quantizationCopy, dirCopy);
     nodes = v22->_nodes;
     v22->_nodes = v24;
 
-    v26 = sub_19D399430(v13, off_1EB013698);
+    v26 = sub_19D399430(dictionaryCopy, off_1EB013698);
     inputs = v22->_inputs;
     v22->_inputs = v26;
 
-    v28 = sub_19D399430(v13, off_1EB013440);
+    v28 = sub_19D399430(dictionaryCopy, off_1EB013440);
     outputs = v22->_outputs;
     v22->_outputs = v28;
 
-    objc_msgSend_validateNetworkTensors_(v22, v30, v14, v31);
+    objc_msgSend_validateNetworkTensors_(v22, v30, tensorsCopy, v31);
     objc_msgSend_collapseNodes(v22, v32, v33, v34);
     objc_msgSend_validateNodeTensors(v22, v35, v36, v37);
   }
@@ -175,11 +175,11 @@
   return v38;
 }
 
-- (void)validateNetworkTensors:(id)a3
+- (void)validateNetworkTensors:(id)tensors
 {
-  v4 = a3;
+  tensorsCopy = tensors;
   v7 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v5, @"%@ == %%@", v6, off_1EB013688);
-  v13 = v4;
+  v13 = tensorsCopy;
   v14 = v13;
   v8 = v7;
   v15 = v8;
@@ -356,31 +356,31 @@ LABEL_5:
   self->_outputs = v48;
 }
 
-- (void)collapsePackUnpack:(id)a3 nodesToRemove:(id)a4
+- (void)collapsePackUnpack:(id)unpack nodesToRemove:(id)remove
 {
   v130[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v10 = objc_msgSend_inputs(v5, v7, v8, v9);
+  unpackCopy = unpack;
+  removeCopy = remove;
+  v10 = objc_msgSend_inputs(unpackCopy, v7, v8, v9);
   if (!objc_msgSend_count(v10, v11, v12, v13))
   {
 
     goto LABEL_5;
   }
 
-  v17 = objc_msgSend_outputs(v5, v14, v15, v16);
+  v17 = objc_msgSend_outputs(unpackCopy, v14, v15, v16);
   v21 = objc_msgSend_count(v17, v18, v19, v20);
 
   if (!v21)
   {
 LABEL_5:
-    sub_19D2C78CC(@"Node %@ contains empty inputs or outputs", v22, v23, v24, v25, v26, v27, v28, v5);
+    sub_19D2C78CC(@"Node %@ contains empty inputs or outputs", v22, v23, v24, v25, v26, v27, v28, unpackCopy);
   }
 
-  v29 = objc_msgSend_inputs(v5, v22, v23, v24);
+  v29 = objc_msgSend_inputs(unpackCopy, v22, v23, v24);
   v32 = objc_msgSend_objectAtIndex_(v29, v30, 0, v31);
 
-  v36 = objc_msgSend_outputs(v5, v33, v34, v35);
+  v36 = objc_msgSend_outputs(unpackCopy, v33, v34, v35);
   v39 = objc_msgSend_objectAtIndex_(v36, v37, 0, v38);
 
   v43 = objc_msgSend_asInput(v39, v40, v41, v42);
@@ -433,34 +433,34 @@ LABEL_5:
   v121 = objc_msgSend_asOutput(v89, v118, v119, v120);
   objc_msgSend_addObject_(v121, v122, v47, v123);
 
-  objc_msgSend_addObject_(v6, v124, v5, v125);
-  objc_msgSend_addObject_(v6, v126, v78, v127);
+  objc_msgSend_addObject_(removeCopy, v124, unpackCopy, v125);
+  objc_msgSend_addObject_(removeCopy, v126, v78, v127);
 }
 
-- (void)removeView:(id)a3 nodesToRemove:(id)a4
+- (void)removeView:(id)view nodesToRemove:(id)remove
 {
-  v86 = a3;
-  v5 = a4;
-  v9 = objc_msgSend_inputs(v86, v6, v7, v8);
+  viewCopy = view;
+  removeCopy = remove;
+  v9 = objc_msgSend_inputs(viewCopy, v6, v7, v8);
   if (!objc_msgSend_count(v9, v10, v11, v12))
   {
 
     goto LABEL_5;
   }
 
-  v16 = objc_msgSend_outputs(v86, v13, v14, v15);
+  v16 = objc_msgSend_outputs(viewCopy, v13, v14, v15);
   v20 = objc_msgSend_count(v16, v17, v18, v19);
 
   if (!v20)
   {
 LABEL_5:
-    sub_19D2C78CC(@"Node %@ contains empty inputs or outputs", v21, v22, v23, v24, v25, v26, v27, v86);
+    sub_19D2C78CC(@"Node %@ contains empty inputs or outputs", v21, v22, v23, v24, v25, v26, v27, viewCopy);
   }
 
-  v28 = objc_msgSend_inputs(v86, v21, v22, v23);
+  v28 = objc_msgSend_inputs(viewCopy, v21, v22, v23);
   v31 = objc_msgSend_objectAtIndex_(v28, v29, 0, v30);
 
-  v35 = objc_msgSend_outputs(v86, v32, v33, v34);
+  v35 = objc_msgSend_outputs(viewCopy, v32, v33, v34);
   v38 = objc_msgSend_objectAtIndex_(v35, v36, 0, v37);
 
   v42 = objc_msgSend_asInput(v38, v39, v40, v41);
@@ -468,7 +468,7 @@ LABEL_5:
 
   if (!v46)
   {
-    sub_19D2C78CC(@"Node %@ output is going nowhere?", v47, v48, v49, v50, v51, v52, v53, v86);
+    sub_19D2C78CC(@"Node %@ output is going nowhere?", v47, v48, v49, v50, v51, v52, v53, viewCopy);
   }
 
   v54 = objc_msgSend_inputs(v46, v47, v48, v49);
@@ -486,24 +486,24 @@ LABEL_5:
   v81 = objc_msgSend_asInput(v31, v78, v79, v80);
   objc_msgSend_addObject_(v81, v82, v46, v83);
 
-  objc_msgSend_addObject_(v5, v84, v86, v85);
+  objc_msgSend_addObject_(removeCopy, v84, viewCopy, v85);
 }
 
-- (void)description:(id)a3 indent:(id)a4
+- (void)description:(id)description indent:(id)indent
 {
-  v28 = a3;
-  v6 = a4;
+  descriptionCopy = description;
+  indentCopy = indent;
   v10 = objc_msgSend_inputs(self, v7, v8, v9);
-  v11 = sub_19D398EBC(v10, v6);
-  objc_msgSend_appendFormat_(v28, v12, @"\r %@ Inputs = %@ ", v13, v6, v11);
+  v11 = sub_19D398EBC(v10, indentCopy);
+  objc_msgSend_appendFormat_(descriptionCopy, v12, @"\r %@ Inputs = %@ ", v13, indentCopy, v11);
 
   v17 = objc_msgSend_outputs(self, v14, v15, v16);
-  v18 = sub_19D398EBC(v17, v6);
-  objc_msgSend_appendFormat_(v28, v19, @"\r %@ Outputs = %@ ", v20, v6, v18);
+  v18 = sub_19D398EBC(v17, indentCopy);
+  objc_msgSend_appendFormat_(descriptionCopy, v19, @"\r %@ Outputs = %@ ", v20, indentCopy, v18);
 
   v24 = objc_msgSend_nodes(self, v21, v22, v23);
-  v25 = sub_19D398EBC(v24, v6);
-  objc_msgSend_appendFormat_(v28, v26, @"\r %@ Nodes = %@ ", v27, v6, v25);
+  v25 = sub_19D398EBC(v24, indentCopy);
+  objc_msgSend_appendFormat_(descriptionCopy, v26, @"\r %@ Nodes = %@ ", v27, indentCopy, v25);
 }
 
 - (id)jsonDescription
@@ -526,22 +526,22 @@ LABEL_5:
   return v27;
 }
 
-- (void)generateJSONAtPath:(id)a3
+- (void)generateJSONAtPath:(id)path
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   v8 = objc_msgSend_jsonDescription(self, v5, v6, v7);
   v38 = 0;
   v10 = objc_msgSend_dataWithJSONObject_options_error_(MEMORY[0x1E696ACB0], v9, v8, 1, &v38);
   v11 = v38;
-  v14 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v12, @"%@/network.json", v13, v4);
+  v14 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v12, @"%@/network.json", v13, pathCopy);
   objc_msgSend_writeToFile_atomically_(v10, v15, v14, 1);
 
   v37 = v11;
   v17 = objc_msgSend_dataWithJSONObject_options_error_(MEMORY[0x1E696ACB0], v16, MEMORY[0x1E695E0F8], 1, &v37);
   v18 = v37;
 
-  v21 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v19, @"%@/description.json", v20, v4);
+  v21 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v19, @"%@/description.json", v20, pathCopy);
   objc_msgSend_writeToFile_atomically_(v17, v22, v21, 1);
 
   v35 = 0u;
@@ -563,7 +563,7 @@ LABEL_5:
           objc_enumerationMutation(v26);
         }
 
-        objc_msgSend_generateJSONAtPath_(*(*(&v33 + 1) + 8 * v32++), v28, v4, v29);
+        objc_msgSend_generateJSONAtPath_(*(*(&v33 + 1) + 8 * v32++), v28, pathCopy, v29);
       }
 
       while (v30 != v32);

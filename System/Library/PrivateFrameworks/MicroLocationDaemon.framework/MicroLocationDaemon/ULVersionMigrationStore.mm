@@ -1,40 +1,40 @@
 @interface ULVersionMigrationStore
-- (BOOL)_commitBatchForEntityName:(id)a3 migratingAttribute:(id)a4 stop:(BOOL *)a5;
+- (BOOL)_commitBatchForEntityName:(id)name migratingAttribute:(id)attribute stop:(BOOL *)stop;
 - (BOOL)_connectLabelsToScanningEvents;
-- (BOOL)_createScanningEventFromRecordingEvent:(id)a3 withRelatedLOIObjectID:(id)a4;
-- (BOOL)_migrateAttributeToRelationshipForEntityName:(id)a3 deprecatedAttribute:(id)a4 sortAttribute:(id)a5 relationship:(id)a6 relatedEntityName:(id)a7 relatedAttribute:(id)a8 relatedSortAttribute:(id)a9 fetchBatchSize:(unint64_t)a10;
+- (BOOL)_createScanningEventFromRecordingEvent:(id)event withRelatedLOIObjectID:(id)d;
+- (BOOL)_migrateAttributeToRelationshipForEntityName:(id)name deprecatedAttribute:(id)attribute sortAttribute:(id)sortAttribute relationship:(id)relationship relatedEntityName:(id)entityName relatedAttribute:(id)relatedAttribute relatedSortAttribute:(id)relatedSortAttribute fetchBatchSize:(unint64_t)self0;
 - (BOOL)_migrateAttributesToRelationships;
 - (BOOL)_migrateConfigurations;
 - (BOOL)_migrateMeasurements;
 - (BOOL)_migrateRecordingEvents;
 - (BOOL)_updateLabelsContextLayers;
-- (BOOL)performVersionMigrationForModelVersion:(id)a3;
-- (ULVersionMigrationStore)initWithDbStore:(ULDatabaseStoreInterface *)a3;
+- (BOOL)performVersionMigrationForModelVersion:(id)version;
+- (ULVersionMigrationStore)initWithDbStore:(ULDatabaseStoreInterface *)store;
 - (id).cxx_construct;
 - (id)_getTriggerToRecordingUUIDMap;
-- (id)_getUUIDToObjectIDMapForRelatedEntityName:(id)a3 relatedAttribute:(id)a4 relatedSortAttribute:(id)a5 filterUUIDs:(id)a6;
-- (void)_connectLabelsInBatch:(id)a3 withTriggerUUIDMap:(id)a4 andScanEventsUUIDMap:(id)a5;
-- (void)_createAnchorAppearanceMapMOFromConfigurationMO:(id)a3 withLOIObjectID:(id)a4;
-- (void)_createBLEMeasurementFromDeprecatedMeasurement:(id)a3 withMeasurementProto:()unique_ptr<CLMicroLocationProto:(std:(id)a5 :default_delete<CLMicroLocationProto::Measurement>>)a4 :Measurement andRelatedScanningEventObjectID:;
-- (void)_createMeasurementFromDeprecatedMeasurement:(id)a3 withRelatedScanningEventObjectID:(id)a4;
-- (void)_createUWBMeasurementFromDeprecatedMeasurement:(id)a3 withMeasurementProto:()unique_ptr<CLMicroLocationProto:(std:(id)a5 :default_delete<CLMicroLocationProto::Measurement>>)a4 :Measurement andRelatedScanningEventObjectID:;
-- (void)_createWiFiHistogramMOFromConfigurationMO:(id)a3 withLOIObjectID:(id)a4;
-- (void)_createWiFiMeasurementFromDeprecatedMeasurement:(id)a3 withMeasurementProto:()unique_ptr<CLMicroLocationProto:(std:(id)a5 :default_delete<CLMicroLocationProto::Measurement>>)a4 :Measurement andRelatedScanningEventObjectID:;
-- (void)_migrateBatch:(id)a3 forDeprecatedAttribute:(id)a4 relationship:(id)a5 withRelationUUIDMap:(id)a6;
-- (void)_migrateConfigurationInBatch:(id)a3 withLOIMap:(id)a4;
-- (void)_migrateMeasurementsInBatch:(id)a3 withRelationUUIDMap:(id)a4;
-- (void)_migrateRecordingEventsInBatch:(id)a3 withRelationUUIDMap:(id)a4;
-- (void)_updateContextLayersForLabelsInBatch:(id)a3;
-- (void)setAnchorDeviceModelAllowedMap:()map<std:()DeviceModel :()std:(std:(DeviceModel>>> *)a3 :allocator<std::pair<const)std::string :less<std::string> string;
+- (id)_getUUIDToObjectIDMapForRelatedEntityName:(id)name relatedAttribute:(id)attribute relatedSortAttribute:(id)sortAttribute filterUUIDs:(id)ds;
+- (void)_connectLabelsInBatch:(id)batch withTriggerUUIDMap:(id)map andScanEventsUUIDMap:(id)dMap;
+- (void)_createAnchorAppearanceMapMOFromConfigurationMO:(id)o withLOIObjectID:(id)d;
+- (void)_createBLEMeasurementFromDeprecatedMeasurement:(id)measurement withMeasurementProto:()unique_ptr<CLMicroLocationProto:(std:(id)proto :default_delete<CLMicroLocationProto::Measurement>>)a4 :Measurement andRelatedScanningEventObjectID:;
+- (void)_createMeasurementFromDeprecatedMeasurement:(id)measurement withRelatedScanningEventObjectID:(id)d;
+- (void)_createUWBMeasurementFromDeprecatedMeasurement:(id)measurement withMeasurementProto:()unique_ptr<CLMicroLocationProto:(std:(id)proto :default_delete<CLMicroLocationProto::Measurement>>)a4 :Measurement andRelatedScanningEventObjectID:;
+- (void)_createWiFiHistogramMOFromConfigurationMO:(id)o withLOIObjectID:(id)d;
+- (void)_createWiFiMeasurementFromDeprecatedMeasurement:(id)measurement withMeasurementProto:()unique_ptr<CLMicroLocationProto:(std:(id)proto :default_delete<CLMicroLocationProto::Measurement>>)a4 :Measurement andRelatedScanningEventObjectID:;
+- (void)_migrateBatch:(id)batch forDeprecatedAttribute:(id)attribute relationship:(id)relationship withRelationUUIDMap:(id)map;
+- (void)_migrateConfigurationInBatch:(id)batch withLOIMap:(id)map;
+- (void)_migrateMeasurementsInBatch:(id)batch withRelationUUIDMap:(id)map;
+- (void)_migrateRecordingEventsInBatch:(id)batch withRelationUUIDMap:(id)map;
+- (void)_updateContextLayersForLabelsInBatch:(id)batch;
+- (void)setAnchorDeviceModelAllowedMap:()map<std:()DeviceModel :()std:(std:(DeviceModel>>> *)std :allocator<std::pair<const)std::string :less<std::string> string;
 @end
 
 @implementation ULVersionMigrationStore
 
-- (ULVersionMigrationStore)initWithDbStore:(ULDatabaseStoreInterface *)a3
+- (ULVersionMigrationStore)initWithDbStore:(ULDatabaseStoreInterface *)store
 {
   v7.receiver = self;
   v7.super_class = ULVersionMigrationStore;
-  v3 = [(ULStore *)&v7 initWithDbStore:a3];
+  v3 = [(ULStore *)&v7 initWithDbStore:store];
   if (v3)
   {
     v4 = [MEMORY[0x277CBEB58] set];
@@ -48,24 +48,24 @@
   return v3;
 }
 
-- (BOOL)performVersionMigrationForModelVersion:(id)a3
+- (BOOL)performVersionMigrationForModelVersion:(id)version
 {
-  v4 = a3;
-  if ([v4 unsignedIntValue] > 1)
+  versionCopy = version;
+  if ([versionCopy unsignedIntValue] > 1)
   {
     v9 = 1;
   }
 
   else
   {
-    v5 = [(ULVersionMigrationStore *)self _migrateAttributesToRelationships];
-    v6 = [(ULVersionMigrationStore *)self _migrateConfigurations];
-    v7 = [(ULVersionMigrationStore *)self _migrateRecordingEvents];
-    v8 = [(ULVersionMigrationStore *)self _migrateMeasurements];
-    v9 = (v5 && v6 && v7 && v8) & [(ULVersionMigrationStore *)self _connectLabelsToScanningEvents];
+    _migrateAttributesToRelationships = [(ULVersionMigrationStore *)self _migrateAttributesToRelationships];
+    _migrateConfigurations = [(ULVersionMigrationStore *)self _migrateConfigurations];
+    _migrateRecordingEvents = [(ULVersionMigrationStore *)self _migrateRecordingEvents];
+    _migrateMeasurements = [(ULVersionMigrationStore *)self _migrateMeasurements];
+    v9 = (_migrateAttributesToRelationships && _migrateConfigurations && _migrateRecordingEvents && _migrateMeasurements) & [(ULVersionMigrationStore *)self _connectLabelsToScanningEvents];
   }
 
-  if ([v4 unsignedIntValue] <= 2)
+  if ([versionCopy unsignedIntValue] <= 2)
   {
     v9 &= [(ULVersionMigrationStore *)self _updateLabelsContextLayers];
   }
@@ -73,50 +73,50 @@
   return v9;
 }
 
-- (BOOL)_migrateAttributeToRelationshipForEntityName:(id)a3 deprecatedAttribute:(id)a4 sortAttribute:(id)a5 relationship:(id)a6 relatedEntityName:(id)a7 relatedAttribute:(id)a8 relatedSortAttribute:(id)a9 fetchBatchSize:(unint64_t)a10
+- (BOOL)_migrateAttributeToRelationshipForEntityName:(id)name deprecatedAttribute:(id)attribute sortAttribute:(id)sortAttribute relationship:(id)relationship relatedEntityName:(id)entityName relatedAttribute:(id)relatedAttribute relatedSortAttribute:(id)relatedSortAttribute fetchBatchSize:(unint64_t)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v34 = a5;
-  v33 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  nameCopy = name;
+  attributeCopy = attribute;
+  sortAttributeCopy = sortAttribute;
+  relationshipCopy = relationship;
+  entityNameCopy = entityName;
+  relatedAttributeCopy = relatedAttribute;
+  relatedSortAttributeCopy = relatedSortAttribute;
   v45 = 0;
   v46 = &v45;
   v47 = 0x2020000000;
   v48 = 1;
-  v21 = [(ULStore *)self managedObjectContext];
+  managedObjectContext = [(ULStore *)self managedObjectContext];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __190__ULVersionMigrationStore__migrateAttributeToRelationshipForEntityName_deprecatedAttribute_sortAttribute_relationship_relatedEntityName_relatedAttribute_relatedSortAttribute_fetchBatchSize___block_invoke;
   v35[3] = &unk_2798D4AC0;
   v35[4] = self;
-  v32 = v16;
-  v22 = v16;
+  v32 = nameCopy;
+  v22 = nameCopy;
   v36 = v22;
-  v31 = v17;
-  v23 = v17;
+  v31 = attributeCopy;
+  v23 = attributeCopy;
   v37 = v23;
-  v24 = v18;
+  v24 = entityNameCopy;
   v38 = v24;
-  v25 = v19;
+  v25 = relatedAttributeCopy;
   v39 = v25;
-  v30 = v19;
-  v26 = v20;
+  v30 = relatedAttributeCopy;
+  v26 = relatedSortAttributeCopy;
   v40 = v26;
-  v27 = v34;
+  v27 = sortAttributeCopy;
   v41 = v27;
-  v44 = a10;
-  v28 = v33;
+  sizeCopy = size;
+  v28 = relationshipCopy;
   v42 = v28;
   v43 = &v45;
-  [v21 performBlockAndWait:{v35, v30, v31, v32}];
+  [managedObjectContext performBlockAndWait:{v35, v30, v31, v32}];
 
-  LOBYTE(a4) = *(v46 + 24);
+  LOBYTE(attribute) = *(v46 + 24);
   _Block_object_dispose(&v45, 8);
 
-  return a4;
+  return attribute;
 }
 
 void __190__ULVersionMigrationStore__migrateAttributeToRelationshipForEntityName_deprecatedAttribute_sortAttribute_relationship_relatedEntityName_relatedAttribute_relatedSortAttribute_fetchBatchSize___block_invoke(uint64_t a1)
@@ -175,18 +175,18 @@ void __190__ULVersionMigrationStore__migrateAttributeToRelationshipForEntityName
   }
 }
 
-- (void)_migrateBatch:(id)a3 forDeprecatedAttribute:(id)a4 relationship:(id)a5 withRelationUUIDMap:(id)a6
+- (void)_migrateBatch:(id)batch forDeprecatedAttribute:(id)attribute relationship:(id)relationship withRelationUUIDMap:(id)map
 {
   v29 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v23 = a5;
-  v12 = a6;
+  batchCopy = batch;
+  attributeCopy = attribute;
+  relationshipCopy = relationship;
+  mapCopy = map;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v10;
+  obj = batchCopy;
   v13 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v13)
   {
@@ -201,17 +201,17 @@ void __190__ULVersionMigrationStore__migrateAttributeToRelationshipForEntityName
         }
 
         v16 = *(*(&v24 + 1) + 8 * i);
-        v17 = [v16 valueForKey:v11];
-        v18 = [v12 objectForKeyedSubscript:v17];
+        v17 = [v16 valueForKey:attributeCopy];
+        v18 = [mapCopy objectForKeyedSubscript:v17];
 
         if (v18)
         {
-          v19 = [(ULStore *)self managedObjectContext];
-          v20 = [v19 existingObjectWithID:v18 error:0];
-          [v16 setValue:v20 forKey:v23];
+          managedObjectContext = [(ULStore *)self managedObjectContext];
+          v20 = [managedObjectContext existingObjectWithID:v18 error:0];
+          [v16 setValue:v20 forKey:relationshipCopy];
         }
 
-        [v16 setValue:0 forKey:v11];
+        [v16 setValue:0 forKey:attributeCopy];
       }
 
       v13 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -223,24 +223,24 @@ void __190__ULVersionMigrationStore__migrateAttributeToRelationshipForEntityName
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_commitBatchForEntityName:(id)a3 migratingAttribute:(id)a4 stop:(BOOL *)a5
+- (BOOL)_commitBatchForEntityName:(id)name migratingAttribute:(id)attribute stop:(BOOL *)stop
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(ULStore *)self managedObjectContext];
-  v11 = [v10 hasChanges];
+  nameCopy = name;
+  attributeCopy = attribute;
+  managedObjectContext = [(ULStore *)self managedObjectContext];
+  hasChanges = [managedObjectContext hasChanges];
 
-  if (v11)
+  if (hasChanges)
   {
-    v12 = [(ULStore *)self managedObjectContext];
+    managedObjectContext2 = [(ULStore *)self managedObjectContext];
     v21 = 0;
-    v13 = [v12 save:&v21];
+    v13 = [managedObjectContext2 save:&v21];
     v14 = v21;
 
     if (v14)
     {
-      *a5 = 1;
+      *stop = 1;
       if (onceToken_MicroLocation_Default != -1)
       {
         [ULVersionMigrationStore _commitBatchForEntityName:migratingAttribute:stop:];
@@ -256,9 +256,9 @@ void __190__ULVersionMigrationStore__migrateAttributeToRelationshipForEntityName
         v26 = 2114;
         v27 = v14;
         v28 = 2113;
-        v29 = v8;
+        v29 = nameCopy;
         v30 = 2113;
-        v31 = v9;
+        v31 = attributeCopy;
         _os_log_impl(&dword_258FE9000, v15, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:Version Migration: Error migrating batch. Could not save changes to store, error:%{public, location:escape_only}@, Migrating Entity:%{private, location:escape_only}@, Migrating Property:%{private, location:escape_only}@}", buf, 0x30u);
       }
 
@@ -277,14 +277,14 @@ void __190__ULVersionMigrationStore__migrateAttributeToRelationshipForEntityName
         v26 = 2114;
         v27 = v14;
         v28 = 2113;
-        v29 = v8;
+        v29 = nameCopy;
         v30 = 2113;
-        v31 = v9;
+        v31 = attributeCopy;
         _os_signpost_emit_with_name_impl(&dword_258FE9000, v16, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "Version Migration: Error migrating batch. Could not save changes to store", "{msg%{public}.0s:Version Migration: Error migrating batch. Could not save changes to store, error:%{public, location:escape_only}@, Migrating Entity:%{private, location:escape_only}@, Migrating Property:%{private, location:escape_only}@}", buf, 0x30u);
       }
 
-      v17 = [(ULStore *)self dbStore];
-      v18 = (*(v17->var0 + 2))(v17);
+      dbStore = [(ULStore *)self dbStore];
+      v18 = (*(dbStore->var0 + 2))(dbStore);
       [v18 handleDatabaseError:v14];
     }
   }
@@ -298,33 +298,33 @@ void __190__ULVersionMigrationStore__migrateAttributeToRelationshipForEntityName
   return v13;
 }
 
-- (id)_getUUIDToObjectIDMapForRelatedEntityName:(id)a3 relatedAttribute:(id)a4 relatedSortAttribute:(id)a5 filterUUIDs:(id)a6
+- (id)_getUUIDToObjectIDMapForRelatedEntityName:(id)name relatedAttribute:(id)attribute relatedSortAttribute:(id)sortAttribute filterUUIDs:(id)ds
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x277CBEB18] array];
-  if (v13)
+  nameCopy = name;
+  attributeCopy = attribute;
+  sortAttributeCopy = sortAttribute;
+  dsCopy = ds;
+  array = [MEMORY[0x277CBEB18] array];
+  if (dsCopy)
   {
-    v15 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", v11, v13];
-    [v14 addObject:v15];
+    dsCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", attributeCopy, dsCopy];
+    [array addObject:dsCopy];
   }
 
-  v16 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:v12 ascending:1];
+  v16 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:sortAttributeCopy ascending:1];
   v36[0] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:1];
-  v18 = [(ULStore *)self managedObjectContext];
-  v19 = [(ULStore *)self fetchManagedObjectsWithEntityName:v10 byAndPredicates:v14 sortDescriptors:v17 andLimit:0 returnObjectsAsFaults:1 withManagedObjectContext:v18];
+  managedObjectContext = [(ULStore *)self managedObjectContext];
+  v19 = [(ULStore *)self fetchManagedObjectsWithEntityName:nameCopy byAndPredicates:array sortDescriptors:v17 andLimit:0 returnObjectsAsFaults:1 withManagedObjectContext:managedObjectContext];
 
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
   v33 = __Block_byref_object_copy__26;
   v34 = __Block_byref_object_dispose__26;
-  v35 = [MEMORY[0x277CBEB38] dictionary];
-  v20 = [(ULStore *)self managedObjectContext];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  managedObjectContext2 = [(ULStore *)self managedObjectContext];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __119__ULVersionMigrationStore__getUUIDToObjectIDMapForRelatedEntityName_relatedAttribute_relatedSortAttribute_filterUUIDs___block_invoke;
@@ -332,9 +332,9 @@ void __190__ULVersionMigrationStore__migrateAttributeToRelationshipForEntityName
   v21 = v19;
   v27 = v21;
   v29 = &v30;
-  v22 = v11;
+  v22 = attributeCopy;
   v28 = v22;
-  [v20 performBlockAndWait:v26];
+  [managedObjectContext2 performBlockAndWait:v26];
 
   v23 = v31[5];
   _Block_object_dispose(&v30, 8);
@@ -388,21 +388,21 @@ void __119__ULVersionMigrationStore__getUUIDToObjectIDMapForRelatedEntityName_re
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v7 = +[ULDefaultsSingleton shared];
-  v8 = [v7 defaultsDictionary];
+  defaultsDictionary = [v7 defaultsDictionary];
 
   v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULAssociatedStateTableMigrationPageSize"];
-  v10 = [v8 objectForKey:v9];
+  v10 = [defaultsDictionary objectForKey:v9];
   if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v11 = [v10 unsignedIntValue];
+    unsignedIntValue = [v10 unsignedIntValue];
   }
 
   else
   {
-    v11 = [&unk_286A71C58 unsignedIntValue];
+    unsignedIntValue = [&unk_286A71C58 unsignedIntValue];
   }
 
-  v12 = v11;
+  v12 = unsignedIntValue;
 
   v51 = [(ULVersionMigrationStore *)self _migrateAttributeToRelationshipForEntityName:v4 deprecatedAttribute:@"loiId_deprecated" sortAttribute:@"timestamp" relationship:@"loi" relatedEntityName:v6 relatedAttribute:@"loiId" relatedSortAttribute:@"lastSeenTimeStamp" fetchBatchSize:v12];
   v13 = objc_opt_class();
@@ -410,21 +410,21 @@ void __119__ULVersionMigrationStore__getUUIDToObjectIDMapForRelatedEntityName_re
   v15 = objc_opt_class();
   v16 = NSStringFromClass(v15);
   v17 = +[ULDefaultsSingleton shared];
-  v18 = [v17 defaultsDictionary];
+  defaultsDictionary2 = [v17 defaultsDictionary];
 
   v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULRapportTableMigrationPageSize"];
-  v20 = [v18 objectForKey:v19];
+  v20 = [defaultsDictionary2 objectForKey:v19];
   if (v20 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v21 = [v20 unsignedIntValue];
+    unsignedIntValue2 = [v20 unsignedIntValue];
   }
 
   else
   {
-    v21 = [&unk_286A71C58 unsignedIntValue];
+    unsignedIntValue2 = [&unk_286A71C58 unsignedIntValue];
   }
 
-  v22 = v21;
+  v22 = unsignedIntValue2;
 
   v23 = [(ULVersionMigrationStore *)self _migrateAttributeToRelationshipForEntityName:v14 deprecatedAttribute:@"loiId_deprecated" sortAttribute:@"generationTimestamp" relationship:@"loi" relatedEntityName:v16 relatedAttribute:@"loiId" relatedSortAttribute:@"lastSeenTimeStamp" fetchBatchSize:v22];
   v24 = objc_opt_class();
@@ -468,18 +468,18 @@ void __119__ULVersionMigrationStore__getUUIDToObjectIDMapForRelatedEntityName_re
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 1;
-  v3 = [(ULStore *)self managedObjectContext];
+  managedObjectContext = [(ULStore *)self managedObjectContext];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __49__ULVersionMigrationStore__migrateConfigurations__block_invoke;
   v5[3] = &unk_2798D4908;
   v5[4] = self;
   v5[5] = &v6;
-  [v3 performBlockAndWait:v5];
+  [managedObjectContext performBlockAndWait:v5];
 
-  LOBYTE(v3) = *(v7 + 24);
+  LOBYTE(managedObjectContext) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v3;
+  return managedObjectContext;
 }
 
 void __49__ULVersionMigrationStore__migrateConfigurations__block_invoke(uint64_t a1)
@@ -566,16 +566,16 @@ void __49__ULVersionMigrationStore__migrateConfigurations__block_invoke_59(uint6
   }
 }
 
-- (void)_migrateConfigurationInBatch:(id)a3 withLOIMap:(id)a4
+- (void)_migrateConfigurationInBatch:(id)batch withLOIMap:(id)map
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  batchCopy = batch;
+  mapCopy = map;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v6;
+  v8 = batchCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -590,15 +590,15 @@ void __49__ULVersionMigrationStore__migrateConfigurations__block_invoke_59(uint6
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 loiId];
-        v14 = [v7 objectForKeyedSubscript:v13];
+        loiId = [v12 loiId];
+        v14 = [mapCopy objectForKeyedSubscript:loiId];
 
         if (v14)
         {
-          v15 = [v12 configurationType];
-          if (v15)
+          configurationType = [v12 configurationType];
+          if (configurationType)
           {
-            if (v15 == 1)
+            if (configurationType == 1)
             {
               [(ULVersionMigrationStore *)self _createAnchorAppearanceMapMOFromConfigurationMO:v12 withLOIObjectID:v14];
             }
@@ -620,11 +620,11 @@ void __49__ULVersionMigrationStore__migrateConfigurations__block_invoke_59(uint6
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_createWiFiHistogramMOFromConfigurationMO:(id)a3 withLOIObjectID:(id)a4
+- (void)_createWiFiHistogramMOFromConfigurationMO:(id)o withLOIObjectID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ULVersionMigrationStore *)self _getConfigProtoFromConfigurationMO:v6];
+  oCopy = o;
+  dCopy = d;
+  v8 = [(ULVersionMigrationStore *)self _getConfigProtoFromConfigurationMO:oCopy];
   if (v13)
   {
     if ((*(v13 + 48) & 4) != 0)
@@ -661,11 +661,11 @@ void __49__ULVersionMigrationStore__migrateConfigurations__block_invoke_59(uint6
   }
 }
 
-- (void)_createAnchorAppearanceMapMOFromConfigurationMO:(id)a3 withLOIObjectID:(id)a4
+- (void)_createAnchorAppearanceMapMOFromConfigurationMO:(id)o withLOIObjectID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ULVersionMigrationStore *)self _getConfigProtoFromConfigurationMO:v6];
+  oCopy = o;
+  dCopy = d;
+  v8 = [(ULVersionMigrationStore *)self _getConfigProtoFromConfigurationMO:oCopy];
   if (v13)
   {
     if ((*(v13 + 48) & 8) != 0)
@@ -708,18 +708,18 @@ void __49__ULVersionMigrationStore__migrateConfigurations__block_invoke_59(uint6
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 1;
-  v3 = [(ULStore *)self managedObjectContext];
+  managedObjectContext = [(ULStore *)self managedObjectContext];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __50__ULVersionMigrationStore__migrateRecordingEvents__block_invoke;
   v5[3] = &unk_2798D4908;
   v5[4] = self;
   v5[5] = &v6;
-  [v3 performBlockAndWait:v5];
+  [managedObjectContext performBlockAndWait:v5];
 
-  LOBYTE(v3) = *(v7 + 24);
+  LOBYTE(managedObjectContext) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v3;
+  return managedObjectContext;
 }
 
 void __50__ULVersionMigrationStore__migrateRecordingEvents__block_invoke(uint64_t a1)
@@ -806,16 +806,16 @@ void __50__ULVersionMigrationStore__migrateRecordingEvents__block_invoke_2(uint6
   }
 }
 
-- (void)_migrateRecordingEventsInBatch:(id)a3 withRelationUUIDMap:(id)a4
+- (void)_migrateRecordingEventsInBatch:(id)batch withRelationUUIDMap:(id)map
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  batchCopy = batch;
+  mapCopy = map;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v6;
+  obj = batchCopy;
   v8 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
@@ -830,22 +830,22 @@ void __50__ULVersionMigrationStore__migrateRecordingEvents__block_invoke_2(uint6
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
-        v12 = [v11 loiId];
-        v13 = [v7 objectForKeyedSubscript:v12];
+        loiId = [v11 loiId];
+        v13 = [mapCopy objectForKeyedSubscript:loiId];
 
         if (v13)
         {
-          v14 = [(ULVersionMigrationStore *)self handledRecordingUUIDs];
-          v15 = [v11 recordingUUID];
-          v16 = [v14 containsObject:v15];
+          handledRecordingUUIDs = [(ULVersionMigrationStore *)self handledRecordingUUIDs];
+          recordingUUID = [v11 recordingUUID];
+          v16 = [handledRecordingUUIDs containsObject:recordingUUID];
 
           if ((v16 & 1) == 0)
           {
             if ([(ULVersionMigrationStore *)self _createScanningEventFromRecordingEvent:v11 withRelatedLOIObjectID:v13])
             {
-              v17 = [(ULVersionMigrationStore *)self handledRecordingUUIDs];
-              v18 = [v11 recordingUUID];
-              [v17 addObject:v18];
+              handledRecordingUUIDs2 = [(ULVersionMigrationStore *)self handledRecordingUUIDs];
+              recordingUUID2 = [v11 recordingUUID];
+              [handledRecordingUUIDs2 addObject:recordingUUID2];
             }
           }
         }
@@ -860,35 +860,35 @@ void __50__ULVersionMigrationStore__migrateRecordingEvents__block_invoke_2(uint6
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_createScanningEventFromRecordingEvent:(id)a3 withRelatedLOIObjectID:(id)a4
+- (BOOL)_createScanningEventFromRecordingEvent:(id)event withRelatedLOIObjectID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 event];
-  v9 = [v8 bytes];
-  v10 = [v6 event];
-  [v10 length];
-  v11 = wireless_diagnostics::google::protobuf::MessageLite::ParseFromArray(v32, v9);
+  eventCopy = event;
+  dCopy = d;
+  event = [eventCopy event];
+  bytes = [event bytes];
+  event2 = [eventCopy event];
+  [event2 length];
+  v11 = wireless_diagnostics::google::protobuf::MessageLite::ParseFromArray(v32, bytes);
 
   if (v11)
   {
     v12 = [ULScanningEventMO alloc];
-    v13 = [(ULStore *)self managedObjectContext];
-    v14 = [(ULScanningEventMO *)v12 initWithContext:v13];
+    managedObjectContext = [(ULStore *)self managedObjectContext];
+    v14 = [(ULScanningEventMO *)v12 initWithContext:managedObjectContext];
 
-    v15 = [v6 recordingUUID];
-    [(ULScanningEventMO *)v14 setScanEventUUID:v15];
+    recordingUUID = [eventCopy recordingUUID];
+    [(ULScanningEventMO *)v14 setScanEventUUID:recordingUUID];
 
-    v16 = [MEMORY[0x277D28868] deviceClass];
-    [(ULScanningEventMO *)v14 setDeviceIdentifier:v16];
+    deviceClass = [MEMORY[0x277D28868] deviceClass];
+    [(ULScanningEventMO *)v14 setDeviceIdentifier:deviceClass];
 
-    [v6 recordingTimestamp];
+    [eventCopy recordingTimestamp];
     [(ULScanningEventMO *)v14 setTimestamp:?];
-    v17 = [(ULStore *)self managedObjectContext];
-    v18 = [v17 existingObjectWithID:v7 error:0];
+    managedObjectContext2 = [(ULStore *)self managedObjectContext];
+    v18 = [managedObjectContext2 existingObjectWithID:dCopy error:0];
     [(ULScanningEventMO *)v14 setLoi:v18];
 
-    -[ULScanningEventMO setScanType:](v14, "setScanType:", [v6 eventSubType] != 2);
+    -[ULScanningEventMO setScanType:](v14, "setScanType:", [eventCopy eventSubType] != 2);
     [(ULScanningEventMO *)v14 setBleSuspended:v32[77] & ((v35 & 0x2000) >> 13)];
     [(ULScanningEventMO *)v14 setUwbSuspended:v32[76] & ((v35 & 0x800) >> 11)];
     [(ULScanningEventMO *)v14 setWifiDisabled:0];
@@ -969,18 +969,18 @@ void __50__ULVersionMigrationStore__migrateRecordingEvents__block_invoke_2(uint6
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 1;
-  v3 = [(ULStore *)self managedObjectContext];
+  managedObjectContext = [(ULStore *)self managedObjectContext];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __47__ULVersionMigrationStore__migrateMeasurements__block_invoke;
   v5[3] = &unk_2798D4908;
   v5[4] = self;
   v5[5] = &v6;
-  [v3 performBlockAndWait:v5];
+  [managedObjectContext performBlockAndWait:v5];
 
-  LOBYTE(v3) = *(v7 + 24);
+  LOBYTE(managedObjectContext) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v3;
+  return managedObjectContext;
 }
 
 void __47__ULVersionMigrationStore__migrateMeasurements__block_invoke(uint64_t a1)
@@ -1056,16 +1056,16 @@ void __47__ULVersionMigrationStore__migrateMeasurements__block_invoke_2(uint64_t
   }
 }
 
-- (void)_migrateMeasurementsInBatch:(id)a3 withRelationUUIDMap:(id)a4
+- (void)_migrateMeasurementsInBatch:(id)batch withRelationUUIDMap:(id)map
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  batchCopy = batch;
+  mapCopy = map;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v6;
+  v8 = batchCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -1080,8 +1080,8 @@ void __47__ULVersionMigrationStore__migrateMeasurements__block_invoke_2(uint64_t
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v12 recordingUUID];
-        v14 = [v7 objectForKeyedSubscript:v13];
+        recordingUUID = [v12 recordingUUID];
+        v14 = [mapCopy objectForKeyedSubscript:recordingUUID];
 
         if (v14)
         {
@@ -1098,25 +1098,25 @@ void __47__ULVersionMigrationStore__migrateMeasurements__block_invoke_2(uint64_t
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_createMeasurementFromDeprecatedMeasurement:(id)a3 withRelatedScanningEventObjectID:(id)a4
+- (void)_createMeasurementFromDeprecatedMeasurement:(id)measurement withRelatedScanningEventObjectID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  measurementCopy = measurement;
+  dCopy = d;
   operator new();
 }
 
-- (void)_createWiFiMeasurementFromDeprecatedMeasurement:(id)a3 withMeasurementProto:()unique_ptr<CLMicroLocationProto:(std:(id)a5 :default_delete<CLMicroLocationProto::Measurement>>)a4 :Measurement andRelatedScanningEventObjectID:
+- (void)_createWiFiMeasurementFromDeprecatedMeasurement:(id)measurement withMeasurementProto:()unique_ptr<CLMicroLocationProto:(std:(id)proto :default_delete<CLMicroLocationProto::Measurement>>)a4 :Measurement andRelatedScanningEventObjectID:
 {
-  v21 = a3;
-  v8 = a5;
+  measurementCopy = measurement;
+  protoCopy = proto;
   if ((a4.var0->var0[9] & 4) != 0)
   {
     v9 = [ULWiFiMeasurementMO alloc];
-    v10 = [(ULStore *)self managedObjectContext];
-    v11 = [(ULWiFiMeasurementMO *)v9 initWithContext:v10];
+    managedObjectContext = [(ULStore *)self managedObjectContext];
+    v11 = [(ULWiFiMeasurementMO *)v9 initWithContext:managedObjectContext];
 
-    v12 = [(ULStore *)self managedObjectContext];
-    v13 = [v12 existingObjectWithID:v8 error:0];
+    managedObjectContext2 = [(ULStore *)self managedObjectContext];
+    v13 = [managedObjectContext2 existingObjectWithID:protoCopy error:0];
     [(ULWiFiMeasurementMO *)v11 setScanningEvent:v13];
 
     v14 = [(ULWiFiMeasurementMO *)v11 setTimestamp:*(a4.var0->var0 + 1)];
@@ -1127,7 +1127,7 @@ void __47__ULVersionMigrationStore__migrateMeasurements__block_invoke_2(uint64_t
     }
 
     [(ULWiFiMeasurementMO *)v11 setChannel:*(v15 + 32)];
-    v16 = -[ULWiFiMeasurementMO setFlags:](v11, "setFlags:", [v21 flags]);
+    v16 = -[ULWiFiMeasurementMO setFlags:](v11, "setFlags:", [measurementCopy flags]);
     v17 = *(a4.var0->var0 + 2);
     if (!v17)
     {
@@ -1156,19 +1156,19 @@ void __47__ULVersionMigrationStore__migrateMeasurements__block_invoke_2(uint64_t
   }
 }
 
-- (void)_createBLEMeasurementFromDeprecatedMeasurement:(id)a3 withMeasurementProto:()unique_ptr<CLMicroLocationProto:(std:(id)a5 :default_delete<CLMicroLocationProto::Measurement>>)a4 :Measurement andRelatedScanningEventObjectID:
+- (void)_createBLEMeasurementFromDeprecatedMeasurement:(id)measurement withMeasurementProto:()unique_ptr<CLMicroLocationProto:(std:(id)proto :default_delete<CLMicroLocationProto::Measurement>>)a4 :Measurement andRelatedScanningEventObjectID:
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  measurementCopy = measurement;
+  protoCopy = proto;
   if ((a4.var0->var0[9] & 0x40) != 0)
   {
     v10 = [ULBLEMeasurementMO alloc];
-    v11 = [(ULStore *)self managedObjectContext];
-    v12 = [(ULBLEMeasurementMO *)v10 initWithContext:v11];
+    managedObjectContext = [(ULStore *)self managedObjectContext];
+    v12 = [(ULBLEMeasurementMO *)v10 initWithContext:managedObjectContext];
 
-    v13 = [(ULStore *)self managedObjectContext];
-    v14 = [v13 existingObjectWithID:v9 error:0];
+    managedObjectContext2 = [(ULStore *)self managedObjectContext];
+    v14 = [managedObjectContext2 existingObjectWithID:protoCopy error:0];
     [(ULBLEMeasurementMO *)v12 setScanningEvent:v14];
 
     v15 = [(ULBLEMeasurementMO *)v12 setTimestamp:*(a4.var0->var0 + 1)];
@@ -1204,8 +1204,8 @@ void __47__ULVersionMigrationStore__migrateMeasurements__block_invoke_2(uint64_t
         }
 
         v21 = [v20 initWithUUIDBytes:v33];
-        v22 = [v21 UUIDString];
-        [(ULBLEMeasurementMO *)v12 setSourceIdsUUID:v22];
+        uUIDString = [v21 UUIDString];
+        [(ULBLEMeasurementMO *)v12 setSourceIdsUUID:uUIDString];
       }
     }
 
@@ -1252,19 +1252,19 @@ void __47__ULVersionMigrationStore__migrateMeasurements__block_invoke_2(uint64_t
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_createUWBMeasurementFromDeprecatedMeasurement:(id)a3 withMeasurementProto:()unique_ptr<CLMicroLocationProto:(std:(id)a5 :default_delete<CLMicroLocationProto::Measurement>>)a4 :Measurement andRelatedScanningEventObjectID:
+- (void)_createUWBMeasurementFromDeprecatedMeasurement:(id)measurement withMeasurementProto:()unique_ptr<CLMicroLocationProto:(std:(id)proto :default_delete<CLMicroLocationProto::Measurement>>)a4 :Measurement andRelatedScanningEventObjectID:
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  measurementCopy = measurement;
+  protoCopy = proto;
   if ((a4.var0->var0[9] & 0x80) != 0)
   {
     v10 = [ULUWBMeasurementMO alloc];
-    v11 = [(ULStore *)self managedObjectContext];
-    v12 = [(ULUWBMeasurementMO *)v10 initWithContext:v11];
+    managedObjectContext = [(ULStore *)self managedObjectContext];
+    v12 = [(ULUWBMeasurementMO *)v10 initWithContext:managedObjectContext];
 
-    v13 = [(ULStore *)self managedObjectContext];
-    v14 = [v13 existingObjectWithID:v9 error:0];
+    managedObjectContext2 = [(ULStore *)self managedObjectContext];
+    v14 = [managedObjectContext2 existingObjectWithID:protoCopy error:0];
     [(ULUWBMeasurementMO *)v12 setScanningEvent:v14];
 
     v15 = [(ULUWBMeasurementMO *)v12 setTimestamp:*(a4.var0->var0 + 1)];
@@ -1301,8 +1301,8 @@ void __47__ULVersionMigrationStore__migrateMeasurements__block_invoke_2(uint64_t
         }
 
         v22 = [v21 initWithUUIDBytes:v27];
-        v23 = [v22 UUIDString];
-        [(ULUWBMeasurementMO *)v12 setSourceIdsUUID:v23];
+        uUIDString = [v22 UUIDString];
+        [(ULUWBMeasurementMO *)v12 setSourceIdsUUID:uUIDString];
       }
     }
 
@@ -1328,18 +1328,18 @@ void __47__ULVersionMigrationStore__migrateMeasurements__block_invoke_2(uint64_t
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 1;
-  v3 = [(ULVersionMigrationStore *)self _getTriggerToRecordingUUIDMap];
-  if ([v3 count])
+  _getTriggerToRecordingUUIDMap = [(ULVersionMigrationStore *)self _getTriggerToRecordingUUIDMap];
+  if ([_getTriggerToRecordingUUIDMap count])
   {
-    v4 = [(ULStore *)self managedObjectContext];
+    managedObjectContext = [(ULStore *)self managedObjectContext];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __57__ULVersionMigrationStore__connectLabelsToScanningEvents__block_invoke;
     v7[3] = &unk_2798D4B38;
     v7[4] = self;
-    v8 = v3;
+    v8 = _getTriggerToRecordingUUIDMap;
     v9 = &v10;
-    [v4 performBlockAndWait:v7];
+    [managedObjectContext performBlockAndWait:v7];
 
     v5 = *(v11 + 24);
   }
@@ -1413,18 +1413,18 @@ void __57__ULVersionMigrationStore__connectLabelsToScanningEvents__block_invoke_
   }
 }
 
-- (void)_connectLabelsInBatch:(id)a3 withTriggerUUIDMap:(id)a4 andScanEventsUUIDMap:(id)a5
+- (void)_connectLabelsInBatch:(id)batch withTriggerUUIDMap:(id)map andScanEventsUUIDMap:(id)dMap
 {
-  v22 = self;
+  selfCopy = self;
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  batchCopy = batch;
+  mapCopy = map;
+  dMapCopy = dMap;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v7;
+  obj = batchCopy;
   v10 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v10)
   {
@@ -1439,20 +1439,20 @@ void __57__ULVersionMigrationStore__connectLabelsToScanningEvents__block_invoke_
         }
 
         v13 = *(*(&v24 + 1) + 8 * i);
-        v14 = [v13 triggerUUID_deprecated];
-        v15 = [v8 objectForKeyedSubscript:v14];
+        triggerUUID_deprecated = [v13 triggerUUID_deprecated];
+        v15 = [mapCopy objectForKeyedSubscript:triggerUUID_deprecated];
 
         if (v15)
         {
-          v16 = [v9 objectForKeyedSubscript:v15];
+          v16 = [dMapCopy objectForKeyedSubscript:v15];
           if (v16)
           {
-            v17 = [(ULStore *)v22 managedObjectContext];
-            v18 = [v17 existingObjectWithID:v16 error:0];
+            managedObjectContext = [(ULStore *)selfCopy managedObjectContext];
+            v18 = [managedObjectContext existingObjectWithID:v16 error:0];
             [v13 setScanningEvent:v18];
 
-            v19 = [v13 scanningEvent];
-            v20 = [v19 loi];
+            scanningEvent = [v13 scanningEvent];
+            v20 = [scanningEvent loi];
             [v13 setLoi:v20];
           }
 
@@ -1476,9 +1476,9 @@ void __57__ULVersionMigrationStore__connectLabelsToScanningEvents__block_invoke_
   v4 = NSStringFromClass(v3);
   v24 = [(ULStore *)self fetchPropertyForEntityName:v4 propertyToFetch:@"triggerUUID_deprecated" distinctResults:1 byAndPredicates:0 sortDescriptors:0 andLimit:0];
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"triggerUUID", v24];
-  [v5 addObject:v6];
+  [array addObject:v6];
 
   v25 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"receivedTimestamp" ascending:1];
   v33[0] = @"triggerUUID";
@@ -1489,9 +1489,9 @@ void __57__ULVersionMigrationStore__connectLabelsToScanningEvents__block_invoke_
   v32 = v25;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v32 count:1];
   LOBYTE(v22) = 1;
-  v23 = [(ULStore *)self fetchPropertiesForEntityName:v8 propertiesToFetch:v26 propertiesToGroupBy:0 distinctResults:1 byAndPredicates:v5 sortDescriptors:v9 andLimit:0 resetContext:v22];
+  v23 = [(ULStore *)self fetchPropertiesForEntityName:v8 propertiesToFetch:v26 propertiesToGroupBy:0 distinctResults:1 byAndPredicates:array sortDescriptors:v9 andLimit:0 resetContext:v22];
 
-  v10 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
@@ -1526,7 +1526,7 @@ void __57__ULVersionMigrationStore__connectLabelsToScanningEvents__block_invoke_
 
         if (!v19)
         {
-          [v10 setObject:v17 forKeyedSubscript:v16];
+          [dictionary setObject:v17 forKeyedSubscript:v16];
         }
       }
 
@@ -1538,18 +1538,18 @@ void __57__ULVersionMigrationStore__connectLabelsToScanningEvents__block_invoke_
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return dictionary;
 }
 
-- (void)_updateContextLayersForLabelsInBatch:(id)a3
+- (void)_updateContextLayersForLabelsInBatch:(id)batch
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  batchCopy = batch;
+  v4 = [batchCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = *v15;
@@ -1560,14 +1560,14 @@ void __57__ULVersionMigrationStore__connectLabelsToScanningEvents__block_invoke_
       {
         if (*v15 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(batchCopy);
         }
 
         v7 = *(*(&v14 + 1) + 8 * v6);
         v8 = objc_alloc(MEMORY[0x277CCAD78]);
-        v9 = [v7 service];
-        v10 = [v9 serviceUUID];
-        v11 = [v8 initWithUUIDString:v10];
+        service = [v7 service];
+        serviceUUID = [service serviceUUID];
+        v11 = [v8 initWithUUIDString:serviceUUID];
 
         v12 = [MEMORY[0x277D28788] getDefaultContextLayerForService:v11];
         [v7 setContextLayerType:{objc_msgSend(MEMORY[0x277D28788], "contextLayerEnumFromStringType:", v12)}];
@@ -1576,7 +1576,7 @@ void __57__ULVersionMigrationStore__connectLabelsToScanningEvents__block_invoke_
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v4 = [batchCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v4);
@@ -1591,18 +1591,18 @@ void __57__ULVersionMigrationStore__connectLabelsToScanningEvents__block_invoke_
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 1;
-  v3 = [(ULStore *)self managedObjectContext];
+  managedObjectContext = [(ULStore *)self managedObjectContext];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __53__ULVersionMigrationStore__updateLabelsContextLayers__block_invoke;
   v5[3] = &unk_2798D4908;
   v5[4] = self;
   v5[5] = &v6;
-  [v3 performBlockAndWait:v5];
+  [managedObjectContext performBlockAndWait:v5];
 
-  LOBYTE(v3) = *(v7 + 24);
+  LOBYTE(managedObjectContext) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v3;
+  return managedObjectContext;
 }
 
 void __53__ULVersionMigrationStore__updateLabelsContextLayers__block_invoke(uint64_t a1)
@@ -1651,12 +1651,12 @@ void __53__ULVersionMigrationStore__updateLabelsContextLayers__block_invoke_109(
   }
 }
 
-- (void)setAnchorDeviceModelAllowedMap:()map<std:()DeviceModel :()std:(std:(DeviceModel>>> *)a3 :allocator<std::pair<const)std::string :less<std::string> string
+- (void)setAnchorDeviceModelAllowedMap:()map<std:()DeviceModel :()std:(std:(DeviceModel>>> *)std :allocator<std::pair<const)std::string :less<std::string> string
 {
   p_anchorDeviceModelAllowedMap = &self->_anchorDeviceModelAllowedMap;
-  if (p_anchorDeviceModelAllowedMap != a3)
+  if (p_anchorDeviceModelAllowedMap != std)
   {
-    std::__tree<std::__value_type<std::string,DeviceModel>,std::__map_value_compare<std::string,std::__value_type<std::string,DeviceModel>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,DeviceModel>>>::__assign_multi<std::__tree_const_iterator<std::__value_type<std::string,DeviceModel>,std::__tree_node<std::__value_type<std::string,DeviceModel>,void *> *,long>>(p_anchorDeviceModelAllowedMap, a3->__tree_.__begin_node_, &a3->__tree_.__end_node_.__left_);
+    std::__tree<std::__value_type<std::string,DeviceModel>,std::__map_value_compare<std::string,std::__value_type<std::string,DeviceModel>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,DeviceModel>>>::__assign_multi<std::__tree_const_iterator<std::__value_type<std::string,DeviceModel>,std::__tree_node<std::__value_type<std::string,DeviceModel>,void *> *,long>>(p_anchorDeviceModelAllowedMap, std->__tree_.__begin_node_, &std->__tree_.__end_node_.__left_);
   }
 }
 

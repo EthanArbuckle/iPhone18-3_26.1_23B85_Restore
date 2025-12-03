@@ -1,13 +1,13 @@
 @interface DESMMappedFile
-- (DESMMappedFile)initWithURL:(id)a3;
+- (DESMMappedFile)initWithURL:(id)l;
 - (void)dealloc;
 @end
 
 @implementation DESMMappedFile
 
-- (DESMMappedFile)initWithURL:(id)a3
+- (DESMMappedFile)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v19.receiver = self;
   v19.super_class = DESMMappedFile;
   v6 = [(DESMMappedFile *)&v19 init];
@@ -16,7 +16,7 @@
     goto LABEL_17;
   }
 
-  v7 = open([v5 fileSystemRepresentation], 0);
+  v7 = open([lCopy fileSystemRepresentation], 0);
   if (v7 == -1)
   {
     v15 = +[DESLogging coreChannel];
@@ -46,7 +46,7 @@
     v16 = +[DESLogging coreChannel];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      [(DESMMappedFile *)v5 initWithURL:v16];
+      [(DESMMappedFile *)lCopy initWithURL:v16];
     }
 
     goto LABEL_16;
@@ -76,7 +76,7 @@ LABEL_17:
   data = v6->_data;
   v6->_data = v12;
 
-  objc_storeStrong(&v6->_fileURL, a3);
+  objc_storeStrong(&v6->_fileURL, l);
   v14 = v6;
 LABEL_18:
 

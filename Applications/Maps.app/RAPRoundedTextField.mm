@@ -1,17 +1,17 @@
 @interface RAPRoundedTextField
-- (CGRect)editingRectForBounds:(CGRect)a3;
-- (CGRect)placeholderRectForBounds:(CGRect)a3;
-- (CGRect)textRectForBounds:(CGRect)a3;
+- (CGRect)editingRectForBounds:(CGRect)bounds;
+- (CGRect)placeholderRectForBounds:(CGRect)bounds;
+- (CGRect)textRectForBounds:(CGRect)bounds;
 - (RAPRoundedTextField)init;
 @end
 
 @implementation RAPRoundedTextField
 
-- (CGRect)textRectForBounds:(CGRect)a3
+- (CGRect)textRectForBounds:(CGRect)bounds
 {
   v11.receiver = self;
   v11.super_class = RAPRoundedTextField;
-  [(RAPRoundedTextField *)&v11 textRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(RAPRoundedTextField *)&v11 textRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v4 = v3 + 15.0;
   v6 = v5 + 7.5;
   v8 = v7 + -15.0;
@@ -23,9 +23,9 @@
   return result;
 }
 
-- (CGRect)editingRectForBounds:(CGRect)a3
+- (CGRect)editingRectForBounds:(CGRect)bounds
 {
-  [(RAPRoundedTextField *)self textRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(RAPRoundedTextField *)self textRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -33,9 +33,9 @@
   return result;
 }
 
-- (CGRect)placeholderRectForBounds:(CGRect)a3
+- (CGRect)placeholderRectForBounds:(CGRect)bounds
 {
-  [(RAPRoundedTextField *)self textRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(RAPRoundedTextField *)self textRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -53,8 +53,8 @@
     v3 = +[UIColor systemGray6Color];
     [(RAPRoundedTextField *)v2 setBackgroundColor:v3];
 
-    v4 = [(RAPRoundedTextField *)v2 layer];
-    [v4 setCornerRadius:7.5];
+    layer = [(RAPRoundedTextField *)v2 layer];
+    [layer setCornerRadius:7.5];
 
     [(RAPRoundedTextField *)v2 setClipsToBounds:1];
   }

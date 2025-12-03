@@ -1,31 +1,31 @@
 @interface CompletionListTableViewController
 + (id)tableViewCellForSizeEstimation;
-+ (void)configureCell:(id)a3 backgroundMode:(int64_t)a4 separatorStyle:(int)a5 shouldHaveTopPadding:(BOOL)a6 configurationStateDidChangeCallback:(id)a7;
++ (void)configureCell:(id)cell backgroundMode:(int64_t)mode separatorStyle:(int)style shouldHaveTopPadding:(BOOL)padding configurationStateDidChangeCallback:(id)callback;
 - (CompletionListTableViewController)init;
 - (CompletionListTableViewDataSource)dataSource;
 - (UITableViewHeaderFooterView)defaultHeaderFooterView;
 - (UITableViewHeaderFooterView)recentSearchesHeaderFooterView;
-- (id)backgroundColorUsingTranslucentAppearance:(BOOL)a3;
+- (id)backgroundColorUsingTranslucentAppearance:(BOOL)appearance;
 - (void)_updateTableViewContentInset;
-- (void)_updateWebSearchTipProposedHeightForTableViewWidth:(double)a3;
-- (void)keyboardDidChangeFrame:(id)a3;
-- (void)setShowsWebSearchTipIfExists:(BOOL)a3;
-- (void)setWebSearchTipView:(id)a3;
+- (void)_updateWebSearchTipProposedHeightForTableViewWidth:(double)width;
+- (void)keyboardDidChangeFrame:(id)frame;
+- (void)setShowsWebSearchTipIfExists:(BOOL)exists;
+- (void)setWebSearchTipView:(id)view;
 - (void)updateContentInsets;
-- (void)updateKeyboardBottomInsetFromKeyboardFrame:(CGRect)a3;
+- (void)updateKeyboardBottomInsetFromKeyboardFrame:(CGRect)frame;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CompletionListTableViewController
 
-+ (void)configureCell:(id)a3 backgroundMode:(int64_t)a4 separatorStyle:(int)a5 shouldHaveTopPadding:(BOOL)a6 configurationStateDidChangeCallback:(id)a7
++ (void)configureCell:(id)cell backgroundMode:(int64_t)mode separatorStyle:(int)style shouldHaveTopPadding:(BOOL)padding configurationStateDidChangeCallback:(id)callback
 {
-  v11 = a3;
-  v12 = a7;
+  cellCopy = cell;
+  callbackCopy = callback;
   if ([MEMORY[0x277D49A08] isSolariumEnabled])
   {
     v13 = 22.0;
@@ -41,15 +41,15 @@
   aBlock[2] = __138__CompletionListTableViewController_configureCell_backgroundMode_separatorStyle_shouldHaveTopPadding_configurationStateDidChangeCallback___block_invoke;
   aBlock[3] = &unk_2781DB678;
   v30 = v13;
-  v31 = a5;
-  v14 = v12;
+  styleCopy = style;
+  v14 = callbackCopy;
   v29 = v14;
   v15 = _Block_copy(aBlock);
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __138__CompletionListTableViewController_configureCell_backgroundMode_separatorStyle_shouldHaveTopPadding_configurationStateDidChangeCallback___block_invoke_2;
   v24[3] = &unk_2781DB6A0;
-  if (a4 == 1 && a6)
+  if (mode == 1 && padding)
   {
     v16 = 8.0;
   }
@@ -71,7 +71,7 @@
   *&v23[4] = v13;
   v19 = _Block_copy(v23);
   v20 = v19;
-  if (a4 == 1)
+  if (mode == 1)
   {
     v21 = v18;
   }
@@ -81,7 +81,7 @@
     v21 = v19;
   }
 
-  if (a4)
+  if (mode)
   {
     v22 = v21;
   }
@@ -91,10 +91,10 @@
     v22 = v15;
   }
 
-  [v11 setConfigurationUpdateHandler:v22];
+  [cellCopy setConfigurationUpdateHandler:v22];
   if (objc_opt_respondsToSelector())
   {
-    [v11 setCustomEdgeInsets:{v16, 0.0, 0.0, 0.0}];
+    [cellCopy setCustomEdgeInsets:{v16, 0.0, 0.0, 0.0}];
   }
 }
 
@@ -285,53 +285,53 @@ void __138__CompletionListTableViewController_configureCell_backgroundMode_separ
   v13.receiver = self;
   v13.super_class = CompletionListTableViewController;
   [(SFPopoverSizingTableViewController *)&v13 viewDidLoad];
-  v3 = [(CompletionListTableViewController *)self navigationItem];
-  [v3 setLargeTitleDisplayMode:2];
-  v4 = [(CompletionListTableViewController *)self tableView];
+  navigationItem = [(CompletionListTableViewController *)self navigationItem];
+  [navigationItem setLargeTitleDisplayMode:2];
+  tableView = [(CompletionListTableViewController *)self tableView];
   v5 = [MEMORY[0x277D75C80] _traitCollectionWithVibrancy:0];
-  [v4 _setLocalOverrideTraitCollection:v5];
+  [tableView _setLocalOverrideTraitCollection:v5];
 
-  [v4 setAccessibilityIdentifier:@"CompletionListTableView"];
-  [v4 _setFirstResponderKeyboardAvoidanceEnabled:0];
-  [v4 setKeyboardDismissMode:2];
-  [v4 setSectionFooterHeight:0.0];
-  [v4 _setSectionContentInsetFollowsLayoutMargins:0];
-  [v4 _setSectionContentInset:{0.0, 16.0, 0.0, 16.0}];
-  [v4 _setSectionCornerRadius:0.0];
-  [v4 _setHeaderAndFooterViewsFloat:0];
-  [v4 setSectionHeaderTopPadding:0.0];
+  [tableView setAccessibilityIdentifier:@"CompletionListTableView"];
+  [tableView _setFirstResponderKeyboardAvoidanceEnabled:0];
+  [tableView setKeyboardDismissMode:2];
+  [tableView setSectionFooterHeight:0.0];
+  [tableView _setSectionContentInsetFollowsLayoutMargins:0];
+  [tableView _setSectionContentInset:{0.0, 16.0, 0.0, 16.0}];
+  [tableView _setSectionCornerRadius:0.0];
+  [tableView _setHeaderAndFooterViewsFloat:0];
+  [tableView setSectionHeaderTopPadding:0.0];
   if ([MEMORY[0x277D49A08] isSolariumEnabled])
   {
-    [v4 setSeparatorStyle:0];
+    [tableView setSeparatorStyle:0];
   }
 
-  [v4 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"CatalogViewControllerTableHeader"];
-  [v4 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"RecentSearchesTableHeader"];
+  [tableView registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"CatalogViewControllerTableHeader"];
+  [tableView registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"RecentSearchesTableHeader"];
   v6 = objc_alloc(MEMORY[0x277D763C8]);
-  [v4 bounds];
+  [tableView bounds];
   v7 = [v6 initWithFrame:?];
   headerBackdropCaptureView = self->_headerBackdropCaptureView;
   self->_headerBackdropCaptureView = v7;
 
-  v9 = [(_UIVisualEffectBackdropView *)self->_headerBackdropCaptureView captureGroup];
-  [v9 setGroupName:@"completion-list-header"];
+  captureGroup = [(_UIVisualEffectBackdropView *)self->_headerBackdropCaptureView captureGroup];
+  [captureGroup setGroupName:@"completion-list-header"];
 
   [(_UIVisualEffectBackdropView *)self->_headerBackdropCaptureView setRenderMode:1];
-  [v4 setBackgroundView:self->_headerBackdropCaptureView];
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v10 addObserver:self selector:sel_keyboardDidChangeFrame_ name:*MEMORY[0x277D76C60] object:0];
-  [v10 addObserver:self selector:sel_keyboardDidChangeFrame_ name:*MEMORY[0x277D76B98] object:0];
-  [v10 addObserver:self selector:sel_keyboardDidChangeFrame_ name:*MEMORY[0x277D76C50] object:0];
-  v11 = [[CompletionListTableViewDataSource alloc] initWithTableView:v4];
+  [tableView setBackgroundView:self->_headerBackdropCaptureView];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_keyboardDidChangeFrame_ name:*MEMORY[0x277D76C60] object:0];
+  [defaultCenter addObserver:self selector:sel_keyboardDidChangeFrame_ name:*MEMORY[0x277D76B98] object:0];
+  [defaultCenter addObserver:self selector:sel_keyboardDidChangeFrame_ name:*MEMORY[0x277D76C50] object:0];
+  v11 = [[CompletionListTableViewDataSource alloc] initWithTableView:tableView];
   dataSource = self->_dataSource;
   self->_dataSource = v11;
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v4.receiver = self;
   v4.super_class = CompletionListTableViewController;
-  [(CompletionListTableViewController *)&v4 viewIsAppearing:a3];
+  [(CompletionListTableViewController *)&v4 viewIsAppearing:appearing];
   [MEMORY[0x277D75830] visiblePeripheralFrame];
   [(CompletionListTableViewController *)self updateKeyboardBottomInsetFromKeyboardFrame:?];
 }
@@ -344,7 +344,7 @@ void __138__CompletionListTableViewController_configureCell_backgroundMode_separ
   if (self->_shouldResetScrollOffsetOnNextLayout)
   {
     self->_shouldResetScrollOffsetOnNextLayout = 0;
-    v3 = [(CompletionListTableViewController *)self tableView];
+    tableView = [(CompletionListTableViewController *)self tableView];
     if ([(CompletionListTableViewController *)self _isInPopoverPresentation])
     {
       v4 = *MEMORY[0x277CBF348];
@@ -353,27 +353,27 @@ void __138__CompletionListTableViewController_configureCell_backgroundMode_separ
 
     else
     {
-      [v3 adjustedContentInset];
+      [tableView adjustedContentInset];
       v5 = -v6;
       v4 = 0.0;
     }
 
-    [v3 setContentOffset:{v4, v5}];
+    [tableView setContentOffset:{v4, v5}];
   }
 }
 
 - (UITableViewHeaderFooterView)defaultHeaderFooterView
 {
-  v2 = [(CompletionListTableViewController *)self tableView];
-  v3 = [v2 dequeueReusableHeaderFooterViewWithIdentifier:@"CatalogViewControllerTableHeader"];
+  tableView = [(CompletionListTableViewController *)self tableView];
+  v3 = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"CatalogViewControllerTableHeader"];
 
   return v3;
 }
 
 - (UITableViewHeaderFooterView)recentSearchesHeaderFooterView
 {
-  v2 = [(CompletionListTableViewController *)self tableView];
-  v3 = [v2 dequeueReusableHeaderFooterViewWithIdentifier:@"RecentSearchesTableHeader"];
+  tableView = [(CompletionListTableViewController *)self tableView];
+  v3 = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"RecentSearchesTableHeader"];
 
   return v3;
 }
@@ -385,56 +385,56 @@ void __138__CompletionListTableViewController_configureCell_backgroundMode_separ
   [(CompletionListTableViewController *)self updateKeyboardBottomInsetFromKeyboardFrame:?];
 }
 
-- (void)setWebSearchTipView:(id)a3
+- (void)setWebSearchTipView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if (![(CompletionListTableViewController *)self _showingWebSearchTip])
   {
-    objc_storeStrong(&self->_webSearchTipView, a3);
+    objc_storeStrong(&self->_webSearchTipView, view);
   }
 }
 
-- (void)setShowsWebSearchTipIfExists:(BOOL)a3
+- (void)setShowsWebSearchTipIfExists:(BOOL)exists
 {
   v24[4] = *MEMORY[0x277D85DE8];
-  if (self->_showsWebSearchTipIfExists != a3)
+  if (self->_showsWebSearchTipIfExists != exists)
   {
-    self->_showsWebSearchTipIfExists = a3;
+    self->_showsWebSearchTipIfExists = exists;
     if (self->_webSearchTipView)
     {
-      v4 = [(CompletionListTableViewController *)self tableView];
+      tableView = [(CompletionListTableViewController *)self tableView];
       if (self->_showsWebSearchTipIfExists)
       {
         v5 = objc_alloc_init(MEMORY[0x277D75D18]);
-        [v4 setTableHeaderView:v5];
+        [tableView setTableHeaderView:v5];
         [(UIView *)self->_webSearchTipView setTranslatesAutoresizingMaskIntoConstraints:0];
         [v5 addSubview:self->_webSearchTipView];
         [MEMORY[0x277D756E0] groupedHeaderConfiguration];
-        v6 = v23 = v4;
+        v6 = v23 = tableView;
         [v6 directionalLayoutMargins];
         v8 = v7;
 
         v18 = MEMORY[0x277CCAAD0];
-        v22 = [(UIView *)self->_webSearchTipView leftAnchor];
-        v21 = [v5 leftAnchor];
-        v20 = [v22 constraintEqualToAnchor:v21 constant:16.0];
+        leftAnchor = [(UIView *)self->_webSearchTipView leftAnchor];
+        leftAnchor2 = [v5 leftAnchor];
+        v20 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:16.0];
         v24[0] = v20;
-        v19 = [(UIView *)self->_webSearchTipView rightAnchor];
-        v17 = [v5 rightAnchor];
-        v9 = [v19 constraintEqualToAnchor:v17 constant:-16.0];
+        rightAnchor = [(UIView *)self->_webSearchTipView rightAnchor];
+        rightAnchor2 = [v5 rightAnchor];
+        v9 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-16.0];
         v24[1] = v9;
-        v10 = [(UIView *)self->_webSearchTipView topAnchor];
-        v11 = [v5 topAnchor];
-        v12 = [v10 constraintEqualToAnchor:v11 constant:v8];
+        topAnchor = [(UIView *)self->_webSearchTipView topAnchor];
+        topAnchor2 = [v5 topAnchor];
+        v12 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v8];
         v24[2] = v12;
-        v13 = [(UIView *)self->_webSearchTipView bottomAnchor];
-        v14 = [v5 bottomAnchor];
-        v15 = [v13 constraintEqualToAnchor:v14];
+        bottomAnchor = [(UIView *)self->_webSearchTipView bottomAnchor];
+        bottomAnchor2 = [v5 bottomAnchor];
+        v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         v24[3] = v15;
         v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:4];
         [v18 activateConstraints:v16];
 
-        v4 = v23;
+        tableView = v23;
         [v23 bounds];
         [(CompletionListTableViewController *)self _updateWebSearchTipProposedHeightForTableViewWidth:CGRectGetWidth(v25)];
         [v5 setBounds:{0.0, 0.0, 0.0, v8 + self->_webSearchTipProposedHeight}];
@@ -443,20 +443,20 @@ void __138__CompletionListTableViewController_configureCell_backgroundMode_separ
       else
       {
         [(UIView *)self->_webSearchTipView removeFromSuperview];
-        [v4 setTableHeaderView:0];
+        [tableView setTableHeaderView:0];
       }
     }
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  width = a3.width;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = CompletionListTableViewController;
-  [(SFPopoverSizingTableViewController *)&v8 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
-  v6 = [(CompletionListTableViewController *)self tableView];
-  [v6 bounds];
+  [(SFPopoverSizingTableViewController *)&v8 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
+  tableView = [(CompletionListTableViewController *)self tableView];
+  [tableView bounds];
   v7 = CGRectGetWidth(v9);
 
   if (v7 != width)
@@ -465,15 +465,15 @@ void __138__CompletionListTableViewController_configureCell_backgroundMode_separ
   }
 }
 
-- (void)_updateWebSearchTipProposedHeightForTableViewWidth:(double)a3
+- (void)_updateWebSearchTipProposedHeightForTableViewWidth:(double)width
 {
-  v5 = [(CompletionListTableViewController *)self _showingWebSearchTip];
+  _showingWebSearchTip = [(CompletionListTableViewController *)self _showingWebSearchTip];
   v8 = 0.0;
-  if (v5)
+  if (_showingWebSearchTip)
   {
     LODWORD(v6) = 1148846080;
     LODWORD(v7) = 1112014848;
-    [(UIView *)self->_webSearchTipView systemLayoutSizeFittingSize:a3 + -32.0 withHorizontalFittingPriority:*(MEMORY[0x277D76C78] + 8) verticalFittingPriority:v6, v7];
+    [(UIView *)self->_webSearchTipView systemLayoutSizeFittingSize:width + -32.0 withHorizontalFittingPriority:*(MEMORY[0x277D76C78] + 8) verticalFittingPriority:v6, v7];
   }
 
   self->_webSearchTipProposedHeight = v8;
@@ -490,38 +490,38 @@ void __138__CompletionListTableViewController_configureCell_backgroundMode_separ
 + (id)tableViewCellForSizeEstimation
 {
   v2 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:3 reuseIdentifier:0];
-  v3 = [v2 textLabel];
-  [v3 setText:@"A"];
+  textLabel = [v2 textLabel];
+  [textLabel setText:@"A"];
 
-  v4 = [v2 detailTextLabel];
-  [v4 setText:@"A"];
+  detailTextLabel = [v2 detailTextLabel];
+  [detailTextLabel setText:@"A"];
 
   return v2;
 }
 
-- (id)backgroundColorUsingTranslucentAppearance:(BOOL)a3
+- (id)backgroundColorUsingTranslucentAppearance:(BOOL)appearance
 {
-  v4 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v5 = v4;
-  if (a3)
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  v5 = systemBackgroundColor;
+  if (appearance)
   {
-    v6 = [MEMORY[0x277D75348] clearColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
   }
 
   else
   {
-    v6 = v4;
+    clearColor = systemBackgroundColor;
   }
 
-  v7 = v6;
+  v7 = clearColor;
 
   return v7;
 }
 
-- (void)keyboardDidChangeFrame:(id)a3
+- (void)keyboardDidChangeFrame:(id)frame
 {
-  v4 = [a3 userInfo];
-  v6 = [v4 objectForKey:*MEMORY[0x277D76BB8]];
+  userInfo = [frame userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x277D76BB8]];
 
   v5 = v6;
   if (v6)
@@ -532,24 +532,24 @@ void __138__CompletionListTableViewController_configureCell_backgroundMode_separ
   }
 }
 
-- (void)updateKeyboardBottomInsetFromKeyboardFrame:(CGRect)a3
+- (void)updateKeyboardBottomInsetFromKeyboardFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = 0.0;
-  if (!CGRectIsEmpty(a3))
+  if (!CGRectIsEmpty(frame))
   {
-    v9 = [(CompletionListTableViewController *)self tableView];
-    [v9 convertRect:0 fromView:{x, y, width, height}];
+    tableView = [(CompletionListTableViewController *)self tableView];
+    [tableView convertRect:0 fromView:{x, y, width, height}];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
 
-    v18 = [(CompletionListTableViewController *)self tableView];
-    [v18 bounds];
+    tableView2 = [(CompletionListTableViewController *)self tableView];
+    [tableView2 bounds];
     MaxY = CGRectGetMaxY(v23);
     v24.origin.x = v11;
     v24.origin.y = v13;
@@ -557,8 +557,8 @@ void __138__CompletionListTableViewController_configureCell_backgroundMode_separ
     v24.size.height = v17;
     if (MaxY >= CGRectGetMinY(v24))
     {
-      v20 = [(CompletionListTableViewController *)self tableView];
-      [v20 bounds];
+      tableView3 = [(CompletionListTableViewController *)self tableView];
+      [tableView3 bounds];
       v21 = CGRectGetMaxY(v25);
       v26.origin.x = v11;
       v26.origin.y = v13;
@@ -578,7 +578,7 @@ void __138__CompletionListTableViewController_configureCell_backgroundMode_separ
 
 - (void)_updateTableViewContentInset
 {
-  v8 = [(CompletionListTableViewController *)self tableView];
+  tableView = [(CompletionListTableViewController *)self tableView];
   if ([(CompletionListTableViewController *)self _isInPopoverPresentation])
   {
     v3 = *MEMORY[0x277D29078];
@@ -588,15 +588,15 @@ void __138__CompletionListTableViewController_configureCell_backgroundMode_separ
 
   else
   {
-    [v8 safeAreaInsets];
+    [tableView safeAreaInsets];
     v3 = 0.0;
     keyboardBottomInset = fmax(self->_keyboardBottomInset - v6, 0.0);
     v5 = keyboardBottomInset;
   }
 
   [objc_opt_class() bottomContentPadding];
-  [v8 setContentInset:{0.0, 0.0, keyboardBottomInset + v7, 0.0}];
-  [v8 setVerticalScrollIndicatorInsets:{v3, 0.0, v5, 0.0}];
+  [tableView setContentInset:{0.0, 0.0, keyboardBottomInset + v7, 0.0}];
+  [tableView setVerticalScrollIndicatorInsets:{v3, 0.0, v5, 0.0}];
 }
 
 @end

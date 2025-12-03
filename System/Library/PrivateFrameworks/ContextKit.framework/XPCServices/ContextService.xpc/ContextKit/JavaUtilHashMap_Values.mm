@@ -1,8 +1,8 @@
 @interface JavaUtilHashMap_Values
-- (BOOL)containsWithId:(id)a3;
-- (JavaUtilHashMap_Values)initWithJavaUtilHashMap:(id)a3;
+- (BOOL)containsWithId:(id)id;
+- (JavaUtilHashMap_Values)initWithJavaUtilHashMap:(id)map;
 - (id)iterator;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)__javaClone;
 - (void)clear;
 @end
@@ -16,11 +16,11 @@
   return [Weak newValueIterator];
 }
 
-- (BOOL)containsWithId:(id)a3
+- (BOOL)containsWithId:(id)id
 {
   Weak = objc_loadWeak(&self->this$0_);
 
-  return [Weak containsValueWithId:a3];
+  return [Weak containsValueWithId:id];
 }
 
 - (void)clear
@@ -30,9 +30,9 @@
   [Weak clear];
 }
 
-- (JavaUtilHashMap_Values)initWithJavaUtilHashMap:(id)a3
+- (JavaUtilHashMap_Values)initWithJavaUtilHashMap:(id)map
 {
-  objc_storeWeak(&self->this$0_, a3);
+  objc_storeWeak(&self->this$0_, map);
   JavaUtilAbstractCollection_init(self, v4);
   return self;
 }
@@ -44,10 +44,10 @@
   [(JavaUtilHashMap_Values *)&v3 __javaClone];
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  result = [objc_loadWeak(&self->this$0_) enumerateEntriesWithState:a3 objects:a4 count:a5];
-  var1 = a3->var1;
+  result = [objc_loadWeak(&self->this$0_) enumerateEntriesWithState:state objects:objects count:count];
+  var1 = state->var1;
   v8 = &var1[result];
   while (var1 < v8)
   {

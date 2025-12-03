@@ -7,20 +7,20 @@
 - (_opaque_pthread_mutex_t)allowedBundleIDsLock;
 - (_opaque_pthread_mutex_t)initialSyncInProgressLock;
 - (_opaque_pthread_mutex_t)reunionSyncInProgressLock;
-- (id)_newKeyForValues:(id)a3 priority:(int64_t)a4;
-- (void)_checkAvailabilityForValues:(id)a3 priority:(int64_t)a4 logString:(id)a5 fromQueue:(id)a6 withCompletionBlock:(id)a7;
-- (void)_resourceAvailabilityChangedForIdentifiers:(id)a3;
+- (id)_newKeyForValues:(id)values priority:(int64_t)priority;
+- (void)_checkAvailabilityForValues:(id)values priority:(int64_t)priority logString:(id)string fromQueue:(id)queue withCompletionBlock:(id)block;
+- (void)_resourceAvailabilityChangedForIdentifiers:(id)identifiers;
 - (void)_setupPairedSystemContext;
-- (void)checkAvailabilityForValues:(id)a3 priority:(int64_t)a4 logString:(id)a5 fromQueue:(id)a6 withCompletionBlock:(id)a7;
+- (void)checkAvailabilityForValues:(id)values priority:(int64_t)priority logString:(id)string fromQueue:(id)queue withCompletionBlock:(id)block;
 - (void)clearAdmissionCheckCache;
 - (void)dealloc;
-- (void)forceCheckAvailabilityForValues:(id)a3 priority:(int64_t)a4 logString:(id)a5 fromQueue:(id)a6 withCompletionBlock:(id)a7;
-- (void)setAllowedBundleIDsLock:(_opaque_pthread_mutex_t *)a3;
-- (void)setInitialSyncInProgress:(BOOL)a3 forClientID:(id)a4;
-- (void)setInitialSyncInProgressLock:(_opaque_pthread_mutex_t *)a3;
+- (void)forceCheckAvailabilityForValues:(id)values priority:(int64_t)priority logString:(id)string fromQueue:(id)queue withCompletionBlock:(id)block;
+- (void)setAllowedBundleIDsLock:(_opaque_pthread_mutex_t *)lock;
+- (void)setInitialSyncInProgress:(BOOL)progress forClientID:(id)d;
+- (void)setInitialSyncInProgressLock:(_opaque_pthread_mutex_t *)lock;
 - (void)setPairedDeviceIdentifier;
-- (void)setReunionSyncInProgress:(BOOL)a3 forClientID:(id)a4;
-- (void)setReunionSyncInProgressLock:(_opaque_pthread_mutex_t *)a3;
+- (void)setReunionSyncInProgress:(BOOL)progress forClientID:(id)d;
+- (void)setReunionSyncInProgressLock:(_opaque_pthread_mutex_t *)lock;
 @end
 
 @implementation IDSDuetInterface
@@ -31,16 +31,16 @@
   dispatch_assert_queue_V2(v3);
 
   v4 = +[IDSPairingManager sharedInstance];
-  v8 = [v4 pairedDeviceUniqueID];
+  pairedDeviceUniqueID = [v4 pairedDeviceUniqueID];
 
   if (objc_opt_respondsToSelector())
   {
     v5 = self->_pairedSystemContext;
-    v6 = [(_DASPairedSystemContext *)v5 pairedDeviceIdentifier];
-    v7 = v6;
-    if (!v6 || ([v6 isEqualToString:v8] & 1) == 0)
+    pairedDeviceIdentifier = [(_DASPairedSystemContext *)v5 pairedDeviceIdentifier];
+    v7 = pairedDeviceIdentifier;
+    if (!pairedDeviceIdentifier || ([pairedDeviceIdentifier isEqualToString:pairedDeviceUniqueID] & 1) == 0)
     {
-      [(_DASPairedSystemContext *)v5 setPairedDeviceIdentifier:v8];
+      [(_DASPairedSystemContext *)v5 setPairedDeviceIdentifier:pairedDeviceUniqueID];
     }
   }
 }
@@ -51,7 +51,7 @@
   block[1] = 3221225472;
   block[2] = sub_100328BD0;
   block[3] = &unk_100BD75B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100CBCDF8 != -1)
   {
     dispatch_once(&qword_100CBCDF8, block);
@@ -143,7 +143,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v6 = self;
+    selfCopy = self;
     v7 = 2080;
     v8 = "[IDSDuetInterface dealloc]";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%p %s", buf, 0x16u);
@@ -162,13 +162,13 @@
   [(IDSDuetInterface *)&v4 dealloc];
 }
 
-- (void)_resourceAvailabilityChangedForIdentifiers:(id)a3
+- (void)_resourceAvailabilityChangedForIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = +[IDSQuickSwitchHelper sharedInstance];
-  v6 = [v5 isQuickSwitchingToAnotherDevice];
+  isQuickSwitchingToAnotherDevice = [v5 isQuickSwitchingToAnotherDevice];
 
-  if (v6)
+  if (isQuickSwitchingToAnotherDevice)
   {
     v7 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -193,21 +193,21 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained duetInterface:self resourceAvailabilityChangedForIdentifiers:v4];
+    [WeakRetained duetInterface:self resourceAvailabilityChangedForIdentifiers:identifiersCopy];
   }
 }
 
-- (void)setInitialSyncInProgress:(BOOL)a3 forClientID:(id)a4
+- (void)setInitialSyncInProgress:(BOOL)progress forClientID:(id)d
 {
-  v4 = a3;
-  v6 = a4;
+  progressCopy = progress;
+  dCopy = d;
   pthread_mutex_lock(&self->_initialSyncInProgressLock);
-  v7 = [(NSMutableSet *)self->_initialSyncClientIDs containsObject:v6];
-  if (v4)
+  v7 = [(NSMutableSet *)self->_initialSyncClientIDs containsObject:dCopy];
+  if (progressCopy)
   {
     if ((v7 & 1) == 0)
     {
-      [(NSMutableSet *)self->_initialSyncClientIDs addObject:v6];
+      [(NSMutableSet *)self->_initialSyncClientIDs addObject:dCopy];
       v8 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
@@ -215,7 +215,7 @@
         *buf = 138412802;
         v16 = @"YES";
         v17 = 2112;
-        v18 = v6;
+        v18 = dCopy;
         v19 = 2112;
         v20 = v9;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Setting initialSyncInProgress to %@. Callstack %@ clientID %@", buf, 0x20u);
@@ -241,7 +241,7 @@ LABEL_16:
 
   else if (v7)
   {
-    [(NSMutableSet *)self->_initialSyncClientIDs removeObject:v6];
+    [(NSMutableSet *)self->_initialSyncClientIDs removeObject:dCopy];
     v11 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -249,7 +249,7 @@ LABEL_16:
       *buf = 138412802;
       v16 = @"NO";
       v17 = 2112;
-      v18 = v6;
+      v18 = dCopy;
       v19 = 2112;
       v20 = v12;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Setting initialSyncInProgress to %@. Callstack %@ for clientID %@", buf, 0x20u);
@@ -283,17 +283,17 @@ LABEL_16:
   return v3;
 }
 
-- (void)setReunionSyncInProgress:(BOOL)a3 forClientID:(id)a4
+- (void)setReunionSyncInProgress:(BOOL)progress forClientID:(id)d
 {
-  v4 = a3;
-  v6 = a4;
+  progressCopy = progress;
+  dCopy = d;
   pthread_mutex_lock(&self->_reunionSyncInProgressLock);
-  v7 = [(NSMutableSet *)self->_reunionSyncClientIDs containsObject:v6];
-  if (v4)
+  v7 = [(NSMutableSet *)self->_reunionSyncClientIDs containsObject:dCopy];
+  if (progressCopy)
   {
     if ((v7 & 1) == 0)
     {
-      [(NSMutableSet *)self->_reunionSyncClientIDs addObject:v6];
+      [(NSMutableSet *)self->_reunionSyncClientIDs addObject:dCopy];
       v8 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
@@ -301,7 +301,7 @@ LABEL_16:
         *buf = 138412802;
         v16 = @"YES";
         v17 = 2112;
-        v18 = v6;
+        v18 = dCopy;
         v19 = 2112;
         v20 = v9;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Setting reunionSyncInProgress to %@. Callstack %@ clientID %@", buf, 0x20u);
@@ -327,7 +327,7 @@ LABEL_16:
 
   else if (v7)
   {
-    [(NSMutableSet *)self->_reunionSyncClientIDs removeObject:v6];
+    [(NSMutableSet *)self->_reunionSyncClientIDs removeObject:dCopy];
     v11 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -335,7 +335,7 @@ LABEL_16:
       *buf = 138412802;
       v16 = @"NO";
       v17 = 2112;
-      v18 = v6;
+      v18 = dCopy;
       v19 = 2112;
       v20 = v12;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Setting reunionSyncInProgress to %@. Callstack %@ for clientID %@", buf, 0x20u);
@@ -369,40 +369,40 @@ LABEL_16:
   return v3;
 }
 
-- (id)_newKeyForValues:(id)a3 priority:(int64_t)a4
+- (id)_newKeyForValues:(id)values priority:(int64_t)priority
 {
-  v5 = a3;
+  valuesCopy = values;
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_100329B34;
   v14 = &unk_100BD7630;
   v6 = objc_alloc_init(NSMutableString);
   v15 = v6;
-  [v5 enumerateObjectsUsingBlock:&v11];
+  [valuesCopy enumerateObjectsUsingBlock:&v11];
 
   v7 = [NSString alloc];
-  v8 = [v7 initWithFormat:@"%d", a4, v11, v12, v13, v14];
+  v8 = [v7 initWithFormat:@"%d", priority, v11, v12, v13, v14];
   [v6 appendString:v8];
   v9 = v6;
 
   return v9;
 }
 
-- (void)_checkAvailabilityForValues:(id)a3 priority:(int64_t)a4 logString:(id)a5 fromQueue:(id)a6 withCompletionBlock:(id)a7
+- (void)_checkAvailabilityForValues:(id)values priority:(int64_t)priority logString:(id)string fromQueue:(id)queue withCompletionBlock:(id)block
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  valuesCopy = values;
+  stringCopy = string;
+  queueCopy = queue;
+  blockCopy = block;
   v16 = objc_autoreleasePoolPush();
-  dispatch_assert_queue_V2(v14);
+  dispatch_assert_queue_V2(queueCopy);
   v17 = 50;
-  if (a4 == 300)
+  if (priority == 300)
   {
     v17 = 90;
   }
 
-  if (a4 == 100)
+  if (priority == 100)
   {
     v18 = 10;
   }
@@ -412,8 +412,8 @@ LABEL_16:
     v18 = v17;
   }
 
-  v19 = [(IDSDuetInterface *)self initialSyncInProgress];
-  if (v19)
+  initialSyncInProgress = [(IDSDuetInterface *)self initialSyncInProgress];
+  if (initialSyncInProgress)
   {
     v20 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -456,25 +456,25 @@ LABEL_16:
       }
     }
 
-    v19 = 1;
+    initialSyncInProgress = 1;
   }
 
   v22 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v42 = v12;
+    v42 = valuesCopy;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEBUG, "Performing duet check for values %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v37 = v12;
+    v37 = valuesCopy;
     _IDSLogV();
   }
 
   v40 = 900.0;
-  v23 = [(_DASPairedSystemContext *)self->_pairedSystemContext allowsSendingTrafficeForServiceIdentifiers:v12 atPriorityLevel:v18 isReunionOrInitialSync:v19 responseValidityDuration:&v40, v37];
+  v23 = [(_DASPairedSystemContext *)self->_pairedSystemContext allowsSendingTrafficeForServiceIdentifiers:valuesCopy atPriorityLevel:v18 isReunionOrInitialSync:initialSyncInProgress responseValidityDuration:&v40, v37];
   v24 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
@@ -485,9 +485,9 @@ LABEL_16:
     }
 
     v26 = &stru_100C06028;
-    if (v13)
+    if (stringCopy)
     {
-      v26 = v13;
+      v26 = stringCopy;
     }
 
     *buf = 138412546;
@@ -500,7 +500,7 @@ LABEL_16:
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
   {
     v27 = v23 ? @"YES" : @"NO";
-    v28 = v13 ? v13 : &stru_100C06028;
+    v28 = stringCopy ? stringCopy : &stru_100C06028;
     v38 = v27;
     v39 = v28;
     _IDSLogTransport();
@@ -514,7 +514,7 @@ LABEL_16:
 
   if (v23)
   {
-    v29 = [(IDSDuetInterface *)self _newKeyForValues:v12 priority:a4];
+    v29 = [(IDSDuetInterface *)self _newKeyForValues:valuesCopy priority:priority];
     v30 = [NSDate alloc];
     v31 = [v30 initWithTimeIntervalSinceNow:v40];
     pthread_mutex_lock(&self->_allowedBundleIDsLock);
@@ -534,7 +534,7 @@ LABEL_16:
     goto LABEL_51;
   }
 
-  if (a4 == 300)
+  if (priority == 300)
   {
     v35 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -552,7 +552,7 @@ LABEL_16:
 
 LABEL_51:
     v36 = 1;
-    if (!v15)
+    if (!blockCopy)
     {
       goto LABEL_55;
     }
@@ -561,23 +561,23 @@ LABEL_51:
   }
 
   v36 = 0;
-  if (v15)
+  if (blockCopy)
   {
 LABEL_54:
-    v15[2](v15, v36);
+    blockCopy[2](blockCopy, v36);
   }
 
 LABEL_55:
   objc_autoreleasePoolPop(v16);
 }
 
-- (void)forceCheckAvailabilityForValues:(id)a3 priority:(int64_t)a4 logString:(id)a5 fromQueue:(id)a6 withCompletionBlock:(id)a7
+- (void)forceCheckAvailabilityForValues:(id)values priority:(int64_t)priority logString:(id)string fromQueue:(id)queue withCompletionBlock:(id)block
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (![v12 count])
+  valuesCopy = values;
+  stringCopy = string;
+  queueCopy = queue;
+  blockCopy = block;
+  if (![valuesCopy count])
   {
     v16 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -591,41 +591,41 @@ LABEL_55:
       _IDSLogV();
     }
 
-    v12 = &off_100C3DAC0;
+    valuesCopy = &off_100C3DAC0;
   }
 
-  [(IDSDuetInterface *)self _checkAvailabilityForValues:v12 priority:a4 logString:v13 fromQueue:v14 withCompletionBlock:v15];
+  [(IDSDuetInterface *)self _checkAvailabilityForValues:valuesCopy priority:priority logString:stringCopy fromQueue:queueCopy withCompletionBlock:blockCopy];
 }
 
-- (void)checkAvailabilityForValues:(id)a3 priority:(int64_t)a4 logString:(id)a5 fromQueue:(id)a6 withCompletionBlock:(id)a7
+- (void)checkAvailabilityForValues:(id)values priority:(int64_t)priority logString:(id)string fromQueue:(id)queue withCompletionBlock:(id)block
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if ([(IDSDuetInterface *)v12 count])
+  valuesCopy = values;
+  stringCopy = string;
+  queueCopy = queue;
+  blockCopy = block;
+  if ([(IDSDuetInterface *)valuesCopy count])
   {
-    if ([(IDSDuetInterface *)v12 count]!= 1)
+    if ([(IDSDuetInterface *)valuesCopy count]!= 1)
     {
       v17 = 0;
       goto LABEL_15;
     }
 
-    v16 = [(IDSDuetInterface *)v12 firstObject];
+    firstObject = [(IDSDuetInterface *)valuesCopy firstObject];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [(IDSDuetInterface *)v16 hasPrefix:@"com.apple.private.alloy"]&& ([(IDSDuetInterface *)v16 isEqualToString:@"com.apple.private.alloy.proxiedcrashcopier"]& 1) == 0)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [(IDSDuetInterface *)firstObject hasPrefix:@"com.apple.private.alloy"]&& ([(IDSDuetInterface *)firstObject isEqualToString:@"com.apple.private.alloy.proxiedcrashcopier"]& 1) == 0)
     {
       v26 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v31 = v16;
+        selfCopy2 = firstObject;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEBUG, "Service has not specified DuetIdentifiers! %@", buf, 0xCu);
       }
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v27 = v16;
+        v27 = firstObject;
         _IDSLogV();
       }
 
@@ -653,12 +653,12 @@ LABEL_55:
     }
 
     v17 = 0;
-    v16 = v12;
-    v12 = &off_100C3DAC0;
+    firstObject = valuesCopy;
+    valuesCopy = &off_100C3DAC0;
   }
 
 LABEL_15:
-  v19 = [(IDSDuetInterface *)self _newKeyForValues:v12 priority:a4, v27];
+  v19 = [(IDSDuetInterface *)self _newKeyForValues:valuesCopy priority:priority, v27];
   pthread_mutex_lock(&self->_allowedBundleIDsLock);
   v20 = [(NSMutableDictionary *)self->_allowedBundleIDs objectForKey:v19];
   v21 = v20;
@@ -668,7 +668,7 @@ LABEL_15:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v31 = self;
+      selfCopy2 = self;
       v32 = 2080;
       v33 = "[IDSDuetInterface checkAvailabilityForValues:priority:logString:fromQueue:withCompletionBlock:]";
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%p %s Sending IDS message, already allowed by CoreDuet", buf, 0x16u);
@@ -680,9 +680,9 @@ LABEL_15:
     }
 
     pthread_mutex_unlock(&self->_allowedBundleIDsLock);
-    if (v15)
+    if (blockCopy)
     {
-      v15[2](v15, 1);
+      blockCopy[2](blockCopy, 1);
     }
   }
 
@@ -700,7 +700,7 @@ LABEL_15:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v31 = self;
+      selfCopy2 = self;
       v32 = 2080;
       v33 = "[IDSDuetInterface checkAvailabilityForValues:priority:logString:fromQueue:withCompletionBlock:]";
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%p %s Sending IDS message, asking CoreDuet", buf, 0x16u);
@@ -708,12 +708,12 @@ LABEL_15:
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v28 = self;
+      selfCopy3 = self;
       v29 = "[IDSDuetInterface checkAvailabilityForValues:priority:logString:fromQueue:withCompletionBlock:]";
       _IDSLogV();
     }
 
-    [(IDSDuetInterface *)self _checkAvailabilityForValues:v12 priority:a4 logString:v13 fromQueue:v14 withCompletionBlock:v15, v28, v29];
+    [(IDSDuetInterface *)self _checkAvailabilityForValues:valuesCopy priority:priority logString:stringCopy fromQueue:queueCopy withCompletionBlock:blockCopy, selfCopy3, v29];
   }
 }
 
@@ -749,12 +749,12 @@ LABEL_15:
   return self;
 }
 
-- (void)setAllowedBundleIDsLock:(_opaque_pthread_mutex_t *)a3
+- (void)setAllowedBundleIDsLock:(_opaque_pthread_mutex_t *)lock
 {
-  v3 = *&a3->__sig;
-  v4 = *&a3->__opaque[8];
-  v5 = *&a3->__opaque[40];
-  *&self->_allowedBundleIDsLock.__opaque[24] = *&a3->__opaque[24];
+  v3 = *&lock->__sig;
+  v4 = *&lock->__opaque[8];
+  v5 = *&lock->__opaque[40];
+  *&self->_allowedBundleIDsLock.__opaque[24] = *&lock->__opaque[24];
   *&self->_allowedBundleIDsLock.__opaque[40] = v5;
   *&self->_allowedBundleIDsLock.__sig = v3;
   *&self->_allowedBundleIDsLock.__opaque[8] = v4;
@@ -771,12 +771,12 @@ LABEL_15:
   return self;
 }
 
-- (void)setInitialSyncInProgressLock:(_opaque_pthread_mutex_t *)a3
+- (void)setInitialSyncInProgressLock:(_opaque_pthread_mutex_t *)lock
 {
-  v3 = *&a3->__sig;
-  v4 = *&a3->__opaque[8];
-  v5 = *&a3->__opaque[40];
-  *&self->_initialSyncInProgressLock.__opaque[24] = *&a3->__opaque[24];
+  v3 = *&lock->__sig;
+  v4 = *&lock->__opaque[8];
+  v5 = *&lock->__opaque[40];
+  *&self->_initialSyncInProgressLock.__opaque[24] = *&lock->__opaque[24];
   *&self->_initialSyncInProgressLock.__opaque[40] = v5;
   *&self->_initialSyncInProgressLock.__sig = v3;
   *&self->_initialSyncInProgressLock.__opaque[8] = v4;
@@ -793,12 +793,12 @@ LABEL_15:
   return self;
 }
 
-- (void)setReunionSyncInProgressLock:(_opaque_pthread_mutex_t *)a3
+- (void)setReunionSyncInProgressLock:(_opaque_pthread_mutex_t *)lock
 {
-  v3 = *&a3->__sig;
-  v4 = *&a3->__opaque[8];
-  v5 = *&a3->__opaque[40];
-  *&self->_reunionSyncInProgressLock.__opaque[24] = *&a3->__opaque[24];
+  v3 = *&lock->__sig;
+  v4 = *&lock->__opaque[8];
+  v5 = *&lock->__opaque[40];
+  *&self->_reunionSyncInProgressLock.__opaque[24] = *&lock->__opaque[24];
   *&self->_reunionSyncInProgressLock.__opaque[40] = v5;
   *&self->_reunionSyncInProgressLock.__sig = v3;
   *&self->_reunionSyncInProgressLock.__opaque[8] = v4;

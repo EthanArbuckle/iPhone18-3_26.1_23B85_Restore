@@ -3,20 +3,20 @@
 + (id)supportedMetadataKeys;
 - (BOOL)executeCommand;
 - (BOOL)listKeys;
-- (BOOL)listReportsFor:(id)a3;
-- (BOOL)recordBitValues:(id)a3 metadata:(id)a4 forKey:(id)a5;
-- (BOOL)recordBitVectors:(id)a3 metadata:(id)a4 forKey:(id)a5;
-- (BOOL)recordFloatVectors:(id)a3 metadata:(id)a4 forKey:(id)a5;
-- (BOOL)recordNumbers:(id)a3 metadata:(id)a4 forKey:(id)a5;
-- (BOOL)recordNumbersVectors:(id)a3 metadata:(id)a4 forKey:(id)a5;
-- (BOOL)recordStrings:(id)a3 metadata:(id)a4 forKey:(id)a5;
-- (BOOL)recordWords:(id)a3 forKey:(id)a4;
-- (BOOL)submitRecordsForKey:(id)a3;
-- (_DPToolCommand)initWithAction:(id)a3 arguments:(id)a4 metadata:(id)a5 recordKey:(id)a6 databasePath:(id)a7 writeOK:(BOOL)a8;
+- (BOOL)listReportsFor:(id)for;
+- (BOOL)recordBitValues:(id)values metadata:(id)metadata forKey:(id)key;
+- (BOOL)recordBitVectors:(id)vectors metadata:(id)metadata forKey:(id)key;
+- (BOOL)recordFloatVectors:(id)vectors metadata:(id)metadata forKey:(id)key;
+- (BOOL)recordNumbers:(id)numbers metadata:(id)metadata forKey:(id)key;
+- (BOOL)recordNumbersVectors:(id)vectors metadata:(id)metadata forKey:(id)key;
+- (BOOL)recordStrings:(id)strings metadata:(id)metadata forKey:(id)key;
+- (BOOL)recordWords:(id)words forKey:(id)key;
+- (BOOL)submitRecordsForKey:(id)key;
+- (_DPToolCommand)initWithAction:(id)action arguments:(id)arguments metadata:(id)metadata recordKey:(id)key databasePath:(id)path writeOK:(BOOL)k;
 - (id)description;
-- (id)floatVectorsFromCSVString:(id)a3;
-- (id)metadataFromCSVString:(id)a3;
-- (id)queryForKey:(id)a3;
+- (id)floatVectorsFromCSVString:(id)string;
+- (id)metadataFromCSVString:(id)string;
+- (id)queryForKey:(id)key;
 - (void)executeCommand;
 @end
 
@@ -46,14 +46,14 @@
   return v3;
 }
 
-- (_DPToolCommand)initWithAction:(id)a3 arguments:(id)a4 metadata:(id)a5 recordKey:(id)a6 databasePath:(id)a7 writeOK:(BOOL)a8
+- (_DPToolCommand)initWithAction:(id)action arguments:(id)arguments metadata:(id)metadata recordKey:(id)key databasePath:(id)path writeOK:(BOOL)k
 {
-  v8 = a8;
-  v27 = a3;
-  v26 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  kCopy = k;
+  actionCopy = action;
+  argumentsCopy = arguments;
+  metadataCopy = metadata;
+  keyCopy = key;
+  pathCopy = path;
   v28.receiver = self;
   v28.super_class = _DPToolCommand;
   v18 = [(_DPToolCommand *)&v28 init];
@@ -63,23 +63,23 @@
     goto LABEL_6;
   }
 
-  objc_storeStrong(&v18->_action, a3);
-  objc_storeStrong(&v19->_arguments, a4);
-  objc_storeStrong(&v19->_metadata, a5);
-  objc_storeStrong(&v19->_recordKey, a6);
-  objc_storeStrong(&v19->_databasePath, a7);
-  v19->_writeOK = v8;
-  if (v17)
+  objc_storeStrong(&v18->_action, action);
+  objc_storeStrong(&v19->_arguments, arguments);
+  objc_storeStrong(&v19->_metadata, metadata);
+  objc_storeStrong(&v19->_recordKey, key);
+  objc_storeStrong(&v19->_databasePath, path);
+  v19->_writeOK = kCopy;
+  if (pathCopy)
   {
-    v20 = [_DPStorage storageWithDirectory:v17 readOnly:!v8, v26, v27];
+    actionCopy = [_DPStorage storageWithDirectory:pathCopy readOnly:!kCopy, argumentsCopy, actionCopy];
     storage = v19->_storage;
-    v19->_storage = v20;
+    v19->_storage = actionCopy;
   }
 
   else
   {
-    storage = [_DPStrings databaseDirectoryPath:v26];
-    v22 = [_DPStorage storageWithDirectory:storage readOnly:!v8];
+    storage = [_DPStrings databaseDirectoryPath:argumentsCopy];
+    v22 = [_DPStorage storageWithDirectory:storage readOnly:!kCopy];
     v23 = v19->_storage;
     v19->_storage = v22;
   }
@@ -131,45 +131,45 @@ LABEL_9:
   p_action = &self->_action;
   if ([(NSString *)self->_action isEqualToString:@"recordnumbers"])
   {
-    v8 = [(_DPToolCommand *)self recordNumbers:self->_arguments metadata:v5 forKey:self->_recordKey];
+    listKeys = [(_DPToolCommand *)self recordNumbers:self->_arguments metadata:v5 forKey:self->_recordKey];
 LABEL_22:
-    v16 = v8;
+    v16 = listKeys;
     goto LABEL_23;
   }
 
   if ([(NSString *)*p_action isEqualToString:@"recordnumbersvectors"])
   {
-    v8 = [(_DPToolCommand *)self recordNumbersVectors:self->_arguments metadata:v5 forKey:self->_recordKey];
+    listKeys = [(_DPToolCommand *)self recordNumbersVectors:self->_arguments metadata:v5 forKey:self->_recordKey];
     goto LABEL_22;
   }
 
   if ([(NSString *)*p_action isEqualToString:@"recordbitvalues"])
   {
-    v8 = [(_DPToolCommand *)self recordBitValues:self->_arguments metadata:v5 forKey:self->_recordKey];
+    listKeys = [(_DPToolCommand *)self recordBitValues:self->_arguments metadata:v5 forKey:self->_recordKey];
     goto LABEL_22;
   }
 
   if ([(NSString *)*p_action isEqualToString:@"recordbitvectors"])
   {
-    v8 = [(_DPToolCommand *)self recordBitVectors:self->_arguments metadata:v5 forKey:self->_recordKey];
+    listKeys = [(_DPToolCommand *)self recordBitVectors:self->_arguments metadata:v5 forKey:self->_recordKey];
     goto LABEL_22;
   }
 
   if ([(NSString *)*p_action isEqualToString:@"recordfloatvectors"])
   {
-    v8 = [(_DPToolCommand *)self recordFloatVectors:self->_arguments metadata:v5 forKey:self->_recordKey];
+    listKeys = [(_DPToolCommand *)self recordFloatVectors:self->_arguments metadata:v5 forKey:self->_recordKey];
     goto LABEL_22;
   }
 
   if ([(NSString *)*p_action isEqualToString:@"recordstrings"])
   {
-    v8 = [(_DPToolCommand *)self recordStrings:self->_arguments metadata:v5 forKey:self->_recordKey];
+    listKeys = [(_DPToolCommand *)self recordStrings:self->_arguments metadata:v5 forKey:self->_recordKey];
     goto LABEL_22;
   }
 
   if ([(NSString *)*p_action isEqualToString:@"recordwords"])
   {
-    v8 = [(_DPToolCommand *)self recordWords:self->_arguments forKey:self->_recordKey];
+    listKeys = [(_DPToolCommand *)self recordWords:self->_arguments forKey:self->_recordKey];
     goto LABEL_22;
   }
 
@@ -177,19 +177,19 @@ LABEL_22:
   {
     if ([(NSString *)*p_action isEqualToString:@"submitrecords"])
     {
-      v8 = [(_DPToolCommand *)self submitRecordsForKey:self->_recordKey];
+      listKeys = [(_DPToolCommand *)self submitRecordsForKey:self->_recordKey];
       goto LABEL_22;
     }
 
     if ([(NSString *)*p_action isEqualToString:@"listreports"])
     {
-      v8 = [(_DPToolCommand *)self listReportsFor:self->_arguments];
+      listKeys = [(_DPToolCommand *)self listReportsFor:self->_arguments];
       goto LABEL_22;
     }
 
     if ([(NSString *)*p_action isEqualToString:@"listkeys"])
     {
-      v8 = [(_DPToolCommand *)self listKeys];
+      listKeys = [(_DPToolCommand *)self listKeys];
       goto LABEL_22;
     }
 
@@ -240,27 +240,27 @@ LABEL_23:
   return v16;
 }
 
-- (id)floatVectorsFromCSVString:(id)a3
+- (id)floatVectorsFromCSVString:(id)string
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 dp_floatVectorsFromCSVString];
-  if ([v4 count])
+  stringCopy = string;
+  dp_floatVectorsFromCSVString = [stringCopy dp_floatVectorsFromCSVString];
+  if ([dp_floatVectorsFromCSVString count])
   {
-    v5 = v4;
+    v5 = dp_floatVectorsFromCSVString;
   }
 
   else
   {
-    v18 = v4;
+    v18 = dp_floatVectorsFromCSVString;
     v5 = objc_opt_new();
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v19 = v3;
-    v6 = [v3 dp_stringsFromCSVString];
-    v7 = [v6 countByEnumeratingWithState:&v20 objects:v26 count:16];
+    v19 = stringCopy;
+    dp_stringsFromCSVString = [stringCopy dp_stringsFromCSVString];
+    v7 = [dp_stringsFromCSVString countByEnumeratingWithState:&v20 objects:v26 count:16];
     if (v7)
     {
       v8 = v7;
@@ -272,12 +272,12 @@ LABEL_23:
         {
           if (*v21 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(dp_stringsFromCSVString);
           }
 
           v11 = *(*(&v20 + 1) + 8 * v10);
-          v12 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-          v13 = [v11 stringByTrimmingCharactersInSet:v12];
+          whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+          v13 = [v11 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
           v14 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v13];
           if (v14)
@@ -300,14 +300,14 @@ LABEL_23:
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v20 objects:v26 count:16];
+        v8 = [dp_stringsFromCSVString countByEnumeratingWithState:&v20 objects:v26 count:16];
       }
 
       while (v8);
     }
 
-    v4 = v18;
-    v3 = v19;
+    dp_floatVectorsFromCSVString = v18;
+    stringCopy = v19;
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -315,17 +315,17 @@ LABEL_23:
   return v5;
 }
 
-- (id)metadataFromCSVString:(id)a3
+- (id)metadataFromCSVString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  stringCopy = string;
+  v4 = stringCopy;
+  if (stringCopy)
   {
-    v5 = [v3 dp_dictionaryFromJsonString];
-    if ([v5 count])
+    dp_dictionaryFromJsonString = [stringCopy dp_dictionaryFromJsonString];
+    if ([dp_dictionaryFromJsonString count])
     {
-      v5 = v5;
-      v6 = v5;
+      dp_dictionaryFromJsonString = dp_dictionaryFromJsonString;
+      v6 = dp_dictionaryFromJsonString;
     }
 
     else
@@ -342,8 +342,8 @@ LABEL_23:
 
         if (v10)
         {
-          v5 = v10;
-          v6 = v5;
+          dp_dictionaryFromJsonString = v10;
+          v6 = dp_dictionaryFromJsonString;
         }
 
         else
@@ -354,7 +354,7 @@ LABEL_23:
             [_DPToolCommand metadataFromCSVString:];
           }
 
-          v5 = 0;
+          dp_dictionaryFromJsonString = 0;
           v6 = 0;
         }
       }
@@ -375,23 +375,23 @@ LABEL_23:
   return v6;
 }
 
-- (BOOL)recordNumbers:(id)a3 metadata:(id)a4 forKey:(id)a5
+- (BOOL)recordNumbers:(id)numbers metadata:(id)metadata forKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [[_DPNumericDataRecorder alloc] initWithKey:v9];
+  numbersCopy = numbers;
+  metadataCopy = metadata;
+  keyCopy = key;
+  v10 = [[_DPNumericDataRecorder alloc] initWithKey:keyCopy];
   if (v10)
   {
-    v11 = [v7 dp_numbersFromCSVString];
-    if (v8)
+    dp_numbersFromCSVString = [numbersCopy dp_numbersFromCSVString];
+    if (metadataCopy)
     {
-      v12 = [(_DPNumericDataRecorder *)v10 record:v11 metadata:v8];
+      v12 = [(_DPNumericDataRecorder *)v10 record:dp_numbersFromCSVString metadata:metadataCopy];
     }
 
     else
     {
-      v12 = [(_DPNumericDataRecorder *)v10 record:v11];
+      v12 = [(_DPNumericDataRecorder *)v10 record:dp_numbersFromCSVString];
     }
 
     v14 = v12;
@@ -411,23 +411,23 @@ LABEL_23:
   return v14;
 }
 
-- (BOOL)recordNumbersVectors:(id)a3 metadata:(id)a4 forKey:(id)a5
+- (BOOL)recordNumbersVectors:(id)vectors metadata:(id)metadata forKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [[_DPNumericDataRecorder alloc] initWithKey:v9];
+  vectorsCopy = vectors;
+  metadataCopy = metadata;
+  keyCopy = key;
+  v10 = [[_DPNumericDataRecorder alloc] initWithKey:keyCopy];
   if (v10)
   {
-    v11 = [v7 dp_numbersVectorsFromCSVString];
-    if (v8)
+    dp_numbersVectorsFromCSVString = [vectorsCopy dp_numbersVectorsFromCSVString];
+    if (metadataCopy)
     {
-      v12 = [(_DPNumericDataRecorder *)v10 recordNumbersVectors:v11 metadata:v8];
+      v12 = [(_DPNumericDataRecorder *)v10 recordNumbersVectors:dp_numbersVectorsFromCSVString metadata:metadataCopy];
     }
 
     else
     {
-      v12 = [(_DPNumericDataRecorder *)v10 recordNumbersVectors:v11];
+      v12 = [(_DPNumericDataRecorder *)v10 recordNumbersVectors:dp_numbersVectorsFromCSVString];
     }
 
     v14 = v12;
@@ -447,23 +447,23 @@ LABEL_23:
   return v14;
 }
 
-- (BOOL)recordBitValues:(id)a3 metadata:(id)a4 forKey:(id)a5
+- (BOOL)recordBitValues:(id)values metadata:(id)metadata forKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [[_DPBitValueRecorder alloc] initWithKey:v9];
+  valuesCopy = values;
+  metadataCopy = metadata;
+  keyCopy = key;
+  v10 = [[_DPBitValueRecorder alloc] initWithKey:keyCopy];
   if (v10)
   {
-    v11 = [v7 dp_numbersFromCSVString];
-    if (v8)
+    dp_numbersFromCSVString = [valuesCopy dp_numbersFromCSVString];
+    if (metadataCopy)
     {
-      v12 = [(_DPBitValueRecorder *)v10 record:v11 metadata:v8];
+      v12 = [(_DPBitValueRecorder *)v10 record:dp_numbersFromCSVString metadata:metadataCopy];
     }
 
     else
     {
-      v12 = [(_DPBitValueRecorder *)v10 record:v11];
+      v12 = [(_DPBitValueRecorder *)v10 record:dp_numbersFromCSVString];
     }
 
     v14 = v12;
@@ -483,23 +483,23 @@ LABEL_23:
   return v14;
 }
 
-- (BOOL)recordBitVectors:(id)a3 metadata:(id)a4 forKey:(id)a5
+- (BOOL)recordBitVectors:(id)vectors metadata:(id)metadata forKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [[_DPBitValueRecorder alloc] initWithKey:v9];
+  vectorsCopy = vectors;
+  metadataCopy = metadata;
+  keyCopy = key;
+  v10 = [[_DPBitValueRecorder alloc] initWithKey:keyCopy];
   if (v10)
   {
-    v11 = [v7 dp_bitVectorsFromCSVString];
-    if (v8)
+    dp_bitVectorsFromCSVString = [vectorsCopy dp_bitVectorsFromCSVString];
+    if (metadataCopy)
     {
-      v12 = [(_DPBitValueRecorder *)v10 recordBitVectors:v11 metadata:v8];
+      v12 = [(_DPBitValueRecorder *)v10 recordBitVectors:dp_bitVectorsFromCSVString metadata:metadataCopy];
     }
 
     else
     {
-      v12 = [(_DPBitValueRecorder *)v10 recordBitVectors:v11];
+      v12 = [(_DPBitValueRecorder *)v10 recordBitVectors:dp_bitVectorsFromCSVString];
     }
 
     v14 = v12;
@@ -519,12 +519,12 @@ LABEL_23:
   return v14;
 }
 
-- (BOOL)recordFloatVectors:(id)a3 metadata:(id)a4 forKey:(id)a5
+- (BOOL)recordFloatVectors:(id)vectors metadata:(id)metadata forKey:(id)key
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[_DPFloatValueRecorder alloc] initWithKey:v10];
+  vectorsCopy = vectors;
+  metadataCopy = metadata;
+  keyCopy = key;
+  v11 = [[_DPFloatValueRecorder alloc] initWithKey:keyCopy];
   if (!v11)
   {
     v12 = +[_DPLog tool];
@@ -536,7 +536,7 @@ LABEL_23:
     goto LABEL_10;
   }
 
-  v12 = [(_DPToolCommand *)self floatVectorsFromCSVString:v8];
+  v12 = [(_DPToolCommand *)self floatVectorsFromCSVString:vectorsCopy];
   if (![v12 count])
   {
     v14 = +[_DPLog tool];
@@ -550,9 +550,9 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  if (v9)
+  if (metadataCopy)
   {
-    v13 = [(_DPFloatValueRecorder *)v11 recordFloatVectors:v12 metadata:v9];
+    v13 = [(_DPFloatValueRecorder *)v11 recordFloatVectors:v12 metadata:metadataCopy];
   }
 
   else
@@ -566,23 +566,23 @@ LABEL_13:
   return v15;
 }
 
-- (BOOL)recordStrings:(id)a3 metadata:(id)a4 forKey:(id)a5
+- (BOOL)recordStrings:(id)strings metadata:(id)metadata forKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [[_DPStringRecorder alloc] initWithKey:v9];
+  stringsCopy = strings;
+  metadataCopy = metadata;
+  keyCopy = key;
+  v10 = [[_DPStringRecorder alloc] initWithKey:keyCopy];
   if (v10)
   {
-    v11 = [v7 dp_stringsFromCSVString];
-    if (v8)
+    dp_stringsFromCSVString = [stringsCopy dp_stringsFromCSVString];
+    if (metadataCopy)
     {
-      v12 = [(_DPStringRecorder *)v10 record:v11 metadata:v8];
+      v12 = [(_DPStringRecorder *)v10 record:dp_stringsFromCSVString metadata:metadataCopy];
     }
 
     else
     {
-      v12 = [(_DPStringRecorder *)v10 record:v11];
+      v12 = [(_DPStringRecorder *)v10 record:dp_stringsFromCSVString];
     }
 
     v14 = v12;
@@ -602,15 +602,15 @@ LABEL_13:
   return v14;
 }
 
-- (BOOL)recordWords:(id)a3 forKey:(id)a4
+- (BOOL)recordWords:(id)words forKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[_DPWordRecorder alloc] initWithKey:v6];
+  wordsCopy = words;
+  keyCopy = key;
+  v7 = [[_DPWordRecorder alloc] initWithKey:keyCopy];
   if (v7)
   {
-    v8 = [v5 dp_wordRecordsFromCSVString];
-    v9 = [(_DPWordRecorder *)v7 record:v8];
+    dp_wordRecordsFromCSVString = [wordsCopy dp_wordRecordsFromCSVString];
+    v9 = [(_DPWordRecorder *)v7 record:dp_wordRecordsFromCSVString];
   }
 
   else
@@ -627,9 +627,9 @@ LABEL_13:
   return v9;
 }
 
-- (id)queryForKey:(id)a3
+- (id)queryForKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v6 = self->_databasePath;
   if (v6)
   {
@@ -646,10 +646,10 @@ LABEL_13:
   v9 = [_DPStorage storageWithDirectory:v7 readOnly:v8];
   if (v9)
   {
-    v10 = [_DPRecordQueryPredicates entityForKey:v5];
+    v10 = [_DPRecordQueryPredicates entityForKey:keyCopy];
     if (v10)
     {
-      v11 = [_DPRecordQueryPredicates predicateForRecordsNotSubmittedForKeyBeginsWith:v5];
+      v11 = [_DPRecordQueryPredicates predicateForRecordsNotSubmittedForKeyBeginsWith:keyCopy];
       v20 = 0;
       v21 = &v20;
       v22 = 0x3032000000;
@@ -692,10 +692,10 @@ LABEL_13:
   return v14;
 }
 
-- (BOOL)submitRecordsForKey:(id)a3
+- (BOOL)submitRecordsForKey:(id)key
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v5 = self->_databasePath;
   if (v5)
   {
@@ -713,7 +713,7 @@ LABEL_13:
   v9 = [_DPStorage storageWithDirectory:v6 readOnly:v7];
   if (v9)
   {
-    v15[0] = v4;
+    v15[0] = keyCopy;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
     v11 = [v8 generateReportForKeys:v10 storage:v9];
 
@@ -729,27 +729,27 @@ LABEL_13:
   return v12;
 }
 
-- (BOOL)listReportsFor:(id)a3
+- (BOOL)listReportsFor:(id)for
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"all"])
+  forCopy = for;
+  if ([forCopy isEqualToString:@"all"])
   {
-    v4 = +[_DPReportFileManager submittedReports];
+    reportsNotYetSubmitted = +[_DPReportFileManager submittedReports];
   }
 
   else
   {
-    if (![v3 isEqualToString:@"pending"])
+    if (![forCopy isEqualToString:@"pending"])
     {
       v6 = 0;
       goto LABEL_7;
     }
 
     v5 = objc_opt_new();
-    v4 = [v5 reportsNotYetSubmitted];
+    reportsNotYetSubmitted = [v5 reportsNotYetSubmitted];
   }
 
-  NSLog(&stru_283969448.isa, v4);
+  NSLog(&stru_283969448.isa, reportsNotYetSubmitted);
 
   v6 = 1;
 LABEL_7:
@@ -815,7 +815,7 @@ LABEL_7:
 - (void)executeCommand
 {
   v10 = *MEMORY[0x277D85DE8];
-  v9 = HIDWORD(*a1);
+  v9 = HIDWORD(*self);
   OUTLINED_FUNCTION_0(&dword_22622D000, a2, a3, "Failed to parse JSON from string: '%@'", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }

@@ -1,8 +1,8 @@
 @interface HUHomeHubSharedUserWarningTableViewController
 - (void)loadView;
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HUHomeHubSharedUserWarningTableViewController
@@ -19,15 +19,15 @@
     _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_DEFAULT, "[HUHomeHubSharedUserWarningTableViewController:viewDidLoad]", v5, 2u);
   }
 
-  v4 = [(HUHomeHubSharedUserWarningTableViewController *)self tableView];
-  [v4 setAllowsSelection:0];
+  tableView = [(HUHomeHubSharedUserWarningTableViewController *)self tableView];
+  [tableView setAllowsSelection:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = HUHomeHubSharedUserWarningTableViewController;
-  [(HUItemTableViewController *)&v5 viewWillAppear:a3];
+  [(HUItemTableViewController *)&v5 viewWillAppear:appear];
   v3 = HFLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -36,11 +36,11 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = HUHomeHubSharedUserWarningTableViewController;
-  [(HUItemTableViewController *)&v5 viewWillDisappear:a3];
+  [(HUItemTableViewController *)&v5 viewWillDisappear:disappear];
   v3 = HFLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -49,16 +49,16 @@
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
   v24.receiver = self;
   v24.super_class = HUHomeHubSharedUserWarningTableViewController;
-  [(HUItemTableViewController *)&v24 updateCell:v10 forItem:v11 indexPath:a5 animated:v6];
+  [(HUItemTableViewController *)&v24 updateCell:cellCopy forItem:itemCopy indexPath:path animated:animatedCopy];
   objc_opt_class();
-  v12 = v11;
+  v12 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v13 = v12;
@@ -74,7 +74,7 @@
   if (v14)
   {
     v15 = objc_opt_class();
-    v16 = v10;
+    v16 = cellCopy;
     if (v16)
     {
       if (objc_opt_isKindOfClass())
@@ -93,21 +93,21 @@
         goto LABEL_12;
       }
 
-      v19 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-      [v19 handleFailureInFunction:v20 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v15, objc_opt_class()}];
+      [currentHandler handleFailureInFunction:v20 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v15, objc_opt_class()}];
     }
 
     v18 = 0;
 LABEL_12:
 
-    v21 = [v14 home];
-    v22 = [v14 user];
-    v23 = [v21 hf_handleForUser:v22];
+    home = [v14 home];
+    user = [v14 user];
+    v23 = [home hf_handleForUser:user];
     [v18 setUserHandle:v23];
   }
 
-  [v10 setAccessoryType:0];
+  [cellCopy setAccessoryType:0];
 }
 
 @end

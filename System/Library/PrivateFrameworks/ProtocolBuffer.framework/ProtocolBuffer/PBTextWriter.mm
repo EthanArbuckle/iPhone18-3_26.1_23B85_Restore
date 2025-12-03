@@ -1,18 +1,18 @@
 @interface PBTextWriter
-- (BOOL)write:(id)a3;
+- (BOOL)write:(id)write;
 - (PBTextWriter)init;
 - (id)string;
-- (uint64_t)_printLine:(uint64_t)a3 format:(uint64_t)a4;
-- (uint64_t)_write:(uint64_t)a1;
-- (uint64_t)_writeResult:(uint64_t)a3 forProperty:(uint64_t)a4 bracePrefix:(uint64_t)a5;
+- (uint64_t)_printLine:(uint64_t)line format:(uint64_t)format;
+- (uint64_t)_write:(uint64_t)_write;
+- (uint64_t)_writeResult:(uint64_t)result forProperty:(uint64_t)property bracePrefix:(uint64_t)prefix;
 - (void)dealloc;
 @end
 
 @implementation PBTextWriter
 
-- (BOOL)write:(id)a3
+- (BOOL)write:(id)write
 {
-  if (!a3)
+  if (!write)
   {
     return 0;
   }
@@ -23,13 +23,13 @@
     self->_newlinesPrinted = 1;
   }
 
-  return [(PBTextWriter *)self _write:a3];
+  return [(PBTextWriter *)self _write:write];
 }
 
-- (uint64_t)_write:(uint64_t)a1
+- (uint64_t)_write:(uint64_t)_write
 {
   v82 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (_write)
   {
     v2 = a2 == 0;
   }
@@ -44,7 +44,7 @@
   if (!v2)
   {
     v6 = objc_opt_class();
-    v7 = [_PBProperty getValidPropertiesForType:v6 withCache:*(a1 + 32)];
+    v7 = [_PBProperty getValidPropertiesForType:v6 withCache:*(_write + 32)];
     v75 = 0u;
     v76 = 0u;
     v77 = 0u;
@@ -207,14 +207,14 @@
               v25 = *(v14 + 816);
               if ([*(v18 + 16) isSubclassOfClass:objc_opt_class()])
               {
-                [(PBTextWriter *)a1 _printLine:@"%@: {" format:v26, v9, v10, v11, v12, *(v18 + 8)];
-                ++*(a1 + 16);
+                [(PBTextWriter *)_write _printLine:@"%@: {" format:v26, v9, v10, v11, v12, *(v18 + 8)];
+                ++*(_write + 16);
                 v80 = 0.0;
                 [*(v18 + 48) invokeWithTarget:a2];
                 [*(v18 + 48) getReturnValue:&v80];
-                [(PBTextWriter *)a1 _write:?];
-                --*(a1 + 16);
-                [(PBTextWriter *)a1 _printLine:@"}" format:v27, v28, v29, v30, v31, v72];
+                [(PBTextWriter *)_write _write:?];
+                --*(_write + 16);
+                [(PBTextWriter *)_write _printLine:@"}" format:v27, v28, v29, v30, v31, v72];
                 goto LABEL_129;
               }
 
@@ -237,7 +237,7 @@ LABEL_110:
               [v38 getReturnValue:&v80];
               v33 = v80;
 LABEL_128:
-              [(PBTextWriter *)a1 _writeResult:v18 forProperty:0 bracePrefix:v9, v10, v11, v12, v71];
+              [(PBTextWriter *)_write _writeResult:v18 forProperty:0 bracePrefix:v9, v10, v11, v12, v71];
               v16 = 0x1E696A000;
               goto LABEL_129;
             }
@@ -742,7 +742,7 @@ LABEL_112:
               v48 = 0;
             }
 
-            [(PBTextWriter *)a1 _writeResult:v48 forProperty:v18 bracePrefix:v40, v42, v43, v44, v45, v71];
+            [(PBTextWriter *)_write _writeResult:v48 forProperty:v18 bracePrefix:v40, v42, v43, v44, v45, v71];
             v14 = 0x1E833D000;
           }
 
@@ -763,7 +763,7 @@ LABEL_129:
   return v73;
 }
 
-- (uint64_t)_printLine:(uint64_t)a3 format:(uint64_t)a4
+- (uint64_t)_printLine:(uint64_t)line format:(uint64_t)format
 {
   v25 = *MEMORY[0x1E69E9840];
   if (result)
@@ -771,7 +771,7 @@ LABEL_129:
     v9 = result;
     *(result + 8) = 0;
     v23 = &a9;
-    v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:a3 arguments:&a9];
+    v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:line arguments:&a9];
     v11 = objc_alloc_init(MEMORY[0x1E696AD60]);
     if (*(v9 + 16) >= 1)
     {
@@ -825,7 +825,7 @@ LABEL_129:
   return result;
 }
 
-- (uint64_t)_writeResult:(uint64_t)a3 forProperty:(uint64_t)a4 bracePrefix:(uint64_t)a5
+- (uint64_t)_writeResult:(uint64_t)result forProperty:(uint64_t)property bracePrefix:(uint64_t)prefix
 {
   v44 = *MEMORY[0x1E69E9840];
   if (!a2)
@@ -833,16 +833,16 @@ LABEL_129:
     goto LABEL_33;
   }
 
-  v12 = result;
+  resultCopy = result;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (a3)
+    if (result)
     {
-      v18 = *(a3 + 8);
-      if (*(a3 + 32) == 64)
+      v18 = *(result + 8);
+      if (*(result + 32) == 64)
       {
-        result = [(PBTextWriter *)v12 _printLine:@"%@: %@" format:v13, v14, v15, v16, v17, *(a3 + 8)];
+        result = [(PBTextWriter *)resultCopy _printLine:@"%@: %@" format:v13, v14, v15, v16, v17, *(result + 8)];
 LABEL_33:
         v36 = *MEMORY[0x1E69E9840];
         return result;
@@ -867,7 +867,7 @@ LABEL_33:
     result = [a2 countByEnumeratingWithState:&v39 objects:v43 count:16];
     if (result)
     {
-      v19 = result;
+      resultCopy3 = result;
       v20 = *v40;
       do
       {
@@ -879,12 +879,12 @@ LABEL_33:
             objc_enumerationMutation(a2);
           }
 
-          [(PBTextWriter *)v12 _writeResult:a3 forProperty:a4 bracePrefix:?];
+          [(PBTextWriter *)resultCopy _writeResult:result forProperty:property bracePrefix:?];
         }
 
-        while (v19 != v21);
+        while (resultCopy3 != v21);
         result = [a2 countByEnumeratingWithState:&v39 objects:v43 count:16];
-        v19 = result;
+        resultCopy3 = result;
       }
 
       while (result);
@@ -896,24 +896,24 @@ LABEL_33:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (a4)
+    if (property)
     {
-      [(PBTextWriter *)v12 _printLine:@"%@ {" format:v22, v23, v24, v25, v26, a4];
-      ++*(v12 + 16);
+      [(PBTextWriter *)resultCopy _printLine:@"%@ {" format:v22, v23, v24, v25, v26, property];
+      ++*(resultCopy + 16);
     }
 
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __53__PBTextWriter__writeResult_forProperty_bracePrefix___block_invoke;
     v38[3] = &unk_1E833D4D8;
-    v38[4] = v12;
+    v38[4] = resultCopy;
     result = [a2 enumerateKeysAndObjectsUsingBlock:v38];
-    if (!a4)
+    if (!property)
     {
       goto LABEL_33;
     }
 
-    --*(v12 + 16);
+    --*(resultCopy + 16);
     v27 = @"}";
     goto LABEL_32;
   }
@@ -921,9 +921,9 @@ LABEL_33:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (a3)
+    if (result)
     {
-      v28 = *(a3 + 8);
+      v28 = *(result + 8);
     }
 
     else
@@ -938,7 +938,7 @@ LABEL_33:
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  if (!a3)
+  if (!result)
   {
     v18 = 0;
     if (isKindOfClass)
@@ -951,24 +951,24 @@ LABEL_30:
 LABEL_31:
     v27 = @"%@: %@";
 LABEL_32:
-    result = [(PBTextWriter *)v12 _printLine:v27 format:v13, v14, v15, v16, v17, v37];
+    result = [(PBTextWriter *)resultCopy _printLine:v27 format:v13, v14, v15, v16, v17, v37];
     goto LABEL_33;
   }
 
-  v18 = *(a3 + 8);
+  v18 = *(result + 8);
   if ((isKindOfClass & 1) == 0)
   {
     goto LABEL_30;
   }
 
 LABEL_26:
-  [(PBTextWriter *)v12 _printLine:@"%@: {" format:v13, v14, v15, v16, v17, v18];
-  ++*(v12 + 16);
-  [(PBTextWriter *)v12 _write:a2];
-  --*(v12 + 16);
+  [(PBTextWriter *)resultCopy _printLine:@"%@: {" format:v13, v14, v15, v16, v17, v18];
+  ++*(resultCopy + 16);
+  [(PBTextWriter *)resultCopy _write:a2];
+  --*(resultCopy + 16);
   v35 = *MEMORY[0x1E69E9840];
 
-  return [(PBTextWriter *)v12 _printLine:@"}" format:v30, v31, v32, v33, v34, a9];
+  return [(PBTextWriter *)resultCopy _printLine:@"}" format:v30, v31, v32, v33, v34, a9];
 }
 
 uint64_t __53__PBTextWriter__writeResult_forProperty_bracePrefix___block_invoke(uint64_t a1, uint64_t a2)

@@ -1,36 +1,36 @@
 @interface HUWallpaperPhotoCell
-- (HUWallpaperPhotoCell)initWithFrame:(CGRect)a3;
+- (HUWallpaperPhotoCell)initWithFrame:(CGRect)frame;
 - (HUWallpaperPhotoCellDelegate)delegate;
 - (UIImage)image;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)deleteButtonPressed;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBusy:(BOOL)a3;
-- (void)setContentMode:(int64_t)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setEmpty:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImage:(id)a3;
-- (void)setRemovable:(BOOL)a3;
-- (void)showBorder:(BOOL)a3 animated:(BOOL)a4;
+- (void)setBackgroundColor:(id)color;
+- (void)setBusy:(BOOL)busy;
+- (void)setContentMode:(int64_t)mode;
+- (void)setCornerRadius:(double)radius;
+- (void)setEmpty:(BOOL)empty;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImage:(id)image;
+- (void)setRemovable:(BOOL)removable;
+- (void)showBorder:(BOOL)border animated:(BOOL)animated;
 - (void)updateView;
 @end
 
 @implementation HUWallpaperPhotoCell
 
-- (HUWallpaperPhotoCell)initWithFrame:(CGRect)a3
+- (HUWallpaperPhotoCell)initWithFrame:(CGRect)frame
 {
   v65[2] = *MEMORY[0x277D85DE8];
   v64.receiver = self;
   v64.super_class = HUWallpaperPhotoCell;
-  v3 = [(HUWallpaperPhotoCell *)&v64 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUWallpaperPhotoCell *)&v64 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D755E8]);
-    v5 = [(HUWallpaperPhotoCell *)v3 contentView];
-    [v5 bounds];
+    contentView = [(HUWallpaperPhotoCell *)v3 contentView];
+    [contentView bounds];
     v6 = [v4 initWithFrame:?];
     imageView = v3->_imageView;
     v3->_imageView = v6;
@@ -44,26 +44,26 @@
     v3->_showBorder = 0;
     v3->_contentMode = 2;
     v8 = objc_alloc(MEMORY[0x277D75D18]);
-    v9 = [(HUWallpaperPhotoCell *)v3 contentView];
-    [v9 bounds];
+    contentView2 = [(HUWallpaperPhotoCell *)v3 contentView];
+    [contentView2 bounds];
     v10 = [v8 initWithFrame:?];
     selectionOverlayView = v3->_selectionOverlayView;
     v3->_selectionOverlayView = v10;
 
     [(UIView *)v3->_selectionOverlayView setClipsToBounds:1];
-    v12 = [MEMORY[0x277D75348] clearColor];
-    [(UIView *)v3->_selectionOverlayView setBackgroundColor:v12];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UIView *)v3->_selectionOverlayView setBackgroundColor:clearColor];
 
-    v13 = [(UIView *)v3->_selectionOverlayView layer];
-    [v13 setCornerRadius:10.0];
+    layer = [(UIView *)v3->_selectionOverlayView layer];
+    [layer setCornerRadius:10.0];
 
-    v14 = [MEMORY[0x277D75348] systemOrangeColor];
-    v15 = [v14 CGColor];
-    v16 = [(UIView *)v3->_selectionOverlayView layer];
-    [v16 setBorderColor:v15];
+    systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+    cGColor = [systemOrangeColor CGColor];
+    layer2 = [(UIView *)v3->_selectionOverlayView layer];
+    [layer2 setBorderColor:cGColor];
 
-    v17 = [(UIView *)v3->_selectionOverlayView layer];
-    [v17 setBorderWidth:2.0];
+    layer3 = [(UIView *)v3->_selectionOverlayView layer];
+    [layer3 setBorderWidth:2.0];
 
     [(UIView *)v3->_selectionOverlayView setAlpha:0.0];
     v18 = [MEMORY[0x277D75220] buttonWithType:0];
@@ -74,13 +74,13 @@
     v21 = HUImageNamed(@"deleteWallpaperButton");
     [(UIButton *)v20 setImage:v21 forState:0];
 
-    v22 = [(UIButton *)v3->_deleteButton layer];
-    [v22 setBorderWidth:3.0];
+    layer4 = [(UIButton *)v3->_deleteButton layer];
+    [layer4 setBorderWidth:3.0];
 
-    v23 = [MEMORY[0x277D75348] systemWhiteColor];
-    v24 = [v23 CGColor];
-    v25 = [(UIButton *)v3->_deleteButton layer];
-    [v25 setBorderColor:v24];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    cGColor2 = [systemWhiteColor CGColor];
+    layer5 = [(UIButton *)v3->_deleteButton layer];
+    [layer5 setBorderColor:cGColor2];
 
     [(UIButton *)v3->_deleteButton addTarget:v3 action:sel_deleteButtonPressed forControlEvents:64];
     v26 = objc_alloc(MEMORY[0x277D756B8]);
@@ -91,8 +91,8 @@
     v29 = _HULocalizedStringWithDefaultValue(@"HUEditLocationChoosePhotoLabelMac", @"HUEditLocationChoosePhotoLabelMac", 1);
     [(UILabel *)v3->_choosePhotoLabel setText:v29];
 
-    v30 = [MEMORY[0x277D75348] hf_keyColor];
-    [(UILabel *)v3->_choosePhotoLabel setTextColor:v30];
+    hf_keyColor = [MEMORY[0x277D75348] hf_keyColor];
+    [(UILabel *)v3->_choosePhotoLabel setTextColor:hf_keyColor];
 
     [(UILabel *)v3->_choosePhotoLabel setHidden:1];
     [(UILabel *)v3->_choosePhotoLabel sizeToFit];
@@ -109,57 +109,57 @@
     [(UIStackView *)v3->_stackView setDistribution:3];
     [(UIStackView *)v3->_stackView setSpacing:8.0];
     [(UIStackView *)v3->_stackView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v35 = [MEMORY[0x277CD9F90] layer];
+    layer6 = [MEMORY[0x277CD9F90] layer];
     borderLayer = v3->_borderLayer;
-    v3->_borderLayer = v35;
+    v3->_borderLayer = layer6;
 
-    v37 = [MEMORY[0x277D75348] systemLightGrayColor];
-    -[CAShapeLayer setStrokeColor:](v3->_borderLayer, "setStrokeColor:", [v37 CGColor]);
+    systemLightGrayColor = [MEMORY[0x277D75348] systemLightGrayColor];
+    -[CAShapeLayer setStrokeColor:](v3->_borderLayer, "setStrokeColor:", [systemLightGrayColor CGColor]);
 
     [(CAShapeLayer *)v3->_borderLayer setFillColor:0];
     [(CAShapeLayer *)v3->_borderLayer setLineWidth:2.0];
     [(CAShapeLayer *)v3->_borderLayer setLineDashPattern:&unk_282492C18];
-    v38 = [(HUWallpaperPhotoCell *)v3 contentView];
-    [v38 addSubview:v3->_stackView];
+    contentView3 = [(HUWallpaperPhotoCell *)v3 contentView];
+    [contentView3 addSubview:v3->_stackView];
 
-    v39 = [(HUWallpaperPhotoCell *)v3 contentView];
-    [v39 addSubview:v3->_selectionOverlayView];
+    contentView4 = [(HUWallpaperPhotoCell *)v3 contentView];
+    [contentView4 addSubview:v3->_selectionOverlayView];
 
-    v40 = [(HUWallpaperPhotoCell *)v3 contentView];
-    v41 = [v40 layer];
-    [v41 addSublayer:v3->_borderLayer];
+    contentView5 = [(HUWallpaperPhotoCell *)v3 contentView];
+    layer7 = [contentView5 layer];
+    [layer7 addSublayer:v3->_borderLayer];
 
-    v42 = [MEMORY[0x277D75348] systemBlackColor];
-    v43 = [v42 CGColor];
-    v44 = [(HUWallpaperPhotoCell *)v3 contentView];
-    v45 = [v44 layer];
-    [v45 setBackgroundColor:v43];
+    systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+    cGColor3 = [systemBlackColor CGColor];
+    contentView6 = [(HUWallpaperPhotoCell *)v3 contentView];
+    layer8 = [contentView6 layer];
+    [layer8 setBackgroundColor:cGColor3];
 
-    v46 = [(HUWallpaperPhotoCell *)v3 contentView];
-    [v46 setAutoresizingMask:18];
+    contentView7 = [(HUWallpaperPhotoCell *)v3 contentView];
+    [contentView7 setAutoresizingMask:18];
 
-    v47 = [(UIStackView *)v3->_stackView heightAnchor];
-    v48 = [(HUWallpaperPhotoCell *)v3 contentView];
-    v49 = [v48 heightAnchor];
-    v50 = [v47 constraintLessThanOrEqualToAnchor:v49];
+    heightAnchor = [(UIStackView *)v3->_stackView heightAnchor];
+    contentView8 = [(HUWallpaperPhotoCell *)v3 contentView];
+    heightAnchor2 = [contentView8 heightAnchor];
+    v50 = [heightAnchor constraintLessThanOrEqualToAnchor:heightAnchor2];
     [v50 setActive:1];
 
-    v51 = [(UIStackView *)v3->_stackView widthAnchor];
-    v52 = [(HUWallpaperPhotoCell *)v3 contentView];
-    v53 = [v52 widthAnchor];
-    v54 = [v51 constraintEqualToAnchor:v53];
+    widthAnchor = [(UIStackView *)v3->_stackView widthAnchor];
+    contentView9 = [(HUWallpaperPhotoCell *)v3 contentView];
+    widthAnchor2 = [contentView9 widthAnchor];
+    v54 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     [v54 setActive:1];
 
-    v55 = [(UIStackView *)v3->_stackView centerYAnchor];
-    v56 = [(HUWallpaperPhotoCell *)v3 contentView];
-    v57 = [v56 centerYAnchor];
-    v58 = [v55 constraintEqualToAnchor:v57];
+    centerYAnchor = [(UIStackView *)v3->_stackView centerYAnchor];
+    contentView10 = [(HUWallpaperPhotoCell *)v3 contentView];
+    centerYAnchor2 = [contentView10 centerYAnchor];
+    v58 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v58 setActive:1];
 
-    v59 = [(UIImageView *)v3->_imageView widthAnchor];
-    v60 = [(HUWallpaperPhotoCell *)v3 stackView];
-    v61 = [v60 widthAnchor];
-    v62 = [v59 constraintEqualToAnchor:v61];
+    widthAnchor3 = [(UIImageView *)v3->_imageView widthAnchor];
+    stackView = [(HUWallpaperPhotoCell *)v3 stackView];
+    widthAnchor4 = [stackView widthAnchor];
+    v62 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
     [(HUWallpaperPhotoCell *)v3 setImageWidthConstraint:v62];
   }
 
@@ -172,8 +172,8 @@
   [(HUWallpaperPhotoCell *)self setEmpty:0];
   [(HUWallpaperPhotoCell *)self setRemovable:0];
   [(HUWallpaperPhotoCell *)self setShowBorder:0];
-  v3 = [(HUWallpaperPhotoCell *)self choosePhotoLabel];
-  [v3 setHidden:1];
+  choosePhotoLabel = [(HUWallpaperPhotoCell *)self choosePhotoLabel];
+  [choosePhotoLabel setHidden:1];
 
   v4.receiver = self;
   v4.super_class = HUWallpaperPhotoCell;
@@ -182,45 +182,45 @@
 
 - (void)deleteButtonPressed
 {
-  v3 = [(HUWallpaperPhotoCell *)self delegate];
+  delegate = [(HUWallpaperPhotoCell *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(HUWallpaperPhotoCell *)self delegate];
-    [v4 wallpaperPhotoCellDidPressDeleteButton:self];
+    delegate2 = [(HUWallpaperPhotoCell *)self delegate];
+    [delegate2 wallpaperPhotoCellDidPressDeleteButton:self];
   }
 }
 
 - (void)layoutSubviews
 {
-  v3 = [(HUWallpaperPhotoCell *)self contentView];
-  [v3 frame];
+  contentView = [(HUWallpaperPhotoCell *)self contentView];
+  [contentView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(HUWallpaperPhotoCell *)self selectionOverlayView];
-  [v12 setFrame:{v5 + -4.0, v7 + -4.0, v9 + 8.0, v11 + 8.0}];
+  selectionOverlayView = [(HUWallpaperPhotoCell *)self selectionOverlayView];
+  [selectionOverlayView setFrame:{v5 + -4.0, v7 + -4.0, v9 + 8.0, v11 + 8.0}];
 
-  v13 = [(HUWallpaperPhotoCell *)self contentView];
-  [v13 origin];
+  contentView2 = [(HUWallpaperPhotoCell *)self contentView];
+  [contentView2 origin];
   v15 = v14 + -8.0;
-  v16 = [(HUWallpaperPhotoCell *)self contentView];
-  [v16 origin];
+  contentView3 = [(HUWallpaperPhotoCell *)self contentView];
+  [contentView3 origin];
   v18 = v17 + -8.0;
-  v19 = [(HUWallpaperPhotoCell *)self deleteButton];
-  [v19 setFrame:{v15, v18, 26.0, 26.0}];
+  deleteButton = [(HUWallpaperPhotoCell *)self deleteButton];
+  [deleteButton setFrame:{v15, v18, 26.0, 26.0}];
 
-  v20 = [(HUWallpaperPhotoCell *)self deleteButton];
-  [v20 setContentEdgeInsets:{3.0, 3.0, 3.0, 3.0}];
+  deleteButton2 = [(HUWallpaperPhotoCell *)self deleteButton];
+  [deleteButton2 setContentEdgeInsets:{3.0, 3.0, 3.0, 3.0}];
 
-  v25 = [(HUWallpaperPhotoCell *)self deleteButton];
-  [v25 frame];
+  deleteButton3 = [(HUWallpaperPhotoCell *)self deleteButton];
+  [deleteButton3 frame];
   v22 = v21 * 0.5;
-  v23 = [(HUWallpaperPhotoCell *)self deleteButton];
-  v24 = [v23 layer];
-  [v24 setCornerRadius:v22];
+  deleteButton4 = [(HUWallpaperPhotoCell *)self deleteButton];
+  layer = [deleteButton4 layer];
+  [layer setCornerRadius:v22];
 }
 
 - (void)updateView
@@ -229,50 +229,50 @@
   {
     if (![(HUWallpaperPhotoCell *)self showBorder]|| (v3 = 1.0, [(HUWallpaperPhotoCell *)self empty]))
     {
-      v4 = [(HUWallpaperPhotoCell *)self empty];
-      if (v4)
+      empty = [(HUWallpaperPhotoCell *)self empty];
+      if (empty)
       {
-        v5 = [MEMORY[0x277D75348] labelColor];
-        v6 = [(HUWallpaperPhotoCell *)self imageView];
-        [v6 setTintColor:v5];
+        labelColor = [MEMORY[0x277D75348] labelColor];
+        imageView = [(HUWallpaperPhotoCell *)self imageView];
+        [imageView setTintColor:labelColor];
 
         v7 = 0.0;
       }
 
       else
       {
-        v8 = [(HUWallpaperPhotoCell *)self imageView];
-        [v8 setTintColor:0];
+        imageView2 = [(HUWallpaperPhotoCell *)self imageView];
+        [imageView2 setTintColor:0];
 
         [(HUWallpaperPhotoCell *)self cornerRadius];
         v7 = v9 / 1.5;
       }
 
-      v10 = [(HUWallpaperPhotoCell *)self imageView];
-      [v10 _setContinuousCornerRadius:v7];
+      imageView3 = [(HUWallpaperPhotoCell *)self imageView];
+      [imageView3 _setContinuousCornerRadius:v7];
 
-      v11 = [(HUWallpaperPhotoCell *)self choosePhotoLabel];
-      [v11 setHidden:!v4];
+      choosePhotoLabel = [(HUWallpaperPhotoCell *)self choosePhotoLabel];
+      [choosePhotoLabel setHidden:!empty];
 
-      v12 = [(HUWallpaperPhotoCell *)self imageWidthConstraint];
-      [v12 setActive:!v4];
+      imageWidthConstraint = [(HUWallpaperPhotoCell *)self imageWidthConstraint];
+      [imageWidthConstraint setActive:!empty];
 
       v3 = 0.0;
     }
 
-    v13 = [(HUWallpaperPhotoCell *)self selectionOverlayView];
-    [v13 setAlpha:v3];
+    selectionOverlayView = [(HUWallpaperPhotoCell *)self selectionOverlayView];
+    [selectionOverlayView setAlpha:v3];
 
     [(HUWallpaperPhotoCell *)self cornerRadius];
     v15 = v14;
-    v16 = [(HUWallpaperPhotoCell *)self selectionOverlayView];
-    [v16 _setCornerRadius:v15];
+    selectionOverlayView2 = [(HUWallpaperPhotoCell *)self selectionOverlayView];
+    [selectionOverlayView2 _setCornerRadius:v15];
 
     if ([(HUWallpaperPhotoCell *)self removable])
     {
-      v17 = [(HUWallpaperPhotoCell *)self contentView];
-      v18 = [(HUWallpaperPhotoCell *)self deleteButton];
-      [v17 addSubview:v18];
+      contentView = [(HUWallpaperPhotoCell *)self contentView];
+      deleteButton = [(HUWallpaperPhotoCell *)self deleteButton];
+      [contentView addSubview:deleteButton];
     }
 
     else
@@ -282,16 +282,16 @@
         goto LABEL_13;
       }
 
-      v17 = [(HUWallpaperPhotoCell *)self deleteButton];
-      [v17 removeFromSuperview];
+      contentView = [(HUWallpaperPhotoCell *)self deleteButton];
+      [contentView removeFromSuperview];
     }
   }
 
 LABEL_13:
-  v19 = [(HUWallpaperPhotoCell *)self busy];
-  v20 = [(HUWallpaperPhotoCell *)self spinnerView];
-  v21 = v20;
-  if (v19)
+  busy = [(HUWallpaperPhotoCell *)self busy];
+  spinnerView = [(HUWallpaperPhotoCell *)self spinnerView];
+  v21 = spinnerView;
+  if (busy)
   {
 
     if (!v21)
@@ -299,65 +299,65 @@ LABEL_13:
       v22 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:101];
       [(HUWallpaperPhotoCell *)self setSpinnerView:v22];
 
-      v23 = [(HUWallpaperPhotoCell *)self spinnerView];
-      [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
+      spinnerView2 = [(HUWallpaperPhotoCell *)self spinnerView];
+      [spinnerView2 setTranslatesAutoresizingMaskIntoConstraints:0];
     }
 
-    v24 = [(HUWallpaperPhotoCell *)self spinnerView];
-    [v24 startAnimating];
+    spinnerView3 = [(HUWallpaperPhotoCell *)self spinnerView];
+    [spinnerView3 startAnimating];
 
-    v25 = [(HUWallpaperPhotoCell *)self contentView];
-    v26 = [(HUWallpaperPhotoCell *)self spinnerView];
-    [v25 addSubview:v26];
+    contentView2 = [(HUWallpaperPhotoCell *)self contentView];
+    spinnerView4 = [(HUWallpaperPhotoCell *)self spinnerView];
+    [contentView2 addSubview:spinnerView4];
 
-    v27 = [(HUWallpaperPhotoCell *)self spinnerView];
-    v28 = [v27 centerXAnchor];
-    v29 = [(HUWallpaperPhotoCell *)self contentView];
-    v30 = [v29 centerXAnchor];
-    v31 = [v28 constraintEqualToAnchor:v30];
+    spinnerView5 = [(HUWallpaperPhotoCell *)self spinnerView];
+    centerXAnchor = [spinnerView5 centerXAnchor];
+    contentView3 = [(HUWallpaperPhotoCell *)self contentView];
+    centerXAnchor2 = [contentView3 centerXAnchor];
+    v31 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v31 setActive:1];
 
-    v32 = [(HUWallpaperPhotoCell *)self spinnerView];
-    v33 = [v32 centerYAnchor];
-    v34 = [(HUWallpaperPhotoCell *)self contentView];
-    v35 = [v34 centerYAnchor];
-    v36 = [v33 constraintEqualToAnchor:v35];
+    spinnerView6 = [(HUWallpaperPhotoCell *)self spinnerView];
+    centerYAnchor = [spinnerView6 centerYAnchor];
+    contentView4 = [(HUWallpaperPhotoCell *)self contentView];
+    centerYAnchor2 = [contentView4 centerYAnchor];
+    v36 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v36 setActive:1];
   }
 
   else
   {
-    [v20 stopAnimating];
+    [spinnerView stopAnimating];
 
-    v32 = [(HUWallpaperPhotoCell *)self spinnerView];
-    [v32 removeFromSuperview];
+    spinnerView6 = [(HUWallpaperPhotoCell *)self spinnerView];
+    [spinnerView6 removeFromSuperview];
   }
 
   v37 = MEMORY[0x277D75208];
-  v38 = [(HUWallpaperPhotoCell *)self contentView];
-  [v38 bounds];
+  contentView5 = [(HUWallpaperPhotoCell *)self contentView];
+  [contentView5 bounds];
   v40 = v39;
   v42 = v41;
   v44 = v43;
   v46 = v45;
   [(HUWallpaperPhotoCell *)self cornerRadius];
   v48 = [v37 bezierPathWithRoundedRect:v40 cornerRadius:{v42, v44, v46, v47}];
-  v49 = [v48 CGPath];
-  v50 = [(HUWallpaperPhotoCell *)self borderLayer];
-  [v50 setPath:v49];
+  cGPath = [v48 CGPath];
+  borderLayer = [(HUWallpaperPhotoCell *)self borderLayer];
+  [borderLayer setPath:cGPath];
 
-  v51 = [(HUWallpaperPhotoCell *)self contentView];
-  [v51 bounds];
+  contentView6 = [(HUWallpaperPhotoCell *)self contentView];
+  [contentView6 bounds];
   v53 = v52;
   v55 = v54;
   v57 = v56;
   v59 = v58;
-  v60 = [(HUWallpaperPhotoCell *)self borderLayer];
-  [v60 setFrame:{v53, v55, v57, v59}];
+  borderLayer2 = [(HUWallpaperPhotoCell *)self borderLayer];
+  [borderLayer2 setFrame:{v53, v55, v57, v59}];
 
-  LODWORD(v51) = [(HUWallpaperPhotoCell *)self empty];
-  v61 = [(HUWallpaperPhotoCell *)self borderLayer];
-  [v61 setHidden:v51 ^ 1];
+  LODWORD(contentView6) = [(HUWallpaperPhotoCell *)self empty];
+  borderLayer3 = [(HUWallpaperPhotoCell *)self borderLayer];
+  [borderLayer3 setHidden:contentView6 ^ 1];
 
   if (([(HUWallpaperPhotoCell *)self isHighlighted]& 1) != 0 || (v62 = 1.0, [(HUWallpaperPhotoCell *)self busy]))
   {
@@ -372,80 +372,80 @@ LABEL_13:
     }
   }
 
-  v63 = [(HUWallpaperPhotoCell *)self imageView];
-  [v63 setAlpha:v62];
+  imageView4 = [(HUWallpaperPhotoCell *)self imageView];
+  [imageView4 setAlpha:v62];
 
   [(HUWallpaperPhotoCell *)self setNeedsLayout];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  if ([(HUWallpaperPhotoCell *)self isHighlighted]!= a3)
+  highlightedCopy = highlighted;
+  if ([(HUWallpaperPhotoCell *)self isHighlighted]!= highlighted)
   {
     v5.receiver = self;
     v5.super_class = HUWallpaperPhotoCell;
-    [(HUWallpaperPhotoCell *)&v5 setHighlighted:v3];
+    [(HUWallpaperPhotoCell *)&v5 setHighlighted:highlightedCopy];
     [(HUWallpaperPhotoCell *)self updateView];
   }
 }
 
-- (void)setBusy:(BOOL)a3
+- (void)setBusy:(BOOL)busy
 {
-  if (self->_busy != a3)
+  if (self->_busy != busy)
   {
-    self->_busy = a3;
+    self->_busy = busy;
     [(HUWallpaperPhotoCell *)self updateView];
   }
 }
 
-- (void)setEmpty:(BOOL)a3
+- (void)setEmpty:(BOOL)empty
 {
-  if (self->_empty != a3)
+  if (self->_empty != empty)
   {
-    self->_empty = a3;
+    self->_empty = empty;
     [(HUWallpaperPhotoCell *)self updateView];
   }
 }
 
-- (void)setRemovable:(BOOL)a3
+- (void)setRemovable:(BOOL)removable
 {
-  if (self->_removable != a3)
+  if (self->_removable != removable)
   {
-    self->_removable = a3;
+    self->_removable = removable;
     [(HUWallpaperPhotoCell *)self updateView];
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(HUWallpaperPhotoCell *)self updateView];
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v9.receiver = self;
   v9.super_class = HUWallpaperPhotoCell;
-  v4 = a3;
-  [(HUWallpaperPhotoCell *)&v9 setBackgroundColor:v4];
-  v5 = v4;
-  v6 = [v5 CGColor];
+  colorCopy = color;
+  [(HUWallpaperPhotoCell *)&v9 setBackgroundColor:colorCopy];
+  v5 = colorCopy;
+  cGColor = [v5 CGColor];
 
-  v7 = [(HUWallpaperPhotoCell *)self contentView];
-  v8 = [v7 layer];
-  [v8 setBackgroundColor:v6];
+  contentView = [(HUWallpaperPhotoCell *)self contentView];
+  layer = [contentView layer];
+  [layer setBackgroundColor:cGColor];
 }
 
-- (void)showBorder:(BOOL)a3 animated:(BOOL)a4
+- (void)showBorder:(BOOL)border animated:(BOOL)animated
 {
-  if (self->_showBorder != a3)
+  if (self->_showBorder != border)
   {
-    self->_showBorder = a3;
-    if (a4)
+    self->_showBorder = border;
+    if (animated)
     {
       v6[5] = v4;
       v6[6] = v5;
@@ -477,54 +477,54 @@ uint64_t __44__HUWallpaperPhotoCell_showBorder_animated___block_invoke(uint64_t 
 {
   if ([(HUWallpaperPhotoCell *)self empty])
   {
-    v3 = [(HUWallpaperPhotoCell *)self imageView];
-    v4 = [v3 image];
+    imageView = [(HUWallpaperPhotoCell *)self imageView];
+    image = [imageView image];
   }
 
   else
   {
-    v4 = 0;
+    image = 0;
   }
 
-  return v4;
+  return image;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v5 = [(HUWallpaperPhotoCell *)self imageView];
-  [v5 setImage:v4];
+  imageCopy = image;
+  imageView = [(HUWallpaperPhotoCell *)self imageView];
+  [imageView setImage:imageCopy];
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
-  self->_contentMode = a3;
-  v4 = [(HUWallpaperPhotoCell *)self imageView];
-  [v4 setContentMode:a3];
+  self->_contentMode = mode;
+  imageView = [(HUWallpaperPhotoCell *)self imageView];
+  [imageView setContentMode:mode];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v12.receiver = self;
   v12.super_class = HUWallpaperPhotoCell;
-  v8 = [(HUWallpaperPhotoCell *)&v12 hitTest:v7 withEvent:x, y];
-  if (!v8)
+  deleteButton = [(HUWallpaperPhotoCell *)&v12 hitTest:eventCopy withEvent:x, y];
+  if (!deleteButton)
   {
-    v8 = [(HUWallpaperPhotoCell *)self deleteButton];
+    deleteButton = [(HUWallpaperPhotoCell *)self deleteButton];
 
-    if (v8)
+    if (deleteButton)
     {
-      v9 = [(HUWallpaperPhotoCell *)self deleteButton];
-      v10 = [(HUWallpaperPhotoCell *)self deleteButton];
-      [(HUWallpaperPhotoCell *)self convertPoint:v10 toView:x, y];
-      v8 = [v9 hitTest:v7 withEvent:?];
+      deleteButton2 = [(HUWallpaperPhotoCell *)self deleteButton];
+      deleteButton3 = [(HUWallpaperPhotoCell *)self deleteButton];
+      [(HUWallpaperPhotoCell *)self convertPoint:deleteButton3 toView:x, y];
+      deleteButton = [deleteButton2 hitTest:eventCopy withEvent:?];
     }
   }
 
-  return v8;
+  return deleteButton;
 }
 
 - (HUWallpaperPhotoCellDelegate)delegate

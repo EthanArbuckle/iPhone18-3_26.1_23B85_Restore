@@ -1,44 +1,44 @@
 @interface HDHeartDailyAnalyticsBuilder
-- (BOOL)_buildIrregularRhythmNotificationsV2AnalyticsWithError:(uint64_t)a1;
-- (BOOL)_buildOTAFeatureAvailabilityAnalyticsWithError:(uint64_t)a1;
-- (BOOL)_buildRespiratoryRateAnalyticsWithError:(uint64_t)a1;
-- (HDHeartDailyAnalyticsBuilder)initWithProfile:(id)a3 calendar:(id)a4 dateInterval:(id)a5 heartRateNotificationsUserDefaults:(id)a6 heartRhythmUserDefaults:(id)a7 remoteFeatureAvailabilityUserDefaults:(id)a8 pairedDeviceRegistry:(id)a9 areHealthNotificationsAuthorized:(BOOL)a10 isHealthDataSubmissionAllowed:(BOOL)a11;
-- (id)_daysBetweenStartDate:(uint64_t)a3 endDate:;
-- (id)_ecgClassificationsBetweenStartDate:(void *)a3 endDate:;
-- (id)_mostRecentOnboardingCompletionForHighestVersionOfFeatureIdentifier:(uint64_t)a3 error:;
-- (id)heartDailyAnalyticsWithError:(id *)a3;
+- (BOOL)_buildIrregularRhythmNotificationsV2AnalyticsWithError:(uint64_t)error;
+- (BOOL)_buildOTAFeatureAvailabilityAnalyticsWithError:(uint64_t)error;
+- (BOOL)_buildRespiratoryRateAnalyticsWithError:(uint64_t)error;
+- (HDHeartDailyAnalyticsBuilder)initWithProfile:(id)profile calendar:(id)calendar dateInterval:(id)interval heartRateNotificationsUserDefaults:(id)defaults heartRhythmUserDefaults:(id)userDefaults remoteFeatureAvailabilityUserDefaults:(id)availabilityUserDefaults pairedDeviceRegistry:(id)registry areHealthNotificationsAuthorized:(BOOL)self0 isHealthDataSubmissionAllowed:(BOOL)self1;
+- (id)_daysBetweenStartDate:(uint64_t)date endDate:;
+- (id)_ecgClassificationsBetweenStartDate:(void *)date endDate:;
+- (id)_mostRecentOnboardingCompletionForHighestVersionOfFeatureIdentifier:(uint64_t)identifier error:;
+- (id)heartDailyAnalyticsWithError:(id *)error;
 @end
 
 @implementation HDHeartDailyAnalyticsBuilder
 
-- (HDHeartDailyAnalyticsBuilder)initWithProfile:(id)a3 calendar:(id)a4 dateInterval:(id)a5 heartRateNotificationsUserDefaults:(id)a6 heartRhythmUserDefaults:(id)a7 remoteFeatureAvailabilityUserDefaults:(id)a8 pairedDeviceRegistry:(id)a9 areHealthNotificationsAuthorized:(BOOL)a10 isHealthDataSubmissionAllowed:(BOOL)a11
+- (HDHeartDailyAnalyticsBuilder)initWithProfile:(id)profile calendar:(id)calendar dateInterval:(id)interval heartRateNotificationsUserDefaults:(id)defaults heartRhythmUserDefaults:(id)userDefaults remoteFeatureAvailabilityUserDefaults:(id)availabilityUserDefaults pairedDeviceRegistry:(id)registry areHealthNotificationsAuthorized:(BOOL)self0 isHealthDataSubmissionAllowed:(BOOL)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v24 = a6;
-  v23 = a7;
-  v19 = a9;
+  profileCopy = profile;
+  calendarCopy = calendar;
+  intervalCopy = interval;
+  defaultsCopy = defaults;
+  userDefaultsCopy = userDefaults;
+  registryCopy = registry;
   v25.receiver = self;
   v25.super_class = HDHeartDailyAnalyticsBuilder;
   v20 = [(HDHeartDailyAnalyticsBuilder *)&v25 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeWeak(&v20->_profile, v16);
-    objc_storeStrong(&v21->_heartRateNotificationsUserDefaults, a6);
-    objc_storeStrong(&v21->_heartRhythmUserDefaults, a7);
-    v21->_isHealthDataSubmissionAllowed = a11;
-    objc_storeStrong(&v21->_calendar, a4);
-    objc_storeStrong(&v21->_dateInterval, a5);
-    objc_storeStrong(&v21->_pairedDeviceRegistry, a9);
-    v21->_areHealthNotificationsAuthorized = a10;
+    objc_storeWeak(&v20->_profile, profileCopy);
+    objc_storeStrong(&v21->_heartRateNotificationsUserDefaults, defaults);
+    objc_storeStrong(&v21->_heartRhythmUserDefaults, userDefaults);
+    v21->_isHealthDataSubmissionAllowed = allowed;
+    objc_storeStrong(&v21->_calendar, calendar);
+    objc_storeStrong(&v21->_dateInterval, interval);
+    objc_storeStrong(&v21->_pairedDeviceRegistry, registry);
+    v21->_areHealthNotificationsAuthorized = authorized;
   }
 
   return v21;
 }
 
-- (id)heartDailyAnalyticsWithError:(id *)a3
+- (id)heartDailyAnalyticsWithError:(id *)error
 {
   v239 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -55,10 +55,10 @@
   heartDailyAnalytics = self->_heartDailyAnalytics;
   self->_heartDailyAnalytics = v7;
 
-  v9 = [(NSDateInterval *)self->_dateInterval startDate];
-  v10 = [(NSDateInterval *)self->_dateInterval endDate];
-  v223 = v9;
-  v220 = v10;
+  startDate = [(NSDateInterval *)self->_dateInterval startDate];
+  endDate = [(NSDateInterval *)self->_dateInterval endDate];
+  v223 = startDate;
+  v220 = endDate;
   v11 = self->_heartDailyAnalytics;
   [(HDHeartDailyAnalytics *)v11 updateIrregularRhythmNotificationClassificationCount:-1];
   [(HDHeartDailyAnalytics *)v11 updateIsIrnOnboarded:0];
@@ -104,8 +104,8 @@
     goto LABEL_19;
   }
 
-  v22 = [v21 integerValue];
-  v23 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(MEMORY[0x277CCD380], "algorithmVersionForOnboardingVersion:", v22)}];
+  integerValue = [v21 integerValue];
+  v23 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(MEMORY[0x277CCD380], "algorithmVersionForOnboardingVersion:", integerValue)}];
   v24 = v23;
   if (!v23 || [v23 integerValue] <= 0)
   {
@@ -114,17 +114,17 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v25 = [v24 stringValue];
+  stringValue = [v24 stringValue];
 
-  if (v25)
+  if (stringValue)
   {
     v206 = v15;
-    [(HDHeartDailyAnalytics *)v11 updateECGActiveAlgorithmVersion:v25];
+    [(HDHeartDailyAnalytics *)v11 updateECGActiveAlgorithmVersion:stringValue];
     v26 = [MEMORY[0x277CCD7C0] productBuildVersionForDeviceType:0];
-    v219 = v25;
+    v219 = stringValue;
     if (v26)
     {
-      v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v25, v26];
+      v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", stringValue, v26];
       if (v27)
       {
         [(HDHeartDailyAnalytics *)v11 updateECGUpdateVersionPhone:v27];
@@ -142,26 +142,26 @@ LABEL_19:
       }
     }
 
-    v28 = a3;
+    errorCopy2 = error;
 
     v199 = [MEMORY[0x277CCD7C0] productBuildVersionForDeviceType:1];
     if (v199)
     {
-      v200 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v219, v199];
-      if (v200)
+      v199 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v219, v199];
+      if (v199)
       {
-        [(HDHeartDailyAnalytics *)v11 updateECGUpdateVersionWatch:v200];
+        [(HDHeartDailyAnalytics *)v11 updateECGUpdateVersionWatch:v199];
       }
     }
 
     else
     {
       _HKInitializeLogging();
-      v200 = HKLogAnalytics();
-      if (os_log_type_enabled(v200, OS_LOG_TYPE_ERROR))
+      v199 = HKLogAnalytics();
+      if (os_log_type_enabled(v199, OS_LOG_TYPE_ERROR))
       {
         LOWORD(buf) = 0;
-        _os_log_error_impl(&dword_228986000, v200, OS_LOG_TYPE_ERROR, "Could not determine ECGUpdateVersionWatch", &buf, 2u);
+        _os_log_error_impl(&dword_228986000, v199, OS_LOG_TYPE_ERROR, "Could not determine ECGUpdateVersionWatch", &buf, 2u);
       }
     }
 
@@ -179,7 +179,7 @@ LABEL_20:
   }
 
   v219 = 0;
-  v28 = a3;
+  errorCopy2 = error;
 LABEL_23:
 
   v29 = *MEMORY[0x277CCB748];
@@ -192,11 +192,11 @@ LABEL_23:
   [(NSUserDefaults *)self->_remoteFeatureAvailabilityUserDefaults setInteger:0 forKey:v29];
   v31 = [(NSUserDefaults *)self->_heartRateNotificationsUserDefaults objectForKey:*MEMORY[0x277CCE430]];
   [(HDHeartDailyAnalytics *)v11 updateIsAtrialFibrillationEnabled:v31];
-  v32 = [(NRPairedDeviceRegistry *)self->_pairedDeviceRegistry getActivePairedDevice];
-  v33 = [v32 valueForProperty:*MEMORY[0x277D2BBC0]];
+  getActivePairedDevice = [(NRPairedDeviceRegistry *)self->_pairedDeviceRegistry getActivePairedDevice];
+  v33 = [getActivePairedDevice valueForProperty:*MEMORY[0x277D2BBC0]];
   [(HDHeartDailyAnalytics *)v11 updateActiveWatchProductType:v33];
 
-  v34 = [v32 valueForProperty:*MEMORY[0x277D2BC08]];
+  v34 = [getActivePairedDevice valueForProperty:*MEMORY[0x277D2BC08]];
   [(HDHeartDailyAnalytics *)v11 updateActiveWatchSystemBuildVersion:v34];
 
   v35 = [HDKeyValueDomain alloc];
@@ -207,10 +207,10 @@ LABEL_23:
 
   if (v221 && [v221 integerValue] >= 1)
   {
-    v214 = v32;
+    v214 = getActivePairedDevice;
     v216 = v13;
     v39 = v31;
-    v40 = v28;
+    v40 = errorCopy2;
     v41 = v15;
     v42 = *MEMORY[0x277CCBCE0];
     v227 = 0;
@@ -235,9 +235,9 @@ LABEL_23:
     }
 
     v15 = v41;
-    v28 = v40;
+    errorCopy2 = v40;
     v31 = v39;
-    v32 = v214;
+    getActivePairedDevice = v214;
     v13 = v216;
   }
 
@@ -253,7 +253,7 @@ LABEL_23:
 
   else if (v49)
   {
-    v209 = v28;
+    v209 = errorCopy2;
     v51 = v49;
     _HKInitializeLogging();
     v52 = HKLogAnalytics();
@@ -265,7 +265,7 @@ LABEL_23:
     }
 
     v50 = v51;
-    v28 = v209;
+    errorCopy2 = v209;
   }
 
   if (!self->_isHealthDataSubmissionAllowed)
@@ -279,10 +279,10 @@ LABEL_23:
   v204 = v48;
   v207 = v15;
   v208 = v38;
-  v215 = v32;
+  v215 = getActivePairedDevice;
   v217 = v13;
   v205 = v31;
-  v210 = v28;
+  v210 = errorCopy2;
   [(HDHeartDailyAnalytics *)v11 updateIsImproveHealthAndActivityAllowed:1];
   v213 = [(HDHeartDailyAnalyticsBuilder *)self _ecgClassificationsBetweenStartDate:v223 endDate:v220];
   -[HDHeartDailyAnalytics updateElectrocardiogramClassificationCount:](v11, "updateElectrocardiogramClassificationCount:", [v213 count]);
@@ -297,9 +297,9 @@ LABEL_23:
   v57 = [MEMORY[0x277CBEA60] arrayWithObjects:&v237 count:2];
   v58 = [v56 predicateMatchingAllPredicates:v57];
 
-  v59 = [MEMORY[0x277CCD0C0] atrialFibrillationEventType];
+  atrialFibrillationEventType = [MEMORY[0x277CCD0C0] atrialFibrillationEventType];
   v60 = objc_loadWeakRetained(&self->_profile);
-  v61 = [(HDSampleEntity *)HDCategorySampleEntity entityEnumeratorWithType:v59 profile:v60];
+  v61 = [(HDSampleEntity *)HDCategorySampleEntity entityEnumeratorWithType:atrialFibrillationEventType profile:v60];
 
   [v61 setPredicate:v58];
   v62 = [MEMORY[0x277D10B68] orderingTermWithProperty:@"start_date" entityClass:objc_opt_class() ascending:1];
@@ -307,13 +307,13 @@ LABEL_23:
   v63 = [MEMORY[0x277CBEA60] arrayWithObjects:&v236 count:1];
   [v61 setOrderingTerms:v63];
 
-  v64 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v229 = 0;
   *&buf = MEMORY[0x277D85DD0];
   *(&buf + 1) = 3221225472;
   v233 = __69__HDHeartDailyAnalyticsBuilder__aFibSamplesBetweenStartDate_endDate___block_invoke;
   v234 = &unk_2786204C8;
-  v65 = v64;
+  v65 = array;
   v235 = v65;
   LOBYTE(v62) = [v61 enumerateWithError:&v229 handler:&buf];
   v66 = v229;
@@ -348,18 +348,18 @@ LABEL_23:
   v74 = [MEMORY[0x277CBEA60] arrayWithObjects:&v237 count:2];
   v75 = [v73 predicateMatchingAllPredicates:v74];
 
-  v76 = [MEMORY[0x277CCD920] heartbeatSeriesType];
+  heartbeatSeriesType = [MEMORY[0x277CCD920] heartbeatSeriesType];
   v77 = objc_loadWeakRetained(&self->_profile);
-  v78 = [(HDSampleEntity *)HDCategorySampleEntity entityEnumeratorWithType:v76 profile:v77];
+  v78 = [(HDSampleEntity *)HDCategorySampleEntity entityEnumeratorWithType:heartbeatSeriesType profile:v77];
 
   [v78 setPredicate:v75];
-  v79 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v236 = 0;
   *&buf = MEMORY[0x277D85DD0];
   *(&buf + 1) = 3221225472;
   v233 = __81__HDHeartDailyAnalyticsBuilder__countRecordedTachogramsBetweenStartDate_endDate___block_invoke;
   v234 = &unk_2786204C8;
-  v80 = v79;
+  v80 = array2;
   v235 = v80;
   LOBYTE(v73) = [v78 enumerateWithError:&v236 handler:&buf];
   v81 = v236;
@@ -422,15 +422,15 @@ LABEL_23:
       _os_log_error_impl(&dword_228986000, v94, OS_LOG_TYPE_ERROR, "Failed to get CountAnalyzedTacogramsPast24Hours, error: %{public}@", &buf, 0xCu);
     }
 
-    v95 = -1;
+    integerValue2 = -1;
   }
 
   else
   {
-    v95 = [v92 integerValue];
+    integerValue2 = [v92 integerValue];
   }
 
-  if (v95 < 0)
+  if (integerValue2 < 0)
   {
     _HKInitializeLogging();
     v98 = HKLogAnalytics();
@@ -443,8 +443,8 @@ LABEL_23:
     goto LABEL_72;
   }
 
-  [(HDHeartDailyAnalytics *)v11 updateCountAnalyzedTachogramsPast24Hours:v95];
-  if (v95)
+  [(HDHeartDailyAnalytics *)v11 updateCountAnalyzedTachogramsPast24Hours:integerValue2];
+  if (integerValue2)
   {
     v96 = objc_alloc(v86[438]);
     v97 = objc_loadWeakRetained(&self->_profile);
@@ -484,13 +484,13 @@ LABEL_72:
   v109 = [(HDSampleEntity *)HDCategorySampleEntity entityEnumeratorWithType:v107 profile:v108];
 
   [v109 setPredicate:v106];
-  v110 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   v236 = 0;
   *&buf = MEMORY[0x277D85DD0];
   *(&buf + 1) = 3221225472;
   v233 = __82__HDHeartDailyAnalyticsBuilder__countActiveEnergySamplesBetweenStartDate_endDate___block_invoke;
   v234 = &unk_2786204C8;
-  v111 = v110;
+  v111 = array3;
   v235 = v111;
   LOBYTE(v104) = [v109 enumerateWithError:&v236 handler:&buf];
   v112 = v236;
@@ -576,13 +576,13 @@ LABEL_93:
   [(HDHeartDailyAnalytics *)v11 updateWithElectrocardiogramClassifications:v213 isWithin24HoursPostIRN:0];
   if ([v202 count])
   {
-    v124 = [v202 firstObject];
+    firstObject = [v202 firstObject];
     calendar = self->_calendar;
-    v126 = [v124 startDate];
-    v127 = [(NSCalendar *)calendar dateByAddingUnit:16 value:1 toDate:v126 options:0];
+    startDate2 = [firstObject startDate];
+    v127 = [(NSCalendar *)calendar dateByAddingUnit:16 value:1 toDate:startDate2 options:0];
 
-    v128 = [v124 startDate];
-    v129 = [(HDHeartDailyAnalyticsBuilder *)self _ecgClassificationsBetweenStartDate:v128 endDate:v127];
+    startDate3 = [firstObject startDate];
+    v129 = [(HDHeartDailyAnalyticsBuilder *)self _ecgClassificationsBetweenStartDate:startDate3 endDate:v127];
 
     v38 = v208;
     [(HDHeartDailyAnalytics *)v11 updateWithElectrocardiogramClassifications:v129 isWithin24HoursPostIRN:1];
@@ -597,11 +597,11 @@ LABEL_93:
   }
 
   v15 = v207;
-  v32 = v215;
+  getActivePairedDevice = v215;
   v50 = v203;
 
   v48 = v204;
-  v28 = v210;
+  errorCopy2 = v210;
   v11 = v130;
   v13 = v217;
 LABEL_97:
@@ -613,9 +613,9 @@ LABEL_97:
   }
 
   v133 = objc_loadWeakRetained(&self->_profile);
-  v134 = [v133 ageGatingManager];
+  ageGatingManager = [v133 ageGatingManager];
   *&buf = 0;
-  v135 = [v134 ageInYearsWithError:&buf];
+  v135 = [ageGatingManager ageInYearsWithError:&buf];
   v136 = buf;
 
   if (v135 || !v136)
@@ -623,9 +623,9 @@ LABEL_97:
     [(HDHeartDailyAnalytics *)self->_heartDailyAnalytics updateAgeInYears:v135];
     v146 = [MEMORY[0x277CCD720] characteristicTypeForIdentifier:*MEMORY[0x277CCBB08]];
     v147 = objc_loadWeakRetained(&self->_profile);
-    v148 = [v147 userCharacteristicsManager];
+    userCharacteristicsManager = [v147 userCharacteristicsManager];
     v237 = v136;
-    v149 = [v148 userCharacteristicForType:v146 error:&v237];
+    v149 = [userCharacteristicsManager userCharacteristicForType:v146 error:&v237];
     v150 = v237;
 
     if (v149)
@@ -665,31 +665,31 @@ LABEL_102:
 
 LABEL_121:
       v155 = objc_loadWeakRetained(&self->_profile);
-      v156 = [v155 periodicCountryMonitor];
+      periodicCountryMonitor = [v155 periodicCountryMonitor];
 
       v157 = self->_calendar;
-      v158 = [(NSDateInterval *)self->_dateInterval endDate];
-      v159 = [(NSCalendar *)v157 dateByAddingUnit:16 value:2 toDate:v158 options:0];
+      endDate2 = [(NSDateInterval *)self->_dateInterval endDate];
+      v159 = [(NSCalendar *)v157 dateByAddingUnit:16 value:2 toDate:endDate2 options:0];
 
-      v160 = [v156 lastCheckAttemptDate];
-      if (v160)
+      lastCheckAttemptDate = [periodicCountryMonitor lastCheckAttemptDate];
+      if (lastCheckAttemptDate)
       {
         v161 = self->_heartDailyAnalytics;
-        v162 = [(HDHeartDailyAnalyticsBuilder *)self->_calendar _daysBetweenStartDate:v160 endDate:v159];
+        v162 = [(HDHeartDailyAnalyticsBuilder *)self->_calendar _daysBetweenStartDate:lastCheckAttemptDate endDate:v159];
         [(HDHeartDailyAnalytics *)v161 updateDaysSinceLastCountryMonitorCheck:v162];
       }
 
-      v163 = [v156 lastFetchAttemptDate];
-      if (v163)
+      lastFetchAttemptDate = [periodicCountryMonitor lastFetchAttemptDate];
+      if (lastFetchAttemptDate)
       {
         v164 = self->_heartDailyAnalytics;
-        v165 = [(HDHeartDailyAnalyticsBuilder *)self->_calendar _daysBetweenStartDate:v163 endDate:v159];
+        v165 = [(HDHeartDailyAnalyticsBuilder *)self->_calendar _daysBetweenStartDate:lastFetchAttemptDate endDate:v159];
         [(HDHeartDailyAnalytics *)v164 updateDaysSinceLastCountryMonitorFetch:v165];
       }
 
       v166 = self->_heartDailyAnalytics;
-      v167 = [v156 lastFetchAttemptBuild];
-      [(HDHeartDailyAnalytics *)v166 updateLastCountryMonitorFetchBuildNumber:v167];
+      lastFetchAttemptBuild = [periodicCountryMonitor lastFetchAttemptBuild];
+      [(HDHeartDailyAnalytics *)v166 updateLastCountryMonitorFetchBuildNumber:lastFetchAttemptBuild];
 
       v168 = *MEMORY[0x277CCC030];
       *&buf = 0;
@@ -711,8 +711,8 @@ LABEL_121:
       {
         [(HDHeartDailyAnalytics *)self->_heartDailyAnalytics updateIsGlucoseEnhancedChartingDelivered:v169 != 0];
         v174 = self->_heartDailyAnalytics;
-        v175 = [v169 countryCode];
-        [(HDHeartDailyAnalytics *)v174 updateGlucoseEnhancedChartingCountryCode:v175];
+        countryCode = [v169 countryCode];
+        [(HDHeartDailyAnalytics *)v174 updateGlucoseEnhancedChartingCountryCode:countryCode];
 
         v177 = v145;
       }
@@ -762,8 +762,8 @@ LABEL_121:
       {
         [(HDHeartDailyAnalytics *)self->_heartDailyAnalytics updateIsMenstrualCyclesHeartRateInputDelivered:v184 != 0];
         v189 = self->_heartDailyAnalytics;
-        v190 = [v184 countryCode];
-        [(HDHeartDailyAnalytics *)v189 updateMenstrualCyclesHeartRateInputCountryCode:v190];
+        countryCode2 = [v184 countryCode];
+        [(HDHeartDailyAnalytics *)v189 updateMenstrualCyclesHeartRateInputCountryCode:countryCode2];
 
         v192 = v178;
       }
@@ -849,10 +849,10 @@ LABEL_153:
   v145 = v154;
   if (v154)
   {
-    if (v28)
+    if (errorCopy2)
     {
       v196 = v154;
-      *v28 = v145;
+      *errorCopy2 = v145;
     }
 
     else
@@ -869,16 +869,16 @@ LABEL_158:
   return v195;
 }
 
-- (BOOL)_buildIrregularRhythmNotificationsV2AnalyticsWithError:(uint64_t)a1
+- (BOOL)_buildIrregularRhythmNotificationsV2AnalyticsWithError:(uint64_t)error
 {
-  if (!a1)
+  if (!error)
   {
     return 0;
   }
 
   v4 = *MEMORY[0x277CCC080];
   v23 = 0;
-  v5 = [(HDHeartDailyAnalyticsBuilder *)a1 _mostRecentOnboardingCompletionForHighestVersionOfFeatureIdentifier:v4 error:&v23];
+  v5 = [(HDHeartDailyAnalyticsBuilder *)error _mostRecentOnboardingCompletionForHighestVersionOfFeatureIdentifier:v4 error:&v23];
   v6 = v23;
   v7 = v6;
   if (v5)
@@ -910,10 +910,10 @@ LABEL_158:
     goto LABEL_23;
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 8));
-  v10 = [WeakRetained featureSettingsManager];
+  WeakRetained = objc_loadWeakRetained((error + 8));
+  featureSettingsManager = [WeakRetained featureSettingsManager];
   v22 = v7;
-  v11 = [v10 featureSettingsForFeatureIdentifier:v4 error:&v22];
+  v11 = [featureSettingsManager featureSettingsForFeatureIdentifier:v4 error:&v22];
   v12 = v22;
 
   v13 = v11 != 0;
@@ -929,30 +929,30 @@ LABEL_158:
       v14 = 0;
     }
 
-    [*(a1 + 16) updateAlgorithmVersionIRN:v14];
-    v15 = *(a1 + 16);
+    [*(error + 16) updateAlgorithmVersionIRN:v14];
+    v15 = *(error + 16);
     v16 = [v11 numberForKey:*MEMORY[0x277CCC120]];
     [v15 updateIsAtrialFibrillationEnabledV2:v16];
 
-    if (*(a1 + 48) != 1)
+    if (*(error + 48) != 1)
     {
       goto LABEL_22;
     }
 
-    v17 = *(a1 + 16);
-    v18 = [v5 countryCode];
-    [v17 updateAtrialFibrillationDetectionV2CountryCode:v18];
+    v17 = *(error + 16);
+    countryCode = [v5 countryCode];
+    [v17 updateAtrialFibrillationDetectionV2CountryCode:countryCode];
   }
 
   else
   {
-    v18 = v12;
-    if (v18)
+    countryCode = v12;
+    if (countryCode)
     {
       if (a2)
       {
-        v20 = v18;
-        *a2 = v18;
+        v20 = countryCode;
+        *a2 = countryCode;
       }
 
       else
@@ -968,32 +968,32 @@ LABEL_23:
   return v13;
 }
 
-- (BOOL)_buildOTAFeatureAvailabilityAnalyticsWithError:(uint64_t)a1
+- (BOOL)_buildOTAFeatureAvailabilityAnalyticsWithError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v3 = [WeakRetained daemon];
-    v4 = [v3 OTAFeatureAvailabilityManager];
+    WeakRetained = objc_loadWeakRetained((error + 8));
+    daemon = [WeakRetained daemon];
+    oTAFeatureAvailabilityManager = [daemon OTAFeatureAvailabilityManager];
 
-    v5 = *(a1 + 16);
-    v6 = [v4 factorPackID];
-    [v5 updateOTAFactorPackID:v6];
+    v5 = *(error + 16);
+    factorPackID = [oTAFeatureAvailabilityManager factorPackID];
+    [v5 updateOTAFactorPackID:factorPackID];
   }
 
-  return a1 != 0;
+  return error != 0;
 }
 
-- (BOOL)_buildRespiratoryRateAnalyticsWithError:(uint64_t)a1
+- (BOOL)_buildRespiratoryRateAnalyticsWithError:(uint64_t)error
 {
-  if (!a1)
+  if (!error)
   {
     return 0;
   }
 
   v4 = *MEMORY[0x277CCC0C8];
   v22 = 0;
-  v5 = [(HDHeartDailyAnalyticsBuilder *)a1 _mostRecentOnboardingCompletionForHighestVersionOfFeatureIdentifier:v4 error:&v22];
+  v5 = [(HDHeartDailyAnalyticsBuilder *)error _mostRecentOnboardingCompletionForHighestVersionOfFeatureIdentifier:v4 error:&v22];
   v6 = v22;
   v7 = v6;
   if (v5)
@@ -1008,21 +1008,21 @@ LABEL_23:
 
   if (v8)
   {
-    [*(a1 + 16) updateIsRespiratoryRateDelivered:v5 != 0];
-    v9 = *(a1 + 16);
-    v10 = [v5 countryCode];
-    [v9 updateRespiratoryRateCountryCode:v10];
+    [*(error + 16) updateIsRespiratoryRateDelivered:v5 != 0];
+    v9 = *(error + 16);
+    countryCode = [v5 countryCode];
+    [v9 updateRespiratoryRateCountryCode:countryCode];
 
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v12 = [WeakRetained featureSettingsManager];
+    WeakRetained = objc_loadWeakRetained((error + 8));
+    featureSettingsManager = [WeakRetained featureSettingsManager];
     v21 = v7;
-    v13 = [v12 featureSettingsForFeatureIdentifier:v4 error:&v21];
+    v13 = [featureSettingsManager featureSettingsForFeatureIdentifier:v4 error:&v21];
     v14 = v21;
 
     v15 = v13 != 0;
     if (v13)
     {
-      v16 = *(a1 + 16);
+      v16 = *(error + 16);
       v17 = [v13 numberForKey:*MEMORY[0x277CCC120]];
       [v16 updateIsRespiratoryRateEnabledInPrivacy:v17];
     }
@@ -1067,9 +1067,9 @@ LABEL_23:
   return v15;
 }
 
-- (id)_daysBetweenStartDate:(uint64_t)a3 endDate:
+- (id)_daysBetweenStartDate:(uint64_t)date endDate:
 {
-  v3 = [a1 components:16 fromDate:a2 toDate:a3 options:0];
+  v3 = [self components:16 fromDate:a2 toDate:date options:0];
   v4 = 0;
   if ([v3 day] != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1079,12 +1079,12 @@ LABEL_23:
   return v4;
 }
 
-- (id)_mostRecentOnboardingCompletionForHighestVersionOfFeatureIdentifier:(uint64_t)a3 error:
+- (id)_mostRecentOnboardingCompletionForHighestVersionOfFeatureIdentifier:(uint64_t)identifier error:
 {
   v5 = a2;
-  WeakRetained = objc_loadWeakRetained((a1 + 8));
-  v7 = [WeakRetained onboardingCompletionManager];
-  v8 = [v7 onboardingCompletionsForHighestVersionOfFeatureIdentifier:v5 error:a3];
+  WeakRetained = objc_loadWeakRetained((self + 8));
+  onboardingCompletionManager = [WeakRetained onboardingCompletionManager];
+  v8 = [onboardingCompletionManager onboardingCompletionsForHighestVersionOfFeatureIdentifier:v5 error:identifier];
 
   if (v8)
   {
@@ -1109,10 +1109,10 @@ uint64_t __106__HDHeartDailyAnalyticsBuilder__mostRecentOnboardingCompletionForH
   return v7;
 }
 
-- (id)_ecgClassificationsBetweenStartDate:(void *)a3 endDate:
+- (id)_ecgClassificationsBetweenStartDate:(void *)date endDate:
 {
   v28[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v5 = HDSampleEntityPredicateForStartDate(6);
   v6 = HDSampleEntityPredicateForEndDate(4);
 
@@ -1122,9 +1122,9 @@ uint64_t __106__HDHeartDailyAnalyticsBuilder__mostRecentOnboardingCompletionForH
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:2];
   v9 = [v7 predicateMatchingAllPredicates:v8];
 
-  v10 = [MEMORY[0x277CCD3A8] electrocardiogramType];
-  WeakRetained = objc_loadWeakRetained((a1 + 8));
-  v12 = [(HDSampleEntity *)HDCategorySampleEntity entityEnumeratorWithType:v10 profile:WeakRetained];
+  electrocardiogramType = [MEMORY[0x277CCD3A8] electrocardiogramType];
+  WeakRetained = objc_loadWeakRetained((self + 8));
+  v12 = [(HDSampleEntity *)HDCategorySampleEntity entityEnumeratorWithType:electrocardiogramType profile:WeakRetained];
 
   [v12 setPredicate:v9];
   v13 = [MEMORY[0x277D10B68] orderingTermWithProperty:@"start_date" entityClass:objc_opt_class() ascending:1];
@@ -1132,13 +1132,13 @@ uint64_t __106__HDHeartDailyAnalyticsBuilder__mostRecentOnboardingCompletionForH
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v27 count:1];
   [v12 setOrderingTerms:v14];
 
-  v15 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v24 = 0;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __76__HDHeartDailyAnalyticsBuilder__ecgClassificationsBetweenStartDate_endDate___block_invoke;
   v22[3] = &unk_2786204C8;
-  v16 = v15;
+  v16 = array;
   v23 = v16;
   LOBYTE(WeakRetained) = [v12 enumerateWithError:&v24 handler:v22];
   v17 = v24;

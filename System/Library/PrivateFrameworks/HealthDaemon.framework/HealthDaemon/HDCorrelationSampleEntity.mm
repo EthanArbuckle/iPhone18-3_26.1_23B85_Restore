@@ -1,37 +1,37 @@
 @interface HDCorrelationSampleEntity
-+ (BOOL)acceptsObject:(id)a3;
-+ (BOOL)addCodableObject:(id)a3 toCollection:(id)a4;
-+ (id)deleteStatementsForRelatedEntitiesWithTransaction:(id)a3;
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7;
++ (BOOL)acceptsObject:(id)object;
++ (BOOL)addCodableObject:(id)object toCollection:(id)collection;
++ (id)deleteStatementsForRelatedEntitiesWithTransaction:(id)transaction;
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
 @end
 
 @implementation HDCorrelationSampleEntity
 
-+ (BOOL)acceptsObject:(id)a3
++ (BOOL)acceptsObject:(id)object
 {
-  v4 = a3;
-  v7.receiver = a1;
+  objectCopy = object;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___HDCorrelationSampleEntity;
-  if (objc_msgSendSuper2(&v7, sel_acceptsObject_, v4) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (objc_msgSendSuper2(&v7, sel_acceptsObject_, objectCopy) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [v4 _containsObjects];
+    _containsObjects = [objectCopy _containsObjects];
   }
 
   else
   {
-    v5 = 0;
+    _containsObjects = 0;
   }
 
-  return v5;
+  return _containsObjects;
 }
 
-+ (id)deleteStatementsForRelatedEntitiesWithTransaction:(id)a3
++ (id)deleteStatementsForRelatedEntitiesWithTransaction:(id)transaction
 {
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___HDCorrelationSampleEntity;
-  v3 = a3;
-  v4 = objc_msgSendSuper2(&v8, sel_deleteStatementsForRelatedEntitiesWithTransaction_, v3);
-  v5 = [HDAssociationEntity deleteStatementForParentIDWithTransaction:v3, v8.receiver, v8.super_class];
+  transactionCopy = transaction;
+  v4 = objc_msgSendSuper2(&v8, sel_deleteStatementsForRelatedEntitiesWithTransaction_, transactionCopy);
+  v5 = [HDAssociationEntity deleteStatementForParentIDWithTransaction:transactionCopy, v8.receiver, v8.super_class];
 
   v6 = [v4 arrayByAddingObject:v5];
 
@@ -54,23 +54,23 @@ uint64_t __53__HDCorrelationSampleEntity__objectsWithIDs_profile___block_invoke(
   return 1;
 }
 
-+ (BOOL)addCodableObject:(id)a3 toCollection:(id)a4
++ (BOOL)addCodableObject:(id)object toCollection:(id)collection
 {
-  if (a3)
+  if (object)
   {
-    [a4 addCorrelations:a3];
+    [collection addCorrelations:object];
   }
 
-  return a3 != 0;
+  return object != 0;
 }
 
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(HDEntityEncoder *)[_HDCorrelationSampleEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:v14 transaction:v13 purpose:a5 encodingOptions:v12 authorizationFilter:v11];
+  filterCopy = filter;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  v15 = [(HDEntityEncoder *)[_HDCorrelationSampleEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:profileCopy transaction:transactionCopy purpose:purpose encodingOptions:optionsCopy authorizationFilter:filterCopy];
 
   return v15;
 }

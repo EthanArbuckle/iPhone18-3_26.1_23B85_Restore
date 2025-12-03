@@ -1,7 +1,7 @@
 @interface NTKMagmaCrownEffect
 - (NTKMagmaCrownEffect)init;
-- (void)applyForTime:(double)a3 quad:(id)a4;
-- (void)setIdle:(BOOL)a3;
+- (void)applyForTime:(double)time quad:(id)quad;
+- (void)setIdle:(BOOL)idle;
 @end
 
 @implementation NTKMagmaCrownEffect
@@ -19,22 +19,22 @@
   return result;
 }
 
-- (void)setIdle:(BOOL)a3
+- (void)setIdle:(BOOL)idle
 {
-  if (self->_idle != a3)
+  if (self->_idle != idle)
   {
-    self->_idle = a3;
+    self->_idle = idle;
   }
 }
 
-- (void)applyForTime:(double)a3 quad:(id)a4
+- (void)applyForTime:(double)time quad:(id)quad
 {
   if (!self->_idle)
   {
-    v17 = a4;
-    [v17 size];
+    quadCopy = quad;
+    [quadCopy size];
     v16 = v6;
-    [v17 size];
+    [quadCopy size];
     v7 = 1.0;
     v8.f64[0] = v16;
     v8.f64[1] = v9;
@@ -44,7 +44,7 @@
     v15 = COERCE_DOUBLE(vcvt_f32_f64(vmulq_f64(v8, _Q1)));
     LODWORD(v7) = 1053609165;
     LODWORD(_Q1.f64[0]) = 5.0;
-    [v17 applyInverseQuadraticRepuslorWithOrigin:v15 magnitude:_Q1.f64[0] radius:v7];
+    [quadCopy applyInverseQuadraticRepuslorWithOrigin:v15 magnitude:_Q1.f64[0] radius:v7];
   }
 }
 

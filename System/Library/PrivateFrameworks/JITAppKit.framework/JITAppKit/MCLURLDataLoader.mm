@@ -1,122 +1,122 @@
 @interface MCLURLDataLoader
-+ (BOOL)isValidResumeData:(id)a3;
-+ (BOOL)task:(id)a3 equalsToTask:(id)a4;
-+ (id)dateFromRFC1123:(id)a3;
++ (BOOL)isValidResumeData:(id)data;
++ (BOOL)task:(id)task equalsToTask:(id)toTask;
++ (id)dateFromRFC1123:(id)c1123;
 + (id)downloadData;
-+ (id)duplicateResponse:(id)a3 withContentLength:(int64_t)a4;
-+ (id)fileExtensionForMimeType:(id)a3;
-+ (id)mimeTypeForFileExtension:(id)a3;
++ (id)duplicateResponse:(id)response withContentLength:(int64_t)length;
++ (id)fileExtensionForMimeType:(id)type;
++ (id)mimeTypeForFileExtension:(id)extension;
 + (id)shared;
-+ (id)uniqueImageKeyForURL:(id)a3;
-+ (id)uniqueKeyForURL:(id)a3;
-+ (void)addSessionConfigurator:(id)a3;
-+ (void)applyDefaultRequestHeaders:(id)a3;
-+ (void)removeFilesOlderThan:(id)a3 inDirectory:(id)a4;
-+ (void)restart:(id)a3;
-- (BOOL)deleteCookie:(id)a3 inDomain:(id)a4 secure:(BOOL)a5;
++ (id)uniqueImageKeyForURL:(id)l;
++ (id)uniqueKeyForURL:(id)l;
++ (void)addSessionConfigurator:(id)configurator;
++ (void)applyDefaultRequestHeaders:(id)headers;
++ (void)removeFilesOlderThan:(id)than inDirectory:(id)directory;
++ (void)restart:(id)restart;
+- (BOOL)deleteCookie:(id)cookie inDomain:(id)domain secure:(BOOL)secure;
 - (MCLURLDataLoader)init;
 - (NSOperationQueue)operationQueue;
 - (NSSet)cacheLocations;
 - (NSURLCache)cache;
-- (id)_cachedResponseForRequest:(id)a3;
+- (id)_cachedResponseForRequest:(id)request;
 - (id)allCookies;
-- (id)cachableFileAttributes:(id)a3;
-- (id)configuredURLRequestForTask:(id)a3 download:(BOOL *)a4 resumeData:(id *)a5;
-- (id)cookiesForURL:(id)a3;
+- (id)cachableFileAttributes:(id)attributes;
+- (id)configuredURLRequestForTask:(id)task download:(BOOL *)download resumeData:(id *)data;
+- (id)cookiesForURL:(id)l;
 - (id)defaultSessionConfiguration;
-- (id)downloadCachedResponse:(id)a3;
-- (id)downloadImageFromURL:(id)a3 category:(id)a4 completionHandler:(id)a5;
-- (id)downloadImageWithRequest:(id)a3 category:(id)a4 completionHandler:(id)a5;
-- (id)downloadRequest:(id)a3 category:(id)a4 completionHandler:(id)a5;
-- (id)downloadRequest:(id)a3 toPath:(id)a4 category:(id)a5 completionHandler:(id)a6;
-- (id)downloadURL:(id)a3 category:(id)a4 completionHandler:(id)a5;
-- (id)downloadURL:(id)a3 toPath:(id)a4 category:(id)a5 completionHandler:(id)a6;
-- (id)duplicateTasksForTask:(id)a3;
-- (id)findCookie:(id)a3 inDomain:(id)a4 secure:(BOOL)a5;
-- (id)findCookie:(id)a3 inDomain:(id)a4 secure:(BOOL)a5 cookies:(id)a6;
-- (id)findMatchingCookies:(id)a3 inDomain:(id)a4 secure:(BOOL)a5;
+- (id)downloadCachedResponse:(id)response;
+- (id)downloadImageFromURL:(id)l category:(id)category completionHandler:(id)handler;
+- (id)downloadImageWithRequest:(id)request category:(id)category completionHandler:(id)handler;
+- (id)downloadRequest:(id)request category:(id)category completionHandler:(id)handler;
+- (id)downloadRequest:(id)request toPath:(id)path category:(id)category completionHandler:(id)handler;
+- (id)downloadURL:(id)l category:(id)category completionHandler:(id)handler;
+- (id)downloadURL:(id)l toPath:(id)path category:(id)category completionHandler:(id)handler;
+- (id)duplicateTasksForTask:(id)task;
+- (id)findCookie:(id)cookie inDomain:(id)domain secure:(BOOL)secure;
+- (id)findCookie:(id)cookie inDomain:(id)domain secure:(BOOL)secure cookies:(id)cookies;
+- (id)findMatchingCookies:(id)cookies inDomain:(id)domain secure:(BOOL)secure;
 - (id)imagesDownloadDirectory;
-- (id)loadRequest:(id)a3 category:(id)a4 completionHandler:(id)a5;
-- (id)loadRequest:(id)a3 category:(id)a4 completionHandler:(id)a5 receiveData:(id)a6;
-- (id)loadURL:(id)a3 category:(id)a4 completionHandler:(id)a5;
-- (id)loaderTaskForSessionTask:(id)a3;
-- (int64_t)priorityForCategory:(id)a3;
-- (unint64_t)connectionsLimitForPriorityOfTask:(id)a3;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didBecomeDownloadTask:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 dataTask:(id)a4 willCacheResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didResumeAtOffset:(int64_t)a5 expectedTotalBytes:(int64_t)a6;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didWriteData:(int64_t)a5 totalBytesWritten:(int64_t)a6 totalBytesExpectedToWrite:(int64_t)a7;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
-- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)a3;
-- (void)_removeCachedResponseForRequest:(id)a3;
-- (void)_removeCachedResponseForRequest:(id)a3 force:(BOOL)a4;
-- (void)addCacheLocation:(id)a3;
-- (void)addRewriteRule:(id)a3;
-- (void)applicationDidBecomeActiveNotification:(id)a3;
-- (void)applicationDidEnterBackgroundNotification:(id)a3;
-- (void)applicationWillEnterForegroundNotification:(id)a3;
-- (void)applyRewriteRules:(id)a3;
-- (void)backgroundClearOldCaches:(id)a3;
-- (void)backgroundRemoveCachedResponseForRequest:(id)a3;
-- (void)cancelTask:(id)a3;
-- (void)cancelTasks:(id)a3;
+- (id)loadRequest:(id)request category:(id)category completionHandler:(id)handler;
+- (id)loadRequest:(id)request category:(id)category completionHandler:(id)handler receiveData:(id)data;
+- (id)loadURL:(id)l category:(id)category completionHandler:(id)handler;
+- (id)loaderTaskForSessionTask:(id)task;
+- (int64_t)priorityForCategory:(id)category;
+- (unint64_t)connectionsLimitForPriorityOfTask:(id)task;
+- (void)URLSession:(id)session dataTask:(id)task didBecomeDownloadTask:(id)downloadTask;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session dataTask:(id)task willCacheResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l;
+- (void)URLSession:(id)session downloadTask:(id)task didResumeAtOffset:(int64_t)offset expectedTotalBytes:(int64_t)bytes;
+- (void)URLSession:(id)session downloadTask:(id)task didWriteData:(int64_t)data totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
+- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)session;
+- (void)_removeCachedResponseForRequest:(id)request;
+- (void)_removeCachedResponseForRequest:(id)request force:(BOOL)force;
+- (void)addCacheLocation:(id)location;
+- (void)addRewriteRule:(id)rule;
+- (void)applicationDidBecomeActiveNotification:(id)notification;
+- (void)applicationDidEnterBackgroundNotification:(id)notification;
+- (void)applicationWillEnterForegroundNotification:(id)notification;
+- (void)applyRewriteRules:(id)rules;
+- (void)backgroundClearOldCaches:(id)caches;
+- (void)backgroundRemoveCachedResponseForRequest:(id)request;
+- (void)cancelTask:(id)task;
+- (void)cancelTasks:(id)tasks;
 - (void)clearCache;
-- (void)clearOldCaches:(id)a3;
+- (void)clearOldCaches:(id)caches;
 - (void)configureSession;
-- (void)configureSession:(id)a3;
-- (void)deleteCookiesMatchingPredicate:(id)a3;
+- (void)configureSession:(id)session;
+- (void)deleteCookiesMatchingPredicate:(id)predicate;
 - (void)dispose;
-- (void)enqueueTask:(id)a3 reschedule:(BOOL)a4;
-- (void)enumerateCookies:(id)a3 inDomain:(id)a4 secure:(BOOL)a5 withBlock:(id)a6;
-- (void)enumerateCookies:(id)a3 secure:(BOOL)a4 cookies:(id)a5 withBlock:(id)a6;
-- (void)internalRestart:(id)a3;
+- (void)enqueueTask:(id)task reschedule:(BOOL)reschedule;
+- (void)enumerateCookies:(id)cookies inDomain:(id)domain secure:(BOOL)secure withBlock:(id)block;
+- (void)enumerateCookies:(id)cookies secure:(BOOL)secure cookies:(id)a5 withBlock:(id)block;
+- (void)internalRestart:(id)restart;
 - (void)notifyBackgroundStopped;
 - (void)notifyEmptyQueue;
 - (void)notifyEnqueue;
-- (void)operationCancelTask:(id)a3;
+- (void)operationCancelTask:(id)task;
 - (void)operationReschedule;
 - (void)operationRestartSession;
 - (void)operationSuspendSession;
-- (void)processURLRequestRewrite:(id)a3;
-- (void)removeCachedResponseForRequest:(id)a3;
-- (void)removeRewriteRule:(id)a3;
-- (void)removeRewriteRules:(id)a3;
-- (void)removeRewriteRulesWithName:(id)a3;
+- (void)processURLRequestRewrite:(id)rewrite;
+- (void)removeCachedResponseForRequest:(id)request;
+- (void)removeRewriteRule:(id)rule;
+- (void)removeRewriteRules:(id)rules;
+- (void)removeRewriteRulesWithName:(id)name;
 - (void)resume;
-- (void)setCategory:(id)a3 forTask:(id)a4;
-- (void)setCategory:(id)a3 forTasks:(id)a4;
-- (void)setCookie:(id)a3;
-- (void)setPriority:(int64_t)a3 forCategory:(id)a4;
-- (void)setupCache:(BOOL)a3;
-- (void)storeResumeData:(id)a3 forTask:(id)a4;
+- (void)setCategory:(id)category forTask:(id)task;
+- (void)setCategory:(id)category forTasks:(id)tasks;
+- (void)setCookie:(id)cookie;
+- (void)setPriority:(int64_t)priority forCategory:(id)category;
+- (void)setupCache:(BOOL)cache;
+- (void)storeResumeData:(id)data forTask:(id)task;
 - (void)suspend;
-- (void)task:(id)a3 completedWithError:(id)a4;
-- (void)updateDownloadCacheEntry:(id)a3;
+- (void)task:(id)task completedWithError:(id)error;
+- (void)updateDownloadCacheEntry:(id)entry;
 @end
 
 @implementation MCLURLDataLoader
 
-+ (id)dateFromRFC1123:(id)a3
++ (id)dateFromRFC1123:(id)c1123
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, c1123);
   if (location[0])
   {
     v10 = location[0];
     v3 = location[0];
-    v19 = [v10 UTF8String];
+    uTF8String = [v10 UTF8String];
     v17 = 0;
     v16 = 0;
     v18 = "%a, %d %b %Y %H:%M:%S %Z";
     memset(&__b, 0, sizeof(__b));
-    v16 = strptime_l(v19, "%a, %d %b %Y %H:%M:%S %Z", &__b, 0);
+    v16 = strptime_l(uTF8String, "%a, %d %b %Y %H:%M:%S %Z", &__b, 0);
     if (v16 && (v14 = mktime(&__b), v4 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v14], v5 = v17, v17 = v4, MEMORY[0x277D82BD8](v5), v17))
     {
       v22 = MEMORY[0x277D82BE0](v17);
@@ -127,7 +127,7 @@
     {
       v18 = "%A, %d-%b-%y %H:%M:%S %Z";
       memset(&v13, 0, sizeof(v13));
-      v16 = strptime_l(v19, "%A, %d-%b-%y %H:%M:%S %Z", &v13, 0);
+      v16 = strptime_l(uTF8String, "%A, %d-%b-%y %H:%M:%S %Z", &v13, 0);
       if (v16 && (v12 = mktime(&v13), v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v12], v7 = v17, v17 = v6, MEMORY[0x277D82BD8](v7), v17))
       {
         v22 = MEMORY[0x277D82BE0](v17);
@@ -138,7 +138,7 @@
       {
         v18 = "%a %b %e %H:%M:%S %Y";
         memset(&v11, 0, sizeof(v11));
-        v16 = strptime_l(v19, "%a %b %e %H:%M:%S %Y", &v11, 0);
+        v16 = strptime_l(uTF8String, "%a %b %e %H:%M:%S %Y", &v11, 0);
         if (v16)
         {
           v22 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:mktime(&v11)];
@@ -168,12 +168,12 @@
   return v8;
 }
 
-+ (id)fileExtensionForMimeType:(id)a3
++ (id)fileExtensionForMimeType:(id)type
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, type);
   PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x277CC1F60], location[0], 0);
   v7 = 0;
   if (PreferredIdentifierForTag)
@@ -204,12 +204,12 @@
   return v5;
 }
 
-+ (id)mimeTypeForFileExtension:(id)a3
++ (id)mimeTypeForFileExtension:(id)extension
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, extension);
   PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x277CC1F58], location[0], 0);
   v6 = 0;
   if (PreferredIdentifierForTag)
@@ -230,32 +230,32 @@
   return v4;
 }
 
-- (void)setCookie:(id)a3
+- (void)setCookie:(id)cookie
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(MCLURLDataLoader *)v5 cookieStorage];
-  [(NSHTTPCookieStorage *)v3 setCookie:location[0]];
-  MEMORY[0x277D82BD8](v3);
+  objc_storeStrong(location, cookie);
+  cookieStorage = [(MCLURLDataLoader *)selfCopy cookieStorage];
+  [(NSHTTPCookieStorage *)cookieStorage setCookie:location[0]];
+  MEMORY[0x277D82BD8](cookieStorage);
   objc_storeStrong(location, 0);
 }
 
-- (id)findCookie:(id)a3 inDomain:(id)a4 secure:(BOOL)a5
+- (id)findCookie:(id)cookie inDomain:(id)domain secure:(BOOL)secure
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, cookie);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
-  v20 = a5;
+  objc_storeStrong(&v21, domain);
+  secureCopy = secure;
   v19 = 0;
   if ([v21 length])
   {
     v13 = MEMORY[0x277CBEBC0];
-    if (v20)
+    if (secureCopy)
     {
       v5 = @"https";
     }
@@ -268,26 +268,26 @@
     v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@://%@", v5, v21];
     v18 = [v13 URLWithString:?];
     MEMORY[0x277D82BD8](v14);
-    v15 = [(MCLURLDataLoader *)v23 cookieStorage];
-    v6 = [(NSHTTPCookieStorage *)v15 cookiesForURL:v18];
+    cookieStorage = [(MCLURLDataLoader *)selfCopy cookieStorage];
+    v6 = [(NSHTTPCookieStorage *)cookieStorage cookiesForURL:v18];
     v7 = v19;
     v19 = v6;
     MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v15);
+    MEMORY[0x277D82BD8](cookieStorage);
     objc_storeStrong(&v18, 0);
   }
 
   else
   {
-    v12 = [(MCLURLDataLoader *)v23 cookieStorage];
-    v8 = [(NSHTTPCookieStorage *)v12 cookies];
+    cookieStorage2 = [(MCLURLDataLoader *)selfCopy cookieStorage];
+    cookies = [(NSHTTPCookieStorage *)cookieStorage2 cookies];
     v9 = v19;
-    v19 = v8;
+    v19 = cookies;
     MEMORY[0x277D82BD8](v9);
-    MEMORY[0x277D82BD8](v12);
+    MEMORY[0x277D82BD8](cookieStorage2);
   }
 
-  v11 = [MCLURLDataLoader findCookie:v23 inDomain:"findCookie:inDomain:secure:cookies:" secure:location[0] cookies:?];
+  v11 = [MCLURLDataLoader findCookie:selfCopy inDomain:"findCookie:inDomain:secure:cookies:" secure:location[0] cookies:?];
   objc_storeStrong(&v19, 0);
   objc_storeStrong(&v21, 0);
   objc_storeStrong(location, 0);
@@ -295,17 +295,17 @@
   return v11;
 }
 
-- (id)findCookie:(id)a3 inDomain:(id)a4 secure:(BOOL)a5 cookies:(id)a6
+- (id)findCookie:(id)cookie inDomain:(id)domain secure:(BOOL)secure cookies:(id)cookies
 {
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, cookie);
   v32 = 0;
-  objc_storeStrong(&v32, a4);
-  v31 = a5;
+  objc_storeStrong(&v32, domain);
+  secureCopy = secure;
   v30 = 0;
-  objc_storeStrong(&v30, a6);
+  objc_storeStrong(&v30, cookies);
   v23 = 0;
   v24 = &v23;
   v25 = 838860800;
@@ -313,10 +313,10 @@
   v27 = __Block_byref_object_copy__0;
   v28 = __Block_byref_object_dispose__0;
   v29 = 0;
-  v22 = [MEMORY[0x277CBEAA8] date];
-  v11 = v34;
+  date = [MEMORY[0x277CBEAA8] date];
+  v11 = selfCopy;
   v8 = location[0];
-  v9 = v31;
+  v9 = secureCopy;
   v10 = v30;
   v15 = MEMORY[0x277D85DD0];
   v16 = -1073741824;
@@ -324,13 +324,13 @@
   v18 = __63__MCLURLDataLoader_Cookie__findCookie_inDomain_secure_cookies___block_invoke;
   v19 = &unk_2797EE758;
   v20 = MEMORY[0x277D82BE0](v32);
-  v21[0] = MEMORY[0x277D82BE0](v22);
+  v21[0] = MEMORY[0x277D82BE0](date);
   v21[1] = &v23;
   [(MCLURLDataLoader *)v11 enumerateCookies:v8 secure:v9 cookies:v10 withBlock:&v15];
   v7 = MEMORY[0x277D82BE0](v24[5]);
   objc_storeStrong(v21, 0);
   objc_storeStrong(&v20, 0);
-  objc_storeStrong(&v22, 0);
+  objc_storeStrong(&date, 0);
   _Block_object_dispose(&v23, 8);
   objc_storeStrong(&v29, 0);
   objc_storeStrong(&v30, 0);
@@ -387,15 +387,15 @@ void __63__MCLURLDataLoader_Cookie__findCookie_inDomain_secure_cookies___block_i
   objc_storeStrong(location, 0);
 }
 
-- (id)findMatchingCookies:(id)a3 inDomain:(id)a4 secure:(BOOL)a5
+- (id)findMatchingCookies:(id)cookies inDomain:(id)domain secure:(BOOL)secure
 {
-  v39 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, cookies);
   v37 = 0;
-  objc_storeStrong(&v37, a4);
-  v36 = a5;
+  objc_storeStrong(&v37, domain);
+  secureCopy = secure;
   v35 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v34 = 0;
   v30 = 0;
@@ -460,9 +460,9 @@ void __63__MCLURLDataLoader_Cookie__findCookie_inDomain_secure_cookies___block_i
 
     else
     {
-      v24 = [MEMORY[0x277CBEAA8] date];
-      v10 = [(MCLURLDataLoader *)v39 cookieStorage];
-      v9 = [(NSHTTPCookieStorage *)v10 cookies];
+      date = [MEMORY[0x277CBEAA8] date];
+      cookieStorage = [(MCLURLDataLoader *)selfCopy cookieStorage];
+      cookies = [(NSHTTPCookieStorage *)cookieStorage cookies];
       v15 = MEMORY[0x277D85DD0];
       v16 = -1073741824;
       v17 = 0;
@@ -470,18 +470,18 @@ void __63__MCLURLDataLoader_Cookie__findCookie_inDomain_secure_cookies___block_i
       v19 = &unk_2797EE780;
       v20 = MEMORY[0x277D82BE0](v33);
       v21 = MEMORY[0x277D82BE0](v28);
-      v22 = MEMORY[0x277D82BE0](v24);
+      v22 = MEMORY[0x277D82BE0](date);
       v23 = MEMORY[0x277D82BE0](v35);
-      [(NSArray *)v9 enumerateObjectsUsingBlock:&v15];
-      MEMORY[0x277D82BD8](v9);
-      MEMORY[0x277D82BD8](v10);
+      [(NSArray *)cookies enumerateObjectsUsingBlock:&v15];
+      MEMORY[0x277D82BD8](cookies);
+      MEMORY[0x277D82BD8](cookieStorage);
       v40 = MEMORY[0x277D82BE0](v35);
       v29 = 1;
       objc_storeStrong(&v23, 0);
       objc_storeStrong(&v22, 0);
       objc_storeStrong(&v21, 0);
       objc_storeStrong(&v20, 0);
-      objc_storeStrong(&v24, 0);
+      objc_storeStrong(&date, 0);
     }
 
     objc_storeStrong(&v28, 0);
@@ -563,43 +563,43 @@ void __64__MCLURLDataLoader_Cookie__findMatchingCookies_inDomain_secure___block_
 
 - (id)allCookies
 {
-  v3 = [(MCLURLDataLoader *)self cookieStorage];
-  v4 = [(NSHTTPCookieStorage *)v3 cookies];
-  MEMORY[0x277D82BD8](v3);
+  cookieStorage = [(MCLURLDataLoader *)self cookieStorage];
+  cookies = [(NSHTTPCookieStorage *)cookieStorage cookies];
+  MEMORY[0x277D82BD8](cookieStorage);
 
-  return v4;
+  return cookies;
 }
 
-- (BOOL)deleteCookie:(id)a3 inDomain:(id)a4 secure:(BOOL)a5
+- (BOOL)deleteCookie:(id)cookie inDomain:(id)domain secure:(BOOL)secure
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, cookie);
   v26 = 0;
-  objc_storeStrong(&v26, a4);
-  v25 = a5;
+  objc_storeStrong(&v26, domain);
+  secureCopy = secure;
   v20 = 0;
   v21 = &v20;
   v22 = 0x20000000;
   v23 = 32;
   v24 = 0;
-  v19 = [(MCLURLDataLoader *)v28 cookieStorage];
-  v10 = v28;
+  cookieStorage = [(MCLURLDataLoader *)selfCopy cookieStorage];
+  v10 = selfCopy;
   v7 = location[0];
   v8 = v26;
-  v9 = v25;
+  v9 = secureCopy;
   v13 = MEMORY[0x277D85DD0];
   v14 = -1073741824;
   v15 = 0;
   v16 = __57__MCLURLDataLoader_Cookie__deleteCookie_inDomain_secure___block_invoke;
   v17 = &unk_2797EE7A8;
-  v18[0] = MEMORY[0x277D82BE0](v19);
+  v18[0] = MEMORY[0x277D82BE0](cookieStorage);
   v18[1] = &v20;
   [(MCLURLDataLoader *)v10 enumerateCookies:v7 inDomain:v8 secure:v9 withBlock:&v13];
   v6 = *(v21 + 24);
   objc_storeStrong(v18, 0);
-  objc_storeStrong(&v19, 0);
+  objc_storeStrong(&cookieStorage, 0);
   _Block_object_dispose(&v20, 8);
   objc_storeStrong(&v26, 0);
   objc_storeStrong(location, 0);
@@ -616,26 +616,26 @@ void __57__MCLURLDataLoader_Cookie__deleteCookie_inDomain_secure___block_invoke(
   objc_storeStrong(location, 0);
 }
 
-- (void)deleteCookiesMatchingPredicate:(id)a3
+- (void)deleteCookiesMatchingPredicate:(id)predicate
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11 = [(MCLURLDataLoader *)v13 cookieStorage];
-  v3 = [(NSHTTPCookieStorage *)v11 cookies];
+  objc_storeStrong(location, predicate);
+  cookieStorage = [(MCLURLDataLoader *)selfCopy cookieStorage];
+  cookies = [(NSHTTPCookieStorage *)cookieStorage cookies];
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __59__MCLURLDataLoader_Cookie__deleteCookiesMatchingPredicate___block_invoke;
   v8 = &unk_2797EE7D0;
   v9 = MEMORY[0x277D82BE0](location[0]);
-  v10 = MEMORY[0x277D82BE0](v11);
-  [(NSArray *)v3 enumerateObjectsUsingBlock:?];
-  MEMORY[0x277D82BD8](v3);
+  v10 = MEMORY[0x277D82BE0](cookieStorage);
+  [(NSArray *)cookies enumerateObjectsUsingBlock:?];
+  MEMORY[0x277D82BD8](cookies);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v9, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&cookieStorage, 0);
   objc_storeStrong(location, 0);
 }
 
@@ -652,22 +652,22 @@ void __59__MCLURLDataLoader_Cookie__deleteCookiesMatchingPredicate___block_invok
   objc_storeStrong(location, 0);
 }
 
-- (void)enumerateCookies:(id)a3 inDomain:(id)a4 secure:(BOOL)a5 withBlock:(id)a6
+- (void)enumerateCookies:(id)cookies inDomain:(id)domain secure:(BOOL)secure withBlock:(id)block
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, cookies);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
-  v21 = a5;
+  objc_storeStrong(&v22, domain);
+  secureCopy = secure;
   v20 = 0;
-  objc_storeStrong(&v20, a6);
+  objc_storeStrong(&v20, block);
   v19 = 0;
   if ([v22 length])
   {
     v12 = MEMORY[0x277CBEBC0];
-    if (v21)
+    if (secureCopy)
     {
       v6 = @"https";
     }
@@ -680,46 +680,46 @@ void __59__MCLURLDataLoader_Cookie__deleteCookiesMatchingPredicate___block_invok
     v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@://%@", v6, v22];
     v18 = [v12 URLWithString:?];
     MEMORY[0x277D82BD8](v13);
-    v14 = [(MCLURLDataLoader *)v24 cookieStorage];
-    v7 = [(NSHTTPCookieStorage *)v14 cookiesForURL:v18];
+    cookieStorage = [(MCLURLDataLoader *)selfCopy cookieStorage];
+    v7 = [(NSHTTPCookieStorage *)cookieStorage cookiesForURL:v18];
     v8 = v19;
     v19 = v7;
     MEMORY[0x277D82BD8](v8);
-    MEMORY[0x277D82BD8](v14);
+    MEMORY[0x277D82BD8](cookieStorage);
     objc_storeStrong(&v18, 0);
   }
 
   else
   {
-    v11 = [(MCLURLDataLoader *)v24 cookieStorage];
-    v9 = [(NSHTTPCookieStorage *)v11 cookies];
+    cookieStorage2 = [(MCLURLDataLoader *)selfCopy cookieStorage];
+    cookies = [(NSHTTPCookieStorage *)cookieStorage2 cookies];
     v10 = v19;
-    v19 = v9;
+    v19 = cookies;
     MEMORY[0x277D82BD8](v10);
-    MEMORY[0x277D82BD8](v11);
+    MEMORY[0x277D82BD8](cookieStorage2);
   }
 
-  [(MCLURLDataLoader *)v24 enumerateCookies:location[0] secure:v21 cookies:v19 withBlock:v20];
+  [(MCLURLDataLoader *)selfCopy enumerateCookies:location[0] secure:secureCopy cookies:v19 withBlock:v20];
   objc_storeStrong(&v19, 0);
   objc_storeStrong(&v20, 0);
   objc_storeStrong(&v22, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)enumerateCookies:(id)a3 secure:(BOOL)a4 cookies:(id)a5 withBlock:(id)a6
+- (void)enumerateCookies:(id)cookies secure:(BOOL)secure cookies:(id)a5 withBlock:(id)block
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v15 = a4;
+  objc_storeStrong(location, cookies);
+  secureCopy = secure;
   v14 = 0;
   objc_storeStrong(&v14, a5);
   v13 = 0;
-  objc_storeStrong(&v13, a6);
+  objc_storeStrong(&v13, block);
   v9 = v14;
   v10 = MEMORY[0x277D82BE0](location[0]);
-  v12 = v15;
+  v12 = secureCopy;
   v11 = MEMORY[0x277D82BE0](v13);
   [v9 enumerateObjectsUsingBlock:?];
   objc_storeStrong(&v11, 0);
@@ -759,31 +759,31 @@ void __70__MCLURLDataLoader_Cookie__enumerateCookies_secure_cookies_withBlock___
   objc_storeStrong(location, 0);
 }
 
-- (id)cookiesForURL:(id)a3
+- (id)cookiesForURL:(id)l
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(MCLURLDataLoader *)v7 cookieStorage];
-  v5 = [(NSHTTPCookieStorage *)v4 cookiesForURL:location[0]];
-  MEMORY[0x277D82BD8](v4);
+  objc_storeStrong(location, l);
+  cookieStorage = [(MCLURLDataLoader *)selfCopy cookieStorage];
+  v5 = [(NSHTTPCookieStorage *)cookieStorage cookiesForURL:location[0]];
+  MEMORY[0x277D82BD8](cookieStorage);
   objc_storeStrong(location, 0);
 
   return v5;
 }
 
-- (id)downloadImageFromURL:(id)a3 category:(id)a4 completionHandler:(id)a5
+- (id)downloadImageFromURL:(id)l category:(id)category completionHandler:(id)handler
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, category);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
-  v8 = v14;
+  objc_storeStrong(&v11, handler);
+  v8 = selfCopy;
   v9 = [MEMORY[0x277CCAD20] requestWithURL:location[0]];
   v10 = [MCLURLDataLoader downloadImageWithRequest:v8 category:"downloadImageWithRequest:category:completionHandler:" completionHandler:?];
   MEMORY[0x277D82BD8](v9);
@@ -794,22 +794,22 @@ void __70__MCLURLDataLoader_Cookie__enumerateCookies_secure_cookies_withBlock___
   return v10;
 }
 
-- (id)downloadImageWithRequest:(id)a3 category:(id)a4 completionHandler:(id)a5
+- (id)downloadImageWithRequest:(id)request category:(id)category completionHandler:(id)handler
 {
-  v42 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v40 = 0;
-  objc_storeStrong(&v40, a4);
+  objc_storeStrong(&v40, category);
   v39 = 0;
-  objc_storeStrong(&v39, a5);
+  objc_storeStrong(&v39, handler);
   v38 = [location[0] URL];
-  v11 = [(MCLURLDataLoader *)v42 imagesDownloadDirectory];
+  imagesDownloadDirectory = [(MCLURLDataLoader *)selfCopy imagesDownloadDirectory];
   v10 = [MCLURLDataLoader uniqueImageKeyForURL:v38];
-  v37 = [v11 stringByAppendingPathComponent:?];
+  v37 = [imagesDownloadDirectory stringByAppendingPathComponent:?];
   MEMORY[0x277D82BD8](v10);
-  MEMORY[0x277D82BD8](v11);
+  MEMORY[0x277D82BD8](imagesDownloadDirectory);
   v33[0] = 0;
   v33[1] = v33;
   v34 = 0x20000000;
@@ -820,7 +820,7 @@ void __70__MCLURLDataLoader_Cookie__enumerateCookies_secure_cookies_withBlock___
   v30 = 0x20000000;
   v31 = 32;
   v32 = 0;
-  v14 = v42;
+  v14 = selfCopy;
   v12 = location[0];
   v13 = v37;
   v25[0] = MEMORY[0x277D85DD0];
@@ -842,7 +842,7 @@ void __70__MCLURLDataLoader_Cookie__enumerateCookies_secure_cookies_withBlock___
   v24[1] = v33;
   v24[2] = v29;
   v24[0] = MEMORY[0x277D82BE0](v39);
-  v21 = MEMORY[0x277D82BE0](v42);
+  v21 = MEMORY[0x277D82BE0](selfCopy);
   v22 = MEMORY[0x277D82BE0](v40);
   v23 = MEMORY[0x277D82BE0](v28);
   dispatch_async(queue, &v15);
@@ -1032,12 +1032,12 @@ uint64_t __50__MCLURLDataLoader_Image__imagesDownloadDirectory__block_invoke()
   return MEMORY[0x277D82BD8](v5);
 }
 
-+ (id)uniqueImageKeyForURL:(id)a3
++ (id)uniqueImageKeyForURL:(id)l
 {
-  v22 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v24 = &uniqueImageKeyForURL__onceToken;
   v23 = 0;
   objc_storeStrong(&v23, &__block_literal_global_6);
@@ -1047,28 +1047,28 @@ uint64_t __50__MCLURLDataLoader_Image__imagesDownloadDirectory__block_invoke()
   }
 
   objc_storeStrong(&v23, 0);
-  v20 = [v22 uniqueKeyForURL:location[0]];
+  v20 = [selfCopy uniqueKeyForURL:location[0]];
   v13 = 0;
   v14 = &v13;
   v15 = 838860800;
   v16 = 48;
   v17 = __Block_byref_object_copy__1;
   v18 = __Block_byref_object_dispose__1;
-  v19 = [v20 pathExtension];
-  v11 = [v20 stringByDeletingPathExtension];
-  v3 = [v11 stringByAppendingString:uniqueImageKeyForURL__screenScale];
+  pathExtension = [v20 pathExtension];
+  stringByDeletingPathExtension = [v20 stringByDeletingPathExtension];
+  v3 = [stringByDeletingPathExtension stringByAppendingString:uniqueImageKeyForURL__screenScale];
   v4 = v20;
   v20 = v3;
   MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v11);
+  MEMORY[0x277D82BD8](stringByDeletingPathExtension);
   if (![v14[5] length])
   {
     objc_storeStrong(v14 + 5, @"image");
     v10 = objc_alloc(MEMORY[0x277CCACE0]);
     v12 = [v10 initWithURL:location[0] resolvingAgainstBaseURL:0];
-    v9 = [v12 queryItems];
-    [v9 enumerateObjectsUsingBlock:?];
-    MEMORY[0x277D82BD8](v9);
+    queryItems = [v12 queryItems];
+    [queryItems enumerateObjectsUsingBlock:?];
+    MEMORY[0x277D82BD8](queryItems);
     objc_storeStrong(&v12, 0);
   }
 
@@ -1082,7 +1082,7 @@ uint64_t __50__MCLURLDataLoader_Image__imagesDownloadDirectory__block_invoke()
 
   v8 = MEMORY[0x277D82BE0](v20);
   _Block_object_dispose(&v13, 8);
-  objc_storeStrong(&v19, 0);
+  objc_storeStrong(&pathExtension, 0);
   objc_storeStrong(&v20, 0);
   objc_storeStrong(location, 0);
 
@@ -1156,12 +1156,12 @@ void __48__MCLURLDataLoader_Image__uniqueImageKeyForURL___block_invoke_19(void *
   objc_storeStrong(location, 0);
 }
 
-+ (void)addSessionConfigurator:(id)a3
++ (void)addSessionConfigurator:(id)configurator
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, configurator);
   v7 = &addSessionConfigurator__onceToken;
   v6 = 0;
   objc_storeStrong(&v6, &__block_literal_global_12);
@@ -1188,14 +1188,14 @@ uint64_t __43__MCLURLDataLoader_addSessionConfigurator___block_invoke()
 
 + (id)shared
 {
-  v11 = a1;
+  selfCopy = self;
   v10 = a2;
   obj = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __26__MCLURLDataLoader_shared__block_invoke;
   v8 = &__block_descriptor_40_e5_v8__0l;
-  v9 = a1;
+  selfCopy2 = self;
   v13 = &shared_onceToken_1;
   location = 0;
   objc_storeStrong(&location, &obj);
@@ -1285,20 +1285,20 @@ uint64_t __26__MCLURLDataLoader_shared__block_invoke(uint64_t a1)
     MEMORY[0x277D82BD8](v24);
     MEMORY[0x277D82BD8](v25);
     MEMORY[0x277D82BD8](v26);
-    v18 = [MEMORY[0x277CCAA38] sharedHTTPCookieStorage];
+    mEMORY[0x277CCAA38] = [MEMORY[0x277CCAA38] sharedHTTPCookieStorage];
     cookieStorage = v32->_cookieStorage;
-    v32->_cookieStorage = v18;
+    v32->_cookieStorage = mEMORY[0x277CCAA38];
     MEMORY[0x277D82BD8](cookieStorage);
     [(MCLURLDataLoader *)v32 setupCache:0];
-    v27 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v27 addObserver:v32 selector:sel_applicationDidEnterBackgroundNotification_ name:*MEMORY[0x277D76660] object:?];
-    MEMORY[0x277D82BD8](v27);
-    v28 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v28 addObserver:v32 selector:sel_applicationWillEnterForegroundNotification_ name:*MEMORY[0x277D76758] object:0];
-    MEMORY[0x277D82BD8](v28);
-    v29 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v29 addObserver:v32 selector:sel_applicationDidBecomeActiveNotification_ name:*MEMORY[0x277D76648] object:0];
-    MEMORY[0x277D82BD8](v29);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v32 selector:sel_applicationDidEnterBackgroundNotification_ name:*MEMORY[0x277D76660] object:?];
+    MEMORY[0x277D82BD8](defaultCenter);
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v32 selector:sel_applicationWillEnterForegroundNotification_ name:*MEMORY[0x277D76758] object:0];
+    MEMORY[0x277D82BD8](defaultCenter2);
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v32 selector:sel_applicationDidBecomeActiveNotification_ name:*MEMORY[0x277D76648] object:0];
+    MEMORY[0x277D82BD8](defaultCenter3);
   }
 
   v21 = MEMORY[0x277D82BE0](v32);
@@ -1309,58 +1309,58 @@ uint64_t __26__MCLURLDataLoader_shared__block_invoke(uint64_t a1)
 
 - (void)dispose
 {
-  v4 = self;
+  selfCopy = self;
   v3[1] = a2;
   v3[0] = MEMORY[0x277D82BE0](self->_session);
-  objc_storeStrong(&v4->_session, 0);
+  objc_storeStrong(&selfCopy->_session, 0);
   [v3[0] invalidateAndCancel];
-  v2 = MEMORY[0x277D82BE0](v4->_operationQueue);
-  objc_storeStrong(&v4->_operationQueue, 0);
+  v2 = MEMORY[0x277D82BE0](selfCopy->_operationQueue);
+  objc_storeStrong(&selfCopy->_operationQueue, 0);
   [v2 cancelAllOperations];
   [MEMORY[0x277CCACC8] sleepForTimeInterval:0.01];
-  [(NSRecursiveLock *)v4->_taskQueueLock lock];
-  [(NSMutableArray *)v4->_taskQueue removeAllObjects];
-  [(NSMutableDictionary *)v4->_activeTasks removeAllObjects];
-  [(NSMutableArray *)v4->_sessionTasks removeAllObjects];
-  [(NSMutableOrderedSet *)v4->_duplicateTasks removeAllObjects];
-  [(NSRecursiveLock *)v4->_taskQueueLock unlock];
+  [(NSRecursiveLock *)selfCopy->_taskQueueLock lock];
+  [(NSMutableArray *)selfCopy->_taskQueue removeAllObjects];
+  [(NSMutableDictionary *)selfCopy->_activeTasks removeAllObjects];
+  [(NSMutableArray *)selfCopy->_sessionTasks removeAllObjects];
+  [(NSMutableOrderedSet *)selfCopy->_duplicateTasks removeAllObjects];
+  [(NSRecursiveLock *)selfCopy->_taskQueueLock unlock];
   [v2 waitUntilAllOperationsAreFinished];
-  objc_storeStrong(&v4->_cache, 0);
+  objc_storeStrong(&selfCopy->_cache, 0);
   objc_storeStrong(&v2, 0);
   objc_storeStrong(v3, 0);
 }
 
 - (NSURLCache)cache
 {
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
   if (!self->_cache)
   {
-    v11 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v12 = [v11 integerForKey:@"MCLURLDataLoader.cacheVersion"];
-    MEMORY[0x277D82BD8](v11);
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v12 = [standardUserDefaults integerForKey:@"MCLURLDataLoader.cacheVersion"];
+    MEMORY[0x277D82BD8](standardUserDefaults);
     v20 = v12;
     if (!v12)
     {
-      v9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      [v9 setInteger:0 forKey:@"MCLURLDataLoader.cacheVersion"];
-      MEMORY[0x277D82BD8](v9);
-      v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      [v10 synchronize];
-      MEMORY[0x277D82BD8](v10);
+      standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      [standardUserDefaults2 setInteger:0 forKey:@"MCLURLDataLoader.cacheVersion"];
+      MEMORY[0x277D82BD8](standardUserDefaults2);
+      standardUserDefaults3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      [standardUserDefaults3 synchronize];
+      MEMORY[0x277D82BD8](standardUserDefaults3);
     }
 
     v19 = [objc_opt_class() description];
     v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%ld", v19, v20];
-    cachePath = v22->_cachePath;
-    v22->_cachePath = v2;
+    cachePath = selfCopy->_cachePath;
+    selfCopy->_cachePath = v2;
     MEMORY[0x277D82BD8](cachePath);
     v13 = MEMORY[0x277D85DD0];
     v14 = -1073741824;
     v15 = 0;
     v16 = __25__MCLURLDataLoader_cache__block_invoke;
     v17 = &unk_2797EE220;
-    v18 = MEMORY[0x277D82BE0](v22);
+    v18 = MEMORY[0x277D82BE0](selfCopy);
     v24 = &cache_onceToken;
     location = 0;
     objc_storeStrong(&location, &v13);
@@ -1371,51 +1371,51 @@ uint64_t __26__MCLURLDataLoader_shared__block_invoke(uint64_t a1)
 
     objc_storeStrong(&location, 0);
     v4 = objc_alloc(MEMORY[0x277CCACD8]);
-    v5 = [v4 initWithMemoryCapacity:0 diskCapacity:1000000000 diskPath:v22->_cachePath];
-    cache = v22->_cache;
-    v22->_cache = v5;
+    v5 = [v4 initWithMemoryCapacity:0 diskCapacity:1000000000 diskPath:selfCopy->_cachePath];
+    cache = selfCopy->_cache;
+    selfCopy->_cache = v5;
     MEMORY[0x277D82BD8](cache);
     objc_storeStrong(&v18, 0);
     objc_storeStrong(&v19, 0);
   }
 
-  v7 = v22->_cache;
+  v7 = selfCopy->_cache;
 
   return v7;
 }
 
-- (void)setupCache:(BOOL)a3
+- (void)setupCache:(BOOL)cache
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
-  v14 = [MEMORY[0x277CCAA00] defaultManager];
+  cacheCopy = cache;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v13 = 0;
-  downloadCacheDirectory = v17->_downloadCacheDirectory;
+  downloadCacheDirectory = selfCopy->_downloadCacheDirectory;
   v12 = 0;
-  v5 = [v14 createDirectoryAtPath:downloadCacheDirectory withIntermediateDirectories:1 attributes:0 error:&v12];
+  v5 = [defaultManager createDirectoryAtPath:downloadCacheDirectory withIntermediateDirectories:1 attributes:0 error:&v12];
   objc_storeStrong(&v13, v12);
   if ((v5 & 1) == 0)
   {
     NSLog(&cfstr_ErrorCreatingD.isa, v13);
   }
 
-  if (v15)
+  if (cacheCopy)
   {
-    v4 = [(MCLURLDataLoader *)v17 cacheLocations];
+    cacheLocations = [(MCLURLDataLoader *)selfCopy cacheLocations];
     v6 = MEMORY[0x277D85DD0];
     v7 = -1073741824;
     v8 = 0;
     v9 = __31__MCLURLDataLoader_setupCache___block_invoke;
     v10 = &unk_2797EDFB8;
-    v11 = MEMORY[0x277D82BE0](v14);
-    [(NSSet *)v4 enumerateObjectsUsingBlock:&v6];
-    MEMORY[0x277D82BD8](v4);
+    v11 = MEMORY[0x277D82BE0](defaultManager);
+    [(NSSet *)cacheLocations enumerateObjectsUsingBlock:&v6];
+    MEMORY[0x277D82BD8](cacheLocations);
     objc_storeStrong(&v11, 0);
   }
 
   objc_storeStrong(&v13, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&defaultManager, 0);
 }
 
 void __31__MCLURLDataLoader_setupCache___block_invoke(void *a1, void *a2, uint64_t a3)
@@ -1453,15 +1453,15 @@ void __31__MCLURLDataLoader_setupCache___block_invoke(void *a1, void *a2, uint64
   objc_storeStrong(location, 0);
 }
 
-- (void)clearOldCaches:(id)a3
+- (void)clearOldCaches:(id)caches
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 beginBackgroundTaskWithName:@"Clear Cache" expirationHandler:0];
-  MEMORY[0x277D82BD8](v3);
+  objc_storeStrong(location, caches);
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  v4 = [mEMORY[0x277D75128] beginBackgroundTaskWithName:@"Clear Cache" expirationHandler:0];
+  MEMORY[0x277D82BD8](mEMORY[0x277D75128]);
   v13 = v4;
   queue = dispatch_get_global_queue(2, 0);
   v6 = MEMORY[0x277D85DD0];
@@ -1469,7 +1469,7 @@ void __31__MCLURLDataLoader_setupCache___block_invoke(void *a1, void *a2, uint64
   v8 = 0;
   v9 = __35__MCLURLDataLoader_clearOldCaches___block_invoke;
   v10 = &unk_2797EE968;
-  v11 = MEMORY[0x277D82BE0](v15);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   v12[0] = MEMORY[0x277D82BE0](location[0]);
   v12[1] = v13;
   dispatch_async(queue, &v6);
@@ -1493,24 +1493,24 @@ uint64_t __35__MCLURLDataLoader_clearOldCaches___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)backgroundClearOldCaches:(id)a3
+- (void)backgroundClearOldCaches:(id)caches
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, caches);
   v6 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
   v5 = [(NSArray *)v6 objectAtIndex:0];
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v4 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
   v29 = [v5 stringByAppendingPathComponent:?];
-  MEMORY[0x277D82BD8](v3);
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](bundleIdentifier);
+  MEMORY[0x277D82BD8](mainBundle);
   MEMORY[0x277D82BD8](v5);
   MEMORY[0x277D82BD8](v6);
   v28 = [objc_opt_class() description];
-  v27 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v27 contentsOfDirectoryAtPath:v29 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v7 = [defaultManager contentsOfDirectoryAtPath:v29 error:0];
   v18[1] = MEMORY[0x277D85DD0];
   v19 = -1073741824;
   v20 = 0;
@@ -1519,23 +1519,23 @@ uint64_t __35__MCLURLDataLoader_clearOldCaches___block_invoke(uint64_t a1)
   v23 = MEMORY[0x277D82BE0](location[0]);
   v24 = MEMORY[0x277D82BE0](v28);
   v25 = MEMORY[0x277D82BE0](v29);
-  v26 = MEMORY[0x277D82BE0](v27);
+  v26 = MEMORY[0x277D82BE0](defaultManager);
   [v7 enumerateObjectsUsingBlock:?];
   MEMORY[0x277D82BD8](v7);
   v18[0] = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-604800.0];
   v17 = [v29 stringByAppendingPathComponent:location[0]];
   [objc_opt_class() removeFilesOlderThan:v18[0] inDirectory:v17];
-  v8 = [(MCLURLDataLoader *)v31 cacheLocations];
+  cacheLocations = [(MCLURLDataLoader *)selfCopy cacheLocations];
   v9 = MEMORY[0x277D85DD0];
   v10 = -1073741824;
   v11 = 0;
   v12 = __45__MCLURLDataLoader_backgroundClearOldCaches___block_invoke_2;
   v13 = &unk_2797EE9B8;
-  v14 = MEMORY[0x277D82BE0](v27);
-  v15 = MEMORY[0x277D82BE0](v31);
+  v14 = MEMORY[0x277D82BE0](defaultManager);
+  v15 = MEMORY[0x277D82BE0](selfCopy);
   v16 = MEMORY[0x277D82BE0](v18[0]);
-  [(NSSet *)v8 enumerateObjectsUsingBlock:?];
-  MEMORY[0x277D82BD8](v8);
+  [(NSSet *)cacheLocations enumerateObjectsUsingBlock:?];
+  MEMORY[0x277D82BD8](cacheLocations);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v14, 0);
@@ -1545,7 +1545,7 @@ uint64_t __35__MCLURLDataLoader_clearOldCaches___block_invoke(uint64_t a1)
   objc_storeStrong(&v25, 0);
   objc_storeStrong(&v24, 0);
   objc_storeStrong(&v23, 0);
-  objc_storeStrong(&v27, 0);
+  objc_storeStrong(&defaultManager, 0);
   objc_storeStrong(&v28, 0);
   objc_storeStrong(&v29, 0);
   objc_storeStrong(location, 0);
@@ -1593,30 +1593,30 @@ void __45__MCLURLDataLoader_backgroundClearOldCaches___block_invoke_2(uint64_t a
   objc_storeStrong(location, 0);
 }
 
-+ (void)removeFilesOlderThan:(id)a3 inDirectory:(id)a4
++ (void)removeFilesOlderThan:(id)than inDirectory:(id)directory
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, than);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  v14 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v14 contentsOfDirectoryAtPath:v15 error:0];
+  objc_storeStrong(&v15, directory);
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager contentsOfDirectoryAtPath:v15 error:0];
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
   v9 = __53__MCLURLDataLoader_removeFilesOlderThan_inDirectory___block_invoke;
   v10 = &unk_2797EE9E0;
   v11 = MEMORY[0x277D82BE0](v15);
-  v12 = MEMORY[0x277D82BE0](v14);
+  v12 = MEMORY[0x277D82BE0](defaultManager);
   v13 = MEMORY[0x277D82BE0](location[0]);
   [v5 enumerateObjectsUsingBlock:?];
   MEMORY[0x277D82BD8](v5);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v11, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&defaultManager, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(location, 0);
 }
@@ -1661,28 +1661,28 @@ void __53__MCLURLDataLoader_removeFilesOlderThan_inDirectory___block_invoke(uint
 
 - (void)clearCache
 {
-  v24 = self;
+  selfCopy = self;
   v23[1] = a2;
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 postNotificationName:@"MCLURLDataLoaderWillClearCache" object:v24];
-  MEMORY[0x277D82BD8](v6);
-  v23[0] = MEMORY[0x277D82BE0](v24->_cache);
-  [(MCLURLDataLoader *)v24 dispose];
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v8 = [v7 integerForKey:?];
-  MEMORY[0x277D82BD8](v7);
-  v9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"MCLURLDataLoaderWillClearCache" object:selfCopy];
+  MEMORY[0x277D82BD8](defaultCenter);
+  v23[0] = MEMORY[0x277D82BE0](selfCopy->_cache);
+  [(MCLURLDataLoader *)selfCopy dispose];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v8 = [standardUserDefaults integerForKey:?];
+  MEMORY[0x277D82BD8](standardUserDefaults);
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
   v22[1] = (v8 + 1);
-  [v9 setInteger:? forKey:?];
-  MEMORY[0x277D82BD8](v9);
-  v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v10 synchronize];
-  MEMORY[0x277D82BD8](v10);
+  [standardUserDefaults2 setInteger:? forKey:?];
+  MEMORY[0x277D82BD8](standardUserDefaults2);
+  standardUserDefaults3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults3 synchronize];
+  MEMORY[0x277D82BD8](standardUserDefaults3);
   [v23[0] removeAllCachedResponses];
   v22[0] = [MEMORY[0x277CCAA00] defaultManager];
   v21 = 0;
-  v20 = [(NSString *)v24->_downloadCacheDirectory stringByAppendingPathExtension:@"0"];
-  downloadCacheDirectory = v24->_downloadCacheDirectory;
+  v20 = [(NSString *)selfCopy->_downloadCacheDirectory stringByAppendingPathExtension:@"0"];
+  downloadCacheDirectory = selfCopy->_downloadCacheDirectory;
   v19 = v21;
   v11 = [v22[0] moveItemAtPath:downloadCacheDirectory toPath:v20 error:&v19];
   objc_storeStrong(&v21, v19);
@@ -1691,20 +1691,20 @@ void __53__MCLURLDataLoader_removeFilesOlderThan_inDirectory___block_invoke(uint
     NSLog(&cfstr_ErrorDeletingD.isa, v21);
   }
 
-  v3 = [(MCLURLDataLoader *)v24 cacheLocations];
+  cacheLocations = [(MCLURLDataLoader *)selfCopy cacheLocations];
   v12 = MEMORY[0x277D85DD0];
   v13 = -1073741824;
   v14 = 0;
   v15 = __30__MCLURLDataLoader_clearCache__block_invoke;
   v16 = &unk_2797EDFB8;
   v17 = MEMORY[0x277D82BE0](v22[0]);
-  [(NSSet *)v3 enumerateObjectsUsingBlock:&v12];
-  MEMORY[0x277D82BD8](v3);
-  [(MCLURLDataLoader *)v24 setupCache:1];
-  [(MCLURLDataLoader *)v24 configureSession];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:@"MCLURLDataLoaderDidClearCache" object:v24];
-  MEMORY[0x277D82BD8](v4);
+  [(NSSet *)cacheLocations enumerateObjectsUsingBlock:&v12];
+  MEMORY[0x277D82BD8](cacheLocations);
+  [(MCLURLDataLoader *)selfCopy setupCache:1];
+  [(MCLURLDataLoader *)selfCopy configureSession];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 postNotificationName:@"MCLURLDataLoaderDidClearCache" object:selfCopy];
+  MEMORY[0x277D82BD8](defaultCenter2);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v20, 0);
   objc_storeStrong(&v21, 0);
@@ -1784,17 +1784,17 @@ void __30__MCLURLDataLoader_clearCache__block_invoke_2(void *a1)
   objc_storeStrong(v6, 0);
 }
 
-- (void)removeCachedResponseForRequest:(id)a3
+- (void)removeCachedResponseForRequest:(id)request
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v12 = [location[0] mutableCopy];
   [objc_opt_class() applyDefaultRequestHeaders:v12];
-  [(MCLURLDataLoader *)v14 processURLRequestRewrite:v12];
-  objc_initWeak(&v11, v14);
-  operationQueue = v14->_operationQueue;
+  [(MCLURLDataLoader *)selfCopy processURLRequestRewrite:v12];
+  objc_initWeak(&v11, selfCopy);
+  operationQueue = selfCopy->_operationQueue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
@@ -1817,37 +1817,37 @@ uint64_t __51__MCLURLDataLoader_removeCachedResponseForRequest___block_invoke(ui
   return MEMORY[0x277D82BD8](WeakRetained);
 }
 
-- (void)backgroundRemoveCachedResponseForRequest:(id)a3
+- (void)backgroundRemoveCachedResponseForRequest:(id)request
 {
   v30 = *MEMORY[0x277D85DE8];
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(MCLURLDataLoader *)v28 _removeCachedResponseForRequest:location[0] force:1];
-  downloadCacheDirectory = v28->_downloadCacheDirectory;
+  objc_storeStrong(location, request);
+  [(MCLURLDataLoader *)selfCopy _removeCachedResponseForRequest:location[0] force:1];
+  downloadCacheDirectory = selfCopy->_downloadCacheDirectory;
   v19 = [location[0] URL];
   v18 = [MCLURLDataLoader uniqueKeyForURL:?];
   v26 = [(NSString *)downloadCacheDirectory stringByAppendingPathComponent:?];
   MEMORY[0x277D82BD8](v18);
   MEMORY[0x277D82BD8](v19);
-  v25 = [MEMORY[0x277CCAA00] defaultManager];
-  v20 = [v26 pathExtension];
-  v21 = [v20 length];
-  MEMORY[0x277D82BD8](v20);
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  pathExtension = [v26 pathExtension];
+  v21 = [pathExtension length];
+  MEMORY[0x277D82BD8](pathExtension);
   if (v21)
   {
-    [v25 removeItemAtPath:v26 error:0];
+    [defaultManager removeItemAtPath:v26 error:0];
   }
 
   else
   {
-    v24 = [v26 lastPathComponent];
+    lastPathComponent = [v26 lastPathComponent];
     memset(__b, 0, sizeof(__b));
-    v13 = v25;
-    v14 = [v26 stringByDeletingLastPathComponent];
+    v13 = defaultManager;
+    stringByDeletingLastPathComponent = [v26 stringByDeletingLastPathComponent];
     obj = [v13 enumeratorAtPath:?];
-    MEMORY[0x277D82BD8](v14);
+    MEMORY[0x277D82BD8](stringByDeletingLastPathComponent);
     v16 = [obj countByEnumeratingWithState:__b objects:v29 count:16];
     if (v16)
     {
@@ -1863,18 +1863,18 @@ uint64_t __51__MCLURLDataLoader_removeCachedResponseForRequest___block_invoke(ui
         }
 
         v23 = *(__b[1] + 8 * v11);
-        v7 = [v23 stringByDeletingPathExtension];
-        v8 = [v7 isEqualToString:v24];
-        MEMORY[0x277D82BD8](v7);
+        stringByDeletingPathExtension = [v23 stringByDeletingPathExtension];
+        v8 = [stringByDeletingPathExtension isEqualToString:lastPathComponent];
+        MEMORY[0x277D82BD8](stringByDeletingPathExtension);
         if (v8)
         {
-          v4 = v25;
+          v4 = defaultManager;
           v3 = v26;
-          v6 = [v23 pathExtension];
+          pathExtension2 = [v23 pathExtension];
           v5 = [v3 stringByAppendingPathExtension:?];
           [v4 removeItemAtPath:? error:?];
           MEMORY[0x277D82BD8](v5);
-          MEMORY[0x277D82BD8](v6);
+          MEMORY[0x277D82BD8](pathExtension2);
         }
 
         ++v11;
@@ -1891,57 +1891,57 @@ uint64_t __51__MCLURLDataLoader_removeCachedResponseForRequest___block_invoke(ui
     }
 
     MEMORY[0x277D82BD8](obj);
-    objc_storeStrong(&v24, 0);
+    objc_storeStrong(&lastPathComponent, 0);
   }
 
-  objc_storeStrong(&v25, 0);
+  objc_storeStrong(&defaultManager, 0);
   objc_storeStrong(&v26, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)addCacheLocation:(id)a3
+- (void)addCacheLocation:(id)location
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, location);
   v20 = 0;
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v19 = v20;
-  v10 = [v9 createDirectoryAtPath:location[0] withIntermediateDirectories:1 attributes:0 error:&v19];
+  v10 = [defaultManager createDirectoryAtPath:location[0] withIntermediateDirectories:1 attributes:0 error:&v19];
   objc_storeStrong(&v20, v19);
-  MEMORY[0x277D82BD8](v9);
+  MEMORY[0x277D82BD8](defaultManager);
   if ((v10 & 1) == 0)
   {
     NSLog(&cfstr_ErrorCreatingC.isa, v20);
   }
 
   v4 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v3 = [(NSArray *)v4 firstObject];
-  v18 = [v3 stringByDeletingLastPathComponent];
-  MEMORY[0x277D82BD8](v3);
+  firstObject = [(NSArray *)v4 firstObject];
+  stringByDeletingLastPathComponent = [firstObject stringByDeletingLastPathComponent];
+  MEMORY[0x277D82BD8](firstObject);
   MEMORY[0x277D82BD8](v4);
-  v6 = [(MCLURLDataLoader *)v22 cacheLocations];
+  cacheLocations = [(MCLURLDataLoader *)selfCopy cacheLocations];
   v11 = MEMORY[0x277D85DD0];
   v12 = -1073741824;
   v13 = 0;
   v14 = __37__MCLURLDataLoader_addCacheLocation___block_invoke;
   v15 = &unk_2797EEA30;
-  v16 = MEMORY[0x277D82BE0](v18);
-  v5 = [(NSSet *)v6 objectsPassingTest:&v11];
+  v16 = MEMORY[0x277D82BE0](stringByDeletingLastPathComponent);
+  v5 = [(NSSet *)cacheLocations objectsPassingTest:&v11];
   v17 = [(NSSet *)v5 mutableCopy];
   MEMORY[0x277D82BD8](v5);
-  MEMORY[0x277D82BD8](v6);
+  MEMORY[0x277D82BD8](cacheLocations);
   [v17 addObject:location[0]];
-  v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v7 = [v17 allObjects];
-  [v8 setObject:? forKey:?];
-  MEMORY[0x277D82BD8](v7);
-  MEMORY[0x277D82BD8](v8);
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  allObjects = [v17 allObjects];
+  [standardUserDefaults setObject:? forKey:?];
+  MEMORY[0x277D82BD8](allObjects);
+  MEMORY[0x277D82BD8](standardUserDefaults);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v16, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&stringByDeletingLastPathComponent, 0);
   objc_storeStrong(&v20, 0);
   objc_storeStrong(location, 0);
 }
@@ -1956,14 +1956,14 @@ uint64_t __37__MCLURLDataLoader_addCacheLocation___block_invoke(void *a1, void *
   return v4;
 }
 
-- (void)addRewriteRule:(id)a3
+- (void)addRewriteRule:(id)rule
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(NSMutableOrderedSet *)v4->_rewriteRules addObject:location[0]];
-  [(NSMutableOrderedSet *)v4->_rewriteRules sortWithOptions:16 usingComparator:&__block_literal_global_104];
+  objc_storeStrong(location, rule);
+  [(NSMutableOrderedSet *)selfCopy->_rewriteRules addObject:location[0]];
+  [(NSMutableOrderedSet *)selfCopy->_rewriteRules sortWithOptions:16 usingComparator:&__block_literal_global_104];
   objc_storeStrong(location, 0);
 }
 
@@ -1997,23 +1997,23 @@ uint64_t __35__MCLURLDataLoader_addRewriteRule___block_invoke(void *a1, void *a2
   return v10;
 }
 
-- (void)removeRewriteRule:(id)a3
+- (void)removeRewriteRule:(id)rule
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(NSMutableOrderedSet *)v4->_rewriteRules removeObject:location[0]];
+  objc_storeStrong(location, rule);
+  [(NSMutableOrderedSet *)selfCopy->_rewriteRules removeObject:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)removeRewriteRulesWithName:(id)a3
+- (void)removeRewriteRulesWithName:(id)name
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  rewriteRules = v12->_rewriteRules;
+  objc_storeStrong(location, name);
+  rewriteRules = selfCopy->_rewriteRules;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
@@ -2021,7 +2021,7 @@ uint64_t __35__MCLURLDataLoader_addRewriteRule___block_invoke(void *a1, void *a2
   v8 = &unk_2797EEA78;
   v9 = MEMORY[0x277D82BE0](location[0]);
   v10 = [(NSMutableOrderedSet *)rewriteRules indexesOfObjectsPassingTest:?];
-  [(NSMutableOrderedSet *)v12->_rewriteRules removeObjectsAtIndexes:v10];
+  [(NSMutableOrderedSet *)selfCopy->_rewriteRules removeObjectsAtIndexes:v10];
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
@@ -2039,97 +2039,97 @@ uint64_t __47__MCLURLDataLoader_removeRewriteRulesWithName___block_invoke(void *
   return v5;
 }
 
-- (void)removeRewriteRules:(id)a3
+- (void)removeRewriteRules:(id)rules
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(NSMutableOrderedSet *)v4->_rewriteRules removeObjectsInArray:location[0]];
+  objc_storeStrong(location, rules);
+  [(NSMutableOrderedSet *)selfCopy->_rewriteRules removeObjectsInArray:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)applyRewriteRules:(id)a3
+- (void)applyRewriteRules:(id)rules
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(MCLURLDataLoader *)v4 processURLRequestRewrite:location[0]];
+  objc_storeStrong(location, rules);
+  [(MCLURLDataLoader *)selfCopy processURLRequestRewrite:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)applicationDidEnterBackgroundNotification:(id)a3
+- (void)applicationDidEnterBackgroundNotification:(id)notification
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v15->_backgroundTaskIdentifier == *MEMORY[0x277D767B0])
+  objc_storeStrong(location, notification);
+  if (selfCopy->_backgroundTaskIdentifier == *MEMORY[0x277D767B0])
   {
     v13 = 0;
-    [(NSRecursiveLock *)v15->_taskQueueLock lock];
-    v6 = [(NSMutableDictionary *)v15->_activeTasks count];
-    v13 = v6 + [(NSMutableArray *)v15->_taskQueue count]!= 0;
-    [(NSRecursiveLock *)v15->_taskQueueLock unlock];
+    [(NSRecursiveLock *)selfCopy->_taskQueueLock lock];
+    v6 = [(NSMutableDictionary *)selfCopy->_activeTasks count];
+    v13 = v6 + [(NSMutableArray *)selfCopy->_taskQueue count]!= 0;
+    [(NSRecursiveLock *)selfCopy->_taskQueueLock unlock];
     if (v13)
     {
-      v5 = [MEMORY[0x277D75128] sharedApplication];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
       v4 = [objc_opt_class() description];
       v7 = MEMORY[0x277D85DD0];
       v8 = -1073741824;
       v9 = 0;
       v10 = __62__MCLURLDataLoader_applicationDidEnterBackgroundNotification___block_invoke;
       v11 = &unk_2797EE220;
-      v12 = MEMORY[0x277D82BE0](v15);
-      v3 = [v5 beginBackgroundTaskWithName:v4 expirationHandler:&v7];
-      v15->_backgroundTaskIdentifier = v3;
+      v12 = MEMORY[0x277D82BE0](selfCopy);
+      v3 = [mEMORY[0x277D75128] beginBackgroundTaskWithName:v4 expirationHandler:&v7];
+      selfCopy->_backgroundTaskIdentifier = v3;
       MEMORY[0x277D82BD8](v4);
-      MEMORY[0x277D82BD8](v5);
+      MEMORY[0x277D82BD8](mEMORY[0x277D75128]);
       objc_storeStrong(&v12, 0);
     }
 
-    if (v15->_backgroundTaskIdentifier == *MEMORY[0x277D767B0])
+    if (selfCopy->_backgroundTaskIdentifier == *MEMORY[0x277D767B0])
     {
-      [(MCLURLDataLoader *)v15 suspend];
+      [(MCLURLDataLoader *)selfCopy suspend];
     }
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)applicationWillEnterForegroundNotification:(id)a3
+- (void)applicationWillEnterForegroundNotification:(id)notification
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(MCLURLDataLoader *)v4 notifyBackgroundStopped];
-  v4->_resuming = 1;
-  [(MCLURLDataLoader *)v4 resume];
+  objc_storeStrong(location, notification);
+  [(MCLURLDataLoader *)selfCopy notifyBackgroundStopped];
+  selfCopy->_resuming = 1;
+  [(MCLURLDataLoader *)selfCopy resume];
   objc_storeStrong(location, 0);
 }
 
-- (void)applicationDidBecomeActiveNotification:(id)a3
+- (void)applicationDidBecomeActiveNotification:(id)notification
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4->_resuming = 0;
-  [(MCLURLDataLoader *)v4 resume];
+  objc_storeStrong(location, notification);
+  selfCopy->_resuming = 0;
+  [(MCLURLDataLoader *)selfCopy resume];
   objc_storeStrong(location, 0);
 }
 
 - (void)suspend
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   if (!self->_suspended)
   {
-    v10->_suspended = 1;
-    objc_initWeak(location, v10);
-    operationQueue = v10->_operationQueue;
+    selfCopy->_suspended = 1;
+    objc_initWeak(location, selfCopy);
+    operationQueue = selfCopy->_operationQueue;
     v3 = MEMORY[0x277D85DD0];
     v4 = -1073741824;
     v5 = 0;
@@ -2151,12 +2151,12 @@ uint64_t __27__MCLURLDataLoader_suspend__block_invoke(uint64_t a1)
 
 - (void)resume
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   if (self->_suspended)
   {
-    objc_initWeak(location, v10);
-    operationQueue = v10->_operationQueue;
+    objc_initWeak(location, selfCopy);
+    operationQueue = selfCopy->_operationQueue;
     v3 = MEMORY[0x277D85DD0];
     v4 = -1073741824;
     v5 = 0;
@@ -2176,41 +2176,41 @@ uint64_t __26__MCLURLDataLoader_resume__block_invoke(uint64_t a1)
   return MEMORY[0x277D82BD8](WeakRetained);
 }
 
-+ (void)restart:(id)a3
++ (void)restart:(id)restart
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, restart);
   [shared internalRestart:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)internalRestart:(id)a3
+- (void)internalRestart:(id)restart
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v13 = [MEMORY[0x277CCABD8] currentQueue];
-  v15->_suspended = 1;
-  objc_initWeak(&v12, v15);
-  operationQueue = v15->_operationQueue;
+  objc_storeStrong(location, restart);
+  currentQueue = [MEMORY[0x277CCABD8] currentQueue];
+  selfCopy->_suspended = 1;
+  objc_initWeak(&v12, selfCopy);
+  operationQueue = selfCopy->_operationQueue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __36__MCLURLDataLoader_internalRestart___block_invoke;
   v8 = &unk_2797EEAA0;
   objc_copyWeak(&v11, &v12);
-  v9 = MEMORY[0x277D82BE0](v13);
+  v9 = MEMORY[0x277D82BE0](currentQueue);
   v10 = MEMORY[0x277D82BE0](location[0]);
   [(NSOperationQueue *)operationQueue addOperationWithBlock:&v4];
-  [(NSOperationQueue *)v15->_operationQueue waitUntilAllOperationsAreFinished];
+  [(NSOperationQueue *)selfCopy->_operationQueue waitUntilAllOperationsAreFinished];
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v9, 0);
   objc_destroyWeak(&v11);
   objc_destroyWeak(&v12);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&currentQueue, 0);
   objc_storeStrong(location, 0);
 }
 
@@ -2226,9 +2226,9 @@ uint64_t __36__MCLURLDataLoader_internalRestart___block_invoke(uint64_t a1)
 {
   if (self->_backgroundTaskIdentifier != *MEMORY[0x277D767B0])
   {
-    v2 = [MEMORY[0x277D75128] sharedApplication];
-    [v2 endBackgroundTask:self->_backgroundTaskIdentifier];
-    MEMORY[0x277D82BD8](v2);
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] endBackgroundTask:self->_backgroundTaskIdentifier];
+    MEMORY[0x277D82BD8](mEMORY[0x277D75128]);
     self->_backgroundTaskIdentifier = *MEMORY[0x277D767B0];
   }
 }
@@ -2237,10 +2237,10 @@ uint64_t __36__MCLURLDataLoader_internalRestart___block_invoke(uint64_t a1)
 {
   if (!self->_resuming)
   {
-    v2 = [MEMORY[0x277D75128] sharedApplication];
-    v3 = [v2 applicationState];
-    MEMORY[0x277D82BD8](v2);
-    if (v3 == 2)
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    applicationState = [mEMORY[0x277D75128] applicationState];
+    MEMORY[0x277D82BD8](mEMORY[0x277D75128]);
+    if (applicationState == 2)
     {
       [(MCLURLDataLoader *)self suspend];
     }
@@ -2249,62 +2249,62 @@ uint64_t __36__MCLURLDataLoader_internalRestart___block_invoke(uint64_t a1)
 
 - (void)notifyEnqueue
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v5 = 0;
   v4 = 0;
-  if ([v3 applicationState] == 2)
+  if ([mEMORY[0x277D75128] applicationState] == 2)
   {
-    v6 = [MEMORY[0x277D75128] sharedApplication];
+    mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
     v5 = 1;
-    [v6 backgroundTimeRemaining];
+    [mEMORY[0x277D75128]2 backgroundTimeRemaining];
     v4 = v2 > 5.0;
   }
 
   if (v5)
   {
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](mEMORY[0x277D75128]2);
   }
 
-  MEMORY[0x277D82BD8](v3);
+  MEMORY[0x277D82BD8](mEMORY[0x277D75128]);
   if (v4)
   {
     [(MCLURLDataLoader *)self resume];
   }
 }
 
-- (int64_t)priorityForCategory:(id)a3
+- (int64_t)priorityForCategory:(id)category
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(NSMutableDictionary *)v7->_priorities objectForKeyedSubscript:location[0]];
-  v5 = [v4 integerValue];
+  objc_storeStrong(location, category);
+  v4 = [(NSMutableDictionary *)selfCopy->_priorities objectForKeyedSubscript:location[0]];
+  integerValue = [v4 integerValue];
   MEMORY[0x277D82BD8](v4);
   objc_storeStrong(location, 0);
-  return v5;
+  return integerValue;
 }
 
-- (void)setPriority:(int64_t)a3 forCategory:(id)a4
+- (void)setPriority:(int64_t)priority forCategory:(id)category
 {
-  v27 = self;
+  selfCopy = self;
   v26 = a2;
-  v25 = a3;
+  priorityCopy = priority;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v8 = [(NSMutableDictionary *)v27->_priorities objectForKeyedSubscript:location];
-  v9 = [v8 integerValue];
+  objc_storeStrong(&location, category);
+  v8 = [(NSMutableDictionary *)selfCopy->_priorities objectForKeyedSubscript:location];
+  integerValue = [v8 integerValue];
   MEMORY[0x277D82BD8](v8);
-  v23[1] = v9;
-  if (v9 != v25)
+  v23[1] = integerValue;
+  if (integerValue != priorityCopy)
   {
-    v4 = [MEMORY[0x277CCABB0] numberWithInteger:v25];
+    v4 = [MEMORY[0x277CCABB0] numberWithInteger:priorityCopy];
     [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
     MEMORY[0x277D82BD8](v4);
-    [(NSRecursiveLock *)v27->_taskQueueLock lock];
+    [(NSRecursiveLock *)selfCopy->_taskQueueLock lock];
     v5 = objc_alloc(MEMORY[0x277CBEB18]);
-    v23[0] = [v5 initWithCapacity:{-[NSMutableArray count](v27->_taskQueue, "count")}];
-    taskQueue = v27->_taskQueue;
+    v23[0] = [v5 initWithCapacity:{-[NSMutableArray count](selfCopy->_taskQueue, "count")}];
+    taskQueue = selfCopy->_taskQueue;
     v16 = MEMORY[0x277D85DD0];
     v17 = -1073741824;
     v18 = 0;
@@ -2313,14 +2313,14 @@ uint64_t __36__MCLURLDataLoader_internalRestart___block_invoke(uint64_t a1)
     v21 = MEMORY[0x277D82BE0](location);
     v22 = MEMORY[0x277D82BE0](v23[0]);
     [(NSMutableArray *)taskQueue enumerateObjectsUsingBlock:&v16];
-    [(NSRecursiveLock *)v27->_taskQueueLock unlock];
+    [(NSRecursiveLock *)selfCopy->_taskQueueLock unlock];
     v7 = v23[0];
     v10 = MEMORY[0x277D85DD0];
     v11 = -1073741824;
     v12 = 0;
     v13 = __44__MCLURLDataLoader_setPriority_forCategory___block_invoke_2;
     v14 = &unk_2797EEAF0;
-    v15 = MEMORY[0x277D82BE0](v27);
+    v15 = MEMORY[0x277D82BE0](selfCopy);
     [v7 enumerateObjectsUsingBlock:&v10];
     objc_storeStrong(&v15, 0);
     objc_storeStrong(&v22, 0);
@@ -2356,17 +2356,17 @@ void __44__MCLURLDataLoader_setPriority_forCategory___block_invoke_2(id *a1, voi
   objc_storeStrong(location, 0);
 }
 
-- (id)loadRequest:(id)a3 category:(id)a4 completionHandler:(id)a5
+- (id)loadRequest:(id)request category:(id)category completionHandler:(id)handler
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, category);
   v9 = 0;
-  objc_storeStrong(&v9, a5);
-  v8 = [(MCLURLDataLoader *)v12 loadRequest:location[0] category:v10 completionHandler:v9 receiveData:0];
+  objc_storeStrong(&v9, handler);
+  v8 = [(MCLURLDataLoader *)selfCopy loadRequest:location[0] category:v10 completionHandler:v9 receiveData:0];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
@@ -2374,18 +2374,18 @@ void __44__MCLURLDataLoader_setPriority_forCategory___block_invoke_2(id *a1, voi
   return v8;
 }
 
-- (id)loadRequest:(id)a3 category:(id)a4 completionHandler:(id)a5 receiveData:(id)a6
+- (id)loadRequest:(id)request category:(id)category completionHandler:(id)handler receiveData:(id)data
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, category);
   v15 = 0;
-  objc_storeStrong(&v15, a5);
+  objc_storeStrong(&v15, handler);
   v14 = 0;
-  objc_storeStrong(&v14, a6);
+  objc_storeStrong(&v14, data);
   if (v16)
   {
     v9 = v16;
@@ -2399,7 +2399,7 @@ void __44__MCLURLDataLoader_setPriority_forCategory___block_invoke_2(id *a1, voi
   objc_storeStrong(&v16, v9);
   v6 = [MCLURLDataLoaderTask alloc];
   v13 = [MCLURLDataLoaderTask initWithURLRequest:v6 targetPath:"initWithURLRequest:targetPath:category:completionHandler:receiveData:" category:location[0] completionHandler:? receiveData:?];
-  [(MCLURLDataLoader *)v18 enqueueTask:v13 reschedule:0];
+  [(MCLURLDataLoader *)selfCopy enqueueTask:v13 reschedule:0];
   v8 = MEMORY[0x277D82BE0](v13);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v14, 0);
@@ -2410,17 +2410,17 @@ void __44__MCLURLDataLoader_setPriority_forCategory___block_invoke_2(id *a1, voi
   return v8;
 }
 
-- (id)loadURL:(id)a3 category:(id)a4 completionHandler:(id)a5
+- (id)loadURL:(id)l category:(id)category completionHandler:(id)handler
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, category);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
-  v8 = v14;
+  objc_storeStrong(&v11, handler);
+  v8 = selfCopy;
   v9 = [MEMORY[0x277CCAD20] requestWithURL:location[0]];
   v10 = [MCLURLDataLoader loadRequest:v8 category:"loadRequest:category:completionHandler:" completionHandler:?];
   MEMORY[0x277D82BD8](v9);
@@ -2431,18 +2431,18 @@ void __44__MCLURLDataLoader_setPriority_forCategory___block_invoke_2(id *a1, voi
   return v10;
 }
 
-- (id)downloadRequest:(id)a3 toPath:(id)a4 category:(id)a5 completionHandler:(id)a6
+- (id)downloadRequest:(id)request toPath:(id)path category:(id)category completionHandler:(id)handler
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, path);
   v15 = 0;
-  objc_storeStrong(&v15, a5);
+  objc_storeStrong(&v15, category);
   v14 = 0;
-  objc_storeStrong(&v14, a6);
+  objc_storeStrong(&v14, handler);
   if (v15)
   {
     v9 = v15;
@@ -2456,7 +2456,7 @@ void __44__MCLURLDataLoader_setPriority_forCategory___block_invoke_2(id *a1, voi
   objc_storeStrong(&v15, v9);
   v6 = [MCLURLDataLoaderTask alloc];
   v13 = [(MCLURLDataLoaderTask *)v6 initWithURLRequest:location[0] targetPath:v16 category:v15 completionHandler:v14 receiveData:?];
-  [(MCLURLDataLoader *)v18 enqueueTask:v13 reschedule:0];
+  [(MCLURLDataLoader *)selfCopy enqueueTask:v13 reschedule:0];
   v8 = MEMORY[0x277D82BE0](v13);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v14, 0);
@@ -2467,19 +2467,19 @@ void __44__MCLURLDataLoader_setPriority_forCategory___block_invoke_2(id *a1, voi
   return v8;
 }
 
-- (id)downloadURL:(id)a3 toPath:(id)a4 category:(id)a5 completionHandler:(id)a6
+- (id)downloadURL:(id)l toPath:(id)path category:(id)category completionHandler:(id)handler
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, path);
   v14 = 0;
-  objc_storeStrong(&v14, a5);
+  objc_storeStrong(&v14, category);
   v13 = 0;
-  objc_storeStrong(&v13, a6);
-  v10 = v17;
+  objc_storeStrong(&v13, handler);
+  v10 = selfCopy;
   v11 = [MEMORY[0x277CCAD20] requestWithURL:location[0]];
   v12 = [MCLURLDataLoader downloadRequest:v10 toPath:"downloadRequest:toPath:category:completionHandler:" category:? completionHandler:?];
   MEMORY[0x277D82BD8](v11);
@@ -2491,25 +2491,25 @@ void __44__MCLURLDataLoader_setPriority_forCategory___block_invoke_2(id *a1, voi
   return v12;
 }
 
-- (id)downloadRequest:(id)a3 category:(id)a4 completionHandler:(id)a5
+- (id)downloadRequest:(id)request category:(id)category completionHandler:(id)handler
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, category);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
-  downloadCacheDirectory = v20->_downloadCacheDirectory;
+  objc_storeStrong(&v17, handler);
+  downloadCacheDirectory = selfCopy->_downloadCacheDirectory;
   v13 = [location[0] URL];
   v12 = [MCLURLDataLoader uniqueKeyForURL:?];
   v16 = [(NSString *)downloadCacheDirectory stringByAppendingPathComponent:?];
   MEMORY[0x277D82BD8](v12);
   MEMORY[0x277D82BD8](v13);
-  v14 = [(NSString *)v16 pathExtension];
-  v15 = [(NSString *)v14 length];
-  MEMORY[0x277D82BD8](v14);
+  pathExtension = [(NSString *)v16 pathExtension];
+  v15 = [(NSString *)pathExtension length];
+  MEMORY[0x277D82BD8](pathExtension);
   if (!v15)
   {
     v5 = [(NSString *)v16 stringByAppendingPathExtension:@"[content_type]"];
@@ -2518,7 +2518,7 @@ void __44__MCLURLDataLoader_setPriority_forCategory___block_invoke_2(id *a1, voi
     MEMORY[0x277D82BD8](v6);
   }
 
-  v8 = [(MCLURLDataLoader *)v20 downloadRequest:location[0] toPath:v16 category:v18 completionHandler:v17];
+  v8 = [(MCLURLDataLoader *)selfCopy downloadRequest:location[0] toPath:v16 category:v18 completionHandler:v17];
   objc_storeStrong(&v16, 0);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v18, 0);
@@ -2527,17 +2527,17 @@ void __44__MCLURLDataLoader_setPriority_forCategory___block_invoke_2(id *a1, voi
   return v8;
 }
 
-- (id)downloadURL:(id)a3 category:(id)a4 completionHandler:(id)a5
+- (id)downloadURL:(id)l category:(id)category completionHandler:(id)handler
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, category);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
-  v8 = v14;
+  objc_storeStrong(&v11, handler);
+  v8 = selfCopy;
   v9 = [MEMORY[0x277CCAD20] requestWithURL:location[0]];
   v10 = [MCLURLDataLoader downloadRequest:v8 category:"downloadRequest:category:completionHandler:" completionHandler:?];
   MEMORY[0x277D82BD8](v9);
@@ -2548,15 +2548,15 @@ void __44__MCLURLDataLoader_setPriority_forCategory___block_invoke_2(id *a1, voi
   return v10;
 }
 
-- (void)cancelTask:(id)a3
+- (void)cancelTask:(id)task
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, task);
   [location[0] setCancelled:1];
-  objc_initWeak(&v11, v13);
-  operationQueue = v13->_operationQueue;
+  objc_initWeak(&v11, selfCopy);
+  operationQueue = selfCopy->_operationQueue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
@@ -2578,19 +2578,19 @@ uint64_t __31__MCLURLDataLoader_cancelTask___block_invoke(uint64_t a1)
   return MEMORY[0x277D82BD8](WeakRetained);
 }
 
-- (void)cancelTasks:(id)a3
+- (void)cancelTasks:(id)tasks
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, tasks);
   [location[0] enumerateObjectsUsingBlock:&__block_literal_global_112];
-  objc_initWeak(&from, v15);
+  objc_initWeak(&from, selfCopy);
   v5 = [location[0] copy];
   v3 = location[0];
   location[0] = v5;
   MEMORY[0x277D82BD8](v3);
-  operationQueue = v15->_operationQueue;
+  operationQueue = selfCopy->_operationQueue;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
@@ -2640,35 +2640,35 @@ void __32__MCLURLDataLoader_cancelTasks___block_invoke_3(id *a1, void *a2)
   objc_storeStrong(location, 0);
 }
 
-- (void)setCategory:(id)a3 forTask:(id)a4
+- (void)setCategory:(id)category forTask:(id)task
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, category);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
-  v5 = [v7 category];
-  v6 = [v5 isEqualToString:location[0]];
-  MEMORY[0x277D82BD8](v5);
+  objc_storeStrong(&v7, task);
+  category = [v7 category];
+  v6 = [category isEqualToString:location[0]];
+  MEMORY[0x277D82BD8](category);
   if ((v6 & 1) == 0)
   {
     [v7 setCategory:location[0]];
-    [(MCLURLDataLoader *)v9 enqueueTask:v7 reschedule:1];
+    [(MCLURLDataLoader *)selfCopy enqueueTask:v7 reschedule:1];
   }
 
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)setCategory:(id)a3 forTasks:(id)a4
+- (void)setCategory:(id)category forTasks:(id)tasks
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, category);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, tasks);
   v5 = v13;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
@@ -2676,7 +2676,7 @@ void __32__MCLURLDataLoader_cancelTasks___block_invoke_3(id *a1, void *a2)
   v9 = __41__MCLURLDataLoader_setCategory_forTasks___block_invoke;
   v10 = &unk_2797EEAC8;
   v11 = MEMORY[0x277D82BE0](location[0]);
-  v12 = MEMORY[0x277D82BE0](v15);
+  v12 = MEMORY[0x277D82BE0](selfCopy);
   [v5 enumerateObjectsUsingBlock:?];
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v11, 0);
@@ -2701,61 +2701,61 @@ void __41__MCLURLDataLoader_setCategory_forTasks___block_invoke(uint64_t a1, voi
   objc_storeStrong(location, 0);
 }
 
-+ (id)uniqueKeyForURL:(id)a3
++ (id)uniqueKeyForURL:(id)l
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v22 = [location[0] absoluteString];
+  objc_storeStrong(location, l);
+  absoluteString = [location[0] absoluteString];
   MEMORY[0x277D82BD8](0);
-  v3 = v22;
-  v21 = [v22 UTF8String];
-  if (v21)
+  v3 = absoluteString;
+  uTF8String = [absoluteString UTF8String];
+  if (uTF8String)
   {
-    v4 = strlen(v21);
-    v19 = XXH64(v21, v4, 0);
-    v13 = [location[0] path];
+    v4 = strlen(uTF8String);
+    v19 = XXH64(uTF8String, v4, 0);
+    path = [location[0] path];
     v16 = 0;
-    if (v13)
+    if (path)
     {
-      v5 = MEMORY[0x277D82BE0](v13);
+      v5 = MEMORY[0x277D82BE0](path);
     }
 
     else
     {
-      v17 = [location[0] resourceSpecifier];
+      resourceSpecifier = [location[0] resourceSpecifier];
       v16 = 1;
-      v5 = MEMORY[0x277D82BE0](v17);
+      v5 = MEMORY[0x277D82BE0](resourceSpecifier);
     }
 
     v18 = v5;
     if (v16)
     {
-      MEMORY[0x277D82BD8](v17);
+      MEMORY[0x277D82BD8](resourceSpecifier);
     }
 
-    MEMORY[0x277D82BD8](v13);
-    v15 = [v18 lastPathComponent];
-    v14 = [v15 pathExtension];
-    v12 = [v15 stringByDeletingPathExtension];
-    v6 = [v12 stringByAppendingFormat:@"-%llX", v19];
-    v7 = v15;
-    v15 = v6;
+    MEMORY[0x277D82BD8](path);
+    lastPathComponent = [v18 lastPathComponent];
+    pathExtension = [lastPathComponent pathExtension];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+    v6 = [stringByDeletingPathExtension stringByAppendingFormat:@"-%llX", v19];
+    v7 = lastPathComponent;
+    lastPathComponent = v6;
     MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v12);
-    if ([v14 length])
+    MEMORY[0x277D82BD8](stringByDeletingPathExtension);
+    if ([pathExtension length])
     {
-      v8 = [v15 stringByAppendingPathExtension:v14];
-      v9 = v15;
-      v15 = v8;
+      v8 = [lastPathComponent stringByAppendingPathExtension:pathExtension];
+      v9 = lastPathComponent;
+      lastPathComponent = v8;
       MEMORY[0x277D82BD8](v9);
     }
 
-    v24 = MEMORY[0x277D82BE0](v15);
+    v24 = MEMORY[0x277D82BE0](lastPathComponent);
     v20 = 1;
-    objc_storeStrong(&v14, 0);
-    objc_storeStrong(&v15, 0);
+    objc_storeStrong(&pathExtension, 0);
+    objc_storeStrong(&lastPathComponent, 0);
     objc_storeStrong(&v18, 0);
   }
 
@@ -2765,7 +2765,7 @@ void __41__MCLURLDataLoader_setCategory_forTasks___block_invoke(uint64_t a1, voi
     v20 = 1;
   }
 
-  objc_storeStrong(&v22, 0);
+  objc_storeStrong(&absoluteString, 0);
   objc_storeStrong(location, 0);
   v10 = v24;
 
@@ -2775,11 +2775,11 @@ void __41__MCLURLDataLoader_setCategory_forTasks___block_invoke(uint64_t a1, voi
 - (NSSet)cacheLocations
 {
   v3 = MEMORY[0x277CBEB98];
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v5 arrayForKey:@"MCLURLDataLoader.cacheLocations"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults arrayForKey:@"MCLURLDataLoader.cacheLocations"];
   v6 = [v3 setWithArray:?];
   MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v5);
+  MEMORY[0x277D82BD8](standardUserDefaults);
 
   return v6;
 }
@@ -2789,14 +2789,14 @@ void __41__MCLURLDataLoader_setCategory_forTasks___block_invoke(uint64_t a1, voi
   if (!self->_session)
   {
     v4 = MEMORY[0x277CCAD30];
-    v6 = [(MCLURLDataLoader *)self defaultSessionConfiguration];
-    v5 = [(MCLURLDataLoader *)self operationQueue];
-    v2 = [v4 sessionWithConfiguration:v6 delegate:self delegateQueue:?];
+    defaultSessionConfiguration = [(MCLURLDataLoader *)self defaultSessionConfiguration];
+    operationQueue = [(MCLURLDataLoader *)self operationQueue];
+    v2 = [v4 sessionWithConfiguration:defaultSessionConfiguration delegate:self delegateQueue:?];
     session = self->_session;
     self->_session = v2;
     MEMORY[0x277D82BD8](session);
-    MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](operationQueue);
+    MEMORY[0x277D82BD8](defaultSessionConfiguration);
     v7 = [objc_opt_class() description];
     [(NSURLSession *)self->_session setSessionDescription:?];
     MEMORY[0x277D82BD8](v7);
@@ -2805,10 +2805,10 @@ void __41__MCLURLDataLoader_setCategory_forTasks___block_invoke(uint64_t a1, voi
 
 - (id)defaultSessionConfiguration
 {
-  v7 = self;
+  selfCopy = self;
   v6[1] = a2;
   v6[0] = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-  [(MCLURLDataLoader *)v7 configureSession:v6[0]];
+  [(MCLURLDataLoader *)selfCopy configureSession:v6[0]];
   v3 = _sessionConfigurators;
   v5 = MEMORY[0x277D82BE0](v6[0]);
   [v3 enumerateObjectsUsingBlock:?];
@@ -2828,25 +2828,25 @@ void __47__MCLURLDataLoader_defaultSessionConfiguration__block_invoke(void *a1, 
   objc_storeStrong(location, 0);
 }
 
-- (void)configureSession:(id)a3
+- (void)configureSession:(id)session
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   [location[0] setTimeoutIntervalForRequest:15.0];
   [location[0] setTimeoutIntervalForResource:36000.0];
   [location[0] setNetworkServiceType:?];
   [location[0] setAllowsCellularAccess:1];
   [location[0] setHTTPShouldUsePipelining:1];
   [location[0] setHTTPShouldSetCookies:1];
-  [location[0] setHTTPCookieStorage:v5->_cookieStorage];
+  [location[0] setHTTPCookieStorage:selfCopy->_cookieStorage];
   [location[0] setHTTPCookieAcceptPolicy:1];
   [location[0] setHTTPAdditionalHeaders:0];
   [location[0] setHTTPMaximumConnectionsPerHost:10];
-  v3 = [(MCLURLDataLoader *)v5 cache];
+  cache = [(MCLURLDataLoader *)selfCopy cache];
   [location[0] setURLCache:?];
-  MEMORY[0x277D82BD8](v3);
+  MEMORY[0x277D82BD8](cache);
   [location[0] setRequestCachePolicy:0];
   objc_storeStrong(location, 0);
 }
@@ -2875,23 +2875,23 @@ void __47__MCLURLDataLoader_defaultSessionConfiguration__block_invoke(void *a1, 
   return v4;
 }
 
-- (void)operationCancelTask:(id)a3
+- (void)operationCancelTask:(id)task
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(NSRecursiveLock *)v12->_taskQueueLock lock];
-  [(NSMutableArray *)v12->_taskQueue removeObject:location[0]];
-  [(NSMutableOrderedSet *)v12->_duplicateTasks removeObject:location[0]];
-  [(NSRecursiveLock *)v12->_taskQueueLock unlock];
-  sessionTasks = v12->_sessionTasks;
+  objc_storeStrong(location, task);
+  [(NSRecursiveLock *)selfCopy->_taskQueueLock lock];
+  [(NSMutableArray *)selfCopy->_taskQueue removeObject:location[0]];
+  [(NSMutableOrderedSet *)selfCopy->_duplicateTasks removeObject:location[0]];
+  [(NSRecursiveLock *)selfCopy->_taskQueueLock unlock];
+  sessionTasks = selfCopy->_sessionTasks;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __40__MCLURLDataLoader_operationCancelTask___block_invoke;
   v8 = &unk_2797EEBD8;
-  v9 = MEMORY[0x277D82BE0](v12);
+  v9 = MEMORY[0x277D82BE0](selfCopy);
   v10 = MEMORY[0x277D82BE0](location[0]);
   [(NSMutableArray *)sessionTasks enumerateObjectsUsingBlock:?];
   objc_storeStrong(&v10, 0);
@@ -2946,27 +2946,27 @@ void __40__MCLURLDataLoader_operationCancelTask___block_invoke_2(uint64_t a1, vo
   objc_storeStrong(location, 0);
 }
 
-- (void)enqueueTask:(id)a3 reschedule:(BOOL)a4
+- (void)enqueueTask:(id)task reschedule:(BOOL)reschedule
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v27 = a4;
-  [(NSRecursiveLock *)v29->_taskQueueLock lock];
-  if (a4)
+  objc_storeStrong(location, task);
+  rescheduleCopy = reschedule;
+  [(NSRecursiveLock *)selfCopy->_taskQueueLock lock];
+  if (reschedule)
   {
-    if (([(NSMutableArray *)v29->_taskQueue containsObject:location[0]]& 1) == 0)
+    if (([(NSMutableArray *)selfCopy->_taskQueue containsObject:location[0]]& 1) == 0)
     {
-      [(NSRecursiveLock *)v29->_taskQueueLock unlock];
+      [(NSRecursiveLock *)selfCopy->_taskQueueLock unlock];
       v26 = 1;
       goto LABEL_8;
     }
 
-    [(NSMutableArray *)v29->_taskQueue removeObject:location[0]];
+    [(NSMutableArray *)selfCopy->_taskQueue removeObject:location[0]];
   }
 
-  taskQueue = v29->_taskQueue;
+  taskQueue = selfCopy->_taskQueue;
   v6 = location[0];
   v4 = [(NSMutableArray *)taskQueue count];
   v31 = 0;
@@ -2980,17 +2980,17 @@ void __40__MCLURLDataLoader_operationCancelTask___block_invoke_2(uint64_t a1, vo
   v19 = 0;
   v20 = __43__MCLURLDataLoader_enqueueTask_reschedule___block_invoke;
   v21 = &unk_2797EEC00;
-  v22 = MEMORY[0x277D82BE0](v29);
+  v22 = MEMORY[0x277D82BE0](selfCopy);
   v25 = [(NSMutableArray *)taskQueue indexOfObject:v6 inSortedRange:v23 options:v24 usingComparator:1536, &v17];
-  [(NSMutableArray *)v29->_taskQueue insertObject:location[0] atIndex:v25];
+  [(NSMutableArray *)selfCopy->_taskQueue insertObject:location[0] atIndex:v25];
   v8 = v25;
-  v27 = v8 == [(NSMutableArray *)v29->_taskQueue count]- 1;
-  [(NSRecursiveLock *)v29->_taskQueueLock unlock];
-  [(MCLURLDataLoader *)v29 notifyEnqueue];
-  if (v27)
+  rescheduleCopy = v8 == [(NSMutableArray *)selfCopy->_taskQueue count]- 1;
+  [(NSRecursiveLock *)selfCopy->_taskQueueLock unlock];
+  [(MCLURLDataLoader *)selfCopy notifyEnqueue];
+  if (rescheduleCopy)
   {
-    objc_initWeak(&v16, v29);
-    operationQueue = v29->_operationQueue;
+    objc_initWeak(&v16, selfCopy);
+    operationQueue = selfCopy->_operationQueue;
     v10 = MEMORY[0x277D85DD0];
     v11 = -1073741824;
     v12 = 0;
@@ -3053,22 +3053,22 @@ uint64_t __43__MCLURLDataLoader_enqueueTask_reschedule___block_invoke_2(uint64_t
 
 - (void)operationReschedule
 {
-  v37 = self;
+  selfCopy = self;
   v36[1] = a2;
-  if (!self->_suspended && [(NSMutableDictionary *)v37->_activeTasks count]< 0x14)
+  if (!self->_suspended && [(NSMutableDictionary *)selfCopy->_activeTasks count]< 0x14)
   {
-    [(NSRecursiveLock *)v37->_taskQueueLock lock];
-    v36[0] = [(NSMutableArray *)v37->_taskQueue lastObject];
-    if (v37->_session && v36[0] && (v16 = [(NSMutableDictionary *)v37->_activeTasks count], v16 < [(MCLURLDataLoader *)v37 connectionsLimitForPriorityOfTask:v36[0]]))
+    [(NSRecursiveLock *)selfCopy->_taskQueueLock lock];
+    v36[0] = [(NSMutableArray *)selfCopy->_taskQueue lastObject];
+    if (selfCopy->_session && v36[0] && (v16 = [(NSMutableDictionary *)selfCopy->_activeTasks count], v16 < [(MCLURLDataLoader *)selfCopy connectionsLimitForPriorityOfTask:v36[0]]))
     {
-      [(NSMutableArray *)v37->_taskQueue removeLastObject];
-      [(NSRecursiveLock *)v37->_taskQueueLock unlock];
+      [(NSMutableArray *)selfCopy->_taskQueue removeLastObject];
+      [(NSRecursiveLock *)selfCopy->_taskQueueLock unlock];
       v30 = 0;
       v31 = &v30;
       v32 = 0x20000000;
       v33 = 32;
       v34 = 0;
-      activeTasks = v37->_activeTasks;
+      activeTasks = selfCopy->_activeTasks;
       v24 = MEMORY[0x277D85DD0];
       v25 = -1073741824;
       v26 = 0;
@@ -3079,38 +3079,38 @@ uint64_t __43__MCLURLDataLoader_enqueueTask_reschedule___block_invoke_2(uint64_t
       [(NSMutableDictionary *)activeTasks enumerateKeysAndObjectsUsingBlock:&v24];
       if (v31[3])
       {
-        [(NSMutableOrderedSet *)v37->_duplicateTasks addObject:v36[0]];
+        [(NSMutableOrderedSet *)selfCopy->_duplicateTasks addObject:v36[0]];
         v35 = 1;
       }
 
-      else if (v37->_session)
+      else if (selfCopy->_session)
       {
         v23 = 0;
         location = 0;
         v20 = 0;
-        v13 = [(MCLURLDataLoader *)v37 configuredURLRequestForTask:v36[0] download:&v23 resumeData:&v20];
+        v13 = [(MCLURLDataLoader *)selfCopy configuredURLRequestForTask:v36[0] download:&v23 resumeData:&v20];
         objc_storeStrong(&location, v20);
         v21 = v13;
         v18 = 0;
         v14 = 0;
         if (v23)
         {
-          v19 = [v36[0] receiveDataHandler];
+          receiveDataHandler = [v36[0] receiveDataHandler];
           v18 = 1;
-          v14 = v19 == 0;
+          v14 = receiveDataHandler == 0;
         }
 
         v23 = v14;
         if (v18)
         {
-          MEMORY[0x277D82BD8](v19);
+          MEMORY[0x277D82BD8](receiveDataHandler);
         }
 
         [v36[0] setRequest:v21];
         v17 = 0;
         if (location)
         {
-          v2 = [(NSURLSession *)v37->_session downloadTaskWithResumeData:location];
+          v2 = [(NSURLSession *)selfCopy->_session downloadTaskWithResumeData:location];
           v3 = v17;
           v17 = v2;
           MEMORY[0x277D82BD8](v3);
@@ -3120,12 +3120,12 @@ uint64_t __43__MCLURLDataLoader_enqueueTask_reschedule___block_invoke_2(uint64_t
         {
           if (v23)
           {
-            v4 = [(NSURLSession *)v37->_session downloadTaskWithRequest:v21];
+            v4 = [(NSURLSession *)selfCopy->_session downloadTaskWithRequest:v21];
           }
 
           else
           {
-            v4 = [(NSURLSession *)v37->_session dataTaskWithRequest:v21];
+            v4 = [(NSURLSession *)selfCopy->_session dataTaskWithRequest:v21];
           }
 
           v5 = v17;
@@ -3136,12 +3136,12 @@ uint64_t __43__MCLURLDataLoader_enqueueTask_reschedule___block_invoke_2(uint64_t
         if (v17)
         {
           v11 = v36[0];
-          v12 = v37->_activeTasks;
+          v12 = selfCopy->_activeTasks;
           v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v17, "taskIdentifier")}];
           [(NSMutableDictionary *)v12 setObject:v11 forKeyedSubscript:?];
           MEMORY[0x277D82BD8](v10);
-          v9 = v37;
-          v8 = [v36[0] category];
+          v9 = selfCopy;
+          category = [v36[0] category];
           if ([(MCLURLDataLoader *)v9 priorityForCategory:?]<= 0)
           {
             v7 = *MEMORY[0x277CCA790];
@@ -3154,12 +3154,12 @@ uint64_t __43__MCLURLDataLoader_enqueueTask_reschedule___block_invoke_2(uint64_t
 
           LODWORD(v6) = v7;
           [v17 setPriority:v6];
-          MEMORY[0x277D82BD8](v8);
-          [(NSMutableArray *)v37->_sessionTasks addObject:v17];
+          MEMORY[0x277D82BD8](category);
+          [(NSMutableArray *)selfCopy->_sessionTasks addObject:v17];
           [v17 resume];
         }
 
-        [(MCLURLDataLoader *)v37 operationReschedule];
+        [(MCLURLDataLoader *)selfCopy operationReschedule];
         objc_storeStrong(&v17, 0);
         objc_storeStrong(&v21, 0);
         objc_storeStrong(&location, 0);
@@ -3177,10 +3177,10 @@ uint64_t __43__MCLURLDataLoader_enqueueTask_reschedule___block_invoke_2(uint64_t
 
     else
     {
-      [(NSRecursiveLock *)v37->_taskQueueLock unlock];
-      if (!v36[0] && ![(NSMutableDictionary *)v37->_activeTasks count])
+      [(NSRecursiveLock *)selfCopy->_taskQueueLock unlock];
+      if (!v36[0] && ![(NSMutableDictionary *)selfCopy->_activeTasks count])
       {
-        [(MCLURLDataLoader *)v37 notifyEmptyQueue];
+        [(MCLURLDataLoader *)selfCopy notifyEmptyQueue];
       }
 
       v35 = 1;
@@ -3209,37 +3209,37 @@ void __39__MCLURLDataLoader_operationReschedule__block_invoke(void *a1, void *a2
 
 - (void)operationSuspendSession
 {
-  v17 = self;
+  selfCopy = self;
   v16[1] = a2;
   [(NSRecursiveLock *)self->_taskQueueLock lock];
-  v2 = [(NSMutableDictionary *)v17->_activeTasks allValues];
+  allValues = [(NSMutableDictionary *)selfCopy->_activeTasks allValues];
   v11[1] = MEMORY[0x277D85DD0];
   v12 = -1073741824;
   v13 = 0;
   v14 = __43__MCLURLDataLoader_operationSuspendSession__block_invoke;
   v15 = &unk_2797EEAF0;
-  v16[0] = MEMORY[0x277D82BE0](v17);
-  [v2 enumerateObjectsUsingBlock:?];
-  MEMORY[0x277D82BD8](v2);
-  duplicateTasks = v17->_duplicateTasks;
+  v16[0] = MEMORY[0x277D82BE0](selfCopy);
+  [allValues enumerateObjectsUsingBlock:?];
+  MEMORY[0x277D82BD8](allValues);
+  duplicateTasks = selfCopy->_duplicateTasks;
   v10[1] = MEMORY[0x277D85DD0];
   v10[2] = 3221225472;
   v10[3] = __43__MCLURLDataLoader_operationSuspendSession__block_invoke_2;
   v10[4] = &unk_2797EEAF0;
-  v11[0] = MEMORY[0x277D82BE0](v17);
+  v11[0] = MEMORY[0x277D82BE0](selfCopy);
   [(NSMutableOrderedSet *)duplicateTasks enumerateObjectsUsingBlock:?];
-  [(NSRecursiveLock *)v17->_taskQueueLock unlock];
-  [(NSMutableOrderedSet *)v17->_duplicateTasks removeAllObjects];
-  sessionTasks = v17->_sessionTasks;
+  [(NSRecursiveLock *)selfCopy->_taskQueueLock unlock];
+  [(NSMutableOrderedSet *)selfCopy->_duplicateTasks removeAllObjects];
+  sessionTasks = selfCopy->_sessionTasks;
   v5 = MEMORY[0x277D85DD0];
   v6 = -1073741824;
   v7 = 0;
   v8 = __43__MCLURLDataLoader_operationSuspendSession__block_invoke_3;
   v9 = &unk_2797EEC50;
-  v10[0] = MEMORY[0x277D82BE0](v17);
+  v10[0] = MEMORY[0x277D82BE0](selfCopy);
   [(NSMutableArray *)sessionTasks enumerateObjectsUsingBlock:?];
-  [(NSMutableDictionary *)v17->_activeTasks removeAllObjects];
-  [(MCLURLDataLoader *)v17 notifyBackgroundStopped];
+  [(NSMutableDictionary *)selfCopy->_activeTasks removeAllObjects];
+  [(MCLURLDataLoader *)selfCopy notifyBackgroundStopped];
   objc_storeStrong(v10, 0);
   objc_storeStrong(v11, 0);
   objc_storeStrong(v16, 0);
@@ -3307,25 +3307,25 @@ void __43__MCLURLDataLoader_operationSuspendSession__block_invoke_4(uint64_t a1,
 
 - (void)operationRestartSession
 {
-  v3 = self;
+  selfCopy = self;
   v2[1] = a2;
   [(MCLURLDataLoader *)self operationSuspendSession];
-  v2[0] = MEMORY[0x277D82BE0](v3->_session);
-  objc_storeStrong(&v3->_session, 0);
+  v2[0] = MEMORY[0x277D82BE0](selfCopy->_session);
+  objc_storeStrong(&selfCopy->_session, 0);
   [v2[0] invalidateAndCancel];
-  [(MCLURLDataLoader *)v3 configureSession];
-  [(MCLURLDataLoader *)v3 operationResumeSession];
+  [(MCLURLDataLoader *)selfCopy configureSession];
+  [(MCLURLDataLoader *)selfCopy operationResumeSession];
   objc_storeStrong(v2, 0);
 }
 
-+ (BOOL)task:(id)a3 equalsToTask:(id)a4
++ (BOOL)task:(id)task equalsToTask:(id)toTask
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, task);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, toTask);
   v7 = [location[0] URL];
   v8 = [v22 URL];
   v20 = 0;
@@ -3337,22 +3337,22 @@ void __43__MCLURLDataLoader_operationSuspendSession__block_invoke_4(uint64_t a1,
   v9 = 0;
   if ([v7 isEqual:?])
   {
-    v21 = [location[0] targetPath];
+    targetPath = [location[0] targetPath];
     v20 = 1;
-    v19 = [v22 targetPath];
+    targetPath2 = [v22 targetPath];
     v18 = 1;
     v5 = 1;
-    if (v21 != v19)
+    if (targetPath != targetPath2)
     {
-      v17 = [location[0] targetPath];
+      targetPath3 = [location[0] targetPath];
       v16 = 1;
-      v15 = [v17 stringByDeletingPathExtension];
+      stringByDeletingPathExtension = [targetPath3 stringByDeletingPathExtension];
       v14 = 1;
-      v13 = [v22 targetPath];
+      targetPath4 = [v22 targetPath];
       v12 = 1;
-      v11 = [v13 stringByDeletingPathExtension];
+      stringByDeletingPathExtension2 = [targetPath4 stringByDeletingPathExtension];
       v10 = 1;
-      v5 = [v15 isEqualToString:?];
+      v5 = [stringByDeletingPathExtension isEqualToString:?];
     }
 
     v9 = v5;
@@ -3361,32 +3361,32 @@ void __43__MCLURLDataLoader_operationSuspendSession__block_invoke_4(uint64_t a1,
   v24 = v9 & 1;
   if (v10)
   {
-    MEMORY[0x277D82BD8](v11);
+    MEMORY[0x277D82BD8](stringByDeletingPathExtension2);
   }
 
   if (v12)
   {
-    MEMORY[0x277D82BD8](v13);
+    MEMORY[0x277D82BD8](targetPath4);
   }
 
   if (v14)
   {
-    MEMORY[0x277D82BD8](v15);
+    MEMORY[0x277D82BD8](stringByDeletingPathExtension);
   }
 
   if (v16)
   {
-    MEMORY[0x277D82BD8](v17);
+    MEMORY[0x277D82BD8](targetPath3);
   }
 
   if (v18)
   {
-    MEMORY[0x277D82BD8](v19);
+    MEMORY[0x277D82BD8](targetPath2);
   }
 
   if (v20)
   {
-    MEMORY[0x277D82BD8](v21);
+    MEMORY[0x277D82BD8](targetPath);
   }
 
   MEMORY[0x277D82BD8](v8);
@@ -3396,14 +3396,14 @@ void __43__MCLURLDataLoader_operationSuspendSession__block_invoke_4(uint64_t a1,
   return v24 & 1;
 }
 
-- (id)duplicateTasksForTask:(id)a3
+- (id)duplicateTasksForTask:(id)task
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, task);
   v28 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:2];
-  duplicateTasks = v30->_duplicateTasks;
+  duplicateTasks = selfCopy->_duplicateTasks;
   v21 = MEMORY[0x277D85DD0];
   v22 = -1073741824;
   v23 = 0;
@@ -3412,7 +3412,7 @@ void __43__MCLURLDataLoader_operationSuspendSession__block_invoke_4(uint64_t a1,
   v26 = MEMORY[0x277D82BE0](location[0]);
   v27 = MEMORY[0x277D82BE0](v28);
   [(NSMutableOrderedSet *)duplicateTasks enumerateObjectsUsingBlock:&v21];
-  [(NSRecursiveLock *)v30->_taskQueueLock lock];
+  [(NSRecursiveLock *)selfCopy->_taskQueueLock lock];
   v14 = 0;
   v15 = &v14;
   v16 = 838860800;
@@ -3420,7 +3420,7 @@ void __43__MCLURLDataLoader_operationSuspendSession__block_invoke_4(uint64_t a1,
   v18 = __Block_byref_object_copy__2;
   v19 = __Block_byref_object_dispose__2;
   v20 = 0;
-  taskQueue = v30->_taskQueue;
+  taskQueue = selfCopy->_taskQueue;
   v7 = MEMORY[0x277D85DD0];
   v8 = -1073741824;
   v9 = 0;
@@ -3432,10 +3432,10 @@ void __43__MCLURLDataLoader_operationSuspendSession__block_invoke_4(uint64_t a1,
   [(NSMutableArray *)taskQueue enumerateObjectsUsingBlock:&v7];
   if (v15[5])
   {
-    [(NSMutableArray *)v30->_taskQueue removeObjectsAtIndexes:v15[5]];
+    [(NSMutableArray *)selfCopy->_taskQueue removeObjectsAtIndexes:v15[5]];
   }
 
-  [(NSRecursiveLock *)v30->_taskQueueLock unlock];
+  [(NSRecursiveLock *)selfCopy->_taskQueueLock unlock];
   v4 = MEMORY[0x277D82BE0](v28);
   objc_storeStrong(v13, 0);
   objc_storeStrong(&v12, 0);
@@ -3485,13 +3485,13 @@ void __42__MCLURLDataLoader_duplicateTasksForTask___block_invoke_127(uint64_t a1
   objc_storeStrong(location, 0);
 }
 
-- (id)loaderTaskForSessionTask:(id)a3
+- (id)loaderTaskForSessionTask:(id)task
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  activeTasks = v8->_activeTasks;
+  objc_storeStrong(location, task);
+  activeTasks = selfCopy->_activeTasks;
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(location[0], "taskIdentifier")}];
   v6 = [(NSMutableDictionary *)activeTasks objectForKeyedSubscript:?];
   MEMORY[0x277D82BD8](v5);
@@ -3500,14 +3500,14 @@ void __42__MCLURLDataLoader_duplicateTasksForTask___block_invoke_127(uint64_t a1
   return v6;
 }
 
-+ (void)applyDefaultRequestHeaders:(id)a3
++ (void)applyDefaultRequestHeaders:(id)headers
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v7 = [v6 stringForKey:@"UserAgentApp"];
+  objc_storeStrong(location, headers);
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v7 = [standardUserDefaults stringForKey:@"UserAgentApp"];
   v10 = 0;
   v8 = 0;
   if (v7)
@@ -3517,9 +3517,9 @@ void __42__MCLURLDataLoader_duplicateTasksForTask___block_invoke_127(uint64_t a1
 
   else
   {
-    v11 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
     v10 = 1;
-    v9 = [v11 stringForKey:@"UserAgent"];
+    v9 = [standardUserDefaults2 stringForKey:@"UserAgent"];
     v8 = 1;
     v3 = MEMORY[0x277D82BE0](v9);
   }
@@ -3532,15 +3532,15 @@ void __42__MCLURLDataLoader_duplicateTasksForTask___block_invoke_127(uint64_t a1
 
   if (v10)
   {
-    MEMORY[0x277D82BD8](v11);
+    MEMORY[0x277D82BD8](standardUserDefaults2);
   }
 
   MEMORY[0x277D82BD8](v7);
-  MEMORY[0x277D82BD8](v6);
+  MEMORY[0x277D82BD8](standardUserDefaults);
   [location[0] setValue:v12 forHTTPHeaderField:@"User-Agent"];
-  v4 = [location[0] HTTPMethod];
-  v5 = [v4 isEqualToString:@"GET"];
-  MEMORY[0x277D82BD8](v4);
+  hTTPMethod = [location[0] HTTPMethod];
+  v5 = [hTTPMethod isEqualToString:@"GET"];
+  MEMORY[0x277D82BD8](hTTPMethod);
   if (v5)
   {
     [location[0] setHTTPMethod:@"GET"];
@@ -3550,28 +3550,28 @@ void __42__MCLURLDataLoader_duplicateTasksForTask___block_invoke_127(uint64_t a1
   objc_storeStrong(location, 0);
 }
 
-- (id)configuredURLRequestForTask:(id)a3 download:(BOOL *)a4 resumeData:(id *)a5
+- (id)configuredURLRequestForTask:(id)task download:(BOOL *)download resumeData:(id *)data
 {
   v95 = *MEMORY[0x277D85DE8];
-  v92 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v90 = a4;
-  v89 = a5;
-  v49 = [location[0] request];
-  v88 = [v49 mutableCopy];
-  MEMORY[0x277D82BD8](v49);
-  v50 = [location[0] request];
-  [v50 timeoutInterval];
+  objc_storeStrong(location, task);
+  downloadCopy = download;
+  dataCopy = data;
+  request = [location[0] request];
+  v88 = [request mutableCopy];
+  MEMORY[0x277D82BD8](request);
+  request2 = [location[0] request];
+  [request2 timeoutInterval];
   [v88 setTimeoutInterval:?];
-  MEMORY[0x277D82BD8](v50);
+  MEMORY[0x277D82BD8](request2);
   [objc_opt_class() applyDefaultRequestHeaders:v88];
-  [(MCLURLDataLoader *)v92 processURLRequestRewrite:v88];
-  v51 = v92;
-  v52 = [location[0] category];
+  [(MCLURLDataLoader *)selfCopy processURLRequestRewrite:v88];
+  v51 = selfCopy;
+  category = [location[0] category];
   v53 = [(MCLURLDataLoader *)v51 priorityForCategory:?];
-  MEMORY[0x277D82BD8](v52);
+  MEMORY[0x277D82BD8](category);
   v87 = v53;
   if (v53 >= 0)
   {
@@ -3585,14 +3585,14 @@ void __42__MCLURLDataLoader_duplicateTasksForTask___block_invoke_127(uint64_t a1
 
   [v88 setNetworkServiceType:v5];
   [v88 setAllowsCellularAccess:v87 != -2];
-  v54 = [v88 HTTPMethod];
-  v55 = [v54 isEqualToString:@"GET"];
-  MEMORY[0x277D82BD8](v54);
+  hTTPMethod = [v88 HTTPMethod];
+  v55 = [hTTPMethod isEqualToString:@"GET"];
+  MEMORY[0x277D82BD8](hTTPMethod);
   if (v55)
   {
-    v46 = [location[0] receiveDataHandler];
-    MEMORY[0x277D82BD8](v46);
-    if (v46)
+    receiveDataHandler = [location[0] receiveDataHandler];
+    MEMORY[0x277D82BD8](receiveDataHandler);
+    if (receiveDataHandler)
     {
       v93 = MEMORY[0x277D82BE0](v88);
       v86 = 1;
@@ -3600,22 +3600,22 @@ void __42__MCLURLDataLoader_duplicateTasksForTask___block_invoke_127(uint64_t a1
 
     else
     {
-      v85 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       if ([location[0] download])
       {
-        v84 = [location[0] targetPath];
-        if ([v84 hasSuffix:@"[content_type]"])
+        targetPath = [location[0] targetPath];
+        if ([targetPath hasSuffix:@"[content_type]"])
         {
-          v6 = [v84 stringByDeletingPathExtension];
-          v7 = v84;
-          v84 = v6;
+          stringByDeletingPathExtension = [targetPath stringByDeletingPathExtension];
+          v7 = targetPath;
+          targetPath = stringByDeletingPathExtension;
           MEMORY[0x277D82BD8](v7);
-          v83 = [v84 lastPathComponent];
+          lastPathComponent = [targetPath lastPathComponent];
           memset(__b, 0, sizeof(__b));
-          v42 = v85;
-          v43 = [v84 stringByDeletingLastPathComponent];
+          v42 = defaultManager;
+          stringByDeletingLastPathComponent = [targetPath stringByDeletingLastPathComponent];
           obj = [v42 enumeratorAtPath:?];
-          MEMORY[0x277D82BD8](v43);
+          MEMORY[0x277D82BD8](stringByDeletingLastPathComponent);
           v45 = [obj countByEnumeratingWithState:__b objects:v94 count:16];
           if (v45)
           {
@@ -3631,9 +3631,9 @@ void __42__MCLURLDataLoader_duplicateTasksForTask___block_invoke_127(uint64_t a1
               }
 
               v82 = *(__b[1] + 8 * v40);
-              v36 = [v82 stringByDeletingPathExtension];
-              v37 = [v36 isEqualToString:v83];
-              MEMORY[0x277D82BD8](v36);
+              stringByDeletingPathExtension2 = [v82 stringByDeletingPathExtension];
+              v37 = [stringByDeletingPathExtension2 isEqualToString:lastPathComponent];
+              MEMORY[0x277D82BD8](stringByDeletingPathExtension2);
               if (v37)
               {
                 break;
@@ -3652,9 +3652,9 @@ void __42__MCLURLDataLoader_duplicateTasksForTask___block_invoke_127(uint64_t a1
             }
 
             v34 = location[0];
-            v35 = [v82 pathExtension];
+            pathExtension = [v82 pathExtension];
             [v34 applyFileExtension:?];
-            MEMORY[0x277D82BD8](v35);
+            MEMORY[0x277D82BD8](pathExtension);
             v86 = 2;
           }
 
@@ -3665,45 +3665,45 @@ LABEL_18:
           }
 
           MEMORY[0x277D82BD8](obj);
-          objc_storeStrong(&v83, 0);
+          objc_storeStrong(&lastPathComponent, 0);
         }
 
-        objc_storeStrong(&v84, 0);
+        objc_storeStrong(&targetPath, 0);
       }
 
-      v80 = [(MCLURLDataLoader *)v92 _cachedResponseForRequest:v88];
+      v80 = [(MCLURLDataLoader *)selfCopy _cachedResponseForRequest:v88];
       if (v80)
       {
         v79 = 1;
         if ([v88 cachePolicy])
         {
-          [(MCLURLDataLoader *)v92 _removeCachedResponseForRequest:v88];
+          [(MCLURLDataLoader *)selfCopy _removeCachedResponseForRequest:v88];
           v79 = 0;
         }
 
         else if ([location[0] download])
         {
           v78 = 0;
-          v30 = v85;
-          v32 = [location[0] targetPath];
+          v30 = defaultManager;
+          targetPath2 = [location[0] targetPath];
           v76 = v78;
           v31 = [v30 attributesOfItemAtPath:? error:?];
           objc_storeStrong(&v78, v76);
           v77 = v31;
-          MEMORY[0x277D82BD8](v32);
+          MEMORY[0x277D82BD8](targetPath2);
           v74 = 0;
           v33 = 0;
           if (!v31)
           {
-            v29 = v85;
-            v75 = [location[0] targetPath];
+            v29 = defaultManager;
+            targetPath3 = [location[0] targetPath];
             v74 = 1;
             v33 = [v29 fileExistsAtPath:?];
           }
 
           if (v74)
           {
-            MEMORY[0x277D82BD8](v75);
+            MEMORY[0x277D82BD8](targetPath3);
           }
 
           if (v33)
@@ -3711,7 +3711,7 @@ LABEL_18:
             NSLog(&cfstr_ErrorGettingFi.isa, v78);
           }
 
-          v8 = [(MCLURLDataLoader *)v92 cachableFileAttributes:v77];
+          v8 = [(MCLURLDataLoader *)selfCopy cachableFileAttributes:v77];
           v9 = v77;
           v77 = v8;
           MEMORY[0x277D82BD8](v9);
@@ -3719,7 +3719,7 @@ LABEL_18:
           v28 = 0;
           if (v77)
           {
-            v73 = [v80 userInfo];
+            userInfo = [v80 userInfo];
             v72 = 1;
             v28 = [v77 isEqualToDictionary:?];
           }
@@ -3727,13 +3727,13 @@ LABEL_18:
           v79 = v28 & 1;
           if (v72)
           {
-            MEMORY[0x277D82BD8](v73);
+            MEMORY[0x277D82BD8](userInfo);
           }
 
           if ((v79 & 1) == 0)
           {
-            [(MCLURLDataLoader *)v92 _removeCachedResponseForRequest:v88];
-            *v90 = 1;
+            [(MCLURLDataLoader *)selfCopy _removeCachedResponseForRequest:v88];
+            *downloadCopy = 1;
             [v88 setCachePolicy:1];
           }
 
@@ -3743,11 +3743,11 @@ LABEL_18:
 
         else
         {
-          v27 = [v80 userInfo];
-          MEMORY[0x277D82BD8](v27);
-          if (v27)
+          userInfo2 = [v80 userInfo];
+          MEMORY[0x277D82BD8](userInfo2);
+          if (userInfo2)
           {
-            [(MCLURLDataLoader *)v92 _removeCachedResponseForRequest:v88];
+            [(MCLURLDataLoader *)selfCopy _removeCachedResponseForRequest:v88];
             [v88 setCachePolicy:1];
             v79 = 0;
           }
@@ -3755,16 +3755,16 @@ LABEL_18:
 
         if (v79)
         {
-          v24 = [v80 response];
-          v71 = [v24 allHeaderFields];
-          MEMORY[0x277D82BD8](v24);
-          v25 = [v71 objectForKeyedSubscript:@"Cache-Control"];
+          response = [v80 response];
+          allHeaderFields = [response allHeaderFields];
+          MEMORY[0x277D82BD8](response);
+          v25 = [allHeaderFields objectForKeyedSubscript:@"Cache-Control"];
           v26 = [v25 containsString:@"private"];
           MEMORY[0x277D82BD8](v25);
           v70 = v26;
           if ((v26 & 1) == 0)
           {
-            v23 = [v71 objectForKeyedSubscript:@"Etag"];
+            v23 = [allHeaderFields objectForKeyedSubscript:@"Etag"];
             v67 = 0;
             if (v23)
             {
@@ -3773,7 +3773,7 @@ LABEL_18:
 
             else
             {
-              v68 = [v71 objectForKeyedSubscript:@"ETag"];
+              v68 = [allHeaderFields objectForKeyedSubscript:@"ETag"];
               v67 = 1;
               v10 = MEMORY[0x277D82BE0](v68);
             }
@@ -3785,7 +3785,7 @@ LABEL_18:
             }
 
             MEMORY[0x277D82BD8](v23);
-            v22 = [v71 objectForKeyedSubscript:@"Last-Modified"];
+            v22 = [allHeaderFields objectForKeyedSubscript:@"Last-Modified"];
             v64 = 0;
             if (v22)
             {
@@ -3794,7 +3794,7 @@ LABEL_18:
 
             else
             {
-              v65 = [v71 objectForKeyedSubscript:@"Date"];
+              v65 = [allHeaderFields objectForKeyedSubscript:@"Date"];
               v64 = 1;
               v11 = MEMORY[0x277D82BE0](v65);
             }
@@ -3811,12 +3811,12 @@ LABEL_18:
               [v88 setValue:v69 forHTTPHeaderField:@"If-None-Match"];
             }
 
-            v20 = [v71 objectForKeyedSubscript:@"Expires"];
+            v20 = [allHeaderFields objectForKeyedSubscript:@"Expires"];
             v61 = 0;
             v21 = 1;
             if (![v20 length])
             {
-              v62 = [v71 objectForKeyedSubscript:@"Cache-Control"];
+              v62 = [allHeaderFields objectForKeyedSubscript:@"Cache-Control"];
               v61 = 1;
               v21 = [v62 length] != 0;
             }
@@ -3837,20 +3837,20 @@ LABEL_18:
             objc_storeStrong(&v69, 0);
           }
 
-          objc_storeStrong(&v71, 0);
+          objc_storeStrong(&allHeaderFields, 0);
         }
       }
 
       else if ([location[0] download])
       {
         [v88 setCachePolicy:1];
-        *v90 = 1;
-        if (v89)
+        *downloadCopy = 1;
+        if (dataCopy)
         {
-          v19 = [location[0] targetPath];
-          v60 = [v19 stringByAppendingPathExtension:@"partial"];
-          MEMORY[0x277D82BD8](v19);
-          if ([v85 fileExistsAtPath:v60])
+          targetPath4 = [location[0] targetPath];
+          v60 = [targetPath4 stringByAppendingPathExtension:@"partial"];
+          MEMORY[0x277D82BD8](targetPath4);
+          if ([defaultManager fileExistsAtPath:v60])
           {
             v59 = 0;
             v12 = objc_alloc(MEMORY[0x277CBEA90]);
@@ -3867,7 +3867,7 @@ LABEL_18:
             {
               v17 = v58;
               v13 = v58;
-              *v89 = v17;
+              *dataCopy = v17;
             }
 
             else
@@ -3885,17 +3885,17 @@ LABEL_18:
 
       if ([location[0] download])
       {
-        v16 = [location[0] targetPath];
-        v56 = [v16 stringByAppendingPathExtension:@"partial"];
-        MEMORY[0x277D82BD8](v16);
-        [v85 removeItemAtPath:v56 error:?];
+        targetPath5 = [location[0] targetPath];
+        v56 = [targetPath5 stringByAppendingPathExtension:@"partial"];
+        MEMORY[0x277D82BD8](targetPath5);
+        [defaultManager removeItemAtPath:v56 error:?];
         objc_storeStrong(&v56, 0);
       }
 
       v93 = MEMORY[0x277D82BE0](v88);
       v86 = 1;
       objc_storeStrong(&v80, 0);
-      objc_storeStrong(&v85, 0);
+      objc_storeStrong(&defaultManager, 0);
     }
   }
 
@@ -3914,13 +3914,13 @@ LABEL_18:
   return v14;
 }
 
-- (void)processURLRequestRewrite:(id)a3
+- (void)processURLRequestRewrite:(id)rewrite
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  rewriteRules = v11->_rewriteRules;
+  objc_storeStrong(location, rewrite);
+  rewriteRules = selfCopy->_rewriteRules;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
@@ -3963,16 +3963,16 @@ void __45__MCLURLDataLoader_processURLRequestRewrite___block_invoke(id *a1, void
   objc_storeStrong(location, 0);
 }
 
-- (unint64_t)connectionsLimitForPriorityOfTask:(id)a3
+- (unint64_t)connectionsLimitForPriorityOfTask:(id)task
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = v8;
-  v5 = [location[0] category];
+  objc_storeStrong(location, task);
+  v4 = selfCopy;
+  category = [location[0] category];
   v6 = [(MCLURLDataLoader *)v4 priorityForCategory:?];
-  MEMORY[0x277D82BD8](v5);
+  MEMORY[0x277D82BD8](category);
   switch(v6)
   {
     case -9223372036854775808:
@@ -4002,13 +4002,13 @@ void __45__MCLURLDataLoader_processURLRequestRewrite___block_invoke(id *a1, void
   return v9;
 }
 
-- (id)cachableFileAttributes:(id)a3
+- (id)cachableFileAttributes:(id)attributes
 {
   v15[2] = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, attributes);
   v10 = 0;
   v8 = 0;
   v6 = 0;
@@ -4019,9 +4019,9 @@ void __45__MCLURLDataLoader_processURLRequestRewrite___block_invoke(id *a1, void
     v10 = 1;
     v15[0] = v11;
     v14[1] = *MEMORY[0x277CCA150];
-    v9 = [location[0] fileModificationDate];
+    fileModificationDate = [location[0] fileModificationDate];
     v8 = 1;
-    v15[1] = v9;
+    v15[1] = fileModificationDate;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
     v6 = 1;
     v3 = MEMORY[0x277D82BE0](v7);
@@ -4040,7 +4040,7 @@ void __45__MCLURLDataLoader_processURLRequestRewrite___block_invoke(id *a1, void
 
   if (v8)
   {
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](fileModificationDate);
   }
 
   if (v10)
@@ -4055,22 +4055,22 @@ void __45__MCLURLDataLoader_processURLRequestRewrite___block_invoke(id *a1, void
   return v4;
 }
 
-- (void)task:(id)a3 completedWithError:(id)a4
+- (void)task:(id)task completedWithError:(id)error
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, task);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
-  v8 = [v18 domain];
+  objc_storeStrong(&v18, error);
+  domain = [v18 domain];
   v9 = 0;
-  if ([v8 isEqualToString:*MEMORY[0x277CCA738]])
+  if ([domain isEqualToString:*MEMORY[0x277CCA738]])
   {
     v9 = [v18 code] == -999;
   }
 
-  MEMORY[0x277D82BD8](v8);
+  MEMORY[0x277D82BD8](domain);
   if (v9)
   {
     objc_storeStrong(&v18, 0);
@@ -4079,17 +4079,17 @@ void __45__MCLURLDataLoader_processURLRequestRewrite___block_invoke(id *a1, void
 
   [location[0] applyMimeType];
   [location[0] dispatchCompletion:v18];
-  activeTasks = v20->_activeTasks;
+  activeTasks = selfCopy->_activeTasks;
   v5 = [(NSMutableDictionary *)activeTasks allKeysForObject:location[0]];
   [(NSMutableDictionary *)activeTasks removeObjectsForKeys:?];
   MEMORY[0x277D82BD8](v5);
-  v6 = [(MCLURLDataLoader *)v20 duplicateTasksForTask:location[0]];
+  v6 = [(MCLURLDataLoader *)selfCopy duplicateTasksForTask:location[0]];
   v10 = MEMORY[0x277D85DD0];
   v11 = -1073741824;
   v12 = 0;
   v13 = __44__MCLURLDataLoader_task_completedWithError___block_invoke;
   v14 = &unk_2797EECC8;
-  v15 = MEMORY[0x277D82BE0](v20);
+  v15 = MEMORY[0x277D82BE0](selfCopy);
   v16 = MEMORY[0x277D82BE0](location[0]);
   v17 = MEMORY[0x277D82BE0](v18);
   [v6 enumerateObjectsUsingBlock:&v10];
@@ -4132,42 +4132,42 @@ void __44__MCLURLDataLoader_task_completedWithError___block_invoke(uint64_t a1, 
   objc_storeStrong(location, 0);
 }
 
-- (id)downloadCachedResponse:(id)a3
+- (id)downloadCachedResponse:(id)response
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v21 = [location[0] targetPath];
+  objc_storeStrong(location, response);
+  targetPath = [location[0] targetPath];
   v20 = 0;
-  v14 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v18 = v20;
-  v13 = [v14 attributesOfItemAtPath:v21 error:&v18];
+  v13 = [defaultManager attributesOfItemAtPath:targetPath error:&v18];
   objc_storeStrong(&v20, v18);
   v19 = v13;
-  MEMORY[0x277D82BD8](v14);
+  MEMORY[0x277D82BD8](defaultManager);
   if (v19)
   {
-    v12 = [v19 fileSize];
-    v10 = [location[0] response];
-    v11 = [v10 expectedContentLength];
-    MEMORY[0x277D82BD8](v10);
-    if (v12 == v11)
+    fileSize = [v19 fileSize];
+    response = [location[0] response];
+    expectedContentLength = [response expectedContentLength];
+    MEMORY[0x277D82BD8](response);
+    if (fileSize == expectedContentLength)
     {
-      v3 = [(MCLURLDataLoader *)v23 cachableFileAttributes:v19];
+      v3 = [(MCLURLDataLoader *)selfCopy cachableFileAttributes:v19];
       v4 = v19;
       v19 = v3;
       MEMORY[0x277D82BD8](v4);
-      v16 = [objc_opt_class() downloadData];
+      downloadData = [objc_opt_class() downloadData];
       v8 = objc_opt_class();
-      v9 = [location[0] response];
-      v15 = [v8 duplicateResponse:v9 withContentLength:{objc_msgSend(v16, "length")}];
-      MEMORY[0x277D82BD8](v9);
+      response2 = [location[0] response];
+      v15 = [v8 duplicateResponse:response2 withContentLength:{objc_msgSend(downloadData, "length")}];
+      MEMORY[0x277D82BD8](response2);
       v5 = objc_alloc(MEMORY[0x277CCA8F0]);
-      v24 = [v5 initWithResponse:v15 data:v16 userInfo:v19 storagePolicy:0];
+      v24 = [v5 initWithResponse:v15 data:downloadData userInfo:v19 storagePolicy:0];
       v17 = 1;
       objc_storeStrong(&v15, 0);
-      objc_storeStrong(&v16, 0);
+      objc_storeStrong(&downloadData, 0);
     }
 
     else
@@ -4190,7 +4190,7 @@ void __44__MCLURLDataLoader_task_completedWithError___block_invoke(uint64_t a1, 
 
   objc_storeStrong(&v19, 0);
   objc_storeStrong(&v20, 0);
-  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&targetPath, 0);
   objc_storeStrong(location, 0);
   v6 = v24;
 
@@ -4221,23 +4221,23 @@ uint64_t __32__MCLURLDataLoader_downloadData__block_invoke(uint64_t a1)
   return MEMORY[0x277D82BD8](v2);
 }
 
-+ (id)duplicateResponse:(id)a3 withContentLength:(int64_t)a4
++ (id)duplicateResponse:(id)response withContentLength:(int64_t)length
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v13 = a4;
-  v7 = [location[0] allHeaderFields];
-  v12 = [v7 mutableCopy];
-  MEMORY[0x277D82BD8](v7);
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", v13];
+  objc_storeStrong(location, response);
+  lengthCopy = length;
+  allHeaderFields = [location[0] allHeaderFields];
+  v12 = [allHeaderFields mutableCopy];
+  MEMORY[0x277D82BD8](allHeaderFields);
+  lengthCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", lengthCopy];
   [v12 setObject:? forKeyedSubscript:?];
-  MEMORY[0x277D82BD8](v8);
+  MEMORY[0x277D82BD8](lengthCopy);
   v9 = objc_alloc(MEMORY[0x277CCAA40]);
   v10 = [location[0] URL];
-  v4 = [location[0] statusCode];
-  v11 = [v9 initWithURL:v10 statusCode:v4 HTTPVersion:@"HTTP/1.1" headerFields:v12];
+  statusCode = [location[0] statusCode];
+  v11 = [v9 initWithURL:v10 statusCode:statusCode HTTPVersion:@"HTTP/1.1" headerFields:v12];
   MEMORY[0x277D82BD8](v10);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
@@ -4245,25 +4245,25 @@ uint64_t __32__MCLURLDataLoader_downloadData__block_invoke(uint64_t a1)
   return v11;
 }
 
-- (void)updateDownloadCacheEntry:(id)a3
+- (void)updateDownloadCacheEntry:(id)entry
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v24 = [location[0] request];
+  objc_storeStrong(location, entry);
+  request = [location[0] request];
   v22 = 0;
   v13 = 0;
   if ([location[0] responseOk])
   {
-    v23 = [v24 HTTPMethod];
+    hTTPMethod = [request HTTPMethod];
     v22 = 1;
-    v13 = [v23 isEqualToString:@"GET"];
+    v13 = [hTTPMethod isEqualToString:@"GET"];
   }
 
   if (v22)
   {
-    MEMORY[0x277D82BD8](v23);
+    MEMORY[0x277D82BD8](hTTPMethod);
   }
 
   if ((v13 & 1) == 0)
@@ -4271,20 +4271,20 @@ uint64_t __32__MCLURLDataLoader_downloadData__block_invoke(uint64_t a1)
     goto LABEL_20;
   }
 
-  v9 = [location[0] response];
-  v10 = [v9 allHeaderFields];
-  v11 = [v10 objectForKeyedSubscript:@"Cache-Control"];
+  response = [location[0] response];
+  allHeaderFields = [response allHeaderFields];
+  v11 = [allHeaderFields objectForKeyedSubscript:@"Cache-Control"];
   v20 = 0;
   v18 = 0;
   v16 = 0;
   v12 = 1;
   if (([v11 containsString:@"no-cache"] & 1) == 0)
   {
-    v21 = [location[0] response];
+    response2 = [location[0] response];
     v20 = 1;
-    v19 = [v21 allHeaderFields];
+    allHeaderFields2 = [response2 allHeaderFields];
     v18 = 1;
-    v17 = [v19 objectForKeyedSubscript:@"Pragma"];
+    v17 = [allHeaderFields2 objectForKeyedSubscript:@"Pragma"];
     v16 = 1;
     v12 = [v17 containsString:@"no-cache"];
   }
@@ -4296,34 +4296,34 @@ uint64_t __32__MCLURLDataLoader_downloadData__block_invoke(uint64_t a1)
 
   if (v18)
   {
-    MEMORY[0x277D82BD8](v19);
+    MEMORY[0x277D82BD8](allHeaderFields2);
   }
 
   if (v20)
   {
-    MEMORY[0x277D82BD8](v21);
+    MEMORY[0x277D82BD8](response2);
   }
 
   MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v10);
-  MEMORY[0x277D82BD8](v9);
+  MEMORY[0x277D82BD8](allHeaderFields);
+  MEMORY[0x277D82BD8](response);
   if ((v12 & 1) == 0)
   {
-    v14 = [(MCLURLDataLoader *)v26 downloadCachedResponse:location[0]];
+    v14 = [(MCLURLDataLoader *)selfCopy downloadCachedResponse:location[0]];
     if (v14)
     {
-      cache = v26->_cache;
-      v6 = [location[0] request];
+      cache = selfCopy->_cache;
+      request2 = [location[0] request];
       [(NSURLCache *)cache storeCachedResponse:v14 forRequest:?];
-      MEMORY[0x277D82BD8](v6);
+      MEMORY[0x277D82BD8](request2);
     }
 
     else
     {
-      v3 = v26;
-      v4 = [location[0] request];
+      v3 = selfCopy;
+      request3 = [location[0] request];
       [(MCLURLDataLoader *)v3 _removeCachedResponseForRequest:?];
-      MEMORY[0x277D82BD8](v4);
+      MEMORY[0x277D82BD8](request3);
     }
 
     objc_storeStrong(&v14, 0);
@@ -4332,29 +4332,29 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v7 = v26;
-  v8 = [location[0] request];
+  v7 = selfCopy;
+  request4 = [location[0] request];
   [(MCLURLDataLoader *)v7 _removeCachedResponseForRequest:?];
-  MEMORY[0x277D82BD8](v8);
+  MEMORY[0x277D82BD8](request4);
   v15 = 1;
 LABEL_21:
-  objc_storeStrong(&v24, 0);
+  objc_storeStrong(&request, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)storeResumeData:(id)a3 forTask:(id)a4
+- (void)storeResumeData:(id)data forTask:(id)task
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, task);
   if (location[0])
   {
-    v4 = [v10 targetPath];
-    v9 = [v4 stringByAppendingPathExtension:@"partial"];
-    MEMORY[0x277D82BD8](v4);
+    targetPath = [v10 targetPath];
+    v9 = [targetPath stringByAppendingPathExtension:@"partial"];
+    MEMORY[0x277D82BD8](targetPath);
     v8 = 0;
     v7 = 0;
     v5 = [location[0] writeToFile:v9 options:1 error:&v7];
@@ -4372,12 +4372,12 @@ LABEL_21:
   objc_storeStrong(location, 0);
 }
 
-+ (BOOL)isValidResumeData:(id)a3
++ (BOOL)isValidResumeData:(id)data
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   if (![location[0] length])
   {
     goto LABEL_9;
@@ -4405,16 +4405,16 @@ LABEL_9:
   return v12 & 1;
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  [(NSRecursiveLock *)v14->_taskQueueLock lock];
-  activeTasks = v14->_activeTasks;
+  objc_storeStrong(&v12, error);
+  [(NSRecursiveLock *)selfCopy->_taskQueueLock lock];
+  activeTasks = selfCopy->_activeTasks;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
@@ -4422,9 +4422,9 @@ LABEL_9:
   v10 = &unk_2797EECF0;
   v11 = MEMORY[0x277D82BE0](v12);
   [(NSMutableDictionary *)activeTasks enumerateKeysAndObjectsUsingBlock:?];
-  [(NSMutableDictionary *)v14->_activeTasks removeAllObjects];
-  [(NSMutableArray *)v14->_sessionTasks removeAllObjects];
-  [(NSRecursiveLock *)v14->_taskQueueLock unlock];
+  [(NSMutableDictionary *)selfCopy->_activeTasks removeAllObjects];
+  [(NSMutableArray *)selfCopy->_sessionTasks removeAllObjects];
+  [(NSRecursiveLock *)selfCopy->_taskQueueLock unlock];
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
@@ -4442,21 +4442,21 @@ void __57__MCLURLDataLoader_URLSession_didBecomeInvalidWithError___block_invoke(
   objc_storeStrong(location, 0);
 }
 
-- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)a3
+- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)session
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [MEMORY[0x277CCABD8] mainQueue];
+  objc_storeStrong(location, session);
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __69__MCLURLDataLoader_URLSessionDidFinishEventsForBackgroundURLSession___block_invoke;
   v8 = &unk_2797EE220;
   v9 = MEMORY[0x277D82BE0](location[0]);
-  [v3 addOperationWithBlock:?];
-  MEMORY[0x277D82BD8](v3);
+  [mainQueue addOperationWithBlock:?];
+  MEMORY[0x277D82BD8](mainQueue);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
@@ -4475,35 +4475,35 @@ void __69__MCLURLDataLoader_URLSessionDidFinishEventsForBackgroundURLSession___b
   objc_storeStrong(location, 0);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, task);
   v19 = 0;
-  objc_storeStrong(&v19, a5);
-  v18 = [(MCLURLDataLoader *)v22 loaderTaskForSessionTask:v20];
-  v11 = [v18 response];
-  MEMORY[0x277D82BD8](v11);
-  if (!v11)
+  objc_storeStrong(&v19, error);
+  v18 = [(MCLURLDataLoader *)selfCopy loaderTaskForSessionTask:v20];
+  response = [v18 response];
+  MEMORY[0x277D82BD8](response);
+  if (!response)
   {
-    v8 = [v20 response];
+    response2 = [v20 response];
     [v18 setResponse:?];
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](response2);
   }
 
-  [(NSMutableArray *)v22->_sessionTasks removeObject:v20];
+  [(NSMutableArray *)selfCopy->_sessionTasks removeObject:v20];
   v15 = 0;
   v7 = 0;
   if (v19)
   {
-    v16 = [v19 domain];
+    domain = [v19 domain];
     v15 = 1;
     v7 = 0;
-    if ([v16 isEqualToString:*MEMORY[0x277CCA738]])
+    if ([domain isEqualToString:*MEMORY[0x277CCA738]])
     {
       v7 = [v19 code] == -999;
     }
@@ -4511,7 +4511,7 @@ void __69__MCLURLDataLoader_URLSessionDidFinishEventsForBackgroundURLSession___b
 
   if (v15)
   {
-    MEMORY[0x277D82BD8](v16);
+    MEMORY[0x277D82BD8](domain);
   }
 
   v17 = v7;
@@ -4523,30 +4523,30 @@ void __69__MCLURLDataLoader_URLSessionDidFinishEventsForBackgroundURLSession___b
     v6 = 0;
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v20 response];
+      response3 = [v20 response];
       v13 = 1;
-      v6 = [v14 expectedContentLength] >= 500000;
+      v6 = [response3 expectedContentLength] >= 500000;
     }
   }
 
   if (v13)
   {
-    MEMORY[0x277D82BD8](v14);
+    MEMORY[0x277D82BD8](response3);
   }
 
   if (v6)
   {
-    v5 = [v19 userInfo];
-    v12 = [v5 objectForKeyedSubscript:*MEMORY[0x277CCA788]];
-    MEMORY[0x277D82BD8](v5);
-    [(MCLURLDataLoader *)v22 storeResumeData:v12 forTask:v18];
+    userInfo = [v19 userInfo];
+    v12 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA788]];
+    MEMORY[0x277D82BD8](userInfo);
+    [(MCLURLDataLoader *)selfCopy storeResumeData:v12 forTask:v18];
     objc_storeStrong(&v12, 0);
   }
 
-  if (!v17 || !v22->_suspended)
+  if (!v17 || !selfCopy->_suspended)
   {
-    [(MCLURLDataLoader *)v22 task:v18 completedWithError:v19];
-    [(MCLURLDataLoader *)v22 operationReschedule];
+    [(MCLURLDataLoader *)selfCopy task:v18 completedWithError:v19];
+    [(MCLURLDataLoader *)selfCopy operationReschedule];
   }
 
   objc_storeStrong(&v18, 0);
@@ -4555,19 +4555,19 @@ void __69__MCLURLDataLoader_URLSessionDidFinishEventsForBackgroundURLSession___b
   objc_storeStrong(location, 0);
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v49 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v47 = 0;
-  objc_storeStrong(&v47, a4);
+  objc_storeStrong(&v47, task);
   v46 = 0;
-  objc_storeStrong(&v46, a5);
+  objc_storeStrong(&v46, response);
   v45 = 0;
-  objc_storeStrong(&v45, a6);
-  v44 = [(MCLURLDataLoader *)v49 loaderTaskForSessionTask:v47];
+  objc_storeStrong(&v45, handler);
+  v44 = [(MCLURLDataLoader *)selfCopy loaderTaskForSessionTask:v47];
   [v44 setResponse:v46];
   if ([v44 cancelled])
   {
@@ -4576,51 +4576,51 @@ void __69__MCLURLDataLoader_URLSessionDidFinishEventsForBackgroundURLSession___b
 
   else if ([v44 download])
   {
-    v24 = v49;
-    v25 = [v44 request];
+    v24 = selfCopy;
+    request = [v44 request];
     v43 = [(MCLURLDataLoader *)v24 _cachedResponseForRequest:?];
-    MEMORY[0x277D82BD8](v25);
-    v26 = [v44 originalRequest];
+    MEMORY[0x277D82BD8](request);
+    originalRequest = [v44 originalRequest];
     v41 = 0;
     v27 = 0;
-    if (![v26 cachePolicy])
+    if (![originalRequest cachePolicy])
     {
-      v42 = [v43 userInfo];
+      userInfo = [v43 userInfo];
       v41 = 1;
-      v27 = v42 != 0;
+      v27 = userInfo != 0;
     }
 
     if (v41)
     {
-      MEMORY[0x277D82BD8](v42);
+      MEMORY[0x277D82BD8](userInfo);
     }
 
-    MEMORY[0x277D82BD8](v26);
+    MEMORY[0x277D82BD8](originalRequest);
     if (v27)
     {
-      v19 = [v44 response];
-      v18 = [v19 allHeaderFields];
-      v40 = [v18 mutableCopy];
-      MEMORY[0x277D82BD8](v18);
-      MEMORY[0x277D82BD8](v19);
-      v21 = [v43 response];
-      v20 = [v21 allHeaderFields];
-      v39 = [v20 mutableCopy];
-      MEMORY[0x277D82BD8](v20);
-      MEMORY[0x277D82BD8](v21);
+      response = [v44 response];
+      allHeaderFields = [response allHeaderFields];
+      v40 = [allHeaderFields mutableCopy];
+      MEMORY[0x277D82BD8](allHeaderFields);
+      MEMORY[0x277D82BD8](response);
+      response2 = [v43 response];
+      allHeaderFields2 = [response2 allHeaderFields];
+      v39 = [allHeaderFields2 mutableCopy];
+      MEMORY[0x277D82BD8](allHeaderFields2);
+      MEMORY[0x277D82BD8](response2);
       [v40 removeObjectForKey:?];
       [v39 removeObjectForKey:@"Date"];
-      v22 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
       v38 = [v40 objectsForKeys:&unk_286780F40 notFoundMarker:?];
-      MEMORY[0x277D82BD8](v22);
-      v23 = [MEMORY[0x277CBEB68] null];
+      MEMORY[0x277D82BD8](null);
+      null2 = [MEMORY[0x277CBEB68] null];
       v37 = [v39 objectsForKeys:&unk_286780F58 notFoundMarker:?];
-      MEMORY[0x277D82BD8](v23);
+      MEMORY[0x277D82BD8](null2);
       if ([v44 responseOk] & 1) == 0 || (objc_msgSend(v38, "isEqualToArray:", v37))
       {
         if (([v44 responseOk] & 1) != 0 && (objc_msgSend(v40, "isEqualToDictionary:", v39) & 1) == 0)
         {
-          [(MCLURLDataLoader *)v49 updateDownloadCacheEntry:v44];
+          [(MCLURLDataLoader *)selfCopy updateDownloadCacheEntry:v44];
         }
 
         [v44 setCachedResponse:1];
@@ -4648,30 +4648,30 @@ void __69__MCLURLDataLoader_URLSessionDidFinishEventsForBackgroundURLSession___b
 
   else
   {
-    v16 = v49;
-    v17 = [v44 request];
+    v16 = selfCopy;
+    request2 = [v44 request];
     v36 = [(MCLURLDataLoader *)v16 _cachedResponseForRequest:?];
-    MEMORY[0x277D82BD8](v17);
+    MEMORY[0x277D82BD8](request2);
     if (v36)
     {
-      v11 = [v44 response];
-      v10 = [v11 allHeaderFields];
-      v35 = [v10 mutableCopy];
-      MEMORY[0x277D82BD8](v10);
-      MEMORY[0x277D82BD8](v11);
-      v13 = [v36 response];
-      v12 = [v13 allHeaderFields];
-      v34 = [v12 mutableCopy];
-      MEMORY[0x277D82BD8](v12);
-      MEMORY[0x277D82BD8](v13);
+      response3 = [v44 response];
+      allHeaderFields3 = [response3 allHeaderFields];
+      v35 = [allHeaderFields3 mutableCopy];
+      MEMORY[0x277D82BD8](allHeaderFields3);
+      MEMORY[0x277D82BD8](response3);
+      response4 = [v36 response];
+      allHeaderFields4 = [response4 allHeaderFields];
+      v34 = [allHeaderFields4 mutableCopy];
+      MEMORY[0x277D82BD8](allHeaderFields4);
+      MEMORY[0x277D82BD8](response4);
       [v35 removeObjectForKey:?];
       [v34 removeObjectForKey:@"Date"];
-      v14 = [MEMORY[0x277CBEB68] null];
+      null3 = [MEMORY[0x277CBEB68] null];
       v33 = [v35 objectsForKeys:&unk_286780F70 notFoundMarker:?];
-      MEMORY[0x277D82BD8](v14);
-      v15 = [MEMORY[0x277CBEB68] null];
+      MEMORY[0x277D82BD8](null3);
+      null4 = [MEMORY[0x277CBEB68] null];
       v32 = [v34 objectsForKeys:&unk_286780F88 notFoundMarker:?];
-      MEMORY[0x277D82BD8](v15);
+      MEMORY[0x277D82BD8](null4);
       if ([v44 responseOk] & 1) != 0 && (objc_msgSend(v33, "isEqualToArray:", v32))
       {
         [v44 setCachedResponse:1];
@@ -4683,10 +4683,10 @@ void __69__MCLURLDataLoader_URLSessionDidFinishEventsForBackgroundURLSession___b
       objc_storeStrong(&v35, 0);
     }
 
-    v31 = [v44 receiveDataHandler];
-    if (v31)
+    receiveDataHandler = [v44 receiveDataHandler];
+    if (receiveDataHandler)
     {
-      (*(v31 + 2))(v31, v44, 0);
+      (*(receiveDataHandler + 2))(receiveDataHandler, v44, 0);
     }
 
     else
@@ -4696,15 +4696,15 @@ void __69__MCLURLDataLoader_URLSessionDidFinishEventsForBackgroundURLSession___b
       {
         if ([v46 expectedContentLength] >= 0xF4240)
         {
-          v8 = 1000000;
+          expectedContentLength = 1000000;
         }
 
         else
         {
-          v8 = [v46 expectedContentLength];
+          expectedContentLength = [v46 expectedContentLength];
         }
 
-        v7 = v8;
+        v7 = expectedContentLength;
       }
 
       else
@@ -4718,7 +4718,7 @@ void __69__MCLURLDataLoader_URLSessionDidFinishEventsForBackgroundURLSession___b
     }
 
     (*(v45 + 2))(v45, 1);
-    objc_storeStrong(&v31, 0);
+    objc_storeStrong(&receiveDataHandler, 0);
     objc_storeStrong(&v36, 0);
   }
 
@@ -4729,48 +4729,48 @@ void __69__MCLURLDataLoader_URLSessionDidFinishEventsForBackgroundURLSession___b
   objc_storeStrong(location, 0);
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didBecomeDownloadTask:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didBecomeDownloadTask:(id)downloadTask
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, task);
   v12 = 0;
-  objc_storeStrong(&v12, a5);
-  v11 = [(MCLURLDataLoader *)v15 loaderTaskForSessionTask:v13];
-  activeTasks = v15->_activeTasks;
+  objc_storeStrong(&v12, downloadTask);
+  v11 = [(MCLURLDataLoader *)selfCopy loaderTaskForSessionTask:v13];
+  activeTasks = selfCopy->_activeTasks;
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v13, "taskIdentifier")}];
   [(NSMutableDictionary *)activeTasks removeObjectForKey:?];
   MEMORY[0x277D82BD8](v10);
   if (v11)
   {
-    v5 = v15->_activeTasks;
+    v5 = selfCopy->_activeTasks;
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v12, "taskIdentifier")}];
     [(NSMutableDictionary *)v5 setObject:v11 forKeyedSubscript:?];
     MEMORY[0x277D82BD8](v6);
   }
 
-  [(NSMutableArray *)v15->_sessionTasks removeObject:v13];
-  [(NSMutableArray *)v15->_sessionTasks addObject:v12];
+  [(NSMutableArray *)selfCopy->_sessionTasks removeObject:v13];
+  [(NSMutableArray *)selfCopy->_sessionTasks addObject:v12];
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, task);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
-  v10 = [(MCLURLDataLoader *)v14 loaderTaskForSessionTask:v12];
+  objc_storeStrong(&v11, data);
+  v10 = [(MCLURLDataLoader *)selfCopy loaderTaskForSessionTask:v12];
   if ([v10 cancelled])
   {
     [v12 cancel];
@@ -4779,20 +4779,20 @@ void __69__MCLURLDataLoader_URLSessionDidFinishEventsForBackgroundURLSession___b
 
   else
   {
-    v8 = [v10 receiveDataHandler];
-    if (v8)
+    receiveDataHandler = [v10 receiveDataHandler];
+    if (receiveDataHandler)
     {
-      (*(v8 + 2))(v8, v10, v11);
+      (*(receiveDataHandler + 2))(receiveDataHandler, v10, v11);
     }
 
     else
     {
-      v5 = [v10 responseData];
-      [v5 appendData:v11];
-      MEMORY[0x277D82BD8](v5);
+      responseData = [v10 responseData];
+      [responseData appendData:v11];
+      MEMORY[0x277D82BD8](responseData);
     }
 
-    objc_storeStrong(&v8, 0);
+    objc_storeStrong(&receiveDataHandler, 0);
     v9 = 0;
   }
 
@@ -4802,19 +4802,19 @@ void __69__MCLURLDataLoader_URLSessionDidFinishEventsForBackgroundURLSession___b
   objc_storeStrong(location, 0);
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 willCacheResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task willCacheResponse:(id)response completionHandler:(id)handler
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
+  objc_storeStrong(&v24, task);
   v23 = 0;
-  objc_storeStrong(&v23, a5);
+  objc_storeStrong(&v23, response);
   v22 = 0;
-  objc_storeStrong(&v22, a6);
-  v21 = [(MCLURLDataLoader *)v26 loaderTaskForSessionTask:v24];
+  objc_storeStrong(&v22, handler);
+  v21 = [(MCLURLDataLoader *)selfCopy loaderTaskForSessionTask:v24];
   v19 = 0;
   v13 = 1;
   if (v21)
@@ -4822,15 +4822,15 @@ void __69__MCLURLDataLoader_URLSessionDidFinishEventsForBackgroundURLSession___b
     v13 = 1;
     if (([v21 download] & 1) == 0)
     {
-      v20 = [v21 receiveDataHandler];
+      receiveDataHandler = [v21 receiveDataHandler];
       v19 = 1;
-      v13 = v20 != 0;
+      v13 = receiveDataHandler != 0;
     }
   }
 
   if (v19)
   {
-    MEMORY[0x277D82BD8](v20);
+    MEMORY[0x277D82BD8](receiveDataHandler);
   }
 
   if (v13)
@@ -4840,21 +4840,21 @@ void __69__MCLURLDataLoader_URLSessionDidFinishEventsForBackgroundURLSession___b
 
   else
   {
-    v7 = [v23 response];
-    v18 = [v7 allHeaderFields];
-    MEMORY[0x277D82BD8](v7);
-    v8 = [v24 originalRequest];
+    response = [v23 response];
+    allHeaderFields = [response allHeaderFields];
+    MEMORY[0x277D82BD8](response);
+    originalRequest = [v24 originalRequest];
     v16 = 0;
     v14 = 0;
     v9 = 1;
-    if ([v8 cachePolicy] != 1)
+    if ([originalRequest cachePolicy] != 1)
     {
-      v17 = [v18 objectForKeyedSubscript:@"Cache-Control"];
+      v17 = [allHeaderFields objectForKeyedSubscript:@"Cache-Control"];
       v16 = 1;
       v6 = 0;
       if (!v17)
       {
-        v15 = [v18 objectForKeyedSubscript:@"Expires"];
+        v15 = [allHeaderFields objectForKeyedSubscript:@"Expires"];
         v14 = 1;
         v6 = v15 == 0;
       }
@@ -4872,7 +4872,7 @@ void __69__MCLURLDataLoader_URLSessionDidFinishEventsForBackgroundURLSession___b
       MEMORY[0x277D82BD8](v17);
     }
 
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](originalRequest);
     if (v9)
     {
       (*(v22 + 2))(v22, 0);
@@ -4883,7 +4883,7 @@ void __69__MCLURLDataLoader_URLSessionDidFinishEventsForBackgroundURLSession___b
       (*(v22 + 2))(v22, v23);
     }
 
-    objc_storeStrong(&v18, 0);
+    objc_storeStrong(&allHeaderFields, 0);
   }
 
   objc_storeStrong(&v21, 0);
@@ -4893,21 +4893,21 @@ void __69__MCLURLDataLoader_URLSessionDidFinishEventsForBackgroundURLSession___b
   objc_storeStrong(location, 0);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, task);
   v21 = 0;
-  objc_storeStrong(&v21, a5);
+  objc_storeStrong(&v21, redirection);
   v20 = 0;
-  objc_storeStrong(&v20, a6);
+  objc_storeStrong(&v20, request);
   v19 = 0;
-  objc_storeStrong(&v19, a7);
-  v18 = [(MCLURLDataLoader *)v24 loaderTaskForSessionTask:v22];
+  objc_storeStrong(&v19, handler);
+  v18 = [(MCLURLDataLoader *)selfCopy loaderTaskForSessionTask:v22];
   if ([v18 cancelled])
   {
     [v22 cancel];
@@ -4916,10 +4916,10 @@ void __69__MCLURLDataLoader_URLSessionDidFinishEventsForBackgroundURLSession___b
 
   else
   {
-    v16 = [v18 redirectHandler];
-    if (v16)
+    redirectHandler = [v18 redirectHandler];
+    if (redirectHandler)
     {
-      v15 = (*(v16 + 2))(v16, v18, v21, v20);
+      v15 = (*(redirectHandler + 2))(redirectHandler, v18, v21, v20);
       if (v15)
       {
         [v18 setRequest:v15];
@@ -4928,7 +4928,7 @@ void __69__MCLURLDataLoader_URLSessionDidFinishEventsForBackgroundURLSession___b
         [v15 timeoutInterval];
         [v8 setTimeoutInterval:?];
         [objc_opt_class() applyDefaultRequestHeaders:v14];
-        [(MCLURLDataLoader *)v24 processURLRequestRewrite:v14];
+        [(MCLURLDataLoader *)selfCopy processURLRequestRewrite:v14];
         objc_storeStrong(&v15, v14);
         objc_storeStrong(&v14, 0);
       }
@@ -4951,12 +4951,12 @@ void __69__MCLURLDataLoader_URLSessionDidFinishEventsForBackgroundURLSession___b
       [v20 timeoutInterval];
       [v7 setTimeoutInterval:?];
       [objc_opt_class() applyDefaultRequestHeaders:v13];
-      [(MCLURLDataLoader *)v24 processURLRequestRewrite:v13];
+      [(MCLURLDataLoader *)selfCopy processURLRequestRewrite:v13];
       (*(v19 + 2))(v19, v13);
       objc_storeStrong(&v13, 0);
     }
 
-    objc_storeStrong(&v16, 0);
+    objc_storeStrong(&redirectHandler, 0);
     v17 = 0;
   }
 
@@ -4968,40 +4968,40 @@ void __69__MCLURLDataLoader_URLSessionDidFinishEventsForBackgroundURLSession___b
   objc_storeStrong(location, 0);
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, task);
   v28 = 0;
-  objc_storeStrong(&v28, a5);
-  v27 = [(MCLURLDataLoader *)v31 loaderTaskForSessionTask:v29];
-  v16 = [v29 response];
+  objc_storeStrong(&v28, l);
+  v27 = [(MCLURLDataLoader *)selfCopy loaderTaskForSessionTask:v29];
+  response = [v29 response];
   [v27 setResponse:?];
-  MEMORY[0x277D82BD8](v16);
+  MEMORY[0x277D82BD8](response);
   if ([v27 responseOk])
   {
     v25 = 0;
     [v27 applyMimeType];
-    v24 = [v27 targetPath];
-    v23 = [MEMORY[0x277CCAA00] defaultManager];
-    if ([v23 fileExistsAtPath:v24])
+    targetPath = [v27 targetPath];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    if ([defaultManager fileExistsAtPath:targetPath])
     {
-      v12 = [v27 response];
-      v13 = [v12 expectedContentLength];
-      MEMORY[0x277D82BD8](v12);
-      v22 = v13;
-      if ((v13 & 0x8000000000000000) == 0)
+      response2 = [v27 response];
+      expectedContentLength = [response2 expectedContentLength];
+      MEMORY[0x277D82BD8](response2);
+      v22 = expectedContentLength;
+      if ((expectedContentLength & 0x8000000000000000) == 0)
       {
-        v10 = [v28 path];
+        path = [v28 path];
         v20 = v25;
-        v9 = [v23 attributesOfItemAtPath:? error:?];
+        v9 = [defaultManager attributesOfItemAtPath:? error:?];
         objc_storeStrong(&v25, v20);
         v21 = v9;
-        MEMORY[0x277D82BD8](v10);
+        MEMORY[0x277D82BD8](path);
         v18 = 0;
         v11 = 1;
         if (v9)
@@ -5009,15 +5009,15 @@ void __69__MCLURLDataLoader_URLSessionDidFinishEventsForBackgroundURLSession___b
           v11 = 1;
           if ([v21 fileSize] >= v22)
           {
-            v19 = [objc_opt_class() downloadData];
+            downloadData = [objc_opt_class() downloadData];
             v18 = 1;
-            v11 = v22 == [v19 length];
+            v11 = v22 == [downloadData length];
           }
         }
 
         if (v18)
         {
-          MEMORY[0x277D82BD8](v19);
+          MEMORY[0x277D82BD8](downloadData);
         }
 
         if (v11)
@@ -5038,30 +5038,30 @@ void __69__MCLURLDataLoader_URLSessionDidFinishEventsForBackgroundURLSession___b
         }
       }
 
-      [v23 removeItemAtPath:v24 error:0];
+      [defaultManager removeItemAtPath:targetPath error:0];
     }
 
-    v6 = v23;
+    v6 = defaultManager;
     v5 = v28;
-    v7 = [MEMORY[0x277CBEBC0] fileURLWithPath:v24];
+    v7 = [MEMORY[0x277CBEBC0] fileURLWithPath:targetPath];
     v17 = v25;
     v8 = [v6 moveItemAtURL:v5 toURL:? error:?];
     objc_storeStrong(&v25, v17);
     MEMORY[0x277D82BD8](v7);
     if (v8)
     {
-      [(MCLURLDataLoader *)v31 updateDownloadCacheEntry:v27];
+      [(MCLURLDataLoader *)selfCopy updateDownloadCacheEntry:v27];
     }
 
     else
     {
-      [(MCLURLDataLoader *)v31 task:v27 completedWithError:v25];
+      [(MCLURLDataLoader *)selfCopy task:v27 completedWithError:v25];
     }
 
     v26 = 0;
 LABEL_19:
-    objc_storeStrong(&v23, 0);
-    objc_storeStrong(&v24, 0);
+    objc_storeStrong(&defaultManager, 0);
+    objc_storeStrong(&targetPath, 0);
     objc_storeStrong(&v25, 0);
     goto LABEL_20;
   }
@@ -5074,56 +5074,56 @@ LABEL_20:
   objc_storeStrong(location, 0);
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didResumeAtOffset:(int64_t)a5 expectedTotalBytes:(int64_t)a6
+- (void)URLSession:(id)session downloadTask:(id)task didResumeAtOffset:(int64_t)offset expectedTotalBytes:(int64_t)bytes
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, task);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didWriteData:(int64_t)a5 totalBytesWritten:(int64_t)a6 totalBytesExpectedToWrite:(int64_t)a7
+- (void)URLSession:(id)session downloadTask:(id)task didWriteData:(int64_t)data totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v12[3] = a5;
-  v12[2] = a6;
-  v12[1] = a7;
-  v12[0] = [(MCLURLDataLoader *)v15 loaderTaskForSessionTask:v13];
-  HIDWORD(v7) = HIDWORD(a6);
-  *&v7 = (a6 * 1.0) / a7;
+  objc_storeStrong(&v13, task);
+  v12[3] = data;
+  v12[2] = written;
+  v12[1] = write;
+  v12[0] = [(MCLURLDataLoader *)selfCopy loaderTaskForSessionTask:v13];
+  HIDWORD(v7) = HIDWORD(written);
+  *&v7 = (written * 1.0) / write;
   [v12[0] setProgress:v7];
   objc_storeStrong(v12, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_removeCachedResponseForRequest:(id)a3
+- (void)_removeCachedResponseForRequest:(id)request
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(MCLURLDataLoader *)v4 _removeCachedResponseForRequest:location[0] force:0];
+  objc_storeStrong(location, request);
+  [(MCLURLDataLoader *)selfCopy _removeCachedResponseForRequest:location[0] force:0];
   objc_storeStrong(location, 0);
 }
 
-- (void)_removeCachedResponseForRequest:(id)a3 force:(BOOL)a4
+- (void)_removeCachedResponseForRequest:(id)request force:(BOOL)force
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v14 = a4;
-  if (a4)
+  objc_storeStrong(location, request);
+  forceCopy = force;
+  if (force)
   {
     v13 = MEMORY[0x277D82BE0](&unk_286781048);
     v12 = MEMORY[0x277D82BE0](&unk_286781070);
@@ -5133,27 +5133,27 @@ LABEL_20:
     MEMORY[0x277D82BD8](v5);
     v7 = objc_alloc(MEMORY[0x277CCA8F0]);
     v6 = v11;
-    v8 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     v10 = [v7 initWithResponse:v6 data:? userInfo:? storagePolicy:?];
-    MEMORY[0x277D82BD8](v8);
-    [(NSURLCache *)v16->_cache storeCachedResponse:v10 forRequest:location[0]];
+    MEMORY[0x277D82BD8](data);
+    [(NSURLCache *)selfCopy->_cache storeCachedResponse:v10 forRequest:location[0]];
     objc_storeStrong(&v10, 0);
     objc_storeStrong(&v11, 0);
     objc_storeStrong(&v12, 0);
     objc_storeStrong(&v13, 0);
   }
 
-  [(NSURLCache *)v16->_cache removeCachedResponseForRequest:location[0]];
+  [(NSURLCache *)selfCopy->_cache removeCachedResponseForRequest:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (id)_cachedResponseForRequest:(id)a3
+- (id)_cachedResponseForRequest:(id)request
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = [(NSURLCache *)v11->_cache cachedResponseForRequest:location[0]];
+  objc_storeStrong(location, request);
+  v9 = [(NSURLCache *)selfCopy->_cache cachedResponseForRequest:location[0]];
   if (v9 && (v6 = [v9 userInfo], v5 = objc_msgSend(v6, "objectForKeyedSubscript:", @"IGNORE"), v7 = objc_msgSend(v5, "BOOLValue"), MEMORY[0x277D82BD8](v5), MEMORY[0x277D82BD8](v6), (v7 & 1) != 0))
   {
     objc_opt_class();

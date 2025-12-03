@@ -6,7 +6,7 @@
 
 - (BOOL)pnp_isPencilEvent
 {
-  if (![a1 _hidEvent])
+  if (![self _hidEvent])
   {
     return 0;
   }

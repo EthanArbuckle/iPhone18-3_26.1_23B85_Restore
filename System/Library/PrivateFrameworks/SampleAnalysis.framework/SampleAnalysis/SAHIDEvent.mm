@@ -1,14 +1,14 @@
 @interface SAHIDEvent
-+ (id)hidEventWithoutReferencesFromPAStyleSerializedHIDEvent:(uint64_t)a1;
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4;
-+ (void)hidEventWithHIDEventType:(void *)a3 atTimestamp:;
-+ (void)parseKTrace:(ktrace_session *)a3 findingHIDEvents:(id)a4;
-- (BOOL)addSelfToBuffer:(id *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5;
++ (id)hidEventWithoutReferencesFromPAStyleSerializedHIDEvent:(uint64_t)event;
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length;
++ (void)hidEventWithHIDEventType:(void *)type atTimestamp:;
++ (void)parseKTrace:(ktrace_session *)trace findingHIDEvents:(id)events;
+- (BOOL)addSelfToBuffer:(id *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary;
 - (NSString)debugDescription;
 - (NSString)hidEventTypeString;
-- (void)addKTraceEvent:(uint64_t)a1 fromSession:(uint64_t)a2;
-- (void)addSelfToSerializationDictionary:(id)a3;
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6;
+- (void)addKTraceEvent:(uint64_t)event fromSession:(uint64_t)session;
+- (void)addSelfToSerializationDictionary:(id)dictionary;
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary;
 @end
 
 @implementation SAHIDEvent
@@ -29,7 +29,7 @@
   return v3;
 }
 
-+ (void)hidEventWithHIDEventType:(void *)a3 atTimestamp:
++ (void)hidEventWithHIDEventType:(void *)type atTimestamp:
 {
   objc_opt_self();
   v5 = objc_alloc(objc_opt_class());
@@ -42,7 +42,7 @@
     if (v6)
     {
       *(v6 + 4) = a2;
-      objc_storeStrong(v6 + 3, a3);
+      objc_storeStrong(v6 + 3, type);
       v8 = [MEMORY[0x1E695E0F0] mutableCopy];
       v9 = v7[1];
       v7[1] = v8;
@@ -57,9 +57,9 @@
   return v7;
 }
 
-- (void)addKTraceEvent:(uint64_t)a1 fromSession:(uint64_t)a2
+- (void)addKTraceEvent:(uint64_t)event fromSession:(uint64_t)session
 {
-  if (!a1)
+  if (!event)
   {
     return;
   }
@@ -69,8 +69,8 @@
   if (v4)
   {
     v5 = v4;
-    v6 = [SATimestamp timestampWithKTraceEvent:a2 fromSession:?];
-    v7 = *(a2 + 48);
+    v6 = [SATimestamp timestampWithKTraceEvent:session fromSession:?];
+    v7 = *(session + 48);
     pid_for_thread = -1;
     if (v7 > 736428035)
     {
@@ -84,18 +84,18 @@
         if (v7 == 736428064)
         {
           v9 = 0;
-          pid_for_thread = *(a2 + 24);
+          pid_for_thread = *(session + 24);
           goto LABEL_34;
         }
       }
 
       if ((v7 - 736493572) > 0xC)
       {
-        v11 = *(a2 + 48);
+        v11 = *(session + 48);
         goto LABEL_20;
       }
 
-      v11 = *(a2 + 48);
+      v11 = *(session + 48);
       if (((1 << (v7 - 4)) & 0x1111) == 0)
       {
 LABEL_20:
@@ -134,7 +134,7 @@ LABEL_32:
         }
 
 LABEL_33:
-        v9 = *(a2 + 40);
+        v9 = *(session + 40);
 LABEL_34:
         v19.receiver = v5;
         v19.super_class = SAHIDStep;
@@ -148,7 +148,7 @@ LABEL_34:
           v16[3] = v9;
           v18 = v16;
 
-          [*(a1 + 8) addObject:v18];
+          [*(event + 8) addObject:v18];
           v4 = v18;
         }
 
@@ -163,13 +163,13 @@ LABEL_34:
       }
 
 LABEL_18:
-      pid_for_thread = *(a2 + 88);
-      v11 = *(a2 + 48);
+      pid_for_thread = *(session + 88);
+      v11 = *(session + 48);
       if (pid_for_thread < 0)
       {
-        v12 = *(a2 + 40);
+        v12 = *(session + 40);
         pid_for_thread = ktrace_get_pid_for_thread();
-        v11 = *(a2 + 48);
+        v11 = *(session + 48);
       }
 
       goto LABEL_20;
@@ -195,7 +195,7 @@ LABEL_18:
       v10 = 408;
     }
 
-    v11 = *(a2 + 48);
+    v11 = *(session + 48);
     if (v7 != (v10 | 0x2B870000))
     {
       goto LABEL_20;
@@ -207,15 +207,15 @@ LABEL_18:
 LABEL_37:
 }
 
-+ (void)parseKTrace:(ktrace_session *)a3 findingHIDEvents:(id)a4
++ (void)parseKTrace:(ktrace_session *)trace findingHIDEvents:(id)events
 {
   v6 = [MEMORY[0x1E695E0F8] mutableCopy];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __43__SAHIDEvent_parseKTrace_findingHIDEvents___block_invoke;
   v9[3] = &unk_1E86F52E0;
-  v11 = a4;
-  v12 = a3;
+  eventsCopy = events;
+  traceCopy = trace;
   v10 = v6;
   v7 = v6;
   v8 = MEMORY[0x1E12EBE50](v9);
@@ -324,10 +324,10 @@ LABEL_27:
   return v5;
 }
 
-- (BOOL)addSelfToBuffer:(id *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5
+- (BOOL)addSelfToBuffer:(id *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary
 {
   v60 = *MEMORY[0x1E69E9840];
-  if ([(SAHIDEvent *)self sizeInBytesForSerializedVersion]!= a4)
+  if ([(SAHIDEvent *)self sizeInBytesForSerializedVersion]!= length)
   {
     v5 = *__error();
     v22 = _sa_logt();
@@ -335,39 +335,39 @@ LABEL_27:
     {
       v23 = [(SAHIDEvent *)self debugDescription];
       *buf = 136315650;
-      v57 = [v23 UTF8String];
+      uTF8String = [v23 UTF8String];
       v58 = 2048;
       *v59 = [(SAHIDEvent *)self sizeInBytesForSerializedVersion];
       *&v59[8] = 2048;
-      *&v59[10] = a4;
+      *&v59[10] = length;
       _os_log_error_impl(&dword_1E0E2F000, v22, OS_LOG_TYPE_ERROR, "%s: size %lu != buffer length %lu", buf, 0x20u);
     }
 
     *__error() = v5;
     v24 = [(SAHIDEvent *)self debugDescription];
-    v25 = [v24 UTF8String];
+    uTF8String2 = [v24 UTF8String];
     [(SAHIDEvent *)self sizeInBytesForSerializedVersion];
-    _SASetCrashLogMessage(856, "%s: size %lu != buffer length %lu", v26, v27, v28, v29, v30, v31, v25);
+    _SASetCrashLogMessage(856, "%s: size %lu != buffer length %lu", v26, v27, v28, v29, v30, v31, uTF8String2);
 
     _os_crash();
     __break(1u);
     goto LABEL_13;
   }
 
-  *&a3->var0 = 513;
-  a3->var3 = self->_hidEventType;
-  a3->var4 = SASerializableIndexForPointerFromSerializationDictionary(self->_hidEventTimestamp, a5);
+  *&buffer->var0 = 513;
+  buffer->var3 = self->_hidEventType;
+  buffer->var4 = SASerializableIndexForPointerFromSerializationDictionary(self->_hidEventTimestamp, dictionary);
   if ([(NSMutableArray *)self->_steps count]>= 0xFFFF)
   {
 LABEL_13:
     v32 = *__error();
-    a3 = _sa_logt();
-    if (os_log_type_enabled(a3, OS_LOG_TYPE_ERROR))
+    buffer = _sa_logt();
+    if (os_log_type_enabled(buffer, OS_LOG_TYPE_ERROR))
     {
       v33 = [(NSMutableArray *)self->_steps count];
       *buf = 134217984;
-      v57 = v33;
-      _os_log_error_impl(&dword_1E0E2F000, a3, OS_LOG_TYPE_ERROR, "hid event with %lu steps", buf, 0xCu);
+      uTF8String = v33;
+      _os_log_error_impl(&dword_1E0E2F000, buffer, OS_LOG_TYPE_ERROR, "hid event with %lu steps", buf, 0xCu);
     }
 
     *__error() = v32;
@@ -381,37 +381,37 @@ LABEL_16:
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
     {
       v43 = [(SAHIDEvent *)self debugDescription];
-      v44 = [v43 UTF8String];
-      var2 = a3->var2;
-      v46 = [(SAHIDEvent *)self sizeInBytesForSerializedVersion];
+      uTF8String3 = [v43 UTF8String];
+      var2 = buffer->var2;
+      sizeInBytesForSerializedVersion = [(SAHIDEvent *)self sizeInBytesForSerializedVersion];
       *buf = 136315906;
-      v57 = v44;
+      uTF8String = uTF8String3;
       v58 = 1024;
       *v59 = var2;
       *&v59[4] = 2048;
       *&v59[6] = v5;
       *&v59[14] = 2048;
-      *&v59[16] = v46;
+      *&v59[16] = sizeInBytesForSerializedVersion;
       _os_log_error_impl(&dword_1E0E2F000, v42, OS_LOG_TYPE_ERROR, "%s: after serializing (with %u steps), ended with length %ld, should be %lu", buf, 0x26u);
     }
 
     *__error() = v41;
     v47 = [(SAHIDEvent *)self debugDescription];
-    v48 = [v47 UTF8String];
-    v49 = a3->var2;
+    uTF8String4 = [v47 UTF8String];
+    v49 = buffer->var2;
     [(SAHIDEvent *)self sizeInBytesForSerializedVersion];
-    _SASetCrashLogMessage(875, "%s: after serializing (with %u steps), ended with length %ld, should be %lu", v50, v51, v52, v53, v54, v55, v48);
+    _SASetCrashLogMessage(875, "%s: after serializing (with %u steps), ended with length %ld, should be %lu", v50, v51, v52, v53, v54, v55, uTF8String4);
 
     _os_crash();
     __break(1u);
   }
 
   v10 = [(NSMutableArray *)self->_steps count];
-  a3->var2 = v10;
+  buffer->var2 = v10;
   if (v10)
   {
     v11 = 0;
-    v12 = a3 + 2;
+    v12 = buffer + 2;
     do
     {
       v13 = [(NSMutableArray *)self->_steps objectAtIndexedSubscript:v11];
@@ -424,12 +424,12 @@ LABEL_16:
       v12[-1].var4 = [v15 tid];
 
       v16 = [(NSMutableArray *)self->_steps objectAtIndexedSubscript:v11];
-      v17 = [v16 timestamp];
-      *&v12->var0 = SASerializableIndexForPointerFromSerializationDictionary(v17, a5);
+      timestamp = [v16 timestamp];
+      *&v12->var0 = SASerializableIndexForPointerFromSerializationDictionary(timestamp, dictionary);
       v12 = (v12 + 24);
 
       ++v11;
-      v18 = a3->var2;
+      v18 = buffer->var2;
     }
 
     while (v11 < v18);
@@ -440,7 +440,7 @@ LABEL_16:
     LODWORD(v18) = 0;
   }
 
-  v19 = &a3[1].var0 + 24 * v18;
+  v19 = &buffer[1].var0 + 24 * v18;
   v5 = 24 * v18 + 18;
   if (v5 != [(SAHIDEvent *)self sizeInBytesForSerializedVersion])
   {
@@ -453,15 +453,15 @@ LABEL_16:
   return 1;
 }
 
-- (void)addSelfToSerializationDictionary:(id)a3
+- (void)addSelfToSerializationDictionary:(id)dictionary
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [objc_opt_class() classDictionaryKey];
-  v6 = SASerializableAddInstanceToSerializationDictionaryWithClassKey(a3, self, v5);
+  classDictionaryKey = [objc_opt_class() classDictionaryKey];
+  v6 = SASerializableAddInstanceToSerializationDictionaryWithClassKey(dictionary, self, classDictionaryKey);
 
   if (v6)
   {
-    [(SATimestamp *)self->_hidEventTimestamp addSelfToSerializationDictionary:a3];
+    [(SATimestamp *)self->_hidEventTimestamp addSelfToSerializationDictionary:dictionary];
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
@@ -482,8 +482,8 @@ LABEL_16:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v14 + 1) + 8 * v11) timestamp];
-          [v12 addSelfToSerializationDictionary:a3];
+          timestamp = [*(*(&v14 + 1) + 8 * v11) timestamp];
+          [timestamp addSelfToSerializationDictionary:dictionary];
 
           ++v11;
         }
@@ -499,45 +499,45 @@ LABEL_16:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length
 {
   *&v50[13] = *MEMORY[0x1E69E9840];
-  if (*a3 >= 3u)
+  if (*buffer >= 3u)
   {
     goto LABEL_23;
   }
 
-  if (a4 <= 0xF)
+  if (length <= 0xF)
   {
     v19 = *__error();
-    v5 = _sa_logt();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    bufferCopy = _sa_logt();
+    if (os_log_type_enabled(bufferCopy, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v48 = a4;
+      lengthCopy3 = length;
       v49 = 2048;
       *v50 = 16;
-      _os_log_error_impl(&dword_1E0E2F000, v5, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SAHIDEvent struct %lu", buf, 0x16u);
+      _os_log_error_impl(&dword_1E0E2F000, bufferCopy, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SAHIDEvent struct %lu", buf, 0x16u);
     }
 
     *__error() = v19;
-    _SASetCrashLogMessage(898, "bufferLength %lu < serialized SAHIDEvent struct %lu", v20, v21, v22, v23, v24, v25, a4);
+    _SASetCrashLogMessage(898, "bufferLength %lu < serialized SAHIDEvent struct %lu", v20, v21, v22, v23, v24, v25, length);
     _os_crash();
     __break(1u);
     goto LABEL_17;
   }
 
-  v5 = a3;
-  if (8 * *(a3 + 1) + 16 > a4)
+  bufferCopy = buffer;
+  if (8 * *(buffer + 1) + 16 > length)
   {
 LABEL_17:
     v26 = *__error();
     v27 = _sa_logt();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      v28 = *(v5 + 2);
+      v28 = *(bufferCopy + 2);
       *buf = 134218496;
-      v48 = a4;
+      lengthCopy3 = length;
       v49 = 1024;
       *v50 = v28;
       v50[2] = 2048;
@@ -546,8 +546,8 @@ LABEL_17:
     }
 
     *__error() = v26;
-    v45 = *(v5 + 2);
-    _SASetCrashLogMessage(899, "bufferLength %lu < serialized SAHIDEvent struct plus %u children %lu", v29, v30, v31, v32, v33, v34, a4);
+    v45 = *(bufferCopy + 2);
+    _SASetCrashLogMessage(899, "bufferLength %lu < serialized SAHIDEvent struct plus %u children %lu", v29, v30, v31, v32, v33, v34, length);
     _os_crash();
     __break(1u);
 LABEL_20:
@@ -555,17 +555,17 @@ LABEL_20:
     v36 = _sa_logt();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
-      v37 = *(v5 + 2);
+      v37 = *(bufferCopy + 2);
       *buf = 134218240;
-      v48 = a4;
+      lengthCopy3 = length;
       v49 = 1024;
       *v50 = v37;
       _os_log_error_impl(&dword_1E0E2F000, v36, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SAThread v2 struct with %u thread states", buf, 0x12u);
     }
 
     *__error() = v35;
-    v46 = *(v5 + 2);
-    _SASetCrashLogMessage(906, "bufferLength %lu < serialized SAThread v2 struct with %u thread states", v38, v39, v40, v41, v42, v43, a4);
+    v46 = *(bufferCopy + 2);
+    _SASetCrashLogMessage(906, "bufferLength %lu < serialized SAThread v2 struct with %u thread states", v38, v39, v40, v41, v42, v43, length);
     _os_crash();
     __break(1u);
 LABEL_23:
@@ -573,7 +573,7 @@ LABEL_23:
     objc_exception_throw(v44);
   }
 
-  if (*(a3 + 1) < 2u)
+  if (*(buffer + 1) < 2u)
   {
     if ((*gSASerializationEncodedDataIsEmbedded() & 1) == 0)
     {
@@ -583,12 +583,12 @@ LABEL_23:
     goto LABEL_9;
   }
 
-  if (24 * *(a3 + 1) + 18 > a4)
+  if (24 * *(buffer + 1) + 18 > length)
   {
     goto LABEL_20;
   }
 
-  if ((*(a3 + 24 * *(a3 + 1) + 16) & 1) == 0)
+  if ((*(buffer + 24 * *(buffer + 1) + 16) & 1) == 0)
   {
 LABEL_7:
     v6 = off_1E86F4CE8;
@@ -599,15 +599,15 @@ LABEL_9:
   v6 = off_1E86F4CF0;
 LABEL_10:
   v7 = objc_alloc_init(*v6);
-  v7[4] = *(v5 + 4);
-  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:*(v5 + 2)];
+  v7[4] = *(bufferCopy + 4);
+  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:*(bufferCopy + 2)];
   v9 = *(v7 + 1);
   *(v7 + 1) = v8;
 
-  if (*(v5 + 2))
+  if (*(bufferCopy + 2))
   {
     v10 = 0;
-    v11 = (v5 + 24);
+    v11 = (bufferCopy + 24);
     do
     {
       v12 = *(v7 + 1);
@@ -621,52 +621,52 @@ LABEL_10:
       ++v10;
     }
 
-    while (v10 < *(v5 + 2));
+    while (v10 < *(bufferCopy + 2));
   }
 
   v17 = *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary
 {
   *&v45[13] = *MEMORY[0x1E69E9840];
-  if (*a3 >= 3u)
+  if (*buffer >= 3u)
   {
     goto LABEL_16;
   }
 
-  if (a4 <= 0xF)
+  if (length <= 0xF)
   {
     v24 = *__error();
-    v7 = _sa_logt();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    bufferCopy = _sa_logt();
+    if (os_log_type_enabled(bufferCopy, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v43 = a4;
+      lengthCopy2 = length;
       v44 = 2048;
       *v45 = 16;
-      _os_log_error_impl(&dword_1E0E2F000, v7, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SAHIDEvent struct %lu", buf, 0x16u);
+      _os_log_error_impl(&dword_1E0E2F000, bufferCopy, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SAHIDEvent struct %lu", buf, 0x16u);
     }
 
     *__error() = v24;
-    _SASetCrashLogMessage(937, "bufferLength %lu < serialized SAHIDEvent struct %lu", v25, v26, v27, v28, v29, v30, a4);
+    _SASetCrashLogMessage(937, "bufferLength %lu < serialized SAHIDEvent struct %lu", v25, v26, v27, v28, v29, v30, length);
     _os_crash();
     __break(1u);
     goto LABEL_13;
   }
 
-  v7 = a3;
-  if (8 * *(a3 + 1) + 16 > a4)
+  bufferCopy = buffer;
+  if (8 * *(buffer + 1) + 16 > length)
   {
 LABEL_13:
     v31 = *__error();
     v32 = _sa_logt();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
-      v33 = *(v7 + 2);
+      v33 = *(bufferCopy + 2);
       *buf = 134218496;
-      v43 = a4;
+      lengthCopy2 = length;
       v44 = 1024;
       *v45 = v33;
       v45[2] = 2048;
@@ -675,8 +675,8 @@ LABEL_13:
     }
 
     *__error() = v31;
-    v41 = *(v7 + 2);
-    _SASetCrashLogMessage(938, "bufferLength %lu < serialized SAHIDEvent struct plus %u children %lu", v34, v35, v36, v37, v38, v39, a4);
+    v41 = *(bufferCopy + 2);
+    _SASetCrashLogMessage(938, "bufferLength %lu < serialized SAHIDEvent struct plus %u children %lu", v34, v35, v36, v37, v38, v39, length);
     _os_crash();
     __break(1u);
 LABEL_16:
@@ -684,22 +684,22 @@ LABEL_16:
     objc_exception_throw(v40);
   }
 
-  v11 = *(a3 + 1);
+  v11 = *(buffer + 1);
   v12 = objc_opt_class();
-  v13 = SASerializableNonnullInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v11, a5, a6, v12);
+  v13 = SASerializableNonnullInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v11, dictionary, bufferDictionary, v12);
   hidEventTimestamp = self->_hidEventTimestamp;
   self->_hidEventTimestamp = v13;
 
-  if (*(v7 + 2))
+  if (*(bufferCopy + 2))
   {
     v15 = 0;
-    v16 = (v7 + 32);
+    v16 = (bufferCopy + 32);
     do
     {
       v17 = *v16;
       v16 += 3;
       v18 = objc_opt_class();
-      v19 = SASerializableNonnullInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v17, a5, a6, v18);
+      v19 = SASerializableNonnullInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v17, dictionary, bufferDictionary, v18);
       v20 = [(NSMutableArray *)self->_steps objectAtIndexedSubscript:v15];
       v22 = v20;
       if (v20)
@@ -710,13 +710,13 @@ LABEL_16:
       ++v15;
     }
 
-    while (v15 < *(v7 + 2));
+    while (v15 < *(bufferCopy + 2));
   }
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)hidEventWithoutReferencesFromPAStyleSerializedHIDEvent:(uint64_t)a1
++ (id)hidEventWithoutReferencesFromPAStyleSerializedHIDEvent:(uint64_t)event
 {
   v26 = *MEMORY[0x1E69E9840];
   objc_opt_self();

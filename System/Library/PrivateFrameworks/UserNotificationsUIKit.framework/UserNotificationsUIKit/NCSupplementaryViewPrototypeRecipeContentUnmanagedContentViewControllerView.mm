@@ -1,16 +1,16 @@
 @interface NCSupplementaryViewPrototypeRecipeContentUnmanagedContentViewControllerView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NCSupplementaryViewPrototypeRecipeContentUnmanagedContentViewControllerViewDelegate)delegate;
 - (void)_unmanagedViewTapped;
 - (void)layoutSubviews;
-- (void)setContainsUnmanagedContent:(BOOL)a3;
+- (void)setContainsUnmanagedContent:(BOOL)content;
 @end
 
 @implementation NCSupplementaryViewPrototypeRecipeContentUnmanagedContentViewControllerView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UISegmentedControl *)self->_unmanagedSegmentControl frame:a3.width];
+  [(UISegmentedControl *)self->_unmanagedSegmentControl frame:fits.width];
   v3 = CGRectGetMaxY(v6) + 35.0;
   v4 = 0.0;
   result.height = v3;
@@ -31,8 +31,8 @@
     self->_unmanagedView = v3;
 
     v5 = self->_unmanagedView;
-    v6 = [MEMORY[0x277D75348] systemLightGrayColor];
-    [(UIView *)v5 setBackgroundColor:v6];
+    systemLightGrayColor = [MEMORY[0x277D75348] systemLightGrayColor];
+    [(UIView *)v5 setBackgroundColor:systemLightGrayColor];
 
     [(NCSupplementaryViewPrototypeRecipeContentUnmanagedContentViewControllerView *)self addSubview:self->_unmanagedView];
   }
@@ -190,19 +190,19 @@ void __93__NCSupplementaryViewPrototypeRecipeContentUnmanagedContentViewControll
   }
 }
 
-- (void)setContainsUnmanagedContent:(BOOL)a3
+- (void)setContainsUnmanagedContent:(BOOL)content
 {
-  self->_containsUnmanagedContent = a3;
-  [(UISegmentedControl *)self->_unmanagedSegmentControl setSelectedSegmentIndex:a3];
+  self->_containsUnmanagedContent = content;
+  [(UISegmentedControl *)self->_unmanagedSegmentControl setSelectedSegmentIndex:content];
 
   [(NCSupplementaryViewPrototypeRecipeContentUnmanagedContentViewControllerView *)self setNeedsLayout];
 }
 
 - (void)_unmanagedViewTapped
 {
-  v3 = [(UIView *)self->_unmanagedView backgroundColor];
-  v4 = [MEMORY[0x277D75348] systemLightGrayColor];
-  if ([v3 isEqual:v4])
+  backgroundColor = [(UIView *)self->_unmanagedView backgroundColor];
+  systemLightGrayColor = [MEMORY[0x277D75348] systemLightGrayColor];
+  if ([backgroundColor isEqual:systemLightGrayColor])
   {
     [MEMORY[0x277D75348] systemMintColor];
   }

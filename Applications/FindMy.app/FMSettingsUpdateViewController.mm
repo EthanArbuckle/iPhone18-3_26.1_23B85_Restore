@@ -2,7 +2,7 @@
 - (void)backAction;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation FMSettingsUpdateViewController
@@ -12,25 +12,25 @@
   v6.receiver = self;
   v6.super_class = type metadata accessor for FMSettingsUpdateViewController();
   v2 = v6.receiver;
-  v3 = [(FMSettingsUpdateViewController *)&v6 viewDidLoad];
-  (*((swift_isaMask & *v2) + 0xF8))(v3);
+  viewDidLoad = [(FMSettingsUpdateViewController *)&v6 viewDidLoad];
+  (*((swift_isaMask & *v2) + 0xF8))(viewDidLoad);
   sub_100343D80();
   (*((swift_isaMask & *v2) + 0x108))(v4, v5);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = type metadata accessor for FMSettingsUpdateViewController();
   v4 = v6.receiver;
-  v5 = [(FMSettingsUpdateViewController *)&v6 viewWillAppear:v3];
+  v5 = [(FMSettingsUpdateViewController *)&v6 viewWillAppear:appearCopy];
   (*((swift_isaMask & *v4) + 0x110))(v5);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003446B8();
 }
 
@@ -46,9 +46,9 @@
   v6[2] = sub_100004AE4;
   v6[3] = &unk_1006379A0;
   v4 = _Block_copy(v6);
-  v5 = self;
+  selfCopy = self;
 
-  [(FMSettingsUpdateViewController *)v5 dismissViewControllerAnimated:1 completion:v4];
+  [(FMSettingsUpdateViewController *)selfCopy dismissViewControllerAnimated:1 completion:v4];
 
   _Block_release(v4);
 }

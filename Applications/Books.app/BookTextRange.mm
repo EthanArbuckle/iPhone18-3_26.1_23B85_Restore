@@ -1,11 +1,11 @@
 @interface BookTextRange
-+ (id)textRangeWithRange:(_NSRange)a3;
-+ (id)textRangeWithRange:(_NSRange)a3 eolAffinity:(BOOL)a4 preferredStartPosition:(float)a5 preferredEndPosition:(float)a6;
-- (BOOL)isEqual:(id)a3;
-- (BookTextRange)initWithRange:(_NSRange)a3;
-- (BookTextRange)initWithRange:(_NSRange)a3 eolAffinity:(BOOL)a4 preferredStartPosition:(float)a5 preferredEndPosition:(float)a6;
++ (id)textRangeWithRange:(_NSRange)range;
++ (id)textRangeWithRange:(_NSRange)range eolAffinity:(BOOL)affinity preferredStartPosition:(float)position preferredEndPosition:(float)endPosition;
+- (BOOL)isEqual:(id)equal;
+- (BookTextRange)initWithRange:(_NSRange)range;
+- (BookTextRange)initWithRange:(_NSRange)range eolAffinity:(BOOL)affinity preferredStartPosition:(float)position preferredEndPosition:(float)endPosition;
 - (_NSRange)range;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)end;
 - (id)start;
@@ -13,37 +13,37 @@
 
 @implementation BookTextRange
 
-+ (id)textRangeWithRange:(_NSRange)a3
++ (id)textRangeWithRange:(_NSRange)range
 {
-  v3 = [[a1 alloc] initWithRange:{a3.location, a3.length}];
+  v3 = [[self alloc] initWithRange:{range.location, range.length}];
 
   return v3;
 }
 
-+ (id)textRangeWithRange:(_NSRange)a3 eolAffinity:(BOOL)a4 preferredStartPosition:(float)a5 preferredEndPosition:(float)a6
++ (id)textRangeWithRange:(_NSRange)range eolAffinity:(BOOL)affinity preferredStartPosition:(float)position preferredEndPosition:(float)endPosition
 {
-  v8 = a4;
-  length = a3.length;
-  location = a3.location;
-  v11 = [a1 alloc];
-  *&v12 = a5;
-  *&v13 = a6;
-  v14 = [v11 initWithRange:location eolAffinity:length preferredStartPosition:v8 preferredEndPosition:{v12, v13}];
+  affinityCopy = affinity;
+  length = range.length;
+  location = range.location;
+  v11 = [self alloc];
+  *&v12 = position;
+  *&v13 = endPosition;
+  v14 = [v11 initWithRange:location eolAffinity:length preferredStartPosition:affinityCopy preferredEndPosition:{v12, v13}];
 
   return v14;
 }
 
-- (BookTextRange)initWithRange:(_NSRange)a3
+- (BookTextRange)initWithRange:(_NSRange)range
 {
   LODWORD(v3) = 2143289344;
   LODWORD(v4) = 2143289344;
-  return [(BookTextRange *)self initWithRange:a3.location eolAffinity:a3.length preferredStartPosition:0 preferredEndPosition:v3, v4];
+  return [(BookTextRange *)self initWithRange:range.location eolAffinity:range.length preferredStartPosition:0 preferredEndPosition:v3, v4];
 }
 
-- (BookTextRange)initWithRange:(_NSRange)a3 eolAffinity:(BOOL)a4 preferredStartPosition:(float)a5 preferredEndPosition:(float)a6
+- (BookTextRange)initWithRange:(_NSRange)range eolAffinity:(BOOL)affinity preferredStartPosition:(float)position preferredEndPosition:(float)endPosition
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v12.receiver = self;
   v12.super_class = BookTextRange;
   result = [(BookTextRange *)&v12 init];
@@ -51,17 +51,17 @@
   {
     result->_range.location = location;
     result->_range.length = length;
-    result->_eolAffinity = a4;
-    result->_preferredStartPosition = a5;
-    result->_preferredEndPosition = a6;
+    result->_eolAffinity = affinity;
+    result->_preferredStartPosition = position;
+    result->_preferredEndPosition = endPosition;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   eolAffinity = self->_eolAffinity;
   *&v6 = self->_preferredStartPosition;
   *&v7 = self->_preferredEndPosition;
@@ -117,9 +117,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = __IMAccessibilityCastAsClass();
   if (v5 && ((length = self->_range.length, self->_range.location == *(v5 + 8)) ? (v7 = length == *(v5 + 16)) : (v7 = 0), v7))

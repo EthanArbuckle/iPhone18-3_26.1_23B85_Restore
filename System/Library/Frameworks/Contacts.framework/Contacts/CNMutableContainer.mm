@@ -2,20 +2,20 @@
 - (id)copy;
 - (id)freeze;
 - (id)freezeWithSelfAsSnapshot;
-- (void)adoptValuesFromAndSetSnapshot:(id)a3;
-- (void)setAccountIdentifier:(id)a3;
-- (void)setConstraintsPath:(id)a3;
-- (void)setExternalIdentifier:(id)a3;
-- (void)setExternalModificationTag:(id)a3;
-- (void)setExternalSyncData:(id)a3;
-- (void)setExternalSyncTag:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setLastSyncDate:(id)a3;
-- (void)setMeIdentifier:(id)a3;
-- (void)setName:(id)a3;
-- (void)setProviderIdentifier:(id)a3;
-- (void)setProviderMetadata:(id)a3;
-- (void)setSnapshot:(id)a3;
+- (void)adoptValuesFromAndSetSnapshot:(id)snapshot;
+- (void)setAccountIdentifier:(id)identifier;
+- (void)setConstraintsPath:(id)path;
+- (void)setExternalIdentifier:(id)identifier;
+- (void)setExternalModificationTag:(id)tag;
+- (void)setExternalSyncData:(id)data;
+- (void)setExternalSyncTag:(id)tag;
+- (void)setIdentifier:(id)identifier;
+- (void)setLastSyncDate:(id)date;
+- (void)setMeIdentifier:(id)identifier;
+- (void)setName:(id)name;
+- (void)setProviderIdentifier:(id)identifier;
+- (void)setProviderMetadata:(id)metadata;
+- (void)setSnapshot:(id)snapshot;
 @end
 
 @implementation CNMutableContainer
@@ -27,11 +27,11 @@
   return [(CNContainer *)v3 initWithContainer:self];
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  if (self->super._identifier != a3)
+  if (self->super._identifier != identifier)
   {
-    v4 = [a3 copy];
+    v4 = [identifier copy];
     identifier = self->super._identifier;
     self->super._identifier = v4;
 
@@ -39,11 +39,11 @@
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  if (self->super._name != a3)
+  if (self->super._name != name)
   {
-    v4 = [a3 copy];
+    v4 = [name copy];
     name = self->super._name;
     self->super._name = v4;
 
@@ -51,11 +51,11 @@
   }
 }
 
-- (void)setAccountIdentifier:(id)a3
+- (void)setAccountIdentifier:(id)identifier
 {
-  if (self->super._accountIdentifier != a3)
+  if (self->super._accountIdentifier != identifier)
   {
-    v4 = [a3 copy];
+    v4 = [identifier copy];
     accountIdentifier = self->super._accountIdentifier;
     self->super._accountIdentifier = v4;
 
@@ -63,11 +63,11 @@
   }
 }
 
-- (void)setExternalIdentifier:(id)a3
+- (void)setExternalIdentifier:(id)identifier
 {
-  if (self->super._externalIdentifier != a3)
+  if (self->super._externalIdentifier != identifier)
   {
-    v4 = [a3 copy];
+    v4 = [identifier copy];
     externalIdentifier = self->super._externalIdentifier;
     self->super._externalIdentifier = v4;
 
@@ -75,11 +75,11 @@
   }
 }
 
-- (void)setExternalModificationTag:(id)a3
+- (void)setExternalModificationTag:(id)tag
 {
-  if (self->super._externalModificationTag != a3)
+  if (self->super._externalModificationTag != tag)
   {
-    v4 = [a3 copy];
+    v4 = [tag copy];
     externalModificationTag = self->super._externalModificationTag;
     self->super._externalModificationTag = v4;
 
@@ -87,11 +87,11 @@
   }
 }
 
-- (void)setExternalSyncTag:(id)a3
+- (void)setExternalSyncTag:(id)tag
 {
-  if (self->super._externalSyncTag != a3)
+  if (self->super._externalSyncTag != tag)
   {
-    v4 = [a3 copy];
+    v4 = [tag copy];
     externalSyncTag = self->super._externalSyncTag;
     self->super._externalSyncTag = v4;
 
@@ -99,11 +99,11 @@
   }
 }
 
-- (void)setExternalSyncData:(id)a3
+- (void)setExternalSyncData:(id)data
 {
-  if (self->super._externalSyncData != a3)
+  if (self->super._externalSyncData != data)
   {
-    v4 = [a3 copy];
+    v4 = [data copy];
     externalSyncData = self->super._externalSyncData;
     self->super._externalSyncData = v4;
 
@@ -111,11 +111,11 @@
   }
 }
 
-- (void)setConstraintsPath:(id)a3
+- (void)setConstraintsPath:(id)path
 {
-  if (self->super._constraintsPath != a3)
+  if (self->super._constraintsPath != path)
   {
-    v4 = [a3 copy];
+    v4 = [path copy];
     constraintsPath = self->super._constraintsPath;
     self->super._constraintsPath = v4;
 
@@ -123,11 +123,11 @@
   }
 }
 
-- (void)setMeIdentifier:(id)a3
+- (void)setMeIdentifier:(id)identifier
 {
-  if (self->super._meIdentifier != a3)
+  if (self->super._meIdentifier != identifier)
   {
-    v4 = [a3 copy];
+    v4 = [identifier copy];
     meIdentifier = self->super._meIdentifier;
     self->super._meIdentifier = v4;
 
@@ -135,11 +135,11 @@
   }
 }
 
-- (void)setLastSyncDate:(id)a3
+- (void)setLastSyncDate:(id)date
 {
-  if (self->super._lastSyncDate != a3)
+  if (self->super._lastSyncDate != date)
   {
-    v4 = [a3 copy];
+    v4 = [date copy];
     lastSyncDate = self->super._lastSyncDate;
     self->super._lastSyncDate = v4;
 
@@ -147,25 +147,25 @@
   }
 }
 
-- (void)setSnapshot:(id)a3
+- (void)setSnapshot:(id)snapshot
 {
   snapshot = self->super._snapshot;
-  if (snapshot != a3)
+  if (snapshot != snapshot)
   {
     self->super._snapshot = 0;
-    v5 = a3;
+    snapshotCopy = snapshot;
 
-    v6 = [v5 copy];
+    v6 = [snapshotCopy copy];
     v7 = self->super._snapshot;
     self->super._snapshot = v6;
   }
 }
 
-- (void)adoptValuesFromAndSetSnapshot:(id)a3
+- (void)adoptValuesFromAndSetSnapshot:(id)snapshot
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  snapshotCopy = snapshot;
+  if (snapshotCopy)
   {
     v14 = 0u;
     v15 = 0u;
@@ -187,7 +187,7 @@
           }
 
           v10 = *(*(&v12 + 1) + 8 * i);
-          v11 = [v10 CNValueForContainer:v4];
+          v11 = [v10 CNValueForContainer:snapshotCopy];
           [v10 setCNValue:v11 onContainer:self];
         }
 
@@ -198,7 +198,7 @@
     }
   }
 
-  [(CNMutableContainer *)self setSnapshot:v4];
+  [(CNMutableContainer *)self setSnapshot:snapshotCopy];
 }
 
 - (id)freeze
@@ -210,17 +210,17 @@
 
 - (id)freezeWithSelfAsSnapshot
 {
-  v3 = [MEMORY[0x1E695DFB0] null];
-  [(CNMutableContainer *)self setSnapshot:v3];
+  null = [MEMORY[0x1E695DFB0] null];
+  [(CNMutableContainer *)self setSnapshot:null];
 
   return [(CNMutableContainer *)self freeze];
 }
 
-- (void)setProviderIdentifier:(id)a3
+- (void)setProviderIdentifier:(id)identifier
 {
-  if (self->super._providerIdentifier != a3)
+  if (self->super._providerIdentifier != identifier)
   {
-    v4 = [a3 copy];
+    v4 = [identifier copy];
     providerIdentifier = self->super._providerIdentifier;
     self->super._providerIdentifier = v4;
 
@@ -228,11 +228,11 @@
   }
 }
 
-- (void)setProviderMetadata:(id)a3
+- (void)setProviderMetadata:(id)metadata
 {
-  if (self->super._providerMetadata != a3)
+  if (self->super._providerMetadata != metadata)
   {
-    v4 = [a3 copy];
+    v4 = [metadata copy];
     providerMetadata = self->super._providerMetadata;
     self->super._providerMetadata = v4;
 

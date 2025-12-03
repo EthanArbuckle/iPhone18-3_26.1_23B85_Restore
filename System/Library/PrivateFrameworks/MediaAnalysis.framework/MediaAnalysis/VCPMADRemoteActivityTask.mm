@@ -1,30 +1,30 @@
 @interface VCPMADRemoteActivityTask
-+ (id)taskWithActivityType:(unint64_t)a3 andCompletionHandler:(id)a4;
-- (BOOL)run:(id *)a3;
-- (VCPMADRemoteActivityTask)initWithActivityType:(unint64_t)a3 andCompletionHandler:(id)a4;
++ (id)taskWithActivityType:(unint64_t)type andCompletionHandler:(id)handler;
+- (BOOL)run:(id *)run;
+- (VCPMADRemoteActivityTask)initWithActivityType:(unint64_t)type andCompletionHandler:(id)handler;
 - (id)connection;
-- (void)updateProgress:(double)a3;
+- (void)updateProgress:(double)progress;
 @end
 
 @implementation VCPMADRemoteActivityTask
 
-- (VCPMADRemoteActivityTask)initWithActivityType:(unint64_t)a3 andCompletionHandler:(id)a4
+- (VCPMADRemoteActivityTask)initWithActivityType:(unint64_t)type andCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v11.receiver = self;
   v11.super_class = VCPMADRemoteActivityTask;
-  v7 = [(VCPMADRemoteActivityTask *)&v11 initWithCompletionHandler:v6];
+  v7 = [(VCPMADRemoteActivityTask *)&v11 initWithCompletionHandler:handlerCopy];
   v8 = v7;
   if (v7)
   {
-    v7->_activityType = a3;
+    v7->_activityType = type;
     if (MediaAnalysisLogLevel() >= 7)
     {
       v9 = VCPLogToOSLogType[7];
       if (os_log_type_enabled(&_os_log_default, v9))
       {
         *buf = 67109120;
-        v13 = a3;
+        typeCopy = type;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v9, "[MAD BG Service] Initializing activity %d ... ", buf, 8u);
       }
     }
@@ -33,12 +33,12 @@
   return v8;
 }
 
-+ (id)taskWithActivityType:(unint64_t)a3 andCompletionHandler:(id)a4
++ (id)taskWithActivityType:(unint64_t)type andCompletionHandler:(id)handler
 {
-  v6 = a4;
-  if (a3 <= 0x16 && ((1 << a3) & 0x79140E) != 0 || a3 - 256 < 4)
+  handlerCopy = handler;
+  if (type <= 0x16 && ((1 << type) & 0x79140E) != 0 || type - 256 < 4)
   {
-    v7 = [[a1 alloc] initWithActivityType:a3 andCompletionHandler:v6];
+    v7 = [[self alloc] initWithActivityType:type andCompletionHandler:handlerCopy];
   }
 
   else
@@ -85,7 +85,7 @@
   return connection;
 }
 
-- (void)updateProgress:(double)a3
+- (void)updateProgress:(double)progress
 {
   v4 = +[VCPWatchdog sharedWatchdog];
   [v4 pet];
@@ -96,13 +96,13 @@
     if (os_log_type_enabled(&_os_log_default, v5))
     {
       v6 = 134217984;
-      v7 = a3;
+      progressCopy = progress;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "[MAD BG Service] %3.1f%% complete", &v6, 0xCu);
     }
   }
 }
 
-- (BOOL)run:(id *)a3
+- (BOOL)run:(id *)run
 {
   v57 = 0;
   v58 = &v57;
@@ -151,21 +151,21 @@ LABEL_13:
         v23 = VCPLogToOSLogType[5];
         if (os_log_type_enabled(&_os_log_default, v23))
         {
-          v24 = [v52[5] code];
+          code = [v52[5] code];
           *buf = 67109120;
-          *&buf[4] = v24;
+          *&buf[4] = code;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v23, "[MAD BG Service] finished (%d)", buf, 8u);
         }
       }
 
-      if (a3)
+      if (run)
       {
         v25 = v52[5];
         if (v25)
         {
           v26 = [v25 copy];
-          v27 = *a3;
-          *a3 = v26;
+          v27 = *run;
+          *run = v26;
         }
       }
 
@@ -182,8 +182,8 @@ LABEL_13:
     }
 
     v6 = dispatch_semaphore_create(0);
-    v7 = [(VCPMADRemoteActivityTask *)self connection];
-    v8 = [v7 remoteObjectProxyWithErrorHandler:&stru_100286EA0];
+    connection = [(VCPMADRemoteActivityTask *)self connection];
+    v8 = [connection remoteObjectProxyWithErrorHandler:&stru_100286EA0];
     v45[0] = _NSConcreteStackBlock;
     v45[1] = 3221225472;
     v45[2] = sub_10012DF40;
@@ -200,14 +200,14 @@ LABEL_13:
 
     v11 = dispatch_group_create();
     dispatch_group_enter(v11);
-    v12 = [(VCPMADRemoteActivityTask *)self connection];
+    connection2 = [(VCPMADRemoteActivityTask *)self connection];
     v43[0] = _NSConcreteStackBlock;
     v43[1] = 3221225472;
     v43[2] = sub_10012E00C;
     v43[3] = &unk_100286EC8;
     v13 = v11;
     v44 = v13;
-    v14 = [v12 remoteObjectProxyWithErrorHandler:v43];
+    v14 = [connection2 remoteObjectProxyWithErrorHandler:v43];
     v15 = self->_activityType;
     v38[0] = _NSConcreteStackBlock;
     v38[1] = 3221225472;
@@ -252,15 +252,15 @@ LABEL_13:
     }
   }
 
-  if (a3)
+  if (run)
   {
     v65 = NSLocalizedDescriptionKey;
     v30 = [NSString stringWithFormat:@"Waking background analysis service timeout deferring ..."];;
     v66 = v30;
     v31 = [NSDictionary dictionaryWithObjects:&v66 forKeys:&v65 count:1];
     v32 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v31];
-    v33 = *a3;
-    *a3 = v32;
+    v33 = *run;
+    *run = v32;
   }
 
   v28 = 0;

@@ -1,7 +1,7 @@
 @interface TTRListBadgeView.ShadowLayer
 - (_TtCC15RemindersUICore16TTRListBadgeViewP33_3DF80B16FE3BCF93F419A82E393676A411ShadowLayer)init;
-- (_TtCC15RemindersUICore16TTRListBadgeViewP33_3DF80B16FE3BCF93F419A82E393676A411ShadowLayer)initWithCoder:(id)a3;
-- (_TtCC15RemindersUICore16TTRListBadgeViewP33_3DF80B16FE3BCF93F419A82E393676A411ShadowLayer)initWithLayer:(id)a3;
+- (_TtCC15RemindersUICore16TTRListBadgeViewP33_3DF80B16FE3BCF93F419A82E393676A411ShadowLayer)initWithCoder:(id)coder;
+- (_TtCC15RemindersUICore16TTRListBadgeViewP33_3DF80B16FE3BCF93F419A82E393676A411ShadowLayer)initWithLayer:(id)layer;
 - (void)layoutSublayers;
 @end
 
@@ -25,7 +25,7 @@
   return [(TTRNoDefaultImplicitActionLayer *)&v3 init];
 }
 
-- (_TtCC15RemindersUICore16TTRListBadgeViewP33_3DF80B16FE3BCF93F419A82E393676A411ShadowLayer)initWithLayer:(id)a3
+- (_TtCC15RemindersUICore16TTRListBadgeViewP33_3DF80B16FE3BCF93F419A82E393676A411ShadowLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_21DBFBC1C();
@@ -40,12 +40,12 @@
   return v5;
 }
 
-- (_TtCC15RemindersUICore16TTRListBadgeViewP33_3DF80B16FE3BCF93F419A82E393676A411ShadowLayer)initWithCoder:(id)a3
+- (_TtCC15RemindersUICore16TTRListBadgeViewP33_3DF80B16FE3BCF93F419A82E393676A411ShadowLayer)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for TTRListBadgeView.ShadowLayer();
-  v4 = a3;
-  v5 = [(TTRNoDefaultImplicitActionLayer *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(TTRNoDefaultImplicitActionLayer *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

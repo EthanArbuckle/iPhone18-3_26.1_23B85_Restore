@@ -1,22 +1,22 @@
 @interface WeatherLocationResolutionResult
-+ (id)confirmationRequiredWithWeatherLocationToConfirm:(id)a3;
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3;
-+ (id)disambiguationWithWeatherLocationsToDisambiguate:(id)a3;
-+ (id)successWithResolvedWeatherLocation:(id)a3;
++ (id)confirmationRequiredWithWeatherLocationToConfirm:(id)confirm;
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate;
++ (id)disambiguationWithWeatherLocationsToDisambiguate:(id)disambiguate;
++ (id)successWithResolvedWeatherLocation:(id)location;
 @end
 
 @implementation WeatherLocationResolutionResult
 
-+ (id)successWithResolvedWeatherLocation:(id)a3
++ (id)successWithResolvedWeatherLocation:(id)location
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static WeatherLocationResolutionResult.success(with:)(v4);
+  locationCopy = location;
+  v5 = static WeatherLocationResolutionResult.success(with:)(locationCopy);
 
   return v5;
 }
 
-+ (id)disambiguationWithWeatherLocationsToDisambiguate:(id)a3
++ (id)disambiguationWithWeatherLocationsToDisambiguate:(id)disambiguate
 {
   type metadata accessor for WeatherLocation();
   v3 = sub_10004AA5C();
@@ -26,16 +26,16 @@
   return v4;
 }
 
-+ (id)confirmationRequiredWithWeatherLocationToConfirm:(id)a3
++ (id)confirmationRequiredWithWeatherLocationToConfirm:(id)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static WeatherLocationResolutionResult.confirmationRequired(with:)(a3);
+  confirmCopy = confirm;
+  v5 = static WeatherLocationResolutionResult.confirmationRequired(with:)(confirm);
 
   return v5;
 }
 
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate
 {
   sub_10004943C();
   sub_10004AA5C();

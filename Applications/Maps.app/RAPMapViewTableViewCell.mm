@@ -1,5 +1,5 @@
 @interface RAPMapViewTableViewCell
-- (RAPMapViewTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 viewModel:(id)a5;
+- (RAPMapViewTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier viewModel:(id)model;
 - (void)layoutSubviews;
 - (void)setupConstraints;
 - (void)setupSubviews;
@@ -15,12 +15,12 @@
   [(BlurredBackgroundLabel *)self->_descriptionBackgroundView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height];
   v4 = v3;
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [v5 userInterfaceLayoutDirection];
 
   mapView = self->_mapView;
   [(RAPMapViewTableViewCell *)self safeAreaInsets];
   v9 = v8;
-  if (v6 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v9 = v8 + 8.0;
     [(RAPMapViewTableViewCell *)self safeAreaInsets];
@@ -37,57 +37,57 @@
 
 - (void)setupConstraints
 {
-  v3 = [(RAPMapViewTableViewCell *)self contentView];
-  v4 = [(BlurredBackgroundLabel *)self->_descriptionBackgroundView leadingAnchor];
-  v5 = [(RAPMapViewTableViewCell *)self leadingAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
+  contentView = [(RAPMapViewTableViewCell *)self contentView];
+  leadingAnchor = [(BlurredBackgroundLabel *)self->_descriptionBackgroundView leadingAnchor];
+  leadingAnchor2 = [(RAPMapViewTableViewCell *)self leadingAnchor];
+  v6 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v36[0] = v6;
-  v7 = [(BlurredBackgroundLabel *)self->_descriptionBackgroundView trailingAnchor];
-  v8 = [(RAPMapViewTableViewCell *)self trailingAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  trailingAnchor = [(BlurredBackgroundLabel *)self->_descriptionBackgroundView trailingAnchor];
+  trailingAnchor2 = [(RAPMapViewTableViewCell *)self trailingAnchor];
+  v9 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v36[1] = v9;
   v10 = [NSArray arrayWithObjects:v36 count:2];
 
-  v11 = [(RAPInlineMapViewModel *)self->_viewModel allowsEditing];
+  allowsEditing = [(RAPInlineMapViewModel *)self->_viewModel allowsEditing];
   descriptionBackgroundView = self->_descriptionBackgroundView;
-  if (v11)
+  if (allowsEditing)
   {
-    v13 = [(BlurredBackgroundLabel *)descriptionBackgroundView topAnchor];
-    [v3 topAnchor];
+    topAnchor = [(BlurredBackgroundLabel *)descriptionBackgroundView topAnchor];
+    [contentView topAnchor];
   }
 
   else
   {
-    v13 = [(BlurredBackgroundLabel *)descriptionBackgroundView bottomAnchor];
-    [v3 bottomAnchor];
+    topAnchor = [(BlurredBackgroundLabel *)descriptionBackgroundView bottomAnchor];
+    [contentView bottomAnchor];
   }
   v14 = ;
-  v15 = [v13 constraintEqualToAnchor:v14];
+  v15 = [topAnchor constraintEqualToAnchor:v14];
 
   v34 = [v10 arrayByAddingObject:v15];
 
   [NSLayoutConstraint activateConstraints:v34];
-  v33 = [(MKMapView *)self->_mapView topAnchor];
-  v32 = [v3 topAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  topAnchor2 = [(MKMapView *)self->_mapView topAnchor];
+  topAnchor3 = [contentView topAnchor];
+  v31 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
   v35[0] = v31;
-  v30 = [(MKMapView *)self->_mapView bottomAnchor];
-  v29 = [v3 bottomAnchor];
-  v27 = [v30 constraintEqualToAnchor:v29];
+  bottomAnchor = [(MKMapView *)self->_mapView bottomAnchor];
+  bottomAnchor2 = [contentView bottomAnchor];
+  v27 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v35[1] = v27;
   [(MKMapView *)self->_mapView leadingAnchor];
-  v16 = v3;
-  v17 = v28 = v3;
-  v18 = [(RAPMapViewTableViewCell *)self leadingAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  v16 = contentView;
+  v17 = v28 = contentView;
+  leadingAnchor3 = [(RAPMapViewTableViewCell *)self leadingAnchor];
+  v19 = [v17 constraintEqualToAnchor:leadingAnchor3];
   v35[2] = v19;
-  v20 = [(MKMapView *)self->_mapView trailingAnchor];
-  v21 = [(RAPMapViewTableViewCell *)self trailingAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  trailingAnchor3 = [(MKMapView *)self->_mapView trailingAnchor];
+  trailingAnchor4 = [(RAPMapViewTableViewCell *)self trailingAnchor];
+  v22 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v35[3] = v22;
-  v23 = [v16 heightAnchor];
-  v24 = [(BlurredBackgroundLabel *)self->_descriptionBackgroundView heightAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24 constant:235.0];
+  heightAnchor = [v16 heightAnchor];
+  heightAnchor2 = [(BlurredBackgroundLabel *)self->_descriptionBackgroundView heightAnchor];
+  v25 = [heightAnchor constraintEqualToAnchor:heightAnchor2 constant:235.0];
   v35[4] = v25;
   v26 = [NSArray arrayWithObjects:v35 count:5];
 
@@ -97,8 +97,8 @@
 - (void)setupSubviews
 {
   [(MKMapView *)self->_mapView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v3 = [(RAPMapViewTableViewCell *)self contentView];
-  [v3 addSubview:self->_mapView];
+  contentView = [(RAPMapViewTableViewCell *)self contentView];
+  [contentView addSubview:self->_mapView];
 
   [(RAPInlineMapViewModel *)self->_viewModel selectedCoordinate];
   v14 = MKCoordinateRegionMakeWithDistance(v13, 200.0, 200.0);
@@ -114,11 +114,11 @@
   [(BlurredBackgroundLabel *)self->_descriptionBackgroundView setGroupName:v7];
 
   [(BlurredBackgroundLabel *)self->_descriptionBackgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v8 = [(RAPInlineMapViewModel *)self->_viewModel instructionalText];
-  [(BlurredBackgroundLabel *)self->_descriptionBackgroundView setText:v8];
+  instructionalText = [(RAPInlineMapViewModel *)self->_viewModel instructionalText];
+  [(BlurredBackgroundLabel *)self->_descriptionBackgroundView setText:instructionalText];
 
-  v9 = [(RAPMapViewTableViewCell *)self contentView];
-  [v9 addSubview:self->_mapView];
+  contentView2 = [(RAPMapViewTableViewCell *)self contentView];
+  [contentView2 addSubview:self->_mapView];
 
   mapView = self->_mapView;
   v11 = self->_descriptionBackgroundView;
@@ -126,16 +126,16 @@
   [(MKMapView *)mapView addSubview:v11];
 }
 
-- (RAPMapViewTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 viewModel:(id)a5
+- (RAPMapViewTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier viewModel:(id)model
 {
-  v9 = a5;
+  modelCopy = model;
   v18.receiver = self;
   v18.super_class = RAPMapViewTableViewCell;
-  v10 = [(RAPMapViewTableViewCell *)&v18 initWithStyle:a3 reuseIdentifier:a4];
+  v10 = [(RAPMapViewTableViewCell *)&v18 initWithStyle:style reuseIdentifier:identifier];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_viewModel, a5);
+    objc_storeStrong(&v10->_viewModel, model);
     v12 = objc_alloc_init(MKMapView);
     mapView = v11->_mapView;
     v11->_mapView = v12;
@@ -149,8 +149,8 @@
     [(RAPMapViewTableViewCell *)v11 setupSubviews];
     [(RAPMapViewTableViewCell *)v11 setupConstraints];
     [(RAPMapViewTableViewCell *)v11 setSelectionStyle:0];
-    v16 = [(RAPInlineMapViewModel *)v11->_viewModel instructionalText];
-    [(RAPMapViewTableViewCell *)v11 setAccessibilityLabel:v16];
+    instructionalText = [(RAPInlineMapViewModel *)v11->_viewModel instructionalText];
+    [(RAPMapViewTableViewCell *)v11 setAccessibilityLabel:instructionalText];
   }
 
   return v11;

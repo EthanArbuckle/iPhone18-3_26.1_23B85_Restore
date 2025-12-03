@@ -1,31 +1,31 @@
 @interface HFAccessoryProfileGroupItem
 - (HFAccessoryProfileGroupItem)init;
-- (HFAccessoryProfileGroupItem)initWithProfiles:(id)a3 groupIdentifier:(id)a4 valueSource:(id)a5;
+- (HFAccessoryProfileGroupItem)initWithProfiles:(id)profiles groupIdentifier:(id)identifier valueSource:(id)source;
 - (NSSet)services;
 - (id)_buildProfileItems;
 - (id)accessories;
-- (id)copyWithValueSource:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithValueSource:(id)source;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HFAccessoryProfileGroupItem
 
-- (HFAccessoryProfileGroupItem)initWithProfiles:(id)a3 groupIdentifier:(id)a4 valueSource:(id)a5
+- (HFAccessoryProfileGroupItem)initWithProfiles:(id)profiles groupIdentifier:(id)identifier valueSource:(id)source
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  profilesCopy = profiles;
+  identifierCopy = identifier;
+  sourceCopy = source;
   v16.receiver = self;
   v16.super_class = HFAccessoryProfileGroupItem;
   v12 = [(HFItemGroupItem *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_profiles, a3);
-    objc_storeStrong(&v13->_groupIdentifier, a4);
-    objc_storeStrong(&v13->_valueSource, a5);
-    v14 = [(HFAccessoryProfileGroupItem *)v13 _buildProfileItems];
-    [(HFItemGroupItem *)v13 setItems:v14];
+    objc_storeStrong(&v12->_profiles, profiles);
+    objc_storeStrong(&v13->_groupIdentifier, identifier);
+    objc_storeStrong(&v13->_valueSource, source);
+    _buildProfileItems = [(HFAccessoryProfileGroupItem *)v13 _buildProfileItems];
+    [(HFItemGroupItem *)v13 setItems:_buildProfileItems];
   }
 
   return v13;
@@ -33,33 +33,33 @@
 
 - (HFAccessoryProfileGroupItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithProfiles_groupIdentifier_valueSource_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAccessoryProfileGroupItem.m" lineNumber:34 description:{@"%s is unavailable; use %@ instead", "-[HFAccessoryProfileGroupItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessoryProfileGroupItem.m" lineNumber:34 description:{@"%s is unavailable; use %@ instead", "-[HFAccessoryProfileGroupItem init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(HFAccessoryProfileGroupItem *)self valueSource];
-  v5 = [(HFAccessoryProfileGroupItem *)self copyWithValueSource:v4];
+  valueSource = [(HFAccessoryProfileGroupItem *)self valueSource];
+  v5 = [(HFAccessoryProfileGroupItem *)self copyWithValueSource:valueSource];
 
   return v5;
 }
 
 - (id)accessories
 {
-  v2 = [(HFAccessoryProfileGroupItem *)self profiles];
-  v3 = [v2 na_map:&__block_literal_global_133];
+  profiles = [(HFAccessoryProfileGroupItem *)self profiles];
+  v3 = [profiles na_map:&__block_literal_global_133];
 
   return v3;
 }
 
 - (NSSet)services
 {
-  v2 = [(HFAccessoryProfileGroupItem *)self profiles];
-  v3 = [v2 na_flatMap:&__block_literal_global_9_5];
+  profiles = [(HFAccessoryProfileGroupItem *)self profiles];
+  v3 = [profiles na_flatMap:&__block_literal_global_9_5];
 
   return v3;
 }
@@ -75,13 +75,13 @@ id __39__HFAccessoryProfileGroupItem_services__block_invoke(uint64_t a1, void *a
 
 - (id)_buildProfileItems
 {
-  v3 = [(HFAccessoryProfileGroupItem *)self profiles];
+  profiles = [(HFAccessoryProfileGroupItem *)self profiles];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__HFAccessoryProfileGroupItem__buildProfileItems__block_invoke;
   v6[3] = &unk_277DFCFF0;
   v6[4] = self;
-  v4 = [v3 na_map:v6];
+  v4 = [profiles na_map:v6];
 
   return v4;
 }
@@ -96,13 +96,13 @@ HFAccessoryProfileItem *__49__HFAccessoryProfileGroupItem__buildProfileItems__bl
   return v6;
 }
 
-- (id)copyWithValueSource:(id)a3
+- (id)copyWithValueSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(HFAccessoryProfileGroupItem *)self profiles];
-  v7 = [(HFAccessoryProfileGroupItem *)self groupIdentifier];
-  v8 = [v5 initWithProfiles:v6 groupIdentifier:v7 valueSource:v4];
+  profiles = [(HFAccessoryProfileGroupItem *)self profiles];
+  groupIdentifier = [(HFAccessoryProfileGroupItem *)self groupIdentifier];
+  v8 = [v5 initWithProfiles:profiles groupIdentifier:groupIdentifier valueSource:sourceCopy];
 
   [v8 copyLatestResultsFromItem:self];
   return v8;

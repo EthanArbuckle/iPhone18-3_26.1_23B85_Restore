@@ -1,59 +1,59 @@
 @interface MapsSuggestionsRoutine
-+ (id)_loisFromResult:(id)a3 usingDuration:(double)a4;
++ (id)_loisFromResult:(id)result usingDuration:(double)duration;
 + (id)_mapItemCache;
-+ (id)_mapItemForHandle:(id)a3;
++ (id)_mapItemForHandle:(id)handle;
 + (id)contextOptionsForPLCs;
-+ (void)_q_loisFromPredictedContextResult:(id)a3 usingNetworkRequester:(id)a4 currentLocation:(id)a5 predictionDuration:(double)a6 considerGymPredictions:(BOOL)a7 considerSchoolPredictions:(BOOL)a8 considerUnknownTypePredictions:(BOOL)a9 callbackQueue:(id)a10 completionHandler:(id)a11;
-+ (void)loisFromPredictedContextResult:(id)a3 usingNetworkRequester:(id)a4 currentLocation:(id)a5 predictionDuration:(double)a6 considerGymPredictions:(BOOL)a7 considerSchoolPredictions:(BOOL)a8 considerUnknownTypePredictions:(BOOL)a9 callbackQueue:(id)a10 completionHandler:(id)a11;
-+ (void)setMapItem:(id)a3 forHandle:(id)a4;
-- (BOOL)canProduceEntriesOfType:(int64_t)a3;
-- (MapsSuggestionsEntry)_suggestionEntryForPLOI:(uint64_t)a1;
-- (MapsSuggestionsRoutine)initWithRoutineConnector:(id)a3 networkRequester:(id)a4 mapsSync:(id)a5;
++ (void)_q_loisFromPredictedContextResult:(id)result usingNetworkRequester:(id)requester currentLocation:(id)location predictionDuration:(double)duration considerGymPredictions:(BOOL)predictions considerSchoolPredictions:(BOOL)schoolPredictions considerUnknownTypePredictions:(BOOL)typePredictions callbackQueue:(id)self0 completionHandler:(id)self1;
++ (void)loisFromPredictedContextResult:(id)result usingNetworkRequester:(id)requester currentLocation:(id)location predictionDuration:(double)duration considerGymPredictions:(BOOL)predictions considerSchoolPredictions:(BOOL)schoolPredictions considerUnknownTypePredictions:(BOOL)typePredictions callbackQueue:(id)self0 completionHandler:(id)self1;
++ (void)setMapItem:(id)item forHandle:(id)handle;
+- (BOOL)canProduceEntriesOfType:(int64_t)type;
+- (MapsSuggestionsEntry)_suggestionEntryForPLOI:(uint64_t)i;
+- (MapsSuggestionsRoutine)initWithRoutineConnector:(id)connector networkRequester:(id)requester mapsSync:(id)sync;
 - (NSString)uniqueName;
-- (char)correctLabelForCurrentPlace:(id)a3 date:(id)a4 newLabel:(id)a5 handler:(id)a6;
-- (char)correctLabelForVisitWithIdentifier:(id)a3 entryDate:(id)a4 originalLabel:(id)a5 newLabel:(id)a6 handler:(id)a7;
-- (char)fetchAllSuggestedLOIsExcludingTypes:(id)a3 minVisits:(unint64_t)a4 maxAge:(double)a5 maxResults:(unint64_t)a6 handler:(id)a7;
-- (char)fetchAutomaticVehicleEventDetectionSupportedWithHandler:(id)a3;
-- (char)fetchEntriesForLocation:(id)a3 period:(id)a4 handler:(id)a5;
-- (char)fetchEntriesUsingPLC:(id)a3 period:(id)a4 includeFrequentLocationEntries:(BOOL)a5 handler:(id)a6;
-- (char)fetchLOIsOfType:(int64_t)a3 handler:(id)a4;
-- (char)fetchLOIsSinceDate:(id)a3 handler:(id)a4;
-- (char)fetchLastVisitAtLocation:(id)a3 handler:(id)a4;
-- (char)fetchLastVisitAtMapItem:(id)a3 withinDistance:(double)a4 handler:(id)a5;
-- (char)fetchLocationOfInterestWithIdentifier:(id)a3 withHandler:(id)a4;
-- (char)fetchLocationsSinceDate:(id)a3 handler:(id)a4;
-- (char)fetchMostRecentVisitWithinDistance:(double)a3 ofMapItem:(id)a4 handler:(id)a5;
-- (char)fetchSuggestedLOIsForTypes:(id)a3 minVisits:(unint64_t)a4 maxAge:(double)a5 maxResults:(unint64_t)a6 handler:(id)a7;
-- (char)fetchSuggestedShortcutsForType:(int64_t)a3 minVisits:(unint64_t)a4 maxAge:(double)a5 handler:(id)a6;
-- (char)predictedExitTimeFromLocation:(id)a3 date:(id)a4 handler:(id)a5;
-- (char)readMeCardWithMinVisits:(unint64_t)a3 maxAge:(double)a4 handler:(id)a5;
-- (char)startMonitoringPredictedContextForHomeAndWorkWithHandler:(id)a3;
-- (char)touristBitForLocation:(id)a3 handler:(id)a4;
+- (char)correctLabelForCurrentPlace:(id)place date:(id)date newLabel:(id)label handler:(id)handler;
+- (char)correctLabelForVisitWithIdentifier:(id)identifier entryDate:(id)date originalLabel:(id)label newLabel:(id)newLabel handler:(id)handler;
+- (char)fetchAllSuggestedLOIsExcludingTypes:(id)types minVisits:(unint64_t)visits maxAge:(double)age maxResults:(unint64_t)results handler:(id)handler;
+- (char)fetchAutomaticVehicleEventDetectionSupportedWithHandler:(id)handler;
+- (char)fetchEntriesForLocation:(id)location period:(id)period handler:(id)handler;
+- (char)fetchEntriesUsingPLC:(id)c period:(id)period includeFrequentLocationEntries:(BOOL)entries handler:(id)handler;
+- (char)fetchLOIsOfType:(int64_t)type handler:(id)handler;
+- (char)fetchLOIsSinceDate:(id)date handler:(id)handler;
+- (char)fetchLastVisitAtLocation:(id)location handler:(id)handler;
+- (char)fetchLastVisitAtMapItem:(id)item withinDistance:(double)distance handler:(id)handler;
+- (char)fetchLocationOfInterestWithIdentifier:(id)identifier withHandler:(id)handler;
+- (char)fetchLocationsSinceDate:(id)date handler:(id)handler;
+- (char)fetchMostRecentVisitWithinDistance:(double)distance ofMapItem:(id)item handler:(id)handler;
+- (char)fetchSuggestedLOIsForTypes:(id)types minVisits:(unint64_t)visits maxAge:(double)age maxResults:(unint64_t)results handler:(id)handler;
+- (char)fetchSuggestedShortcutsForType:(int64_t)type minVisits:(unint64_t)visits maxAge:(double)age handler:(id)handler;
+- (char)predictedExitTimeFromLocation:(id)location date:(id)date handler:(id)handler;
+- (char)readMeCardWithMinVisits:(unint64_t)visits maxAge:(double)age handler:(id)handler;
+- (char)startMonitoringPredictedContextForHomeAndWorkWithHandler:(id)handler;
+- (char)touristBitForLocation:(id)location handler:(id)handler;
 - (id).cxx_construct;
-- (id)_msgLOIsForRTLOIs:(uint64_t)a1;
-- (id)_updateEntry:(id *)a1;
-- (id)capLocationsOfInterest:(unint64_t)a3 maxResults:;
-- (id)initFromResourceDepot:(id)a3;
-- (uint64_t)_addFieldsToSuggestionsEntry:(void *)a3 fromRTMapItem:;
-- (uint64_t)_addMapItemToShortcut:(void *)a3 fromLOI:(void *)a4 group:;
-- (uint64_t)_addParkedCarFieldsToSuggestionsEntry:(void *)a3 vehicleEvent:;
+- (id)_msgLOIsForRTLOIs:(uint64_t)is;
+- (id)_updateEntry:(id *)entry;
+- (id)capLocationsOfInterest:(unint64_t)interest maxResults:;
+- (id)initFromResourceDepot:(id)depot;
+- (uint64_t)_addFieldsToSuggestionsEntry:(void *)entry fromRTMapItem:;
+- (uint64_t)_addMapItemToShortcut:(void *)shortcut fromLOI:(void *)i group:;
+- (uint64_t)_addParkedCarFieldsToSuggestionsEntry:(void *)entry vehicleEvent:;
 - (uint64_t)_clearedToFetchSuggestions;
-- (uint64_t)_convertType:(void *)a3 source:;
-- (uint64_t)_fetchStoredVisitsWithOptions:(void *)a3 handler:;
+- (uint64_t)_convertType:(void *)type source:;
+- (uint64_t)_fetchStoredVisitsWithOptions:(void *)options handler:;
 - (unint64_t)countHomeLOIs;
 - (unint64_t)countSchoolLOIs;
 - (unint64_t)countWorkLOIs;
-- (void)_addLabelForEntry:(uint64_t)a1;
-- (void)_cacheEntryExitDatesFromVisit:(void *)a3 forMapItemIdentifier:(void *)a4 name:;
+- (void)_addLabelForEntry:(uint64_t)entry;
+- (void)_cacheEntryExitDatesFromVisit:(void *)visit forMapItemIdentifier:(void *)identifier name:;
 - (void)_clearedToFetchSuggestions;
-- (void)_resolveMapItemsAndAddEntries:(void *)a3 handler:;
-- (void)_treatLOIs:(void *)a3 handler:;
-- (void)_treatPLOIs:(const char *)a3 stepCounter:(void *)a4 handler:;
-- (void)_treatPredictedContextResult:(uint64_t)a3 considerGymPredictions:(uint64_t)a4 considerSchoolPredictions:(uint64_t)a5 considerUnknownTypePredictions:(void *)a6 handler:;
-- (void)addParkedCarObserver:(id)a3;
-- (void)forgetLocationOfInterest:(id)a3 handler:(id)a4;
-- (void)removeParkedCarObserver:(id)a3;
-- (void)removeParkedCarsAllowingFeature:(BOOL)a3 handler:(id)a4;
+- (void)_resolveMapItemsAndAddEntries:(void *)entries handler:;
+- (void)_treatLOIs:(void *)is handler:;
+- (void)_treatPLOIs:(const char *)is stepCounter:(void *)counter handler:;
+- (void)_treatPredictedContextResult:(uint64_t)result considerGymPredictions:(uint64_t)predictions considerSchoolPredictions:(uint64_t)schoolPredictions considerUnknownTypePredictions:(void *)typePredictions handler:;
+- (void)addParkedCarObserver:(id)observer;
+- (void)forgetLocationOfInterest:(id)interest handler:(id)handler;
+- (void)removeParkedCarObserver:(id)observer;
+- (void)removeParkedCarsAllowingFeature:(BOOL)feature handler:(id)handler;
 - (void)updateFixedLOIs;
 @end
 
@@ -66,13 +66,13 @@
   return self;
 }
 
-- (MapsSuggestionsRoutine)initWithRoutineConnector:(id)a3 networkRequester:(id)a4 mapsSync:(id)a5
+- (MapsSuggestionsRoutine)initWithRoutineConnector:(id)connector networkRequester:(id)requester mapsSync:(id)sync
 {
   v50 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  connectorCopy = connector;
+  requesterCopy = requester;
+  syncCopy = sync;
+  if (!connectorCopy)
   {
     v42 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -91,7 +91,7 @@
     goto LABEL_11;
   }
 
-  if (!v10)
+  if (!requesterCopy)
   {
     v42 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -109,7 +109,7 @@
 
 LABEL_11:
 
-    v41 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
@@ -119,9 +119,9 @@ LABEL_11:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_connector, a3);
-    objc_storeStrong(&v13->_networkRequester, a4);
-    objc_storeStrong(&v13->_mapsSync, a5);
+    objc_storeStrong(&v12->_connector, connector);
+    objc_storeStrong(&v13->_networkRequester, requester);
+    objc_storeStrong(&v13->_mapsSync, sync);
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     MSg::Queue::Queue(buf, @"MapsSuggestionsRoutineQueue", v14);
     v15 = *buf;
@@ -177,18 +177,18 @@ LABEL_11:
   }
 
   self = v13;
-  v41 = self;
+  selfCopy = self;
 LABEL_12:
 
-  return v41;
+  return selfCopy;
 }
 
-- (id)initFromResourceDepot:(id)a3
+- (id)initFromResourceDepot:(id)depot
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  depotCopy = depot;
+  v5 = depotCopy;
+  if (!depotCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -207,9 +207,9 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v6 = [v4 oneRoutineConnector];
+  oneRoutineConnector = [depotCopy oneRoutineConnector];
 
-  if (!v6)
+  if (!oneRoutineConnector)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -228,9 +228,9 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v7 = [v5 oneNetworkRequester];
+  oneNetworkRequester = [v5 oneNetworkRequester];
 
-  if (!v7)
+  if (!oneNetworkRequester)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -248,19 +248,19 @@ LABEL_12:
 
 LABEL_13:
 
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_14;
   }
 
-  v8 = [v5 oneRoutineConnector];
-  v9 = [v5 oneNetworkRequester];
-  v10 = [v5 oneMapsSync];
-  self = [(MapsSuggestionsRoutine *)self initWithRoutineConnector:v8 networkRequester:v9 mapsSync:v10];
+  oneRoutineConnector2 = [v5 oneRoutineConnector];
+  oneNetworkRequester2 = [v5 oneNetworkRequester];
+  oneMapsSync = [v5 oneMapsSync];
+  self = [(MapsSuggestionsRoutine *)self initWithRoutineConnector:oneRoutineConnector2 networkRequester:oneNetworkRequester2 mapsSync:oneMapsSync];
 
-  v11 = self;
+  selfCopy = self;
 LABEL_14:
 
-  return v11;
+  return selfCopy;
 }
 
 - (NSString)uniqueName
@@ -270,11 +270,11 @@ LABEL_14:
   return [v2 description];
 }
 
-- (uint64_t)_convertType:(void *)a3 source:
+- (uint64_t)_convertType:(void *)type source:
 {
   v65 = *MEMORY[0x1E69E9840];
-  v49 = a3;
-  if (!a1)
+  typeCopy = type;
+  if (!self)
   {
     goto LABEL_109;
   }
@@ -283,7 +283,7 @@ LABEL_14:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109120;
-    LODWORD(v60) = [v49 count];
+    LODWORD(v60) = [typeCopy count];
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "Treating Routine entry of %u types", buf, 8u);
   }
 
@@ -291,7 +291,7 @@ LABEL_14:
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v6 = v49;
+  v6 = typeCopy;
   v7 = [v6 countByEnumeratingWithState:&v50 objects:v58 count:16];
   if (v7)
   {
@@ -333,7 +333,7 @@ LABEL_14:
         [MapsSuggestionsRoutine _convertType:source:];
       }
 
-      a1 = 1;
+      self = 1;
       goto LABEL_109;
     case 1:
       if (MapsSuggestionsSawHomeOrWorkOnThisDevice::s_onceToken != -1)
@@ -341,7 +341,7 @@ LABEL_14:
         [MapsSuggestionsRoutine _convertType:source:];
       }
 
-      a1 = 2;
+      self = 2;
       goto LABEL_109;
     case 2:
       if (MapsSuggestionsSawHomeOrWorkOnThisDevice::s_onceToken != -1)
@@ -349,7 +349,7 @@ LABEL_14:
         [MapsSuggestionsRoutine _convertType:source:];
       }
 
-      a1 = 19;
+      self = 19;
       goto LABEL_109;
   }
 
@@ -574,7 +574,7 @@ LABEL_66:
 
   if (v28)
   {
-    a1 = 4;
+    self = 4;
     goto LABEL_109;
   }
 
@@ -686,7 +686,7 @@ LABEL_88:
 
   if (v36)
   {
-    a1 = 7;
+    self = 7;
   }
 
   else
@@ -761,30 +761,30 @@ LABEL_106:
 
     if (v44)
     {
-      a1 = 4;
+      self = 4;
     }
 
     else
     {
-      a1 = 0;
+      self = 0;
     }
   }
 
 LABEL_109:
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)_clearedToFetchSuggestions
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  dispatch_assert_queue_V2(a1[4]);
-  objc_initWeak(&location, a1);
+  dispatch_assert_queue_V2(self[4]);
+  objc_initWeak(&location, self);
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __52__MapsSuggestionsRoutine__clearedToFetchSuggestions__block_invoke;
@@ -792,13 +792,13 @@ LABEL_109:
   objc_copyWeak(&v19, &location);
   v2 = _Block_copy(&v15);
   BOOL = GEOConfigGetBOOL();
-  v4 = [MEMORY[0x1E69B3730] tccPrompted];
-  v5 = [MEMORY[0x1E69B3730] isEligible];
+  tccPrompted = [MEMORY[0x1E69B3730] tccPrompted];
+  isEligible = [MEMORY[0x1E69B3730] isEligible];
   v6 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v7 = @"NOT ELIGIBLE";
-    if (v5)
+    if (isEligible)
     {
       v7 = @"ELIGIBLE";
     }
@@ -826,7 +826,7 @@ LABEL_109:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     v11 = @"NO";
-    if (v4)
+    if (tccPrompted)
     {
       v11 = @"YES";
     }
@@ -836,12 +836,12 @@ LABEL_109:
     _os_log_impl(&dword_1C5126000, v10, OS_LOG_TYPE_DEBUG, "FR TCC Prompted for Legacy Routine Source? %@", buf, 0xCu);
   }
 
-  if ((MapsFeature_IsEnabled_LocationIntelligenceMaps() & v5) != 1)
+  if ((MapsFeature_IsEnabled_LocationIntelligenceMaps() & isEligible) != 1)
   {
     goto LABEL_18;
   }
 
-  if (!(v4 & 1 | ((BOOL & 1) == 0)))
+  if (!(tccPrompted & 1 | ((BOOL & 1) == 0)))
   {
     v13 = GEOFindOrCreateLog();
     [(MapsSuggestionsRoutine *)v13 _clearedToFetchSuggestions];
@@ -907,17 +907,17 @@ uint64_t __52__MapsSuggestionsRoutine__clearedToFetchSuggestions__block_invoke(u
   return v3;
 }
 
-- (void)_addLabelForEntry:(uint64_t)a1
+- (void)_addLabelForEntry:(uint64_t)entry
 {
   v3 = a2;
-  if (a1)
+  if (entry)
   {
     v9 = v3;
     v4 = [v3 stringForKey:@"MapsSuggestionsCoreRoutineCustomLabel"];
     v5 = [v9 numberForKey:@"MapsSuggestionsCoreRoutineType"];
-    v6 = [v5 integerValue];
+    integerValue = [v5 integerValue];
 
-    v7 = MSgLOITypeForRTLOIType(v6);
+    v7 = MSgLOITypeForRTLOIType(integerValue);
     v8 = MapsSuggestionsRoutineLocalizedLabelLOIType(v7, v4);
     [v9 setString:v8 forKey:@"MapsSuggestionsCoreRoutineLabel"];
 
@@ -925,19 +925,19 @@ uint64_t __52__MapsSuggestionsRoutine__clearedToFetchSuggestions__block_invoke(u
   }
 }
 
-- (uint64_t)_addFieldsToSuggestionsEntry:(void *)a3 fromRTMapItem:
+- (uint64_t)_addFieldsToSuggestionsEntry:(void *)entry fromRTMapItem:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  entryCopy = entry;
+  v7 = entryCopy;
+  if (self)
   {
     if (v5)
     {
-      if (v6)
+      if (entryCopy)
       {
         [v5 setGeoMapItem:0];
-        v8 = [v7 name];
+        name = [v7 name];
         v13 = 0;
         v14 = &v13;
         v15 = 0x3032000000;
@@ -949,13 +949,13 @@ uint64_t __52__MapsSuggestionsRoutine__clearedToFetchSuggestions__block_invoke(u
         v12[2] = ___ZL18_firstLineOfStringP8NSString_block_invoke;
         v12[3] = &unk_1E81F7C60;
         v12[4] = &v13;
-        [v8 enumerateLinesUsingBlock:v12];
+        [name enumerateLinesUsingBlock:v12];
         v9 = v14[5];
         _Block_object_dispose(&v13, 8);
 
         [v5 setUndecoratedTitle:v9];
         [v5 setUndecoratedSubtitle:0];
-        a1 = 1;
+        self = 1;
         goto LABEL_7;
       }
     }
@@ -966,19 +966,19 @@ uint64_t __52__MapsSuggestionsRoutine__clearedToFetchSuggestions__block_invoke(u
       [MapsSuggestionsRoutine _addFieldsToSuggestionsEntry:v10 fromRTMapItem:?];
     }
 
-    a1 = 0;
+    self = 0;
   }
 
 LABEL_7:
 
-  return a1;
+  return self;
 }
 
-- (uint64_t)_addParkedCarFieldsToSuggestionsEntry:(void *)a3 vehicleEvent:
+- (uint64_t)_addParkedCarFieldsToSuggestionsEntry:(void *)entry vehicleEvent:
 {
   v5 = a2;
-  v6 = a3;
-  if (!a1)
+  entryCopy = entry;
+  if (!self)
   {
     goto LABEL_11;
   }
@@ -988,7 +988,7 @@ LABEL_7:
     v19 = GEOFindOrCreateLog();
     [MapsSuggestionsRoutine _addParkedCarFieldsToSuggestionsEntry:v19 vehicleEvent:?];
 LABEL_14:
-    a1 = 0;
+    self = 0;
     goto LABEL_11;
   }
 
@@ -1006,27 +1006,27 @@ LABEL_14:
 
   GEOConfigGetDouble();
   [v5 setWeight:?];
-  if (v6)
+  if (entryCopy)
   {
     [v5 setBoolean:1 forKey:@"MapsSuggestionsRoutineIsBackedByVehicleEventKey"];
-    v9 = [v6 date];
-    [v5 setDate:v9 forKey:@"MapsSuggestionsWhenItHappenedKey"];
+    date = [entryCopy date];
+    [v5 setDate:date forKey:@"MapsSuggestionsWhenItHappenedKey"];
 
-    v10 = [v6 nearbyLocationOfInterest];
+    nearbyLocationOfInterest = [entryCopy nearbyLocationOfInterest];
 
-    if (v10)
+    if (nearbyLocationOfInterest)
     {
       v11 = MEMORY[0x1E696AD98];
-      v12 = [v6 nearbyLocationOfInterest];
-      v13 = [v11 numberWithInteger:{objc_msgSend(v12, "type")}];
+      nearbyLocationOfInterest2 = [entryCopy nearbyLocationOfInterest];
+      v13 = [v11 numberWithInteger:{objc_msgSend(nearbyLocationOfInterest2, "type")}];
       [v5 setNumber:v13 forKey:@"MapsSuggestionsCoreRoutineTypeSource"];
 
-      v14 = [v6 nearbyLocationOfInterest];
-      v15 = [v14 customLabel];
-      v16 = v15;
-      if (v15)
+      nearbyLocationOfInterest3 = [entryCopy nearbyLocationOfInterest];
+      customLabel = [nearbyLocationOfInterest3 customLabel];
+      v16 = customLabel;
+      if (customLabel)
       {
-        v17 = v15;
+        v17 = customLabel;
       }
 
       else
@@ -1038,27 +1038,27 @@ LABEL_14:
     }
   }
 
-  a1 = 1;
+  self = 1;
 LABEL_11:
 
-  return a1;
+  return self;
 }
 
-- (MapsSuggestionsEntry)_suggestionEntryForPLOI:(uint64_t)a1
+- (MapsSuggestionsEntry)_suggestionEntryForPLOI:(uint64_t)i
 {
   v120 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v86 = v3;
-  if (a1)
+  if (i)
   {
     v4 = v3;
-    dispatch_assert_queue_V2(*(a1 + 32));
-    v5 = [v4 locationOfInterest];
-    v87 = v5;
-    v84 = [v4 sources];
-    v85 = [v5 mapItem];
-    v6 = -[MapsSuggestionsRoutine _convertType:source:](a1, [v5 type], v84);
-    if (([a1 canProduceEntriesOfType:v6] & 1) == 0)
+    dispatch_assert_queue_V2(*(i + 32));
+    locationOfInterest = [v4 locationOfInterest];
+    v87 = locationOfInterest;
+    sources = [v4 sources];
+    mapItem = [locationOfInterest mapItem];
+    v6 = -[MapsSuggestionsRoutine _convertType:source:](i, [locationOfInterest type], sources);
+    if (([i canProduceEntriesOfType:v6] & 1) == 0)
     {
       v8 = GEOFindOrCreateLog();
       if (os_log_type_enabled(&v8->super, OS_LOG_TYPE_DEBUG))
@@ -1071,13 +1071,13 @@ LABEL_11:
       goto LABEL_67;
     }
 
-    v7 = [v5 typeSource];
+    typeSource = [locationOfInterest typeSource];
     v8 = [[MapsSuggestionsEntry alloc] initWithType:v6 title:&stru_1F444C108];
-    v9 = [v5 location];
-    [v9 latitude];
+    location = [locationOfInterest location];
+    [location latitude];
     v11 = v10;
-    v12 = [v5 location];
-    [v12 longitude];
+    location2 = [locationOfInterest location];
+    [location2 longitude];
     v14 = v13;
 
     v97 = 0;
@@ -1090,8 +1090,8 @@ LABEL_11:
     v104 = v14;
     if ([MEMORY[0x1E69A1E80] isLocationShiftRequiredForCoordinate:{v11, v14}])
     {
-      v15 = [v87 location];
-      v16 = [v15 referenceFrame] == 2;
+      location3 = [v87 location];
+      v16 = [location3 referenceFrame] == 2;
 
       if (!v16)
       {
@@ -1102,11 +1102,11 @@ LABEL_11:
           _os_log_impl(&dword_1C5126000, v17, OS_LOG_TYPE_DEBUG, "Entry needs location shift.", &buf, 2u);
         }
 
-        if (!*(a1 + 152))
+        if (!*(i + 152))
         {
           v18 = objc_alloc_init(MEMORY[0x1E69A1E80]);
-          v19 = *(a1 + 152);
-          *(a1 + 152) = v18;
+          v19 = *(i + 152);
+          *(i + 152) = v18;
         }
 
         *&buf = 0;
@@ -1114,7 +1114,7 @@ LABEL_11:
         v110 = 0x2020000000;
         v111 = 0;
         v20 = dispatch_semaphore_create(0);
-        v21 = *(a1 + 152);
+        v21 = *(i + 152);
         v93[0] = MEMORY[0x1E69E9820];
         v93[1] = 3221225472;
         v93[2] = __50__MapsSuggestionsRoutine__suggestionEntryForPLOI___block_invoke;
@@ -1156,11 +1156,11 @@ LABEL_67:
       }
     }
 
-    [(MapsSuggestionsRoutine *)a1 _addFieldsToSuggestionsEntry:v8 fromRTMapItem:v85];
-    v26 = [v87 identifier];
-    v83 = [v26 UUIDString];
+    [(MapsSuggestionsRoutine *)i _addFieldsToSuggestionsEntry:v8 fromRTMapItem:mapItem];
+    identifier = [v87 identifier];
+    uUIDString = [identifier UUIDString];
 
-    [(MapsSuggestionsEntry *)v8 setString:v83 forKey:@"MapsSuggestionsCoreRoutinePK"];
+    [(MapsSuggestionsEntry *)v8 setString:uUIDString forKey:@"MapsSuggestionsCoreRoutinePK"];
     [(MapsSuggestionsEntry *)v8 setString:@"MapsSuggestionsCoreRoutinePK" forKey:@"MapsSuggestionsPrimaryKey"];
     v27 = [MEMORY[0x1E696AD98] numberWithDouble:v98[6]];
     [(MapsSuggestionsEntry *)v8 setNumber:v27 forKey:@"MapsSuggestionsLatitudeKey"];
@@ -1169,8 +1169,8 @@ LABEL_67:
     [(MapsSuggestionsEntry *)v8 setNumber:v28 forKey:@"MapsSuggestionsLongitudeKey"];
 
     v29 = MEMORY[0x1E696AD98];
-    v30 = [v87 location];
-    [v30 horizontalUncertainty];
+    location4 = [v87 location];
+    [location4 horizontalUncertainty];
     v31 = [v29 numberWithDouble:?];
     [(MapsSuggestionsEntry *)v8 setNumber:v31 forKey:@"MapsSuggestionsCoreRoutineLocationUncertainty"];
 
@@ -1181,11 +1181,11 @@ LABEL_67:
     v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v87, "typeSource")}];
     [(MapsSuggestionsEntry *)v8 setNumber:v33 forKey:@"MapsSuggestionsCoreRoutineTypeSource"];
 
-    v34 = [v87 customLabel];
-    v35 = v34;
-    if (v34)
+    customLabel = [v87 customLabel];
+    v35 = customLabel;
+    if (customLabel)
     {
-      v36 = v34;
+      v36 = customLabel;
     }
 
     else
@@ -1195,24 +1195,24 @@ LABEL_67:
 
     [(MapsSuggestionsEntry *)v8 setString:v36 forKey:@"MapsSuggestionsCoreRoutineCustomLabel"];
 
-    v37 = [v87 identifier];
-    [(MapsSuggestionsEntry *)v8 setUUID:v37 forKey:@"MapsSuggestionsCoreRoutineIdentifier"];
+    identifier2 = [v87 identifier];
+    [(MapsSuggestionsEntry *)v8 setUUID:identifier2 forKey:@"MapsSuggestionsCoreRoutineIdentifier"];
 
-    v38 = [v86 nextEntryTime];
-    [(MapsSuggestionsEntry *)v8 setDate:v38 forKey:@"MapsSuggestionsScheduledTimeKey"];
+    nextEntryTime = [v86 nextEntryTime];
+    [(MapsSuggestionsEntry *)v8 setDate:nextEntryTime forKey:@"MapsSuggestionsScheduledTimeKey"];
 
     v39 = MEMORY[0x1E696AD98];
-    v40 = [v87 visits];
-    v41 = [v39 numberWithUnsignedInteger:{objc_msgSend(v40, "count")}];
+    visits = [v87 visits];
+    v41 = [v39 numberWithUnsignedInteger:{objc_msgSend(visits, "count")}];
     [(MapsSuggestionsEntry *)v8 setNumber:v41 forKey:@"MapsSuggestionsCoreRoutineVisitsCountKey"];
 
-    [(MapsSuggestionsEntry *)v8 setBoolean:v7 & 1 forKey:@"MapsSuggestionsCoreRoutineFromMeCardKey"];
-    v42 = [v85 geoMapItemHandle];
-    [(MapsSuggestionsEntry *)v8 setMapItemHandleData:v42];
+    [(MapsSuggestionsEntry *)v8 setBoolean:typeSource & 1 forKey:@"MapsSuggestionsCoreRoutineFromMeCardKey"];
+    geoMapItemHandle = [mapItem geoMapItemHandle];
+    [(MapsSuggestionsEntry *)v8 setMapItemHandleData:geoMapItemHandle];
 
-    v43 = [v86 nextEntryTime];
-    v44 = v43;
-    if (!v43)
+    nextEntryTime2 = [v86 nextEntryTime];
+    v44 = nextEntryTime2;
+    if (!nextEntryTime2)
     {
       v45 = MEMORY[0x1E695DF00];
       GEOConfigGetDouble();
@@ -1220,21 +1220,21 @@ LABEL_67:
     }
 
     [(MapsSuggestionsEntry *)v8 setExpires:v44];
-    if (!v43)
+    if (!nextEntryTime2)
     {
     }
 
-    v46 = [v87 visits];
-    v47 = [v46 firstObject];
+    visits2 = [v87 visits];
+    firstObject = [visits2 firstObject];
 
-    v48 = [v47 entryDate];
-    [(MapsSuggestionsEntry *)v8 setDate:v48 forKey:@"MapsSuggestionsCoreRoutineFirstVisit"];
+    entryDate = [firstObject entryDate];
+    [(MapsSuggestionsEntry *)v8 setDate:entryDate forKey:@"MapsSuggestionsCoreRoutineFirstVisit"];
 
-    v49 = [v87 visits];
-    v82 = [v49 lastObject];
+    visits3 = [v87 visits];
+    lastObject = [visits3 lastObject];
 
-    v50 = [v82 entryDate];
-    [(MapsSuggestionsEntry *)v8 setDate:v50 forKey:@"MapsSuggestionsCoreRoutineLastVisit"];
+    entryDate2 = [lastObject entryDate];
+    [(MapsSuggestionsEntry *)v8 setDate:entryDate2 forKey:@"MapsSuggestionsCoreRoutineLastVisit"];
 
     [v86 confidence];
     v52 = v51;
@@ -1267,7 +1267,7 @@ LABEL_67:
           goto LABEL_50;
         }
 
-        v80 = v84;
+        v80 = sources;
         v59 = objc_opt_class();
         if (v80)
         {
@@ -1316,8 +1316,8 @@ LABEL_39:
                   goto LABEL_62;
                 }
 
-                v78 = [v64 vehicleEvent];
-                v79 = [(MapsSuggestionsRoutine *)a1 _addParkedCarFieldsToSuggestionsEntry:v8 vehicleEvent:v78];
+                vehicleEvent = [v64 vehicleEvent];
+                v79 = [(MapsSuggestionsRoutine *)i _addParkedCarFieldsToSuggestionsEntry:v8 vehicleEvent:vehicleEvent];
 
                 if ((v79 & 1) == 0)
                 {
@@ -1400,16 +1400,16 @@ LABEL_62:
       GEOConfigGetDouble();
       [(MapsSuggestionsEntry *)v8 setWeight:v52 * v58];
 LABEL_47:
-      [(MapsSuggestionsRoutine *)a1 _addLabelForEntry:v8];
-      v81 = v47;
+      [(MapsSuggestionsRoutine *)i _addLabelForEntry:v8];
+      v81 = firstObject;
       v66 = dispatch_group_create();
       dispatch_group_enter(v66);
-      v67 = *(a1 + 24);
-      v68 = [v85 muid];
-      v69 = [v85 name];
-      v70 = [v85 address];
-      v71 = [v70 geoAddressObject];
-      v72 = [v71 fullAddressWithMultiline:0];
+      v67 = *(i + 24);
+      muid = [mapItem muid];
+      name = [mapItem name];
+      address = [mapItem address];
+      geoAddressObject = [address geoAddressObject];
+      v72 = [geoAddressObject fullAddressWithMultiline:0];
       v88[0] = MEMORY[0x1E69E9820];
       v88[1] = 3221225472;
       v88[2] = __50__MapsSuggestionsRoutine__suggestionEntryForPLOI___block_invoke_290;
@@ -1418,10 +1418,10 @@ LABEL_47:
       v89 = v73;
       v74 = v66;
       v90 = v74;
-      LODWORD(v68) = [v67 queryMapsSyncWithRTMapItemMuid:v68 name:v69 address:v72 completion:v88];
+      LODWORD(muid) = [v67 queryMapsSyncWithRTMapItemMuid:muid name:name address:v72 completion:v88];
 
-      v47 = v81;
-      if (!v68)
+      firstObject = v81;
+      if (!muid)
       {
         dispatch_group_leave(v74);
       }
@@ -1517,20 +1517,20 @@ void __50__MapsSuggestionsRoutine__suggestionEntryForPLOI___block_invoke_290(uin
   dispatch_group_leave(v3);
 }
 
-- (id)_updateEntry:(id *)a1
+- (id)_updateEntry:(id *)entry
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (entry)
   {
-    v5 = [v3 type];
-    if (!v4 || v5 == 7)
+    type = [v3 type];
+    if (!v4 || type == 7)
     {
-      a1 = v4;
+      entry = v4;
       goto LABEL_48;
     }
 
-    v6 = [a1[16] shortcutForEntry:v4];
+    v6 = [entry[16] shortcutForEntry:v4];
     if (v6)
     {
 LABEL_5:
@@ -1560,7 +1560,7 @@ LABEL_5:
             goto LABEL_26;
           }
 
-          if ([a1[16] hasShortcutOfType:2])
+          if ([entry[16] hasShortcutOfType:2])
           {
             v8 = GEOFindOrCreateLog();
             if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -1609,7 +1609,7 @@ LABEL_40:
 
               v14 = [v4 copyWithNewType:v10];
 LABEL_47:
-              a1 = v14;
+              entry = v14;
 
               goto LABEL_48;
             }
@@ -1622,7 +1622,7 @@ LABEL_26:
             goto LABEL_40;
           }
 
-          if ([a1[16] hasShortcutOfType:3])
+          if ([entry[16] hasShortcutOfType:3])
           {
             v8 = GEOFindOrCreateLog();
             if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -1659,7 +1659,7 @@ LABEL_45:
 
     if ([v4 type] == 1)
     {
-      if (![a1[16] hasShortcutOfType:2])
+      if (![entry[16] hasShortcutOfType:2])
       {
         GEOFindOrCreateLog();
         objc_claimAutoreleasedReturnValue();
@@ -1684,7 +1684,7 @@ LABEL_45:
         goto LABEL_5;
       }
 
-      if (![a1[16] hasShortcutOfType:3])
+      if (![entry[16] hasShortcutOfType:3])
       {
         GEOFindOrCreateLog();
         objc_claimAutoreleasedReturnValue();
@@ -1709,29 +1709,29 @@ LABEL_38:
 
 LABEL_48:
 
-  return a1;
+  return entry;
 }
 
-- (void)_treatPLOIs:(const char *)a3 stepCounter:(void *)a4 handler:
+- (void)_treatPLOIs:(const char *)is stepCounter:(void *)counter handler:
 {
   v34 = *MEMORY[0x1E69E9840];
   v21 = a2;
-  v20 = a4;
-  if (a1)
+  counterCopy = counter;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 32));
+    dispatch_assert_queue_V2(*(self + 32));
     v24 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if ((*(a1 + 160) & 1) == 0)
+    if ((*(self + 160) & 1) == 0)
     {
       GEOConfigSetBOOL();
-      *(a1 + 160) = 1;
+      *(self + 160) = 1;
     }
 
     v6 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       *buf = 136315394;
-      v30 = "[MapsSuggestionsRoutine _treatPLOIs:stepCounter:handler:]";
+      isCopy = "[MapsSuggestionsRoutine _treatPLOIs:stepCounter:handler:]";
       v31 = 1024;
       LODWORD(v32) = [v21 count];
       _os_log_impl(&dword_1C5126000, v6, OS_LOG_TYPE_DEBUG, "%s: about to process %u routine LOIs", buf, 0x12u);
@@ -1758,7 +1758,7 @@ LABEL_48:
           }
 
           v12 = *(*(&v25 + 1) + 8 * i);
-          v13 = [(MapsSuggestionsRoutine *)a1 _suggestionEntryForPLOI:v12];
+          v13 = [(MapsSuggestionsRoutine *)self _suggestionEntryForPLOI:v12];
           v14 = v13;
           if (v13)
           {
@@ -1772,7 +1772,7 @@ LABEL_48:
                 if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
                 {
                   *buf = 138412290;
-                  v30 = v12;
+                  isCopy = v12;
                   _os_log_impl(&dword_1C5126000, v17, OS_LOG_TYPE_DEBUG, "We already had a high-confidence Home, we don't need a low-confidence one: %@", buf, 0xCu);
                 }
 
@@ -1784,18 +1784,18 @@ LABEL_22:
               v8 |= v16 > 0.0;
             }
 
-            v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{++v9, v20}];
+            v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{++v9, counterCopy}];
             [v14 setNumber:v18 forKey:@"MapsSuggestionsOriginalPositionKey"];
 
             [v24 addObject:v14];
             v17 = GEOFindOrCreateLog();
             if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
             {
-              v19 = [v14 fullDescription];
+              fullDescription = [v14 fullDescription];
               *buf = 134218242;
-              v30 = a3;
+              isCopy = is;
               v31 = 2112;
-              v32 = v19;
+              v32 = fullDescription;
               _os_log_impl(&dword_1C5126000, v17, OS_LOG_TYPE_DEBUG, "FindAllPLOIEntries %lu yielded MapsSuggestionEntry: %@", buf, 0x16u);
             }
 
@@ -1811,24 +1811,24 @@ LABEL_23:
       while (v7);
     }
 
-    [(MapsSuggestionsRoutine *)a1 _resolveMapItemsAndAddEntries:v24 handler:v20];
+    [(MapsSuggestionsRoutine *)self _resolveMapItemsAndAddEntries:v24 handler:counterCopy];
   }
 }
 
-- (void)_resolveMapItemsAndAddEntries:(void *)a3 handler:
+- (void)_resolveMapItemsAndAddEntries:(void *)entries handler:
 {
   v57 = *MEMORY[0x1E69E9840];
   v35 = a2;
-  v34 = a3;
-  if (a1)
+  entriesCopy = entries;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 32));
+    dispatch_assert_queue_V2(*(self + 32));
     v5 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [a1 uniqueName];
+      uniqueName = [self uniqueName];
       *buf = 138412546;
-      *v55 = v6;
+      *v55 = uniqueName;
       *&v55[8] = 2080;
       *&v55[10] = "_resolveMapItemsAndAddEntries";
       _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -1841,7 +1841,7 @@ LABEL_23:
       _os_signpost_emit_with_name_impl(&dword_1C5126000, v7, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_resolveMapItemsAndAddEntries", "", buf, 2u);
     }
 
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, self);
     group = dispatch_group_create();
     v49 = 0u;
     v50 = 0u;
@@ -1864,8 +1864,8 @@ LABEL_23:
           v10 = *(*(&v49 + 1) + 8 * i);
           if ([v10 type])
           {
-            v11 = [v10 geoMapItem];
-            v12 = v11 == 0;
+            geoMapItem = [v10 geoMapItem];
+            v12 = geoMapItem == 0;
 
             if (v12)
             {
@@ -1875,7 +1875,7 @@ LABEL_23:
                 v14 = GEOFindOrCreateLog();
                 if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
                 {
-                  v15 = *(a1 + 136);
+                  v15 = *(self + 136);
                   *buf = 138412546;
                   *v55 = v13;
                   *&v55[8] = 2112;
@@ -1884,16 +1884,16 @@ LABEL_23:
                 }
               }
 
-              v16 = [*(a1 + 136) objectForKeyedSubscript:v13];
+              v16 = [*(self + 136) objectForKeyedSubscript:v13];
               if (v16)
               {
                 v17 = GEOFindOrCreateLog();
                 if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
                 {
-                  v18 = [*(a1 + 136) hitsOnKey:v13];
-                  [*(a1 + 136) totalHitRatio];
+                  v18 = [*(self + 136) hitsOnKey:v13];
+                  [*(self + 136) totalHitRatio];
                   v20 = v19;
-                  v21 = [*(a1 + 136) count];
+                  v21 = [*(self + 136) count];
                   *buf = 67109632;
                   *v55 = v18;
                   *&v55[4] = 2048;
@@ -1904,7 +1904,7 @@ LABEL_23:
                 }
 
                 [v10 setGeoMapItem:v16];
-                v22 = [*(a1 + 144) objectForKeyedSubscript:v13];
+                v22 = [*(self + 144) objectForKeyedSubscript:v13];
                 v23 = v22;
                 v24 = &unk_1F4470F90;
                 if (v22)
@@ -1922,9 +1922,9 @@ LABEL_23:
                 v26 = GEOFindOrCreateLog();
                 if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
                 {
-                  [*(a1 + 136) totalHitRatio];
+                  [*(self + 136) totalHitRatio];
                   v28 = v27;
-                  v29 = [*(a1 + 136) count];
+                  v29 = [*(self + 136) count];
                   *buf = 134218240;
                   *v55 = v28;
                   *&v55[8] = 1024;
@@ -1933,7 +1933,7 @@ LABEL_23:
                 }
 
                 dispatch_group_enter(group);
-                v30 = *(a1 + 16);
+                v30 = *(self + 16);
                 v44[0] = MEMORY[0x1E69E9820];
                 v44[1] = 3221225472;
                 v44[2] = __64__MapsSuggestionsRoutine__resolveMapItemsAndAddEntries_handler___block_invoke;
@@ -1971,16 +1971,16 @@ LABEL_23:
       while (v8);
     }
 
-    v32 = *(a1 + 32);
+    v32 = *(self + 32);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __64__MapsSuggestionsRoutine__resolveMapItemsAndAddEntries_handler___block_invoke_298;
     block[3] = &unk_1E81F76B0;
     v40 = obj;
-    v41 = a1;
+    selfCopy = self;
     v33 = v32;
     objc_copyWeak(&v43, &location);
-    v42 = v34;
+    v42 = entriesCopy;
     dispatch_group_notify(group, v33, block);
 
     objc_destroyWeak(&v43);
@@ -1988,19 +1988,19 @@ LABEL_23:
   }
 }
 
-- (void)_treatPredictedContextResult:(uint64_t)a3 considerGymPredictions:(uint64_t)a4 considerSchoolPredictions:(uint64_t)a5 considerUnknownTypePredictions:(void *)a6 handler:
+- (void)_treatPredictedContextResult:(uint64_t)result considerGymPredictions:(uint64_t)predictions considerSchoolPredictions:(uint64_t)schoolPredictions considerUnknownTypePredictions:(void *)typePredictions handler:
 {
   v30 = *MEMORY[0x1E69E9840];
   v11 = a2;
-  v21 = a6;
-  if (a1)
+  typePredictionsCopy = typePredictions;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 32));
+    dispatch_assert_queue_V2(*(self + 32));
     v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if ((*(a1 + 160) & 1) == 0)
+    if ((*(self + 160) & 1) == 0)
     {
       GEOConfigSetBOOL();
-      *(a1 + 160) = 1;
+      *(self + 160) = 1;
     }
 
     v12 = GEOFindOrCreateLog();
@@ -2014,22 +2014,22 @@ LABEL_23:
       _os_log_impl(&dword_1C5126000, v12, OS_LOG_TYPE_DEBUG, "%s: about to process %@ routine LOIs", buf, 0x16u);
     }
 
-    objc_initWeak(buf, a1);
-    v14 = *(a1 + 16);
+    objc_initWeak(buf, self);
+    v14 = *(self + 16);
     v15 = MapsSuggestionsCurrentBestLocation();
     GEOConfigGetDouble();
     v17 = v16;
-    v18 = *(a1 + 32);
+    v18 = *(self + 32);
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __143__MapsSuggestionsRoutine__treatPredictedContextResult_considerGymPredictions_considerSchoolPredictions_considerUnknownTypePredictions_handler___block_invoke;
     v22[3] = &unk_1E81F7660;
     objc_copyWeak(&v25, buf);
-    v24 = v21;
-    v22[4] = a1;
+    v24 = typePredictionsCopy;
+    v22[4] = self;
     v19 = v20;
     v23 = v19;
-    [MapsSuggestionsRoutine loisFromPredictedContextResult:v11 usingNetworkRequester:v14 currentLocation:v15 predictionDuration:a3 considerGymPredictions:a4 considerSchoolPredictions:a5 considerUnknownTypePredictions:v17 callbackQueue:v18 completionHandler:v22];
+    [MapsSuggestionsRoutine loisFromPredictedContextResult:v11 usingNetworkRequester:v14 currentLocation:v15 predictionDuration:result considerGymPredictions:predictions considerSchoolPredictions:schoolPredictions considerUnknownTypePredictions:v17 callbackQueue:v18 completionHandler:v22];
 
     objc_destroyWeak(&v25);
     objc_destroyWeak(buf);
@@ -2370,13 +2370,13 @@ void __64__MapsSuggestionsRoutine__resolveMapItemsAndAddEntries_handler___block_
   }
 }
 
-- (char)fetchEntriesForLocation:(id)a3 period:(id)a4 handler:(id)a5
+- (char)fetchEntriesForLocation:(id)location period:(id)period handler:(id)handler
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  locationCopy = location;
+  periodCopy = period;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -2395,7 +2395,7 @@ void __64__MapsSuggestionsRoutine__resolveMapItemsAndAddEntries_handler___block_
     goto LABEL_20;
   }
 
-  if (!v8)
+  if (!locationCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -2414,7 +2414,7 @@ void __64__MapsSuggestionsRoutine__resolveMapItemsAndAddEntries_handler___block_
     goto LABEL_20;
   }
 
-  if (!v9)
+  if (!periodCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -2433,9 +2433,9 @@ void __64__MapsSuggestionsRoutine__resolveMapItemsAndAddEntries_handler___block_
     goto LABEL_20;
   }
 
-  v11 = [v9 startDate];
+  startDate = [periodCopy startDate];
 
-  if (!v11)
+  if (!startDate)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -2454,7 +2454,7 @@ void __64__MapsSuggestionsRoutine__resolveMapItemsAndAddEntries_handler___block_
     goto LABEL_20;
   }
 
-  [v9 duration];
+  [periodCopy duration];
   if (v12 == 0.0)
   {
     v13 = GEOFindOrCreateLog();
@@ -2495,24 +2495,24 @@ LABEL_20:
       *buf = 134218498;
       v29 = v16;
       v30 = 2112;
-      *v31 = v9;
+      *v31 = periodCopy;
       *&v31[8] = 2112;
-      *&v31[10] = v8;
+      *&v31[10] = locationCopy;
       _os_log_impl(&dword_1C5126000, v18, OS_LOG_TYPE_DEBUG, "FindAllPLOIEntries %lu uses %@ location=%@", buf, 0x20u);
     }
 
     connector = self->_connector;
-    v20 = [v9 startDate];
-    [v9 duration];
+    startDate2 = [periodCopy startDate];
+    [periodCopy duration];
     v22 = v21;
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __65__MapsSuggestionsRoutine_fetchEntriesForLocation_period_handler___block_invoke;
     v24[3] = &unk_1E81F76D8;
     objc_copyWeak(v26, &location);
-    v25 = v10;
+    v25 = handlerCopy;
     v26[1] = v16;
-    [(MapsSuggestionsRoutineConnector *)connector fetchNextPLOIsFromLocation:v8 startDate:v20 timeInterval:v24 withHandler:v22];
+    [(MapsSuggestionsRoutineConnector *)connector fetchNextPLOIsFromLocation:locationCopy startDate:startDate2 timeInterval:v24 withHandler:v22];
 
     objc_destroyWeak(v26);
     objc_destroyWeak(&location);
@@ -2527,7 +2527,7 @@ LABEL_20:
       _os_log_impl(&dword_1C5126000, v23, OS_LOG_TYPE_DEBUG, "User turned off Siri Suggestions for maps. Not attempting to fetch entries", buf, 2u);
     }
 
-    (*(v10 + 2))(v10, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   v14 = 1;
@@ -2649,10 +2649,10 @@ void __65__MapsSuggestionsRoutine_fetchEntriesForLocation_period_handler___block
   }
 }
 
-- (char)startMonitoringPredictedContextForHomeAndWorkWithHandler:(id)a3
+- (char)startMonitoringPredictedContextForHomeAndWorkWithHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   if (!+[MapsSuggestionsSiri isEnabled])
   {
     v9 = GEOFindOrCreateLog();
@@ -2666,7 +2666,7 @@ LABEL_10:
 
 LABEL_11:
 
-    (*(v4 + 2))(v4, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
     goto LABEL_12;
   }
 
@@ -2700,7 +2700,7 @@ LABEL_11:
   v12[2] = __83__MapsSuggestionsRoutine_startMonitoringPredictedContextForHomeAndWorkWithHandler___block_invoke;
   v12[3] = &unk_1E81F7728;
   objc_copyWeak(v14, buf);
-  v13 = v4;
+  v13 = handlerCopy;
   v14[1] = v5;
   [(MapsSuggestionsRoutineConnector *)connector startMonitoringPredictedContextWithOptions:v8 handler:v12];
 
@@ -2895,13 +2895,13 @@ uint64_t __83__MapsSuggestionsRoutine_startMonitoringPredictedContextForHomeAndW
   return (*(*(a1 + 32) + 16))();
 }
 
-- (char)fetchEntriesUsingPLC:(id)a3 period:(id)a4 includeFrequentLocationEntries:(BOOL)a5 handler:(id)a6
+- (char)fetchEntriesUsingPLC:(id)c period:(id)period includeFrequentLocationEntries:(BOOL)entries handler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (!v12)
+  cCopy = c;
+  periodCopy = period;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v15 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -2920,7 +2920,7 @@ uint64_t __83__MapsSuggestionsRoutine_startMonitoringPredictedContextForHomeAndW
     goto LABEL_20;
   }
 
-  if (!v10)
+  if (!cCopy)
   {
     v15 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -2939,7 +2939,7 @@ uint64_t __83__MapsSuggestionsRoutine_startMonitoringPredictedContextForHomeAndW
     goto LABEL_20;
   }
 
-  if (!v11)
+  if (!periodCopy)
   {
     v15 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -2958,9 +2958,9 @@ uint64_t __83__MapsSuggestionsRoutine_startMonitoringPredictedContextForHomeAndW
     goto LABEL_20;
   }
 
-  v13 = [v11 startDate];
+  startDate = [periodCopy startDate];
 
-  if (!v13)
+  if (!startDate)
   {
     v15 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -2979,7 +2979,7 @@ uint64_t __83__MapsSuggestionsRoutine_startMonitoringPredictedContextForHomeAndW
     goto LABEL_20;
   }
 
-  [v11 duration];
+  [periodCopy duration];
   if (v14 != 0.0)
   {
     if (+[MapsSuggestionsSiri isEnabled])
@@ -3001,9 +3001,9 @@ uint64_t __83__MapsSuggestionsRoutine_startMonitoringPredictedContextForHomeAndW
           *buf = 134218498;
           v30 = v18;
           v31 = 2112;
-          *v32 = v11;
+          *v32 = periodCopy;
           *&v32[8] = 2112;
-          *&v32[10] = v10;
+          *&v32[10] = cCopy;
           _os_log_impl(&dword_1C5126000, v20, OS_LOG_TYPE_DEBUG, "FetchEntriesUsingPLC %lu uses %@ location=%@", buf, 0x20u);
         }
 
@@ -3015,9 +3015,9 @@ uint64_t __83__MapsSuggestionsRoutine_startMonitoringPredictedContextForHomeAndW
         v25[2] = __93__MapsSuggestionsRoutine_fetchEntriesUsingPLC_period_includeFrequentLocationEntries_handler___block_invoke;
         v25[3] = &unk_1E81F7778;
         objc_copyWeak(v27, buf);
-        v26 = v12;
+        v26 = handlerCopy;
         v27[1] = v18;
-        v28 = a5;
+        entriesCopy = entries;
         [(MapsSuggestionsRoutineConnector *)connector fetchPredictedContextWithOptions:v22 handler:v25];
 
         objc_destroyWeak(v27);
@@ -3046,7 +3046,7 @@ LABEL_33:
       }
     }
 
-    (*(v12 + 2))(v12, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
 LABEL_35:
     v16 = 1;
     goto LABEL_21;
@@ -3267,13 +3267,13 @@ uint64_t __93__MapsSuggestionsRoutine_fetchEntriesUsingPLC_period_includeFrequen
   return (*(*(a1 + 32) + 16))();
 }
 
-- (uint64_t)_addMapItemToShortcut:(void *)a3 fromLOI:(void *)a4 group:
+- (uint64_t)_addMapItemToShortcut:(void *)shortcut fromLOI:(void *)i group:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!a1)
+  shortcutCopy = shortcut;
+  iCopy = i;
+  v10 = iCopy;
+  if (!self)
   {
     v14 = 0;
     goto LABEL_7;
@@ -3285,12 +3285,12 @@ uint64_t __93__MapsSuggestionsRoutine_fetchEntriesUsingPLC_period_includeFrequen
     objc_claimAutoreleasedReturnValue();
     [MapsSuggestionsRoutine _addMapItemToShortcut:fromLOI:group:];
 LABEL_11:
-    v12 = v19;
+    mapItem = v19;
     v14 = v20;
     goto LABEL_6;
   }
 
-  if (!v8)
+  if (!shortcutCopy)
   {
     GEOFindOrCreateLog();
     objc_claimAutoreleasedReturnValue();
@@ -3298,7 +3298,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (!v9)
+  if (!iCopy)
   {
     GEOFindOrCreateLog();
     objc_claimAutoreleasedReturnValue();
@@ -3306,18 +3306,18 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  dispatch_assert_queue_V2(*(a1 + 32));
+  dispatch_assert_queue_V2(*(self + 32));
   dispatch_group_enter(v10);
-  v11 = *(a1 + 16);
-  v12 = [v8 mapItem];
-  v13 = [v12 geoMapItemHandle];
+  v11 = *(self + 16);
+  mapItem = [shortcutCopy mapItem];
+  geoMapItemHandle = [mapItem geoMapItemHandle];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __62__MapsSuggestionsRoutine__addMapItemToShortcut_fromLOI_group___block_invoke;
   v16[3] = &unk_1E81F63C0;
   v17 = v10;
   v18 = v7;
-  v14 = [v11 resolveMapItemHandleData:v13 dropAnalyticsSessionID:0 completion:v16];
+  v14 = [v11 resolveMapItemHandleData:geoMapItemHandle dropAnalyticsSessionID:0 completion:v16];
 
 LABEL_6:
 LABEL_7:
@@ -3368,13 +3368,13 @@ void __62__MapsSuggestionsRoutine__addMapItemToShortcut_fromLOI_group___block_in
   }
 }
 
-- (id)capLocationsOfInterest:(unint64_t)a3 maxResults:
+- (id)capLocationsOfInterest:(unint64_t)interest maxResults:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
-    if ([v5 count] <= a3)
+    if ([v5 count] <= interest)
     {
       v8 = v6;
     }
@@ -3382,7 +3382,7 @@ void __62__MapsSuggestionsRoutine__addMapItemToShortcut_fromLOI_group___block_in
     else
     {
       v7 = [v6 sortedArrayUsingComparator:&__block_literal_global_328];
-      v8 = [v7 subarrayWithRange:{0, a3}];
+      v8 = [v7 subarrayWithRange:{0, interest}];
     }
   }
 
@@ -3408,10 +3408,10 @@ uint64_t __60__MapsSuggestionsRoutine_capLocationsOfInterest_maxResults___block_
   return v11;
 }
 
-- (char)fetchAllSuggestedLOIsExcludingTypes:(id)a3 minVisits:(unint64_t)a4 maxAge:(double)a5 maxResults:(unint64_t)a6 handler:(id)a7
+- (char)fetchAllSuggestedLOIsExcludingTypes:(id)types minVisits:(unint64_t)visits maxAge:(double)age maxResults:(unint64_t)results handler:(id)handler
 {
-  v12 = a3;
-  v13 = a7;
+  typesCopy = types;
+  handlerCopy = handler;
   if (+[MapsSuggestionsSiri isEnabled])
   {
     v14 = dispatch_group_create();
@@ -3422,8 +3422,8 @@ uint64_t __60__MapsSuggestionsRoutine_capLocationsOfInterest_maxResults___block_
     aBlock[3] = &unk_1E81F77C0;
     v16 = v14;
     v35 = v16;
-    v38 = a4;
-    v36 = v12;
+    visitsCopy = visits;
+    v36 = typesCopy;
     v17 = v15;
     v37 = v17;
     v18 = _Block_copy(aBlock);
@@ -3434,20 +3434,20 @@ uint64_t __60__MapsSuggestionsRoutine_capLocationsOfInterest_maxResults___block_
     block[2] = __98__MapsSuggestionsRoutine_fetchAllSuggestedLOIsExcludingTypes_minVisits_maxAge_maxResults_handler___block_invoke_329;
     block[3] = &unk_1E81F7028;
     objc_copyWeak(v32, &location);
-    v32[1] = *&a5;
+    v32[1] = *&age;
     v31 = v18;
     innerQueue = self->_queue._innerQueue;
     v20 = v18;
     dispatch_async(innerQueue, block);
     dispatch_group_wait(v16, 0xFFFFFFFFFFFFFFFFLL);
-    v21 = [(MapsSuggestionsRoutine *)self capLocationsOfInterest:v17 maxResults:a6];
+    v21 = [(MapsSuggestionsRoutine *)self capLocationsOfInterest:v17 maxResults:results];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __98__MapsSuggestionsRoutine_fetchAllSuggestedLOIsExcludingTypes_minVisits_maxAge_maxResults_handler___block_invoke_330;
     v26[3] = &unk_1E81F5B00;
     objc_copyWeak(&v29, &location);
     v27 = v21;
-    v28 = v13;
+    v28 = handlerCopy;
     v22 = self->_queue._innerQueue;
     v23 = v21;
     dispatch_async(v22, v26);
@@ -3701,12 +3701,12 @@ void __98__MapsSuggestionsRoutine_fetchAllSuggestedLOIsExcludingTypes_minVisits_
   }
 }
 
-- (id)_msgLOIsForRTLOIs:(uint64_t)a1
+- (id)_msgLOIsForRTLOIs:(uint64_t)is
 {
   v46 = *MEMORY[0x1E69E9840];
   v22 = a2;
-  v26 = a1;
-  if (a1)
+  isCopy = is;
+  if (is)
   {
     v24 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v22, "count")}];
     group = dispatch_group_create();
@@ -3735,17 +3735,17 @@ void __98__MapsSuggestionsRoutine_fetchAllSuggestedLOIsExcludingTypes_minVisits_
           if (v32)
           {
             dispatch_group_enter(group);
-            v6 = *(v26 + 24);
-            v7 = [v5 mapItem];
-            v8 = [v7 muid];
-            v9 = [v5 mapItem];
-            v29 = v7;
-            v31 = [v9 name];
-            v28 = v9;
-            v10 = [v5 mapItem];
-            v11 = [v10 address];
-            v12 = [v11 geoAddressObject];
-            v13 = [v12 fullAddressWithMultiline:0];
+            v6 = *(isCopy + 24);
+            mapItem = [v5 mapItem];
+            muid = [mapItem muid];
+            mapItem2 = [v5 mapItem];
+            v29 = mapItem;
+            name = [mapItem2 name];
+            v28 = mapItem2;
+            mapItem3 = [v5 mapItem];
+            address = [mapItem3 address];
+            geoAddressObject = [address geoAddressObject];
+            v13 = [geoAddressObject fullAddressWithMultiline:0];
             v37[0] = MEMORY[0x1E69E9820];
             v37[1] = 3221225472;
             v37[2] = __44__MapsSuggestionsRoutine__msgLOIsForRTLOIs___block_invoke;
@@ -3756,22 +3756,22 @@ void __98__MapsSuggestionsRoutine_fetchAllSuggestedLOIsExcludingTypes_minVisits_
             v39 = v15;
             v16 = group;
             v40 = v16;
-            LODWORD(v8) = [v6 queryMapsSyncWithRTMapItemMuid:v8 name:v31 address:v13 completion:v37];
+            LODWORD(muid) = [v6 queryMapsSyncWithRTMapItemMuid:muid name:name address:v13 completion:v37];
 
             v3 = v25;
-            if (!v8)
+            if (!muid)
             {
               dispatch_group_leave(v16);
             }
 
             dispatch_group_wait(v16, 0xFFFFFFFFFFFFFFFFLL);
-            v17 = [(MapsSuggestionsLocationOfInterest *)v14 mapItem];
-            v18 = v17 == 0;
+            mapItem4 = [(MapsSuggestionsLocationOfInterest *)v14 mapItem];
+            v18 = mapItem4 == 0;
 
             if (v18)
             {
               dispatch_group_enter(v16);
-              v19 = *(v26 + 16);
+              v19 = *(isCopy + 16);
               v33[0] = MEMORY[0x1E69E9820];
               v33[1] = 3221225472;
               v33[2] = __44__MapsSuggestionsRoutine__msgLOIsForRTLOIs___block_invoke_394;
@@ -3808,12 +3808,12 @@ void __98__MapsSuggestionsRoutine_fetchAllSuggestedLOIsExcludingTypes_minVisits_
   return v24;
 }
 
-- (char)fetchSuggestedLOIsForTypes:(id)a3 minVisits:(unint64_t)a4 maxAge:(double)a5 maxResults:(unint64_t)a6 handler:(id)a7
+- (char)fetchSuggestedLOIsForTypes:(id)types minVisits:(unint64_t)visits maxAge:(double)age maxResults:(unint64_t)results handler:(id)handler
 {
   v53 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v27 = a7;
-  if (!v27)
+  typesCopy = types;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v23 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -3844,7 +3844,7 @@ void __98__MapsSuggestionsRoutine_fetchAllSuggestedLOIsExcludingTypes_minVisits_
     goto LABEL_21;
   }
 
-  if (!v12 || ![v12 count])
+  if (!typesCopy || ![typesCopy count])
   {
     v23 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -3868,16 +3868,16 @@ LABEL_21:
   aBlock[3] = &unk_1E81F77E8;
   v14 = v25;
   v41 = v14;
-  v43 = a4;
+  visitsCopy = visits;
   v26 = v13;
   v42 = v26;
-  v44 = a6;
+  resultsCopy = results;
   v15 = _Block_copy(aBlock);
   v38 = 0u;
   v39 = 0u;
   v37 = 0u;
   v36 = 0u;
-  obj = v12;
+  obj = typesCopy;
   v16 = [obj countByEnumeratingWithState:&v36 objects:v45 count:{16, v25}];
   if (v16)
   {
@@ -3891,16 +3891,16 @@ LABEL_21:
           objc_enumerationMutation(obj);
         }
 
-        v19 = [*(*(&v36 + 1) + 8 * i) integerValue];
+        integerValue = [*(*(&v36 + 1) + 8 * i) integerValue];
         dispatch_group_enter(v14);
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __89__MapsSuggestionsRoutine_fetchSuggestedLOIsForTypes_minVisits_maxAge_maxResults_handler___block_invoke_332;
         block[3] = &unk_1E81F7810;
         objc_copyWeak(v35, location);
-        v35[1] = v19;
+        v35[1] = integerValue;
         v34 = v15;
-        v35[2] = *&a5;
+        v35[2] = *&age;
         dispatch_async(self->_queue._innerQueue, block);
 
         objc_destroyWeak(v35);
@@ -3919,7 +3919,7 @@ LABEL_21:
   v29[3] = &unk_1E81F5B00;
   objc_copyWeak(&v32, location);
   v30 = v26;
-  v31 = v27;
+  v31 = handlerCopy;
   innerQueue = self->_queue._innerQueue;
   v21 = v26;
   dispatch_async(innerQueue, v29);
@@ -4156,22 +4156,22 @@ void __89__MapsSuggestionsRoutine_fetchSuggestedLOIsForTypes_minVisits_maxAge_ma
   }
 }
 
-- (char)fetchSuggestedShortcutsForType:(int64_t)a3 minVisits:(unint64_t)a4 maxAge:(double)a5 handler:(id)a6
+- (char)fetchSuggestedShortcutsForType:(int64_t)type minVisits:(unint64_t)visits maxAge:(double)age handler:(id)handler
 {
   v35 = *MEMORY[0x1E69E9840];
-  v10 = a6;
-  if (v10)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (+[MapsSuggestionsSiri isEnabled])
     {
-      if (a3 <= 1)
+      if (type <= 1)
       {
-        v11 = 1;
+        typeCopy = 1;
       }
 
       else
       {
-        v11 = a3;
+        typeCopy = type;
       }
 
       objc_initWeak(location, self);
@@ -4179,18 +4179,18 @@ void __89__MapsSuggestionsRoutine_fetchSuggestedLOIsForTypes_minVisits_maxAge_ma
       aBlock[1] = 3221225472;
       aBlock[2] = __82__MapsSuggestionsRoutine_fetchSuggestedShortcutsForType_minVisits_maxAge_handler___block_invoke;
       aBlock[3] = &unk_1E81F7860;
-      v26 = v10;
+      v26 = handlerCopy;
       objc_copyWeak(v27, location);
-      v27[1] = a4;
-      v27[2] = v11;
+      v27[1] = visits;
+      v27[2] = typeCopy;
       v12 = _Block_copy(aBlock);
-      v13 = MapsSuggestionsNowWithOffset(-a5);
+      v13 = MapsSuggestionsNowWithOffset(-age);
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __82__MapsSuggestionsRoutine_fetchSuggestedShortcutsForType_minVisits_maxAge_handler___block_invoke_2;
       v21[3] = &unk_1E81F7700;
       objc_copyWeak(v24, location);
-      v24[1] = v11;
+      v24[1] = typeCopy;
       v22 = v13;
       v23 = v12;
       innerQueue = self->_queue._innerQueue;
@@ -4213,7 +4213,7 @@ void __89__MapsSuggestionsRoutine_fetchSuggestedLOIsForTypes_minVisits_maxAge_ma
         _os_log_impl(&dword_1C5126000, v19, OS_LOG_TYPE_DEBUG, "User turned off Siri Suggestions for maps. Not attempting to fetch shortcuts", location, 2u);
       }
 
-      (*(v10 + 2))(v10, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
 
     v18 = 1;
@@ -4480,10 +4480,10 @@ LABEL_12:
 LABEL_16:
 }
 
-- (char)readMeCardWithMinVisits:(unint64_t)a3 maxAge:(double)a4 handler:(id)a5
+- (char)readMeCardWithMinVisits:(unint64_t)visits maxAge:(double)age handler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  handlerCopy = handler;
   v9 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -4491,7 +4491,7 @@ LABEL_16:
     _os_log_impl(&dword_1C5126000, v9, OS_LOG_TYPE_DEBUG, "ASYNC FAILURE INVESTIGATION: Entering method readMeCardWithMinVisits", buf, 2u);
   }
 
-  if (v8)
+  if (handlerCopy)
   {
     if (+[MapsSuggestionsSiri isEnabled])
     {
@@ -4500,11 +4500,11 @@ LABEL_16:
       aBlock[1] = 3221225472;
       aBlock[2] = __65__MapsSuggestionsRoutine_readMeCardWithMinVisits_maxAge_handler___block_invoke;
       aBlock[3] = &unk_1E81F7888;
-      v26 = v8;
+      v26 = handlerCopy;
       objc_copyWeak(v27, buf);
-      v27[1] = a3;
+      v27[1] = visits;
       v10 = _Block_copy(aBlock);
-      v11 = MapsSuggestionsNowWithOffset(-a4);
+      v11 = MapsSuggestionsNowWithOffset(-age);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __65__MapsSuggestionsRoutine_readMeCardWithMinVisits_maxAge_handler___block_invoke_340;
@@ -4538,7 +4538,7 @@ LABEL_16:
         _os_log_impl(&dword_1C5126000, v18, OS_LOG_TYPE_DEBUG, "User turned off Siri Suggestions for maps. Not attempting to fetch shortcuts for MeCard", buf, 2u);
       }
 
-      (*(v8 + 2))(v8, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
 
     v17 = 1;
@@ -5222,15 +5222,15 @@ void __41__MapsSuggestionsRoutine_updateFixedLOIs__block_invoke_345(uint64_t a1)
   return MSg::Queue::sync<unsigned long>(&self->_queue, v3);
 }
 
-- (char)fetchLastVisitAtLocation:(id)a3 handler:(id)a4
+- (char)fetchLastVisitAtLocation:(id)location handler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  locationCopy = location;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (handlerCopy)
   {
-    if (v6)
+    if (locationCopy)
     {
       objc_initWeak(location, self);
       connector = self->_connector;
@@ -5239,7 +5239,7 @@ void __41__MapsSuggestionsRoutine_updateFixedLOIs__block_invoke_345(uint64_t a1)
       v13[2] = __59__MapsSuggestionsRoutine_fetchLastVisitAtLocation_handler___block_invoke_2;
       v13[3] = &unk_1E81F7900;
       objc_copyWeak(&v16, location);
-      v14 = v6;
+      v14 = locationCopy;
       v15 = v8;
       [(MapsSuggestionsRoutineConnector *)connector fetchLocationOfInterestAtLocation:v14 withHandler:v13];
 
@@ -5253,7 +5253,7 @@ void __41__MapsSuggestionsRoutine_updateFixedLOIs__block_invoke_345(uint64_t a1)
       block[1] = 3221225472;
       block[2] = __59__MapsSuggestionsRoutine_fetchLastVisitAtLocation_handler___block_invoke;
       block[3] = &unk_1E81F56F8;
-      v18 = v7;
+      v18 = handlerCopy;
       dispatch_async(self->_queue._innerQueue, block);
     }
 
@@ -5388,28 +5388,28 @@ void __59__MapsSuggestionsRoutine_fetchLastVisitAtLocation_handler___block_invok
   (*(v2 + 16))(v2, v3, v5, 0);
 }
 
-- (void)_cacheEntryExitDatesFromVisit:(void *)a3 forMapItemIdentifier:(void *)a4 name:
+- (void)_cacheEntryExitDatesFromVisit:(void *)visit forMapItemIdentifier:(void *)identifier name:
 {
   v30[2] = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  visitCopy = visit;
+  identifierCopy = identifier;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 32));
+    dispatch_assert_queue_V2(*(self + 32));
     BOOL = GEOConfigGetBOOL();
-    v11 = *(a1 + 88);
+    v11 = *(self + 88);
     if ((BOOL & 1) == 0)
     {
-      *(a1 + 88) = 0;
+      *(self + 88) = 0;
 
-      v23 = *(a1 + 96);
-      *(a1 + 96) = 0;
+      v23 = *(self + 96);
+      *(self + 96) = 0;
 
       GEOFindOrCreateLog();
       objc_claimAutoreleasedReturnValue();
       [MapsSuggestionsRoutine _cacheEntryExitDatesFromVisit:forMapItemIdentifier:name:];
-      v17 = *v25;
+      entry = *v25;
 LABEL_17:
 
       goto LABEL_18;
@@ -5418,40 +5418,40 @@ LABEL_17:
     if (!v11)
     {
       v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v13 = *(a1 + 88);
-      *(a1 + 88) = v12;
+      v13 = *(self + 88);
+      *(self + 88) = v12;
     }
 
-    if (!*(a1 + 96))
+    if (!*(self + 96))
     {
       v14 = [MEMORY[0x1E695DF00] now];
-      v15 = *(a1 + 96);
-      *(a1 + 96) = v14;
+      v15 = *(self + 96);
+      *(self + 96) = v14;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v16 = v7;
-      v17 = [v16 entry];
-      v18 = [v16 exit];
+      entry = [v16 entry];
+      exit = [v16 exit];
 
-      if (v17 && v18)
+      if (entry && exit)
       {
-        v30[0] = v17;
-        v30[1] = v18;
+        v30[0] = entry;
+        v30[1] = exit;
         v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
-        [*(a1 + 88) setObject:v19 forKeyedSubscript:v8];
+        [*(self + 88) setObject:v19 forKeyedSubscript:visitCopy];
 
         v20 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
         {
-          v21 = [*(a1 + 88) objectForKeyedSubscript:v8];
-          v22 = [v8 description];
+          v21 = [*(self + 88) objectForKeyedSubscript:visitCopy];
+          v22 = [visitCopy description];
           *v25 = 138412802;
           *&v25[4] = v21;
           v26 = 2112;
-          v27 = v9;
+          v27 = identifierCopy;
           v28 = 2112;
           v29 = v22;
           _os_log_impl(&dword_1C5126000, v20, OS_LOG_TYPE_DEBUG, "Caching dates %@ for %@, %@", v25, 0x20u);
@@ -5463,12 +5463,12 @@ LABEL_17:
 
     else
     {
-      v17 = 0;
-      v18 = 0;
+      entry = 0;
+      exit = 0;
     }
 
-    v24 = [MEMORY[0x1E695DFB0] null];
-    [*(a1 + 88) setObject:v24 forKeyedSubscript:v8];
+    null = [MEMORY[0x1E695DFB0] null];
+    [*(self + 88) setObject:null forKeyedSubscript:visitCopy];
 
 LABEL_16:
     goto LABEL_17;
@@ -5477,31 +5477,31 @@ LABEL_16:
 LABEL_18:
 }
 
-- (uint64_t)_fetchStoredVisitsWithOptions:(void *)a3 handler:
+- (uint64_t)_fetchStoredVisitsWithOptions:(void *)options handler:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  optionsCopy = options;
+  v7 = optionsCopy;
+  if (self)
   {
     if (v5)
     {
-      if (v6)
+      if (optionsCopy)
       {
-        objc_initWeak(&location, a1);
-        v8 = *(a1 + 8);
-        v9 = [v5 rtStoredVisitFetchOptions];
+        objc_initWeak(&location, self);
+        v8 = *(self + 8);
+        rtStoredVisitFetchOptions = [v5 rtStoredVisitFetchOptions];
         v13[0] = MEMORY[0x1E69E9820];
         v13[1] = 3221225472;
         v13[2] = __64__MapsSuggestionsRoutine__fetchStoredVisitsWithOptions_handler___block_invoke;
         v13[3] = &unk_1E81F62D0;
         objc_copyWeak(&v15, &location);
         v14 = v7;
-        [v8 fetchStoredVisitsWithOptions:v9 handler:v13];
+        [v8 fetchStoredVisitsWithOptions:rtStoredVisitFetchOptions handler:v13];
 
         objc_destroyWeak(&v15);
         objc_destroyWeak(&location);
-        a1 = 1;
+        self = 1;
         goto LABEL_5;
       }
 
@@ -5515,12 +5515,12 @@ LABEL_18:
       [MapsSuggestionsRoutine _fetchStoredVisitsWithOptions:v11 handler:?];
     }
 
-    a1 = 0;
+    self = 0;
   }
 
 LABEL_5:
 
-  return a1;
+  return self;
 }
 
 void __64__MapsSuggestionsRoutine__fetchStoredVisitsWithOptions_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -5609,25 +5609,25 @@ LABEL_9:
 LABEL_23:
 }
 
-- (char)fetchLastVisitAtMapItem:(id)a3 withinDistance:(double)a4 handler:(id)a5
+- (char)fetchLastVisitAtMapItem:(id)item withinDistance:(double)distance handler:(id)handler
 {
   v47 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  itemCopy = item;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (!v8 || ([v8 _identifier], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
+    if (!itemCopy || ([itemCopy _identifier], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
     {
-      v17 = [v8 _identifier];
+      _identifier = [itemCopy _identifier];
 
-      if (!v17)
+      if (!_identifier)
       {
         v18 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
-          v19 = [v8 name];
+          name = [itemCopy name];
           *v45 = 138412290;
-          *&v45[4] = v19;
+          *&v45[4] = name;
           _os_log_impl(&dword_1C5126000, v18, OS_LOG_TYPE_ERROR, "mapItemIdentifier is nil for %@", v45, 0xCu);
         }
       }
@@ -5636,7 +5636,7 @@ LABEL_23:
       v39[1] = 3221225472;
       v39[2] = __73__MapsSuggestionsRoutine_fetchLastVisitAtMapItem_withinDistance_handler___block_invoke;
       v39[3] = &unk_1E81F56F8;
-      v40 = v9;
+      v40 = handlerCopy;
       dispatch_async(self->_queue._innerQueue, v39);
 
       goto LABEL_19;
@@ -5663,7 +5663,7 @@ LABEL_23:
       block[3] = &unk_1E81F7928;
       block[4] = self;
       v34 = v12;
-      v13 = v8;
+      v13 = itemCopy;
       v31 = v13;
       v32 = v45;
       v33 = &v35;
@@ -5673,10 +5673,10 @@ LABEL_23:
         v14 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
         {
-          v15 = [v13 name];
+          name2 = [v13 name];
           v16 = *(*&v45[8] + 40);
           *buf = 138412546;
-          v42 = v15;
+          v42 = name2;
           v43 = 2112;
           v44 = v16;
           _os_log_impl(&dword_1C5126000, v14, OS_LOG_TYPE_DEBUG, "Returning cached dates for the visit to %@ instead of querying Routine. %@", buf, 0x16u);
@@ -5687,7 +5687,7 @@ LABEL_23:
         v27[2] = __73__MapsSuggestionsRoutine_fetchLastVisitAtMapItem_withinDistance_handler___block_invoke_368;
         v27[3] = &unk_1E81F5E78;
         v29 = v45;
-        v28 = v9;
+        v28 = handlerCopy;
         dispatch_async(self->_queue._innerQueue, v27);
 
         _Block_object_dispose(v45, 8);
@@ -5705,9 +5705,9 @@ LABEL_23:
     v23[2] = __73__MapsSuggestionsRoutine_fetchLastVisitAtMapItem_withinDistance_handler___block_invoke_2;
     v23[3] = &unk_1E81F5BA0;
     objc_copyWeak(v26, v45);
-    v24 = v8;
-    v25 = v9;
-    v26[1] = *&a4;
+    v24 = itemCopy;
+    v25 = handlerCopy;
+    v26[1] = *&distance;
     dispatch_async(self->_queue._innerQueue, v23);
 
     objc_destroyWeak(v26);
@@ -6076,17 +6076,17 @@ void __73__MapsSuggestionsRoutine_fetchLastVisitAtMapItem_withinDistance_handler
   }
 }
 
-- (char)fetchMostRecentVisitWithinDistance:(double)a3 ofMapItem:(id)a4 handler:(id)a5
+- (char)fetchMostRecentVisitWithinDistance:(double)distance ofMapItem:(id)item handler:(id)handler
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  itemCopy = item;
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  if (handlerCopy)
   {
-    if (v8)
+    if (itemCopy)
     {
-      [v8 coordinate];
+      [itemCopy coordinate];
       v13 = CLLocationFromGEOLocationCoordinate2D(v11, v12);
       objc_initWeak(location, self);
       connector = self->_connector;
@@ -6098,7 +6098,7 @@ void __73__MapsSuggestionsRoutine_fetchLastVisitAtMapItem_withinDistance_handler
       v20 = v13;
       v21 = v10;
       v15 = v13;
-      [(MapsSuggestionsRoutineConnector *)connector fetchLocationsOfInterestWithinDistance:v15 ofLocation:v19 withHandler:a3];
+      [(MapsSuggestionsRoutineConnector *)connector fetchLocationsOfInterestWithinDistance:v15 ofLocation:v19 withHandler:distance];
 
       objc_destroyWeak(&v22);
       objc_destroyWeak(location);
@@ -6110,7 +6110,7 @@ void __73__MapsSuggestionsRoutine_fetchLastVisitAtMapItem_withinDistance_handler
       block[1] = 3221225472;
       block[2] = __79__MapsSuggestionsRoutine_fetchMostRecentVisitWithinDistance_ofMapItem_handler___block_invoke;
       block[3] = &unk_1E81F56F8;
-      v24 = v9;
+      v24 = handlerCopy;
       dispatch_async(self->_queue._innerQueue, block);
     }
 
@@ -6329,11 +6329,11 @@ void __79__MapsSuggestionsRoutine_fetchMostRecentVisitWithinDistance_ofMapItem_h
   (*(v1 + 16))(v1, 0, 0);
 }
 
-- (char)fetchAutomaticVehicleEventDetectionSupportedWithHandler:(id)a3
+- (char)fetchAutomaticVehicleEventDetectionSupportedWithHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     objc_initWeak(location, self);
     connector = self->_connector;
@@ -6342,7 +6342,7 @@ void __79__MapsSuggestionsRoutine_fetchMostRecentVisitWithinDistance_ofMapItem_h
     v9[2] = __82__MapsSuggestionsRoutine_fetchAutomaticVehicleEventDetectionSupportedWithHandler___block_invoke;
     v9[3] = &unk_1E81F79F0;
     objc_copyWeak(&v11, location);
-    v10 = v4;
+    v10 = handlerCopy;
     [(MapsSuggestionsRoutineConnector *)connector fetchAutomaticVehicleEventDetectionSupportedWithHandler:v9];
 
     objc_destroyWeak(&v11);
@@ -6451,9 +6451,9 @@ void __82__MapsSuggestionsRoutine_fetchAutomaticVehicleEventDetectionSupportedWi
   }
 }
 
-- (void)addParkedCarObserver:(id)a3
+- (void)addParkedCarObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -6470,7 +6470,7 @@ void __82__MapsSuggestionsRoutine_fetchAutomaticVehicleEventDetectionSupportedWi
   objc_copyWeak(&v10, &location);
   v9 = v5;
   v7 = v5;
-  [(MapsSuggestionsObservers *)parkedCarObservers registerObserver:v4 handler:v8];
+  [(MapsSuggestionsObservers *)parkedCarObservers registerObserver:observerCopy handler:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&v12);
@@ -6562,9 +6562,9 @@ void __47__MapsSuggestionsRoutine_addParkedCarObserver___block_invoke_2(uint64_t
   }
 }
 
-- (void)removeParkedCarObserver:(id)a3
+- (void)removeParkedCarObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   parkedCarObservers = self->_parkedCarObservers;
   v6[0] = MEMORY[0x1E69E9820];
@@ -6572,7 +6572,7 @@ void __47__MapsSuggestionsRoutine_addParkedCarObserver___block_invoke_2(uint64_t
   v6[2] = __50__MapsSuggestionsRoutine_removeParkedCarObserver___block_invoke;
   v6[3] = &unk_1E81F55C8;
   objc_copyWeak(&v7, &location);
-  [(MapsSuggestionsObservers *)parkedCarObservers unregisterObserver:v4 handler:v6];
+  [(MapsSuggestionsObservers *)parkedCarObservers unregisterObserver:observerCopy handler:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -6613,13 +6613,13 @@ void __50__MapsSuggestionsRoutine_removeParkedCarObserver___block_invoke(uint64_
   }
 }
 
-- (void)removeParkedCarsAllowingFeature:(BOOL)a3 handler:(id)a4
+- (void)removeParkedCarsAllowingFeature:(BOOL)feature handler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  if (v4)
+  featureCopy = feature;
+  handlerCopy = handler;
+  if (featureCopy)
   {
-    [(MapsSuggestionsRoutineConnector *)self->_connector clearAllVehicleEventsWithHandler:v6];
+    [(MapsSuggestionsRoutineConnector *)self->_connector clearAllVehicleEventsWithHandler:handlerCopy];
   }
 
   else
@@ -6642,19 +6642,19 @@ void __50__MapsSuggestionsRoutine_removeParkedCarObserver___block_invoke(uint64_
 
     v8 = v7;
     _Block_object_dispose(&v11, 8);
-    v9 = [v7 sharedConnection];
-    [v9 setFindMyCarAllowed:0];
+    sharedConnection = [v7 sharedConnection];
+    [sharedConnection setFindMyCarAllowed:0];
 
-    v6[2](v6);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (char)touristBitForLocation:(id)a3 handler:(id)a4
+- (char)touristBitForLocation:(id)location handler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  locationCopy = location;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -6677,7 +6677,7 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  if (!v6)
+  if (!locationCopy)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -6704,8 +6704,8 @@ LABEL_10:
     v15[1] = 3221225472;
     v15[2] = __56__MapsSuggestionsRoutine_touristBitForLocation_handler___block_invoke;
     v15[3] = &unk_1E81F7A88;
-    v16 = v7;
-    [(MapsSuggestionsRoutineConnector *)connector fetchRoutineModeFromLocation:v6 withHandler:v15];
+    v16 = handlerCopy;
+    [(MapsSuggestionsRoutineConnector *)connector fetchRoutineModeFromLocation:locationCopy withHandler:v15];
     v9 = 1;
     v10 = v16;
   }
@@ -6721,7 +6721,7 @@ LABEL_10:
 
     v10 = [MEMORY[0x1E696ABC0] GEOErrorWithCode:-13 reason:@"User turned off Siri Suggestions for Maps. We cannot go to CoreRoutine"];
     v13 = MapsSuggestionsConfidenceDontKnow();
-    (*(v7 + 2))(v7, v10, v13);
+    (*(handlerCopy + 2))(handlerCopy, v10, v13);
     v9 = 1;
   }
 
@@ -6799,19 +6799,19 @@ void __44__MapsSuggestionsRoutine__msgLOIsForRTLOIs___block_invoke_394(uint64_t 
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (char)fetchLOIsOfType:(int64_t)a3 handler:(id)a4
+- (char)fetchLOIsOfType:(int64_t)type handler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v6)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     objc_initWeak(&location, self);
     v7 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v8 = [(MapsSuggestionsRoutine *)self uniqueName];
+      uniqueName = [(MapsSuggestionsRoutine *)self uniqueName];
       *buf = 138412546;
-      v20 = v8;
+      v20 = uniqueName;
       v21 = 2080;
       *v22 = "fetchLOIsOfType";
       _os_log_impl(&dword_1C5126000, v7, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -6825,13 +6825,13 @@ void __44__MapsSuggestionsRoutine__msgLOIsForRTLOIs___block_invoke_394(uint64_t 
     }
 
     connector = self->_connector;
-    v11 = rtLOITypeForMSgLOIType(a3);
+    v11 = rtLOITypeForMSgLOIType(type);
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __50__MapsSuggestionsRoutine_fetchLOIsOfType_handler___block_invoke;
     v15[3] = &unk_1E81F62D0;
     objc_copyWeak(&v17, &location);
-    v16 = v6;
+    v16 = handlerCopy;
     [(MapsSuggestionsRoutineConnector *)connector fetchLocationsOfInterestOfType:v11 withHandler:v15];
 
     objc_destroyWeak(&v17);
@@ -6994,12 +6994,12 @@ void __50__MapsSuggestionsRoutine_fetchLOIsOfType_handler___block_invoke_396(uin
   }
 }
 
-- (char)fetchLOIsSinceDate:(id)a3 handler:(id)a4
+- (char)fetchLOIsSinceDate:(id)date handler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  dateCopy = date;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -7018,7 +7018,7 @@ void __50__MapsSuggestionsRoutine_fetchLOIsOfType_handler___block_invoke_396(uin
     goto LABEL_14;
   }
 
-  if (!v6)
+  if (!dateCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -7046,9 +7046,9 @@ LABEL_14:
     v8 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v9 = [(MapsSuggestionsRoutine *)self uniqueName];
+      uniqueName = [(MapsSuggestionsRoutine *)self uniqueName];
       *buf = 138412546;
-      v21 = v9;
+      v21 = uniqueName;
       v22 = 2080;
       *v23 = "fetchLocationsSinceDate";
       _os_log_impl(&dword_1C5126000, v8, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -7067,8 +7067,8 @@ LABEL_14:
     v16[2] = __53__MapsSuggestionsRoutine_fetchLOIsSinceDate_handler___block_invoke;
     v16[3] = &unk_1E81F62D0;
     objc_copyWeak(&v18, &location);
-    v17 = v7;
-    [(MapsSuggestionsRoutineConnector *)connector fetchLocationsOfInterestVisitedSinceDate:v6 withHandler:v16];
+    v17 = handlerCopy;
+    [(MapsSuggestionsRoutineConnector *)connector fetchLocationsOfInterestVisitedSinceDate:dateCopy withHandler:v16];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
@@ -7083,7 +7083,7 @@ LABEL_14:
       _os_log_impl(&dword_1C5126000, v14, OS_LOG_TYPE_DEBUG, "User turned off Siri Suggestions for maps. Not attempting to fetch locations", buf, 2u);
     }
 
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   v13 = 1;
@@ -7225,12 +7225,12 @@ void __53__MapsSuggestionsRoutine_fetchLOIsSinceDate_handler___block_invoke_398(
   }
 }
 
-- (char)fetchLocationsSinceDate:(id)a3 handler:(id)a4
+- (char)fetchLocationsSinceDate:(id)date handler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  dateCopy = date;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -7249,7 +7249,7 @@ void __53__MapsSuggestionsRoutine_fetchLOIsSinceDate_handler___block_invoke_398(
     goto LABEL_14;
   }
 
-  if (!v6)
+  if (!dateCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -7277,9 +7277,9 @@ LABEL_14:
     v8 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v9 = [(MapsSuggestionsRoutine *)self uniqueName];
+      uniqueName = [(MapsSuggestionsRoutine *)self uniqueName];
       *buf = 138412546;
-      v21 = v9;
+      v21 = uniqueName;
       v22 = 2080;
       *v23 = "fetchLocationsSinceDate";
       _os_log_impl(&dword_1C5126000, v8, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -7298,8 +7298,8 @@ LABEL_14:
     v16[2] = __58__MapsSuggestionsRoutine_fetchLocationsSinceDate_handler___block_invoke;
     v16[3] = &unk_1E81F62D0;
     objc_copyWeak(&v18, &location);
-    v17 = v7;
-    [(MapsSuggestionsRoutineConnector *)connector fetchLocationsOfInterestVisitedSinceDate:v6 withHandler:v16];
+    v17 = handlerCopy;
+    [(MapsSuggestionsRoutineConnector *)connector fetchLocationsOfInterestVisitedSinceDate:dateCopy withHandler:v16];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
@@ -7314,7 +7314,7 @@ LABEL_14:
       _os_log_impl(&dword_1C5126000, v14, OS_LOG_TYPE_DEBUG, "User turned off Siri Suggestions for maps. Not attempting to fetch locations", buf, 2u);
     }
 
-    (*(v7 + 2))(v7, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
   }
 
   v13 = 1;
@@ -7454,14 +7454,14 @@ void __58__MapsSuggestionsRoutine_fetchLocationsSinceDate_handler___block_invoke
   }
 }
 
-- (void)_treatLOIs:(void *)a3 handler:
+- (void)_treatLOIs:(void *)is handler:
 {
   v38 = *MEMORY[0x1E69E9840];
   v26 = a2;
-  v25 = a3;
-  if (a1)
+  isCopy = is;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 32));
+    dispatch_assert_queue_V2(*(self + 32));
     v5 = [v26 count];
     v6 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -7496,29 +7496,29 @@ void __58__MapsSuggestionsRoutine_fetchLocationsSinceDate_handler___block_invoke
 
           v11 = *(*(&v29 + 1) + 8 * v10);
           v12 = objc_alloc(MEMORY[0x1E6985C40]);
-          v13 = [v11 location];
-          [v13 latitude];
+          location = [v11 location];
+          [location latitude];
           v15 = v14;
-          v16 = [v11 location];
-          [v16 longitude];
+          location2 = [v11 location];
+          [location2 longitude];
           v18 = [v12 initWithLatitude:v15 longitude:v17];
 
           if (v18)
           {
             [v7 addObject:v18];
-            v19 = [MEMORY[0x1E695DFB0] null];
-            v20 = [v11 visits];
-            v21 = [v20 lastObject];
-            v22 = [v21 exitDate];
+            null = [MEMORY[0x1E695DFB0] null];
+            visits = [v11 visits];
+            lastObject = [visits lastObject];
+            exitDate = [lastObject exitDate];
 
-            if (v22)
+            if (exitDate)
             {
-              v23 = v22;
+              v23 = exitDate;
             }
 
             else
             {
-              v23 = v19;
+              v23 = null;
             }
 
             v24 = v23;
@@ -7535,16 +7535,16 @@ void __58__MapsSuggestionsRoutine_fetchLocationsSinceDate_handler___block_invoke
       while (v8);
     }
 
-    v25[2](v25, v7, v28, 0);
+    isCopy[2](isCopy, v7, v28, 0);
   }
 }
 
-- (char)fetchLocationOfInterestWithIdentifier:(id)a3 withHandler:(id)a4
+- (char)fetchLocationOfInterestWithIdentifier:(id)identifier withHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -7563,7 +7563,7 @@ void __58__MapsSuggestionsRoutine_fetchLocationsSinceDate_handler___block_invoke
     goto LABEL_13;
   }
 
-  if (!v6)
+  if (!identifierCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -7589,9 +7589,9 @@ LABEL_13:
   v8 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [(MapsSuggestionsRoutine *)self uniqueName];
+    uniqueName = [(MapsSuggestionsRoutine *)self uniqueName];
     *buf = 138412546;
-    v20 = v9;
+    v20 = uniqueName;
     v21 = 2080;
     *v22 = "fetchLocationOfInterestWithIdentifier";
     _os_log_impl(&dword_1C5126000, v8, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -7610,8 +7610,8 @@ LABEL_13:
   v15[2] = __76__MapsSuggestionsRoutine_fetchLocationOfInterestWithIdentifier_withHandler___block_invoke;
   v15[3] = &unk_1E81F7B28;
   objc_copyWeak(&v17, &location);
-  v16 = v7;
-  [(MapsSuggestionsRoutineConnector *)connector fetchLocationOfInterestWithIdentifier:v6 withHandler:v15];
+  v16 = handlerCopy;
+  [(MapsSuggestionsRoutineConnector *)connector fetchLocationOfInterestWithIdentifier:identifierCopy withHandler:v15];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -7769,18 +7769,18 @@ void __76__MapsSuggestionsRoutine_fetchLocationOfInterestWithIdentifier_withHand
   }
 }
 
-- (void)forgetLocationOfInterest:(id)a3 handler:(id)a4
+- (void)forgetLocationOfInterest:(id)interest handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  interestCopy = interest;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __59__MapsSuggestionsRoutine_forgetLocationOfInterest_handler___block_invoke;
   v10[3] = &unk_1E81F7B50;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = interestCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = interestCopy;
   MSg::Queue::async<MapsSuggestionsRoutine>(&self->_queue, self, v10);
 }
 
@@ -7794,23 +7794,23 @@ void __59__MapsSuggestionsRoutine_forgetLocationOfInterest_handler___block_invok
   [v6[1] removeLocationOfInterestWithIdentifier:v5 handler:*(a1 + 40)];
 }
 
-- (char)predictedExitTimeFromLocation:(id)a3 date:(id)a4 handler:(id)a5
+- (char)predictedExitTimeFromLocation:(id)location date:(id)date handler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  locationCopy = location;
+  dateCopy = date;
+  handlerCopy = handler;
   v11 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v23 = v8;
+    v23 = locationCopy;
     v24 = 2112;
-    *v25 = v9;
+    *v25 = dateCopy;
     _os_log_impl(&dword_1C5126000, v11, OS_LOG_TYPE_DEBUG, "Getting ExitTime of %@ at %@", buf, 0x16u);
   }
 
-  if (!v10)
+  if (!handlerCopy)
   {
     v14 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -7832,7 +7832,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v8)
+  if (!locationCopy)
   {
     v14 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -7852,7 +7852,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (!v9)
+  if (!dateCopy)
   {
     v14 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -7881,9 +7881,9 @@ LABEL_15:
     v18[1] = 3221225472;
     v18[2] = __69__MapsSuggestionsRoutine_predictedExitTimeFromLocation_date_handler___block_invoke;
     v18[3] = &unk_1E81F5748;
-    v19 = v8;
-    v20 = v9;
-    v21 = v10;
+    v19 = locationCopy;
+    v20 = dateCopy;
+    v21 = handlerCopy;
     [(MapsSuggestionsRoutineConnector *)connector fetchPredictedExitDatesFromLocation:v19 onDate:v20 withHandler:v18];
 
     v13 = 1;
@@ -7900,7 +7900,7 @@ LABEL_15:
     }
 
     v14 = [MEMORY[0x1E696ABC0] GEOErrorWithCode:-13 reason:@"User turned off Siri Suggestions for Maps. We cannot go to CoreRoutine"];
-    (*(v10 + 2))(v10, 0, v14);
+    (*(handlerCopy + 2))(handlerCopy, 0, v14);
     v13 = 1;
   }
 
@@ -7961,14 +7961,14 @@ LABEL_9:
 LABEL_10:
 }
 
-- (char)correctLabelForCurrentPlace:(id)a3 date:(id)a4 newLabel:(id)a5 handler:(id)a6
+- (char)correctLabelForCurrentPlace:(id)place date:(id)date newLabel:(id)label handler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v13)
+  placeCopy = place;
+  dateCopy = date;
+  labelCopy = label;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v16 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -7990,7 +7990,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v10)
+  if (!placeCopy)
   {
     v16 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -8010,7 +8010,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (!v11)
+  if (!dateCopy)
   {
     v16 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -8037,9 +8037,9 @@ LABEL_12:
   v19[1] = 3221225472;
   v19[2] = __76__MapsSuggestionsRoutine_correctLabelForCurrentPlace_date_newLabel_handler___block_invoke;
   v19[3] = &unk_1E81F7B78;
-  v20 = v11;
-  v21 = v13;
-  [(MapsSuggestionsRoutineConnector *)connector correctLabelForCurrentPlace:v10 date:v20 newLabel:v12 handler:v19];
+  v20 = dateCopy;
+  v21 = handlerCopy;
+  [(MapsSuggestionsRoutineConnector *)connector correctLabelForCurrentPlace:placeCopy date:v20 newLabel:labelCopy handler:v19];
 
   v15 = 1;
   v16 = v20;
@@ -8083,15 +8083,15 @@ void __76__MapsSuggestionsRoutine_correctLabelForCurrentPlace_date_newLabel_hand
   (*(*(a1 + 40) + 16))();
 }
 
-- (char)correctLabelForVisitWithIdentifier:(id)a3 entryDate:(id)a4 originalLabel:(id)a5 newLabel:(id)a6 handler:(id)a7
+- (char)correctLabelForVisitWithIdentifier:(id)identifier entryDate:(id)date originalLabel:(id)label newLabel:(id)newLabel handler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v16)
+  identifierCopy = identifier;
+  dateCopy = date;
+  labelCopy = label;
+  newLabelCopy = newLabel;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v19 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -8113,7 +8113,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v14)
+  if (!labelCopy)
   {
     v19 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -8133,7 +8133,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (!v13)
+  if (!dateCopy)
   {
     v19 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -8160,10 +8160,10 @@ LABEL_12:
   v22[1] = 3221225472;
   v22[2] = __102__MapsSuggestionsRoutine_correctLabelForVisitWithIdentifier_entryDate_originalLabel_newLabel_handler___block_invoke;
   v22[3] = &unk_1E81F7BA0;
-  v23 = v12;
-  v24 = v13;
-  v25 = v16;
-  [(MapsSuggestionsRoutineConnector *)connector correctLabelForVisitWithIdentifier:v23 entryDate:v24 originalLabel:v14 newLabel:v15 handler:v22];
+  v23 = identifierCopy;
+  v24 = dateCopy;
+  v25 = handlerCopy;
+  [(MapsSuggestionsRoutineConnector *)connector correctLabelForVisitWithIdentifier:v23 entryDate:v24 originalLabel:labelCopy newLabel:newLabelCopy handler:v22];
 
   v18 = 1;
   v19 = v23;
@@ -8213,33 +8213,33 @@ void __102__MapsSuggestionsRoutine_correctLabelForVisitWithIdentifier_entryDate_
   (*(a1[6] + 16))();
 }
 
-+ (void)loisFromPredictedContextResult:(id)a3 usingNetworkRequester:(id)a4 currentLocation:(id)a5 predictionDuration:(double)a6 considerGymPredictions:(BOOL)a7 considerSchoolPredictions:(BOOL)a8 considerUnknownTypePredictions:(BOOL)a9 callbackQueue:(id)a10 completionHandler:(id)a11
++ (void)loisFromPredictedContextResult:(id)result usingNetworkRequester:(id)requester currentLocation:(id)location predictionDuration:(double)duration considerGymPredictions:(BOOL)predictions considerSchoolPredictions:(BOOL)schoolPredictions considerUnknownTypePredictions:(BOOL)typePredictions callbackQueue:(id)self0 completionHandler:(id)self1
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a10;
-  v22 = a11;
-  objc_initWeak(&location, a1);
+  resultCopy = result;
+  requesterCopy = requester;
+  locationCopy = location;
+  queueCopy = queue;
+  handlerCopy = handler;
+  objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __236__MapsSuggestionsRoutine_Internal__loisFromPredictedContextResult_usingNetworkRequester_currentLocation_predictionDuration_considerGymPredictions_considerSchoolPredictions_considerUnknownTypePredictions_callbackQueue_completionHandler___block_invoke;
   block[3] = &unk_1E81F7BC8;
   objc_copyWeak(v34, &location);
-  v29 = v18;
-  v30 = v19;
-  v34[1] = *&a6;
-  v35 = a7;
-  v36 = a8;
-  v37 = a9;
-  v31 = v20;
-  v32 = v21;
-  v33 = v22;
-  v23 = v22;
-  v24 = v21;
-  v25 = v20;
-  v26 = v19;
-  v27 = v18;
+  v29 = resultCopy;
+  v30 = requesterCopy;
+  v34[1] = *&duration;
+  predictionsCopy = predictions;
+  schoolPredictionsCopy = schoolPredictions;
+  typePredictionsCopy = typePredictions;
+  v31 = locationCopy;
+  v32 = queueCopy;
+  v33 = handlerCopy;
+  v23 = handlerCopy;
+  v24 = queueCopy;
+  v25 = locationCopy;
+  v26 = requesterCopy;
+  v27 = resultCopy;
   dispatch_async(v24, block);
 
   objc_destroyWeak(v34);
@@ -8297,13 +8297,13 @@ uint64_t __49__MapsSuggestionsRoutine_Internal___mapItemCache__block_invoke()
   return [v3 setCountLimit:Integer];
 }
 
-+ (id)_mapItemForHandle:(id)a3
++ (id)_mapItemForHandle:(id)handle
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handleCopy = handle;
   dispatch_assert_queue_not_V2(MEMORY[0x1E69E96A0]);
-  v5 = [a1 _mapItemCache];
-  v6 = [v5 objectForKey:v4];
+  _mapItemCache = [self _mapItemCache];
+  v6 = [_mapItemCache objectForKey:handleCopy];
   {
     +[MapsSuggestionsRoutine(Internal) _mapItemForHandle:]::lastPurgeDate = MapsSuggestionsNow();
   }
@@ -8329,7 +8329,7 @@ uint64_t __49__MapsSuggestionsRoutine_Internal___mapItemCache__block_invoke()
       _os_log_impl(&dword_1C5126000, v12, OS_LOG_TYPE_DEBUG, "Its been more than %.2f days since the last purge. Emptying the PLC mapItem cache. 🗑️", &v17, 0xCu);
     }
 
-    [v5 removeAllObjects];
+    [_mapItemCache removeAllObjects];
     v13 = MapsSuggestionsNow();
     v14 = +[MapsSuggestionsRoutine(Internal) _mapItemForHandle:]::lastPurgeDate;
     +[MapsSuggestionsRoutine(Internal) _mapItemForHandle:]::lastPurgeDate = v13;
@@ -8340,21 +8340,21 @@ uint64_t __49__MapsSuggestionsRoutine_Internal___mapItemCache__block_invoke()
   return v15;
 }
 
-+ (void)setMapItem:(id)a3 forHandle:(id)a4
++ (void)setMapItem:(id)item forHandle:(id)handle
 {
-  v8 = a3;
-  v6 = a4;
+  itemCopy = item;
+  handleCopy = handle;
   dispatch_assert_queue_not_V2(MEMORY[0x1E69E96A0]);
-  v7 = [a1 _mapItemCache];
-  [v7 setObject:v8 forKey:v6];
+  _mapItemCache = [self _mapItemCache];
+  [_mapItemCache setObject:itemCopy forKey:handleCopy];
 }
 
-+ (id)_loisFromResult:(id)a3 usingDuration:(double)a4
++ (id)_loisFromResult:(id)result usingDuration:(double)duration
 {
   v65 = *MEMORY[0x1E69E9840];
-  v48 = a3;
+  resultCopy = result;
   dispatch_assert_queue_not_V2(MEMORY[0x1E69E96A0]);
-  v50 = [v48 nextStepPredictedContextsWithFilterMask:3];
+  v50 = [resultCopy nextStepPredictedContextsWithFilterMask:3];
   v51 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v50, "count")}];
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -8386,54 +8386,54 @@ uint64_t __49__MapsSuggestionsRoutine_Internal___mapItemCache__block_invoke()
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v9 dateInterval];
-          v11 = [v10 startDate];
-          v12 = [v11 date];
-          if (!v12)
+          dateInterval = [v9 dateInterval];
+          startDate = [dateInterval startDate];
+          date = [startDate date];
+          if (!date)
           {
             goto LABEL_16;
           }
 
-          v13 = [v9 dateInterval];
-          v14 = [v13 endDate];
-          v15 = [v14 date];
-          v16 = v15 == 0;
+          dateInterval2 = [v9 dateInterval];
+          endDate = [dateInterval2 endDate];
+          date2 = [endDate date];
+          v16 = date2 == 0;
 
           if (v16)
           {
             continue;
           }
 
-          v17 = [v9 dateInterval];
-          v18 = [v17 startDate];
-          v10 = [v18 date];
+          dateInterval3 = [v9 dateInterval];
+          startDate2 = [dateInterval3 startDate];
+          dateInterval = [startDate2 date];
 
-          v19 = MapsSuggestionsNowWithOffset(a4);
-          v20 = [v10 earlierDate:v19];
-          LOBYTE(v18) = v20 == v10;
+          v19 = MapsSuggestionsNowWithOffset(duration);
+          v20 = [dateInterval earlierDate:v19];
+          LOBYTE(startDate2) = v20 == dateInterval;
 
-          if (v18)
+          if (startDate2)
           {
-            v11 = v9;
-            v21 = [v11 locationOfInterest];
-            v22 = v21 == 0;
+            startDate = v9;
+            locationOfInterest = [startDate locationOfInterest];
+            v22 = locationOfInterest == 0;
 
             if (!v22)
             {
-              v23 = [v11 locationOfInterest];
-              v24 = [v23 mapItem];
-              v25 = v24 == 0;
+              locationOfInterest2 = [startDate locationOfInterest];
+              mapItem = [locationOfInterest2 mapItem];
+              v25 = mapItem == 0;
 
               if (!v25)
               {
-                v26 = [v11 locationOfInterest];
-                v27 = [v26 mapItem];
-                v28 = [v27 geoMapItemHandle];
-                v29 = v28 == 0;
+                locationOfInterest3 = [startDate locationOfInterest];
+                mapItem2 = [locationOfInterest3 mapItem];
+                geoMapItemHandle = [mapItem2 geoMapItemHandle];
+                v29 = geoMapItemHandle == 0;
 
                 if (!v29)
                 {
-                  [v51 addObject:v11];
+                  [v51 addObject:startDate];
                 }
               }
             }
@@ -8481,12 +8481,12 @@ LABEL_16:
 
         v36 = *(*(&v53 + 1) + 8 * j);
         v37 = [MapsSuggestionsLocationOfInterest alloc];
-        v38 = [v36 locationOfInterest];
-        v39 = [v36 dateInterval];
+        locationOfInterest4 = [v36 locationOfInterest];
+        dateInterval4 = [v36 dateInterval];
         [v36 probability];
         v41 = v40;
-        v42 = [v36 predictionSources];
-        v43 = [(MapsSuggestionsLocationOfInterest *)v37 initWithLOI:v38 predictedDateInterval:v39 probability:v42 predictionSources:v41];
+        predictionSources = [v36 predictionSources];
+        v43 = [(MapsSuggestionsLocationOfInterest *)v37 initWithLOI:locationOfInterest4 predictedDateInterval:dateInterval4 probability:predictionSources predictionSources:v41];
 
         [v31 addObject:v43];
       }
@@ -8525,32 +8525,32 @@ uint64_t __66__MapsSuggestionsRoutine_Internal___loisFromResult_usingDuration___
   return v11;
 }
 
-+ (void)_q_loisFromPredictedContextResult:(id)a3 usingNetworkRequester:(id)a4 currentLocation:(id)a5 predictionDuration:(double)a6 considerGymPredictions:(BOOL)a7 considerSchoolPredictions:(BOOL)a8 considerUnknownTypePredictions:(BOOL)a9 callbackQueue:(id)a10 completionHandler:(id)a11
++ (void)_q_loisFromPredictedContextResult:(id)result usingNetworkRequester:(id)requester currentLocation:(id)location predictionDuration:(double)duration considerGymPredictions:(BOOL)predictions considerSchoolPredictions:(BOOL)schoolPredictions considerUnknownTypePredictions:(BOOL)typePredictions callbackQueue:(id)self0 completionHandler:(id)self1
 {
-  v11 = a9;
-  v12 = a8;
-  v13 = a7;
+  typePredictionsCopy = typePredictions;
+  schoolPredictionsCopy = schoolPredictions;
+  predictionsCopy = predictions;
   v182 = *MEMORY[0x1E69E9840];
-  v142 = a3;
-  v139 = a4;
-  v157 = a5;
-  v18 = a10;
-  v145 = a11;
-  v140 = v18;
-  dispatch_assert_queue_V2(v18);
-  [v157 horizontalAccuracy];
+  resultCopy = result;
+  requesterCopy = requester;
+  locationCopy = location;
+  queueCopy = queue;
+  handlerCopy = handler;
+  v140 = queueCopy;
+  dispatch_assert_queue_V2(queueCopy);
+  [locationCopy horizontalAccuracy];
   v20 = v19;
   GEOConfigGetDouble();
   if (v20 <= v21)
   {
-    v138 = [a1 _loisFromResult:v142 usingDuration:a6];
+    v138 = [self _loisFromResult:resultCopy usingDuration:duration];
     if (v138 && [v138 count])
     {
       v26 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
       {
-        v27 = [v157 timestamp];
-        v28 = MapsSuggestionsAMPMStringFromDate(v27);
+        timestamp = [locationCopy timestamp];
+        v28 = MapsSuggestionsAMPMStringFromDate(timestamp);
         *buf = 138412290;
         v176 = v28;
         _os_log_impl(&dword_1C5126000, v26, OS_LOG_TYPE_DEBUG, "Current Location timestamp: %@", buf, 0xCu);
@@ -8573,21 +8573,21 @@ uint64_t __66__MapsSuggestionsRoutine_Internal___loisFromResult_usingDuration___
       obj = v138;
       v38 = [obj countByEnumeratingWithState:&v170 objects:v181 count:16];
       v39 = @"/Gym";
-      v40 = v31 | v11;
-      v137 = v31 | v11;
-      v144 = v29 | v13;
-      v141 = v30 | v12;
+      v40 = v31 | typePredictionsCopy;
+      v137 = v31 | typePredictionsCopy;
+      v144 = v29 | predictionsCopy;
+      v141 = v30 | schoolPredictionsCopy;
       if (v38)
       {
         v135 = v40 ^ 1;
-        if (!(v29 | v13))
+        if (!(v29 | predictionsCopy))
         {
           v39 = &stru_1F444C108;
         }
 
         v151 = v39;
         v153 = *v171;
-        if (v30 | v12)
+        if (v30 | schoolPredictionsCopy)
         {
           v41 = @"/School";
         }
@@ -8630,9 +8630,9 @@ LABEL_20:
           v46 = GEOFindOrCreateLog();
           if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
           {
-            v47 = [v44 identifierString];
+            identifierString = [v44 identifierString];
             *buf = 138412290;
-            v176 = v47;
+            v176 = identifierString;
             _os_log_impl(&dword_1C5126000, v46, OS_LOG_TYPE_DEBUG, "~~~~ PARSING LOI WITH ID: %@  ~~~~", buf, 0xCu);
           }
 
@@ -8650,8 +8650,8 @@ LABEL_20:
             _os_log_impl(&dword_1C5126000, v49, OS_LOG_TYPE_DEBUG, "~~~~~~~ Checking LOI for Next Destination & Entry Time ~~~~~~~~", buf, 2u);
           }
 
-          v50 = [v44 location];
-          [v157 distanceFromLocation:v50];
+          location = [v44 location];
+          [locationCopy distanceFromLocation:location];
           v52 = v51;
 
           v53 = GEOFindOrCreateLog();
@@ -8703,9 +8703,9 @@ LABEL_20:
           {
             if (v141)
             {
-              v75 = [v57 type];
-              v58 = v75 == 2;
-              if (v75 == 2)
+              type = [v57 type];
+              v58 = type == 2;
+              if (type == 2)
               {
                 v76 = 1;
               }
@@ -8738,25 +8738,25 @@ LABEL_44:
             v60 = @"❌";
           }
 
-          v61 = [v59 initWithFormat:@"%@ Is the next LOI Home/Work%@%@%@ ?", v60, v151, v149, v147];
+          v147 = [v59 initWithFormat:@"%@ Is the next LOI Home/Work%@%@%@ ?", v60, v151, v149, v147];
           v62 = GEOFindOrCreateLog();
           if (os_log_type_enabled(v62, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v176 = v61;
+            v176 = v147;
             _os_log_impl(&dword_1C5126000, v62, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
           }
 
-          v63 = [v57 predictedStartDate];
-          if (MapsSuggestionsIsInTheFuture(v63))
+          predictedStartDate = [v57 predictedStartDate];
+          if (MapsSuggestionsIsInTheFuture(predictedStartDate))
           {
             IsWithinThePast = 1;
           }
 
           else
           {
-            v65 = [v57 predictedStartDate];
-            IsWithinThePast = MapsSuggestionsIsWithinThePast(v65, v37);
+            predictedStartDate2 = [v57 predictedStartDate];
+            IsWithinThePast = MapsSuggestionsIsWithinThePast(predictedStartDate2, v37);
           }
 
           v66 = GEOFindOrCreateLog();
@@ -8798,16 +8798,16 @@ LABEL_44:
           if (!((v72 < v70 || v52 < v33) | BOOL & (v52 > v35)) && v58 && IsWithinThePast)
           {
             v79 = v68;
-            v134 = [v79 predictedStartDate];
+            predictedStartDate3 = [v79 predictedStartDate];
             GEOFindOrCreateLog();
             v80 = v136 = v79;
             if (os_log_type_enabled(v80, OS_LOG_TYPE_DEBUG))
             {
-              v81 = [v136 preferredName];
+              preferredName = [v136 preferredName];
               [v136 predictedStartDate];
               v82 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
               *buf = 138412546;
-              v176 = v81;
+              v176 = preferredName;
               v177 = 2112;
               v178 = v82;
               _os_log_impl(&dword_1C5126000, v80, OS_LOG_TYPE_DEBUG, "🎉 Found Next Destination: %@, entryTime: %@ 🎉 ", buf, 0x16u);
@@ -8830,7 +8830,7 @@ LABEL_44:
         }
       }
 
-      v134 = 0;
+      predictedStartDate3 = 0;
       v136 = 0;
 LABEL_84:
 
@@ -8888,9 +8888,9 @@ LABEL_93:
           v90 = GEOFindOrCreateLog();
           if (os_log_type_enabled(v90, OS_LOG_TYPE_DEBUG))
           {
-            v91 = [v88 identifierString];
+            identifierString2 = [v88 identifierString];
             *buf = 138412290;
-            v176 = v91;
+            v176 = identifierString2;
             _os_log_impl(&dword_1C5126000, v90, OS_LOG_TYPE_DEBUG, "~~~~ PARSING LOI WITH ID: %@  ~~~~", buf, 0xCu);
           }
 
@@ -8908,8 +8908,8 @@ LABEL_93:
             _os_log_impl(&dword_1C5126000, v93, OS_LOG_TYPE_DEBUG, "~~~~~~~ Checking LOI for Exit Time ~~~~~~~~", buf, 2u);
           }
 
-          v94 = [v88 location];
-          [v157 distanceFromLocation:v94];
+          location2 = [v88 location];
+          [locationCopy distanceFromLocation:location2];
           v96 = v95;
 
           v97 = GEOFindOrCreateLog();
@@ -8940,9 +8940,9 @@ LABEL_93:
           {
             if (v141)
             {
-              v112 = [v99 type];
-              v100 = v112 == 2;
-              if (v112 == 2)
+              type2 = [v99 type];
+              v100 = type2 == 2;
+              if (type2 == 2)
               {
                 v113 = 1;
               }
@@ -8975,12 +8975,12 @@ LABEL_111:
             v102 = @"❌";
           }
 
-          v103 = [v101 initWithFormat:@"%@ Is the next LOI Home/Work%@%@%@ ?", v102, v154, v152, v150];
+          v150 = [v101 initWithFormat:@"%@ Is the next LOI Home/Work%@%@%@ ?", v102, v154, v152, v150];
           v104 = GEOFindOrCreateLog();
           if (os_log_type_enabled(v104, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v176 = v103;
+            v176 = v150;
             _os_log_impl(&dword_1C5126000, v104, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
           }
 
@@ -9008,14 +9008,14 @@ LABEL_111:
 
           if (v109 >= v107 && v96 <= v33 && v100)
           {
-            v115 = [v105 predictedEndDate];
+            predictedEndDate = [v105 predictedEndDate];
             v116 = GEOFindOrCreateLog();
             if (os_log_type_enabled(v116, OS_LOG_TYPE_DEBUG))
             {
               [v105 preferredName];
               v117 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
               *buf = 138412546;
-              v176 = v115;
+              v176 = predictedEndDate;
               v177 = 2112;
               v178 = v117;
               _os_log_impl(&dword_1C5126000, v116, OS_LOG_TYPE_DEBUG, "🎉 Found Exit Time: %@ for %@ 🎉 ", buf, 0x16u);
@@ -9038,24 +9038,24 @@ LABEL_111:
         }
       }
 
-      v115 = 0;
+      predictedEndDate = 0;
 LABEL_139:
 
       if (v136)
       {
-        v118 = [v136 mapItemHandle];
-        v119 = [a1 _mapItemForHandle:v118];
+        mapItemHandle = [v136 mapItemHandle];
+        v119 = [self _mapItemForHandle:mapItemHandle];
 
         if (v119)
         {
           v120 = GEOFindOrCreateLog();
           if (os_log_type_enabled(v120, OS_LOG_TYPE_DEBUG))
           {
-            v121 = [v136 preferredName];
+            preferredName2 = [v136 preferredName];
             [v136 identifierUUID];
             v122 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
             *buf = 138412546;
-            v176 = v121;
+            v176 = preferredName2;
             v177 = 2112;
             v178 = v122;
             _os_log_impl(&dword_1C5126000, v120, OS_LOG_TYPE_DEBUG, "♻️ Found a mapItem in the cache for type %@, ID: %@", buf, 0x16u);
@@ -9065,8 +9065,8 @@ LABEL_139:
           v123 = GEOFindOrCreateLog();
           if (os_log_type_enabled(v123, OS_LOG_TYPE_DEBUG))
           {
-            v124 = [v119 _styleAttributes];
-            if ([v124 hasAttributes])
+            _styleAttributes = [v119 _styleAttributes];
+            if ([_styleAttributes hasAttributes])
             {
               v125 = @"YES";
             }
@@ -9089,9 +9089,9 @@ LABEL_139:
             _os_log_impl(&dword_1C5126000, v123, OS_LOG_TYPE_DEBUG, "hasAttributes: %@, attributes: %@, clientAttributes: %@", buf, 0x20u);
           }
 
-          if (v145)
+          if (handlerCopy)
           {
-            v145[2](v145, v134, v115, v136, 0);
+            handlerCopy[2](handlerCopy, predictedStartDate3, predictedEndDate, v136, 0);
           }
         }
 
@@ -9100,11 +9100,11 @@ LABEL_139:
           v128 = GEOFindOrCreateLog();
           if (os_log_type_enabled(v128, OS_LOG_TYPE_DEBUG))
           {
-            v129 = [v136 preferredName];
+            preferredName3 = [v136 preferredName];
             [v136 identifierUUID];
             v130 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
             *buf = 138412546;
-            v176 = v129;
+            v176 = preferredName3;
             v177 = 2112;
             v178 = v130;
             _os_log_impl(&dword_1C5126000, v128, OS_LOG_TYPE_DEBUG, "Didn't find a mapItem in the cache. Making a place inference network request for type %@, ID: %@", buf, 0x16u);
@@ -9115,15 +9115,15 @@ LABEL_139:
           v158[2] = __239__MapsSuggestionsRoutine_Internal___q_loisFromPredictedContextResult_usingNetworkRequester_currentLocation_predictionDuration_considerGymPredictions_considerSchoolPredictions_considerUnknownTypePredictions_callbackQueue_completionHandler___block_invoke;
           v158[3] = &unk_1E81F7C38;
           v159 = v140;
-          v131 = v145;
+          v131 = handlerCopy;
           v164 = v131;
-          v132 = v115;
+          v132 = predictedEndDate;
           v160 = v132;
-          v165 = a1;
+          selfCopy = self;
           v161 = v136;
           v162 = 0;
-          v163 = v134;
-          v133 = [v161 hydrateMapItemWithNetworkRequester:v139 completion:v158];
+          v163 = predictedStartDate3;
+          v133 = [v161 hydrateMapItemWithNetworkRequester:requesterCopy completion:v158];
           if (v131 && !v133)
           {
             v131[2](v131, 0, v132, 0, 0);
@@ -9131,9 +9131,9 @@ LABEL_139:
         }
       }
 
-      else if (v145)
+      else if (handlerCopy)
       {
-        v145[2](v145, 0, v115, 0, 0);
+        handlerCopy[2](handlerCopy, 0, predictedEndDate, 0, 0);
       }
     }
 
@@ -9146,9 +9146,9 @@ LABEL_139:
         _os_log_impl(&dword_1C5126000, v78, OS_LOG_TYPE_DEBUG, "❌ No LOIs to process after filtering", buf, 2u);
       }
 
-      if (v145)
+      if (handlerCopy)
       {
-        v145[2](v145, 0, 0, 0, 0);
+        handlerCopy[2](handlerCopy, 0, 0, 0, 0);
       }
     }
 
@@ -9158,7 +9158,7 @@ LABEL_139:
   v22 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
   {
-    [v157 horizontalAccuracy];
+    [locationCopy horizontalAccuracy];
     v24 = v23;
     GEOConfigGetDouble();
     *buf = 134218240;
@@ -9168,9 +9168,9 @@ LABEL_139:
     _os_log_impl(&dword_1C5126000, v22, OS_LOG_TYPE_DEBUG, "❌ Unable to process Contexts. horizontalAccuracy: %.2f is higher than our threshold: %.0f", buf, 0x16u);
   }
 
-  if (v145)
+  if (handlerCopy)
   {
-    v145[2](v145, 0, 0, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0, 0, 0);
   }
 
 LABEL_161:
@@ -9274,7 +9274,7 @@ uint64_t __239__MapsSuggestionsRoutine_Internal___q_loisFromPredictedContextResu
   return v3;
 }
 
-- (BOOL)canProduceEntriesOfType:(int64_t)a3
+- (BOOL)canProduceEntriesOfType:(int64_t)type
 {
   v19 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_not_V2(MEMORY[0x1E69E96A0]);
@@ -9302,7 +9302,7 @@ uint64_t __239__MapsSuggestionsRoutine_Internal___q_loisFromPredictedContextResu
     _os_log_impl(&dword_1C5126000, v6, OS_LOG_TYPE_DEBUG, "Location Allowed for Maps Bundle ID? %@", &v16, 0xCu);
   }
 
-  switch(a3)
+  switch(type)
   {
     case 0:
       if (qword_1EDC51EF0 != -1)
@@ -9396,10 +9396,10 @@ LABEL_8:
 
 - (void)_clearedToFetchSuggestions
 {
-  if (os_log_type_enabled(a1, OS_LOG_TYPE_DEBUG))
+  if (os_log_type_enabled(self, OS_LOG_TYPE_DEBUG))
   {
     *v2 = 0;
-    _os_log_impl(&dword_1C5126000, a1, OS_LOG_TYPE_DEBUG, "TCC not prompted", v2, 2u);
+    _os_log_impl(&dword_1C5126000, self, OS_LOG_TYPE_DEBUG, "TCC not prompted", v2, 2u);
   }
 }
 

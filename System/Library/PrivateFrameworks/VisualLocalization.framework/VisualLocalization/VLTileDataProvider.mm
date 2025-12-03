@@ -1,19 +1,19 @@
 @interface VLTileDataProvider
 - (VLLocalizationDataProviderDelegate)delegate;
 - (VLTileDataProvider)init;
-- (VLTileDataProvider)initWithAuditToken:(id)a3 supportedFormatVersions:(id)a4;
+- (VLTileDataProvider)initWithAuditToken:(id)token supportedFormatVersions:(id)versions;
 - (id).cxx_construct;
-- (id)cachedTileForKey:(id *)a3;
-- (id)fileURLForKey:(id *)a3 error:(id *)a4;
-- (void)_commonInitWithTileLoader:(id)a3 auditToken:(id)a4 supportedFormatVersions:(id)a5;
-- (void)_disburseMetadataTileForKey:(uint64_t)a3 tileData:(void *)a4 error:(void *)a5;
-- (void)_fetchDataTile:(uint64_t)a3 originalKey:(_OWORD *)a4 additionalInfo:(uint64_t *)a5;
-- (void)_fetchMetadataForCoordinate:(id *)a3 completionHandler:(id)a4;
-- (void)_fetchMetadataForDataKey:(id *)a3 completionHandler:(id)a4;
-- (void)_fetchMetadataTile:(uint64_t)a3 completionHandler:(void *)a4;
-- (void)_fetchTileDataForKey:(id *)a3 completion:(id)a4;
+- (id)cachedTileForKey:(id *)key;
+- (id)fileURLForKey:(id *)key error:(id *)error;
+- (void)_commonInitWithTileLoader:(id)loader auditToken:(id)token supportedFormatVersions:(id)versions;
+- (void)_disburseMetadataTileForKey:(uint64_t)key tileData:(void *)data error:(void *)error;
+- (void)_fetchDataTile:(uint64_t)tile originalKey:(_OWORD *)key additionalInfo:(uint64_t *)info;
+- (void)_fetchMetadataForCoordinate:(id *)coordinate completionHandler:(id)handler;
+- (void)_fetchMetadataForDataKey:(id *)key completionHandler:(id)handler;
+- (void)_fetchMetadataTile:(uint64_t)tile completionHandler:(void *)handler;
+- (void)_fetchTileDataForKey:(id *)key completion:(id)completion;
 - (void)dealloc;
-- (void)determineAvailabilityForCoordinate:(id *)a3 horizontalAccuracy:(double)a4 purpose:(int64_t)a5 callbackQueue:(id)a6 callback:(id)a7;
+- (void)determineAvailabilityForCoordinate:(id *)coordinate horizontalAccuracy:(double)accuracy purpose:(int64_t)purpose callbackQueue:(id)queue callback:(id)callback;
 @end
 
 @implementation VLTileDataProvider
@@ -25,49 +25,49 @@
   return result;
 }
 
-- (VLTileDataProvider)initWithAuditToken:(id)a3 supportedFormatVersions:(id)a4
+- (VLTileDataProvider)initWithAuditToken:(id)token supportedFormatVersions:(id)versions
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  versionsCopy = versions;
   v12.receiver = self;
   v12.super_class = VLTileDataProvider;
   v8 = [(VLTileDataProvider *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    [(VLTileDataProvider *)v8 _commonInitWithTileLoader:0 auditToken:v6 supportedFormatVersions:v7];
+    [(VLTileDataProvider *)v8 _commonInitWithTileLoader:0 auditToken:tokenCopy supportedFormatVersions:versionsCopy];
     v10 = v9;
   }
 
   return v9;
 }
 
-- (void)_commonInitWithTileLoader:(id)a3 auditToken:(id)a4 supportedFormatVersions:(id)a5
+- (void)_commonInitWithTileLoader:(id)loader auditToken:(id)token supportedFormatVersions:(id)versions
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  objc_storeStrong(self + 4, a4);
-  if (v8)
+  loaderCopy = loader;
+  tokenCopy = token;
+  versionsCopy = versions;
+  objc_storeStrong(self + 4, token);
+  if (loaderCopy)
   {
-    v11 = v8;
+    modernLoader = loaderCopy;
   }
 
   else
   {
-    v11 = [MEMORY[0x277D0EDA8] modernLoader];
+    modernLoader = [MEMORY[0x277D0EDA8] modernLoader];
   }
 
   v12 = *(self + 2);
-  *(self + 2) = v11;
+  *(self + 2) = modernLoader;
 
   v13 = GEOTileLoaderClientIdentifier();
   v14 = *(self + 3);
   *(self + 3) = v13;
 
   [*(self + 2) openForClient:*(self + 3)];
-  v15 = [v10 copy];
+  v15 = [versionsCopy copy];
   v16 = *(self + 26);
   *(self + 26) = v15;
 
@@ -94,15 +94,15 @@
         v23 = *(self + 54);
         if (v23 > [v22 unsignedIntValue])
         {
-          v21 = *(self + 54);
+          unsignedIntValue = *(self + 54);
         }
 
         else
         {
-          v21 = [v22 unsignedIntValue];
+          unsignedIntValue = [v22 unsignedIntValue];
         }
 
-        *(self + 54) = v21;
+        *(self + 54) = unsignedIntValue;
       }
 
       v18 = [v17 countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -140,11 +140,11 @@ void __45__VLTileDataProvider_setShouldCacheMetadata___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_disburseMetadataTileForKey:(uint64_t)a3 tileData:(void *)a4 error:(void *)a5
+- (void)_disburseMetadataTileForKey:(uint64_t)key tileData:(void *)data error:(void *)error
 {
   v71 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  errorCopy = error;
   v54 = 0;
   v55 = &v54;
   v56 = 0x3032000000;
@@ -155,16 +155,16 @@ void __45__VLTileDataProvider_setShouldCacheMetadata___block_invoke(uint64_t a1)
   v48 = 3221225472;
   v49 = __65__VLTileDataProvider__disburseMetadataTileForKey_tileData_error___block_invoke;
   v50 = &unk_279E2D840;
-  v51 = a1;
+  selfCopy = self;
   v52 = &v54;
-  v53 = a3;
+  keyCopy = key;
   geo_isolate_sync_data();
   if ([v55[5] count])
   {
-    if (!v9)
+    if (!errorCopy)
     {
       v42 = 0;
-      v17 = [v8 readDataWithOptions:0 error:&v42];
+      v17 = [dataCopy readDataWithOptions:0 error:&v42];
       v13 = v42;
       if (v17)
       {
@@ -176,8 +176,8 @@ void __45__VLTileDataProvider_setShouldCacheMetadata___block_invoke(uint64_t a1)
           v32 = 3221225472;
           v33 = __65__VLTileDataProvider__disburseMetadataTileForKey_tileData_error___block_invoke_11;
           v34 = &unk_279E2D7A0;
-          v35 = a1;
-          v37 = a3;
+          selfCopy2 = self;
+          keyCopy2 = key;
           v36 = v18;
           geo_isolate_sync_data();
         }
@@ -292,8 +292,8 @@ LABEL_33:
       }
     }
 
-    v11 = *(a3 + 6);
-    v12 = *(a3 + 10) & 0x3FFFFFF;
+    v11 = *(key + 6);
+    v12 = *(key + 10) & 0x3FFFFFF;
     *buf = 67175427;
     v64 = v11 & 0x3F;
     v65 = 1025;
@@ -301,7 +301,7 @@ LABEL_33:
     v67 = 1025;
     v68 = v12;
     v69 = 2114;
-    v70 = v9;
+    v70 = errorCopy;
     _os_log_impl(&dword_27103D000, v10, OS_LOG_TYPE_ERROR, "Failed to load metadata tile %{private}i_%{private}i_%{private}i: %{public}@", buf, 0x1Eu);
     goto LABEL_6;
   }
@@ -333,14 +333,14 @@ void __65__VLTileDataProvider__disburseMetadataTileForKey_tileData_error___block
   }
 }
 
-- (void)_fetchMetadataForCoordinate:(id *)a3 completionHandler:(id)a4
+- (void)_fetchMetadataForCoordinate:(id *)coordinate completionHandler:(id)handler
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v6)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v7 = [MEMORY[0x277D0ECD0] modernManager];
-    v8 = [v7 maximumZoomLevelForStyle:70];
+    modernManager = [MEMORY[0x277D0ECD0] modernManager];
+    v8 = [modernManager maximumZoomLevelForStyle:70];
 
     if (v8 == 255)
     {
@@ -349,7 +349,7 @@ void __65__VLTileDataProvider__disburseMetadataTileForKey_tileData_error___block
       block[1] = 3221225472;
       block[2] = __68__VLTileDataProvider__fetchMetadataForCoordinate_completionHandler___block_invoke;
       block[3] = &unk_279E2D7C8;
-      v25 = v6;
+      v25 = handlerCopy;
       dispatch_async(v17, block);
     }
 
@@ -374,7 +374,7 @@ void __65__VLTileDataProvider__disburseMetadataTileForKey_tileData_error___block
       v15 = _MergedGlobals_1;
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
-        v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%+.8f, %+.8f", *&a3->var0, *&a3->var1];
+        v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%+.8f, %+.8f", *&coordinate->var0, *&coordinate->var1];
         *buf = 138478595;
         v27 = v16;
         v28 = 1025;
@@ -386,7 +386,7 @@ void __65__VLTileDataProvider__disburseMetadataTileForKey_tileData_error___block
         _os_log_impl(&dword_27103D000, v15, OS_LOG_TYPE_DEBUG, "Coordinate %{private}@ maps to metadata tile %{private}i_%{private}i_%{private}i", buf, 0x1Eu);
       }
 
-      [(VLTileDataProvider *)self _fetchMetadataTile:&v18 completionHandler:v6];
+      [(VLTileDataProvider *)self _fetchMetadataTile:&v18 completionHandler:handlerCopy];
     }
   }
 }
@@ -400,21 +400,21 @@ void __68__VLTileDataProvider__fetchMetadataForCoordinate_completionHandler___bl
   (*(v1 + 16))(v1, 0, v3);
 }
 
-- (void)_fetchMetadataForDataKey:(id *)a3 completionHandler:(id)a4
+- (void)_fetchMetadataForDataKey:(id *)key completionHandler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v6)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v7 = [MEMORY[0x277D0ECD0] modernManager];
-    v8 = [v7 maximumZoomLevelForStyle:70];
+    modernManager = [MEMORY[0x277D0ECD0] modernManager];
+    v8 = [modernManager maximumZoomLevelForStyle:70];
 
     if (v8 != 255)
     {
       v9 = *(self + 54);
-      v10 = ldexp(1.0, v8 - a3->var0);
-      v11 = (v10 * a3->var1);
-      v12 = v10 * a3->var2;
+      v10 = ldexp(1.0, v8 - key->var0);
+      v11 = (v10 * key->var1);
+      v12 = v10 * key->var2;
       LOBYTE(buf) = *MEMORY[0x277D0EA78] & 0x7F;
       v13 = *MEMORY[0x277D0EA70] & 0x3F | ((v9 & 0x1FF) << 6);
       BYTE5(buf) = 0;
@@ -430,7 +430,7 @@ void __68__VLTileDataProvider__fetchMetadataForCoordinate_completionHandler___bl
         if (!os_log_type_enabled(_MergedGlobals_1, OS_LOG_TYPE_DEBUG))
         {
 LABEL_6:
-          [(VLTileDataProvider *)self _fetchMetadataTile:&v21 completionHandler:v6];
+          [(VLTileDataProvider *)self _fetchMetadataTile:&v21 completionHandler:handlerCopy];
           goto LABEL_11;
         }
       }
@@ -445,9 +445,9 @@ LABEL_6:
         }
       }
 
-      var0 = a3->var0;
-      var1 = a3->var1;
-      var2 = a3->var2;
+      var0 = key->var0;
+      var1 = key->var1;
+      var2 = key->var2;
       LODWORD(buf) = 67175937;
       DWORD1(buf) = var0;
       WORD4(buf) = 1025;
@@ -475,7 +475,7 @@ LABEL_10:
         block[1] = 3221225472;
         block[2] = __65__VLTileDataProvider__fetchMetadataForDataKey_completionHandler___block_invoke;
         block[3] = &unk_279E2D7C8;
-        v23 = v6;
+        v23 = handlerCopy;
         dispatch_async(v20, block);
 
         goto LABEL_11;
@@ -509,10 +509,10 @@ void __65__VLTileDataProvider__fetchMetadataForDataKey_completionHandler___block
   (*(v1 + 16))(v1, 0, v3);
 }
 
-- (void)_fetchMetadataTile:(uint64_t)a3 completionHandler:(void *)a4
+- (void)_fetchMetadataTile:(uint64_t)tile completionHandler:(void *)handler
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
@@ -527,11 +527,11 @@ void __65__VLTileDataProvider__fetchMetadataForDataKey_completionHandler___block
   v21[2] = 3221225472;
   v21[3] = __59__VLTileDataProvider__fetchMetadataTile_completionHandler___block_invoke;
   v21[4] = &unk_279E2D7F0;
-  v21[5] = a1;
+  v21[5] = self;
   v23 = &v26;
   v24 = &v32;
-  v25 = a3;
-  v7 = v6;
+  tileCopy = tile;
+  v7 = handlerCopy;
   v22 = v7;
   geo_isolate_sync();
   if (!v27[5])
@@ -557,8 +557,8 @@ void __65__VLTileDataProvider__fetchMetadataForDataKey_completionHandler___block
         }
       }
 
-      v12 = *(a3 + 6);
-      v13 = *(a3 + 10) & 0x3FFFFFF;
+      v12 = *(tile + 6);
+      v13 = *(tile + 10) & 0x3FFFFFF;
       LODWORD(buf) = 67175169;
       HIDWORD(buf) = v12 & 0x3F;
       v37 = 1025;
@@ -575,16 +575,16 @@ void __65__VLTileDataProvider__fetchMetadataForDataKey_completionHandler___block
       if (!os_log_type_enabled(_MergedGlobals_1, OS_LOG_TYPE_INFO))
       {
 LABEL_13:
-        objc_initWeak(&buf, a1);
-        v18 = a1[2];
-        v17 = a1[3];
+        objc_initWeak(&buf, self);
+        v18 = self[2];
+        v17 = self[3];
         v19 = dispatch_get_global_queue(21, 0);
         v20[0] = MEMORY[0x277D85DD0];
         v20[1] = 3221225472;
         v20[2] = __59__VLTileDataProvider__fetchMetadataTile_completionHandler___block_invoke_15;
         v20[3] = &unk_279E2D818;
         objc_copyWeak(v21, &buf);
-        [v18 loadKey:a3 priority:3221225469 forClient:v17 options:3 reason:4 callbackQ:v19 beginNetwork:0 callback:v20];
+        [v18 loadKey:tile priority:3221225469 forClient:v17 options:3 reason:4 callbackQ:v19 beginNetwork:0 callback:v20];
 
         objc_destroyWeak(v21);
         objc_destroyWeak(&buf);
@@ -602,8 +602,8 @@ LABEL_13:
       }
     }
 
-    v15 = *(a3 + 6);
-    v16 = *(a3 + 10) & 0x3FFFFFF;
+    v15 = *(tile + 6);
+    v16 = *(tile + 10) & 0x3FFFFFF;
     LODWORD(buf) = 67175169;
     HIDWORD(buf) = v15 & 0x3F;
     v37 = 1025;
@@ -630,8 +630,8 @@ LABEL_13:
   if (os_log_type_enabled(_MergedGlobals_1, OS_LOG_TYPE_DEBUG))
   {
 LABEL_4:
-    v9 = *(a3 + 6);
-    v10 = *(a3 + 10) & 0x3FFFFFF;
+    v9 = *(tile + 6);
+    v10 = *(tile + 10) & 0x3FFFFFF;
     LODWORD(buf) = 67175169;
     HIDWORD(buf) = v9 & 0x3F;
     v37 = 1025;
@@ -684,7 +684,7 @@ void __59__VLTileDataProvider__fetchMetadataTile_completionHandler___block_invok
   [WeakRetained _disburseMetadataTileForKey:a2 tileData:v9 error:v8];
 }
 
-- (id)cachedTileForKey:(id *)a3
+- (id)cachedTileForKey:(id *)key
 {
   v25 = *MEMORY[0x277D85DE8];
   v11 = 0;
@@ -717,10 +717,10 @@ LABEL_5:
       }
     }
 
-    var0 = a3->var0;
-    var1 = a3->var1;
-    var2 = a3->var2;
-    var3 = a3->var3;
+    var0 = key->var0;
+    var1 = key->var1;
+    var2 = key->var2;
+    var3 = key->var3;
     *buf = 67109888;
     v18 = var0;
     v19 = 1024;
@@ -758,14 +758,14 @@ void __39__VLTileDataProvider_cachedTileForKey___block_invoke(void *a1)
   }
 }
 
-- (id)fileURLForKey:(id *)a3 error:(id *)a4
+- (id)fileURLForKey:(id *)key error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
   v7 = [(VLTileDataProvider *)self cachedTileForKey:?];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 fileURL];
+    fileURL = [v7 fileURL];
     goto LABEL_19;
   }
 
@@ -786,14 +786,14 @@ void __39__VLTileDataProvider_cachedTileForKey___block_invoke(void *a1)
   {
     if (*(v22 + 24) != 1)
     {
-      if (a4)
+      if (error)
       {
-        *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"VLLocalizationDataProviderErrorDomain" code:1 userInfo:0];
+        *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"VLLocalizationDataProviderErrorDomain" code:1 userInfo:0];
       }
 
       if ((v30[3] & 1) == 0)
       {
-        [(VLTileDataProvider *)self _fetchTileDataForKey:a3 completion:0];
+        [(VLTileDataProvider *)self _fetchTileDataForKey:key completion:0];
       }
 
       goto LABEL_18;
@@ -818,10 +818,10 @@ void __39__VLTileDataProvider_cachedTileForKey___block_invoke(void *a1)
       }
     }
 
-    var0 = a3->var0;
-    var1 = a3->var1;
-    var2 = a3->var2;
-    var3 = a3->var3;
+    var0 = key->var0;
+    var1 = key->var1;
+    var2 = key->var2;
+    var3 = key->var3;
     *buf = 67175425;
     v34 = var0;
     v35 = 1025;
@@ -850,10 +850,10 @@ void __39__VLTileDataProvider_cachedTileForKey___block_invoke(void *a1)
   if (os_log_type_enabled(_MergedGlobals_1, OS_LOG_TYPE_DEBUG))
   {
 LABEL_6:
-    v11 = a3->var0;
-    v12 = a3->var1;
-    v13 = a3->var2;
-    v14 = a3->var3;
+    v11 = key->var0;
+    v12 = key->var1;
+    v13 = key->var2;
+    v14 = key->var3;
     *buf = 67175425;
     v34 = v11;
     v35 = 1025;
@@ -868,19 +868,19 @@ LABEL_11:
   }
 
 LABEL_12:
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"VLLocalizationDataProviderErrorDomain" code:2 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"VLLocalizationDataProviderErrorDomain" code:2 userInfo:0];
   }
 
 LABEL_18:
   _Block_object_dispose(&v21, 8);
   _Block_object_dispose(&v25, 8);
   _Block_object_dispose(&v29, 8);
-  v9 = 0;
+  fileURL = 0;
 LABEL_19:
 
-  return v9;
+  return fileURL;
 }
 
 void *__42__VLTileDataProvider_fileURLForKey_error___block_invoke(void *result)
@@ -957,11 +957,11 @@ LABEL_22:
   return result;
 }
 
-- (void)_fetchTileDataForKey:(id *)a3 completion:(id)a4
+- (void)_fetchTileDataForKey:(id *)key completion:(id)completion
 {
   v71 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (!v6 || ([(VLTileDataProvider *)self cachedTileForKey:a3], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+  completionCopy = completion;
+  if (!completionCopy || ([(VLTileDataProvider *)self cachedTileForKey:key], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v60 = 0;
     v61 = &v60;
@@ -979,10 +979,10 @@ LABEL_22:
     v44 = 3221225472;
     v45 = __54__VLTileDataProvider__fetchTileDataForKey_completion___block_invoke_2;
     v46 = &unk_279E2D868;
-    v47 = self;
+    selfCopy = self;
     v48 = &v60;
     v50 = &v52;
-    v51 = a3;
+    keyCopy = key;
     v49 = &v56;
     geo_isolate_sync_data();
     if (*(v57 + 24) == 1)
@@ -1003,7 +1003,7 @@ LABEL_22:
         if (!os_log_type_enabled(_MergedGlobals_1, OS_LOG_TYPE_DEBUG))
         {
 LABEL_8:
-          if (v6)
+          if (completionCopy)
           {
             v15 = [MEMORY[0x277CCA9B8] errorWithDomain:@"VLLocalizationDataProviderErrorDomain" code:2 userInfo:0];
             v16 = dispatch_get_global_queue(21, 0);
@@ -1012,7 +1012,7 @@ LABEL_8:
             v40[2] = __54__VLTileDataProvider__fetchTileDataForKey_completion___block_invoke_17;
             v40[3] = &unk_279E2D890;
             v41 = v15;
-            v42 = v6;
+            v42 = completionCopy;
             v17 = v15;
             dispatch_async(v16, v40);
           }
@@ -1021,10 +1021,10 @@ LABEL_8:
         }
       }
 
-      var0 = a3->var0;
-      var1 = a3->var1;
-      var2 = a3->var2;
-      var3 = a3->var3;
+      var0 = key->var0;
+      var1 = key->var1;
+      var2 = key->var2;
+      var3 = key->var3;
       *buf = 67175425;
       *&buf[4] = var0;
       *&buf[8] = 1025;
@@ -1055,7 +1055,7 @@ LABEL_8:
         if (!os_log_type_enabled(_MergedGlobals_1, OS_LOG_TYPE_DEBUG))
         {
 LABEL_14:
-          if (v6)
+          if (completionCopy)
           {
             v23 = [MEMORY[0x277CCA9B8] errorWithDomain:@"VLLocalizationDataProviderErrorDomain" code:2 userInfo:0];
             v24 = dispatch_get_global_queue(21, 0);
@@ -1064,7 +1064,7 @@ LABEL_14:
             v37[2] = __54__VLTileDataProvider__fetchTileDataForKey_completion___block_invoke_18;
             v37[3] = &unk_279E2D890;
             v38 = v23;
-            v39 = v6;
+            v39 = completionCopy;
             v25 = v23;
             dispatch_async(v24, v37);
           }
@@ -1073,10 +1073,10 @@ LABEL_14:
         }
       }
 
-      v19 = a3->var0;
-      v20 = a3->var1;
-      v21 = a3->var2;
-      v22 = a3->var3;
+      v19 = key->var0;
+      v20 = key->var1;
+      v21 = key->var2;
+      v22 = key->var3;
       *buf = 67175425;
       *&buf[4] = v19;
       *&buf[8] = 1025;
@@ -1089,21 +1089,21 @@ LABEL_14:
       goto LABEL_14;
     }
 
-    if (v6)
+    if (completionCopy)
     {
       location[1] = MEMORY[0x277D85DD0];
       location[2] = 3221225472;
       location[3] = __54__VLTileDataProvider__fetchTileDataForKey_completion___block_invoke_2_19;
       location[4] = &unk_279E2D8B8;
       location[5] = self;
-      v36 = a3;
-      v35 = v6;
+      keyCopy2 = key;
+      v35 = completionCopy;
       geo_isolate_sync_data();
     }
 
     if (*(v61 + 24) != 1)
     {
-      *buf = *a3;
+      *buf = *key;
       objc_initWeak(location, self);
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
@@ -1111,7 +1111,7 @@ LABEL_14:
       v31[3] = &unk_279E2D958;
       objc_copyWeak(&v32, location);
       v33 = *buf;
-      [(VLTileDataProvider *)self _fetchMetadataForDataKey:a3 completionHandler:v31];
+      [(VLTileDataProvider *)self _fetchMetadataForDataKey:key completionHandler:v31];
       objc_destroyWeak(&v32);
       objc_destroyWeak(location);
       goto LABEL_23;
@@ -1140,10 +1140,10 @@ LABEL_23:
       }
     }
 
-    v27 = a3->var0;
-    v28 = a3->var1;
-    v29 = a3->var2;
-    v30 = a3->var3;
+    v27 = key->var0;
+    v28 = key->var1;
+    v29 = key->var2;
+    v30 = key->var3;
     *buf = 67175425;
     *&buf[4] = v27;
     *&buf[8] = 1025;
@@ -1162,7 +1162,7 @@ LABEL_23:
   block[2] = __54__VLTileDataProvider__fetchTileDataForKey_completion___block_invoke;
   block[3] = &unk_279E2D890;
   v65 = v7;
-  v66 = v6;
+  v66 = completionCopy;
   v9 = v7;
   dispatch_async(v8, block);
 
@@ -1639,7 +1639,7 @@ uint64_t __54__VLTileDataProvider__fetchTileDataForKey_completion___block_invoke
   return result;
 }
 
-- (void)_fetchDataTile:(uint64_t)a3 originalKey:(_OWORD *)a4 additionalInfo:(uint64_t *)a5
+- (void)_fetchDataTile:(uint64_t)tile originalKey:(_OWORD *)key additionalInfo:(uint64_t *)info
 {
   v33 = *MEMORY[0x277D85DE8];
   if (qword_281181C70 != -1)
@@ -1658,11 +1658,11 @@ uint64_t __54__VLTileDataProvider__fetchTileDataForKey_completion___block_invoke
   if (os_log_type_enabled(_MergedGlobals_1, OS_LOG_TYPE_INFO))
   {
 LABEL_3:
-    v10 = *(a3 + 6);
-    v11 = *(a3 + 10) & 0x3FFFFFF;
-    v12 = *(a3 + 3);
-    v13 = *a5;
-    v14 = *(a5 + 2);
+    v10 = *(tile + 6);
+    v11 = *(tile + 10) & 0x3FFFFFF;
+    v12 = *(tile + 3);
+    v13 = *info;
+    v14 = *(info + 2);
     *buf = 67175937;
     *&buf[4] = v10 & 0x3F;
     *&buf[8] = 1025;
@@ -1679,12 +1679,12 @@ LABEL_3:
   }
 
 LABEL_4:
-  objc_initWeak(&location, a1);
-  *buf = *a4;
-  v16 = a1[2];
-  v15 = a1[3];
+  objc_initWeak(&location, self);
+  *buf = *key;
+  v16 = self[2];
+  v15 = self[3];
   v17 = qos_class_self();
-  v18 = a1[4];
+  v18 = self[4];
   v19 = dispatch_get_global_queue(21, 0);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -1693,7 +1693,7 @@ LABEL_4:
   objc_copyWeak(&v22, &location);
   v23 = *buf;
   LODWORD(v20) = v17;
-  [v16 loadKey:a3 additionalInfo:a5 priority:3221225469 forClient:v15 options:3 reason:4 qos:v20 signpostID:0 auditToken:v18 callbackQ:v19 beginNetwork:0 callback:v21];
+  [v16 loadKey:tile additionalInfo:info priority:3221225469 forClient:v15 options:3 reason:4 qos:v20 signpostID:0 auditToken:v18 callbackQ:v19 beginNetwork:0 callback:v21];
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(&location);
@@ -1910,23 +1910,23 @@ LABEL_23:
   }
 }
 
-- (void)determineAvailabilityForCoordinate:(id *)a3 horizontalAccuracy:(double)a4 purpose:(int64_t)a5 callbackQueue:(id)a6 callback:(id)a7
+- (void)determineAvailabilityForCoordinate:(id *)coordinate horizontalAccuracy:(double)accuracy purpose:(int64_t)purpose callbackQueue:(id)queue callback:(id)callback
 {
-  v12 = a6;
-  v13 = a7;
-  v22 = *a3;
+  queueCopy = queue;
+  callbackCopy = callback;
+  v22 = *coordinate;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __107__VLTileDataProvider_determineAvailabilityForCoordinate_horizontalAccuracy_purpose_callbackQueue_callback___block_invoke;
   v16[3] = &unk_279E2D9F8;
   v16[4] = self;
-  v17 = v12;
-  v18 = v13;
+  v17 = queueCopy;
+  v18 = callbackCopy;
   v19 = v22;
-  v20 = a4;
-  v21 = a5;
-  v14 = v13;
-  v15 = v12;
+  accuracyCopy = accuracy;
+  purposeCopy = purpose;
+  v14 = callbackCopy;
+  v15 = queueCopy;
   [(VLTileDataProvider *)self _fetchMetadataForCoordinate:&v22 completionHandler:v16];
 }
 

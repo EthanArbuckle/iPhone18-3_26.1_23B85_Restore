@@ -1,40 +1,40 @@
 @interface THWAnchoredWidgetLayout
-- (CGPoint)stackedControlContainerOrigin:(id)a3;
+- (CGPoint)stackedControlContainerOrigin:(id)origin;
 - (CGRect)widgetLayoutBounds;
 - (CGSize)_containerSize;
-- (CGSize)_containerSizeClampWidth:(BOOL)a3;
-- (THWAnchoredWidgetLayout)initWithInfo:(id)a3;
-- (UIEdgeInsets)stackedControlContainerInsets:(id)a3;
+- (CGSize)_containerSizeClampWidth:(BOOL)width;
+- (THWAnchoredWidgetLayout)initWithInfo:(id)info;
+- (UIEdgeInsets)stackedControlContainerInsets:(id)insets;
 - (UIEdgeInsets)widgetInsets;
-- (double)stackedControlContainer:(id)a3 heightForFlexibleLayout:(id)a4 withTotalFixedHeight:(double)a5;
-- (double)stackedControlContainer:(id)a3 minHeightForChildLayout:(id)a4;
-- (double)stackedControlContainer:(id)a3 verticalPaddingAfter:(id)a4;
+- (double)stackedControlContainer:(id)container heightForFlexibleLayout:(id)layout withTotalFixedHeight:(double)height;
+- (double)stackedControlContainer:(id)container minHeightForChildLayout:(id)layout;
+- (double)stackedControlContainer:(id)container verticalPaddingAfter:(id)after;
 - (id)_stackLayout;
-- (id)additionalDependenciesForChildLayout:(id)a3;
+- (id)additionalDependenciesForChildLayout:(id)layout;
 - (id)childrenForLayout;
 - (id)computeLayoutGeometry;
-- (id)controlContainerChildrenForLayout:(id)a3;
+- (id)controlContainerChildrenForLayout:(id)layout;
 - (id)dependentLayouts;
-- (id)layoutGeometryForLayout:(id)a3;
-- (id)stackedControlContainer:(id)a3 layoutGeometryForLayout:(id)a4;
-- (id)stackedControlContainer:(id)a3 styleProviderForLayout:(id)a4;
-- (id)stackedControlContainer:(id)a3 styleProviderForStorage:(id)a4;
-- (unsigned)stackedControlContainer:(id)a3 maxLineCountForLayout:(id)a4;
+- (id)layoutGeometryForLayout:(id)layout;
+- (id)stackedControlContainer:(id)container layoutGeometryForLayout:(id)layout;
+- (id)stackedControlContainer:(id)container styleProviderForLayout:(id)layout;
+- (id)stackedControlContainer:(id)container styleProviderForStorage:(id)storage;
+- (unsigned)stackedControlContainer:(id)container maxLineCountForLayout:(id)layout;
 - (void)_computeInsets;
 - (void)dealloc;
-- (void)setWidgetStackLayout:(id)a3;
+- (void)setWidgetStackLayout:(id)layout;
 - (void)updateChildrenFromInfo;
-- (void)wasAddedToLayoutController:(id)a3;
+- (void)wasAddedToLayoutController:(id)controller;
 - (void)widgetStackInvalidateChildren;
 @end
 
 @implementation THWAnchoredWidgetLayout
 
-- (THWAnchoredWidgetLayout)initWithInfo:(id)a3
+- (THWAnchoredWidgetLayout)initWithInfo:(id)info
 {
   v5.receiver = self;
   v5.super_class = THWAnchoredWidgetLayout;
-  v3 = [(THWAnchoredWidgetLayout *)&v5 initWithInfo:a3];
+  v3 = [(THWAnchoredWidgetLayout *)&v5 initWithInfo:info];
   if (v3)
   {
     v3->_stackInfo = [[THWStackedControlContainer alloc] initWithDelegate:v3];
@@ -84,9 +84,9 @@
   self->_widgetInsets.right = v10;
 }
 
-- (void)wasAddedToLayoutController:(id)a3
+- (void)wasAddedToLayoutController:(id)controller
 {
-  -[THWAnchoredWidgetLayout setStackHost:](self, "setStackHost:", [a3 ancestorLayoutOfLayout:self orDelegateConformingToProtocol:&OBJC_PROTOCOL___THWWidgetStackHosting]);
+  -[THWAnchoredWidgetLayout setStackHost:](self, "setStackHost:", [controller ancestorLayoutOfLayout:self orDelegateConformingToProtocol:&OBJC_PROTOCOL___THWWidgetStackHosting]);
 
   [(THWAnchoredWidgetLayout *)self _computeInsets];
 }
@@ -125,16 +125,16 @@
   [(THWAnchoredWidgetLayout *)self setWidgetStackLayout:TSUProtocolCast()];
 }
 
-- (void)setWidgetStackLayout:(id)a3
+- (void)setWidgetStackLayout:(id)layout
 {
   widgetStackLayout = self->_widgetStackLayout;
-  if (widgetStackLayout != a3)
+  if (widgetStackLayout != layout)
   {
 
-    self->_widgetStackLayout = a3;
-    v6 = [(THWAnchoredWidgetLayout *)self _stackLayout];
+    self->_widgetStackLayout = layout;
+    _stackLayout = [(THWAnchoredWidgetLayout *)self _stackLayout];
 
-    [v6 invalidateChildren];
+    [_stackLayout invalidateChildren];
   }
 }
 
@@ -165,9 +165,9 @@
   return result;
 }
 
-- (CGSize)_containerSizeClampWidth:(BOOL)a3
+- (CGSize)_containerSizeClampWidth:(BOOL)width
 {
-  v3 = a3;
+  widthCopy = width;
   objc_opt_class();
   [(THWAnchoredWidgetLayout *)self parent];
   v5 = TSUDynamicCast();
@@ -176,7 +176,7 @@
     [v5 maximumFrameSizeForChild:self];
     v7 = v6;
     v9 = v8;
-    if (!v3)
+    if (!widthCopy)
     {
       goto LABEL_4;
     }
@@ -186,7 +186,7 @@
 
   v9 = 400.0;
   v7 = 300.0;
-  if (v3)
+  if (widthCopy)
   {
 LABEL_3:
     [objc_msgSend(objc_msgSend(-[THWAnchoredWidgetLayout info](self "info")];
@@ -209,15 +209,15 @@ LABEL_4:
   return result;
 }
 
-- (id)additionalDependenciesForChildLayout:(id)a3
+- (id)additionalDependenciesForChildLayout:(id)layout
 {
-  if ([(THWAnchoredWidgetLayout *)self _stackLayout]!= a3)
+  if ([(THWAnchoredWidgetLayout *)self _stackLayout]!= layout)
   {
     return 0;
   }
 
-  v5 = self;
-  return [NSArray arrayWithObjects:&v5 count:1];
+  selfCopy = self;
+  return [NSArray arrayWithObjects:&selfCopy count:1];
 }
 
 - (id)dependentLayouts
@@ -243,10 +243,10 @@ LABEL_4:
   return v3;
 }
 
-- (id)layoutGeometryForLayout:(id)a3
+- (id)layoutGeometryForLayout:(id)layout
 {
-  v4 = [a3 info];
-  if (v4 != [objc_msgSend(objc_msgSend(-[THWAnchoredWidgetLayout info](self "info")])
+  info = [layout info];
+  if (info != [objc_msgSend(objc_msgSend(-[THWAnchoredWidgetLayout info](self "info")])
   {
     return 0;
   }
@@ -265,12 +265,12 @@ LABEL_4:
 
 - (void)widgetStackInvalidateChildren
 {
-  v2 = [(THWAnchoredWidgetLayout *)self _stackLayout];
+  _stackLayout = [(THWAnchoredWidgetLayout *)self _stackLayout];
 
-  [v2 invalidateChildren];
+  [_stackLayout invalidateChildren];
 }
 
-- (id)controlContainerChildrenForLayout:(id)a3
+- (id)controlContainerChildrenForLayout:(id)layout
 {
   v4 = +[NSMutableArray array];
   if (objc_opt_respondsToSelector())
@@ -311,7 +311,7 @@ LABEL_10:
   return v4;
 }
 
-- (CGPoint)stackedControlContainerOrigin:(id)a3
+- (CGPoint)stackedControlContainerOrigin:(id)origin
 {
   [(THWAnchoredWidgetLayout *)self _containerSizeClampWidth:0];
   [(THWAnchoredWidgetLayout *)self _containerSizeClampWidth:1];
@@ -322,7 +322,7 @@ LABEL_10:
   return result;
 }
 
-- (UIEdgeInsets)stackedControlContainerInsets:(id)a3
+- (UIEdgeInsets)stackedControlContainerInsets:(id)insets
 {
   top = self->_widgetInsets.top;
   left = self->_widgetInsets.left;
@@ -335,11 +335,11 @@ LABEL_10:
   return result;
 }
 
-- (double)stackedControlContainer:(id)a3 verticalPaddingAfter:(id)a4
+- (double)stackedControlContainer:(id)container verticalPaddingAfter:(id)after
 {
-  v4 = [-[THWAnchoredWidgetLayout layoutController](self layoutController];
+  layoutController = [-[THWAnchoredWidgetLayout layoutController](self layoutController];
   result = 10.0;
-  if (v4)
+  if (layoutController)
   {
     return 5.0;
   }
@@ -347,7 +347,7 @@ LABEL_10:
   return result;
 }
 
-- (id)stackedControlContainer:(id)a3 layoutGeometryForLayout:(id)a4
+- (id)stackedControlContainer:(id)container layoutGeometryForLayout:(id)layout
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -356,31 +356,31 @@ LABEL_10:
 
   widgetStackLayout = self->_widgetStackLayout;
 
-  return [(THWWidgetStackLayout *)widgetStackLayout widgetStack:self layoutGeometryForLayout:a4];
+  return [(THWWidgetStackLayout *)widgetStackLayout widgetStack:self layoutGeometryForLayout:layout];
 }
 
-- (id)stackedControlContainer:(id)a3 styleProviderForLayout:(id)a4
+- (id)stackedControlContainer:(id)container styleProviderForLayout:(id)layout
 {
-  v5 = -[THWAnchoredWidgetWPStyleProvider initWithStorage:]([THWAnchoredWidgetWPStyleProvider alloc], "initWithStorage:", [a4 info]);
+  v5 = -[THWAnchoredWidgetWPStyleProvider initWithStorage:]([THWAnchoredWidgetWPStyleProvider alloc], "initWithStorage:", [layout info]);
   -[THWAnchoredWidgetWPStyleProvider setFilterDelegate:](v5, "setFilterDelegate:", [-[THWAnchoredWidgetLayout layoutController](self "layoutController")]);
   return v5;
 }
 
-- (id)stackedControlContainer:(id)a3 styleProviderForStorage:(id)a4
+- (id)stackedControlContainer:(id)container styleProviderForStorage:(id)storage
 {
-  v5 = [[THWAnchoredWidgetWPStyleProvider alloc] initWithStorage:a4];
+  v5 = [[THWAnchoredWidgetWPStyleProvider alloc] initWithStorage:storage];
   -[THWAnchoredWidgetWPStyleProvider setFilterDelegate:](v5, "setFilterDelegate:", [-[THWAnchoredWidgetLayout layoutController](self "layoutController")]);
   return v5;
 }
 
-- (double)stackedControlContainer:(id)a3 heightForFlexibleLayout:(id)a4 withTotalFixedHeight:(double)a5
+- (double)stackedControlContainer:(id)container heightForFlexibleLayout:(id)layout withTotalFixedHeight:(double)height
 {
-  [(THWAnchoredWidgetLayout *)self _containerSize:a3];
+  [(THWAnchoredWidgetLayout *)self _containerSize:container];
   TSDRectWithSize();
   v8 = v7;
   left = self->_widgetInsets.left;
   right = self->_widgetInsets.right;
-  v12 = v11 - (self->_widgetInsets.top + self->_widgetInsets.bottom) - a5;
+  v12 = v11 - (self->_widgetInsets.top + self->_widgetInsets.bottom) - height;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return fmax(v12, 100.0);
@@ -392,7 +392,7 @@ LABEL_10:
   return result;
 }
 
-- (unsigned)stackedControlContainer:(id)a3 maxLineCountForLayout:(id)a4
+- (unsigned)stackedControlContainer:(id)container maxLineCountForLayout:(id)layout
 {
   v6 = 1;
   if (([-[THWAnchoredWidgetLayout layoutController](self layoutController] & 1) == 0)
@@ -415,12 +415,12 @@ LABEL_10:
 
   widgetStackLayout = self->_widgetStackLayout;
 
-  return [(THWWidgetStackLayout *)widgetStackLayout widgetStack:self maxLinesForWPLayout:a4 withDefault:v6];
+  return [(THWWidgetStackLayout *)widgetStackLayout widgetStack:self maxLinesForWPLayout:layout withDefault:v6];
 }
 
-- (double)stackedControlContainer:(id)a3 minHeightForChildLayout:(id)a4
+- (double)stackedControlContainer:(id)container minHeightForChildLayout:(id)layout
 {
-  [a4 frame];
+  [layout frame];
   v8 = v7;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -429,7 +429,7 @@ LABEL_10:
 
   widgetStackLayout = self->_widgetStackLayout;
 
-  [(THWWidgetStackLayout *)widgetStackLayout widgetStack:self stackedControlContainer:a3 minHeightForLayout:a4];
+  [(THWWidgetStackLayout *)widgetStackLayout widgetStack:self stackedControlContainer:container minHeightForLayout:layout];
   return result;
 }
 

@@ -1,32 +1,32 @@
 @interface STUIStatusBarDataAggregator
 + (void)initialize;
 - (NSSet)coalescedEntryKeys;
-- (STUIStatusBarDataAggregator)initWithUpdateBlock:(id)a3;
-- (id)_updatedDataFromData:(id)a3 delayedKeys:(id)a4;
-- (id)beginDelayingUpdatesForEntryKeys:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (STUIStatusBarDataAggregator)initWithUpdateBlock:(id)block;
+- (id)_updatedDataFromData:(id)data delayedKeys:(id)keys;
+- (id)beginDelayingUpdatesForEntryKeys:(id)keys;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)_coalescedUpdateForEntryKeys:(id)a3;
-- (void)_updateForCoalescedKeysWithData:(id)a3;
-- (void)_updateForDelayedKeysWithData:(id)a3;
-- (void)_updateForOverlayWithData:(id)a3;
-- (void)_updateFromPendingUpdatesForKeys:(id)a3 block:(id)a4;
-- (void)beginCoalescingUpdatesForEntryKeys:(id)a3 delay:(double)a4;
+- (void)_coalescedUpdateForEntryKeys:(id)keys;
+- (void)_updateForCoalescedKeysWithData:(id)data;
+- (void)_updateForDelayedKeysWithData:(id)data;
+- (void)_updateForOverlayWithData:(id)data;
+- (void)_updateFromPendingUpdatesForKeys:(id)keys block:(id)block;
+- (void)beginCoalescingUpdatesForEntryKeys:(id)keys delay:(double)delay;
 - (void)dealloc;
-- (void)endCoalescingUpdatesForEntryKeys:(id)a3;
-- (void)endDelayingUpdates:(id)a3;
-- (void)updateWithData:(id)a3;
+- (void)endCoalescingUpdatesForEntryKeys:(id)keys;
+- (void)endDelayingUpdates:(id)updates;
+- (void)updateWithData:(id)data;
 @end
 
 @implementation STUIStatusBarDataAggregator
 
 - (id)succinctDescription
 {
-  v2 = [(STUIStatusBarDataAggregator *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STUIStatusBarDataAggregator *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (void)dealloc
@@ -39,7 +39,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_alloc_init(MEMORY[0x277CCA940]);
     v3 = _statusBarDelayedDataEntryKeys;
@@ -49,13 +49,13 @@
   }
 }
 
-- (STUIStatusBarDataAggregator)initWithUpdateBlock:(id)a3
+- (STUIStatusBarDataAggregator)initWithUpdateBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v19.receiver = self;
   v19.super_class = STUIStatusBarDataAggregator;
   v5 = [(STUIStatusBarDataAggregator *)&v19 init];
-  [(STUIStatusBarDataAggregator *)v5 setUpdateBlock:v4];
+  [(STUIStatusBarDataAggregator *)v5 setUpdateBlock:blockCopy];
   v6 = objc_alloc_init(MEMORY[0x277CCA940]);
   [(STUIStatusBarDataAggregator *)v5 setDelayedKeys:v6];
 
@@ -69,8 +69,8 @@
   [(STUIStatusBarDataAggregator *)v5 setCoalescedTimers:v9];
 
   v10 = MEMORY[0x277CCACA8];
-  v11 = [(STUIStatusBarDataAggregator *)v5 succinctDescription];
-  v12 = [v10 stringWithFormat:@"SystemStatusUI - StatusBar - %@", v11];
+  succinctDescription = [(STUIStatusBarDataAggregator *)v5 succinctDescription];
+  v12 = [v10 stringWithFormat:@"SystemStatusUI - StatusBar - %@", succinctDescription];
 
   objc_initWeak(&location, v5);
   v13 = MEMORY[0x277D85CD0];
@@ -93,35 +93,35 @@ id __51__STUIStatusBarDataAggregator_initWithUpdateBlock___block_invoke(uint64_t
   return v2;
 }
 
-- (void)updateWithData:(id)a3
+- (void)updateWithData:(id)data
 {
-  v4 = a3;
-  v7 = v4;
+  dataCopy = data;
+  v7 = dataCopy;
   if (!self->_dataClass)
   {
     v5 = objc_opt_class();
     dataClass = self->_dataClass;
     self->_dataClass = v5;
 
-    v4 = v7;
+    dataCopy = v7;
   }
 
-  [(STUIStatusBarDataAggregator *)self _updateForOverlayWithData:v4];
+  [(STUIStatusBarDataAggregator *)self _updateForOverlayWithData:dataCopy];
 }
 
-- (id)_updatedDataFromData:(id)a3 delayedKeys:(id)a4
+- (id)_updatedDataFromData:(id)data delayedKeys:(id)keys
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count])
+  dataCopy = data;
+  keysCopy = keys;
+  if ([keysCopy count])
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v19 = v7;
-    v8 = v7;
+    v19 = keysCopy;
+    v8 = keysCopy;
     v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v9)
     {
@@ -137,7 +137,7 @@ id __51__STUIStatusBarDataAggregator_initWithUpdateBlock___block_invoke(uint64_t
           }
 
           v13 = *(*(&v20 + 1) + 8 * i);
-          v14 = [v6 valueForKey:v13];
+          v14 = [dataCopy valueForKey:v13];
           if (v14)
           {
             v15 = [STUIStatusBarDataAggregatorUpdate updateWithEntry:v14];
@@ -151,7 +151,7 @@ id __51__STUIStatusBarDataAggregator_initWithUpdateBlock___block_invoke(uint64_t
       while (v10);
     }
 
-    v16 = [v6 dataByRemovingEntriesForKeys:v8];
+    v16 = [dataCopy dataByRemovingEntriesForKeys:v8];
     if ([v16 isEmpty])
     {
       v17 = 0;
@@ -162,32 +162,32 @@ id __51__STUIStatusBarDataAggregator_initWithUpdateBlock___block_invoke(uint64_t
       v17 = v16;
     }
 
-    v7 = v19;
+    keysCopy = v19;
   }
 
   else
   {
-    v17 = v6;
+    v17 = dataCopy;
   }
 
   return v17;
 }
 
-- (void)_updateFromPendingUpdatesForKeys:(id)a3 block:(id)a4
+- (void)_updateFromPendingUpdatesForKeys:(id)keys block:(id)block
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  blockCopy = block;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v6;
-  v8 = [v6 countByEnumeratingWithState:&v31 objects:v37 count:16];
+  obj = keysCopy;
+  v8 = [keysCopy countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v8)
   {
     v9 = v8;
-    v26 = v7;
+    v26 = blockCopy;
     v10 = 0;
     v11 = 0;
     v12 = *v32;
@@ -205,8 +205,8 @@ id __51__STUIStatusBarDataAggregator_initWithUpdateBlock___block_invoke(uint64_t
         v16 = v15;
         if (v15)
         {
-          v17 = [v15 animated];
-          if (v17)
+          animated = [v15 animated];
+          if (animated)
           {
             v18 = v10;
           }
@@ -218,7 +218,7 @@ id __51__STUIStatusBarDataAggregator_initWithUpdateBlock___block_invoke(uint64_t
 
           if (!v18)
           {
-            v19 = v17;
+            v19 = animated;
             v20 = objc_alloc_init(MEMORY[0x277D6BA20]);
             v18 = v20;
             if (v19)
@@ -232,8 +232,8 @@ id __51__STUIStatusBarDataAggregator_initWithUpdateBlock___block_invoke(uint64_t
             }
           }
 
-          v21 = [v16 entry];
-          [v18 setEntry:v21 forKey:v14];
+          entry = [v16 entry];
+          [v18 setEntry:entry forKey:v14];
 
           [(NSMutableDictionary *)self->_pendingUpdates setObject:0 forKeyedSubscript:v14];
         }
@@ -243,7 +243,7 @@ id __51__STUIStatusBarDataAggregator_initWithUpdateBlock___block_invoke(uint64_t
     }
 
     while (v9);
-    v7 = v26;
+    blockCopy = v26;
     if (v11)
     {
       v22 = _STUIStatusBar_Log();
@@ -274,8 +274,8 @@ id __51__STUIStatusBarDataAggregator_initWithUpdateBlock___block_invoke(uint64_t
         _os_log_impl(&dword_26C4DD000, v24, OS_LOG_TYPE_DEBUG, "performing pending animated updates with data: %@", buf, 0xCu);
       }
 
-      v25 = [v10 immutableCopy];
-      (v26)[2](v26, v25);
+      immutableCopy = [v10 immutableCopy];
+      (v26)[2](v26, immutableCopy);
     }
   }
 
@@ -293,19 +293,19 @@ void __70__STUIStatusBarDataAggregator__updateFromPendingUpdatesForKeys_block___
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)_updateForOverlayWithData:(id)a3
+- (void)_updateForOverlayWithData:(id)data
 {
-  v4 = [a3 dataByApplyingOverlay:self->_overlayData];
+  v4 = [data dataByApplyingOverlay:self->_overlayData];
   [(STUIStatusBarDataAggregator *)self _updateForDelayedKeysWithData:v4];
 }
 
-- (void)_updateForDelayedKeysWithData:(id)a3
+- (void)_updateForDelayedKeysWithData:(id)data
 {
   delayedKeys = self->_delayedKeys;
-  v7 = a3;
+  dataCopy = data;
   if ([(NSCountedSet *)delayedKeys count])
   {
-    v5 = [(STUIStatusBarDataAggregator *)self _updatedDataFromData:v7 delayedKeys:self->_delayedKeys];
+    v5 = [(STUIStatusBarDataAggregator *)self _updatedDataFromData:dataCopy delayedKeys:self->_delayedKeys];
 
     if (v5)
     {
@@ -321,20 +321,20 @@ void __70__STUIStatusBarDataAggregator__updateFromPendingUpdatesForKeys_block___
 
   else
   {
-    [(STUIStatusBarDataAggregator *)self _updateForCoalescedKeysWithData:v7];
-    v6 = v7;
+    [(STUIStatusBarDataAggregator *)self _updateForCoalescedKeysWithData:dataCopy];
+    v6 = dataCopy;
   }
 }
 
-- (id)beginDelayingUpdatesForEntryKeys:(id)a3
+- (id)beginDelayingUpdatesForEntryKeys:(id)keys
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keysCopy = keys;
   v5 = _STUIStatusBar_Log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v22 = v4;
+    v22 = keysCopy;
     _os_log_impl(&dword_26C4DD000, v5, OS_LOG_TYPE_DEBUG, "begin delaying updates for %@", buf, 0xCu);
   }
 
@@ -342,7 +342,7 @@ void __70__STUIStatusBarDataAggregator__updateFromPendingUpdatesForKeys_block___
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = keysCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -391,14 +391,14 @@ void __64__STUIStatusBarDataAggregator_beginDelayingUpdatesForEntryKeys___block_
   }
 }
 
-- (void)endDelayingUpdates:(id)a3
+- (void)endDelayingUpdates:(id)updates
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updatesCopy = updates;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = updatesCopy;
     if (([v5 isInvalidated] & 1) == 0)
     {
       [v5 invalidate];
@@ -407,8 +407,8 @@ void __64__STUIStatusBarDataAggregator_beginDelayingUpdatesForEntryKeys___block_
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v7 = [v5 delayedKeys];
-      v8 = [v7 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      delayedKeys = [v5 delayedKeys];
+      v8 = [delayedKeys countByEnumeratingWithState:&v17 objects:v25 count:16];
       if (v8)
       {
         v9 = v8;
@@ -419,7 +419,7 @@ void __64__STUIStatusBarDataAggregator_beginDelayingUpdatesForEntryKeys___block_
           {
             if (*v18 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(delayedKeys);
             }
 
             v12 = *(*(&v17 + 1) + 8 * i);
@@ -427,7 +427,7 @@ void __64__STUIStatusBarDataAggregator_beginDelayingUpdatesForEntryKeys___block_
             [_statusBarDelayedDataEntryKeys removeObject:v12];
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v17 objects:v25 count:16];
+          v9 = [delayedKeys countByEnumeratingWithState:&v17 objects:v25 count:16];
         }
 
         while (v9);
@@ -436,10 +436,10 @@ void __64__STUIStatusBarDataAggregator_beginDelayingUpdatesForEntryKeys___block_
       v13 = _STUIStatusBar_Log();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
-        v14 = [v5 delayedKeys];
+        delayedKeys2 = [v5 delayedKeys];
         delayedKeys = self->_delayedKeys;
         *buf = 138412546;
-        v22 = v14;
+        v22 = delayedKeys2;
         v23 = 2112;
         v24 = delayedKeys;
         _os_log_impl(&dword_26C4DD000, v13, OS_LOG_TYPE_DEBUG, "end delaying updates for %@, remaining keys: %@", buf, 0x16u);
@@ -456,21 +456,21 @@ void __64__STUIStatusBarDataAggregator_beginDelayingUpdatesForEntryKeys___block_
   }
 }
 
-- (void)_updateForCoalescedKeysWithData:(id)a3
+- (void)_updateForCoalescedKeysWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if ([(NSMutableDictionary *)self->_coalescedKeys count])
   {
-    v5 = [(STUIStatusBarDataAggregator *)self coalescedEntryKeys];
-    v6 = [(STUIStatusBarDataAggregator *)self _updatedDataFromData:v4 delayedKeys:v5];
+    coalescedEntryKeys = [(STUIStatusBarDataAggregator *)self coalescedEntryKeys];
+    v6 = [(STUIStatusBarDataAggregator *)self _updatedDataFromData:dataCopy delayedKeys:coalescedEntryKeys];
 
     coalescedKeys = self->_coalescedKeys;
     v10 = MEMORY[0x277D85DD0];
     v11 = 3221225472;
     v12 = __63__STUIStatusBarDataAggregator__updateForCoalescedKeysWithData___block_invoke;
     v13 = &unk_279D38FC8;
-    v14 = v4;
-    v15 = self;
+    v14 = dataCopy;
+    selfCopy = self;
     [(NSMutableDictionary *)coalescedKeys enumerateKeysAndObjectsUsingBlock:&v10];
     if (v6)
     {
@@ -481,8 +481,8 @@ void __64__STUIStatusBarDataAggregator_beginDelayingUpdatesForEntryKeys___block_
 
   else
   {
-    v9 = [(STUIStatusBarDataAggregator *)self updateBlock];
-    (v9)[2](v9, v4);
+    updateBlock = [(STUIStatusBarDataAggregator *)self updateBlock];
+    (updateBlock)[2](updateBlock, dataCopy);
   }
 }
 
@@ -520,18 +520,18 @@ void __63__STUIStatusBarDataAggregator__updateForCoalescedKeysWithData___block_i
   [WeakRetained _coalescedUpdateForEntryKeys:v2];
 }
 
-- (void)_coalescedUpdateForEntryKeys:(id)a3
+- (void)_coalescedUpdateForEntryKeys:(id)keys
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(STUIStatusBarDataAggregator *)self updateBlock];
-  [(STUIStatusBarDataAggregator *)self _updateFromPendingUpdatesForKeys:v4 block:v5];
+  keysCopy = keys;
+  updateBlock = [(STUIStatusBarDataAggregator *)self updateBlock];
+  [(STUIStatusBarDataAggregator *)self _updateFromPendingUpdatesForKeys:keysCopy block:updateBlock];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = v4;
+  v6 = keysCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -560,15 +560,15 @@ void __63__STUIStatusBarDataAggregator__updateForCoalescedKeysWithData___block_i
   }
 }
 
-- (void)beginCoalescingUpdatesForEntryKeys:(id)a3 delay:(double)a4
+- (void)beginCoalescingUpdatesForEntryKeys:(id)keys delay:(double)delay
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  keysCopy = keys;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [keysCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -579,7 +579,7 @@ void __63__STUIStatusBarDataAggregator__updateForCoalescedKeysWithData___block_i
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keysCopy);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
@@ -587,60 +587,60 @@ void __63__STUIStatusBarDataAggregator__updateForCoalescedKeysWithData___block_i
 
         if (!v12)
         {
-          v13 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+          v13 = [MEMORY[0x277CCABB0] numberWithDouble:delay];
           [(NSMutableDictionary *)self->_coalescedKeys setObject:v13 forKeyedSubscript:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [keysCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)endCoalescingUpdatesForEntryKeys:(id)a3
+- (void)endCoalescingUpdatesForEntryKeys:(id)keys
 {
-  v4 = a3;
-  v7 = [v4 mutableCopy];
+  keysCopy = keys;
+  v7 = [keysCopy mutableCopy];
   [v7 minusSet:self->_delayedKeys];
   [(STUIStatusBarDataAggregator *)self _coalescedUpdateForEntryKeys:v7];
   coalescedKeys = self->_coalescedKeys;
-  v6 = [v4 allObjects];
+  allObjects = [keysCopy allObjects];
 
-  [(NSMutableDictionary *)coalescedKeys removeObjectsForKeys:v6];
+  [(NSMutableDictionary *)coalescedKeys removeObjectsForKeys:allObjects];
 }
 
 - (NSSet)coalescedEntryKeys
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(NSMutableDictionary *)self->_coalescedKeys allKeys];
-  v4 = [v2 setWithArray:v3];
+  allKeys = [(NSMutableDictionary *)self->_coalescedKeys allKeys];
+  v4 = [v2 setWithArray:allKeys];
 
   return v4;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STUIStatusBarDataAggregator *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STUIStatusBarDataAggregator *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(STUIStatusBarDataAggregator *)self succinctDescriptionBuilder];
-  [v5 setActiveMultilinePrefix:v4];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(STUIStatusBarDataAggregator *)self succinctDescriptionBuilder];
+  [succinctDescriptionBuilder setActiveMultilinePrefix:prefixCopy];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __69__STUIStatusBarDataAggregator_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_279D38150;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

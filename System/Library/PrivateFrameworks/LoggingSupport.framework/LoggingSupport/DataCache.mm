@@ -1,5 +1,5 @@
 @interface DataCache
-- (id)init:(unsigned int)a3 evictionHandler:(id)a4;
+- (id)init:(unsigned int)init evictionHandler:(id)handler;
 - (void)flush;
 @end
 
@@ -7,13 +7,13 @@
 
 - (void)flush
 {
-  v2 = [(DataCache *)self cache];
-  [v2 removeAllObjects];
+  cache = [(DataCache *)self cache];
+  [cache removeAllObjects];
 }
 
-- (id)init:(unsigned int)a3 evictionHandler:(id)a4
+- (id)init:(unsigned int)init evictionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = DataCache;
   v7 = [(DataCache *)&v14 init];
@@ -24,8 +24,8 @@
     v12[1] = 3221225472;
     v12[2] = __34__DataCache_init_evictionHandler___block_invoke;
     v12[3] = &unk_2787AE660;
-    v13 = v6;
-    v9 = [(_OSLogLRUCache *)v8 initWithName:@"clientDataCache" maxCount:a3 evictionHandler:v12];
+    v13 = handlerCopy;
+    v9 = [(_OSLogLRUCache *)v8 initWithName:@"clientDataCache" maxCount:init evictionHandler:v12];
     cache = v7->_cache;
     v7->_cache = v9;
   }

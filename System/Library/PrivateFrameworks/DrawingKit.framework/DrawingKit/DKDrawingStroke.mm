@@ -1,9 +1,9 @@
 @interface DKDrawingStroke
-+ (DKDrawingStroke)drawingStrokeWithData:(id)a3 count:(unint64_t)a4;
++ (DKDrawingStroke)drawingStrokeWithData:(id)data count:(unint64_t)count;
 - (DKDrawingStroke)init;
-- (id)_decodeDKEncodedDrawingPointDataAsArray:(id)a3 count:(int64_t)a4;
-- (id)_encodePointsDrawingPointData:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_decodeDKEncodedDrawingPointDataAsArray:(id)array count:(int64_t)count;
+- (id)_encodePointsDrawingPointData:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation DKDrawingStroke
@@ -15,42 +15,42 @@
   v2 = [(DKDrawingStroke *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     strokePoints = v2->_strokePoints;
-    v2->_strokePoints = v3;
+    v2->_strokePoints = array;
   }
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = objc_alloc(MEMORY[0x277CBEB18]);
-  v6 = [(DKDrawingStroke *)self strokePoints];
-  v7 = [v5 initWithArray:v6 copyItems:1];
+  strokePoints = [(DKDrawingStroke *)self strokePoints];
+  v7 = [v5 initWithArray:strokePoints copyItems:1];
   v8 = v4[1];
   v4[1] = v7;
 
   return v4;
 }
 
-+ (DKDrawingStroke)drawingStrokeWithData:(id)a3 count:(unint64_t)a4
++ (DKDrawingStroke)drawingStrokeWithData:(id)data count:(unint64_t)count
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(DKDrawingStroke);
-  v7 = [(DKDrawingStroke *)v6 _decodeDKEncodedDrawingPointDataAsArray:v5 count:a4];
+  v7 = [(DKDrawingStroke *)v6 _decodeDKEncodedDrawingPointDataAsArray:dataCopy count:count];
 
-  v8 = [(DKDrawingStroke *)v6 strokePoints];
-  [v8 addObjectsFromArray:v7];
+  strokePoints = [(DKDrawingStroke *)v6 strokePoints];
+  [strokePoints addObjectsFromArray:v7];
 
   return v6;
 }
 
-- (id)_encodePointsDrawingPointData:(id)a3
+- (id)_encodePointsDrawingPointData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 count];
+  dataCopy = data;
+  v4 = [dataCopy count];
   v5 = (32 * v4);
   if (32 * v4)
   {
@@ -66,7 +66,7 @@
         v11 = v7 + 2;
         do
         {
-          v12 = [v3 objectAtIndex:v9];
+          v12 = [dataCopy objectAtIndex:v9];
           [v12 location];
           v14 = v13;
           v16 = v15;
@@ -98,14 +98,14 @@
   return v5;
 }
 
-- (id)_decodeDKEncodedDrawingPointDataAsArray:(id)a3 count:(int64_t)a4
+- (id)_decodeDKEncodedDrawingPointDataAsArray:(id)array count:(int64_t)count
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB18] array];
-  v7 = [v5 length];
-  if (a4 >= 1 && v7)
+  arrayCopy = array;
+  array = [MEMORY[0x277CBEB18] array];
+  v7 = [arrayCopy length];
+  if (count >= 1 && v7)
   {
-    v8 = ([v5 bytes] + 16);
+    v8 = ([arrayCopy bytes] + 16);
     do
     {
       v9 = *(v8 - 2);
@@ -117,15 +117,15 @@
       [(DKDrawingStrokePoint *)v13 setLocation:v9, v10];
       [(DKDrawingStrokePoint *)v13 setVelocity:v11];
       [(DKDrawingStrokePoint *)v13 setForce:v12];
-      [v6 addObject:v13];
+      [array addObject:v13];
 
-      --a4;
+      --count;
     }
 
-    while (a4);
+    while (count);
   }
 
-  return v6;
+  return array;
 }
 
 @end

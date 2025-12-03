@@ -1,29 +1,29 @@
 @interface LACUIHostedWindowScene
-- (void)handleAction:(id)a3 completion:(id)a4;
-- (void)sendAction:(id)a3 completion:(id)a4;
+- (void)handleAction:(id)action completion:(id)completion;
+- (void)sendAction:(id)action completion:(id)completion;
 @end
 
 @implementation LACUIHostedWindowScene
 
-- (void)handleAction:(id)a3 completion:(id)a4
+- (void)handleAction:(id)action completion:(id)completion
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(LACUIHostedWindowScene *)self keyWindow];
-  v8 = [v7 rootViewController];
+  actionCopy = action;
+  completionCopy = completion;
+  keyWindow = [(LACUIHostedWindowScene *)self keyWindow];
+  rootViewController = [keyWindow rootViewController];
 
-  v9 = [(LACUIHostedWindowScene *)self delegate];
-  v10 = [v9 conformsToProtocol:&unk_28682F428];
+  delegate = [(LACUIHostedWindowScene *)self delegate];
+  v10 = [delegate conformsToProtocol:&unk_28682F428];
 
   if (v10)
   {
-    v11 = [(LACUIHostedWindowScene *)self delegate];
-    if ([v11 handlesAction:v13])
+    delegate2 = [(LACUIHostedWindowScene *)self delegate];
+    if ([delegate2 handlesAction:actionCopy])
     {
-      if (v11)
+      if (delegate2)
       {
 LABEL_9:
-        [v11 handleAction:v13 completion:v6];
+        [delegate2 handleAction:actionCopy completion:completionCopy];
         goto LABEL_12;
       }
     }
@@ -33,12 +33,12 @@ LABEL_9:
     }
   }
 
-  if ([v8 conformsToProtocol:&unk_28682F428])
+  if ([rootViewController conformsToProtocol:&unk_28682F428])
   {
-    v11 = v8;
-    if ([v11 handlesAction:v13])
+    delegate2 = rootViewController;
+    if ([delegate2 handlesAction:actionCopy])
     {
-      if (v11)
+      if (delegate2)
       {
         goto LABEL_9;
       }
@@ -49,18 +49,18 @@ LABEL_9:
     }
   }
 
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ cannot handle action: %@", self, v13];
-  v12 = [MEMORY[0x277D24060] errorWithCode:*MEMORY[0x277D23E88] debugDescription:v11];
-  v6[2](v6, v12);
+  delegate2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ cannot handle action: %@", self, actionCopy];
+  v12 = [MEMORY[0x277D24060] errorWithCode:*MEMORY[0x277D23E88] debugDescription:delegate2];
+  completionCopy[2](completionCopy, v12);
 
 LABEL_12:
 }
 
-- (void)sendAction:(id)a3 completion:(id)a4
+- (void)sendAction:(id)action completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[LACUIHostedSceneActionClientToHost alloc] initWithAction:v7 completion:v6];
+  completionCopy = completion;
+  actionCopy = action;
+  v8 = [[LACUIHostedSceneActionClientToHost alloc] initWithAction:actionCopy completion:completionCopy];
 
   [(_UIHostedWindowScene *)self sendAction:v8];
 }

@@ -7,14 +7,14 @@
 - (BOOL)isPresent
 {
   v2 = +[AVAudioSession sharedInstance];
-  v3 = [v2 currentRoute];
+  currentRoute = [v2 currentRoute];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 outputs];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  outputs = [currentRoute outputs];
+  v5 = [outputs countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -26,14 +26,14 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(outputs);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) portType];
-        v7 |= [v10 isEqualToString:AVAudioSessionPortHeadphones];
+        portType = [*(*(&v12 + 1) + 8 * i) portType];
+        v7 |= [portType isEqualToString:AVAudioSessionPortHeadphones];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [outputs countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);

@@ -1,17 +1,17 @@
 @interface CKActionMenuItemAccessibility
-- (void)setView:(id)a3;
+- (void)setView:(id)view;
 @end
 
 @implementation CKActionMenuItemAccessibility
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
   v6.receiver = self;
   v6.super_class = CKActionMenuItemAccessibility;
-  v4 = a3;
-  [(CKActionMenuItemAccessibility *)&v6 setView:v4];
+  viewCopy = view;
+  [(CKActionMenuItemAccessibility *)&v6 setView:viewCopy];
   v5 = [(CKActionMenuItemAccessibility *)self accessibilityLabel:v6.receiver];
-  [v4 setAccessibilityLabel:v5];
+  [viewCopy setAccessibilityLabel:v5];
 }
 
 @end

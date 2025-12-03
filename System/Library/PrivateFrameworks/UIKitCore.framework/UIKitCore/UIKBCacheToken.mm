@@ -1,34 +1,34 @@
 @interface UIKBCacheToken
-+ (id)tokenTemplateForKey:(id)a3 style:(int)a4 renderConfig:(id)a5 size:(CGSize)a6;
++ (id)tokenTemplateForKey:(id)key style:(int)style renderConfig:(id)config size:(CGSize)size;
 - (CGSize)size;
-- (UIKBCacheToken)initWithComponents:(id)a3 name:(id)a4;
+- (UIKBCacheToken)initWithComponents:(id)components name:(id)name;
 - (id)description;
-- (id)stringForComponentArray:(id)a3 additionalValues:(id)a4;
-- (id)stringForConstruction:(id)a3;
-- (id)stringForKey:(id)a3 state:(int)a4;
-- (id)stringForRenderFlags:(int64_t)a3 renderConfig:(id)a4;
-- (id)stringForSplitState:(BOOL)a3 handBias:(int64_t)a4;
-- (id)stringForState:(int)a3;
-- (int)_writeArray:(id)a3 toStr:(char *)a4 maxLen:(int)a5;
-- (int)_writeEdgeInsets:(UIEdgeInsets)a3 toStr:(char *)a4 maxLen:(int)a5;
-- (int)_writeNumber:(float)a3 toStr:(char *)a4;
-- (int)_writeString:(id)a3 toStr:(char *)a4 maxLen:(int)a5;
+- (id)stringForComponentArray:(id)array additionalValues:(id)values;
+- (id)stringForConstruction:(id)construction;
+- (id)stringForKey:(id)key state:(int)state;
+- (id)stringForRenderFlags:(int64_t)flags renderConfig:(id)config;
+- (id)stringForSplitState:(BOOL)state handBias:(int64_t)bias;
+- (id)stringForState:(int)state;
+- (int)_writeArray:(id)array toStr:(char *)str maxLen:(int)len;
+- (int)_writeEdgeInsets:(UIEdgeInsets)insets toStr:(char *)str maxLen:(int)len;
+- (int)_writeNumber:(float)number toStr:(char *)str;
+- (int)_writeString:(id)string toStr:(char *)str maxLen:(int)len;
 @end
 
 @implementation UIKBCacheToken
 
-- (UIKBCacheToken)initWithComponents:(id)a3 name:(id)a4
+- (UIKBCacheToken)initWithComponents:(id)components name:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  componentsCopy = components;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = UIKBCacheToken;
   v9 = [(UIKBCacheToken *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_components, a3);
-    objc_storeStrong(&v10->_name, a4);
+    objc_storeStrong(&v9->_components, components);
+    objc_storeStrong(&v10->_name, name);
     v10->_emptyFields = 0;
   }
 
@@ -44,17 +44,17 @@
   return result;
 }
 
-- (int)_writeString:(id)a3 toStr:(char *)a4 maxLen:(int)a5
+- (int)_writeString:(id)string toStr:(char *)str maxLen:(int)len
 {
   result = 0;
-  if (a3)
+  if (string)
   {
-    if ((a5 & 0x80000000) == 0)
+    if ((len & 0x80000000) == 0)
     {
       v9 = 0;
-      v7 = a5;
-      v8 = a3;
-      [v8 getBytes:a4 maxLength:v7 usedLength:&v9 encoding:4 options:0 range:0 remainingRange:{objc_msgSend(v8, "length"), 0}];
+      lenCopy = len;
+      stringCopy = string;
+      [stringCopy getBytes:str maxLength:lenCopy usedLength:&v9 encoding:4 options:0 range:0 remainingRange:{objc_msgSend(stringCopy, "length"), 0}];
 
       return v9;
     }
@@ -63,33 +63,33 @@
   return result;
 }
 
-- (int)_writeNumber:(float)a3 toStr:(char *)a4
+- (int)_writeNumber:(float)number toStr:(char *)str
 {
-  v4 = a3;
-  if (a3 <= 9 && v4 == a3)
+  numberCopy2 = number;
+  if (number <= 9 && numberCopy2 == number)
   {
-    *a4 = a3 | 0x30;
+    *str = number | 0x30;
     return 1;
   }
 
   else
   {
-    if (a3 >= 0.0)
+    if (number >= 0.0)
     {
       v6 = 0;
     }
 
     else
     {
-      *a4 = 45;
-      a3 = -a3;
-      v4 = a3;
+      *str = 45;
+      number = -number;
+      numberCopy2 = number;
       v6 = 1;
     }
 
     v8 = 0;
     v9 = 1.0;
-    if (a3 != v4)
+    if (number != numberCopy2)
     {
       v9 = 0.1;
     }
@@ -99,7 +99,7 @@
     {
       while (1)
       {
-        v11 = (a3 / v10);
+        v11 = (number / v10);
         if ((v8 & 1) == 0 && v11 < 1)
         {
           break;
@@ -107,12 +107,12 @@
 
         if (v10 == 0.1)
         {
-          a4[v6++] = 46;
+          str[v6++] = 46;
         }
 
         result = v6 + 1;
-        a4[v6] = v11 + 48;
-        a3 = a3 - (v10 * v11);
+        str[v6] = v11 + 48;
+        number = number - (v10 * v11);
         v10 = v10 / 10.0;
         v8 = 1;
         ++v6;
@@ -128,42 +128,42 @@
 
     while (v10 >= v9);
     result = v6 + 1;
-    a4[v6] = 48;
+    str[v6] = 48;
   }
 
   return result;
 }
 
-- (int)_writeEdgeInsets:(UIEdgeInsets)a3 toStr:(char *)a4 maxLen:(int)a5
+- (int)_writeEdgeInsets:(UIEdgeInsets)insets toStr:(char *)str maxLen:(int)len
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v11 = [(UIKBCacheToken *)self _writeString:@"insets:{" toStr:a4 maxLen:*&a5];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  v11 = [(UIKBCacheToken *)self _writeString:@"insets:{" toStr:str maxLen:*&len];
   *&v12 = top;
-  v13 = [(UIKBCacheToken *)self _writeNumber:&a4[v11] toStr:v12]+ v11;
-  a4[v13] = 44;
+  v13 = [(UIKBCacheToken *)self _writeNumber:&str[v11] toStr:v12]+ v11;
+  str[v13] = 44;
   *&v14 = left;
-  v15 = v13 + 1 + [(UIKBCacheToken *)self _writeNumber:&a4[v13 + 1] toStr:v14];
-  a4[v15] = 44;
+  v15 = v13 + 1 + [(UIKBCacheToken *)self _writeNumber:&str[v13 + 1] toStr:v14];
+  str[v15] = 44;
   *&v16 = bottom;
-  v17 = v15 + 1 + [(UIKBCacheToken *)self _writeNumber:&a4[v15 + 1] toStr:v16];
-  a4[v17] = 44;
+  v17 = v15 + 1 + [(UIKBCacheToken *)self _writeNumber:&str[v15 + 1] toStr:v16];
+  str[v17] = 44;
   *&v18 = right;
-  v19 = v17 + 1 + [(UIKBCacheToken *)self _writeNumber:&a4[v17 + 1] toStr:v18];
-  a4[v19] = 125;
+  v19 = v17 + 1 + [(UIKBCacheToken *)self _writeNumber:&str[v17 + 1] toStr:v18];
+  str[v19] = 125;
   return v19 + 1;
 }
 
-- (int)_writeArray:(id)a3 toStr:(char *)a4 maxLen:(int)a5
+- (int)_writeArray:(id)array toStr:(char *)str maxLen:(int)len
 {
   v23 = *MEMORY[0x1E69E9840];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = a3;
+  obj = array;
   v8 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
@@ -183,10 +183,10 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 += [(UIKBCacheToken *)self _writeString:v13 toStr:&a4[v10] maxLen:(a5 - v10)];
+          v10 += [(UIKBCacheToken *)self _writeString:v13 toStr:&str[v10] maxLen:(len - v10)];
           if (v10 >= 1)
           {
-            while (!a4[v10 - 1])
+            while (!str[v10 - 1])
             {
               v14 = __OFSUB__(v10--, 1);
               if ((v10 < 0) ^ v14 | (v10 == 0))
@@ -204,7 +204,7 @@
           if (objc_opt_isKindOfClass())
           {
             [v13 floatValue];
-            v15 = [(UIKBCacheToken *)self _writeNumber:&a4[v10] toStr:?];
+            v15 = [(UIKBCacheToken *)self _writeNumber:&str[v10] toStr:?];
           }
 
           else
@@ -216,14 +216,14 @@
             }
 
             [v13 UIEdgeInsetsValue];
-            v15 = [(UIKBCacheToken *)self _writeEdgeInsets:&a4[v10] toStr:(a5 - v10) maxLen:?];
+            v15 = [(UIKBCacheToken *)self _writeEdgeInsets:&str[v10] toStr:(len - v10) maxLen:?];
           }
 
           v10 += v15;
         }
 
 LABEL_17:
-        a4[v10++] = 59;
+        str[v10++] = 59;
       }
 
       v9 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -240,10 +240,10 @@ LABEL_21:
   return v10;
 }
 
-- (id)stringForConstruction:(id)a3
+- (id)stringForConstruction:(id)construction
 {
-  v5 = a3;
-  if (v5)
+  constructionCopy = construction;
+  if (constructionCopy)
   {
     v6 = malloc_type_malloc(0x100uLL, 0x100004077774924uLL);
     v7 = v6;
@@ -268,7 +268,7 @@ LABEL_21:
     v6[3] = 0u;
     *v6 = 0u;
     v6[1] = 0u;
-    v8 = v5[2](v5, v6, 255);
+    v8 = constructionCopy[2](constructionCopy, v6, 255);
     v9 = v8 >= 255 ? 255 : v8;
     v10 = v9 & ~(v9 >> 31);
     v7[v10] = 0;
@@ -278,8 +278,8 @@ LABEL_21:
       goto LABEL_9;
     }
 
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"UIKBCacheToken.m" lineNumber:222 description:{@"Invalid key string for token: %@", self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIKBCacheToken.m" lineNumber:222 description:{@"Invalid key string for token: %@", self}];
   }
 
   v7 = 0;
@@ -288,19 +288,19 @@ LABEL_9:
   return v7;
 }
 
-- (id)stringForComponentArray:(id)a3 additionalValues:(id)a4
+- (id)stringForComponentArray:(id)array additionalValues:(id)values
 {
-  v6 = a3;
-  v7 = a4;
+  arrayCopy = array;
+  valuesCopy = values;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __59__UIKBCacheToken_stringForComponentArray_additionalValues___block_invoke;
   v12[3] = &unk_1E710E7B8;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = arrayCopy;
+  v14 = valuesCopy;
+  v8 = valuesCopy;
+  v9 = arrayCopy;
   v10 = [(UIKBCacheToken *)self stringForConstruction:v12];
 
   return v10;
@@ -319,10 +319,10 @@ uint64_t __59__UIKBCacheToken_stringForComponentArray_additionalValues___block_i
   return v6;
 }
 
-- (id)stringForKey:(id)a3 state:(int)a4
+- (id)stringForKey:(id)key state:(int)state
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&state;
+  keyCopy = key;
   if ([(UIKBCacheToken *)self emptyFields]== 1)
   {
     v7 = [(UIKBCacheToken *)self stringForState:v4];
@@ -331,29 +331,29 @@ uint64_t __59__UIKBCacheToken_stringForComponentArray_additionalValues___block_i
   else
   {
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [(UIKBCacheToken *)self string];
-    v10 = [v6 cacheDisplayString];
-    v7 = [v8 stringWithValidatedFormat:v9 validFormatSpecifiers:@"%@ %d %d %d" error:0, v10, objc_msgSend(v6, "displayTypeHint"), v4, objc_msgSend(v6, "clipCorners")];
+    string = [(UIKBCacheToken *)self string];
+    cacheDisplayString = [keyCopy cacheDisplayString];
+    v7 = [v8 stringWithValidatedFormat:string validFormatSpecifiers:@"%@ %d %d %d" error:0, cacheDisplayString, objc_msgSend(keyCopy, "displayTypeHint"), v4, objc_msgSend(keyCopy, "clipCorners")];
   }
 
   return v7;
 }
 
-- (id)stringForState:(int)a3
+- (id)stringForState:(int)state
 {
-  v3 = *&a3;
+  v3 = *&state;
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(UIKBCacheToken *)self string];
-  v6 = [v4 stringWithValidatedFormat:v5 validFormatSpecifiers:@"%d" error:0, v3];
+  string = [(UIKBCacheToken *)self string];
+  v6 = [v4 stringWithValidatedFormat:string validFormatSpecifiers:@"%d" error:0, v3];
 
   return v6;
 }
 
-- (id)stringForSplitState:(BOOL)a3 handBias:(int64_t)a4
+- (id)stringForSplitState:(BOOL)state handBias:(int64_t)bias
 {
-  v5 = a3;
+  stateCopy = state;
   v7 = [(NSMutableArray *)self->_components count];
-  if (v5)
+  if (stateCopy)
   {
     v8 = @"split";
   }
@@ -363,7 +363,7 @@ uint64_t __59__UIKBCacheToken_stringForComponentArray_additionalValues___block_i
     v8 = @"default";
   }
 
-  if (v5)
+  if (stateCopy)
   {
     v9 = 3;
   }
@@ -373,7 +373,7 @@ uint64_t __59__UIKBCacheToken_stringForComponentArray_additionalValues___block_i
     v9 = 0;
   }
 
-  if (v5)
+  if (stateCopy)
   {
     v10 = v7 - 3;
   }
@@ -387,10 +387,10 @@ uint64_t __59__UIKBCacheToken_stringForComponentArray_additionalValues___block_i
   v12 = [(UIKBCacheToken *)self stringForComponentArray:v11 additionalValues:0];
   v13 = [MEMORY[0x1E696AD60] stringWithString:v8];
   v14 = v13;
-  if (a4)
+  if (bias)
   {
     v15 = @"right";
-    if (a4 == 2)
+    if (bias == 2)
     {
       v15 = @"left";
     }
@@ -400,8 +400,8 @@ uint64_t __59__UIKBCacheToken_stringForComponentArray_additionalValues___block_i
 
   if ([(NSSet *)self->_transformationIdentifiers count])
   {
-    v16 = [(NSSet *)self->_transformationIdentifiers allObjects];
-    v17 = [v16 componentsJoinedByString:{@", "}];
+    allObjects = [(NSSet *)self->_transformationIdentifiers allObjects];
+    v17 = [allObjects componentsJoinedByString:{@", "}];
     [v14 appendFormat:@"t:%@;", v17];
   }
 
@@ -410,18 +410,18 @@ uint64_t __59__UIKBCacheToken_stringForComponentArray_additionalValues___block_i
   return v18;
 }
 
-- (id)stringForRenderFlags:(int64_t)a3 renderConfig:(id)a4
+- (id)stringForRenderFlags:(int64_t)flags renderConfig:(id)config
 {
-  v6 = a4;
+  configCopy = config;
   components = self->_components;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __52__UIKBCacheToken_stringForRenderFlags_renderConfig___block_invoke;
   v11[3] = &unk_1E710E7E0;
   v11[4] = self;
-  v12 = v6;
-  v13 = a3;
-  v8 = v6;
+  v12 = configCopy;
+  flagsCopy = flags;
+  v8 = configCopy;
   v9 = [(UIKBCacheToken *)self stringForComponentArray:components additionalValues:v11];
 
   return v9;
@@ -445,17 +445,17 @@ uint64_t __52__UIKBCacheToken_stringForRenderFlags_renderConfig___block_invoke(u
   return v9 + [*(a1 + 32) _writeNumber:a2 + 2 toStr:v13];
 }
 
-+ (id)tokenTemplateForKey:(id)a3 style:(int)a4 renderConfig:(id)a5 size:(CGSize)a6
++ (id)tokenTemplateForKey:(id)key style:(int)style renderConfig:(id)config size:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
-  v8 = *&a4;
-  v10 = a5;
-  v11 = a3;
-  v12 = [v11 name];
-  v13 = [UIKBCacheToken tokenTemplateForKey:v11 name:v12 style:v8 renderConfig:v10 size:width, height];
+  height = size.height;
+  width = size.width;
+  v8 = *&style;
+  configCopy = config;
+  keyCopy = key;
+  name = [keyCopy name];
+  height = [UIKBCacheToken tokenTemplateForKey:keyCopy name:name style:v8 renderConfig:configCopy size:width, height];
 
-  return v13;
+  return height;
 }
 
 - (id)description
@@ -463,8 +463,8 @@ uint64_t __52__UIKBCacheToken_stringForRenderFlags_renderConfig___block_invoke(u
   v7.receiver = self;
   v7.super_class = UIKBCacheToken;
   v3 = [(UIKBCacheToken *)&v7 description];
-  v4 = [(UIKBCacheToken *)self string];
-  v5 = [v3 stringByAppendingFormat:@" <%@>", v4];
+  string = [(UIKBCacheToken *)self string];
+  v5 = [v3 stringByAppendingFormat:@" <%@>", string];
 
   return v5;
 }

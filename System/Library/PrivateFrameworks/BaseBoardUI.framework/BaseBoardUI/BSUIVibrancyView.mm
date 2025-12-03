@@ -1,9 +1,9 @@
 @interface BSUIVibrancyView
 + (BOOL)isDisabled;
-- (BSUIVibrancyView)initWithFrame:(CGRect)a3;
+- (BSUIVibrancyView)initWithFrame:(CGRect)frame;
 - (void)_updateFilterViewsIfNeeded;
 - (void)layoutSubviews;
-- (void)setConfiguration:(id)a3;
+- (void)setConfiguration:(id)configuration;
 @end
 
 @implementation BSUIVibrancyView
@@ -41,11 +41,11 @@ void __30__BSUIVibrancyView_isDisabled__block_invoke()
   _MergedGlobals_1_0 = [v0 BOOLForKey:@"BSUIVibrancyEffectViewDisabled"];
 }
 
-- (BSUIVibrancyView)initWithFrame:(CGRect)a3
+- (BSUIVibrancyView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = BSUIVibrancyView;
-  v3 = [(BSUIVibrancyView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BSUIVibrancyView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(BSUIVibrancyConfiguration);
@@ -55,12 +55,12 @@ void __30__BSUIVibrancyView_isDisabled__block_invoke()
   return v3;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v6 = a3;
+  configurationCopy = configuration;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [configurationCopy copy];
     configuration = self->_configuration;
     self->_configuration = v4;
 

@@ -48,7 +48,7 @@
 
 - (uint64_t)Any
 {
-  v4 = *(a1 + 32);
+  v4 = *(self + 32);
   if (a2)
   {
     v5 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
@@ -65,12 +65,12 @@
 
 - (uint64_t)String
 {
-  result = *a1;
+  result = *self;
   if (!result)
   {
     _sSDySSypGMaTm_0(255, &lazy cache variable for type metadata for [String : String]);
     result = swift_getWitnessTable();
-    atomic_store(result, a1);
+    atomic_store(result, self);
   }
 
   return result;

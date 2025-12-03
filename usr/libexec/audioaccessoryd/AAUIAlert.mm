@@ -1,17 +1,17 @@
 @interface AAUIAlert
 - (void)_invalidateActiveAlert;
-- (void)deliverAlertWithHeaderKey:(id)a3 messageKey:(id)a4 defaultButtonKey:(id)a5 alternativeButtonKey:(id)a6 andCompletion:(id)a7;
+- (void)deliverAlertWithHeaderKey:(id)key messageKey:(id)messageKey defaultButtonKey:(id)buttonKey alternativeButtonKey:(id)alternativeButtonKey andCompletion:(id)completion;
 @end
 
 @implementation AAUIAlert
 
-- (void)deliverAlertWithHeaderKey:(id)a3 messageKey:(id)a4 defaultButtonKey:(id)a5 alternativeButtonKey:(id)a6 andCompletion:(id)a7
+- (void)deliverAlertWithHeaderKey:(id)key messageKey:(id)messageKey defaultButtonKey:(id)buttonKey alternativeButtonKey:(id)alternativeButtonKey andCompletion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  keyCopy = key;
+  messageKeyCopy = messageKey;
+  buttonKeyCopy = buttonKey;
+  alternativeButtonKeyCopy = alternativeButtonKey;
+  completionCopy = completion;
   if (self->_activeAlert)
   {
     if (dword_1002F6690 <= 30 && (dword_1002F6690 != -1 || _LogCategory_Initialize()))
@@ -27,17 +27,17 @@
   v23[1] = 3221225472;
   v23[2] = sub_10003BFE0;
   v23[3] = &unk_1002B7D00;
-  v24 = v13;
-  v25 = v14;
-  v26 = v12;
-  v27 = v15;
-  v28 = self;
-  v29 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v12;
-  v21 = v14;
-  v22 = v13;
+  v24 = messageKeyCopy;
+  v25 = buttonKeyCopy;
+  v26 = keyCopy;
+  v27 = alternativeButtonKeyCopy;
+  selfCopy = self;
+  v29 = completionCopy;
+  v18 = completionCopy;
+  v19 = alternativeButtonKeyCopy;
+  v20 = keyCopy;
+  v21 = buttonKeyCopy;
+  v22 = messageKeyCopy;
   dispatch_async(v17, v23);
 }
 

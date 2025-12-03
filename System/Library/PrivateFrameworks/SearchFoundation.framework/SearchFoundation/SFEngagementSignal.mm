@@ -1,89 +1,89 @@
 @interface SFEngagementSignal
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFEngagementSignal)initWithCoder:(id)a3;
-- (SFEngagementSignal)initWithProtobuf:(id)a3;
-- (SFEngagementSignal)initWithVersion:(id)a3 serverScore:(id)a4 severScoreConfidence:(id)a5 localScore:(id)a6 localScoreConfidence:(id)a7 domainScores:(id)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFEngagementSignal)initWithCoder:(id)coder;
+- (SFEngagementSignal)initWithProtobuf:(id)protobuf;
+- (SFEngagementSignal)initWithVersion:(id)version serverScore:(id)score severScoreConfidence:(id)confidence localScore:(id)localScore localScoreConfidence:(id)scoreConfidence domainScores:(id)scores;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFEngagementSignal
 
-- (SFEngagementSignal)initWithVersion:(id)a3 serverScore:(id)a4 severScoreConfidence:(id)a5 localScore:(id)a6 localScoreConfidence:(id)a7 domainScores:(id)a8
+- (SFEngagementSignal)initWithVersion:(id)version serverScore:(id)score severScoreConfidence:(id)confidence localScore:(id)localScore localScoreConfidence:(id)scoreConfidence domainScores:(id)scores
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  versionCopy = version;
+  scoreCopy = score;
+  confidenceCopy = confidence;
+  localScoreCopy = localScore;
+  scoreConfidenceCopy = scoreConfidence;
+  scoresCopy = scores;
   v23.receiver = self;
   v23.super_class = SFEngagementSignal;
   v20 = [(SFEngagementSignal *)&v23 init];
   v21 = v20;
   if (v20)
   {
-    [(SFEngagementSignal *)v20 setVersion:v14];
-    [(SFEngagementSignal *)v21 setServerScore:v15];
-    [(SFEngagementSignal *)v21 setServerScoreConfidence:v16];
-    [(SFEngagementSignal *)v21 setLocalScore:v17];
-    [(SFEngagementSignal *)v21 setLocalScoreConfidence:v18];
-    [(SFEngagementSignal *)v21 setDomainEngagementScores:v19];
+    [(SFEngagementSignal *)v20 setVersion:versionCopy];
+    [(SFEngagementSignal *)v21 setServerScore:scoreCopy];
+    [(SFEngagementSignal *)v21 setServerScoreConfidence:confidenceCopy];
+    [(SFEngagementSignal *)v21 setLocalScore:localScoreCopy];
+    [(SFEngagementSignal *)v21 setLocalScoreConfidence:scoreConfidenceCopy];
+    [(SFEngagementSignal *)v21 setDomainEngagementScores:scoresCopy];
   }
 
   return v21;
 }
 
-- (SFEngagementSignal)initWithProtobuf:(id)a3
+- (SFEngagementSignal)initWithProtobuf:(id)protobuf
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v30.receiver = self;
   v30.super_class = SFEngagementSignal;
   v5 = [(SFEngagementSignal *)&v30 init];
   if (v5)
   {
-    if ([v4 version])
+    if ([protobufCopy version])
     {
-      v6 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "version")}];
+      v6 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(protobufCopy, "version")}];
       [(SFEngagementSignal *)v5 setVersion:v6];
     }
 
-    [v4 serverScore];
+    [protobufCopy serverScore];
     if (v7 != 0.0)
     {
       v8 = MEMORY[0x1E696AD98];
-      [v4 serverScore];
+      [protobufCopy serverScore];
       v9 = [v8 numberWithFloat:?];
       [(SFEngagementSignal *)v5 setServerScore:v9];
     }
 
-    [v4 localScore];
+    [protobufCopy localScore];
     if (v10 != 0.0)
     {
       v11 = MEMORY[0x1E696AD98];
-      [v4 localScore];
+      [protobufCopy localScore];
       v12 = [v11 numberWithFloat:?];
       [(SFEngagementSignal *)v5 setLocalScore:v12];
     }
 
-    if ([v4 serverScoreConfidence])
+    if ([protobufCopy serverScoreConfidence])
     {
-      v13 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "serverScoreConfidence")}];
+      v13 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(protobufCopy, "serverScoreConfidence")}];
       [(SFEngagementSignal *)v5 setServerScoreConfidence:v13];
     }
 
-    if ([v4 localScoreConfidence])
+    if ([protobufCopy localScoreConfidence])
     {
-      v14 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "localScoreConfidence")}];
+      v14 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(protobufCopy, "localScoreConfidence")}];
       [(SFEngagementSignal *)v5 setLocalScoreConfidence:v14];
     }
 
-    v15 = [v4 domainEngagementScores];
-    if (v15)
+    domainEngagementScores = [protobufCopy domainEngagementScores];
+    if (domainEngagementScores)
     {
       v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -97,8 +97,8 @@
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v17 = [v4 domainEngagementScores];
-    v18 = [v17 countByEnumeratingWithState:&v26 objects:v31 count:16];
+    domainEngagementScores2 = [protobufCopy domainEngagementScores];
+    v18 = [domainEngagementScores2 countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v18)
     {
       v19 = v18;
@@ -109,7 +109,7 @@
         {
           if (*v27 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(domainEngagementScores2);
           }
 
           v22 = [[SFDomainEngagementScore alloc] initWithProtobuf:*(*(&v26 + 1) + 8 * i)];
@@ -119,7 +119,7 @@
           }
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v26 objects:v31 count:16];
+        v19 = [domainEngagementScores2 countByEnumeratingWithState:&v26 objects:v31 count:16];
       }
 
       while (v19);
@@ -135,38 +135,38 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SFEngagementSignal *)self version];
-  v4 = [v3 hash];
-  v5 = [(SFEngagementSignal *)self serverScore];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(SFEngagementSignal *)self localScore];
-  v8 = [v7 hash];
-  v9 = [(SFEngagementSignal *)self serverScoreConfidence];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(SFEngagementSignal *)self localScoreConfidence];
-  v12 = [v11 hash];
-  v13 = [(SFEngagementSignal *)self domainEngagementScores];
-  v14 = v12 ^ [v13 hash];
+  version = [(SFEngagementSignal *)self version];
+  v4 = [version hash];
+  serverScore = [(SFEngagementSignal *)self serverScore];
+  v6 = [serverScore hash] ^ v4;
+  localScore = [(SFEngagementSignal *)self localScore];
+  v8 = [localScore hash];
+  serverScoreConfidence = [(SFEngagementSignal *)self serverScoreConfidence];
+  v10 = v6 ^ v8 ^ [serverScoreConfidence hash];
+  localScoreConfidence = [(SFEngagementSignal *)self localScoreConfidence];
+  v12 = [localScoreConfidence hash];
+  domainEngagementScores = [(SFEngagementSignal *)self domainEngagementScores];
+  v14 = v12 ^ [domainEngagementScores hash];
 
   return v10 ^ v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFEngagementSignal *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFEngagementSignal *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(SFEngagementSignal *)self version];
-      v8 = [(SFEngagementSignal *)v6 version];
-      if ((v7 != 0) == (v8 == 0))
+      v6 = equalCopy;
+      version = [(SFEngagementSignal *)self version];
+      version2 = [(SFEngagementSignal *)v6 version];
+      if ((version != 0) == (version2 == 0))
       {
         v11 = 0;
 LABEL_36:
@@ -174,33 +174,33 @@ LABEL_36:
         goto LABEL_37;
       }
 
-      v9 = [(SFEngagementSignal *)self version];
-      if (v9)
+      version3 = [(SFEngagementSignal *)self version];
+      if (version3)
       {
-        v10 = [(SFEngagementSignal *)self version];
-        v57 = [(SFEngagementSignal *)v6 version];
-        if (![v10 isEqual:?])
+        version4 = [(SFEngagementSignal *)self version];
+        version5 = [(SFEngagementSignal *)v6 version];
+        if (![version4 isEqual:?])
         {
           v11 = 0;
           goto LABEL_34;
         }
 
-        v54 = v10;
+        v54 = version4;
       }
 
-      v56 = [(SFEngagementSignal *)self serverScore];
-      v55 = [(SFEngagementSignal *)v6 serverScore];
-      if ((v56 != 0) == (v55 == 0))
+      serverScore = [(SFEngagementSignal *)self serverScore];
+      serverScore2 = [(SFEngagementSignal *)v6 serverScore];
+      if ((serverScore != 0) == (serverScore2 == 0))
       {
         goto LABEL_32;
       }
 
-      v12 = [(SFEngagementSignal *)self serverScore];
-      if (v12)
+      serverScore3 = [(SFEngagementSignal *)self serverScore];
+      if (serverScore3)
       {
-        v13 = [(SFEngagementSignal *)self serverScore];
-        v3 = [(SFEngagementSignal *)v6 serverScore];
-        if (([v13 isEqual:v3] & 1) == 0)
+        serverScore4 = [(SFEngagementSignal *)self serverScore];
+        serverScore5 = [(SFEngagementSignal *)v6 serverScore];
+        if (([serverScore4 isEqual:serverScore5] & 1) == 0)
         {
 
 LABEL_31:
@@ -210,38 +210,38 @@ LABEL_32:
           goto LABEL_33;
         }
 
-        v51 = v13;
-        v53 = v8;
-        v14 = v57;
-        v15 = v12;
+        v51 = serverScore4;
+        v53 = version2;
+        v14 = version5;
+        v15 = serverScore3;
       }
 
       else
       {
-        v53 = v8;
-        v14 = v57;
+        v53 = version2;
+        v14 = version5;
         v15 = 0;
       }
 
-      v52 = v3;
-      v57 = v14;
-      v16 = [(SFEngagementSignal *)self localScore];
-      v17 = [(SFEngagementSignal *)v6 localScore];
-      v12 = v15;
-      v8 = v53;
-      if ((v16 != 0) != (v17 == 0))
+      v52 = serverScore5;
+      version5 = v14;
+      localScore = [(SFEngagementSignal *)self localScore];
+      localScore2 = [(SFEngagementSignal *)v6 localScore];
+      serverScore3 = v15;
+      version2 = v53;
+      if ((localScore != 0) != (localScore2 == 0))
       {
-        v50 = v17;
-        v49 = [(SFEngagementSignal *)self localScore];
-        if (v49)
+        v50 = localScore2;
+        localScore3 = [(SFEngagementSignal *)self localScore];
+        if (localScore3)
         {
-          v18 = [(SFEngagementSignal *)self localScore];
-          v46 = [(SFEngagementSignal *)v6 localScore];
-          v47 = v18;
-          if (![v18 isEqual:?])
+          localScore4 = [(SFEngagementSignal *)self localScore];
+          localScore5 = [(SFEngagementSignal *)v6 localScore];
+          v47 = localScore4;
+          if (![localScore4 isEqual:?])
           {
             v11 = 0;
-            v24 = v49;
+            v24 = localScore3;
             goto LABEL_56;
           }
 
@@ -253,38 +253,38 @@ LABEL_32:
           v48 = v15;
         }
 
-        v19 = [(SFEngagementSignal *)self serverScoreConfidence];
-        v20 = [(SFEngagementSignal *)v6 serverScoreConfidence];
-        if ((v19 != 0) != (v20 == 0))
+        serverScoreConfidence = [(SFEngagementSignal *)self serverScoreConfidence];
+        serverScoreConfidence2 = [(SFEngagementSignal *)v6 serverScoreConfidence];
+        if ((serverScoreConfidence != 0) != (serverScoreConfidence2 == 0))
         {
-          v45 = v20;
+          v45 = serverScoreConfidence2;
           [(SFEngagementSignal *)self serverScoreConfidence];
-          v12 = v48;
-          v44 = v43 = v19;
+          serverScore3 = v48;
+          v44 = v43 = serverScoreConfidence;
           if (v44)
           {
-            v21 = [(SFEngagementSignal *)self serverScoreConfidence];
-            v41 = [(SFEngagementSignal *)v6 serverScoreConfidence];
-            v42 = v21;
-            if (![v21 isEqual:?])
+            serverScoreConfidence3 = [(SFEngagementSignal *)self serverScoreConfidence];
+            serverScoreConfidence4 = [(SFEngagementSignal *)v6 serverScoreConfidence];
+            v42 = serverScoreConfidence3;
+            if (![serverScoreConfidence3 isEqual:?])
             {
               v11 = 0;
               v22 = v44;
 LABEL_54:
 
 LABEL_55:
-              v24 = v49;
-              if (!v49)
+              v24 = localScore3;
+              if (!localScore3)
               {
 LABEL_57:
 
-                if (v12)
+                if (serverScore3)
                 {
                 }
 
 LABEL_33:
-                v10 = v54;
-                if (!v9)
+                version4 = v54;
+                if (!version3)
                 {
 LABEL_35:
 
@@ -302,20 +302,20 @@ LABEL_56:
             }
           }
 
-          v25 = [(SFEngagementSignal *)self localScoreConfidence];
-          v26 = [(SFEngagementSignal *)v6 localScoreConfidence];
-          if ((v25 != 0) == (v26 == 0))
+          localScoreConfidence = [(SFEngagementSignal *)self localScoreConfidence];
+          localScoreConfidence2 = [(SFEngagementSignal *)v6 localScoreConfidence];
+          if ((localScoreConfidence != 0) == (localScoreConfidence2 == 0))
           {
 
             v11 = 0;
-            v12 = v48;
+            serverScore3 = v48;
             goto LABEL_53;
           }
 
-          v39 = v25;
-          v40 = v26;
+          v39 = localScoreConfidence;
+          v40 = localScoreConfidence2;
           [(SFEngagementSignal *)self localScoreConfidence];
-          v38 = v12 = v48;
+          v38 = serverScore3 = v48;
           if (v38 && (-[SFEngagementSignal localScoreConfidence](self, "localScoreConfidence"), v27 = objc_claimAutoreleasedReturnValue(), -[SFEngagementSignal localScoreConfidence](v6, "localScoreConfidence"), v36 = objc_claimAutoreleasedReturnValue(), v37 = v27, ![v27 isEqual:?]))
           {
             v11 = 0;
@@ -324,26 +324,26 @@ LABEL_56:
 
           else
           {
-            v28 = [(SFEngagementSignal *)self domainEngagementScores];
-            v29 = [(SFEngagementSignal *)v6 domainEngagementScores];
-            if ((v28 != 0) == (v29 == 0))
+            domainEngagementScores = [(SFEngagementSignal *)self domainEngagementScores];
+            domainEngagementScores2 = [(SFEngagementSignal *)v6 domainEngagementScores];
+            if ((domainEngagementScores != 0) == (domainEngagementScores2 == 0))
             {
 
               v11 = 0;
-              v12 = v48;
+              serverScore3 = v48;
             }
 
             else
             {
-              v35 = v29;
-              v30 = [(SFEngagementSignal *)self domainEngagementScores];
-              v12 = v48;
-              if (v30)
+              v35 = domainEngagementScores2;
+              domainEngagementScores3 = [(SFEngagementSignal *)self domainEngagementScores];
+              serverScore3 = v48;
+              if (domainEngagementScores3)
               {
-                v34 = v30;
-                v33 = [(SFEngagementSignal *)self domainEngagementScores];
-                v31 = [(SFEngagementSignal *)v6 domainEngagementScores];
-                v11 = [v33 isEqual:?];
+                v34 = domainEngagementScores3;
+                domainEngagementScores4 = [(SFEngagementSignal *)self domainEngagementScores];
+                domainEngagementScores5 = [(SFEngagementSignal *)v6 domainEngagementScores];
+                v11 = [domainEngagementScores4 isEqual:?];
               }
 
               else
@@ -371,15 +371,15 @@ LABEL_53:
           goto LABEL_54;
         }
 
-        v12 = v48;
-        if (v49)
+        serverScore3 = v48;
+        if (localScore3)
         {
         }
 
-        v17 = v50;
+        localScore2 = v50;
       }
 
-      if (v12)
+      if (serverScore3)
       {
       }
 
@@ -394,31 +394,31 @@ LABEL_37:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFEngagementSignal *)self version];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  version = [(SFEngagementSignal *)self version];
+  v6 = [version copy];
   [v4 setVersion:v6];
 
-  v7 = [(SFEngagementSignal *)self serverScore];
-  v8 = [v7 copy];
+  serverScore = [(SFEngagementSignal *)self serverScore];
+  v8 = [serverScore copy];
   [v4 setServerScore:v8];
 
-  v9 = [(SFEngagementSignal *)self localScore];
-  v10 = [v9 copy];
+  localScore = [(SFEngagementSignal *)self localScore];
+  v10 = [localScore copy];
   [v4 setLocalScore:v10];
 
-  v11 = [(SFEngagementSignal *)self serverScoreConfidence];
-  v12 = [v11 copy];
+  serverScoreConfidence = [(SFEngagementSignal *)self serverScoreConfidence];
+  v12 = [serverScoreConfidence copy];
   [v4 setServerScoreConfidence:v12];
 
-  v13 = [(SFEngagementSignal *)self localScoreConfidence];
-  v14 = [v13 copy];
+  localScoreConfidence = [(SFEngagementSignal *)self localScoreConfidence];
+  v14 = [localScoreConfidence copy];
   [v4 setLocalScoreConfidence:v14];
 
-  v15 = [(SFEngagementSignal *)self domainEngagementScores];
-  v16 = [v15 copy];
+  domainEngagementScores = [(SFEngagementSignal *)self domainEngagementScores];
+  v16 = [domainEngagementScores copy];
   [v4 setDomainEngagementScores:v16];
 
   return v4;
@@ -427,31 +427,31 @@ LABEL_37:
 - (NSData)jsonData
 {
   v2 = [[_SFPBEngagementSignal alloc] initWithFacade:self];
-  v3 = [(_SFPBEngagementSignal *)v2 jsonData];
+  jsonData = [(_SFPBEngagementSignal *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBEngagementSignal alloc] initWithFacade:self];
-  v3 = [(_SFPBEngagementSignal *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBEngagementSignal *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBEngagementSignal alloc] initWithFacade:self];
-  v5 = [(_SFPBEngagementSignal *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBEngagementSignal *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFEngagementSignal)initWithCoder:(id)a3
+- (SFEngagementSignal)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBEngagementSignal alloc] initWithData:v5];
   v7 = [(SFEngagementSignal *)self initWithProtobuf:v6];

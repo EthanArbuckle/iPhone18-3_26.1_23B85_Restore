@@ -1,28 +1,28 @@
 @interface _UIMainMenuHostKeyboardShortcut
-- (BOOL)isEqual:(id)a3;
-- (_UIMainMenuHostKeyboardShortcut)initWithKeyboardShortcut:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_UIMainMenuHostKeyboardShortcut)initWithKeyboardShortcut:(id)shortcut;
 - (id)description;
 @end
 
 @implementation _UIMainMenuHostKeyboardShortcut
 
-- (_UIMainMenuHostKeyboardShortcut)initWithKeyboardShortcut:(id)a3
+- (_UIMainMenuHostKeyboardShortcut)initWithKeyboardShortcut:(id)shortcut
 {
-  v5 = a3;
+  shortcutCopy = shortcut;
   v6 = [(_UIMainMenuHostKeyboardShortcut *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_keyboardShortcut, a3);
+    objc_storeStrong(&v6->_keyboardShortcut, shortcut);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -34,7 +34,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       keyboardShortcut = v7->_keyboardShortcut;
       v9 = self->_keyboardShortcut;
       v10 = keyboardShortcut;
@@ -67,9 +67,9 @@
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   v4 = [v3 appendObject:self->_keyboardShortcut withName:@"keyboardShortcut"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 @end

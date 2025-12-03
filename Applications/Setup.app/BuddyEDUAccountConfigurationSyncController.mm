@@ -1,8 +1,8 @@
 @interface BuddyEDUAccountConfigurationSyncController
 + (BOOL)controllerNeedsToRun;
 - (BFFFlowItemDelegate)delegate;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
-- (void)startFlowItem:(BOOL)a3;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
+- (void)startFlowItem:(BOOL)item;
 @end
 
 @implementation BuddyEDUAccountConfigurationSyncController
@@ -11,7 +11,7 @@
 {
   v2 = +[BYPreferencesController buddyPreferences];
   v3 = [v2 objectForKey:BYBuddyDoneKey];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
   v5 = +[BYManagedAppleIDBootstrap isMultiUser];
   v6 = 0;
@@ -25,7 +25,7 @@
       v6 = 1;
       if ((v8 & 1) == 0)
       {
-        return !(v4 & 1);
+        return !(bOOLValue & 1);
       }
     }
   }
@@ -33,12 +33,12 @@
   return v6;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v3 = +[BYManagedAppleIDBootstrap sharedManager];
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
@@ -52,10 +52,10 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)startFlowItem:(BOOL)a3
+- (void)startFlowItem:(BOOL)item
 {
-  v3 = [(BuddyEDUAccountConfigurationSyncController *)self delegate];
-  [(BFFFlowItemDelegate *)v3 flowItemDone:self nextItemClass:objc_opt_class()];
+  delegate = [(BuddyEDUAccountConfigurationSyncController *)self delegate];
+  [(BFFFlowItemDelegate *)delegate flowItemDone:self nextItemClass:objc_opt_class()];
 }
 
 - (BFFFlowItemDelegate)delegate

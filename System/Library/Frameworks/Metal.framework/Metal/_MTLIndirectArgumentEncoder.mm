@@ -1,22 +1,22 @@
 @interface _MTLIndirectArgumentEncoder
-- (_MTLIndirectArgumentEncoder)initWithLayout:(id)a3 device:(id)a4;
-- (id)newArgumentEncoderForBufferAtIndex:(unint64_t)a3;
+- (_MTLIndirectArgumentEncoder)initWithLayout:(id)layout device:(id)device;
+- (id)newArgumentEncoderForBufferAtIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)setAccelerationStructure:(id)a3 atIndex:(unint64_t)a4;
-- (void)setArgumentBuffer:(id)a3 startOffset:(unint64_t)a4 arrayElement:(unint64_t)a5;
+- (void)setAccelerationStructure:(id)structure atIndex:(unint64_t)index;
+- (void)setArgumentBuffer:(id)buffer startOffset:(unint64_t)offset arrayElement:(unint64_t)element;
 @end
 
 @implementation _MTLIndirectArgumentEncoder
 
-- (_MTLIndirectArgumentEncoder)initWithLayout:(id)a3 device:(id)a4
+- (_MTLIndirectArgumentEncoder)initWithLayout:(id)layout device:(id)device
 {
   v8.receiver = self;
   v8.super_class = _MTLIndirectArgumentEncoder;
   v6 = [(_MTLObjectWithLabel *)&v8 init];
   if (v6)
   {
-    v6->_device = a4;
-    v6->_layout = a3;
+    v6->_device = device;
+    v6->_layout = layout;
   }
 
   return v6;
@@ -32,16 +32,16 @@
   [(_MTLObjectWithLabel *)&v3 dealloc];
 }
 
-- (void)setArgumentBuffer:(id)a3 startOffset:(unint64_t)a4 arrayElement:(unint64_t)a5
+- (void)setArgumentBuffer:(id)buffer startOffset:(unint64_t)offset arrayElement:(unint64_t)element
 {
-  v7 = a4 + [(_MTLIndirectArgumentEncoder *)self encodedLength]* a5;
+  v7 = offset + [(_MTLIndirectArgumentEncoder *)self encodedLength]* element;
 
-  [(_MTLIndirectArgumentEncoder *)self setArgumentBuffer:a3 offset:v7];
+  [(_MTLIndirectArgumentEncoder *)self setArgumentBuffer:buffer offset:v7];
 }
 
-- (id)newArgumentEncoderForBufferAtIndex:(unint64_t)a3
+- (id)newArgumentEncoderForBufferAtIndex:(unint64_t)index
 {
-  result = [(_MTLIndirectArgumentBufferLayout *)self->_layout bufferLayoutForResourceAtIndex:a3];
+  result = [(_MTLIndirectArgumentBufferLayout *)self->_layout bufferLayoutForResourceAtIndex:index];
   if (result)
   {
     v5 = result;
@@ -53,14 +53,14 @@
   return result;
 }
 
-- (void)setAccelerationStructure:(id)a3 atIndex:(unint64_t)a4
+- (void)setAccelerationStructure:(id)structure atIndex:(unint64_t)index
 {
   if (([(MTLDevice *)[(_MTLIndirectArgumentEncoder *)self device] requiresRaytracingEmulation]& 1) != 0)
   {
-    v8 = [a3 buffer];
-    v9 = [a3 bufferOffset];
+    buffer = [structure buffer];
+    bufferOffset = [structure bufferOffset];
 
-    [(_MTLIndirectArgumentEncoder *)self setBuffer:v8 offset:v9 atIndex:a4];
+    [(_MTLIndirectArgumentEncoder *)self setBuffer:buffer offset:bufferOffset atIndex:index];
   }
 
   else

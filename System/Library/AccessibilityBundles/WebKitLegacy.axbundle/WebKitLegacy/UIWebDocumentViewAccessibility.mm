@@ -1,9 +1,9 @@
 @interface UIWebDocumentViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityHasTextOperations;
 - (BOOL)_accessibilityIsFirstElementForFocus;
 - (BOOL)_accessibilityIsScrollAncestor;
-- (BOOL)_accessibilityScrollToFrame:(CGRect)a3 forView:(id)a4;
+- (BOOL)_accessibilityScrollToFrame:(CGRect)frame forView:(id)view;
 - (BOOL)_accessibilityScrollingEnabled;
 - (BOOL)accessibilityScrollDownPage;
 - (BOOL)accessibilityScrollLeftPage;
@@ -11,10 +11,10 @@
 - (BOOL)accessibilityScrollUpPage;
 - (CGRect)_accessibilityContentFrame;
 - (CGRect)accessibilityFrame;
-- (id)_accessibilityAttributedValueForRange:(_NSRange *)a3;
-- (id)_accessibilityDataDetectorScheme:(CGPoint)a3;
+- (id)_accessibilityAttributedValueForRange:(_NSRange *)range;
+- (id)_accessibilityDataDetectorScheme:(CGPoint)scheme;
 - (id)_accessibilityDocumentView;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)_accessibilityResponderElement;
 - (id)_accessibilityRootObject;
 - (id)_accessibilityScrollStatus;
@@ -24,181 +24,181 @@
 - (int64_t)accessibilityContainerType;
 - (unint64_t)accessibilityTraits;
 - (void)_accessibilityDocumentView;
-- (void)_accessibilityZoomAtPoint:(CGPoint)a3 zoomIn:(BOOL)a4;
-- (void)_axZoomToCenterWithScale:(CGPoint)a3 scale:(double)a4;
+- (void)_accessibilityZoomAtPoint:(CGPoint)point zoomIn:(BOOL)in;
+- (void)_axZoomToCenterWithScale:(CGPoint)scale scale:(double)a4;
 - (void)clearSelection;
-- (void)copy:(id)a3;
-- (void)cut:(id)a3;
+- (void)copy:(id)copy;
+- (void)cut:(id)cut;
 - (void)dealloc;
-- (void)handleKeyWebEvent:(id)a3;
-- (void)paste:(id)a3;
-- (void)selectAll:(id)a3;
-- (void)setSelectedDOMRange:(id)a3 affinity:(unint64_t)a4;
-- (void)setSelectedTextRange:(id)a3;
-- (void)stopLoading:(id)a3;
-- (void)toggleBoldface:(id)a3;
-- (void)toggleItalics:(id)a3;
-- (void)toggleUnderline:(id)a3;
-- (void)webView:(id)a3 didFailLoadWithError:(id)a4 forFrame:(id)a5;
-- (void)webView:(id)a3 didFinishLoadForFrame:(id)a4;
-- (void)webView:(id)a3 willShowFullScreenForPlugInView:(id)a4;
+- (void)handleKeyWebEvent:(id)event;
+- (void)paste:(id)paste;
+- (void)selectAll:(id)all;
+- (void)setSelectedDOMRange:(id)range affinity:(unint64_t)affinity;
+- (void)setSelectedTextRange:(id)range;
+- (void)stopLoading:(id)loading;
+- (void)toggleBoldface:(id)boldface;
+- (void)toggleItalics:(id)italics;
+- (void)toggleUnderline:(id)underline;
+- (void)webView:(id)view didFailLoadWithError:(id)error forFrame:(id)frame;
+- (void)webView:(id)view didFinishLoadForFrame:(id)frame;
+- (void)webView:(id)view willShowFullScreenForPlugInView:(id)inView;
 @end
 
 @implementation UIWebDocumentViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UIScrollView" hasInstanceMethod:@"_zoomToCenter: scale: duration:" withFullSignature:{"v", "{CGPoint=dd}", "d", "d", 0}];
-  [v3 validateClass:@"UIWebDocumentView" hasInstanceMethod:@"_focusedOrMainFrame" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIWebDocumentView" hasInstanceMethod:@"_zoomedDocumentScale" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"UIWebDocumentView" hasInstanceMethod:@"approximateNodeAtViewportLocation:" withFullSignature:{"@", "^{CGPoint=dd}", 0}];
-  [v3 validateClass:@"UIWebDocumentView" hasInstanceMethod:@"clearSelection" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"UIWebDocumentView" hasInstanceMethod:@"didEndZoom" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"UIWebDocumentView" hasInstanceMethod:@"didZoom" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"UIWebDocumentView" hasInstanceMethod:@"hasEditableSelection" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"UIWebDocumentView" hasInstanceMethod:@"hasSelection" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"UIWebDocumentView" hasInstanceMethod:@"inputDelegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIWebDocumentView" hasInstanceMethod:@"keyboardInputShouldDelete:" withFullSignature:{"B", "@", 0}];
-  [v3 validateClass:@"UIWebDocumentView" hasInstanceMethod:@"maximumScale" withFullSignature:{"f", 0}];
-  [v3 validateClass:@"UIWebDocumentView" hasInstanceMethod:@"minimumScale" withFullSignature:{"f", 0}];
-  [v3 validateClass:@"UIWebDocumentView" hasInstanceMethod:@"redrawScaledDocument" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"UIWebDocumentView" hasInstanceMethod:@"setSelectedDOMRange: affinity:" withFullSignature:{"v", "@", "Q", 0}];
-  [v3 validateClass:@"UIWebDocumentView" hasInstanceMethod:@"stopLoading:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"UIWebDocumentView" hasInstanceMethod:@"textInputTraits" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIWebDocumentView" hasInstanceMethod:@"toggleBoldface:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"UIWebDocumentView" hasInstanceMethod:@"toggleItalics:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"UIWebDocumentView" hasInstanceMethod:@"toggleUnderline:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"UIWebDocumentView" hasInstanceMethod:@"updatesScrollView" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"UIWebDocumentView" hasInstanceMethod:@"webView: didFinishLoadForFrame:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"UIWebDocumentView" hasInstanceMethod:@"webView: willShowFullScreenForPlugInView:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"UIWebDocumentView" hasInstanceMethod:@"willStartZoom" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"UIWebDocumentView" hasInstanceMethod:@"handleKeyWebEvent:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"UIWebDocumentView" hasInstanceVariable:@"_documentScale" withType:"f"];
-  [v3 validateClass:@"UIWebDocumentView" hasInstanceVariable:@"_plugInViews" withType:"^{__CFDictionary=}"];
-  [v3 validateClass:@"UIWebDocumentView" hasInstanceVariable:@"_webView" withType:"WebView"];
-  [v3 validateClass:@"UIWebDocumentView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"UIWebDocumentView"];
-  [v3 validateClass:@"WebView"];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"_accessibleSubviews" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DOMNode" hasInstanceMethod:@"handleKeyWebEvent:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UIScrollView" hasInstanceMethod:@"_zoomToCenter: scale: duration:" withFullSignature:{"v", "{CGPoint=dd}", "d", "d", 0}];
+  [validationsCopy validateClass:@"UIWebDocumentView" hasInstanceMethod:@"_focusedOrMainFrame" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIWebDocumentView" hasInstanceMethod:@"_zoomedDocumentScale" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"UIWebDocumentView" hasInstanceMethod:@"approximateNodeAtViewportLocation:" withFullSignature:{"@", "^{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"UIWebDocumentView" hasInstanceMethod:@"clearSelection" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"UIWebDocumentView" hasInstanceMethod:@"didEndZoom" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"UIWebDocumentView" hasInstanceMethod:@"didZoom" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"UIWebDocumentView" hasInstanceMethod:@"hasEditableSelection" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"UIWebDocumentView" hasInstanceMethod:@"hasSelection" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"UIWebDocumentView" hasInstanceMethod:@"inputDelegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIWebDocumentView" hasInstanceMethod:@"keyboardInputShouldDelete:" withFullSignature:{"B", "@", 0}];
+  [validationsCopy validateClass:@"UIWebDocumentView" hasInstanceMethod:@"maximumScale" withFullSignature:{"f", 0}];
+  [validationsCopy validateClass:@"UIWebDocumentView" hasInstanceMethod:@"minimumScale" withFullSignature:{"f", 0}];
+  [validationsCopy validateClass:@"UIWebDocumentView" hasInstanceMethod:@"redrawScaledDocument" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"UIWebDocumentView" hasInstanceMethod:@"setSelectedDOMRange: affinity:" withFullSignature:{"v", "@", "Q", 0}];
+  [validationsCopy validateClass:@"UIWebDocumentView" hasInstanceMethod:@"stopLoading:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"UIWebDocumentView" hasInstanceMethod:@"textInputTraits" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIWebDocumentView" hasInstanceMethod:@"toggleBoldface:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"UIWebDocumentView" hasInstanceMethod:@"toggleItalics:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"UIWebDocumentView" hasInstanceMethod:@"toggleUnderline:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"UIWebDocumentView" hasInstanceMethod:@"updatesScrollView" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"UIWebDocumentView" hasInstanceMethod:@"webView: didFinishLoadForFrame:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"UIWebDocumentView" hasInstanceMethod:@"webView: willShowFullScreenForPlugInView:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"UIWebDocumentView" hasInstanceMethod:@"willStartZoom" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"UIWebDocumentView" hasInstanceMethod:@"handleKeyWebEvent:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"UIWebDocumentView" hasInstanceVariable:@"_documentScale" withType:"f"];
+  [validationsCopy validateClass:@"UIWebDocumentView" hasInstanceVariable:@"_plugInViews" withType:"^{__CFDictionary=}"];
+  [validationsCopy validateClass:@"UIWebDocumentView" hasInstanceVariable:@"_webView" withType:"WebView"];
+  [validationsCopy validateClass:@"UIWebDocumentView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"UIWebDocumentView"];
+  [validationsCopy validateClass:@"WebView"];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"_accessibleSubviews" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DOMNode" hasInstanceMethod:@"handleKeyWebEvent:" withFullSignature:{"v", "@", 0}];
 }
 
-- (void)stopLoading:(id)a3
+- (void)stopLoading:(id)loading
 {
   v6.receiver = self;
   v6.super_class = UIWebDocumentViewAccessibility;
-  [(UIWebDocumentViewAccessibility *)&v6 stopLoading:a3];
+  [(UIWebDocumentViewAccessibility *)&v6 stopLoading:loading];
   v3 = *MEMORY[0x29EDC75E8];
   LODWORD(v4) = -1.0;
   v5 = [MEMORY[0x29EDBA070] numberWithFloat:v4];
   UIAccessibilityPostNotification(v3, v5);
 }
 
-- (void)webView:(id)a3 didFailLoadWithError:(id)a4 forFrame:(id)a5
+- (void)webView:(id)view didFailLoadWithError:(id)error forFrame:(id)frame
 {
   v8.receiver = self;
   v8.super_class = UIWebDocumentViewAccessibility;
-  [(UIWebDocumentViewAccessibility *)&v8 webView:a3 didFailLoadWithError:a4 forFrame:a5];
+  [(UIWebDocumentViewAccessibility *)&v8 webView:view didFailLoadWithError:error forFrame:frame];
   v5 = *MEMORY[0x29EDC75E8];
   LODWORD(v6) = -1.0;
   v7 = [MEMORY[0x29EDBA070] numberWithFloat:v6];
   UIAccessibilityPostNotification(v5, v7);
 }
 
-- (void)webView:(id)a3 willShowFullScreenForPlugInView:(id)a4
+- (void)webView:(id)view willShowFullScreenForPlugInView:(id)inView
 {
   v7.receiver = self;
   v7.super_class = UIWebDocumentViewAccessibility;
-  [(UIWebDocumentViewAccessibility *)&v7 webView:a3 willShowFullScreenForPlugInView:a4];
+  [(UIWebDocumentViewAccessibility *)&v7 webView:view willShowFullScreenForPlugInView:inView];
   v4 = *MEMORY[0x29EDC75E8];
   LODWORD(v5) = 1.0;
   v6 = [MEMORY[0x29EDBA070] numberWithFloat:v5];
   UIAccessibilityPostNotification(v4, v6);
 }
 
-- (void)setSelectedDOMRange:(id)a3 affinity:(unint64_t)a4
+- (void)setSelectedDOMRange:(id)range affinity:(unint64_t)affinity
 {
   v4.receiver = self;
   v4.super_class = UIWebDocumentViewAccessibility;
-  [(UIWebDocumentViewAccessibility *)&v4 setSelectedDOMRange:a3 affinity:a4];
+  [(UIWebDocumentViewAccessibility *)&v4 setSelectedDOMRange:range affinity:affinity];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC74D0], 0);
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
   v4.receiver = self;
   v4.super_class = UIWebDocumentViewAccessibility;
-  [(UIWebDocumentViewAccessibility *)&v4 copy:a3];
+  [(UIWebDocumentViewAccessibility *)&v4 copy:copy];
   [(UIWebDocumentViewAccessibility *)self _accessibilityPostPasteboardTextForOperation:*MEMORY[0x29EDBDC18]];
 }
 
-- (void)cut:(id)a3
+- (void)cut:(id)cut
 {
   v4 = *MEMORY[0x29EDBDC18];
-  v5 = a3;
+  cutCopy = cut;
   [(UIWebDocumentViewAccessibility *)self _accessibilityIgnoreNextPostPasteboardTextOperation:v4];
   v6.receiver = self;
   v6.super_class = UIWebDocumentViewAccessibility;
-  [(UIWebDocumentViewAccessibility *)&v6 cut:v5];
+  [(UIWebDocumentViewAccessibility *)&v6 cut:cutCopy];
 
   [(UIWebDocumentViewAccessibility *)self _accessibilityPostPasteboardTextForOperation:*MEMORY[0x29EDBDC20]];
 }
 
-- (void)paste:(id)a3
+- (void)paste:(id)paste
 {
   v4 = *MEMORY[0x29EDBDC50];
-  v5 = a3;
+  pasteCopy = paste;
   [(UIWebDocumentViewAccessibility *)self _accessibilityPostPasteboardTextForOperation:v4];
   v6.receiver = self;
   v6.super_class = UIWebDocumentViewAccessibility;
-  [(UIWebDocumentViewAccessibility *)&v6 paste:v5];
+  [(UIWebDocumentViewAccessibility *)&v6 paste:pasteCopy];
 }
 
-- (void)selectAll:(id)a3
+- (void)selectAll:(id)all
 {
   v5.receiver = self;
   v5.super_class = UIWebDocumentViewAccessibility;
-  [(UIWebDocumentViewAccessibility *)&v5 selectAll:a3];
+  [(UIWebDocumentViewAccessibility *)&v5 selectAll:all];
   v3 = *MEMORY[0x29EDC7EA8];
   v4 = UIKitAccessibilityLocalizedString();
   UIAccessibilityPostNotification(v3, v4);
 }
 
-- (void)toggleBoldface:(id)a3
+- (void)toggleBoldface:(id)boldface
 {
   v5.receiver = self;
   v5.super_class = UIWebDocumentViewAccessibility;
-  [(UIWebDocumentViewAccessibility *)&v5 toggleBoldface:a3];
+  [(UIWebDocumentViewAccessibility *)&v5 toggleBoldface:boldface];
   v3 = *MEMORY[0x29EDC7EA8];
   v4 = UIKitAccessibilityLocalizedString();
   UIAccessibilityPostNotification(v3, v4);
 }
 
-- (void)toggleItalics:(id)a3
+- (void)toggleItalics:(id)italics
 {
   v5.receiver = self;
   v5.super_class = UIWebDocumentViewAccessibility;
-  [(UIWebDocumentViewAccessibility *)&v5 toggleItalics:a3];
+  [(UIWebDocumentViewAccessibility *)&v5 toggleItalics:italics];
   v3 = *MEMORY[0x29EDC7EA8];
   v4 = UIKitAccessibilityLocalizedString();
   UIAccessibilityPostNotification(v3, v4);
 }
 
-- (void)toggleUnderline:(id)a3
+- (void)toggleUnderline:(id)underline
 {
   v5.receiver = self;
   v5.super_class = UIWebDocumentViewAccessibility;
-  [(UIWebDocumentViewAccessibility *)&v5 toggleUnderline:a3];
+  [(UIWebDocumentViewAccessibility *)&v5 toggleUnderline:underline];
   v3 = *MEMORY[0x29EDC7EA8];
   v4 = UIKitAccessibilityLocalizedString();
   UIAccessibilityPostNotification(v3, v4);
 }
 
-- (void)_axZoomToCenterWithScale:(CGPoint)a3 scale:(double)a4
+- (void)_axZoomToCenterWithScale:(CGPoint)scale scale:(double)a4
 {
-  y = a3.y;
-  x = a3.x;
+  y = scale.y;
+  x = scale.x;
   v8 = [(UIWebDocumentViewAccessibility *)self safeValueForKey:@"enclosingScrollView"];
   v9 = v8;
   if (v8 && [v8 safeBoolForKey:@"isZoomEnabled"])
@@ -213,11 +213,11 @@
   }
 }
 
-- (void)_accessibilityZoomAtPoint:(CGPoint)a3 zoomIn:(BOOL)a4
+- (void)_accessibilityZoomAtPoint:(CGPoint)point zoomIn:(BOOL)in
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  inCopy = in;
+  y = point.y;
+  x = point.x;
   WebThreadLock();
   v34 = [(UIWebDocumentViewAccessibility *)self safeValueForKey:@"enclosingScrollView"];
   [v34 convertPoint:self fromView:{x, y}];
@@ -248,7 +248,7 @@
   }
 
   v27 = v26;
-  if (!v4)
+  if (!inCopy)
   {
     v27 = -v27;
   }
@@ -276,29 +276,29 @@
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }
 
-- (void)setSelectedTextRange:(id)a3
+- (void)setSelectedTextRange:(id)range
 {
   v3.receiver = self;
   v3.super_class = UIWebDocumentViewAccessibility;
-  [(UIWebDocumentViewAccessibility *)&v3 setSelectedTextRange:a3];
+  [(UIWebDocumentViewAccessibility *)&v3 setSelectedTextRange:range];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC74D0], 0);
 }
 
 - (BOOL)_accessibilityHasTextOperations
 {
   v2 = [(UIWebDocumentViewAccessibility *)self safeValueForKey:@"hasSelection"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)webView:(id)a3 didFinishLoadForFrame:(id)a4
+- (void)webView:(id)view didFinishLoadForFrame:(id)frame
 {
-  v6 = a4;
+  frameCopy = frame;
   v23.receiver = self;
   v23.super_class = UIWebDocumentViewAccessibility;
-  [(UIWebDocumentViewAccessibility *)&v23 webView:a3 didFinishLoadForFrame:v6];
-  v7 = [*MEMORY[0x29EDC8008] _accessibilityBundleIdentifier];
+  [(UIWebDocumentViewAccessibility *)&v23 webView:view didFinishLoadForFrame:frameCopy];
+  _accessibilityBundleIdentifier = [*MEMORY[0x29EDC8008] _accessibilityBundleIdentifier];
   if (!webView_didFinishLoadForFrame__appsOKToPost)
   {
     v8 = [objc_allocWithZone(MEMORY[0x29EDB8D80]) initWithObjects:{@"com.apple.mobilesafari", @"com.apple.Preferences", 0}];
@@ -306,38 +306,38 @@
     webView_didFinishLoadForFrame__appsOKToPost = v8;
   }
 
-  v10 = [v6 dataSource];
-  v11 = [v10 request];
-  v12 = [v11 URL];
+  dataSource = [frameCopy dataSource];
+  request = [dataSource request];
+  v12 = [request URL];
   if ([v12 isFileURL])
   {
   }
 
   else
   {
-    [v6 dataSource];
-    v22 = self;
-    v14 = v13 = v7;
-    v15 = [v14 request];
-    v16 = [v15 URL];
-    v17 = [v16 absoluteString];
-    v18 = [v17 isEqualToString:@"about:blank"];
+    [frameCopy dataSource];
+    selfCopy = self;
+    v14 = v13 = _accessibilityBundleIdentifier;
+    request2 = [v14 request];
+    v16 = [request2 URL];
+    absoluteString = [v16 absoluteString];
+    v18 = [absoluteString isEqualToString:@"about:blank"];
 
-    v7 = v13;
+    _accessibilityBundleIdentifier = v13;
     if ((v18 & 1) == 0)
     {
-      [(UIWebDocumentViewAccessibility *)v22 bounds];
+      [(UIWebDocumentViewAccessibility *)selfCopy bounds];
       if (v19 >= 100.0)
       {
-        v20 = [(UIWebDocumentViewAccessibility *)v22 safeValueForKey:@"superview"];
+        v20 = [(UIWebDocumentViewAccessibility *)selfCopy safeValueForKey:@"superview"];
 
         if (v20)
         {
           if ([webView_didFinishLoadForFrame__appsOKToPost containsObject:v13])
           {
-            v21 = [v6 parentFrame];
+            parentFrame = [frameCopy parentFrame];
 
-            if (!v21)
+            if (!parentFrame)
             {
               UIAccessibilityPostNotification(*MEMORY[0x29EDC75E8], 0);
             }
@@ -351,12 +351,12 @@
 - (BOOL)_accessibilityScrollingEnabled
 {
   v2 = [(UIWebDocumentViewAccessibility *)self safeValueForKey:@"_scroller"];
-  v3 = [v2 _accessibilityScrollingEnabled];
+  _accessibilityScrollingEnabled = [v2 _accessibilityScrollingEnabled];
 
-  return v3;
+  return _accessibilityScrollingEnabled;
 }
 
-- (id)_accessibilityDataDetectorScheme:(CGPoint)a3
+- (id)_accessibilityDataDetectorScheme:(CGPoint)scheme
 {
   WebThreadLock();
   if (objc_opt_respondsToSelector())
@@ -364,10 +364,10 @@
     LOBYTE(v22) = 0;
     objc_opt_class();
     v4 = __UIAccessibilityCastAsClass();
-    v5 = [v4 window];
+    window = [v4 window];
     UIAccessibilitySceneReferencePointToScreenPoint();
-    [v5 convertPoint:0 fromWindow:?];
-    [v5 convertPoint:v4 toView:?];
+    [window convertPoint:0 fromWindow:?];
+    [window convertPoint:v4 toView:?];
     v7 = v6;
     v9 = v8;
     v26 = v6;
@@ -394,21 +394,21 @@
       goto LABEL_16;
     }
 
-    v11 = [v10 absoluteLinkURL];
-    v12 = [v11 absoluteString];
-    v13 = [v12 hasPrefix:@"x-apple-data-detectors:"];
+    absoluteLinkURL = [v10 absoluteLinkURL];
+    absoluteString = [absoluteLinkURL absoluteString];
+    v13 = [absoluteString hasPrefix:@"x-apple-data-detectors:"];
 
     if (!v13)
     {
       goto LABEL_16;
     }
 
-    v14 = [NSClassFromString(&cfstr_Dddetectioncon.isa) sharedController];
+    nSClassFromString(&cfstr_Dddetectioncon.isa) = [NSClassFromString(&cfstr_Dddetectioncon.isa) sharedController];
     v22 = 0;
     v23 = &v22;
     v24 = 0x2020000000;
     v25 = 0;
-    v15 = v14;
+    v15 = nSClassFromString(&cfstr_Dddetectioncon.isa);
     v21 = v10;
     AXPerformSafeBlock();
     if (v23[3])
@@ -507,11 +507,11 @@ void __67__UIWebDocumentViewAccessibility__accessibilityDataDetectorScheme___blo
 
 - (id)accessibilityLabel
 {
-  v2 = [(UIWebDocumentViewAccessibility *)self accessibilityUserDefinedLabel];
-  v3 = v2;
-  if (v2)
+  accessibilityUserDefinedLabel = [(UIWebDocumentViewAccessibility *)self accessibilityUserDefinedLabel];
+  v3 = accessibilityUserDefinedLabel;
+  if (accessibilityUserDefinedLabel)
   {
-    v4 = v2;
+    v4 = accessibilityUserDefinedLabel;
   }
 
   return v3;
@@ -520,9 +520,9 @@ void __67__UIWebDocumentViewAccessibility__accessibilityDataDetectorScheme___blo
 - (id)_accessibilityScrollStatus
 {
   v2 = [(UIWebDocumentViewAccessibility *)self safeValueForKey:@"_scroller"];
-  v3 = [v2 _accessibilityScrollStatus];
+  _accessibilityScrollStatus = [v2 _accessibilityScrollStatus];
 
-  return v3;
+  return _accessibilityScrollStatus;
 }
 
 - (void)clearSelection
@@ -536,38 +536,38 @@ void __67__UIWebDocumentViewAccessibility__accessibilityDataDetectorScheme___blo
 - (BOOL)accessibilityScrollUpPage
 {
   v2 = [(UIWebDocumentViewAccessibility *)self safeValueForKey:@"_scroller"];
-  v3 = [v2 accessibilityScrollUpPage];
+  accessibilityScrollUpPage = [v2 accessibilityScrollUpPage];
 
-  return v3;
+  return accessibilityScrollUpPage;
 }
 
 - (BOOL)accessibilityScrollDownPage
 {
   v2 = [(UIWebDocumentViewAccessibility *)self safeValueForKey:@"_scroller"];
-  v3 = [v2 accessibilityScrollDownPage];
+  accessibilityScrollDownPage = [v2 accessibilityScrollDownPage];
 
-  return v3;
+  return accessibilityScrollDownPage;
 }
 
 - (BOOL)accessibilityScrollRightPage
 {
   v2 = [(UIWebDocumentViewAccessibility *)self safeValueForKey:@"_scroller"];
-  v3 = [v2 accessibilityScrollRightPage];
+  accessibilityScrollRightPage = [v2 accessibilityScrollRightPage];
 
-  return v3;
+  return accessibilityScrollRightPage;
 }
 
 - (BOOL)accessibilityScrollLeftPage
 {
   v2 = [(UIWebDocumentViewAccessibility *)self safeValueForKey:@"_scroller"];
-  v3 = [v2 accessibilityScrollLeftPage];
+  accessibilityScrollLeftPage = [v2 accessibilityScrollLeftPage];
 
-  return v3;
+  return accessibilityScrollLeftPage;
 }
 
-- (id)_accessibilityAttributedValueForRange:(_NSRange *)a3
+- (id)_accessibilityAttributedValueForRange:(_NSRange *)range
 {
-  v5 = [(UIWebDocumentViewAccessibility *)self _accessibilityRootObject];
+  _accessibilityRootObject = [(UIWebDocumentViewAccessibility *)self _accessibilityRootObject];
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -579,16 +579,16 @@ void __67__UIWebDocumentViewAccessibility__accessibilityDataDetectorScheme___blo
   v14 = __72__UIWebDocumentViewAccessibility__accessibilityAttributedValueForRange___block_invoke;
   v15 = &unk_29F321680;
   v17 = &v19;
-  v6 = v5;
+  v6 = _accessibilityRootObject;
   v16 = v6;
-  v18 = a3;
+  rangeCopy = range;
   AXPerformSafeBlock();
   v7 = v20[5];
 
   _Block_object_dispose(&v19, 8);
   if (![v7 length])
   {
-    v8 = [v6 _accessibilityAttributedValueForRange:a3];
+    v8 = [v6 _accessibilityAttributedValueForRange:range];
 
     v7 = v8;
   }
@@ -597,7 +597,7 @@ void __67__UIWebDocumentViewAccessibility__accessibilityDataDetectorScheme___blo
   {
     v11.receiver = self;
     v11.super_class = UIWebDocumentViewAccessibility;
-    v9 = [(UIWebDocumentViewAccessibility *)&v11 _accessibilityAttributedValueForRange:a3];
+    v9 = [(UIWebDocumentViewAccessibility *)&v11 _accessibilityAttributedValueForRange:range];
 
     v7 = v9;
   }
@@ -650,17 +650,17 @@ uint64_t __72__UIWebDocumentViewAccessibility__accessibilityAttributedValueForRa
 
   v3();
   v4 = [(UIWebDocumentViewAccessibility *)self safeValueForKey:@"_webView"];
-  v5 = [v4 mainFrame];
-  v6 = [v5 frameView];
-  v7 = [v6 documentView];
+  mainFrame = [v4 mainFrame];
+  frameView = [mainFrame frameView];
+  documentView = [frameView documentView];
 
-  return v7;
+  return documentView;
 }
 
 - (id)_accessibilityRootObject
 {
-  v2 = [(UIWebDocumentViewAccessibility *)self _accessibilityDocumentView];
-  v3 = [v2 safeValueForKey:@"accessibilityRootElement"];
+  _accessibilityDocumentView = [(UIWebDocumentViewAccessibility *)self _accessibilityDocumentView];
+  v3 = [_accessibilityDocumentView safeValueForKey:@"accessibilityRootElement"];
 
   return v3;
 }
@@ -668,20 +668,20 @@ uint64_t __72__UIWebDocumentViewAccessibility__accessibilityAttributedValueForRa
 - (id)_accessibilityResponderElement
 {
   v21 = *MEMORY[0x29EDCA608];
-  v2 = [(UIWebDocumentViewAccessibility *)self _accessibilityRootObject];
+  _accessibilityRootObject = [(UIWebDocumentViewAccessibility *)self _accessibilityRootObject];
   NSClassFromString(&cfstr_Webpdfview.isa);
   if (objc_opt_isKindOfClass())
   {
     v3 = 0;
-    v4 = v2;
+    v4 = _accessibilityRootObject;
   }
 
   else
   {
-    v4 = [v2 safeValueForKey:@"accessibilityFocusedUIElement"];
+    v4 = [_accessibilityRootObject safeValueForKey:@"accessibilityFocusedUIElement"];
 
-    v5 = [v4 accessibilityTraits];
-    if ((*MEMORY[0x29EDC7528] & v5) != 0)
+    accessibilityTraits = [v4 accessibilityTraits];
+    if ((*MEMORY[0x29EDC7528] & accessibilityTraits) != 0)
     {
       v4 = v4;
       v3 = v4;
@@ -796,11 +796,11 @@ LABEL_17:
 - (id)accessibilityElements
 {
   v6[1] = *MEMORY[0x29EDCA608];
-  v2 = [(UIWebDocumentViewAccessibility *)self _accessibilityRootObject];
-  v3 = v2;
-  if (v2)
+  _accessibilityRootObject = [(UIWebDocumentViewAccessibility *)self _accessibilityRootObject];
+  v3 = _accessibilityRootObject;
+  if (_accessibilityRootObject)
   {
-    v6[0] = v2;
+    v6[0] = _accessibilityRootObject;
     v4 = [MEMORY[0x29EDB8D80] arrayWithObjects:v6 count:1];
   }
 
@@ -832,20 +832,20 @@ LABEL_17:
   return result;
 }
 
-- (BOOL)_accessibilityScrollToFrame:(CGRect)a3 forView:(id)a4
+- (BOOL)_accessibilityScrollToFrame:(CGRect)frame forView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9 = [(UIWebDocumentViewAccessibility *)self safeValueForKey:@"updatesScrollView"];
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  if ((v10 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
-    v11 = [MEMORY[0x29EDB9F48] mainBundle];
-    v12 = [v11 bundleIdentifier];
-    v13 = [v12 isEqualToString:@"com.apple.purplebuddy"];
+    mainBundle = [MEMORY[0x29EDB9F48] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v13 = [bundleIdentifier isEqualToString:@"com.apple.purplebuddy"];
 
     if (!v13)
     {
@@ -861,63 +861,63 @@ LABEL_17:
 
 - (BOOL)_accessibilityIsScrollAncestor
 {
-  v3 = [(UIWebDocumentViewAccessibility *)self isAccessibilityUserDefinedScrollAncestor];
+  isAccessibilityUserDefinedScrollAncestor = [(UIWebDocumentViewAccessibility *)self isAccessibilityUserDefinedScrollAncestor];
 
-  if (!v3)
+  if (!isAccessibilityUserDefinedScrollAncestor)
   {
     return 1;
   }
 
-  v4 = [(UIWebDocumentViewAccessibility *)self isAccessibilityUserDefinedScrollAncestor];
-  v5 = [v4 BOOLValue];
+  isAccessibilityUserDefinedScrollAncestor2 = [(UIWebDocumentViewAccessibility *)self isAccessibilityUserDefinedScrollAncestor];
+  bOOLValue = [isAccessibilityUserDefinedScrollAncestor2 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (int64_t)accessibilityContainerType
 {
-  v3 = [(UIWebDocumentViewAccessibility *)self accessibilityUserDefinedTraits];
-  if (v3)
+  accessibilityUserDefinedTraits = [(UIWebDocumentViewAccessibility *)self accessibilityUserDefinedTraits];
+  if (accessibilityUserDefinedTraits)
   {
     v8.receiver = self;
     v8.super_class = UIWebDocumentViewAccessibility;
-    v4 = [(UIWebDocumentViewAccessibility *)&v8 accessibilityContainerType];
+    accessibilityContainerType = [(UIWebDocumentViewAccessibility *)&v8 accessibilityContainerType];
   }
 
   else
   {
-    v5 = [(UIWebDocumentViewAccessibility *)self storedAccessibilityContainerType];
+    storedAccessibilityContainerType = [(UIWebDocumentViewAccessibility *)self storedAccessibilityContainerType];
 
-    if (v5)
+    if (storedAccessibilityContainerType)
     {
-      v6 = [(UIWebDocumentViewAccessibility *)self storedAccessibilityContainerType];
-      v4 = [v6 integerValue];
+      storedAccessibilityContainerType2 = [(UIWebDocumentViewAccessibility *)self storedAccessibilityContainerType];
+      accessibilityContainerType = [storedAccessibilityContainerType2 integerValue];
     }
 
     else
     {
-      v4 = 4;
+      accessibilityContainerType = 4;
     }
   }
 
-  return v4;
+  return accessibilityContainerType;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(UIWebDocumentViewAccessibility *)self accessibilityUserDefinedTraits];
-  v3 = v2;
-  if (v2)
+  accessibilityUserDefinedTraits = [(UIWebDocumentViewAccessibility *)self accessibilityUserDefinedTraits];
+  v3 = accessibilityUserDefinedTraits;
+  if (accessibilityUserDefinedTraits)
   {
-    v4 = [v2 unsignedLongLongValue];
+    unsignedLongLongValue = [accessibilityUserDefinedTraits unsignedLongLongValue];
   }
 
   else
   {
-    v4 = *MEMORY[0x29EDC7FA0];
+    unsignedLongLongValue = *MEMORY[0x29EDC7FA0];
   }
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
 - (CGRect)accessibilityFrame
@@ -949,13 +949,13 @@ LABEL_17:
   return result;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v33 = *MEMORY[0x29EDCA608];
-  v7 = a4;
-  if (![(UIWebDocumentViewAccessibility *)self pointInside:v7 withEvent:x, y])
+  eventCopy = event;
+  if (![(UIWebDocumentViewAccessibility *)self pointInside:eventCopy withEvent:x, y])
   {
     v14 = 0;
     goto LABEL_34;
@@ -970,8 +970,8 @@ LABEL_17:
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v8 = v31 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  _accessibilityDocumentView = v31 = 0u;
+  v9 = [_accessibilityDocumentView countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v9)
   {
     v10 = v9;
@@ -982,12 +982,12 @@ LABEL_17:
       {
         if (*v29 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(_accessibilityDocumentView);
         }
 
         v13 = *(*(&v28 + 1) + 8 * i);
         [v13 convertPoint:self fromView:{x, y, v28}];
-        v14 = [v13 hitTest:v7 withEvent:?];
+        v14 = [v13 hitTest:eventCopy withEvent:?];
 
         if ([v14 isAccessibilityElement])
         {
@@ -996,7 +996,7 @@ LABEL_17:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v10 = [_accessibilityDocumentView countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v10)
       {
         continue;
@@ -1006,16 +1006,16 @@ LABEL_17:
     }
   }
 
-  v8 = [(UIWebDocumentViewAccessibility *)self _accessibilityDocumentView];
-  [v8 convertPoint:0 fromView:{x, y}];
+  _accessibilityDocumentView = [(UIWebDocumentViewAccessibility *)self _accessibilityDocumentView];
+  [_accessibilityDocumentView convertPoint:0 fromView:{x, y}];
   v16 = v15;
   v18 = v17;
-  if ([v7 _accessibilityAutomationHitTest])
+  if ([eventCopy _accessibilityAutomationHitTest])
   {
     [(UIWebDocumentViewAccessibility *)self _accessibilitySetBoolValue:1 forKey:@"AXIgnoreFuzzyHitTesting"];
   }
 
-  v14 = [v8 accessibilityHitTest:{v16, v18, v28}];
+  v14 = [_accessibilityDocumentView accessibilityHitTest:{v16, v18, v28}];
   if (v14)
   {
     do
@@ -1026,9 +1026,9 @@ LABEL_17:
       }
 
       v19 = [v14 safeValueForKey:@"isAttachment"];
-      v20 = [v19 BOOLValue];
+      bOOLValue = [v19 BOOLValue];
 
-      if (!v20)
+      if (!bOOLValue)
       {
         break;
       }
@@ -1052,7 +1052,7 @@ LABEL_17:
     while (v25);
   }
 
-  if ([v7 _accessibilityAutomationHitTest])
+  if ([eventCopy _accessibilityAutomationHitTest])
   {
     [(UIWebDocumentViewAccessibility *)self _accessibilitySetBoolValue:0 forKey:@"AXIgnoreFuzzyHitTesting"];
   }
@@ -1069,19 +1069,19 @@ LABEL_17:
   {
   }
 
-  v26 = [(UIWebDocumentViewAccessibility *)self __accessibilityHitTest:v7 withEvent:x, y];
-  if (!v26)
+  selfCopy = [(UIWebDocumentViewAccessibility *)self __accessibilityHitTest:eventCopy withEvent:x, y];
+  if (!selfCopy)
   {
-    if (![(UIWebDocumentViewAccessibility *)self pointInside:v7 withEvent:x, y])
+    if (![(UIWebDocumentViewAccessibility *)self pointInside:eventCopy withEvent:x, y])
     {
       v14 = 0;
       goto LABEL_33;
     }
 
-    v26 = self;
+    selfCopy = self;
   }
 
-  v14 = v26;
+  v14 = selfCopy;
 LABEL_33:
 
 LABEL_34:
@@ -1091,36 +1091,36 @@ LABEL_34:
 
 - (id)_accessibilitySpeakThisString
 {
-  v2 = self;
-  v3 = [(UIWebDocumentViewAccessibility *)v2 selectedTextRange];
-  v4 = [(UIWebDocumentViewAccessibility *)v2 beginningOfDocument];
-  v5 = [(UIWebDocumentViewAccessibility *)v2 endOfDocument];
-  v6 = [(UIWebDocumentViewAccessibility *)v2 textRangeFromPosition:v4 toPosition:v5];
-  v10.receiver = v2;
+  selfCopy = self;
+  selectedTextRange = [(UIWebDocumentViewAccessibility *)selfCopy selectedTextRange];
+  beginningOfDocument = [(UIWebDocumentViewAccessibility *)selfCopy beginningOfDocument];
+  endOfDocument = [(UIWebDocumentViewAccessibility *)selfCopy endOfDocument];
+  v6 = [(UIWebDocumentViewAccessibility *)selfCopy textRangeFromPosition:beginningOfDocument toPosition:endOfDocument];
+  v10.receiver = selfCopy;
   v10.super_class = UIWebDocumentViewAccessibility;
   [(UIWebDocumentViewAccessibility *)&v10 setSelectedTextRange:v6];
-  v7 = [(UIWebDocumentViewAccessibility *)v2 textInRange:v6];
-  v9.receiver = v2;
+  v7 = [(UIWebDocumentViewAccessibility *)selfCopy textInRange:v6];
+  v9.receiver = selfCopy;
   v9.super_class = UIWebDocumentViewAccessibility;
-  [(UIWebDocumentViewAccessibility *)&v9 setSelectedTextRange:v3];
+  [(UIWebDocumentViewAccessibility *)&v9 setSelectedTextRange:selectedTextRange];
 
   return v7;
 }
 
-- (void)handleKeyWebEvent:(id)a3
+- (void)handleKeyWebEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = UIWebDocumentViewAccessibility;
-  v3 = a3;
-  [(UIWebDocumentViewAccessibility *)&v4 handleKeyWebEvent:v3];
-  sendNotificationAfterHandlingWebKeyEventIfNeeded(v3);
+  eventCopy = event;
+  [(UIWebDocumentViewAccessibility *)&v4 handleKeyWebEvent:eventCopy];
+  sendNotificationAfterHandlingWebKeyEventIfNeeded(eventCopy);
 }
 
 - (void)_accessibilityDocumentView
 {
-  v0 = [MEMORY[0x29EDB9F28] currentHandler];
+  currentHandler = [MEMORY[0x29EDB9F28] currentHandler];
   v1 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:"void get_WebThreadLock(void)"];
-  [v0 handleFailureInFunction:v1 file:@"UIWebDocumentViewAccessibility.m" lineNumber:17 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"UIWebDocumentViewAccessibility.m" lineNumber:17 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

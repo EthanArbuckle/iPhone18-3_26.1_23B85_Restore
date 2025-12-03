@@ -1,17 +1,17 @@
 @interface COAlarmServiceClient
-- (COAlarmServiceClient)initWithConnection:(id)a3;
-- (void)changeClientLifetimeActivityMetrics:(id)a3;
+- (COAlarmServiceClient)initWithConnection:(id)connection;
+- (void)changeClientLifetimeActivityMetrics:(id)metrics;
 - (void)dealloc;
-- (void)donateClientLifetimeActivityCompletionReason:(int)a3;
+- (void)donateClientLifetimeActivityCompletionReason:(int)reason;
 @end
 
 @implementation COAlarmServiceClient
 
-- (COAlarmServiceClient)initWithConnection:(id)a3
+- (COAlarmServiceClient)initWithConnection:(id)connection
 {
   v14.receiver = self;
   v14.super_class = COAlarmServiceClient;
-  v3 = [(COCoordinationServiceClient *)&v14 initWithConnection:a3];
+  v3 = [(COCoordinationServiceClient *)&v14 initWithConnection:connection];
   v4 = v3;
   if (v3)
   {
@@ -31,8 +31,8 @@
     {
       xpc_dictionary_set_uint64(v10, "service", 0);
       v11 = v4->_clientLifetimeActivityMetrics;
-      v12 = [(COCoordinationServiceClient *)v4 clientBundleIdentifier];
-      xpc_dictionary_set_string(v11, "client", [v12 UTF8String]);
+      clientBundleIdentifier = [(COCoordinationServiceClient *)v4 clientBundleIdentifier];
+      xpc_dictionary_set_string(v11, "client", [clientBundleIdentifier UTF8String]);
     }
   }
 
@@ -55,13 +55,13 @@
   [(COAlarmServiceClient *)&v6 dealloc];
 }
 
-- (void)donateClientLifetimeActivityCompletionReason:(int)a3
+- (void)donateClientLifetimeActivityCompletionReason:(int)reason
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __69__COAlarmServiceClient_donateClientLifetimeActivityCompletionReason___block_invoke;
   v3[3] = &unk_278E17CA0;
-  v4 = a3;
+  reasonCopy = reason;
   v3[4] = self;
   [(COCoordinationServiceClient *)self _withLock:v3];
 }
@@ -91,16 +91,16 @@ uint64_t __69__COAlarmServiceClient_donateClientLifetimeActivityCompletionReason
   return [v3 setClientLifetimeActivityCompletionReason:v2];
 }
 
-- (void)changeClientLifetimeActivityMetrics:(id)a3
+- (void)changeClientLifetimeActivityMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __60__COAlarmServiceClient_changeClientLifetimeActivityMetrics___block_invoke;
   v6[3] = &unk_278E159A0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = metricsCopy;
+  v5 = metricsCopy;
   [(COCoordinationServiceClient *)self _withLock:v6];
 }
 

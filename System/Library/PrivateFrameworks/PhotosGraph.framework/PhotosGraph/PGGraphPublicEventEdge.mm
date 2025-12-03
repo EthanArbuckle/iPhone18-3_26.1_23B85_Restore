@@ -1,15 +1,15 @@
 @interface PGGraphPublicEventEdge
 + (id)filter;
-- (id)initFromMomentNode:(id)a3 toPublicEventNode:(id)a4;
+- (id)initFromMomentNode:(id)node toPublicEventNode:(id)eventNode;
 @end
 
 @implementation PGGraphPublicEventEdge
 
-- (id)initFromMomentNode:(id)a3 toPublicEventNode:(id)a4
+- (id)initFromMomentNode:(id)node toPublicEventNode:(id)eventNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphPublicEventEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:eventNode];
 }
 
 + (id)filter

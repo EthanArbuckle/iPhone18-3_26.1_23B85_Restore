@@ -1,11 +1,11 @@
 @interface CarPlayPlayabilityStatusService
-+ (BOOL)isModelObjectPlayable:(id)a3;
++ (BOOL)isModelObjectPlayable:(id)playable;
 - (_TtC5Music31CarPlayPlayabilityStatusService)init;
 @end
 
 @implementation CarPlayPlayabilityStatusService
 
-+ (BOOL)isModelObjectPlayable:(id)a3
++ (BOOL)isModelObjectPlayable:(id)playable
 {
   v4 = type metadata accessor for MusicPlayer.PlayabilityStatus();
   v5 = *(v4 - 8);
@@ -13,20 +13,20 @@
   v7 = &v14 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   __chkstk_darwin(v8);
   v10 = &v14 - v9;
-  if (a3)
+  if (playable)
   {
     objc_opt_self();
     if (swift_dynamicCastObjCClass())
     {
-      LOBYTE(a3) = 1;
+      LOBYTE(playable) = 1;
     }
 
     else
     {
-      v11 = a3;
-      sub_100537EF0(v11, v10);
+      playableCopy = playable;
+      sub_100537EF0(playableCopy, v10);
       (*(v5 + 104))(v7, enum case for MusicPlayer.PlayabilityStatus.playable(_:), v4);
-      LOBYTE(a3) = static MusicPlayer.PlayabilityStatus.== infix(_:_:)();
+      LOBYTE(playable) = static MusicPlayer.PlayabilityStatus.== infix(_:_:)();
 
       v12 = *(v5 + 8);
       v12(v7, v4);
@@ -34,7 +34,7 @@
     }
   }
 
-  return a3 & 1;
+  return playable & 1;
 }
 
 - (_TtC5Music31CarPlayPlayabilityStatusService)init

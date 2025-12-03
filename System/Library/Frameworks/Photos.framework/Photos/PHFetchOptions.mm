@@ -1,89 +1,89 @@
 @interface PHFetchOptions
 + (PHFetchOptions)fetchOptionsWithInclusiveDefaults;
-+ (PHFetchOptions)fetchOptionsWithInclusiveDefaultsForPhotoLibrary:(id)a3;
-+ (PHFetchOptions)fetchOptionsWithPhotoLibrary:(id)a3 orObject:(id)a4;
-+ (id)effectivePhotoLibraryForFetchOptions:(id)a3 object:(id)a4;
-+ (id)fetchOptionsCopyFromNullableFetchOptions:(id)a3 photoLibrary:(id)a4;
++ (PHFetchOptions)fetchOptionsWithInclusiveDefaultsForPhotoLibrary:(id)library;
++ (PHFetchOptions)fetchOptionsWithPhotoLibrary:(id)library orObject:(id)object;
++ (id)effectivePhotoLibraryForFetchOptions:(id)options object:(id)object;
++ (id)fetchOptionsCopyFromNullableFetchOptions:(id)options photoLibrary:(id)library;
 - (BOOL)hasAnySortDescriptors;
 - (BOOL)includePlaceholderAssets;
 - (NSDictionary)internalLoggingDescriptionDictionary;
 - (NSString)shortDescription;
 - (PHFetchOptions)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)minimumUnverifiedFaceCount;
 - (unint64_t)minimumVerifiedFaceCount;
 - (unint64_t)sharingStream;
 - (unsigned)highlightCurationType;
 - (unsigned)sharingFilter;
-- (void)addFetchPropertySets:(id)a3;
-- (void)mergeWithFetchOptions:(id)a3;
-- (void)setCacheSizeForFetch:(int64_t)a3;
-- (void)setChunkSizeForFetch:(int64_t)a3;
-- (void)setCurationType:(int64_t)a3;
-- (void)setExcludeDuplicateAssetVisibilityStateHidden:(BOOL)a3;
-- (void)setExcludeMontageAssets:(BOOL)a3;
-- (void)setExcludeNonVisibleStackedAssets:(BOOL)a3;
-- (void)setExcludeScreenshotAssets:(BOOL)a3;
-- (void)setExcludeSensitiveAndUnprocessedAssets:(BOOL)a3;
+- (void)addFetchPropertySets:(id)sets;
+- (void)mergeWithFetchOptions:(id)options;
+- (void)setCacheSizeForFetch:(int64_t)fetch;
+- (void)setChunkSizeForFetch:(int64_t)fetch;
+- (void)setCurationType:(int64_t)type;
+- (void)setExcludeDuplicateAssetVisibilityStateHidden:(BOOL)hidden;
+- (void)setExcludeMontageAssets:(BOOL)assets;
+- (void)setExcludeNonVisibleStackedAssets:(BOOL)assets;
+- (void)setExcludeScreenshotAssets:(BOOL)assets;
+- (void)setExcludeSensitiveAndUnprocessedAssets:(BOOL)assets;
 - (void)setFetchLimit:(NSUInteger)fetchLimit;
-- (void)setFetchOffset:(unint64_t)a3;
-- (void)setFetchPropertySets:(id)a3;
-- (void)setHighlightCurationType:(unsigned __int16)a3;
-- (void)setIncludeActionCamVideoSmartAlbum:(BOOL)a3;
+- (void)setFetchOffset:(unint64_t)offset;
+- (void)setFetchPropertySets:(id)sets;
+- (void)setHighlightCurationType:(unsigned __int16)type;
+- (void)setIncludeActionCamVideoSmartAlbum:(BOOL)album;
 - (void)setIncludeAllBurstAssets:(BOOL)includeAllBurstAssets;
-- (void)setIncludeAllPhotosSmartAlbum:(BOOL)a3;
+- (void)setIncludeAllPhotosSmartAlbum:(BOOL)album;
 - (void)setIncludeAssetSourceTypes:(PHAssetSourceType)includeAssetSourceTypes;
-- (void)setIncludeBothPrivateAssetsAndSharedContentContributedByCurrentUser:(BOOL)a3;
-- (void)setIncludeCollectionShareAssets:(BOOL)a3;
-- (void)setIncludeDuplicateAssetVisibilityStateMostRelevant:(BOOL)a3;
-- (void)setIncludeDuplicateAssets:(BOOL)a3;
-- (void)setIncludeDuplicatesAlbums:(BOOL)a3;
-- (void)setIncludeExitingShares:(BOOL)a3;
-- (void)setIncludeExpiredShares:(BOOL)a3;
-- (void)setIncludeFavoriteMemoriesCollectionList:(BOOL)a3;
-- (void)setIncludeGuestAssets:(BOOL)a3;
+- (void)setIncludeBothPrivateAssetsAndSharedContentContributedByCurrentUser:(BOOL)user;
+- (void)setIncludeCollectionShareAssets:(BOOL)assets;
+- (void)setIncludeDuplicateAssetVisibilityStateMostRelevant:(BOOL)relevant;
+- (void)setIncludeDuplicateAssets:(BOOL)assets;
+- (void)setIncludeDuplicatesAlbums:(BOOL)albums;
+- (void)setIncludeExitingShares:(BOOL)shares;
+- (void)setIncludeExpiredShares:(BOOL)shares;
+- (void)setIncludeFavoriteMemoriesCollectionList:(BOOL)list;
+- (void)setIncludeGuestAssets:(BOOL)assets;
 - (void)setIncludeHiddenAssets:(BOOL)includeHiddenAssets;
-- (void)setIncludeLocalMemories:(BOOL)a3;
-- (void)setIncludeMediaAnalysisProcessingRangeTypes:(int64_t)a3;
-- (void)setIncludeNonvisibleFaces:(BOOL)a3;
-- (void)setIncludeOnlyAssetsAllowedForAnalysis:(BOOL)a3;
-- (void)setIncludeOnlyContentContributedByCurrentUser:(BOOL)a3;
-- (void)setIncludeOnlyFacesInFaceGroups:(BOOL)a3;
-- (void)setIncludeOnlyFacesNeedingFaceCrop:(BOOL)a3;
-- (void)setIncludeOnlyFacesWithFaceprints:(BOOL)a3;
-- (void)setIncludeOnlyPersonsWithVisibleKeyFaces:(BOOL)a3;
-- (void)setIncludeOnlyTorsoDetectionData:(BOOL)a3;
-- (void)setIncludePendingMemories:(BOOL)a3;
-- (void)setIncludePendingShares:(BOOL)a3;
-- (void)setIncludePlaceholderAssets:(BOOL)a3;
-- (void)setIncludePlacesSmartAlbum:(BOOL)a3;
-- (void)setIncludeProResSmartAlbum:(BOOL)a3;
-- (void)setIncludeRecentlyEditedSmartAlbum:(BOOL)a3;
-- (void)setIncludeRejectedMemories:(BOOL)a3;
-- (void)setIncludeRootFolder:(BOOL)a3;
-- (void)setIncludeScreenRecordingsSmartAlbum:(BOOL)a3;
-- (void)setIncludeSharedLibrarySharingSuggestionsSmartAlbum:(BOOL)a3;
-- (void)setIncludeSourceMemories:(BOOL)a3;
-- (void)setIncludeStoryMemories:(BOOL)a3;
-- (void)setIncludeTorsoAndFaceDetectionData:(BOOL)a3;
-- (void)setIncludeTorsoOnlyPerson:(BOOL)a3;
-- (void)setIncludeTrashBinAlbum:(BOOL)a3;
-- (void)setIncludeTrashedAssets:(BOOL)a3;
-- (void)setIncludeTrashedShares:(BOOL)a3;
-- (void)setIncludeUserSmartAlbums:(BOOL)a3;
-- (void)setIsExclusivePredicate:(BOOL)a3;
-- (void)setMinimumUnverifiedFaceCount:(unint64_t)a3;
-- (void)setMinimumVerifiedFaceCount:(unint64_t)a3;
-- (void)setPersonContext:(int64_t)a3;
-- (void)setReverseDefaultSortDescriptors:(BOOL)a3;
-- (void)setReverseSortOrder:(BOOL)a3;
-- (void)setSharingFilter:(unsigned __int16)a3;
-- (void)setSharingStream:(unint64_t)a3;
-- (void)setShouldPrefetchCount:(BOOL)a3;
-- (void)setSocialGroupContext:(int64_t)a3;
-- (void)setSuppressSlowFetchReports:(BOOL)a3;
-- (void)setUseNoIndexOnSharingFilter:(BOOL)a3;
+- (void)setIncludeLocalMemories:(BOOL)memories;
+- (void)setIncludeMediaAnalysisProcessingRangeTypes:(int64_t)types;
+- (void)setIncludeNonvisibleFaces:(BOOL)faces;
+- (void)setIncludeOnlyAssetsAllowedForAnalysis:(BOOL)analysis;
+- (void)setIncludeOnlyContentContributedByCurrentUser:(BOOL)user;
+- (void)setIncludeOnlyFacesInFaceGroups:(BOOL)groups;
+- (void)setIncludeOnlyFacesNeedingFaceCrop:(BOOL)crop;
+- (void)setIncludeOnlyFacesWithFaceprints:(BOOL)faceprints;
+- (void)setIncludeOnlyPersonsWithVisibleKeyFaces:(BOOL)faces;
+- (void)setIncludeOnlyTorsoDetectionData:(BOOL)data;
+- (void)setIncludePendingMemories:(BOOL)memories;
+- (void)setIncludePendingShares:(BOOL)shares;
+- (void)setIncludePlaceholderAssets:(BOOL)assets;
+- (void)setIncludePlacesSmartAlbum:(BOOL)album;
+- (void)setIncludeProResSmartAlbum:(BOOL)album;
+- (void)setIncludeRecentlyEditedSmartAlbum:(BOOL)album;
+- (void)setIncludeRejectedMemories:(BOOL)memories;
+- (void)setIncludeRootFolder:(BOOL)folder;
+- (void)setIncludeScreenRecordingsSmartAlbum:(BOOL)album;
+- (void)setIncludeSharedLibrarySharingSuggestionsSmartAlbum:(BOOL)album;
+- (void)setIncludeSourceMemories:(BOOL)memories;
+- (void)setIncludeStoryMemories:(BOOL)memories;
+- (void)setIncludeTorsoAndFaceDetectionData:(BOOL)data;
+- (void)setIncludeTorsoOnlyPerson:(BOOL)person;
+- (void)setIncludeTrashBinAlbum:(BOOL)album;
+- (void)setIncludeTrashedAssets:(BOOL)assets;
+- (void)setIncludeTrashedShares:(BOOL)shares;
+- (void)setIncludeUserSmartAlbums:(BOOL)albums;
+- (void)setIsExclusivePredicate:(BOOL)predicate;
+- (void)setMinimumUnverifiedFaceCount:(unint64_t)count;
+- (void)setMinimumVerifiedFaceCount:(unint64_t)count;
+- (void)setPersonContext:(int64_t)context;
+- (void)setReverseDefaultSortDescriptors:(BOOL)descriptors;
+- (void)setReverseSortOrder:(BOOL)order;
+- (void)setSharingFilter:(unsigned __int16)filter;
+- (void)setSharingStream:(unint64_t)stream;
+- (void)setShouldPrefetchCount:(BOOL)count;
+- (void)setSocialGroupContext:(int64_t)context;
+- (void)setSuppressSlowFetchReports:(BOOL)reports;
+- (void)setUseNoIndexOnSharingFilter:(BOOL)filter;
 - (void)setWantsIncrementalChangeDetails:(BOOL)wantsIncrementalChangeDetails;
 @end
 
@@ -114,16 +114,16 @@
 
 - (BOOL)hasAnySortDescriptors
 {
-  v3 = [(PHFetchOptions *)self sortDescriptors];
-  if ([v3 count])
+  sortDescriptors = [(PHFetchOptions *)self sortDescriptors];
+  if ([sortDescriptors count])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(PHFetchOptions *)self internalSortDescriptors];
-    v4 = [v5 count] != 0;
+    internalSortDescriptors = [(PHFetchOptions *)self internalSortDescriptors];
+    v4 = [internalSortDescriptors count] != 0;
   }
 
   return v4;
@@ -194,7 +194,7 @@
     {
       v7 = v6;
       v8 = NSStringFromSelector(a2);
-      v9 = [v8 UTF8String];
+      uTF8String = [v8 UTF8String];
 
       if (outCount)
       {
@@ -207,7 +207,7 @@
             v13 = Name;
             if (strcmp(Name, "shortDescription"))
             {
-              if (strcmp(v13, v9))
+              if (strcmp(v13, uTF8String))
               {
                 v14 = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{objc_msgSend(MEMORY[0x1E696AEC0], "defaultCStringEncoding")}];
                 v15 = [(PHFetchOptions *)self valueForKey:v14];
@@ -242,15 +242,15 @@
   v17.receiver = self;
   v17.super_class = PHFetchOptions;
   v3 = [(PHFetchOptions *)&v17 description];
-  v16 = [(PHFetchOptions *)self predicate];
+  predicate = [(PHFetchOptions *)self predicate];
   v15 = objc_opt_class();
-  v4 = [(PHFetchOptions *)self internalPredicate];
+  internalPredicate = [(PHFetchOptions *)self internalPredicate];
   v14 = objc_opt_class();
-  v5 = [(PHFetchOptions *)self fetchLimit];
-  v6 = [(PHFetchOptions *)self sortDescriptors];
-  v7 = [(PHFetchOptions *)self internalSortDescriptors];
-  v8 = [(PHFetchOptions *)self customObjectIDSortOrder];
-  v9 = [v8 count];
+  fetchLimit = [(PHFetchOptions *)self fetchLimit];
+  sortDescriptors = [(PHFetchOptions *)self sortDescriptors];
+  internalSortDescriptors = [(PHFetchOptions *)self internalSortDescriptors];
+  customObjectIDSortOrder = [(PHFetchOptions *)self customObjectIDSortOrder];
+  v9 = [customObjectIDSortOrder count];
   if ([(PHFetchOptions *)self reverseSortOrder])
   {
     v10 = @"D";
@@ -261,8 +261,8 @@
     v10 = @"A";
   }
 
-  v11 = [(PHFetchOptions *)self transientIdentifier];
-  v12 = [v3 stringByAppendingFormat:@" predicate=%@/%@[%ld], sort=%@/%@/%ld/%@, changes[%@]=%d", v15, v14, v5, v6, v7, v9, v10, v11, -[PHFetchOptions wantsIncrementalChangeDetails](self, "wantsIncrementalChangeDetails")];
+  transientIdentifier = [(PHFetchOptions *)self transientIdentifier];
+  v12 = [v3 stringByAppendingFormat:@" predicate=%@/%@[%ld], sort=%@/%@/%ld/%@, changes[%@]=%d", v15, v14, fetchLimit, sortDescriptors, internalSortDescriptors, v9, v10, transientIdentifier, -[PHFetchOptions wantsIncrementalChangeDetails](self, "wantsIncrementalChangeDetails")];
 
   return v12;
 }
@@ -272,72 +272,72 @@
   v8.receiver = self;
   v8.super_class = PHFetchOptions;
   v3 = [(PHFetchOptions *)&v8 description];
-  v4 = [(PHFetchOptions *)self predicate];
-  v5 = [(PHFetchOptions *)self sortDescriptors];
-  v6 = [v3 stringByAppendingFormat:@" predicate=%@, sort=%@, wantsChangeDetails=%d", v4, v5, -[PHFetchOptions wantsIncrementalChangeDetails](self, "wantsIncrementalChangeDetails")];
+  predicate = [(PHFetchOptions *)self predicate];
+  sortDescriptors = [(PHFetchOptions *)self sortDescriptors];
+  v6 = [v3 stringByAppendingFormat:@" predicate=%@, sort=%@, wantsChangeDetails=%d", predicate, sortDescriptors, -[PHFetchOptions wantsIncrementalChangeDetails](self, "wantsIncrementalChangeDetails")];
 
   return v6;
 }
 
-- (void)setReverseDefaultSortDescriptors:(BOOL)a3
+- (void)setReverseDefaultSortDescriptors:(BOOL)descriptors
 {
-  self->_reverseDefaultSortDescriptorsNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_reverseDefaultSortDescriptorsNumber = [MEMORY[0x1E696AD98] numberWithBool:descriptors];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setSuppressSlowFetchReports:(BOOL)a3
+- (void)setSuppressSlowFetchReports:(BOOL)reports
 {
-  self->_suppressSlowFetchReportsNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_suppressSlowFetchReportsNumber = [MEMORY[0x1E696AD98] numberWithBool:reports];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setUseNoIndexOnSharingFilter:(BOOL)a3
+- (void)setUseNoIndexOnSharingFilter:(BOOL)filter
 {
-  self->_useNoIndexOnSharingFilter = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_useNoIndexOnSharingFilter = [MEMORY[0x1E696AD98] numberWithBool:filter];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setSharingFilter:(unsigned __int16)a3
+- (void)setSharingFilter:(unsigned __int16)filter
 {
-  self->_sharingFilterNumber = [MEMORY[0x1E696AD98] numberWithUnsignedShort:a3];
+  self->_sharingFilterNumber = [MEMORY[0x1E696AD98] numberWithUnsignedShort:filter];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeBothPrivateAssetsAndSharedContentContributedByCurrentUser:(BOOL)a3
+- (void)setIncludeBothPrivateAssetsAndSharedContentContributedByCurrentUser:(BOOL)user
 {
-  self->_includeBothPrivateAssetsAndSharedContentContributedByCurrentUserNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeBothPrivateAssetsAndSharedContentContributedByCurrentUserNumber = [MEMORY[0x1E696AD98] numberWithBool:user];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeOnlyContentContributedByCurrentUser:(BOOL)a3
+- (void)setIncludeOnlyContentContributedByCurrentUser:(BOOL)user
 {
-  self->_includeOnlyContentContributedByCurrentUserNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeOnlyContentContributedByCurrentUserNumber = [MEMORY[0x1E696AD98] numberWithBool:user];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeOnlyAssetsAllowedForAnalysis:(BOOL)a3
+- (void)setIncludeOnlyAssetsAllowedForAnalysis:(BOOL)analysis
 {
-  self->_includeOnlyAssetsAllowedForAnalysisNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeOnlyAssetsAllowedForAnalysisNumber = [MEMORY[0x1E696AD98] numberWithBool:analysis];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeUserSmartAlbums:(BOOL)a3
+- (void)setIncludeUserSmartAlbums:(BOOL)albums
 {
-  self->_includeUserSmartAlbumsNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeUserSmartAlbumsNumber = [MEMORY[0x1E696AD98] numberWithBool:albums];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setSharingStream:(unint64_t)a3
+- (void)setSharingStream:(unint64_t)stream
 {
-  self->_sharingStreamNumber = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  self->_sharingStreamNumber = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:stream];
 
   MEMORY[0x1EEE66BB8]();
 }
@@ -356,296 +356,296 @@
   }
 }
 
-- (void)setHighlightCurationType:(unsigned __int16)a3
+- (void)setHighlightCurationType:(unsigned __int16)type
 {
-  self->_highlightCurationTypeNumber = [MEMORY[0x1E696AD98] numberWithUnsignedShort:a3];
+  self->_highlightCurationTypeNumber = [MEMORY[0x1E696AD98] numberWithUnsignedShort:type];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIsExclusivePredicate:(BOOL)a3
+- (void)setIsExclusivePredicate:(BOOL)predicate
 {
-  self->_isExclusivePredicateNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_isExclusivePredicateNumber = [MEMORY[0x1E696AD98] numberWithBool:predicate];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setShouldPrefetchCount:(BOOL)a3
+- (void)setShouldPrefetchCount:(BOOL)count
 {
-  self->_shouldPrefetchCountNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_shouldPrefetchCountNumber = [MEMORY[0x1E696AD98] numberWithBool:count];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeMediaAnalysisProcessingRangeTypes:(int64_t)a3
+- (void)setIncludeMediaAnalysisProcessingRangeTypes:(int64_t)types
 {
-  self->_includeMediaAnalysisProcessingRangeTypesNumber = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  self->_includeMediaAnalysisProcessingRangeTypesNumber = [MEMORY[0x1E696AD98] numberWithInteger:types];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeOnlyFacesInFaceGroups:(BOOL)a3
+- (void)setIncludeOnlyFacesInFaceGroups:(BOOL)groups
 {
-  self->_includeOnlyFacesInFaceGroupsNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeOnlyFacesInFaceGroupsNumber = [MEMORY[0x1E696AD98] numberWithBool:groups];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeOnlyFacesWithFaceprints:(BOOL)a3
+- (void)setIncludeOnlyFacesWithFaceprints:(BOOL)faceprints
 {
-  self->_includeOnlyFacesWithFaceprintsNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeOnlyFacesWithFaceprintsNumber = [MEMORY[0x1E696AD98] numberWithBool:faceprints];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeOnlyFacesNeedingFaceCrop:(BOOL)a3
+- (void)setIncludeOnlyFacesNeedingFaceCrop:(BOOL)crop
 {
-  self->_includeOnlyFacesNeedingFaceCropNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeOnlyFacesNeedingFaceCropNumber = [MEMORY[0x1E696AD98] numberWithBool:crop];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeTorsoOnlyPerson:(BOOL)a3
+- (void)setIncludeTorsoOnlyPerson:(BOOL)person
 {
-  self->_includeTorsoOnlyPersonNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeTorsoOnlyPersonNumber = [MEMORY[0x1E696AD98] numberWithBool:person];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setExcludeSensitiveAndUnprocessedAssets:(BOOL)a3
+- (void)setExcludeSensitiveAndUnprocessedAssets:(BOOL)assets
 {
-  self->_excludeSensitiveAndUnprocessedAssets = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_excludeSensitiveAndUnprocessedAssets = [MEMORY[0x1E696AD98] numberWithBool:assets];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeDuplicatesAlbums:(BOOL)a3
+- (void)setIncludeDuplicatesAlbums:(BOOL)albums
 {
-  self->_includeDuplicatesAlbumsNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeDuplicatesAlbumsNumber = [MEMORY[0x1E696AD98] numberWithBool:albums];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeOnlyTorsoDetectionData:(BOOL)a3
+- (void)setIncludeOnlyTorsoDetectionData:(BOOL)data
 {
-  self->_includeOnlyTorsoDetectionDataNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeOnlyTorsoDetectionDataNumber = [MEMORY[0x1E696AD98] numberWithBool:data];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeTorsoAndFaceDetectionData:(BOOL)a3
+- (void)setIncludeTorsoAndFaceDetectionData:(BOOL)data
 {
-  self->_includeTorsoAndFaceDetectionDataNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeTorsoAndFaceDetectionDataNumber = [MEMORY[0x1E696AD98] numberWithBool:data];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeOnlyPersonsWithVisibleKeyFaces:(BOOL)a3
+- (void)setIncludeOnlyPersonsWithVisibleKeyFaces:(BOOL)faces
 {
-  self->_includeOnlyPersonsWithVisibleKeyFacesNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeOnlyPersonsWithVisibleKeyFacesNumber = [MEMORY[0x1E696AD98] numberWithBool:faces];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeNonvisibleFaces:(BOOL)a3
+- (void)setIncludeNonvisibleFaces:(BOOL)faces
 {
-  self->_includeNonvisibleFacesNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeNonvisibleFacesNumber = [MEMORY[0x1E696AD98] numberWithBool:faces];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setMinimumUnverifiedFaceCount:(unint64_t)a3
+- (void)setMinimumUnverifiedFaceCount:(unint64_t)count
 {
-  self->_minimumUnverifiedFaceCountNumber = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  self->_minimumUnverifiedFaceCountNumber = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:count];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setMinimumVerifiedFaceCount:(unint64_t)a3
+- (void)setMinimumVerifiedFaceCount:(unint64_t)count
 {
-  self->_minimumVerifiedFaceCountNumber = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  self->_minimumVerifiedFaceCountNumber = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:count];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setExcludeScreenshotAssets:(BOOL)a3
+- (void)setExcludeScreenshotAssets:(BOOL)assets
 {
-  self->_excludeScreenshotAssetsNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_excludeScreenshotAssetsNumber = [MEMORY[0x1E696AD98] numberWithBool:assets];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setExcludeMontageAssets:(BOOL)a3
+- (void)setExcludeMontageAssets:(BOOL)assets
 {
-  self->_excludeMontageAssetsNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_excludeMontageAssetsNumber = [MEMORY[0x1E696AD98] numberWithBool:assets];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeRootFolder:(BOOL)a3
+- (void)setIncludeRootFolder:(BOOL)folder
 {
-  self->_includeRootFolderNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeRootFolderNumber = [MEMORY[0x1E696AD98] numberWithBool:folder];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeTrashBinAlbum:(BOOL)a3
+- (void)setIncludeTrashBinAlbum:(BOOL)album
 {
-  self->_includeTrashBinAlbumNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeTrashBinAlbumNumber = [MEMORY[0x1E696AD98] numberWithBool:album];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeProResSmartAlbum:(BOOL)a3
+- (void)setIncludeProResSmartAlbum:(BOOL)album
 {
-  self->_includeProResSmartAlbumNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeProResSmartAlbumNumber = [MEMORY[0x1E696AD98] numberWithBool:album];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeActionCamVideoSmartAlbum:(BOOL)a3
+- (void)setIncludeActionCamVideoSmartAlbum:(BOOL)album
 {
-  self->_includeActionCamVideoSmartAlbumNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeActionCamVideoSmartAlbumNumber = [MEMORY[0x1E696AD98] numberWithBool:album];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeSharedLibrarySharingSuggestionsSmartAlbum:(BOOL)a3
+- (void)setIncludeSharedLibrarySharingSuggestionsSmartAlbum:(BOOL)album
 {
-  self->_includeSharedLibrarySharingSuggestionsSmartAlbumNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeSharedLibrarySharingSuggestionsSmartAlbumNumber = [MEMORY[0x1E696AD98] numberWithBool:album];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeScreenRecordingsSmartAlbum:(BOOL)a3
+- (void)setIncludeScreenRecordingsSmartAlbum:(BOOL)album
 {
-  self->_includeScreenRecordingsSmartAlbumNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeScreenRecordingsSmartAlbumNumber = [MEMORY[0x1E696AD98] numberWithBool:album];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeRecentlyEditedSmartAlbum:(BOOL)a3
+- (void)setIncludeRecentlyEditedSmartAlbum:(BOOL)album
 {
-  self->_includeRecentlyEditedSmartAlbumNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeRecentlyEditedSmartAlbumNumber = [MEMORY[0x1E696AD98] numberWithBool:album];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeAllPhotosSmartAlbum:(BOOL)a3
+- (void)setIncludeAllPhotosSmartAlbum:(BOOL)album
 {
-  self->_includeAllPhotosSmartAlbumNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeAllPhotosSmartAlbumNumber = [MEMORY[0x1E696AD98] numberWithBool:album];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludePlacesSmartAlbum:(BOOL)a3
+- (void)setIncludePlacesSmartAlbum:(BOOL)album
 {
-  self->_includePlacesSmartAlbumNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includePlacesSmartAlbumNumber = [MEMORY[0x1E696AD98] numberWithBool:album];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeFavoriteMemoriesCollectionList:(BOOL)a3
+- (void)setIncludeFavoriteMemoriesCollectionList:(BOOL)list
 {
-  self->_includeFavoriteMemoriesCollectionListNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeFavoriteMemoriesCollectionListNumber = [MEMORY[0x1E696AD98] numberWithBool:list];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludePendingShares:(BOOL)a3
+- (void)setIncludePendingShares:(BOOL)shares
 {
-  self->_includePendingSharesNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includePendingSharesNumber = [MEMORY[0x1E696AD98] numberWithBool:shares];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeExitingShares:(BOOL)a3
+- (void)setIncludeExitingShares:(BOOL)shares
 {
-  self->_includeExitingSharesNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeExitingSharesNumber = [MEMORY[0x1E696AD98] numberWithBool:shares];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeExpiredShares:(BOOL)a3
+- (void)setIncludeExpiredShares:(BOOL)shares
 {
-  self->_includeExpiredSharesNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeExpiredSharesNumber = [MEMORY[0x1E696AD98] numberWithBool:shares];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeTrashedShares:(BOOL)a3
+- (void)setIncludeTrashedShares:(BOOL)shares
 {
-  self->_includeTrashedSharesNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeTrashedSharesNumber = [MEMORY[0x1E696AD98] numberWithBool:shares];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeTrashedAssets:(BOOL)a3
+- (void)setIncludeTrashedAssets:(BOOL)assets
 {
-  self->_includeTrashedAssetsNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeTrashedAssetsNumber = [MEMORY[0x1E696AD98] numberWithBool:assets];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setSocialGroupContext:(int64_t)a3
+- (void)setSocialGroupContext:(int64_t)context
 {
-  self->_socialGroupContextNumber = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  self->_socialGroupContextNumber = [MEMORY[0x1E696AD98] numberWithInteger:context];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPersonContext:(int64_t)a3
+- (void)setPersonContext:(int64_t)context
 {
-  self->_personContextNumber = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  self->_personContextNumber = [MEMORY[0x1E696AD98] numberWithInteger:context];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setCurationType:(int64_t)a3
+- (void)setCurationType:(int64_t)type
 {
-  self->_curationTypeNumber = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  self->_curationTypeNumber = [MEMORY[0x1E696AD98] numberWithInteger:type];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeSourceMemories:(BOOL)a3
+- (void)setIncludeSourceMemories:(BOOL)memories
 {
-  self->_includeSourceMemoriesNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeSourceMemoriesNumber = [MEMORY[0x1E696AD98] numberWithBool:memories];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeStoryMemories:(BOOL)a3
+- (void)setIncludeStoryMemories:(BOOL)memories
 {
-  self->_includeStoryMemoriesNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeStoryMemoriesNumber = [MEMORY[0x1E696AD98] numberWithBool:memories];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeLocalMemories:(BOOL)a3
+- (void)setIncludeLocalMemories:(BOOL)memories
 {
-  self->_includeLocalMemoriesNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeLocalMemoriesNumber = [MEMORY[0x1E696AD98] numberWithBool:memories];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeRejectedMemories:(BOOL)a3
+- (void)setIncludeRejectedMemories:(BOOL)memories
 {
-  self->_includeRejectedMemoriesNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeRejectedMemoriesNumber = [MEMORY[0x1E696AD98] numberWithBool:memories];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludePendingMemories:(BOOL)a3
+- (void)setIncludePendingMemories:(BOOL)memories
 {
-  self->_includePendingMemoriesNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includePendingMemoriesNumber = [MEMORY[0x1E696AD98] numberWithBool:memories];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludePlaceholderAssets:(BOOL)a3
+- (void)setIncludePlaceholderAssets:(BOOL)assets
 {
-  self->_includePlaceholderAssetsNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includePlaceholderAssetsNumber = [MEMORY[0x1E696AD98] numberWithBool:assets];
 
   MEMORY[0x1EEE66BB8]();
 }
@@ -663,65 +663,65 @@
   return result;
 }
 
-- (void)setIncludeCollectionShareAssets:(BOOL)a3
+- (void)setIncludeCollectionShareAssets:(BOOL)assets
 {
-  self->_includeCollectionShareAssetsNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeCollectionShareAssetsNumber = [MEMORY[0x1E696AD98] numberWithBool:assets];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeGuestAssets:(BOOL)a3
+- (void)setIncludeGuestAssets:(BOOL)assets
 {
-  self->_includeGuestAssetsNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeGuestAssetsNumber = [MEMORY[0x1E696AD98] numberWithBool:assets];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setExcludeNonVisibleStackedAssets:(BOOL)a3
+- (void)setExcludeNonVisibleStackedAssets:(BOOL)assets
 {
-  self->_excludeNonVisibleStackedAssetsNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_excludeNonVisibleStackedAssetsNumber = [MEMORY[0x1E696AD98] numberWithBool:assets];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeDuplicateAssetVisibilityStateMostRelevant:(BOOL)a3
+- (void)setIncludeDuplicateAssetVisibilityStateMostRelevant:(BOOL)relevant
 {
-  self->_includeDuplicateAssetVisibilityStateMostRelevantNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeDuplicateAssetVisibilityStateMostRelevantNumber = [MEMORY[0x1E696AD98] numberWithBool:relevant];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setExcludeDuplicateAssetVisibilityStateHidden:(BOOL)a3
+- (void)setExcludeDuplicateAssetVisibilityStateHidden:(BOOL)hidden
 {
-  self->_excludeDuplicateAssetVisibilityStateHiddenNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_excludeDuplicateAssetVisibilityStateHiddenNumber = [MEMORY[0x1E696AD98] numberWithBool:hidden];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIncludeDuplicateAssets:(BOOL)a3
+- (void)setIncludeDuplicateAssets:(BOOL)assets
 {
-  self->_includeDuplicateAssetsNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_includeDuplicateAssetsNumber = [MEMORY[0x1E696AD98] numberWithBool:assets];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setReverseSortOrder:(BOOL)a3
+- (void)setReverseSortOrder:(BOOL)order
 {
-  self->_reverseSortOrderNumber = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  self->_reverseSortOrderNumber = [MEMORY[0x1E696AD98] numberWithBool:order];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setCacheSizeForFetch:(int64_t)a3
+- (void)setCacheSizeForFetch:(int64_t)fetch
 {
-  self->_cacheSizeForFetchNumber = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  self->_cacheSizeForFetchNumber = [MEMORY[0x1E696AD98] numberWithInteger:fetch];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setChunkSizeForFetch:(int64_t)a3
+- (void)setChunkSizeForFetch:(int64_t)fetch
 {
-  self->_chunkSizeForFetchNumber = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  self->_chunkSizeForFetchNumber = [MEMORY[0x1E696AD98] numberWithInteger:fetch];
 
   MEMORY[0x1EEE66BB8]();
 }
@@ -733,9 +733,9 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setFetchOffset:(unint64_t)a3
+- (void)setFetchOffset:(unint64_t)offset
 {
-  self->_fetchOffsetNumber = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  self->_fetchOffsetNumber = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:offset];
 
   MEMORY[0x1EEE66BB8]();
 }
@@ -768,95 +768,95 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addFetchPropertySets:(id)a3
+- (void)addFetchPropertySets:(id)sets
 {
-  if (a3)
+  if (sets)
   {
     [(NSMutableSet *)self->_propertySets addObjectsFromArray:?];
   }
 }
 
-- (void)setFetchPropertySets:(id)a3
+- (void)setFetchPropertySets:(id)sets
 {
   propertySets = self->_propertySets;
-  v5 = a3;
+  setsCopy = sets;
   [(NSMutableSet *)propertySets removeAllObjects];
-  [(NSMutableSet *)self->_propertySets addObjectsFromArray:v5];
+  [(NSMutableSet *)self->_propertySets addObjectsFromArray:setsCopy];
 }
 
-- (void)mergeWithFetchOptions:(id)a3
+- (void)mergeWithFetchOptions:(id)options
 {
-  v46 = a3;
+  optionsCopy = options;
   v4 = PHPredicateByCombiningPredicatesWithAnd;
-  v5 = [(PHFetchOptions *)self predicate];
-  v6 = [v46 predicate];
-  v7 = v4[2](v4, v5, v6);
+  predicate = [(PHFetchOptions *)self predicate];
+  predicate2 = [optionsCopy predicate];
+  v7 = v4[2](v4, predicate, predicate2);
 
   v8 = PHPredicateByCombiningPredicatesWithAnd;
-  v9 = [(PHFetchOptions *)self internalPredicate];
-  v10 = [v46 internalPredicate];
-  v11 = v8[2](v8, v9, v10);
+  internalPredicate = [(PHFetchOptions *)self internalPredicate];
+  internalPredicate2 = [optionsCopy internalPredicate];
+  v11 = v8[2](v8, internalPredicate, internalPredicate2);
 
   [(PHFetchOptions *)self setPredicate:v7];
   [(PHFetchOptions *)self setInternalPredicate:v11];
   v12 = PHPredicateByCombiningPredicatesWithOr;
-  v13 = [(PHFetchOptions *)self internalInclusionPredicate];
-  v14 = [v46 internalInclusionPredicate];
-  v15 = v12[2](v12, v13, v14);
+  internalInclusionPredicate = [(PHFetchOptions *)self internalInclusionPredicate];
+  internalInclusionPredicate2 = [optionsCopy internalInclusionPredicate];
+  v15 = v12[2](v12, internalInclusionPredicate, internalInclusionPredicate2);
 
   [(PHFetchOptions *)self setInternalInclusionPredicate:v15];
-  v16 = [v46 fetchPropertySets];
-  v17 = [v16 count];
+  fetchPropertySets = [optionsCopy fetchPropertySets];
+  v17 = [fetchPropertySets count];
 
   if (v17)
   {
-    v18 = [v46 fetchPropertySets];
-    [(PHFetchOptions *)self addFetchPropertySets:v18];
+    fetchPropertySets2 = [optionsCopy fetchPropertySets];
+    [(PHFetchOptions *)self addFetchPropertySets:fetchPropertySets2];
   }
 
-  v19 = [v46 sortDescriptors];
+  sortDescriptors = [optionsCopy sortDescriptors];
 
-  if (v19)
+  if (sortDescriptors)
   {
-    v20 = [v46 sortDescriptors];
-    [(PHFetchOptions *)self setSortDescriptors:v20];
+    sortDescriptors2 = [optionsCopy sortDescriptors];
+    [(PHFetchOptions *)self setSortDescriptors:sortDescriptors2];
   }
 
-  v21 = [v46 internalSortDescriptors];
+  internalSortDescriptors = [optionsCopy internalSortDescriptors];
 
-  if (v21)
+  if (internalSortDescriptors)
   {
-    v22 = [v46 internalSortDescriptors];
-    [(PHFetchOptions *)self setInternalSortDescriptors:v22];
+    internalSortDescriptors2 = [optionsCopy internalSortDescriptors];
+    [(PHFetchOptions *)self setInternalSortDescriptors:internalSortDescriptors2];
   }
 
-  v23 = [v46 transientIdentifier];
+  transientIdentifier = [optionsCopy transientIdentifier];
 
-  if (v23)
+  if (transientIdentifier)
   {
-    v24 = [v46 transientIdentifier];
-    [(PHFetchOptions *)self setTransientIdentifier:v24];
+    transientIdentifier2 = [optionsCopy transientIdentifier];
+    [(PHFetchOptions *)self setTransientIdentifier:transientIdentifier2];
   }
 
-  v25 = [v46 customObjectIDSortOrder];
+  customObjectIDSortOrder = [optionsCopy customObjectIDSortOrder];
 
-  if (v25)
+  if (customObjectIDSortOrder)
   {
-    v26 = [v46 customObjectIDSortOrder];
-    [(PHFetchOptions *)self setCustomObjectIDSortOrder:v26];
+    customObjectIDSortOrder2 = [optionsCopy customObjectIDSortOrder];
+    [(PHFetchOptions *)self setCustomObjectIDSortOrder:customObjectIDSortOrder2];
   }
 
-  v27 = v46;
-  if (v46[42])
+  v27 = optionsCopy;
+  if (optionsCopy[42])
   {
-    -[PHFetchOptions setMinimumVerifiedFaceCount:](self, "setMinimumVerifiedFaceCount:", [v46 minimumVerifiedFaceCount]);
-    v27 = v46;
+    -[PHFetchOptions setMinimumVerifiedFaceCount:](self, "setMinimumVerifiedFaceCount:", [optionsCopy minimumVerifiedFaceCount]);
+    v27 = optionsCopy;
   }
 
   if (v27[43])
   {
-    -[PHFetchOptions setMinimumUnverifiedFaceCount:](self, "setMinimumUnverifiedFaceCount:", [v46 minimumUnverifiedFaceCount]);
-    v27 = v46;
+    -[PHFetchOptions setMinimumUnverifiedFaceCount:](self, "setMinimumUnverifiedFaceCount:", [optionsCopy minimumUnverifiedFaceCount]);
+    v27 = optionsCopy;
   }
 
   if ([v27 includeOnlyFacesNeedingFaceCrop])
@@ -864,494 +864,494 @@
     [(PHFetchOptions *)self setIncludeOnlyFacesNeedingFaceCrop:1];
   }
 
-  v28 = [v46 photoLibrary];
+  photoLibrary = [optionsCopy photoLibrary];
 
-  if (v28)
+  if (photoLibrary)
   {
-    v29 = [v46 photoLibrary];
-    [(PHFetchOptions *)self setPhotoLibrary:v29];
+    photoLibrary2 = [optionsCopy photoLibrary];
+    [(PHFetchOptions *)self setPhotoLibrary:photoLibrary2];
   }
 
-  v30 = [v46 verifiedPersonTypes];
+  verifiedPersonTypes = [optionsCopy verifiedPersonTypes];
 
-  if (v30)
+  if (verifiedPersonTypes)
   {
-    v31 = [v46 verifiedPersonTypes];
-    [(PHFetchOptions *)self setVerifiedPersonTypes:v31];
+    verifiedPersonTypes2 = [optionsCopy verifiedPersonTypes];
+    [(PHFetchOptions *)self setVerifiedPersonTypes:verifiedPersonTypes2];
   }
 
-  v32 = [v46 changeDetectionCriteria];
+  changeDetectionCriteria = [optionsCopy changeDetectionCriteria];
 
-  if (v32)
+  if (changeDetectionCriteria)
   {
-    v33 = [(PHFetchOptions *)self changeDetectionCriteria];
-    v34 = [v46 changeDetectionCriteria];
-    if (v33)
+    changeDetectionCriteria2 = [(PHFetchOptions *)self changeDetectionCriteria];
+    changeDetectionCriteria3 = [optionsCopy changeDetectionCriteria];
+    if (changeDetectionCriteria2)
     {
-      v35 = [v33 changeDetectionCriteriaByAddingChangeDetectionCriteria:v34];
+      v35 = [changeDetectionCriteria2 changeDetectionCriteriaByAddingChangeDetectionCriteria:changeDetectionCriteria3];
       [(PHFetchOptions *)self setChangeDetectionCriteria:v35];
     }
 
     else
     {
-      [(PHFetchOptions *)self setChangeDetectionCriteria:v34];
+      [(PHFetchOptions *)self setChangeDetectionCriteria:changeDetectionCriteria3];
     }
   }
 
-  v36 = v46;
-  if (v46[6])
+  v36 = optionsCopy;
+  if (optionsCopy[6])
   {
-    -[PHFetchOptions setCurationType:](self, "setCurationType:", [v46 curationType]);
-    v36 = v46;
+    -[PHFetchOptions setCurationType:](self, "setCurationType:", [optionsCopy curationType]);
+    v36 = optionsCopy;
   }
 
   if (v36[7])
   {
-    -[PHFetchOptions setWantsIncrementalChangeDetails:](self, "setWantsIncrementalChangeDetails:", [v46 wantsIncrementalChangeDetails]);
-    v36 = v46;
+    -[PHFetchOptions setWantsIncrementalChangeDetails:](self, "setWantsIncrementalChangeDetails:", [optionsCopy wantsIncrementalChangeDetails]);
+    v36 = optionsCopy;
   }
 
   if (v36[2])
   {
-    -[PHFetchOptions setIncludeAllBurstAssets:](self, "setIncludeAllBurstAssets:", [v46 includeAllBurstAssets]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeAllBurstAssets:](self, "setIncludeAllBurstAssets:", [optionsCopy includeAllBurstAssets]);
+    v36 = optionsCopy;
   }
 
   if (v36[1])
   {
-    -[PHFetchOptions setIncludeHiddenAssets:](self, "setIncludeHiddenAssets:", [v46 includeHiddenAssets]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeHiddenAssets:](self, "setIncludeHiddenAssets:", [optionsCopy includeHiddenAssets]);
+    v36 = optionsCopy;
   }
 
   if (v36[8])
   {
-    -[PHFetchOptions setChunkSizeForFetch:](self, "setChunkSizeForFetch:", [v46 chunkSizeForFetch]);
-    v36 = v46;
+    -[PHFetchOptions setChunkSizeForFetch:](self, "setChunkSizeForFetch:", [optionsCopy chunkSizeForFetch]);
+    v36 = optionsCopy;
   }
 
   if (v36[9])
   {
-    -[PHFetchOptions setCacheSizeForFetch:](self, "setCacheSizeForFetch:", [v46 cacheSizeForFetch]);
-    v36 = v46;
+    -[PHFetchOptions setCacheSizeForFetch:](self, "setCacheSizeForFetch:", [optionsCopy cacheSizeForFetch]);
+    v36 = optionsCopy;
   }
 
   if (v36[4])
   {
-    -[PHFetchOptions setFetchLimit:](self, "setFetchLimit:", [v46 fetchLimit]);
-    v36 = v46;
+    -[PHFetchOptions setFetchLimit:](self, "setFetchLimit:", [optionsCopy fetchLimit]);
+    v36 = optionsCopy;
   }
 
   if (v36[5])
   {
-    -[PHFetchOptions setFetchOffset:](self, "setFetchOffset:", [v46 fetchOffset]);
-    v36 = v46;
+    -[PHFetchOptions setFetchOffset:](self, "setFetchOffset:", [optionsCopy fetchOffset]);
+    v36 = optionsCopy;
   }
 
   if (v36[3])
   {
-    -[PHFetchOptions setIncludeAssetSourceTypes:](self, "setIncludeAssetSourceTypes:", [v46 includeAssetSourceTypes]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeAssetSourceTypes:](self, "setIncludeAssetSourceTypes:", [optionsCopy includeAssetSourceTypes]);
+    v36 = optionsCopy;
   }
 
   if (v36[11])
   {
-    -[PHFetchOptions setIncludeDuplicateAssets:](self, "setIncludeDuplicateAssets:", [v46 includeDuplicateAssets]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeDuplicateAssets:](self, "setIncludeDuplicateAssets:", [optionsCopy includeDuplicateAssets]);
+    v36 = optionsCopy;
   }
 
   if (v36[12])
   {
-    -[PHFetchOptions setExcludeDuplicateAssetVisibilityStateHidden:](self, "setExcludeDuplicateAssetVisibilityStateHidden:", [v46 excludeDuplicateAssetVisibilityStateHidden]);
-    v36 = v46;
+    -[PHFetchOptions setExcludeDuplicateAssetVisibilityStateHidden:](self, "setExcludeDuplicateAssetVisibilityStateHidden:", [optionsCopy excludeDuplicateAssetVisibilityStateHidden]);
+    v36 = optionsCopy;
   }
 
   if (v36[13])
   {
-    -[PHFetchOptions setIncludeDuplicateAssetVisibilityStateMostRelevant:](self, "setIncludeDuplicateAssetVisibilityStateMostRelevant:", [v46 includeDuplicateAssetVisibilityStateMostRelevant]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeDuplicateAssetVisibilityStateMostRelevant:](self, "setIncludeDuplicateAssetVisibilityStateMostRelevant:", [optionsCopy includeDuplicateAssetVisibilityStateMostRelevant]);
+    v36 = optionsCopy;
   }
 
   if (v36[14])
   {
-    -[PHFetchOptions setExcludeNonVisibleStackedAssets:](self, "setExcludeNonVisibleStackedAssets:", [v46 excludeNonVisibleStackedAssets]);
-    v36 = v46;
+    -[PHFetchOptions setExcludeNonVisibleStackedAssets:](self, "setExcludeNonVisibleStackedAssets:", [optionsCopy excludeNonVisibleStackedAssets]);
+    v36 = optionsCopy;
   }
 
   if (v36[15])
   {
-    -[PHFetchOptions setIncludeGuestAssets:](self, "setIncludeGuestAssets:", [v46 includeGuestAssets]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeGuestAssets:](self, "setIncludeGuestAssets:", [optionsCopy includeGuestAssets]);
+    v36 = optionsCopy;
   }
 
   if (v36[16])
   {
-    -[PHFetchOptions setIncludePlaceholderAssets:](self, "setIncludePlaceholderAssets:", [v46 includePlaceholderAssets]);
-    v36 = v46;
+    -[PHFetchOptions setIncludePlaceholderAssets:](self, "setIncludePlaceholderAssets:", [optionsCopy includePlaceholderAssets]);
+    v36 = optionsCopy;
   }
 
   if (v36[17])
   {
-    -[PHFetchOptions setIncludeCollectionShareAssets:](self, "setIncludeCollectionShareAssets:", [v46 includeCollectionShareAssets]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeCollectionShareAssets:](self, "setIncludeCollectionShareAssets:", [optionsCopy includeCollectionShareAssets]);
+    v36 = optionsCopy;
   }
 
   if (v36[18])
   {
-    -[PHFetchOptions setIncludePendingMemories:](self, "setIncludePendingMemories:", [v46 includePendingMemories]);
-    v36 = v46;
+    -[PHFetchOptions setIncludePendingMemories:](self, "setIncludePendingMemories:", [optionsCopy includePendingMemories]);
+    v36 = optionsCopy;
   }
 
   if (v36[19])
   {
-    -[PHFetchOptions setIncludeRejectedMemories:](self, "setIncludeRejectedMemories:", [v46 includeRejectedMemories]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeRejectedMemories:](self, "setIncludeRejectedMemories:", [optionsCopy includeRejectedMemories]);
+    v36 = optionsCopy;
   }
 
   if (v36[20])
   {
-    -[PHFetchOptions setIncludeLocalMemories:](self, "setIncludeLocalMemories:", [v46 includeLocalMemories]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeLocalMemories:](self, "setIncludeLocalMemories:", [optionsCopy includeLocalMemories]);
+    v36 = optionsCopy;
   }
 
   if (v36[21])
   {
-    -[PHFetchOptions setIncludeStoryMemories:](self, "setIncludeStoryMemories:", [v46 includeStoryMemories]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeStoryMemories:](self, "setIncludeStoryMemories:", [optionsCopy includeStoryMemories]);
+    v36 = optionsCopy;
   }
 
   if (v36[22])
   {
-    -[PHFetchOptions setIncludeSourceMemories:](self, "setIncludeSourceMemories:", [v46 includeSourceMemories]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeSourceMemories:](self, "setIncludeSourceMemories:", [optionsCopy includeSourceMemories]);
+    v36 = optionsCopy;
   }
 
   if (v36[23])
   {
-    -[PHFetchOptions setPersonContext:](self, "setPersonContext:", [v46 personContext]);
-    v36 = v46;
+    -[PHFetchOptions setPersonContext:](self, "setPersonContext:", [optionsCopy personContext]);
+    v36 = optionsCopy;
   }
 
   if (v36[24])
   {
-    -[PHFetchOptions setSocialGroupContext:](self, "setSocialGroupContext:", [v46 socialGroupContext]);
-    v36 = v46;
+    -[PHFetchOptions setSocialGroupContext:](self, "setSocialGroupContext:", [optionsCopy socialGroupContext]);
+    v36 = optionsCopy;
   }
 
   if (v36[10])
   {
-    -[PHFetchOptions setReverseSortOrder:](self, "setReverseSortOrder:", [v46 reverseSortOrder]);
-    v36 = v46;
+    -[PHFetchOptions setReverseSortOrder:](self, "setReverseSortOrder:", [optionsCopy reverseSortOrder]);
+    v36 = optionsCopy;
   }
 
   if (v36[25])
   {
-    -[PHFetchOptions setIncludeTrashedAssets:](self, "setIncludeTrashedAssets:", [v46 includeTrashedAssets]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeTrashedAssets:](self, "setIncludeTrashedAssets:", [optionsCopy includeTrashedAssets]);
+    v36 = optionsCopy;
   }
 
   if (v36[26])
   {
-    -[PHFetchOptions setIncludeTrashedShares:](self, "setIncludeTrashedShares:", [v46 includeTrashedShares]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeTrashedShares:](self, "setIncludeTrashedShares:", [optionsCopy includeTrashedShares]);
+    v36 = optionsCopy;
   }
 
   if (v36[27])
   {
-    -[PHFetchOptions setIncludeExpiredShares:](self, "setIncludeExpiredShares:", [v46 includeExpiredShares]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeExpiredShares:](self, "setIncludeExpiredShares:", [optionsCopy includeExpiredShares]);
+    v36 = optionsCopy;
   }
 
   if (v36[28])
   {
-    -[PHFetchOptions setIncludeExitingShares:](self, "setIncludeExitingShares:", [v46 includeExitingShares]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeExitingShares:](self, "setIncludeExitingShares:", [optionsCopy includeExitingShares]);
+    v36 = optionsCopy;
   }
 
   if (v36[29])
   {
-    -[PHFetchOptions setIncludePendingShares:](self, "setIncludePendingShares:", [v46 includePendingShares]);
-    v36 = v46;
+    -[PHFetchOptions setIncludePendingShares:](self, "setIncludePendingShares:", [optionsCopy includePendingShares]);
+    v36 = optionsCopy;
   }
 
   if (v36[30])
   {
-    -[PHFetchOptions setIncludeFavoriteMemoriesCollectionList:](self, "setIncludeFavoriteMemoriesCollectionList:", [v46 includeFavoriteMemoriesCollectionList]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeFavoriteMemoriesCollectionList:](self, "setIncludeFavoriteMemoriesCollectionList:", [optionsCopy includeFavoriteMemoriesCollectionList]);
+    v36 = optionsCopy;
   }
 
   if (v36[31])
   {
-    -[PHFetchOptions setIncludePlacesSmartAlbum:](self, "setIncludePlacesSmartAlbum:", [v46 includePlacesSmartAlbum]);
-    v36 = v46;
+    -[PHFetchOptions setIncludePlacesSmartAlbum:](self, "setIncludePlacesSmartAlbum:", [optionsCopy includePlacesSmartAlbum]);
+    v36 = optionsCopy;
   }
 
   if (v36[32])
   {
-    -[PHFetchOptions setIncludeAllPhotosSmartAlbum:](self, "setIncludeAllPhotosSmartAlbum:", [v46 includeAllPhotosSmartAlbum]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeAllPhotosSmartAlbum:](self, "setIncludeAllPhotosSmartAlbum:", [optionsCopy includeAllPhotosSmartAlbum]);
+    v36 = optionsCopy;
   }
 
   if (v36[33])
   {
-    -[PHFetchOptions setIncludeRecentlyEditedSmartAlbum:](self, "setIncludeRecentlyEditedSmartAlbum:", [v46 includeRecentlyEditedSmartAlbum]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeRecentlyEditedSmartAlbum:](self, "setIncludeRecentlyEditedSmartAlbum:", [optionsCopy includeRecentlyEditedSmartAlbum]);
+    v36 = optionsCopy;
   }
 
   if (v36[34])
   {
-    -[PHFetchOptions setIncludeScreenRecordingsSmartAlbum:](self, "setIncludeScreenRecordingsSmartAlbum:", [v46 includeScreenRecordingsSmartAlbum]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeScreenRecordingsSmartAlbum:](self, "setIncludeScreenRecordingsSmartAlbum:", [optionsCopy includeScreenRecordingsSmartAlbum]);
+    v36 = optionsCopy;
   }
 
   if (v36[35])
   {
-    -[PHFetchOptions setIncludeSharedLibrarySharingSuggestionsSmartAlbum:](self, "setIncludeSharedLibrarySharingSuggestionsSmartAlbum:", [v46 includeSharedLibrarySharingSuggestionsSmartAlbum]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeSharedLibrarySharingSuggestionsSmartAlbum:](self, "setIncludeSharedLibrarySharingSuggestionsSmartAlbum:", [optionsCopy includeSharedLibrarySharingSuggestionsSmartAlbum]);
+    v36 = optionsCopy;
   }
 
   if (v36[36])
   {
-    -[PHFetchOptions setIncludeActionCamVideoSmartAlbum:](self, "setIncludeActionCamVideoSmartAlbum:", [v46 includeActionCamVideoSmartAlbum]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeActionCamVideoSmartAlbum:](self, "setIncludeActionCamVideoSmartAlbum:", [optionsCopy includeActionCamVideoSmartAlbum]);
+    v36 = optionsCopy;
   }
 
   if (v36[37])
   {
-    -[PHFetchOptions setIncludeProResSmartAlbum:](self, "setIncludeProResSmartAlbum:", [v46 includeProResSmartAlbum]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeProResSmartAlbum:](self, "setIncludeProResSmartAlbum:", [optionsCopy includeProResSmartAlbum]);
+    v36 = optionsCopy;
   }
 
   if (v36[38])
   {
-    -[PHFetchOptions setIncludeTrashBinAlbum:](self, "setIncludeTrashBinAlbum:", [v46 includeTrashedAssets]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeTrashBinAlbum:](self, "setIncludeTrashBinAlbum:", [optionsCopy includeTrashedAssets]);
+    v36 = optionsCopy;
   }
 
   if (v36[39])
   {
-    -[PHFetchOptions setIncludeRootFolder:](self, "setIncludeRootFolder:", [v46 includeRootFolder]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeRootFolder:](self, "setIncludeRootFolder:", [optionsCopy includeRootFolder]);
+    v36 = optionsCopy;
   }
 
   if (v36[40])
   {
-    -[PHFetchOptions setExcludeMontageAssets:](self, "setExcludeMontageAssets:", [v46 excludeMontageAssets]);
-    v36 = v46;
+    -[PHFetchOptions setExcludeMontageAssets:](self, "setExcludeMontageAssets:", [optionsCopy excludeMontageAssets]);
+    v36 = optionsCopy;
   }
 
   if (v36[41])
   {
-    -[PHFetchOptions setExcludeScreenshotAssets:](self, "setExcludeScreenshotAssets:", [v46 excludeScreenshotAssets]);
-    v36 = v46;
+    -[PHFetchOptions setExcludeScreenshotAssets:](self, "setExcludeScreenshotAssets:", [optionsCopy excludeScreenshotAssets]);
+    v36 = optionsCopy;
   }
 
   if (v36[51])
   {
-    -[PHFetchOptions setShouldPrefetchCount:](self, "setShouldPrefetchCount:", [v46 shouldPrefetchCount]);
-    v36 = v46;
+    -[PHFetchOptions setShouldPrefetchCount:](self, "setShouldPrefetchCount:", [optionsCopy shouldPrefetchCount]);
+    v36 = optionsCopy;
   }
 
   if (v36[49])
   {
-    -[PHFetchOptions setIsExclusivePredicate:](self, "setIsExclusivePredicate:", [v46 isExclusivePredicate]);
-    v36 = v46;
+    -[PHFetchOptions setIsExclusivePredicate:](self, "setIsExclusivePredicate:", [optionsCopy isExclusivePredicate]);
+    v36 = optionsCopy;
   }
 
   if (v36[52])
   {
-    -[PHFetchOptions setHighlightCurationType:](self, "setHighlightCurationType:", [v46 highlightCurationType]);
-    v36 = v46;
+    -[PHFetchOptions setHighlightCurationType:](self, "setHighlightCurationType:", [optionsCopy highlightCurationType]);
+    v36 = optionsCopy;
   }
 
   if (v36[53])
   {
-    -[PHFetchOptions setSharingStream:](self, "setSharingStream:", [v46 sharingStream]);
-    v36 = v46;
+    -[PHFetchOptions setSharingStream:](self, "setSharingStream:", [optionsCopy sharingStream]);
+    v36 = optionsCopy;
   }
 
   if (v36[54])
   {
-    -[PHFetchOptions setIncludeUserSmartAlbums:](self, "setIncludeUserSmartAlbums:", [v46 includeUserSmartAlbums]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeUserSmartAlbums:](self, "setIncludeUserSmartAlbums:", [optionsCopy includeUserSmartAlbums]);
+    v36 = optionsCopy;
   }
 
   if (v36[44])
   {
-    -[PHFetchOptions setIncludeNonvisibleFaces:](self, "setIncludeNonvisibleFaces:", [v46 includeNonvisibleFaces]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeNonvisibleFaces:](self, "setIncludeNonvisibleFaces:", [optionsCopy includeNonvisibleFaces]);
+    v36 = optionsCopy;
   }
 
   if (v36[47])
   {
-    -[PHFetchOptions setIncludeOnlyFacesWithFaceprints:](self, "setIncludeOnlyFacesWithFaceprints:", [v46 includeOnlyFacesWithFaceprints]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeOnlyFacesWithFaceprints:](self, "setIncludeOnlyFacesWithFaceprints:", [optionsCopy includeOnlyFacesWithFaceprints]);
+    v36 = optionsCopy;
   }
 
   if (v36[48])
   {
-    -[PHFetchOptions setIncludeOnlyFacesInFaceGroups:](self, "setIncludeOnlyFacesInFaceGroups:", [v46 includeOnlyFacesInFaceGroups]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeOnlyFacesInFaceGroups:](self, "setIncludeOnlyFacesInFaceGroups:", [optionsCopy includeOnlyFacesInFaceGroups]);
+    v36 = optionsCopy;
   }
 
   if (v36[45])
   {
-    -[PHFetchOptions setIncludeOnlyPersonsWithVisibleKeyFaces:](self, "setIncludeOnlyPersonsWithVisibleKeyFaces:", [v46 includeOnlyPersonsWithVisibleKeyFaces]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeOnlyPersonsWithVisibleKeyFaces:](self, "setIncludeOnlyPersonsWithVisibleKeyFaces:", [optionsCopy includeOnlyPersonsWithVisibleKeyFaces]);
+    v36 = optionsCopy;
   }
 
   if (v36[55])
   {
-    -[PHFetchOptions setIncludeOnlyAssetsAllowedForAnalysis:](self, "setIncludeOnlyAssetsAllowedForAnalysis:", [v46 includeOnlyAssetsAllowedForAnalysis]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeOnlyAssetsAllowedForAnalysis:](self, "setIncludeOnlyAssetsAllowedForAnalysis:", [optionsCopy includeOnlyAssetsAllowedForAnalysis]);
+    v36 = optionsCopy;
   }
 
   if (v36[56])
   {
-    -[PHFetchOptions setIncludeOnlyContentContributedByCurrentUser:](self, "setIncludeOnlyContentContributedByCurrentUser:", [v46 includeOnlyContentContributedByCurrentUser]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeOnlyContentContributedByCurrentUser:](self, "setIncludeOnlyContentContributedByCurrentUser:", [optionsCopy includeOnlyContentContributedByCurrentUser]);
+    v36 = optionsCopy;
   }
 
   if (v36[57])
   {
-    -[PHFetchOptions setIncludeBothPrivateAssetsAndSharedContentContributedByCurrentUser:](self, "setIncludeBothPrivateAssetsAndSharedContentContributedByCurrentUser:", [v46 includeBothPrivateAssetsAndSharedContentContributedByCurrentUser]);
-    v36 = v46;
+    -[PHFetchOptions setIncludeBothPrivateAssetsAndSharedContentContributedByCurrentUser:](self, "setIncludeBothPrivateAssetsAndSharedContentContributedByCurrentUser:", [optionsCopy includeBothPrivateAssetsAndSharedContentContributedByCurrentUser]);
+    v36 = optionsCopy;
   }
 
-  v37 = [v36 importantFetchName];
+  importantFetchName = [v36 importantFetchName];
 
-  if (v37)
+  if (importantFetchName)
   {
-    v38 = [v46 importantFetchName];
-    [(PHFetchOptions *)self setImportantFetchName:v38];
+    importantFetchName2 = [optionsCopy importantFetchName];
+    [(PHFetchOptions *)self setImportantFetchName:importantFetchName2];
   }
 
-  v39 = [v46 includedDetectionTypes];
+  includedDetectionTypes = [optionsCopy includedDetectionTypes];
 
-  if (v39)
+  if (includedDetectionTypes)
   {
-    v40 = [v46 includedDetectionTypes];
-    [(PHFetchOptions *)self setIncludedDetectionTypes:v40];
+    includedDetectionTypes2 = [optionsCopy includedDetectionTypes];
+    [(PHFetchOptions *)self setIncludedDetectionTypes:includedDetectionTypes2];
   }
 
-  v41 = v46;
-  if (v46[59])
+  v41 = optionsCopy;
+  if (optionsCopy[59])
   {
-    -[PHFetchOptions setIncludeTorsoAndFaceDetectionData:](self, "setIncludeTorsoAndFaceDetectionData:", [v46 includeTorsoAndFaceDetectionData]);
-    v41 = v46;
+    -[PHFetchOptions setIncludeTorsoAndFaceDetectionData:](self, "setIncludeTorsoAndFaceDetectionData:", [optionsCopy includeTorsoAndFaceDetectionData]);
+    v41 = optionsCopy;
   }
 
   if (v41[60])
   {
-    -[PHFetchOptions setIncludeOnlyTorsoDetectionData:](self, "setIncludeOnlyTorsoDetectionData:", [v46 includeOnlyTorsoDetectionData]);
-    v41 = v46;
+    -[PHFetchOptions setIncludeOnlyTorsoDetectionData:](self, "setIncludeOnlyTorsoDetectionData:", [optionsCopy includeOnlyTorsoDetectionData]);
+    v41 = optionsCopy;
   }
 
   if (v41[61])
   {
-    -[PHFetchOptions setIncludeTorsoOnlyPerson:](self, "setIncludeTorsoOnlyPerson:", [v46 includeTorsoOnlyPerson]);
-    v41 = v46;
+    -[PHFetchOptions setIncludeTorsoOnlyPerson:](self, "setIncludeTorsoOnlyPerson:", [optionsCopy includeTorsoOnlyPerson]);
+    v41 = optionsCopy;
   }
 
   if (v41[62])
   {
-    -[PHFetchOptions setIncludeDuplicatesAlbums:](self, "setIncludeDuplicatesAlbums:", [v46 includeDuplicatesAlbums]);
-    v41 = v46;
+    -[PHFetchOptions setIncludeDuplicatesAlbums:](self, "setIncludeDuplicatesAlbums:", [optionsCopy includeDuplicatesAlbums]);
+    v41 = optionsCopy;
   }
 
   if (v41[63])
   {
-    -[PHFetchOptions setIncludeMediaAnalysisProcessingRangeTypes:](self, "setIncludeMediaAnalysisProcessingRangeTypes:", [v46 includeMediaAnalysisProcessingRangeTypes]);
-    v41 = v46;
+    -[PHFetchOptions setIncludeMediaAnalysisProcessingRangeTypes:](self, "setIncludeMediaAnalysisProcessingRangeTypes:", [optionsCopy includeMediaAnalysisProcessingRangeTypes]);
+    v41 = optionsCopy;
   }
 
   if (v41[66])
   {
-    -[PHFetchOptions setSharingFilter:](self, "setSharingFilter:", [v46 sharingFilter]);
-    v41 = v46;
+    -[PHFetchOptions setSharingFilter:](self, "setSharingFilter:", [optionsCopy sharingFilter]);
+    v41 = optionsCopy;
   }
 
   if (v41[67])
   {
-    -[PHFetchOptions setUseNoIndexOnSharingFilter:](self, "setUseNoIndexOnSharingFilter:", [v46 useNoIndexOnSharingFilter]);
-    v41 = v46;
+    -[PHFetchOptions setUseNoIndexOnSharingFilter:](self, "setUseNoIndexOnSharingFilter:", [optionsCopy useNoIndexOnSharingFilter]);
+    v41 = optionsCopy;
   }
 
   if (v41[64])
   {
-    -[PHFetchOptions setSuppressSlowFetchReports:](self, "setSuppressSlowFetchReports:", [v46 suppressSlowFetchReports]);
-    v41 = v46;
+    -[PHFetchOptions setSuppressSlowFetchReports:](self, "setSuppressSlowFetchReports:", [optionsCopy suppressSlowFetchReports]);
+    v41 = optionsCopy;
   }
 
   if (v41[65])
   {
-    -[PHFetchOptions setReverseDefaultSortDescriptors:](self, "setReverseDefaultSortDescriptors:", [v46 reverseDefaultSortDescriptors]);
-    v41 = v46;
+    -[PHFetchOptions setReverseDefaultSortDescriptors:](self, "setReverseDefaultSortDescriptors:", [optionsCopy reverseDefaultSortDescriptors]);
+    v41 = optionsCopy;
   }
 
-  v42 = [v41 relatedEntityName];
+  relatedEntityName = [v41 relatedEntityName];
 
-  if (v42)
+  if (relatedEntityName)
   {
-    v43 = [v46 relatedEntityName];
-    [(PHFetchOptions *)self setRelatedEntityName:v43];
+    relatedEntityName2 = [optionsCopy relatedEntityName];
+    [(PHFetchOptions *)self setRelatedEntityName:relatedEntityName2];
   }
 
-  v44 = [v46 relatedRelationshipProperty];
+  relatedRelationshipProperty = [optionsCopy relatedRelationshipProperty];
 
-  if (v44)
+  if (relatedRelationshipProperty)
   {
-    v45 = [v46 relatedRelationshipProperty];
-    [(PHFetchOptions *)self setRelatedRelationshipProperty:v45];
+    relatedRelationshipProperty2 = [optionsCopy relatedRelationshipProperty];
+    [(PHFetchOptions *)self setRelatedRelationshipProperty:relatedRelationshipProperty2];
   }
 
-  if (v46[68])
+  if (optionsCopy[68])
   {
-    -[PHFetchOptions setExcludeSensitiveAndUnprocessedAssets:](self, "setExcludeSensitiveAndUnprocessedAssets:", [v46 excludeSensitiveAndUnprocessedAssets]);
+    -[PHFetchOptions setExcludeSensitiveAndUnprocessedAssets:](self, "setExcludeSensitiveAndUnprocessedAssets:", [optionsCopy excludeSensitiveAndUnprocessedAssets]);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
-  v5 = [(PHFetchOptions *)self predicate];
-  v6 = [v5 copy];
+  predicate = [(PHFetchOptions *)self predicate];
+  v6 = [predicate copy];
   [v4 setPredicate:v6];
 
-  v7 = [(PHFetchOptions *)self sortDescriptors];
-  v8 = [v7 copy];
+  sortDescriptors = [(PHFetchOptions *)self sortDescriptors];
+  v8 = [sortDescriptors copy];
   [v4 setSortDescriptors:v8];
 
-  v9 = [(PHFetchOptions *)self internalPredicate];
-  v10 = [v9 copy];
+  internalPredicate = [(PHFetchOptions *)self internalPredicate];
+  v10 = [internalPredicate copy];
   [v4 setInternalPredicate:v10];
 
-  v11 = [(PHFetchOptions *)self internalInclusionPredicate];
-  v12 = [v11 copy];
+  internalInclusionPredicate = [(PHFetchOptions *)self internalInclusionPredicate];
+  v12 = [internalInclusionPredicate copy];
   [v4 setInternalInclusionPredicate:v12];
 
-  v13 = [(PHFetchOptions *)self internalSortDescriptors];
-  v14 = [v13 copy];
+  internalSortDescriptors = [(PHFetchOptions *)self internalSortDescriptors];
+  v14 = [internalSortDescriptors copy];
   [v4 setInternalSortDescriptors:v14];
 
-  v15 = [(PHFetchOptions *)self fetchPropertySets];
-  [v4 setFetchPropertySets:v15];
+  fetchPropertySets = [(PHFetchOptions *)self fetchPropertySets];
+  [v4 setFetchPropertySets:fetchPropertySets];
 
-  v16 = [(PHFetchOptions *)self transientIdentifier];
-  [v4 setTransientIdentifier:v16];
+  transientIdentifier = [(PHFetchOptions *)self transientIdentifier];
+  [v4 setTransientIdentifier:transientIdentifier];
 
-  v17 = [(PHFetchOptions *)self customObjectIDSortOrder];
-  [v4 setCustomObjectIDSortOrder:v17];
+  customObjectIDSortOrder = [(PHFetchOptions *)self customObjectIDSortOrder];
+  [v4 setCustomObjectIDSortOrder:customObjectIDSortOrder];
 
-  v18 = [(PHFetchOptions *)self photoLibrary];
-  [v4 setPhotoLibrary:v18];
+  photoLibrary = [(PHFetchOptions *)self photoLibrary];
+  [v4 setPhotoLibrary:photoLibrary];
 
-  v19 = [(PHFetchOptions *)self verifiedPersonTypes];
-  v20 = [v19 copy];
+  verifiedPersonTypes = [(PHFetchOptions *)self verifiedPersonTypes];
+  v20 = [verifiedPersonTypes copy];
   [v4 setVerifiedPersonTypes:v20];
 
-  v21 = [(PHFetchOptions *)self changeDetectionCriteria];
-  v22 = [v21 copy];
+  changeDetectionCriteria = [(PHFetchOptions *)self changeDetectionCriteria];
+  v22 = [changeDetectionCriteria copy];
   [v4 setChangeDetectionCriteria:v22];
 
   v23 = [(NSNumber *)self->_curationTypeNumber copy];
@@ -1637,13 +1637,13 @@
   return v4;
 }
 
-+ (id)fetchOptionsCopyFromNullableFetchOptions:(id)a3 photoLibrary:(id)a4
++ (id)fetchOptionsCopyFromNullableFetchOptions:(id)options photoLibrary:(id)library
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  optionsCopy = options;
+  libraryCopy = library;
+  if (optionsCopy)
   {
-    v7 = [v5 copy];
+    v7 = [optionsCopy copy];
   }
 
   else
@@ -1652,65 +1652,65 @@
   }
 
   v8 = v7;
-  if (v6)
+  if (libraryCopy)
   {
-    [(PHFetchOptions *)v7 setPhotoLibrary:v6];
+    [(PHFetchOptions *)v7 setPhotoLibrary:libraryCopy];
   }
 
   return v8;
 }
 
-+ (id)effectivePhotoLibraryForFetchOptions:(id)a3 object:(id)a4
++ (id)effectivePhotoLibraryForFetchOptions:(id)options object:(id)object
 {
-  v5 = a3;
-  v6 = [a4 photoLibrary];
-  if (!v6)
+  optionsCopy = options;
+  photoLibrary = [object photoLibrary];
+  if (!photoLibrary)
   {
-    v6 = [v5 photoLibrary];
-    if (!v6)
+    photoLibrary = [optionsCopy photoLibrary];
+    if (!photoLibrary)
     {
-      v6 = +[PHPhotoLibrary sharedPhotoLibrary];
+      photoLibrary = +[PHPhotoLibrary sharedPhotoLibrary];
     }
   }
 
-  v7 = v6;
+  v7 = photoLibrary;
 
   return v7;
 }
 
-+ (PHFetchOptions)fetchOptionsWithPhotoLibrary:(id)a3 orObject:(id)a4
++ (PHFetchOptions)fetchOptionsWithPhotoLibrary:(id)library orObject:(id)object
 {
-  v5 = a3;
-  v6 = a4;
+  libraryCopy = library;
+  objectCopy = object;
   v7 = objc_alloc_init(PHFetchOptions);
   v8 = v7;
-  if (v5)
+  if (libraryCopy)
   {
-    [(PHFetchOptions *)v7 setPhotoLibrary:v5];
+    [(PHFetchOptions *)v7 setPhotoLibrary:libraryCopy];
   }
 
   else
   {
-    v9 = [v6 photoLibrary];
-    [(PHFetchOptions *)v8 setPhotoLibrary:v9];
+    photoLibrary = [objectCopy photoLibrary];
+    [(PHFetchOptions *)v8 setPhotoLibrary:photoLibrary];
   }
 
   return v8;
 }
 
-+ (PHFetchOptions)fetchOptionsWithInclusiveDefaultsForPhotoLibrary:(id)a3
++ (PHFetchOptions)fetchOptionsWithInclusiveDefaultsForPhotoLibrary:(id)library
 {
-  v3 = [a3 librarySpecificFetchOptions];
-  [v3 setIncludeHiddenAssets:1];
-  [v3 setIncludeAllBurstAssets:1];
+  librarySpecificFetchOptions = [library librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludeHiddenAssets:1];
+  [librarySpecificFetchOptions setIncludeAllBurstAssets:1];
 
-  return v3;
+  return librarySpecificFetchOptions;
 }
 
 + (PHFetchOptions)fetchOptionsWithInclusiveDefaults
 {
   v3 = +[PHPhotoLibrary sharedPhotoLibrary];
-  v4 = [a1 fetchOptionsWithInclusiveDefaultsForPhotoLibrary:v3];
+  v4 = [self fetchOptionsWithInclusiveDefaultsForPhotoLibrary:v3];
 
   return v4;
 }

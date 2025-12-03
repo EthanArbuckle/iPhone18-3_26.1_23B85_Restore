@@ -1,15 +1,15 @@
 @interface PUPhotoEditCopyEditsViewController
-+ (BOOL)shouldPresentForCopyingFromCompositionController:(id)a3 asset:(id)a4;
-+ (id)_sectionsForConfiguration:(id)a3;
-- (PUPhotoEditCopyEditsViewController)initWithCompositionController:(id)a3 asset:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
++ (BOOL)shouldPresentForCopyingFromCompositionController:(id)controller asset:(id)asset;
++ (id)_sectionsForConfiguration:(id)configuration;
+- (PUPhotoEditCopyEditsViewController)initWithCompositionController:(id)controller asset:(id)asset;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_finish;
-- (void)switchControlDidSwitch:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)switchControlDidSwitch:(id)switch;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -18,122 +18,122 @@
 
 - (void)_finish
 {
-  v3 = [(PUPhotoEditCopyEditsViewController *)self configuration];
-  v12 = [v3 result];
+  configuration = [(PUPhotoEditCopyEditsViewController *)self configuration];
+  result = [configuration result];
 
-  v4 = [v12 compositionController];
-  v5 = [MEMORY[0x1E69C42B0] hasValidAdjustmentsInCompositionController:v4];
+  compositionController = [result compositionController];
+  v5 = [MEMORY[0x1E69C42B0] hasValidAdjustmentsInCompositionController:compositionController];
   if (v5)
   {
-    v6 = [MEMORY[0x1E69C4220] sharedPresetManager];
-    v7 = [(PUPhotoEditCopyEditsViewController *)self asset];
-    v8 = [v12 smartCopyEnabled];
-    v9 = [v12 analyticsPayload];
-    [v6 copyPresetFromCompositionController:v4 sourceAsset:v7 smartCopyEnabled:v8 configurationAnalyticsPayload:v9];
+    mEMORY[0x1E69C4220] = [MEMORY[0x1E69C4220] sharedPresetManager];
+    asset = [(PUPhotoEditCopyEditsViewController *)self asset];
+    smartCopyEnabled = [result smartCopyEnabled];
+    analyticsPayload = [result analyticsPayload];
+    [mEMORY[0x1E69C4220] copyPresetFromCompositionController:compositionController sourceAsset:asset smartCopyEnabled:smartCopyEnabled configurationAnalyticsPayload:analyticsPayload];
   }
 
-  v10 = [(PUPhotoEditCopyEditsViewController *)self completionHandler];
+  completionHandler = [(PUPhotoEditCopyEditsViewController *)self completionHandler];
 
-  if (v10)
+  if (completionHandler)
   {
-    v11 = [(PUPhotoEditCopyEditsViewController *)self completionHandler];
-    v11[2](v11, v5);
+    completionHandler2 = [(PUPhotoEditCopyEditsViewController *)self completionHandler];
+    completionHandler2[2](completionHandler2, v5);
   }
 }
 
-- (void)switchControlDidSwitch:(id)a3
+- (void)switchControlDidSwitch:(id)switch
 {
-  v4 = a3;
-  [v4 tag];
-  v5 = [(PUPhotoEditCopyEditsViewController *)self configuration];
-  v6 = [v5 settings];
+  switchCopy = switch;
+  [switchCopy tag];
+  configuration = [(PUPhotoEditCopyEditsViewController *)self configuration];
+  settings = [configuration settings];
   v7 = PFFind();
 
   [v7 setEnabled:{objc_msgSend(v7, "enabled") ^ 1}];
   if ([v7 identifier] == 2)
   {
-    v8 = [(PUPhotoEditCopyEditsViewController *)self configuration];
-    v9 = [v8 settings];
+    configuration2 = [(PUPhotoEditCopyEditsViewController *)self configuration];
+    settings2 = [configuration2 settings];
     v10 = PFFind();
 
-    if (([v4 isOn] & 1) == 0)
+    if (([switchCopy isOn] & 1) == 0)
     {
       [v10 setEnabled:0];
-      v11 = [(PUPhotoEditCopyEditsViewController *)self smartSwitch];
-      [v11 setOn:0];
+      smartSwitch = [(PUPhotoEditCopyEditsViewController *)self smartSwitch];
+      [smartSwitch setOn:0];
     }
 
-    v12 = [v4 isOn];
-    v13 = [(PUPhotoEditCopyEditsViewController *)self smartSwitch];
-    [v13 setEnabled:v12];
+    isOn = [switchCopy isOn];
+    smartSwitch2 = [(PUPhotoEditCopyEditsViewController *)self smartSwitch];
+    [smartSwitch2 setEnabled:isOn];
   }
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v5 = [(PUPhotoEditCopyEditsViewController *)self sections];
-  v6 = [v5 objectAtIndex:a4];
-  v7 = [v6 footer];
+  sections = [(PUPhotoEditCopyEditsViewController *)self sections];
+  v6 = [sections objectAtIndex:section];
+  footer = [v6 footer];
 
-  return v7;
+  return footer;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(PUPhotoEditCopyEditsViewController *)self sections];
-  v6 = [v5 objectAtIndex:a4];
-  v7 = [v6 header];
+  sections = [(PUPhotoEditCopyEditsViewController *)self sections];
+  v6 = [sections objectAtIndex:section];
+  header = [v6 header];
 
-  return v7;
+  return header;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUPhotoEditCopyEditsViewController *)self sections];
-  v9 = [v8 objectAtIndex:{objc_msgSend(v6, "section")}];
-  v10 = [v9 items];
-  v11 = [v10 objectAtIndex:{objc_msgSend(v6, "row")}];
+  pathCopy = path;
+  viewCopy = view;
+  sections = [(PUPhotoEditCopyEditsViewController *)self sections];
+  v9 = [sections objectAtIndex:{objc_msgSend(pathCopy, "section")}];
+  items = [v9 items];
+  v11 = [items objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-  v12 = [v7 dequeueReusableCellWithIdentifier:@"PUPhotoEditCopyEditsViewControllerCellReuseIdentifier" forIndexPath:v6];
+  v12 = [viewCopy dequeueReusableCellWithIdentifier:@"PUPhotoEditCopyEditsViewControllerCellReuseIdentifier" forIndexPath:pathCopy];
 
-  v13 = [v12 accessoryView];
-  if (!v13)
+  accessoryView = [v12 accessoryView];
+  if (!accessoryView)
   {
-    v13 = objc_alloc_init(MEMORY[0x1E69DCFD0]);
-    [v13 addTarget:self action:sel_switchControlDidSwitch_ forControlEvents:4096];
-    [v12 setAccessoryView:v13];
+    accessoryView = objc_alloc_init(MEMORY[0x1E69DCFD0]);
+    [accessoryView addTarget:self action:sel_switchControlDidSwitch_ forControlEvents:4096];
+    [v12 setAccessoryView:accessoryView];
     if ([v11 identifier] == 6)
     {
-      [(PUPhotoEditCopyEditsViewController *)self setSmartSwitch:v13];
+      [(PUPhotoEditCopyEditsViewController *)self setSmartSwitch:accessoryView];
     }
   }
 
-  v14 = [v11 localizedTitle];
-  v15 = [v12 textLabel];
-  [v15 setText:v14];
+  localizedTitle = [v11 localizedTitle];
+  textLabel = [v12 textLabel];
+  [textLabel setText:localizedTitle];
 
-  [v13 setTag:{objc_msgSend(v11, "identifier")}];
-  [v13 setOn:{objc_msgSend(v11, "enabled")}];
+  [accessoryView setTag:{objc_msgSend(v11, "identifier")}];
+  [accessoryView setOn:{objc_msgSend(v11, "enabled")}];
 
   return v12;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(PUPhotoEditCopyEditsViewController *)self sections];
-  v6 = [v5 objectAtIndex:a4];
-  v7 = [v6 items];
-  v8 = [v7 count];
+  sections = [(PUPhotoEditCopyEditsViewController *)self sections];
+  v6 = [sections objectAtIndex:section];
+  items = [v6 items];
+  v8 = [items count];
 
   return v8;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(PUPhotoEditCopyEditsViewController *)self sections];
-  v4 = [v3 count];
+  sections = [(PUPhotoEditCopyEditsViewController *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
@@ -144,22 +144,22 @@
   v28.receiver = self;
   v28.super_class = PUPhotoEditCopyEditsViewController;
   [(PUPhotoEditCopyEditsViewController *)&v28 viewDidLayoutSubviews];
-  v3 = [(PUPhotoEditCopyEditsViewController *)self tableView];
-  v4 = [v3 visibleCells];
-  v5 = [v4 firstObject];
-  v6 = [v5 textLabel];
-  v7 = [v6 font];
+  tableView = [(PUPhotoEditCopyEditsViewController *)self tableView];
+  visibleCells = [tableView visibleCells];
+  firstObject = [visibleCells firstObject];
+  textLabel = [firstObject textLabel];
+  font = [textLabel font];
 
-  if (v7)
+  if (font)
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v8 = [(PUPhotoEditCopyEditsViewController *)self configuration];
-    v9 = [v8 settings];
+    configuration = [(PUPhotoEditCopyEditsViewController *)self configuration];
+    settings = [configuration settings];
 
-    v10 = [v9 countByEnumeratingWithState:&v24 objects:v31 count:16];
+    v10 = [settings countByEnumeratingWithState:&v24 objects:v31 count:16];
     if (v10)
     {
       v11 = v10;
@@ -174,14 +174,14 @@
         {
           if (*v25 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(settings);
           }
 
-          v18 = [*(*(&v24 + 1) + 8 * i) localizedTitle];
+          localizedTitle = [*(*(&v24 + 1) + 8 * i) localizedTitle];
           v29 = v13;
-          v30 = v7;
+          v30 = font;
           v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
-          [v18 boundingRectWithSize:0 options:v19 attributes:0 context:{v14, v15}];
+          [localizedTitle boundingRectWithSize:0 options:v19 attributes:0 context:{v14, v15}];
           v21 = v20;
 
           if (v21 > v16)
@@ -190,7 +190,7 @@
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v24 objects:v31 count:16];
+        v11 = [settings countByEnumeratingWithState:&v24 objects:v31 count:16];
       }
 
       while (v11);
@@ -213,16 +213,16 @@
     v22 = 300.0;
   }
 
-  v23 = [(PUPhotoEditCopyEditsViewController *)self tableView];
-  [v23 contentSize];
+  tableView2 = [(PUPhotoEditCopyEditsViewController *)self tableView];
+  [tableView2 contentSize];
   [(PUPhotoEditCopyEditsViewController *)self setPreferredContentSize:v22];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PUPhotoEditCopyEditsViewController;
-  [(PUPhotoEditCopyEditsViewController *)&v4 viewDidDisappear:a3];
+  [(PUPhotoEditCopyEditsViewController *)&v4 viewDidDisappear:disappear];
   [(PUPhotoEditCopyEditsViewController *)self _finish];
 }
 
@@ -248,20 +248,20 @@
   v7 = objc_alloc(MEMORY[0x1E69DC708]);
   v8 = [v7 initWithPrimaryAction:{v6, v15, v16, v17, v18}];
   [v8 setStyle:2];
-  v9 = [v8 creatingFixedGroup];
-  v22[0] = v9;
+  creatingFixedGroup = [v8 creatingFixedGroup];
+  v22[0] = creatingFixedGroup;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
-  v11 = [(PUPhotoEditCopyEditsViewController *)self navigationItem];
-  [v11 setTrailingItemGroups:v10];
+  navigationItem = [(PUPhotoEditCopyEditsViewController *)self navigationItem];
+  [navigationItem setTrailingItemGroups:v10];
 
-  v12 = [(PUPhotoEditCopyEditsViewController *)self tableView];
-  [v12 registerClass:objc_opt_class() forCellReuseIdentifier:@"PUPhotoEditCopyEditsViewControllerCellReuseIdentifier"];
+  tableView = [(PUPhotoEditCopyEditsViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"PUPhotoEditCopyEditsViewControllerCellReuseIdentifier"];
 
-  v13 = [(PUPhotoEditCopyEditsViewController *)self tableView];
-  [v13 setAllowsSelection:0];
+  tableView2 = [(PUPhotoEditCopyEditsViewController *)self tableView];
+  [tableView2 setAllowsSelection:0];
 
-  v14 = [(PUPhotoEditCopyEditsViewController *)self tableView];
-  [v14 setAlwaysBounceVertical:0];
+  tableView3 = [(PUPhotoEditCopyEditsViewController *)self tableView];
+  [tableView3 setAlwaysBounceVertical:0];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
@@ -273,20 +273,20 @@ void __49__PUPhotoEditCopyEditsViewController_viewDidLoad__block_invoke(uint64_t
   [WeakRetained dismissViewControllerAnimated:1 completion:&__block_literal_global_70559];
 }
 
-- (PUPhotoEditCopyEditsViewController)initWithCompositionController:(id)a3 asset:(id)a4
+- (PUPhotoEditCopyEditsViewController)initWithCompositionController:(id)controller asset:(id)asset
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  assetCopy = asset;
   v14.receiver = self;
   v14.super_class = PUPhotoEditCopyEditsViewController;
   v8 = [(PUPhotoEditCopyEditsViewController *)&v14 initWithStyle:2];
   if (v8)
   {
-    v9 = [objc_alloc(MEMORY[0x1E69C4278]) initWithCompositionController:v6 asset:v7];
+    v9 = [objc_alloc(MEMORY[0x1E69C4278]) initWithCompositionController:controllerCopy asset:assetCopy];
     configuration = v8->_configuration;
     v8->_configuration = v9;
 
-    objc_storeStrong(&v8->_asset, a4);
+    objc_storeStrong(&v8->_asset, asset);
     v11 = [PUPhotoEditCopyEditsViewController _sectionsForConfiguration:v8->_configuration];
     sections = v8->_sections;
     v8->_sections = v11;
@@ -295,21 +295,21 @@ void __49__PUPhotoEditCopyEditsViewController_viewDidLoad__block_invoke(uint64_t
   return v8;
 }
 
-+ (id)_sectionsForConfiguration:(id)a3
++ (id)_sectionsForConfiguration:(id)configuration
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [v3 settings];
+  configurationCopy = configuration;
+  array = [MEMORY[0x1E695DF70] array];
+  settings = [configurationCopy settings];
   v6 = PFFilter();
 
   if ([v6 count])
   {
     v7 = [[PUCopyEditsSettingSection alloc] initWithItems:v6 header:0 footer:0];
-    [v4 addObject:v7];
+    [array addObject:v7];
   }
 
-  v8 = [v3 settings];
+  settings2 = [configurationCopy settings];
   v9 = PFFind();
 
   if (v9)
@@ -320,22 +320,22 @@ void __49__PUPhotoEditCopyEditsViewController_viewDidLoad__block_invoke(uint64_t
     v12 = PELocalizedString();
     v13 = [(PUCopyEditsSettingSection *)v10 initWithItems:v11 header:0 footer:v12];
 
-    [v4 addObject:v13];
+    [array addObject:v13];
   }
 
-  return v4;
+  return array;
 }
 
-+ (BOOL)shouldPresentForCopyingFromCompositionController:(id)a3 asset:(id)a4
++ (BOOL)shouldPresentForCopyingFromCompositionController:(id)controller asset:(id)asset
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  assetCopy = asset;
   v7 = +[PUPhotoEditProtoSettings sharedInstance];
-  v8 = [v7 enableSelectiveCopyEdits];
+  enableSelectiveCopyEdits = [v7 enableSelectiveCopyEdits];
 
-  if (v8)
+  if (enableSelectiveCopyEdits)
   {
-    v9 = [objc_alloc(MEMORY[0x1E69C4278]) initWithCompositionController:v5 asset:v6];
+    v9 = [objc_alloc(MEMORY[0x1E69C4278]) initWithCompositionController:controllerCopy asset:assetCopy];
     v10 = [PUPhotoEditCopyEditsViewController _sectionsForConfiguration:v9];
     v11 = [v10 count] != 0;
   }

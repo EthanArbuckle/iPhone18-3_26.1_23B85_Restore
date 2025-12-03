@@ -9,21 +9,21 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PNPersonParameter *)self name];
+  name = [(PNPersonParameter *)self name];
   [(PNPersonParameter *)self startValue];
   v6 = v5;
   [(PNPersonParameter *)self endValue];
   v8 = v7;
   [(PNPersonParameter *)self incrementValue];
-  v10 = [v3 stringWithFormat:@"Parameter name: '%@', start: %lf, end: %lf, increment: %lf", v4, v6, v8, v9];
+  v10 = [v3 stringWithFormat:@"Parameter name: '%@', start: %lf, end: %lf, increment: %lf", name, v6, v8, v9];
 
   return v10;
 }
 
 - (BOOL)isValid
 {
-  v3 = [(PNPersonParameter *)self name];
-  if (!v3 || ([(PNPersonParameter *)self startValue], v4 == 1.79769313e308) || ([(PNPersonParameter *)self endValue], v5 == 1.79769313e308))
+  name = [(PNPersonParameter *)self name];
+  if (!name || ([(PNPersonParameter *)self startValue], v4 == 1.79769313e308) || ([(PNPersonParameter *)self endValue], v5 == 1.79769313e308))
   {
     v7 = 0;
   }

@@ -1,7 +1,7 @@
 @interface PHRecyclableObjectVendor
-- (PHRecyclableObjectVendor)initWithTargetClass:(Class)a3 requiresThreadSafety:(BOOL)a4 initialPoolSize:(int64_t)a5 prototypeStep:(id)a6;
+- (PHRecyclableObjectVendor)initWithTargetClass:(Class)class requiresThreadSafety:(BOOL)safety initialPoolSize:(int64_t)size prototypeStep:(id)step;
 - (id)dequeueRecyclableObject;
-- (void)recycleObject:(id)a3;
+- (void)recycleObject:(id)object;
 @end
 
 @implementation PHRecyclableObjectVendor
@@ -15,17 +15,17 @@
 
   if ([(NSMutableArray *)self->_recycledObjects count])
   {
-    v3 = [(NSMutableArray *)self->_recycledObjects lastObject];
+    lastObject = [(NSMutableArray *)self->_recycledObjects lastObject];
     [(NSMutableArray *)self->_recycledObjects removeLastObject];
   }
 
   else
   {
-    v3 = [[(objc_class *)self->_targetClass alloc] init];
+    lastObject = [[(objc_class *)self->_targetClass alloc] init];
     builder = self->_builder;
     if (builder)
     {
-      builder[2](builder, v3);
+      builder[2](builder, lastObject);
     }
   }
 
@@ -34,18 +34,18 @@
     os_unfair_lock_unlock(&self->_lock);
   }
 
-  return v3;
+  return lastObject;
 }
 
-- (void)recycleObject:(id)a3
+- (void)recycleObject:(id)object
 {
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
-    v5 = v4;
+    v5 = objectCopy;
     if (self->_repsondsToPrepareForReuse)
     {
-      [v4 prepareForReuse];
+      [objectCopy prepareForReuse];
     }
 
     if (self->_threadSafe)
@@ -54,62 +54,62 @@
     }
 
     [(NSMutableArray *)self->_recycledObjects addObject:v5];
-    v4 = v5;
+    objectCopy = v5;
     if (self->_threadSafe)
     {
       os_unfair_lock_unlock(&self->_lock);
-      v4 = v5;
+      objectCopy = v5;
     }
   }
 }
 
-- (PHRecyclableObjectVendor)initWithTargetClass:(Class)a3 requiresThreadSafety:(BOOL)a4 initialPoolSize:(int64_t)a5 prototypeStep:(id)a6
+- (PHRecyclableObjectVendor)initWithTargetClass:(Class)class requiresThreadSafety:(BOOL)safety initialPoolSize:(int64_t)size prototypeStep:(id)step
 {
-  v11 = a6;
+  stepCopy = step;
   v22.receiver = self;
   v22.super_class = PHRecyclableObjectVendor;
   v12 = [(PHRecyclableObjectVendor *)&v22 init];
   if (v12)
   {
-    if (!a3)
+    if (!class)
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v21 handleFailureInMethod:a2 object:v12 file:@"PHRecyclableObjectVendor.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"class"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v12 file:@"PHRecyclableObjectVendor.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"class"}];
     }
 
-    if (a5 <= 20)
+    if (size <= 20)
     {
-      v13 = 20;
+      sizeCopy = 20;
     }
 
     else
     {
-      v13 = a5;
+      sizeCopy = size;
     }
 
-    v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:v13];
+    v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:sizeCopy];
     recycledObjects = v12->_recycledObjects;
     v12->_recycledObjects = v14;
 
-    if (a5 >= 1)
+    if (size >= 1)
     {
       do
       {
         v16 = v12->_recycledObjects;
-        v17 = objc_alloc_init(a3);
+        v17 = objc_alloc_init(class);
         [(NSMutableArray *)v16 addObject:v17];
 
-        --a5;
+        --size;
       }
 
-      while (a5);
+      while (size);
     }
 
     v12->_lock._os_unfair_lock_opaque = 0;
-    v12->_repsondsToPrepareForReuse = class_respondsToSelector(a3, sel_prepareForReuse);
-    v12->_targetClass = a3;
-    v12->_threadSafe = a4;
-    v18 = _Block_copy(v11);
+    v12->_repsondsToPrepareForReuse = class_respondsToSelector(class, sel_prepareForReuse);
+    v12->_targetClass = class;
+    v12->_threadSafe = safety;
+    v18 = _Block_copy(stepCopy);
     builder = v12->_builder;
     v12->_builder = v18;
   }

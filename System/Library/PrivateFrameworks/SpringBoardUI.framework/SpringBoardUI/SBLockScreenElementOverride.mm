@@ -1,24 +1,24 @@
 @interface SBLockScreenElementOverride
-+ (id)overrideForElement:(int64_t)a3;
-+ (id)overrideForHiddenElement:(int64_t)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
++ (id)overrideForElement:(int64_t)element;
++ (id)overrideForHiddenElement:(int64_t)element;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation SBLockScreenElementOverride
 
-+ (id)overrideForElement:(int64_t)a3
++ (id)overrideForElement:(int64_t)element
 {
   v4 = objc_alloc_init(SBLockScreenElementOverride);
-  [(SBLockScreenElementOverride *)v4 setElement:a3];
+  [(SBLockScreenElementOverride *)v4 setElement:element];
 
   return v4;
 }
 
-+ (id)overrideForHiddenElement:(int64_t)a3
++ (id)overrideForHiddenElement:(int64_t)element
 {
-  v3 = [a1 overrideForElement:a3];
+  v3 = [self overrideForElement:element];
   [v3 setHidden:1];
 
   return v3;
@@ -26,10 +26,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBLockScreenElementOverride *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBLockScreenElementOverride *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -44,12 +44,12 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBLockScreenElementOverride *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBLockScreenElementOverride *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

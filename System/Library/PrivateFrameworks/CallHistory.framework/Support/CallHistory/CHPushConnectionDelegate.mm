@@ -1,8 +1,8 @@
 @interface CHPushConnectionDelegate
 - (CHPushConnectionDelegate)init;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier;
 - (void)dealloc;
 @end
 
@@ -16,9 +16,9 @@
   if (v2)
   {
     v3 = [NSString stringWithFormat:@"com.apple.CallHistory.queue.%@.%p", objc_opt_class(), v2];
-    v4 = [v3 UTF8String];
+    uTF8String = [v3 UTF8String];
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v6 = dispatch_queue_create(v4, v5);
+    v6 = dispatch_queue_create(uTF8String, v5);
     queue = v2->_queue;
     v2->_queue = v6;
 
@@ -53,61 +53,61 @@
   [(CHPushConnectionDelegate *)&v3 dealloc];
 }
 
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(CHPushConnectionDelegate *)self queue];
-  dispatch_assert_queue_V2(v12);
+  tokenCopy = token;
+  topicCopy = topic;
+  identifierCopy = identifier;
+  queue = [(CHPushConnectionDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v13 = [(CHPushConnectionDelegate *)self logHandle];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  logHandle = [(CHPushConnectionDelegate *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543874;
-    v15 = v9;
+    v15 = tokenCopy;
     v16 = 2114;
-    v17 = v10;
+    v17 = topicCopy;
     v18 = 2114;
-    v19 = v11;
-    _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Received token %{public}@ for topic %{public}@ and identifier %{public}@", &v14, 0x20u);
+    v19 = identifierCopy;
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Received token %{public}@ for topic %{public}@ and identifier %{public}@", &v14, 0x20u);
   }
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v5 = a4;
-  v6 = [(CHPushConnectionDelegate *)self queue];
-  dispatch_assert_queue_V2(v6);
+  tokenCopy = token;
+  queue = [(CHPushConnectionDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(CHPushConnectionDelegate *)self logHandle];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  logHandle = [(CHPushConnectionDelegate *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v5;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Received public token %{public}@", &v8, 0xCu);
+    v9 = tokenCopy;
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Received public token %{public}@", &v8, 0xCu);
   }
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v5 = a4;
-  v6 = [(CHPushConnectionDelegate *)self queue];
-  dispatch_assert_queue_V2(v6);
+  messageCopy = message;
+  queue = [(CHPushConnectionDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(CHPushConnectionDelegate *)self logHandle];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  logHandle = [(CHPushConnectionDelegate *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 topic];
+    topic = [messageCopy topic];
     v11 = 138543362;
-    v12 = v8;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Received incoming message for topic %{public}@", &v11, 0xCu);
+    v12 = topic;
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Received incoming message for topic %{public}@", &v11, 0xCu);
   }
 
-  v9 = [(CHPushConnectionDelegate *)self logHandle];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+  logHandle2 = [(CHPushConnectionDelegate *)self logHandle];
+  if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEBUG))
   {
-    sub_100033E90(v5, v9);
+    sub_100033E90(messageCopy, logHandle2);
   }
 
   v10 = +[NSNotificationCenter defaultCenter];

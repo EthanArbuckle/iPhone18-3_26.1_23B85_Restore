@@ -1,37 +1,37 @@
 @interface VoiceOverCommandDetailsViewController
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path;
 - (id)specifiers;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (void)_addGestureButtonTapped:(id)a3;
-- (void)_addKeyboardShortcutButtonTapped:(id)a3;
-- (void)_addKeyboardShortcutWithSpecifier:(id)a3 resolver:(id)a4;
-- (void)_addQuickNavShortcutButtonTapped:(id)a3;
-- (void)_addSpecifiersForShortcuts:(id)a3 toSpecifiers:(id)a4 commandManager:(id)a5 resolver:(id)a6;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (void)_addGestureButtonTapped:(id)tapped;
+- (void)_addKeyboardShortcutButtonTapped:(id)tapped;
+- (void)_addKeyboardShortcutWithSpecifier:(id)specifier resolver:(id)resolver;
+- (void)_addQuickNavShortcutButtonTapped:(id)tapped;
+- (void)_addSpecifiersForShortcuts:(id)shortcuts toSpecifiers:(id)specifiers commandManager:(id)manager resolver:(id)resolver;
 - (void)_finishEditingIfNeeded;
 - (void)_updateNavigationBarUI;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didEndEditingRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willBeginEditingRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didEndEditingRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willBeginEditingRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation VoiceOverCommandDetailsViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = VoiceOverCommandDetailsViewController;
-  [(VoiceOverCommandDetailsViewController *)&v4 viewWillAppear:a3];
+  [(VoiceOverCommandDetailsViewController *)&v4 viewWillAppear:appear];
   [(VoiceOverCommandDetailsViewController *)self _updateNavigationBarUI];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a3;
+  editingCopy = editing;
   v18.receiver = self;
   v18.super_class = VoiceOverCommandDetailsViewController;
-  [(VoiceOverCommandDetailsViewController *)&v18 setEditing:a3 animated:a4];
+  [(VoiceOverCommandDetailsViewController *)&v18 setEditing:editing animated:animated];
   [(VoiceOverCommandDetailsViewController *)self _updateNavigationBarUI];
   v16 = 0u;
   v17 = 0u;
@@ -55,7 +55,7 @@
         }
 
         v12 = *(*(&v14 + 1) + 8 * v11);
-        v13 = [NSNumber numberWithInt:!v4, v14];
+        v13 = [NSNumber numberWithInt:!editingCopy, v14];
         [v12 setProperty:v13 forKey:v10];
 
         [(VoiceOverCommandDetailsViewController *)self reloadSpecifier:v12 animated:1];
@@ -82,11 +82,11 @@
   v4 = objc_opt_new();
   v51 = objc_opt_new();
   v5 = OBJC_IVAR___PSViewController__specifier;
-  v54 = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] voCommandManager];
-  v6 = [*&self->AXUISettingsBaseListController_opaque[v5] voCommandContext];
-  v7 = [v6 command];
+  voCommandManager = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] voCommandManager];
+  voCommandContext = [*&self->AXUISettingsBaseListController_opaque[v5] voCommandContext];
+  command = [voCommandContext command];
 
-  v8 = [*&self->AXUISettingsBaseListController_opaque[v5] voCommandResolver];
+  voCommandResolver = [*&self->AXUISettingsBaseListController_opaque[v5] voCommandResolver];
   v9 = _AXSTripleClickCopyOptions();
   if (_AXSTripleClickContainsOption())
   {
@@ -110,18 +110,18 @@ LABEL_5:
   v11 = settingsLocString(@"vo.touch.gestures", @"VoiceOverSettings");
   v12 = [PSSpecifier groupSpecifierWithName:v11];
 
-  if (v10 && [v54 commandHasModifiedBindingsWhenZoomEnabled:v7 withResolver:v8])
+  if (v10 && [voCommandManager commandHasModifiedBindingsWhenZoomEnabled:command withResolver:voCommandResolver])
   {
     v13 = settingsLocString(@"vo.touch.gestures.zoom.conflict", @"VoiceOverSettings");
     [v12 setProperty:v13 forKey:PSFooterTextGroupKey];
   }
 
-  v49 = self;
+  selfCopy = self;
   v52 = v12;
   [v4 addObject:v12];
-  v14 = v54;
-  v50 = v7;
-  [v54 gestureBindingsForCommand:v7 withResolver:v8];
+  v14 = voCommandManager;
+  v50 = command;
+  [voCommandManager gestureBindingsForCommand:command withResolver:voCommandResolver];
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
@@ -143,20 +143,20 @@ LABEL_5:
         }
 
         v21 = *(*(&v56 + 1) + 8 * i);
-        v22 = [v14 availabilityForGesture:v21 withResolver:v8];
+        v22 = [v14 availabilityForGesture:v21 withResolver:voCommandResolver];
         if (v22 != &dword_0 + 2)
         {
           v23 = v22;
-          v24 = [PSSpecifier voGestureItem:v21 commandManager:v14 resolver:v8];
+          v24 = [PSSpecifier voGestureItem:v21 commandManager:v14 resolver:voCommandResolver];
 
           v25 = [NSNumber numberWithUnsignedInteger:v23];
-          v26 = [v24 voCommandContext];
-          [v26 setBindingAvailability:v25];
+          voCommandContext2 = [v24 voCommandContext];
+          [voCommandContext2 setBindingAvailability:v25];
 
           v27 = [NSNumber numberWithInt:v23 == 0];
           [v24 setProperty:v27 forKey:v19];
 
-          v14 = v54;
+          v14 = voCommandManager;
           [v4 addObject:v24];
           v17 = v24;
         }
@@ -175,10 +175,10 @@ LABEL_5:
 
   v28 = v14;
   v29 = settingsLocString(@"vo.add.gesture", @"VoiceOverSettings");
-  v30 = [PSSpecifier preferenceSpecifierNamed:v29 target:v49 set:0 get:0 detail:0 cell:13 edit:0];
+  v30 = [PSSpecifier preferenceSpecifierNamed:v29 target:selfCopy set:0 get:0 detail:0 cell:13 edit:0];
 
   v31 = v50;
-  v32 = [VOCommandContext genericContextWithCommandManager:v14 command:v50 resolver:v8];
+  v32 = [VOCommandContext genericContextWithCommandManager:v14 command:v50 resolver:voCommandResolver];
   [v30 setVoCommandContext:v32];
 
   [v30 setButtonAction:"_addGestureButtonTapped:"];
@@ -192,18 +192,18 @@ LABEL_5:
 
   v53 = v34;
   [v4 addObject:v34];
-  v47 = [v28 shortcutBindingsForCommand:v50 withResolver:v8];
-  [VoiceOverCommandDetailsViewController _addSpecifiersForShortcuts:v49 toSpecifiers:"_addSpecifiersForShortcuts:toSpecifiers:commandManager:resolver:" commandManager:? resolver:?];
+  v47 = [v28 shortcutBindingsForCommand:v50 withResolver:voCommandResolver];
+  [VoiceOverCommandDetailsViewController _addSpecifiersForShortcuts:selfCopy toSpecifiers:"_addSpecifiersForShortcuts:toSpecifiers:commandManager:resolver:" commandManager:? resolver:?];
   v36 = settingsLocString(@"vo.add.keyboard.shortcut", @"VoiceOverSettings");
-  v37 = [PSSpecifier preferenceSpecifierNamed:v36 target:v49 set:0 get:0 detail:0 cell:13 edit:0];
+  v37 = [PSSpecifier preferenceSpecifierNamed:v36 target:selfCopy set:0 get:0 detail:0 cell:13 edit:0];
 
-  v38 = [VOCommandContext genericContextWithCommandManager:v28 command:v50 resolver:v8];
+  v38 = [VOCommandContext genericContextWithCommandManager:v28 command:v50 resolver:voCommandResolver];
   [v37 setVoCommandContext:v38];
 
   [v37 setButtonAction:"_addKeyboardShortcutButtonTapped:"];
   [v4 addObject:v37];
   [(NSArray *)v51 addObject:v37];
-  v39 = [v8 copy];
+  v39 = [voCommandResolver copy];
   [v39 setKeyboardMode:1];
   v40 = [v28 shortcutBindingsForCommand:v50 withResolver:v39];
   if ([v40 count])
@@ -213,35 +213,35 @@ LABEL_5:
 
     v31 = v50;
     [v4 addObject:v42];
-    [(VoiceOverCommandDetailsViewController *)v49 _addSpecifiersForShortcuts:v40 toSpecifiers:v4 commandManager:v28 resolver:v39];
+    [(VoiceOverCommandDetailsViewController *)selfCopy _addSpecifiersForShortcuts:v40 toSpecifiers:v4 commandManager:v28 resolver:v39];
     v53 = v42;
   }
 
-  v43 = *&v49->AXUISettingsBaseListController_opaque[v48];
-  *&v49->AXUISettingsBaseListController_opaque[v48] = v4;
+  v43 = *&selfCopy->AXUISettingsBaseListController_opaque[v48];
+  *&selfCopy->AXUISettingsBaseListController_opaque[v48] = v4;
   v44 = v4;
 
-  addItemSpecifiers = v49->_addItemSpecifiers;
-  v49->_addItemSpecifiers = v51;
+  addItemSpecifiers = selfCopy->_addItemSpecifiers;
+  selfCopy->_addItemSpecifiers = v51;
 
-  v3 = *&v49->AXUISettingsBaseListController_opaque[v48];
+  v3 = *&selfCopy->AXUISettingsBaseListController_opaque[v48];
 LABEL_24:
 
   return v3;
 }
 
-- (void)_addSpecifiersForShortcuts:(id)a3 toSpecifiers:(id)a4 commandManager:(id)a5 resolver:(id)a6
+- (void)_addSpecifiersForShortcuts:(id)shortcuts toSpecifiers:(id)specifiers commandManager:(id)manager resolver:(id)resolver
 {
-  v9 = a3;
-  v25 = a4;
-  v10 = a5;
-  v11 = a6;
+  shortcutsCopy = shortcuts;
+  specifiersCopy = specifiers;
+  managerCopy = manager;
+  resolverCopy = resolver;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v9;
-  v12 = [v9 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  obj = shortcutsCopy;
+  v12 = [shortcutsCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v12)
   {
     v13 = v12;
@@ -258,20 +258,20 @@ LABEL_24:
         }
 
         v17 = *(*(&v27 + 1) + 8 * i);
-        v18 = [v10 availabilityForShortcut:v17 withResolver:v11];
+        v18 = [managerCopy availabilityForShortcut:v17 withResolver:resolverCopy];
         if (v18 != &dword_0 + 2)
         {
           v19 = v18;
-          v20 = [VOCommandContext keyboardShortcutContextWithKeyChord:v17 commandManager:v10 resolver:v11];
+          v20 = [VOCommandContext keyboardShortcutContextWithKeyChord:v17 commandManager:managerCopy resolver:resolverCopy];
           v21 = [NSNumber numberWithUnsignedInteger:v19];
           [v20 setBindingAvailability:v21];
 
-          v22 = [PSSpecifier voKeyboardShortcutItem:v20 commandManager:v10 resolver:v11];
+          v22 = [PSSpecifier voKeyboardShortcutItem:v20 commandManager:managerCopy resolver:resolverCopy];
 
           v23 = [NSNumber numberWithInt:v19 == 0];
           [v22 setProperty:v23 forKey:v24];
 
-          [v25 addObject:v22];
+          [specifiersCopy addObject:v22];
           v14 = v22;
         }
       }
@@ -288,53 +288,53 @@ LABEL_24:
   }
 }
 
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path
 {
-  v4 = [(VoiceOverCommandDetailsViewController *)self specifierForIndexPath:a4];
+  v4 = [(VoiceOverCommandDetailsViewController *)self specifierForIndexPath:path];
   v5 = [v4 voBindingAvailability] == 0;
 
   return v5;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v4 = [(VoiceOverCommandDetailsViewController *)self specifierForIndexPath:a4];
+  v4 = [(VoiceOverCommandDetailsViewController *)self specifierForIndexPath:path];
   v5 = [v4 voBindingAvailability] == 0;
 
   return v5;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
     v50[2] = v8;
     v50[3] = v7;
     v50[14] = v5;
     v50[15] = v6;
-    v10 = [(VoiceOverCommandDetailsViewController *)self specifierForIndexPath:a5];
-    v11 = [v10 voCommandResolver];
-    v12 = [v10 voCommandContext];
-    v13 = [v12 commandManager];
-    v14 = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] voCommandContext];
-    v15 = [v14 command];
+    v10 = [(VoiceOverCommandDetailsViewController *)self specifierForIndexPath:path];
+    voCommandResolver = [v10 voCommandResolver];
+    voCommandContext = [v10 voCommandContext];
+    commandManager = [voCommandContext commandManager];
+    voCommandContext2 = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] voCommandContext];
+    command = [voCommandContext2 command];
 
-    if (!v10 || !v12 || !v13 || !v15 || ![v12 itemType])
+    if (!v10 || !voCommandContext || !commandManager || !command || ![voCommandContext itemType])
     {
       goto LABEL_12;
     }
 
-    v16 = [v12 itemType];
-    if ((v16 - 3) >= 2)
+    itemType = [voCommandContext itemType];
+    if ((itemType - 3) >= 2)
     {
-      if (v16 != &dword_0 + 2)
+      if (itemType != &dword_0 + 2)
       {
 LABEL_12:
 
         return;
       }
 
-      [v12 gesture];
+      [voCommandContext gesture];
       v47[0] = _NSConcreteStackBlock;
       v47[1] = 3221225472;
       v47[2] = __88__VoiceOverCommandDetailsViewController_tableView_commitEditingStyle_forRowAtIndexPath___block_invoke;
@@ -342,10 +342,10 @@ LABEL_12:
       v25 = v21 = &v48;
       v48 = v25;
       v32 = &v49;
-      v27 = v15;
+      v27 = command;
       v49 = v27;
       v31 = v50;
-      v26 = v11;
+      v26 = voCommandResolver;
       v50[0] = v26;
       v42[0] = _NSConcreteStackBlock;
       v42[1] = 3221225472;
@@ -367,17 +367,17 @@ LABEL_12:
 
     else
     {
-      [v12 keyChord];
+      [voCommandContext keyChord];
       v38[0] = _NSConcreteStackBlock;
       v38[1] = 3221225472;
       v38[2] = __88__VoiceOverCommandDetailsViewController_tableView_commitEditingStyle_forRowAtIndexPath___block_invoke_315;
       v17 = v38[3] = &unk_255A48;
       v39 = v17;
       v32 = &v40;
-      v18 = v15;
+      v18 = command;
       v40 = v18;
       v31 = &v41;
-      v19 = v11;
+      v19 = voCommandResolver;
       v41 = v19;
       v33[0] = _NSConcreteStackBlock;
       v33[1] = 3221225472;
@@ -398,7 +398,7 @@ LABEL_12:
       v24 = v33;
     }
 
-    [v13 batchUpdateActiveProfile:v23 saveIfSuccessful:1 completion:v24];
+    [commandManager batchUpdateActiveProfile:v23 saveIfSuccessful:1 completion:v24];
 
     goto LABEL_12;
   }
@@ -442,14 +442,14 @@ void __88__VoiceOverCommandDetailsViewController_tableView_commitEditingStyle_fo
   }
 }
 
-- (void)tableView:(id)a3 willBeginEditingRowAtIndexPath:(id)a4
+- (void)tableView:(id)view willBeginEditingRowAtIndexPath:(id)path
 {
   [(VoiceOverCommandDetailsViewController *)self setEditing:1 animated:1];
 
   [(VoiceOverCommandDetailsViewController *)self _updateNavigationBarUI];
 }
 
-- (void)tableView:(id)a3 didEndEditingRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didEndEditingRowAtIndexPath:(id)path
 {
   [(VoiceOverCommandDetailsViewController *)self setEditing:0 animated:1];
 
@@ -459,11 +459,11 @@ void __88__VoiceOverCommandDetailsViewController_tableView_commitEditingStyle_fo
 - (void)_finishEditingIfNeeded
 {
   v3 = OBJC_IVAR___PSViewController__specifier;
-  v8 = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] voCommandManager];
-  v4 = [*&self->AXUISettingsBaseListController_opaque[v3] voCommandContext];
-  v5 = [v4 command];
-  v6 = [*&self->AXUISettingsBaseListController_opaque[v3] voCommandResolver];
-  v7 = [v8 commandHasAnyBindings:v5 withResolver:v6];
+  voCommandManager = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] voCommandManager];
+  voCommandContext = [*&self->AXUISettingsBaseListController_opaque[v3] voCommandContext];
+  command = [voCommandContext command];
+  voCommandResolver = [*&self->AXUISettingsBaseListController_opaque[v3] voCommandResolver];
+  v7 = [voCommandManager commandHasAnyBindings:command withResolver:voCommandResolver];
 
   if ((v7 & 1) == 0)
   {
@@ -474,17 +474,17 @@ void __88__VoiceOverCommandDetailsViewController_tableView_commitEditingStyle_fo
 - (void)_updateNavigationBarUI
 {
   v3 = OBJC_IVAR___PSViewController__specifier;
-  v14 = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] voCommandManager];
-  v4 = [*&self->AXUISettingsBaseListController_opaque[v3] voCommandContext];
-  v5 = [v4 command];
-  v6 = [*&self->AXUISettingsBaseListController_opaque[v3] voCommandResolver];
-  v7 = [v14 commandHasAnyBindings:v5 withResolver:v6];
+  voCommandManager = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] voCommandManager];
+  voCommandContext = [*&self->AXUISettingsBaseListController_opaque[v3] voCommandContext];
+  command = [voCommandContext command];
+  voCommandResolver = [*&self->AXUISettingsBaseListController_opaque[v3] voCommandResolver];
+  v7 = [voCommandManager commandHasAnyBindings:command withResolver:voCommandResolver];
 
   if (v7)
   {
-    v8 = [(VoiceOverCommandDetailsViewController *)self isEditing];
+    isEditing = [(VoiceOverCommandDetailsViewController *)self isEditing];
     v9 = objc_allocWithZone(UIBarButtonItem);
-    if (v8)
+    if (isEditing)
     {
       v10 = "_doneNavigationButtonTapped:";
       v11 = 0;
@@ -496,30 +496,30 @@ void __88__VoiceOverCommandDetailsViewController_tableView_commitEditingStyle_fo
       v11 = 2;
     }
 
-    v12 = [v9 initWithBarButtonSystemItem:v11 target:self action:v10];
-    v13 = [(VoiceOverCommandDetailsViewController *)self navigationItem];
-    [v13 setRightBarButtonItem:v12];
+    navigationItem2 = [v9 initWithBarButtonSystemItem:v11 target:self action:v10];
+    navigationItem = [(VoiceOverCommandDetailsViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:navigationItem2];
   }
 
   else
   {
-    v12 = [(VoiceOverCommandDetailsViewController *)self navigationItem];
-    [v12 setRightBarButtonItem:0];
+    navigationItem2 = [(VoiceOverCommandDetailsViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:0];
   }
 }
 
-- (void)_addGestureButtonTapped:(id)a3
+- (void)_addGestureButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [v4 voCommandResolver];
+  tappedCopy = tapped;
+  voCommandResolver = [tappedCopy voCommandResolver];
   objc_initWeak(&location, self);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __65__VoiceOverCommandDetailsViewController__addGestureButtonTapped___block_invoke;
   v12[3] = &unk_258958;
-  v6 = v4;
+  v6 = tappedCopy;
   v13 = v6;
-  v7 = v5;
+  v7 = voCommandResolver;
   v14 = v7;
   objc_copyWeak(&v15, &location);
   v10[0] = _NSConcreteStackBlock;
@@ -592,10 +592,10 @@ void __65__VoiceOverCommandDetailsViewController__addGestureButtonTapped___block
   WeakRetained[19] = 0;
 }
 
-- (void)_addKeyboardShortcutWithSpecifier:(id)a3 resolver:(id)a4
+- (void)_addKeyboardShortcutWithSpecifier:(id)specifier resolver:(id)resolver
 {
-  v6 = a3;
-  v7 = a4;
+  specifierCopy = specifier;
+  resolverCopy = resolver;
   objc_initWeak(&location, self);
   v8 = *&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSViewController__specifier];
   v22[0] = _NSConcreteStackBlock;
@@ -604,9 +604,9 @@ void __65__VoiceOverCommandDetailsViewController__addGestureButtonTapped___block
   v22[3] = &unk_258980;
   v9 = v8;
   v23 = v9;
-  v10 = v6;
+  v10 = specifierCopy;
   v24 = v10;
-  v11 = v7;
+  v11 = resolverCopy;
   v25 = v11;
   objc_copyWeak(&v26, &location);
   v17 = _NSConcreteStackBlock;
@@ -620,9 +620,9 @@ void __65__VoiceOverCommandDetailsViewController__addGestureButtonTapped___block
 
   [(AXKeyboardShortcutEntryPresenter *)self->_keyboardShortcutEntryPresenter setFilteredKeyModifiers:22, v17, v18, v19, v20];
   v14 = self->_keyboardShortcutEntryPresenter;
-  v15 = [v10 voCommandContext];
-  v16 = [v15 keyChord];
-  [(AXKeyboardShortcutEntryPresenter *)v14 presentWithController:self initialKeyChord:v16];
+  voCommandContext = [v10 voCommandContext];
+  keyChord = [voCommandContext keyChord];
+  [(AXKeyboardShortcutEntryPresenter *)v14 presentWithController:self initialKeyChord:keyChord];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&v26);
@@ -686,19 +686,19 @@ void __84__VoiceOverCommandDetailsViewController__addKeyboardShortcutWithSpecifi
   WeakRetained[18] = 0;
 }
 
-- (void)_addKeyboardShortcutButtonTapped:(id)a3
+- (void)_addKeyboardShortcutButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = +[VOSCommandResolver resolverForCurrentHost];
-  [(VoiceOverCommandDetailsViewController *)self _addKeyboardShortcutWithSpecifier:v4 resolver:v5];
+  [(VoiceOverCommandDetailsViewController *)self _addKeyboardShortcutWithSpecifier:tappedCopy resolver:v5];
 }
 
-- (void)_addQuickNavShortcutButtonTapped:(id)a3
+- (void)_addQuickNavShortcutButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = +[VOSCommandResolver resolverForCurrentHost];
   [v5 setKeyboardMode:1];
-  [(VoiceOverCommandDetailsViewController *)self _addKeyboardShortcutWithSpecifier:v4 resolver:v5];
+  [(VoiceOverCommandDetailsViewController *)self _addKeyboardShortcutWithSpecifier:tappedCopy resolver:v5];
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface TVWorkoutPlanRepetitionDetailView
 - (CGSize)intrinsicContentSize;
-- (_TtC9SeymourUI33TVWorkoutPlanRepetitionDetailView)initWithCoder:(id)a3;
-- (_TtC9SeymourUI33TVWorkoutPlanRepetitionDetailView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI33TVWorkoutPlanRepetitionDetailView)initWithCoder:(id)coder;
+- (_TtC9SeymourUI33TVWorkoutPlanRepetitionDetailView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation TVWorkoutPlanRepetitionDetailView
@@ -16,7 +16,7 @@
   return result;
 }
 
-- (_TtC9SeymourUI33TVWorkoutPlanRepetitionDetailView)initWithCoder:(id)a3
+- (_TtC9SeymourUI33TVWorkoutPlanRepetitionDetailView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9SeymourUI33TVWorkoutPlanRepetitionDetailView_stackView;
   v5 = [objc_allocWithZone(MEMORY[0x277D75A68]) init];
@@ -29,7 +29,7 @@
   return result;
 }
 
-- (_TtC9SeymourUI33TVWorkoutPlanRepetitionDetailView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI33TVWorkoutPlanRepetitionDetailView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

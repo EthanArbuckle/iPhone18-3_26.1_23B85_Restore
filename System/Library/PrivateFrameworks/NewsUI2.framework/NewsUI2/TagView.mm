@@ -6,9 +6,9 @@
 - (NSString)title;
 - (NSString)tsaxAccessibilityLabelForReordering;
 - (unint64_t)accessibilityTraits;
-- (void)setAccessibilityTraits:(unint64_t)a3;
-- (void)setAccessibilityValue:(id)a3;
-- (void)setTsaxAccessibilityLabelForReordering:(id)a3;
+- (void)setAccessibilityTraits:(unint64_t)traits;
+- (void)setAccessibilityValue:(id)value;
+- (void)setTsaxAccessibilityLabelForReordering:(id)reordering;
 @end
 
 @implementation TagView
@@ -31,9 +31,9 @@
   return v3;
 }
 
-- (void)setTsaxAccessibilityLabelForReordering:(id)a3
+- (void)setTsaxAccessibilityLabelForReordering:(id)reordering
 {
-  if (a3)
+  if (reordering)
   {
     v4 = sub_219BF5414();
     v6 = v5;
@@ -54,11 +54,11 @@
 - (NSString)title
 {
   v2 = *(self + OBJC_IVAR____TtC7NewsUI27TagView_titleLabel);
-  v3 = self;
-  v4 = [v2 text];
-  if (v4)
+  selfCopy = self;
+  text = [v2 text];
+  if (text)
   {
-    v5 = v4;
+    v5 = text;
     sub_219BF5414();
 
     v6 = sub_219BF53D4();
@@ -75,22 +75,22 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TagView.accessibilityTraits.getter();
 
   return v3;
 }
 
-- (void)setAccessibilityTraits:(unint64_t)a3
+- (void)setAccessibilityTraits:(unint64_t)traits
 {
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  [(TagView *)&v4 setAccessibilityTraits:a3];
+  [(TagView *)&v4 setAccessibilityTraits:traits];
 }
 
 - (CGRect)accessibilityFrame
 {
-  v2 = self;
+  selfCopy = self;
   TagView.accessibilityFrame.getter();
   v4 = v3;
   v6 = v5;
@@ -110,7 +110,7 @@
 
 - (NSString)accessibilityValue
 {
-  v2 = self;
+  selfCopy = self;
   TagView.accessibilityValue.getter();
   v4 = v3;
 
@@ -127,29 +127,29 @@
   return v5;
 }
 
-- (void)setAccessibilityValue:(id)a3
+- (void)setAccessibilityValue:(id)value
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (value)
   {
     sub_219BF5414();
-    v6 = self;
-    a3 = sub_219BF53D4();
+    selfCopy = self;
+    value = sub_219BF53D4();
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v8.receiver = self;
   v8.super_class = ObjectType;
-  [(TagView *)&v8 setAccessibilityValue:a3];
+  [(TagView *)&v8 setAccessibilityValue:value];
 }
 
 - (BOOL)accessibilityActivate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TagView.accessibilityActivate()();
 
   return v3;
@@ -157,7 +157,7 @@
 
 - (NSArray)accessibilityCustomActions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TagView.accessibilityCustomActions.getter();
 
   if (v3)

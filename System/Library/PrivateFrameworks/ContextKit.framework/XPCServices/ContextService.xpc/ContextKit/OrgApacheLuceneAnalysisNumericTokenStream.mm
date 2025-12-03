@@ -1,17 +1,17 @@
 @interface OrgApacheLuceneAnalysisNumericTokenStream
 - (BOOL)incrementToken;
 - (id)description;
-- (id)setDoubleValueWithDouble:(double)a3;
-- (id)setFloatValueWithFloat:(float)a3;
-- (id)setIntValueWithInt:(int)a3;
-- (id)setLongValueWithLong:(int64_t)a3;
+- (id)setDoubleValueWithDouble:(double)double;
+- (id)setFloatValueWithFloat:(float)float;
+- (id)setIntValueWithInt:(int)int;
+- (id)setLongValueWithLong:(int64_t)long;
 - (void)dealloc;
 - (void)reset;
 @end
 
 @implementation OrgApacheLuceneAnalysisNumericTokenStream
 
-- (id)setLongValueWithLong:(int64_t)a3
+- (id)setLongValueWithLong:(int64_t)long
 {
   numericAtt = self->numericAtt_;
   if (!numericAtt)
@@ -20,11 +20,11 @@
   }
 
   self->valSize_ = 64;
-  [(OrgApacheLuceneAnalysisNumericTokenStream_NumericTermAttribute *)numericAtt init__WithLong:a3 withInt:64 withInt:self->precisionStep_ withInt:-self->precisionStep_];
+  [(OrgApacheLuceneAnalysisNumericTokenStream_NumericTermAttribute *)numericAtt init__WithLong:long withInt:64 withInt:self->precisionStep_ withInt:-self->precisionStep_];
   return self;
 }
 
-- (id)setIntValueWithInt:(int)a3
+- (id)setIntValueWithInt:(int)int
 {
   numericAtt = self->numericAtt_;
   if (!numericAtt)
@@ -33,11 +33,11 @@
   }
 
   self->valSize_ = 32;
-  [(OrgApacheLuceneAnalysisNumericTokenStream_NumericTermAttribute *)numericAtt init__WithLong:a3 withInt:32 withInt:self->precisionStep_ withInt:-self->precisionStep_];
+  [(OrgApacheLuceneAnalysisNumericTokenStream_NumericTermAttribute *)numericAtt init__WithLong:int withInt:32 withInt:self->precisionStep_ withInt:-self->precisionStep_];
   return self;
 }
 
-- (id)setDoubleValueWithDouble:(double)a3
+- (id)setDoubleValueWithDouble:(double)double
 {
   numericAtt = self->numericAtt_;
   if (!numericAtt)
@@ -45,13 +45,13 @@
     JreThrowNullPointerException();
   }
 
-  v5 = OrgApacheLuceneUtilNumericUtils_doubleToSortableLongWithDouble_(a3);
+  v5 = OrgApacheLuceneUtilNumericUtils_doubleToSortableLongWithDouble_(double);
   self->valSize_ = 64;
   [(OrgApacheLuceneAnalysisNumericTokenStream_NumericTermAttribute *)numericAtt init__WithLong:v5 withInt:64 withInt:self->precisionStep_ withInt:-self->precisionStep_];
   return self;
 }
 
-- (id)setFloatValueWithFloat:(float)a3
+- (id)setFloatValueWithFloat:(float)float
 {
   numericAtt = self->numericAtt_;
   if (!numericAtt)
@@ -59,7 +59,7 @@
     JreThrowNullPointerException();
   }
 
-  v5 = OrgApacheLuceneUtilNumericUtils_floatToSortableIntWithFloat_(a3);
+  v5 = OrgApacheLuceneUtilNumericUtils_floatToSortableIntWithFloat_(float);
   self->valSize_ = 32;
   [(OrgApacheLuceneAnalysisNumericTokenStream_NumericTermAttribute *)numericAtt init__WithLong:v5 withInt:32 withInt:self->precisionStep_ withInt:-self->precisionStep_];
   return self;
@@ -99,7 +99,7 @@
     goto LABEL_8;
   }
 
-  v4 = [(OrgApacheLuceneAnalysisNumericTokenStream_NumericTermAttribute *)numericAtt incShift];
+  incShift = [(OrgApacheLuceneAnalysisNumericTokenStream_NumericTermAttribute *)numericAtt incShift];
   typeAtt = self->typeAtt_;
   if (!typeAtt)
   {
@@ -107,7 +107,7 @@
   }
 
   v6 = &OrgApacheLuceneAnalysisNumericTokenStream_TOKEN_TYPE_FULL_PREC_;
-  if (v4)
+  if (incShift)
   {
     v6 = &OrgApacheLuceneAnalysisNumericTokenStream_TOKEN_TYPE_LOWER_PREC_;
   }
@@ -120,8 +120,8 @@ LABEL_8:
     JreThrowNullPointerException();
   }
 
-  [(OrgApacheLuceneAnalysisTokenattributesPositionIncrementAttribute *)posIncrAtt setPositionIncrementWithInt:v4 == 0];
-  return v4 < self->valSize_;
+  [(OrgApacheLuceneAnalysisTokenattributesPositionIncrementAttribute *)posIncrAtt setPositionIncrementWithInt:incShift == 0];
+  return incShift < self->valSize_;
 }
 
 - (id)description

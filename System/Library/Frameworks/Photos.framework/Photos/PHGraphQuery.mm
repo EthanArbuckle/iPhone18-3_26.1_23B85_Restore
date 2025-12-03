@@ -1,26 +1,26 @@
 @interface PHGraphQuery
-+ (BOOL)_shouldExcludeSocialGroupWithVerifiedType:(signed __int16)a3 inSocialGroupContext:(int64_t)a4;
-+ (id)_graphBasePredicateWithLabelCode:(int)a3 options:(id)a4;
-+ (id)_graphFetchSocialGroupsObjectIDsSortedWithOptions:(id)a3 library:(id)a4;
-+ (id)_nodeTableFromSocialGroupNodeValues:(id)a3 socialGroupContext:(int64_t)a4;
-+ (id)graphQueryForAssetsForPerson:(id)a3 options:(id)a4;
-+ (id)graphQueryForExclusiveAssetsForSocialGroup:(id)a3 options:(id)a4;
-+ (id)graphQueryForInclusiveAssetsForSocialGroup:(id)a3 options:(id)a4;
-+ (id)graphQueryForKeyAssetForSocialGroup:(id)a3 createIfNeeded:(BOOL)a4 options:(id)a5;
-+ (id)graphQueryForPersonsForAsset:(id)a3 options:(id)a4;
-+ (id)graphQueryForPersonsInSocialGroup:(id)a3 options:(id)a4;
-+ (id)graphQueryForSocialGroupsWithOptions:(id)a3;
-+ (id)queryForSearchEntitiesWithOptions:(id)a3;
-+ (id)queryForSocialGroupsWithUUIDs:(id)a3 options:(id)a4;
-- (BOOL)_graphQueryIntersectsWithChange:(id)a3;
++ (BOOL)_shouldExcludeSocialGroupWithVerifiedType:(signed __int16)type inSocialGroupContext:(int64_t)context;
++ (id)_graphBasePredicateWithLabelCode:(int)code options:(id)options;
++ (id)_graphFetchSocialGroupsObjectIDsSortedWithOptions:(id)options library:(id)library;
++ (id)_nodeTableFromSocialGroupNodeValues:(id)values socialGroupContext:(int64_t)context;
++ (id)graphQueryForAssetsForPerson:(id)person options:(id)options;
++ (id)graphQueryForExclusiveAssetsForSocialGroup:(id)group options:(id)options;
++ (id)graphQueryForInclusiveAssetsForSocialGroup:(id)group options:(id)options;
++ (id)graphQueryForKeyAssetForSocialGroup:(id)group createIfNeeded:(BOOL)needed options:(id)options;
++ (id)graphQueryForPersonsForAsset:(id)asset options:(id)options;
++ (id)graphQueryForPersonsInSocialGroup:(id)group options:(id)options;
++ (id)graphQueryForSocialGroupsWithOptions:(id)options;
++ (id)queryForSearchEntitiesWithOptions:(id)options;
++ (id)queryForSocialGroupsWithUUIDs:(id)ds options:(id)options;
+- (BOOL)_graphQueryIntersectsWithChange:(id)change;
 - (id)_graphRefetchSocialGroup;
 - (id)changeHandlingContainerIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)executeQuery;
 - (id)extraBatchFetchingArrayOptions;
-- (id)updatedQueryWithChange:(id)a3;
-- (unint64_t)possibleChangesForChange:(id)a3;
+- (id)updatedQueryWithChange:(id)change;
+- (unint64_t)possibleChangesForChange:(id)change;
 @end
 
 @implementation PHGraphQuery
@@ -28,21 +28,21 @@
 - (id)extraBatchFetchingArrayOptions
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PHGraphQuery *)self graphQueryType];
-  if (v3 > 8)
+  graphQueryType = [(PHGraphQuery *)self graphQueryType];
+  if (graphQueryType > 8)
   {
     v6 = PLBackendGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v7 = 134217984;
-      v8 = [(PHGraphQuery *)self graphQueryType];
+      graphQueryType2 = [(PHGraphQuery *)self graphQueryType];
       _os_log_impl(&dword_19C86F000, v6, OS_LOG_TYPE_ERROR, "Unknown graph query type: %ld", &v7, 0xCu);
     }
 
     goto LABEL_3;
   }
 
-  if (v3 != 2)
+  if (graphQueryType != 2)
   {
 LABEL_3:
     v4 = MEMORY[0x1E695E0F8];
@@ -57,25 +57,25 @@ LABEL_4:
   return v4;
 }
 
-- (BOOL)_graphQueryIntersectsWithChange:(id)a3
+- (BOOL)_graphQueryIntersectsWithChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (([(PHGraphQuery *)self graphQueryType]- 1) > 1)
   {
-    v6 = [v4 updatedObjectIDs];
-    v7 = [(PHGraphQuery *)self graphSubject];
-    v8 = [v7 objectID];
-    v9 = [v6 containsObject:v8];
+    updatedObjectIDs = [changeCopy updatedObjectIDs];
+    graphSubject = [(PHGraphQuery *)self graphSubject];
+    objectID = [graphSubject objectID];
+    v9 = [updatedObjectIDs containsObject:objectID];
 
     if (v9)
     {
-      v10 = [(PHGraphQuery *)self graphQueryType];
-      if (v10 > 6)
+      graphQueryType = [(PHGraphQuery *)self graphQueryType];
+      if (graphQueryType > 6)
       {
-        if ((v10 - 7) < 2)
+        if ((graphQueryType - 7) < 2)
         {
-          v16 = [MEMORY[0x1E69BE468] entityName];
-          v17 = [v4 containsChangesForEntityWithManagedEntityName:v16];
+          entityName = [MEMORY[0x1E69BE468] entityName];
+          v17 = [changeCopy containsChangesForEntityWithManagedEntityName:entityName];
 
           if (v17)
           {
@@ -86,34 +86,34 @@ LABEL_4:
 
       else
       {
-        if ((v10 - 5) < 2)
+        if ((graphQueryType - 5) < 2)
         {
-          v11 = [(PHGraphQuery *)self graphSubject];
-          v12 = [v11 objectID];
-          v13 = [v4 changedPropertyNamesForObjectID:v12 entityClass:objc_opt_class()];
+          graphSubject2 = [(PHGraphQuery *)self graphSubject];
+          objectID2 = [graphSubject2 objectID];
+          v13 = [changeCopy changedPropertyNamesForObjectID:objectID2 entityClass:objc_opt_class()];
           v14 = v13;
           v15 = @"inclusiveAssetIDs";
         }
 
-        else if (v10 == 3)
+        else if (graphQueryType == 3)
         {
-          v11 = [(PHGraphQuery *)self graphSubject];
-          v12 = [v11 objectID];
-          v13 = [v4 changedPropertyNamesForObjectID:v12 entityClass:objc_opt_class()];
+          graphSubject2 = [(PHGraphQuery *)self graphSubject];
+          objectID2 = [graphSubject2 objectID];
+          v13 = [changeCopy changedPropertyNamesForObjectID:objectID2 entityClass:objc_opt_class()];
           v14 = v13;
           v15 = @"memberPersonIDs";
         }
 
         else
         {
-          if (v10 != 4)
+          if (graphQueryType != 4)
           {
             goto LABEL_11;
           }
 
-          v11 = [(PHGraphQuery *)self graphSubject];
-          v12 = [v11 objectID];
-          v13 = [v4 changedPropertyNamesForObjectID:v12 entityClass:objc_opt_class()];
+          graphSubject2 = [(PHGraphQuery *)self graphSubject];
+          objectID2 = [graphSubject2 objectID];
+          v13 = [changeCopy changedPropertyNamesForObjectID:objectID2 entityClass:objc_opt_class()];
           v14 = v13;
           v15 = @"keyAssetID";
         }
@@ -134,7 +134,7 @@ LABEL_11:
     goto LABEL_16;
   }
 
-  v5 = [v4 containsChangesForEntityClass:objc_opt_class()];
+  v5 = [changeCopy containsChangesForEntityClass:objc_opt_class()];
 LABEL_16:
 
   return v5;
@@ -144,44 +144,44 @@ LABEL_16:
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v2 = self->_graphSubject;
-  v3 = [(PHObject *)v2 photoLibrary];
-  v4 = [v3 librarySpecificFetchOptions];
+  photoLibrary = [(PHObject *)v2 photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v4 setSocialGroupContext:2];
-  v5 = [(PHObject *)v2 localIdentifier];
-  v10[0] = v5;
+  [librarySpecificFetchOptions setSocialGroupContext:2];
+  localIdentifier = [(PHObject *)v2 localIdentifier];
+  v10[0] = localIdentifier;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-  v7 = [PHSocialGroup fetchSocialGroupsWithLocalIdentifiers:v6 options:v4];
+  v7 = [PHSocialGroup fetchSocialGroupsWithLocalIdentifiers:v6 options:librarySpecificFetchOptions];
 
-  v8 = [v7 firstObject];
+  firstObject = [v7 firstObject];
 
-  return v8;
+  return firstObject;
 }
 
 - (id)changeHandlingContainerIdentifier
 {
-  v2 = [(PHGraphQuery *)self graphSubject];
-  v3 = [v2 objectID];
+  graphSubject = [(PHGraphQuery *)self graphSubject];
+  objectID = [graphSubject objectID];
 
-  return v3;
+  return objectID;
 }
 
 - (id)executeQuery
 {
-  v2 = self;
-  v3 = [(PHGraphQuery *)self graphQueryType];
-  if (v3 <= 8)
+  selfCopy = self;
+  graphQueryType = [(PHGraphQuery *)self graphQueryType];
+  if (graphQueryType <= 8)
   {
-    if (v3 == 2)
+    if (graphQueryType == 2)
     {
-      v5 = [(PHFetchResult *)v2 fetchOptions];
-      v6 = [v5 fetchPropertySets];
-      if ([v6 count])
+      fetchOptions = [(PHFetchResult *)selfCopy fetchOptions];
+      fetchPropertySets = [fetchOptions fetchPropertySets];
+      if ([fetchPropertySets count])
       {
         v7 = MEMORY[0x1E695DFD8];
-        v8 = [(PHFetchResult *)v2 fetchOptions];
-        v9 = [v8 fetchPropertySets];
-        v10 = [v7 setWithArray:v9];
+        fetchOptions2 = [(PHFetchResult *)selfCopy fetchOptions];
+        fetchPropertySets2 = [fetchOptions2 fetchPropertySets];
+        v10 = [v7 setWithArray:fetchPropertySets2];
       }
 
       else
@@ -190,36 +190,36 @@ LABEL_16:
       }
 
       v11 = [PHManualFetchResult alloc];
-      v12 = [(PHManualFetchResult *)v2 seedOIDs];
-      v13 = [(PHFetchResult *)v2 fetchOptions];
-      v14 = [v13 photoLibrary];
-      v15 = [(PHManualFetchResult *)v2 description];
-      v16 = [(PHFetchResult *)v2 fetchOptions];
-      v17 = [v16 fetchLimit];
+      seedOIDs = [(PHManualFetchResult *)selfCopy seedOIDs];
+      fetchOptions3 = [(PHFetchResult *)selfCopy fetchOptions];
+      photoLibrary = [fetchOptions3 photoLibrary];
+      v15 = [(PHManualFetchResult *)selfCopy description];
+      fetchOptions4 = [(PHFetchResult *)selfCopy fetchOptions];
+      fetchLimit = [fetchOptions4 fetchLimit];
 
       v18 = 200;
-      if (v17 < 0xC8)
+      if (fetchLimit < 0xC8)
       {
-        v18 = v17;
+        v18 = fetchLimit;
       }
 
-      v2 = [(PHManualFetchResult *)v11 initWithOids:v12 photoLibrary:v14 fetchType:@"PHSocialGroup" fetchPropertySets:v10 identifier:v15 registerIfNeeded:1 graphQuery:v2 batchSize:v18];
+      selfCopy = [(PHManualFetchResult *)v11 initWithOids:seedOIDs photoLibrary:photoLibrary fetchType:@"PHSocialGroup" fetchPropertySets:v10 identifier:v15 registerIfNeeded:1 graphQuery:selfCopy batchSize:v18];
     }
 
     else
     {
-      v19.receiver = v2;
+      v19.receiver = selfCopy;
       v19.super_class = PHGraphQuery;
-      v2 = [(PHQuery *)&v19 executeQuery];
+      selfCopy = [(PHQuery *)&v19 executeQuery];
     }
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (unint64_t)possibleChangesForChange:(id)a3
+- (unint64_t)possibleChangesForChange:(id)change
 {
-  if ([(PHGraphQuery *)self _graphQueryIntersectsWithChange:a3])
+  if ([(PHGraphQuery *)self _graphQueryIntersectsWithChange:change])
   {
     return 15;
   }
@@ -230,110 +230,110 @@ LABEL_16:
   }
 }
 
-- (id)updatedQueryWithChange:(id)a3
+- (id)updatedQueryWithChange:(id)change
 {
-  if (![(PHGraphQuery *)self _graphQueryIntersectsWithChange:a3])
+  if (![(PHGraphQuery *)self _graphQueryIntersectsWithChange:change])
   {
     goto LABEL_21;
   }
 
-  v4 = [(PHGraphQuery *)self graphQueryType];
-  if (v4 > 4)
+  graphQueryType = [(PHGraphQuery *)self graphQueryType];
+  if (graphQueryType > 4)
   {
-    if (v4 <= 6)
+    if (graphQueryType <= 6)
     {
-      if (v4 == 5)
+      if (graphQueryType == 5)
       {
         v14 = objc_opt_class();
-        v6 = [(PHGraphQuery *)self _graphRefetchSocialGroup];
-        v7 = [(PHQuery *)self fetchOptions];
-        [v14 graphQueryForInclusiveAssetsForSocialGroup:v6 options:v7];
+        _graphRefetchSocialGroup = [(PHGraphQuery *)self _graphRefetchSocialGroup];
+        fetchOptions = [(PHQuery *)self fetchOptions];
+        [v14 graphQueryForInclusiveAssetsForSocialGroup:_graphRefetchSocialGroup options:fetchOptions];
       }
 
       else
       {
         v9 = objc_opt_class();
-        v6 = [(PHGraphQuery *)self _graphRefetchSocialGroup];
-        v7 = [(PHQuery *)self fetchOptions];
-        [v9 graphQueryForExclusiveAssetsForSocialGroup:v6 options:v7];
+        _graphRefetchSocialGroup = [(PHGraphQuery *)self _graphRefetchSocialGroup];
+        fetchOptions = [(PHQuery *)self fetchOptions];
+        [v9 graphQueryForExclusiveAssetsForSocialGroup:_graphRefetchSocialGroup options:fetchOptions];
       }
       v8 = ;
       goto LABEL_19;
     }
 
-    if (v4 == 7)
+    if (graphQueryType == 7)
     {
       v15 = objc_opt_class();
       graphSubject = self->_graphSubject;
-      v6 = [(PHQuery *)self fetchOptions];
-      v12 = [v15 graphQueryForAssetsForPerson:graphSubject options:v6];
+      _graphRefetchSocialGroup = [(PHQuery *)self fetchOptions];
+      v12 = [v15 graphQueryForAssetsForPerson:graphSubject options:_graphRefetchSocialGroup];
     }
 
     else
     {
-      if (v4 != 8)
+      if (graphQueryType != 8)
       {
         goto LABEL_21;
       }
 
       v10 = objc_opt_class();
       v11 = self->_graphSubject;
-      v6 = [(PHQuery *)self fetchOptions];
-      v12 = [v10 graphQueryForPersonsForAsset:v11 options:v6];
+      _graphRefetchSocialGroup = [(PHQuery *)self fetchOptions];
+      v12 = [v10 graphQueryForPersonsForAsset:v11 options:_graphRefetchSocialGroup];
     }
 
 LABEL_17:
-    v17 = v12;
+    selfCopy = v12;
     goto LABEL_20;
   }
 
-  if ((v4 - 1) < 2)
+  if ((graphQueryType - 1) < 2)
   {
     v13 = objc_opt_class();
-    v6 = [(PHQuery *)self fetchOptions];
-    v12 = [v13 graphQueryForSocialGroupsWithOptions:v6];
+    _graphRefetchSocialGroup = [(PHQuery *)self fetchOptions];
+    v12 = [v13 graphQueryForSocialGroupsWithOptions:_graphRefetchSocialGroup];
     goto LABEL_17;
   }
 
-  if (v4 == 3)
+  if (graphQueryType == 3)
   {
     v18 = objc_opt_class();
-    v6 = [(PHGraphQuery *)self _graphRefetchSocialGroup];
-    v7 = [(PHQuery *)self fetchOptions];
-    v8 = [v18 graphQueryForPersonsInSocialGroup:v6 options:v7];
+    _graphRefetchSocialGroup = [(PHGraphQuery *)self _graphRefetchSocialGroup];
+    fetchOptions = [(PHQuery *)self fetchOptions];
+    v8 = [v18 graphQueryForPersonsInSocialGroup:_graphRefetchSocialGroup options:fetchOptions];
     goto LABEL_19;
   }
 
-  if (v4 == 4)
+  if (graphQueryType == 4)
   {
     v5 = objc_opt_class();
-    v6 = [(PHGraphQuery *)self _graphRefetchSocialGroup];
-    v7 = [(PHQuery *)self fetchOptions];
-    v8 = [v5 graphQueryForKeyAssetForSocialGroup:v6 createIfNeeded:0 options:v7];
+    _graphRefetchSocialGroup = [(PHGraphQuery *)self _graphRefetchSocialGroup];
+    fetchOptions = [(PHQuery *)self fetchOptions];
+    v8 = [v5 graphQueryForKeyAssetForSocialGroup:_graphRefetchSocialGroup createIfNeeded:0 options:fetchOptions];
 LABEL_19:
-    v17 = v8;
+    selfCopy = v8;
 
 LABEL_20:
-    if (v17)
+    if (selfCopy)
     {
       goto LABEL_22;
     }
   }
 
 LABEL_21:
-  v17 = self;
+  selfCopy = self;
 LABEL_22:
 
-  return v17;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = PHGraphQuery;
-  v4 = [(PHQuery *)&v8 copyWithZone:a3];
-  v5 = [(PHGraphQuery *)self graphSubject];
-  v6 = [v5 copy];
+  v4 = [(PHQuery *)&v8 copyWithZone:zone];
+  graphSubject = [(PHGraphQuery *)self graphSubject];
+  v6 = [graphSubject copy];
   [v4 setGraphSubject:v6];
 
   [v4 setGraphQueryType:{-[PHGraphQuery graphQueryType](self, "graphQueryType")}];
@@ -342,41 +342,41 @@ LABEL_22:
 
 - (id)description
 {
-  v3 = [(PHGraphQuery *)self graphQueryType];
-  if (v3 > 8)
+  graphQueryType = [(PHGraphQuery *)self graphQueryType];
+  if (graphQueryType > 8)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = off_1E75A9B98[v3];
+    v4 = off_1E75A9B98[graphQueryType];
   }
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(PHGraphQuery *)self graphSubject];
+  graphSubject = [(PHGraphQuery *)self graphSubject];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [(PHGraphQuery *)self graphSubject];
-  v10 = [v9 uuid];
-  v11 = [v5 stringWithFormat:@"PHGraphQuery(type=%@, subject=(%@ uuid=%@))", v4, v8, v10];
+  graphSubject2 = [(PHGraphQuery *)self graphSubject];
+  uuid = [graphSubject2 uuid];
+  v11 = [v5 stringWithFormat:@"PHGraphQuery(type=%@, subject=(%@ uuid=%@))", v4, v8, uuid];
 
   return v11;
 }
 
-+ (id)_nodeTableFromSocialGroupNodeValues:(id)a3 socialGroupContext:(int64_t)a4
++ (id)_nodeTableFromSocialGroupNodeValues:(id)values socialGroupContext:(int64_t)context
 {
-  v23 = a1;
-  v24 = a4;
+  selfCopy = self;
+  contextCopy = context;
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  valuesCopy = values;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v28 = [MEMORY[0x1E695DFA8] set];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v4;
+  obj = valuesCopy;
   v27 = [obj countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v27)
   {
@@ -391,15 +391,15 @@ LABEL_22:
         }
 
         v7 = *(*(&v29 + 1) + 8 * i);
-        v8 = [v7 objectForKeyedSubscript:{@"node", v23, v24}];
-        v9 = [v5 objectForKeyedSubscript:v8];
+        v8 = [v7 objectForKeyedSubscript:{@"node", selfCopy, contextCopy}];
+        v9 = [dictionary objectForKeyedSubscript:v8];
         v10 = [v7 objectForKeyedSubscript:@"nameCode"];
-        v11 = [v10 unsignedIntValue];
-        v12 = [PHSocialGroup propertyNameFromNodeValueNameCode:v11];
-        v13 = [PHSocialGroup nodeValueAcessorNameForNameCode:v11];
+        unsignedIntValue = [v10 unsignedIntValue];
+        v12 = [PHSocialGroup propertyNameFromNodeValueNameCode:unsignedIntValue];
+        v13 = [PHSocialGroup nodeValueAcessorNameForNameCode:unsignedIntValue];
         v14 = [v7 objectForKeyedSubscript:v13];
         v15 = v14;
-        if (v11 == 2000 && [v23 _shouldExcludeSocialGroupWithVerifiedType:objc_msgSend(v14 inSocialGroupContext:{"intValue"), v24}])
+        if (unsignedIntValue == 2000 && [selfCopy _shouldExcludeSocialGroupWithVerifiedType:objc_msgSend(v14 inSocialGroupContext:{"intValue"), contextCopy}])
         {
           [v28 addObject:v8];
         }
@@ -423,14 +423,14 @@ LABEL_22:
             [v9 setObject:v19 forKeyedSubscript:@"uuid"];
           }
 
-          [v5 setObject:v9 forKeyedSubscript:v8];
+          [dictionary setObject:v9 forKeyedSubscript:v8];
 
           if (v9)
           {
 LABEL_10:
             if ([v28 containsObject:v8])
             {
-              v16 = v5;
+              v16 = dictionary;
               v17 = 0;
               v18 = v8;
             }
@@ -453,20 +453,20 @@ LABEL_10:
     while (v27);
   }
 
-  return v5;
+  return dictionary;
 }
 
-+ (BOOL)_shouldExcludeSocialGroupWithVerifiedType:(signed __int16)a3 inSocialGroupContext:(int64_t)a4
++ (BOOL)_shouldExcludeSocialGroupWithVerifiedType:(signed __int16)type inSocialGroupContext:(int64_t)context
 {
-  v4 = (a3 + 1) < 2;
-  if (a4)
+  v4 = (type + 1) < 2;
+  if (context)
   {
     v4 = 0;
   }
 
-  if (a4 == 1)
+  if (context == 1)
   {
-    return a3 != 1;
+    return type != 1;
   }
 
   else
@@ -475,19 +475,19 @@ LABEL_10:
   }
 }
 
-+ (id)_graphFetchSocialGroupsObjectIDsSortedWithOptions:(id)a3 library:(id)a4
++ (id)_graphFetchSocialGroupsObjectIDsSortedWithOptions:(id)options library:(id)library
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  optionsCopy = options;
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:a1 file:@"PHGraphQuery.m" lineNumber:454 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHGraphQuery.m" lineNumber:454 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
-  v9 = [v7 sortDescriptors];
-  v10 = [v8 photoLibraryForCurrentQueueQoS];
-  v11 = [v10 managedObjectContext];
+  sortDescriptors = [optionsCopy sortDescriptors];
+  photoLibraryForCurrentQueueQoS = [libraryCopy photoLibraryForCurrentQueueQoS];
+  managedObjectContext = [photoLibraryForCurrentQueueQoS managedObjectContext];
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -498,29 +498,29 @@ LABEL_10:
   v23[1] = 3221225472;
   v23[2] = __74__PHGraphQuery__graphFetchSocialGroupsObjectIDsSortedWithOptions_library___block_invoke;
   v23[3] = &unk_1E75A9B78;
-  v12 = v9;
+  v12 = sortDescriptors;
   v24 = v12;
-  v13 = v11;
+  v13 = managedObjectContext;
   v25 = v13;
-  v28 = a1;
-  v14 = v7;
+  selfCopy = self;
+  v14 = optionsCopy;
   v26 = v14;
   v27 = &v29;
-  [v10 performBlockAndWait:v23];
+  [photoLibraryForCurrentQueueQoS performBlockAndWait:v23];
   v15 = v30[5];
   if ([v14 fetchLimit])
   {
     v16 = v30[5];
-    v17 = [v14 fetchLimit];
+    fetchLimit = [v14 fetchLimit];
     v18 = [v30[5] count];
-    if (v17 >= v18)
+    if (fetchLimit >= v18)
     {
       v19 = v18;
     }
 
     else
     {
-      v19 = v17;
+      v19 = fetchLimit;
     }
 
     v20 = [v16 subarrayWithRange:{0, v19}];
@@ -587,26 +587,26 @@ id __74__PHGraphQuery__graphFetchSocialGroupsObjectIDsSortedWithOptions_library_
   return v4;
 }
 
-+ (id)queryForSearchEntitiesWithOptions:(id)a3
++ (id)queryForSearchEntitiesWithOptions:(id)options
 {
   v3 = MEMORY[0x1E696AE18];
-  v4 = a3;
-  v5 = [v3 predicateWithFormat:@"%K == %u", @"primaryLabelCode", 1100];
-  v6 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v4 object:0];
-  v7 = [PHQuery queryForType:@"PHSearchEntity" withBasePredicate:v5 inLibrary:v6];
+  optionsCopy = options;
+  1100 = [v3 predicateWithFormat:@"%K == %u", @"primaryLabelCode", 1100];
+  v6 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  v7 = [PHQuery queryForType:@"PHSearchEntity" withBasePredicate:1100 inLibrary:v6];
 
-  [v7 setFetchOptions:v4];
+  [v7 setFetchOptions:optionsCopy];
 
   return v7;
 }
 
-+ (id)graphQueryForPersonsForAsset:(id)a3 options:(id)a4
++ (id)graphQueryForPersonsForAsset:(id)asset options:(id)options
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 photoLibrary];
-  v9 = [v8 managedObjectContext];
+  assetCopy = asset;
+  optionsCopy = options;
+  photoLibrary = [assetCopy photoLibrary];
+  managedObjectContext = [photoLibrary managedObjectContext];
 
   v33 = 0;
   v34 = &v33;
@@ -625,18 +625,18 @@ id __74__PHGraphQuery__graphFetchSocialGroupsObjectIDsSortedWithOptions_library_
   v21 = __53__PHGraphQuery_graphQueryForPersonsForAsset_options___block_invoke;
   v22 = &unk_1E75A9D58;
   v25 = &v27;
-  v10 = v6;
+  v10 = assetCopy;
   v23 = v10;
-  v11 = v9;
+  v11 = managedObjectContext;
   v24 = v11;
   v26 = &v33;
   [v11 performBlockAndWait:&v19];
   if (v28[5])
   {
-    v12 = [v10 photoLibrary];
-    v13 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v7 photoLibrary:v12];
+    photoLibrary2 = [v10 photoLibrary];
+    v13 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary2];
 
-    v14 = [a1 queryForPersonsWithObjectIDs:v28[5] options:v13];
+    v14 = [self queryForPersonsWithObjectIDs:v28[5] options:v13];
     [v14 setGraphSubject:v10];
     [v14 setGraphQueryType:8];
   }
@@ -646,19 +646,19 @@ id __74__PHGraphQuery__graphFetchSocialGroupsObjectIDsSortedWithOptions_library_
     v15 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v10 uuid];
+      uuid = [v10 uuid];
       v17 = v34[5];
       *buf = 136315650;
       v40 = "+[PHGraphQuery graphQueryForPersonsForAsset:options:]";
       v41 = 2112;
-      v42 = v16;
+      v42 = uuid;
       v43 = 2112;
       v44 = v17;
       _os_log_impl(&dword_19C86F000, v15, OS_LOG_TYPE_ERROR, "%s: Failed to fetch persons for asset %@ with error: %@", buf, 0x20u);
     }
 
     v14 = 0;
-    v13 = v7;
+    v13 = optionsCopy;
   }
 
   _Block_object_dispose(&v27, 8);
@@ -695,13 +695,13 @@ void __53__PHGraphQuery_graphQueryForPersonsForAsset_options___block_invoke(uint
   objc_storeStrong(v11, v12);
 }
 
-+ (id)graphQueryForAssetsForPerson:(id)a3 options:(id)a4
++ (id)graphQueryForAssetsForPerson:(id)person options:(id)options
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 photoLibrary];
-  v9 = [v8 managedObjectContext];
+  personCopy = person;
+  optionsCopy = options;
+  photoLibrary = [personCopy photoLibrary];
+  managedObjectContext = [photoLibrary managedObjectContext];
 
   v33 = 0;
   v34 = &v33;
@@ -720,18 +720,18 @@ void __53__PHGraphQuery_graphQueryForPersonsForAsset_options___block_invoke(uint
   v21 = __53__PHGraphQuery_graphQueryForAssetsForPerson_options___block_invoke;
   v22 = &unk_1E75A9D58;
   v25 = &v27;
-  v10 = v6;
+  v10 = personCopy;
   v23 = v10;
-  v11 = v9;
+  v11 = managedObjectContext;
   v24 = v11;
   v26 = &v33;
   [v11 performBlockAndWait:&v19];
   if (v28[5])
   {
-    v12 = [v10 photoLibrary];
-    v13 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v7 photoLibrary:v12];
+    photoLibrary2 = [v10 photoLibrary];
+    v13 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary2];
 
-    v14 = [a1 queryForVisibleAssetsWithObjectIDs:v28[5] options:v13];
+    v14 = [self queryForVisibleAssetsWithObjectIDs:v28[5] options:v13];
     [v14 setGraphSubject:v10];
     [v14 setGraphQueryType:7];
   }
@@ -741,19 +741,19 @@ void __53__PHGraphQuery_graphQueryForPersonsForAsset_options___block_invoke(uint
     v15 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v10 uuid];
+      uuid = [v10 uuid];
       v17 = v34[5];
       *buf = 136315650;
       v40 = "+[PHGraphQuery graphQueryForAssetsForPerson:options:]";
       v41 = 2112;
-      v42 = v16;
+      v42 = uuid;
       v43 = 2112;
       v44 = v17;
       _os_log_impl(&dword_19C86F000, v15, OS_LOG_TYPE_ERROR, "%s: Failed to fetch assets for person %@ with error: %@", buf, 0x20u);
     }
 
     v14 = 0;
-    v13 = v7;
+    v13 = optionsCopy;
   }
 
   _Block_object_dispose(&v27, 8);
@@ -790,65 +790,65 @@ void __53__PHGraphQuery_graphQueryForAssetsForPerson_options___block_invoke(uint
   objc_storeStrong(v11, v12);
 }
 
-+ (id)graphQueryForKeyAssetForSocialGroup:(id)a3 createIfNeeded:(BOOL)a4 options:(id)a5
++ (id)graphQueryForKeyAssetForSocialGroup:(id)group createIfNeeded:(BOOL)needed options:(id)options
 {
-  v6 = a4;
+  neededCopy = needed;
   v39[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = [v9 keyAssetID];
+  groupCopy = group;
+  optionsCopy = options;
+  keyAssetID = [groupCopy keyAssetID];
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
   v38 = 0;
-  if (v11)
+  if (keyAssetID)
   {
-    v12 = [v10 photoLibrary];
-    v13 = [v12 managedObjectContext];
-    v14 = v13 == 0;
+    photoLibrary = [optionsCopy photoLibrary];
+    managedObjectContext = [photoLibrary managedObjectContext];
+    v14 = managedObjectContext == 0;
 
     if (v14)
     {
-      v30 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v30 handleFailureInMethod:a2 object:a1 file:@"PHGraphQuery.m" lineNumber:154 description:{@"Invalid parameter not satisfying: %@", @"options.photoLibrary.managedObjectContext"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PHGraphQuery.m" lineNumber:154 description:{@"Invalid parameter not satisfying: %@", @"options.photoLibrary.managedObjectContext"}];
     }
 
-    v15 = [v10 photoLibrary];
-    v16 = [v15 managedObjectContext];
+    photoLibrary2 = [optionsCopy photoLibrary];
+    managedObjectContext2 = [photoLibrary2 managedObjectContext];
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __75__PHGraphQuery_graphQueryForKeyAssetForSocialGroup_createIfNeeded_options___block_invoke;
     v31[3] = &unk_1E75AA3F8;
-    v32 = v10;
-    v33 = v11;
+    v32 = optionsCopy;
+    v33 = keyAssetID;
     v34 = &v35;
-    [v16 performBlockAndWait:v31];
+    [managedObjectContext2 performBlockAndWait:v31];
   }
 
   if (_os_feature_enabled_impl())
   {
-    if (((v11 != 0) & v36[3]) == 0 && v6)
+    if (((keyAssetID != 0) & v36[3]) == 0 && neededCopy)
     {
-      v17 = [v9 exclusiveAssetIDs];
-      v18 = [v17 count] == 0;
+      exclusiveAssetIDs = [groupCopy exclusiveAssetIDs];
+      v18 = [exclusiveAssetIDs count] == 0;
 
       if (!v18)
       {
-        v19 = [v10 photoLibrary];
-        v20 = [v19 photoAnalysisClient];
+        photoLibrary3 = [optionsCopy photoLibrary];
+        photoAnalysisClient = [photoLibrary3 photoAnalysisClient];
 
-        v21 = [objc_alloc(MEMORY[0x1E69BE630]) initWithServiceProvider:v20];
+        v21 = [objc_alloc(MEMORY[0x1E69BE630]) initWithServiceProvider:photoAnalysisClient];
         v22 = MEMORY[0x1E695DFD8];
-        v23 = [v9 uuid];
-        v24 = [v22 setWithObject:v23];
+        uuid = [groupCopy uuid];
+        v24 = [v22 setWithObject:uuid];
         [v21 updateKeyAssetOfSocialGroupsWithUUIDs:v24 operationID:&stru_1F0FC60C8 reply:&__block_literal_global_100];
       }
     }
   }
 
-  if (v11)
+  if (keyAssetID)
   {
-    v39[0] = v11;
+    v39[0] = keyAssetID;
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:1];
   }
 
@@ -857,11 +857,11 @@ void __53__PHGraphQuery_graphQueryForAssetsForPerson_options___block_invoke(uint
     v25 = MEMORY[0x1E695E0F0];
   }
 
-  v26 = [v9 photoLibrary];
-  v27 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v10 photoLibrary:v26];
+  photoLibrary4 = [groupCopy photoLibrary];
+  v27 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary4];
 
-  v28 = [a1 queryForVisibleAssetsWithObjectIDs:v25 options:v27];
-  [v28 setGraphSubject:v9];
+  v28 = [self queryForVisibleAssetsWithObjectIDs:v25 options:v27];
+  [v28 setGraphSubject:groupCopy];
   [v28 setGraphQueryType:4];
 
   _Block_object_dispose(&v35, 8);
@@ -912,86 +912,86 @@ void __75__PHGraphQuery_graphQueryForKeyAssetForSocialGroup_createIfNeeded_optio
   }
 }
 
-+ (id)graphQueryForInclusiveAssetsForSocialGroup:(id)a3 options:(id)a4
++ (id)graphQueryForInclusiveAssetsForSocialGroup:(id)group options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 inclusiveAssetIDs];
-  v9 = [v7 photoLibrary];
-  v10 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v6 photoLibrary:v9];
+  optionsCopy = options;
+  groupCopy = group;
+  inclusiveAssetIDs = [groupCopy inclusiveAssetIDs];
+  photoLibrary = [groupCopy photoLibrary];
+  v10 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary];
 
-  v11 = [v8 allObjects];
-  v12 = [a1 queryForVisibleAssetsWithObjectIDs:v11 options:v10];
+  allObjects = [inclusiveAssetIDs allObjects];
+  v12 = [self queryForVisibleAssetsWithObjectIDs:allObjects options:v10];
 
-  [v12 setGraphSubject:v7];
+  [v12 setGraphSubject:groupCopy];
   [v12 setGraphQueryType:5];
 
   return v12;
 }
 
-+ (id)graphQueryForExclusiveAssetsForSocialGroup:(id)a3 options:(id)a4
++ (id)graphQueryForExclusiveAssetsForSocialGroup:(id)group options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 exclusiveAssetIDs];
-  v9 = [v7 photoLibrary];
-  v10 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v6 photoLibrary:v9];
+  optionsCopy = options;
+  groupCopy = group;
+  exclusiveAssetIDs = [groupCopy exclusiveAssetIDs];
+  photoLibrary = [groupCopy photoLibrary];
+  v10 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary];
 
-  v11 = [v8 allObjects];
-  v12 = [a1 queryForVisibleAssetsWithObjectIDs:v11 options:v10];
+  allObjects = [exclusiveAssetIDs allObjects];
+  v12 = [self queryForVisibleAssetsWithObjectIDs:allObjects options:v10];
 
-  [v12 setGraphSubject:v7];
+  [v12 setGraphSubject:groupCopy];
   [v12 setGraphQueryType:6];
 
   return v12;
 }
 
-+ (id)graphQueryForPersonsInSocialGroup:(id)a3 options:(id)a4
++ (id)graphQueryForPersonsInSocialGroup:(id)group options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 memberPersonIDs];
-  v9 = [v7 photoLibrary];
-  v10 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v6 photoLibrary:v9];
+  optionsCopy = options;
+  groupCopy = group;
+  memberPersonIDs = [groupCopy memberPersonIDs];
+  photoLibrary = [groupCopy photoLibrary];
+  v10 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary];
 
-  v11 = [v8 allObjects];
-  v12 = [a1 queryForPersonsWithObjectIDs:v11 options:v10];
+  allObjects = [memberPersonIDs allObjects];
+  v12 = [self queryForPersonsWithObjectIDs:allObjects options:v10];
 
-  [v12 setGraphSubject:v7];
+  [v12 setGraphSubject:groupCopy];
   [v12 setGraphQueryType:3];
 
   return v12;
 }
 
-+ (id)queryForSocialGroupsWithUUIDs:(id)a3 options:(id)a4
++ (id)queryForSocialGroupsWithUUIDs:(id)ds options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  optionsCopy = options;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__44252;
   v25 = __Block_byref_object_dispose__44253;
   v26 = 0;
-  v7 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
-  v8 = [v7 photoLibrary];
+  v7 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  photoLibrary = [v7 photoLibrary];
 
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __54__PHGraphQuery_queryForSocialGroupsWithUUIDs_options___block_invoke;
   v18 = &unk_1E75AADC0;
-  v9 = v8;
+  v9 = photoLibrary;
   v19 = v9;
   v20 = &v21;
   [v9 performBlockAndWait:&v15];
   v10 = v22[5];
   if (v10)
   {
-    v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@ AND %K IN %@", @"primaryLabel", v10, @"uuid", v5, v15, v16, v17, v18];
-    v12 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
+    v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@ AND %K IN %@", @"primaryLabel", v10, @"uuid", dsCopy, v15, v16, v17, v18];
+    v12 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
     v13 = [PHQuery queryForType:@"PHSocialGroup" withBasePredicate:v11 inLibrary:v12];
 
-    [v13 setFetchOptions:v6];
+    [v13 setFetchOptions:optionsCopy];
   }
 
   else
@@ -1016,32 +1016,32 @@ void __54__PHGraphQuery_queryForSocialGroupsWithUUIDs_options___block_invoke(uin
   *(v5 + 40) = v4;
 }
 
-+ (id)graphQueryForSocialGroupsWithOptions:(id)a3
++ (id)graphQueryForSocialGroupsWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [a1 _graphBasePredicateWithLabelCode:1000 options:v4];
-  v6 = [v4 sortDescriptors];
-  v7 = [v6 _pl_firstObjectPassingTest:&__block_literal_global_44307];
+  optionsCopy = options;
+  v5 = [self _graphBasePredicateWithLabelCode:1000 options:optionsCopy];
+  sortDescriptors = [optionsCopy sortDescriptors];
+  v7 = [sortDescriptors _pl_firstObjectPassingTest:&__block_literal_global_44307];
 
-  v8 = [v4 photoLibrary];
+  photoLibrary = [optionsCopy photoLibrary];
   if (v7)
   {
-    v9 = [a1 _graphFetchSocialGroupsObjectIDsSortedWithOptions:v4 library:v8];
+    v9 = [self _graphFetchSocialGroupsObjectIDsSortedWithOptions:optionsCopy library:photoLibrary];
 
-    v10 = [v4 photoLibrary];
-    v11 = [a1 queryForType:@"PHSocialGroup" withBasePredicate:v5 seedOIDs:v9 inLibrary:v10];
+    photoLibrary2 = [optionsCopy photoLibrary];
+    v11 = [self queryForType:@"PHSocialGroup" withBasePredicate:v5 seedOIDs:v9 inLibrary:photoLibrary2];
 
     [v11 setGraphQueryType:2];
   }
 
   else
   {
-    v11 = [a1 queryForType:@"PHSocialGroup" withBasePredicate:v5 inLibrary:v8];
+    v11 = [self queryForType:@"PHSocialGroup" withBasePredicate:v5 inLibrary:photoLibrary];
 
     [v11 setGraphQueryType:1];
   }
 
-  [v11 setFetchOptions:v4];
+  [v11 setFetchOptions:optionsCopy];
   [v11 setGraphSubject:0];
 
   return v11;
@@ -1055,16 +1055,16 @@ BOOL __53__PHGraphQuery_graphQueryForSocialGroupsWithOptions___block_invoke(uint
   return v3 != 0;
 }
 
-+ (id)_graphBasePredicateWithLabelCode:(int)a3 options:(id)a4
++ (id)_graphBasePredicateWithLabelCode:(int)code options:(id)options
 {
-  v4 = *&a3;
+  v4 = *&code;
   v14[2] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  optionsCopy = options;
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %u", @"primaryLabelCode", v4];
-  if ([v5 socialGroupContext])
+  if ([optionsCopy socialGroupContext])
   {
     v7 = v6;
-    if ([v5 socialGroupContext] != 1)
+    if ([optionsCopy socialGroupContext] != 1)
     {
       goto LABEL_6;
     }

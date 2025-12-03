@@ -1,15 +1,15 @@
 @interface WPDManager
-+ (id)cbStateAsString:(int64_t)a3;
-+ (id)wpStateAsString:(int64_t)a3;
++ (id)cbStateAsString:(int64_t)string;
++ (id)wpStateAsString:(int64_t)string;
 + (void)initialize;
-+ (void)initializeAdvDenylist:(id)a3 AdvAllowlist:(id)a4 ScanDenylist:(id)a5 ScanAllowlist:(id)a6;
-- (BOOL)isAdvertisingAllowlistedForType:(unsigned __int8)a3;
-- (BOOL)isScanAllowlistedForType:(unsigned __int8)a3;
++ (void)initializeAdvDenylist:(id)denylist AdvAllowlist:(id)allowlist ScanDenylist:(id)scanDenylist ScanAllowlist:(id)scanAllowlist;
+- (BOOL)isAdvertisingAllowlistedForType:(unsigned __int8)type;
+- (BOOL)isScanAllowlistedForType:(unsigned __int8)type;
 - (NSString)description;
-- (WPDManager)initWithServer:(id)a3 Name:(id)a4;
+- (WPDManager)initWithServer:(id)server Name:(id)name;
 - (WPDaemonServer)server;
 - (id)generateStateDumpStrings;
-- (void)cbManagerDidUpdateState:(id)a3;
+- (void)cbManagerDidUpdateState:(id)state;
 - (void)cleanup;
 - (void)dealloc;
 - (void)generateStateDump;
@@ -28,7 +28,7 @@
 + (void)initialize
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     _isInternalBuild = os_variant_has_internal_diagnostics();
     if (WPLogInitOnce != -1)
@@ -94,18 +94,18 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (WPDManager)initWithServer:(id)a3 Name:(id)a4
+- (WPDManager)initWithServer:(id)server Name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  serverCopy = server;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = WPDManager;
   v8 = [(WPDManager *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_server, v6);
-    objc_storeStrong(&v9->_name, a4);
+    objc_storeWeak(&v8->_server, serverCopy);
+    objc_storeStrong(&v9->_name, name);
     v9->_state = 0;
     *&v9->_restricted = 0;
     cbManagers = v9->_cbManagers;
@@ -150,14 +150,14 @@
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = [(WPDManager *)self generateStateDumpStrings];
-  v5 = [v4 count] - 1;
+  generateStateDumpStrings = [(WPDManager *)self generateStateDumpStrings];
+  v5 = [generateStateDumpStrings count] - 1;
   v6 = [MEMORY[0x277CCAB68] stringWithFormat:@"%@\n", self->_name];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v4 subarrayWithRange:{1, v5}];
+  v7 = [generateStateDumpStrings subarrayWithRange:{1, v5}];
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -191,27 +191,27 @@
 
 - (id)generateStateDumpStrings
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"========= %@ =========\n", self->_name];
-  [v3 addObject:v4];
+  [array addObject:v4];
 
   v5 = MEMORY[0x277CCACA8];
   v6 = [WPDManager wpStateAsString:[(WPDManager *)self state]];
   v7 = [v5 stringWithFormat:@"state: %@ (%d)\n", v6, -[WPDManager state](self, "state")];
-  [v3 addObject:v7];
+  [array addObject:v7];
 
   v8 = MEMORY[0x277CCACA8];
-  v9 = [(WPDManager *)self testMode];
+  testMode = [(WPDManager *)self testMode];
   v10 = "no";
-  if (v9)
+  if (testMode)
   {
     v10 = "yes";
   }
 
   v11 = [v8 stringWithFormat:@"testMode: %s\n", v10];
-  [v3 addObject:v11];
+  [array addObject:v11];
 
-  v12 = [MEMORY[0x277CBEA60] arrayWithArray:v3];
+  v12 = [MEMORY[0x277CBEA60] arrayWithArray:array];
 
   return v12;
 }
@@ -223,8 +223,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(WPDManager *)self generateStateDumpStrings];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v16 count:16];
+  generateStateDumpStrings = [(WPDManager *)self generateStateDumpStrings];
+  v3 = [generateStateDumpStrings countByEnumeratingWithState:&v10 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -236,7 +236,7 @@
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(generateStateDumpStrings);
         }
 
         v7 = *(*(&v10 + 1) + 8 * v6);
@@ -257,7 +257,7 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v16 count:16];
+      v4 = [generateStateDumpStrings countByEnumeratingWithState:&v10 objects:v16 count:16];
     }
 
     while (v4);
@@ -266,16 +266,16 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cbManagerDidUpdateState:(id)a3
+- (void)cbManagerDidUpdateState:(id)state
 {
-  v4 = a3;
-  v5 = [(WPDManager *)self cbManagers];
-  v6 = [v5 containsObject:v4];
+  stateCopy = state;
+  cbManagers = [(WPDManager *)self cbManagers];
+  v6 = [cbManagers containsObject:stateCopy];
 
   if (v6)
   {
-    v7 = [(WPDManager *)self server];
-    [v7 cbManagerDidUpdateState:v4];
+    server = [(WPDManager *)self server];
+    [server cbManagerDidUpdateState:stateCopy];
   }
 
   else
@@ -288,7 +288,7 @@
     v8 = WiProxLog;
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
     {
-      [(WPDManager *)v8 cbManagerDidUpdateState:v4];
+      [(WPDManager *)v8 cbManagerDidUpdateState:stateCopy];
     }
   }
 }
@@ -302,14 +302,14 @@
   v1 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isScanAllowlistedForType:(unsigned __int8)a3
+- (BOOL)isScanAllowlistedForType:(unsigned __int8)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = +[WPDManager scanAllowlist];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 containsIndex:v3];
+    v6 = [v4 containsIndex:typeCopy];
   }
 
   else
@@ -320,14 +320,14 @@
   return v6;
 }
 
-- (BOOL)isAdvertisingAllowlistedForType:(unsigned __int8)a3
+- (BOOL)isAdvertisingAllowlistedForType:(unsigned __int8)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = +[WPDManager advAllowlist];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 containsIndex:v3];
+    v6 = [v4 containsIndex:typeCopy];
   }
 
   else
@@ -338,42 +338,42 @@
   return v6;
 }
 
-+ (id)wpStateAsString:(int64_t)a3
++ (id)wpStateAsString:(int64_t)string
 {
-  if ((a3 - 1) > 2)
+  if ((string - 1) > 2)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_279E58E58[a3 - 1];
+    return off_279E58E58[string - 1];
   }
 }
 
-+ (id)cbStateAsString:(int64_t)a3
++ (id)cbStateAsString:(int64_t)string
 {
-  if ((a3 - 1) > 9)
+  if ((string - 1) > 9)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_279E58E70[a3 - 1];
+    return off_279E58E70[string - 1];
   }
 }
 
-+ (void)initializeAdvDenylist:(id)a3 AdvAllowlist:(id)a4 ScanDenylist:(id)a5 ScanAllowlist:(id)a6
++ (void)initializeAdvDenylist:(id)denylist AdvAllowlist:(id)allowlist ScanDenylist:(id)scanDenylist ScanAllowlist:(id)scanAllowlist
 {
   v26 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  denylistCopy = denylist;
+  allowlistCopy = allowlist;
+  scanDenylistCopy = scanDenylist;
+  scanAllowlistCopy = scanAllowlist;
   if (_isInternalBuild == 1)
   {
-    v13 = _combineDenylistAndAllowlist(v11, v12);
+    v13 = _combineDenylistAndAllowlist(scanDenylistCopy, scanAllowlistCopy);
   }
 
   else
@@ -406,7 +406,7 @@
 
   if (_isInternalBuild == 1)
   {
-    v16 = _combineDenylistAndAllowlist(v9, v10);
+    v16 = _combineDenylistAndAllowlist(denylistCopy, allowlistCopy);
   }
 
   else

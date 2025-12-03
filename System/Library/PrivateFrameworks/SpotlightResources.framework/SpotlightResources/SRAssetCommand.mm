@@ -1,15 +1,15 @@
 @interface SRAssetCommand
-+ (id)runAssetCommand:(id)a3;
-+ (id)usageInformationForSubcommand:(id)a3;
++ (id)runAssetCommand:(id)command;
++ (id)usageInformationForSubcommand:(id)subcommand;
 @end
 
 @implementation SRAssetCommand
 
-+ (id)usageInformationForSubcommand:(id)a3
++ (id)usageInformationForSubcommand:(id)subcommand
 {
-  v3 = a3;
+  subcommandCopy = subcommand;
   v4 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"\n"];
-  if ([v3 isEqualToString:@"dump"])
+  if ([subcommandCopy isEqualToString:@"dump"])
   {
     [v4 appendFormat:@"searchutil -c asset:dump:cache\n\tDump %@'s OTA asset bundle cache.\n", @"searchd"];
     [v4 appendFormat:@"searchutil -c asset:dump:loaded\n\tDump all assets loaded by %@.\n", @"searchd"];
@@ -24,7 +24,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v3 isEqualToString:@"bundle"])
+  if ([subcommandCopy isEqualToString:@"bundle"])
   {
     v5 = @"\tkey: path, compatibilityversion, contentversion, or bundleversion; anything else will dump all MobileAsset properties\n";
     v6 = @"\tdeliveryType: Required, Optional, Delta, OptionalTest, or DeltaTest\n";
@@ -32,13 +32,13 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  if ([v3 isEqualToString:@"content"])
+  if ([subcommandCopy isEqualToString:@"content"])
   {
     v5 = @"searchutil -c asset:content:<contentType>:<language>\n\tDump all loaded assets for a content type and language.\n";
     goto LABEL_12;
   }
 
-  if ([v3 isEqualToString:@"load"] & 1) != 0 || (objc_msgSend(v3, "isEqual:", @"unload"))
+  if ([subcommandCopy isEqualToString:@"load"] & 1) != 0 || (objc_msgSend(subcommandCopy, "isEqual:", @"unload"))
   {
     v5 = @"searchutil -c asset:reset\n\tSpotlightResources will no longer hold on to assertions for requests from 'searchutil -c asset:load'.\n";
     v6 = @"\tdeliveryType: Required, Optional, Delta, OptionalTest, or DeltaTest\n";
@@ -46,7 +46,7 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  if ([v3 isEqualToString:@"availability"])
+  if ([subcommandCopy isEqualToString:@"availability"])
   {
     v5 = @"\tdeliveryType: Required, Optional, Delta, OptionalTest, or DeltaTest\n";
     v6 = @"searchutil -c asset:availability:<localeIdentifier>[:<deliveryType>]\n\tReturns asset availability for the specified locale or (locale, delivery type).\n";
@@ -60,31 +60,31 @@ LABEL_12:
   return v4;
 }
 
-+ (id)runAssetCommand:(id)a3
++ (id)runAssetCommand:(id)command
 {
   v85[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] >= 2)
+  commandCopy = command;
+  if ([commandCopy count] >= 2)
   {
-    v5 = [v4 objectAtIndexedSubscript:1];
-    v6 = [v5 lowercaseString];
+    v5 = [commandCopy objectAtIndexedSubscript:1];
+    lowercaseString = [v5 lowercaseString];
 
-    if ([v6 isEqualToString:@"dump"])
+    if ([lowercaseString isEqualToString:@"dump"])
     {
-      if ([v4 count] <= 2)
+      if ([commandCopy count] <= 2)
       {
         goto LABEL_36;
       }
 
-      v7 = [v4 objectAtIndexedSubscript:2];
-      v8 = [v7 lowercaseString];
+      v7 = [commandCopy objectAtIndexedSubscript:2];
+      lowercaseString2 = [v7 lowercaseString];
 
-      if ([v8 isEqualToString:@"cache"])
+      if ([lowercaseString2 isEqualToString:@"cache"])
       {
         v9 = +[SRAssetBundleCache sharedInstance];
-        v10 = [v9 dumpCache];
+        dumpCache = [v9 dumpCache];
 LABEL_21:
-        v15 = v10;
+        v15 = dumpCache;
 
 LABEL_22:
         v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"\n%@\n", v15];
@@ -94,68 +94,68 @@ LABEL_73:
         goto LABEL_74;
       }
 
-      if ([v8 isEqualToString:@"loaded"])
+      if ([lowercaseString2 isEqualToString:@"loaded"])
       {
         v9 = +[SRDefaultsManager sharedDefaultsManager];
-        v10 = [v9 allLoadedAssets];
+        dumpCache = [v9 allLoadedAssets];
         goto LABEL_21;
       }
 
-      if ([v8 isEqualToString:@"defaults"])
+      if ([lowercaseString2 isEqualToString:@"defaults"])
       {
         v15 = +[SRDefaultsManager defaultProperties];
         goto LABEL_22;
       }
 
-      if ([v8 isEqualToString:@"config"])
+      if ([lowercaseString2 isEqualToString:@"config"])
       {
         v43 = objc_alloc(MEMORY[0x1E696AEC0]);
         v15 = +[SRDefaultsManager sharedDefaultsManager];
-        v44 = [v15 assetConfigDump];
+        assetConfigDump = [v15 assetConfigDump];
       }
 
-      else if ([v8 isEqualToString:@"locales"])
+      else if ([lowercaseString2 isEqualToString:@"locales"])
       {
         v43 = objc_alloc(MEMORY[0x1E696AEC0]);
         v15 = +[SRDefaultsManager sharedDefaultsManager];
-        v44 = [v15 langConfigDump];
+        assetConfigDump = [v15 langConfigDump];
       }
 
       else
       {
-        if (![v8 isEqualToString:@"assertions"])
+        if (![lowercaseString2 isEqualToString:@"assertions"])
         {
-          v20 = [a1 usageInformationForSubcommand:v6];
+          v20 = [self usageInformationForSubcommand:lowercaseString];
           goto LABEL_73;
         }
 
         v43 = objc_alloc(MEMORY[0x1E696AEC0]);
         v15 = +[SRDefaultsManager sharedDefaultsManager];
-        v44 = [v15 assertionsDump];
+        assetConfigDump = [v15 assertionsDump];
       }
 
-      v16 = v44;
-      v47 = [v43 initWithFormat:@"\n%@\n", v44, v70];
+      lowercaseString10 = assetConfigDump;
+      v47 = [v43 initWithFormat:@"\n%@\n", assetConfigDump, v70];
       goto LABEL_70;
     }
 
-    if ([v6 isEqualToString:@"bundle"])
+    if ([lowercaseString isEqualToString:@"bundle"])
     {
-      if ([v4 count] <= 4)
+      if ([commandCopy count] <= 4)
       {
         goto LABEL_36;
       }
 
-      v11 = [v4 objectAtIndexedSubscript:2];
-      v12 = [v11 lowercaseString];
-      v8 = deliveryTypeFromLowerCaseString(v12);
+      v11 = [commandCopy objectAtIndexedSubscript:2];
+      lowercaseString3 = [v11 lowercaseString];
+      lowercaseString2 = deliveryTypeFromLowerCaseString(lowercaseString3);
 
-      v13 = [v4 objectAtIndexedSubscript:3];
-      v14 = [v13 lowercaseString];
-      v15 = languageFromLowerCaseString(v14);
+      v13 = [commandCopy objectAtIndexedSubscript:3];
+      lowercaseString4 = [v13 lowercaseString];
+      v15 = languageFromLowerCaseString(lowercaseString4);
 
-      v16 = getAssetBundleInfo(v8, v15, 0);
-      if (!v16)
+      lowercaseString10 = getAssetBundleInfo(lowercaseString2, v15, 0);
+      if (!lowercaseString10)
       {
         v20 = @"\nAsset bundle could not be found or was not cached.\n";
 LABEL_71:
@@ -163,25 +163,25 @@ LABEL_71:
         goto LABEL_72;
       }
 
-      v17 = [v4 objectAtIndexedSubscript:4];
-      v18 = [v17 lowercaseString];
+      v17 = [commandCopy objectAtIndexedSubscript:4];
+      lowercaseString5 = [v17 lowercaseString];
 
-      if ([v18 isEqualToString:@"path"])
+      if ([lowercaseString5 isEqualToString:@"path"])
       {
         v19 = @"Path";
       }
 
-      else if ([v18 isEqualToString:@"compatibilityversion"])
+      else if ([lowercaseString5 isEqualToString:@"compatibilityversion"])
       {
         v19 = @"Compatibility Version";
       }
 
-      else if ([v18 isEqualToString:@"contentversion"])
+      else if ([lowercaseString5 isEqualToString:@"contentversion"])
       {
         v19 = @"Content Version";
       }
 
-      else if ([v18 isEqualToString:@"bundleversion"])
+      else if ([lowercaseString5 isEqualToString:@"bundleversion"])
       {
         v19 = @"Bundle Version";
       }
@@ -191,23 +191,23 @@ LABEL_71:
         v19 = @"MobileAsset Properties";
       }
 
-      v51 = [v16 objectForKeyedSubscript:v19];
+      v51 = [lowercaseString10 objectForKeyedSubscript:v19];
       v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"\n%@\n", v51];
 
 LABEL_63:
       goto LABEL_71;
     }
 
-    if ([v6 isEqualToString:@"content"])
+    if ([lowercaseString isEqualToString:@"content"])
     {
-      if ([v4 count] > 3)
+      if ([commandCopy count] > 3)
       {
-        v21 = [v4 objectAtIndexedSubscript:2];
-        v22 = [v21 lowercaseString];
+        v21 = [commandCopy objectAtIndexedSubscript:2];
+        lowercaseString6 = [v21 lowercaseString];
 
-        v23 = [v4 objectAtIndexedSubscript:3];
-        v24 = [v23 lowercaseString];
-        v25 = languageFromLowerCaseString(v24);
+        v23 = [commandCopy objectAtIndexedSubscript:3];
+        lowercaseString7 = [v23 lowercaseString];
+        v25 = languageFromLowerCaseString(lowercaseString7);
 
         v78 = 0;
         v79 = &v78;
@@ -216,18 +216,18 @@ LABEL_63:
         v82 = __Block_byref_object_dispose_;
         v83 = 0;
         v26 = +[SRDefaultsManager sharedDefaultsManager];
-        v27 = [v26 allLoadedAssets];
+        allLoadedAssets = [v26 allLoadedAssets];
 
-        v28 = [v27 objectForKeyedSubscript:v25];
+        v28 = [allLoadedAssets objectForKeyedSubscript:v25];
 
         if (v28)
         {
-          v29 = [v27 objectForKeyedSubscript:v25];
+          v29 = [allLoadedAssets objectForKeyedSubscript:v25];
           v75[0] = MEMORY[0x1E69E9820];
           v75[1] = 3221225472;
           v75[2] = __34__SRAssetCommand_runAssetCommand___block_invoke;
           v75[3] = &unk_1E7A2B100;
-          v76 = v22;
+          v76 = lowercaseString6;
           v77 = &v78;
           [v29 enumerateKeysAndObjectsUsingBlock:v75];
         }
@@ -242,23 +242,23 @@ LABEL_63:
       goto LABEL_36;
     }
 
-    if ([v6 isEqualToString:@"load"])
+    if ([lowercaseString isEqualToString:@"load"])
     {
-      if ([v4 count] <= 2)
+      if ([commandCopy count] <= 2)
       {
         goto LABEL_36;
       }
 
-      v31 = [v4 objectAtIndexedSubscript:2];
-      v32 = [v31 lowercaseString];
-      v33 = [v32 isEqualToString:@"force"];
+      v31 = [commandCopy objectAtIndexedSubscript:2];
+      lowercaseString8 = [v31 lowercaseString];
+      v33 = [lowercaseString8 isEqualToString:@"force"];
 
       if (v33)
       {
-        if ([v4 count] <= 3)
+        if ([commandCopy count] <= 3)
         {
 LABEL_36:
-          v20 = [a1 usageInformationForSubcommand:v6];
+          v20 = [self usageInformationForSubcommand:lowercaseString];
 LABEL_74:
 
           goto LABEL_75;
@@ -274,9 +274,9 @@ LABEL_74:
         v50 = 2;
       }
 
-      v52 = [v4 objectAtIndexedSubscript:v50];
-      v53 = [v52 lowercaseString];
-      v54 = languageFromLowerCaseString(v53);
+      v52 = [commandCopy objectAtIndexedSubscript:v50];
+      lowercaseString9 = [v52 lowercaseString];
+      v54 = languageFromLowerCaseString(lowercaseString9);
 
       v55 = +[SRDefaultsManager sharedDefaultsManager];
       v56 = objc_alloc(MEMORY[0x1E695DFD8]);
@@ -286,59 +286,59 @@ LABEL_74:
       [v55 requestAssetsForLanguages:v58 removeExisting:0 force:v33];
 
       v59 = +[SRDefaultsManager sharedDefaultsManager];
-      v60 = [v59 currentAssetTypes];
+      currentAssetTypes = [v59 currentAssetTypes];
 
       v61 = +[SRDefaultsManager sharedDefaultsManager];
-      [v61 loadTestAssetsForLanguage:v54 assetTypes:v60];
+      [v61 loadTestAssetsForLanguage:v54 assetTypes:currentAssetTypes];
 
       v62 = +[SRDefaultsManager sharedDefaultsManager];
-      v63 = [v62 loadOTAAssetsForLanguage:v54 updateCache:0 assetTypes:v60 force:v33];
+      v63 = [v62 loadOTAAssetsForLanguage:v54 updateCache:0 assetTypes:currentAssetTypes force:v33];
 
       v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"\n%@ OTA assets for %@.\n", v49, v54];
       goto LABEL_74;
     }
 
-    if ([v6 isEqualToString:@"availability"])
+    if ([lowercaseString isEqualToString:@"availability"])
     {
-      if ([v4 count] <= 2)
+      if ([commandCopy count] <= 2)
       {
         goto LABEL_36;
       }
 
-      v8 = [v4 objectAtIndexedSubscript:2];
-      v15 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v8];
-      if ([v4 count] <= 3)
+      lowercaseString2 = [commandCopy objectAtIndexedSubscript:2];
+      v15 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:lowercaseString2];
+      if ([commandCopy count] <= 3)
       {
         v45 = SRAreAssetsAvailableForLocale(v15);
         v46 = objc_alloc(MEMORY[0x1E696AEC0]);
-        v16 = SRAssetAvailabilityString(v45);
-        v47 = [v46 initWithFormat:@"\n%@ for %@\n", v16, v8];
+        lowercaseString10 = SRAssetAvailabilityString(v45);
+        v47 = [v46 initWithFormat:@"\n%@ for %@\n", lowercaseString10, lowercaseString2];
 LABEL_70:
         v20 = v47;
         goto LABEL_71;
       }
 
-      v64 = [v4 objectAtIndexedSubscript:3];
-      v16 = [v64 lowercaseString];
+      v64 = [commandCopy objectAtIndexedSubscript:3];
+      lowercaseString10 = [v64 lowercaseString];
 
       v65 = languageCodeForLocale(v15);
-      v66 = SRIsAssetAvailable(v16, v65, 0, 0, 0, 0);
+      v66 = SRIsAssetAvailable(lowercaseString10, v65, 0, 0, 0, 0);
 
       v67 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v18 = SRAssetAvailabilityString(v66);
-      v20 = [v67 initWithFormat:@"\n%@ for (%@, %@)\n", v18, v8, v16];
+      lowercaseString5 = SRAssetAvailabilityString(v66);
+      v20 = [v67 initWithFormat:@"\n%@ for (%@, %@)\n", lowercaseString5, lowercaseString2, lowercaseString10];
       goto LABEL_63;
     }
 
-    if ([v6 isEqualToString:@"reset"])
+    if ([lowercaseString isEqualToString:@"reset"])
     {
-      v34 = [MEMORY[0x1E695DF58] preferredLanguages];
+      preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
       v35 = objc_alloc_init(MEMORY[0x1E695DFA8]);
       v71 = 0u;
       v72 = 0u;
       v73 = 0u;
       v74 = 0u;
-      v36 = v34;
+      v36 = preferredLanguages;
       v37 = [v36 countByEnumeratingWithState:&v71 objects:v84 count:16];
       if (v37)
       {
@@ -371,15 +371,15 @@ LABEL_70:
     }
   }
 
-  if ([v4 count] <= 1)
+  if ([commandCopy count] <= 1)
   {
-    v20 = [a1 usageInformationForSubcommand:0];
+    v20 = [self usageInformationForSubcommand:0];
   }
 
   else
   {
-    v48 = [v4 objectAtIndexedSubscript:1];
-    v20 = [a1 usageInformationForSubcommand:v48];
+    v48 = [commandCopy objectAtIndexedSubscript:1];
+    v20 = [self usageInformationForSubcommand:v48];
   }
 
 LABEL_75:

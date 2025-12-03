@@ -1,24 +1,24 @@
 @interface OZNotificationStub
-- (OZNotificationStub)initWithOZDocument:(void *)a3 useTimer:(BOOL)a4;
+- (OZNotificationStub)initWithOZDocument:(void *)document useTimer:(BOOL)timer;
 - (void)dealloc;
 - (void)fire;
-- (void)processNotifications:(id)a3;
+- (void)processNotifications:(id)notifications;
 - (void)releaseTimer;
 @end
 
 @implementation OZNotificationStub
 
-- (OZNotificationStub)initWithOZDocument:(void *)a3 useTimer:(BOOL)a4
+- (OZNotificationStub)initWithOZDocument:(void *)document useTimer:(BOOL)timer
 {
-  v4 = a4;
+  timerCopy = timer;
   v9.receiver = self;
   v9.super_class = OZNotificationStub;
   v6 = [(OZNotificationStub *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    v6->_pDocument = a3;
-    if (v4)
+    v6->_pDocument = document;
+    if (timerCopy)
     {
       [(OZNotificationStub *)v6 createTimer];
     }
@@ -46,7 +46,7 @@
   self->_pTimer = 0;
 }
 
-- (void)processNotifications:(id)a3
+- (void)processNotifications:(id)notifications
 {
   v3 = *(self->_pDocument + 21);
   if (v3)
@@ -58,9 +58,9 @@
 - (void)fire
 {
   pTimer = self->_pTimer;
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
 
-  [(NSTimer *)pTimer setFireDate:v3];
+  [(NSTimer *)pTimer setFireDate:date];
 }
 
 @end

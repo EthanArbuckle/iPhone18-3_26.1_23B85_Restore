@@ -1,77 +1,77 @@
 @interface NRDevicePairingManager
-+ (uint64_t)copyErrorForCode:(uint64_t)a1;
-+ (uint64_t)copyErrorForCode:(void *)a3 userInfo:;
++ (uint64_t)copyErrorForCode:(uint64_t)code;
++ (uint64_t)copyErrorForCode:(void *)code userInfo:;
 + (uint64_t)copyXPCError;
-+ (void)unpairDevice:(id)a3 queue:(id)a4 withCompletion:(id)a5;
-+ (void)unpairDevice:(id)a3 withCompletion:(id)a4;
-- (NRDevicePairingManager)initWithIdentifier:(id)a3 pairingCriteria:(id)a4 metadata:(id)a5 queue:(id)a6;
++ (void)unpairDevice:(id)device queue:(id)queue withCompletion:(id)completion;
++ (void)unpairDevice:(id)device withCompletion:(id)completion;
+- (NRDevicePairingManager)initWithIdentifier:(id)identifier pairingCriteria:(id)criteria metadata:(id)metadata queue:(id)queue;
 - (NSString)fullDescription;
 - (id)description;
-- (void)activateWithCompletion:(id)a3;
-- (void)callCompletionBlock:(void *)a3 withError:;
+- (void)activateWithCompletion:(id)completion;
+- (void)callCompletionBlock:(void *)block withError:;
 - (void)cancelDiscovery;
 - (void)cancelPairing;
 - (void)dealloc;
-- (void)getDataForAuthMethod:(unint64_t)a3 withCompletion:(id)a4;
+- (void)getDataForAuthMethod:(unint64_t)method withCompletion:(id)completion;
 - (void)invalidate;
-- (void)invalidateWithError:(void *)a1;
-- (void)pairingFailedWithError:(void *)a1;
-- (void)requestAuthMethodForDevice:(id)a3 authMethod:(unint64_t)a4 withCompletion:(id)a5;
-- (void)setInternalManagerState:(void *)a1;
-- (void)startDiscoveryWithCompletion:(id)a3;
-- (void)startPairingDevice:(id)a3 withCompletion:(id)a4 resultBlock:(id)a5;
+- (void)invalidateWithError:(void *)error;
+- (void)pairingFailedWithError:(void *)error;
+- (void)requestAuthMethodForDevice:(id)device authMethod:(unint64_t)method withCompletion:(id)completion;
+- (void)setInternalManagerState:(void *)state;
+- (void)startDiscoveryWithCompletion:(id)completion;
+- (void)startPairingDevice:(id)device withCompletion:(id)completion resultBlock:(id)block;
 @end
 
 @implementation NRDevicePairingManager
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
-    v3 = self;
-    objc_sync_enter(v3);
-    internalManagerState = v3->_internalManagerState;
-    objc_sync_exit(v3);
+    selfCopy2 = self;
+    objc_sync_enter(selfCopy2);
+    internalManagerState = selfCopy2->_internalManagerState;
+    objc_sync_exit(selfCopy2);
 
     if (internalManagerState == 10)
     {
       return;
     }
 
-    [(NRDevicePairingManager *)v3 setInternalManagerState:?];
-    self = v3->_operationQueue;
+    [(NRDevicePairingManager *)selfCopy2 setInternalManagerState:?];
+    self = selfCopy2->_operationQueue;
   }
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__NRDevicePairingManager_invalidate__block_invoke;
   block[3] = &unk_27996B180;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(&self->super, block);
 }
 
-- (void)setInternalManagerState:(void *)a1
+- (void)setInternalManagerState:(void *)state
 {
-  if (!a1)
+  if (!state)
   {
     return;
   }
 
-  v13 = a1;
-  objc_sync_enter(v13);
-  v3 = v13[1];
+  stateCopy = state;
+  objc_sync_enter(stateCopy);
+  v3 = stateCopy[1];
   if (v3 == a2)
   {
-    objc_sync_exit(v13);
-    v4 = v13;
+    objc_sync_exit(stateCopy);
+    v4 = stateCopy;
 LABEL_9:
 
     return;
   }
 
-  v13[1] = a2;
-  objc_sync_exit(v13);
+  stateCopy[1] = a2;
+  objc_sync_exit(stateCopy);
 
   if (nrCopyLogObj_onceToken_1533 != -1)
   {
@@ -183,20 +183,20 @@ void __36__NRDevicePairingManager_invalidate__block_invoke_3(uint64_t a1)
 {
   if (self)
   {
-    v2 = self;
-    objc_sync_enter(v2);
-    internalManagerState = v2->_internalManagerState;
-    objc_sync_exit(v2);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    internalManagerState = selfCopy->_internalManagerState;
+    objc_sync_exit(selfCopy);
 
     if (internalManagerState == 8)
     {
-      [(NRDevicePairingManager *)v2 setInternalManagerState:?];
-      operationQueue = v2->_operationQueue;
+      [(NRDevicePairingManager *)selfCopy setInternalManagerState:?];
+      operationQueue = selfCopy->_operationQueue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __39__NRDevicePairingManager_cancelPairing__block_invoke;
       block[3] = &unk_27996B180;
-      block[4] = v2;
+      block[4] = selfCopy;
       dispatch_async(operationQueue, block);
     }
   }
@@ -346,28 +346,28 @@ uint64_t __39__NRDevicePairingManager_cancelPairing__block_invoke_3(uint64_t a1)
   return result;
 }
 
-- (void)invalidateWithError:(void *)a1
+- (void)invalidateWithError:(void *)error
 {
   v3 = a2;
-  if (a1)
+  if (error)
   {
-    v4 = a1;
-    objc_sync_enter(v4);
-    v5 = v4[1];
-    objc_sync_exit(v4);
+    errorCopy = error;
+    objc_sync_enter(errorCopy);
+    v5 = errorCopy[1];
+    objc_sync_exit(errorCopy);
 
     if (v5 != 10)
     {
-      [(NRDevicePairingManager *)v4 setInternalManagerState:?];
-      v6 = v4[9];
-      v4[9] = 0;
+      [(NRDevicePairingManager *)errorCopy setInternalManagerState:?];
+      v6 = errorCopy[9];
+      errorCopy[9] = 0;
 
-      v7 = v4[7];
+      v7 = errorCopy[7];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __46__NRDevicePairingManager_invalidateWithError___block_invoke;
       v8[3] = &unk_27996B248;
-      v8[4] = v4;
+      v8[4] = errorCopy;
       v9 = v3;
       dispatch_async(v7, v8);
     }
@@ -403,14 +403,14 @@ void __46__NRDevicePairingManager_invalidateWithError___block_invoke(uint64_t a1
   }
 }
 
-- (void)startPairingDevice:(id)a3 withCompletion:(id)a4 resultBlock:(id)a5
+- (void)startPairingDevice:(id)device withCompletion:(id)completion resultBlock:(id)block
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v9)
+  deviceCopy = device;
+  completionCopy = completion;
+  blockCopy = block;
+  v11 = blockCopy;
+  if (!completionCopy)
   {
     v20 = nrCopyLogObj_1529();
     if (sNRCopyLogToStdErr == 1)
@@ -435,7 +435,7 @@ LABEL_16:
     goto LABEL_7;
   }
 
-  if (!v10)
+  if (!blockCopy)
   {
     v21 = nrCopyLogObj_1529();
     if (sNRCopyLogToStdErr == 1)
@@ -468,8 +468,8 @@ LABEL_16:
     block[2] = __72__NRDevicePairingManager_startPairingDevice_withCompletion_resultBlock___block_invoke;
     block[3] = &unk_27996B298;
     block[4] = v12;
-    v38 = v8;
-    v39 = v9;
+    v38 = deviceCopy;
+    v39 = completionCopy;
     dispatch_async(operationQueue, block);
   }
 
@@ -482,7 +482,7 @@ LABEL_16:
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:&v40 count:1];
     v16 = [v14 initWithDomain:@"NRDevicePairingErrorDomain" code:-3001 userInfo:v15];
 
-    [(NRDevicePairingManager *)self callCompletionBlock:v9 withError:v16];
+    [(NRDevicePairingManager *)self callCompletionBlock:completionCopy withError:v16];
   }
 
 LABEL_7:
@@ -490,19 +490,19 @@ LABEL_7:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)callCompletionBlock:(void *)a3 withError:
+- (void)callCompletionBlock:(void *)block withError:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  blockCopy = block;
+  if (self)
   {
-    v7 = *(a1 + 56);
+    v7 = *(self + 56);
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __56__NRDevicePairingManager_callCompletionBlock_withError___block_invoke;
     v8[3] = &unk_27996B158;
     v10 = v5;
-    v9 = v6;
+    v9 = blockCopy;
     dispatch_async(v7, v8);
   }
 }
@@ -627,11 +627,11 @@ uint64_t __72__NRDevicePairingManager_startPairingDevice_withCompletion_resultBl
   return v3();
 }
 
-- (void)getDataForAuthMethod:(unint64_t)a3 withCompletion:(id)a4
+- (void)getDataForAuthMethod:(unint64_t)method withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = v5;
-  if (!v5)
+  completionCopy = completion;
+  v6 = completionCopy;
+  if (!completionCopy)
   {
     v7 = nrCopyLogObj_1529();
     if (sNRCopyLogToStdErr == 1)
@@ -664,7 +664,7 @@ uint64_t __72__NRDevicePairingManager_startPairingDevice_withCompletion_resultBl
   block[1] = 3221225472;
   block[2] = __62__NRDevicePairingManager_getDataForAuthMethod_withCompletion___block_invoke;
   block[3] = &unk_27996B870;
-  v17 = v5;
+  v17 = completionCopy;
   dispatch_async(&self->super, block);
 
 LABEL_5:
@@ -685,13 +685,13 @@ void __62__NRDevicePairingManager_getDataForAuthMethod_withCompletion___block_in
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestAuthMethodForDevice:(id)a3 authMethod:(unint64_t)a4 withCompletion:(id)a5
+- (void)requestAuthMethodForDevice:(id)device authMethod:(unint64_t)method withCompletion:(id)completion
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (!v8)
+  deviceCopy = device;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (!deviceCopy)
   {
     v18 = nrCopyLogObj_1529();
     if (sNRCopyLogToStdErr == 1)
@@ -716,7 +716,7 @@ LABEL_16:
     goto LABEL_7;
   }
 
-  if (!v9)
+  if (!completionCopy)
   {
     v19 = nrCopyLogObj_1529();
     if (sNRCopyLogToStdErr == 1)
@@ -747,8 +747,8 @@ LABEL_16:
     block[2] = __79__NRDevicePairingManager_requestAuthMethodForDevice_authMethod_withCompletion___block_invoke;
     block[3] = &unk_27996B1F8;
     block[4] = v11;
-    v36 = v8;
-    v38 = a4;
+    v36 = deviceCopy;
+    methodCopy = method;
     v37 = v10;
     dispatch_async(operationQueue, block);
   }
@@ -848,20 +848,20 @@ void __79__NRDevicePairingManager_requestAuthMethodForDevice_authMethod_withComp
 {
   if (self)
   {
-    v2 = self;
-    objc_sync_enter(v2);
-    internalManagerState = v2->_internalManagerState;
-    objc_sync_exit(v2);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    internalManagerState = selfCopy->_internalManagerState;
+    objc_sync_exit(selfCopy);
 
     if (internalManagerState == 5)
     {
-      [(NRDevicePairingManager *)v2 setInternalManagerState:?];
-      operationQueue = v2->_operationQueue;
+      [(NRDevicePairingManager *)selfCopy setInternalManagerState:?];
+      operationQueue = selfCopy->_operationQueue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __41__NRDevicePairingManager_cancelDiscovery__block_invoke;
       block[3] = &unk_27996B180;
-      block[4] = v2;
+      block[4] = selfCopy;
       dispatch_async(operationQueue, block);
     }
   }
@@ -946,11 +946,11 @@ void __41__NRDevicePairingManager_cancelDiscovery__block_invoke_2(uint64_t a1, v
   }
 }
 
-- (void)startDiscoveryWithCompletion:(id)a3
+- (void)startDiscoveryWithCompletion:(id)completion
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     v12 = nrCopyLogObj_1529();
     if (sNRCopyLogToStdErr == 1)
@@ -983,7 +983,7 @@ void __41__NRDevicePairingManager_cancelDiscovery__block_invoke_2(uint64_t a1, v
     block[2] = __55__NRDevicePairingManager_startDiscoveryWithCompletion___block_invoke;
     block[3] = &unk_27996B158;
     block[4] = v5;
-    v22 = v4;
+    v22 = completionCopy;
     dispatch_async(operationQueue, block);
   }
 
@@ -996,7 +996,7 @@ void __41__NRDevicePairingManager_cancelDiscovery__block_invoke_2(uint64_t a1, v
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:&v23 count:1];
     v10 = [v8 initWithDomain:@"NRDevicePairingErrorDomain" code:-3001 userInfo:v9];
 
-    [(NRDevicePairingManager *)self callCompletionBlock:v4 withError:v10];
+    [(NRDevicePairingManager *)self callCompletionBlock:completionCopy withError:v10];
   }
 
 LABEL_6:
@@ -1127,11 +1127,11 @@ uint64_t __55__NRDevicePairingManager_startDiscoveryWithCompletion___block_invok
   return v3();
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     v12 = nrCopyLogObj_1529();
     if (sNRCopyLogToStdErr == 1)
@@ -1164,7 +1164,7 @@ uint64_t __55__NRDevicePairingManager_startDiscoveryWithCompletion___block_invok
     block[2] = __49__NRDevicePairingManager_activateWithCompletion___block_invoke;
     block[3] = &unk_27996B158;
     block[4] = v5;
-    v22 = v4;
+    v22 = completionCopy;
     dispatch_async(operationQueue, block);
   }
 
@@ -1177,7 +1177,7 @@ uint64_t __55__NRDevicePairingManager_startDiscoveryWithCompletion___block_invok
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:&v23 count:1];
     v10 = [v8 initWithDomain:@"NRDevicePairingErrorDomain" code:-3001 userInfo:v9];
 
-    [(NRDevicePairingManager *)self callCompletionBlock:v4 withError:v10];
+    [(NRDevicePairingManager *)self callCompletionBlock:completionCopy withError:v10];
   }
 
 LABEL_6:
@@ -1310,16 +1310,16 @@ uint64_t __49__NRDevicePairingManager_activateWithCompletion___block_invoke_3(ui
 
 - (NSString)fullDescription
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_managerInfo;
   }
 
-  v3 = [(NRDevicePairingManager *)self fullDescription];
-  v4 = [v3 mutableCopy];
+  fullDescription = [(NRDevicePairingManager *)self fullDescription];
+  v4 = [fullDescription mutableCopy];
 
-  [v4 appendFormat:@" State %zu", -[NRDevicePairingManager managerState](v2, "managerState")];
+  [v4 appendFormat:@" State %zu", -[NRDevicePairingManager managerState](selfCopy, "managerState")];
 
   return v4;
 }
@@ -1351,15 +1351,15 @@ uint64_t __49__NRDevicePairingManager_activateWithCompletion___block_invoke_3(ui
   [(NRDevicePairingManager *)&v8 dealloc];
 }
 
-- (NRDevicePairingManager)initWithIdentifier:(id)a3 pairingCriteria:(id)a4 metadata:(id)a5 queue:(id)a6
+- (NRDevicePairingManager)initWithIdentifier:(id)identifier pairingCriteria:(id)criteria metadata:(id)metadata queue:(id)queue
 {
   v68 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (!v11)
+  identifierCopy = identifier;
+  criteriaCopy = criteria;
+  metadataCopy = metadata;
+  queueCopy = queue;
+  v14 = queueCopy;
+  if (!criteriaCopy)
   {
     v27 = nrCopyLogObj_1529();
     if (sNRCopyLogToStdErr == 1)
@@ -1381,11 +1381,11 @@ uint64_t __49__NRDevicePairingManager_activateWithCompletion___block_invoke_3(ui
     _NRLogWithArgs(v33, 17, "%s called with null pairingCriteria", v34, v35, v36, v37, v38, "[NRDevicePairingManager initWithIdentifier:pairingCriteria:metadata:queue:]");
 LABEL_24:
 
-    v24 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
-  if (!v13)
+  if (!queueCopy)
   {
     v28 = nrCopyLogObj_1529();
     if (sNRCopyLogToStdErr == 1)
@@ -1406,7 +1406,7 @@ LABEL_23:
     }
 
 LABEL_25:
-    v24 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
@@ -1436,16 +1436,16 @@ LABEL_6:
       v20 = p_isa[11];
       p_isa[11] = v19;
 
-      v21 = [v10 copy];
+      v21 = [identifierCopy copy];
       [p_isa[11] setIdentifier:v21];
 
-      v22 = [v11 copy];
+      v22 = [criteriaCopy copy];
       [p_isa[11] setPairingCriteria:v22];
 
-      v23 = [v12 copy];
+      v23 = [metadataCopy copy];
       [p_isa[11] setMetadata:v23];
 
-      objc_storeStrong(p_isa + 7, a6);
+      objc_storeStrong(p_isa + 7, queue);
       if (nrXPCCopyQueue_onceToken != -1)
       {
         dispatch_once(&nrXPCCopyQueue_onceToken, &__block_literal_global_2644);
@@ -1456,7 +1456,7 @@ LABEL_6:
       [p_isa setManagerState:1];
       objc_storeStrong(p_isa + 9, v16);
       self = p_isa;
-      v24 = self;
+      selfCopy = self;
       goto LABEL_10;
     }
 
@@ -1511,28 +1511,28 @@ LABEL_27:
 
 LABEL_28:
   v16 = 0;
-  v24 = 0;
+  selfCopy = 0;
 LABEL_10:
 
 LABEL_11:
   v25 = *MEMORY[0x277D85DE8];
-  return v24;
+  return selfCopy;
 }
 
-+ (void)unpairDevice:(id)a3 queue:(id)a4 withCompletion:(id)a5
++ (void)unpairDevice:(id)device queue:(id)queue withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v7)
+  deviceCopy = device;
+  queueCopy = queue;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (deviceCopy)
   {
-    if (v8)
+    if (queueCopy)
     {
-      if (v9)
+      if (completionCopy)
       {
-        v11 = [v7 copy];
-        v12 = [v11 nrDeviceIdentifier];
+        v11 = [deviceCopy copy];
+        nrDeviceIdentifier = [v11 nrDeviceIdentifier];
         v38[0] = MEMORY[0x277D85DD0];
         v38[1] = 3221225472;
         v38[2] = __60__NRDevicePairingManager_unpairDevice_queue_withCompletion___block_invoke;
@@ -1540,7 +1540,7 @@ LABEL_11:
         v39 = v11;
         v40 = v10;
         v13 = v11;
-        nrXPCUnpairDeviceByNRUUID(v12, v8, v38);
+        nrXPCUnpairDeviceByNRUUID(nrDeviceIdentifier, queueCopy, v38);
       }
 
       else
@@ -1667,17 +1667,17 @@ LABEL_11:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)unpairDevice:(id)a3 withCompletion:(id)a4
++ (void)unpairDevice:(id)device withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  deviceCopy = device;
   if (nrXPCCopyQueue_onceToken != -1)
   {
     dispatch_once(&nrXPCCopyQueue_onceToken, &__block_literal_global_2644);
   }
 
   v7 = nrXPCCopyQueue_nrXPCQueue;
-  [NRDevicePairingManager unpairDevice:v6 queue:v7 withCompletion:v5];
+  [NRDevicePairingManager unpairDevice:deviceCopy queue:v7 withCompletion:completionCopy];
 }
 
 + (uint64_t)copyXPCError
@@ -1694,13 +1694,13 @@ LABEL_11:
   return v2;
 }
 
-+ (uint64_t)copyErrorForCode:(void *)a3 userInfo:
++ (uint64_t)copyErrorForCode:(void *)code userInfo:
 {
-  v4 = a3;
+  codeCopy = code;
   objc_opt_self();
-  if ([v4 count])
+  if ([codeCopy count])
   {
-    v5 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:v4];
+    v5 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:codeCopy];
   }
 
   else
@@ -1713,7 +1713,7 @@ LABEL_11:
   return v6;
 }
 
-+ (uint64_t)copyErrorForCode:(uint64_t)a1
++ (uint64_t)copyErrorForCode:(uint64_t)code
 {
   objc_opt_self();
 
@@ -1753,27 +1753,27 @@ uint64_t __59__NRDevicePairingManager_pairingSucceededWithPairedDevice___block_i
   return result;
 }
 
-- (void)pairingFailedWithError:(void *)a1
+- (void)pairingFailedWithError:(void *)error
 {
   v3 = a2;
-  if (a1)
+  if (error)
   {
-    v4 = a1;
-    objc_sync_enter(v4);
-    v5 = v4[1];
-    objc_sync_exit(v4);
+    errorCopy = error;
+    objc_sync_enter(errorCopy);
+    v5 = errorCopy[1];
+    objc_sync_exit(errorCopy);
 
     if (v5 == 8)
     {
-      v7 = objc_getProperty(v4, v6, 80, 1);
-      objc_setProperty_atomic_copy(v4, v8, 0, 80);
-      [(NRDevicePairingManager *)v4 setInternalManagerState:?];
-      v9 = v4[7];
+      v7 = objc_getProperty(errorCopy, v6, 80, 1);
+      objc_setProperty_atomic_copy(errorCopy, v8, 0, 80);
+      [(NRDevicePairingManager *)errorCopy setInternalManagerState:?];
+      v9 = errorCopy[7];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __49__NRDevicePairingManager_pairingFailedWithError___block_invoke;
       block[3] = &unk_27996B298;
-      block[4] = v4;
+      block[4] = errorCopy;
       v13 = v7;
       v12 = v3;
       v10 = v7;

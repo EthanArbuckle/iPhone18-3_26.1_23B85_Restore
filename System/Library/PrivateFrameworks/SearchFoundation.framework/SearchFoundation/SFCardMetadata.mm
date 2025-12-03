@@ -1,35 +1,35 @@
 @interface SFCardMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFCardMetadata)initWithCoder:(id)a3;
-- (SFCardMetadata)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFCardMetadata)initWithCoder:(id)coder;
+- (SFCardMetadata)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFCardMetadata
 
-- (SFCardMetadata)initWithProtobuf:(id)a3
+- (SFCardMetadata)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v10.receiver = self;
   v10.super_class = SFCardMetadata;
   v5 = [(SFCardMetadata *)&v10 init];
   if (v5)
   {
-    if ([v4 isServerEntity])
+    if ([protobufCopy isServerEntity])
     {
-      -[SFCardMetadata setIsServerEntity:](v5, "setIsServerEntity:", [v4 isServerEntity]);
+      -[SFCardMetadata setIsServerEntity:](v5, "setIsServerEntity:", [protobufCopy isServerEntity]);
     }
 
-    v6 = [v4 queryToSearchAcrossAllDomains];
+    queryToSearchAcrossAllDomains = [protobufCopy queryToSearchAcrossAllDomains];
 
-    if (v6)
+    if (queryToSearchAcrossAllDomains)
     {
-      v7 = [v4 queryToSearchAcrossAllDomains];
-      [(SFCardMetadata *)v5 setQueryToSearchAcrossAllDomains:v7];
+      queryToSearchAcrossAllDomains2 = [protobufCopy queryToSearchAcrossAllDomains];
+      [(SFCardMetadata *)v5 setQueryToSearchAcrossAllDomains:queryToSearchAcrossAllDomains2];
     }
 
     v8 = v5;
@@ -40,42 +40,42 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SFCardMetadata *)self isServerEntity];
-  v4 = [(SFCardMetadata *)self queryToSearchAcrossAllDomains];
-  v5 = [v4 hash];
+  isServerEntity = [(SFCardMetadata *)self isServerEntity];
+  queryToSearchAcrossAllDomains = [(SFCardMetadata *)self queryToSearchAcrossAllDomains];
+  v5 = [queryToSearchAcrossAllDomains hash];
 
-  return v5 ^ v3;
+  return v5 ^ isServerEntity;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
-  else if ([(SFCardMetadata *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(SFCardMetadata *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(SFCardMetadata *)self isServerEntity];
-    if (v6 == [(SFCardMetadata *)v5 isServerEntity])
+    v5 = equalCopy;
+    isServerEntity = [(SFCardMetadata *)self isServerEntity];
+    if (isServerEntity == [(SFCardMetadata *)v5 isServerEntity])
     {
-      v8 = [(SFCardMetadata *)self queryToSearchAcrossAllDomains];
-      v9 = [(SFCardMetadata *)v5 queryToSearchAcrossAllDomains];
-      if ((v8 != 0) == (v9 == 0))
+      queryToSearchAcrossAllDomains = [(SFCardMetadata *)self queryToSearchAcrossAllDomains];
+      queryToSearchAcrossAllDomains2 = [(SFCardMetadata *)v5 queryToSearchAcrossAllDomains];
+      if ((queryToSearchAcrossAllDomains != 0) == (queryToSearchAcrossAllDomains2 == 0))
       {
         v7 = 0;
       }
 
       else
       {
-        v10 = [(SFCardMetadata *)self queryToSearchAcrossAllDomains];
-        if (v10)
+        queryToSearchAcrossAllDomains3 = [(SFCardMetadata *)self queryToSearchAcrossAllDomains];
+        if (queryToSearchAcrossAllDomains3)
         {
-          v11 = [(SFCardMetadata *)self queryToSearchAcrossAllDomains];
-          v12 = [(SFCardMetadata *)v5 queryToSearchAcrossAllDomains];
-          v7 = [v11 isEqual:v12];
+          queryToSearchAcrossAllDomains4 = [(SFCardMetadata *)self queryToSearchAcrossAllDomains];
+          queryToSearchAcrossAllDomains5 = [(SFCardMetadata *)v5 queryToSearchAcrossAllDomains];
+          v7 = [queryToSearchAcrossAllDomains4 isEqual:queryToSearchAcrossAllDomains5];
         }
 
         else
@@ -99,12 +99,12 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setIsServerEntity:{-[SFCardMetadata isServerEntity](self, "isServerEntity")}];
-  v5 = [(SFCardMetadata *)self queryToSearchAcrossAllDomains];
-  v6 = [v5 copy];
+  queryToSearchAcrossAllDomains = [(SFCardMetadata *)self queryToSearchAcrossAllDomains];
+  v6 = [queryToSearchAcrossAllDomains copy];
   [v4 setQueryToSearchAcrossAllDomains:v6];
 
   return v4;
@@ -113,31 +113,31 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBCardMetadata alloc] initWithFacade:self];
-  v3 = [(_SFPBCardMetadata *)v2 jsonData];
+  jsonData = [(_SFPBCardMetadata *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBCardMetadata alloc] initWithFacade:self];
-  v3 = [(_SFPBCardMetadata *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBCardMetadata *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBCardMetadata alloc] initWithFacade:self];
-  v5 = [(_SFPBCardMetadata *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBCardMetadata *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFCardMetadata)initWithCoder:(id)a3
+- (SFCardMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBCardMetadata alloc] initWithData:v5];
   v7 = [(SFCardMetadata *)self initWithProtobuf:v6];

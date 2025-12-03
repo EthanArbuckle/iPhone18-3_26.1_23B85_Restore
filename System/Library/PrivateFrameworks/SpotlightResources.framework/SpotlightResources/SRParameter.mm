@@ -7,25 +7,25 @@
 + (id)filePathNil;
 + (id)longNil;
 + (id)longZero;
-+ (id)nilParameterWithType:(int64_t)a3;
-+ (id)parameterWithDouble:(double)a3 name:(id)a4;
-+ (id)parameterWithFilePath:(id)a3 name:(id)a4;
-+ (id)parameterWithLong:(int64_t)a3 name:(id)a4;
-+ (id)parameterWithString:(id)a3 name:(id)a4;
++ (id)nilParameterWithType:(int64_t)type;
++ (id)parameterWithDouble:(double)double name:(id)name;
++ (id)parameterWithFilePath:(id)path name:(id)name;
++ (id)parameterWithLong:(int64_t)long name:(id)name;
++ (id)parameterWithString:(id)string name:(id)name;
 + (id)stringNil;
-+ (id)typeStringFromParameterType:(int64_t)a3;
++ (id)typeStringFromParameterType:(int64_t)type;
 - (BOOL)isNil;
 - (BOOL)isPositiveLong;
-- (BOOL)updateWithDouble:(double)a3;
-- (BOOL)updateWithFilePath:(id)a3;
-- (BOOL)updateWithLong:(int64_t)a3;
-- (BOOL)updateWithString:(id)a3;
-- (SRParameter)initWithDouble:(double)a3 flags:(int64_t)a4 name:(id)a5;
-- (SRParameter)initWithFilePath:(id)a3 flags:(int64_t)a4 name:(id)a5;
-- (SRParameter)initWithLong:(int64_t)a3 flags:(int64_t)a4 name:(id)a5;
-- (SRParameter)initWithString:(id)a3 flags:(int64_t)a4 name:(id)a5;
-- (SRParameter)initWithType:(int64_t)a3 flags:(int64_t)a4 name:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)updateWithDouble:(double)double;
+- (BOOL)updateWithFilePath:(id)path;
+- (BOOL)updateWithLong:(int64_t)long;
+- (BOOL)updateWithString:(id)string;
+- (SRParameter)initWithDouble:(double)double flags:(int64_t)flags name:(id)name;
+- (SRParameter)initWithFilePath:(id)path flags:(int64_t)flags name:(id)name;
+- (SRParameter)initWithLong:(int64_t)long flags:(int64_t)flags name:(id)name;
+- (SRParameter)initWithString:(id)string flags:(int64_t)flags name:(id)name;
+- (SRParameter)initWithType:(int64_t)type flags:(int64_t)flags name:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)getBooleanValue;
 - (id)getDoubleValue;
@@ -40,9 +40,9 @@
 - (void)getStringValue;
 - (void)isNil;
 - (void)makeNil;
-- (void)setName:(id)a3;
-- (void)setNumber:(id)a3;
-- (void)setString:(id)a3;
+- (void)setName:(id)name;
+- (void)setNumber:(id)number;
+- (void)setString:(id)string;
 @end
 
 @implementation SRParameter
@@ -73,7 +73,7 @@
   if ([(SRParameter *)self isFilePath])
   {
     v3 = [MEMORY[0x1E695DFF8] URLWithString:self->_value];
-    v4 = [v3 lastPathComponent];
+    lastPathComponent = [v3 lastPathComponent];
   }
 
   else
@@ -84,10 +84,10 @@
       [(SRParameter *)self getFilePathValue];
     }
 
-    v4 = 0;
+    lastPathComponent = 0;
   }
 
-  return v4;
+  return lastPathComponent;
 }
 
 - (BOOL)isNil
@@ -189,9 +189,9 @@
   return v3;
 }
 
-- (SRParameter)initWithType:(int64_t)a3 flags:(int64_t)a4 name:(id)a5
+- (SRParameter)initWithType:(int64_t)type flags:(int64_t)flags name:(id)name
 {
-  v8 = a5;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = SRParameter;
   v9 = [(SRParameter *)&v18 init];
@@ -207,16 +207,16 @@
     goto LABEL_7;
   }
 
-  v9->_type = a3;
-  v9->_flag = a4;
-  v11 = [v8 copy];
+  v9->_type = type;
+  v9->_flag = flags;
+  v11 = [nameCopy copy];
   v12 = v10[3];
   v10[3] = v11;
 
   v13 = v10[5];
   v10[5] = 0;
 
-  if (a3 < 3 || (a3 - 3) < 2)
+  if (type < 3 || (type - 3) < 2)
   {
     v14 = v10[4];
     v10[4] = 0;
@@ -238,9 +238,9 @@ LABEL_8:
   return v15;
 }
 
-- (SRParameter)initWithLong:(int64_t)a3 flags:(int64_t)a4 name:(id)a5
+- (SRParameter)initWithLong:(int64_t)long flags:(int64_t)flags name:(id)name
 {
-  v8 = a5;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = SRParameter;
   v9 = [(SRParameter *)&v16 init];
@@ -248,12 +248,12 @@ LABEL_8:
   if (v9)
   {
     v9->_type = 1;
-    v9->_flag = a4;
-    v11 = [MEMORY[0x1E696AD98] numberWithLong:a3];
+    v9->_flag = flags;
+    v11 = [MEMORY[0x1E696AD98] numberWithLong:long];
     value = v10->_value;
     v10->_value = v11;
 
-    v13 = [v8 copy];
+    v13 = [nameCopy copy];
     name = v10->_name;
     v10->_name = v13;
   }
@@ -270,9 +270,9 @@ LABEL_8:
   return v10;
 }
 
-- (SRParameter)initWithDouble:(double)a3 flags:(int64_t)a4 name:(id)a5
+- (SRParameter)initWithDouble:(double)double flags:(int64_t)flags name:(id)name
 {
-  v8 = a5;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = SRParameter;
   v9 = [(SRParameter *)&v16 init];
@@ -280,12 +280,12 @@ LABEL_8:
   if (v9)
   {
     v9->_type = 2;
-    v9->_flag = a4;
-    v11 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    v9->_flag = flags;
+    v11 = [MEMORY[0x1E696AD98] numberWithDouble:double];
     value = v10->_value;
     v10->_value = v11;
 
-    v13 = [v8 copy];
+    v13 = [nameCopy copy];
     name = v10->_name;
     v10->_name = v13;
   }
@@ -302,10 +302,10 @@ LABEL_8:
   return v10;
 }
 
-- (SRParameter)initWithString:(id)a3 flags:(int64_t)a4 name:(id)a5
+- (SRParameter)initWithString:(id)string flags:(int64_t)flags name:(id)name
 {
-  v8 = a3;
-  v9 = a5;
+  stringCopy = string;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = SRParameter;
   v10 = [(SRParameter *)&v17 init];
@@ -313,12 +313,12 @@ LABEL_8:
   if (v10)
   {
     v10->_type = 3;
-    v10->_flag = a4;
-    v12 = [MEMORY[0x1E696AEC0] stringWithString:v8];
+    v10->_flag = flags;
+    v12 = [MEMORY[0x1E696AEC0] stringWithString:stringCopy];
     value = v11->_value;
     v11->_value = v12;
 
-    v14 = [v9 copy];
+    v14 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v14;
   }
@@ -335,10 +335,10 @@ LABEL_8:
   return v11;
 }
 
-- (SRParameter)initWithFilePath:(id)a3 flags:(int64_t)a4 name:(id)a5
+- (SRParameter)initWithFilePath:(id)path flags:(int64_t)flags name:(id)name
 {
-  v8 = a3;
-  v9 = a5;
+  pathCopy = path;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = SRParameter;
   v10 = [(SRParameter *)&v17 init];
@@ -346,12 +346,12 @@ LABEL_8:
   if (v10)
   {
     v10->_type = 4;
-    v10->_flag = a4;
-    v12 = [MEMORY[0x1E696AEC0] stringWithString:v8];
+    v10->_flag = flags;
+    v12 = [MEMORY[0x1E696AEC0] stringWithString:pathCopy];
     value = v11->_value;
     v11->_value = v12;
 
-    v14 = [v9 copy];
+    v14 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v14;
   }
@@ -368,85 +368,85 @@ LABEL_8:
   return v11;
 }
 
-+ (id)nilParameterWithType:(int64_t)a3
++ (id)nilParameterWithType:(int64_t)type
 {
-  v3 = [[a1 alloc] initWithType:a3 flags:0 name:@"Unknown"];
+  v3 = [[self alloc] initWithType:type flags:0 name:@"Unknown"];
 
   return v3;
 }
 
-+ (id)parameterWithLong:(int64_t)a3 name:(id)a4
++ (id)parameterWithLong:(int64_t)long name:(id)name
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithLong:a3 flags:0 name:v6];
+  nameCopy = name;
+  v7 = [[self alloc] initWithLong:long flags:0 name:nameCopy];
 
   return v7;
 }
 
-+ (id)parameterWithDouble:(double)a3 name:(id)a4
++ (id)parameterWithDouble:(double)double name:(id)name
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithDouble:0 flags:v6 name:a3];
+  nameCopy = name;
+  v7 = [[self alloc] initWithDouble:0 flags:nameCopy name:double];
 
   return v7;
 }
 
-+ (id)parameterWithString:(id)a3 name:(id)a4
++ (id)parameterWithString:(id)string name:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithString:v7 flags:0 name:v6];
+  nameCopy = name;
+  stringCopy = string;
+  v8 = [[self alloc] initWithString:stringCopy flags:0 name:nameCopy];
 
   return v8;
 }
 
-+ (id)parameterWithFilePath:(id)a3 name:(id)a4
++ (id)parameterWithFilePath:(id)path name:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithFilePath:v7 flags:0 name:v6];
+  nameCopy = name;
+  pathCopy = path;
+  v8 = [[self alloc] initWithFilePath:pathCopy flags:0 name:nameCopy];
 
   return v8;
 }
 
-+ (id)typeStringFromParameterType:(int64_t)a3
++ (id)typeStringFromParameterType:(int64_t)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7A2B188[a3];
+    return off_1E7A2B188[type];
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   name = self->_name;
   self->_name = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setNumber:(id)a3
+- (void)setNumber:(id)number
 {
-  v4 = a3;
-  v6 = v4;
-  if (v4)
+  numberCopy = number;
+  v6 = numberCopy;
+  if (numberCopy)
   {
-    v4 = v4;
+    numberCopy = numberCopy;
   }
 
   value = self->_value;
-  self->_value = v4;
+  self->_value = numberCopy;
 }
 
-- (void)setString:(id)a3
+- (void)setString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v4 = [MEMORY[0x1E696AEC0] stringWithString:?];
   }
@@ -462,7 +462,7 @@ LABEL_8:
   MEMORY[0x1EEE66BB8]();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   if (!v4)
@@ -517,7 +517,7 @@ LABEL_13:
 
 - (void)makeNil
 {
-  OUTLINED_FUNCTION_2_2(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_2_2(self, *MEMORY[0x1E69E9840]);
   OUTLINED_FUNCTION_2_1();
   OUTLINED_FUNCTION_1(&dword_1AE58E000, v1, v2, "makeNil for SRParameter with invalid type %ld", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x1E69E9840];
@@ -557,9 +557,9 @@ LABEL_13:
       v14 = self->_value;
       if (v14)
       {
-        v15 = [v14 BOOLValue];
+        bOOLValue = [v14 BOOLValue];
         v16 = @"NO";
-        if (v15)
+        if (bOOLValue)
         {
           v16 = @"YES";
         }
@@ -828,12 +828,12 @@ uint64_t __26__SRParameter_filePathNil__block_invoke()
   return v3;
 }
 
-- (BOOL)updateWithLong:(int64_t)a3
+- (BOOL)updateWithLong:(int64_t)long
 {
-  v5 = [(SRParameter *)self isLong];
-  if (v5)
+  isLong = [(SRParameter *)self isLong];
+  if (isLong)
   {
-    v6 = [MEMORY[0x1E696AD98] numberWithLong:a3];
+    v6 = [MEMORY[0x1E696AD98] numberWithLong:long];
     value = self->_value;
     self->_value = v6;
   }
@@ -847,15 +847,15 @@ uint64_t __26__SRParameter_filePathNil__block_invoke()
     }
   }
 
-  return v5;
+  return isLong;
 }
 
-- (BOOL)updateWithDouble:(double)a3
+- (BOOL)updateWithDouble:(double)double
 {
-  v5 = [(SRParameter *)self isDouble];
-  if (v5)
+  isDouble = [(SRParameter *)self isDouble];
+  if (isDouble)
   {
-    v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    v6 = [MEMORY[0x1E696AD98] numberWithDouble:double];
     value = self->_value;
     self->_value = v6;
   }
@@ -869,16 +869,16 @@ uint64_t __26__SRParameter_filePathNil__block_invoke()
     }
   }
 
-  return v5;
+  return isDouble;
 }
 
-- (BOOL)updateWithString:(id)a3
+- (BOOL)updateWithString:(id)string
 {
-  v4 = a3;
-  v5 = [(SRParameter *)self isString];
-  if (v5)
+  stringCopy = string;
+  isString = [(SRParameter *)self isString];
+  if (isString)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithString:v4];
+    v6 = [MEMORY[0x1E696AEC0] stringWithString:stringCopy];
     value = self->_value;
     self->_value = v6;
   }
@@ -892,16 +892,16 @@ uint64_t __26__SRParameter_filePathNil__block_invoke()
     }
   }
 
-  return v5;
+  return isString;
 }
 
-- (BOOL)updateWithFilePath:(id)a3
+- (BOOL)updateWithFilePath:(id)path
 {
-  v4 = a3;
-  v5 = [(SRParameter *)self isFilePath];
-  if (v5)
+  pathCopy = path;
+  isFilePath = [(SRParameter *)self isFilePath];
+  if (isFilePath)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithString:v4];
+    v6 = [MEMORY[0x1E696AEC0] stringWithString:pathCopy];
     value = self->_value;
     self->_value = v6;
   }
@@ -915,7 +915,7 @@ uint64_t __26__SRParameter_filePathNil__block_invoke()
     }
   }
 
-  return v5;
+  return isFilePath;
 }
 
 - (void)initWithType:(uint64_t *)a1 flags:name:.cold.1(uint64_t *a1)
@@ -985,7 +985,7 @@ uint64_t __26__SRParameter_filePathNil__block_invoke()
 
 - (void)isNil
 {
-  OUTLINED_FUNCTION_2_2(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_2_2(self, *MEMORY[0x1E69E9840]);
   OUTLINED_FUNCTION_2_1();
   OUTLINED_FUNCTION_1(&dword_1AE58E000, v1, v2, "isNil for SRParameter with invalid type %ld", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x1E69E9840];
@@ -993,7 +993,7 @@ uint64_t __26__SRParameter_filePathNil__block_invoke()
 
 - (void)getBooleanValue
 {
-  OUTLINED_FUNCTION_3_1(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_3_1(self, *MEMORY[0x1E69E9840]);
   OUTLINED_FUNCTION_2_1();
   OUTLINED_FUNCTION_1(&dword_1AE58E000, v1, v2, "SRParameter getBooleanValue called for type %ld", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x1E69E9840];
@@ -1001,7 +1001,7 @@ uint64_t __26__SRParameter_filePathNil__block_invoke()
 
 - (void)getLongValue
 {
-  OUTLINED_FUNCTION_3_1(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_3_1(self, *MEMORY[0x1E69E9840]);
   OUTLINED_FUNCTION_2_1();
   OUTLINED_FUNCTION_1(&dword_1AE58E000, v1, v2, "SRParameter getLongValue called for type %ld", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x1E69E9840];
@@ -1009,7 +1009,7 @@ uint64_t __26__SRParameter_filePathNil__block_invoke()
 
 - (void)getDoubleValue
 {
-  OUTLINED_FUNCTION_3_1(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_3_1(self, *MEMORY[0x1E69E9840]);
   OUTLINED_FUNCTION_2_1();
   OUTLINED_FUNCTION_1(&dword_1AE58E000, v1, v2, "SRParameter getDoubleValue called for type %ld", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x1E69E9840];
@@ -1017,7 +1017,7 @@ uint64_t __26__SRParameter_filePathNil__block_invoke()
 
 - (void)getStringValue
 {
-  OUTLINED_FUNCTION_3_1(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_3_1(self, *MEMORY[0x1E69E9840]);
   OUTLINED_FUNCTION_2_1();
   OUTLINED_FUNCTION_1(&dword_1AE58E000, v1, v2, "SRParameter getStringValue called for type %ld", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x1E69E9840];
@@ -1025,7 +1025,7 @@ uint64_t __26__SRParameter_filePathNil__block_invoke()
 
 - (void)getFilePathValue
 {
-  OUTLINED_FUNCTION_3_1(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_3_1(self, *MEMORY[0x1E69E9840]);
   OUTLINED_FUNCTION_2_1();
   OUTLINED_FUNCTION_1(&dword_1AE58E000, v1, v2, "SRParameter getFilePathValue called for type %ld", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x1E69E9840];

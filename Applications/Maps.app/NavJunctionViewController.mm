@@ -1,14 +1,14 @@
 @interface NavJunctionViewController
-+ (void)updateJunctionImageSizeForScreenSize:(CGSize)a3;
++ (void)updateJunctionImageSizeForScreenSize:(CGSize)size;
 - (NavJunctionViewController)init;
 - (NavJunctionViewControllerDelegate)delegate;
 - (double)calculateAvailableHeight;
 - (void)_pressedJunctionView;
-- (void)fitImageForHeight:(double)a3;
-- (void)lightLevelController:(id)a3 didUpdateLightLevel:(int64_t)a4;
-- (void)setJunctionImage:(id)a3;
-- (void)setJunctionViewInfo:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)fitImageForHeight:(double)height;
+- (void)lightLevelController:(id)controller didUpdateLightLevel:(int64_t)level;
+- (void)setJunctionImage:(id)image;
+- (void)setJunctionViewInfo:(id)info;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateSkyColor;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -23,14 +23,14 @@
   return WeakRetained;
 }
 
-- (void)lightLevelController:(id)a3 didUpdateLightLevel:(int64_t)a4
+- (void)lightLevelController:(id)controller didUpdateLightLevel:(int64_t)level
 {
-  if (![(NavJunctionViewController *)self lightModeSource:a3])
+  if (![(NavJunctionViewController *)self lightModeSource:controller])
   {
     v8 = +[MapsLightLevelController sharedController];
-    v5 = [v8 shouldUseNightMode];
+    shouldUseNightMode = [v8 shouldUseNightMode];
     junctionViewInfo = self->_junctionViewInfo;
-    if (v5)
+    if (shouldUseNightMode)
     {
       [(NavJunctionViewInfo *)junctionViewInfo junctionViewDarkenedImage];
     }
@@ -44,32 +44,32 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v13.receiver = self;
   v13.super_class = NavJunctionViewController;
-  [(NavJunctionViewController *)&v13 traitCollectionDidChange:v4];
+  [(NavJunctionViewController *)&v13 traitCollectionDidChange:changeCopy];
   if ([(NavJunctionViewController *)self lightModeSource]== 1)
   {
-    v5 = [(NavJunctionViewController *)self traitCollection];
-    v6 = [v5 userInterfaceStyle];
-    v7 = [v4 userInterfaceStyle];
+    traitCollection = [(NavJunctionViewController *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
+    userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-    if (v6 != v7)
+    if (userInterfaceStyle != userInterfaceStyle2)
     {
-      v8 = [(NavJunctionViewController *)self traitCollection];
-      v9 = [v8 userInterfaceStyle];
-      v10 = [(NavJunctionViewController *)self junctionViewInfo];
-      v11 = v10;
-      if (v9 == 2)
+      traitCollection2 = [(NavJunctionViewController *)self traitCollection];
+      userInterfaceStyle3 = [traitCollection2 userInterfaceStyle];
+      junctionViewInfo = [(NavJunctionViewController *)self junctionViewInfo];
+      v11 = junctionViewInfo;
+      if (userInterfaceStyle3 == 2)
       {
-        [v10 junctionViewDarkenedImage];
+        [junctionViewInfo junctionViewDarkenedImage];
       }
 
       else
       {
-        [v10 junctionViewImage];
+        [junctionViewInfo junctionViewImage];
       }
       v12 = ;
       [(NavJunctionViewController *)self setJunctionImage:v12];
@@ -79,8 +79,8 @@
 
 - (void)updateSkyColor
 {
-  v4 = [(NavJunctionViewController *)self lightModeSource];
-  if (v4)
+  lightModeSource = [(NavJunctionViewController *)self lightModeSource];
+  if (lightModeSource)
   {
     if ([(NavJunctionViewController *)self lightModeSource]!= 1)
     {
@@ -102,60 +102,60 @@
 
 LABEL_12:
       v7 = [UIColor colorWithRed:0.709803922 green:0.866666667 blue:0.929411765 alpha:1.0];
-      v12 = [v7 CGColor];
+      cGColor = [v7 CGColor];
       v8 = [UIColor colorWithRed:0.929411765 green:0.929411765 blue:0.929411765 alpha:1.0];
-      v9 = &v12;
+      v9 = &cGColor;
       goto LABEL_13;
     }
   }
 
-  v5 = [(NavJunctionViewController *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  traitCollection = [(NavJunctionViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (!v4)
+  if (!lightModeSource)
   {
   }
 
-  if (v6 != 2)
+  if (userInterfaceStyle != 2)
   {
     goto LABEL_12;
   }
 
 LABEL_10:
   v7 = [UIColor colorWithRed:0.137254902 green:0.298039216 blue:0.478431373 alpha:1.0];
-  v13 = [v7 CGColor];
+  cGColor2 = [v7 CGColor];
   v8 = [UIColor colorWithRed:0.337254902 green:0.42745098 blue:0.647058824 alpha:1.0];
-  v9 = &v13;
+  v9 = &cGColor2;
 LABEL_13:
   v9[1] = [v8 CGColor];
   v10 = [NSArray arrayWithObjects:v9 count:2];
-  v11 = [(NavJunctionViewController *)self skyGradientLayer];
-  [v11 setColors:v10];
+  skyGradientLayer = [(NavJunctionViewController *)self skyGradientLayer];
+  [skyGradientLayer setColors:v10];
 }
 
 - (void)_pressedJunctionView
 {
-  v2 = [(NavJunctionViewController *)self delegate];
-  [v2 hideJunctionViewTemporarily];
+  delegate = [(NavJunctionViewController *)self delegate];
+  [delegate hideJunctionViewTemporarily];
 }
 
-- (void)setJunctionViewInfo:(id)a3
+- (void)setJunctionViewInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_junctionViewInfo != v4)
+  infoCopy = info;
+  v5 = infoCopy;
+  if (infoCopy && self->_junctionViewInfo != infoCopy)
   {
     v6 = +[NavigationFeedbackCollector sharedFeedbackCollector];
-    v7 = [(NavJunctionViewInfo *)v5 junctionViewId];
-    [v6 setJunctionViewDisplayed:v7];
+    junctionViewId = [(NavJunctionViewInfo *)v5 junctionViewId];
+    [v6 setJunctionViewDisplayed:junctionViewId];
   }
 
   junctionViewInfo = self->_junctionViewInfo;
   self->_junctionViewInfo = v5;
   v9 = v5;
 
-  v11 = [(NavJunctionViewController *)self traitCollection];
-  if ([v11 userInterfaceStyle] == 2)
+  traitCollection = [(NavJunctionViewController *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] == 2)
   {
     [(NavJunctionViewInfo *)v9 junctionViewDarkenedImage];
   }
@@ -169,16 +169,16 @@ LABEL_13:
   [(NavJunctionViewController *)self setJunctionImage:v10];
 }
 
-- (void)setJunctionImage:(id)a3
+- (void)setJunctionImage:(id)image
 {
-  v8 = a3;
+  imageCopy = image;
   [(NavJunctionViewController *)self loadViewIfNeeded];
-  objc_storeStrong(&self->_junctionImage, a3);
+  objc_storeStrong(&self->_junctionImage, image);
   [(UIImage *)self->_junctionImage setAccessibilityIdentifier:@"NavJunctionImage"];
-  v5 = [(NavJunctionViewController *)self junctionView];
-  [v5 setImage:v8];
+  junctionView = [(NavJunctionViewController *)self junctionView];
+  [junctionView setImage:imageCopy];
 
-  if (v8 && ([v8 size], v6 > 0.0))
+  if (imageCopy && ([imageCopy size], v6 > 0.0))
   {
     [(NavJunctionViewController *)self calculateAvailableHeight];
     [(NavJunctionViewController *)self setAvailableHeight:?];
@@ -186,58 +186,58 @@ LABEL_13:
 
   else
   {
-    v7 = [(NavJunctionViewController *)self heightConstraint];
-    [v7 setConstant:0.0];
+    heightConstraint = [(NavJunctionViewController *)self heightConstraint];
+    [heightConstraint setConstant:0.0];
   }
 
   [(NavJunctionViewController *)self updateSkyColor];
 }
 
-- (void)fitImageForHeight:(double)a3
+- (void)fitImageForHeight:(double)height
 {
-  v5 = [(NavJunctionViewController *)self junctionImage];
-  [v5 size];
+  junctionImage = [(NavJunctionViewController *)self junctionImage];
+  [junctionImage size];
   v7 = v6;
 
   v8 = 0.0;
-  if (v7 != 0.0 && a3 != 0.0)
+  if (v7 != 0.0 && height != 0.0)
   {
-    v9 = [(NavJunctionViewController *)self junctionImage];
-    [v9 size];
+    junctionImage2 = [(NavJunctionViewController *)self junctionImage];
+    [junctionImage2 size];
     v10 = 0.0;
     if (v11 > 0.0)
     {
-      v12 = [(NavJunctionViewController *)self junctionImage];
-      [v12 size];
+      junctionImage3 = [(NavJunctionViewController *)self junctionImage];
+      [junctionImage3 size];
       v14 = v13;
-      v15 = [(NavJunctionViewController *)self view];
-      [v15 frame];
+      view = [(NavJunctionViewController *)self view];
+      [view frame];
       v17 = v16 * v14;
-      v18 = [(NavJunctionViewController *)self junctionImage];
-      [v18 size];
+      junctionImage4 = [(NavJunctionViewController *)self junctionImage];
+      [junctionImage4 size];
       v10 = floor(v17 / v19);
     }
 
-    if (v10 <= a3)
+    if (v10 <= height)
     {
       v20 = 0.0;
     }
 
     else
     {
-      v20 = (v10 - a3) * 0.600000024;
+      v20 = (v10 - height) * 0.600000024;
     }
 
-    v8 = fmin(v10, a3);
-    v21 = [(NavJunctionViewController *)self junctionViewBottomConstraint];
-    [v21 setConstant:v20];
+    v8 = fmin(v10, height);
+    junctionViewBottomConstraint = [(NavJunctionViewController *)self junctionViewBottomConstraint];
+    [junctionViewBottomConstraint setConstant:v20];
 
-    v22 = [(NavJunctionViewController *)self junctionViewHeightConstraint];
-    [v22 setConstant:v10];
+    junctionViewHeightConstraint = [(NavJunctionViewController *)self junctionViewHeightConstraint];
+    [junctionViewHeightConstraint setConstant:v10];
   }
 
-  v23 = [(NavJunctionViewController *)self heightConstraint];
-  [v23 setConstant:v8];
+  heightConstraint = [(NavJunctionViewController *)self heightConstraint];
+  [heightConstraint setConstant:v8];
 }
 
 - (void)viewDidLayoutSubviews
@@ -245,22 +245,22 @@ LABEL_13:
   v13.receiver = self;
   v13.super_class = NavJunctionViewController;
   [(NavJunctionViewController *)&v13 viewDidLayoutSubviews];
-  v3 = [(NavJunctionViewController *)self view];
-  [v3 bounds];
+  view = [(NavJunctionViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(NavJunctionViewController *)self skyGradientLayer];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  skyGradientLayer = [(NavJunctionViewController *)self skyGradientLayer];
+  [skyGradientLayer setFrame:{v5, v7, v9, v11}];
 }
 
 - (double)calculateAvailableHeight
 {
-  v3 = [(NavJunctionViewController *)self delegate];
-  v4 = [(NavJunctionViewController *)self heightConstraint];
-  [v4 constant];
-  [v3 maxAvailableHeightForJunctionView:?];
+  delegate = [(NavJunctionViewController *)self delegate];
+  heightConstraint = [(NavJunctionViewController *)self heightConstraint];
+  [heightConstraint constant];
+  [delegate maxAvailableHeightForJunctionView:?];
   v6 = v5;
 
   return v6;
@@ -271,89 +271,89 @@ LABEL_13:
   v49.receiver = self;
   v49.super_class = NavJunctionViewController;
   [(NavJunctionViewController *)&v49 viewDidLoad];
-  v3 = [(NavJunctionViewController *)self view];
-  v4 = [v3 layer];
-  [v4 setMasksToBounds:1];
+  view = [(NavJunctionViewController *)self view];
+  layer = [view layer];
+  [layer setMasksToBounds:1];
 
-  v5 = [(NavJunctionViewController *)self view];
-  [v5 setClipsToBounds:1];
+  view2 = [(NavJunctionViewController *)self view];
+  [view2 setClipsToBounds:1];
 
   v6 = objc_opt_new();
   [(NavJunctionViewController *)self setSkyGradientLayer:v6];
 
-  v7 = [(NavJunctionViewController *)self skyGradientLayer];
-  [v7 setLocations:&off_1016ED178];
+  skyGradientLayer = [(NavJunctionViewController *)self skyGradientLayer];
+  [skyGradientLayer setLocations:&off_1016ED178];
 
-  v8 = [(NavJunctionViewController *)self skyGradientLayer];
-  [v8 setStartPoint:{0.5, 0.0}];
+  skyGradientLayer2 = [(NavJunctionViewController *)self skyGradientLayer];
+  [skyGradientLayer2 setStartPoint:{0.5, 0.0}];
 
-  v9 = [(NavJunctionViewController *)self skyGradientLayer];
-  [v9 setEndPoint:{0.5, 1.0}];
+  skyGradientLayer3 = [(NavJunctionViewController *)self skyGradientLayer];
+  [skyGradientLayer3 setEndPoint:{0.5, 1.0}];
 
-  v10 = [(NavJunctionViewController *)self view];
-  v11 = [v10 layer];
-  v12 = [(NavJunctionViewController *)self skyGradientLayer];
-  [v11 addSublayer:v12];
+  view3 = [(NavJunctionViewController *)self view];
+  layer2 = [view3 layer];
+  skyGradientLayer4 = [(NavJunctionViewController *)self skyGradientLayer];
+  [layer2 addSublayer:skyGradientLayer4];
 
   v13 = [[UIImageView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [(NavJunctionViewController *)self setJunctionView:v13];
 
-  v14 = [(NavJunctionViewController *)self junctionView];
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+  junctionView = [(NavJunctionViewController *)self junctionView];
+  [junctionView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v15 = [(NavJunctionViewController *)self junctionView];
-  [v15 setContentMode:2];
+  junctionView2 = [(NavJunctionViewController *)self junctionView];
+  [junctionView2 setContentMode:2];
 
-  v16 = [(NavJunctionViewController *)self junctionView];
-  [v16 setUserInteractionEnabled:1];
+  junctionView3 = [(NavJunctionViewController *)self junctionView];
+  [junctionView3 setUserInteractionEnabled:1];
 
-  v17 = [(NavJunctionViewController *)self junctionView];
-  [v17 setAccessibilityIdentifier:@"NavJunctionView"];
+  junctionView4 = [(NavJunctionViewController *)self junctionView];
+  [junctionView4 setAccessibilityIdentifier:@"NavJunctionView"];
 
-  v18 = [(NavJunctionViewController *)self junctionView];
+  junctionView5 = [(NavJunctionViewController *)self junctionView];
   v19 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"_pressedJunctionView"];
-  [v18 addGestureRecognizer:v19];
+  [junctionView5 addGestureRecognizer:v19];
 
-  v20 = [(NavJunctionViewController *)self view];
-  v21 = [(NavJunctionViewController *)self junctionView];
-  [v20 addSubview:v21];
+  view4 = [(NavJunctionViewController *)self view];
+  junctionView6 = [(NavJunctionViewController *)self junctionView];
+  [view4 addSubview:junctionView6];
 
-  v22 = [(NavJunctionViewController *)self junctionView];
-  v23 = [v22 bottomAnchor];
-  v24 = [(NavJunctionViewController *)self view];
-  v25 = [v24 bottomAnchor];
-  v26 = [v23 constraintEqualToAnchor:v25 constant:0.0];
+  junctionView7 = [(NavJunctionViewController *)self junctionView];
+  bottomAnchor = [junctionView7 bottomAnchor];
+  view5 = [(NavJunctionViewController *)self view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
   [(NavJunctionViewController *)self setJunctionViewBottomConstraint:v26];
 
-  v27 = [(NavJunctionViewController *)self junctionView];
-  v28 = [v27 heightAnchor];
-  v29 = [v28 constraintEqualToConstant:0.0];
+  junctionView8 = [(NavJunctionViewController *)self junctionView];
+  heightAnchor = [junctionView8 heightAnchor];
+  v29 = [heightAnchor constraintEqualToConstant:0.0];
   [(NavJunctionViewController *)self setJunctionViewHeightConstraint:v29];
 
-  v30 = [(NavJunctionViewController *)self view];
-  v31 = [v30 heightAnchor];
+  view6 = [(NavJunctionViewController *)self view];
+  heightAnchor2 = [view6 heightAnchor];
   LODWORD(v32) = 1148846080;
-  v33 = [v31 constraintEqualToConstant:0.0 priority:v32];
+  v33 = [heightAnchor2 constraintEqualToConstant:0.0 priority:v32];
   [(NavJunctionViewController *)self setHeightConstraint:v33];
 
-  v48 = [(NavJunctionViewController *)self junctionView];
-  v46 = [v48 widthAnchor];
-  v47 = [(NavJunctionViewController *)self view];
-  v45 = [v47 widthAnchor];
-  v44 = [v46 constraintEqualToAnchor:v45];
+  junctionView9 = [(NavJunctionViewController *)self junctionView];
+  widthAnchor = [junctionView9 widthAnchor];
+  view7 = [(NavJunctionViewController *)self view];
+  widthAnchor2 = [view7 widthAnchor];
+  v44 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v50[0] = v44;
-  v34 = [(NavJunctionViewController *)self junctionView];
-  v35 = [v34 centerXAnchor];
-  v36 = [(NavJunctionViewController *)self view];
-  v37 = [v36 centerXAnchor];
-  v38 = [v35 constraintEqualToAnchor:v37];
+  junctionView10 = [(NavJunctionViewController *)self junctionView];
+  centerXAnchor = [junctionView10 centerXAnchor];
+  view8 = [(NavJunctionViewController *)self view];
+  centerXAnchor2 = [view8 centerXAnchor];
+  v38 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v50[1] = v38;
-  v39 = [(NavJunctionViewController *)self junctionViewBottomConstraint];
-  v50[2] = v39;
-  v40 = [(NavJunctionViewController *)self junctionViewHeightConstraint];
-  v50[3] = v40;
-  v41 = [(NavJunctionViewController *)self heightConstraint];
-  v50[4] = v41;
+  junctionViewBottomConstraint = [(NavJunctionViewController *)self junctionViewBottomConstraint];
+  v50[2] = junctionViewBottomConstraint;
+  junctionViewHeightConstraint = [(NavJunctionViewController *)self junctionViewHeightConstraint];
+  v50[3] = junctionViewHeightConstraint;
+  heightConstraint = [(NavJunctionViewController *)self heightConstraint];
+  v50[4] = heightConstraint;
   v42 = [NSArray arrayWithObjects:v50 count:5];
   [NSLayoutConstraint activateConstraints:v42];
 
@@ -375,14 +375,14 @@ LABEL_13:
   return v3;
 }
 
-+ (void)updateJunctionImageSizeForScreenSize:(CGSize)a3
++ (void)updateJunctionImageSizeForScreenSize:(CGSize)size
 {
-  if (a3.width != 0.0)
+  if (size.width != 0.0)
   {
-    height = a3.height;
-    if (a3.height != 0.0)
+    height = size.height;
+    if (size.height != 0.0)
     {
-      width = a3.width;
+      width = size.width;
 LABEL_6:
       if (width >= height)
       {
@@ -403,8 +403,8 @@ LABEL_6:
   if (v5)
   {
     v6 = v5;
-    v7 = [v5 currentMode];
-    [v7 size];
+    currentMode = [v5 currentMode];
+    [currentMode size];
     width = v8;
     height = v9;
 

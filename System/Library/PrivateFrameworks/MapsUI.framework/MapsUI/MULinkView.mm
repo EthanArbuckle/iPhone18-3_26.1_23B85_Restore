@@ -1,19 +1,19 @@
 @interface MULinkView
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (MULinkView)initWithLabelColor:(id)a3 linkColor:(id)a4;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (MULinkView)initWithLabelColor:(id)color linkColor:(id)linkColor;
 - (unint64_t)numberOfLines;
 - (void)_setupLinkView;
 - (void)_updateForButtonShapeStatusChange;
-- (void)setNumberOfLines:(unint64_t)a3;
+- (void)setNumberOfLines:(unint64_t)lines;
 @end
 
 @implementation MULinkView
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
-  v9 = a3;
-  v10 = a4;
-  if (!a6)
+  viewCopy = view;
+  lCopy = l;
+  if (!interaction)
   {
     selectionBlock = self->_selectionBlock;
     if (selectionBlock)
@@ -49,34 +49,34 @@
 
 - (unint64_t)numberOfLines
 {
-  v2 = [(UITextView *)self->_textView textContainer];
-  v3 = [v2 maximumNumberOfLines];
+  textContainer = [(UITextView *)self->_textView textContainer];
+  maximumNumberOfLines = [textContainer maximumNumberOfLines];
 
-  return v3;
+  return maximumNumberOfLines;
 }
 
-- (void)setNumberOfLines:(unint64_t)a3
+- (void)setNumberOfLines:(unint64_t)lines
 {
-  v4 = [(UITextView *)self->_textView textContainer];
-  [v4 setMaximumNumberOfLines:a3];
+  textContainer = [(UITextView *)self->_textView textContainer];
+  [textContainer setMaximumNumberOfLines:lines];
 }
 
 - (void)_setupLinkView
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DD168] _mapsui_defaultTextView];
+  _mapsui_defaultTextView = [MEMORY[0x1E69DD168] _mapsui_defaultTextView];
   textView = self->_textView;
-  self->_textView = v3;
+  self->_textView = _mapsui_defaultTextView;
 
   [(UITextView *)self->_textView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [MEMORY[0x1E69DC888] clearColor];
-  [(UITextView *)self->_textView setBackgroundColor:v5];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UITextView *)self->_textView setBackgroundColor:clearColor];
 
   [(UITextView *)self->_textView setTextColor:self->_labelColor];
   [(UITextView *)self->_textView setDelegate:self];
   [(UITextView *)self->_textView setAccessibilityIdentifier:@"LinkViewTextView"];
-  v6 = [(UITextView *)self->_textView textContainer];
-  [v6 setLineBreakMode:4];
+  textContainer = [(UITextView *)self->_textView textContainer];
+  [textContainer setLineBreakMode:4];
 
   [(MULinkView *)self setDirectionalLayoutMargins:*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)];
   [(UITextView *)self->_textView setInsetsLayoutMarginsFromSafeArea:0];
@@ -88,8 +88,8 @@
   v7 = MEMORY[0x1E696ACD8];
   v8 = [MUEdgeLayout alloc];
   v9 = self->_textView;
-  v10 = [(MULinkView *)self layoutMarginsGuide];
-  v11 = [(MUEdgeLayout *)v8 initWithItem:v9 container:v10];
+  layoutMarginsGuide = [(MULinkView *)self layoutMarginsGuide];
+  v11 = [(MUEdgeLayout *)v8 initWithItem:v9 container:layoutMarginsGuide];
   v18[0] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
   [v7 _mapsui_activateLayouts:v12];
@@ -102,10 +102,10 @@
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (MULinkView)initWithLabelColor:(id)a3 linkColor:(id)a4
+- (MULinkView)initWithLabelColor:(id)color linkColor:(id)linkColor
 {
-  v6 = a3;
-  v7 = a4;
+  colorCopy = color;
+  linkColorCopy = linkColor;
   v16.receiver = self;
   v16.super_class = MULinkView;
   v8 = [(MULinkView *)&v16 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -115,25 +115,25 @@
     v10 = NSStringFromClass(v9);
     [(MULinkView *)v8 setAccessibilityIdentifier:v10];
 
-    v11 = v6;
-    if (!v6)
+    labelColor = colorCopy;
+    if (!colorCopy)
     {
-      v11 = [MEMORY[0x1E69DC888] labelColor];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
     }
 
-    objc_storeStrong(&v8->_labelColor, v11);
-    if (!v6)
+    objc_storeStrong(&v8->_labelColor, labelColor);
+    if (!colorCopy)
     {
     }
 
-    v12 = v7;
-    if (!v7)
+    v12 = linkColorCopy;
+    if (!linkColorCopy)
     {
       v12 = +[MUInfoCardStyle tintColor];
     }
 
     objc_storeStrong(&v8->_linkColor, v12);
-    if (!v7)
+    if (!linkColorCopy)
     {
     }
 

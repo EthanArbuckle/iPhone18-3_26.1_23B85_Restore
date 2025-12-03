@@ -1,16 +1,16 @@
 @interface CarMediaSourceFetcher
 - (uint64_t)mediaSourceService:didUpdateIdentifier:;
-- (void)mediaSourceService:(id)a3 didUpdateMediaItems:(id)a4;
+- (void)mediaSourceService:(id)service didUpdateMediaItems:(id)items;
 @end
 
 @implementation CarMediaSourceFetcher
 
-- (void)mediaSourceService:(id)a3 didUpdateMediaItems:(id)a4
+- (void)mediaSourceService:(id)service didUpdateMediaItems:(id)items
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_97EF0(v6, a4);
+  serviceCopy = service;
+  itemsCopy = items;
+  selfCopy = self;
+  sub_97EF0(serviceCopy, items);
 }
 
 - (uint64_t)mediaSourceService:didUpdateIdentifier:

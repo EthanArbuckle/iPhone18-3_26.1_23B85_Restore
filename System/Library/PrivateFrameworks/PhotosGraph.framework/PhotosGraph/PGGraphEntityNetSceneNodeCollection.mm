@@ -1,42 +1,42 @@
 @interface PGGraphEntityNetSceneNodeCollection
-+ (id)sceneNodesForSceneNames:(id)a3 inGraph:(id)a4;
++ (id)sceneNodesForSceneNames:(id)names inGraph:(id)graph;
 - (NSSet)localizedNames;
-- (void)enumerateLocalizedNamesUsingBlock:(id)a3;
-- (void)enumerateSceneIdentifiersUsingBlock:(id)a3;
+- (void)enumerateLocalizedNamesUsingBlock:(id)block;
+- (void)enumerateSceneIdentifiersUsingBlock:(id)block;
 @end
 
 @implementation PGGraphEntityNetSceneNodeCollection
 
-+ (id)sceneNodesForSceneNames:(id)a3 inGraph:(id)a4
++ (id)sceneNodesForSceneNames:(id)names inGraph:(id)graph
 {
-  v6 = a4;
-  v7 = [(PGGraphSceneNode *)PGGraphEntityNetSceneNode filterForSceneNames:a3];
-  v8 = [a1 nodesMatchingFilter:v7 inGraph:v6];
+  graphCopy = graph;
+  v7 = [(PGGraphSceneNode *)PGGraphEntityNetSceneNode filterForSceneNames:names];
+  v8 = [self nodesMatchingFilter:v7 inGraph:graphCopy];
 
   return v8;
 }
 
-- (void)enumerateSceneIdentifiersUsingBlock:(id)a3
+- (void)enumerateSceneIdentifiersUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __75__PGGraphEntityNetSceneNodeCollection_enumerateSceneIdentifiersUsingBlock___block_invoke;
   v6[3] = &unk_278887A18;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(MANodeCollection *)self enumerateUnsignedLongLongPropertyValuesForKey:@"sceneIdentifier" withBlock:v6];
 }
 
-- (void)enumerateLocalizedNamesUsingBlock:(id)a3
+- (void)enumerateLocalizedNamesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __73__PGGraphEntityNetSceneNodeCollection_enumerateLocalizedNamesUsingBlock___block_invoke;
   v6[3] = &unk_278887978;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(MANodeCollection *)self enumerateStringPropertyValuesForKey:@"localizedName" withBlock:v6];
 }
 

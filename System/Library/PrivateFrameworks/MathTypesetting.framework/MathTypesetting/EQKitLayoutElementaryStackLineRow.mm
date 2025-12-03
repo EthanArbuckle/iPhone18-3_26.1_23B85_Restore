@@ -1,52 +1,52 @@
 @interface EQKitLayoutElementaryStackLineRow
-- (EQKitLayoutElementaryStackLineRow)initWithLength:(unint64_t)a3 thickness:(double)a4 position:(int64_t)a5 followingSpace:(double)a6;
-- (id)newBoxWithStackWidth:(double)a3 columnWidthIter:(__wrap_iter<double *>)a4 iterMax:(__wrap_iter<double *>)a5 previousRow:(id)a6 layoutManager:(const void *)a7;
+- (EQKitLayoutElementaryStackLineRow)initWithLength:(unint64_t)length thickness:(double)thickness position:(int64_t)position followingSpace:(double)space;
+- (id)newBoxWithStackWidth:(double)width columnWidthIter:(__wrap_iter<double *>)iter iterMax:(__wrap_iter<double *>)max previousRow:(id)row layoutManager:(const void *)manager;
 @end
 
 @implementation EQKitLayoutElementaryStackLineRow
 
-- (EQKitLayoutElementaryStackLineRow)initWithLength:(unint64_t)a3 thickness:(double)a4 position:(int64_t)a5 followingSpace:(double)a6
+- (EQKitLayoutElementaryStackLineRow)initWithLength:(unint64_t)length thickness:(double)thickness position:(int64_t)position followingSpace:(double)space
 {
   v11.receiver = self;
   v11.super_class = EQKitLayoutElementaryStackLineRow;
   result = [(EQKitLayoutElementaryStackLineRow *)&v11 init];
   if (result)
   {
-    result->mLength = a3;
-    result->mThickness = a4;
-    result->mFollowingSpace = a6;
-    if (a3)
+    result->mLength = length;
+    result->mThickness = thickness;
+    result->mFollowingSpace = space;
+    if (length)
     {
-      result->mAlignmentShift -= a5 + a3;
+      result->mAlignmentShift -= position + length;
     }
   }
 
   return result;
 }
 
-- (id)newBoxWithStackWidth:(double)a3 columnWidthIter:(__wrap_iter<double *>)a4 iterMax:(__wrap_iter<double *>)a5 previousRow:(id)a6 layoutManager:(const void *)a7
+- (id)newBoxWithStackWidth:(double)width columnWidthIter:(__wrap_iter<double *>)iter iterMax:(__wrap_iter<double *>)max previousRow:(id)row layoutManager:(const void *)manager
 {
   mLength = self->mLength;
   if (mLength)
   {
-    v11 = (a4.var0 + 8 * mLength);
+    v11 = (iter.var0 + 8 * mLength);
     v12 = 0.0;
     do
     {
-      v13 = *a4.var0;
-      a4.var0 += 8;
+      v13 = *iter.var0;
+      iter.var0 += 8;
       v12 = v13 + v12;
     }
 
-    while (a4.var0 != v11);
-    a3 = v12;
+    while (iter.var0 != v11);
+    width = v12;
   }
 
   v14 = [EQKitRule alloc];
   mThickness = self->mThickness;
-  v16 = *(EQKitLayoutManager::layoutContext(a7) + 112);
+  v16 = *(EQKitLayoutManager::layoutContext(manager) + 112);
 
-  return [(EQKitRule *)v14 initWithHeight:v16 depth:0.0 width:mThickness cgColor:a3];
+  return [(EQKitRule *)v14 initWithHeight:v16 depth:0.0 width:mThickness cgColor:width];
 }
 
 @end

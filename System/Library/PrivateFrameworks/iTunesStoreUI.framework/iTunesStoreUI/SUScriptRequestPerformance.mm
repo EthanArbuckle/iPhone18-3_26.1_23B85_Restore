@@ -1,22 +1,22 @@
 @interface SUScriptRequestPerformance
-+ (id)webScriptNameForKeyName:(id)a3;
++ (id)webScriptNameForKeyName:(id)name;
 + (void)initialize;
 - (NSString)JSONHeaders;
-- (SUScriptRequestPerformance)initWithRequestPerformance:(id)a3;
+- (SUScriptRequestPerformance)initWithRequestPerformance:(id)performance;
 - (id)scriptAttributeKeys;
 - (void)dealloc;
 @end
 
 @implementation SUScriptRequestPerformance
 
-- (SUScriptRequestPerformance)initWithRequestPerformance:(id)a3
+- (SUScriptRequestPerformance)initWithRequestPerformance:(id)performance
 {
   v6.receiver = self;
   v6.super_class = SUScriptRequestPerformance;
   v4 = [(SUScriptObject *)&v6 init];
   if (v4)
   {
-    v4->_performance = a3;
+    v4->_performance = performance;
   }
 
   return v4;
@@ -45,14 +45,14 @@
   return v3;
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_78 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptRequestPerformance;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
@@ -62,14 +62,14 @@
 {
   v4.receiver = self;
   v4.super_class = SUScriptRequestPerformance;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_78 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_78 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __KeyMapping_78 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{@"headers", @"JSONHeaders", @"requestBeginInterval", @"receivedResponseInterval", @"requestEndInterval", @"finishInterval", @"renderBeginInterval", @"renderBeginInterval", @"renderEndInterval", @"renderEndInterval", 0}];
   }

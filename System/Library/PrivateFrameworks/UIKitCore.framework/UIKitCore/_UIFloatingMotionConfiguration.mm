@@ -1,20 +1,20 @@
 @interface _UIFloatingMotionConfiguration
-+ (id)configurationWithLargeTranslationOnAxis:(unint64_t)a3;
-+ (id)configurationWithRotation:(CGPoint)a3;
-+ (id)configurationWithRotationOnAxis:(unint64_t)a3;
-+ (id)configurationWithTranslation:(CGPoint)a3;
-+ (id)configurationWithTranslationOnAxis:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)configurationWithLargeTranslationOnAxis:(unint64_t)axis;
++ (id)configurationWithRotation:(CGPoint)rotation;
++ (id)configurationWithRotationOnAxis:(unint64_t)axis;
++ (id)configurationWithTranslation:(CGPoint)translation;
++ (id)configurationWithTranslationOnAxis:(unint64_t)axis;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)rotation;
 - (CGPoint)translation;
-- (id)_initWithTranslation:(CGPoint)a3 rotation:(CGPoint)a4;
+- (id)_initWithTranslation:(CGPoint)translation rotation:(CGPoint)rotation;
 @end
 
 @implementation _UIFloatingMotionConfiguration
 
-+ (id)configurationWithRotationOnAxis:(unint64_t)a3
++ (id)configurationWithRotationOnAxis:(unint64_t)axis
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+  if ((axis & 0xFFFFFFFFFFFFFFFDLL) == 1)
   {
     v3 = 0.04;
   }
@@ -24,7 +24,7 @@
     v3 = 0.0;
   }
 
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((axis & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     v4 = 0.04;
   }
@@ -34,15 +34,15 @@
     v4 = 0.0;
   }
 
-  v5 = [a1 alloc];
+  v5 = [self alloc];
   v6 = [v5 _initWithTranslation:*MEMORY[0x1E695EFF8] rotation:{*(MEMORY[0x1E695EFF8] + 8), v3, v4}];
 
   return v6;
 }
 
-+ (id)configurationWithTranslationOnAxis:(unint64_t)a3
++ (id)configurationWithTranslationOnAxis:(unint64_t)axis
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+  if ((axis & 0xFFFFFFFFFFFFFFFDLL) == 1)
   {
     v3 = 4.0;
   }
@@ -52,7 +52,7 @@
     v3 = 0.0;
   }
 
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((axis & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     v4 = 4.0;
   }
@@ -62,15 +62,15 @@
     v4 = 0.0;
   }
 
-  v5 = [a1 alloc];
+  v5 = [self alloc];
   v6 = [v5 _initWithTranslation:v3 rotation:{v4, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
 
   return v6;
 }
 
-+ (id)configurationWithLargeTranslationOnAxis:(unint64_t)a3
++ (id)configurationWithLargeTranslationOnAxis:(unint64_t)axis
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+  if ((axis & 0xFFFFFFFFFFFFFFFDLL) == 1)
   {
     v3 = 8.0;
   }
@@ -80,7 +80,7 @@
     v3 = 0.0;
   }
 
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((axis & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     v4 = 8.0;
   }
@@ -90,38 +90,38 @@
     v4 = 0.0;
   }
 
-  v5 = [a1 alloc];
+  v5 = [self alloc];
   v6 = [v5 _initWithTranslation:v3 rotation:{v4, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
 
   return v6;
 }
 
-+ (id)configurationWithRotation:(CGPoint)a3
++ (id)configurationWithRotation:(CGPoint)rotation
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [a1 alloc];
+  y = rotation.y;
+  x = rotation.x;
+  v5 = [self alloc];
   v6 = [v5 _initWithTranslation:*MEMORY[0x1E695EFF8] rotation:{*(MEMORY[0x1E695EFF8] + 8), x, y}];
 
   return v6;
 }
 
-+ (id)configurationWithTranslation:(CGPoint)a3
++ (id)configurationWithTranslation:(CGPoint)translation
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [a1 alloc];
+  y = translation.y;
+  x = translation.x;
+  v5 = [self alloc];
   v6 = [v5 _initWithTranslation:x rotation:{y, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
 
   return v6;
 }
 
-- (id)_initWithTranslation:(CGPoint)a3 rotation:(CGPoint)a4
+- (id)_initWithTranslation:(CGPoint)translation rotation:(CGPoint)rotation
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = rotation.y;
+  x = rotation.x;
+  v6 = translation.y;
+  v7 = translation.x;
   v9.receiver = self;
   v9.super_class = _UIFloatingMotionConfiguration;
   result = [(_UIFloatingMotionConfiguration *)&v9 init];
@@ -136,10 +136,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -147,9 +147,9 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (([(_UIFloatingMotionConfiguration *)v4 translation], self->_translation.x == v6) ? (v7 = self->_translation.y == v5) : (v7 = 0), v7))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (([(_UIFloatingMotionConfiguration *)equalCopy translation], self->_translation.x == v6) ? (v7 = self->_translation.y == v5) : (v7 = 0), v7))
     {
-      [(_UIFloatingMotionConfiguration *)v4 rotation];
+      [(_UIFloatingMotionConfiguration *)equalCopy rotation];
       v8 = self->_rotation.y == v10 && self->_rotation.x == v9;
     }
 

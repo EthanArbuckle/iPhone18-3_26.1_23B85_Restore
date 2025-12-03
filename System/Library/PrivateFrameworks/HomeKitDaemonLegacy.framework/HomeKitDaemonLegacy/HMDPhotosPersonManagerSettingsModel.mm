@@ -1,7 +1,7 @@
 @interface HMDPhotosPersonManagerSettingsModel
 + (NSUUID)sentinelParentUUID;
 + (id)hmbProperties;
-- (HMDPhotosPersonManagerSettingsModel)initWithModelID:(id)a3 settings:(id)a4;
+- (HMDPhotosPersonManagerSettingsModel)initWithModelID:(id)d settings:(id)settings;
 - (id)createSettings;
 @end
 
@@ -10,29 +10,29 @@
 - (id)createSettings
 {
   v3 = objc_alloc_init(MEMORY[0x277CD1C80]);
-  v4 = [(HMDPhotosPersonManagerSettingsModel *)self zoneUUID];
-  [v3 setImportingFromPhotoLibraryEnabled:v4 != 0];
+  zoneUUID = [(HMDPhotosPersonManagerSettingsModel *)self zoneUUID];
+  [v3 setImportingFromPhotoLibraryEnabled:zoneUUID != 0];
 
-  v5 = [(HMDPhotosPersonManagerSettingsModel *)self sharingFaceClassificationsEnabled];
-  [v3 setSharingFaceClassificationsEnabled:{objc_msgSend(v5, "BOOLValue")}];
+  sharingFaceClassificationsEnabled = [(HMDPhotosPersonManagerSettingsModel *)self sharingFaceClassificationsEnabled];
+  [v3 setSharingFaceClassificationsEnabled:{objc_msgSend(sharingFaceClassificationsEnabled, "BOOLValue")}];
 
   v6 = [v3 copy];
 
   return v6;
 }
 
-- (HMDPhotosPersonManagerSettingsModel)initWithModelID:(id)a3 settings:(id)a4
+- (HMDPhotosPersonManagerSettingsModel)initWithModelID:(id)d settings:(id)settings
 {
-  v6 = a4;
-  v7 = a3;
+  settingsCopy = settings;
+  dCopy = d;
   v8 = [HMDPhotosPersonManagerSettingsModel alloc];
-  v9 = [objc_opt_class() sentinelParentUUID];
-  v10 = [(HMBModel *)v8 initWithModelID:v7 parentModelID:v9];
+  sentinelParentUUID = [objc_opt_class() sentinelParentUUID];
+  v10 = [(HMBModel *)v8 initWithModelID:dCopy parentModelID:sentinelParentUUID];
 
   v11 = MEMORY[0x277CCABB0];
-  v12 = [v6 isSharingFaceClassificationsEnabled];
+  isSharingFaceClassificationsEnabled = [settingsCopy isSharingFaceClassificationsEnabled];
 
-  v13 = [v11 numberWithBool:v12];
+  v13 = [v11 numberWithBool:isSharingFaceClassificationsEnabled];
   [(HMDPhotosPersonManagerSettingsModel *)v10 setSharingFaceClassificationsEnabled:v13];
 
   return v10;

@@ -1,7 +1,7 @@
 @interface SFDeviceQueryParameters
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)queryType;
-- (SFDeviceQueryParameters)initWithDeviceAssetQuery:(id)a3 installedOnly:(BOOL)a4 imperfectMatch:(BOOL)a5 fallback:(BOOL)a6;
+- (SFDeviceQueryParameters)initWithDeviceAssetQuery:(id)query installedOnly:(BOOL)only imperfectMatch:(BOOL)match fallback:(BOOL)fallback;
 - (id)description;
 - (id)maAssetQueryDescription;
 - (unint64_t)hash;
@@ -9,26 +9,26 @@
 
 @implementation SFDeviceQueryParameters
 
-- (SFDeviceQueryParameters)initWithDeviceAssetQuery:(id)a3 installedOnly:(BOOL)a4 imperfectMatch:(BOOL)a5 fallback:(BOOL)a6
+- (SFDeviceQueryParameters)initWithDeviceAssetQuery:(id)query installedOnly:(BOOL)only imperfectMatch:(BOOL)match fallback:(BOOL)fallback
 {
-  v8 = a4;
-  v10 = a3;
+  onlyCopy = only;
+  queryCopy = query;
   v22.receiver = self;
   v22.super_class = SFDeviceQueryParameters;
   v11 = [(SFDeviceQueryParameters *)&v22 init];
   v12 = v11;
   if (v11)
   {
-    v11->_installedOnly = v8;
-    v11->_imperfectMatch = a5;
-    v11->_fallback = a6;
+    v11->_installedOnly = onlyCopy;
+    v11->_imperfectMatch = match;
+    v11->_fallback = fallback;
     v13 = getMAAssetQueryClass;
-    v14 = v10;
+    v14 = queryCopy;
     v15 = objc_alloc(v13());
-    v16 = [v14 assetType];
-    v17 = [v15 initWithType:v16];
+    assetType = [v14 assetType];
+    v17 = [v15 initWithType:assetType];
 
-    if (v8)
+    if (onlyCopy)
     {
       v18 = 1;
     }
@@ -39,9 +39,9 @@
     }
 
     [v17 returnTypes:v18];
-    v19 = [v14 effectiveProductType];
+    effectiveProductType = [v14 effectiveProductType];
 
-    SFDeviceAssetAddKeyValuePair(@"ProductType", v19, v17);
+    SFDeviceAssetAddKeyValuePair(@"ProductType", effectiveProductType, v17);
     maQuery = v12->_maQuery;
     v12->_maQuery = v17;
   }
@@ -51,7 +51,7 @@
 
 - (id)maAssetQueryDescription
 {
-  v2 = [(SFDeviceQueryParameters *)self maQuery];
+  maQuery = [(SFDeviceQueryParameters *)self maQuery];
   v17 = 0;
   v10 = objc_opt_class();
   NSAppendPrintF();
@@ -59,20 +59,20 @@
   NSAppendPrintF();
   v3 = v16;
 
-  v4 = [v2 returnTypes];
-  if (v4 == 2)
+  returnTypes = [maQuery returnTypes];
+  if (returnTypes == 2)
   {
     v13 = v3;
     v5 = &v13;
   }
 
-  else if (v4 == 1)
+  else if (returnTypes == 1)
   {
     v14 = v3;
     v5 = &v14;
   }
 
-  else if (v4)
+  else if (returnTypes)
   {
     v12 = v3;
     v5 = &v12;
@@ -87,7 +87,7 @@
   NSAppendPrintF();
   v6 = *v5;
 
-  v11 = [v2 queryParams];
+  queryParams = [maQuery queryParams];
   NSAppendPrintF();
   v7 = v6;
 
@@ -126,10 +126,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -139,11 +139,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SFDeviceQueryParameters *)self maQuery];
-      v7 = [(SFDeviceQueryParameters *)v5 maQuery];
-      v8 = v6;
-      v9 = v7;
+      v5 = equalCopy;
+      maQuery = [(SFDeviceQueryParameters *)self maQuery];
+      maQuery2 = [(SFDeviceQueryParameters *)v5 maQuery];
+      v8 = maQuery;
+      v9 = maQuery2;
       v10 = v9;
       if (v8 == v9)
       {
@@ -165,11 +165,11 @@
         }
       }
 
-      v13 = [(SFDeviceQueryParameters *)self installedOnly];
-      if (v13 == [(SFDeviceQueryParameters *)v5 installedOnly])
+      installedOnly = [(SFDeviceQueryParameters *)self installedOnly];
+      if (installedOnly == [(SFDeviceQueryParameters *)v5 installedOnly])
       {
-        v14 = [(SFDeviceQueryParameters *)self fallback];
-        v12 = v14 ^ [(SFDeviceQueryParameters *)v5 fallback]^ 1;
+        fallback = [(SFDeviceQueryParameters *)self fallback];
+        v12 = fallback ^ [(SFDeviceQueryParameters *)v5 fallback]^ 1;
 LABEL_14:
 
         goto LABEL_15;
@@ -190,8 +190,8 @@ LABEL_15:
 
 - (unint64_t)hash
 {
-  v2 = [(SFDeviceQueryParameters *)self maQuery];
-  v3 = [v2 hash];
+  maQuery = [(SFDeviceQueryParameters *)self maQuery];
+  v3 = [maQuery hash];
 
   return v3;
 }

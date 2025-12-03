@@ -1,22 +1,22 @@
 @interface AFSiriWorkoutReminder
-- (AFSiriWorkoutReminder)initWithCoder:(id)a3;
-- (AFSiriWorkoutReminder)initWithPredictionIdentifier:(id)a3 predictionType:(int64_t)a4 workoutActivityType:(unint64_t)a5 locationType:(int64_t)a6 swimmingLocationType:(int64_t)a7;
-- (AFSiriWorkoutReminder)initWithPredictionIdentifier:(id)a3 predictionType:(int64_t)a4 workoutType:(int64_t)a5;
-- (AFSiriWorkoutReminder)initWithPredictionIdentifier:(id)a3 predictionType:(int64_t)a4 workoutType:(int64_t)a5 workoutActivityType:(unint64_t)a6 locationType:(int64_t)a7 swimmingLocationType:(int64_t)a8;
+- (AFSiriWorkoutReminder)initWithCoder:(id)coder;
+- (AFSiriWorkoutReminder)initWithPredictionIdentifier:(id)identifier predictionType:(int64_t)type workoutActivityType:(unint64_t)activityType locationType:(int64_t)locationType swimmingLocationType:(int64_t)swimmingLocationType;
+- (AFSiriWorkoutReminder)initWithPredictionIdentifier:(id)identifier predictionType:(int64_t)type workoutType:(int64_t)workoutType;
+- (AFSiriWorkoutReminder)initWithPredictionIdentifier:(id)identifier predictionType:(int64_t)type workoutType:(int64_t)workoutType workoutActivityType:(unint64_t)activityType locationType:(int64_t)locationType swimmingLocationType:(int64_t)swimmingLocationType;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFSiriWorkoutReminder
 
-- (AFSiriWorkoutReminder)initWithCoder:(id)a3
+- (AFSiriWorkoutReminder)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"predictionIdentifier"];
-  v6 = [v4 decodeIntegerForKey:@"predictionType"];
-  if ([v4 containsValueForKey:@"workoutType"])
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"predictionIdentifier"];
+  v6 = [coderCopy decodeIntegerForKey:@"predictionType"];
+  if ([coderCopy containsValueForKey:@"workoutType"])
   {
-    v7 = [v4 decodeIntegerForKey:@"workoutType"];
+    v7 = [coderCopy decodeIntegerForKey:@"workoutType"];
   }
 
   else
@@ -24,9 +24,9 @@
     v7 = 0;
   }
 
-  if ([v4 containsValueForKey:@"workoutActivityType"])
+  if ([coderCopy containsValueForKey:@"workoutActivityType"])
   {
-    v8 = [v4 decodeIntegerForKey:@"workoutActivityType"];
+    v8 = [coderCopy decodeIntegerForKey:@"workoutActivityType"];
   }
 
   else
@@ -34,9 +34,9 @@
     v8 = 0;
   }
 
-  if ([v4 containsValueForKey:@"workoutLocationType"])
+  if ([coderCopy containsValueForKey:@"workoutLocationType"])
   {
-    v9 = [v4 decodeIntegerForKey:@"workoutLocationType"];
+    v9 = [coderCopy decodeIntegerForKey:@"workoutLocationType"];
   }
 
   else
@@ -44,9 +44,9 @@
     v9 = 0;
   }
 
-  if ([v4 containsValueForKey:@"workoutSwimmingLocationType"])
+  if ([coderCopy containsValueForKey:@"workoutSwimmingLocationType"])
   {
-    v10 = [v4 decodeIntegerForKey:@"workoutSwimmingLocationType"];
+    v10 = [coderCopy decodeIntegerForKey:@"workoutSwimmingLocationType"];
   }
 
   else
@@ -59,17 +59,17 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(AFSiriWorkoutReminder *)self predictionIdentifier];
-  [v5 encodeObject:v4 forKey:@"predictionIdentifier"];
+  coderCopy = coder;
+  predictionIdentifier = [(AFSiriWorkoutReminder *)self predictionIdentifier];
+  [coderCopy encodeObject:predictionIdentifier forKey:@"predictionIdentifier"];
 
-  [v5 encodeInteger:-[AFSiriWorkoutReminder predictionType](self forKey:{"predictionType"), @"predictionType"}];
-  [v5 encodeInteger:-[AFSiriWorkoutReminder workoutType](self forKey:{"workoutType"), @"workoutType"}];
-  [v5 encodeInteger:-[AFSiriWorkoutReminder workoutActivityType](self forKey:{"workoutActivityType"), @"workoutActivityType"}];
-  [v5 encodeInteger:-[AFSiriWorkoutReminder workoutLocationType](self forKey:{"workoutLocationType"), @"workoutLocationType"}];
-  [v5 encodeInteger:-[AFSiriWorkoutReminder workoutSwimmingLocationType](self forKey:{"workoutSwimmingLocationType"), @"workoutSwimmingLocationType"}];
+  [coderCopy encodeInteger:-[AFSiriWorkoutReminder predictionType](self forKey:{"predictionType"), @"predictionType"}];
+  [coderCopy encodeInteger:-[AFSiriWorkoutReminder workoutType](self forKey:{"workoutType"), @"workoutType"}];
+  [coderCopy encodeInteger:-[AFSiriWorkoutReminder workoutActivityType](self forKey:{"workoutActivityType"), @"workoutActivityType"}];
+  [coderCopy encodeInteger:-[AFSiriWorkoutReminder workoutLocationType](self forKey:{"workoutLocationType"), @"workoutLocationType"}];
+  [coderCopy encodeInteger:-[AFSiriWorkoutReminder workoutSwimmingLocationType](self forKey:{"workoutSwimmingLocationType"), @"workoutSwimmingLocationType"}];
 }
 
 - (id)description
@@ -107,59 +107,59 @@
   return v13;
 }
 
-- (AFSiriWorkoutReminder)initWithPredictionIdentifier:(id)a3 predictionType:(int64_t)a4 workoutType:(int64_t)a5 workoutActivityType:(unint64_t)a6 locationType:(int64_t)a7 swimmingLocationType:(int64_t)a8
+- (AFSiriWorkoutReminder)initWithPredictionIdentifier:(id)identifier predictionType:(int64_t)type workoutType:(int64_t)workoutType workoutActivityType:(unint64_t)activityType locationType:(int64_t)locationType swimmingLocationType:(int64_t)swimmingLocationType
 {
-  v15 = a3;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = AFSiriWorkoutReminder;
   v16 = [(AFSiriWorkoutReminder *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_predictionIdentifier, a3);
-    v17->_workoutSwimmingLocationType = a8;
-    v17->_predictionType = a4;
-    v17->_workoutType = a5;
-    v17->_workoutActivityType = a6;
-    v17->_workoutLocationType = a7;
+    objc_storeStrong(&v16->_predictionIdentifier, identifier);
+    v17->_workoutSwimmingLocationType = swimmingLocationType;
+    v17->_predictionType = type;
+    v17->_workoutType = workoutType;
+    v17->_workoutActivityType = activityType;
+    v17->_workoutLocationType = locationType;
   }
 
   return v17;
 }
 
-- (AFSiriWorkoutReminder)initWithPredictionIdentifier:(id)a3 predictionType:(int64_t)a4 workoutActivityType:(unint64_t)a5 locationType:(int64_t)a6 swimmingLocationType:(int64_t)a7
+- (AFSiriWorkoutReminder)initWithPredictionIdentifier:(id)identifier predictionType:(int64_t)type workoutActivityType:(unint64_t)activityType locationType:(int64_t)locationType swimmingLocationType:(int64_t)swimmingLocationType
 {
-  v13 = a3;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = AFSiriWorkoutReminder;
   v14 = [(AFSiriWorkoutReminder *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_predictionIdentifier, a3);
-    v15->_workoutSwimmingLocationType = a7;
-    v15->_predictionType = a4;
+    objc_storeStrong(&v14->_predictionIdentifier, identifier);
+    v15->_workoutSwimmingLocationType = swimmingLocationType;
+    v15->_predictionType = type;
     v15->_workoutType = 0;
-    v15->_workoutActivityType = a5;
-    v15->_workoutLocationType = a6;
+    v15->_workoutActivityType = activityType;
+    v15->_workoutLocationType = locationType;
   }
 
   return v15;
 }
 
-- (AFSiriWorkoutReminder)initWithPredictionIdentifier:(id)a3 predictionType:(int64_t)a4 workoutType:(int64_t)a5
+- (AFSiriWorkoutReminder)initWithPredictionIdentifier:(id)identifier predictionType:(int64_t)type workoutType:(int64_t)workoutType
 {
-  v9 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = AFSiriWorkoutReminder;
   v10 = [(AFSiriWorkoutReminder *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_predictionIdentifier, a3);
+    objc_storeStrong(&v10->_predictionIdentifier, identifier);
     v11->_workoutSwimmingLocationType = 0;
-    v11->_predictionType = a4;
-    v11->_workoutType = a5;
+    v11->_predictionType = type;
+    v11->_workoutType = workoutType;
     v11->_workoutActivityType = 0;
     v11->_workoutLocationType = 0;
   }

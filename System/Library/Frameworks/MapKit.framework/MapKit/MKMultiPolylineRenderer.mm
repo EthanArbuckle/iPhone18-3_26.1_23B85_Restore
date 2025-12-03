@@ -1,24 +1,24 @@
 @interface MKMultiPolylineRenderer
 - (BOOL)_canProvideVectorGeometry;
-- (MKMultiPolylineRenderer)initWithCoder:(id)a3;
+- (MKMultiPolylineRenderer)initWithCoder:(id)coder;
 - (double)_strokeEnd;
 - (double)_strokeStart;
 - (id)_vectorGeometry;
-- (id)vectorDataForOverlay:(id)a3;
-- (void)_decodePropertiesWithCoder:(id)a3;
+- (id)vectorDataForOverlay:(id)overlay;
+- (void)_decodePropertiesWithCoder:(id)coder;
 - (void)_performInitialConfiguration;
-- (void)_setStrokeEnd:(double)a3;
-- (void)_setStrokeStart:(double)a3;
+- (void)_setStrokeEnd:(double)end;
+- (void)_setStrokeStart:(double)start;
 - (void)_updateRenderColors;
 - (void)createPath;
-- (void)drawMapRect:(id)a3 zoomScale:(double)a4 inContext:(CGContext *)a5;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAlpha:(double)a3;
-- (void)setLineCap:(int)a3;
-- (void)setLineJoin:(int)a3;
-- (void)setLineWidth:(double)a3;
-- (void)setMiterLimit:(double)a3;
-- (void)setStrokeColor:(id)a3;
+- (void)drawMapRect:(id)rect zoomScale:(double)scale inContext:(CGContext *)context;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAlpha:(double)alpha;
+- (void)setLineCap:(int)cap;
+- (void)setLineJoin:(int)join;
+- (void)setLineWidth:(double)width;
+- (void)setMiterLimit:(double)limit;
+- (void)setStrokeColor:(id)color;
 @end
 
 @implementation MKMultiPolylineRenderer
@@ -27,13 +27,13 @@
 {
   if (self->_vectorGeometry)
   {
-    v3 = [(MKOverlayRenderer *)self _mapView];
+    _mapView = [(MKOverlayRenderer *)self _mapView];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __46__MKMultiPolylineRenderer__updateRenderColors__block_invoke;
     v5[3] = &unk_1E76CDB38;
     v5[4] = self;
-    [v3 _withEffectiveTraitCollection:v5];
+    [_mapView _withEffectiveTraitCollection:v5];
   }
 
   v4.receiver = self;
@@ -48,41 +48,41 @@ void __46__MKMultiPolylineRenderer__updateRenderColors__block_invoke(uint64_t a1
   [*(*(a1 + 32) + 208) setColor:{objc_msgSend(v3, "CGColor")}];
 }
 
-- (id)vectorDataForOverlay:(id)a3
+- (id)vectorDataForOverlay:(id)overlay
 {
   if ([(MKMultiPolylineRenderer *)self _canProvideVectorGeometry])
   {
-    v4 = [(MKMultiPolylineRenderer *)self _vectorGeometry];
+    _vectorGeometry = [(MKMultiPolylineRenderer *)self _vectorGeometry];
   }
 
   else
   {
-    v4 = 0;
+    _vectorGeometry = 0;
   }
 
-  return v4;
+  return _vectorGeometry;
 }
 
 - (id)_vectorGeometry
 {
-  v2 = self;
+  selfCopy = self;
   v31 = *MEMORY[0x1E69E9840];
   if (!self->_vectorGeometry && [(MKMultiPolylineRenderer *)self _canProvideVectorGeometry])
   {
     v3 = MEMORY[0x1E695DF70];
-    v4 = [(MKOverlayRenderer *)v2 overlay];
-    v5 = [v4 polylines];
-    v6 = [v3 arrayWithCapacity:{objc_msgSend(v5, "count")}];
+    overlay = [(MKOverlayRenderer *)selfCopy overlay];
+    polylines = [overlay polylines];
+    v6 = [v3 arrayWithCapacity:{objc_msgSend(polylines, "count")}];
 
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    p_isa = &v2->super.super.super.isa;
-    v7 = [(MKOverlayRenderer *)v2 overlay];
-    v8 = [v7 polylines];
+    p_isa = &selfCopy->super.super.super.isa;
+    overlay2 = [(MKOverlayRenderer *)selfCopy overlay];
+    polylines2 = [overlay2 polylines];
 
-    v9 = [v8 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    v9 = [polylines2 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v9)
     {
       v10 = v9;
@@ -93,14 +93,14 @@ void __46__MKMultiPolylineRenderer__updateRenderColors__block_invoke(uint64_t a1
         {
           if (*v27 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(polylines2);
           }
 
           v13 = [objc_alloc(MEMORY[0x1E69DF4D8]) initWithMapPoints:objc_msgSend(*(*(&v26 + 1) + 8 * i) elevations:"points") count:objc_msgSend(*(*(&v26 + 1) + 8 * i) needsElevationCorrection:{"elevations"), objc_msgSend(*(*(&v26 + 1) + 8 * i), "pointCount"), objc_msgSend(*(*(&v26 + 1) + 8 * i), "needsElevationCorrection")}];
           [v6 addObject:v13];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v10 = [polylines2 countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v10);
@@ -108,38 +108,38 @@ void __46__MKMultiPolylineRenderer__updateRenderColors__block_invoke(uint64_t a1
 
     v14 = v6;
     v15 = [objc_alloc(MEMORY[0x1E69DF4E0]) initWithPolylines:v6];
-    v2 = p_isa;
+    selfCopy = p_isa;
     v16 = p_isa[26];
     p_isa[26] = v15;
 
     [p_isa lineWidth];
     [p_isa[26] setLineWidth:?];
-    v17 = [p_isa strokeColor];
-    [p_isa[26] setColor:{objc_msgSend(v17, "CGColor")}];
+    strokeColor = [p_isa strokeColor];
+    [p_isa[26] setColor:{objc_msgSend(strokeColor, "CGColor")}];
 
     [p_isa alpha];
     [p_isa[26] setAlpha:?];
-    v18 = [p_isa lineJoin];
-    if (v18 == 2)
+    lineJoin = [p_isa lineJoin];
+    if (lineJoin == 2)
     {
       v19 = 1;
     }
 
     else
     {
-      v19 = 2 * (v18 == 0);
+      v19 = 2 * (lineJoin == 0);
     }
 
     [p_isa[26] setLineJoin:v19];
-    v20 = [p_isa lineCap];
-    if (v20 == 2)
+    lineCap = [p_isa lineCap];
+    if (lineCap == 2)
     {
       v21 = 2;
     }
 
     else
     {
-      v21 = v20 == 0;
+      v21 = lineCap == 0;
     }
 
     [p_isa[26] setLineCap:v21];
@@ -156,7 +156,7 @@ void __46__MKMultiPolylineRenderer__updateRenderColors__block_invoke(uint64_t a1
     [p_isa[26] setMiterLimit:v22];
   }
 
-  vectorGeometry = v2->_vectorGeometry;
+  vectorGeometry = selfCopy->_vectorGeometry;
 
   return vectorGeometry;
 }
@@ -173,59 +173,59 @@ void __46__MKMultiPolylineRenderer__updateRenderColors__block_invoke(uint64_t a1
     return 0;
   }
 
-  v3 = [(MKOverlayPathRenderer *)self lineDashPattern];
-  v4 = [v3 count];
+  lineDashPattern = [(MKOverlayPathRenderer *)self lineDashPattern];
+  v4 = [lineDashPattern count];
 
   if (v4)
   {
     return 0;
   }
 
-  v7 = [(MKOverlayPathRenderer *)self strokeColor];
-  v5 = CGColorGetPattern([v7 CGColor]) == 0;
+  strokeColor = [(MKOverlayPathRenderer *)self strokeColor];
+  v5 = CGColorGetPattern([strokeColor CGColor]) == 0;
 
   return v5;
 }
 
-- (void)setMiterLimit:(double)a3
+- (void)setMiterLimit:(double)limit
 {
   v6.receiver = self;
   v6.super_class = MKMultiPolylineRenderer;
   [(MKOverlayPathRenderer *)&v6 setMiterLimit:?];
-  v5 = 10.0;
-  if (a3 > 0.0)
+  limitCopy = 10.0;
+  if (limit > 0.0)
   {
-    v5 = a3;
+    limitCopy = limit;
   }
 
-  [(VKVectorOverlayPolylineGroup *)self->_vectorGeometry setMiterLimit:v5];
+  [(VKVectorOverlayPolylineGroup *)self->_vectorGeometry setMiterLimit:limitCopy];
 }
 
-- (void)setLineCap:(int)a3
+- (void)setLineCap:(int)cap
 {
   v6.receiver = self;
   v6.super_class = MKMultiPolylineRenderer;
   [(MKOverlayPathRenderer *)&v6 setLineCap:?];
-  if (a3 == 2)
+  if (cap == 2)
   {
     v5 = 2;
   }
 
   else
   {
-    v5 = a3 == 0;
+    v5 = cap == 0;
   }
 
   [(VKVectorOverlayPolylineGroup *)self->_vectorGeometry setLineCap:v5];
 }
 
-- (void)setLineJoin:(int)a3
+- (void)setLineJoin:(int)join
 {
-  v5 = a3 == 0;
+  v5 = join == 0;
   v7.receiver = self;
   v7.super_class = MKMultiPolylineRenderer;
   [(MKOverlayPathRenderer *)&v7 setLineJoin:?];
-  if (a3 == 2)
+  if (join == 2)
   {
     v6 = 1;
   }
@@ -238,7 +238,7 @@ void __46__MKMultiPolylineRenderer__updateRenderColors__block_invoke(uint64_t a1
   [(VKVectorOverlayPolylineGroup *)self->_vectorGeometry setLineJoin:v6];
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   v7.receiver = self;
   v7.super_class = MKMultiPolylineRenderer;
@@ -250,38 +250,38 @@ void __46__MKMultiPolylineRenderer__updateRenderColors__block_invoke(uint64_t a1
   v6[3] = &unk_1E76CD230;
   v6[4] = self;
   v6[5] = v5;
-  *&v6[6] = a3;
+  *&v6[6] = alpha;
   [(MKOverlayPathRenderer *)self _animateVectorGeometryIfNecessaryForKey:@"alpha" withStepHandler:v6];
 }
 
-- (void)setStrokeColor:(id)a3
+- (void)setStrokeColor:(id)color
 {
-  v4 = a3;
-  v5 = [(MKOverlayPathRenderer *)self strokeColor];
-  v6 = v5;
-  if (v5)
+  colorCopy = color;
+  strokeColor = [(MKOverlayPathRenderer *)self strokeColor];
+  v6 = strokeColor;
+  if (strokeColor)
   {
-    v7 = v5;
+    clearColor = strokeColor;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E69DC888] clearColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
   }
 
-  v8 = v7;
+  v8 = clearColor;
 
   v15.receiver = self;
   v15.super_class = MKMultiPolylineRenderer;
-  [(MKOverlayPathRenderer *)&v15 setStrokeColor:v4];
+  [(MKOverlayPathRenderer *)&v15 setStrokeColor:colorCopy];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __42__MKMultiPolylineRenderer_setStrokeColor___block_invoke;
   v11[3] = &unk_1E76CCF90;
   v12 = v8;
-  v13 = v4;
-  v14 = self;
-  v9 = v4;
+  v13 = colorCopy;
+  selfCopy = self;
+  v9 = colorCopy;
   v10 = v8;
   [(MKOverlayPathRenderer *)self _animateVectorGeometryIfNecessaryForKey:@"strokeColor" withStepHandler:v11];
 }
@@ -301,15 +301,15 @@ void __42__MKMultiPolylineRenderer_setStrokeColor___block_invoke(uint64_t a1, fl
   [*(*(a1 + 48) + 208) setColor:{objc_msgSend(v6, "CGColor")}];
 }
 
-- (void)setLineWidth:(double)a3
+- (void)setLineWidth:(double)width
 {
   v7.receiver = self;
   v7.super_class = MKMultiPolylineRenderer;
   [(MKOverlayPathRenderer *)&v7 setLineWidth:?];
   [(VKVectorOverlayPolylineGroup *)self->_vectorGeometry lineWidth];
-  if (fabs(a3) < 0.000001 || fabs(v5) < 0.000001)
+  if (fabs(width) < 0.000001 || fabs(v5) < 0.000001)
   {
-    [(VKVectorOverlayPolylineGroup *)self->_vectorGeometry setLineWidth:a3];
+    [(VKVectorOverlayPolylineGroup *)self->_vectorGeometry setLineWidth:width];
   }
 
   else
@@ -320,21 +320,21 @@ void __42__MKMultiPolylineRenderer_setStrokeColor___block_invoke(uint64_t a1, fl
     v6[3] = &unk_1E76CD230;
     v6[4] = self;
     *&v6[5] = v5;
-    *&v6[6] = a3;
+    *&v6[6] = width;
     [(MKOverlayPathRenderer *)self _animateVectorGeometryIfNecessaryForKey:@"lineWidth" withStepHandler:v6];
   }
 }
 
-- (void)drawMapRect:(id)a3 zoomScale:(double)a4 inContext:(CGContext *)a5
+- (void)drawMapRect:(id)rect zoomScale:(double)scale inContext:(CGContext *)context
 {
   v53 = *MEMORY[0x1E69E9840];
-  [(MKOverlayRenderer *)self _originMapPoint:a3.var0.var0];
+  [(MKOverlayRenderer *)self _originMapPoint:rect.var0.var0];
   v9 = v8;
   v11 = v10;
   Mutable = CGPathCreateMutable();
   [(MKMultiPolylineRenderer *)self _strokeStart];
   v14 = v13;
-  v45 = self;
+  selfCopy = self;
   [(MKMultiPolylineRenderer *)self _strokeEnd];
   v16 = v15;
   v17 = v14 > 0.0;
@@ -358,11 +358,11 @@ void __42__MKMultiPolylineRenderer_setStrokeColor___block_invoke(uint64_t a1, fl
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v19 = [(MKOverlayRenderer *)self overlay];
-  v20 = [v19 polylines];
+  overlay = [(MKOverlayRenderer *)self overlay];
+  polylines = [overlay polylines];
 
-  obj = v20;
-  v21 = [v20 countByEnumeratingWithState:&v48 objects:v52 count:16];
+  obj = polylines;
+  v21 = [polylines countByEnumeratingWithState:&v48 objects:v52 count:16];
   if (v21)
   {
     v22 = v21;
@@ -380,17 +380,17 @@ void __42__MKMultiPolylineRenderer_setStrokeColor___block_invoke(uint64_t a1, fl
         }
 
         v26 = *(*(&v48 + 1) + 8 * i);
-        v27 = [v26 points];
-        v28 = [v26 pointCount];
-        if (v28 >= 2)
+        points = [v26 points];
+        pointCount = [v26 pointCount];
+        if (pointCount >= 2)
         {
-          v29 = v28;
-          _MKPolylineAddToPath(Mutable, v27, v28, v9, v11, a4, 0.0, 1.0, -1.0);
+          v29 = pointCount;
+          _MKPolylineAddToPath(Mutable, points, pointCount, v9, v11, scale, 0.0, 1.0, -1.0);
           if (!CGPathIsEmpty(Mutable))
           {
             if ((v23 & 1) == 0)
             {
-              [(MKOverlayPathRenderer *)v45 applyStrokePropertiesToContext:a5 atZoomScale:a4];
+              [(MKOverlayPathRenderer *)selfCopy applyStrokePropertiesToContext:context atZoomScale:scale];
             }
 
             if (v46)
@@ -401,10 +401,10 @@ void __42__MKMultiPolylineRenderer_setStrokeColor___block_invoke(uint64_t a1, fl
               LineJoin = CGContextGetLineJoin();
               CGContextGetMiterLimit();
               v35 = v34;
-              v36 = a5;
+              contextCopy = context;
               v37 = CGPathCreateMutable();
               [v26 _mapPointsLength];
-              _MKPolylineAddToPath(v37, v27, v29, v9, v11, a4, v14, v16, v38);
+              _MKPolylineAddToPath(v37, points, v29, v9, v11, scale, v14, v16, v38);
               if (v14 <= 0.0)
               {
                 v39 = LineCap;
@@ -429,7 +429,7 @@ void __42__MKMultiPolylineRenderer_setStrokeColor___block_invoke(uint64_t a1, fl
               CopyByStrokingPath = _MKCGPathCreateCopyByStrokingPath(v37, v39, v40, LineJoin, v31, v35);
               CGPathAddPath(v43, 0, CopyByStrokingPath);
               v42 = v37;
-              a5 = v36;
+              context = contextCopy;
               Mutable = v44;
               CGPathRelease(v42);
               CGPathRelease(CopyByStrokingPath);
@@ -450,11 +450,11 @@ void __42__MKMultiPolylineRenderer_setStrokeColor___block_invoke(uint64_t a1, fl
   {
     if (v18)
     {
-      CGContextAddPath(a5, v18);
-      CGContextClip(a5);
+      CGContextAddPath(context, v18);
+      CGContextClip(context);
     }
 
-    [(MKOverlayPathRenderer *)v45 strokePath:Mutable inContext:a5];
+    [(MKOverlayPathRenderer *)selfCopy strokePath:Mutable inContext:context];
   }
 
   CGPathRelease(Mutable);
@@ -469,10 +469,10 @@ void __42__MKMultiPolylineRenderer_setStrokeColor___block_invoke(uint64_t a1, fl
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [(MKOverlayRenderer *)self overlay];
-  v5 = [v4 polylines];
+  overlay = [(MKOverlayRenderer *)self overlay];
+  polylines = [overlay polylines];
 
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v6 = [polylines countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v6)
   {
     v7 = v6;
@@ -484,21 +484,21 @@ void __42__MKMultiPolylineRenderer_setStrokeColor___block_invoke(uint64_t a1, fl
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(polylines);
         }
 
         v10 = *(*(&v22 + 1) + 8 * v9);
         [(MKOverlayRenderer *)self _originMapPoint];
         v12 = v11;
         v14 = v13;
-        v15 = [v10 points];
-        v16 = [v10 pointCount];
-        if (v16 >= 2)
+        points = [v10 points];
+        pointCount = [v10 pointCount];
+        if (pointCount >= 2)
         {
-          v17 = v16;
-          v19 = *v15;
-          v20 = v15[1];
-          v18 = v15 + 3;
+          v17 = pointCount;
+          v19 = *points;
+          v20 = points[1];
+          v18 = points + 3;
           CGPathMoveToPoint(Mutable, 0, v19 - v12, v20 - v14);
           v21 = v17 - 1;
           do
@@ -515,7 +515,7 @@ void __42__MKMultiPolylineRenderer_setStrokeColor___block_invoke(uint64_t a1, fl
       }
 
       while (v9 != v7);
-      v7 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v7 = [polylines countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v7);
@@ -525,99 +525,99 @@ void __42__MKMultiPolylineRenderer_setStrokeColor___block_invoke(uint64_t a1, fl
   CGPathRelease(Mutable);
 }
 
-- (void)_setStrokeEnd:(double)a3
+- (void)_setStrokeEnd:(double)end
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  if (vabdd_f64(a3, v4->_strokeEnd) >= 0.00000011920929)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (vabdd_f64(end, selfCopy->_strokeEnd) >= 0.00000011920929)
   {
-    [(MKMultiPolylineRenderer *)v4 willChangeValueForKey:@"strokeEnd"];
-    strokeEnd = v4->_strokeEnd;
-    v4->_strokeEnd = a3;
-    v6 = [(MKOverlayRenderer *)v4 _renderer];
-    [v6 setNeedsDisplayForReason:2];
+    [(MKMultiPolylineRenderer *)selfCopy willChangeValueForKey:@"strokeEnd"];
+    strokeEnd = selfCopy->_strokeEnd;
+    selfCopy->_strokeEnd = end;
+    _renderer = [(MKOverlayRenderer *)selfCopy _renderer];
+    [_renderer setNeedsDisplayForReason:2];
 
-    [(MKMultiPolylineRenderer *)v4 didChangeValueForKey:@"strokeEnd"];
+    [(MKMultiPolylineRenderer *)selfCopy didChangeValueForKey:@"strokeEnd"];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __41__MKMultiPolylineRenderer__setStrokeEnd___block_invoke;
     v7[3] = &unk_1E76CD230;
-    v7[4] = v4;
+    v7[4] = selfCopy;
     *&v7[5] = strokeEnd;
-    *&v7[6] = a3;
-    [(MKOverlayPathRenderer *)v4 _animateVectorGeometryIfNecessaryForKey:@"strokeEnd" withStepHandler:v7];
+    *&v7[6] = end;
+    [(MKOverlayPathRenderer *)selfCopy _animateVectorGeometryIfNecessaryForKey:@"strokeEnd" withStepHandler:v7];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_setStrokeStart:(double)a3
+- (void)_setStrokeStart:(double)start
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  if (vabdd_f64(a3, v4->_strokeStart) >= 0.00000011920929)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (vabdd_f64(start, selfCopy->_strokeStart) >= 0.00000011920929)
   {
-    [(MKMultiPolylineRenderer *)v4 willChangeValueForKey:@"strokeStart"];
-    strokeStart = v4->_strokeStart;
-    v4->_strokeStart = a3;
-    v6 = [(MKOverlayRenderer *)v4 _renderer];
-    [v6 setNeedsDisplayForReason:2];
+    [(MKMultiPolylineRenderer *)selfCopy willChangeValueForKey:@"strokeStart"];
+    strokeStart = selfCopy->_strokeStart;
+    selfCopy->_strokeStart = start;
+    _renderer = [(MKOverlayRenderer *)selfCopy _renderer];
+    [_renderer setNeedsDisplayForReason:2];
 
-    [(MKMultiPolylineRenderer *)v4 didChangeValueForKey:@"strokeStart"];
+    [(MKMultiPolylineRenderer *)selfCopy didChangeValueForKey:@"strokeStart"];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __43__MKMultiPolylineRenderer__setStrokeStart___block_invoke;
     v7[3] = &unk_1E76CD230;
-    v7[4] = v4;
+    v7[4] = selfCopy;
     *&v7[5] = strokeStart;
-    *&v7[6] = a3;
-    [(MKOverlayPathRenderer *)v4 _animateVectorGeometryIfNecessaryForKey:@"strokeStart" withStepHandler:v7];
+    *&v7[6] = start;
+    [(MKOverlayPathRenderer *)selfCopy _animateVectorGeometryIfNecessaryForKey:@"strokeStart" withStepHandler:v7];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (double)_strokeEnd
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  strokeEnd = v2->_strokeEnd;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  strokeEnd = selfCopy->_strokeEnd;
+  objc_sync_exit(selfCopy);
 
   return strokeEnd;
 }
 
 - (double)_strokeStart
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  strokeStart = v2->_strokeStart;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  strokeStart = selfCopy->_strokeStart;
+  objc_sync_exit(selfCopy);
 
   return strokeStart;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MKMultiPolylineRenderer *)self multiPolyline];
-  [v4 encodeObject:v5 forKey:@"MKMultiPolylinePolyline"];
+  coderCopy = coder;
+  multiPolyline = [(MKMultiPolylineRenderer *)self multiPolyline];
+  [coderCopy encodeObject:multiPolyline forKey:@"MKMultiPolylinePolyline"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_strokeStart];
-  [v4 encodeObject:v6 forKey:@"MKMultiPolylineRendererStrokeStart"];
+  [coderCopy encodeObject:v6 forKey:@"MKMultiPolylineRendererStrokeStart"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_strokeEnd];
-  [v4 encodeObject:v7 forKey:@"MKMultiPolylineRendererStrokeEnd"];
+  [coderCopy encodeObject:v7 forKey:@"MKMultiPolylineRendererStrokeEnd"];
 
   v8.receiver = self;
   v8.super_class = MKMultiPolylineRenderer;
-  [(MKOverlayPathRenderer *)&v8 _encodePropertiesWithCoder:v4];
+  [(MKOverlayPathRenderer *)&v8 _encodePropertiesWithCoder:coderCopy];
 }
 
-- (void)_decodePropertiesWithCoder:(id)a3
+- (void)_decodePropertiesWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MKMultiPolylineRendererStrokeStart"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MKMultiPolylineRendererStrokeStart"];
   v6 = v5;
   if (v5)
   {
@@ -625,7 +625,7 @@ void __42__MKMultiPolylineRenderer_setStrokeColor___block_invoke(uint64_t a1, fl
     self->_strokeStart = v7;
   }
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MKMultiPolylineRendererStrokeEnd"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MKMultiPolylineRendererStrokeEnd"];
   v9 = v8;
   if (v8)
   {
@@ -635,18 +635,18 @@ void __42__MKMultiPolylineRenderer_setStrokeColor___block_invoke(uint64_t a1, fl
 
   v11.receiver = self;
   v11.super_class = MKMultiPolylineRenderer;
-  [(MKOverlayPathRenderer *)&v11 _decodePropertiesWithCoder:v4];
+  [(MKOverlayPathRenderer *)&v11 _decodePropertiesWithCoder:coderCopy];
 }
 
-- (MKMultiPolylineRenderer)initWithCoder:(id)a3
+- (MKMultiPolylineRenderer)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MKMultiPolylinePolyline"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MKMultiPolylinePolyline"];
   v6 = [(MKMultiPolylineRenderer *)self initWithMultiPolyline:v5];
   v7 = v6;
   if (v6)
   {
-    [(MKMultiPolylineRenderer *)v6 _decodePropertiesWithCoder:v4];
+    [(MKMultiPolylineRenderer *)v6 _decodePropertiesWithCoder:coderCopy];
   }
 
   return v7;

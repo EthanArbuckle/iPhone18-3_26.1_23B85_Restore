@@ -1,5 +1,5 @@
 @interface TUCall
-- (BOOL)canDisplayAlertUI:(BOOL)a3;
+- (BOOL)canDisplayAlertUI:(BOOL)i;
 - (BOOL)carrierAllowsReportVoiceCall;
 - (BOOL)isBranded;
 - (BOOL)isCallbackAllowed;
@@ -12,25 +12,25 @@
 
 @implementation TUCall
 
-- (BOOL)canDisplayAlertUI:(BOOL)a3
+- (BOOL)canDisplayAlertUI:(BOOL)i
 {
-  v3 = a3;
-  v4 = self;
-  LOBYTE(v3) = sub_100005014(v3);
+  iCopy = i;
+  selfCopy = self;
+  LOBYTE(iCopy) = sub_100005014(iCopy);
 
-  return v3 & 1;
+  return iCopy & 1;
 }
 
 - (BOOL)isBranded
 {
-  v3 = [(TUCall *)self imageURL];
-  if (v3)
+  imageURL = [(TUCall *)self imageURL];
+  if (imageURL)
   {
-    v4 = [(TUCall *)self localizedLabel];
-    if (v4)
+    localizedLabel = [(TUCall *)self localizedLabel];
+    if (localizedLabel)
     {
-      v5 = [(TUCall *)self callDirectoryName];
-      v6 = v5 == 0;
+      callDirectoryName = [(TUCall *)self callDirectoryName];
+      v6 = callDirectoryName == 0;
     }
 
     else
@@ -63,9 +63,9 @@ LABEL_13:
 
   else
   {
-    v5 = [(TUCall *)self handle];
-    v6 = [v5 value];
-    v7 = [v6 length];
+    handle = [(TUCall *)self handle];
+    value = [handle value];
+    v7 = [value length];
 
     if (v7)
     {
@@ -98,9 +98,9 @@ LABEL_13:
           }
 
           v9 = +[TUCallCenter sharedInstance];
-          v10 = [v9 isAmbiguous];
+          isAmbiguous = [v9 isAmbiguous];
 
-          if (v10)
+          if (isAmbiguous)
           {
             v3 = sub_100004F84();
             if (!os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -114,9 +114,9 @@ LABEL_13:
           }
 
           v11 = +[PHInCallUtilities sharedInstance];
-          v12 = [v11 isSetupAssistantRunning];
+          isSetupAssistantRunning = [v11 isSetupAssistantRunning];
 
-          if (v12)
+          if (isSetupAssistantRunning)
           {
             v3 = sub_100004F84();
             if (!os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -130,9 +130,9 @@ LABEL_13:
           }
 
           v13 = +[PHInCallUtilities sharedInstance];
-          v14 = [v13 isInLostMode];
+          isInLostMode = [v13 isInLostMode];
 
-          if (v14)
+          if (isInLostMode)
           {
             v3 = sub_100004F84();
             if (!os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -146,9 +146,9 @@ LABEL_13:
           }
 
           v15 = +[PHInCallUtilities sharedInstance];
-          v16 = [v15 canSendText];
+          canSendText = [v15 canSendText];
 
-          if ((v16 & 1) == 0)
+          if ((canSendText & 1) == 0)
           {
             v3 = sub_100004F84();
             if (!os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -162,9 +162,9 @@ LABEL_13:
           }
 
           v17 = +[PHInCallUtilities sharedInstance];
-          v18 = [v17 isSMSRestricted];
+          isSMSRestricted = [v17 isSMSRestricted];
 
-          if (v18)
+          if (isSMSRestricted)
           {
             v3 = sub_100004F84();
             if (!os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -183,9 +183,9 @@ LABEL_13:
           }
 
           v19 = +[PHInCallUtilities sharedInstance];
-          v20 = [v19 isLockScreenMessagingAllowed];
+          isLockScreenMessagingAllowed = [v19 isLockScreenMessagingAllowed];
 
-          if (v20)
+          if (isLockScreenMessagingAllowed)
           {
             return 1;
           }
@@ -231,9 +231,9 @@ LABEL_14:
 
 - (BOOL)isCallbackAllowed
 {
-  v2 = [(TUCall *)self handle];
-  v3 = [v2 value];
-  v4 = [v3 length];
+  handle = [(TUCall *)self handle];
+  value = [handle value];
+  v4 = [value length];
 
   if (v4)
   {
@@ -262,9 +262,9 @@ LABEL_25:
 
   else
   {
-    v5 = [(TUCall *)self handle];
-    v6 = [v5 value];
-    v7 = [v6 length];
+    handle = [(TUCall *)self handle];
+    value = [handle value];
+    v7 = [value length];
 
     if (v7)
     {
@@ -293,9 +293,9 @@ LABEL_25:
       else
       {
         v8 = +[TUCallCenter sharedInstance];
-        v9 = [v8 isAmbiguous];
+        isAmbiguous = [v8 isAmbiguous];
 
-        if (v9)
+        if (isAmbiguous)
         {
           v3 = sub_100004F84();
           if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -309,9 +309,9 @@ LABEL_25:
         else
         {
           v10 = +[PHInCallUtilities sharedInstance];
-          v11 = [v10 isSetupAssistantRunning];
+          isSetupAssistantRunning = [v10 isSetupAssistantRunning];
 
-          if (v11)
+          if (isSetupAssistantRunning)
           {
             v3 = sub_100004F84();
             if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -325,9 +325,9 @@ LABEL_25:
           else
           {
             v12 = +[PHInCallUtilities sharedInstance];
-            v13 = [v12 isInLostMode];
+            isInLostMode = [v12 isInLostMode];
 
-            if (v13)
+            if (isInLostMode)
             {
               v3 = sub_100004F84();
               if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -341,9 +341,9 @@ LABEL_25:
             else
             {
               v14 = [LSApplicationProxy applicationProxyForIdentifier:@"com.apple.reminders"];
-              v15 = [v14 isRemovedSystemApp];
+              isRemovedSystemApp = [v14 isRemovedSystemApp];
 
-              if (!v15)
+              if (!isRemovedSystemApp)
               {
                 return 1;
               }
@@ -378,8 +378,8 @@ LABEL_25:
 
 - (BOOL)isThumper
 {
-  v3 = [(TUCall *)self provider];
-  if ([v3 isTelephonyProvider] && -[TUCall isHostedOnCurrentDevice](self, "isHostedOnCurrentDevice") && -[TUCall isEndpointOnCurrentDevice](self, "isEndpointOnCurrentDevice"))
+  provider = [(TUCall *)self provider];
+  if ([provider isTelephonyProvider] && -[TUCall isHostedOnCurrentDevice](self, "isHostedOnCurrentDevice") && -[TUCall isEndpointOnCurrentDevice](self, "isEndpointOnCurrentDevice"))
   {
     v4 = +[TUCallCapabilities supportsPrimaryCalling]^ 1;
   }
@@ -394,7 +394,7 @@ LABEL_25:
 
 - (BOOL)isSOSOrFakeSOS
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10015631C();
 
   return v3 & 1;
@@ -402,7 +402,7 @@ LABEL_25:
 
 - (BOOL)carrierAllowsReportVoiceCall
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10016B2DC();
 
   return v3 & 1;
@@ -410,7 +410,7 @@ LABEL_25:
 
 - (NSString)carrierName
 {
-  v2 = self;
+  selfCopy = self;
   sub_10016B410();
 
   v3 = String._bridgeToObjectiveC()();

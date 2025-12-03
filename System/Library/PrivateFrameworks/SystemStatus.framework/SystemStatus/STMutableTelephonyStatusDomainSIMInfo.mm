@@ -1,172 +1,172 @@
 @interface STMutableTelephonyStatusDomainSIMInfo
-- (BOOL)applyDiff:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setBootstrap:(BOOL)a3;
-- (void)setCallForwardingEnabled:(BOOL)a3;
-- (void)setCellularServiceState:(unint64_t)a3;
-- (void)setDataNetworkType:(unint64_t)a3;
-- (void)setLabel:(id)a3;
-- (void)setMaxSignalStrengthBars:(unint64_t)a3;
-- (void)setPreferredForDataConnections:(BOOL)a3;
-- (void)setProvidingDataConnection:(BOOL)a3;
-- (void)setRegisteredWithoutCellular:(BOOL)a3;
-- (void)setSIMPresent:(BOOL)a3;
-- (void)setSecondaryServiceDescription:(id)a3;
-- (void)setServiceDescription:(id)a3;
-- (void)setServiceState:(unint64_t)a3;
-- (void)setShortLabel:(id)a3;
-- (void)setSignalStrengthBars:(unint64_t)a3;
+- (BOOL)applyDiff:(id)diff;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setBootstrap:(BOOL)bootstrap;
+- (void)setCallForwardingEnabled:(BOOL)enabled;
+- (void)setCellularServiceState:(unint64_t)state;
+- (void)setDataNetworkType:(unint64_t)type;
+- (void)setLabel:(id)label;
+- (void)setMaxSignalStrengthBars:(unint64_t)bars;
+- (void)setPreferredForDataConnections:(BOOL)connections;
+- (void)setProvidingDataConnection:(BOOL)connection;
+- (void)setRegisteredWithoutCellular:(BOOL)cellular;
+- (void)setSIMPresent:(BOOL)present;
+- (void)setSecondaryServiceDescription:(id)description;
+- (void)setServiceDescription:(id)description;
+- (void)setServiceState:(unint64_t)state;
+- (void)setShortLabel:(id)label;
+- (void)setSignalStrengthBars:(unint64_t)bars;
 @end
 
 @implementation STMutableTelephonyStatusDomainSIMInfo
 
-- (void)setSIMPresent:(BOOL)a3
+- (void)setSIMPresent:(BOOL)present
 {
-  if (self->super._SIMPresent != a3)
+  if (self->super._SIMPresent != present)
   {
-    self->super._SIMPresent = a3;
+    self->super._SIMPresent = present;
   }
 }
 
-- (void)setBootstrap:(BOOL)a3
+- (void)setBootstrap:(BOOL)bootstrap
 {
-  if (self->super._bootstrap != a3)
+  if (self->super._bootstrap != bootstrap)
   {
-    self->super._bootstrap = a3;
+    self->super._bootstrap = bootstrap;
   }
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v6 = a3;
+  labelCopy = label;
   if (![(NSString *)self->super._label isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [labelCopy copy];
     label = self->super._label;
     self->super._label = v4;
   }
 }
 
-- (void)setShortLabel:(id)a3
+- (void)setShortLabel:(id)label
 {
-  v6 = a3;
+  labelCopy = label;
   if (![(NSString *)self->super._shortLabel isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [labelCopy copy];
     shortLabel = self->super._shortLabel;
     self->super._shortLabel = v4;
   }
 }
 
-- (void)setSignalStrengthBars:(unint64_t)a3
+- (void)setSignalStrengthBars:(unint64_t)bars
 {
-  if (self->super._signalStrengthBars != a3)
+  if (self->super._signalStrengthBars != bars)
   {
-    self->super._signalStrengthBars = a3;
+    self->super._signalStrengthBars = bars;
   }
 }
 
-- (void)setMaxSignalStrengthBars:(unint64_t)a3
+- (void)setMaxSignalStrengthBars:(unint64_t)bars
 {
-  if (self->super._maxSignalStrengthBars != a3)
+  if (self->super._maxSignalStrengthBars != bars)
   {
-    self->super._maxSignalStrengthBars = a3;
+    self->super._maxSignalStrengthBars = bars;
   }
 }
 
-- (void)setServiceState:(unint64_t)a3
+- (void)setServiceState:(unint64_t)state
 {
-  if (self->super._serviceState != a3)
+  if (self->super._serviceState != state)
   {
-    self->super._serviceState = a3;
+    self->super._serviceState = state;
   }
 }
 
-- (void)setCellularServiceState:(unint64_t)a3
+- (void)setCellularServiceState:(unint64_t)state
 {
-  if (self->super._cellularServiceState != a3)
+  if (self->super._cellularServiceState != state)
   {
-    self->super._cellularServiceState = a3;
+    self->super._cellularServiceState = state;
   }
 }
 
-- (void)setServiceDescription:(id)a3
+- (void)setServiceDescription:(id)description
 {
-  v6 = a3;
+  descriptionCopy = description;
   if (![(NSString *)self->super._serviceDescription isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [descriptionCopy copy];
     serviceDescription = self->super._serviceDescription;
     self->super._serviceDescription = v4;
   }
 }
 
-- (void)setSecondaryServiceDescription:(id)a3
+- (void)setSecondaryServiceDescription:(id)description
 {
-  v6 = a3;
+  descriptionCopy = description;
   if (![(NSString *)self->super._secondaryServiceDescription isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [descriptionCopy copy];
     secondaryServiceDescription = self->super._secondaryServiceDescription;
     self->super._secondaryServiceDescription = v4;
   }
 }
 
-- (void)setDataNetworkType:(unint64_t)a3
+- (void)setDataNetworkType:(unint64_t)type
 {
-  if (self->super._dataNetworkType != a3)
+  if (self->super._dataNetworkType != type)
   {
-    self->super._dataNetworkType = a3;
+    self->super._dataNetworkType = type;
   }
 }
 
-- (void)setProvidingDataConnection:(BOOL)a3
+- (void)setProvidingDataConnection:(BOOL)connection
 {
-  if (self->super._providingDataConnection != a3)
+  if (self->super._providingDataConnection != connection)
   {
-    self->super._providingDataConnection = a3;
+    self->super._providingDataConnection = connection;
   }
 }
 
-- (void)setPreferredForDataConnections:(BOOL)a3
+- (void)setPreferredForDataConnections:(BOOL)connections
 {
-  if (self->super._preferredForDataConnections != a3)
+  if (self->super._preferredForDataConnections != connections)
   {
-    self->super._preferredForDataConnections = a3;
+    self->super._preferredForDataConnections = connections;
   }
 }
 
-- (void)setRegisteredWithoutCellular:(BOOL)a3
+- (void)setRegisteredWithoutCellular:(BOOL)cellular
 {
-  if (self->super._registeredWithoutCellular != a3)
+  if (self->super._registeredWithoutCellular != cellular)
   {
-    self->super._registeredWithoutCellular = a3;
+    self->super._registeredWithoutCellular = cellular;
   }
 }
 
-- (void)setCallForwardingEnabled:(BOOL)a3
+- (void)setCallForwardingEnabled:(BOOL)enabled
 {
-  if (self->super._callForwardingEnabled != a3)
+  if (self->super._callForwardingEnabled != enabled)
   {
-    self->super._callForwardingEnabled = a3;
+    self->super._callForwardingEnabled = enabled;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [STTelephonyStatusDomainSIMInfo allocWithZone:a3];
+  v4 = [STTelephonyStatusDomainSIMInfo allocWithZone:zone];
 
   return [(STTelephonyStatusDomainSIMInfo *)v4 initWithSIMInfo:?];
 }
 
-- (BOOL)applyDiff:(id)a3
+- (BOOL)applyDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    [v4 applyToMutableInfo:self];
+    [diffCopy applyToMutableInfo:self];
   }
 
   return isKindOfClass & 1;

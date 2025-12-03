@@ -1,7 +1,7 @@
 @interface GPUPerformanceStateDefault
-+ (BOOL)supportsConsistentStateDevice:(id)a3;
++ (BOOL)supportsConsistentStateDevice:(id)device;
 + (id)consistentStateDevice;
-+ (id)perfLevelEnumToGPUStateStringKey:(unsigned int)a3;
++ (id)perfLevelEnumToGPUStateStringKey:(unsigned int)key;
 + (unsigned)ioAccelerator;
 - (BOOL)_acquireLock;
 - (BOOL)_setConsistentPerformanceLevel;
@@ -9,11 +9,11 @@
 - (BOOL)isDestructive;
 - (BOOL)isInternalOnly;
 - (BOOL)setUp;
-- (GPUPerformanceStateDefault)initWithGPUPerformanceState:(unsigned int)a3;
+- (GPUPerformanceStateDefault)initWithGPUPerformanceState:(unsigned int)state;
 - (id)identifierName;
 - (id)userFriendlyName;
 - (void)_cleanup;
-- (void)_dumpCurrentState:(id)a3;
+- (void)_dumpCurrentState:(id)state;
 - (void)_setConsistentPerformanceLevel;
 - (void)setUp;
 - (void)tearDown;
@@ -36,10 +36,10 @@
   return result;
 }
 
-+ (BOOL)supportsConsistentStateDevice:(id)a3
++ (BOOL)supportsConsistentStateDevice:(id)device
 {
-  v3 = a3;
-  if (v3 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0)
+  deviceCopy = device;
+  if (deviceCopy && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v4 = objc_opt_respondsToSelector();
   }
@@ -68,11 +68,11 @@
   return v3;
 }
 
-+ (id)perfLevelEnumToGPUStateStringKey:(unsigned int)a3
++ (id)perfLevelEnumToGPUStateStringKey:(unsigned int)key
 {
-  if (a3 < 4)
+  if (key < 4)
   {
-    return off_278DF81F8[a3];
+    return off_278DF81F8[key];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
@@ -152,7 +152,7 @@
   return 1;
 }
 
-- (GPUPerformanceStateDefault)initWithGPUPerformanceState:(unsigned int)a3
+- (GPUPerformanceStateDefault)initWithGPUPerformanceState:(unsigned int)state
 {
   v13 = *MEMORY[0x277D85DE8];
   v10.receiver = self;
@@ -161,14 +161,14 @@
   v5 = v4;
   if (v4)
   {
-    if (!a3)
+    if (!state)
     {
       [GPUPerformanceStateDefault initWithGPUPerformanceState:];
     }
 
-    v4->_desiredGPUPerformanceState = a3;
+    v4->_desiredGPUPerformanceState = state;
     v4->_acceleratorService = +[GPUPerformanceStateDefault ioAccelerator];
-    v5->_performanceLevel = a3;
+    v5->_performanceLevel = state;
     v6 = objc_opt_new();
     applePMPPerfStateControl = v5->_applePMPPerfStateControl;
     v5->_applePMPPerfStateControl = v6;
@@ -176,7 +176,7 @@
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v12 = a3;
+      stateCopy = state;
       _os_log_impl(&dword_243E0F000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Set Performance State: %lu", buf, 0xCu);
     }
   }
@@ -250,7 +250,7 @@ LABEL_9:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v10 = 138412290;
-    v11 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_243E0F000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Starting Setup - %@ Condition", &v10, 0xCu);
   }
 
@@ -290,7 +290,7 @@ LABEL_13:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v10 = 138412290;
-    v11 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_243E0F000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Finished Setup - %@ Condition", &v10, 0xCu);
   }
 
@@ -308,7 +308,7 @@ LABEL_13:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v10 = 138412290;
-      v11 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_243E0F000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Unable to Setup PMP %@ Condition", &v10, 0xCu);
     }
   }
@@ -319,10 +319,10 @@ LABEL_14:
   return v7;
 }
 
-- (void)_dumpCurrentState:(id)a3
+- (void)_dumpCurrentState:(id)state
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   consistentDevice = self->_consistentDevice;
   if (consistentDevice)
   {
@@ -332,7 +332,7 @@ LABEL_14:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v11 = v4;
+        v11 = stateCopy;
         v12 = 2112;
         *v13 = v6;
         _os_log_impl(&dword_243E0F000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%@ Consistent Perf State Status: %@", buf, 0x16u);
@@ -356,7 +356,7 @@ LABEL_14:
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
           *buf = 138413058;
-          v11 = v4;
+          v11 = stateCopy;
           v12 = 1024;
           *v13 = BYTE2(outputStruct);
           *&v13[4] = 1024;
@@ -402,7 +402,7 @@ LABEL_14:
 - (void)_setConsistentPerformanceLevel
 {
   v8 = *MEMORY[0x277D85DE8];
-  v7 = *a1;
+  v7 = *self;
   OUTLINED_FUNCTION_0_3();
   _os_log_fault_impl(v1, v2, v3, v4, v5, 8u);
   v6 = *MEMORY[0x277D85DE8];

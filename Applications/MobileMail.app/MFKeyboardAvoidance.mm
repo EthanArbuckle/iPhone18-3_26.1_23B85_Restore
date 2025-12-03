@@ -1,19 +1,19 @@
 @interface MFKeyboardAvoidance
 + (id)sharedController;
-- (CGRect)_frameInViewUsingForView:(id)a3 keyboardInfo:(id)a4;
-- (CGRect)_keyboardOverlapForView:(id)a3 usingKeyboardInfo:(id)a4;
-- (double)_keyboardVerticalOverlapForView:(id)a3 usingKeyboardInfo:(id)a4;
+- (CGRect)_frameInViewUsingForView:(id)view keyboardInfo:(id)info;
+- (CGRect)_keyboardOverlapForView:(id)view usingKeyboardInfo:(id)info;
+- (double)_keyboardVerticalOverlapForView:(id)view usingKeyboardInfo:(id)info;
 - (id)_init;
-- (void)_adjustAvoidable:(id)a3 forAutomaticKeyboardInfo:(id)a4 animated:(BOOL)a5;
-- (void)_adjustAvoidablesForKeyboardInfo:(id)a3;
-- (void)_keyboardDidChangeFrame:(id)a3;
-- (void)_keyboardWillHide:(id)a3;
-- (void)_keyboardWillShow:(id)a3;
+- (void)_adjustAvoidable:(id)avoidable forAutomaticKeyboardInfo:(id)info animated:(BOOL)animated;
+- (void)_adjustAvoidablesForKeyboardInfo:(id)info;
+- (void)_keyboardDidChangeFrame:(id)frame;
+- (void)_keyboardWillHide:(id)hide;
+- (void)_keyboardWillShow:(id)show;
 - (void)_registerForKeyboardNotifications;
 - (void)_unregisterForKeyboardNotifications;
 - (void)dealloc;
-- (void)registerKeyboardAvoidable:(id)a3;
-- (void)unregisterKeyboardAvoidable:(id)a3;
+- (void)registerKeyboardAvoidable:(id)avoidable;
+- (void)unregisterKeyboardAvoidable:(id)avoidable;
 @end
 
 @implementation MFKeyboardAvoidance
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001CFC60;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD500 != -1)
   {
     dispatch_once(&qword_1006DD500, block);
@@ -50,9 +50,9 @@
   return [(MFKeyboardAvoidance *)&v3 init];
 }
 
-- (void)registerKeyboardAvoidable:(id)a3
+- (void)registerKeyboardAvoidable:(id)avoidable
 {
-  v4 = a3;
+  avoidableCopy = avoidable;
   if (!self->_keyboardAvoidables)
   {
     v5 = [[NSHashTable alloc] initWithOptions:5 capacity:1];
@@ -66,13 +66,13 @@
     *buf = 138543618;
     v18 = objc_opt_class();
     v19 = 2048;
-    v20 = v4;
+    v20 = avoidableCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "#keyboard registering keyboard avoidable <%{public}@:%p>", buf, 0x16u);
   }
 
-  [(NSHashTable *)self->_keyboardAvoidables addObject:v4];
-  v8 = [(NSHashTable *)self->_keyboardAvoidables allObjects];
-  if ([v8 count] == 1)
+  [(NSHashTable *)self->_keyboardAvoidables addObject:avoidableCopy];
+  allObjects = [(NSHashTable *)self->_keyboardAvoidables allObjects];
+  if ([allObjects count] == 1)
   {
     registeredForNotifications = self->_registeredForNotifications;
 
@@ -91,7 +91,7 @@
   v15[2] = sub_1001CFFF4;
   v15[3] = &unk_10064C660;
   v15[4] = self;
-  v10 = v4;
+  v10 = avoidableCopy;
   v16 = v10;
   v11 = objc_retainBlock(v15);
   v12 = [v10 transitionCoordinatorForKeyboardAvoidance:self];
@@ -111,21 +111,21 @@
   }
 }
 
-- (void)unregisterKeyboardAvoidable:(id)a3
+- (void)unregisterKeyboardAvoidable:(id)avoidable
 {
-  v4 = a3;
-  v5 = [v4 transitionCoordinatorForKeyboardAvoidance:self];
+  avoidableCopy = avoidable;
+  v5 = [avoidableCopy transitionCoordinatorForKeyboardAvoidance:self];
   v6 = MFLogGeneral();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
     v15 = objc_opt_class();
     v16 = 2048;
-    v17 = v4;
+    v17 = avoidableCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "#keyboard unregistering keyboard avoidable <%{public}@:%p>", buf, 0x16u);
   }
 
-  [(NSHashTable *)self->_keyboardAvoidables removeObject:v4];
+  [(NSHashTable *)self->_keyboardAvoidables removeObject:avoidableCopy];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1001D0254;
@@ -151,10 +151,10 @@
   }
 }
 
-- (double)_keyboardVerticalOverlapForView:(id)a3 usingKeyboardInfo:(id)a4
+- (double)_keyboardVerticalOverlapForView:(id)view usingKeyboardInfo:(id)info
 {
-  v6 = a3;
-  [(MFKeyboardAvoidance *)self _frameInViewUsingForView:v6 keyboardInfo:a4];
+  viewCopy = view;
+  [(MFKeyboardAvoidance *)self _frameInViewUsingForView:viewCopy keyboardInfo:info];
   x = v14.origin.x;
   y = v14.origin.y;
   width = v14.size.width;
@@ -162,7 +162,7 @@
   v11 = 0.0;
   if (!CGRectIsEmpty(v14))
   {
-    [v6 bounds];
+    [viewCopy bounds];
     MaxY = CGRectGetMaxY(v15);
     v16.origin.x = x;
     v16.origin.y = y;
@@ -174,11 +174,11 @@
   return v11;
 }
 
-- (CGRect)_keyboardOverlapForView:(id)a3 usingKeyboardInfo:(id)a4
+- (CGRect)_keyboardOverlapForView:(id)view usingKeyboardInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  [(MFKeyboardAvoidance *)self _frameInViewUsingForView:v6 keyboardInfo:v7];
+  viewCopy = view;
+  infoCopy = info;
+  [(MFKeyboardAvoidance *)self _frameInViewUsingForView:viewCopy keyboardInfo:infoCopy];
   x = v20.origin.x;
   y = v20.origin.y;
   width = v20.size.width;
@@ -193,7 +193,7 @@
 
   else
   {
-    [v6 bounds];
+    [viewCopy bounds];
     v24.origin.x = x;
     v24.origin.y = y;
     v24.size.width = width;
@@ -216,14 +216,14 @@
   return result;
 }
 
-- (CGRect)_frameInViewUsingForView:(id)a3 keyboardInfo:(id)a4
+- (CGRect)_frameInViewUsingForView:(id)view keyboardInfo:(id)info
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  viewCopy = view;
+  infoCopy = info;
+  v7 = infoCopy;
+  if (infoCopy)
   {
-    v8 = [v6 objectForKeyedSubscript:UIKeyboardFrameEndUserInfoKey];
+    v8 = [infoCopy objectForKeyedSubscript:UIKeyboardFrameEndUserInfoKey];
     [v8 CGRectValue];
     v10 = v9;
     v12 = v11;
@@ -233,17 +233,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = v5;
+      window = viewCopy;
     }
 
     else
     {
-      v17 = [v5 window];
+      window = [viewCopy window];
     }
 
-    v22 = v17;
-    [v17 convertRect:0 fromWindow:{v10, v12, v14, v16}];
-    [v5 convertRect:0 fromView:?];
+    v22 = window;
+    [window convertRect:0 fromWindow:{v10, v12, v14, v16}];
+    [viewCopy convertRect:0 fromView:?];
     x = v23;
     y = v24;
     width = v25;
@@ -288,15 +288,15 @@
   return result;
 }
 
-- (void)_adjustAvoidable:(id)a3 forAutomaticKeyboardInfo:(id)a4 animated:(BOOL)a5
+- (void)_adjustAvoidable:(id)avoidable forAutomaticKeyboardInfo:(id)info animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 viewForKeyboardAvoidance:self];
-  [(MFKeyboardAvoidance *)self _keyboardVerticalOverlapForView:v10 usingKeyboardInfo:v9];
+  animatedCopy = animated;
+  avoidableCopy = avoidable;
+  infoCopy = info;
+  v10 = [avoidableCopy viewForKeyboardAvoidance:self];
+  [(MFKeyboardAvoidance *)self _keyboardVerticalOverlapForView:v10 usingKeyboardInfo:infoCopy];
   v12 = v11;
-  [(MFKeyboardAvoidance *)self _keyboardOverlapForView:v10 usingKeyboardInfo:v9];
+  [(MFKeyboardAvoidance *)self _keyboardOverlapForView:v10 usingKeyboardInfo:infoCopy];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -305,22 +305,22 @@
   v28[1] = 3221225472;
   v28[2] = sub_1001D0934;
   v28[3] = &unk_100654228;
-  v21 = v8;
+  v21 = avoidableCopy;
   v31 = v12;
   v32 = v14;
   v33 = v16;
   v34 = v18;
   v35 = v20;
   v29 = v21;
-  v30 = self;
+  selfCopy = self;
   v22 = objc_retainBlock(v28);
-  v23 = [v9 objectForKeyedSubscript:UIKeyboardAnimationDurationUserInfoKey];
+  v23 = [infoCopy objectForKeyedSubscript:UIKeyboardAnimationDurationUserInfoKey];
   [v23 doubleValue];
   v25 = v24;
 
-  if (v5 && v25 > 0.0)
+  if (animatedCopy && v25 > 0.0)
   {
-    v26 = [v9 objectForKeyedSubscript:UIKeyboardAnimationCurveUserInfoKey];
+    v26 = [infoCopy objectForKeyedSubscript:UIKeyboardAnimationCurveUserInfoKey];
     v27 = [v26 integerValue] << 16;
 
     [UIView animateWithDuration:v27 delay:v22 options:0 animations:v25 completion:0.0];
@@ -332,14 +332,14 @@
   }
 }
 
-- (void)_adjustAvoidablesForKeyboardInfo:(id)a3
+- (void)_adjustAvoidablesForKeyboardInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = MFLogGeneral();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v19 = v4;
+    v19 = infoCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "#keyboard adjust avoidables for keyboard info: %{public}@", buf, 0xCu);
   }
 
@@ -365,7 +365,7 @@
         v10 = *(*(&v13 + 1) + 8 * v9);
         if (v10)
         {
-          [(MFKeyboardAvoidance *)self _adjustAvoidable:v10 forAutomaticKeyboardInfo:v4 animated:1, v13];
+          [(MFKeyboardAvoidance *)self _adjustAvoidable:v10 forAutomaticKeyboardInfo:infoCopy animated:1, v13];
         }
 
         v9 = v9 + 1;
@@ -378,61 +378,61 @@
     while (v7);
   }
 
-  v11 = [v4 copy];
+  v11 = [infoCopy copy];
   currentKeyboardInfo = self->_currentKeyboardInfo;
   self->_currentKeyboardInfo = v11;
 }
 
-- (void)_keyboardWillHide:(id)a3
+- (void)_keyboardWillHide:(id)hide
 {
-  v4 = a3;
+  hideCopy = hide;
   v5 = MFLogGeneral();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 userInfo];
+    userInfo = [hideCopy userInfo];
     *buf = 138543362;
-    v11 = v6;
+    v11 = userInfo;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "#keyboard keyboard will hide: %{public}@", buf, 0xCu);
   }
 
-  v7 = [v4 userInfo];
+  userInfo2 = [hideCopy userInfo];
   v9 = NSRunLoopCommonModes;
   v8 = [NSArray arrayWithObjects:&v9 count:1];
-  [(MFKeyboardAvoidance *)self performSelector:"_adjustAvoidablesForKeyboardInfo:" withObject:v7 afterDelay:v8 inModes:0.0];
+  [(MFKeyboardAvoidance *)self performSelector:"_adjustAvoidablesForKeyboardInfo:" withObject:userInfo2 afterDelay:v8 inModes:0.0];
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
-  v4 = a3;
+  showCopy = show;
   v5 = MFLogGeneral();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 userInfo];
+    userInfo = [showCopy userInfo];
     v8 = 138543362;
-    v9 = v6;
+    v9 = userInfo;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "#keyboard keyboard will show: %{public}@", &v8, 0xCu);
   }
 
-  v7 = [v4 userInfo];
-  [(MFKeyboardAvoidance *)self _adjustAvoidablesForKeyboardInfo:v7];
+  userInfo2 = [showCopy userInfo];
+  [(MFKeyboardAvoidance *)self _adjustAvoidablesForKeyboardInfo:userInfo2];
 
   [objc_opt_class() cancelPreviousPerformRequestsWithTarget:self selector:"_adjustAvoidablesForKeyboardInfo:" object:0];
 }
 
-- (void)_keyboardDidChangeFrame:(id)a3
+- (void)_keyboardDidChangeFrame:(id)frame
 {
-  v4 = a3;
+  frameCopy = frame;
   v5 = MFLogGeneral();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 userInfo];
+    userInfo = [frameCopy userInfo];
     v8 = 138543362;
-    v9 = v6;
+    v9 = userInfo;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "#keyboard keyboard did change frame: %{public}@", &v8, 0xCu);
   }
 
-  v7 = [v4 userInfo];
-  [(MFKeyboardAvoidance *)self _adjustAvoidablesForKeyboardInfo:v7];
+  userInfo2 = [frameCopy userInfo];
+  [(MFKeyboardAvoidance *)self _adjustAvoidablesForKeyboardInfo:userInfo2];
 
   [objc_opt_class() cancelPreviousPerformRequestsWithTarget:self selector:"_adjustAvoidablesForKeyboardInfo:" object:0];
 }

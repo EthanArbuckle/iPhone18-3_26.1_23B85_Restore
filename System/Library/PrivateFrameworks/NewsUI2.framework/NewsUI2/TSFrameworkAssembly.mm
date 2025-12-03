@@ -1,11 +1,11 @@
 @interface TSFrameworkAssembly
 - (TSFrameworkAssembly)init;
-- (TSFrameworkAssembly)initWithNewsAppConfigurationManager:(id)a3;
+- (TSFrameworkAssembly)initWithNewsAppConfigurationManager:(id)manager;
 @end
 
 @implementation TSFrameworkAssembly
 
-- (TSFrameworkAssembly)initWithNewsAppConfigurationManager:(id)a3
+- (TSFrameworkAssembly)initWithNewsAppConfigurationManager:(id)manager
 {
   ObjectType = swift_getObjectType();
   v5 = objc_allocWithZone(type metadata accessor for FeatureAvailabilityProvider());

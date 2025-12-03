@@ -1,12 +1,12 @@
 @interface CSLPRFDepthAutoLaunchAppSettingLighthouseImpl
-+ (id)dictionaryForSettings:(id)a3;
-+ (id)settingsForDictionary:(id)a3;
++ (id)dictionaryForSettings:(id)settings;
++ (id)settingsForDictionary:(id)dictionary;
 - (CSLPRFDepthAutoLaunchAppSettingLighthouseImpl)init;
 - (CSLPRFDepthAutoLaunchSettingCoordinatorImplDelegate)delegate;
 - (CSLPRFDepthAutoLaunchSettings)settings;
-- (void)_updateWithDictionary:(id)a3;
-- (void)applySettings:(id)a3;
-- (void)twoWaySyncSettingDidUpdate:(id)a3;
+- (void)_updateWithDictionary:(id)dictionary;
+- (void)applySettings:(id)settings;
+- (void)twoWaySyncSettingDidUpdate:(id)update;
 @end
 
 @implementation CSLPRFDepthAutoLaunchAppSettingLighthouseImpl
@@ -18,17 +18,17 @@
   return WeakRetained;
 }
 
-- (void)twoWaySyncSettingDidUpdate:(id)a3
+- (void)twoWaySyncSettingDidUpdate:(id)update
 {
-  v4 = [a3 value];
-  [(CSLPRFDepthAutoLaunchAppSettingLighthouseImpl *)self _updateWithDictionary:v4];
+  value = [update value];
+  [(CSLPRFDepthAutoLaunchAppSettingLighthouseImpl *)self _updateWithDictionary:value];
 }
 
-- (void)_updateWithDictionary:(id)a3
+- (void)_updateWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [CSLPRFDepthAutoLaunchAppSettingLighthouseImpl settingsForDictionary:v4];
+  v8 = [CSLPRFDepthAutoLaunchAppSettingLighthouseImpl settingsForDictionary:dictionaryCopy];
 
   if ([v8 isEqual:self->_settings])
   {
@@ -42,23 +42,23 @@
     self->_settings = v5;
 
     os_unfair_lock_unlock(&self->_lock);
-    v7 = [(CSLPRFDepthAutoLaunchAppSettingLighthouseImpl *)self delegate];
-    [v7 autoLaunchSettingCoordinator:self didUpdateSettings:v8];
+    delegate = [(CSLPRFDepthAutoLaunchAppSettingLighthouseImpl *)self delegate];
+    [delegate autoLaunchSettingCoordinator:self didUpdateSettings:v8];
   }
 }
 
-- (void)applySettings:(id)a3
+- (void)applySettings:(id)settings
 {
-  v8 = a3;
+  settingsCopy = settings;
   os_unfair_lock_lock(&self->_lock);
-  if ([v8 isEqual:self->_settings])
+  if ([settingsCopy isEqual:self->_settings])
   {
     os_unfair_lock_unlock(&self->_lock);
   }
 
   else
   {
-    v4 = [v8 copy];
+    v4 = [settingsCopy copy];
     settings = self->_settings;
     self->_settings = v4;
 
@@ -66,8 +66,8 @@
     os_unfair_lock_unlock(&self->_lock);
     if (v6)
     {
-      v7 = [(CSLPRFDepthAutoLaunchAppSettingLighthouseImpl *)self underlyingSetting];
-      [v7 setValue:v6];
+      underlyingSetting = [(CSLPRFDepthAutoLaunchAppSettingLighthouseImpl *)self underlyingSetting];
+      [underlyingSetting setValue:v6];
     }
   }
 }
@@ -93,18 +93,18 @@
     v2->_underlyingSetting = v3;
 
     [(CSLPRFTwoWaySyncSetting *)v2->_underlyingSetting setDelegate:v2];
-    v5 = [(CSLPRFTwoWaySyncSetting *)v2->_underlyingSetting value];
-    [(CSLPRFDepthAutoLaunchAppSettingLighthouseImpl *)v2 _updateWithDictionary:v5];
+    value = [(CSLPRFTwoWaySyncSetting *)v2->_underlyingSetting value];
+    [(CSLPRFDepthAutoLaunchAppSettingLighthouseImpl *)v2 _updateWithDictionary:value];
   }
 
   return v2;
 }
 
-+ (id)settingsForDictionary:(id)a3
++ (id)settingsForDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_alloc_init(CSLPRFMutableDepthAutoLaunchSettings);
-  v5 = [v3 objectForKeyedSubscript:@"bundleID"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"bundleID"];
   v6 = objc_opt_class();
   v7 = v5;
   if (v6)
@@ -128,7 +128,7 @@
   v9 = v8;
 
   [(CSLPRFMutableDepthAutoLaunchSettings *)v4 setBundleID:v9];
-  v10 = [v3 objectForKeyedSubscript:@"behavior"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"behavior"];
   v11 = objc_opt_class();
   v12 = v10;
   if (v11)
@@ -151,13 +151,13 @@
 
   v14 = v13;
 
-  v15 = [v14 integerValue];
-  if (v15 <= 2)
+  integerValue = [v14 integerValue];
+  if (integerValue <= 2)
   {
-    [(CSLPRFMutableDepthAutoLaunchSettings *)v4 setAutoLaunchBehavior:v15];
+    [(CSLPRFMutableDepthAutoLaunchSettings *)v4 setAutoLaunchBehavior:integerValue];
   }
 
-  v16 = [v3 objectForKeyedSubscript:@"changeSource"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"changeSource"];
   v17 = objc_opt_class();
   v18 = v16;
   if (v17)
@@ -180,9 +180,9 @@
 
   v20 = v19;
 
-  v21 = [v20 integerValue];
-  [(CSLPRFMutableDepthAutoLaunchSettings *)v4 setChangeSource:v21];
-  v22 = [v3 objectForKeyedSubscript:@"threshold"];
+  integerValue2 = [v20 integerValue];
+  [(CSLPRFMutableDepthAutoLaunchSettings *)v4 setChangeSource:integerValue2];
+  v22 = [dictionaryCopy objectForKeyedSubscript:@"threshold"];
   v23 = objc_opt_class();
   v24 = v22;
   if (v23)
@@ -205,37 +205,37 @@
 
   v26 = v25;
 
-  v27 = [v26 integerValue];
-  if (v27 <= 1)
+  integerValue3 = [v26 integerValue];
+  if (integerValue3 <= 1)
   {
-    [(CSLPRFMutableDepthAutoLaunchSettings *)v4 setThreshold:v27];
+    [(CSLPRFMutableDepthAutoLaunchSettings *)v4 setThreshold:integerValue3];
   }
 
   return v4;
 }
 
-+ (id)dictionaryForSettings:(id)a3
++ (id)dictionaryForSettings:(id)settings
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
-  v5 = [v3 dictionary];
-  [v5 setObject:&unk_284025360 forKeyedSubscript:@"version"];
-  v6 = [v4 bundleID];
-  [v5 setObject:v6 forKeyedSubscript:@"bundleID"];
+  settingsCopy = settings;
+  dictionary = [v3 dictionary];
+  [dictionary setObject:&unk_284025360 forKeyedSubscript:@"version"];
+  bundleID = [settingsCopy bundleID];
+  [dictionary setObject:bundleID forKeyedSubscript:@"bundleID"];
 
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "autoLaunchBehavior")}];
-  [v5 setObject:v7 forKeyedSubscript:@"behavior"];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(settingsCopy, "autoLaunchBehavior")}];
+  [dictionary setObject:v7 forKeyedSubscript:@"behavior"];
 
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "changeSource")}];
-  [v5 setObject:v8 forKeyedSubscript:@"changeSource"];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(settingsCopy, "changeSource")}];
+  [dictionary setObject:v8 forKeyedSubscript:@"changeSource"];
 
   v9 = MEMORY[0x277CCABB0];
-  v10 = [v4 threshold];
+  threshold = [settingsCopy threshold];
 
-  v11 = [v9 numberWithInteger:v10];
-  [v5 setObject:v11 forKeyedSubscript:@"threshold"];
+  v11 = [v9 numberWithInteger:threshold];
+  [dictionary setObject:v11 forKeyedSubscript:@"threshold"];
 
-  return v5;
+  return dictionary;
 }
 
 @end

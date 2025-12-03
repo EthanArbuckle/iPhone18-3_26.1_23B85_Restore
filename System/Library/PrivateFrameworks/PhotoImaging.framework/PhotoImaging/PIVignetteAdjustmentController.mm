@@ -2,64 +2,64 @@
 - (double)falloff;
 - (double)intensity;
 - (double)radius;
-- (void)setFalloff:(double)a3;
-- (void)setIntensity:(double)a3;
-- (void)setRadius:(double)a3;
+- (void)setFalloff:(double)falloff;
+- (void)setIntensity:(double)intensity;
+- (void)setRadius:(double)radius;
 @end
 
 @implementation PIVignetteAdjustmentController
 
-- (void)setFalloff:(double)a3
+- (void)setFalloff:(double)falloff
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v4 = [(PIAdjustmentController *)self adjustment];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:falloff];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v5 = +[PIVignetteAdjustmentController falloffKey];
-  [v4 setObject:v6 forKeyedSubscript:v5];
+  [adjustment setObject:v6 forKeyedSubscript:v5];
 }
 
 - (double)falloff
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v3 = +[PIVignetteAdjustmentController falloffKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  v4 = [adjustment objectForKeyedSubscript:v3];
   [v4 doubleValue];
   v6 = v5;
 
   return v6;
 }
 
-- (void)setRadius:(double)a3
+- (void)setRadius:(double)radius
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v4 = [(PIAdjustmentController *)self adjustment];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:radius];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v5 = +[PIVignetteAdjustmentController radiusKey];
-  [v4 setObject:v6 forKeyedSubscript:v5];
+  [adjustment setObject:v6 forKeyedSubscript:v5];
 }
 
 - (double)radius
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v3 = +[PIVignetteAdjustmentController radiusKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  v4 = [adjustment objectForKeyedSubscript:v3];
   [v4 doubleValue];
   v6 = v5;
 
   return v6;
 }
 
-- (void)setIntensity:(double)a3
+- (void)setIntensity:(double)intensity
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v4 = [(PIAdjustmentController *)self adjustment];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:intensity];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v5 = +[PIVignetteAdjustmentController intensityKey];
-  [v4 setObject:v6 forKeyedSubscript:v5];
+  [adjustment setObject:v6 forKeyedSubscript:v5];
 }
 
 - (double)intensity
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v3 = +[PIVignetteAdjustmentController intensityKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  v4 = [adjustment objectForKeyedSubscript:v3];
   [v4 doubleValue];
   v6 = v5;
 

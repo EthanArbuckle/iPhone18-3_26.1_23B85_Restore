@@ -1,9 +1,9 @@
 @interface SBChronoApplicationProcessStateObserver
 + (SBChronoApplicationProcessStateObserver)sharedInstance;
-- (BOOL)_shouldInformChronoForApplication:(id)a3;
+- (BOOL)_shouldInformChronoForApplication:(id)application;
 - (SBChronoApplicationProcessStateObserver)init;
-- (void)_queue_handleApplicationProcessStateDidChangeIfNecessary:(id)a3;
-- (void)applicationProcessStateDidChange:(id)a3;
+- (void)_queue_handleApplicationProcessStateDidChangeIfNecessary:(id)necessary;
+- (void)applicationProcessStateDidChange:(id)change;
 @end
 
 @implementation SBChronoApplicationProcessStateObserver
@@ -35,9 +35,9 @@ void __57__SBChronoApplicationProcessStateObserver_sharedInstance__block_invoke(
   if (v2)
   {
     v3 = objc_alloc(MEMORY[0x277CFA3C0]);
-    v4 = [MEMORY[0x277CFA390] visible];
-    v5 = [MEMORY[0x277CFA218] visible];
-    v6 = [v3 initWithWidgetsPredicate:v4 controlsPredicate:v5];
+    visible = [MEMORY[0x277CFA390] visible];
+    visible2 = [MEMORY[0x277CFA218] visible];
+    v6 = [v3 initWithWidgetsPredicate:visible controlsPredicate:visible2];
 
     v7 = [objc_alloc(MEMORY[0x277CFA3B8]) initWithOptions:v6];
     extensionProvider = v2->_extensionProvider;
@@ -69,69 +69,69 @@ void __57__SBChronoApplicationProcessStateObserver_sharedInstance__block_invoke(
   return v2;
 }
 
-- (void)applicationProcessStateDidChange:(id)a3
+- (void)applicationProcessStateDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __76__SBChronoApplicationProcessStateObserver_applicationProcessStateDidChange___block_invoke;
   v7[3] = &unk_2783A92D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_queue_handleApplicationProcessStateDidChangeIfNecessary:(id)a3
+- (void)_queue_handleApplicationProcessStateDidChangeIfNecessary:(id)necessary
 {
-  v4 = a3;
-  v12 = [v4 object];
-  v5 = [v4 userInfo];
+  necessaryCopy = necessary;
+  object = [necessaryCopy object];
+  userInfo = [necessaryCopy userInfo];
 
-  v6 = [v5 objectForKey:@"previousProcessState"];
+  v6 = [userInfo objectForKey:@"previousProcessState"];
 
-  v7 = [v6 isForeground];
-  v8 = [v12 processState];
-  v9 = [v8 isForeground];
+  isForeground = [v6 isForeground];
+  processState = [object processState];
+  isForeground2 = [processState isForeground];
 
-  if (v9 && (v7 & 1) == 0 && [(SBChronoApplicationProcessStateObserver *)self _shouldInformChronoForApplication:v12])
+  if (isForeground2 && (isForeground & 1) == 0 && [(SBChronoApplicationProcessStateObserver *)self _shouldInformChronoForApplication:object])
   {
     service = self->_service;
-    v11 = [v12 bundleIdentifier];
-    [(CHSInteractionEventService *)service applicationEnteredForegroundWithBundleID:v11];
+    bundleIdentifier = [object bundleIdentifier];
+    [(CHSInteractionEventService *)service applicationEnteredForegroundWithBundleID:bundleIdentifier];
   }
 }
 
-- (BOOL)_shouldInformChronoForApplication:(id)a3
+- (BOOL)_shouldInformChronoForApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   v5 = objc_alloc(MEMORY[0x277CC1E70]);
-  v6 = [v4 bundleIdentifier];
-  v7 = [v5 initWithBundleIdentifier:v6 allowPlaceholder:0 error:0];
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  v7 = [v5 initWithBundleIdentifier:bundleIdentifier allowPlaceholder:0 error:0];
 
   if (v7)
   {
-    v8 = [v7 applicationExtensionRecords];
-    v9 = [v8 bs_filter:&__block_literal_global_11_1];
+    applicationExtensionRecords = [v7 applicationExtensionRecords];
+    v9 = [applicationExtensionRecords bs_filter:&__block_literal_global_11_1];
 
     if ([v9 count])
     {
       extensionProvider = self->_extensionProvider;
-      v11 = [v4 bundleIdentifier];
-      v12 = [(CHSWidgetExtensionProvider *)extensionProvider widgetExtensionContainerForContainerBundleIdentifier:v11];
+      bundleIdentifier2 = [applicationCopy bundleIdentifier];
+      v12 = [(CHSWidgetExtensionProvider *)extensionProvider widgetExtensionContainerForContainerBundleIdentifier:bundleIdentifier2];
 
       v17 = 0;
       v18 = &v17;
       v19 = 0x2020000000;
       v20 = 0;
-      v13 = [v12 localExtensions];
+      localExtensions = [v12 localExtensions];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __77__SBChronoApplicationProcessStateObserver__shouldInformChronoForApplication___block_invoke_2;
       v16[3] = &unk_2783B0CB0;
       v16[4] = &v17;
-      [v13 enumerateObjectsUsingBlock:v16];
+      [localExtensions enumerateObjectsUsingBlock:v16];
 
       v14 = *(v18 + 24) ^ 1;
       _Block_object_dispose(&v17, 8);

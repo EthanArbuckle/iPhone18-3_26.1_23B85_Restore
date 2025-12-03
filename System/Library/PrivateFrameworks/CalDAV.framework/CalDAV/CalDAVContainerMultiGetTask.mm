@@ -1,6 +1,6 @@
 @interface CalDAVContainerMultiGetTask
 - (id)copyAdditionalPropElements;
-- (void)setAdditionalProperties:(id)a3 onDataItem:(id)a4;
+- (void)setAdditionalProperties:(id)properties onDataItem:(id)item;
 @end
 
 @implementation CalDAVContainerMultiGetTask
@@ -13,9 +13,9 @@
     [v3 CDVAddItemParserMappingWithNameSpace:*MEMORY[0x277CFDDC0] name:@"schedule-tag" parseClass:objc_opt_class()];
   }
 
-  v4 = [(CalDAVContainerMultiGetTask *)self getScheduleChanges];
+  getScheduleChanges = [(CalDAVContainerMultiGetTask *)self getScheduleChanges];
   v5 = *MEMORY[0x277CFDE90];
-  if (v4)
+  if (getScheduleChanges)
   {
     [v3 CDVAddItemParserMappingWithNameSpace:v5 name:@"schedule-changes" parseClass:objc_opt_class()];
   }
@@ -25,24 +25,24 @@
   return v3;
 }
 
-- (void)setAdditionalProperties:(id)a3 onDataItem:(id)a4
+- (void)setAdditionalProperties:(id)properties onDataItem:(id)item
 {
-  v13 = a4;
+  itemCopy = item;
   v5 = *MEMORY[0x277CFDDC0];
-  v6 = a3;
-  v7 = [v6 CDVObjectForKeyWithNameSpace:v5 andName:@"schedule-tag"];
-  v8 = [v7 payloadAsString];
+  propertiesCopy = properties;
+  v7 = [propertiesCopy CDVObjectForKeyWithNameSpace:v5 andName:@"schedule-tag"];
+  payloadAsString = [v7 payloadAsString];
 
-  [v13 setScheduleTag:v8];
+  [itemCopy setScheduleTag:payloadAsString];
   v9 = *MEMORY[0x277CFDE90];
-  v10 = [v6 CDVObjectForKeyWithNameSpace:*MEMORY[0x277CFDE90] andName:@"schedule-changes"];
-  [v13 setScheduleChanges:v10];
-  v11 = [v6 CDVObjectForKeyWithNameSpace:v9 andName:@"created-by"];
-  [v13 setCreatedBy:v11];
+  v10 = [propertiesCopy CDVObjectForKeyWithNameSpace:*MEMORY[0x277CFDE90] andName:@"schedule-changes"];
+  [itemCopy setScheduleChanges:v10];
+  v11 = [propertiesCopy CDVObjectForKeyWithNameSpace:v9 andName:@"created-by"];
+  [itemCopy setCreatedBy:v11];
 
-  v12 = [v6 CDVObjectForKeyWithNameSpace:v9 andName:@"updated-by"];
+  v12 = [propertiesCopy CDVObjectForKeyWithNameSpace:v9 andName:@"updated-by"];
 
-  [v13 setUpdatedBy:v12];
+  [itemCopy setUpdatedBy:v12];
 }
 
 @end

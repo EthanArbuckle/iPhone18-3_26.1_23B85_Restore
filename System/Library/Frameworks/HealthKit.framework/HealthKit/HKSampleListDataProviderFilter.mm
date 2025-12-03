@@ -1,6 +1,6 @@
 @interface HKSampleListDataProviderFilter
 - (HKSampleListDataProviderFilter)init;
-- (HKSampleListDataProviderFilter)initWithPredicate:(id)a3 dataTypes:(id)a4;
+- (HKSampleListDataProviderFilter)initWithPredicate:(id)predicate dataTypes:(id)types;
 @end
 
 @implementation HKSampleListDataProviderFilter
@@ -15,16 +15,16 @@
   return 0;
 }
 
-- (HKSampleListDataProviderFilter)initWithPredicate:(id)a3 dataTypes:(id)a4
+- (HKSampleListDataProviderFilter)initWithPredicate:(id)predicate dataTypes:(id)types
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  typesCopy = types;
   v12.receiver = self;
   v12.super_class = HKSampleListDataProviderFilter;
   v8 = [(HKSampleListDataProviderFilter *)&v12 init];
   if (v8)
   {
-    v9 = [v6 hk_filterRepresentationForDataTypes:v7];
+    v9 = [predicateCopy hk_filterRepresentationForDataTypes:typesCopy];
     filter = v8->_filter;
     v8->_filter = v9;
   }

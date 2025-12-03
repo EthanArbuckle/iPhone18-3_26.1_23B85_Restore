@@ -1,11 +1,11 @@
 @interface _MRGroupSessionJoinResponseMessageProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRGroupSessionJoinResponseMessageProtobuf
@@ -16,20 +16,20 @@
   v8.receiver = self;
   v8.super_class = _MRGroupSessionJoinResponseMessageProtobuf;
   v4 = [(_MRGroupSessionJoinResponseMessageProtobuf *)&v8 description];
-  v5 = [(_MRGroupSessionJoinResponseMessageProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRGroupSessionJoinResponseMessageProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   participantIdentifier = self->_participantIdentifier;
   if (participantIdentifier)
   {
-    [v3 setObject:participantIdentifier forKey:@"participantIdentifier"];
+    [dictionary setObject:participantIdentifier forKey:@"participantIdentifier"];
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_approved];
@@ -38,32 +38,32 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_participantIdentifier)
   {
     [_MRGroupSessionJoinResponseMessageProtobuf writeTo:];
   }
 
-  v6 = v4;
+  v6 = toCopy;
   PBDataWriterWriteStringField();
   approved = self->_approved;
   PBDataWriterWriteBOOLField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   participantIdentifier = self->_participantIdentifier;
-  v5 = a3;
-  [v5 setParticipantIdentifier:participantIdentifier];
-  v5[16] = self->_approved;
+  toCopy = to;
+  [toCopy setParticipantIdentifier:participantIdentifier];
+  toCopy[16] = self->_approved;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_participantIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_participantIdentifier copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -71,25 +71,25 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v6 = [v4 isMemberOfClass:objc_opt_class()] && ((participantIdentifier = self->_participantIdentifier, !(participantIdentifier | *(v4 + 1))) || -[NSString isEqual:](participantIdentifier, "isEqual:")) && self->_approved == v4[16];
+  equalCopy = equal;
+  v6 = [equalCopy isMemberOfClass:objc_opt_class()] && ((participantIdentifier = self->_participantIdentifier, !(participantIdentifier | *(equalCopy + 1))) || -[NSString isEqual:](participantIdentifier, "isEqual:")) && self->_approved == equalCopy[16];
 
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(_MRGroupSessionJoinResponseMessageProtobuf *)self setParticipantIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  self->_approved = v4[16];
+  self->_approved = fromCopy[16];
 }
 
 @end

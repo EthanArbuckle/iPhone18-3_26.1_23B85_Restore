@@ -1,10 +1,10 @@
 @interface ADFauxUIService
 - (ADFauxUIService)init;
-- (id)commandsForDomain:(id)a3;
+- (id)commandsForDomain:(id)domain;
 - (id)domains;
-- (void)_appPunchOutHandler:(id)a3 forDomain:(id)a4 completion:(id)a5;
-- (void)_unhandledCommand:(id)a3 error:(id)a4 forDomain:(id)a5 completion:(id)a6;
-- (void)handleCommand:(id)a3 forDomain:(id)a4 executionContext:(id)a5 reply:(id)a6;
+- (void)_appPunchOutHandler:(id)handler forDomain:(id)domain completion:(id)completion;
+- (void)_unhandledCommand:(id)command error:(id)error forDomain:(id)domain completion:(id)completion;
+- (void)handleCommand:(id)command forDomain:(id)domain executionContext:(id)context reply:(id)reply;
 @end
 
 @implementation ADFauxUIService
@@ -17,33 +17,33 @@
   return v2;
 }
 
-- (void)_unhandledCommand:(id)a3 error:(id)a4 forDomain:(id)a5 completion:(id)a6
+- (void)_unhandledCommand:(id)command error:(id)error forDomain:(id)domain completion:(id)completion
 {
-  if (a6)
+  if (completion)
   {
-    v8 = a6;
-    v9 = a4;
+    completionCopy = completion;
+    errorCopy = error;
     v10 = [[SACommandFailed alloc] initWithReason:@"Command not supported "];
-    (*(a6 + 2))(v8, v10, v9);
+    (*(completion + 2))(completionCopy, v10, errorCopy);
   }
 }
 
-- (void)_appPunchOutHandler:(id)a3 forDomain:(id)a4 completion:(id)a5
+- (void)_appPunchOutHandler:(id)handler forDomain:(id)domain completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v19 = v8;
-  v11 = [v19 punchOutUri];
-  v12 = [v11 absoluteString];
-  v13 = [v12 length];
+  handlerCopy = handler;
+  domainCopy = domain;
+  completionCopy = completion;
+  v19 = handlerCopy;
+  punchOutUri = [v19 punchOutUri];
+  absoluteString = [punchOutUri absoluteString];
+  v13 = [absoluteString length];
 
   if (!v13)
   {
     goto LABEL_10;
   }
 
-  v14 = [[TUDialRequest alloc] initWithURL:v11];
+  v14 = [[TUDialRequest alloc] initWithURL:punchOutUri];
   if (([v14 isValid] & 1) == 0)
   {
 
@@ -54,7 +54,7 @@ LABEL_10:
   if (!v14)
   {
 LABEL_11:
-    [(ADFauxUIService *)self _unhandledCommand:v19 forDomain:v9 completion:v10];
+    [(ADFauxUIService *)self _unhandledCommand:v19 forDomain:domainCopy completion:completionCopy];
     v14 = 0;
     goto LABEL_12;
   }
@@ -69,32 +69,32 @@ LABEL_11:
   }
 
   v18 = objc_alloc_init(*v17);
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, v18, 0);
+    completionCopy[2](completionCopy, v18, 0);
   }
 
 LABEL_12:
 }
 
-- (void)handleCommand:(id)a3 forDomain:(id)a4 executionContext:(id)a5 reply:(id)a6
+- (void)handleCommand:(id)command forDomain:(id)domain executionContext:(id)context reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  commandCopy = command;
+  domainCopy = domain;
+  contextCopy = context;
+  replyCopy = reply;
   v14 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v15 = v14;
-    v16 = [v10 encodedClassName];
-    v17 = [v10 groupIdentifier];
+    encodedClassName = [commandCopy encodedClassName];
+    groupIdentifier = [commandCopy groupIdentifier];
     *buf = 136315650;
     v30 = "[ADFauxUIService handleCommand:forDomain:executionContext:reply:]";
     v31 = 2112;
-    v32 = v16;
+    v32 = encodedClassName;
     v33 = 2112;
-    v34 = v17;
+    v34 = groupIdentifier;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s Dispatching command (%@) for domain (%@)", buf, 0x20u);
   }
 
@@ -103,22 +103,22 @@ LABEL_12:
   block[1] = 3221225472;
   block[2] = sub_1002BF0C8;
   block[3] = &unk_10051D2A0;
-  v24 = v10;
-  v25 = self;
-  v27 = v12;
-  v28 = v13;
-  v26 = v11;
-  v19 = v12;
-  v20 = v13;
-  v21 = v11;
-  v22 = v10;
+  v24 = commandCopy;
+  selfCopy = self;
+  v27 = contextCopy;
+  v28 = replyCopy;
+  v26 = domainCopy;
+  v19 = contextCopy;
+  v20 = replyCopy;
+  v21 = domainCopy;
+  v22 = commandCopy;
   dispatch_async(serialQueue, block);
 }
 
-- (id)commandsForDomain:(id)a3
+- (id)commandsForDomain:(id)domain
 {
   v3 = SAUIGroupIdentifier;
-  if ([a3 isEqualToString:SAUIGroupIdentifier])
+  if ([domain isEqualToString:SAUIGroupIdentifier])
   {
     v6 = v3;
     v4 = [NSArray arrayWithObjects:&v6 count:1];

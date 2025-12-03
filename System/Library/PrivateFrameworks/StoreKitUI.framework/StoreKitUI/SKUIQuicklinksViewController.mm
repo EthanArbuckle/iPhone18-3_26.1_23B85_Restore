@@ -1,17 +1,17 @@
 @interface SKUIQuicklinksViewController
-- (CGRect)frameForLinkAtIndex:(int64_t)a3;
+- (CGRect)frameForLinkAtIndex:(int64_t)index;
 - (SKUIQuicklinksViewControllerDelegate)delegate;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (int64_t)_numberOfRows;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)dealloc;
 - (void)loadView;
-- (void)setColoringWithColorScheme:(id)a3;
-- (void)setLinks:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)willTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)setColoringWithColorScheme:(id)scheme;
+- (void)setLinks:(id)links;
+- (void)setTitle:(id)title;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SKUIQuicklinksViewController
@@ -25,10 +25,10 @@
   [(SKUIQuicklinksViewController *)&v3 dealloc];
 }
 
-- (CGRect)frameForLinkAtIndex:(int64_t)a3
+- (CGRect)frameForLinkAtIndex:(int64_t)index
 {
   collectionView = self->_collectionView;
-  v4 = [MEMORY[0x277CCAA70] indexPathForItem:a3 inSection:0];
+  v4 = [MEMORY[0x277CCAA70] indexPathForItem:index inSection:0];
   v5 = [(UICollectionView *)collectionView cellForItemAtIndexPath:v4];
 
   if (v5)
@@ -60,11 +60,11 @@
   return result;
 }
 
-- (void)setColoringWithColorScheme:(id)a3
+- (void)setColoringWithColorScheme:(id)scheme
 {
-  if (self->_colorScheme != a3)
+  if (self->_colorScheme != scheme)
   {
-    v4 = [a3 copy];
+    v4 = [scheme copy];
     colorScheme = self->_colorScheme;
     self->_colorScheme = v4;
 
@@ -72,11 +72,11 @@
   }
 }
 
-- (void)setLinks:(id)a3
+- (void)setLinks:(id)links
 {
-  if (self->_links != a3)
+  if (self->_links != links)
   {
-    v4 = [a3 copy];
+    v4 = [links copy];
     links = self->_links;
     self->_links = v4;
 
@@ -86,10 +86,10 @@
   }
 }
 
-- (void)willTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  width = a3.width;
-  v6 = [(SKUIQuicklinksViewController *)self view:a4];
+  width = size.width;
+  v6 = [(SKUIQuicklinksViewController *)self view:coordinator];
   if (width <= 682.0)
   {
     v7 = 1;
@@ -100,9 +100,9 @@
     v7 = 3;
   }
 
-  v11 = [(UICollectionView *)self->_collectionView collectionViewLayout];
-  [v11 setItemSize:{floor(width / v7), 44.0}];
-  [v11 setNumberOfColumns:v7];
+  collectionViewLayout = [(UICollectionView *)self->_collectionView collectionViewLayout];
+  [collectionViewLayout setItemSize:{floor(width / v7), 44.0}];
+  [collectionViewLayout setNumberOfColumns:v7];
   [(UICollectionView *)self->_collectionView frame];
   [(UICollectionView *)self->_collectionView setFrame:v8, v9, v10, ceilf([(SKUIQuicklinksViewController *)self _numberOfRows]* 44.0)];
   [(SKUIQuicklinksView *)self->_quicklinksView sizeToFit];
@@ -115,28 +115,28 @@
   v1 = "[SKUIQuicklinksViewController loadView]";
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   quicklinksView = self->_quicklinksView;
-  v5 = a3;
-  [(SKUIQuicklinksView *)quicklinksView setTitle:v5];
+  titleCopy = title;
+  [(SKUIQuicklinksView *)quicklinksView setTitle:titleCopy];
   v6.receiver = self;
   v6.super_class = SKUIQuicklinksViewController;
-  [(SKUIQuicklinksViewController *)&v6 setTitle:v5];
+  [(SKUIQuicklinksViewController *)&v6 setTitle:titleCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v15 = *MEMORY[0x277D85DE8];
   v13.receiver = self;
   v13.super_class = SKUIQuicklinksViewController;
-  [(SKUIQuicklinksViewController *)&v13 viewWillAppear:a3];
+  [(SKUIQuicklinksViewController *)&v13 viewWillAppear:appear];
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
+  indexPathsForSelectedItems = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
+  v5 = [indexPathsForSelectedItems countByEnumeratingWithState:&v9 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -148,27 +148,27 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(indexPathsForSelectedItems);
         }
 
         [(UICollectionView *)self->_collectionView deselectItemAtIndexPath:*(*(&v9 + 1) + 8 * v8++) animated:0];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
+      v6 = [indexPathsForSelectedItems countByEnumeratingWithState:&v9 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   result = [(NSArray *)self->_links count];
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v8 = result / 3;
     if (result != 3 * (result / 3))
@@ -182,54 +182,54 @@
   return result;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 dequeueReusableCellWithReuseIdentifier:@"a" forIndexPath:v6];
-  v9 = [v6 item];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"a" forIndexPath:pathCopy];
+  item = [pathCopy item];
 
-  if (v9 >= [(NSArray *)self->_links count])
+  if (item >= [(NSArray *)self->_links count])
   {
     [v8 configureForLink:0];
   }
 
   else
   {
-    v10 = [(NSArray *)self->_links objectAtIndex:v9];
+    v10 = [(NSArray *)self->_links objectAtIndex:item];
     [v8 configureForLink:v10];
   }
 
-  v11 = [v7 backgroundColor];
+  backgroundColor = [viewCopy backgroundColor];
 
-  [v8 setBackgroundColor:v11];
+  [v8 setBackgroundColor:backgroundColor];
   [v8 setColoringWithColorScheme:self->_colorScheme];
-  v12 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-  if (!v12)
+  primaryTextColor = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+  if (!primaryTextColor)
   {
-    v12 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.2];
+    primaryTextColor = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.2];
   }
 
-  [v8 setSeparatorColor:v12];
+  [v8 setSeparatorColor:primaryTextColor];
   [v8 setSeparatorStyle:1];
 
   return v8;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v10 = a4;
-  v5 = [v10 item];
-  if (v5 < [(NSArray *)self->_links count])
+  pathCopy = path;
+  item = [pathCopy item];
+  if (item < [(NSArray *)self->_links count])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(NSArray *)self->_links objectAtIndex:v5];
+      v8 = [(NSArray *)self->_links objectAtIndex:item];
       v9 = objc_loadWeakRetained(&self->_delegate);
-      [v9 quicklinksViewController:self didSelectLink:v8 atIndex:{objc_msgSend(v10, "item")}];
+      [v9 quicklinksViewController:self didSelectLink:v8 atIndex:{objc_msgSend(pathCopy, "item")}];
     }
   }
 }
@@ -237,17 +237,17 @@
 - (int64_t)_numberOfRows
 {
   v3 = [(NSArray *)self->_links count];
-  v4 = [(UICollectionView *)self->_collectionView collectionViewLayout];
-  v5 = [v4 numberOfColumns];
+  collectionViewLayout = [(UICollectionView *)self->_collectionView collectionViewLayout];
+  numberOfColumns = [collectionViewLayout numberOfColumns];
 
-  if (v3 % v5)
+  if (v3 % numberOfColumns)
   {
-    return v3 / v5 + 1;
+    return v3 / numberOfColumns + 1;
   }
 
   else
   {
-    return v3 / v5;
+    return v3 / numberOfColumns;
   }
 }
 

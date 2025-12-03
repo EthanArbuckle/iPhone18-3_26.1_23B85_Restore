@@ -1,61 +1,61 @@
 @interface WFEmail
 - (EMDaemonInterface)interface;
 - (NSString)wfName;
-- (WFEmail)initWithCoder:(id)a3;
-- (WFEmail)initWithGlobalMessageID:(int64_t)a3 accountIdentifier:(id)a4 subject:(id)a5 sender:(id)a6 recipients:(id)a7;
-- (WFEmail)initWithIdentifier:(id)a3 accountIdentifier:(id)a4 subject:(id)a5 sender:(id)a6 recipients:(id)a7;
-- (void)encodeWithCoder:(id)a3;
-- (void)fetchAttachmentsWithCompletionHandler:(id)a3;
-- (void)fetchContentRepresentationWithCompletionHandler:(id)a3;
+- (WFEmail)initWithCoder:(id)coder;
+- (WFEmail)initWithGlobalMessageID:(int64_t)d accountIdentifier:(id)identifier subject:(id)subject sender:(id)sender recipients:(id)recipients;
+- (WFEmail)initWithIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier subject:(id)subject sender:(id)sender recipients:(id)recipients;
+- (void)encodeWithCoder:(id)coder;
+- (void)fetchAttachmentsWithCompletionHandler:(id)handler;
+- (void)fetchContentRepresentationWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFEmail
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFEmail *)self subject];
-  [v4 encodeObject:v5 forKey:@"subject"];
+  coderCopy = coder;
+  subject = [(WFEmail *)self subject];
+  [coderCopy encodeObject:subject forKey:@"subject"];
 
-  v6 = [(WFEmail *)self identifier];
-  [v4 encodeObject:v6 forKey:@"identifier"];
+  identifier = [(WFEmail *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v7 = [(WFEmail *)self accountIdentifier];
-  [v4 encodeObject:v7 forKey:@"accountIdentifier"];
+  accountIdentifier = [(WFEmail *)self accountIdentifier];
+  [coderCopy encodeObject:accountIdentifier forKey:@"accountIdentifier"];
 
-  v8 = [(WFEmail *)self sender];
-  [v4 encodeObject:v8 forKey:@"sender"];
+  sender = [(WFEmail *)self sender];
+  [coderCopy encodeObject:sender forKey:@"sender"];
 
-  v9 = [(WFEmail *)self recipients];
-  [v4 encodeObject:v9 forKey:@"recipients"];
+  recipients = [(WFEmail *)self recipients];
+  [coderCopy encodeObject:recipients forKey:@"recipients"];
 }
 
-- (WFEmail)initWithCoder:(id)a3
+- (WFEmail)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(WFEmail *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subject"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subject"];
     subject = v5->_subject;
     v5->_subject = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sender"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sender"];
     sender = v5->_sender;
     v5->_sender = v12;
 
     v14 = MEMORY[0x277CBEB98];
     v15 = objc_opt_class();
     v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"recipients"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"recipients"];
     recipients = v5->_recipients;
     v5->_recipients = v17;
 
@@ -67,8 +67,8 @@
 
 - (NSString)wfName
 {
-  v3 = [(WFEmail *)self subject];
-  if ([v3 length])
+  subject = [(WFEmail *)self subject];
+  if ([subject length])
   {
     [(WFEmail *)self subject];
   }
@@ -82,10 +82,10 @@
   return v4;
 }
 
-- (void)fetchContentRepresentationWithCompletionHandler:(id)a3
+- (void)fetchContentRepresentationWithCompletionHandler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = getWFContentItemLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -94,18 +94,18 @@
     _os_log_impl(&dword_21E1BD000, v5, OS_LOG_TYPE_DEBUG, "%s Fetching Message Content", buf, 0xCu);
   }
 
-  v6 = [(WFEmail *)self interface];
-  v7 = [v6 messageRepository];
+  interface = [(WFEmail *)self interface];
+  messageRepository = [interface messageRepository];
   EMObjectIDClass = getEMObjectIDClass();
-  v9 = [(WFEmail *)self identifier];
-  v10 = [(objc_class *)EMObjectIDClass objectIDFromSerializedRepresentation:v9];
+  identifier = [(WFEmail *)self identifier];
+  v10 = [(objc_class *)EMObjectIDClass objectIDFromSerializedRepresentation:identifier];
 
-  v11 = [v7 messageForObjectID:v10];
+  v11 = [messageRepository messageForObjectID:v10];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __59__WFEmail_fetchContentRepresentationWithCompletionHandler___block_invoke;
   v16[3] = &unk_2783492D0;
-  v12 = v4;
+  v12 = handlerCopy;
   v16[4] = self;
   v17 = v12;
   [v11 addSuccessBlock:v16];
@@ -192,10 +192,10 @@ void __59__WFEmail_fetchContentRepresentationWithCompletionHandler___block_invok
   }
 }
 
-- (void)fetchAttachmentsWithCompletionHandler:(id)a3
+- (void)fetchAttachmentsWithCompletionHandler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = getWFContentItemLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -204,18 +204,18 @@ void __59__WFEmail_fetchContentRepresentationWithCompletionHandler___block_invok
     _os_log_impl(&dword_21E1BD000, v5, OS_LOG_TYPE_DEBUG, "%s Fetching Message Attachments", buf, 0xCu);
   }
 
-  v6 = [(WFEmail *)self interface];
-  v7 = [v6 messageRepository];
+  interface = [(WFEmail *)self interface];
+  messageRepository = [interface messageRepository];
   EMObjectIDClass = getEMObjectIDClass();
-  v9 = [(WFEmail *)self identifier];
-  v10 = [(objc_class *)EMObjectIDClass objectIDFromSerializedRepresentation:v9];
+  identifier = [(WFEmail *)self identifier];
+  v10 = [(objc_class *)EMObjectIDClass objectIDFromSerializedRepresentation:identifier];
 
-  v11 = [v7 messageForObjectID:v10];
+  v11 = [messageRepository messageForObjectID:v10];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __49__WFEmail_fetchAttachmentsWithCompletionHandler___block_invoke;
   v16[3] = &unk_278349258;
-  v12 = v4;
+  v12 = handlerCopy;
   v17 = v12;
   [v11 addSuccessBlock:v16];
   v14[0] = MEMORY[0x277D85DD0];
@@ -339,17 +339,17 @@ void __49__WFEmail_fetchAttachmentsWithCompletionHandler___block_invoke_2_16(uin
   return interface;
 }
 
-- (WFEmail)initWithIdentifier:(id)a3 accountIdentifier:(id)a4 subject:(id)a5 sender:(id)a6 recipients:(id)a7
+- (WFEmail)initWithIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier subject:(id)subject sender:(id)sender recipients:(id)recipients
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  if (!v14)
+  identifierCopy = identifier;
+  accountIdentifierCopy = accountIdentifier;
+  subjectCopy = subject;
+  senderCopy = sender;
+  recipientsCopy = recipients;
+  if (!identifierCopy)
   {
-    v31 = [MEMORY[0x277CCA890] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"WFEmail.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFEmail.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
   v32.receiver = self;
@@ -358,20 +358,20 @@ void __49__WFEmail_fetchAttachmentsWithCompletionHandler___block_invoke_2_16(uin
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_identifier, a3);
-    v21 = [v15 copy];
+    objc_storeStrong(&v19->_identifier, identifier);
+    v21 = [accountIdentifierCopy copy];
     accountIdentifier = v20->_accountIdentifier;
     v20->_accountIdentifier = v21;
 
-    v23 = [v16 copy];
+    v23 = [subjectCopy copy];
     subject = v20->_subject;
     v20->_subject = v23;
 
-    v25 = [WFEmailAddress addressWithEmailAddress:v17];
+    v25 = [WFEmailAddress addressWithEmailAddress:senderCopy];
     sender = v20->_sender;
     v20->_sender = v25;
 
-    v27 = [v18 if_compactMap:&__block_literal_global_21909];
+    v27 = [recipientsCopy if_compactMap:&__block_literal_global_21909];
     recipients = v20->_recipients;
     v20->_recipients = v27;
 
@@ -381,24 +381,24 @@ void __49__WFEmail_fetchAttachmentsWithCompletionHandler___block_invoke_2_16(uin
   return v20;
 }
 
-- (WFEmail)initWithGlobalMessageID:(int64_t)a3 accountIdentifier:(id)a4 subject:(id)a5 sender:(id)a6 recipients:(id)a7
+- (WFEmail)initWithGlobalMessageID:(int64_t)d accountIdentifier:(id)identifier subject:(id)subject sender:(id)sender recipients:(id)recipients
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  subjectCopy = subject;
+  senderCopy = sender;
+  recipientsCopy = recipients;
   v17 = objc_alloc(getEMMessageObjectIDClass());
-  v18 = [(objc_class *)getEMMailboxScopeClass() allMailboxesScope];
-  v19 = [v17 initWithGlobalMessageID:a3 mailboxScope:v18];
+  allMailboxesScope = [(objc_class *)getEMMailboxScopeClass() allMailboxesScope];
+  v19 = [v17 initWithGlobalMessageID:d mailboxScope:allMailboxesScope];
 
-  v20 = [v19 serializedRepresentation];
-  if (!v20)
+  serializedRepresentation = [v19 serializedRepresentation];
+  if (!serializedRepresentation)
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"WFEmail.m" lineNumber:54 description:{@"Failed to encode identifier %lld (EMMessageObjectID %@)", a3, v19}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFEmail.m" lineNumber:54 description:{@"Failed to encode identifier %lld (EMMessageObjectID %@)", d, v19}];
   }
 
-  v21 = [(WFEmail *)self initWithIdentifier:v20 accountIdentifier:v13 subject:v14 sender:v15 recipients:v16];
+  v21 = [(WFEmail *)self initWithIdentifier:serializedRepresentation accountIdentifier:identifierCopy subject:subjectCopy sender:senderCopy recipients:recipientsCopy];
 
   return v21;
 }

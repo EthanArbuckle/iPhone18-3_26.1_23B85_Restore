@@ -1,6 +1,6 @@
 @interface GMHeaderIconProvider
 - (_TtC14VoiceTriggerUI20GMHeaderIconProvider)init;
-- (id)imageViewWithLabelWithLabelFontSize:(double)a3 labelBackgroundColor:(id)a4 labelForegroundColor:(id)a5;
+- (id)imageViewWithLabelWithLabelFontSize:(double)size labelBackgroundColor:(id)color labelForegroundColor:(id)foregroundColor;
 @end
 
 @implementation GMHeaderIconProvider
@@ -15,12 +15,12 @@
   return [(GMHeaderIconProvider *)&v4 init];
 }
 
-- (id)imageViewWithLabelWithLabelFontSize:(double)a3 labelBackgroundColor:(id)a4 labelForegroundColor:(id)a5
+- (id)imageViewWithLabelWithLabelFontSize:(double)size labelBackgroundColor:(id)color labelForegroundColor:(id)foregroundColor
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = self;
-  v11 = sub_272907FB0(v8, v9, a3);
+  colorCopy = color;
+  foregroundColorCopy = foregroundColor;
+  selfCopy = self;
+  v11 = sub_272907FB0(colorCopy, foregroundColorCopy, size);
 
   return v11;
 }

@@ -1,36 +1,36 @@
 @interface HNDRocker
 + (CGSize)initialRockerSize;
 + (CGSize)nubbitSize;
-- (BOOL)_angleIndicatesReturnToCenter:(double)a3;
+- (BOOL)_angleIndicatesReturnToCenter:(double)center;
 - (BOOL)_backButtonShouldBeHidden;
 - (BOOL)_expectsSecureIntent;
 - (BOOL)_includeRingerButtonInHardware;
 - (BOOL)_replaceRingerWithOrientationLock;
 - (BOOL)accessibilityPerformEscape;
-- (BOOL)activateMenuItemDown:(id)a3 fromButtonPress:(BOOL)a4;
-- (BOOL)activateMenuItemUp:(id)a3 fromButtonPress:(BOOL)a4;
-- (BOOL)customizationMapAllowInstanceActivation:(id)a3;
+- (BOOL)activateMenuItemDown:(id)down fromButtonPress:(BOOL)press;
+- (BOOL)activateMenuItemUp:(id)up fromButtonPress:(BOOL)press;
+- (BOOL)customizationMapAllowInstanceActivation:(id)activation;
 - (CGPoint)_initialPointForGesture;
 - (CGPoint)onScreenLocation;
-- (CGRect)onScreenFrameForRockerButton:(id)a3;
+- (CGRect)onScreenFrameForRockerButton:(id)button;
 - (HNDDisplayManager)displayManager;
-- (HNDRocker)initWithFrame:(CGRect)a3;
+- (HNDRocker)initWithFrame:(CGRect)frame;
 - (double)_cornerRadiusForCurrentDevice;
-- (id)_adjustMainScreenCustomizationForDeviceSupport:(id)a3;
+- (id)_adjustMainScreenCustomizationForDeviceSupport:(id)support;
 - (id)_dockSpecificMenuItems;
-- (id)_rockerButtonForLocation:(id)a3 buttonType:(id)a4;
+- (id)_rockerButtonForLocation:(id)location buttonType:(id)type;
 - (id)_rockerItemsByLocation;
 - (id)accessibilityPath;
-- (id)animationEndButtonForButtonTag:(int)a3;
+- (id)animationEndButtonForButtonTag:(int)tag;
 - (id)currentlyVisibleRockerItems;
-- (id)rockerHitTest:(CGPoint)a3;
-- (int64_t)_indexForAngle:(double)a3;
+- (id)rockerHitTest:(CGPoint)test;
+- (int64_t)_indexForAngle:(double)angle;
 - (void)_accessibilityReaderPressed;
 - (void)_actionButtonPressed;
 - (void)_activateLockButton;
 - (void)_addFavoriteBoxPressed;
 - (void)_addNewButtonsToView;
-- (void)_applePayButtonPressed:(id)a3;
+- (void)_applePayButtonPressed:(id)pressed;
 - (void)_armApplePay;
 - (void)_assignLocationsToRockerItems;
 - (void)_autoHideForEyeTrackingToggled;
@@ -41,31 +41,31 @@
 - (void)_cameraButtonLightPressed;
 - (void)_cameraButtonPressed;
 - (void)_cameraPressed;
-- (void)_centerBackButtonToView:(id)a3;
+- (void)_centerBackButtonToView:(id)view;
 - (void)_commandAndControlPressed;
 - (void)_confirmApplePay;
-- (void)_continuousScrollPressed:(id)a3 fromButtonPress:(BOOL)a4 inDirection:(unint64_t)a5 iconType:(id)a6;
+- (void)_continuousScrollPressed:(id)pressed fromButtonPress:(BOOL)press inDirection:(unint64_t)direction iconType:(id)type;
 - (void)_controlCenterPressed;
-- (void)_customGesturePressed:(id)a3 fromButtonPress:(BOOL)a4;
+- (void)_customGesturePressed:(id)pressed fromButtonPress:(BOOL)press;
 - (void)_decreaseDwellTimePressed;
 - (void)_detectionModePresssed;
 - (void)_disableUserInterfaceClient;
 - (void)_dockPressed;
-- (void)_doubleTapPressed:(id)a3 fromButtonPress:(BOOL)a4;
-- (void)_dragAndDropPressed:(id)a3 fromButtonPress:(BOOL)a4 dragMenu:(BOOL)a5;
-- (void)_enableDockIconActivationMode:(unint64_t)a3;
+- (void)_doubleTapPressed:(id)pressed fromButtonPress:(BOOL)press;
+- (void)_dragAndDropPressed:(id)pressed fromButtonPress:(BOOL)press dragMenu:(BOOL)menu;
+- (void)_enableDockIconActivationMode:(unint64_t)mode;
 - (void)_frontFacingCameraPressed;
-- (void)_goBackInMenuState:(int)a3;
-- (void)_handleTouch:(int64_t)a3;
+- (void)_goBackInMenuState:(int)state;
+- (void)_handleTouch:(int64_t)touch;
 - (void)_hapticMusicPressed;
-- (void)_highlightRockerButtonAtAngle:(double)a3;
-- (void)_homeButton:(BOOL)a3;
+- (void)_highlightRockerButtonAtAngle:(double)angle;
+- (void)_homeButton:(BOOL)button;
 - (void)_increaseDwellTimePressed;
 - (void)_initializeNubbit;
-- (void)_layoutButtonsWithViewForCenteringAtStart:(id)a3 includingBackButton:(BOOL)a4;
+- (void)_layoutButtonsWithViewForCenteringAtStart:(id)start includingBackButton:(BOOL)button;
 - (void)_layoutForegroundImageView;
-- (void)_layoutMenuItems:(BOOL)a3 oldRockers:(id)a4 viewForCenteringAtStart:(id)a5 shouldUpdateKeyboardFocusIfNeeded:(BOOL)a6;
-- (void)_layoutMenuItemsInReverse:(BOOL)a3 oldRockers:(id)a4 animateToIcon:(id)a5 shouldUpdateKeyboardFocusIfNeeded:(BOOL)a6;
+- (void)_layoutMenuItems:(BOOL)items oldRockers:(id)rockers viewForCenteringAtStart:(id)start shouldUpdateKeyboardFocusIfNeeded:(BOOL)needed;
+- (void)_layoutMenuItemsInReverse:(BOOL)reverse oldRockers:(id)rockers animateToIcon:(id)icon shouldUpdateKeyboardFocusIfNeeded:(BOOL)needed;
 - (void)_liveCaptionsPressed;
 - (void)_liveSpeechPressed;
 - (void)_loadDwellMenuItems;
@@ -73,7 +73,7 @@
 - (void)_loadGesturesMenuItems;
 - (void)_loadHardwareMenuItems;
 - (void)_loadInitialMenuItems;
-- (void)_loadMenuItems:(BOOL)a3 viewForCenteringAtStart:(id)a4 goBackwards:(BOOL)a5 originalState:(int64_t)a6 shouldUpdateKeyboardFocusIfNeeded:(BOOL)a7;
+- (void)_loadMenuItems:(BOOL)items viewForCenteringAtStart:(id)start goBackwards:(BOOL)backwards originalState:(int64_t)state shouldUpdateKeyboardFocusIfNeeded:(BOOL)needed;
 - (void)_loadMoreMenuItems;
 - (void)_loadRotateMenuItems;
 - (void)_loadScrollMenuItems;
@@ -81,9 +81,9 @@
 - (void)_loadSideAppMenuItems;
 - (void)_loadSideAppMoreMenuItems;
 - (void)_loadSiriShortcutsMenuItems;
-- (void)_lockButton:(BOOL)a3;
-- (void)_lockDwellControlAction:(BOOL)a3;
-- (void)_longPressPressed:(id)a3 fromButtonPress:(BOOL)a4;
+- (void)_lockButton:(BOOL)button;
+- (void)_lockDwellControlAction:(BOOL)action;
+- (void)_longPressPressed:(id)pressed fromButtonPress:(BOOL)press;
 - (void)_menuBarPressed;
 - (void)_menuExited;
 - (void)_motionCuesPressed;
@@ -91,36 +91,36 @@
 - (void)_nearbyDeviceControlPressed;
 - (void)_notificationCenterPressed;
 - (void)_openVisualIntelligence;
-- (void)_orbPressed:(id)a3 fromButtonPress:(BOOL)a4;
-- (void)_pinchPressed:(id)a3 mode:(unint64_t)a4;
+- (void)_orbPressed:(id)pressed fromButtonPress:(BOOL)press;
+- (void)_pinchPressed:(id)pressed mode:(unint64_t)mode;
 - (void)_preloadDwellMenuItems;
 - (void)_preloadInitialMenuItems;
 - (void)_reachabilityPressed;
 - (void)_rebootDevicePressed;
 - (void)_resetForegroundImage;
 - (void)_resetHoverCircleLocation;
-- (void)_resetVisibility:(BOOL)a3;
-- (void)_ringerSwitchPressed:(BOOL)a3;
+- (void)_resetVisibility:(BOOL)visibility;
+- (void)_ringerSwitchPressed:(BOOL)pressed;
 - (void)_rotationLockPressed;
 - (void)_screenshotPressed;
-- (void)_scrollPressed:(id)a3 fromButtonPress:(BOOL)a4 vertical:(BOOL)a5 forward:(BOOL)a6 max:(BOOL)a7;
-- (void)_setBackgroundWithType:(int)a3;
+- (void)_scrollPressed:(id)pressed fromButtonPress:(BOOL)press vertical:(BOOL)vertical forward:(BOOL)forward max:(BOOL)max;
+- (void)_setBackgroundWithType:(int)type;
 - (void)_setMaskViewMenuRadius;
 - (void)_setMaskViewNubbitRadius;
-- (void)_setRingerSwitchIcon:(id)a3;
-- (void)_setRotationLockIcon:(id)a3;
+- (void)_setRingerSwitchIcon:(id)icon;
+- (void)_setRotationLockIcon:(id)icon;
 - (void)_shakePressed;
 - (void)_shortcutsDidUpdate;
 - (void)_siriButtonPressed;
 - (void)_sosPressed;
 - (void)_speakScreenPressed;
-- (void)_spotlightPressed:(id)a3;
+- (void)_spotlightPressed:(id)pressed;
 - (void)_swapArmApplePayWithConfirmApplePayIfNeeded;
 - (void)_sysdiagnosePressed;
-- (void)_tapPressed:(id)a3 fromButtonPress:(BOOL)a4;
+- (void)_tapPressed:(id)pressed fromButtonPress:(BOOL)press;
 - (void)_toggleAppSwitcher;
 - (void)_toggleAssistiveAccess;
-- (void)_toggleDwellControlPause:(BOOL)a3;
+- (void)_toggleDwellControlPause:(BOOL)pause;
 - (void)_toggleDwellKeyboardContinuousPath;
 - (void)_toggleNeedsToShowZoomWindow;
 - (void)_toggleOnDeviceEyeTracking;
@@ -128,18 +128,18 @@
 - (void)_tripleClickHomePressed;
 - (void)_typeToSiriButtonPressed;
 - (void)_updateBackButtonVisibility;
-- (void)_updateHapticMusicIcon:(id)a3;
+- (void)_updateHapticMusicIcon:(id)icon;
 - (void)_updateKeyboardFocusIfNeeded;
-- (void)_updateMotionCuesIcon:(id)a3;
+- (void)_updateMotionCuesIcon:(id)icon;
 - (void)_updateNubbitFadedProperties;
-- (void)_updateProgress:(id)a3;
-- (void)_updateRockerItemIfNeededForItem:(id)a3;
+- (void)_updateProgress:(id)progress;
+- (void)_updateRockerItemIfNeededForItem:(id)item;
 - (void)_updateSelectedButton;
-- (void)_updateSelectedButton:(id)a3;
+- (void)_updateSelectedButton:(id)button;
 - (void)_updateVolumeDisplay;
 - (void)_voiceControlPressed;
-- (void)_volumeDown:(BOOL)a3;
-- (void)_volumeUp:(BOOL)a3;
+- (void)_volumeDown:(BOOL)down;
+- (void)_volumeUp:(BOOL)up;
 - (void)_watchRemoteScreenPressed;
 - (void)dealloc;
 - (void)didFailToFloatApp;
@@ -147,24 +147,24 @@
 - (void)didMoveToWindow;
 - (void)fadeNubbit;
 - (void)forceReloadScrollMenuItems;
-- (void)handleRealDownEvent:(CGPoint)a3;
-- (void)handleRealMoveEvent:(CGPoint)a3 maxOrb:(double)a4 currentForce:(double)a5;
-- (void)handleRealUpEvent:(CGPoint)a3 maxOrb:(double)a4;
+- (void)handleRealDownEvent:(CGPoint)event;
+- (void)handleRealMoveEvent:(CGPoint)event maxOrb:(double)orb currentForce:(double)force;
+- (void)handleRealUpEvent:(CGPoint)event maxOrb:(double)orb;
 - (void)highlightNubbit;
-- (void)hoveredTo:(CGPoint)a3;
-- (void)performPress:(int)a3 type:(int)a4 source:(int)a5;
+- (void)hoveredTo:(CGPoint)to;
+- (void)performPress:(int)press type:(int)type source:(int)source;
 - (void)reloadDwellMenu;
-- (void)setFrame:(CGRect)a3;
-- (void)setFullMenuVisible:(BOOL)a3 atPoint:(CGPoint)a4;
-- (void)setNubbitVisible:(BOOL)a3;
-- (void)setStyle:(int)a3;
-- (void)showBannerWithText:(id)a3;
-- (void)showNubbitPressedState:(BOOL)a3;
-- (void)showVolumeBar:(BOOL)a3 withProgress:(double)a4;
+- (void)setFrame:(CGRect)frame;
+- (void)setFullMenuVisible:(BOOL)visible atPoint:(CGPoint)point;
+- (void)setNubbitVisible:(BOOL)visible;
+- (void)setStyle:(int)style;
+- (void)showBannerWithText:(id)text;
+- (void)showNubbitPressedState:(BOOL)state;
+- (void)showVolumeBar:(BOOL)bar withProgress:(double)progress;
 - (void)showVolumeDisplayImmediately;
-- (void)transitionMenuToNubbit:(CGPoint)a3 changeAlpha:(BOOL)a4 animate:(BOOL)a5;
-- (void)transitionNubbitToMenu:(CGPoint)a3 concurrentAnimation:(id)a4 animationCompleted:(id)a5;
-- (void)updateForegroundImageForAction:(id)a3;
+- (void)transitionMenuToNubbit:(CGPoint)nubbit changeAlpha:(BOOL)alpha animate:(BOOL)animate;
+- (void)transitionNubbitToMenu:(CGPoint)menu concurrentAnimation:(id)animation animationCompleted:(id)completed;
+- (void)updateForegroundImageForAction:(id)action;
 - (void)updateRingerSwitch;
 - (void)updateRockersForSubstantialTransition;
 - (void)updateRotationLockSwitch;
@@ -173,14 +173,14 @@
 
 @implementation HNDRocker
 
-- (void)setStyle:(int)a3
+- (void)setStyle:(int)style
 {
-  self->_style = a3;
-  if (a3)
+  self->_style = style;
+  if (style)
   {
-    v4 = [(HNDRocker *)self disableDashBoardGesturesAssertion];
+    disableDashBoardGesturesAssertion = [(HNDRocker *)self disableDashBoardGesturesAssertion];
 
-    if (!v4)
+    if (!disableDashBoardGesturesAssertion)
     {
       v5 = [AXAssertion assertionWithType:AXAssertionTypeDisableDashboardSystemGestures identifier:@"AST menu active"];
       [(HNDRocker *)self setDisableDashBoardGesturesAssertion:v5];
@@ -194,7 +194,7 @@
   }
 }
 
-- (HNDRocker)initWithFrame:(CGRect)a3
+- (HNDRocker)initWithFrame:(CGRect)frame
 {
   v94.receiver = self;
   v94.super_class = HNDRocker;
@@ -203,13 +203,13 @@
   v4 = +[UIColor clearColor];
   [(HNDRocker *)v3 setBackgroundColor:v4];
 
-  v5 = [(HNDRocker *)v3 layer];
-  [v5 setMasksToBounds:0];
+  layer = [(HNDRocker *)v3 layer];
+  [layer setMasksToBounds:0];
 
   [(HNDRocker *)v3 setClipsToBounds:0];
   [(HNDRocker *)v3 setAutoresizesSubviews:1];
-  v6 = [(HNDRocker *)v3 layer];
-  [v6 setDisableUpdateMask:32];
+  layer2 = [(HNDRocker *)v3 layer];
+  [layer2 setDisableUpdateMask:32];
 
   v7 = [UIImage imageNamed:@"NubbitCenter"];
   v8 = [v7 imageWithRenderingMode:2];
@@ -237,8 +237,8 @@
   v15 = +[UIColor blackColor];
   [(UIView *)v3->_maskImageView setBackgroundColor:v15];
 
-  v16 = [(UIView *)v3->_maskImageView layer];
-  [v16 setCornerCurve:kCACornerCurveContinuous];
+  layer3 = [(UIView *)v3->_maskImageView layer];
+  [layer3 setCornerCurve:kCACornerCurveContinuous];
 
   [(HNDRocker *)v3 _setMaskViewNubbitRadius];
   [(HNDRocker *)v3 ax_setWantsFlexibleGlassAppearance:1];
@@ -254,8 +254,8 @@
   v3->_layoutView = v19;
 
   [(AXAssistiveTouchLayoutView *)v3->_layoutView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v21 = [(HNDRocker *)v3 _contentView];
-  [v21 addSubview:v3->_layoutView];
+  _contentView = [(HNDRocker *)v3 _contentView];
+  [_contentView addSubview:v3->_layoutView];
 
   objc_initWeak(&location, v3);
   v91[0] = _NSConcreteStackBlock;
@@ -273,8 +273,8 @@
   v25 = sub_100042B24(@"BACK");
   [(HNDRockerButton *)v24 setAccessibilityLabel:v25];
 
-  v26 = [(HNDRocker *)v3 _contentView];
-  [v26 addSubview:v3->_backButton];
+  _contentView2 = [(HNDRocker *)v3 _contentView];
+  [_contentView2 addSubview:v3->_backButton];
 
   v27 = [objc_allocWithZone(NSMutableArray) init];
   rockerItems = v3->_rockerItems;
@@ -307,8 +307,8 @@
   v3->_middleCircle = v37;
 
   [(AXPIFingerView *)v3->_middleCircle setHidden:1];
-  v39 = [(HNDRocker *)v3 _contentView];
-  [v39 addSubview:v3->_middleCircle];
+  _contentView3 = [(HNDRocker *)v3 _contentView];
+  [_contentView3 addSubview:v3->_middleCircle];
 
   v40 = objc_allocWithZone(AXDispatchTimer);
   v41 = &_dispatch_main_q;
@@ -380,25 +380,25 @@
   shortcutsUpdateToken = v47->_shortcutsUpdateToken;
   v47->_shortcutsUpdateToken = v55;
 
-  v74 = [(AXAssistiveTouchLayoutView *)v3->_layoutView topAnchor];
-  v75 = [(UIVisualEffectView *)v3->_backdropView contentView];
-  v73 = [v75 topAnchor];
-  v72 = [v74 constraintEqualToAnchor:v73];
+  topAnchor = [(AXAssistiveTouchLayoutView *)v3->_layoutView topAnchor];
+  contentView = [(UIVisualEffectView *)v3->_backdropView contentView];
+  topAnchor2 = [contentView topAnchor];
+  v72 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v95[0] = v72;
-  v70 = [(AXAssistiveTouchLayoutView *)v3->_layoutView bottomAnchor];
-  v71 = [(UIVisualEffectView *)v3->_backdropView contentView];
-  v69 = [v71 bottomAnchor];
-  v68 = [v70 constraintEqualToAnchor:v69];
+  bottomAnchor = [(AXAssistiveTouchLayoutView *)v3->_layoutView bottomAnchor];
+  contentView2 = [(UIVisualEffectView *)v3->_backdropView contentView];
+  bottomAnchor2 = [contentView2 bottomAnchor];
+  v68 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v95[1] = v68;
-  v57 = [(AXAssistiveTouchLayoutView *)v3->_layoutView leadingAnchor];
-  v58 = [(UIVisualEffectView *)v3->_backdropView contentView];
-  v59 = [v58 leadingAnchor];
-  v60 = [v57 constraintEqualToAnchor:v59];
+  leadingAnchor = [(AXAssistiveTouchLayoutView *)v3->_layoutView leadingAnchor];
+  contentView3 = [(UIVisualEffectView *)v3->_backdropView contentView];
+  leadingAnchor2 = [contentView3 leadingAnchor];
+  v60 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v95[2] = v60;
-  v61 = [(AXAssistiveTouchLayoutView *)v3->_layoutView trailingAnchor];
-  v62 = [(UIVisualEffectView *)v3->_backdropView contentView];
-  v63 = [v62 trailingAnchor];
-  v64 = [v61 constraintEqualToAnchor:v63];
+  trailingAnchor = [(AXAssistiveTouchLayoutView *)v3->_layoutView trailingAnchor];
+  contentView4 = [(UIVisualEffectView *)v3->_backdropView contentView];
+  trailingAnchor2 = [contentView4 trailingAnchor];
+  v64 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v95[3] = v64;
   v65 = [NSArray arrayWithObjects:v95 count:4];
   [NSLayoutConstraint activateConstraints:v65];
@@ -419,25 +419,25 @@
   v4 = +[AXSiriShortcutsManager sharedManager];
   [v4 unregisterShortcutsDidChangeBlock:self->_shortcutsUpdateToken];
 
-  v5 = [(HNDRocker *)self hitTestCategoryAssertion];
-  [v5 invalidate];
+  hitTestCategoryAssertion = [(HNDRocker *)self hitTestCategoryAssertion];
+  [hitTestCategoryAssertion invalidate];
 
   v6.receiver = self;
   v6.super_class = HNDRocker;
   [(HNDRocker *)&v6 dealloc];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  rect = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  rect = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *&v43.size.width = self;
   *&v43.size.height = HNDRocker;
   [(CGSize *)&v43.size setFrame:?];
-  v7 = [(HNDRocker *)self displayManager];
-  [v7 screenBounds];
+  displayManager = [(HNDRocker *)self displayManager];
+  [displayManager screenBounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -454,8 +454,8 @@
   v21 = v45.origin.y;
   v22 = v45.size.width;
   height = v45.size.height;
-  [v7 foreheadRect];
-  [v7 convertFrameToInterfaceOrientation:?];
+  [displayManager foreheadRect];
+  [displayManager convertFrameToInterfaceOrientation:?];
   v39 = v24;
   v40 = v23;
   v37 = v26;
@@ -546,40 +546,40 @@ LABEL_14:
 {
   [(HNDRocker *)self _cornerRadiusForCurrentDevice];
   v4 = v3;
-  v5 = [(UIView *)self->_maskImageView layer];
-  [v5 setCornerRadius:v4];
+  layer = [(UIView *)self->_maskImageView layer];
+  [layer setCornerRadius:v4];
 
-  v6 = [(UIView *)self->_maskImageView layer];
-  [v6 cornerRadius];
+  layer2 = [(UIView *)self->_maskImageView layer];
+  [layer2 cornerRadius];
   v8 = v7;
-  v9 = [(UIVisualEffectView *)self->_backdropView layer];
-  [v9 setCornerRadius:v8];
+  layer3 = [(UIVisualEffectView *)self->_backdropView layer];
+  [layer3 setCornerRadius:v8];
 
-  v13 = [(UIVisualEffectView *)self->_backdropView layer];
-  [v13 cornerRadius];
+  layer4 = [(UIVisualEffectView *)self->_backdropView layer];
+  [layer4 cornerRadius];
   v11 = v10;
-  v12 = [(HNDRocker *)self layer];
-  [v12 setCornerRadius:v11];
+  layer5 = [(HNDRocker *)self layer];
+  [layer5 setCornerRadius:v11];
 }
 
 - (void)_setMaskViewMenuRadius
 {
   AXCornerRadiusForBackground();
   v4 = v3;
-  v5 = [(UIView *)self->_maskImageView layer];
-  [v5 setCornerRadius:v4];
+  layer = [(UIView *)self->_maskImageView layer];
+  [layer setCornerRadius:v4];
 
-  v6 = [(UIView *)self->_maskImageView layer];
-  [v6 cornerRadius];
+  layer2 = [(UIView *)self->_maskImageView layer];
+  [layer2 cornerRadius];
   v8 = v7;
-  v9 = [(UIVisualEffectView *)self->_backdropView layer];
-  [v9 setCornerRadius:v8];
+  layer3 = [(UIVisualEffectView *)self->_backdropView layer];
+  [layer3 setCornerRadius:v8];
 
-  v13 = [(UIView *)self->_maskImageView layer];
-  [v13 cornerRadius];
+  layer4 = [(UIView *)self->_maskImageView layer];
+  [layer4 cornerRadius];
   v11 = v10;
-  v12 = [(HNDRocker *)self layer];
-  [v12 setCornerRadius:v11];
+  layer5 = [(HNDRocker *)self layer];
+  [layer5 setCornerRadius:v11];
 }
 
 - (double)_cornerRadiusForCurrentDevice
@@ -617,9 +617,9 @@ LABEL_14:
 
 - (void)_updateBackButtonVisibility
 {
-  v3 = [(HNDRocker *)self _backButtonShouldBeHidden];
+  _backButtonShouldBeHidden = [(HNDRocker *)self _backButtonShouldBeHidden];
   v4 = 1.0;
-  if (v3)
+  if (_backButtonShouldBeHidden)
   {
     v4 = 0.0;
   }
@@ -627,12 +627,12 @@ LABEL_14:
   [(HNDRockerButton *)self->_backButton setAlpha:v4];
   backButton = self->_backButton;
 
-  [(HNDRockerButton *)backButton setUserInteractionEnabled:v3 ^ 1];
+  [(HNDRockerButton *)backButton setUserInteractionEnabled:_backButtonShouldBeHidden ^ 1];
 }
 
-- (void)_updateProgress:(id)a3
+- (void)_updateProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   if (self->_startInterval == 0.0)
   {
     self->_startInterval = CFAbsoluteTimeGetCurrent();
@@ -660,7 +660,7 @@ LABEL_14:
     [(HNDRocker *)self setNeedsDisplay];
     self->_linkRunning = 0;
     v6 = +[NSRunLoop currentRunLoop];
-    [v4 removeFromRunLoop:v6 forMode:NSDefaultRunLoopMode];
+    [progressCopy removeFromRunLoop:v6 forMode:NSDefaultRunLoopMode];
   }
 }
 
@@ -698,29 +698,29 @@ LABEL_14:
   return j__AXDeviceIsRingerSwitchAvailable();
 }
 
-- (int64_t)_indexForAngle:(double)a3
+- (int64_t)_indexForAngle:(double)angle
 {
   v4 = [(NSMutableArray *)self->_rockerItems count];
   if (v4 == 6)
   {
     result = 0;
-    if (a3 < 315.0 && a3 >= 0.0)
+    if (angle < 315.0 && angle >= 0.0)
     {
-      if (a3 >= 45.0)
+      if (angle >= 45.0)
       {
-        if (a3 >= 135.0)
+        if (angle >= 135.0)
         {
-          if (a3 < 180.0)
+          if (angle < 180.0)
           {
             return 3;
           }
 
-          if (a3 < 225.0)
+          if (angle < 225.0)
           {
             return 4;
           }
 
-          v6 = a3 >= 315.0 || a3 < 225.0;
+          v6 = angle >= 315.0 || angle < 225.0;
           v7 = 5;
           goto LABEL_11;
         }
@@ -740,13 +740,13 @@ LABEL_14:
     }
 
     result = 0;
-    if (a3 < 315.0 && a3 >= 45.0)
+    if (angle < 315.0 && angle >= 45.0)
     {
-      if (a3 >= 135.0)
+      if (angle >= 135.0)
       {
-        if (a3 >= 225.0)
+        if (angle >= 225.0)
         {
-          v6 = a3 >= 315.0 || a3 < 225.0;
+          v6 = angle >= 315.0 || angle < 225.0;
           v7 = 3;
 LABEL_11:
           if (v6)
@@ -770,9 +770,9 @@ LABEL_11:
   return result;
 }
 
-- (void)_highlightRockerButtonAtAngle:(double)a3
+- (void)_highlightRockerButtonAtAngle:(double)angle
 {
-  v4 = [(HNDRocker *)self _indexForAngle:a3];
+  v4 = [(HNDRocker *)self _indexForAngle:angle];
   self->_selectedButtonIndex = v4;
   [(HNDRockerButton *)self->_selectedButton setSelected:0];
   v5 = [(NSMutableArray *)self->_rockerItems objectAtIndex:v4];
@@ -785,21 +785,21 @@ LABEL_11:
   [(AXPIFingerView *)middleCircle setSelected:0];
 }
 
-- (BOOL)_angleIndicatesReturnToCenter:(double)a3
+- (BOOL)_angleIndicatesReturnToCenter:(double)center
 {
   v5 = [(NSMutableArray *)self->_rockerItems count];
   if (v5 == 6)
   {
     selectedButtonIndex = self->_selectedButtonIndex;
-    if (a3 >= 225.0 || (a3 >= 135.0 ? (v13 = selectedButtonIndex == 0) : (v13 = 0), !v13))
+    if (center >= 225.0 || (center >= 135.0 ? (v13 = selectedButtonIndex == 0) : (v13 = 0), !v13))
     {
-      if (a3 >= 225.0 || (a3 >= 135.0 ? (v14 = selectedButtonIndex == 1) : (v14 = 0), !v14))
+      if (center >= 225.0 || (center >= 135.0 ? (v14 = selectedButtonIndex == 1) : (v14 = 0), !v14))
       {
-        if (a3 >= 315.0 || (a3 >= 225.0 ? (v15 = selectedButtonIndex == 2) : (v15 = 0), !v15))
+        if (center >= 315.0 || (center >= 225.0 ? (v15 = selectedButtonIndex == 2) : (v15 = 0), !v15))
         {
-          v17 = a3 >= 315.0 && (selectedButtonIndex - 3) < 2;
+          v17 = center >= 315.0 && (selectedButtonIndex - 3) < 2;
           result = 1;
-          if (a3 >= 45.0 && !v17 && (a3 >= 135.0 || a3 < 45.0 || selectedButtonIndex != 5))
+          if (center >= 45.0 && !v17 && (center >= 135.0 || center < 45.0 || selectedButtonIndex != 5))
           {
             return 0;
           }
@@ -818,19 +818,19 @@ LABEL_11:
   }
 
   v6 = self->_selectedButtonIndex;
-  if (a3 < 225.0 && a3 >= 135.0 && v6 == 0)
+  if (center < 225.0 && center >= 135.0 && v6 == 0)
   {
     return 1;
   }
 
-  if (a3 < 315.0 && a3 >= 225.0 && v6 == 1)
+  if (center < 315.0 && center >= 225.0 && v6 == 1)
   {
     return 1;
   }
 
-  v10 = a3 >= 315.0 && v6 == 2;
+  v10 = center >= 315.0 && v6 == 2;
   result = 1;
-  if (a3 >= 45.0 && !v10 && (a3 >= 135.0 || a3 < 45.0 || v6 != 3))
+  if (center >= 45.0 && !v10 && (center >= 135.0 || center < 45.0 || v6 != 3))
   {
     return 0;
   }
@@ -838,10 +838,10 @@ LABEL_11:
   return result;
 }
 
-- (id)rockerHitTest:(CGPoint)a3
+- (id)rockerHitTest:(CGPoint)test
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -885,53 +885,53 @@ LABEL_11:
   }
 }
 
-- (void)_updateSelectedButton:(id)a3
+- (void)_updateSelectedButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   selectedButton = self->_selectedButton;
-  if (selectedButton != v5)
+  if (selectedButton != buttonCopy)
   {
-    v7 = v5;
+    v7 = buttonCopy;
     [(HNDRockerButton *)selectedButton setSelected:0];
     [(HNDRockerButton *)self->_selectedButton setHighlighted:0];
-    objc_storeStrong(&self->_selectedButton, a3);
+    objc_storeStrong(&self->_selectedButton, button);
     [(HNDRockerButton *)self->_selectedButton setSelected:1];
     selectedButton = [(NSMutableArray *)self->_rockerItems indexOfObject:self->_selectedButton];
-    v5 = v7;
+    buttonCopy = v7;
     self->_selectedButtonIndex = selectedButton;
   }
 
-  _objc_release_x1(selectedButton, v5);
+  _objc_release_x1(selectedButton, buttonCopy);
 }
 
-- (void)hoveredTo:(CGPoint)a3
+- (void)hoveredTo:(CGPoint)to
 {
-  v4 = [(HNDRocker *)self rockerHitTest:a3.x, a3.y];
+  v4 = [(HNDRocker *)self rockerHitTest:to.x, to.y];
   [(HNDRocker *)self hoveredToRockerButton:v4];
 }
 
-- (CGRect)onScreenFrameForRockerButton:(id)a3
+- (CGRect)onScreenFrameForRockerButton:(id)button
 {
-  v4 = a3;
-  v5 = [v4 imageView];
-  [v5 frame];
+  buttonCopy = button;
+  imageView = [buttonCopy imageView];
+  [imageView frame];
   x = v6;
   y = v8;
   width = v10;
   height = v12;
 
-  v14 = [v4 label];
+  label = [buttonCopy label];
 
-  if (v14)
+  if (label)
   {
-    v15 = [v4 imageView];
-    [v15 frame];
+    imageView2 = [buttonCopy imageView];
+    [imageView2 frame];
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
-    v24 = [v4 label];
-    [v24 frame];
+    label2 = [buttonCopy label];
+    [label2 frame];
     v44.origin.x = v25;
     v44.origin.y = v26;
     v44.size.width = v27;
@@ -947,7 +947,7 @@ LABEL_11:
     height = v42.size.height;
   }
 
-  [(HNDRocker *)self convertRect:v4 fromView:x, y, width, height];
+  [(HNDRocker *)self convertRect:buttonCopy fromView:x, y, width, height];
   v30 = v29;
   v32 = v31;
   v34 = v33;
@@ -988,22 +988,22 @@ LABEL_11:
   }
 }
 
-- (void)showVolumeBar:(BOOL)a3 withProgress:(double)a4
+- (void)showVolumeBar:(BOOL)bar withProgress:(double)progress
 {
-  if (a3)
+  if (bar)
   {
     v6 = +[AXSettings sharedInstance];
-    v7 = [v6 assistiveTouchMainScreenCustomization];
-    v8 = [v7 allValues];
+    assistiveTouchMainScreenCustomization = [v6 assistiveTouchMainScreenCustomization];
+    allValues = [assistiveTouchMainScreenCustomization allValues];
 
-    if ([v8 containsObject:AXAssistiveTouchIconTypeVolumeUp])
+    if ([allValues containsObject:AXAssistiveTouchIconTypeVolumeUp])
     {
       v9 = 1;
     }
 
     else
     {
-      v9 = [v8 containsObject:AXAssistiveTouchIconTypeVolumeDown];
+      v9 = [allValues containsObject:AXAssistiveTouchIconTypeVolumeDown];
     }
 
     state = self->_state;
@@ -1019,15 +1019,15 @@ LABEL_11:
         self->_volumeBar = v15;
 
         [(HNDVolumeBar *)self->_volumeBar setTranslatesAutoresizingMaskIntoConstraints:0];
-        v17 = [(HNDRocker *)self _contentView];
-        [v17 addSubview:self->_volumeBar];
-        v28 = [(HNDVolumeBar *)self->_volumeBar centerXAnchor];
-        v18 = [v17 centerXAnchor];
-        v19 = [v28 constraintEqualToAnchor:v18];
+        _contentView = [(HNDRocker *)self _contentView];
+        [_contentView addSubview:self->_volumeBar];
+        centerXAnchor = [(HNDVolumeBar *)self->_volumeBar centerXAnchor];
+        centerXAnchor2 = [_contentView centerXAnchor];
+        v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
         v34[0] = v19;
-        v20 = [(HNDVolumeBar *)self->_volumeBar centerYAnchor];
-        v21 = [v17 centerYAnchor];
-        v22 = [v20 constraintEqualToAnchor:v21];
+        centerYAnchor = [(HNDVolumeBar *)self->_volumeBar centerYAnchor];
+        centerYAnchor2 = [_contentView centerYAnchor];
+        v22 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
         v34[1] = v22;
         v23 = [NSArray arrayWithObjects:v34 count:2];
         [NSLayoutConstraint activateConstraints:v23];
@@ -1035,7 +1035,7 @@ LABEL_11:
         volumeBar = self->_volumeBar;
       }
 
-      [(HNDVolumeBar *)volumeBar setProgress:a4];
+      [(HNDVolumeBar *)volumeBar setProgress:progress];
       [(HNDVolumeBar *)self->_volumeBar setNeedsDisplay];
       volumeHideTimer = self->_volumeHideTimer;
       if (!volumeHideTimer)
@@ -1096,7 +1096,7 @@ LABEL_11:
   }
 }
 
-- (void)_goBackInMenuState:(int)a3
+- (void)_goBackInMenuState:(int)state
 {
   state = self->_state;
   if (state <= 6)
@@ -1105,7 +1105,7 @@ LABEL_11:
     {
       if ((state - 2) >= 2)
       {
-        if (state == 1 && a3 == 3)
+        if (state == 1 && state == 3)
         {
 
           [(HNDRocker *)self _menuExited];
@@ -1119,36 +1119,36 @@ LABEL_11:
 
     if (state == 5)
     {
-      if (a3 != 3)
+      if (state != 3)
       {
         return;
       }
 
       if (j__AXDeviceIsSiriAvailable())
       {
-        v7 = 6;
+        intValue2 = 6;
       }
 
       else if (j__AXDeviceIsVoiceControlAvailable())
       {
-        v7 = 6;
+        intValue2 = 6;
       }
 
       else
       {
-        v7 = 1;
+        intValue2 = 1;
       }
 
       goto LABEL_29;
     }
 
 LABEL_22:
-    if (a3 != 3)
+    if (state != 3)
     {
       return;
     }
 
-    v7 = 2;
+    intValue2 = 2;
     goto LABEL_29;
   }
 
@@ -1156,12 +1156,12 @@ LABEL_22:
   {
     if (state != 7)
     {
-      if (a3 != 3)
+      if (state != 3)
       {
         return;
       }
 
-      v7 = 7;
+      intValue2 = 7;
       goto LABEL_29;
     }
 
@@ -1172,7 +1172,7 @@ LABEL_22:
   {
     if (state != 11)
     {
-      if (state != 12 || a3 != 3)
+      if (state != 12 || state != 3)
       {
         return;
       }
@@ -1184,40 +1184,40 @@ LABEL_22:
   }
 
 LABEL_27:
-  if (a3 != 3)
+  if (state != 3)
   {
     return;
   }
 
 LABEL_28:
-  v7 = 1;
+  intValue2 = 1;
 LABEL_29:
   if ([(NSMutableArray *)self->_stackState count])
   {
-    v8 = [(NSMutableArray *)self->_stackState lastObject];
-    v9 = [v8 intValue];
+    lastObject = [(NSMutableArray *)self->_stackState lastObject];
+    intValue = [lastObject intValue];
     v10 = self->_state;
 
-    if (v10 != v9)
+    if (v10 != intValue)
     {
       _AXAssert();
     }
 
     [(NSMutableArray *)self->_stackState removeLastObject];
-    v11 = [(NSMutableArray *)self->_stackState lastObject];
-    v7 = [v11 intValue];
+    lastObject2 = [(NSMutableArray *)self->_stackState lastObject];
+    intValue2 = [lastObject2 intValue];
   }
 
-  self->_state = v7;
+  self->_state = intValue2;
 
   [(HNDRocker *)self _loadMenuItems:1 viewForCenteringAtStart:0 goBackwards:1 originalState:state];
 }
 
-- (void)performPress:(int)a3 type:(int)a4 source:(int)a5
+- (void)performPress:(int)press type:(int)type source:(int)source
 {
-  v7 = *&a3;
-  [(AXPIFingerView *)self->_middleCircle setPressed:a3 == 2 animated:1];
-  if (a4 == 2)
+  v7 = *&press;
+  [(AXPIFingerView *)self->_middleCircle setPressed:press == 2 animated:1];
+  if (type == 2)
   {
 LABEL_2:
 
@@ -1228,7 +1228,7 @@ LABEL_2:
   selectedButton = self->_selectedButton;
   if (!selectedButton)
   {
-    if (a5 == 2 && a4 == 1)
+    if (source == 2 && type == 1)
     {
       return;
     }
@@ -1239,33 +1239,33 @@ LABEL_2:
   [(HNDRockerButton *)selectedButton performPress:v7 == 2];
 }
 
-- (void)handleRealDownEvent:(CGPoint)a3
+- (void)handleRealDownEvent:(CGPoint)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = event.y;
+  x = event.x;
   self->_farthestTrackingDistance = 0.0;
   p_windowDownStartPoint = &self->_windowDownStartPoint;
-  v7 = [(HNDRocker *)self window];
-  [v7 convertPoint:self fromView:{x, y}];
+  window = [(HNDRocker *)self window];
+  [window convertPoint:self fromView:{x, y}];
   p_windowDownStartPoint->x = v8;
   p_windowDownStartPoint->y = v9;
 
   if (!self->_style)
   {
     [(AXDispatchTimer *)self->_nubbitFadeTimer cancel];
-    v10 = [(HNDView *)self controlDelegate];
-    [v10 viewPressedDown:self];
+    controlDelegate = [(HNDView *)self controlDelegate];
+    [controlDelegate viewPressedDown:self];
   }
 }
 
-- (void)handleRealMoveEvent:(CGPoint)a3 maxOrb:(double)a4 currentForce:(double)a5
+- (void)handleRealMoveEvent:(CGPoint)event maxOrb:(double)orb currentForce:(double)force
 {
-  y = a3.y;
-  x = a3.x;
-  if ([(HNDRocker *)self pointInside:0 withEvent:a3.x, a3.y, a4, a5]&& AXForceTouchAvailableAndEnabled())
+  y = event.y;
+  x = event.x;
+  if ([(HNDRocker *)self pointInside:0 withEvent:event.x, event.y, orb, force]&& AXForceTouchAvailableAndEnabled())
   {
-    v9 = [(HNDRocker *)self window];
-    [v9 convertPoint:self fromView:{x, y}];
+    window = [(HNDRocker *)self window];
+    [window convertPoint:self fromView:{x, y}];
     SCRCMathGetDistanceBetweenPoints();
     v11 = v10;
 
@@ -1279,7 +1279,7 @@ LABEL_2:
     if (!self->_activatedOrbAction)
     {
       AXForceTouchThresholdPeek();
-      if (v13 < a4 && self->_farthestTrackingDistance < 15.0)
+      if (v13 < orb && self->_farthestTrackingDistance < 15.0)
       {
         v14 = ASTLogCommon();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -1289,8 +1289,8 @@ LABEL_2:
         }
 
         self->_orbActionThresholdReached = 1;
-        v15 = [(HNDView *)self controlDelegate];
-        [v15 viewOrbActionTriggered:self];
+        controlDelegate = [(HNDView *)self controlDelegate];
+        [controlDelegate viewOrbActionTriggered:self];
 
         [(HNDRocker *)self fadeNubbit];
         self->_activatedOrbAction = 1;
@@ -1299,10 +1299,10 @@ LABEL_2:
   }
 }
 
-- (void)handleRealUpEvent:(CGPoint)a3 maxOrb:(double)a4
+- (void)handleRealUpEvent:(CGPoint)event maxOrb:(double)orb
 {
   style = self->_style;
-  v7 = [(HNDRocker *)self pointInside:0 withEvent:a3.x, a3.y];
+  v7 = [(HNDRocker *)self pointInside:0 withEvent:event.x, event.y];
   if (style)
   {
     if (v7 && !self->_selectedButton)
@@ -1315,8 +1315,8 @@ LABEL_2:
   {
     if (v7)
     {
-      v8 = [(HNDRocker *)self displayManager];
-      if ([v8 playedHapticForCurrentEvent])
+      displayManager = [(HNDRocker *)self displayManager];
+      if ([displayManager playedHapticForCurrentEvent])
       {
         orbActionThresholdReached = self->_orbActionThresholdReached;
 
@@ -1331,10 +1331,10 @@ LABEL_2:
       {
       }
 
-      if (!AXForceTouchAvailableAndEnabled() || (AXForceTouchThresholdPeek(), v10 >= a4))
+      if (!AXForceTouchAvailableAndEnabled() || (AXForceTouchThresholdPeek(), v10 >= orb))
       {
-        v11 = [(HNDView *)self controlDelegate];
-        [v11 viewPressedUp:self];
+        controlDelegate = [(HNDView *)self controlDelegate];
+        [controlDelegate viewPressedUp:self];
       }
     }
 
@@ -1350,14 +1350,14 @@ LABEL_2:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = [(HNDRocker *)self initialItems];
-  v4 = [(HNDRocker *)self touchItems];
-  v5 = [(HNDRocker *)self hardwareItems];
-  v6 = [(HNDRocker *)self rotateItems];
-  v7 = [(HNDRocker *)self moreItems];
-  v8 = [(HNDRocker *)self scrollItems];
-  v9 = [(HNDRocker *)self dwellItems];
-  v10 = [NSArray axArrayWithPossiblyNilArrays:8, v3, v4, v5, v6, v7, v8, v9, self->_rockerItems];
+  initialItems = [(HNDRocker *)self initialItems];
+  touchItems = [(HNDRocker *)self touchItems];
+  hardwareItems = [(HNDRocker *)self hardwareItems];
+  rotateItems = [(HNDRocker *)self rotateItems];
+  moreItems = [(HNDRocker *)self moreItems];
+  scrollItems = [(HNDRocker *)self scrollItems];
+  dwellItems = [(HNDRocker *)self dwellItems];
+  v10 = [NSArray axArrayWithPossiblyNilArrays:8, initialItems, touchItems, hardwareItems, rotateItems, moreItems, scrollItems, dwellItems, self->_rockerItems];
 
   v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
@@ -1374,13 +1374,13 @@ LABEL_2:
         }
 
         v15 = *(*(&v19 + 1) + 8 * i);
-        v16 = [v15 substantialTransitionOccurredBlock];
+        substantialTransitionOccurredBlock = [v15 substantialTransitionOccurredBlock];
 
-        if (v16)
+        if (substantialTransitionOccurredBlock)
         {
           v17 = objc_autoreleasePoolPush();
-          v18 = [v15 substantialTransitionOccurredBlock];
-          v18[2]();
+          substantialTransitionOccurredBlock2 = [v15 substantialTransitionOccurredBlock];
+          substantialTransitionOccurredBlock2[2]();
 
           objc_autoreleasePoolPop(v17);
         }
@@ -1393,22 +1393,22 @@ LABEL_2:
   }
 }
 
-- (id)_rockerButtonForLocation:(id)a3 buttonType:(id)a4
+- (id)_rockerButtonForLocation:(id)location buttonType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  typeCopy = type;
   if (qword_100218A88 != -1)
   {
     sub_1001297AC();
   }
 
-  if ([v7 isEqualToString:AXAssistiveTouchIconTypeDwellPauseToggle])
+  if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeDwellPauseToggle])
   {
     v8 = +[HNDHandManager sharedManager];
-    v9 = [v8 dwellControlPaused];
+    dwellControlPaused = [v8 dwellControlPaused];
 
     v10 = &AXAssistiveTouchIconTypeDwellResume;
-    if (!v9)
+    if (!dwellControlPaused)
     {
       v10 = &AXAssistiveTouchIconTypeDwellPause;
     }
@@ -1416,16 +1416,16 @@ LABEL_2:
 
   else
   {
-    if (![v7 isEqualToString:AXAssistiveTouchIconTypeDwellLockToggle])
+    if (![typeCopy isEqualToString:AXAssistiveTouchIconTypeDwellLockToggle])
     {
       goto LABEL_11;
     }
 
     v11 = +[HNDHandManager sharedManager];
-    v12 = [v11 dwellControlAutorevertEnabled];
+    dwellControlAutorevertEnabled = [v11 dwellControlAutorevertEnabled];
 
     v10 = &AXAssistiveTouchIconTypeDwellUnlock;
-    if (v12)
+    if (dwellControlAutorevertEnabled)
     {
       v10 = &AXAssistiveTouchIconTypeDwellLock;
     }
@@ -1433,17 +1433,17 @@ LABEL_2:
 
   v13 = *v10;
 
-  v7 = v13;
+  typeCopy = v13;
 LABEL_11:
-  v14 = [qword_100218A78 containsObject:v7];
-  v15 = [qword_100218A80 containsObject:v7];
+  v14 = [qword_100218A78 containsObject:typeCopy];
+  v15 = [qword_100218A80 containsObject:typeCopy];
   v16 = AXUIAssistiveTouchImageNameForName();
   v17 = AXUIAssistiveTouchStringForName();
   v18 = [HNDRockerButton buttonWithTitle:v17 imageName:v16 downBlock:0 upBlock:0 showWithGuidedAccess:v14 ^ 1 showWithAssistiveAccess:v15 ^ 1];
 
-  [v18 setType:v7];
+  [v18 setType:typeCopy];
   v19 = AXAssistiveTouchIconTypeTripleClick;
-  if ([v7 isEqualToString:AXAssistiveTouchIconTypeTripleClick])
+  if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeTripleClick])
   {
     v20 = self->_tripleClickButton == 0;
     objc_storeStrong(&self->_tripleClickButton, v18);
@@ -1454,12 +1454,12 @@ LABEL_11:
     }
 
     v22 = +[AXSpringBoardServer server];
-    v23 = [v22 visibleTripleClickItems];
+    visibleTripleClickItems = [v22 visibleTripleClickItems];
 
-    if ([v23 count] == 1)
+    if ([visibleTripleClickItems count] == 1)
     {
-      v24 = [v23 firstObject];
-      v25 = +[AXTripleClickHelpers localizedTitleForAccessibilityShortcutOption:](AXTripleClickHelpers, "localizedTitleForAccessibilityShortcutOption:", [v24 intValue]);
+      firstObject = [visibleTripleClickItems firstObject];
+      v25 = +[AXTripleClickHelpers localizedTitleForAccessibilityShortcutOption:](AXTripleClickHelpers, "localizedTitleForAccessibilityShortcutOption:", [firstObject intValue]);
 
       if (v25)
       {
@@ -1468,14 +1468,14 @@ LABEL_11:
 
       else
       {
-        v26 = [v18 title];
-        [v18 setTitle:v26];
+        title = [v18 title];
+        [v18 setTitle:title];
       }
     }
   }
 
   objc_initWeak(&location, self);
-  if ([v7 isEqualToString:AXAssistiveTouchIconTypeNotificationCenter])
+  if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeNotificationCenter])
   {
     v247[0] = _NSConcreteStackBlock;
     v247[1] = 3221225472;
@@ -1485,7 +1485,7 @@ LABEL_11:
     [v18 setUpBlock:v247];
     objc_destroyWeak(&v248);
 LABEL_52:
-    [v18 setLocation:v6];
+    [v18 setLocation:locationCopy];
     v27 = v18;
 LABEL_53:
     v28 = v27;
@@ -1493,7 +1493,7 @@ LABEL_53:
     goto LABEL_54;
   }
 
-  if ([v7 isEqualToString:AXAssistiveTouchIconTypePinch])
+  if ([typeCopy isEqualToString:AXAssistiveTouchIconTypePinch])
   {
     v245[0] = _NSConcreteStackBlock;
     v245[1] = 3221225472;
@@ -1505,7 +1505,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if ([v7 isEqualToString:AXAssistiveTouchIconTypeRotate])
+  if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeRotate])
   {
     v243[0] = _NSConcreteStackBlock;
     v243[1] = 3221225472;
@@ -1517,7 +1517,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if ([v7 isEqualToString:AXAssistiveTouchIconTypePinchAndRotate])
+  if ([typeCopy isEqualToString:AXAssistiveTouchIconTypePinchAndRotate])
   {
     v241[0] = _NSConcreteStackBlock;
     v241[1] = 3221225472;
@@ -1529,7 +1529,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if ([v7 isEqualToString:AXAssistiveTouchIconTypeDoubleTap])
+  if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeDoubleTap])
   {
     v239[0] = _NSConcreteStackBlock;
     v239[1] = 3221225472;
@@ -1541,7 +1541,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if ([v7 isEqualToString:AXAssistiveTouchIconTypeLongPress])
+  if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeLongPress])
   {
     v237[0] = _NSConcreteStackBlock;
     v237[1] = 3221225472;
@@ -1553,7 +1553,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if ([v7 isEqualToString:AXAssistiveTouchIconTypeDragAndDrop])
+  if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeDragAndDrop])
   {
     v235[0] = _NSConcreteStackBlock;
     v235[1] = 3221225472;
@@ -1565,7 +1565,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if ([v7 isEqualToString:AXAssistiveTouchIconTypeMoveMenu])
+  if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeMoveMenu])
   {
     v233[0] = _NSConcreteStackBlock;
     v233[1] = 3221225472;
@@ -1577,7 +1577,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if ([v7 isEqualToString:AXAssistiveTouchIconTypeSpotlight])
+  if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeSpotlight])
   {
     v231[0] = _NSConcreteStackBlock;
     v231[1] = 3221225472;
@@ -1589,7 +1589,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if ([v7 isEqualToString:AXAssistiveTouchIconTypeForceTap])
+  if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeForceTap])
   {
     v229[0] = _NSConcreteStackBlock;
     v229[1] = 3221225472;
@@ -1601,7 +1601,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if ([v7 isEqualToString:AXAssistiveTouchIconTypeLockScreen])
+  if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeLockScreen])
   {
     [v18 setDownBlock:0];
     v227[0] = _NSConcreteStackBlock;
@@ -1615,7 +1615,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if ([v7 isEqualToString:AXAssistiveTouchIconTypeVolumeDown])
+  if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeVolumeDown])
   {
     v225[0] = _NSConcreteStackBlock;
     v225[1] = 3221225472;
@@ -1635,7 +1635,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if ([v7 isEqualToString:AXAssistiveTouchIconTypeVolumeUp])
+  if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeVolumeUp])
   {
     v221[0] = _NSConcreteStackBlock;
     v221[1] = 3221225472;
@@ -1655,7 +1655,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if ([v7 isEqualToString:v19])
+  if ([typeCopy isEqualToString:v19])
   {
     v217[0] = _NSConcreteStackBlock;
     v217[1] = 3221225472;
@@ -1668,7 +1668,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if ([v7 isEqualToString:AXAssistiveTouchIconTypeRotateScreen])
+  if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeRotateScreen])
   {
     v215[0] = _NSConcreteStackBlock;
     v215[1] = 3221225472;
@@ -1681,7 +1681,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if ([v7 isEqualToString:AXAssistiveTouchIconTypeMute])
+  if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeMute])
   {
     v213[0] = _NSConcreteStackBlock;
     v213[1] = 3221225472;
@@ -1695,7 +1695,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if (AXDeviceHasStaccato() && [v7 isEqualToString:AXAssistiveTouchIconTypeActionButton])
+  if (AXDeviceHasStaccato() && [typeCopy isEqualToString:AXAssistiveTouchIconTypeActionButton])
   {
     v211[0] = _NSConcreteStackBlock;
     v211[1] = 3221225472;
@@ -1709,7 +1709,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if (AXDeviceSupportsCameraButton() && [v7 isEqualToString:AXAssistiveTouchIconTypeCameraButton])
+  if (AXDeviceSupportsCameraButton() && [typeCopy isEqualToString:AXAssistiveTouchIconTypeCameraButton])
   {
     v209[0] = _NSConcreteStackBlock;
     v209[1] = 3221225472;
@@ -1721,7 +1721,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if (AXDeviceSupportsCameraButton() && [v7 isEqualToString:AXAssistiveTouchIconTypeCameraButtonLightPress])
+  if (AXDeviceSupportsCameraButton() && [typeCopy isEqualToString:AXAssistiveTouchIconTypeCameraButtonLightPress])
   {
     v207[0] = _NSConcreteStackBlock;
     v207[1] = 3221225472;
@@ -1733,7 +1733,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if (AXDeviceSupportsCameraButton() && [v7 isEqualToString:AXAssistiveTouchIconTypeCameraButtonDoubleLightPress])
+  if (AXDeviceSupportsCameraButton() && [typeCopy isEqualToString:AXAssistiveTouchIconTypeCameraButtonDoubleLightPress])
   {
     v205[0] = _NSConcreteStackBlock;
     v205[1] = 3221225472;
@@ -1745,7 +1745,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if (AXDeviceIsPhone() && AXDeviceHasGreyMatterEnabled() && [v7 isEqualToString:AXAssistiveTouchIconTypeVisualIntelligence])
+  if (AXDeviceIsPhone() && AXDeviceHasGreyMatterEnabled() && [typeCopy isEqualToString:AXAssistiveTouchIconTypeVisualIntelligence])
   {
     v203[0] = _NSConcreteStackBlock;
     v203[1] = 3221225472;
@@ -1757,7 +1757,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if ([v7 isEqualToString:AXAssistiveTouchIconTypeOrientation])
+  if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeOrientation])
   {
     v201[0] = _NSConcreteStackBlock;
     v201[1] = 3221225472;
@@ -1771,7 +1771,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if ([v7 isEqualToString:AXAssistiveTouchIconTypeScreenshot])
+  if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeScreenshot])
   {
     v199[0] = _NSConcreteStackBlock;
     v199[1] = 3221225472;
@@ -1783,7 +1783,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if (AXDeviceSupportsVirtualTrackpad() && [v7 isEqualToString:AXAssistiveTouchIconTypeTrackpad])
+  if (AXDeviceSupportsVirtualTrackpad() && [typeCopy isEqualToString:AXAssistiveTouchIconTypeTrackpad])
   {
     v197[0] = _NSConcreteStackBlock;
     v197[1] = 3221225472;
@@ -1795,7 +1795,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if ([v7 isEqualToString:AXAssistiveTouchIconTypeMenuBar])
+  if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeMenuBar])
   {
     v195[0] = _NSConcreteStackBlock;
     v195[1] = 3221225472;
@@ -1807,7 +1807,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if ([v7 isEqualToString:AXAssistiveTouchIconTypeShake])
+  if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeShake])
   {
     v193[0] = _NSConcreteStackBlock;
     v193[1] = 3221225472;
@@ -1819,7 +1819,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if ([v7 isEqualToString:AXAssistiveTouchIconTypeAppSwitcher])
+  if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeAppSwitcher])
   {
     v191[0] = _NSConcreteStackBlock;
     v191[1] = 3221225472;
@@ -1831,7 +1831,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if ([v7 isEqualToString:AXAssistiveTouchIconTypeDevice])
+  if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeDevice])
   {
     v189[0] = _NSConcreteStackBlock;
     v189[1] = 3221225472;
@@ -1844,7 +1844,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if ([v7 isEqualToString:AXAssistiveTouchIconTypeControlCenter])
+  if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeControlCenter])
   {
     v187[0] = _NSConcreteStackBlock;
     v187[1] = 3221225472;
@@ -1857,7 +1857,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if ([v7 isEqualToString:AXAssistiveTouchIconTypeHome])
+  if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeHome])
   {
     v185[0] = _NSConcreteStackBlock;
     v185[1] = 3221225472;
@@ -1878,7 +1878,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if ([v7 isEqualToString:AXAssistiveTouchIconTypeCustom])
+  if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeCustom])
   {
     v181[0] = _NSConcreteStackBlock;
     v181[1] = 3221225472;
@@ -1891,7 +1891,7 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if ([v7 isEqualToString:AXAssistiveTouchIconTypeSiri])
+  if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeSiri])
   {
     if (j__AXDeviceIsSiriAvailable())
     {
@@ -1915,8 +1915,8 @@ LABEL_53:
       v172[3] = &unk_1001D4B88;
       v172[4] = &v173;
       [v18 setSubstantialTransitionOccurredBlock:v172];
-      v31 = [v18 substantialTransitionOccurredBlock];
-      v31[2]();
+      substantialTransitionOccurredBlock = [v18 substantialTransitionOccurredBlock];
+      substantialTransitionOccurredBlock[2]();
 
       _Block_object_dispose(&v173, 8);
       objc_destroyWeak(&v180);
@@ -1924,10 +1924,10 @@ LABEL_53:
     }
 
     v33 = AXAssistiveTouchIconTypeVoiceControl;
-    v27 = [(HNDRocker *)self _rockerButtonForLocation:v6 buttonType:AXAssistiveTouchIconTypeVoiceControl];
+    v27 = [(HNDRocker *)self _rockerButtonForLocation:locationCopy buttonType:AXAssistiveTouchIconTypeVoiceControl];
 
-    v34 = [v27 type];
-    LODWORD(v33) = [v34 isEqualToString:v33];
+    type = [v27 type];
+    LODWORD(v33) = [type isEqualToString:v33];
 
     if (!v33)
     {
@@ -1939,7 +1939,7 @@ LABEL_101:
     goto LABEL_53;
   }
 
-  if ([v7 isEqualToString:AXAssistiveTouchIconTypeTypeToSiri])
+  if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeTypeToSiri])
   {
     if (j__AXDeviceIsSiriAvailable())
     {
@@ -1963,8 +1963,8 @@ LABEL_101:
       v169[3] = &unk_1001D4B88;
       v169[4] = &v173;
       [v18 setSubstantialTransitionOccurredBlock:v169];
-      v32 = [v18 substantialTransitionOccurredBlock];
-      v32[2]();
+      substantialTransitionOccurredBlock2 = [v18 substantialTransitionOccurredBlock];
+      substantialTransitionOccurredBlock2[2]();
 
       _Block_object_dispose(&v173, 8);
       objc_destroyWeak(&v171);
@@ -1972,10 +1972,10 @@ LABEL_101:
     }
 
     v35 = AXAssistiveTouchIconTypeVoiceControl;
-    v27 = [(HNDRocker *)self _rockerButtonForLocation:v6 buttonType:AXAssistiveTouchIconTypeVoiceControl];
+    v27 = [(HNDRocker *)self _rockerButtonForLocation:locationCopy buttonType:AXAssistiveTouchIconTypeVoiceControl];
 
-    v36 = [v27 type];
-    LODWORD(v35) = [v36 isEqualToString:v35];
+    type2 = [v27 type];
+    LODWORD(v35) = [type2 isEqualToString:v35];
 
     if (!v35)
     {
@@ -1985,9 +1985,9 @@ LABEL_101:
     goto LABEL_101;
   }
 
-  if (![v7 isEqualToString:AXAssistiveTouchIconTypeVoiceControl])
+  if (![typeCopy isEqualToString:AXAssistiveTouchIconTypeVoiceControl])
   {
-    if ([v7 isEqualToString:AXAssistiveTouchIconTypeCommandAndControl])
+    if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeCommandAndControl])
     {
       v165[0] = _NSConcreteStackBlock;
       v165[1] = 3221225472;
@@ -1998,7 +1998,7 @@ LABEL_101:
       objc_destroyWeak(&v166);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeGestures])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeGestures])
     {
       v163[0] = _NSConcreteStackBlock;
       v163[1] = 3221225472;
@@ -2010,7 +2010,7 @@ LABEL_101:
       objc_destroyWeak(&v164);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeSOS])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeSOS])
     {
       v161[0] = _NSConcreteStackBlock;
       v161[1] = 3221225472;
@@ -2021,7 +2021,7 @@ LABEL_101:
       objc_destroyWeak(&v162);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeDetectionMode])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeDetectionMode])
     {
       v159[0] = _NSConcreteStackBlock;
       v159[1] = 3221225472;
@@ -2032,7 +2032,7 @@ LABEL_101:
       objc_destroyWeak(&v160);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeWatchRemoteScreen])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeWatchRemoteScreen])
     {
       v157[0] = _NSConcreteStackBlock;
       v157[1] = 3221225472;
@@ -2043,7 +2043,7 @@ LABEL_101:
       objc_destroyWeak(&v158);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeBackgroundSounds])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeBackgroundSounds])
     {
       v155[0] = _NSConcreteStackBlock;
       v155[1] = 3221225472;
@@ -2054,7 +2054,7 @@ LABEL_101:
       objc_destroyWeak(&v156);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeLiveCaptions])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeLiveCaptions])
     {
       v153[0] = _NSConcreteStackBlock;
       v153[1] = 3221225472;
@@ -2065,7 +2065,7 @@ LABEL_101:
       objc_destroyWeak(&v154);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeLiveSpeech])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeLiveSpeech])
     {
       v151[0] = _NSConcreteStackBlock;
       v151[1] = 3221225472;
@@ -2076,7 +2076,7 @@ LABEL_101:
       objc_destroyWeak(&v152);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeDimFlashingLights])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeDimFlashingLights])
     {
       v149[0] = _NSConcreteStackBlock;
       v149[1] = 3221225472;
@@ -2087,7 +2087,7 @@ LABEL_101:
       objc_destroyWeak(&v150);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeHapticMusic])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeHapticMusic])
     {
       v147[0] = _NSConcreteStackBlock;
       v147[1] = 3221225472;
@@ -2099,7 +2099,7 @@ LABEL_101:
       objc_destroyWeak(&v148);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeMotionCues])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeMotionCues])
     {
       v145[0] = _NSConcreteStackBlock;
       v145[1] = 3221225472;
@@ -2111,7 +2111,7 @@ LABEL_101:
       objc_destroyWeak(&v146);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeNearbyDeviceControl])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeNearbyDeviceControl])
     {
       v143[0] = _NSConcreteStackBlock;
       v143[1] = 3221225472;
@@ -2122,7 +2122,7 @@ LABEL_101:
       objc_destroyWeak(&v144);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeAccessibilityReader])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeAccessibilityReader])
     {
       v141[0] = _NSConcreteStackBlock;
       v141[1] = 3221225472;
@@ -2133,7 +2133,7 @@ LABEL_101:
       objc_destroyWeak(&v142);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeRebootDevice])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeRebootDevice])
     {
       v139[0] = _NSConcreteStackBlock;
       v139[1] = 3221225472;
@@ -2144,7 +2144,7 @@ LABEL_101:
       objc_destroyWeak(&v140);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeReachability])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeReachability])
     {
       v137[0] = _NSConcreteStackBlock;
       v137[1] = 3221225472;
@@ -2155,7 +2155,7 @@ LABEL_101:
       objc_destroyWeak(&v138);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeSpeakScreen])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeSpeakScreen])
     {
       v135[0] = _NSConcreteStackBlock;
       v135[1] = 3221225472;
@@ -2166,7 +2166,7 @@ LABEL_101:
       objc_destroyWeak(&v136);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeSysdiagnose])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeSysdiagnose])
     {
       v133[0] = _NSConcreteStackBlock;
       v133[1] = 3221225472;
@@ -2177,7 +2177,7 @@ LABEL_101:
       objc_destroyWeak(&v134);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeToggleDock])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeToggleDock])
     {
       v131[0] = _NSConcreteStackBlock;
       v131[1] = 3221225472;
@@ -2188,7 +2188,7 @@ LABEL_101:
       objc_destroyWeak(&v132);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeConfirmApplePay] && -[HNDRocker _expectsSecureIntent](self, "_expectsSecureIntent"))
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeConfirmApplePay] && -[HNDRocker _expectsSecureIntent](self, "_expectsSecureIntent"))
     {
       v129[0] = _NSConcreteStackBlock;
       v129[1] = 3221225472;
@@ -2199,7 +2199,7 @@ LABEL_101:
       objc_destroyWeak(&v130);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeArmApplePay])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeArmApplePay])
     {
       v127[0] = _NSConcreteStackBlock;
       v127[1] = 3221225472;
@@ -2211,7 +2211,7 @@ LABEL_101:
       objc_destroyWeak(&v128);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeDwell])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeDwell])
     {
       v125[0] = _NSConcreteStackBlock;
       v125[1] = 3221225472;
@@ -2223,7 +2223,7 @@ LABEL_101:
       objc_destroyWeak(&v126);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeDwellResume])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeDwellResume])
     {
       v123[0] = _NSConcreteStackBlock;
       v123[1] = 3221225472;
@@ -2234,7 +2234,7 @@ LABEL_101:
       objc_destroyWeak(&v124);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeDwellPause])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeDwellPause])
     {
       v121[0] = _NSConcreteStackBlock;
       v121[1] = 3221225472;
@@ -2245,7 +2245,7 @@ LABEL_101:
       objc_destroyWeak(&v122);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeDwellLock])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeDwellLock])
     {
       v119[0] = _NSConcreteStackBlock;
       v119[1] = 3221225472;
@@ -2256,7 +2256,7 @@ LABEL_101:
       objc_destroyWeak(&v120);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeDwellUnlock])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeDwellUnlock])
     {
       v117[0] = _NSConcreteStackBlock;
       v117[1] = 3221225472;
@@ -2267,7 +2267,7 @@ LABEL_101:
       objc_destroyWeak(&v118);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeDwellClick])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeDwellClick])
     {
       v115[0] = _NSConcreteStackBlock;
       v115[1] = 3221225472;
@@ -2278,7 +2278,7 @@ LABEL_101:
       objc_destroyWeak(&v116);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeDwellIncreaseTime])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeDwellIncreaseTime])
     {
       v113[0] = _NSConcreteStackBlock;
       v113[1] = 3221225472;
@@ -2289,7 +2289,7 @@ LABEL_101:
       objc_destroyWeak(&v114);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeDwellDecreaseTime])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeDwellDecreaseTime])
     {
       v111[0] = _NSConcreteStackBlock;
       v111[1] = 3221225472;
@@ -2300,7 +2300,7 @@ LABEL_101:
       objc_destroyWeak(&v112);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeScroll])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeScroll])
     {
       v109[0] = _NSConcreteStackBlock;
       v109[1] = 3221225472;
@@ -2312,7 +2312,7 @@ LABEL_101:
       objc_destroyWeak(&v110);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeScrollUp])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeScrollUp])
     {
       v107[0] = _NSConcreteStackBlock;
       v107[1] = 3221225472;
@@ -2323,7 +2323,7 @@ LABEL_101:
       objc_destroyWeak(&v108);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeScrollDown])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeScrollDown])
     {
       v105[0] = _NSConcreteStackBlock;
       v105[1] = 3221225472;
@@ -2334,7 +2334,7 @@ LABEL_101:
       objc_destroyWeak(&v106);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeScrollLeft])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeScrollLeft])
     {
       v103[0] = _NSConcreteStackBlock;
       v103[1] = 3221225472;
@@ -2345,7 +2345,7 @@ LABEL_101:
       objc_destroyWeak(&v104);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeScrollRight])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeScrollRight])
     {
       v101[0] = _NSConcreteStackBlock;
       v101[1] = 3221225472;
@@ -2356,7 +2356,7 @@ LABEL_101:
       objc_destroyWeak(&v102);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeScrollToTop])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeScrollToTop])
     {
       v99[0] = _NSConcreteStackBlock;
       v99[1] = 3221225472;
@@ -2367,7 +2367,7 @@ LABEL_101:
       objc_destroyWeak(&v100);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeScrollToBottom])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeScrollToBottom])
     {
       v97[0] = _NSConcreteStackBlock;
       v97[1] = 3221225472;
@@ -2378,33 +2378,33 @@ LABEL_101:
       objc_destroyWeak(&v98);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeContinuousScrollHorizontal])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeContinuousScrollHorizontal])
     {
       v94[0] = _NSConcreteStackBlock;
       v94[1] = 3221225472;
       v94[2] = sub_100053990;
       v94[3] = &unk_1001D4CD0;
       objc_copyWeak(&v96, &location);
-      v95 = v7;
+      v95 = typeCopy;
       [v18 setUpBlock:v94];
 
       objc_destroyWeak(&v96);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeContinuousScrollVertical])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeContinuousScrollVertical])
     {
       v91[0] = _NSConcreteStackBlock;
       v91[1] = 3221225472;
       v91[2] = sub_1000539F8;
       v91[3] = &unk_1001D4CD0;
       objc_copyWeak(&v93, &location);
-      v92 = v7;
+      v92 = typeCopy;
       [v18 setUpBlock:v91];
 
       objc_destroyWeak(&v93);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeEyeTrackingBubbleMode])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeEyeTrackingBubbleMode])
     {
       v89[0] = _NSConcreteStackBlock;
       v89[1] = 3221225472;
@@ -2415,7 +2415,7 @@ LABEL_101:
       objc_destroyWeak(&v90);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeEyeTrackingAutoHide])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeEyeTrackingAutoHide])
     {
       v87[0] = _NSConcreteStackBlock;
       v87[1] = 3221225472;
@@ -2426,7 +2426,7 @@ LABEL_101:
       objc_destroyWeak(&v88);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeHeadTrackingBubbleMode])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeHeadTrackingBubbleMode])
     {
       v85[0] = _NSConcreteStackBlock;
       v85[1] = 3221225472;
@@ -2437,7 +2437,7 @@ LABEL_101:
       objc_destroyWeak(&v86);
     }
 
-    else if (AXDeviceSupportsOnDeviceEyeTracking() && [v7 isEqualToString:AXAssistiveTouchIconTypeCalibrateOnDeviceEyeTracking])
+    else if (AXDeviceSupportsOnDeviceEyeTracking() && [typeCopy isEqualToString:AXAssistiveTouchIconTypeCalibrateOnDeviceEyeTracking])
     {
       v83[0] = _NSConcreteStackBlock;
       v83[1] = 3221225472;
@@ -2448,7 +2448,7 @@ LABEL_101:
       objc_destroyWeak(&v84);
     }
 
-    else if (AXDeviceSupportsOnDeviceEyeTracking() && [v7 isEqualToString:AXAssistiveTouchIconTypeOnDeviceEyeTrackingZoomScreen])
+    else if (AXDeviceSupportsOnDeviceEyeTracking() && [typeCopy isEqualToString:AXAssistiveTouchIconTypeOnDeviceEyeTrackingZoomScreen])
     {
       v81[0] = _NSConcreteStackBlock;
       v81[1] = 3221225472;
@@ -2459,7 +2459,7 @@ LABEL_101:
       objc_destroyWeak(&v82);
     }
 
-    else if (AXDeviceSupportsOnDeviceEyeTracking() && [v7 isEqualToString:AXAssistiveTouchIconTypeOnDeviceEyeTracking])
+    else if (AXDeviceSupportsOnDeviceEyeTracking() && [typeCopy isEqualToString:AXAssistiveTouchIconTypeOnDeviceEyeTracking])
     {
       v79[0] = _NSConcreteStackBlock;
       v79[1] = 3221225472;
@@ -2470,7 +2470,7 @@ LABEL_101:
       objc_destroyWeak(&v80);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeDwellToggleKeyboardContinuousPath])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeDwellToggleKeyboardContinuousPath])
     {
       v77[0] = _NSConcreteStackBlock;
       v77[1] = 3221225472;
@@ -2481,7 +2481,7 @@ LABEL_101:
       objc_destroyWeak(&v78);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeAssistiveAccess])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeAssistiveAccess])
     {
       v75[0] = _NSConcreteStackBlock;
       v75[1] = 3221225472;
@@ -2492,7 +2492,7 @@ LABEL_101:
       objc_destroyWeak(&v76);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeCamera])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeCamera])
     {
       v73[0] = _NSConcreteStackBlock;
       v73[1] = 3221225472;
@@ -2503,7 +2503,7 @@ LABEL_101:
       objc_destroyWeak(&v74);
     }
 
-    else if ([v7 isEqualToString:AXAssistiveTouchIconTypeFrontFacingCamera])
+    else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeFrontFacingCamera])
     {
       v71[0] = _NSConcreteStackBlock;
       v71[1] = 3221225472;
@@ -2514,17 +2514,17 @@ LABEL_101:
       objc_destroyWeak(&v72);
     }
 
-    else if ([v7 hasPrefix:@"CustomGesture-"])
+    else if ([typeCopy hasPrefix:@"CustomGesture-"])
     {
-      v58 = [v7 stringByReplacingOccurrencesOfString:@"CustomGesture-" withString:&stru_1001DB590];
+      v58 = [typeCopy stringByReplacingOccurrencesOfString:@"CustomGesture-" withString:&stru_1001DB590];
       v37 = +[HNDHandManager sharedManager];
-      v38 = [v37 customGestures];
+      customGestures = [v37 customGestures];
 
       v69 = 0u;
       v70 = 0u;
       v67 = 0u;
       v68 = 0u;
-      obj = v38;
+      obj = customGestures;
       v39 = [obj countByEnumeratingWithState:&v67 objects:v250 count:16];
       if (v39)
       {
@@ -2539,19 +2539,19 @@ LABEL_101:
             }
 
             v41 = *(*(&v67 + 1) + 8 * i);
-            v42 = [v41 name];
-            v43 = [v42 isEqualToString:v58];
+            name = [v41 name];
+            v43 = [name isEqualToString:v58];
 
             if (v43)
             {
-              v56 = [v41 name];
+              name2 = [v41 name];
               v65[0] = _NSConcreteStackBlock;
               v65[1] = 3221225472;
               v65[2] = sub_100053CE0;
               v65[3] = &unk_1001D4CD0;
               objc_copyWeak(&v66, &location);
               v65[4] = v41;
-              v44 = [HNDRockerButton buttonWithTitle:v56 imageName:@"IconFavorites" downBlock:0 upBlock:v65 showWithGuidedAccess:1 showWithAssistiveAccess:1];
+              v44 = [HNDRockerButton buttonWithTitle:name2 imageName:@"IconFavorites" downBlock:0 upBlock:v65 showWithGuidedAccess:1 showWithAssistiveAccess:1];
 
               [v44 setCustomTitle:1];
               objc_destroyWeak(&v66);
@@ -2578,16 +2578,16 @@ LABEL_219:
     else
     {
       v45 = AXASTSiriShortcutPrefixName;
-      if ([v7 hasPrefix:AXASTSiriShortcutPrefixName])
+      if ([typeCopy hasPrefix:AXASTSiriShortcutPrefixName])
       {
         v46 = [NSString stringWithFormat:@"%@-", v45];
-        v47 = [v7 rangeOfString:v46];
-        v49 = [v7 substringFromIndex:&v47[v48]];
+        v47 = [typeCopy rangeOfString:v46];
+        v49 = [typeCopy substringFromIndex:&v47[v48]];
 
         v50 = +[AXSiriShortcutsManager sharedManager];
         v51 = [v50 shortcutForIdentifier:v49];
 
-        v52 = [v51 shortcutName];
+        shortcutName = [v51 shortcutName];
         v53 = AXUIAssistiveTouchImageNameForName();
         v62[0] = _NSConcreteStackBlock;
         v62[1] = 3221225472;
@@ -2595,14 +2595,14 @@ LABEL_219:
         v62[3] = &unk_1001D4CF8;
         v54 = v51;
         v63 = v54;
-        v64 = self;
-        v55 = [HNDRockerButton buttonWithTitle:v52 imageName:v53 downBlock:0 upBlock:v62 showWithGuidedAccess:0 showWithAssistiveAccess:0];
+        selfCopy = self;
+        v55 = [HNDRockerButton buttonWithTitle:shortcutName imageName:v53 downBlock:0 upBlock:v62 showWithGuidedAccess:0 showWithAssistiveAccess:0];
 
         [v55 setCustomTitle:1];
         v18 = v55;
       }
 
-      else if ([v7 isEqualToString:AXAssistiveTouchIconTypeSiriShortcutsMenu])
+      else if ([typeCopy isEqualToString:AXAssistiveTouchIconTypeSiriShortcutsMenu])
       {
         v60[0] = _NSConcreteStackBlock;
         v60[1] = 3221225472;
@@ -2631,7 +2631,7 @@ LABEL_219:
     goto LABEL_52;
   }
 
-  v28 = [(HNDRocker *)self _rockerButtonForLocation:v6 buttonType:AXAssistiveTouchIconTypeGestures];
+  v28 = [(HNDRocker *)self _rockerButtonForLocation:locationCopy buttonType:AXAssistiveTouchIconTypeGestures];
 LABEL_54:
   v29 = v28;
   objc_destroyWeak(&location);
@@ -2642,8 +2642,8 @@ LABEL_54:
 - (void)_preloadInitialMenuItems
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 assistiveTouchMainScreenCustomization];
-  v5 = [v4 mutableCopy];
+  assistiveTouchMainScreenCustomization = [v3 assistiveTouchMainScreenCustomization];
+  v5 = [assistiveTouchMainScreenCustomization mutableCopy];
 
   if (self->_didPerformInitialDeviceCompatibilityCheck)
   {
@@ -2654,10 +2654,10 @@ LABEL_54:
   {
     v6 = [(HNDRocker *)self _adjustMainScreenCustomizationForDeviceSupport:v5];
     v7 = [v6 objectForKeyedSubscript:@"didAdjustMap"];
-    v8 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
 
     [(HNDRocker *)self setDidPerformInitialDeviceCompatibilityCheck:1];
-    if (v8)
+    if (bOOLValue)
     {
       v9 = [v6 objectForKeyedSubscript:@"adjustedMap"];
       v10 = +[AXSettings sharedInstance];
@@ -2694,8 +2694,8 @@ LABEL_54:
         v19 = [v13 objectForKeyedSubscript:{v18, v24}];
         v20 = [(HNDRocker *)self _rockerButtonForLocation:v18 buttonType:v19];
 
-        v21 = [(HNDRocker *)self initialItems];
-        [v21 addObject:v20];
+        initialItems = [(HNDRocker *)self initialItems];
+        [initialItems addObject:v20];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -2704,20 +2704,20 @@ LABEL_54:
     while (v15);
   }
 
-  v22 = [(HNDRocker *)self initialItems];
-  v23 = [(HNDRocker *)self _filteredItems:v22];
+  initialItems2 = [(HNDRocker *)self initialItems];
+  v23 = [(HNDRocker *)self _filteredItems:initialItems2];
   [(HNDRocker *)self setInitialItems:v23];
 }
 
-- (id)_adjustMainScreenCustomizationForDeviceSupport:(id)a3
+- (id)_adjustMainScreenCustomizationForDeviceSupport:(id)support
 {
-  v3 = a3;
-  v4 = [v3 mutableCopy];
+  supportCopy = support;
+  v4 = [supportCopy mutableCopy];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = v3;
+  v5 = supportCopy;
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (!v6)
   {
@@ -2776,16 +2776,16 @@ LABEL_19:
 
 - (void)_loadInitialMenuItems
 {
-  v3 = [(HNDRocker *)self initialItems];
+  initialItems = [(HNDRocker *)self initialItems];
 
-  if (!v3)
+  if (!initialItems)
   {
     [(HNDRocker *)self _preloadInitialMenuItems];
   }
 
   rockerItems = self->_rockerItems;
-  v5 = [(HNDRocker *)self initialItems];
-  [(NSMutableArray *)rockerItems addObjectsFromArray:v5];
+  initialItems2 = [(HNDRocker *)self initialItems];
+  [(NSMutableArray *)rockerItems addObjectsFromArray:initialItems2];
 
   [(HNDRocker *)self _swapArmApplePayWithConfirmApplePayIfNeeded];
   [(HNDRocker *)self updateRotationLockSwitch];
@@ -2806,69 +2806,69 @@ LABEL_19:
     v4 = 0;
   }
 
-  v5 = [(HNDRocker *)self moreItems];
+  moreItems = [(HNDRocker *)self moreItems];
 
-  if (!v5)
+  if (!moreItems)
   {
     v6 = [objc_allocWithZone(NSMutableArray) init];
     [(HNDRocker *)self setMoreItems:v6];
 
     v7 = [(HNDRocker *)self _rockerButtonForLocation:0 buttonType:AXAssistiveTouchIconTypeAppSwitcher];
-    v8 = [(HNDRocker *)self moreItems];
-    [v8 addObject:v7];
+    moreItems2 = [(HNDRocker *)self moreItems];
+    [moreItems2 addObject:v7];
 
     v9 = [(HNDRocker *)self _rockerButtonForLocation:0 buttonType:AXAssistiveTouchIconTypeScreenshot];
 
-    v10 = [(HNDRocker *)self moreItems];
-    [v10 addObject:v9];
+    moreItems3 = [(HNDRocker *)self moreItems];
+    [moreItems3 addObject:v9];
 
     if (IsSOSAvailable)
     {
       v11 = [(HNDRocker *)self _rockerButtonForLocation:0 buttonType:AXAssistiveTouchIconTypeSOS];
 
-      v12 = [(HNDRocker *)self moreItems];
-      [v12 addObject:v11];
+      moreItems4 = [(HNDRocker *)self moreItems];
+      [moreItems4 addObject:v11];
 
       v9 = v11;
     }
 
     v13 = [(HNDRocker *)self _rockerButtonForLocation:0 buttonType:AXAssistiveTouchIconTypeShake];
 
-    v14 = [(HNDRocker *)self moreItems];
-    [v14 addObject:v13];
+    moreItems5 = [(HNDRocker *)self moreItems];
+    [moreItems5 addObject:v13];
 
     v15 = [(HNDRocker *)self _rockerButtonForLocation:0 buttonType:AXAssistiveTouchIconTypeRebootDevice];
 
-    v16 = [(HNDRocker *)self moreItems];
-    [v16 addObject:v15];
+    moreItems6 = [(HNDRocker *)self moreItems];
+    [moreItems6 addObject:v15];
 
     if (AXDeviceSupportsSideApp())
     {
       v17 = [(HNDRocker *)self _rockerButtonForLocation:0 buttonType:AXAssistiveTouchIconTypeToggleDock];
 
-      v18 = [(HNDRocker *)self moreItems];
-      [v18 addObject:v17];
+      moreItems7 = [(HNDRocker *)self moreItems];
+      [moreItems7 addObject:v17];
 
       v15 = v17;
     }
 
-    v19 = [(HNDRocker *)self moreItems];
-    v20 = [(HNDRocker *)self _filteredItems:v19];
+    moreItems8 = [(HNDRocker *)self moreItems];
+    v20 = [(HNDRocker *)self _filteredItems:moreItems8];
     [(HNDRocker *)self setMoreItems:v20];
   }
 
   rockerItems = self->_rockerItems;
-  v22 = [(HNDRocker *)self moreItems];
-  [(NSMutableArray *)rockerItems addObjectsFromArray:v22];
+  moreItems9 = [(HNDRocker *)self moreItems];
+  [(NSMutableArray *)rockerItems addObjectsFromArray:moreItems9];
 
   if (AXDeviceCanArmApplePay())
   {
 LABEL_11:
     if ([(HNDRocker *)self _expectsSecureIntent])
     {
-      v23 = [(HNDRocker *)self confirmApplePayButton];
+      confirmApplePayButton = [(HNDRocker *)self confirmApplePayButton];
 
-      if (!v23)
+      if (!confirmApplePayButton)
       {
         v24 = [(HNDRocker *)self _rockerButtonForLocation:0 buttonType:AXAssistiveTouchIconTypeConfirmApplePay];
         [(HNDRocker *)self setConfirmApplePayButton:v24];
@@ -2876,14 +2876,14 @@ LABEL_11:
 
       v25 = [(NSMutableArray *)self->_rockerItems indexOfObjectPassingTest:&stru_1001D4D38];
       v26 = self->_rockerItems;
-      v27 = [(HNDRocker *)self confirmApplePayButton];
+      confirmApplePayButton2 = [(HNDRocker *)self confirmApplePayButton];
     }
 
     else
     {
-      v30 = [(HNDRocker *)self applePayButton];
+      applePayButton = [(HNDRocker *)self applePayButton];
 
-      if (!v30)
+      if (!applePayButton)
       {
         v31 = [(HNDRocker *)self _rockerButtonForLocation:0 buttonType:AXAssistiveTouchIconTypeArmApplePay];
         [(HNDRocker *)self setApplePayButton:v31];
@@ -2891,18 +2891,18 @@ LABEL_11:
 
       v25 = [(NSMutableArray *)self->_rockerItems indexOfObjectPassingTest:&stru_1001D4D58];
       v26 = self->_rockerItems;
-      v27 = [(HNDRocker *)self applePayButton];
+      confirmApplePayButton2 = [(HNDRocker *)self applePayButton];
     }
 
-    v28 = v27;
+    v28 = confirmApplePayButton2;
     if (v25 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(NSMutableArray *)v26 addObject:v27];
+      [(NSMutableArray *)v26 addObject:confirmApplePayButton2];
     }
 
     else
     {
-      [(NSMutableArray *)v26 replaceObjectAtIndex:v25 withObject:v27];
+      [(NSMutableArray *)v26 replaceObjectAtIndex:v25 withObject:confirmApplePayButton2];
     }
 
     goto LABEL_24;
@@ -2926,63 +2926,63 @@ LABEL_24:
 LABEL_25:
   if ((j__AXDeviceIsSiriAvailable() & 1) != 0 || j__AXDeviceIsVoiceControlAvailable())
   {
-    v32 = [(HNDRocker *)self gesturesButton];
+    gesturesButton = [(HNDRocker *)self gesturesButton];
 
-    if (!v32)
+    if (!gesturesButton)
     {
       v33 = [(HNDRocker *)self _rockerButtonForLocation:0 buttonType:AXAssistiveTouchIconTypeGestures];
       [(HNDRocker *)self setGesturesButton:v33];
     }
 
     v34 = self->_rockerItems;
-    v35 = [(HNDRocker *)self gesturesButton];
+    gesturesButton2 = [(HNDRocker *)self gesturesButton];
   }
 
   else
   {
-    v36 = [(HNDRocker *)self tripleClickHomeButton];
+    tripleClickHomeButton = [(HNDRocker *)self tripleClickHomeButton];
 
-    if (!v36)
+    if (!tripleClickHomeButton)
     {
       v37 = [(HNDRocker *)self _rockerButtonForLocation:0 buttonType:AXAssistiveTouchIconTypeTripleClick];
       [(HNDRocker *)self setTripleClickHomeButton:v37];
     }
 
     v34 = self->_rockerItems;
-    v35 = [(HNDRocker *)self tripleClickHomeButton];
+    gesturesButton2 = [(HNDRocker *)self tripleClickHomeButton];
   }
 
-  v38 = v35;
-  [(NSMutableArray *)v34 addObject:v35];
+  v38 = gesturesButton2;
+  [(NSMutableArray *)v34 addObject:gesturesButton2];
 
   if (v4)
   {
-    v39 = [(HNDRocker *)self reachabilityButton];
+    reachabilityButton = [(HNDRocker *)self reachabilityButton];
 
-    if (!v39)
+    if (!reachabilityButton)
     {
       v40 = [(HNDRocker *)self _rockerButtonForLocation:0 buttonType:AXAssistiveTouchIconTypeReachability];
       [(HNDRocker *)self setReachabilityButton:v40];
     }
 
     v41 = self->_rockerItems;
-    v42 = [(HNDRocker *)self reachabilityButton];
-    [(NSMutableArray *)v41 addObject:v42];
+    reachabilityButton2 = [(HNDRocker *)self reachabilityButton];
+    [(NSMutableArray *)v41 addObject:reachabilityButton2];
   }
 
   if (_AXSSpeakThisEnabled())
   {
-    v43 = [(HNDRocker *)self speakScreenButton];
+    speakScreenButton = [(HNDRocker *)self speakScreenButton];
 
-    if (!v43)
+    if (!speakScreenButton)
     {
       v44 = [(HNDRocker *)self _rockerButtonForLocation:0 buttonType:AXAssistiveTouchIconTypeSpeakScreen];
       [(HNDRocker *)self setSpeakScreenButton:v44];
     }
 
     v45 = self->_rockerItems;
-    v46 = [(HNDRocker *)self speakScreenButton];
-    [(NSMutableArray *)v45 addObject:v46];
+    speakScreenButton2 = [(HNDRocker *)self speakScreenButton];
+    [(NSMutableArray *)v45 addObject:speakScreenButton2];
   }
 
   [(HNDRocker *)self _assignLocationsToRockerItems];
@@ -3011,9 +3011,9 @@ LABEL_25:
 
 - (void)_loadGesturesMenuItems
 {
-  v3 = [(HNDRocker *)self touchItems];
+  touchItems = [(HNDRocker *)self touchItems];
 
-  if (!v3)
+  if (!touchItems)
   {
     v4 = [objc_allocWithZone(NSMutableArray) init];
     [(HNDRocker *)self setTouchItems:v4];
@@ -3029,8 +3029,8 @@ LABEL_25:
     v7 = [HNDRockerButton buttonWithTitle:v6 imageName:@"IconFingers4" downBlock:0 upBlock:v28 showWithGuidedAccess:1 showWithAssistiveAccess:1];
 
     [v7 setLocation:AXAssistiveTouchIconLocationBottomMiddle];
-    v8 = [(HNDRocker *)self touchItems];
-    [v8 addObject:v7];
+    touchItems2 = [(HNDRocker *)self touchItems];
+    [touchItems2 addObject:v7];
 
     v9 = [NSString localizedStringWithFormat:v5, 3];
     v26[0] = _NSConcreteStackBlock;
@@ -3041,8 +3041,8 @@ LABEL_25:
     v10 = [HNDRockerButton buttonWithTitle:v9 imageName:@"IconFingers3" downBlock:0 upBlock:v26 showWithGuidedAccess:1 showWithAssistiveAccess:1];
 
     [v10 setLocation:AXAssistiveTouchIconLocationMidRight];
-    v11 = [(HNDRocker *)self touchItems];
-    [v11 addObject:v10];
+    touchItems3 = [(HNDRocker *)self touchItems];
+    [touchItems3 addObject:v10];
 
     v12 = [NSString localizedStringWithFormat:v5, 2];
     v24[0] = _NSConcreteStackBlock;
@@ -3053,8 +3053,8 @@ LABEL_25:
     v13 = [HNDRockerButton buttonWithTitle:v12 imageName:@"IconFingers2" downBlock:0 upBlock:v24 showWithGuidedAccess:1 showWithAssistiveAccess:1];
 
     [v13 setLocation:AXAssistiveTouchIconLocationTopMiddle];
-    v14 = [(HNDRocker *)self touchItems];
-    [v14 addObject:v13];
+    touchItems4 = [(HNDRocker *)self touchItems];
+    [touchItems4 addObject:v13];
 
     v15 = [NSString localizedStringWithFormat:v5, 5];
     v22[0] = _NSConcreteStackBlock;
@@ -3065,11 +3065,11 @@ LABEL_25:
     v16 = [HNDRockerButton buttonWithTitle:v15 imageName:@"IconFingers5" downBlock:0 upBlock:v22 showWithGuidedAccess:1 showWithAssistiveAccess:1];
 
     [v16 setLocation:AXAssistiveTouchIconLocationMidLeft];
-    v17 = [(HNDRocker *)self touchItems];
-    [v17 addObject:v16];
+    touchItems5 = [(HNDRocker *)self touchItems];
+    [touchItems5 addObject:v16];
 
-    v18 = [(HNDRocker *)self touchItems];
-    v19 = [(HNDRocker *)self _filteredItems:v18];
+    touchItems6 = [(HNDRocker *)self touchItems];
+    v19 = [(HNDRocker *)self _filteredItems:touchItems6];
     [(HNDRocker *)self setTouchItems:v19];
 
     objc_destroyWeak(&v23);
@@ -3082,15 +3082,15 @@ LABEL_25:
   }
 
   rockerItems = self->_rockerItems;
-  v21 = [(HNDRocker *)self touchItems];
-  [(NSMutableArray *)rockerItems addObjectsFromArray:v21];
+  touchItems7 = [(HNDRocker *)self touchItems];
+  [(NSMutableArray *)rockerItems addObjectsFromArray:touchItems7];
 }
 
 - (void)_loadRotateMenuItems
 {
-  v3 = [(HNDRocker *)self rotateItems];
+  rotateItems = [(HNDRocker *)self rotateItems];
 
-  if (!v3)
+  if (!rotateItems)
   {
     v4 = [objc_allocWithZone(NSMutableArray) init];
     [(HNDRocker *)self setRotateItems:v4];
@@ -3100,48 +3100,48 @@ LABEL_25:
     v7 = [HNDRockerButton buttonWithTitle:v5 imageName:v6 downBlock:0 upBlock:&stru_1001D4DC0 showWithGuidedAccess:1 showWithAssistiveAccess:1];
 
     [v7 setLocation:AXAssistiveTouchIconLocationBottomMiddle];
-    v8 = [(HNDRocker *)self rotateItems];
-    [v8 addObject:v7];
+    rotateItems2 = [(HNDRocker *)self rotateItems];
+    [rotateItems2 addObject:v7];
 
     v9 = sub_100042B24(@"ORIENTATION-LANDSCAPE-RIGHT");
     v10 = [NSString at_deviceIconNameForIdentifier:@"IconRight"];
     v11 = [HNDRockerButton buttonWithTitle:v9 imageName:v10 downBlock:0 upBlock:&stru_1001D4DE0 showWithGuidedAccess:1 showWithAssistiveAccess:1];
 
     [v11 setLocation:AXAssistiveTouchIconLocationMidRight];
-    v12 = [(HNDRocker *)self rotateItems];
-    [v12 addObject:v11];
+    rotateItems3 = [(HNDRocker *)self rotateItems];
+    [rotateItems3 addObject:v11];
 
     v13 = sub_100042B24(@"ORIENTATION-PORTRAIT");
     v14 = [NSString at_deviceIconNameForIdentifier:@"IconDevice"];
     v15 = [HNDRockerButton buttonWithTitle:v13 imageName:v14 downBlock:0 upBlock:&stru_1001D4E00 showWithGuidedAccess:1 showWithAssistiveAccess:1];
 
     [v15 setLocation:AXAssistiveTouchIconLocationTopMiddle];
-    v16 = [(HNDRocker *)self rotateItems];
-    [v16 addObject:v15];
+    rotateItems4 = [(HNDRocker *)self rotateItems];
+    [rotateItems4 addObject:v15];
 
     v17 = sub_100042B24(@"ORIENTATION-LANDSCAPE-LEFT");
     v18 = [NSString at_deviceIconNameForIdentifier:@"IconLeft"];
     v19 = [HNDRockerButton buttonWithTitle:v17 imageName:v18 downBlock:0 upBlock:&stru_1001D4E20 showWithGuidedAccess:1 showWithAssistiveAccess:1];
 
     [v19 setLocation:AXAssistiveTouchIconLocationMidLeft];
-    v20 = [(HNDRocker *)self rotateItems];
-    [v20 addObject:v19];
+    rotateItems5 = [(HNDRocker *)self rotateItems];
+    [rotateItems5 addObject:v19];
 
-    v21 = [(HNDRocker *)self rotateItems];
-    v22 = [(HNDRocker *)self _filteredItems:v21];
+    rotateItems6 = [(HNDRocker *)self rotateItems];
+    v22 = [(HNDRocker *)self _filteredItems:rotateItems6];
     [(HNDRocker *)self setRotateItems:v22];
   }
 
   rockerItems = self->_rockerItems;
-  v24 = [(HNDRocker *)self rotateItems];
-  [(NSMutableArray *)rockerItems addObjectsFromArray:v24];
+  rotateItems7 = [(HNDRocker *)self rotateItems];
+  [(NSMutableArray *)rockerItems addObjectsFromArray:rotateItems7];
 }
 
 - (void)_loadScrollMenuItems
 {
-  v3 = [(HNDRocker *)self scrollItems];
+  scrollItems = [(HNDRocker *)self scrollItems];
 
-  if (!v3)
+  if (!scrollItems)
   {
     v4 = [objc_allocWithZone(NSMutableArray) init];
     [(HNDRocker *)self setScrollItems:v4];
@@ -3160,9 +3160,9 @@ LABEL_25:
     v29[5] = AXAssistiveTouchIconLocationBottomMiddle;
     v11 = [NSArray arrayWithObjects:v29 count:6];
     v12 = +[HNDDeviceManager sharedManager];
-    v13 = [v12 mainDeviceIsMotionTracker];
+    mainDeviceIsMotionTracker = [v12 mainDeviceIsMotionTracker];
 
-    if (v13)
+    if (mainDeviceIsMotionTracker)
     {
       v28[0] = v5;
       v28[1] = v6;
@@ -3189,7 +3189,7 @@ LABEL_25:
     v15 = AXAssistiveTouchScrollIcons();
     v16 = [NSMutableArray arrayWithArray:v15];
 
-    if ((v13 & 1) == 0)
+    if ((mainDeviceIsMotionTracker & 1) == 0)
     {
       [v16 removeObject:AXAssistiveTouchIconTypeContinuousScrollHorizontal];
       [v16 removeObject:AXAssistiveTouchIconTypeContinuousScrollVertical];
@@ -3201,7 +3201,7 @@ LABEL_25:
     v23 = 3221225472;
     v24 = sub_10005589C;
     v25 = &unk_1001D4E48;
-    v26 = self;
+    selfCopy = self;
     v27 = v14;
     v17 = v14;
     [v16 enumerateObjectsUsingBlock:&v22];
@@ -3211,8 +3211,8 @@ LABEL_25:
   }
 
   rockerItems = self->_rockerItems;
-  v21 = [(HNDRocker *)self scrollItems];
-  [(NSMutableArray *)rockerItems addObjectsFromArray:v21];
+  scrollItems2 = [(HNDRocker *)self scrollItems];
+  [(NSMutableArray *)rockerItems addObjectsFromArray:scrollItems2];
 }
 
 - (void)forceReloadScrollMenuItems
@@ -3229,10 +3229,10 @@ LABEL_25:
   v16 = 0u;
   v17 = 0u;
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 assistiveTouchMainScreenCustomization];
-  v5 = [v4 allValues];
+  assistiveTouchMainScreenCustomization = [v3 assistiveTouchMainScreenCustomization];
+  allValues = [assistiveTouchMainScreenCustomization allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v20 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -3245,7 +3245,7 @@ LABEL_25:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v14 + 1) + 8 * v10) hasPrefix:v9])
@@ -3258,7 +3258,7 @@ LABEL_25:
       }
 
       while (v7 != v10);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v20 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v14 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -3294,14 +3294,14 @@ LABEL_11:
   v8 = 0x2020000000;
   v9 = 0;
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 assistiveTouchMainScreenCustomization];
+  assistiveTouchMainScreenCustomization = [v3 assistiveTouchMainScreenCustomization];
 
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100055C3C;
   v5[3] = &unk_1001D4E70;
   v5[4] = &v6;
-  [v4 enumerateKeysAndObjectsUsingBlock:v5];
+  [assistiveTouchMainScreenCustomization enumerateKeysAndObjectsUsingBlock:v5];
   if (*(v7 + 24) == 1)
   {
     [(HNDRocker *)self _preloadInitialMenuItems];
@@ -3343,23 +3343,23 @@ LABEL_11:
   v13 = v7;
   v9 = v7;
   [v8 enumerateObjectsUsingBlock:v12];
-  v10 = [(HNDRocker *)self dwellItems];
-  v11 = [(HNDRocker *)self _filteredItems:v10];
+  dwellItems = [(HNDRocker *)self dwellItems];
+  v11 = [(HNDRocker *)self _filteredItems:dwellItems];
   [(HNDRocker *)self setDwellItems:v11];
 }
 
 - (void)_loadDwellMenuItems
 {
-  v3 = [(HNDRocker *)self dwellItems];
+  dwellItems = [(HNDRocker *)self dwellItems];
 
-  if (!v3)
+  if (!dwellItems)
   {
     [(HNDRocker *)self _preloadDwellMenuItems];
   }
 
   rockerItems = self->_rockerItems;
-  v5 = [(HNDRocker *)self dwellItems];
-  [(NSMutableArray *)rockerItems addObjectsFromArray:v5];
+  dwellItems2 = [(HNDRocker *)self dwellItems];
+  [(NSMutableArray *)rockerItems addObjectsFromArray:dwellItems2];
 
   if (AXRuntimeCheck_DwellKeyboardSwipe())
   {
@@ -3374,9 +3374,9 @@ LABEL_11:
   if (v2)
   {
     v3 = +[HNDSecureIntentManager sharedInstance];
-    v4 = [v3 waitingForSecureIntent];
+    waitingForSecureIntent = [v3 waitingForSecureIntent];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(v2) = waitingForSecureIntent;
   }
 
   return v2;
@@ -3386,9 +3386,9 @@ LABEL_11:
 {
   if ([(HNDRocker *)self _expectsSecureIntent])
   {
-    v3 = [(HNDRocker *)self confirmApplePayButton];
+    confirmApplePayButton = [(HNDRocker *)self confirmApplePayButton];
 
-    if (!v3)
+    if (!confirmApplePayButton)
     {
       v4 = [(HNDRocker *)self _rockerButtonForLocation:0 buttonType:AXAssistiveTouchIconTypeConfirmApplePay];
       [(HNDRocker *)self setConfirmApplePayButton:v4];
@@ -3399,13 +3399,13 @@ LABEL_11:
     {
       v6 = v5;
       v11 = [(NSMutableArray *)self->_rockerItems objectAtIndex:v5];
-      v7 = [v11 location];
-      v8 = [(HNDRocker *)self confirmApplePayButton];
-      [v8 setLocation:v7];
+      location = [v11 location];
+      confirmApplePayButton2 = [(HNDRocker *)self confirmApplePayButton];
+      [confirmApplePayButton2 setLocation:location];
 
       rockerItems = self->_rockerItems;
-      v10 = [(HNDRocker *)self confirmApplePayButton];
-      [(NSMutableArray *)rockerItems replaceObjectAtIndex:v6 withObject:v10];
+      confirmApplePayButton3 = [(HNDRocker *)self confirmApplePayButton];
+      [(NSMutableArray *)rockerItems replaceObjectAtIndex:v6 withObject:confirmApplePayButton3];
     }
   }
 }
@@ -3438,14 +3438,14 @@ LABEL_11:
 - (void)_loadSiriShortcutsMenuItems
 {
   v3 = +[AXSiriShortcutsManager sharedManager];
-  v4 = [v3 shortcuts];
+  shortcuts = [v3 shortcuts];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000564E8;
   v9[3] = &unk_1001D4EE0;
   v5 = v3;
   v10 = v5;
-  v6 = [v4 ax_mappedArrayUsingBlock:v9];
+  v6 = [shortcuts ax_mappedArrayUsingBlock:v9];
   v7 = [v6 mutableCopy];
 
   if ([v7 count] == 1)
@@ -3460,9 +3460,9 @@ LABEL_11:
   [(HNDRocker *)self _assignLocationsToRockerItems];
 }
 
-- (void)_updateHapticMusicIcon:(id)a3
+- (void)_updateHapticMusicIcon:(id)icon
 {
-  v4 = a3;
+  iconCopy = icon;
   v5 = AXUIAssistiveTouchImageNameForName();
   if (!_AXSHapticMusicEnabled() || (+[AXSettings sharedInstance](AXSettings, "sharedInstance"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 hapticMusicActive], v6, (v7 & 1) == 0))
   {
@@ -3471,8 +3471,8 @@ LABEL_11:
     v5 = v8;
   }
 
-  [v4 setImageName:v5];
-  [(HNDRocker *)self setHapticMusicButton:v4];
+  [iconCopy setImageName:v5];
+  [(HNDRocker *)self setHapticMusicButton:iconCopy];
   if (![(HNDRocker *)self registeredForHapticMusicChanges])
   {
     objc_initWeak(&location, self);
@@ -3482,7 +3482,7 @@ LABEL_11:
     v11[2] = sub_100056874;
     v11[3] = &unk_1001D3438;
     objc_copyWeak(&v13, &location);
-    v12 = v4;
+    v12 = iconCopy;
     [v9 registerUpdateBlock:v11 forRetrieveSelector:"hapticMusicActive" withListener:self];
 
     objc_destroyWeak(&v13);
@@ -3493,9 +3493,9 @@ LABEL_11:
   }
 }
 
-- (void)_updateMotionCuesIcon:(id)a3
+- (void)_updateMotionCuesIcon:(id)icon
 {
-  object = a3;
+  object = icon;
   v4 = AXUIAssistiveTouchImageNameForName();
   if (([AXTripleClickHelpers valueForAccessibilityShortcutOption:36]& 1) == 0)
   {
@@ -3513,9 +3513,9 @@ LABEL_11:
   }
 }
 
-- (void)_setRingerSwitchIcon:(id)a3
+- (void)_setRingerSwitchIcon:(id)icon
 {
-  v8 = a3;
+  iconCopy = icon;
   if (sub_100042494())
   {
     v3 = @"MUTE";
@@ -3530,15 +3530,15 @@ LABEL_11:
   if (AXDeviceHasStaccato())
   {
     v5 = sub_100042C9C(@"ACTION_BUTTON");
-    [v8 setTitle:v5];
+    [iconCopy setTitle:v5];
 
     v6 = AXUIAssistiveTouchImageNameForName();
-    [v8 setImageName:v6];
+    [iconCopy setImageName:v6];
   }
 
   else
   {
-    [v8 setTitle:v4];
+    [iconCopy setTitle:v4];
     if (sub_100042494())
     {
       v7 = @"IconMuted";
@@ -3549,7 +3549,7 @@ LABEL_11:
       v7 = @"IconUnmuted";
     }
 
-    [v8 setImageName:v7];
+    [iconCopy setImageName:v7];
   }
 }
 
@@ -3574,23 +3574,23 @@ LABEL_11:
 - (void)updateRotationLockSwitch
 {
   v3 = [(NSMutableArray *)self->_rockerItems axFilterObjectsUsingBlock:&stru_1001D4F60];
-  v5 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
-  v4 = v5;
-  if (v5)
+  v4 = firstObject;
+  if (firstObject)
   {
-    [(HNDRocker *)self _setRotationLockIcon:v5];
-    v4 = v5;
+    [(HNDRocker *)self _setRotationLockIcon:firstObject];
+    v4 = firstObject;
   }
 }
 
-- (void)_setRotationLockIcon:(id)a3
+- (void)_setRotationLockIcon:(id)icon
 {
-  v8 = a3;
+  iconCopy = icon;
   v3 = +[HNDEventManager sharedManager];
-  v4 = [v3 orientationLocked];
+  orientationLocked = [v3 orientationLocked];
 
-  if (v4)
+  if (orientationLocked)
   {
     v5 = @"IconRotationUnlock";
   }
@@ -3600,7 +3600,7 @@ LABEL_11:
     v5 = @"IconRotationLock";
   }
 
-  if (v4)
+  if (orientationLocked)
   {
     v6 = @"ORIENTATION_UNLOCKED";
   }
@@ -3610,16 +3610,16 @@ LABEL_11:
     v6 = @"ORIENTATION_LOCKED";
   }
 
-  [v8 setImageName:v5];
+  [iconCopy setImageName:v5];
   v7 = sub_100042B24(v6);
-  [v8 setTitle:v7];
+  [iconCopy setTitle:v7];
 }
 
 - (void)_loadHardwareMenuItems
 {
-  v3 = [(HNDRocker *)self hardwareItems];
+  hardwareItems = [(HNDRocker *)self hardwareItems];
 
-  if (v3)
+  if (hardwareItems)
   {
     goto LABEL_13;
   }
@@ -3660,10 +3660,10 @@ LABEL_11:
 LABEL_8:
   v11 = v8;
   v12 = v10;
-  v13 = [(HNDRocker *)self hardwareItems];
+  hardwareItems2 = [(HNDRocker *)self hardwareItems];
   v34 = v7;
   v14 = [(HNDRocker *)self _rockerButtonForLocation:v7 buttonType:AXAssistiveTouchIconTypeRotateScreen];
-  [v13 addObject:v14];
+  [hardwareItems2 addObject:v14];
 
   objc_initWeak(location, self);
   if ([(HNDRocker *)self _includeRingerButtonInHardware])
@@ -3676,8 +3676,8 @@ LABEL_8:
     v15 = [HNDRockerButton buttonWithTitle:0 imageName:0 downBlock:0 upBlock:v40 showWithGuidedAccess:1 showWithAssistiveAccess:1];
     [v15 setTag:100];
     [v15 setLocation:v12];
-    v16 = [(HNDRocker *)self hardwareItems];
-    [v16 addObject:v15];
+    hardwareItems3 = [(HNDRocker *)self hardwareItems];
+    [hardwareItems3 addObject:v15];
 
     objc_destroyWeak(&v41);
   }
@@ -3694,8 +3694,8 @@ LABEL_8:
     v19 = [HNDRockerButton buttonWithTitle:v18 imageName:v17 downBlock:0 upBlock:v39 showWithGuidedAccess:0 showWithAssistiveAccess:1];
 
     [v19 setLocation:v12];
-    v20 = [(HNDRocker *)self hardwareItems];
-    [v20 addObject:v19];
+    hardwareItems4 = [(HNDRocker *)self hardwareItems];
+    [hardwareItems4 addObject:v19];
   }
 
   v21 = sub_100042B24(@"MORE");
@@ -3708,23 +3708,23 @@ LABEL_8:
 
   [v22 setTag:109];
   [v22 setLocation:v11];
-  v23 = [(HNDRocker *)self hardwareItems];
-  [v23 addObject:v22];
+  hardwareItems5 = [(HNDRocker *)self hardwareItems];
+  [hardwareItems5 addObject:v22];
 
-  v24 = [(HNDRocker *)self hardwareItems];
+  hardwareItems6 = [(HNDRocker *)self hardwareItems];
   v25 = [(HNDRocker *)self _rockerButtonForLocation:v36 buttonType:AXAssistiveTouchIconTypeVolumeDown];
-  [v24 addObject:v25];
+  [hardwareItems6 addObject:v25];
 
-  v26 = [(HNDRocker *)self hardwareItems];
+  hardwareItems7 = [(HNDRocker *)self hardwareItems];
   v27 = [(HNDRocker *)self _rockerButtonForLocation:v9 buttonType:AXAssistiveTouchIconTypeVolumeUp];
-  [v26 addObject:v27];
+  [hardwareItems7 addObject:v27];
 
-  v28 = [(HNDRocker *)self hardwareItems];
+  hardwareItems8 = [(HNDRocker *)self hardwareItems];
   v29 = [(HNDRocker *)self _rockerButtonForLocation:v35 buttonType:AXAssistiveTouchIconTypeLockScreen];
-  [v28 addObject:v29];
+  [hardwareItems8 addObject:v29];
 
-  v30 = [(HNDRocker *)self hardwareItems];
-  v31 = [(HNDRocker *)self _filteredItems:v30];
+  hardwareItems9 = [(HNDRocker *)self hardwareItems];
+  v31 = [(HNDRocker *)self _filteredItems:hardwareItems9];
   [(HNDRocker *)self setHardwareItems:v31];
 
   objc_destroyWeak(&v38);
@@ -3732,27 +3732,27 @@ LABEL_8:
 
 LABEL_13:
   rockerItems = self->_rockerItems;
-  v33 = [(HNDRocker *)self hardwareItems];
-  [(NSMutableArray *)rockerItems addObjectsFromArray:v33];
+  hardwareItems10 = [(HNDRocker *)self hardwareItems];
+  [(NSMutableArray *)rockerItems addObjectsFromArray:hardwareItems10];
 
   [(HNDRocker *)self updateRingerSwitch];
 }
 
-- (void)_customGesturePressed:(id)a3 fromButtonPress:(BOOL)a4
+- (void)_customGesturePressed:(id)pressed fromButtonPress:(BOOL)press
 {
-  v4 = a4;
+  pressCopy = press;
   v6 = AXAssistiveTouchIconTypeCustom;
-  v7 = a3;
+  pressedCopy = pressed;
   [(HNDRocker *)self updateForegroundImageForAction:v6];
   v8 = +[HNDHandManager sharedManager];
-  v9 = [(HNDRocker *)self hardwareIdentifier];
-  [v8 prepareGesture:v7 onDisplay:v9];
+  hardwareIdentifier = [(HNDRocker *)self hardwareIdentifier];
+  [v8 prepareGesture:pressedCopy onDisplay:hardwareIdentifier];
 
-  if (v4)
+  if (pressCopy)
   {
     v11 = +[HNDHandManager sharedManager];
-    v10 = [(HNDRocker *)self hardwareIdentifier];
-    [v11 performPreparedGestureOnDisplay:v10];
+    hardwareIdentifier2 = [(HNDRocker *)self hardwareIdentifier];
+    [v11 performPreparedGestureOnDisplay:hardwareIdentifier2];
   }
 }
 
@@ -3761,18 +3761,18 @@ LABEL_13:
   if (![(AXDispatchTimer *)self->_homeButtonDismissTimer isPending]|| [(AXDispatchTimer *)self->_homeButtonDismissTimer isCancelled])
   {
     v3 = +[AXSpringBoardServer server];
-    v4 = [v3 isControlCenterVisible];
+    isControlCenterVisible = [v3 isControlCenterVisible];
 
-    if (v4)
+    if (isControlCenterVisible)
     {
       v5 = +[AXPISystemActionHelper sharedInstance];
       [v5 toggleControlCenter];
     }
 
     v6 = +[AXSpringBoardServer server];
-    v7 = [v6 isNotificationCenterVisible];
+    isNotificationCenterVisible = [v6 isNotificationCenterVisible];
 
-    if (v7)
+    if (isNotificationCenterVisible)
     {
       v8 = +[AXSpringBoardServer server];
       [v8 toggleNotificationCenter];
@@ -3829,15 +3829,15 @@ LABEL_13:
   v8[7] = *v3;
   v12 = [NSArray arrayWithObjects:"arrayWithObjects:count:" count:?];
   v13 = +[HNDDeviceManager sharedManager];
-  v14 = [v13 mainDeviceIsMotionTracker];
+  mainDeviceIsMotionTracker = [v13 mainDeviceIsMotionTracker];
 
-  v15 = [v12 firstObject];
-  if (v14)
+  firstObject = [v12 firstObject];
+  if (mainDeviceIsMotionTracker)
   {
-    v16 = [(HNDRocker *)self _rockerButtonForLocation:v15 buttonType:AXAssistiveTouchIconTypePinch];
+    v16 = [(HNDRocker *)self _rockerButtonForLocation:firstObject buttonType:AXAssistiveTouchIconTypePinch];
     [v2 addObject:v16];
 
-    v15 = [v12 objectAtIndexedSubscript:{objc_msgSend(v2, "count")}];
+    firstObject = [v12 objectAtIndexedSubscript:{objc_msgSend(v2, "count")}];
     v17 = &AXAssistiveTouchIconTypeRotate;
   }
 
@@ -3846,14 +3846,14 @@ LABEL_13:
     v17 = &AXAssistiveTouchIconTypePinchAndRotate;
   }
 
-  v18 = [(HNDRocker *)self _rockerButtonForLocation:v15 buttonType:*v17];
+  v18 = [(HNDRocker *)self _rockerButtonForLocation:firstObject buttonType:*v17];
   [v2 addObject:v18];
 
   v19 = +[HNDHandManager sharedManager];
-  v40 = [v19 customGestures];
+  customGestures = [v19 customGestures];
 
   v20 = [v2 count];
-  if (&v20[[v40 count]] <= 7)
+  if (&v20[[customGestures count]] <= 7)
   {
     v21 = AXForceTouchAvailableAndEnabled();
     v22 = &AXAssistiveTouchIconTypeForceTap;
@@ -3869,7 +3869,7 @@ LABEL_13:
   }
 
   v26 = [v2 count];
-  if (&v26[[v40 count]] <= 7)
+  if (&v26[[customGestures count]] <= 7)
   {
     v27 = [v12 objectAtIndexedSubscript:{objc_msgSend(v2, "count")}];
     v28 = [(HNDRocker *)self _rockerButtonForLocation:v27 buttonType:AXAssistiveTouchIconTypeDoubleTap];
@@ -3877,7 +3877,7 @@ LABEL_13:
   }
 
   v29 = [v2 count];
-  if (&v29[[v40 count]] <= 7)
+  if (&v29[[customGestures count]] <= 7)
   {
     v30 = [v12 objectAtIndexedSubscript:{objc_msgSend(v2, "count")}];
     v31 = [(HNDRocker *)self _rockerButtonForLocation:v30 buttonType:AXAssistiveTouchIconTypeDragAndDrop];
@@ -3894,7 +3894,7 @@ LABEL_13:
   objc_copyWeak(&v47, &location);
   v33 = v12;
   v46 = v33;
-  [v40 enumerateObjectsUsingBlock:v44];
+  [customGestures enumerateObjectsUsingBlock:v44];
   v34 = [v32 count];
   if (v34 <= 7)
   {
@@ -3952,10 +3952,10 @@ LABEL_13:
   return result;
 }
 
-- (void)_setBackgroundWithType:(int)a3
+- (void)_setBackgroundWithType:(int)type
 {
   y = CGPointZero.y;
-  if (a3 == 1)
+  if (type == 1)
   {
     +[HNDRocker initialRockerSize];
   }
@@ -3969,7 +3969,7 @@ LABEL_13:
   [(UIVisualEffectView *)self->_backdropView bounds];
   [(UIView *)self->_maskImageView setFrame:?];
   [(UIVisualEffectView *)self->_backdropView setMaskView:self->_maskImageView];
-  self->_backgroundType = a3;
+  self->_backgroundType = type;
 }
 
 - (void)_addNewButtonsToView
@@ -3995,8 +3995,8 @@ LABEL_13:
 
         v8 = *(*(&v11 + 1) + 8 * i);
         [v8 setSelected:{0, v11}];
-        v9 = [(HNDRocker *)self _contentView];
-        [v9 addSubview:v8];
+        _contentView = [(HNDRocker *)self _contentView];
+        [_contentView addSubview:v8];
       }
 
       v5 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -4005,64 +4005,64 @@ LABEL_13:
     while (v5);
   }
 
-  v10 = [(HNDRocker *)self _contentView];
-  [v10 bringSubviewToFront:self->_middleCircle];
+  _contentView2 = [(HNDRocker *)self _contentView];
+  [_contentView2 bringSubviewToFront:self->_middleCircle];
 }
 
-- (void)_centerBackButtonToView:(id)a3
+- (void)_centerBackButtonToView:(id)view
 {
-  v4 = a3;
-  v5 = [(HNDRocker *)self backButtonConstraints];
+  viewCopy = view;
+  backButtonConstraints = [(HNDRocker *)self backButtonConstraints];
 
-  if (v5)
+  if (backButtonConstraints)
   {
-    v6 = [(HNDRocker *)self backButtonConstraints];
-    [NSLayoutConstraint deactivateConstraints:v6];
+    backButtonConstraints2 = [(HNDRocker *)self backButtonConstraints];
+    [NSLayoutConstraint deactivateConstraints:backButtonConstraints2];
   }
 
-  if (v4)
+  if (viewCopy)
   {
-    v16 = [(HNDRockerButton *)self->_backButton imageView];
-    v7 = [v16 centerXAnchor];
-    v8 = [v4 centerXAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    imageView = [(HNDRockerButton *)self->_backButton imageView];
+    centerXAnchor = [imageView centerXAnchor];
+    centerXAnchor2 = [viewCopy centerXAnchor];
+    v9 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v17[0] = v9;
-    v10 = [(HNDRockerButton *)self->_backButton imageView];
-    v11 = [v10 centerYAnchor];
-    v12 = [v4 centerYAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    imageView2 = [(HNDRockerButton *)self->_backButton imageView];
+    centerYAnchor = [imageView2 centerYAnchor];
+    centerYAnchor2 = [viewCopy centerYAnchor];
+    v13 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v17[1] = v13;
     v14 = [NSArray arrayWithObjects:v17 count:2];
     [(HNDRocker *)self setBackButtonConstraints:v14];
 
-    v15 = [(HNDRocker *)self backButtonConstraints];
-    [NSLayoutConstraint activateConstraints:v15];
+    backButtonConstraints3 = [(HNDRocker *)self backButtonConstraints];
+    [NSLayoutConstraint activateConstraints:backButtonConstraints3];
   }
 
   else
   {
-    v15 = ASTLogCommon();
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
+    backButtonConstraints3 = ASTLogCommon();
+    if (os_log_type_enabled(backButtonConstraints3, OS_LOG_TYPE_FAULT))
     {
-      sub_1001297C0(v15);
+      sub_1001297C0(backButtonConstraints3);
     }
   }
 }
 
-- (void)_layoutMenuItemsInReverse:(BOOL)a3 oldRockers:(id)a4 animateToIcon:(id)a5 shouldUpdateKeyboardFocusIfNeeded:(BOOL)a6
+- (void)_layoutMenuItemsInReverse:(BOOL)reverse oldRockers:(id)rockers animateToIcon:(id)icon shouldUpdateKeyboardFocusIfNeeded:(BOOL)needed
 {
-  v8 = a3;
-  v10 = a4;
-  v11 = a5;
-  [v10 enumerateObjectsUsingBlock:&stru_1001D4FC8];
+  reverseCopy = reverse;
+  rockersCopy = rockers;
+  iconCopy = icon;
+  [rockersCopy enumerateObjectsUsingBlock:&stru_1001D4FC8];
   v35[0] = _NSConcreteStackBlock;
   v35[1] = 3221225472;
   v35[2] = sub_10005858C;
   v35[3] = &unk_1001D3C80;
-  v12 = v10;
+  v12 = rockersCopy;
   v36 = v12;
-  v37 = self;
-  v13 = v11;
+  selfCopy = self;
+  v13 = iconCopy;
   v38 = v13;
   v14 = objc_retainBlock(v35);
   v31[0] = _NSConcreteStackBlock;
@@ -4071,18 +4071,18 @@ LABEL_13:
   v31[3] = &unk_1001D5030;
   v15 = v12;
   v32 = v15;
-  v33 = self;
-  v34 = a6;
+  selfCopy2 = self;
+  neededCopy = needed;
   v16 = objc_retainBlock(v31);
   v25 = _NSConcreteStackBlock;
   v26 = 3221225472;
   v27 = sub_100058690;
   v28 = &unk_1001D36E8;
-  v29 = self;
+  selfCopy3 = self;
   v17 = v15;
   v30 = v17;
   v18 = objc_retainBlock(&v25);
-  if (v8)
+  if (reverseCopy)
   {
     LODWORD(v19) = 1048233745;
     LODWORD(v21) = 1061244476;
@@ -4103,29 +4103,29 @@ LABEL_13:
   }
 }
 
-- (void)_layoutMenuItems:(BOOL)a3 oldRockers:(id)a4 viewForCenteringAtStart:(id)a5 shouldUpdateKeyboardFocusIfNeeded:(BOOL)a6
+- (void)_layoutMenuItems:(BOOL)items oldRockers:(id)rockers viewForCenteringAtStart:(id)start shouldUpdateKeyboardFocusIfNeeded:(BOOL)needed
 {
-  v8 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemsCopy = items;
+  rockersCopy = rockers;
+  startCopy = start;
   [(HNDRocker *)self _addNewButtonsToView];
   if (self->_state != 1)
   {
     [(HNDRockerButton *)self->_backButton setSelected:0];
   }
 
-  v12 = [(HNDRocker *)self _contentView];
-  [v12 bringSubviewToFront:self->_middleCircle];
+  _contentView = [(HNDRocker *)self _contentView];
+  [_contentView bringSubviewToFront:self->_middleCircle];
 
-  [v10 enumerateObjectsUsingBlock:&stru_1001D5050];
+  [rockersCopy enumerateObjectsUsingBlock:&stru_1001D5050];
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_100058AF4;
   v31[3] = &unk_1001D3C80;
-  v13 = v10;
+  v13 = rockersCopy;
   v32 = v13;
-  v33 = self;
-  v14 = v11;
+  selfCopy = self;
+  v14 = startCopy;
   v34 = v14;
   v15 = objc_retainBlock(v31);
   v24 = _NSConcreteStackBlock;
@@ -4133,11 +4133,11 @@ LABEL_13:
   v26 = sub_100058C10;
   v27 = &unk_1001D5030;
   v16 = v13;
-  v30 = a6;
+  neededCopy = needed;
   v28 = v16;
-  v29 = self;
+  selfCopy2 = self;
   v17 = objc_retainBlock(&v24);
-  if (v8)
+  if (itemsCopy)
   {
     LODWORD(v18) = 1048233745;
     LODWORD(v20) = 1061244476;
@@ -4156,27 +4156,27 @@ LABEL_13:
   }
 }
 
-- (BOOL)activateMenuItemDown:(id)a3 fromButtonPress:(BOOL)a4
+- (BOOL)activateMenuItemDown:(id)down fromButtonPress:(BOOL)press
 {
-  v5 = a3;
-  if ([v5 isEqualToString:AXAssistiveTouchIconTypeHome])
+  downCopy = down;
+  if ([downCopy isEqualToString:AXAssistiveTouchIconTypeHome])
   {
     [(HNDRocker *)self _homeButton:1];
   }
 
-  else if ([v5 isEqualToString:AXAssistiveTouchIconTypeLockScreen])
+  else if ([downCopy isEqualToString:AXAssistiveTouchIconTypeLockScreen])
   {
     [(HNDRocker *)self _lockButton:1];
   }
 
-  else if ([v5 isEqualToString:AXAssistiveTouchIconTypeVolumeUp])
+  else if ([downCopy isEqualToString:AXAssistiveTouchIconTypeVolumeUp])
   {
     [(HNDRocker *)self _volumeUp:1];
   }
 
   else
   {
-    if (![v5 isEqualToString:AXAssistiveTouchIconTypeVolumeDown])
+    if (![downCopy isEqualToString:AXAssistiveTouchIconTypeVolumeDown])
     {
       v7 = 0;
       goto LABEL_12;
@@ -4189,7 +4189,7 @@ LABEL_13:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = downCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Activate menu item down: %@", &v9, 0xCu);
   }
 
@@ -4199,44 +4199,44 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)activateMenuItemUp:(id)a3 fromButtonPress:(BOOL)a4
+- (BOOL)activateMenuItemUp:(id)up fromButtonPress:(BOOL)press
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeOrientation])
+  pressCopy = press;
+  upCopy = up;
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeOrientation])
   {
     [(HNDRocker *)self _rotationLockPressed];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeOpenMenu])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeOpenMenu])
   {
-    v7 = [(HNDRocker *)self displayManager];
-    [v7 showMenu:1];
+    displayManager = [(HNDRocker *)self displayManager];
+    [displayManager showMenu:1];
 LABEL_5:
 
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeNotificationCenter])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeNotificationCenter])
   {
     [(HNDRocker *)self _notificationCenterPressed];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeControlCenter])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeControlCenter])
   {
     [(HNDRocker *)self _controlCenterPressed];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeHome])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeHome])
   {
     [(HNDRocker *)self _homeButton:0];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeSiri])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeSiri])
   {
     if (j__AXDeviceIsSiriAvailable())
     {
@@ -4246,7 +4246,7 @@ LABEL_5:
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeTypeToSiri])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeTypeToSiri])
   {
     if (j__AXDeviceIsSiriAvailable())
     {
@@ -4257,7 +4257,7 @@ LABEL_5:
   }
 
   v11 = AXAssistiveTouchIconTypeVoiceControl;
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeVoiceControl])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeVoiceControl])
   {
     if (!j__AXDeviceIsVoiceControlAvailable())
     {
@@ -4269,392 +4269,392 @@ LABEL_24:
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeCommandAndControl])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeCommandAndControl])
   {
     [(HNDRocker *)self _commandAndControlPressed];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeLockScreen])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeLockScreen])
   {
     [(HNDRocker *)self _lockButton:0];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeVolumeUp])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeVolumeUp])
   {
     [(HNDRocker *)self _volumeUp:0];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeVolumeDown])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeVolumeDown])
   {
     [(HNDRocker *)self _volumeDown:0];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeMute])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeMute])
   {
     [(HNDRocker *)self _ringerPressed:1];
     goto LABEL_12;
   }
 
-  if (AXDeviceHasStaccato() && [v6 isEqualToString:AXAssistiveTouchIconTypeActionButton])
+  if (AXDeviceHasStaccato() && [upCopy isEqualToString:AXAssistiveTouchIconTypeActionButton])
   {
     [(HNDRocker *)self _actionButtonPressed];
     goto LABEL_12;
   }
 
-  if (AXDeviceSupportsCameraButton() && [v6 isEqualToString:AXAssistiveTouchIconTypeCameraButton])
+  if (AXDeviceSupportsCameraButton() && [upCopy isEqualToString:AXAssistiveTouchIconTypeCameraButton])
   {
     [(HNDRocker *)self _cameraButtonPressed];
     goto LABEL_12;
   }
 
-  if (AXDeviceSupportsCameraButton() && [v6 isEqualToString:AXAssistiveTouchIconTypeCameraButtonLightPress])
+  if (AXDeviceSupportsCameraButton() && [upCopy isEqualToString:AXAssistiveTouchIconTypeCameraButtonLightPress])
   {
     [(HNDRocker *)self _cameraButtonLightPressed];
     goto LABEL_12;
   }
 
-  if (AXDeviceSupportsCameraButton() && [v6 isEqualToString:AXAssistiveTouchIconTypeCameraButtonDoubleLightPress])
+  if (AXDeviceSupportsCameraButton() && [upCopy isEqualToString:AXAssistiveTouchIconTypeCameraButtonDoubleLightPress])
   {
     [(HNDRocker *)self _cameraButtonDoubleLightPressed];
     goto LABEL_12;
   }
 
-  if (AXDeviceHasGreyMatterEnabled() && AXDeviceIsPhone() && [v6 isEqualToString:AXAssistiveTouchIconTypeVisualIntelligence])
+  if (AXDeviceHasGreyMatterEnabled() && AXDeviceIsPhone() && [upCopy isEqualToString:AXAssistiveTouchIconTypeVisualIntelligence])
   {
     [(HNDRocker *)self _openVisualIntelligence];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeShake])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeShake])
   {
     [(HNDRocker *)self _shakePressed];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeAppSwitcher])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeAppSwitcher])
   {
     [(HNDRocker *)self _toggleAppSwitcher];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeScreenshot])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeScreenshot])
   {
     [(HNDRocker *)self _screenshotPressed];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeHoverTextTyping])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeHoverTextTyping])
   {
     [(HNDRocker *)self _toggleHoverTextTyping];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeTrackpad])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeTrackpad])
   {
     [(HNDRocker *)self _trackpadPressed];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:v11])
+  if ([upCopy isEqualToString:v11])
   {
     goto LABEL_24;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypePinch])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypePinch])
   {
-    v12 = self;
+    selfCopy3 = self;
     v13 = 1;
 LABEL_68:
-    [(HNDRocker *)v12 _pinchPressed:0 mode:v13];
+    [(HNDRocker *)selfCopy3 _pinchPressed:0 mode:v13];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeRotate])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeRotate])
   {
-    v12 = self;
+    selfCopy3 = self;
     v13 = 0;
     goto LABEL_68;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypePinchAndRotate])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypePinchAndRotate])
   {
-    v12 = self;
+    selfCopy3 = self;
     v13 = 2;
     goto LABEL_68;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeTap])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeTap])
   {
 LABEL_70:
-    [(HNDRocker *)self _tapPressed:0 fromButtonPress:v4];
+    [(HNDRocker *)self _tapPressed:0 fromButtonPress:pressCopy];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeDoubleTap])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeDoubleTap])
   {
-    [(HNDRocker *)self _doubleTapPressed:0 fromButtonPress:v4];
+    [(HNDRocker *)self _doubleTapPressed:0 fromButtonPress:pressCopy];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeLongPress])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeLongPress])
   {
-    [(HNDRocker *)self _longPressPressed:0 fromButtonPress:v4];
+    [(HNDRocker *)self _longPressPressed:0 fromButtonPress:pressCopy];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeDragAndDrop])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeDragAndDrop])
   {
-    v14 = self;
-    v15 = v4;
+    selfCopy5 = self;
+    v15 = pressCopy;
     v16 = 0;
 LABEL_79:
-    [(HNDRocker *)v14 _dragAndDropPressed:0 fromButtonPress:v15 dragMenu:v16];
+    [(HNDRocker *)selfCopy5 _dragAndDropPressed:0 fromButtonPress:v15 dragMenu:v16];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeMoveMenu])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeMoveMenu])
   {
-    v14 = self;
-    v15 = v4;
+    selfCopy5 = self;
+    v15 = pressCopy;
     v16 = 1;
     goto LABEL_79;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeSpotlight])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeSpotlight])
   {
     [(HNDRocker *)self _spotlightPressed:0];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeTripleClick])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeTripleClick])
   {
     [(HNDRocker *)self _tripleClickHomePressed];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeForceTap])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeForceTap])
   {
-    [(HNDRocker *)self _orbPressed:0 fromButtonPress:v4];
+    [(HNDRocker *)self _orbPressed:0 fromButtonPress:pressCopy];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeSOS])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeSOS])
   {
     [(HNDRocker *)self _sosPressed];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeDetectionMode])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeDetectionMode])
   {
     [(HNDRocker *)self _detectionModePresssed];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeWatchRemoteScreen])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeWatchRemoteScreen])
   {
     [(HNDRocker *)self _watchRemoteScreenPressed];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeBackgroundSounds])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeBackgroundSounds])
   {
     [(HNDRocker *)self _backgroundSoundsPressed];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeLiveCaptions])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeLiveCaptions])
   {
     [(HNDRocker *)self _liveCaptionsPressed];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeDimFlashingLights])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeDimFlashingLights])
   {
     [(HNDRocker *)self _dimFlashingLightsPressed];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeHapticMusic])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeHapticMusic])
   {
     [(HNDRocker *)self _hapticMusicPressed];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeMotionCues])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeMotionCues])
   {
     [(HNDRocker *)self _motionCuesPressed];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeLiveSpeech])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeLiveSpeech])
   {
     [(HNDRocker *)self _liveSpeechPressed];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeNearbyDeviceControl])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeNearbyDeviceControl])
   {
     [(HNDRocker *)self _nearbyDeviceControlPressed];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeAccessibilityReader])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeAccessibilityReader])
   {
     [(HNDRocker *)self _accessibilityReaderPressed];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeSysdiagnose])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeSysdiagnose])
   {
     [(HNDRocker *)self _sysdiagnosePressed];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeRebootDevice])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeRebootDevice])
   {
     [(HNDRocker *)self _rebootDevicePressed];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeReachability])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeReachability])
   {
     [(HNDRocker *)self _reachabilityPressed];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeSpeakScreen])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeSpeakScreen])
   {
     [(HNDRocker *)self _speakScreenPressed];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeToggleDock])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeToggleDock])
   {
     [(HNDRocker *)self _dockPressed];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeArmApplePay])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeArmApplePay])
   {
     [(HNDRocker *)self _applePayButtonPressed:0];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeDwellResume])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeDwellResume])
   {
-    v17 = self;
+    selfCopy7 = self;
     v18 = 0;
 LABEL_124:
-    [(HNDRocker *)v17 _toggleDwellControlPause:v18];
+    [(HNDRocker *)selfCopy7 _toggleDwellControlPause:v18];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeDwellPause])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeDwellPause])
   {
-    v17 = self;
+    selfCopy7 = self;
     v18 = 1;
     goto LABEL_124;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeDwellPauseToggle])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeDwellPauseToggle])
   {
-    v7 = +[HNDHandManager sharedManager];
-    -[HNDRocker _toggleDwellControlPause:](self, "_toggleDwellControlPause:", [v7 dwellControlPaused] ^ 1);
+    displayManager = +[HNDHandManager sharedManager];
+    -[HNDRocker _toggleDwellControlPause:](self, "_toggleDwellControlPause:", [displayManager dwellControlPaused] ^ 1);
     goto LABEL_5;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeDwellLock])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeDwellLock])
   {
-    v19 = self;
+    selfCopy10 = self;
     v20 = 1;
 LABEL_133:
-    [(HNDRocker *)v19 _lockDwellControlAction:v20];
+    [(HNDRocker *)selfCopy10 _lockDwellControlAction:v20];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeDwellUnlock])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeDwellUnlock])
   {
-    v19 = self;
+    selfCopy10 = self;
     v20 = 0;
     goto LABEL_133;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeDwellLockToggle])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeDwellLockToggle])
   {
     v21 = +[HNDHandManager sharedManager];
-    v22 = [v21 dwellControlAutorevertEnabled];
+    dwellControlAutorevertEnabled = [v21 dwellControlAutorevertEnabled];
 
-    v19 = self;
-    v20 = v22;
+    selfCopy10 = self;
+    v20 = dwellControlAutorevertEnabled;
     goto LABEL_133;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeDwellClick])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeDwellClick])
   {
     goto LABEL_70;
   }
 
   v23 = AXAssistiveTouchIconTypeDwellIncreaseTime;
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeDwellIncreaseTime])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeDwellIncreaseTime])
   {
     [(HNDRocker *)self _increaseDwellTimePressed];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:v23])
+  if ([upCopy isEqualToString:v23])
   {
     [(HNDRocker *)self _decreaseDwellTimePressed];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeScrollUp])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeScrollUp])
   {
-    v24 = self;
-    v25 = v4;
+    selfCopy16 = self;
+    v25 = pressCopy;
     v26 = 1;
 LABEL_145:
     v27 = 0;
 LABEL_149:
     v28 = 0;
 LABEL_155:
-    [(HNDRocker *)v24 _scrollPressed:0 fromButtonPress:v25 vertical:v26 forward:v27 max:v28];
+    [(HNDRocker *)selfCopy16 _scrollPressed:0 fromButtonPress:v25 vertical:v26 forward:v27 max:v28];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeScrollDown])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeScrollDown])
   {
-    v24 = self;
-    v25 = v4;
+    selfCopy16 = self;
+    v25 = pressCopy;
     v26 = 1;
 LABEL_148:
     v27 = 1;
     goto LABEL_149;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeScrollLeft])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeScrollLeft])
   {
-    v24 = self;
-    v25 = v4;
+    selfCopy16 = self;
+    v25 = pressCopy;
     v26 = 0;
     goto LABEL_145;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeScrollRight])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeScrollRight])
   {
-    v24 = self;
-    v25 = v4;
+    selfCopy16 = self;
+    v25 = pressCopy;
     v26 = 0;
     goto LABEL_148;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeScrollToTop])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeScrollToTop])
   {
-    v24 = self;
-    v25 = v4;
+    selfCopy16 = self;
+    v25 = pressCopy;
     v26 = 1;
     v27 = 0;
 LABEL_154:
@@ -4662,72 +4662,72 @@ LABEL_154:
     goto LABEL_155;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeScrollToBottom])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeScrollToBottom])
   {
-    v24 = self;
-    v25 = v4;
+    selfCopy16 = self;
+    v25 = pressCopy;
     v26 = 1;
     v27 = 1;
     goto LABEL_154;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeContinuousScrollHorizontal])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeContinuousScrollHorizontal])
   {
-    v29 = self;
-    v30 = v4;
+    selfCopy18 = self;
+    v30 = pressCopy;
     v31 = 1;
 LABEL_160:
-    [(HNDRocker *)v29 _continuousScrollPressed:0 fromButtonPress:v30 inDirection:v31 iconType:v6];
+    [(HNDRocker *)selfCopy18 _continuousScrollPressed:0 fromButtonPress:v30 inDirection:v31 iconType:upCopy];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeContinuousScrollVertical])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeContinuousScrollVertical])
   {
-    v29 = self;
-    v30 = v4;
+    selfCopy18 = self;
+    v30 = pressCopy;
     v31 = 0;
     goto LABEL_160;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeEyeTrackingBubbleMode])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeEyeTrackingBubbleMode])
   {
     goto LABEL_165;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeEyeTrackingAutoHide])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeEyeTrackingAutoHide])
   {
     [(HNDRocker *)self _autoHideForEyeTrackingToggled];
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AXAssistiveTouchIconTypeHeadTrackingBubbleMode])
+  if ([upCopy isEqualToString:AXAssistiveTouchIconTypeHeadTrackingBubbleMode])
   {
 LABEL_165:
     [(HNDRocker *)self _bubbleModeToggled];
     goto LABEL_12;
   }
 
-  if (AXDeviceSupportsOnDeviceEyeTracking() && [v6 isEqualToString:AXAssistiveTouchIconTypeCalibrateOnDeviceEyeTracking])
+  if (AXDeviceSupportsOnDeviceEyeTracking() && [upCopy isEqualToString:AXAssistiveTouchIconTypeCalibrateOnDeviceEyeTracking])
   {
     [(HNDRocker *)self _calibrateEyeTrackingPressed];
   }
 
-  else if (AXDeviceSupportsOnDeviceEyeTracking() && [v6 isEqualToString:AXAssistiveTouchIconTypeOnDeviceEyeTrackingZoomScreen])
+  else if (AXDeviceSupportsOnDeviceEyeTracking() && [upCopy isEqualToString:AXAssistiveTouchIconTypeOnDeviceEyeTrackingZoomScreen])
   {
     [(HNDRocker *)self _toggleNeedsToShowZoomWindow];
   }
 
-  else if (AXDeviceSupportsOnDeviceEyeTracking() && [v6 isEqualToString:AXAssistiveTouchIconTypeOnDeviceEyeTracking])
+  else if (AXDeviceSupportsOnDeviceEyeTracking() && [upCopy isEqualToString:AXAssistiveTouchIconTypeOnDeviceEyeTracking])
   {
     [(HNDRocker *)self _toggleOnDeviceEyeTracking];
   }
 
-  else if ([v6 isEqualToString:AXAssistiveTouchIconTypeDwellToggleKeyboardContinuousPath])
+  else if ([upCopy isEqualToString:AXAssistiveTouchIconTypeDwellToggleKeyboardContinuousPath])
   {
     [(HNDRocker *)self _toggleDwellKeyboardContinuousPath];
   }
 
-  else if ([v6 isEqualToString:AXAssistiveTouchIconTypeAssistiveAccess])
+  else if ([upCopy isEqualToString:AXAssistiveTouchIconTypeAssistiveAccess])
   {
     [(HNDRocker *)self _toggleAssistiveAccess];
   }
@@ -4735,27 +4735,27 @@ LABEL_165:
   else
   {
     v32 = AXAssistiveTouchIconTypeCamera;
-    if ([v6 isEqualToString:AXAssistiveTouchIconTypeCamera])
+    if ([upCopy isEqualToString:AXAssistiveTouchIconTypeCamera])
     {
       [(HNDRocker *)self _cameraPressed];
     }
 
-    else if ([v6 isEqualToString:v32])
+    else if ([upCopy isEqualToString:v32])
     {
       [(HNDRocker *)self _frontFacingCameraPressed];
     }
 
-    else if ([v6 hasPrefix:@"CustomGesture-"])
+    else if ([upCopy hasPrefix:@"CustomGesture-"])
     {
-      v51 = [v6 stringByReplacingOccurrencesOfString:@"CustomGesture-" withString:&stru_1001DB590];
+      v51 = [upCopy stringByReplacingOccurrencesOfString:@"CustomGesture-" withString:&stru_1001DB590];
       v33 = +[HNDHandManager sharedManager];
-      v34 = [v33 customGestures];
+      customGestures = [v33 customGestures];
 
       v56 = 0u;
       v57 = 0u;
       v54 = 0u;
       v55 = 0u;
-      v35 = v34;
+      v35 = customGestures;
       v36 = [v35 countByEnumeratingWithState:&v54 objects:v60 count:16];
       if (v36)
       {
@@ -4771,12 +4771,12 @@ LABEL_165:
             }
 
             v40 = *(*(&v54 + 1) + 8 * i);
-            v41 = [v40 name];
-            v42 = [v41 isEqualToString:v51];
+            name = [v40 name];
+            v42 = [name isEqualToString:v51];
 
             if (v42)
             {
-              [(HNDRocker *)self _customGesturePressed:v40 fromButtonPress:v4];
+              [(HNDRocker *)self _customGesturePressed:v40 fromButtonPress:pressCopy];
               goto LABEL_196;
             }
           }
@@ -4797,11 +4797,11 @@ LABEL_196:
     else
     {
       v43 = AXASTSiriShortcutPrefixName;
-      if ([v6 hasPrefix:AXASTSiriShortcutPrefixName])
+      if ([upCopy hasPrefix:AXASTSiriShortcutPrefixName])
       {
         v44 = [NSString stringWithFormat:@"%@-", v43];
-        v45 = [v6 rangeOfString:v44];
-        v47 = [v6 substringFromIndex:&v45[v46]];
+        v45 = [upCopy rangeOfString:v44];
+        v47 = [upCopy substringFromIndex:&v45[v46]];
 
         v48 = +[AXSiriShortcutsManager sharedManager];
         v49 = [v48 shortcutForIdentifier:v47];
@@ -4814,7 +4814,7 @@ LABEL_196:
 
       else
       {
-        if (![v6 isEqualToString:AXAssistiveTouchIconTypePassThroughToApp])
+        if (![upCopy isEqualToString:AXAssistiveTouchIconTypePassThroughToApp])
         {
           v9 = 0;
           goto LABEL_15;
@@ -4836,12 +4836,12 @@ LABEL_196:
   }
 
 LABEL_12:
-  [(HNDRocker *)self setLastMenuItemActivated:v6];
+  [(HNDRocker *)self setLastMenuItemActivated:upCopy];
   v8 = ASTLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v59 = v6;
+    v59 = upCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Activate menu item up: %@", buf, 0xCu);
   }
 
@@ -4851,10 +4851,10 @@ LABEL_15:
   return v9;
 }
 
-- (void)showNubbitPressedState:(BOOL)a3
+- (void)showNubbitPressedState:(BOOL)state
 {
   v3 = 0.65;
-  if (!a3)
+  if (!state)
   {
     v3 = 1.0;
   }
@@ -4862,14 +4862,14 @@ LABEL_15:
   [(HNDRocker *)self setAlpha:v3];
 }
 
-- (BOOL)customizationMapAllowInstanceActivation:(id)a3
+- (BOOL)customizationMapAllowInstanceActivation:(id)activation
 {
-  v3 = a3;
-  if ([v3 count] == 1)
+  activationCopy = activation;
+  if ([activationCopy count] == 1)
   {
     v4 = AXAssistiveTouchLocationsForLayout();
-    v5 = [v4 firstObject];
-    v6 = [v3 objectForKeyedSubscript:v5];
+    firstObject = [v4 firstObject];
+    v6 = [activationCopy objectForKeyedSubscript:firstObject];
 
     if (!v6 || ([v6 isEqualToString:AXAssistiveTouchIconTypeCustom] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", AXAssistiveTouchIconTypeDevice) & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", AXAssistiveTouchIconTypeGestures) & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", AXAssistiveTouchIconTypeOrientation) & 1) != 0)
     {
@@ -4913,8 +4913,8 @@ LABEL_15:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 location];
-        [v3 setObject:v9 forKeyedSubscript:v10];
+        location = [v9 location];
+        [v3 setObject:v9 forKeyedSubscript:location];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -4926,24 +4926,24 @@ LABEL_15:
   return v3;
 }
 
-- (void)_layoutButtonsWithViewForCenteringAtStart:(id)a3 includingBackButton:(BOOL)a4
+- (void)_layoutButtonsWithViewForCenteringAtStart:(id)start includingBackButton:(BOOL)button
 {
-  v4 = a4;
-  v6 = a3;
+  buttonCopy = button;
+  startCopy = start;
   [(HNDRocker *)self _setBackgroundWithType:1];
-  v7 = [(HNDRocker *)self _rockerItemsByLocation];
-  v8 = v7;
+  _rockerItemsByLocation = [(HNDRocker *)self _rockerItemsByLocation];
+  v8 = _rockerItemsByLocation;
   v9 = "tonNumber:";
-  if (v6)
+  if (startCopy)
   {
     v59[0] = _NSConcreteStackBlock;
     v59[1] = 3221225472;
     v59[2] = sub_10005AA8C;
     v59[3] = &unk_1001D50B8;
     v59[4] = self;
-    v60 = v7;
-    v61 = v6;
-    v62 = v4;
+    v60 = _rockerItemsByLocation;
+    v61 = startCopy;
+    v62 = buttonCopy;
     [UIView performWithoutAnimation:v59];
   }
 
@@ -4964,7 +4964,7 @@ LABEL_15:
     v12 = AXAssistiveTouchIconLocationTopRight;
     v51 = [NSValue valueWithCGPoint:0.669, 0.127];
     v78[1] = v51;
-    v53 = v4;
+    v53 = buttonCopy;
     v77[2] = AXAssistiveTouchIconLocationMidLeft;
     v13 = AXAssistiveTouchIconLocationMidLeft;
     v36 = AXAssistiveTouchIconLocationMidLeft;
@@ -5015,7 +5015,7 @@ LABEL_15:
     v69[5] = v15;
     v69[6] = v36;
     v69[7] = v36;
-    v4 = v53;
+    buttonCopy = v53;
     v8 = v56;
     v21 = [NSArray arrayWithObjects:v69 count:8];
     [(AXAssistiveTouchLayoutView *)layoutView layoutItemsByLocation:v56 positions:v38 rows:v35 columns:v20 clockwiseOctagonalLocations:v21 horizontallyCenteredLocation:0];
@@ -5033,12 +5033,12 @@ LABEL_15:
     v67[0] = AXAssistiveTouchIconLocationTopMiddle;
     v52 = [NSValue valueWithCGPoint:0.5, 0.127];
     v68[0] = v52;
-    v55 = v6;
+    v55 = startCopy;
     v24 = AXAssistiveTouchIconLocationMidLeft;
     v67[1] = AXAssistiveTouchIconLocationMidLeft;
     v51 = [NSValue valueWithCGPoint:0.161, 0.475];
     v68[1] = v51;
-    v54 = v4;
+    v54 = buttonCopy;
     v25 = AXAssistiveTouchIconLocationMidRight;
     v67[2] = AXAssistiveTouchIconLocationMidRight;
     v48 = [NSValue valueWithCGPoint:0.854, 0.475];
@@ -5065,12 +5065,12 @@ LABEL_15:
     v63[1] = v23;
     v63[2] = v25;
     v63[3] = v25;
-    v4 = v54;
+    buttonCopy = v54;
     v63[4] = v27;
     v63[5] = v26;
     v63[6] = v24;
     v63[7] = v24;
-    v6 = v55;
+    startCopy = v55;
     v10 = &selRef_repeatItemWithDismissTimer;
     v31 = [NSArray arrayWithObjects:v63 count:8];
     v32 = v23;
@@ -5081,14 +5081,14 @@ LABEL_15:
 LABEL_8:
 
     v9 = "updateSignalQuality:forButtonNumber:" + 26;
-    if (!v4)
+    if (!buttonCopy)
     {
       goto LABEL_13;
     }
 
 LABEL_12:
-    v33 = [(HNDRocker *)self _contentView];
-    [(HNDRocker *)self _centerBackButtonToView:v33];
+    _contentView = [(HNDRocker *)self _contentView];
+    [(HNDRocker *)self _centerBackButtonToView:_contentView];
 
     goto LABEL_13;
   }
@@ -5097,7 +5097,7 @@ LABEL_12:
   {
 LABEL_11:
     [(AXAssistiveTouchLayoutView *)self->_layoutView layoutItemsByLocation:v8 hasBackButton:[(HNDRocker *)self _backButtonShouldBeHidden]^ 1];
-    if (!v4)
+    if (!buttonCopy)
     {
       goto LABEL_13;
     }
@@ -5106,7 +5106,7 @@ LABEL_11:
   }
 
   _AXAssert();
-  if (v4)
+  if (buttonCopy)
   {
     goto LABEL_12;
   }
@@ -5120,7 +5120,7 @@ LABEL_13:
   v58[3] = &unk_1001D50E0;
   v58[4] = self;
   [v34 enumerateObjectsUsingBlock:v58];
-  if (v4)
+  if (buttonCopy)
   {
     [(HNDRocker *)self _updateBackButtonVisibility];
   }
@@ -5149,29 +5149,29 @@ LABEL_13:
   }
 }
 
-- (void)_loadMenuItems:(BOOL)a3 viewForCenteringAtStart:(id)a4 goBackwards:(BOOL)a5 originalState:(int64_t)a6 shouldUpdateKeyboardFocusIfNeeded:(BOOL)a7
+- (void)_loadMenuItems:(BOOL)items viewForCenteringAtStart:(id)start goBackwards:(BOOL)backwards originalState:(int64_t)state shouldUpdateKeyboardFocusIfNeeded:(BOOL)needed
 {
-  v7 = a7;
-  v9 = a5;
-  v10 = a3;
-  v12 = a4;
+  neededCopy = needed;
+  backwardsCopy = backwards;
+  itemsCopy = items;
+  startCopy = start;
   [(AXPIFingerView *)self->_middleCircle setSelected:1];
   [(HNDRockerButton *)self->_selectedButton setSelected:0];
   selectedButton = self->_selectedButton;
   self->_selectedButton = 0;
 
-  if (!v9)
+  if (!backwardsCopy)
   {
     v14 = [(NSMutableArray *)self->_stackState count];
-    if (a6 != 1 || v14 != 1)
+    if (state != 1 || v14 != 1)
     {
-      v15 = [(NSMutableArray *)self->_stackState lastObject];
-      v16 = [v15 intValue];
+      lastObject = [(NSMutableArray *)self->_stackState lastObject];
+      intValue = [lastObject intValue];
 
-      if (v16 != a6)
+      if (intValue != state)
       {
         stackState = self->_stackState;
-        v18 = [NSNumber numberWithInteger:a6];
+        v18 = [NSNumber numberWithInteger:state];
         [(NSMutableArray *)stackState addObject:v18];
       }
     }
@@ -5250,7 +5250,7 @@ LABEL_13:
   }
 
   v21 = +[AXBackBoardServer server];
-  v22 = [v21 isGuidedAccessActive];
+  isGuidedAccessActive = [v21 isGuidedAccessActive];
 
   v23 = AXAssistiveAccessEnabled();
   rockerItems = self->_rockerItems;
@@ -5258,7 +5258,7 @@ LABEL_13:
   v32[1] = 3221225472;
   v32[2] = sub_10005B0F8;
   v32[3] = &unk_1001D5100;
-  v33 = v22;
+  v33 = isGuidedAccessActive;
   v34 = v23;
   [(NSMutableArray *)rockerItems enumerateObjectsUsingBlock:v32];
   [(NSMutableArray *)self->_rockerItems enumerateObjectsUsingBlock:&stru_1001D5140];
@@ -5268,37 +5268,37 @@ LABEL_13:
   }
 
   v25 = +[AXSpringBoardServer server];
-  v26 = [v25 isPurpleBuddyAppFrontmost];
+  isPurpleBuddyAppFrontmost = [v25 isPurpleBuddyAppFrontmost];
 
   v27 = self->_rockerItems;
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_10005B364;
   v30[3] = &unk_1001D5180;
-  v31 = v26;
+  v31 = isPurpleBuddyAppFrontmost;
   [(NSMutableArray *)v27 enumerateObjectsUsingBlock:v30];
-  if (v9)
+  if (backwardsCopy)
   {
     [(HNDRocker *)self _addNewButtonsToView];
-    if ((a6 - 2) >= 0xB)
+    if ((state - 2) >= 0xB)
     {
       _AXAssert();
     }
 
     else
     {
-      v28 = [(HNDRocker *)self animationEndButtonForButtonTag:dword_1001BD248[a6 - 2]];
+      v28 = [(HNDRocker *)self animationEndButtonForButtonTag:dword_1001BD248[state - 2]];
       if (v28)
       {
 LABEL_40:
         [(HNDRocker *)self _removeAllAnimations:1, v29];
-        [(HNDRocker *)self _layoutMenuItemsInReverse:v10 oldRockers:v19 animateToIcon:v28 shouldUpdateKeyboardFocusIfNeeded:v7];
+        [(HNDRocker *)self _layoutMenuItemsInReverse:itemsCopy oldRockers:v19 animateToIcon:v28 shouldUpdateKeyboardFocusIfNeeded:neededCopy];
 
         goto LABEL_41;
       }
     }
 
-    v29 = [NSNumber numberWithInteger:a6];
+    v29 = [NSNumber numberWithInteger:state];
     _AXAssert();
 
     v28 = 0;
@@ -5306,7 +5306,7 @@ LABEL_40:
   }
 
   [(HNDRocker *)self _removeAllAnimations:1];
-  [(HNDRocker *)self _layoutMenuItems:v10 oldRockers:v19 viewForCenteringAtStart:v12 shouldUpdateKeyboardFocusIfNeeded:v7];
+  [(HNDRocker *)self _layoutMenuItems:itemsCopy oldRockers:v19 viewForCenteringAtStart:startCopy shouldUpdateKeyboardFocusIfNeeded:neededCopy];
 LABEL_41:
   [(HNDRocker *)self _resetHoverCircleLocation];
   [(NSMutableArray *)self->_rockerItems enumerateObjectsUsingBlock:&stru_1001D51C0];
@@ -5314,14 +5314,14 @@ LABEL_41:
   UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, 0);
 }
 
-- (id)animationEndButtonForButtonTag:(int)a3
+- (id)animationEndButtonForButtonTag:(int)tag
 {
   rockerItems = self->_rockerItems;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10005B4D4;
   v8[3] = &unk_1001D51E0;
-  v9 = a3;
+  tagCopy = tag;
   v5 = [(NSMutableArray *)rockerItems indexOfObjectPassingTest:v8];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -5334,7 +5334,7 @@ LABEL_41:
   return v6;
 }
 
-- (void)_applePayButtonPressed:(id)a3
+- (void)_applePayButtonPressed:(id)pressed
 {
   if ([(HNDRocker *)self _expectsSecureIntent])
   {
@@ -5352,9 +5352,9 @@ LABEL_41:
 - (CGPoint)_initialPointForGesture
 {
   v3 = +[HNDDeviceManager sharedManager];
-  v4 = [v3 mainDeviceIsPointer];
+  mainDeviceIsPointer = [v3 mainDeviceIsPointer];
 
-  if (!v4 || ((+[HNDHandManager sharedManager](HNDHandManager, "sharedManager"), v5 = objc_claimAutoreleasedReturnValue(), [v5 currentPointForPointer], v7 = v6, v9 = v8, v5, v7 == CGPointZero.x) ? (v10 = v9 == CGPointZero.y) : (v10 = 0), v10))
+  if (!mainDeviceIsPointer || ((+[HNDHandManager sharedManager](HNDHandManager, "sharedManager"), v5 = objc_claimAutoreleasedReturnValue(), [v5 currentPointForPointer], v7 = v6, v9 = v8, v5, v7 == CGPointZero.x) ? (v10 = v9 == CGPointZero.y) : (v10 = 0), v10))
   {
     if (self->_style)
     {
@@ -5362,24 +5362,24 @@ LABEL_41:
       AX_CGRectGetCenter();
       v12 = v11;
       v14 = v13;
-      v15 = [(HNDRocker *)self superview];
-      [(HNDRocker *)self convertPoint:v15 toView:v12, v14];
+      superview = [(HNDRocker *)self superview];
+      [(HNDRocker *)self convertPoint:superview toView:v12, v14];
       v7 = v16;
       v9 = v17;
     }
 
     else
     {
-      v18 = [(HNDRocker *)self window];
-      [v18 bounds];
+      window = [(HNDRocker *)self window];
+      [window bounds];
       MidX = CGRectGetMidX(v28);
-      v20 = [(HNDRocker *)self window];
-      [v20 bounds];
+      window2 = [(HNDRocker *)self window];
+      [window2 bounds];
       MidY = CGRectGetMidY(v29);
 
-      v15 = [(HNDRocker *)self window];
-      v22 = [(HNDRocker *)self superview];
-      [v15 convertPoint:v22 toView:{MidX, MidY}];
+      superview = [(HNDRocker *)self window];
+      superview2 = [(HNDRocker *)self superview];
+      [superview convertPoint:superview2 toView:{MidX, MidY}];
       v7 = v23;
       v9 = v24;
     }
@@ -5392,89 +5392,89 @@ LABEL_41:
   return result;
 }
 
-- (void)_orbPressed:(id)a3 fromButtonPress:(BOOL)a4
+- (void)_orbPressed:(id)pressed fromButtonPress:(BOOL)press
 {
-  v4 = a4;
+  pressCopy = press;
   [(HNDRocker *)self updateForegroundImageForAction:AXAssistiveTouchIconTypeForceTap];
   [(HNDRocker *)self _initialPointForGesture];
   v10 = [AXNamedReplayableGesture forceTouchGestureAtPoint:?];
   v6 = +[HNDHandManager sharedManager];
-  v7 = [(HNDRocker *)self hardwareIdentifier];
-  [v6 prepareGesture:v10 onDisplay:v7];
+  hardwareIdentifier = [(HNDRocker *)self hardwareIdentifier];
+  [v6 prepareGesture:v10 onDisplay:hardwareIdentifier];
 
-  if (v4)
+  if (pressCopy)
   {
     v8 = +[HNDHandManager sharedManager];
-    v9 = [(HNDRocker *)self hardwareIdentifier];
-    [v8 performPreparedGestureOnDisplay:v9];
+    hardwareIdentifier2 = [(HNDRocker *)self hardwareIdentifier];
+    [v8 performPreparedGestureOnDisplay:hardwareIdentifier2];
   }
 }
 
-- (void)_longPressPressed:(id)a3 fromButtonPress:(BOOL)a4
+- (void)_longPressPressed:(id)pressed fromButtonPress:(BOOL)press
 {
-  v4 = a4;
+  pressCopy = press;
   [(HNDRocker *)self updateForegroundImageForAction:AXAssistiveTouchIconTypeLongPress];
   [(HNDRocker *)self _initialPointForGesture];
   v10 = [AXNamedReplayableGesture longPressGestureAtPoint:?];
   v6 = +[HNDHandManager sharedManager];
-  v7 = [(HNDRocker *)self hardwareIdentifier];
-  [v6 prepareGesture:v10 onDisplay:v7];
+  hardwareIdentifier = [(HNDRocker *)self hardwareIdentifier];
+  [v6 prepareGesture:v10 onDisplay:hardwareIdentifier];
 
-  if (v4)
+  if (pressCopy)
   {
     v8 = +[HNDHandManager sharedManager];
-    v9 = [(HNDRocker *)self hardwareIdentifier];
-    [v8 performPreparedGestureOnDisplay:v9];
+    hardwareIdentifier2 = [(HNDRocker *)self hardwareIdentifier];
+    [v8 performPreparedGestureOnDisplay:hardwareIdentifier2];
   }
 }
 
-- (void)_tapPressed:(id)a3 fromButtonPress:(BOOL)a4
+- (void)_tapPressed:(id)pressed fromButtonPress:(BOOL)press
 {
-  v4 = a4;
+  pressCopy = press;
   [(HNDRocker *)self updateForegroundImageForAction:AXAssistiveTouchIconTypeDwellClick];
   [(HNDRocker *)self _initialPointForGesture];
   v10 = [AXNamedReplayableGesture tapGestureAtPoint:0 isDoubleTap:1 numberOfFingers:?];
   v6 = +[HNDHandManager sharedManager];
-  v7 = [(HNDRocker *)self hardwareIdentifier];
-  [v6 prepareGesture:v10 onDisplay:v7];
+  hardwareIdentifier = [(HNDRocker *)self hardwareIdentifier];
+  [v6 prepareGesture:v10 onDisplay:hardwareIdentifier];
 
-  if (v4)
+  if (pressCopy)
   {
     v8 = +[HNDHandManager sharedManager];
-    v9 = [(HNDRocker *)self hardwareIdentifier];
-    [v8 performPreparedGestureOnDisplay:v9];
+    hardwareIdentifier2 = [(HNDRocker *)self hardwareIdentifier];
+    [v8 performPreparedGestureOnDisplay:hardwareIdentifier2];
   }
 }
 
-- (void)_doubleTapPressed:(id)a3 fromButtonPress:(BOOL)a4
+- (void)_doubleTapPressed:(id)pressed fromButtonPress:(BOOL)press
 {
-  v4 = a4;
+  pressCopy = press;
   [(HNDRocker *)self updateForegroundImageForAction:AXAssistiveTouchIconTypeDoubleTap];
   [(HNDRocker *)self _initialPointForGesture];
   v10 = [AXNamedReplayableGesture tapGestureAtPoint:1 isDoubleTap:1 numberOfFingers:?];
   v6 = +[HNDHandManager sharedManager];
-  v7 = [(HNDRocker *)self hardwareIdentifier];
-  [v6 prepareGesture:v10 onDisplay:v7];
+  hardwareIdentifier = [(HNDRocker *)self hardwareIdentifier];
+  [v6 prepareGesture:v10 onDisplay:hardwareIdentifier];
 
-  if (v4)
+  if (pressCopy)
   {
     v8 = +[HNDHandManager sharedManager];
-    v9 = [(HNDRocker *)self hardwareIdentifier];
-    [v8 performPreparedGestureOnDisplay:v9];
+    hardwareIdentifier2 = [(HNDRocker *)self hardwareIdentifier];
+    [v8 performPreparedGestureOnDisplay:hardwareIdentifier2];
   }
 }
 
-- (void)_dragAndDropPressed:(id)a3 fromButtonPress:(BOOL)a4 dragMenu:(BOOL)a5
+- (void)_dragAndDropPressed:(id)pressed fromButtonPress:(BOOL)press dragMenu:(BOOL)menu
 {
-  v5 = a5;
-  v6 = a4;
+  menuCopy = menu;
+  pressCopy = press;
   WeakRetained = objc_loadWeakRetained(&self->_displayManager);
-  v9 = [WeakRetained rocker];
-  v10 = [v9 isNubbitVisible];
+  rocker = [WeakRetained rocker];
+  isNubbitVisible = [rocker isNubbitVisible];
 
-  if (!v5 || (v10 & 1) != 0)
+  if (!menuCopy || (isNubbitVisible & 1) != 0)
   {
-    if (v5)
+    if (menuCopy)
     {
       v12 = 0;
     }
@@ -5489,36 +5489,36 @@ LABEL_41:
     v14 = v13;
     v16 = v15;
     v17 = +[HNDHandManager sharedManager];
-    v18 = [v17 inDragMode];
+    inDragMode = [v17 inDragMode];
 
     v21 = +[HNDHandManager sharedManager];
-    v19 = [(HNDRocker *)self hardwareIdentifier];
-    if (v18)
+    hardwareIdentifier = [(HNDRocker *)self hardwareIdentifier];
+    if (inDragMode)
     {
-      [v21 endDragModeAtPoint:v19 onDisplay:1 completed:{v14, v16}];
+      [v21 endDragModeAtPoint:hardwareIdentifier onDisplay:1 completed:{v14, v16}];
     }
 
     else
     {
-      [v21 startDragModeOnDisplay:v19];
+      [v21 startDragModeOnDisplay:hardwareIdentifier];
 
-      if (!v6 || v5)
+      if (!pressCopy || menuCopy)
       {
-        if (!v5)
+        if (!menuCopy)
         {
           return;
         }
 
         v21 = +[HNDHandManager sharedManager];
-        v20 = [(HNDRocker *)self hardwareIdentifier];
-        [v21 beginDragMenuAtPoint:v20 onDisplay:{v14, v16}];
+        hardwareIdentifier2 = [(HNDRocker *)self hardwareIdentifier];
+        [v21 beginDragMenuAtPoint:hardwareIdentifier2 onDisplay:{v14, v16}];
       }
 
       else
       {
         v21 = +[HNDHandManager sharedManager];
-        v20 = [(HNDRocker *)self hardwareIdentifier];
-        [v21 beginDragAtPoint:v20 onDisplay:{v14, v16}];
+        hardwareIdentifier2 = [(HNDRocker *)self hardwareIdentifier];
+        [v21 beginDragAtPoint:hardwareIdentifier2 onDisplay:{v14, v16}];
       }
     }
   }
@@ -5534,12 +5534,12 @@ LABEL_41:
   }
 }
 
-- (void)_pinchPressed:(id)a3 mode:(unint64_t)a4
+- (void)_pinchPressed:(id)pressed mode:(unint64_t)mode
 {
-  v17 = a3;
-  if (a4 <= 2)
+  pressedCopy = pressed;
+  if (mode <= 2)
   {
-    [(HNDRocker *)self updateForegroundImageForAction:**(&off_1001D5548 + a4)];
+    [(HNDRocker *)self updateForegroundImageForAction:**(&off_1001D5548 + mode)];
   }
 
   v6 = +[HNDHandManager sharedManager];
@@ -5547,33 +5547,33 @@ LABEL_41:
   AX_CGRectGetCenter();
   v8 = v7;
   v10 = v9;
-  v11 = [(HNDRocker *)self superview];
-  [(HNDRocker *)self convertPoint:v11 toView:v8, v10];
+  superview = [(HNDRocker *)self superview];
+  [(HNDRocker *)self convertPoint:superview toView:v8, v10];
   v13 = v12;
   v15 = v14;
-  v16 = [(HNDRocker *)self hardwareIdentifier];
-  [v6 startPinchModeWithPoint:v16 onDisplay:a4 mode:{v13, v15}];
+  hardwareIdentifier = [(HNDRocker *)self hardwareIdentifier];
+  [v6 startPinchModeWithPoint:hardwareIdentifier onDisplay:mode mode:{v13, v15}];
 }
 
-- (void)_scrollPressed:(id)a3 fromButtonPress:(BOOL)a4 vertical:(BOOL)a5 forward:(BOOL)a6 max:(BOOL)a7
+- (void)_scrollPressed:(id)pressed fromButtonPress:(BOOL)press vertical:(BOOL)vertical forward:(BOOL)forward max:(BOOL)max
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
-  v10 = a4;
+  maxCopy = max;
+  forwardCopy = forward;
+  verticalCopy = vertical;
+  pressCopy = press;
   v12 = &AXAssistiveTouchIconTypeScrollDown;
-  if (!a5)
+  if (!vertical)
   {
     v12 = &AXAssistiveTouchIconTypeScrollRight;
   }
 
   v13 = &AXAssistiveTouchIconTypeScrollUp;
-  if (!a5)
+  if (!vertical)
   {
     v13 = &AXAssistiveTouchIconTypeScrollLeft;
   }
 
-  if (!a6)
+  if (!forward)
   {
     v12 = v13;
   }
@@ -5583,69 +5583,69 @@ LABEL_41:
   v15 = v14;
   v17 = v16;
   v18 = +[HNDHandManager sharedManager];
-  v19 = [(HNDRocker *)self hardwareIdentifier];
-  [v18 prepareScrollAtPoint:v19 onDisplay:v9 vertical:v8 forward:v7 max:{v15, v17}];
+  hardwareIdentifier = [(HNDRocker *)self hardwareIdentifier];
+  [v18 prepareScrollAtPoint:hardwareIdentifier onDisplay:verticalCopy vertical:forwardCopy forward:maxCopy max:{v15, v17}];
 
-  if (v10)
+  if (pressCopy)
   {
     v21 = +[HNDHandManager sharedManager];
-    v20 = [(HNDRocker *)self hardwareIdentifier];
-    [v21 performPreparedGestureOnDisplay:v20];
+    hardwareIdentifier2 = [(HNDRocker *)self hardwareIdentifier];
+    [v21 performPreparedGestureOnDisplay:hardwareIdentifier2];
   }
 }
 
-- (void)_continuousScrollPressed:(id)a3 fromButtonPress:(BOOL)a4 inDirection:(unint64_t)a5 iconType:(id)a6
+- (void)_continuousScrollPressed:(id)pressed fromButtonPress:(BOOL)press inDirection:(unint64_t)direction iconType:(id)type
 {
-  [(HNDRocker *)self updateForegroundImageForAction:a6, a4];
+  [(HNDRocker *)self updateForegroundImageForAction:type, press];
   v8 = +[HNDHandManager sharedManager];
-  v9 = [v8 inContinuousScrollMode];
+  inContinuousScrollMode = [v8 inContinuousScrollMode];
 
   v11 = +[HNDHandManager sharedManager];
-  v10 = [(HNDRocker *)self hardwareIdentifier];
-  if (v9)
+  hardwareIdentifier = [(HNDRocker *)self hardwareIdentifier];
+  if (inContinuousScrollMode)
   {
-    [v11 endContinuousScrollingOnDisplay:v10 withCompletion:0];
+    [v11 endContinuousScrollingOnDisplay:hardwareIdentifier withCompletion:0];
   }
 
   else
   {
-    [v11 beginContinuousScrollingInDirection:a5 onDisplay:v10];
+    [v11 beginContinuousScrollingInDirection:direction onDisplay:hardwareIdentifier];
   }
 }
 
 - (void)_bubbleModeToggled
 {
   v2 = +[HNDHandManager sharedManager];
-  v3 = [v2 bubbleModeAllowed];
+  bubbleModeAllowed = [v2 bubbleModeAllowed];
 
-  if (v3)
+  if (bubbleModeAllowed)
   {
     v6 = +[AXSettings sharedInstance];
-    v4 = [v6 assistiveTouchBubbleModeEnabled];
+    assistiveTouchBubbleModeEnabled = [v6 assistiveTouchBubbleModeEnabled];
     v5 = +[AXSettings sharedInstance];
-    [v5 setAssistiveTouchBubbleModeEnabled:v4 ^ 1];
+    [v5 setAssistiveTouchBubbleModeEnabled:assistiveTouchBubbleModeEnabled ^ 1];
   }
 }
 
 - (void)_autoHideForEyeTrackingToggled
 {
   v2 = +[HNDHandManager sharedManager];
-  v3 = [v2 eyeTrackingAutoHideAllowed];
+  eyeTrackingAutoHideAllowed = [v2 eyeTrackingAutoHideAllowed];
 
-  if (v3)
+  if (eyeTrackingAutoHideAllowed)
   {
     v6 = +[AXSettings sharedInstance];
-    v4 = [v6 assistiveTouchEyeTrackingAutoHideEnabled];
+    assistiveTouchEyeTrackingAutoHideEnabled = [v6 assistiveTouchEyeTrackingAutoHideEnabled];
     v5 = +[AXSettings sharedInstance];
-    [v5 setAssistiveTouchEyeTrackingAutoHideEnabled:v4 ^ 1];
+    [v5 setAssistiveTouchEyeTrackingAutoHideEnabled:assistiveTouchEyeTrackingAutoHideEnabled ^ 1];
   }
 }
 
-- (void)_toggleDwellControlPause:(BOOL)a3
+- (void)_toggleDwellControlPause:(BOOL)pause
 {
-  v3 = a3;
+  pauseCopy = pause;
   v5 = &AXAssistiveTouchIconTypeDwellPause;
-  if (!a3)
+  if (!pause)
   {
     v5 = &AXAssistiveTouchIconTypeDwellClick;
   }
@@ -5653,15 +5653,15 @@ LABEL_41:
   [(HNDRocker *)self updateForegroundImageForAction:*v5];
   [(HNDRocker *)self _menuExited];
   v6 = +[HNDHandManager sharedManager];
-  [v6 setDwellControlPaused:v3];
+  [v6 setDwellControlPaused:pauseCopy];
 }
 
-- (void)_lockDwellControlAction:(BOOL)a3
+- (void)_lockDwellControlAction:(BOOL)action
 {
-  v3 = a3;
+  actionCopy = action;
   [(HNDRocker *)self _menuExited];
   v4 = +[HNDHandManager sharedManager];
-  [v4 setDwellControlAutorevertEnabled:!v3];
+  [v4 setDwellControlAutorevertEnabled:!actionCopy];
 }
 
 - (void)_increaseDwellTimePressed
@@ -5694,8 +5694,8 @@ LABEL_41:
   [(UIVisualEffectView *)self->_backdropView frame];
   v4 = v3;
   v6 = v5;
-  v7 = [(UIImageView *)self->_nubbitForeground image];
-  [v7 size];
+  image = [(UIImageView *)self->_nubbitForeground image];
+  [image size];
   v9 = v8;
   v11 = v10;
 
@@ -5709,24 +5709,24 @@ LABEL_41:
   [(UIImageView *)nubbitForeground setFrame:v15.origin.x, v15.origin.y, v15.size.width, v15.size.height];
 }
 
-- (void)updateForegroundImageForAction:(id)a3
+- (void)updateForegroundImageForAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   if ([(HNDRocker *)self style]== 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_displayManager);
-    v6 = [WeakRetained usesSeparateRockerForFullMenu];
+    usesSeparateRockerForFullMenu = [WeakRetained usesSeparateRockerForFullMenu];
 
-    if (v6)
+    if (usesSeparateRockerForFullMenu)
     {
-      v7 = [(HNDRocker *)self displayManager];
-      [v7 updateNubbitForegroundImageForAction:v4];
+      displayManager = [(HNDRocker *)self displayManager];
+      [displayManager updateNubbitForegroundImageForAction:actionCopy];
 
       goto LABEL_12;
     }
   }
 
-  if (!v4)
+  if (!actionCopy)
   {
     goto LABEL_11;
   }
@@ -5739,26 +5739,26 @@ LABEL_41:
   }
 
   v9 = +[HNDDeviceManager sharedManager];
-  v10 = [v9 mainDeviceIsPointer];
+  mainDeviceIsPointer = [v9 mainDeviceIsPointer];
 
-  if ((v10 & 1) == 0)
+  if ((mainDeviceIsPointer & 1) == 0)
   {
 LABEL_11:
     [(HNDRocker *)self _resetForegroundImage];
     goto LABEL_12;
   }
 
-  v11 = [(HNDRocker *)self foregroundImageAction];
-  v12 = [v11 isEqualToString:v4];
+  foregroundImageAction = [(HNDRocker *)self foregroundImageAction];
+  v12 = [foregroundImageAction isEqualToString:actionCopy];
 
   if ((v12 & 1) == 0)
   {
-    [(HNDRocker *)self setForegroundImageAction:v4];
-    [(HNDRocker *)self setAccessibilityValue:v4];
-    v13 = [(HNDRocker *)self isFullMenuVisible];
+    [(HNDRocker *)self setForegroundImageAction:actionCopy];
+    [(HNDRocker *)self setAccessibilityValue:actionCopy];
+    isFullMenuVisible = [(HNDRocker *)self isFullMenuVisible];
     if (self->_nubbitForeground)
     {
-      v14 = v13 ^ 1;
+      v14 = isFullMenuVisible ^ 1;
     }
 
     else
@@ -5835,9 +5835,9 @@ LABEL_12:
 {
   [(HNDRocker *)self _menuExited];
   v2 = +[AXSpringBoardServer server];
-  v6 = [v2 visibleTripleClickItems];
+  visibleTripleClickItems = [v2 visibleTripleClickItems];
 
-  if ([v6 count] == 1 && (objc_msgSend(v6, "firstObject"), v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(v3, "intValue"), v3, v4 == 6))
+  if ([visibleTripleClickItems count] == 1 && (objc_msgSend(visibleTripleClickItems, "firstObject"), v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(v3, "intValue"), v3, v4 == 6))
   {
     v5 = +[AXSpringBoardServer server];
     [v5 showAlert:10 withHandler:&stru_1001D5260];
@@ -5877,8 +5877,8 @@ LABEL_12:
 - (void)_trackpadPressed
 {
   [(HNDRocker *)self _menuExited];
-  v3 = [(HNDRocker *)self displayManager];
-  [v3 toggleVirtualTrackpad];
+  displayManager = [(HNDRocker *)self displayManager];
+  [displayManager toggleVirtualTrackpad];
 }
 
 - (void)_menuBarPressed
@@ -5892,28 +5892,28 @@ LABEL_12:
 - (void)_calibrateEyeTrackingPressed
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 assistiveTouchMouseOnDeviceEyeTrackingEnabled];
+  assistiveTouchMouseOnDeviceEyeTrackingEnabled = [v3 assistiveTouchMouseOnDeviceEyeTrackingEnabled];
 
-  if (v4)
+  if (assistiveTouchMouseOnDeviceEyeTrackingEnabled)
   {
-    v5 = [(HNDRocker *)self displayManager];
+    displayManager = [(HNDRocker *)self displayManager];
     [(HNDRocker *)self _menuExited];
-    [v5 setNeedsRecalibration:1];
+    [displayManager setNeedsRecalibration:1];
   }
 }
 
 - (void)_toggleNeedsToShowZoomWindow
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 assistiveTouchMouseOnDeviceEyeTrackingEnabled];
+  assistiveTouchMouseOnDeviceEyeTrackingEnabled = [v3 assistiveTouchMouseOnDeviceEyeTrackingEnabled];
 
-  if (v4)
+  if (assistiveTouchMouseOnDeviceEyeTrackingEnabled)
   {
-    v5 = [(HNDRocker *)self displayManager];
-    v6 = [v5 needsToShowZoomWindow];
+    displayManager = [(HNDRocker *)self displayManager];
+    needsToShowZoomWindow = [displayManager needsToShowZoomWindow];
 
-    v7 = [(HNDRocker *)self displayManager];
-    [v7 setNeedsToShowZoomWindow:v6 ^ 1];
+    displayManager2 = [(HNDRocker *)self displayManager];
+    [displayManager2 setNeedsToShowZoomWindow:needsToShowZoomWindow ^ 1];
 
     [(HNDRocker *)self _menuExited];
   }
@@ -5922,10 +5922,10 @@ LABEL_12:
 - (void)_toggleOnDeviceEyeTracking
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 assistiveTouchMouseOnDeviceEyeTrackingEnabled];
+  assistiveTouchMouseOnDeviceEyeTrackingEnabled = [v3 assistiveTouchMouseOnDeviceEyeTrackingEnabled];
 
   v5 = +[AXSettings sharedInstance];
-  [v5 setAssistiveTouchMouseOnDeviceEyeTrackingEnabled:v4 ^ 1];
+  [v5 setAssistiveTouchMouseOnDeviceEyeTrackingEnabled:assistiveTouchMouseOnDeviceEyeTrackingEnabled ^ 1];
 
   [(HNDRocker *)self _menuExited];
 }
@@ -5933,37 +5933,37 @@ LABEL_12:
 - (void)_toggleDwellKeyboardContinuousPath
 {
   v4 = +[AXSettings sharedInstance];
-  v2 = [v4 assistiveTouchDwellKeyboardContinuousPathEnabled];
+  assistiveTouchDwellKeyboardContinuousPathEnabled = [v4 assistiveTouchDwellKeyboardContinuousPathEnabled];
   v3 = +[AXSettings sharedInstance];
-  [v3 setAssistiveTouchDwellKeyboardContinuousPathEnabled:v2 ^ 1];
+  [v3 setAssistiveTouchDwellKeyboardContinuousPathEnabled:assistiveTouchDwellKeyboardContinuousPathEnabled ^ 1];
 }
 
-- (void)showBannerWithText:(id)a3
+- (void)showBannerWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"_disableUserInterfaceClient" object:0];
-  v5 = [(HNDRocker *)self displayManager];
-  [v5 addUserInterfaceClientEnabler:@"AssistiveTouchRocker"];
+  displayManager = [(HNDRocker *)self displayManager];
+  [displayManager addUserInterfaceClientEnabler:@"AssistiveTouchRocker"];
 
-  v6 = [(HNDRocker *)self displayManager];
+  displayManager2 = [(HNDRocker *)self displayManager];
   v7 = sub_100042B24(@"ASSISTIVE_TOUCH");
-  [v6 showSimpleBannerWithTitle:v7 text:v4];
+  [displayManager2 showSimpleBannerWithTitle:v7 text:textCopy];
 
   [(HNDRocker *)self performSelector:"_disableUserInterfaceClient" withObject:0 afterDelay:15.0];
 }
 
 - (void)_disableUserInterfaceClient
 {
-  v2 = [(HNDRocker *)self displayManager];
-  [v2 removeUserInterfaceClientEnabler:@"AssistiveTouchRocker"];
+  displayManager = [(HNDRocker *)self displayManager];
+  [displayManager removeUserInterfaceClientEnabler:@"AssistiveTouchRocker"];
 }
 
-- (void)_spotlightPressed:(id)a3
+- (void)_spotlightPressed:(id)pressed
 {
   v4 = +[AXBackBoardServer server];
-  v5 = [v4 isGuidedAccessActive];
+  isGuidedAccessActive = [v4 isGuidedAccessActive];
 
-  if (v5)
+  if (isGuidedAccessActive)
   {
     v6 = ASTLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -6041,9 +6041,9 @@ LABEL_8:
   if (_AXSHapticMusicEnabled())
   {
     v4 = +[AXSettings sharedInstance];
-    v2 = [v4 hapticMusicActive];
+    hapticMusicActive = [v4 hapticMusicActive];
     v3 = +[AXSettings sharedInstance];
-    [v3 setHapticMusicActive:v2 ^ 1];
+    [v3 setHapticMusicActive:hapticMusicActive ^ 1];
   }
 
   else
@@ -6078,8 +6078,8 @@ LABEL_8:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 type];
-        v11 = [v10 isEqualToString:v7];
+        type = [v9 type];
+        v11 = [type isEqualToString:v7];
 
         if (v11)
         {
@@ -6131,9 +6131,9 @@ LABEL_11:
 - (void)_sosPressed
 {
   v3 = +[AXBackBoardServer server];
-  v4 = [v3 isGuidedAccessActive];
+  isGuidedAccessActive = [v3 isGuidedAccessActive];
 
-  if (v4)
+  if (isGuidedAccessActive)
   {
     v5 = ASTLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -6266,7 +6266,7 @@ LABEL_8:
   [v2 liftHomeButtonUp];
 }
 
-- (void)_handleTouch:(int64_t)a3
+- (void)_handleTouch:(int64_t)touch
 {
   middleCircle = self->_middleCircle;
   if (middleCircle && ([(AXPIFingerView *)middleCircle isHidden]& 1) == 0)
@@ -6275,8 +6275,8 @@ LABEL_8:
     AX_CGRectGetCenter();
     v9 = v8;
     v11 = v10;
-    v12 = [(HNDRocker *)self superview];
-    [(HNDRocker *)self convertPoint:v12 toView:v9, v11];
+    superview = [(HNDRocker *)self superview];
+    [(HNDRocker *)self convertPoint:superview toView:v9, v11];
     x = v13;
     y = v14;
   }
@@ -6288,8 +6288,8 @@ LABEL_8:
   }
 
   v16 = +[HNDHandManager sharedManager];
-  v15 = [(HNDRocker *)self hardwareIdentifier];
-  [v16 handleMultiTouchStandard:a3 onDisplay:v15 withExistingFingerMidPoint:{x, y}];
+  hardwareIdentifier = [(HNDRocker *)self hardwareIdentifier];
+  [v16 handleMultiTouchStandard:touch onDisplay:hardwareIdentifier withExistingFingerMidPoint:{x, y}];
 }
 
 - (void)_activateLockButton
@@ -6303,11 +6303,11 @@ LABEL_8:
   sub_1000428A0(v4);
 }
 
-- (void)_lockButton:(BOOL)a3
+- (void)_lockButton:(BOOL)button
 {
   v5 = +[AXPISystemActionHelper sharedInstance];
   v6 = v5;
-  if (a3)
+  if (button)
   {
     [v5 pressLockButtonDown];
 
@@ -6343,12 +6343,12 @@ LABEL_8:
   [(HNDRocker *)self showVolumeBar:1 withProgress:?];
 }
 
-- (void)_volumeUp:(BOOL)a3
+- (void)_volumeUp:(BOOL)up
 {
-  v3 = a3;
+  upCopy = up;
   v5 = +[AXPISystemActionHelper sharedInstance];
   v6 = v5;
-  if (v3)
+  if (upCopy)
   {
     [v5 pressVolumeUpButtonDown];
 
@@ -6366,12 +6366,12 @@ LABEL_8:
   }
 }
 
-- (void)_volumeDown:(BOOL)a3
+- (void)_volumeDown:(BOOL)down
 {
-  v3 = a3;
+  downCopy = down;
   v5 = +[AXPISystemActionHelper sharedInstance];
   v6 = v5;
-  if (v3)
+  if (downCopy)
   {
     [v5 pressVolumeDownButtonDown];
 
@@ -6398,31 +6398,31 @@ LABEL_8:
 - (void)_rotationLockPressed
 {
   v2 = +[HNDEventManager sharedManager];
-  v3 = [v2 orientationLocked];
+  orientationLocked = [v2 orientationLocked];
 
   v4 = +[HNDEventManager sharedManager];
-  [v4 setOrientationLocked:v3 ^ 1];
+  [v4 setOrientationLocked:orientationLocked ^ 1];
 
   AXPerformBlockOnMainThreadAfterDelay();
 }
 
-- (void)_ringerSwitchPressed:(BOOL)a3
+- (void)_ringerSwitchPressed:(BOOL)pressed
 {
-  if (![(HNDRocker *)self _replaceRingerWithOrientationLock]|| a3)
+  if (![(HNDRocker *)self _replaceRingerWithOrientationLock]|| pressed)
   {
-    v5 = !sub_100042494();
+    orientationLocked = !sub_100042494();
   }
 
   else
   {
     v4 = +[HNDEventManager sharedManager];
-    v5 = [v4 orientationLocked];
+    orientationLocked = [v4 orientationLocked];
   }
 
   if (j__AXDeviceIsRingerSwitchAvailable())
   {
     v6 = +[AXPISystemActionHelper sharedInstance];
-    [v6 toggleRingerSwitch:v5];
+    [v6 toggleRingerSwitch:orientationLocked];
 
     AXPerformBlockOnMainThreadAfterDelay();
   }
@@ -6430,10 +6430,10 @@ LABEL_8:
   else
   {
     v7 = +[HNDEventManager sharedManager];
-    v8 = [v7 orientationLocked];
+    orientationLocked2 = [v7 orientationLocked];
 
     v9 = +[HNDEventManager sharedManager];
-    [v9 setOrientationLocked:v8 ^ 1];
+    [v9 setOrientationLocked:orientationLocked2 ^ 1];
   }
 }
 
@@ -6505,31 +6505,31 @@ LABEL_8:
   [(AXDispatchTimer *)homeButtonDismissTimer afterDelay:v5 processBlock:0.5];
 }
 
-- (void)_homeButton:(BOOL)a3
+- (void)_homeButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   if ([(HNDRocker *)self shouldIgnoreNextHome]|| (sub_1000424B4() & 1) != 0)
   {
     if ([(HNDRocker *)self shouldIgnoreNextHome])
     {
-      v5 = self;
+      selfCopy2 = self;
       v6 = 0;
     }
 
     else
     {
-      v5 = self;
+      selfCopy2 = self;
       v6 = 1;
     }
 
-    [(HNDRocker *)v5 setShouldIgnoreNextHome:v6];
+    [(HNDRocker *)selfCopy2 setShouldIgnoreNextHome:v6];
   }
 
   else
   {
     v7 = +[AXPISystemActionHelper sharedInstance];
     v8 = v7;
-    if (v3)
+    if (buttonCopy)
     {
       [v7 pressHomeButtonDown];
 
@@ -6588,10 +6588,10 @@ LABEL_8:
   AX_CGRectGetCenter();
   v4 = v3;
   v6 = v5;
-  v7 = [(HNDRocker *)self window];
-  v8 = [v7 subviews];
-  v9 = [v8 firstObject];
-  [(HNDRocker *)self convertPoint:v9 toView:v4, v6];
+  window = [(HNDRocker *)self window];
+  subviews = [window subviews];
+  firstObject = [subviews firstObject];
+  [(HNDRocker *)self convertPoint:firstObject toView:v4, v6];
   v11 = v10;
   v13 = v12;
 
@@ -6602,11 +6602,11 @@ LABEL_8:
   return result;
 }
 
-- (void)setFullMenuVisible:(BOOL)a3 atPoint:(CGPoint)a4
+- (void)setFullMenuVisible:(BOOL)visible atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3;
+  y = point.y;
+  x = point.x;
+  visibleCopy = visible;
   v8 = ASTLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -6614,13 +6614,13 @@ LABEL_8:
     v23.y = y;
     v9 = NSStringFromCGPoint(v23);
     *buf = 67109378;
-    v20 = v6;
+    v20 = visibleCopy;
     v21 = 2112;
     v22 = v9;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "setFullMenuVisible: %d, atPoint: %@", buf, 0x12u);
   }
 
-  if (self->_isFullMenuVisible == v6)
+  if (self->_isFullMenuVisible == visibleCopy)
   {
     v10 = ASTLogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -6632,10 +6632,10 @@ LABEL_8:
 
   else
   {
-    self->_isFullMenuVisible = v6;
+    self->_isFullMenuVisible = visibleCopy;
     self->_progress = 0.1;
     [(HNDRocker *)self frame];
-    if (v6)
+    if (visibleCopy)
     {
       v13 = v11;
       v14 = v12;
@@ -6674,30 +6674,30 @@ LABEL_8:
   }
 }
 
-- (void)_enableDockIconActivationMode:(unint64_t)a3
+- (void)_enableDockIconActivationMode:(unint64_t)mode
 {
   [(HNDRocker *)self _dockPressed];
   v5 = sub_100042B24(@"DOCK_INSTRUCTIONS");
   [(HNDRocker *)self showBannerWithText:v5];
 
   v6 = +[AXSpringBoardServer server];
-  [v6 setDockIconActivationMode:a3];
+  [v6 setDockIconActivationMode:mode];
 }
 
 - (id)_dockSpecificMenuItems
 {
   v3 = +[AXSpringBoardServer server];
-  v4 = [v3 canSetDockIconActivationMode];
+  canSetDockIconActivationMode = [v3 canSetDockIconActivationMode];
 
-  if (v4)
+  if (canSetDockIconActivationMode)
   {
-    v5 = [UIApp userInterfaceLayoutDirection];
-    v6 = [(HNDRocker *)self dockSpecificButtons];
+    userInterfaceLayoutDirection = [UIApp userInterfaceLayoutDirection];
+    dockSpecificButtons = [(HNDRocker *)self dockSpecificButtons];
 
-    if (!v6)
+    if (!dockSpecificButtons)
     {
       objc_initWeak(&location, self);
-      if (v5 == 1)
+      if (userInterfaceLayoutDirection == 1)
       {
         v17 = sub_100042B24(@"PIN_APP_RIGHT");
         v7 = @"AT_LaunchPinFromDockRight";
@@ -6716,7 +6716,7 @@ LABEL_8:
       objc_copyWeak(&v26, &location);
       v9 = [HNDRockerButton buttonWithTitle:v17 imageName:v7 downBlock:0 upBlock:v25 showWithGuidedAccess:0 showWithAssistiveAccess:0];
       v28[0] = v9;
-      if (v5 == 1)
+      if (userInterfaceLayoutDirection == 1)
       {
         v10 = sub_100042B24(@"PIN_APP_LEFT");
         v11 = @"AT_LaunchPinFromDockLeft";
@@ -6770,9 +6770,9 @@ LABEL_8:
   v44 = 0u;
   v45 = 0u;
   v3 = +[AXSpringBoardServer server];
-  v4 = [v3 allowedMedusaGestures];
+  allowedMedusaGestures = [v3 allowedMedusaGestures];
 
-  v5 = [v4 countByEnumeratingWithState:&v42 objects:v46 count:16];
+  v5 = [allowedMedusaGestures countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (v5)
   {
     v6 = *v43;
@@ -6782,12 +6782,12 @@ LABEL_8:
       {
         if (*v43 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allowedMedusaGestures);
         }
 
         v8 = *(*(&v42 + 1) + 8 * i);
-        v9 = [(HNDRocker *)self buttonsByMedusaGesture];
-        v10 = v9 == 0;
+        buttonsByMedusaGesture = [(HNDRocker *)self buttonsByMedusaGesture];
+        v10 = buttonsByMedusaGesture == 0;
 
         if (v10)
         {
@@ -6795,21 +6795,21 @@ LABEL_8:
           [(HNDRocker *)self setButtonsByMedusaGesture:v11];
         }
 
-        v12 = [(HNDRocker *)self buttonsByMedusaGesture];
-        v13 = [v12 objectForKeyedSubscript:v8];
+        buttonsByMedusaGesture2 = [(HNDRocker *)self buttonsByMedusaGesture];
+        v13 = [buttonsByMedusaGesture2 objectForKeyedSubscript:v8];
 
         if (!v13)
         {
-          v14 = [v8 unsignedIntegerValue];
-          v15 = sub_1000429E0(v14);
-          if (v14 > 0x10)
+          unsignedIntegerValue = [v8 unsignedIntegerValue];
+          v15 = sub_1000429E0(unsignedIntegerValue);
+          if (unsignedIntegerValue > 0x10)
           {
             v16 = 0;
           }
 
           else
           {
-            v16 = *(&off_1001D5560 + v14);
+            v16 = *(&off_1001D5560 + unsignedIntegerValue);
           }
 
           v41[0] = _NSConcreteStackBlock;
@@ -6817,30 +6817,30 @@ LABEL_8:
           v41[2] = sub_10005F7E8;
           v41[3] = &unk_1001D53E8;
           v41[4] = self;
-          v41[5] = v14;
+          v41[5] = unsignedIntegerValue;
           v13 = [HNDRockerButton buttonWithTitle:v15 imageName:v16 downBlock:0 upBlock:v41 showWithGuidedAccess:0 showWithAssistiveAccess:0];
 
-          v17 = [(HNDRocker *)self buttonsByMedusaGesture];
-          [v17 setObject:v13 forKeyedSubscript:v8];
+          buttonsByMedusaGesture3 = [(HNDRocker *)self buttonsByMedusaGesture];
+          [buttonsByMedusaGesture3 setObject:v13 forKeyedSubscript:v8];
         }
 
         [(NSMutableArray *)self->_rockerItems addObject:v13];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v42 objects:v46 count:16];
+      v5 = [allowedMedusaGestures countByEnumeratingWithState:&v42 objects:v46 count:16];
     }
 
     while (v5);
   }
 
   rockerItems = self->_rockerItems;
-  v19 = [(HNDRocker *)self _dockSpecificMenuItems];
-  [(NSMutableArray *)rockerItems addObjectsFromArray:v19];
+  _dockSpecificMenuItems = [(HNDRocker *)self _dockSpecificMenuItems];
+  [(NSMutableArray *)rockerItems addObjectsFromArray:_dockSpecificMenuItems];
 
   if ([(NSMutableArray *)self->_rockerItems count]<= 1)
   {
-    v20 = [(HNDRocker *)self toggleDockButton];
-    v21 = v20 == 0;
+    toggleDockButton = [(HNDRocker *)self toggleDockButton];
+    v21 = toggleDockButton == 0;
 
     if (v21)
     {
@@ -6849,14 +6849,14 @@ LABEL_8:
     }
 
     v23 = self->_rockerItems;
-    v24 = [(HNDRocker *)self toggleDockButton];
-    [(NSMutableArray *)v23 addObject:v24];
+    toggleDockButton2 = [(HNDRocker *)self toggleDockButton];
+    [(NSMutableArray *)v23 addObject:toggleDockButton2];
   }
 
   if ([(NSMutableArray *)self->_rockerItems count]<= 1)
   {
-    v25 = [(HNDRocker *)self appSwitcherButton];
-    v26 = v25 == 0;
+    appSwitcherButton = [(HNDRocker *)self appSwitcherButton];
+    v26 = appSwitcherButton == 0;
 
     if (v26)
     {
@@ -6865,8 +6865,8 @@ LABEL_8:
     }
 
     v28 = self->_rockerItems;
-    v29 = [(HNDRocker *)self appSwitcherButton];
-    [(NSMutableArray *)v28 addObject:v29];
+    appSwitcherButton2 = [(HNDRocker *)self appSwitcherButton];
+    [(NSMutableArray *)v28 addObject:appSwitcherButton2];
   }
 
   if ([(NSMutableArray *)self->_rockerItems count]< 9)
@@ -6881,8 +6881,8 @@ LABEL_8:
     [(HNDRocker *)self setSideAppMoreRockerItems:v31];
 
     [(NSMutableArray *)self->_rockerItems removeObjectsInRange:7, v30];
-    v32 = [(HNDRocker *)self moreButton];
-    LODWORD(v30) = v32 == 0;
+    moreButton = [(HNDRocker *)self moreButton];
+    LODWORD(v30) = moreButton == 0;
 
     if (v30)
     {
@@ -6896,16 +6896,16 @@ LABEL_8:
       v34 = [HNDRockerButton buttonWithTitle:v33 imageName:@"IconMore" downBlock:0 upBlock:v38 showWithGuidedAccess:1 showWithAssistiveAccess:1];
       [(HNDRocker *)self setMoreButton:v34];
 
-      v35 = [(HNDRocker *)self moreButton];
-      [v35 setTag:114];
+      moreButton2 = [(HNDRocker *)self moreButton];
+      [moreButton2 setTag:114];
 
       objc_destroyWeak(&v39);
       objc_destroyWeak(&location);
     }
 
     v36 = self->_rockerItems;
-    v37 = [(HNDRocker *)self moreButton];
-    [(NSMutableArray *)v36 addObject:v37];
+    moreButton3 = [(HNDRocker *)self moreButton];
+    [(NSMutableArray *)v36 addObject:moreButton3];
   }
 
   [(HNDRocker *)self _assignLocationsToRockerItems];
@@ -6914,8 +6914,8 @@ LABEL_8:
 - (void)_loadSideAppMoreMenuItems
 {
   rockerItems = self->_rockerItems;
-  v4 = [(HNDRocker *)self sideAppMoreRockerItems];
-  [(NSMutableArray *)rockerItems addObjectsFromArray:v4];
+  sideAppMoreRockerItems = [(HNDRocker *)self sideAppMoreRockerItems];
+  [(NSMutableArray *)rockerItems addObjectsFromArray:sideAppMoreRockerItems];
 
   [(HNDRocker *)self _assignLocationsToRockerItems];
 }
@@ -6996,12 +6996,12 @@ LABEL_8:
   [backdropView setAlpha:v4];
 }
 
-- (void)_resetVisibility:(BOOL)a3
+- (void)_resetVisibility:(BOOL)visibility
 {
-  v3 = a3;
+  visibilityCopy = visibility;
   if (![(HNDRocker *)self style])
   {
-    if (v3)
+    if (visibilityCopy)
     {
       if (_UISolariumEnabled())
       {
@@ -7030,9 +7030,9 @@ LABEL_8:
 - (void)fadeNubbit
 {
   v3 = +[HNDHandManager sharedManager];
-  v4 = [v3 alwaysShowMenu];
+  alwaysShowMenu = [v3 alwaysShowMenu];
 
-  if (v4)
+  if (alwaysShowMenu)
   {
     if (!self->_nubbitDimmed)
     {
@@ -7070,12 +7070,12 @@ LABEL_8:
   }
 }
 
-- (void)transitionMenuToNubbit:(CGPoint)a3 changeAlpha:(BOOL)a4 animate:(BOOL)a5
+- (void)transitionMenuToNubbit:(CGPoint)nubbit changeAlpha:(BOOL)alpha animate:(BOOL)animate
 {
-  v5 = a5;
-  v6 = a4;
-  y = a3.y;
-  x = a3.x;
+  animateCopy = animate;
+  alphaCopy = alpha;
+  y = nubbit.y;
+  x = nubbit.x;
   v10 = ASTLogRocker();
   v11 = os_signpost_id_generate(v10);
 
@@ -7088,10 +7088,10 @@ LABEL_8:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v13, OS_SIGNPOST_INTERVAL_BEGIN, v11, "Transition Menu to Nubbit", "", buf, 2u);
   }
 
-  v15 = [(HNDRocker *)self displayManager];
-  v16 = [v15 userInteractionEnabledOnRockerDismissView];
+  displayManager = [(HNDRocker *)self displayManager];
+  userInteractionEnabledOnRockerDismissView = [displayManager userInteractionEnabledOnRockerDismissView];
 
-  if (v16)
+  if (userInteractionEnabledOnRockerDismissView)
   {
     v17 = ASTLogCommon();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -7109,9 +7109,9 @@ LABEL_8:
     *buf = 138412802;
     v53 = v19;
     v54 = 1024;
-    *v55 = v6;
+    *v55 = alphaCopy;
     *&v55[4] = 1024;
-    *&v55[6] = v5;
+    *&v55[6] = animateCopy;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "transitionMenuToNubbit point: %@, changeAlpha: %i, animate: %i", buf, 0x18u);
   }
 
@@ -7210,7 +7210,7 @@ LABEL_23:
   [(HNDRocker *)self alpha];
   if (v38 == 0.0)
   {
-    if (v6)
+    if (alphaCopy)
     {
       [(HNDRocker *)self setAlpha:1.0];
     }
@@ -7222,13 +7222,13 @@ LABEL_23:
     +[CATransaction commit];
   }
 
-  if (v6)
+  if (alphaCopy)
   {
     [(AXPIFingerView *)self->_middleCircle setAlpha:0.0];
   }
 
   v39 = 0.0;
-  if (nubbitForeground && v5)
+  if (nubbitForeground && animateCopy)
   {
     if (sub_100042D94())
     {
@@ -7249,20 +7249,20 @@ LABEL_23:
   v50[5] = v11;
   *&v50[6] = x;
   *&v50[7] = y;
-  v51 = v6;
+  v51 = alphaCopy;
   v40 = objc_retainBlock(v50);
   v48[0] = _NSConcreteStackBlock;
   v48[1] = 3221225472;
   v48[2] = sub_100060768;
   v48[3] = &unk_1001D54B8;
-  v49 = v6;
+  v49 = alphaCopy;
   v48[4] = self;
   v48[5] = v11;
   v41 = objc_retainBlock(v48);
-  v42 = [(HNDRocker *)self displayManager];
-  v43 = [v42 usesSeparateRockerForFullMenu];
+  displayManager2 = [(HNDRocker *)self displayManager];
+  usesSeparateRockerForFullMenu = [displayManager2 usesSeparateRockerForFullMenu];
 
-  if (v43)
+  if (usesSeparateRockerForFullMenu)
   {
     (v40[2])(v40);
     (v41[2])(v41, 1);
@@ -7284,12 +7284,12 @@ LABEL_23:
   }
 }
 
-- (void)transitionNubbitToMenu:(CGPoint)a3 concurrentAnimation:(id)a4 animationCompleted:(id)a5
+- (void)transitionNubbitToMenu:(CGPoint)menu concurrentAnimation:(id)animation animationCompleted:(id)completed
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  v10 = a5;
+  y = menu.y;
+  x = menu.x;
+  animationCopy = animation;
+  completedCopy = completed;
   v11 = ASTLogRocker();
   v12 = os_signpost_id_generate(v11);
 
@@ -7359,20 +7359,20 @@ LABEL_23:
     v44 = v12;
     v45 = x;
     v46 = y;
-    v43 = v9;
+    v43 = animationCopy;
     v25 = objc_retainBlock(v42);
     v35 = _NSConcreteStackBlock;
     v36 = 3221225472;
     v37 = sub_1000611DC;
     v38 = &unk_1001D5528;
-    v39 = self;
-    v40 = v10;
+    selfCopy = self;
+    v40 = completedCopy;
     v41 = v12;
     v26 = objc_retainBlock(&v35);
     v27 = [(HNDRocker *)self displayManager:v35];
-    v28 = [v27 usesSeparateRockerForFullMenu];
+    usesSeparateRockerForFullMenu = [v27 usesSeparateRockerForFullMenu];
 
-    if (v28)
+    if (usesSeparateRockerForFullMenu)
     {
       (v25[2])(v25);
       (v26[2])(v26, 1);
@@ -7392,13 +7392,13 @@ LABEL_23:
   }
 }
 
-- (void)setNubbitVisible:(BOOL)a3
+- (void)setNubbitVisible:(BOOL)visible
 {
-  if (self->_isNubbitVisible != a3)
+  if (self->_isNubbitVisible != visible)
   {
-    self->_isNubbitVisible = a3;
+    self->_isNubbitVisible = visible;
     nubbitForeground = self->_nubbitForeground;
-    if (a3)
+    if (visible)
     {
       v6 = 1.0;
       if (!nubbitForeground)
@@ -7423,19 +7423,19 @@ LABEL_23:
 - (void)_menuExited
 {
   v4 = +[HNDHandManager sharedManager];
-  v3 = [(HNDRocker *)self hardwareIdentifier];
-  [v4 menuExitedOnDisplay:v3];
+  hardwareIdentifier = [(HNDRocker *)self hardwareIdentifier];
+  [v4 menuExitedOnDisplay:hardwareIdentifier];
 }
 
 - (BOOL)accessibilityPerformEscape
 {
-  v3 = [(HNDRocker *)self isAccessibilityElement];
-  if ((v3 & 1) == 0)
+  isAccessibilityElement = [(HNDRocker *)self isAccessibilityElement];
+  if ((isAccessibilityElement & 1) == 0)
   {
     [(HNDRocker *)self _menuExited];
   }
 
-  return v3 ^ 1;
+  return isAccessibilityElement ^ 1;
 }
 
 - (id)accessibilityPath
@@ -7445,8 +7445,8 @@ LABEL_23:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UIView *)self->_maskImageView layer];
-  [v11 cornerRadius];
+  layer = [(UIView *)self->_maskImageView layer];
+  [layer cornerRadius];
   v13 = [UIBezierPath bezierPathWithRoundedRect:v4 cornerRadius:v6, v8, v10, v12];
   v14 = UIAccessibilityConvertPathToScreenCoordinates(v13, self->_maskImageView);
 
@@ -7461,16 +7461,16 @@ LABEL_23:
   v3 = +[AXPerformanceTestReportingServer server];
   [v3 assistiveTouchDidLaunch];
 
-  v4 = [(HNDRocker *)self window];
-  v5 = [v4 _contextId];
+  window = [(HNDRocker *)self window];
+  _contextId = [window _contextId];
 
-  v6 = [(HNDRocker *)self hitTestCategoryAssertion];
-  [v6 invalidate];
+  hitTestCategoryAssertion = [(HNDRocker *)self hitTestCategoryAssertion];
+  [hitTestCategoryAssertion invalidate];
 
-  if (v5)
+  if (_contextId)
   {
     v7 = +[BKSTouchEventService sharedInstance];
-    v8 = [NSNumber numberWithUnsignedInt:v5];
+    v8 = [NSNumber numberWithUnsignedInt:_contextId];
     v12 = v8;
     v9 = [NSArray arrayWithObjects:&v12 count:1];
     v10 = [v7 setContextIDs:v9 forHitTestContextCategory:1];
@@ -7478,9 +7478,9 @@ LABEL_23:
   }
 }
 
-- (void)_updateRockerItemIfNeededForItem:(id)a3
+- (void)_updateRockerItemIfNeededForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if (![(NSMutableArray *)self->_rockerItems count])
   {
     goto LABEL_12;
@@ -7488,24 +7488,24 @@ LABEL_23:
 
   objc_opt_class();
   v5 = __UIAccessibilityCastAsClass();
-  v6 = [v5 type];
-  v7 = [v6 isEqualToString:AXAssistiveTouchIconTypeSpotlight];
+  type = [v5 type];
+  v7 = [type isEqualToString:AXAssistiveTouchIconTypeSpotlight];
 
   if (v7)
   {
     objc_opt_class();
     v8 = __UIAccessibilityCastAsClass();
     v9 = +[HNDHandManager sharedManager];
-    v10 = [v9 currentDisplayManager];
-    v11 = [v10 isCurrentOrientationLandscape];
+    currentDisplayManager = [v9 currentDisplayManager];
+    isCurrentOrientationLandscape = [currentDisplayManager isCurrentOrientationLandscape];
 
-    [v8 setDisabled:AXDeviceIsPhone() & v11];
+    [v8 setDisabled:AXDeviceIsPhone() & isCurrentOrientationLandscape];
   }
 
   if (AXDeviceSupportsOnDeviceEyeTracking())
   {
-    v12 = [v5 type];
-    if ([v12 isEqualToString:AXAssistiveTouchIconTypeCalibrateOnDeviceEyeTracking])
+    type2 = [v5 type];
+    if ([type2 isEqualToString:AXAssistiveTouchIconTypeCalibrateOnDeviceEyeTracking])
     {
 
 LABEL_8:
@@ -7515,8 +7515,8 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    v13 = [v5 type];
-    v14 = [v13 isEqualToString:AXAssistiveTouchIconTypeOnDeviceEyeTrackingZoomScreen];
+    type3 = [v5 type];
+    v14 = [type3 isEqualToString:AXAssistiveTouchIconTypeOnDeviceEyeTrackingZoomScreen];
 
     if (v14)
     {
@@ -7525,8 +7525,8 @@ LABEL_8:
   }
 
 LABEL_9:
-  v16 = [v5 type];
-  v17 = [v16 isEqualToString:AXAssistiveTouchIconTypeMenuBar];
+  type4 = [v5 type];
+  v17 = [type4 isEqualToString:AXAssistiveTouchIconTypeMenuBar];
 
   if (v17)
   {

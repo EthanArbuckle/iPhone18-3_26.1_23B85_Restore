@@ -1,15 +1,15 @@
 @interface WebMIMETypeRegistry
-+ (BOOL)isSupportedImageMIMEType:(id)a3;
-+ (BOOL)isSupportedMediaMIMEType:(id)a3;
-+ (id)mimeTypeForExtension:(id)a3;
-+ (id)preferredExtensionForMIMEType:(id)a3;
++ (BOOL)isSupportedImageMIMEType:(id)type;
++ (BOOL)isSupportedMediaMIMEType:(id)type;
++ (id)mimeTypeForExtension:(id)extension;
++ (id)preferredExtensionForMIMEType:(id)type;
 @end
 
 @implementation WebMIMETypeRegistry
 
-+ (id)mimeTypeForExtension:(id)a3
++ (id)mimeTypeForExtension:(id)extension
 {
-  MEMORY[0x1CCA63A40](&v12, a3);
+  MEMORY[0x1CCA63A40](&v12, extension);
   WebCore::MIMETypeRegistry::mimeTypeForExtension();
   v3 = v13;
   if (v13)
@@ -57,9 +57,9 @@
   return v5;
 }
 
-+ (id)preferredExtensionForMIMEType:(id)a3
++ (id)preferredExtensionForMIMEType:(id)type
 {
-  MEMORY[0x1CCA63A40](&v13, a3);
+  MEMORY[0x1CCA63A40](&v13, type);
   WebCore::MIMETypeRegistry::preferredExtensionForMIMEType(&v14, &v13, v3);
   v4 = v14;
   if (v14)
@@ -107,9 +107,9 @@
   return v6;
 }
 
-+ (BOOL)isSupportedImageMIMEType:(id)a3
++ (BOOL)isSupportedImageMIMEType:(id)type
 {
-  MEMORY[0x1CCA63A40](&v8, a3);
+  MEMORY[0x1CCA63A40](&v8, type);
   result = WebCore::MIMETypeRegistry::isSupportedImageMIMEType(&v8, v3);
   v6 = v8;
   v8 = 0;
@@ -126,9 +126,9 @@
   return result;
 }
 
-+ (BOOL)isSupportedMediaMIMEType:(id)a3
++ (BOOL)isSupportedMediaMIMEType:(id)type
 {
-  MEMORY[0x1CCA63A40](&v8, a3);
+  MEMORY[0x1CCA63A40](&v8, type);
   result = WebCore::MIMETypeRegistry::isSupportedMediaMIMEType(&v8, v3);
   v6 = v8;
   v8 = 0;

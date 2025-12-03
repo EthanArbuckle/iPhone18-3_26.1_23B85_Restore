@@ -1,10 +1,10 @@
 @interface BDSNBPinningManager
 - (BDSNBPinningManager)init;
-- (id)updateReadingNowWithCompletion:(id)a3;
-- (id)updateWantToReadWithCompletion:(id)a3;
-- (void)audiobookStoreEnabledWithCompletion:(id)a3;
-- (void)fetchMostRecentAudiobookWithCompletion:(id)a3;
-- (void)updateBitrateForItemWithAdamID:(id)a3 completion:(id)a4;
+- (id)updateReadingNowWithCompletion:(id)completion;
+- (id)updateWantToReadWithCompletion:(id)completion;
+- (void)audiobookStoreEnabledWithCompletion:(id)completion;
+- (void)fetchMostRecentAudiobookWithCompletion:(id)completion;
+- (void)updateBitrateForItemWithAdamID:(id)d completion:(id)completion;
 @end
 
 @implementation BDSNBPinningManager
@@ -24,44 +24,44 @@
   return v2;
 }
 
-- (void)fetchMostRecentAudiobookWithCompletion:(id)a3
+- (void)fetchMostRecentAudiobookWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BDSNBPinningManager *)self serviceProxy];
-  [v5 fetchMostRecentAudiobookWithCompletion:v4];
+  completionCopy = completion;
+  serviceProxy = [(BDSNBPinningManager *)self serviceProxy];
+  [serviceProxy fetchMostRecentAudiobookWithCompletion:completionCopy];
 }
 
-- (id)updateWantToReadWithCompletion:(id)a3
+- (id)updateWantToReadWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BDSNBPinningManager *)self serviceProxy];
-  v6 = [v5 updateWantToReadWithCompletion:v4];
+  completionCopy = completion;
+  serviceProxy = [(BDSNBPinningManager *)self serviceProxy];
+  v6 = [serviceProxy updateWantToReadWithCompletion:completionCopy];
 
   return v6;
 }
 
-- (id)updateReadingNowWithCompletion:(id)a3
+- (id)updateReadingNowWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BDSNBPinningManager *)self serviceProxy];
-  v6 = [v5 updateReadingNowWithCompletion:v4];
+  completionCopy = completion;
+  serviceProxy = [(BDSNBPinningManager *)self serviceProxy];
+  v6 = [serviceProxy updateReadingNowWithCompletion:completionCopy];
 
   return v6;
 }
 
-- (void)updateBitrateForItemWithAdamID:(id)a3 completion:(id)a4
+- (void)updateBitrateForItemWithAdamID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BDSNBPinningManager *)self serviceProxy];
-  [v8 updateBitrateForItemWithAdamID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  serviceProxy = [(BDSNBPinningManager *)self serviceProxy];
+  [serviceProxy updateBitrateForItemWithAdamID:dCopy completion:completionCopy];
 }
 
-- (void)audiobookStoreEnabledWithCompletion:(id)a3
+- (void)audiobookStoreEnabledWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BDSNBPinningManager *)self serviceProxy];
-  [v5 audiobookStoreEnabledWithCompletion:v4];
+  completionCopy = completion;
+  serviceProxy = [(BDSNBPinningManager *)self serviceProxy];
+  [serviceProxy audiobookStoreEnabledWithCompletion:completionCopy];
 }
 
 @end

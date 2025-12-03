@@ -12,8 +12,8 @@
 - (void)__ck_callDelegateBlocks
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = objc_getAssociatedObject(a1, &key);
-  objc_setAssociatedObject(a1, &key, 0, 0x301);
+  v2 = objc_getAssociatedObject(self, &key);
+  objc_setAssociatedObject(self, &key, 0, 0x301);
   v10 = 0u;
   v11 = 0u;
   v8 = 0u;
@@ -52,22 +52,22 @@
   if (v5)
   {
     aBlock = v5;
-    v6 = [a1 delegate];
+    delegate = [self delegate];
 
-    if (!v6)
+    if (!delegate)
     {
-      [(UINavigationController(CKAdditions) *)a2 __ck_enqueueCompletionBlock:a1];
+      [(UINavigationController(CKAdditions) *)a2 __ck_enqueueCompletionBlock:self];
     }
 
-    v7 = objc_getAssociatedObject(a1, &key);
-    if (!v7)
+    array = objc_getAssociatedObject(self, &key);
+    if (!array)
     {
-      v7 = [MEMORY[0x1E695DF70] array];
-      objc_setAssociatedObject(a1, &key, v7, 0x301);
+      array = [MEMORY[0x1E695DF70] array];
+      objc_setAssociatedObject(self, &key, array, 0x301);
     }
 
     v8 = _Block_copy(aBlock);
-    [v7 addObject:v8];
+    [array addObject:v8];
 
     v5 = aBlock;
   }
@@ -76,8 +76,8 @@
 - (void)__ck_pushViewController:()CKAdditions animated:completion:
 {
   v8 = a3;
-  [a1 __ck_enqueueCompletionBlock:a5];
-  [a1 pushViewController:v8 animated:a4];
+  [self __ck_enqueueCompletionBlock:a5];
+  [self pushViewController:v8 animated:a4];
 }
 
 - (id)__ck_popViewControllerAnimated:()CKAdditions completion:
@@ -95,8 +95,8 @@
   v7 = v6;
   v16 = v7;
   v8 = _Block_copy(&v12);
-  [a1 __ck_enqueueCompletionBlock:{v8, v12, v13, v14, v15}];
-  v9 = [a1 popViewControllerAnimated:a3];
+  [self __ck_enqueueCompletionBlock:{v8, v12, v13, v14, v15}];
+  v9 = [self popViewControllerAnimated:a3];
   v10 = v9;
   *(v19 + 24) = v9 != 0;
   if (v7 && !v9)
@@ -125,8 +125,8 @@
   v10 = v9;
   v19 = v10;
   v11 = _Block_copy(&v15);
-  [a1 __ck_enqueueCompletionBlock:{v11, v15, v16, v17, v18}];
-  v12 = [a1 popToViewController:v8 animated:a4];
+  [self __ck_enqueueCompletionBlock:{v11, v15, v16, v17, v18}];
+  v12 = [self popToViewController:v8 animated:a4];
   v13 = [v12 count];
   *(v22 + 24) = v13 != 0;
   if (v10 && !v13)
@@ -154,8 +154,8 @@
   v7 = v6;
   v16 = v7;
   v8 = _Block_copy(&v12);
-  [a1 __ck_enqueueCompletionBlock:{v8, v12, v13, v14, v15}];
-  v9 = [a1 popToRootViewControllerAnimated:a3];
+  [self __ck_enqueueCompletionBlock:{v8, v12, v13, v14, v15}];
+  v9 = [self popToRootViewControllerAnimated:a3];
   v10 = [v9 count];
   *(v19 + 24) = v10 != 0;
   if (v7 && !v10)

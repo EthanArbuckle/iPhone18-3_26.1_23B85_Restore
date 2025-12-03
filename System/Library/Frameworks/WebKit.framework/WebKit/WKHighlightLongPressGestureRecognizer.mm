@@ -1,7 +1,7 @@
 @interface WKHighlightLongPressGestureRecognizer
 - (UIScrollView)lastTouchedScrollView;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation WKHighlightLongPressGestureRecognizer
@@ -14,12 +14,12 @@
   objc_storeWeak(&self->_lastTouchedScrollView.m_weakReference, 0);
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = WKHighlightLongPressGestureRecognizer;
-  [(WKHighlightLongPressGestureRecognizer *)&v7 touchesBegan:a3 withEvent:a4];
-  v6 = WebKit::scrollViewForTouches(a3);
+  [(WKHighlightLongPressGestureRecognizer *)&v7 touchesBegan:began withEvent:event];
+  v6 = WebKit::scrollViewForTouches(began);
   if (v6)
   {
     objc_storeWeak(&self->_lastTouchedScrollView.m_weakReference, v6);

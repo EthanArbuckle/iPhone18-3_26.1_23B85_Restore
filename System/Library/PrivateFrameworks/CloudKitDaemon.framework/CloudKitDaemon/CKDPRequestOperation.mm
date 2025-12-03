@@ -1,12 +1,12 @@
 @interface CKDPRequestOperation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPRequestOperation
@@ -409,953 +409,953 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_header)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_request)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_zoneSaveRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_zoneRetrieveRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_zoneDeleteRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_zoneRetrieveChangesRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_zoneChildrenRetrieveRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_zoneRetrieveAncestorsRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_recordSaveRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_recordRetrieveRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_recordRetrieveVersionsRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_recordRetrieveChangesRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_recordDeleteRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_recordResolveTokenRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_fetchArchivedRecordsRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_recordMoveRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_shareAccessRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_queryRetrieveRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_mergeableDeltaSaveRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_mergeableDeltaMetadataRetrieveRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_mergeableDeltaReplaceRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_mergeableDeltaRetrieveRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_assetUploadTokenRetrieveRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_deleteContainerRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_userAvailableQuotaRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_bundlesForContainerRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_webAuthTokenRetrieveRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_updateMissingAssetStatusRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_anonymousShareAddRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_anonymousShareRemoveRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_subscriptionCreateRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_subscriptionRetrieveRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_subscriptionDeleteRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_userRetrieveRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_userQueryRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_userPrivacySettingsRetrieveRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_userPrivacySettingsUpdateRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_userPrivacySettingsResetRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_userPrivacySettingsBatchLookupRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_adopterCapabilitiesSaveRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_adopterCapabilitiesCheckRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_zoneUsageSaveRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_shareUsageSaveRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_shareAcceptRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_shareDeclineRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_shareVettingInitiateRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_tokenRegistrationRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_tokenUnregistrationRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_setBadgeCountRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_notificationSyncRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_notificationMarkReadRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_archiveRecordsRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_markAssetBrokenRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_functionInvokeRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   header = self->_header;
-  v60 = v4;
+  v60 = toCopy;
   if (header)
   {
-    objc_msgSend_setHeader_(v4, v5, header);
-    v4 = v60;
+    objc_msgSend_setHeader_(toCopy, v5, header);
+    toCopy = v60;
   }
 
   request = self->_request;
   if (request)
   {
     objc_msgSend_setRequest_(v60, v5, request);
-    v4 = v60;
+    toCopy = v60;
   }
 
   zoneSaveRequest = self->_zoneSaveRequest;
   if (zoneSaveRequest)
   {
     objc_msgSend_setZoneSaveRequest_(v60, v5, zoneSaveRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   zoneRetrieveRequest = self->_zoneRetrieveRequest;
   if (zoneRetrieveRequest)
   {
     objc_msgSend_setZoneRetrieveRequest_(v60, v5, zoneRetrieveRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   zoneDeleteRequest = self->_zoneDeleteRequest;
   if (zoneDeleteRequest)
   {
     objc_msgSend_setZoneDeleteRequest_(v60, v5, zoneDeleteRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   zoneRetrieveChangesRequest = self->_zoneRetrieveChangesRequest;
   if (zoneRetrieveChangesRequest)
   {
     objc_msgSend_setZoneRetrieveChangesRequest_(v60, v5, zoneRetrieveChangesRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   zoneChildrenRetrieveRequest = self->_zoneChildrenRetrieveRequest;
   if (zoneChildrenRetrieveRequest)
   {
     objc_msgSend_setZoneChildrenRetrieveRequest_(v60, v5, zoneChildrenRetrieveRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   zoneRetrieveAncestorsRequest = self->_zoneRetrieveAncestorsRequest;
   if (zoneRetrieveAncestorsRequest)
   {
     objc_msgSend_setZoneRetrieveAncestorsRequest_(v60, v5, zoneRetrieveAncestorsRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   recordSaveRequest = self->_recordSaveRequest;
   if (recordSaveRequest)
   {
     objc_msgSend_setRecordSaveRequest_(v60, v5, recordSaveRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   recordRetrieveRequest = self->_recordRetrieveRequest;
   if (recordRetrieveRequest)
   {
     objc_msgSend_setRecordRetrieveRequest_(v60, v5, recordRetrieveRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   recordRetrieveVersionsRequest = self->_recordRetrieveVersionsRequest;
   if (recordRetrieveVersionsRequest)
   {
     objc_msgSend_setRecordRetrieveVersionsRequest_(v60, v5, recordRetrieveVersionsRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   recordRetrieveChangesRequest = self->_recordRetrieveChangesRequest;
   if (recordRetrieveChangesRequest)
   {
     objc_msgSend_setRecordRetrieveChangesRequest_(v60, v5, recordRetrieveChangesRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   recordDeleteRequest = self->_recordDeleteRequest;
   if (recordDeleteRequest)
   {
     objc_msgSend_setRecordDeleteRequest_(v60, v5, recordDeleteRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   recordResolveTokenRequest = self->_recordResolveTokenRequest;
   if (recordResolveTokenRequest)
   {
     objc_msgSend_setRecordResolveTokenRequest_(v60, v5, recordResolveTokenRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   fetchArchivedRecordsRequest = self->_fetchArchivedRecordsRequest;
   if (fetchArchivedRecordsRequest)
   {
     objc_msgSend_setFetchArchivedRecordsRequest_(v60, v5, fetchArchivedRecordsRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   recordMoveRequest = self->_recordMoveRequest;
   if (recordMoveRequest)
   {
     objc_msgSend_setRecordMoveRequest_(v60, v5, recordMoveRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   shareAccessRequest = self->_shareAccessRequest;
   if (shareAccessRequest)
   {
     objc_msgSend_setShareAccessRequest_(v60, v5, shareAccessRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   queryRetrieveRequest = self->_queryRetrieveRequest;
   if (queryRetrieveRequest)
   {
     objc_msgSend_setQueryRetrieveRequest_(v60, v5, queryRetrieveRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   mergeableDeltaSaveRequest = self->_mergeableDeltaSaveRequest;
   if (mergeableDeltaSaveRequest)
   {
     objc_msgSend_setMergeableDeltaSaveRequest_(v60, v5, mergeableDeltaSaveRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   mergeableDeltaMetadataRetrieveRequest = self->_mergeableDeltaMetadataRetrieveRequest;
   if (mergeableDeltaMetadataRetrieveRequest)
   {
     objc_msgSend_setMergeableDeltaMetadataRetrieveRequest_(v60, v5, mergeableDeltaMetadataRetrieveRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   mergeableDeltaReplaceRequest = self->_mergeableDeltaReplaceRequest;
   if (mergeableDeltaReplaceRequest)
   {
     objc_msgSend_setMergeableDeltaReplaceRequest_(v60, v5, mergeableDeltaReplaceRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   mergeableDeltaRetrieveRequest = self->_mergeableDeltaRetrieveRequest;
   if (mergeableDeltaRetrieveRequest)
   {
     objc_msgSend_setMergeableDeltaRetrieveRequest_(v60, v5, mergeableDeltaRetrieveRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   assetUploadTokenRetrieveRequest = self->_assetUploadTokenRetrieveRequest;
   if (assetUploadTokenRetrieveRequest)
   {
     objc_msgSend_setAssetUploadTokenRetrieveRequest_(v60, v5, assetUploadTokenRetrieveRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   deleteContainerRequest = self->_deleteContainerRequest;
   if (deleteContainerRequest)
   {
     objc_msgSend_setDeleteContainerRequest_(v60, v5, deleteContainerRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   userAvailableQuotaRequest = self->_userAvailableQuotaRequest;
   if (userAvailableQuotaRequest)
   {
     objc_msgSend_setUserAvailableQuotaRequest_(v60, v5, userAvailableQuotaRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   bundlesForContainerRequest = self->_bundlesForContainerRequest;
   if (bundlesForContainerRequest)
   {
     objc_msgSend_setBundlesForContainerRequest_(v60, v5, bundlesForContainerRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   webAuthTokenRetrieveRequest = self->_webAuthTokenRetrieveRequest;
   if (webAuthTokenRetrieveRequest)
   {
     objc_msgSend_setWebAuthTokenRetrieveRequest_(v60, v5, webAuthTokenRetrieveRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   updateMissingAssetStatusRequest = self->_updateMissingAssetStatusRequest;
   if (updateMissingAssetStatusRequest)
   {
     objc_msgSend_setUpdateMissingAssetStatusRequest_(v60, v5, updateMissingAssetStatusRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   anonymousShareAddRequest = self->_anonymousShareAddRequest;
   if (anonymousShareAddRequest)
   {
     objc_msgSend_setAnonymousShareAddRequest_(v60, v5, anonymousShareAddRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   anonymousShareRemoveRequest = self->_anonymousShareRemoveRequest;
   if (anonymousShareRemoveRequest)
   {
     objc_msgSend_setAnonymousShareRemoveRequest_(v60, v5, anonymousShareRemoveRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   subscriptionCreateRequest = self->_subscriptionCreateRequest;
   if (subscriptionCreateRequest)
   {
     objc_msgSend_setSubscriptionCreateRequest_(v60, v5, subscriptionCreateRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   subscriptionRetrieveRequest = self->_subscriptionRetrieveRequest;
   if (subscriptionRetrieveRequest)
   {
     objc_msgSend_setSubscriptionRetrieveRequest_(v60, v5, subscriptionRetrieveRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   subscriptionDeleteRequest = self->_subscriptionDeleteRequest;
   if (subscriptionDeleteRequest)
   {
     objc_msgSend_setSubscriptionDeleteRequest_(v60, v5, subscriptionDeleteRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   userRetrieveRequest = self->_userRetrieveRequest;
   if (userRetrieveRequest)
   {
     objc_msgSend_setUserRetrieveRequest_(v60, v5, userRetrieveRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   userQueryRequest = self->_userQueryRequest;
   if (userQueryRequest)
   {
     objc_msgSend_setUserQueryRequest_(v60, v5, userQueryRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   userPrivacySettingsRetrieveRequest = self->_userPrivacySettingsRetrieveRequest;
   if (userPrivacySettingsRetrieveRequest)
   {
     objc_msgSend_setUserPrivacySettingsRetrieveRequest_(v60, v5, userPrivacySettingsRetrieveRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   userPrivacySettingsUpdateRequest = self->_userPrivacySettingsUpdateRequest;
   if (userPrivacySettingsUpdateRequest)
   {
     objc_msgSend_setUserPrivacySettingsUpdateRequest_(v60, v5, userPrivacySettingsUpdateRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   userPrivacySettingsResetRequest = self->_userPrivacySettingsResetRequest;
   if (userPrivacySettingsResetRequest)
   {
     objc_msgSend_setUserPrivacySettingsResetRequest_(v60, v5, userPrivacySettingsResetRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   userPrivacySettingsBatchLookupRequest = self->_userPrivacySettingsBatchLookupRequest;
   if (userPrivacySettingsBatchLookupRequest)
   {
     objc_msgSend_setUserPrivacySettingsBatchLookupRequest_(v60, v5, userPrivacySettingsBatchLookupRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   adopterCapabilitiesSaveRequest = self->_adopterCapabilitiesSaveRequest;
   if (adopterCapabilitiesSaveRequest)
   {
     objc_msgSend_setAdopterCapabilitiesSaveRequest_(v60, v5, adopterCapabilitiesSaveRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   adopterCapabilitiesCheckRequest = self->_adopterCapabilitiesCheckRequest;
   if (adopterCapabilitiesCheckRequest)
   {
     objc_msgSend_setAdopterCapabilitiesCheckRequest_(v60, v5, adopterCapabilitiesCheckRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   zoneUsageSaveRequest = self->_zoneUsageSaveRequest;
   if (zoneUsageSaveRequest)
   {
     objc_msgSend_setZoneUsageSaveRequest_(v60, v5, zoneUsageSaveRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   shareUsageSaveRequest = self->_shareUsageSaveRequest;
   if (shareUsageSaveRequest)
   {
     objc_msgSend_setShareUsageSaveRequest_(v60, v5, shareUsageSaveRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   shareAcceptRequest = self->_shareAcceptRequest;
   if (shareAcceptRequest)
   {
     objc_msgSend_setShareAcceptRequest_(v60, v5, shareAcceptRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   shareDeclineRequest = self->_shareDeclineRequest;
   if (shareDeclineRequest)
   {
     objc_msgSend_setShareDeclineRequest_(v60, v5, shareDeclineRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   shareVettingInitiateRequest = self->_shareVettingInitiateRequest;
   if (shareVettingInitiateRequest)
   {
     objc_msgSend_setShareVettingInitiateRequest_(v60, v5, shareVettingInitiateRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   tokenRegistrationRequest = self->_tokenRegistrationRequest;
   if (tokenRegistrationRequest)
   {
     objc_msgSend_setTokenRegistrationRequest_(v60, v5, tokenRegistrationRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   tokenUnregistrationRequest = self->_tokenUnregistrationRequest;
   if (tokenUnregistrationRequest)
   {
     objc_msgSend_setTokenUnregistrationRequest_(v60, v5, tokenUnregistrationRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   setBadgeCountRequest = self->_setBadgeCountRequest;
   if (setBadgeCountRequest)
   {
     objc_msgSend_setSetBadgeCountRequest_(v60, v5, setBadgeCountRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   notificationSyncRequest = self->_notificationSyncRequest;
   if (notificationSyncRequest)
   {
     objc_msgSend_setNotificationSyncRequest_(v60, v5, notificationSyncRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   notificationMarkReadRequest = self->_notificationMarkReadRequest;
   if (notificationMarkReadRequest)
   {
     objc_msgSend_setNotificationMarkReadRequest_(v60, v5, notificationMarkReadRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   archiveRecordsRequest = self->_archiveRecordsRequest;
   if (archiveRecordsRequest)
   {
     objc_msgSend_setArchiveRecordsRequest_(v60, v5, archiveRecordsRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   markAssetBrokenRequest = self->_markAssetBrokenRequest;
   if (markAssetBrokenRequest)
   {
     objc_msgSend_setMarkAssetBrokenRequest_(v60, v5, markAssetBrokenRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 
   functionInvokeRequest = self->_functionInvokeRequest;
   if (functionInvokeRequest)
   {
     objc_msgSend_setFunctionInvokeRequest_(v60, v5, functionInvokeRequest);
-    v4 = v60;
+    toCopy = v60;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_header, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_header, v11, zone);
   v13 = v10[11];
   v10[11] = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_request, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_request, v14, zone);
   v16 = v10[27];
   v10[27] = v15;
 
-  v18 = objc_msgSend_copyWithZone_(self->_zoneSaveRequest, v17, a3);
+  v18 = objc_msgSend_copyWithZone_(self->_zoneSaveRequest, v17, zone);
   v19 = v10[53];
   v10[53] = v18;
 
-  v21 = objc_msgSend_copyWithZone_(self->_zoneRetrieveRequest, v20, a3);
+  v21 = objc_msgSend_copyWithZone_(self->_zoneRetrieveRequest, v20, zone);
   v22 = v10[52];
   v10[52] = v21;
 
-  v24 = objc_msgSend_copyWithZone_(self->_zoneDeleteRequest, v23, a3);
+  v24 = objc_msgSend_copyWithZone_(self->_zoneDeleteRequest, v23, zone);
   v25 = v10[49];
   v10[49] = v24;
 
-  v27 = objc_msgSend_copyWithZone_(self->_zoneRetrieveChangesRequest, v26, a3);
+  v27 = objc_msgSend_copyWithZone_(self->_zoneRetrieveChangesRequest, v26, zone);
   v28 = v10[51];
   v10[51] = v27;
 
-  v30 = objc_msgSend_copyWithZone_(self->_zoneChildrenRetrieveRequest, v29, a3);
+  v30 = objc_msgSend_copyWithZone_(self->_zoneChildrenRetrieveRequest, v29, zone);
   v31 = v10[48];
   v10[48] = v30;
 
-  v33 = objc_msgSend_copyWithZone_(self->_zoneRetrieveAncestorsRequest, v32, a3);
+  v33 = objc_msgSend_copyWithZone_(self->_zoneRetrieveAncestorsRequest, v32, zone);
   v34 = v10[50];
   v10[50] = v33;
 
-  v36 = objc_msgSend_copyWithZone_(self->_recordSaveRequest, v35, a3);
+  v36 = objc_msgSend_copyWithZone_(self->_recordSaveRequest, v35, zone);
   v37 = v10[26];
   v10[26] = v36;
 
-  v39 = objc_msgSend_copyWithZone_(self->_recordRetrieveRequest, v38, a3);
+  v39 = objc_msgSend_copyWithZone_(self->_recordRetrieveRequest, v38, zone);
   v40 = v10[24];
   v10[24] = v39;
 
-  v42 = objc_msgSend_copyWithZone_(self->_recordRetrieveVersionsRequest, v41, a3);
+  v42 = objc_msgSend_copyWithZone_(self->_recordRetrieveVersionsRequest, v41, zone);
   v43 = v10[25];
   v10[25] = v42;
 
-  v45 = objc_msgSend_copyWithZone_(self->_recordRetrieveChangesRequest, v44, a3);
+  v45 = objc_msgSend_copyWithZone_(self->_recordRetrieveChangesRequest, v44, zone);
   v46 = v10[23];
   v10[23] = v45;
 
-  v48 = objc_msgSend_copyWithZone_(self->_recordDeleteRequest, v47, a3);
+  v48 = objc_msgSend_copyWithZone_(self->_recordDeleteRequest, v47, zone);
   v49 = v10[20];
   v10[20] = v48;
 
-  v51 = objc_msgSend_copyWithZone_(self->_recordResolveTokenRequest, v50, a3);
+  v51 = objc_msgSend_copyWithZone_(self->_recordResolveTokenRequest, v50, zone);
   v52 = v10[22];
   v10[22] = v51;
 
-  v54 = objc_msgSend_copyWithZone_(self->_fetchArchivedRecordsRequest, v53, a3);
+  v54 = objc_msgSend_copyWithZone_(self->_fetchArchivedRecordsRequest, v53, zone);
   v55 = v10[9];
   v10[9] = v54;
 
-  v57 = objc_msgSend_copyWithZone_(self->_recordMoveRequest, v56, a3);
+  v57 = objc_msgSend_copyWithZone_(self->_recordMoveRequest, v56, zone);
   v58 = v10[21];
   v10[21] = v57;
 
-  v60 = objc_msgSend_copyWithZone_(self->_shareAccessRequest, v59, a3);
+  v60 = objc_msgSend_copyWithZone_(self->_shareAccessRequest, v59, zone);
   v61 = v10[30];
   v10[30] = v60;
 
-  v63 = objc_msgSend_copyWithZone_(self->_queryRetrieveRequest, v62, a3);
+  v63 = objc_msgSend_copyWithZone_(self->_queryRetrieveRequest, v62, zone);
   v64 = v10[19];
   v10[19] = v63;
 
-  v66 = objc_msgSend_copyWithZone_(self->_mergeableDeltaSaveRequest, v65, a3);
+  v66 = objc_msgSend_copyWithZone_(self->_mergeableDeltaSaveRequest, v65, zone);
   v67 = v10[16];
   v10[16] = v66;
 
-  v69 = objc_msgSend_copyWithZone_(self->_mergeableDeltaMetadataRetrieveRequest, v68, a3);
+  v69 = objc_msgSend_copyWithZone_(self->_mergeableDeltaMetadataRetrieveRequest, v68, zone);
   v70 = v10[13];
   v10[13] = v69;
 
-  v72 = objc_msgSend_copyWithZone_(self->_mergeableDeltaReplaceRequest, v71, a3);
+  v72 = objc_msgSend_copyWithZone_(self->_mergeableDeltaReplaceRequest, v71, zone);
   v73 = v10[14];
   v10[14] = v72;
 
-  v75 = objc_msgSend_copyWithZone_(self->_mergeableDeltaRetrieveRequest, v74, a3);
+  v75 = objc_msgSend_copyWithZone_(self->_mergeableDeltaRetrieveRequest, v74, zone);
   v76 = v10[15];
   v10[15] = v75;
 
-  v78 = objc_msgSend_copyWithZone_(self->_assetUploadTokenRetrieveRequest, v77, a3);
+  v78 = objc_msgSend_copyWithZone_(self->_assetUploadTokenRetrieveRequest, v77, zone);
   v79 = v10[6];
   v10[6] = v78;
 
-  v81 = objc_msgSend_copyWithZone_(self->_deleteContainerRequest, v80, a3);
+  v81 = objc_msgSend_copyWithZone_(self->_deleteContainerRequest, v80, zone);
   v82 = v10[8];
   v10[8] = v81;
 
-  v84 = objc_msgSend_copyWithZone_(self->_userAvailableQuotaRequest, v83, a3);
+  v84 = objc_msgSend_copyWithZone_(self->_userAvailableQuotaRequest, v83, zone);
   v85 = v10[40];
   v10[40] = v84;
 
-  v87 = objc_msgSend_copyWithZone_(self->_bundlesForContainerRequest, v86, a3);
+  v87 = objc_msgSend_copyWithZone_(self->_bundlesForContainerRequest, v86, zone);
   v88 = v10[7];
   v10[7] = v87;
 
-  v90 = objc_msgSend_copyWithZone_(self->_webAuthTokenRetrieveRequest, v89, a3);
+  v90 = objc_msgSend_copyWithZone_(self->_webAuthTokenRetrieveRequest, v89, zone);
   v91 = v10[47];
   v10[47] = v90;
 
-  v93 = objc_msgSend_copyWithZone_(self->_updateMissingAssetStatusRequest, v92, a3);
+  v93 = objc_msgSend_copyWithZone_(self->_updateMissingAssetStatusRequest, v92, zone);
   v94 = v10[39];
   v10[39] = v93;
 
-  v96 = objc_msgSend_copyWithZone_(self->_anonymousShareAddRequest, v95, a3);
+  v96 = objc_msgSend_copyWithZone_(self->_anonymousShareAddRequest, v95, zone);
   v97 = v10[3];
   v10[3] = v96;
 
-  v99 = objc_msgSend_copyWithZone_(self->_anonymousShareRemoveRequest, v98, a3);
+  v99 = objc_msgSend_copyWithZone_(self->_anonymousShareRemoveRequest, v98, zone);
   v100 = v10[4];
   v10[4] = v99;
 
-  v102 = objc_msgSend_copyWithZone_(self->_subscriptionCreateRequest, v101, a3);
+  v102 = objc_msgSend_copyWithZone_(self->_subscriptionCreateRequest, v101, zone);
   v103 = v10[34];
   v10[34] = v102;
 
-  v105 = objc_msgSend_copyWithZone_(self->_subscriptionRetrieveRequest, v104, a3);
+  v105 = objc_msgSend_copyWithZone_(self->_subscriptionRetrieveRequest, v104, zone);
   v106 = v10[36];
   v10[36] = v105;
 
-  v108 = objc_msgSend_copyWithZone_(self->_subscriptionDeleteRequest, v107, a3);
+  v108 = objc_msgSend_copyWithZone_(self->_subscriptionDeleteRequest, v107, zone);
   v109 = v10[35];
   v10[35] = v108;
 
-  v111 = objc_msgSend_copyWithZone_(self->_userRetrieveRequest, v110, a3);
+  v111 = objc_msgSend_copyWithZone_(self->_userRetrieveRequest, v110, zone);
   v112 = v10[46];
   v10[46] = v111;
 
-  v114 = objc_msgSend_copyWithZone_(self->_userQueryRequest, v113, a3);
+  v114 = objc_msgSend_copyWithZone_(self->_userQueryRequest, v113, zone);
   v115 = v10[45];
   v10[45] = v114;
 
-  v117 = objc_msgSend_copyWithZone_(self->_userPrivacySettingsRetrieveRequest, v116, a3);
+  v117 = objc_msgSend_copyWithZone_(self->_userPrivacySettingsRetrieveRequest, v116, zone);
   v118 = v10[43];
   v10[43] = v117;
 
-  v120 = objc_msgSend_copyWithZone_(self->_userPrivacySettingsUpdateRequest, v119, a3);
+  v120 = objc_msgSend_copyWithZone_(self->_userPrivacySettingsUpdateRequest, v119, zone);
   v121 = v10[44];
   v10[44] = v120;
 
-  v123 = objc_msgSend_copyWithZone_(self->_userPrivacySettingsResetRequest, v122, a3);
+  v123 = objc_msgSend_copyWithZone_(self->_userPrivacySettingsResetRequest, v122, zone);
   v124 = v10[42];
   v10[42] = v123;
 
-  v126 = objc_msgSend_copyWithZone_(self->_userPrivacySettingsBatchLookupRequest, v125, a3);
+  v126 = objc_msgSend_copyWithZone_(self->_userPrivacySettingsBatchLookupRequest, v125, zone);
   v127 = v10[41];
   v10[41] = v126;
 
-  v129 = objc_msgSend_copyWithZone_(self->_adopterCapabilitiesSaveRequest, v128, a3);
+  v129 = objc_msgSend_copyWithZone_(self->_adopterCapabilitiesSaveRequest, v128, zone);
   v130 = v10[2];
   v10[2] = v129;
 
-  v132 = objc_msgSend_copyWithZone_(self->_adopterCapabilitiesCheckRequest, v131, a3);
+  v132 = objc_msgSend_copyWithZone_(self->_adopterCapabilitiesCheckRequest, v131, zone);
   v133 = v10[1];
   v10[1] = v132;
 
-  v135 = objc_msgSend_copyWithZone_(self->_zoneUsageSaveRequest, v134, a3);
+  v135 = objc_msgSend_copyWithZone_(self->_zoneUsageSaveRequest, v134, zone);
   v136 = v10[54];
   v10[54] = v135;
 
-  v138 = objc_msgSend_copyWithZone_(self->_shareUsageSaveRequest, v137, a3);
+  v138 = objc_msgSend_copyWithZone_(self->_shareUsageSaveRequest, v137, zone);
   v139 = v10[32];
   v10[32] = v138;
 
-  v141 = objc_msgSend_copyWithZone_(self->_shareAcceptRequest, v140, a3);
+  v141 = objc_msgSend_copyWithZone_(self->_shareAcceptRequest, v140, zone);
   v142 = v10[29];
   v10[29] = v141;
 
-  v144 = objc_msgSend_copyWithZone_(self->_shareDeclineRequest, v143, a3);
+  v144 = objc_msgSend_copyWithZone_(self->_shareDeclineRequest, v143, zone);
   v145 = v10[31];
   v10[31] = v144;
 
-  v147 = objc_msgSend_copyWithZone_(self->_shareVettingInitiateRequest, v146, a3);
+  v147 = objc_msgSend_copyWithZone_(self->_shareVettingInitiateRequest, v146, zone);
   v148 = v10[33];
   v10[33] = v147;
 
-  v150 = objc_msgSend_copyWithZone_(self->_tokenRegistrationRequest, v149, a3);
+  v150 = objc_msgSend_copyWithZone_(self->_tokenRegistrationRequest, v149, zone);
   v151 = v10[37];
   v10[37] = v150;
 
-  v153 = objc_msgSend_copyWithZone_(self->_tokenUnregistrationRequest, v152, a3);
+  v153 = objc_msgSend_copyWithZone_(self->_tokenUnregistrationRequest, v152, zone);
   v154 = v10[38];
   v10[38] = v153;
 
-  v156 = objc_msgSend_copyWithZone_(self->_setBadgeCountRequest, v155, a3);
+  v156 = objc_msgSend_copyWithZone_(self->_setBadgeCountRequest, v155, zone);
   v157 = v10[28];
   v10[28] = v156;
 
-  v159 = objc_msgSend_copyWithZone_(self->_notificationSyncRequest, v158, a3);
+  v159 = objc_msgSend_copyWithZone_(self->_notificationSyncRequest, v158, zone);
   v160 = v10[18];
   v10[18] = v159;
 
-  v162 = objc_msgSend_copyWithZone_(self->_notificationMarkReadRequest, v161, a3);
+  v162 = objc_msgSend_copyWithZone_(self->_notificationMarkReadRequest, v161, zone);
   v163 = v10[17];
   v10[17] = v162;
 
-  v165 = objc_msgSend_copyWithZone_(self->_archiveRecordsRequest, v164, a3);
+  v165 = objc_msgSend_copyWithZone_(self->_archiveRecordsRequest, v164, zone);
   v166 = v10[5];
   v10[5] = v165;
 
-  v168 = objc_msgSend_copyWithZone_(self->_markAssetBrokenRequest, v167, a3);
+  v168 = objc_msgSend_copyWithZone_(self->_markAssetBrokenRequest, v167, zone);
   v169 = v10[12];
   v10[12] = v168;
 
-  v171 = objc_msgSend_copyWithZone_(self->_functionInvokeRequest, v170, a3);
+  v171 = objc_msgSend_copyWithZone_(self->_functionInvokeRequest, v170, zone);
   v172 = v10[10];
   v10[10] = v171;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_110;
   }
 
   header = self->_header;
-  v9 = v4[11];
+  v9 = equalCopy[11];
   if (header | v9)
   {
     if (!objc_msgSend_isEqual_(header, v7, v9))
@@ -1365,7 +1365,7 @@
   }
 
   request = self->_request;
-  v11 = v4[27];
+  v11 = equalCopy[27];
   if (request | v11)
   {
     if (!objc_msgSend_isEqual_(request, v7, v11))
@@ -1375,7 +1375,7 @@
   }
 
   zoneSaveRequest = self->_zoneSaveRequest;
-  v13 = v4[53];
+  v13 = equalCopy[53];
   if (zoneSaveRequest | v13)
   {
     if (!objc_msgSend_isEqual_(zoneSaveRequest, v7, v13))
@@ -1385,7 +1385,7 @@
   }
 
   zoneRetrieveRequest = self->_zoneRetrieveRequest;
-  v15 = v4[52];
+  v15 = equalCopy[52];
   if (zoneRetrieveRequest | v15)
   {
     if (!objc_msgSend_isEqual_(zoneRetrieveRequest, v7, v15))
@@ -1395,7 +1395,7 @@
   }
 
   zoneDeleteRequest = self->_zoneDeleteRequest;
-  v17 = v4[49];
+  v17 = equalCopy[49];
   if (zoneDeleteRequest | v17)
   {
     if (!objc_msgSend_isEqual_(zoneDeleteRequest, v7, v17))
@@ -1405,7 +1405,7 @@
   }
 
   zoneRetrieveChangesRequest = self->_zoneRetrieveChangesRequest;
-  v19 = v4[51];
+  v19 = equalCopy[51];
   if (zoneRetrieveChangesRequest | v19)
   {
     if (!objc_msgSend_isEqual_(zoneRetrieveChangesRequest, v7, v19))
@@ -1415,7 +1415,7 @@
   }
 
   zoneChildrenRetrieveRequest = self->_zoneChildrenRetrieveRequest;
-  v21 = v4[48];
+  v21 = equalCopy[48];
   if (zoneChildrenRetrieveRequest | v21)
   {
     if (!objc_msgSend_isEqual_(zoneChildrenRetrieveRequest, v7, v21))
@@ -1425,7 +1425,7 @@
   }
 
   zoneRetrieveAncestorsRequest = self->_zoneRetrieveAncestorsRequest;
-  v23 = v4[50];
+  v23 = equalCopy[50];
   if (zoneRetrieveAncestorsRequest | v23)
   {
     if (!objc_msgSend_isEqual_(zoneRetrieveAncestorsRequest, v7, v23))
@@ -1435,7 +1435,7 @@
   }
 
   recordSaveRequest = self->_recordSaveRequest;
-  v25 = v4[26];
+  v25 = equalCopy[26];
   if (recordSaveRequest | v25)
   {
     if (!objc_msgSend_isEqual_(recordSaveRequest, v7, v25))
@@ -1445,7 +1445,7 @@
   }
 
   recordRetrieveRequest = self->_recordRetrieveRequest;
-  v27 = v4[24];
+  v27 = equalCopy[24];
   if (recordRetrieveRequest | v27)
   {
     if (!objc_msgSend_isEqual_(recordRetrieveRequest, v7, v27))
@@ -1455,7 +1455,7 @@
   }
 
   recordRetrieveVersionsRequest = self->_recordRetrieveVersionsRequest;
-  v29 = v4[25];
+  v29 = equalCopy[25];
   if (recordRetrieveVersionsRequest | v29)
   {
     if (!objc_msgSend_isEqual_(recordRetrieveVersionsRequest, v7, v29))
@@ -1465,7 +1465,7 @@
   }
 
   recordRetrieveChangesRequest = self->_recordRetrieveChangesRequest;
-  v31 = v4[23];
+  v31 = equalCopy[23];
   if (recordRetrieveChangesRequest | v31)
   {
     if (!objc_msgSend_isEqual_(recordRetrieveChangesRequest, v7, v31))
@@ -1475,7 +1475,7 @@
   }
 
   recordDeleteRequest = self->_recordDeleteRequest;
-  v33 = v4[20];
+  v33 = equalCopy[20];
   if (recordDeleteRequest | v33)
   {
     if (!objc_msgSend_isEqual_(recordDeleteRequest, v7, v33))
@@ -1485,7 +1485,7 @@
   }
 
   recordResolveTokenRequest = self->_recordResolveTokenRequest;
-  v35 = v4[22];
+  v35 = equalCopy[22];
   if (recordResolveTokenRequest | v35)
   {
     if (!objc_msgSend_isEqual_(recordResolveTokenRequest, v7, v35))
@@ -1495,7 +1495,7 @@
   }
 
   fetchArchivedRecordsRequest = self->_fetchArchivedRecordsRequest;
-  v37 = v4[9];
+  v37 = equalCopy[9];
   if (fetchArchivedRecordsRequest | v37)
   {
     if (!objc_msgSend_isEqual_(fetchArchivedRecordsRequest, v7, v37))
@@ -1505,7 +1505,7 @@
   }
 
   recordMoveRequest = self->_recordMoveRequest;
-  v39 = v4[21];
+  v39 = equalCopy[21];
   if (recordMoveRequest | v39)
   {
     if (!objc_msgSend_isEqual_(recordMoveRequest, v7, v39))
@@ -1515,7 +1515,7 @@
   }
 
   shareAccessRequest = self->_shareAccessRequest;
-  v41 = v4[30];
+  v41 = equalCopy[30];
   if (shareAccessRequest | v41)
   {
     if (!objc_msgSend_isEqual_(shareAccessRequest, v7, v41))
@@ -1525,7 +1525,7 @@
   }
 
   queryRetrieveRequest = self->_queryRetrieveRequest;
-  v43 = v4[19];
+  v43 = equalCopy[19];
   if (queryRetrieveRequest | v43)
   {
     if (!objc_msgSend_isEqual_(queryRetrieveRequest, v7, v43))
@@ -1535,7 +1535,7 @@
   }
 
   mergeableDeltaSaveRequest = self->_mergeableDeltaSaveRequest;
-  v45 = v4[16];
+  v45 = equalCopy[16];
   if (mergeableDeltaSaveRequest | v45)
   {
     if (!objc_msgSend_isEqual_(mergeableDeltaSaveRequest, v7, v45))
@@ -1545,7 +1545,7 @@
   }
 
   mergeableDeltaMetadataRetrieveRequest = self->_mergeableDeltaMetadataRetrieveRequest;
-  v47 = v4[13];
+  v47 = equalCopy[13];
   if (mergeableDeltaMetadataRetrieveRequest | v47)
   {
     if (!objc_msgSend_isEqual_(mergeableDeltaMetadataRetrieveRequest, v7, v47))
@@ -1555,7 +1555,7 @@
   }
 
   mergeableDeltaReplaceRequest = self->_mergeableDeltaReplaceRequest;
-  v49 = v4[14];
+  v49 = equalCopy[14];
   if (mergeableDeltaReplaceRequest | v49)
   {
     if (!objc_msgSend_isEqual_(mergeableDeltaReplaceRequest, v7, v49))
@@ -1565,7 +1565,7 @@
   }
 
   mergeableDeltaRetrieveRequest = self->_mergeableDeltaRetrieveRequest;
-  v51 = v4[15];
+  v51 = equalCopy[15];
   if (mergeableDeltaRetrieveRequest | v51)
   {
     if (!objc_msgSend_isEqual_(mergeableDeltaRetrieveRequest, v7, v51))
@@ -1575,7 +1575,7 @@
   }
 
   assetUploadTokenRetrieveRequest = self->_assetUploadTokenRetrieveRequest;
-  v53 = v4[6];
+  v53 = equalCopy[6];
   if (assetUploadTokenRetrieveRequest | v53)
   {
     if (!objc_msgSend_isEqual_(assetUploadTokenRetrieveRequest, v7, v53))
@@ -1585,7 +1585,7 @@
   }
 
   deleteContainerRequest = self->_deleteContainerRequest;
-  v55 = v4[8];
+  v55 = equalCopy[8];
   if (deleteContainerRequest | v55)
   {
     if (!objc_msgSend_isEqual_(deleteContainerRequest, v7, v55))
@@ -1595,7 +1595,7 @@
   }
 
   userAvailableQuotaRequest = self->_userAvailableQuotaRequest;
-  v57 = v4[40];
+  v57 = equalCopy[40];
   if (userAvailableQuotaRequest | v57)
   {
     if (!objc_msgSend_isEqual_(userAvailableQuotaRequest, v7, v57))
@@ -1605,7 +1605,7 @@
   }
 
   bundlesForContainerRequest = self->_bundlesForContainerRequest;
-  v59 = v4[7];
+  v59 = equalCopy[7];
   if (bundlesForContainerRequest | v59)
   {
     if (!objc_msgSend_isEqual_(bundlesForContainerRequest, v7, v59))
@@ -1615,7 +1615,7 @@
   }
 
   webAuthTokenRetrieveRequest = self->_webAuthTokenRetrieveRequest;
-  v61 = v4[47];
+  v61 = equalCopy[47];
   if (webAuthTokenRetrieveRequest | v61)
   {
     if (!objc_msgSend_isEqual_(webAuthTokenRetrieveRequest, v7, v61))
@@ -1625,7 +1625,7 @@
   }
 
   updateMissingAssetStatusRequest = self->_updateMissingAssetStatusRequest;
-  v63 = v4[39];
+  v63 = equalCopy[39];
   if (updateMissingAssetStatusRequest | v63)
   {
     if (!objc_msgSend_isEqual_(updateMissingAssetStatusRequest, v7, v63))
@@ -1635,7 +1635,7 @@
   }
 
   anonymousShareAddRequest = self->_anonymousShareAddRequest;
-  v65 = v4[3];
+  v65 = equalCopy[3];
   if (anonymousShareAddRequest | v65)
   {
     if (!objc_msgSend_isEqual_(anonymousShareAddRequest, v7, v65))
@@ -1645,7 +1645,7 @@
   }
 
   anonymousShareRemoveRequest = self->_anonymousShareRemoveRequest;
-  v67 = v4[4];
+  v67 = equalCopy[4];
   if (anonymousShareRemoveRequest | v67)
   {
     if (!objc_msgSend_isEqual_(anonymousShareRemoveRequest, v7, v67))
@@ -1655,7 +1655,7 @@
   }
 
   subscriptionCreateRequest = self->_subscriptionCreateRequest;
-  v69 = v4[34];
+  v69 = equalCopy[34];
   if (subscriptionCreateRequest | v69)
   {
     if (!objc_msgSend_isEqual_(subscriptionCreateRequest, v7, v69))
@@ -1665,7 +1665,7 @@
   }
 
   subscriptionRetrieveRequest = self->_subscriptionRetrieveRequest;
-  v71 = v4[36];
+  v71 = equalCopy[36];
   if (subscriptionRetrieveRequest | v71)
   {
     if (!objc_msgSend_isEqual_(subscriptionRetrieveRequest, v7, v71))
@@ -1675,7 +1675,7 @@
   }
 
   subscriptionDeleteRequest = self->_subscriptionDeleteRequest;
-  v73 = v4[35];
+  v73 = equalCopy[35];
   if (subscriptionDeleteRequest | v73)
   {
     if (!objc_msgSend_isEqual_(subscriptionDeleteRequest, v7, v73))
@@ -1685,7 +1685,7 @@
   }
 
   userRetrieveRequest = self->_userRetrieveRequest;
-  v75 = v4[46];
+  v75 = equalCopy[46];
   if (userRetrieveRequest | v75)
   {
     if (!objc_msgSend_isEqual_(userRetrieveRequest, v7, v75))
@@ -1695,7 +1695,7 @@
   }
 
   userQueryRequest = self->_userQueryRequest;
-  v77 = v4[45];
+  v77 = equalCopy[45];
   if (userQueryRequest | v77)
   {
     if (!objc_msgSend_isEqual_(userQueryRequest, v7, v77))
@@ -1705,7 +1705,7 @@
   }
 
   userPrivacySettingsRetrieveRequest = self->_userPrivacySettingsRetrieveRequest;
-  v79 = v4[43];
+  v79 = equalCopy[43];
   if (userPrivacySettingsRetrieveRequest | v79)
   {
     if (!objc_msgSend_isEqual_(userPrivacySettingsRetrieveRequest, v7, v79))
@@ -1715,7 +1715,7 @@
   }
 
   userPrivacySettingsUpdateRequest = self->_userPrivacySettingsUpdateRequest;
-  v81 = v4[44];
+  v81 = equalCopy[44];
   if (userPrivacySettingsUpdateRequest | v81)
   {
     if (!objc_msgSend_isEqual_(userPrivacySettingsUpdateRequest, v7, v81))
@@ -1725,7 +1725,7 @@
   }
 
   userPrivacySettingsResetRequest = self->_userPrivacySettingsResetRequest;
-  v83 = v4[42];
+  v83 = equalCopy[42];
   if (userPrivacySettingsResetRequest | v83)
   {
     if (!objc_msgSend_isEqual_(userPrivacySettingsResetRequest, v7, v83))
@@ -1735,7 +1735,7 @@
   }
 
   userPrivacySettingsBatchLookupRequest = self->_userPrivacySettingsBatchLookupRequest;
-  v85 = v4[41];
+  v85 = equalCopy[41];
   if (userPrivacySettingsBatchLookupRequest | v85)
   {
     if (!objc_msgSend_isEqual_(userPrivacySettingsBatchLookupRequest, v7, v85))
@@ -1745,7 +1745,7 @@
   }
 
   adopterCapabilitiesSaveRequest = self->_adopterCapabilitiesSaveRequest;
-  v87 = v4[2];
+  v87 = equalCopy[2];
   if (adopterCapabilitiesSaveRequest | v87)
   {
     if (!objc_msgSend_isEqual_(adopterCapabilitiesSaveRequest, v7, v87))
@@ -1755,7 +1755,7 @@
   }
 
   adopterCapabilitiesCheckRequest = self->_adopterCapabilitiesCheckRequest;
-  v89 = v4[1];
+  v89 = equalCopy[1];
   if (adopterCapabilitiesCheckRequest | v89)
   {
     if (!objc_msgSend_isEqual_(adopterCapabilitiesCheckRequest, v7, v89))
@@ -1765,7 +1765,7 @@
   }
 
   zoneUsageSaveRequest = self->_zoneUsageSaveRequest;
-  v91 = v4[54];
+  v91 = equalCopy[54];
   if (zoneUsageSaveRequest | v91)
   {
     if (!objc_msgSend_isEqual_(zoneUsageSaveRequest, v7, v91))
@@ -1775,7 +1775,7 @@
   }
 
   shareUsageSaveRequest = self->_shareUsageSaveRequest;
-  v93 = v4[32];
+  v93 = equalCopy[32];
   if (shareUsageSaveRequest | v93)
   {
     if (!objc_msgSend_isEqual_(shareUsageSaveRequest, v7, v93))
@@ -1785,7 +1785,7 @@
   }
 
   shareAcceptRequest = self->_shareAcceptRequest;
-  v95 = v4[29];
+  v95 = equalCopy[29];
   if (shareAcceptRequest | v95)
   {
     if (!objc_msgSend_isEqual_(shareAcceptRequest, v7, v95))
@@ -1795,7 +1795,7 @@
   }
 
   shareDeclineRequest = self->_shareDeclineRequest;
-  v97 = v4[31];
+  v97 = equalCopy[31];
   if (shareDeclineRequest | v97)
   {
     if (!objc_msgSend_isEqual_(shareDeclineRequest, v7, v97))
@@ -1805,7 +1805,7 @@
   }
 
   shareVettingInitiateRequest = self->_shareVettingInitiateRequest;
-  v99 = v4[33];
+  v99 = equalCopy[33];
   if (shareVettingInitiateRequest | v99)
   {
     if (!objc_msgSend_isEqual_(shareVettingInitiateRequest, v7, v99))
@@ -1815,7 +1815,7 @@
   }
 
   tokenRegistrationRequest = self->_tokenRegistrationRequest;
-  v101 = v4[37];
+  v101 = equalCopy[37];
   if (tokenRegistrationRequest | v101)
   {
     if (!objc_msgSend_isEqual_(tokenRegistrationRequest, v7, v101))
@@ -1825,7 +1825,7 @@
   }
 
   tokenUnregistrationRequest = self->_tokenUnregistrationRequest;
-  v103 = v4[38];
+  v103 = equalCopy[38];
   if (tokenUnregistrationRequest | v103)
   {
     if (!objc_msgSend_isEqual_(tokenUnregistrationRequest, v7, v103))
@@ -1835,7 +1835,7 @@
   }
 
   setBadgeCountRequest = self->_setBadgeCountRequest;
-  v105 = v4[28];
+  v105 = equalCopy[28];
   if (setBadgeCountRequest | v105)
   {
     if (!objc_msgSend_isEqual_(setBadgeCountRequest, v7, v105))
@@ -1845,7 +1845,7 @@
   }
 
   notificationSyncRequest = self->_notificationSyncRequest;
-  v107 = v4[18];
+  v107 = equalCopy[18];
   if (notificationSyncRequest | v107)
   {
     if (!objc_msgSend_isEqual_(notificationSyncRequest, v7, v107))
@@ -1854,10 +1854,10 @@
     }
   }
 
-  if (((notificationMarkReadRequest = self->_notificationMarkReadRequest, v109 = v4[17], !(notificationMarkReadRequest | v109)) || objc_msgSend_isEqual_(notificationMarkReadRequest, v7, v109)) && ((archiveRecordsRequest = self->_archiveRecordsRequest, v111 = v4[5], !(archiveRecordsRequest | v111)) || objc_msgSend_isEqual_(archiveRecordsRequest, v7, v111)) && ((markAssetBrokenRequest = self->_markAssetBrokenRequest, v113 = v4[12], !(markAssetBrokenRequest | v113)) || objc_msgSend_isEqual_(markAssetBrokenRequest, v7, v113)))
+  if (((notificationMarkReadRequest = self->_notificationMarkReadRequest, v109 = equalCopy[17], !(notificationMarkReadRequest | v109)) || objc_msgSend_isEqual_(notificationMarkReadRequest, v7, v109)) && ((archiveRecordsRequest = self->_archiveRecordsRequest, v111 = equalCopy[5], !(archiveRecordsRequest | v111)) || objc_msgSend_isEqual_(archiveRecordsRequest, v7, v111)) && ((markAssetBrokenRequest = self->_markAssetBrokenRequest, v113 = equalCopy[12], !(markAssetBrokenRequest | v113)) || objc_msgSend_isEqual_(markAssetBrokenRequest, v7, v113)))
   {
     functionInvokeRequest = self->_functionInvokeRequest;
-    v115 = v4[10];
+    v115 = equalCopy[10];
     if (functionInvokeRequest | v115)
     {
       isEqual = objc_msgSend_isEqual_(functionInvokeRequest, v7, v115);
@@ -1936,23 +1936,23 @@ LABEL_110:
   return v139 ^ v160 ^ objc_msgSend_hash(self->_functionInvokeRequest, v161, v162);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   header = self->_header;
-  v113 = v4;
-  v6 = v4[11];
+  v113 = fromCopy;
+  v6 = fromCopy[11];
   if (header)
   {
     if (v6)
     {
-      objc_msgSend_mergeFrom_(header, v4, v6);
+      objc_msgSend_mergeFrom_(header, fromCopy, v6);
     }
   }
 
   else if (v6)
   {
-    objc_msgSend_setHeader_(self, v4, v6);
+    objc_msgSend_setHeader_(self, fromCopy, v6);
   }
 
   request = self->_request;

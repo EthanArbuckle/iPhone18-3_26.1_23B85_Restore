@@ -1,68 +1,68 @@
 @interface RTLearnedPlaceVersions
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)trueVersion;
-- (void)setExistingVersion:(id)a3;
-- (void)setInferredVersion:(id)a3;
-- (void)setTruthfulCounterpart:(id)a3;
+- (void)setExistingVersion:(id)version;
+- (void)setInferredVersion:(id)version;
+- (void)setTruthfulCounterpart:(id)counterpart;
 @end
 
 @implementation RTLearnedPlaceVersions
 
-- (void)setInferredVersion:(id)a3
+- (void)setInferredVersion:(id)version
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RTLearnedPlace *)v4 identifier];
-  v6 = [(RTLearnedPlaceVersions *)self existingVersion];
-  v7 = [v6 identifier];
-  v8 = [v5 isEqual:v7];
-  if (!v4 || v8)
+  versionCopy = version;
+  identifier = [(RTLearnedPlace *)versionCopy identifier];
+  existingVersion = [(RTLearnedPlaceVersions *)self existingVersion];
+  identifier2 = [existingVersion identifier];
+  v8 = [identifier isEqual:identifier2];
+  if (!versionCopy || v8)
   {
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  v9 = [(RTLearnedPlaceVersions *)self existingVersion];
+  existingVersion2 = [(RTLearnedPlaceVersions *)self existingVersion];
 
-  if (v9)
+  if (existingVersion2)
   {
-    v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    identifier = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(identifier, OS_LOG_TYPE_ERROR))
     {
       v15 = 136315394;
       v16 = "[RTLearnedPlaceVersions setInferredVersion:]";
       v17 = 1024;
       v18 = 110;
-      _os_log_error_impl(&dword_2304B3000, v5, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: [inferredVersion.identifier isEqual:self.existingVersion.identifier] || inferredVersion == nil || self.existingVersion == nil (in %s:%d)", &v15, 0x12u);
+      _os_log_error_impl(&dword_2304B3000, identifier, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: [inferredVersion.identifier isEqual:self.existingVersion.identifier] || inferredVersion == nil || self.existingVersion == nil (in %s:%d)", &v15, 0x12u);
     }
 
     goto LABEL_7;
   }
 
 LABEL_8:
-  v10 = [(RTLearnedPlace *)v4 type];
-  v11 = [(RTLearnedPlaceVersions *)self truthfulCounterpart];
-  v12 = [v11 type];
-  if (!v4 || v10 == v12)
+  type = [(RTLearnedPlace *)versionCopy type];
+  truthfulCounterpart = [(RTLearnedPlaceVersions *)self truthfulCounterpart];
+  type2 = [truthfulCounterpart type];
+  if (!versionCopy || type == type2)
   {
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  v13 = [(RTLearnedPlaceVersions *)self truthfulCounterpart];
+  truthfulCounterpart2 = [(RTLearnedPlaceVersions *)self truthfulCounterpart];
 
-  if (v13)
+  if (truthfulCounterpart2)
   {
-    v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    truthfulCounterpart = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(truthfulCounterpart, OS_LOG_TYPE_ERROR))
     {
       v15 = 136315394;
       v16 = "[RTLearnedPlaceVersions setInferredVersion:]";
       v17 = 1024;
       v18 = 113;
-      _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: inferredVersion.type == self.truthfulCounterpart.type || inferredVersion == nil || self.truthfulCounterpart == nil (in %s:%d)", &v15, 0x12u);
+      _os_log_error_impl(&dword_2304B3000, truthfulCounterpart, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: inferredVersion.type == self.truthfulCounterpart.type || inferredVersion == nil || self.truthfulCounterpart == nil (in %s:%d)", &v15, 0x12u);
     }
 
     goto LABEL_13;
@@ -70,35 +70,35 @@ LABEL_13:
 
 LABEL_14:
   inferredVersion = self->_inferredVersion;
-  self->_inferredVersion = v4;
+  self->_inferredVersion = versionCopy;
 }
 
-- (void)setExistingVersion:(id)a3
+- (void)setExistingVersion:(id)version
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RTLearnedPlaceVersions *)self inferredVersion];
-  v6 = [v5 identifier];
-  v7 = [(RTLearnedPlace *)v4 identifier];
-  if ([v6 isEqual:v7])
+  versionCopy = version;
+  inferredVersion = [(RTLearnedPlaceVersions *)self inferredVersion];
+  identifier = [inferredVersion identifier];
+  identifier2 = [(RTLearnedPlace *)versionCopy identifier];
+  if ([identifier isEqual:identifier2])
   {
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  v8 = [(RTLearnedPlaceVersions *)self inferredVersion];
+  inferredVersion2 = [(RTLearnedPlaceVersions *)self inferredVersion];
 
-  if (v4 && v8)
+  if (versionCopy && inferredVersion2)
   {
-    v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    inferredVersion = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(inferredVersion, OS_LOG_TYPE_ERROR))
     {
       v10 = 136315394;
       v11 = "[RTLearnedPlaceVersions setExistingVersion:]";
       v12 = 1024;
       v13 = 122;
-      _os_log_error_impl(&dword_2304B3000, v5, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: [self.inferredVersion.identifier isEqual:existingVersion.identifier] || self.inferredVersion == nil || existingVersion == nil (in %s:%d)", &v10, 0x12u);
+      _os_log_error_impl(&dword_2304B3000, inferredVersion, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: [self.inferredVersion.identifier isEqual:existingVersion.identifier] || self.inferredVersion == nil || existingVersion == nil (in %s:%d)", &v10, 0x12u);
     }
 
     goto LABEL_7;
@@ -106,34 +106,34 @@ LABEL_7:
 
 LABEL_8:
   existingVersion = self->_existingVersion;
-  self->_existingVersion = v4;
+  self->_existingVersion = versionCopy;
 }
 
-- (void)setTruthfulCounterpart:(id)a3
+- (void)setTruthfulCounterpart:(id)counterpart
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RTLearnedPlaceVersions *)self inferredVersion];
-  v6 = [v5 type];
-  if (v6 == [(RTLearnedPlace *)v4 type])
+  counterpartCopy = counterpart;
+  inferredVersion = [(RTLearnedPlaceVersions *)self inferredVersion];
+  type = [inferredVersion type];
+  if (type == [(RTLearnedPlace *)counterpartCopy type])
   {
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  v7 = [(RTLearnedPlaceVersions *)self inferredVersion];
+  inferredVersion2 = [(RTLearnedPlaceVersions *)self inferredVersion];
 
-  if (v4 && v7)
+  if (counterpartCopy && inferredVersion2)
   {
-    v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    inferredVersion = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(inferredVersion, OS_LOG_TYPE_ERROR))
     {
       v9 = 136315394;
       v10 = "[RTLearnedPlaceVersions setTruthfulCounterpart:]";
       v11 = 1024;
       v12 = 131;
-      _os_log_error_impl(&dword_2304B3000, v5, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: self.inferredVersion.type == truthfulCounterpart.type || self.inferredVersion == nil || truthfulCounterpart == nil (in %s:%d)", &v9, 0x12u);
+      _os_log_error_impl(&dword_2304B3000, inferredVersion, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: self.inferredVersion.type == truthfulCounterpart.type || self.inferredVersion == nil || truthfulCounterpart == nil (in %s:%d)", &v9, 0x12u);
     }
 
     goto LABEL_6;
@@ -141,49 +141,49 @@ LABEL_6:
 
 LABEL_7:
   truthfulCounterpart = self->_truthfulCounterpart;
-  self->_truthfulCounterpart = v4;
+  self->_truthfulCounterpart = counterpartCopy;
 }
 
 - (id)trueVersion
 {
-  v3 = [(RTLearnedPlaceVersions *)self existingVersion];
-  v4 = [v3 typeSource] & 6;
+  existingVersion = [(RTLearnedPlaceVersions *)self existingVersion];
+  v4 = [existingVersion typeSource] & 6;
 
   if (v4)
   {
-    v5 = [(RTLearnedPlaceVersions *)self existingVersion];
+    existingVersion2 = [(RTLearnedPlaceVersions *)self existingVersion];
   }
 
   else
   {
-    v6 = [(RTLearnedPlaceVersions *)self inferredVersion];
-    v7 = [v6 typeSource] & 6;
+    inferredVersion = [(RTLearnedPlaceVersions *)self inferredVersion];
+    v7 = [inferredVersion typeSource] & 6;
 
     if (v7)
     {
-      v5 = [(RTLearnedPlaceVersions *)self inferredVersion];
+      existingVersion2 = [(RTLearnedPlaceVersions *)self inferredVersion];
     }
 
     else
     {
-      v5 = 0;
+      existingVersion2 = 0;
     }
   }
 
-  return v5;
+  return existingVersion2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
-  v5 = [(RTLearnedPlaceVersions *)self inferredVersion];
-  [v4 setInferredVersion:v5];
+  inferredVersion = [(RTLearnedPlaceVersions *)self inferredVersion];
+  [v4 setInferredVersion:inferredVersion];
 
-  v6 = [(RTLearnedPlaceVersions *)self existingVersion];
-  [v4 setExistingVersion:v6];
+  existingVersion = [(RTLearnedPlaceVersions *)self existingVersion];
+  [v4 setExistingVersion:existingVersion];
 
-  v7 = [(RTLearnedPlaceVersions *)self truthfulCounterpart];
-  [v4 setTruthfulCounterpart:v7];
+  truthfulCounterpart = [(RTLearnedPlaceVersions *)self truthfulCounterpart];
+  [v4 setTruthfulCounterpart:truthfulCounterpart];
 
   return v4;
 }

@@ -1,24 +1,24 @@
 @interface PassKitServicesXPCService
-- (void)imageDataForPassUniqueIdentifier:(id)a3 size:(CGSize)a4 completion:(id)a5;
-- (void)imageDataForRecurringPaymentMemo:(id)a3 size:(CGSize)a4 completion:(id)a5;
-- (void)imageDataForTransaction:(id)a3 size:(CGSize)a4 completion:(id)a5;
+- (void)imageDataForPassUniqueIdentifier:(id)identifier size:(CGSize)size completion:(id)completion;
+- (void)imageDataForRecurringPaymentMemo:(id)memo size:(CGSize)size completion:(id)completion;
+- (void)imageDataForTransaction:(id)transaction size:(CGSize)size completion:(id)completion;
 @end
 
 @implementation PassKitServicesXPCService
 
-- (void)imageDataForTransaction:(id)a3 size:(CGSize)a4 completion:(id)a5
+- (void)imageDataForTransaction:(id)transaction size:(CGSize)size completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = a5;
+  height = size.height;
+  width = size.width;
+  transactionCopy = transaction;
+  completionCopy = completion;
   v11 = objc_autoreleasePoolPush();
   v12 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v9 identifier];
+    identifier = [transactionCopy identifier];
     *buf = 138412290;
-    v30 = v13;
+    v30 = identifier;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Getting icon for transaction %@.", buf, 0xCu);
   }
 
@@ -38,74 +38,74 @@
   v24 = 3221225472;
   v25 = sub_100000F80;
   v26 = &unk_100004138;
-  v18 = v9;
+  v18 = transactionCopy;
   v27 = v18;
-  v19 = v10;
+  v19 = completionCopy;
   v28 = v19;
-  v20 = [(PKPaymentTransactionIconGenerator *)iconGenerator iconForTransaction:v18 size:1 ignoreLogoURL:0 requestType:&v23 iconHandler:width, height];
-  if (v20)
+  height = [(PKPaymentTransactionIconGenerator *)iconGenerator iconForTransaction:v18 size:1 ignoreLogoURL:0 requestType:&v23 iconHandler:width, height];
+  if (height)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v18 identifier];
+      identifier2 = [v18 identifier];
       *buf = 138412546;
-      v30 = v20;
+      v30 = height;
       v31 = 2112;
-      v32 = v21;
+      v32 = identifier2;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Returning %@ for transaction %@.", buf, 0x16u);
     }
 
-    v22 = UIImagePNGRepresentation(v20);
+    v22 = UIImagePNGRepresentation(height);
     (*(v19 + 2))(v19, v22);
   }
 
   objc_autoreleasePoolPop(v11);
 }
 
-- (void)imageDataForPassUniqueIdentifier:(id)a3 size:(CGSize)a4 completion:(id)a5
+- (void)imageDataForPassUniqueIdentifier:(id)identifier size:(CGSize)size completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  height = size.height;
+  width = size.width;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if ([v8 length])
+    if ([identifierCopy length])
     {
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_1000011A8;
       v10[3] = &unk_100004160;
-      v11 = v8;
+      v11 = identifierCopy;
       v13 = width;
       v14 = height;
-      v12 = v9;
+      v12 = completionCopy;
       dispatch_async(&_dispatch_main_q, v10);
     }
 
     else
     {
-      (*(v9 + 2))(v9, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
 
-- (void)imageDataForRecurringPaymentMemo:(id)a3 size:(CGSize)a4 completion:(id)a5
+- (void)imageDataForRecurringPaymentMemo:(id)memo size:(CGSize)size completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  height = size.height;
+  width = size.width;
+  memoCopy = memo;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10000141C;
     v10[3] = &unk_100004160;
-    v11 = v8;
+    v11 = memoCopy;
     v13 = width;
     v14 = height;
-    v12 = v9;
+    v12 = completionCopy;
     dispatch_async(&_dispatch_main_q, v10);
   }
 }

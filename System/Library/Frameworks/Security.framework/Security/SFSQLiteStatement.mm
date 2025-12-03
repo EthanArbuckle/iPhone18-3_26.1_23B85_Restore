@@ -1,29 +1,29 @@
 @interface SFSQLiteStatement
 - (BOOL)step;
 - (SFSQLite)SQLite;
-- (SFSQLiteStatement)initWithSQLite:(id)a3 SQL:(id)a4 handle:(sqlite3_stmt *)a5;
-- (double)doubleAtIndex:(unint64_t)a3;
+- (SFSQLiteStatement)initWithSQLite:(id)lite SQL:(id)l handle:(sqlite3_stmt *)handle;
+- (double)doubleAtIndex:(unint64_t)index;
 - (id)allObjects;
 - (id)allObjectsByColumnName;
-- (id)blobAtIndex:(unint64_t)a3;
-- (id)columnNameAtIndex:(unint64_t)a3;
-- (id)objectAtIndex:(unint64_t)a3;
-- (id)retainedTemporaryBoundObject:(id)a3;
-- (id)textAtIndex:(unint64_t)a3;
-- (int)columnTypeAtIndex:(unint64_t)a3;
-- (int)intAtIndex:(unint64_t)a3;
-- (int64_t)int64AtIndex:(unint64_t)a3;
+- (id)blobAtIndex:(unint64_t)index;
+- (id)columnNameAtIndex:(unint64_t)index;
+- (id)objectAtIndex:(unint64_t)index;
+- (id)retainedTemporaryBoundObject:(id)object;
+- (id)textAtIndex:(unint64_t)index;
+- (int)columnTypeAtIndex:(unint64_t)index;
+- (int)intAtIndex:(unint64_t)index;
+- (int64_t)int64AtIndex:(unint64_t)index;
 - (unint64_t)columnCount;
-- (unint64_t)indexForColumnName:(id)a3;
-- (void)bindBlob:(id)a3 atIndex:(unint64_t)a4;
-- (void)bindDouble:(double)a3 atIndex:(unint64_t)a4;
-- (void)bindInt64:(int64_t)a3 atIndex:(unint64_t)a4;
-- (void)bindInt:(int)a3 atIndex:(unint64_t)a4;
-- (void)bindNullAtIndex:(unint64_t)a3;
-- (void)bindText:(id)a3 atIndex:(unint64_t)a4;
-- (void)bindValue:(id)a3 atIndex:(unint64_t)a4;
-- (void)bindValues:(id)a3;
-- (void)enumerateColumnsUsingBlock:(id)a3;
+- (unint64_t)indexForColumnName:(id)name;
+- (void)bindBlob:(id)blob atIndex:(unint64_t)index;
+- (void)bindDouble:(double)double atIndex:(unint64_t)index;
+- (void)bindInt64:(int64_t)int64 atIndex:(unint64_t)index;
+- (void)bindInt:(int)int atIndex:(unint64_t)index;
+- (void)bindNullAtIndex:(unint64_t)index;
+- (void)bindText:(id)text atIndex:(unint64_t)index;
+- (void)bindValue:(id)value atIndex:(unint64_t)index;
+- (void)bindValues:(id)values;
+- (void)enumerateColumnsUsingBlock:(id)block;
 - (void)finalizeStatement;
 - (void)reset;
 - (void)resetAfterStepError;
@@ -38,15 +38,15 @@
   return WeakRetained;
 }
 
-- (void)enumerateColumnsUsingBlock:(id)a3
+- (void)enumerateColumnsUsingBlock:(id)block
 {
-  v12 = a3;
-  v4 = [(SFSQLiteStatement *)self columnCount];
-  v5 = v4;
+  blockCopy = block;
+  columnCount = [(SFSQLiteStatement *)self columnCount];
+  v5 = columnCount;
   if (self->_indexesByColumnName)
   {
     v6 = 0;
-    if (!v4)
+    if (!columnCount)
     {
       goto LABEL_11;
     }
@@ -54,7 +54,7 @@
 
   else
   {
-    v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:v4];
+    v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:columnCount];
     if (!v5)
     {
       goto LABEL_11;
@@ -71,9 +71,9 @@
       [v6 setObject:v9 forKeyedSubscript:v8];
     }
 
-    if (v12)
+    if (blockCopy)
     {
-      v12[2]();
+      blockCopy[2]();
     }
 
     ++v7;
@@ -91,8 +91,8 @@ LABEL_11:
 
 - (id)allObjectsByColumnName
 {
-  v3 = [(SFSQLiteStatement *)self columnCount];
-  v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:v3];
+  columnCount = [(SFSQLiteStatement *)self columnCount];
+  v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:columnCount];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __43__SFSQLiteStatement_allObjectsByColumnName__block_invoke;
@@ -119,15 +119,15 @@ void __43__SFSQLiteStatement_allObjectsByColumnName__block_invoke(uint64_t a1, u
 
 - (id)allObjects
 {
-  v3 = [(SFSQLiteStatement *)self columnCount];
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:v3];
+  columnCount = [(SFSQLiteStatement *)self columnCount];
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:columnCount];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __31__SFSQLiteStatement_allObjects__block_invoke;
   v8[3] = &unk_1E70D47D8;
   v5 = v4;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   [(SFSQLiteStatement *)self enumerateColumnsUsingBlock:v8];
   v6 = v5;
 
@@ -150,7 +150,7 @@ void __31__SFSQLiteStatement_allObjects__block_invoke(uint64_t a1, uint64_t a2)
   }
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   v13 = *MEMORY[0x1E69E9840];
   v5 = [(SFSQLiteStatement *)self columnTypeAtIndex:?];
@@ -159,14 +159,14 @@ void __31__SFSQLiteStatement_allObjects__block_invoke(uint64_t a1, uint64_t a2)
   {
     if (v5 == 1)
     {
-      v8 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[SFSQLiteStatement int64AtIndex:](self, "int64AtIndex:", a3)}];
+      v8 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[SFSQLiteStatement int64AtIndex:](self, "int64AtIndex:", index)}];
       goto LABEL_16;
     }
 
     if (v5 == 2)
     {
       v7 = MEMORY[0x1E696AD98];
-      [(SFSQLiteStatement *)self doubleAtIndex:a3];
+      [(SFSQLiteStatement *)self doubleAtIndex:index];
       v8 = [v7 numberWithDouble:?];
       goto LABEL_16;
     }
@@ -177,10 +177,10 @@ void __31__SFSQLiteStatement_allObjects__block_invoke(uint64_t a1, uint64_t a2)
     switch(v5)
     {
       case 3:
-        v8 = [(SFSQLiteStatement *)self textAtIndex:a3];
+        v8 = [(SFSQLiteStatement *)self textAtIndex:index];
         goto LABEL_16;
       case 4:
-        v8 = [(SFSQLiteStatement *)self blobAtIndex:a3];
+        v8 = [(SFSQLiteStatement *)self blobAtIndex:index];
         goto LABEL_16;
       case 5:
         goto LABEL_15;
@@ -203,16 +203,16 @@ LABEL_16:
   return v8;
 }
 
-- (id)textAtIndex:(unint64_t)a3
+- (id)textAtIndex:(unint64_t)index
 {
-  v3 = a3;
+  indexCopy = index;
   if (self->_reset)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"SFSQLiteStatement.m" lineNumber:298 description:{@"Statement is reset: %@", self->_SQL}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SFSQLiteStatement.m" lineNumber:298 description:{@"Statement is reset: %@", self->_SQL}];
   }
 
-  v5 = sqlite3_column_text(self->_handle, v3);
+  v5 = sqlite3_column_text(self->_handle, indexCopy);
   if (v5)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v5];
@@ -221,69 +221,69 @@ LABEL_16:
   return v5;
 }
 
-- (id)blobAtIndex:(unint64_t)a3
+- (id)blobAtIndex:(unint64_t)index
 {
-  v3 = a3;
+  indexCopy = index;
   if (self->_reset)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"SFSQLiteStatement.m" lineNumber:286 description:{@"Statement is reset: %@", self->_SQL}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SFSQLiteStatement.m" lineNumber:286 description:{@"Statement is reset: %@", self->_SQL}];
   }
 
-  v5 = sqlite3_column_blob(self->_handle, v3);
+  v5 = sqlite3_column_blob(self->_handle, indexCopy);
   if (v5)
   {
-    v5 = [MEMORY[0x1E695DEF0] dataWithBytes:v5 length:{sqlite3_column_bytes(self->_handle, v3)}];
+    v5 = [MEMORY[0x1E695DEF0] dataWithBytes:v5 length:{sqlite3_column_bytes(self->_handle, indexCopy)}];
   }
 
   return v5;
 }
 
-- (double)doubleAtIndex:(unint64_t)a3
+- (double)doubleAtIndex:(unint64_t)index
 {
-  v3 = a3;
+  indexCopy = index;
   if (self->_reset)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"SFSQLiteStatement.m" lineNumber:280 description:{@"Statement is reset: %@", self->_SQL}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SFSQLiteStatement.m" lineNumber:280 description:{@"Statement is reset: %@", self->_SQL}];
   }
 
   handle = self->_handle;
 
-  return sqlite3_column_double(handle, v3);
+  return sqlite3_column_double(handle, indexCopy);
 }
 
-- (int64_t)int64AtIndex:(unint64_t)a3
+- (int64_t)int64AtIndex:(unint64_t)index
 {
-  v3 = a3;
+  indexCopy = index;
   if (self->_reset)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"SFSQLiteStatement.m" lineNumber:274 description:{@"Statement is reset: %@", self->_SQL}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SFSQLiteStatement.m" lineNumber:274 description:{@"Statement is reset: %@", self->_SQL}];
   }
 
   handle = self->_handle;
 
-  return sqlite3_column_int64(handle, v3);
+  return sqlite3_column_int64(handle, indexCopy);
 }
 
-- (int)intAtIndex:(unint64_t)a3
+- (int)intAtIndex:(unint64_t)index
 {
-  v3 = a3;
+  indexCopy = index;
   if (self->_reset)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"SFSQLiteStatement.m" lineNumber:268 description:{@"Statement is reset: %@", self->_SQL}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SFSQLiteStatement.m" lineNumber:268 description:{@"Statement is reset: %@", self->_SQL}];
   }
 
   handle = self->_handle;
 
-  return sqlite3_column_int(handle, v3);
+  return sqlite3_column_int(handle, indexCopy);
 }
 
-- (unint64_t)indexForColumnName:(id)a3
+- (unint64_t)indexForColumnName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   indexesByColumnName = self->_indexesByColumnName;
   if (!indexesByColumnName)
   {
@@ -291,116 +291,116 @@ LABEL_16:
     indexesByColumnName = self->_indexesByColumnName;
   }
 
-  v6 = [(NSDictionary *)indexesByColumnName objectForKeyedSubscript:v4];
+  v6 = [(NSDictionary *)indexesByColumnName objectForKeyedSubscript:nameCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v8 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v8;
+  return unsignedIntegerValue;
 }
 
-- (id)columnNameAtIndex:(unint64_t)a3
+- (id)columnNameAtIndex:(unint64_t)index
 {
-  v3 = a3;
+  indexCopy = index;
   if (self->_reset)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"SFSQLiteStatement.m" lineNumber:253 description:{@"Statement is reset: %@", self->_SQL}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SFSQLiteStatement.m" lineNumber:253 description:{@"Statement is reset: %@", self->_SQL}];
   }
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = sqlite3_column_name(self->_handle, v3);
+  v6 = sqlite3_column_name(self->_handle, indexCopy);
 
   return [v5 stringWithUTF8String:v6];
 }
 
-- (int)columnTypeAtIndex:(unint64_t)a3
+- (int)columnTypeAtIndex:(unint64_t)index
 {
-  v3 = a3;
+  indexCopy = index;
   if (self->_reset)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"SFSQLiteStatement.m" lineNumber:247 description:{@"Statement is reset: %@", self->_SQL}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SFSQLiteStatement.m" lineNumber:247 description:{@"Statement is reset: %@", self->_SQL}];
   }
 
   handle = self->_handle;
 
-  return sqlite3_column_type(handle, v3);
+  return sqlite3_column_type(handle, indexCopy);
 }
 
 - (unint64_t)columnCount
 {
   if (self->_reset)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"SFSQLiteStatement.m" lineNumber:241 description:{@"Statement is reset: %@", self->_SQL}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SFSQLiteStatement.m" lineNumber:241 description:{@"Statement is reset: %@", self->_SQL}];
   }
 
   return sqlite3_column_count(self->_handle);
 }
 
-- (void)bindValues:(id)a3
+- (void)bindValues:(id)values
 {
-  v6 = a3;
-  if ([v6 count])
+  valuesCopy = values;
+  if ([valuesCopy count])
   {
     v4 = 0;
     do
     {
-      v5 = [v6 objectAtIndexedSubscript:v4];
+      v5 = [valuesCopy objectAtIndexedSubscript:v4];
       [(SFSQLiteStatement *)self bindValue:v5 atIndex:v4];
 
       ++v4;
     }
 
-    while (v4 < [v6 count]);
+    while (v4 < [valuesCopy count]);
   }
 }
 
-- (void)bindValue:(id)a3 atIndex:(unint64_t)a4
+- (void)bindValue:(id)value atIndex:(unint64_t)index
 {
   v17 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [SFObjCType typeForValue:v7];
-    if ([v8 isIntegerNumber])
+    absoluteString = [SFObjCType typeForValue:valueCopy];
+    if ([absoluteString isIntegerNumber])
     {
-      if ([v8 size] > 4)
+      if ([absoluteString size] > 4)
       {
-        -[SFSQLiteStatement bindInt64:atIndex:](self, "bindInt64:atIndex:", [v7 longLongValue], a4);
+        -[SFSQLiteStatement bindInt64:atIndex:](self, "bindInt64:atIndex:", [valueCopy longLongValue], index);
       }
 
       else
       {
-        -[SFSQLiteStatement bindInt:atIndex:](self, "bindInt:atIndex:", [v7 intValue], a4);
+        -[SFSQLiteStatement bindInt:atIndex:](self, "bindInt:atIndex:", [valueCopy intValue], index);
       }
     }
 
     else
     {
-      if (([v8 isFloatingPointNumber] & 1) == 0)
+      if (([absoluteString isFloatingPointNumber] & 1) == 0)
       {
-        v14 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v14 handleFailureInMethod:a2 object:self file:@"SFSQLiteStatement.m" lineNumber:208 description:@"Expected number type to be either integer or floating point"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"SFSQLiteStatement.m" lineNumber:208 description:@"Expected number type to be either integer or floating point"];
       }
 
-      if ([v8 code] != 11 && objc_msgSend(v8, "code") != 10)
+      if ([absoluteString code] != 11 && objc_msgSend(absoluteString, "code") != 10)
       {
-        v15 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v15 handleFailureInMethod:a2 object:self file:@"SFSQLiteStatement.m" lineNumber:209 description:{@"Unexpected floating point number type: %@", v8}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"SFSQLiteStatement.m" lineNumber:209 description:{@"Unexpected floating point number type: %@", absoluteString}];
       }
 
-      [v7 doubleValue];
-      [(SFSQLiteStatement *)self bindDouble:a4 atIndex:?];
+      [valueCopy doubleValue];
+      [(SFSQLiteStatement *)self bindDouble:index atIndex:?];
     }
 
     goto LABEL_18;
@@ -409,7 +409,7 @@ LABEL_16:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SFSQLiteStatement *)self bindBlob:v7 atIndex:a4];
+    [(SFSQLiteStatement *)self bindBlob:valueCopy atIndex:index];
     goto LABEL_19;
   }
 
@@ -417,12 +417,12 @@ LABEL_16:
   if (objc_opt_isKindOfClass())
   {
     memset(buf, 170, 16);
-    [v7 getUUIDBytes:buf];
+    [valueCopy getUUIDBytes:buf];
     v9 = [MEMORY[0x1E695DEF0] dataWithBytes:buf length:16];
 LABEL_15:
-    v8 = v9;
+    absoluteString = v9;
     v10 = [(SFSQLiteStatement *)self retainedTemporaryBoundObject:v9];
-    [(SFSQLiteStatement *)self bindBlob:v10 atIndex:a4];
+    [(SFSQLiteStatement *)self bindBlob:v10 atIndex:index];
 LABEL_16:
 
 LABEL_18:
@@ -432,38 +432,38 @@ LABEL_18:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SFSQLiteStatement *)self bindText:v7 atIndex:a4];
+    [(SFSQLiteStatement *)self bindText:valueCopy atIndex:index];
     goto LABEL_19;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SFSQLiteStatement *)self bindNullAtIndex:a4];
+    [(SFSQLiteStatement *)self bindNullAtIndex:index];
     goto LABEL_19;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 timeIntervalSinceReferenceDate];
-    [(SFSQLiteStatement *)self bindDouble:a4 atIndex:?];
+    [valueCopy timeIntervalSinceReferenceDate];
+    [(SFSQLiteStatement *)self bindDouble:index atIndex:?];
     goto LABEL_19;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:0];
+    v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:valueCopy requiringSecureCoding:1 error:0];
     goto LABEL_15;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 absoluteString];
-    v10 = [(SFSQLiteStatement *)self retainedTemporaryBoundObject:v8];
-    [(SFSQLiteStatement *)self bindText:v10 atIndex:a4];
+    absoluteString = [valueCopy absoluteString];
+    v10 = [(SFSQLiteStatement *)self retainedTemporaryBoundObject:absoluteString];
+    [(SFSQLiteStatement *)self bindText:v10 atIndex:index];
     goto LABEL_16;
   }
 
@@ -480,9 +480,9 @@ LABEL_19:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)retainedTemporaryBoundObject:(id)a3
+- (id)retainedTemporaryBoundObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   temporaryBoundObjects = self->_temporaryBoundObjects;
   if (!temporaryBoundObjects)
   {
@@ -493,14 +493,14 @@ LABEL_19:
     temporaryBoundObjects = self->_temporaryBoundObjects;
   }
 
-  [(NSMutableArray *)temporaryBoundObjects addObject:v4];
+  [(NSMutableArray *)temporaryBoundObjects addObject:objectCopy];
 
-  return v4;
+  return objectCopy;
 }
 
-- (void)bindNullAtIndex:(unint64_t)a3
+- (void)bindNullAtIndex:(unint64_t)index
 {
-  if (sqlite3_bind_null(self->_handle, a3 + 1))
+  if (sqlite3_bind_null(self->_handle, index + 1))
   {
     v3 = secLogObjForScope("SecError");
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -511,23 +511,23 @@ LABEL_19:
   }
 }
 
-- (void)bindText:(id)a3 atIndex:(unint64_t)a4
+- (void)bindText:(id)text atIndex:(unint64_t)index
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
+  textCopy = text;
+  v7 = textCopy;
   if (self->_reset)
   {
-    if (v6)
+    if (textCopy)
     {
-      if (sqlite3_bind_text(self->_handle, a4 + 1, [v6 UTF8String], -1, 0))
+      if (sqlite3_bind_text(self->_handle, index + 1, [textCopy UTF8String], -1, 0))
       {
         v8 = secLogObjForScope("SecError");
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
           SQL = self->_SQL;
           v13 = 134218242;
-          v14 = a4;
+          indexCopy = index;
           v15 = 2112;
           v16 = SQL;
           _os_log_impl(&dword_1887D2000, v8, OS_LOG_TYPE_DEFAULT, "sfsqlite: Error binding text at %ld: %@", &v13, 0x16u);
@@ -537,7 +537,7 @@ LABEL_19:
 
     else
     {
-      [(SFSQLiteStatement *)self bindNullAtIndex:a4];
+      [(SFSQLiteStatement *)self bindNullAtIndex:index];
     }
   }
 
@@ -548,7 +548,7 @@ LABEL_19:
     {
       v11 = self->_SQL;
       v13 = 138412290;
-      v14 = v11;
+      indexCopy = v11;
       _os_log_impl(&dword_1887D2000, v10, OS_LOG_TYPE_DEFAULT, "sfsqlite: Statement is not reset: %@", &v13, 0xCu);
     }
   }
@@ -556,23 +556,23 @@ LABEL_19:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)bindBlob:(id)a3 atIndex:(unint64_t)a4
+- (void)bindBlob:(id)blob atIndex:(unint64_t)index
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
+  blobCopy = blob;
+  v7 = blobCopy;
   if (self->_reset)
   {
-    if (v6)
+    if (blobCopy)
     {
-      if (sqlite3_bind_blob(self->_handle, a4 + 1, [v6 bytes], objc_msgSend(v6, "length"), 0))
+      if (sqlite3_bind_blob(self->_handle, index + 1, [blobCopy bytes], objc_msgSend(blobCopy, "length"), 0))
       {
         v8 = secLogObjForScope("SecError");
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
           SQL = self->_SQL;
           v13 = 134218242;
-          v14 = a4;
+          indexCopy = index;
           v15 = 2112;
           v16 = SQL;
           _os_log_impl(&dword_1887D2000, v8, OS_LOG_TYPE_DEFAULT, "sfsqlite: Error binding blob at %ld: %@", &v13, 0x16u);
@@ -582,7 +582,7 @@ LABEL_19:
 
     else
     {
-      [(SFSQLiteStatement *)self bindNullAtIndex:a4];
+      [(SFSQLiteStatement *)self bindNullAtIndex:index];
     }
   }
 
@@ -593,7 +593,7 @@ LABEL_19:
     {
       v11 = self->_SQL;
       v13 = 138412290;
-      v14 = v11;
+      indexCopy = v11;
       _os_log_impl(&dword_1887D2000, v10, OS_LOG_TYPE_DEFAULT, "sfsqlite: Statement is not reset: %@", &v13, 0xCu);
     }
   }
@@ -601,7 +601,7 @@ LABEL_19:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)bindDouble:(double)a3 atIndex:(unint64_t)a4
+- (void)bindDouble:(double)double atIndex:(unint64_t)index
 {
   v17 = *MEMORY[0x1E69E9840];
   if (!self->_reset)
@@ -611,7 +611,7 @@ LABEL_19:
     {
       SQL = self->_SQL;
       v13 = 138412290;
-      v14 = SQL;
+      indexCopy = SQL;
       v8 = "sfsqlite: Statement is not reset: %@";
       v9 = v6;
       v10 = 12;
@@ -623,14 +623,14 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (sqlite3_bind_double(self->_handle, a4 + 1, a3))
+  if (sqlite3_bind_double(self->_handle, index + 1, double))
   {
     v6 = secLogObjForScope("SecError");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = self->_SQL;
       v13 = 134218242;
-      v14 = a4;
+      indexCopy = index;
       v15 = 2112;
       v16 = v7;
       v8 = "sfsqlite: Error binding double at %ld: %@";
@@ -648,7 +648,7 @@ LABEL_9:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)bindInt64:(int64_t)a3 atIndex:(unint64_t)a4
+- (void)bindInt64:(int64_t)int64 atIndex:(unint64_t)index
 {
   v17 = *MEMORY[0x1E69E9840];
   if (!self->_reset)
@@ -658,7 +658,7 @@ LABEL_9:
     {
       SQL = self->_SQL;
       v13 = 138412290;
-      v14 = SQL;
+      indexCopy = SQL;
       v8 = "sfsqlite: Statement is not reset: %@";
       v9 = v6;
       v10 = 12;
@@ -670,14 +670,14 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (sqlite3_bind_int64(self->_handle, a4 + 1, a3))
+  if (sqlite3_bind_int64(self->_handle, index + 1, int64))
   {
     v6 = secLogObjForScope("SecError");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = self->_SQL;
       v13 = 134218242;
-      v14 = a4;
+      indexCopy = index;
       v15 = 2112;
       v16 = v7;
       v8 = "sfsqlite: Error binding int64 at %ld: %@";
@@ -695,7 +695,7 @@ LABEL_9:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)bindInt:(int)a3 atIndex:(unint64_t)a4
+- (void)bindInt:(int)int atIndex:(unint64_t)index
 {
   v17 = *MEMORY[0x1E69E9840];
   if (!self->_reset)
@@ -705,7 +705,7 @@ LABEL_9:
     {
       SQL = self->_SQL;
       v13 = 138412290;
-      v14 = SQL;
+      indexCopy = SQL;
       v8 = "sfsqlite: Statement is not reset: %@";
       v9 = v6;
       v10 = 12;
@@ -717,14 +717,14 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (sqlite3_bind_int(self->_handle, a4 + 1, a3))
+  if (sqlite3_bind_int(self->_handle, index + 1, int))
   {
     v6 = secLogObjForScope("SecError");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = self->_SQL;
       v13 = 134218242;
-      v14 = a4;
+      indexCopy = index;
       v15 = 2112;
       v16 = v7;
       v8 = "sfsqlite: Error binding int at %ld: %@";
@@ -873,19 +873,19 @@ LABEL_9:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (SFSQLiteStatement)initWithSQLite:(id)a3 SQL:(id)a4 handle:(sqlite3_stmt *)a5
+- (SFSQLiteStatement)initWithSQLite:(id)lite SQL:(id)l handle:(sqlite3_stmt *)handle
 {
-  v8 = a3;
-  v9 = a4;
+  liteCopy = lite;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = SFSQLiteStatement;
   v10 = [(SFSQLiteStatement *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_SQLite, v8);
-    objc_storeStrong(&v11->_SQL, a4);
-    v11->_handle = a5;
+    objc_storeWeak(&v10->_SQLite, liteCopy);
+    objc_storeStrong(&v11->_SQL, l);
+    v11->_handle = handle;
     v11->_reset = 1;
   }
 

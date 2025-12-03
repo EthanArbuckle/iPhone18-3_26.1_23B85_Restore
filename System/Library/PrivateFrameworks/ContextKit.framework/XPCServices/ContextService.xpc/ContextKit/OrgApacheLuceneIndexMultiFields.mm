@@ -1,21 +1,21 @@
 @interface OrgApacheLuceneIndexMultiFields
-+ (id)getTermsWithOrgApacheLuceneIndexIndexReader:(id)a3 withNSString:(id)a4;
++ (id)getTermsWithOrgApacheLuceneIndexIndexReader:(id)reader withNSString:(id)string;
 - (id)iterator;
-- (id)termsWithNSString:(id)a3;
+- (id)termsWithNSString:(id)string;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneIndexMultiFields
 
-+ (id)getTermsWithOrgApacheLuceneIndexIndexReader:(id)a3 withNSString:(id)a4
++ (id)getTermsWithOrgApacheLuceneIndexIndexReader:(id)reader withNSString:(id)string
 {
-  FieldsWithOrgApacheLuceneIndexIndexReader = OrgApacheLuceneIndexMultiFields_getFieldsWithOrgApacheLuceneIndexIndexReader_(a3);
+  FieldsWithOrgApacheLuceneIndexIndexReader = OrgApacheLuceneIndexMultiFields_getFieldsWithOrgApacheLuceneIndexIndexReader_(reader);
   if (!FieldsWithOrgApacheLuceneIndexIndexReader)
   {
     JreThrowNullPointerException();
   }
 
-  return [(OrgApacheLuceneIndexMultiFields *)FieldsWithOrgApacheLuceneIndexIndexReader termsWithNSString:a4];
+  return [(OrgApacheLuceneIndexMultiFields *)FieldsWithOrgApacheLuceneIndexIndexReader termsWithNSString:string];
 }
 
 - (id)iterator
@@ -57,7 +57,7 @@ LABEL_6:
   return v8;
 }
 
-- (id)termsWithNSString:(id)a3
+- (id)termsWithNSString:(id)string
 {
   terms = self->terms_;
   if (!terms)
@@ -90,7 +90,7 @@ LABEL_22:
       goto LABEL_22;
     }
 
-    v13 = [(IOSClass *)v12 termsWithNSString:a3];
+    v13 = [(IOSClass *)v12 termsWithNSString:string];
     if (v13)
     {
       [(JavaUtilArrayList *)v7 addWithId:v13];
@@ -134,7 +134,7 @@ LABEL_22:
   }
 
   v6 = new_OrgApacheLuceneIndexMultiTerms_initWithOrgApacheLuceneIndexTermsArray_withOrgApacheLuceneIndexReaderSliceArray_(v16, [(JavaUtilArrayList *)v10 toArrayWithNSObjectArray:OrgApacheLuceneIndexReaderSlice_EMPTY_ARRAY_]);
-  [(JavaUtilMap *)self->terms_ putWithId:a3 withId:v6];
+  [(JavaUtilMap *)self->terms_ putWithId:string withId:v6];
   return v6;
 }
 

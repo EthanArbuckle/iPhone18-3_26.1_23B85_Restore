@@ -1,5 +1,5 @@
 @interface _SCDAContextMutation
-- (_SCDAContextMutation)initWithBase:(id)a3;
+- (_SCDAContextMutation)initWithBase:(id)base;
 - (id)getOverrideState;
 - (id)getPerceptualAudioHash;
 - (int64_t)getActivationSource;
@@ -39,30 +39,30 @@
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_overrideState;
+    overrideState = self->_overrideState;
   }
 
   else
   {
-    v2 = [(SCDAContext *)self->_base overrideState];
+    overrideState = [(SCDAContext *)self->_base overrideState];
   }
 
-  return v2;
+  return overrideState;
 }
 
 - (id)getPerceptualAudioHash
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_perceptualAudioHash;
+    perceptualAudioHash = self->_perceptualAudioHash;
   }
 
   else
   {
-    v2 = [(SCDAContext *)self->_base perceptualAudioHash];
+    perceptualAudioHash = [(SCDAContext *)self->_base perceptualAudioHash];
   }
 
-  return v2;
+  return perceptualAudioHash;
 }
 
 - (unint64_t)getTimestamp
@@ -78,16 +78,16 @@
   }
 }
 
-- (_SCDAContextMutation)initWithBase:(id)a3
+- (_SCDAContextMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _SCDAContextMutation;
   v6 = [(_SCDAContextMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

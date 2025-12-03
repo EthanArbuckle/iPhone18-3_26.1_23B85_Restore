@@ -1,42 +1,42 @@
 @interface REMDisplayDate
-- (BOOL)isEqual:(id)a3;
-- (REMDisplayDate)initWithCoder:(id)a3;
-- (REMDisplayDate)initWithDate:(id)a3 allDay:(BOOL)a4 timeZone:(id)a5 floatingDateSecondsFromGMT:(int64_t)a6;
-- (REMDisplayDate)initWithDueDateComponents:(id)a3 alarms:(id)a4;
-- (REMDisplayDate)initWithFloatingDateComponents:(id)a3 nonFloatingDateComponents:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMDisplayDate)initWithCoder:(id)coder;
+- (REMDisplayDate)initWithDate:(id)date allDay:(BOOL)day timeZone:(id)zone floatingDateSecondsFromGMT:(int64_t)t;
+- (REMDisplayDate)initWithDueDateComponents:(id)components alarms:(id)alarms;
+- (REMDisplayDate)initWithFloatingDateComponents:(id)components nonFloatingDateComponents:(id)dateComponents;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dateByAdjustingFloatingDateForDefaultTimeZone;
-- (id)dateByAdjustingFloatingDateForTimeZone:(id)a3;
+- (id)dateByAdjustingFloatingDateForTimeZone:(id)zone;
 - (id)dateComponentsRepresentation;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMDisplayDate
 
-- (REMDisplayDate)initWithDate:(id)a3 allDay:(BOOL)a4 timeZone:(id)a5 floatingDateSecondsFromGMT:(int64_t)a6
+- (REMDisplayDate)initWithDate:(id)date allDay:(BOOL)day timeZone:(id)zone floatingDateSecondsFromGMT:(int64_t)t
 {
-  v10 = a3;
-  v11 = a5;
-  if (v10)
+  dateCopy = date;
+  zoneCopy = zone;
+  if (dateCopy)
   {
     v18.receiver = self;
     v18.super_class = REMDisplayDate;
     v12 = [(REMDisplayDate *)&v18 init];
     if (v12)
     {
-      v13 = [v10 copy];
+      v13 = [dateCopy copy];
       date = v12->_date;
       v12->_date = v13;
 
-      v12->_allDay = a4;
-      objc_storeStrong(&v12->_timeZone, a5);
-      v12->_floatingDateSecondsFromGMT = a6;
+      v12->_allDay = day;
+      objc_storeStrong(&v12->_timeZone, zone);
+      v12->_floatingDateSecondsFromGMT = t;
     }
 
     self = v12;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
@@ -47,17 +47,17 @@
       [REMDisplayDate initWithDate:allDay:timeZone:floatingDateSecondsFromGMT:];
     }
 
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (REMDisplayDate)initWithFloatingDateComponents:(id)a3 nonFloatingDateComponents:(id)a4
+- (REMDisplayDate)initWithFloatingDateComponents:(id)components nonFloatingDateComponents:(id)dateComponents
 {
-  v6 = a3;
-  v7 = a4;
-  if (!(v6 | v7))
+  componentsCopy = components;
+  dateComponentsCopy = dateComponents;
+  if (!(componentsCopy | dateComponentsCopy))
   {
     goto LABEL_18;
   }
@@ -69,24 +69,24 @@
   {
 LABEL_28:
     self = self;
-    v21 = self;
+    selfCopy = self;
     goto LABEL_29;
   }
 
-  if (v6)
+  if (componentsCopy)
   {
     v8 = MEMORY[0x1E695DF10];
-    v9 = [MEMORY[0x1E695DFE8] defaultTimeZone];
-    v10 = [v8 rem_dateWithDateComponents:v6 timeZone:v9];
+    defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
+    distantFuture2 = [v8 rem_dateWithDateComponents:componentsCopy timeZone:defaultTimeZone];
 
-    if (v7)
+    if (dateComponentsCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_12:
-    v13 = [MEMORY[0x1E695DF00] distantFuture];
-    if (v10)
+    distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+    if (distantFuture2)
     {
       goto LABEL_6;
     }
@@ -94,34 +94,34 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v10 = [MEMORY[0x1E695DF00] distantFuture];
-  if (!v7)
+  distantFuture2 = [MEMORY[0x1E695DF00] distantFuture];
+  if (!dateComponentsCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_5:
   v11 = MEMORY[0x1E695DF10];
-  v12 = [v7 timeZone];
-  v13 = [v11 rem_dateWithDateComponents:v7 timeZone:v12];
+  timeZone = [dateComponentsCopy timeZone];
+  distantFuture = [v11 rem_dateWithDateComponents:dateComponentsCopy timeZone:timeZone];
 
-  if (v10)
+  if (distantFuture2)
   {
 LABEL_6:
-    if (v13)
+    if (distantFuture)
     {
-      v14 = [MEMORY[0x1E695DFE8] defaultTimeZone];
-      self->_floatingDateSecondsFromGMT = [v14 secondsFromGMT];
+      defaultTimeZone2 = [MEMORY[0x1E695DFE8] defaultTimeZone];
+      self->_floatingDateSecondsFromGMT = [defaultTimeZone2 secondsFromGMT];
 
-      [v10 timeIntervalSinceDate:v13];
+      [distantFuture2 timeIntervalSinceDate:distantFuture];
       p_date = &self->_date;
       if (v16 >= 0.0)
       {
-        objc_storeStrong(p_date, v13);
-        self->_allDay = [v7 rem_isAllDayDateComponents];
-        v22 = [v7 timeZone];
+        objc_storeStrong(p_date, distantFuture);
+        self->_allDay = [dateComponentsCopy rem_isAllDayDateComponents];
+        timeZone2 = [dateComponentsCopy timeZone];
         timeZone = self->_timeZone;
-        self->_timeZone = v22;
+        self->_timeZone = timeZone2;
 
         if (!self->_timeZone)
         {
@@ -146,11 +146,11 @@ LABEL_6:
 
       else
       {
-        objc_storeStrong(p_date, v10);
-        self->_allDay = [v6 rem_isAllDayDateComponents];
-        v17 = [v6 timeZone];
+        objc_storeStrong(p_date, distantFuture2);
+        self->_allDay = [componentsCopy rem_isAllDayDateComponents];
+        timeZone3 = [componentsCopy timeZone];
         v18 = self->_timeZone;
-        self->_timeZone = v17;
+        self->_timeZone = timeZone3;
 
         if (!self->_timeZone)
         {
@@ -188,17 +188,17 @@ LABEL_13:
 LABEL_17:
 
 LABEL_18:
-  v21 = 0;
+  selfCopy = 0;
 LABEL_29:
 
-  return v21;
+  return selfCopy;
 }
 
-- (REMDisplayDate)initWithDueDateComponents:(id)a3 alarms:(id)a4
+- (REMDisplayDate)initWithDueDateComponents:(id)components alarms:(id)alarms
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() displayDateWithDueDateComponents:v7 alarms:v6];
+  alarmsCopy = alarms;
+  componentsCopy = components;
+  v8 = [objc_opt_class() displayDateWithDueDateComponents:componentsCopy alarms:alarmsCopy];
 
   return v8;
 }
@@ -207,34 +207,34 @@ LABEL_29:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMDisplayDate *)self date];
-  v6 = [(REMDisplayDate *)self timeZone];
-  v7 = [v3 stringWithFormat:@"<%@: %p date: %@, timeZone: %@, floatingDateSecondsFromGMT: %ld, allDay: %ld>", v4, self, v5, v6, -[REMDisplayDate floatingDateSecondsFromGMT](self, "floatingDateSecondsFromGMT"), -[REMDisplayDate isAllDay](self, "isAllDay")];
+  date = [(REMDisplayDate *)self date];
+  timeZone = [(REMDisplayDate *)self timeZone];
+  v7 = [v3 stringWithFormat:@"<%@: %p date: %@, timeZone: %@, floatingDateSecondsFromGMT: %ld, allDay: %ld>", v4, self, date, timeZone, -[REMDisplayDate floatingDateSecondsFromGMT](self, "floatingDateSecondsFromGMT"), -[REMDisplayDate isAllDay](self, "isAllDay")];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  v5 = [(REMDisplayDate *)self date];
-  v6 = [v4 date];
-  v7 = v6;
-  if (v5 == v6)
+  date = [(REMDisplayDate *)self date];
+  date2 = [equalCopy date];
+  v7 = date2;
+  if (date == date2)
   {
   }
 
   else
   {
-    v8 = [(REMDisplayDate *)self date];
-    v9 = [v4 date];
-    v10 = [v8 isEqual:v9];
+    date3 = [(REMDisplayDate *)self date];
+    date4 = [equalCopy date];
+    v10 = [date3 isEqual:date4];
 
     if (!v10)
     {
@@ -242,21 +242,21 @@ LABEL_29:
     }
   }
 
-  v11 = [(REMDisplayDate *)self isAllDay];
-  if (v11 == [v4 isAllDay])
+  isAllDay = [(REMDisplayDate *)self isAllDay];
+  if (isAllDay == [equalCopy isAllDay])
   {
-    v12 = [(REMDisplayDate *)self timeZone];
-    v13 = [v4 timeZone];
-    v14 = v13;
-    if (v12 == v13)
+    timeZone = [(REMDisplayDate *)self timeZone];
+    timeZone2 = [equalCopy timeZone];
+    v14 = timeZone2;
+    if (timeZone == timeZone2)
     {
     }
 
     else
     {
-      v15 = [(REMDisplayDate *)self timeZone];
-      v16 = [v4 timeZone];
-      v17 = [v15 isEqual:v16];
+      timeZone3 = [(REMDisplayDate *)self timeZone];
+      timeZone4 = [equalCopy timeZone];
+      v17 = [timeZone3 isEqual:timeZone4];
 
       if (!v17)
       {
@@ -264,8 +264,8 @@ LABEL_29:
       }
     }
 
-    v20 = [(REMDisplayDate *)self floatingDateSecondsFromGMT];
-    v18 = v20 == [v4 floatingDateSecondsFromGMT];
+    floatingDateSecondsFromGMT = [(REMDisplayDate *)self floatingDateSecondsFromGMT];
+    v18 = floatingDateSecondsFromGMT == [equalCopy floatingDateSecondsFromGMT];
     goto LABEL_10;
   }
 
@@ -278,11 +278,11 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v3 = [(REMDisplayDate *)self date];
-  v4 = [v3 hash];
+  date = [(REMDisplayDate *)self date];
+  v4 = [date hash];
   v5 = v4 + [(REMDisplayDate *)self isAllDay];
-  v6 = [(REMDisplayDate *)self timeZone];
-  v7 = [v6 hash];
+  timeZone = [(REMDisplayDate *)self timeZone];
+  v7 = [timeZone hash];
   v8 = v7 ^ [(REMDisplayDate *)self floatingDateSecondsFromGMT];
 
   return v8 ^ v5;
@@ -290,91 +290,91 @@ LABEL_10:
 
 - (id)dateByAdjustingFloatingDateForDefaultTimeZone
 {
-  v3 = [MEMORY[0x1E695DFE8] defaultTimeZone];
-  v4 = [(REMDisplayDate *)self dateByAdjustingFloatingDateForTimeZone:v3];
+  defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
+  v4 = [(REMDisplayDate *)self dateByAdjustingFloatingDateForTimeZone:defaultTimeZone];
 
   return v4;
 }
 
-- (id)dateByAdjustingFloatingDateForTimeZone:(id)a3
+- (id)dateByAdjustingFloatingDateForTimeZone:(id)zone
 {
-  v4 = a3;
-  v5 = [(REMDisplayDate *)self date];
+  zoneCopy = zone;
+  date = [(REMDisplayDate *)self date];
   if ([(REMDisplayDate *)self isAllDay])
   {
-    v6 = [v5 dateByAddingTimeInterval:{(-[REMDisplayDate floatingDateSecondsFromGMT](self, "floatingDateSecondsFromGMT") - objc_msgSend(v4, "secondsFromGMT"))}];
+    v6 = [date dateByAddingTimeInterval:{(-[REMDisplayDate floatingDateSecondsFromGMT](self, "floatingDateSecondsFromGMT") - objc_msgSend(zoneCopy, "secondsFromGMT"))}];
 
-    v5 = v6;
+    date = v6;
   }
 
-  return v5;
+  return date;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [REMDisplayDate alloc];
-  v5 = [(REMDisplayDate *)self date];
-  v6 = [(REMDisplayDate *)self isAllDay];
-  v7 = [(REMDisplayDate *)self timeZone];
-  v8 = [(REMDisplayDate *)v4 initWithDate:v5 allDay:v6 timeZone:v7 floatingDateSecondsFromGMT:[(REMDisplayDate *)self floatingDateSecondsFromGMT]];
+  date = [(REMDisplayDate *)self date];
+  isAllDay = [(REMDisplayDate *)self isAllDay];
+  timeZone = [(REMDisplayDate *)self timeZone];
+  v8 = [(REMDisplayDate *)v4 initWithDate:date allDay:isAllDay timeZone:timeZone floatingDateSecondsFromGMT:[(REMDisplayDate *)self floatingDateSecondsFromGMT]];
 
   return v8;
 }
 
-- (REMDisplayDate)initWithCoder:(id)a3
+- (REMDisplayDate)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isAllDay"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
-  v8 = [v4 decodeIntegerForKey:@"floatingDateSecondsFromGMT"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isAllDay"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
+  v8 = [coderCopy decodeIntegerForKey:@"floatingDateSecondsFromGMT"];
 
   v9 = -[REMDisplayDate initWithDate:allDay:timeZone:floatingDateSecondsFromGMT:](self, "initWithDate:allDay:timeZone:floatingDateSecondsFromGMT:", v5, [v6 BOOLValue], v7, v8);
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(REMDisplayDate *)self date];
-  [v7 encodeObject:v4 forKey:@"date"];
+  coderCopy = coder;
+  date = [(REMDisplayDate *)self date];
+  [coderCopy encodeObject:date forKey:@"date"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[REMDisplayDate isAllDay](self, "isAllDay")}];
-  [v7 encodeObject:v5 forKey:@"isAllDay"];
+  [coderCopy encodeObject:v5 forKey:@"isAllDay"];
 
-  v6 = [(REMDisplayDate *)self timeZone];
-  [v7 encodeObject:v6 forKey:@"timeZone"];
+  timeZone = [(REMDisplayDate *)self timeZone];
+  [coderCopy encodeObject:timeZone forKey:@"timeZone"];
 
-  [v7 encodeInteger:-[REMDisplayDate floatingDateSecondsFromGMT](self forKey:{"floatingDateSecondsFromGMT"), @"floatingDateSecondsFromGMT"}];
+  [coderCopy encodeInteger:-[REMDisplayDate floatingDateSecondsFromGMT](self forKey:{"floatingDateSecondsFromGMT"), @"floatingDateSecondsFromGMT"}];
 }
 
 - (id)dateComponentsRepresentation
 {
-  v3 = [(REMDisplayDate *)self timeZone];
-  v4 = v3;
-  if (v3)
+  timeZone = [(REMDisplayDate *)self timeZone];
+  v4 = timeZone;
+  if (timeZone)
   {
-    v5 = v3;
+    defaultTimeZone = timeZone;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DFE8] defaultTimeZone];
+    defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
   }
 
-  v6 = v5;
+  v6 = defaultTimeZone;
 
   v7 = MEMORY[0x1E695DF10];
-  v8 = [(REMDisplayDate *)self date];
-  v9 = [v7 rem_dateComponentsWithDate:v8 timeZone:v6 isAllDay:{-[REMDisplayDate isAllDay](self, "isAllDay")}];
+  date = [(REMDisplayDate *)self date];
+  v9 = [v7 rem_dateComponentsWithDate:date timeZone:v6 isAllDay:{-[REMDisplayDate isAllDay](self, "isAllDay")}];
 
-  v10 = [(REMDisplayDate *)self timeZone];
+  timeZone2 = [(REMDisplayDate *)self timeZone];
 
-  if (!v10)
+  if (!timeZone2)
   {
-    v11 = [v9 rem_strippingTimeZone];
+    rem_strippingTimeZone = [v9 rem_strippingTimeZone];
 
-    v9 = v11;
+    v9 = rem_strippingTimeZone;
   }
 
   return v9;

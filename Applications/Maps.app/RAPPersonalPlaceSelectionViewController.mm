@@ -1,29 +1,29 @@
 @interface RAPPersonalPlaceSelectionViewController
-- (RAPPersonalPlaceSelectionViewController)initWithQuestion:(id)a3;
-- (id)homeWorkCorrectionQuestionForIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_editCorrectionsQuestion:(id)a3;
-- (void)refinementCoordinator:(id)a3 finishedRefiningCoordinate:(CLLocationCoordinate2D)a4 withShortcut:(id)a5;
-- (void)refinementCoordinatorRequestsChangeAddress:(id)a3 withShortcut:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (RAPPersonalPlaceSelectionViewController)initWithQuestion:(id)question;
+- (id)homeWorkCorrectionQuestionForIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_editCorrectionsQuestion:(id)question;
+- (void)refinementCoordinator:(id)coordinator finishedRefiningCoordinate:(CLLocationCoordinate2D)coordinate withShortcut:(id)shortcut;
+- (void)refinementCoordinatorRequestsChangeAddress:(id)address withShortcut:(id)shortcut;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateAddresses;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation RAPPersonalPlaceSelectionViewController
 
-- (void)refinementCoordinator:(id)a3 finishedRefiningCoordinate:(CLLocationCoordinate2D)a4 withShortcut:(id)a5
+- (void)refinementCoordinator:(id)coordinator finishedRefiningCoordinate:(CLLocationCoordinate2D)coordinate withShortcut:(id)shortcut
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v9 = a3;
-  v10 = a5;
-  v11 = [ShortcutEditSession editSessionWithShortcut:v10];
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  coordinatorCopy = coordinator;
+  shortcutCopy = shortcut;
+  v11 = [ShortcutEditSession editSessionWithShortcut:shortcutCopy];
   [v11 setAdjustedCoordinate:{latitude, longitude}];
   objc_initWeak(&location, self);
   v13[0] = _NSConcreteStackBlock;
@@ -31,7 +31,7 @@
   v13[2] = sub_100A0AC44;
   v13[3] = &unk_10165FC50;
   objc_copyWeak(&v15, &location);
-  v12 = v10;
+  v12 = shortcutCopy;
   v14 = v12;
   [v11 saveWithCompletion:v13];
 
@@ -39,51 +39,51 @@
   objc_destroyWeak(&location);
 }
 
-- (void)refinementCoordinatorRequestsChangeAddress:(id)a3 withShortcut:(id)a4
+- (void)refinementCoordinatorRequestsChangeAddress:(id)address withShortcut:(id)shortcut
 {
-  v5 = a4;
-  v7 = [(RAPPersonalPlaceSelectionViewController *)self _maps_mapsSceneDelegate];
-  v6 = [v7 chromeViewController];
-  [v6 resetForEditingShortcut:v5];
+  shortcutCopy = shortcut;
+  _maps_mapsSceneDelegate = [(RAPPersonalPlaceSelectionViewController *)self _maps_mapsSceneDelegate];
+  chromeViewController = [_maps_mapsSceneDelegate chromeViewController];
+  [chromeViewController resetForEditingShortcut:shortcutCopy];
 }
 
-- (void)_editCorrectionsQuestion:(id)a3
+- (void)_editCorrectionsQuestion:(id)question
 {
-  v7 = a3;
+  questionCopy = question;
   currentCorrectionsCoordinator = self->_currentCorrectionsCoordinator;
   if (currentCorrectionsCoordinator)
   {
     self->_currentCorrectionsCoordinator = 0;
   }
 
-  v5 = [[RAPPersonalPlaceRefinementCoordinator alloc] initWithPresentingViewController:self delegate:self report:self->_rapReport question:v7];
+  v5 = [[RAPPersonalPlaceRefinementCoordinator alloc] initWithPresentingViewController:self delegate:self report:self->_rapReport question:questionCopy];
   v6 = self->_currentCorrectionsCoordinator;
   self->_currentCorrectionsCoordinator = v5;
 
   [(RAPPersonalPlaceRefinementCoordinator *)self->_currentCorrectionsCoordinator beginShortcutRefinement];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v12 = [(RAPPersonalPlaceSelectionViewController *)self homeWorkCorrectionQuestionForIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v12 = [(RAPPersonalPlaceSelectionViewController *)self homeWorkCorrectionQuestionForIndexPath:pathCopy];
   v8 = [RAPPersonalPlaceCorrectionsQuestion alloc];
-  v9 = [v12 report];
-  v10 = [v12 shortcut];
-  v11 = [(RAPPersonalPlaceCorrectionsQuestion *)v8 initWithReport:v9 parentQuestion:v12 shortcut:v10];
+  report = [v12 report];
+  shortcut = [v12 shortcut];
+  v11 = [(RAPPersonalPlaceCorrectionsQuestion *)v8 initWithReport:report parentQuestion:v12 shortcut:shortcut];
 
   [(RAPMenuQuestion *)self->_question setSelectedMenuItem:v11];
   [(RAPPersonalPlaceSelectionViewController *)self _editCorrectionsQuestion:v11];
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[RAPTwoLinesMenuTableViewCell reuseIdentifier];
-  v9 = [v7 dequeueReusableCellWithIdentifier:v8];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:v8];
 
   if (!v9)
   {
@@ -92,39 +92,39 @@
     v9 = [(RAPTwoLinesMenuTableViewCell *)v10 initWithStyle:0 reuseIdentifier:v11];
   }
 
-  v12 = [(RAPPersonalPlaceSelectionViewController *)self homeWorkCorrectionQuestionForIndexPath:v6];
+  v12 = [(RAPPersonalPlaceSelectionViewController *)self homeWorkCorrectionQuestionForIndexPath:pathCopy];
   v13 = [RAPTwoLinesViewModelImpl viewModelFromRAPMenuItem:v12];
   [(RAPTwoLinesMenuTableViewCell *)v9 setViewModel:v13];
 
   return v9;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"Address [Home Work Editor]" value:@"localized string not found" table:0];
-  v7 = [v4 _maps_groupedHeaderViewWithTitle:v6];
+  v7 = [viewCopy _maps_groupedHeaderViewWithTitle:v6];
 
   return v7;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(RAPMenuQuestion *)self->_question mainMenuItems:a3];
+  v4 = [(RAPMenuQuestion *)self->_question mainMenuItems:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)homeWorkCorrectionQuestionForIndexPath:(id)a3
+- (id)homeWorkCorrectionQuestionForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(RAPPersonalPlaceSelectionViewController *)self question];
-  v6 = [v5 mainMenuItems];
-  v7 = [v4 row];
+  pathCopy = path;
+  question = [(RAPPersonalPlaceSelectionViewController *)self question];
+  mainMenuItems = [question mainMenuItems];
+  v7 = [pathCopy row];
 
-  v8 = [v6 objectAtIndexedSubscript:v7];
+  v8 = [mainMenuItems objectAtIndexedSubscript:v7];
 
   return v8;
 }
@@ -143,32 +143,32 @@
   objc_destroyWeak(&location);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  v5 = [(RAPPersonalPlaceSelectionViewController *)self tableView:a4];
-  v6 = [v5 isEditing];
+  v5 = [(RAPPersonalPlaceSelectionViewController *)self tableView:coordinator];
+  isEditing = [v5 isEditing];
 
-  if (v6)
+  if (isEditing)
   {
-    v7 = [(RAPPersonalPlaceSelectionViewController *)self tableView];
-    [v7 reloadData];
+    tableView = [(RAPPersonalPlaceSelectionViewController *)self tableView];
+    [tableView reloadData];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = RAPPersonalPlaceSelectionViewController;
-  [(RAPPersonalPlaceSelectionViewController *)&v5 viewWillDisappear:a3];
+  [(RAPPersonalPlaceSelectionViewController *)&v5 viewWillDisappear:disappear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = RAPPersonalPlaceSelectionViewController;
-  [(RAPPersonalPlaceSelectionViewController *)&v5 viewWillAppear:a3];
+  [(RAPPersonalPlaceSelectionViewController *)&v5 viewWillAppear:appear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"updateAddresses" name:@"MapsLocationOfInterestDidChangeNotification" object:0];
 }
@@ -178,54 +178,54 @@
   v16.receiver = self;
   v16.super_class = RAPPersonalPlaceSelectionViewController;
   [(RAPPersonalPlaceSelectionViewController *)&v16 viewDidLoad];
-  v3 = [(RAPPersonalPlaceSelectionViewController *)self tableView];
-  [v3 setEstimatedRowHeight:55.0];
+  tableView = [(RAPPersonalPlaceSelectionViewController *)self tableView];
+  [tableView setEstimatedRowHeight:55.0];
 
-  v4 = [(RAPPersonalPlaceSelectionViewController *)self tableView];
-  [v4 setRowHeight:UITableViewAutomaticDimension];
+  tableView2 = [(RAPPersonalPlaceSelectionViewController *)self tableView];
+  [tableView2 setRowHeight:UITableViewAutomaticDimension];
 
-  v5 = [(RAPPersonalPlaceSelectionViewController *)self tableView];
+  tableView3 = [(RAPPersonalPlaceSelectionViewController *)self tableView];
   v6 = objc_opt_class();
   v7 = +[RAPTwoLinesMenuTableViewCell reuseIdentifier];
-  [v5 registerClass:v6 forCellReuseIdentifier:v7];
+  [tableView3 registerClass:v6 forCellReuseIdentifier:v7];
 
-  v8 = [(RAPPersonalPlaceSelectionViewController *)self tableView];
-  [v8 _maps_initializeRAPAppearance];
+  tableView4 = [(RAPPersonalPlaceSelectionViewController *)self tableView];
+  [tableView4 _maps_initializeRAPAppearance];
 
   v9 = +[NSBundle mainBundle];
   v10 = [v9 localizedStringForKey:@"Back" value:@"localized string not found" table:0];
-  v11 = [(RAPPersonalPlaceSelectionViewController *)self navigationItem];
-  [v11 setBackButtonTitle:v10];
+  navigationItem = [(RAPPersonalPlaceSelectionViewController *)self navigationItem];
+  [navigationItem setBackButtonTitle:v10];
 
-  v12 = [(RAPPersonalPlaceSelectionViewController *)self navigationController];
-  v13 = [v12 rootViewController];
+  navigationController = [(RAPPersonalPlaceSelectionViewController *)self navigationController];
+  rootViewController = [navigationController rootViewController];
 
-  if (v13 == self)
+  if (rootViewController == self)
   {
     v14 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"cancel:"];
-    v15 = [(RAPPersonalPlaceSelectionViewController *)self navigationItem];
-    [v15 setLeftBarButtonItem:v14];
+    navigationItem2 = [(RAPPersonalPlaceSelectionViewController *)self navigationItem];
+    [navigationItem2 setLeftBarButtonItem:v14];
   }
 
   [(RAPPersonalPlaceSelectionViewController *)self updateAddresses];
 }
 
-- (RAPPersonalPlaceSelectionViewController)initWithQuestion:(id)a3
+- (RAPPersonalPlaceSelectionViewController)initWithQuestion:(id)question
 {
-  v5 = a3;
+  questionCopy = question;
   v12.receiver = self;
   v12.super_class = RAPPersonalPlaceSelectionViewController;
   v6 = [(RAPPersonalPlaceSelectionViewController *)&v12 initWithStyle:1];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_question, a3);
-    v8 = [v5 report];
+    objc_storeStrong(&v6->_question, question);
+    report = [questionCopy report];
     rapReport = v7->_rapReport;
-    v7->_rapReport = v8;
+    v7->_rapReport = report;
 
-    v10 = [v5 localizedTitle];
-    [(RAPPersonalPlaceSelectionViewController *)v7 setTitle:v10];
+    localizedTitle = [questionCopy localizedTitle];
+    [(RAPPersonalPlaceSelectionViewController *)v7 setTitle:localizedTitle];
   }
 
   return v7;

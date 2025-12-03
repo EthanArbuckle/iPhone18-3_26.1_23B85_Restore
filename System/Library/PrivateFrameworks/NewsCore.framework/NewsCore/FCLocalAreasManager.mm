@@ -1,21 +1,21 @@
 @interface FCLocalAreasManager
-- (FCLocalAreasManager)initWithContentContext:(id)a3;
+- (FCLocalAreasManager)initWithContentContext:(id)context;
 - (void)_loadFromCache;
-- (void)_refreshWithQoS:(int64_t)a3 completion:(id)a4;
-- (void)fetchLocalAreasProvider:(id)a3;
+- (void)_refreshWithQoS:(int64_t)s completion:(id)completion;
+- (void)fetchLocalAreasProvider:(id)provider;
 @end
 
 @implementation FCLocalAreasManager
 
-- (FCLocalAreasManager)initWithContentContext:(id)a3
+- (FCLocalAreasManager)initWithContentContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = FCLocalAreasManager;
   v5 = [(FCLocalAreasManager *)&v13 init];
   contentContext = v5->_contentContext;
-  v5->_contentContext = v4;
-  v7 = v4;
+  v5->_contentContext = contextCopy;
+  v7 = contextCopy;
 
   v8 = [[FCAsyncSerialQueue alloc] initWithQualityOfService:17];
   queue = v5->_queue;
@@ -28,27 +28,27 @@
   return v5;
 }
 
-- (void)fetchLocalAreasProvider:(id)a3
+- (void)fetchLocalAreasProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(FCLocalAreasManager *)self loadFromCacheOnce];
+  providerCopy = provider;
+  loadFromCacheOnce = [(FCLocalAreasManager *)self loadFromCacheOnce];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __47__FCLocalAreasManager_fetchLocalAreasProvider___block_invoke;
   v8[3] = &unk_1E7C36EA0;
   v8[4] = self;
-  [v5 executeOnce:v8];
+  [loadFromCacheOnce executeOnce:v8];
 
-  v6 = [(FCLocalAreasManager *)self localAreasMapping];
-  if (v6)
+  localAreasMapping = [(FCLocalAreasManager *)self localAreasMapping];
+  if (localAreasMapping)
   {
     [(FCLocalAreasManager *)self _refreshWithQoS:17 completion:0];
-    v4[2](v4, v6, 0);
+    providerCopy[2](providerCopy, localAreasMapping, 0);
   }
 
   else
   {
-    v7 = v4;
+    v7 = providerCopy;
     [(FCLocalAreasManager *)self _refreshWithQoS:25 completion:v7];
   }
 }
@@ -56,19 +56,19 @@
 - (void)_loadFromCache
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = [(FCLocalAreasManager *)self contentContext];
-  v4 = [v3 appConfigurationManager];
-  v5 = [v4 possiblyUnfetchedAppConfiguration];
-  v6 = [v5 localAreasMappingResourceId];
+  contentContext = [(FCLocalAreasManager *)self contentContext];
+  appConfigurationManager = [contentContext appConfigurationManager];
+  possiblyUnfetchedAppConfiguration = [appConfigurationManager possiblyUnfetchedAppConfiguration];
+  localAreasMappingResourceId = [possiblyUnfetchedAppConfiguration localAreasMappingResourceId];
 
-  if (v6)
+  if (localAreasMappingResourceId)
   {
-    v7 = v6;
+    v7 = localAreasMappingResourceId;
     v8 = [FCResourcesFetchOperation alloc];
-    v9 = [(FCLocalAreasManager *)self contentContext];
+    contentContext2 = [(FCLocalAreasManager *)self contentContext];
     v16[0] = v7;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-    v11 = [(FCResourcesFetchOperation *)v8 initWithContext:v9 resourceIDs:v10 downloadAssets:0];
+    v11 = [(FCResourcesFetchOperation *)v8 initWithContext:contentContext2 resourceIDs:v10 downloadAssets:0];
 
     [(FCFetchOperation *)v11 setCachePolicy:3];
     [(FCFetchOperation *)v11 setCanSendFetchCompletionSynchronously:1];
@@ -152,11 +152,11 @@ void __37__FCLocalAreasManager__loadFromCache__block_invoke_4(uint64_t a1, void 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_refreshWithQoS:(int64_t)a3 completion:(id)a4
+- (void)_refreshWithQoS:(int64_t)s completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(FCLocalAreasManager *)self localAreasMappingFetchDate];
-  if (v7 && (v8 = v7, -[FCLocalAreasManager localAreasMappingFetchDate](self, "localAreasMappingFetchDate"), v9 = objc_claimAutoreleasedReturnValue(), [v9 fc_timeIntervalUntilNow], v11 = v10, v9, v8, v11 <= 86400.0))
+  completionCopy = completion;
+  localAreasMappingFetchDate = [(FCLocalAreasManager *)self localAreasMappingFetchDate];
+  if (localAreasMappingFetchDate && (v8 = localAreasMappingFetchDate, -[FCLocalAreasManager localAreasMappingFetchDate](self, "localAreasMappingFetchDate"), v9 = objc_claimAutoreleasedReturnValue(), [v9 fc_timeIntervalUntilNow], v11 = v10, v9, v8, v11 <= 86400.0))
   {
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
@@ -164,24 +164,24 @@ void __37__FCLocalAreasManager__loadFromCache__block_invoke_4(uint64_t a1, void 
     v18[3] = &unk_1E7C37778;
     v12 = &v19;
     v18[4] = self;
-    v19 = v6;
-    v13 = v6;
+    v19 = completionCopy;
+    v13 = completionCopy;
     __50__FCLocalAreasManager__refreshWithQoS_completion___block_invoke(v18);
   }
 
   else
   {
-    v14 = [(FCLocalAreasManager *)self queue];
+    queue = [(FCLocalAreasManager *)self queue];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __50__FCLocalAreasManager__refreshWithQoS_completion___block_invoke_2;
     v16[3] = &unk_1E7C3EFC0;
     v12 = v17;
     v16[4] = self;
-    v17[0] = v6;
-    v17[1] = a3;
-    v15 = v6;
-    [v14 withQualityOfService:a3 enqueueBlock:v16];
+    v17[0] = completionCopy;
+    v17[1] = s;
+    v15 = completionCopy;
+    [queue withQualityOfService:s enqueueBlock:v16];
   }
 }
 

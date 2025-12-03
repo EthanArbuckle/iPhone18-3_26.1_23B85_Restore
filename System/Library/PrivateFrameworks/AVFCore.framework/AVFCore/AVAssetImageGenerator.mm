@@ -1,25 +1,25 @@
 @interface AVAssetImageGenerator
 + (AVAssetImageGenerator)assetImageGeneratorWithAsset:(AVAsset *)asset;
 - (AVAssetImageGenerator)initWithAsset:(AVAsset *)asset;
-- (BOOL)_ensureFigAssetImageGeneratorAllowingSynchronousPropertyLoad:(BOOL)a3 error:(id *)a4;
+- (BOOL)_ensureFigAssetImageGeneratorAllowingSynchronousPropertyLoad:(BOOL)load error:(id *)error;
 - (BOOL)isDefunct;
-- (CGImage)_copyCGImageAtTime:(id *)a3 usingAssetReader:(id)a4 error:(id *)a5;
+- (CGImage)_copyCGImageAtTime:(id *)time usingAssetReader:(id)reader error:(id *)error;
 - (CGImageRef)copyCGImageAtTime:(CMTime *)requestedTime actualTime:(CMTime *)actualTime error:(NSError *)outError;
 - (CGSize)_scaledSizeForRenderSize:(CGSize)result;
 - (CGSize)maximumSize;
-- (id)_NSErrorForError:(int)a3;
+- (id)_NSErrorForError:(int)error;
 - (id)_makeAutoreleasedAssetReader;
 - (id)_optionsDictionary;
-- (id)_requestWithRequestID:(id)a3;
-- (id)_videoSettingWithSize:(CGSize)a3 bitDepth:(unsigned int)a4;
-- (void)_didGenerateCGImage:(id)a3;
-- (void)_failedToGenerateCGImage:(id)a3;
+- (id)_requestWithRequestID:(id)d;
+- (id)_videoSettingWithSize:(CGSize)size bitDepth:(unsigned int)depth;
+- (void)_didGenerateCGImage:(id)image;
+- (void)_failedToGenerateCGImage:(id)image;
 - (void)_serverDied;
 - (void)cancelAllCGImageGeneration;
 - (void)dealloc;
 - (void)generateCGImageAsynchronouslyForTime:(CMTime *)requestedTime completionHandler:(void *)handler;
 - (void)generateCGImagesAsynchronouslyForTimes:(NSArray *)requestedTimes completionHandler:(AVAssetImageGeneratorCompletionHandler)handler;
-- (void)setPrefersStandardDynamicRange:(BOOL)a3;
+- (void)setPrefersStandardDynamicRange:(BOOL)range;
 - (void)setRequestedTimeToleranceAfter:(CMTime *)requestedTimeToleranceAfter;
 - (void)setRequestedTimeToleranceBefore:(CMTime *)requestedTimeToleranceBefore;
 - (void)setVideoComposition:(AVVideoComposition *)videoComposition;
@@ -29,7 +29,7 @@
 
 + (AVAssetImageGenerator)assetImageGeneratorWithAsset:(AVAsset *)asset
 {
-  v3 = [[a1 alloc] initWithAsset:asset];
+  v3 = [[self alloc] initWithAsset:asset];
 
   return v3;
 }
@@ -151,10 +151,10 @@
   v9 = objc_autoreleasePoolPush();
   if ([(AVAssetImageGenerator *)self videoComposition]|| (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v10 = [(AVAssetImageGenerator *)self _makeAutoreleasedAssetReader];
+    _makeAutoreleasedAssetReader = [(AVAssetImageGenerator *)self _makeAutoreleasedAssetReader];
     v26 = *&requestedTime->value;
     epoch = requestedTime->epoch;
-    v24 = [(AVAssetImageGenerator *)self _copyCGImageAtTime:&v26 usingAssetReader:v10 error:&v25];
+    v24 = [(AVAssetImageGenerator *)self _copyCGImageAtTime:&v26 usingAssetReader:_makeAutoreleasedAssetReader error:&v25];
     if (actualTime)
     {
       v11 = *&requestedTime->value;
@@ -165,10 +165,10 @@
 
   else
   {
-    v15 = [(AVAssetImageGenerator *)self _optionsDictionary];
-    if (![v15 count])
+    _optionsDictionary = [(AVAssetImageGenerator *)self _optionsDictionary];
+    if (![_optionsDictionary count])
     {
-      v15 = 0;
+      _optionsDictionary = 0;
     }
 
     if ([(AVAssetImageGenerator *)self _ensureFigAssetImageGeneratorAllowingSynchronousPropertyLoad:1 error:&v25])
@@ -184,7 +184,7 @@
           v18 = *MEMORY[0x1E695E480];
           v26 = v22;
           epoch = v23;
-          v19 = v17(generator, &v26, v15, v18, &v24, actualTime);
+          v19 = v17(generator, &v26, _optionsDictionary, v18, &v24, actualTime);
           if (v24)
           {
             goto LABEL_5;
@@ -596,12 +596,12 @@ uint64_t __80__AVAssetImageGenerator_generateCGImageAsynchronouslyForTime_comple
   }
 }
 
-- (void)setPrefersStandardDynamicRange:(BOOL)a3
+- (void)setPrefersStandardDynamicRange:(BOOL)range
 {
-  v3 = a3;
+  rangeCopy = range;
   v5 = self->_priv->dynamicRangePolicy;
   v6 = @"MatchSource";
-  if (v3)
+  if (rangeCopy)
   {
     v6 = @"ForceSDR";
   }
@@ -690,14 +690,14 @@ LABEL_7:
 
 - (id)_optionsDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:3];
-  [v3 setObject:v4 forKey:*MEMORY[0x1E6970E18]];
+  [dictionary setObject:v4 forKey:*MEMORY[0x1E6970E18]];
   priv = self->_priv;
   if (priv->appliesPreferredTrackTransform)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:1];
-    [v3 setObject:v6 forKey:*MEMORY[0x1E6970DE8]];
+    [dictionary setObject:v6 forKey:*MEMORY[0x1E6970DE8]];
     priv = self->_priv;
   }
 
@@ -705,7 +705,7 @@ LABEL_7:
   if (width > 0.0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithInt:width];
-    [v3 setObject:v8 forKey:*MEMORY[0x1E6970E00]];
+    [dictionary setObject:v8 forKey:*MEMORY[0x1E6970E00]];
     priv = self->_priv;
   }
 
@@ -713,21 +713,21 @@ LABEL_7:
   if (height > 0.0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithInt:height];
-    [v3 setObject:v10 forKey:*MEMORY[0x1E6970DF8]];
+    [dictionary setObject:v10 forKey:*MEMORY[0x1E6970DF8]];
     priv = self->_priv;
   }
 
   apertureMode = priv->apertureMode;
   if (apertureMode)
   {
-    [v3 setObject:apertureMode forKey:*MEMORY[0x1E6970DE0]];
+    [dictionary setObject:apertureMode forKey:*MEMORY[0x1E6970DE0]];
     priv = self->_priv;
   }
 
   if (priv->useSWDecoderForAV1)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithBool:1];
-    [v3 setObject:v12 forKey:*MEMORY[0x1E6970DC8]];
+    [dictionary setObject:v12 forKey:*MEMORY[0x1E6970DC8]];
     priv = self->_priv;
   }
 
@@ -749,7 +749,7 @@ LABEL_7:
       v14 = MEMORY[0x1E6970DD0];
     }
 
-    [v3 setObject:*v14 forKey:*MEMORY[0x1E6970DF0]];
+    [dictionary setObject:*v14 forKey:*MEMORY[0x1E6970DF0]];
   }
 
 LABEL_17:
@@ -757,34 +757,34 @@ LABEL_17:
   if (!v15->allowsProfessionalVideoWorkflowVideoDecoders)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithBool:1];
-    [v3 setObject:v16 forKey:*MEMORY[0x1E6970E08]];
+    [dictionary setObject:v16 forKey:*MEMORY[0x1E6970E08]];
     v15 = self->_priv;
   }
 
   if ((v15->requestedTimeToleranceBefore.flags & 0x1D) == 1)
   {
     requestedTimeToleranceBefore = v15->requestedTimeToleranceBefore;
-    [v3 setObject:NSDictionaryFromCMTime(&requestedTimeToleranceBefore) forKey:*MEMORY[0x1E6970E28]];
+    [dictionary setObject:NSDictionaryFromCMTime(&requestedTimeToleranceBefore) forKey:*MEMORY[0x1E6970E28]];
     v15 = self->_priv;
   }
 
   if ((v15->requestedTimeToleranceAfter.flags & 0x1D) == 1)
   {
     requestedTimeToleranceBefore = v15->requestedTimeToleranceAfter;
-    [v3 setObject:NSDictionaryFromCMTime(&requestedTimeToleranceBefore) forKey:*MEMORY[0x1E6970E20]];
+    [dictionary setObject:NSDictionaryFromCMTime(&requestedTimeToleranceBefore) forKey:*MEMORY[0x1E6970E20]];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)_didGenerateCGImage:(id)a3
+- (void)_didGenerateCGImage:(id)image
 {
-  v5 = -[AVAssetImageGenerator _requestWithRequestID:](self, "_requestWithRequestID:", [a3 objectForKey:*MEMORY[0x1E6970E68]]);
+  v5 = -[AVAssetImageGenerator _requestWithRequestID:](self, "_requestWithRequestID:", [image objectForKey:*MEMORY[0x1E6970E68]]);
   if (v5)
   {
     v6 = v5;
-    v7 = [a3 objectForKey:*MEMORY[0x1E6970E58]];
-    v8 = [a3 objectForKey:*MEMORY[0x1E6970E60]];
+    v7 = [image objectForKey:*MEMORY[0x1E6970E58]];
+    v8 = [image objectForKey:*MEMORY[0x1E6970E60]];
     memset(&v16, 0, sizeof(v16));
     CMTimeMakeFromDictionary(&v16, v8);
     v9 = [v6 objectForKey:@"RequestedTime"];
@@ -813,13 +813,13 @@ LABEL_17:
   }
 }
 
-- (void)_failedToGenerateCGImage:(id)a3
+- (void)_failedToGenerateCGImage:(id)image
 {
-  v5 = -[AVAssetImageGenerator _requestWithRequestID:](self, "_requestWithRequestID:", [a3 objectForKey:*MEMORY[0x1E6970E68]]);
+  v5 = -[AVAssetImageGenerator _requestWithRequestID:](self, "_requestWithRequestID:", [image objectForKey:*MEMORY[0x1E6970E68]]);
   if (v5)
   {
     v6 = v5;
-    v7 = [objc_msgSend(a3 objectForKey:{*MEMORY[0x1E6970E70]), "intValue"}];
+    v7 = [objc_msgSend(image objectForKey:{*MEMORY[0x1E6970E70]), "intValue"}];
     v8 = [v6 objectForKey:@"RequestedTime"];
     v9 = [v6 objectForKey:@"CompletionHandler"];
     if (v7 == -12432)
@@ -939,7 +939,7 @@ uint64_t __36__AVAssetImageGenerator__serverDied__block_invoke(uint64_t a1)
   return [*(*(*(a1 + 32) + 8) + 112) removeAllObjects];
 }
 
-- (id)_requestWithRequestID:(id)a3
+- (id)_requestWithRequestID:(id)d
 {
   v7 = 0;
   v8 = &v7;
@@ -953,7 +953,7 @@ uint64_t __36__AVAssetImageGenerator__serverDied__block_invoke(uint64_t a1)
   block[2] = __47__AVAssetImageGenerator__requestWithRequestID___block_invoke;
   block[3] = &unk_1E7460F30;
   block[4] = self;
-  block[5] = a3;
+  block[5] = d;
   block[6] = &v7;
   dispatch_sync(requestsQueue, block);
   v4 = v8[5];
@@ -1048,17 +1048,17 @@ id __47__AVAssetImageGenerator__requestWithRequestID___block_invoke(void *a1)
   return result;
 }
 
-- (CGImage)_copyCGImageAtTime:(id *)a3 usingAssetReader:(id)a4 error:(id *)a5
+- (CGImage)_copyCGImageAtTime:(id *)time usingAssetReader:(id)reader error:(id *)error
 {
   v28[1] = *MEMORY[0x1E69E9840];
   imageOut = 0;
-  v9 = [a4 outputs];
-  if (![v9 count])
+  outputs = [reader outputs];
+  if (![outputs count])
   {
-    v17 = AVLocalizedError(@"AVFoundationErrorDomain", -11832, 0);
+    error = AVLocalizedError(@"AVFoundationErrorDomain", -11832, 0);
 LABEL_18:
     result = 0;
-    if (!a5)
+    if (!error)
     {
       return result;
     }
@@ -1066,22 +1066,22 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v10 = [v9 objectAtIndex:0];
-  start = *a3;
+  v10 = [outputs objectAtIndex:0];
+  start = *time;
   v23 = **&MEMORY[0x1E6960CC0];
   CMTimeRangeMake(&v25, &start, &v23);
-  [a4 setTimeRange:&v25];
-  [a4 _setReadSingleSample:1];
-  [a4 startReading];
-  v11 = [v10 copyNextSampleBuffer];
-  if (!v11)
+  [reader setTimeRange:&v25];
+  [reader _setReadSingleSample:1];
+  [reader startReading];
+  copyNextSampleBuffer = [v10 copyNextSampleBuffer];
+  if (!copyNextSampleBuffer)
   {
-    if ([a4 status] == 3)
+    if ([reader status] == 3)
     {
-      v17 = [a4 error];
-      v19 = [v17 userInfo];
+      error = [reader error];
+      userInfo = [error userInfo];
       v20 = *MEMORY[0x1E696AA08];
-      v21 = [v19 objectForKey:*MEMORY[0x1E696AA08]];
+      v21 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
       if ([v21 code] == -12138)
       {
         v22 = [MEMORY[0x1E695DF20] dictionaryWithObject:v21 forKey:v20];
@@ -1089,14 +1089,14 @@ LABEL_18:
 
       else
       {
-        if ([v17 code] != -11841)
+        if ([error code] != -11841)
         {
 LABEL_17:
-          [a4 cancelReading];
+          [reader cancelReading];
           goto LABEL_18;
         }
 
-        v22 = [MEMORY[0x1E695DF20] dictionaryWithObject:v17 forKey:v20];
+        v22 = [MEMORY[0x1E695DF20] dictionaryWithObject:error forKey:v20];
       }
     }
 
@@ -1105,45 +1105,45 @@ LABEL_17:
       v22 = 0;
     }
 
-    v17 = AVLocalizedError(@"AVFoundationErrorDomain", -11832, v22);
+    error = AVLocalizedError(@"AVFoundationErrorDomain", -11832, v22);
     goto LABEL_17;
   }
 
-  v12 = v11;
-  [a4 cancelReading];
+  v12 = copyNextSampleBuffer;
+  [reader cancelReading];
   v27 = *MEMORY[0x1E69834D8];
   v28[0] = *MEMORY[0x1E695E4C0];
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
   ImageBuffer = CMSampleBufferGetImageBuffer(v12);
-  if (!ImageBuffer || ((v15 = ImageBuffer, ![(NSString *)[(AVAssetImageGenerator *)self dynamicRangePolicy] isEqualToString:@"MatchSource"]) ? (v16 = 0) : (v16 = v13), VTCreateCGImageFromCVPixelBuffer(v15, v16, &imageOut), v17 = 0, !imageOut))
+  if (!ImageBuffer || ((v15 = ImageBuffer, ![(NSString *)[(AVAssetImageGenerator *)self dynamicRangePolicy] isEqualToString:@"MatchSource"]) ? (v16 = 0) : (v16 = v13), VTCreateCGImageFromCVPixelBuffer(v15, v16, &imageOut), error = 0, !imageOut))
   {
-    v17 = AVLocalizedError(@"AVFoundationErrorDomain", -11801, 0);
+    error = AVLocalizedError(@"AVFoundationErrorDomain", -11801, 0);
   }
 
   CFRelease(v12);
   result = imageOut;
-  if (a5)
+  if (error)
   {
 LABEL_19:
     if (!result)
     {
-      *a5 = v17;
+      *error = error;
     }
   }
 
   return result;
 }
 
-- (id)_NSErrorForError:(int)a3
+- (id)_NSErrorForError:(int)error
 {
-  if (a3 == 268435459)
+  if (error == 268435459)
   {
     return AVLocalizedError(@"AVFoundationErrorDomain", -11819, 0);
   }
 
   else
   {
-    return AVLocalizedErrorWithUnderlyingOSStatus(a3, 0);
+    return AVLocalizedErrorWithUnderlyingOSStatus(error, 0);
   }
 }
 
@@ -1199,9 +1199,9 @@ LABEL_19:
   return v3 == 1;
 }
 
-- (BOOL)_ensureFigAssetImageGeneratorAllowingSynchronousPropertyLoad:(BOOL)a3 error:(id *)a4
+- (BOOL)_ensureFigAssetImageGeneratorAllowingSynchronousPropertyLoad:(BOOL)load error:(id *)error
 {
-  v7 = [(AVAsset *)self->_priv->asset _figAsset];
+  _figAsset = [(AVAsset *)self->_priv->asset _figAsset];
   [(AVAssetImageGenerator *)self _optionsDictionary];
   priv = self->_priv;
   if (priv->generator)
@@ -1209,12 +1209,12 @@ LABEL_19:
     return 1;
   }
 
-  if (!a3 && [(AVAsset *)priv->asset statusOfValueForKey:@"streaming" error:a4]!= 2)
+  if (!load && [(AVAsset *)priv->asset statusOfValueForKey:@"streaming" error:error]!= 2)
   {
     return 0;
   }
 
-  if (!v7)
+  if (!_figAsset)
   {
     return 1;
   }
@@ -1257,25 +1257,25 @@ LABEL_12:
     v11 = RemoteFromAssetWithOptions;
   }
 
-  if (!a4)
+  if (!error)
   {
     return 0;
   }
 
   v23 = [(AVAssetImageGenerator *)self _NSErrorForError:v11];
   result = 0;
-  *a4 = v23;
+  *error = v23;
   return result;
 }
 
-- (id)_videoSettingWithSize:(CGSize)a3 bitDepth:(unsigned int)a4
+- (id)_videoSettingWithSize:(CGSize)size bitDepth:(unsigned int)depth
 {
   cf = 0;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   LODWORD(v7) = 0;
   if (!FPSupport_CreateDestinationPixelBufferAttributes())
   {
-    [v4 setObject:MEMORY[0x1E695E118] forKeyedSubscript:{@"AVVideoAllowWideColorKey", v7}];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:{@"AVVideoAllowWideColorKey", v7}];
   }
 
   if (cf)
@@ -1283,7 +1283,7 @@ LABEL_12:
     CFRelease(cf);
   }
 
-  return v4;
+  return dictionary;
 }
 
 - (id)_makeAutoreleasedAssetReader
@@ -1356,15 +1356,15 @@ LABEL_12:
       {
         v19 = v18;
         customVideoCompositorSession = self->_priv->customVideoCompositorSession;
-        v21 = [(AVAssetImageGenerator *)self videoComposition];
+        videoComposition = [(AVAssetImageGenerator *)self videoComposition];
         if (customVideoCompositorSession)
         {
-          [v19 _setVideoComposition:v21 customVideoCompositorSession:self->_priv->customVideoCompositorSession];
+          [v19 _setVideoComposition:videoComposition customVideoCompositorSession:self->_priv->customVideoCompositorSession];
         }
 
         else
         {
-          [v19 setVideoComposition:v21];
+          [v19 setVideoComposition:videoComposition];
         }
 
         goto LABEL_22;

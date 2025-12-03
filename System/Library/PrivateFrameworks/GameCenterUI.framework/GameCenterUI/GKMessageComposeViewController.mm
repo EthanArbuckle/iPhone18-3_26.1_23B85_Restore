@@ -1,17 +1,17 @@
 @interface GKMessageComposeViewController
 - (GKMessageComposeViewControllerDelegate)gkComposeDelegate;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation GKMessageComposeViewController
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = GKMessageComposeViewController;
-  [(GKMessageComposeViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(GKMessageComposeViewController *)self gkComposeDelegate];
-  [v4 didEndDisplaying];
+  [(GKMessageComposeViewController *)&v5 viewDidDisappear:disappear];
+  gkComposeDelegate = [(GKMessageComposeViewController *)self gkComposeDelegate];
+  [gkComposeDelegate didEndDisplaying];
 }
 
 - (GKMessageComposeViewControllerDelegate)gkComposeDelegate

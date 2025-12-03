@@ -3,13 +3,13 @@
 + (id)sharedInstance;
 - (BOOL)hasFileChanged;
 - (BOOL)isFeatureDisabled;
-- (BOOL)isGroupInBlocklist:(id)a3;
+- (BOOL)isGroupInBlocklist:(id)blocklist;
 - (IMGroupBlocklistManager)init;
-- (id)initFromFile:(id)a3;
-- (void)_updateLastModifiedDate:(id)a3;
-- (void)blocklistGroupId:(id)a3;
+- (id)initFromFile:(id)file;
+- (void)_updateLastModifiedDate:(id)date;
+- (void)blocklistGroupId:(id)id;
 - (void)loadData;
-- (void)loadFromFile:(id)a3;
+- (void)loadFromFile:(id)file;
 - (void)reloadIfNeeded;
 - (void)save;
 @end
@@ -19,8 +19,8 @@
 + (id)groupsBlocklistFilename
 {
   v2 = IMSystemRootDirectory();
-  v3 = [qword_1EB301F70 stringByExpandingTildeInPath];
-  v4 = [v2 stringByAppendingPathComponent:v3];
+  stringByExpandingTildeInPath = [qword_1EB301F70 stringByExpandingTildeInPath];
+  v4 = [v2 stringByAppendingPathComponent:stringByExpandingTildeInPath];
   v5 = [v4 stringByAppendingPathComponent:@"/com.apple.messages.group-blacklist.plist"];
 
   return v5;
@@ -32,7 +32,7 @@
   block[1] = 3221225472;
   block[2] = sub_1A86FCE00;
   block[3] = &unk_1E7826200;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED8CA2F8 != -1)
   {
     dispatch_once(&qword_1ED8CA2F8, block);
@@ -60,16 +60,16 @@
   return v2;
 }
 
-- (id)initFromFile:(id)a3
+- (id)initFromFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v9.receiver = self;
   v9.super_class = IMGroupBlocklistManager;
   v5 = [(IMGroupBlocklistManager *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(IMGroupBlocklistManager *)v5 loadFromFile:v4];
+    [(IMGroupBlocklistManager *)v5 loadFromFile:fileCopy];
     v7 = v6;
   }
 
@@ -78,14 +78,14 @@
 
 - (BOOL)hasFileChanged
 {
-  v3 = [(IMGroupBlocklistManager *)self lastModifiedDate];
+  lastModifiedDate = [(IMGroupBlocklistManager *)self lastModifiedDate];
 
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v5 = +[IMGroupBlocklistManager groupsBlocklistFilename];
-  if (v3)
+  if (lastModifiedDate)
   {
     v13 = 0;
-    v6 = [v4 attributesOfItemAtPath:v5 error:&v13];
+    v6 = [defaultManager attributesOfItemAtPath:v5 error:&v13];
     v7 = v13;
     v8 = [v6 objectForKey:*MEMORY[0x1E696A350]];
 
@@ -94,8 +94,8 @@
     {
       if (v8)
       {
-        v10 = [(IMGroupBlocklistManager *)self lastModifiedDate];
-        v9 = [v10 compare:v8] != 0;
+        lastModifiedDate2 = [(IMGroupBlocklistManager *)self lastModifiedDate];
+        v9 = [lastModifiedDate2 compare:v8] != 0;
       }
     }
 
@@ -104,20 +104,20 @@
 
   else
   {
-    v12 = [v4 fileExistsAtPath:v5];
+    v12 = [defaultManager fileExistsAtPath:v5];
 
     return v12;
   }
 }
 
-- (void)blocklistGroupId:(id)a3
+- (void)blocklistGroupId:(id)id
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  idCopy = id;
   if (![(IMGroupBlocklistManager *)self isFeatureDisabled])
   {
     [(IMGroupBlocklistManager *)self reloadIfNeeded];
-    v5 = [qword_1EB338DC8 objectForKey:v4];
+    v5 = [qword_1EB338DC8 objectForKey:idCopy];
 
     v6 = IMOSLoggingEnabled();
     if (v5)
@@ -128,7 +128,7 @@
         if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
         {
           v11 = 138412290;
-          v12 = v4;
+          v12 = idCopy;
           _os_log_impl(&dword_1A85E5000, v7, OS_LOG_TYPE_INFO, "Already blocklisted groupId: %@", &v11, 0xCu);
         }
       }
@@ -142,23 +142,23 @@
         if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
         {
           v11 = 138412290;
-          v12 = v4;
+          v12 = idCopy;
           _os_log_impl(&dword_1A85E5000, v8, OS_LOG_TYPE_INFO, "Blocklisting groupId: %@", &v11, 0xCu);
         }
       }
 
       v9 = qword_1EB338DC8;
-      v10 = [MEMORY[0x1E695DF00] date];
-      [v9 setValue:v10 forKey:v4];
+      date = [MEMORY[0x1E695DF00] date];
+      [v9 setValue:date forKey:idCopy];
 
       [(IMGroupBlocklistManager *)self save];
     }
   }
 }
 
-- (BOOL)isGroupInBlocklist:(id)a3
+- (BOOL)isGroupInBlocklist:(id)blocklist
 {
-  v4 = a3;
+  blocklistCopy = blocklist;
   if ([(IMGroupBlocklistManager *)self isFeatureDisabled])
   {
     v5 = 0;
@@ -167,7 +167,7 @@
   else
   {
     [(IMGroupBlocklistManager *)self reloadIfNeeded];
-    v6 = [qword_1EB338DC8 objectForKey:v4];
+    v6 = [qword_1EB338DC8 objectForKey:blocklistCopy];
     v5 = v6 != 0;
   }
 
@@ -191,9 +191,9 @@
     }
   }
 
-  v5 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (void)save
@@ -248,13 +248,13 @@
   [(IMGroupBlocklistManager *)self loadFromFile:v3];
 }
 
-- (void)loadFromFile:(id)a3
+- (void)loadFromFile:(id)file
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fileCopy = file;
   v5 = objc_alloc(MEMORY[0x1E695DF90]);
   v6 = MEMORY[0x1E695DFF8];
-  v7 = [@"file://" stringByAppendingString:v4];
+  v7 = [@"file://" stringByAppendingString:fileCopy];
   v8 = [v6 URLWithString:v7];
   v17 = 0;
   v9 = [v5 initWithContentsOfURL:v8 error:&v17];
@@ -272,7 +272,7 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v19 = v4;
+        v19 = fileCopy;
         v20 = 2112;
         v21 = v10;
         _os_log_impl(&dword_1A85E5000, v14, OS_LOG_TYPE_INFO, "Failed to load blocklist from file(%@). Error: %@", buf, 0x16u);
@@ -292,31 +292,31 @@
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v19 = v4;
+        v19 = fileCopy;
         v20 = 2112;
         v21 = qword_1EB338DC8;
         _os_log_impl(&dword_1A85E5000, v13, OS_LOG_TYPE_INFO, "Loaded blocklist from file(%@) %@.", buf, 0x16u);
       }
     }
 
-    [(IMGroupBlocklistManager *)self _updateLastModifiedDate:v4];
+    [(IMGroupBlocklistManager *)self _updateLastModifiedDate:fileCopy];
   }
 }
 
-- (void)_updateLastModifiedDate:(id)a3
+- (void)_updateLastModifiedDate:(id)date
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
+  dateCopy = date;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v14 = 0;
-  v6 = [v5 attributesOfItemAtPath:v4 error:&v14];
+  v6 = [defaultManager attributesOfItemAtPath:dateCopy error:&v14];
   v7 = v14;
   v8 = [v6 objectForKey:*MEMORY[0x1E696A350]];
 
   if (v7)
   {
-    v9 = [MEMORY[0x1E695DF00] date];
-    [(IMGroupBlocklistManager *)self setLastModifiedDate:v9];
+    date = [MEMORY[0x1E695DF00] date];
+    [(IMGroupBlocklistManager *)self setLastModifiedDate:date];
 
     if (IMOSLoggingEnabled())
     {
@@ -325,7 +325,7 @@
       {
         lastModifiedDate = self->_lastModifiedDate;
         *buf = 138412802;
-        v16 = v4;
+        v16 = dateCopy;
         v17 = 2112;
         v18 = v7;
         v19 = 2112;
@@ -348,7 +348,7 @@
         v17 = 2112;
         v18 = v13;
         v19 = 2112;
-        v20 = v4;
+        v20 = dateCopy;
         _os_log_impl(&dword_1A85E5000, v12, OS_LOG_TYPE_INFO, "Setting lastModifiedDate to %@ from %@ file(%@).", buf, 0x20u);
       }
     }

@@ -1,47 +1,47 @@
 @interface SoftwareUpdateSSO
 - (BOOL)callerHasRequiredEntitlements;
 - (BOOL)ssoIsSupported;
-- (SoftwareUpdateSSO)initWithOptions:(id)a3;
-- (id)buildSSOError:(int)a3 underlying:(id)a4 description:(id)a5;
+- (SoftwareUpdateSSO)initWithOptions:(id)options;
+- (id)buildSSOError:(int)error underlying:(id)underlying description:(id)description;
 - (id)copyUserInfo;
 - (id)getDawToken;
 - (unint64_t)_completionDeadline;
-- (void)authenticator:(id)a3 didCompleteWithError:(id)a4;
-- (void)authenticator:(id)a3 didCompleteWithResult:(id)a4;
-- (void)copyTokenFromAuthenticatorResponse:(id)a3 error:(id)a4;
+- (void)authenticator:(id)authenticator didCompleteWithError:(id)error;
+- (void)authenticator:(id)authenticator didCompleteWithResult:(id)result;
+- (void)copyTokenFromAuthenticatorResponse:(id)response error:(id)error;
 - (void)invalidate;
 - (void)setupAuthenticator;
 @end
 
 @implementation SoftwareUpdateSSO
 
-- (id)buildSSOError:(int)a3 underlying:(id)a4 description:(id)a5
+- (id)buildSSOError:(int)error underlying:(id)underlying description:(id)description
 {
-  v7 = a4;
-  v8 = a5;
+  underlyingCopy = underlying;
+  descriptionCopy = description;
   v9 = objc_opt_new();
   v10 = v9;
   if (v9)
   {
-    if (v8)
+    if (descriptionCopy)
     {
-      [v9 setObject:v8 forKey:NSLocalizedDescriptionKey];
+      [v9 setObject:descriptionCopy forKey:NSLocalizedDescriptionKey];
     }
 
-    if (v7)
+    if (underlyingCopy)
     {
-      [v10 setObject:v7 forKey:NSUnderlyingErrorKey];
+      [v10 setObject:underlyingCopy forKey:NSUnderlyingErrorKey];
     }
   }
 
-  v11 = [NSError errorWithDomain:@"SoftwareUpdateSSOError" code:a3 userInfo:v10];
+  v11 = [NSError errorWithDomain:@"SoftwareUpdateSSOError" code:error userInfo:v10];
 
   return v11;
 }
 
-- (SoftwareUpdateSSO)initWithOptions:(id)a3
+- (SoftwareUpdateSSO)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v22.receiver = self;
   v22.super_class = SoftwareUpdateSSO;
   v5 = [(SoftwareUpdateSSO *)&v22 init];
@@ -50,8 +50,8 @@
     v6 = objc_opt_new();
     [(SoftwareUpdateSSO *)v5 setAuthenticator:v6];
 
-    v7 = [(SoftwareUpdateSSO *)v5 authenticator];
-    [v7 setDelegate:v5];
+    authenticator = [(SoftwareUpdateSSO *)v5 authenticator];
+    [authenticator setDelegate:v5];
 
     [(SoftwareUpdateSSO *)v5 setDawToken:0];
     v8 = dispatch_semaphore_create(0);
@@ -63,22 +63,22 @@
     ssoControllerQueue = v5->ssoControllerQueue;
     v5->ssoControllerQueue = v11;
 
-    if (v4)
+    if (optionsCopy)
     {
-      v13 = [v4 objectForKeyedSubscript:@"applicationIdentifier"];
+      v13 = [optionsCopy objectForKeyedSubscript:@"applicationIdentifier"];
       [(SoftwareUpdateSSO *)v5 setAppIdentifier:v13];
 
-      v14 = [v4 objectForKeyedSubscript:@"environmentIdentifier"];
+      v14 = [optionsCopy objectForKeyedSubscript:@"environmentIdentifier"];
       [(SoftwareUpdateSSO *)v5 setEnvIdentifier:v14];
 
-      v15 = [v4 objectForKeyedSubscript:@"username"];
+      v15 = [optionsCopy objectForKeyedSubscript:@"username"];
       [(SoftwareUpdateSSO *)v5 setUserName:v15];
 
-      v16 = [v4 objectForKeyedSubscript:@"interactivity"];
+      v16 = [optionsCopy objectForKeyedSubscript:@"interactivity"];
 
       if (v16)
       {
-        v17 = [v4 objectForKeyedSubscript:@"interactivity"];
+        v17 = [optionsCopy objectForKeyedSubscript:@"interactivity"];
         if (([v17 isEqualToString:@"0"] & 1) != 0 || (objc_msgSend(v17, "isEqualToString:", @"1") & 1) != 0 || objc_msgSend(v17, "isEqualToString:", @"2"))
         {
           [(SoftwareUpdateSSO *)v5 setInteractivityLevel:v17];
@@ -96,9 +96,9 @@
         }
       }
 
-      v18 = [(SoftwareUpdateSSO *)v5 interactivityLevel];
+      interactivityLevel = [(SoftwareUpdateSSO *)v5 interactivityLevel];
 
-      if (!v18)
+      if (!interactivityLevel)
       {
         v19 = _MADLog(@"SSO");
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -117,36 +117,36 @@
 
 - (void)invalidate
 {
-  v3 = [(SoftwareUpdateSSO *)self authenticator];
-  [v3 setDelegate:0];
+  authenticator = [(SoftwareUpdateSSO *)self authenticator];
+  [authenticator setDelegate:0];
 
   [(SoftwareUpdateSSO *)self setAuthenticator:0];
 }
 
 - (void)setupAuthenticator
 {
-  v7 = [(SoftwareUpdateSSO *)self authenticator];
-  v3 = [(SoftwareUpdateSSO *)self appIdentifier];
-  [v7 setAppIdentifier:v3];
+  authenticator = [(SoftwareUpdateSSO *)self authenticator];
+  appIdentifier = [(SoftwareUpdateSSO *)self appIdentifier];
+  [authenticator setAppIdentifier:appIdentifier];
 
-  v4 = [(SoftwareUpdateSSO *)self envIdentifier];
-  [v7 setEnvIdentifier:v4];
+  envIdentifier = [(SoftwareUpdateSSO *)self envIdentifier];
+  [authenticator setEnvIdentifier:envIdentifier];
 
-  v5 = [(SoftwareUpdateSSO *)self userName];
-  [v7 setUsername:v5];
+  userName = [(SoftwareUpdateSSO *)self userName];
+  [authenticator setUsername:userName];
 
-  v6 = [(SoftwareUpdateSSO *)self interactivityLevel];
-  [v7 setInteractivity:v6];
+  interactivityLevel = [(SoftwareUpdateSSO *)self interactivityLevel];
+  [authenticator setInteractivity:interactivityLevel];
 
-  [v7 setOtherParameters:0];
+  [authenticator setOtherParameters:0];
 }
 
-- (void)copyTokenFromAuthenticatorResponse:(id)a3 error:(id)a4
+- (void)copyTokenFromAuthenticatorResponse:(id)response error:(id)error
 {
-  v6 = a4;
-  if (a3)
+  errorCopy = error;
+  if (response)
   {
-    v7 = [a3 mutableCopy];
+    v7 = [response mutableCopy];
     v8 = _MADLog(@"SSO");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -158,20 +158,20 @@
     v10 = [v7 objectForKeyedSubscript:@"otherInfo"];
     [v9 setQuery:v10];
 
-    v11 = [v9 queryItems];
+    queryItems = [v9 queryItems];
     v36[0] = _NSConcreteStackBlock;
     v36[1] = 3221225472;
     v36[2] = __62__SoftwareUpdateSSO_copyTokenFromAuthenticatorResponse_error___block_invoke;
     v36[3] = &unk_4B2A78;
     v12 = v7;
     v37 = v12;
-    [v11 enumerateObjectsUsingBlock:v36];
+    [queryItems enumerateObjectsUsingBlock:v36];
 
-    v13 = [(SoftwareUpdateSSO *)self authenticator];
-    v14 = [v13 otherParameters];
-    v15 = [v14 objectForKeyedSubscript:@"DAWRequest"];
-    v16 = [&__kCFBooleanTrue stringValue];
-    v17 = [v15 isEqualToString:v16];
+    authenticator = [(SoftwareUpdateSSO *)self authenticator];
+    otherParameters = [authenticator otherParameters];
+    v15 = [otherParameters objectForKeyedSubscript:@"DAWRequest"];
+    stringValue = [&__kCFBooleanTrue stringValue];
+    v17 = [v15 isEqualToString:stringValue];
 
     v18 = _MADLog(@"SSO");
     v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
@@ -201,17 +201,17 @@
     dawToken = self->_dawToken;
     self->_dawToken = v24;
 
-    v26 = [(SoftwareUpdateSSO *)self userName];
+    userName = [(SoftwareUpdateSSO *)self userName];
 
-    if (!v26)
+    if (!userName)
     {
       v27 = [v12 objectForKeyedSubscript:@"username"];
       [(SoftwareUpdateSSO *)self setUserName:v27];
     }
 
-    v28 = [(SoftwareUpdateSSO *)self personID];
+    personID = [(SoftwareUpdateSSO *)self personID];
 
-    if (!v28)
+    if (!personID)
     {
       v29 = [v12 objectForKeyedSubscript:@"personId"];
       [(SoftwareUpdateSSO *)self setPersonID:v29];
@@ -220,34 +220,34 @@
     v30 = _MADLog(@"SSO");
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
-      v31 = [(SoftwareUpdateSSO *)self userName];
-      v32 = [(SoftwareUpdateSSO *)self personID];
-      if (v32)
+      userName2 = [(SoftwareUpdateSSO *)self userName];
+      personID2 = [(SoftwareUpdateSSO *)self personID];
+      if (personID2)
       {
-        v33 = [(SoftwareUpdateSSO *)self personID];
+        personID3 = [(SoftwareUpdateSSO *)self personID];
       }
 
       else
       {
-        v33 = @"Unknown";
+        personID3 = @"Unknown";
       }
 
-      v34 = [(SoftwareUpdateSSO *)self dawToken];
+      dawToken = [(SoftwareUpdateSSO *)self dawToken];
       v35 = @"Valid";
       *buf = 138412802;
-      v39 = v31;
+      v39 = userName2;
       v40 = 2112;
-      if (!v34)
+      if (!dawToken)
       {
         v35 = @"Not present";
       }
 
-      v41 = v33;
+      v41 = personID3;
       v42 = 2112;
       v43 = v35;
       _os_log_impl(&dword_0, v30, OS_LOG_TYPE_ERROR, "Username :%@ personID: %@ token:%@", buf, 0x20u);
 
-      if (v32)
+      if (personID2)
       {
       }
     }
@@ -261,12 +261,12 @@ LABEL_28:
   v21 = self->_dawToken;
   self->_dawToken = 0;
 
-  if (v6)
+  if (errorCopy)
   {
     v22 = _MADLog(@"SSO");
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
-      v23 = [v6 description];
+      v23 = [errorCopy description];
       *buf = 138412290;
       v39 = v23;
       _os_log_impl(&dword_0, v22, OS_LOG_TYPE_ERROR, "Failed to retrieve SSO token: %@\n", buf, 0xCu);
@@ -330,10 +330,10 @@ void __62__SoftwareUpdateSSO_copyTokenFromAuthenticatorResponse_error___block_in
 
 - (unint64_t)_completionDeadline
 {
-  v2 = [(SoftwareUpdateSSO *)self interactivityLevel];
-  v3 = [v2 integerValue];
+  interactivityLevel = [(SoftwareUpdateSSO *)self interactivityLevel];
+  integerValue = [interactivityLevel integerValue];
 
-  if (v3 == &dword_0 + 1)
+  if (integerValue == &dword_0 + 1)
   {
     v4 = 12000000000;
   }
@@ -462,14 +462,14 @@ void __32__SoftwareUpdateSSO_getDawToken__block_invoke(uint64_t a1)
 
 - (BOOL)ssoIsSupported
 {
-  v3 = [(SoftwareUpdateSSO *)self authenticator];
+  authenticator = [(SoftwareUpdateSSO *)self authenticator];
 
-  if (v3)
+  if (authenticator)
   {
-    v4 = [(SoftwareUpdateSSO *)self authenticator];
-    v5 = [v4 authenticationSupported];
+    authenticator2 = [(SoftwareUpdateSSO *)self authenticator];
+    authenticationSupported = [authenticator2 authenticationSupported];
 
-    return v5;
+    return authenticationSupported;
   }
 
   else
@@ -485,9 +485,9 @@ void __32__SoftwareUpdateSSO_getDawToken__block_invoke(uint64_t a1)
   }
 }
 
-- (void)authenticator:(id)a3 didCompleteWithResult:(id)a4
+- (void)authenticator:(id)authenticator didCompleteWithResult:(id)result
 {
-  v5 = a4;
+  resultCopy = result;
   v6 = _MADLog(@"SSO");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -495,22 +495,22 @@ void __32__SoftwareUpdateSSO_getDawToken__block_invoke(uint64_t a1)
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "INFO: ExtensibleSSOAuthentication callback returned success\n", v7, 2u);
   }
 
-  [(SoftwareUpdateSSO *)self copyTokenFromAuthenticatorResponse:v5 error:0];
+  [(SoftwareUpdateSSO *)self copyTokenFromAuthenticatorResponse:resultCopy error:0];
 }
 
-- (void)authenticator:(id)a3 didCompleteWithError:(id)a4
+- (void)authenticator:(id)authenticator didCompleteWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = _MADLog(@"SSO");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    v7 = [v5 description];
+    v7 = [errorCopy description];
     v9 = 138412290;
     v10 = v7;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_ERROR, "ExtensibleSSOAuthentication callback returned error: %@\n", &v9, 0xCu);
   }
 
-  v8 = [(SoftwareUpdateSSO *)self buildSSOError:1 underlying:v5 description:@"Call to SSOAuthenticator Authenticate failed"];
+  v8 = [(SoftwareUpdateSSO *)self buildSSOError:1 underlying:errorCopy description:@"Call to SSOAuthenticator Authenticate failed"];
   [(SoftwareUpdateSSO *)self copyTokenFromAuthenticatorResponse:0 error:v8];
 }
 

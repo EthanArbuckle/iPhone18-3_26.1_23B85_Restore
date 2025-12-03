@@ -1,6 +1,6 @@
 @interface LCFProactivePredictionRanker
 - (LCFProactivePredictionRanker)init;
-- (id)proactiveRanking:(id)a3 predictions:(id)a4;
+- (id)proactiveRanking:(id)ranking predictions:(id)predictions;
 @end
 
 @implementation LCFProactivePredictionRanker
@@ -18,46 +18,46 @@
   return v2;
 }
 
-- (id)proactiveRanking:(id)a3 predictions:(id)a4
+- (id)proactiveRanking:(id)ranking predictions:(id)predictions
 {
   v51 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
-  v39 = v6;
-  if (v7 == [v6 count])
+  rankingCopy = ranking;
+  predictionsCopy = predictions;
+  v7 = [rankingCopy count];
+  v39 = predictionsCopy;
+  if (v7 == [predictionsCopy count])
   {
     v8 = objc_opt_new();
-    if ([v5 count])
+    if ([rankingCopy count])
     {
       v9 = 0;
       do
       {
-        v10 = [v5 objectAtIndexedSubscript:v9];
+        v10 = [rankingCopy objectAtIndexedSubscript:v9];
         v11 = [v39 featuresAtIndex:v9];
         v12 = [[LCFProactivePredictionRankerHolder alloc] init:v10 prediction:v11];
-        v13 = [v10 featureValues];
-        v14 = [v13 objectForKeyedSubscript:@"_sharingEventUID"];
-        v15 = [v14 stringValue];
+        featureValues = [v10 featureValues];
+        v14 = [featureValues objectForKeyedSubscript:@"_sharingEventUID"];
+        stringValue = [v14 stringValue];
 
-        v16 = [v8 objectForKey:v15];
+        v16 = [v8 objectForKey:stringValue];
 
         if (!v16)
         {
           v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
-          [v8 setObject:v17 forKey:v15];
+          [v8 setObject:v17 forKey:stringValue];
         }
 
-        v18 = [v8 objectForKeyedSubscript:v15];
+        v18 = [v8 objectForKeyedSubscript:stringValue];
         [v18 addObject:v12];
 
         ++v9;
       }
 
-      while (v9 < [v5 count]);
+      while (v9 < [rankingCopy count]);
     }
 
-    v38 = v5;
+    v38 = rankingCopy;
     v40 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v44 = 0u;
     v45 = 0u;
@@ -91,13 +91,13 @@
                 while (1)
                 {
                   v25 = [v23 objectAtIndexedSubscript:v24 - 1];
-                  v26 = [v25 featureSet];
-                  v27 = [v26 featureValues];
-                  v28 = [v27 objectForKeyedSubscript:@"_isPositiveLabeled"];
-                  v29 = [v28 BOOLValue];
-                  v30 = [v29 BOOLValue];
+                  featureSet = [v25 featureSet];
+                  featureValues2 = [featureSet featureValues];
+                  v28 = [featureValues2 objectForKeyedSubscript:@"_isPositiveLabeled"];
+                  bOOLValue = [v28 BOOLValue];
+                  v29BOOLValue = [bOOLValue BOOLValue];
 
-                  if (v30)
+                  if (v29BOOLValue)
                   {
                     break;
                   }
@@ -147,7 +147,7 @@ LABEL_25:
       while (v43);
     }
 
-    v5 = v38;
+    rankingCopy = v38;
   }
 
   else
@@ -155,7 +155,7 @@ LABEL_25:
     v35 = LCFMMLogProactivePredictionRanker;
     if (os_log_type_enabled(LCFMMLogProactivePredictionRanker, OS_LOG_TYPE_ERROR))
     {
-      [(LCFProactivePredictionRanker *)v35 proactiveRanking:v5 predictions:v6];
+      [(LCFProactivePredictionRanker *)v35 proactiveRanking:rankingCopy predictions:predictionsCopy];
     }
 
     v40 = 0;

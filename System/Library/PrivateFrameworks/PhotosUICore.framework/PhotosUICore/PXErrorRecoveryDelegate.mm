@@ -1,17 +1,17 @@
 @interface PXErrorRecoveryDelegate
 + (id)sharedErrorRecoveryDelegate;
-- (void)_didPresentErrorWithRecovery:(BOOL)a3 contextInfo:(void *)a4;
+- (void)_didPresentErrorWithRecovery:(BOOL)recovery contextInfo:(void *)info;
 @end
 
 @implementation PXErrorRecoveryDelegate
 
-- (void)_didPresentErrorWithRecovery:(BOOL)a3 contextInfo:(void *)a4
+- (void)_didPresentErrorWithRecovery:(BOOL)recovery contextInfo:(void *)info
 {
-  if (a4)
+  if (info)
   {
-    v5 = a4;
-    (*(a4 + 2))(a4, a3);
-    a4 = v5;
+    infoCopy = info;
+    (*(info + 2))(info, recovery);
+    info = infoCopy;
     v4 = vars8;
   }
 }

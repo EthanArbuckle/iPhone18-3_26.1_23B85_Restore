@@ -1,6 +1,6 @@
 @interface DMDRemoveOSUpdateOperation
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -20,7 +20,7 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
   v4 = DMFOSUpdateLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

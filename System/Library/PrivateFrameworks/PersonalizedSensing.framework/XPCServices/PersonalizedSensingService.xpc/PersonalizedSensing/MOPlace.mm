@@ -1,29 +1,29 @@
 @interface MOPlace
-- (BOOL)_isString:(id)a3 equalToString:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isSimilarToPlace:(id)a3 locationThreshold:(double)a4;
-- (MOPlace)initWithCoder:(id)a3;
-- (MOPlace)initWithIdentifier:(id)a3;
-- (MOPlace)initWithIdentifier:(id)a3 placeName:(id)a4 enclosingArea:(id)a5 placeType:(unint64_t)a6 placeUserType:(unint64_t)a7 location:(id)a8 locationMode:(unint64_t)a9 poiCategory:(id)a10 categoryMuid:(id)a11 distanceToHomeInMiles:(double)a12 placeNameConfidence:(double)a13 familiarityIndexLOI:(double)a14 priorityScore:(double)a15 startDate:(id)a16 endDate:(id)a17;
-- (MOPlace)initWithPlaceName:(id)a3 enclosingArea:(id)a4 placeType:(unint64_t)a5 placeUserType:(unint64_t)a6 location:(id)a7 locationMode:(unint64_t)a8 poiCategory:(id)a9 categoryMuid:(id)a10 distanceToHomeInMiles:(double)a11 placeNameConfidence:(double)a12 familiarityIndexLOI:(double)a13 startDate:(id)a14 endDate:(id)a15;
-- (MOPlace)initWithPlaceName:(id)a3 placeType:(unint64_t)a4 placeUserType:(unint64_t)a5 location:(id)a6 locationMode:(unint64_t)a7 poiCategory:(id)a8 categoryMuid:(id)a9 distanceToHomeInMiles:(double)a10 placeNameConfidence:(double)a11 familiarityIndexLOI:(double)a12;
+- (BOOL)_isString:(id)string equalToString:(id)toString;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isSimilarToPlace:(id)place locationThreshold:(double)threshold;
+- (MOPlace)initWithCoder:(id)coder;
+- (MOPlace)initWithIdentifier:(id)identifier;
+- (MOPlace)initWithIdentifier:(id)identifier placeName:(id)name enclosingArea:(id)area placeType:(unint64_t)type placeUserType:(unint64_t)userType location:(id)location locationMode:(unint64_t)mode poiCategory:(id)self0 categoryMuid:(id)self1 distanceToHomeInMiles:(double)self2 placeNameConfidence:(double)self3 familiarityIndexLOI:(double)self4 priorityScore:(double)self5 startDate:(id)self6 endDate:(id)self7;
+- (MOPlace)initWithPlaceName:(id)name enclosingArea:(id)area placeType:(unint64_t)type placeUserType:(unint64_t)userType location:(id)location locationMode:(unint64_t)mode poiCategory:(id)category categoryMuid:(id)self0 distanceToHomeInMiles:(double)self1 placeNameConfidence:(double)self2 familiarityIndexLOI:(double)self3 startDate:(id)self4 endDate:(id)self5;
+- (MOPlace)initWithPlaceName:(id)name placeType:(unint64_t)type placeUserType:(unint64_t)userType location:(id)location locationMode:(unint64_t)mode poiCategory:(id)category categoryMuid:(id)muid distanceToHomeInMiles:(double)self0 placeNameConfidence:(double)self1 familiarityIndexLOI:(double)self2;
 - (id)description;
 - (id)placeKey;
 - (id)promptDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOPlace
 
-- (BOOL)isSimilarToPlace:(id)a3 locationThreshold:(double)a4
+- (BOOL)isSimilarToPlace:(id)place locationThreshold:(double)threshold
 {
-  v6 = a3;
-  if (v6)
+  placeCopy = place;
+  if (placeCopy)
   {
-    v7 = [(MOPlace *)self placeName];
-    v8 = [v6 placeName];
-    if (![(MOPlace *)self _isString:v7 equalToString:v8])
+    placeName = [(MOPlace *)self placeName];
+    placeName2 = [placeCopy placeName];
+    if (![(MOPlace *)self _isString:placeName equalToString:placeName2])
     {
       v28 = 0;
 LABEL_9:
@@ -31,37 +31,37 @@ LABEL_9:
       goto LABEL_11;
     }
 
-    v9 = [(MOPlace *)self enclosingArea];
-    v10 = [v6 enclosingArea];
-    v11 = [(MOPlace *)self _isString:v9 equalToString:v10];
+    enclosingArea = [(MOPlace *)self enclosingArea];
+    enclosingArea2 = [placeCopy enclosingArea];
+    v11 = [(MOPlace *)self _isString:enclosingArea equalToString:enclosingArea2];
 
     if (v11)
     {
-      v12 = [(MOPlace *)self location];
-      if (!v12 || (v13 = v12, [v6 location], v14 = objc_claimAutoreleasedReturnValue(), v14, v13, !v14))
+      location = [(MOPlace *)self location];
+      if (!location || (v13 = location, [placeCopy location], v14 = objc_claimAutoreleasedReturnValue(), v14, v13, !v14))
       {
         v28 = 1;
         goto LABEL_11;
       }
 
       v15 = [CLLocation alloc];
-      v16 = [(MOPlace *)self location];
-      [v16 latitude];
+      location2 = [(MOPlace *)self location];
+      [location2 latitude];
       v18 = v17;
-      v19 = [(MOPlace *)self location];
-      [v19 longitude];
-      v7 = [v15 initWithLatitude:v18 longitude:v20];
+      location3 = [(MOPlace *)self location];
+      [location3 longitude];
+      placeName = [v15 initWithLatitude:v18 longitude:v20];
 
       v21 = [CLLocation alloc];
-      v22 = [v6 location];
-      [v22 latitude];
+      location4 = [placeCopy location];
+      [location4 latitude];
       v24 = v23;
-      v25 = [v6 location];
-      [v25 longitude];
-      v8 = [v21 initWithLatitude:v24 longitude:v26];
+      location5 = [placeCopy location];
+      [location5 longitude];
+      placeName2 = [v21 initWithLatitude:v24 longitude:v26];
 
-      [v7 distanceFromLocation:v8];
-      v28 = v27 <= a4;
+      [placeName distanceFromLocation:placeName2];
+      v28 = v27 <= threshold;
       goto LABEL_9;
     }
   }
@@ -74,11 +74,11 @@ LABEL_11:
 
 - (id)placeKey
 {
-  v3 = [(MOPlace *)self placeName];
-  v4 = v3;
-  if (v3)
+  placeName = [(MOPlace *)self placeName];
+  v4 = placeName;
+  if (placeName)
   {
-    v5 = v3;
+    v5 = placeName;
   }
 
   else
@@ -88,11 +88,11 @@ LABEL_11:
 
   v6 = v5;
 
-  v7 = [(MOPlace *)self enclosingArea];
-  v8 = v7;
-  if (v7)
+  enclosingArea = [(MOPlace *)self enclosingArea];
+  v8 = enclosingArea;
+  if (enclosingArea)
   {
-    v9 = v7;
+    v9 = enclosingArea;
   }
 
   else
@@ -107,17 +107,17 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)_isString:(id)a3 equalToString:(id)a4
+- (BOOL)_isString:(id)string equalToString:(id)toString
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 | v6)
+  stringCopy = string;
+  toStringCopy = toString;
+  v7 = toStringCopy;
+  if (stringCopy | toStringCopy)
   {
     v8 = 0;
-    if (v5 && v6)
+    if (stringCopy && toStringCopy)
     {
-      v8 = [v5 isEqualToString:v6];
+      v8 = [stringCopy isEqualToString:toStringCopy];
     }
   }
 
@@ -129,10 +129,10 @@ LABEL_11:
   return v8;
 }
 
-- (MOPlace)initWithIdentifier:(id)a3
+- (MOPlace)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v5 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -141,72 +141,72 @@ LABEL_11:
     }
   }
 
-  v6 = [(MOPlace *)self initWithIdentifier:v4 placeName:&stru_1000BA000 enclosingArea:&stru_1000BA000 placeType:0 placeUserType:0 location:0 locationMode:-1.0 poiCategory:-1.0 categoryMuid:0.0 distanceToHomeInMiles:-1.0 placeNameConfidence:0 familiarityIndexLOI:&stru_1000BA000 priorityScore:0 startDate:0 endDate:0];
+  v6 = [(MOPlace *)self initWithIdentifier:identifierCopy placeName:&stru_1000BA000 enclosingArea:&stru_1000BA000 placeType:0 placeUserType:0 location:0 locationMode:-1.0 poiCategory:-1.0 categoryMuid:0.0 distanceToHomeInMiles:-1.0 placeNameConfidence:0 familiarityIndexLOI:&stru_1000BA000 priorityScore:0 startDate:0 endDate:0];
 
   return v6;
 }
 
-- (MOPlace)initWithPlaceName:(id)a3 enclosingArea:(id)a4 placeType:(unint64_t)a5 placeUserType:(unint64_t)a6 location:(id)a7 locationMode:(unint64_t)a8 poiCategory:(id)a9 categoryMuid:(id)a10 distanceToHomeInMiles:(double)a11 placeNameConfidence:(double)a12 familiarityIndexLOI:(double)a13 startDate:(id)a14 endDate:(id)a15
+- (MOPlace)initWithPlaceName:(id)name enclosingArea:(id)area placeType:(unint64_t)type placeUserType:(unint64_t)userType location:(id)location locationMode:(unint64_t)mode poiCategory:(id)category categoryMuid:(id)self0 distanceToHomeInMiles:(double)self1 placeNameConfidence:(double)self2 familiarityIndexLOI:(double)self3 startDate:(id)self4 endDate:(id)self5
 {
-  v21 = a15;
-  v22 = a14;
-  v23 = a10;
-  v24 = a9;
-  v25 = a7;
-  v26 = a4;
-  v27 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
+  muidCopy = muid;
+  categoryCopy = category;
+  locationCopy = location;
+  areaCopy = area;
+  nameCopy = name;
   v28 = +[NSUUID UUID];
-  v29 = [(MOPlace *)self initWithIdentifier:v28 placeName:v27 enclosingArea:v26 placeType:a5 placeUserType:a6 location:v25 locationMode:a11 poiCategory:a12 categoryMuid:a13 distanceToHomeInMiles:-1.0 placeNameConfidence:a8 familiarityIndexLOI:v24 priorityScore:v23 startDate:v22 endDate:v21];
+  v29 = [(MOPlace *)self initWithIdentifier:v28 placeName:nameCopy enclosingArea:areaCopy placeType:type placeUserType:userType location:locationCopy locationMode:miles poiCategory:confidence categoryMuid:i distanceToHomeInMiles:-1.0 placeNameConfidence:mode familiarityIndexLOI:categoryCopy priorityScore:muidCopy startDate:dateCopy endDate:endDateCopy];
 
   return v29;
 }
 
-- (MOPlace)initWithPlaceName:(id)a3 placeType:(unint64_t)a4 placeUserType:(unint64_t)a5 location:(id)a6 locationMode:(unint64_t)a7 poiCategory:(id)a8 categoryMuid:(id)a9 distanceToHomeInMiles:(double)a10 placeNameConfidence:(double)a11 familiarityIndexLOI:(double)a12
+- (MOPlace)initWithPlaceName:(id)name placeType:(unint64_t)type placeUserType:(unint64_t)userType location:(id)location locationMode:(unint64_t)mode poiCategory:(id)category categoryMuid:(id)muid distanceToHomeInMiles:(double)self0 placeNameConfidence:(double)self1 familiarityIndexLOI:(double)self2
 {
-  v22 = a9;
-  v23 = a8;
-  v24 = a6;
-  v25 = a3;
+  muidCopy = muid;
+  categoryCopy = category;
+  locationCopy = location;
+  nameCopy = name;
   v26 = +[NSUUID UUID];
-  v27 = [(MOPlace *)self initWithIdentifier:v26 placeName:v25 enclosingArea:&stru_1000BA000 placeType:a4 placeUserType:a5 location:v24 locationMode:a10 poiCategory:a11 categoryMuid:a12 distanceToHomeInMiles:-1.0 placeNameConfidence:a7 familiarityIndexLOI:v23 priorityScore:v22 startDate:0 endDate:0];
+  v27 = [(MOPlace *)self initWithIdentifier:v26 placeName:nameCopy enclosingArea:&stru_1000BA000 placeType:type placeUserType:userType location:locationCopy locationMode:miles poiCategory:confidence categoryMuid:i distanceToHomeInMiles:-1.0 placeNameConfidence:mode familiarityIndexLOI:categoryCopy priorityScore:muidCopy startDate:0 endDate:0];
 
   return v27;
 }
 
-- (MOPlace)initWithIdentifier:(id)a3 placeName:(id)a4 enclosingArea:(id)a5 placeType:(unint64_t)a6 placeUserType:(unint64_t)a7 location:(id)a8 locationMode:(unint64_t)a9 poiCategory:(id)a10 categoryMuid:(id)a11 distanceToHomeInMiles:(double)a12 placeNameConfidence:(double)a13 familiarityIndexLOI:(double)a14 priorityScore:(double)a15 startDate:(id)a16 endDate:(id)a17
+- (MOPlace)initWithIdentifier:(id)identifier placeName:(id)name enclosingArea:(id)area placeType:(unint64_t)type placeUserType:(unint64_t)userType location:(id)location locationMode:(unint64_t)mode poiCategory:(id)self0 categoryMuid:(id)self1 distanceToHomeInMiles:(double)self2 placeNameConfidence:(double)self3 familiarityIndexLOI:(double)self4 priorityScore:(double)self5 startDate:(id)self6 endDate:(id)self7
 {
-  v26 = a3;
-  obj = a4;
-  v27 = a4;
-  v38 = a5;
-  v28 = a5;
-  v40 = a8;
-  v39 = a10;
-  v29 = a11;
-  v30 = a16;
-  v31 = a17;
+  identifierCopy = identifier;
+  obj = name;
+  nameCopy = name;
+  areaCopy = area;
+  areaCopy2 = area;
+  locationCopy = location;
+  categoryCopy = category;
+  muidCopy = muid;
+  dateCopy = date;
+  endDateCopy = endDate;
   v41.receiver = self;
   v41.super_class = MOPlace;
   v32 = [(MOPlace *)&v41 init];
   v33 = v32;
   if (v32)
   {
-    objc_storeStrong(&v32->_identifier, a3);
-    v33->_placeUserType = a7;
-    v33->_placeType = a6;
+    objc_storeStrong(&v32->_identifier, identifier);
+    v33->_placeUserType = userType;
+    v33->_placeType = type;
     objc_storeStrong(&v33->_placeName, obj);
-    objc_storeStrong(&v33->_enclosingArea, v38);
-    objc_storeStrong(&v33->_location, a8);
-    v33->_locationMode = a9;
-    objc_storeStrong(&v33->_poiCategory, a10);
-    objc_storeStrong(&v33->_categoryMuid, a11);
+    objc_storeStrong(&v33->_enclosingArea, areaCopy);
+    objc_storeStrong(&v33->_location, location);
+    v33->_locationMode = mode;
+    objc_storeStrong(&v33->_poiCategory, category);
+    objc_storeStrong(&v33->_categoryMuid, muid);
     v33->_proposition = 0;
-    v33->_familiarityIndexLOI = a14;
-    v33->_distanceToHomeInMiles = a12;
-    v33->_placeNameConfidence = a13;
-    v33->_priorityScore = a15;
-    objc_storeStrong(&v33->_startDate, a16);
-    objc_storeStrong(&v33->_endDate, a17);
+    v33->_familiarityIndexLOI = i;
+    v33->_distanceToHomeInMiles = miles;
+    v33->_placeNameConfidence = confidence;
+    v33->_priorityScore = score;
+    objc_storeStrong(&v33->_startDate, date);
+    objc_storeStrong(&v33->_endDate, endDate);
     v33->_sourceEventAccessType = 5;
   }
 
@@ -215,18 +215,18 @@ LABEL_11:
 
 - (id)promptDescription
 {
-  v3 = [(MOPlace *)self placeName];
+  placeName = [(MOPlace *)self placeName];
 
-  if (v3)
+  if (placeName)
   {
-    v4 = [(MOPlace *)self proposition];
+    proposition = [(MOPlace *)self proposition];
     v5 = @"at";
-    if (v4 == 2)
+    if (proposition == 2)
     {
       v5 = @"on";
     }
 
-    if (v4 == 3)
+    if (proposition == 3)
     {
       v6 = @"in";
     }
@@ -236,8 +236,8 @@ LABEL_11:
       v6 = v5;
     }
 
-    v7 = [(MOPlace *)self placeName];
-    v8 = [NSString stringWithFormat:@"%@ %@", v6, v7];
+    placeName2 = [(MOPlace *)self placeName];
+    v8 = [NSString stringWithFormat:@"%@ %@", v6, placeName2];
   }
 
   else
@@ -250,47 +250,47 @@ LABEL_11:
 
 - (id)description
 {
-  v3 = [(MOPlace *)self identifier];
-  v4 = [(MOPlace *)self placeName];
-  v5 = [v4 mask];
+  identifier = [(MOPlace *)self identifier];
+  placeName = [(MOPlace *)self placeName];
+  mask = [placeName mask];
   [(MOPlace *)self placeNameConfidence];
   v7 = v6;
-  v8 = [(MOPlace *)self placeType];
-  v9 = [(MOPlace *)self placeUserType];
-  v10 = [(MOPlace *)self categoryMuid];
-  v11 = [(MOPlace *)self locationMode];
+  placeType = [(MOPlace *)self placeType];
+  placeUserType = [(MOPlace *)self placeUserType];
+  categoryMuid = [(MOPlace *)self categoryMuid];
+  locationMode = [(MOPlace *)self locationMode];
   [(MOPlace *)self distanceToHomeInMiles];
   v13 = v12;
-  v14 = [(MOPlace *)self poiCategory];
+  poiCategory = [(MOPlace *)self poiCategory];
   [(MOPlace *)self familiarityIndexLOI];
-  v16 = [NSString stringWithFormat:@"<MOPlace identifier, %@, name, %@, confidence, %f, placeType, %lu, placeUserType, %lu, categoryMuid, %@, locationMode, %lu, distanceToHomeInMiles, %f, poiCategory, %@, familiarityIndexLOI, %f>", v3, v5, v7, v8, v9, v10, v11, v13, v14, v15];
+  v16 = [NSString stringWithFormat:@"<MOPlace identifier, %@, name, %@, confidence, %f, placeType, %lu, placeUserType, %lu, categoryMuid, %@, locationMode, %lu, distanceToHomeInMiles, %f, poiCategory, %@, familiarityIndexLOI, %f>", identifier, mask, v7, placeType, placeUserType, categoryMuid, locationMode, v13, poiCategory, v15];
 
   return v16;
 }
 
-- (MOPlace)initWithCoder:(id)a3
+- (MOPlace)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"placeName"];
-  v30 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"enclosingArea"];
-  v29 = [v3 decodeInt64ForKey:@"placeType"];
-  v28 = [v3 decodeInt64ForKey:@"placeUserType"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
-  v27 = [v3 decodeInt64ForKey:@"proposition"];
-  [v3 decodeFloatForKey:@"placeNameConfidence"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"placeName"];
+  v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"enclosingArea"];
+  v29 = [coderCopy decodeInt64ForKey:@"placeType"];
+  v28 = [coderCopy decodeInt64ForKey:@"placeUserType"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+  v27 = [coderCopy decodeInt64ForKey:@"proposition"];
+  [coderCopy decodeFloatForKey:@"placeNameConfidence"];
   v8 = v7;
-  v9 = [v3 decodeInt64ForKey:@"locationMode"];
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"poiCategory"];
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"categoryMuid"];
-  [v3 decodeFloatForKey:@"distanceToHomeInMiles"];
+  v9 = [coderCopy decodeInt64ForKey:@"locationMode"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"poiCategory"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"categoryMuid"];
+  [coderCopy decodeFloatForKey:@"distanceToHomeInMiles"];
   v13 = v12;
-  [v3 decodeFloatForKey:@"familiarityIndexLOI"];
+  [coderCopy decodeFloatForKey:@"familiarityIndexLOI"];
   v15 = v14;
-  [v3 decodeFloatForKey:@"priorityScore"];
+  [coderCopy decodeFloatForKey:@"priorityScore"];
   v17 = v16;
-  v18 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
-  v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
   v26 = v10;
   v20 = v10;
   v21 = v6;
@@ -299,80 +299,80 @@ LABEL_11:
   if (v22)
   {
     [(MOPlace *)v22 setProposition:v27];
-    v24 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"sourceEventIdentifier"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceEventIdentifier"];
     [(MOPlace *)v23 setSourceEventIdentifier:v24];
 
-    -[MOPlace setSourceEventAccessType:](v23, "setSourceEventAccessType:", [v3 decodeInt64ForKey:@"sourceEventAccessType"]);
+    -[MOPlace setSourceEventAccessType:](v23, "setSourceEventAccessType:", [coderCopy decodeInt64ForKey:@"sourceEventAccessType"]);
   }
 
   return v23;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v9 = a3;
-  [v9 encodeObject:identifier forKey:@"identifier"];
-  [v9 encodeObject:self->_placeName forKey:@"placeName"];
-  [v9 encodeInt64:self->_placeType forKey:@"placeType"];
-  [v9 encodeInt64:self->_placeUserType forKey:@"placeUserType"];
-  [v9 encodeObject:self->_location forKey:@"location"];
-  [v9 encodeInt64:self->_proposition forKey:@"proposition"];
-  [v9 encodeInt64:self->_locationMode forKey:@"locationMode"];
-  [v9 encodeObject:self->_poiCategory forKey:@"poiCategory"];
-  [v9 encodeObject:self->_categoryMuid forKey:@"categoryMuid"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_placeName forKey:@"placeName"];
+  [coderCopy encodeInt64:self->_placeType forKey:@"placeType"];
+  [coderCopy encodeInt64:self->_placeUserType forKey:@"placeUserType"];
+  [coderCopy encodeObject:self->_location forKey:@"location"];
+  [coderCopy encodeInt64:self->_proposition forKey:@"proposition"];
+  [coderCopy encodeInt64:self->_locationMode forKey:@"locationMode"];
+  [coderCopy encodeObject:self->_poiCategory forKey:@"poiCategory"];
+  [coderCopy encodeObject:self->_categoryMuid forKey:@"categoryMuid"];
   priorityScore = self->_priorityScore;
   *&priorityScore = priorityScore;
-  [v9 encodeFloat:@"priorityScore" forKey:priorityScore];
+  [coderCopy encodeFloat:@"priorityScore" forKey:priorityScore];
   distanceToHomeInMiles = self->_distanceToHomeInMiles;
   *&distanceToHomeInMiles = distanceToHomeInMiles;
-  [v9 encodeFloat:@"distanceToHomeInMiles" forKey:distanceToHomeInMiles];
+  [coderCopy encodeFloat:@"distanceToHomeInMiles" forKey:distanceToHomeInMiles];
   placeNameConfidence = self->_placeNameConfidence;
   *&placeNameConfidence = placeNameConfidence;
-  [v9 encodeFloat:@"placeNameConfidence" forKey:placeNameConfidence];
+  [coderCopy encodeFloat:@"placeNameConfidence" forKey:placeNameConfidence];
   familiarityIndexLOI = self->_familiarityIndexLOI;
   *&familiarityIndexLOI = familiarityIndexLOI;
-  [v9 encodeFloat:@"familiarityIndexLOI" forKey:familiarityIndexLOI];
-  [v9 encodeObject:self->_enclosingArea forKey:@"enclosingArea"];
-  [v9 encodeObject:self->_startDate forKey:@"startDate"];
-  [v9 encodeObject:self->_endDate forKey:@"endDate"];
-  [v9 encodeInt64:self->_sourceEventAccessType forKey:@"sourceEventAccessType"];
-  [v9 encodeObject:self->_sourceEventIdentifier forKey:@"sourceEventIdentifier"];
+  [coderCopy encodeFloat:@"familiarityIndexLOI" forKey:familiarityIndexLOI];
+  [coderCopy encodeObject:self->_enclosingArea forKey:@"enclosingArea"];
+  [coderCopy encodeObject:self->_startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"endDate"];
+  [coderCopy encodeInt64:self->_sourceEventAccessType forKey:@"sourceEventAccessType"];
+  [coderCopy encodeObject:self->_sourceEventIdentifier forKey:@"sourceEventIdentifier"];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(MOPlace *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(MOPlace *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self == v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if (v5)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v7 = v6;
-        v8 = [(MOPlace *)self identifier];
-        if (v8 || ([(MOPlace *)v7 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        identifier = [(MOPlace *)self identifier];
+        if (identifier || ([(MOPlace *)v7 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v9 = [(MOPlace *)self identifier];
-          v10 = [(MOPlace *)v7 identifier];
-          v11 = [v9 isEqual:v10];
+          identifier2 = [(MOPlace *)self identifier];
+          identifier3 = [(MOPlace *)v7 identifier];
+          v11 = [identifier2 isEqual:identifier3];
 
-          if (v8)
+          if (identifier)
           {
 LABEL_12:
 

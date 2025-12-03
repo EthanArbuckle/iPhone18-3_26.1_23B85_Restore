@@ -3,10 +3,10 @@
 - (BOOL)_hasVerifiedNewPassword;
 - (BOOL)accessibilityPerformEscape;
 - (BOOL)accessibilityPerformMagicTap;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (KerberosPasswordChangeViewControllerDelegate)delegate;
-- (KerberosPasswordViewController)initWithCoder:(id)a3;
-- (KerberosPasswordViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (KerberosPasswordViewController)initWithCoder:(id)coder;
+- (KerberosPasswordViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (NSLayoutConstraint)bottomConstraint;
 - (UIBarButtonItem)cancelButton;
 - (UILabel)realmLabel;
@@ -21,26 +21,26 @@
 - (UIView)separator2;
 - (void)_disableUI;
 - (void)_enableUI;
-- (void)_showMessage:(id)a3 completionHandler:(id)a4;
-- (void)cancelClicked:(id)a3;
+- (void)_showMessage:(id)message completionHandler:(id)handler;
+- (void)cancelClicked:(id)clicked;
 - (void)cancelCurrentOperation;
 - (void)changeADPassword;
 - (void)changeFocusedElementForAccessibilityIfNeeded;
 - (void)changePasswordClicked;
-- (void)handleKerberosOperation:(id)a3 withMessage:(id)a4;
-- (void)keyboardWillChangeFrame:(id)a3;
-- (void)keyboardWillHide:(id)a3;
-- (void)textFieldDidChange:(id)a3;
+- (void)handleKerberosOperation:(id)operation withMessage:(id)message;
+- (void)keyboardWillChangeFrame:(id)frame;
+- (void)keyboardWillHide:(id)hide;
+- (void)textFieldDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
 @implementation KerberosPasswordViewController
 
-- (KerberosPasswordViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (KerberosPasswordViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = KerberosPasswordViewController;
-  result = [(KerberosPasswordViewController *)&v5 initWithNibName:a3 bundle:a4];
+  result = [(KerberosPasswordViewController *)&v5 initWithNibName:name bundle:bundle];
   if (result)
   {
     result->_shouldChangeFocusedElementForAccessibility = 1;
@@ -49,11 +49,11 @@
   return result;
 }
 
-- (KerberosPasswordViewController)initWithCoder:(id)a3
+- (KerberosPasswordViewController)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = KerberosPasswordViewController;
-  result = [(KerberosPasswordViewController *)&v4 initWithCoder:a3];
+  result = [(KerberosPasswordViewController *)&v4 initWithCoder:coder];
   if (result)
   {
     result->_shouldChangeFocusedElementForAccessibility = 1;
@@ -73,13 +73,13 @@
     sub_10000B170();
   }
 
-  v4 = [(KerberosPasswordViewController *)self changePasswordButton];
-  v5 = [v4 layer];
-  [v5 setCornerRadius:10.0];
+  changePasswordButton = [(KerberosPasswordViewController *)self changePasswordButton];
+  layer = [changePasswordButton layer];
+  [layer setCornerRadius:10.0];
 
-  v6 = [(KerberosPasswordViewController *)self userNamePasswordView];
-  v7 = [v6 layer];
-  [v7 setCornerRadius:10.0];
+  userNamePasswordView = [(KerberosPasswordViewController *)self userNamePasswordView];
+  layer2 = [userNamePasswordView layer];
+  [layer2 setCornerRadius:10.0];
 
   v8 = +[UIColor secondarySystemBackgroundColor];
   WeakRetained = objc_loadWeakRetained(&self->_separator1);
@@ -98,8 +98,8 @@
 
   [v12 setAdjustsFontForContentSizeCategory:1];
   v14 = [[UIBarButtonItem alloc] initWithCustomView:v12];
-  v15 = [(KerberosPasswordViewController *)self navigationItem];
-  [v15 setLeftBarButtonItem:v14];
+  navigationItem = [(KerberosPasswordViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v14];
 
   v16 = objc_loadWeakRetained(&self->_usernameTextField);
   [v16 setDelegate:self];
@@ -137,16 +137,16 @@
   v27 = objc_loadWeakRetained(&self->_changedPasswordAgainTextField);
   [v27 setTextContentType:UITextContentTypeNewPassword];
 
-  v28 = [(KerberosPasswordViewController *)self containerView];
-  [v28 setClipsToBounds:1];
+  containerView = [(KerberosPasswordViewController *)self containerView];
+  [containerView setClipsToBounds:1];
 
-  v29 = [(KerberosPasswordViewController *)self containerView];
-  v30 = [v29 layer];
-  [v30 setCornerRadius:10.0];
+  containerView2 = [(KerberosPasswordViewController *)self containerView];
+  layer3 = [containerView2 layer];
+  [layer3 setCornerRadius:10.0];
 
-  v31 = [(KerberosPasswordViewController *)self containerView];
-  v32 = [v31 layer];
-  [v32 setMaskedCorners:3];
+  containerView3 = [(KerberosPasswordViewController *)self containerView];
+  layer4 = [containerView3 layer];
+  [layer4 setMaskedCorners:3];
 
   v33 = +[NSNotificationCenter defaultCenter];
   [v33 addObserver:self selector:"keyboardWillChangeFrame:" name:UIKeyboardWillChangeFrameNotification object:0];
@@ -155,22 +155,22 @@
   [v34 addObserver:self selector:"keyboardWillHide:" name:UIKeyboardWillHideNotification object:0];
 }
 
-- (void)keyboardWillChangeFrame:(id)a3
+- (void)keyboardWillChangeFrame:(id)frame
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:UIKeyboardFrameEndUserInfoKey];
+  userInfo = [frame userInfo];
+  v5 = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
   [v5 CGRectValue];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [v4 objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+  v14 = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
   [v14 doubleValue];
   v16 = v15;
 
-  v17 = [v4 objectForKey:UIKeyboardAnimationCurveUserInfoKey];
-  v18 = [v17 unsignedIntegerValue];
+  v17 = [userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+  unsignedIntegerValue = [v17 unsignedIntegerValue];
 
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
@@ -181,25 +181,25 @@
   v19[6] = v9;
   v19[7] = v11;
   v19[8] = v13;
-  [UIView animateWithDuration:v18 delay:v19 options:&stru_1000143E0 animations:v16 completion:0.0];
+  [UIView animateWithDuration:unsignedIntegerValue delay:v19 options:&stru_1000143E0 animations:v16 completion:0.0];
 }
 
-- (void)keyboardWillHide:(id)a3
+- (void)keyboardWillHide:(id)hide
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+  userInfo = [hide userInfo];
+  v5 = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
   [v5 doubleValue];
   v7 = v6;
 
-  v8 = [v4 objectForKey:UIKeyboardAnimationCurveUserInfoKey];
-  v9 = [v8 unsignedIntegerValue];
+  v8 = [userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100001BFC;
   v10[3] = &unk_100014358;
   v10[4] = self;
-  [UIView animateWithDuration:v9 delay:v10 options:&stru_100014400 animations:v7 completion:0.0];
+  [UIView animateWithDuration:unsignedIntegerValue delay:v10 options:&stru_100014400 animations:v7 completion:0.0];
 }
 
 - (void)changePasswordClicked
@@ -218,20 +218,20 @@
       sub_10000B220();
     }
 
-    v5 = [(KerberosPasswordViewController *)self usernameTextField];
-    v6 = [v5 text];
-    v7 = [(KerberosPasswordViewController *)self currentUIContext];
-    [v7 setUserName:v6];
+    usernameTextField = [(KerberosPasswordViewController *)self usernameTextField];
+    text = [usernameTextField text];
+    currentUIContext = [(KerberosPasswordViewController *)self currentUIContext];
+    [currentUIContext setUserName:text];
 
-    v8 = [(KerberosPasswordViewController *)self passwordTextField];
-    v9 = [v8 text];
-    v10 = [(KerberosPasswordViewController *)self currentUIContext];
-    [v10 setPassword:v9];
+    passwordTextField = [(KerberosPasswordViewController *)self passwordTextField];
+    text2 = [passwordTextField text];
+    currentUIContext2 = [(KerberosPasswordViewController *)self currentUIContext];
+    [currentUIContext2 setPassword:text2];
 
-    v11 = [(KerberosPasswordViewController *)self changedPasswordTextField];
-    v12 = [v11 text];
-    v13 = [(KerberosPasswordViewController *)self currentUIContext];
-    [v13 setChangedPassword:v12];
+    changedPasswordTextField = [(KerberosPasswordViewController *)self changedPasswordTextField];
+    text3 = [changedPasswordTextField text];
+    currentUIContext3 = [(KerberosPasswordViewController *)self currentUIContext];
+    [currentUIContext3 setChangedPassword:text3];
 
     [(KerberosPasswordViewController *)self changeADPassword];
   }
@@ -256,7 +256,7 @@
   }
 }
 
-- (void)cancelClicked:(id)a3
+- (void)cancelClicked:(id)clicked
 {
   v4 = sub_100001624();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -264,100 +264,100 @@
     sub_10000B254();
   }
 
-  v5 = [(KerberosPasswordViewController *)self delegate];
+  delegate = [(KerberosPasswordViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(KerberosPasswordViewController *)self delegate];
-    [v7 didClose];
+    delegate2 = [(KerberosPasswordViewController *)self delegate];
+    [delegate2 didClose];
   }
 
   else
   {
-    v8 = [(KerberosPasswordViewController *)self presentingViewController];
+    presentingViewController = [(KerberosPasswordViewController *)self presentingViewController];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100001FA4;
     v9[3] = &unk_100014358;
     v9[4] = self;
-    [v8 dismissViewControllerAnimated:1 completion:v9];
+    [presentingViewController dismissViewControllerAnimated:1 completion:v9];
   }
 }
 
 - (void)_disableUI
 {
-  v3 = [(KerberosPasswordViewController *)self changePasswordButton];
-  [v3 setEnabled:0];
+  changePasswordButton = [(KerberosPasswordViewController *)self changePasswordButton];
+  [changePasswordButton setEnabled:0];
 
-  v4 = [(KerberosPasswordViewController *)self cancelButton];
-  [v4 setEnabled:0];
+  cancelButton = [(KerberosPasswordViewController *)self cancelButton];
+  [cancelButton setEnabled:0];
 
-  v5 = [(KerberosPasswordViewController *)self cancelButton];
-  [v5 setIsAccessibilityElement:0];
+  cancelButton2 = [(KerberosPasswordViewController *)self cancelButton];
+  [cancelButton2 setIsAccessibilityElement:0];
 
-  v6 = [(KerberosPasswordViewController *)self usernameTextField];
-  [v6 setEnabled:0];
+  usernameTextField = [(KerberosPasswordViewController *)self usernameTextField];
+  [usernameTextField setEnabled:0];
 
-  v7 = [(KerberosPasswordViewController *)self passwordTextField];
-  [v7 setEnabled:0];
+  passwordTextField = [(KerberosPasswordViewController *)self passwordTextField];
+  [passwordTextField setEnabled:0];
 
-  v8 = [(KerberosPasswordViewController *)self changedPasswordTextField];
-  [v8 setEnabled:0];
+  changedPasswordTextField = [(KerberosPasswordViewController *)self changedPasswordTextField];
+  [changedPasswordTextField setEnabled:0];
 
-  v9 = [(KerberosPasswordViewController *)self changedPasswordAgainTextField];
-  [v9 setEnabled:0];
+  changedPasswordAgainTextField = [(KerberosPasswordViewController *)self changedPasswordAgainTextField];
+  [changedPasswordAgainTextField setEnabled:0];
 
-  v10 = [(KerberosPasswordViewController *)self spinner];
-  [v10 startAnimating];
+  spinner = [(KerberosPasswordViewController *)self spinner];
+  [spinner startAnimating];
 
   [(KerberosPasswordViewController *)self changeFocusedElementForAccessibilityIfNeeded];
 }
 
 - (void)_enableUI
 {
-  v3 = [(KerberosPasswordViewController *)self _hasFilledRequiredFormFields];
-  v4 = [(KerberosPasswordViewController *)self changePasswordButton];
-  [v4 setEnabled:v3];
+  _hasFilledRequiredFormFields = [(KerberosPasswordViewController *)self _hasFilledRequiredFormFields];
+  changePasswordButton = [(KerberosPasswordViewController *)self changePasswordButton];
+  [changePasswordButton setEnabled:_hasFilledRequiredFormFields];
 
-  v5 = [(KerberosPasswordViewController *)self cancelButton];
-  [v5 setEnabled:1];
+  cancelButton = [(KerberosPasswordViewController *)self cancelButton];
+  [cancelButton setEnabled:1];
 
-  v6 = [(KerberosPasswordViewController *)self cancelButton];
-  [v6 setIsAccessibilityElement:1];
+  cancelButton2 = [(KerberosPasswordViewController *)self cancelButton];
+  [cancelButton2 setIsAccessibilityElement:1];
 
-  v7 = [(KerberosPasswordViewController *)self currentUIContext];
-  LODWORD(v4) = [v7 userNameIsReadOnly];
-  v8 = [(KerberosPasswordViewController *)self usernameTextField];
-  [v8 setEnabled:v4 ^ 1];
+  currentUIContext = [(KerberosPasswordViewController *)self currentUIContext];
+  LODWORD(changePasswordButton) = [currentUIContext userNameIsReadOnly];
+  usernameTextField = [(KerberosPasswordViewController *)self usernameTextField];
+  [usernameTextField setEnabled:changePasswordButton ^ 1];
 
-  v9 = [(KerberosPasswordViewController *)self passwordTextField];
-  [v9 setEnabled:1];
+  passwordTextField = [(KerberosPasswordViewController *)self passwordTextField];
+  [passwordTextField setEnabled:1];
 
-  v10 = [(KerberosPasswordViewController *)self changedPasswordTextField];
-  [v10 setEnabled:1];
+  changedPasswordTextField = [(KerberosPasswordViewController *)self changedPasswordTextField];
+  [changedPasswordTextField setEnabled:1];
 
-  v11 = [(KerberosPasswordViewController *)self changedPasswordAgainTextField];
-  [v11 setEnabled:1];
+  changedPasswordAgainTextField = [(KerberosPasswordViewController *)self changedPasswordAgainTextField];
+  [changedPasswordAgainTextField setEnabled:1];
 
-  v12 = [(KerberosPasswordViewController *)self spinner];
-  [v12 stopAnimating];
+  spinner = [(KerberosPasswordViewController *)self spinner];
+  [spinner stopAnimating];
 }
 
 - (void)cancelCurrentOperation
 {
-  v2 = [(KerberosPasswordViewController *)self currentUIContext];
-  [v2 cancelRequest];
+  currentUIContext = [(KerberosPasswordViewController *)self currentUIContext];
+  [currentUIContext cancelRequest];
 }
 
-- (void)handleKerberosOperation:(id)a3 withMessage:(id)a4
+- (void)handleKerberosOperation:(id)operation withMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  messageCopy = message;
   v8 = sub_100001624();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_10000B288(v6, v7, v8);
+    sub_10000B288(operationCopy, messageCopy, v8);
   }
 
   v10[0] = _NSConcreteStackBlock;
@@ -365,8 +365,8 @@
   v10[2] = sub_100002360;
   v10[3] = &unk_100014450;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = operationCopy;
+  v9 = operationCopy;
   [v9 presentAuthorizationViewControllerWithCompletion:v10];
 }
 
@@ -388,13 +388,13 @@
   dispatch_async(v4, block);
 }
 
-- (void)_showMessage:(id)a3 completionHandler:(id)a4
+- (void)_showMessage:(id)message completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  messageCopy = message;
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"CHANGE_PASSWORD_ERROR" value:&stru_100014860 table:0];
-  v10 = [UIAlertController alertControllerWithTitle:v9 message:v7 preferredStyle:1];
+  v10 = [UIAlertController alertControllerWithTitle:v9 message:messageCopy preferredStyle:1];
 
   v11 = +[NSBundle mainBundle];
   v12 = [v11 localizedStringForKey:@"OK_TEXT" value:&stru_100014860 table:0];
@@ -403,8 +403,8 @@
   v16[2] = sub_100002D24;
   v16[3] = &unk_100014478;
   v16[4] = self;
-  v17 = v6;
-  v13 = v6;
+  v17 = handlerCopy;
+  v13 = handlerCopy;
   v14 = [UIAlertAction actionWithTitle:v12 style:0 handler:v16];
   [v10 addAction:v14];
 
@@ -416,29 +416,29 @@
   [(KerberosPasswordViewController *)self presentViewController:v10 animated:1 completion:v15];
 }
 
-- (void)textFieldDidChange:(id)a3
+- (void)textFieldDidChange:(id)change
 {
-  v4 = [(KerberosPasswordViewController *)self _hasFilledRequiredFormFields];
+  _hasFilledRequiredFormFields = [(KerberosPasswordViewController *)self _hasFilledRequiredFormFields];
   changePasswordButton = self->_changePasswordButton;
 
-  [(UIButton *)changePasswordButton setEnabled:v4];
+  [(UIButton *)changePasswordButton setEnabled:_hasFilledRequiredFormFields];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
+  returnCopy = return;
   WeakRetained = objc_loadWeakRetained(&self->_usernameTextField);
 
   v6 = objc_loadWeakRetained(&self->_passwordTextField);
   v7 = v6;
-  if (WeakRetained == v4)
+  if (WeakRetained == returnCopy)
   {
     goto LABEL_7;
   }
 
   v8 = objc_loadWeakRetained(&self->_changedPasswordTextField);
   v9 = v8;
-  if (v7 == v4)
+  if (v7 == returnCopy)
   {
     [v8 becomeFirstResponder];
 
@@ -447,7 +447,7 @@
 
   v10 = objc_loadWeakRetained(&self->_changedPasswordAgainTextField);
   v7 = v10;
-  if (v9 == v4)
+  if (v9 == returnCopy)
   {
 LABEL_7:
     [v7 becomeFirstResponder];
@@ -456,7 +456,7 @@ LABEL_7:
   else
   {
 
-    if (v7 == v4 && [(KerberosPasswordViewController *)self _hasFilledRequiredFormFields])
+    if (v7 == returnCopy && [(KerberosPasswordViewController *)self _hasFilledRequiredFormFields])
     {
       [(KerberosPasswordViewController *)self changePasswordClicked];
     }
@@ -482,8 +482,8 @@ LABEL_9:
 
 - (BOOL)accessibilityPerformMagicTap
 {
-  v3 = [(KerberosPasswordViewController *)self _hasFilledRequiredFormFields];
-  if (v3)
+  _hasFilledRequiredFormFields = [(KerberosPasswordViewController *)self _hasFilledRequiredFormFields];
+  if (_hasFilledRequiredFormFields)
   {
     v4 = sub_100001624();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -495,7 +495,7 @@ LABEL_9:
     [(KerberosPasswordViewController *)self changePasswordClicked:0];
   }
 
-  return v3;
+  return _hasFilledRequiredFormFields;
 }
 
 - (void)changeFocusedElementForAccessibilityIfNeeded
@@ -512,20 +512,20 @@ LABEL_9:
 - (BOOL)_hasFilledRequiredFormFields
 {
   WeakRetained = objc_loadWeakRetained(&self->_usernameTextField);
-  v4 = [WeakRetained text];
-  v5 = [v4 length];
+  text = [WeakRetained text];
+  v5 = [text length];
 
   v6 = objc_loadWeakRetained(&self->_passwordTextField);
-  v7 = [v6 text];
-  v8 = [v7 length];
+  text2 = [v6 text];
+  v8 = [text2 length];
 
   v9 = objc_loadWeakRetained(&self->_changedPasswordTextField);
-  v10 = [v9 text];
-  v11 = [v10 length];
+  text3 = [v9 text];
+  v11 = [text3 length];
 
   v12 = objc_loadWeakRetained(&self->_changedPasswordAgainTextField);
-  v13 = [v12 text];
-  v14 = [v13 length];
+  text4 = [v12 text];
+  v14 = [text4 length];
 
   result = 0;
   if (v5 && v8)
@@ -548,11 +548,11 @@ LABEL_9:
 
 - (BOOL)_hasVerifiedNewPassword
 {
-  v3 = [(KerberosPasswordViewController *)self changedPasswordTextField];
-  v4 = [v3 text];
-  v5 = [(KerberosPasswordViewController *)self changedPasswordAgainTextField];
-  v6 = [v5 text];
-  v7 = [v4 isEqualToString:v6];
+  changedPasswordTextField = [(KerberosPasswordViewController *)self changedPasswordTextField];
+  text = [changedPasswordTextField text];
+  changedPasswordAgainTextField = [(KerberosPasswordViewController *)self changedPasswordAgainTextField];
+  text2 = [changedPasswordAgainTextField text];
+  v7 = [text isEqualToString:text2];
 
   return v7;
 }

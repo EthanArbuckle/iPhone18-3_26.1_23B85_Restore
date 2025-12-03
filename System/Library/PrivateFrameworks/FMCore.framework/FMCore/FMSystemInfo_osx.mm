@@ -63,9 +63,9 @@
     else
     {
       v3 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:v9 length:16];
-      v4 = [v3 fm_hexString];
+      fm_hexString = [v3 fm_hexString];
       v5 = deviceUDID__deviceUDID;
-      deviceUDID__deviceUDID = v4;
+      deviceUDID__deviceUDID = fm_hexString;
     }
 
     v2 = deviceUDID__deviceUDID;
@@ -81,11 +81,11 @@
   v2 = osVersion__osVersion;
   if (!osVersion__osVersion)
   {
-    v3 = [MEMORY[0x277CCAC38] processInfo];
-    v4 = v3;
-    if (v3)
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    v4 = processInfo;
+    if (processInfo)
     {
-      [v3 operatingSystemVersion];
+      [processInfo operatingSystemVersion];
     }
 
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu.%lu", 0, 0, v8];
@@ -103,9 +103,9 @@
   v3 = deviceModelName__deviceModelName;
   if (!deviceModelName__deviceModelName)
   {
-    v4 = [(FMSystemInfo_osx *)self productType];
+    productType = [(FMSystemInfo_osx *)self productType];
     v5 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:{@"0123456789, "}];
-    v6 = [v4 stringByTrimmingCharactersInSet:v5];
+    v6 = [productType stringByTrimmingCharactersInSet:v5];
     v7 = deviceModelName__deviceModelName;
     deviceModelName__deviceModelName = v6;
 

@@ -1,86 +1,86 @@
 @interface VFXPhysicsSliderJoint
-+ (id)jointWithBody:(id)a1 axis:(SEL)a2 anchor:(id)a3;
-+ (id)jointWithBodyA:(id)a3 axisA:(id)a4 anchorA:bodyB:axisB:anchorB:;
-+ (id)sliderWithBody:(id)a3 axis:(id)a4 anchor:(id)a5;
-+ (id)sliderWithBodyA:(id)a3 axisA:(id)a4 anchorA:(id)a5 bodyB:(id)a6 axisB:(id)a7 anchorB:(id)a8;
++ (id)jointWithBody:(id)body axis:(SEL)axis anchor:(id)anchor;
++ (id)jointWithBodyA:(id)a axisA:(id)axisA anchorA:bodyB:axisB:anchorB:;
++ (id)sliderWithBody:(id)body axis:(id)axis anchor:(id)anchor;
++ (id)sliderWithBodyA:(id)a axisA:(id)axisA anchorA:(id)anchorA bodyB:(id)b axisB:(id)axisB anchorB:(id)anchorB;
 - (VFXPhysicsSliderJoint)init;
-- (VFXPhysicsSliderJoint)initWithBodyA:(id)a3 axisA:(id)a4 anchorA:bodyB:axisB:anchorB:;
-- (VFXPhysicsSliderJoint)initWithCoder:(id)a3;
+- (VFXPhysicsSliderJoint)initWithBodyA:(id)a axisA:(id)axisA anchorA:bodyB:axisB:anchorB:;
+- (VFXPhysicsSliderJoint)initWithCoder:(id)coder;
 - (btTypedConstraint)_createConstraint;
 - (id)anchorAValue;
 - (id)anchorBValue;
 - (id)axisAValue;
 - (id)axisBValue;
-- (id)valueForKey:(id)a3;
-- (void)copyFrom:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)valueForKey:(id)key;
+- (void)copyFrom:(id)from;
+- (void)encodeWithCoder:(id)coder;
 - (void)setAnchorA:(VFXPhysicsSliderJoint *)self;
-- (void)setAnchorAValue:(id)a3;
+- (void)setAnchorAValue:(id)value;
 - (void)setAnchorB:(VFXPhysicsSliderJoint *)self;
-- (void)setAnchorBValue:(id)a3;
+- (void)setAnchorBValue:(id)value;
 - (void)setAxisA:(VFXPhysicsSliderJoint *)self;
-- (void)setAxisAValue:(id)a3;
+- (void)setAxisAValue:(id)value;
 - (void)setAxisB:(VFXPhysicsSliderJoint *)self;
-- (void)setAxisBValue:(id)a3;
-- (void)setMaximumAngularLimit:(float)a3;
-- (void)setMaximumLinearLimit:(float)a3;
-- (void)setMinimumAngularLimit:(float)a3;
-- (void)setMinimumLinearLimit:(float)a3;
-- (void)setMotorMaximumForce:(float)a3;
-- (void)setMotorMaximumTorque:(float)a3;
-- (void)setMotorTargetAngularVelocity:(float)a3;
-- (void)setMotorTargetLinearVelocity:(float)a3;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)setAxisBValue:(id)value;
+- (void)setMaximumAngularLimit:(float)limit;
+- (void)setMaximumLinearLimit:(float)limit;
+- (void)setMinimumAngularLimit:(float)limit;
+- (void)setMinimumLinearLimit:(float)limit;
+- (void)setMotorMaximumForce:(float)force;
+- (void)setMotorMaximumTorque:(float)torque;
+- (void)setMotorTargetAngularVelocity:(float)velocity;
+- (void)setMotorTargetLinearVelocity:(float)velocity;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation VFXPhysicsSliderJoint
 
-+ (id)sliderWithBodyA:(id)a3 axisA:(id)a4 anchorA:(id)a5 bodyB:(id)a6 axisB:(id)a7 anchorB:(id)a8
++ (id)sliderWithBodyA:(id)a axisA:(id)axisA anchorA:(id)anchorA bodyB:(id)b axisB:(id)axisB anchorB:(id)anchorB
 {
-  v15 = objc_msgSend_objectAtIndexedSubscript_(a4, a2, 0, a4);
+  v15 = objc_msgSend_objectAtIndexedSubscript_(axisA, a2, 0, axisA);
   objc_msgSend_floatValue(v15, v16, v17, v18);
-  v21 = objc_msgSend_objectAtIndexedSubscript_(a4, v19, 1, v20);
+  v21 = objc_msgSend_objectAtIndexedSubscript_(axisA, v19, 1, v20);
   objc_msgSend_floatValue(v21, v22, v23, v24);
-  v27 = objc_msgSend_objectAtIndexedSubscript_(a4, v25, 2, v26);
+  v27 = objc_msgSend_objectAtIndexedSubscript_(axisA, v25, 2, v26);
   objc_msgSend_floatValue(v27, v28, v29, v30);
-  v33 = objc_msgSend_objectAtIndexedSubscript_(a5, v31, 0, v32);
+  v33 = objc_msgSend_objectAtIndexedSubscript_(anchorA, v31, 0, v32);
   objc_msgSend_floatValue(v33, v34, v35, v36);
-  v39 = objc_msgSend_objectAtIndexedSubscript_(a5, v37, 1, v38);
+  v39 = objc_msgSend_objectAtIndexedSubscript_(anchorA, v37, 1, v38);
   objc_msgSend_floatValue(v39, v40, v41, v42);
-  v45 = objc_msgSend_objectAtIndexedSubscript_(a5, v43, 2, v44);
+  v45 = objc_msgSend_objectAtIndexedSubscript_(anchorA, v43, 2, v44);
   objc_msgSend_floatValue(v45, v46, v47, v48);
-  v51 = objc_msgSend_objectAtIndexedSubscript_(a7, v49, 0, v50);
+  v51 = objc_msgSend_objectAtIndexedSubscript_(axisB, v49, 0, v50);
   objc_msgSend_floatValue(v51, v52, v53, v54);
-  v57 = objc_msgSend_objectAtIndexedSubscript_(a7, v55, 1, v56);
+  v57 = objc_msgSend_objectAtIndexedSubscript_(axisB, v55, 1, v56);
   objc_msgSend_floatValue(v57, v58, v59, v60);
-  v63 = objc_msgSend_objectAtIndexedSubscript_(a7, v61, 2, v62);
+  v63 = objc_msgSend_objectAtIndexedSubscript_(axisB, v61, 2, v62);
   objc_msgSend_floatValue(v63, v64, v65, v66);
-  v69 = objc_msgSend_objectAtIndexedSubscript_(a8, v67, 0, v68);
+  v69 = objc_msgSend_objectAtIndexedSubscript_(anchorB, v67, 0, v68);
   objc_msgSend_floatValue(v69, v70, v71, v72);
-  v75 = objc_msgSend_objectAtIndexedSubscript_(a8, v73, 1, v74);
+  v75 = objc_msgSend_objectAtIndexedSubscript_(anchorB, v73, 1, v74);
   objc_msgSend_floatValue(v75, v76, v77, v78);
-  v81 = objc_msgSend_objectAtIndexedSubscript_(a8, v79, 2, v80);
+  v81 = objc_msgSend_objectAtIndexedSubscript_(anchorB, v79, 2, v80);
   objc_msgSend_floatValue(v81, v82, v83, v84);
 
-  return MEMORY[0x1EEE66B58](a1, sel_jointWithBodyA_axisA_anchorA_bodyB_axisB_anchorB_, a3, a6);
+  return MEMORY[0x1EEE66B58](self, sel_jointWithBodyA_axisA_anchorA_bodyB_axisB_anchorB_, a, b);
 }
 
-+ (id)sliderWithBody:(id)a3 axis:(id)a4 anchor:(id)a5
++ (id)sliderWithBody:(id)body axis:(id)axis anchor:(id)anchor
 {
-  v9 = objc_msgSend_objectAtIndexedSubscript_(a4, a2, 0, a4);
+  v9 = objc_msgSend_objectAtIndexedSubscript_(axis, a2, 0, axis);
   objc_msgSend_floatValue(v9, v10, v11, v12);
-  v15 = objc_msgSend_objectAtIndexedSubscript_(a4, v13, 1, v14);
+  v15 = objc_msgSend_objectAtIndexedSubscript_(axis, v13, 1, v14);
   objc_msgSend_floatValue(v15, v16, v17, v18);
-  v21 = objc_msgSend_objectAtIndexedSubscript_(a4, v19, 2, v20);
+  v21 = objc_msgSend_objectAtIndexedSubscript_(axis, v19, 2, v20);
   objc_msgSend_floatValue(v21, v22, v23, v24);
-  v27 = objc_msgSend_objectAtIndexedSubscript_(a5, v25, 0, v26);
+  v27 = objc_msgSend_objectAtIndexedSubscript_(anchor, v25, 0, v26);
   objc_msgSend_floatValue(v27, v28, v29, v30);
-  v33 = objc_msgSend_objectAtIndexedSubscript_(a5, v31, 1, v32);
+  v33 = objc_msgSend_objectAtIndexedSubscript_(anchor, v31, 1, v32);
   objc_msgSend_floatValue(v33, v34, v35, v36);
-  v39 = objc_msgSend_objectAtIndexedSubscript_(a5, v37, 2, v38);
+  v39 = objc_msgSend_objectAtIndexedSubscript_(anchor, v37, 2, v38);
   objc_msgSend_floatValue(v39, v40, v41, v42);
 
-  return MEMORY[0x1EEE66B58](a1, sel_jointWithBody_axis_anchor_, a3, v43);
+  return MEMORY[0x1EEE66B58](self, sel_jointWithBody_axis_anchor_, body, v43);
 }
 
 - (id)axisAValue
@@ -100,13 +100,13 @@
   return objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v27, v29, 3);
 }
 
-- (void)setAxisAValue:(id)a3
+- (void)setAxisAValue:(id)value
 {
-  v6 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, v3);
+  v6 = objc_msgSend_objectAtIndexedSubscript_(value, a2, 0, v3);
   objc_msgSend_floatValue(v6, v7, v8, v9);
-  v12 = objc_msgSend_objectAtIndexedSubscript_(a3, v10, 1, v11);
+  v12 = objc_msgSend_objectAtIndexedSubscript_(value, v10, 1, v11);
   objc_msgSend_floatValue(v12, v13, v14, v15);
-  v18 = objc_msgSend_objectAtIndexedSubscript_(a3, v16, 2, v17);
+  v18 = objc_msgSend_objectAtIndexedSubscript_(value, v16, 2, v17);
   objc_msgSend_floatValue(v18, v19, v20, v21);
 
   MEMORY[0x1EEE66B58](self, sel_setAxisA_, v22, v23);
@@ -129,13 +129,13 @@
   return objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v27, v29, 3);
 }
 
-- (void)setAnchorAValue:(id)a3
+- (void)setAnchorAValue:(id)value
 {
-  v6 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, v3);
+  v6 = objc_msgSend_objectAtIndexedSubscript_(value, a2, 0, v3);
   objc_msgSend_floatValue(v6, v7, v8, v9);
-  v12 = objc_msgSend_objectAtIndexedSubscript_(a3, v10, 1, v11);
+  v12 = objc_msgSend_objectAtIndexedSubscript_(value, v10, 1, v11);
   objc_msgSend_floatValue(v12, v13, v14, v15);
-  v18 = objc_msgSend_objectAtIndexedSubscript_(a3, v16, 2, v17);
+  v18 = objc_msgSend_objectAtIndexedSubscript_(value, v16, 2, v17);
   objc_msgSend_floatValue(v18, v19, v20, v21);
 
   MEMORY[0x1EEE66B58](self, sel_setAnchorA_, v22, v23);
@@ -158,13 +158,13 @@
   return objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v27, v29, 3);
 }
 
-- (void)setAxisBValue:(id)a3
+- (void)setAxisBValue:(id)value
 {
-  v6 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, v3);
+  v6 = objc_msgSend_objectAtIndexedSubscript_(value, a2, 0, v3);
   objc_msgSend_floatValue(v6, v7, v8, v9);
-  v12 = objc_msgSend_objectAtIndexedSubscript_(a3, v10, 1, v11);
+  v12 = objc_msgSend_objectAtIndexedSubscript_(value, v10, 1, v11);
   objc_msgSend_floatValue(v12, v13, v14, v15);
-  v18 = objc_msgSend_objectAtIndexedSubscript_(a3, v16, 2, v17);
+  v18 = objc_msgSend_objectAtIndexedSubscript_(value, v16, 2, v17);
   objc_msgSend_floatValue(v18, v19, v20, v21);
 
   MEMORY[0x1EEE66B58](self, sel_setAxisB_, v22, v23);
@@ -187,13 +187,13 @@
   return objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v27, v29, 3);
 }
 
-- (void)setAnchorBValue:(id)a3
+- (void)setAnchorBValue:(id)value
 {
-  v6 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, v3);
+  v6 = objc_msgSend_objectAtIndexedSubscript_(value, a2, 0, v3);
   objc_msgSend_floatValue(v6, v7, v8, v9);
-  v12 = objc_msgSend_objectAtIndexedSubscript_(a3, v10, 1, v11);
+  v12 = objc_msgSend_objectAtIndexedSubscript_(value, v10, 1, v11);
   objc_msgSend_floatValue(v12, v13, v14, v15);
-  v18 = objc_msgSend_objectAtIndexedSubscript_(a3, v16, 2, v17);
+  v18 = objc_msgSend_objectAtIndexedSubscript_(value, v16, 2, v17);
   objc_msgSend_floatValue(v18, v19, v20, v21);
 
   MEMORY[0x1EEE66B58](self, sel_setAnchorB_, v22, v23);
@@ -216,7 +216,7 @@
   return result;
 }
 
-- (VFXPhysicsSliderJoint)initWithBodyA:(id)a3 axisA:(id)a4 anchorA:bodyB:axisB:anchorB:
+- (VFXPhysicsSliderJoint)initWithBodyA:(id)a axisA:(id)axisA anchorA:bodyB:axisB:anchorB:
 {
   v19 = v6;
   v20 = v7;
@@ -228,10 +228,10 @@
   v13 = v10;
   if (v10)
   {
-    objc_msgSend_setBodyA_(v10, v11, a3, v12);
+    objc_msgSend_setBodyA_(v10, v11, a, v12);
     *&v13[1].super.super.isa = v17;
     *&v13[1].super._constraint = v18;
-    objc_msgSend_setBodyB_(v13, v14, a4, v15);
+    objc_msgSend_setBodyB_(v13, v14, axisA, v15);
     *&v13[1].super._bodyB = v19;
     *&v13[2].super.super.isa = v20;
     *&v13[2].super._constraint = xmmword_1AFE47CC0;
@@ -242,37 +242,37 @@
   return v13;
 }
 
-+ (id)jointWithBodyA:(id)a3 axisA:(id)a4 anchorA:bodyB:axisB:anchorB:
++ (id)jointWithBodyA:(id)a axisA:(id)axisA anchorA:bodyB:axisB:anchorB:
 {
   v17 = v7;
   v15 = v5;
   v16 = v6;
   v14 = v4;
-  v10 = [a1 alloc];
-  v12 = objc_msgSend_initWithBodyA_axisA_anchorA_bodyB_axisB_anchorB_(v10, v11, a3, a4, v14, v15, v16, v17);
+  v10 = [self alloc];
+  v12 = objc_msgSend_initWithBodyA_axisA_anchorA_bodyB_axisB_anchorB_(v10, v11, a, axisA, v14, v15, v16, v17);
 
   return v12;
 }
 
-+ (id)jointWithBody:(id)a1 axis:(SEL)a2 anchor:(id)a3
++ (id)jointWithBody:(id)body axis:(SEL)axis anchor:(id)anchor
 {
   v11 = v3;
   v12 = v4;
-  v6 = [a1 alloc];
-  v9 = objc_msgSend_initWithBody_axis_anchor_(v6, v7, a3, v8, v11, v12);
+  v6 = [body alloc];
+  v9 = objc_msgSend_initWithBody_axis_anchor_(v6, v7, anchor, v8, v11, v12);
 
   return v9;
 }
 
-- (void)copyFrom:(id)a3
+- (void)copyFrom:(id)from
 {
-  v3 = *(a3 + 4);
-  *&self[1].super.super.isa = *(a3 + 3);
+  v3 = *(from + 4);
+  *&self[1].super.super.isa = *(from + 3);
   *&self[1].super._constraint = v3;
-  v4 = *(a3 + 8);
-  v6 = *(a3 + 5);
-  v5 = *(a3 + 6);
-  *&self[2].super._constraint = *(a3 + 7);
+  v4 = *(from + 8);
+  v6 = *(from + 5);
+  v5 = *(from + 6);
+  *&self[2].super._constraint = *(from + 7);
   *&self[2].super._bodyB = v4;
   *&self[1].super._bodyB = v6;
   *&self[2].super.super.isa = v5;
@@ -287,7 +287,7 @@
   v10[1] = 3221225472;
   v10[2] = sub_1AF360DCC;
   v10[3] = &unk_1E7A7E5C8;
-  v12 = self;
+  selfCopy = self;
   v11 = v9;
   objc_msgSend__postCommandWithBlock_(v6, v7, v10, v8);
 }
@@ -301,7 +301,7 @@
   v10[1] = 3221225472;
   v10[2] = sub_1AF360FB4;
   v10[3] = &unk_1E7A7E5C8;
-  v12 = self;
+  selfCopy = self;
   v11 = v9;
   objc_msgSend__postCommandWithBlock_(v6, v7, v10, v8);
 }
@@ -315,7 +315,7 @@
   v10[1] = 3221225472;
   v10[2] = sub_1AF36119C;
   v10[3] = &unk_1E7A7E5C8;
-  v12 = self;
+  selfCopy = self;
   v11 = v9;
   objc_msgSend__postCommandWithBlock_(v6, v7, v10, v8);
 }
@@ -329,112 +329,112 @@
   v10[1] = 3221225472;
   v10[2] = sub_1AF3612D4;
   v10[3] = &unk_1E7A7E5C8;
-  v12 = self;
+  selfCopy = self;
   v11 = v9;
   objc_msgSend__postCommandWithBlock_(v6, v7, v10, v8);
 }
 
-- (void)setMinimumLinearLimit:(float)a3
+- (void)setMinimumLinearLimit:(float)limit
 {
-  *&self[2].super._constraint = a3;
+  *&self[2].super._constraint = limit;
   v7 = objc_msgSend_physicsWorld(self, a2, v3, v4);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_1AF361410;
   v10[3] = &unk_1E7A7E270;
   v10[4] = self;
-  v11 = a3;
+  limitCopy = limit;
   objc_msgSend__postCommandWithBlock_(v7, v8, v10, v9);
 }
 
-- (void)setMaximumLinearLimit:(float)a3
+- (void)setMaximumLinearLimit:(float)limit
 {
-  *(&self[2].super._constraint + 1) = a3;
+  *(&self[2].super._constraint + 1) = limit;
   v7 = objc_msgSend_physicsWorld(self, a2, v3, v4);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_1AF3614F4;
   v10[3] = &unk_1E7A7E270;
   v10[4] = self;
-  v11 = a3;
+  limitCopy = limit;
   objc_msgSend__postCommandWithBlock_(v7, v8, v10, v9);
 }
 
-- (void)setMinimumAngularLimit:(float)a3
+- (void)setMinimumAngularLimit:(float)limit
 {
-  *&self[2].super._bodyA = a3;
+  *&self[2].super._bodyA = limit;
   v7 = objc_msgSend_physicsWorld(self, a2, v3, v4);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_1AF3615D8;
   v10[3] = &unk_1E7A7E270;
   v10[4] = self;
-  v11 = a3;
+  limitCopy = limit;
   objc_msgSend__postCommandWithBlock_(v7, v8, v10, v9);
 }
 
-- (void)setMaximumAngularLimit:(float)a3
+- (void)setMaximumAngularLimit:(float)limit
 {
-  *(&self[2].super._bodyA + 1) = a3;
+  *(&self[2].super._bodyA + 1) = limit;
   v7 = objc_msgSend_physicsWorld(self, a2, v3, v4);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_1AF36170C;
   v10[3] = &unk_1E7A7E270;
   v10[4] = self;
-  v11 = a3;
+  limitCopy = limit;
   objc_msgSend__postCommandWithBlock_(v7, v8, v10, v9);
 }
 
-- (void)setMotorTargetLinearVelocity:(float)a3
+- (void)setMotorTargetLinearVelocity:(float)velocity
 {
-  *&self[2].super._bodyB = a3;
+  *&self[2].super._bodyB = velocity;
   v7 = objc_msgSend_physicsWorld(self, a2, v3, v4);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_1AF361840;
   v10[3] = &unk_1E7A7E270;
   v10[4] = self;
-  v11 = a3;
+  velocityCopy = velocity;
   objc_msgSend__postCommandWithBlock_(v7, v8, v10, v9);
 }
 
-- (void)setMotorMaximumForce:(float)a3
+- (void)setMotorMaximumForce:(float)force
 {
-  *(&self[2].super._bodyB + 1) = a3;
+  *(&self[2].super._bodyB + 1) = force;
   v7 = objc_msgSend_physicsWorld(self, a2, v3, v4);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_1AF361930;
   v10[3] = &unk_1E7A7E270;
   v10[4] = self;
-  v11 = a3;
+  forceCopy = force;
   objc_msgSend__postCommandWithBlock_(v7, v8, v10, v9);
 }
 
-- (void)setMotorTargetAngularVelocity:(float)a3
+- (void)setMotorTargetAngularVelocity:(float)velocity
 {
-  *self[2]._anon_28 = a3;
+  *self[2]._anon_28 = velocity;
   v7 = objc_msgSend_physicsWorld(self, a2, v3, v4);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_1AF361A14;
   v10[3] = &unk_1E7A7E270;
   v10[4] = self;
-  v11 = a3;
+  velocityCopy = velocity;
   objc_msgSend__postCommandWithBlock_(v7, v8, v10, v9);
 }
 
-- (void)setMotorMaximumTorque:(float)a3
+- (void)setMotorMaximumTorque:(float)torque
 {
-  *&self[2]._anon_28[4] = a3;
+  *&self[2]._anon_28[4] = torque;
   v7 = objc_msgSend_physicsWorld(self, a2, v3, v4);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_1AF361B04;
   v10[3] = &unk_1E7A7E270;
   v10[4] = self;
-  v11 = a3;
+  torqueCopy = torque;
   objc_msgSend__postCommandWithBlock_(v7, v8, v10, v9);
 }
 
@@ -616,28 +616,28 @@
   return v57;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   v21.receiver = self;
   v21.super_class = VFXPhysicsSliderJoint;
   [(VFXPhysicsJoint *)&v21 encodeWithCoder:?];
-  v4 += 3;
-  sub_1AF371A8C(a3, @"axisA", *v4);
-  sub_1AF371A8C(a3, @"axisB", v4[2]);
-  sub_1AF371A8C(a3, @"anchorA", v4[1]);
-  sub_1AF371A8C(a3, @"anchorB", v4[3]);
-  objc_msgSend_encodeDouble_forKey_(a3, v5, @"minLinearLimit", v6, v4[4].n128_f32[0]);
-  objc_msgSend_encodeDouble_forKey_(a3, v7, @"maxLinearLimit", v8, v4[4].n128_f32[1]);
-  objc_msgSend_encodeDouble_forKey_(a3, v9, @"minAngularLimit", v10, v4[4].n128_f32[2]);
-  objc_msgSend_encodeDouble_forKey_(a3, v11, @"maxAngularLimit", v12, v4[4].n128_f32[3]);
-  objc_msgSend_encodeDouble_forKey_(a3, v13, @"motorTargetLinearVelocity", v14, v4[5].n128_f32[0]);
-  objc_msgSend_encodeDouble_forKey_(a3, v15, @"motorMaximumForce", v16, v4[5].n128_f32[1]);
-  objc_msgSend_encodeDouble_forKey_(a3, v17, @"motorTargetAngularVelocity", v18, v4[5].n128_f32[2]);
-  objc_msgSend_encodeDouble_forKey_(a3, v19, @"motorMaximumTorque", v20, v4[5].n128_f32[3]);
+  selfCopy += 3;
+  sub_1AF371A8C(coder, @"axisA", *selfCopy);
+  sub_1AF371A8C(coder, @"axisB", selfCopy[2]);
+  sub_1AF371A8C(coder, @"anchorA", selfCopy[1]);
+  sub_1AF371A8C(coder, @"anchorB", selfCopy[3]);
+  objc_msgSend_encodeDouble_forKey_(coder, v5, @"minLinearLimit", v6, selfCopy[4].n128_f32[0]);
+  objc_msgSend_encodeDouble_forKey_(coder, v7, @"maxLinearLimit", v8, selfCopy[4].n128_f32[1]);
+  objc_msgSend_encodeDouble_forKey_(coder, v9, @"minAngularLimit", v10, selfCopy[4].n128_f32[2]);
+  objc_msgSend_encodeDouble_forKey_(coder, v11, @"maxAngularLimit", v12, selfCopy[4].n128_f32[3]);
+  objc_msgSend_encodeDouble_forKey_(coder, v13, @"motorTargetLinearVelocity", v14, selfCopy[5].n128_f32[0]);
+  objc_msgSend_encodeDouble_forKey_(coder, v15, @"motorMaximumForce", v16, selfCopy[5].n128_f32[1]);
+  objc_msgSend_encodeDouble_forKey_(coder, v17, @"motorTargetAngularVelocity", v18, selfCopy[5].n128_f32[2]);
+  objc_msgSend_encodeDouble_forKey_(coder, v19, @"motorMaximumTorque", v20, selfCopy[5].n128_f32[3]);
 }
 
-- (VFXPhysicsSliderJoint)initWithCoder:(id)a3
+- (VFXPhysicsSliderJoint)initWithCoder:(id)coder
 {
   v42.receiver = self;
   v42.super_class = VFXPhysicsSliderJoint;
@@ -646,36 +646,36 @@
   {
     v8 = objc_msgSend_immediateMode(VFXTransaction, v4, v5, v6);
     objc_msgSend_setImmediateMode_(VFXTransaction, v9, 1, v10);
-    *&v11 = sub_1AF371BC4(a3, @"axisA");
+    *&v11 = sub_1AF371BC4(coder, @"axisA");
     *&v7[1].super.super.isa = v11;
-    *&v12 = sub_1AF371BC4(a3, @"axisB");
+    *&v12 = sub_1AF371BC4(coder, @"axisB");
     *&v7[1].super._bodyB = v12;
-    *&v13 = sub_1AF371BC4(a3, @"anchorA");
+    *&v13 = sub_1AF371BC4(coder, @"anchorA");
     *&v7[1].super._constraint = v13;
-    *&v14 = sub_1AF371BC4(a3, @"anchorB");
+    *&v14 = sub_1AF371BC4(coder, @"anchorB");
     *&v7[2].super.super.isa = v14;
-    objc_msgSend_decodeDoubleForKey_(a3, v15, @"minLinearLimit", v16);
+    objc_msgSend_decodeDoubleForKey_(coder, v15, @"minLinearLimit", v16);
     *&v17 = v17;
     LODWORD(v7[2].super._constraint) = LODWORD(v17);
-    objc_msgSend_decodeDoubleForKey_(a3, v18, @"maxLinearLimit", v19);
+    objc_msgSend_decodeDoubleForKey_(coder, v18, @"maxLinearLimit", v19);
     *&v20 = v20;
     HIDWORD(v7[2].super._constraint) = LODWORD(v20);
-    objc_msgSend_decodeDoubleForKey_(a3, v21, @"minAngularLimit", v22);
+    objc_msgSend_decodeDoubleForKey_(coder, v21, @"minAngularLimit", v22);
     *&v23 = v23;
     LODWORD(v7[2].super._bodyA) = LODWORD(v23);
-    objc_msgSend_decodeDoubleForKey_(a3, v24, @"maxAngularLimit", v25);
+    objc_msgSend_decodeDoubleForKey_(coder, v24, @"maxAngularLimit", v25);
     *&v26 = v26;
     HIDWORD(v7[2].super._bodyA) = LODWORD(v26);
-    objc_msgSend_decodeDoubleForKey_(a3, v27, @"motorTargetLinearVelocity", v28);
+    objc_msgSend_decodeDoubleForKey_(coder, v27, @"motorTargetLinearVelocity", v28);
     *&v29 = v29;
     LODWORD(v7[2].super._bodyB) = LODWORD(v29);
-    objc_msgSend_decodeDoubleForKey_(a3, v30, @"motorMaximumForce", v31);
+    objc_msgSend_decodeDoubleForKey_(coder, v30, @"motorMaximumForce", v31);
     *&v32 = v32;
     HIDWORD(v7[2].super._bodyB) = LODWORD(v32);
-    objc_msgSend_decodeDoubleForKey_(a3, v33, @"motorTargetAngularVelocity", v34);
+    objc_msgSend_decodeDoubleForKey_(coder, v33, @"motorTargetAngularVelocity", v34);
     *&v35 = v35;
     *v7[2]._anon_28 = LODWORD(v35);
-    objc_msgSend_decodeDoubleForKey_(a3, v36, @"motorMaximumTorque", v37);
+    objc_msgSend_decodeDoubleForKey_(coder, v36, @"motorMaximumTorque", v37);
     *&v38 = v38;
     *&v7[2]._anon_28[4] = LODWORD(v38);
     objc_msgSend_setImmediateMode_(VFXTransaction, v39, v8, v40);
@@ -684,21 +684,21 @@
   return v7;
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  if (objc_msgSend_isEqualToString_(a3, a2, @"axisA", v3))
+  if (objc_msgSend_isEqualToString_(key, a2, @"axisA", v3))
   {
     v9 = MEMORY[0x1E696B098];
     objc_msgSend_axisA(self, v6, v7, v8);
   }
 
-  else if (objc_msgSend_isEqualToString_(a3, v6, @"axisB", v8))
+  else if (objc_msgSend_isEqualToString_(key, v6, @"axisB", v8))
   {
     v9 = MEMORY[0x1E696B098];
     objc_msgSend_axisB(self, v13, v14, v15);
   }
 
-  else if (objc_msgSend_isEqualToString_(a3, v13, @"anchorA", v15))
+  else if (objc_msgSend_isEqualToString_(key, v13, @"anchorA", v15))
   {
     v9 = MEMORY[0x1E696B098];
     objc_msgSend_anchorA(self, v16, v17, v18);
@@ -706,11 +706,11 @@
 
   else
   {
-    if (!objc_msgSend_isEqualToString_(a3, v16, @"anchorB", v18))
+    if (!objc_msgSend_isEqualToString_(key, v16, @"anchorB", v18))
     {
       v23.receiver = self;
       v23.super_class = VFXPhysicsSliderJoint;
-      return [(VFXPhysicsSliderJoint *)&v23 valueForKey:a3];
+      return [(VFXPhysicsSliderJoint *)&v23 valueForKey:key];
     }
 
     v9 = MEMORY[0x1E696B098];
@@ -720,32 +720,32 @@
   return objc_msgSend_valueWithVFXFloat3_(v9, v10, v11, v12);
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  if (objc_msgSend_isEqualToString_(a4, a2, @"axisA", a4))
+  if (objc_msgSend_isEqualToString_(key, a2, @"axisA", key))
   {
-    objc_msgSend_VFXFloat3Value(a3, v7, v8, v9);
+    objc_msgSend_VFXFloat3Value(value, v7, v8, v9);
 
     MEMORY[0x1EEE66B58](self, sel_setAxisA_, v10, v11);
   }
 
-  else if (objc_msgSend_isEqualToString_(a4, v7, @"axisB", v9))
+  else if (objc_msgSend_isEqualToString_(key, v7, @"axisB", v9))
   {
-    objc_msgSend_VFXFloat3Value(a3, v12, v13, v14);
+    objc_msgSend_VFXFloat3Value(value, v12, v13, v14);
 
     MEMORY[0x1EEE66B58](self, sel_setAxisB_, v15, v16);
   }
 
-  else if (objc_msgSend_isEqualToString_(a4, v12, @"anchorA", v14))
+  else if (objc_msgSend_isEqualToString_(key, v12, @"anchorA", v14))
   {
-    objc_msgSend_VFXFloat3Value(a3, v17, v18, v19);
+    objc_msgSend_VFXFloat3Value(value, v17, v18, v19);
 
     MEMORY[0x1EEE66B58](self, sel_setAnchorA_, v20, v21);
   }
 
-  else if (objc_msgSend_isEqualToString_(a4, v17, @"anchorB", v19))
+  else if (objc_msgSend_isEqualToString_(key, v17, @"anchorB", v19))
   {
-    objc_msgSend_VFXFloat3Value(a3, v22, v23, v24);
+    objc_msgSend_VFXFloat3Value(value, v22, v23, v24);
 
     MEMORY[0x1EEE66B58](self, sel_setAnchorB_, v25, v26);
   }
@@ -754,7 +754,7 @@
   {
     v27.receiver = self;
     v27.super_class = VFXPhysicsSliderJoint;
-    [(VFXPhysicsSliderJoint *)&v27 setValue:a3 forKey:a4];
+    [(VFXPhysicsSliderJoint *)&v27 setValue:value forKey:key];
   }
 }
 

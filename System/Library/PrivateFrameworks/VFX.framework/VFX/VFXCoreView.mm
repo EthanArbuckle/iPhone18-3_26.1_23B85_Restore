@@ -3,14 +3,14 @@
 - (BOOL)isHidden;
 - (CGRect)frame;
 - (UIColor)backgroundColor;
-- (_TtC3VFX11VFXCoreView)initWithCoder:(id)a3;
-- (_TtC3VFX11VFXCoreView)initWithFrame:(CGRect)a3;
+- (_TtC3VFX11VFXCoreView)initWithCoder:(id)coder;
+- (_TtC3VFX11VFXCoreView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHidden:(BOOL)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setFrame:(CGRect)frame;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation VFXCoreView
@@ -42,14 +42,14 @@
 
   v5.receiver = self;
   v5.super_class = type metadata accessor for VFXCoreView();
-  v3 = [(VFXCoreView *)&v5 isHidden];
+  isHidden = [(VFXCoreView *)&v5 isHidden];
 
-  return v3;
+  return isHidden;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   sub_1AFDFD638();
   sub_1AFDFD628();
   sub_1AFDFD5B8();
@@ -60,25 +60,25 @@
 
   v8.receiver = self;
   v8.super_class = type metadata accessor for VFXCoreView();
-  v5 = self;
-  [(VFXCoreView *)&v8 setHidden:v3];
-  v6 = [(VFXCoreView *)v5 window:v8.receiver];
+  selfCopy = self;
+  [(VFXCoreView *)&v8 setHidden:hiddenCopy];
+  v6 = [(VFXCoreView *)selfCopy window:v8.receiver];
   if (v6)
   {
 
-    v7 = [(VFXCoreView *)v5 isHidden];
+    isHidden = [(VFXCoreView *)selfCopy isHidden];
   }
 
   else
   {
-    v7 = 1;
+    isHidden = 1;
   }
 
-  *(&v5->super.super.super.isa + OBJC_IVAR____TtC3VFX11VFXCoreView_paused) = v7;
+  *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC3VFX11VFXCoreView_paused) = isHidden;
   sub_1AF752BB4();
 }
 
-- (_TtC3VFX11VFXCoreView)initWithCoder:(id)a3
+- (_TtC3VFX11VFXCoreView)initWithCoder:(id)coder
 {
   sub_1AFDFD638();
   sub_1AFDFD628();
@@ -88,7 +88,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = sub_1AF7530D8(a3);
+  v4 = sub_1AF7530D8(coder);
 
   return v4;
 }
@@ -97,18 +97,18 @@
 {
   if (*(&self->super.super.super.isa + OBJC_IVAR____TtC3VFX11VFXCoreView_renderer))
   {
-    v3 = self;
+    selfCopy = self;
 
     sub_1AF7535DC(v4);
   }
 
   else
   {
-    v5 = self;
+    selfCopy2 = self;
   }
 
-  v6 = [objc_opt_self() defaultCenter];
-  [v6 removeObserver_];
+  defaultCenter = [objc_opt_self() defaultCenter];
+  [defaultCenter removeObserver_];
 
   v7.receiver = self;
   v7.super_class = type metadata accessor for VFXCoreView();
@@ -125,15 +125,15 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
-  v4 = [(VFXCoreView *)v3 window];
-  v5 = v4;
-  if (v4)
+  selfCopy = self;
+  window = [(VFXCoreView *)selfCopy window];
+  v5 = window;
+  if (window)
   {
   }
 
   sub_1AF753A54(v5 != 0);
-  v6.receiver = v3;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for VFXCoreView();
   [(VFXCoreView *)&v6 didMoveToWindow];
 }
@@ -150,18 +150,18 @@
 
   v15.receiver = self;
   v15.super_class = type metadata accessor for VFXCoreView();
-  v3 = self;
+  selfCopy = self;
   [(VFXCoreView *)&v15 layoutSubviews];
-  [(VFXCoreView *)v3 bounds:v15.receiver];
+  [(VFXCoreView *)selfCopy bounds:v15.receiver];
   v5 = v4;
   v7 = v6;
-  [(VFXCoreView *)v3 contentScaleFactor];
+  [(VFXCoreView *)selfCopy contentScaleFactor];
   v9 = v5 * v8;
-  [(VFXCoreView *)v3 contentScaleFactor];
+  [(VFXCoreView *)selfCopy contentScaleFactor];
   v11 = v7 * v10;
   v12 = ceil(v9);
   v13 = ceil(v11);
-  if (*(&v3->super.super.super.isa + OBJC_IVAR____TtC3VFX11VFXCoreView_drawableSize) != v12 || *(&v3->super.super._responderFlags + OBJC_IVAR____TtC3VFX11VFXCoreView_drawableSize) != v13)
+  if (*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC3VFX11VFXCoreView_drawableSize) != v12 || *(&selfCopy->super.super._responderFlags + OBJC_IVAR____TtC3VFX11VFXCoreView_drawableSize) != v13)
   {
     sub_1AF753FAC(v12, v13);
   }
@@ -196,12 +196,12 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_1AFDFD638();
   sub_1AFDFD628();
   sub_1AFDFD5B8();
@@ -212,18 +212,18 @@
 
   v20.receiver = self;
   v20.super_class = type metadata accessor for VFXCoreView();
-  v8 = self;
+  selfCopy = self;
   [(VFXCoreView *)&v20 setFrame:x, y, width, height];
-  [(VFXCoreView *)v8 bounds:v20.receiver];
+  [(VFXCoreView *)selfCopy bounds:v20.receiver];
   v10 = v9;
   v12 = v11;
-  [(VFXCoreView *)v8 contentScaleFactor];
+  [(VFXCoreView *)selfCopy contentScaleFactor];
   v14 = v10 * v13;
-  [(VFXCoreView *)v8 contentScaleFactor];
+  [(VFXCoreView *)selfCopy contentScaleFactor];
   v16 = v12 * v15;
   v17 = ceil(v14);
   v18 = ceil(v16);
-  if (*(&v8->super.super.super.isa + OBJC_IVAR____TtC3VFX11VFXCoreView_drawableSize) != v17 || *(&v8->super.super._responderFlags + OBJC_IVAR____TtC3VFX11VFXCoreView_drawableSize) != v18)
+  if (*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC3VFX11VFXCoreView_drawableSize) != v17 || *(&selfCopy->super.super._responderFlags + OBJC_IVAR____TtC3VFX11VFXCoreView_drawableSize) != v18)
   {
     sub_1AF753FAC(v17, v18);
   }
@@ -241,12 +241,12 @@
 
   v5.receiver = self;
   v5.super_class = type metadata accessor for VFXCoreView();
-  v3 = [(VFXCoreView *)&v5 backgroundColor];
+  backgroundColor = [(VFXCoreView *)&v5 backgroundColor];
 
-  return v3;
+  return backgroundColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   sub_1AFDFD638();
   sub_1AFDFD628();
@@ -258,13 +258,13 @@
 
   v7.receiver = self;
   v7.super_class = type metadata accessor for VFXCoreView();
-  v5 = a3;
-  v6 = self;
-  [(VFXCoreView *)&v7 setBackgroundColor:v5];
+  colorCopy = color;
+  selfCopy = self;
+  [(VFXCoreView *)&v7 setBackgroundColor:colorCopy];
   sub_1AF754468();
 }
 
-- (_TtC3VFX11VFXCoreView)initWithFrame:(CGRect)a3
+- (_TtC3VFX11VFXCoreView)initWithFrame:(CGRect)frame
 {
   sub_1AFDFD638();
   sub_1AFDFD628();

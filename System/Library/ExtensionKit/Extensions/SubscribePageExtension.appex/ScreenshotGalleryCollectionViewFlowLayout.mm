@@ -1,10 +1,10 @@
 @interface ScreenshotGalleryCollectionViewFlowLayout
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity;
 - (_TtC22SubscribePageExtension41ScreenshotGalleryCollectionViewFlowLayout)init;
-- (_TtC22SubscribePageExtension41ScreenshotGalleryCollectionViewFlowLayout)initWithCoder:(id)a3;
+- (_TtC22SubscribePageExtension41ScreenshotGalleryCollectionViewFlowLayout)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)panGestureRecognizedBy:(id)a3;
-- (void)prepareForTransitionToLayout:(id)a3;
+- (void)panGestureRecognizedBy:(id)by;
+- (void)prepareForTransitionToLayout:(id)layout;
 - (void)prepareLayout;
 @end
 
@@ -22,7 +22,7 @@
   return v5;
 }
 
-- (_TtC22SubscribePageExtension41ScreenshotGalleryCollectionViewFlowLayout)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension41ScreenshotGalleryCollectionViewFlowLayout)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC22SubscribePageExtension41ScreenshotGalleryCollectionViewFlowLayout_indexPathAtInitialScroll;
   v5 = sub_1007417F4();
@@ -34,51 +34,51 @@
 
 - (void)dealloc
 {
-  v2 = self;
-  v3 = [(ScreenshotGalleryCollectionViewFlowLayout *)v2 collectionView];
-  if (v3)
+  selfCopy = self;
+  collectionView = [(ScreenshotGalleryCollectionViewFlowLayout *)selfCopy collectionView];
+  if (collectionView)
   {
-    v4 = v3;
-    v5 = [v3 panGestureRecognizer];
+    v4 = collectionView;
+    panGestureRecognizer = [collectionView panGestureRecognizer];
 
-    [v5 removeTarget:v2 action:0];
+    [panGestureRecognizer removeTarget:selfCopy action:0];
   }
 
-  v6.receiver = v2;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for ScreenshotGalleryCollectionViewFlowLayout();
   [(ScreenshotGalleryCollectionViewFlowLayout *)&v6 dealloc];
 }
 
 - (void)prepareLayout
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005FAA30();
 }
 
-- (void)prepareForTransitionToLayout:(id)a3
+- (void)prepareForTransitionToLayout:(id)layout
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for ScreenshotGalleryCollectionViewFlowLayout();
-  v4 = a3;
+  layoutCopy = layout;
   v5 = v9.receiver;
-  [(ScreenshotGalleryCollectionViewFlowLayout *)&v9 prepareForTransitionToLayout:v4];
-  v6 = [v5 collectionView];
-  if (v6)
+  [(ScreenshotGalleryCollectionViewFlowLayout *)&v9 prepareForTransitionToLayout:layoutCopy];
+  collectionView = [v5 collectionView];
+  if (collectionView)
   {
-    v7 = v6;
-    v8 = [v6 panGestureRecognizer];
+    v7 = collectionView;
+    panGestureRecognizer = [collectionView panGestureRecognizer];
 
-    [v8 removeTarget:v5 action:0];
+    [panGestureRecognizer removeTarget:v5 action:0];
   }
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
-  v8 = self;
+  y = velocity.y;
+  x = velocity.x;
+  v6 = offset.y;
+  v7 = offset.x;
+  selfCopy = self;
   sub_1005FAC3C(v7, v6, x, y);
   v10 = v9;
   v12 = v11;
@@ -90,11 +90,11 @@
   return result;
 }
 
-- (void)panGestureRecognizedBy:(id)a3
+- (void)panGestureRecognizedBy:(id)by
 {
-  v4 = a3;
-  v5 = self;
-  sub_1005FB2E0(v4);
+  byCopy = by;
+  selfCopy = self;
+  sub_1005FB2E0(byCopy);
 }
 
 @end

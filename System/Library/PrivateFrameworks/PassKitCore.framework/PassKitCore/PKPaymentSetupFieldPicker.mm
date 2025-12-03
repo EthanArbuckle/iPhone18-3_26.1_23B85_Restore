@@ -1,37 +1,37 @@
 @interface PKPaymentSetupFieldPicker
-+ (id)pickerItemMatchingValue:(id)a3 pickerItems:(id)a4;
++ (id)pickerItemMatchingValue:(id)value pickerItems:(id)items;
 - (BOOL)submissionStringMeetsAllRequirements;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)defaultPickerItem;
 - (void)_commonUpdate;
 - (void)_updateCurrentValuePickerItem;
-- (void)setCurrentValue:(id)a3;
-- (void)setDefaultValue:(id)a3;
-- (void)setPickerItems:(id)a3;
-- (void)updateWithAttribute:(id)a3;
-- (void)updateWithConfiguration:(id)a3;
+- (void)setCurrentValue:(id)value;
+- (void)setDefaultValue:(id)value;
+- (void)setPickerItems:(id)items;
+- (void)updateWithAttribute:(id)attribute;
+- (void)updateWithConfiguration:(id)configuration;
 @end
 
 @implementation PKPaymentSetupFieldPicker
 
-- (void)updateWithAttribute:(id)a3
+- (void)updateWithAttribute:(id)attribute
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  attributeCopy = attribute;
   v21.receiver = self;
   v21.super_class = PKPaymentSetupFieldPicker;
-  [(PKPaymentSetupField *)&v21 updateWithAttribute:v4];
+  [(PKPaymentSetupField *)&v21 updateWithAttribute:attributeCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = attributeCopy;
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = [v5 pickerItems];
-    v8 = [v7 countByEnumeratingWithState:&v17 objects:v22 count:16];
+    pickerItems = [v5 pickerItems];
+    v8 = [pickerItems countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v8)
     {
       v9 = v8;
@@ -43,7 +43,7 @@
         {
           if (*v18 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(pickerItems);
           }
 
           v12 = [PKPaymentSetupFieldPickerItem _itemWithDIAttributePickerItem:*(*(&v17 + 1) + 8 * v11)];
@@ -56,7 +56,7 @@
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v17 objects:v22 count:16];
+        v9 = [pickerItems countByEnumeratingWithState:&v17 objects:v22 count:16];
       }
 
       while (v9);
@@ -69,26 +69,26 @@
       self->_pickerItems = v13;
     }
 
-    v15 = [v5 defaultValue];
-    v16 = [v15 value];
+    defaultValue = [v5 defaultValue];
+    value = [defaultValue value];
 
-    if ([v16 length])
+    if ([value length])
     {
-      [(PKPaymentSetupFieldPicker *)self setDefaultValue:v16];
+      [(PKPaymentSetupFieldPicker *)self setDefaultValue:value];
     }
   }
 
   [(PKPaymentSetupFieldPicker *)self _commonUpdate];
 }
 
-- (void)updateWithConfiguration:(id)a3
+- (void)updateWithConfiguration:(id)configuration
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   v35.receiver = self;
   v35.super_class = PKPaymentSetupFieldPicker;
-  [(PKPaymentSetupField *)&v35 updateWithConfiguration:v4];
-  v5 = [v4 PKArrayContaining:objc_opt_class() forKey:@"pickerItems"];
+  [(PKPaymentSetupField *)&v35 updateWithConfiguration:configurationCopy];
+  v5 = [configurationCopy PKArrayContaining:objc_opt_class() forKey:@"pickerItems"];
   v6 = [v5 count];
   if (v6)
   {
@@ -132,7 +132,7 @@
     self->_pickerItems = v16;
   }
 
-  v18 = [v4 PKStringForKey:{@"pickerType", v31}];
+  v18 = [configurationCopy PKStringForKey:{@"pickerType", v31}];
   v19 = v18;
   if (v18 == @"radio")
   {
@@ -175,7 +175,7 @@ LABEL_22:
 LABEL_23:
 
   self->_pickerType = v21;
-  v28 = [v4 PKStringForKey:@"localizedDescription"];
+  v28 = [configurationCopy PKStringForKey:@"localizedDescription"];
   v29 = [v28 length];
   if (v29)
   {
@@ -203,18 +203,18 @@ LABEL_23:
   [(PKPaymentSetupFieldPicker *)self _updateCurrentValuePickerItem];
 }
 
-- (void)setCurrentValue:(id)a3
+- (void)setCurrentValue:(id)value
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->super._currentValue != v4)
+  valueCopy = value;
+  v5 = valueCopy;
+  if (self->super._currentValue != valueCopy)
   {
-    v11 = v4;
-    if (!v4 || (v6 = [(NSArray *)self->_pickerItems containsObject:v4], v5 = v11, v6))
+    v11 = valueCopy;
+    if (!valueCopy || (v6 = [(NSArray *)self->_pickerItems containsObject:valueCopy], v5 = v11, v6))
     {
-      v7 = [(PKPaymentSetupField *)self attribute];
-      v8 = [v11 attributePickerItem];
-      [v7 setCurrentValue:v8];
+      attribute = [(PKPaymentSetupField *)self attribute];
+      attributePickerItem = [v11 attributePickerItem];
+      [attribute setCurrentValue:attributePickerItem];
 
       v9 = [v11 copyWithZone:0];
       currentValue = self->super._currentValue;
@@ -226,23 +226,23 @@ LABEL_23:
   }
 }
 
-- (void)setDefaultValue:(id)a3
+- (void)setDefaultValue:(id)value
 {
   v4.receiver = self;
   v4.super_class = PKPaymentSetupFieldPicker;
-  [(PKPaymentSetupField *)&v4 setDefaultValue:a3];
+  [(PKPaymentSetupField *)&v4 setDefaultValue:value];
   [(PKPaymentSetupFieldPicker *)self _updateCurrentValuePickerItem];
 }
 
 - (id)defaultPickerItem
 {
-  v3 = [(PKPaymentSetupField *)self defaultValue];
+  defaultValue = [(PKPaymentSetupField *)self defaultValue];
 
-  if (v3)
+  if (defaultValue)
   {
     v4 = objc_opt_class();
-    v5 = [(PKPaymentSetupField *)self defaultValue];
-    v6 = [v4 pickerItemMatchingValue:v5 pickerItems:self->_pickerItems];
+    defaultValue2 = [(PKPaymentSetupField *)self defaultValue];
+    v6 = [v4 pickerItemMatchingValue:defaultValue2 pickerItems:self->_pickerItems];
   }
 
   else
@@ -253,14 +253,14 @@ LABEL_23:
   return v6;
 }
 
-- (void)setPickerItems:(id)a3
+- (void)setPickerItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   pickerItems = self->_pickerItems;
-  v7 = v5;
-  if (!v5 || !pickerItems)
+  v7 = itemsCopy;
+  if (!itemsCopy || !pickerItems)
   {
-    if (pickerItems == v5)
+    if (pickerItems == itemsCopy)
     {
       goto LABEL_7;
     }
@@ -268,26 +268,26 @@ LABEL_23:
     goto LABEL_6;
   }
 
-  if (([(NSArray *)v5 isEqual:?]& 1) == 0)
+  if (([(NSArray *)itemsCopy isEqual:?]& 1) == 0)
   {
 LABEL_6:
-    objc_storeStrong(&self->_pickerItems, a3);
+    objc_storeStrong(&self->_pickerItems, items);
     [(PKPaymentSetupFieldPicker *)self _updateCurrentValuePickerItem];
   }
 
 LABEL_7:
 }
 
-+ (id)pickerItemMatchingValue:(id)a3 pickerItems:(id)a4
++ (id)pickerItemMatchingValue:(id)value pickerItems:(id)items
 {
-  v5 = a3;
+  valueCopy = value;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __65__PKPaymentSetupFieldPicker_pickerItemMatchingValue_pickerItems___block_invoke;
   v9[3] = &unk_1E79C8418;
-  v10 = v5;
-  v6 = v5;
-  v7 = [a4 pk_firstObjectPassingTest:v9];
+  v10 = valueCopy;
+  v6 = valueCopy;
+  v7 = [items pk_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -352,18 +352,18 @@ LABEL_15:
 - (void)_updateCurrentValuePickerItem
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaymentSetupField *)self defaultValue];
-  if (v3)
+  defaultValue = [(PKPaymentSetupField *)self defaultValue];
+  if (defaultValue)
   {
-    v4 = [objc_opt_class() pickerItemMatchingValue:v3 pickerItems:self->_pickerItems];
+    v4 = [objc_opt_class() pickerItemMatchingValue:defaultValue pickerItems:self->_pickerItems];
     if (v4)
     {
       v5 = PKLogFacilityTypeGetObject(7uLL);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
-        v6 = [v4 submissionValue];
+        submissionValue = [v4 submissionValue];
         v7 = 138412290;
-        v8 = v6;
+        v8 = submissionValue;
         _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "Setting picker currentValue to %@", &v7, 0xCu);
       }
 
@@ -374,17 +374,17 @@ LABEL_15:
 
 - (BOOL)submissionStringMeetsAllRequirements
 {
-  v2 = [(PKPaymentSetupField *)self submissionString];
-  v3 = [v2 length] != 0;
+  submissionString = [(PKPaymentSetupField *)self submissionString];
+  v3 = [submissionString length] != 0;
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = PKPaymentSetupFieldPicker;
-  v4 = [(PKPaymentSetupField *)&v6 copyWithZone:a3];
+  v4 = [(PKPaymentSetupField *)&v6 copyWithZone:zone];
   *(v4 + 22) = self->_pickerType;
   objc_storeStrong(v4 + 21, self->_pickerItems);
   return v4;

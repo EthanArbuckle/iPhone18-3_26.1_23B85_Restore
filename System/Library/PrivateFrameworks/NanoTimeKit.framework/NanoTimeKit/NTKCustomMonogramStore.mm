@@ -4,7 +4,7 @@
 - (id)_customMonogramFromPrefs;
 - (void)_notifyClientsOfChange;
 - (void)dealloc;
-- (void)setCustomMonogram:(id)a3;
+- (void)setCustomMonogram:(id)monogram;
 @end
 
 @implementation NTKCustomMonogramStore
@@ -56,20 +56,20 @@ void __40__NTKCustomMonogramStore_sharedInstance__block_invoke()
 - (id)_customMonogramFromPrefs
 {
   v2 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:@"com.apple.NanoTimeKit"];
-  v3 = [v2 synchronize];
+  synchronize = [v2 synchronize];
   v4 = [v2 stringForKey:@"customMonogram"];
 
   return v4;
 }
 
-- (void)setCustomMonogram:(id)a3
+- (void)setCustomMonogram:(id)monogram
 {
   v4 = MEMORY[0x277D2BA58];
-  v5 = a3;
+  monogramCopy = monogram;
   v12 = [[v4 alloc] initWithDomain:@"com.apple.NanoTimeKit"];
-  [v12 setObject:v5 forKey:@"customMonogram"];
+  [v12 setObject:monogramCopy forKey:@"customMonogram"];
 
-  v6 = [v12 synchronize];
+  synchronize = [v12 synchronize];
   npsManager = self->_npsManager;
   if (!npsManager)
   {
@@ -89,8 +89,8 @@ void __40__NTKCustomMonogramStore_sharedInstance__block_invoke()
 
 - (void)_notifyClientsOfChange
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"NTKCustomMonogramChangedNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"NTKCustomMonogramChangedNotification" object:self];
 }
 
 @end

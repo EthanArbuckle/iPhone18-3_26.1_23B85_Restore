@@ -1,8 +1,8 @@
 @interface HMDPredictionSubscriber
-- (HMDPredictionSubscriber)initWithWorkQueue:(id)a3 messageDispatcher:(id)a4 notificationBackend:(int64_t)a5;
-- (HMDPredictionSubscriber)initWithWorkQueue:(id)a3 messageDispatcher:(id)a4 notificationBackend:(int64_t)a5 darwinNotificationProvider:(id)a6;
+- (HMDPredictionSubscriber)initWithWorkQueue:(id)queue messageDispatcher:(id)dispatcher notificationBackend:(int64_t)backend;
+- (HMDPredictionSubscriber)initWithWorkQueue:(id)queue messageDispatcher:(id)dispatcher notificationBackend:(int64_t)backend darwinNotificationProvider:(id)provider;
 - (HMDPredictionSubscriberDataSource)dataSource;
-- (id)notificationNameForBackend:(int64_t)a3;
+- (id)notificationNameForBackend:(int64_t)backend;
 - (void)configure;
 - (void)dealloc;
 @end
@@ -23,7 +23,7 @@
   {
     v3 = [(HMDPredictionSubscriber *)self notificationNameForBackend:[(HMDPredictionSubscriber *)self notificationBackend]];
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     v7 = v6;
     if (v3)
@@ -39,18 +39,18 @@
       }
 
       objc_autoreleasePoolPop(v4);
-      objc_initWeak(buf, v5);
-      v9 = [(HMDPredictionSubscriber *)v5 darwinNotificationProvider];
+      objc_initWeak(buf, selfCopy);
+      darwinNotificationProvider = [(HMDPredictionSubscriber *)selfCopy darwinNotificationProvider];
       v10 = v3;
-      v11 = [v3 UTF8String];
-      v12 = [(HMDPredictionSubscriber *)v5 workQueue];
+      uTF8String = [v3 UTF8String];
+      workQueue = [(HMDPredictionSubscriber *)selfCopy workQueue];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __36__HMDPredictionSubscriber_configure__block_invoke;
       v16[3] = &unk_279729F68;
       objc_copyWeak(&v18, buf);
       v17 = v3;
-      [v9 notifyRegisterDispatch:v11 outToken:&v5->_predictionsChangedNotificationToken queue:v12 handler:v16];
+      [darwinNotificationProvider notifyRegisterDispatch:uTF8String outToken:&selfCopy->_predictionsChangedNotificationToken queue:workQueue handler:v16];
 
       objc_destroyWeak(&v18);
       objc_destroyWeak(buf);
@@ -61,7 +61,7 @@
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
         v13 = HMFGetLogIdentifier();
-        v14 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDPredictionSubscriber notificationBackend](v5, "notificationBackend")}];
+        v14 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDPredictionSubscriber notificationBackend](selfCopy, "notificationBackend")}];
         *buf = 138543618;
         v20 = v13;
         v21 = 2112;
@@ -111,9 +111,9 @@ void __36__HMDPredictionSubscriber_configure__block_invoke(uint64_t a1)
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)notificationNameForBackend:(int64_t)a3
+- (id)notificationNameForBackend:(int64_t)backend
 {
-  if (a3)
+  if (backend)
   {
     return 0;
   }
@@ -136,34 +136,34 @@ void __36__HMDPredictionSubscriber_configure__block_invoke(uint64_t a1)
   [(HMDPredictionSubscriber *)&v3 dealloc];
 }
 
-- (HMDPredictionSubscriber)initWithWorkQueue:(id)a3 messageDispatcher:(id)a4 notificationBackend:(int64_t)a5 darwinNotificationProvider:(id)a6
+- (HMDPredictionSubscriber)initWithWorkQueue:(id)queue messageDispatcher:(id)dispatcher notificationBackend:(int64_t)backend darwinNotificationProvider:(id)provider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  queueCopy = queue;
+  dispatcherCopy = dispatcher;
+  providerCopy = provider;
   v17.receiver = self;
   v17.super_class = HMDPredictionSubscriber;
   v14 = [(HMDPredictionSubscriber *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_workQueue, a3);
-    objc_storeStrong(&v15->_messageDispatcher, a4);
-    objc_storeStrong(&v15->_darwinNotificationProvider, a6);
-    v15->_notificationBackend = a5;
+    objc_storeStrong(&v14->_workQueue, queue);
+    objc_storeStrong(&v15->_messageDispatcher, dispatcher);
+    objc_storeStrong(&v15->_darwinNotificationProvider, provider);
+    v15->_notificationBackend = backend;
     v15->_predictionsChangedNotificationToken = -1;
   }
 
   return v15;
 }
 
-- (HMDPredictionSubscriber)initWithWorkQueue:(id)a3 messageDispatcher:(id)a4 notificationBackend:(int64_t)a5
+- (HMDPredictionSubscriber)initWithWorkQueue:(id)queue messageDispatcher:(id)dispatcher notificationBackend:(int64_t)backend
 {
   v8 = MEMORY[0x277CD19C0];
-  v9 = a4;
-  v10 = a3;
+  dispatcherCopy = dispatcher;
+  queueCopy = queue;
   v11 = objc_alloc_init(v8);
-  v12 = [(HMDPredictionSubscriber *)self initWithWorkQueue:v10 messageDispatcher:v9 notificationBackend:a5 darwinNotificationProvider:v11];
+  v12 = [(HMDPredictionSubscriber *)self initWithWorkQueue:queueCopy messageDispatcher:dispatcherCopy notificationBackend:backend darwinNotificationProvider:v11];
 
   return v12;
 }

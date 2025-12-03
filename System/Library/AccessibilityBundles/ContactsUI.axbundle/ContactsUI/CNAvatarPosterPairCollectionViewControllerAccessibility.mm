@@ -1,31 +1,31 @@
 @interface CNAvatarPosterPairCollectionViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 @end
 
 @implementation CNAvatarPosterPairCollectionViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ContactsUI.CNAvatarPosterPairCollectionViewController" isKindOfClass:@"UICollectionViewController"];
-  [v3 validateClass:@"ContactsUI.CNAvatarPosterPairCollectionViewController" hasSwiftField:@"centeredPosterButton" withSwiftType:"Optional<UIButton>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ContactsUI.CNAvatarPosterPairCollectionViewController" isKindOfClass:@"UICollectionViewController"];
+  [validationsCopy validateClass:@"ContactsUI.CNAvatarPosterPairCollectionViewController" hasSwiftField:@"centeredPosterButton" withSwiftType:"Optional<UIButton>"];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v20.receiver = self;
   v20.super_class = CNAvatarPosterPairCollectionViewControllerAccessibility;
-  v7 = a3;
-  v8 = [(CNAvatarPosterPairCollectionViewControllerAccessibility *)&v20 collectionView:v7 cellForItemAtIndexPath:v6];
+  viewCopy = view;
+  v8 = [(CNAvatarPosterPairCollectionViewControllerAccessibility *)&v20 collectionView:viewCopy cellForItemAtIndexPath:pathCopy];
   [v8 setIsAccessibilityElement:1];
-  v9 = -[CNAvatarPosterPairCollectionViewControllerAccessibility collectionView:numberOfItemsInSection:](self, "collectionView:numberOfItemsInSection:", v7, [v6 section]);
+  v9 = -[CNAvatarPosterPairCollectionViewControllerAccessibility collectionView:numberOfItemsInSection:](self, "collectionView:numberOfItemsInSection:", viewCopy, [pathCopy section]);
 
-  v10 = [v6 item];
+  item = [pathCopy item];
   v11 = v9 - 1;
   [v8 setAccessibilityTraits:*MEMORY[0x29EDC7F70]];
-  if (v10 == v9 - 1)
+  if (item == v9 - 1)
   {
     v12 = accessibilityLocalizedString(@"add.new.poster");
     [v8 setAccessibilityLabel:v12];
@@ -41,7 +41,7 @@
 
     v14 = MEMORY[0x29EDBA0F8];
     v15 = accessibilityLocalizedString(@"contact.poster.position");
-    v16 = [v14 stringWithFormat:v15, objc_msgSend(v6, "item") + 1, v11];
+    v16 = [v14 stringWithFormat:v15, objc_msgSend(pathCopy, "item") + 1, v11];
     [v8 setAccessibilityValue:v16];
 
     v17 = accessibilityLocalizedString(@"contact.photo.customize.hint");

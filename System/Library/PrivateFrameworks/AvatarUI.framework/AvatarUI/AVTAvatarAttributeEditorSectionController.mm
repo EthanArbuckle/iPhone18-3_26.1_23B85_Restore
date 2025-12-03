@@ -1,65 +1,65 @@
 @interface AVTAvatarAttributeEditorSectionController
-+ (BOOL)shouldHideLabelBackgroundInSection:(id)a3 fittingWidth:(double)a4;
-+ (CGSize)cellSizeForSectionItem:(id)a3 inSection:(id)a4 fittingWidth:(double)a5 environment:(id)a6;
-+ (UIEdgeInsets)edgeInsetsForSection:(id)a3 fittingWidth:(double)a4 environment:(id)a5;
-+ (double)edgeLengthFittingWidth:(double)a3 environment:(id)a4;
-+ (double)maxLabelHeightInSection:(id)a3 fittingWidth:(double)a4;
++ (BOOL)shouldHideLabelBackgroundInSection:(id)section fittingWidth:(double)width;
++ (CGSize)cellSizeForSectionItem:(id)item inSection:(id)section fittingWidth:(double)width environment:(id)environment;
++ (UIEdgeInsets)edgeInsetsForSection:(id)section fittingWidth:(double)width environment:(id)environment;
++ (double)edgeLengthFittingWidth:(double)width environment:(id)environment;
++ (double)maxLabelHeightInSection:(id)section fittingWidth:(double)width;
 - (AVTAvatarAttributeEditorControllerSubSelectionDelegate)delegate;
-- (AVTAvatarAttributeEditorSectionController)initWithThumbnailScheduler:(id)a3 renderingScheduler:(id)a4 environment:(id)a5;
-- (CGSize)sizeForFocusingItemAtIndex:(int64_t)a3 fittingSize:(CGSize)a4;
-- (CGSize)sizeForItemAtIndex:(int64_t)a3 fittingSize:(CGSize)a4;
-- (UIEdgeInsets)edgeInsetsFittingSize:(CGSize)a3;
-- (id)prefetchingSectionItemForIndex:(int64_t)a3;
-- (id)viewForIndex:(int64_t)a3;
+- (AVTAvatarAttributeEditorSectionController)initWithThumbnailScheduler:(id)scheduler renderingScheduler:(id)renderingScheduler environment:(id)environment;
+- (CGSize)sizeForFocusingItemAtIndex:(int64_t)index fittingSize:(CGSize)size;
+- (CGSize)sizeForItemAtIndex:(int64_t)index fittingSize:(CGSize)size;
+- (UIEdgeInsets)edgeInsetsFittingSize:(CGSize)size;
+- (id)prefetchingSectionItemForIndex:(int64_t)index;
+- (id)viewForIndex:(int64_t)index;
 - (int64_t)numberOfItems;
-- (unint64_t)indexForItem:(id)a3;
-- (void)cell:(id)a3 willDisplayAtIndex:(int64_t)a4;
-- (void)didHighlightItemAtIndex:(int64_t)a3 cell:(id)a4 completionBlock:(id)a5;
-- (void)didSelectItemAtIndex:(int64_t)a3 cell:(id)a4;
-- (void)didUnhighlightItemAtIndex:(int64_t)a3 cell:(id)a4 completionBlock:(id)a5;
-- (void)updateCell:(id)a3 forItemAtIndex:(int64_t)a4;
-- (void)updateWithSection:(id)a3;
+- (unint64_t)indexForItem:(id)item;
+- (void)cell:(id)cell willDisplayAtIndex:(int64_t)index;
+- (void)didHighlightItemAtIndex:(int64_t)index cell:(id)cell completionBlock:(id)block;
+- (void)didSelectItemAtIndex:(int64_t)index cell:(id)cell;
+- (void)didUnhighlightItemAtIndex:(int64_t)index cell:(id)cell completionBlock:(id)block;
+- (void)updateCell:(id)cell forItemAtIndex:(int64_t)index;
+- (void)updateWithSection:(id)section;
 @end
 
 @implementation AVTAvatarAttributeEditorSectionController
 
-+ (double)edgeLengthFittingWidth:(double)a3 environment:(id)a4
++ (double)edgeLengthFittingWidth:(double)width environment:(id)environment
 {
-  v5 = a4;
-  v6 = [v5 deviceIsPad];
+  environmentCopy = environment;
+  deviceIsPad = [environmentCopy deviceIsPad];
   v7 = 400.0;
-  if (a3 <= 400.0 || (v7 = 6.0, (v6 & 1) == 0))
+  if (width <= 400.0 || (v7 = 6.0, (deviceIsPad & 1) == 0))
   {
-    v8 = [v5 deviceIsMac];
+    deviceIsMac = [environmentCopy deviceIsMac];
     v7 = 3.0;
-    if (((a3 > 300.0) & v8) != 0)
+    if (((width > 300.0) & deviceIsMac) != 0)
     {
       v7 = 6.0;
     }
   }
 
-  v9 = floor((a3 + -24.0 + (v7 + -1.0) * -0.0) / v7);
+  v9 = floor((width + -24.0 + (v7 + -1.0) * -0.0) / v7);
 
   return v9;
 }
 
-+ (CGSize)cellSizeForSectionItem:(id)a3 inSection:(id)a4 fittingWidth:(double)a5 environment:(id)a6
++ (CGSize)cellSizeForSectionItem:(id)item inSection:(id)section fittingWidth:(double)width environment:(id)environment
 {
-  v10 = a3;
-  v11 = a4;
-  [a1 edgeLengthFittingWidth:a6 environment:a5];
+  itemCopy = item;
+  sectionCopy = section;
+  [self edgeLengthFittingWidth:environment environment:width];
   v13 = v12;
-  [v10 heightRatio];
+  [itemCopy heightRatio];
   v15 = v13 * v14;
-  v16 = [v11 options];
-  v17 = [v16 showsLabel];
+  options = [sectionCopy options];
+  showsLabel = [options showsLabel];
 
-  if (v17)
+  if (showsLabel)
   {
-    [a1 maxLabelHeightInSection:v11 fittingWidth:v13];
+    [self maxLabelHeightInSection:sectionCopy fittingWidth:v13];
     v19 = v18;
-    [v10 heightRatio];
-    [a1 requiredLabelSpaceForMaxLabelHeight:v19 cellEdgeLength:v13 sectionItemHeightRatio:v20];
+    [itemCopy heightRatio];
+    [self requiredLabelSpaceForMaxLabelHeight:v19 cellEdgeLength:v13 sectionItemHeightRatio:v20];
     v15 = v15 + v21;
   }
 
@@ -70,23 +70,23 @@
   return result;
 }
 
-+ (double)maxLabelHeightInSection:(id)a3 fittingWidth:(double)a4
++ (double)maxLabelHeightInSection:(id)section fittingWidth:(double)width
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 options];
-  v7 = [v6 showsLabel];
+  sectionCopy = section;
+  options = [sectionCopy options];
+  showsLabel = [options showsLabel];
 
   v8 = 0.0;
-  if (v7)
+  if (showsLabel)
   {
     v9 = +[AVTUIFontRepository attributeViewLabelFont];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v10 = [v5 sectionItems];
-    v11 = [v10 countByEnumeratingWithState:&v25 objects:v31 count:16];
+    sectionItems = [sectionCopy sectionItems];
+    v11 = [sectionItems countByEnumeratingWithState:&v25 objects:v31 count:16];
     if (v11)
     {
       v12 = v11;
@@ -99,14 +99,14 @@
         {
           if (*v26 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(sectionItems);
           }
 
-          v17 = [*(*(&v25 + 1) + 8 * i) localizedName];
+          localizedName = [*(*(&v25 + 1) + 8 * i) localizedName];
           v29 = v14;
           v30 = v9;
           v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
-          [v17 boundingRectWithSize:1 options:v18 attributes:0 context:{a4, 1.79769313e308}];
+          [localizedName boundingRectWithSize:1 options:v18 attributes:0 context:{width, 1.79769313e308}];
           v20 = v19;
 
           v21 = ceil(v20);
@@ -116,7 +116,7 @@
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v25 objects:v31 count:16];
+        v12 = [sectionItems countByEnumeratingWithState:&v25 objects:v31 count:16];
       }
 
       while (v12);
@@ -143,14 +143,14 @@
   return v8;
 }
 
-+ (BOOL)shouldHideLabelBackgroundInSection:(id)a3 fittingWidth:(double)a4
++ (BOOL)shouldHideLabelBackgroundInSection:(id)section fittingWidth:(double)width
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 options];
-  v7 = [v6 showsLabel];
+  sectionCopy = section;
+  options = [sectionCopy options];
+  showsLabel = [options showsLabel];
 
-  if (v7)
+  if (showsLabel)
   {
     v8 = +[AVTUIFontRepository attributeViewLabelFont];
     [v8 lineHeight];
@@ -161,8 +161,8 @@
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v13 = [v5 sectionItems];
-    v14 = [v13 countByEnumeratingWithState:&v30 objects:v38 count:16];
+    sectionItems = [sectionCopy sectionItems];
+    v14 = [sectionItems countByEnumeratingWithState:&v30 objects:v38 count:16];
     if (v14)
     {
       v15 = ceil(v10) + 3.0;
@@ -175,14 +175,14 @@
         {
           if (*v31 != v17)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(sectionItems);
           }
 
-          v20 = [*(*(&v30 + 1) + 8 * i) localizedName];
+          localizedName = [*(*(&v30 + 1) + 8 * i) localizedName];
           v36 = v18;
           v37 = v8;
           v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
-          [v20 boundingRectWithSize:1 options:v21 attributes:0 context:{a4, 1.79769313e308}];
+          [localizedName boundingRectWithSize:1 options:v21 attributes:0 context:{width, 1.79769313e308}];
           v23 = v22;
           v25 = v24;
 
@@ -191,7 +191,7 @@
             v34 = v18;
             v35 = v8;
             v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
-            [v20 boundingRectWithSize:1 options:v26 attributes:0 context:{a4 + -4.0 + -1.0, 1.79769313e308}];
+            [localizedName boundingRectWithSize:1 options:v26 attributes:0 context:{width + -4.0 + -1.0, 1.79769313e308}];
             v28 = v27;
 
             if (ceil(v28) > v16)
@@ -203,13 +203,13 @@ LABEL_15:
             }
           }
 
-          else if (ceil(v23) >= a4 + -4.0)
+          else if (ceil(v23) >= width + -4.0)
           {
             goto LABEL_15;
           }
         }
 
-        v14 = [v13 countByEnumeratingWithState:&v30 objects:v38 count:16];
+        v14 = [sectionItems countByEnumeratingWithState:&v30 objects:v38 count:16];
         if (v14)
         {
           continue;
@@ -230,15 +230,15 @@ LABEL_16:
   return v14;
 }
 
-+ (UIEdgeInsets)edgeInsetsForSection:(id)a3 fittingWidth:(double)a4 environment:(id)a5
++ (UIEdgeInsets)edgeInsetsForSection:(id)section fittingWidth:(double)width environment:(id)environment
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 localizedName];
-  if (v10)
+  sectionCopy = section;
+  environmentCopy = environment;
+  localizedName = [sectionCopy localizedName];
+  if (localizedName)
   {
-    v11 = [v8 localizedName];
-    if ([v11 length])
+    localizedName2 = [sectionCopy localizedName];
+    if ([localizedName2 length])
     {
       v12 = 0.0;
     }
@@ -254,34 +254,34 @@ LABEL_16:
     v12 = 12.0;
   }
 
-  v13 = [v8 sectionItems];
-  v14 = [v13 firstObject];
+  sectionItems = [sectionCopy sectionItems];
+  firstObject = [sectionItems firstObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
     v16 = MEMORY[0x1E695DF30];
-    v17 = [v8 sectionItems];
-    v18 = [v17 firstObject];
-    [v16 raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", v18}];
+    sectionItems2 = [sectionCopy sectionItems];
+    firstObject2 = [sectionItems2 firstObject];
+    [v16 raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", firstObject2}];
   }
 
-  v19 = [v8 sectionItems];
-  v20 = [v19 firstObject];
+  sectionItems3 = [sectionCopy sectionItems];
+  firstObject3 = [sectionItems3 firstObject];
 
-  if (v20)
+  if (firstObject3)
   {
-    [a1 edgeLengthFittingWidth:v9 environment:a4];
+    [self edgeLengthFittingWidth:environmentCopy environment:width];
     v22 = v21;
-    [v20 heightRatio];
+    [firstObject3 heightRatio];
     v24 = v23;
-    v25 = [v8 options];
-    v26 = [v25 showsLabel];
+    options = [sectionCopy options];
+    showsLabel = [options showsLabel];
 
-    if (v26)
+    if (showsLabel)
     {
-      [v20 heightRatio];
+      [firstObject3 heightRatio];
       v28 = (v22 * v27 - v22) * 0.5 + 12.0;
       v29 = 17.0;
       v12 = 17.0 - v28;
@@ -311,200 +311,200 @@ LABEL_16:
   return result;
 }
 
-- (AVTAvatarAttributeEditorSectionController)initWithThumbnailScheduler:(id)a3 renderingScheduler:(id)a4 environment:(id)a5
+- (AVTAvatarAttributeEditorSectionController)initWithThumbnailScheduler:(id)scheduler renderingScheduler:(id)renderingScheduler environment:(id)environment
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  schedulerCopy = scheduler;
+  renderingSchedulerCopy = renderingScheduler;
+  environmentCopy = environment;
   v17.receiver = self;
   v17.super_class = AVTAvatarAttributeEditorSectionController;
   v12 = [(AVTAvatarAttributeEditorSectionController *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_environment, a5);
+    objc_storeStrong(&v12->_environment, environment);
     v13->_selectedIndex = 0x7FFFFFFFFFFFFFFFLL;
     v14 = [AVTTransitionCoordinator concurrentTransitionCoordinatorWithDelay:0.015];
     transitionCoordinator = v13->_transitionCoordinator;
     v13->_transitionCoordinator = v14;
 
-    objc_storeStrong(&v13->_thumbnailScheduler, a3);
-    objc_storeStrong(&v13->_renderingScheduler, a4);
+    objc_storeStrong(&v13->_thumbnailScheduler, scheduler);
+    objc_storeStrong(&v13->_renderingScheduler, renderingScheduler);
   }
 
   return v13;
 }
 
-- (void)updateWithSection:(id)a3
+- (void)updateWithSection:(id)section
 {
-  v5 = a3;
+  sectionCopy = section;
   p_section = &self->_section;
-  if (self->_section != v5)
+  if (self->_section != sectionCopy)
   {
-    v9 = v5;
-    objc_storeStrong(p_section, a3);
-    v7 = [(AVTAvatarAttributeEditorSection *)self->_section sectionItems];
-    self->_selectedIndex = [v7 indexOfObjectPassingTest:&__block_literal_global_10];
+    v9 = sectionCopy;
+    objc_storeStrong(p_section, section);
+    sectionItems = [(AVTAvatarAttributeEditorSection *)self->_section sectionItems];
+    self->_selectedIndex = [sectionItems indexOfObjectPassingTest:&__block_literal_global_10];
 
-    v8 = [(AVTAvatarAttributeEditorSectionController *)self transitionCoordinator];
-    [v8 cancelAllTransitions];
+    transitionCoordinator = [(AVTAvatarAttributeEditorSectionController *)self transitionCoordinator];
+    [transitionCoordinator cancelAllTransitions];
 
-    v5 = v9;
+    sectionCopy = v9;
   }
 
-  MEMORY[0x1EEE66BB8](p_section, v5);
+  MEMORY[0x1EEE66BB8](p_section, sectionCopy);
 }
 
-- (void)updateCell:(id)a3 forItemAtIndex:(int64_t)a4
+- (void)updateCell:(id)cell forItemAtIndex:(int64_t)index
 {
-  v35 = a3;
-  v6 = [v35 valueView];
-  v7 = [v6 superview];
+  cellCopy = cell;
+  valueView = [cellCopy valueView];
+  superview = [valueView superview];
 
-  if (v7)
+  if (superview)
   {
-    v8 = [(AVTAvatarAttributeEditorSectionController *)self transitionCoordinator];
-    v9 = [v35 valueView];
-    [v8 cancelTransitionsMatchingModel:v9];
+    transitionCoordinator = [(AVTAvatarAttributeEditorSectionController *)self transitionCoordinator];
+    valueView2 = [cellCopy valueView];
+    [transitionCoordinator cancelTransitionsMatchingModel:valueView2];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [(AVTAvatarAttributeEditorSectionController *)self section];
-    v11 = [v10 sectionItems];
-    v12 = [v11 objectAtIndexedSubscript:a4];
+    section = [(AVTAvatarAttributeEditorSectionController *)self section];
+    sectionItems = [section sectionItems];
+    v12 = [sectionItems objectAtIndexedSubscript:index];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
       v14 = MEMORY[0x1E695DF30];
-      v15 = [(AVTAvatarAttributeEditorSectionController *)self section];
-      v16 = [v15 sectionItems];
-      v17 = [v16 objectAtIndexedSubscript:a4];
+      section2 = [(AVTAvatarAttributeEditorSectionController *)self section];
+      sectionItems2 = [section2 sectionItems];
+      v17 = [sectionItems2 objectAtIndexedSubscript:index];
       [v14 raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", v17}];
     }
 
-    v18 = [(AVTAvatarAttributeEditorSectionController *)self section];
-    v19 = [v18 sectionItems];
-    v20 = [v19 objectAtIndexedSubscript:a4];
+    section3 = [(AVTAvatarAttributeEditorSectionController *)self section];
+    sectionItems3 = [section3 sectionItems];
+    v20 = [sectionItems3 objectAtIndexedSubscript:index];
 
-    v21 = [v20 localizedName];
-    [v35 setLabelString:v21];
+    localizedName = [v20 localizedName];
+    [cellCopy setLabelString:localizedName];
 
     v22 = objc_opt_class();
-    v23 = [(AVTAvatarAttributeEditorSectionController *)self section];
-    [v35 bounds];
-    [v22 maxLabelHeightInSection:v23 fittingWidth:v24];
+    section4 = [(AVTAvatarAttributeEditorSectionController *)self section];
+    [cellCopy bounds];
+    [v22 maxLabelHeightInSection:section4 fittingWidth:v24];
     v26 = v25;
 
     v27 = objc_opt_class();
-    [v35 bounds];
+    [cellCopy bounds];
     v29 = v28;
     [v20 heightRatio];
     [v27 requiredLabelSpaceForMaxLabelHeight:v26 cellEdgeLength:v29 sectionItemHeightRatio:v30];
-    [v35 setLabelVerticalSpace:?];
+    [cellCopy setLabelVerticalSpace:?];
     v31 = objc_opt_class();
-    v32 = [(AVTAvatarAttributeEditorSectionController *)self section];
-    [v35 bounds];
-    [v35 setShouldHideLabelBackground:{objc_msgSend(v31, "shouldHideLabelBackgroundInSection:fittingWidth:", v32, v33)}];
+    section5 = [(AVTAvatarAttributeEditorSectionController *)self section];
+    [cellCopy bounds];
+    [cellCopy setShouldHideLabelBackground:{objc_msgSend(v31, "shouldHideLabelBackgroundInSection:fittingWidth:", section5, v33)}];
   }
 
-  v34 = [(AVTAvatarAttributeEditorSectionController *)self viewForIndex:a4];
-  [v35 setAttributeView:v34];
+  v34 = [(AVTAvatarAttributeEditorSectionController *)self viewForIndex:index];
+  [cellCopy setAttributeView:v34];
 }
 
-- (id)viewForIndex:(int64_t)a3
+- (id)viewForIndex:(int64_t)index
 {
   v5 = [AVTAttributeValueView alloc];
   v6 = [(AVTAttributeValueView *)v5 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(AVTAttributeValueView *)v6 setSelectionStyle:0];
-  v7 = [(AVTAvatarAttributeEditorSectionController *)self section];
-  v8 = [v7 sectionItems];
-  v9 = [v8 objectAtIndexedSubscript:a3];
+  section = [(AVTAvatarAttributeEditorSectionController *)self section];
+  sectionItems = [section sectionItems];
+  v9 = [sectionItems objectAtIndexedSubscript:index];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
     v11 = MEMORY[0x1E695DF30];
-    v12 = [(AVTAvatarAttributeEditorSectionController *)self section];
-    v13 = [v12 sectionItems];
-    v14 = [v13 objectAtIndexedSubscript:a3];
+    section2 = [(AVTAvatarAttributeEditorSectionController *)self section];
+    sectionItems2 = [section2 sectionItems];
+    v14 = [sectionItems2 objectAtIndexedSubscript:index];
     [v11 raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", v14}];
   }
 
-  v15 = [(AVTAvatarAttributeEditorSectionController *)self section];
-  v16 = [v15 sectionItems];
-  v17 = [v16 objectAtIndexedSubscript:a3];
+  section3 = [(AVTAvatarAttributeEditorSectionController *)self section];
+  sectionItems3 = [section3 sectionItems];
+  v17 = [sectionItems3 objectAtIndexedSubscript:index];
 
   [v17 heightRatio];
   [(AVTAttributeValueView *)v6 setImageSizeRatio:1.0, v18];
-  [(AVTAttributeValueView *)v6 updateSelectedState:[(AVTAvatarAttributeEditorSectionController *)self selectedIndex]== a3 animated:0];
+  [(AVTAttributeValueView *)v6 updateSelectedState:[(AVTAvatarAttributeEditorSectionController *)self selectedIndex]== index animated:0];
 
   return v6;
 }
 
-- (id)prefetchingSectionItemForIndex:(int64_t)a3
+- (id)prefetchingSectionItemForIndex:(int64_t)index
 {
-  v5 = [(AVTAvatarAttributeEditorSectionController *)self section];
-  v6 = [v5 sectionItems];
-  v7 = [v6 objectAtIndexedSubscript:a3];
+  section = [(AVTAvatarAttributeEditorSectionController *)self section];
+  sectionItems = [section sectionItems];
+  v7 = [sectionItems objectAtIndexedSubscript:index];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
     v9 = MEMORY[0x1E695DF30];
-    v10 = [(AVTAvatarAttributeEditorSectionController *)self section];
-    v11 = [v10 sectionItems];
-    v12 = [v11 objectAtIndexedSubscript:a3];
+    section2 = [(AVTAvatarAttributeEditorSectionController *)self section];
+    sectionItems2 = [section2 sectionItems];
+    v12 = [sectionItems2 objectAtIndexedSubscript:index];
     [v9 raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", v12}];
   }
 
-  v13 = [(AVTAvatarAttributeEditorSectionController *)self section];
-  v14 = [v13 sectionItems];
-  v15 = [v14 objectAtIndexedSubscript:a3];
+  section3 = [(AVTAvatarAttributeEditorSectionController *)self section];
+  sectionItems3 = [section3 sectionItems];
+  v15 = [sectionItems3 objectAtIndexedSubscript:index];
 
   return v15;
 }
 
 - (int64_t)numberOfItems
 {
-  v2 = [(AVTAvatarAttributeEditorSectionController *)self section];
-  v3 = [v2 sectionItems];
-  v4 = [v3 count];
+  section = [(AVTAvatarAttributeEditorSectionController *)self section];
+  sectionItems = [section sectionItems];
+  v4 = [sectionItems count];
 
   return v4;
 }
 
-- (CGSize)sizeForItemAtIndex:(int64_t)a3 fittingSize:(CGSize)a4
+- (CGSize)sizeForItemAtIndex:(int64_t)index fittingSize:(CGSize)size
 {
-  width = a4.width;
-  v7 = [(AVTAvatarAttributeEditorSectionController *)self section:a4.width];
-  v8 = [v7 sectionItems];
-  v9 = [v8 objectAtIndexedSubscript:a3];
+  width = size.width;
+  v7 = [(AVTAvatarAttributeEditorSectionController *)self section:size.width];
+  sectionItems = [v7 sectionItems];
+  v9 = [sectionItems objectAtIndexedSubscript:index];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
     v11 = MEMORY[0x1E695DF30];
-    v12 = [(AVTAvatarAttributeEditorSectionController *)self section];
-    v13 = [v12 sectionItems];
-    v14 = [v13 objectAtIndexedSubscript:a3];
+    section = [(AVTAvatarAttributeEditorSectionController *)self section];
+    sectionItems2 = [section sectionItems];
+    v14 = [sectionItems2 objectAtIndexedSubscript:index];
     [v11 raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", v14}];
   }
 
-  v15 = [(AVTAvatarAttributeEditorSectionController *)self section];
-  v16 = [v15 sectionItems];
-  v17 = [v16 objectAtIndexedSubscript:a3];
+  section2 = [(AVTAvatarAttributeEditorSectionController *)self section];
+  sectionItems3 = [section2 sectionItems];
+  v17 = [sectionItems3 objectAtIndexedSubscript:index];
 
   v18 = objc_opt_class();
-  v19 = [(AVTAvatarAttributeEditorSectionController *)self section];
-  v20 = [(AVTAvatarAttributeEditorSectionController *)self environment];
-  [v18 cellSizeForSectionItem:v17 inSection:v19 fittingWidth:v20 environment:width];
+  section3 = [(AVTAvatarAttributeEditorSectionController *)self section];
+  environment = [(AVTAvatarAttributeEditorSectionController *)self environment];
+  [v18 cellSizeForSectionItem:v17 inSection:section3 fittingWidth:environment environment:width];
   v22 = v21;
   v24 = v23;
 
@@ -515,23 +515,23 @@ LABEL_16:
   return result;
 }
 
-- (unint64_t)indexForItem:(id)a3
+- (unint64_t)indexForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(AVTAvatarAttributeEditorSectionController *)self section];
-  v6 = [v5 sectionItems];
-  v7 = [v6 indexOfObject:v4];
+  itemCopy = item;
+  section = [(AVTAvatarAttributeEditorSectionController *)self section];
+  sectionItems = [section sectionItems];
+  v7 = [sectionItems indexOfObject:itemCopy];
 
   return v7;
 }
 
-- (UIEdgeInsets)edgeInsetsFittingSize:(CGSize)a3
+- (UIEdgeInsets)edgeInsetsFittingSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   v5 = objc_opt_class();
-  v6 = [(AVTAvatarAttributeEditorSectionController *)self section];
-  v7 = [(AVTAvatarAttributeEditorSectionController *)self environment];
-  [v5 edgeInsetsForSection:v6 fittingWidth:v7 environment:width];
+  section = [(AVTAvatarAttributeEditorSectionController *)self section];
+  environment = [(AVTAvatarAttributeEditorSectionController *)self environment];
+  [v5 edgeInsetsForSection:section fittingWidth:environment environment:width];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -548,33 +548,33 @@ LABEL_16:
   return result;
 }
 
-- (void)cell:(id)a3 willDisplayAtIndex:(int64_t)a4
+- (void)cell:(id)cell willDisplayAtIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [v6 valueView];
-  v8 = [MEMORY[0x1E696AFB0] UUID];
-  val = v7;
-  [v7 setDisplaySessionUUID:v8];
-  v9 = [(AVTAvatarAttributeEditorSectionController *)self section];
-  v10 = [v9 sectionItems];
-  v11 = [v10 objectAtIndexedSubscript:a4];
+  cellCopy = cell;
+  valueView = [cellCopy valueView];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  val = valueView;
+  [valueView setDisplaySessionUUID:uUID];
+  section = [(AVTAvatarAttributeEditorSectionController *)self section];
+  sectionItems = [section sectionItems];
+  v11 = [sectionItems objectAtIndexedSubscript:index];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
     v13 = MEMORY[0x1E695DF30];
-    v14 = [(AVTAvatarAttributeEditorSectionController *)self section];
-    v15 = [v14 sectionItems];
-    v16 = [v15 objectAtIndexedSubscript:a4];
+    section2 = [(AVTAvatarAttributeEditorSectionController *)self section];
+    sectionItems2 = [section2 sectionItems];
+    v16 = [sectionItems2 objectAtIndexedSubscript:index];
     [v13 raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", v16}];
   }
 
-  v17 = [(AVTAvatarAttributeEditorSectionController *)self section];
-  v18 = [v17 sectionItems];
-  v19 = [v18 objectAtIndexedSubscript:a4];
+  section3 = [(AVTAvatarAttributeEditorSectionController *)self section];
+  sectionItems3 = [section3 sectionItems];
+  v19 = [sectionItems3 objectAtIndexedSubscript:index];
 
-  v20 = [(AVTAvatarAttributeEditorSectionController *)self transitionCoordinator];
+  transitionCoordinator = [(AVTAvatarAttributeEditorSectionController *)self transitionCoordinator];
   v71[0] = 0;
   v71[1] = v71;
   v71[2] = 0x3032000000;
@@ -583,8 +583,8 @@ LABEL_16:
   v72 = 0;
   objc_initWeak(&location, val);
   objc_initWeak(&v69, v19);
-  v43 = [(AVTAvatarAttributeEditorSectionController *)self section];
-  objc_initWeak(&v68, v43);
+  section4 = [(AVTAvatarAttributeEditorSectionController *)self section];
+  objc_initWeak(&v68, section4);
   objc_initWeak(&from, self);
   v62[0] = MEMORY[0x1E69E9820];
   v62[1] = 3221225472;
@@ -593,27 +593,27 @@ LABEL_16:
   objc_copyWeak(&v65, &location);
   objc_copyWeak(&v66, &from);
   v64 = v71;
-  v45 = v20;
+  v45 = transitionCoordinator;
   v63 = v45;
   v21 = [v62 copy];
-  v22 = [(AVTAvatarAttributeEditorSectionController *)self thumbnailScheduler];
-  v44 = [(AVTAvatarAttributeEditorSectionController *)self renderingScheduler];
-  v23 = [(AVTAvatarAttributeEditorSectionController *)self environment];
-  v24 = [v23 logger];
+  thumbnailScheduler = [(AVTAvatarAttributeEditorSectionController *)self thumbnailScheduler];
+  renderingScheduler = [(AVTAvatarAttributeEditorSectionController *)self renderingScheduler];
+  environment = [(AVTAvatarAttributeEditorSectionController *)self environment];
+  logger = [environment logger];
 
-  [v22 scheduleTask:v21 forIndex:a4];
-  v25 = [(AVTAvatarAttributeEditorSectionController *)self section];
-  v26 = [v25 identifier];
-  v27 = [v26 description];
-  [v24 logRequestingThumbnailForIndex:a4 section:v27];
+  [thumbnailScheduler scheduleTask:v21 forIndex:index];
+  section5 = [(AVTAvatarAttributeEditorSectionController *)self section];
+  identifier = [section5 identifier];
+  v27 = [identifier description];
+  [logger logRequestingThumbnailForIndex:index section:v27];
 
-  v28 = [v19 stickerResourceProvider];
+  stickerResourceProvider = [v19 stickerResourceProvider];
 
-  v41 = v8;
-  v42 = v24;
-  if (v28)
+  v41 = uUID;
+  v42 = logger;
+  if (stickerResourceProvider)
   {
-    v29 = [v19 stickerResourceProvider];
+    stickerResourceProvider2 = [v19 stickerResourceProvider];
     v30 = v59;
     v59[0] = MEMORY[0x1E69E9820];
     v59[1] = 3221225472;
@@ -623,17 +623,17 @@ LABEL_16:
     objc_copyWeak(&v60, &location);
     v32 = v61;
     objc_copyWeak(v61, &v69);
-    v59[4] = v8;
+    v59[4] = uUID;
     v59[7] = v71;
-    v59[5] = v22;
+    v59[5] = thumbnailScheduler;
     v59[6] = v21;
-    v61[1] = a4;
-    v33 = (v29)[2](v29, v59, 0);
+    v61[1] = index;
+    v33 = (stickerResourceProvider2)[2](stickerResourceProvider2, v59, 0);
   }
 
   else
   {
-    v29 = [v19 thumbnailProvider];
+    stickerResourceProvider2 = [v19 thumbnailProvider];
     v30 = v56;
     v56[0] = MEMORY[0x1E69E9820];
     v56[1] = 3221225472;
@@ -643,12 +643,12 @@ LABEL_16:
     objc_copyWeak(&v57, &location);
     v32 = v58;
     objc_copyWeak(v58, &v69);
-    v56[4] = v8;
+    v56[4] = uUID;
     v56[7] = v71;
-    v56[5] = v22;
+    v56[5] = thumbnailScheduler;
     v56[6] = v21;
-    v58[1] = a4;
-    v33 = (v29)[2](v29, v56, 0);
+    v58[1] = index;
+    v33 = (stickerResourceProvider2)[2](stickerResourceProvider2, v56, 0);
   }
 
   v34 = v33;
@@ -664,19 +664,19 @@ LABEL_16:
   objc_copyWeak(&v55, &v68);
   v35 = v45;
   v48 = v35;
-  v36 = v22;
+  v36 = thumbnailScheduler;
   v49 = v36;
   v37 = v21;
   v51 = v37;
-  v38 = v44;
+  v38 = renderingScheduler;
   v50 = v38;
   v39 = v34;
   v52 = v39;
   [val setDiscardableContentHandler:v47];
-  v40 = [v19 cachedThumbnail];
-  if (v40)
+  cachedThumbnail = [v19 cachedThumbnail];
+  if (cachedThumbnail)
   {
-    [val updateWithImage:v40];
+    [val updateWithImage:cachedThumbnail];
   }
 
   else
@@ -803,37 +803,37 @@ void __69__AVTAvatarAttributeEditorSectionController_cell_willDisplayAtIndex___b
   }
 }
 
-- (void)didHighlightItemAtIndex:(int64_t)a3 cell:(id)a4 completionBlock:(id)a5
+- (void)didHighlightItemAtIndex:(int64_t)index cell:(id)cell completionBlock:(id)block
 {
-  v6 = a5;
-  v7 = [a4 valueView];
-  [v7 updateHighlightedState:1 animated:1 completionBlock:v6];
+  blockCopy = block;
+  valueView = [cell valueView];
+  [valueView updateHighlightedState:1 animated:1 completionBlock:blockCopy];
 }
 
-- (void)didUnhighlightItemAtIndex:(int64_t)a3 cell:(id)a4 completionBlock:(id)a5
+- (void)didUnhighlightItemAtIndex:(int64_t)index cell:(id)cell completionBlock:(id)block
 {
-  v6 = a5;
-  v7 = [a4 valueView];
-  [v7 updateHighlightedState:0 animated:1 completionBlock:v6];
+  blockCopy = block;
+  valueView = [cell valueView];
+  [valueView updateHighlightedState:0 animated:1 completionBlock:blockCopy];
 }
 
-- (void)didSelectItemAtIndex:(int64_t)a3 cell:(id)a4
+- (void)didSelectItemAtIndex:(int64_t)index cell:(id)cell
 {
-  v9 = [(AVTAvatarAttributeEditorSectionController *)self delegate:a3];
-  v6 = [(AVTAvatarAttributeEditorSectionController *)self section];
-  v7 = [v6 sectionItems];
-  v8 = [v7 objectAtIndexedSubscript:a3];
+  v9 = [(AVTAvatarAttributeEditorSectionController *)self delegate:index];
+  section = [(AVTAvatarAttributeEditorSectionController *)self section];
+  sectionItems = [section sectionItems];
+  v8 = [sectionItems objectAtIndexedSubscript:index];
   [v9 attributeEditorSectionController:self didSelectSectionItem:v8];
 }
 
-- (CGSize)sizeForFocusingItemAtIndex:(int64_t)a3 fittingSize:(CGSize)a4
+- (CGSize)sizeForFocusingItemAtIndex:(int64_t)index fittingSize:(CGSize)size
 {
-  width = a4.width;
-  v7 = [(AVTAvatarAttributeEditorSectionController *)self section:a4.width];
-  v8 = [v7 sectionItems];
-  v9 = [v8 count];
+  width = size.width;
+  v7 = [(AVTAvatarAttributeEditorSectionController *)self section:size.width];
+  sectionItems = [v7 sectionItems];
+  v9 = [sectionItems count];
 
-  if (v9 <= a3)
+  if (v9 <= index)
   {
     v17 = *MEMORY[0x1E695F060];
     v19 = *(MEMORY[0x1E695F060] + 8);
@@ -842,12 +842,12 @@ void __69__AVTAvatarAttributeEditorSectionController_cell_willDisplayAtIndex___b
   else
   {
     v10 = objc_opt_class();
-    v11 = [(AVTAvatarAttributeEditorSectionController *)self section];
-    v12 = [v11 sectionItems];
-    v13 = [v12 objectAtIndexedSubscript:a3];
-    v14 = [(AVTAvatarAttributeEditorSectionController *)self section];
-    v15 = [(AVTAvatarAttributeEditorSectionController *)self environment];
-    [v10 cellSizeForSectionItem:v13 inSection:v14 fittingWidth:v15 environment:width];
+    section = [(AVTAvatarAttributeEditorSectionController *)self section];
+    sectionItems2 = [section sectionItems];
+    v13 = [sectionItems2 objectAtIndexedSubscript:index];
+    section2 = [(AVTAvatarAttributeEditorSectionController *)self section];
+    environment = [(AVTAvatarAttributeEditorSectionController *)self environment];
+    [v10 cellSizeForSectionItem:v13 inSection:section2 fittingWidth:environment environment:width];
     v17 = v16;
     v19 = v18;
   }

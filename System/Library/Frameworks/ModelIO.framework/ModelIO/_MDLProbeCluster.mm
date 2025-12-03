@@ -1,9 +1,9 @@
 @interface _MDLProbeCluster
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCluster:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCluster:(id)cluster;
 - (unint64_t)hash;
-- (void)calculateCentroidNotIncludingSamplesinArray:(id)a3;
+- (void)calculateCentroidNotIncludingSamplesinArray:(id)array;
 @end
 
 @implementation _MDLProbeCluster
@@ -16,14 +16,14 @@
   return v6;
 }
 
-- (BOOL)isEqualToCluster:(id)a3
+- (BOOL)isEqualToCluster:(id)cluster
 {
-  v6 = a3;
-  if (v6 && (objc_msgSend_centroid(self, v4, v5), v25 = v7, objc_msgSend_centroid(v6, v8, v9), (vmovn_s32(vceqq_f32(v25, v12)).u8[0] & 1) != 0) && (objc_msgSend_centroid(self, v10, v11), v26 = v13, objc_msgSend_centroid(v6, v14, v15), (vmovn_s32(vceqq_f32(v26, v18)).i8[2] & 1) != 0))
+  clusterCopy = cluster;
+  if (clusterCopy && (objc_msgSend_centroid(self, v4, v5), v25 = v7, objc_msgSend_centroid(clusterCopy, v8, v9), (vmovn_s32(vceqq_f32(v25, v12)).u8[0] & 1) != 0) && (objc_msgSend_centroid(self, v10, v11), v26 = v13, objc_msgSend_centroid(clusterCopy, v14, v15), (vmovn_s32(vceqq_f32(v26, v18)).i8[2] & 1) != 0))
   {
     objc_msgSend_centroid(self, v16, v17);
     v27 = v19;
-    objc_msgSend_centroid(v6, v20, v21);
+    objc_msgSend_centroid(clusterCopy, v20, v21);
     v23 = vmovn_s32(vceqq_f32(v27, v22)).i8[4];
   }
 
@@ -35,10 +35,10 @@
   return v23 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqualToCluster = 1;
   }
@@ -48,7 +48,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      isEqualToCluster = objc_msgSend_isEqualToCluster_(self, v5, v4);
+      isEqualToCluster = objc_msgSend_isEqualToCluster_(self, v5, equalCopy);
     }
 
     else
@@ -92,10 +92,10 @@
   return v12 ^ v14;
 }
 
-- (void)calculateCentroidNotIncludingSamplesinArray:(id)a3
+- (void)calculateCentroidNotIncludingSamplesinArray:(id)array
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -124,7 +124,7 @@ LABEL_13:
       }
 
       v12 = *(*(&v24 + 1) + 8 * i);
-      if ((objc_msgSend_containsObject_(v4, v7, v12, *&v23, v24) & 1) == 0)
+      if ((objc_msgSend_containsObject_(arrayCopy, v7, v12, *&v23, v24) & 1) == 0)
       {
         objc_msgSend_position(v12, v7, v13);
         v23 = vaddq_f32(v14, v23);

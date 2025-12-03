@@ -1,8 +1,8 @@
 @interface MPArtworkRepresentation
-+ (id)representationForVisualIdentity:(id)a3 withSize:(CGSize)a4 image:(id)a5;
-+ (id)representationForVisualIdentity:(id)a3 withSize:(CGSize)a4 video:(id)a5;
++ (id)representationForVisualIdentity:(id)identity withSize:(CGSize)size image:(id)image;
++ (id)representationForVisualIdentity:(id)identity withSize:(CGSize)size video:(id)video;
 - (CGSize)representationSize;
-- (MPArtworkRepresentation)representationWithPreparedImage:(id)a3;
+- (MPArtworkRepresentation)representationWithPreparedImage:(id)image;
 @end
 
 @implementation MPArtworkRepresentation
@@ -16,43 +16,43 @@
   return result;
 }
 
-- (MPArtworkRepresentation)representationWithPreparedImage:(id)a3
+- (MPArtworkRepresentation)representationWithPreparedImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v5 = objc_opt_new();
   [v5 setKind:{-[MPArtworkRepresentation kind](self, "kind")}];
-  [v5 setImage:v4];
+  [v5 setImage:imageCopy];
 
   [(MPArtworkRepresentation *)self representationSize];
   [v5 setRepresentationSize:?];
-  v6 = [(MPArtworkRepresentation *)self representationToken];
-  [v5 setRepresentationToken:v6];
+  representationToken = [(MPArtworkRepresentation *)self representationToken];
+  [v5 setRepresentationToken:representationToken];
 
   [v5 setImagePrepared:1];
-  v7 = [(MPArtworkRepresentation *)self visualIdenticalityStringRepresentation];
+  visualIdenticalityStringRepresentation = [(MPArtworkRepresentation *)self visualIdenticalityStringRepresentation];
   v8 = v5[5];
-  v5[5] = v7;
+  v5[5] = visualIdenticalityStringRepresentation;
 
   return v5;
 }
 
-+ (id)representationForVisualIdentity:(id)a3 withSize:(CGSize)a4 video:(id)a5
++ (id)representationForVisualIdentity:(id)identity withSize:(CGSize)size video:(id)video
 {
-  if (a5)
+  if (video)
   {
-    height = a4.height;
-    width = a4.width;
-    v8 = a5;
-    v9 = a3;
+    height = size.height;
+    width = size.width;
+    videoCopy = video;
+    identityCopy = identity;
     v10 = objc_alloc_init(MPArtworkRepresentation);
     [(MPArtworkRepresentation *)v10 setKind:1];
-    [(MPArtworkRepresentation *)v10 setVideo:v8];
+    [(MPArtworkRepresentation *)v10 setVideo:videoCopy];
 
     [(MPArtworkRepresentation *)v10 setRepresentationSize:width, height];
-    v11 = [v9 stringRepresentation];
+    stringRepresentation = [identityCopy stringRepresentation];
 
     visualIdenticalityStringRepresentation = v10->_visualIdenticalityStringRepresentation;
-    v10->_visualIdenticalityStringRepresentation = v11;
+    v10->_visualIdenticalityStringRepresentation = stringRepresentation;
   }
 
   else
@@ -63,23 +63,23 @@
   return v10;
 }
 
-+ (id)representationForVisualIdentity:(id)a3 withSize:(CGSize)a4 image:(id)a5
++ (id)representationForVisualIdentity:(id)identity withSize:(CGSize)size image:(id)image
 {
-  if (a5)
+  if (image)
   {
-    height = a4.height;
-    width = a4.width;
-    v8 = a5;
-    v9 = a3;
+    height = size.height;
+    width = size.width;
+    imageCopy = image;
+    identityCopy = identity;
     v10 = objc_alloc_init(MPArtworkRepresentation);
     [(MPArtworkRepresentation *)v10 setKind:0];
-    [(MPArtworkRepresentation *)v10 setImage:v8];
+    [(MPArtworkRepresentation *)v10 setImage:imageCopy];
 
     [(MPArtworkRepresentation *)v10 setRepresentationSize:width, height];
-    v11 = [v9 stringRepresentation];
+    stringRepresentation = [identityCopy stringRepresentation];
 
     visualIdenticalityStringRepresentation = v10->_visualIdenticalityStringRepresentation;
-    v10->_visualIdenticalityStringRepresentation = v11;
+    v10->_visualIdenticalityStringRepresentation = stringRepresentation;
   }
 
   else

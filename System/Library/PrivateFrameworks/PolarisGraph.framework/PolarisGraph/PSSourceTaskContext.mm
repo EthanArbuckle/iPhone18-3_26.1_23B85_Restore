@@ -1,6 +1,6 @@
 @interface PSSourceTaskContext
 - (PSSourceTaskContext)init;
-- (PSSourceTaskContext)initWithResourceHeap:(id)a3;
+- (PSSourceTaskContext)initWithResourceHeap:(id)heap;
 @end
 
 @implementation PSSourceTaskContext
@@ -20,16 +20,16 @@
   return v2;
 }
 
-- (PSSourceTaskContext)initWithResourceHeap:(id)a3
+- (PSSourceTaskContext)initWithResourceHeap:(id)heap
 {
-  v5 = a3;
+  heapCopy = heap;
   v9.receiver = self;
   v9.super_class = PSSourceTaskContext;
   v6 = [(PSSourceTaskContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_resourceHeap, a3);
+    objc_storeStrong(&v6->_resourceHeap, heap);
   }
 
   return v7;

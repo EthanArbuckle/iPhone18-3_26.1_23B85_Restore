@@ -1,23 +1,23 @@
 @interface VCPMADResourceLock
-- (VCPMADResourceLock)initWithResourceManager:(id)a3 andResource:(id)a4;
+- (VCPMADResourceLock)initWithResourceManager:(id)manager andResource:(id)resource;
 - (void)dealloc;
 - (void)reset;
 @end
 
 @implementation VCPMADResourceLock
 
-- (VCPMADResourceLock)initWithResourceManager:(id)a3 andResource:(id)a4
+- (VCPMADResourceLock)initWithResourceManager:(id)manager andResource:(id)resource
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  resourceCopy = resource;
   v12.receiver = self;
   v12.super_class = VCPMADResourceLock;
   v9 = [(VCPMADResourceLock *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_resourceManager, a3);
-    objc_storeStrong(&v10->_resource, a4);
+    objc_storeStrong(&v9->_resourceManager, manager);
+    objc_storeStrong(&v10->_resource, resource);
   }
 
   return v10;

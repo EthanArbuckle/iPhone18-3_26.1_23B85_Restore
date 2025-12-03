@@ -1,22 +1,22 @@
 @interface MFMutableFilterDataConsumer
-- (MFMutableFilterDataConsumer)initWithMainConsumer:(id)a3;
-- (int64_t)appendData:(id)a3;
-- (void)addDataConsumer:(id)a3;
+- (MFMutableFilterDataConsumer)initWithMainConsumer:(id)consumer;
+- (int64_t)appendData:(id)data;
+- (void)addDataConsumer:(id)consumer;
 - (void)done;
 @end
 
 @implementation MFMutableFilterDataConsumer
 
-- (MFMutableFilterDataConsumer)initWithMainConsumer:(id)a3
+- (MFMutableFilterDataConsumer)initWithMainConsumer:(id)consumer
 {
-  v5 = a3;
+  consumerCopy = consumer;
   v11.receiver = self;
   v11.super_class = MFMutableFilterDataConsumer;
-  v6 = [(MFBaseFilterDataConsumer *)&v11 initWithConsumer:v5];
+  v6 = [(MFBaseFilterDataConsumer *)&v11 initWithConsumer:consumerCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mainConsumer, a3);
+    objc_storeStrong(&v6->_mainConsumer, consumer);
     v8 = [[MFLock alloc] initWithName:@"MFMutableFilterDataConsumer Lock" andDelegate:0];
     consumerLock = v7->_consumerLock;
     v7->_consumerLock = v8;
@@ -27,29 +27,29 @@
   return v7;
 }
 
-- (void)addDataConsumer:(id)a3
+- (void)addDataConsumer:(id)consumer
 {
-  v5 = a3;
+  consumerCopy = consumer;
   [(MFLock *)self->_consumerLock lock];
-  v4 = [(MFGuaranteedCollectingDataConsumer *)self->_mainConsumer data];
-  [v5 appendData:v4];
+  data = [(MFGuaranteedCollectingDataConsumer *)self->_mainConsumer data];
+  [consumerCopy appendData:data];
 
-  [(NSMutableArray *)self->super._consumers addObject:v5];
+  [(NSMutableArray *)self->super._consumers addObject:consumerCopy];
   if (self->_isDone && !self->super._serialAppend)
   {
-    [v5 done];
+    [consumerCopy done];
   }
 
   [(MFLock *)self->_consumerLock unlock];
 }
 
-- (int64_t)appendData:(id)a3
+- (int64_t)appendData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   [(MFLock *)self->_consumerLock lock];
   v7.receiver = self;
   v7.super_class = MFMutableFilterDataConsumer;
-  v5 = [(MFBaseFilterDataConsumer *)&v7 appendData:v4];
+  v5 = [(MFBaseFilterDataConsumer *)&v7 appendData:dataCopy];
   [(MFLock *)self->_consumerLock unlock];
 
   return v5;

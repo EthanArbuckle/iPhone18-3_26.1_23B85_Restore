@@ -1,18 +1,18 @@
 @interface _MPCAutoPlayEnumerationResult
-- (_MPCAutoPlayEnumerationResult)initWithSectionIdentifier:(id)a3;
+- (_MPCAutoPlayEnumerationResult)initWithSectionIdentifier:(id)identifier;
 @end
 
 @implementation _MPCAutoPlayEnumerationResult
 
-- (_MPCAutoPlayEnumerationResult)initWithSectionIdentifier:(id)a3
+- (_MPCAutoPlayEnumerationResult)initWithSectionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = _MPCAutoPlayEnumerationResult;
   v5 = [(_MPCAutoPlayEnumerationResult *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     sectionIdentifier = v5->_sectionIdentifier;
     v5->_sectionIdentifier = v6;
   }

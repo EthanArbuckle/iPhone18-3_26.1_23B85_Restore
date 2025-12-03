@@ -1,14 +1,14 @@
 @interface NCNotificationListSupplementaryHostingViewAccessibility
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation NCNotificationListSupplementaryHostingViewAccessibility
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v8 = [(NCNotificationListSupplementaryHostingViewAccessibility *)self safeValueForKey:@"hostedView"];
   NSClassFromString(&cfstr_Csprominentuis.isa);
   isKindOfClass = objc_opt_isKindOfClass();
@@ -22,7 +22,7 @@
   {
     v12.receiver = self;
     v12.super_class = NCNotificationListSupplementaryHostingViewAccessibility;
-    v10 = [(NCNotificationListSupplementaryHostingViewAccessibility *)&v12 _accessibilityHitTest:v7 withEvent:x, y];
+    v10 = [(NCNotificationListSupplementaryHostingViewAccessibility *)&v12 _accessibilityHitTest:eventCopy withEvent:x, y];
   }
 
   return v10;

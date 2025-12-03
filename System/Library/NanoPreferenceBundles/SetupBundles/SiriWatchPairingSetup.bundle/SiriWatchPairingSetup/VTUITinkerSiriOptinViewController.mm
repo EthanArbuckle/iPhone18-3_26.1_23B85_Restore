@@ -7,9 +7,9 @@
 - (id)okayButtonTitle;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)applyConfirmedOptin:(BOOL)a3;
-- (void)learnMoreButtonPressed:(id)a3;
-- (void)okayButtonPressed:(id)a3;
+- (void)applyConfirmedOptin:(BOOL)optin;
+- (void)learnMoreButtonPressed:(id)pressed;
+- (void)okayButtonPressed:(id)pressed;
 @end
 
 @implementation VTUITinkerSiriOptinViewController
@@ -33,21 +33,21 @@
 {
   if (self->_languageSupported)
   {
-    v2 = [(VTUITinkerSiriOptinViewController *)self delegate];
-    v3 = [v2 setupFlowUserInfo];
-    v4 = [v3 objectForKey:BPSPairingFlowFamilyMember];
-    v5 = [v4 firstName];
-    v6 = [v5 localizedCapitalizedString];
+    delegate = [(VTUITinkerSiriOptinViewController *)self delegate];
+    setupFlowUserInfo = [delegate setupFlowUserInfo];
+    v4 = [setupFlowUserInfo objectForKey:BPSPairingFlowFamilyMember];
+    firstName = [v4 firstName];
+    localizedCapitalizedString = [firstName localizedCapitalizedString];
 
     v7 = [NSBundle bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"SIRI_TINKER_TITLE_%@" value:&stru_84A0 table:@"Localizable"];
-    v9 = [NSString stringWithFormat:v8, v6];
+    v9 = [NSString stringWithFormat:v8, localizedCapitalizedString];
   }
 
   else
   {
-    v6 = [NSBundle bundleForClass:objc_opt_class()];
-    v9 = [v6 localizedStringForKey:@"SIRI_FYI_NOT_SUPPORTED_TITLE" value:&stru_84A0 table:@"Localizable"];
+    localizedCapitalizedString = [NSBundle bundleForClass:objc_opt_class()];
+    v9 = [localizedCapitalizedString localizedStringForKey:@"SIRI_FYI_NOT_SUPPORTED_TITLE" value:&stru_84A0 table:@"Localizable"];
   }
 
   return v9;
@@ -55,25 +55,25 @@
 
 - (id)detailString
 {
-  v3 = [(VTUITinkerSiriOptinViewController *)self delegate];
-  v4 = [v3 setupFlowUserInfo];
-  v5 = [v4 objectForKey:BPSPairingFlowFamilyMember];
-  v6 = [v5 firstName];
-  v7 = [v6 localizedCapitalizedString];
+  delegate = [(VTUITinkerSiriOptinViewController *)self delegate];
+  setupFlowUserInfo = [delegate setupFlowUserInfo];
+  v5 = [setupFlowUserInfo objectForKey:BPSPairingFlowFamilyMember];
+  firstName = [v5 firstName];
+  localizedCapitalizedString = [firstName localizedCapitalizedString];
 
-  LODWORD(v4) = self->_languageSupported;
+  LODWORD(setupFlowUserInfo) = self->_languageSupported;
   v8 = [NSBundle bundleForClass:objc_opt_class()];
   v9 = v8;
-  if (v4 == 1)
+  if (setupFlowUserInfo == 1)
   {
     v10 = [v8 localizedStringForKey:@"SIRI_DETAIL_TINKER_%@_%@" value:&stru_84A0 table:@"Localizable"];
-    [NSString stringWithFormat:v10, v7, v7];
+    [NSString stringWithFormat:v10, localizedCapitalizedString, localizedCapitalizedString];
   }
 
   else
   {
     v10 = [v8 localizedStringForKey:@"SIRI_FYI_NOT_SUPPORTED_BODY_TINKER_%@" value:&stru_84A0 table:@"Localizable"];
-    [NSString stringWithFormat:v10, v7, v13];
+    [NSString stringWithFormat:v10, localizedCapitalizedString, v13];
   }
   v11 = ;
 
@@ -83,38 +83,38 @@
 - (id)imageResource
 {
   v2 = +[BPSBridgeAppContext shared];
-  v3 = [v2 activeDevice];
+  activeDevice = [v2 activeDevice];
   v4 = VTUISiriScreenStringForDevice();
 
   return v4;
 }
 
-- (void)okayButtonPressed:(id)a3
+- (void)okayButtonPressed:(id)pressed
 {
-  v4 = [(VTUITinkerSiriOptinViewController *)self delegate];
-  [v4 buddyControllerDone:self];
+  delegate = [(VTUITinkerSiriOptinViewController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
-- (void)learnMoreButtonPressed:(id)a3
+- (void)learnMoreButtonPressed:(id)pressed
 {
   v4 = [OBPrivacyPresenter presenterForPrivacySplashWithIdentifier:OBPrivacyAskSiriIdentifier];
   [v4 setPresentingViewController:self];
   [v4 present];
 }
 
-- (void)applyConfirmedOptin:(BOOL)a3
+- (void)applyConfirmedOptin:(BOOL)optin
 {
-  if (a3)
+  if (optin)
   {
-    v4 = [(VTUITinkerSiriOptinViewController *)self delegate];
-    [v4 buddyControllerDone:self nextControllerClass:objc_opt_class()];
+    delegate = [(VTUITinkerSiriOptinViewController *)self delegate];
+    [delegate buddyControllerDone:self nextControllerClass:objc_opt_class()];
   }
 
   else
   {
     VTUITinkerSetSiriEnabled(0);
-    v4 = [(VTUITinkerSiriOptinViewController *)self delegate];
-    [v4 buddyControllerDone:self];
+    delegate = [(VTUITinkerSiriOptinViewController *)self delegate];
+    [delegate buddyControllerDone:self];
   }
 }
 

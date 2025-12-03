@@ -1,8 +1,8 @@
 @interface CAMControlStatusBar
 - (BOOL)isControlExpanded;
-- (BOOL)isIndicatorDesiredForType:(unint64_t)a3;
+- (BOOL)isIndicatorDesiredForType:(unint64_t)type;
 - (CAMApertureStatusIndicator)apertureIndicator;
-- (CAMControlStatusBar)initWithFrame:(CGRect)a3;
+- (CAMControlStatusBar)initWithFrame:(CGRect)frame;
 - (CAMControlStatusBarDelegate)delegate;
 - (CAMExposureBiasStatusIndicator)exposureBiasIndicator;
 - (CAMFilterStatusIndicator)filterIndicator;
@@ -20,48 +20,48 @@
 - (CAMTimerStatusIndicator)timerIndicator;
 - (CAMVideoConfigurationStatusIndicator)videoConfigurationIndicator;
 - (CAMVideoStabilizationStatusIndicator)videoStabilizationIndicator;
-- (id)_createIndicatorForType:(unint64_t)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)hudItemForAccessibilityHUDManager:(id)a3;
-- (id)indicatorForType:(unint64_t)a3;
+- (id)_createIndicatorForType:(unint64_t)type;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)hudItemForAccessibilityHUDManager:(id)manager;
+- (id)indicatorForType:(unint64_t)type;
 - (void)_ensureDesiredIndicators;
-- (void)_handleStatusIndicatorTapped:(id)a3;
-- (void)_installIndicatorIfNeededForType:(unint64_t)a3;
-- (void)_iterateViewsForHUDManager:(id)a3 withItemFoundBlock:(id)a4;
-- (void)_layoutDesiredViewsForTypes:(id)a3 inDesiredTypes:(id)a4 atOrigin:(int64_t)a5;
-- (void)_loadIndicatorIfNeededForType:(unint64_t)a3;
-- (void)_prelayoutForNewTypes:(id)a3 oldTypes:(id)a4 atOrigin:(int64_t)a5;
-- (void)_setDirectionIndicatorHiddenForSpace:(BOOL)a3;
-- (void)_updateDirectionIndicatorAlphaAnimated:(BOOL)a3;
-- (void)_updateExpandingInsetsForControl:(id)a3;
-- (void)_updateIndicatorsVisibilityAnimated:(BOOL)a3;
-- (void)collapseExpandedIndicatorAnimated:(BOOL)a3;
-- (void)controlStatusIndicatorDidChangeIntrinsicContentSize:(id)a3 animated:(BOOL)a4;
-- (void)expandingControl:(id)a3 didChangeExpanded:(BOOL)a4 animated:(BOOL)a5;
-- (void)expandingControl:(id)a3 willChangeExpanded:(BOOL)a4 animated:(BOOL)a5;
+- (void)_handleStatusIndicatorTapped:(id)tapped;
+- (void)_installIndicatorIfNeededForType:(unint64_t)type;
+- (void)_iterateViewsForHUDManager:(id)manager withItemFoundBlock:(id)block;
+- (void)_layoutDesiredViewsForTypes:(id)types inDesiredTypes:(id)desiredTypes atOrigin:(int64_t)origin;
+- (void)_loadIndicatorIfNeededForType:(unint64_t)type;
+- (void)_prelayoutForNewTypes:(id)types oldTypes:(id)oldTypes atOrigin:(int64_t)origin;
+- (void)_setDirectionIndicatorHiddenForSpace:(BOOL)space;
+- (void)_updateDirectionIndicatorAlphaAnimated:(BOOL)animated;
+- (void)_updateExpandingInsetsForControl:(id)control;
+- (void)_updateIndicatorsVisibilityAnimated:(BOOL)animated;
+- (void)collapseExpandedIndicatorAnimated:(BOOL)animated;
+- (void)controlStatusIndicatorDidChangeIntrinsicContentSize:(id)size animated:(BOOL)animated;
+- (void)expandingControl:(id)control didChangeExpanded:(BOOL)expanded animated:(BOOL)animated;
+- (void)expandingControl:(id)control willChangeExpanded:(BOOL)expanded animated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)selectedByAccessibilityHUDManager:(id)a3;
-- (void)setDirectionIndicatorVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4;
-- (void)setPrimaryAccessoryControl:(id)a3;
-- (void)setPrimaryDesiredIndicatorTypes:(id)a3;
-- (void)setPrimaryDesiredIndicatorTypes:(id)a3 secondaryDesiredIndicatorTypes:(id)a4 animated:(BOOL)a5;
-- (void)setSecondaryAccessoryControl:(id)a3 animated:(BOOL)a4;
-- (void)setSecondaryDesiredIndicatorTypes:(id)a3;
+- (void)selectedByAccessibilityHUDManager:(id)manager;
+- (void)setDirectionIndicatorVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated;
+- (void)setPrimaryAccessoryControl:(id)control;
+- (void)setPrimaryDesiredIndicatorTypes:(id)types;
+- (void)setPrimaryDesiredIndicatorTypes:(id)types secondaryDesiredIndicatorTypes:(id)indicatorTypes animated:(BOOL)animated;
+- (void)setSecondaryAccessoryControl:(id)control animated:(BOOL)animated;
+- (void)setSecondaryDesiredIndicatorTypes:(id)types;
 @end
 
 @implementation CAMControlStatusBar
 
-- (CAMControlStatusBar)initWithFrame:(CGRect)a3
+- (CAMControlStatusBar)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = CAMControlStatusBar;
-  v3 = [(CAMControlStatusBar *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMControlStatusBar *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     statusIndicatorsByType = v3->__statusIndicatorsByType;
-    v3->__statusIndicatorsByType = v4;
+    v3->__statusIndicatorsByType = dictionary;
 
     primaryDesiredIndicatorTypes = v3->_primaryDesiredIndicatorTypes;
     v7 = MEMORY[0x1E695E0F0];
@@ -77,36 +77,36 @@
 - (void)layoutSubviews
 {
   v60 = *MEMORY[0x1E69E9840];
-  v3 = [(CAMControlStatusBar *)self primaryDesiredIndicatorTypes];
-  [(CAMControlStatusBar *)self _layoutAllDesiredTypes:v3 atOrigin:0];
+  primaryDesiredIndicatorTypes = [(CAMControlStatusBar *)self primaryDesiredIndicatorTypes];
+  [(CAMControlStatusBar *)self _layoutAllDesiredTypes:primaryDesiredIndicatorTypes atOrigin:0];
 
-  v4 = [(CAMControlStatusBar *)self secondaryDesiredIndicatorTypes];
-  [(CAMControlStatusBar *)self _layoutAllDesiredTypes:v4 atOrigin:1];
+  secondaryDesiredIndicatorTypes = [(CAMControlStatusBar *)self secondaryDesiredIndicatorTypes];
+  [(CAMControlStatusBar *)self _layoutAllDesiredTypes:secondaryDesiredIndicatorTypes atOrigin:1];
 
   [(CAMControlStatusBar *)self bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(CAMControlStatusBar *)self _statusIndicatorsByType];
-  v14 = [(CAMControlStatusBar *)self secondaryDesiredIndicatorTypes];
-  v15 = [v14 lastObject];
+  _statusIndicatorsByType = [(CAMControlStatusBar *)self _statusIndicatorsByType];
+  secondaryDesiredIndicatorTypes2 = [(CAMControlStatusBar *)self secondaryDesiredIndicatorTypes];
+  lastObject = [secondaryDesiredIndicatorTypes2 lastObject];
 
-  v16 = [(CAMControlStatusBar *)self primaryDesiredIndicatorTypes];
-  v17 = [v16 lastObject];
+  primaryDesiredIndicatorTypes2 = [(CAMControlStatusBar *)self primaryDesiredIndicatorTypes];
+  lastObject2 = [primaryDesiredIndicatorTypes2 lastObject];
 
   MinX = v10;
-  if (v15)
+  if (lastObject)
   {
-    v19 = [v13 objectForKeyedSubscript:v15];
+    v19 = [_statusIndicatorsByType objectForKeyedSubscript:lastObject];
     [v19 frame];
     MinX = CGRectGetMinX(v61);
   }
 
-  v54 = v15;
-  if (v17)
+  v54 = lastObject;
+  if (lastObject2)
   {
-    v20 = [v13 objectForKeyedSubscript:v17];
+    v20 = [_statusIndicatorsByType objectForKeyedSubscript:lastObject2];
     [v20 frame];
     MaxX = CGRectGetMaxX(v62);
   }
@@ -116,12 +116,12 @@
     MaxX = 0.0;
   }
 
-  v53 = v17;
-  v22 = [(CAMControlStatusBar *)self directionIndicator];
-  v23 = v22;
-  if (v22)
+  v53 = lastObject2;
+  directionIndicator = [(CAMControlStatusBar *)self directionIndicator];
+  v23 = directionIndicator;
+  if (directionIndicator)
   {
-    [v22 intrinsicContentSize];
+    [directionIndicator intrinsicContentSize];
     UIRectCenteredXInRectScale();
     v51 = v6;
     rect = v12;
@@ -180,17 +180,17 @@
     [v23 setFrame:{v32, y, width, height}];
   }
 
-  v37 = [(CAMControlStatusBar *)self _allDesiredTypes];
-  v38 = [v37 mutableCopy];
+  _allDesiredTypes = [(CAMControlStatusBar *)self _allDesiredTypes];
+  v38 = [_allDesiredTypes mutableCopy];
 
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v39 = [(CAMControlStatusBar *)self secondaryDesiredIndicatorTypes];
-  v40 = [v39 reverseObjectEnumerator];
+  secondaryDesiredIndicatorTypes3 = [(CAMControlStatusBar *)self secondaryDesiredIndicatorTypes];
+  reverseObjectEnumerator = [secondaryDesiredIndicatorTypes3 reverseObjectEnumerator];
 
-  v41 = [v40 countByEnumeratingWithState:&v55 objects:v59 count:16];
+  v41 = [reverseObjectEnumerator countByEnumeratingWithState:&v55 objects:v59 count:16];
   if (v41)
   {
     v42 = v41;
@@ -201,11 +201,11 @@ LABEL_17:
     {
       if (*v56 != v43)
       {
-        objc_enumerationMutation(v40);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v45 = *(*(&v55 + 1) + 8 * v44);
-      v46 = [v13 objectForKeyedSubscript:v45];
+      v46 = [_statusIndicatorsByType objectForKeyedSubscript:v45];
       [v46 frame];
       v47 = CGRectGetMinX(v67);
 
@@ -217,7 +217,7 @@ LABEL_17:
       [v38 removeObject:v45];
       if (v42 == ++v44)
       {
-        v42 = [v40 countByEnumeratingWithState:&v55 objects:v59 count:16];
+        v42 = [reverseObjectEnumerator countByEnumeratingWithState:&v55 objects:v59 count:16];
         if (v42)
         {
           goto LABEL_17;
@@ -234,11 +234,11 @@ LABEL_17:
   [(CAMControlStatusBar *)self _updateIndicatorsVisibilityAnimated:0];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   [(CAMControlStatusBar *)self bounds];
   MidY = CGRectGetMidY(v16);
   v9 = MidY + -40.0;
@@ -255,23 +255,23 @@ LABEL_17:
 
   v14.receiver = self;
   v14.super_class = CAMControlStatusBar;
-  v12 = [(CAMControlStatusBar *)&v14 hitTest:v7 withEvent:x, v11];
+  v12 = [(CAMControlStatusBar *)&v14 hitTest:eventCopy withEvent:x, v11];
 
   return v12;
 }
 
-- (void)_layoutDesiredViewsForTypes:(id)a3 inDesiredTypes:(id)a4 atOrigin:(int64_t)a5
+- (void)_layoutDesiredViewsForTypes:(id)types inDesiredTypes:(id)desiredTypes atOrigin:(int64_t)origin
 {
-  v8 = a3;
-  v9 = a4;
+  typesCopy = types;
+  desiredTypesCopy = desiredTypes;
   [(CAMControlStatusBar *)self bounds];
   v38[0] = 0;
   v38[1] = v38;
   v38[2] = 0x2020000000;
   v39 = 0.0;
-  if (a5)
+  if (origin)
   {
-    if (a5 != 1)
+    if (origin != 1)
     {
       goto LABEL_6;
     }
@@ -294,30 +294,30 @@ LABEL_6:
   aBlock[6] = v11;
   *&aBlock[7] = v12;
   aBlock[8] = v13;
-  aBlock[9] = a5;
+  aBlock[9] = origin;
   aBlock[4] = v38;
   v15 = _Block_copy(aBlock);
-  if (a5 == 1)
+  if (origin == 1)
   {
-    v16 = [(CAMControlStatusBar *)self secondaryAccessoryControl];
-    v25 = v15[2](v15, v16, 16.0);
+    secondaryAccessoryControl = [(CAMControlStatusBar *)self secondaryAccessoryControl];
+    v25 = v15[2](v15, secondaryAccessoryControl, 16.0);
     v27 = v26;
     v29 = v28;
     v31 = v30;
-    v24 = [(CAMControlStatusBar *)self secondaryAccessoryControl];
-    [v24 setFrame:{v25, v27, v29, v31}];
+    secondaryAccessoryControl2 = [(CAMControlStatusBar *)self secondaryAccessoryControl];
+    [secondaryAccessoryControl2 setFrame:{v25, v27, v29, v31}];
     goto LABEL_10;
   }
 
-  if (!a5)
+  if (!origin)
   {
-    v16 = [(CAMControlStatusBar *)self primaryAccessoryControl];
-    v17 = v15[2](v15, v16, 16.0);
+    secondaryAccessoryControl = [(CAMControlStatusBar *)self primaryAccessoryControl];
+    v17 = v15[2](v15, secondaryAccessoryControl, 16.0);
     v19 = v18;
     v21 = v20;
     v23 = v22;
-    v24 = [(CAMControlStatusBar *)self primaryAccessoryControl];
-    [v24 setFrame:{v17, v19, v21, v23}];
+    secondaryAccessoryControl2 = [(CAMControlStatusBar *)self primaryAccessoryControl];
+    [secondaryAccessoryControl2 setFrame:{v17, v19, v21, v23}];
 LABEL_10:
   }
 
@@ -328,9 +328,9 @@ LABEL_10:
   v34[4] = self;
   v32 = v15;
   v36 = v32;
-  v33 = v8;
+  v33 = typesCopy;
   v35 = v33;
-  [v9 enumerateObjectsUsingBlock:v34];
+  [desiredTypesCopy enumerateObjectsUsingBlock:v34];
 
   _Block_object_dispose(v38, 8);
 }
@@ -400,17 +400,17 @@ void __75__CAMControlStatusBar__layoutDesiredViewsForTypes_inDesiredTypes_atOrig
   }
 }
 
-- (void)_prelayoutForNewTypes:(id)a3 oldTypes:(id)a4 atOrigin:(int64_t)a5
+- (void)_prelayoutForNewTypes:(id)types oldTypes:(id)oldTypes atOrigin:(int64_t)origin
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x1E695DFA8] setWithArray:v8];
+  typesCopy = types;
+  oldTypesCopy = oldTypes;
+  v10 = [MEMORY[0x1E695DFA8] setWithArray:typesCopy];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v11 = v9;
+  v11 = oldTypesCopy;
   v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v12)
   {
@@ -443,9 +443,9 @@ void __75__CAMControlStatusBar__layoutDesiredViewsForTypes_inDesiredTypes_atOrig
   v19[3] = &unk_1E76F8400;
   v19[4] = self;
   v20 = v10;
-  v21 = v8;
-  v22 = a5;
-  v17 = v8;
+  v21 = typesCopy;
+  originCopy = origin;
+  v17 = typesCopy;
   v18 = v10;
   [v16 performWithoutAnimation:v19];
 }
@@ -490,28 +490,28 @@ void __63__CAMControlStatusBar__prelayoutForNewTypes_oldTypes_atOrigin___block_i
   }
 }
 
-- (void)_updateExpandingInsetsForControl:(id)a3
+- (void)_updateExpandingInsetsForControl:(id)control
 {
-  v9 = a3;
-  [v9 frame];
-  [v9 alignmentRectForFrame:?];
+  controlCopy = control;
+  [controlCopy frame];
+  [controlCopy alignmentRectForFrame:?];
   [(CAMControlStatusBar *)self bounds];
   v12 = CGRectInset(v11, 12.0, 0.0);
   x = v12.origin.x;
   y = v12.origin.y;
   width = v12.size.width;
   height = v12.size.height;
-  v8 = [v9 superview];
-  [(CAMControlStatusBar *)self convertRect:v8 toView:x, y, width, height];
+  superview = [controlCopy superview];
+  [(CAMControlStatusBar *)self convertRect:superview toView:x, y, width, height];
 
   CEKRectInsetsInRect();
-  [v9 setExpansionInsets:?];
+  [controlCopy setExpansionInsets:?];
 }
 
-- (id)_createIndicatorForType:(unint64_t)a3
+- (id)_createIndicatorForType:(unint64_t)type
 {
   v5 = off_1E76F3E48;
-  switch(a3)
+  switch(type)
   {
     case 0uLL:
       goto LABEL_18;
@@ -571,7 +571,7 @@ LABEL_18:
       break;
   }
 
-  [(CAMControlStatusIndicator *)v6 setControlStatusType:a3];
+  [(CAMControlStatusIndicator *)v6 setControlStatusType:type];
   [(CAMVideoConfigurationStatusIndicator *)v6 addTarget:self action:sel__handleStatusIndicatorTapped_ forControlEvents:64];
 LABEL_20:
   [(CAMVideoConfigurationStatusIndicator *)v6 setAlpha:0.0];
@@ -579,192 +579,192 @@ LABEL_20:
   return v6;
 }
 
-- (id)indicatorForType:(unint64_t)a3
+- (id)indicatorForType:(unint64_t)type
 {
-  v4 = [(CAMControlStatusBar *)self _statusIndicatorsByType];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  _statusIndicatorsByType = [(CAMControlStatusBar *)self _statusIndicatorsByType];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+  v6 = [_statusIndicatorsByType objectForKeyedSubscript:v5];
 
   return v6;
 }
 
 - (CAMFlashExpandableStatusIndicator)flashIndicator
 {
-  v2 = [(CAMControlStatusBar *)self _statusIndicatorsByType];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C82A0];
+  _statusIndicatorsByType = [(CAMControlStatusBar *)self _statusIndicatorsByType];
+  v3 = [_statusIndicatorsByType objectForKeyedSubscript:&unk_1F16C82A0];
 
   return v3;
 }
 
 - (CAMLivePhotoStatusIndicator)livePhotoIndicator
 {
-  v2 = [(CAMControlStatusBar *)self _statusIndicatorsByType];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C82B8];
+  _statusIndicatorsByType = [(CAMControlStatusBar *)self _statusIndicatorsByType];
+  v3 = [_statusIndicatorsByType objectForKeyedSubscript:&unk_1F16C82B8];
 
   return v3;
 }
 
 - (CAMHDRStatusIndicator)hdrIndicator
 {
-  v2 = [(CAMControlStatusBar *)self _statusIndicatorsByType];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C82D0];
+  _statusIndicatorsByType = [(CAMControlStatusBar *)self _statusIndicatorsByType];
+  v3 = [_statusIndicatorsByType objectForKeyedSubscript:&unk_1F16C82D0];
 
   return v3;
 }
 
 - (CAMTimerStatusIndicator)timerIndicator
 {
-  v2 = [(CAMControlStatusBar *)self _statusIndicatorsByType];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C82E8];
+  _statusIndicatorsByType = [(CAMControlStatusBar *)self _statusIndicatorsByType];
+  v3 = [_statusIndicatorsByType objectForKeyedSubscript:&unk_1F16C82E8];
 
   return v3;
 }
 
 - (CAMFilterStatusIndicator)filterIndicator
 {
-  v2 = [(CAMControlStatusBar *)self _statusIndicatorsByType];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C8300];
+  _statusIndicatorsByType = [(CAMControlStatusBar *)self _statusIndicatorsByType];
+  v3 = [_statusIndicatorsByType objectForKeyedSubscript:&unk_1F16C8300];
 
   return v3;
 }
 
 - (CAMApertureStatusIndicator)apertureIndicator
 {
-  v2 = [(CAMControlStatusBar *)self _statusIndicatorsByType];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C8318];
+  _statusIndicatorsByType = [(CAMControlStatusBar *)self _statusIndicatorsByType];
+  v3 = [_statusIndicatorsByType objectForKeyedSubscript:&unk_1F16C8318];
 
   return v3;
 }
 
 - (CAMIntensityStatusIndicator)intensityIndicator
 {
-  v2 = [(CAMControlStatusBar *)self _statusIndicatorsByType];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C8330];
+  _statusIndicatorsByType = [(CAMControlStatusBar *)self _statusIndicatorsByType];
+  v3 = [_statusIndicatorsByType objectForKeyedSubscript:&unk_1F16C8330];
 
   return v3;
 }
 
 - (CAMExposureBiasStatusIndicator)exposureBiasIndicator
 {
-  v2 = [(CAMControlStatusBar *)self _statusIndicatorsByType];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C8348];
+  _statusIndicatorsByType = [(CAMControlStatusBar *)self _statusIndicatorsByType];
+  v3 = [_statusIndicatorsByType objectForKeyedSubscript:&unk_1F16C8348];
 
   return v3;
 }
 
 - (CAMVideoConfigurationStatusIndicator)videoConfigurationIndicator
 {
-  v2 = [(CAMControlStatusBar *)self _statusIndicatorsByType];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C8360];
+  _statusIndicatorsByType = [(CAMControlStatusBar *)self _statusIndicatorsByType];
+  v3 = [_statusIndicatorsByType objectForKeyedSubscript:&unk_1F16C8360];
 
   return v3;
 }
 
 - (CAMNightModeStatusIndicator)nightModeIndicator
 {
-  v2 = [(CAMControlStatusBar *)self _statusIndicatorsByType];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C8378];
+  _statusIndicatorsByType = [(CAMControlStatusBar *)self _statusIndicatorsByType];
+  v3 = [_statusIndicatorsByType objectForKeyedSubscript:&unk_1F16C8378];
 
   return v3;
 }
 
 - (CAMSemanticStyleStatusIndicator)semanticStyleIndicator
 {
-  v2 = [(CAMControlStatusBar *)self _statusIndicatorsByType];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C8390];
+  _statusIndicatorsByType = [(CAMControlStatusBar *)self _statusIndicatorsByType];
+  v3 = [_statusIndicatorsByType objectForKeyedSubscript:&unk_1F16C8390];
 
   return v3;
 }
 
 - (CAMSmartStyleStatusIndicator)smartStyleIndicator
 {
-  v2 = [(CAMControlStatusBar *)self _statusIndicatorsByType];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C83A8];
+  _statusIndicatorsByType = [(CAMControlStatusBar *)self _statusIndicatorsByType];
+  v3 = [_statusIndicatorsByType objectForKeyedSubscript:&unk_1F16C83A8];
 
   return v3;
 }
 
 - (CAMRAWStatusIndicator)rawIndicator
 {
-  v2 = [(CAMControlStatusBar *)self _statusIndicatorsByType];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C83C0];
+  _statusIndicatorsByType = [(CAMControlStatusBar *)self _statusIndicatorsByType];
+  v3 = [_statusIndicatorsByType objectForKeyedSubscript:&unk_1F16C83C0];
 
   return v3;
 }
 
 - (CAMPhotoFormatStatusIndicator)photoFormatStatusIndicator
 {
-  v2 = [(CAMControlStatusBar *)self _statusIndicatorsByType];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C83D8];
+  _statusIndicatorsByType = [(CAMControlStatusBar *)self _statusIndicatorsByType];
+  v3 = [_statusIndicatorsByType objectForKeyedSubscript:&unk_1F16C83D8];
 
   return v3;
 }
 
 - (CAMProResStatusIndicator)proResIndicator
 {
-  v2 = [(CAMControlStatusBar *)self _statusIndicatorsByType];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C83F0];
+  _statusIndicatorsByType = [(CAMControlStatusBar *)self _statusIndicatorsByType];
+  v3 = [_statusIndicatorsByType objectForKeyedSubscript:&unk_1F16C83F0];
 
   return v3;
 }
 
 - (CAMSharedLibraryStatusIndicator)sharedLibraryIndicator
 {
-  v2 = [(CAMControlStatusBar *)self _statusIndicatorsByType];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C8408];
+  _statusIndicatorsByType = [(CAMControlStatusBar *)self _statusIndicatorsByType];
+  v3 = [_statusIndicatorsByType objectForKeyedSubscript:&unk_1F16C8408];
 
   return v3;
 }
 
 - (CAMVideoStabilizationStatusIndicator)videoStabilizationIndicator
 {
-  v2 = [(CAMControlStatusBar *)self _statusIndicatorsByType];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C8420];
+  _statusIndicatorsByType = [(CAMControlStatusBar *)self _statusIndicatorsByType];
+  v3 = [_statusIndicatorsByType objectForKeyedSubscript:&unk_1F16C8420];
 
   return v3;
 }
 
-- (void)_handleStatusIndicatorTapped:(id)a3
+- (void)_handleStatusIndicatorTapped:(id)tapped
 {
-  v4 = a3;
-  v6 = [(CAMControlStatusBar *)self delegate];
-  v5 = [v4 controlStatusType];
+  tappedCopy = tapped;
+  delegate = [(CAMControlStatusBar *)self delegate];
+  controlStatusType = [tappedCopy controlStatusType];
 
-  [v6 controlStatusBar:self didReceiveTapInIndicatorForType:v5];
+  [delegate controlStatusBar:self didReceiveTapInIndicatorForType:controlStatusType];
 }
 
-- (void)setPrimaryDesiredIndicatorTypes:(id)a3
+- (void)setPrimaryDesiredIndicatorTypes:(id)types
 {
-  v4 = a3;
-  v5 = [(CAMControlStatusBar *)self secondaryDesiredIndicatorTypes];
-  [(CAMControlStatusBar *)self setPrimaryDesiredIndicatorTypes:v4 secondaryDesiredIndicatorTypes:v5 animated:0];
+  typesCopy = types;
+  secondaryDesiredIndicatorTypes = [(CAMControlStatusBar *)self secondaryDesiredIndicatorTypes];
+  [(CAMControlStatusBar *)self setPrimaryDesiredIndicatorTypes:typesCopy secondaryDesiredIndicatorTypes:secondaryDesiredIndicatorTypes animated:0];
 }
 
-- (void)setSecondaryDesiredIndicatorTypes:(id)a3
+- (void)setSecondaryDesiredIndicatorTypes:(id)types
 {
-  v4 = a3;
-  v5 = [(CAMControlStatusBar *)self primaryDesiredIndicatorTypes];
-  [(CAMControlStatusBar *)self setPrimaryDesiredIndicatorTypes:v5 secondaryDesiredIndicatorTypes:v4 animated:0];
+  typesCopy = types;
+  primaryDesiredIndicatorTypes = [(CAMControlStatusBar *)self primaryDesiredIndicatorTypes];
+  [(CAMControlStatusBar *)self setPrimaryDesiredIndicatorTypes:primaryDesiredIndicatorTypes secondaryDesiredIndicatorTypes:typesCopy animated:0];
 }
 
-- (void)setPrimaryDesiredIndicatorTypes:(id)a3 secondaryDesiredIndicatorTypes:(id)a4 animated:(BOOL)a5
+- (void)setPrimaryDesiredIndicatorTypes:(id)types secondaryDesiredIndicatorTypes:(id)indicatorTypes animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (![v8 isEqual:self->_primaryDesiredIndicatorTypes] || (objc_msgSend(v9, "isEqual:", self->_secondaryDesiredIndicatorTypes) & 1) == 0)
+  animatedCopy = animated;
+  typesCopy = types;
+  indicatorTypesCopy = indicatorTypes;
+  if (![typesCopy isEqual:self->_primaryDesiredIndicatorTypes] || (objc_msgSend(indicatorTypesCopy, "isEqual:", self->_secondaryDesiredIndicatorTypes) & 1) == 0)
   {
     v10 = self->_primaryDesiredIndicatorTypes;
     v11 = self->_secondaryDesiredIndicatorTypes;
-    v12 = [v8 copy];
-    v13 = [v9 copy];
+    v12 = [typesCopy copy];
+    v13 = [indicatorTypesCopy copy];
     objc_storeStrong(&self->_primaryDesiredIndicatorTypes, v12);
     objc_storeStrong(&self->_secondaryDesiredIndicatorTypes, v13);
     v14 = [MEMORY[0x1E695DFA8] setWithArray:v13];
     [v14 addObjectsFromArray:v12];
     [(CAMControlStatusBar *)self _setAllDesiredTypes:v14];
     [(CAMControlStatusBar *)self _ensureDesiredIndicators];
-    if (v5)
+    if (animatedCopy)
     {
       [(CAMControlStatusBar *)self _prelayoutForNewTypes:v12 oldTypes:v10 atOrigin:0];
       [(CAMControlStatusBar *)self _prelayoutForNewTypes:v13 oldTypes:v11 atOrigin:1];
@@ -784,73 +784,73 @@ LABEL_20:
   }
 }
 
-- (BOOL)isIndicatorDesiredForType:(unint64_t)a3
+- (BOOL)isIndicatorDesiredForType:(unint64_t)type
 {
-  v4 = [(CAMControlStatusBar *)self _allDesiredTypes];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v6 = [v4 containsObject:v5];
+  _allDesiredTypes = [(CAMControlStatusBar *)self _allDesiredTypes];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+  v6 = [_allDesiredTypes containsObject:v5];
 
   return v6;
 }
 
-- (void)collapseExpandedIndicatorAnimated:(BOOL)a3
+- (void)collapseExpandedIndicatorAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(CAMControlStatusBar *)self _expandedControl];
-  [v4 setExpanded:0 animated:v3];
+  animatedCopy = animated;
+  _expandedControl = [(CAMControlStatusBar *)self _expandedControl];
+  [_expandedControl setExpanded:0 animated:animatedCopy];
 }
 
 - (BOOL)isControlExpanded
 {
-  v2 = [(CAMControlStatusBar *)self _expandedControl];
-  v3 = v2 != 0;
+  _expandedControl = [(CAMControlStatusBar *)self _expandedControl];
+  v3 = _expandedControl != 0;
 
   return v3;
 }
 
-- (void)setDirectionIndicatorVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setDirectionIndicatorVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_directionIndicatorVisible != a3)
+  if (self->_directionIndicatorVisible != visible)
   {
-    v5 = a4;
-    self->_directionIndicatorVisible = a3;
-    if (a3)
+    animatedCopy = animated;
+    self->_directionIndicatorVisible = visible;
+    if (visible)
     {
-      v7 = [(CAMControlStatusBar *)self directionIndicator];
+      directionIndicator = [(CAMControlStatusBar *)self directionIndicator];
 
-      if (!v7)
+      if (!directionIndicator)
       {
         v8 = objc_alloc_init(CAMDirectionalIndicator);
         directionIndicator = self->_directionIndicator;
         self->_directionIndicator = v8;
 
         [(CAMControlStatusBar *)self addSubview:self->_directionIndicator];
-        if (v5)
+        if (animatedCopy)
         {
           [(CAMDirectionalIndicator *)self->_directionIndicator setAlpha:0.0];
         }
       }
     }
 
-    [(CAMControlStatusBar *)self _updateDirectionIndicatorAlphaAnimated:v5];
+    [(CAMControlStatusBar *)self _updateDirectionIndicatorAlphaAnimated:animatedCopy];
   }
 }
 
-- (void)_setDirectionIndicatorHiddenForSpace:(BOOL)a3
+- (void)_setDirectionIndicatorHiddenForSpace:(BOOL)space
 {
-  if (self->__directionIndicatorHiddenForSpace != a3)
+  if (self->__directionIndicatorHiddenForSpace != space)
   {
-    self->__directionIndicatorHiddenForSpace = a3;
+    self->__directionIndicatorHiddenForSpace = space;
     [(CAMControlStatusBar *)self _updateDirectionIndicatorAlphaAnimated:0];
   }
 }
 
-- (void)_updateDirectionIndicatorAlphaAnimated:(BOOL)a3
+- (void)_updateDirectionIndicatorAlphaAnimated:(BOOL)animated
 {
   if ([(CAMControlStatusBar *)self isDirectionIndicatorVisible]&& ![(CAMControlStatusBar *)self _isDirectionIndicatorHiddenForSpace])
   {
-    v5 = [(CAMControlStatusBar *)self _expandedControl];
-    v4 = v5 == 0;
+    _expandedControl = [(CAMControlStatusBar *)self _expandedControl];
+    v4 = _expandedControl == 0;
   }
 
   else
@@ -883,43 +883,43 @@ void __62__CAMControlStatusBar__updateDirectionIndicatorAlphaAnimated___block_in
   [v2 setAlpha:v1];
 }
 
-- (void)setPrimaryAccessoryControl:(id)a3
+- (void)setPrimaryAccessoryControl:(id)control
 {
-  v5 = a3;
-  if (self->_primaryAccessoryControl != v5)
+  controlCopy = control;
+  if (self->_primaryAccessoryControl != controlCopy)
   {
-    v8 = v5;
-    v6 = self;
-    v7 = [(UIView *)self->_primaryAccessoryControl superview];
+    v8 = controlCopy;
+    selfCopy = self;
+    superview = [(UIView *)self->_primaryAccessoryControl superview];
 
-    if (v7 == v6)
+    if (superview == selfCopy)
     {
       [(UIView *)self->_primaryAccessoryControl removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_primaryAccessoryControl, a3);
-    [(CAMControlStatusBar *)v6 addSubview:self->_primaryAccessoryControl];
+    objc_storeStrong(&self->_primaryAccessoryControl, control);
+    [(CAMControlStatusBar *)selfCopy addSubview:self->_primaryAccessoryControl];
 
-    v5 = v8;
+    controlCopy = v8;
   }
 }
 
-- (void)setSecondaryAccessoryControl:(id)a3 animated:(BOOL)a4
+- (void)setSecondaryAccessoryControl:(id)control animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  if (self->_secondaryAccessoryControl == v7)
+  animatedCopy = animated;
+  controlCopy = control;
+  if (self->_secondaryAccessoryControl == controlCopy)
   {
     goto LABEL_10;
   }
 
-  v8 = self;
-  v9 = [(UIView *)self->_secondaryAccessoryControl superview];
+  selfCopy = self;
+  superview = [(UIView *)self->_secondaryAccessoryControl superview];
 
-  if (v9 == v8)
+  if (superview == selfCopy)
   {
     [(UIView *)self->_secondaryAccessoryControl removeFromSuperview];
-    if (!v4)
+    if (!animatedCopy)
     {
       goto LABEL_5;
     }
@@ -927,48 +927,48 @@ void __62__CAMControlStatusBar__updateDirectionIndicatorAlphaAnimated___block_in
     goto LABEL_4;
   }
 
-  if (v4)
+  if (animatedCopy)
   {
 LABEL_4:
-    [(CAMControlStatusBar *)v8 layoutIfNeeded];
+    [(CAMControlStatusBar *)selfCopy layoutIfNeeded];
   }
 
 LABEL_5:
-  objc_storeStrong(&self->_secondaryAccessoryControl, a3);
-  if (v7)
+  objc_storeStrong(&self->_secondaryAccessoryControl, control);
+  if (controlCopy)
   {
-    [(CAMControlStatusBar *)v8 addSubview:self->_secondaryAccessoryControl];
+    [(CAMControlStatusBar *)selfCopy addSubview:self->_secondaryAccessoryControl];
   }
 
-  [(CAMControlStatusBar *)v8 setNeedsLayout];
-  if (v4)
+  [(CAMControlStatusBar *)selfCopy setNeedsLayout];
+  if (animatedCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __61__CAMControlStatusBar_setSecondaryAccessoryControl_animated___block_invoke;
     v10[3] = &unk_1E76F77B0;
-    v10[4] = v8;
+    v10[4] = selfCopy;
     [MEMORY[0x1E69DD250] animateWithDuration:2 delay:v10 usingSpringWithDamping:0 initialSpringVelocity:0.5 options:0.0 animations:1.0 completion:1.0];
   }
 
 LABEL_10:
 }
 
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    v4 = a4;
-    self->_orientation = a3;
+    animatedCopy = animated;
+    self->_orientation = orientation;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(CAMControlStatusBar *)self _statusIndicatorsByType];
-    v7 = [v6 allValues];
+    _statusIndicatorsByType = [(CAMControlStatusBar *)self _statusIndicatorsByType];
+    allValues = [_statusIndicatorsByType allValues];
 
-    v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v8 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v8)
     {
       v9 = v8;
@@ -979,22 +979,22 @@ LABEL_10:
         {
           if (*v14 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
           v12 = *(*(&v13 + 1) + 8 * i);
           if ([v12 supportsOrientations])
           {
-            [v12 setOrientation:a3 animated:v4];
+            [v12 setOrientation:orientation animated:animatedCopy];
           }
 
           else
           {
-            [CAMView rotateView:v12 toInterfaceOrientation:a3 animated:v4];
+            [CAMView rotateView:v12 toInterfaceOrientation:orientation animated:animatedCopy];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v9);
@@ -1009,8 +1009,8 @@ LABEL_10:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(CAMControlStatusBar *)self _allDesiredTypes];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  _allDesiredTypes = [(CAMControlStatusBar *)self _allDesiredTypes];
+  v4 = [_allDesiredTypes countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1022,69 +1022,69 @@ LABEL_10:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_allDesiredTypes);
         }
 
-        v8 = [*(*(&v9 + 1) + 8 * v7) integerValue];
-        [(CAMControlStatusBar *)self _loadIndicatorIfNeededForType:v8];
-        [(CAMControlStatusBar *)self _installIndicatorIfNeededForType:v8];
+        integerValue = [*(*(&v9 + 1) + 8 * v7) integerValue];
+        [(CAMControlStatusBar *)self _loadIndicatorIfNeededForType:integerValue];
+        [(CAMControlStatusBar *)self _installIndicatorIfNeededForType:integerValue];
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [_allDesiredTypes countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_loadIndicatorIfNeededForType:(unint64_t)a3
+- (void)_loadIndicatorIfNeededForType:(unint64_t)type
 {
-  v9 = [(CAMControlStatusBar *)self _statusIndicatorsByType];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v6 = [v9 objectForKeyedSubscript:v5];
+  _statusIndicatorsByType = [(CAMControlStatusBar *)self _statusIndicatorsByType];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+  v6 = [_statusIndicatorsByType objectForKeyedSubscript:v5];
 
   if (!v6)
   {
-    v6 = [(CAMControlStatusBar *)self _createIndicatorForType:a3];
+    v6 = [(CAMControlStatusBar *)self _createIndicatorForType:type];
     [v6 setOrientation:{-[CAMControlStatusBar orientation](self, "orientation")}];
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-    [v9 setObject:v6 forKeyedSubscript:v7];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+    [_statusIndicatorsByType setObject:v6 forKeyedSubscript:v7];
 
     if (objc_opt_respondsToSelector())
     {
       [v6 setDelegate:self];
     }
 
-    v8 = [(CAMControlStatusBar *)self delegate];
-    [v8 controlStatusBar:self didCreateIndicatorForType:a3];
+    delegate = [(CAMControlStatusBar *)self delegate];
+    [delegate controlStatusBar:self didCreateIndicatorForType:type];
   }
 }
 
-- (void)_installIndicatorIfNeededForType:(unint64_t)a3
+- (void)_installIndicatorIfNeededForType:(unint64_t)type
 {
-  v8 = self;
-  v4 = [(CAMControlStatusBar *)v8 _statusIndicatorsByType];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  selfCopy = self;
+  _statusIndicatorsByType = [(CAMControlStatusBar *)selfCopy _statusIndicatorsByType];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+  v6 = [_statusIndicatorsByType objectForKeyedSubscript:v5];
 
   if (v6)
   {
-    v7 = [v6 superview];
+    superview = [v6 superview];
 
-    if (v7 != v8)
+    if (superview != selfCopy)
     {
-      [(CAMControlStatusBar *)v8 addSubview:v6];
+      [(CAMControlStatusBar *)selfCopy addSubview:v6];
     }
   }
 }
 
-- (void)_updateIndicatorsVisibilityAnimated:(BOOL)a3
+- (void)_updateIndicatorsVisibilityAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CAMControlStatusBar *)self _allVisibleTypes];
-  if (v3)
+  animatedCopy = animated;
+  _allVisibleTypes = [(CAMControlStatusBar *)self _allVisibleTypes];
+  if (animatedCopy)
   {
     v6 = 0.5;
   }
@@ -1094,16 +1094,16 @@ LABEL_10:
     v6 = 0.0;
   }
 
-  v7 = [(CAMControlStatusBar *)self _expandedControl];
+  _expandedControl = [(CAMControlStatusBar *)self _expandedControl];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __59__CAMControlStatusBar__updateIndicatorsVisibilityAnimated___block_invoke;
   v10[3] = &unk_1E76F7938;
   v10[4] = self;
-  v11 = v5;
-  v12 = v7;
-  v8 = v7;
-  v9 = v5;
+  v11 = _allVisibleTypes;
+  v12 = _expandedControl;
+  v8 = _expandedControl;
+  v9 = _allVisibleTypes;
   [CAMView animateIfNeededWithDuration:2 usingSpringWithDamping:v10 initialSpringVelocity:0 options:v6 animations:1.0 completion:1.0];
 }
 
@@ -1144,11 +1144,11 @@ void __59__CAMControlStatusBar__updateIndicatorsVisibilityAnimated___block_invok
   [v10 setAlpha:v7];
 }
 
-- (void)controlStatusIndicatorDidChangeIntrinsicContentSize:(id)a3 animated:(BOOL)a4
+- (void)controlStatusIndicatorDidChangeIntrinsicContentSize:(id)size animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   [(CAMControlStatusBar *)self setNeedsLayout];
-  if (v4)
+  if (animatedCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -1159,82 +1159,82 @@ void __59__CAMControlStatusBar__updateIndicatorsVisibilityAnimated___block_invok
   }
 }
 
-- (void)expandingControl:(id)a3 willChangeExpanded:(BOOL)a4 animated:(BOOL)a5
+- (void)expandingControl:(id)control willChangeExpanded:(BOOL)expanded animated:(BOOL)animated
 {
-  v5 = a4;
-  v8 = a3;
-  v7 = [(CAMControlStatusBar *)self delegate];
-  [v7 controlStatusBar:self willChangeExpandingControl:v8 expanded:v5];
+  expandedCopy = expanded;
+  controlCopy = control;
+  delegate = [(CAMControlStatusBar *)self delegate];
+  [delegate controlStatusBar:self willChangeExpandingControl:controlCopy expanded:expandedCopy];
 
-  if (v5)
+  if (expandedCopy)
   {
-    [(CAMControlStatusBar *)self _updateExpandingInsetsForControl:v8];
+    [(CAMControlStatusBar *)self _updateExpandingInsetsForControl:controlCopy];
   }
 }
 
-- (void)expandingControl:(id)a3 didChangeExpanded:(BOOL)a4 animated:(BOOL)a5
+- (void)expandingControl:(id)control didChangeExpanded:(BOOL)expanded animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
-  v13 = a3;
-  v8 = [(CAMControlStatusBar *)self _expandedControl];
-  v9 = v8;
-  if (v6)
+  animatedCopy = animated;
+  expandedCopy = expanded;
+  controlCopy = control;
+  _expandedControl = [(CAMControlStatusBar *)self _expandedControl];
+  v9 = _expandedControl;
+  if (expandedCopy)
   {
-    [(CAMControlStatusBar *)self _setExpandedControl:v13];
-    [v9 setExpanded:0 animated:v5];
-    v10 = [v13 superview];
-    [v10 bringSubviewToFront:v13];
+    [(CAMControlStatusBar *)self _setExpandedControl:controlCopy];
+    [v9 setExpanded:0 animated:animatedCopy];
+    superview = [controlCopy superview];
+    [superview bringSubviewToFront:controlCopy];
 
 LABEL_6:
-    [(CAMControlStatusBar *)self _updateIndicatorsVisibilityAnimated:v5];
-    [(CAMControlStatusBar *)self _updateDirectionIndicatorAlphaAnimated:v5];
+    [(CAMControlStatusBar *)self _updateIndicatorsVisibilityAnimated:animatedCopy];
+    [(CAMControlStatusBar *)self _updateDirectionIndicatorAlphaAnimated:animatedCopy];
     goto LABEL_7;
   }
 
-  if (v9 == v13)
+  if (v9 == controlCopy)
   {
     [(CAMControlStatusBar *)self _setExpandedControl:0];
   }
 
-  v11 = [(CAMControlStatusBar *)self _expandedControl];
+  _expandedControl2 = [(CAMControlStatusBar *)self _expandedControl];
 
-  if (!v11)
+  if (!_expandedControl2)
   {
     goto LABEL_6;
   }
 
 LABEL_7:
-  v12 = [(CAMControlStatusBar *)self delegate];
-  [v12 controlStatusBar:self didChangeExpandingControl:v13 expanded:v6];
+  delegate = [(CAMControlStatusBar *)self delegate];
+  [delegate controlStatusBar:self didChangeExpandingControl:controlCopy expanded:expandedCopy];
 }
 
-- (void)_iterateViewsForHUDManager:(id)a3 withItemFoundBlock:(id)a4
+- (void)_iterateViewsForHUDManager:(id)manager withItemFoundBlock:(id)block
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CAMControlStatusBar *)self _expandedControl];
+  managerCopy = manager;
+  blockCopy = block;
+  _expandedControl = [(CAMControlStatusBar *)self _expandedControl];
 
-  if (v8)
+  if (_expandedControl)
   {
-    v9 = [(CAMControlStatusBar *)self _expandedControl];
+    _expandedControl2 = [(CAMControlStatusBar *)self _expandedControl];
 LABEL_3:
-    v10 = v9;
-    v7[2](v7, v9);
+    v10 = _expandedControl2;
+    blockCopy[2](blockCopy, _expandedControl2);
 
     goto LABEL_23;
   }
 
-  [v6 locationOfAccessibilityGestureInView:self];
+  [managerCopy locationOfAccessibilityGestureInView:self];
   v12 = v11;
   v14 = v13;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v15 = [(CAMControlStatusBar *)self _allVisibleTypes];
-  v16 = [v15 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  _allVisibleTypes = [(CAMControlStatusBar *)self _allVisibleTypes];
+  v16 = [_allVisibleTypes countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v16)
   {
     v17 = v16;
@@ -1246,19 +1246,19 @@ LABEL_3:
       {
         if (*v30 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(_allVisibleTypes);
         }
 
         v20 = *(*(&v29 + 1) + 8 * v19);
-        v21 = [(CAMControlStatusBar *)self _statusIndicatorsByType];
-        v22 = [v21 objectForKeyedSubscript:v20];
+        _statusIndicatorsByType = [(CAMControlStatusBar *)self _statusIndicatorsByType];
+        v22 = [_statusIndicatorsByType objectForKeyedSubscript:v20];
 
         [v22 frame];
         v35.x = v12;
         v35.y = v14;
         if (CGRectContainsPoint(v39, v35))
         {
-          v7[2](v7, v22);
+          blockCopy[2](blockCopy, v22);
 
           goto LABEL_22;
         }
@@ -1267,7 +1267,7 @@ LABEL_3:
       }
 
       while (v17 != v19);
-      v17 = [v15 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v17 = [_allVisibleTypes countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v17)
       {
         continue;
@@ -1279,33 +1279,33 @@ LABEL_3:
 
   if ([(CAMControlStatusBar *)self isDirectionIndicatorVisible])
   {
-    v23 = [(CAMControlStatusBar *)self directionIndicator];
-    [v23 frame];
+    directionIndicator = [(CAMControlStatusBar *)self directionIndicator];
+    [directionIndicator frame];
     v36.x = v12;
     v36.y = v14;
     v24 = CGRectContainsPoint(v40, v36);
 
     if (v24)
     {
-      v9 = [(CAMControlStatusBar *)self directionIndicator];
+      _expandedControl2 = [(CAMControlStatusBar *)self directionIndicator];
       goto LABEL_3;
     }
   }
 
-  v15 = [(CAMControlStatusBar *)self primaryAccessoryControl];
-  v25 = [(CAMControlStatusBar *)self secondaryAccessoryControl];
-  if ([v15 conformsToProtocol:&unk_1F16D4378] && (objc_msgSend(v15, "frame"), v37.x = v12, v37.y = v14, v26 = CGRectContainsPoint(v41, v37), v27 = v15, v26) || objc_msgSend(v25, "conformsToProtocol:", &unk_1F16D4378) && (objc_msgSend(v25, "frame"), v38.x = v12, v38.y = v14, v28 = CGRectContainsPoint(v42, v38), v27 = v25, v28))
+  _allVisibleTypes = [(CAMControlStatusBar *)self primaryAccessoryControl];
+  secondaryAccessoryControl = [(CAMControlStatusBar *)self secondaryAccessoryControl];
+  if ([_allVisibleTypes conformsToProtocol:&unk_1F16D4378] && (objc_msgSend(_allVisibleTypes, "frame"), v37.x = v12, v37.y = v14, v26 = CGRectContainsPoint(v41, v37), v27 = _allVisibleTypes, v26) || objc_msgSend(secondaryAccessoryControl, "conformsToProtocol:", &unk_1F16D4378) && (objc_msgSend(secondaryAccessoryControl, "frame"), v38.x = v12, v38.y = v14, v28 = CGRectContainsPoint(v42, v38), v27 = secondaryAccessoryControl, v28))
   {
-    v7[2](v7, v27);
+    blockCopy[2](blockCopy, v27);
   }
 
 LABEL_22:
 LABEL_23:
 }
 
-- (id)hudItemForAccessibilityHUDManager:(id)a3
+- (id)hudItemForAccessibilityHUDManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -1317,7 +1317,7 @@ LABEL_23:
   v8[2] = __57__CAMControlStatusBar_hudItemForAccessibilityHUDManager___block_invoke;
   v8[3] = &unk_1E76F79B0;
   v10 = &v11;
-  v5 = v4;
+  v5 = managerCopy;
   v9 = v5;
   [(CAMControlStatusBar *)self _iterateViewsForHUDManager:v5 withItemFoundBlock:v8];
   v6 = v12[5];
@@ -1337,15 +1337,15 @@ uint64_t __57__CAMControlStatusBar_hudItemForAccessibilityHUDManager___block_inv
   return MEMORY[0x1EEE66BB8](v3, v5);
 }
 
-- (void)selectedByAccessibilityHUDManager:(id)a3
+- (void)selectedByAccessibilityHUDManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __57__CAMControlStatusBar_selectedByAccessibilityHUDManager___block_invoke;
   v6[3] = &unk_1E76F79D8;
-  v7 = v4;
-  v5 = v4;
+  v7 = managerCopy;
+  v5 = managerCopy;
   [(CAMControlStatusBar *)self _iterateViewsForHUDManager:v5 withItemFoundBlock:v6];
 }
 

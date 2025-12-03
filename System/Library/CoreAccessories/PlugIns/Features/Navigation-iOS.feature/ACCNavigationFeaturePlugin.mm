@@ -2,18 +2,18 @@
 - (NSMutableDictionary)navigationShimAccessoryList;
 - (NSString)description;
 - (NSString)pluginName;
-- (id)_navigationShimAccessoryForConnectionIDNoLock:(unsigned int)a3;
-- (id)navigationShimAccessoryForConnectionID:(unsigned int)a3;
+- (id)_navigationShimAccessoryForConnectionIDNoLock:(unsigned int)lock;
+- (id)navigationShimAccessoryForConnectionID:(unsigned int)d;
 - (void)initPlugin;
-- (void)navigation:(id)a3 accessoryAttached:(id)a4;
-- (void)navigation:(id)a3 accessoryDetached:(id)a4;
-- (void)navigation:(id)a3 startRouteGuidance:(id)a4 componentList:(id)a5;
-- (void)navigation:(id)a3 stopRouteGuidance:(id)a4 componentList:(id)a5;
+- (void)navigation:(id)navigation accessoryAttached:(id)attached;
+- (void)navigation:(id)navigation accessoryDetached:(id)detached;
+- (void)navigation:(id)navigation startRouteGuidance:(id)guidance componentList:(id)list;
+- (void)navigation:(id)navigation stopRouteGuidance:(id)guidance componentList:(id)list;
 - (void)notifyNavigationAccessoryClientsOfStateChange;
 - (void)startPlugin;
 - (void)stopPlugin;
-- (void)updateManeuverInfo:(id)a3 componentIdList:(id)a4 accessory:(id)a5;
-- (void)updateRouteGuidanceInfo:(id)a3 componentIdList:(id)a4 accessory:(id)a5;
+- (void)updateManeuverInfo:(id)info componentIdList:(id)list accessory:(id)accessory;
+- (void)updateRouteGuidanceInfo:(id)info componentIdList:(id)list accessory:(id)accessory;
 @end
 
 @implementation ACCNavigationFeaturePlugin
@@ -28,16 +28,16 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ACCNavigationFeaturePlugin *)self pluginName];
+  pluginName = [(ACCNavigationFeaturePlugin *)self pluginName];
   v5 = obfuscatedPointer(self);
-  v6 = [(ACCNavigationFeaturePlugin *)self isRunning];
+  isRunning = [(ACCNavigationFeaturePlugin *)self isRunning];
   v7 = "NO";
-  if (v6)
+  if (isRunning)
   {
     v7 = "YES";
   }
 
-  v8 = [v3 stringWithFormat:@"<%@: %p> isRunning: %s", v4, v5, v7];
+  v8 = [v3 stringWithFormat:@"<%@: %p> isRunning: %s", pluginName, v5, v7];
 
   return v8;
 }
@@ -116,9 +116,9 @@
     _os_log_impl(&dword_2335F7000, v6, OS_LOG_TYPE_INFO, "[#Navigation] Create/Get shared ACCiAP2ShimServer...", v24, 2u);
   }
 
-  v8 = [MEMORY[0x277CE84E8] sharedInstance];
+  mEMORY[0x277CE84E8] = [MEMORY[0x277CE84E8] sharedInstance];
   iap2server = self->_iap2server;
-  self->_iap2server = v8;
+  self->_iap2server = mEMORY[0x277CE84E8];
 
   [(ACCiAP2ShimServer *)self->_iap2server startServer];
   if (gLogObjects && gNumLogObjects >= 1)
@@ -261,11 +261,11 @@
   }
 }
 
-- (void)navigation:(id)a3 accessoryAttached:(id)a4
+- (void)navigation:(id)navigation accessoryAttached:(id)attached
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  navigationCopy = navigation;
+  attachedCopy = attached;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 1;
@@ -298,9 +298,9 @@
     iap2server = self->_iap2server;
     navigationProvider = self->_navigationProvider;
     *buf = 138413314;
-    v21 = v6;
+    v21 = navigationCopy;
     v22 = 2112;
-    v23 = v7;
+    v23 = attachedCopy;
     v24 = 2112;
     v25 = navigationProvider;
     v26 = 2112;
@@ -315,9 +315,9 @@
   v17[1] = 3221225472;
   v17[2] = __59__ACCNavigationFeaturePlugin_navigation_accessoryAttached___block_invoke;
   v17[3] = &unk_2789E42E8;
-  v18 = v7;
-  v19 = self;
-  v15 = v7;
+  v18 = attachedCopy;
+  selfCopy = self;
+  v15 = attachedCopy;
   dispatch_async(navigationQueue, v17);
 
   v16 = *MEMORY[0x277D85DE8];
@@ -424,11 +424,11 @@ void __59__ACCNavigationFeaturePlugin_navigation_accessoryAttached___block_invok
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)navigation:(id)a3 accessoryDetached:(id)a4
+- (void)navigation:(id)navigation accessoryDetached:(id)detached
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  navigationCopy = navigation;
+  detachedCopy = detached;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 1;
@@ -461,9 +461,9 @@ void __59__ACCNavigationFeaturePlugin_navigation_accessoryAttached___block_invok
     iap2server = self->_iap2server;
     navigationProvider = self->_navigationProvider;
     *buf = 138413314;
-    v20 = v6;
+    v20 = navigationCopy;
     v21 = 2112;
-    v22 = v7;
+    v22 = detachedCopy;
     v23 = 2112;
     v24 = navigationProvider;
     v25 = 2112;
@@ -479,8 +479,8 @@ void __59__ACCNavigationFeaturePlugin_navigation_accessoryAttached___block_invok
   v17[2] = __59__ACCNavigationFeaturePlugin_navigation_accessoryDetached___block_invoke;
   v17[3] = &unk_2789E42E8;
   v17[4] = self;
-  v18 = v7;
-  v15 = v7;
+  v18 = detachedCopy;
+  v15 = detachedCopy;
   dispatch_async(navigationQueue, v17);
 
   v16 = *MEMORY[0x277D85DE8];
@@ -561,12 +561,12 @@ void __59__ACCNavigationFeaturePlugin_navigation_accessoryDetached___block_invok
   }
 }
 
-- (void)navigation:(id)a3 startRouteGuidance:(id)a4 componentList:(id)a5
+- (void)navigation:(id)navigation startRouteGuidance:(id)guidance componentList:(id)list
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  navigationCopy = navigation;
+  guidanceCopy = guidance;
+  listCopy = list;
   if (gLogObjects)
   {
     v11 = gNumLogObjects < 1;
@@ -599,11 +599,11 @@ void __59__ACCNavigationFeaturePlugin_navigation_accessoryDetached___block_invok
     iap2server = self->_iap2server;
     navigationProvider = self->_navigationProvider;
     *buf = 138413570;
-    v25 = v8;
+    v25 = navigationCopy;
     v26 = 2112;
-    v27 = v9;
+    v27 = guidanceCopy;
     v28 = 2112;
-    v29 = v10;
+    v29 = listCopy;
     v30 = 2112;
     v31 = navigationProvider;
     v32 = 2112;
@@ -619,10 +619,10 @@ void __59__ACCNavigationFeaturePlugin_navigation_accessoryDetached___block_invok
   block[2] = __74__ACCNavigationFeaturePlugin_navigation_startRouteGuidance_componentList___block_invoke;
   block[3] = &unk_2789E4310;
   block[4] = self;
-  v22 = v9;
-  v23 = v10;
-  v18 = v10;
-  v19 = v9;
+  v22 = guidanceCopy;
+  v23 = listCopy;
+  v18 = listCopy;
+  v19 = guidanceCopy;
   dispatch_async(navigationQueue, block);
 
   v20 = *MEMORY[0x277D85DE8];
@@ -688,12 +688,12 @@ void __74__ACCNavigationFeaturePlugin_navigation_startRouteGuidance_componentLis
   }
 }
 
-- (void)navigation:(id)a3 stopRouteGuidance:(id)a4 componentList:(id)a5
+- (void)navigation:(id)navigation stopRouteGuidance:(id)guidance componentList:(id)list
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  navigationCopy = navigation;
+  guidanceCopy = guidance;
+  listCopy = list;
   if (gLogObjects)
   {
     v11 = gNumLogObjects < 1;
@@ -726,11 +726,11 @@ void __74__ACCNavigationFeaturePlugin_navigation_startRouteGuidance_componentLis
     iap2server = self->_iap2server;
     navigationProvider = self->_navigationProvider;
     *buf = 138413570;
-    v25 = v8;
+    v25 = navigationCopy;
     v26 = 2112;
-    v27 = v9;
+    v27 = guidanceCopy;
     v28 = 2112;
-    v29 = v10;
+    v29 = listCopy;
     v30 = 2112;
     v31 = navigationProvider;
     v32 = 2112;
@@ -746,10 +746,10 @@ void __74__ACCNavigationFeaturePlugin_navigation_startRouteGuidance_componentLis
   block[2] = __73__ACCNavigationFeaturePlugin_navigation_stopRouteGuidance_componentList___block_invoke;
   block[3] = &unk_2789E4310;
   block[4] = self;
-  v22 = v9;
-  v23 = v10;
-  v18 = v10;
-  v19 = v9;
+  v22 = guidanceCopy;
+  v23 = listCopy;
+  v18 = listCopy;
+  v19 = guidanceCopy;
   dispatch_async(navigationQueue, block);
 
   v20 = *MEMORY[0x277D85DE8];
@@ -815,7 +815,7 @@ void __73__ACCNavigationFeaturePlugin_navigation_stopRouteGuidance_componentList
   }
 }
 
-- (id)navigationShimAccessoryForConnectionID:(unsigned int)a3
+- (id)navigationShimAccessoryForConnectionID:(unsigned int)d
 {
   v8 = 0;
   v9 = &v8;
@@ -830,7 +830,7 @@ void __73__ACCNavigationFeaturePlugin_navigation_stopRouteGuidance_componentList
   block[3] = &unk_2789E4338;
   block[4] = self;
   block[5] = &v8;
-  v7 = a3;
+  dCopy = d;
   dispatch_sync(navigationQueue, block);
   v4 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -860,12 +860,12 @@ uint64_t __69__ACCNavigationFeaturePlugin_navigationShimAccessoryForConnectionID
   return navigationShimAccessoryList;
 }
 
-- (void)updateRouteGuidanceInfo:(id)a3 componentIdList:(id)a4 accessory:(id)a5
+- (void)updateRouteGuidanceInfo:(id)info componentIdList:(id)list accessory:(id)accessory
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  listCopy = list;
+  accessoryCopy = accessory;
   if (gLogObjects)
   {
     v11 = gNumLogObjects < 1;
@@ -897,11 +897,11 @@ uint64_t __69__ACCNavigationFeaturePlugin_navigationShimAccessoryForConnectionID
     navigationProvider = self->_navigationProvider;
     navigationShim = self->_navigationShim;
     *buf = 138413314;
-    v26 = v8;
+    v26 = infoCopy;
     v27 = 2112;
-    v28 = v9;
+    v28 = listCopy;
     v29 = 2112;
-    v30 = v10;
+    v30 = accessoryCopy;
     v31 = 2112;
     v32 = navigationProvider;
     v33 = 2112;
@@ -915,12 +915,12 @@ uint64_t __69__ACCNavigationFeaturePlugin_navigationShimAccessoryForConnectionID
   v21[2] = __80__ACCNavigationFeaturePlugin_updateRouteGuidanceInfo_componentIdList_accessory___block_invoke;
   v21[3] = &unk_2789E4360;
   v21[4] = self;
-  v22 = v10;
-  v23 = v9;
-  v24 = v8;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
+  v22 = accessoryCopy;
+  v23 = listCopy;
+  v24 = infoCopy;
+  v17 = infoCopy;
+  v18 = listCopy;
+  v19 = accessoryCopy;
   dispatch_async(navigationQueue, v21);
 
   v20 = *MEMORY[0x277D85DE8];
@@ -1000,12 +1000,12 @@ void __80__ACCNavigationFeaturePlugin_updateRouteGuidanceInfo_componentIdList_ac
   }
 }
 
-- (void)updateManeuverInfo:(id)a3 componentIdList:(id)a4 accessory:(id)a5
+- (void)updateManeuverInfo:(id)info componentIdList:(id)list accessory:(id)accessory
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  listCopy = list;
+  accessoryCopy = accessory;
   if (gLogObjects)
   {
     v11 = gNumLogObjects < 1;
@@ -1037,11 +1037,11 @@ void __80__ACCNavigationFeaturePlugin_updateRouteGuidanceInfo_componentIdList_ac
     navigationProvider = self->_navigationProvider;
     navigationShim = self->_navigationShim;
     *buf = 138413314;
-    v26 = v8;
+    v26 = infoCopy;
     v27 = 2112;
-    v28 = v9;
+    v28 = listCopy;
     v29 = 2112;
-    v30 = v10;
+    v30 = accessoryCopy;
     v31 = 2112;
     v32 = navigationProvider;
     v33 = 2112;
@@ -1055,12 +1055,12 @@ void __80__ACCNavigationFeaturePlugin_updateRouteGuidanceInfo_componentIdList_ac
   v21[2] = __75__ACCNavigationFeaturePlugin_updateManeuverInfo_componentIdList_accessory___block_invoke;
   v21[3] = &unk_2789E4360;
   v21[4] = self;
-  v22 = v10;
-  v23 = v9;
-  v24 = v8;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
+  v22 = accessoryCopy;
+  v23 = listCopy;
+  v24 = infoCopy;
+  v17 = infoCopy;
+  v18 = listCopy;
+  v19 = accessoryCopy;
   dispatch_async(navigationQueue, v21);
 
   v20 = *MEMORY[0x277D85DE8];
@@ -1147,10 +1147,10 @@ void __75__ACCNavigationFeaturePlugin_updateManeuverInfo_componentIdList_accesso
   [v2 postNSDistributeNotificationType:v3 notifyDict:0];
 }
 
-- (id)_navigationShimAccessoryForConnectionIDNoLock:(unsigned int)a3
+- (id)_navigationShimAccessoryForConnectionIDNoLock:(unsigned int)lock
 {
   navigationShimAccessoryList = self->_navigationShimAccessoryList;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:lock];
   v5 = [(NSMutableDictionary *)navigationShimAccessoryList objectForKey:v4];
 
   return v5;

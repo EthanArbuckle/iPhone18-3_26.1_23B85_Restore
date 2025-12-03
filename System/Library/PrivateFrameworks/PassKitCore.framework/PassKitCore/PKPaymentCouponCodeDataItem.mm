@@ -8,25 +8,25 @@
 
 - (NSString)couponCode
 {
-  v2 = [(PKPaymentDataItem *)self model];
-  v3 = [v2 couponCode];
+  model = [(PKPaymentDataItem *)self model];
+  couponCode = [model couponCode];
 
-  return v3;
+  return couponCode;
 }
 
 - (BOOL)isAwaitingCouponCodeUpdate
 {
-  v2 = [(PKPaymentDataItem *)self model];
-  v3 = [v2 numberOfOutstandingCouponCodeUpdates] != 0;
+  model = [(PKPaymentDataItem *)self model];
+  v3 = [model numberOfOutstandingCouponCodeUpdates] != 0;
 
   return v3;
 }
 
 - (NSArray)errors
 {
-  v2 = [(PKPaymentDataItem *)self model];
-  v3 = [v2 paymentErrors];
-  v4 = [v3 pk_objectsPassingTest:&__block_literal_global_382];
+  model = [(PKPaymentDataItem *)self model];
+  paymentErrors = [model paymentErrors];
+  v4 = [paymentErrors pk_objectsPassingTest:&__block_literal_global_382];
 
   return v4;
 }

@@ -1,16 +1,16 @@
 @interface MPRTTTranscriptionMessage
-- (MPRTTTranscriptionMessage)initWithCallUUID:(id)a3;
+- (MPRTTTranscriptionMessage)initWithCallUUID:(id)d;
 - (NSAttributedString)attributedText;
 - (NSString)text;
 - (id)makeTranscriptMessage;
-- (void)fetchRTTConversationForCallUUID:(id)a3;
+- (void)fetchRTTConversationForCallUUID:(id)d;
 @end
 
 @implementation MPRTTTranscriptionMessage
 
-- (MPRTTTranscriptionMessage)initWithCallUUID:(id)a3
+- (MPRTTTranscriptionMessage)initWithCallUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = MPRTTTranscriptionMessage;
   v5 = [(MPRTTTranscriptionMessage *)&v10 init];
@@ -21,15 +21,15 @@
     rttConversationsQueue = v5->_rttConversationsQueue;
     v5->_rttConversationsQueue = v7;
 
-    [(MPRTTTranscriptionMessage *)v5 fetchRTTConversationForCallUUID:v4];
+    [(MPRTTTranscriptionMessage *)v5 fetchRTTConversationForCallUUID:dCopy];
   }
 
   return v5;
 }
 
-- (void)fetchRTTConversationForCallUUID:(id)a3
+- (void)fetchRTTConversationForCallUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -49,7 +49,7 @@
     block[3] = &unk_1002867B8;
     objc_copyWeak(v12, buf);
     v12[1] = v7;
-    v11 = v4;
+    v11 = dCopy;
     dispatch_async(rttConversationsQueue, block);
 
     objc_destroyWeak(v12);
@@ -149,8 +149,8 @@ void __61__MPRTTTranscriptionMessage_fetchRTTConversationForCallUUID___block_inv
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v4 = [(RTTConversation *)self->_conversation utterances];
-    v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    utterances = [(RTTConversation *)self->_conversation utterances];
+    v5 = [utterances countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v5)
     {
       v6 = v5;
@@ -161,21 +161,21 @@ void __61__MPRTTTranscriptionMessage_fetchRTTConversationForCallUUID___block_inv
         {
           if (*v16 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(utterances);
           }
 
           v9 = *(*(&v15 + 1) + 8 * i);
           if (([v9 isMe] & 1) == 0)
           {
-            v10 = [v9 text];
+            text = [v9 text];
             if ([v9 isTranscription])
             {
               v11 = ttyLocString();
               v12 = [NSString stringWithFormat:v11, &stru_10028F310];
 
-              v13 = [v10 stringByReplacingOccurrencesOfString:v12 withString:&stru_10028F310];
+              v13 = [text stringByReplacingOccurrencesOfString:v12 withString:&stru_10028F310];
 
-              v10 = v13;
+              text = v13;
             }
 
             if ([(__CFString *)v3 length])
@@ -183,11 +183,11 @@ void __61__MPRTTTranscriptionMessage_fetchRTTConversationForCallUUID___block_inv
               [(__CFString *)v3 appendString:@" "];
             }
 
-            [(__CFString *)v3 appendString:v10];
+            [(__CFString *)v3 appendString:text];
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v6 = [utterances countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v6);
@@ -204,24 +204,24 @@ void __61__MPRTTTranscriptionMessage_fetchRTTConversationForCallUUID___block_inv
 
 - (NSAttributedString)attributedText
 {
-  v2 = self;
-  v3 = [(MPRTTTranscriptionMessage *)v2 text];
-  v4 = [objc_allocWithZone(NSAttributedString) initWithString:v3];
+  selfCopy = self;
+  text = [(MPRTTTranscriptionMessage *)selfCopy text];
+  v4 = [objc_allocWithZone(NSAttributedString) initWithString:text];
 
   return v4;
 }
 
 - (NSString)text
 {
-  v2 = self;
-  v3 = [(MPRTTTranscriptionMessage *)v2 makeTranscriptMessage];
-  if (!v3)
+  selfCopy = self;
+  makeTranscriptMessage = [(MPRTTTranscriptionMessage *)selfCopy makeTranscriptMessage];
+  if (!makeTranscriptMessage)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v3 = String._bridgeToObjectiveC()();
+    makeTranscriptMessage = String._bridgeToObjectiveC()();
   }
 
-  return v3;
+  return makeTranscriptMessage;
 }
 
 @end

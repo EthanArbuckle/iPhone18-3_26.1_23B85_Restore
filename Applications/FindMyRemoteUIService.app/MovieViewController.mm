@@ -1,17 +1,17 @@
 @interface MovieViewController
-- (_TtC21FindMyRemoteUIService19MovieViewController)initWithContentView:(id)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (_TtC21FindMyRemoteUIService19MovieViewController)initWithContentView:(id)view;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MovieViewController
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_10000B504(a3);
+  selfCopy = self;
+  sub_10000B504(disappear);
 }
 
-- (_TtC21FindMyRemoteUIService19MovieViewController)initWithContentView:(id)a3
+- (_TtC21FindMyRemoteUIService19MovieViewController)initWithContentView:(id)view
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

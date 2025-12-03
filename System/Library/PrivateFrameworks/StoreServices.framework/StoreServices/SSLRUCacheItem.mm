@@ -1,20 +1,20 @@
 @interface SSLRUCacheItem
 - (NSCopying)key;
-- (SSLRUCacheItem)initWithKey:(id)a3 object:(id)a4;
+- (SSLRUCacheItem)initWithKey:(id)key object:(id)object;
 @end
 
 @implementation SSLRUCacheItem
 
-- (SSLRUCacheItem)initWithKey:(id)a3 object:(id)a4
+- (SSLRUCacheItem)initWithKey:(id)key object:(id)object
 {
-  v6 = a3;
+  keyCopy = key;
   v10.receiver = self;
   v10.super_class = SSLRUCacheItem;
-  v7 = [(SSDoubleLinkedListNode *)&v10 initWithObject:a4];
+  v7 = [(SSDoubleLinkedListNode *)&v10 initWithObject:object];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_key, v6);
+    objc_storeWeak(&v7->_key, keyCopy);
   }
 
   return v8;

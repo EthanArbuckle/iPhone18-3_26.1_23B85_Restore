@@ -1,12 +1,12 @@
 @interface AVTMaterial
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)applyToVFXMaterial:(id)a3;
+- (void)applyToVFXMaterial:(id)material;
 @end
 
 @implementation AVTMaterial
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(AVTMaterial);
   objc_storeStrong(&v4->_baseColor, self->_baseColor);
@@ -14,20 +14,20 @@
   return v4;
 }
 
-- (void)applyToVFXMaterial:(id)a3
+- (void)applyToVFXMaterial:(id)material
 {
-  v4 = a3;
+  materialCopy = material;
   baseColor = self->_baseColor;
-  v6 = [v4 diffuse];
-  [v6 setContents:baseColor];
+  diffuse = [materialCopy diffuse];
+  [diffuse setContents:baseColor];
 
   additionalPropertyColors = self->_additionalPropertyColors;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __34__AVTMaterial_applyToVFXMaterial___block_invoke;
   v9[3] = &unk_1E7F48558;
-  v10 = v4;
-  v8 = v4;
+  v10 = materialCopy;
+  v8 = materialCopy;
   [(NSDictionary *)additionalPropertyColors enumerateKeysAndObjectsUsingBlock:v9];
 }
 
@@ -62,8 +62,8 @@ void __34__AVTMaterial_applyToVFXMaterial___block_invoke(uint64_t a1, void *a2, 
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   baseColor = self->_baseColor;
-  v6 = [(NSDictionary *)self->_additionalPropertyColors allKeys];
-  v7 = [v3 stringWithFormat:@"<%@ %p | base color: %@, additional properties: %@>", v4, self, baseColor, v6];
+  allKeys = [(NSDictionary *)self->_additionalPropertyColors allKeys];
+  v7 = [v3 stringWithFormat:@"<%@ %p | base color: %@, additional properties: %@>", v4, self, baseColor, allKeys];
 
   return v7;
 }

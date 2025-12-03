@@ -1,16 +1,16 @@
 @interface GKContactsIntegrationBulletin
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4;
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler;
 @end
 
 @implementation GKContactsIntegrationBulletin
 
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [a3 objectForKey:GKPushCommandKey];
-  v7 = [v6 integerValue];
+  handlerCopy = handler;
+  v6 = [notification objectForKey:GKPushCommandKey];
+  integerValue = [v6 integerValue];
 
-  if (v7 << 16 != 19726336)
+  if (integerValue << 16 != 19726336)
   {
     if (!os_log_GKGeneral)
     {
@@ -20,19 +20,19 @@
     v12 = os_log_GKError;
     if (os_log_type_enabled(os_log_GKError, OS_LOG_TYPE_ERROR))
     {
-      sub_1002967BC(v7, v12);
-      if (!v5)
+      sub_1002967BC(integerValue, v12);
+      if (!handlerCopy)
       {
         goto LABEL_12;
       }
     }
 
-    else if (!v5)
+    else if (!handlerCopy)
     {
       goto LABEL_12;
     }
 
-    v5[2](v5, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_12;
   }
 
@@ -53,7 +53,7 @@
   v13[1] = 3221225472;
   v13[2] = sub_1001A2D90;
   v13[3] = &unk_100361CB8;
-  v14 = v5;
+  v14 = handlerCopy;
   [v10 clearCachesWithCompletionHandler:v13];
 
 LABEL_12:

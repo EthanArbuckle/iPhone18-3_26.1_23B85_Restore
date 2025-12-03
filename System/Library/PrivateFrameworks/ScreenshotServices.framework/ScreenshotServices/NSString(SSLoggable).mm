@@ -6,17 +6,17 @@
 
 - (id)shorterLoggableString
 {
-  if ([a1 length] < 6)
+  if ([self length] < 6)
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = [a1 substringToIndex:5];
+    selfCopy = [self substringToIndex:5];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 @end

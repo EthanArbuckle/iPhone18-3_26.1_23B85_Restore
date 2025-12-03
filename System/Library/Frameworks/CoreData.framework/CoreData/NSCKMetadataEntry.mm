@@ -1,16 +1,16 @@
 @interface NSCKMetadataEntry
-+ (NSManagedObject)_insertMetadataEntryWithKey:(uint64_t)a3 forStore:(void *)a4 intoManagedObjectContext:;
-+ (NSManagedObject)insertMetadataEntryWithKey:(uint64_t)a3 BOOLValue:(uint64_t)a4 forStore:(void *)a5 intoManagedObjectContext:;
-+ (NSManagedObject)insertMetadataEntryWithKey:(uint64_t)a3 stringValue:(uint64_t)a4 forStore:(void *)a5 intoManagedObjectContext:;
++ (NSManagedObject)_insertMetadataEntryWithKey:(uint64_t)key forStore:(void *)store intoManagedObjectContext:;
++ (NSManagedObject)insertMetadataEntryWithKey:(uint64_t)key BOOLValue:(uint64_t)value forStore:(void *)store intoManagedObjectContext:;
++ (NSManagedObject)insertMetadataEntryWithKey:(uint64_t)key stringValue:(uint64_t)value forStore:(void *)store intoManagedObjectContext:;
 + (NSString)entityPath;
-+ (uint64_t)_updateOrInsertMetadataEntryWithKey:(uint64_t)a3 valueSettingBlock:(uint64_t)a4 forStore:(void *)a5 intoManagedObjectContext:(void *)a6 error:;
-+ (uint64_t)entryForKey:(uint64_t)a3 fromStore:(void *)a4 inManagedObjectContext:(uint64_t)a5 error:;
-+ (uint64_t)updateOrInsertMetadataEntryWithKey:(char)a3 BOOLValue:(uint64_t)a4 forStore:(void *)a5 intoManagedObjectContext:(void *)a6 error:;
-+ (uint64_t)updateOrInsertMetadataEntryWithKey:(uint64_t)a3 integerValue:(uint64_t)a4 forStore:(void *)a5 intoManagedObjectContext:(void *)a6 error:;
-+ (uint64_t)updateOrInsertMetadataEntryWithKey:(uint64_t)a3 stringValue:(uint64_t)a4 forStore:(void *)a5 intoManagedObjectContext:(void *)a6 error:;
-+ (uint64_t)updateOrInsertMetadataEntryWithKey:(uint64_t)a3 transformedValue:(uint64_t)a4 forStore:(void *)a5 intoManagedObjectContext:(void *)a6 error:;
-+ (void)entriesForKeys:(uint64_t)a3 fromStore:(void *)a4 inManagedObjectContext:(uint64_t)a5 error:;
-+ (void)entriesForKeys:(void *)a3 onlyFetchingProperties:(uint64_t)a4 fromStore:(void *)a5 inManagedObjectContext:(uint64_t)a6 error:;
++ (uint64_t)_updateOrInsertMetadataEntryWithKey:(uint64_t)key valueSettingBlock:(uint64_t)block forStore:(void *)store intoManagedObjectContext:(void *)context error:;
++ (uint64_t)entryForKey:(uint64_t)key fromStore:(void *)store inManagedObjectContext:(uint64_t)context error:;
++ (uint64_t)updateOrInsertMetadataEntryWithKey:(char)key BOOLValue:(uint64_t)value forStore:(void *)store intoManagedObjectContext:(void *)context error:;
++ (uint64_t)updateOrInsertMetadataEntryWithKey:(uint64_t)key integerValue:(uint64_t)value forStore:(void *)store intoManagedObjectContext:(void *)context error:;
++ (uint64_t)updateOrInsertMetadataEntryWithKey:(uint64_t)key stringValue:(uint64_t)value forStore:(void *)store intoManagedObjectContext:(void *)context error:;
++ (uint64_t)updateOrInsertMetadataEntryWithKey:(uint64_t)key transformedValue:(uint64_t)value forStore:(void *)store intoManagedObjectContext:(void *)context error:;
++ (void)entriesForKeys:(uint64_t)keys fromStore:(void *)store inManagedObjectContext:(uint64_t)context error:;
++ (void)entriesForKeys:(void *)keys onlyFetchingProperties:(uint64_t)properties fromStore:(void *)store inManagedObjectContext:(uint64_t)context error:;
 - (BOOL)BOOLValue;
 - (__CFString)describeValue;
 @end
@@ -27,9 +27,9 @@
 
 - (BOOL)BOOLValue
 {
-  v2 = [(NSCKMetadataEntry *)self BOOLValueNum];
+  bOOLValueNum = [(NSCKMetadataEntry *)self BOOLValueNum];
 
-  return [v2 BOOLValue];
+  return [bOOLValueNum BOOLValue];
 }
 
 - (__CFString)describeValue
@@ -73,7 +73,7 @@ LABEL_12:
 
   if ([(__CFString *)v1 transformedValue])
   {
-    v4 = [(__CFString *)v1 transformedValue];
+    transformedValue = [(__CFString *)v1 transformedValue];
   }
 
   else
@@ -110,15 +110,15 @@ LABEL_12:
       goto LABEL_12;
     }
 
-    v4 = [(__CFString *)v1 dateValue];
+    transformedValue = [(__CFString *)v1 dateValue];
   }
 
   v5 = *MEMORY[0x1E69E9840];
 
-  return [v4 description];
+  return [transformedValue description];
 }
 
-+ (uint64_t)entryForKey:(uint64_t)a3 fromStore:(void *)a4 inManagedObjectContext:(uint64_t)a5 error:
++ (uint64_t)entryForKey:(uint64_t)key fromStore:(void *)store inManagedObjectContext:(uint64_t)context error:
 {
   v12[1] = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -130,24 +130,24 @@ LABEL_12:
   return result;
 }
 
-+ (void)entriesForKeys:(uint64_t)a3 fromStore:(void *)a4 inManagedObjectContext:(uint64_t)a5 error:
++ (void)entriesForKeys:(uint64_t)keys fromStore:(void *)store inManagedObjectContext:(uint64_t)context error:
 {
   objc_opt_self();
 
-  return [NSCKMetadataEntry entriesForKeys:a2 onlyFetchingProperties:0 fromStore:a3 inManagedObjectContext:a4 error:a5];
+  return [NSCKMetadataEntry entriesForKeys:a2 onlyFetchingProperties:0 fromStore:keys inManagedObjectContext:store error:context];
 }
 
-+ (void)entriesForKeys:(void *)a3 onlyFetchingProperties:(uint64_t)a4 fromStore:(void *)a5 inManagedObjectContext:(uint64_t)a6 error:
++ (void)entriesForKeys:(void *)keys onlyFetchingProperties:(uint64_t)properties fromStore:(void *)store inManagedObjectContext:(uint64_t)context error:
 {
   v25[1] = *MEMORY[0x1E69E9840];
   objc_opt_self();
   v11 = +[NSFetchRequest fetchRequestWithEntityName:](NSFetchRequest, "fetchRequestWithEntityName:", +[NSCKMetadataEntry entityPath]);
   -[NSFetchRequest setPredicate:](v11, "setPredicate:", [MEMORY[0x1E696AE18] predicateWithFormat:@"key IN (%@)", a2]);
-  v25[0] = a4;
+  v25[0] = properties;
   -[NSFetchRequest setAffectedStores:](v11, "setAffectedStores:", [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1]);
-  if ([a3 count])
+  if ([keys count])
   {
-    [(NSFetchRequest *)v11 setPropertiesToFetch:a3];
+    [(NSFetchRequest *)v11 setPropertiesToFetch:keys];
   }
 
   else
@@ -155,8 +155,8 @@ LABEL_12:
     [(NSFetchRequest *)v11 setReturnsObjectsAsFaults:0];
   }
 
-  v12 = [a5 executeFetchRequest:v11 error:a6];
-  v13 = [MEMORY[0x1E695DF90] dictionary];
+  v12 = [store executeFetchRequest:v11 error:context];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (v12)
   {
     v22 = 0u;
@@ -178,7 +178,7 @@ LABEL_12:
             objc_enumerationMutation(v12);
           }
 
-          [v13 setObject:*(*(&v20 + 1) + 8 * v17) forKey:{objc_msgSend(*(*(&v20 + 1) + 8 * v17), "key")}];
+          [dictionary setObject:*(*(&v20 + 1) + 8 * v17) forKey:{objc_msgSend(*(*(&v20 + 1) + 8 * v17), "key")}];
           ++v17;
         }
 
@@ -191,62 +191,62 @@ LABEL_12:
   }
 
   v18 = *MEMORY[0x1E69E9840];
-  return v13;
+  return dictionary;
 }
 
-+ (NSManagedObject)insertMetadataEntryWithKey:(uint64_t)a3 stringValue:(uint64_t)a4 forStore:(void *)a5 intoManagedObjectContext:
++ (NSManagedObject)insertMetadataEntryWithKey:(uint64_t)key stringValue:(uint64_t)value forStore:(void *)store intoManagedObjectContext:
 {
   objc_opt_self();
-  v9 = [NSCKMetadataEntry _insertMetadataEntryWithKey:a2 forStore:a4 intoManagedObjectContext:a5];
-  [(NSManagedObject *)v9 setStringValue:a3];
+  v9 = [NSCKMetadataEntry _insertMetadataEntryWithKey:a2 forStore:value intoManagedObjectContext:store];
+  [(NSManagedObject *)v9 setStringValue:key];
   return v9;
 }
 
-+ (NSManagedObject)_insertMetadataEntryWithKey:(uint64_t)a3 forStore:(void *)a4 intoManagedObjectContext:
++ (NSManagedObject)_insertMetadataEntryWithKey:(uint64_t)key forStore:(void *)store intoManagedObjectContext:
 {
   objc_opt_self();
-  v7 = +[NSEntityDescription insertNewObjectForEntityForName:inManagedObjectContext:](NSEntityDescription, "insertNewObjectForEntityForName:inManagedObjectContext:", +[NSCKMetadataEntry entityPath], a4);
+  v7 = +[NSEntityDescription insertNewObjectForEntityForName:inManagedObjectContext:](NSEntityDescription, "insertNewObjectForEntityForName:inManagedObjectContext:", +[NSCKMetadataEntry entityPath], store);
   [(NSManagedObject *)v7 setKey:a2];
-  [a4 assignObject:v7 toPersistentStore:a3];
+  [store assignObject:v7 toPersistentStore:key];
   return v7;
 }
 
-+ (NSManagedObject)insertMetadataEntryWithKey:(uint64_t)a3 BOOLValue:(uint64_t)a4 forStore:(void *)a5 intoManagedObjectContext:
++ (NSManagedObject)insertMetadataEntryWithKey:(uint64_t)key BOOLValue:(uint64_t)value forStore:(void *)store intoManagedObjectContext:
 {
   objc_opt_self();
-  v9 = [NSCKMetadataEntry _insertMetadataEntryWithKey:a2 forStore:a4 intoManagedObjectContext:a5];
-  [(NSManagedObject *)v9 setBoolValue:a3];
+  v9 = [NSCKMetadataEntry _insertMetadataEntryWithKey:a2 forStore:value intoManagedObjectContext:store];
+  [(NSManagedObject *)v9 setBoolValue:key];
   return v9;
 }
 
-+ (uint64_t)updateOrInsertMetadataEntryWithKey:(char)a3 BOOLValue:(uint64_t)a4 forStore:(void *)a5 intoManagedObjectContext:(void *)a6 error:
++ (uint64_t)updateOrInsertMetadataEntryWithKey:(char)key BOOLValue:(uint64_t)value forStore:(void *)store intoManagedObjectContext:(void *)context error:
 {
   objc_opt_self();
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __106__NSCKMetadataEntry_updateOrInsertMetadataEntryWithKey_BOOLValue_forStore_intoManagedObjectContext_error___block_invoke;
   v12[3] = &__block_descriptor_33_e27_v16__0__NSCKMetadataEntry_8l;
-  v13 = a3;
-  return [NSCKMetadataEntry _updateOrInsertMetadataEntryWithKey:a2 valueSettingBlock:v12 forStore:a4 intoManagedObjectContext:a5 error:a6];
+  keyCopy = key;
+  return [NSCKMetadataEntry _updateOrInsertMetadataEntryWithKey:a2 valueSettingBlock:v12 forStore:value intoManagedObjectContext:store error:context];
 }
 
-+ (uint64_t)_updateOrInsertMetadataEntryWithKey:(uint64_t)a3 valueSettingBlock:(uint64_t)a4 forStore:(void *)a5 intoManagedObjectContext:(void *)a6 error:
++ (uint64_t)_updateOrInsertMetadataEntryWithKey:(uint64_t)key valueSettingBlock:(uint64_t)block forStore:(void *)store intoManagedObjectContext:(void *)context error:
 {
   v22 = *MEMORY[0x1E69E9840];
   objc_opt_self();
   v17 = 0;
-  v11 = [NSCKMetadataEntry entryForKey:a2 fromStore:a4 inManagedObjectContext:a5 error:&v17];
+  v11 = [NSCKMetadataEntry entryForKey:a2 fromStore:block inManagedObjectContext:store error:&v17];
   if (!v11)
   {
-    v11 = [NSCKMetadataEntry _insertMetadataEntryWithKey:a2 forStore:a4 intoManagedObjectContext:a5];
+    v11 = [NSCKMetadataEntry _insertMetadataEntryWithKey:a2 forStore:block intoManagedObjectContext:store];
     if (!v11)
     {
       if (v17)
       {
-        if (a6)
+        if (context)
         {
           v12 = 0;
-          *a6 = v17;
+          *context = v17;
           goto LABEL_4;
         }
       }
@@ -280,43 +280,43 @@ LABEL_12:
   }
 
   v12 = v11;
-  (*(a3 + 16))(a3, v11);
+  (*(key + 16))(key, v11);
 LABEL_4:
   v13 = *MEMORY[0x1E69E9840];
   return v12;
 }
 
-+ (uint64_t)updateOrInsertMetadataEntryWithKey:(uint64_t)a3 stringValue:(uint64_t)a4 forStore:(void *)a5 intoManagedObjectContext:(void *)a6 error:
++ (uint64_t)updateOrInsertMetadataEntryWithKey:(uint64_t)key stringValue:(uint64_t)value forStore:(void *)store intoManagedObjectContext:(void *)context error:
 {
   objc_opt_self();
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __108__NSCKMetadataEntry_updateOrInsertMetadataEntryWithKey_stringValue_forStore_intoManagedObjectContext_error___block_invoke;
   v12[3] = &unk_1E6EC4300;
-  v12[4] = a3;
-  return [NSCKMetadataEntry _updateOrInsertMetadataEntryWithKey:a2 valueSettingBlock:v12 forStore:a4 intoManagedObjectContext:a5 error:a6];
+  v12[4] = key;
+  return [NSCKMetadataEntry _updateOrInsertMetadataEntryWithKey:a2 valueSettingBlock:v12 forStore:value intoManagedObjectContext:store error:context];
 }
 
-+ (uint64_t)updateOrInsertMetadataEntryWithKey:(uint64_t)a3 transformedValue:(uint64_t)a4 forStore:(void *)a5 intoManagedObjectContext:(void *)a6 error:
++ (uint64_t)updateOrInsertMetadataEntryWithKey:(uint64_t)key transformedValue:(uint64_t)value forStore:(void *)store intoManagedObjectContext:(void *)context error:
 {
   objc_opt_self();
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __113__NSCKMetadataEntry_updateOrInsertMetadataEntryWithKey_transformedValue_forStore_intoManagedObjectContext_error___block_invoke;
   v12[3] = &unk_1E6EC4300;
-  v12[4] = a3;
-  return [NSCKMetadataEntry _updateOrInsertMetadataEntryWithKey:a2 valueSettingBlock:v12 forStore:a4 intoManagedObjectContext:a5 error:a6];
+  v12[4] = key;
+  return [NSCKMetadataEntry _updateOrInsertMetadataEntryWithKey:a2 valueSettingBlock:v12 forStore:value intoManagedObjectContext:store error:context];
 }
 
-+ (uint64_t)updateOrInsertMetadataEntryWithKey:(uint64_t)a3 integerValue:(uint64_t)a4 forStore:(void *)a5 intoManagedObjectContext:(void *)a6 error:
++ (uint64_t)updateOrInsertMetadataEntryWithKey:(uint64_t)key integerValue:(uint64_t)value forStore:(void *)store intoManagedObjectContext:(void *)context error:
 {
   objc_opt_self();
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __109__NSCKMetadataEntry_updateOrInsertMetadataEntryWithKey_integerValue_forStore_intoManagedObjectContext_error___block_invoke;
   v12[3] = &unk_1E6EC4300;
-  v12[4] = a3;
-  return [NSCKMetadataEntry _updateOrInsertMetadataEntryWithKey:a2 valueSettingBlock:v12 forStore:a4 intoManagedObjectContext:a5 error:a6];
+  v12[4] = key;
+  return [NSCKMetadataEntry _updateOrInsertMetadataEntryWithKey:a2 valueSettingBlock:v12 forStore:value intoManagedObjectContext:store error:context];
 }
 
 @end

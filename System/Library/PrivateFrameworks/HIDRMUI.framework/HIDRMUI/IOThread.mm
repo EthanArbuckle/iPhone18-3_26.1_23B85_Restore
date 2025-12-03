@@ -5,17 +5,17 @@
 + (void)initializeThread;
 - (IOThread)init;
 - (void)dealloc;
-- (void)dispatchSync:(id)a3;
+- (void)dispatchSync:(id)sync;
 @end
 
 @implementation IOThread
 
 + (unint64_t)classCount
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = sClassCount;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -109,8 +109,8 @@ intptr_t __31__IOThread_decrementClassCount__block_invoke_1(uint64_t a1)
 
 + (void)initializeThread
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!sRunLoop)
   {
     v3 = dispatch_semaphore_create(0);
@@ -135,7 +135,7 @@ intptr_t __31__IOThread_decrementClassCount__block_invoke_1(uint64_t a1)
     dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 uint64_t __28__IOThread_initializeThread__block_invoke(uint64_t a1)
@@ -164,9 +164,9 @@ uint64_t __28__IOThread_initializeThread__block_invoke(uint64_t a1)
   return [sRunLoop run];
 }
 
-- (void)dispatchSync:(id)a3
+- (void)dispatchSync:(id)sync
 {
-  v3 = a3;
+  syncCopy = sync;
   v4 = dispatch_semaphore_create(0);
   v5 = sRunLoop;
   v8[0] = MEMORY[0x277D85DD0];
@@ -174,9 +174,9 @@ uint64_t __28__IOThread_initializeThread__block_invoke(uint64_t a1)
   v8[2] = __25__IOThread_dispatchSync___block_invoke;
   v8[3] = &unk_2796A31E8;
   v9 = v4;
-  v10 = v3;
+  v10 = syncCopy;
   v6 = v4;
-  v7 = v3;
+  v7 = syncCopy;
   [v5 performBlock:v8];
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
 }

@@ -1,48 +1,48 @@
 @interface HDCloudSyncStoreEntity
-+ (BOOL)cacheEpochs:(id)a3 storeIdentifier:(id)a4 database:(id)a5 error:(id *)a6;
-+ (BOOL)cacheEpochs:(id)a3 storeIdentifier:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (BOOL)cacheExcludedSyncIdentities:(id)a3 storeIdentifier:(id)a4 database:(id)a5 error:(id *)a6;
-+ (BOOL)cacheExcludedSyncIdentities:(id)a3 storeIdentifier:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (BOOL)enumerateShardsForOwnerIdentifier:(id)a3 containerIdentifier:(id)a4 syncIdentity:(id)a5 profile:(id)a6 transaction:(id)a7 error:(id *)a8 handler:(id)a9;
-+ (BOOL)persistState:(id)a3 storeUUID:(id)a4 shouldReplace:(BOOL)a5 healthDatabase:(id)a6 error:(id *)a7;
-+ (BOOL)rebaseRequiredByDate:(id)a3 intervals:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (BOOL)resetLastSyncDateExcludingStores:(id)a3 profile:(id)a4 error:(id *)a5;
++ (BOOL)cacheEpochs:(id)epochs storeIdentifier:(id)identifier database:(id)database error:(id *)error;
++ (BOOL)cacheEpochs:(id)epochs storeIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (BOOL)cacheExcludedSyncIdentities:(id)identities storeIdentifier:(id)identifier database:(id)database error:(id *)error;
++ (BOOL)cacheExcludedSyncIdentities:(id)identities storeIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (BOOL)enumerateShardsForOwnerIdentifier:(id)identifier containerIdentifier:(id)containerIdentifier syncIdentity:(id)identity profile:(id)profile transaction:(id)transaction error:(id *)error handler:(id)handler;
++ (BOOL)persistState:(id)state storeUUID:(id)d shouldReplace:(BOOL)replace healthDatabase:(id)database error:(id *)error;
++ (BOOL)rebaseRequiredByDate:(id)date intervals:(id)intervals profile:(id)profile error:(id *)error;
++ (BOOL)resetLastSyncDateExcludingStores:(id)stores profile:(id)profile error:(id *)error;
 + (id)_persistedStateProperties;
-+ (id)cachedEpochsForStoreIdentifier:(id)a3 database:(id)a4 error:(id *)a5;
-+ (id)cachedEpochsForStoreIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)cachedExcludedSyncIdentitiesForStoreIdentifier:(id)a3 database:(id)a4 error:(id *)a5;
-+ (id)cachedExcludedSyncIdentitiesForStoreIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
++ (id)cachedEpochsForStoreIdentifier:(id)identifier database:(id)database error:(id *)error;
++ (id)cachedEpochsForStoreIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (id)cachedExcludedSyncIdentitiesForStoreIdentifier:(id)identifier database:(id)database error:(id *)error;
++ (id)cachedExcludedSyncIdentitiesForStoreIdentifier:(id)identifier profile:(id)profile error:(id *)error;
 + (id)foreignKeys;
-+ (id)persistedMostRecentLastSyncDateForProfile:(id)a3 error:(id *)a4;
-+ (id)persistedStateForStoreUUID:(id)a3 database:(id)a4 error:(id *)a5;
-+ (id)persistedStateForStoreUUID:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)persistedStoreUUIDsForProfile:(id)a3 error:(id *)a4;
-+ (id)storeIdentifiersForOwnerIdentifier:(id)a3 containerIdentifier:(id)a4 syncIdentity:(id)a5 profile:(id)a6 error:(id *)a7;
-- (BOOL)fetchShardPropertiesInTransaction:(id)a3 error:(id *)a4 handler:(id)a5;
-- (BOOL)updateShardStartDate:(id)a3 endDate:(id)a4 type:(int64_t)a5 transaction:(id)a6 error:(id *)a7;
-- (BOOL)updateSyncIdentity:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (id)storeUUIDInTransaction:(id)a3 error:(id *)a4;
++ (id)persistedMostRecentLastSyncDateForProfile:(id)profile error:(id *)error;
++ (id)persistedStateForStoreUUID:(id)d database:(id)database error:(id *)error;
++ (id)persistedStateForStoreUUID:(id)d profile:(id)profile error:(id *)error;
++ (id)persistedStoreUUIDsForProfile:(id)profile error:(id *)error;
++ (id)storeIdentifiersForOwnerIdentifier:(id)identifier containerIdentifier:(id)containerIdentifier syncIdentity:(id)identity profile:(id)profile error:(id *)error;
+- (BOOL)fetchShardPropertiesInTransaction:(id)transaction error:(id *)error handler:(id)handler;
+- (BOOL)updateShardStartDate:(id)date endDate:(id)endDate type:(int64_t)type transaction:(id)transaction error:(id *)error;
+- (BOOL)updateSyncIdentity:(id)identity transaction:(id)transaction error:(id *)error;
+- (id)storeUUIDInTransaction:(id)transaction error:(id *)error;
 @end
 
 @implementation HDCloudSyncStoreEntity
 
-+ (BOOL)rebaseRequiredByDate:(id)a3 intervals:(id)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)rebaseRequiredByDate:(id)date intervals:(id)intervals profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [a5 database];
+  dateCopy = date;
+  intervalsCopy = intervals;
+  database = [profile database];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __71__HDCloudSyncStoreEntity_rebaseRequiredByDate_intervals_profile_error___block_invoke;
   v16[3] = &unk_278614698;
-  v18 = v11;
-  v19 = a1;
-  v17 = v10;
-  v13 = v11;
-  v14 = v10;
-  LOBYTE(a6) = [a1 performWriteTransactionWithHealthDatabase:v12 error:a6 block:v16];
+  v18 = intervalsCopy;
+  selfCopy = self;
+  v17 = dateCopy;
+  v13 = intervalsCopy;
+  v14 = dateCopy;
+  LOBYTE(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:v16];
 
-  return a6;
+  return error;
 }
 
 uint64_t __71__HDCloudSyncStoreEntity_rebaseRequiredByDate_intervals_profile_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -141,36 +141,36 @@ uint64_t __71__HDCloudSyncStoreEntity_rebaseRequiredByDate_intervals_profile_err
   return sqlite3_bind_int64(a2, 2, v5);
 }
 
-+ (id)storeIdentifiersForOwnerIdentifier:(id)a3 containerIdentifier:(id)a4 syncIdentity:(id)a5 profile:(id)a6 error:(id *)a7
++ (id)storeIdentifiersForOwnerIdentifier:(id)identifier containerIdentifier:(id)containerIdentifier syncIdentity:(id)identity profile:(id)profile error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  identifierCopy = identifier;
+  containerIdentifierCopy = containerIdentifier;
+  identityCopy = identity;
+  profileCopy = profile;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
   v34 = __Block_byref_object_copy__188;
   v35 = __Block_byref_object_dispose__188;
   v36 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v16 = [v15 database];
+  database = [profileCopy database];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __108__HDCloudSyncStoreEntity_storeIdentifiersForOwnerIdentifier_containerIdentifier_syncIdentity_profile_error___block_invoke;
   v24[3] = &unk_27862D448;
-  v30 = a1;
-  v17 = v15;
+  selfCopy = self;
+  v17 = profileCopy;
   v25 = v17;
-  v18 = v14;
+  v18 = identityCopy;
   v26 = v18;
-  v19 = v12;
+  v19 = identifierCopy;
   v27 = v19;
-  v20 = v13;
+  v20 = containerIdentifierCopy;
   v28 = v20;
   v29 = &v31;
-  LODWORD(a7) = [a1 performReadTransactionWithHealthDatabase:v16 error:a7 block:v24];
+  LODWORD(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v24];
 
-  if (a7)
+  if (error)
   {
     v21 = v32[5];
   }
@@ -291,28 +291,28 @@ uint64_t __108__HDCloudSyncStoreEntity_storeIdentifiersForOwnerIdentifier_contai
   return v0;
 }
 
-+ (id)persistedStateForStoreUUID:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)persistedStateForStoreUUID:(id)d profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  profileCopy = profile;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__188;
   v23 = __Block_byref_object_dispose__188;
   v24 = 0;
-  v10 = [v9 database];
+  database = [profileCopy database];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __67__HDCloudSyncStoreEntity_persistedStateForStoreUUID_profile_error___block_invoke;
   v15[3] = &unk_2786169D8;
   v17 = &v19;
-  v18 = a1;
-  v11 = v8;
+  selfCopy = self;
+  v11 = dCopy;
   v16 = v11;
-  LODWORD(a5) = [a1 performReadTransactionWithHealthDatabase:v10 error:a5 block:v15];
+  LODWORD(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v15];
 
-  if (a5)
+  if (error)
   {
     v12 = v20[5];
   }
@@ -342,25 +342,25 @@ BOOL __67__HDCloudSyncStoreEntity_persistedStateForStoreUUID_profile_error___blo
   return *(*(a1[5] + 8) + 40) != 0;
 }
 
-+ (id)persistedStoreUUIDsForProfile:(id)a3 error:(id *)a4
++ (id)persistedStoreUUIDsForProfile:(id)profile error:(id *)error
 {
-  v6 = a3;
+  profileCopy = profile;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__188;
   v16 = __Block_byref_object_dispose__188;
   v17 = [MEMORY[0x277CBEB58] set];
-  v7 = [v6 database];
+  database = [profileCopy database];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __62__HDCloudSyncStoreEntity_persistedStoreUUIDsForProfile_error___block_invoke;
   v11[3] = &unk_27861C1A0;
   v11[4] = &v12;
-  v11[5] = a1;
-  LOBYTE(a4) = [a1 performReadTransactionWithHealthDatabase:v7 error:a4 block:v11];
+  v11[5] = self;
+  LOBYTE(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v11];
 
-  if ((a4 & 1) == 0)
+  if ((error & 1) == 0)
   {
     v8 = v13[5];
     v13[5] = 0;
@@ -408,25 +408,25 @@ uint64_t __62__HDCloudSyncStoreEntity_persistedStoreUUIDsForProfile_error___bloc
   return 1;
 }
 
-+ (id)persistedMostRecentLastSyncDateForProfile:(id)a3 error:(id *)a4
++ (id)persistedMostRecentLastSyncDateForProfile:(id)profile error:(id *)error
 {
-  v6 = a3;
+  profileCopy = profile;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__188;
   v15 = __Block_byref_object_dispose__188;
   v16 = 0;
-  v7 = [v6 database];
+  database = [profileCopy database];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __74__HDCloudSyncStoreEntity_persistedMostRecentLastSyncDateForProfile_error___block_invoke;
   v10[3] = &unk_27861C1A0;
   v10[4] = &v11;
-  v10[5] = a1;
-  LODWORD(a4) = [a1 performReadTransactionWithHealthDatabase:v7 error:a4 block:v10];
+  v10[5] = self;
+  LODWORD(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v10];
 
-  if (a4)
+  if (error)
   {
     v8 = [v12[5] copy];
   }
@@ -478,15 +478,15 @@ uint64_t __74__HDCloudSyncStoreEntity_persistedMostRecentLastSyncDateForProfile_
   return 0;
 }
 
-+ (id)persistedStateForStoreUUID:(id)a3 database:(id)a4 error:(id *)a5
++ (id)persistedStateForStoreUUID:(id)d database:(id)database error:(id *)error
 {
   v114[3] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  dCopy = d;
+  databaseCopy = database;
+  if (!dCopy)
   {
-    v41 = [MEMORY[0x277CCA890] currentHandler];
-    [v41 handleFailureInMethod:a2 object:a1 file:@"HDCloudSyncStoreEntity.m" lineNumber:269 description:{@"Invalid parameter not satisfying: %@", @"storeUUID != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncStoreEntity.m" lineNumber:269 description:{@"Invalid parameter not satisfying: %@", @"storeUUID != nil"}];
   }
 
   v108 = 0;
@@ -551,7 +551,7 @@ uint64_t __74__HDCloudSyncStoreEntity_persistedMostRecentLastSyncDateForProfile_
   v53 = &v52;
   v54 = 0x2020000000;
   v55 = 0;
-  v11 = [HDSyncStoreEntity existingSyncStoreEntityWithUUID:v9 database:v10 error:a5];
+  v11 = [HDSyncStoreEntity existingSyncStoreEntityWithUUID:dCopy database:databaseCopy error:error];
   v12 = v11;
   if (!v11)
   {
@@ -563,7 +563,7 @@ uint64_t __74__HDCloudSyncStoreEntity_persistedMostRecentLastSyncDateForProfile_
   v14 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v11, "persistentID")}];
   v49 = [v13 predicateWithProperty:@"sync_store" equalToValue:v14];
 
-  v15 = [a1 queryWithDatabase:v10 predicate:v49];
+  v15 = [self queryWithDatabase:databaseCopy predicate:v49];
   v16 = +[HDCloudSyncStoreEntity _persistedStateProperties];
   v51[0] = MEMORY[0x277D85DD0];
   v51[1] = 3221225472;
@@ -581,7 +581,7 @@ uint64_t __74__HDCloudSyncStoreEntity_persistedMostRecentLastSyncDateForProfile_
   v51[13] = &v60;
   v51[14] = &v56;
   v51[15] = &v52;
-  LOBYTE(v13) = [v15 enumerateProperties:v16 error:a5 enumerationHandler:v51];
+  LOBYTE(v13) = [v15 enumerateProperties:v16 error:error enumerationHandler:v51];
 
   if (v13)
   {
@@ -620,18 +620,18 @@ uint64_t __74__HDCloudSyncStoreEntity_persistedMostRecentLastSyncDateForProfile_
 
     v25 = v65[3];
     v50 = 0;
-    v26 = [HDSyncIdentityEntity concreteIdentityForPersistentID:v25 database:v10 error:&v50];
+    v26 = [HDSyncIdentityEntity concreteIdentityForPersistentID:v25 database:databaseCopy error:&v50];
     v27 = v50;
     v28 = v27;
     if (v27)
     {
       v29 = v27;
       v30 = v29;
-      if (a5)
+      if (error)
       {
         v31 = v29;
         v19 = 0;
-        *a5 = v30;
+        *error = v30;
       }
 
       else
@@ -652,9 +652,9 @@ uint64_t __74__HDCloudSyncStoreEntity_persistedMostRecentLastSyncDateForProfile_
       v34 = v81[5];
       v35 = v75[5];
       v36 = v69[5];
-      v37 = [v46 identity];
+      identity = [v46 identity];
       LODWORD(v42) = *(v57 + 6);
-      v30 = [(_HDCloudSyncStorePersistableState *)v44 initWithServerChangeToken:v48 baselineEpoch:v43 rebaseDeadline:v32 lastSyncDate:v33 emptyZones:v47 lastCheckDate:v34 ownerIdentifier:v35 containerIdentifier:v36 syncIdentity:v37 syncProtocolVersion:v42];
+      v30 = [(_HDCloudSyncStorePersistableState *)v44 initWithServerChangeToken:v48 baselineEpoch:v43 rebaseDeadline:v32 lastSyncDate:v33 emptyZones:v47 lastCheckDate:v34 ownerIdentifier:v35 containerIdentifier:v36 syncIdentity:identity syncProtocolVersion:v42];
 
       v15 = v45;
       v26 = v46;
@@ -752,37 +752,37 @@ uint64_t __68__HDCloudSyncStoreEntity_persistedStateForStoreUUID_database_error_
   return 1;
 }
 
-+ (BOOL)persistState:(id)a3 storeUUID:(id)a4 shouldReplace:(BOOL)a5 healthDatabase:(id)a6 error:(id *)a7
++ (BOOL)persistState:(id)state storeUUID:(id)d shouldReplace:(BOOL)replace healthDatabase:(id)database error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  if (!v14)
+  stateCopy = state;
+  dCopy = d;
+  databaseCopy = database;
+  if (!dCopy)
   {
-    v29 = [MEMORY[0x277CCA890] currentHandler];
-    [v29 handleFailureInMethod:a2 object:a1 file:@"HDCloudSyncStoreEntity.m" lineNumber:361 description:{@"Invalid parameter not satisfying: %@", @"uuid != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncStoreEntity.m" lineNumber:361 description:{@"Invalid parameter not satisfying: %@", @"uuid != nil"}];
   }
 
-  v16 = [v13 serverChangeToken];
+  serverChangeToken = [stateCopy serverChangeToken];
 
-  if (v16)
+  if (serverChangeToken)
   {
     v17 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
-    v18 = [v13 serverChangeToken];
-    [v17 encodeObject:v18 forKey:@"changeToken"];
+    serverChangeToken2 = [stateCopy serverChangeToken];
+    [v17 encodeObject:serverChangeToken2 forKey:@"changeToken"];
 
-    v16 = [v17 encodedData];
+    serverChangeToken = [v17 encodedData];
   }
 
-  v19 = [v13 emptyZoneDateByZoneID];
+  emptyZoneDateByZoneID = [stateCopy emptyZoneDateByZoneID];
 
-  if (v19)
+  if (emptyZoneDateByZoneID)
   {
     v20 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
-    v21 = [v13 emptyZoneDateByZoneID];
-    [v20 encodeObject:v21 forKey:@"emptyZones"];
+    emptyZoneDateByZoneID2 = [stateCopy emptyZoneDateByZoneID];
+    [v20 encodeObject:emptyZoneDateByZoneID2 forKey:@"emptyZones"];
 
-    v19 = [v20 encodedData];
+    emptyZoneDateByZoneID = [v20 encodedData];
   }
 
   v39[0] = 0;
@@ -793,20 +793,20 @@ uint64_t __68__HDCloudSyncStoreEntity_persistedStateForStoreUUID_database_error_
   v30[1] = 3221225472;
   v30[2] = __84__HDCloudSyncStoreEntity_persistState_storeUUID_shouldReplace_healthDatabase_error___block_invoke;
   v30[3] = &unk_27862D4E8;
-  v37 = a1;
-  v22 = v14;
+  selfCopy = self;
+  v22 = dCopy;
   v31 = v22;
-  v23 = v13;
+  v23 = stateCopy;
   v32 = v23;
-  v24 = v15;
+  v24 = databaseCopy;
   v33 = v24;
   v36 = v39;
-  v25 = v16;
+  v25 = serverChangeToken;
   v34 = v25;
-  v26 = v19;
+  v26 = emptyZoneDateByZoneID;
   v35 = v26;
-  v38 = a5;
-  v27 = [a1 performWriteTransactionWithHealthDatabase:v24 error:a7 block:v30];
+  replaceCopy = replace;
+  v27 = [self performWriteTransactionWithHealthDatabase:v24 error:error block:v30];
 
   _Block_object_dispose(v39, 8);
   return v27;
@@ -1144,20 +1144,20 @@ void __84__HDCloudSyncStoreEntity_persistState_storeUUID_shouldReplace_healthDat
   JUMPOUT(0x22AAC6B30);
 }
 
-+ (BOOL)resetLastSyncDateExcludingStores:(id)a3 profile:(id)a4 error:(id *)a5
++ (BOOL)resetLastSyncDateExcludingStores:(id)stores profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = [a4 database];
+  storesCopy = stores;
+  database = [profile database];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __73__HDCloudSyncStoreEntity_resetLastSyncDateExcludingStores_profile_error___block_invoke;
   v12[3] = &unk_278619348;
-  v13 = v8;
-  v14 = a1;
-  v10 = v8;
-  LOBYTE(a5) = [a1 performWriteTransactionWithHealthDatabase:v9 error:a5 block:v12];
+  v13 = storesCopy;
+  selfCopy = self;
+  v10 = storesCopy;
+  LOBYTE(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:v12];
 
-  return a5;
+  return error;
 }
 
 uint64_t __73__HDCloudSyncStoreEntity_resetLastSyncDateExcludingStores_profile_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1225,39 +1225,39 @@ void __73__HDCloudSyncStoreEntity_resetLastSyncDateExcludingStores_profile_error
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)storeUUIDInTransaction:(id)a3 error:(id *)a4
+- (id)storeUUIDInTransaction:(id)transaction error:(id *)error
 {
-  v5 = a3;
+  transactionCopy = transaction;
   v6 = [(HDSQLiteEntity *)[HDSyncStoreEntity alloc] initWithPersistentID:[(HDSQLiteEntity *)self persistentID]];
-  v7 = [v5 databaseForEntityClass:objc_opt_class()];
+  v7 = [transactionCopy databaseForEntityClass:objc_opt_class()];
 
   v8 = [(HDSQLiteEntity *)v6 UUIDForProperty:@"uuid" database:v7];
 
   return v8;
 }
 
-+ (id)cachedExcludedSyncIdentitiesForStoreIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)cachedExcludedSyncIdentitiesForStoreIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  profileCopy = profile;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__188;
   v23 = __Block_byref_object_dispose__188;
   v24 = 0;
-  v10 = [v9 database];
+  database = [profileCopy database];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __87__HDCloudSyncStoreEntity_cachedExcludedSyncIdentitiesForStoreIdentifier_profile_error___block_invoke;
   v15[3] = &unk_2786169D8;
   v17 = &v19;
-  v18 = a1;
-  v11 = v8;
+  selfCopy = self;
+  v11 = identifierCopy;
   v16 = v11;
-  LODWORD(a5) = [a1 performReadTransactionWithHealthDatabase:v10 error:a5 block:v15];
+  LODWORD(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v15];
 
-  if (a5)
+  if (error)
   {
     v12 = v20[5];
   }
@@ -1287,16 +1287,16 @@ BOOL __87__HDCloudSyncStoreEntity_cachedExcludedSyncIdentitiesForStoreIdentifier
   return *a3 == 0;
 }
 
-+ (id)cachedExcludedSyncIdentitiesForStoreIdentifier:(id)a3 database:(id)a4 error:(id *)a5
++ (id)cachedExcludedSyncIdentitiesForStoreIdentifier:(id)identifier database:(id)database error:(id *)error
 {
   v44[2] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!v9)
+  identifierCopy = identifier;
+  databaseCopy = database;
+  v11 = databaseCopy;
+  if (!identifierCopy)
   {
-    v28 = [MEMORY[0x277CCA890] currentHandler];
-    [v28 handleFailureInMethod:a2 object:a1 file:@"HDCloudSyncStoreEntity.m" lineNumber:564 description:{@"Invalid parameter not satisfying: %@", @"storeIdentifier != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncStoreEntity.m" lineNumber:564 description:{@"Invalid parameter not satisfying: %@", @"storeIdentifier != nil"}];
 
     if (v11)
     {
@@ -1304,13 +1304,13 @@ BOOL __87__HDCloudSyncStoreEntity_cachedExcludedSyncIdentitiesForStoreIdentifier
     }
 
 LABEL_14:
-    v29 = [MEMORY[0x277CCA890] currentHandler];
-    [v29 handleFailureInMethod:a2 object:a1 file:@"HDCloudSyncStoreEntity.m" lineNumber:565 description:{@"Invalid parameter not satisfying: %@", @"database != nil"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDCloudSyncStoreEntity.m" lineNumber:565 description:{@"Invalid parameter not satisfying: %@", @"database != nil"}];
 
     goto LABEL_3;
   }
 
-  if (!v10)
+  if (!databaseCopy)
   {
     goto LABEL_14;
   }
@@ -1318,8 +1318,8 @@ LABEL_14:
 LABEL_3:
   v12 = MEMORY[0x277CCACA8];
   v13 = +[(HDSQLiteSchemaEntity *)HDSyncStoreEntity];
-  v14 = [a1 disambiguatedDatabaseTable];
-  v15 = [v12 stringWithFormat:@"SELECT cs.%@ FROM %@ AS s INNER JOIN %@ AS cs ON s.%@ == cs.%@ WHERE s.%@ == ?", @"cached_excluded_sync_identities", v13, v14, *MEMORY[0x277D10A40], @"sync_store", @"uuid"];
+  disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+  v15 = [v12 stringWithFormat:@"SELECT cs.%@ FROM %@ AS s INNER JOIN %@ AS cs ON s.%@ == cs.%@ WHERE s.%@ == ?", @"cached_excluded_sync_identities", v13, disambiguatedDatabaseTable, *MEMORY[0x277D10A40], @"sync_store", @"uuid"];
 
   v34 = 0;
   v35 = &v34;
@@ -1331,14 +1331,14 @@ LABEL_3:
   v32[1] = 3221225472;
   v32[2] = __88__HDCloudSyncStoreEntity_cachedExcludedSyncIdentitiesForStoreIdentifier_database_error___block_invoke;
   v32[3] = &unk_278614860;
-  v16 = v9;
+  v16 = identifierCopy;
   v33 = v16;
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __88__HDCloudSyncStoreEntity_cachedExcludedSyncIdentitiesForStoreIdentifier_database_error___block_invoke_2;
   v31[3] = &unk_278614620;
   v31[4] = &v34;
-  if (([v11 executeUncachedSQL:v15 error:a5 bindingHandler:v32 enumerationHandler:v31] & 1) != 0 && v35[5])
+  if (([v11 executeUncachedSQL:v15 error:error bindingHandler:v32 enumerationHandler:v31] & 1) != 0 && v35[5])
   {
     v17 = objc_alloc(MEMORY[0x277CCAAC8]);
     v18 = v35[5];
@@ -1360,7 +1360,7 @@ LABEL_3:
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v41 = a1;
+        selfCopy = self;
         v42 = 2114;
         v43 = v20;
         _os_log_error_impl(&dword_228986000, v25, OS_LOG_TYPE_ERROR, "%{public}@: Failed to load cached excluded sync identities with error: %{public}@", buf, 0x16u);
@@ -1400,23 +1400,23 @@ uint64_t __88__HDCloudSyncStoreEntity_cachedExcludedSyncIdentitiesForStoreIdenti
   return 0;
 }
 
-+ (BOOL)cacheExcludedSyncIdentities:(id)a3 storeIdentifier:(id)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)cacheExcludedSyncIdentities:(id)identities storeIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [a5 database];
+  identitiesCopy = identities;
+  identifierCopy = identifier;
+  database = [profile database];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __84__HDCloudSyncStoreEntity_cacheExcludedSyncIdentities_storeIdentifier_profile_error___block_invoke;
   v16[3] = &unk_278614698;
-  v18 = v11;
-  v19 = a1;
-  v17 = v10;
-  v13 = v11;
-  v14 = v10;
-  LOBYTE(a6) = [a1 performWriteTransactionWithHealthDatabase:v12 error:a6 block:v16];
+  v18 = identifierCopy;
+  selfCopy = self;
+  v17 = identitiesCopy;
+  v13 = identifierCopy;
+  v14 = identitiesCopy;
+  LOBYTE(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:v16];
 
-  return a6;
+  return error;
 }
 
 uint64_t __84__HDCloudSyncStoreEntity_cacheExcludedSyncIdentities_storeIdentifier_profile_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1427,15 +1427,15 @@ uint64_t __84__HDCloudSyncStoreEntity_cacheExcludedSyncIdentities_storeIdentifie
   return v6;
 }
 
-+ (BOOL)cacheExcludedSyncIdentities:(id)a3 storeIdentifier:(id)a4 database:(id)a5 error:(id *)a6
++ (BOOL)cacheExcludedSyncIdentities:(id)identities storeIdentifier:(id)identifier database:(id)database error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = v13;
-  if (v12)
+  identitiesCopy = identities;
+  identifierCopy = identifier;
+  databaseCopy = database;
+  v14 = databaseCopy;
+  if (identifierCopy)
   {
-    if (v13)
+    if (databaseCopy)
     {
       goto LABEL_3;
     }
@@ -1443,8 +1443,8 @@ uint64_t __84__HDCloudSyncStoreEntity_cacheExcludedSyncIdentities_storeIdentifie
 
   else
   {
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:a1 file:@"HDCloudSyncStoreEntity.m" lineNumber:636 description:{@"Invalid parameter not satisfying: %@", @"storeIdentifier != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncStoreEntity.m" lineNumber:636 description:{@"Invalid parameter not satisfying: %@", @"storeIdentifier != nil"}];
 
     if (v14)
     {
@@ -1452,37 +1452,37 @@ uint64_t __84__HDCloudSyncStoreEntity_cacheExcludedSyncIdentities_storeIdentifie
     }
   }
 
-  v25 = [MEMORY[0x277CCA890] currentHandler];
-  [v25 handleFailureInMethod:a2 object:a1 file:@"HDCloudSyncStoreEntity.m" lineNumber:637 description:{@"Invalid parameter not satisfying: %@", @"database != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDCloudSyncStoreEntity.m" lineNumber:637 description:{@"Invalid parameter not satisfying: %@", @"database != nil"}];
 
 LABEL_3:
-  v15 = [HDSyncStoreEntity existingSyncStoreEntityWithUUID:v12 database:v14 error:a6];
+  v15 = [HDSyncStoreEntity existingSyncStoreEntityWithUUID:identifierCopy database:v14 error:error];
   if (v15)
   {
-    if (v11)
+    if (identitiesCopy)
     {
       v16 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
-      [v16 encodeObject:v11 forKey:@"excludedSyncIdentities"];
-      v17 = [v16 encodedData];
+      [v16 encodeObject:identitiesCopy forKey:@"excludedSyncIdentities"];
+      encodedData = [v16 encodedData];
     }
 
     else
     {
-      v17 = 0;
+      encodedData = 0;
     }
 
     v19 = MEMORY[0x277CCACA8];
-    v20 = [a1 disambiguatedDatabaseTable];
-    v21 = [v19 stringWithFormat:@"UPDATE %@ SET %@ = ? WHERE %@ == ?", v20, @"cached_excluded_sync_identities", @"sync_store"];
+    disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+    v21 = [v19 stringWithFormat:@"UPDATE %@ SET %@ = ? WHERE %@ == ?", disambiguatedDatabaseTable, @"cached_excluded_sync_identities", @"sync_store"];
 
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __85__HDCloudSyncStoreEntity_cacheExcludedSyncIdentities_storeIdentifier_database_error___block_invoke;
     v26[3] = &unk_278613038;
-    v27 = v17;
+    v27 = encodedData;
     v28 = v15;
-    v22 = v17;
-    v18 = [v14 executeUncachedSQL:v21 error:a6 bindingHandler:v26 enumerationHandler:0];
+    v22 = encodedData;
+    v18 = [v14 executeUncachedSQL:v21 error:error bindingHandler:v26 enumerationHandler:0];
   }
 
   else
@@ -1511,28 +1511,28 @@ uint64_t __85__HDCloudSyncStoreEntity_cacheExcludedSyncIdentities_storeIdentifie
   return sqlite3_bind_int64(a2, 2, v5);
 }
 
-+ (id)cachedEpochsForStoreIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)cachedEpochsForStoreIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  profileCopy = profile;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__188;
   v23 = __Block_byref_object_dispose__188;
   v24 = 0;
-  v10 = [v9 database];
+  database = [profileCopy database];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __71__HDCloudSyncStoreEntity_cachedEpochsForStoreIdentifier_profile_error___block_invoke;
   v15[3] = &unk_2786169D8;
   v17 = &v19;
-  v18 = a1;
-  v11 = v8;
+  selfCopy = self;
+  v11 = identifierCopy;
   v16 = v11;
-  LODWORD(a5) = [a1 performReadTransactionWithHealthDatabase:v10 error:a5 block:v15];
+  LODWORD(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v15];
 
-  if (a5)
+  if (error)
   {
     v12 = v20[5];
   }
@@ -1562,14 +1562,14 @@ BOOL __71__HDCloudSyncStoreEntity_cachedEpochsForStoreIdentifier_profile_error__
   return *a3 == 0;
 }
 
-+ (id)cachedEpochsForStoreIdentifier:(id)a3 database:(id)a4 error:(id *)a5
++ (id)cachedEpochsForStoreIdentifier:(id)identifier database:(id)database error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  identifierCopy = identifier;
+  databaseCopy = database;
+  v11 = databaseCopy;
+  if (identifierCopy)
   {
-    if (v10)
+    if (databaseCopy)
     {
       goto LABEL_3;
     }
@@ -1577,8 +1577,8 @@ BOOL __71__HDCloudSyncStoreEntity_cachedEpochsForStoreIdentifier_profile_error__
 
   else
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"HDCloudSyncStoreEntity.m" lineNumber:699 description:{@"Invalid parameter not satisfying: %@", @"storeIdentifier != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncStoreEntity.m" lineNumber:699 description:{@"Invalid parameter not satisfying: %@", @"storeIdentifier != nil"}];
 
     if (v11)
     {
@@ -1586,14 +1586,14 @@ BOOL __71__HDCloudSyncStoreEntity_cachedEpochsForStoreIdentifier_profile_error__
     }
   }
 
-  v20 = [MEMORY[0x277CCA890] currentHandler];
-  [v20 handleFailureInMethod:a2 object:a1 file:@"HDCloudSyncStoreEntity.m" lineNumber:700 description:{@"Invalid parameter not satisfying: %@", @"database != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDCloudSyncStoreEntity.m" lineNumber:700 description:{@"Invalid parameter not satisfying: %@", @"database != nil"}];
 
 LABEL_3:
   v12 = MEMORY[0x277CCACA8];
   v13 = +[(HDSQLiteSchemaEntity *)HDSyncStoreEntity];
-  v14 = [a1 disambiguatedDatabaseTable];
-  v15 = [v12 stringWithFormat:@"SELECT cs.%@, cs.%@, cs.%@ FROM %@ AS s INNER JOIN %@ AS cs ON s.%@ == cs.%@ WHERE s.%@ == ?", @"cached_active_epoch", @"cached_pending_epoch", @"cached_tombstone_epoch", v13, v14, *MEMORY[0x277D10A40], @"sync_store", @"uuid"];
+  disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+  v15 = [v12 stringWithFormat:@"SELECT cs.%@, cs.%@, cs.%@ FROM %@ AS s INNER JOIN %@ AS cs ON s.%@ == cs.%@ WHERE s.%@ == ?", @"cached_active_epoch", @"cached_pending_epoch", @"cached_tombstone_epoch", v13, disambiguatedDatabaseTable, *MEMORY[0x277D10A40], @"sync_store", @"uuid"];
 
   v24 = 0;
   v25 = &v24;
@@ -1605,14 +1605,14 @@ LABEL_3:
   v22[1] = 3221225472;
   v22[2] = __72__HDCloudSyncStoreEntity_cachedEpochsForStoreIdentifier_database_error___block_invoke;
   v22[3] = &unk_278614860;
-  v16 = v9;
+  v16 = identifierCopy;
   v23 = v16;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __72__HDCloudSyncStoreEntity_cachedEpochsForStoreIdentifier_database_error___block_invoke_2;
   v21[3] = &unk_278614620;
   v21[4] = &v24;
-  if ([v11 executeUncachedSQL:v15 error:a5 bindingHandler:v22 enumerationHandler:v21])
+  if ([v11 executeUncachedSQL:v15 error:error bindingHandler:v22 enumerationHandler:v21])
   {
     v17 = v25[5];
   }
@@ -1678,23 +1678,23 @@ uint64_t __72__HDCloudSyncStoreEntity_cachedEpochsForStoreIdentifier_database_er
   return 0;
 }
 
-+ (BOOL)cacheEpochs:(id)a3 storeIdentifier:(id)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)cacheEpochs:(id)epochs storeIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [a5 database];
+  epochsCopy = epochs;
+  identifierCopy = identifier;
+  database = [profile database];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __68__HDCloudSyncStoreEntity_cacheEpochs_storeIdentifier_profile_error___block_invoke;
   v16[3] = &unk_278614698;
-  v18 = v11;
-  v19 = a1;
-  v17 = v10;
-  v13 = v11;
-  v14 = v10;
-  LOBYTE(a6) = [a1 performWriteTransactionWithHealthDatabase:v12 error:a6 block:v16];
+  v18 = identifierCopy;
+  selfCopy = self;
+  v17 = epochsCopy;
+  v13 = identifierCopy;
+  v14 = epochsCopy;
+  LOBYTE(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:v16];
 
-  return a6;
+  return error;
 }
 
 uint64_t __68__HDCloudSyncStoreEntity_cacheEpochs_storeIdentifier_profile_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1705,23 +1705,23 @@ uint64_t __68__HDCloudSyncStoreEntity_cacheEpochs_storeIdentifier_profile_error_
   return v6;
 }
 
-+ (BOOL)cacheEpochs:(id)a3 storeIdentifier:(id)a4 database:(id)a5 error:(id *)a6
++ (BOOL)cacheEpochs:(id)epochs storeIdentifier:(id)identifier database:(id)database error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (v11)
+  epochsCopy = epochs;
+  identifierCopy = identifier;
+  databaseCopy = database;
+  if (epochsCopy)
   {
-    if (v12)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_9:
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"HDCloudSyncStoreEntity.m" lineNumber:778 description:{@"Invalid parameter not satisfying: %@", @"storeIdentifier != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncStoreEntity.m" lineNumber:778 description:{@"Invalid parameter not satisfying: %@", @"storeIdentifier != nil"}];
 
-    if (v13)
+    if (databaseCopy)
     {
       goto LABEL_4;
     }
@@ -1729,39 +1729,39 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v20 = [MEMORY[0x277CCA890] currentHandler];
-  [v20 handleFailureInMethod:a2 object:a1 file:@"HDCloudSyncStoreEntity.m" lineNumber:777 description:{@"Invalid parameter not satisfying: %@", @"epochs != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDCloudSyncStoreEntity.m" lineNumber:777 description:{@"Invalid parameter not satisfying: %@", @"epochs != nil"}];
 
-  if (!v12)
+  if (!identifierCopy)
   {
     goto LABEL_9;
   }
 
 LABEL_3:
-  if (v13)
+  if (databaseCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_10:
-  v22 = [MEMORY[0x277CCA890] currentHandler];
-  [v22 handleFailureInMethod:a2 object:a1 file:@"HDCloudSyncStoreEntity.m" lineNumber:779 description:{@"Invalid parameter not satisfying: %@", @"database != nil"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"HDCloudSyncStoreEntity.m" lineNumber:779 description:{@"Invalid parameter not satisfying: %@", @"database != nil"}];
 
 LABEL_4:
-  v14 = [HDSyncStoreEntity existingSyncStoreEntityWithUUID:v12 database:v13 error:a6];
+  v14 = [HDSyncStoreEntity existingSyncStoreEntityWithUUID:identifierCopy database:databaseCopy error:error];
   if (v14)
   {
     v15 = MEMORY[0x277CCACA8];
-    v16 = [a1 disambiguatedDatabaseTable];
-    v17 = [v15 stringWithFormat:@"UPDATE %@ SET %@ = ?, %@ = ?, %@ = ? WHERE %@ == ?", v16, @"cached_active_epoch", @"cached_pending_epoch", @"cached_tombstone_epoch", @"sync_store"];
+    disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+    v17 = [v15 stringWithFormat:@"UPDATE %@ SET %@ = ?, %@ = ?, %@ = ? WHERE %@ == ?", disambiguatedDatabaseTable, @"cached_active_epoch", @"cached_pending_epoch", @"cached_tombstone_epoch", @"sync_store"];
 
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __69__HDCloudSyncStoreEntity_cacheEpochs_storeIdentifier_database_error___block_invoke;
     v23[3] = &unk_278613038;
-    v24 = v11;
+    v24 = epochsCopy;
     v25 = v14;
-    v18 = [v13 executeUncachedSQL:v17 error:a6 bindingHandler:v23 enumerationHandler:0];
+    v18 = [databaseCopy executeUncachedSQL:v17 error:error bindingHandler:v23 enumerationHandler:0];
   }
 
   else
@@ -1818,30 +1818,30 @@ uint64_t __69__HDCloudSyncStoreEntity_cacheEpochs_storeIdentifier_database_error
   return sqlite3_bind_int64(a2, 4, v10);
 }
 
-+ (BOOL)enumerateShardsForOwnerIdentifier:(id)a3 containerIdentifier:(id)a4 syncIdentity:(id)a5 profile:(id)a6 transaction:(id)a7 error:(id *)a8 handler:(id)a9
++ (BOOL)enumerateShardsForOwnerIdentifier:(id)identifier containerIdentifier:(id)containerIdentifier syncIdentity:(id)identity profile:(id)profile transaction:(id)transaction error:(id *)error handler:(id)handler
 {
-  if (a5)
+  if (identity)
   {
-    v14 = a3;
-    v15 = a4;
-    v16 = a7;
-    v17 = a9;
-    v18 = a6;
-    v19 = a5;
+    identifierCopy = identifier;
+    containerIdentifierCopy = containerIdentifier;
+    transactionCopy = transaction;
+    handlerCopy = handler;
+    profileCopy = profile;
+    identityCopy = identity;
     v20 = objc_opt_self();
-    v21 = [v18 syncIdentityManager];
+    syncIdentityManager = [profileCopy syncIdentityManager];
 
     v69[0] = 0;
-    v22 = [v21 concreteIdentityForIdentity:v19 shouldCreate:0 transaction:v16 error:v69];
+    v22 = [syncIdentityManager concreteIdentityForIdentity:identityCopy shouldCreate:0 transaction:transactionCopy error:v69];
 
     v23 = v69[0];
     if (v23)
     {
-      if (a8)
+      if (error)
       {
         v24 = v23;
         v25 = 0;
-        *a8 = v23;
+        *error = v23;
       }
 
       else
@@ -1854,19 +1854,19 @@ uint64_t __69__HDCloudSyncStoreEntity_cacheEpochs_storeIdentifier_database_error
     else
     {
       v40 = MEMORY[0x277CCACA8];
-      v51 = a8;
-      v41 = v17;
-      v42 = v15;
-      v43 = v14;
+      errorCopy = error;
+      v41 = handlerCopy;
+      v42 = containerIdentifierCopy;
+      v43 = identifierCopy;
       v44 = *MEMORY[0x277D10A40];
-      v45 = [v20 disambiguatedDatabaseTable];
+      disambiguatedDatabaseTable = [v20 disambiguatedDatabaseTable];
       v50 = v44;
-      v14 = v43;
-      v15 = v42;
-      v17 = v41;
-      v46 = [v40 stringWithFormat:@"SELECT %@, %@, %@, %@ FROM %@ WHERE %@ = ? AND %@ = ? AND %@ = ? AND %@ IS NOT NULL", v50, @"shard_start_date", @"shard_end_date", @"shard_type", v45, @"owner_id", @"container_id", @"sync_identity", @"shard_type"];
+      identifierCopy = v43;
+      containerIdentifierCopy = v42;
+      handlerCopy = v41;
+      v46 = [v40 stringWithFormat:@"SELECT %@, %@, %@, %@ FROM %@ WHERE %@ = ? AND %@ = ? AND %@ = ? AND %@ IS NOT NULL", v50, @"shard_start_date", @"shard_end_date", @"shard_type", disambiguatedDatabaseTable, @"owner_id", @"container_id", @"sync_identity", @"shard_type"];
 
-      v47 = [v16 databaseForEntityClass:v20];
+      v47 = [transactionCopy databaseForEntityClass:v20];
       v64 = MEMORY[0x277D85DD0];
       v65 = 3221225472;
       v66 = __128__HDCloudSyncStoreEntity__enumerateShardsForOwnerIdentifier_containerIdentifier_syncIdentity_profile_transaction_error_handler___block_invoke;
@@ -1876,8 +1876,8 @@ uint64_t __69__HDCloudSyncStoreEntity_cacheEpochs_storeIdentifier_database_error
       v58 = 3221225472;
       v59 = __128__HDCloudSyncStoreEntity__enumerateShardsForOwnerIdentifier_containerIdentifier_syncIdentity_profile_transaction_error_handler___block_invoke_2;
       v60 = &unk_278613528;
-      v61 = v14;
-      v62 = v15;
+      v61 = identifierCopy;
+      v62 = containerIdentifierCopy;
       v63 = v22;
       v52 = MEMORY[0x277D85DD0];
       v53 = 3221225472;
@@ -1885,55 +1885,55 @@ uint64_t __69__HDCloudSyncStoreEntity_cacheEpochs_storeIdentifier_database_error
       v55 = &unk_278613B30;
       v56 = v41;
       v48 = v46;
-      v25 = [v47 executeCachedStatementForKey:&_enumerateShardsForOwnerIdentifier_containerIdentifier_syncIdentity_profile_transaction_error_handler__lookupKey error:v51 SQLGenerator:&v64 bindingHandler:&v57 enumerationHandler:&v52];
+      v25 = [v47 executeCachedStatementForKey:&_enumerateShardsForOwnerIdentifier_containerIdentifier_syncIdentity_profile_transaction_error_handler__lookupKey error:errorCopy SQLGenerator:&v64 bindingHandler:&v57 enumerationHandler:&v52];
     }
   }
 
   else
   {
-    v26 = a3;
-    v27 = a4;
-    v28 = a9;
-    v29 = a7;
+    identifierCopy2 = identifier;
+    containerIdentifierCopy2 = containerIdentifier;
+    handlerCopy2 = handler;
+    transactionCopy2 = transaction;
     v30 = objc_opt_self();
     v31 = MEMORY[0x277CCACA8];
     v32 = *MEMORY[0x277D10A40];
-    v33 = [v30 disambiguatedDatabaseTable];
-    v34 = [v31 stringWithFormat:@"SELECT %@, %@, %@, %@ FROM %@ WHERE %@ = ? AND %@ = ? AND %@ IS NOT NULL", v32, @"shard_start_date", @"shard_end_date", @"shard_type", v33, @"owner_id", @"container_id", @"shard_type"];
+    disambiguatedDatabaseTable2 = [v30 disambiguatedDatabaseTable];
+    v34 = [v31 stringWithFormat:@"SELECT %@, %@, %@, %@ FROM %@ WHERE %@ = ? AND %@ = ? AND %@ IS NOT NULL", v32, @"shard_start_date", @"shard_end_date", @"shard_type", disambiguatedDatabaseTable2, @"owner_id", @"container_id", @"shard_type"];
 
-    v35 = [v29 databaseForEntityClass:v30];
+    v35 = [transactionCopy2 databaseForEntityClass:v30];
 
     v64 = MEMORY[0x277D85DD0];
     v65 = 3221225472;
     v66 = __115__HDCloudSyncStoreEntity__enumerateShardsForOwnerIdentifier_containerIdentifier_profile_transaction_error_handler___block_invoke;
     v67 = &unk_278615C80;
     v68 = v34;
-    v56 = v28;
+    v56 = handlerCopy2;
     v57 = MEMORY[0x277D85DD0];
     v58 = 3221225472;
     v59 = __115__HDCloudSyncStoreEntity__enumerateShardsForOwnerIdentifier_containerIdentifier_profile_transaction_error_handler___block_invoke_2;
     v60 = &unk_278613038;
-    v61 = v26;
-    v62 = v27;
+    v61 = identifierCopy2;
+    v62 = containerIdentifierCopy2;
     v52 = MEMORY[0x277D85DD0];
     v53 = 3221225472;
     v54 = __115__HDCloudSyncStoreEntity__enumerateShardsForOwnerIdentifier_containerIdentifier_profile_transaction_error_handler___block_invoke_3;
     v55 = &unk_278613B30;
-    v36 = v28;
-    v37 = v27;
-    v38 = v26;
+    v36 = handlerCopy2;
+    v37 = containerIdentifierCopy2;
+    v38 = identifierCopy2;
     v39 = v34;
-    v25 = [v35 executeCachedStatementForKey:&_enumerateShardsForOwnerIdentifier_containerIdentifier_profile_transaction_error_handler__lookupKey error:a8 SQLGenerator:&v64 bindingHandler:&v57 enumerationHandler:&v52];
+    v25 = [v35 executeCachedStatementForKey:&_enumerateShardsForOwnerIdentifier_containerIdentifier_profile_transaction_error_handler__lookupKey error:error SQLGenerator:&v64 bindingHandler:&v57 enumerationHandler:&v52];
   }
 
   return v25;
 }
 
-- (BOOL)updateShardStartDate:(id)a3 endDate:(id)a4 type:(int64_t)a5 transaction:(id)a6 error:(id *)a7
+- (BOOL)updateShardStartDate:(id)date endDate:(id)endDate type:(int64_t)type transaction:(id)transaction error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = [a6 databaseForEntity:self];
+  dateCopy = date;
+  endDateCopy = endDate;
+  v14 = [transaction databaseForEntity:self];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __78__HDCloudSyncStoreEntity_updateShardStartDate_endDate_type_transaction_error___block_invoke;
@@ -1943,15 +1943,15 @@ uint64_t __69__HDCloudSyncStoreEntity_cacheEpochs_storeIdentifier_database_error
   v18[1] = 3221225472;
   v18[2] = __78__HDCloudSyncStoreEntity_updateShardStartDate_endDate_type_transaction_error___block_invoke_2;
   v18[3] = &unk_2786144E0;
-  v19 = v12;
-  v20 = v13;
-  v21 = self;
-  v22 = a5;
-  v15 = v13;
-  v16 = v12;
-  LOBYTE(a7) = [v14 executeCachedStatementForKey:&updateShardStartDate_endDate_type_transaction_error__updateKey error:a7 SQLGenerator:v23 bindingHandler:v18 enumerationHandler:0];
+  v19 = dateCopy;
+  v20 = endDateCopy;
+  selfCopy = self;
+  typeCopy = type;
+  v15 = endDateCopy;
+  v16 = dateCopy;
+  LOBYTE(error) = [v14 executeCachedStatementForKey:&updateShardStartDate_endDate_type_transaction_error__updateKey error:error SQLGenerator:v23 bindingHandler:v18 enumerationHandler:0];
 
-  return a7;
+  return error;
 }
 
 id __78__HDCloudSyncStoreEntity_updateShardStartDate_endDate_type_transaction_error___block_invoke(uint64_t a1)
@@ -1996,16 +1996,16 @@ uint64_t __78__HDCloudSyncStoreEntity_updateShardStartDate_endDate_type_transact
   return sqlite3_bind_int64(a2, 4, v8);
 }
 
-- (BOOL)fetchShardPropertiesInTransaction:(id)a3 error:(id *)a4 handler:(id)a5
+- (BOOL)fetchShardPropertiesInTransaction:(id)transaction error:(id *)error handler:(id)handler
 {
-  v8 = a5;
-  v9 = [a3 databaseForEntity:self];
+  handlerCopy = handler;
+  v9 = [transaction databaseForEntity:self];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __74__HDCloudSyncStoreEntity_fetchShardPropertiesInTransaction_error_handler___block_invoke;
   v15[3] = &unk_278615C80;
   v15[4] = self;
-  v13 = v8;
+  v13 = handlerCopy;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __74__HDCloudSyncStoreEntity_fetchShardPropertiesInTransaction_error_handler___block_invoke_2;
@@ -2015,10 +2015,10 @@ uint64_t __78__HDCloudSyncStoreEntity_updateShardStartDate_endDate_type_transact
   v12[1] = 3221225472;
   v12[2] = __74__HDCloudSyncStoreEntity_fetchShardPropertiesInTransaction_error_handler___block_invoke_3;
   v12[3] = &unk_278613B30;
-  v10 = v8;
-  LOBYTE(a4) = [v9 executeCachedStatementForKey:&fetchShardPropertiesInTransaction_error_handler__lookupKey error:a4 SQLGenerator:v15 bindingHandler:v14 enumerationHandler:v12];
+  v10 = handlerCopy;
+  LOBYTE(error) = [v9 executeCachedStatementForKey:&fetchShardPropertiesInTransaction_error_handler__lookupKey error:error SQLGenerator:v15 bindingHandler:v14 enumerationHandler:v12];
 
-  return a4;
+  return error;
 }
 
 id __74__HDCloudSyncStoreEntity_fetchShardPropertiesInTransaction_error_handler___block_invoke(uint64_t a1)
@@ -2048,10 +2048,10 @@ uint64_t __74__HDCloudSyncStoreEntity_fetchShardPropertiesInTransaction_error_ha
   return v6;
 }
 
-- (BOOL)updateSyncIdentity:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)updateSyncIdentity:(id)identity transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = [a4 databaseForEntity:self];
+  identityCopy = identity;
+  v9 = [transaction databaseForEntity:self];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __63__HDCloudSyncStoreEntity_updateSyncIdentity_transaction_error___block_invoke;
@@ -2061,12 +2061,12 @@ uint64_t __74__HDCloudSyncStoreEntity_fetchShardPropertiesInTransaction_error_ha
   v12[1] = 3221225472;
   v12[2] = __63__HDCloudSyncStoreEntity_updateSyncIdentity_transaction_error___block_invoke_2;
   v12[3] = &unk_278613038;
-  v13 = v8;
-  v14 = self;
-  v10 = v8;
-  LOBYTE(a5) = [v9 executeCachedStatementForKey:&updateSyncIdentity_transaction_error__lookupKey error:a5 SQLGenerator:v15 bindingHandler:v12 enumerationHandler:0];
+  v13 = identityCopy;
+  selfCopy = self;
+  v10 = identityCopy;
+  LOBYTE(error) = [v9 executeCachedStatementForKey:&updateSyncIdentity_transaction_error__lookupKey error:error SQLGenerator:v15 bindingHandler:v12 enumerationHandler:0];
 
-  return a5;
+  return error;
 }
 
 id __63__HDCloudSyncStoreEntity_updateSyncIdentity_transaction_error___block_invoke(uint64_t a1)

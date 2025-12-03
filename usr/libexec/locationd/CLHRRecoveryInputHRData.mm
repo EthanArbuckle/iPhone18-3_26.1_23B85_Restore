@@ -1,69 +1,69 @@
 @interface CLHRRecoveryInputHRData
-- (CLHRRecoveryInputHRData)initWithCoder:(id)a3;
-- (CLHRRecoveryInputHRData)initWithHRRecoveryInputHR:(const HRRecoveryInputHR *)a3;
-- (CLHRRecoveryInputHRData)initWithRecordId:(unint64_t)a3 startTime:(double)a4 hr:(double)a5 hrConfidence:(double)a6;
+- (CLHRRecoveryInputHRData)initWithCoder:(id)coder;
+- (CLHRRecoveryInputHRData)initWithHRRecoveryInputHR:(const HRRecoveryInputHR *)r;
+- (CLHRRecoveryInputHRData)initWithRecordId:(unint64_t)id startTime:(double)time hr:(double)hr hrConfidence:(double)confidence;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLHRRecoveryInputHRData
 
-- (CLHRRecoveryInputHRData)initWithCoder:(id)a3
+- (CLHRRecoveryInputHRData)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = CLHRRecoveryInputHRData;
   v4 = [(CLHRRecoveryInputHRData *)&v9 init];
   if (v4)
   {
-    v4->_recordId = [a3 decodeInt64ForKey:@"recordId"];
-    [a3 decodeDoubleForKey:@"startTime"];
+    v4->_recordId = [coder decodeInt64ForKey:@"recordId"];
+    [coder decodeDoubleForKey:@"startTime"];
     v4->_startTime = v5;
-    [a3 decodeDoubleForKey:@"mets"];
+    [coder decodeDoubleForKey:@"mets"];
     v4->_hr = v6;
-    [a3 decodeDoubleForKey:@"grade"];
+    [coder decodeDoubleForKey:@"grade"];
     v4->_hrConfidence = v7;
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInt64:self->_recordId forKey:@"recordId"];
-  [a3 encodeDouble:@"startTime" forKey:self->_startTime];
-  [a3 encodeDouble:@"mets" forKey:self->_hr];
+  [coder encodeInt64:self->_recordId forKey:@"recordId"];
+  [coder encodeDouble:@"startTime" forKey:self->_startTime];
+  [coder encodeDouble:@"mets" forKey:self->_hr];
   hrConfidence = self->_hrConfidence;
 
-  [a3 encodeDouble:@"grade" forKey:hrConfidence];
+  [coder encodeDouble:@"grade" forKey:hrConfidence];
 }
 
-- (CLHRRecoveryInputHRData)initWithRecordId:(unint64_t)a3 startTime:(double)a4 hr:(double)a5 hrConfidence:(double)a6
+- (CLHRRecoveryInputHRData)initWithRecordId:(unint64_t)id startTime:(double)time hr:(double)hr hrConfidence:(double)confidence
 {
   v11.receiver = self;
   v11.super_class = CLHRRecoveryInputHRData;
   result = [(CLHRRecoveryInputHRData *)&v11 init];
   if (result)
   {
-    result->_recordId = a3;
-    result->_startTime = a4;
-    result->_hr = a5;
-    result->_hrConfidence = a6;
+    result->_recordId = id;
+    result->_startTime = time;
+    result->_hr = hr;
+    result->_hrConfidence = confidence;
   }
 
   return result;
 }
 
-- (CLHRRecoveryInputHRData)initWithHRRecoveryInputHR:(const HRRecoveryInputHR *)a3
+- (CLHRRecoveryInputHRData)initWithHRRecoveryInputHR:(const HRRecoveryInputHR *)r
 {
   v5.receiver = self;
   v5.super_class = CLHRRecoveryInputHRData;
   result = [(CLHRRecoveryInputHRData *)&v5 init];
   if (result)
   {
-    result->_recordId = a3->var0;
-    result->_startTime = a3->var1;
-    result->_hr = a3->var2;
-    result->_hrConfidence = a3->var3;
+    result->_recordId = r->var0;
+    result->_startTime = r->var1;
+    result->_hr = r->var2;
+    result->_hrConfidence = r->var3;
   }
 
   return result;
@@ -73,13 +73,13 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(CLHRRecoveryInputHRData *)self recordId];
+  recordId = [(CLHRRecoveryInputHRData *)self recordId];
   [(CLHRRecoveryInputHRData *)self startTime];
   v7 = v6;
   [(CLHRRecoveryInputHRData *)self hr];
   v9 = v8;
   [(CLHRRecoveryInputHRData *)self hrConfidence];
-  return [NSString stringWithFormat:@"%@, <recordId %llu, startTime %f, hr %f, hrConfidence %f>", v4, v5, v7, v9, v10];
+  return [NSString stringWithFormat:@"%@, <recordId %llu, startTime %f, hr %f, hrConfidence %f>", v4, recordId, v7, v9, v10];
 }
 
 @end

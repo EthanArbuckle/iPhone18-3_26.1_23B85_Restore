@@ -1,14 +1,14 @@
 @interface UISDeviceContext
-+ (id)clb_contextForDisplayStyle:(int64_t)a3;
++ (id)clb_contextForDisplayStyle:(int64_t)style;
 @end
 
 @implementation UISDeviceContext
 
-+ (id)clb_contextForDisplayStyle:(int64_t)a3
++ (id)clb_contextForDisplayStyle:(int64_t)style
 {
   BSDispatchQueueAssertMain();
   v4 = +[UISMutableDeviceContext defaultContext];
-  if (a3 == 1)
+  if (style == 1)
   {
     if (sub_1000227C0() == 2)
     {
@@ -23,7 +23,7 @@
 
   else
   {
-    if (a3)
+    if (style)
     {
       goto LABEL_8;
     }

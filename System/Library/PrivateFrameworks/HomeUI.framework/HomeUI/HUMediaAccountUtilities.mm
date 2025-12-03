@@ -1,8 +1,8 @@
 @interface HUMediaAccountUtilities
-+ (id)defaultCurrentVolumeForMediaProfiles:(id)a3;
-+ (id)determineMediaPickerAvailabilityForHomePodProfiles:(id)a3 inHome:(id)a4;
++ (id)defaultCurrentVolumeForMediaProfiles:(id)profiles;
++ (id)determineMediaPickerAvailabilityForHomePodProfiles:(id)profiles inHome:(id)home;
 + (id)musicAppURL;
-+ (id)reasonForMediaPickerNotAvailable:(int64_t)a3;
++ (id)reasonForMediaPickerNotAvailable:(int64_t)available;
 @end
 
 @implementation HUMediaAccountUtilities
@@ -49,15 +49,15 @@ LABEL_6:
   [*(a1 + 32) finishWithResult:v5];
 }
 
-+ (id)reasonForMediaPickerNotAvailable:(int64_t)a3
++ (id)reasonForMediaPickerNotAvailable:(int64_t)available
 {
   v3 = @"HUTriggerMediaPickerUnavailableMusicCatalogPlaybackDisabledPromptMessage";
-  if (a3 != 1)
+  if (available != 1)
   {
     v3 = 0;
   }
 
-  if (a3)
+  if (available)
   {
     return v3;
   }
@@ -76,9 +76,9 @@ LABEL_6:
   return v3;
 }
 
-+ (id)defaultCurrentVolumeForMediaProfiles:(id)a3
++ (id)defaultCurrentVolumeForMediaProfiles:(id)profiles
 {
-  v3 = a3;
+  profilesCopy = profiles;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -88,7 +88,7 @@ LABEL_6:
   v8[2] = __64__HUMediaAccountUtilities_defaultCurrentVolumeForMediaProfiles___block_invoke;
   v8[3] = &unk_277DB7C50;
   v8[4] = &v9;
-  [v3 na_each:v8];
+  [profilesCopy na_each:v8];
   v4 = v10;
   v5 = v10[6];
   if (fabsf(v5) < 0.00000011921)
@@ -117,35 +117,35 @@ float __64__HUMediaAccountUtilities_defaultCurrentVolumeForMediaProfiles___block
   return result;
 }
 
-+ (id)determineMediaPickerAvailabilityForHomePodProfiles:(id)a3 inHome:(id)a4
++ (id)determineMediaPickerAvailabilityForHomePodProfiles:(id)profiles inHome:(id)home
 {
   v48[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v7 && (v9 = [v7 count], v8) && v9)
+  profilesCopy = profiles;
+  homeCopy = home;
+  if (profilesCopy && (v9 = [profilesCopy count], homeCopy) && v9)
   {
     v10 = HFLogForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315650;
-      v42 = "+[HUMediaAccountUtilities determineMediaPickerAvailabilityForHomePodProfiles:inHome:]";
+      selfCopy = "+[HUMediaAccountUtilities determineMediaPickerAvailabilityForHomePodProfiles:inHome:]";
       v43 = 2112;
-      v44 = v7;
+      v44 = profilesCopy;
       v45 = 2112;
-      v46 = v8;
+      v46 = homeCopy;
       _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "%s HomePodMediaProfiles %@ Home %@", buf, 0x20u);
     }
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v12 = _HULocalizedStringWithDefaultValue(@"HUMediaSelectionPickerButton", @"HUMediaSelectionPickerButton", 1);
-    [v11 setObject:v12 forKeyedSubscript:*MEMORY[0x277D13F60]];
+    [dictionary setObject:v12 forKeyedSubscript:*MEMORY[0x277D13F60]];
 
     if (+[HUMediaAccountUtilities isMusicAppInstalled])
     {
       v13 = +[HUMediaAccountUtilities isAppleMusicSubscriptionAvailable];
       v14 = MEMORY[0x277D2C900];
       v39 = @"HOMediaSelectionPickingForExternalPlayerKey";
-      v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "count")}];
+      v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(profilesCopy, "count")}];
       v40 = v15;
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
       v17 = [v14 futureWithResult:v16];
@@ -155,11 +155,11 @@ float __64__HUMediaAccountUtilities_defaultCurrentVolumeForMediaProfiles___block
       {
         v19 = NSStringFromSelector(a2);
         *buf = 138412802;
-        v42 = a1;
+        selfCopy = self;
         v43 = 2112;
         v44 = v19;
         v45 = 2112;
-        v46 = v7;
+        v46 = profilesCopy;
         _os_log_impl(&dword_20CEB6000, v18, OS_LOG_TYPE_DEFAULT, "%@:%@ homePodMediaProfiles [%@]", buf, 0x20u);
       }
 
@@ -168,10 +168,10 @@ float __64__HUMediaAccountUtilities_defaultCurrentVolumeForMediaProfiles___block
       v33[1] = 3221225472;
       v33[2] = __85__HUMediaAccountUtilities_determineMediaPickerAvailabilityForHomePodProfiles_inHome___block_invoke;
       v33[3] = &unk_277DB7CE8;
-      v34 = v7;
-      v36 = a1;
+      v34 = profilesCopy;
+      selfCopy2 = self;
       v37 = a2;
-      v35 = v8;
+      v35 = homeCopy;
       v21 = [v20 futureWithBlock:v33];
       v22 = MEMORY[0x277D2C900];
       v38[0] = v13;
@@ -183,16 +183,16 @@ float __64__HUMediaAccountUtilities_defaultCurrentVolumeForMediaProfiles___block
       v30[1] = 3221225472;
       v30[2] = __85__HUMediaAccountUtilities_determineMediaPickerAvailabilityForHomePodProfiles_inHome___block_invoke_5;
       v30[3] = &unk_277DB7D10;
-      v11 = v11;
-      v31 = v11;
+      dictionary = dictionary;
+      v31 = dictionary;
       v32 = a2;
       v25 = [v24 flatMap:v30];
     }
 
     else
     {
-      [v11 setObject:&unk_282490BF0 forKeyedSubscript:@"HOMediaPickerUnavailableReasonKey"];
-      v25 = [MEMORY[0x277D2C900] futureWithResult:v11];
+      [dictionary setObject:&unk_282490BF0 forKeyedSubscript:@"HOMediaPickerUnavailableReasonKey"];
+      v25 = [MEMORY[0x277D2C900] futureWithResult:dictionary];
     }
   }
 
@@ -202,14 +202,14 @@ float __64__HUMediaAccountUtilities_defaultCurrentVolumeForMediaProfiles___block
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315138;
-      v42 = "+[HUMediaAccountUtilities determineMediaPickerAvailabilityForHomePodProfiles:inHome:]";
+      selfCopy = "+[HUMediaAccountUtilities determineMediaPickerAvailabilityForHomePodProfiles:inHome:]";
       _os_log_error_impl(&dword_20CEB6000, v26, OS_LOG_TYPE_ERROR, "%s Either the parameter mediaprofile or Home is nil", buf, 0xCu);
     }
 
     v27 = MEMORY[0x277D2C900];
     v47 = @"Error";
-    v11 = [MEMORY[0x277CCA9B8] hf_errorWithCode:33];
-    v48[0] = v11;
+    dictionary = [MEMORY[0x277CCA9B8] hf_errorWithCode:33];
+    v48[0] = dictionary;
     v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:&v47 count:1];
     v25 = [v27 futureWithResult:v28];
   }

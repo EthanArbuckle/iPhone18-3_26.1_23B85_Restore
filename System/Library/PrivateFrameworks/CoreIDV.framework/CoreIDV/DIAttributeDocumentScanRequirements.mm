@@ -1,43 +1,43 @@
 @interface DIAttributeDocumentScanRequirements
-- (DIAttributeDocumentScanRequirements)initWithCoder:(id)a3;
-- (DIAttributeDocumentScanRequirements)initWithDocumentScanRequirements:(id)a3;
+- (DIAttributeDocumentScanRequirements)initWithCoder:(id)coder;
+- (DIAttributeDocumentScanRequirements)initWithDocumentScanRequirements:(id)requirements;
 - (NSString)countryCode;
 - (NSString)type;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCountryCode:(id)a3;
-- (void)setType:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCountryCode:(id)code;
+- (void)setType:(id)type;
 @end
 
 @implementation DIAttributeDocumentScanRequirements
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = DIAttributeDocumentScanRequirements;
-  v4 = a3;
-  [(DIAttributeImageCaptureRequirements *)&v5 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(DIAttributeImageCaptureRequirements *)&v5 encodeWithCoder:coderCopy];
   os_unfair_lock_lock(&self->super._lock);
-  [v4 encodeObject:self->_countryCode forKey:{@"countryCode", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_type forKey:@"type"];
+  [coderCopy encodeObject:self->_countryCode forKey:{@"countryCode", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_type forKey:@"type"];
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (DIAttributeDocumentScanRequirements)initWithCoder:(id)a3
+- (DIAttributeDocumentScanRequirements)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = DIAttributeDocumentScanRequirements;
-  v5 = [(DIAttributeImageCaptureRequirements *)&v11 initWithCoder:v4];
+  v5 = [(DIAttributeImageCaptureRequirements *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
     countryCode = v5->_countryCode;
     v5->_countryCode = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     type = v5->_type;
     v5->_type = v8;
   }
@@ -45,21 +45,21 @@
   return v5;
 }
 
-- (DIAttributeDocumentScanRequirements)initWithDocumentScanRequirements:(id)a3
+- (DIAttributeDocumentScanRequirements)initWithDocumentScanRequirements:(id)requirements
 {
-  v4 = a3;
+  requirementsCopy = requirements;
   v11.receiver = self;
   v11.super_class = DIAttributeDocumentScanRequirements;
-  v5 = [(DIAttributeImageCaptureRequirements *)&v11 initWithImageCaptureRequirements:v4];
+  v5 = [(DIAttributeImageCaptureRequirements *)&v11 initWithImageCaptureRequirements:requirementsCopy];
   if (v5)
   {
-    v6 = [v4 countryCode];
+    countryCode = [requirementsCopy countryCode];
     countryCode = v5->_countryCode;
-    v5->_countryCode = v6;
+    v5->_countryCode = countryCode;
 
-    v8 = [v4 type];
+    type = [requirementsCopy type];
     type = v5->_type;
-    v5->_type = v8;
+    v5->_type = type;
   }
 
   return v5;
@@ -82,9 +82,9 @@
   return v3;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [DIAttributeDocumentScanRequirements allocWithZone:a3];
+  v4 = [DIAttributeDocumentScanRequirements allocWithZone:zone];
 
   return [(DIAttributeDocumentScanRequirements *)v4 initWithDocumentScanRequirements:self];
 }
@@ -98,13 +98,13 @@
   return v3;
 }
 
-- (void)setCountryCode:(id)a3
+- (void)setCountryCode:(id)code
 {
-  v6 = a3;
+  codeCopy = code;
   os_unfair_lock_lock(&self->super._lock);
-  if (self->_countryCode != v6)
+  if (self->_countryCode != codeCopy)
   {
-    v4 = [(NSString *)v6 copyWithZone:0];
+    v4 = [(NSString *)codeCopy copyWithZone:0];
     countryCode = self->_countryCode;
     self->_countryCode = v4;
   }
@@ -121,13 +121,13 @@
   return v3;
 }
 
-- (void)setType:(id)a3
+- (void)setType:(id)type
 {
-  v6 = a3;
+  typeCopy = type;
   os_unfair_lock_lock(&self->super._lock);
-  if (self->_type != v6)
+  if (self->_type != typeCopy)
   {
-    v4 = [(NSString *)v6 copyWithZone:0];
+    v4 = [(NSString *)typeCopy copyWithZone:0];
     type = self->_type;
     self->_type = v4;
   }

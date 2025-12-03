@@ -3,17 +3,17 @@
 - (NSArray)actions;
 - (NSString)condition;
 - (int)ignoreCount;
-- (void)setActions:(id)a3;
-- (void)setCondition:(id)a3;
+- (void)setActions:(id)actions;
+- (void)setCondition:(id)condition;
 @end
 
 @implementation RWIProtocolDebuggerBreakpointOptions
 
-- (void)setCondition:(id)a3
+- (void)setCondition:(id)condition
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDebuggerBreakpointOptions;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"condition"];
+  [(RWIProtocolJSONObject *)&v3 setString:condition forKey:@"condition"];
 }
 
 - (NSString)condition
@@ -25,14 +25,14 @@
   return v2;
 }
 
-- (void)setActions:(id)a3
+- (void)setActions:(id)actions
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a3;
+  obj = actions;
   v3 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {

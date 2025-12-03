@@ -1,61 +1,61 @@
 @interface PKProvisioningAnalyticsSessionReporter
-- (PKProvisioningAnalyticsSessionReporter)initWithResponder:(id)a3 sessionID:(id)a4;
+- (PKProvisioningAnalyticsSessionReporter)initWithResponder:(id)responder sessionID:(id)d;
 - (PKProvisioningAnalyticsSessionReportingResponder)responder;
-- (void)reportError:(id)a3 context:(id)a4;
-- (void)reportEvent:(id)a3;
-- (void)reportOtherError:(id)a3 context:(id)a4;
+- (void)reportError:(id)error context:(id)context;
+- (void)reportEvent:(id)event;
+- (void)reportOtherError:(id)error context:(id)context;
 - (void)resetProductTypes;
-- (void)setProductType:(id)a3 subtype:(id)a4;
-- (void)setSetupProduct:(id)a3;
+- (void)setProductType:(id)type subtype:(id)subtype;
+- (void)setSetupProduct:(id)product;
 @end
 
 @implementation PKProvisioningAnalyticsSessionReporter
 
-- (PKProvisioningAnalyticsSessionReporter)initWithResponder:(id)a3 sessionID:(id)a4
+- (PKProvisioningAnalyticsSessionReporter)initWithResponder:(id)responder sessionID:(id)d
 {
-  v6 = a3;
+  responderCopy = responder;
   v10.receiver = self;
   v10.super_class = PKProvisioningAnalyticsSessionReporter;
   v7 = [(PKProvisioningAnalyticsSessionReporter *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_responder, v6);
-    v8->_sessionID = a4;
+    objc_storeWeak(&v7->_responder, responderCopy);
+    v8->_sessionID = d;
   }
 
   return v8;
 }
 
-- (void)reportEvent:(id)a3
+- (void)reportEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(PKProvisioningAnalyticsSessionReporter *)self responder];
-  [v5 reportRawEventForReporter:self event:v4];
+  eventCopy = event;
+  responder = [(PKProvisioningAnalyticsSessionReporter *)self responder];
+  [responder reportRawEventForReporter:self event:eventCopy];
 }
 
-- (void)reportError:(id)a3 context:(id)a4
+- (void)reportError:(id)error context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKProvisioningAnalyticsSessionReporter *)self responder];
-  [v8 reportErrorForReporter:self error:v7 context:v6];
+  contextCopy = context;
+  errorCopy = error;
+  responder = [(PKProvisioningAnalyticsSessionReporter *)self responder];
+  [responder reportErrorForReporter:self error:errorCopy context:contextCopy];
 }
 
-- (void)reportOtherError:(id)a3 context:(id)a4
+- (void)reportOtherError:(id)error context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKProvisioningAnalyticsSessionReporter *)self responder];
-  [v8 reportOtherErrorForReporter:self error:v7 context:v6];
+  contextCopy = context;
+  errorCopy = error;
+  responder = [(PKProvisioningAnalyticsSessionReporter *)self responder];
+  [responder reportOtherErrorForReporter:self error:errorCopy context:contextCopy];
 }
 
-- (void)setProductType:(id)a3 subtype:(id)a4
+- (void)setProductType:(id)type subtype:(id)subtype
 {
-  v6 = a4;
-  v7 = a3;
+  subtypeCopy = subtype;
+  typeCopy = type;
   WeakRetained = objc_loadWeakRetained(&self->_responder);
-  [WeakRetained setProductType:v7 subtype:v6];
+  [WeakRetained setProductType:typeCopy subtype:subtypeCopy];
 }
 
 - (void)resetProductTypes
@@ -64,11 +64,11 @@
   [WeakRetained resetProductTypes];
 }
 
-- (void)setSetupProduct:(id)a3
+- (void)setSetupProduct:(id)product
 {
-  v4 = a3;
+  productCopy = product;
   WeakRetained = objc_loadWeakRetained(&self->_responder);
-  [WeakRetained setSetupProduct:v4];
+  [WeakRetained setSetupProduct:productCopy];
 }
 
 - (PKProvisioningAnalyticsSessionReportingResponder)responder

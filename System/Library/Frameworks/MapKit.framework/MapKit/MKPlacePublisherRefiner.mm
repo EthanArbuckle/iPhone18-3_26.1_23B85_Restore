@@ -1,15 +1,15 @@
 @interface MKPlacePublisherRefiner
-- (MKPlacePublisherRefiner)initWithPublisherIdentifier:(unint64_t)a3 providerIdentifier:(int)a4;
-- (void)fetchWithCallbackQueue:(id)a3 completion:(id)a4;
+- (MKPlacePublisherRefiner)initWithPublisherIdentifier:(unint64_t)identifier providerIdentifier:(int)providerIdentifier;
+- (void)fetchWithCallbackQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation MKPlacePublisherRefiner
 
-- (void)fetchWithCallbackQueue:(id)a3 completion:(id)a4
+- (void)fetchWithCallbackQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     if (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
@@ -24,7 +24,7 @@ LABEL_9:
     goto LABEL_4;
   }
 
-  if (!v6)
+  if (!queueCopy)
   {
     if (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
@@ -40,8 +40,8 @@ LABEL_9:
   v8 = +[MKMapService sharedService];
   publisherIdentifier = self->_publisherIdentifier;
   v10 = +[MKMapService sharedService];
-  v11 = [v10 defaultTraits];
-  v12 = [v8 ticketForPublisherViewPublisherIdentifier:publisherIdentifier keywordFilter:0 addressFilter:0 batchSize:1 withTraits:v11];
+  defaultTraits = [v10 defaultTraits];
+  v12 = [v8 ticketForPublisherViewPublisherIdentifier:publisherIdentifier keywordFilter:0 addressFilter:0 batchSize:1 withTraits:defaultTraits];
   ticket = self->_ticket;
   self->_ticket = v12;
 
@@ -50,8 +50,8 @@ LABEL_9:
   v17[1] = 3221225472;
   v17[2] = __61__MKPlacePublisherRefiner_fetchWithCallbackQueue_completion___block_invoke;
   v17[3] = &unk_1E76C6968;
-  v18 = v7;
-  [(MKMapServicePublisherViewTicket *)v14 submitWithCallbackQueue:v6 handler:v17 networkActivity:0];
+  v18 = completionCopy;
+  [(MKMapServicePublisherViewTicket *)v14 submitWithCallbackQueue:queueCopy handler:v17 networkActivity:0];
 
 LABEL_4:
 }
@@ -108,25 +108,25 @@ LABEL_8:
   v16();
 }
 
-- (MKPlacePublisherRefiner)initWithPublisherIdentifier:(unint64_t)a3 providerIdentifier:(int)a4
+- (MKPlacePublisherRefiner)initWithPublisherIdentifier:(unint64_t)identifier providerIdentifier:(int)providerIdentifier
 {
-  v4 = self;
-  if (a3)
+  selfCopy = self;
+  if (identifier)
   {
-    v5 = *&a4;
+    v5 = *&providerIdentifier;
     v13.receiver = self;
     v13.super_class = MKPlacePublisherRefiner;
     v7 = [(MKPlacePublisherRefiner *)&v13 init];
     if (v7)
     {
       v8 = [MKMapItemIdentifier alloc];
-      v9 = [(MKMapItemIdentifier *)v8 initWithMUID:a3 resultProviderID:v5 coordinate:*MEMORY[0x1E6985CC0], *(MEMORY[0x1E6985CC0] + 8)];
+      v9 = [(MKMapItemIdentifier *)v8 initWithMUID:identifier resultProviderID:v5 coordinate:*MEMORY[0x1E6985CC0], *(MEMORY[0x1E6985CC0] + 8)];
       publisherIdentifier = v7->_publisherIdentifier;
       v7->_publisherIdentifier = v9;
     }
 
-    v4 = v7;
-    v11 = v4;
+    selfCopy = v7;
+    v11 = selfCopy;
   }
 
   else

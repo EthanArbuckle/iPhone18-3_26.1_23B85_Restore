@@ -1,24 +1,24 @@
 @interface NTKActivityDigitalFaceBundle
 + (id)identifier;
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryTitleForDevice:(id)a3;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryTitleForDevice:(id)device;
 @end
 
 @implementation NTKActivityDigitalFaceBundle
 
 + (id)identifier
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___NTKActivityDigitalFaceBundle;
   v3 = objc_msgSendSuper2(&v7, "identifier");
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [NSString stringWithFormat:@"%@.%@", v3, v4];
 
   return v5;
 }
 
-- (id)galleryTitleForDevice:(id)a3
+- (id)galleryTitleForDevice:(id)device
 {
   if (NTKShowGalleryLiteUI())
   {
@@ -33,12 +33,12 @@
   return v3;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   if (NTKShowGalleryLiteUI())
   {
-    v5 = [(NTKActivityDigitalFaceBundle *)self defaultFaceForDevice:v4];
+    v5 = [(NTKActivityDigitalFaceBundle *)self defaultFaceForDevice:deviceCopy];
 
     v15[0] = NTKComplicationSlotTopLeft;
     v15[1] = NTKComplicationSlotTopRight;
@@ -58,22 +58,22 @@
 
     v13 = v5;
     v10 = [NSArray arrayWithObjects:&v13 count:1];
-    v4 = v5;
+    deviceCopy = v5;
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = NTKActivityDigitalFaceBundle;
-    v10 = [(NTKActivityDigitalFaceBundle *)&v12 galleryFacesForDevice:v4];
+    v10 = [(NTKActivityDigitalFaceBundle *)&v12 galleryFacesForDevice:deviceCopy];
   }
 
   return v10;
 }
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   if (NTKShowBlueRidgeUI())
   {
     v4 = 217;
@@ -84,7 +84,7 @@
     v4 = 17;
   }
 
-  v5 = [NTKFace defaultFaceOfStyle:v4 forDevice:v3];
+  v5 = [NTKFace defaultFaceOfStyle:v4 forDevice:deviceCopy];
 
   return v5;
 }

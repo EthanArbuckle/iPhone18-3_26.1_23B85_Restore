@@ -1,20 +1,20 @@
 @interface NSDictionary
-- (id)objectForPlatformSpecificKey:(void *)a1;
+- (id)objectForPlatformSpecificKey:(void *)key;
 @end
 
 @implementation NSDictionary
 
-- (id)objectForPlatformSpecificKey:(void *)a1
+- (id)objectForPlatformSpecificKey:(void *)key
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (key)
   {
     v5 = [v3 stringByAppendingString:@"-iOS"];
-    v6 = [a1 objectForKey:v5];
+    v6 = [key objectForKey:v5];
     if (!v6)
     {
-      v6 = [a1 objectForKey:v4];
+      v6 = [key objectForKey:v4];
     }
   }
 

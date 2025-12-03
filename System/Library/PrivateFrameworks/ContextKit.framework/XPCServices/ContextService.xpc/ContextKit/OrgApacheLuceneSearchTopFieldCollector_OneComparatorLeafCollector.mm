@@ -1,28 +1,28 @@
 @interface OrgApacheLuceneSearchTopFieldCollector_OneComparatorLeafCollector
-- (OrgApacheLuceneSearchTopFieldCollector_OneComparatorLeafCollector)initWithOrgApacheLuceneSearchLeafFieldComparator:(id)a3 withInt:(int)a4;
+- (OrgApacheLuceneSearchTopFieldCollector_OneComparatorLeafCollector)initWithOrgApacheLuceneSearchLeafFieldComparator:(id)comparator withInt:(int)int;
 - (void)dealloc;
-- (void)setScorerWithOrgApacheLuceneSearchScorer:(id)a3;
+- (void)setScorerWithOrgApacheLuceneSearchScorer:(id)scorer;
 @end
 
 @implementation OrgApacheLuceneSearchTopFieldCollector_OneComparatorLeafCollector
 
-- (OrgApacheLuceneSearchTopFieldCollector_OneComparatorLeafCollector)initWithOrgApacheLuceneSearchLeafFieldComparator:(id)a3 withInt:(int)a4
+- (OrgApacheLuceneSearchTopFieldCollector_OneComparatorLeafCollector)initWithOrgApacheLuceneSearchLeafFieldComparator:(id)comparator withInt:(int)int
 {
-  JreStrongAssign(&self->comparator_, a3);
-  self->reverseMul_ = a4;
+  JreStrongAssign(&self->comparator_, comparator);
+  self->reverseMul_ = int;
   return self;
 }
 
-- (void)setScorerWithOrgApacheLuceneSearchScorer:(id)a3
+- (void)setScorerWithOrgApacheLuceneSearchScorer:(id)scorer
 {
-  JreStrongAssign(&self->scorer_, a3);
+  JreStrongAssign(&self->scorer_, scorer);
   comparator = self->comparator_;
   if (!comparator)
   {
     JreThrowNullPointerException();
   }
 
-  [(OrgApacheLuceneSearchLeafFieldComparator *)comparator setScorerWithOrgApacheLuceneSearchScorer:a3];
+  [(OrgApacheLuceneSearchLeafFieldComparator *)comparator setScorerWithOrgApacheLuceneSearchScorer:scorer];
 }
 
 - (void)dealloc

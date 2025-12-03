@@ -1,77 +1,77 @@
 @interface GKSessionInternal
-- (BOOL)acceptConnectionFromPeer:(id)a3 error:(id *)a4;
+- (BOOL)acceptConnectionFromPeer:(id)peer error:(id *)error;
 - (BOOL)checkDNSConnection;
-- (BOOL)isPeerBusy:(id)a3;
-- (BOOL)parseServiceName:(const char *)a3 intoDisplayName:(id *)a4 pid:(unsigned int *)a5 state:(id *)a6;
-- (BOOL)passesSendDataSanityCheck:(id)a3 toPeers:(id)a4 withDataMode:(unsigned int)a5 error:(id *)a6;
-- (BOOL)sendDataToAllPeers:(id)a3 withDataMode:(unsigned int)a4 error:(id *)a5;
-- (BOOL)tryConnectToPeer:(id)a3;
-- (GKSessionInternal)initWithConnection:(id)a3 session:(id)a4 delegate:(id)a5;
-- (GKSessionInternal)initWithSessionID:(id)a3 displayName:(id)a4 session:(id)a5 sessionMode:(unsigned int)a6;
+- (BOOL)isPeerBusy:(id)busy;
+- (BOOL)parseServiceName:(const char *)name intoDisplayName:(id *)displayName pid:(unsigned int *)pid state:(id *)state;
+- (BOOL)passesSendDataSanityCheck:(id)check toPeers:(id)peers withDataMode:(unsigned int)mode error:(id *)error;
+- (BOOL)sendDataToAllPeers:(id)peers withDataMode:(unsigned int)mode error:(id *)error;
+- (BOOL)tryConnectToPeer:(id)peer;
+- (GKSessionInternal)initWithConnection:(id)connection session:(id)session delegate:(id)delegate;
+- (GKSessionInternal)initWithSessionID:(id)d displayName:(id)name session:(id)session sessionMode:(unsigned int)mode;
 - (NSString)displayName;
-- (id)displayNameForPeer:(id)a3;
-- (id)newNSErrorFromGKSessionError:(int)a3 description:(id)a4 reason:(id)a5;
-- (id)newNSErrorFromHRESULT:(int)a3 description:(id)a4 reason:(id)a5;
-- (id)peersWithConnectionState:(unsigned int)a3;
+- (id)displayNameForPeer:(id)peer;
+- (id)newNSErrorFromGKSessionError:(int)error description:(id)description reason:(id)reason;
+- (id)newNSErrorFromHRESULT:(int)t description:(id)description reason:(id)reason;
+- (id)peersWithConnectionState:(unsigned int)state;
 - (id)serviceName;
 - (void)browse;
-- (void)cancelConnectToPeer:(id)a3;
+- (void)cancelConnectToPeer:(id)peer;
 - (void)cleanupExAvailablePeers;
-- (void)connectToPeer:(id)a3 withTimeout:(double)a4;
+- (void)connectToPeer:(id)peer withTimeout:(double)timeout;
 - (void)dealloc;
-- (void)denyConnectionFromPeer:(id)a3;
-- (void)didFindService:(const char *)a3 fromIF:(const char *)a4 withError:(int)a5 moreComing:(BOOL)a6;
-- (void)didPublishWithError:(int)a3;
-- (void)didRemoveService:(const char *)a3 fromIF:(const char *)a4 withError:(int)a5 moreComing:(BOOL)a6;
+- (void)denyConnectionFromPeer:(id)peer;
+- (void)didFindService:(const char *)service fromIF:(const char *)f withError:(int)error moreComing:(BOOL)coming;
+- (void)didPublishWithError:(int)error;
+- (void)didRemoveService:(const char *)service fromIF:(const char *)f withError:(int)error moreComing:(BOOL)coming;
 - (void)disconnectFromAllPeers;
-- (void)disconnectPeerFromAllPeers:(id)a3;
+- (void)disconnectPeerFromAllPeers:(id)peers;
 - (void)handleEvents;
 - (void)lock;
-- (void)processTXTRecordForPeer:(id)a3 txtLen:(unsigned __int16)a4 txtRecord:(const void *)a5;
+- (void)processTXTRecordForPeer:(id)peer txtLen:(unsigned __int16)len txtRecord:(const void *)record;
 - (void)publish;
-- (void)receiveDOOB:(id)a3 fromPeer:(id)a4 inSession:(id)a5 context:(void *)a6;
+- (void)receiveDOOB:(id)b fromPeer:(id)peer inSession:(id)session context:(void *)context;
 - (void)reset;
-- (void)setAvailable:(BOOL)a3;
-- (void)setBusy:(BOOL)a3;
-- (void)setDOOBReceiveHandler:(id)a3 withContext:(void *)a4 inBand:(unsigned int)a5;
-- (void)setDataReceiveHandler:(id)a3 withContext:(void *)a4;
-- (void)setDelegate:(id)a3;
-- (void)setPrivateDelegate:(id)a3;
-- (void)setWifiEnabled:(BOOL)a3;
+- (void)setAvailable:(BOOL)available;
+- (void)setBusy:(BOOL)busy;
+- (void)setDOOBReceiveHandler:(id)handler withContext:(void *)context inBand:(unsigned int)band;
+- (void)setDataReceiveHandler:(id)handler withContext:(void *)context;
+- (void)setDelegate:(id)delegate;
+- (void)setPrivateDelegate:(id)delegate;
+- (void)setWifiEnabled:(BOOL)enabled;
 - (void)stopOldService;
 - (void)stopResolvingAllPeers;
-- (void)tellDelegate_connectionRequestToPeerFailed:(id)a3;
-- (void)tellDelegate_didConnectPeer:(id)a3;
-- (void)tellDelegate_didDisconnectPeer:(id)a3;
-- (void)tellDelegate_didReceiveBand_RetryICE:(id)a3;
-- (void)tellDelegate_didReceiveData:(id)a3;
-- (void)tellDelegate_didReceiveDataFromPeerWithContext:(id)a3;
-- (void)tellDelegate_gotInvited:(id)a3;
-- (void)tellDelegate_initiateRelay:(id)a3;
-- (void)tellDelegate_isConnectingPeer:(id)a3;
-- (void)tellDelegate_networkStatisticsChanged:(id)a3;
-- (void)tellDelegate_peerDidBecomeAvailable:(id)a3;
-- (void)tellDelegate_peerDidBecomeBusy:(id)a3;
-- (void)tellDelegate_peerDidBecomeUnavailable:(id)a3;
-- (void)tellDelegate_sessionDidFailWithError:(id)a3;
-- (void)tellDelegate_updateRelay:(id)a3;
-- (void)timeoutConnectToPeer:(id)a3;
+- (void)tellDelegate_connectionRequestToPeerFailed:(id)failed;
+- (void)tellDelegate_didConnectPeer:(id)peer;
+- (void)tellDelegate_didDisconnectPeer:(id)peer;
+- (void)tellDelegate_didReceiveBand_RetryICE:(id)e;
+- (void)tellDelegate_didReceiveData:(id)data;
+- (void)tellDelegate_didReceiveDataFromPeerWithContext:(id)context;
+- (void)tellDelegate_gotInvited:(id)invited;
+- (void)tellDelegate_initiateRelay:(id)relay;
+- (void)tellDelegate_isConnectingPeer:(id)peer;
+- (void)tellDelegate_networkStatisticsChanged:(id)changed;
+- (void)tellDelegate_peerDidBecomeAvailable:(id)available;
+- (void)tellDelegate_peerDidBecomeBusy:(id)busy;
+- (void)tellDelegate_peerDidBecomeUnavailable:(id)unavailable;
+- (void)tellDelegate_sessionDidFailWithError:(id)error;
+- (void)tellDelegate_updateRelay:(id)relay;
+- (void)timeoutConnectToPeer:(id)peer;
 - (void)unlock;
 @end
 
 @implementation GKSessionInternal
 
-- (id)newNSErrorFromHRESULT:(int)a3 description:(id)a4 reason:(id)a5
+- (id)newNSErrorFromHRESULT:(int)t description:(id)description reason:(id)reason
 {
   v6 = 0;
   v25 = *MEMORY[0x277D85DE8];
-  if (a4 && a5)
+  if (description && reason)
   {
     v9 = objc_alloc(MEMORY[0x277CBEAC0]);
-    v6 = [v9 initWithObjectsAndKeys:{a4, *MEMORY[0x277CCA450], a5, *MEMORY[0x277CCA470], 0}];
+    v6 = [v9 initWithObjectsAndKeys:{description, *MEMORY[0x277CCA450], reason, *MEMORY[0x277CCA470], 0}];
   }
 
-  v10 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"com.apple.gamekit.GKSessionErrorDomain" code:a3 userInfo:v6];
+  v10 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"com.apple.gamekit.GKSessionErrorDomain" code:t userInfo:v6];
 
   if (VRTraceGetErrorLogLevelForModule() >= 3)
   {
@@ -86,9 +86,9 @@
       v19 = 1024;
       v20 = 733;
       v21 = 1024;
-      v22 = a3;
+      tCopy = t;
       v23 = 2112;
-      v24 = [v10 localizedDescription];
+      localizedDescription = [v10 localizedDescription];
       _os_log_error_impl(&dword_24E50C000, v12, OS_LOG_TYPE_ERROR, " [%s] %s:%d Error: %d -- %@.", buf, 0x2Cu);
     }
   }
@@ -97,17 +97,17 @@
   return v10;
 }
 
-- (id)newNSErrorFromGKSessionError:(int)a3 description:(id)a4 reason:(id)a5
+- (id)newNSErrorFromGKSessionError:(int)error description:(id)description reason:(id)reason
 {
   v6 = 0;
   v25 = *MEMORY[0x277D85DE8];
-  if (a4 && a5)
+  if (description && reason)
   {
     v9 = objc_alloc(MEMORY[0x277CBEAC0]);
-    v6 = [v9 initWithObjectsAndKeys:{a4, *MEMORY[0x277CCA450], a5, *MEMORY[0x277CCA470], 0}];
+    v6 = [v9 initWithObjectsAndKeys:{description, *MEMORY[0x277CCA450], reason, *MEMORY[0x277CCA470], 0}];
   }
 
-  v10 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"com.apple.gamekit.GKSessionErrorDomain" code:a3 userInfo:v6];
+  v10 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"com.apple.gamekit.GKSessionErrorDomain" code:error userInfo:v6];
 
   if (VRTraceGetErrorLogLevelForModule() >= 3)
   {
@@ -122,9 +122,9 @@
       v19 = 1024;
       v20 = 747;
       v21 = 1024;
-      v22 = a3;
+      errorCopy = error;
       v23 = 2112;
-      v24 = [v10 localizedDescription];
+      localizedDescription = [v10 localizedDescription];
       _os_log_error_impl(&dword_24E50C000, v12, OS_LOG_TYPE_ERROR, " [%s] %s:%d Error: %d -- %@.", buf, 0x2Cu);
     }
   }
@@ -133,7 +133,7 @@
   return v10;
 }
 
-- (void)tellDelegate_sessionDidFailWithError:(id)a3
+- (void)tellDelegate_sessionDidFailWithError:(id)error
 {
   if (self->_shutdown)
   {
@@ -149,17 +149,17 @@
 
   else
   {
-    v4 = [a3 objectForKeyedSubscript:@"NSError"];
-    v5 = self;
+    v4 = [error objectForKeyedSubscript:@"NSError"];
+    selfCopy = self;
     pthread_mutex_lock(&self->_delegateLock);
-    v6 = [(GKSessionInternal *)self delegate];
-    [(GKSessionDelegate *)v6 session:self->_session didFailWithError:v4];
+    delegate = [(GKSessionInternal *)self delegate];
+    [(GKSessionDelegate *)delegate session:self->_session didFailWithError:v4];
 
     pthread_mutex_unlock(&self->_delegateLock);
   }
 }
 
-- (void)tellDelegate_didConnectPeer:(id)a3
+- (void)tellDelegate_didConnectPeer:(id)peer
 {
   v46 = *MEMORY[0x277D85DE8];
   if (self->_shutdown)
@@ -176,9 +176,9 @@
     goto LABEL_37;
   }
 
-  v5 = [a3 objectForKeyedSubscript:@"peerID"];
+  v5 = [peer objectForKeyedSubscript:@"peerID"];
   v30 = 0;
-  v6 = [a3 objectForKeyedSubscript:@"data"];
+  v6 = [peer objectForKeyedSubscript:@"data"];
   v7 = 2;
   if (v6)
   {
@@ -195,18 +195,18 @@
   }
 
   pthread_mutex_lock(&self->_delegateLock);
-  v8 = [(GKSessionInternal *)self delegate];
-  v9 = [(GKSessionInternal *)self privateDelegate];
+  delegate = [(GKSessionInternal *)self delegate];
+  privateDelegate = [(GKSessionInternal *)self privateDelegate];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     v10 = VRTraceErrorLogLevelToCSTR();
     v11 = *MEMORY[0x277CE5818];
     if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
     {
-      if (v9)
+      if (privateDelegate)
       {
-        v28 = [-[GKSessionPrivateDelegate description](v9 "description")];
-        if (v8)
+        v28 = [-[GKSessionPrivateDelegate description](privateDelegate "description")];
+        if (delegate)
         {
           goto LABEL_13;
         }
@@ -215,10 +215,10 @@
       else
       {
         v28 = "<nil>";
-        if (v8)
+        if (delegate)
         {
 LABEL_13:
-          v12 = [-[GKSessionDelegate description](v8 description];
+          v12 = [-[GKSessionDelegate description](delegate description];
           if (v5)
           {
 LABEL_14:
@@ -308,7 +308,7 @@ LABEL_19:
         v35 = 1024;
         v36 = 825;
         v37 = 2112;
-        v38 = v9;
+        v38 = privateDelegate;
         v39 = 2112;
         v40 = v5;
         v41 = 1024;
@@ -319,10 +319,10 @@ LABEL_19:
       }
     }
 
-    [(GKSessionPrivateDelegate *)v9 session:self->_session peer:v5 didChangeState:v7];
+    [(GKSessionPrivateDelegate *)privateDelegate session:self->_session peer:v5 didChangeState:v7];
   }
 
-  if (v8 != v9 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (delegate != privateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -339,7 +339,7 @@ LABEL_19:
         v35 = 1024;
         v36 = 830;
         v37 = 2112;
-        v38 = v8;
+        v38 = delegate;
         v39 = 2112;
         v40 = v5;
         v41 = 1024;
@@ -350,7 +350,7 @@ LABEL_19:
       }
     }
 
-    [(GKSessionDelegate *)v8 session:self->_session peer:v5 didChangeState:v7];
+    [(GKSessionDelegate *)delegate session:self->_session peer:v5 didChangeState:v7];
   }
 
   pthread_mutex_unlock(&self->_delegateLock);
@@ -360,7 +360,7 @@ LABEL_37:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tellDelegate_didDisconnectPeer:(id)a3
+- (void)tellDelegate_didDisconnectPeer:(id)peer
 {
   v38 = *MEMORY[0x277D85DE8];
   if (self->_shutdown)
@@ -377,10 +377,10 @@ LABEL_37:
     goto LABEL_27;
   }
 
-  v5 = [a3 objectForKeyedSubscript:@"peerID"];
+  v5 = [peer objectForKeyedSubscript:@"peerID"];
   pthread_mutex_lock(&self->_delegateLock);
-  v6 = [(GKSessionInternal *)self delegate];
-  v7 = [(GKSessionInternal *)self privateDelegate];
+  delegate = [(GKSessionInternal *)self delegate];
+  privateDelegate = [(GKSessionInternal *)self privateDelegate];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
   v9 = MEMORY[0x277CE5818];
   if (ErrorLogLevelForModule >= 6)
@@ -389,10 +389,10 @@ LABEL_37:
     v11 = *v9;
     if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT))
     {
-      if (v7)
+      if (privateDelegate)
       {
-        v21 = [-[GKSessionPrivateDelegate description](v7 "description")];
-        if (v6)
+        v21 = [-[GKSessionPrivateDelegate description](privateDelegate "description")];
+        if (delegate)
         {
           goto LABEL_9;
         }
@@ -401,10 +401,10 @@ LABEL_37:
       else
       {
         v21 = "<nil>";
-        if (v6)
+        if (delegate)
         {
 LABEL_9:
-          v12 = [-[GKSessionDelegate description](v6 "description")];
+          v12 = [-[GKSessionDelegate description](delegate "description")];
           if (v5)
           {
 LABEL_10:
@@ -477,15 +477,15 @@ LABEL_15:
     }
   }
 
-  v19 = self;
+  selfCopy = self;
   if (objc_opt_respondsToSelector())
   {
-    [(GKSessionPrivateDelegate *)v7 session:self->_session peer:v5 didChangeState:3];
+    [(GKSessionPrivateDelegate *)privateDelegate session:self->_session peer:v5 didChangeState:3];
   }
 
-  if (v6 != v7 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (delegate != privateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [(GKSessionDelegate *)v6 session:self->_session peer:v5 didChangeState:3];
+    [(GKSessionDelegate *)delegate session:self->_session peer:v5 didChangeState:3];
   }
 
   pthread_mutex_unlock(&self->_delegateLock);
@@ -495,7 +495,7 @@ LABEL_27:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tellDelegate_isConnectingPeer:(id)a3
+- (void)tellDelegate_isConnectingPeer:(id)peer
 {
   v25 = *MEMORY[0x277D85DE8];
   if (self->_shutdown)
@@ -512,7 +512,7 @@ LABEL_27:
 
   else
   {
-    v5 = [a3 objectForKeyedSubscript:@"peerID"];
+    v5 = [peer objectForKeyedSubscript:@"peerID"];
     ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
     v7 = MEMORY[0x277CE5818];
     if (ErrorLogLevelForModule >= 6)
@@ -572,16 +572,16 @@ LABEL_27:
     }
 
     pthread_mutex_lock(&self->_delegateLock);
-    v14 = [(GKSessionInternal *)self delegate];
-    v15 = [(GKSessionInternal *)self privateDelegate];
+    delegate = [(GKSessionInternal *)self delegate];
+    privateDelegate = [(GKSessionInternal *)self privateDelegate];
     if (objc_opt_respondsToSelector())
     {
-      [(GKSessionPrivateDelegate *)v15 session:self->_session peer:v5 didChangeState:4];
+      [(GKSessionPrivateDelegate *)privateDelegate session:self->_session peer:v5 didChangeState:4];
     }
 
-    if (v14 != v15 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (delegate != privateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [(GKSessionDelegate *)v14 session:self->_session peer:v5 didChangeState:4];
+      [(GKSessionDelegate *)delegate session:self->_session peer:v5 didChangeState:4];
     }
 
     pthread_mutex_unlock(&self->_delegateLock);
@@ -590,7 +590,7 @@ LABEL_27:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tellDelegate_peerDidBecomeAvailable:(id)a3
+- (void)tellDelegate_peerDidBecomeAvailable:(id)available
 {
   v24 = *MEMORY[0x277D85DE8];
   if (self->_shutdown)
@@ -607,7 +607,7 @@ LABEL_27:
 
   else
   {
-    v5 = [a3 objectForKeyedSubscript:@"peerID"];
+    v5 = [available objectForKeyedSubscript:@"peerID"];
     ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
     v7 = MEMORY[0x277CE5818];
     if (ErrorLogLevelForModule > 6)
@@ -657,16 +657,16 @@ LABEL_27:
     }
 
     pthread_mutex_lock(&self->_delegateLock);
-    v13 = [(GKSessionInternal *)self delegate];
-    v14 = [(GKSessionInternal *)self privateDelegate];
+    delegate = [(GKSessionInternal *)self delegate];
+    privateDelegate = [(GKSessionInternal *)self privateDelegate];
     if (objc_opt_respondsToSelector())
     {
-      [(GKSessionPrivateDelegate *)v14 session:self->_session peer:v5 didChangeState:0];
+      [(GKSessionPrivateDelegate *)privateDelegate session:self->_session peer:v5 didChangeState:0];
     }
 
-    if (v13 != v14 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (delegate != privateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [(GKSessionDelegate *)v13 session:self->_session peer:v5 didChangeState:0];
+      [(GKSessionDelegate *)delegate session:self->_session peer:v5 didChangeState:0];
     }
 
     pthread_mutex_unlock(&self->_delegateLock);
@@ -675,7 +675,7 @@ LABEL_27:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tellDelegate_peerDidBecomeUnavailable:(id)a3
+- (void)tellDelegate_peerDidBecomeUnavailable:(id)unavailable
 {
   v24 = *MEMORY[0x277D85DE8];
   if (self->_shutdown)
@@ -692,7 +692,7 @@ LABEL_27:
 
   else
   {
-    v5 = [a3 objectForKeyedSubscript:@"peerID"];
+    v5 = [unavailable objectForKeyedSubscript:@"peerID"];
     ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
     v7 = MEMORY[0x277CE5818];
     if (ErrorLogLevelForModule > 6)
@@ -742,16 +742,16 @@ LABEL_27:
     }
 
     pthread_mutex_lock(&self->_delegateLock);
-    v13 = [(GKSessionInternal *)self delegate];
-    v14 = [(GKSessionInternal *)self privateDelegate];
+    delegate = [(GKSessionInternal *)self delegate];
+    privateDelegate = [(GKSessionInternal *)self privateDelegate];
     if (objc_opt_respondsToSelector())
     {
-      [(GKSessionPrivateDelegate *)v14 session:self->_session peer:v5 didChangeState:1];
+      [(GKSessionPrivateDelegate *)privateDelegate session:self->_session peer:v5 didChangeState:1];
     }
 
-    if (v13 != v14 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (delegate != privateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [(GKSessionDelegate *)v13 session:self->_session peer:v5 didChangeState:1];
+      [(GKSessionDelegate *)delegate session:self->_session peer:v5 didChangeState:1];
     }
 
     pthread_mutex_unlock(&self->_delegateLock);
@@ -760,7 +760,7 @@ LABEL_27:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tellDelegate_didReceiveBand_RetryICE:(id)a3
+- (void)tellDelegate_didReceiveBand_RetryICE:(id)e
 {
   if (self->_shutdown)
   {
@@ -776,8 +776,8 @@ LABEL_27:
 
   else
   {
-    v4 = [a3 objectForKeyedSubscript:@"peerID"];
-    v5 = [a3 objectForKeyedSubscript:@"data"];
+    v4 = [e objectForKeyedSubscript:@"peerID"];
+    v5 = [e objectForKeyedSubscript:@"data"];
     pthread_mutex_lock(&self->_delegateLock);
     v6 = self->_doobReceiveHandler[1];
     if (v6)
@@ -789,15 +789,15 @@ LABEL_27:
   }
 }
 
-- (void)tellDelegate_didReceiveData:(id)a3
+- (void)tellDelegate_didReceiveData:(id)data
 {
   v26 = *MEMORY[0x277D85DE8];
   if (!self->_shutdown)
   {
-    v5 = [a3 objectForKeyedSubscript:@"peerID"];
-    v6 = [a3 objectForKeyedSubscript:@"data"];
+    v5 = [data objectForKeyedSubscript:@"peerID"];
+    v6 = [data objectForKeyedSubscript:@"data"];
     pthread_mutex_lock(&self->_delegateLock);
-    v7 = [(GKSessionInternal *)self dataReceiveHandler];
+    dataReceiveHandler = [(GKSessionInternal *)self dataReceiveHandler];
     if (VRTraceGetErrorLogLevelForModule() >= 8)
     {
       v8 = VRTraceErrorLogLevelToCSTR();
@@ -814,15 +814,15 @@ LABEL_27:
           v16 = 1024;
           v17 = 1000;
           v18 = 2048;
-          v19 = [(GKSessionInternal *)self delegate];
+          delegate = [(GKSessionInternal *)self delegate];
           v20 = 2048;
-          v21 = [(GKSessionInternal *)self privateDelegate];
+          privateDelegate = [(GKSessionInternal *)self privateDelegate];
           v22 = 1024;
           v23 = [v6 length];
           v24 = 2080;
-          v25 = [v5 UTF8String];
+          uTF8String = [v5 UTF8String];
           _os_log_impl(&dword_24E50C000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d tellDelegate[%p, %p]_didReceiveData of length [%d] from [%s]", &v12, 0x40u);
-          if (!v7)
+          if (!dataReceiveHandler)
           {
             goto LABEL_13;
           }
@@ -840,15 +840,15 @@ LABEL_27:
         v16 = 1024;
         v17 = 1000;
         v18 = 2048;
-        v19 = [(GKSessionInternal *)self delegate];
+        delegate = [(GKSessionInternal *)self delegate];
         v20 = 2048;
-        v21 = [(GKSessionInternal *)self privateDelegate];
+        privateDelegate = [(GKSessionInternal *)self privateDelegate];
         v22 = 1024;
         v23 = [v6 length];
         v24 = 2080;
-        v25 = [v5 UTF8String];
+        uTF8String = [v5 UTF8String];
         _os_log_debug_impl(&dword_24E50C000, v9, OS_LOG_TYPE_DEBUG, " [%s] %s:%d tellDelegate[%p, %p]_didReceiveData of length [%d] from [%s]", &v12, 0x40u);
-        if (!v7)
+        if (!dataReceiveHandler)
         {
           goto LABEL_13;
         }
@@ -857,7 +857,7 @@ LABEL_27:
       }
     }
 
-    if (!v7)
+    if (!dataReceiveHandler)
     {
 LABEL_13:
 
@@ -866,7 +866,7 @@ LABEL_13:
     }
 
 LABEL_12:
-    [v7 receiveData:v6 fromPeer:v5 inSession:self->_session context:self->_dataReceiveHandlerContext];
+    [dataReceiveHandler receiveData:v6 fromPeer:v5 inSession:self->_session context:self->_dataReceiveHandlerContext];
     goto LABEL_13;
   }
 
@@ -884,7 +884,7 @@ LABEL_14:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tellDelegate_didReceiveDataFromPeerWithContext:(id)a3
+- (void)tellDelegate_didReceiveDataFromPeerWithContext:(id)context
 {
   v28 = *MEMORY[0x277D85DE8];
   if (self->_shutdown)
@@ -901,9 +901,9 @@ LABEL_14:
     goto LABEL_16;
   }
 
-  v5 = [a3 objectForKeyedSubscript:@"peerID"];
-  v6 = [a3 objectForKeyedSubscript:@"data"];
-  v7 = [(GKSessionInternal *)self dataReceiveHandler];
+  v5 = [context objectForKeyedSubscript:@"peerID"];
+  v6 = [context objectForKeyedSubscript:@"data"];
+  dataReceiveHandler = [(GKSessionInternal *)self dataReceiveHandler];
   if (VRTraceGetErrorLogLevelForModule() < 8)
   {
     goto LABEL_11;
@@ -929,9 +929,9 @@ LABEL_14:
       v24 = 1024;
       v25 = [v6 length];
       v26 = 2080;
-      v27 = [v5 UTF8String];
+      uTF8String = [v5 UTF8String];
       _os_log_impl(&dword_24E50C000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d tellDelegate[%p, %p]_didReceiveData of length [%d] from [%s]", &v16, 0x40u);
-      if (!v7)
+      if (!dataReceiveHandler)
       {
         goto LABEL_16;
       }
@@ -940,7 +940,7 @@ LABEL_14:
     }
 
 LABEL_11:
-    if (!v7)
+    if (!dataReceiveHandler)
     {
       goto LABEL_16;
     }
@@ -966,9 +966,9 @@ LABEL_11:
   v24 = 1024;
   v25 = [v6 length];
   v26 = 2080;
-  v27 = [v5 UTF8String];
+  uTF8String = [v5 UTF8String];
   _os_log_debug_impl(&dword_24E50C000, v9, OS_LOG_TYPE_DEBUG, " [%s] %s:%d tellDelegate[%p, %p]_didReceiveData of length [%d] from [%s]", &v16, 0x40u);
-  if (!v7)
+  if (!dataReceiveHandler)
   {
     goto LABEL_16;
   }
@@ -981,7 +981,7 @@ LABEL_12:
     if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
     {
       v13 = [v6 length];
-      v14 = [v5 UTF8String];
+      uTF8String2 = [v5 UTF8String];
       v16 = 136316162;
       v17 = v11;
       v18 = 2080;
@@ -991,18 +991,18 @@ LABEL_12:
       v22 = 1024;
       *v23 = v13;
       *&v23[4] = 2080;
-      *&v23[6] = v14;
+      *&v23[6] = uTF8String2;
       _os_log_impl(&dword_24E50C000, v12, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Inform handler did receiveVoiceChatData of length=%d from peerID=%s", &v16, 0x2Cu);
     }
   }
 
-  [v7 receiveVoiceChatData:v6 fromPeer:v5];
+  [dataReceiveHandler receiveVoiceChatData:v6 fromPeer:v5];
 LABEL_16:
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tellDelegate_gotInvited:(id)a3
+- (void)tellDelegate_gotInvited:(id)invited
 {
   v26 = *MEMORY[0x277D85DE8];
   if (self->_shutdown)
@@ -1019,7 +1019,7 @@ LABEL_16:
 
   else
   {
-    v5 = [a3 objectForKeyedSubscript:@"peerID"];
+    v5 = [invited objectForKeyedSubscript:@"peerID"];
     if (VRTraceGetErrorLogLevelForModule() >= 6)
     {
       v6 = VRTraceErrorLogLevelToCSTR();
@@ -1049,8 +1049,8 @@ LABEL_16:
     }
 
     pthread_mutex_lock(&self->_delegateLock);
-    v9 = [(GKSessionInternal *)self delegate];
-    v10 = [(GKSessionInternal *)self privateDelegate];
+    delegate = [(GKSessionInternal *)self delegate];
+    privateDelegate = [(GKSessionInternal *)self privateDelegate];
     if (objc_opt_respondsToSelector())
     {
       if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -1066,17 +1066,17 @@ LABEL_16:
           v20 = 1024;
           v21 = 1049;
           v22 = 2112;
-          v23 = v10;
+          v23 = privateDelegate;
           v24 = 2112;
           v25 = v5;
           _os_log_impl(&dword_24E50C000, v12, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %@ didReceiveConnectionRequestFromPeer: %@", &v16, 0x30u);
         }
       }
 
-      [(GKSessionPrivateDelegate *)v10 session:self->_session didReceiveConnectionRequestFromPeer:v5];
+      [(GKSessionPrivateDelegate *)privateDelegate session:self->_session didReceiveConnectionRequestFromPeer:v5];
     }
 
-    if (v9 != v10 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (delegate != privateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 7)
       {
@@ -1091,14 +1091,14 @@ LABEL_16:
           v20 = 1024;
           v21 = 1053;
           v22 = 2112;
-          v23 = v9;
+          v23 = delegate;
           v24 = 2112;
           v25 = v5;
           _os_log_impl(&dword_24E50C000, v14, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %@ didReceiveConnectionRequestFromPeer: %@", &v16, 0x30u);
         }
       }
 
-      [(GKSessionDelegate *)v9 session:self->_session didReceiveConnectionRequestFromPeer:v5];
+      [(GKSessionDelegate *)delegate session:self->_session didReceiveConnectionRequestFromPeer:v5];
     }
 
     pthread_mutex_unlock(&self->_delegateLock);
@@ -1107,7 +1107,7 @@ LABEL_16:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tellDelegate_connectionRequestToPeerFailed:(id)a3
+- (void)tellDelegate_connectionRequestToPeerFailed:(id)failed
 {
   v28 = *MEMORY[0x277D85DE8];
   if (self->_shutdown)
@@ -1124,9 +1124,9 @@ LABEL_16:
 
   else
   {
-    v5 = [a3 objectForKeyedSubscript:@"peerID"];
-    v6 = [a3 objectForKeyedSubscript:@"NSError"];
-    v7 = self;
+    v5 = [failed objectForKeyedSubscript:@"peerID"];
+    v6 = [failed objectForKeyedSubscript:@"NSError"];
+    selfCopy = self;
     if (VRTraceGetErrorLogLevelForModule() >= 6)
     {
       v8 = VRTraceErrorLogLevelToCSTR();
@@ -1156,8 +1156,8 @@ LABEL_16:
     }
 
     pthread_mutex_lock(&self->_delegateLock);
-    v11 = [(GKSessionInternal *)self delegate];
-    v12 = [(GKSessionInternal *)self privateDelegate];
+    delegate = [(GKSessionInternal *)self delegate];
+    privateDelegate = [(GKSessionInternal *)self privateDelegate];
     if (objc_opt_respondsToSelector())
     {
       if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -1173,17 +1173,17 @@ LABEL_16:
           v22 = 1024;
           v23 = 1082;
           v24 = 2112;
-          v25 = v12;
+          v25 = privateDelegate;
           v26 = 2112;
           v27 = v5;
           _os_log_impl(&dword_24E50C000, v14, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %@ connectionRequestToPeerFailed: %@", &v18, 0x30u);
         }
       }
 
-      [(GKSessionPrivateDelegate *)v12 session:self->_session connectionWithPeerFailed:v5 withError:v6];
+      [(GKSessionPrivateDelegate *)privateDelegate session:self->_session connectionWithPeerFailed:v5 withError:v6];
     }
 
-    if (v11 != v12 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (delegate != privateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 7)
       {
@@ -1198,14 +1198,14 @@ LABEL_16:
           v22 = 1024;
           v23 = 1086;
           v24 = 2112;
-          v25 = v11;
+          v25 = delegate;
           v26 = 2112;
           v27 = v5;
           _os_log_impl(&dword_24E50C000, v16, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %@ connectionRequestToPeerFailed: %@", &v18, 0x30u);
         }
       }
 
-      [(GKSessionDelegate *)v11 session:self->_session connectionWithPeerFailed:v5 withError:v6];
+      [(GKSessionDelegate *)delegate session:self->_session connectionWithPeerFailed:v5 withError:v6];
     }
 
     pthread_mutex_unlock(&self->_delegateLock);
@@ -1214,7 +1214,7 @@ LABEL_16:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tellDelegate_peerDidBecomeBusy:(id)a3
+- (void)tellDelegate_peerDidBecomeBusy:(id)busy
 {
   v23 = *MEMORY[0x277D85DE8];
   if (self->_shutdown)
@@ -1231,7 +1231,7 @@ LABEL_16:
 
   else
   {
-    v5 = [a3 objectForKeyedSubscript:@"peerID"];
+    v5 = [busy objectForKeyedSubscript:@"peerID"];
     if (VRTraceGetErrorLogLevelForModule() >= 6)
     {
       v6 = VRTraceErrorLogLevelToCSTR();
@@ -1261,7 +1261,7 @@ LABEL_16:
     }
 
     pthread_mutex_lock(&self->_delegateLock);
-    v9 = [(GKSessionInternal *)self privateDelegate];
+    privateDelegate = [(GKSessionInternal *)self privateDelegate];
     if (objc_opt_respondsToSelector())
     {
       if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -1277,14 +1277,14 @@ LABEL_16:
           v17 = 1024;
           v18 = 1112;
           v19 = 2112;
-          v20 = v9;
+          v20 = privateDelegate;
           v21 = 2112;
           v22 = v5;
           _os_log_impl(&dword_24E50C000, v11, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %@: peerDidBecomeBusy: %@", &v13, 0x30u);
         }
       }
 
-      [(GKSessionPrivateDelegate *)v9 session:self->_session peerDidBecomeBusy:v5];
+      [(GKSessionPrivateDelegate *)privateDelegate session:self->_session peerDidBecomeBusy:v5];
     }
 
     pthread_mutex_unlock(&self->_delegateLock);
@@ -1293,7 +1293,7 @@ LABEL_16:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tellDelegate_initiateRelay:(id)a3
+- (void)tellDelegate_initiateRelay:(id)relay
 {
   v30 = *MEMORY[0x277D85DE8];
   if (self->_shutdown)
@@ -1310,8 +1310,8 @@ LABEL_16:
 
   else
   {
-    v5 = [a3 objectForKeyedSubscript:@"peerID"];
-    v6 = [a3 objectForKeyedSubscript:@"dict"];
+    v5 = [relay objectForKeyedSubscript:@"peerID"];
+    v6 = [relay objectForKeyedSubscript:@"dict"];
     if (VRTraceGetErrorLogLevelForModule() >= 6)
     {
       v7 = VRTraceErrorLogLevelToCSTR();
@@ -1359,7 +1359,7 @@ LABEL_16:
     if (+[GKConnection isRelayEnabled])
     {
       pthread_mutex_lock(&self->_delegateLock);
-      v12 = [(GKSessionInternal *)self privateDelegate];
+      privateDelegate = [(GKSessionInternal *)self privateDelegate];
       if (objc_opt_respondsToSelector())
       {
         if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -1375,7 +1375,7 @@ LABEL_16:
             v22 = 1024;
             v23 = 1141;
             v24 = 2112;
-            v25 = v12;
+            v25 = privateDelegate;
             v26 = 2112;
             v27 = v6;
             v28 = 2112;
@@ -1384,7 +1384,7 @@ LABEL_16:
           }
         }
 
-        [(GKSessionPrivateDelegate *)v12 session:self->_session initiateRelay:v6 forPeer:v5];
+        [(GKSessionPrivateDelegate *)privateDelegate session:self->_session initiateRelay:v6 forPeer:v5];
       }
 
       else if (objc_opt_respondsToSelector())
@@ -1402,7 +1402,7 @@ LABEL_16:
             v22 = 1024;
             v23 = 1146;
             v24 = 2112;
-            v25 = v12;
+            v25 = privateDelegate;
             v26 = 2112;
             v27 = v6;
             v28 = 2112;
@@ -1411,7 +1411,7 @@ LABEL_16:
           }
         }
 
-        [(GKSessionPrivateDelegate *)v12 session:self->_session initiateRelay:v6];
+        [(GKSessionPrivateDelegate *)privateDelegate session:self->_session initiateRelay:v6];
       }
 
       pthread_mutex_unlock(&self->_delegateLock);
@@ -1421,7 +1421,7 @@ LABEL_16:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tellDelegate_updateRelay:(id)a3
+- (void)tellDelegate_updateRelay:(id)relay
 {
   v30 = *MEMORY[0x277D85DE8];
   if (self->_shutdown)
@@ -1438,8 +1438,8 @@ LABEL_16:
 
   else
   {
-    v5 = [a3 objectForKeyedSubscript:@"peerID"];
-    v6 = [a3 objectForKeyedSubscript:@"dict"];
+    v5 = [relay objectForKeyedSubscript:@"peerID"];
+    v6 = [relay objectForKeyedSubscript:@"dict"];
     if (VRTraceGetErrorLogLevelForModule() >= 6)
     {
       v7 = VRTraceErrorLogLevelToCSTR();
@@ -1487,7 +1487,7 @@ LABEL_16:
     if (+[GKConnection isRelayEnabled])
     {
       pthread_mutex_lock(&self->_delegateLock);
-      v12 = [(GKSessionInternal *)self privateDelegate];
+      privateDelegate = [(GKSessionInternal *)self privateDelegate];
       if (objc_opt_respondsToSelector())
       {
         if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -1503,7 +1503,7 @@ LABEL_16:
             v22 = 1024;
             v23 = 1173;
             v24 = 2112;
-            v25 = v12;
+            v25 = privateDelegate;
             v26 = 2112;
             v27 = v6;
             v28 = 2112;
@@ -1512,7 +1512,7 @@ LABEL_16:
           }
         }
 
-        [(GKSessionPrivateDelegate *)v12 session:self->_session initiateRelay:v6 forPeer:v5];
+        [(GKSessionPrivateDelegate *)privateDelegate session:self->_session initiateRelay:v6 forPeer:v5];
       }
 
       else if (objc_opt_respondsToSelector())
@@ -1530,7 +1530,7 @@ LABEL_16:
             v22 = 1024;
             v23 = 1178;
             v24 = 2112;
-            v25 = v12;
+            v25 = privateDelegate;
             v26 = 2112;
             v27 = v6;
             v28 = 2112;
@@ -1539,7 +1539,7 @@ LABEL_16:
           }
         }
 
-        [(GKSessionPrivateDelegate *)v12 session:self->_session updateRelay:v6];
+        [(GKSessionPrivateDelegate *)privateDelegate session:self->_session updateRelay:v6];
       }
 
       pthread_mutex_unlock(&self->_delegateLock);
@@ -1549,7 +1549,7 @@ LABEL_16:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tellDelegate_networkStatisticsChanged:(id)a3
+- (void)tellDelegate_networkStatisticsChanged:(id)changed
 {
   v27 = *MEMORY[0x277D85DE8];
   if (self->_shutdown)
@@ -1566,8 +1566,8 @@ LABEL_16:
 
   else
   {
-    v5 = [a3 objectForKeyedSubscript:@"peerID"];
-    v6 = [a3 objectForKeyedSubscript:@"dict"];
+    v5 = [changed objectForKeyedSubscript:@"peerID"];
+    v6 = [changed objectForKeyedSubscript:@"dict"];
     if (VRTraceGetErrorLogLevelForModule() >= 6)
     {
       v7 = VRTraceErrorLogLevelToCSTR();
@@ -1625,7 +1625,7 @@ LABEL_16:
     }
 
     pthread_mutex_lock(&self->_delegateLock);
-    v13 = [(GKSessionInternal *)self privateDelegate];
+    privateDelegate = [(GKSessionInternal *)self privateDelegate];
     if (objc_opt_respondsToSelector())
     {
       if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -1641,14 +1641,14 @@ LABEL_16:
           v21 = 1024;
           v22 = 1201;
           v23 = 2112;
-          v24 = v13;
+          v24 = privateDelegate;
           v25 = 2112;
           v26 = v6;
           _os_log_impl(&dword_24E50C000, v15, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %@: stats-changed: %@", &v17, 0x30u);
         }
       }
 
-      [(GKSessionPrivateDelegate *)v13 session:self->_session networkStatisticsChanged:v6];
+      [(GKSessionPrivateDelegate *)privateDelegate session:self->_session networkStatisticsChanged:v6];
     }
 
     pthread_mutex_unlock(&self->_delegateLock);
@@ -1657,7 +1657,7 @@ LABEL_16:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)parseServiceName:(const char *)a3 intoDisplayName:(id *)a4 pid:(unsigned int *)a5 state:(id *)a6
+- (BOOL)parseServiceName:(const char *)name intoDisplayName:(id *)displayName pid:(unsigned int *)pid state:(id *)state
 {
   v68 = *MEMORY[0x277D85DE8];
   v58 = -21846;
@@ -1666,7 +1666,7 @@ LABEL_16:
   v55 = -21846;
   v53 = -1431655766;
   v54 = -1431655766;
-  if (sscanf(a3, "%2c", &v58) <= 0)
+  if (sscanf(name, "%2c", &v58) <= 0)
   {
     if (VRTraceGetErrorLogLevelForModule() < 7)
     {
@@ -1690,7 +1690,7 @@ LABEL_40:
     v63 = 1024;
     v64 = 1240;
     v65 = 2080;
-    *v66 = a3;
+    *v66 = name;
     v14 = " [%s] %s:%d parseServiceName: invalid format: %s";
     goto LABEL_38;
   }
@@ -1796,14 +1796,14 @@ LABEL_40:
     v63 = 1024;
     v64 = 1246;
     v65 = 2080;
-    *v66 = a3;
+    *v66 = name;
     v14 = " [%s] %s:%d parseServiceName: invalid version: %s";
     goto LABEL_38;
   }
 
   if (!(v16 | v20))
   {
-    if (sscanf(a3, "%*2c%6c%3c%n", &v54, &v56, &v53) <= 1)
+    if (sscanf(name, "%*2c%6c%3c%n", &v54, &v56, &v53) <= 1)
     {
       if (VRTraceGetErrorLogLevelForModule() < 7)
       {
@@ -1825,7 +1825,7 @@ LABEL_40:
       v63 = 1024;
       v64 = 1258;
       v65 = 2080;
-      *v66 = a3;
+      *v66 = name;
       v14 = " [%s] %s:%d parseServiceName: invalid format: %s";
       goto LABEL_38;
     }
@@ -1971,10 +1971,10 @@ LABEL_95:
 LABEL_123:
                                 v48 = (v32 + v30 + v34 + v36 + v38) | (v43 << 30);
                                 v49 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{v45, @"busy", 0}];
-                                *a5 = v48;
+                                *pid = v48;
                                 v50 = objc_alloc(MEMORY[0x277CCACA8]);
-                                *a4 = [v50 initWithUTF8String:&a3[v53]];
-                                *a6 = v49;
+                                *displayName = [v50 initWithUTF8String:&name[v53]];
+                                *state = v49;
                                 LOBYTE(v13) = 1;
                                 goto LABEL_41;
                               }
@@ -1999,7 +1999,7 @@ LABEL_123:
                               v63 = 1024;
                               v64 = 1275;
                               v65 = 2080;
-                              *v66 = a3;
+                              *v66 = name;
                               v14 = " [%s] %s:%d parseServiceName: busy state missing: %s";
 LABEL_38:
                               v24 = v12;
@@ -2054,7 +2054,7 @@ LABEL_111:
                             v63 = 1024;
                             v64 = 1265;
                             v65 = 2080;
-                            *v66 = a3;
+                            *v66 = name;
                             *&v66[8] = 1024;
                             v67 = v42;
                             v14 = " [%s] %s:%d parseServiceName: invalid peer ID: %s (%d)";
@@ -2256,7 +2256,7 @@ LABEL_41:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didPublishWithError:(int)a3
+- (void)didPublishWithError:(int)error
 {
   v25 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -2272,12 +2272,12 @@ LABEL_41:
       v21 = 1024;
       v22 = 1313;
       v23 = 1024;
-      v24 = a3;
+      errorCopy = error;
       _os_log_impl(&dword_24E50C000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d didPublish: %d", buf, 0x22u);
     }
   }
 
-  if (a3)
+  if (error)
   {
     if (self->_service)
     {
@@ -2295,7 +2295,7 @@ LABEL_41:
           v21 = 1024;
           v22 = 1317;
           v23 = 1024;
-          v24 = service;
+          errorCopy = service;
           _os_log_impl(&dword_24E50C000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d => calling DNSServiceRefDeallocate(_service) (%08X)", buf, 0x22u);
         }
       }
@@ -2320,7 +2320,7 @@ LABEL_41:
           v21 = 1024;
           v22 = 1322;
           v23 = 1024;
-          v24 = serviceBrowser;
+          errorCopy = serviceBrowser;
           _os_log_impl(&dword_24E50C000, v11, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d => calling DNSServiceRefDeallocate(_serviceBrowser) (%08X)", buf, 0x22u);
         }
       }
@@ -2331,7 +2331,7 @@ LABEL_41:
 
     if (self->_sessionStarted)
     {
-      v13 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"com.apple.gamekit.GKSessionErrorDomain" code:a3 userInfo:0];
+      v13 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"com.apple.gamekit.GKSessionErrorDomain" code:error userInfo:0];
       v14 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{v13, @"NSError", 0}];
       pthread_mutex_lock(&self->_delegateLock);
       [(GKSessionInternal *)self delegate];
@@ -2471,23 +2471,23 @@ void __66__GKSessionInternal_callback__sendCallbacksToDelegate_remotePeer___bloc
   GCKSessionDecodeChannelStatistics();
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   pthread_mutex_lock(&self->_delegateLock);
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
 
   pthread_mutex_unlock(&self->_delegateLock);
 }
 
-- (void)setPrivateDelegate:(id)a3
+- (void)setPrivateDelegate:(id)delegate
 {
   pthread_mutex_lock(&self->_delegateLock);
-  objc_storeWeak(&self->_privateDelegate, a3);
+  objc_storeWeak(&self->_privateDelegate, delegate);
 
   pthread_mutex_unlock(&self->_delegateLock);
 }
 
-- (GKSessionInternal)initWithConnection:(id)a3 session:(id)a4 delegate:(id)a5
+- (GKSessionInternal)initWithConnection:(id)connection session:(id)session delegate:(id)delegate
 {
   v13 = *MEMORY[0x277D85DE8];
   v12.receiver = self;
@@ -2496,14 +2496,14 @@ void __66__GKSessionInternal_callback__sendCallbacksToDelegate_remotePeer___bloc
   if (v8)
   {
     VRTraceReset();
-    v8->_session = a4;
+    v8->_session = session;
     v8->_wifiEnabled = 1;
     v8->_sReset = -1;
-    v8->_pid = [a3 gckPID];
-    v8->sessionRef = [a3 gckSession];
-    objc_storeWeak(&v8->_delegate, a5);
-    [a3 setEventDelegate:v8];
-    v8->_connection = a3;
+    v8->_pid = [connection gckPID];
+    v8->sessionRef = [connection gckSession];
+    objc_storeWeak(&v8->_delegate, delegate);
+    [connection setEventDelegate:v8];
+    v8->_connection = connection;
     sessionRef = v8->sessionRef;
     GCKSessionSetEventCallback();
   }
@@ -2512,7 +2512,7 @@ void __66__GKSessionInternal_callback__sendCallbacksToDelegate_remotePeer___bloc
   return 0;
 }
 
-- (GKSessionInternal)initWithSessionID:(id)a3 displayName:(id)a4 session:(id)a5 sessionMode:(unsigned int)a6
+- (GKSessionInternal)initWithSessionID:(id)d displayName:(id)name session:(id)session sessionMode:(unsigned int)mode
 {
   v30 = *MEMORY[0x277D85DE8];
   v20.receiver = self;
@@ -2521,25 +2521,25 @@ void __66__GKSessionInternal_callback__sendCallbacksToDelegate_remotePeer___bloc
   if (v10)
   {
     VRTraceReset();
-    v10->_session = a5;
+    v10->_session = session;
     v10->_connection = 0;
-    v10->_mode = a6;
+    v10->_mode = mode;
     v10->_wifiEnabled = 1;
     v10->_sReset = -1;
-    if (![a4 length])
+    if (![name length])
     {
       v11 = MEMORY[0x277CCACA8];
       v12 = [objc_msgSend(MEMORY[0x277CCA8D8] "mainBundle")];
       [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-      a4 = [v11 stringWithFormat:@"%@%f", v12, v13];
+      name = [v11 stringWithFormat:@"%@%f", v12, v13];
     }
 
-    if (![a3 length])
+    if (![d length])
     {
-      a3 = [objc_msgSend(MEMORY[0x277CCA8D8] "mainBundle")];
+      d = [objc_msgSend(MEMORY[0x277CCA8D8] "mainBundle")];
     }
 
-    v10->sessionID = a3;
+    v10->sessionID = d;
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v14 = VRTraceErrorLogLevelToCSTR();
@@ -2556,7 +2556,7 @@ void __66__GKSessionInternal_callback__sendCallbacksToDelegate_remotePeer___bloc
         v26 = 2112;
         v27 = sessionID;
         v28 = 2112;
-        v29 = a4;
+        nameCopy = name;
         _os_log_impl(&dword_24E50C000, v15, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d initWithSessionID: %@ displayName: %@", buf, 0x30u);
       }
     }
@@ -2766,7 +2766,7 @@ void __66__GKSessionInternal_callback__sendCallbacksToDelegate_remotePeer___bloc
       v11 = 1024;
       v12 = 2682;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 2112;
       v16 = displayName;
       _os_log_impl(&dword_24E50C000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d session[%p] [%@] dealloc", buf, 0x30u);
@@ -2786,16 +2786,16 @@ void __66__GKSessionInternal_callback__sendCallbacksToDelegate_remotePeer___bloc
   return v2;
 }
 
-- (id)displayNameForPeer:(id)a3
+- (id)displayNameForPeer:(id)peer
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = [a3 intValue];
-  if (v4 != self->_pid)
+  intValue = [peer intValue];
+  if (intValue != self->_pid)
   {
-    v8 = [(GKTable *)self->_peerNameTable objectForKey:v4];
+    v8 = [(GKTable *)self->_peerNameTable objectForKey:intValue];
     if (v8)
     {
-      v5 = v8;
+      displayName = v8;
       if (VRTraceGetErrorLogLevelForModule() < 7)
       {
         goto LABEL_21;
@@ -2815,15 +2815,15 @@ void __66__GKSessionInternal_callback__sendCallbacksToDelegate_remotePeer___bloc
       v21 = 1024;
       v22 = 2728;
       v23 = 1024;
-      v24 = v4;
+      v24 = intValue;
       v25 = 2112;
-      v26 = v5;
+      v26 = displayName;
       v11 = " [%s] %s:%d displayNameForPeer: %d = %@ (table)";
     }
 
     else
     {
-      v12 = [(GKTable *)self->_peerInfoTable objectForKey:v4];
+      v12 = [(GKTable *)self->_peerInfoTable objectForKey:intValue];
       if (!v12 || (v13 = [v12 displayName]) == 0)
       {
 LABEL_17:
@@ -2836,11 +2836,11 @@ LABEL_17:
           }
         }
 
-        v5 = 0;
+        displayName = 0;
         goto LABEL_21;
       }
 
-      v5 = v13;
+      displayName = v13;
       if (VRTraceGetErrorLogLevelForModule() < 7)
       {
         goto LABEL_21;
@@ -2860,9 +2860,9 @@ LABEL_17:
       v21 = 1024;
       v22 = 2732;
       v23 = 1024;
-      v24 = v4;
+      v24 = intValue;
       v25 = 2112;
-      v26 = v5;
+      v26 = displayName;
       v11 = " [%s] %s:%d displayNameForPeer: %d = %@ (peer)";
     }
 
@@ -2870,7 +2870,7 @@ LABEL_17:
     goto LABEL_21;
   }
 
-  v5 = [(GKSessionInternal *)self displayName];
+  displayName = [(GKSessionInternal *)self displayName];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v6 = VRTraceErrorLogLevelToCSTR();
@@ -2884,29 +2884,29 @@ LABEL_17:
       v21 = 1024;
       v22 = 2726;
       v23 = 1024;
-      v24 = v4;
+      v24 = intValue;
       v25 = 2112;
-      v26 = v5;
+      v26 = displayName;
       _os_log_impl(&dword_24E50C000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d displayNameForPeer: %d = %@ (self)", &v17, 0x2Cu);
     }
   }
 
-  if (!v5)
+  if (!displayName)
   {
     goto LABEL_17;
   }
 
 LABEL_21:
-  result = v5;
+  result = displayName;
   v16 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (BOOL)passesSendDataSanityCheck:(id)a3 toPeers:(id)a4 withDataMode:(unsigned int)a5 error:(id *)a6
+- (BOOL)passesSendDataSanityCheck:(id)check toPeers:(id)peers withDataMode:(unsigned int)mode error:(id *)error
 {
-  if (a4)
+  if (peers)
   {
-    v6 = a3 == 0;
+    v6 = check == 0;
   }
 
   else
@@ -2914,16 +2914,16 @@ LABEL_21:
     v6 = 1;
   }
 
-  v8 = v6 || a5 > 1;
-  if (a6 && v8)
+  v8 = v6 || mode > 1;
+  if (error && v8)
   {
     v9 = @"Parameter mode is invalid.";
-    if (!a4)
+    if (!peers)
     {
       v9 = @"Parameter peers is invalid.";
     }
 
-    if (a3)
+    if (check)
     {
       v10 = v9;
     }
@@ -2933,28 +2933,28 @@ LABEL_21:
       v10 = @"Parameter data is invalid.";
     }
 
-    *a6 = [(GKSessionInternal *)self newNSErrorFromGKSessionError:30500 description:@"Invalid parameter for -sendData:toPeers:withDataMode:error:" reason:v10];
+    *error = [(GKSessionInternal *)self newNSErrorFromGKSessionError:30500 description:@"Invalid parameter for -sendData:toPeers:withDataMode:error:" reason:v10];
   }
 
   return v8 ^ 1;
 }
 
-- (BOOL)sendDataToAllPeers:(id)a3 withDataMode:(unsigned int)a4 error:(id *)a5
+- (BOOL)sendDataToAllPeers:(id)peers withDataMode:(unsigned int)mode error:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (peers)
   {
-    v7 = a3;
-    [a3 bytes];
-    [a3 length];
+    peersCopy = peers;
+    [peers bytes];
+    [peers length];
     [(GKSessionInternal *)self lock];
     agpSessionRef = self->agpSessionRef;
     AGPSessionBroadcast();
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = [(GKSessionInternal *)self newNSErrorFromGKSessionError:30500 description:@"Invalid parameter for -sendDataToAllPeers:withDataMode:error:" reason:@"Parameter data is invalid."];
+    *error = [(GKSessionInternal *)self newNSErrorFromGKSessionError:30500 description:@"Invalid parameter for -sendDataToAllPeers:withDataMode:error:" reason:@"Parameter data is invalid."];
   }
 
   if (VRTraceGetErrorLogLevelForModule() < 7)
@@ -2982,7 +2982,7 @@ LABEL_8:
   return v11;
 }
 
-- (void)receiveDOOB:(id)a3 fromPeer:(id)a4 inSession:(id)a5 context:(void *)a6
+- (void)receiveDOOB:(id)b fromPeer:(id)peer inSession:(id)session context:(void *)context
 {
   v25 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -2998,33 +2998,33 @@ LABEL_8:
       v17 = 1024;
       v18 = 2890;
       v19 = 1024;
-      v20 = [a3 length];
+      v20 = [b length];
       v21 = 2048;
-      v22 = [a4 intValue];
+      intValue = [peer intValue];
       v23 = 2112;
-      v24 = [a5 displayNameForPeer:a4];
+      v24 = [session displayNameForPeer:peer];
       _os_log_impl(&dword_24E50C000, v11, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d RetryICE:: gcksession:didReceiveDOOB: %d bytes fromPeer: %08lx %@", &v13, 0x36u);
     }
   }
 
-  GCKSessionReceiveDOOB(self->sessionRef, [a4 intValue], objc_msgSend(a3, "bytes"), objc_msgSend(a3, "length"));
+  GCKSessionReceiveDOOB(self->sessionRef, [peer intValue], objc_msgSend(b, "bytes"), objc_msgSend(b, "length"));
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDOOBReceiveHandler:(id)a3 withContext:(void *)a4 inBand:(unsigned int)a5
+- (void)setDOOBReceiveHandler:(id)handler withContext:(void *)context inBand:(unsigned int)band
 {
   pthread_mutex_lock(&self->_delegateLock);
-  if (a3 && (objc_opt_respondsToSelector() & 1) == 0)
+  if (handler && (objc_opt_respondsToSelector() & 1) == 0)
   {
     v9 = @"The out-of-band data handler does not respond to the correct selector.";
   }
 
   else
   {
-    if (a5 == 1)
+    if (band == 1)
     {
-      self->_doobReceiveHandler[1] = a3;
-      self->_doobReceiveHandlerContext[1] = a4;
+      self->_doobReceiveHandler[1] = handler;
+      self->_doobReceiveHandlerContext[1] = context;
       goto LABEL_11;
     }
 
@@ -3044,10 +3044,10 @@ LABEL_11:
   pthread_mutex_unlock(&self->_delegateLock);
 }
 
-- (void)setDataReceiveHandler:(id)a3 withContext:(void *)a4
+- (void)setDataReceiveHandler:(id)handler withContext:(void *)context
 {
   pthread_mutex_lock(&self->_delegateLock);
-  if (a3 && (objc_opt_respondsToSelector() & 1) == 0)
+  if (handler && (objc_opt_respondsToSelector() & 1) == 0)
   {
     v7 = [(GKSessionInternal *)self newNSErrorFromGKSessionError:30500 description:@"Invalid parameter for -setDataReceiveHandler:withContext:" reason:@"The handler does not respond to the correct selector."];
     v8 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{v7, @"NSError", 0}];
@@ -3060,14 +3060,14 @@ LABEL_11:
 
   else
   {
-    objc_storeWeak(&self->_dataReceiveHandler, a3);
-    self->_dataReceiveHandlerContext = a4;
+    objc_storeWeak(&self->_dataReceiveHandler, handler);
+    self->_dataReceiveHandlerContext = context;
   }
 
   pthread_mutex_unlock(&self->_delegateLock);
 }
 
-- (void)timeoutConnectToPeer:(id)a3
+- (void)timeoutConnectToPeer:(id)peer
 {
   v36 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CCA8B0]);
@@ -3080,7 +3080,7 @@ LABEL_11:
     if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
     {
       displayName = self->_displayName;
-      [a3 connectTimeout];
+      [peer connectTimeout];
       *buf = 136316162;
       v25 = v8;
       v26 = 2080;
@@ -3096,10 +3096,10 @@ LABEL_11:
   }
 
   *(&v23.tv_usec + 1) = -1431655766;
-  [a3 connectTimeout];
+  [peer connectTimeout];
   v13 = v12;
   v23.tv_sec = v12;
-  [a3 connectTimeout];
+  [peer connectTimeout];
   v23.tv_usec = ((v14 - v13) * 1000000.0);
   select(0, 0, 0, 0, &v23);
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -3109,9 +3109,9 @@ LABEL_11:
     if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
     {
       v17 = self->_displayName;
-      v18 = [a3 pid];
-      v19 = -[GKList hasID:](self->_peersConnected, "hasID:", [a3 pid]);
-      v20 = [a3 needsToTimeout];
+      v18 = [peer pid];
+      v19 = -[GKList hasID:](self->_peersConnected, "hasID:", [peer pid]);
+      needsToTimeout = [peer needsToTimeout];
       *buf = 136316674;
       v25 = v15;
       v26 = 2080;
@@ -3125,15 +3125,15 @@ LABEL_11:
       *&v33[4] = 1024;
       *&v33[6] = v19;
       v34 = 1024;
-      v35 = v20;
+      v35 = needsToTimeout;
       _os_log_impl(&dword_24E50C000, v16, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d [%@] timeoutConnectToPeer: %d - connected?(%d) needs to?(%d)", buf, 0x38u);
     }
   }
 
-  if (!-[GKList hasID:](self->_peersConnected, "hasID:", [a3 pid]) && objc_msgSend(a3, "needsToTimeout"))
+  if (!-[GKList hasID:](self->_peersConnected, "hasID:", [peer pid]) && objc_msgSend(peer, "needsToTimeout"))
   {
     sessionRef = self->sessionRef;
-    [a3 pid];
+    [peer pid];
     GCKSessionCancelConnectToLocalService();
   }
 
@@ -3141,15 +3141,15 @@ LABEL_11:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connectToPeer:(id)a3 withTimeout:(double)a4
+- (void)connectToPeer:(id)peer withTimeout:(double)timeout
 {
   v45 = *MEMORY[0x277D85DE8];
-  v7 = [a3 intValue];
-  v8 = [(GKTable *)self->_peerInfoTable objectForKey:v7];
+  intValue = [peer intValue];
+  v8 = [(GKTable *)self->_peerInfoTable objectForKey:intValue];
   if (v8)
   {
     v9 = v8;
-    [(GKList *)self->_peersPendingOutgoingInvitation addID:v7];
+    [(GKList *)self->_peersPendingOutgoingInvitation addID:intValue];
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v10 = VRTraceErrorLogLevelToCSTR();
@@ -3167,13 +3167,13 @@ LABEL_11:
     }
 
     [v9 stopResolving];
-    v12 = 30000000.0;
-    if (a4 != 0.0)
+    timeoutCopy = 30000000.0;
+    if (timeout != 0.0)
     {
-      v12 = a4;
+      timeoutCopy = timeout;
     }
 
-    [v9 setConnectTimeout:v12];
+    [v9 setConnectTimeout:timeoutCopy];
     [v9 setNeedsToTimeout:1];
     [objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8] "mainBundle")];
     [(GKConnection *)self->_connection reportingAgent];
@@ -3227,7 +3227,7 @@ LABEL_11:
           v39 = 1024;
           v40 = 3029;
           v41 = 2112;
-          *v42 = a3;
+          *v42 = peer;
           _os_log_impl(&dword_24E50C000, v22, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d ********** BEGIN RESOLVE: %@", buf, 0x26u);
         }
       }
@@ -3249,7 +3249,7 @@ LABEL_11:
         }
 
         v27 = [objc_msgSend(v9 "serviceName")];
-        v28 = [(NSString *)self->serviceType UTF8String];
+        uTF8String = [(NSString *)self->serviceType UTF8String];
         *buf = 136316418;
         v36 = v25;
         v37 = 2080;
@@ -3261,7 +3261,7 @@ LABEL_11:
         *&v42[4] = 2080;
         *&v42[6] = v27;
         v43 = 2080;
-        v44 = v28;
+        v44 = uTF8String;
         v17 = " [%s] %s:%d resolve failed right away: %d [%s][%s]";
         v18 = v26;
         v19 = 54;
@@ -3282,7 +3282,7 @@ LABEL_11:
           goto LABEL_30;
         }
 
-        v31 = [v9 serviceName];
+        serviceName = [v9 serviceName];
         *buf = 136316418;
         v36 = v29;
         v37 = 2080;
@@ -3290,7 +3290,7 @@ LABEL_11:
         v39 = 1024;
         v40 = 3047;
         v41 = 2112;
-        *v42 = v31;
+        *v42 = serviceName;
         *&v42[8] = 1024;
         *&v42[10] = sdRef;
         v43 = 1024;
@@ -3307,7 +3307,7 @@ LABEL_30:
     return;
   }
 
-  if (!a3)
+  if (!peer)
   {
     goto LABEL_30;
   }
@@ -3323,11 +3323,11 @@ LABEL_30:
   }
 
   v33 = [(GKSessionInternal *)self newNSErrorFromGKSessionError:30501 description:@"The peerID was not found." reason:@"Invalid peerID."];
-  -[GKSessionInternal performSelectorOnMainThread:withObject:waitUntilDone:](self, "performSelectorOnMainThread:withObject:waitUntilDone:", sel_tellDelegate_connectionRequestToPeerFailed_, [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{a3, @"peerID", v33, @"NSError", 0}], 0);
+  -[GKSessionInternal performSelectorOnMainThread:withObject:waitUntilDone:](self, "performSelectorOnMainThread:withObject:waitUntilDone:", sel_tellDelegate_connectionRequestToPeerFailed_, [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{peer, @"peerID", v33, @"NSError", 0}], 0);
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelConnectToPeer:(id)a3
+- (void)cancelConnectToPeer:(id)peer
 {
   v18 = *MEMORY[0x277D85DE8];
   if (self->_shutdown)
@@ -3342,9 +3342,9 @@ LABEL_30:
     }
   }
 
-  else if (a3)
+  else if (peer)
   {
-    v4 = -[GKTable objectForKey:](self->_peerInfoTable, "objectForKey:", [a3 intValue]);
+    v4 = -[GKTable objectForKey:](self->_peerInfoTable, "objectForKey:", [peer intValue]);
     if (v4)
     {
       v5 = v4;
@@ -3361,7 +3361,7 @@ LABEL_30:
           v14 = 1024;
           v15 = 3070;
           v16 = 2112;
-          v17 = [v5 displayName];
+          displayName = [v5 displayName];
           _os_log_impl(&dword_24E50C000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d ** Stop resolving: %@ local cancelled", &v10, 0x26u);
         }
       }
@@ -3378,13 +3378,13 @@ LABEL_30:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)acceptConnectionFromPeer:(id)a3 error:(id *)a4
+- (BOOL)acceptConnectionFromPeer:(id)peer error:(id *)error
 {
   if (self->_shutdown)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [(GKSessionInternal *)self newNSErrorFromGKSessionError:30500 description:@"Session already released - invalid operation." reason:@"Session shutting down."];
+      *error = [(GKSessionInternal *)self newNSErrorFromGKSessionError:30500 description:@"Session already released - invalid operation." reason:@"Session shutting down."];
     }
 
     if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -3399,9 +3399,9 @@ LABEL_30:
 
   else
   {
-    if (a3)
+    if (peer)
     {
-      [a3 intValue];
+      [peer intValue];
       [objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8] "mainBundle")];
       [(GKConnection *)self->_connection reportingAgent];
       pid = self->_pid;
@@ -3417,16 +3417,16 @@ LABEL_30:
       GCKSessionRespondToInvitation();
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [(GKSessionInternal *)self newNSErrorFromGKSessionError:30500 description:@"Invalid parameter for -acceptConnectionFromPeer:error:" reason:@"Parameter peerID is invalid."];
+      *error = [(GKSessionInternal *)self newNSErrorFromGKSessionError:30500 description:@"Invalid parameter for -acceptConnectionFromPeer:error:" reason:@"Parameter peerID is invalid."];
     }
   }
 
   return 0;
 }
 
-- (void)denyConnectionFromPeer:(id)a3
+- (void)denyConnectionFromPeer:(id)peer
 {
   if (self->_shutdown)
   {
@@ -3440,9 +3440,9 @@ LABEL_30:
     }
   }
 
-  else if (a3)
+  else if (peer)
   {
-    -[GKList removeID:](self->_peersPendingIncomingInvitation, "removeID:", [a3 intValue]);
+    -[GKList removeID:](self->_peersPendingIncomingInvitation, "removeID:", [peer intValue]);
     [(GKConnection *)self->_connection reportingAgent];
     reportingGKLog();
     sessionRef = self->sessionRef;
@@ -3451,7 +3451,7 @@ LABEL_30:
   }
 }
 
-- (void)disconnectPeerFromAllPeers:(id)a3
+- (void)disconnectPeerFromAllPeers:(id)peers
 {
   v33 = *MEMORY[0x277D85DE8];
   if (self->_shutdown)
@@ -3477,27 +3477,27 @@ LABEL_5:
 
   else
   {
-    if (!a3)
+    if (!peers)
     {
       goto LABEL_21;
     }
 
-    v22 = [a3 intValue];
+    intValue = [peers intValue];
     [(GKConnection *)self->_connection reportingAgent];
     reportingGKLog();
     v7 = [[GKOOBMessage alloc] initWithMessageType:1500];
     if (v7)
     {
       v8 = v7;
-      v9 = [(GKOOBMessage *)v7 data];
-      if (v9)
+      data = [(GKOOBMessage *)v7 data];
+      if (data)
       {
-        v10 = v9;
-        v11 = v9;
-        v12 = [v10 bytes];
+        v10 = data;
+        v11 = data;
+        bytes = [v10 bytes];
         v13 = [v10 length];
         [(GKSessionInternal *)self lock];
-        v14 = AGPSessionSendTo(self->agpSessionRef, &v22, 1, v12, v13);
+        v14 = AGPSessionSendTo(self->agpSessionRef, &intValue, 1, bytes, v13);
         if (v14)
         {
           v15 = v14;
@@ -3514,7 +3514,7 @@ LABEL_5:
               v27 = 1024;
               v28 = 3165;
               v29 = 2048;
-              v30 = v22;
+              v30 = intValue;
               v31 = 2048;
               v32 = v15;
               _os_log_impl(&dword_24E50C000, v17, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d disconnectPeerFromAllPeers: AGPSessionSendTo failed for peer:(%lx) error:(%lX)\n", buf, 0x30u);
@@ -3573,9 +3573,9 @@ LABEL_21:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAvailable:(BOOL)a3
+- (void)setAvailable:(BOOL)available
 {
-  v3 = a3;
+  availableCopy = available;
   v52 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -3590,7 +3590,7 @@ LABEL_21:
       v44 = 1024;
       v45 = 3189;
       v46 = 1024;
-      v47 = v3;
+      v47 = availableCopy;
       _os_log_impl(&dword_24E50C000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d setAvailable: %d", buf, 0x22u);
     }
   }
@@ -3616,7 +3616,7 @@ LABEL_21:
     goto LABEL_63;
   }
 
-  if (v3)
+  if (availableCopy)
   {
     v9 = +[GKBluetoothSupport bluetoothStatus];
     v10 = v9;
@@ -3863,18 +3863,18 @@ LABEL_63:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (id)peersWithConnectionState:(unsigned int)a3
+- (id)peersWithConnectionState:(unsigned int)state
 {
   v4 = 0;
-  if (a3 > 3)
+  if (state > 3)
   {
-    if (a3 == 4)
+    if (state == 4)
     {
       v4 = [(GKList *)self->_peersPendingIncomingInvitation allMatchingObjectsFromTable:self->_peerIDTable];
       [v4 addObjectsFromArray:{-[GKList allMatchingObjectsFromTable:](self->_peersPendingOutgoingInvitation, "allMatchingObjectsFromTable:", self->_peerIDTable)}];
     }
 
-    else if (a3 == 5)
+    else if (state == 5)
     {
       goto LABEL_7;
     }
@@ -3882,13 +3882,13 @@ LABEL_63:
     return v4;
   }
 
-  if (!a3)
+  if (!state)
   {
     peersAvailable = self->_peersAvailable;
     goto LABEL_9;
   }
 
-  if (a3 != 2)
+  if (state != 2)
   {
     return v4;
   }
@@ -3935,12 +3935,12 @@ LABEL_9:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setBusy:(BOOL)a3
+- (void)setBusy:(BOOL)busy
 {
   v26 = *MEMORY[0x277D85DE8];
-  if (self->_isBusy != a3)
+  if (self->_isBusy != busy)
   {
-    self->_isBusy = a3;
+    self->_isBusy = busy;
     [(GKSessionInternal *)self lock];
     if (self->_isPublishing)
     {
@@ -4032,16 +4032,16 @@ LABEL_9:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setWifiEnabled:(BOOL)a3
+- (void)setWifiEnabled:(BOOL)enabled
 {
-  self->_wifiEnabled = a3;
+  self->_wifiEnabled = enabled;
   sessionRef = self->sessionRef;
   GCKSessionSetWifiEnabled();
 }
 
-- (BOOL)isPeerBusy:(id)a3
+- (BOOL)isPeerBusy:(id)busy
 {
-  v3 = -[GKTable objectForKey:](self->_peerInfoTable, "objectForKey:", [a3 intValue]);
+  v3 = -[GKTable objectForKey:](self->_peerInfoTable, "objectForKey:", [busy intValue]);
   if (v3)
   {
 
@@ -4578,16 +4578,16 @@ LABEL_6:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processTXTRecordForPeer:(id)a3 txtLen:(unsigned __int16)a4 txtRecord:(const void *)a5
+- (void)processTXTRecordForPeer:(id)peer txtLen:(unsigned __int16)len txtRecord:(const void *)record
 {
-  v6 = a4;
+  lenCopy = len;
   v32 = *MEMORY[0x277D85DE8];
-  if (a4 && a5)
+  if (len && record)
   {
-    if (TXTRecordContainsKey(a4, a5, "state"))
+    if (TXTRecordContainsKey(len, record, "state"))
     {
       valueLen[0] = -86;
-      ValuePtr = TXTRecordGetValuePtr(v6, a5, "state", valueLen);
+      ValuePtr = TXTRecordGetValuePtr(lenCopy, record, "state", valueLen);
       v10 = 0;
       if (ValuePtr && valueLen[0] == 1)
       {
@@ -4606,8 +4606,8 @@ LABEL_6:
       v14 = *MEMORY[0x277CE5818];
       if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [a3 pid];
-        v16 = [a3 isBusy];
+        v15 = [peer pid];
+        isBusy = [peer isBusy];
         *valueLen = 136316418;
         v21 = v13;
         v22 = 2080;
@@ -4615,19 +4615,19 @@ LABEL_6:
         v24 = 1024;
         v25 = 3860;
         v26 = 1024;
-        v27 = v15;
+        recordCopy = v15;
         v28 = 1024;
-        v29 = v16;
+        v29 = isBusy;
         v30 = 1024;
         v31 = v10;
         _os_log_impl(&dword_24E50C000, v14, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d ** peer %d: oldbusy=%d, newbusy=%d", valueLen, 0x2Eu);
       }
     }
 
-    if (v10 != [a3 isBusy])
+    if (v10 != [peer isBusy])
     {
-      v17 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{-[GKAutoPeerIDTable objectForKey:](self->_peerIDTable, "objectForKey:", objc_msgSend(a3, "pid")), @"peerID", 0}];
-      [a3 setBusy:v10];
+      v17 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{-[GKAutoPeerIDTable objectForKey:](self->_peerIDTable, "objectForKey:", objc_msgSend(peer, "pid")), @"peerID", 0}];
+      [peer setBusy:v10];
       if (v10)
       {
         v18 = sel_tellDelegate_peerDidBecomeBusy_;
@@ -4655,9 +4655,9 @@ LABEL_6:
       v24 = 1024;
       v25 = 3846;
       v26 = 1024;
-      v27 = a5;
+      recordCopy = record;
       v28 = 1024;
-      v29 = v6;
+      v29 = lenCopy;
       _os_log_impl(&dword_24E50C000, v12, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d ** no TXT record to process: txtRecord=%08X, txtLen=%u", valueLen, 0x28u);
     }
   }
@@ -4665,13 +4665,13 @@ LABEL_6:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didFindService:(const char *)a3 fromIF:(const char *)a4 withError:(int)a5 moreComing:(BOOL)a6
+- (void)didFindService:(const char *)service fromIF:(const char *)f withError:(int)error moreComing:(BOOL)coming
 {
   buf[127] = *MEMORY[0x277D85DE8];
   v45 = 0xAAAAAAAAAAAAAAAALL;
   v44 = -1431655766;
   v43 = 0xAAAAAAAAAAAAAAAALL;
-  if ([(GKSessionInternal *)self parseServiceName:a3 intoDisplayName:&v45 pid:&v44 state:&v43])
+  if ([(GKSessionInternal *)self parseServiceName:service intoDisplayName:&v45 pid:&v44 state:&v43])
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -4696,7 +4696,7 @@ LABEL_6:
     }
 
     [(GKList *)self->_peersForCleanup removeID:v44];
-    if ([(GKSessionInternal *)self filterService:a4 withPID:v44])
+    if ([(GKSessionInternal *)self filterService:f withPID:v44])
     {
       if (VRTraceGetErrorLogLevelForModule() < 7)
       {
@@ -4717,11 +4717,11 @@ LABEL_6:
       HIWORD(buf[2]) = 1024;
       LODWORD(buf[3]) = 3922;
       WORD2(buf[3]) = 2080;
-      *(&buf[3] + 6) = a3;
+      *(&buf[3] + 6) = service;
       HIWORD(buf[4]) = 2080;
-      buf[5] = a4;
+      buf[5] = f;
       LOWORD(buf[6]) = 1024;
-      *(&buf[6] + 2) = a5;
+      *(&buf[6] + 2) = error;
       v17 = " [%s] %s:%d browse rejected: [%s] from [%s] (%d)";
       v18 = v16;
       v19 = 54;
@@ -4761,12 +4761,12 @@ LABEL_15:
     v22 = [v43 objectForKeyedSubscript:@"busy"];
     if (v22)
     {
-      v23 = [v22 BOOLValue];
+      bOOLValue = [v22 BOOLValue];
     }
 
     else
     {
-      v23 = 0;
+      bOOLValue = 0;
     }
 
     v24 = [(GKTable *)self->_peerInfoTable objectForKey:v44];
@@ -4780,13 +4780,13 @@ LABEL_37:
     }
 
     v26 = [GKPeerInternal alloc];
-    v25 = -[GKPeerInternal initWithPID:displayName:serviceName:](v26, "initWithPID:displayName:serviceName:", v44, v45, [MEMORY[0x277CCACA8] stringWithUTF8String:a3]);
+    v25 = -[GKPeerInternal initWithPID:displayName:serviceName:](v26, "initWithPID:displayName:serviceName:", v44, v45, [MEMORY[0x277CCACA8] stringWithUTF8String:service]);
     [(GKPeerInternal *)v25 setSession:self];
-    [(GKPeerInternal *)v25 setBusy:v23];
+    [(GKPeerInternal *)v25 setBusy:bOOLValue];
     sdRef = self->_dnsServiceConnection;
     memset(buf + 1, 170, 0x3F0uLL);
     LOBYTE(buf[0]) = 0;
-    v27 = DNSServiceConstructFullName(buf, a3, [(NSString *)self->serviceType UTF8String], "local.");
+    v27 = DNSServiceConstructFullName(buf, service, [(NSString *)self->serviceType UTF8String], "local.");
     if (v27)
     {
       v28 = v27;
@@ -4886,7 +4886,7 @@ LABEL_31:
   }
 
 LABEL_38:
-  if (!a6)
+  if (!coming)
   {
     [(GKSessionInternal *)self cleanupExAvailablePeers];
   }
@@ -4895,16 +4895,16 @@ LABEL_40:
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didRemoveService:(const char *)a3 fromIF:(const char *)a4 withError:(int)a5 moreComing:(BOOL)a6
+- (void)didRemoveService:(const char *)service fromIF:(const char *)f withError:(int)error moreComing:(BOOL)coming
 {
   v43 = *MEMORY[0x277D85DE8];
   v31 = 0xAAAAAAAAAAAAAAAALL;
   v30 = -1431655766;
   v29 = 0xAAAAAAAAAAAAAAAALL;
-  if (![(GKSessionInternal *)self parseServiceName:a3 intoDisplayName:&v31 pid:&v30 state:&v29])
+  if (![(GKSessionInternal *)self parseServiceName:service intoDisplayName:&v31 pid:&v30 state:&v29])
   {
 LABEL_27:
-    if (!a6)
+    if (!coming)
     {
       [(GKSessionInternal *)self cleanupExAvailablePeers];
     }
@@ -4935,7 +4935,7 @@ LABEL_27:
   }
 
   [(GKList *)self->_peersForCleanup removeID:v30];
-  if ([(GKSessionInternal *)self filterService:a4 withPID:v30])
+  if ([(GKSessionInternal *)self filterService:f withPID:v30])
   {
     if (VRTraceGetErrorLogLevelForModule() < 7)
     {
@@ -4956,11 +4956,11 @@ LABEL_27:
     v36 = 1024;
     v37 = 4029;
     v38 = 2080;
-    *v39 = a3;
+    *v39 = service;
     *&v39[8] = 2080;
-    v40 = a4;
+    fCopy = f;
     v41 = 1024;
-    v42 = a5;
+    errorCopy = error;
     v17 = " [%s] %s:%d browse rejected: [%s] from [%s] (%d)";
     v18 = v16;
     v19 = 54;
@@ -5123,7 +5123,7 @@ LABEL_9:
       v11 = *MEMORY[0x277CE5818];
       if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(NSString *)self->serviceType UTF8String];
+        uTF8String = [(NSString *)self->serviceType UTF8String];
         *buf = 136315906;
         v32 = v10;
         v33 = 2080;
@@ -5131,7 +5131,7 @@ LABEL_9:
         v35 = 1024;
         v36 = 4146;
         v37 = 2080;
-        v38 = v12;
+        v38 = uTF8String;
         _os_log_impl(&dword_24E50C000, v11, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d => calling DNSServiceBrowse() (servicetype=%s)", buf, 0x26u);
       }
     }
@@ -5200,7 +5200,7 @@ LABEL_9:
           v23 = *MEMORY[0x277CE5818];
           if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
           {
-            v24 = [v20 localizedDescription];
+            localizedDescription = [v20 localizedDescription];
             *buf = 136315906;
             v32 = v22;
             v33 = 2080;
@@ -5208,7 +5208,7 @@ LABEL_9:
             v35 = 1024;
             v36 = 4167;
             v37 = 2112;
-            v38 = v24;
+            v38 = localizedDescription;
             _os_log_impl(&dword_24E50C000, v23, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Error: %@.", buf, 0x26u);
           }
         }
@@ -5265,14 +5265,14 @@ LABEL_9:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)tryConnectToPeer:(id)a3
+- (BOOL)tryConnectToPeer:(id)peer
 {
   v25 = *MEMORY[0x277D85DE8];
   v18 = -1431655766;
   memset(v17, 170, sizeof(v17));
-  if ([a3 usableAddrs])
+  if ([peer usableAddrs])
   {
-    [a3 removeAndReturnLookupList:&v17[2] andAddrList:&v17[1] andInterfaceList:v17 count:&v18];
+    [peer removeAndReturnLookupList:&v17[2] andAddrList:&v17[1] andInterfaceList:v17 count:&v18];
     if (v18)
     {
       v5 = malloc_type_malloc(8 * v18, 0x2004093837F09uLL);
@@ -5297,8 +5297,8 @@ LABEL_9:
       }
 
       sessionRef = self->sessionRef;
-      [a3 pid];
-      [a3 connectTimeout];
+      [peer pid];
+      [peer connectTimeout];
       GCKSessionConnectToLocalService();
     }
 

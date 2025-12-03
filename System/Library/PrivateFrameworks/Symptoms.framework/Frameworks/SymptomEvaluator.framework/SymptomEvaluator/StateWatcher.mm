@@ -1,26 +1,26 @@
 @interface StateWatcher
-- (BOOL)configureWatchList:(id)a3 changeList:(id)a4 sourceList:(id)a5;
-- (id)currentStateSummary:(id)a3;
-- (void)deriveKeyPathListFromWatchList:(id)a3 sourceList:(id)a4;
+- (BOOL)configureWatchList:(id)list changeList:(id)changeList sourceList:(id)sourceList;
+- (id)currentStateSummary:(id)summary;
+- (void)deriveKeyPathListFromWatchList:(id)list sourceList:(id)sourceList;
 - (void)disable;
 - (void)enable;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation StateWatcher
 
-- (id)currentStateSummary:(id)a3
+- (id)currentStateSummary:(id)summary
 {
   v68 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  summaryCopy = summary;
+  if (summaryCopy)
   {
     v60 = 0u;
     v61 = 0u;
     v58 = 0u;
     v59 = 0u;
     obj = self->_srcDestMapping;
-    v44 = self;
+    selfCopy = self;
     v40 = [(NSDictionary *)obj countByEnumeratingWithState:&v58 objects:v67 count:16];
     if (v40)
     {
@@ -67,7 +67,7 @@
 
                 v14 = [v7 objectForKeyedSubscript:v12];
                 v15 = [v14 valueForKey:v6];
-                [v4 setValue:v15 forKey:v12];
+                [summaryCopy setValue:v15 forKey:v12];
               }
 
               v9 = [v7 countByEnumeratingWithState:&v54 objects:v66 count:16];
@@ -77,7 +77,7 @@
           }
 
           v5 = v42 + 1;
-          self = v44;
+          self = selfCopy;
         }
 
         while (v42 + 1 != v40);
@@ -112,7 +112,7 @@
           }
 
           v17 = *(*(&v50 + 1) + 8 * j);
-          v18 = [v4 valueForKey:v17];
+          v18 = [summaryCopy valueForKey:v17];
           previousChangeWatchValues = self->_previousChangeWatchValues;
           if (!previousChangeWatchValues || (-[NSMutableDictionary objectForKeyedSubscript:](previousChangeWatchValues, "objectForKeyedSubscript:", v17), v20 = objc_claimAutoreleasedReturnValue(), v21 = [v18 isEqual:v20], v20, (v21 & 1) == 0))
           {
@@ -151,7 +151,7 @@
                   v29 = [v22 objectForKeyedSubscript:v27];
                   v30 = [v18 isEqual:v29];
 
-                  self = v44;
+                  self = selfCopy;
                   if (!v30)
                   {
                     continue;
@@ -167,7 +167,7 @@
                   }
                 }
 
-                [v4 setValue:MEMORY[0x277CBEC38] forKey:v27];
+                [summaryCopy setValue:MEMORY[0x277CBEC38] forKey:v27];
               }
 
               v24 = [v22 countByEnumeratingWithState:&v46 objects:v62 count:16];
@@ -203,27 +203,27 @@ LABEL_43:
   if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v65 = v4;
+    v65 = summaryCopy;
     _os_log_impl(&dword_23255B000, v32, OS_LOG_TYPE_DEBUG, "StateWatcher: currentStateSummary %@", buf, 0xCu);
   }
 
   v33 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return summaryCopy;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v48 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-  v32 = v11;
-  v13 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-  v31 = self;
-  v14 = v9;
-  [(NSDictionary *)self->_srcDestMapping objectForKeyedSubscript:v9];
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+  v32 = changeCopy;
+  v13 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+  selfCopy = self;
+  v14 = pathCopy;
+  [(NSDictionary *)self->_srcDestMapping objectForKeyedSubscript:pathCopy];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -244,7 +244,7 @@ LABEL_3:
 
       v20 = *(*(&v33 + 1) + 8 * v19);
       v21 = [v15 objectForKeyedSubscript:v20];
-      if ([v10 isEqual:v21])
+      if ([objectCopy isEqual:v21])
       {
         break;
       }
@@ -271,7 +271,7 @@ LABEL_3:
       v39 = 2112;
       v40 = v23;
       v41 = 2112;
-      v42 = v10;
+      v42 = objectCopy;
       _os_log_impl(&dword_23255B000, v24, OS_LOG_TYPE_DEBUG, "StateWatcher: observeValueForKeyPath: %@  MATCH on check client name %@ object %@", buf, 0x20u);
     }
 
@@ -305,7 +305,7 @@ LABEL_14:
       v43 = 2112;
       v44 = v22;
       v45 = 2112;
-      v46 = v10;
+      v46 = objectCopy;
       _os_log_impl(&dword_23255B000, v25, OS_LOG_TYPE_ERROR, "StateWatcher: ignore unchanged myname %@ %@ -> %@ derived from %@ %@", buf, 0x34u);
     }
   }
@@ -324,16 +324,16 @@ LABEL_14:
       v43 = 2112;
       v44 = v22;
       v45 = 2112;
-      v46 = v10;
+      v46 = objectCopy;
       _os_log_impl(&dword_23255B000, v27, OS_LOG_TYPE_INFO, "StateWatcher: observe myname %@ %@ -> %@ derived from %@ %@", buf, 0x34u);
     }
 
-    v28 = [(StateWatcher *)v31 delegate];
-    v29 = v28;
+    delegate = [(StateWatcher *)selfCopy delegate];
+    v29 = delegate;
     v26 = v32;
-    if (v28)
+    if (delegate)
     {
-      [v28 noteStateChange:v23 new:v12 old:v13];
+      [delegate noteStateChange:v23 new:v12 old:v13];
     }
   }
 
@@ -426,11 +426,11 @@ LABEL_14:
     }
 
     self->_enabled = 1;
-    v13 = [(StateWatcher *)self delegate];
-    v14 = v13;
-    if (v13)
+    delegate = [(StateWatcher *)self delegate];
+    v14 = delegate;
+    if (delegate)
     {
-      [v13 noteStateChange:@"batchedStatesOnEnable" new:0 old:0];
+      [delegate noteStateChange:@"batchedStatesOnEnable" new:0 old:0];
     }
   }
 
@@ -528,17 +528,17 @@ LABEL_14:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deriveKeyPathListFromWatchList:(id)a3 sourceList:(id)a4
+- (void)deriveKeyPathListFromWatchList:(id)list sourceList:(id)sourceList
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  listCopy = list;
+  sourceListCopy = sourceList;
   v26 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v5;
+  obj = listCopy;
   v23 = [obj countByEnumeratingWithState:&v31 objects:v38 count:16];
   if (v23)
   {
@@ -576,7 +576,7 @@ LABEL_14:
 
               v14 = *(*(&v27 + 1) + 8 * i);
               v15 = [v9 objectForKeyedSubscript:v14];
-              v16 = [v6 objectForKeyedSubscript:v14];
+              v16 = [sourceListCopy objectForKeyedSubscript:v14];
               if (v16)
               {
                 v17 = [(NSDictionary *)v26 objectForKeyedSubscript:v15];
@@ -623,16 +623,16 @@ LABEL_14:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)configureWatchList:(id)a3 changeList:(id)a4 sourceList:(id)a5
+- (BOOL)configureWatchList:(id)list changeList:(id)changeList sourceList:(id)sourceList
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!self->_srcDestMapping && [(StateWatcher *)self isValidWatchList:v8]&& [(StateWatcher *)self isValidChangeList:v9]&& [(StateWatcher *)self isValidSourceList:v10])
+  listCopy = list;
+  changeListCopy = changeList;
+  sourceListCopy = sourceList;
+  if (!self->_srcDestMapping && [(StateWatcher *)self isValidWatchList:listCopy]&& [(StateWatcher *)self isValidChangeList:changeListCopy]&& [(StateWatcher *)self isValidSourceList:sourceListCopy])
   {
-    [(StateWatcher *)self deriveKeyPathListFromWatchList:v8 sourceList:v10];
-    objc_storeStrong(&self->_changeWatchList, a4);
+    [(StateWatcher *)self deriveKeyPathListFromWatchList:listCopy sourceList:sourceListCopy];
+    objc_storeStrong(&self->_changeWatchList, changeList);
     v11 = outrankLogHandle;
     v12 = 1;
     if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_INFO))

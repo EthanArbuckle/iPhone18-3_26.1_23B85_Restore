@@ -1,21 +1,21 @@
 @interface GQPStyleReader
-- (BOOL)beginProperty:(const char *)a3;
-- (GQPStyleReader)initWithStyleType:(int)a3;
+- (BOOL)beginProperty:(const char *)property;
+- (GQPStyleReader)initWithStyleType:(int)type;
 - (id)createStyle;
-- (int)beginReadingFromReader:(_xmlTextReader *)a3 processor:(id)a4;
-- (int)doneReading:(id)a3;
+- (int)beginReadingFromReader:(_xmlTextReader *)reader processor:(id)processor;
+- (int)doneReading:(id)reading;
 - (void)dealloc;
 - (void)doneProperty;
-- (void)handleBoolValue:(BOOL)a3;
-- (void)handleDoubleValue:(double)a3;
-- (void)handleFloatValue:(float)a3;
-- (void)handleIntValue:(int)a3;
-- (void)handleObject:(id)a3;
+- (void)handleBoolValue:(BOOL)value;
+- (void)handleDoubleValue:(double)value;
+- (void)handleFloatValue:(float)value;
+- (void)handleIntValue:(int)value;
+- (void)handleObject:(id)object;
 @end
 
 @implementation GQPStyleReader
 
-- (GQPStyleReader)initWithStyleType:(int)a3
+- (GQPStyleReader)initWithStyleType:(int)type
 {
   v7.receiver = self;
   v7.super_class = GQPStyleReader;
@@ -23,7 +23,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->mStyleType = a3;
+    v4->mStyleType = type;
     v4->mEntries = CFArrayCreateMutable(0, 0, &unk_84B58);
     v5->mCurrentProperty = 0;
   }
@@ -58,26 +58,26 @@
   [(GQPStyleReader *)&v6 dealloc];
 }
 
-- (int)beginReadingFromReader:(_xmlTextReader *)a3 processor:(id)a4
+- (int)beginReadingFromReader:(_xmlTextReader *)reader processor:(id)processor
 {
-  v7 = [objc_msgSend(a4 "documentState")];
+  v7 = [objc_msgSend(processor "documentState")];
   self->mStylesheet = v7;
   v8 = v7;
-  AttributeNs = xmlTextReaderGetAttributeNs(a3, off_9D308, *(qword_A35E8 + 16));
+  AttributeNs = xmlTextReaderGetAttributeNs(reader, off_9D308, *(qword_A35E8 + 16));
   if (AttributeNs)
   {
     self->mIdentifier = AttributeNs;
   }
 
-  self->mParentIdentifier = xmlTextReaderGetAttributeNs(a3, off_9D310, *(qword_A35E8 + 16));
-  self->mUid = xmlTextReaderGetAttributeNs(a3, off_9D3D8, *(qword_A35E0 + 16));
-  if (![objc_msgSend(objc_msgSend(a4 "documentState")])
+  self->mParentIdentifier = xmlTextReaderGetAttributeNs(reader, off_9D310, *(qword_A35E8 + 16));
+  self->mUid = xmlTextReaderGetAttributeNs(reader, off_9D3D8, *(qword_A35E0 + 16));
+  if (![objc_msgSend(objc_msgSend(processor "documentState")])
   {
 
-    sub_37B34(qword_A2A18, a3, a4);
+    sub_37B34(qword_A2A18, reader, processor);
   }
 
-  [objc_msgSend(a4 "documentState")];
+  [objc_msgSend(processor "documentState")];
   v10 = objc_alloc_init(GQDSStyle);
   self->mStyle = v10;
   mIdentifier = self->mIdentifier;
@@ -123,28 +123,28 @@
   return result;
 }
 
-- (int)doneReading:(id)a3
+- (int)doneReading:(id)reading
 {
-  v4 = [(GQPStyleReader *)self createStyle];
+  createStyle = [(GQPStyleReader *)self createStyle];
 
-  [objc_msgSend(a3 "documentState")];
+  [objc_msgSend(reading "documentState")];
   return 1;
 }
 
-- (void)handleObject:(id)a3
+- (void)handleObject:(id)object
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = 0;
+    objectCopy = 0;
   }
 
   else
   {
-    v5 = a3;
+    objectCopy = object;
   }
 
-  v6 = sub_F62C(self->mCurrentProperty, v5);
+  v6 = sub_F62C(self->mCurrentProperty, objectCopy);
   CFArrayAppendValue(self->mEntries, v6);
   self->mCurrentProperty = 0;
 }
@@ -176,9 +176,9 @@
   return self->mStyle;
 }
 
-- (BOOL)beginProperty:(const char *)a3
+- (BOOL)beginProperty:(const char *)property
 {
-  v4 = [GQDSStyleProperties propertyFromString:a3];
+  v4 = [GQDSStyleProperties propertyFromString:property];
   if (v4)
   {
     self->mCurrentProperty = v4;
@@ -205,30 +205,30 @@
   }
 }
 
-- (void)handleBoolValue:(BOOL)a3
+- (void)handleBoolValue:(BOOL)value
 {
-  v4 = sub_F51C(self->mCurrentProperty, a3);
+  v4 = sub_F51C(self->mCurrentProperty, value);
   CFArrayAppendValue(self->mEntries, v4);
   self->mCurrentProperty = 0;
 }
 
-- (void)handleIntValue:(int)a3
+- (void)handleIntValue:(int)value
 {
-  v4 = sub_F51C(self->mCurrentProperty, a3);
+  v4 = sub_F51C(self->mCurrentProperty, value);
   CFArrayAppendValue(self->mEntries, v4);
   self->mCurrentProperty = 0;
 }
 
-- (void)handleFloatValue:(float)a3
+- (void)handleFloatValue:(float)value
 {
-  v4 = sub_F578(self->mCurrentProperty, a3);
+  v4 = sub_F578(self->mCurrentProperty, value);
   CFArrayAppendValue(self->mEntries, v4);
   self->mCurrentProperty = 0;
 }
 
-- (void)handleDoubleValue:(double)a3
+- (void)handleDoubleValue:(double)value
 {
-  v4 = sub_F5D0(self->mCurrentProperty, a3);
+  v4 = sub_F5D0(self->mCurrentProperty, value);
   CFArrayAppendValue(self->mEntries, v4);
   self->mCurrentProperty = 0;
 }

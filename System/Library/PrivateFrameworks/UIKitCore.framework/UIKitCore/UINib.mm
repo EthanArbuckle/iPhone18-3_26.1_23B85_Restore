@@ -2,53 +2,53 @@
 + (UINib)nibWithData:(NSData *)data bundle:(NSBundle *)bundleOrNil;
 + (UINib)nibWithNibName:(NSString *)name bundle:(NSBundle *)bundleOrNil;
 - (NSArray)instantiateWithOwner:(id)ownerOrNil options:(NSDictionary *)optionsOrNil;
-- (UINib)initWithBundle:(id)a3;
-- (UINib)initWithCoder:(id)a3;
-- (UINib)initWithContentsOfFile:(id)a3;
-- (UINib)initWithData:(id)a3 bundle:(id)a4;
-- (UINib)initWithNibName:(id)a3 directory:(id)a4 bundle:(id)a5;
+- (UINib)initWithBundle:(id)bundle;
+- (UINib)initWithCoder:(id)coder;
+- (UINib)initWithContentsOfFile:(id)file;
+- (UINib)initWithData:(id)data bundle:(id)bundle;
+- (UINib)initWithNibName:(id)name directory:(id)directory bundle:(id)bundle;
 - (id)bundleResourcePath;
 - (id)effectiveBundle;
 - (id)lazyArchiveData;
-- (id)nibDataForPath:(id)a3;
-- (id)unarchiverForInstantiatingReturningError:(id *)a3;
+- (id)nibDataForPath:(id)path;
+- (id)unarchiverForInstantiatingReturningError:(id *)error;
 - (void)_registerForMemoryWarningIfNeeded;
 - (void)dealloc;
-- (void)didReceiveMemoryWarning:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)didReceiveMemoryWarning:(id)warning;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UINib
 
 - (void)_registerForMemoryWarningIfNeeded
 {
-  v3 = [self->storage bundleResourceName];
+  bundleResourceName = [self->storage bundleResourceName];
 
-  if (v3)
+  if (bundleResourceName)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:self selector:sel_didReceiveMemoryWarning_ name:@"UIApplicationDidReceiveMemoryWarningNotification" object:UIApp];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_didReceiveMemoryWarning_ name:@"UIApplicationDidReceiveMemoryWarningNotification" object:UIApp];
   }
 }
 
 - (id)lazyArchiveData
 {
-  v4 = [self->storage archiveData];
+  archiveData = [self->storage archiveData];
 
-  if (!v4)
+  if (!archiveData)
   {
-    v5 = [self->storage bundleResourceName];
+    bundleResourceName = [self->storage bundleResourceName];
 
-    if (!v5)
+    if (!bundleResourceName)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"UINib.m" lineNumber:270 description:@"UINib must be instantiated with either data or a nib name."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UINib.m" lineNumber:270 description:@"UINib must be instantiated with either data or a nib name."];
     }
 
-    v6 = [(UINib *)self bundleResourcePath];
-    if (v6)
+    bundleResourcePath = [(UINib *)self bundleResourcePath];
+    if (bundleResourcePath)
     {
-      v7 = [(UINib *)self nibDataForPath:v6];
+      v7 = [(UINib *)self nibDataForPath:bundleResourcePath];
       [self->storage setArchiveData:v7];
     }
   }
@@ -60,31 +60,31 @@
 
 - (id)bundleResourcePath
 {
-  v3 = [self->storage bundleResourceName];
-  if (v3)
+  bundleResourceName = [self->storage bundleResourceName];
+  if (bundleResourceName)
   {
-    v4 = v3;
-    v5 = [self->storage bundleDirectoryName];
+    v4 = bundleResourceName;
+    bundleDirectoryName = [self->storage bundleDirectoryName];
 
-    if (v5)
+    if (bundleDirectoryName)
     {
-      v6 = [(UINib *)self effectiveBundle];
-      v7 = [self->storage bundleResourceName];
-      v8 = [self->storage bundleDirectoryName];
-      v9 = [v6 pathForResource:v7 ofType:@"nib" inDirectory:v8];
+      effectiveBundle = [(UINib *)self effectiveBundle];
+      bundleResourceName2 = [self->storage bundleResourceName];
+      bundleDirectoryName2 = [self->storage bundleDirectoryName];
+      v9 = [effectiveBundle pathForResource:bundleResourceName2 ofType:@"nib" inDirectory:bundleDirectoryName2];
 
 LABEL_6:
       goto LABEL_8;
     }
   }
 
-  v10 = [self->storage bundleResourceName];
+  bundleResourceName3 = [self->storage bundleResourceName];
 
-  if (v10)
+  if (bundleResourceName3)
   {
-    v6 = [(UINib *)self effectiveBundle];
-    v7 = [self->storage bundleResourceName];
-    v9 = [v6 pathForResource:v7 ofType:@"nib"];
+    effectiveBundle = [(UINib *)self effectiveBundle];
+    bundleResourceName2 = [self->storage bundleResourceName];
+    v9 = [effectiveBundle pathForResource:bundleResourceName2 ofType:@"nib"];
     goto LABEL_6;
   }
 
@@ -96,31 +96,31 @@ LABEL_8:
 
 - (id)effectiveBundle
 {
-  v2 = [self->storage bundle];
-  v3 = v2;
-  if (v2)
+  bundle = [self->storage bundle];
+  v3 = bundle;
+  if (bundle)
   {
-    v4 = v2;
+    mainBundle = bundle;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E696AAE8] mainBundle];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
   }
 
-  v5 = v4;
+  v5 = mainBundle;
 
   return v5;
 }
 
 - (void)dealloc
 {
-  v3 = [self->storage bundleResourceName];
+  bundleResourceName = [self->storage bundleResourceName];
 
-  if (v3)
+  if (bundleResourceName)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 removeObserver:self name:@"UIApplicationDidReceiveMemoryWarningNotification" object:UIApp];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"UIApplicationDidReceiveMemoryWarningNotification" object:UIApp];
   }
 
   v5.receiver = self;
@@ -128,9 +128,9 @@ LABEL_8:
   [(UINib *)&v5 dealloc];
 }
 
-- (UINib)initWithBundle:(id)a3
+- (UINib)initWithBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v9.receiver = self;
   v9.super_class = UINib;
   v5 = [(UINib *)&v9 init];
@@ -140,58 +140,58 @@ LABEL_8:
     storage = v5->storage;
     v5->storage = v6;
 
-    [v5->storage setBundle:v4];
+    [v5->storage setBundle:bundleCopy];
   }
 
   return v5;
 }
 
-- (UINib)initWithData:(id)a3 bundle:(id)a4
+- (UINib)initWithData:(id)data bundle:(id)bundle
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  dataCopy = data;
+  bundleCopy = bundle;
+  if (!dataCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"UINib.m" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"data != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UINib.m" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"data != nil"}];
   }
 
-  v9 = [(UINib *)self initWithBundle:v8];
+  v9 = [(UINib *)self initWithBundle:bundleCopy];
   v10 = v9;
   if (v9)
   {
-    [v9->storage setArchiveData:v7];
+    [v9->storage setArchiveData:dataCopy];
   }
 
   return v10;
 }
 
-- (UINib)initWithNibName:(id)a3 directory:(id)a4 bundle:(id)a5
+- (UINib)initWithNibName:(id)name directory:(id)directory bundle:(id)bundle
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9 || ![v9 length])
+  nameCopy = name;
+  directoryCopy = directory;
+  bundleCopy = bundle;
+  if (!nameCopy || ![nameCopy length])
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"UINib.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"(name != nil) && ([name length] > 0)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UINib.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"(name != nil) && ([name length] > 0)"}];
   }
 
-  v12 = [(UINib *)self initWithBundle:v11];
+  v12 = [(UINib *)self initWithBundle:bundleCopy];
   v13 = v12;
   if (v12)
   {
-    [v12->storage setBundleResourceName:v9];
-    [v13->storage setBundleDirectoryName:v10];
+    [v12->storage setBundleResourceName:nameCopy];
+    [v13->storage setBundleDirectoryName:directoryCopy];
     [(UINib *)v13 _registerForMemoryWarningIfNeeded];
   }
 
   return v13;
 }
 
-- (UINib)initWithContentsOfFile:(id)a3
+- (UINib)initWithContentsOfFile:(id)file
 {
-  v4 = [(UINib *)self nibDataForPath:a3];
+  v4 = [(UINib *)self nibDataForPath:file];
   v5 = [(UINib *)self initWithData:v4 bundle:0];
 
   return v5;
@@ -215,40 +215,40 @@ LABEL_8:
   return v7;
 }
 
-- (UINib)initWithCoder:(id)a3
+- (UINib)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = UINib;
   v5 = [(UINib *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"bundleID"];
+    v6 = [coderCopy decodeObjectForKey:@"bundleID"];
     if (v6)
     {
       v7 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:v6];
       if (v7)
       {
         v8 = v7;
-        v9 = [v4 decodeObjectForKey:@"identifierForStringsFile"];
+        v9 = [coderCopy decodeObjectForKey:@"identifierForStringsFile"];
         goto LABEL_11;
       }
 
       NSLog(&cfstr_AnInstanceOfUi.isa, v6);
-      v9 = [v4 decodeObjectForKey:@"identifierForStringsFile"];
+      v9 = [coderCopy decodeObjectForKey:@"identifierForStringsFile"];
     }
 
     else
     {
-      if (![v4 decodeBoolForKey:@"captureEnclosingNIBBundleOnDecode"])
+      if (![coderCopy decodeBoolForKey:@"captureEnclosingNIBBundleOnDecode"])
       {
         v9 = 0;
         v8 = 0;
         goto LABEL_11;
       }
 
-      v8 = UIResourceBundleForNIBBeingDecodedWithCoder(v4);
-      v9 = UIResourceIdentifierForStringsFileForNIBBeingDecodedWithCoder(v4);
+      v8 = UIResourceBundleForNIBBeingDecodedWithCoder(coderCopy);
+      v9 = UIResourceIdentifierForStringsFileForNIBBeingDecodedWithCoder(coderCopy);
       if (v8)
       {
 LABEL_11:
@@ -258,22 +258,22 @@ LABEL_11:
 
         [v5->storage setBundle:v8];
         v12 = v5->storage;
-        v13 = [v4 decodeObjectForKey:@"bundleResourceName"];
+        v13 = [coderCopy decodeObjectForKey:@"bundleResourceName"];
         [v12 setBundleResourceName:v13];
 
         [v5->storage setIdentifierForStringsFile:v9];
-        v14 = [v5->storage bundleResourceName];
+        bundleResourceName = [v5->storage bundleResourceName];
 
         v15 = v5->storage;
-        if (v14)
+        if (bundleResourceName)
         {
-          v16 = [v4 decodeObjectForKey:@"bundleDirectoryName"];
+          v16 = [coderCopy decodeObjectForKey:@"bundleDirectoryName"];
           [v15 setBundleDirectoryName:v16];
         }
 
         else
         {
-          v16 = [v4 decodeObjectForKey:@"archiveData"];
+          v16 = [coderCopy decodeObjectForKey:@"archiveData"];
           [v15 setArchiveData:v16];
         }
 
@@ -292,75 +292,75 @@ LABEL_15:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v17 = a3;
-  v4 = [self->storage bundle];
+  coderCopy = coder;
+  bundle = [self->storage bundle];
 
-  if (v4)
+  if (bundle)
   {
-    v5 = [self->storage bundle];
-    v6 = [v5 bundleIdentifier];
-    [v17 encodeObject:v6 forKey:@"bundleID"];
+    bundle2 = [self->storage bundle];
+    bundleIdentifier = [bundle2 bundleIdentifier];
+    [coderCopy encodeObject:bundleIdentifier forKey:@"bundleID"];
   }
 
-  v7 = [self->storage identifierForStringsFile];
+  identifierForStringsFile = [self->storage identifierForStringsFile];
 
-  if (v7)
+  if (identifierForStringsFile)
   {
-    v8 = [self->storage identifierForStringsFile];
-    [v17 encodeObject:v8 forKey:@"identifierForStringsFile"];
+    identifierForStringsFile2 = [self->storage identifierForStringsFile];
+    [coderCopy encodeObject:identifierForStringsFile2 forKey:@"identifierForStringsFile"];
   }
 
   if ([(UINib *)self captureImplicitLoadingContextOnDecode])
   {
-    [v17 encodeBool:-[UINib captureImplicitLoadingContextOnDecode](self forKey:{"captureImplicitLoadingContextOnDecode"), @"captureEnclosingNIBBundleOnDecode"}];
+    [coderCopy encodeBool:-[UINib captureImplicitLoadingContextOnDecode](self forKey:{"captureImplicitLoadingContextOnDecode"), @"captureEnclosingNIBBundleOnDecode"}];
   }
 
-  v9 = [self->storage bundleResourceName];
+  bundleResourceName = [self->storage bundleResourceName];
 
   storage = self->storage;
-  if (v9)
+  if (bundleResourceName)
   {
-    v11 = [storage bundleResourceName];
-    [v17 encodeObject:v11 forKey:@"bundleResourceName"];
+    bundleResourceName2 = [storage bundleResourceName];
+    [coderCopy encodeObject:bundleResourceName2 forKey:@"bundleResourceName"];
 
-    v12 = [self->storage bundleDirectoryName];
+    bundleDirectoryName = [self->storage bundleDirectoryName];
 
-    v13 = v17;
-    if (!v12)
+    v13 = coderCopy;
+    if (!bundleDirectoryName)
     {
       goto LABEL_13;
     }
 
-    v14 = [self->storage bundleDirectoryName];
+    bundleDirectoryName2 = [self->storage bundleDirectoryName];
     v15 = @"bundleDirectoryName";
   }
 
   else
   {
-    v16 = [storage archiveData];
+    archiveData = [storage archiveData];
 
-    v13 = v17;
-    if (!v16)
+    v13 = coderCopy;
+    if (!archiveData)
     {
       goto LABEL_13;
     }
 
-    v14 = [self->storage archiveData];
+    bundleDirectoryName2 = [self->storage archiveData];
     v15 = @"archiveData";
   }
 
-  [v17 encodeObject:v14 forKey:v15];
+  [coderCopy encodeObject:bundleDirectoryName2 forKey:v15];
 
-  v13 = v17;
+  v13 = coderCopy;
 LABEL_13:
 }
 
-- (id)nibDataForPath:(id)a3
+- (id)nibDataForPath:(id)path
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:v3];
+  pathCopy = path;
+  v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:pathCopy];
   v5 = v4;
   if (v4)
   {
@@ -370,7 +370,7 @@ LABEL_13:
   else
   {
     v7 = objc_alloc(MEMORY[0x1E695DEF0]);
-    v8 = [v3 stringByAppendingPathComponent:@"objects-17.0+.nib"];
+    v8 = [pathCopy stringByAppendingPathComponent:@"objects-17.0+.nib"];
     v9 = [v7 initWithContentsOfFile:v8];
     v10 = v9;
     if (v9)
@@ -381,7 +381,7 @@ LABEL_13:
     else
     {
       v11 = objc_alloc(MEMORY[0x1E695DEF0]);
-      v12 = [v3 stringByAppendingPathComponent:@"objects-16.0+.nib"];
+      v12 = [pathCopy stringByAppendingPathComponent:@"objects-16.0+.nib"];
       v13 = [v11 initWithContentsOfFile:v12];
       v14 = v13;
       if (v13)
@@ -392,7 +392,7 @@ LABEL_13:
       else
       {
         v15 = objc_alloc(MEMORY[0x1E695DEF0]);
-        v16 = [v3 stringByAppendingPathComponent:@"objects-15.0+.nib"];
+        v16 = [pathCopy stringByAppendingPathComponent:@"objects-15.0+.nib"];
         v17 = [v15 initWithContentsOfFile:v16];
         v18 = v17;
         if (v17)
@@ -403,7 +403,7 @@ LABEL_13:
         else
         {
           v19 = objc_alloc(MEMORY[0x1E695DEF0]);
-          v48 = [v3 stringByAppendingPathComponent:@"objects-14.0+.nib"];
+          v48 = [pathCopy stringByAppendingPathComponent:@"objects-14.0+.nib"];
           v20 = [v19 initWithContentsOfFile:?];
           if (v20)
           {
@@ -414,7 +414,7 @@ LABEL_13:
           else
           {
             v22 = objc_alloc(MEMORY[0x1E695DEF0]);
-            v47 = [v3 stringByAppendingPathComponent:@"objects-13.0+.nib"];
+            v47 = [pathCopy stringByAppendingPathComponent:@"objects-13.0+.nib"];
             v23 = [v22 initWithContentsOfFile:?];
             if (v23)
             {
@@ -425,7 +425,7 @@ LABEL_13:
             else
             {
               v25 = objc_alloc(MEMORY[0x1E695DEF0]);
-              v46 = [v3 stringByAppendingPathComponent:@"objects-12.3+.nib"];
+              v46 = [pathCopy stringByAppendingPathComponent:@"objects-12.3+.nib"];
               v26 = [v25 initWithContentsOfFile:?];
               if (v26)
               {
@@ -436,7 +436,7 @@ LABEL_13:
               else
               {
                 v28 = objc_alloc(MEMORY[0x1E695DEF0]);
-                v45 = [v3 stringByAppendingPathComponent:@"objects-11.0+.nib"];
+                v45 = [pathCopy stringByAppendingPathComponent:@"objects-11.0+.nib"];
                 v29 = [v28 initWithContentsOfFile:?];
                 if (v29)
                 {
@@ -447,7 +447,7 @@ LABEL_13:
                 else
                 {
                   v31 = objc_alloc(MEMORY[0x1E695DEF0]);
-                  v44 = [v3 stringByAppendingPathComponent:@"objects-9.1+.nib"];
+                  v44 = [pathCopy stringByAppendingPathComponent:@"objects-9.1+.nib"];
                   v32 = [v31 initWithContentsOfFile:?];
                   if (v32)
                   {
@@ -458,7 +458,7 @@ LABEL_13:
                   else
                   {
                     v34 = objc_alloc(MEMORY[0x1E695DEF0]);
-                    v43 = [v3 stringByAppendingPathComponent:@"objects-8.0+.nib"];
+                    v43 = [pathCopy stringByAppendingPathComponent:@"objects-8.0+.nib"];
                     v35 = [v34 initWithContentsOfFile:?];
                     if (v35)
                     {
@@ -469,7 +469,7 @@ LABEL_13:
                     else
                     {
                       v37 = objc_alloc(MEMORY[0x1E695DEF0]);
-                      v41 = [v3 stringByAppendingPathComponent:@"objects.nib"];
+                      v41 = [pathCopy stringByAppendingPathComponent:@"objects.nib"];
                       v42 = [v37 initWithContentsOfFile:?];
                       if (v42)
                       {
@@ -479,7 +479,7 @@ LABEL_13:
                       else
                       {
                         v38 = objc_alloc(MEMORY[0x1E695DEF0]);
-                        v39 = [v3 stringByAppendingPathComponent:@"runtime.nib"];
+                        v39 = [pathCopy stringByAppendingPathComponent:@"runtime.nib"];
                         v6 = [v38 initWithContentsOfFile:v39];
                       }
 
@@ -508,12 +508,12 @@ LABEL_13:
   return v6;
 }
 
-- (id)unarchiverForInstantiatingReturningError:(id *)a3
+- (id)unarchiverForInstantiatingReturningError:(id *)error
 {
-  v5 = [self->storage nibDecoder];
-  if (v5)
+  nibDecoder = [self->storage nibDecoder];
+  if (nibDecoder)
   {
-    v6 = v5;
+    v6 = nibDecoder;
     v7 = 0;
   }
 
@@ -525,17 +525,17 @@ LABEL_13:
       UIDataLooksLikeNibArchive();
     }
 
-    v9 = [(UINib *)self effectiveBundle];
-    v10 = [self->storage bundleResourceName];
-    v11 = [self->storage bundleDirectoryName];
-    if (v10 && v11)
+    effectiveBundle = [(UINib *)self effectiveBundle];
+    bundleResourceName = [self->storage bundleResourceName];
+    bundleDirectoryName = [self->storage bundleDirectoryName];
+    if (bundleResourceName && bundleDirectoryName)
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"Could not load NIB in bundle: '%@' with name '%@' and directory '%@'", v9, v10, v11];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"Could not load NIB in bundle: '%@' with name '%@' and directory '%@'", effectiveBundle, bundleResourceName, bundleDirectoryName];
     }
 
     else
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"Could not load NIB in bundle: '%@' with name '%@'", v9, v10, v17];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"Could not load NIB in bundle: '%@' with name '%@'", effectiveBundle, bundleResourceName, v17];
     }
     v12 = ;
 
@@ -545,10 +545,10 @@ LABEL_13:
     v7 = [v13 errorWithDomain:v14 code:0 userInfo:v15];
 
     v6 = 0;
-    if (a3 && v7)
+    if (error && v7)
     {
       v16 = v7;
-      *a3 = v7;
+      *error = v7;
     }
   }
 
@@ -560,22 +560,22 @@ LABEL_13:
   v113 = *MEMORY[0x1E69E9840];
   v6 = ownerOrNil;
   v7 = optionsOrNil;
-  v8 = [self->storage identifierForStringsFile];
-  v9 = v8;
-  if (v8)
+  identifierForStringsFile = [self->storage identifierForStringsFile];
+  v9 = identifierForStringsFile;
+  if (identifierForStringsFile)
   {
-    v10 = v8;
+    bundleResourcePath = identifierForStringsFile;
   }
 
   else
   {
-    v10 = [(UINib *)self bundleResourcePath];
+    bundleResourcePath = [(UINib *)self bundleResourcePath];
   }
 
-  v11 = v10;
+  v11 = bundleResourcePath;
 
-  v12 = [(UINib *)self effectiveBundle];
-  [MEMORY[0x1E696AAE8] pushNibLoadingBundle:v12];
+  effectiveBundle = [(UINib *)self effectiveBundle];
+  [MEMORY[0x1E696AAE8] pushNibLoadingBundle:effectiveBundle];
   [MEMORY[0x1E696AAE8] pushNibPath:v11];
   v86 = __isObjectTaggingEnabled;
   __isObjectTaggingEnabled = 1;
@@ -616,23 +616,23 @@ LABEL_13:
       [UIProxyObject addMappingFromIdentifier:0x1EFB63530 toObject:v6 forCoder:v14];
     }
 
-    v79 = v12;
+    v79 = effectiveBundle;
     v81 = v6;
     [UIProxyObject addMappingFromIdentifier:0x1EFB63550 toObject:IBFirstResponderStandin forCoder:v14];
     [v26 addObject:IBFirstResponderStandin];
     if ([v25 count])
     {
-      v29 = [v25 allValues];
-      [v26 addObjectsFromArray:v29];
+      allValues = [v25 allValues];
+      [v26 addObjectsFromArray:allValues];
 
       [UIProxyObject addMappings:v25 forCoder:v14];
     }
 
-    v74 = self;
+    selfCopy = self;
     v75 = v25;
-    v30 = [(UINib *)self effectiveBundle];
+    effectiveBundle2 = [(UINib *)self effectiveBundle];
     v80 = v11;
-    UIResourceBeginDecodingNIBWithCoderFromBundleAndIdentifierForStringsFile(v14, v30, v11);
+    UIResourceBeginDecodingNIBWithCoderFromBundleAndIdentifierForStringsFile(v14, effectiveBundle2, v11);
 
     v31 = [(NSDictionary *)v7 valueForKey:0x1EFB9DE50];
     v32 = [(NSDictionary *)v7 valueForKey:0x1EFB9DE90];
@@ -664,8 +664,8 @@ LABEL_13:
           }
 
           v40 = *(*(&v103 + 1) + 8 * i);
-          v41 = [v40 topLevelObject];
-          [v41 _setTraitStorageList:v40];
+          topLevelObject = [v40 topLevelObject];
+          [topLevelObject _setTraitStorageList:v40];
         }
 
         v37 = [v35 countByEnumeratingWithState:&v103 objects:v112 count:16];
@@ -697,10 +697,10 @@ LABEL_13:
               objc_enumerationMutation(v42);
             }
 
-            v47 = [*(*(&v99 + 1) + 8 * j) topLevelObject];
+            topLevelObject2 = [*(*(&v99 + 1) + 8 * j) topLevelObject];
             if (objc_opt_respondsToSelector())
             {
-              [v47 traitCollection];
+              [topLevelObject2 traitCollection];
             }
 
             else
@@ -708,7 +708,7 @@ LABEL_13:
               +[UITraitCollection _fallbackTraitCollection];
             }
             v48 = ;
-            [v47 _applyTraitStorageRecordsForTraitCollection:v48];
+            [topLevelObject2 _applyTraitStorageRecordsForTraitCollection:v48];
           }
 
           v44 = [v42 countByEnumeratingWithState:&v99 objects:v111 count:16];
@@ -721,9 +721,9 @@ LABEL_13:
     }
 
     [v84 makeObjectsPerformSelector:sel_applyConfiguration];
-    v49 = [v74->storage instantiatingForSimulator];
+    instantiatingForSimulator = [selfCopy->storage instantiatingForSimulator];
     v50 = &selRef_applyForSimulator;
-    if (v49)
+    if (instantiatingForSimulator)
     {
       v51 = &selRef_connectForSimulator;
     }
@@ -843,9 +843,9 @@ LABEL_13:
     v11 = v80;
     v6 = v81;
     v13 = v78;
-    v12 = v79;
+    effectiveBundle = v79;
     v24 = v86;
-    v22 = v75;
+    localizedDescription = v75;
     v21 = v76;
   }
 
@@ -854,8 +854,8 @@ LABEL_13:
     v19 = MEMORY[0x1E695DF30];
     v20 = *MEMORY[0x1E695D930];
     v21 = v15;
-    v22 = [v15 localizedDescription];
-    [v19 raise:v20 format:{@"%@", v22}];
+    localizedDescription = [v15 localizedDescription];
+    [v19 raise:v20 format:{@"%@", localizedDescription}];
     v23 = 0;
     v24 = v86;
   }
@@ -873,7 +873,7 @@ LABEL_13:
   return v14;
 }
 
-- (void)didReceiveMemoryWarning:(id)a3
+- (void)didReceiveMemoryWarning:(id)warning
 {
   [self->storage setNibDecoder:0];
   storage = self->storage;

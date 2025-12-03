@@ -1,18 +1,18 @@
 @interface HDCoreMotionDataCollector
 - (Class)coreMotionDatumClass;
-- (HDCoreMotionDataCollector)initWithProfile:(id)a3;
+- (HDCoreMotionDataCollector)initWithProfile:(id)profile;
 - (HDProfile)profile;
-- (double)queue_differenceFromDatum:(id)a3 toDatum:(id)a4 type:(id)a5;
-- (id)_queue_coreMotionDatumFromSensorDatum:(void *)a1;
+- (double)queue_differenceFromDatum:(id)datum toDatum:(id)toDatum type:(id)type;
+- (id)_queue_coreMotionDatumFromSensorDatum:(void *)datum;
 - (id)collectedTypes;
 - (id)diagnosticDescription;
 - (id)persistentIdentifier;
 - (id)queue_newDataSource;
-- (unint64_t)queue_targetCollectionTypeForRequestedCollectionType:(unint64_t)a3;
-- (void)_accessToFitnessDataDidChange:(id)a3;
-- (void)_queue_updateCollectionType:(uint64_t)a1;
-- (void)beginCollectionForDataAggregator:(id)a3 lastPersistedSensorDatum:(id)a4;
-- (void)dataAggregator:(id)a3 wantsCollectionWithConfiguration:(id)a4;
+- (unint64_t)queue_targetCollectionTypeForRequestedCollectionType:(unint64_t)type;
+- (void)_accessToFitnessDataDidChange:(id)change;
+- (void)_queue_updateCollectionType:(uint64_t)type;
+- (void)beginCollectionForDataAggregator:(id)aggregator lastPersistedSensorDatum:(id)datum;
+- (void)dataAggregator:(id)aggregator wantsCollectionWithConfiguration:(id)configuration;
 - (void)dealloc;
 - (void)queue_recomputeCurrentState;
 - (void)registerWithAggregators;
@@ -21,16 +21,16 @@
 
 @implementation HDCoreMotionDataCollector
 
-- (HDCoreMotionDataCollector)initWithProfile:(id)a3
+- (HDCoreMotionDataCollector)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v16.receiver = self;
   v16.super_class = HDCoreMotionDataCollector;
   v5 = [(HDCoreMotionDataCollector *)&v16 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = HKCreateSerialDispatchQueue();
     queue = v6->_queue;
     v6->_queue = v7;
@@ -43,11 +43,11 @@
     lastCMDatumByType = v6->_lastCMDatumByType;
     v6->_lastCMDatumByType = v11;
 
-    v13 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-    [v13 addObject:v6];
+    mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+    [mEMORY[0x277D10AF8] addObject:v6];
 
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:v6 selector:sel__accessToFitnessDataDidChange_ name:@"HDDataCollectionAccessToFitnessDataDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__accessToFitnessDataDidChange_ name:@"HDDataCollectionAccessToFitnessDataDidChangeNotification" object:0];
   }
 
   return v6;
@@ -55,8 +55,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"HDDataCollectionAccessToFitnessDataDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"HDDataCollectionAccessToFitnessDataDidChangeNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = HDCoreMotionDataCollector;
@@ -105,13 +105,13 @@ uint64_t __52__HDCoreMotionDataCollector_registerWithAggregators__block_invoke(u
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[HDCoreMotionDataCollector queue_recomputeCurrentState]"];
   v70 = [v3 transactionWithOwner:self activityName:v4];
 
-  v71 = [(HDDataCollectorMultiplexer *)self->_multiplexer mergedConfiguration];
-  v5 = -[HDCoreMotionDataCollector queue_targetCollectionTypeForRequestedCollectionType:](self, "queue_targetCollectionTypeForRequestedCollectionType:", [v71 collectionType]);
+  mergedConfiguration = [(HDDataCollectorMultiplexer *)self->_multiplexer mergedConfiguration];
+  v5 = -[HDCoreMotionDataCollector queue_targetCollectionTypeForRequestedCollectionType:](self, "queue_targetCollectionTypeForRequestedCollectionType:", [mergedConfiguration collectionType]);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v7 = [WeakRetained dataCollectionManager];
-  v8 = [v7 hasAccessToFitnessData];
+  dataCollectionManager = [WeakRetained dataCollectionManager];
+  hasAccessToFitnessData = [dataCollectionManager hasAccessToFitnessData];
 
-  if (!v8)
+  if (!hasAccessToFitnessData)
   {
     v5 = 0;
   }
@@ -129,11 +129,11 @@ uint64_t __52__HDCoreMotionDataCollector_registerWithAggregators__block_invoke(u
     if (os_log_type_enabled(*MEMORY[0x277CCC298], OS_LOG_TYPE_DEBUG))
     {
       v60 = v9;
-      v61 = [(HDCoreMotionDataCollector *)self diagnosticDescription];
+      diagnosticDescription = [(HDCoreMotionDataCollector *)self diagnosticDescription];
       *buf = 138543618;
       *&buf[4] = self;
       *&buf[12] = 2114;
-      *&buf[14] = v61;
+      *&buf[14] = diagnosticDescription;
       _os_log_debug_impl(&dword_228986000, v60, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@", buf, 0x16u);
     }
 
@@ -143,13 +143,13 @@ uint64_t __52__HDCoreMotionDataCollector_registerWithAggregators__block_invoke(u
     {
       multiplexer = self->_multiplexer;
       v63 = v10;
-      v64 = [(HDDataCollectorMultiplexer *)multiplexer diagnosticDescription];
+      diagnosticDescription2 = [(HDDataCollectorMultiplexer *)multiplexer diagnosticDescription];
       *buf = 138543874;
       *&buf[4] = self;
       *&buf[12] = 2114;
       *&buf[14] = multiplexer;
       *&buf[22] = 2114;
-      v90 = v64;
+      v90 = diagnosticDescription2;
       _os_log_debug_impl(&dword_228986000, v63, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ %{public}@", buf, 0x20u);
     }
 
@@ -224,8 +224,8 @@ uint64_t __52__HDCoreMotionDataCollector_registerWithAggregators__block_invoke(u
                     v26 = v23;
                     dispatch_assert_queue_V2(self->_queue);
                     v27 = v26;
-                    v28 = [v27 identifier];
-                    v29 = [v28 isEqualToString:v74];
+                    identifier = [v27 identifier];
+                    v29 = [identifier isEqualToString:v74];
 
                     v30 = @"BASAL_ENERGY_INGESTION";
                     if (v29)
@@ -233,8 +233,8 @@ uint64_t __52__HDCoreMotionDataCollector_registerWithAggregators__block_invoke(u
                       goto LABEL_33;
                     }
 
-                    v31 = [v27 identifier];
-                    v32 = [v31 isEqualToString:v73];
+                    identifier2 = [v27 identifier];
+                    v32 = [identifier2 isEqualToString:v73];
 
                     v30 = @"ACTIVE_ENERGY_INGESTION";
                     if (v32)
@@ -242,8 +242,8 @@ uint64_t __52__HDCoreMotionDataCollector_registerWithAggregators__block_invoke(u
                       goto LABEL_33;
                     }
 
-                    v33 = [v27 identifier];
-                    v34 = [v33 isEqualToString:v72];
+                    identifier3 = [v27 identifier];
+                    v34 = [identifier3 isEqualToString:v72];
 
                     v30 = @"STEP_INGESTION";
                     if (v34)
@@ -251,8 +251,8 @@ uint64_t __52__HDCoreMotionDataCollector_registerWithAggregators__block_invoke(u
                       goto LABEL_33;
                     }
 
-                    v35 = [v27 identifier];
-                    v36 = [v35 isEqualToString:v68];
+                    identifier4 = [v27 identifier];
+                    v36 = [identifier4 isEqualToString:v68];
 
                     v30 = @"VULCAN_INGESTION";
                     if (v36)
@@ -260,15 +260,15 @@ uint64_t __52__HDCoreMotionDataCollector_registerWithAggregators__block_invoke(u
                       goto LABEL_33;
                     }
 
-                    v37 = [v27 identifier];
-                    v38 = [v37 isEqualToString:v67];
+                    identifier5 = [v27 identifier];
+                    v38 = [identifier5 isEqualToString:v67];
 
                     v30 = @"DISTANCE_INGESTION";
                     if ((v38 & 1) != 0 || ([v27 identifier], v39 = objc_claimAutoreleasedReturnValue(), v40 = objc_msgSend(v39, "isEqualToString:", v66), v39, v30 = @"FLIGHTS_INGESTION", v40))
                     {
 LABEL_33:
 
-                      v41 = [v27 canonicalUnit];
+                      canonicalUnit = [v27 canonicalUnit];
                       v83 = 0;
                       v84 = &v83;
                       v85 = 0x3032000000;
@@ -276,18 +276,18 @@ LABEL_33:
                       v87 = __Block_byref_object_dispose__92;
                       v88 = 0;
                       v42 = objc_loadWeakRetained(&self->_profile);
-                      v43 = [v42 database];
+                      database = [v42 database];
                       *v93 = MEMORY[0x277D85DD0];
                       *&v93[8] = 3221225472;
                       *&v93[16] = __78__HDCoreMotionDataCollector__queue_migrateDataCollectionContextForType_error___block_invoke;
                       v94 = &unk_278620A18;
                       v95 = v30;
-                      v96 = self;
-                      v44 = v41;
+                      selfCopy = self;
+                      v44 = canonicalUnit;
                       v97 = v44;
                       v99 = &v83;
                       v98 = v27;
-                      v45 = [(HDHealthEntity *)HDUnprotectedKeyValueEntity performWriteTransactionWithHealthDatabase:v43 error:&v82 block:v93];
+                      v45 = [(HDHealthEntity *)HDUnprotectedKeyValueEntity performWriteTransactionWithHealthDatabase:database error:&v82 block:v93];
 
                       if (v45)
                       {
@@ -363,8 +363,8 @@ LABEL_33:
             while (v52);
           }
 
-          v53 = [(NSMutableDictionary *)self->_lastCMDatumByType allValues];
-          v54 = [v53 hk_firstSortedObjectWithComparison:&__block_literal_global_319];
+          allValues = [(NSMutableDictionary *)self->_lastCMDatumByType allValues];
+          v54 = [allValues hk_firstSortedObjectWithComparison:&__block_literal_global_319];
 
           _HKInitializeLogging();
           v55 = *MEMORY[0x277CCC298];
@@ -439,23 +439,23 @@ LABEL_33:
   v59 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_updateCollectionType:(uint64_t)a1
+- (void)_queue_updateCollectionType:(uint64_t)type
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (type)
   {
-    dispatch_assert_queue_V2(*(a1 + 56));
-    if ([*(a1 + 40) collectionType] != a2)
+    dispatch_assert_queue_V2(*(type + 56));
+    if ([*(type + 40) collectionType] != a2)
     {
-      v4 = [*(a1 + 40) cloneWithNewType:a2];
-      v5 = *(a1 + 40);
-      *(a1 + 40) = v4;
+      v4 = [*(type + 40) cloneWithNewType:a2];
+      v5 = *(type + 40);
+      *(type + 40) = v4;
 
       v15 = 0u;
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v6 = *(a1 + 8);
+      v6 = *(type + 8);
       v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
@@ -471,8 +471,8 @@ LABEL_33:
               objc_enumerationMutation(v6);
             }
 
-            v11 = [*(a1 + 16) aggregatorForType:{*(*(&v13 + 1) + 8 * v10), v13}];
-            [v11 dataCollector:a1 didChangeState:*(a1 + 40)];
+            v11 = [*(type + 16) aggregatorForType:{*(*(&v13 + 1) + 8 * v10), v13}];
+            [v11 dataCollector:type didChangeState:*(type + 40)];
 
             ++v10;
           }
@@ -489,18 +489,18 @@ LABEL_33:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_queue_coreMotionDatumFromSensorDatum:(void *)a1
+- (id)_queue_coreMotionDatumFromSensorDatum:(void *)datum
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a1[7];
+  v3 = datum[7];
   v4 = a2;
   dispatch_assert_queue_V2(v3);
-  v5 = [v4 resumeContext];
+  resumeContext = [v4 resumeContext];
 
-  if (v5)
+  if (resumeContext)
   {
     v11 = 0;
-    v6 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_msgSend(a1 fromData:"coreMotionDatumClass") error:{v5, &v11}];
+    v6 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_msgSend(datum fromData:"coreMotionDatumClass") error:{resumeContext, &v11}];
     v7 = v11;
     if (!v6)
     {
@@ -509,7 +509,7 @@ LABEL_33:
       if (os_log_type_enabled(*MEMORY[0x277CCC298], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v13 = a1;
+        datumCopy = datum;
         v14 = 2114;
         v15 = v7;
         _os_log_error_impl(&dword_228986000, v8, OS_LOG_TYPE_ERROR, "%{public}@: Failed to decode datum resume context: %{public}@", buf, 0x16u);
@@ -938,7 +938,7 @@ void __73__HDCoreMotionDataCollector__queue_beginUpdatesWithTargetCollectionType
   }
 }
 
-- (void)_accessToFitnessDataDidChange:(id)a3
+- (void)_accessToFitnessDataDidChange:(id)change
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -972,7 +972,7 @@ void __73__HDCoreMotionDataCollector__queue_beginUpdatesWithTargetCollectionType
   return 0;
 }
 
-- (double)queue_differenceFromDatum:(id)a3 toDatum:(id)a4 type:(id)a5
+- (double)queue_differenceFromDatum:(id)datum toDatum:(id)toDatum type:(id)type
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
@@ -986,34 +986,34 @@ void __73__HDCoreMotionDataCollector__queue_beginUpdatesWithTargetCollectionType
   return 0;
 }
 
-- (unint64_t)queue_targetCollectionTypeForRequestedCollectionType:(unint64_t)a3
+- (unint64_t)queue_targetCollectionTypeForRequestedCollectionType:(unint64_t)type
 {
   dispatch_assert_queue_V2(self->_queue);
-  if (a3 > 2)
+  if (type > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_22916CF68[a3];
+    return qword_22916CF68[type];
   }
 }
 
-- (void)beginCollectionForDataAggregator:(id)a3 lastPersistedSensorDatum:(id)a4
+- (void)beginCollectionForDataAggregator:(id)aggregator lastPersistedSensorDatum:(id)datum
 {
-  v6 = a3;
-  v7 = a4;
+  aggregatorCopy = aggregator;
+  datumCopy = datum;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __87__HDCoreMotionDataCollector_beginCollectionForDataAggregator_lastPersistedSensorDatum___block_invoke;
   block[3] = &unk_278613830;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = datumCopy;
+  v13 = aggregatorCopy;
+  v9 = aggregatorCopy;
+  v10 = datumCopy;
   dispatch_async(queue, block);
 }
 
@@ -1042,20 +1042,20 @@ uint64_t __87__HDCoreMotionDataCollector_beginCollectionForDataAggregator_lastPe
   return result;
 }
 
-- (void)dataAggregator:(id)a3 wantsCollectionWithConfiguration:(id)a4
+- (void)dataAggregator:(id)aggregator wantsCollectionWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  aggregatorCopy = aggregator;
+  configurationCopy = configuration;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__HDCoreMotionDataCollector_dataAggregator_wantsCollectionWithConfiguration___block_invoke;
   block[3] = &unk_278613830;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = configurationCopy;
+  v13 = aggregatorCopy;
+  v9 = aggregatorCopy;
+  v10 = configurationCopy;
   dispatch_async(queue, block);
 }
 

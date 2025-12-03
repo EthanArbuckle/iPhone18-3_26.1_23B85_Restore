@@ -1,19 +1,19 @@
 @interface RangeBiasEstimatorSingleAntennaModel
-- (BOOL)checkCirsValid:(id)a3;
-- (BOOL)configureWithResourceFileHandler:(id)a3;
-- (BOOL)predictBiasEstimate:(unsigned __int8)a3 scaledInputFeatures:(id)a4 output:(id *)a5;
+- (BOOL)checkCirsValid:(id)valid;
+- (BOOL)configureWithResourceFileHandler:(id)handler;
+- (BOOL)predictBiasEstimate:(unsigned __int8)estimate scaledInputFeatures:(id)features output:(id *)output;
 - (RangeBiasEstimatorSingleAntennaModel)init;
 - (id).cxx_construct;
-- (id)consumeInputFeatures:(id)a3;
-- (id)createAndPopulateBiasEstimatorInput:(const void *)a3 ofDimension:(id)a4;
+- (id)consumeInputFeatures:(id)features;
+- (id)createAndPopulateBiasEstimatorInput:(const void *)input ofDimension:(id)dimension;
 - (id)getResourcePathWithBundleName:()basic_string<char bundleDir:()std:(std::allocator<char>> *)data :char_traits<char> resourceName:resourceExtension:;
-- (id)loadResourcesWithResourceIndex:(int)a3;
-- (id)predictOutput:(id)a3;
-- (id)preprocessInputFeatures:(id)a3;
-- (id)scaleCirValuesIfRequired:(id)a3;
+- (id)loadResourcesWithResourceIndex:(int)index;
+- (id)predictOutput:(id)output;
+- (id)preprocessInputFeatures:(id)features;
+- (id)scaleCirValuesIfRequired:(id)required;
 - (pair<std::vector<double>,)getNormalizedCirAndPeakMagnitude:(RangeBiasEstimatorSingleAntennaModel *)self;
 - (vector<double,)getNormalizedFftCir:(RangeBiasEstimatorSingleAntennaModel *)self;
-- (void)addBundleNameToModelResourcePackage:()basic_string<char andBundleDirectory:()std:(std::allocator<char>> *)a3 :char_traits<char>;
+- (void)addBundleNameToModelResourcePackage:()basic_string<char andBundleDirectory:()std:(std::allocator<char>> *)std :char_traits<char>;
 @end
 
 @implementation RangeBiasEstimatorSingleAntennaModel
@@ -306,9 +306,9 @@
   return v13;
 }
 
-- (BOOL)configureWithResourceFileHandler:(id)a3
+- (BOOL)configureWithResourceFileHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
@@ -316,7 +316,7 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#bias-est, Configuring bias estimator with resource file handler", buf, 2u);
   }
 
-  if (!v4)
+  if (!handlerCopy)
   {
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
     {
@@ -326,12 +326,12 @@
     goto LABEL_20;
   }
 
-  v6 = [v4 bundleName];
-  v7 = v6;
-  sub_100004A08(v22, [v6 UTF8String]);
-  v8 = [v4 resourceBundleDir];
-  v9 = v8;
-  sub_100004A08(__p, [v8 UTF8String]);
+  bundleName = [handlerCopy bundleName];
+  v7 = bundleName;
+  sub_100004A08(v22, [bundleName UTF8String]);
+  resourceBundleDir = [handlerCopy resourceBundleDir];
+  v9 = resourceBundleDir;
+  sub_100004A08(__p, [resourceBundleDir UTF8String]);
   [(RangeBiasEstimatorSingleAntennaModel *)self addBundleNameToModelResourcePackage:v22 andBundleDirectory:__p];
   if (v21 < 0)
   {
@@ -395,9 +395,9 @@ LABEL_21:
   return v18;
 }
 
-- (id)consumeInputFeatures:(id)a3
+- (id)consumeInputFeatures:(id)features
 {
-  v4 = a3;
+  featuresCopy = features;
   if ((atomic_load_explicit(&qword_1009F8500, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_1009F8500))
   {
     dword_1009F84F8 = *(sub_1000054A8() + 186);
@@ -407,26 +407,26 @@ LABEL_21:
   biasCorrectionEstimate = self->_biasCorrectionEstimate;
   self->_biasCorrectionEstimate = 0;
 
-  if (v4)
+  if (featuresCopy)
   {
-    v6 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 antennaMask]);
+    v6 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [featuresCopy antennaMask]);
     remoteTxAntennaMask = self->_remoteTxAntennaMask;
     self->_remoteTxAntennaMask = v6;
 
-    v8 = [v4 cirPacket1];
-    if ([v8 count] != 8)
+    cirPacket1 = [featuresCopy cirPacket1];
+    if ([cirPacket1 count] != 8)
     {
       __assert_rtn("[RangeBiasEstimatorSingleAntennaModel consumeInputFeatures:]", "NRBYRangeBiasEstimator.mm", 226, "[CIRValuesPacket1 count] == kDimCIRSamples");
     }
 
-    v9 = [(RangeBiasEstimatorSingleAntennaModel *)self checkCirsValid:v8];
-    v10 = [v4 cirPacket2];
-    if ([v10 count] != 8)
+    v9 = [(RangeBiasEstimatorSingleAntennaModel *)self checkCirsValid:cirPacket1];
+    cirPacket2 = [featuresCopy cirPacket2];
+    if ([cirPacket2 count] != 8)
     {
       __assert_rtn("[RangeBiasEstimatorSingleAntennaModel consumeInputFeatures:]", "NRBYRangeBiasEstimator.mm", 230, "[CIRValuesPacket2 count] == kDimCIRSamples");
     }
 
-    v11 = v9 & [(RangeBiasEstimatorSingleAntennaModel *)self checkCirsValid:v10];
+    v11 = v9 & [(RangeBiasEstimatorSingleAntennaModel *)self checkCirsValid:cirPacket2];
     v12 = qword_1009F9820;
     v13 = os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT);
     if ((v11 & 1) == 0)
@@ -447,8 +447,8 @@ LABEL_21:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "#bias-est, Valid CIRs, continuing ... ", buf, 2u);
     }
 
-    v14 = [(RangeBiasEstimatorSingleAntennaModel *)self scaleCirValuesIfRequired:v8];
-    v15 = [(RangeBiasEstimatorSingleAntennaModel *)self scaleCirValuesIfRequired:v10];
+    v14 = [(RangeBiasEstimatorSingleAntennaModel *)self scaleCirValuesIfRequired:cirPacket1];
+    v15 = [(RangeBiasEstimatorSingleAntennaModel *)self scaleCirValuesIfRequired:cirPacket2];
     v16 = v15;
     if (v14 && v15)
     {
@@ -460,13 +460,13 @@ LABEL_21:
       {
         if (v70 - __p == 56)
         {
-          [v4 rttInitiator];
+          [featuresCopy rttInitiator];
           v18 = v17;
-          [v4 tatInitiator];
+          [featuresCopy tatInitiator];
           v20 = v19;
-          [v4 rttResponder];
+          [featuresCopy rttResponder];
           v22 = v21;
-          [v4 tatResponder];
+          [featuresCopy tatResponder];
           v24 = v23;
           v25 = v22 + v23;
           if (v22 + v23 == 0.0)
@@ -474,13 +474,13 @@ LABEL_21:
             __assert_rtn("[RangeBiasEstimatorSingleAntennaModel consumeInputFeatures:]", "NRBYRangeBiasEstimator.mm", 266, "(tat_r + rtt_r) != 0");
           }
 
-          [v4 leadingEdgePacket1];
+          [featuresCopy leadingEdgePacket1];
           v27 = v26;
-          [v4 firstPathIndexPacket1];
+          [featuresCopy firstPathIndexPacket1];
           v29 = v28;
-          [v4 leadingEdgePacket2];
+          [featuresCopy leadingEdgePacket2];
           v31 = v30;
-          [v4 firstPathIndexPacket2];
+          [featuresCopy firstPathIndexPacket2];
           v33 = v31 - v32;
           if (dword_1009F84F8 == 1)
           {
@@ -502,7 +502,7 @@ LABEL_21:
             v35 = v27 - v29;
           }
 
-          [v4 toaNoiseRms];
+          [featuresCopy toaNoiseRms];
           if (v36 == 0.0 || v78 == 0.0 || v75 == 0.0)
           {
             v37 = qword_1009F9820;
@@ -517,20 +517,20 @@ LABEL_21:
 
           else
           {
-            [v4 toaNoiseRms];
+            [featuresCopy toaNoiseRms];
             __xa = v41;
             v63 = log10(v78);
             v62 = log10(__xa);
-            [v4 toaNoiseRms];
+            [featuresCopy toaNoiseRms];
             v43 = v42;
             __x = log10(v75);
             v61 = log10(v43);
-            [v4 soiRssiDbm];
+            [featuresCopy soiRssiDbm];
             v45 = v44;
-            [v4 rssiDbm];
+            [featuresCopy rssiDbm];
             v60 = v46;
             v59 = v45;
-            [v4 tofPicSecond];
+            [featuresCopy tofPicSecond];
             v58 = v47;
             if (dword_1009F84F8 == 1)
             {
@@ -542,11 +542,11 @@ LABEL_21:
               v48 = 1.0;
             }
 
-            [v4 toaNoiseRms];
+            [featuresCopy toaNoiseRms];
             v57 = v49;
-            [v4 toaPpwinRms];
+            [featuresCopy toaPpwinRms];
             v56 = v50;
-            [v4 toaPpwinPeak];
+            [featuresCopy toaPpwinPeak];
             *buf = v60;
             v80 = v59;
             v81 = v58;
@@ -684,18 +684,18 @@ LABEL_44:
   return v38;
 }
 
-- (id)preprocessInputFeatures:(id)a3
+- (id)preprocessInputFeatures:(id)features
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  featuresCopy = features;
+  v5 = featuresCopy;
+  if (featuresCopy)
   {
-    v6 = [v4 featureValueForName:@"input"];
-    v7 = [v6 multiArrayValue];
+    v6 = [featuresCopy featureValueForName:@"input"];
+    multiArrayValue = [v6 multiArrayValue];
 
-    if ([v7 count] == 43)
+    if ([multiArrayValue count] == 43)
     {
-      if ([v7 count] > 12)
+      if ([multiArrayValue count] > 12)
       {
         v8 = 0;
         __p = 0;
@@ -703,7 +703,7 @@ LABEL_44:
         v32 = 0;
         do
         {
-          v9 = [v7 objectAtIndexedSubscript:v8];
+          v9 = [multiArrayValue objectAtIndexedSubscript:v8];
           [v9 doubleValue];
           *buf = v10;
           sub_100009734(&__p, buf);
@@ -725,22 +725,22 @@ LABEL_44:
           v13 = qword_1009F9820;
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
-            v14 = [(NSNumber *)self->_remoteTxAntennaMask intValue];
+            intValue = [(NSNumber *)self->_remoteTxAntennaMask intValue];
             *buf = 67109120;
-            *&buf[4] = v14;
+            *&buf[4] = intValue;
             _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "#bias-est, Using Antenna %d NN bias model", buf, 8u);
           }
 
-          v15 = [(NSNumber *)self->_remoteTxAntennaMask intValue];
-          if (v15 == 2)
+          intValue2 = [(NSNumber *)self->_remoteTxAntennaMask intValue];
+          if (intValue2 == 2)
           {
-            v16 = [(NeuralNetworkModelWithDataTransformer *)self->_neuralNetworkRangeBiasEstimatorModelAntennaMask2 rangeBiasEstimatorModelDataTransformer];
-            v17 = [v16 applyTransformation:v12];
+            rangeBiasEstimatorModelDataTransformer = [(NeuralNetworkModelWithDataTransformer *)self->_neuralNetworkRangeBiasEstimatorModelAntennaMask2 rangeBiasEstimatorModelDataTransformer];
+            v17 = [rangeBiasEstimatorModelDataTransformer applyTransformation:v12];
           }
 
           else
           {
-            if (v15 != 1)
+            if (intValue2 != 1)
             {
               if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
               {
@@ -762,8 +762,8 @@ LABEL_44:
               abort();
             }
 
-            v16 = [(NeuralNetworkModelWithDataTransformer *)self->_neuralNetworkRangeBiasEstimatorModelAntennaMask1 rangeBiasEstimatorModelDataTransformer];
-            v17 = [v16 applyTransformation:v12];
+            rangeBiasEstimatorModelDataTransformer = [(NeuralNetworkModelWithDataTransformer *)self->_neuralNetworkRangeBiasEstimatorModelAntennaMask1 rangeBiasEstimatorModelDataTransformer];
+            v17 = [rangeBiasEstimatorModelDataTransformer applyTransformation:v12];
           }
 
           v19 = v17;
@@ -771,15 +771,15 @@ LABEL_44:
           if (v19)
           {
             v20 = [v19 featureValueForName:@"input"];
-            v21 = [v20 multiArrayValue];
+            multiArrayValue2 = [v20 multiArrayValue];
 
             for (i = 0; i != 13; ++i)
             {
-              v23 = [v21 objectAtIndexedSubscript:i];
-              [v7 setObject:v23 atIndexedSubscript:i];
+              v23 = [multiArrayValue2 objectAtIndexedSubscript:i];
+              [multiArrayValue setObject:v23 atIndexedSubscript:i];
             }
 
-            v24 = [[RangeBiasEstimatorInput alloc] initWithData:v7];
+            v24 = [[RangeBiasEstimatorInput alloc] initWithData:multiArrayValue];
             v18 = v24;
             if (v24)
             {
@@ -846,10 +846,10 @@ LABEL_36:
   return v18;
 }
 
-- (id)predictOutput:(id)a3
+- (id)predictOutput:(id)output
 {
-  v4 = a3;
-  if (!v4)
+  outputCopy = output;
+  if (!outputCopy)
   {
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
@@ -859,7 +859,7 @@ LABEL_36:
     goto LABEL_13;
   }
 
-  if (![(RangeBiasEstimatorSingleAntennaModel *)self predictBiasEstimate:[(NSNumber *)self->_remoteTxAntennaMask intValue] scaledInputFeatures:v4 output:v20])
+  if (![(RangeBiasEstimatorSingleAntennaModel *)self predictBiasEstimate:[(NSNumber *)self->_remoteTxAntennaMask intValue] scaledInputFeatures:outputCopy output:v20])
   {
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
@@ -933,7 +933,7 @@ LABEL_21:
   return v13;
 }
 
-- (void)addBundleNameToModelResourcePackage:()basic_string<char andBundleDirectory:()std:(std::allocator<char>> *)a3 :char_traits<char>
+- (void)addBundleNameToModelResourcePackage:()basic_string<char andBundleDirectory:()std:(std::allocator<char>> *)std :char_traits<char>
 {
   v4 = v3;
   begin = self->_modelResourcePackage.trainedModelResources.__begin_;
@@ -943,7 +943,7 @@ LABEL_21:
     v9 = 56;
     do
     {
-      sub_10029E970((begin + v9 + 32), a3);
+      sub_10029E970((begin + v9 + 32), std);
       sub_10029E970((self->_modelResourcePackage.trainedModelResources.__begin_ + v9), v4);
       ++v8;
       begin = self->_modelResourcePackage.trainedModelResources.__begin_;
@@ -960,7 +960,7 @@ LABEL_21:
     v12 = 56;
     do
     {
-      sub_10029E970((v10 + v12 + 32), a3);
+      sub_10029E970((v10 + v12 + 32), std);
       sub_10029E970((self->_modelResourcePackage.dataTranformerResources.__begin_ + v12), v4);
       ++v11;
       v10 = self->_modelResourcePackage.dataTranformerResources.__begin_;
@@ -990,8 +990,8 @@ LABEL_21:
   v11 = [v9 stringByAppendingPathComponent:v10];
 
   v12 = [NSBundle bundleWithPath:v11];
-  v20 = [v11 UTF8String];
-  sub_1003030B0(&v22.__pn_, &v20);
+  uTF8String = [v11 UTF8String];
+  sub_1003030B0(&v22.__pn_, &uTF8String);
   std::__fs::filesystem::__status(&v22, 0);
   v13 = v21;
   if (SHIBYTE(v22.__pn_.__r_.__value_.__r.__words[2]) < 0)
@@ -1047,7 +1047,7 @@ LABEL_21:
   return v16;
 }
 
-- (id)loadResourcesWithResourceIndex:(int)a3
+- (id)loadResourcesWithResourceIndex:(int)index
 {
   v62 = 0;
   v63 = 0;
@@ -1064,7 +1064,7 @@ LABEL_21:
     goto LABEL_88;
   }
 
-  if (0xEEEEEEEEEEEEEEEFLL * ((v63 - v62) >> 3) <= a3)
+  if (0xEEEEEEEEEEEEEEEFLL * ((v63 - v62) >> 3) <= index)
   {
     v37 = "trainedModelResourceArray.size() > index";
     v38 = 515;
@@ -1073,8 +1073,8 @@ LABEL_88:
   }
 
   v5 = 0;
-  v6 = a3;
-  v41 = a3 + 1;
+  indexCopy = index;
+  v41 = index + 1;
   v7 = 1;
   v8 = "trainedModelResourceArray[index].bundleDirectory.has_value() && trainedModelResourceArray[index].bundleName.has_value()";
   do
@@ -1086,19 +1086,19 @@ LABEL_88:
     memset(&v55, 0, sizeof(v55));
     if (v7)
     {
-      v10 = v62 + 120 * v6;
+      v10 = v62 + 120 * indexCopy;
       if (*(v10 + 80) == 1 && (*(v10 + 112) & 1) != 0)
       {
         std::string::operator=(&v56, (v10 + 56));
-        v11 = v62 + 120 * v6;
+        v11 = v62 + 120 * indexCopy;
         if ((*(v11 + 112) & 1) == 0)
         {
           goto LABEL_90;
         }
 
         std::string::operator=(&v55, (v11 + 88));
-        std::string::operator=(&v42, (v62 + 120 * v6));
-        v12 = v62 + 120 * v6;
+        std::string::operator=(&v42, (v62 + 120 * indexCopy));
+        v12 = v62 + 120 * indexCopy;
         v13 = *(v12 + 48);
         std::string::operator=(&v57, (v12 + 24));
         goto LABEL_13;
@@ -1109,7 +1109,7 @@ LABEL_85:
       __assert_rtn("[RangeBiasEstimatorSingleAntennaModel loadResourcesWithResourceIndex:]", "NRBYRangeBiasEstimator.mm", v36, v8);
     }
 
-    v14 = v59 + 120 * v6;
+    v14 = v59 + 120 * indexCopy;
     if (*(v14 + 80) != 1 || *(v14 + 112) != 1)
     {
       v36 = 541;
@@ -1118,7 +1118,7 @@ LABEL_85:
     }
 
     std::string::operator=(&v56, (v14 + 56));
-    v15 = v59 + 120 * v6;
+    v15 = v59 + 120 * indexCopy;
     if (*(v15 + 112) != 1)
     {
 LABEL_90:
@@ -1126,8 +1126,8 @@ LABEL_90:
     }
 
     std::string::operator=(&v55, (v15 + 88));
-    std::string::operator=(&v42, (v59 + 120 * v6));
-    v16 = v59 + 120 * v6;
+    std::string::operator=(&v42, (v59 + 120 * indexCopy));
+    v16 = v59 + 120 * indexCopy;
     v13 = *(v16 + 48);
     std::string::operator=(&v57, (v16 + 24));
 LABEL_13:
@@ -1366,21 +1366,21 @@ LABEL_80:
   return v33;
 }
 
-- (BOOL)checkCirsValid:(id)a3
+- (BOOL)checkCirsValid:(id)valid
 {
-  v3 = a3;
+  validCopy = valid;
   v4 = 0;
   v5 = 0;
   do
   {
-    v6 = [v3 objectAtIndex:v4];
-    v7 = [v6 real];
-    [v7 doubleValue];
+    v6 = [validCopy objectAtIndex:v4];
+    real = [v6 real];
+    [real doubleValue];
     if (v8 == 0.0)
     {
-      v9 = [v3 objectAtIndex:v4];
-      v10 = [v9 imag];
-      [v10 doubleValue];
+      v9 = [validCopy objectAtIndex:v4];
+      imag = [v9 imag];
+      [imag doubleValue];
       v12 = v11;
 
       if (v12 == 0.0)
@@ -1414,14 +1414,14 @@ LABEL_17:
   v15 = 0.0;
   do
   {
-    v16 = [v3 objectAtIndex:v13];
-    v17 = [v16 real];
-    [v17 doubleValue];
+    v16 = [validCopy objectAtIndex:v13];
+    real2 = [v16 real];
+    [real2 doubleValue];
     v19 = v18;
 
-    v20 = [v3 objectAtIndex:v13];
-    v21 = [v20 imag];
-    [v21 doubleValue];
+    v20 = [validCopy objectAtIndex:v13];
+    imag2 = [v20 imag];
+    [imag2 doubleValue];
     v15 = v15 + v19;
     v14 = v14 + v22;
 
@@ -1445,9 +1445,9 @@ LABEL_18:
   return v23;
 }
 
-- (id)createAndPopulateBiasEstimatorInput:(const void *)a3 ofDimension:(id)a4
+- (id)createAndPopulateBiasEstimatorInput:(const void *)input ofDimension:(id)dimension
 {
-  v5 = [NSArray arrayWithObject:a4];
+  v5 = [NSArray arrayWithObject:dimension];
   v16 = 0;
   v6 = [[MLMultiArray alloc] initWithShape:v5 dataType:65600 error:&v16];
   v7 = v16;
@@ -1470,13 +1470,13 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#bias-est, Created biasEstimatorInputMLArray, populating values.", v15, 2u);
     }
 
-    if (*(a3 + 1) != *a3)
+    if (*(input + 1) != *input)
     {
       v10 = 0;
       do
       {
         v11 = [NSNumber numberWithInt:v10];
-        v12 = [NSNumber numberWithDouble:*(*a3 + 8 * v10)];
+        v12 = [NSNumber numberWithDouble:*(*input + 8 * v10)];
         v17 = v11;
         v13 = [NSArray arrayWithObjects:&v17 count:1];
         [v6 setObject:v12 forKeyedSubscript:v13];
@@ -1484,7 +1484,7 @@ LABEL_18:
         ++v10;
       }
 
-      while (v10 < (*(a3 + 1) - *a3) >> 3);
+      while (v10 < (*(input + 1) - *input) >> 3);
     }
 
     v9 = [[RangeBiasEstimatorInput alloc] initWithData:v6];
@@ -1493,20 +1493,20 @@ LABEL_18:
   return v9;
 }
 
-- (BOOL)predictBiasEstimate:(unsigned __int8)a3 scaledInputFeatures:(id)a4 output:(id *)a5
+- (BOOL)predictBiasEstimate:(unsigned __int8)estimate scaledInputFeatures:(id)features output:(id *)output
 {
-  v32 = a5;
-  v5 = a3;
+  outputCopy = output;
+  estimateCopy = estimate;
   __src = 0;
   v35 = 0;
   v36 = 0;
-  v33 = a4;
-  v7 = [v33 featureValueForName:@"input"];
-  v8 = [v7 multiArrayValue];
+  featuresCopy = features;
+  v7 = [featuresCopy featureValueForName:@"input"];
+  multiArrayValue = [v7 multiArrayValue];
 
   for (i = 0; i != 43; ++i)
   {
-    v10 = [v8 objectAtIndexedSubscript:{i, v32}];
+    v10 = [multiArrayValue objectAtIndexedSubscript:{i, outputCopy}];
     [v10 doubleValue];
     v12 = v11;
     v13 = v35;
@@ -1575,7 +1575,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (v5 == 2)
+  if (estimateCopy == 2)
   {
     neuralNetworkRangeBiasEstimatorModelAntennaMask2 = self->_neuralNetworkRangeBiasEstimatorModelAntennaMask2;
     if (neuralNetworkRangeBiasEstimatorModelAntennaMask2)
@@ -1634,7 +1634,7 @@ LABEL_41:
 
   else
   {
-    if (v5 != 1)
+    if (estimateCopy != 1)
     {
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
       {
@@ -1743,12 +1743,12 @@ LABEL_19:
   do
   {
     v7 = [v5 objectAtIndexedSubscript:v6];
-    v8 = [v7 real];
-    [v8 doubleValue];
+    real = [v7 real];
+    [real doubleValue];
     v10 = v9;
     v11 = [v5 objectAtIndexedSubscript:v6];
-    v12 = [v11 imag];
-    [v12 doubleValue];
+    imag = [v11 imag];
+    [imag doubleValue];
     v14 = v13;
 
     __p = COERCE_VOID_(hypot(v10, v14));
@@ -1902,12 +1902,12 @@ LABEL_19:
   for (i = 0; i != 8; ++i)
   {
     v22 = [v5 objectAtIndexedSubscript:i];
-    v23 = [v22 real];
-    [v23 doubleValue];
+    real = [v22 real];
+    [real doubleValue];
     v25 = v24;
     v26 = [v5 objectAtIndexedSubscript:i];
-    v27 = [v26 imag];
-    [v27 doubleValue];
+    imag = [v26 imag];
+    [imag doubleValue];
     v28 = __src + 16 * v71[i];
     *v28 = v25;
     v28[1] = v29;
@@ -2082,13 +2082,13 @@ LABEL_45:
   return result;
 }
 
-- (id)scaleCirValuesIfRequired:(id)a3
+- (id)scaleCirValuesIfRequired:(id)required
 {
-  v4 = a3;
+  requiredCopy = required;
   v5 = *(sub_1000054A8() + 186);
   if (!v5)
   {
-    v3 = [v4 copy];
+    v3 = [requiredCopy copy];
     goto LABEL_16;
   }
 
@@ -2114,14 +2114,14 @@ LABEL_45:
   v8 = 0.0;
   do
   {
-    v9 = [v4 objectAtIndexedSubscript:v6];
-    v10 = [v9 real];
-    [v10 doubleValue];
+    v9 = [requiredCopy objectAtIndexedSubscript:v6];
+    real = [v9 real];
+    [real doubleValue];
     v12 = v11;
 
-    v13 = [v4 objectAtIndexedSubscript:v6];
-    v14 = [v13 imag];
-    [v14 doubleValue];
+    v13 = [requiredCopy objectAtIndexedSubscript:v6];
+    imag = [v13 imag];
+    [imag doubleValue];
     v7 = fmax(fabs(v12), v7);
     v8 = fmax(fabs(v15), v8);
 
@@ -2147,14 +2147,14 @@ LABEL_15:
   v19 = (32767.0 / v16);
   do
   {
-    v20 = [v4 objectAtIndexedSubscript:v18];
-    v21 = [v20 real];
-    [v21 doubleValue];
+    v20 = [requiredCopy objectAtIndexedSubscript:v18];
+    real2 = [v20 real];
+    [real2 doubleValue];
     v23 = v22;
 
-    v24 = [v4 objectAtIndexedSubscript:v18];
-    v25 = [v24 imag];
-    [v25 doubleValue];
+    v24 = [requiredCopy objectAtIndexedSubscript:v18];
+    imag2 = [v24 imag];
+    [imag2 doubleValue];
     v27 = v26;
 
     v28 = [Complex alloc];

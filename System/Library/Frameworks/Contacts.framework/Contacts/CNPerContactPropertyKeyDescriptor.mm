@@ -1,11 +1,11 @@
 @interface CNPerContactPropertyKeyDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CNPerContactPropertyKeyDescriptor)init;
-- (CNPerContactPropertyKeyDescriptor)initWithCoder:(id)a3;
+- (CNPerContactPropertyKeyDescriptor)initWithCoder:(id)coder;
 - (id)_cn_optionalKeys;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_cn_executeGetterForRepresentedKeys:(id)a3;
+- (void)_cn_executeGetterForRepresentedKeys:(id)keys;
 @end
 
 @implementation CNPerContactPropertyKeyDescriptor
@@ -25,16 +25,16 @@
   return v2;
 }
 
-- (CNPerContactPropertyKeyDescriptor)initWithCoder:(id)a3
+- (CNPerContactPropertyKeyDescriptor)initWithCoder:(id)coder
 {
   if (self)
   {
     v4 = MEMORY[0x1E695DFD8];
-    v5 = a3;
+    coderCopy = coder;
     v6 = objc_opt_class();
     v7 = objc_opt_class();
     v8 = [v4 setWithObjects:{v6, v7, objc_opt_class(), 0}];
-    v9 = [v5 decodeObjectOfClasses:v8 forKey:@"propertiesByIdentifier"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"propertiesByIdentifier"];
 
     propertiesByIdentifier = self->_propertiesByIdentifier;
     self->_propertiesByIdentifier = v9;
@@ -43,9 +43,9 @@
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v6 = objc_opt_class();
   v9[0] = MEMORY[0x1E69E9820];
@@ -53,8 +53,8 @@
   v9[2] = __45__CNPerContactPropertyKeyDescriptor_isEqual___block_invoke;
   v9[3] = &unk_1E7412228;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = equalCopy;
+  v7 = equalCopy;
   LOBYTE(self) = [v5 isObject:v7 kindOfClass:v6 andEqualToObject:self withBlocks:{v9, 0}];
 
   return self;
@@ -108,15 +108,15 @@ uint64_t __41__CNPerContactPropertyKeyDescriptor_hash__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)_cn_executeGetterForRepresentedKeys:(id)a3
+- (void)_cn_executeGetterForRepresentedKeys:(id)keys
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4[2](v4, @"identifier");
+  keysCopy = keys;
+  v5 = keysCopy[2](keysCopy, @"identifier");
   v6 = [(NSMutableDictionary *)self->_propertiesByIdentifier objectForKey:v5];
   if (!v6)
   {
-    v7 = v4[2](v4, @"linkIdentifier");
+    v7 = keysCopy[2](keysCopy, @"linkIdentifier");
     v6 = [(NSMutableDictionary *)self->_propertiesByIdentifier objectForKey:v7];
   }
 
@@ -140,7 +140,7 @@ uint64_t __41__CNPerContactPropertyKeyDescriptor_hash__block_invoke(uint64_t a1)
           objc_enumerationMutation(v8);
         }
 
-        v13 = (v4[2])(v4, *(*(&v14 + 1) + 8 * v12++));
+        v13 = (keysCopy[2])(keysCopy, *(*(&v14 + 1) + 8 * v12++));
       }
 
       while (v10 != v12);
@@ -153,14 +153,14 @@ uint64_t __41__CNPerContactPropertyKeyDescriptor_hash__block_invoke(uint64_t a1)
 
 - (id)_cn_optionalKeys
 {
-  v2 = [(NSMutableDictionary *)self->_propertiesByIdentifier allValues];
-  v3 = [v2 _cn_flatten];
-  v4 = [CNContactKeyVector keyVectorWithKeys:v3];
+  allValues = [(NSMutableDictionary *)self->_propertiesByIdentifier allValues];
+  _cn_flatten = [allValues _cn_flatten];
+  v4 = [CNContactKeyVector keyVectorWithKeys:_cn_flatten];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CNPerContactPropertyKeyDescriptor);
   v5 = [(NSMutableDictionary *)self->_propertiesByIdentifier mutableCopy];

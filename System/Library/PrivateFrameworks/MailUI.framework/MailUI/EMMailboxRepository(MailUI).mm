@@ -44,9 +44,9 @@
               v12 = v11;
               if ([v12 smartMailboxType] == 8)
               {
-                v13 = [a1 mailboxObjectIDsForMailboxType:{objc_msgSend(v12, "type")}];
-                v14 = [v13 allObjects];
-                v15 = [a1 mailboxesForObjectIDs:v14];
+                v13 = [self mailboxObjectIDsForMailboxType:{objc_msgSend(v12, "type")}];
+                allObjects = [v13 allObjects];
+                v15 = [self mailboxesForObjectIDs:allObjects];
 
                 [v5 addObjectsFromArray:v15];
               }

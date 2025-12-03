@@ -1,19 +1,19 @@
 @interface _GCObservation
-- (_GCObservation)initWithCleanupHandler:(id)a3;
+- (_GCObservation)initWithCleanupHandler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation _GCObservation
 
-- (_GCObservation)initWithCleanupHandler:(id)a3
+- (_GCObservation)initWithCleanupHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9.receiver = self;
   v9.super_class = _GCObservation;
   v5 = [(_GCObservation *)&v9 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(handlerCopy);
     handler = v5->_handler;
     v5->_handler = v6;
   }

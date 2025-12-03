@@ -1,29 +1,29 @@
 @interface PICurvesAutoCalculator
 + (id)_defaultCurveArray;
-+ (id)autoValuesForBlackPoint:(double)a3 whitePoint:(double)a4;
-+ (id)dictionariesFromPoints:(id)a3;
-- (id)computeCurvesForImageHistogram:(id)a3;
-- (void)submit:(id)a3;
++ (id)autoValuesForBlackPoint:(double)point whitePoint:(double)whitePoint;
++ (id)dictionariesFromPoints:(id)points;
+- (id)computeCurvesForImageHistogram:(id)histogram;
+- (void)submit:(id)submit;
 @end
 
 @implementation PICurvesAutoCalculator
 
-+ (id)autoValuesForBlackPoint:(double)a3 whitePoint:(double)a4
++ (id)autoValuesForBlackPoint:(double)point whitePoint:(double)whitePoint
 {
-  v6 = [a1 _defaultCurveArray];
-  v7 = [v6 mutableCopy];
+  _defaultCurveArray = [self _defaultCurveArray];
+  v7 = [_defaultCurveArray mutableCopy];
 
   v8 = [v7 objectAtIndex:1];
   v9 = [PICurveControlPoint alloc];
   [v8 y];
-  v11 = -[PICurveControlPoint initWithX:y:editable:](v9, "initWithX:y:editable:", [v8 isEditable], a3, v10);
+  v11 = -[PICurveControlPoint initWithX:y:editable:](v9, "initWithX:y:editable:", [v8 isEditable], point, v10);
 
   [v7 replaceObjectAtIndex:1 withObject:v11];
   v12 = [v7 objectAtIndex:2];
 
   v13 = [PICurveControlPoint alloc];
   [v12 y];
-  v15 = -[PICurveControlPoint initWithX:y:editable:](v13, "initWithX:y:editable:", [v12 isEditable], a4, v14);
+  v15 = -[PICurveControlPoint initWithX:y:editable:](v13, "initWithX:y:editable:", [v12 isEditable], whitePoint, v14);
 
   [v7 replaceObjectAtIndex:2 withObject:v15];
   v16 = [MEMORY[0x1E695DEC8] arrayWithArray:v7];
@@ -63,16 +63,16 @@ void __44__PICurvesAutoCalculator__defaultCurveArray__block_invoke()
   _defaultCurveArray_defaultCurveArray = v4;
 }
 
-+ (id)dictionariesFromPoints:(id)a3
++ (id)dictionariesFromPoints:(id)points
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  pointsCopy = points;
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(pointsCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v3;
+  obj = pointsCopy;
   v5 = [obj countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v5)
   {
@@ -115,10 +115,10 @@ void __44__PICurvesAutoCalculator__defaultCurveArray__block_invoke()
   return v4;
 }
 
-- (id)computeCurvesForImageHistogram:(id)a3
+- (id)computeCurvesForImageHistogram:(id)histogram
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  histogramCopy = histogram;
   v4 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -156,8 +156,8 @@ LABEL_11:
           v20 = MEMORY[0x1E696AF00];
           v21 = specific;
           v22 = v18;
-          v23 = [v20 callStackSymbols];
-          v4 = [v23 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v20 callStackSymbols];
+          v4 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v26 = specific;
           v27 = 2114;
@@ -184,8 +184,8 @@ LABEL_11:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v14 callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v26 = v17;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -201,11 +201,11 @@ LABEL_14:
   }
 }
 
-- (void)submit:(id)a3
+- (void)submit:(id)submit
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  submitCopy = submit;
+  if (!submitCopy)
   {
     v17 = NUAssertLogger_29578();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -227,8 +227,8 @@ LABEL_14:
         v25 = dispatch_get_specific(*v19);
         v26 = MEMORY[0x1E696AF00];
         v27 = v25;
-        v28 = [v26 callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v26 callStackSymbols];
+        v29 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v25;
         *&buf[12] = 2114;
@@ -239,8 +239,8 @@ LABEL_14:
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v24;
       _os_log_error_impl(&dword_1C7694000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -249,7 +249,7 @@ LABEL_14:
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
+  v5 = submitCopy;
   v6 = [objc_alloc(MEMORY[0x1E69B3AC8]) initWithRequest:self];
   v7 = objc_alloc_init(MEMORY[0x1E69B3AC0]);
   v8 = *(MEMORY[0x1E69B38F0] + 16);
@@ -268,14 +268,14 @@ LABEL_14:
   [v6 setPipelineFilters:v12];
 
   [v6 setSampleMode:2];
-  v13 = [v6 histogramCalculationColorSpace];
-  v14 = [MEMORY[0x1E69B3A10] itur2100HLGColorSpace];
-  LOBYTE(v12) = [v13 isEqual:v14];
+  histogramCalculationColorSpace = [v6 histogramCalculationColorSpace];
+  itur2100HLGColorSpace = [MEMORY[0x1E69B3A10] itur2100HLGColorSpace];
+  LOBYTE(v12) = [histogramCalculationColorSpace isEqual:itur2100HLGColorSpace];
 
   if ((v12 & 1) == 0)
   {
-    v15 = [MEMORY[0x1E69B3A10] displayP3ColorSpace];
-    [v6 setHistogramCalculationColorSpace:v15];
+    displayP3ColorSpace = [MEMORY[0x1E69B3A10] displayP3ColorSpace];
+    [v6 setHistogramCalculationColorSpace:displayP3ColorSpace];
   }
 
   v30[0] = MEMORY[0x1E69E9820];

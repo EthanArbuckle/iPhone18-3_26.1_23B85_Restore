@@ -1,14 +1,14 @@
 @interface MODictionaryEncoder
-+ (id)decodeToDictionary:(id)a3;
-+ (id)encodeDictionary:(id)a3;
++ (id)decodeToDictionary:(id)dictionary;
++ (id)encodeDictionary:(id)dictionary;
 @end
 
 @implementation MODictionaryEncoder
 
-+ (id)encodeDictionary:(id)a3
++ (id)encodeDictionary:(id)dictionary
 {
-  v3 = a3;
-  if (!v3)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     goto LABEL_10;
   }
@@ -27,7 +27,7 @@
   if (objc_opt_isKindOfClass())
   {
     v10 = 0;
-    v5 = [NSJSONSerialization dataWithJSONObject:v3 options:0 error:&v10];
+    v5 = [NSJSONSerialization dataWithJSONObject:dictionaryCopy options:0 error:&v10];
     v6 = v10;
     if (v6 || !v5)
     {
@@ -55,10 +55,10 @@ LABEL_10:
   return v7;
 }
 
-+ (id)decodeToDictionary:(id)a3
++ (id)decodeToDictionary:(id)dictionary
 {
-  v3 = a3;
-  if (!v3)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     goto LABEL_10;
   }
@@ -77,7 +77,7 @@ LABEL_10:
   if (objc_opt_isKindOfClass())
   {
     v10 = 0;
-    v5 = [NSJSONSerialization JSONObjectWithData:v3 options:0 error:&v10];
+    v5 = [NSJSONSerialization JSONObjectWithData:dictionaryCopy options:0 error:&v10];
     v6 = v10;
     if (v6 || !v5)
     {

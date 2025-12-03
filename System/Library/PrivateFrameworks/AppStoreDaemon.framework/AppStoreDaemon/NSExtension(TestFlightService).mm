@@ -6,8 +6,8 @@
 
 - (id)testFlightServiceExtensionCustomServiceTime
 {
-  v1 = [a1 infoDictionary];
-  v2 = [v1 objectForKeyedSubscript:@"NSExtension"];
+  infoDictionary = [self infoDictionary];
+  v2 = [infoDictionary objectForKeyedSubscript:@"NSExtension"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

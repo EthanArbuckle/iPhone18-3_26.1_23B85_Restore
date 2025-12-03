@@ -1,72 +1,72 @@
 @interface PKPeerPaymentPurchaseData
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPKPeerPaymentPurchaseData:(id)a3;
-- (PKPeerPaymentPurchaseData)initWithCoder:(id)a3;
-- (PKPeerPaymentPurchaseData)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPKPeerPaymentPurchaseData:(id)data;
+- (PKPeerPaymentPurchaseData)initWithCoder:(id)coder;
+- (PKPeerPaymentPurchaseData)initWithDictionary:(id)dictionary;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPeerPaymentPurchaseData
 
-- (PKPeerPaymentPurchaseData)initWithDictionary:(id)a3
+- (PKPeerPaymentPurchaseData)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = PKPeerPaymentPurchaseData;
-  v5 = [(PKServiceProviderPurchaseData *)&v8 initWithDictionary:v4];
+  v5 = [(PKServiceProviderPurchaseData *)&v8 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"status"];
+    v6 = [dictionaryCopy PKStringForKey:@"status"];
     v5->_status = PKPeerPaymentPurchaseDataStatusFromString(v6);
 
-    v5->_requiresInteraction = [v4 PKBoolForKey:@"requiresInteraction"];
+    v5->_requiresInteraction = [dictionaryCopy PKBoolForKey:@"requiresInteraction"];
   }
 
   return v5;
 }
 
-- (PKPeerPaymentPurchaseData)initWithCoder:(id)a3
+- (PKPeerPaymentPurchaseData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKPeerPaymentPurchaseData;
   v5 = [(PKPeerPaymentPurchaseData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"status"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"status"];
     v5->_status = PKPeerPaymentPurchaseDataStatusFromString(v6);
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requiresInteraction"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requiresInteraction"];
     v5->_requiresInteraction = [v7 BOOLValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   status = self->_status;
-  v5 = a3;
+  coderCopy = coder;
   v6 = PKPeerPaymentPurchaseDataStatusToString(status);
-  [v5 encodeObject:v6 forKey:@"status"];
+  [coderCopy encodeObject:v6 forKey:@"status"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_requiresInteraction];
-  [v5 encodeObject:v7 forKey:@"requiresInteraction"];
+  [coderCopy encodeObject:v7 forKey:@"requiresInteraction"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPeerPaymentPurchaseData *)self isEqualToPKPeerPaymentPurchaseData:v4];
+  equalCopy = equal;
+  v5 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPeerPaymentPurchaseData *)self isEqualToPKPeerPaymentPurchaseData:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToPKPeerPaymentPurchaseData:(id)a3
+- (BOOL)isEqualToPKPeerPaymentPurchaseData:(id)data
 {
-  v4 = a3;
-  v5 = self == v4 || self->_status == v4->_status && self->_requiresInteraction == v4->_requiresInteraction;
+  dataCopy = data;
+  v5 = self == dataCopy || self->_status == dataCopy->_status && self->_requiresInteraction == dataCopy->_requiresInteraction;
 
   return v5;
 }

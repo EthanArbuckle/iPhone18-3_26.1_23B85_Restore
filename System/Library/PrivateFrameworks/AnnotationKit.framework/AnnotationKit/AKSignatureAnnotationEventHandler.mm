@@ -6,19 +6,19 @@
 
 - (CGSize)naturalSizeForAnnotation
 {
-  v3 = [(AKAnnotationEventHandler *)self annotation];
+  annotation = [(AKAnnotationEventHandler *)self annotation];
   v15.receiver = self;
   v15.super_class = AKSignatureAnnotationEventHandler;
   [(AKAnnotationEventHandler *)&v15 naturalSizeForAnnotation];
   v5 = v4;
   v7 = v6;
-  v8 = [v3 signature];
-  v9 = [v8 path];
+  signature = [annotation signature];
+  path = [signature path];
 
-  if (v9)
+  if (path)
   {
-    v10 = [v3 signature];
-    [v10 pathBounds];
+    signature2 = [annotation signature];
+    [signature2 pathBounds];
     v5 = v11;
     v7 = v12;
   }

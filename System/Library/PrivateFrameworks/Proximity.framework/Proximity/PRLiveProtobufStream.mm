@@ -1,7 +1,7 @@
 @interface PRLiveProtobufStream
 - (PRLiveProtobufStream)init;
 - (PRLiveProtobufStreamDelegate)delegate;
-- (void)consumeProtobufBytes:(id)a3;
+- (void)consumeProtobufBytes:(id)bytes;
 - (void)start;
 - (void)stop;
 @end
@@ -45,8 +45,8 @@
 
 - (void)start
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"PRDiagnostics.m" lineNumber:440 description:@"Must set the delegateQueue property before calling start."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"PRDiagnostics.m" lineNumber:440 description:@"Must set the delegateQueue property before calling start."];
 }
 
 void __29__PRLiveProtobufStream_start__block_invoke(uint64_t a1, char a2)
@@ -59,8 +59,8 @@ void __29__PRLiveProtobufStream_start__block_invoke(uint64_t a1, char a2)
 
 - (void)stop
 {
-  v3 = [(PRLiveProtobufStream *)self server];
-  [v3 stopStreamingProtobufDataForClientId:self->_uniqueId reply:&__block_literal_global_90];
+  server = [(PRLiveProtobufStream *)self server];
+  [server stopStreamingProtobufDataForClientId:self->_uniqueId reply:&__block_literal_global_90];
 }
 
 void __28__PRLiveProtobufStream_stop__block_invoke(uint64_t a1, char a2)
@@ -71,18 +71,18 @@ void __28__PRLiveProtobufStream_stop__block_invoke(uint64_t a1, char a2)
   }
 }
 
-- (void)consumeProtobufBytes:(id)a3
+- (void)consumeProtobufBytes:(id)bytes
 {
-  v4 = a3;
-  v5 = [(PRLiveProtobufStream *)self delegateQueue];
+  bytesCopy = bytes;
+  delegateQueue = [(PRLiveProtobufStream *)self delegateQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__PRLiveProtobufStream_consumeProtobufBytes___block_invoke;
   v7[3] = &unk_2788F3B88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = bytesCopy;
+  v6 = bytesCopy;
+  dispatch_async(delegateQueue, v7);
 }
 
 void __45__PRLiveProtobufStream_consumeProtobufBytes___block_invoke(uint64_t a1)

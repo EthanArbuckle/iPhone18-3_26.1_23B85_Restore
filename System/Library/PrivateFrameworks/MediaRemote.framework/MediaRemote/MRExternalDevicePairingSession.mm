@@ -2,23 +2,23 @@
 - (BOOL)_useSystemPairing;
 - (BOOL)isPaired;
 - (BOOL)isUsingSystemPairing;
-- (MRExternalDevicePairingSession)initWithDevice:(id)a3;
+- (MRExternalDevicePairingSession)initWithDevice:(id)device;
 - (id)pairedDevices;
 - (id)removePeer;
 - (id)updatePeer;
-- (void)_openSecuritySessionInState:(int)a3 useSystemPairing:(void *)a4 completion:;
+- (void)_openSecuritySessionInState:(int)state useSystemPairing:(void *)pairing completion:;
 - (void)open;
 - (void)removePeer;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation MRExternalDevicePairingSession
 
-- (MRExternalDevicePairingSession)initWithDevice:(id)a3
+- (MRExternalDevicePairingSession)initWithDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = MRExternalDevicePairingSession;
-  return [(MRCryptoPairingSession *)&v4 initWithRole:0 device:a3];
+  return [(MRCryptoPairingSession *)&v4 initWithRole:0 device:device];
 }
 
 - (BOOL)isUsingSystemPairing
@@ -30,33 +30,33 @@
 
 - (BOOL)isPaired
 {
-  v3 = [(MRCryptoPairingSession *)self device];
+  device = [(MRCryptoPairingSession *)self device];
 
-  if (!v3)
+  if (!device)
   {
     return 0;
   }
 
   v4 = [MRCoreUtilsSystemPairingSession alloc];
-  v5 = [(MRCryptoPairingSession *)self device];
-  v6 = [(MRCoreUtilsPairingSession *)v4 initWithRole:0 device:v5];
+  device2 = [(MRCryptoPairingSession *)self device];
+  v6 = [(MRCoreUtilsPairingSession *)v4 initWithRole:0 device:device2];
 
   [(MRCoreUtilsPairingSession *)v6 open];
-  LOBYTE(v5) = [(MRCoreUtilsPairingSession *)v6 isPaired];
+  LOBYTE(device2) = [(MRCoreUtilsPairingSession *)v6 isPaired];
 
-  if (v5)
+  if (device2)
   {
     return 1;
   }
 
   v8 = [MRCoreUtilsPairingSession alloc];
-  v9 = [(MRCryptoPairingSession *)self device];
-  v10 = [(MRCoreUtilsPairingSession *)v8 initWithRole:0 device:v9];
+  device3 = [(MRCryptoPairingSession *)self device];
+  v10 = [(MRCoreUtilsPairingSession *)v8 initWithRole:0 device:device3];
 
   [(MRCoreUtilsPairingSession *)v10 open];
-  LOBYTE(v9) = [(MRCoreUtilsPairingSession *)v10 isPaired];
+  LOBYTE(device3) = [(MRCoreUtilsPairingSession *)v10 isPaired];
 
-  return v9;
+  return device3;
 }
 
 - (id)pairedDevices
@@ -64,13 +64,13 @@
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v3 = [(MRCoreUtilsPairingSession *)[MRCoreUtilsSystemPairingSession alloc] initWithRole:0 device:0];
   [(MRCoreUtilsPairingSession *)v3 open];
-  v4 = [(MRCoreUtilsPairingSession *)v3 pairedDevices];
-  [v2 addObjectsFromArray:v4];
+  pairedDevices = [(MRCoreUtilsPairingSession *)v3 pairedDevices];
+  [v2 addObjectsFromArray:pairedDevices];
 
   v5 = [[MRCoreUtilsPairingSession alloc] initWithRole:0 device:0];
   [(MRCoreUtilsPairingSession *)v5 open];
-  v6 = [(MRCoreUtilsPairingSession *)v5 pairedDevices];
-  [v2 addObjectsFromArray:v6];
+  pairedDevices2 = [(MRCoreUtilsPairingSession *)v5 pairedDevices];
+  [v2 addObjectsFromArray:pairedDevices2];
 
   return v2;
 }
@@ -84,25 +84,25 @@
   }
 
   v4 = [MRCoreUtilsSystemPairingSession alloc];
-  v5 = [(MRCryptoPairingSession *)self device];
-  v6 = [(MRCoreUtilsPairingSession *)v4 initWithRole:0 device:v5];
+  device = [(MRCryptoPairingSession *)self device];
+  v6 = [(MRCoreUtilsPairingSession *)v4 initWithRole:0 device:device];
 
   [(MRCoreUtilsPairingSession *)v6 open];
-  v7 = [(MRCoreUtilsSystemPairingSession *)v6 removePeer];
+  removePeer = [(MRCoreUtilsSystemPairingSession *)v6 removePeer];
 
   v8 = [MRCoreUtilsPairingSession alloc];
-  v9 = [(MRCryptoPairingSession *)self device];
-  v10 = [(MRCoreUtilsPairingSession *)v8 initWithRole:0 device:v9];
+  device2 = [(MRCryptoPairingSession *)self device];
+  v10 = [(MRCoreUtilsPairingSession *)v8 initWithRole:0 device:device2];
 
   [(MRCoreUtilsPairingSession *)v10 open];
-  v11 = [(MRCoreUtilsPairingSession *)v10 removePeer];
-  v12 = v11;
-  if (!v7)
+  removePeer2 = [(MRCoreUtilsPairingSession *)v10 removePeer];
+  v12 = removePeer2;
+  if (!removePeer)
   {
-    v7 = v11;
+    removePeer = removePeer2;
   }
 
-  return v7;
+  return removePeer;
 }
 
 - (id)updatePeer
@@ -114,34 +114,34 @@
   }
 
   v4 = [MRCoreUtilsSystemPairingSession alloc];
-  v5 = [(MRCryptoPairingSession *)self device];
-  v6 = [(MRCoreUtilsPairingSession *)v4 initWithRole:0 device:v5];
+  device = [(MRCryptoPairingSession *)self device];
+  v6 = [(MRCoreUtilsPairingSession *)v4 initWithRole:0 device:device];
 
   [(MRCoreUtilsPairingSession *)v6 open];
-  v7 = [(MRCoreUtilsSystemPairingSession *)v6 updatePeer];
+  updatePeer = [(MRCoreUtilsSystemPairingSession *)v6 updatePeer];
 
   v8 = [MRCoreUtilsPairingSession alloc];
-  v9 = [(MRCryptoPairingSession *)self device];
-  v10 = [(MRCoreUtilsPairingSession *)v8 initWithRole:0 device:v9];
+  device2 = [(MRCryptoPairingSession *)self device];
+  v10 = [(MRCoreUtilsPairingSession *)v8 initWithRole:0 device:device2];
 
   [(MRCoreUtilsPairingSession *)v10 open];
-  v11 = [(MRCoreUtilsPairingSession *)v10 updatePeer];
-  v12 = v11;
-  if (!v7)
+  updatePeer2 = [(MRCoreUtilsPairingSession *)v10 updatePeer];
+  v12 = updatePeer2;
+  if (!updatePeer)
   {
-    v7 = v11;
+    updatePeer = updatePeer2;
   }
 
-  return v7;
+  return updatePeer;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = MRExternalDevicePairingSession;
-  [(MRCryptoPairingSession *)&v15 setDelegate:v4];
-  if (v4)
+  [(MRCryptoPairingSession *)&v15 setDelegate:delegateCopy];
+  if (delegateCopy)
   {
     v5 = objc_alloc_init(MRCryptoPairingSessionBlockDelegate);
     [(MRExternalDevicePairingSession *)self setPairingDelegate:v5];
@@ -235,45 +235,45 @@ void __46__MRExternalDevicePairingSession_setDelegate___block_invoke_4(uint64_t 
 
 - (void)open
 {
-  v3 = [(MRExternalDevicePairingSession *)self _useSystemPairing];
+  _useSystemPairing = [(MRExternalDevicePairingSession *)self _useSystemPairing];
 
-  [(MRExternalDevicePairingSession *)&self->super.super.isa _openSecuritySessionInState:v3 useSystemPairing:0 completion:?];
+  [(MRExternalDevicePairingSession *)&self->super.super.isa _openSecuritySessionInState:_useSystemPairing useSystemPairing:0 completion:?];
 }
 
-- (void)_openSecuritySessionInState:(int)a3 useSystemPairing:(void *)a4 completion:
+- (void)_openSecuritySessionInState:(int)state useSystemPairing:(void *)pairing completion:
 {
-  v7 = a4;
-  if (a1)
+  pairingCopy = pairing;
+  if (self)
   {
     v8 = _MRLogForCategory(0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      [MRExternalDevicePairingSession _openSecuritySessionInState:a3 useSystemPairing:a2 completion:v8];
+      [MRExternalDevicePairingSession _openSecuritySessionInState:state useSystemPairing:a2 completion:v8];
     }
 
     v9 = off_1E7698D48;
-    if (!a3)
+    if (!state)
     {
       v9 = off_1E7698D40;
     }
 
     v10 = objc_alloc(*v9);
-    v11 = [a1 device];
-    v12 = [v10 initWithRole:0 device:v11];
+    device = [self device];
+    v12 = [v10 initWithRole:0 device:device];
 
-    [a1 setPairingSession:v12];
-    [a1[4] setDelegate:a1[5]];
-    objc_initWeak(&location, a1);
+    [self setPairingSession:v12];
+    [self[4] setDelegate:self[5]];
+    objc_initWeak(&location, self);
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __90__MRExternalDevicePairingSession__openSecuritySessionInState_useSystemPairing_completion___block_invoke;
     v13[3] = &unk_1E769F6F8;
     objc_copyWeak(v15, &location);
     v15[1] = a2;
-    v16 = a3;
-    v14 = v7;
-    [a1[5] setExchangeCompleteBlock:v13];
-    [a1[4] openInState:a2];
+    stateCopy = state;
+    v14 = pairingCopy;
+    [self[5] setExchangeCompleteBlock:v13];
+    [self[4] openInState:a2];
 
     objc_destroyWeak(v15);
     objc_destroyWeak(&location);
@@ -363,13 +363,13 @@ void __90__MRExternalDevicePairingSession__openSecuritySessionInState_useSystemP
 
 - (BOOL)_useSystemPairing
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [a1 device];
-  if ([v1 supportsSystemPairing])
+  device = [self device];
+  if ([device supportsSystemPairing])
   {
     v2 = +[MRUserSettings currentSettings];
     if ([v2 useExternalDeviceSystemPairing])
@@ -406,7 +406,7 @@ void __90__MRExternalDevicePairingSession__openSecuritySessionInState_useSystemP
 - (void)removePeer
 {
   v9 = *MEMORY[0x1E69E9840];
-  v1 = [a1 device];
+  device = [self device];
   OUTLINED_FUNCTION_0_19(&dword_1A2860000, v2, v3, "[CryptoPairingSession(MRExternalDevicePairingSession)] Unpairing Device %@", v4, v5, v6, v7, 2u);
 
   v8 = *MEMORY[0x1E69E9840];

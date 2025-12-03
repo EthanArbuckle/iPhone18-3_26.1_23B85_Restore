@@ -1,22 +1,22 @@
 @interface TSCH3DBarTexCoordResource
-- (TSCH3DBarTexCoordResource)initWithGeometry:(id)a3 generator:(id)a4;
+- (TSCH3DBarTexCoordResource)initWithGeometry:(id)geometry generator:(id)generator;
 - (id)get;
 @end
 
 @implementation TSCH3DBarTexCoordResource
 
-- (TSCH3DBarTexCoordResource)initWithGeometry:(id)a3 generator:(id)a4
+- (TSCH3DBarTexCoordResource)initWithGeometry:(id)geometry generator:(id)generator
 {
-  v7 = a3;
-  v8 = a4;
+  geometryCopy = geometry;
+  generatorCopy = generator;
   v12.receiver = self;
   v12.super_class = TSCH3DBarTexCoordResource;
   v9 = [(TSCH3DAbstractBarTexCoordResource *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_geometry, a3);
-    objc_storeStrong(&v10->_generator, a4);
+    objc_storeStrong(&v9->_geometry, geometry);
+    objc_storeStrong(&v10->_generator, generator);
   }
 
   return v10;

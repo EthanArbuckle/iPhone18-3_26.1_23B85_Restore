@@ -1,22 +1,22 @@
 @interface BLDownloadMetadata
 - (BOOL)bl_isPurchaseRedownload;
 - (NSNumber)bl_assetFileSize;
-- (id)_bl_copySinfValueWithField:(int64_t)a3;
+- (id)_bl_copySinfValueWithField:(int64_t)field;
 @end
 
 @implementation BLDownloadMetadata
 
-- (id)_bl_copySinfValueWithField:(int64_t)a3
+- (id)_bl_copySinfValueWithField:(int64_t)field
 {
-  v4 = [(BLDownloadMetadata *)self sinfs];
-  if ([v4 count])
+  sinfs = [(BLDownloadMetadata *)self sinfs];
+  if ([sinfs count])
   {
-    v5 = [[BLDownloadDRM alloc] initWithSinfArray:v4];
-    v6 = [(BLDownloadDRM *)v5 sinfsArray];
-    v7 = v6;
-    if (v6)
+    v5 = [[BLDownloadDRM alloc] initWithSinfArray:sinfs];
+    sinfsArray = [(BLDownloadDRM *)v5 sinfsArray];
+    v7 = sinfsArray;
+    if (sinfsArray)
     {
-      v8 = [v6 copyValueForField:a3 error:0];
+      v8 = [sinfsArray copyValueForField:field error:0];
     }
 
     else
@@ -70,15 +70,15 @@
   v2 = [(BLDownloadMetadata *)self valueForFirstAvailableKey:@"is-purchased-redownload", 0];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 @end

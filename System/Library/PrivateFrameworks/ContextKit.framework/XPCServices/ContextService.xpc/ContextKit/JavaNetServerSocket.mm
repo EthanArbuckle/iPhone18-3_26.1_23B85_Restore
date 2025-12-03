@@ -8,12 +8,12 @@
 - (int)getLocalPort;
 - (int)getReceiveBufferSize;
 - (int)getSoTimeout;
-- (void)bindWithJavaNetSocketAddress:(id)a3 withInt:(int)a4;
+- (void)bindWithJavaNetSocketAddress:(id)address withInt:(int)int;
 - (void)close;
 - (void)dealloc;
-- (void)setReceiveBufferSizeWithInt:(int)a3;
-- (void)setReuseAddressWithBoolean:(BOOL)a3;
-- (void)setSoTimeoutWithInt:(int)a3;
+- (void)setReceiveBufferSizeWithInt:(int)int;
+- (void)setReuseAddressWithBoolean:(BOOL)boolean;
+- (void)setSoTimeoutWithInt:(int)int;
 @end
 
 @implementation JavaNetServerSocket
@@ -34,7 +34,7 @@
 
 - (id)checkOpen
 {
-  result = [a1 isClosed];
+  result = [self isClosed];
   if (result)
   {
     v2 = new_JavaNetSocketException_initWithNSString_(@"Socket is closed");
@@ -100,16 +100,16 @@
     JreThrowClassCastException();
   }
 
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
   objc_sync_exit(self);
-  return v5;
+  return intValue;
 }
 
-- (void)setSoTimeoutWithInt:(int)a3
+- (void)setSoTimeoutWithInt:(int)int
 {
   objc_sync_enter(self);
   [JavaNetServerSocket checkOpen]_0(self);
-  if (a3 < 0)
+  if (int < 0)
   {
     v6 = new_JavaLangIllegalArgumentException_initWithNSString_(@"timeout < 0");
     objc_exception_throw(v6);
@@ -121,7 +121,7 @@
     JreThrowNullPointerException();
   }
 
-  [(JavaNetSocketImpl *)impl setOptionWithInt:4102 withId:JavaLangInteger_valueOfWithInt_(a3)];
+  [(JavaNetSocketImpl *)impl setOptionWithInt:4102 withId:JavaLangInteger_valueOfWithInt_(int)];
 
   objc_sync_exit(self);
 }
@@ -139,8 +139,8 @@
     }
 
     v5 = v4;
-    v6 = [(JavaNetServerSocket *)self getInetAddress];
-    if (!v6 || (v7 = [v5 appendWithNSString:{objc_msgSend(v6, "getHostName")}]) == 0 || (v8 = objc_msgSend(v7, "appendWithNSString:", @"/")) == 0 || (v9 = v8, (v10 = -[JavaNetServerSocket getInetAddress](self, "getInetAddress")) == 0) || (v11 = objc_msgSend(v9, "appendWithNSString:", objc_msgSend(v10, "getHostAddress"))) == 0 || (v12 = objc_msgSend(v11, "appendWithNSString:", @",port=0,localport=")) == 0 || (v13 = objc_msgSend(v12, "appendWithInt:", -[JavaNetServerSocket getLocalPort](self, "getLocalPort"))) == 0)
+    getInetAddress = [(JavaNetServerSocket *)self getInetAddress];
+    if (!getInetAddress || (v7 = [v5 appendWithNSString:{objc_msgSend(getInetAddress, "getHostName")}]) == 0 || (v8 = objc_msgSend(v7, "appendWithNSString:", @"/")) == 0 || (v9 = v8, (v10 = -[JavaNetServerSocket getInetAddress](self, "getInetAddress")) == 0) || (v11 = objc_msgSend(v9, "appendWithNSString:", objc_msgSend(v10, "getHostAddress"))) == 0 || (v12 = objc_msgSend(v11, "appendWithNSString:", @",port=0,localport=")) == 0 || (v13 = objc_msgSend(v12, "appendWithInt:", -[JavaNetServerSocket getLocalPort](self, "getLocalPort"))) == 0)
     {
 LABEL_16:
       JreThrowNullPointerException();
@@ -164,7 +164,7 @@ LABEL_16:
   return [v15 description];
 }
 
-- (void)bindWithJavaNetSocketAddress:(id)a3 withInt:(int)a4
+- (void)bindWithJavaNetSocketAddress:(id)address withInt:(int)int
 {
   [JavaNetServerSocket checkOpen]_0(self);
   if ([(JavaNetServerSocket *)self isBound])
@@ -173,7 +173,7 @@ LABEL_16:
     goto LABEL_22;
   }
 
-  if (a3)
+  if (address)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -184,22 +184,22 @@ LABEL_16:
         JreThrowClassCastException();
       }
 
-      v7 = [a3 getAddress];
-      if (v7)
+      getAddress = [address getAddress];
+      if (getAddress)
       {
-        v8 = v7;
-        v9 = [a3 getPort];
+        v8 = getAddress;
+        getPort = [address getPort];
         goto LABEL_10;
       }
 
-      [a3 getHostName];
+      [address getHostName];
       v28 = JreStrcat("$$", v21, v22, v23, v24, v25, v26, v27, @"Host is unresolved: ");
       v12 = new_JavaNetSocketException_initWithNSString_(v28);
     }
 
     else
     {
-      [a3 getClass];
+      [address getClass];
       v20 = JreStrcat("$@", v13, v14, v15, v16, v17, v18, v19, @"Local address not an InetSocketAddress: ");
       v12 = new_JavaLangIllegalArgumentException_initWithNSString_(v20);
     }
@@ -213,7 +213,7 @@ LABEL_22:
     sub_1001520E0();
   }
 
-  v9 = 0;
+  getPort = 0;
   v8 = JavaNetInet4Address_ANY_;
 LABEL_10:
   objc_sync_enter(self);
@@ -223,19 +223,19 @@ LABEL_10:
     JreThrowNullPointerException();
   }
 
-  [(JavaNetSocketImpl *)impl bindWithJavaNetInetAddress:v8 withInt:v9];
+  [(JavaNetSocketImpl *)impl bindWithJavaNetInetAddress:v8 withInt:getPort];
   sub_100200724(self);
-  if (a4 <= 0)
+  if (int <= 0)
   {
-    v11 = 50;
+    intCopy = 50;
   }
 
   else
   {
-    v11 = a4;
+    intCopy = int;
   }
 
-  [(JavaNetSocketImpl *)self->impl_ listenWithInt:v11];
+  [(JavaNetSocketImpl *)self->impl_ listenWithInt:intCopy];
 
   objc_sync_exit(self);
 }
@@ -252,9 +252,9 @@ LABEL_10:
   return v3;
 }
 
-- (void)setReuseAddressWithBoolean:(BOOL)a3
+- (void)setReuseAddressWithBoolean:(BOOL)boolean
 {
-  v3 = a3;
+  booleanCopy = boolean;
   [JavaNetServerSocket checkOpen]_0(self);
   impl = self->impl_;
   if (!impl)
@@ -262,7 +262,7 @@ LABEL_10:
     JreThrowNullPointerException();
   }
 
-  v6 = JavaLangBoolean_valueOfWithBoolean_(v3);
+  v6 = JavaLangBoolean_valueOfWithBoolean_(booleanCopy);
 
   [(JavaNetSocketImpl *)impl setOptionWithInt:4 withId:v6];
 }
@@ -284,10 +284,10 @@ LABEL_10:
   return [v4 BOOLeanValue];
 }
 
-- (void)setReceiveBufferSizeWithInt:(int)a3
+- (void)setReceiveBufferSizeWithInt:(int)int
 {
   [JavaNetServerSocket checkOpen]_0(self);
-  if (a3 <= 0)
+  if (int <= 0)
   {
     v7 = new_JavaLangIllegalArgumentException_initWithNSString_(@"size < 1");
     objc_exception_throw(v7);
@@ -299,7 +299,7 @@ LABEL_10:
     JreThrowNullPointerException();
   }
 
-  v6 = JavaLangInteger_valueOfWithInt_(a3);
+  v6 = JavaLangInteger_valueOfWithInt_(int);
 
   [(JavaNetSocketImpl *)impl setOptionWithInt:4098 withId:v6];
 }

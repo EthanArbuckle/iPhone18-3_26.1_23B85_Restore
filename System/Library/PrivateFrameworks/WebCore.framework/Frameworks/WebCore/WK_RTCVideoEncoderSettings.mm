@@ -1,19 +1,19 @@
 @interface WK_RTCVideoEncoderSettings
 - (VideoCodec)nativeVideoCodec;
-- (WK_RTCVideoEncoderSettings)initWithNativeVideoCodec:(const void *)a3;
+- (WK_RTCVideoEncoderSettings)initWithNativeVideoCodec:(const void *)codec;
 @end
 
 @implementation WK_RTCVideoEncoderSettings
 
-- (WK_RTCVideoEncoderSettings)initWithNativeVideoCodec:(const void *)a3
+- (WK_RTCVideoEncoderSettings)initWithNativeVideoCodec:(const void *)codec
 {
   v9.receiver = self;
   v9.super_class = WK_RTCVideoEncoderSettings;
   v4 = [(WK_RTCVideoEncoderSettings *)&v9 init];
   v5 = v4;
-  if (a3 && v4)
+  if (codec && v4)
   {
-    v6 = *a3;
+    v6 = *codec;
     if (v6 >= 6)
     {
       webrtc::webrtc_checks_impl::UnreachableCodeReached(v4);
@@ -22,14 +22,14 @@
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:(&off_279E947A8)[v6]];
     [(WK_RTCVideoEncoderSettings *)v5 setName:v7];
 
-    [(WK_RTCVideoEncoderSettings *)v5 setWidth:*(a3 + 2)];
-    [(WK_RTCVideoEncoderSettings *)v5 setHeight:*(a3 + 3)];
-    [(WK_RTCVideoEncoderSettings *)v5 setStartBitrate:*(a3 + 2)];
-    [(WK_RTCVideoEncoderSettings *)v5 setMaxBitrate:*(a3 + 3)];
-    [(WK_RTCVideoEncoderSettings *)v5 setMinBitrate:*(a3 + 4)];
-    [(WK_RTCVideoEncoderSettings *)v5 setMaxFramerate:*(a3 + 5)];
-    [(WK_RTCVideoEncoderSettings *)v5 setQpMax:*(a3 + 7)];
-    [(WK_RTCVideoEncoderSettings *)v5 setMode:*(a3 + 81)];
+    [(WK_RTCVideoEncoderSettings *)v5 setWidth:*(codec + 2)];
+    [(WK_RTCVideoEncoderSettings *)v5 setHeight:*(codec + 3)];
+    [(WK_RTCVideoEncoderSettings *)v5 setStartBitrate:*(codec + 2)];
+    [(WK_RTCVideoEncoderSettings *)v5 setMaxBitrate:*(codec + 3)];
+    [(WK_RTCVideoEncoderSettings *)v5 setMinBitrate:*(codec + 4)];
+    [(WK_RTCVideoEncoderSettings *)v5 setMaxFramerate:*(codec + 5)];
+    [(WK_RTCVideoEncoderSettings *)v5 setQpMax:*(codec + 7)];
+    [(WK_RTCVideoEncoderSettings *)v5 setMode:*(codec + 81)];
   }
 
   return v5;

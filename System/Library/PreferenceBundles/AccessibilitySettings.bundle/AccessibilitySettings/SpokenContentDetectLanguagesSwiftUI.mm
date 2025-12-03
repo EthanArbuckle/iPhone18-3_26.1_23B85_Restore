@@ -1,6 +1,6 @@
 @interface SpokenContentDetectLanguagesSwiftUI
-- (SpokenContentDetectLanguagesSwiftUI)initWithCoder:(id)a3;
-- (SpokenContentDetectLanguagesSwiftUI)initWithNibName:(id)a3 bundle:(id)a4;
+- (SpokenContentDetectLanguagesSwiftUI)initWithCoder:(id)coder;
+- (SpokenContentDetectLanguagesSwiftUI)initWithNibName:(id)name bundle:(id)bundle;
 - (id)makeController;
 @end
 
@@ -15,34 +15,34 @@
   return v2;
 }
 
-- (SpokenContentDetectLanguagesSwiftUI)initWithNibName:(id)a3 bundle:(id)a4
+- (SpokenContentDetectLanguagesSwiftUI)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_19BFE4();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = sub_19BFB4();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for SpokenContentDetectLanguagesSwiftUI();
-  v9 = [(SpokenContentDetectLanguagesSwiftUI *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(SpokenContentDetectLanguagesSwiftUI *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (SpokenContentDetectLanguagesSwiftUI)initWithCoder:(id)a3
+- (SpokenContentDetectLanguagesSwiftUI)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for SpokenContentDetectLanguagesSwiftUI();
-  v4 = a3;
-  v5 = [(SpokenContentDetectLanguagesSwiftUI *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(SpokenContentDetectLanguagesSwiftUI *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -1,24 +1,24 @@
 @interface ASCII7BitFormatter
-+ (id)ascii7BitFormatter:(unint64_t)a3;
++ (id)ascii7BitFormatter:(unint64_t)formatter;
 + (id)ascii7BitSet;
-- (ASCII7BitFormatter)initWithMaxLength:(unint64_t)a3;
+- (ASCII7BitFormatter)initWithMaxLength:(unint64_t)length;
 @end
 
 @implementation ASCII7BitFormatter
 
-+ (id)ascii7BitFormatter:(unint64_t)a3
++ (id)ascii7BitFormatter:(unint64_t)formatter
 {
   v4 = [ASCII7BitFormatter alloc];
-  v6 = objc_msgSend_initWithMaxLength_(v4, v5, a3);
+  v6 = objc_msgSend_initWithMaxLength_(v4, v5, formatter);
 
   return v6;
 }
 
-- (ASCII7BitFormatter)initWithMaxLength:(unint64_t)a3
+- (ASCII7BitFormatter)initWithMaxLength:(unint64_t)length
 {
   v13.receiver = self;
   v13.super_class = ASCII7BitFormatter;
-  v5 = [(APFormatter *)&v13 initWithMaxLength:a3];
+  v5 = [(APFormatter *)&v13 initWithMaxLength:length];
   if (v5)
   {
     v6 = objc_msgSend_ascii7BitSet(ASCII7BitFormatter, v3, v4);

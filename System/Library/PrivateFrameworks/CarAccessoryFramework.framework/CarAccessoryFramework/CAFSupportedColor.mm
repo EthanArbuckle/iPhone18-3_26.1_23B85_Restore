@@ -1,22 +1,22 @@
 @interface CAFSupportedColor
-- (CAFSupportedColor)initWithColor:(id)a3;
-- (CAFSupportedColor)initWithDictionary:(id)a3;
+- (CAFSupportedColor)initWithColor:(id)color;
+- (CAFSupportedColor)initWithDictionary:(id)dictionary;
 - (NSDictionary)dictionaryRepresentation;
 - (id)description;
 @end
 
 @implementation CAFSupportedColor
 
-- (CAFSupportedColor)initWithDictionary:(id)a3
+- (CAFSupportedColor)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = CAFSupportedColor;
   v5 = [(CAFSupportedColor *)&v10 init];
   if (v5)
   {
     objc_opt_class();
-    v6 = [v4 objectForKey:@"color"];
+    v6 = [dictionaryCopy objectForKey:@"color"];
     if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v7 = v6;
@@ -34,16 +34,16 @@
   return v5;
 }
 
-- (CAFSupportedColor)initWithColor:(id)a3
+- (CAFSupportedColor)initWithColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v9.receiver = self;
   v9.super_class = CAFSupportedColor;
   v6 = [(CAFSupportedColor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_color, a3);
+    objc_storeStrong(&v6->_color, color);
   }
 
   return v7;
@@ -53,16 +53,16 @@
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = @"color";
-  v2 = [(CAFSupportedColor *)self color];
-  v3 = v2;
-  if (!v2)
+  color = [(CAFSupportedColor *)self color];
+  null = color;
+  if (!color)
   {
-    v3 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v8[0] = v3;
+  v8[0] = null;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  if (!v2)
+  if (!color)
   {
   }
 
@@ -75,8 +75,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CAFSupportedColor *)self color];
-  v6 = [v3 stringWithFormat:@"<%@: %p { %@: %@ }>", v4, self, @"color", v5];
+  color = [(CAFSupportedColor *)self color];
+  v6 = [v3 stringWithFormat:@"<%@: %p { %@: %@ }>", v4, self, @"color", color];
 
   return v6;
 }

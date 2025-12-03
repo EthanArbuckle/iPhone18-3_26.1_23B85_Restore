@@ -7,26 +7,26 @@
 - (void)_updatePeers;
 - (void)_updateResponder;
 - (void)activate;
-- (void)addSample:(id)a3;
+- (void)addSample:(id)sample;
 - (void)dealloc;
 - (void)invalidate;
-- (void)session:(id)a3 didChangeProximitySensorState:(unint64_t)a4;
-- (void)session:(id)a3 didEstimateScores:(id)a4;
-- (void)session:(id)a3 didFailwithError:(id)a4;
-- (void)setLabel:(id)a3;
-- (void)setPeers:(id)a3;
+- (void)session:(id)session didChangeProximitySensorState:(unint64_t)state;
+- (void)session:(id)session didEstimateScores:(id)scores;
+- (void)session:(id)session didFailwithError:(id)error;
+- (void)setLabel:(id)label;
+- (void)setPeers:(id)peers;
 @end
 
 @implementation CURangingSession
 
-- (void)session:(id)a3 didChangeProximitySensorState:(unint64_t)a4
+- (void)session:(id)session didChangeProximitySensorState:(unint64_t)state
 {
   dispatchQueue = self->_dispatchQueue;
-  v7 = a3;
+  sessionCopy = session;
   dispatch_assert_queue_V2(dispatchQueue);
   prRangingSession = self->_prRangingSession;
 
-  if (prRangingSession != v7)
+  if (prRangingSession != sessionCopy)
   {
     return;
   }
@@ -44,14 +44,14 @@
       ucat = self->_ucat;
     }
 
-    if (a4 > 3)
+    if (state > 3)
     {
       v14 = "?";
     }
 
     else
     {
-      v14 = off_1E73A3B58[a4];
+      v14 = off_1E73A3B58[state];
     }
 
     LogPrintF(ucat, "[CURangingSession session:didChangeProximitySensorState:]", 0x1Eu, "PR sensor state changed: %s\n", v9, v10, v11, v12, v14);
@@ -59,7 +59,7 @@
 
 LABEL_11:
   statusFlags = self->_statusFlags;
-  if (a4 == 3)
+  if (state == 3)
   {
     v16 = (statusFlags & 0xFFFFFFFE) + 1;
   }
@@ -119,16 +119,16 @@ LABEL_24:
   }
 }
 
-- (void)session:(id)a3 didFailwithError:(id)a4
+- (void)session:(id)session didFailwithError:(id)error
 {
-  v18 = a4;
+  errorCopy = error;
   dispatchQueue = self->_dispatchQueue;
-  v7 = a3;
+  sessionCopy = session;
   dispatch_assert_queue_V2(dispatchQueue);
   prRangingSession = self->_prRangingSession;
 
-  v13 = v18;
-  if (prRangingSession != v7)
+  v13 = errorCopy;
+  if (prRangingSession != sessionCopy)
   {
     goto LABEL_9;
   }
@@ -137,7 +137,7 @@ LABEL_24:
   ucat = self->_ucat;
   if (ucat->var0 <= 90)
   {
-    v15 = v18;
+    v15 = errorCopy;
     if (ucat->var0 == -1)
     {
       if (!_LogCategory_Initialize(ucat, 0x5Au))
@@ -146,7 +146,7 @@ LABEL_24:
       }
 
       ucat = self->_ucat;
-      v15 = v18;
+      v15 = errorCopy;
     }
 
     LogPrintF(ucat, "[CURangingSession session:didFailwithError:]", 0x5Au, "### PR Ranging failed: %{error}\n", v9, v10, v11, v12, v15);
@@ -157,20 +157,20 @@ LABEL_6:
   v17 = v16;
   if (v16)
   {
-    (*(v16 + 2))(v16, v18);
+    (*(v16 + 2))(v16, errorCopy);
   }
 
-  v13 = v18;
+  v13 = errorCopy;
 LABEL_9:
 }
 
-- (void)session:(id)a3 didEstimateScores:(id)a4
+- (void)session:(id)session didEstimateScores:(id)scores
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  scoresCopy = scores;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (self->_prRangingSession != v6)
+  if (self->_prRangingSession != sessionCopy)
   {
     goto LABEL_30;
   }
@@ -181,14 +181,14 @@ LABEL_9:
     goto LABEL_29;
   }
 
-  v40 = self;
+  selfCopy = self;
   v39 = mach_absolute_time();
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v36 = v7;
-  obj = v7;
+  v36 = scoresCopy;
+  obj = scoresCopy;
   v9 = [obj countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (!v9)
   {
@@ -209,30 +209,30 @@ LABEL_9:
 
       v12 = *(*(&v41 + 1) + 8 * v11);
       v13 = objc_alloc_init(CURangingPeer);
-      v14 = [v12 btAddress];
-      [(CURangingPeer *)v13 setDeviceAddress:v14];
+      btAddress = [v12 btAddress];
+      [(CURangingPeer *)v13 setDeviceAddress:btAddress];
 
       v15 = objc_alloc_init(CURangingMeasurement);
       [(CURangingMeasurement *)v15 setTimestampTicks:v39];
       if (objc_opt_respondsToSelector())
       {
-        v16 = [v12 scoreId];
+        scoreId = [v12 scoreId];
       }
 
       else
       {
-        v16 = 0;
+        scoreId = 0;
       }
 
-      v35 = v16;
+      v35 = scoreId;
       v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%llu"];
       [(CURangingMeasurement *)v15 setIdentifier:v17];
 
-      v18 = [v12 range];
-      v19 = v18;
-      if (v18)
+      range = [v12 range];
+      v19 = range;
+      if (range)
       {
-        [v18 measurement];
+        [range measurement];
         [(CURangingMeasurement *)v15 setDistanceMeters:?];
         [v19 uncertainty];
         [(CURangingMeasurement *)v15 setDistanceError:?];
@@ -244,11 +244,11 @@ LABEL_9:
         v20 = 0;
       }
 
-      v21 = [v12 angle];
-      v22 = v21;
-      if (v21)
+      angle = [v12 angle];
+      v22 = angle;
+      if (angle)
       {
-        [v21 measurement];
+        [angle measurement];
         [(CURangingMeasurement *)v15 setHorizontalAngle:?];
         [v22 uncertainty];
         [(CURangingMeasurement *)v15 setHorizontalError:?];
@@ -258,7 +258,7 @@ LABEL_9:
       [v12 score];
       [(CURangingMeasurement *)v15 setPtsScore:?];
       [(CURangingMeasurement *)v15 setFlags:v20 | 8u];
-      ucat = v40->_ucat;
+      ucat = selfCopy->_ucat;
       if (ucat->var0 <= 10)
       {
         if (ucat->var0 != -1)
@@ -266,12 +266,12 @@ LABEL_9:
           goto LABEL_18;
         }
 
-        if (_LogCategory_Initialize(v40->_ucat, 0xAu))
+        if (_LogCategory_Initialize(selfCopy->_ucat, 0xAu))
         {
-          ucat = v40->_ucat;
+          ucat = selfCopy->_ucat;
 LABEL_18:
-          v24 = [(CURangingPeer *)v13 deviceAddress];
-          LogPrintF(ucat, "[CURangingSession session:didEstimateScores:]", 0xAu, "Ranging measurement: peer %@, %@\n", v25, v26, v27, v28, v24);
+          deviceAddress = [(CURangingPeer *)v13 deviceAddress];
+          LogPrintF(ucat, "[CURangingSession session:didEstimateScores:]", 0xAu, "Ranging measurement: peer %@, %@\n", v25, v26, v27, v28, deviceAddress);
         }
       }
 
@@ -288,10 +288,10 @@ LABEL_18:
   while (v29);
 LABEL_24:
 
-  v7 = v36;
+  scoresCopy = v36;
   if (![obj count])
   {
-    v34 = v40->_ucat;
+    v34 = selfCopy->_ucat;
     if (v34->var0 <= 10)
     {
       if (v34->var0 != -1)
@@ -301,7 +301,7 @@ LABEL_24:
 
       if (_LogCategory_Initialize(v34, 0xAu))
       {
-        v34 = v40->_ucat;
+        v34 = selfCopy->_ucat;
 LABEL_27:
         LogPrintF(v34, "[CURangingSession session:didEstimateScores:]", 0xAu, "Ranging measurement: no devices\n", v30, v31, v32, v33, v35);
       }
@@ -316,14 +316,14 @@ LABEL_30:
 - (void)_updatePeers
 {
   v96 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v88 = 0u;
   v89 = 0u;
   v86 = 0u;
   v87 = 0u;
-  v63 = v2;
-  obj = v2->_peersRanging;
+  v63 = selfCopy;
+  obj = selfCopy->_peersRanging;
   v3 = [(NSArray *)obj countByEnumeratingWithState:&v86 objects:v95 count:16];
   v4 = 0;
   if (v3)
@@ -340,8 +340,8 @@ LABEL_30:
         }
 
         v6 = *(*(&v86 + 1) + 8 * i);
-        v7 = [v6 contactKey];
-        if (v7)
+        contactKey = [v6 contactKey];
+        if (contactKey)
         {
           v84 = 0u;
           v85 = 0u;
@@ -361,8 +361,8 @@ LABEL_30:
                   objc_enumerationMutation(v8);
                 }
 
-                v12 = [*(*(&v82 + 1) + 8 * j) deviceAddress];
-                v13 = [v12 isEqual:v7];
+                deviceAddress = [*(*(&v82 + 1) + 8 * j) deviceAddress];
+                v13 = [deviceAddress isEqual:contactKey];
 
                 if (v13)
                 {
@@ -423,10 +423,10 @@ LABEL_19:
           objc_enumerationMutation(obja);
         }
 
-        v18 = [*(*(&v78 + 1) + 8 * k) deviceAddress];
-        if (v18)
+        deviceAddress2 = [*(*(&v78 + 1) + 8 * k) deviceAddress];
+        if (deviceAddress2)
         {
-          v19 = [objc_alloc(getPRTrustedContactClass[0]()) initWithContactKey:v18];
+          v19 = [objc_alloc(getPRTrustedContactClass[0]()) initWithContactKey:deviceAddress2];
           if (v19)
           {
             [(NSArray *)v56 addObject:v19];
@@ -448,8 +448,8 @@ LABEL_19:
                     objc_enumerationMutation(v20);
                   }
 
-                  v24 = [*(*(&v74 + 1) + 8 * m) contactKey];
-                  v25 = [v24 isEqual:v18];
+                  contactKey2 = [*(*(&v74 + 1) + 8 * m) contactKey];
+                  v25 = [contactKey2 isEqual:deviceAddress2];
 
                   if (v25)
                   {
@@ -517,7 +517,7 @@ LABEL_40:
       }
 
       v33 = *(*(&v70 + 1) + 8 * v32);
-      v38 = [v33 contactKey];
+      contactKey3 = [v33 contactKey];
       p_var0 = &v63->_ucat->var0;
       if (*p_var0 <= 30)
       {
@@ -530,7 +530,7 @@ LABEL_40:
         {
           p_var0 = &v63->_ucat->var0;
 LABEL_50:
-          LogPrintF(p_var0, "[CURangingSession _updatePeers]", 0x1Eu, "Responder remove peer: %@\n", v34, v35, v36, v37, v38);
+          LogPrintF(p_var0, "[CURangingSession _updatePeers]", 0x1Eu, "Responder remove peer: %@\n", v34, v35, v36, v37, contactKey3);
         }
       }
 
@@ -540,7 +540,7 @@ LABEL_50:
       v69[2] = __32__CURangingSession__updatePeers__block_invoke;
       v69[3] = &unk_1E73A40B8;
       v69[4] = v63;
-      v69[5] = v38;
+      v69[5] = contactKey3;
       [(PRContactAllowlist *)prResponder removeTrustedContact:v33 withCompletionHandler:v69];
 
       ++v32;
@@ -577,7 +577,7 @@ LABEL_56:
       }
 
       v46 = *(*(&v65 + 1) + 8 * v45);
-      v51 = [v46 contactKey];
+      contactKey4 = [v46 contactKey];
       v52 = &v63->_ucat->var0;
       if (*v52 <= 30)
       {
@@ -590,7 +590,7 @@ LABEL_56:
         {
           v52 = &v63->_ucat->var0;
 LABEL_63:
-          LogPrintF(v52, "[CURangingSession _updatePeers]", 0x1Eu, "Responder add peer: %@\n", v47, v48, v49, v50, v51);
+          LogPrintF(v52, "[CURangingSession _updatePeers]", 0x1Eu, "Responder add peer: %@\n", v47, v48, v49, v50, contactKey4);
         }
       }
 
@@ -600,7 +600,7 @@ LABEL_63:
       v64[2] = __32__CURangingSession__updatePeers__block_invoke_2;
       v64[3] = &unk_1E73A40B8;
       v64[4] = v63;
-      v64[5] = v51;
+      v64[5] = contactKey4;
       [(PRContactAllowlist *)v53 addTrustedContact:v46 withCompletionHandler:v64];
 
       if (v43 != ++v45)
@@ -903,7 +903,7 @@ LABEL_6:
         }
 
         v14 = *(*(&v27 + 1) + 8 * v13);
-        v19 = [v14 contactKey];
+        contactKey = [v14 contactKey];
         v20 = self->_ucat;
         if (v20->var0 <= 30)
         {
@@ -916,7 +916,7 @@ LABEL_6:
           {
             v20 = self->_ucat;
 LABEL_15:
-            LogPrintF(v20, "[CURangingSession _invalidate]", 0x1Eu, "Responder remove peer on invalidate: %@\n", v15, v16, v17, v18, v19);
+            LogPrintF(v20, "[CURangingSession _invalidate]", 0x1Eu, "Responder remove peer on invalidate: %@\n", v15, v16, v17, v18, contactKey);
           }
         }
 
@@ -926,7 +926,7 @@ LABEL_15:
         v26[2] = __31__CURangingSession__invalidate__block_invoke;
         v26[3] = &unk_1E73A40B8;
         v26[4] = self;
-        v26[5] = v19;
+        v26[5] = contactKey;
         [(PRContactAllowlist *)prResponder removeTrustedContact:v14 withCompletionHandler:v26];
 
         ++v13;
@@ -1076,17 +1076,17 @@ LABEL_5:
   return [v12 _update];
 }
 
-- (void)addSample:(id)a3
+- (void)addSample:(id)sample
 {
-  v4 = a3;
+  sampleCopy = sample;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __30__CURangingSession_addSample___block_invoke;
   v7[3] = &unk_1E73A49F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sampleCopy;
+  v6 = sampleCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1154,25 +1154,25 @@ LABEL_12:
 LABEL_14:
 }
 
-- (void)setPeers:(id)a3
+- (void)setPeers:(id)peers
 {
-  v4 = a3;
-  v5 = [v4 copy];
-  v6 = self;
-  objc_sync_enter(v6);
-  peers = v6->_peers;
+  peersCopy = peers;
+  v5 = [peersCopy copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  peers = selfCopy->_peers;
   v8 = v5;
-  v9 = peers;
-  v10 = v9;
-  if (v8 == v9)
+  peersCopy2 = peers;
+  v10 = peersCopy2;
+  if (v8 == peersCopy2)
   {
 
     goto LABEL_14;
   }
 
-  if ((v8 != 0) != (v9 == 0))
+  if ((v8 != 0) != (peersCopy2 == 0))
   {
-    v11 = [(NSArray *)v8 isEqual:v9];
+    v11 = [(NSArray *)v8 isEqual:peersCopy2];
 
     if (v11)
     {
@@ -1184,52 +1184,52 @@ LABEL_14:
   {
   }
 
-  ucat = v6->_ucat;
+  ucat = selfCopy->_ucat;
   if (ucat->var0 <= 30)
   {
     if (ucat->var0 == -1)
     {
-      if (!_LogCategory_Initialize(v6->_ucat, 0x1Eu))
+      if (!_LogCategory_Initialize(selfCopy->_ucat, 0x1Eu))
       {
         goto LABEL_11;
       }
 
-      ucat = v6->_ucat;
+      ucat = selfCopy->_ucat;
     }
 
-    v13 = [(NSArray *)v6->_peers count];
+    v13 = [(NSArray *)selfCopy->_peers count];
     [(NSArray *)v8 count];
     LogPrintF(ucat, "[CURangingSession setPeers:]", 0x1Eu, "Update peers: %d -> %d total\n", v14, v15, v16, v17, v13);
   }
 
 LABEL_11:
-  objc_storeStrong(&v6->_peers, v5);
-  if (!v6->_peersChanged)
+  objc_storeStrong(&selfCopy->_peers, v5);
+  if (!selfCopy->_peersChanged)
   {
-    v6->_peersChanged = 1;
-    if (v6->_activateCalled)
+    selfCopy->_peersChanged = 1;
+    if (selfCopy->_activateCalled)
     {
-      dispatchQueue = v6->_dispatchQueue;
+      dispatchQueue = selfCopy->_dispatchQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __29__CURangingSession_setPeers___block_invoke;
       block[3] = &unk_1E73A4F68;
-      block[4] = v6;
+      block[4] = selfCopy;
       dispatch_async(dispatchQueue, block);
     }
   }
 
 LABEL_14:
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v13 = a3;
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
   v5 = qword_1EADEA078;
-  v6 = v13;
-  [v13 UTF8String];
+  v6 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF(&self->_ucat, "%s-%s", v7, v8, v9, v10, v11, v12, v5);
 }
 

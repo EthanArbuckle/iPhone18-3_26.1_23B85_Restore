@@ -1,20 +1,20 @@
 @interface HPSSpatialProfileSingleStepPillContainerView
 - (BOOL)leftSectionCompleted;
 - (BOOL)rightSectionCompleted;
-- (HPSSpatialProfileSingleStepPillContainerView)initWithFrame:(CGRect)a3;
-- (void)animateFaceAnglesIfneeded:(id)a3 withCompletion:(id)a4;
-- (void)fillPill:(unint64_t)a3 updatePillsForPoseStatus:(id)a4 withCompletion:(id)a5;
-- (void)updatePillsForPoseStatus:(id)a3 pillCount:(unsigned int *)a4 alongSideAction:(id)a5;
+- (HPSSpatialProfileSingleStepPillContainerView)initWithFrame:(CGRect)frame;
+- (void)animateFaceAnglesIfneeded:(id)ifneeded withCompletion:(id)completion;
+- (void)fillPill:(unint64_t)pill updatePillsForPoseStatus:(id)status withCompletion:(id)completion;
+- (void)updatePillsForPoseStatus:(id)status pillCount:(unsigned int *)count alongSideAction:(id)action;
 @end
 
 @implementation HPSSpatialProfileSingleStepPillContainerView
 
-- (HPSSpatialProfileSingleStepPillContainerView)initWithFrame:(CGRect)a3
+- (HPSSpatialProfileSingleStepPillContainerView)initWithFrame:(CGRect)frame
 {
   v35[4] = *MEMORY[0x277D85DE8];
   v34.receiver = self;
   v34.super_class = HPSSpatialProfileSingleStepPillContainerView;
-  v3 = [(HPSSpatialProfileSingleStepPillContainerView *)&v34 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HPSSpatialProfileSingleStepPillContainerView *)&v34 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -56,21 +56,21 @@
     v4->_layerMappingRight = &unk_28634DAB0;
 
     v28 = MEMORY[0x277CCAAD0];
-    v33 = [(BSUICAPackageView *)v4->_micaView leadingAnchor];
-    v32 = [(HPSSpatialProfileSingleStepPillContainerView *)v4 leadingAnchor];
-    v31 = [v33 constraintEqualToAnchor:v32];
+    leadingAnchor = [(BSUICAPackageView *)v4->_micaView leadingAnchor];
+    leadingAnchor2 = [(HPSSpatialProfileSingleStepPillContainerView *)v4 leadingAnchor];
+    v31 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v35[0] = v31;
-    v30 = [(BSUICAPackageView *)v4->_micaView trailingAnchor];
-    v29 = [(HPSSpatialProfileSingleStepPillContainerView *)v4 trailingAnchor];
-    v17 = [v30 constraintEqualToAnchor:v29];
+    trailingAnchor = [(BSUICAPackageView *)v4->_micaView trailingAnchor];
+    trailingAnchor2 = [(HPSSpatialProfileSingleStepPillContainerView *)v4 trailingAnchor];
+    v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v35[1] = v17;
-    v18 = [(BSUICAPackageView *)v4->_micaView topAnchor];
-    v19 = [(HPSSpatialProfileSingleStepPillContainerView *)v4 topAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    topAnchor = [(BSUICAPackageView *)v4->_micaView topAnchor];
+    topAnchor2 = [(HPSSpatialProfileSingleStepPillContainerView *)v4 topAnchor];
+    v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v35[2] = v20;
-    v21 = [(BSUICAPackageView *)v4->_micaView bottomAnchor];
-    v22 = [(HPSSpatialProfileSingleStepPillContainerView *)v4 bottomAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    bottomAnchor = [(BSUICAPackageView *)v4->_micaView bottomAnchor];
+    bottomAnchor2 = [(HPSSpatialProfileSingleStepPillContainerView *)v4 bottomAnchor];
+    v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v35[3] = v23;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:4];
     [v28 activateConstraints:v24];
@@ -83,23 +83,23 @@
   return v4;
 }
 
-- (void)updatePillsForPoseStatus:(id)a3 pillCount:(unsigned int *)a4 alongSideAction:(id)a5
+- (void)updatePillsForPoseStatus:(id)status pillCount:(unsigned int *)count alongSideAction:(id)action
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 yawAngles];
-  v10 = [v9 debugDescription];
+  statusCopy = status;
+  actionCopy = action;
+  yawAngles = [statusCopy yawAngles];
+  v10 = [yawAngles debugDescription];
   NSLog(&cfstr_SpatialProfile_18.isa, v10);
 
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __99__HPSSpatialProfileSingleStepPillContainerView_updatePillsForPoseStatus_pillCount_alongSideAction___block_invoke;
   v27[3] = &unk_2796AD5A0;
-  v11 = v8;
+  v11 = actionCopy;
   v28 = v11;
-  [(HPSSpatialProfileSingleStepPillContainerView *)self animateFaceAnglesIfneeded:v7 withCompletion:v27];
-  v12 = [v7 yawAngles];
-  v13 = [v12 count];
+  [(HPSSpatialProfileSingleStepPillContainerView *)self animateFaceAnglesIfneeded:statusCopy withCompletion:v27];
+  yawAngles2 = [statusCopy yawAngles];
+  v13 = [yawAngles2 count];
 
   if (v13)
   {
@@ -107,29 +107,29 @@
     v15 = 1;
     do
     {
-      v16 = [v7 yawAngles];
-      v17 = [v16 objectAtIndexedSubscript:v14];
+      yawAngles3 = [statusCopy yawAngles];
+      v17 = [yawAngles3 objectAtIndexedSubscript:v14];
 
       if ([v17 captured])
       {
         v18 = [(NSMutableArray *)self->_pillsStatusArray objectAtIndexedSubscript:v14];
-        v19 = [v18 BOOLValue];
+        bOOLValue = [v18 BOOLValue];
 
-        if ((v19 & 1) == 0)
+        if ((bOOLValue & 1) == 0)
         {
           v24[0] = MEMORY[0x277D85DD0];
           v24[1] = 3221225472;
           v24[2] = __99__HPSSpatialProfileSingleStepPillContainerView_updatePillsForPoseStatus_pillCount_alongSideAction___block_invoke_3;
           v24[3] = &unk_2796AE228;
           v25 = v11;
-          v26 = a4;
-          [(HPSSpatialProfileSingleStepPillContainerView *)self fillPill:v14 updatePillsForPoseStatus:v7 withCompletion:v24];
+          countCopy = count;
+          [(HPSSpatialProfileSingleStepPillContainerView *)self fillPill:v14 updatePillsForPoseStatus:statusCopy withCompletion:v24];
         }
       }
 
       v14 = v15;
-      v20 = [v7 yawAngles];
-      v21 = [v20 count];
+      yawAngles4 = [statusCopy yawAngles];
+      v21 = [yawAngles4 count];
     }
 
     while (v21 > v15++);
@@ -147,24 +147,24 @@ uint64_t __99__HPSSpatialProfileSingleStepPillContainerView_updatePillsForPoseSt
   return (*(v1 + 16))(v1, v3);
 }
 
-- (void)fillPill:(unint64_t)a3 updatePillsForPoseStatus:(id)a4 withCompletion:(id)a5
+- (void)fillPill:(unint64_t)pill updatePillsForPoseStatus:(id)status withCompletion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  statusCopy = status;
+  completionCopy = completion;
   leftPillIndex = self->_leftPillIndex;
   rightPillIndex = self->_rightPillIndex;
-  [v8 currentYawAngle];
-  NSLog(&cfstr_SpatialProfile_19.isa, a3, leftPillIndex, rightPillIndex, v12);
+  [statusCopy currentYawAngle];
+  NSLog(&cfstr_SpatialProfile_19.isa, pill, leftPillIndex, rightPillIndex, v12);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __97__HPSSpatialProfileSingleStepPillContainerView_fillPill_updatePillsForPoseStatus_withCompletion___block_invoke;
   block[3] = &unk_2796AE2C8;
   block[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = a3;
-  v13 = v9;
-  v14 = v8;
+  v16 = statusCopy;
+  v17 = completionCopy;
+  pillCopy = pill;
+  v13 = completionCopy;
+  v14 = statusCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -348,19 +348,19 @@ uint64_t __97__HPSSpatialProfileSingleStepPillContainerView_fillPill_updatePills
   return v13();
 }
 
-- (void)animateFaceAnglesIfneeded:(id)a3 withCompletion:(id)a4
+- (void)animateFaceAnglesIfneeded:(id)ifneeded withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  ifneededCopy = ifneeded;
+  completionCopy = completion;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __89__HPSSpatialProfileSingleStepPillContainerView_animateFaceAnglesIfneeded_withCompletion___block_invoke;
   block[3] = &unk_2796AD5F0;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = ifneededCopy;
+  selfCopy = self;
+  v13 = completionCopy;
+  v8 = completionCopy;
+  v9 = ifneededCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -552,41 +552,41 @@ uint64_t __89__HPSSpatialProfileSingleStepPillContainerView_animateFaceAnglesIfn
 
 - (BOOL)leftSectionCompleted
 {
-  v3 = [(HPSSpatialProfileSingleStepPillContainerView *)self leftEarStateComplete];
-  v4 = [(HPSSpatialProfileSingleStepPillContainerView *)self pillsStatusArray];
-  v5 = [v4 componentsJoinedByString:{@", "}];
-  NSLog(&cfstr_SpatialProfile_25.isa, v3, v5);
+  leftEarStateComplete = [(HPSSpatialProfileSingleStepPillContainerView *)self leftEarStateComplete];
+  pillsStatusArray = [(HPSSpatialProfileSingleStepPillContainerView *)self pillsStatusArray];
+  v5 = [pillsStatusArray componentsJoinedByString:{@", "}];
+  NSLog(&cfstr_SpatialProfile_25.isa, leftEarStateComplete, v5);
 
-  v6 = [(HPSSpatialProfileSingleStepPillContainerView *)self pillsStatusArray];
-  v7 = [v6 objectAtIndexedSubscript:self->_middleMinusOne];
+  pillsStatusArray2 = [(HPSSpatialProfileSingleStepPillContainerView *)self pillsStatusArray];
+  v7 = [pillsStatusArray2 objectAtIndexedSubscript:self->_middleMinusOne];
   if ([v7 BOOLValue])
   {
-    v8 = [(HPSSpatialProfileSingleStepPillContainerView *)self leftEarStateComplete];
+    leftEarStateComplete2 = [(HPSSpatialProfileSingleStepPillContainerView *)self leftEarStateComplete];
   }
 
   else
   {
-    v8 = 0;
+    leftEarStateComplete2 = 0;
   }
 
-  return v8;
+  return leftEarStateComplete2;
 }
 
 - (BOOL)rightSectionCompleted
 {
-  v3 = [(HPSSpatialProfileSingleStepPillContainerView *)self pillsStatusArray];
-  v4 = [v3 objectAtIndexedSubscript:self->_middlePlusOne];
+  pillsStatusArray = [(HPSSpatialProfileSingleStepPillContainerView *)self pillsStatusArray];
+  v4 = [pillsStatusArray objectAtIndexedSubscript:self->_middlePlusOne];
   if ([v4 BOOLValue])
   {
-    v5 = [(HPSSpatialProfileSingleStepPillContainerView *)self rightEarStateComplete];
+    rightEarStateComplete = [(HPSSpatialProfileSingleStepPillContainerView *)self rightEarStateComplete];
   }
 
   else
   {
-    v5 = 0;
+    rightEarStateComplete = 0;
   }
 
-  return v5;
+  return rightEarStateComplete;
 }
 
 @end

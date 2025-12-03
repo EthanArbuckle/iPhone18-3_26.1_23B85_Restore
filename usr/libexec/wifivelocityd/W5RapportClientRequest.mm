@@ -1,15 +1,15 @@
 @interface W5RapportClientRequest
 - (NSString)description;
-- (W5RapportClientRequest)initWithPayload:(id)a3 options:(id)a4 handler:(id)a5;
+- (W5RapportClientRequest)initWithPayload:(id)payload options:(id)options handler:(id)handler;
 @end
 
 @implementation W5RapportClientRequest
 
-- (W5RapportClientRequest)initWithPayload:(id)a3 options:(id)a4 handler:(id)a5
+- (W5RapportClientRequest)initWithPayload:(id)payload options:(id)options handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  payloadCopy = payload;
+  optionsCopy = options;
+  handlerCopy = handler;
   v12 = sub_100098A04();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -20,11 +20,11 @@
     v25 = 1024;
     v26 = 18;
     v27 = 2114;
-    v28 = v10;
+    v28 = optionsCopy;
     v29 = 2114;
-    v30 = v9;
+    v30 = payloadCopy;
     v31 = 2114;
-    v32 = objc_retainBlock(v11);
+    v32 = objc_retainBlock(handlerCopy);
     _os_log_send_and_compose_impl();
   }
 
@@ -32,9 +32,9 @@
   v20.super_class = W5RapportClientRequest;
   v13 = [(W5RapportClientRequest *)&v20 init];
   v14 = v13;
-  if (v13 && (objc_storeStrong(&v13->_payload, a3), v15 = objc_retainBlock(v11), handler = v14->_handler, v14->_handler = v15, handler, v14->_handler))
+  if (v13 && (objc_storeStrong(&v13->_payload, payload), v15 = objc_retainBlock(handlerCopy), handler = v14->_handler, v14->_handler = v15, handler, v14->_handler))
   {
-    v17 = v10;
+    v17 = optionsCopy;
     p_super = &v14->_options->super;
     v14->_options = v17;
   }
@@ -67,8 +67,8 @@
   v5 = NSStringFromClass(v4);
   [v3 appendFormat:@"<%@ : %p", v5, self];
 
-  v6 = [(W5RapportClientRequest *)self payload];
-  [v3 appendFormat:@" payload='%@'", v6];
+  payload = [(W5RapportClientRequest *)self payload];
+  [v3 appendFormat:@" payload='%@'", payload];
 
   [v3 appendString:@">"];
   v7 = [v3 copy];

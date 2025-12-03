@@ -1,31 +1,31 @@
 @interface PKPeerPaymentFamilySettingsViewController
-- (PKPeerPaymentFamilySettingsViewController)initWithPass:(id)a3 dataProvider:(id)a4 peerPaymentAccount:(id)a5 familyCollection:(id)a6;
+- (PKPeerPaymentFamilySettingsViewController)initWithPass:(id)pass dataProvider:(id)provider peerPaymentAccount:(id)account familyCollection:(id)collection;
 - (id)_contactKeysToFetch;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_updateFamilyRows;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation PKPeerPaymentFamilySettingsViewController
 
-- (PKPeerPaymentFamilySettingsViewController)initWithPass:(id)a3 dataProvider:(id)a4 peerPaymentAccount:(id)a5 familyCollection:(id)a6
+- (PKPeerPaymentFamilySettingsViewController)initWithPass:(id)pass dataProvider:(id)provider peerPaymentAccount:(id)account familyCollection:(id)collection
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  providerCopy = provider;
+  accountCopy = account;
+  collectionCopy = collection;
   v31.receiver = self;
   v31.super_class = PKPeerPaymentFamilySettingsViewController;
   v13 = -[PKPeerPaymentFamilySettingsViewController initWithStyle:](&v31, sel_initWithStyle_, [MEMORY[0x1E69DD020] pkui_groupedStyleWithRoundedCorners:1]);
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_paymentServiceDataProvider, a4);
-    objc_storeStrong(&v14->_peerPaymentAccount, a5);
-    objc_storeStrong(&v14->_familyCollection, a6);
+    objc_storeStrong(&v13->_paymentServiceDataProvider, provider);
+    objc_storeStrong(&v14->_peerPaymentAccount, account);
+    objc_storeStrong(&v14->_familyCollection, collection);
     v15 = objc_alloc_init(MEMORY[0x1E695CE18]);
     v16 = objc_alloc(MEMORY[0x1E69B8740]);
-    v17 = [(PKPeerPaymentFamilySettingsViewController *)v14 _contactKeysToFetch];
-    v18 = [v16 initWithContactStore:v15 keysToFetch:v17];
+    _contactKeysToFetch = [(PKPeerPaymentFamilySettingsViewController *)v14 _contactKeysToFetch];
+    v18 = [v16 initWithContactStore:v15 keysToFetch:_contactKeysToFetch];
     contactResolver = v14->_contactResolver;
     v14->_contactResolver = v18;
 
@@ -41,9 +41,9 @@
     peerPaymentAssociatedAccountsController = v14->_peerPaymentAssociatedAccountsController;
     v14->_peerPaymentAssociatedAccountsController = v26;
 
-    v28 = [(PKPeerPaymentFamilySettingsViewController *)v14 navigationItem];
+    navigationItem = [(PKPeerPaymentFamilySettingsViewController *)v14 navigationItem];
     v29 = PKLocalizedPeerPaymentString(&cfstr_MoreMenuFamily.isa, 0);
-    [v28 setTitle:v29];
+    [navigationItem setTitle:v29];
 
     [(PKPeerPaymentFamilySettingsViewController *)v14 _updateFamilyRows];
   }
@@ -54,9 +54,9 @@
 - (void)_updateFamilyRows
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [(PKFamilyMemberCollection *)self->_familyCollection familyMembers];
-  v4 = v3;
-  if (self->_peerPaymentAccount && self->_familyCollection && [v3 count])
+  familyMembers = [(PKFamilyMemberCollection *)self->_familyCollection familyMembers];
+  v4 = familyMembers;
+  if (self->_peerPaymentAccount && self->_familyCollection && [familyMembers count])
   {
     v22 = v4;
     v5 = [PKPeerPaymentFamilyMemberRowModel sortedPeerPaymentFamilyMemberRowModelsForFamilyMembers:v4 peerPaymentAccount:self->_peerPaymentAccount];
@@ -83,34 +83,34 @@
           }
 
           v10 = *(*(&v26 + 1) + 8 * i);
-          v11 = [v10 familyMember];
-          v12 = [v10 account];
-          v13 = [v12 altDSID];
-          v14 = v13;
-          if (v13)
+          familyMember = [v10 familyMember];
+          account = [v10 account];
+          altDSID = [account altDSID];
+          v14 = altDSID;
+          if (altDSID)
           {
-            v15 = v13;
+            altDSID2 = altDSID;
           }
 
           else
           {
-            v16 = [v10 invitation];
-            v15 = [v16 altDSID];
+            invitation = [v10 invitation];
+            altDSID2 = [invitation altDSID];
           }
 
-          v17 = [(PKContactAvatarManager *)self->_contactAvatarManager cachedAvatarForAltDSID:v15];
+          v17 = [(PKContactAvatarManager *)self->_contactAvatarManager cachedAvatarForAltDSID:altDSID2];
           if (!v17)
           {
             contactAvatarManager = self->_contactAvatarManager;
-            v19 = [v10 account];
-            v20 = [v10 invitation];
+            account2 = [v10 account];
+            invitation2 = [v10 invitation];
             v25[0] = MEMORY[0x1E69E9820];
             v25[1] = 3221225472;
             v25[2] = __62__PKPeerPaymentFamilySettingsViewController__updateFamilyRows__block_invoke;
             v25[3] = &unk_1E8010AB0;
             v25[4] = v10;
             v25[5] = self;
-            [(PKContactAvatarManager *)contactAvatarManager avatarForFamilyMember:v11 peerPaymentAccount:v19 invitation:v20 completion:v25];
+            [(PKContactAvatarManager *)contactAvatarManager avatarForFamilyMember:familyMember peerPaymentAccount:account2 invitation:invitation2 completion:v25];
           }
 
           [v10 setImage:v17];
@@ -122,8 +122,8 @@
       while (v8);
     }
 
-    v21 = [(PKPeerPaymentFamilySettingsViewController *)self tableView];
-    [v21 reloadData];
+    tableView = [(PKPeerPaymentFamilySettingsViewController *)self tableView];
+    [tableView reloadData];
 
     v4 = v22;
   }
@@ -151,43 +151,43 @@ void __62__PKPeerPaymentFamilySettingsViewController__updateFamilyRows__block_in
   [v2 reloadData];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [a4 row];
+  viewCopy = view;
+  v7 = [path row];
   if (v7 >= [(NSArray *)self->_sortedFamilyMemberRowModels count])
   {
     v8 = PKLocalizedPeerPaymentString(&cfstr_BackOfPassFami_0.isa);
-    v9 = [v6 dequeueReusableCellWithIdentifier:@"linkCell"];
+    v9 = [viewCopy dequeueReusableCellWithIdentifier:@"linkCell"];
 
     if (!v9)
     {
       v9 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:1 reuseIdentifier:@"linkCell"];
     }
 
-    v14 = [(PKFamilyMemberTableViewCell *)v9 textLabel];
-    [v14 setText:v8];
+    textLabel = [(PKFamilyMemberTableViewCell *)v9 textLabel];
+    [textLabel setText:v8];
 
-    v15 = [(PKFamilyMemberTableViewCell *)v9 textLabel];
-    v16 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [v15 setTextColor:v16];
+    textLabel2 = [(PKFamilyMemberTableViewCell *)v9 textLabel];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [textLabel2 setTextColor:systemBlueColor];
   }
 
   else
   {
     v8 = [(NSArray *)self->_sortedFamilyMemberRowModels objectAtIndex:v7];
-    v9 = [v6 dequeueReusableCellWithIdentifier:@"familyMemberCell"];
+    v9 = [viewCopy dequeueReusableCellWithIdentifier:@"familyMemberCell"];
 
     if (!v9)
     {
       v9 = [[PKFamilyMemberTableViewCell alloc] initWithStyle:1 reuseIdentifier:@"familyMemberCell"];
-      v10 = [(PKFamilyMemberTableViewCell *)v9 textLabel];
-      v11 = [MEMORY[0x1E69DC888] labelColor];
-      [v10 setTextColor:v11];
+      textLabel3 = [(PKFamilyMemberTableViewCell *)v9 textLabel];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
+      [textLabel3 setTextColor:labelColor];
 
-      v12 = [(PKFamilyMemberTableViewCell *)v9 detailTextLabel];
-      v13 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      [v12 setTextColor:v13];
+      detailTextLabel = [(PKFamilyMemberTableViewCell *)v9 detailTextLabel];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      [detailTextLabel setTextColor:secondaryLabelColor];
     }
 
     [(PKFamilyMemberTableViewCell *)v9 setRowModel:v8];
@@ -196,11 +196,11 @@ void __62__PKPeerPaymentFamilySettingsViewController__updateFamilyRows__block_in
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 row];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [pathCopy row];
   if (v8 >= [(NSArray *)self->_sortedFamilyMemberRowModels count])
   {
     v15 = PKLogFacilityTypeGetObject();
@@ -217,19 +217,19 @@ void __62__PKPeerPaymentFamilySettingsViewController__updateFamilyRows__block_in
   else
   {
     v9 = [(NSArray *)self->_sortedFamilyMemberRowModels objectAtIndex:v8];
-    v10 = [v9 familyMember];
+    familyMember = [v9 familyMember];
 
     v11 = [(NSArray *)self->_sortedFamilyMemberRowModels objectAtIndex:v8];
     if (([v11 state] - 1) <= 2)
     {
-      v12 = [[PKPeerPaymentAssociatedAccountPresentationContext alloc] initWithPKFamilyMember:v10 options:0];
+      v12 = [[PKPeerPaymentAssociatedAccountPresentationContext alloc] initWithPKFamilyMember:familyMember options:0];
       peerPaymentAssociatedAccountsController = self->_peerPaymentAssociatedAccountsController;
-      v14 = [(PKPeerPaymentFamilySettingsViewController *)self navigationController];
-      [(PKPeerPaymentAssociatedAccountsController *)peerPaymentAssociatedAccountsController presentAssociatedAccountsFlowWithPresentationContext:v12 fromNavigationController:v14];
+      navigationController = [(PKPeerPaymentFamilySettingsViewController *)self navigationController];
+      [(PKPeerPaymentAssociatedAccountsController *)peerPaymentAssociatedAccountsController presentAssociatedAccountsFlowWithPresentationContext:v12 fromNavigationController:navigationController];
     }
   }
 
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
 - (id)_contactKeysToFetch
@@ -238,14 +238,14 @@ void __62__PKPeerPaymentFamilySettingsViewController__updateFamilyRows__block_in
   v2 = [MEMORY[0x1E695CD80] descriptorForRequiredKeysForStyle:0];
   v11[0] = v2;
   v3 = _MergedGlobals_1_16();
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = -[objc_class descriptorForRequiredKeysWithThreeDTouchEnabled:](v3, "descriptorForRequiredKeysWithThreeDTouchEnabled:", [v4 _supportsForceTouch]);
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v5 = -[objc_class descriptorForRequiredKeysWithThreeDTouchEnabled:](v3, "descriptorForRequiredKeysWithThreeDTouchEnabled:", [currentDevice _supportsForceTouch]);
   v11[1] = v5;
-  v6 = [off_1EE9897A8() descriptorForRequiredKeys];
-  v11[2] = v6;
-  v7 = [off_1EE9897B0() descriptorForRequiredKeys];
+  descriptorForRequiredKeys = [off_1EE9897A8() descriptorForRequiredKeys];
+  v11[2] = descriptorForRequiredKeys;
+  descriptorForRequiredKeys2 = [off_1EE9897B0() descriptorForRequiredKeys];
   v8 = *MEMORY[0x1E695C208];
-  v11[3] = v7;
+  v11[3] = descriptorForRequiredKeys2;
   v11[4] = v8;
   v11[5] = *MEMORY[0x1E695C330];
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:6];

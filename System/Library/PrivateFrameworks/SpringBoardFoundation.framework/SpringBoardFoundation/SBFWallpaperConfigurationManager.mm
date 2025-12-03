@@ -1,7 +1,7 @@
 @interface SBFWallpaperConfigurationManager
 - (NSArray)dataStores;
-- (id)wallpaperConfigurationForVariant:(int64_t)a3 includingValuesForTypes:(unint64_t)a4;
-- (id)wallpaperConfigurationForVariant:(int64_t)a3 includingValuesForTypes:(unint64_t)a4 wallpaperMode:(int64_t)a5;
+- (id)wallpaperConfigurationForVariant:(int64_t)variant includingValuesForTypes:(unint64_t)types;
+- (id)wallpaperConfigurationForVariant:(int64_t)variant includingValuesForTypes:(unint64_t)types wallpaperMode:(int64_t)mode;
 @end
 
 @implementation SBFWallpaperConfigurationManager
@@ -10,25 +10,25 @@
 {
   v4.receiver = self;
   v4.super_class = SBFWallpaperConfigurationManager;
-  v2 = [(PBUIWallpaperConfigurationManager *)&v4 dataStores];
+  dataStores = [(PBUIWallpaperConfigurationManager *)&v4 dataStores];
 
-  return v2;
+  return dataStores;
 }
 
-- (id)wallpaperConfigurationForVariant:(int64_t)a3 includingValuesForTypes:(unint64_t)a4
+- (id)wallpaperConfigurationForVariant:(int64_t)variant includingValuesForTypes:(unint64_t)types
 {
   v6.receiver = self;
   v6.super_class = SBFWallpaperConfigurationManager;
-  v4 = [(PBUIWallpaperConfigurationManager *)&v6 wallpaperConfigurationForVariant:a3 includingValuesForTypes:a4];
+  v4 = [(PBUIWallpaperConfigurationManager *)&v6 wallpaperConfigurationForVariant:variant includingValuesForTypes:types];
 
   return v4;
 }
 
-- (id)wallpaperConfigurationForVariant:(int64_t)a3 includingValuesForTypes:(unint64_t)a4 wallpaperMode:(int64_t)a5
+- (id)wallpaperConfigurationForVariant:(int64_t)variant includingValuesForTypes:(unint64_t)types wallpaperMode:(int64_t)mode
 {
   v7.receiver = self;
   v7.super_class = SBFWallpaperConfigurationManager;
-  v5 = [(PBUIWallpaperConfigurationManager *)&v7 wallpaperConfigurationForVariant:a3 includingValuesForTypes:a4 wallpaperMode:a5];
+  v5 = [(PBUIWallpaperConfigurationManager *)&v7 wallpaperConfigurationForVariant:variant includingValuesForTypes:types wallpaperMode:mode];
 
   return v5;
 }

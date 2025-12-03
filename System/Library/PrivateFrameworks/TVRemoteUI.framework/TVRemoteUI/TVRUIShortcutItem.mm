@@ -1,71 +1,71 @@
 @interface TVRUIShortcutItem
-+ (id)identifierForKind:(unint64_t)a3;
-+ (id)imageForKind:(unint64_t)a3;
-+ (id)imageNameForKind:(unint64_t)a3;
-+ (id)shortcutItemForKind:(unint64_t)a3;
-+ (id)titleForKind:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (TVRUIShortcutItem)initWithKind:(unint64_t)a3 identifier:(id)a4 title:(id)a5 image:(id)a6;
++ (id)identifierForKind:(unint64_t)kind;
++ (id)imageForKind:(unint64_t)kind;
++ (id)imageNameForKind:(unint64_t)kind;
++ (id)shortcutItemForKind:(unint64_t)kind;
++ (id)titleForKind:(unint64_t)kind;
+- (BOOL)isEqual:(id)equal;
+- (TVRUIShortcutItem)initWithKind:(unint64_t)kind identifier:(id)identifier title:(id)title image:(id)image;
 - (unint64_t)hash;
 - (unint64_t)playerCommand;
 @end
 
 @implementation TVRUIShortcutItem
 
-- (TVRUIShortcutItem)initWithKind:(unint64_t)a3 identifier:(id)a4 title:(id)a5 image:(id)a6
+- (TVRUIShortcutItem)initWithKind:(unint64_t)kind identifier:(id)identifier title:(id)title image:(id)image
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  titleCopy = title;
+  imageCopy = image;
   v17.receiver = self;
   v17.super_class = TVRUIShortcutItem;
   v14 = [(TVRUIShortcutItem *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_kind = a3;
-    objc_storeStrong(&v14->_identifier, a4);
-    objc_storeStrong(&v15->_title, a5);
-    objc_storeStrong(&v15->_image, a6);
+    v14->_kind = kind;
+    objc_storeStrong(&v14->_identifier, identifier);
+    objc_storeStrong(&v15->_title, title);
+    objc_storeStrong(&v15->_image, image);
   }
 
   return v15;
 }
 
-+ (id)shortcutItemForKind:(unint64_t)a3
++ (id)shortcutItemForKind:(unint64_t)kind
 {
-  v5 = [a1 identifierForKind:?];
-  v6 = [a1 titleForKind:a3];
-  v7 = [a1 imageForKind:a3];
-  v8 = [[a1 alloc] initWithKind:a3 identifier:v5 title:v6 image:v7];
+  v5 = [self identifierForKind:?];
+  v6 = [self titleForKind:kind];
+  v7 = [self imageForKind:kind];
+  v8 = [[self alloc] initWithKind:kind identifier:v5 title:v6 image:v7];
 
   return v8;
 }
 
 - (unint64_t)playerCommand
 {
-  v2 = [(TVRUIShortcutItem *)self kind];
-  if (v2 > 8)
+  kind = [(TVRUIShortcutItem *)self kind];
+  if (kind > 8)
   {
     return 12;
   }
 
   else
   {
-    return qword_26D0D2360[v2];
+    return qword_26D0D2360[kind];
   }
 }
 
-+ (id)titleForKind:(unint64_t)a3
++ (id)titleForKind:(unint64_t)kind
 {
-  if (a3 > 8)
+  if (kind > 8)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = off_279D87A00[a3];
+    v3 = off_279D87A00[kind];
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v5 = [v4 localizedStringForKey:v3 value:&stru_287E6AEF8 table:@"Localizable"];
   }
@@ -73,9 +73,9 @@
   return v5;
 }
 
-+ (id)imageForKind:(unint64_t)a3
++ (id)imageForKind:(unint64_t)kind
 {
-  v3 = [a1 imageNameForKind:a3];
+  v3 = [self imageNameForKind:kind];
   if (v3)
   {
     v4 = [MEMORY[0x277D755B8] systemImageNamed:v3];
@@ -89,46 +89,46 @@
   return v4;
 }
 
-+ (id)imageNameForKind:(unint64_t)a3
++ (id)imageNameForKind:(unint64_t)kind
 {
-  if (a3 > 8)
+  if (kind > 8)
   {
     return 0;
   }
 
   else
   {
-    return off_279D87A48[a3];
+    return off_279D87A48[kind];
   }
 }
 
-+ (id)identifierForKind:(unint64_t)a3
++ (id)identifierForKind:(unint64_t)kind
 {
-  if (a3 > 8)
+  if (kind > 8)
   {
     return 0;
   }
 
   else
   {
-    return off_279D87A90[a3];
+    return off_279D87A90[kind];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && (v7 = -[TVRUIShortcutItem kind](self, "kind"), v7 == [v6 kind]) && (-[TVRUIShortcutItem identifier](self, "identifier"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "identifier"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqualToString:", v9), v9, v8, v10) && (-[TVRUIShortcutItem title](self, "title"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "title"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v11, "isEqualToString:", v12), v12, v11, v13))
     {
-      v14 = [(TVRUIShortcutItem *)self image];
-      v15 = [v6 image];
+      image = [(TVRUIShortcutItem *)self image];
+      image2 = [v6 image];
 
-      v16 = (v14 == 0) ^ (v15 != 0);
+      v16 = (image == 0) ^ (image2 != 0);
     }
 
     else
@@ -147,15 +147,15 @@
 
 - (unint64_t)hash
 {
-  v3 = [(TVRUIShortcutItem *)self kind];
-  v4 = [(TVRUIShortcutItem *)self identifier];
-  v5 = [v4 hash] + v3;
-  v6 = [(TVRUIShortcutItem *)self title];
-  v7 = [v6 hash];
-  v8 = [(TVRUIShortcutItem *)self image];
-  v9 = v5 + v7 + [v8 hash];
-  v10 = [(TVRUIShortcutItem *)self title];
-  v11 = [v10 hash];
+  kind = [(TVRUIShortcutItem *)self kind];
+  identifier = [(TVRUIShortcutItem *)self identifier];
+  v5 = [identifier hash] + kind;
+  title = [(TVRUIShortcutItem *)self title];
+  v7 = [title hash];
+  image = [(TVRUIShortcutItem *)self image];
+  v9 = v5 + v7 + [image hash];
+  title2 = [(TVRUIShortcutItem *)self title];
+  v11 = [title2 hash];
 
   return v9 + v11;
 }

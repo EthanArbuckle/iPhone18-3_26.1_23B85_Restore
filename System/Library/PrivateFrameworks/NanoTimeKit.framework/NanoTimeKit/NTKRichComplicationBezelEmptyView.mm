@@ -9,13 +9,13 @@
   v6.receiver = self;
   v6.super_class = NTKRichComplicationBezelEmptyView;
   [(NTKRichComplicationBezelEmptyView *)&v6 layoutSubviews];
-  v3 = [(NTKRichComplicationBezelView *)self delegate];
+  delegate = [(NTKRichComplicationBezelView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(NTKRichComplicationBezelView *)self delegate];
-    [v5 didUpdateBezelTextForRichComplicationBezelView:self];
+    delegate2 = [(NTKRichComplicationBezelView *)self delegate];
+    [delegate2 didUpdateBezelTextForRichComplicationBezelView:self];
   }
 }
 

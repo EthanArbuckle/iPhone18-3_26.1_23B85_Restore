@@ -41,9 +41,9 @@
   else
   {
     v3 = +[AXSubsystemVisualAlerts sharedInstance];
-    v4 = [v3 ignoreLogging];
+    ignoreLogging = [v3 ignoreLogging];
 
-    if ((v4 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
       v5 = +[AXSubsystemVisualAlerts identifier];
       v6 = AXLoggerForFacility();
@@ -65,9 +65,9 @@
   }
 
   v10 = +[AXSubsystemVisualAlerts sharedInstance];
-  v11 = [v10 ignoreLogging];
+  ignoreLogging2 = [v10 ignoreLogging];
 
-  if ((v11 & 1) == 0)
+  if ((ignoreLogging2 & 1) == 0)
   {
     v12 = +[AXSubsystemVisualAlerts identifier];
     v13 = AXLoggerForFacility();
@@ -103,9 +103,9 @@
   else
   {
     v3 = +[AXSubsystemVisualAlerts sharedInstance];
-    v4 = [v3 ignoreLogging];
+    ignoreLogging = [v3 ignoreLogging];
 
-    if ((v4 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
       v5 = +[AXSubsystemVisualAlerts identifier];
       v6 = AXLoggerForFacility();
@@ -127,9 +127,9 @@
   }
 
   v10 = +[AXSubsystemVisualAlerts sharedInstance];
-  v11 = [v10 ignoreLogging];
+  ignoreLogging2 = [v10 ignoreLogging];
 
-  if ((v11 & 1) == 0)
+  if ((ignoreLogging2 & 1) == 0)
   {
     v12 = +[AXSubsystemVisualAlerts identifier];
     v13 = AXLoggerForFacility();

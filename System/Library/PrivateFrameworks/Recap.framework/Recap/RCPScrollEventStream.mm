@@ -1,10 +1,10 @@
 @interface RCPScrollEventStream
 - (CAMediaTimingFunction)pointerCurveFunction;
 - (RCPScrollEventStream)init;
-- (id)_eventWithDelta:(CGVector)a3 phase:(unsigned __int16)a4;
+- (id)_eventWithDelta:(CGVector)delta phase:(unsigned __int16)phase;
 - (id)finalizeEventStream;
-- (void)_updateAmplitudeBy:(CGVector)a3;
-- (void)advanceByDelta:(CGVector)a3 duration:(double)a4;
+- (void)_updateAmplitudeBy:(CGVector)by;
+- (void)advanceByDelta:(CGVector)delta duration:(double)duration;
 @end
 
 @implementation RCPScrollEventStream
@@ -54,29 +54,29 @@
   return v4;
 }
 
-- (void)advanceByDelta:(CGVector)a3 duration:(double)a4
+- (void)advanceByDelta:(CGVector)delta duration:(double)duration
 {
-  dy = a3.dy;
-  dx = a3.dx;
+  dy = delta.dy;
+  dx = delta.dx;
   frequency = self->_frequency;
   v8 = 1.0 / frequency;
-  v9 = vcvtpd_s64_f64(frequency * a4);
+  v9 = vcvtpd_s64_f64(frequency * duration);
   v10 = [(RCPScrollEventStream *)self _eventWithDelta:1 phase:0.0, 0.0];
   cachedFirstEvent = self->_cachedFirstEvent;
   self->_cachedFirstEvent = v10;
 
   [(RCPScrollEventStream *)self advanceTime:v8];
-  v12 = [(RCPScrollEventStream *)self pointerCurveFunction];
+  pointerCurveFunction = [(RCPScrollEventStream *)self pointerCurveFunction];
   if (v9 >= 1)
   {
     v13 = 0;
-    v14 = v12;
+    v14 = pointerCurveFunction;
     do
     {
       [v14 rcp_solveForDelta:v9 withSteps:v13 step:{dx, dy}];
       [(RCPScrollEventStream *)self _updateAmplitudeBy:?];
       [(RCPScrollEventStream *)self advanceTime:v8];
-      v12 = v14;
+      pointerCurveFunction = v14;
       ++v13;
     }
 
@@ -84,13 +84,13 @@
   }
 }
 
-- (void)_updateAmplitudeBy:(CGVector)a3
+- (void)_updateAmplitudeBy:(CGVector)by
 {
-  v4 = [(RCPScrollEventStream *)self _eventWithDelta:2 phase:a3.dx, a3.dy];
+  v4 = [(RCPScrollEventStream *)self _eventWithDelta:2 phase:by.dx, by.dy];
   [(NSMutableArray *)self->_events addObject:v4];
 }
 
-- (id)_eventWithDelta:(CGVector)a3 phase:(unsigned __int16)a4
+- (id)_eventWithDelta:(CGVector)delta phase:(unsigned __int16)phase
 {
   v5 = [(RCPEventEnvironment *)self->_environment machAbsoluteTimeForTimeInterval:self->_currentTimeOffset];
   ScrollEvent = IOHIDEventCreateScrollEvent();

@@ -1,33 +1,33 @@
 @interface CKMessageBalloonMaskConfiguration
 - (_TtC7ChatKit33CKMessageBalloonMaskConfiguration)init;
-- (_TtC7ChatKit33CKMessageBalloonMaskConfiguration)initWithBalloonDescriptor:(CKBalloonDescriptor_t *)a3;
+- (_TtC7ChatKit33CKMessageBalloonMaskConfiguration)initWithBalloonDescriptor:(CKBalloonDescriptor_t *)descriptor;
 @end
 
 @implementation CKMessageBalloonMaskConfiguration
 
-- (_TtC7ChatKit33CKMessageBalloonMaskConfiguration)initWithBalloonDescriptor:(CKBalloonDescriptor_t *)a3
+- (_TtC7ChatKit33CKMessageBalloonMaskConfiguration)initWithBalloonDescriptor:(CKBalloonDescriptor_t *)descriptor
 {
-  var4 = a3->var4;
-  var5 = a3->var5;
-  var6 = a3->var6;
-  var9 = a3->var9;
-  var12 = a3->var12;
-  var13 = a3->var13;
-  var14 = a3->var14;
-  var15 = a3->var15;
-  var16 = a3->var16;
-  v28 = *&a3->var0;
+  var4 = descriptor->var4;
+  var5 = descriptor->var5;
+  var6 = descriptor->var6;
+  var9 = descriptor->var9;
+  var12 = descriptor->var12;
+  var13 = descriptor->var13;
+  var14 = descriptor->var14;
+  var15 = descriptor->var15;
+  var16 = descriptor->var16;
+  v28 = *&descriptor->var0;
   v29 = var4;
   v30 = var5;
   v31 = var6;
-  v12 = *&a3->var7.blue;
-  v32 = *&a3->var7.red;
+  v12 = *&descriptor->var7.blue;
+  v32 = *&descriptor->var7.red;
   v33 = v12;
-  v13 = *&a3->var8.blue;
-  v34 = *&a3->var8.red;
+  v13 = *&descriptor->var8.blue;
+  v34 = *&descriptor->var8.red;
   v35 = v13;
   v36 = var9;
-  v37 = *&a3->var10;
+  v37 = *&descriptor->var10;
   v38 = var12;
   v39 = var13;
   v40 = var14;

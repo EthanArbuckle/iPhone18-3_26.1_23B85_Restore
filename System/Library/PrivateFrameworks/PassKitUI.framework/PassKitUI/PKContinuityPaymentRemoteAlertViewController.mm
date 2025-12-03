@@ -1,23 +1,23 @@
 @interface PKContinuityPaymentRemoteAlertViewController
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)result;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)result;
 - (PKContinuityPaymentRemoteAlertViewController)init;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_cancelPayment;
 - (void)_dismiss;
 - (void)_presentEnrollAccessibilityIntentAlert;
-- (void)authorizationDidAuthorizePayment:(id)a3;
-- (void)authorizationDidFinishWithError:(id)a3;
+- (void)authorizationDidAuthorizePayment:(id)payment;
+- (void)authorizationDidFinishWithError:(id)error;
 - (void)authorizationWillStart;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)dealloc;
 - (void)didInvalidateForRemoteAlert;
-- (void)didReceiveCancellationForRemotePaymentRequest:(id)a3;
-- (void)didReceivePaymentClientUpdate:(id)a3 forRemotePaymentRequest:(id)a4;
-- (void)didReceivePaymentResult:(id)a3 forRemotePaymentRequest:(id)a4;
-- (void)handleButtonActions:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)didReceiveCancellationForRemotePaymentRequest:(id)request;
+- (void)didReceivePaymentClientUpdate:(id)update forRemotePaymentRequest:(id)request;
+- (void)didReceivePaymentResult:(id)result forRemotePaymentRequest:(id)request;
+- (void)handleButtonActions:(id)actions;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PKContinuityPaymentRemoteAlertViewController
@@ -54,9 +54,9 @@
   v6.receiver = self;
   v6.super_class = PKContinuityPaymentRemoteAlertViewController;
   [(PKContinuityPaymentRemoteAlertViewController *)&v6 viewDidLoad];
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
   v3 = [MEMORY[0x1E696AD98] numberWithFloat:0.0];
-  [v2 setStatusBarHeightOverride:v3];
+  [mEMORY[0x1E69DC668] setStatusBarHeightOverride:v3];
 
   v4 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -66,26 +66,26 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(PKContinuityPaymentRemoteAlertViewController *)self _cancelPayment];
   v5.receiver = self;
   v5.super_class = PKContinuityPaymentRemoteAlertViewController;
-  [(PKContinuityPaymentRemoteAlertViewController *)&v5 viewWillDisappear:v3];
+  [(PKContinuityPaymentRemoteAlertViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = PKContinuityPaymentRemoteAlertViewController;
-  [(PKContinuityPaymentRemoteAlertViewController *)&v3 viewDidAppear:a3];
+  [(PKContinuityPaymentRemoteAlertViewController *)&v3 viewDidAppear:appear];
   AudioServicesPlaySystemSoundWithCompletion(0x487u, 0);
 }
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)result
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)result
 {
-  if (self->_navigationController != a3)
+  if (self->_navigationController != container)
   {
     v7 = v4;
     v8 = v5;
@@ -119,36 +119,36 @@
   [(PKContinuityPaymentRemoteAlertViewController *)self dismissViewControllerAnimated:0 completion:0];
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a3 userInfo];
-  v8 = [(PKContinuityPaymentRemoteAlertViewController *)self _remoteViewControllerProxy];
-  [v8 setAllowsAlertItems:1];
-  [v8 setAllowsSiri:0];
-  [v8 setAllowsBanners:1];
+  completionCopy = completion;
+  userInfo = [context userInfo];
+  _remoteViewControllerProxy = [(PKContinuityPaymentRemoteAlertViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setAllowsAlertItems:1];
+  [_remoteViewControllerProxy setAllowsSiri:0];
+  [_remoteViewControllerProxy setAllowsBanners:1];
   if (![(UIViewController *)self pkui_userInterfaceIdiomSupportsLargeLayouts])
   {
-    [v8 setLaunchingInterfaceOrientation:1];
+    [_remoteViewControllerProxy setLaunchingInterfaceOrientation:1];
   }
 
-  [v8 setWallpaperStyle:1 withDuration:0.0];
+  [_remoteViewControllerProxy setWallpaperStyle:1 withDuration:0.0];
   if (PKDeviceUILocked())
   {
-    [v8 setWallpaperTunnelActive:1];
-    [v8 setDesiredAutoLockDuration:60.0];
+    [_remoteViewControllerProxy setWallpaperTunnelActive:1];
+    [_remoteViewControllerProxy setDesiredAutoLockDuration:60.0];
   }
 
-  [v8 setDesiredHardwareButtonEvents:16];
-  [v8 setSwipeDismissalStyle:0];
-  [v8 setDismissalAnimationStyle:1];
-  if (v6)
+  [_remoteViewControllerProxy setDesiredHardwareButtonEvents:16];
+  [_remoteViewControllerProxy setSwipeDismissalStyle:0];
+  [_remoteViewControllerProxy setDismissalAnimationStyle:1];
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 
-  v9 = [v7 objectForKey:@"remotePaymentRequest"];
+  v9 = [userInfo objectForKey:@"remotePaymentRequest"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -231,7 +231,7 @@ void __80__PKContinuityPaymentRemoteAlertViewController_configureWithContext_com
   }
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
   if (!self->_hasAuthorizedPayment)
   {
@@ -243,12 +243,12 @@ void __80__PKContinuityPaymentRemoteAlertViewController_configureWithContext_com
 
 - (void)_dismiss
 {
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v3 pkui_resetSharedRootAuthenticationContext];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] pkui_resetSharedRootAuthenticationContext];
 
   [(PKContinuityPaymentRemoteAlertViewController *)self _invalidate];
-  v4 = [(PKContinuityPaymentRemoteAlertViewController *)self presentedViewController];
-  if (v4)
+  presentedViewController = [(PKContinuityPaymentRemoteAlertViewController *)self presentedViewController];
+  if (presentedViewController)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -260,8 +260,8 @@ void __80__PKContinuityPaymentRemoteAlertViewController_configureWithContext_com
 
   else
   {
-    v5 = [(PKContinuityPaymentRemoteAlertViewController *)self _remoteViewControllerProxy];
-    [v5 invalidate];
+    _remoteViewControllerProxy = [(PKContinuityPaymentRemoteAlertViewController *)self _remoteViewControllerProxy];
+    [_remoteViewControllerProxy invalidate];
   }
 }
 
@@ -338,32 +338,32 @@ void __86__PKContinuityPaymentRemoteAlertViewController__presentEnrollAccessibil
   }
 }
 
-- (void)didReceivePaymentResult:(id)a3 forRemotePaymentRequest:(id)a4
+- (void)didReceivePaymentResult:(id)result forRemotePaymentRequest:(id)request
 {
-  v5 = a3;
+  resultCopy = result;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __96__PKContinuityPaymentRemoteAlertViewController_didReceivePaymentResult_forRemotePaymentRequest___block_invoke;
   v7[3] = &unk_1E8010A10;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = resultCopy;
+  v6 = resultCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
-- (void)didReceivePaymentClientUpdate:(id)a3 forRemotePaymentRequest:(id)a4
+- (void)didReceivePaymentClientUpdate:(id)update forRemotePaymentRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  requestCopy = request;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __102__PKContinuityPaymentRemoteAlertViewController_didReceivePaymentClientUpdate_forRemotePaymentRequest___block_invoke;
   block[3] = &unk_1E8010A88;
-  v11 = v7;
-  v12 = self;
-  v13 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = requestCopy;
+  selfCopy = self;
+  v13 = updateCopy;
+  v8 = updateCopy;
+  v9 = requestCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -382,16 +382,16 @@ void __102__PKContinuityPaymentRemoteAlertViewController_didReceivePaymentClient
   }
 }
 
-- (void)didReceiveCancellationForRemotePaymentRequest:(id)a3
+- (void)didReceiveCancellationForRemotePaymentRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __94__PKContinuityPaymentRemoteAlertViewController_didReceiveCancellationForRemotePaymentRequest___block_invoke;
   v6[3] = &unk_1E8010A10;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = requestCopy;
+  selfCopy = self;
+  v5 = requestCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -419,9 +419,9 @@ void __94__PKContinuityPaymentRemoteAlertViewController_didReceiveCancellationFo
   }
 }
 
-- (void)authorizationDidFinishWithError:(id)a3
+- (void)authorizationDidFinishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -437,9 +437,9 @@ void __94__PKContinuityPaymentRemoteAlertViewController_didReceiveCancellationFo
   [(PKContinuityPaymentRemoteAlertViewController *)self _dismiss];
 }
 
-- (void)authorizationDidAuthorizePayment:(id)a3
+- (void)authorizationDidAuthorizePayment:(id)payment
 {
-  v4 = a3;
+  paymentCopy = payment;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -450,7 +450,7 @@ void __94__PKContinuityPaymentRemoteAlertViewController_didReceiveCancellationFo
   if (!self->_hasSentCancelPaymentRequest)
   {
     self->_hasAuthorizedPayment = 1;
-    [(PKContinuityPaymentService *)self->_continuityService sendPayment:v4 forRemotePaymentRequest:self->_remoteRequest completion:0];
+    [(PKContinuityPaymentService *)self->_continuityService sendPayment:paymentCopy forRemotePaymentRequest:self->_remoteRequest completion:0];
   }
 }
 

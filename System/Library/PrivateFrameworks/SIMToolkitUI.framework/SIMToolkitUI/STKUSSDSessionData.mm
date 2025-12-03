@@ -1,43 +1,43 @@
 @interface STKUSSDSessionData
-- (STKUSSDSessionData)initWithText:(id)a3 allowsResponse:(BOOL)a4;
-- (STKUSSDSessionData)initWithXPCDictionary:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (STKUSSDSessionData)initWithText:(id)text allowsResponse:(BOOL)response;
+- (STKUSSDSessionData)initWithXPCDictionary:(id)dictionary;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation STKUSSDSessionData
 
-- (STKUSSDSessionData)initWithText:(id)a3 allowsResponse:(BOOL)a4
+- (STKUSSDSessionData)initWithText:(id)text allowsResponse:(BOOL)response
 {
-  v6 = a3;
+  textCopy = text;
   v11.receiver = self;
   v11.super_class = STKUSSDSessionData;
   v7 = [(STKUSSDSessionData *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [textCopy copy];
     text = v7->_text;
     v7->_text = v8;
 
-    v7->_allowsResponse = a4;
+    v7->_allowsResponse = response;
   }
 
   return v7;
 }
 
-- (STKUSSDSessionData)initWithXPCDictionary:(id)a3
+- (STKUSSDSessionData)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = BSDeserializeStringFromXPCDictionaryWithKey();
-  v6 = xpc_dictionary_get_BOOL(v4, "_allowsResponse");
+  v6 = xpc_dictionary_get_BOOL(dictionaryCopy, "_allowsResponse");
 
   v7 = [(STKUSSDSessionData *)self initWithText:v5 allowsResponse:v6];
   return v7;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
   text = self->_text;
-  xdict = a3;
+  xdict = dictionary;
   BSSerializeStringToXPCDictionaryWithKey();
   xpc_dictionary_set_BOOL(xdict, "_allowsResponse", self->_allowsResponse);
 }

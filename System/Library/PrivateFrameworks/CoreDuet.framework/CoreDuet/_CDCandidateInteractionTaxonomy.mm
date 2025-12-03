@@ -1,46 +1,46 @@
 @interface _CDCandidateInteractionTaxonomy
-+ (void)taxonomyOfInteraction:(uint64_t)a1;
-+ (void)taxonomyWithDirection:(uint64_t)a3 mechanism:;
-- (BOOL)isEqual:(id)a3;
++ (void)taxonomyOfInteraction:(uint64_t)interaction;
++ (void)taxonomyWithDirection:(uint64_t)direction mechanism:;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
 @implementation _CDCandidateInteractionTaxonomy
 
-+ (void)taxonomyWithDirection:(uint64_t)a3 mechanism:
++ (void)taxonomyWithDirection:(uint64_t)direction mechanism:
 {
   v5 = objc_alloc(objc_opt_self());
   if (v5)
   {
     v5[1] = a2;
-    v5[2] = a3;
+    v5[2] = direction;
   }
 
   return v5;
 }
 
-+ (void)taxonomyOfInteraction:(uint64_t)a1
++ (void)taxonomyOfInteraction:(uint64_t)interaction
 {
   v2 = a2;
   objc_opt_self();
-  v3 = [v2 direction];
-  v4 = [v2 mechanism];
+  direction = [v2 direction];
+  mechanism = [v2 mechanism];
 
-  return [_CDCandidateInteractionTaxonomy taxonomyWithDirection:v3 mechanism:v4];
+  return [_CDCandidateInteractionTaxonomy taxonomyWithDirection:direction mechanism:mechanism];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else

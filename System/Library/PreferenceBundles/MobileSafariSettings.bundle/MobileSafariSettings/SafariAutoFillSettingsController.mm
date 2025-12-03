@@ -2,33 +2,33 @@
 - (SafariAutoFillSettingsController)init;
 - (id)_formDataController;
 - (id)meCardName;
-- (id)myInfo:(id)a3;
-- (id)shouldAutoFillCreditCards:(id)a3;
+- (id)myInfo:(id)info;
+- (id)shouldAutoFillCreditCards:(id)cards;
 - (id)specifiers;
-- (id)useContactInfo:(id)a3;
+- (id)useContactInfo:(id)info;
 - (void)_dismissMeCardPicker;
-- (void)_enablingAutoFillWithoutPasscodePromptEndedWithResult:(int64_t)a3;
-- (void)_promptForEnablingAutoFillWithoutPasscodeWithTitle:(id)a3 message:(id)a4 allowAnyway:(BOOL)a5 completionHandler:(id)a6;
+- (void)_enablingAutoFillWithoutPasscodePromptEndedWithResult:(int64_t)result;
+- (void)_promptForEnablingAutoFillWithoutPasscodeWithTitle:(id)title message:(id)message allowAnyway:(BOOL)anyway completionHandler:(id)handler;
 - (void)_setupMeCardPicker;
-- (void)_showCreditCardListInWallet:(id)a3;
-- (void)_showPasscodeSetupSheetWithCompletionHandler:(id)a3;
-- (void)_updateSpecifierWithIdentifier:(id)a3;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPickerDidCancel:(id)a3;
+- (void)_showCreditCardListInWallet:(id)wallet;
+- (void)_showPasscodeSetupSheetWithCompletionHandler:(id)handler;
+- (void)_updateSpecifierWithIdentifier:(id)identifier;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPickerDidCancel:(id)cancel;
 - (void)dealloc;
 - (void)didAcceptEnteredPIN;
 - (void)didAcceptSetPIN;
 - (void)didCancelEnteringPIN;
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3;
-- (void)popoverControllerDidDismissPopover:(id)a3;
-- (void)presentPopoverContactListInTable:(id)a3 index:(id)a4 specifier:(id)a5;
-- (void)setShouldAutoFillCreditCards:(id)a3 specifier:(id)a4;
-- (void)setUseContactInfo:(id)a3 forSpecifier:(id)a4;
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation;
+- (void)popoverControllerDidDismissPopover:(id)popover;
+- (void)presentPopoverContactListInTable:(id)table index:(id)index specifier:(id)specifier;
+- (void)setShouldAutoFillCreditCards:(id)cards specifier:(id)specifier;
+- (void)setUseContactInfo:(id)info forSpecifier:(id)specifier;
 - (void)showMeCardPicker;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateUseContactInfoSpecifiers;
 - (void)willResignActive;
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
 @end
 
 @implementation SafariAutoFillSettingsController
@@ -97,16 +97,16 @@
   [(CNContactPickerViewController *)v5 setDelegate:self];
 }
 
-- (void)_updateSpecifierWithIdentifier:(id)a3
+- (void)_updateSpecifierWithIdentifier:(id)identifier
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v4 = [(SafariAutoFillSettingsController *)self specifierForID:?];
   if (v4)
   {
     v5 = [PSRootController readPreferenceValue:v4];
     v6 = [NSNumber numberWithInt:v5 == 0];
     [PSRootController setPreferenceValue:v6 specifier:v4];
-    [(SafariAutoFillSettingsController *)self reloadSpecifierID:v7];
+    [(SafariAutoFillSettingsController *)self reloadSpecifierID:identifierCopy];
   }
 }
 
@@ -171,10 +171,10 @@ LABEL_6:
   return v10;
 }
 
-- (id)useContactInfo:(id)a3
+- (id)useContactInfo:(id)info
 {
-  v4 = [(SafariAutoFillSettingsController *)self _formDataController];
-  if ([v4 shouldAutoFillFromAddressBook])
+  _formDataController = [(SafariAutoFillSettingsController *)self _formDataController];
+  if ([_formDataController shouldAutoFillFromAddressBook])
   {
     if (self->_isMeCardSet)
     {
@@ -182,7 +182,7 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    [v4 setShouldAutoFillFromAddressBook:0];
+    [_formDataController setShouldAutoFillFromAddressBook:0];
   }
 
   v5 = 0;
@@ -192,41 +192,41 @@ LABEL_6:
   return v6;
 }
 
-- (id)myInfo:(id)a3
+- (id)myInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = [(SafariAutoFillSettingsController *)self specifierForID:@"ContactInfoEnableSwitch"];
   v6 = [PSRootController readPreferenceValue:v5];
 
-  [v4 setProperty:v6 forKey:PSEnabledKey];
-  v7 = [(SafariAutoFillSettingsController *)self meCardName];
+  [infoCopy setProperty:v6 forKey:PSEnabledKey];
+  meCardName = [(SafariAutoFillSettingsController *)self meCardName];
 
-  return v7;
+  return meCardName;
 }
 
-- (void)_promptForEnablingAutoFillWithoutPasscodeWithTitle:(id)a3 message:(id)a4 allowAnyway:(BOOL)a5 completionHandler:(id)a6
+- (void)_promptForEnablingAutoFillWithoutPasscodeWithTitle:(id)title message:(id)message allowAnyway:(BOOL)anyway completionHandler:(id)handler
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = [a6 copy];
+  anywayCopy = anyway;
+  titleCopy = title;
+  messageCopy = message;
+  v12 = [handler copy];
   promptCompletionHandler = self->_promptCompletionHandler;
   self->_promptCompletionHandler = v12;
 
   if (_SFDeviceIsPad())
   {
-    v14 = v10;
+    v14 = titleCopy;
   }
 
   else
   {
-    v14 = v11;
+    v14 = messageCopy;
   }
 
   v15 = v14;
   if (_SFDeviceIsPad())
   {
-    v16 = v11;
+    v16 = messageCopy;
   }
 
   else
@@ -246,7 +246,7 @@ LABEL_6:
   v20 = [UIAlertAction actionWithTitle:v19 style:0 handler:v27];
   [v18 addAction:v20];
 
-  if (v7)
+  if (anywayCopy)
   {
     v21 = SafariSettingsLocalizedString(@"Use Without Passcode", @"AutoFill");
     v26[0] = _NSConcreteStackBlock;
@@ -270,7 +270,7 @@ LABEL_6:
   [(SafariAutoFillSettingsController *)self presentViewController:v18 animated:1 completion:0];
 }
 
-- (void)_enablingAutoFillWithoutPasscodePromptEndedWithResult:(int64_t)a3
+- (void)_enablingAutoFillWithoutPasscodePromptEndedWithResult:(int64_t)result
 {
   promptCompletionHandler = self->_promptCompletionHandler;
   if (promptCompletionHandler)
@@ -279,13 +279,13 @@ LABEL_6:
     v6 = self->_promptCompletionHandler;
     self->_promptCompletionHandler = 0;
 
-    v7[2](v7, a3);
+    v7[2](v7, result);
   }
 }
 
-- (void)_showPasscodeSetupSheetWithCompletionHandler:(id)a3
+- (void)_showPasscodeSetupSheetWithCompletionHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   passcodeSetupCompletionHandler = self->_passcodeSetupCompletionHandler;
   self->_passcodeSetupCompletionHandler = v4;
 
@@ -351,22 +351,22 @@ id __80__SafariAutoFillSettingsController__setShouldAutoFill_specifier_message_s
   }
 }
 
-- (id)shouldAutoFillCreditCards:(id)a3
+- (id)shouldAutoFillCreditCards:(id)cards
 {
-  v3 = [(SafariAutoFillSettingsController *)self _formDataController];
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 shouldAutoFillFromCreditCardData]);
+  _formDataController = [(SafariAutoFillSettingsController *)self _formDataController];
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [_formDataController shouldAutoFillFromCreditCardData]);
 
   return v4;
 }
 
-- (void)setShouldAutoFillCreditCards:(id)a3 specifier:(id)a4
+- (void)setShouldAutoFillCreditCards:(id)cards specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
+  specifierCopy = specifier;
+  cardsCopy = cards;
   v8 = +[WBSDevice currentDevice];
-  v9 = [v8 deviceClass];
+  deviceClass = [v8 deviceClass];
 
-  if (v9 == 3)
+  if (deviceClass == 3)
   {
     v10 = @"When you turn on AutoFill, anyone who has access to your iPad can view and use your saved credit cards. Using a passcode lock on your iPad can protect your saved credit cards.";
   }
@@ -377,16 +377,16 @@ id __80__SafariAutoFillSettingsController__setShouldAutoFill_specifier_message_s
   }
 
   v11 = SafariSettingsLocalizedString(v10, @"AutoFill");
-  v12 = [(SafariAutoFillSettingsController *)self _formDataController];
-  v13 = [v7 BOOLValue];
+  _formDataController = [(SafariAutoFillSettingsController *)self _formDataController];
+  bOOLValue = [cardsCopy BOOLValue];
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __75__SafariAutoFillSettingsController_setShouldAutoFillCreditCards_specifier___block_invoke;
   v15[3] = &unk_89768;
-  v16 = v12;
-  v14 = v12;
-  [(SafariAutoFillSettingsController *)self _setShouldAutoFill:v13 specifier:v6 message:v11 setter:v15];
+  v16 = _formDataController;
+  v14 = _formDataController;
+  [(SafariAutoFillSettingsController *)self _setShouldAutoFill:bOOLValue specifier:specifierCopy message:v11 setter:v15];
 }
 
 - (void)showMeCardPicker
@@ -431,9 +431,9 @@ id __80__SafariAutoFillSettingsController__setShouldAutoFill_specifier_message_s
     self->_isMeCardSet = [WBUFormDataController contactStoreHasMeCard:self->_contactStore];
     v5 = [(SafariAutoFillSettingsController *)self loadSpecifiersFromPlistName:@"AutoFill" target:self];
     v6 = +[SafariSettingsFeatureManager sharedFeatureManager];
-    v7 = [v6 isCreditCardStorageAvailable];
+    isCreditCardStorageAvailable = [v6 isCreditCardStorageAvailable];
 
-    if (v7)
+    if (isCreditCardStorageAvailable)
     {
       v8 = SafariSettingsLocalizedString(@"Automatically fill out web forms using your contact or credit card info.", @"AutoFill");
     }
@@ -472,50 +472,50 @@ id __80__SafariAutoFillSettingsController__setShouldAutoFill_specifier_message_s
   return v4;
 }
 
-- (void)_showCreditCardListInWallet:(id)a3
+- (void)_showCreditCardListInWallet:(id)wallet
 {
   v3 = +[WBUCreditCardDataController sharedCreditCardDataController];
-  v5 = [v3 urlToListOfCardsInWallet];
+  urlToListOfCardsInWallet = [v3 urlToListOfCardsInWallet];
 
   v4 = +[LSApplicationWorkspace defaultWorkspace];
-  [v4 openSensitiveURL:v5 withOptions:0];
+  [v4 openSensitiveURL:urlToListOfCardsInWallet withOptions:0];
 }
 
-- (void)presentPopoverContactListInTable:(id)a3 index:(id)a4 specifier:(id)a5
+- (void)presentPopoverContactListInTable:(id)table index:(id)index specifier:(id)specifier
 {
-  v7 = a4;
-  v12 = a3;
-  [v12 deselectRowAtIndexPath:v7 animated:1];
+  indexCopy = index;
+  tableCopy = table;
+  [tableCopy deselectRowAtIndexPath:indexCopy animated:1];
   [(SafariAutoFillSettingsController *)self _setupMeCardPicker];
   autoFillContactIndex = self->_autoFillContactIndex;
-  self->_autoFillContactIndex = v7;
-  v9 = v7;
+  self->_autoFillContactIndex = indexCopy;
+  v9 = indexCopy;
 
   v10 = [[UIPopoverController alloc] initWithContentViewController:self->_meCardPicker];
   autoFillContactController = self->_autoFillContactController;
   self->_autoFillContactController = v10;
 
   [(UIPopoverController *)self->_autoFillContactController setDelegate:self];
-  [v12 rectForRowAtIndexPath:v9];
-  [(UIPopoverController *)self->_autoFillContactController presentPopoverFromRect:v12 inView:1 permittedArrowDirections:1 animated:?];
+  [tableCopy rectForRowAtIndexPath:v9];
+  [(UIPopoverController *)self->_autoFillContactController presentPopoverFromRect:tableCopy inView:1 permittedArrowDirections:1 animated:?];
 }
 
-- (void)setUseContactInfo:(id)a3 forSpecifier:(id)a4
+- (void)setUseContactInfo:(id)info forSpecifier:(id)specifier
 {
-  v5 = [a3 intValue];
-  v6 = [(SafariAutoFillSettingsController *)self _formDataController];
-  [v6 setShouldAutoFillFromAddressBook:v5 != 0];
+  intValue = [info intValue];
+  _formDataController = [(SafariAutoFillSettingsController *)self _formDataController];
+  [_formDataController setShouldAutoFillFromAddressBook:intValue != 0];
 
-  if (v5 && !self->_isMeCardSet)
+  if (intValue && !self->_isMeCardSet)
   {
     v7 = [(SafariAutoFillSettingsController *)self specifierForID:@"My Info"];
     if (_SFDeviceIsPad())
     {
-      v8 = [(SafariAutoFillSettingsController *)self table];
+      table = [(SafariAutoFillSettingsController *)self table];
       v9 = [(SafariAutoFillSettingsController *)self cachedCellForSpecifierID:@"My Info"];
-      v10 = [v8 indexPathForCell:v9];
+      v10 = [table indexPathForCell:v9];
 
-      [(SafariAutoFillSettingsController *)self presentPopoverContactListInTable:v8 index:v10 specifier:v7];
+      [(SafariAutoFillSettingsController *)self presentPopoverContactListInTable:table index:v10 specifier:v7];
     }
 
     else
@@ -527,26 +527,26 @@ id __80__SafariAutoFillSettingsController__setShouldAutoFill_specifier_message_s
   [(SafariAutoFillSettingsController *)self reloadSpecifierID:@"My Info" animated:1];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SafariAutoFillSettingsController *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(SafariAutoFillSettingsController *)self indexForIndexPath:pathCopy];
   v9 = [*&self->super.PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
   if (_SFDeviceIsPad() && ([v9 identifier], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqualToString:", @"My Info"), v10, v11))
   {
-    [(SafariAutoFillSettingsController *)self presentPopoverContactListInTable:v6 index:v7 specifier:v9];
+    [(SafariAutoFillSettingsController *)self presentPopoverContactListInTable:viewCopy index:pathCopy specifier:v9];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = SafariAutoFillSettingsController;
-    [(SafariSettingsListController *)&v12 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(SafariSettingsListController *)&v12 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 }
 
-- (void)popoverControllerDidDismissPopover:(id)a3
+- (void)popoverControllerDidDismissPopover:(id)popover
 {
   autoFillContactController = self->_autoFillContactController;
   self->_autoFillContactController = 0;
@@ -560,9 +560,9 @@ id __80__SafariAutoFillSettingsController__setShouldAutoFill_specifier_message_s
   [(SafariAutoFillSettingsController *)self updateUseContactInfoSpecifiers];
 }
 
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
-  if ([(UIPopoverController *)self->_autoFillContactController isPopoverVisible:a3])
+  if ([(UIPopoverController *)self->_autoFillContactController isPopoverVisible:orientation])
   {
     autoFillContactController = self->_autoFillContactController;
 
@@ -570,7 +570,7 @@ id __80__SafariAutoFillSettingsController__setShouldAutoFill_specifier_message_s
   }
 }
 
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation
 {
   if (self->_autoFillContactIndex)
   {
@@ -583,16 +583,16 @@ id __80__SafariAutoFillSettingsController__setShouldAutoFill_specifier_message_s
   }
 }
 
-- (void)contactPickerDidCancel:(id)a3
+- (void)contactPickerDidCancel:(id)cancel
 {
   [(SafariAutoFillSettingsController *)self updateUseContactInfoSpecifiers];
 
   [(SafariAutoFillSettingsController *)self _dismissMeCardPicker];
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
-  [(CNContactStore *)self->_contactStore setMeContact:a4 error:0];
+  [(CNContactStore *)self->_contactStore setMeContact:contact error:0];
   [(SafariAutoFillSettingsController *)self updateUseContactInfoSpecifiers];
 
   [(SafariAutoFillSettingsController *)self _dismissMeCardPicker];

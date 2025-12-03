@@ -1,13 +1,13 @@
 @interface BLSDesiredFidelityRequest
-- (BLSDesiredFidelityRequest)initWithCompletion:(id)a3;
-- (void)completeWithDesiredFidelity:(int64_t)a3;
+- (BLSDesiredFidelityRequest)initWithCompletion:(id)completion;
+- (void)completeWithDesiredFidelity:(int64_t)fidelity;
 @end
 
 @implementation BLSDesiredFidelityRequest
 
-- (BLSDesiredFidelityRequest)initWithCompletion:(id)a3
+- (BLSDesiredFidelityRequest)initWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v10.receiver = self;
   v10.super_class = BLSDesiredFidelityRequest;
   v5 = [(BLSDesiredFidelityRequest *)&v10 init];
@@ -15,7 +15,7 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = MEMORY[0x223D716E0](v4);
+    v7 = MEMORY[0x223D716E0](completionCopy);
     completion = v6->_completion;
     v6->_completion = v7;
   }
@@ -23,7 +23,7 @@
   return v6;
 }
 
-- (void)completeWithDesiredFidelity:(int64_t)a3
+- (void)completeWithDesiredFidelity:(int64_t)fidelity
 {
   os_unfair_lock_lock(&self->_lock);
   lock_completed = self->_lock_completed;
@@ -44,7 +44,7 @@
 
   else if (v6)
   {
-    v6[2](v6, a3);
+    v6[2](v6, fidelity);
   }
 }
 

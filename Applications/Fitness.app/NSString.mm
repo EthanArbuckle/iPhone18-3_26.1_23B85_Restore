@@ -1,10 +1,10 @@
 @interface NSString
 + (id)_meridianStringFormatter;
 + (id)_twelveHourFormatter;
-+ (id)attrStringWithValue:(id)a3;
-+ (id)attrStringWithValue:(id)a3 unit:(id)a4;
-+ (id)goalProgressAttrStringWithCurrentValue:(id)a3 goalValue:(id)a4 unitString:(id)a5;
-+ (id)timeIntervalHourMinuteFormatter:(double)a3;
++ (id)attrStringWithValue:(id)value;
++ (id)attrStringWithValue:(id)value unit:(id)unit;
++ (id)goalProgressAttrStringWithCurrentValue:(id)value goalValue:(id)goalValue unitString:(id)string;
++ (id)timeIntervalHourMinuteFormatter:(double)formatter;
 - (BOOL)isEmail;
 - (BOOL)isPhoneNumber;
 - (id)destinationStripped;
@@ -36,22 +36,22 @@
   return v3;
 }
 
-+ (id)attrStringWithValue:(id)a3
++ (id)attrStringWithValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = [UIFont systemFontOfSize:22.0];
   v8 = NSFontAttributeName;
   v9 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
-  v6 = [[NSAttributedString alloc] initWithString:v3 attributes:v5];
+  v6 = [[NSAttributedString alloc] initWithString:valueCopy attributes:v5];
 
   return v6;
 }
 
-+ (id)timeIntervalHourMinuteFormatter:(double)a3
++ (id)timeIntervalHourMinuteFormatter:(double)formatter
 {
-  LODWORD(v3) = vcvtmd_s64_f64(a3 / 60.0);
-  v4 = (a3 % 60);
+  LODWORD(v3) = vcvtmd_s64_f64(formatter / 60.0);
+  v4 = (formatter % 60);
   v5 = [NSNumber numberWithInt:v3];
   v6 = [FIUIFormattingManager stringWithNumber:v5 decimalPrecision:1];
 
@@ -76,35 +76,35 @@
   return v13;
 }
 
-+ (id)attrStringWithValue:(id)a3 unit:(id)a4
++ (id)attrStringWithValue:(id)value unit:(id)unit
 {
-  v5 = a4;
-  v6 = a3;
+  unitCopy = unit;
+  valueCopy = value;
   v7 = [NSMutableAttributedString alloc];
-  v8 = [NSString stringWithFormat:@"%@%@", v6, v5];
-  v9 = [v7 initWithString:v8];
+  unitCopy = [NSString stringWithFormat:@"%@%@", valueCopy, unitCopy];
+  v9 = [v7 initWithString:unitCopy];
 
   v10 = [UIFont systemFontOfSize:22.0];
-  [v9 addAttribute:NSFontAttributeName value:v10 range:{0, objc_msgSend(v6, "length")}];
+  [v9 addAttribute:NSFontAttributeName value:v10 range:{0, objc_msgSend(valueCopy, "length")}];
 
   v11 = [UIFont systemFontOfSize:18.0];
-  v12 = [v6 length];
+  v12 = [valueCopy length];
 
-  v13 = [v5 length];
+  v13 = [unitCopy length];
   [v9 addAttribute:NSFontAttributeName value:v11 range:{v12, v13}];
 
   return v9;
 }
 
-+ (id)goalProgressAttrStringWithCurrentValue:(id)a3 goalValue:(id)a4 unitString:(id)a5
++ (id)goalProgressAttrStringWithCurrentValue:(id)value goalValue:(id)goalValue unitString:(id)string
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [FIUIFormattingManager stringWithNumber:a3 decimalPrecision:1];
-  v11 = [FIUIFormattingManager stringWithNumber:v9 decimalPrecision:1];
+  stringCopy = string;
+  goalValueCopy = goalValue;
+  v10 = [FIUIFormattingManager stringWithNumber:value decimalPrecision:1];
+  v11 = [FIUIFormattingManager stringWithNumber:goalValueCopy decimalPrecision:1];
 
   v12 = [NSString stringWithFormat:@"%@/%@", v10, v11];
-  v13 = [a1 attrStringWithValue:v12 unit:v8];
+  v13 = [self attrStringWithValue:v12 unit:stringCopy];
 
   return v13;
 }

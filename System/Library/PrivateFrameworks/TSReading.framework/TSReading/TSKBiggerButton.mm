@@ -1,18 +1,18 @@
 @interface TSKBiggerButton
-+ (id)tsdPlatformButtonWithFrame:(CGRect)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (void)setHitBufferTop:(double)a3 left:(double)a4 bottom:(double)a5 right:(double)a6;
++ (id)tsdPlatformButtonWithFrame:(CGRect)frame;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (void)setHitBufferTop:(double)top left:(double)left bottom:(double)bottom right:(double)right;
 @end
 
 @implementation TSKBiggerButton
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v14.receiver = self;
   v14.super_class = TSKBiggerButton;
-  result = [(TSKBiggerButton *)&v14 pointInside:a4 withEvent:?];
+  result = [(TSKBiggerButton *)&v14 pointInside:event withEvent:?];
   if (self->mHitTestWithOutsets && !result)
   {
     [(TSKBiggerButton *)self bounds];
@@ -30,21 +30,21 @@
   return result;
 }
 
-- (void)setHitBufferTop:(double)a3 left:(double)a4 bottom:(double)a5 right:(double)a6
+- (void)setHitBufferTop:(double)top left:(double)left bottom:(double)bottom right:(double)right
 {
-  self->mOutsets.top = -a3;
-  self->mOutsets.left = -a4;
-  self->mOutsets.bottom = -a5;
-  self->mOutsets.right = -a6;
+  self->mOutsets.top = -top;
+  self->mOutsets.left = -left;
+  self->mOutsets.bottom = -bottom;
+  self->mOutsets.right = -right;
   self->mHitTestWithOutsets = 1;
 }
 
-+ (id)tsdPlatformButtonWithFrame:(CGRect)a3
++ (id)tsdPlatformButtonWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = [TSKBiggerButton buttonWithType:0];
   [(TSKBiggerButton *)v7 setFrame:x, y, width, height];
   return v7;

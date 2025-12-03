@@ -1,22 +1,22 @@
 @interface FTStartLanguageDetectionRequest
-- (FTStartLanguageDetectionRequest)initWithFlatbuffData:(id)a3 root:(const StartLanguageDetectionRequest *)a4 verify:(BOOL)a5;
+- (FTStartLanguageDetectionRequest)initWithFlatbuffData:(id)data root:(const StartLanguageDetectionRequest *)root verify:(BOOL)verify;
 - (NSArray)locales;
 - (NSString)session_id;
 - (NSString)speech_id;
-- (Offset<siri::speech::schema_fb::StartLanguageDetectionRequest>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::StartLanguageDetectionRequest>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
-- (id)locales_objectAtIndex:(unint64_t)a3;
+- (id)locales_objectAtIndex:(unint64_t)index;
 - (int64_t)codec;
 - (unint64_t)locales_count;
-- (void)locales_enumerateObjectsUsingBlock:(id)a3;
+- (void)locales_enumerateObjectsUsingBlock:(id)block;
 @end
 
 @implementation FTStartLanguageDetectionRequest
 
-- (FTStartLanguageDetectionRequest)initWithFlatbuffData:(id)a3 root:(const StartLanguageDetectionRequest *)a4 verify:(BOOL)a5
+- (FTStartLanguageDetectionRequest)initWithFlatbuffData:(id)data root:(const StartLanguageDetectionRequest *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTStartLanguageDetectionRequest;
   v10 = [(FTStartLanguageDetectionRequest *)&v25 init];
@@ -25,35 +25,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -130,12 +130,12 @@ LABEL_13:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"locales"];
   if (!v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __42__FTStartLanguageDetectionRequest_locales__block_invoke;
     v6[3] = &unk_2789B8AD8;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(FTStartLanguageDetectionRequest *)self locales_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"locales"];
@@ -144,13 +144,13 @@ LABEL_13:
   return v3;
 }
 
-- (id)locales_objectAtIndex:(unint64_t)a3
+- (id)locales_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"locales"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_8;
@@ -163,7 +163,7 @@ LABEL_3:
     v11 = *v10[8].var0;
     if (v11)
     {
-      v12 = &root[4 * a3 + v11 + *root[v11].var0];
+      v12 = &root[4 * index + v11 + *root[v11].var0];
       v13 = (v12 + 4 + *(v12 + 4));
       v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v13 + 1 length:*v13 encoding:4];
       goto LABEL_3;
@@ -203,14 +203,14 @@ LABEL_8:
   return v5;
 }
 
-- (void)locales_enumerateObjectsUsingBlock:(id)a3
+- (void)locales_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"locales"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -234,7 +234,7 @@ LABEL_8:
           do
           {
             v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:&v14[*v14[-4].var0] length:*v13[4 * v12 + 4 + *v14[-4].var0].var0 encoding:4];
-            v4[2](v4, v16, v12, &v19);
+            blockCopy[2](blockCopy, v16, v12, &v19);
             v17 = v19;
 
             if (v17)
@@ -270,41 +270,41 @@ LABEL_8:
   }
 }
 
-- (Offset<siri::speech::schema_fb::StartLanguageDetectionRequest>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::StartLanguageDetectionRequest>)addObjectToBuffer:(void *)buffer
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = [(FTStartLanguageDetectionRequest *)self speech_id];
-  v6 = v5;
-  if (!v5)
+  speech_id = [(FTStartLanguageDetectionRequest *)self speech_id];
+  v6 = speech_id;
+  if (!speech_id)
   {
-    v5 = &stru_284834138;
+    speech_id = &stru_284834138;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)speech_id UTF8String];
+  v8 = strlen(uTF8String);
+  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v10 = [(FTStartLanguageDetectionRequest *)self session_id];
-  v11 = v10;
-  if (!v10)
+  session_id = [(FTStartLanguageDetectionRequest *)self session_id];
+  v11 = session_id;
+  if (!session_id)
   {
-    v10 = &stru_284834138;
+    session_id = &stru_284834138;
   }
 
-  v12 = [(__CFString *)v10 UTF8String];
-  v13 = strlen(v12);
-  v14 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v12, v13);
+  uTF8String2 = [(__CFString *)session_id UTF8String];
+  v13 = strlen(uTF8String2);
+  v14 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String2, v13);
 
   memset(&v36, 0, sizeof(v36));
-  v15 = [(FTStartLanguageDetectionRequest *)self locales];
-  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v36, [v15 count]);
+  locales = [(FTStartLanguageDetectionRequest *)self locales];
+  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v36, [locales count]);
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v16 = [(FTStartLanguageDetectionRequest *)self locales];
-  v17 = [v16 countByEnumeratingWithState:&v32 objects:v37 count:16];
+  locales2 = [(FTStartLanguageDetectionRequest *)self locales];
+  v17 = [locales2 countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v17)
   {
     v18 = *v33;
@@ -314,16 +314,16 @@ LABEL_8:
       {
         if (*v33 != v18)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(locales2);
         }
 
-        v20 = [*(*(&v32 + 1) + 8 * i) UTF8String];
-        v21 = strlen(v20);
-        v31 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v20, v21);
+        uTF8String3 = [*(*(&v32 + 1) + 8 * i) UTF8String];
+        v21 = strlen(uTF8String3);
+        v31 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String3, v21);
         std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::push_back[abi:ne200100](&v36.__begin_, &v31);
       }
 
-      v17 = [v16 countByEnumeratingWithState:&v32 objects:v37 count:16];
+      v17 = [locales2 countByEnumeratingWithState:&v32 objects:v37 count:16];
     }
 
     while (v17);
@@ -339,17 +339,17 @@ LABEL_8:
     begin = v36.__begin_;
   }
 
-  v23 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(a3, begin, v36.__end_ - v36.__begin_);
-  v24 = [(FTStartLanguageDetectionRequest *)self codec];
-  *(a3 + 70) = 1;
-  v25 = *(a3 + 8);
-  v26 = *(a3 + 12);
-  v27 = *(a3 + 10);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 4, String);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v14);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 8, v23);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 10, v24, 0);
-  v28.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v25 - v26 + v27);
+  v23 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(buffer, begin, v36.__end_ - v36.__begin_);
+  codec = [(FTStartLanguageDetectionRequest *)self codec];
+  *(buffer + 70) = 1;
+  v25 = *(buffer + 8);
+  v26 = *(buffer + 12);
+  v27 = *(buffer + 10);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 4, String);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v14);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 8, v23);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 10, codec, 0);
+  v28.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v25 - v26 + v27);
   if (v36.__begin_)
   {
     v36.__end_ = v36.__begin_;

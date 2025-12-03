@@ -1,27 +1,27 @@
 @interface SBResizeGrabberHintingSwitcherModifier
-- (BOOL)_isHandlingEvent:(id)a3;
-- (BOOL)isHintingResizeGrabberForDisplayItem:(id)a3 corner:(unint64_t)a4 inAppLayout:(id)a5;
+- (BOOL)_isHandlingEvent:(id)event;
+- (BOOL)isHintingResizeGrabberForDisplayItem:(id)item corner:(unint64_t)corner inAppLayout:(id)layout;
 - (NSString)identifier;
-- (SBResizeGrabberHintingSwitcherModifier)initWithDisplayItem:(id)a3 corners:(unint64_t)a4;
+- (SBResizeGrabberHintingSwitcherModifier)initWithDisplayItem:(id)item corners:(unint64_t)corners;
 - (id)description;
-- (id)handleDidEdgeProtectResizeGrabberEvent:(id)a3;
-- (id)handleTimerEvent:(id)a3;
-- (unint64_t)visibleCornersForTouchResizeForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (id)handleDidEdgeProtectResizeGrabberEvent:(id)event;
+- (id)handleTimerEvent:(id)event;
+- (unint64_t)visibleCornersForTouchResizeForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 @end
 
 @implementation SBResizeGrabberHintingSwitcherModifier
 
-- (SBResizeGrabberHintingSwitcherModifier)initWithDisplayItem:(id)a3 corners:(unint64_t)a4
+- (SBResizeGrabberHintingSwitcherModifier)initWithDisplayItem:(id)item corners:(unint64_t)corners
 {
-  v7 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = SBResizeGrabberHintingSwitcherModifier;
   v8 = [(SBSwitcherModifier *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_displayItem, a3);
-    v9->_corners = a4;
+    objc_storeStrong(&v8->_displayItem, item);
+    v9->_corners = corners;
   }
 
   return v9;
@@ -30,9 +30,9 @@
 - (NSString)identifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(SBDisplayItem *)self->_displayItem uniqueIdentifier];
+  uniqueIdentifier = [(SBDisplayItem *)self->_displayItem uniqueIdentifier];
   v4 = SBStringFromUIRectCorner();
-  v5 = [v2 stringWithFormat:@"SBResizeGrabberHintingSwitcherModifier(%@, %@)", v3, v4];
+  v5 = [v2 stringWithFormat:@"SBResizeGrabberHintingSwitcherModifier(%@, %@)", uniqueIdentifier, v4];
 
   return v5;
 }
@@ -42,20 +42,20 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SBDisplayItem *)self->_displayItem uniqueIdentifier];
+  uniqueIdentifier = [(SBDisplayItem *)self->_displayItem uniqueIdentifier];
   v7 = SBStringFromUIRectCorner();
-  v8 = [v3 stringWithFormat:@"<%@: %p> (%@, %@)", v5, self, v6, v7];
+  v8 = [v3 stringWithFormat:@"<%@: %p> (%@, %@)", v5, self, uniqueIdentifier, v7];
 
   return v8;
 }
 
-- (id)handleDidEdgeProtectResizeGrabberEvent:(id)a3
+- (id)handleDidEdgeProtectResizeGrabberEvent:(id)event
 {
   v15.receiver = self;
   v15.super_class = SBResizeGrabberHintingSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBSwitcherModifier *)&v15 handleDidEdgeProtectResizeGrabberEvent:v4];
-  v6 = [(SBResizeGrabberHintingSwitcherModifier *)self _isHandlingEvent:v4, v15.receiver, v15.super_class];
+  eventCopy = event;
+  v5 = [(SBSwitcherModifier *)&v15 handleDidEdgeProtectResizeGrabberEvent:eventCopy];
+  v6 = [(SBResizeGrabberHintingSwitcherModifier *)self _isHandlingEvent:eventCopy, v15.receiver, v15.super_class];
 
   if (v6)
   {
@@ -80,16 +80,16 @@
   return v13;
 }
 
-- (id)handleTimerEvent:(id)a3
+- (id)handleTimerEvent:(id)event
 {
   v12.receiver = self;
   v12.super_class = SBResizeGrabberHintingSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBSwitcherModifier *)&v12 handleTimerEvent:v4];
-  v6 = [v4 reason];
+  eventCopy = event;
+  v5 = [(SBSwitcherModifier *)&v12 handleTimerEvent:eventCopy];
+  reason = [eventCopy reason];
 
   v7 = [(SBResizeGrabberHintingSwitcherModifier *)self description];
-  v8 = [v6 isEqualToString:v7];
+  v8 = [reason isEqualToString:v7];
 
   if (v8)
   {
@@ -102,10 +102,10 @@
   return v10;
 }
 
-- (unint64_t)visibleCornersForTouchResizeForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (unint64_t)visibleCornersForTouchResizeForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  v7 = [v6 itemForLayoutRole:a3];
+  layoutCopy = layout;
+  v7 = [layoutCopy itemForLayoutRole:role];
   if ([(SBDisplayItem *)v7 isEqualToItem:?])
   {
     corners = self->_corners;
@@ -115,17 +115,17 @@
   {
     v10.receiver = self;
     v10.super_class = SBResizeGrabberHintingSwitcherModifier;
-    corners = [(SBResizeGrabberHintingSwitcherModifier *)&v10 visibleCornersForTouchResizeForLayoutRole:a3 inAppLayout:v6];
+    corners = [(SBResizeGrabberHintingSwitcherModifier *)&v10 visibleCornersForTouchResizeForLayoutRole:role inAppLayout:layoutCopy];
   }
 
   return corners;
 }
 
-- (BOOL)isHintingResizeGrabberForDisplayItem:(id)a3 corner:(unint64_t)a4 inAppLayout:(id)a5
+- (BOOL)isHintingResizeGrabberForDisplayItem:(id)item corner:(unint64_t)corner inAppLayout:(id)layout
 {
-  if (self->_corners == a4)
+  if (self->_corners == corner)
   {
-    return [(SBDisplayItem *)a3 isEqualToItem:?];
+    return [(SBDisplayItem *)item isEqualToItem:?];
   }
 
   else
@@ -134,15 +134,15 @@
   }
 }
 
-- (BOOL)_isHandlingEvent:(id)a3
+- (BOOL)_isHandlingEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   corners = self->_corners;
-  if (corners == [v4 corners])
+  if (corners == [eventCopy corners])
   {
     displayItem = self->_displayItem;
-    v7 = [v4 displayItem];
-    v8 = [(SBDisplayItem *)displayItem isEqualToItem:v7];
+    displayItem = [eventCopy displayItem];
+    v8 = [(SBDisplayItem *)displayItem isEqualToItem:displayItem];
   }
 
   else

@@ -1,11 +1,11 @@
 @interface PXSharedAlbumsActivityEntryLayout
-- (PXSharedAlbumsActivityEntryLayout)initWithItem:(id)a3;
-- (id)attributedStringForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (PXSharedAlbumsActivityEntryLayout)initWithItem:(id)item;
+- (id)attributedStringForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
 - (id)axSpriteIndexes;
-- (id)colorAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (id)displayAssetFetchResultForSpritesInRange:(_PXGSpriteIndexRange)a3 inLayout:(id)a4;
-- (id)stringAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (id)stringAttributesAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (id)colorAtIndex:(unsigned int)index inLayout:(id)layout;
+- (id)displayAssetFetchResultForSpritesInRange:(_PXGSpriteIndexRange)range inLayout:(id)layout;
+- (id)stringAtIndex:(unsigned int)index inLayout:(id)layout;
+- (id)stringAttributesAtIndex:(unsigned int)index inLayout:(id)layout;
 - (void)displayScaleDidChange;
 - (void)referenceSizeDidChange;
 - (void)update;
@@ -13,30 +13,30 @@
 
 @implementation PXSharedAlbumsActivityEntryLayout
 
-- (id)displayAssetFetchResultForSpritesInRange:(_PXGSpriteIndexRange)a3 inLayout:(id)a4
+- (id)displayAssetFetchResultForSpritesInRange:(_PXGSpriteIndexRange)range inLayout:(id)layout
 {
-  [(PXSharedAlbumsActivityEntryItem *)self->_item assets:a3];
+  [(PXSharedAlbumsActivityEntryItem *)self->_item assets:range];
   objc_claimAutoreleasedReturnValue();
   PXDisplayAssetFetchResultFromArray();
 }
 
-- (id)stringAttributesAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)stringAttributesAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntryViewController.m" lineNumber:458 description:@"Code which should be unreachable has been reached"];
+  layoutCopy = layout;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntryViewController.m" lineNumber:458 description:@"Code which should be unreachable has been reached"];
 
   abort();
 }
 
-- (id)attributedStringForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)attributedStringForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  if (self->_countsSpriteIndex == a3)
+  layoutCopy = layout;
+  if (self->_countsSpriteIndex == index)
   {
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [(PXSharedAlbumsActivityEntryItem *)self->_item assets];
-    v10 = [v8 localizedStringWithFormat:@"%lu", objc_msgSend(v9, "count")];
+    assets = [(PXSharedAlbumsActivityEntryItem *)self->_item assets];
+    message = [v8 localizedStringWithFormat:@"%lu", objc_msgSend(assets, "count")];
 
     v11 = objc_alloc(MEMORY[0x1E696AAB0]);
     if (_TextAttributesForCounts_predicate != -1)
@@ -46,21 +46,21 @@
 
     v12 = _TextAttributesForCounts__textAttributes;
 LABEL_13:
-    v16 = [v11 initWithString:v10 attributes:v12];
+    v16 = [v11 initWithString:message attributes:v12];
     goto LABEL_14;
   }
 
-  if (self->_contributorSpriteIndex != a3)
+  if (self->_contributorSpriteIndex != index)
   {
-    if (self->_messageSpriteIndex != a3)
+    if (self->_messageSpriteIndex != index)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntryViewController.m" lineNumber:453 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntryViewController.m" lineNumber:453 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    v10 = [(PXSharedAlbumsActivityEntryItem *)self->_item message];
+    message = [(PXSharedAlbumsActivityEntryItem *)self->_item message];
     v11 = objc_alloc(MEMORY[0x1E696AAB0]);
     if (_TextAttributesForMessage_predicate != -1)
     {
@@ -71,9 +71,9 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v10 = [(PXSharedAlbumsActivityEntryItem *)self->_item contributorDisplayName];
-  v13 = [(PXSharedAlbumsActivityEntryItem *)self->_item albumName];
-  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ / %@", v10, v13];
+  message = [(PXSharedAlbumsActivityEntryItem *)self->_item contributorDisplayName];
+  albumName = [(PXSharedAlbumsActivityEntryItem *)self->_item albumName];
+  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ / %@", message, albumName];
   v15 = objc_alloc(MEMORY[0x1E696AAB0]);
   if (_TextAttributesForContributor_predicate != -1)
   {
@@ -87,39 +87,39 @@ LABEL_14:
   return v16;
 }
 
-- (id)stringAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)stringAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntryViewController.m" lineNumber:437 description:@"Code which should be unreachable has been reached"];
+  layoutCopy = layout;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntryViewController.m" lineNumber:437 description:@"Code which should be unreachable has been reached"];
 
   abort();
 }
 
-- (id)colorAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)colorAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
+  layoutCopy = layout;
   if (colorAtIndex_inLayout__predicate != -1)
   {
     dispatch_once(&colorAtIndex_inLayout__predicate, &__block_literal_global_410);
   }
 
-  if (self->_backgroundSpriteIndex == a3)
+  if (self->_backgroundSpriteIndex == index)
   {
     v8 = &colorAtIndex_inLayout___backgroundColor;
   }
 
-  else if (self->_assetSpriteIndex == a3)
+  else if (self->_assetSpriteIndex == index)
   {
     v8 = &colorAtIndex_inLayout___assetBackgroundColor;
   }
 
   else
   {
-    if (self->_countsBackgroundSpriteIndex != a3)
+    if (self->_countsBackgroundSpriteIndex != index)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntryViewController.m" lineNumber:430 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntryViewController.m" lineNumber:430 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -613,13 +613,13 @@ void __43__PXSharedAlbumsActivityEntryLayout_update__block_invoke(uint64_t a1, u
   [(PXSharedAlbumsActivityEntryLayout *)self setNeedsUpdate];
 }
 
-- (PXSharedAlbumsActivityEntryLayout)initWithItem:(id)a3
+- (PXSharedAlbumsActivityEntryLayout)initWithItem:(id)item
 {
-  v6 = a3;
-  if (!v6)
+  itemCopy = item;
+  if (!itemCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntryViewController.m" lineNumber:139 description:{@"Invalid parameter not satisfying: %@", @"item"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntryViewController.m" lineNumber:139 description:{@"Invalid parameter not satisfying: %@", @"item"}];
   }
 
   v11.receiver = self;
@@ -628,7 +628,7 @@ void __43__PXSharedAlbumsActivityEntryLayout_update__block_invoke(uint64_t a1, u
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_item, a3);
+    objc_storeStrong(&v7->_item, item);
     v8->_assetSpriteIndex = [(PXSharedAlbumsActivityEntryLayout *)v8 addSpriteWithInitialState:0];
     v8->_backgroundSpriteIndex = [(PXSharedAlbumsActivityEntryLayout *)v8 addSpriteWithInitialState:0];
     v8->_countsBackgroundSpriteIndex = [(PXSharedAlbumsActivityEntryLayout *)v8 addSpriteWithInitialState:0];

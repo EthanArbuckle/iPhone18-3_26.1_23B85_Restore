@@ -1,6 +1,6 @@
 @interface MTRWaterHeaterModeClusterModeTagStruct
 - (MTRWaterHeaterModeClusterModeTagStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRWaterHeaterModeClusterModeTagStruct);
-  v5 = [(MTRWaterHeaterModeClusterModeTagStruct *)self mfgCode];
-  [(MTRWaterHeaterModeClusterModeTagStruct *)v4 setMfgCode:v5];
+  mfgCode = [(MTRWaterHeaterModeClusterModeTagStruct *)self mfgCode];
+  [(MTRWaterHeaterModeClusterModeTagStruct *)v4 setMfgCode:mfgCode];
 
-  v6 = [(MTRWaterHeaterModeClusterModeTagStruct *)self value];
-  [(MTRWaterHeaterModeClusterModeTagStruct *)v4 setValue:v6];
+  value = [(MTRWaterHeaterModeClusterModeTagStruct *)self value];
+  [(MTRWaterHeaterModeClusterModeTagStruct *)v4 setValue:value];
 
   return v4;
 }

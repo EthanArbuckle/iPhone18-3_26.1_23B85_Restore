@@ -1,21 +1,21 @@
 @interface OrgApacheLuceneUtilAttributeSource
 + (void)initialize;
-- (BOOL)hasAttributeWithIOSClass:(id)a3;
+- (BOOL)hasAttributeWithIOSClass:(id)class;
 - (BOOL)hasAttributes;
-- (BOOL)isEqual:(id)a3;
-- (id)addAttributeWithIOSClass:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)addAttributeWithIOSClass:(id)class;
 - (id)captureState;
 - (id)cloneAttributes;
 - (id)description;
 - (id)getAttributeClassesIterator;
 - (id)getAttributeImplsIterator;
-- (id)getAttributeWithIOSClass:(id)a3;
+- (id)getAttributeWithIOSClass:(id)class;
 - (id)getCurrentState;
 - (unint64_t)hash;
 - (void)clearAttributes;
-- (void)copyToWithOrgApacheLuceneUtilAttributeSource:(id)a3;
+- (void)copyToWithOrgApacheLuceneUtilAttributeSource:(id)source;
 - (void)dealloc;
-- (void)restoreStateWithOrgApacheLuceneUtilAttributeSource_State:(id)a3;
+- (void)restoreStateWithOrgApacheLuceneUtilAttributeSource_State:(id)state;
 @end
 
 @implementation OrgApacheLuceneUtilAttributeSource
@@ -58,7 +58,7 @@
 
 - (id)getCurrentState
 {
-  v1 = a1[3];
+  v1 = self[3];
   if (!v1)
   {
     goto LABEL_14;
@@ -73,7 +73,7 @@
   v4 = *(v1 + 24);
   if (!v4)
   {
-    v5 = a1[1];
+    v5 = self[1];
     if (v5)
     {
       if ([v5 isEmpty])
@@ -81,18 +81,18 @@
         return 0;
       }
 
-      v4 = IOSObjectArray_SetAndConsume(a1[3], 0, [OrgApacheLuceneUtilAttributeSource_State alloc]);
-      v6 = a1[2];
+      v4 = IOSObjectArray_SetAndConsume(self[3], 0, [OrgApacheLuceneUtilAttributeSource_State alloc]);
+      v6 = self[2];
       if (v6)
       {
-        v7 = [v6 values];
-        if (v7)
+        values = [v6 values];
+        if (values)
         {
-          v8 = [v7 iterator];
-          if (v8)
+          iterator = [values iterator];
+          if (iterator)
           {
-            v9 = v8;
-            JreStrongAssign(v4 + 1, [v8 next]);
+            v9 = iterator;
+            JreStrongAssign(v4 + 1, [iterator next]);
             if ([v9 hasNext])
             {
               v10 = v4;
@@ -119,7 +119,7 @@ LABEL_14:
   return v4;
 }
 
-- (id)addAttributeWithIOSClass:(id)a3
+- (id)addAttributeWithIOSClass:(id)class
 {
   attributes = self->attributes_;
   if (!attributes)
@@ -130,11 +130,11 @@ LABEL_14:
   v6 = [(JavaUtilMap *)attributes getWithId:?];
   if (!v6)
   {
-    if (a3)
+    if (class)
     {
-      if (![a3 isInterface] || (objc_msgSend(OrgApacheLuceneUtilAttribute_class_(), "isAssignableFrom:", a3) & 1) == 0)
+      if (![class isInterface] || (objc_msgSend(OrgApacheLuceneUtilAttribute_class_(), "isAssignableFrom:", class) & 1) == 0)
       {
-        [a3 getName];
+        [class getName];
         v17 = JreStrcat("$$$", v10, v11, v12, v13, v14, v15, v16, @"addAttribute() only accepts an interface that extends Attribute, but ");
         v18 = new_JavaLangIllegalArgumentException_initWithNSString_(v17);
         objc_exception_throw(v18);
@@ -143,7 +143,7 @@ LABEL_14:
       factory = self->factory_;
       if (factory)
       {
-        v7 = [(OrgApacheLuceneUtilAttributeFactory *)factory createAttributeInstanceWithIOSClass:a3];
+        v7 = [(OrgApacheLuceneUtilAttributeFactory *)factory createAttributeInstanceWithIOSClass:class];
         sub_1000F2F1C(self, v7);
         goto LABEL_10;
       }
@@ -154,14 +154,14 @@ LABEL_13:
   }
 
   v7 = v6;
-  if (!a3)
+  if (!class)
   {
     goto LABEL_13;
   }
 
 LABEL_10:
 
-  return [a3 cast:v7];
+  return [class cast:v7];
 }
 
 - (BOOL)hasAttributes
@@ -175,7 +175,7 @@ LABEL_10:
   return [(JavaUtilMap *)attributes isEmpty]^ 1;
 }
 
-- (BOOL)hasAttributeWithIOSClass:(id)a3
+- (BOOL)hasAttributeWithIOSClass:(id)class
 {
   attributes = self->attributes_;
   if (!attributes)
@@ -183,19 +183,19 @@ LABEL_10:
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilMap *)attributes containsKeyWithId:a3];
+  return [(JavaUtilMap *)attributes containsKeyWithId:class];
 }
 
-- (id)getAttributeWithIOSClass:(id)a3
+- (id)getAttributeWithIOSClass:(id)class
 {
-  if (!a3 || (attributes = self->attributes_) == 0)
+  if (!class || (attributes = self->attributes_) == 0)
   {
     JreThrowNullPointerException();
   }
 
   v5 = [(JavaUtilMap *)attributes getWithId:?];
 
-  return [a3 cast:v5];
+  return [class cast:v5];
 }
 
 - (void)clearAttributes
@@ -232,21 +232,21 @@ LABEL_10:
   return result;
 }
 
-- (void)restoreStateWithOrgApacheLuceneUtilAttributeSource_State:(id)a3
+- (void)restoreStateWithOrgApacheLuceneUtilAttributeSource_State:(id)state
 {
-  if (a3)
+  if (state)
   {
-    v3 = a3;
+    stateCopy = state;
     do
     {
       attributeImpls = self->attributeImpls_;
-      if (!attributeImpls || (v6 = v3[1]) == 0)
+      if (!attributeImpls || (v6 = stateCopy[1]) == 0)
       {
         JreThrowNullPointerException();
       }
 
       v7 = -[JavaUtilMap getWithId:](attributeImpls, "getWithId:", [v6 getClass]);
-      v8 = v3[1];
+      v8 = stateCopy[1];
       if (!v7)
       {
         [objc_msgSend(v8 "getClass")];
@@ -256,10 +256,10 @@ LABEL_10:
       }
 
       [v8 copyToWithOrgApacheLuceneUtilAttributeImpl:?];
-      v3 = v3[2];
+      stateCopy = stateCopy[2];
     }
 
-    while (v3);
+    while (stateCopy);
   }
 }
 
@@ -289,9 +289,9 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v7) = 1;
     return v7;
@@ -304,7 +304,7 @@ LABEL_10:
   }
 
   objc_opt_class();
-  if (a3 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (equal && (objc_opt_isKindOfClass() & 1) == 0)
   {
     JreThrowClassCastException();
   }
@@ -317,12 +317,12 @@ LABEL_10:
 
   if (([(JavaUtilMap *)attributes isEmpty]& 1) == 0)
   {
-    if (!a3)
+    if (!equal)
     {
       goto LABEL_28;
     }
 
-    v8 = *(a3 + 1);
+    v8 = *(equal + 1);
     if (!v8)
     {
       goto LABEL_28;
@@ -337,10 +337,10 @@ LABEL_10:
       }
 
       v10 = [(JavaUtilMap *)attributeImpls size];
-      if (v10 == [*(a3 + 2) size])
+      if (v10 == [*(equal + 2) size])
       {
         v11 = [OrgApacheLuceneUtilAttributeSource getCurrentState]_0(self);
-        v12 = [OrgApacheLuceneUtilAttributeSource getCurrentState]_0(a3);
+        v12 = [OrgApacheLuceneUtilAttributeSource getCurrentState]_0(equal);
         LOBYTE(v7) = 1;
         if (!v11 || !v12)
         {
@@ -355,8 +355,8 @@ LABEL_10:
             break;
           }
 
-          v14 = [v13 getClass];
-          if (v14 != [v11[1] getClass])
+          getClass = [v13 getClass];
+          if (getClass != [v11[1] getClass])
           {
             goto LABEL_26;
           }
@@ -389,12 +389,12 @@ LABEL_26:
     return v7;
   }
 
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_28;
   }
 
-  v6 = *(a3 + 1);
+  v6 = *(equal + 1);
   if (!v6)
   {
     goto LABEL_28;
@@ -459,14 +459,14 @@ LABEL_8:
       goto LABEL_21;
     }
 
-    v12 = [(JavaUtilMap *)v11 entrySet];
-    if (!v12)
+    entrySet = [(JavaUtilMap *)v11 entrySet];
+    if (!entrySet)
     {
       goto LABEL_21;
     }
 
-    v13 = v12;
-    v14 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    v13 = entrySet;
+    v14 = [entrySet countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v14)
     {
       v15 = v14;
@@ -487,21 +487,21 @@ LABEL_8:
           }
 
           v19 = v5->attributes_;
-          v20 = [*(*(&v25 + 1) + 8 * i) getKey];
+          getKey = [*(*(&v25 + 1) + 8 * i) getKey];
           v21 = v5->attributeImpls_;
           if (!v21)
           {
             goto LABEL_21;
           }
 
-          v22 = v20;
-          v23 = [v18 getValue];
-          if (!v23)
+          v22 = getKey;
+          getValue = [v18 getValue];
+          if (!getValue)
           {
             goto LABEL_21;
           }
 
-          -[JavaUtilMap putWithId:withId:](v19, "putWithId:withId:", v22, -[JavaUtilMap getWithId:](v21, "getWithId:", [v23 getClass]));
+          -[JavaUtilMap putWithId:withId:](v19, "putWithId:withId:", v22, -[JavaUtilMap getWithId:](v21, "getWithId:", [getValue getClass]));
         }
 
         v15 = [v13 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -514,17 +514,17 @@ LABEL_8:
   return v5;
 }
 
-- (void)copyToWithOrgApacheLuceneUtilAttributeSource:(id)a3
+- (void)copyToWithOrgApacheLuceneUtilAttributeSource:(id)source
 {
   v4 = [OrgApacheLuceneUtilAttributeSource getCurrentState]_0(self);
   if (v4)
   {
-    if (a3)
+    if (source)
     {
       v5 = v4;
       while (1)
       {
-        v6 = *(a3 + 2);
+        v6 = *(source + 2);
         if (!v6)
         {
           break;
@@ -577,7 +577,7 @@ LABEL_8:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [OrgApacheLuceneUtilAttributeSource__1 alloc];
     OrgLukhnosPortmobileLangClassValue_init(v2);

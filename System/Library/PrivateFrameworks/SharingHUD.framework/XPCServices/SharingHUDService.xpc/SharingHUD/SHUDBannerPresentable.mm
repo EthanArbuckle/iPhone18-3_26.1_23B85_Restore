@@ -1,23 +1,23 @@
 @interface SHUDBannerPresentable
-- (SHUDBannerPresentable)initWithModel:(id)a3;
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4;
+- (SHUDBannerPresentable)initWithModel:(id)model;
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason;
 @end
 
 @implementation SHUDBannerPresentable
 
-- (SHUDBannerPresentable)initWithModel:(id)a3
+- (SHUDBannerPresentable)initWithModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v13.receiver = self;
   v13.super_class = SHUDBannerPresentable;
   v6 = [(SHUDBannerPresentable *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_model, a3);
-    if ([v5 type])
+    objc_storeStrong(&v6->_model, model);
+    if ([modelCopy type])
     {
-      if ([v5 type] == 1)
+      if ([modelCopy type] == 1)
       {
         v8 = +[SHUDOnenessUnlockedUtilities deviceSpecificViewController];
         bannerViewController = v7->_bannerViewController;
@@ -29,15 +29,15 @@
         bannerViewController = sharingHUDLog();
         if (os_log_type_enabled(bannerViewController, OS_LOG_TYPE_ERROR))
         {
-          sub_100009208(v5, bannerViewController);
+          sub_100009208(modelCopy, bannerViewController);
         }
       }
     }
 
     else
     {
-      bannerViewController = [v5 watchName];
-      v10 = +[SHUDPairedUnlockUtilities deviceSpecificViewControllerWithWatchName:needsLockButton:needsUpdate:](SHUDPairedUnlockUtilities, "deviceSpecificViewControllerWithWatchName:needsLockButton:needsUpdate:", bannerViewController, [v5 needsLockButton], objc_msgSend(v5, "needsUpdate"));
+      bannerViewController = [modelCopy watchName];
+      v10 = +[SHUDPairedUnlockUtilities deviceSpecificViewControllerWithWatchName:needsLockButton:needsUpdate:](SHUDPairedUnlockUtilities, "deviceSpecificViewControllerWithWatchName:needsLockButton:needsUpdate:", bannerViewController, [modelCopy needsLockButton], objc_msgSend(modelCopy, "needsUpdate"));
       v11 = v7->_bannerViewController;
       v7->_bannerViewController = v10;
     }
@@ -46,15 +46,15 @@
   return v7;
 }
 
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason
 {
-  v7 = a4;
-  v5 = [(SHUDBannerPresentable *)self bannerDidDisappearHandler];
+  reasonCopy = reason;
+  bannerDidDisappearHandler = [(SHUDBannerPresentable *)self bannerDidDisappearHandler];
 
-  if (v5)
+  if (bannerDidDisappearHandler)
   {
-    v6 = [(SHUDBannerPresentable *)self bannerDidDisappearHandler];
-    (v6)[2](v6, v7);
+    bannerDidDisappearHandler2 = [(SHUDBannerPresentable *)self bannerDidDisappearHandler];
+    (bannerDidDisappearHandler2)[2](bannerDidDisappearHandler2, reasonCopy);
   }
 }
 

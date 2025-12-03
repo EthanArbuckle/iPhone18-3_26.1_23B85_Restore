@@ -1,15 +1,15 @@
 @interface HKCloudSyncRequest
 + (id)emptySyncRequest;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEquivalent:(id)a3;
-- (BOOL)matchesFilter:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEquivalent:(id)equivalent;
+- (BOOL)matchesFilter:(unint64_t)filter;
 - (HKCloudSyncRequest)init;
-- (HKCloudSyncRequest)initWithChangesSyncRequest:(id)a3 contextSyncRequest:(id)a4 stateSyncRequest:(id)a5 medicalIDSyncRequest:(id)a6 summarySharingSyncRequest:(id)a7 allowCellular:(BOOL)a8 qualityOfService:(int64_t)a9;
-- (HKCloudSyncRequest)initWithCoder:(id)a3;
-- (HKCloudSyncRequest)initWithIdentifier:(id)a3 changesSyncRequest:(id)a4 contextSyncRequest:(id)a5 stateSyncRequest:(id)a6 medicalIDSyncRequest:(id)a7 summarySharingSyncRequest:(id)a8 allowCellular:(BOOL)a9 qualityOfService:(int64_t)a10;
+- (HKCloudSyncRequest)initWithChangesSyncRequest:(id)request contextSyncRequest:(id)syncRequest stateSyncRequest:(id)stateSyncRequest medicalIDSyncRequest:(id)dSyncRequest summarySharingSyncRequest:(id)sharingSyncRequest allowCellular:(BOOL)cellular qualityOfService:(int64_t)service;
+- (HKCloudSyncRequest)initWithCoder:(id)coder;
+- (HKCloudSyncRequest)initWithIdentifier:(id)identifier changesSyncRequest:(id)request contextSyncRequest:(id)syncRequest stateSyncRequest:(id)stateSyncRequest medicalIDSyncRequest:(id)dSyncRequest summarySharingSyncRequest:(id)sharingSyncRequest allowCellular:(BOOL)cellular qualityOfService:(int64_t)self0;
 - (id)description;
-- (id)requestByMergingRequest:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)requestByMergingRequest:(id)request;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKCloudSyncRequest
@@ -24,180 +24,180 @@
   return 0;
 }
 
-- (HKCloudSyncRequest)initWithIdentifier:(id)a3 changesSyncRequest:(id)a4 contextSyncRequest:(id)a5 stateSyncRequest:(id)a6 medicalIDSyncRequest:(id)a7 summarySharingSyncRequest:(id)a8 allowCellular:(BOOL)a9 qualityOfService:(int64_t)a10
+- (HKCloudSyncRequest)initWithIdentifier:(id)identifier changesSyncRequest:(id)request contextSyncRequest:(id)syncRequest stateSyncRequest:(id)stateSyncRequest medicalIDSyncRequest:(id)dSyncRequest summarySharingSyncRequest:(id)sharingSyncRequest allowCellular:(BOOL)cellular qualityOfService:(int64_t)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
+  identifierCopy = identifier;
+  requestCopy = request;
+  syncRequestCopy = syncRequest;
+  stateSyncRequestCopy = stateSyncRequest;
+  dSyncRequestCopy = dSyncRequest;
+  sharingSyncRequestCopy = sharingSyncRequest;
   v36.receiver = self;
   v36.super_class = HKCloudSyncRequest;
   v22 = [(HKCloudSyncRequest *)&v36 init];
   if (v22)
   {
-    v23 = [v16 copy];
+    v23 = [identifierCopy copy];
     identifier = v22->_identifier;
     v22->_identifier = v23;
 
-    v25 = [v17 copy];
+    v25 = [requestCopy copy];
     changesSyncRequest = v22->_changesSyncRequest;
     v22->_changesSyncRequest = v25;
 
-    v27 = [v18 copy];
+    v27 = [syncRequestCopy copy];
     contextSyncRequest = v22->_contextSyncRequest;
     v22->_contextSyncRequest = v27;
 
-    v29 = [v19 copy];
+    v29 = [stateSyncRequestCopy copy];
     stateSyncRequest = v22->_stateSyncRequest;
     v22->_stateSyncRequest = v29;
 
-    v31 = [v20 copy];
+    v31 = [dSyncRequestCopy copy];
     medicalIDSyncRequest = v22->_medicalIDSyncRequest;
     v22->_medicalIDSyncRequest = v31;
 
-    v33 = [v21 copy];
+    v33 = [sharingSyncRequestCopy copy];
     summarySharingSyncRequest = v22->_summarySharingSyncRequest;
     v22->_summarySharingSyncRequest = v33;
 
-    v22->_allowCellular = a9;
-    v22->_qualityOfService = a10;
+    v22->_allowCellular = cellular;
+    v22->_qualityOfService = service;
   }
 
   return v22;
 }
 
-- (HKCloudSyncRequest)initWithChangesSyncRequest:(id)a3 contextSyncRequest:(id)a4 stateSyncRequest:(id)a5 medicalIDSyncRequest:(id)a6 summarySharingSyncRequest:(id)a7 allowCellular:(BOOL)a8 qualityOfService:(int64_t)a9
+- (HKCloudSyncRequest)initWithChangesSyncRequest:(id)request contextSyncRequest:(id)syncRequest stateSyncRequest:(id)stateSyncRequest medicalIDSyncRequest:(id)dSyncRequest summarySharingSyncRequest:(id)sharingSyncRequest allowCellular:(BOOL)cellular qualityOfService:(int64_t)service
 {
   v15 = MEMORY[0x1E696AFB0];
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
-  v21 = [v15 UUID];
-  LOBYTE(v24) = a8;
-  v22 = [(HKCloudSyncRequest *)self initWithIdentifier:v21 changesSyncRequest:v20 contextSyncRequest:v19 stateSyncRequest:v18 medicalIDSyncRequest:v17 summarySharingSyncRequest:v16 allowCellular:v24 qualityOfService:a9];
+  sharingSyncRequestCopy = sharingSyncRequest;
+  dSyncRequestCopy = dSyncRequest;
+  stateSyncRequestCopy = stateSyncRequest;
+  syncRequestCopy = syncRequest;
+  requestCopy = request;
+  uUID = [v15 UUID];
+  LOBYTE(v24) = cellular;
+  v22 = [(HKCloudSyncRequest *)self initWithIdentifier:uUID changesSyncRequest:requestCopy contextSyncRequest:syncRequestCopy stateSyncRequest:stateSyncRequestCopy medicalIDSyncRequest:dSyncRequestCopy summarySharingSyncRequest:sharingSyncRequestCopy allowCellular:v24 qualityOfService:service];
 
   return v22;
 }
 
-- (id)requestByMergingRequest:(id)a3
+- (id)requestByMergingRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 changesSyncRequest];
-  if (v5)
+  requestCopy = request;
+  changesSyncRequest = [requestCopy changesSyncRequest];
+  if (changesSyncRequest)
   {
-    v6 = [v4 changesSyncRequest];
-    v7 = [(HKCloudSyncRequest *)self changesSyncRequest];
-    v8 = [v6 requestByMergingRequest:v7];
+    changesSyncRequest2 = [requestCopy changesSyncRequest];
+    changesSyncRequest3 = [(HKCloudSyncRequest *)self changesSyncRequest];
+    changesSyncRequest4 = [changesSyncRequest2 requestByMergingRequest:changesSyncRequest3];
   }
 
   else
   {
-    v8 = [(HKCloudSyncRequest *)self changesSyncRequest];
+    changesSyncRequest4 = [(HKCloudSyncRequest *)self changesSyncRequest];
   }
 
-  v9 = [v4 contextSyncRequest];
-  if (v9)
+  contextSyncRequest = [requestCopy contextSyncRequest];
+  if (contextSyncRequest)
   {
-    v10 = [v4 contextSyncRequest];
-    v11 = [(HKCloudSyncRequest *)self contextSyncRequest];
-    v12 = [v10 requestByMergingRequest:v11];
-  }
-
-  else
-  {
-    v12 = [(HKCloudSyncRequest *)self contextSyncRequest];
-  }
-
-  v13 = [v4 stateSyncRequest];
-  if (v13)
-  {
-    v14 = [v4 stateSyncRequest];
-    v15 = [(HKCloudSyncRequest *)self stateSyncRequest];
-    v16 = [v14 requestByMergingRequest:v15];
+    contextSyncRequest2 = [requestCopy contextSyncRequest];
+    contextSyncRequest3 = [(HKCloudSyncRequest *)self contextSyncRequest];
+    contextSyncRequest4 = [contextSyncRequest2 requestByMergingRequest:contextSyncRequest3];
   }
 
   else
   {
-    v16 = [(HKCloudSyncRequest *)self stateSyncRequest];
+    contextSyncRequest4 = [(HKCloudSyncRequest *)self contextSyncRequest];
   }
 
-  v17 = [v4 medicalIDSyncRequest];
-  if (v17)
+  stateSyncRequest = [requestCopy stateSyncRequest];
+  if (stateSyncRequest)
   {
-    v18 = [v4 medicalIDSyncRequest];
-    v19 = [(HKCloudSyncRequest *)self medicalIDSyncRequest];
-    v20 = [v18 requestByMergingRequest:v19];
-  }
-
-  else
-  {
-    v20 = [(HKCloudSyncRequest *)self medicalIDSyncRequest];
-  }
-
-  v21 = [v4 summarySharingSyncRequest];
-  if (v21)
-  {
-    v22 = [v4 summarySharingSyncRequest];
-    v23 = [(HKCloudSyncRequest *)self summarySharingSyncRequest];
-    v24 = [v22 requestByMergingRequest:v23];
+    stateSyncRequest2 = [requestCopy stateSyncRequest];
+    stateSyncRequest3 = [(HKCloudSyncRequest *)self stateSyncRequest];
+    stateSyncRequest4 = [stateSyncRequest2 requestByMergingRequest:stateSyncRequest3];
   }
 
   else
   {
-    v24 = [(HKCloudSyncRequest *)self summarySharingSyncRequest];
+    stateSyncRequest4 = [(HKCloudSyncRequest *)self stateSyncRequest];
+  }
+
+  medicalIDSyncRequest = [requestCopy medicalIDSyncRequest];
+  if (medicalIDSyncRequest)
+  {
+    medicalIDSyncRequest2 = [requestCopy medicalIDSyncRequest];
+    medicalIDSyncRequest3 = [(HKCloudSyncRequest *)self medicalIDSyncRequest];
+    medicalIDSyncRequest4 = [medicalIDSyncRequest2 requestByMergingRequest:medicalIDSyncRequest3];
+  }
+
+  else
+  {
+    medicalIDSyncRequest4 = [(HKCloudSyncRequest *)self medicalIDSyncRequest];
+  }
+
+  summarySharingSyncRequest = [requestCopy summarySharingSyncRequest];
+  if (summarySharingSyncRequest)
+  {
+    summarySharingSyncRequest2 = [requestCopy summarySharingSyncRequest];
+    summarySharingSyncRequest3 = [(HKCloudSyncRequest *)self summarySharingSyncRequest];
+    summarySharingSyncRequest4 = [summarySharingSyncRequest2 requestByMergingRequest:summarySharingSyncRequest3];
+  }
+
+  else
+  {
+    summarySharingSyncRequest4 = [(HKCloudSyncRequest *)self summarySharingSyncRequest];
   }
 
   v25 = [HKCloudSyncRequest alloc];
   if ([(HKCloudSyncRequest *)self allowCellular])
   {
-    v26 = 1;
+    allowCellular = 1;
   }
 
   else
   {
-    v26 = [v4 allowCellular];
+    allowCellular = [requestCopy allowCellular];
   }
 
-  v27 = [(HKCloudSyncRequest *)self qualityOfService];
-  v28 = [v4 qualityOfService];
-  if (v27 <= v28)
+  qualityOfService = [(HKCloudSyncRequest *)self qualityOfService];
+  qualityOfService2 = [requestCopy qualityOfService];
+  if (qualityOfService <= qualityOfService2)
   {
-    v29 = v28;
+    v29 = qualityOfService2;
   }
 
   else
   {
-    v29 = v27;
+    v29 = qualityOfService;
   }
 
-  v30 = [(HKCloudSyncRequest *)v25 initWithChangesSyncRequest:v8 contextSyncRequest:v12 stateSyncRequest:v16 medicalIDSyncRequest:v20 summarySharingSyncRequest:v24 allowCellular:v26 qualityOfService:v29];
+  v30 = [(HKCloudSyncRequest *)v25 initWithChangesSyncRequest:changesSyncRequest4 contextSyncRequest:contextSyncRequest4 stateSyncRequest:stateSyncRequest4 medicalIDSyncRequest:medicalIDSyncRequest4 summarySharingSyncRequest:summarySharingSyncRequest4 allowCellular:allowCellular qualityOfService:v29];
 
   return v30;
 }
 
 + (id)emptySyncRequest
 {
-  v2 = [[a1 alloc] initWithChangesSyncRequest:0 contextSyncRequest:0 stateSyncRequest:0 medicalIDSyncRequest:0 summarySharingSyncRequest:0 allowCellular:0 qualityOfService:-1];
+  v2 = [[self alloc] initWithChangesSyncRequest:0 contextSyncRequest:0 stateSyncRequest:0 medicalIDSyncRequest:0 summarySharingSyncRequest:0 allowCellular:0 qualityOfService:-1];
 
   return v2;
 }
 
-- (BOOL)isEquivalent:(id)a3
+- (BOOL)isEquivalent:(id)equivalent
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equivalentCopy = equivalent;
+  if (![equivalentCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [v4 changesSyncRequest];
-  v6 = v5;
+  changesSyncRequest = [equivalentCopy changesSyncRequest];
+  v6 = changesSyncRequest;
   changesSyncRequest = self->_changesSyncRequest;
-  if (v5 == changesSyncRequest)
+  if (changesSyncRequest == changesSyncRequest)
   {
   }
 
@@ -208,8 +208,8 @@
       goto LABEL_26;
     }
 
-    v8 = [v4 changesSyncRequest];
-    v9 = [v8 isEqual:self->_changesSyncRequest];
+    changesSyncRequest2 = [equivalentCopy changesSyncRequest];
+    v9 = [changesSyncRequest2 isEqual:self->_changesSyncRequest];
 
     if (!v9)
     {
@@ -217,10 +217,10 @@
     }
   }
 
-  v10 = [v4 contextSyncRequest];
-  v6 = v10;
+  contextSyncRequest = [equivalentCopy contextSyncRequest];
+  v6 = contextSyncRequest;
   contextSyncRequest = self->_contextSyncRequest;
-  if (v10 == contextSyncRequest)
+  if (contextSyncRequest == contextSyncRequest)
   {
   }
 
@@ -231,8 +231,8 @@
       goto LABEL_26;
     }
 
-    v12 = [v4 contextSyncRequest];
-    v13 = [v12 isEqual:self->_contextSyncRequest];
+    contextSyncRequest2 = [equivalentCopy contextSyncRequest];
+    v13 = [contextSyncRequest2 isEqual:self->_contextSyncRequest];
 
     if (!v13)
     {
@@ -240,10 +240,10 @@
     }
   }
 
-  v14 = [v4 stateSyncRequest];
-  v6 = v14;
+  stateSyncRequest = [equivalentCopy stateSyncRequest];
+  v6 = stateSyncRequest;
   stateSyncRequest = self->_stateSyncRequest;
-  if (v14 == stateSyncRequest)
+  if (stateSyncRequest == stateSyncRequest)
   {
   }
 
@@ -254,8 +254,8 @@
       goto LABEL_26;
     }
 
-    v16 = [v4 stateSyncRequest];
-    v17 = [v16 isEqual:self->_stateSyncRequest];
+    stateSyncRequest2 = [equivalentCopy stateSyncRequest];
+    v17 = [stateSyncRequest2 isEqual:self->_stateSyncRequest];
 
     if (!v17)
     {
@@ -263,10 +263,10 @@
     }
   }
 
-  v18 = [v4 summarySharingSyncRequest];
-  v6 = v18;
+  summarySharingSyncRequest = [equivalentCopy summarySharingSyncRequest];
+  v6 = summarySharingSyncRequest;
   summarySharingSyncRequest = self->_summarySharingSyncRequest;
-  if (v18 == summarySharingSyncRequest)
+  if (summarySharingSyncRequest == summarySharingSyncRequest)
   {
   }
 
@@ -277,8 +277,8 @@
       goto LABEL_26;
     }
 
-    v20 = [v4 summarySharingSyncRequest];
-    v21 = [v20 isEqual:self->_summarySharingSyncRequest];
+    summarySharingSyncRequest2 = [equivalentCopy summarySharingSyncRequest];
+    v21 = [summarySharingSyncRequest2 isEqual:self->_summarySharingSyncRequest];
 
     if (!v21)
     {
@@ -286,15 +286,15 @@
     }
   }
 
-  v22 = [v4 medicalIDSyncRequest];
-  v6 = v22;
+  medicalIDSyncRequest = [equivalentCopy medicalIDSyncRequest];
+  v6 = medicalIDSyncRequest;
   medicalIDSyncRequest = self->_medicalIDSyncRequest;
-  if (v22 != medicalIDSyncRequest)
+  if (medicalIDSyncRequest != medicalIDSyncRequest)
   {
     if (medicalIDSyncRequest)
     {
-      v24 = [v4 medicalIDSyncRequest];
-      v25 = [v24 isEqual:self->_medicalIDSyncRequest];
+      medicalIDSyncRequest2 = [equivalentCopy medicalIDSyncRequest];
+      v25 = [medicalIDSyncRequest2 isEqual:self->_medicalIDSyncRequest];
 
       if (!v25)
       {
@@ -310,9 +310,9 @@ LABEL_26:
   }
 
 LABEL_30:
-  if (self->_allowCellular == [v4 allowCellular])
+  if (self->_allowCellular == [equivalentCopy allowCellular])
   {
-    v26 = [v4 qualityOfService] == self->_qualityOfService;
+    v26 = [equivalentCopy qualityOfService] == self->_qualityOfService;
     goto LABEL_28;
   }
 
@@ -323,18 +323,18 @@ LABEL_28:
   return v26;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![(HKCloudSyncRequest *)self isEquivalent:v4])
+  equalCopy = equal;
+  if (![(HKCloudSyncRequest *)self isEquivalent:equalCopy])
   {
     goto LABEL_9;
   }
 
-  v5 = [v4 identifier];
-  v6 = v5;
+  identifier = [equalCopy identifier];
+  v6 = identifier;
   identifier = self->_identifier;
-  if (v5 == identifier)
+  if (identifier == identifier)
   {
   }
 
@@ -348,8 +348,8 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    v8 = [v4 identifier];
-    v9 = [v8 isEqual:self->_identifier];
+    identifier2 = [equalCopy identifier];
+    v9 = [identifier2 isEqual:self->_identifier];
 
     if ((v9 & 1) == 0)
     {
@@ -363,21 +363,21 @@ LABEL_10:
   return v10;
 }
 
-- (BOOL)matchesFilter:(unint64_t)a3
+- (BOOL)matchesFilter:(unint64_t)filter
 {
-  v3 = a3;
-  if (a3)
+  filterCopy = filter;
+  if (filter)
   {
-    v14 = [(HKCloudSyncRequest *)self changesSyncRequest];
-    v5 = v14 == 0;
+    changesSyncRequest = [(HKCloudSyncRequest *)self changesSyncRequest];
+    v5 = changesSyncRequest == 0;
 
-    if ((v3 & 2) != 0)
+    if ((filterCopy & 2) != 0)
     {
 LABEL_3:
-      v6 = [(HKCloudSyncRequest *)self contextSyncRequest];
-      v7 = v6 == 0;
+      contextSyncRequest = [(HKCloudSyncRequest *)self contextSyncRequest];
+      v7 = contextSyncRequest == 0;
 
-      if ((v3 & 4) != 0)
+      if ((filterCopy & 4) != 0)
       {
         goto LABEL_4;
       }
@@ -389,27 +389,27 @@ LABEL_3:
   else
   {
     v5 = 0;
-    if ((a3 & 2) != 0)
+    if ((filter & 2) != 0)
     {
       goto LABEL_3;
     }
   }
 
   v7 = 0;
-  if ((v3 & 4) != 0)
+  if ((filterCopy & 4) != 0)
   {
 LABEL_4:
-    v8 = [(HKCloudSyncRequest *)self stateSyncRequest];
-    v9 = v8 == 0;
+    stateSyncRequest = [(HKCloudSyncRequest *)self stateSyncRequest];
+    v9 = stateSyncRequest == 0;
 
-    if ((v3 & 8) != 0)
+    if ((filterCopy & 8) != 0)
     {
       goto LABEL_5;
     }
 
 LABEL_10:
     v11 = 1;
-    if ((v3 & 0x10) != 0)
+    if ((filterCopy & 0x10) != 0)
     {
       goto LABEL_6;
     }
@@ -421,80 +421,80 @@ LABEL_11:
 
 LABEL_9:
   v9 = 0;
-  if ((v3 & 8) == 0)
+  if ((filterCopy & 8) == 0)
   {
     goto LABEL_10;
   }
 
 LABEL_5:
-  v10 = [(HKCloudSyncRequest *)self medicalIDSyncRequest];
-  v11 = v10 != 0;
+  medicalIDSyncRequest = [(HKCloudSyncRequest *)self medicalIDSyncRequest];
+  v11 = medicalIDSyncRequest != 0;
 
-  if ((v3 & 0x10) == 0)
+  if ((filterCopy & 0x10) == 0)
   {
     goto LABEL_11;
   }
 
 LABEL_6:
-  v12 = [(HKCloudSyncRequest *)self summarySharingSyncRequest];
-  v13 = v12 != 0;
+  summarySharingSyncRequest = [(HKCloudSyncRequest *)self summarySharingSyncRequest];
+  v13 = summarySharingSyncRequest != 0;
 
   return v11 & ~(v5 || v7 || v9) & v13 & 1;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   changesSyncRequest = self->_changesSyncRequest;
-  v5 = a3;
-  [v5 encodeObject:changesSyncRequest forKey:@"changesSyncRequest"];
-  [v5 encodeObject:self->_contextSyncRequest forKey:@"contextSyncRequest"];
-  [v5 encodeObject:self->_stateSyncRequest forKey:@"stateSyncRequest"];
-  [v5 encodeObject:self->_medicalIDSyncRequest forKey:@"medicalIDSyncRequest"];
-  [v5 encodeObject:self->_summarySharingSyncRequest forKey:@"summarySharingSyncRequest"];
-  [v5 encodeObject:self->_identifier forKey:@"requestIdentifier"];
-  [v5 encodeBool:self->_allowCellular forKey:@"allowCellular"];
-  [v5 encodeInteger:self->_qualityOfService forKey:@"qualityOfService"];
+  coderCopy = coder;
+  [coderCopy encodeObject:changesSyncRequest forKey:@"changesSyncRequest"];
+  [coderCopy encodeObject:self->_contextSyncRequest forKey:@"contextSyncRequest"];
+  [coderCopy encodeObject:self->_stateSyncRequest forKey:@"stateSyncRequest"];
+  [coderCopy encodeObject:self->_medicalIDSyncRequest forKey:@"medicalIDSyncRequest"];
+  [coderCopy encodeObject:self->_summarySharingSyncRequest forKey:@"summarySharingSyncRequest"];
+  [coderCopy encodeObject:self->_identifier forKey:@"requestIdentifier"];
+  [coderCopy encodeBool:self->_allowCellular forKey:@"allowCellular"];
+  [coderCopy encodeInteger:self->_qualityOfService forKey:@"qualityOfService"];
 }
 
-- (HKCloudSyncRequest)initWithCoder:(id)a3
+- (HKCloudSyncRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestIdentifier"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"changesSyncRequest"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contextSyncRequest"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stateSyncRequest"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"medicalIDSyncRequest"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"summarySharingSyncRequest"];
-    LOBYTE(v13) = [v4 decodeBoolForKey:@"allowCellular"];
-    self = -[HKCloudSyncRequest initWithIdentifier:changesSyncRequest:contextSyncRequest:stateSyncRequest:medicalIDSyncRequest:summarySharingSyncRequest:allowCellular:qualityOfService:](self, "initWithIdentifier:changesSyncRequest:contextSyncRequest:stateSyncRequest:medicalIDSyncRequest:summarySharingSyncRequest:allowCellular:qualityOfService:", v5, v6, v7, v8, v9, v10, v13, [v4 decodeIntegerForKey:@"qualityOfService"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"changesSyncRequest"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contextSyncRequest"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stateSyncRequest"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"medicalIDSyncRequest"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"summarySharingSyncRequest"];
+    LOBYTE(v13) = [coderCopy decodeBoolForKey:@"allowCellular"];
+    self = -[HKCloudSyncRequest initWithIdentifier:changesSyncRequest:contextSyncRequest:stateSyncRequest:medicalIDSyncRequest:summarySharingSyncRequest:allowCellular:qualityOfService:](self, "initWithIdentifier:changesSyncRequest:contextSyncRequest:stateSyncRequest:medicalIDSyncRequest:summarySharingSyncRequest:allowCellular:qualityOfService:", v5, v6, v7, v8, v9, v10, v13, [coderCopy decodeIntegerForKey:@"qualityOfService"]);
 
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
     v6 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:4865 userInfo:0];
-    [v4 failWithError:v6];
-    v11 = 0;
+    [coderCopy failWithError:v6];
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (id)description
 {
   v13 = MEMORY[0x1E696AD60];
   v3 = objc_opt_class();
-  v4 = [(HKCloudSyncRequest *)self identifier];
-  v5 = [v4 UUIDString];
-  v6 = [(HKCloudSyncRequest *)self changesSyncRequest];
-  v7 = [(HKCloudSyncRequest *)self contextSyncRequest];
-  v8 = [(HKCloudSyncRequest *)self stateSyncRequest];
-  v9 = [(HKCloudSyncRequest *)self medicalIDSyncRequest];
-  v10 = [(HKCloudSyncRequest *)self summarySharingSyncRequest];
-  v11 = [v13 stringWithFormat:@"<%@:%p %@\n| Changes Sync Request: %@\n| Context Sync Request: %@\n| State Sync Request: %@\n| Medical ID Sync Request: %@\n| Summary Sharing Sync Request: %@\n| Allow Cellular: %d\n| Quality of Service: %ld\n", v3, self, v5, v6, v7, v8, v9, v10, -[HKCloudSyncRequest allowCellular](self, "allowCellular"), -[HKCloudSyncRequest qualityOfService](self, "qualityOfService")];
+  identifier = [(HKCloudSyncRequest *)self identifier];
+  uUIDString = [identifier UUIDString];
+  changesSyncRequest = [(HKCloudSyncRequest *)self changesSyncRequest];
+  contextSyncRequest = [(HKCloudSyncRequest *)self contextSyncRequest];
+  stateSyncRequest = [(HKCloudSyncRequest *)self stateSyncRequest];
+  medicalIDSyncRequest = [(HKCloudSyncRequest *)self medicalIDSyncRequest];
+  summarySharingSyncRequest = [(HKCloudSyncRequest *)self summarySharingSyncRequest];
+  v11 = [v13 stringWithFormat:@"<%@:%p %@\n| Changes Sync Request: %@\n| Context Sync Request: %@\n| State Sync Request: %@\n| Medical ID Sync Request: %@\n| Summary Sharing Sync Request: %@\n| Allow Cellular: %d\n| Quality of Service: %ld\n", v3, self, uUIDString, changesSyncRequest, contextSyncRequest, stateSyncRequest, medicalIDSyncRequest, summarySharingSyncRequest, -[HKCloudSyncRequest allowCellular](self, "allowCellular"), -[HKCloudSyncRequest qualityOfService](self, "qualityOfService")];
 
   return v11;
 }

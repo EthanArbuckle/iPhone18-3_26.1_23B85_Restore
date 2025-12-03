@@ -1,16 +1,16 @@
 @interface AVMobileChromelessSlider
 - (AVMobileChromelessSlider)init;
 - (AVMobileChromelessSliderDelegate)delegate;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGRect)frameForSliderMark:(id)a3;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGRect)frameForSliderMark:(id)mark;
 - (CGRect)hitRect;
 - (CGSize)intrinsicContentSize;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)_frameForSliderMark:(void *)a1;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)_frameForSliderMark:(void *)mark;
 - (void)_updateAccessibilityValue;
 - (void)_updateBarTintStateAlpha;
 - (void)_updateBarViewFrames;
@@ -18,17 +18,17 @@
 - (void)_updateSliderMarkViewColors;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
-- (void)cancelTrackingWithEvent:(id)a3;
+- (void)cancelTrackingWithEvent:(id)event;
 - (void)didMoveToWindow;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setBarHeight:(double)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setMaximumValue:(float)a3;
-- (void)setMinimumValue:(float)a3;
-- (void)setSliderMarks:(id)a3;
-- (void)setTintState:(unint64_t)a3;
-- (void)setTotalValue:(float)a3;
+- (void)setBarHeight:(double)height;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setMaximumValue:(float)value;
+- (void)setMinimumValue:(float)value;
+- (void)setSliderMarks:(id)marks;
+- (void)setTintState:(unint64_t)state;
+- (void)setTotalValue:(float)value;
 - (void)setValue:(float)maximumValue;
 @end
 
@@ -81,29 +81,29 @@
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(AVMobileChromelessSlider *)self isEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(AVMobileChromelessSlider *)self isEnabled]!= enabled)
   {
     v5.receiver = self;
     v5.super_class = AVMobileChromelessSlider;
-    [(AVMobileChromelessSlider *)&v5 setEnabled:v3];
+    [(AVMobileChromelessSlider *)&v5 setEnabled:enabledCopy];
     [(AVMobileChromelessSlider *)&self->super.super.super.super.isa _updateSliderBarMaterials];
   }
 }
 
 - (void)_updateSliderBarMaterials
 {
-  if (a1)
+  if (self)
   {
-    v6 = a1[64];
-    v2 = a1[65];
-    if ([a1 isEnabled])
+    v6 = self[64];
+    v2 = self[65];
+    if ([self isEnabled])
     {
-      v3 = a1[62];
+      v3 = self[62];
 
-      v4 = a1[63];
+      v4 = self[63];
       v5 = v3;
       v2 = v4;
     }
@@ -114,23 +114,23 @@
     }
 
     v7 = v5;
-    [a1[58] setEffect:v5];
-    [a1[59] setEffect:v2];
+    [self[58] setEffect:v5];
+    [self[59] setEffect:v2];
   }
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = AVMobileChromelessSlider;
-  [(AVMobileChromelessSlider *)&v7 cancelTrackingWithEvent:a3];
-  v4 = [(AVMobileChromelessSlider *)self delegate];
+  [(AVMobileChromelessSlider *)&v7 cancelTrackingWithEvent:event];
+  delegate = [(AVMobileChromelessSlider *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(AVMobileChromelessSlider *)self delegate];
-    [v6 sliderDidEndTracking:self];
+    delegate2 = [(AVMobileChromelessSlider *)self delegate];
+    [delegate2 sliderDidEndTracking:self];
   }
 
   if (self)
@@ -139,18 +139,18 @@
   }
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 locationInView:self];
+  eventCopy = event;
+  touchCopy = touch;
+  [touchCopy locationInView:self];
   v9 = v8;
   [(AVMobileChromelessSlider *)self bounds];
   v11 = v9 / fmax(v10, 1.0);
   v12 = v11 - self->_trackingTouchStartNormalizedX;
-  v13 = [(AVMobileChromelessSlider *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(AVMobileChromelessSlider *)self effectiveUserInterfaceLayoutDirection];
   *&v14 = -v12;
-  if (v13 != 1)
+  if (effectiveUserInterfaceLayoutDirection != 1)
   {
     *&v14 = v12;
   }
@@ -158,33 +158,33 @@
   *&v14 = self->_minimumValue + ((self->_trackingStartNormalizedValue + *&v14) * (self->_maximumValue - self->_minimumValue));
   [(AVMobileChromelessSlider *)self setValue:v14];
   [(AVMobileChromelessSlider *)self sendActionsForControlEvents:4096];
-  v15 = [(AVMobileChromelessSlider *)self delegate];
+  delegate = [(AVMobileChromelessSlider *)self delegate];
   v16 = objc_opt_respondsToSelector();
 
   if (v16)
   {
-    v17 = [(AVMobileChromelessSlider *)self delegate];
-    [v17 sliderWillEndTracking:self];
+    delegate2 = [(AVMobileChromelessSlider *)self delegate];
+    [delegate2 sliderWillEndTracking:self];
   }
 
   [(UIPointerInteraction *)self->_sliderPointerInteraction invalidate];
   v18.receiver = self;
   v18.super_class = AVMobileChromelessSlider;
-  [(AVMobileChromelessSlider *)&v18 endTrackingWithTouch:v7 withEvent:v6];
+  [(AVMobileChromelessSlider *)&v18 endTrackingWithTouch:touchCopy withEvent:eventCopy];
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 locationInView:self];
+  eventCopy = event;
+  touchCopy = touch;
+  [touchCopy locationInView:self];
   v9 = v8;
   [(AVMobileChromelessSlider *)self bounds];
   v11 = v9 / fmax(v10, 1.0);
   v12 = v11 - self->_trackingTouchStartNormalizedX;
-  v13 = [(AVMobileChromelessSlider *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(AVMobileChromelessSlider *)self effectiveUserInterfaceLayoutDirection];
   *&v14 = -v12;
-  if (v13 != 1)
+  if (effectiveUserInterfaceLayoutDirection != 1)
   {
     *&v14 = v12;
   }
@@ -194,61 +194,61 @@
   [(AVMobileChromelessSlider *)self sendActionsForControlEvents:4096];
   v17.receiver = self;
   v17.super_class = AVMobileChromelessSlider;
-  v15 = [(AVMobileChromelessSlider *)&v17 continueTrackingWithTouch:v7 withEvent:v6];
+  v15 = [(AVMobileChromelessSlider *)&v17 continueTrackingWithTouch:touchCopy withEvent:eventCopy];
 
   return v15;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v5 = a3;
+  touchCopy = touch;
   [(AVMobileChromelessSlider *)self bounds];
   v7 = fmax(v6, 1.0);
-  [v5 locationInView:self];
+  [touchCopy locationInView:self];
   v9 = v8;
 
   v10 = v9 / v7;
   self->_trackingTouchStartNormalizedX = v10;
   self->_trackingStartNormalizedValue = (self->_value - self->_minimumValue) / (self->_maximumValue - self->_minimumValue);
-  v11 = [(AVMobileChromelessSlider *)self delegate];
+  delegate = [(AVMobileChromelessSlider *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(AVMobileChromelessSlider *)self delegate];
-    [v13 sliderDidBeginTracking:self];
+    delegate2 = [(AVMobileChromelessSlider *)self delegate];
+    [delegate2 sliderDidBeginTracking:self];
   }
 
   [(UIPointerInteraction *)self->_sliderPointerInteraction invalidate];
   return 1;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  [(UIView *)self->_contentView frame:a3];
+  [(UIView *)self->_contentView frame:interaction];
   v5 = MEMORY[0x1E69DCDC0];
 
   return [v5 regionWithRect:0 identifier:?];
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v4 = MEMORY[0x1E69DD070];
-  v5 = a3;
+  interactionCopy = interaction;
   v6 = [v4 alloc];
-  v7 = [v5 view];
+  view = [interactionCopy view];
 
-  v8 = [v6 initWithView:v7];
+  v8 = [v6 initWithView:view];
   v9 = [MEMORY[0x1E69DCDA8] effectWithPreview:v8];
   v10 = [MEMORY[0x1E69DCDD0] styleWithEffect:v9 shape:0];
 
   return v10;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(AVMobileChromelessSlider *)self hitRect];
   v10 = x;
   v11 = y;
@@ -261,13 +261,13 @@
   v25.receiver = self;
   v25.super_class = AVMobileChromelessSlider;
   [(AVMobileChromelessSlider *)&v25 layoutSubviews];
-  v3 = [(AVMobileChromelessSlider *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(AVMobileChromelessSlider *)self effectiveUserInterfaceLayoutDirection];
   contentView = self->_contentView;
   [(AVMobileChromelessSlider *)self bounds];
-  [(UIView *)contentView avkit_setFrame:v3 inLayoutDirection:?];
+  [(UIView *)contentView avkit_setFrame:effectiveUserInterfaceLayoutDirection inLayoutDirection:?];
   [(AVMobileChromelessSlider *)self _updateBarViewFrames];
-  v5 = [(UIView *)self->_contentView layer];
-  [v5 setCornerRadius:self->_barHeight * 0.5];
+  layer = [(UIView *)self->_contentView layer];
+  [layer setCornerRadius:self->_barHeight * 0.5];
 
   if ([(NSArray *)self->_sliderMarks count])
   {
@@ -306,13 +306,13 @@
         v19 = v18;
         v21 = v20;
         [v13 setFrame:?];
-        v22 = [(AVMobileChromelessSlider *)self delegate];
+        delegate = [(AVMobileChromelessSlider *)self delegate];
         v23 = objc_opt_respondsToSelector();
 
         if (v23)
         {
-          v24 = [(AVMobileChromelessSlider *)self delegate];
-          [v24 slider:self didUpdateFrame:v12 forSliderMark:{v15, v17, v19, v21}];
+          delegate2 = [(AVMobileChromelessSlider *)self delegate];
+          [delegate2 slider:self didUpdateFrame:v12 forSliderMark:{v15, v17, v19, v21}];
         }
       }
     }
@@ -344,26 +344,26 @@
     v10 = -v8;
     v11 = v3 + v8;
     v12 = v4 + v9;
-    v13 = [v1 effectiveUserInterfaceLayoutDirection];
-    [*(v1 + 58) avkit_setFrame:v13 inLayoutDirection:{v10, v7, v11, v5}];
+    effectiveUserInterfaceLayoutDirection = [v1 effectiveUserInterfaceLayoutDirection];
+    [*(v1 + 58) avkit_setFrame:effectiveUserInterfaceLayoutDirection inLayoutDirection:{v10, v7, v11, v5}];
     v14 = *(v1 + 59);
 
-    return [v14 avkit_setFrame:v13 inLayoutDirection:{v3, v7, v12, v5}];
+    return [v14 avkit_setFrame:effectiveUserInterfaceLayoutDirection inLayoutDirection:{v3, v7, v12, v5}];
   }
 
   return result;
 }
 
-- (void)_frameForSliderMark:(void *)a1
+- (void)_frameForSliderMark:(void *)mark
 {
-  if (a1)
+  if (mark)
   {
     v3 = a2;
-    [a1 bounds];
+    [mark bounds];
     v4 = v3;
-    [a1 bounds];
-    v5 = [v4 markType];
-    if (v5 == 2 || !v5)
+    [mark bounds];
+    markType = [v4 markType];
+    if (markType == 2 || !markType)
     {
       [v4 endValue];
       [v4 startValue];
@@ -399,10 +399,10 @@
   return result;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = [a3 view];
-  LOBYTE(self) = [v4 isDescendantOfView:self];
+  view = [begin view];
+  LOBYTE(self) = [view isDescendantOfView:self];
 
   return self;
 }
@@ -419,10 +419,10 @@
 
 - (void)_updateSliderMarkViewColors
 {
-  if (a1)
+  if (self)
   {
-    v2 = [*(a1 + 560) count];
-    if (v2 != [*(a1 + 488) count])
+    v2 = [*(self + 560) count];
+    if (v2 != [*(self + 488) count])
     {
       v3 = _AVLog();
       if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -432,8 +432,8 @@
       }
     }
 
-    v4 = [*(a1 + 560) count];
-    v5 = [*(a1 + 488) count];
+    v4 = [*(self + 560) count];
+    v5 = [*(self + 488) count];
     if (v4 >= v5)
     {
       v6 = v5;
@@ -448,28 +448,28 @@
     {
       for (i = 0; i != v6; ++i)
       {
-        v8 = [*(a1 + 560) objectAtIndex:i];
-        v9 = [*(a1 + 488) objectAtIndex:i];
-        v10 = [v8 unfilledColor];
-        v11 = *(a1 + 548);
+        v8 = [*(self + 560) objectAtIndex:i];
+        v9 = [*(self + 488) objectAtIndex:i];
+        unfilledColor = [v8 unfilledColor];
+        v11 = *(self + 548);
         [v8 startValue];
         if (v11 >= v12)
         {
-          v13 = [v8 filledColor];
+          filledColor = [v8 filledColor];
 
-          v10 = v13;
+          unfilledColor = filledColor;
         }
 
-        v14 = v10;
+        v14 = unfilledColor;
         objc_opt_self();
         objc_opt_self();
         v18 = 0.0;
         [v14 getRed:0 green:0 blue:0 alpha:&v18];
         v15 = [v14 colorWithAlphaComponent:v18];
 
-        v16 = [v9 backgroundColor];
+        backgroundColor = [v9 backgroundColor];
 
-        if (v16 != v15)
+        if (backgroundColor != v15)
         {
           [v9 setMarkColor:v15];
         }
@@ -478,9 +478,9 @@
   }
 }
 
-- (CGRect)frameForSliderMark:(id)a3
+- (CGRect)frameForSliderMark:(id)mark
 {
-  [(AVMobileChromelessSlider *)self _frameForSliderMark:a3];
+  [(AVMobileChromelessSlider *)self _frameForSliderMark:mark];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -513,15 +513,15 @@
 - (void)_updateBarTintStateAlpha
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [(AVMobileChromelessSlider *)self tintState];
+  tintState = [(AVMobileChromelessSlider *)self tintState];
   objc_opt_self();
-  if (v3 >= 3)
+  if (tintState >= 3)
   {
     v5 = _AVLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v7 = 134217984;
-      v8 = v3;
+      v8 = tintState;
       _os_log_error_impl(&dword_18B49C000, v5, OS_LOG_TYPE_ERROR, "Error: Unrecognized slider tint state %ld", &v7, 0xCu);
     }
 
@@ -530,7 +530,7 @@
 
   else
   {
-    v4 = dbl_18B6EC600[v3];
+    v4 = dbl_18B6EC600[tintState];
   }
 
   [(UIVisualEffectView *)self->_filledBarView setAlpha:v4];
@@ -539,31 +539,31 @@
   [(UIVisualEffectView *)unfilledBarView setAlpha:v4];
 }
 
-- (void)setTotalValue:(float)a3
+- (void)setTotalValue:(float)value
 {
-  if (vabds_f32(self->_totalValue, a3) >= 0.00000011921)
+  if (vabds_f32(self->_totalValue, value) >= 0.00000011921)
   {
-    self->_totalValue = a3;
+    self->_totalValue = value;
     [(AVMobileChromelessSlider *)self setNeedsLayout];
   }
 }
 
-- (void)setTintState:(unint64_t)a3
+- (void)setTintState:(unint64_t)state
 {
-  if (self->_tintState != a3)
+  if (self->_tintState != state)
   {
-    self->_tintState = a3;
+    self->_tintState = state;
     [(AVMobileChromelessSlider *)self _updateBarTintStateAlpha];
   }
 }
 
-- (void)setSliderMarks:(id)a3
+- (void)setSliderMarks:(id)marks
 {
-  v5 = a3;
-  if (self->_sliderMarks != v5)
+  marksCopy = marks;
+  if (self->_sliderMarks != marksCopy)
   {
-    v24 = v5;
-    objc_storeStrong(&self->_sliderMarks, a3);
+    v24 = marksCopy;
+    objc_storeStrong(&self->_sliderMarks, marks);
     v6 = [(NSMutableArray *)self->_sliderMarkViews count];
     if (v6 != [(NSArray *)self->_sliderMarks count])
     {
@@ -581,9 +581,9 @@
             break;
           }
 
-          v11 = objc_alloc_init(AVMobileSliderMarkView);
+          lastObject = objc_alloc_init(AVMobileSliderMarkView);
           v13 = [(NSArray *)self->_sliderMarks objectAtIndex:[(NSMutableArray *)self->_sliderMarkViews count]];
-          v14 = [v13 markType];
+          markType = [v13 markType];
 
           v15 = self->_barHeight + -1.0;
           if (v15 < 1.0)
@@ -592,7 +592,7 @@
           }
 
           v16 = v15 * 0.5;
-          if (v14 == 1)
+          if (markType == 1)
           {
             v17 = 1.75;
           }
@@ -602,37 +602,37 @@
             v17 = v16;
           }
 
-          [(AVMobileSliderMarkView *)v11 setAutoresizingMask:0];
-          [(AVMobileSliderMarkView *)v11 setUserInteractionEnabled:0];
-          v18 = [(AVMobileSliderMarkView *)v11 layer];
-          [v18 setMasksToBounds:1];
+          [(AVMobileSliderMarkView *)lastObject setAutoresizingMask:0];
+          [(AVMobileSliderMarkView *)lastObject setUserInteractionEnabled:0];
+          layer = [(AVMobileSliderMarkView *)lastObject layer];
+          [layer setMasksToBounds:1];
 
-          v19 = [(AVMobileSliderMarkView *)v11 layer];
-          [v19 setCornerRadius:v17];
+          layer2 = [(AVMobileSliderMarkView *)lastObject layer];
+          [layer2 setCornerRadius:v17];
 
-          v20 = [(AVMobileSliderMarkView *)v11 layer];
-          [v20 setCornerCurve:v7];
+          layer3 = [(AVMobileSliderMarkView *)lastObject layer];
+          [layer3 setCornerCurve:v7];
 
           v21 = [(NSArray *)self->_sliderMarks objectAtIndexedSubscript:[(NSMutableArray *)self->_sliderMarkViews count]];
-          v22 = [v21 markType];
+          markType2 = [v21 markType];
 
-          if (v22 == 2)
+          if (markType2 == 2)
           {
-            [(UIView *)self->_contentView insertSubview:v11 belowSubview:self->_filledBarView];
+            [(UIView *)self->_contentView insertSubview:lastObject belowSubview:self->_filledBarView];
           }
 
           else
           {
-            [(AVMobileChromelessSlider *)self addSubview:v11];
+            [(AVMobileChromelessSlider *)self addSubview:lastObject];
           }
 
-          [(NSMutableArray *)self->_sliderMarkViews addObject:v11];
+          [(NSMutableArray *)self->_sliderMarkViews addObject:lastObject];
         }
 
         else
         {
-          v11 = [(NSMutableArray *)sliderMarkViews lastObject];
-          [(AVMobileSliderMarkView *)v11 removeFromSuperview];
+          lastObject = [(NSMutableArray *)sliderMarkViews lastObject];
+          [(AVMobileSliderMarkView *)lastObject removeFromSuperview];
           [(NSMutableArray *)self->_sliderMarkViews removeLastObject];
         }
 
@@ -644,42 +644,42 @@
 
     [(AVMobileChromelessSlider *)self _updateSliderMarkViewColors];
     [(AVMobileChromelessSlider *)self setNeedsLayout];
-    v5 = v24;
+    marksCopy = v24;
   }
 }
 
-- (void)setMaximumValue:(float)a3
+- (void)setMaximumValue:(float)value
 {
-  if (self->_maximumValue != a3 && self->_minimumValue < a3)
+  if (self->_maximumValue != value && self->_minimumValue < value)
   {
-    self->_maximumValue = a3;
-    if (self->_value > a3)
+    self->_maximumValue = value;
+    if (self->_value > value)
     {
       [(AVMobileChromelessSlider *)self setValue:?];
     }
   }
 }
 
-- (void)setMinimumValue:(float)a3
+- (void)setMinimumValue:(float)value
 {
-  if (self->_minimumValue != a3 && self->_maximumValue > a3)
+  if (self->_minimumValue != value && self->_maximumValue > value)
   {
-    self->_minimumValue = a3;
-    if (self->_value > a3)
+    self->_minimumValue = value;
+    if (self->_value > value)
     {
       [(AVMobileChromelessSlider *)self setValue:?];
     }
   }
 }
 
-- (void)setBarHeight:(double)a3
+- (void)setBarHeight:(double)height
 {
-  if (self->_barHeight != a3)
+  if (self->_barHeight != height)
   {
-    self->_barHeight = a3;
+    self->_barHeight = height;
     [(AVMobileChromelessSlider *)self invalidateIntrinsicContentSize];
-    v5 = [(AVMobileChromelessSlider *)self superview];
-    [v5 avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
+    superview = [(AVMobileChromelessSlider *)self superview];
+    [superview avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
 
     [(AVMobileChromelessSlider *)self setNeedsLayout];
     sliderPointerInteraction = self->_sliderPointerInteraction;

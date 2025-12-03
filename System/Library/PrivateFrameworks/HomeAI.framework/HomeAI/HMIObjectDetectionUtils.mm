@@ -1,15 +1,15 @@
 @interface HMIObjectDetectionUtils
-+ (id)convertObjectDetections:(id)a3 cropRect:(CGRect)a4 originalImageSize:(CGSize)a5;
-+ (void)nmsMultiClass:(id)a3 output:(id)a4 nmsConfiguration:(id)a5;
-+ (void)nonMaximumSuppression:(id)a3 output:(id)a4 withThreshold:(double)a5 withMetric:(int64_t)a6;
++ (id)convertObjectDetections:(id)detections cropRect:(CGRect)rect originalImageSize:(CGSize)size;
++ (void)nmsMultiClass:(id)class output:(id)output nmsConfiguration:(id)configuration;
++ (void)nonMaximumSuppression:(id)suppression output:(id)output withThreshold:(double)threshold withMetric:(int64_t)metric;
 @end
 
 @implementation HMIObjectDetectionUtils
 
-+ (void)nonMaximumSuppression:(id)a3 output:(id)a4 withThreshold:(double)a5 withMetric:(int64_t)a6
++ (void)nonMaximumSuppression:(id)suppression output:(id)output withThreshold:(double)threshold withMetric:(int64_t)metric
 {
-  v47 = a4;
-  v9 = [a3 sortedArrayUsingComparator:&__block_literal_global_11];
+  outputCopy = output;
+  v9 = [suppression sortedArrayUsingComparator:&__block_literal_global_11];
   v10 = [v9 count];
   Mutable = CFBitVectorCreateMutable(0, v10);
   CFBitVectorSetCount(Mutable, v10);
@@ -20,7 +20,7 @@
   v14 = v13;
   if (!v10)
   {
-    if (a6 != 2)
+    if (metric != 2)
     {
       v46 = 0;
       v24 = 0;
@@ -48,7 +48,7 @@
 
   while (v10 != v15);
   v14 = v16;
-  if (a6 == 2)
+  if (metric == 2)
   {
 LABEL_7:
     v51 = malloc_type_malloc(4 * v10, 0x100004052888210uLL);
@@ -105,11 +105,11 @@ LABEL_25:
           }
         }
 
-        if (a6 == 2)
+        if (metric == 2)
         {
           HMICGRectIntersectionOverMinArea(*v37, v37[1], v37[2], v37[3], *(v39 - 3), *(v39 - 2), *(v39 - 1), *v39);
           v40 = v42;
-          if (v42 > a5 && *&v51[v35] * 0.95 < *&v51[v38] && v50[v35] > v50[v38])
+          if (v42 > threshold && *&v51[v35] * 0.95 < *&v51[v38] && v50[v35] > v50[v38])
           {
             CFBitVectorSetBitAtIndex(v12, v35, 1u);
           }
@@ -117,7 +117,7 @@ LABEL_25:
           goto LABEL_22;
         }
 
-        if (a6 == 1)
+        if (metric == 1)
         {
           HMICGRectIntersectionOverMinArea(*v37, v37[1], v37[2], v37[3], *(v39 - 3), *(v39 - 2), *(v39 - 1), *v39);
         }
@@ -125,7 +125,7 @@ LABEL_25:
         else
         {
           v40 = 0.0;
-          if (a6)
+          if (metric)
           {
 LABEL_22:
             if (CFBitVectorGetBitAtIndex(v12, v35))
@@ -133,7 +133,7 @@ LABEL_22:
               goto LABEL_33;
             }
 
-            if (v40 > a5)
+            if (v40 > threshold)
             {
               CFBitVectorSetBitAtIndex(v12, v38, 1u);
             }
@@ -152,7 +152,7 @@ LABEL_33:
       if (!CFBitVectorGetBitAtIndex(v12, v35))
       {
         v44 = [v9 objectAtIndexedSubscript:v35];
-        [v47 addObject:v44];
+        [outputCopy addObject:v44];
 
         if (v36 < v10)
         {
@@ -204,18 +204,18 @@ BOOL __81__HMIObjectDetectionUtils_nonMaximumSuppression_output_withThreshold_wi
   return v6 < v8;
 }
 
-+ (void)nmsMultiClass:(id)a3 output:(id)a4 nmsConfiguration:(id)a5
++ (void)nmsMultiClass:(id)class output:(id)output nmsConfiguration:(id)configuration
 {
   v42 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v30 = a4;
-  v8 = a5;
+  classCopy = class;
+  outputCopy = output;
+  configurationCopy = configuration;
   v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v7;
+  obj = classCopy;
   v10 = [obj countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v10)
   {
@@ -231,7 +231,7 @@ BOOL __81__HMIObjectDetectionUtils_nonMaximumSuppression_output_withThreshold_wi
         }
 
         v14 = *(*(&v36 + 1) + 8 * i);
-        v15 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v14, "labelIndex", v30)}];
+        v15 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v14, "labelIndex", outputCopy)}];
         v16 = [v9 objectForKeyedSubscript:v15];
 
         if (!v16)
@@ -271,8 +271,8 @@ BOOL __81__HMIObjectDetectionUtils_nonMaximumSuppression_output_withThreshold_wi
         }
 
         v25 = *(*(&v32 + 1) + 8 * j);
-        v26 = [v8 thresholdForLabel:{v25, v30}];
-        v27 = [v8 metricForLabel:v25];
+        v26 = [configurationCopy thresholdForLabel:{v25, outputCopy}];
+        v27 = [configurationCopy metricForLabel:v25];
         v28 = [v20 objectForKeyedSubscript:v25];
         [v26 doubleValue];
         [HMIObjectDetectionUtils nonMaximumSuppression:v28 output:v19 withThreshold:v27 withMetric:?];
@@ -285,7 +285,7 @@ BOOL __81__HMIObjectDetectionUtils_nonMaximumSuppression_output_withThreshold_wi
   }
 
   v29 = [v19 sortedArrayUsingComparator:&__block_literal_global_99];
-  [v30 addObjectsFromArray:v29];
+  [outputCopy addObjectsFromArray:v29];
 }
 
 BOOL __65__HMIObjectDetectionUtils_nmsMultiClass_output_nmsConfiguration___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -299,22 +299,22 @@ BOOL __65__HMIObjectDetectionUtils_nmsMultiClass_output_nmsConfiguration___block
   return v6 < v8;
 }
 
-+ (id)convertObjectDetections:(id)a3 cropRect:(CGRect)a4 originalImageSize:(CGSize)a5
++ (id)convertObjectDetections:(id)detections cropRect:(CGRect)rect originalImageSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v7 = a4.size.height;
-  v8 = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
+  height = size.height;
+  width = size.width;
+  v7 = rect.size.height;
+  v8 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  detectionsCopy = detections;
   v21.origin.x = x;
   v21.origin.y = y;
   v21.size.width = v8;
   v21.size.height = v7;
   if (CGRectIsNull(v21))
   {
-    v12 = v11;
+    v12 = detectionsCopy;
   }
 
   else
@@ -332,7 +332,7 @@ BOOL __65__HMIObjectDetectionUtils_nmsMultiClass_output_nmsConfiguration___block
     v15[2] = __78__HMIObjectDetectionUtils_convertObjectDetections_cropRect_originalImageSize___block_invoke;
     v15[3] = &__block_descriptor_80_e28__16__0__HMIObjectDetection_8l;
     v16 = v18;
-    v12 = [v11 na_map:v15];
+    v12 = [detectionsCopy na_map:v15];
   }
 
   v13 = v12;

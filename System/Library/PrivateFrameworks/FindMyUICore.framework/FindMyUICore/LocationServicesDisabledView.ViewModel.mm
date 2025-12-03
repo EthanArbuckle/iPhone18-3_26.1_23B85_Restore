@@ -1,14 +1,14 @@
 @interface LocationServicesDisabledView.ViewModel
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 @end
 
 @implementation LocationServicesDisabledView.ViewModel
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
-  v5 = self;
-  [v4 authorizationStatus];
+  authorizationCopy = authorization;
+  selfCopy = self;
+  [authorizationCopy authorizationStatus];
   swift_getKeyPath();
   swift_getKeyPath();
   sub_24B2D3224();

@@ -1,22 +1,22 @@
 @interface TSCEFunction_LEFT
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_LEFT
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = **a5;
+  v8 = **arguments;
   v13 = v8;
   v55 = 0;
   if (v8)
   {
-    objc_msgSend_asRichTextStorage_functionSpec_argumentIndex_outError_(v8, v9, a3, a4, 0, &v55);
+    objc_msgSend_asRichTextStorage_functionSpec_argumentIndex_outError_(v8, v9, context, spec, 0, &v55);
     v14 = v55;
     if (v14)
     {
       v15 = v14;
-      v16 = objc_msgSend_raiseErrorOrConvert_(a3, v9, v14, v11, v12);
+      v16 = objc_msgSend_raiseErrorOrConvert_(context, v9, v14, v11, v12);
       goto LABEL_21;
     }
   }
@@ -29,14 +29,14 @@
   }
 
   v20 = sub_221078910(&v56, v9, v10, v11, v12);
-  if (*(a5 + 1) - *a5 < 9uLL)
+  if (*(arguments + 1) - *arguments < 9uLL)
   {
     v27 = 1;
   }
 
   else
   {
-    v21 = *(*a5 + 8);
+    v21 = *(*arguments + 8);
     if (objc_msgSend_isTokenOrEmptyArg(v21, v22, v23, v24, v25))
     {
       v27 = 1;
@@ -45,11 +45,11 @@
     else
     {
       v54 = 0;
-      v28 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v21, v26, a3, a4, 1, &v54);
+      v28 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v21, v26, context, spec, 1, &v54);
       v15 = v54;
       if (v15)
       {
-        v16 = objc_msgSend_raiseErrorOrConvert_(a3, v29, v15, v31, v32);
+        v16 = objc_msgSend_raiseErrorOrConvert_(context, v29, v15, v31, v32);
 
         goto LABEL_21;
       }

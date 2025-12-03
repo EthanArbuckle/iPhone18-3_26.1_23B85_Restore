@@ -1,23 +1,23 @@
 @interface PKPeerPaymentAssociatedAccountsController
-- (PKPeerPaymentAssociatedAccountsController)initWithFamilyCollection:(id)a3 avatarManager:(id)a4 passLibraryDataProvider:(id)a5 context:(int64_t)a6;
-- (PKPeerPaymentAssociatedAccountsController)initWithFamilyMembers:(id)a3;
-- (void)_peerPaymentAccountChanged:(id)a3;
-- (void)addPeerPaymentAssociatedAccountSetupCompletedWithSucess:(BOOL)a3 updatedAccount:(id)a4 forFamilyMember:(id)a5;
-- (void)presentAssociatedAccountsFlowWithPresentationContext:(id)a3 fromNavigationController:(id)a4;
+- (PKPeerPaymentAssociatedAccountsController)initWithFamilyCollection:(id)collection avatarManager:(id)manager passLibraryDataProvider:(id)provider context:(int64_t)context;
+- (PKPeerPaymentAssociatedAccountsController)initWithFamilyMembers:(id)members;
+- (void)_peerPaymentAccountChanged:(id)changed;
+- (void)addPeerPaymentAssociatedAccountSetupCompletedWithSucess:(BOOL)sucess updatedAccount:(id)account forFamilyMember:(id)member;
+- (void)presentAssociatedAccountsFlowWithPresentationContext:(id)context fromNavigationController:(id)controller;
 @end
 
 @implementation PKPeerPaymentAssociatedAccountsController
 
-- (PKPeerPaymentAssociatedAccountsController)initWithFamilyMembers:(id)a3
+- (PKPeerPaymentAssociatedAccountsController)initWithFamilyMembers:(id)members
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  membersCopy = members;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = v4;
+  v6 = membersCopy;
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
@@ -50,9 +50,9 @@
 
   v14 = [objc_alloc(MEMORY[0x1E69B88A0]) initWithFamilyMembers:v5];
   v15 = [PKContactAvatarManager alloc];
-  v16 = [MEMORY[0x1E69B8740] defaultContactResolver];
-  v17 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
-  v18 = [(PKContactAvatarManager *)v15 initWithContactResolver:v16 paymentDataProvider:v17];
+  defaultContactResolver = [MEMORY[0x1E69B8740] defaultContactResolver];
+  defaultDataProvider = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+  v18 = [(PKContactAvatarManager *)v15 initWithContactResolver:defaultContactResolver paymentDataProvider:defaultDataProvider];
 
   v19 = objc_alloc_init(MEMORY[0x1E69B8A60]);
   v20 = [(PKPeerPaymentAssociatedAccountsController *)self initWithFamilyCollection:v14 avatarManager:v18 passLibraryDataProvider:v19 context:3];
@@ -60,53 +60,53 @@
   return v20;
 }
 
-- (PKPeerPaymentAssociatedAccountsController)initWithFamilyCollection:(id)a3 avatarManager:(id)a4 passLibraryDataProvider:(id)a5 context:(int64_t)a6
+- (PKPeerPaymentAssociatedAccountsController)initWithFamilyCollection:(id)collection avatarManager:(id)manager passLibraryDataProvider:(id)provider context:(int64_t)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  collectionCopy = collection;
+  managerCopy = manager;
+  providerCopy = provider;
   v23.receiver = self;
   v23.super_class = PKPeerPaymentAssociatedAccountsController;
   v14 = [(PKPeerPaymentAssociatedAccountsController *)&v23 init];
   if (v14)
   {
-    v15 = [MEMORY[0x1E69B8DB8] paymentService];
+    paymentService = [MEMORY[0x1E69B8DB8] paymentService];
     paymentService = v14->_paymentService;
-    v14->_paymentService = v15;
+    v14->_paymentService = paymentService;
 
-    v17 = [MEMORY[0x1E69B9000] sharedInstance];
+    mEMORY[0x1E69B9000] = [MEMORY[0x1E69B9000] sharedInstance];
     peerPaymentService = v14->_peerPaymentService;
-    v14->_peerPaymentService = v17;
+    v14->_peerPaymentService = mEMORY[0x1E69B9000];
 
-    v19 = [(PKPeerPaymentService *)v14->_peerPaymentService account];
+    account = [(PKPeerPaymentService *)v14->_peerPaymentService account];
     account = v14->_account;
-    v14->_account = v19;
+    v14->_account = account;
 
-    objc_storeStrong(&v14->_familyCollection, a3);
-    objc_storeStrong(&v14->_avatarManager, a4);
-    v14->_context = a6;
-    objc_storeStrong(&v14->_passLibraryDataProvider, a5);
-    v21 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v21 addObserver:v14 selector:sel__peerPaymentAccountChanged_ name:*MEMORY[0x1E69BC360] object:v14->_peerPaymentService];
+    objc_storeStrong(&v14->_familyCollection, collection);
+    objc_storeStrong(&v14->_avatarManager, manager);
+    v14->_context = context;
+    objc_storeStrong(&v14->_passLibraryDataProvider, provider);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v14 selector:sel__peerPaymentAccountChanged_ name:*MEMORY[0x1E69BC360] object:v14->_peerPaymentService];
   }
 
   return v14;
 }
 
-- (void)presentAssociatedAccountsFlowWithPresentationContext:(id)a3 fromNavigationController:(id)a4
+- (void)presentAssociatedAccountsFlowWithPresentationContext:(id)context fromNavigationController:(id)controller
 {
   v83 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  contextCopy = context;
+  controllerCopy = controller;
+  if (controllerCopy)
   {
     account = self->_account;
     if (account)
     {
       if (([(PKPeerPaymentAccount *)account supportsFamilySharing]& 1) != 0)
       {
-        objc_storeStrong(&self->_navigationController, a4);
-        objc_storeStrong(&self->_presentationContext, a3);
+        objc_storeStrong(&self->_navigationController, controller);
+        objc_storeStrong(&self->_presentationContext, context);
         v10 = PKLogFacilityTypeGetObject();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
@@ -116,42 +116,42 @@
           _os_log_impl(&dword_1BD026000, v10, OS_LOG_TYPE_DEFAULT, "Presenting peer payment associated account view with configuration %@", buf, 0xCu);
         }
 
-        v12 = [(PKPeerPaymentAssociatedAccountPresentationContext *)self->_presentationContext member];
-        v13 = [(PKPeerPaymentAssociatedAccountPresentationContext *)self->_presentationContext setupType];
-        if (v12)
+        member = [(PKPeerPaymentAssociatedAccountPresentationContext *)self->_presentationContext member];
+        setupType = [(PKPeerPaymentAssociatedAccountPresentationContext *)self->_presentationContext setupType];
+        if (member)
         {
-          v14 = v13;
-          v15 = [v12 altDSID];
-          v16 = [(PKPeerPaymentAccount *)self->_account peerPaymentAccountWithAltDSID:v15];
-          v17 = [(PKPeerPaymentAccount *)self->_account accountInvitationWithAltDSID:v15];
+          v14 = setupType;
+          altDSID = [member altDSID];
+          v16 = [(PKPeerPaymentAccount *)self->_account peerPaymentAccountWithAltDSID:altDSID];
+          v17 = [(PKPeerPaymentAccount *)self->_account accountInvitationWithAltDSID:altDSID];
           v18 = v17;
           if (v16 | v17)
           {
             if (v16)
             {
-              v19 = [(PKPeerPaymentAssociatedAccountPresentationContext *)self->_presentationContext transaction];
-              if (v19)
+              transaction = [(PKPeerPaymentAssociatedAccountPresentationContext *)self->_presentationContext transaction];
+              if (transaction)
               {
-                v76 = v15;
+                v76 = altDSID;
                 v77 = v16;
                 v20 = [[PKPeerPaymentAssociatedAccountControllerDoneTapHelper alloc] initWithNavigationController:self->_navigationController];
                 doneTapHelper = self->_doneTapHelper;
                 self->_doneTapHelper = v20;
 
-                v22 = [[PKPeerPaymentAssociatedAccountViewController alloc] initWithFamilyMember:v12 familyCollection:self->_familyCollection account:self->_account context:self->_context];
+                v22 = [[PKPeerPaymentAssociatedAccountViewController alloc] initWithFamilyMember:member familyCollection:self->_familyCollection account:self->_account context:self->_context];
                 [(PKPeerPaymentAssociatedAccountViewController *)v22 navigationItem];
-                v24 = v23 = v19;
+                v24 = v23 = transaction;
                 v25 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self->_doneTapHelper action:sel_doneTapped];
                 [v24 setRightBarButtonItem:v25];
 
-                v26 = [(PKPeerPaymentAssociatedAccountViewController *)v22 familyMemberTransactionViewController];
+                familyMemberTransactionViewController = [(PKPeerPaymentAssociatedAccountViewController *)v22 familyMemberTransactionViewController];
                 v78 = v23;
                 v27 = v23;
-                v28 = v26;
-                v29 = [v26 transactionViewControllerForTransaction:v27];
-                v30 = [v29 navigationItem];
+                v28 = familyMemberTransactionViewController;
+                v29 = [familyMemberTransactionViewController transactionViewControllerForTransaction:v27];
+                navigationItem = [v29 navigationItem];
                 v31 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self->_doneTapHelper action:sel_doneTapped];
-                [v30 setRightBarButtonItem:v31];
+                [navigationItem setRightBarButtonItem:v31];
 
                 if (v22)
                 {
@@ -200,14 +200,14 @@
                   v37 = v74;
                 }
 
-                v19 = v78;
+                transaction = v78;
                 v57 = v75;
-                v15 = v76;
+                altDSID = v76;
               }
 
               else
               {
-                v36 = [[PKPeerPaymentAssociatedAccountViewController alloc] initWithFamilyMember:v12 familyCollection:self->_familyCollection account:self->_account context:self->_context];
+                v36 = [[PKPeerPaymentAssociatedAccountViewController alloc] initWithFamilyMember:member familyCollection:self->_familyCollection account:self->_account context:self->_context];
                 v57 = 0;
               }
             }
@@ -231,18 +231,18 @@
           else
           {
             v79 = v17;
-            v55 = [(PKFamilyMemberCollection *)self->_familyCollection currentUser];
-            v56 = [v55 isOrganizer];
+            currentUser = [(PKFamilyMemberCollection *)self->_familyCollection currentUser];
+            isOrganizer = [currentUser isOrganizer];
 
-            if (v56)
+            if (isOrganizer)
             {
               if (v14 == 1)
               {
                 v70 = [PKPeerPaymentAddAssociatedAccountViewController alloc];
                 familyCollection = self->_familyCollection;
-                v72 = [MEMORY[0x1E69B9020] sharedService];
+                mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
                 v57 = 1;
-                v73 = [(PKPeerPaymentAddAssociatedAccountViewController *)v70 initWithFamilyMember:v12 familyCollection:familyCollection webService:v72 passLibraryDataProvider:self->_passLibraryDataProvider delegate:self context:self->_context setupType:1];
+                v73 = [(PKPeerPaymentAddAssociatedAccountViewController *)v70 initWithFamilyMember:member familyCollection:familyCollection webService:mEMORY[0x1E69B9020] passLibraryDataProvider:self->_passLibraryDataProvider delegate:self context:self->_context setupType:1];
 
                 v36 = [[PKNavigationController alloc] initWithRootViewController:v73];
                 [(PKNavigationController *)v36 setModalInPresentation:1];
@@ -256,7 +256,7 @@
 
               else
               {
-                v36 = [[PKPeerPaymentTurnOnAssociatedAccountViewController alloc] initWithFamilyMember:v12 familyCollection:self->_familyCollection delegate:self passLibraryDataProvider:self->_passLibraryDataProvider context:self->_context setupType:0];
+                v36 = [[PKPeerPaymentTurnOnAssociatedAccountViewController alloc] initWithFamilyMember:member familyCollection:self->_familyCollection delegate:self passLibraryDataProvider:self->_passLibraryDataProvider context:self->_context setupType:0];
                 v57 = 0;
               }
             }
@@ -282,21 +282,21 @@
           {
             if (v57)
             {
-              [v8 presentViewController:v36 animated:1 completion:0];
+              [controllerCopy presentViewController:v36 animated:1 completion:0];
 LABEL_63:
 
               goto LABEL_64;
             }
 
 LABEL_60:
-            if ([v8 pk_settings_useStateDrivenNavigation])
+            if ([controllerCopy pk_settings_useStateDrivenNavigation])
             {
-              [v8 pk_settings_pushViewController:v36];
+              [controllerCopy pk_settings_pushViewController:v36];
             }
 
             else
             {
-              [v8 pushViewController:v36 animated:1];
+              [controllerCopy pushViewController:v36 animated:1];
             }
 
             goto LABEL_63;
@@ -311,7 +311,7 @@ LABEL_60:
             goto LABEL_60;
           }
 
-          v12 = 0;
+          member = 0;
         }
       }
 
@@ -327,14 +327,14 @@ LABEL_60:
         v40 = MEMORY[0x1E69DC650];
         v41 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentFea.isa);
         v42 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentFea_0.isa);
-        v12 = [v40 alertControllerWithTitle:v41 message:v42 preferredStyle:1];
+        member = [v40 alertControllerWithTitle:v41 message:v42 preferredStyle:1];
 
         v43 = MEMORY[0x1E69DC648];
         v44 = PKLocalizedString(&cfstr_Ok.isa);
         v45 = [v43 actionWithTitle:v44 style:0 handler:0];
 
-        [v12 addAction:v45];
-        [v8 presentViewController:v12 animated:1 completion:0];
+        [member addAction:v45];
+        [controllerCopy presentViewController:member animated:1 completion:0];
       }
     }
 
@@ -349,7 +349,7 @@ LABEL_60:
 
       if (PKPassbookIsCurrentlyDeletedByUser())
       {
-        v12 = PKCreateAlertControllerForWalletUninstalled(0);
+        member = PKCreateAlertControllerForWalletUninstalled(0);
       }
 
       else
@@ -378,25 +378,25 @@ LABEL_60:
 
         v50 = PKLocalizedPeerPaymentString(&v48->isa);
         v51 = PKLocalizedPeerPaymentString(&v49->isa);
-        v12 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v50 message:v51 preferredStyle:1];
+        member = [MEMORY[0x1E69DC650] alertControllerWithTitle:v50 message:v51 preferredStyle:1];
         v52 = MEMORY[0x1E69DC648];
         v53 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentErr_5.isa);
         v54 = [v52 actionWithTitle:v53 style:0 handler:&__block_literal_global_111];
 
-        [v12 addAction:v54];
+        [member addAction:v54];
       }
 
-      [v8 presentViewController:v12 animated:1 completion:0];
+      [controllerCopy presentViewController:member animated:1 completion:0];
     }
   }
 
   else
   {
-    v12 = PKLogFacilityTypeGetObject();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    member = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(member, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1BD026000, v12, OS_LOG_TYPE_DEFAULT, "Error: no navigation controller defined.", buf, 2u);
+      _os_log_impl(&dword_1BD026000, member, OS_LOG_TYPE_DEFAULT, "Error: no navigation controller defined.", buf, 2u);
     }
   }
 
@@ -409,11 +409,11 @@ void __123__PKPeerPaymentAssociatedAccountsController_presentAssociatedAccountsF
   PKOpenURL();
 }
 
-- (void)addPeerPaymentAssociatedAccountSetupCompletedWithSucess:(BOOL)a3 updatedAccount:(id)a4 forFamilyMember:(id)a5
+- (void)addPeerPaymentAssociatedAccountSetupCompletedWithSucess:(BOOL)sucess updatedAccount:(id)account forFamilyMember:(id)member
 {
-  v7 = a3;
-  v9 = a4;
-  v10 = a5;
+  sucessCopy = sucess;
+  accountCopy = account;
+  memberCopy = member;
   v11 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -421,24 +421,24 @@ void __123__PKPeerPaymentAssociatedAccountsController_presentAssociatedAccountsF
     _os_log_impl(&dword_1BD026000, v11, OS_LOG_TYPE_DEFAULT, "PKPeerPaymentAssociatedAccountsController addPeerPaymentAssociatedAccountSetupCompletedWithSucess: called", v22, 2u);
   }
 
-  if (!v7)
+  if (!sucessCopy)
   {
     [(UINavigationController *)self->_navigationController dismissViewControllerAnimated:1 completion:0];
     goto LABEL_17;
   }
 
-  if (v9)
+  if (accountCopy)
   {
-    objc_storeStrong(&self->_account, a4);
+    objc_storeStrong(&self->_account, account);
   }
 
   account = self->_account;
-  v13 = [v10 altDSID];
-  v14 = [(PKPeerPaymentAccount *)account peerPaymentAccountWithAltDSID:v13];
+  altDSID = [memberCopy altDSID];
+  v14 = [(PKPeerPaymentAccount *)account peerPaymentAccountWithAltDSID:altDSID];
 
   if (v14)
   {
-    v15 = [[PKPeerPaymentAssociatedAccountViewController alloc] initWithFamilyMember:v10 familyCollection:self->_familyCollection account:self->_account context:self->_context];
+    v15 = [[PKPeerPaymentAssociatedAccountViewController alloc] initWithFamilyMember:memberCopy familyCollection:self->_familyCollection account:self->_account context:self->_context];
   }
 
   else
@@ -454,10 +454,10 @@ void __123__PKPeerPaymentAssociatedAccountsController_presentAssociatedAccountsF
 
   v16 = v15;
 LABEL_12:
-  v17 = [(UINavigationController *)self->_navigationController viewControllers];
-  v18 = [v17 mutableCopy];
+  viewControllers = [(UINavigationController *)self->_navigationController viewControllers];
+  v18 = [viewControllers mutableCopy];
 
-  v19 = [v18 lastObject];
+  lastObject = [v18 lastObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -477,7 +477,7 @@ LABEL_12:
 LABEL_17:
 }
 
-- (void)_peerPaymentAccountChanged:(id)a3
+- (void)_peerPaymentAccountChanged:(id)changed
 {
   peerPaymentService = self->_peerPaymentService;
   v4[0] = MEMORY[0x1E69E9820];

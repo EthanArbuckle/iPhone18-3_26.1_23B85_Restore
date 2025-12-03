@@ -1,22 +1,22 @@
 @interface VCPMovieCurationResults
-- (VCPMovieCurationResults)initWithPHAsset:(id)a3;
+- (VCPMovieCurationResults)initWithPHAsset:(id)asset;
 @end
 
 @implementation VCPMovieCurationResults
 
-- (VCPMovieCurationResults)initWithPHAsset:(id)a3
+- (VCPMovieCurationResults)initWithPHAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v13.receiver = self;
   v13.super_class = VCPMovieCurationResults;
   v6 = [(VCPMovieCurationResults *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_phAsset, a3);
-    v8 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v6->_phAsset, asset);
+    array = [MEMORY[0x1E695DF70] array];
     highlights = v7->_highlights;
-    v7->_highlights = v8;
+    v7->_highlights = array;
 
     if (v7->_highlights)
     {

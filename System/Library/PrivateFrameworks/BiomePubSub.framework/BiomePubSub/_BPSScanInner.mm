@@ -1,77 +1,77 @@
 @interface _BPSScanInner
-- (_BPSScanInner)initWithDownstream:(id)a3 nextPartialResult:(id)a4 initialResult:(id)a5;
-- (int64_t)receiveInput:(id)a3;
+- (_BPSScanInner)initWithDownstream:(id)downstream nextPartialResult:(id)result initialResult:(id)initialResult;
+- (int64_t)receiveInput:(id)input;
 - (void)cancel;
-- (void)receiveCompletion:(id)a3;
-- (void)receiveSubscription:(id)a3;
+- (void)receiveCompletion:(id)completion;
+- (void)receiveSubscription:(id)subscription;
 @end
 
 @implementation _BPSScanInner
 
-- (_BPSScanInner)initWithDownstream:(id)a3 nextPartialResult:(id)a4 initialResult:(id)a5
+- (_BPSScanInner)initWithDownstream:(id)downstream nextPartialResult:(id)result initialResult:(id)initialResult
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  downstreamCopy = downstream;
+  resultCopy = result;
+  initialResultCopy = initialResult;
   v17.receiver = self;
   v17.super_class = _BPSScanInner;
   v12 = [(_BPSScanInner *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_downstream, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_downstream, downstream);
+    v14 = [resultCopy copy];
     nextPartialResult = v13->_nextPartialResult;
     v13->_nextPartialResult = v14;
 
-    objc_storeStrong(&v13->_result, a5);
+    objc_storeStrong(&v13->_result, initialResult);
   }
 
   return v13;
 }
 
-- (void)receiveSubscription:(id)a3
+- (void)receiveSubscription:(id)subscription
 {
-  v4 = a3;
-  v5 = [(_BPSScanInner *)self downstream];
-  [v5 receiveSubscription:v4];
+  subscriptionCopy = subscription;
+  downstream = [(_BPSScanInner *)self downstream];
+  [downstream receiveSubscription:subscriptionCopy];
 }
 
-- (int64_t)receiveInput:(id)a3
+- (int64_t)receiveInput:(id)input
 {
-  v4 = self;
-  v5 = a3;
-  v6 = [(_BPSScanInner *)v4 nextPartialResult];
-  v7 = [(_BPSScanInner *)v4 result];
-  v8 = (v6)[2](v6, v7, v5);
+  selfCopy = self;
+  inputCopy = input;
+  nextPartialResult = [(_BPSScanInner *)selfCopy nextPartialResult];
+  result = [(_BPSScanInner *)selfCopy result];
+  v8 = (nextPartialResult)[2](nextPartialResult, result, inputCopy);
 
-  [(_BPSScanInner *)v4 setResult:v8];
-  v9 = [(_BPSScanInner *)v4 downstream];
-  v10 = [(_BPSScanInner *)v4 result];
-  v11 = [v9 receiveInput:v10];
+  [(_BPSScanInner *)selfCopy setResult:v8];
+  downstream = [(_BPSScanInner *)selfCopy downstream];
+  result2 = [(_BPSScanInner *)selfCopy result];
+  v11 = [downstream receiveInput:result2];
 
   return v11;
 }
 
-- (void)receiveCompletion:(id)a3
+- (void)receiveCompletion:(id)completion
 {
-  v4 = self;
-  v5 = a3;
+  selfCopy = self;
+  completionCopy = completion;
   v6 = __biome_log_for_category();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [_BPSScanInner receiveCompletion:];
   }
 
-  v7 = [(_BPSScanInner *)v4 downstream];
-  [v7 receiveCompletion:v5];
+  downstream = [(_BPSScanInner *)selfCopy downstream];
+  [downstream receiveCompletion:completionCopy];
 }
 
 - (void)cancel
 {
-  v3 = self;
-  v2 = [(_BPSScanInner *)v3 downstream];
-  [v2 cancel];
+  selfCopy = self;
+  downstream = [(_BPSScanInner *)selfCopy downstream];
+  [downstream cancel];
 }
 
 - (void)receiveCompletion:.cold.1()

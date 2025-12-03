@@ -1,8 +1,8 @@
 @interface IKAppUserDefaults
 + (id)sharedUserDefaults;
-- (id)dataForKey:(id)a3;
-- (void)removeDataForKey:(id)a3;
-- (void)setData:(id)a3 forKey:(id)a4;
+- (id)dataForKey:(id)key;
+- (void)removeDataForKey:(id)key;
+- (void)setData:(id)data forKey:(id)key;
 @end
 
 @implementation IKAppUserDefaults
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __39__IKAppUserDefaults_sharedUserDefaults__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedUserDefaults_onceToken != -1)
   {
     dispatch_once(&sharedUserDefaults_onceToken, block);
@@ -33,31 +33,31 @@ uint64_t __39__IKAppUserDefaults_sharedUserDefaults__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)dataForKey:(id)a3
+- (id)dataForKey:(id)key
 {
   v3 = MEMORY[0x277CBEBD0];
-  v4 = a3;
-  v5 = [v3 standardUserDefaults];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  standardUserDefaults = [v3 standardUserDefaults];
+  v6 = [standardUserDefaults objectForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setData:(id)a3 forKey:(id)a4
+- (void)setData:(id)data forKey:(id)key
 {
   v5 = MEMORY[0x277CBEBD0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 standardUserDefaults];
-  [v8 setObject:v7 forKey:v6];
+  keyCopy = key;
+  dataCopy = data;
+  standardUserDefaults = [v5 standardUserDefaults];
+  [standardUserDefaults setObject:dataCopy forKey:keyCopy];
 }
 
-- (void)removeDataForKey:(id)a3
+- (void)removeDataForKey:(id)key
 {
   v3 = MEMORY[0x277CBEBD0];
-  v4 = a3;
-  v5 = [v3 standardUserDefaults];
-  [v5 removeObjectForKey:v4];
+  keyCopy = key;
+  standardUserDefaults = [v3 standardUserDefaults];
+  [standardUserDefaults removeObjectForKey:keyCopy];
 }
 
 @end

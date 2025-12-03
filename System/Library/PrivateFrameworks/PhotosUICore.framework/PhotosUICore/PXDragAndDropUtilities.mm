@@ -1,21 +1,21 @@
 @interface PXDragAndDropUtilities
-+ (id)fileTypeForPhotosContainer:(id)a3;
-+ (id)sanitizedFileNameForString:(id)a3;
-+ (unint64_t)adjustedTargetIndexForCollection:(id)a3 movedObjects:(id)a4 targetIndex:(unint64_t)a5;
++ (id)fileTypeForPhotosContainer:(id)container;
++ (id)sanitizedFileNameForString:(id)string;
++ (unint64_t)adjustedTargetIndexForCollection:(id)collection movedObjects:(id)objects targetIndex:(unint64_t)index;
 @end
 
 @implementation PXDragAndDropUtilities
 
-+ (id)sanitizedFileNameForString:(id)a3
++ (id)sanitizedFileNameForString:(id)string
 {
   v3 = sanitizedFileNameForString__onceToken;
-  v4 = a3;
+  stringCopy = string;
   if (v3 != -1)
   {
     dispatch_once(&sanitizedFileNameForString__onceToken, &__block_literal_global_82712);
   }
 
-  v5 = [v4 stringByReplacingOccurrencesOfString:@"/" withString:@":"];
+  v5 = [stringCopy stringByReplacingOccurrencesOfString:@"/" withString:@":"];
 
   if (v5)
   {
@@ -43,9 +43,9 @@ void __53__PXDragAndDropUtilities_sanitizedFileNameForString___block_invoke()
   sanitizedFileNameForString__regex = v0;
 }
 
-+ (id)fileTypeForPhotosContainer:(id)a3
++ (id)fileTypeForPhotosContainer:(id)container
 {
-  v3 = a3;
+  containerCopy = container;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -73,26 +73,26 @@ void __53__PXDragAndDropUtilities_sanitizedFileNameForString___block_invoke()
   return v6;
 }
 
-+ (unint64_t)adjustedTargetIndexForCollection:(id)a3 movedObjects:(id)a4 targetIndex:(unint64_t)a5
++ (unint64_t)adjustedTargetIndexForCollection:(id)collection movedObjects:(id)objects targetIndex:(unint64_t)index
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 count];
+  collectionCopy = collection;
+  objectsCopy = objects;
+  v9 = [collectionCopy count];
   v10 = objc_alloc_init(MEMORY[0x1E696AD50]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = v8;
+  v11 = objectsCopy;
   v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v12)
   {
     v13 = v12;
     v14 = *v20;
-    if (a5 + 1 < v9)
+    if (index + 1 < v9)
     {
-      v9 = a5 + 1;
+      v9 = index + 1;
     }
 
     do
@@ -105,7 +105,7 @@ void __53__PXDragAndDropUtilities_sanitizedFileNameForString___block_invoke()
           objc_enumerationMutation(v11);
         }
 
-        v16 = [v7 indexOfObject:*(*(&v19 + 1) + 8 * v15) inRange:{0, v9, v19}];
+        v16 = [collectionCopy indexOfObject:*(*(&v19 + 1) + 8 * v15) inRange:{0, v9, v19}];
         if (v16 != 0x7FFFFFFFFFFFFFFFLL)
         {
           [v10 addIndex:v16];
@@ -121,8 +121,8 @@ void __53__PXDragAndDropUtilities_sanitizedFileNameForString___block_invoke()
     while (v13);
   }
 
-  v17 = [v10 countOfIndexesInRange:{0, a5}];
-  return a5 - v17;
+  v17 = [v10 countOfIndexesInRange:{0, index}];
+  return index - v17;
 }
 
 @end

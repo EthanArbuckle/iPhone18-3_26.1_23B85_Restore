@@ -1,23 +1,23 @@
 @interface FBSystemShell
-+ (id)_createSingletonWithOptions:(id)a3;
-- (id)_initWithOptions:(id)a3;
-- (id)assertWatchdogEnabledForLimitedDurationForReason:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
++ (id)_createSingletonWithOptions:(id)options;
+- (id)_initWithOptions:(id)options;
+- (id)assertWatchdogEnabledForLimitedDurationForReason:(id)reason;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)_addBlockToExecuteWhenReady:(id)a3;
-- (void)_setState:(unint64_t)a3;
-- (void)_setSystemIdleSleepDisabled:(BOOL)a3 forReason:(id)a4;
-- (void)sendActionsToBackBoard:(id)a3;
+- (void)_addBlockToExecuteWhenReady:(id)ready;
+- (void)_setState:(unint64_t)state;
+- (void)_setSystemIdleSleepDisabled:(BOOL)disabled forReason:(id)reason;
+- (void)sendActionsToBackBoard:(id)board;
 @end
 
 @implementation FBSystemShell
 
-- (id)_initWithOptions:(id)a3
+- (id)_initWithOptions:(id)options
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   v40.receiver = self;
   v40.super_class = FBSystemShell;
   v5 = [(FBSystemShell *)&v40 init];
@@ -34,7 +34,7 @@
     v6->_lock_blocksToRunWhenReady = v9;
 
     v11 = [FBSystemShellInitializationContext alloc];
-    v12 = [v4 copy];
+    v12 = [optionsCopy copy];
     v13 = [(FBSystemShellInitializationContext *)v11 _initWithOptions:v12];
     initializationContext = v6->_initializationContext;
     v6->_initializationContext = v13;
@@ -49,11 +49,11 @@
 
     kdebug_trace();
     v16 = objc_alloc(MEMORY[0x1E69C7548]);
-    v17 = [MEMORY[0x1E69C7640] currentProcess];
+    currentProcess = [MEMORY[0x1E69C7640] currentProcess];
     v18 = [MEMORY[0x1E69C7560] attributeWithDomain:@"com.apple.frontboard" name:@"SystemShell"];
     v41[0] = v18;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:1];
-    v20 = [v16 initWithExplanation:@"FBSystemShell" target:v17 attributes:v19];
+    v20 = [v16 initWithExplanation:@"FBSystemShell" target:currentProcess attributes:v19];
     runningAssertion = v6->_runningAssertion;
     v6->_runningAssertion = v20;
 
@@ -65,7 +65,7 @@
     v38[1] = 3221225472;
     v38[2] = __34__FBSystemShell__initWithOptions___block_invoke;
     v38[3] = &unk_1E783B530;
-    v23 = v4;
+    v23 = optionsCopy;
     v39 = v23;
     v24 = [v22 initWithConfigurator:v38];
     systemShellService = v6->_systemShellService;
@@ -136,9 +136,9 @@ void __34__FBSystemShell__initWithOptions___block_invoke_31(uint64_t a1)
   [*(*(*(a1 + 40) + 8) + 40) _setSystemIdleSleepDisabled:0 forReason:@"FBSystemShellStartup"];
 }
 
-+ (id)_createSingletonWithOptions:(id)a3
++ (id)_createSingletonWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   if (__instance)
   {
     [FBSystemShell _createSingletonWithOptions:a2];
@@ -148,9 +148,9 @@ void __34__FBSystemShell__initWithOptions___block_invoke_31(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __45__FBSystemShell__createSingletonWithOptions___block_invoke;
   block[3] = &unk_1E783B580;
-  v11 = v4;
+  v11 = optionsCopy;
   v5 = _createSingletonWithOptions__onceToken;
-  v6 = v4;
+  v6 = optionsCopy;
   if (v5 != -1)
   {
     dispatch_once(&_createSingletonWithOptions__onceToken, block);
@@ -169,15 +169,15 @@ void __45__FBSystemShell__createSingletonWithOptions___block_invoke(uint64_t a1)
   __instance = v1;
 }
 
-- (void)sendActionsToBackBoard:(id)a3
+- (void)sendActionsToBackBoard:(id)board
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  boardCopy = board;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [boardCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -189,7 +189,7 @@ void __45__FBSystemShell__createSingletonWithOptions___block_invoke(uint64_t a1)
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(boardCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
@@ -205,7 +205,7 @@ void __45__FBSystemShell__createSingletonWithOptions___block_invoke(uint64_t a1)
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [boardCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -214,9 +214,9 @@ void __45__FBSystemShell__createSingletonWithOptions___block_invoke(uint64_t a1)
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)assertWatchdogEnabledForLimitedDurationForReason:(id)a3
+- (id)assertWatchdogEnabledForLimitedDurationForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   os_unfair_lock_lock(&self->_lock);
   if (!self->_lock_temporaryWatchdogAssertion)
   {
@@ -236,7 +236,7 @@ void __45__FBSystemShell__createSingletonWithOptions___block_invoke(uint64_t a1)
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  v8 = [(BSCompoundAssertion *)self->_lock_temporaryWatchdogAssertion acquireForReason:v4];
+  v8 = [(BSCompoundAssertion *)self->_lock_temporaryWatchdogAssertion acquireForReason:reasonCopy];
 
   return v8;
 }
@@ -252,14 +252,14 @@ void __66__FBSystemShell_assertWatchdogEnabledForLimitedDurationForReason___bloc
   }
 }
 
-- (void)_addBlockToExecuteWhenReady:(id)a3
+- (void)_addBlockToExecuteWhenReady:(id)ready
 {
-  v6 = a3;
+  readyCopy = ready;
   os_unfair_lock_lock(&self->_lock);
   lock_blocksToRunWhenReady = self->_lock_blocksToRunWhenReady;
   if (lock_blocksToRunWhenReady)
   {
-    v5 = MEMORY[0x1AC572E40](v6);
+    v5 = MEMORY[0x1AC572E40](readyCopy);
     [(NSMutableArray *)lock_blocksToRunWhenReady addObject:v5];
 
     os_unfair_lock_unlock(&self->_lock);
@@ -268,16 +268,16 @@ void __66__FBSystemShell_assertWatchdogEnabledForLimitedDurationForReason___bloc
   else
   {
     os_unfair_lock_unlock(&self->_lock);
-    v6[2]();
+    readyCopy[2]();
   }
 }
 
 - (id)succinctDescription
 {
-  v2 = [(FBSystemShell *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSystemShell *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -289,29 +289,29 @@ void __66__FBSystemShell_assertWatchdogEnabledForLimitedDurationForReason___bloc
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSystemShell *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSystemShell *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(FBSystemShell *)self succinctDescriptionBuilder];
-  v5 = [v4 appendObject:self->_initializationContext withName:@"initializationContext" skipIfNil:1];
+  succinctDescriptionBuilder = [(FBSystemShell *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendObject:self->_initializationContext withName:@"initializationContext" skipIfNil:1];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
-- (void)_setSystemIdleSleepDisabled:(BOOL)a3 forReason:(id)a4
+- (void)_setSystemIdleSleepDisabled:(BOOL)disabled forReason:(id)reason
 {
-  v4 = a3;
+  disabledCopy = disabled;
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  reasonCopy = reason;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v7)
+  if (!reasonCopy)
   {
     [FBSystemShell _setSystemIdleSleepDisabled:a2 forReason:?];
   }
@@ -322,8 +322,8 @@ void __66__FBSystemShell_assertWatchdogEnabledForLimitedDurationForReason___bloc
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(NSMutableSet *)self->_lock_preventIdleSleepReasons containsObject:v7];
-  if (v4)
+  v8 = [(NSMutableSet *)self->_lock_preventIdleSleepReasons containsObject:reasonCopy];
+  if (disabledCopy)
   {
     if ((v8 & 1) == 0)
     {
@@ -331,11 +331,11 @@ void __66__FBSystemShell_assertWatchdogEnabledForLimitedDurationForReason___bloc
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v27 = v7;
+        v27 = reasonCopy;
         _os_log_impl(&dword_1A89DD000, v9, OS_LOG_TYPE_INFO, "Preventing system idle sleep for reason: %{public}@", buf, 0xCu);
       }
 
-      [(NSMutableSet *)self->_lock_preventIdleSleepReasons addObject:v7];
+      [(NSMutableSet *)self->_lock_preventIdleSleepReasons addObject:reasonCopy];
     }
   }
 
@@ -345,11 +345,11 @@ void __66__FBSystemShell_assertWatchdogEnabledForLimitedDurationForReason___bloc
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v27 = v7;
+      v27 = reasonCopy;
       _os_log_impl(&dword_1A89DD000, v10, OS_LOG_TYPE_INFO, "Allowing system idle sleep for reason: %{public}@", buf, 0xCu);
     }
 
-    [(NSMutableSet *)self->_lock_preventIdleSleepReasons removeObject:v7];
+    [(NSMutableSet *)self->_lock_preventIdleSleepReasons removeObject:reasonCopy];
   }
 
   v11 = FBLogCommon();
@@ -384,11 +384,11 @@ void __66__FBSystemShell_assertWatchdogEnabledForLimitedDurationForReason___bloc
       }
 
       v16 = objc_alloc(MEMORY[0x1E69C7548]);
-      v17 = [MEMORY[0x1E69C7640] currentProcess];
+      currentProcess = [MEMORY[0x1E69C7640] currentProcess];
       v18 = [MEMORY[0x1E69C7560] attributeWithDomain:@"com.apple.frontboard" name:@"SystemShell-PreventIdleSleep"];
       v25 = v18;
       v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
-      v20 = [v16 initWithExplanation:@"FBSystemApp-PreventIdleSleep" target:v17 attributes:v19];
+      v20 = [v16 initWithExplanation:@"FBSystemApp-PreventIdleSleep" target:currentProcess attributes:v19];
       v21 = self->_lock_preventSleepAssertion;
       self->_lock_preventSleepAssertion = v20;
 
@@ -415,18 +415,18 @@ void __66__FBSystemShell_assertWatchdogEnabledForLimitedDurationForReason___bloc
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setState:(unint64_t)a3
+- (void)_setState:(unint64_t)state
 {
   v20 = *MEMORY[0x1E69E9840];
   state = self->_state;
-  if (state == a3)
+  if (state == state)
   {
 LABEL_15:
     v12 = *MEMORY[0x1E69E9840];
     return;
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
     if (state)
     {
@@ -437,7 +437,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
     if (state != 1)
     {
@@ -552,40 +552,6 @@ LABEL_15:
     v10 = v5;
     v11 = v2;
     _os_log_error_impl(&dword_1A89DD000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", buf, 0x3Au);
-  }
-
-  [v2 UTF8String];
-  _bs_set_crash_log_message();
-  __break(0);
-}
-
-- (void)_setState:(char *)a1 .cold.1(char *a1)
-  v2 = {;
-  if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
-  {
-    NSStringFromSelector(a1);
-    objc_claimAutoreleasedReturnValue();
-    v3 = OUTLINED_FUNCTION_12();
-    v4 = NSStringFromClass(v3);
-    OUTLINED_FUNCTION_0_0();
-    OUTLINED_FUNCTION_4(&dword_1A89DD000, MEMORY[0x1E69E9C10], v5, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", v6, v7, v8, v9, 2u);
-  }
-
-  [v2 UTF8String];
-  _bs_set_crash_log_message();
-  __break(0);
-}
-
-- (void)_setState:(char *)a1 .cold.2(char *a1)
-  v2 = {;
-  if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
-  {
-    NSStringFromSelector(a1);
-    objc_claimAutoreleasedReturnValue();
-    v3 = OUTLINED_FUNCTION_12();
-    v4 = NSStringFromClass(v3);
-    OUTLINED_FUNCTION_0_0();
-    OUTLINED_FUNCTION_4(&dword_1A89DD000, MEMORY[0x1E69E9C10], v5, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", v6, v7, v8, v9, 2u);
   }
 
   [v2 UTF8String];

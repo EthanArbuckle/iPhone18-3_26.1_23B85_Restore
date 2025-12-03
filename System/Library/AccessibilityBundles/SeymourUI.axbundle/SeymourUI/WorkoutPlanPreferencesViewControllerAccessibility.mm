@@ -12,13 +12,13 @@
   [(WorkoutPlanPreferencesViewControllerAccessibility *)&v7 _accessibilityLoadAccessibilityInformation];
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 navigationItem];
+  navigationItem = [v2 navigationItem];
 
-  v4 = [v3 titleView];
-  v5 = v4;
-  if (v4)
+  titleView = [navigationItem titleView];
+  v5 = titleView;
+  if (titleView)
   {
-    [v4 setIsAccessibilityElement:1];
+    [titleView setIsAccessibilityElement:1];
     v6 = UIAXStringForAllChildren();
     [v5 setAccessibilityLabel:v6];
 

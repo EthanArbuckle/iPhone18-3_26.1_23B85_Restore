@@ -1,47 +1,47 @@
 @interface KTVerifierResult
-- (BOOL)isEqual:(id)a3;
-- (KTVerifierResult)initWithCoder:(id)a3;
-- (KTVerifierResult)initWithUri:(id)a3 application:(id)a4 ktResult:(unint64_t)a5 failure:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (KTVerifierResult)initWithCoder:(id)coder;
+- (KTVerifierResult)initWithUri:(id)uri application:(id)application ktResult:(unint64_t)result failure:(id)failure;
 - (NSDictionary)diagnosticsJsonDictionary;
 - (id)description;
-- (id)initPendingForUri:(id)a3 application:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)initPendingForUri:(id)uri application:(id)application;
+- (void)encodeWithCoder:(id)coder;
 - (void)updateLoggableDataForFailure;
-- (void)updateWithStaticKeyEnforced:(unint64_t)a3 isFailureIgnoredForDate:(BOOL)a4;
-- (void)updateWithStaticKeyEnforcedPeerEnforcement:(unint64_t)a3;
+- (void)updateWithStaticKeyEnforced:(unint64_t)enforced isFailureIgnoredForDate:(BOOL)date;
+- (void)updateWithStaticKeyEnforcedPeerEnforcement:(unint64_t)enforcement;
 @end
 
 @implementation KTVerifierResult
 
-- (KTVerifierResult)initWithUri:(id)a3 application:(id)a4 ktResult:(unint64_t)a5 failure:(id)a6
+- (KTVerifierResult)initWithUri:(id)uri application:(id)application ktResult:(unint64_t)result failure:(id)failure
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  uriCopy = uri;
+  applicationCopy = application;
+  failureCopy = failure;
   v16.receiver = self;
   v16.super_class = KTVerifierResult;
   v13 = [(KTVerifierResult *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    [(KTVerifierResult *)v13 setUri:v10];
-    [(KTVerifierResult *)v14 setApplication:v11];
-    [(KTVerifierResult *)v14 setSucceed:a5];
+    [(KTVerifierResult *)v13 setUri:uriCopy];
+    [(KTVerifierResult *)v14 setApplication:applicationCopy];
+    [(KTVerifierResult *)v14 setSucceed:result];
     [(KTVerifierResult *)v14 setOptedIn:0];
     [(KTVerifierResult *)v14 setEverOptedIn:0];
     [(KTVerifierResult *)v14 setRecentlyOptedIn:0];
     [(KTVerifierResult *)v14 setStaticAccountKeyEnforced:0];
     [(KTVerifierResult *)v14 setStaticAccountKeyStatus:3];
-    [(KTVerifierResult *)v14 setFailure:v12];
+    [(KTVerifierResult *)v14 setFailure:failureCopy];
     [(KTVerifierResult *)v14 setUiStatus:0];
   }
 
   return v14;
 }
 
-- (id)initPendingForUri:(id)a3 application:(id)a4
+- (id)initPendingForUri:(id)uri application:(id)application
 {
-  v4 = [(KTVerifierResult *)self initWithUri:a3 application:a4 ktResult:2];
+  v4 = [(KTVerifierResult *)self initWithUri:uri application:application ktResult:2];
   [(KTVerifierResult *)v4 setUiStatus:3];
 
   return v4;
@@ -50,16 +50,16 @@
 - (void)updateLoggableDataForFailure
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(KTVerifierResult *)self failure];
-  [v3 setObject:v4 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  failure = [(KTVerifierResult *)self failure];
+  [dictionary setObject:failure forKeyedSubscript:*MEMORY[0x1E696AA08]];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(KTVerifierResult *)self loggableDatas];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  loggableDatas = [(KTVerifierResult *)self loggableDatas];
+  v6 = [loggableDatas countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -70,19 +70,19 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(loggableDatas);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
         if ([v10 result])
         {
           [v10 setResult:0];
-          v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"kTransparencyError" code:-304 userInfo:v3];
+          v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"kTransparencyError" code:-304 userInfo:dictionary];
           [v10 setFailure:v11];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [loggableDatas countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -91,13 +91,13 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateWithStaticKeyEnforcedPeerEnforcement:(unint64_t)a3
+- (void)updateWithStaticKeyEnforcedPeerEnforcement:(unint64_t)enforcement
 {
   v27 = *MEMORY[0x1E69E9840];
   [(KTVerifierResult *)self setStaticAccountKeyStatus:?];
-  if (a3 > 3)
+  if (enforcement > 3)
   {
-    if (a3 - 4 >= 2)
+    if (enforcement - 4 >= 2)
     {
       goto LABEL_5;
     }
@@ -105,8 +105,8 @@
 LABEL_9:
     [(KTVerifierResult *)self setStaticAccountKeyEnforced:0];
     [(KTVerifierResult *)self setSucceed:0];
-    v6 = [(KTVerifierResult *)self uiStatus];
-    if (v6 > 0xB || ((1 << v6) & 0xC06) == 0)
+    uiStatus = [(KTVerifierResult *)self uiStatus];
+    if (uiStatus > 0xB || ((1 << uiStatus) & 0xC06) == 0)
     {
       if (TRANSPARENCY_DEFAULT_LOG_BLOCK_8 != -1)
       {
@@ -127,11 +127,11 @@ LABEL_9:
     goto LABEL_35;
   }
 
-  if (a3)
+  if (enforcement)
   {
-    if (a3 != 1)
+    if (enforcement != 1)
     {
-      if (a3 != 2)
+      if (enforcement != 2)
       {
 LABEL_5:
         v5 = *MEMORY[0x1E69E9840];
@@ -144,11 +144,11 @@ LABEL_5:
     }
 
     [(KTVerifierResult *)self setStaticAccountKeyEnforced:0];
-    v11 = [(KTVerifierResult *)self uiStatus];
-    if (v11 > 0x11)
+    uiStatus2 = [(KTVerifierResult *)self uiStatus];
+    if (uiStatus2 > 0x11)
     {
 LABEL_39:
-      if (!v11)
+      if (!uiStatus2)
       {
 LABEL_19:
         if (TRANSPARENCY_DEFAULT_LOG_BLOCK_8 != -1)
@@ -165,10 +165,10 @@ LABEL_19:
         goto LABEL_33;
       }
 
-      if (v11 == 5)
+      if (uiStatus2 == 5)
       {
         v18 = *MEMORY[0x1E69E9840];
-        v9 = self;
+        selfCopy5 = self;
         v10 = 4;
         goto LABEL_56;
       }
@@ -195,17 +195,17 @@ LABEL_54:
       goto LABEL_35;
     }
 
-    if (((1 << v11) & 0x33C0) != 0)
+    if (((1 << uiStatus2) & 0x33C0) != 0)
     {
       goto LABEL_19;
     }
 
-    if (v11 != 15)
+    if (uiStatus2 != 15)
     {
-      if (v11 == 17)
+      if (uiStatus2 == 17)
       {
         v17 = *MEMORY[0x1E69E9840];
-        v9 = self;
+        selfCopy5 = self;
         v10 = 16;
         goto LABEL_56;
       }
@@ -215,26 +215,26 @@ LABEL_54:
 
 LABEL_44:
     v19 = *MEMORY[0x1E69E9840];
-    v9 = self;
+    selfCopy5 = self;
     v10 = 3;
     goto LABEL_56;
   }
 
   [(KTVerifierResult *)self setStaticAccountKeyEnforced:1];
-  v7 = [(KTVerifierResult *)self uiStatus];
-  if (v7 > 11)
+  uiStatus3 = [(KTVerifierResult *)self uiStatus];
+  if (uiStatus3 > 11)
   {
-    if (v7 > 14)
+    if (uiStatus3 > 14)
     {
-      if (v7 == 16)
+      if (uiStatus3 == 16)
       {
         v25 = *MEMORY[0x1E69E9840];
-        v9 = self;
+        selfCopy5 = self;
         v10 = 17;
         goto LABEL_56;
       }
 
-      if (v7 == 15)
+      if (uiStatus3 == 15)
       {
         goto LABEL_44;
       }
@@ -259,9 +259,9 @@ LABEL_46:
       goto LABEL_54;
     }
 
-    if ((v7 - 12) >= 2)
+    if ((uiStatus3 - 12) >= 2)
     {
-      if (v7 == 14)
+      if (uiStatus3 == 14)
       {
         goto LABEL_35;
       }
@@ -295,22 +295,22 @@ LABEL_35:
     return;
   }
 
-  if ((v7 - 6) < 4 || !v7)
+  if ((uiStatus3 - 6) < 4 || !uiStatus3)
   {
     goto LABEL_30;
   }
 
-  if (v7 != 4)
+  if (uiStatus3 != 4)
   {
     goto LABEL_46;
   }
 
   v8 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy5 = self;
   v10 = 5;
 LABEL_56:
 
-  [(KTVerifierResult *)v9 setUiStatus:v10];
+  [(KTVerifierResult *)selfCopy5 setUiStatus:v10];
 }
 
 uint64_t __63__KTVerifierResult_updateWithStaticKeyEnforcedPeerEnforcement___block_invoke()
@@ -348,42 +348,42 @@ uint64_t __63__KTVerifierResult_updateWithStaticKeyEnforcedPeerEnforcement___blo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)updateWithStaticKeyEnforced:(unint64_t)a3 isFailureIgnoredForDate:(BOOL)a4
+- (void)updateWithStaticKeyEnforced:(unint64_t)enforced isFailureIgnoredForDate:(BOOL)date
 {
-  v4 = a4;
+  dateCopy = date;
   v33 = *MEMORY[0x1E69E9840];
   if (_os_feature_enabled_impl())
   {
     v7 = *MEMORY[0x1E69E9840];
 
-    [(KTVerifierResult *)self updateWithStaticKeyEnforcedPeerEnforcement:a3];
+    [(KTVerifierResult *)self updateWithStaticKeyEnforcedPeerEnforcement:enforced];
     return;
   }
 
-  [(KTVerifierResult *)self setStaticAccountKeyStatus:a3];
-  if (a3 > 1)
+  [(KTVerifierResult *)self setStaticAccountKeyStatus:enforced];
+  if (enforced > 1)
   {
-    if (a3 == 2)
+    if (enforced == 2)
     {
       [(KTVerifierResult *)self setSucceed:0];
       [(KTVerifierResult *)self setStaticAccountKeyEnforced:0];
-      v13 = [(KTVerifierResult *)self uiStatus];
-      if (v13 > 0xD)
+      uiStatus = [(KTVerifierResult *)self uiStatus];
+      if (uiStatus > 0xD)
       {
         goto LABEL_40;
       }
 
-      if (((1 << v13) & 0x20F9) != 0)
+      if (((1 << uiStatus) & 0x20F9) != 0)
       {
-        if (!v4)
+        if (!dateCopy)
         {
-          v9 = self;
+          selfCopy8 = self;
           v10 = 13;
           goto LABEL_39;
         }
       }
 
-      else if (((1 << v13) & 0x1100) == 0)
+      else if (((1 << uiStatus) & 0x1100) == 0)
       {
         goto LABEL_40;
       }
@@ -391,27 +391,27 @@ uint64_t __63__KTVerifierResult_updateWithStaticKeyEnforcedPeerEnforcement___blo
 
     else
     {
-      if (a3 != 4)
+      if (enforced != 4)
       {
         goto LABEL_18;
       }
 
       [(KTVerifierResult *)self setStaticAccountKeyEnforced:0];
-      v11 = [(KTVerifierResult *)self uiStatus];
-      if (v11 > 0xD)
+      uiStatus2 = [(KTVerifierResult *)self uiStatus];
+      if (uiStatus2 > 0xD)
       {
         goto LABEL_40;
       }
 
-      if (((1 << v11) & 0x30F9) != 0)
+      if (((1 << uiStatus2) & 0x30F9) != 0)
       {
-        if (!v4)
+        if (!dateCopy)
         {
           goto LABEL_22;
         }
       }
 
-      else if (v11 != 8)
+      else if (uiStatus2 != 8)
       {
         goto LABEL_40;
       }
@@ -420,34 +420,34 @@ uint64_t __63__KTVerifierResult_updateWithStaticKeyEnforcedPeerEnforcement___blo
     goto LABEL_38;
   }
 
-  if (!a3)
+  if (!enforced)
   {
     [(KTVerifierResult *)self setStaticAccountKeyEnforced:1];
-    v12 = [(KTVerifierResult *)self uiStatus];
-    if (v12 <= 7)
+    uiStatus3 = [(KTVerifierResult *)self uiStatus];
+    if (uiStatus3 <= 7)
     {
-      if (v12 != 4)
+      if (uiStatus3 != 4)
       {
-        if (v12 != 6)
+        if (uiStatus3 != 6)
         {
           goto LABEL_40;
         }
 
 LABEL_22:
-        v9 = self;
+        selfCopy8 = self;
         v10 = 7;
         goto LABEL_39;
       }
 
 LABEL_32:
-      v9 = self;
+      selfCopy8 = self;
       v10 = 5;
       goto LABEL_39;
     }
 
-    if (v12 != 8)
+    if (uiStatus3 != 8)
     {
-      if (v12 != 13)
+      if (uiStatus3 != 13)
       {
         goto LABEL_40;
       }
@@ -456,12 +456,12 @@ LABEL_32:
     }
 
 LABEL_38:
-    v9 = self;
+    selfCopy8 = self;
     v10 = 9;
     goto LABEL_39;
   }
 
-  if (a3 != 1)
+  if (enforced != 1)
   {
 LABEL_18:
     [(KTVerifierResult *)self setStaticAccountKeyEnforced:0];
@@ -469,19 +469,19 @@ LABEL_18:
   }
 
   [(KTVerifierResult *)self setStaticAccountKeyEnforced:0];
-  v8 = [(KTVerifierResult *)self uiStatus];
-  if (v8 > 8)
+  uiStatus4 = [(KTVerifierResult *)self uiStatus];
+  if (uiStatus4 > 8)
   {
-    if (v8 == 9)
+    if (uiStatus4 == 9)
     {
-      v9 = self;
+      selfCopy8 = self;
       v10 = 8;
       goto LABEL_39;
     }
 
-    if (v8 == 13)
+    if (uiStatus4 == 13)
     {
-      v9 = self;
+      selfCopy8 = self;
       v10 = 3;
       goto LABEL_39;
     }
@@ -489,19 +489,19 @@ LABEL_18:
 
   else
   {
-    if (v8 == 5)
+    if (uiStatus4 == 5)
     {
-      v9 = self;
+      selfCopy8 = self;
       v10 = 4;
       goto LABEL_39;
     }
 
-    if (v8 == 7)
+    if (uiStatus4 == 7)
     {
-      v9 = self;
+      selfCopy8 = self;
       v10 = 6;
 LABEL_39:
-      [(KTVerifierResult *)v9 setUiStatus:v10];
+      [(KTVerifierResult *)selfCopy8 setUiStatus:v10];
     }
   }
 
@@ -515,16 +515,16 @@ LABEL_40:
   if (os_log_type_enabled(TRANSPARENCY_DEFAULT_LOG_INTERNAL_8, OS_LOG_TYPE_DEFAULT))
   {
     v15 = v14;
-    v16 = KTStaticKeyPeerValidateResultGetString(a3);
-    v17 = [(KTVerifierResult *)self staticAccountKeyEnforced];
+    v16 = KTStaticKeyPeerValidateResultGetString(enforced);
+    staticAccountKeyEnforced = [(KTVerifierResult *)self staticAccountKeyEnforced];
     v18 = KTUIStatusGetString([(KTVerifierResult *)self uiStatus]);
     v19 = [(KTVerifierResult *)self uri];
     v21 = 138413570;
     v22 = v16;
     v23 = 1024;
-    v24 = a3;
+    enforcedCopy = enforced;
     v25 = 1024;
-    v26 = v17;
+    v26 = staticAccountKeyEnforced;
     v27 = 2114;
     v28 = v18;
     v29 = 2160;
@@ -544,99 +544,99 @@ uint64_t __72__KTVerifierResult_updateWithStaticKeyEnforced_isFailureIgnoredForD
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v22 = a3;
+  coderCopy = coder;
   v4 = [(KTVerifierResult *)self uri];
-  [v22 encodeObject:v4 forKey:@"uri"];
+  [coderCopy encodeObject:v4 forKey:@"uri"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[KTVerifierResult succeed](self, "succeed")}];
-  [v22 encodeObject:v5 forKey:@"succeed"];
+  [coderCopy encodeObject:v5 forKey:@"succeed"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[KTVerifierResult optedIn](self, "optedIn")}];
-  [v22 encodeObject:v6 forKey:@"optedIn"];
+  [coderCopy encodeObject:v6 forKey:@"optedIn"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[KTVerifierResult everOptedIn](self, "everOptedIn")}];
-  [v22 encodeObject:v7 forKey:@"everOptedIn"];
+  [coderCopy encodeObject:v7 forKey:@"everOptedIn"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[KTVerifierResult recentlyOptedIn](self, "recentlyOptedIn")}];
-  [v22 encodeObject:v8 forKey:@"recentlyOptedIn"];
+  [coderCopy encodeObject:v8 forKey:@"recentlyOptedIn"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[KTVerifierResult staticAccountKeyEnforced](self, "staticAccountKeyEnforced")}];
-  [v22 encodeObject:v9 forKey:@"accountKeyEnforced"];
+  [coderCopy encodeObject:v9 forKey:@"accountKeyEnforced"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[KTVerifierResult staticAccountKeyStatus](self, "staticAccountKeyStatus")}];
-  [v22 encodeObject:v10 forKey:@"staticKeyStatus"];
+  [coderCopy encodeObject:v10 forKey:@"staticKeyStatus"];
 
-  v11 = [(KTVerifierResult *)self validUntil];
-  [v22 encodeObject:v11 forKey:@"validUntil"];
+  validUntil = [(KTVerifierResult *)self validUntil];
+  [coderCopy encodeObject:validUntil forKey:@"validUntil"];
 
-  v12 = [(KTVerifierResult *)self publicID];
+  publicID = [(KTVerifierResult *)self publicID];
 
-  if (v12)
+  if (publicID)
   {
-    v13 = [(KTVerifierResult *)self publicID];
-    [v22 encodeObject:v13 forKey:@"accountKey"];
+    publicID2 = [(KTVerifierResult *)self publicID];
+    [coderCopy encodeObject:publicID2 forKey:@"accountKey"];
   }
 
-  v14 = [(KTVerifierResult *)self loggableDatas];
+  loggableDatas = [(KTVerifierResult *)self loggableDatas];
 
-  if (v14)
+  if (loggableDatas)
   {
-    v15 = [(KTVerifierResult *)self loggableDatas];
-    [v22 encodeObject:v15 forKey:@"loggableDatas"];
+    loggableDatas2 = [(KTVerifierResult *)self loggableDatas];
+    [coderCopy encodeObject:loggableDatas2 forKey:@"loggableDatas"];
   }
 
-  v16 = [(KTVerifierResult *)self failure];
+  failure = [(KTVerifierResult *)self failure];
 
-  if (v16)
+  if (failure)
   {
-    v17 = [(KTVerifierResult *)self failure];
-    [v22 encodeObject:v17 forKey:@"failure"];
+    failure2 = [(KTVerifierResult *)self failure];
+    [coderCopy encodeObject:failure2 forKey:@"failure"];
   }
 
   if ([(KTVerifierResult *)self uiStatus])
   {
     v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[KTVerifierResult uiStatus](self, "uiStatus")}];
-    [v22 encodeObject:v18 forKey:@"uiStatus"];
+    [coderCopy encodeObject:v18 forKey:@"uiStatus"];
   }
 
-  v19 = [(KTVerifierResult *)self application];
+  application = [(KTVerifierResult *)self application];
 
-  v20 = v22;
-  if (v19)
+  v20 = coderCopy;
+  if (application)
   {
-    v21 = [(KTVerifierResult *)self application];
-    [v22 encodeObject:v21 forKey:@"application"];
+    application2 = [(KTVerifierResult *)self application];
+    [coderCopy encodeObject:application2 forKey:@"application"];
 
-    v20 = v22;
+    v20 = coderCopy;
   }
 }
 
-- (KTVerifierResult)initWithCoder:(id)a3
+- (KTVerifierResult)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"uri"];
-  v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"application"];
-  v25 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"succeed"];
-  v24 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"optedIn"];
-  v23 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"everOptedIn"];
-  v22 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"recentlyOptedIn"];
-  v21 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"accountKeyEnforced"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uri"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"application"];
+  v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"succeed"];
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"optedIn"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"everOptedIn"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recentlyOptedIn"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountKeyEnforced"];
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v3 decodeObjectOfClasses:v7 forKey:@"loggableDatas"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"loggableDatas"];
 
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"accountKey"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountKey"];
   v10 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
-  v11 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  v12 = [v10 setByAddingObjectsFromSet:v11];
+  safeErrorClasses = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  v12 = [v10 setByAddingObjectsFromSet:safeErrorClasses];
 
-  v13 = [v3 decodeObjectOfClasses:v12 forKey:@"failure"];
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"uiStatus"];
-  v15 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"staticKeyStatus"];
-  v16 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"validUntil"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"failure"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uiStatus"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"staticKeyStatus"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"validUntil"];
 
   v17 = [[KTVerifierResult alloc] initWithUri:v4 application:v19];
   if (v17)
@@ -657,10 +657,10 @@ uint64_t __72__KTVerifierResult_updateWithStaticKeyEnforced_isFailureIgnoredForD
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -670,9 +670,9 @@ uint64_t __72__KTVerifierResult_updateWithStaticKeyEnforced_isFailureIgnoredForD
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = equalCopy;
       v7 = [(KTVerifierResult *)self uri];
-      if (v7 || ([(KTVerifierResult *)v6 uri], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+      if (v7 || ([(KTVerifierResult *)v6 uri], (publicID2 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v8 = [(KTVerifierResult *)self uri];
         v9 = [(KTVerifierResult *)v6 uri];
@@ -697,14 +697,14 @@ uint64_t __72__KTVerifierResult_updateWithStaticKeyEnforced_isFailureIgnoredForD
         }
       }
 
-      v12 = [(KTVerifierResult *)self application];
-      if (v12 || ([(KTVerifierResult *)v6 application], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+      application = [(KTVerifierResult *)self application];
+      if (application || ([(KTVerifierResult *)v6 application], (publicID2 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v13 = [(KTVerifierResult *)self application];
-        v14 = [(KTVerifierResult *)v6 application];
-        v15 = [v13 isEqual:v14];
+        application2 = [(KTVerifierResult *)self application];
+        application3 = [(KTVerifierResult *)v6 application];
+        v15 = [application2 isEqual:application3];
 
-        if (v12)
+        if (application)
         {
 
           if (!v15)
@@ -723,38 +723,38 @@ uint64_t __72__KTVerifierResult_updateWithStaticKeyEnforced_isFailureIgnoredForD
         }
       }
 
-      v16 = [(KTVerifierResult *)self succeed];
-      if (v16 != [(KTVerifierResult *)v6 succeed])
+      succeed = [(KTVerifierResult *)self succeed];
+      if (succeed != [(KTVerifierResult *)v6 succeed])
       {
         goto LABEL_39;
       }
 
-      v17 = [(KTVerifierResult *)self optedIn];
-      if (v17 != [(KTVerifierResult *)v6 optedIn])
+      optedIn = [(KTVerifierResult *)self optedIn];
+      if (optedIn != [(KTVerifierResult *)v6 optedIn])
       {
         goto LABEL_39;
       }
 
-      v18 = [(KTVerifierResult *)self staticAccountKeyEnforced];
-      if (v18 != [(KTVerifierResult *)v6 staticAccountKeyEnforced])
+      staticAccountKeyEnforced = [(KTVerifierResult *)self staticAccountKeyEnforced];
+      if (staticAccountKeyEnforced != [(KTVerifierResult *)v6 staticAccountKeyEnforced])
       {
         goto LABEL_39;
       }
 
-      v19 = [(KTVerifierResult *)self staticAccountKeyStatus];
-      if (v19 != [(KTVerifierResult *)v6 staticAccountKeyStatus])
+      staticAccountKeyStatus = [(KTVerifierResult *)self staticAccountKeyStatus];
+      if (staticAccountKeyStatus != [(KTVerifierResult *)v6 staticAccountKeyStatus])
       {
         goto LABEL_39;
       }
 
-      v20 = [(KTVerifierResult *)self loggableDatas];
-      if (v20 || ([(KTVerifierResult *)v6 loggableDatas], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+      loggableDatas = [(KTVerifierResult *)self loggableDatas];
+      if (loggableDatas || ([(KTVerifierResult *)v6 loggableDatas], (publicID2 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v21 = [(KTVerifierResult *)self loggableDatas];
-        v22 = [(KTVerifierResult *)v6 loggableDatas];
-        v23 = [v21 isEqual:v22];
+        loggableDatas2 = [(KTVerifierResult *)self loggableDatas];
+        loggableDatas3 = [(KTVerifierResult *)v6 loggableDatas];
+        v23 = [loggableDatas2 isEqual:loggableDatas3];
 
-        if (v20)
+        if (loggableDatas)
         {
 
           if (!v23)
@@ -773,21 +773,21 @@ uint64_t __72__KTVerifierResult_updateWithStaticKeyEnforced_isFailureIgnoredForD
         }
       }
 
-      v24 = [(KTVerifierResult *)self publicID];
-      if (!v24)
+      publicID = [(KTVerifierResult *)self publicID];
+      if (!publicID)
       {
-        v3 = [(KTVerifierResult *)v6 publicID];
-        if (!v3)
+        publicID2 = [(KTVerifierResult *)v6 publicID];
+        if (!publicID2)
         {
           goto LABEL_33;
         }
       }
 
-      v25 = [(KTVerifierResult *)self publicID];
-      v26 = [(KTVerifierResult *)v6 publicID];
-      v27 = [v25 isEqual:v26];
+      publicID3 = [(KTVerifierResult *)self publicID];
+      publicID4 = [(KTVerifierResult *)v6 publicID];
+      v27 = [publicID3 isEqual:publicID4];
 
-      if (v24)
+      if (publicID)
       {
 
         if (!v27)
@@ -796,26 +796,26 @@ uint64_t __72__KTVerifierResult_updateWithStaticKeyEnforced_isFailureIgnoredForD
         }
 
 LABEL_33:
-        v28 = [(KTVerifierResult *)self everOptedIn];
-        if (v28 != [(KTVerifierResult *)v6 everOptedIn])
+        everOptedIn = [(KTVerifierResult *)self everOptedIn];
+        if (everOptedIn != [(KTVerifierResult *)v6 everOptedIn])
         {
           goto LABEL_39;
         }
 
-        v29 = [(KTVerifierResult *)self uiStatus];
-        if (v29 != [(KTVerifierResult *)v6 uiStatus])
+        uiStatus = [(KTVerifierResult *)self uiStatus];
+        if (uiStatus != [(KTVerifierResult *)v6 uiStatus])
         {
           goto LABEL_39;
         }
 
-        v30 = [(KTVerifierResult *)self validUntil];
-        if (v30 || ([(KTVerifierResult *)v6 validUntil], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        validUntil = [(KTVerifierResult *)self validUntil];
+        if (validUntil || ([(KTVerifierResult *)v6 validUntil], (publicID2 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v31 = [(KTVerifierResult *)self validUntil];
-          v32 = [(KTVerifierResult *)v6 validUntil];
-          v11 = [v31 isEqual:v32];
+          validUntil2 = [(KTVerifierResult *)self validUntil];
+          validUntil3 = [(KTVerifierResult *)v6 validUntil];
+          v11 = [validUntil2 isEqual:validUntil3];
 
-          if (v30)
+          if (validUntil)
           {
 LABEL_44:
 
@@ -857,33 +857,33 @@ LABEL_41:
   v4 = KTResultGetString([(KTVerifierResult *)self succeed]);
   v5 = KTUIStatusGetString([(KTVerifierResult *)self uiStatus]);
   v6 = [(KTVerifierResult *)self uri];
-  v7 = [(KTVerifierResult *)self application];
-  v8 = [v3 stringWithFormat:@"kt(%@) ui(%@) %@[%@]", v4, v5, v6, v7];
+  application = [(KTVerifierResult *)self application];
+  v8 = [v3 stringWithFormat:@"kt(%@) ui(%@) %@[%@]", v4, v5, v6, application];
 
-  v9 = [(KTVerifierResult *)self failure];
+  failure = [(KTVerifierResult *)self failure];
 
-  if (v9)
+  if (failure)
   {
-    v10 = [(KTVerifierResult *)self failure];
-    [v8 appendFormat:@" failure: %@", v10];
+    failure2 = [(KTVerifierResult *)self failure];
+    [v8 appendFormat:@" failure: %@", failure2];
   }
 
   [v8 appendFormat:@" optIn: %d, everOptedIn: %d", -[KTVerifierResult optedIn](self, "optedIn"), -[KTVerifierResult everOptedIn](self, "everOptedIn")];
-  v11 = [(KTVerifierResult *)self staticAccountKeyEnforced];
+  staticAccountKeyEnforced = [(KTVerifierResult *)self staticAccountKeyEnforced];
   v12 = KTStaticKeyPeerValidateResultGetString([(KTVerifierResult *)self staticAccountKeyStatus]);
-  v13 = [(KTVerifierResult *)self publicID];
-  v14 = [v13 publicAccountIdentity];
-  [v8 appendFormat:@" staticKeyEnforced: %d, staticKeyStatus: %@, accountKey:%@ ", v11, v12, v14];
+  publicID = [(KTVerifierResult *)self publicID];
+  publicAccountIdentity = [publicID publicAccountIdentity];
+  [v8 appendFormat:@" staticKeyEnforced: %d, staticKeyStatus: %@, accountKey:%@ ", staticAccountKeyEnforced, v12, publicAccountIdentity];
 
-  v15 = [(KTVerifierResult *)self validUntil];
-  v16 = v15;
-  if (v15)
+  validUntil = [(KTVerifierResult *)self validUntil];
+  v16 = validUntil;
+  if (validUntil)
   {
-    [v8 appendFormat:@" expirationTime: %@", v15];
+    [v8 appendFormat:@" expirationTime: %@", validUntil];
   }
 
-  v17 = [(KTVerifierResult *)self loggableDatas];
-  [v8 appendFormat:@" loggableDatas:%@", v17];
+  loggableDatas = [(KTVerifierResult *)self loggableDatas];
+  [v8 appendFormat:@" loggableDatas:%@", loggableDatas];
 
   return v8;
 }
@@ -891,67 +891,67 @@ LABEL_41:
 - (NSDictionary)diagnosticsJsonDictionary
 {
   v42 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [(KTVerifierResult *)self uri];
 
   if (v4)
   {
     v5 = [(KTVerifierResult *)self uri];
-    [v3 setObject:v5 forKeyedSubscript:@"uri"];
+    [dictionary setObject:v5 forKeyedSubscript:@"uri"];
   }
 
-  v6 = [(KTVerifierResult *)self application];
+  application = [(KTVerifierResult *)self application];
 
-  if (v6)
+  if (application)
   {
-    v7 = [(KTVerifierResult *)self application];
-    [v3 setObject:v7 forKeyedSubscript:@"application"];
+    application2 = [(KTVerifierResult *)self application];
+    [dictionary setObject:application2 forKeyedSubscript:@"application"];
   }
 
   v8 = KTResultGetString([(KTVerifierResult *)self succeed]);
-  [v3 setObject:v8 forKeyedSubscript:@"ktResult"];
+  [dictionary setObject:v8 forKeyedSubscript:@"ktResult"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[KTVerifierResult optedIn](self, "optedIn")}];
-  [v3 setObject:v9 forKeyedSubscript:@"optedIn"];
+  [dictionary setObject:v9 forKeyedSubscript:@"optedIn"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[KTVerifierResult everOptedIn](self, "everOptedIn")}];
-  [v3 setObject:v10 forKeyedSubscript:@"everOptedIn"];
+  [dictionary setObject:v10 forKeyedSubscript:@"everOptedIn"];
 
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[KTVerifierResult staticAccountKeyEnforced](self, "staticAccountKeyEnforced")}];
-  [v3 setObject:v11 forKeyedSubscript:@"staticKeyEnforced"];
+  [dictionary setObject:v11 forKeyedSubscript:@"staticKeyEnforced"];
 
   v12 = KTUIStatusGetString([(KTVerifierResult *)self uiStatus]);
-  [v3 setObject:v12 forKeyedSubscript:@"uiStatus"];
+  [dictionary setObject:v12 forKeyedSubscript:@"uiStatus"];
 
   v13 = KTStaticKeyPeerValidateResultGetString([(KTVerifierResult *)self staticAccountKeyStatus]);
-  [v3 setObject:v13 forKeyedSubscript:@"staticKeyStatus"];
+  [dictionary setObject:v13 forKeyedSubscript:@"staticKeyStatus"];
 
-  v14 = [(KTVerifierResult *)self validUntil];
+  validUntil = [(KTVerifierResult *)self validUntil];
 
-  if (v14)
+  if (validUntil)
   {
     v15 = MEMORY[0x1E696AD98];
-    v16 = [(KTVerifierResult *)self validUntil];
-    [v16 timeIntervalSince1970];
+    validUntil2 = [(KTVerifierResult *)self validUntil];
+    [validUntil2 timeIntervalSince1970];
     v17 = [v15 numberWithDouble:?];
-    [v3 setObject:v17 forKeyedSubscript:@"validUntil"];
+    [dictionary setObject:v17 forKeyedSubscript:@"validUntil"];
   }
 
-  v18 = [(KTVerifierResult *)self loggableDatas];
-  v19 = [v18 count];
+  loggableDatas = [(KTVerifierResult *)self loggableDatas];
+  v19 = [loggableDatas count];
 
   if (v19)
   {
     v20 = MEMORY[0x1E695DF70];
-    v21 = [(KTVerifierResult *)self loggableDatas];
-    v22 = [v20 arrayWithCapacity:{objc_msgSend(v21, "count")}];
+    loggableDatas2 = [(KTVerifierResult *)self loggableDatas];
+    v22 = [v20 arrayWithCapacity:{objc_msgSend(loggableDatas2, "count")}];
 
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v23 = [(KTVerifierResult *)self loggableDatas];
-    v24 = [v23 countByEnumeratingWithState:&v37 objects:v41 count:16];
+    loggableDatas3 = [(KTVerifierResult *)self loggableDatas];
+    v24 = [loggableDatas3 countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v24)
     {
       v25 = v24;
@@ -962,43 +962,43 @@ LABEL_41:
         {
           if (*v38 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(loggableDatas3);
           }
 
-          v28 = [*(*(&v37 + 1) + 8 * i) diagnosticsJsonDictionary];
-          [v22 addObject:v28];
+          diagnosticsJsonDictionary = [*(*(&v37 + 1) + 8 * i) diagnosticsJsonDictionary];
+          [v22 addObject:diagnosticsJsonDictionary];
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v37 objects:v41 count:16];
+        v25 = [loggableDatas3 countByEnumeratingWithState:&v37 objects:v41 count:16];
       }
 
       while (v25);
     }
 
-    [v3 setObject:v22 forKeyedSubscript:@"loggableDatas"];
+    [dictionary setObject:v22 forKeyedSubscript:@"loggableDatas"];
   }
 
-  v29 = [(KTVerifierResult *)self publicID];
+  publicID = [(KTVerifierResult *)self publicID];
 
-  if (v29)
+  if (publicID)
   {
-    v30 = [(KTVerifierResult *)self publicID];
-    v31 = [v30 publicAccountIdentity];
-    [v3 setObject:v31 forKeyedSubscript:@"publicID"];
+    publicID2 = [(KTVerifierResult *)self publicID];
+    publicAccountIdentity = [publicID2 publicAccountIdentity];
+    [dictionary setObject:publicAccountIdentity forKeyedSubscript:@"publicID"];
   }
 
-  v32 = [(KTVerifierResult *)self failure];
+  failure = [(KTVerifierResult *)self failure];
 
-  if (v32)
+  if (failure)
   {
-    v33 = [(KTVerifierResult *)self failure];
-    v34 = [v33 description];
-    [v3 setObject:v34 forKeyedSubscript:@"failure"];
+    failure2 = [(KTVerifierResult *)self failure];
+    v34 = [failure2 description];
+    [dictionary setObject:v34 forKeyedSubscript:@"failure"];
   }
 
   v35 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 @end

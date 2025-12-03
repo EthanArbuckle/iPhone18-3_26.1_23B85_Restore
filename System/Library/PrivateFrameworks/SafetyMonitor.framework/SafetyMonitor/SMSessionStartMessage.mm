@@ -1,63 +1,63 @@
 @interface SMSessionStartMessage
-- (SMSessionStartMessage)initWithCoder:(id)a3;
-- (SMSessionStartMessage)initWithDate:(id)a3 messageID:(id)a4 sessionID:(id)a5 invitationToken:(id)a6 sessionType:(unint64_t)a7 estimatedEndTime:(id)a8 coarseEstimatedEndTime:(id)a9 destinationType:(unint64_t)a10 destinationMapItem:(id)a11 lowPowerModeWarningState:(int64_t)a12;
-- (SMSessionStartMessage)initWithDate:(id)a3 messageID:(id)a4 sessionID:(id)a5 invitationTokenDict:(id)a6 sessionType:(unint64_t)a7 estimatedEndTime:(id)a8 coarseEstimatedEndTime:(id)a9 destinationType:(unint64_t)a10 destinationMapItem:(id)a11 lowPowerModeWarningState:(int64_t)a12;
-- (SMSessionStartMessage)initWithDictionary:(id)a3;
-- (SMSessionStartMessage)initWithSessionID:(id)a3 invitationTokenDict:(id)a4 sessionType:(unint64_t)a5 estimatedEndTime:(id)a6 coarseEstimatedEndTime:(id)a7 destinationType:(unint64_t)a8 destinationMapItem:(id)a9 lowPowerModeWarningState:(int64_t)a10;
-- (SMSessionStartMessage)initWithURL:(id)a3;
+- (SMSessionStartMessage)initWithCoder:(id)coder;
+- (SMSessionStartMessage)initWithDate:(id)date messageID:(id)d sessionID:(id)iD invitationToken:(id)token sessionType:(unint64_t)type estimatedEndTime:(id)time coarseEstimatedEndTime:(id)endTime destinationType:(unint64_t)self0 destinationMapItem:(id)self1 lowPowerModeWarningState:(int64_t)self2;
+- (SMSessionStartMessage)initWithDate:(id)date messageID:(id)d sessionID:(id)iD invitationTokenDict:(id)dict sessionType:(unint64_t)type estimatedEndTime:(id)time coarseEstimatedEndTime:(id)endTime destinationType:(unint64_t)self0 destinationMapItem:(id)self1 lowPowerModeWarningState:(int64_t)self2;
+- (SMSessionStartMessage)initWithDictionary:(id)dictionary;
+- (SMSessionStartMessage)initWithSessionID:(id)d invitationTokenDict:(id)dict sessionType:(unint64_t)type estimatedEndTime:(id)time coarseEstimatedEndTime:(id)endTime destinationType:(unint64_t)destinationType destinationMapItem:(id)item lowPowerModeWarningState:(int64_t)self0;
+- (SMSessionStartMessage)initWithURL:(id)l;
 - (id)outputToDictionary;
 - (id)outputToURLComponents;
 - (id)summaryText;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMSessionStartMessage
 
-- (SMSessionStartMessage)initWithSessionID:(id)a3 invitationTokenDict:(id)a4 sessionType:(unint64_t)a5 estimatedEndTime:(id)a6 coarseEstimatedEndTime:(id)a7 destinationType:(unint64_t)a8 destinationMapItem:(id)a9 lowPowerModeWarningState:(int64_t)a10
+- (SMSessionStartMessage)initWithSessionID:(id)d invitationTokenDict:(id)dict sessionType:(unint64_t)type estimatedEndTime:(id)time coarseEstimatedEndTime:(id)endTime destinationType:(unint64_t)destinationType destinationMapItem:(id)item lowPowerModeWarningState:(int64_t)self0
 {
   v16 = MEMORY[0x277CBEAA8];
-  v17 = a9;
-  v18 = a7;
-  v19 = a6;
-  v20 = a4;
-  v21 = a3;
+  itemCopy = item;
+  endTimeCopy = endTime;
+  timeCopy = time;
+  dictCopy = dict;
+  dCopy = d;
   v22 = [v16 now];
-  v23 = [MEMORY[0x277CCAD78] UUID];
-  v24 = [(SMSessionStartMessage *)self initWithDate:v22 messageID:v23 sessionID:v21 invitationTokenDict:v20 sessionType:a5 estimatedEndTime:v19 coarseEstimatedEndTime:v18 destinationType:a8 destinationMapItem:v17 lowPowerModeWarningState:a10];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v24 = [(SMSessionStartMessage *)self initWithDate:v22 messageID:uUID sessionID:dCopy invitationTokenDict:dictCopy sessionType:type estimatedEndTime:timeCopy coarseEstimatedEndTime:endTimeCopy destinationType:destinationType destinationMapItem:itemCopy lowPowerModeWarningState:state];
 
   return v24;
 }
 
-- (SMSessionStartMessage)initWithDate:(id)a3 messageID:(id)a4 sessionID:(id)a5 invitationToken:(id)a6 sessionType:(unint64_t)a7 estimatedEndTime:(id)a8 coarseEstimatedEndTime:(id)a9 destinationType:(unint64_t)a10 destinationMapItem:(id)a11 lowPowerModeWarningState:(int64_t)a12
+- (SMSessionStartMessage)initWithDate:(id)date messageID:(id)d sessionID:(id)iD invitationToken:(id)token sessionType:(unint64_t)type estimatedEndTime:(id)time coarseEstimatedEndTime:(id)endTime destinationType:(unint64_t)self0 destinationMapItem:(id)self1 lowPowerModeWarningState:(int64_t)self2
 {
   v32[1] = *MEMORY[0x277D85DE8];
   v31 = @"receiverHandle";
-  v32[0] = a6;
+  v32[0] = token;
   v17 = MEMORY[0x277CBEAC0];
-  v18 = a11;
-  v19 = a9;
-  v20 = a8;
-  v21 = a6;
-  v22 = a5;
-  v23 = a4;
-  v24 = a3;
+  itemCopy = item;
+  endTimeCopy = endTime;
+  timeCopy = time;
+  tokenCopy = token;
+  iDCopy = iD;
+  dCopy = d;
+  dateCopy = date;
   v25 = [v17 dictionaryWithObjects:v32 forKeys:&v31 count:1];
 
-  v26 = [(SMSessionStartMessage *)self initWithDate:v24 messageID:v23 sessionID:v22 invitationTokenDict:v25 sessionType:a7 estimatedEndTime:v20 coarseEstimatedEndTime:v19 destinationType:a10 destinationMapItem:v18 lowPowerModeWarningState:a12];
+  v26 = [(SMSessionStartMessage *)self initWithDate:dateCopy messageID:dCopy sessionID:iDCopy invitationTokenDict:v25 sessionType:type estimatedEndTime:timeCopy coarseEstimatedEndTime:endTimeCopy destinationType:destinationType destinationMapItem:itemCopy lowPowerModeWarningState:state];
   v27 = *MEMORY[0x277D85DE8];
   return v26;
 }
 
-- (SMSessionStartMessage)initWithDate:(id)a3 messageID:(id)a4 sessionID:(id)a5 invitationTokenDict:(id)a6 sessionType:(unint64_t)a7 estimatedEndTime:(id)a8 coarseEstimatedEndTime:(id)a9 destinationType:(unint64_t)a10 destinationMapItem:(id)a11 lowPowerModeWarningState:(int64_t)a12
+- (SMSessionStartMessage)initWithDate:(id)date messageID:(id)d sessionID:(id)iD invitationTokenDict:(id)dict sessionType:(unint64_t)type estimatedEndTime:(id)time coarseEstimatedEndTime:(id)endTime destinationType:(unint64_t)self0 destinationMapItem:(id)self1 lowPowerModeWarningState:(int64_t)self2
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v30 = a8;
-  v29 = a9;
-  v28 = a11;
-  if (!v18)
+  dateCopy = date;
+  dCopy = d;
+  iDCopy = iD;
+  dictCopy = dict;
+  timeCopy = time;
+  endTimeCopy = endTime;
+  itemCopy = item;
+  if (!dateCopy)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -72,7 +72,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (!v19)
+  if (!dCopy)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -85,7 +85,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (!v20)
+  if (!iDCopy)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -98,7 +98,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (!v21)
+  if (!dictCopy)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -111,7 +111,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (!v30)
+  if (!timeCopy)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -124,7 +124,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (!a7)
+  if (!type)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -136,38 +136,38 @@ LABEL_22:
 
 LABEL_23:
 
-    v24 = 0;
+    selfCopy = 0;
     goto LABEL_24;
   }
 
   v31.receiver = self;
   v31.super_class = SMSessionStartMessage;
-  v22 = [(SMMessage *)&v31 initWithDate:v18 messageID:v19 sessionID:v20];
+  v22 = [(SMMessage *)&v31 initWithDate:dateCopy messageID:dCopy sessionID:iDCopy];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_invitationTokenDict, a6);
-    v23->_sessionType = a7;
-    objc_storeStrong(&v23->_estimatedEndTime, a8);
-    objc_storeStrong(&v23->_coarseEstimatedEndTime, a9);
-    v23->_destinationType = a10;
-    objc_storeStrong(&v23->_destinationMapItem, a11);
-    v23->_lowPowerModeWarningState = a12;
+    objc_storeStrong(&v22->_invitationTokenDict, dict);
+    v23->_sessionType = type;
+    objc_storeStrong(&v23->_estimatedEndTime, time);
+    objc_storeStrong(&v23->_coarseEstimatedEndTime, endTime);
+    v23->_destinationType = destinationType;
+    objc_storeStrong(&v23->_destinationMapItem, item);
+    v23->_lowPowerModeWarningState = state;
   }
 
   self = v23;
-  v24 = self;
+  selfCopy = self;
 LABEL_24:
 
-  return v24;
+  return selfCopy;
 }
 
-- (SMSessionStartMessage)initWithDictionary:(id)a3
+- (SMSessionStartMessage)initWithDictionary:(id)dictionary
 {
   v144 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  v6 = dictionaryCopy;
+  if (!dictionaryCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -179,10 +179,10 @@ LABEL_24:
     goto LABEL_38;
   }
 
-  v7 = [v5 valueForKey:@"messageType"];
-  v8 = [v7 intValue];
+  v7 = [dictionaryCopy valueForKey:@"messageType"];
+  intValue = [v7 intValue];
 
-  if ([objc_opt_class() messageType] != v8)
+  if ([objc_opt_class() messageType] != intValue)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -202,7 +202,7 @@ LABEL_38:
     v139 = 1024;
     *v140 = [objc_opt_class() messageType];
     *&v140[4] = 1024;
-    *&v140[6] = v8;
+    *&v140[6] = intValue;
     v55 = "#SafetyCache,%@,%@,extracted non-matching message type,expected,%d,got,%d";
     v56 = v12;
     v57 = 34;
@@ -213,9 +213,9 @@ LABEL_61:
   }
 
   v9 = [v6 valueForKey:@"interfaceVersion"];
-  v10 = [v9 intValue];
+  intValue2 = [v9 intValue];
 
-  if (v10 != 1)
+  if (intValue2 != 1)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -231,7 +231,7 @@ LABEL_61:
     v137 = 2112;
     v138 = v54;
     v139 = 1024;
-    *v140 = v10;
+    *v140 = intValue2;
     v55 = "#SafetyCache,%@,%@,unrecognized interface version,%d";
     v56 = v12;
     v57 = 28;
@@ -262,7 +262,7 @@ LABEL_61:
         v117 = v20;
         v114 = v12;
         v115 = v14;
-        v118 = self;
+        selfCopy = self;
         log = objc_alloc_init(MEMORY[0x277CBEB38]);
         v21 = 0;
         v22 = 0;
@@ -383,7 +383,7 @@ LABEL_61:
           }
 
           v61 = v117;
-          self = v118;
+          self = selfCopy;
           v21 = v131;
           v6 = v30;
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -407,11 +407,11 @@ LABEL_61:
           }
 
           v66 = [v6 valueForKey:@"sessionType"];
-          v67 = [v66 intValue];
+          intValue3 = [v66 intValue];
 
-          if (v67)
+          if (intValue3)
           {
-            v125 = v67;
+            v125 = intValue3;
             v68 = [v6 valueForKey:@"estimatedEndTime"];
             v17 = v116;
             v130 = v68;
@@ -452,7 +452,7 @@ LABEL_61:
               v124 = v72;
               if (v77)
               {
-                v79 = [v77 intValue];
+                intValue4 = [v77 intValue];
                 v80 = [v6 valueForKey:@"sessionDestinationMapItem"];
                 if (v80)
                 {
@@ -464,12 +464,12 @@ LABEL_61:
                   v81 = 0;
                 }
 
-                v86 = v79;
+                v86 = intValue4;
                 v87 = [v6 valueForKey:@"lowPowerModeWarningState"];
                 v88 = v87;
                 if (v87)
                 {
-                  v89 = [v87 intValue];
+                  intValue5 = [v87 intValue];
                 }
 
                 else
@@ -487,11 +487,11 @@ LABEL_61:
                     _os_log_error_impl(&dword_26455D000, v90, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing lowPowerModeWarningState, OK to proceed", buf, 0x16u);
                   }
 
-                  v89 = 0;
+                  intValue5 = 0;
                 }
 
                 v82 = v124;
-                v91 = [(SMSessionStartMessage *)v118 initWithDate:v115 messageID:v116 sessionID:v117 invitationTokenDict:log sessionType:v125 estimatedEndTime:v127 coarseEstimatedEndTime:v124 destinationType:v86 destinationMapItem:v81 lowPowerModeWarningState:v89];
+                v91 = [(SMSessionStartMessage *)selfCopy initWithDate:v115 messageID:v116 sessionID:v117 invitationTokenDict:log sessionType:v125 estimatedEndTime:v127 coarseEstimatedEndTime:v124 destinationType:v86 destinationMapItem:v81 lowPowerModeWarningState:intValue5];
 
                 self = v91;
                 v58 = v91;
@@ -512,7 +512,7 @@ LABEL_61:
                   v138 = v112;
                   _os_log_error_impl(&dword_26455D000, v80, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing destinationType", buf, 0x16u);
 
-                  self = v118;
+                  self = selfCopy;
                   v21 = v131;
 
                   v58 = 0;
@@ -521,7 +521,7 @@ LABEL_61:
                 else
                 {
                   v58 = 0;
-                  self = v118;
+                  self = selfCopy;
                 }
 
                 v82 = v124;
@@ -604,7 +604,7 @@ LABEL_61:
 
           v58 = 0;
           v73 = v25;
-          self = v118;
+          self = selfCopy;
           v17 = v116;
           v20 = v117;
         }
@@ -678,37 +678,37 @@ LABEL_39:
 {
   v27.receiver = self;
   v27.super_class = SMSessionStartMessage;
-  v3 = [(SMMessage *)&v27 outputToDictionary];
+  outputToDictionary = [(SMMessage *)&v27 outputToDictionary];
   v25[0] = 0;
   v25[1] = v25;
   v25[2] = 0x2020000000;
   v26 = 0;
-  v4 = [(SMSessionStartMessage *)self invitationTokenDict];
+  invitationTokenDict = [(SMSessionStartMessage *)self invitationTokenDict];
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __43__SMSessionStartMessage_outputToDictionary__block_invoke;
   v22 = &unk_279B65248;
   v24 = v25;
-  v5 = v3;
+  v5 = outputToDictionary;
   v23 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:&v19];
+  [invitationTokenDict enumerateKeysAndObjectsUsingBlock:&v19];
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SMSessionStartMessage sessionType](self, "sessionType", v19, v20, v21, v22)}];
   [v5 setObject:v6 forKey:@"sessionType"];
 
   v7 = MEMORY[0x277CCABB0];
-  v8 = [(SMSessionStartMessage *)self estimatedEndTime];
-  [v8 timeIntervalSince1970];
+  estimatedEndTime = [(SMSessionStartMessage *)self estimatedEndTime];
+  [estimatedEndTime timeIntervalSince1970];
   v9 = [v7 numberWithDouble:?];
   [v5 setObject:v9 forKey:@"estimatedEndTime"];
 
-  v10 = [(SMSessionStartMessage *)self coarseEstimatedEndTime];
+  coarseEstimatedEndTime = [(SMSessionStartMessage *)self coarseEstimatedEndTime];
 
-  if (v10)
+  if (coarseEstimatedEndTime)
   {
     v11 = MEMORY[0x277CCABB0];
-    v12 = [(SMSessionStartMessage *)self coarseEstimatedEndTime];
-    [v12 timeIntervalSince1970];
+    coarseEstimatedEndTime2 = [(SMSessionStartMessage *)self coarseEstimatedEndTime];
+    [coarseEstimatedEndTime2 timeIntervalSince1970];
     v13 = [v11 numberWithDouble:?];
     [v5 setObject:v13 forKey:@"coarseEstimatedEndTime"];
   }
@@ -716,12 +716,12 @@ LABEL_39:
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SMSessionStartMessage destinationType](self, "destinationType")}];
   [v5 setObject:v14 forKey:@"sessionDestinationType"];
 
-  v15 = [(SMSessionStartMessage *)self destinationMapItem];
+  destinationMapItem = [(SMSessionStartMessage *)self destinationMapItem];
 
-  if (v15)
+  if (destinationMapItem)
   {
-    v16 = [(SMSessionStartMessage *)self destinationMapItem];
-    v17 = [v16 base64EncodedStringWithOptions:0];
+    destinationMapItem2 = [(SMSessionStartMessage *)self destinationMapItem];
+    v17 = [destinationMapItem2 base64EncodedStringWithOptions:0];
     [v5 setObject:v17 forKey:@"sessionDestinationMapItem"];
   }
 
@@ -782,11 +782,11 @@ void __43__SMSessionStartMessage_outputToDictionary__block_invoke(uint64_t a1, v
   }
 }
 
-- (SMSessionStartMessage)initWithURL:(id)a3
+- (SMSessionStartMessage)initWithURL:(id)l
 {
   v195 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (!v3)
+  lCopy = l;
+  if (!lCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -799,12 +799,12 @@ void __43__SMSessionStartMessage_outputToDictionary__block_invoke(uint64_t a1, v
     goto LABEL_97;
   }
 
-  v4 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v3 resolvingAgainstBaseURL:0];
+  v4 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:lCopy resolvingAgainstBaseURL:0];
   v5 = v4;
   if (!v4)
   {
-    v6 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    queryItems = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+    if (os_log_type_enabled(queryItems, OS_LOG_TYPE_ERROR))
     {
       v110 = objc_opt_class();
       v111 = NSStringFromClass(v110);
@@ -813,15 +813,15 @@ void __43__SMSessionStartMessage_outputToDictionary__block_invoke(uint64_t a1, v
       v186 = v111;
       v187 = 2112;
       v188 = v112;
-      _os_log_error_impl(&dword_26455D000, v6, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing url components", buf, 0x16u);
+      _os_log_error_impl(&dword_26455D000, queryItems, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing url components", buf, 0x16u);
     }
 
     v61 = 0;
     goto LABEL_96;
   }
 
-  v6 = [v4 queryItems];
-  if (!v6)
+  queryItems = [v4 queryItems];
+  if (!queryItems)
   {
     v62 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
@@ -844,7 +844,7 @@ void __43__SMSessionStartMessage_outputToDictionary__block_invoke(uint64_t a1, v
   }
 
   v159 = v5;
-  v160 = v3;
+  v160 = lCopy;
   v170 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v169 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v167 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -853,8 +853,8 @@ void __43__SMSessionStartMessage_outputToDictionary__block_invoke(uint64_t a1, v
   v182 = 0u;
   v183 = 0u;
   v184 = 0u;
-  v158 = v6;
-  v7 = v6;
+  v158 = queryItems;
+  v7 = queryItems;
   v8 = [v7 countByEnumeratingWithState:&v181 objects:v194 count:16];
   if (!v8)
   {
@@ -863,7 +863,7 @@ void __43__SMSessionStartMessage_outputToDictionary__block_invoke(uint64_t a1, v
     v163 = 0;
     v164 = 0;
     v165 = 0;
-    v157 = 0;
+    intValue = 0;
     v177 = 0;
     v179 = 0;
     v180 = 0;
@@ -878,7 +878,7 @@ void __43__SMSessionStartMessage_outputToDictionary__block_invoke(uint64_t a1, v
   v163 = 0;
   v164 = 0;
   v165 = 0;
-  v157 = 0;
+  intValue = 0;
   v177 = 0;
   v179 = 0;
   v180 = 0;
@@ -896,8 +896,8 @@ void __43__SMSessionStartMessage_outputToDictionary__block_invoke(uint64_t a1, v
       }
 
       v12 = *(*(&v181 + 1) + 8 * v11);
-      v13 = [v12 value];
-      if (!v13)
+      value = [v12 value];
+      if (!value)
       {
         v17 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -905,186 +905,186 @@ void __43__SMSessionStartMessage_outputToDictionary__block_invoke(uint64_t a1, v
           v30 = objc_opt_class();
           v31 = NSStringFromClass(v30);
           v32 = NSStringFromSelector(a2);
-          v33 = [v12 name];
+          name = [v12 name];
           *buf = 138412802;
           v186 = v31;
           v187 = 2112;
           v188 = v32;
           v189 = 2112;
-          *v190 = v33;
+          *v190 = name;
           _os_log_error_impl(&dword_26455D000, v17, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,queryItem missing value,queryName,%@", buf, 0x20u);
         }
 
         goto LABEL_14;
       }
 
-      v14 = [v12 name];
-      v15 = [v14 isEqualToString:@"sendDate"];
+      name2 = [v12 name];
+      v15 = [name2 isEqualToString:@"sendDate"];
 
       if (v15)
       {
-        v16 = v13;
+        v16 = value;
 
         v180 = v16;
         goto LABEL_23;
       }
 
-      v18 = [v12 name];
-      v19 = [v18 isEqualToString:@"messageID"];
+      name3 = [v12 name];
+      v19 = [name3 isEqualToString:@"messageID"];
 
       if (v19)
       {
-        v20 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v13];
+        v20 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:value];
 
         v179 = v20;
       }
 
       else
       {
-        v21 = [v12 name];
-        v22 = [v21 isEqualToString:@"sessionID"];
+        name4 = [v12 name];
+        v22 = [name4 isEqualToString:@"sessionID"];
 
         if (v22)
         {
-          v23 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v13];
+          v23 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:value];
 
           v177 = v23;
         }
 
         else
         {
-          v24 = [v12 name];
-          v25 = [v24 isEqualToString:@"messageType"];
+          name5 = [v12 name];
+          v25 = [name5 isEqualToString:@"messageType"];
 
           if (v25)
           {
-            v26 = v13;
+            v26 = value;
 
             v175 = v26;
           }
 
           else
           {
-            v27 = [v12 name];
-            v28 = [v27 isEqualToString:@"interfaceVersion"];
+            name6 = [v12 name];
+            v28 = [name6 isEqualToString:@"interfaceVersion"];
 
             if (v28)
             {
-              v29 = v13;
+              v29 = value;
 
               v173 = v29;
             }
 
             else
             {
-              v34 = [v12 name];
-              v35 = [v34 hasPrefix:@"receiverHandle"];
+              name7 = [v12 name];
+              v35 = [name7 hasPrefix:@"receiverHandle"];
 
-              v36 = [v12 name];
-              v17 = v36;
+              name8 = [v12 name];
+              v17 = name8;
               if (v35)
               {
                 v37 = v170;
                 goto LABEL_33;
               }
 
-              v38 = [v36 hasPrefix:@"sharingInvitationData"];
+              v38 = [name8 hasPrefix:@"sharingInvitationData"];
 
-              v39 = [v12 name];
-              v17 = v39;
+              name9 = [v12 name];
+              v17 = name9;
               if (v38)
               {
                 v37 = v169;
                 goto LABEL_33;
               }
 
-              v40 = [v39 hasPrefix:@"shareURL"];
+              v40 = [name9 hasPrefix:@"shareURL"];
 
-              v41 = [v12 name];
-              v17 = v41;
+              name10 = [v12 name];
+              v17 = name10;
               if (v40)
               {
                 v37 = v167;
                 goto LABEL_33;
               }
 
-              v42 = [v41 hasPrefix:@"participantID"];
+              v42 = [name10 hasPrefix:@"participantID"];
 
-              v43 = [v12 name];
-              v17 = v43;
+              name11 = [v12 name];
+              v17 = name11;
               if (v42)
               {
                 v37 = v166;
 LABEL_33:
-                [v37 setObject:v13 forKey:v17];
+                [v37 setObject:value forKey:v17];
 LABEL_14:
 
                 goto LABEL_23;
               }
 
-              v44 = [v43 isEqualToString:@"sessionType"];
+              v44 = [name11 isEqualToString:@"sessionType"];
 
               if (v44)
               {
-                v157 = [v13 intValue];
+                intValue = [value intValue];
               }
 
               else
               {
-                v45 = [v12 name];
-                v46 = [v45 isEqualToString:@"estimatedEndTime"];
+                name12 = [v12 name];
+                v46 = [name12 isEqualToString:@"estimatedEndTime"];
 
                 if (v46)
                 {
-                  v47 = v13;
+                  v47 = value;
 
                   v165 = v47;
                 }
 
                 else
                 {
-                  v48 = [v12 name];
-                  v49 = [v48 isEqualToString:@"coarseEstimatedEndTime"];
+                  name13 = [v12 name];
+                  v49 = [name13 isEqualToString:@"coarseEstimatedEndTime"];
 
                   if (v49)
                   {
-                    v50 = v13;
+                    v50 = value;
 
                     v164 = v50;
                   }
 
                   else
                   {
-                    v51 = [v12 name];
-                    v52 = [v51 isEqualToString:@"sessionDestinationType"];
+                    name14 = [v12 name];
+                    v52 = [name14 isEqualToString:@"sessionDestinationType"];
 
                     if (v52)
                     {
-                      v53 = v13;
+                      v53 = value;
 
                       v163 = v53;
                     }
 
                     else
                     {
-                      v54 = [v12 name];
-                      v55 = [v54 isEqualToString:@"sessionDestinationMapItem"];
+                      name15 = [v12 name];
+                      v55 = [name15 isEqualToString:@"sessionDestinationMapItem"];
 
                       if (v55)
                       {
-                        v56 = v13;
+                        v56 = value;
 
                         v162 = v56;
                       }
 
                       else
                       {
-                        v57 = [v12 name];
-                        v58 = [v57 isEqualToString:@"lowPowerModeWarningState"];
+                        name16 = [v12 name];
+                        v58 = [name16 isEqualToString:@"lowPowerModeWarningState"];
 
                         if (v58)
                         {
-                          v59 = v13;
+                          v59 = value;
 
                           v161 = v59;
                         }
@@ -1112,27 +1112,27 @@ LABEL_23:
 LABEL_58:
 
   v62 = v175;
-  v63 = [v175 intValue];
-  if (!v175 || [objc_opt_class() messageType] != v63)
+  intValue2 = [v175 intValue];
+  if (!v175 || [objc_opt_class() messageType] != intValue2)
   {
     v68 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     v5 = v159;
-    v3 = v160;
-    v6 = v158;
+    lCopy = v160;
+    queryItems = v158;
     if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
     {
       v113 = objc_opt_class();
       v105 = NSStringFromClass(v113);
       v106 = NSStringFromSelector(a2);
-      v114 = [objc_opt_class() messageType];
+      messageType = [objc_opt_class() messageType];
       *buf = 138413058;
       v186 = v105;
       v187 = 2112;
       v188 = v106;
       v189 = 1024;
-      *v190 = v114;
+      *v190 = messageType;
       *&v190[4] = 1024;
-      *&v190[6] = v63;
+      *&v190[6] = intValue2;
       v107 = "#SafetyCache,%@,%@,extracted non-matching message type,expected,%d,got,%d";
       v108 = v68;
       v109 = 34;
@@ -1146,12 +1146,12 @@ LABEL_93:
     goto LABEL_94;
   }
 
-  v64 = [v173 intValue];
-  v65 = v64;
+  intValue3 = [v173 intValue];
+  v65 = intValue3;
   v5 = v159;
-  v3 = v160;
-  v6 = v158;
-  if (!v173 || v64 != 1)
+  lCopy = v160;
+  queryItems = v158;
+  if (!v173 || intValue3 != 1)
   {
     v68 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
@@ -1394,10 +1394,10 @@ LABEL_140:
     }
   }
 
-  if (!v157)
+  if (!intValue)
   {
     v121 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-    v3 = v160;
+    lCopy = v160;
     if (!os_log_type_enabled(v121, OS_LOG_TYPE_ERROR))
     {
 LABEL_120:
@@ -1419,7 +1419,7 @@ LABEL_142:
     goto LABEL_120;
   }
 
-  v3 = v160;
+  lCopy = v160;
   if (!v165)
   {
     v121 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1471,7 +1471,7 @@ LABEL_142:
 
   if (v163)
   {
-    v137 = [v163 intValue];
+    intValue4 = [v163 intValue];
     if (!v161 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v138 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1489,15 +1489,15 @@ LABEL_142:
       }
     }
 
-    v142 = v137;
-    v143 = [v161 intValue];
+    v142 = intValue4;
+    intValue5 = [v161 intValue];
     v144 = v162;
     if (v162)
     {
       v144 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v162 options:0];
     }
 
-    v61 = [(SMSessionStartMessage *)self initWithDate:v156 messageID:v179 sessionID:v177 invitationTokenDict:log sessionType:v157 estimatedEndTime:v121 coarseEstimatedEndTime:v123 destinationType:v142 destinationMapItem:v144 lowPowerModeWarningState:v143];
+    v61 = [(SMSessionStartMessage *)self initWithDate:v156 messageID:v179 sessionID:v177 invitationTokenDict:log sessionType:intValue estimatedEndTime:v121 coarseEstimatedEndTime:v123 destinationType:v142 destinationMapItem:v144 lowPowerModeWarningState:intValue5];
     self = v61;
     v115 = v176;
   }
@@ -1523,7 +1523,7 @@ LABEL_142:
   }
 
 LABEL_137:
-  v6 = v158;
+  queryItems = v158;
   v5 = v159;
   v62 = v175;
   v69 = v179;
@@ -1547,15 +1547,15 @@ LABEL_97:
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v46.receiver = self;
   v46.super_class = SMSessionStartMessage;
-  v5 = [(SMMessage *)&v46 outputToURLComponents];
-  v6 = [v5 queryItems];
-  [v4 addObjectsFromArray:v6];
+  outputToURLComponents = [(SMMessage *)&v46 outputToURLComponents];
+  queryItems = [outputToURLComponents queryItems];
+  [v4 addObjectsFromArray:queryItems];
 
   v44[0] = 0;
   v44[1] = v44;
   v44[2] = 0x2020000000;
   v45 = 0;
-  v7 = [(SMSessionStartMessage *)self invitationTokenDict];
+  invitationTokenDict = [(SMSessionStartMessage *)self invitationTokenDict];
   v38 = MEMORY[0x277D85DD0];
   v39 = 3221225472;
   v40 = __46__SMSessionStartMessage_outputToURLComponents__block_invoke;
@@ -1563,58 +1563,58 @@ LABEL_97:
   v43 = v44;
   v8 = v4;
   v42 = v8;
-  [v7 enumerateKeysAndObjectsUsingBlock:&v38];
+  [invitationTokenDict enumerateKeysAndObjectsUsingBlock:&v38];
 
   v9 = objc_alloc(MEMORY[0x277CCAD18]);
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SMSessionStartMessage sessionType](self, "sessionType", v38, v39, v40, v41)}];
-  v11 = [v10 stringValue];
-  v12 = [v9 initWithName:@"sessionType" value:v11];
+  stringValue = [v10 stringValue];
+  v12 = [v9 initWithName:@"sessionType" value:stringValue];
   [v8 addObject:v12];
 
   v13 = MEMORY[0x277CCABB0];
-  v14 = [(SMSessionStartMessage *)self estimatedEndTime];
-  [v14 timeIntervalSince1970];
+  estimatedEndTime = [(SMSessionStartMessage *)self estimatedEndTime];
+  [estimatedEndTime timeIntervalSince1970];
   v15 = [v13 numberWithDouble:?];
-  v16 = [v15 stringValue];
+  stringValue2 = [v15 stringValue];
 
-  v17 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"estimatedEndTime" value:v16];
+  v17 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"estimatedEndTime" value:stringValue2];
   [v8 addObject:v17];
 
-  v18 = [(SMSessionStartMessage *)self coarseEstimatedEndTime];
+  coarseEstimatedEndTime = [(SMSessionStartMessage *)self coarseEstimatedEndTime];
 
-  if (v18)
+  if (coarseEstimatedEndTime)
   {
     v19 = MEMORY[0x277CCABB0];
-    v20 = [(SMSessionStartMessage *)self coarseEstimatedEndTime];
-    [v20 timeIntervalSince1970];
+    coarseEstimatedEndTime2 = [(SMSessionStartMessage *)self coarseEstimatedEndTime];
+    [coarseEstimatedEndTime2 timeIntervalSince1970];
     v21 = [v19 numberWithDouble:?];
-    v22 = [v21 stringValue];
+    stringValue3 = [v21 stringValue];
 
-    v23 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"coarseEstimatedEndTime" value:v22];
+    v23 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"coarseEstimatedEndTime" value:stringValue3];
     [v8 addObject:v23];
   }
 
   v24 = objc_alloc(MEMORY[0x277CCAD18]);
   v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SMSessionStartMessage destinationType](self, "destinationType")}];
-  v26 = [v25 stringValue];
-  v27 = [v24 initWithName:@"sessionDestinationType" value:v26];
+  stringValue4 = [v25 stringValue];
+  v27 = [v24 initWithName:@"sessionDestinationType" value:stringValue4];
   [v8 addObject:v27];
 
-  v28 = [(SMSessionStartMessage *)self destinationMapItem];
+  destinationMapItem = [(SMSessionStartMessage *)self destinationMapItem];
 
-  if (v28)
+  if (destinationMapItem)
   {
     v29 = objc_alloc(MEMORY[0x277CCAD18]);
-    v30 = [(SMSessionStartMessage *)self destinationMapItem];
-    v31 = [v30 base64EncodedStringWithOptions:0];
+    destinationMapItem2 = [(SMSessionStartMessage *)self destinationMapItem];
+    v31 = [destinationMapItem2 base64EncodedStringWithOptions:0];
     v32 = [v29 initWithName:@"sessionDestinationMapItem" value:v31];
     [v8 addObject:v32];
   }
 
   v33 = objc_alloc(MEMORY[0x277CCAD18]);
   v34 = [MEMORY[0x277CCABB0] numberWithInteger:{-[SMSessionStartMessage lowPowerModeWarningState](self, "lowPowerModeWarningState")}];
-  v35 = [v34 stringValue];
-  v36 = [v33 initWithName:@"lowPowerModeWarningState" value:v35];
+  stringValue5 = [v34 stringValue];
+  v36 = [v33 initWithName:@"lowPowerModeWarningState" value:stringValue5];
   [v8 addObject:v36];
 
   [v3 setQueryItems:v8];
@@ -1694,10 +1694,10 @@ void __46__SMSessionStartMessage_outputToURLComponents__block_invoke(uint64_t a1
 
 - (id)summaryText
 {
-  v3 = [(SMSessionStartMessage *)self sessionType];
-  if (v3 > 2)
+  sessionType = [(SMSessionStartMessage *)self sessionType];
+  if (sessionType > 2)
   {
-    if (v3 == 3)
+    if (sessionType == 3)
     {
       v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v6 = v5;
@@ -1706,7 +1706,7 @@ void __46__SMSessionStartMessage_outputToURLComponents__block_invoke(uint64_t a1
       goto LABEL_17;
     }
 
-    if (v3 == 4)
+    if (sessionType == 4)
     {
       v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v6 = v5;
@@ -1723,7 +1723,7 @@ LABEL_11:
     goto LABEL_17;
   }
 
-  if (v3 == 1)
+  if (sessionType == 1)
   {
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v6 = v5;
@@ -1732,15 +1732,15 @@ LABEL_11:
     goto LABEL_17;
   }
 
-  if (v3 != 2)
+  if (sessionType != 2)
   {
     goto LABEL_11;
   }
 
-  v4 = [(SMSessionStartMessage *)self destinationType];
+  destinationType = [(SMSessionStartMessage *)self destinationType];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = v5;
-  switch(v4)
+  switch(destinationType)
   {
     case 3uLL:
       v7 = @"START_MESSAGE_SCHOOL_SUMMARY_FORMAT";
@@ -1766,11 +1766,11 @@ LABEL_17:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  coderCopy = coder;
+  if (!coderCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1785,40 +1785,40 @@ LABEL_17:
 
   v21.receiver = self;
   v21.super_class = SMSessionStartMessage;
-  [(SMMessage *)&v21 encodeWithCoder:v4];
+  [(SMMessage *)&v21 encodeWithCoder:coderCopy];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v23 = 0;
-  v6 = [(SMSessionStartMessage *)self invitationTokenDict];
+  invitationTokenDict = [(SMSessionStartMessage *)self invitationTokenDict];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __41__SMSessionStartMessage_encodeWithCoder___block_invoke;
   v18 = &unk_279B65248;
   v20 = buf;
-  v7 = v4;
+  v7 = coderCopy;
   v19 = v7;
-  [v6 enumerateKeysAndObjectsUsingBlock:&v15];
+  [invitationTokenDict enumerateKeysAndObjectsUsingBlock:&v15];
 
   v8 = [MEMORY[0x277CCABB0] numberWithInt:{-[SMSessionStartMessage sessionType](self, "sessionType", v15, v16, v17, v18)}];
   [v7 encodeObject:v8 forKey:@"sessionType"];
 
-  v9 = [(SMSessionStartMessage *)self estimatedEndTime];
-  [v7 encodeObject:v9 forKey:@"estimatedEndTime"];
+  estimatedEndTime = [(SMSessionStartMessage *)self estimatedEndTime];
+  [v7 encodeObject:estimatedEndTime forKey:@"estimatedEndTime"];
 
-  v10 = [(SMSessionStartMessage *)self coarseEstimatedEndTime];
-  [v7 encodeObject:v10 forKey:@"coarseEstimatedEndTime"];
+  coarseEstimatedEndTime = [(SMSessionStartMessage *)self coarseEstimatedEndTime];
+  [v7 encodeObject:coarseEstimatedEndTime forKey:@"coarseEstimatedEndTime"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithInt:{-[SMSessionStartMessage destinationType](self, "destinationType")}];
   [v7 encodeObject:v11 forKey:@"sessionDestinationType"];
 
-  v12 = [(SMSessionStartMessage *)self destinationMapItem];
-  LOBYTE(v11) = v12 == 0;
+  destinationMapItem = [(SMSessionStartMessage *)self destinationMapItem];
+  LOBYTE(v11) = destinationMapItem == 0;
 
   if ((v11 & 1) == 0)
   {
-    v13 = [(SMSessionStartMessage *)self destinationMapItem];
-    [v7 encodeObject:v13 forKey:@"sessionDestinationMapItem"];
+    destinationMapItem2 = [(SMSessionStartMessage *)self destinationMapItem];
+    [v7 encodeObject:destinationMapItem2 forKey:@"sessionDestinationMapItem"];
   }
 
   _Block_object_dispose(buf, 8);
@@ -1873,12 +1873,12 @@ void __41__SMSessionStartMessage_encodeWithCoder___block_invoke(uint64_t a1, voi
   }
 }
 
-- (SMSessionStartMessage)initWithCoder:(id)a3
+- (SMSessionStartMessage)initWithCoder:(id)coder
 {
   v110 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  coderCopy = coder;
+  v6 = coderCopy;
+  if (!coderCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1890,7 +1890,7 @@ void __41__SMSessionStartMessage_encodeWithCoder___block_invoke(uint64_t a1, voi
     goto LABEL_32;
   }
 
-  v7 = [v5 decodeIntegerForKey:@"messageType"];
+  v7 = [coderCopy decodeIntegerForKey:@"messageType"];
   if ([objc_opt_class() messageType] != v7)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -2011,7 +2011,7 @@ LABEL_56:
   v88 = v11;
   v89 = v10;
   v90 = v9;
-  v91 = self;
+  selfCopy = self;
   log = objc_alloc_init(MEMORY[0x277CBEB38]);
   v13 = 0;
   v14 = 0;
@@ -2067,7 +2067,7 @@ LABEL_56:
       v13 = v99;
       if (v50)
       {
-        v52 = [v50 intValue];
+        intValue = [v50 intValue];
         v98 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"estimatedEndTime"];
         if (v98)
         {
@@ -2077,14 +2077,14 @@ LABEL_56:
           v54 = v53;
           if (v53)
           {
-            v55 = v52;
-            v56 = [v53 intValue];
+            v55 = intValue;
+            intValue2 = [v53 intValue];
             v57 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"sessionDestinationMapItem"];
             v58 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"lowPowerModeWarningState"];
             v59 = v58;
             if (v58)
             {
-              v60 = [v58 intValue];
+              intValue3 = [v58 intValue];
             }
 
             else
@@ -2105,10 +2105,10 @@ LABEL_56:
                 }
               }
 
-              v60 = 0;
+              intValue3 = 0;
             }
 
-            v43 = [(SMSessionStartMessage *)v91 initWithDate:v90 messageID:v89 sessionID:v88 invitationTokenDict:log sessionType:v55 estimatedEndTime:v98 coarseEstimatedEndTime:v97 destinationType:v56 destinationMapItem:v57 lowPowerModeWarningState:v60];
+            v43 = [(SMSessionStartMessage *)selfCopy initWithDate:v90 messageID:v89 sessionID:v88 invitationTokenDict:log sessionType:v55 estimatedEndTime:v98 coarseEstimatedEndTime:v97 destinationType:intValue2 destinationMapItem:v57 lowPowerModeWarningState:intValue3];
 
             self = v43;
           }
@@ -2127,14 +2127,14 @@ LABEL_56:
               v104 = v86;
               _os_log_error_impl(&dword_26455D000, v57, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing destinationType", buf, 0x16u);
 
-              self = v91;
+              self = selfCopy;
               v43 = 0;
             }
 
             else
             {
               v43 = 0;
-              self = v91;
+              self = selfCopy;
             }
           }
 
@@ -2147,7 +2147,7 @@ LABEL_56:
           v62 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
           if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
           {
-            self = v91;
+            self = selfCopy;
             v80 = objc_opt_class();
             v81 = NSStringFromClass(v80);
             NSStringFromSelector(aSelector);
@@ -2165,7 +2165,7 @@ LABEL_56:
           else
           {
             v43 = 0;
-            self = v91;
+            self = selfCopy;
           }
         }
 
@@ -2177,7 +2177,7 @@ LABEL_56:
         v98 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
         if (os_log_type_enabled(v98, OS_LOG_TYPE_ERROR))
         {
-          self = v91;
+          self = selfCopy;
           v77 = objc_opt_class();
           v78 = NSStringFromClass(v77);
           v79 = NSStringFromSelector(aSelector);
@@ -2194,7 +2194,7 @@ LABEL_56:
         else
         {
           v43 = 0;
-          self = v91;
+          self = selfCopy;
         }
       }
 
@@ -2282,7 +2282,7 @@ LABEL_21:
 
   v43 = 0;
   v21 = v17;
-  self = v91;
+  self = selfCopy;
 LABEL_72:
 
   v10 = v89;

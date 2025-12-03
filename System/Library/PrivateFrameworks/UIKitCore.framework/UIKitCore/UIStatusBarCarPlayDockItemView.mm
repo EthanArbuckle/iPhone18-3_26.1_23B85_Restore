@@ -1,26 +1,26 @@
 @interface UIStatusBarCarPlayDockItemView
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4;
-- (UIStatusBarCarPlayDockItemView)initWithFrame:(CGRect)a3;
+- (BOOL)updateForNewData:(id)data actions:(int)actions;
+- (UIStatusBarCarPlayDockItemView)initWithFrame:(CGRect)frame;
 - (UIView)preferredItemViewToFocus;
 - (double)_neededSizeWithCallTimer;
-- (double)neededSizeForImageSet:(id)a3;
-- (id)_toItemViewForBundleIdentifier:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (double)neededSizeForImageSet:(id)set;
+- (id)_toItemViewForBundleIdentifier:(id)identifier;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)preferredFocusEnvironments;
 - (unint64_t)_numberOfEnabledItems;
-- (void)_updateInCallDurationIfNecessary:(id)a3;
+- (void)_updateInCallDurationIfNecessary:(id)necessary;
 - (void)layoutSubviews;
-- (void)updateForNewStyle:(id)a3;
+- (void)updateForNewStyle:(id)style;
 @end
 
 @implementation UIStatusBarCarPlayDockItemView
 
-- (UIStatusBarCarPlayDockItemView)initWithFrame:(CGRect)a3
+- (UIStatusBarCarPlayDockItemView)initWithFrame:(CGRect)frame
 {
   v27[2] = *MEMORY[0x1E69E9840];
   v26.receiver = self;
   v26.super_class = UIStatusBarCarPlayDockItemView;
-  v3 = [(UIView *)&v26 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v26 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIStatusBarCarPlayDockAppItemButton alloc];
@@ -50,16 +50,16 @@
     [(UIView *)v3->_inCallDurationLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v3 addSubview:v3->_inCallDurationLabel];
     [(UIView *)v3->_inCallDurationLabel setHidden:1];
-    v17 = [(UIView *)v3->_inCallDurationLabel firstBaselineAnchor];
-    v18 = [(UIView *)v3->_itemThreeButton bottomAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18 constant:5.5];
+    firstBaselineAnchor = [(UIView *)v3->_inCallDurationLabel firstBaselineAnchor];
+    bottomAnchor = [(UIView *)v3->_itemThreeButton bottomAnchor];
+    v19 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:5.5];
     inCallLabelSpacingConstraint = v3->_inCallLabelSpacingConstraint;
     v3->_inCallLabelSpacingConstraint = v19;
 
     v27[0] = v3->_inCallLabelSpacingConstraint;
-    v21 = [(UIView *)v3->_inCallDurationLabel centerXAnchor];
-    v22 = [(UIView *)v3 centerXAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    centerXAnchor = [(UIView *)v3->_inCallDurationLabel centerXAnchor];
+    centerXAnchor2 = [(UIView *)v3 centerXAnchor];
+    v23 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v27[1] = v23;
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:2];
 
@@ -69,24 +69,24 @@
   return v3;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
+  y = test.y;
   v18.receiver = self;
   v18.super_class = UIStatusBarCarPlayDockItemView;
-  v6 = [(UIView *)&v18 hitTest:a4 withEvent:a3.x];
-  v7 = [(UIStatusBarCarPlayDockItemView *)self itemOneButton];
-  if (v6 != v7)
+  v6 = [(UIView *)&v18 hitTest:event withEvent:test.x];
+  itemOneButton = [(UIStatusBarCarPlayDockItemView *)self itemOneButton];
+  if (v6 != itemOneButton)
   {
     goto LABEL_2;
   }
 
-  v8 = [v6 isActive];
+  isActive = [v6 isActive];
 
-  if (v8)
+  if (isActive)
   {
-    v9 = [(UIStatusBarCarPlayDockItemView *)self itemTwoButton];
-    [v9 frame];
+    itemTwoButton = [(UIStatusBarCarPlayDockItemView *)self itemTwoButton];
+    [itemTwoButton frame];
     if (_UIInternalPreferencesRevisionOnce != -1)
     {
       v16 = v10;
@@ -125,7 +125,7 @@ LABEL_7:
     if (y > v12)
     {
       [(UIStatusBarCarPlayDockItemView *)self itemTwoButton];
-      v6 = v7 = v6;
+      v6 = itemOneButton = v6;
 LABEL_2:
     }
   }
@@ -141,29 +141,29 @@ LABEL_2:
   v6 = v5;
   v7 = v5 + 38.0;
   v8 = v5 + 38.0 + 38.0;
-  v9 = [(UIStatusBarCarPlayDockItemView *)self itemOneButton];
-  [v9 setFrame:{0.0, v6, v4, 38.0}];
+  itemOneButton = [(UIStatusBarCarPlayDockItemView *)self itemOneButton];
+  [itemOneButton setFrame:{0.0, v6, v4, 38.0}];
 
-  v10 = [(UIStatusBarCarPlayDockItemView *)self itemTwoButton];
-  [v10 setFrame:{0.0, v7, v4, 38.0}];
+  itemTwoButton = [(UIStatusBarCarPlayDockItemView *)self itemTwoButton];
+  [itemTwoButton setFrame:{0.0, v7, v4, 38.0}];
 
-  v11 = [(UIStatusBarCarPlayDockItemView *)self itemThreeButton];
-  [v11 setFrame:{0.0, v8, v4, 38.0}];
+  itemThreeButton = [(UIStatusBarCarPlayDockItemView *)self itemThreeButton];
+  [itemThreeButton setFrame:{0.0, v8, v4, 38.0}];
 }
 
 - (double)_neededSizeWithCallTimer
 {
-  v3 = [(UIStatusBarCarPlayDockItemView *)self inCallDurationLabel];
-  [v3 frame];
+  inCallDurationLabel = [(UIStatusBarCarPlayDockItemView *)self inCallDurationLabel];
+  [inCallDurationLabel frame];
   v5 = v4;
-  v6 = [(UIStatusBarCarPlayDockItemView *)self inCallDurationLabel];
-  [v6 _firstBaselineOffsetFromTop];
+  inCallDurationLabel2 = [(UIStatusBarCarPlayDockItemView *)self inCallDurationLabel];
+  [inCallDurationLabel2 _firstBaselineOffsetFromTop];
   v8 = v5 + v7 + 8.0;
 
   return v8;
 }
 
-- (double)neededSizeForImageSet:(id)a3
+- (double)neededSizeForImageSet:(id)set
 {
   if ([(UIStatusBarCarPlayDockItemView *)self isShowingCallTimer])
   {
@@ -180,67 +180,67 @@ LABEL_2:
   return result;
 }
 
-- (void)updateForNewStyle:(id)a3
+- (void)updateForNewStyle:(id)style
 {
-  v4 = a3;
-  v5 = [v4 untintedImageNamed:@"AppIcon_Highlight_Sliced"];
+  styleCopy = style;
+  v5 = [styleCopy untintedImageNamed:@"AppIcon_Highlight_Sliced"];
   v6 = [v5 imageWithRenderingMode:2];
   v7 = +[UIColor externalSystemTealColor];
   v29 = [v6 _flatImageWithColor:v7];
 
   v8 = [v29 resizableImageWithCapInsets:{12.0, 12.0, 12.0, 12.0}];
-  v9 = [(UIStatusBarCarPlayDockItemView *)self itemOneButton];
-  v10 = [v9 iconHighlightImageView];
-  [v10 setImage:v8];
+  itemOneButton = [(UIStatusBarCarPlayDockItemView *)self itemOneButton];
+  iconHighlightImageView = [itemOneButton iconHighlightImageView];
+  [iconHighlightImageView setImage:v8];
 
-  v11 = [(UIStatusBarCarPlayDockItemView *)self itemTwoButton];
-  v12 = [v11 iconHighlightImageView];
-  [v12 setImage:v8];
+  itemTwoButton = [(UIStatusBarCarPlayDockItemView *)self itemTwoButton];
+  iconHighlightImageView2 = [itemTwoButton iconHighlightImageView];
+  [iconHighlightImageView2 setImage:v8];
 
-  v13 = [(UIStatusBarCarPlayDockItemView *)self itemThreeButton];
-  v14 = [v13 iconHighlightImageView];
-  [v14 setImage:v8];
+  itemThreeButton = [(UIStatusBarCarPlayDockItemView *)self itemThreeButton];
+  iconHighlightImageView3 = [itemThreeButton iconHighlightImageView];
+  [iconHighlightImageView3 setImage:v8];
 
-  v15 = [v4 untintedImageNamed:@"Dock_Badge"];
+  v15 = [styleCopy untintedImageNamed:@"Dock_Badge"];
   v16 = +[UIColor redColor];
   v17 = [v15 _flatImageWithColor:v16];
 
-  v18 = [(UIStatusBarCarPlayDockItemView *)self itemOneButton];
-  v19 = [v18 badgeView];
-  [v19 setImage:v17];
+  itemOneButton2 = [(UIStatusBarCarPlayDockItemView *)self itemOneButton];
+  badgeView = [itemOneButton2 badgeView];
+  [badgeView setImage:v17];
 
-  v20 = [(UIStatusBarCarPlayDockItemView *)self itemTwoButton];
-  v21 = [v20 badgeView];
-  [v21 setImage:v17];
+  itemTwoButton2 = [(UIStatusBarCarPlayDockItemView *)self itemTwoButton];
+  badgeView2 = [itemTwoButton2 badgeView];
+  [badgeView2 setImage:v17];
 
-  v22 = [(UIStatusBarCarPlayDockItemView *)self itemThreeButton];
-  v23 = [v22 badgeView];
-  [v23 setImage:v17];
+  itemThreeButton2 = [(UIStatusBarCarPlayDockItemView *)self itemThreeButton];
+  badgeView3 = [itemThreeButton2 badgeView];
+  [badgeView3 setImage:v17];
 
-  v24 = [v4 textFontForStyle:4];
+  v24 = [styleCopy textFontForStyle:4];
 
-  v25 = [(UIStatusBarCarPlayDockItemView *)self inCallDurationLabel];
-  [v25 setFont:v24];
+  inCallDurationLabel = [(UIStatusBarCarPlayDockItemView *)self inCallDurationLabel];
+  [inCallDurationLabel setFont:v24];
 
   v26 = +[UIColor whiteColor];
-  v27 = [(UIStatusBarCarPlayDockItemView *)self inCallDurationLabel];
-  [v27 setTextColor:v26];
+  inCallDurationLabel2 = [(UIStatusBarCarPlayDockItemView *)self inCallDurationLabel];
+  [inCallDurationLabel2 setTextColor:v26];
 
-  v28 = [(UIStatusBarCarPlayDockItemView *)self inCallDurationLabel];
-  [v28 setTextAlignment:1];
+  inCallDurationLabel3 = [(UIStatusBarCarPlayDockItemView *)self inCallDurationLabel];
+  [inCallDurationLabel3 setTextAlignment:1];
 }
 
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4
+- (BOOL)updateForNewData:(id)data actions:(int)actions
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&actions;
+  dataCopy = data;
   if ((v4 & 0x100) != 0)
   {
-    v8 = [(UIStatusBarItemView *)self foregroundView];
-    v9 = [v8 statusBar];
-    v10 = [v9 dockDataProvider];
+    foregroundView = [(UIStatusBarItemView *)self foregroundView];
+    statusBar = [foregroundView statusBar];
+    dockDataProvider = [statusBar dockDataProvider];
 
-    if (!v10)
+    if (!dockDataProvider)
     {
 LABEL_28:
 
@@ -248,13 +248,13 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    v11 = [v10 bundleIdentifiers];
-    v12 = [v10 activeBundleIdentifier];
-    v13 = [(UIStatusBarCarPlayDockItemView *)self currentBundleIdentifiers];
-    v14 = [v11 count];
+    bundleIdentifiers = [dockDataProvider bundleIdentifiers];
+    activeBundleIdentifier = [dockDataProvider activeBundleIdentifier];
+    currentBundleIdentifiers = [(UIStatusBarCarPlayDockItemView *)self currentBundleIdentifiers];
+    v14 = [bundleIdentifiers count];
     if (v14)
     {
-      v15 = [v11 firstObject];
+      firstObject = [bundleIdentifiers firstObject];
       if (v14 == 1)
       {
         v14 = 0;
@@ -263,7 +263,7 @@ LABEL_28:
 
       else
       {
-        v16 = [v11 objectAtIndex:1];
+        v16 = [bundleIdentifiers objectAtIndex:1];
         if (v14 < 3)
         {
           v14 = 0;
@@ -271,7 +271,7 @@ LABEL_28:
 
         else
         {
-          v14 = [v11 objectAtIndex:2];
+          v14 = [bundleIdentifiers objectAtIndex:2];
         }
       }
     }
@@ -279,47 +279,47 @@ LABEL_28:
     else
     {
       v16 = 0;
-      v15 = 0;
+      firstObject = 0;
     }
 
-    v53 = v15;
-    v51 = [v10 shouldDisplayBadgeForBundleIdentifier:v15];
+    v53 = firstObject;
+    v51 = [dockDataProvider shouldDisplayBadgeForBundleIdentifier:firstObject];
     v52 = v16;
-    v17 = [v10 shouldDisplayBadgeForBundleIdentifier:v16];
+    v17 = [dockDataProvider shouldDisplayBadgeForBundleIdentifier:v16];
     v57 = v14;
-    v18 = [v10 shouldDisplayBadgeForBundleIdentifier:v14];
-    v56 = [(UIStatusBarCarPlayDockItemView *)self itemOneButton];
-    v55 = [(UIStatusBarCarPlayDockItemView *)self itemTwoButton];
-    v54 = [(UIStatusBarCarPlayDockItemView *)self itemThreeButton];
+    v18 = [dockDataProvider shouldDisplayBadgeForBundleIdentifier:v14];
+    itemOneButton = [(UIStatusBarCarPlayDockItemView *)self itemOneButton];
+    itemTwoButton = [(UIStatusBarCarPlayDockItemView *)self itemTwoButton];
+    itemThreeButton = [(UIStatusBarCarPlayDockItemView *)self itemThreeButton];
     v50 = v17;
-    if ([v11 isEqualToArray:v13])
+    if ([bundleIdentifiers isEqualToArray:currentBundleIdentifiers])
     {
-      v19 = [(UIStatusBarCarPlayDockItemView *)self currentActiveBundleIdentifier];
-      v20 = v19;
-      if ((v12 != 0) != (v19 == 0))
+      currentActiveBundleIdentifier = [(UIStatusBarCarPlayDockItemView *)self currentActiveBundleIdentifier];
+      v20 = currentActiveBundleIdentifier;
+      if ((activeBundleIdentifier != 0) != (currentActiveBundleIdentifier == 0))
       {
-        v21 = [(UIStatusBarCarPlayDockItemView *)self currentActiveBundleIdentifier];
-        if (!v21)
+        currentActiveBundleIdentifier2 = [(UIStatusBarCarPlayDockItemView *)self currentActiveBundleIdentifier];
+        if (!currentActiveBundleIdentifier2)
         {
 
 LABEL_31:
-          [v56 setHasBadge:v51];
-          [v56 setBadgeHidden:objc_msgSend(v56 animated:{"shouldShowBadge") ^ 1, 1}];
-          [v55 setHasBadge:v17];
-          [v55 setBadgeHidden:objc_msgSend(v55 animated:{"shouldShowBadge") ^ 1, 1}];
-          [v54 setHasBadge:v18];
-          [v54 setBadgeHidden:objc_msgSend(v54 animated:{"shouldShowBadge") ^ 1, 1}];
+          [itemOneButton setHasBadge:v51];
+          [itemOneButton setBadgeHidden:objc_msgSend(itemOneButton animated:{"shouldShowBadge") ^ 1, 1}];
+          [itemTwoButton setHasBadge:v17];
+          [itemTwoButton setBadgeHidden:objc_msgSend(itemTwoButton animated:{"shouldShowBadge") ^ 1, 1}];
+          [itemThreeButton setHasBadge:v18];
+          [itemThreeButton setBadgeHidden:objc_msgSend(itemThreeButton animated:{"shouldShowBadge") ^ 1, 1}];
 LABEL_27:
-          v36 = [v10 callDuration];
-          [(UIStatusBarCarPlayDockItemView *)self _updateInCallDurationIfNecessary:v36];
+          callDuration = [dockDataProvider callDuration];
+          [(UIStatusBarCarPlayDockItemView *)self _updateInCallDurationIfNecessary:callDuration];
 
           goto LABEL_28;
         }
 
-        v22 = v21;
+        v22 = currentActiveBundleIdentifier2;
         [(UIStatusBarCarPlayDockItemView *)self currentActiveBundleIdentifier];
         v24 = v23 = v18;
-        v46 = [v24 isEqualToString:v12];
+        v46 = [v24 isEqualToString:activeBundleIdentifier];
 
         v18 = v23;
         v17 = v50;
@@ -336,18 +336,18 @@ LABEL_27:
     }
 
     v49 = v18;
-    v25 = [(UIView *)self traitCollection];
-    v26 = [v10 dockImageForBundleIdentifier:v53 format:9 traitCollection:v25];
+    traitCollection = [(UIView *)self traitCollection];
+    v26 = [dockDataProvider dockImageForBundleIdentifier:v53 format:9 traitCollection:traitCollection];
 
-    v27 = [(UIView *)self traitCollection];
-    v47 = [v10 dockImageForBundleIdentifier:v52 format:9 traitCollection:v27];
+    traitCollection2 = [(UIView *)self traitCollection];
+    v47 = [dockDataProvider dockImageForBundleIdentifier:v52 format:9 traitCollection:traitCollection2];
 
-    v28 = [(UIView *)self traitCollection];
-    v44 = [v10 dockImageForBundleIdentifier:v57 format:9 traitCollection:v28];
+    traitCollection3 = [(UIView *)self traitCollection];
+    v44 = [dockDataProvider dockImageForBundleIdentifier:v57 format:9 traitCollection:traitCollection3];
 
-    [v56 setUserInteractionEnabled:0];
-    [v55 setUserInteractionEnabled:0];
-    [v54 setUserInteractionEnabled:0];
+    [itemOneButton setUserInteractionEnabled:0];
+    [itemTwoButton setUserInteractionEnabled:0];
+    [itemThreeButton setUserInteractionEnabled:0];
     v113[0] = 0;
     v113[1] = v113;
     v113[2] = 0x3032000000;
@@ -419,11 +419,11 @@ LABEL_27:
     v78[2] = __59__UIStatusBarCarPlayDockItemView_updateForNewData_actions___block_invoke;
     v78[3] = &unk_1E711F4B8;
     v94 = v113;
-    v79 = v13;
-    v39 = v11;
-    v40 = v11;
+    v79 = currentBundleIdentifiers;
+    v39 = bundleIdentifiers;
+    v40 = bundleIdentifiers;
     v80 = v40;
-    v81 = self;
+    selfCopy = self;
     v95 = v103;
     v96 = v109;
     v82 = v53;
@@ -437,14 +437,14 @@ LABEL_27:
     v86 = v42;
     v43 = v26;
     v87 = v43;
-    v31 = v56;
+    v31 = itemOneButton;
     v88 = v31;
-    v32 = v55;
+    v32 = itemTwoButton;
     v89 = v32;
-    v33 = v54;
+    v33 = itemThreeButton;
     v90 = v33;
     v99 = v111;
-    v34 = v12;
+    v34 = activeBundleIdentifier;
     v91 = v34;
     v48 = v47;
     v92 = v48;
@@ -475,7 +475,7 @@ LABEL_27:
     v60 = v70;
     v61 = v71;
     v62 = v72;
-    v63 = self;
+    selfCopy2 = self;
     v64 = v109;
     v65 = v103;
     v66 = v107;
@@ -493,13 +493,13 @@ LABEL_27:
     _Block_object_dispose(v111, 8);
     _Block_object_dispose(v113, 8);
 
-    v11 = v39;
+    bundleIdentifiers = v39;
     goto LABEL_27;
   }
 
   v58.receiver = self;
   v58.super_class = UIStatusBarCarPlayDockItemView;
-  v7 = [(UIStatusBarItemView *)&v58 updateForNewData:v6 actions:v4];
+  v7 = [(UIStatusBarItemView *)&v58 updateForNewData:dataCopy actions:v4];
 LABEL_29:
 
   return v7;
@@ -837,24 +837,24 @@ uint64_t __59__UIStatusBarCarPlayDockItemView_updateForNewData_actions___block_i
   return [v8 updateContentsAndWidth];
 }
 
-- (id)_toItemViewForBundleIdentifier:(id)a3
+- (id)_toItemViewForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__174;
   v16 = __Block_byref_object_dispose__174;
   v17 = 0;
-  v5 = [(UIView *)self subviews];
+  subviews = [(UIView *)self subviews];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __65__UIStatusBarCarPlayDockItemView__toItemViewForBundleIdentifier___block_invoke;
   v9[3] = &unk_1E711F530;
-  v6 = v4;
+  v6 = identifierCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [subviews enumerateObjectsUsingBlock:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -879,14 +879,14 @@ void __65__UIStatusBarCarPlayDockItemView__toItemViewForBundleIdentifier___block
   }
 }
 
-- (void)_updateInCallDurationIfNecessary:(id)a3
+- (void)_updateInCallDurationIfNecessary:(id)necessary
 {
-  v4 = a3;
-  v5 = [(UIStatusBarCarPlayDockItemView *)self inCallDurationLabel];
-  v6 = [(UIStatusBarCarPlayDockItemView *)self isShowingCallTimer];
-  if (!v4)
+  necessaryCopy = necessary;
+  inCallDurationLabel = [(UIStatusBarCarPlayDockItemView *)self inCallDurationLabel];
+  isShowingCallTimer = [(UIStatusBarCarPlayDockItemView *)self isShowingCallTimer];
+  if (!necessaryCopy)
   {
-    if (!v6)
+    if (!isShowingCallTimer)
     {
       goto LABEL_8;
     }
@@ -897,7 +897,7 @@ void __65__UIStatusBarCarPlayDockItemView__toItemViewForBundleIdentifier___block
     v11[2] = __67__UIStatusBarCarPlayDockItemView__updateInCallDurationIfNecessary___block_invoke_3;
     v11[3] = &unk_1E70F35B8;
     v11[4] = self;
-    v12 = v5;
+    v12 = inCallDurationLabel;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __67__UIStatusBarCarPlayDockItemView__updateInCallDurationIfNecessary___block_invoke_4;
@@ -911,16 +911,16 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (!v6)
+  if (!isShowingCallTimer)
   {
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __67__UIStatusBarCarPlayDockItemView__updateInCallDurationIfNecessary___block_invoke;
     v16[3] = &unk_1E70F6228;
     v16[4] = self;
-    v8 = v5;
+    v8 = inCallDurationLabel;
     v17 = v8;
-    v18 = v4;
+    v18 = necessaryCopy;
     [UIView performWithoutAnimation:v16];
     [(UIStatusBarCarPlayDockItemView *)self setShowingCallTimer:1];
     v13[0] = MEMORY[0x1E69E9820];
@@ -928,15 +928,15 @@ LABEL_7:
     v13[2] = __67__UIStatusBarCarPlayDockItemView__updateInCallDurationIfNecessary___block_invoke_2;
     v13[3] = &unk_1E70F35B8;
     v14 = v8;
-    v15 = self;
+    selfCopy = self;
     [UIView animateWithDuration:v13 animations:0.4];
 
     v7 = v17;
     goto LABEL_7;
   }
 
-  [v5 setText:v4];
-  [v5 sizeToFit];
+  [inCallDurationLabel setText:necessaryCopy];
+  [inCallDurationLabel sizeToFit];
 LABEL_8:
 }
 
@@ -998,14 +998,14 @@ uint64_t __67__UIStatusBarCarPlayDockItemView__updateInCallDurationIfNecessary__
 
 - (unint64_t)_numberOfEnabledItems
 {
-  v3 = [(UIStatusBarCarPlayDockItemView *)self itemOneButton];
-  v4 = [v3 itemHasBundleIdentifier];
+  itemOneButton = [(UIStatusBarCarPlayDockItemView *)self itemOneButton];
+  itemHasBundleIdentifier = [itemOneButton itemHasBundleIdentifier];
 
-  v5 = [(UIStatusBarCarPlayDockItemView *)self itemTwoButton];
-  v6 = [v5 itemHasBundleIdentifier] + v4;
+  itemTwoButton = [(UIStatusBarCarPlayDockItemView *)self itemTwoButton];
+  v6 = [itemTwoButton itemHasBundleIdentifier] + itemHasBundleIdentifier;
 
-  v7 = [(UIStatusBarCarPlayDockItemView *)self itemThreeButton];
-  v8 = v6 + [v7 itemHasBundleIdentifier];
+  itemThreeButton = [(UIStatusBarCarPlayDockItemView *)self itemThreeButton];
+  v8 = v6 + [itemThreeButton itemHasBundleIdentifier];
 
   return v8;
 }
@@ -1013,22 +1013,22 @@ uint64_t __67__UIStatusBarCarPlayDockItemView__updateInCallDurationIfNecessary__
 - (id)preferredFocusEnvironments
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [(UIStatusBarCarPlayDockItemView *)self preferredItemViewToFocus];
-  if (v3)
+  preferredItemViewToFocus = [(UIStatusBarCarPlayDockItemView *)self preferredItemViewToFocus];
+  if (preferredItemViewToFocus)
   {
-    v4 = [(UIStatusBarCarPlayDockItemView *)self preferredItemViewToFocus];
-    v8[0] = v4;
-    v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
+    preferredItemViewToFocus2 = [(UIStatusBarCarPlayDockItemView *)self preferredItemViewToFocus];
+    v8[0] = preferredItemViewToFocus2;
+    preferredFocusEnvironments = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = UIStatusBarCarPlayDockItemView;
-    v5 = [(UIView *)&v7 preferredFocusEnvironments];
+    preferredFocusEnvironments = [(UIView *)&v7 preferredFocusEnvironments];
   }
 
-  return v5;
+  return preferredFocusEnvironments;
 }
 
 - (UIView)preferredItemViewToFocus

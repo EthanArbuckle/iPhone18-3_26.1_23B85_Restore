@@ -1,25 +1,25 @@
 @interface DAECalendarAvailabilityContext
-- (DAECalendarAvailabilityContext)initWithResultsBlock:(id)a3 completionBlock:(id)a4;
-- (void)finishedWithError:(id)a3;
-- (void)resultsReturned:(id)a3;
+- (DAECalendarAvailabilityContext)initWithResultsBlock:(id)block completionBlock:(id)completionBlock;
+- (void)finishedWithError:(id)error;
+- (void)resultsReturned:(id)returned;
 @end
 
 @implementation DAECalendarAvailabilityContext
 
-- (DAECalendarAvailabilityContext)initWithResultsBlock:(id)a3 completionBlock:(id)a4
+- (DAECalendarAvailabilityContext)initWithResultsBlock:(id)block completionBlock:(id)completionBlock
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   v14.receiver = self;
   v14.super_class = DAECalendarAvailabilityContext;
   v8 = [(DAECalendarAvailabilityContext *)&v14 init];
   if (v8)
   {
-    v9 = _Block_copy(v6);
+    v9 = _Block_copy(blockCopy);
     resultsBlock = v8->_resultsBlock;
     v8->_resultsBlock = v9;
 
-    v11 = _Block_copy(v7);
+    v11 = _Block_copy(completionBlockCopy);
     completionBlock = v8->_completionBlock;
     v8->_completionBlock = v11;
   }
@@ -27,37 +27,37 @@
   return v8;
 }
 
-- (void)resultsReturned:(id)a3
+- (void)resultsReturned:(id)returned
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  resultsBlock = v4->_resultsBlock;
+  returnedCopy = returned;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  resultsBlock = selfCopy->_resultsBlock;
   if (resultsBlock)
   {
-    resultsBlock[2](resultsBlock, v6);
+    resultsBlock[2](resultsBlock, returnedCopy);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)finishedWithError:(id)a3
+- (void)finishedWithError:(id)error
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  completionBlock = v4->_completionBlock;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  completionBlock = selfCopy->_completionBlock;
   if (completionBlock)
   {
-    completionBlock[2](completionBlock, v8);
-    v6 = v4->_completionBlock;
-    v4->_completionBlock = 0;
+    completionBlock[2](completionBlock, errorCopy);
+    v6 = selfCopy->_completionBlock;
+    selfCopy->_completionBlock = 0;
 
-    resultsBlock = v4->_resultsBlock;
-    v4->_resultsBlock = 0;
+    resultsBlock = selfCopy->_resultsBlock;
+    selfCopy->_resultsBlock = 0;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 @end

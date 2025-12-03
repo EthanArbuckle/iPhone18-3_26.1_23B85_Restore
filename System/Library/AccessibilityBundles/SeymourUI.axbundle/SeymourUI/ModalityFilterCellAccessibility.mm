@@ -1,16 +1,16 @@
 @interface ModalityFilterCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
-- (void)accessibilityApplyState:(BOOL)a3 disabled:(BOOL)a4;
+- (void)accessibilityApplyState:(BOOL)state disabled:(BOOL)disabled;
 @end
 
 @implementation ModalityFilterCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SeymourUI.ModalityFilterCell" hasInstanceMethod:@"accessibilityApplyState:disabled:" withFullSignature:{"v", "B", "B", 0}];
-  [v3 validateClass:@"SeymourUI.ModalityFilterCell" isKindOfClass:@"UICollectionViewCell"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SeymourUI.ModalityFilterCell" hasInstanceMethod:@"accessibilityApplyState:disabled:" withFullSignature:{"v", "B", "B", 0}];
+  [validationsCopy validateClass:@"SeymourUI.ModalityFilterCell" isKindOfClass:@"UICollectionViewCell"];
 }
 
 - (unint64_t)accessibilityTraits
@@ -20,28 +20,28 @@
   return *MEMORY[0x29EDC7F70] | [(ModalityFilterCellAccessibility *)&v3 accessibilityTraits];
 }
 
-- (void)accessibilityApplyState:(BOOL)a3 disabled:(BOOL)a4
+- (void)accessibilityApplyState:(BOOL)state disabled:(BOOL)disabled
 {
-  v4 = a4;
-  v5 = a3;
+  disabledCopy = disabled;
+  stateCopy = state;
   v11.receiver = self;
   v11.super_class = ModalityFilterCellAccessibility;
   [ModalityFilterCellAccessibility accessibilityApplyState:sel_accessibilityApplyState_disabled_ disabled:?];
-  if (!v5 || !v4)
+  if (!stateCopy || !disabledCopy)
   {
-    if (v4)
+    if (disabledCopy)
     {
-      v7 = [(ModalityFilterCellAccessibility *)self accessibilityTraits];
-      [(ModalityFilterCellAccessibility *)self setAccessibilityTraits:*MEMORY[0x29EDC7FA8] | v7];
+      accessibilityTraits = [(ModalityFilterCellAccessibility *)self accessibilityTraits];
+      [(ModalityFilterCellAccessibility *)self setAccessibilityTraits:*MEMORY[0x29EDC7FA8] | accessibilityTraits];
     }
 
     else
     {
       [(ModalityFilterCellAccessibility *)self setAccessibilityTraits:[(ModalityFilterCellAccessibility *)self accessibilityTraits]& ~*MEMORY[0x29EDC7FA8]];
-      if (v5)
+      if (stateCopy)
       {
-        v8 = [(ModalityFilterCellAccessibility *)self accessibilityTraits];
-        v9 = *MEMORY[0x29EDC7FC0] | v8;
+        accessibilityTraits2 = [(ModalityFilterCellAccessibility *)self accessibilityTraits];
+        v9 = *MEMORY[0x29EDC7FC0] | accessibilityTraits2;
 LABEL_8:
         [(ModalityFilterCellAccessibility *)self setAccessibilityTraits:v9];
         return;

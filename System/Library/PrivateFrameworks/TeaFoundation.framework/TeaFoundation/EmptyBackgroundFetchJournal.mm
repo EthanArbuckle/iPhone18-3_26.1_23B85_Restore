@@ -1,11 +1,11 @@
 @interface EmptyBackgroundFetchJournal
 - (NSArray)entries;
-- (void)addEntryWithReason:(id)a3;
+- (void)addEntryWithReason:(id)reason;
 @end
 
 @implementation EmptyBackgroundFetchJournal
 
-- (void)addEntryWithReason:(id)a3
+- (void)addEntryWithReason:(id)reason
 {
   sub_1BF17A0AC();
 }

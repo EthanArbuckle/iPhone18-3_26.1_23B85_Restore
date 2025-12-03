@@ -1,69 +1,69 @@
 @interface AXUIBluetoothHelper
 - (AXUIBluetoothHelper)init;
 - (BOOL)_onlySensorsConnected;
-- (BOOL)_setup:(BTSessionImpl *)a3;
-- (BOOL)attach:(id)a3;
-- (BOOL)btleDeviceIsPaired:(id)a3;
-- (BOOL)connectAddress:(id)a3;
-- (BOOL)connectDevice:(id)a3;
-- (BOOL)connectDevice:(id)a3 withServices:(unsigned int)a4;
+- (BOOL)_setup:(BTSessionImpl *)_setup;
+- (BOOL)attach:(id)attach;
+- (BOOL)btleDeviceIsPaired:(id)paired;
+- (BOOL)connectAddress:(id)address;
+- (BOOL)connectDevice:(id)device;
+- (BOOL)connectDevice:(id)device withServices:(unsigned int)services;
 - (BOOL)connectable;
 - (BOOL)connected;
-- (BOOL)disconnectAddress:(id)a3;
-- (BOOL)disconnectDevice:(id)a3;
+- (BOOL)disconnectAddress:(id)address;
+- (BOOL)disconnectDevice:(id)device;
 - (BOOL)isAnyoneScanning;
 - (BOOL)isDiscoverable;
-- (BOOL)isServiceSupported:(unsigned int)a3;
-- (BOOL)peripheralMatchesUnadvertisedService:(id)a3;
-- (BOOL)setEnabled:(BOOL)a3;
-- (BOOL)setPowered:(BOOL)a3;
-- (BOOL)unpairAddress:(id)a3;
-- (BOOL)unpairDevice:(id)a3;
-- (BOOL)wasDeviceDiscovered:(id)a3;
+- (BOOL)isServiceSupported:(unsigned int)supported;
+- (BOOL)peripheralMatchesUnadvertisedService:(id)service;
+- (BOOL)setEnabled:(BOOL)enabled;
+- (BOOL)setPowered:(BOOL)powered;
+- (BOOL)unpairAddress:(id)address;
+- (BOOL)unpairDevice:(id)device;
+- (BOOL)wasDeviceDiscovered:(id)discovered;
 - (NSArray)pairedBTLEDevices;
-- (id)addDeviceIfNeeded:(BTDeviceImpl *)a3;
+- (id)addDeviceIfNeeded:(BTDeviceImpl *)needed;
 - (id)allowedServices;
 - (id)connectingDevices;
-- (id)deviceForPeripheral:(id)a3;
+- (id)deviceForPeripheral:(id)peripheral;
 - (id)pairedDevices;
 - (int64_t)powerState;
-- (unsigned)authorizedServicesForDevice:(id)a3;
-- (void)_addDiscoveredDevice:(id)a3;
-- (void)_cleanup:(BOOL)a3;
-- (void)_peripheralDidCompletePairing:(id)a3;
-- (void)_postNotification:(id)a3;
-- (void)_postNotificationWithArray:(id)a3;
+- (unsigned)authorizedServicesForDevice:(id)device;
+- (void)_addDiscoveredDevice:(id)device;
+- (void)_cleanup:(BOOL)_cleanup;
+- (void)_peripheralDidCompletePairing:(id)pairing;
+- (void)_postNotification:(id)notification;
+- (void)_postNotificationWithArray:(id)array;
 - (void)_powerChanged;
-- (void)_removeDevice:(id)a3;
+- (void)_removeDevice:(id)device;
 - (void)_restartScan;
-- (void)_setDiscoveryAgentScanning:(BOOL)a3;
-- (void)_setupCentralScanning:(BOOL)a3;
+- (void)_setDiscoveryAgentScanning:(BOOL)scanning;
+- (void)_setupCentralScanning:(BOOL)scanning;
 - (void)_updateCentralManagerScan;
-- (void)acceptSSP:(int)a3 forDevice:(id)a4;
+- (void)acceptSSP:(int)p forDevice:(id)device;
 - (void)cancelPairing;
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6;
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManager:(id)a3 didUpdatePeripheralConnectionState:(id)a4;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i;
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManager:(id)manager didUpdatePeripheralConnectionState:(id)state;
+- (void)centralManagerDidUpdateState:(id)state;
 - (void)dealloc;
-- (void)deviceDiscovered:(id)a3;
-- (void)deviceRemoved:(id)a3;
-- (void)deviceUpdated:(id)a3;
+- (void)deviceDiscovered:(id)discovered;
+- (void)deviceRemoved:(id)removed;
+- (void)deviceUpdated:(id)updated;
 - (void)isAnyoneScanning;
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4;
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5;
-- (void)pairingAgent:(id)a3 peerDidUnpair:(id)a4;
-- (void)peripheralDidUpdateName:(id)a3;
-- (void)postNotification:(id)a3;
-- (void)postNotificationName:(id)a3 object:(id)a4;
-- (void)postNotificationName:(id)a3 object:(id)a4 error:(id)a5;
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing;
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error;
+- (void)pairingAgent:(id)agent peerDidUnpair:(id)unpair;
+- (void)peripheralDidUpdateName:(id)name;
+- (void)postNotification:(id)notification;
+- (void)postNotificationName:(id)name object:(id)object;
+- (void)postNotificationName:(id)name object:(id)object error:(id)error;
 - (void)resetDeviceScanning;
-- (void)setConnectable:(BOOL)a3;
-- (void)setDevicePairingEnabled:(BOOL)a3;
-- (void)setDeviceScanningEnabled:(BOOL)a3;
-- (void)setDiscoverable:(BOOL)a3;
-- (void)setPincode:(id)a3 forDevice:(id)a4;
-- (void)unpairBTLEDevice:(id)a3;
+- (void)setConnectable:(BOOL)connectable;
+- (void)setDevicePairingEnabled:(BOOL)enabled;
+- (void)setDeviceScanningEnabled:(BOOL)enabled;
+- (void)setDiscoverable:(BOOL)discoverable;
+- (void)setPincode:(id)pincode forDevice:(id)device;
+- (void)unpairBTLEDevice:(id)device;
 @end
 
 @implementation AXUIBluetoothHelper
@@ -83,16 +83,16 @@
 
   else
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     discoveredDevices = v3->_discoveredDevices;
-    v3->_discoveredDevices = v4;
+    v3->_discoveredDevices = dictionary;
 
     v6 = objc_alloc(MEMORY[0x1E695D258]);
     v7 = [v6 initWithDelegate:v3 queue:MEMORY[0x1E69E96A0] options:0];
     [(AXUIBluetoothHelper *)v3 setCentralManager:v7];
 
-    v8 = [(CBCentralManager *)v3->_centralManager sharedPairingAgent];
-    [v8 setDelegate:v3];
+    sharedPairingAgent = [(CBCentralManager *)v3->_centralManager sharedPairingAgent];
+    [sharedPairingAgent setDelegate:v3];
 
     v9 = v3;
   }
@@ -100,21 +100,21 @@
   return v9;
 }
 
-- (BOOL)attach:(id)a3
+- (BOOL)attach:(id)attach
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 integerValue] >= 1)
+  attachCopy = attach;
+  if ([attachCopy integerValue] >= 1)
   {
     v5 = AXLogBluetooth();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      LODWORD(v18) = [v4 intValue];
+      LODWORD(v18) = [attachCopy intValue];
       _os_log_impl(&dword_18B15E000, v5, OS_LOG_TYPE_DEFAULT, "VOTBTM: attemping to re-attach in %d seconds", buf, 8u);
     }
 
-    -[AXUIBluetoothHelper performSelector:withObject:afterDelay:](self, "performSelector:withObject:afterDelay:", sel_attach_, 0, [v4 intValue]);
+    -[AXUIBluetoothHelper performSelector:withObject:afterDelay:](self, "performSelector:withObject:afterDelay:", sel_attach_, 0, [attachCopy intValue]);
     goto LABEL_6;
   }
 
@@ -133,9 +133,9 @@ LABEL_6:
   }
 
   v9 = MEMORY[0x1E696AEC0];
-  v10 = [MEMORY[0x1E696AAE8] mainBundle];
-  v11 = [v10 bundleIdentifier];
-  v12 = [v9 stringWithFormat:@"VOBTM%@-%u", v11, getpid()];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v12 = [v9 stringWithFormat:@"VOBTM%@-%u", bundleIdentifier, getpid()];
 
   [v12 cStringUsingEncoding:4];
   v13 = BTSessionAttachWithQueue();
@@ -175,10 +175,10 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)_setup:(BTSessionImpl *)a3
+- (BOOL)_setup:(BTSessionImpl *)_setup
 {
   v18 = *MEMORY[0x1E69E9840];
-  self->_session = a3;
+  self->_session = _setup;
   v4 = BTServiceAddCallbacks();
   if (v4)
   {
@@ -267,9 +267,9 @@ LABEL_11:
   }
 }
 
-- (void)setDeviceScanningEnabled:(BOOL)a3
+- (void)setDeviceScanningEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v11 = *MEMORY[0x1E69E9840];
   if (self->_session)
   {
@@ -277,7 +277,7 @@ LABEL_11:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = "disabled";
-      if (v3)
+      if (enabledCopy)
       {
         v6 = "enabled";
       }
@@ -287,14 +287,14 @@ LABEL_11:
       _os_log_impl(&dword_18B15E000, v5, OS_LOG_TYPE_DEFAULT, "VOTBTM: setting device scanning %{public}s", &v9, 0xCu);
     }
 
-    [(AXUIBluetoothHelper *)self _setDiscoveryAgentScanning:v3];
+    [(AXUIBluetoothHelper *)self _setDiscoveryAgentScanning:enabledCopy];
     v7 = 0;
-    self->_scanningEnabled = v3;
+    self->_scanningEnabled = enabledCopy;
   }
 
   else
   {
-    if (!a3)
+    if (!enabled)
     {
       return;
     }
@@ -312,14 +312,14 @@ LABEL_11:
   self->_wantsScanningEnabled = v7;
 }
 
-- (void)_setDiscoveryAgentScanning:(BOOL)a3
+- (void)_setDiscoveryAgentScanning:(BOOL)scanning
 {
   v16 = *MEMORY[0x1E69E9840];
   if (self->_session)
   {
     p_discoveryAgent = &self->_discoveryAgent;
     discoveryAgent = self->_discoveryAgent;
-    if (a3)
+    if (scanning)
     {
       if (!discoveryAgent)
       {
@@ -378,7 +378,7 @@ LABEL_20:
     return;
   }
 
-  if (a3)
+  if (scanning)
   {
     v10 = AXLogBluetooth();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -415,11 +415,11 @@ LABEL_20:
   }
 }
 
-- (void)_cleanup:(BOOL)a3
+- (void)_cleanup:(BOOL)_cleanup
 {
   v9 = *MEMORY[0x1E69E9840];
   self->_available = 0;
-  if (!a3)
+  if (!_cleanup)
   {
     if (self->_discoveryAgent)
     {
@@ -460,19 +460,19 @@ LABEL_20:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_18B15E000, v6, OS_LOG_TYPE_DEFAULT, "Cleaning up BT helper: %@", &v7, 0xCu);
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(AXUIBluetoothHelper *)self centralManager];
-  v4 = [v3 sharedPairingAgent];
-  [v4 setDelegate:0];
+  centralManager = [(AXUIBluetoothHelper *)self centralManager];
+  sharedPairingAgent = [centralManager sharedPairingAgent];
+  [sharedPairingAgent setDelegate:0];
 
-  v5 = [(AXUIBluetoothHelper *)self centralManager];
-  [v5 setDelegate:0];
+  centralManager2 = [(AXUIBluetoothHelper *)self centralManager];
+  [centralManager2 setDelegate:0];
 
   [(AXUIBluetoothHelper *)self _cleanup:0];
   v6.receiver = self;
@@ -480,11 +480,11 @@ LABEL_20:
   [(AXUIBluetoothHelper *)&v6 dealloc];
 }
 
-- (void)_postNotificationWithArray:(id)a3
+- (void)_postNotificationWithArray:(id)array
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 count];
+  arrayCopy = array;
+  v4 = [arrayCopy count];
   if (!v4)
   {
     v6 = 0;
@@ -492,7 +492,7 @@ LABEL_20:
     goto LABEL_8;
   }
 
-  v5 = [v3 objectAtIndex:0];
+  v5 = [arrayCopy objectAtIndex:0];
   if (v4 == 1)
   {
     v6 = 0;
@@ -500,10 +500,10 @@ LABEL_20:
 
   else
   {
-    v6 = [v3 objectAtIndex:1];
+    v6 = [arrayCopy objectAtIndex:1];
     if (v4 >= 3)
     {
-      v7 = [v3 objectAtIndex:2];
+      v7 = [arrayCopy objectAtIndex:2];
       v4 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v7, @"VOSBluetoothErrorKey", v5, @"VOSBluetoothNotificationNameKey", 0}];
 
       goto LABEL_8;
@@ -520,41 +520,41 @@ LABEL_8:
     _os_log_impl(&dword_18B15E000, v8, OS_LOG_TYPE_DEFAULT, "VOTBTM: posting notification %{public}@", buf, 0xCu);
   }
 
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v9 postNotificationName:v5 object:v6 userInfo:v4];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:v5 object:v6 userInfo:v4];
 }
 
-- (void)_postNotification:(id)a3
+- (void)_postNotification:(id)notification
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = AXLogBluetooth();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = notificationCopy;
     _os_log_impl(&dword_18B15E000, v5, OS_LOG_TYPE_DEFAULT, "VOTBTM: posting notification %{public}@", &v7, 0xCu);
   }
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 postNotificationName:v4 object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:notificationCopy object:self];
 }
 
-- (void)postNotification:(id)a3
+- (void)postNotification:(id)notification
 {
-  v4 = a3;
-  v3 = v4;
+  notificationCopy = notification;
+  v3 = notificationCopy;
   AXPerformBlockAsynchronouslyOnMainThread();
 }
 
-- (void)postNotificationName:(id)a3 object:(id)a4
+- (void)postNotificationName:(id)name object:(id)object
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  nameCopy = name;
+  objectCopy = object;
+  v7 = objectCopy;
+  if (nameCopy && objectCopy)
   {
-    v8 = v5;
+    v8 = nameCopy;
     v9 = v7;
     AXPerformBlockAsynchronouslyOnMainThread();
   }
@@ -571,16 +571,16 @@ void __51__AXUIBluetoothHelper_postNotificationName_object___block_invoke(void *
   [v1 _postNotificationWithArray:v3];
 }
 
-- (void)postNotificationName:(id)a3 object:(id)a4 error:(id)a5
+- (void)postNotificationName:(id)name object:(id)object error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v7 && v8 && v9)
+  nameCopy = name;
+  objectCopy = object;
+  errorCopy = error;
+  v10 = errorCopy;
+  if (nameCopy && objectCopy && errorCopy)
   {
-    v11 = v7;
-    v12 = v8;
+    v11 = nameCopy;
+    v12 = objectCopy;
     v13 = v10;
     AXPerformBlockAsynchronouslyOnMainThread();
   }
@@ -608,13 +608,13 @@ void __57__AXUIBluetoothHelper_postNotificationName_object_error___block_invoke(
   return result;
 }
 
-- (BOOL)setPowered:(BOOL)a3
+- (BOOL)setPowered:(BOOL)powered
 {
   v15 = *MEMORY[0x1E69E9840];
   localDevice = self->_localDevice;
   if (localDevice)
   {
-    v5 = a3;
+    poweredCopy = powered;
     v6 = BTLocalDeviceSetModulePower();
     if (v6)
     {
@@ -623,7 +623,7 @@ void __57__AXUIBluetoothHelper_postNotificationName_object_error___block_invoke(
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v9 = @"OFF";
-        if (v5)
+        if (poweredCopy)
         {
           v9 = @"ON";
         }
@@ -659,51 +659,51 @@ void __57__AXUIBluetoothHelper_postNotificationName_object_error___block_invoke(
   }
 }
 
-- (BOOL)setEnabled:(BOOL)a3
+- (BOOL)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if (!a3)
+  enabledCopy = enabled;
+  if (!enabled)
   {
     [(AXUIBluetoothHelper *)self setDeviceScanningEnabled:0];
   }
 
-  return [(AXUIBluetoothHelper *)self setPowered:v3];
+  return [(AXUIBluetoothHelper *)self setPowered:enabledCopy];
 }
 
-- (BOOL)btleDeviceIsPaired:(id)a3
+- (BOOL)btleDeviceIsPaired:(id)paired
 {
-  v4 = a3;
-  v5 = [(AXUIBluetoothHelper *)self centralManager];
-  v6 = [v5 sharedPairingAgent];
-  v7 = [v4 peripheral];
+  pairedCopy = paired;
+  centralManager = [(AXUIBluetoothHelper *)self centralManager];
+  sharedPairingAgent = [centralManager sharedPairingAgent];
+  peripheral = [pairedCopy peripheral];
 
-  LOBYTE(v4) = [v6 isPeerPaired:v7];
-  return v4;
+  LOBYTE(pairedCopy) = [sharedPairingAgent isPeerPaired:peripheral];
+  return pairedCopy;
 }
 
-- (void)unpairBTLEDevice:(id)a3
+- (void)unpairBTLEDevice:(id)device
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  deviceCopy = device;
   v5 = AXLogBluetooth();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = deviceCopy;
     _os_log_impl(&dword_18B15E000, v5, OS_LOG_TYPE_DEFAULT, "Unpairing BTLE device: %@", &v9, 0xCu);
   }
 
-  v6 = [(AXUIBluetoothHelper *)self centralManager];
-  v7 = [v6 sharedPairingAgent];
-  v8 = [v4 peripheral];
-  [v7 unpairPeer:v8];
+  centralManager = [(AXUIBluetoothHelper *)self centralManager];
+  sharedPairingAgent = [centralManager sharedPairingAgent];
+  peripheral = [deviceCopy peripheral];
+  [sharedPairingAgent unpairPeer:peripheral];
 }
 
-- (BOOL)unpairAddress:(id)a3
+- (BOOL)unpairAddress:(id)address
 {
   *&v14[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 UTF8String];
+  addressCopy = address;
+  [addressCopy UTF8String];
   BTDeviceAddressFromString();
   v5 = BTDeviceFromAddress();
   if (v5)
@@ -711,7 +711,7 @@ void __57__AXUIBluetoothHelper_postNotificationName_object_error___block_invoke(
     v6 = AXLogBluetooth();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(AXUIBluetoothHelper *)v4 unpairAddress:v5, v6];
+      [(AXUIBluetoothHelper *)addressCopy unpairAddress:v5, v6];
     }
   }
 
@@ -727,7 +727,7 @@ void __57__AXUIBluetoothHelper_postNotificationName_object_error___block_invoke(
         *buf = 67109378;
         v14[0] = v8;
         LOWORD(v14[1]) = 2112;
-        *(&v14[1] + 2) = v4;
+        *(&v14[1] + 2) = addressCopy;
         _os_log_impl(&dword_18B15E000, v9, OS_LOG_TYPE_DEFAULT, "VOTBTM: failed to unpair from device with error %d (address: %@)", buf, 0x12u);
       }
     }
@@ -735,7 +735,7 @@ void __57__AXUIBluetoothHelper_postNotificationName_object_error___block_invoke(
     deviceUpdated = self->_deviceUpdated;
     if (deviceUpdated)
     {
-      v11 = [[AXUIBluetoothDevice alloc] initWithDevice:0 address:v4 helper:self];
+      v11 = [[AXUIBluetoothDevice alloc] initWithDevice:0 address:addressCopy helper:self];
       deviceUpdated[2](deviceUpdated, v11);
     }
 
@@ -743,7 +743,7 @@ void __57__AXUIBluetoothHelper_postNotificationName_object_error___block_invoke(
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *v14 = v4;
+      *v14 = addressCopy;
       _os_log_impl(&dword_18B15E000, v6, OS_LOG_TYPE_DEFAULT, "VOTBTM: Unpaired device address: %@", buf, 0xCu);
     }
   }
@@ -751,23 +751,23 @@ void __57__AXUIBluetoothHelper_postNotificationName_object_error___block_invoke(
   return v5 == 0;
 }
 
-- (BOOL)unpairDevice:(id)a3
+- (BOOL)unpairDevice:(id)device
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  deviceCopy = device;
   v5 = AXLogBluetooth();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v4;
+    v13 = deviceCopy;
     _os_log_impl(&dword_18B15E000, v5, OS_LOG_TYPE_DEFAULT, "VOTBTM: Unpairing device: %@", &v12, 0xCu);
   }
 
-  if (v4)
+  if (deviceCopy)
   {
-    if ([v4 isBTLEDevice])
+    if ([deviceCopy isBTLEDevice])
     {
-      [(AXUIBluetoothHelper *)self unpairBTLEDevice:v4];
+      [(AXUIBluetoothHelper *)self unpairBTLEDevice:deviceCopy];
       v6 = 1;
     }
 
@@ -779,7 +779,7 @@ void __57__AXUIBluetoothHelper_postNotificationName_object_error___block_invoke(
       }
 
       [(AXUIBluetoothHelper *)self cancelPairing];
-      [v4 device];
+      [deviceCopy device];
       v7 = BTPairingAgentDeletePairedDevice();
       v6 = v7 == 0;
       if (v7)
@@ -789,7 +789,7 @@ void __57__AXUIBluetoothHelper_postNotificationName_object_error___block_invoke(
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
           v12 = 138543618;
-          v13 = v4;
+          v13 = deviceCopy;
           v14 = 1024;
           v15 = v8;
           _os_log_impl(&dword_18B15E000, v9, OS_LOG_TYPE_DEFAULT, "VOTBTM: failed to unpair from device %{public}@ with error %d", &v12, 0x12u);
@@ -799,7 +799,7 @@ void __57__AXUIBluetoothHelper_postNotificationName_object_error___block_invoke(
       deviceUpdated = self->_deviceUpdated;
       if (deviceUpdated)
       {
-        deviceUpdated[2](deviceUpdated, v4);
+        deviceUpdated[2](deviceUpdated, deviceCopy);
       }
     }
   }
@@ -812,15 +812,15 @@ void __57__AXUIBluetoothHelper_postNotificationName_object_error___block_invoke(
   return v6;
 }
 
-- (void)setDevicePairingEnabled:(BOOL)a3
+- (void)setDevicePairingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v20 = *MEMORY[0x1E69E9840];
   v5 = AXLogBluetooth();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = "disabled";
-    if (v3)
+    if (enabledCopy)
     {
       v6 = "enabled";
     }
@@ -830,7 +830,7 @@ void __57__AXUIBluetoothHelper_postNotificationName_object_error___block_invoke(
     _os_log_impl(&dword_18B15E000, v5, OS_LOG_TYPE_DEFAULT, "VOTBTM: trying setting device pairing %{public}s", &v18, 0xCu);
   }
 
-  if (!self->_session || [(AXUIBluetoothHelper *)self devicePairingEnabled]== v3)
+  if (!self->_session || [(AXUIBluetoothHelper *)self devicePairingEnabled]== enabledCopy)
   {
     self->_wantsDiscoveryEnabled = 1;
     return;
@@ -840,7 +840,7 @@ void __57__AXUIBluetoothHelper_postNotificationName_object_error___block_invoke(
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = "disabled";
-    if (v3)
+    if (enabledCopy)
     {
       v8 = "enabled";
     }
@@ -852,7 +852,7 @@ void __57__AXUIBluetoothHelper_postNotificationName_object_error___block_invoke(
 
   p_pairingAgent = &self->_pairingAgent;
   pairingAgent = self->_pairingAgent;
-  if (!v3)
+  if (!enabledCopy)
   {
     if (!pairingAgent)
     {
@@ -933,20 +933,20 @@ LABEL_22:
   }
 }
 
-- (id)deviceForPeripheral:(id)a3
+- (id)deviceForPeripheral:(id)peripheral
 {
-  v4 = a3;
+  peripheralCopy = peripheral;
   btleDevices = self->_btleDevices;
-  v6 = [v4 identifier];
-  v7 = [v6 UUIDString];
-  v8 = [(NSMutableDictionary *)btleDevices objectForKey:v7];
+  identifier = [peripheralCopy identifier];
+  uUIDString = [identifier UUIDString];
+  v8 = [(NSMutableDictionary *)btleDevices objectForKey:uUIDString];
 
   if (!v8)
   {
-    v8 = [[AXUIBluetoothDevice alloc] initWithPeripheral:v4 helper:self];
+    v8 = [[AXUIBluetoothDevice alloc] initWithPeripheral:peripheralCopy helper:self];
     v9 = self->_btleDevices;
-    v10 = [(AXUIBluetoothDevice *)v8 identifier];
-    [(NSMutableDictionary *)v9 setObject:v8 forKeyedSubscript:v10];
+    identifier2 = [(AXUIBluetoothDevice *)v8 identifier];
+    [(NSMutableDictionary *)v9 setObject:v8 forKeyedSubscript:identifier2];
   }
 
   v11 = v8;
@@ -958,17 +958,17 @@ LABEL_22:
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(AXUIBluetoothHelper *)self centralManager];
-  v5 = [v4 state];
+  centralManager = [(AXUIBluetoothHelper *)self centralManager];
+  state = [centralManager state];
 
-  if (v5 == 5)
+  if (state == 5)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [(AXUIBluetoothHelper *)self centralManager];
-    v7 = [v6 retrieveConnectedPeripheralsWithServices:0 allowAll:1];
+    centralManager2 = [(AXUIBluetoothHelper *)self centralManager];
+    v7 = [centralManager2 retrieveConnectedPeripheralsWithServices:0 allowAll:1];
 
     v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
@@ -985,9 +985,9 @@ LABEL_22:
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
-          v13 = [v12 name];
-          v14 = v13;
-          if (!v13 || ([v13 containsString:@"Apple Pencil"] & 1) == 0)
+          name = [v12 name];
+          v14 = name;
+          if (!name || ([name containsString:@"Apple Pencil"] & 1) == 0)
           {
             v15 = [(AXUIBluetoothHelper *)self deviceForPeripheral:v12];
             if (v15 && ([v3 containsObject:v15] & 1) == 0 && -[AXUIBluetoothHelper isPairedDeviceBrailleDisplay:](self, "isPairedDeviceBrailleDisplay:", v15))
@@ -1010,7 +1010,7 @@ LABEL_22:
 - (id)pairedDevices
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (self->_localDevice)
   {
     v40 = 0;
@@ -1067,28 +1067,28 @@ LABEL_22:
     }
   }
 
-  return v3;
+  return array;
 }
 
-- (void)setPincode:(id)a3 forDevice:(id)a4
+- (void)setPincode:(id)pincode forDevice:(id)device
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  pincodeCopy = pincode;
+  deviceCopy = device;
   v7 = AXLogBluetooth();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
-    v9 = v5;
+    v9 = pincodeCopy;
     v10 = 2114;
-    v11 = v6;
+    v11 = deviceCopy;
     _os_log_impl(&dword_18B15E000, v7, OS_LOG_TYPE_DEFAULT, "VOTBTM: setting pincode %{public}@ for device %{public}@", &v8, 0x16u);
   }
 
-  if (v5)
+  if (pincodeCopy)
   {
-    [v6 device];
-    [v5 UTF8String];
+    [deviceCopy device];
+    [pincodeCopy UTF8String];
     BTPairingAgentSetPincode();
   }
 
@@ -1145,17 +1145,17 @@ LABEL_22:
   return localDevice;
 }
 
-- (void)setDiscoverable:(BOOL)a3
+- (void)setDiscoverable:(BOOL)discoverable
 {
   v9 = *MEMORY[0x1E69E9840];
   if (self->_localDevice)
   {
-    v3 = a3;
+    discoverableCopy = discoverable;
     v5 = AXLogBluetooth();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = "disabled";
-      if (v3)
+      if (discoverableCopy)
       {
         v6 = "enabled";
       }
@@ -1167,15 +1167,15 @@ LABEL_22:
 
     if (!BTLocalDeviceSetDiscoverable())
     {
-      [(AXUIBluetoothHelper *)self setDevicePairingEnabled:v3];
+      [(AXUIBluetoothHelper *)self setDevicePairingEnabled:discoverableCopy];
     }
   }
 }
 
-- (BOOL)wasDeviceDiscovered:(id)a3
+- (BOOL)wasDeviceDiscovered:(id)discovered
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  discoveredCopy = discovered;
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
@@ -1222,7 +1222,7 @@ LABEL_22:
   return 0;
 }
 
-- (id)addDeviceIfNeeded:(BTDeviceImpl *)a3
+- (id)addDeviceIfNeeded:(BTDeviceImpl *)needed
 {
   v17 = *MEMORY[0x1E69E9840];
   btDeviceDict = self->_btDeviceDict;
@@ -1241,9 +1241,9 @@ LABEL_2:
   if (v10)
   {
     v7 = v10;
-    if ([(BTDeviceImpl *)v10 device]!= a3)
+    if ([(BTDeviceImpl *)v10 device]!= needed)
     {
-      [(BTDeviceImpl *)v7 setDevice:a3];
+      [(BTDeviceImpl *)v7 setDevice:needed];
     }
   }
 
@@ -1255,7 +1255,7 @@ LABEL_2:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v15 = 134217984;
-        v16 = a3;
+        neededCopy = needed;
         _os_log_impl(&dword_18B15E000, v14, OS_LOG_TYPE_DEFAULT, "VOTBTM: Failed to retrieve address for BTDevice %p. VOSBluetoothManager may be thoroughly confused.", &v15, 0xCu);
       }
 
@@ -1263,18 +1263,18 @@ LABEL_2:
       goto LABEL_2;
     }
 
-    v7 = [objc_allocWithZone(AXUIBluetoothDevice) initWithDevice:a3 address:v8 helper:self];
+    v7 = [objc_allocWithZone(AXUIBluetoothDevice) initWithDevice:needed address:v8 helper:self];
     v11 = AXLogBluetooth();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543362;
-      v16 = v7;
+      neededCopy = v7;
       _os_log_impl(&dword_18B15E000, v11, OS_LOG_TYPE_DEFAULT, "VOTBTM: Adding new device %{public}@", &v15, 0xCu);
     }
 
     [(NSMutableDictionary *)self->_btAddrDict setObject:v7 forKey:v8];
     v12 = self->_btDeviceDict;
-    v13 = [MEMORY[0x1E696B098] valueWithPointer:a3];
+    v13 = [MEMORY[0x1E696B098] valueWithPointer:needed];
     [(NSMutableDictionary *)v12 setObject:v7 forKey:v13];
   }
 
@@ -1283,21 +1283,21 @@ LABEL_3:
   return v7;
 }
 
-- (void)acceptSSP:(int)a3 forDevice:(id)a4
+- (void)acceptSSP:(int)p forDevice:(id)device
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  deviceCopy = device;
   v6 = AXLogBluetooth();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134218242;
-    v11 = a3;
+    pCopy = p;
     v12 = 2114;
-    v13 = v5;
+    v13 = deviceCopy;
     _os_log_impl(&dword_18B15E000, v6, OS_LOG_TYPE_DEFAULT, "VOTBTM: accepting SSP with error code %ld for device %{public}@", &v10, 0x16u);
   }
 
-  [v5 device];
+  [deviceCopy device];
   v7 = BTPairingAgentAcceptSSP();
   if (v7)
   {
@@ -1306,29 +1306,29 @@ LABEL_3:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 67109120;
-      LODWORD(v11) = v8;
+      LODWORD(pCopy) = v8;
       _os_log_impl(&dword_18B15E000, v9, OS_LOG_TYPE_DEFAULT, "VOTBTM: BTPairingAgentAcceptSSP returned error %d", &v10, 8u);
     }
   }
 }
 
-- (BOOL)connectAddress:(id)a3
+- (BOOL)connectAddress:(id)address
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_discoveredDevices objectForKeyedSubscript:v4];
+  addressCopy = address;
+  v5 = [(NSMutableDictionary *)self->_discoveredDevices objectForKeyedSubscript:addressCopy];
   if (!v5)
   {
     v6 = AXLogBluetooth();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(AXUIBluetoothHelper *)self discoveredDevices];
+      discoveredDevices = [(AXUIBluetoothHelper *)self discoveredDevices];
       v9 = 138412802;
-      v10 = self;
+      selfCopy = self;
       v11 = 2112;
-      v12 = v4;
+      v12 = addressCopy;
       v13 = 2112;
-      v14 = v7;
+      v14 = discoveredDevices;
       _os_log_impl(&dword_18B15E000, v6, OS_LOG_TYPE_DEFAULT, "%@ Could not find device with address: %@ %@", &v9, 0x20u);
     }
   }
@@ -1338,9 +1338,9 @@ LABEL_3:
   return 1;
 }
 
-- (BOOL)disconnectAddress:(id)a3
+- (BOOL)disconnectAddress:(id)address
 {
-  v4 = [(NSMutableDictionary *)self->_discoveredDevices objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_discoveredDevices objectForKeyedSubscript:address];
   if (v4)
   {
     [(AXUIBluetoothHelper *)self disconnectDevice:v4];
@@ -1359,25 +1359,25 @@ LABEL_3:
   return v4 != 0;
 }
 
-- (BOOL)disconnectDevice:(id)a3
+- (BOOL)disconnectDevice:(id)device
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 isBTLEDevice];
+  deviceCopy = device;
+  isBTLEDevice = [deviceCopy isBTLEDevice];
   v6 = AXLogBluetooth();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (isBTLEDevice)
   {
     if (v7)
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = deviceCopy;
       _os_log_impl(&dword_18B15E000, v6, OS_LOG_TYPE_DEFAULT, "VOTBTM: Disconnecting periperhal: %@", &v13, 0xCu);
     }
 
-    v8 = [(AXUIBluetoothHelper *)self centralManager];
-    v9 = [v4 peripheral];
-    [v8 cancelPeripheralConnection:v9 options:0];
+    centralManager = [(AXUIBluetoothHelper *)self centralManager];
+    peripheral = [deviceCopy peripheral];
+    [centralManager cancelPeripheralConnection:peripheral options:0];
   }
 
   else
@@ -1385,87 +1385,87 @@ LABEL_3:
     if (v7)
     {
       v13 = 138543362;
-      v14 = v4;
+      v14 = deviceCopy;
       _os_log_impl(&dword_18B15E000, v6, OS_LOG_TYPE_DEFAULT, "VOTBTM: disconnecting services to device %{public}@", &v13, 0xCu);
     }
 
-    [v4 device];
+    [deviceCopy device];
     v10 = BTDeviceDisconnect();
     if (!v10)
     {
-      LOBYTE(v5) = 1;
+      LOBYTE(isBTLEDevice) = 1;
       goto LABEL_11;
     }
 
     v11 = v10;
-    v8 = AXLogBluetooth();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    centralManager = AXLogBluetooth();
+    if (os_log_type_enabled(centralManager, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543618;
-      v14 = v4;
+      v14 = deviceCopy;
       v15 = 1024;
       v16 = v11;
-      _os_log_impl(&dword_18B15E000, v8, OS_LOG_TYPE_DEFAULT, "VOTBTM: disconnecting to device %{public}@ failed with error %d", &v13, 0x12u);
+      _os_log_impl(&dword_18B15E000, centralManager, OS_LOG_TYPE_DEFAULT, "VOTBTM: disconnecting to device %{public}@ failed with error %d", &v13, 0x12u);
     }
   }
 
 LABEL_11:
-  return v5;
+  return isBTLEDevice;
 }
 
-- (BOOL)connectDevice:(id)a3 withServices:(unsigned int)a4
+- (BOOL)connectDevice:(id)device withServices:(unsigned int)services
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 isBTLEDevice];
-  if (!v7)
+  deviceCopy = device;
+  isBTLEDevice = [deviceCopy isBTLEDevice];
+  if (!isBTLEDevice)
   {
     v16 = AXLogBluetooth();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 67109378;
-      *v21 = a4;
+      *v21 = services;
       *&v21[4] = 2114;
-      *&v21[6] = v6;
+      *&v21[6] = deviceCopy;
       _os_log_impl(&dword_18B15E000, v16, OS_LOG_TYPE_DEFAULT, "VOTBTM: connecting services 0x%08x to device %{public}@", &v20, 0x12u);
     }
 
-    [v6 device];
+    [deviceCopy device];
     v17 = BTDeviceConnectServices();
     if (v17)
     {
       v18 = v17;
-      v15 = AXLogBluetooth();
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      peripheral4 = AXLogBluetooth();
+      if (os_log_type_enabled(peripheral4, OS_LOG_TYPE_DEFAULT))
       {
         v20 = 138543618;
-        *v21 = v6;
+        *v21 = deviceCopy;
         *&v21[8] = 1024;
         *&v21[10] = v18;
-        _os_log_impl(&dword_18B15E000, v15, OS_LOG_TYPE_DEFAULT, "VOTBTM: connecting to device %{public}@ failed with error %d", &v20, 0x12u);
+        _os_log_impl(&dword_18B15E000, peripheral4, OS_LOG_TYPE_DEFAULT, "VOTBTM: connecting to device %{public}@ failed with error %d", &v20, 0x12u);
       }
 
       goto LABEL_13;
     }
 
 LABEL_14:
-    LOBYTE(v7) = 1;
+    LOBYTE(isBTLEDevice) = 1;
     goto LABEL_15;
   }
 
   v8 = AXLogBrailleHW();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 peripheral];
+    peripheral = [deviceCopy peripheral];
     v20 = 138412290;
-    *v21 = v9;
+    *v21 = peripheral;
     _os_log_impl(&dword_18B15E000, v8, OS_LOG_TYPE_DEFAULT, "Attempt connect: Current peripheral state: %@", &v20, 0xCu);
   }
 
-  v10 = [v6 peripheral];
-  v11 = [v10 isConnectedToSystem];
+  peripheral2 = [deviceCopy peripheral];
+  isConnectedToSystem = [peripheral2 isConnectedToSystem];
 
-  if (v11)
+  if (isConnectedToSystem)
   {
     goto LABEL_14;
   }
@@ -1473,25 +1473,25 @@ LABEL_14:
   v12 = AXLogBrailleHW();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v6 peripheral];
+    peripheral3 = [deviceCopy peripheral];
     v20 = 138412290;
-    *v21 = v13;
+    *v21 = peripheral3;
     _os_log_impl(&dword_18B15E000, v12, OS_LOG_TYPE_DEFAULT, "Connecting: %@", &v20, 0xCu);
   }
 
   centralManager = self->_centralManager;
-  v15 = [v6 peripheral];
-  [(CBCentralManager *)centralManager connectPeripheral:v15 options:0];
+  peripheral4 = [deviceCopy peripheral];
+  [(CBCentralManager *)centralManager connectPeripheral:peripheral4 options:0];
 LABEL_13:
 
 LABEL_15:
-  return v7;
+  return isBTLEDevice;
 }
 
-- (BOOL)connectDevice:(id)a3
+- (BOOL)connectDevice:(id)device
 {
-  v4 = a3;
-  LOBYTE(self) = [(AXUIBluetoothHelper *)self connectDevice:v4 withServices:[(AXUIBluetoothHelper *)self authorizedServices]];
+  deviceCopy = device;
+  LOBYTE(self) = [(AXUIBluetoothHelper *)self connectDevice:deviceCopy withServices:[(AXUIBluetoothHelper *)self authorizedServices]];
 
   return self;
 }
@@ -1521,17 +1521,17 @@ LABEL_15:
   return localDevice;
 }
 
-- (void)setConnectable:(BOOL)a3
+- (void)setConnectable:(BOOL)connectable
 {
   v8 = *MEMORY[0x1E69E9840];
   if (self->_localDevice)
   {
-    v3 = a3;
+    connectableCopy = connectable;
     v4 = AXLogBluetooth();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = "disabled";
-      if (v3)
+      if (connectableCopy)
       {
         v5 = "enabled";
       }
@@ -1548,7 +1548,7 @@ LABEL_15:
 - (id)connectingDevices
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (self->_localDevice)
   {
     v40 = 0;
@@ -1605,7 +1605,7 @@ LABEL_15:
     }
   }
 
-  return v3;
+  return array;
 }
 
 - (BOOL)_onlySensorsConnected
@@ -1657,7 +1657,7 @@ LABEL_15:
   return localDevice;
 }
 
-- (BOOL)isServiceSupported:(unsigned int)a3
+- (BOOL)isServiceSupported:(unsigned int)supported
 {
   localDevice = self->_localDevice;
   if (localDevice)
@@ -1669,9 +1669,9 @@ LABEL_15:
   return localDevice;
 }
 
-- (unsigned)authorizedServicesForDevice:(id)a3
+- (unsigned)authorizedServicesForDevice:(id)device
 {
-  [a3 device];
+  [device device];
   AuthorizedServices = BTDeviceGetAuthorizedServices();
   if (!AuthorizedServices)
   {
@@ -1692,12 +1692,12 @@ LABEL_15:
 {
   if ([(CBCentralManager *)self->_centralManager state]== 5)
   {
-    v2 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v2 postNotificationName:@"VOSBluetoothCoreBluetoothManagerReadyNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"VOSBluetoothCoreBluetoothManagerReadyNotification" object:0];
   }
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
   v23 = *MEMORY[0x1E69E9840];
   [(AXUIBluetoothHelper *)self _updateCentralManagerScan];
@@ -1714,8 +1714,8 @@ LABEL_15:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(AXUIBluetoothHelper *)self centralManager];
-  v7 = [v6 retrieveConnectedPeripheralsWithServices:MEMORY[0x1E695E0F0]];
+  centralManager = [(AXUIBluetoothHelper *)self centralManager];
+  v7 = [centralManager retrieveConnectedPeripheralsWithServices:MEMORY[0x1E695E0F0]];
 
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
@@ -1757,19 +1757,19 @@ LABEL_15:
   [(AXUIBluetoothHelper *)self _setupCentralScanning:1];
 }
 
-- (void)_setupCentralScanning:(BOOL)a3
+- (void)_setupCentralScanning:(BOOL)scanning
 {
-  v3 = a3;
-  v5 = [(AXUIBluetoothHelper *)self centralManager];
-  v6 = [v5 state];
+  scanningCopy = scanning;
+  centralManager = [(AXUIBluetoothHelper *)self centralManager];
+  state = [centralManager state];
 
-  if (v6 == 5)
+  if (state == 5)
   {
-    v7 = [(AXUIBluetoothHelper *)self centralManager];
-    v9 = v7;
-    if (v3)
+    centralManager2 = [(AXUIBluetoothHelper *)self centralManager];
+    v9 = centralManager2;
+    if (scanningCopy)
     {
-      [v7 scanForPeripheralsWithServices:0 options:0];
+      [centralManager2 scanForPeripheralsWithServices:0 options:0];
 
       v8 = AXLogBrailleHW();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1781,52 +1781,52 @@ LABEL_15:
 
     else
     {
-      [v7 stopScan];
+      [centralManager2 stopScan];
     }
   }
 }
 
-- (void)_removeDevice:(id)a3
+- (void)_removeDevice:(id)device
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 paired] & 1) == 0)
+  deviceCopy = device;
+  if (([deviceCopy paired] & 1) == 0)
   {
     v5 = AXLogBluetooth();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138543362;
-      v11 = v4;
+      v11 = deviceCopy;
       _os_log_impl(&dword_18B15E000, v5, OS_LOG_TYPE_DEFAULT, "VOTBTM: Removing device %{public}@", &v10, 0xCu);
     }
 
     btAddrDict = self->_btAddrDict;
-    v7 = [v4 address];
-    [(NSMutableDictionary *)btAddrDict removeObjectForKey:v7];
+    address = [deviceCopy address];
+    [(NSMutableDictionary *)btAddrDict removeObjectForKey:address];
 
     btDeviceDict = self->_btDeviceDict;
-    v9 = [MEMORY[0x1E696B098] valueWithPointer:{objc_msgSend(v4, "device")}];
+    v9 = [MEMORY[0x1E696B098] valueWithPointer:{objc_msgSend(deviceCopy, "device")}];
     [(NSMutableDictionary *)btDeviceDict removeObjectForKey:v9];
   }
 }
 
-- (void)deviceDiscovered:(id)a3
+- (void)deviceDiscovered:(id)discovered
 {
-  self->_deviceDiscovered = _Block_copy(a3);
+  self->_deviceDiscovered = _Block_copy(discovered);
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)deviceRemoved:(id)a3
+- (void)deviceRemoved:(id)removed
 {
-  self->_deviceRemoved = _Block_copy(a3);
+  self->_deviceRemoved = _Block_copy(removed);
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)deviceUpdated:(id)a3
+- (void)deviceUpdated:(id)updated
 {
-  self->_deviceUpdated = _Block_copy(a3);
+  self->_deviceUpdated = _Block_copy(updated);
 
   MEMORY[0x1EEE66BB8]();
 }
@@ -1843,29 +1843,29 @@ LABEL_15:
   return v4;
 }
 
-- (BOOL)peripheralMatchesUnadvertisedService:(id)a3
+- (BOOL)peripheralMatchesUnadvertisedService:(id)service
 {
-  v3 = a3;
-  v4 = [v3 name];
-  if ([v4 hasPrefix:@"DotPad"])
+  serviceCopy = service;
+  name = [serviceCopy name];
+  if ([name hasPrefix:@"DotPad"])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 name];
-    v5 = [v6 hasPrefix:@"DotPocket"];
+    name2 = [serviceCopy name];
+    v5 = [name2 hasPrefix:@"DotPocket"];
   }
 
   return v5;
 }
 
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  [a5 objectForKeyedSubscript:*MEMORY[0x1E695D1F8]];
+  peripheralCopy = peripheral;
+  [data objectForKeyedSubscript:*MEMORY[0x1E695D1F8]];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -1886,8 +1886,8 @@ LABEL_15:
         }
 
         v14 = *(*(&v21 + 1) + 8 * v13);
-        v15 = [(AXUIBluetoothHelper *)self allowedServices];
-        LOBYTE(v14) = [v15 containsObject:v14];
+        allowedServices = [(AXUIBluetoothHelper *)self allowedServices];
+        LOBYTE(v14) = [allowedServices containsObject:v14];
 
         if (v14)
         {
@@ -1910,14 +1910,14 @@ LABEL_15:
     }
   }
 
-  v16 = [(AXUIBluetoothHelper *)self peripheralMatchesUnadvertisedService:v8];
+  v16 = [(AXUIBluetoothHelper *)self peripheralMatchesUnadvertisedService:peripheralCopy];
 LABEL_11:
   v17 = AXLogBrailleHW();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     v18 = [MEMORY[0x1E696AD98] numberWithBool:v16];
     *buf = 138412802;
-    v26 = v8;
+    v26 = peripheralCopy;
     v27 = 2112;
     v28 = v18;
     v29 = 2112;
@@ -1927,7 +1927,7 @@ LABEL_11:
 
   if (v16)
   {
-    v19 = [(AXUIBluetoothHelper *)self deviceForPeripheral:v8];
+    v19 = [(AXUIBluetoothHelper *)self deviceForPeripheral:peripheralCopy];
     v20 = AXLogBrailleHW();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
@@ -1940,38 +1940,38 @@ LABEL_11:
   }
 }
 
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [(AXUIBluetoothHelper *)self deviceForPeripheral:v7];
+  peripheralCopy = peripheral;
+  errorCopy = error;
+  v9 = [(AXUIBluetoothHelper *)self deviceForPeripheral:peripheralCopy];
   v10 = AXLogBrailleHW();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     v13 = 138412802;
-    v14 = v7;
+    v14 = peripheralCopy;
     v15 = 2112;
     v16 = v9;
     v17 = 2112;
-    v18 = v8;
+    v18 = errorCopy;
     _os_log_error_impl(&dword_18B15E000, v10, OS_LOG_TYPE_ERROR, "Failed to connected: %@, device: %@ error %@", &v13, 0x20u);
   }
 
   if (v9)
   {
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 postNotificationName:@"VOSBluetoothDeviceConnectFailedNotification" object:v9];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"VOSBluetoothDeviceConnectFailedNotification" object:v9];
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 postNotificationName:@"VOSBluetoothDeviceUpdatedNotification" object:v9];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 postNotificationName:@"VOSBluetoothDeviceUpdatedNotification" object:v9];
   }
 }
 
-- (void)centralManager:(id)a3 didUpdatePeripheralConnectionState:(id)a4
+- (void)centralManager:(id)manager didUpdatePeripheralConnectionState:(id)state
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = [(AXUIBluetoothHelper *)self deviceForPeripheral:a4];
+  v4 = [(AXUIBluetoothHelper *)self deviceForPeripheral:state];
   v5 = AXLogBrailleHW();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1982,45 +1982,45 @@ LABEL_11:
 
   if (v4)
   {
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 postNotificationName:@"VOSBluetoothDeviceUpdatedNotification" object:v4];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"VOSBluetoothDeviceUpdatedNotification" object:v4];
   }
 }
 
-- (void)_peripheralDidCompletePairing:(id)a3
+- (void)_peripheralDidCompletePairing:(id)pairing
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pairingCopy = pairing;
   v5 = AXLogBrailleHW();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = pairingCopy;
     _os_log_impl(&dword_18B15E000, v5, OS_LOG_TYPE_DEFAULT, "Completed pairing to %@", &v8, 0xCu);
   }
 
-  if (v4)
+  if (pairingCopy)
   {
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 postNotificationName:@"VOSBluetoothDevicePairedNotification" object:v4];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"VOSBluetoothDevicePairedNotification" object:pairingCopy];
 
     deviceUpdated = self->_deviceUpdated;
     if (deviceUpdated)
     {
-      deviceUpdated[2](deviceUpdated, v4);
+      deviceUpdated[2](deviceUpdated, pairingCopy);
     }
   }
 }
 
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing
 {
-  v5 = [(AXUIBluetoothHelper *)self deviceForPeripheral:a4];
+  v5 = [(AXUIBluetoothHelper *)self deviceForPeripheral:pairing];
   if (v5)
   {
     v8 = v5;
     [(AXUIBluetoothHelper *)self _peripheralDidCompletePairing:v5];
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 postNotificationName:@"VOSBluetoothDeviceConnectSuccessNotification" object:v8];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"VOSBluetoothDeviceConnectSuccessNotification" object:v8];
 
     deviceUpdated = self->_deviceUpdated;
     if (deviceUpdated)
@@ -2032,20 +2032,20 @@ LABEL_11:
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error
 {
-  v10 = a4;
-  v6 = [(AXUIBluetoothHelper *)self deviceForPeripheral:v10];
-  if ([v10 state])
+  pairingCopy = pairing;
+  v6 = [(AXUIBluetoothHelper *)self deviceForPeripheral:pairingCopy];
+  if ([pairingCopy state])
   {
-    v7 = [(AXUIBluetoothHelper *)self centralManager];
-    [v7 cancelPeripheralConnection:v10];
+    centralManager = [(AXUIBluetoothHelper *)self centralManager];
+    [centralManager cancelPeripheralConnection:pairingCopy];
   }
 
   if (v6)
   {
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 postNotificationName:@"VOSBluetoothDeviceUnpairedNotification" object:v6];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"VOSBluetoothDeviceUnpairedNotification" object:v6];
 
     deviceUpdated = self->_deviceUpdated;
     if (deviceUpdated)
@@ -2055,13 +2055,13 @@ LABEL_11:
   }
 }
 
-- (void)pairingAgent:(id)a3 peerDidUnpair:(id)a4
+- (void)pairingAgent:(id)agent peerDidUnpair:(id)unpair
 {
-  v7 = [(AXUIBluetoothHelper *)self deviceForPeripheral:a4];
+  v7 = [(AXUIBluetoothHelper *)self deviceForPeripheral:unpair];
   if (v7)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 postNotificationName:@"VOSBluetoothDeviceDisconnectSuccessNotification" object:v7];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"VOSBluetoothDeviceDisconnectSuccessNotification" object:v7];
 
     deviceUpdated = self->_deviceUpdated;
     if (deviceUpdated)
@@ -2071,13 +2071,13 @@ LABEL_11:
   }
 }
 
-- (void)peripheralDidUpdateName:(id)a3
+- (void)peripheralDidUpdateName:(id)name
 {
-  v6 = [(AXUIBluetoothHelper *)self deviceForPeripheral:a3];
+  v6 = [(AXUIBluetoothHelper *)self deviceForPeripheral:name];
   if (v6)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 postNotificationName:@"VOSBluetoothDeviceUpdatedNotification" object:v6];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"VOSBluetoothDeviceUpdatedNotification" object:v6];
   }
 
   deviceUpdated = self->_deviceUpdated;
@@ -2087,26 +2087,26 @@ LABEL_11:
   }
 }
 
-- (void)_addDiscoveredDevice:(id)a3
+- (void)_addDiscoveredDevice:(id)device
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([(AXUIBluetoothHelper *)v4 address], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  deviceCopy = device;
+  v5 = deviceCopy;
+  if (deviceCopy && ([(AXUIBluetoothHelper *)deviceCopy address], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     discoveredDevices = self->_discoveredDevices;
-    v8 = [(AXUIBluetoothHelper *)v5 address];
-    [(NSMutableDictionary *)discoveredDevices setObject:v5 forKeyedSubscript:v8];
+    address = [(AXUIBluetoothHelper *)v5 address];
+    [(NSMutableDictionary *)discoveredDevices setObject:v5 forKeyedSubscript:address];
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 postNotificationName:@"VOSBluetoothDeviceDiscoveredNotification" object:v5];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"VOSBluetoothDeviceDiscoveredNotification" object:v5];
 
     v10 = AXLogBluetooth();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = self->_discoveredDevices;
       v14 = 138412546;
-      v15 = self;
+      selfCopy = self;
       v16 = 2112;
       v17 = v11;
       _os_log_impl(&dword_18B15E000, v10, OS_LOG_TYPE_DEFAULT, "%@ Discovered devices: %@", &v14, 0x16u);
@@ -2125,7 +2125,7 @@ LABEL_11:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v5;
+      selfCopy = v5;
       _os_log_impl(&dword_18B15E000, v13, OS_LOG_TYPE_DEFAULT, "Invalid discovered device: %@", &v14, 0xCu);
     }
   }
@@ -2145,7 +2145,7 @@ LABEL_11:
 {
   v3 = *MEMORY[0x1E69E9840];
   v2[0] = 67109120;
-  v2[1] = a1;
+  v2[1] = self;
   _os_log_error_impl(&dword_18B15E000, a2, OS_LOG_TYPE_ERROR, "VOTBTM: BTLocalDeviceGetScanning returned error %d", v2, 8u);
 }
 

@@ -1,34 +1,34 @@
 @interface DoAPClientService
-- (DoAPClientService)initWithManager:(id)a3 peripheral:(id)a4 service:(id)a5;
-- (id)uuidToString:(id)a3;
+- (DoAPClientService)initWithManager:(id)manager peripheral:(id)peripheral service:(id)service;
+- (id)uuidToString:(id)string;
 - (void)createDoAPDevice;
 - (void)dealloc;
 - (void)destroyDoAPDevice;
 - (void)doapDeviceDidStop;
-- (void)eventIndicator:(id)a3;
-- (void)handleInputData:(id)a3 targetDevice:(id)a4;
+- (void)eventIndicator:(id)indicator;
+- (void)handleInputData:(id)data targetDevice:(id)device;
 - (void)notifyDidStartIfEverythingReady;
-- (void)parseTLVCodecValue:(char *)a3 dataLength:(unsigned __int8)a4 codecStruct:(id *)a5;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverDescriptorsForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)selectCodec:(id)a3;
-- (void)setNotificationEnabled:(id)a3;
+- (void)parseTLVCodecValue:(char *)value dataLength:(unsigned __int8)length codecStruct:(id *)struct;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverDescriptorsForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)selectCodec:(id)codec;
+- (void)setNotificationEnabled:(id)enabled;
 - (void)start;
-- (void)startStreaming:(id)a3;
+- (void)startStreaming:(id)streaming;
 - (void)stop;
-- (void)stopStreaming:(id)a3;
-- (void)writeData:(id)a3 forCharacteristic:(id)a4 withResponse:(BOOL)a5;
+- (void)stopStreaming:(id)streaming;
+- (void)writeData:(id)data forCharacteristic:(id)characteristic withResponse:(BOOL)response;
 @end
 
 @implementation DoAPClientService
 
-- (DoAPClientService)initWithManager:(id)a3 peripheral:(id)a4 service:(id)a5
+- (DoAPClientService)initWithManager:(id)manager peripheral:(id)peripheral service:(id)service
 {
   v12.receiver = self;
   v12.super_class = DoAPClientService;
-  v5 = [(ClientService *)&v12 initWithManager:a3 peripheral:a4 service:a5];
+  v5 = [(ClientService *)&v12 initWithManager:manager peripheral:peripheral service:service];
   v6 = v5;
   if (v5)
   {
@@ -70,9 +70,9 @@
   v13[5] = v8;
   v9 = [NSArray arrayWithObjects:v13 count:6];
 
-  v10 = [(ClientService *)self peripheral];
-  v11 = [(ClientService *)self service];
-  [v10 discoverCharacteristics:v9 forService:v11];
+  peripheral = [(ClientService *)self peripheral];
+  service = [(ClientService *)self service];
+  [peripheral discoverCharacteristics:v9 forService:service];
 }
 
 - (void)stop
@@ -93,27 +93,27 @@
   [(DoAPClientService *)&v4 dealloc];
 }
 
-- (void)parseTLVCodecValue:(char *)a3 dataLength:(unsigned __int8)a4 codecStruct:(id *)a5
+- (void)parseTLVCodecValue:(char *)value dataLength:(unsigned __int8)length codecStruct:(id *)struct
 {
-  if (!a4)
+  if (!length)
   {
     return;
   }
 
-  v6 = a4;
+  lengthCopy = length;
   v8 = 0;
-  v9 = a4;
+  lengthCopy2 = length;
   while (1)
   {
-    v10 = a3[v8];
+    v10 = value[v8];
     v11 = v8 + 2;
     if (v10 <= 5)
     {
-      if (a3[v8] <= 2u)
+      if (value[v8] <= 2u)
       {
         if (v10 == 1)
         {
-          if (v6 <= v11)
+          if (lengthCopy <= v11)
           {
             if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
             {
@@ -124,9 +124,9 @@
           }
 
           v22 = v8 + 3;
-          v23 = a3[(v8 + 2)];
-          a5->var1 = v23;
-          if (v6 <= (v8 + 3))
+          v23 = value[(v8 + 2)];
+          struct->var1 = v23;
+          if (lengthCopy <= (v8 + 3))
           {
             if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
             {
@@ -137,11 +137,11 @@
           }
 
           v8 += 4;
-          a5->var1 = v23 | (a3[v22] << 8);
+          struct->var1 = v23 | (value[v22] << 8);
           v24 = qword_1000DDBC8;
           if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
           {
-            var1 = a5->var1;
+            var1 = struct->var1;
             *buf = 67109120;
             v38 = var1;
             v14 = v24;
@@ -157,7 +157,7 @@
             goto LABEL_48;
           }
 
-          if (v6 <= v11)
+          if (lengthCopy <= v11)
           {
             if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
             {
@@ -168,11 +168,11 @@
           }
 
           v8 += 3;
-          a5->var2 = a3[v11];
+          struct->var2 = value[v11];
           v18 = qword_1000DDBC8;
           if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
           {
-            var2 = a5->var2;
+            var2 = struct->var2;
             *buf = 67109120;
             v38 = var2;
             v14 = v18;
@@ -187,7 +187,7 @@
         switch(v10)
         {
           case 3u:
-            if (v6 <= v11)
+            if (lengthCopy <= v11)
             {
               if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
               {
@@ -198,11 +198,11 @@
             }
 
             v8 += 3;
-            a5->var3 = a3[v11];
+            struct->var3 = value[v11];
             v28 = qword_1000DDBC8;
             if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
             {
-              var3 = a5->var3;
+              var3 = struct->var3;
               *buf = 67109120;
               v38 = var3;
               v14 = v28;
@@ -212,7 +212,7 @@
 
             break;
           case 4u:
-            if ((v8 + 2) + 4 >= v9)
+            if ((v8 + 2) + 4 >= lengthCopy2)
             {
               if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
               {
@@ -222,12 +222,12 @@
               return;
             }
 
-            a5->var4 = *&a3[(v8 + 2)];
+            struct->var4 = *&value[(v8 + 2)];
             v8 += 6;
             v32 = qword_1000DDBC8;
             if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
             {
-              var4 = a5->var4;
+              var4 = struct->var4;
               *buf = 67109120;
               v38 = var4;
               v14 = v32;
@@ -237,7 +237,7 @@
 
             break;
           case 5u:
-            if (v6 <= v11)
+            if (lengthCopy <= v11)
             {
               if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
               {
@@ -248,11 +248,11 @@
             }
 
             v8 += 3;
-            a5->var5 = a3[v11];
+            struct->var5 = value[v11];
             v12 = qword_1000DDBC8;
             if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
             {
-              var5 = a5->var5;
+              var5 = struct->var5;
               *buf = 67109120;
               v38 = var5;
               v14 = v12;
@@ -271,7 +271,7 @@ LABEL_47:
       goto LABEL_51;
     }
 
-    if (a3[v8] <= 7u)
+    if (value[v8] <= 7u)
     {
       break;
     }
@@ -279,7 +279,7 @@ LABEL_47:
     switch(v10)
     {
       case 8u:
-        if (v6 <= v11)
+        if (lengthCopy <= v11)
         {
           if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
           {
@@ -290,11 +290,11 @@ LABEL_47:
         }
 
         v8 += 3;
-        a5->var8 = a3[v11];
+        struct->var8 = value[v11];
         v30 = qword_1000DDBC8;
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
         {
-          var8 = a5->var8;
+          var8 = struct->var8;
           *buf = 67109120;
           v38 = var8;
           v14 = v30;
@@ -304,7 +304,7 @@ LABEL_47:
 
         break;
       case 9u:
-        if (v6 <= v11)
+        if (lengthCopy <= v11)
         {
           if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
           {
@@ -315,11 +315,11 @@ LABEL_47:
         }
 
         v8 += 3;
-        a5->var9 = a3[v11];
+        struct->var9 = value[v11];
         v34 = qword_1000DDBC8;
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
         {
-          var9 = a5->var9;
+          var9 = struct->var9;
           *buf = 67109120;
           v38 = var9;
           v14 = v34;
@@ -329,7 +329,7 @@ LABEL_47:
 
         break;
       case 0xAu:
-        if (v6 <= v11)
+        if (lengthCopy <= v11)
         {
           if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
           {
@@ -340,11 +340,11 @@ LABEL_47:
         }
 
         v8 += 3;
-        a5->var10 = a3[v11];
+        struct->var10 = value[v11];
         v16 = qword_1000DDBC8;
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
         {
-          var10 = a5->var10;
+          var10 = struct->var10;
           *buf = 67109120;
           v38 = var10;
           v14 = v16;
@@ -358,7 +358,7 @@ LABEL_47:
     }
 
 LABEL_51:
-    if (v6 <= v8)
+    if (lengthCopy <= v8)
     {
       return;
     }
@@ -381,7 +381,7 @@ LABEL_48:
       goto LABEL_51;
     }
 
-    if (v6 <= v11)
+    if (lengthCopy <= v11)
     {
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
       {
@@ -392,11 +392,11 @@ LABEL_48:
     }
 
     v8 += 3;
-    a5->var7 = a3[v11];
+    struct->var7 = value[v11];
     v20 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
     {
-      var7 = a5->var7;
+      var7 = struct->var7;
       *buf = 67109120;
       v38 = var7;
       v14 = v20;
@@ -407,14 +407,14 @@ LABEL_48:
     goto LABEL_51;
   }
 
-  if (v6 > v11)
+  if (lengthCopy > v11)
   {
     v8 += 3;
-    a5->var6 = a3[v11];
+    struct->var6 = value[v11];
     v26 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
     {
-      var6 = a5->var6;
+      var6 = struct->var6;
       *buf = 67109120;
       v38 = var6;
       v14 = v26;
@@ -433,26 +433,26 @@ LABEL_48:
 
 - (void)createDoAPDevice
 {
-  v26 = [(DoAPClientService *)self SupportedCodecsCharacteristic];
-  v3 = [v26 value];
-  if (v3 && [(DoAPClientService *)self isStartStreamingNotificationEnabled]&& [(DoAPClientService *)self isStopStreamingNotificationEnabled]&& [(DoAPClientService *)self isSendDataNotificationEnabled])
+  supportedCodecsCharacteristic = [(DoAPClientService *)self SupportedCodecsCharacteristic];
+  value = [supportedCodecsCharacteristic value];
+  if (value && [(DoAPClientService *)self isStartStreamingNotificationEnabled]&& [(DoAPClientService *)self isStopStreamingNotificationEnabled]&& [(DoAPClientService *)self isSendDataNotificationEnabled])
   {
-    v4 = [(DoAPClientService *)self isEventIndicatorNotificationEnabled];
+    isEventIndicatorNotificationEnabled = [(DoAPClientService *)self isEventIndicatorNotificationEnabled];
 
-    if (v4)
+    if (isEventIndicatorNotificationEnabled)
     {
-      v5 = [(DoAPClientService *)self SupportedCodecsCharacteristic];
-      v6 = [v5 value];
-      v7 = [v6 length];
+      supportedCodecsCharacteristic2 = [(DoAPClientService *)self SupportedCodecsCharacteristic];
+      value2 = [supportedCodecsCharacteristic2 value];
+      v7 = [value2 length];
 
       if (v7 >= 7)
       {
-        v8 = [(DoAPClientService *)self SupportedCodecsCharacteristic];
-        v9 = [v8 value];
-        v10 = [v9 bytes];
+        supportedCodecsCharacteristic3 = [(DoAPClientService *)self SupportedCodecsCharacteristic];
+        value3 = [supportedCodecsCharacteristic3 value];
+        bytes = [value3 bytes];
 
-        v13 = *v10;
-        v11 = (v10 + 1);
+        v13 = *bytes;
+        v11 = (bytes + 1);
         v12 = v13;
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
         {
@@ -494,17 +494,17 @@ LABEL_48:
           if (v17)
           {
             [(DoAPClientService *)self parseTLVCodecList:v11 dataLength:v17 streamID:v15];
-            v19 = [(DoAPClientService *)self codecList];
-            v20 = [DoAPDevice doapDeviceWithCodecs:v19 streamID:v15];
+            codecList = [(DoAPClientService *)self codecList];
+            v20 = [DoAPDevice doapDeviceWithCodecs:codecList streamID:v15];
 
             if (v20)
             {
               [v20 setService:self];
-              v21 = [(ClientService *)self peripheral];
-              [v20 setPeripheral:v21];
+              peripheral = [(ClientService *)self peripheral];
+              [v20 setPeripheral:peripheral];
 
-              v22 = [(DoAPClientService *)self doapDevices];
-              [v22 addObject:v20];
+              doapDevices = [(DoAPClientService *)self doapDevices];
+              [doapDevices addObject:v20];
 
               [v20 start];
             }
@@ -519,8 +519,8 @@ LABEL_48:
             }
 
             v11 = (v11 + v17);
-            v25 = [(DoAPClientService *)self codecList];
-            [v25 removeAllObjects];
+            codecList2 = [(DoAPClientService *)self codecList];
+            [codecList2 removeAllObjects];
           }
 
           else
@@ -553,8 +553,8 @@ LABEL_48:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(DoAPClientService *)self doapDevices];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  doapDevices = [(DoAPClientService *)self doapDevices];
+  v3 = [doapDevices countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -566,7 +566,7 @@ LABEL_48:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(doapDevices);
         }
 
         [*(*(&v7 + 1) + 8 * v6) stop];
@@ -574,7 +574,7 @@ LABEL_48:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [doapDevices countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -587,8 +587,8 @@ LABEL_48:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(DoAPClientService *)self doapDevices];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  doapDevices = [(DoAPClientService *)self doapDevices];
+  v4 = [doapDevices countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -600,7 +600,7 @@ LABEL_48:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(doapDevices);
         }
 
         if ([*(*(&v10 + 1) + 8 * v7) state] != 2)
@@ -613,7 +613,7 @@ LABEL_48:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [doapDevices countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -633,11 +633,11 @@ LABEL_48:
   [(ClientService *)self notifyDidStart];
 }
 
-- (void)setNotificationEnabled:(id)a3
+- (void)setNotificationEnabled:(id)enabled
 {
-  v12 = a3;
+  enabledCopy = enabled;
   v4 = [CBUUID UUIDWithString:CBUUIDStartStreamingCharacteristicString];
-  v5 = [v12 isEqual:v4];
+  v5 = [enabledCopy isEqual:v4];
 
   if (v5)
   {
@@ -647,7 +647,7 @@ LABEL_48:
   else
   {
     v6 = [CBUUID UUIDWithString:CBUUIDStopStreamingCharacteristicString];
-    v7 = [v12 isEqual:v6];
+    v7 = [enabledCopy isEqual:v6];
 
     if (v7)
     {
@@ -657,7 +657,7 @@ LABEL_48:
     else
     {
       v8 = [CBUUID UUIDWithString:CBUUIDSendDataCharacteristicString];
-      v9 = [v12 isEqual:v8];
+      v9 = [enabledCopy isEqual:v8];
 
       if (v9)
       {
@@ -667,7 +667,7 @@ LABEL_48:
       else
       {
         v10 = [CBUUID UUIDWithString:CBUUIDEventIndicatorCharacteristicString];
-        v11 = [v12 isEqual:v10];
+        v11 = [enabledCopy isEqual:v10];
 
         if (v11)
         {
@@ -678,21 +678,21 @@ LABEL_48:
   }
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v8 = a3;
-  v9 = v8;
-  if (a5)
+  peripheralCopy = peripheral;
+  v9 = peripheralCopy;
+  if (error)
   {
     goto LABEL_2;
   }
 
-  v51 = v8;
+  v51 = peripheralCopy;
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = [a4 characteristics];
+  obj = [service characteristics];
   v10 = [obj countByEnumeratingWithState:&v55 objects:v59 count:16];
   if (v10)
   {
@@ -716,23 +716,23 @@ LABEL_48:
         }
 
         v15 = *(*(&v55 + 1) + 8 * v14);
-        v16 = [(DoAPClientService *)self SupportedCodecsCharacteristic];
-        if (v16)
+        supportedCodecsCharacteristic = [(DoAPClientService *)self SupportedCodecsCharacteristic];
+        if (supportedCodecsCharacteristic)
         {
         }
 
         else
         {
-          v17 = [v15 UUID];
+          uUID = [v15 UUID];
           v18 = [CBUUID UUIDWithString:v53];
-          v19 = [v17 isEqual:v18];
+          v19 = [uUID isEqual:v18];
 
           if (v19)
           {
             [(DoAPClientService *)self setSupportedCodecsCharacteristic:v15];
-            v20 = [v15 value];
+            value = [v15 value];
 
-            if (!v20)
+            if (!value)
             {
               [v51 readValueForCharacteristic:v15];
             }
@@ -741,16 +741,16 @@ LABEL_48:
           }
         }
 
-        v21 = [(DoAPClientService *)self SelectedCodecCharacteristic];
-        if (v21)
+        selectedCodecCharacteristic = [(DoAPClientService *)self SelectedCodecCharacteristic];
+        if (selectedCodecCharacteristic)
         {
         }
 
         else
         {
-          v22 = [v15 UUID];
+          uUID2 = [v15 UUID];
           v23 = [CBUUID UUIDWithString:v52];
-          v24 = [v22 isEqual:v23];
+          v24 = [uUID2 isEqual:v23];
 
           if (v24)
           {
@@ -759,16 +759,16 @@ LABEL_48:
           }
         }
 
-        v25 = [(DoAPClientService *)self StartStreamingCharacteristic];
-        if (v25)
+        startStreamingCharacteristic = [(DoAPClientService *)self StartStreamingCharacteristic];
+        if (startStreamingCharacteristic)
         {
         }
 
         else
         {
-          v26 = [v15 UUID];
+          uUID3 = [v15 UUID];
           v27 = [CBUUID UUIDWithString:v50];
-          v28 = [v26 isEqual:v27];
+          v28 = [uUID3 isEqual:v27];
 
           if (v28)
           {
@@ -782,16 +782,16 @@ LABEL_48:
           }
         }
 
-        v29 = [(DoAPClientService *)self StopStreamingCharacteristic];
-        if (v29)
+        stopStreamingCharacteristic = [(DoAPClientService *)self StopStreamingCharacteristic];
+        if (stopStreamingCharacteristic)
         {
         }
 
         else
         {
-          v30 = [v15 UUID];
+          uUID4 = [v15 UUID];
           v31 = [CBUUID UUIDWithString:v49];
-          v32 = [v30 isEqual:v31];
+          v32 = [uUID4 isEqual:v31];
 
           if (v32)
           {
@@ -805,16 +805,16 @@ LABEL_48:
           }
         }
 
-        v33 = [(DoAPClientService *)self SendDataCharacteristic];
-        if (v33)
+        sendDataCharacteristic = [(DoAPClientService *)self SendDataCharacteristic];
+        if (sendDataCharacteristic)
         {
         }
 
         else
         {
-          v34 = [v15 UUID];
+          uUID5 = [v15 UUID];
           v35 = [CBUUID UUIDWithString:v48];
-          v36 = [v34 isEqual:v35];
+          v36 = [uUID5 isEqual:v35];
 
           if (v36)
           {
@@ -828,16 +828,16 @@ LABEL_48:
           }
         }
 
-        v37 = [(DoAPClientService *)self EventIndicatorCharacteristic];
-        if (v37)
+        eventIndicatorCharacteristic = [(DoAPClientService *)self EventIndicatorCharacteristic];
+        if (eventIndicatorCharacteristic)
         {
         }
 
         else
         {
-          v38 = [v15 UUID];
+          uUID6 = [v15 UUID];
           v39 = [CBUUID UUIDWithString:v47];
-          v40 = [v38 isEqual:v39];
+          v40 = [uUID6 isEqual:v39];
 
           if (v40)
           {
@@ -865,30 +865,30 @@ LABEL_38:
     while (v11);
   }
 
-  v41 = [(DoAPClientService *)self SupportedCodecsCharacteristic];
+  supportedCodecsCharacteristic2 = [(DoAPClientService *)self SupportedCodecsCharacteristic];
 
-  if (v41)
+  if (supportedCodecsCharacteristic2)
   {
-    v42 = [(DoAPClientService *)self SelectedCodecCharacteristic];
+    selectedCodecCharacteristic2 = [(DoAPClientService *)self SelectedCodecCharacteristic];
 
     v9 = v51;
-    if (v42)
+    if (selectedCodecCharacteristic2)
     {
-      v43 = [(DoAPClientService *)self StartStreamingCharacteristic];
+      startStreamingCharacteristic2 = [(DoAPClientService *)self StartStreamingCharacteristic];
 
-      if (v43)
+      if (startStreamingCharacteristic2)
       {
-        v44 = [(DoAPClientService *)self StopStreamingCharacteristic];
+        stopStreamingCharacteristic2 = [(DoAPClientService *)self StopStreamingCharacteristic];
 
-        if (v44)
+        if (stopStreamingCharacteristic2)
         {
-          v45 = [(DoAPClientService *)self SendDataCharacteristic];
+          sendDataCharacteristic2 = [(DoAPClientService *)self SendDataCharacteristic];
 
-          if (v45)
+          if (sendDataCharacteristic2)
           {
-            v46 = [(DoAPClientService *)self EventIndicatorCharacteristic];
+            eventIndicatorCharacteristic2 = [(DoAPClientService *)self EventIndicatorCharacteristic];
 
-            if (!v46 && os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
+            if (!eventIndicatorCharacteristic2 && os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
             {
               sub_100077834();
             }
@@ -930,31 +930,31 @@ LABEL_38:
 LABEL_2:
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v7 = a4;
-  if (!a5)
+  characteristicCopy = characteristic;
+  if (!error)
   {
     v8 = _os_feature_enabled_impl();
-    v9 = [(DoAPClientService *)self SupportedCodecsCharacteristic];
+    supportedCodecsCharacteristic = [(DoAPClientService *)self SupportedCodecsCharacteristic];
 
     if (v8)
     {
-      if (v9 != v7)
+      if (supportedCodecsCharacteristic != characteristicCopy)
       {
-        v10 = [(DoAPClientService *)self StartStreamingCharacteristic];
-        if (v10 != v7)
+        startStreamingCharacteristic = [(DoAPClientService *)self StartStreamingCharacteristic];
+        if (startStreamingCharacteristic != characteristicCopy)
         {
-          v11 = [(DoAPClientService *)self StopStreamingCharacteristic];
-          if (v11 != v7)
+          stopStreamingCharacteristic = [(DoAPClientService *)self StopStreamingCharacteristic];
+          if (stopStreamingCharacteristic != characteristicCopy)
           {
-            v12 = [(DoAPClientService *)self SendDataCharacteristic];
-            v13 = v12;
-            if (v12 != v7)
+            sendDataCharacteristic = [(DoAPClientService *)self SendDataCharacteristic];
+            v13 = sendDataCharacteristic;
+            if (sendDataCharacteristic != characteristicCopy)
             {
-              v14 = [(DoAPClientService *)self EventIndicatorCharacteristic];
+              eventIndicatorCharacteristic = [(DoAPClientService *)self EventIndicatorCharacteristic];
 
-              if (v14 != v7)
+              if (eventIndicatorCharacteristic != characteristicCopy)
               {
                 goto LABEL_2;
               }
@@ -965,8 +965,8 @@ LABEL_2:
         }
 
 LABEL_20:
-        v20 = [v7 value];
-        v21 = [DataInputStream inputStreamWithData:v20 byteOrder:1];
+        value = [characteristicCopy value];
+        v21 = [DataInputStream inputStreamWithData:value byteOrder:1];
 
         v57 = 0;
         v47 = v21;
@@ -994,27 +994,27 @@ LABEL_20:
             }
 
             v26 = *(*(&v53 + 1) + 8 * i);
-            v27 = [v26 streamID];
+            streamID = [v26 streamID];
             v28 = v57;
-            v29 = [(DoAPClientService *)self StopStreamingCharacteristic];
+            stopStreamingCharacteristic2 = [(DoAPClientService *)self StopStreamingCharacteristic];
 
-            if (v29 != v7)
+            if (stopStreamingCharacteristic2 != characteristicCopy)
             {
-              v30 = [(DoAPClientService *)self SendDataCharacteristic];
+              sendDataCharacteristic2 = [(DoAPClientService *)self SendDataCharacteristic];
 
-              if (v30 != v7)
+              if (sendDataCharacteristic2 != characteristicCopy)
               {
-                v31 = self;
-                v32 = [(DoAPClientService *)self EventIndicatorCharacteristic];
+                selfCopy = self;
+                eventIndicatorCharacteristic2 = [(DoAPClientService *)self EventIndicatorCharacteristic];
 
-                if (v32 == v7 && ([v7 value], v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "length"), v33, v34 >= 3))
+                if (eventIndicatorCharacteristic2 == characteristicCopy && ([characteristicCopy value], v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "length"), v33, v34 >= 3))
                 {
-                  v35 = [v7 value];
-                  v36 = [v35 bytes];
+                  value2 = [characteristicCopy value];
+                  bytes = [value2 bytes];
 
-                  v37 = v36[2];
-                  self = v31;
-                  if (v37 != 3 && v27 != v28)
+                  v37 = bytes[2];
+                  self = selfCopy;
+                  if (v37 != 3 && streamID != v28)
                   {
                     continue;
                   }
@@ -1022,8 +1022,8 @@ LABEL_20:
 
                 else
                 {
-                  self = v31;
-                  if (v27 != v28)
+                  self = selfCopy;
+                  if (streamID != v28)
                   {
                     continue;
                   }
@@ -1033,7 +1033,7 @@ LABEL_20:
 
             if ([v26 state] >= 2)
             {
-              [(DoAPClientService *)self handleInputData:v7 targetDevice:v26];
+              [(DoAPClientService *)self handleInputData:characteristicCopy targetDevice:v26];
             }
           }
 
@@ -1052,31 +1052,31 @@ LABEL_16:
       goto LABEL_2;
     }
 
-    if (v9 == v7)
+    if (supportedCodecsCharacteristic == characteristicCopy)
     {
       goto LABEL_16;
     }
 
-    v15 = [(DoAPClientService *)self StartStreamingCharacteristic];
-    if (v15 != v7)
+    startStreamingCharacteristic2 = [(DoAPClientService *)self StartStreamingCharacteristic];
+    if (startStreamingCharacteristic2 != characteristicCopy)
     {
-      v16 = [(DoAPClientService *)self StopStreamingCharacteristic];
-      if (v16 != v7)
+      stopStreamingCharacteristic3 = [(DoAPClientService *)self StopStreamingCharacteristic];
+      if (stopStreamingCharacteristic3 != characteristicCopy)
       {
-        v17 = [(DoAPClientService *)self SendDataCharacteristic];
-        v18 = v17;
-        if (v17 != v7)
+        sendDataCharacteristic3 = [(DoAPClientService *)self SendDataCharacteristic];
+        v18 = sendDataCharacteristic3;
+        if (sendDataCharacteristic3 != characteristicCopy)
         {
-          v19 = [(DoAPClientService *)self EventIndicatorCharacteristic];
+          eventIndicatorCharacteristic3 = [(DoAPClientService *)self EventIndicatorCharacteristic];
 
-          if (v19 != v7)
+          if (eventIndicatorCharacteristic3 != characteristicCopy)
           {
             goto LABEL_2;
           }
 
 LABEL_41:
-          v38 = [v7 value];
-          v39 = [DataInputStream inputStreamWithData:v38 byteOrder:1];
+          value3 = [characteristicCopy value];
+          v39 = [DataInputStream inputStreamWithData:value3 byteOrder:1];
 
           v57 = 0;
           [v39 readUint16:&v57];
@@ -1084,8 +1084,8 @@ LABEL_41:
           v50 = 0u;
           v51 = 0u;
           v52 = 0u;
-          v40 = [(DoAPClientService *)self doapDevices];
-          v41 = [v40 countByEnumeratingWithState:&v49 objects:v58 count:16];
+          doapDevices = [(DoAPClientService *)self doapDevices];
+          v41 = [doapDevices countByEnumeratingWithState:&v49 objects:v58 count:16];
           if (v41)
           {
             v42 = v41;
@@ -1096,23 +1096,23 @@ LABEL_41:
               {
                 if (*v50 != v43)
                 {
-                  objc_enumerationMutation(v40);
+                  objc_enumerationMutation(doapDevices);
                 }
 
                 v45 = *(*(&v49 + 1) + 8 * j);
-                v46 = [v45 streamID];
-                if (v46 == v57)
+                streamID2 = [v45 streamID];
+                if (streamID2 == v57)
                 {
                   if ([v45 state] >= 2)
                   {
-                    [(DoAPClientService *)self handleInputData:v7 targetDevice:v45];
+                    [(DoAPClientService *)self handleInputData:characteristicCopy targetDevice:v45];
                   }
 
                   goto LABEL_52;
                 }
               }
 
-              v42 = [v40 countByEnumeratingWithState:&v49 objects:v58 count:16];
+              v42 = [doapDevices countByEnumeratingWithState:&v49 objects:v58 count:16];
             }
 
             while (v42);
@@ -1131,23 +1131,23 @@ LABEL_52:
 LABEL_2:
 }
 
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
   v11 = qword_1000DDBC8;
-  if (v10)
+  if (errorCopy)
   {
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
       v12 = v11;
-      v13 = [v9 UUID];
-      v14 = [(DoAPClientService *)self uuidToString:v13];
+      uUID = [characteristicCopy UUID];
+      v14 = [(DoAPClientService *)self uuidToString:uUID];
       v16 = 138412546;
       v17 = v14;
       v18 = 2112;
-      v19 = v10;
+      v19 = errorCopy;
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "DoAP Error starting notifications on %@ characteristic: %@", &v16, 0x16u);
     }
   }
@@ -1156,38 +1156,38 @@ LABEL_2:
   {
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
     {
-      sub_10007799C(v11, v9);
+      sub_10007799C(v11, characteristicCopy);
     }
 
-    v15 = [v9 UUID];
-    [(DoAPClientService *)self setNotificationEnabled:v15];
+    uUID2 = [characteristicCopy UUID];
+    [(DoAPClientService *)self setNotificationEnabled:uUID2];
 
     [(DoAPClientService *)self createDoAPDevice];
   }
 }
 
-- (void)peripheral:(id)a3 didDiscoverDescriptorsForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverDescriptorsForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (a5)
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  if (error)
   {
     goto LABEL_2;
   }
 
-  v10 = [(DoAPClientService *)self StartStreamingCharacteristic];
-  if (v10 != v9)
+  startStreamingCharacteristic = [(DoAPClientService *)self StartStreamingCharacteristic];
+  if (startStreamingCharacteristic != characteristicCopy)
   {
-    v11 = [(DoAPClientService *)self StopStreamingCharacteristic];
-    if (v11 != v9)
+    stopStreamingCharacteristic = [(DoAPClientService *)self StopStreamingCharacteristic];
+    if (stopStreamingCharacteristic != characteristicCopy)
     {
-      v12 = [(DoAPClientService *)self SendDataCharacteristic];
-      v13 = v12;
-      if (v12 != v9)
+      sendDataCharacteristic = [(DoAPClientService *)self SendDataCharacteristic];
+      v13 = sendDataCharacteristic;
+      if (sendDataCharacteristic != characteristicCopy)
       {
-        v14 = [(DoAPClientService *)self EventIndicatorCharacteristic];
+        eventIndicatorCharacteristic = [(DoAPClientService *)self EventIndicatorCharacteristic];
 
-        if (v14 != v9)
+        if (eventIndicatorCharacteristic != characteristicCopy)
         {
           goto LABEL_2;
         }
@@ -1202,8 +1202,8 @@ LABEL_11:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v15 = [v9 descriptors];
-  v16 = [v15 countByEnumeratingWithState:&v34 objects:v38 count:16];
+  descriptors = [characteristicCopy descriptors];
+  v16 = [descriptors countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v16)
   {
     v17 = v16;
@@ -1214,60 +1214,60 @@ LABEL_11:
       {
         if (*v35 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(descriptors);
         }
 
-        v20 = [*(*(&v34 + 1) + 8 * i) UUID];
+        uUID = [*(*(&v34 + 1) + 8 * i) UUID];
         v21 = [CBUUID UUIDWithString:CBUUIDClientCharacteristicConfigurationString];
-        v22 = [v20 isEqual:v21];
+        v22 = [uUID isEqual:v21];
 
         if (v22)
         {
 
           v24 = qword_1000DDBC8;
-          v9 = v33;
+          characteristicCopy = v33;
           if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
           {
             sub_100077A50(v24, v33);
           }
 
-          v25 = [(DoAPClientService *)self StartStreamingCharacteristic];
+          startStreamingCharacteristic2 = [(DoAPClientService *)self StartStreamingCharacteristic];
 
-          if (v25)
+          if (startStreamingCharacteristic2)
           {
-            v26 = [(DoAPClientService *)self StartStreamingCharacteristic];
-            [v8 setNotifyValue:1 forCharacteristic:v26];
+            startStreamingCharacteristic3 = [(DoAPClientService *)self StartStreamingCharacteristic];
+            [peripheralCopy setNotifyValue:1 forCharacteristic:startStreamingCharacteristic3];
           }
 
-          v27 = [(DoAPClientService *)self StopStreamingCharacteristic];
+          stopStreamingCharacteristic2 = [(DoAPClientService *)self StopStreamingCharacteristic];
 
-          if (v27)
+          if (stopStreamingCharacteristic2)
           {
-            v28 = [(DoAPClientService *)self StopStreamingCharacteristic];
-            [v8 setNotifyValue:1 forCharacteristic:v28];
+            stopStreamingCharacteristic3 = [(DoAPClientService *)self StopStreamingCharacteristic];
+            [peripheralCopy setNotifyValue:1 forCharacteristic:stopStreamingCharacteristic3];
           }
 
-          v29 = [(DoAPClientService *)self SendDataCharacteristic];
+          sendDataCharacteristic2 = [(DoAPClientService *)self SendDataCharacteristic];
 
-          if (v29)
+          if (sendDataCharacteristic2)
           {
-            v30 = [(DoAPClientService *)self SendDataCharacteristic];
-            [v8 setNotifyValue:1 forCharacteristic:v30];
+            sendDataCharacteristic3 = [(DoAPClientService *)self SendDataCharacteristic];
+            [peripheralCopy setNotifyValue:1 forCharacteristic:sendDataCharacteristic3];
           }
 
-          v31 = [(DoAPClientService *)self EventIndicatorCharacteristic];
+          eventIndicatorCharacteristic2 = [(DoAPClientService *)self EventIndicatorCharacteristic];
 
-          if (v31)
+          if (eventIndicatorCharacteristic2)
           {
-            v32 = [(DoAPClientService *)self EventIndicatorCharacteristic];
-            [v8 setNotifyValue:1 forCharacteristic:v32];
+            eventIndicatorCharacteristic3 = [(DoAPClientService *)self EventIndicatorCharacteristic];
+            [peripheralCopy setNotifyValue:1 forCharacteristic:eventIndicatorCharacteristic3];
           }
 
           goto LABEL_2;
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      v17 = [descriptors countByEnumeratingWithState:&v34 objects:v38 count:16];
       if (v17)
       {
         continue;
@@ -1278,7 +1278,7 @@ LABEL_11:
   }
 
   v23 = qword_1000DDBC8;
-  v9 = v33;
+  characteristicCopy = v33;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
   {
     sub_100077B04(v23, v33);
@@ -1300,8 +1300,8 @@ LABEL_2:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(DoAPClientService *)self doapDevices];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  doapDevices = [(DoAPClientService *)self doapDevices];
+  v5 = [doapDevices countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1312,7 +1312,7 @@ LABEL_5:
     {
       if (*v12 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(doapDevices);
       }
 
       if ([*(*(&v11 + 1) + 8 * v8) state] != 8)
@@ -1322,7 +1322,7 @@ LABEL_5:
 
       if (v6 == ++v8)
       {
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+        v6 = [doapDevices countByEnumeratingWithState:&v11 objects:v16 count:16];
         if (v6)
         {
           goto LABEL_5;
@@ -1344,50 +1344,50 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Remove all DoAP devices", buf, 2u);
     }
 
-    v10 = [(DoAPClientService *)self codecList];
-    [v10 removeAllObjects];
+    codecList = [(DoAPClientService *)self codecList];
+    [codecList removeAllObjects];
 
-    v4 = [(DoAPClientService *)self doapDevices];
-    [v4 removeAllObjects];
+    doapDevices = [(DoAPClientService *)self doapDevices];
+    [doapDevices removeAllObjects];
   }
 }
 
-- (void)selectCodec:(id)a3
+- (void)selectCodec:(id)codec
 {
-  v4 = a3;
-  v5 = [(DoAPClientService *)self SelectedCodecCharacteristic];
-  [(DoAPClientService *)self writeData:v4 forCharacteristic:v5 withResponse:0];
+  codecCopy = codec;
+  selectedCodecCharacteristic = [(DoAPClientService *)self SelectedCodecCharacteristic];
+  [(DoAPClientService *)self writeData:codecCopy forCharacteristic:selectedCodecCharacteristic withResponse:0];
 }
 
-- (void)startStreaming:(id)a3
+- (void)startStreaming:(id)streaming
 {
-  v4 = a3;
-  v5 = [(DoAPClientService *)self StartStreamingCharacteristic];
-  [(DoAPClientService *)self writeData:v4 forCharacteristic:v5 withResponse:0];
+  streamingCopy = streaming;
+  startStreamingCharacteristic = [(DoAPClientService *)self StartStreamingCharacteristic];
+  [(DoAPClientService *)self writeData:streamingCopy forCharacteristic:startStreamingCharacteristic withResponse:0];
 }
 
-- (void)stopStreaming:(id)a3
+- (void)stopStreaming:(id)streaming
 {
-  v4 = a3;
-  v5 = [(DoAPClientService *)self StopStreamingCharacteristic];
-  [(DoAPClientService *)self writeData:v4 forCharacteristic:v5 withResponse:0];
+  streamingCopy = streaming;
+  stopStreamingCharacteristic = [(DoAPClientService *)self StopStreamingCharacteristic];
+  [(DoAPClientService *)self writeData:streamingCopy forCharacteristic:stopStreamingCharacteristic withResponse:0];
 }
 
-- (void)eventIndicator:(id)a3
+- (void)eventIndicator:(id)indicator
 {
-  v4 = a3;
-  v5 = [(DoAPClientService *)self EventIndicatorCharacteristic];
-  [(DoAPClientService *)self writeData:v4 forCharacteristic:v5 withResponse:0];
+  indicatorCopy = indicator;
+  eventIndicatorCharacteristic = [(DoAPClientService *)self EventIndicatorCharacteristic];
+  [(DoAPClientService *)self writeData:indicatorCopy forCharacteristic:eventIndicatorCharacteristic withResponse:0];
 }
 
-- (void)writeData:(id)a3 forCharacteristic:(id)a4 withResponse:(BOOL)a5
+- (void)writeData:(id)data forCharacteristic:(id)characteristic withResponse:(BOOL)response
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  characteristicCopy = characteristic;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
   {
     sub_100077BC8();
-    if (a5)
+    if (response)
     {
       goto LABEL_4;
     }
@@ -1395,40 +1395,40 @@ LABEL_11:
     goto LABEL_3;
   }
 
-  if (!a5)
+  if (!response)
   {
 LABEL_3:
-    v10 = [(ClientService *)self peripheral];
-    [v10 writeValue:v8 forCharacteristic:v9 type:1];
+    peripheral = [(ClientService *)self peripheral];
+    [peripheral writeValue:dataCopy forCharacteristic:characteristicCopy type:1];
   }
 
 LABEL_4:
 }
 
-- (void)handleInputData:(id)a3 targetDevice:(id)a4
+- (void)handleInputData:(id)data targetDevice:(id)device
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 value];
-  v8 = [v7 bytes];
+  dataCopy = data;
+  deviceCopy = device;
+  value = [dataCopy value];
+  bytes = [value bytes];
 
-  v9 = [v5 value];
-  v10 = [v9 length];
+  value2 = [dataCopy value];
+  v10 = [value2 length];
 
-  v11 = [v5 UUID];
+  uUID = [dataCopy UUID];
   v12 = [CBUUID UUIDWithString:CBUUIDStartStreamingCharacteristicString];
-  v13 = [v11 isEqual:v12];
+  v13 = [uUID isEqual:v12];
 
   if (v13)
   {
-    [v6 handleStartStreaming];
+    [deviceCopy handleStartStreaming];
   }
 
   else
   {
-    v14 = [v5 UUID];
+    uUID2 = [dataCopy UUID];
     v15 = [CBUUID UUIDWithString:CBUUIDStopStreamingCharacteristicString];
-    v16 = [v14 isEqual:v15];
+    v16 = [uUID2 isEqual:v15];
 
     if (v16)
     {
@@ -1442,29 +1442,29 @@ LABEL_4:
 
       else
       {
-        [v6 handleStopStreaming:v8[2]];
+        [deviceCopy handleStopStreaming:bytes[2]];
       }
     }
 
     else
     {
-      v17 = [v5 UUID];
+      uUID3 = [dataCopy UUID];
       v18 = [CBUUID UUIDWithString:CBUUIDSendDataCharacteristicString];
-      v19 = [v17 isEqual:v18];
+      v19 = [uUID3 isEqual:v18];
 
       if (v19)
       {
         if (v10 > 4)
         {
-          v24 = *(v8 + 3);
+          v24 = *(bytes + 3);
           if (v10 - 5 == v24)
           {
             if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
             {
-              sub_100077D28(v8);
+              sub_100077D28(bytes);
             }
 
-            [v6 handleAudioData:v8 + 5 dataLength:v24];
+            [deviceCopy handleAudioData:bytes + 5 dataLength:v24];
           }
 
           else if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
@@ -1481,9 +1481,9 @@ LABEL_4:
 
       else
       {
-        v20 = [v5 UUID];
+        uUID4 = [dataCopy UUID];
         v21 = [CBUUID UUIDWithString:CBUUIDEventIndicatorCharacteristicString];
-        v22 = [v20 isEqual:v21];
+        v22 = [uUID4 isEqual:v21];
 
         if (v22)
         {
@@ -1504,10 +1504,10 @@ LABEL_4:
 
             else
             {
-              v23 = (v8 + 4);
+              v23 = (bytes + 4);
             }
 
-            [v6 handleEventIndicator:v8[2] eventValue:v23];
+            [deviceCopy handleEventIndicator:bytes[2] eventValue:v23];
           }
         }
 
@@ -1520,11 +1520,11 @@ LABEL_4:
   }
 }
 
-- (id)uuidToString:(id)a3
+- (id)uuidToString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = [CBUUID UUIDWithString:CBUUIDSupportedCodecsCharacteristicString];
-  v5 = [v3 isEqual:v4];
+  v5 = [stringCopy isEqual:v4];
 
   if (v5)
   {
@@ -1534,7 +1534,7 @@ LABEL_4:
   else
   {
     v7 = [CBUUID UUIDWithString:CBUUIDSelectedCodecCharacteristicString];
-    v8 = [v3 isEqual:v7];
+    v8 = [stringCopy isEqual:v7];
 
     if (v8)
     {
@@ -1544,7 +1544,7 @@ LABEL_4:
     else
     {
       v9 = [CBUUID UUIDWithString:CBUUIDStartStreamingCharacteristicString];
-      v10 = [v3 isEqual:v9];
+      v10 = [stringCopy isEqual:v9];
 
       if (v10)
       {
@@ -1554,7 +1554,7 @@ LABEL_4:
       else
       {
         v11 = [CBUUID UUIDWithString:CBUUIDStopStreamingCharacteristicString];
-        v12 = [v3 isEqual:v11];
+        v12 = [stringCopy isEqual:v11];
 
         if (v12)
         {
@@ -1564,7 +1564,7 @@ LABEL_4:
         else
         {
           v13 = [CBUUID UUIDWithString:CBUUIDSendDataCharacteristicString];
-          v14 = [v3 isEqual:v13];
+          v14 = [stringCopy isEqual:v13];
 
           if (v14)
           {
@@ -1574,7 +1574,7 @@ LABEL_4:
           else
           {
             v15 = [CBUUID UUIDWithString:CBUUIDEventIndicatorCharacteristicString];
-            v16 = [v3 isEqual:v15];
+            v16 = [stringCopy isEqual:v15];
 
             if (v16)
             {

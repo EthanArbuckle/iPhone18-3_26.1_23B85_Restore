@@ -1,25 +1,25 @@
 @interface ILMessageFilterExtensionHostContext
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (void)deferQueryRequestToNetworkWithReply:(id)a3;
-- (void)deferReportRequestToNetworkWithReply:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (void)deferQueryRequestToNetworkWithReply:(id)reply;
+- (void)deferReportRequestToNetworkWithReply:(id)reply;
 - (void)finish;
-- (void)handleCapabilitiesQueryRequest:(id)a3 completion:(id)a4;
-- (void)handleQueryRequest:(id)a3 completion:(id)a4;
-- (void)handleReportRequest:(id)a3 completion:(id)a4;
+- (void)handleCapabilitiesQueryRequest:(id)request completion:(id)completion;
+- (void)handleQueryRequest:(id)request completion:(id)completion;
+- (void)handleReportRequest:(id)request completion:(id)completion;
 @end
 
 @implementation ILMessageFilterExtensionHostContext
 
-- (void)handleQueryRequest:(id)a3 completion:(id)a4
+- (void)handleQueryRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __69__ILMessageFilterExtensionHostContext_handleQueryRequest_completion___block_invoke;
   v13[3] = &unk_278A5E3D0;
-  v7 = v6;
+  v7 = completionCopy;
   v14 = v7;
-  v8 = a3;
+  requestCopy = request;
   v9 = [(ILMessageFilterExtensionHostContext *)self remoteObjectProxyWithErrorHandler:v13];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -27,7 +27,7 @@
   v11[3] = &unk_278A5E3F8;
   v12 = v7;
   v10 = v7;
-  [v9 handleQueryRequest:v8 reply:v11];
+  [v9 handleQueryRequest:requestCopy reply:v11];
 }
 
 void __69__ILMessageFilterExtensionHostContext_handleQueryRequest_completion___block_invoke(uint64_t a1, void *a2)
@@ -58,16 +58,16 @@ void __69__ILMessageFilterExtensionHostContext_handleQueryRequest_completion___b
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleReportRequest:(id)a3 completion:(id)a4
+- (void)handleReportRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __70__ILMessageFilterExtensionHostContext_handleReportRequest_completion___block_invoke;
   v13[3] = &unk_278A5E3D0;
-  v7 = v6;
+  v7 = completionCopy;
   v14 = v7;
-  v8 = a3;
+  requestCopy = request;
   v9 = [(ILMessageFilterExtensionHostContext *)self remoteObjectProxyWithErrorHandler:v13];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -75,7 +75,7 @@ void __69__ILMessageFilterExtensionHostContext_handleQueryRequest_completion___b
   v11[3] = &unk_278A5E420;
   v12 = v7;
   v10 = v7;
-  [v9 handleReportRequest:v8 reply:v11];
+  [v9 handleReportRequest:requestCopy reply:v11];
 }
 
 void __70__ILMessageFilterExtensionHostContext_handleReportRequest_completion___block_invoke(uint64_t a1, void *a2)
@@ -102,16 +102,16 @@ uint64_t __70__ILMessageFilterExtensionHostContext_handleReportRequest_completio
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)handleCapabilitiesQueryRequest:(id)a3 completion:(id)a4
+- (void)handleCapabilitiesQueryRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __81__ILMessageFilterExtensionHostContext_handleCapabilitiesQueryRequest_completion___block_invoke;
   v13[3] = &unk_278A5E3D0;
-  v7 = v6;
+  v7 = completionCopy;
   v14 = v7;
-  v8 = a3;
+  requestCopy = request;
   v9 = [(ILMessageFilterExtensionHostContext *)self remoteObjectProxyWithErrorHandler:v13];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -119,7 +119,7 @@ uint64_t __70__ILMessageFilterExtensionHostContext_handleReportRequest_completio
   v11[3] = &unk_278A5E448;
   v12 = v7;
   v10 = v7;
-  [v9 handleCapabilitiesQueryRequest:v8 reply:v11];
+  [v9 handleCapabilitiesQueryRequest:requestCopy reply:v11];
 }
 
 void __81__ILMessageFilterExtensionHostContext_handleCapabilitiesQueryRequest_completion___block_invoke(uint64_t a1, void *a2)
@@ -166,15 +166,15 @@ void __45__ILMessageFilterExtensionHostContext_finish__block_invoke(uint64_t a1,
   }
 }
 
-- (void)deferQueryRequestToNetworkWithReply:(id)a3
+- (void)deferQueryRequestToNetworkWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(ILMessageFilterExtensionHostContext *)self deferQueryRequestToNetwork];
+  replyCopy = reply;
+  deferQueryRequestToNetwork = [(ILMessageFilterExtensionHostContext *)self deferQueryRequestToNetwork];
 
-  if (v5)
+  if (deferQueryRequestToNetwork)
   {
-    v8 = [(ILMessageFilterExtensionHostContext *)self deferQueryRequestToNetwork];
-    v8[2](v8, v4);
+    deferQueryRequestToNetwork2 = [(ILMessageFilterExtensionHostContext *)self deferQueryRequestToNetwork];
+    deferQueryRequestToNetwork2[2](deferQueryRequestToNetwork2, replyCopy);
   }
 
   else
@@ -186,19 +186,19 @@ void __45__ILMessageFilterExtensionHostContext_finish__block_invoke(uint64_t a1,
     }
 
     v7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.IdentityLookup.error.messagefilter" code:1 userInfo:0];
-    (*(v4 + 2))(v4, 0, v7);
+    (*(replyCopy + 2))(replyCopy, 0, v7);
   }
 }
 
-- (void)deferReportRequestToNetworkWithReply:(id)a3
+- (void)deferReportRequestToNetworkWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(ILMessageFilterExtensionHostContext *)self deferReportRequestToNetwork];
+  replyCopy = reply;
+  deferReportRequestToNetwork = [(ILMessageFilterExtensionHostContext *)self deferReportRequestToNetwork];
 
-  if (v5)
+  if (deferReportRequestToNetwork)
   {
-    v8 = [(ILMessageFilterExtensionHostContext *)self deferReportRequestToNetwork];
-    v8[2](v8, v4);
+    deferReportRequestToNetwork2 = [(ILMessageFilterExtensionHostContext *)self deferReportRequestToNetwork];
+    deferReportRequestToNetwork2[2](deferReportRequestToNetwork2, replyCopy);
   }
 
   else
@@ -210,15 +210,15 @@ void __45__ILMessageFilterExtensionHostContext_finish__block_invoke(uint64_t a1,
     }
 
     v7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.IdentityLookup.error.messagefilter" code:1 userInfo:0];
-    (*(v4 + 2))(v4, 0, v7);
+    (*(replyCopy + 2))(replyCopy, 0, v7);
   }
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ILMessageFilterExtensionHostContext *)self _auxiliaryConnection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  _auxiliaryConnection = [(ILMessageFilterExtensionHostContext *)self _auxiliaryConnection];
+  v6 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }

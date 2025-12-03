@@ -1,21 +1,21 @@
 @interface CLSInvestigation
-+ (id)investigationWithProfiles:(id)a3 clueDates:(id)a4 clueLocations:(id)a5 cluePeoples:(id)a6 helper:(id)a7;
-+ (id)investigationWithProfiles:(id)a3 helper:(id)a4;
-- (CLSInvestigation)initWithClueCollection:(id)a3 profiles:(id)a4 helper:(id)a5;
-- (CLSInvestigation)initWithFeeder:(id)a3 profiles:(id)a4 helper:(id)a5;
-- (CLSInvestigation)initWithHelper:(id)a3;
-- (CLSInvestigation)initWithProfiles:(id)a3 helper:(id)a4;
++ (id)investigationWithProfiles:(id)profiles clueDates:(id)dates clueLocations:(id)locations cluePeoples:(id)peoples helper:(id)helper;
++ (id)investigationWithProfiles:(id)profiles helper:(id)helper;
+- (CLSInvestigation)initWithClueCollection:(id)collection profiles:(id)profiles helper:(id)helper;
+- (CLSInvestigation)initWithFeeder:(id)feeder profiles:(id)profiles helper:(id)helper;
+- (CLSInvestigation)initWithHelper:(id)helper;
+- (CLSInvestigation)initWithProfiles:(id)profiles helper:(id)helper;
 - (CLSInvestigationDelegate)delegate;
 - (CLSInvestigationInterviewDelegate)interviewDelegate;
-- (id)_traceStringForType:(unint64_t)a3;
-- (id)description:(BOOL)a3;
+- (id)_traceStringForType:(unint64_t)type;
+- (id)description:(BOOL)description;
 - (id)sampleOfItems;
 - (id)tracesDescription;
 - (unint64_t)numberOfItems;
-- (void)_didEndInvestigation:(BOOL)a3;
-- (void)_willBeginInvestigation:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setInterviewDelegate:(id)a3;
+- (void)_didEndInvestigation:(BOOL)investigation;
+- (void)_willBeginInvestigation:(id)investigation;
+- (void)setDelegate:(id)delegate;
+- (void)setInterviewDelegate:(id)delegate;
 @end
 
 @implementation CLSInvestigation
@@ -38,17 +38,17 @@
 {
   v33 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v4 = self;
-  objc_sync_enter(v4);
-  p_isa = &v4->super.isa;
-  if ([(NSMutableDictionary *)v4->_tracesLogsByURIs count])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  p_isa = &selfCopy->super.isa;
+  if ([(NSMutableDictionary *)selfCopy->_tracesLogsByURIs count])
   {
     [v3 appendFormat:@"<Traces>"];
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    obj = v4->_tracesLogsURIs;
+    obj = selfCopy->_tracesLogsURIs;
     v20 = [(NSMutableArray *)obj countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v20)
     {
@@ -114,16 +114,16 @@
   return v3;
 }
 
-- (id)_traceStringForType:(unint64_t)a3
+- (id)_traceStringForType:(unint64_t)type
 {
-  if (a3 - 1 > 4)
+  if (type - 1 > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_2788A7D38[a3 - 1];
+    return off_2788A7D38[type - 1];
   }
 }
 
@@ -132,16 +132,16 @@
   if ((*&self->_investigationFlags & 8) != 0 && (WeakRetained = objc_loadWeakRetained(&self->_interviewDelegate)) != 0)
   {
     v4 = WeakRetained;
-    v5 = [WeakRetained sampleOfItemsInInvestigation:self];
+    indexSet = [WeakRetained sampleOfItemsInInvestigation:self];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCAB58] indexSet];
-    v6 = [(CLSInvestigation *)self numberOfItems];
-    if (v6)
+    indexSet = [MEMORY[0x277CCAB58] indexSet];
+    numberOfItems = [(CLSInvestigation *)self numberOfItems];
+    if (numberOfItems)
     {
-      v7 = v6;
+      v7 = numberOfItems;
       precision = self->_precision;
       v9 = 0.2;
       v10 = 0.5;
@@ -164,19 +164,19 @@
       }
 
       v13 = vcvtmd_u64_f64(1.0 / v9);
-      if (v6 / v13 > v12)
+      if (numberOfItems / v13 > v12)
       {
-        v13 = v6 / v12;
+        v13 = numberOfItems / v12;
       }
 
       for (i = 0; i < v7; i += v13)
       {
-        [v5 addIndex:i];
+        [indexSet addIndex:i];
       }
     }
   }
 
-  return v5;
+  return indexSet;
 }
 
 - (unint64_t)numberOfItems
@@ -198,7 +198,7 @@
   return v5;
 }
 
-- (void)_didEndInvestigation:(BOOL)a3
+- (void)_didEndInvestigation:(BOOL)investigation
 {
   obj = self;
   objc_sync_enter(obj);
@@ -218,28 +218,28 @@
   objc_sync_exit(v3);
 }
 
-- (void)_willBeginInvestigation:(id)a3
+- (void)_willBeginInvestigation:(id)investigation
 {
-  obj = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  objc_storeWeak(&v4->_inspector, obj);
-  if (*&v4->_investigationFlags)
+  obj = investigation;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeWeak(&selfCopy->_inspector, obj);
+  if (*&selfCopy->_investigationFlags)
   {
-    WeakRetained = objc_loadWeakRetained(&v4->_delegate);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
     v6 = WeakRetained;
     if (WeakRetained)
     {
-      [WeakRetained investigationWillBegin:v4];
+      [WeakRetained investigationWillBegin:selfCopy];
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)description:(BOOL)a3
+- (id)description:(BOOL)description
 {
-  v3 = a3;
+  descriptionCopy = description;
   v23 = *MEMORY[0x277D85DE8];
   v5 = [MEMORY[0x277CCAB68] stringWithFormat:@"\n<Investigation> [%@]", self->_uuid];
   [v5 appendFormat:@"\n\n\tprofiles:"];
@@ -277,19 +277,19 @@
   v14 = [v13 cls_indentBy:1];
   [v5 appendFormat:@"\n\n%@", v14];
 
-  if (v3)
+  if (descriptionCopy)
   {
-    v15 = [(CLSInvestigation *)self tracesDescription];
-    v16 = [v15 cls_indentBy:1];
+    tracesDescription = [(CLSInvestigation *)self tracesDescription];
+    v16 = [tracesDescription cls_indentBy:1];
     [v5 appendFormat:@"\n\n%@", v16];
   }
 
   return v5;
 }
 
-- (void)setInterviewDelegate:(id)a3
+- (void)setInterviewDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_interviewDelegate);
 
   if (WeakRetained != obj)
@@ -320,9 +320,9 @@
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -343,13 +343,13 @@
   }
 }
 
-- (CLSInvestigation)initWithProfiles:(id)a3 helper:(id)a4
+- (CLSInvestigation)initWithProfiles:(id)profiles helper:(id)helper
 {
-  v6 = a3;
-  v7 = [(CLSInvestigation *)self initWithHelper:a4];
+  profilesCopy = profiles;
+  v7 = [(CLSInvestigation *)self initWithHelper:helper];
   if (v7)
   {
-    v8 = [MEMORY[0x277CBEB18] arrayWithArray:v6];
+    v8 = [MEMORY[0x277CBEB18] arrayWithArray:profilesCopy];
     profiles = v7->_profiles;
     v7->_profiles = v8;
   }
@@ -357,17 +357,17 @@
   return v7;
 }
 
-- (CLSInvestigation)initWithHelper:(id)a3
+- (CLSInvestigation)initWithHelper:(id)helper
 {
-  v5 = a3;
+  helperCopy = helper;
   v22.receiver = self;
   v22.super_class = CLSInvestigation;
   v6 = [(CLSInvestigation *)&v22 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CCACA8] cls_generateUUID];
+    cls_generateUUID = [MEMORY[0x277CCACA8] cls_generateUUID];
     uuid = v6->_uuid;
-    v6->_uuid = v7;
+    v6->_uuid = cls_generateUUID;
 
     feeder = v6->_feeder;
     v6->_feeder = 0;
@@ -382,8 +382,8 @@
 
     objc_storeWeak(&v6->_inspector, 0);
     v12 = [CLSClueCollection alloc];
-    v13 = [v5 serviceManager];
-    v14 = [(CLSClueCollection *)v12 initWithServiceManager:v13];
+    serviceManager = [helperCopy serviceManager];
+    v14 = [(CLSClueCollection *)v12 initWithServiceManager:serviceManager];
     clueCollection = v6->_clueCollection;
     v6->_clueCollection = v14;
 
@@ -391,7 +391,7 @@
     v6->_precision = 2;
     v6->_informants = 0;
 
-    objc_storeStrong(&v6->_helper, a3);
+    objc_storeStrong(&v6->_helper, helper);
     v17 = objc_opt_new();
     tracesLogsByURIs = v6->_tracesLogsByURIs;
     v6->_tracesLogsByURIs = v17;
@@ -407,35 +407,35 @@
   return v6;
 }
 
-- (CLSInvestigation)initWithFeeder:(id)a3 profiles:(id)a4 helper:(id)a5
+- (CLSInvestigation)initWithFeeder:(id)feeder profiles:(id)profiles helper:(id)helper
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [(CLSInvestigation *)self initWithHelper:a5];
+  feederCopy = feeder;
+  profilesCopy = profiles;
+  v11 = [(CLSInvestigation *)self initWithHelper:helper];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_feeder, a3);
-    v13 = [MEMORY[0x277CBEB18] arrayWithArray:v10];
+    objc_storeStrong(&v11->_feeder, feeder);
+    v13 = [MEMORY[0x277CBEB18] arrayWithArray:profilesCopy];
     profiles = v12->_profiles;
     v12->_profiles = v13;
 
-    [(CLSInvestigation *)v12 setInterviewDelegate:v9];
+    [(CLSInvestigation *)v12 setInterviewDelegate:feederCopy];
   }
 
   return v12;
 }
 
-- (CLSInvestigation)initWithClueCollection:(id)a3 profiles:(id)a4 helper:(id)a5
+- (CLSInvestigation)initWithClueCollection:(id)collection profiles:(id)profiles helper:(id)helper
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [(CLSInvestigation *)self initWithHelper:a5];
+  collectionCopy = collection;
+  profilesCopy = profiles;
+  v11 = [(CLSInvestigation *)self initWithHelper:helper];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_clueCollection, a3);
-    v13 = [MEMORY[0x277CBEB18] arrayWithArray:v10];
+    objc_storeStrong(&v11->_clueCollection, collection);
+    v13 = [MEMORY[0x277CBEB18] arrayWithArray:profilesCopy];
     profiles = v12->_profiles;
     v12->_profiles = v13;
   }
@@ -443,51 +443,51 @@
   return v12;
 }
 
-+ (id)investigationWithProfiles:(id)a3 clueDates:(id)a4 clueLocations:(id)a5 cluePeoples:(id)a6 helper:(id)a7
++ (id)investigationWithProfiles:(id)profiles clueDates:(id)dates clueLocations:(id)locations cluePeoples:(id)peoples helper:(id)helper
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = a3;
-  v16 = [[CLSInvestigation alloc] initWithProfiles:v15 helper:v14];
+  datesCopy = dates;
+  locationsCopy = locations;
+  peoplesCopy = peoples;
+  helperCopy = helper;
+  profilesCopy = profiles;
+  v16 = [[CLSInvestigation alloc] initWithProfiles:profilesCopy helper:helperCopy];
 
   v17 = objc_opt_new();
-  if (v11 && [v11 count])
+  if (datesCopy && [datesCopy count])
   {
-    v18 = [v14 serviceManager];
-    v19 = [CLSInputTimeClue clueWithDates:v11 serviceManager:v18];
+    serviceManager = [helperCopy serviceManager];
+    v19 = [CLSInputTimeClue clueWithDates:datesCopy serviceManager:serviceManager];
     v27[0] = v19;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
     [v17 addObjectsFromArray:v20];
   }
 
-  if (v12 && [v12 count])
+  if (locationsCopy && [locationsCopy count])
   {
-    v21 = [v14 locationCache];
-    v22 = [CLSInputLocationClue cluesWithLocations:v12 locationCache:v21];
+    locationCache = [helperCopy locationCache];
+    v22 = [CLSInputLocationClue cluesWithLocations:locationsCopy locationCache:locationCache];
     [v17 addObjectsFromArray:v22];
   }
 
-  if (v13 && [v13 count])
+  if (peoplesCopy && [peoplesCopy count])
   {
-    v23 = [v14 serviceManager];
-    v24 = [CLSInputPeopleClue cluesWithPeoples:v13 serviceManager:v23];
+    serviceManager2 = [helperCopy serviceManager];
+    v24 = [CLSInputPeopleClue cluesWithPeoples:peoplesCopy serviceManager:serviceManager2];
     [v17 addObjectsFromArray:v24];
   }
 
-  v25 = [(CLSInvestigation *)v16 clueCollection];
-  [v25 mergeClues:v17];
+  clueCollection = [(CLSInvestigation *)v16 clueCollection];
+  [clueCollection mergeClues:v17];
 
   return v16;
 }
 
-+ (id)investigationWithProfiles:(id)a3 helper:(id)a4
++ (id)investigationWithProfiles:(id)profiles helper:(id)helper
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CLSInvestigation alloc] initWithProfiles:v6 helper:v5];
+  helperCopy = helper;
+  profilesCopy = profiles;
+  v7 = [[CLSInvestigation alloc] initWithProfiles:profilesCopy helper:helperCopy];
 
   return v7;
 }

@@ -1,21 +1,21 @@
 @interface TSCH3DProjector
-+ (id)projectorWithProjection:(void *)a3 transform:(void *)a4;
-- (TSCH3DProjector)initWithProjection:(void *)a3 transform:(void *)a4;
++ (id)projectorWithProjection:(void *)projection transform:(void *)transform;
+- (TSCH3DProjector)initWithProjection:(void *)projection transform:(void *)transform;
 - (id).cxx_construct;
-- (line<glm::detail::tvec3<float>>)objectSpaceLineFromPoint:(SEL)a3;
+- (line<glm::detail::tvec3<float>>)objectSpaceLineFromPoint:(SEL)point;
 @end
 
 @implementation TSCH3DProjector
 
-+ (id)projectorWithProjection:(void *)a3 transform:(void *)a4
++ (id)projectorWithProjection:(void *)projection transform:(void *)transform
 {
-  v6 = [a1 alloc];
-  v11 = objc_msgSend_initWithProjection_transform_(v6, v7, v8, v9, v10, a3, a4);
+  v6 = [self alloc];
+  v11 = objc_msgSend_initWithProjection_transform_(v6, v7, v8, v9, v10, projection, transform);
 
   return v11;
 }
 
-- (TSCH3DProjector)initWithProjection:(void *)a3 transform:(void *)a4
+- (TSCH3DProjector)initWithProjection:(void *)projection transform:(void *)transform
 {
   v12.receiver = self;
   v12.super_class = TSCH3DProjector;
@@ -23,38 +23,38 @@
   v7 = v6;
   if (v6)
   {
-    *(v6 + 2) = *a3;
-    *(v6 + 3) = *(a3 + 1);
-    *(v6 + 4) = *(a3 + 2);
-    *(v6 + 5) = *(a3 + 3);
-    *(v6 + 6) = *(a3 + 4);
-    *(v6 + 7) = *(a3 + 5);
-    *(v6 + 8) = *(a3 + 6);
-    *(v6 + 9) = *(a3 + 7);
-    *(v6 + 10) = *(a3 + 8);
-    *(v6 + 11) = *(a3 + 9);
-    *(v6 + 12) = *(a3 + 10);
-    *(v6 + 13) = *(a3 + 11);
-    *(v6 + 14) = *(a3 + 12);
-    *(v6 + 15) = *(a3 + 13);
-    *(v6 + 16) = *(a3 + 14);
-    *(v6 + 17) = *(a3 + 15);
-    *(v6 + 18) = *a4;
-    *(v6 + 19) = *(a4 + 1);
-    *(v6 + 20) = *(a4 + 2);
-    *(v6 + 21) = *(a4 + 3);
-    *(v6 + 22) = *(a4 + 4);
-    *(v6 + 23) = *(a4 + 5);
-    *(v6 + 24) = *(a4 + 6);
-    *(v6 + 25) = *(a4 + 7);
-    *(v6 + 26) = *(a4 + 8);
-    *(v6 + 27) = *(a4 + 9);
-    *(v6 + 28) = *(a4 + 10);
-    *(v6 + 29) = *(a4 + 11);
-    *(v6 + 30) = *(a4 + 12);
-    *(v6 + 31) = *(a4 + 13);
-    *(v6 + 32) = *(a4 + 14);
-    *(v6 + 33) = *(a4 + 15);
+    *(v6 + 2) = *projection;
+    *(v6 + 3) = *(projection + 1);
+    *(v6 + 4) = *(projection + 2);
+    *(v6 + 5) = *(projection + 3);
+    *(v6 + 6) = *(projection + 4);
+    *(v6 + 7) = *(projection + 5);
+    *(v6 + 8) = *(projection + 6);
+    *(v6 + 9) = *(projection + 7);
+    *(v6 + 10) = *(projection + 8);
+    *(v6 + 11) = *(projection + 9);
+    *(v6 + 12) = *(projection + 10);
+    *(v6 + 13) = *(projection + 11);
+    *(v6 + 14) = *(projection + 12);
+    *(v6 + 15) = *(projection + 13);
+    *(v6 + 16) = *(projection + 14);
+    *(v6 + 17) = *(projection + 15);
+    *(v6 + 18) = *transform;
+    *(v6 + 19) = *(transform + 1);
+    *(v6 + 20) = *(transform + 2);
+    *(v6 + 21) = *(transform + 3);
+    *(v6 + 22) = *(transform + 4);
+    *(v6 + 23) = *(transform + 5);
+    *(v6 + 24) = *(transform + 6);
+    *(v6 + 25) = *(transform + 7);
+    *(v6 + 26) = *(transform + 8);
+    *(v6 + 27) = *(transform + 9);
+    *(v6 + 28) = *(transform + 10);
+    *(v6 + 29) = *(transform + 11);
+    *(v6 + 30) = *(transform + 12);
+    *(v6 + 31) = *(transform + 13);
+    *(v6 + 32) = *(transform + 14);
+    *(v6 + 33) = *(transform + 15);
     sub_2761558A0((v6 + 8), (v6 + 72), v11);
     v8 = v11[1];
     *(v7 + 136) = v11[0];
@@ -67,9 +67,9 @@
   return v7;
 }
 
-- (line<glm::detail::tvec3<float>>)objectSpaceLineFromPoint:(SEL)a3
+- (line<glm::detail::tvec3<float>>)objectSpaceLineFromPoint:(SEL)point
 {
-  v9 = objc_msgSend_combined(self, a3, v4, v5, v6);
+  v9 = objc_msgSend_combined(self, point, v4, v5, v6);
 
   sub_276154AF4(a4, v9, retstr, v10);
   return result;

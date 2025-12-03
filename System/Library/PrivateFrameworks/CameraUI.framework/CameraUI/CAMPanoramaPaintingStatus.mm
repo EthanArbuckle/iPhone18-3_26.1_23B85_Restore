@@ -1,16 +1,16 @@
 @interface CAMPanoramaPaintingStatus
-- (CAMPanoramaPaintingStatus)initWithSpeed:(double)a3 cropRectangle:(CGRect)a4 normalizedBaselineOffset:(double)a5;
+- (CAMPanoramaPaintingStatus)initWithSpeed:(double)speed cropRectangle:(CGRect)rectangle normalizedBaselineOffset:(double)offset;
 - (CGRect)cropRectangle;
 @end
 
 @implementation CAMPanoramaPaintingStatus
 
-- (CAMPanoramaPaintingStatus)initWithSpeed:(double)a3 cropRectangle:(CGRect)a4 normalizedBaselineOffset:(double)a5
+- (CAMPanoramaPaintingStatus)initWithSpeed:(double)speed cropRectangle:(CGRect)rectangle normalizedBaselineOffset:(double)offset
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
   v15.receiver = self;
   v15.super_class = CAMPanoramaPaintingStatus;
   v11 = [(CAMPanoramaPaintingStatus *)&v15 init];
@@ -21,8 +21,8 @@
     v11->_cropRectangle.origin.y = y;
     v11->_cropRectangle.size.width = width;
     v11->_cropRectangle.size.height = height;
-    v11->_speed = a3;
-    v11->_normalizedBaselineOffset = a5;
+    v11->_speed = speed;
+    v11->_normalizedBaselineOffset = offset;
     v13 = v11;
   }
 

@@ -1,23 +1,23 @@
 @interface PKPassProvisioningMetadata
-- (PKPassProvisioningMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKPassProvisioningMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassProvisioningMetadata
 
-- (PKPassProvisioningMetadata)initWithCoder:(id)a3
+- (PKPassProvisioningMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = PKPassProvisioningMetadata;
   v5 = [(PKPassProvisioningMetadata *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceDeviceType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceDeviceType"];
     v5->_sourceDeviceType = PKPassProvisioningMetadataSourceDeviceTypeFromString(v6);
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedSourceDeviceDescription"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedSourceDeviceDescription"];
     localizedSourceDeviceDescription = v5->_localizedSourceDeviceDescription;
     v5->_localizedSourceDeviceDescription = v7;
   }
@@ -25,7 +25,7 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (self->_sourceDeviceType == 1)
   {
@@ -37,16 +37,16 @@
     v4 = @"none";
   }
 
-  v5 = a3;
-  [v5 encodeObject:v4 forKey:@"sourceDeviceType"];
-  [v5 encodeObject:self->_localizedSourceDeviceDescription forKey:@"localizedSourceDeviceDescription"];
+  coderCopy = coder;
+  [coderCopy encodeObject:v4 forKey:@"sourceDeviceType"];
+  [coderCopy encodeObject:self->_localizedSourceDeviceDescription forKey:@"localizedSourceDeviceDescription"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(PKPassProvisioningMetadata);
   v5->_sourceDeviceType = self->_sourceDeviceType;
-  v6 = [(NSString *)self->_localizedSourceDeviceDescription copyWithZone:a3];
+  v6 = [(NSString *)self->_localizedSourceDeviceDescription copyWithZone:zone];
   localizedSourceDeviceDescription = v5->_localizedSourceDeviceDescription;
   v5->_localizedSourceDeviceDescription = v6;
 

@@ -1,21 +1,21 @@
 @interface RAPInstructionIncorrectView
-- (RAPInstructionIncorrectView)initWithFrame:(CGRect)a3;
-- (void)setDisplayMode:(int)a3;
+- (RAPInstructionIncorrectView)initWithFrame:(CGRect)frame;
+- (void)setDisplayMode:(int)mode;
 - (void)viewTapped;
 @end
 
 @implementation RAPInstructionIncorrectView
 
-- (void)setDisplayMode:(int)a3
+- (void)setDisplayMode:(int)mode
 {
-  if (self->_displayMode != a3)
+  if (self->_displayMode != mode)
   {
-    self->_displayMode = a3;
-    if (a3 <= 1)
+    self->_displayMode = mode;
+    if (mode <= 1)
     {
-      if (a3)
+      if (mode)
       {
-        if (a3 != 1)
+        if (mode != 1)
         {
           return;
         }
@@ -49,7 +49,7 @@
       goto LABEL_13;
     }
 
-    if (a3 == 2)
+    if (mode == 2)
     {
       [(RAPInstructionIncorrectView *)self setUserInteractionEnabled:1];
       [(UIImageView *)self->_chevronView setAccessibilityIdentifier:@"Collapse instructions"];
@@ -67,7 +67,7 @@ LABEL_13:
       return;
     }
 
-    if (a3 == 3)
+    if (mode == 3)
     {
       [(UIImageView *)self->_chevronView setHidden:1];
 
@@ -108,11 +108,11 @@ LABEL_13:
   }
 }
 
-- (RAPInstructionIncorrectView)initWithFrame:(CGRect)a3
+- (RAPInstructionIncorrectView)initWithFrame:(CGRect)frame
 {
   v30.receiver = self;
   v30.super_class = RAPInstructionIncorrectView;
-  v3 = [(RAPInstructionIncorrectView *)&v30 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RAPInstructionIncorrectView *)&v30 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIImageView alloc];
@@ -142,22 +142,22 @@ LABEL_13:
     [(RAPInstructionIncorrectView *)v3 addGestureRecognizer:v13];
     v14 = +[NSMutableArray array];
     v15 = _NSDictionaryOfVariableBindings(@"_flagView, _chevronView", v3->_flagView, v3->_chevronView, 0);
-    v16 = [(UIImageView *)v3->_flagView centerYAnchor];
-    v17 = [(UIImageView *)v3->_chevronView centerYAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    centerYAnchor = [(UIImageView *)v3->_flagView centerYAnchor];
+    centerYAnchor2 = [(UIImageView *)v3->_chevronView centerYAnchor];
+    v18 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v14 addObject:v18];
 
-    v19 = [(UIImageView *)v3->_chevronView centerYAnchor];
-    v20 = [(RAPInstructionIncorrectView *)v3 centerYAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    centerYAnchor3 = [(UIImageView *)v3->_chevronView centerYAnchor];
+    centerYAnchor4 = [(RAPInstructionIncorrectView *)v3 centerYAnchor];
+    v21 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     [v14 addObject:v21];
 
-    v22 = [(RAPInstructionIncorrectView *)v3 widthAnchor];
-    v23 = [v22 constraintEqualToConstant:44.0];
+    widthAnchor = [(RAPInstructionIncorrectView *)v3 widthAnchor];
+    v23 = [widthAnchor constraintEqualToConstant:44.0];
     [v14 addObject:v23];
 
-    v24 = [(RAPInstructionIncorrectView *)v3 heightAnchor];
-    v25 = [v24 constraintEqualToConstant:44.0];
+    heightAnchor = [(RAPInstructionIncorrectView *)v3 heightAnchor];
+    v25 = [heightAnchor constraintEqualToConstant:44.0];
     [v14 addObject:v25];
 
     v26 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|->=0-[_flagView]-4-[_chevronView]-0-|", 0, 0, v15);

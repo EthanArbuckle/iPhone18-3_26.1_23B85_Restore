@@ -1,22 +1,22 @@
 @interface PSDServiceProgressDelegate
 - (PSDActivity)service;
 - (void)activityDidCompleteSending;
-- (void)activityDidUpdateProgress:(float)a3;
+- (void)activityDidUpdateProgress:(float)progress;
 @end
 
 @implementation PSDServiceProgressDelegate
 
 - (void)activityDidCompleteSending
 {
-  v2 = [(PSDServiceProgressDelegate *)self service];
-  [v2 progressDelegateDidCompleteSending];
+  service = [(PSDServiceProgressDelegate *)self service];
+  [service progressDelegateDidCompleteSending];
 }
 
-- (void)activityDidUpdateProgress:(float)a3
+- (void)activityDidUpdateProgress:(float)progress
 {
-  v5 = [(PSDServiceProgressDelegate *)self service];
-  *&v4 = a3;
-  [v5 progressDelegateDidUpdateProgress:v4];
+  service = [(PSDServiceProgressDelegate *)self service];
+  *&v4 = progress;
+  [service progressDelegateDidUpdateProgress:v4];
 }
 
 - (PSDActivity)service

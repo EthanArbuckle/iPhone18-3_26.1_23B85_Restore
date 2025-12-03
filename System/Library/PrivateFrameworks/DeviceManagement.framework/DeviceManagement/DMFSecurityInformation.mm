@@ -1,107 +1,107 @@
 @interface DMFSecurityInformation
-- (BOOL)isEqual:(id)a3;
-- (DMFSecurityInformation)initWithCoder:(id)a3;
-- (DMFSecurityInformation)initWithSupportsBlockLevelEncryption:(BOOL)a3 supportsFileLevelEncryption:(BOOL)a4 passcodeIsSet:(BOOL)a5 passcodeIsCompliantWithGlobalRestrictions:(BOOL)a6 passcodeIsCompliantWithProfileRestrictions:(BOOL)a7 passcodeLockGracePeriodEnforced:(unint64_t)a8 passcodeLockGracePeriod:(unint64_t)a9;
+- (BOOL)isEqual:(id)equal;
+- (DMFSecurityInformation)initWithCoder:(id)coder;
+- (DMFSecurityInformation)initWithSupportsBlockLevelEncryption:(BOOL)encryption supportsFileLevelEncryption:(BOOL)levelEncryption passcodeIsSet:(BOOL)set passcodeIsCompliantWithGlobalRestrictions:(BOOL)restrictions passcodeIsCompliantWithProfileRestrictions:(BOOL)profileRestrictions passcodeLockGracePeriodEnforced:(unint64_t)enforced passcodeLockGracePeriod:(unint64_t)period;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFSecurityInformation
 
-- (DMFSecurityInformation)initWithSupportsBlockLevelEncryption:(BOOL)a3 supportsFileLevelEncryption:(BOOL)a4 passcodeIsSet:(BOOL)a5 passcodeIsCompliantWithGlobalRestrictions:(BOOL)a6 passcodeIsCompliantWithProfileRestrictions:(BOOL)a7 passcodeLockGracePeriodEnforced:(unint64_t)a8 passcodeLockGracePeriod:(unint64_t)a9
+- (DMFSecurityInformation)initWithSupportsBlockLevelEncryption:(BOOL)encryption supportsFileLevelEncryption:(BOOL)levelEncryption passcodeIsSet:(BOOL)set passcodeIsCompliantWithGlobalRestrictions:(BOOL)restrictions passcodeIsCompliantWithProfileRestrictions:(BOOL)profileRestrictions passcodeLockGracePeriodEnforced:(unint64_t)enforced passcodeLockGracePeriod:(unint64_t)period
 {
   v16.receiver = self;
   v16.super_class = DMFSecurityInformation;
   result = [(DMFSecurityInformation *)&v16 init];
   if (result)
   {
-    result->_supportsBlockLevelEncryption = a3;
-    result->_supportsFileLevelEncryption = a4;
-    result->_passcodeIsSet = a5;
-    result->_passcodeIsCompliantWithGlobalRestrictions = a6;
-    result->_passcodeIsCompliantWithProfileRestrictions = a7;
-    result->_passcodeLockGracePeriod = a9;
-    result->_passcodeLockGracePeriodEnforced = a8;
+    result->_supportsBlockLevelEncryption = encryption;
+    result->_supportsFileLevelEncryption = levelEncryption;
+    result->_passcodeIsSet = set;
+    result->_passcodeIsCompliantWithGlobalRestrictions = restrictions;
+    result->_passcodeIsCompliantWithProfileRestrictions = profileRestrictions;
+    result->_passcodeLockGracePeriod = period;
+    result->_passcodeLockGracePeriodEnforced = enforced;
   }
 
   return result;
 }
 
-- (DMFSecurityInformation)initWithCoder:(id)a3
+- (DMFSecurityInformation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = DMFSecurityInformation;
   v5 = [(DMFSecurityInformation *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"supportsBlockLevelEncryption"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"supportsBlockLevelEncryption"];
     v5->_supportsBlockLevelEncryption = [v6 BOOLValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"supportsFileLevelEncryption"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"supportsFileLevelEncryption"];
     v5->_supportsFileLevelEncryption = [v7 BOOLValue];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passcodeIsSet"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passcodeIsSet"];
     v5->_passcodeIsSet = [v8 BOOLValue];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passcodeIsCompliantWithGlobalRestrictions"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passcodeIsCompliantWithGlobalRestrictions"];
     v5->_passcodeIsCompliantWithGlobalRestrictions = [v9 BOOLValue];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passcodeIsCompliantWithProfileRestrictions"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passcodeIsCompliantWithProfileRestrictions"];
     v5->_passcodeIsCompliantWithProfileRestrictions = [v10 BOOLValue];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passcodeLockGracePeriodEnforced"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passcodeLockGracePeriodEnforced"];
     v5->_passcodeLockGracePeriodEnforced = [v11 unsignedIntegerValue];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passcodeLockGracePeriod"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passcodeLockGracePeriod"];
     v5->_passcodeLockGracePeriod = [v12 unsignedIntegerValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithBool:{-[DMFSecurityInformation supportsBlockLevelEncryption](self, "supportsBlockLevelEncryption")}];
-  [v5 encodeObject:v6 forKey:@"supportsBlockLevelEncryption"];
+  [coderCopy encodeObject:v6 forKey:@"supportsBlockLevelEncryption"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[DMFSecurityInformation supportsFileLevelEncryption](self, "supportsFileLevelEncryption")}];
-  [v5 encodeObject:v7 forKey:@"supportsFileLevelEncryption"];
+  [coderCopy encodeObject:v7 forKey:@"supportsFileLevelEncryption"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[DMFSecurityInformation passcodeIsSet](self, "passcodeIsSet")}];
-  [v5 encodeObject:v8 forKey:@"passcodeIsSet"];
+  [coderCopy encodeObject:v8 forKey:@"passcodeIsSet"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[DMFSecurityInformation passcodeIsCompliantWithGlobalRestrictions](self, "passcodeIsCompliantWithGlobalRestrictions")}];
-  [v5 encodeObject:v9 forKey:@"passcodeIsCompliantWithGlobalRestrictions"];
+  [coderCopy encodeObject:v9 forKey:@"passcodeIsCompliantWithGlobalRestrictions"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[DMFSecurityInformation passcodeIsCompliantWithProfileRestrictions](self, "passcodeIsCompliantWithProfileRestrictions")}];
-  [v5 encodeObject:v10 forKey:@"passcodeIsCompliantWithProfileRestrictions"];
+  [coderCopy encodeObject:v10 forKey:@"passcodeIsCompliantWithProfileRestrictions"];
 
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[DMFSecurityInformation passcodeLockGracePeriodEnforced](self, "passcodeLockGracePeriodEnforced")}];
-  [v5 encodeObject:v11 forKey:@"passcodeLockGracePeriodEnforced"];
+  [coderCopy encodeObject:v11 forKey:@"passcodeLockGracePeriodEnforced"];
 
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[DMFSecurityInformation passcodeLockGracePeriod](self, "passcodeLockGracePeriod")}];
-  [v5 encodeObject:v12 forKey:@"passcodeLockGracePeriod"];
+  [coderCopy encodeObject:v12 forKey:@"passcodeLockGracePeriod"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(DMFSecurityInformation *)self supportsBlockLevelEncryption];
-  v4 = v3 ^ [(DMFSecurityInformation *)self supportsFileLevelEncryption];
-  v5 = [(DMFSecurityInformation *)self passcodeIsSet];
-  v6 = v5 ^ [(DMFSecurityInformation *)self passcodeIsCompliantWithGlobalRestrictions]^ v4;
+  supportsBlockLevelEncryption = [(DMFSecurityInformation *)self supportsBlockLevelEncryption];
+  v4 = supportsBlockLevelEncryption ^ [(DMFSecurityInformation *)self supportsFileLevelEncryption];
+  passcodeIsSet = [(DMFSecurityInformation *)self passcodeIsSet];
+  v6 = passcodeIsSet ^ [(DMFSecurityInformation *)self passcodeIsCompliantWithGlobalRestrictions]^ v4;
   v7 = [(DMFSecurityInformation *)self passcodeIsCompliantWithProfileRestrictions]^ v6 ^ 1;
-  v8 = [(DMFSecurityInformation *)self passcodeLockGracePeriodEnforced];
-  return v8 ^ [(DMFSecurityInformation *)self passcodeLockGracePeriod]^ v7;
+  passcodeLockGracePeriodEnforced = [(DMFSecurityInformation *)self passcodeLockGracePeriodEnforced];
+  return passcodeLockGracePeriodEnforced ^ [(DMFSecurityInformation *)self passcodeLockGracePeriod]^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -111,12 +111,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(DMFSecurityInformation *)self supportsBlockLevelEncryption];
-      if (v6 == [(DMFSecurityInformation *)v5 supportsBlockLevelEncryption]&& (v7 = [(DMFSecurityInformation *)self supportsFileLevelEncryption], v7 == [(DMFSecurityInformation *)v5 supportsFileLevelEncryption]) && (v8 = [(DMFSecurityInformation *)self passcodeIsSet], v8 == [(DMFSecurityInformation *)v5 passcodeIsSet]) && (v9 = [(DMFSecurityInformation *)self passcodeIsCompliantWithGlobalRestrictions], v9 == [(DMFSecurityInformation *)v5 passcodeIsCompliantWithGlobalRestrictions]) && (v10 = [(DMFSecurityInformation *)self passcodeIsCompliantWithProfileRestrictions], v10 == [(DMFSecurityInformation *)v5 passcodeIsCompliantWithProfileRestrictions]) && (v11 = [(DMFSecurityInformation *)self passcodeLockGracePeriodEnforced], v11 == [(DMFSecurityInformation *)v5 passcodeLockGracePeriodEnforced]))
+      v5 = equalCopy;
+      supportsBlockLevelEncryption = [(DMFSecurityInformation *)self supportsBlockLevelEncryption];
+      if (supportsBlockLevelEncryption == [(DMFSecurityInformation *)v5 supportsBlockLevelEncryption]&& (v7 = [(DMFSecurityInformation *)self supportsFileLevelEncryption], v7 == [(DMFSecurityInformation *)v5 supportsFileLevelEncryption]) && (v8 = [(DMFSecurityInformation *)self passcodeIsSet], v8 == [(DMFSecurityInformation *)v5 passcodeIsSet]) && (v9 = [(DMFSecurityInformation *)self passcodeIsCompliantWithGlobalRestrictions], v9 == [(DMFSecurityInformation *)v5 passcodeIsCompliantWithGlobalRestrictions]) && (v10 = [(DMFSecurityInformation *)self passcodeIsCompliantWithProfileRestrictions], v10 == [(DMFSecurityInformation *)v5 passcodeIsCompliantWithProfileRestrictions]) && (v11 = [(DMFSecurityInformation *)self passcodeLockGracePeriodEnforced], v11 == [(DMFSecurityInformation *)v5 passcodeLockGracePeriodEnforced]))
       {
-        v12 = [(DMFSecurityInformation *)self passcodeLockGracePeriod];
-        v13 = v12 == [(DMFSecurityInformation *)v5 passcodeLockGracePeriod];
+        passcodeLockGracePeriod = [(DMFSecurityInformation *)self passcodeLockGracePeriod];
+        v13 = passcodeLockGracePeriod == [(DMFSecurityInformation *)v5 passcodeLockGracePeriod];
       }
 
       else

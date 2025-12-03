@@ -1,22 +1,22 @@
 @interface BRCSyncOperationThrottle
-- (BOOL)scheduleIfPossibleWithCurrentTimestamp:(int64_t)a3 signalSourceIfFailed:(id)a4 description:(id)a5;
+- (BOOL)scheduleIfPossibleWithCurrentTimestamp:(int64_t)timestamp signalSourceIfFailed:(id)failed description:(id)description;
 - (BOOL)updateForClearingOutOfQuota;
-- (BRCSyncOperationThrottle)initWithCoder:(id)a3;
-- (BRCSyncOperationThrottle)initWithMangledID:(id)a3 isSyncDown:(BOOL)a4;
+- (BRCSyncOperationThrottle)initWithCoder:(id)coder;
+- (BRCSyncOperationThrottle)initWithMangledID:(id)d isSyncDown:(BOOL)down;
 - (double)nextTry;
 - (id)description;
 - (void)clear;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateAfterSchedulingTaskWithMinimumDelay:(double)a3;
-- (void)updateForError:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateAfterSchedulingTaskWithMinimumDelay:(double)delay;
+- (void)updateForError:(id)error;
 @end
 
 @implementation BRCSyncOperationThrottle
 
 - (double)nextTry
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [v3 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v5 = v4;
 
   delay = 0.0;
@@ -35,18 +35,18 @@
   return result;
 }
 
-- (BRCSyncOperationThrottle)initWithMangledID:(id)a3 isSyncDown:(BOOL)a4
+- (BRCSyncOperationThrottle)initWithMangledID:(id)d isSyncDown:(BOOL)down
 {
-  v7 = a3;
+  dCopy = d;
   v8 = [(BRCSyncOperationThrottle *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_mangledID, a3);
-    v9->_isSyncDown = a4;
+    objc_storeStrong(&v8->_mangledID, d);
+    v9->_isSyncDown = down;
     v10 = v9;
-    v11 = [(BRCSyncOperationThrottle *)v10 mangledID];
-    v12 = [BRCUserDefaults defaultsForMangledID:v11];
+    mangledID = [(BRCSyncOperationThrottle *)v10 mangledID];
+    v12 = [BRCUserDefaults defaultsForMangledID:mangledID];
 
     if (v9->_isSyncDown)
     {
@@ -66,39 +66,39 @@
   return v9;
 }
 
-- (BRCSyncOperationThrottle)initWithCoder:(id)a3
+- (BRCSyncOperationThrottle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(BRCSyncOperationThrottle *)self init];
   if (v5)
   {
-    v5->_isSyncDown = [v4 decodeBoolForKey:@"t"];
-    [v4 decodeDoubleForKey:@"d"];
+    v5->_isSyncDown = [coderCopy decodeBoolForKey:@"t"];
+    [coderCopy decodeDoubleForKey:@"d"];
     v5->_delay = v6;
-    [v4 decodeDoubleForKey:@"e"];
+    [coderCopy decodeDoubleForKey:@"e"];
     v5->_nextTry = v7;
-    v5->_lastErrorKind = [v4 decodeIntForKey:@"k"];
-    v5->_graceNextRequest = [v4 decodeBoolForKey:@"g"];
+    v5->_lastErrorKind = [coderCopy decodeIntForKey:@"k"];
+    v5->_graceNextRequest = [coderCopy decodeBoolForKey:@"g"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeBool:self->_isSyncDown forKey:@"t"];
-  [v5 encodeDouble:@"d" forKey:self->_delay];
-  [v5 encodeDouble:@"e" forKey:self->_nextTry];
+  coderCopy = coder;
+  [coderCopy encodeBool:self->_isSyncDown forKey:@"t"];
+  [coderCopy encodeDouble:@"d" forKey:self->_delay];
+  [coderCopy encodeDouble:@"e" forKey:self->_nextTry];
   lastErrorKind = self->_lastErrorKind;
   if (lastErrorKind)
   {
-    [v5 encodeInt:lastErrorKind forKey:@"k"];
+    [coderCopy encodeInt:lastErrorKind forKey:@"k"];
   }
 
   if (self->_graceNextRequest)
   {
-    [v5 encodeBool:1 forKey:@"g"];
+    [coderCopy encodeBool:1 forKey:@"g"];
   }
 }
 
@@ -111,8 +111,8 @@
     [v3 appendString:@" graced"];
   }
 
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [v5 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v7 = v6;
 
   nextTry = self->_nextTry;
@@ -129,14 +129,14 @@
   return v4;
 }
 
-- (void)updateAfterSchedulingTaskWithMinimumDelay:(double)a3
+- (void)updateAfterSchedulingTaskWithMinimumDelay:(double)delay
 {
-  v4 = self;
-  v5 = [(BRCSyncOperationThrottle *)v4 mangledID];
-  v6 = [BRCUserDefaults defaultsForMangledID:v5];
+  selfCopy = self;
+  mangledID = [(BRCSyncOperationThrottle *)selfCopy mangledID];
+  v6 = [BRCUserDefaults defaultsForMangledID:mangledID];
 
-  LODWORD(v5) = v4->_isSyncDown;
-  if (v5 == 1)
+  LODWORD(mangledID) = selfCopy->_isSyncDown;
+  if (mangledID == 1)
   {
     [v6 syncDownThrottle];
   }
@@ -147,24 +147,24 @@
   }
   v24 = ;
 
-  v7 = [MEMORY[0x277CBEAA8] date];
-  [v7 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v9 = v8;
 
-  v10 = v9 - v4->_nextTry;
+  v10 = v9 - selfCopy->_nextTry;
   [v24 inactivityKickbackDelay];
   v12 = v10 - v11;
   [v24 inactivityKickbackRatio];
   v14 = v12 * v13;
   [v24 minWait];
-  if (v15 > a3)
+  if (v15 > delay)
   {
     [v24 minWait];
-    a3 = v16;
+    delay = v16;
   }
 
-  delay = v4->_delay;
-  if (v14 < delay || delay <= a3)
+  delay = selfCopy->_delay;
+  if (v14 < delay || delay <= delay)
   {
     v19 = v24;
   }
@@ -176,34 +176,34 @@
       v14 = v14 - delay;
       [v24 ratioOnSuccess];
       v19 = v24;
-      delay = v20 * v4->_delay;
-      v4->_delay = delay;
+      delay = v20 * selfCopy->_delay;
+      selfCopy->_delay = delay;
     }
 
-    while (v14 >= delay && delay > a3);
+    while (v14 >= delay && delay > delay);
   }
 
-  if (delay < a3)
+  if (delay < delay)
   {
-    v4->_delay = a3;
-    delay = a3;
+    selfCopy->_delay = delay;
+    delay = delay;
   }
 
   v25 = v19;
   [v19 maxWait];
   if (delay <= v22)
   {
-    v23 = v4->_delay;
+    v23 = selfCopy->_delay;
   }
 
   else
   {
     [v25 maxWait];
-    v4->_delay = v23;
+    selfCopy->_delay = v23;
   }
 
-  v4->_nextTry = v9 + v23;
-  v4->_graceNextRequest = 0;
+  selfCopy->_nextTry = v9 + v23;
+  selfCopy->_graceNextRequest = 0;
 }
 
 - (BOOL)updateForClearingOutOfQuota
@@ -211,11 +211,11 @@
   lastErrorKind = self->_lastErrorKind;
   if (lastErrorKind == 2)
   {
-    v4 = self;
-    v5 = [(BRCSyncOperationThrottle *)v4 mangledID];
-    v6 = [BRCUserDefaults defaultsForMangledID:v5];
+    selfCopy = self;
+    mangledID = [(BRCSyncOperationThrottle *)selfCopy mangledID];
+    v6 = [BRCUserDefaults defaultsForMangledID:mangledID];
 
-    isSyncDown = v4->_isSyncDown;
+    isSyncDown = selfCopy->_isSyncDown;
     if (isSyncDown)
     {
       [v6 syncDownThrottle];
@@ -227,34 +227,34 @@
     }
     v8 = ;
 
-    v4->_nextTry = v4->_nextTry - v4->_delay;
+    selfCopy->_nextTry = selfCopy->_nextTry - selfCopy->_delay;
     [v8 ratioOnQuotaErrorClear];
-    v10 = v9 * v4->_delay;
-    v4->_delay = v10;
+    v10 = v9 * selfCopy->_delay;
+    selfCopy->_delay = v10;
     [v8 minWait];
     if (v10 >= v11)
     {
       v11 = v10;
     }
 
-    v12 = v4->_nextTry + v11;
-    v4->_delay = v11;
-    v4->_nextTry = v12;
+    v12 = selfCopy->_nextTry + v11;
+    selfCopy->_delay = v11;
+    selfCopy->_nextTry = v12;
     self->_lastErrorKind = 0;
   }
 
   return lastErrorKind == 2;
 }
 
-- (void)updateForError:(id)a3
+- (void)updateForError:(id)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  v6 = [(BRCSyncOperationThrottle *)v5 mangledID];
-  v7 = [BRCUserDefaults defaultsForMangledID:v6];
+  errorCopy = error;
+  selfCopy = self;
+  mangledID = [(BRCSyncOperationThrottle *)selfCopy mangledID];
+  v7 = [BRCUserDefaults defaultsForMangledID:mangledID];
 
-  isSyncDown = v5->_isSyncDown;
+  isSyncDown = selfCopy->_isSyncDown;
   if (isSyncDown)
   {
     [v7 syncDownThrottle];
@@ -266,22 +266,22 @@
   }
   v9 = ;
 
-  v10 = [v4 brc_syncOperationErrorKind];
-  v11 = [MEMORY[0x277CBEAA8] date];
-  [v11 timeIntervalSince1970];
+  brc_syncOperationErrorKind = [errorCopy brc_syncOperationErrorKind];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v13 = v12;
 
-  if (!v4 || v10 == -1)
+  if (!errorCopy || brc_syncOperationErrorKind == -1)
   {
-    if (v5->_lastErrorKind == 2)
+    if (selfCopy->_lastErrorKind == 2)
     {
       [v9 ratioOnQuotaErrorClear];
-      v5->_delay = v20 * v5->_delay;
+      selfCopy->_delay = v20 * selfCopy->_delay;
     }
 
     [v9 ratioOnSuccess];
-    v17 = v21 * v5->_delay;
-    v5->_delay = v17;
+    v17 = v21 * selfCopy->_delay;
+    selfCopy->_delay = v17;
     [v9 minWait];
     if (v17 < v22)
     {
@@ -291,19 +291,19 @@
     goto LABEL_21;
   }
 
-  if (v10 != 1)
+  if (brc_syncOperationErrorKind != 1)
   {
-    if (v5->_isSyncDown && [v4 br_isCloudDocsErrorCode:32])
+    if (selfCopy->_isSyncDown && [errorCopy br_isCloudDocsErrorCode:32])
     {
       [v9 ratioOnSuccess];
-      v5->_delay = v5->_delay / v14;
+      selfCopy->_delay = selfCopy->_delay / v14;
     }
 
     [v9 ratioOnFailure];
-    v5->_delay = v15 * v5->_delay;
+    selfCopy->_delay = v15 * selfCopy->_delay;
   }
 
-  [v4 br_suggestedRetryTimeInterval];
+  [errorCopy br_suggestedRetryTimeInterval];
   if (v16 != 0.0)
   {
     v17 = v16;
@@ -311,7 +311,7 @@
     v19 = brc_default_log();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
-      delay = v5->_delay;
+      delay = selfCopy->_delay;
       v28 = 134218498;
       v29 = v17;
       v30 = 2048;
@@ -321,17 +321,17 @@
       _os_log_debug_impl(&dword_223E7A000, v19, OS_LOG_TYPE_DEBUG, "[DEBUG] server provided backoff %.03fs (delay %.03fs)%@", &v28, 0x20u);
     }
 
-    if (v5->_delay >= v17)
+    if (selfCopy->_delay >= v17)
     {
-      v17 = v5->_delay;
+      v17 = selfCopy->_delay;
     }
 
 LABEL_21:
-    v5->_delay = v17;
+    selfCopy->_delay = v17;
     goto LABEL_22;
   }
 
-  v17 = v5->_delay;
+  v17 = selfCopy->_delay;
 LABEL_22:
   [v9 maxWait];
   if (v17 < v23)
@@ -339,16 +339,16 @@ LABEL_22:
     v23 = v17;
   }
 
-  v5->_delay = v23;
+  selfCopy->_delay = v23;
   v24 = brc_bread_crumbs();
   v25 = brc_default_log();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
   {
-    [(BRCSyncOperationThrottle *)v5 updateForError:v24, v25];
+    [(BRCSyncOperationThrottle *)selfCopy updateForError:v24, v25];
   }
 
-  v5->_lastErrorKind = v10;
-  v5->_nextTry = v13 + v5->_delay;
+  selfCopy->_lastErrorKind = brc_syncOperationErrorKind;
+  selfCopy->_nextTry = v13 + selfCopy->_delay;
 
   v26 = *MEMORY[0x277D85DE8];
 }
@@ -360,14 +360,14 @@ LABEL_22:
   self->_nextTry = 0.0;
 }
 
-- (BOOL)scheduleIfPossibleWithCurrentTimestamp:(int64_t)a3 signalSourceIfFailed:(id)a4 description:(id)a5
+- (BOOL)scheduleIfPossibleWithCurrentTimestamp:(int64_t)timestamp signalSourceIfFailed:(id)failed description:(id)description
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  failedCopy = failed;
+  descriptionCopy = description;
   [(BRCSyncOperationThrottle *)self nextTry];
   v10 = brc_interval_to_nsec();
-  if (v10 - a3 >= 0x2540BE401)
+  if (v10 - timestamp >= 0x2540BE401)
   {
     v11 = brc_bread_crumbs();
     v12 = brc_default_log();
@@ -385,20 +385,20 @@ LABEL_22:
 
       brc_interval_from_nsec();
       v25 = 138413314;
-      v26 = v9;
+      v26 = descriptionCopy;
       v27 = 2112;
       v28 = v21;
       v29 = 2048;
       v30 = v22;
       v31 = 2112;
-      v32 = self;
+      selfCopy = self;
       v33 = 2112;
       v34 = v11;
       _os_log_debug_impl(&dword_223E7A000, v12, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ sync-%@ is throttled for more than 10s: %.1fs (%@)%@", &v25, 0x34u);
     }
   }
 
-  if (v10 > a3)
+  if (v10 > timestamp)
   {
     if (v10 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -419,7 +419,7 @@ LABEL_22:
         [BRCSyncOperationThrottle(SchedulingAdditions) scheduleIfPossibleWithCurrentTimestamp:v17 signalSourceIfFailed:v18 description:?];
       }
 
-      [v8 signalWithDeadline:v10];
+      [failedCopy signalWithDeadline:v10];
     }
   }
 
@@ -429,17 +429,17 @@ LABEL_22:
     v14 = brc_default_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      v23 = [(BRCSyncOperationThrottle *)self isSyncDown];
+      isSyncDown = [(BRCSyncOperationThrottle *)self isSyncDown];
       v24 = @"up";
       v25 = 138412802;
-      if (v23)
+      if (isSyncDown)
       {
         v24 = @"down";
       }
 
       v26 = v24;
       v27 = 2112;
-      v28 = v9;
+      v28 = descriptionCopy;
       v29 = 2112;
       v30 = v13;
       _os_log_debug_impl(&dword_223E7A000, v14, OS_LOG_TYPE_DEBUG, "[DEBUG] syncing %@ %@%@", &v25, 0x20u);
@@ -449,7 +449,7 @@ LABEL_22:
   }
 
   v19 = *MEMORY[0x277D85DE8];
-  return v10 <= a3;
+  return v10 <= timestamp;
 }
 
 - (void)updateForError:(os_log_t)log .cold.1(uint64_t a1, uint64_t a2, os_log_t log)

@@ -1,41 +1,41 @@
 @interface IMDeliveryReceiptProcessingPipelineComponent
-- (IMDeliveryReceiptProcessingPipelineComponent)initWithMessageStore:(id)a3;
-- (id)_processDeliveryReceiptForMessage:(id)a3 date:(id)a4 isFromOffGridCapableDevice:(BOOL)a5 chat:(id)a6;
-- (id)runIndividuallyWithInput:(id)a3;
-- (void)_metricMessageGUIDDelivered:(id)a3 sendDate:(id)a4 deliveryDate:(id)a5;
-- (void)_metricMessageGUIDSendToDelivered:(id)a3;
-- (void)_reduceExpectedSatelliteDeliveriesOnMessage:(id)a3 chat:(id)a4;
+- (IMDeliveryReceiptProcessingPipelineComponent)initWithMessageStore:(id)store;
+- (id)_processDeliveryReceiptForMessage:(id)message date:(id)date isFromOffGridCapableDevice:(BOOL)device chat:(id)chat;
+- (id)runIndividuallyWithInput:(id)input;
+- (void)_metricMessageGUIDDelivered:(id)delivered sendDate:(id)date deliveryDate:(id)deliveryDate;
+- (void)_metricMessageGUIDSendToDelivered:(id)delivered;
+- (void)_reduceExpectedSatelliteDeliveriesOnMessage:(id)message chat:(id)chat;
 @end
 
 @implementation IMDeliveryReceiptProcessingPipelineComponent
 
-- (IMDeliveryReceiptProcessingPipelineComponent)initWithMessageStore:(id)a3
+- (IMDeliveryReceiptProcessingPipelineComponent)initWithMessageStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = IMDeliveryReceiptProcessingPipelineComponent;
   v6 = [(IMDeliveryReceiptProcessingPipelineComponent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_messageStore, a3);
+    objc_storeStrong(&v6->_messageStore, store);
   }
 
   return v7;
 }
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  inputCopy = input;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [v4 GUID];
+      gUID = [inputCopy GUID];
       *buf = 138412290;
-      v27 = v6;
+      v27 = gUID;
       _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "<IMDeliveryReceiptProcessingPipelineComponent> Started processing for Message GUID: %@", buf, 0xCu);
     }
   }
@@ -47,48 +47,48 @@
       v7 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
-        v8 = [v4 GUID];
+        gUID2 = [inputCopy GUID];
         *buf = 138412290;
-        v27 = v8;
+        v27 = gUID2;
         _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, "    Ignoring delivery receipt for message: %@", buf, 0xCu);
       }
     }
 
-    v9 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v4];
+    v9 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
   }
 
   else
   {
-    v10 = [v4 GUID];
+    gUID3 = [inputCopy GUID];
     if (IMOSLoggingEnabled())
     {
       v11 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v27 = v10;
+        v27 = gUID3;
         _os_log_impl(&dword_22B4CC000, v11, OS_LOG_TYPE_INFO, "    Received Fresh Delivery Receipt For Message GUID: %@", buf, 0xCu);
       }
     }
 
-    v12 = [(IMDMessageStore *)self->_messageStore messageWithGUID:v10];
+    v12 = [(IMDMessageStore *)self->_messageStore messageWithGUID:gUID3];
     if (v12)
     {
       v13 = [(IMDMessageStore *)self->_messageStore chatForMessage:v12];
       v14 = MEMORY[0x277CBEAA8];
-      v15 = [v4 timestamp];
-      v16 = [v14 __im_iMessageDateFromTimeStamp:v15];
-      v17 = [v4 senderRegistrationProperties];
-      v18 = -[IMDeliveryReceiptProcessingPipelineComponent _processDeliveryReceiptForMessage:date:isFromOffGridCapableDevice:chat:](self, "_processDeliveryReceiptForMessage:date:isFromOffGridCapableDevice:chat:", v12, v16, [v17 containsObject:*MEMORY[0x277D18910]], v13);
+      timestamp = [inputCopy timestamp];
+      v16 = [v14 __im_iMessageDateFromTimeStamp:timestamp];
+      senderRegistrationProperties = [inputCopy senderRegistrationProperties];
+      v18 = -[IMDeliveryReceiptProcessingPipelineComponent _processDeliveryReceiptForMessage:date:isFromOffGridCapableDevice:chat:](self, "_processDeliveryReceiptForMessage:date:isFromOffGridCapableDevice:chat:", v12, v16, [senderRegistrationProperties containsObject:*MEMORY[0x277D18910]], v13);
 
       v25 = v18;
       v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v25 count:1];
-      [v4 setMessageItems:v19];
+      [inputCopy setMessageItems:v19];
 
       if (v13)
       {
-        [v4 setChat:v13];
-        v9 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v4];
+        [inputCopy setChat:v13];
+        v9 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
       }
 
       else
@@ -112,17 +112,17 @@
   return v9;
 }
 
-- (id)_processDeliveryReceiptForMessage:(id)a3 date:(id)a4 isFromOffGridCapableDevice:(BOOL)a5 chat:(id)a6
+- (id)_processDeliveryReceiptForMessage:(id)message date:(id)date isFromOffGridCapableDevice:(BOOL)device chat:(id)chat
 {
-  v7 = a5;
+  deviceCopy = device;
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v10 guid];
-  if (v10)
+  messageCopy = message;
+  dateCopy = date;
+  chatCopy = chat;
+  guid = [messageCopy guid];
+  if (messageCopy)
   {
-    if ([v10 isDelivered])
+    if ([messageCopy isDelivered])
     {
       if (IMOSLoggingEnabled())
       {
@@ -134,35 +134,35 @@
         }
       }
 
-      if (v7 && [v10 expectedOffGridCapableDeliveries])
+      if (deviceCopy && [messageCopy expectedOffGridCapableDeliveries])
       {
         if (IMOSLoggingEnabled())
         {
           v15 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
           {
-            v16 = [v10 expectedOffGridCapableDeliveries];
+            expectedOffGridCapableDeliveries = [messageCopy expectedOffGridCapableDeliveries];
             v31 = 134217984;
-            v32 = v16;
+            v32 = expectedOffGridCapableDeliveries;
             _os_log_impl(&dword_22B4CC000, v15, OS_LOG_TYPE_INFO, "    Updating expected off grid capable deliveries (has %llu)", &v31, 0xCu);
           }
         }
 
-        [(IMDeliveryReceiptProcessingPipelineComponent *)self _reduceExpectedSatelliteDeliveriesOnMessage:v10 chat:v12];
-        v17 = [(IMDMessageStore *)self->_messageStore storeMessage:v10 forceReplace:0 modifyError:0 modifyFlags:1 flagMask:0x20000000000];
+        [(IMDeliveryReceiptProcessingPipelineComponent *)self _reduceExpectedSatelliteDeliveriesOnMessage:messageCopy chat:chatCopy];
+        v17 = [(IMDMessageStore *)self->_messageStore storeMessage:messageCopy forceReplace:0 modifyError:0 modifyFlags:1 flagMask:0x20000000000];
 
 LABEL_48:
-        v10 = v17;
+        messageCopy = v17;
       }
     }
 
     else
     {
-      if ([v10 errorCode] != 43)
+      if ([messageCopy errorCode] != 43)
       {
-        if ([v10 needsRelay])
+        if ([messageCopy needsRelay])
         {
-          [v10 setNeedsRelay:0];
+          [messageCopy setNeedsRelay:0];
           if (IMOSLoggingEnabled())
           {
             v20 = OSLogHandleForIMFoundationCategory();
@@ -180,61 +180,61 @@ LABEL_48:
           if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
           {
             v31 = 138412290;
-            v32 = v13;
+            v32 = guid;
             _os_log_impl(&dword_22B4CC000, v21, OS_LOG_TYPE_INFO, "    Received delivery receipt for message: %@", &v31, 0xCu);
           }
         }
 
-        [v10 setFlags:{objc_msgSend(v10, "flags") | 0x9000}];
-        if (v11)
+        [messageCopy setFlags:{objc_msgSend(messageCopy, "flags") | 0x9000}];
+        if (dateCopy)
         {
-          [v10 setTimeDelivered:v11];
+          [messageCopy setTimeDelivered:dateCopy];
         }
 
         else
         {
-          v22 = [MEMORY[0x277CBEAA8] date];
-          [v10 setTimeDelivered:v22];
+          date = [MEMORY[0x277CBEAA8] date];
+          [messageCopy setTimeDelivered:date];
         }
 
-        [v10 setScheduleType:0];
-        [v10 setScheduleState:0];
-        if (v7 && [v10 expectedOffGridCapableDeliveries])
+        [messageCopy setScheduleType:0];
+        [messageCopy setScheduleState:0];
+        if (deviceCopy && [messageCopy expectedOffGridCapableDeliveries])
         {
-          [(IMDeliveryReceiptProcessingPipelineComponent *)self _reduceExpectedSatelliteDeliveriesOnMessage:v10 chat:v12];
+          [(IMDeliveryReceiptProcessingPipelineComponent *)self _reduceExpectedSatelliteDeliveriesOnMessage:messageCopy chat:chatCopy];
         }
 
-        v23 = [v10 time];
-        v24 = [v10 timeDelivered];
-        [(IMDeliveryReceiptProcessingPipelineComponent *)self _metricMessageGUIDDelivered:v13 sendDate:v23 deliveryDate:v24];
+        time = [messageCopy time];
+        timeDelivered = [messageCopy timeDelivered];
+        [(IMDeliveryReceiptProcessingPipelineComponent *)self _metricMessageGUIDDelivered:guid sendDate:time deliveryDate:timeDelivered];
 
-        v25 = [v10 fileTransferGUIDs];
-        LOBYTE(v24) = [v25 count] == 0;
+        fileTransferGUIDs = [messageCopy fileTransferGUIDs];
+        LOBYTE(timeDelivered) = [fileTransferGUIDs count] == 0;
 
-        if ((v24 & 1) == 0)
+        if ((timeDelivered & 1) == 0)
         {
-          [(IMDeliveryReceiptProcessingPipelineComponent *)self _metricMessageGUIDSendToDelivered:v10];
+          [(IMDeliveryReceiptProcessingPipelineComponent *)self _metricMessageGUIDSendToDelivered:messageCopy];
         }
 
-        v26 = [v10 errorCode];
-        if (v26)
+        errorCode = [messageCopy errorCode];
+        if (errorCode)
         {
           if (IMOSLoggingEnabled())
           {
             v27 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
             {
-              v28 = [v10 errorCode];
+              errorCode2 = [messageCopy errorCode];
               v31 = 67109120;
-              LODWORD(v32) = v28;
+              LODWORD(v32) = errorCode2;
               _os_log_impl(&dword_22B4CC000, v27, OS_LOG_TYPE_INFO, "    Message had error: %d", &v31, 8u);
             }
           }
 
-          [v10 setErrorCode:0];
+          [messageCopy setErrorCode:0];
         }
 
-        v17 = [(IMDMessageStore *)self->_messageStore storeMessage:v10 forceReplace:0 modifyError:v26 != 0 modifyFlags:1 flagMask:0x20000009009];
+        v17 = [(IMDMessageStore *)self->_messageStore storeMessage:messageCopy forceReplace:0 modifyError:errorCode != 0 modifyFlags:1 flagMask:0x20000009009];
 
         goto LABEL_48;
       }
@@ -263,22 +263,22 @@ LABEL_48:
       }
     }
 
-    v10 = 0;
+    messageCopy = 0;
   }
 
   v29 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return messageCopy;
 }
 
-- (void)_reduceExpectedSatelliteDeliveriesOnMessage:(id)a3 chat:(id)a4
+- (void)_reduceExpectedSatelliteDeliveriesOnMessage:(id)message chat:(id)chat
 {
-  v9 = a3;
-  v5 = a4;
-  [v9 setExpectedOffGridCapableDeliveries:{objc_msgSend(v9, "expectedOffGridCapableDeliveries") - 1}];
-  if ([v9 isPendingSatelliteSend])
+  messageCopy = message;
+  chatCopy = chat;
+  [messageCopy setExpectedOffGridCapableDeliveries:{objc_msgSend(messageCopy, "expectedOffGridCapableDeliveries") - 1}];
+  if ([messageCopy isPendingSatelliteSend])
   {
-    v6 = [v9 expectedOffGridCapableDeliveries] != 0;
+    v6 = [messageCopy expectedOffGridCapableDeliveries] != 0;
   }
 
   else
@@ -286,24 +286,24 @@ LABEL_48:
     v6 = 0;
   }
 
-  [v9 setIsPendingSatelliteSend:v6];
-  if (![v9 expectedOffGridCapableDeliveries])
+  [messageCopy setIsPendingSatelliteSend:v6];
+  if (![messageCopy expectedOffGridCapableDeliveries])
   {
     v7 = +[IMDOffGridAvailabilityTracker sharedTracker];
-    v8 = [v5 recipient];
-    [v7 stopTrackingHandle:v8];
+    recipient = [chatCopy recipient];
+    [v7 stopTrackingHandle:recipient];
   }
 }
 
-- (void)_metricMessageGUIDDelivered:(id)a3 sendDate:(id)a4 deliveryDate:(id)a5
+- (void)_metricMessageGUIDDelivered:(id)delivered sendDate:(id)date deliveryDate:(id)deliveryDate
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  deliveredCopy = delivered;
+  dateCopy = date;
+  deliveryDateCopy = deliveryDate;
   if ((IMIsRunningInUnitTesting() & 1) == 0)
   {
-    [v9 timeIntervalSinceDate:v8];
+    [deliveryDateCopy timeIntervalSinceDate:dateCopy];
     v11 = v10;
     if (IMOSLoggingEnabled())
     {
@@ -318,18 +318,18 @@ LABEL_48:
 
     if (v11 > 0.0)
     {
-      v13 = [MEMORY[0x277D1AAA8] sharedInstance];
+      mEMORY[0x277D1AAA8] = [MEMORY[0x277D1AAA8] sharedInstance];
       v14 = [MEMORY[0x277CCABB0] numberWithDouble:v11];
-      [v13 trackEvent:*MEMORY[0x277D1A340] withStatistic:v14];
+      [mEMORY[0x277D1AAA8] trackEvent:*MEMORY[0x277D1A340] withStatistic:v14];
 
       v15 = [MEMORY[0x277CCABB0] numberWithDouble:v11];
       v20 = *MEMORY[0x277D1A088];
       v21 = v15;
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-      v17 = [MEMORY[0x277D1AAA8] sharedInstance];
-      [v17 trackEvent:*MEMORY[0x277D1A108] withDictionary:v16];
+      mEMORY[0x277D1AAA8]2 = [MEMORY[0x277D1AAA8] sharedInstance];
+      [mEMORY[0x277D1AAA8]2 trackEvent:*MEMORY[0x277D1A108] withDictionary:v16];
 
-      v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v15, @"DeliveryDuration", v7, @"MessageGUID", 0}];
+      v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v15, @"DeliveryDuration", deliveredCopy, @"MessageGUID", 0}];
       if (qword_281422598 != -1)
       {
         sub_22B7D6898();
@@ -345,18 +345,18 @@ LABEL_48:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_metricMessageGUIDSendToDelivered:(id)a3
+- (void)_metricMessageGUIDSendToDelivered:(id)delivered
 {
   v83 = *MEMORY[0x277D85DE8];
-  v58 = a3;
+  deliveredCopy = delivered;
   v3 = +[IMDFileTransferCenter sharedInstance];
-  v4 = [v58 fileTransferGUIDs];
-  v5 = [v4 firstObject];
-  v55 = [v3 transferForGUID:v5];
+  fileTransferGUIDs = [deliveredCopy fileTransferGUIDs];
+  firstObject = [fileTransferGUIDs firstObject];
+  v55 = [v3 transferForGUID:firstObject];
 
-  v6 = [v58 timeDelivered];
-  v7 = [v55 createdDate];
-  [v6 timeIntervalSinceDate:v7];
+  timeDelivered = [deliveredCopy timeDelivered];
+  createdDate = [v55 createdDate];
+  [timeDelivered timeIntervalSinceDate:createdDate];
   v9 = v8;
 
   v60 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -364,8 +364,8 @@ LABEL_48:
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v10 = [v58 fileTransferGUIDs];
-  v11 = [v10 countByEnumeratingWithState:&v67 objects:v82 count:16];
+  fileTransferGUIDs2 = [deliveredCopy fileTransferGUIDs];
+  v11 = [fileTransferGUIDs2 countByEnumeratingWithState:&v67 objects:v82 count:16];
   if (v11)
   {
     v57 = 0;
@@ -385,16 +385,16 @@ LABEL_48:
       {
         if (*v68 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(fileTransferGUIDs2);
         }
 
         v16 = *(*(&v67 + 1) + 8 * i);
         v17 = +[IMDFileTransferCenter sharedInstance];
         v18 = [v17 transferForGUID:v16];
 
-        v19 = [v18 totalBytes];
-        v20 = [v18 type];
-        v21 = UTTypeConformsTo(v20, @"public.heic");
+        totalBytes = [v18 totalBytes];
+        type = [v18 type];
+        v21 = UTTypeConformsTo(type, @"public.heic");
 
         if (v21)
         {
@@ -403,8 +403,8 @@ LABEL_48:
 
         else
         {
-          v22 = [v18 type];
-          v23 = UTTypeConformsTo(v22, @"public.png");
+          type2 = [v18 type];
+          v23 = UTTypeConformsTo(type2, @"public.png");
 
           if (v23)
           {
@@ -413,8 +413,8 @@ LABEL_48:
 
           else
           {
-            v24 = [v18 type];
-            v25 = UTTypeConformsTo(v24, @"public.jpeg");
+            type3 = [v18 type];
+            v25 = UTTypeConformsTo(type3, @"public.jpeg");
 
             if (v25)
             {
@@ -423,8 +423,8 @@ LABEL_48:
 
             else
             {
-              v26 = [v18 type];
-              v27 = UTTypeConformsTo(v26, inConformsToUTI);
+              type4 = [v18 type];
+              v27 = UTTypeConformsTo(type4, inConformsToUTI);
 
               if (v27)
               {
@@ -433,8 +433,8 @@ LABEL_48:
 
               else
               {
-                v28 = [v18 type];
-                v29 = UTTypeConformsTo(v28, v61);
+                type5 = [v18 type];
+                v29 = UTTypeConformsTo(type5, v61);
 
                 if (v29)
                 {
@@ -443,8 +443,8 @@ LABEL_48:
 
                 else
                 {
-                  v30 = [v18 type];
-                  v31 = UTTypeConformsTo(v30, v56);
+                  type6 = [v18 type];
+                  v31 = UTTypeConformsTo(type6, v56);
 
                   if (v31)
                   {
@@ -461,10 +461,10 @@ LABEL_48:
           }
         }
 
-        v14 = v14 + v19;
+        v14 = v14 + totalBytes;
       }
 
-      v11 = [v10 countByEnumeratingWithState:&v67 objects:v82 count:16];
+      v11 = [fileTransferGUIDs2 countByEnumeratingWithState:&v67 objects:v82 count:16];
     }
 
     while (v11);
@@ -510,8 +510,8 @@ LABEL_48:
   [v60 setObject:v41 forKey:*MEMORY[0x277D1A308]];
 
   memset(v66, 0, sizeof(v66));
-  v42 = [v58 fileTransferGUIDs];
-  if ([v42 countByEnumeratingWithState:v66 objects:v81 count:16])
+  fileTransferGUIDs3 = [deliveredCopy fileTransferGUIDs];
+  if ([fileTransferGUIDs3 countByEnumeratingWithState:v66 objects:v81 count:16])
   {
     v43 = **(&v66[0] + 1);
     v44 = +[IMDFileTransferCenter sharedInstance];
@@ -527,26 +527,26 @@ LABEL_48:
     v48 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
     {
-      v49 = [v58 guid];
-      v50 = [v55 createdDate];
-      v51 = [v58 timeDelivered];
+      guid = [deliveredCopy guid];
+      createdDate2 = [v55 createdDate];
+      timeDelivered2 = [deliveredCopy timeDelivered];
       *buf = 138413314;
-      v72 = v49;
+      v72 = guid;
       v73 = 2048;
       v74 = v9;
       v75 = 2112;
-      v76 = v50;
+      v76 = createdDate2;
       v77 = 2112;
-      v78 = v51;
+      v78 = timeDelivered2;
       v79 = 2048;
       v80 = v14;
       _os_log_impl(&dword_22B4CC000, v48, OS_LOG_TYPE_INFO, "For message: %@ timeDuration: %f file create date: %@ delivered time: %@ total file Size: %f", buf, 0x34u);
     }
   }
 
-  v52 = [MEMORY[0x277D1AAA8] sharedInstance];
+  mEMORY[0x277D1AAA8] = [MEMORY[0x277D1AAA8] sharedInstance];
   v53 = [v60 copy];
-  [v52 trackEvent:*MEMORY[0x277D1A118] withDictionary:v53];
+  [mEMORY[0x277D1AAA8] trackEvent:*MEMORY[0x277D1A118] withDictionary:v53];
 
   v54 = *MEMORY[0x277D85DE8];
 }

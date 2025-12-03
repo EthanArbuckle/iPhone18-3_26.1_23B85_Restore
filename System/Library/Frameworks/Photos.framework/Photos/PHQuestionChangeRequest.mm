@@ -1,189 +1,189 @@
 @interface PHQuestionChangeRequest
-+ (id)changeRequestForQuestion:(id)a3;
-+ (id)creationRequestForQuestionWithEntityIdentifier:(id)a3 type:(unsigned __int16)a4 state:(unsigned __int16)a5 entityType:(unsigned __int16)a6 displayType:(unsigned __int16)a7 score:(double)a8 additionalInfo:(id)a9 creationDate:(id)a10 questionVersion:(signed __int16)a11;
-+ (void)deleteQuestions:(id)a3;
++ (id)changeRequestForQuestion:(id)question;
++ (id)creationRequestForQuestionWithEntityIdentifier:(id)identifier type:(unsigned __int16)type state:(unsigned __int16)state entityType:(unsigned __int16)entityType displayType:(unsigned __int16)displayType score:(double)score additionalInfo:(id)info creationDate:(id)self0 questionVersion:(signed __int16)self1;
++ (void)deleteQuestions:(id)questions;
 - (NSDate)creationDate;
 - (NSDictionary)additionalInfo;
 - (NSString)entityIdentifier;
 - (PHObjectPlaceholder)placeholderForCreatedQuestion;
-- (PHQuestionChangeRequest)initWithUUID:(id)a3 objectID:(id)a4;
-- (PHQuestionChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5;
+- (PHQuestionChangeRequest)initWithUUID:(id)d objectID:(id)iD;
+- (PHQuestionChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization;
 - (double)score;
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4;
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error;
 - (id)initForNewObject;
 - (signed)questionVersion;
 - (unsigned)displayType;
 - (unsigned)entityType;
 - (unsigned)state;
 - (unsigned)type;
-- (void)encodeToXPCDict:(id)a3;
-- (void)setAdditionalInfo:(id)a3;
-- (void)setCreationDate:(id)a3;
-- (void)setDisplayType:(unsigned __int16)a3;
-- (void)setEntityIdentifier:(id)a3;
-- (void)setEntityType:(unsigned __int16)a3;
-- (void)setQuestionVersion:(signed __int16)a3;
-- (void)setScore:(double)a3;
-- (void)setState:(unsigned __int16)a3;
-- (void)setType:(unsigned __int16)a3;
+- (void)encodeToXPCDict:(id)dict;
+- (void)setAdditionalInfo:(id)info;
+- (void)setCreationDate:(id)date;
+- (void)setDisplayType:(unsigned __int16)type;
+- (void)setEntityIdentifier:(id)identifier;
+- (void)setEntityType:(unsigned __int16)type;
+- (void)setQuestionVersion:(signed __int16)version;
+- (void)setScore:(double)score;
+- (void)setState:(unsigned __int16)state;
+- (void)setType:(unsigned __int16)type;
 @end
 
 @implementation PHQuestionChangeRequest
 
-- (void)setQuestionVersion:(signed __int16)a3
+- (void)setQuestionVersion:(signed __int16)version
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  versionCopy = version;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"questionVersion"];
+  v8 = [MEMORY[0x1E696AD98] numberWithShort:versionCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"questionVersion"];
 }
 
 - (signed)questionVersion
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"questionVersion"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"questionVersion"];
 
-  LOWORD(v3) = [v5 shortValue];
-  return v3;
+  LOWORD(helper) = [v5 shortValue];
+  return helper;
 }
 
-- (void)setCreationDate:(id)a3
+- (void)setCreationDate:(id)date
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  dateCopy = date;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (dateCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"creationDate"];
+    [mutations setObject:dateCopy forKeyedSubscript:@"creationDate"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"creationDate"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"creationDate"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"creationDate"];
+    [mutations removeObjectForKey:@"creationDate"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"creationDate"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"creationDate"];
   }
 }
 
 - (NSDate)creationDate
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"creationDate"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"creationDate"];
 
   return v5;
 }
 
-- (void)setAdditionalInfo:(id)a3
+- (void)setAdditionalInfo:(id)info
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  infoCopy = info;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (infoCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"additionalInfo"];
+    [mutations setObject:infoCopy forKeyedSubscript:@"additionalInfo"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"additionalInfo"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"additionalInfo"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"additionalInfo"];
+    [mutations removeObjectForKey:@"additionalInfo"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"additionalInfo"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"additionalInfo"];
   }
 }
 
 - (NSDictionary)additionalInfo
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"additionalInfo"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"additionalInfo"];
 
   return v5;
 }
 
-- (void)setEntityIdentifier:(id)a3
+- (void)setEntityIdentifier:(id)identifier
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  identifierCopy = identifier;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (identifierCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"entityIdentifier"];
+    [mutations setObject:identifierCopy forKeyedSubscript:@"entityIdentifier"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"entityIdentifier"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"entityIdentifier"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"entityIdentifier"];
+    [mutations removeObjectForKey:@"entityIdentifier"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"entityIdentifier"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"entityIdentifier"];
   }
 }
 
 - (NSString)entityIdentifier
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"entityIdentifier"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"entityIdentifier"];
 
   return v5;
 }
 
-- (void)setScore:(double)a3
+- (void)setScore:(double)score
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"score"];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:score];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"score"];
 }
 
 - (double)score
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"score"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"score"];
 
   [v5 doubleValue];
   v7 = v6;
@@ -191,108 +191,108 @@
   return v7;
 }
 
-- (void)setDisplayType:(unsigned __int16)a3
+- (void)setDisplayType:(unsigned __int16)type
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  typeCopy = type;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"displayType"];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:typeCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"displayType"];
 }
 
 - (unsigned)displayType
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"displayType"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"displayType"];
 
-  LOWORD(v3) = [v5 shortValue];
-  return v3;
+  LOWORD(helper) = [v5 shortValue];
+  return helper;
 }
 
-- (void)setEntityType:(unsigned __int16)a3
+- (void)setEntityType:(unsigned __int16)type
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  typeCopy = type;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"entityType"];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:typeCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"entityType"];
 }
 
 - (unsigned)entityType
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"entityType"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"entityType"];
 
-  LOWORD(v3) = [v5 shortValue];
-  return v3;
+  LOWORD(helper) = [v5 shortValue];
+  return helper;
 }
 
-- (void)setState:(unsigned __int16)a3
+- (void)setState:(unsigned __int16)state
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  stateCopy = state;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"state"];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:stateCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"state"];
 }
 
 - (unsigned)state
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"state"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"state"];
 
-  LOWORD(v3) = [v5 shortValue];
-  return v3;
+  LOWORD(helper) = [v5 shortValue];
+  return helper;
 }
 
-- (void)setType:(unsigned __int16)a3
+- (void)setType:(unsigned __int16)type
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  typeCopy = type;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"type"];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:typeCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"type"];
 }
 
 - (unsigned)type
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"type"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"type"];
 
-  LOWORD(v3) = [v5 shortValue];
-  return v3;
+  LOWORD(helper) = [v5 shortValue];
+  return helper;
 }
 
-- (PHQuestionChangeRequest)initWithUUID:(id)a3 objectID:(id)a4
+- (PHQuestionChangeRequest)initWithUUID:(id)d objectID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v12.receiver = self;
   v12.super_class = PHQuestionChangeRequest;
   v8 = [(PHChangeRequest *)&v12 init];
   if (v8)
   {
-    v9 = [[PHChangeRequestHelper alloc] initWithUUID:v6 objectID:v7 changeRequest:v8];
+    v9 = [[PHChangeRequestHelper alloc] initWithUUID:dCopy objectID:iDCopy changeRequest:v8];
     helper = v8->super._helper;
     v8->super._helper = v9;
   }
@@ -300,24 +300,24 @@
   return v8;
 }
 
-- (void)encodeToXPCDict:(id)a3
+- (void)encodeToXPCDict:(id)dict
 {
-  v4 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 encodeToXPCDict:v4];
+  dictCopy = dict;
+  helper = [(PHChangeRequest *)self helper];
+  [helper encodeToXPCDict:dictCopy];
 }
 
-- (PHQuestionChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5
+- (PHQuestionChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictCopy = dict;
+  requestCopy = request;
+  authorizationCopy = authorization;
   v15.receiver = self;
   v15.super_class = PHQuestionChangeRequest;
   v11 = [(PHChangeRequest *)&v15 init];
   if (v11)
   {
-    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:v8 changeRequest:v11 request:v9 clientAuthorization:v10];
+    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:dictCopy changeRequest:v11 request:requestCopy clientAuthorization:authorizationCopy];
     helper = v11->super._helper;
     v11->super._helper = v12;
   }
@@ -325,18 +325,18 @@
   return v11;
 }
 
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E69BE710];
-  v7 = a3;
-  v8 = [(PHChangeRequest *)self uuid];
-  v9 = [v6 insertIntoPhotoLibrary:v7 withUUID:v8];
+  libraryCopy = library;
+  uuid = [(PHChangeRequest *)self uuid];
+  v9 = [v6 insertIntoPhotoLibrary:libraryCopy withUUID:uuid];
 
   if (v9)
   {
-    v10 = [(PHQuestionChangeRequest *)self entityIdentifier];
-    [v9 setEntityIdentifier:v10];
+    entityIdentifier = [(PHQuestionChangeRequest *)self entityIdentifier];
+    [v9 setEntityIdentifier:entityIdentifier];
 
     [v9 setType:{-[PHQuestionChangeRequest type](self, "type")}];
     [v9 setState:{-[PHQuestionChangeRequest state](self, "state")}];
@@ -344,11 +344,11 @@
     [v9 setDisplayType:{-[PHQuestionChangeRequest displayType](self, "displayType")}];
     [(PHQuestionChangeRequest *)self score];
     [v9 setScore:?];
-    v11 = [(PHQuestionChangeRequest *)self additionalInfo];
-    [v9 setAdditionalInfo:v11];
+    additionalInfo = [(PHQuestionChangeRequest *)self additionalInfo];
+    [v9 setAdditionalInfo:additionalInfo];
 
-    v12 = [(PHQuestionChangeRequest *)self creationDate];
-    [v9 setCreationDate:v12];
+    creationDate = [(PHQuestionChangeRequest *)self creationDate];
+    [v9 setCreationDate:creationDate];
 
     [v9 setQuestionVersion:{-[PHQuestionChangeRequest questionVersion](self, "questionVersion")}];
     v13 = v9;
@@ -362,10 +362,10 @@
     v20[0] = v15;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
     v17 = [v14 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v16];
-    if (a4)
+    if (error)
     {
       v17 = v17;
-      *a4 = v17;
+      *error = v17;
     }
   }
 
@@ -374,8 +374,8 @@
 
 - (PHObjectPlaceholder)placeholderForCreatedQuestion
 {
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 placeholderForCreatedObjectWithClass:objc_opt_class() changeRequest:self];
+  helper = [(PHChangeRequest *)self helper];
+  v4 = [helper placeholderForCreatedObjectWithClass:objc_opt_class() changeRequest:self];
 
   return v4;
 }
@@ -395,22 +395,22 @@
   return v2;
 }
 
-+ (void)deleteQuestions:(id)a3
++ (void)deleteQuestions:(id)questions
 {
-  v5 = a3;
-  v4 = [(PHObjectDeleteRequest *)PHQuestionDeleteRequest deleteRequestsForObjects:v5 ofType:objc_opt_class() forSelector:a2];
+  questionsCopy = questions;
+  v4 = [(PHObjectDeleteRequest *)PHQuestionDeleteRequest deleteRequestsForObjects:questionsCopy ofType:objc_opt_class() forSelector:a2];
 }
 
-+ (id)changeRequestForQuestion:(id)a3
++ (id)changeRequestForQuestion:(id)question
 {
-  v3 = a3;
+  questionCopy = question;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = [PHQuestionChangeRequest alloc];
-    v5 = [v3 uuid];
-    v6 = [v3 objectID];
-    v7 = [(PHQuestionChangeRequest *)v4 initWithUUID:v5 objectID:v6];
+    uuid = [questionCopy uuid];
+    objectID = [questionCopy objectID];
+    v7 = [(PHQuestionChangeRequest *)v4 initWithUUID:uuid objectID:objectID];
   }
 
   else
@@ -421,29 +421,29 @@
   return v7;
 }
 
-+ (id)creationRequestForQuestionWithEntityIdentifier:(id)a3 type:(unsigned __int16)a4 state:(unsigned __int16)a5 entityType:(unsigned __int16)a6 displayType:(unsigned __int16)a7 score:(double)a8 additionalInfo:(id)a9 creationDate:(id)a10 questionVersion:(signed __int16)a11
++ (id)creationRequestForQuestionWithEntityIdentifier:(id)identifier type:(unsigned __int16)type state:(unsigned __int16)state entityType:(unsigned __int16)entityType displayType:(unsigned __int16)displayType score:(double)score additionalInfo:(id)info creationDate:(id)self0 questionVersion:(signed __int16)self1
 {
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v18 = a10;
-  v19 = a9;
-  v20 = a3;
-  v21 = [[PHQuestionChangeRequest alloc] initForNewObject];
-  [v21 setEntityIdentifier:v20];
+  displayTypeCopy = displayType;
+  entityTypeCopy = entityType;
+  stateCopy = state;
+  typeCopy = type;
+  dateCopy = date;
+  infoCopy = info;
+  identifierCopy = identifier;
+  initForNewObject = [[PHQuestionChangeRequest alloc] initForNewObject];
+  [initForNewObject setEntityIdentifier:identifierCopy];
 
-  [v21 setType:v16];
-  [v21 setState:v15];
-  [v21 setEntityType:v14];
-  [v21 setDisplayType:v13];
-  [v21 setScore:a8];
-  [v21 setAdditionalInfo:v19];
+  [initForNewObject setType:typeCopy];
+  [initForNewObject setState:stateCopy];
+  [initForNewObject setEntityType:entityTypeCopy];
+  [initForNewObject setDisplayType:displayTypeCopy];
+  [initForNewObject setScore:score];
+  [initForNewObject setAdditionalInfo:infoCopy];
 
-  [v21 setCreationDate:v18];
-  [v21 setQuestionVersion:a11];
+  [initForNewObject setCreationDate:dateCopy];
+  [initForNewObject setQuestionVersion:version];
 
-  return v21;
+  return initForNewObject;
 }
 
 @end

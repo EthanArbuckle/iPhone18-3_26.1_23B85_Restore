@@ -9,8 +9,8 @@
 {
   v2 = +[CSGestureMonitor sharedInstance];
   v3 = mach_absolute_time();
-  v4 = [v2 wakeGestureTimestamp];
-  if (v4 <= [v2 dismissalTimestamp])
+  wakeGestureTimestamp = [v2 wakeGestureTimestamp];
+  if (wakeGestureTimestamp <= [v2 dismissalTimestamp])
   {
     v10 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_INFO))
@@ -29,7 +29,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  [CSFTimeUtils hostTimeToSeconds:v3 - v4];
+  [CSFTimeUtils hostTimeToSeconds:v3 - wakeGestureTimestamp];
   v6 = v5;
   v7 = CSLogContextFacilityCoreSpeech;
   v8 = os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_INFO);

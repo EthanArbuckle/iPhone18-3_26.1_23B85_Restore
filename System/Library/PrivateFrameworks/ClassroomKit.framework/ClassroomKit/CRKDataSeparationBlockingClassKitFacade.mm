@@ -1,9 +1,9 @@
 @interface CRKDataSeparationBlockingClassKitFacade
-- (CRKDataSeparationBlockingClassKitFacade)initWithClassKitFacade:(id)a3;
+- (CRKDataSeparationBlockingClassKitFacade)initWithClassKitFacade:(id)facade;
 - (int64_t)nextAccountState;
 - (void)dealloc;
 - (void)nextAccountState;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)startObserving;
 - (void)stopObserving;
 - (void)updateAccountState;
@@ -19,15 +19,15 @@
   [(CRKDataSeparationBlockingClassKitFacade *)&v3 dealloc];
 }
 
-- (CRKDataSeparationBlockingClassKitFacade)initWithClassKitFacade:(id)a3
+- (CRKDataSeparationBlockingClassKitFacade)initWithClassKitFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v9.receiver = self;
   v9.super_class = CRKDataSeparationBlockingClassKitFacade;
-  v5 = [(CRKClassKitFacadeDecoratorBase *)&v9 initWithClassKitFacade:v4];
+  v5 = [(CRKClassKitFacadeDecoratorBase *)&v9 initWithClassKitFacade:facadeCopy];
   if (v5)
   {
-    v6 = [[CRKClassKitCurrentUserProvider alloc] initWithClassKitFacade:v4];
+    v6 = [[CRKClassKitCurrentUserProvider alloc] initWithClassKitFacade:facadeCopy];
     currentUserProvider = v5->_currentUserProvider;
     v5->_currentUserProvider = v6;
 
@@ -45,8 +45,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [objc_opt_class() observedKeyPathsOnCurrentUserProvider];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observedKeyPathsOnCurrentUserProvider = [objc_opt_class() observedKeyPathsOnCurrentUserProvider];
+  v4 = [observedKeyPathsOnCurrentUserProvider countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -58,25 +58,25 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observedKeyPathsOnCurrentUserProvider);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
-        v9 = [(CRKDataSeparationBlockingClassKitFacade *)self currentUserProvider];
-        [v9 addObserver:self forKeyPath:v8 options:0 context:@"CRKDataSeparationBlockingClassKitFacadeObservationContext"];
+        currentUserProvider = [(CRKDataSeparationBlockingClassKitFacade *)self currentUserProvider];
+        [currentUserProvider addObserver:self forKeyPath:v8 options:0 context:@"CRKDataSeparationBlockingClassKitFacadeObservationContext"];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [observedKeyPathsOnCurrentUserProvider countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
   }
 
-  v10 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  [v10 addObserver:self forKeyPath:@"accountState" options:0 context:@"CRKDataSeparationBlockingClassKitFacadeObservationContext"];
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  [underlyingClassKitFacade addObserver:self forKeyPath:@"accountState" options:0 context:@"CRKDataSeparationBlockingClassKitFacadeObservationContext"];
 }
 
 - (void)stopObserving
@@ -86,8 +86,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [objc_opt_class() observedKeyPathsOnCurrentUserProvider];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observedKeyPathsOnCurrentUserProvider = [objc_opt_class() observedKeyPathsOnCurrentUserProvider];
+  v4 = [observedKeyPathsOnCurrentUserProvider countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -99,33 +99,33 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observedKeyPathsOnCurrentUserProvider);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
-        v9 = [(CRKDataSeparationBlockingClassKitFacade *)self currentUserProvider];
-        [v9 removeObserver:self forKeyPath:v8 context:@"CRKDataSeparationBlockingClassKitFacadeObservationContext"];
+        currentUserProvider = [(CRKDataSeparationBlockingClassKitFacade *)self currentUserProvider];
+        [currentUserProvider removeObserver:self forKeyPath:v8 context:@"CRKDataSeparationBlockingClassKitFacadeObservationContext"];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [observedKeyPathsOnCurrentUserProvider countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
   }
 
-  v10 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  [v10 removeObserver:self forKeyPath:@"accountState" context:@"CRKDataSeparationBlockingClassKitFacadeObservationContext"];
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  [underlyingClassKitFacade removeObserver:self forKeyPath:@"accountState" context:@"CRKDataSeparationBlockingClassKitFacadeObservationContext"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == @"CRKDataSeparationBlockingClassKitFacadeObservationContext")
+  if (context == @"CRKDataSeparationBlockingClassKitFacadeObservationContext")
   {
 
-    [(CRKDataSeparationBlockingClassKitFacade *)self updateAccountState:a3];
+    [(CRKDataSeparationBlockingClassKitFacade *)self updateAccountState:path];
   }
 
   else
@@ -134,32 +134,32 @@
     v10 = v7;
     v8.receiver = self;
     v8.super_class = CRKDataSeparationBlockingClassKitFacade;
-    [(CRKDataSeparationBlockingClassKitFacade *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(CRKDataSeparationBlockingClassKitFacade *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
 - (void)updateAccountState
 {
-  v3 = [(CRKDataSeparationBlockingClassKitFacade *)self nextAccountState];
-  if ([(CRKDataSeparationBlockingClassKitFacade *)self modifiedAccountState]!= v3)
+  nextAccountState = [(CRKDataSeparationBlockingClassKitFacade *)self nextAccountState];
+  if ([(CRKDataSeparationBlockingClassKitFacade *)self modifiedAccountState]!= nextAccountState)
   {
 
-    [(CRKDataSeparationBlockingClassKitFacade *)self setModifiedAccountState:v3];
+    [(CRKDataSeparationBlockingClassKitFacade *)self setModifiedAccountState:nextAccountState];
   }
 }
 
 - (int64_t)nextAccountState
 {
-  v3 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  v4 = [v3 accountState];
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  accountState = [underlyingClassKitFacade accountState];
 
-  if (v4 == 2)
+  if (accountState == 2)
   {
-    v5 = [(CRKDataSeparationBlockingClassKitFacade *)self currentUserProvider];
-    v6 = [v5 currentUser];
-    v7 = [v6 hasDataSeparatedAccount];
+    currentUserProvider = [(CRKDataSeparationBlockingClassKitFacade *)self currentUserProvider];
+    currentUser = [currentUserProvider currentUser];
+    hasDataSeparatedAccount = [currentUser hasDataSeparatedAccount];
 
-    if (v7)
+    if (hasDataSeparatedAccount)
     {
       if (_CRKLogASM_onceToken_12 != -1)
       {
@@ -181,16 +181,16 @@
     }
   }
 
-  return v4;
+  return accountState;
 }
 
 - (void)nextAccountState
 {
   v4 = *MEMORY[0x277D85DE8];
-  v1 = a1;
+  selfCopy = self;
   v2 = 138543362;
   v3 = objc_opt_class();
-  _os_log_error_impl(&dword_243550000, v1, OS_LOG_TYPE_ERROR, "%{public}@: overriding account state to ineligible because the current user is data separated", &v2, 0xCu);
+  _os_log_error_impl(&dword_243550000, selfCopy, OS_LOG_TYPE_ERROR, "%{public}@: overriding account state to ineligible because the current user is data separated", &v2, 0xCu);
 }
 
 @end

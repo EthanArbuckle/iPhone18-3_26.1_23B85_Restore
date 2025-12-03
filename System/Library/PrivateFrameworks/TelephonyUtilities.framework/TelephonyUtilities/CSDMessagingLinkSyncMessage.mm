@@ -1,22 +1,22 @@
 @interface CSDMessagingLinkSyncMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingLinkSyncMessage
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -42,25 +42,25 @@
   }
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Update"])
+  else if ([typeCopy isEqualToString:@"Update"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CheckIn"])
+  else if ([typeCopy isEqualToString:@"CheckIn"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Recover"])
+  else if ([typeCopy isEqualToString:@"Recover"])
   {
     v4 = 3;
   }
@@ -78,8 +78,8 @@
   v7.receiver = self;
   v7.super_class = CSDMessagingLinkSyncMessage;
   v3 = [(CSDMessagingLinkSyncMessage *)&v7 description];
-  v4 = [(CSDMessagingLinkSyncMessage *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CSDMessagingLinkSyncMessage *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -115,37 +115,37 @@
   updateMessage = self->_updateMessage;
   if (updateMessage)
   {
-    v9 = [(CSDMessagingLinkSyncUpdateMessage *)updateMessage dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"updateMessage"];
+    dictionaryRepresentation = [(CSDMessagingLinkSyncUpdateMessage *)updateMessage dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"updateMessage"];
   }
 
   checkInMessage = self->_checkInMessage;
   if (checkInMessage)
   {
-    v11 = [(CSDMessagingLinkSyncCheckInMessage *)checkInMessage dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"checkInMessage"];
+    dictionaryRepresentation2 = [(CSDMessagingLinkSyncCheckInMessage *)checkInMessage dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"checkInMessage"];
   }
 
   recoverMessage = self->_recoverMessage;
   if (recoverMessage)
   {
-    v13 = [(CSDMessagingLinkSyncRecoverMessage *)recoverMessage dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"recoverMessage"];
+    dictionaryRepresentation3 = [(CSDMessagingLinkSyncRecoverMessage *)recoverMessage dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation3 forKey:@"recoverMessage"];
   }
 
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if ((has & 2) != 0)
   {
     version = self->_version;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -153,68 +153,68 @@
   {
     type = self->_type;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_updateMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_checkInMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_recoverMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[10] = self->_version;
-    *(v4 + 44) |= 2u;
+    toCopy[10] = self->_version;
+    *(toCopy + 44) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[6] = self->_type;
-    *(v4 + 44) |= 1u;
+    toCopy[6] = self->_type;
+    *(toCopy + 44) |= 1u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_updateMessage)
   {
-    [v4 setUpdateMessage:?];
-    v4 = v6;
+    [toCopy setUpdateMessage:?];
+    toCopy = v6;
   }
 
   if (self->_checkInMessage)
   {
     [v6 setCheckInMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_recoverMessage)
   {
     [v6 setRecoverMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -230,39 +230,39 @@
     *(v5 + 44) |= 1u;
   }
 
-  v8 = [(CSDMessagingLinkSyncUpdateMessage *)self->_updateMessage copyWithZone:a3];
+  v8 = [(CSDMessagingLinkSyncUpdateMessage *)self->_updateMessage copyWithZone:zone];
   v9 = v6[4];
   v6[4] = v8;
 
-  v10 = [(CSDMessagingLinkSyncCheckInMessage *)self->_checkInMessage copyWithZone:a3];
+  v10 = [(CSDMessagingLinkSyncCheckInMessage *)self->_checkInMessage copyWithZone:zone];
   v11 = v6[1];
   v6[1] = v10;
 
-  v12 = [(CSDMessagingLinkSyncRecoverMessage *)self->_recoverMessage copyWithZone:a3];
+  v12 = [(CSDMessagingLinkSyncRecoverMessage *)self->_recoverMessage copyWithZone:zone];
   v13 = v6[2];
   v6[2] = v12;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
-  v5 = *(v4 + 44);
+  v5 = *(equalCopy + 44);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_version != *(v4 + 10))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_version != *(equalCopy + 10))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
 LABEL_18:
     v9 = 0;
@@ -271,25 +271,25 @@ LABEL_18:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_type != *(v4 + 6))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_type != *(equalCopy + 6))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_18;
   }
 
   updateMessage = self->_updateMessage;
-  if (updateMessage | *(v4 + 4) && ![(CSDMessagingLinkSyncUpdateMessage *)updateMessage isEqual:?])
+  if (updateMessage | *(equalCopy + 4) && ![(CSDMessagingLinkSyncUpdateMessage *)updateMessage isEqual:?])
   {
     goto LABEL_18;
   }
 
   checkInMessage = self->_checkInMessage;
-  if (checkInMessage | *(v4 + 1))
+  if (checkInMessage | *(equalCopy + 1))
   {
     if (![(CSDMessagingLinkSyncCheckInMessage *)checkInMessage isEqual:?])
     {
@@ -298,7 +298,7 @@ LABEL_18:
   }
 
   recoverMessage = self->_recoverMessage;
-  if (recoverMessage | *(v4 + 2))
+  if (recoverMessage | *(equalCopy + 2))
   {
     v9 = [(CSDMessagingLinkSyncRecoverMessage *)recoverMessage isEqual:?];
   }
@@ -342,21 +342,21 @@ LABEL_6:
   return v5 ^ v6 ^ [(CSDMessagingLinkSyncRecoverMessage *)self->_recoverMessage hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 44);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 44);
   if ((v6 & 2) != 0)
   {
-    self->_version = *(v4 + 10);
+    self->_version = *(fromCopy + 10);
     *&self->_has |= 2u;
-    v6 = *(v4 + 44);
+    v6 = *(fromCopy + 44);
   }
 
   if (v6)
   {
-    self->_type = *(v4 + 6);
+    self->_type = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 

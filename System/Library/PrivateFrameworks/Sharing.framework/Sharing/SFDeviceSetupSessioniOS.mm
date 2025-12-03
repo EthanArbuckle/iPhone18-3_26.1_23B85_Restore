@@ -10,16 +10,16 @@
 - (uint64_t)_handleSetupActionSoftwareUpdate;
 - (uint64_t)_sendConfigInfo;
 - (void)_cleanup;
-- (void)_completedWithError:(id)a3;
-- (void)_handleBuddyProgress:(id)a3;
-- (void)_handleSetupActionRequest:(id)a3 responseHandler:(id)a4;
+- (void)_completedWithError:(id)error;
+- (void)_handleBuddyProgress:(id)progress;
+- (void)_handleSetupActionRequest:(id)request responseHandler:(id)handler;
 - (void)_handleSetupActionSoftwareUpdate;
 - (void)_handleSetupPeerSuspended;
-- (void)_handleSetupResumeFoundDevice:(id)a3;
-- (void)_presentOneTimeCodeProxCard:(id)a3;
-- (void)_receivedConfigResponse:(id)a3;
-- (void)_receivedObject:(id)a3 flags:(unsigned int)a4;
-- (void)_registerOneTimeCodeDetection:(id)a3;
+- (void)_handleSetupResumeFoundDevice:(id)device;
+- (void)_presentOneTimeCodeProxCard:(id)card;
+- (void)_receivedConfigResponse:(id)response;
+- (void)_receivedObject:(id)object flags:(unsigned int)flags;
+- (void)_registerOneTimeCodeDetection:(id)detection;
 - (void)_run;
 - (void)_runOTCSetup;
 - (void)_runSFSessionActivated;
@@ -30,12 +30,12 @@
 - (void)activate;
 - (void)dealloc;
 - (void)didComplete;
-- (void)didRequestPresentationForProxCard:(id)a3;
+- (void)didRequestPresentationForProxCard:(id)card;
 - (void)invalidate;
-- (void)proximitySetupCompletedWithResult:(id)a3;
-- (void)sendAppEvent:(id)a3;
-- (void)setPairFlags:(unsigned int)a3;
-- (void)tryPIN:(id)a3;
+- (void)proximitySetupCompletedWithResult:(id)result;
+- (void)sendAppEvent:(id)event;
+- (void)setPairFlags:(unsigned int)flags;
+- (void)tryPIN:(id)n;
 @end
 
 @implementation SFDeviceSetupSessioniOS
@@ -97,7 +97,7 @@
   self->_receivedObjectHandler = 0;
 }
 
-- (void)setPairFlags:(unsigned int)a3
+- (void)setPairFlags:(unsigned int)flags
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -105,7 +105,7 @@
   v4[2] = __40__SFDeviceSetupSessioniOS_setPairFlags___block_invoke;
   v4[3] = &unk_1E788D970;
   v4[4] = self;
-  v5 = a3;
+  flagsCopy = flags;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -226,12 +226,12 @@ uint64_t __37__SFDeviceSetupSessioniOS_invalidate__block_invoke(uint64_t a1)
   return [v17 _cleanup];
 }
 
-- (void)_completedWithError:(id)a3
+- (void)_completedWithError:(id)error
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v5 = v4;
+  v5 = errorCopy;
   if (v5)
   {
     if (gLogCategory_SFDeviceSetupSessioniOS <= 60 && (gLogCategory_SFDeviceSetupSessioniOS != -1 || _LogCategory_Initialize()))
@@ -264,11 +264,11 @@ uint64_t __37__SFDeviceSetupSessioniOS_invalidate__block_invoke(uint64_t a1)
   }
 
   v15[0] = @"errDomain";
-  v9 = [v5 domain];
-  v10 = v9;
-  if (v9)
+  domain = [v5 domain];
+  v10 = domain;
+  if (domain)
   {
-    v11 = v9;
+    v11 = domain;
   }
 
   else
@@ -548,10 +548,10 @@ void __47__SFDeviceSetupSessioniOS__runPreAuthPairSetup__block_invoke(uint64_t a
       [SFDeviceSetupSessioniOS _runESIMSetup];
     }
 
-    v5 = [(SFSession *)self->_sfSession messageSessionTemplate];
-    if (v5)
+    messageSessionTemplate = [(SFSession *)self->_sfSession messageSessionTemplate];
+    if (messageSessionTemplate)
     {
-      v6 = v5;
+      v6 = messageSessionTemplate;
       v7 = [objc_alloc(getCoreTelephonyClientClass()) initWithQueue:self->_dispatchQueue];
       if (v7)
       {
@@ -671,9 +671,9 @@ void __39__SFDeviceSetupSessioniOS__runOTCSetup__block_invoke(uint64_t a1, void 
   return v2;
 }
 
-- (void)_registerOneTimeCodeDetection:(id)a3
+- (void)_registerOneTimeCodeDetection:(id)detection
 {
-  v4 = a3;
+  detectionCopy = detection;
   if (self->_oneTimeCodeAccelerator)
   {
     if (gLogCategory_SFDeviceSetupSessioniOS <= 30 && (gLogCategory_SFDeviceSetupSessioniOS != -1 || _LogCategory_Initialize()))
@@ -696,7 +696,7 @@ void __39__SFDeviceSetupSessioniOS__runOTCSetup__block_invoke(uint64_t a1, void 
     v8[2] = __57__SFDeviceSetupSessioniOS__registerOneTimeCodeDetection___block_invoke;
     v8[3] = &unk_1E788FE88;
     objc_copyWeak(&v10, &location);
-    v9 = v4;
+    v9 = detectionCopy;
     v6 = [v5 initWithBlockForUpdates:v8];
     oneTimeCodeAccelerator = self->_oneTimeCodeAccelerator;
     self->_oneTimeCodeAccelerator = v6;
@@ -745,20 +745,20 @@ void __57__SFDeviceSetupSessioniOS__registerOneTimeCodeDetection___block_invoke(
   }
 }
 
-- (void)_presentOneTimeCodeProxCard:(id)a3
+- (void)_presentOneTimeCodeProxCard:(id)card
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  cardCopy = card;
   if (gLogCategory_SFDeviceSetupSessioniOS <= 30 && (gLogCategory_SFDeviceSetupSessioniOS != -1 || _LogCategory_Initialize()))
   {
-    [SFDeviceSetupSessioniOS _presentOneTimeCodeProxCard:v4];
+    [SFDeviceSetupSessioniOS _presentOneTimeCodeProxCard:cardCopy];
   }
 
   progressHandler = self->_progressHandler;
   if (progressHandler)
   {
     v8 = @"oneTimeCode";
-    v9[0] = v4;
+    v9[0] = cardCopy;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
     progressHandler[2](progressHandler, 1100, v6);
   }
@@ -776,10 +776,10 @@ void __57__SFDeviceSetupSessioniOS__registerOneTimeCodeDetection___block_invoke(
       [SFDeviceSetupSessioniOS _runDependentSetup];
     }
 
-    v4 = [(SFSession *)self->_sfSession messageSessionTemplate];
-    if (v4)
+    messageSessionTemplate = [(SFSession *)self->_sfSession messageSessionTemplate];
+    if (messageSessionTemplate)
     {
-      v5 = v4;
+      v5 = messageSessionTemplate;
       self->_dependentSetupState = 1;
       v6 = [objc_alloc(getPRXCardContentViewControllerClass()) initWithNibName:0 bundle:0];
       v7 = [objc_alloc(getPASUIGuardianViewPresenterClass()) initWithSharingViewController:v6];
@@ -881,14 +881,14 @@ void __45__SFDeviceSetupSessioniOS__runDependentSetup__block_invoke_2(uint64_t a
       }
 
       self->_cdpState = 1;
-      v5 = [(SFSession *)self->_sfSession messageSessionTemplate];
-      if (v5)
+      messageSessionTemplate = [(SFSession *)self->_sfSession messageSessionTemplate];
+      if (messageSessionTemplate)
       {
         v6 = objc_alloc_init(getCDPContextClass_0());
         cdpContext = self->_cdpContext;
         self->_cdpContext = v6;
 
-        [(CDPContext *)self->_cdpContext setSharingChannel:v5];
+        [(CDPContext *)self->_cdpContext setSharingChannel:messageSessionTemplate];
         v8 = [objc_alloc(getCDPStateControllerClass_0()) initWithContext:self->_cdpContext];
         cdpController = self->_cdpController;
         self->_cdpController = v8;
@@ -953,10 +953,10 @@ uint64_t __43__SFDeviceSetupSessioniOS__runCoreCDPSetup__block_invoke_2(uint64_t
       [SFDeviceSetupSessioniOS _runWalletSetup];
     }
 
-    v5 = [(SFSession *)self->_sfSession messageSessionTemplate];
-    if (v5)
+    messageSessionTemplate = [(SFSession *)self->_sfSession messageSessionTemplate];
+    if (messageSessionTemplate)
     {
-      v6 = v5;
+      v6 = messageSessionTemplate;
       v7 = objc_alloc_init(getPKProximitySetupSourceClientClass[0]());
       if (v7)
       {
@@ -1097,18 +1097,18 @@ void __37__SFDeviceSetupSessioniOS__runResume__block_invoke(uint64_t a1, void *a
       fileTransferSessionTemplate = self->_fileTransferSessionTemplate;
     }
 
-    v7 = [(RPFileTransferSession *)fileTransferSessionTemplate selfPublicKey];
-    if (v7)
+    selfPublicKey = [(RPFileTransferSession *)fileTransferSessionTemplate selfPublicKey];
+    if (selfPublicKey)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"ftPK"];
+      [v3 setObject:selfPublicKey forKeyedSubscript:@"ftPK"];
     }
 
     v8 = objc_alloc_init(getACAccountStoreClass_5());
-    v9 = [v8 aa_primaryAppleAccount];
-    v10 = [v9 username];
-    if ([v10 length])
+    aa_primaryAppleAccount = [v8 aa_primaryAppleAccount];
+    username = [aa_primaryAppleAccount username];
+    if ([username length])
     {
-      [v3 setObject:v10 forKeyedSubscript:@"icn"];
+      [v3 setObject:username forKeyedSubscript:@"icn"];
     }
 
     else if (gLogCategory_SFDeviceSetupSessioniOS <= 60 && (gLogCategory_SFDeviceSetupSessioniOS != -1 || _LogCategory_Initialize()))
@@ -1116,12 +1116,12 @@ void __37__SFDeviceSetupSessioniOS__runResume__block_invoke(uint64_t a1, void *a
       [SFDeviceSetupSessioniOS _sendConfigInfo];
     }
 
-    v11 = [MEMORY[0x1E695DF58] preferredLanguages];
-    v12 = [v11 firstObject];
+    preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+    firstObject = [preferredLanguages firstObject];
 
-    if (v12)
+    if (firstObject)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"lang"];
+      [v3 setObject:firstObject forKeyedSubscript:@"lang"];
     }
 
     else if (gLogCategory_SFDeviceSetupSessioniOS <= 60 && (gLogCategory_SFDeviceSetupSessioniOS != -1 || _LogCategory_Initialize()))
@@ -1129,12 +1129,12 @@ void __37__SFDeviceSetupSessioniOS__runResume__block_invoke(uint64_t a1, void *a
       [SFDeviceSetupSessioniOS _sendConfigInfo];
     }
 
-    v13 = [MEMORY[0x1E695DF58] currentLocale];
-    v14 = [v13 localeIdentifier];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
 
-    if (v14)
+    if (localeIdentifier)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"locale"];
+      [v3 setObject:localeIdentifier forKeyedSubscript:@"locale"];
     }
 
     else if (gLogCategory_SFDeviceSetupSessioniOS <= 60 && (gLogCategory_SFDeviceSetupSessioniOS != -1 || _LogCategory_Initialize()))
@@ -1158,11 +1158,11 @@ void __37__SFDeviceSetupSessioniOS__runResume__block_invoke(uint64_t a1, void *a
         [SFDeviceSetupSessioniOS _sendConfigInfo];
       }
 
-      v14 = [v16 objectForKeyedSubscript:@"password"];
+      localeIdentifier = [v16 objectForKeyedSubscript:@"password"];
 
-      if (v14)
+      if (localeIdentifier)
       {
-        [v3 setObject:v14 forKeyedSubscript:@"wifiPW"];
+        [v3 setObject:localeIdentifier forKeyedSubscript:@"wifiPW"];
       }
 
       else
@@ -1172,7 +1172,7 @@ void __37__SFDeviceSetupSessioniOS__runResume__block_invoke(uint64_t a1, void *a
           [SFDeviceSetupSessioniOS _sendConfigInfo];
         }
 
-        v14 = 0;
+        localeIdentifier = 0;
       }
     }
 
@@ -1190,9 +1190,9 @@ void __37__SFDeviceSetupSessioniOS__runResume__block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)_receivedConfigResponse:(id)a3
+- (void)_receivedConfigResponse:(id)response
 {
-  v8 = a3;
+  responseCopy = response;
   CFDataGetTypeID();
   v4 = CFDictionaryGetTypedValue();
   if (v4)
@@ -1204,10 +1204,10 @@ void __37__SFDeviceSetupSessioniOS__runResume__block_invoke(uint64_t a1, void *a
   v5 = CFDictionaryGetTypedValue();
   if (v5)
   {
-    v6 = [(RPFileTransferSession *)self->_fileTransferSessionTemplate targetID];
+    targetID = [(RPFileTransferSession *)self->_fileTransferSessionTemplate targetID];
 
     [(RPFileTransferSession *)self->_fileTransferSessionTemplate setTargetID:v5];
-    if (!v6)
+    if (!targetID)
     {
       progressHandler = self->_progressHandler;
       if (progressHandler)
@@ -1244,10 +1244,10 @@ void __37__SFDeviceSetupSessioniOS__runResume__block_invoke(uint64_t a1, void *a
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:SFDeviceClassCodeGet()];
   [v10 setObject:v4 forKeyedSubscript:@"dclass"];
 
-  v5 = [MEMORY[0x1E695DF58] preferredLanguages];
-  if (v5)
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+  if (preferredLanguages)
   {
-    [v10 setObject:v5 forKeyedSubscript:@"langs"];
+    [v10 setObject:preferredLanguages forKeyedSubscript:@"langs"];
   }
 
   else if (gLogCategory_SFDeviceSetupSessioniOS <= 60 && (gLogCategory_SFDeviceSetupSessioniOS != -1 || _LogCategory_Initialize()))
@@ -1255,10 +1255,10 @@ void __37__SFDeviceSetupSessioniOS__runResume__block_invoke(uint64_t a1, void *a
     [SFDeviceSetupSessioniOS _sendPreAuthInfo];
   }
 
-  v6 = [v5 firstObject];
-  if (v6)
+  firstObject = [preferredLanguages firstObject];
+  if (firstObject)
   {
-    [v10 setObject:v6 forKeyedSubscript:@"lang"];
+    [v10 setObject:firstObject forKeyedSubscript:@"lang"];
   }
 
   else if (gLogCategory_SFDeviceSetupSessioniOS <= 60 && (gLogCategory_SFDeviceSetupSessioniOS != -1 || _LogCategory_Initialize()))
@@ -1266,12 +1266,12 @@ void __37__SFDeviceSetupSessioniOS__runResume__block_invoke(uint64_t a1, void *a
     [SFDeviceSetupSessioniOS _sendPreAuthInfo];
   }
 
-  v7 = [MEMORY[0x1E695DF58] currentLocale];
-  v8 = [v7 localeIdentifier];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  if (v8)
+  if (localeIdentifier)
   {
-    [v10 setObject:v8 forKeyedSubscript:@"locale"];
+    [v10 setObject:localeIdentifier forKeyedSubscript:@"locale"];
   }
 
   else if (gLogCategory_SFDeviceSetupSessioniOS <= 60 && (gLogCategory_SFDeviceSetupSessioniOS != -1 || _LogCategory_Initialize()))
@@ -1329,8 +1329,8 @@ LABEL_34:
     }
 
     [(BYDeviceSetupSourceSession *)self->_buddySession setFileTransferSessionTemplate:self->_fileTransferSessionTemplate];
-    v7 = [(SFSession *)self->_sfSession messageSessionTemplate];
-    [(BYDeviceSetupSourceSession *)self->_buddySession setMessageSession:v7];
+    messageSessionTemplate = [(SFSession *)self->_sfSession messageSessionTemplate];
+    [(BYDeviceSetupSourceSession *)self->_buddySession setMessageSession:messageSessionTemplate];
 
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -1358,10 +1358,10 @@ void __45__SFDeviceSetupSessioniOS__startBuddySession__block_invoke(uint64_t a1,
   dispatch_async(v5, v7);
 }
 
-- (void)_handleBuddyProgress:(id)a3
+- (void)_handleBuddyProgress:(id)progress
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  progressCopy = progress;
   if (self->_buddySession)
   {
     if (gLogCategory_SFDeviceSetupSessioniOS <= 30 && (gLogCategory_SFDeviceSetupSessioniOS != -1 || _LogCategory_Initialize()))
@@ -1379,7 +1379,7 @@ void __45__SFDeviceSetupSessioniOS__startBuddySession__block_invoke(uint64_t a1,
       progressHandler = self->_progressHandler;
       if (progressHandler)
       {
-        progressHandler[2](progressHandler, 242, v4);
+        progressHandler[2](progressHandler, 242, progressCopy);
       }
 
       self->_buddyComplete = 1;
@@ -1480,10 +1480,10 @@ LABEL_24:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleSetupActionRequest:(id)a3 responseHandler:(id)a4
+- (void)_handleSetupActionRequest:(id)request responseHandler:(id)handler
 {
-  v16 = a3;
-  v6 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   Int64Ranged = CFDictionaryGetInt64Ranged();
   if (gLogCategory_SFDeviceSetupSessioniOS <= 30 && (gLogCategory_SFDeviceSetupSessioniOS != -1 || _LogCategory_Initialize()))
@@ -1585,7 +1585,7 @@ LABEL_20:
 
   [v7 setObject:&unk_1F1D7CFA0 forKeyedSubscript:@"er"];
 LABEL_31:
-  (*(v6 + 2))(v6, 0, 0, v7);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, v7);
 }
 
 - (void)_handleSetupActionSoftwareUpdate
@@ -1682,13 +1682,13 @@ void __52__SFDeviceSetupSessioniOS__handleSetupPeerSuspended__block_invoke_2(uin
   }
 }
 
-- (void)_handleSetupResumeFoundDevice:(id)a3
+- (void)_handleSetupResumeFoundDevice:(id)device
 {
-  v10 = a3;
-  if (([v10 deviceFlags] & 0x100) != 0)
+  deviceCopy = device;
+  if (([deviceCopy deviceFlags] & 0x100) != 0)
   {
-    v5 = [v10 bleDevice];
-    v6 = [v5 advertisementFields];
+    bleDevice = [deviceCopy bleDevice];
+    advertisementFields = [bleDevice advertisementFields];
     CFDataGetTypeID();
     v7 = CFDictionaryGetTypedValue();
 
@@ -1699,7 +1699,7 @@ void __52__SFDeviceSetupSessioniOS__handleSetupPeerSuspended__block_invoke_2(uin
         [SFDeviceSetupSessioniOS _handleSetupResumeFoundDevice:];
       }
 
-      objc_storeStrong(&self->_peerDevice, a3);
+      objc_storeStrong(&self->_peerDevice, device);
       [(SFDeviceDiscovery *)self->_resumeDiscovery invalidate];
       resumeDiscovery = self->_resumeDiscovery;
       self->_resumeDiscovery = 0;
@@ -1720,23 +1720,23 @@ void __52__SFDeviceSetupSessioniOS__handleSetupPeerSuspended__block_invoke_2(uin
   }
 }
 
-- (void)_receivedObject:(id)a3 flags:(unsigned int)a4
+- (void)_receivedObject:(id)object flags:(unsigned int)flags
 {
-  v4 = a4;
-  v6 = a3;
-  v12 = v6;
+  flagsCopy = flags;
+  objectCopy = object;
+  v12 = objectCopy;
   if (gLogCategory_SFDeviceSetupSessioniOS <= 30)
   {
-    if (gLogCategory_SFDeviceSetupSessioniOS != -1 || (v7 = _LogCategory_Initialize(), v6 = v12, v7))
+    if (gLogCategory_SFDeviceSetupSessioniOS != -1 || (v7 = _LogCategory_Initialize(), objectCopy = v12, v7))
     {
-      [SFDeviceSetupSessioniOS _receivedObject:v6 flags:?];
+      [SFDeviceSetupSessioniOS _receivedObject:objectCopy flags:?];
     }
   }
 
   Int64Ranged = CFDictionaryGetInt64Ranged();
   if (Int64Ranged == 2)
   {
-    if ((v4 & 1) == 0)
+    if ((flagsCopy & 1) == 0)
     {
       [SFDeviceSetupSessioniOS _receivedObject:? flags:?];
       goto LABEL_21;
@@ -1761,7 +1761,7 @@ void __52__SFDeviceSetupSessioniOS__handleSetupPeerSuspended__block_invoke_2(uin
   if (Int64Ranged == 5)
   {
     v9 = v12;
-    if (v4)
+    if (flagsCopy)
     {
       goto LABEL_22;
     }
@@ -1798,17 +1798,17 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)sendAppEvent:(id)a3
+- (void)sendAppEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__SFDeviceSetupSessioniOS_sendAppEvent___block_invoke;
   v7[3] = &unk_1E788A658;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1830,17 +1830,17 @@ void __40__SFDeviceSetupSessioniOS_sendAppEvent___block_invoke(uint64_t a1)
   [*(*(a1 + 32) + 80) sendWithFlags:1 object:v5];
 }
 
-- (void)tryPIN:(id)a3
+- (void)tryPIN:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __34__SFDeviceSetupSessioniOS_tryPIN___block_invoke;
   v7[3] = &unk_1E788A658;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nCopy;
+  v6 = nCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1873,10 +1873,10 @@ uint64_t __34__SFDeviceSetupSessioniOS_tryPIN___block_invoke(uint64_t a1)
   }
 }
 
-- (void)didRequestPresentationForProxCard:(id)a3
+- (void)didRequestPresentationForProxCard:(id)card
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  cardCopy = card;
   if (gLogCategory_SFDeviceSetupSessioniOS <= 30 && (gLogCategory_SFDeviceSetupSessioniOS != -1 || _LogCategory_Initialize()))
   {
     [SFDeviceSetupSessioniOS didRequestPresentationForProxCard:];
@@ -1886,7 +1886,7 @@ uint64_t __34__SFDeviceSetupSessioniOS_tryPIN___block_invoke(uint64_t a1)
   if (progressHandler)
   {
     v8 = @"viewController";
-    v9[0] = v4;
+    v9[0] = cardCopy;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
     progressHandler[2](progressHandler, 1000, v6);
   }
@@ -1894,17 +1894,17 @@ uint64_t __34__SFDeviceSetupSessioniOS_tryPIN___block_invoke(uint64_t a1)
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)proximitySetupCompletedWithResult:(id)a3
+- (void)proximitySetupCompletedWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__SFDeviceSetupSessioniOS_proximitySetupCompletedWithResult___block_invoke;
   v7[3] = &unk_1E788A658;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = resultCopy;
+  selfCopy = self;
+  v6 = resultCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -2013,7 +2013,7 @@ uint64_t __43__SFDeviceSetupSessioniOS__runCoreCDPSetup__block_invoke_2_cold_1(u
 
 - (uint64_t)_handleSetupActionSoftwareUpdate
 {
-  v3 = *a1;
+  v3 = *self;
   v4 = *a2;
   return LogPrintF();
 }

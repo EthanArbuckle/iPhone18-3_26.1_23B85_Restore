@@ -1,17 +1,17 @@
 @interface AlertControllerFactory
-+ (id)_actionForErrorType:(int64_t)a3 completion:(id)a4;
-+ (id)_messageForErrorType:(int64_t)a3;
-+ (id)_titleForErrorType:(int64_t)a3;
-+ (id)alertControllerWithBiometryType:(int64_t)a3 forCarrier:(id)a4 completion:(id)a5;
-+ (id)alertControllerWithError:(int64_t)a3 completion:(id)a4;
++ (id)_actionForErrorType:(int64_t)type completion:(id)completion;
++ (id)_messageForErrorType:(int64_t)type;
++ (id)_titleForErrorType:(int64_t)type;
++ (id)alertControllerWithBiometryType:(int64_t)type forCarrier:(id)carrier completion:(id)completion;
++ (id)alertControllerWithError:(int64_t)error completion:(id)completion;
 @end
 
 @implementation AlertControllerFactory
 
-+ (id)_actionForErrorType:(int64_t)a3 completion:(id)a4
++ (id)_actionForErrorType:(int64_t)type completion:(id)completion
 {
-  v5 = a4;
-  if ((a3 - 1) > 1)
+  completionCopy = completion;
+  if ((type - 1) > 1)
   {
     v8 = 0;
   }
@@ -25,22 +25,22 @@
     v10[1] = 3221225472;
     v10[2] = sub_100002600;
     v10[3] = &unk_100010378;
-    v11 = v5;
+    v11 = completionCopy;
     v8 = [UIAlertAction actionWithTitle:v7 style:0 handler:v10];
   }
 
   return v8;
 }
 
-+ (id)_messageForErrorType:(int64_t)a3
++ (id)_messageForErrorType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = @"CONNECTION_LOST_MESSAGE";
     goto LABEL_5;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v3 = @"USER_AUTHENTICATION_FAILURE_MESSAGE";
 LABEL_5:
@@ -56,15 +56,15 @@ LABEL_7:
   return v5;
 }
 
-+ (id)_titleForErrorType:(int64_t)a3
++ (id)_titleForErrorType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = @"CONNECTION_FAILURE_TITLE";
     goto LABEL_5;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v3 = @"AUTHENTICATION_FAILURE_TITLE";
 LABEL_5:
@@ -80,13 +80,13 @@ LABEL_7:
   return v5;
 }
 
-+ (id)alertControllerWithError:(int64_t)a3 completion:(id)a4
++ (id)alertControllerWithError:(int64_t)error completion:(id)completion
 {
-  v6 = [a1 _actionForErrorType:a3 completion:a4];
+  v6 = [self _actionForErrorType:error completion:completion];
   if (v6)
   {
-    v7 = [a1 _messageForErrorType:a3];
-    v8 = [a1 _titleForErrorType:a3];
+    v7 = [self _messageForErrorType:error];
+    v8 = [self _titleForErrorType:error];
     v9 = [UIAlertController alertControllerWithTitle:v8 message:v7 preferredStyle:1];
     [v9 addAction:v6];
   }
@@ -99,10 +99,10 @@ LABEL_7:
   return v9;
 }
 
-+ (id)alertControllerWithBiometryType:(int64_t)a3 forCarrier:(id)a4 completion:(id)a5
++ (id)alertControllerWithBiometryType:(int64_t)type forCarrier:(id)carrier completion:(id)completion
 {
-  v31 = a5;
-  v7 = a4;
+  completionCopy = completion;
+  carrierCopy = carrier;
   v8 = [NSBundle bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"USE_TOUCH_ID" value:&stru_1000109B8 table:@"Localizable"];
 
@@ -112,7 +112,7 @@ LABEL_7:
   v12 = [NSBundle bundleForClass:objc_opt_class()];
   v13 = [v12 localizedStringForKey:@"TOUCH_ID_LOGIN_ENABLE_MESSAGE" value:&stru_1000109B8 table:@"Localizable"];
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v14 = [NSBundle bundleForClass:objc_opt_class()];
     v15 = [v14 localizedStringForKey:@"USE_FACE_ID" value:&stru_1000109B8 table:@"Localizable"];
@@ -128,14 +128,14 @@ LABEL_7:
     v9 = v15;
   }
 
-  v20 = [v11 stringByReplacingOccurrencesOfString:@"%@" withString:{v7, v13}];
-  v21 = [v13 stringByReplacingOccurrencesOfString:@"%@" withString:v7];
+  v20 = [v11 stringByReplacingOccurrencesOfString:@"%@" withString:{carrierCopy, v13}];
+  v21 = [v13 stringByReplacingOccurrencesOfString:@"%@" withString:carrierCopy];
 
   v34[0] = _NSConcreteStackBlock;
   v34[1] = 3221225472;
   v34[2] = sub_100002C20;
   v34[3] = &unk_100010378;
-  v22 = v31;
+  v22 = completionCopy;
   v35 = v22;
   v23 = [UIAlertAction actionWithTitle:v9 style:0 handler:v34];
   v24 = [NSBundle bundleForClass:objc_opt_class()];

@@ -1,24 +1,24 @@
 @interface AKBasicLoginSecondFactorActions
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation AKBasicLoginSecondFactorActions
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v14 = self;
+  selfCopy = self;
   v13[2] = a2;
-  v13[1] = a3;
-  v13[0] = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v3 = [v14->_regenerateCodeAction copy];
+  v13[1] = zone;
+  v13[0] = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v3 = [selfCopy->_regenerateCodeAction copy];
   v4 = *(v13[0] + 1);
   *(v13[0] + 1) = v3;
   *&v5 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  v6 = [v14->_codeEnteredAction copy];
+  v6 = [selfCopy->_codeEnteredAction copy];
   v7 = *(v13[0] + 2);
   *(v13[0] + 2) = v6;
   *&v8 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-  v9 = [v14->_ak_cancelAction copy];
+  v9 = [selfCopy->_ak_cancelAction copy];
   v10 = *(v13[0] + 3);
   *(v13[0] + 3) = v9;
   MEMORY[0x277D82BD8](v10);

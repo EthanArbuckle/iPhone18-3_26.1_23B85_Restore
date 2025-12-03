@@ -1,60 +1,60 @@
 @interface SKAPFSContainerDisk
-- (id)copyVolumesWithIncludeSnapshots:(BOOL)a3;
+- (id)copyVolumesWithIncludeSnapshots:(BOOL)snapshots;
 - (id)designatedPhysicalStore;
 - (id)dictionaryRepresentation;
 - (id)minimalDictionaryRepresentation;
 - (id)physicalStores;
 - (id)volumes;
 - (id)volumesExcludingSnapshots;
-- (void)updateWithDictionary:(id)a3;
+- (void)updateWithDictionary:(id)dictionary;
 @end
 
 @implementation SKAPFSContainerDisk
 
-- (void)updateWithDictionary:(id)a3
+- (void)updateWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v7.receiver = v5;
+  dictionaryCopy = dictionary;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7.receiver = selfCopy;
   v7.super_class = SKAPFSContainerDisk;
-  [(SKDisk *)&v7 updateWithDictionary:v4];
-  v6 = [v4 objectForKey:@"designatedPSUUID"];
-  [(SKAPFSContainerDisk *)v5 setDesignatedPSUUID:v6];
+  [(SKDisk *)&v7 updateWithDictionary:dictionaryCopy];
+  v6 = [dictionaryCopy objectForKey:@"designatedPSUUID"];
+  [(SKAPFSContainerDisk *)selfCopy setDesignatedPSUUID:v6];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)minimalDictionaryRepresentation
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v7.receiver = v2;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7.receiver = selfCopy;
   v7.super_class = SKAPFSContainerDisk;
-  v3 = [(SKDisk *)&v7 minimalDictionaryRepresentation];
-  v4 = [(SKAPFSContainerDisk *)v2 designatedPSUUID];
+  minimalDictionaryRepresentation = [(SKDisk *)&v7 minimalDictionaryRepresentation];
+  designatedPSUUID = [(SKAPFSContainerDisk *)selfCopy designatedPSUUID];
 
-  if (v4)
+  if (designatedPSUUID)
   {
-    v5 = [(SKAPFSContainerDisk *)v2 designatedPSUUID];
-    [v3 setObject:v5 forKey:@"designatedPSUUID"];
+    designatedPSUUID2 = [(SKAPFSContainerDisk *)selfCopy designatedPSUUID];
+    [minimalDictionaryRepresentation setObject:designatedPSUUID2 forKey:@"designatedPSUUID"];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return minimalDictionaryRepresentation;
 }
 
 - (id)dictionaryRepresentation
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v5.receiver = v2;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5.receiver = selfCopy;
   v5.super_class = SKAPFSContainerDisk;
-  v3 = [(SKDisk *)&v5 dictionaryRepresentation];
-  objc_sync_exit(v2);
+  dictionaryRepresentation = [(SKDisk *)&v5 dictionaryRepresentation];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
 - (id)physicalStores
@@ -66,8 +66,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v3 allDisks];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allDisks = [v3 allDisks];
+  v6 = [allDisks countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -78,7 +78,7 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allDisks);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -93,7 +93,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [allDisks countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -104,16 +104,16 @@
   return v4;
 }
 
-- (id)copyVolumesWithIncludeSnapshots:(BOOL)a3
+- (id)copyVolumesWithIncludeSnapshots:(BOOL)snapshots
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = [(SKDisk *)self children];
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  children = [(SKDisk *)self children];
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(children, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = children;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -133,7 +133,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          if (a3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+          if (snapshots || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
             [v5 addObject:{v11, v14}];
           }
@@ -195,16 +195,16 @@
           goto LABEL_12;
         }
 
-        v9 = [(SKAPFSContainerDisk *)self designatedPSUUID];
-        if (!v9)
+        designatedPSUUID = [(SKAPFSContainerDisk *)self designatedPSUUID];
+        if (!designatedPSUUID)
         {
           goto LABEL_12;
         }
 
-        v10 = v9;
-        v11 = [(SKAPFSContainerDisk *)self designatedPSUUID];
-        v12 = [v8 apfsUUID];
-        v13 = [v11 isEqualToString:v12];
+        v10 = designatedPSUUID;
+        designatedPSUUID2 = [(SKAPFSContainerDisk *)self designatedPSUUID];
+        apfsUUID = [v8 apfsUUID];
+        v13 = [designatedPSUUID2 isEqualToString:apfsUUID];
 
         if (v13)
         {

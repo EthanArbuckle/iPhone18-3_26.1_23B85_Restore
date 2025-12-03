@@ -1,11 +1,11 @@
 @interface CTPNRDataType
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCTPNRDataType:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCTPNRDataType:(id)type;
 - (CTPNRDataType)init;
-- (CTPNRDataType)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CTPNRDataType)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTPNRDataType
@@ -14,11 +14,11 @@
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
   [v3 appendFormat:@", mechanism=%ld", -[CTPNRDataType pnrMechanism](self, "pnrMechanism")];
-  v4 = [(CTPNRDataType *)self svcCenterAddr];
-  [v3 appendFormat:@", serviceCenter=%@", v4];
+  svcCenterAddr = [(CTPNRDataType *)self svcCenterAddr];
+  [v3 appendFormat:@", serviceCenter=%@", svcCenterAddr];
 
-  v5 = [(CTPNRDataType *)self destAddr];
-  [v3 appendFormat:@", destination=%@", v5];
+  destAddr = [(CTPNRDataType *)self destAddr];
+  [v3 appendFormat:@", destination=%@", destAddr];
 
   [v3 appendString:@">"];
 
@@ -38,41 +38,41 @@
   return result;
 }
 
-- (BOOL)isEqualToCTPNRDataType:(id)a3
+- (BOOL)isEqualToCTPNRDataType:(id)type
 {
-  v8 = a3;
-  if (!v8 || (v9 = -[CTPNRDataType pnrMechanism](self, "pnrMechanism"), v9 != [v8 pnrMechanism]))
+  typeCopy = type;
+  if (!typeCopy || (v9 = -[CTPNRDataType pnrMechanism](self, "pnrMechanism"), v9 != [typeCopy pnrMechanism]))
   {
     v12 = 0;
     goto LABEL_18;
   }
 
-  v10 = [(CTPNRDataType *)self svcCenterAddr];
-  if (!v10)
+  svcCenterAddr = [(CTPNRDataType *)self svcCenterAddr];
+  if (!svcCenterAddr)
   {
-    v3 = [v8 svcCenterAddr];
-    if (!v3)
+    svcCenterAddr2 = [typeCopy svcCenterAddr];
+    if (!svcCenterAddr2)
     {
       v13 = 0;
       goto LABEL_10;
     }
   }
 
-  v4 = [(CTPNRDataType *)self svcCenterAddr];
-  v11 = [v8 svcCenterAddr];
-  v5 = v11;
-  if (v4 == v11)
+  svcCenterAddr3 = [(CTPNRDataType *)self svcCenterAddr];
+  svcCenterAddr4 = [typeCopy svcCenterAddr];
+  v5 = svcCenterAddr4;
+  if (svcCenterAddr3 == svcCenterAddr4)
   {
     v13 = 1;
 LABEL_10:
-    v14 = [(CTPNRDataType *)self destAddr];
-    if (v14 || ([v8 destAddr], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+    destAddr = [(CTPNRDataType *)self destAddr];
+    if (destAddr || ([typeCopy destAddr], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v15 = [(CTPNRDataType *)self destAddr];
-      v16 = [v8 destAddr];
-      v12 = v15 == v16;
+      destAddr2 = [(CTPNRDataType *)self destAddr];
+      destAddr3 = [typeCopy destAddr];
+      v12 = destAddr2 == destAddr3;
 
-      if (v14)
+      if (destAddr)
       {
 
         if (!v13)
@@ -101,7 +101,7 @@ LABEL_14:
 
   v12 = 0;
 LABEL_15:
-  if (!v10)
+  if (!svcCenterAddr)
   {
   }
 
@@ -109,10 +109,10 @@ LABEL_18:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -120,44 +120,44 @@ LABEL_18:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTPNRDataType *)self isEqualToCTPNRDataType:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTPNRDataType *)self isEqualToCTPNRDataType:equalCopy];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CTPNRDataType allocWithZone:a3];
+  v4 = [CTPNRDataType allocWithZone:zone];
   [(CTPNRDataType *)v4 setPnrMechanism:self->_pnrMechanism];
   [(CTPNRDataType *)v4 setSvcCenterAddr:self->_svcCenterAddr];
   [(CTPNRDataType *)v4 setDestAddr:self->_destAddr];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   pnrMechanism = self->_pnrMechanism;
-  v5 = a3;
-  [v5 encodeInteger:pnrMechanism forKey:@"pnr_mechanism"];
-  [v5 encodeObject:self->_svcCenterAddr forKey:@"svc_center_addr"];
-  [v5 encodeObject:self->_destAddr forKey:@"dst_addr"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:pnrMechanism forKey:@"pnr_mechanism"];
+  [coderCopy encodeObject:self->_svcCenterAddr forKey:@"svc_center_addr"];
+  [coderCopy encodeObject:self->_destAddr forKey:@"dst_addr"];
 }
 
-- (CTPNRDataType)initWithCoder:(id)a3
+- (CTPNRDataType)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CTPNRDataType;
   v5 = [(CTPNRDataType *)&v11 init];
   if (v5)
   {
-    v5->_pnrMechanism = [v4 decodeIntegerForKey:@"pnr_mechanism"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"svc_center_addr"];
+    v5->_pnrMechanism = [coderCopy decodeIntegerForKey:@"pnr_mechanism"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"svc_center_addr"];
     svcCenterAddr = v5->_svcCenterAddr;
     v5->_svcCenterAddr = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dst_addr"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dst_addr"];
     destAddr = v5->_destAddr;
     v5->_destAddr = v8;
   }

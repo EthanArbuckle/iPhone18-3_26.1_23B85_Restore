@@ -1,13 +1,13 @@
 @interface MPSNNGramMatrixCalculation
 - (MPSNNGramMatrixCalculation)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSNNGramMatrixCalculation)initWithDevice:(id)device alpha:(float)alpha;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4;
-- (id)resultStateForSourceImage:(id)a3 sourceStates:(id)a4 destinationImage:(id)a5;
-- (id)temporaryResultStateForCommandBuffer:(id)a3 sourceImage:(id)a4 sourceStates:(id)a5 destinationImage:(id)a6;
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states;
+- (id)resultStateForSourceImage:(id)image sourceStates:(id)states destinationImage:(id)destinationImage;
+- (id)temporaryResultStateForCommandBuffer:(id)buffer sourceImage:(id)image sourceStates:(id)states destinationImage:(id)destinationImage;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNNGramMatrixCalculation
@@ -40,11 +40,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v37.receiver = self;
   v37.super_class = MPSNNGramMatrixCalculation;
-  v6 = [(MPSCNNKernel *)&v37 copyWithZone:a3 device:a4];
+  v6 = [(MPSCNNKernel *)&v37 copyWithZone:zone device:device];
   alpha = self->_alpha;
   v6[90] = alpha;
   v8 = *(*(v6 + *MEMORY[0x277CD7350]) + 16);
@@ -58,7 +58,7 @@
   propertyCallback = self->_propertyCallback;
   if (propertyCallback && objc_msgSend_conformsToProtocol_(propertyCallback, v23, &unk_284D09E18, v24, v25, v26, v27, v28))
   {
-    *(v6 + 41) = objc_msgSend_copyWithZone_(self->_propertyCallback, v30, a3, v31, v32, v33, v34, v35);
+    *(v6 + 41) = objc_msgSend_copyWithZone_(self->_propertyCallback, v30, zone, v31, v32, v33, v34, v35);
   }
 
   return v6;
@@ -120,28 +120,28 @@
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v37.receiver = self;
   v37.super_class = MPSNNGramMatrixCalculation;
   [(MPSCNNKernel *)&v37 encodeWithCoder:?];
   *&v5 = self->_alpha;
-  objc_msgSend_encodeFloat_forKey_(a3, v6, @"MPSCNNGram_alpha", v7, v8, v9, v10, v11, v5);
+  objc_msgSend_encodeFloat_forKey_(coder, v6, @"MPSCNNGram_alpha", v7, v8, v9, v10, v11, v5);
   if (self->_propertyCallback && (objc_msgSend_conformsToProtocol_(self->_propertyCallback, v12, &unk_284D09FA0, v13, v14, v15, v16, v17) & 1) != 0)
   {
     v18 = objc_opt_class();
     v26 = objc_msgSend_supportsSecureCoding(v18, v19, v20, v21, v22, v23, v24, v25);
-    objc_msgSend_encodeBool_forKey_(a3, v27, v26, @"MPSCNNGram_hasPropertyCallback", v28, v29, v30, v31);
+    objc_msgSend_encodeBool_forKey_(coder, v27, v26, @"MPSCNNGram_hasPropertyCallback", v28, v29, v30, v31);
     if (v26)
     {
-      objc_msgSend_encodeObject_forKey_(a3, v32, self->_propertyCallback, @"MPSCNNGram_propertyCallback", v33, v34, v35, v36);
+      objc_msgSend_encodeObject_forKey_(coder, v32, self->_propertyCallback, @"MPSCNNGram_propertyCallback", v33, v34, v35, v36);
     }
   }
 
   else
   {
-    objc_msgSend_encodeBool_forKey_(a3, v12, 0, @"MPSCNNGram_hasPropertyCallback", v14, v15, v16, v17);
+    objc_msgSend_encodeBool_forKey_(coder, v12, 0, @"MPSCNNGram_hasPropertyCallback", v14, v15, v16, v17);
   }
 }
 
@@ -154,11 +154,11 @@
   return objc_msgSend_stringWithFormat_(v3, v5, @"%@\n\talpha: %f", v6, v7, v8, v9, v10, v4, self->_alpha);
 }
 
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states
 {
   v46.receiver = self;
   v46.super_class = MPSNNGramMatrixCalculation;
-  v4 = [(MPSCNNKernel *)&v46 destinationImageDescriptorForSourceImages:a3 sourceStates:a4];
+  v4 = [(MPSCNNKernel *)&v46 destinationImageDescriptorForSourceImages:images sourceStates:states];
   objc_msgSend_width(v4, v5, v6, v7, v8, v9, v10, v11);
   objc_msgSend_height(v4, v12, v13, v14, v15, v16, v17, v18);
   v26 = objc_msgSend_featureChannels(v4, v19, v20, v21, v22, v23, v24, v25);
@@ -168,7 +168,7 @@
   return v4;
 }
 
-- (id)resultStateForSourceImage:(id)a3 sourceStates:(id)a4 destinationImage:(id)a5
+- (id)resultStateForSourceImage:(id)image sourceStates:(id)states destinationImage:(id)destinationImage
 {
   v9 = [MPSNNGramGradientState alloc];
   v16 = objc_msgSend_initWithResource_(v9, v10, 0, v11, v12, v13, v14, v15);
@@ -177,11 +177,11 @@
   propertyCallback = self->_propertyCallback;
   if (propertyCallback)
   {
-    objc_msgSend_alphaForSourceImage_destinationImage_(propertyCallback, v24, a3, a5, v25, v26, v27, v28);
+    objc_msgSend_alphaForSourceImage_destinationImage_(propertyCallback, v24, image, destinationImage, v25, v26, v27, v28);
     v16[72] = v31;
   }
 
-  objc_msgSend_copyToGradientState_sourceImage_sourceStates_destinationImage_(self, v24, v16, a3, a4, a5, v27, v28);
+  objc_msgSend_copyToGradientState_sourceImage_sourceStates_destinationImage_(self, v24, v16, image, states, destinationImage, v27, v28);
   if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 0x10) != 0)
   {
     v32 = MEMORY[0x277CCACA8];
@@ -194,11 +194,11 @@
   return v16;
 }
 
-- (id)temporaryResultStateForCommandBuffer:(id)a3 sourceImage:(id)a4 sourceStates:(id)a5 destinationImage:(id)a6
+- (id)temporaryResultStateForCommandBuffer:(id)buffer sourceImage:(id)image sourceStates:(id)states destinationImage:(id)destinationImage
 {
-  if (a3)
+  if (buffer)
   {
-    v12 = objc_msgSend_temporaryStateWithCommandBuffer_(MPSNNGramGradientState, a2, a3, a4, a5, a6, v6, v7);
+    v12 = objc_msgSend_temporaryStateWithCommandBuffer_(MPSNNGramGradientState, a2, buffer, image, states, destinationImage, v6, v7);
   }
 
   else
@@ -213,11 +213,11 @@
   propertyCallback = self->_propertyCallback;
   if (propertyCallback)
   {
-    objc_msgSend_alphaForSourceImage_destinationImage_(propertyCallback, v28, a4, a6, v29, v30, v31, v32);
+    objc_msgSend_alphaForSourceImage_destinationImage_(propertyCallback, v28, image, destinationImage, v29, v30, v31, v32);
     v27[72] = v35;
   }
 
-  objc_msgSend_copyToGradientState_sourceImage_sourceStates_destinationImage_(self, v28, v27, a4, a5, a6, v31, v32);
+  objc_msgSend_copyToGradientState_sourceImage_sourceStates_destinationImage_(self, v28, v27, image, states, destinationImage, v31, v32);
   if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 0x10) != 0)
   {
     v36 = MEMORY[0x277CCACA8];

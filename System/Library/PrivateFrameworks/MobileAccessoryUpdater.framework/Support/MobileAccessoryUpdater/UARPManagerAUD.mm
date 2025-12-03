@@ -1,38 +1,38 @@
 @interface UARPManagerAUD
-- (BOOL)dynamicAssetSolicitation:(id)a3 modelNumber:(id)a4 notifyService:(id)a5;
-- (BOOL)dynamicAssetSolicitation:(id)a3 modelNumbers:(id)a4 notifyService:(id)a5;
-- (BOOL)handleXPCStreamEvent:(id)a3;
+- (BOOL)dynamicAssetSolicitation:(id)solicitation modelNumber:(id)number notifyService:(id)service;
+- (BOOL)dynamicAssetSolicitation:(id)solicitation modelNumbers:(id)numbers notifyService:(id)service;
+- (BOOL)handleXPCStreamEvent:(id)event;
 - (BOOL)isBusy;
-- (UARPManagerAUD)initWithQueue:(id)a3;
-- (id)personalizationHelperQueryPendingTssRequests:(id)a3;
-- (int64_t)addAccessory:(id)a3 assetID:(id)a4;
-- (int64_t)disableTRMSystemAuthenticationForRegistryEntryID:(id)a3;
-- (int64_t)enableTRMSystemAuthenticationForRegistryEntryID:(id)a3;
-- (int64_t)removeAccessory:(id)a3;
-- (int64_t)requestConsent:(id)a3;
-- (int64_t)revokeConsentRequest:(id)a3;
-- (void)assetAvailabilityUpdateForAccessory:(id)a3 assetID:(id)a4;
-- (void)consentReceived:(id)a3;
-- (void)consentReceivedPostLogoutMode:(id)a3;
+- (UARPManagerAUD)initWithQueue:(id)queue;
+- (id)personalizationHelperQueryPendingTssRequests:(id)requests;
+- (int64_t)addAccessory:(id)accessory assetID:(id)d;
+- (int64_t)disableTRMSystemAuthenticationForRegistryEntryID:(id)d;
+- (int64_t)enableTRMSystemAuthenticationForRegistryEntryID:(id)d;
+- (int64_t)removeAccessory:(id)accessory;
+- (int64_t)requestConsent:(id)consent;
+- (int64_t)revokeConsentRequest:(id)request;
+- (void)assetAvailabilityUpdateForAccessory:(id)accessory assetID:(id)d;
+- (void)consentReceived:(id)received;
+- (void)consentReceivedPostLogoutMode:(id)mode;
 - (void)dealloc;
 - (void)dumpState;
-- (void)firmwareUpdateProgressForAccessory:(id)a3 assetID:(id)a4 bytesSent:(unint64_t)a5 bytesTotal:(unint64_t)a6;
-- (void)firmwareUpdateProgressForUARPConsent:(id)a3 bytesSent:(unint64_t)a4 bytesTotal:(unint64_t)a5;
+- (void)firmwareUpdateProgressForAccessory:(id)accessory assetID:(id)d bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total;
+- (void)firmwareUpdateProgressForUARPConsent:(id)consent bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total;
 - (void)handlePeriodicLaunch;
-- (void)notifyAttestationCertificatesAvailable:(id)a3 forSubjectKeyIdentifer:(id)a4;
-- (void)personalizationHelperTssResponse:(id)a3 updaterName:(id)a4;
-- (void)postConsentUpdateCompleteNotification:(id)a3 success:(BOOL)a4;
-- (void)progressForUARPConsent:(id)a3 bytesSent:(unint64_t)a4 bytesTotal:(unint64_t)a5;
-- (void)progressForUARPConsentInPostLogout:(id)a3 bytesSent:(unint64_t)a4 bytesTotal:(unint64_t)a5;
-- (void)stagingCompleteForAccessoryID:(id)a3 assetID:(id)a4 status:(unint64_t)a5;
-- (void)start:(BOOL)a3;
-- (void)supplementalAssetAvailabilityUpdateForAccessory:(id)a3 assetName:(id)a4;
-- (void)supportedAccessories:(id)a3 forProductGroup:(id)a4 isComplete:(BOOL)a5;
+- (void)notifyAttestationCertificatesAvailable:(id)available forSubjectKeyIdentifer:(id)identifer;
+- (void)personalizationHelperTssResponse:(id)response updaterName:(id)name;
+- (void)postConsentUpdateCompleteNotification:(id)notification success:(BOOL)success;
+- (void)progressForUARPConsent:(id)consent bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total;
+- (void)progressForUARPConsentInPostLogout:(id)logout bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total;
+- (void)stagingCompleteForAccessoryID:(id)d assetID:(id)iD status:(unint64_t)status;
+- (void)start:(BOOL)start;
+- (void)supplementalAssetAvailabilityUpdateForAccessory:(id)accessory assetName:(id)name;
+- (void)supportedAccessories:(id)accessories forProductGroup:(id)group isComplete:(BOOL)complete;
 @end
 
 @implementation UARPManagerAUD
 
-- (UARPManagerAUD)initWithQueue:(id)a3
+- (UARPManagerAUD)initWithQueue:(id)queue
 {
   v6.receiver = self;
   v6.super_class = UARPManagerAUD;
@@ -40,7 +40,7 @@
   if (v4)
   {
     v4->_log = os_log_create("com.apple.accessoryupdater.uarp", "updaterManager");
-    v4->_dispatchQueue = a3;
+    v4->_dispatchQueue = queue;
     v4->_listener = [[UARPManagerListener alloc] initWithManager:v4 dispatchQueue:v4->_dispatchQueue];
     v4->_observerListener = 0;
     if (MGGetBoolAnswer())
@@ -63,18 +63,18 @@
   [(UARPManager *)&v3 dealloc];
 }
 
-- (void)assetAvailabilityUpdateForAccessory:(id)a3 assetID:(id)a4
+- (void)assetAvailabilityUpdateForAccessory:(id)accessory assetID:(id)d
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002602C;
   block[3] = &unk_100080FC8;
-  block[4] = a3;
+  block[4] = accessory;
   dispatch_sync(dispatchQueue, block);
 }
 
-- (void)supplementalAssetAvailabilityUpdateForAccessory:(id)a3 assetName:(id)a4
+- (void)supplementalAssetAvailabilityUpdateForAccessory:(id)accessory assetName:(id)name
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -82,7 +82,7 @@
     *buf = 136315394;
     v11 = "[UARPManagerAUD supplementalAssetAvailabilityUpdateForAccessory:assetName:]";
     v12 = 2112;
-    v13 = a4;
+    nameCopy = name;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "RECEIVED %s Asset Name is %@", buf, 0x16u);
   }
 
@@ -91,35 +91,35 @@
   block[1] = 3221225472;
   block[2] = sub_10002617C;
   block[3] = &unk_100080FC8;
-  block[4] = a3;
+  block[4] = accessory;
   dispatch_sync(dispatchQueue, block);
 }
 
-- (void)supportedAccessories:(id)a3 forProductGroup:(id)a4 isComplete:(BOOL)a5
+- (void)supportedAccessories:(id)accessories forProductGroup:(id)group isComplete:(BOOL)complete
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100026220;
   block[3] = &unk_100080FC8;
-  block[4] = a4;
+  block[4] = group;
   dispatch_sync(dispatchQueue, block);
 }
 
-- (void)notifyAttestationCertificatesAvailable:(id)a3 forSubjectKeyIdentifer:(id)a4
+- (void)notifyAttestationCertificatesAvailable:(id)available forSubjectKeyIdentifer:(id)identifer
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100026308;
   block[3] = &unk_100080FC8;
-  block[4] = a4;
+  block[4] = identifer;
   dispatch_sync(dispatchQueue, block);
 }
 
-- (void)start:(BOOL)a3
+- (void)start:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     [+[UARPDatabase sharedDatabase](UARPDatabase "sharedDatabase")];
     sub_1000061EC(0, 0);
@@ -146,7 +146,7 @@
   dispatch_sync(dispatchQueue, v5);
 }
 
-- (BOOL)handleXPCStreamEvent:(id)a3
+- (BOOL)handleXPCStreamEvent:(id)event
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -163,7 +163,7 @@
   block[1] = 3221225472;
   block[2] = sub_10002658C;
   block[3] = &unk_100081A40;
-  block[5] = a3;
+  block[5] = event;
   block[6] = &v17;
   block[4] = self;
   dispatch_sync(dispatchQueue, block);
@@ -193,7 +193,7 @@
   [(UARPManager *)&v4 dumpState];
 }
 
-- (int64_t)requestConsent:(id)a3
+- (int64_t)requestConsent:(id)consent
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -201,23 +201,23 @@
     sub_10004CF54(log, v6, v7, v8, v9, v10, v11, v12);
   }
 
-  if (![(UARPUpdaterServiceManager *)self->_updaterManager consentDisabledForUARPConsent:a3 sendConsent:1])
+  if (![(UARPUpdaterServiceManager *)self->_updaterManager consentDisabledForUARPConsent:consent sendConsent:1])
   {
-    return [(UARPConsent *)self->_consentManager requestConsent:a3];
+    return [(UARPConsent *)self->_consentManager requestConsent:consent];
   }
 
   if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
   {
-    sub_10004CFCC(a3);
+    sub_10004CFCC(consent);
   }
 
   notify_post("com.apple.uarp.disabledConsent.start");
   return 0;
 }
 
-- (void)postConsentUpdateCompleteNotification:(id)a3 success:(BOOL)a4
+- (void)postConsentUpdateCompleteNotification:(id)notification success:(BOOL)success
 {
-  v4 = a4;
+  successCopy = success;
   out_token = 0;
   v6 = notify_register_check("com.apple.uarp.disabledConsent.complete", &out_token);
   if (v6)
@@ -232,12 +232,12 @@
 
   else
   {
-    notify_set_state(out_token, v4);
+    notify_set_state(out_token, successCopy);
     notify_post("com.apple.uarp.disabledConsent.complete");
   }
 }
 
-- (int64_t)revokeConsentRequest:(id)a3
+- (int64_t)revokeConsentRequest:(id)request
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -245,21 +245,21 @@
     sub_10004D0DC(log, v6, v7, v8, v9, v10, v11, v12);
   }
 
-  if (![(UARPUpdaterServiceManager *)self->_updaterManager consentDisabledForUARPConsent:a3 sendConsent:0])
+  if (![(UARPUpdaterServiceManager *)self->_updaterManager consentDisabledForUARPConsent:request sendConsent:0])
   {
-    return [(UARPConsent *)self->_consentManager revokeConsentRequest:a3];
+    return [(UARPConsent *)self->_consentManager revokeConsentRequest:request];
   }
 
   if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
   {
-    sub_10004D154(a3);
+    sub_10004D154(request);
   }
 
-  [(UARPManagerAUD *)self postConsentUpdateCompleteNotification:a3 success:0];
+  [(UARPManagerAUD *)self postConsentUpdateCompleteNotification:request success:0];
   return 0;
 }
 
-- (int64_t)enableTRMSystemAuthenticationForRegistryEntryID:(id)a3
+- (int64_t)enableTRMSystemAuthenticationForRegistryEntryID:(id)d
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -267,10 +267,10 @@
     sub_10004D1D8(log, v6, v7, v8, v9, v10, v11, v12);
   }
 
-  return [(UARPUpdaterServiceManager *)self->_updaterManager enableTRMSystemAuthenticationForRegistryEntryID:a3]^ 1;
+  return [(UARPUpdaterServiceManager *)self->_updaterManager enableTRMSystemAuthenticationForRegistryEntryID:d]^ 1;
 }
 
-- (int64_t)disableTRMSystemAuthenticationForRegistryEntryID:(id)a3
+- (int64_t)disableTRMSystemAuthenticationForRegistryEntryID:(id)d
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -278,10 +278,10 @@
     sub_10004D250(log, v6, v7, v8, v9, v10, v11, v12);
   }
 
-  return [(UARPUpdaterServiceManager *)self->_updaterManager disableTRMSystemAuthenticationForRegistryEntryID:a3]^ 1;
+  return [(UARPUpdaterServiceManager *)self->_updaterManager disableTRMSystemAuthenticationForRegistryEntryID:d]^ 1;
 }
 
-- (void)consentReceived:(id)a3
+- (void)consentReceived:(id)received
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -295,11 +295,11 @@
   v14[2] = sub_100026B00;
   v14[3] = &unk_100081788;
   v14[4] = self;
-  v14[5] = a3;
+  v14[5] = received;
   dispatch_sync(dispatchQueue, v14);
 }
 
-- (void)consentReceivedPostLogoutMode:(id)a3
+- (void)consentReceivedPostLogoutMode:(id)mode
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -313,11 +313,11 @@
   v14[2] = sub_100026BCC;
   v14[3] = &unk_100081788;
   v14[4] = self;
-  v14[5] = a3;
+  v14[5] = mode;
   dispatch_sync(dispatchQueue, v14);
 }
 
-- (void)firmwareUpdateProgressForUARPConsent:(id)a3 bytesSent:(unint64_t)a4 bytesTotal:(unint64_t)a5
+- (void)firmwareUpdateProgressForUARPConsent:(id)consent bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -325,10 +325,10 @@
     sub_10004D3B8(log, v10, v11, v12, v13, v14, v15, v16);
   }
 
-  [(UARPConsent *)self->_consentManager firmwareUpdateProgressForUARPConsent:a3 bytesSent:a4 bytesTotal:a5];
+  [(UARPConsent *)self->_consentManager firmwareUpdateProgressForUARPConsent:consent bytesSent:sent bytesTotal:total];
 }
 
-- (void)progressForUARPConsent:(id)a3 bytesSent:(unint64_t)a4 bytesTotal:(unint64_t)a5
+- (void)progressForUARPConsent:(id)consent bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -336,8 +336,8 @@
     sub_10004D430(log, v10, v11, v12, v13, v14, v15, v16);
   }
 
-  v17 = [(UARPConsent *)self->_consentManager updateCompleteForUARPConsent:a3 bytesSent:a4 bytesTotal:a5];
-  if ([(UARPUpdaterServiceManager *)self->_updaterManager bypassProgressForUARPConsent:a3 sendConsent:v17])
+  v17 = [(UARPConsent *)self->_consentManager updateCompleteForUARPConsent:consent bytesSent:sent bytesTotal:total];
+  if ([(UARPUpdaterServiceManager *)self->_updaterManager bypassProgressForUARPConsent:consent sendConsent:v17])
   {
     v18 = self->_log;
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -345,11 +345,11 @@
       v19 = 136315906;
       v20 = "[UARPManagerAUD progressForUARPConsent:bytesSent:bytesTotal:]";
       v21 = 2114;
-      v22 = [a3 accessoryName];
+      accessoryName = [consent accessoryName];
       v23 = 2050;
-      v24 = a4;
+      sentCopy = sent;
       v25 = 2050;
-      v26 = a5;
+      totalCopy = total;
       _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%s: Bypassing for %{public}@, progress %{public}lu / %{public}lu bytes", &v19, 0x2Au);
       if (!v17)
       {
@@ -362,19 +362,19 @@
       return;
     }
 
-    if ([a3 installerProgressError])
+    if ([consent installerProgressError])
     {
-      [(UARPManagerAUD *)self postConsentUpdateCompleteNotification:a3 success:0];
+      [(UARPManagerAUD *)self postConsentUpdateCompleteNotification:consent success:0];
     }
   }
 
   else
   {
-    [(UARPConsent *)self->_consentManager progressForUARPConsent:a3 bytesSent:a4 bytesTotal:a5];
+    [(UARPConsent *)self->_consentManager progressForUARPConsent:consent bytesSent:sent bytesTotal:total];
   }
 }
 
-- (void)progressForUARPConsentInPostLogout:(id)a3 bytesSent:(unint64_t)a4 bytesTotal:(unint64_t)a5
+- (void)progressForUARPConsentInPostLogout:(id)logout bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -382,7 +382,7 @@
     sub_10004D4A8(log, v10, v11, v12, v13, v14, v15, v16);
   }
 
-  if ([(UARPUpdaterServiceManager *)self->_updaterManager consentDisabledForUARPConsent:a3 sendConsent:0])
+  if ([(UARPUpdaterServiceManager *)self->_updaterManager consentDisabledForUARPConsent:logout sendConsent:0])
   {
     v17 = self->_log;
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -390,23 +390,23 @@
       v18 = 136315906;
       v19 = "[UARPManagerAUD progressForUARPConsentInPostLogout:bytesSent:bytesTotal:]";
       v20 = 2114;
-      v21 = [a3 accessoryName];
+      accessoryName = [logout accessoryName];
       v22 = 2050;
-      v23 = a4;
+      sentCopy = sent;
       v24 = 2050;
-      v25 = a5;
+      totalCopy = total;
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%s: Bypassing for %{public}@, progress %{public}lu / %{public}lu bytes", &v18, 0x2Au);
     }
 
-    if ([(UARPConsent *)self->_consentManager updateCompleteForUARPConsentInPostLogout:a3 bytesSent:a4 bytesTotal:a5])
+    if ([(UARPConsent *)self->_consentManager updateCompleteForUARPConsentInPostLogout:logout bytesSent:sent bytesTotal:total])
     {
-      [(UARPManagerAUD *)self postConsentUpdateCompleteNotification:a3 success:1];
+      [(UARPManagerAUD *)self postConsentUpdateCompleteNotification:logout success:1];
     }
   }
 
   else
   {
-    [(UARPConsent *)self->_consentManager progressForUARPConsentInPostLogout:a3 bytesSent:a4 bytesTotal:a5];
+    [(UARPConsent *)self->_consentManager progressForUARPConsentInPostLogout:logout bytesSent:sent bytesTotal:total];
   }
 }
 
@@ -429,7 +429,7 @@
   return v3;
 }
 
-- (BOOL)dynamicAssetSolicitation:(id)a3 modelNumber:(id)a4 notifyService:(id)a5
+- (BOOL)dynamicAssetSolicitation:(id)solicitation modelNumber:(id)number notifyService:(id)service
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -437,10 +437,10 @@
     sub_10004D520(log);
   }
 
-  return [(UARPUpdaterServiceManager *)self->_updaterManager dynamicAssetSolicitation:a3 modelNumber:a4 notifyService:a5];
+  return [(UARPUpdaterServiceManager *)self->_updaterManager dynamicAssetSolicitation:solicitation modelNumber:number notifyService:service];
 }
 
-- (BOOL)dynamicAssetSolicitation:(id)a3 modelNumbers:(id)a4 notifyService:(id)a5
+- (BOOL)dynamicAssetSolicitation:(id)solicitation modelNumbers:(id)numbers notifyService:(id)service
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -448,10 +448,10 @@
     sub_10004D564(log);
   }
 
-  return [(UARPUpdaterServiceManager *)self->_updaterManager dynamicAssetSolicitation:a3 modelNumbers:a4 notifyService:a5];
+  return [(UARPUpdaterServiceManager *)self->_updaterManager dynamicAssetSolicitation:solicitation modelNumbers:numbers notifyService:service];
 }
 
-- (id)personalizationHelperQueryPendingTssRequests:(id)a3
+- (id)personalizationHelperQueryPendingTssRequests:(id)requests
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -459,7 +459,7 @@
     sub_10004D5A8(log, v6, v7, v8, v9, v10, v11, v12);
   }
 
-  v13 = [(UARPUpdaterServiceManager *)self->_updaterManager queryPendingTssRequestsForUpdater:a3];
+  v13 = [(UARPUpdaterServiceManager *)self->_updaterManager queryPendingTssRequestsForUpdater:requests];
   v14 = self->_log;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -473,7 +473,7 @@
   return v13;
 }
 
-- (void)personalizationHelperTssResponse:(id)a3 updaterName:(id)a4
+- (void)personalizationHelperTssResponse:(id)response updaterName:(id)name
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -481,7 +481,7 @@
     v8 = 136315394;
     v9 = "[UARPManagerAUD personalizationHelperTssResponse:updaterName:]";
     v10 = 2112;
-    v11 = a4;
+    responseCopy = name;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "%s: tss response for updater %@", &v8, 0x16u);
     log = self->_log;
   }
@@ -491,14 +491,14 @@
     v8 = 136315394;
     v9 = "[UARPManagerAUD personalizationHelperTssResponse:updaterName:]";
     v10 = 2112;
-    v11 = a3;
+    responseCopy = response;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "%s: tss response %@", &v8, 0x16u);
   }
 
-  [(UARPUpdaterServiceManager *)self->_updaterManager tssResponse:a3 updaterName:a4];
+  [(UARPUpdaterServiceManager *)self->_updaterManager tssResponse:response updaterName:name];
 }
 
-- (int64_t)addAccessory:(id)a3 assetID:(id)a4
+- (int64_t)addAccessory:(id)accessory assetID:(id)d
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -506,13 +506,13 @@
     sub_10004D620(log, v8, v9, v10, v11, v12, v13, v14);
   }
 
-  [(UARPObserverListener *)self->_observerListener addAccessoryID:a3 assetID:a4];
+  [(UARPObserverListener *)self->_observerListener addAccessoryID:accessory assetID:d];
   v16.receiver = self;
   v16.super_class = UARPManagerAUD;
-  return [(UARPManager *)&v16 addAccessory:a3 assetID:a4];
+  return [(UARPManager *)&v16 addAccessory:accessory assetID:d];
 }
 
-- (int64_t)removeAccessory:(id)a3
+- (int64_t)removeAccessory:(id)accessory
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -520,13 +520,13 @@
     sub_10004D698(log, v6, v7, v8, v9, v10, v11, v12);
   }
 
-  [(UARPObserverListener *)self->_observerListener removeAccessoryID:a3];
+  [(UARPObserverListener *)self->_observerListener removeAccessoryID:accessory];
   v14.receiver = self;
   v14.super_class = UARPManagerAUD;
-  return [(UARPManager *)&v14 removeAccessory:a3];
+  return [(UARPManager *)&v14 removeAccessory:accessory];
 }
 
-- (void)firmwareUpdateProgressForAccessory:(id)a3 assetID:(id)a4 bytesSent:(unint64_t)a5 bytesTotal:(unint64_t)a6
+- (void)firmwareUpdateProgressForAccessory:(id)accessory assetID:(id)d bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -534,10 +534,10 @@
     sub_10004D710(log, v12, v13, v14, v15, v16, v17, v18);
   }
 
-  [(UARPObserverListener *)self->_observerListener firmwareUpdateProgressForAccessoryID:a3 assetID:a4 bytesSent:a5 bytesTotal:a6];
+  [(UARPObserverListener *)self->_observerListener firmwareUpdateProgressForAccessoryID:accessory assetID:d bytesSent:sent bytesTotal:total];
 }
 
-- (void)stagingCompleteForAccessoryID:(id)a3 assetID:(id)a4 status:(unint64_t)a5
+- (void)stagingCompleteForAccessoryID:(id)d assetID:(id)iD status:(unint64_t)status
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -545,7 +545,7 @@
     sub_10004D788(log, v10, v11, v12, v13, v14, v15, v16);
   }
 
-  [(UARPObserverListener *)self->_observerListener stagingCompleteForAccessoryID:a3 assetID:a4 status:a5];
+  [(UARPObserverListener *)self->_observerListener stagingCompleteForAccessoryID:d assetID:iD status:status];
 }
 
 @end

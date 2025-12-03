@@ -1,13 +1,13 @@
 @interface AMLClientDonations
-- (AMLClientDonations)initWithFeaturesConfiguration:(id)a3 featureProvider:(id)a4 batchProvider:(id)a5 arrayProvider:(id)a6 metadata:(id)a7 donationTime:(id)a8;
+- (AMLClientDonations)initWithFeaturesConfiguration:(id)configuration featureProvider:(id)provider batchProvider:(id)batchProvider arrayProvider:(id)arrayProvider metadata:(id)metadata donationTime:(id)time;
 - (AMLFeaturesConfiguration)featuresConfiguration;
 - (AMLFeaturesDonationMetadata)metadata;
 - (MLArrayBatchProvider)arrayProvider;
 - (MLBatchProvider)batchProvider;
 - (MLFeatureProvider)featureProvider;
 - (NSString)donationTime;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMLClientDonations
@@ -63,9 +63,9 @@
   return v3;
 }
 
-- (AMLClientDonations)initWithFeaturesConfiguration:(id)a3 featureProvider:(id)a4 batchProvider:(id)a5 arrayProvider:(id)a6 metadata:(id)a7 donationTime:(id)a8
+- (AMLClientDonations)initWithFeaturesConfiguration:(id)configuration featureProvider:(id)provider batchProvider:(id)batchProvider arrayProvider:(id)arrayProvider metadata:(id)metadata donationTime:(id)time
 {
-  if (a8)
+  if (time)
   {
     v13 = sub_21AF097CC();
     v15 = v14;
@@ -77,17 +77,17 @@
     v15 = 0;
   }
 
-  v16 = a3;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v17 = a6;
-  v18 = a7;
-  return AMLClientDonations.init(featuresConfiguration:featureProvider:batchProvider:arrayProvider:metadata:donationTime:)(a3, a4, a5, a6, a7, v13, v15);
+  arrayProviderCopy = arrayProvider;
+  metadataCopy = metadata;
+  return AMLClientDonations.init(featuresConfiguration:featureProvider:batchProvider:arrayProvider:metadata:donationTime:)(configuration, provider, batchProvider, arrayProvider, metadata, v13, v15);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   AMLClientDonations.copy(with:)(v6);
 
   sub_21AEAF9B0(v6, v6[3]);
@@ -96,11 +96,11 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  AMLClientDonations.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  AMLClientDonations.encode(with:)(coderCopy);
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface _UIFocusRegion
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)regionFrame;
-- (_UIFocusRegion)initWithFrame:(CGRect)a3 coordinateSpace:(id)a4;
+- (_UIFocusRegion)initWithFrame:(CGRect)frame coordinateSpace:(id)space;
 - (id)_descriptionBuilder;
-- (id)_focusRegionWithAdjustedFrame:(CGRect)a3 coordinateSpace:(id)a4;
+- (id)_focusRegionWithAdjustedFrame:(CGRect)frame coordinateSpace:(id)space;
 - (id)description;
-- (unint64_t)_effectiveBoundariesBlockingFocusMovementRequest:(id)a3;
-- (unint64_t)_effectiveFocusableBoundariesForHeading:(unint64_t)a3;
+- (unint64_t)_effectiveBoundariesBlockingFocusMovementRequest:(id)request;
+- (unint64_t)_effectiveFocusableBoundariesForHeading:(unint64_t)heading;
 - (unint64_t)hash;
 @end
 
@@ -32,17 +32,17 @@
   return *&vorr_s8(*v4.i8, *&vextq_s8(v4, v4, 8uLL)) ^ v3;
 }
 
-- (_UIFocusRegion)initWithFrame:(CGRect)a3 coordinateSpace:(id)a4
+- (_UIFocusRegion)initWithFrame:(CGRect)frame coordinateSpace:(id)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  if (!v11)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  spaceCopy = space;
+  if (!spaceCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"_UIFocusRegion.m" lineNumber:221 description:{@"Invalid parameter not satisfying: %@", @"coordinateSpace"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusRegion.m" lineNumber:221 description:{@"Invalid parameter not satisfying: %@", @"coordinateSpace"}];
   }
 
   v16.receiver = self;
@@ -55,44 +55,44 @@
     v12->_regionFrame.origin.y = y;
     v12->_regionFrame.size.width = width;
     v12->_regionFrame.size.height = height;
-    objc_storeStrong(&v12->_regionCoordinateSpace, a4);
+    objc_storeStrong(&v12->_regionCoordinateSpace, space);
   }
 
   return v13;
 }
 
-- (id)_focusRegionWithAdjustedFrame:(CGRect)a3 coordinateSpace:(id)a4
+- (id)_focusRegionWithAdjustedFrame:(CGRect)frame coordinateSpace:(id)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  spaceCopy = space;
   v16.origin.x = x;
   v16.origin.y = y;
   v16.size.width = width;
   v16.size.height = height;
   if (CGRectIsEmpty(v16))
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_UIFocusRegion.m" lineNumber:233 description:{@"Invalid parameter not satisfying: %@", @"!CGRectIsEmpty(frame)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusRegion.m" lineNumber:233 description:{@"Invalid parameter not satisfying: %@", @"!CGRectIsEmpty(frame)"}];
 
-    if (v10)
+    if (spaceCopy)
     {
       goto LABEL_3;
     }
   }
 
-  else if (v10)
+  else if (spaceCopy)
   {
     goto LABEL_3;
   }
 
-  v14 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v14 handleFailureInMethod:a2 object:self file:@"_UIFocusRegion.m" lineNumber:234 description:{@"Invalid parameter not satisfying: %@", @"coordinateSpace"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIFocusRegion.m" lineNumber:234 description:{@"Invalid parameter not satisfying: %@", @"coordinateSpace"}];
 
 LABEL_3:
-  v11 = [objc_alloc(objc_opt_class()) initWithFrame:v10 coordinateSpace:{x, y, width, height}];
+  v11 = [objc_alloc(objc_opt_class()) initWithFrame:spaceCopy coordinateSpace:{x, y, width, height}];
 
   return v11;
 }
@@ -104,17 +104,17 @@ LABEL_3:
   v4 = NSStringFromCGRect(v16);
   v5 = [v3 appendObject:v4 withName:@"frame"];
 
-  v6 = [(_UIFocusRegion *)self regionCoordinateSpace];
+  regionCoordinateSpace = [(_UIFocusRegion *)self regionCoordinateSpace];
 
-  if (v6)
+  if (regionCoordinateSpace)
   {
-    v7 = [(_UIFocusRegion *)self regionCoordinateSpace];
-    if (v7)
+    regionCoordinateSpace2 = [(_UIFocusRegion *)self regionCoordinateSpace];
+    if (regionCoordinateSpace2)
     {
       v8 = MEMORY[0x1E696AEC0];
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
-      v11 = [v8 stringWithFormat:@"<%@: %p>", v10, v7];
+      v11 = [v8 stringWithFormat:@"<%@: %p>", v10, regionCoordinateSpace2];
     }
 
     else
@@ -135,16 +135,16 @@ LABEL_3:
 
 - (id)description
 {
-  v2 = [(_UIFocusRegion *)self _descriptionBuilder];
-  v3 = [v2 build];
+  _descriptionBuilder = [(_UIFocusRegion *)self _descriptionBuilder];
+  build = [_descriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -153,7 +153,7 @@ LABEL_3:
   {
     if ([(_UIFocusRegion *)self isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
+      v5 = equalCopy;
       regionCoordinateSpace = v5->_regionCoordinateSpace;
       v7 = self->_regionCoordinateSpace;
       v8 = regionCoordinateSpace;
@@ -194,21 +194,21 @@ LABEL_15:
   return v11;
 }
 
-- (unint64_t)_effectiveFocusableBoundariesForHeading:(unint64_t)a3
+- (unint64_t)_effectiveFocusableBoundariesForHeading:(unint64_t)heading
 {
-  v3 = a3;
-  v4 = [(_UIFocusRegion *)self _focusableBoundaries];
+  headingCopy = heading;
+  _focusableBoundaries = [(_UIFocusRegion *)self _focusableBoundaries];
 
-  return _UIEffectiveFocusRegionBoundariesForHeading(v4, v3);
+  return _UIEffectiveFocusRegionBoundariesForHeading(_focusableBoundaries, headingCopy);
 }
 
-- (unint64_t)_effectiveBoundariesBlockingFocusMovementRequest:(id)a3
+- (unint64_t)_effectiveBoundariesBlockingFocusMovementRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(_UIFocusRegion *)self _boundariesBlockingFocusMovementRequest:v4];
-  v6 = [v4 movementInfo];
+  requestCopy = request;
+  v5 = [(_UIFocusRegion *)self _boundariesBlockingFocusMovementRequest:requestCopy];
+  movementInfo = [requestCopy movementInfo];
 
-  v7 = _UIEffectiveFocusRegionBoundariesForHeading(v5, [v6 heading]);
+  v7 = _UIEffectiveFocusRegionBoundariesForHeading(v5, [movementInfo heading]);
   return v7;
 }
 

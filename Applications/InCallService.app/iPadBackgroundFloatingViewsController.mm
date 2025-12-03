@@ -1,15 +1,15 @@
 @interface iPadBackgroundFloatingViewsController
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (PHAudioCallLayoutGuidesProvider)layoutGuidesProvider;
 - (UIView)backgroundContainer;
-- (void)addToBackground:(id)a3;
+- (void)addToBackground:(id)background;
 - (void)dismissFloatingView;
-- (void)insertToBackground:(id)a3;
-- (void)setLayoutGuidesProvider:(id)a3;
-- (void)showFloatingView:(id)a3 addWidthConstraints:(BOOL)a4 :(id)a5;
-- (void)updateBackgroundFor:(int64_t)a3;
-- (void)updateIsLandscape:(BOOL)a3;
-- (void)updateWithContainerView:(id)a3 updateNameVisiblity:(id)a4 updateButtonsVisibility:(id)a5;
+- (void)insertToBackground:(id)background;
+- (void)setLayoutGuidesProvider:(id)provider;
+- (void)showFloatingView:(id)view addWidthConstraints:(BOOL)constraints :(id)a5;
+- (void)updateBackgroundFor:(int64_t)for;
+- (void)updateIsLandscape:(BOOL)landscape;
+- (void)updateWithContainerView:(id)view updateNameVisiblity:(id)visiblity updateButtonsVisibility:(id)visibility;
 @end
 
 @implementation iPadBackgroundFloatingViewsController
@@ -21,46 +21,46 @@
   return v2;
 }
 
-- (void)setLayoutGuidesProvider:(id)a3
+- (void)setLayoutGuidesProvider:(id)provider
 {
-  v5 = a3;
-  v6 = self;
-  sub_100190B60(a3);
+  providerCopy = provider;
+  selfCopy = self;
+  sub_100190B60(provider);
 }
 
-- (void)updateWithContainerView:(id)a3 updateNameVisiblity:(id)a4 updateButtonsVisibility:(id)a5
+- (void)updateWithContainerView:(id)view updateNameVisiblity:(id)visiblity updateButtonsVisibility:(id)visibility
 {
-  v8 = _Block_copy(a4);
-  v9 = _Block_copy(a5);
+  v8 = _Block_copy(visiblity);
+  v9 = _Block_copy(visibility);
   v10 = swift_allocObject();
   *(v10 + 16) = v8;
   v11 = swift_allocObject();
   *(v11 + 16) = v9;
-  v12 = a3;
-  v13 = self;
-  sub_100190BF4(v12, sub_10016D258, v10, sub_10016D3D8, v11);
+  viewCopy = view;
+  selfCopy = self;
+  sub_100190BF4(viewCopy, sub_10016D258, v10, sub_10016D3D8, v11);
 }
 
-- (void)updateIsLandscape:(BOOL)a3
+- (void)updateIsLandscape:(BOOL)landscape
 {
-  v3 = a3;
-  v4 = self;
-  sub_100190D8C(v3);
+  landscapeCopy = landscape;
+  selfCopy = self;
+  sub_100190D8C(landscapeCopy);
 }
 
-- (void)showFloatingView:(id)a3 addWidthConstraints:(BOOL)a4 :(id)a5
+- (void)showFloatingView:(id)view addWidthConstraints:(BOOL)constraints :(id)a5
 {
   v8 = _Block_copy(a5);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  v10 = a3;
-  v11 = self;
-  sub_100190F34(v10, a4, sub_1001541E8, v9);
+  viewCopy = view;
+  selfCopy = self;
+  sub_100190F34(viewCopy, constraints, sub_1001541E8, v9);
 }
 
 - (void)dismissFloatingView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001918D8();
 }
 
@@ -71,32 +71,32 @@
   return v2;
 }
 
-- (void)addToBackground:(id)a3
+- (void)addToBackground:(id)background
 {
-  v4 = a3;
-  v5 = self;
-  sub_1001920F8(v4);
+  backgroundCopy = background;
+  selfCopy = self;
+  sub_1001920F8(backgroundCopy);
 }
 
-- (void)insertToBackground:(id)a3
+- (void)insertToBackground:(id)background
 {
-  v4 = a3;
-  v5 = self;
-  sub_10019217C(v4);
+  backgroundCopy = background;
+  selfCopy = self;
+  sub_10019217C(backgroundCopy);
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_100192204(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  LOBYTE(self) = sub_100192204(beginCopy);
 
   return self & 1;
 }
 
-- (void)updateBackgroundFor:(int64_t)a3
+- (void)updateBackgroundFor:(int64_t)for
 {
-  v3 = self;
+  selfCopy = self;
   sub_1001922F0();
 }
 

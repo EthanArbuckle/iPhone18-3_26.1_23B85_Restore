@@ -21,30 +21,30 @@
 - (uint64_t)topicAvoidsCoalescing:()CoordinatorAccessors
 {
   v4 = a3;
-  v5 = [a1 nonCoalescingTopicsFromBag];
-  v6 = [v5 containsObject:v4];
+  nonCoalescingTopicsFromBag = [self nonCoalescingTopicsFromBag];
+  v6 = [nonCoalescingTopicsFromBag containsObject:v4];
 
   return v6;
 }
 
 - (uint64_t)ttlFromBag
 {
-  if ([a1 ttlFromDefault])
+  if ([self ttlFromDefault])
   {
 
-    return [a1 ttlFromDefault];
+    return [self ttlFromDefault];
   }
 
   else
   {
     v3 = 1296000;
-    v4 = [a1 objectForKey:@"pds-batch-register-ttl"];
+    v4 = [self objectForKey:@"pds-batch-register-ttl"];
     if (v4)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if ([a1 allRequiredBagTTLValuesPresent])
+        if ([self allRequiredBagTTLValuesPresent])
         {
           [v4 doubleValue];
           v3 = v5;
@@ -58,22 +58,22 @@
 
 - (uint64_t)ttlWindowFromBag
 {
-  if ([a1 ttlWindowFromDefault])
+  if ([self ttlWindowFromDefault])
   {
 
-    return [a1 ttlWindowFromDefault];
+    return [self ttlWindowFromDefault];
   }
 
   else
   {
     v3 = 86400;
-    v4 = [a1 objectForKey:@"pds-batch-heartbeat-window"];
+    v4 = [self objectForKey:@"pds-batch-heartbeat-window"];
     if (v4)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if ([a1 allRequiredBagTTLValuesPresent])
+        if ([self allRequiredBagTTLValuesPresent])
         {
           [v4 doubleValue];
           v3 = v5;
@@ -87,22 +87,22 @@
 
 - (uint64_t)ttlGracePeriodFromBag
 {
-  if ([a1 ttlGracePeriodFromDefault])
+  if ([self ttlGracePeriodFromDefault])
   {
 
-    return [a1 ttlGracePeriodFromDefault];
+    return [self ttlGracePeriodFromDefault];
   }
 
   else
   {
     v3 = 432000;
-    v4 = [a1 objectForKey:@"pds-batch-heartbeat-before-ttl"];
+    v4 = [self objectForKey:@"pds-batch-heartbeat-before-ttl"];
     if (v4)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if ([a1 allRequiredBagTTLValuesPresent])
+        if ([self allRequiredBagTTLValuesPresent])
         {
           [v4 doubleValue];
           v3 = v5;
@@ -116,14 +116,14 @@
 
 - (double)coalesceDelayFromBag
 {
-  v2 = [a1 objectForKey:@"pds-batch-coalescing-delay"];
+  v2 = [self objectForKey:@"pds-batch-coalescing-delay"];
   v3 = 20.0;
   if (v2)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([a1 allRequiredBagCoalescingValuesPresent])
+      if ([self allRequiredBagCoalescingValuesPresent])
       {
         [v2 doubleValue];
         v3 = v4;
@@ -136,14 +136,14 @@
 
 - (double)coalescePeriodFromBag
 {
-  v2 = [a1 objectForKey:@"pds-batch-coalescing-period"];
+  v2 = [self objectForKey:@"pds-batch-coalescing-period"];
   v3 = 30.0;
   if (v2)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([a1 allRequiredBagCoalescingValuesPresent])
+      if ([self allRequiredBagCoalescingValuesPresent])
       {
         [v2 doubleValue];
         v3 = v4;
@@ -156,7 +156,7 @@
 
 - (double)coalesceMaxPeriodFromBag
 {
-  v1 = [a1 objectForKey:@"pds-batch-max-coalescing-period"];
+  v1 = [self objectForKey:@"pds-batch-max-coalescing-period"];
   if (v1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     [v1 doubleValue];
@@ -173,7 +173,7 @@
 
 - (double)messageTimeoutFromBag
 {
-  v1 = [a1 objectForKey:@"pds-message-timeout"];
+  v1 = [self objectForKey:@"pds-message-timeout"];
   v2 = 36000.0;
   if (v1)
   {
@@ -190,7 +190,7 @@
 
 - (uint64_t)bagKillSwitchActive
 {
-  v1 = [a1 objectForKey:@"pds-kit-enabled"];
+  v1 = [self objectForKey:@"pds-kit-enabled"];
   if (v1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v2 = [v1 BOOLValue] ^ 1;
@@ -206,7 +206,7 @@
 
 - (id)minEnabledVersion
 {
-  v1 = [a1 objectForKey:@"pds-min-enabled-version"];
+  v1 = [self objectForKey:@"pds-min-enabled-version"];
   if (v1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v2 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v1, "intValue")}];
@@ -226,7 +226,7 @@
   v6[0] = @"pds-batch-max-coalescing-period";
   v6[1] = @"pds-batch-coalescing-delay";
   v2 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:2];
-  v3 = [a1 _valuesDefinedAsNumbersInBagForKeys:v2];
+  v3 = [self _valuesDefinedAsNumbersInBagForKeys:v2];
 
   v4 = *MEMORY[0x277D85DE8];
   return v3;
@@ -239,7 +239,7 @@
   v6[1] = @"pds-batch-heartbeat-window";
   v6[2] = @"pds-batch-heartbeat-before-ttl";
   v2 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:3];
-  v3 = [a1 _valuesDefinedAsNumbersInBagForKeys:v2];
+  v3 = [self _valuesDefinedAsNumbersInBagForKeys:v2];
 
   v4 = *MEMORY[0x277D85DE8];
   return v3;
@@ -249,7 +249,7 @@
 {
   v17 = *MEMORY[0x277D85DE8];
   v2 = objc_opt_new();
-  v3 = [a1 objectForKey:@"pds-batch-non-coalescing-topics"];
+  v3 = [self objectForKey:@"pds-batch-non-coalescing-topics"];
   if (v3)
   {
     objc_opt_class();
@@ -297,8 +297,8 @@
 
 - (uint64_t)ttlFromDefault
 {
-  v0 = [MEMORY[0x277D192C8] sharedDefaults];
-  v1 = [v0 appValueForKey:@"pds-ttl"];
+  mEMORY[0x277D192C8] = [MEMORY[0x277D192C8] sharedDefaults];
+  v1 = [mEMORY[0x277D192C8] appValueForKey:@"pds-ttl"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -320,9 +320,9 @@
 
   v3 = v2;
 LABEL_7:
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
 - (uint64_t)_valuesDefinedAsNumbersInBagForKeys:()CoordinatorAccessors
@@ -348,7 +348,7 @@ LABEL_7:
           objc_enumerationMutation(v4);
         }
 
-        v10 = [a1 objectForKey:*(*(&v13 + 1) + 8 * i)];
+        v10 = [self objectForKey:*(*(&v13 + 1) + 8 * i)];
         if (!v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           v8 = 0;

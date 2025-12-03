@@ -1,19 +1,19 @@
 @interface DMDEngineSetDeclarationsOperation
-- (void)performDatabaseModificationOperationWithManagedObjectContext:(id)a3;
+- (void)performDatabaseModificationOperationWithManagedObjectContext:(id)context;
 @end
 
 @implementation DMDEngineSetDeclarationsOperation
 
-- (void)performDatabaseModificationOperationWithManagedObjectContext:(id)a3
+- (void)performDatabaseModificationOperationWithManagedObjectContext:(id)context
 {
-  v4 = a3;
-  v5 = [(DMDEngineSetDeclarationsOperation *)self request];
-  v6 = [v5 organizationIdentifier];
-  v7 = [DMDDeclarationPayloadMetadata fetchRequestForFailedDeclarationsFromOrganizationWithIdentifier:v6];
+  contextCopy = context;
+  request = [(DMDEngineSetDeclarationsOperation *)self request];
+  organizationIdentifier = [request organizationIdentifier];
+  v7 = [DMDDeclarationPayloadMetadata fetchRequestForFailedDeclarationsFromOrganizationWithIdentifier:organizationIdentifier];
 
   v64 = 0;
-  v52 = v4;
-  v8 = [v4 executeFetchRequest:v7 error:&v64];
+  v52 = contextCopy;
+  v8 = [contextCopy executeFetchRequest:v7 error:&v64];
   v9 = v64;
   v60 = 0u;
   v61 = 0u;
@@ -43,9 +43,9 @@
     while (v12);
   }
 
-  v15 = [(DMDEngineSetDeclarationsOperation *)self request];
-  v16 = [v15 organizationIdentifier];
-  v17 = [DMDDeclarationPayloadMetadata fetchRequestForActiveDeclarationsFromOrganizationWithIdentifier:v16];
+  request2 = [(DMDEngineSetDeclarationsOperation *)self request];
+  organizationIdentifier2 = [request2 organizationIdentifier];
+  v17 = [DMDDeclarationPayloadMetadata fetchRequestForActiveDeclarationsFromOrganizationWithIdentifier:organizationIdentifier2];
 
   v59 = v9;
   v18 = [v17 execute:&v59];
@@ -54,13 +54,13 @@
   if (v18)
   {
     v51 = v18;
-    v20 = [(DMDEngineSetDeclarationsOperation *)self request];
-    v21 = [v20 declarations];
-    v50 = self;
-    v22 = [(DMDEngineSetDeclarationsOperation *)self request];
-    v23 = [v22 organizationIdentifier];
+    request3 = [(DMDEngineSetDeclarationsOperation *)self request];
+    declarations = [request3 declarations];
+    selfCopy = self;
+    request4 = [(DMDEngineSetDeclarationsOperation *)self request];
+    organizationIdentifier3 = [request4 organizationIdentifier];
     v58 = v19;
-    v24 = [DMDDeclarationPayloadMetadata declarationsWithDictionaries:v21 organizationIdentifier:v23 context:v52 error:&v58];
+    v24 = [DMDDeclarationPayloadMetadata declarationsWithDictionaries:declarations organizationIdentifier:organizationIdentifier3 context:v52 error:&v58];
     v49 = v58;
 
     v25 = [v24 mutableCopy];
@@ -73,10 +73,10 @@
       v48 = v7;
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
-        v28 = [(DMDEngineSetDeclarationsOperation *)v50 request];
-        v29 = [v28 organizationIdentifier];
+        request5 = [(DMDEngineSetDeclarationsOperation *)selfCopy request];
+        organizationIdentifier4 = [request5 organizationIdentifier];
         *buf = 138543362;
-        v67 = v29;
+        v67 = organizationIdentifier4;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "Start set declarations for %{public}@", buf, 0xCu);
       }
 
@@ -101,12 +101,12 @@
 
             v35 = *(*(&v54 + 1) + 8 * j);
             [v35 setAvailable:{0, v46}];
-            v36 = [v35 identifier];
-            v37 = [v25 objectForKeyedSubscript:v36];
+            identifier = [v35 identifier];
+            v37 = [v25 objectForKeyedSubscript:identifier];
 
-            v38 = [v37 serverHash];
-            v39 = [v35 serverHash];
-            v40 = [v38 isEqualToString:v39];
+            serverHash = [v37 serverHash];
+            serverHash2 = [v35 serverHash];
+            v40 = [serverHash isEqualToString:serverHash2];
 
             if (v40)
             {
@@ -119,8 +119,8 @@
               }
 
               [v52 deleteObject:v37];
-              v42 = [v37 identifier];
-              [v25 removeObjectForKey:v42];
+              identifier2 = [v37 identifier];
+              [v25 removeObjectForKey:identifier2];
 
               [v35 setAvailable:1];
             }
@@ -138,7 +138,7 @@
 
       if (v43)
       {
-        [(DMDEngineSetDeclarationsOperation *)v50 setResultObject:0];
+        [(DMDEngineSetDeclarationsOperation *)selfCopy setResultObject:0];
         v10 = v47;
         v7 = v48;
       }
@@ -153,7 +153,7 @@
           sub_100083CC8(v19);
         }
 
-        [(DMDEngineSetDeclarationsOperation *)v50 setError:v19];
+        [(DMDEngineSetDeclarationsOperation *)selfCopy setError:v19];
       }
 
       v17 = v46;
@@ -167,7 +167,7 @@
         sub_100083D50(v49);
       }
 
-      [(DMDEngineSetDeclarationsOperation *)v50 setError:v49];
+      [(DMDEngineSetDeclarationsOperation *)selfCopy setError:v49];
     }
 
     v18 = v51;

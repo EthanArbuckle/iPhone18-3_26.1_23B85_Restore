@@ -1,10 +1,10 @@
 @interface MediaFirstPartyCollectionViewCell
-- (_TtC9MomentsUI33MediaFirstPartyCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC9MomentsUI33MediaFirstPartyCollectionViewCell)initWithCoder:(id)coder;
 @end
 
 @implementation MediaFirstPartyCollectionViewCell
 
-- (_TtC9MomentsUI33MediaFirstPartyCollectionViewCell)initWithCoder:(id)a3
+- (_TtC9MomentsUI33MediaFirstPartyCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9MomentsUI33MediaFirstPartyCollectionViewCell_mediaFirstPartyView;
   if (one-time initialization token for empty != -1)

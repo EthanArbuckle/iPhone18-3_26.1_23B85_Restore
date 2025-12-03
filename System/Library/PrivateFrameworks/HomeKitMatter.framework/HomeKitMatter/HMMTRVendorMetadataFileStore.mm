@@ -1,38 +1,38 @@
 @interface HMMTRVendorMetadataFileStore
 + (id)logCategory;
 - (HMMTRVendorMetadata)metadata;
-- (HMMTRVendorMetadataFileStore)initWithFileURL:(id)a3;
-- (HMMTRVendorMetadataFileStore)initWithFileURL:(id)a3 uarpController:(id)a4 fileManager:(id)a5 preferences:(id)a6;
+- (HMMTRVendorMetadataFileStore)initWithFileURL:(id)l;
+- (HMMTRVendorMetadataFileStore)initWithFileURL:(id)l uarpController:(id)controller fileManager:(id)manager preferences:(id)preferences;
 - (HMMTRVendorMetadataStoreDelegate)delegate;
-- (id)_retrieveVendorMetadataForVendorID:(id)a3 productID:(id)a4 metadata:(id)a5;
+- (id)_retrieveVendorMetadataForVendorID:(id)d productID:(id)iD metadata:(id)metadata;
 - (id)logIdentifier;
 - (id)overrideMetadata;
 - (id)staticMetadata;
 - (id)staticMetadataFileURL;
-- (void)_addProductInfoToMetadata:(id)a3 accessories:(id)a4;
-- (void)_addVendorInfoToMetadata:(id)a3 accessories:(id)a4;
+- (void)_addProductInfoToMetadata:(id)metadata accessories:(id)accessories;
+- (void)_addVendorInfoToMetadata:(id)metadata accessories:(id)accessories;
 - (void)_handleCloudMetadataFetchFailure;
 - (void)_handleCloudMetadataFetchSuccess;
-- (void)_prepopulateCacheForKnownAccessories:(id)a3;
-- (void)_processSupportedAccessories:(id)a3;
-- (void)_saveMetadata:(id)a3;
+- (void)_prepopulateCacheForKnownAccessories:(id)accessories;
+- (void)_processSupportedAccessories:(id)accessories;
+- (void)_saveMetadata:(id)metadata;
 - (void)attemptCloudMetadataFetch;
 - (void)cancelCloudMetadataFetch;
 - (void)fetchCloudMetadata;
-- (void)setDelegate:(id)a3;
-- (void)supportedAccessories:(id)a3 forProductGroup:(id)a4 isComplete:(BOOL)a5;
-- (void)timerDidFire:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)supportedAccessories:(id)accessories forProductGroup:(id)group isComplete:(BOOL)complete;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMMTRVendorMetadataFileStore
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v4 = a3;
+  fireCopy = fire;
   os_unfair_lock_lock_with_options();
   retryTimer = self->_retryTimer;
 
-  if (retryTimer != v4)
+  if (retryTimer != fireCopy)
   {
     goto LABEL_7;
   }
@@ -79,18 +79,18 @@ void __45__HMMTRVendorMetadataFileStore_timerDidFire___block_invoke(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)supportedAccessories:(id)a3 forProductGroup:(id)a4 isComplete:(BOOL)a5
+- (void)supportedAccessories:(id)accessories forProductGroup:(id)group isComplete:(BOOL)complete
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v23 = a4;
+  accessoriesCopy = accessories;
+  groupCopy = group;
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v8 count];
+    v13 = [accessoriesCopy count];
     v14 = HMFBooleanToString();
     *buf = 138543874;
     v30 = v12;
@@ -107,7 +107,7 @@ void __45__HMMTRVendorMetadataFileStore_timerDidFire___block_invoke(uint64_t a1)
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v15 = v8;
+  v15 = accessoriesCopy;
   v16 = [v15 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v16)
   {
@@ -125,7 +125,7 @@ void __45__HMMTRVendorMetadataFileStore_timerDidFire___block_invoke(uint64_t a1)
         v19 = [HMMTRUARPAccessory fromUARPSupportedAccessory:*(*(&v24 + 1) + 8 * v18)];
         if (v19)
         {
-          [(NSMutableSet *)v10->_batchedAccessories addObject:v19];
+          [(NSMutableSet *)selfCopy->_batchedAccessories addObject:v19];
         }
 
         ++v18;
@@ -138,30 +138,30 @@ void __45__HMMTRVendorMetadataFileStore_timerDidFire___block_invoke(uint64_t a1)
     while (v16);
   }
 
-  if (a5)
+  if (complete)
   {
-    batchedAccessories = v10->_batchedAccessories;
-    v10->_batchedAccessories = 0;
+    batchedAccessories = selfCopy->_batchedAccessories;
+    selfCopy->_batchedAccessories = 0;
     v21 = batchedAccessories;
 
-    os_unfair_lock_unlock(&v10->_lock);
-    [(HMMTRVendorMetadataFileStore *)v10 _processSupportedAccessories:v21];
+    os_unfair_lock_unlock(&selfCopy->_lock);
+    [(HMMTRVendorMetadataFileStore *)selfCopy _processSupportedAccessories:v21];
   }
 
   else
   {
-    os_unfair_lock_unlock(&v10->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processSupportedAccessories:(id)a3
+- (void)_processSupportedAccessories:(id)accessories
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoriesCopy = accessories;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -169,23 +169,23 @@ void __45__HMMTRVendorMetadataFileStore_timerDidFire___block_invoke(uint64_t a1)
     v15 = 138543618;
     v16 = v8;
     v17 = 2048;
-    v18 = [v4 count];
+    v18 = [accessoriesCopy count];
     _os_log_impl(&dword_22AEAE000, v7, OS_LOG_TYPE_INFO, "%{public}@Processing all supported accessories, number of entries: %lu", &v15, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  if ([v4 count])
+  if ([accessoriesCopy count])
   {
     v9 = objc_alloc_init(HMMTRMutableVendorMetadata);
-    [(HMMTRVendorMetadataFileStore *)v6 _addVendorInfoToMetadata:v9 accessories:v4];
-    [(HMMTRVendorMetadataFileStore *)v6 _addProductInfoToMetadata:v9 accessories:v4];
-    [(HMMTRVendorMetadataFileStore *)v6 _saveMetadata:v9];
+    [(HMMTRVendorMetadataFileStore *)selfCopy _addVendorInfoToMetadata:v9 accessories:accessoriesCopy];
+    [(HMMTRVendorMetadataFileStore *)selfCopy _addProductInfoToMetadata:v9 accessories:accessoriesCopy];
+    [(HMMTRVendorMetadataFileStore *)selfCopy _saveMetadata:v9];
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = v6;
+    v11 = selfCopy;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -205,9 +205,9 @@ void __45__HMMTRVendorMetadataFileStore_timerDidFire___block_invoke(uint64_t a1)
 - (id)logIdentifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMMTRVendorMetadataFileStore *)self dclCacheAvailable];
+  dclCacheAvailable = [(HMMTRVendorMetadataFileStore *)self dclCacheAvailable];
   v4 = @"Unavailable";
-  if (v3)
+  if (dclCacheAvailable)
   {
     v4 = @"Available";
   }
@@ -215,15 +215,15 @@ void __45__HMMTRVendorMetadataFileStore_timerDidFire___block_invoke(uint64_t a1)
   return [v2 stringWithFormat:@"DCL Cache %@", v4];
 }
 
-- (void)_addProductInfoToMetadata:(id)a3 accessories:(id)a4
+- (void)_addProductInfoToMetadata:(id)metadata accessories:(id)accessories
 {
   v51 = *MEMORY[0x277D85DE8];
-  v38 = a3;
+  metadataCopy = metadata;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  obj = a4;
+  obj = accessories;
   v5 = [obj countByEnumeratingWithState:&v39 objects:v50 count:16];
   if (v5)
   {
@@ -244,13 +244,13 @@ void __45__HMMTRVendorMetadataFileStore_timerDidFire___block_invoke(uint64_t a1)
         }
 
         v10 = *(*(&v39 + 1) + 8 * v9);
-        v11 = [v10 productNumber];
-        v12 = [v11 isEqualToString:@"0000"];
+        productNumber = [v10 productNumber];
+        v12 = [productNumber isEqualToString:@"0000"];
 
         if ((v12 & 1) == 0)
         {
           v13 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(v10, "vendorID")}];
-          v14 = [v38 vendorWithID:v13];
+          v14 = [metadataCopy vendorWithID:v13];
           v15 = [v14 mutableCopy];
 
           if (v15)
@@ -264,10 +264,10 @@ void __45__HMMTRVendorMetadataFileStore_timerDidFire___block_invoke(uint64_t a1)
 
             if (v20)
             {
-              v21 = [v20 firstObject];
-              if (v21)
+              firstObject = [v20 firstObject];
+              if (firstObject)
               {
-                v22 = v21;
+                v22 = firstObject;
               }
 
               else
@@ -285,17 +285,17 @@ void __45__HMMTRVendorMetadataFileStore_timerDidFire___block_invoke(uint64_t a1)
             v28 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v10, "accessoryCategoryNumber")}];
             [(HMMTRVendorMetadataProduct *)v27 setDeviceTypeID:v28];
 
-            v29 = [v10 accessoryMarketingName];
-            [(HMMTRVendorMetadataProduct *)v27 setName:v29];
+            accessoryMarketingName = [v10 accessoryMarketingName];
+            [(HMMTRVendorMetadataProduct *)v27 setName:accessoryMarketingName];
 
-            v30 = [v10 accessoryProductLabel];
-            [(HMMTRVendorMetadataProduct *)v27 setLabel:v30];
+            accessoryProductLabel = [v10 accessoryProductLabel];
+            [(HMMTRVendorMetadataProduct *)v27 setLabel:accessoryProductLabel];
 
-            v31 = [v10 accessoryInstallationGuideURL];
-            [(HMMTRVendorMetadataProduct *)v27 setInstallationGuideURL:v31];
+            accessoryInstallationGuideURL = [v10 accessoryInstallationGuideURL];
+            [(HMMTRVendorMetadataProduct *)v27 setInstallationGuideURL:accessoryInstallationGuideURL];
 
             [v15 addProduct:v27];
-            [v38 addVendor:v15];
+            [metadataCopy addVendor:v15];
 
             v8 = v35;
           }
@@ -303,7 +303,7 @@ void __45__HMMTRVendorMetadataFileStore_timerDidFire___block_invoke(uint64_t a1)
           else
           {
             v23 = objc_autoreleasePoolPush();
-            v24 = self;
+            selfCopy = self;
             v25 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
             {
@@ -336,16 +336,16 @@ void __45__HMMTRVendorMetadataFileStore_timerDidFire___block_invoke(uint64_t a1)
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addVendorInfoToMetadata:(id)a3 accessories:(id)a4
+- (void)_addVendorInfoToMetadata:(id)metadata accessories:(id)accessories
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  metadataCopy = metadata;
+  accessoriesCopy = accessories;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v7 = [accessoriesCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -356,31 +356,31 @@ void __45__HMMTRVendorMetadataFileStore_timerDidFire___block_invoke(uint64_t a1)
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(accessoriesCopy);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v11 productNumber];
-        v13 = [v12 isEqualToString:@"0000"];
+        productNumber = [v11 productNumber];
+        v13 = [productNumber isEqualToString:@"0000"];
 
         if (v13)
         {
           v14 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(v11, "vendorID")}];
-          v15 = [v5 vendorWithID:v14];
+          v15 = [metadataCopy vendorWithID:v14];
           v16 = [v15 mutableCopy];
 
           if (!v16)
           {
             v16 = [(HMMTRVendorMetadataVendor *)[HMMTRMutableVendorMetadataVendor alloc] initWithIdentifier:v14];
-            v17 = [v11 vendorName];
-            [(HMMTRVendorMetadataVendor *)v16 setName:v17];
+            vendorName = [v11 vendorName];
+            [(HMMTRVendorMetadataVendor *)v16 setName:vendorName];
 
-            [v5 addVendor:v16];
+            [metadataCopy addVendor:v16];
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [accessoriesCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v8);
@@ -389,20 +389,20 @@ void __45__HMMTRVendorMetadataFileStore_timerDidFire___block_invoke(uint64_t a1)
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_prepopulateCacheForKnownAccessories:(id)a3
+- (void)_prepopulateCacheForKnownAccessories:(id)accessories
 {
-  v4 = a3;
-  v5 = [(HMMTRVendorMetadataFileStore *)self delegate];
+  accessoriesCopy = accessories;
+  delegate = [(HMMTRVendorMetadataFileStore *)self delegate];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __69__HMMTRVendorMetadataFileStore__prepopulateCacheForKnownAccessories___block_invoke;
   v14 = &unk_2786ED8A0;
-  v15 = self;
-  v16 = v4;
-  v6 = v4;
-  [v5 forAllPairedMatterServersFetchVidPid:&v11];
+  selfCopy = self;
+  v16 = accessoriesCopy;
+  v6 = accessoriesCopy;
+  [delegate forAllPairedMatterServersFetchVidPid:&v11];
 
-  v7 = [(HMMTRVendorMetadataFileStore *)self _retrieveVendorMetadataForVendorID:&unk_283EE7BF0 productID:0 metadata:v6, v11, v12, v13, v14, v15];
+  selfCopy = [(HMMTRVendorMetadataFileStore *)self _retrieveVendorMetadataForVendorID:&unk_283EE7BF0 productID:0 metadata:v6, v11, v12, v13, v14, selfCopy];
   v8 = [(HMMTRVendorMetadataFileStore *)self _retrieveVendorMetadataForVendorID:&unk_283EE7C08 productID:0 metadata:v6];
   v9 = [(HMMTRVendorMetadataFileStore *)self _retrieveVendorMetadataForVendorID:&unk_283EE7C20 productID:0 metadata:v6];
   v10 = [(HMMTRVendorMetadataFileStore *)self _retrieveVendorMetadataForVendorID:&unk_283EE7C38 productID:0 metadata:v6];
@@ -421,55 +421,55 @@ id *__69__HMMTRVendorMetadataFileStore__prepopulateCacheForKnownAccessories___bl
   return result;
 }
 
-- (void)_saveMetadata:(id)a3
+- (void)_saveMetadata:(id)metadata
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMMTRVendorMetadataFileStore *)self fileManager];
-  v6 = [v4 dictionaryRepresentation];
-  v7 = [(HMMTRVendorMetadataFileStore *)self fileURL];
+  metadataCopy = metadata;
+  fileManager = [(HMMTRVendorMetadataFileStore *)self fileManager];
+  dictionaryRepresentation = [metadataCopy dictionaryRepresentation];
+  fileURL = [(HMMTRVendorMetadataFileStore *)self fileURL];
   v21 = 0;
-  v8 = [v5 writeDictionary:v6 toURL:v7 error:&v21];
+  v8 = [fileManager writeDictionary:dictionaryRepresentation toURL:fileURL error:&v21];
   v9 = v21;
 
   if (v8)
   {
     [(HMMTRVendorMetadataFileStore *)self setDclCacheAvailable:1];
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = HMFGetLogIdentifier();
-      v14 = [(HMMTRVendorMetadataFileStore *)v11 fileURL];
+      fileURL2 = [(HMMTRVendorMetadataFileStore *)selfCopy fileURL];
       *buf = 138543618;
       v23 = v13;
       v24 = 2112;
-      v25 = v14;
+      v25 = fileURL2;
       _os_log_impl(&dword_22AEAE000, v12, OS_LOG_TYPE_INFO, "%{public}@Successfully saved metadata to %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v10);
-    [(HMMTRVendorMetadataFileStore *)v11 _handleCloudMetadataFetchSuccess];
+    [(HMMTRVendorMetadataFileStore *)selfCopy _handleCloudMetadataFetchSuccess];
     os_unfair_lock_lock_with_options();
-    [(NSCache *)v11->_vendorMetadataCache removeAllObjects];
-    os_unfair_lock_unlock(&v11->_lock);
-    [(HMMTRVendorMetadataFileStore *)v11 _prepopulateCacheForKnownAccessories:v4];
+    [(NSCache *)selfCopy->_vendorMetadataCache removeAllObjects];
+    os_unfair_lock_unlock(&selfCopy->_lock);
+    [(HMMTRVendorMetadataFileStore *)selfCopy _prepopulateCacheForKnownAccessories:metadataCopy];
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       v18 = HMFGetLogIdentifier();
-      v19 = [(HMMTRVendorMetadataFileStore *)v16 fileURL];
+      fileURL3 = [(HMMTRVendorMetadataFileStore *)selfCopy2 fileURL];
       *buf = 138543874;
       v23 = v18;
       v24 = 2112;
-      v25 = v19;
+      v25 = fileURL3;
       v26 = 2112;
       v27 = v9;
       _os_log_impl(&dword_22AEAE000, v17, OS_LOG_TYPE_ERROR, "%{public}@Failed to write vendor metadata to %@: %@", buf, 0x20u);
@@ -484,8 +484,8 @@ id *__69__HMMTRVendorMetadataFileStore__prepopulateCacheForKnownAccessories___bl
 - (id)overrideMetadata
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = [(HMMTRVendorMetadataFileStore *)self vendorMetadataCache];
-  v4 = [v3 objectForKey:@"vendor-metadata-local"];
+  vendorMetadataCache = [(HMMTRVendorMetadataFileStore *)self vendorMetadataCache];
+  v4 = [vendorMetadataCache objectForKey:@"vendor-metadata-local"];
 
   if (v4)
   {
@@ -501,44 +501,44 @@ id *__69__HMMTRVendorMetadataFileStore__prepopulateCacheForKnownAccessories___bl
       v6 = 0;
     }
 
-    v7 = v6;
+    fileManager = v6;
   }
 
   else
   {
-    v8 = [(HMMTRVendorMetadataFileStore *)self preferences];
-    v9 = [v8 preferenceForKey:@"allowVendorDataOverride"];
-    v10 = [v9 BOOLValue];
+    preferences = [(HMMTRVendorMetadataFileStore *)self preferences];
+    v9 = [preferences preferenceForKey:@"allowVendorDataOverride"];
+    bOOLValue = [v9 BOOLValue];
 
-    if (!v10)
+    if (!bOOLValue)
     {
       goto LABEL_17;
     }
 
-    v11 = [(HMMTRVendorMetadataFileStore *)self fileURL];
-    v12 = [v11 lastPathComponent];
+    fileURL = [(HMMTRVendorMetadataFileStore *)self fileURL];
+    lastPathComponent = [fileURL lastPathComponent];
 
-    v13 = [v12 stringByDeletingPathExtension];
-    v14 = [v13 stringByAppendingString:@"-local"];
-    v15 = [v12 pathExtension];
-    v16 = [v14 stringByAppendingPathExtension:v15];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+    v14 = [stringByDeletingPathExtension stringByAppendingString:@"-local"];
+    pathExtension = [lastPathComponent pathExtension];
+    v16 = [v14 stringByAppendingPathExtension:pathExtension];
 
     v17 = MEMORY[0x277CBEBC0];
-    v18 = [(HMMTRVendorMetadataFileStore *)self fileURL];
-    v19 = [v17 URLWithString:v16 relativeToURL:v18];
-    v20 = [v19 absoluteURL];
+    fileURL2 = [(HMMTRVendorMetadataFileStore *)self fileURL];
+    v19 = [v17 URLWithString:v16 relativeToURL:fileURL2];
+    absoluteURL = [v19 absoluteURL];
 
-    v7 = [(HMMTRVendorMetadataFileStore *)self fileManager];
-    v21 = [(HMMTRVendorMetadata *)v7 dictionaryWithContentsOfURL:v20 error:0];
+    fileManager = [(HMMTRVendorMetadataFileStore *)self fileManager];
+    v21 = [(HMMTRVendorMetadata *)fileManager dictionaryWithContentsOfURL:absoluteURL error:0];
 
     if (v21)
     {
-      v7 = [[HMMTRVendorMetadata alloc] initWithDictionaryRepresentation:v21];
+      fileManager = [[HMMTRVendorMetadata alloc] initWithDictionaryRepresentation:v21];
       v22 = objc_autoreleasePoolPush();
-      v23 = self;
+      selfCopy = self;
       v24 = HMFGetOSLogHandle();
       v25 = v24;
-      if (v7)
+      if (fileManager)
       {
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
@@ -547,15 +547,15 @@ id *__69__HMMTRVendorMetadataFileStore__prepopulateCacheForKnownAccessories___bl
           *buf = 138543618;
           v35 = v26;
           v36 = 2112;
-          v37 = v20;
+          v37 = absoluteURL;
           _os_log_impl(&dword_22AEAE000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@Using override vendor metadata from %@", buf, 0x16u);
 
           v22 = v33;
         }
 
         objc_autoreleasePoolPop(v22);
-        v27 = [(HMMTRVendorMetadataFileStore *)v23 vendorMetadataCache];
-        [v27 setObject:v7 forKey:@"vendor-metadata-local"];
+        vendorMetadataCache2 = [(HMMTRVendorMetadataFileStore *)selfCopy vendorMetadataCache];
+        [vendorMetadataCache2 setObject:fileManager forKey:@"vendor-metadata-local"];
 
         v28 = 0;
       }
@@ -568,12 +568,12 @@ id *__69__HMMTRVendorMetadataFileStore__prepopulateCacheForKnownAccessories___bl
           *buf = 138543618;
           v35 = v29;
           v36 = 2112;
-          v37 = v20;
+          v37 = absoluteURL;
           _os_log_impl(&dword_22AEAE000, v25, OS_LOG_TYPE_ERROR, "%{public}@Ignoring invalid override vendor metadata from %@", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v22);
-        v7 = 0;
+        fileManager = 0;
         v28 = 1;
       }
     }
@@ -586,25 +586,25 @@ id *__69__HMMTRVendorMetadataFileStore__prepopulateCacheForKnownAccessories___bl
     if (v28)
     {
 LABEL_17:
-      v30 = [(HMMTRVendorMetadataFileStore *)self vendorMetadataCache];
-      [v30 setObject:MEMORY[0x277CBEC28] forKey:@"vendor-metadata-local"];
+      vendorMetadataCache3 = [(HMMTRVendorMetadataFileStore *)self vendorMetadataCache];
+      [vendorMetadataCache3 setObject:MEMORY[0x277CBEC28] forKey:@"vendor-metadata-local"];
 
-      v7 = 0;
+      fileManager = 0;
     }
   }
 
   v31 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return fileManager;
 }
 
 - (id)staticMetadata
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(HMMTRVendorMetadataFileStore *)self fileManager];
-  v4 = [(HMMTRVendorMetadataFileStore *)self staticMetadataFileURL];
+  fileManager = [(HMMTRVendorMetadataFileStore *)self fileManager];
+  staticMetadataFileURL = [(HMMTRVendorMetadataFileStore *)self staticMetadataFileURL];
   v22 = 0;
-  v5 = [v3 dictionaryWithContentsOfURL:v4 error:&v22];
+  v5 = [fileManager dictionaryWithContentsOfURL:staticMetadataFileURL error:&v22];
   v6 = v22;
 
   if (v5)
@@ -619,7 +619,7 @@ LABEL_17:
     else
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = self;
+      selfCopy = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
@@ -639,16 +639,16 @@ LABEL_17:
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v13 = HMFGetLogIdentifier();
-      v14 = [(HMMTRVendorMetadataFileStore *)v11 staticMetadataFileURL];
+      staticMetadataFileURL2 = [(HMMTRVendorMetadataFileStore *)selfCopy2 staticMetadataFileURL];
       *buf = 138543874;
       v24 = v13;
       v25 = 2112;
-      v26 = v14;
+      v26 = staticMetadataFileURL2;
       v27 = 2112;
       v28 = v6;
       _os_log_impl(&dword_22AEAE000, v12, OS_LOG_TYPE_ERROR, "%{public}@Failed to load local vendor metadata at file URL %@: %@", buf, 0x20u);
@@ -681,19 +681,19 @@ LABEL_17:
   }
 }
 
-- (id)_retrieveVendorMetadataForVendorID:(id)a3 productID:(id)a4 metadata:(id)a5
+- (id)_retrieveVendorMetadataForVendorID:(id)d productID:(id)iD metadata:(id)metadata
 {
   v93 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v8;
-  if (v8)
+  dCopy = d;
+  iDCopy = iD;
+  metadataCopy = metadata;
+  v11 = dCopy;
+  if (dCopy)
   {
-    v12 = [(HMMTRVendorMetadataFileStore *)self vendorMetadataCache];
-    v13 = [v12 objectForKey:@"vendor-metadata"];
+    vendorMetadataCache = [(HMMTRVendorMetadataFileStore *)self vendorMetadataCache];
+    v13 = [vendorMetadataCache objectForKey:@"vendor-metadata"];
 
-    v14 = v10;
+    metadata = metadataCopy;
     os_unfair_lock_lock_with_options();
     if (v13)
     {
@@ -702,18 +702,18 @@ LABEL_17:
 
     else
     {
-      if (!v14)
+      if (!metadata)
       {
-        v14 = [(HMMTRVendorMetadataFileStore *)self metadata];
+        metadata = [(HMMTRVendorMetadataFileStore *)self metadata];
       }
 
       v21 = [HMMTRMutableVendorMetadata alloc];
-      v22 = [v14 version];
-      v23 = [v14 schemaVersion];
-      v24 = [(HMMTRVendorMetadata *)v21 initWithVersion:v22 schemaVersion:v23];
+      version = [metadata version];
+      schemaVersion = [metadata schemaVersion];
+      v24 = [(HMMTRVendorMetadata *)v21 initWithVersion:version schemaVersion:schemaVersion];
 
-      v25 = [(HMMTRVendorMetadataFileStore *)self vendorMetadataCache];
-      [v25 setObject:v24 forKey:@"vendor-metadata"];
+      vendorMetadataCache2 = [(HMMTRVendorMetadataFileStore *)self vendorMetadataCache];
+      [vendorMetadataCache2 setObject:v24 forKey:@"vendor-metadata"];
 
       v15 = v24;
     }
@@ -731,12 +731,12 @@ LABEL_17:
     else
     {
       v28 = [(HMMTRVendorMetadataVendor *)[HMMTRMutableVendorMetadataVendor alloc] initWithIdentifier:v11];
-      if (!v14)
+      if (!metadata)
       {
-        v14 = [(HMMTRVendorMetadataFileStore *)self metadata];
+        metadata = [(HMMTRVendorMetadataFileStore *)self metadata];
       }
 
-      v60 = [v14 vendorWithID:v11];
+      v60 = [metadata vendorWithID:v11];
       v56 = v60 == 0;
       if (v60)
       {
@@ -767,7 +767,7 @@ LABEL_17:
 
     if ([(HMMTRVendorMetadataVendor *)v28 invalid])
     {
-      v54 = v10;
+      v54 = metadataCopy;
       retryQueue = self->_retryQueue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
@@ -777,8 +777,8 @@ LABEL_17:
       v50 = &v69;
       v69 = v11;
       v33 = &v70;
-      v53 = v9;
-      v70 = v9;
+      v53 = iDCopy;
+      v70 = iDCopy;
       v72 = v13 == 0;
       v73 = v27 == 0;
       v74 = v56;
@@ -790,9 +790,9 @@ LABEL_17:
 
     else
     {
-      if (v9)
+      if (iDCopy)
       {
-        v35 = [(HMMTRVendorMetadataVendor *)v28 productWithID:v9 includeInvalids:1];
+        v35 = [(HMMTRVendorMetadataVendor *)v28 productWithID:iDCopy includeInvalids:1];
         if (v35)
         {
           v55 = v35;
@@ -802,15 +802,15 @@ LABEL_17:
         {
           if (!v60)
           {
-            if (!v14)
+            if (!metadata)
             {
-              v14 = [(HMMTRVendorMetadataFileStore *)self metadata];
+              metadata = [(HMMTRVendorMetadataFileStore *)self metadata];
             }
 
-            v60 = [v14 vendorWithID:v11];
+            v60 = [metadata vendorWithID:v11];
           }
 
-          v38 = [v60 productWithID:v9];
+          v38 = [v60 productWithID:iDCopy];
           v51 = v38;
           if (v38)
           {
@@ -819,7 +819,7 @@ LABEL_17:
 
           else
           {
-            v55 = [(HMMTRVendorMetadataProduct *)[HMMTRMutableVendorMetadataProduct alloc] initWithIdentifier:v9 categoryNumber:&unk_283EE7BD8 isInvalid:1];
+            v55 = [(HMMTRVendorMetadataProduct *)[HMMTRMutableVendorMetadataProduct alloc] initWithIdentifier:iDCopy categoryNumber:&unk_283EE7BD8 isInvalid:1];
           }
 
           v39 = v28;
@@ -841,7 +841,7 @@ LABEL_17:
 
         os_unfair_lock_unlock(&self->_lock);
         context = objc_autoreleasePoolPush();
-        v42 = self;
+        selfCopy = self;
         v43 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
         {
@@ -856,7 +856,7 @@ LABEL_17:
           v77 = 2112;
           v78 = v11;
           v79 = 2112;
-          v80 = v9;
+          v80 = iDCopy;
           v81 = 2112;
           v82 = v49;
           v83 = 2112;
@@ -879,7 +879,7 @@ LABEL_17:
       }
 
       v53 = 0;
-      v54 = v10;
+      v54 = metadataCopy;
       v36 = self->_retryQueue;
       v61[0] = MEMORY[0x277D85DD0];
       v61[1] = 3221225472;
@@ -900,8 +900,8 @@ LABEL_17:
       v20 = v37;
     }
 
-    v9 = v53;
-    v10 = v54;
+    iDCopy = v53;
+    metadataCopy = v54;
 
     os_unfair_lock_unlock(&self->_lock);
 LABEL_42:
@@ -910,7 +910,7 @@ LABEL_42:
   }
 
   v16 = objc_autoreleasePoolPush();
-  v17 = self;
+  selfCopy2 = self;
   v18 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
@@ -920,7 +920,7 @@ LABEL_42:
     v77 = 2112;
     v78 = 0;
     v79 = 2112;
-    v80 = v9;
+    v80 = iDCopy;
     _os_log_impl(&dword_22AEAE000, v18, OS_LOG_TYPE_INFO, "%{public}@retrieveVendorMetadataForVendorID:%@ productID:%@ -> nil vendor, returning nil", buf, 0x20u);
   }
 
@@ -1015,7 +1015,7 @@ void __86__HMMTRVendorMetadataFileStore__retrieveVendorMetadataForVendorID_produ
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1023,35 +1023,35 @@ void __86__HMMTRVendorMetadataFileStore__retrieveVendorMetadataForVendorID_produ
     *buf = 138543618;
     v19 = v6;
     v20 = 2048;
-    v21 = [(HMMTRVendorMetadataFileStore *)v4 retryCount]+ 1;
+    v21 = [(HMMTRVendorMetadataFileStore *)selfCopy retryCount]+ 1;
     _os_log_impl(&dword_22AEAE000, v5, OS_LOG_TYPE_INFO, "%{public}@Fetching cloud metadata by requesting supported accessories from UARP controller (attempt %lu)", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v3);
   os_unfair_lock_lock_with_options();
-  if (v4->_batchedAccessories)
+  if (selfCopy->_batchedAccessories)
   {
-    retryQueue = v4->_retryQueue;
+    retryQueue = selfCopy->_retryQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __57__HMMTRVendorMetadataFileStore_attemptCloudMetadataFetch__block_invoke;
     block[3] = &unk_2786F0CA8;
-    block[4] = v4;
+    block[4] = selfCopy;
     dispatch_async(retryQueue, block);
   }
 
   v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  batchedAccessories = v4->_batchedAccessories;
-  v4->_batchedAccessories = v8;
+  batchedAccessories = selfCopy->_batchedAccessories;
+  selfCopy->_batchedAccessories = v8;
 
-  os_unfair_lock_unlock(&v4->_lock);
-  v10 = [(HMMTRVendorMetadataFileStore *)v4 uarpController];
-  v11 = [v10 getBatchedSupportedAccessories:0 assetLocationType:15];
+  os_unfair_lock_unlock(&selfCopy->_lock);
+  uarpController = [(HMMTRVendorMetadataFileStore *)selfCopy uarpController];
+  v11 = [uarpController getBatchedSupportedAccessories:0 assetLocationType:15];
 
   if ((v11 & 1) == 0)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = v4;
+    v13 = selfCopy;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -1147,7 +1147,7 @@ void __57__HMMTRVendorMetadataFileStore_attemptCloudMetadataFetch__block_invoke(
     self->_retryCount = retryCount + 1;
     os_unfair_lock_unlock(&self->_lock);
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -1165,12 +1165,12 @@ void __57__HMMTRVendorMetadataFileStore_attemptCloudMetadataFetch__block_invoke(
     objc_autoreleasePoolPop(v13);
     os_unfair_lock_lock_with_options();
     v18 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:0 options:v12];
-    retryTimer = v14->_retryTimer;
-    v14->_retryTimer = v18;
+    retryTimer = selfCopy->_retryTimer;
+    selfCopy->_retryTimer = v18;
 
-    [(HMFTimer *)v14->_retryTimer setDelegate:v14];
-    [(HMFTimer *)v14->_retryTimer setDelegateQueue:v14->_retryQueue];
-    [(HMFTimer *)v14->_retryTimer resume];
+    [(HMFTimer *)selfCopy->_retryTimer setDelegate:selfCopy];
+    [(HMFTimer *)selfCopy->_retryTimer setDelegateQueue:selfCopy->_retryQueue];
+    [(HMFTimer *)selfCopy->_retryTimer resume];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -1201,7 +1201,7 @@ void __64__HMMTRVendorMetadataFileStore__handleCloudMetadataFetchFailure__block_
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1213,18 +1213,18 @@ void __64__HMMTRVendorMetadataFileStore__handleCloudMetadataFetchFailure__block_
 
   objc_autoreleasePoolPop(v3);
   os_unfair_lock_lock_with_options();
-  v4->_fetchInProgress = 0;
-  v4->_retryCount = 0;
-  v4->_firstFailureTime = 0.0;
-  retryTimer = v4->_retryTimer;
+  selfCopy->_fetchInProgress = 0;
+  selfCopy->_retryCount = 0;
+  selfCopy->_firstFailureTime = 0.0;
+  retryTimer = selfCopy->_retryTimer;
   if (retryTimer)
   {
     [(HMFTimer *)retryTimer cancel];
-    v8 = v4->_retryTimer;
-    v4->_retryTimer = 0;
+    v8 = selfCopy->_retryTimer;
+    selfCopy->_retryTimer = 0;
   }
 
-  os_unfair_lock_unlock(&v4->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v9 = *MEMORY[0x277D85DE8];
 }
 
@@ -1232,7 +1232,7 @@ void __64__HMMTRVendorMetadataFileStore__handleCloudMetadataFetchFailure__block_
 {
   v14 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1244,29 +1244,29 @@ void __64__HMMTRVendorMetadataFileStore__handleCloudMetadataFetchFailure__block_
 
   objc_autoreleasePoolPop(v3);
   os_unfair_lock_lock_with_options();
-  if (v4->_fetchInProgress)
+  if (selfCopy->_fetchInProgress)
   {
-    v4->_fetchInProgress = 0;
-    v4->_retryCount = 0;
-    v4->_firstFailureTime = 0.0;
-    retryTimer = v4->_retryTimer;
+    selfCopy->_fetchInProgress = 0;
+    selfCopy->_retryCount = 0;
+    selfCopy->_firstFailureTime = 0.0;
+    retryTimer = selfCopy->_retryTimer;
     if (retryTimer)
     {
       [(HMFTimer *)retryTimer cancel];
-      v8 = v4->_retryTimer;
-      v4->_retryTimer = 0;
+      v8 = selfCopy->_retryTimer;
+      selfCopy->_retryTimer = 0;
     }
 
-    retryQueue = v4->_retryQueue;
+    retryQueue = selfCopy->_retryQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __56__HMMTRVendorMetadataFileStore_cancelCloudMetadataFetch__block_invoke;
     block[3] = &unk_2786F0CA8;
-    block[4] = v4;
+    block[4] = selfCopy;
     dispatch_async(retryQueue, block);
   }
 
-  os_unfair_lock_unlock(&v4->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v10 = *MEMORY[0x277D85DE8];
 }
 
@@ -1291,12 +1291,12 @@ void __56__HMMTRVendorMetadataFileStore_cancelCloudMetadataFetch__block_invoke(u
 - (void)fetchCloudMetadata
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(HMMTRVendorMetadataFileStore *)self overrideMetadata];
+  overrideMetadata = [(HMMTRVendorMetadataFileStore *)self overrideMetadata];
 
-  if (v3)
+  if (overrideMetadata)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -1354,18 +1354,18 @@ void __50__HMMTRVendorMetadataFileStore_fetchCloudMetadata__block_invoke(uint64_
 - (HMMTRVendorMetadata)metadata
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(HMMTRVendorMetadataFileStore *)self overrideMetadata];
-  v4 = v3;
-  if (v3)
+  overrideMetadata = [(HMMTRVendorMetadataFileStore *)self overrideMetadata];
+  v4 = overrideMetadata;
+  if (overrideMetadata)
   {
-    v5 = v3;
+    staticMetadata = overrideMetadata;
   }
 
   else
   {
-    v6 = [(HMMTRVendorMetadataFileStore *)self fileManager];
-    v7 = [(HMMTRVendorMetadataFileStore *)self fileURL];
-    v8 = [v6 dictionaryWithContentsOfURL:v7 error:0];
+    fileManager = [(HMMTRVendorMetadataFileStore *)self fileManager];
+    fileURL = [(HMMTRVendorMetadataFileStore *)self fileURL];
+    v8 = [fileManager dictionaryWithContentsOfURL:fileURL error:0];
 
     if (v8)
     {
@@ -1379,7 +1379,7 @@ void __50__HMMTRVendorMetadataFileStore_fetchCloudMetadata__block_invoke(uint64_
       else
       {
         v15 = objc_autoreleasePoolPush();
-        v16 = self;
+        selfCopy = self;
         v17 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
@@ -1393,13 +1393,13 @@ void __50__HMMTRVendorMetadataFileStore_fetchCloudMetadata__block_invoke(uint64_
         v10 = objc_alloc_init(HMMTRVendorMetadata);
       }
 
-      v5 = v10;
+      staticMetadata = v10;
     }
 
     else
     {
       v11 = objc_autoreleasePoolPush();
-      v12 = self;
+      selfCopy2 = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
@@ -1410,21 +1410,21 @@ void __50__HMMTRVendorMetadataFileStore_fetchCloudMetadata__block_invoke(uint64_
       }
 
       objc_autoreleasePoolPop(v11);
-      [(HMMTRVendorMetadataFileStore *)v12 setDclCacheAvailable:0];
-      v5 = [(HMMTRVendorMetadataFileStore *)v12 staticMetadata];
+      [(HMMTRVendorMetadataFileStore *)selfCopy2 setDclCacheAvailable:0];
+      staticMetadata = [(HMMTRVendorMetadataFileStore *)selfCopy2 staticMetadata];
     }
   }
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return staticMetadata;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock_with_options();
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1438,34 +1438,34 @@ void __50__HMMTRVendorMetadataFileStore_fetchCloudMetadata__block_invoke(uint64_
   return WeakRetained;
 }
 
-- (HMMTRVendorMetadataFileStore)initWithFileURL:(id)a3 uarpController:(id)a4 fileManager:(id)a5 preferences:(id)a6
+- (HMMTRVendorMetadataFileStore)initWithFileURL:(id)l uarpController:(id)controller fileManager:(id)manager preferences:(id)preferences
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  lCopy = l;
+  controllerCopy = controller;
+  managerCopy = manager;
+  preferencesCopy = preferences;
+  if (!lCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (!v12)
+  if (!controllerCopy)
   {
 LABEL_9:
     _HMFPreconditionFailure();
     goto LABEL_10;
   }
 
-  if (!v13)
+  if (!managerCopy)
   {
 LABEL_10:
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  v15 = v14;
-  if (!v14)
+  v15 = preferencesCopy;
+  if (!preferencesCopy)
   {
 LABEL_11:
     v25 = _HMFPreconditionFailure();
@@ -1478,8 +1478,8 @@ LABEL_11:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_fileURL, a3);
-    objc_storeStrong(&v17->_uarpController, a4);
+    objc_storeStrong(&v16->_fileURL, l);
+    objc_storeStrong(&v17->_uarpController, controller);
     [(UARPController *)v17->_uarpController setDelegate:v17];
     batchedAccessories = v17->_batchedAccessories;
     v17->_batchedAccessories = 0;
@@ -1488,8 +1488,8 @@ LABEL_11:
     vendorMetadataCache = v17->_vendorMetadataCache;
     v17->_vendorMetadataCache = v19;
 
-    objc_storeStrong(&v17->_fileManager, a5);
-    objc_storeStrong(&v17->_preferences, a6);
+    objc_storeStrong(&v17->_fileManager, manager);
+    objc_storeStrong(&v17->_preferences, preferences);
     v17->_fetchInProgress = 0;
     v17->_retryCount = 0;
     v21 = dispatch_queue_create("com.apple.homekit.matter.vendor.metadata.retry", 0);
@@ -1506,14 +1506,14 @@ LABEL_11:
   return v17;
 }
 
-- (HMMTRVendorMetadataFileStore)initWithFileURL:(id)a3
+- (HMMTRVendorMetadataFileStore)initWithFileURL:(id)l
 {
   v4 = MEMORY[0x277D02620];
-  v5 = a3;
+  lCopy = l;
   v6 = objc_alloc_init(v4);
   v7 = objc_alloc_init(HMMTRFileManager);
-  v8 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v9 = [(HMMTRVendorMetadataFileStore *)self initWithFileURL:v5 uarpController:v6 fileManager:v7 preferences:v8];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v9 = [(HMMTRVendorMetadataFileStore *)self initWithFileURL:lCopy uarpController:v6 fileManager:v7 preferences:mEMORY[0x277D0F8D0]];
 
   return v9;
 }

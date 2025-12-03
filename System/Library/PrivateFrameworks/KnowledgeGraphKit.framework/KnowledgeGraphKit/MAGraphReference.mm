@@ -1,7 +1,7 @@
 @interface MAGraphReference
 - (MAGraph)concreteGraph;
 - (MAGraphProxy)graph;
-- (MAGraphReference)initWithGraph:(id)a3;
+- (MAGraphReference)initWithGraph:(id)graph;
 @end
 
 @implementation MAGraphReference
@@ -20,18 +20,18 @@
   return WeakRetained;
 }
 
-- (MAGraphReference)initWithGraph:(id)a3
+- (MAGraphReference)initWithGraph:(id)graph
 {
-  v4 = a3;
+  graphCopy = graph;
   v9.receiver = self;
   v9.super_class = MAGraphReference;
   v5 = [(MAGraphReference *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_concreteGraph, v4);
-    v7 = [v4 identifier];
-    v6->_hash = [v7 hash];
+    objc_storeWeak(&v5->_concreteGraph, graphCopy);
+    identifier = [graphCopy identifier];
+    v6->_hash = [identifier hash];
   }
 
   return v6;

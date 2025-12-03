@@ -13,7 +13,7 @@
   v18 = a7;
   v19 = a8;
   v20 = a9;
-  v25.receiver = a1;
+  v25.receiver = self;
   v25.super_class = &off_284890220;
   v21 = objc_msgSendSuper2(&v25, sel_init);
   v22 = v21;
@@ -41,7 +41,7 @@
   v20 = a8;
   v21 = a9;
   v22 = a10;
-  v27.receiver = a1;
+  v27.receiver = self;
   v27.super_class = &off_284890220;
   v23 = objc_msgSendSuper2(&v27, sel_init);
   v24 = v23;
@@ -89,10 +89,10 @@
     }
 
     v13 = [MEMORY[0x277CE1C30] statisticsWithEngineMeta:v9 locale:v7];
-    [a1 setStatistics:v13];
+    [self setStatistics:v13];
 
-    v14 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v15 = [v14 BOOLForKey:@"DisambiguationEnabled"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v15 = [standardUserDefaults BOOLForKey:@"DisambiguationEnabled"];
 
     if ((v15 & 1) == 0)
     {
@@ -103,7 +103,7 @@
         _os_log_impl(&dword_232E53000, v18, OS_LOG_TYPE_INFO, "Skipping loading sense data from meta because it's disabled in user defaults", v28, 2u);
       }
 
-      [a1 setSenses:0];
+      [self setSenses:0];
       goto LABEL_26;
     }
 
@@ -125,22 +125,22 @@ LABEL_16:
         if (v22)
         {
           v23 = [MEMORY[0x277CE1C08] genderAlternativesFromDictionary:v22];
-          [a1 setGenderAlternatives:v23];
+          [self setGenderAlternatives:v23];
         }
 
         v24 = [v9 objectForKeyedSubscript:@"romanization"];
-        v25 = [a1 sanitizedFormattedString];
-        if (!v25 && v24 && [v24 length])
+        sanitizedFormattedString = [self sanitizedFormattedString];
+        if (!sanitizedFormattedString && v24 && [v24 length])
         {
-          v26 = [a1 romanization];
+          romanization = [self romanization];
 
-          if (!v26)
+          if (!romanization)
           {
-            [a1 setRomanization:v24];
+            [self setRomanization:v24];
             v27 = _LTOSLogTranslationEngine();
             if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
             {
-              [_LTTranslationCandidate(Daemon) updateWithEngineMeta:v27 locale:a1];
+              [_LTTranslationCandidate(Daemon) updateWithEngineMeta:v27 locale:self];
             }
           }
         }
@@ -157,7 +157,7 @@ LABEL_26:
     }
 
     v21 = v17;
-    [a1 setSenses:v17];
+    [self setSenses:v17];
 
     goto LABEL_16;
   }

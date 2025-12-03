@@ -1,6 +1,6 @@
 @interface BKUIAnalyticsManager
 - (BKUIAnalyticsManager)init;
-- (void)traceEvent:(id)a3 withPayload:(id)a4;
+- (void)traceEvent:(id)event withPayload:(id)payload;
 @end
 
 @implementation BKUIAnalyticsManager
@@ -12,18 +12,18 @@
   return [(BKUIAnalyticsManager *)&v3 init];
 }
 
-- (void)traceEvent:(id)a3 withPayload:(id)a4
+- (void)traceEvent:(id)event withPayload:(id)payload
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  payloadCopy = payload;
   v7 = _BKUILoggingFacility();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = v5;
+    v10 = eventCopy;
     v11 = 2112;
-    v12 = v6;
+    v12 = payloadCopy;
     _os_log_impl(&dword_241B0A000, v7, OS_LOG_TYPE_DEFAULT, "Tracing event: %@ payload: %@", &v9, 0x16u);
   }
 

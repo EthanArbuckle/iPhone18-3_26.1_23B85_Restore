@@ -1,17 +1,17 @@
 @interface _CDInteractionStoreNotifier
 + (_CDInteractionStoreNotifier)sharedInstance;
 - (_CDInteractionStoreNotifier)init;
-- (id)filterInteractionsForUser:(id)a3;
-- (void)addSubscriber:(id)a3;
+- (id)filterInteractionsForUser:(id)user;
+- (void)addSubscriber:(id)subscriber;
 - (void)dealloc;
 - (void)deleteAll;
-- (void)deleted:(id)a3;
-- (void)handleXPCNotificationEvent:(id)a3;
-- (void)postPackedMechanisms:(unint64_t)a3;
-- (void)publishDeletedXPCEvent:(id)a3;
-- (void)publishRecordedXPCEvent:(id)a3;
-- (void)recorded:(id)a3;
-- (void)removeSubscriberWithToken:(unint64_t)a3 streamName:(id)a4;
+- (void)deleted:(id)deleted;
+- (void)handleXPCNotificationEvent:(id)event;
+- (void)postPackedMechanisms:(unint64_t)mechanisms;
+- (void)publishDeletedXPCEvent:(id)event;
+- (void)publishRecordedXPCEvent:(id)event;
+- (void)recorded:(id)recorded;
+- (void)removeSubscriberWithToken:(unint64_t)token streamName:(id)name;
 - (void)suspend;
 @end
 
@@ -47,17 +47,17 @@
 
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
-    v6 = [v5 UTF8String];
+    uTF8String = [v5 UTF8String];
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v8 = dispatch_queue_create(v6, v7);
+    v8 = dispatch_queue_create(uTF8String, v7);
     queue = v2->_queue;
     v2->_queue = v8;
 
-    LODWORD(v6) = getuid();
-    v2->_isRootProcess = v6 == 0;
+    LODWORD(uTF8String) = getuid();
+    v2->_isRootProcess = uTF8String == 0;
     v10 = +[_CDLogging interactionChannel];
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-    if (v6)
+    if (uTF8String)
     {
       if (v11)
       {
@@ -131,9 +131,9 @@
   [(_CDInteractionStoreNotifier *)&v4 dealloc];
 }
 
-- (void)postPackedMechanisms:(unint64_t)a3
+- (void)postPackedMechanisms:(unint64_t)mechanisms
 {
-  if (notify_set_state(self->_notifierToken, a3))
+  if (notify_set_state(self->_notifierToken, mechanisms))
   {
     v3 = +[_CDLogging interactionChannel];
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -145,18 +145,18 @@
   notify_post([@"PSStoreChangedNotificationInternal" UTF8String]);
 }
 
-- (id)filterInteractionsForUser:(id)a3
+- (id)filterInteractionsForUser:(id)user
 {
-  v4 = a3;
-  v5 = v4;
+  userCopy = user;
+  v5 = userCopy;
   if (self->_isRootProcess)
   {
-    v6 = v4;
+    v6 = userCopy;
   }
 
   else
   {
-    v6 = [v4 _pas_filteredArrayWithTest:&__block_literal_global_39_1];
+    v6 = [userCopy _pas_filteredArrayWithTest:&__block_literal_global_39_1];
   }
 
   v7 = v6;
@@ -164,19 +164,19 @@
   return v7;
 }
 
-- (void)recorded:(id)a3
+- (void)recorded:(id)recorded
 {
-  v4 = a3;
+  recordedCopy = recorded;
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __40___CDInteractionStoreNotifier_recorded___block_invoke;
   v11[3] = &unk_1E7367710;
-  v12 = v4;
-  v13 = self;
+  v12 = recordedCopy;
+  selfCopy = self;
   v6 = v11;
   v7 = queue;
-  v8 = v4;
+  v8 = recordedCopy;
   v9 = os_transaction_create();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -188,19 +188,19 @@
   dispatch_async(v7, block);
 }
 
-- (void)deleted:(id)a3
+- (void)deleted:(id)deleted
 {
-  v4 = a3;
+  deletedCopy = deleted;
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __39___CDInteractionStoreNotifier_deleted___block_invoke;
   v11[3] = &unk_1E7367710;
-  v12 = v4;
-  v13 = self;
+  v12 = deletedCopy;
+  selfCopy = self;
   v6 = v11;
   v7 = queue;
-  v8 = v4;
+  v8 = deletedCopy;
   v9 = os_transaction_create();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -214,11 +214,11 @@
 
 - (void)deleteAll
 {
-  v2 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v2 postNotificationName:@"_CDInteractionStoreDeleteAllInteractionsNotification" object:0 userInfo:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"_CDInteractionStoreDeleteAllInteractionsNotification" object:0 userInfo:0];
 
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 postNotificationName:@"_CDInteractionStoreDeleteAllInteractionsNotification" object:0 userInfo:0];
+  defaultCenter2 = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter2 postNotificationName:@"_CDInteractionStoreDeleteAllInteractionsNotification" object:0 userInfo:0];
 }
 
 - (void)suspend
@@ -232,9 +232,9 @@
   dispatch_sync(queue, block);
 }
 
-- (void)addSubscriber:(id)a3
+- (void)addSubscriber:(id)subscriber
 {
-  v4 = a3;
+  subscriberCopy = subscriber;
   v5 = +[_CDLogging interactionChannel];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -242,18 +242,18 @@
     _os_log_impl(&dword_191750000, v5, OS_LOG_TYPE_DEFAULT, "Adding subscriber", buf, 2u);
   }
 
-  v6 = [v4 streamName];
-  v7 = [v4 token];
+  streamName = [subscriberCopy streamName];
+  token = [subscriberCopy token];
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.coreduetinteraction.interaction-recorded"];
-  v9 = [v8 isEqualToString:v6];
+  v9 = [v8 isEqualToString:streamName];
 
   if (v9)
   {
     v10 = self->_interactionStoreRecordedEventSubscribersByToken;
     objc_sync_enter(v10);
     interactionStoreRecordedEventSubscribersByToken = self->_interactionStoreRecordedEventSubscribersByToken;
-    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v7];
-    [(NSMutableDictionary *)interactionStoreRecordedEventSubscribersByToken setObject:v4 forKeyedSubscript:v12];
+    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:token];
+    [(NSMutableDictionary *)interactionStoreRecordedEventSubscribersByToken setObject:subscriberCopy forKeyedSubscript:v12];
 
     v13 = +[_CDLogging interactionChannel];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -270,15 +270,15 @@ LABEL_9:
   }
 
   v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.coreduetinteraction.interaction-deleted"];
-  v17 = [v16 isEqualToString:v6];
+  v17 = [v16 isEqualToString:streamName];
 
   if (v17)
   {
     v10 = self->_interactionStoreDeletedEventSubscribersByToken;
     objc_sync_enter(v10);
     interactionStoreDeletedEventSubscribersByToken = self->_interactionStoreDeletedEventSubscribersByToken;
-    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v7];
-    [(NSMutableDictionary *)interactionStoreDeletedEventSubscribersByToken setObject:v4 forKeyedSubscript:v19];
+    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:token];
+    [(NSMutableDictionary *)interactionStoreDeletedEventSubscribersByToken setObject:subscriberCopy forKeyedSubscript:v19];
 
     v13 = +[_CDLogging interactionChannel];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -304,9 +304,9 @@ LABEL_10:
 LABEL_13:
 }
 
-- (void)removeSubscriberWithToken:(unint64_t)a3 streamName:(id)a4
+- (void)removeSubscriberWithToken:(unint64_t)token streamName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v7 = +[_CDLogging interactionChannel];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -315,14 +315,14 @@ LABEL_13:
   }
 
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.coreduetinteraction.interaction-recorded"];
-  v9 = [v8 isEqualToString:v6];
+  v9 = [v8 isEqualToString:nameCopy];
 
   if (v9)
   {
     v10 = self->_interactionStoreRecordedEventSubscribersByToken;
     objc_sync_enter(v10);
     interactionStoreRecordedEventSubscribersByToken = self->_interactionStoreRecordedEventSubscribersByToken;
-    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:token];
     [(NSMutableDictionary *)interactionStoreRecordedEventSubscribersByToken setObject:0 forKeyedSubscript:v12];
 
     v13 = +[_CDLogging interactionChannel];
@@ -340,14 +340,14 @@ LABEL_9:
   }
 
   v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.coreduetinteraction.interaction-deleted"];
-  v17 = [v16 isEqualToString:v6];
+  v17 = [v16 isEqualToString:nameCopy];
 
   if (v17)
   {
     v10 = self->_interactionStoreDeletedEventSubscribersByToken;
     objc_sync_enter(v10);
     interactionStoreDeletedEventSubscribersByToken = self->_interactionStoreDeletedEventSubscribersByToken;
-    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:token];
     [(NSMutableDictionary *)interactionStoreDeletedEventSubscribersByToken setObject:0 forKeyedSubscript:v19];
 
     v13 = +[_CDLogging interactionChannel];
@@ -374,10 +374,10 @@ LABEL_10:
 LABEL_13:
 }
 
-- (void)handleXPCNotificationEvent:(id)a3
+- (void)handleXPCNotificationEvent:(id)event
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v5 = +[_CDLogging interactionChannel];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -388,7 +388,7 @@ LABEL_13:
   v14 = 0;
   v15 = 0;
   v13 = 0;
-  v6 = [_CDXPCCodecs parseNotificationEvent:v4 registrationIdentifier:&v15 info:&v14 error:&v13];
+  v6 = [_CDXPCCodecs parseNotificationEvent:eventCopy registrationIdentifier:&v15 info:&v14 error:&v13];
 
   v7 = v15;
   v8 = v14;
@@ -435,15 +435,15 @@ LABEL_13:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)publishRecordedXPCEvent:(id)a3
+- (void)publishRecordedXPCEvent:(id)event
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v5 = +[_CDLogging interactionChannel];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138739971;
-    v31 = v4;
+    v31 = eventCopy;
     _os_log_impl(&dword_191750000, v5, OS_LOG_TYPE_INFO, "Publishing recorded XPC event with interactions %{sensitive}@", buf, 0xCu);
   }
 
@@ -458,9 +458,9 @@ LABEL_13:
 
   if (self->_interactionRecordedEventPublisher)
   {
-    if (v4)
+    if (eventCopy)
     {
-      v8 = v4;
+      v8 = eventCopy;
     }
 
     else
@@ -477,21 +477,21 @@ LABEL_13:
 
     v12 = self->_interactionStoreRecordedEventSubscribersByToken;
     objc_sync_enter(v12);
-    v13 = [(NSMutableDictionary *)self->_interactionStoreRecordedEventSubscribersByToken allValues];
+    allValues = [(NSMutableDictionary *)self->_interactionStoreRecordedEventSubscribersByToken allValues];
     v14 = +[_CDLogging interactionChannel];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v31 = v13;
+      v31 = allValues;
       _os_log_impl(&dword_191750000, v14, OS_LOG_TYPE_INFO, "All subscribers %@", buf, 0xCu);
     }
 
-    v20 = v4;
+    v20 = eventCopy;
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v15 = v13;
+    v15 = allValues;
     v16 = [(_CDXPCEventPublisher *)v15 countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v16)
     {
@@ -515,22 +515,22 @@ LABEL_13:
       while (v16);
     }
 
-    v4 = v20;
+    eventCopy = v20;
     objc_sync_exit(v12);
   }
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)publishDeletedXPCEvent:(id)a3
+- (void)publishDeletedXPCEvent:(id)event
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v5 = +[_CDLogging interactionChannel];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138739971;
-    v31 = v4;
+    v31 = eventCopy;
     _os_log_impl(&dword_191750000, v5, OS_LOG_TYPE_INFO, "Publishing deleted XPC event with interactions %{sensitive}@", buf, 0xCu);
   }
 
@@ -545,9 +545,9 @@ LABEL_13:
 
   if (self->_interactionDeletedEventPublisher)
   {
-    if (v4)
+    if (eventCopy)
     {
-      v8 = v4;
+      v8 = eventCopy;
     }
 
     else
@@ -564,21 +564,21 @@ LABEL_13:
 
     v12 = self->_interactionStoreDeletedEventSubscribersByToken;
     objc_sync_enter(v12);
-    v13 = [(NSMutableDictionary *)self->_interactionStoreDeletedEventSubscribersByToken allValues];
+    allValues = [(NSMutableDictionary *)self->_interactionStoreDeletedEventSubscribersByToken allValues];
     v14 = +[_CDLogging interactionChannel];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v31 = v13;
+      v31 = allValues;
       _os_log_impl(&dword_191750000, v14, OS_LOG_TYPE_INFO, "All subscribers %@", buf, 0xCu);
     }
 
-    v20 = v4;
+    v20 = eventCopy;
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v15 = v13;
+    v15 = allValues;
     v16 = [(_CDXPCEventPublisher *)v15 countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v16)
     {
@@ -602,7 +602,7 @@ LABEL_13:
       while (v16);
     }
 
-    v4 = v20;
+    eventCopy = v20;
     objc_sync_exit(v12);
   }
 

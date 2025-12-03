@@ -1,25 +1,25 @@
 @interface CycleTimelineCollectionViewController
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (_TtC24MenstrualCyclesAppPlugin33CycleTimelineCollectionViewLayout)collectionViewLayout;
-- (_TtC24MenstrualCyclesAppPlugin37CycleTimelineCollectionViewController)initWithCollectionViewLayout:(id)a3;
-- (_TtC24MenstrualCyclesAppPlugin37CycleTimelineCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (_TtC24MenstrualCyclesAppPlugin37CycleTimelineCollectionViewController)initWithCollectionViewLayout:(id)layout;
+- (_TtC24MenstrualCyclesAppPlugin37CycleTimelineCollectionViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (void)adaptToContentSizeChanges;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)didReceiveSignificantTimeChangeNotification;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CycleTimelineCollectionViewController
@@ -28,7 +28,7 @@
 {
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
-  v2 = [(CycleTimelineCollectionViewController *)&v5 collectionViewLayout];
+  collectionViewLayout = [(CycleTimelineCollectionViewController *)&v5 collectionViewLayout];
   type metadata accessor for CycleTimelineCollectionViewLayout();
   v3 = swift_dynamicCastClassUnconditional();
 
@@ -37,189 +37,189 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_29DF823FC();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_29DF82884(a3);
+  selfCopy = self;
+  sub_29DF82884(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v9.receiver = self;
   v9.super_class = swift_getObjectType();
   v4 = v9.receiver;
-  [(CycleTimelineCollectionViewController *)&v9 viewWillDisappear:v3];
-  v5 = [v4 navigationController];
-  if (v5)
+  [(CycleTimelineCollectionViewController *)&v9 viewWillDisappear:disappearCopy];
+  navigationController = [v4 navigationController];
+  if (navigationController)
   {
-    v6 = v5;
-    v7 = [v5 interactivePopGestureRecognizer];
+    v6 = navigationController;
+    interactivePopGestureRecognizer = [navigationController interactivePopGestureRecognizer];
 
-    if (v7)
+    if (interactivePopGestureRecognizer)
     {
       v8 = *&v4[OBJC_IVAR____TtC24MenstrualCyclesAppPlugin37CycleTimelineCollectionViewController_navControllerDelegateCache];
       swift_unknownObjectRetain();
-      [v7 setDelegate_];
+      [interactivePopGestureRecognizer setDelegate_];
       swift_unknownObjectRelease();
     }
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  sub_29DF82AF8(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_29DF82AF8(controller);
 }
 
 - (void)adaptToContentSizeChanges
 {
-  v2 = self;
+  selfCopy = self;
   sub_29DF82D4C();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_29DF83210();
 }
 
 - (void)didReceiveSignificantTimeChangeNotification
 {
-  v2 = self;
+  selfCopy = self;
   sub_29DF83C60();
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = sub_29E2BCFB4();
   v7 = *(v6 - 8);
   MEMORY[0x2A1C7C4A8](v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_29E2BCF44();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_29DF84818(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_29DF84818(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   sub_29DEC65FC();
   sub_29E2C31A4();
   sub_29DF89378(&unk_2A18199E0, MEMORY[0x29EDBA2F8]);
-  v5 = self;
+  selfCopy = self;
   sub_29E2C4344();
 
   return v7;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = sub_29E2BCFB4();
   v7 = *(v6 - 8);
   MEMORY[0x2A1C7C4A8](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_29E2BCF44();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_29DF89614(v9);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = sub_29E2BCFB4();
   v9 = *(v8 - 8);
   MEMORY[0x2A1C7C4A8](v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_29E2BCF44();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_29DF89DC0(v13, v11);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  sub_29DF89DC0(cellCopy, v11);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = sub_29E2BCFB4();
   v9 = *(v8 - 8);
   MEMORY[0x2A1C7C4A8](v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_29E2BCF44();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
   sub_29DF8A388();
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_29DF8820C(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_29DF8820C(scrollCopy);
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = self;
+  animationCopy = animation;
+  selfCopy = self;
   sub_29DF8A5BC();
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  v5 = self;
+  draggingCopy = dragging;
+  selfCopy = self;
   sub_29DF8A780();
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v6 = a3;
-  v7 = self;
-  sub_29DF8A840(a4);
+  draggingCopy = dragging;
+  selfCopy = self;
+  sub_29DF8A840(decelerate);
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  v5 = self;
+  deceleratingCopy = decelerating;
+  selfCopy = self;
   sub_29DF8AA08();
 }
 
-- (_TtC24MenstrualCyclesAppPlugin37CycleTimelineCollectionViewController)initWithCollectionViewLayout:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin37CycleTimelineCollectionViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC24MenstrualCyclesAppPlugin37CycleTimelineCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC24MenstrualCyclesAppPlugin37CycleTimelineCollectionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_29DF8910C(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  LOBYTE(self) = sub_29DF8910C(beginCopy);
 
   return self & 1;
 }

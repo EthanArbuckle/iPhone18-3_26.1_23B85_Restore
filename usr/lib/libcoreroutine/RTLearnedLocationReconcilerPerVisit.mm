@@ -1,48 +1,48 @@
 @interface RTLearnedLocationReconcilerPerVisit
-+ (void)submitMetricsOnReconciledGraphDensity:(id)a3 algorithm:(unint64_t)a4 persistenceManager:(id)a5 managedObjectContext:(id)a6;
-- (RTLearnedLocationReconcilerPerVisit)initWithPersistenceManager:(id)a3 defaultsManager:(id)a4;
-- (RTLearnedLocationReconcilerPerVisit)initWithPersistenceManager:(id)a3 defaultsManager:(id)a4 distanceCalculator:(id)a5 reconciliationModels:(id)a6;
++ (void)submitMetricsOnReconciledGraphDensity:(id)density algorithm:(unint64_t)algorithm persistenceManager:(id)manager managedObjectContext:(id)context;
+- (RTLearnedLocationReconcilerPerVisit)initWithPersistenceManager:(id)manager defaultsManager:(id)defaultsManager;
+- (RTLearnedLocationReconcilerPerVisit)initWithPersistenceManager:(id)manager defaultsManager:(id)defaultsManager distanceCalculator:(id)calculator reconciliationModels:(id)models;
 - (id)_currentModel;
-- (id)_findWinner:(id)a3 currentVisit:(id)a4 model:(id)a5 modelContext:(id)a6;
-- (id)_visitFollowingVisit:(id)a3 visits:(id)a4;
-- (id)_visitsWithContext:(id)a3 predicate:(id)a4 sortDescriptors:(id)a5 error:(id *)a6;
-- (void)_performReconciliationWithHandler:(id)a3;
-- (void)_reconcileVisits:(id)a3 context:(id)a4 handler:(id)a5;
-- (void)_reconcileVisits:(id)a3 handler:(id)a4;
-- (void)_reconcileVisitsWithContext:(id)a3 handler:(id)a4;
-- (void)collapseReconciledVisitsToLocationsOfInterest:(id)a3 context:(id)a4 handler:(id)a5;
-- (void)collapseVisits:(id)a3 context:(id)a4;
-- (void)performReconciliationWithHandler:(id)a3;
-- (void)reconcileVisits:(id)a3 context:(id)a4 handler:(id)a5;
-- (void)reconcileVisits:(id)a3 handler:(id)a4;
+- (id)_findWinner:(id)winner currentVisit:(id)visit model:(id)model modelContext:(id)context;
+- (id)_visitFollowingVisit:(id)visit visits:(id)visits;
+- (id)_visitsWithContext:(id)context predicate:(id)predicate sortDescriptors:(id)descriptors error:(id *)error;
+- (void)_performReconciliationWithHandler:(id)handler;
+- (void)_reconcileVisits:(id)visits context:(id)context handler:(id)handler;
+- (void)_reconcileVisits:(id)visits handler:(id)handler;
+- (void)_reconcileVisitsWithContext:(id)context handler:(id)handler;
+- (void)collapseReconciledVisitsToLocationsOfInterest:(id)interest context:(id)context handler:(id)handler;
+- (void)collapseVisits:(id)visits context:(id)context;
+- (void)performReconciliationWithHandler:(id)handler;
+- (void)reconcileVisits:(id)visits context:(id)context handler:(id)handler;
+- (void)reconcileVisits:(id)visits handler:(id)handler;
 @end
 
 @implementation RTLearnedLocationReconcilerPerVisit
 
-- (RTLearnedLocationReconcilerPerVisit)initWithPersistenceManager:(id)a3 defaultsManager:(id)a4
+- (RTLearnedLocationReconcilerPerVisit)initWithPersistenceManager:(id)manager defaultsManager:(id)defaultsManager
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  defaultsManagerCopy = defaultsManager;
+  managerCopy = manager;
   v8 = objc_opt_new();
   v9 = objc_opt_new();
   v13[0] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
-  v11 = [(RTLearnedLocationReconcilerPerVisit *)self initWithPersistenceManager:v7 defaultsManager:v6 distanceCalculator:v8 reconciliationModels:v10];
+  v11 = [(RTLearnedLocationReconcilerPerVisit *)self initWithPersistenceManager:managerCopy defaultsManager:defaultsManagerCopy distanceCalculator:v8 reconciliationModels:v10];
 
   return v11;
 }
 
-- (RTLearnedLocationReconcilerPerVisit)initWithPersistenceManager:(id)a3 defaultsManager:(id)a4 distanceCalculator:(id)a5 reconciliationModels:(id)a6
+- (RTLearnedLocationReconcilerPerVisit)initWithPersistenceManager:(id)manager defaultsManager:(id)defaultsManager distanceCalculator:(id)calculator reconciliationModels:(id)models
 {
   v38 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  managerCopy = manager;
+  defaultsManagerCopy = defaultsManager;
+  calculatorCopy = calculator;
+  modelsCopy = models;
+  if (managerCopy)
   {
-    if (v12)
+    if (defaultsManagerCopy)
     {
       goto LABEL_3;
     }
@@ -60,10 +60,10 @@
       _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: persistenceManager (in %s:%d)", buf, 0x12u);
     }
 
-    if (v12)
+    if (defaultsManagerCopy)
     {
 LABEL_3:
-      if (v13)
+      if (calculatorCopy)
       {
         goto LABEL_14;
       }
@@ -82,7 +82,7 @@ LABEL_3:
     _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: defaultsManager (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v13)
+  if (!calculatorCopy)
   {
 LABEL_11:
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -97,7 +97,7 @@ LABEL_11:
   }
 
 LABEL_14:
-  if (![v14 count])
+  if (![modelsCopy count])
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -110,10 +110,10 @@ LABEL_14:
     }
   }
 
-  v19 = 0;
-  if (v11 && v12 && v13)
+  selfCopy = 0;
+  if (managerCopy && defaultsManagerCopy && calculatorCopy)
   {
-    if ([v14 count])
+    if ([modelsCopy count])
     {
       v33.receiver = self;
       v33.super_class = RTLearnedLocationReconcilerPerVisit;
@@ -121,69 +121,69 @@ LABEL_14:
       v21 = v20;
       if (v20)
       {
-        obj = a4;
+        obj = defaultsManager;
         v22 = v20;
         v23 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v24 = [(RTLearnedLocationReconcilerPerVisit *)v22 UTF8String];
+          uTF8String = [(RTLearnedLocationReconcilerPerVisit *)v22 UTF8String];
         }
 
         else
         {
           [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), v22];
-          v25 = v31 = a5;
-          v24 = [v25 UTF8String];
+          v25 = v31 = calculator;
+          uTF8String = [v25 UTF8String];
 
-          a5 = v31;
+          calculator = v31;
         }
 
-        v26 = dispatch_queue_create(v24, v23);
+        v26 = dispatch_queue_create(uTF8String, v23);
 
         queue = v22->_queue;
         v22->_queue = v26;
 
-        objc_storeStrong(&v22->_persistenceManager, a3);
+        objc_storeStrong(&v22->_persistenceManager, manager);
         objc_storeStrong(&v22->_defaultsManager, obj);
-        objc_storeStrong(&v22->_distanceCalculator, a5);
-        v28 = [v14 copy];
+        objc_storeStrong(&v22->_distanceCalculator, calculator);
+        v28 = [modelsCopy copy];
         reconciliationModels = v22->_reconciliationModels;
         v22->_reconciliationModels = v28;
       }
 
       self = v21;
-      v19 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v19 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v19;
+  return selfCopy;
 }
 
-- (void)performReconciliationWithHandler:(id)a3
+- (void)performReconciliationWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__RTLearnedLocationReconcilerPerVisit_performReconciliationWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_performReconciliationWithHandler:(id)a3
+- (void)_performReconciliationWithHandler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -202,8 +202,8 @@ LABEL_14:
   v8[2] = __73__RTLearnedLocationReconcilerPerVisit__performReconciliationWithHandler___block_invoke;
   v8[3] = &unk_2788C9110;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(RTPersistenceManager *)persistenceManager createManagedObjectContext:v8];
 }
 
@@ -236,15 +236,15 @@ void __73__RTLearnedLocationReconcilerPerVisit__performReconciliationWithHandler
   }
 }
 
-- (void)_reconcileVisitsWithContext:(id)a3 handler:(id)a4
+- (void)_reconcileVisitsWithContext:(id)context handler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  contextCopy = context;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (contextCopy)
   {
-    if (v7)
+    if (handlerCopy)
     {
 LABEL_11:
       v13[0] = MEMORY[0x277D85DD0];
@@ -252,7 +252,7 @@ LABEL_11:
       v13[2] = __75__RTLearnedLocationReconcilerPerVisit__reconcileVisitsWithContext_handler___block_invoke;
       v13[3] = &unk_2788C4500;
       v13[4] = self;
-      v14 = v6;
+      v14 = contextCopy;
       v15 = v8;
       [v14 performBlock:v13];
 
@@ -294,7 +294,7 @@ LABEL_11:
     _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler (in %s:%d)", buf, 0x12u);
   }
 
-  if (v6)
+  if (contextCopy)
   {
     goto LABEL_11;
   }
@@ -318,37 +318,37 @@ void __75__RTLearnedLocationReconcilerPerVisit__reconcileVisitsWithContext_handl
   [*(a1 + 32) _reconcileVisits:v7 context:*(a1 + 40) handler:*(a1 + 48)];
 }
 
-- (void)reconcileVisits:(id)a3 handler:(id)a4
+- (void)reconcileVisits:(id)visits handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  visitsCopy = visits;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__RTLearnedLocationReconcilerPerVisit_reconcileVisits_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = visitsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = visitsCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_reconcileVisits:(id)a3 handler:(id)a4
+- (void)_reconcileVisits:(id)visits handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  visitsCopy = visits;
+  handlerCopy = handler;
   persistenceManager = self->_persistenceManager;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __64__RTLearnedLocationReconcilerPerVisit__reconcileVisits_handler___block_invoke;
   v11[3] = &unk_2788C9138;
-  v12 = v6;
-  v13 = v7;
+  v12 = visitsCopy;
+  v13 = handlerCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = visitsCopy;
+  v10 = handlerCopy;
   [(RTPersistenceManager *)persistenceManager createManagedObjectContext:v11];
 }
 
@@ -382,33 +382,33 @@ void __64__RTLearnedLocationReconcilerPerVisit__reconcileVisits_handler___block_
   }
 }
 
-- (void)reconcileVisits:(id)a3 context:(id)a4 handler:(id)a5
+- (void)reconcileVisits:(id)visits context:(id)context handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  visitsCopy = visits;
+  contextCopy = context;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __71__RTLearnedLocationReconcilerPerVisit_reconcileVisits_context_handler___block_invoke;
   v15[3] = &unk_2788C5530;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = visitsCopy;
+  v17 = contextCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = contextCopy;
+  v14 = visitsCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)_reconcileVisits:(id)a3 context:(id)a4 handler:(id)a5
+- (void)_reconcileVisits:(id)visits context:(id)context handler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  visitsCopy = visits;
+  contextCopy = context;
+  handlerCopy = handler;
+  if (!contextCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -425,13 +425,13 @@ void __64__RTLearnedLocationReconcilerPerVisit__reconcileVisits_handler___block_
   v15[1] = 3221225472;
   v15[2] = __72__RTLearnedLocationReconcilerPerVisit__reconcileVisits_context_handler___block_invoke;
   v15[3] = &unk_2788C5530;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = visitsCopy;
+  selfCopy = self;
+  v18 = contextCopy;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = contextCopy;
+  v14 = visitsCopy;
   [v13 performBlock:v15];
 }
 
@@ -484,13 +484,13 @@ LABEL_6:
   return v12;
 }
 
-- (void)collapseReconciledVisitsToLocationsOfInterest:(id)a3 context:(id)a4 handler:(id)a5
+- (void)collapseReconciledVisitsToLocationsOfInterest:(id)interest context:(id)context handler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  interestCopy = interest;
+  contextCopy = context;
+  handlerCopy = handler;
+  if (!contextCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -507,13 +507,13 @@ LABEL_6:
   v15[1] = 3221225472;
   v15[2] = __101__RTLearnedLocationReconcilerPerVisit_collapseReconciledVisitsToLocationsOfInterest_context_handler___block_invoke;
   v15[3] = &unk_2788C5530;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = interestCopy;
+  selfCopy = self;
+  v18 = contextCopy;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = contextCopy;
+  v14 = interestCopy;
   [v13 performBlock:v15];
 }
 
@@ -889,12 +889,12 @@ uint64_t __101__RTLearnedLocationReconcilerPerVisit_collapseReconciledVisitsToLo
   return v10;
 }
 
-- (void)collapseVisits:(id)a3 context:(id)a4
+- (void)collapseVisits:(id)visits context:(id)context
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  visitsCopy = visits;
+  contextCopy = context;
+  if (!contextCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -911,11 +911,11 @@ uint64_t __101__RTLearnedLocationReconcilerPerVisit_collapseReconciledVisitsToLo
   v11[1] = 3221225472;
   v11[2] = __62__RTLearnedLocationReconcilerPerVisit_collapseVisits_context___block_invoke;
   v11[3] = &unk_2788C76F8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = visitsCopy;
+  selfCopy = self;
+  v14 = contextCopy;
+  v9 = contextCopy;
+  v10 = visitsCopy;
   [v9 performBlockAndWait:v11];
 }
 
@@ -1034,27 +1034,27 @@ BOOL __62__RTLearnedLocationReconcilerPerVisit_collapseVisits_context___block_in
 
 - (id)_currentModel
 {
-  v2 = [(RTLearnedLocationReconcilerPerVisit *)self reconciliationModels];
-  v3 = [v2 firstObject];
+  reconciliationModels = [(RTLearnedLocationReconcilerPerVisit *)self reconciliationModels];
+  firstObject = [reconciliationModels firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (id)_findWinner:(id)a3 currentVisit:(id)a4 model:(id)a5 modelContext:(id)a6
+- (id)_findWinner:(id)winner currentVisit:(id)visit model:(id)model modelContext:(id)context
 {
   v32 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v10;
-  [v11 weightForVisit:v13 modelContext:v12];
+  winnerCopy = winner;
+  visitCopy = visit;
+  modelCopy = model;
+  contextCopy = context;
+  v13 = visitCopy;
+  [modelCopy weightForVisit:v13 modelContext:contextCopy];
   v15 = v14;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v16 = v9;
+  v16 = winnerCopy;
   v17 = [v16 countByEnumeratingWithState:&v27 objects:v31 count:16];
   v18 = v13;
   if (v17)
@@ -1072,7 +1072,7 @@ BOOL __62__RTLearnedLocationReconcilerPerVisit_collapseVisits_context___block_in
         }
 
         v22 = *(*(&v27 + 1) + 8 * i);
-        [v11 weightForVisit:v22 modelContext:{v12, v27}];
+        [modelCopy weightForVisit:v22 modelContext:{contextCopy, v27}];
         if (v23 > v15)
         {
           v24 = v23;
@@ -1092,18 +1092,18 @@ BOOL __62__RTLearnedLocationReconcilerPerVisit_collapseVisits_context___block_in
   return v18;
 }
 
-- (id)_visitFollowingVisit:(id)a3 visits:(id)a4
+- (id)_visitFollowingVisit:(id)visit visits:(id)visits
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5 || ![v6 count])
+  visitCopy = visit;
+  visitsCopy = visits;
+  v7 = visitsCopy;
+  if (!visitCopy || ![visitsCopy count])
   {
     goto LABEL_9;
   }
 
-  v8 = [v7 indexOfObjectIdenticalTo:v5];
+  v8 = [v7 indexOfObjectIdenticalTo:visitCopy];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -1132,11 +1132,11 @@ LABEL_9:
   return v11;
 }
 
-- (id)_visitsWithContext:(id)a3 predicate:(id)a4 sortDescriptors:(id)a5 error:(id *)a6
+- (id)_visitsWithContext:(id)context predicate:(id)predicate sortDescriptors:(id)descriptors error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -1153,18 +1153,18 @@ LABEL_9:
   v17[1] = 3221225472;
   v17[2] = __90__RTLearnedLocationReconcilerPerVisit__visitsWithContext_predicate_sortDescriptors_error___block_invoke;
   v17[3] = &unk_2788C9200;
-  v12 = v10;
+  v12 = predicateCopy;
   v18 = v12;
-  v13 = v11;
+  v13 = descriptorsCopy;
   v19 = v13;
   v21 = &v29;
-  v14 = v9;
+  v14 = contextCopy;
   v20 = v14;
   v22 = &v23;
   [v14 performBlockAndWait:v17];
-  if (a6)
+  if (error)
   {
-    *a6 = v24[5];
+    *error = v24[5];
   }
 
   v15 = v30[5];
@@ -1191,22 +1191,22 @@ void __90__RTLearnedLocationReconcilerPerVisit__visitsWithContext_predicate_sort
   *(v6 + 40) = v5;
 }
 
-+ (void)submitMetricsOnReconciledGraphDensity:(id)a3 algorithm:(unint64_t)a4 persistenceManager:(id)a5 managedObjectContext:(id)a6
++ (void)submitMetricsOnReconciledGraphDensity:(id)density algorithm:(unint64_t)algorithm persistenceManager:(id)manager managedObjectContext:(id)context
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = v11;
-  if (v11)
+  densityCopy = density;
+  managerCopy = manager;
+  contextCopy = context;
+  v12 = contextCopy;
+  if (contextCopy)
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __136__RTLearnedLocationReconcilerPerVisit_Metrics__submitMetricsOnReconciledGraphDensity_algorithm_persistenceManager_managedObjectContext___block_invoke;
     v14[3] = &unk_2788C4C70;
-    v15 = v11;
-    v16 = v9;
-    v17 = v10;
-    v18 = a4;
+    v15 = contextCopy;
+    v16 = densityCopy;
+    v17 = managerCopy;
+    algorithmCopy = algorithm;
     [v15 performBlockAndWait:v14];
 
     v13 = v15;

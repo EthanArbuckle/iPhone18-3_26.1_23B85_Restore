@@ -6,7 +6,7 @@
 
 - (GCHIDDeviceSnapshot)gc_snapshot
 {
-  v1 = [[GCHIDDeviceSnapshot alloc] initWithHIDDevice:a1];
+  v1 = [[GCHIDDeviceSnapshot alloc] initWithHIDDevice:self];
 
   return v1;
 }

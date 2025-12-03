@@ -7,16 +7,16 @@
 
 - (uint64_t)sbh_didExitIconView
 {
-  v1 = objc_getAssociatedObject(a1, &SBHIconViewTouchDidExitKey);
-  v2 = [v1 BOOLValue];
+  v1 = objc_getAssociatedObject(self, &SBHIconViewTouchDidExitKey);
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)sbh_setDidExitIconView:()SBIconViewUtilities
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  objc_setAssociatedObject(a1, &SBHIconViewTouchDidExitKey, v2, 3);
+  objc_setAssociatedObject(self, &SBHIconViewTouchDidExitKey, v2, 3);
 }
 
 @end

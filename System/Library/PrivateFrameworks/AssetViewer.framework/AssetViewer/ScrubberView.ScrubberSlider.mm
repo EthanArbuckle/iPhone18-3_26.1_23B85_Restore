@@ -1,29 +1,29 @@
 @interface ScrubberView.ScrubberSlider
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5;
-- (CGRect)trackRectForBounds:(CGRect)a3;
-- (_TtCC11AssetViewer12ScrubberView14ScrubberSlider)initWithFrame:(CGRect)a3;
-- (void)cancelTrackingWithEvent:(id)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (void)setValue:(float)a3 animated:(BOOL)a4;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value;
+- (CGRect)trackRectForBounds:(CGRect)bounds;
+- (_TtCC11AssetViewer12ScrubberView14ScrubberSlider)initWithFrame:(CGRect)frame;
+- (void)cancelTrackingWithEvent:(id)event;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
+- (void)setValue:(float)value animated:(BOOL)animated;
 @end
 
 @implementation ScrubberView.ScrubberSlider
 
-- (void)setValue:(float)a3 animated:(BOOL)a4
+- (void)setValue:(float)value animated:(BOOL)animated
 {
-  v6 = self;
-  sub_241285068(a4, a3);
+  selfCopy = self;
+  sub_241285068(animated, value);
 }
 
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   v18.origin.x = x;
   v18.origin.y = y;
   v18.size.width = width;
@@ -35,7 +35,7 @@
   v19.origin.y = y;
   v19.size.width = width;
   v19.size.height = height;
-  v12 = (CGRectGetWidth(v19) + -8.0) * a5;
+  v12 = (CGRectGetWidth(v19) + -8.0) * value;
   v20.origin.x = x;
   v20.origin.y = y;
   v20.size.width = width;
@@ -53,13 +53,13 @@
   return result;
 }
 
-- (CGRect)trackRectForBounds:(CGRect)a3
+- (CGRect)trackRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  MinX = CGRectGetMinX(a3);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  MinX = CGRectGetMinX(bounds);
   v13.origin.x = x;
   v13.origin.y = y;
   v13.size.width = width;
@@ -80,41 +80,41 @@
   return result;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  LOBYTE(a4) = sub_2412852DC(v6, a4);
+  touchCopy = touch;
+  eventCopy = event;
+  selfCopy = self;
+  LOBYTE(event) = sub_2412852DC(touchCopy, event);
 
-  return a4 & 1;
+  return event & 1;
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  LOBYTE(a4) = sub_241285404(v6, a4);
+  touchCopy = touch;
+  eventCopy = event;
+  selfCopy = self;
+  LOBYTE(event) = sub_241285404(touchCopy, event);
 
-  return a4 & 1;
+  return event & 1;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_2412855C8(a3, a4);
+  touchCopy = touch;
+  eventCopy = event;
+  selfCopy = self;
+  sub_2412855C8(touch, event);
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = type metadata accessor for ScrubberView.ScrubberSlider();
-  v4 = a3;
+  eventCopy = event;
   v5 = v10.receiver;
-  [(ScrubberView.ScrubberSlider *)&v10 cancelTrackingWithEvent:v4];
+  [(ScrubberView.ScrubberSlider *)&v10 cancelTrackingWithEvent:eventCopy];
   v6 = &v5[OBJC_IVAR____TtCC11AssetViewer12ScrubberView14ScrubberSlider_trackedLocationOfTouch];
   v7 = *&v5[OBJC_IVAR____TtCC11AssetViewer12ScrubberView14ScrubberSlider_trackedLocationOfTouch];
   v8 = *&v5[OBJC_IVAR____TtCC11AssetViewer12ScrubberView14ScrubberSlider_trackedLocationOfTouch + 8];
@@ -127,12 +127,12 @@
   v5[OBJC_IVAR____TtCC11AssetViewer12ScrubberView14ScrubberSlider_thumbShouldReturnToTouch] = 0;
 }
 
-- (_TtCC11AssetViewer12ScrubberView14ScrubberSlider)initWithFrame:(CGRect)a3
+- (_TtCC11AssetViewer12ScrubberView14ScrubberSlider)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtCC11AssetViewer12ScrubberView14ScrubberSlider_translationFromTrailingTouch);
   *v7 = 0;
   v7[1] = 0;

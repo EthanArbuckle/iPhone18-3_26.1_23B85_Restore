@@ -1,24 +1,24 @@
 @interface MagazineFeedViewController
-- (BOOL)scrollViewShouldScrollToTop:(id)a3;
-- (_TtC7NewsUI226MagazineFeedViewController)initWithCoder:(id)a3;
-- (_TtC7NewsUI226MagazineFeedViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)scrollViewShouldScrollToTop:(id)top;
+- (_TtC7NewsUI226MagazineFeedViewController)initWithCoder:(id)coder;
+- (_TtC7NewsUI226MagazineFeedViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dealloc;
 - (void)deselect;
 - (void)offlineStatusBannerRequestedForceReload;
-- (void)scrollToTopAnimated:(BOOL)a3;
-- (void)startTraversingWithDirection:(int64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)scrollToTopAnimated:(BOOL)animated;
+- (void)startTraversingWithDirection:(int64_t)direction;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation MagazineFeedViewController
 
-- (_TtC7NewsUI226MagazineFeedViewController)initWithCoder:(id)a3
+- (_TtC7NewsUI226MagazineFeedViewController)initWithCoder:(id)coder
 {
   result = sub_219BF7514();
   __break(1u);
@@ -28,16 +28,16 @@
 - (void)dealloc
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
+  selfCopy = self;
 
   sub_219BE58F4();
 
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = ObjectType;
   [(MagazineFeedViewController *)&v5 dealloc];
 }
 
-- (_TtC7NewsUI226MagazineFeedViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7NewsUI226MagazineFeedViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -46,40 +46,40 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_218C9B838();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_218C9C128(a3);
+  selfCopy = self;
+  sub_218C9C128(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_218C9C4F8(a3);
+  selfCopy = self;
+  sub_218C9C4F8(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(MagazineFeedViewController *)&v5 viewWillDisappear:v3];
+  [(MagazineFeedViewController *)&v5 viewWillDisappear:disappearCopy];
   sub_219BE6AB4();
   sub_219BE5904();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v4 = v7.receiver;
-  [(MagazineFeedViewController *)&v7 viewDidDisappear:v3];
+  [(MagazineFeedViewController *)&v7 viewDidDisappear:disappearCopy];
   v5 = swift_allocObject();
   *(v5 + 16) = xmmword_219C1D060;
   *(v5 + 32) = 2;
@@ -94,15 +94,15 @@
   v15.super_class = swift_getObjectType();
   v2 = v15.receiver;
   [(MagazineFeedViewController *)&v15 viewWillLayoutSubviews];
-  v3 = [*&v2[OBJC_IVAR____TtC7NewsUI226MagazineFeedViewController_blueprintViewController] view];
-  if (v3)
+  view = [*&v2[OBJC_IVAR____TtC7NewsUI226MagazineFeedViewController_blueprintViewController] view];
+  if (view)
   {
-    v4 = v3;
-    v5 = [v2 view];
-    if (v5)
+    v4 = view;
+    view2 = [v2 view];
+    if (view2)
     {
-      v6 = v5;
-      [v5 bounds];
+      v6 = view2;
+      [view2 bounds];
       v8 = v7;
       v10 = v9;
       v12 = v11;
@@ -121,21 +121,21 @@
   __break(1u);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v7.receiver;
-  [(MagazineFeedViewController *)&v7 traitCollectionDidChange:v4];
-  v6 = [v5 traitCollection];
+  [(MagazineFeedViewController *)&v7 traitCollectionDidChange:changeCopy];
+  traitCollection = [v5 traitCollection];
   sub_218CA00C8();
 }
 
 - (void)offlineStatusBannerRequestedForceReload
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC7NewsUI226MagazineFeedViewController_eventHandler);
-  v3 = self;
+  selfCopy = self;
   sub_219BE86E4();
   v4 = objc_allocWithZone(sub_219BE9274());
   v7 = sub_219BE9254();
@@ -144,40 +144,40 @@
   (*(v5 + 64))(v7, ObjectType, v5);
 }
 
-- (BOOL)scrollViewShouldScrollToTop:(id)a3
+- (BOOL)scrollViewShouldScrollToTop:(id)top
 {
   v4 = (*(&self->super.super.super.isa + OBJC_IVAR____TtC7NewsUI226MagazineFeedViewController_eventHandler))[5];
   ObjectType = swift_getObjectType();
   v6 = *(v4 + 80);
-  v7 = self;
+  selfCopy = self;
   v6(ObjectType, v4);
 
   return 1;
 }
 
-- (void)startTraversingWithDirection:(int64_t)a3
+- (void)startTraversingWithDirection:(int64_t)direction
 {
-  v3 = self;
+  selfCopy = self;
   sub_219BE8684();
 }
 
 - (void)deselect
 {
-  v3 = self;
+  selfCopy = self;
   sub_219BE8664();
   v2 = sub_219BE7BC4();
 
   [v2 selectItemAtIndexPath:0 animated:0 scrollPosition:0];
 }
 
-- (void)scrollToTopAnimated:(BOOL)a3
+- (void)scrollToTopAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = self;
+  animatedCopy = animated;
+  selfCopy = self;
   sub_219BE8664();
   v4 = sub_219BE7BC4();
 
-  [v4 ts:v3 scrollToTop:1 dismissKeyboard:?];
+  [v4 ts:animatedCopy scrollToTop:1 dismissKeyboard:?];
 }
 
 @end

@@ -1,28 +1,28 @@
 @interface LACStorageObjectEncoder
-- (id)_lastBioAuthDataToNumber:(id)a3;
-- (id)encodeValue:(id)a3 forKey:(int64_t)a4 error:(id *)a5;
+- (id)_lastBioAuthDataToNumber:(id)number;
+- (id)encodeValue:(id)value forKey:(int64_t)key error:(id *)error;
 @end
 
 @implementation LACStorageObjectEncoder
 
-- (id)encodeValue:(id)a3 forKey:(int64_t)a4 error:(id *)a5
+- (id)encodeValue:(id)value forKey:(int64_t)key error:(id *)error
 {
-  v8 = a3;
-  v9 = v8;
-  if (a5)
+  valueCopy = value;
+  v9 = valueCopy;
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
-  if (!v8)
+  if (!valueCopy)
   {
     goto LABEL_27;
   }
 
-  if (a4 == 24 && [v8 length] >= 3)
+  if (key == 24 && [valueCopy length] >= 3)
   {
-    v10 = [v9 bytes];
-    v11 = [(LACStorageObjectEncoder *)self _convertACMExclaveBatchToDictionary:*v10 | (*(v10 + 2) << 16)];
+    bytes = [v9 bytes];
+    v11 = [(LACStorageObjectEncoder *)self _convertACMExclaveBatchToDictionary:*bytes | (*(bytes + 2) << 16)];
 LABEL_14:
     v15 = v11;
     goto LABEL_28;
@@ -34,15 +34,15 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (a4 > 13)
+  if (key > 13)
   {
-    if (a4 == 14)
+    if (key == 14)
     {
       v11 = [(LACStorageObjectEncoder *)self _lastBioAuthDataToNumber:v9];
       goto LABEL_14;
     }
 
-    if (a4 != 1001)
+    if (key != 1001)
     {
 LABEL_19:
       if ([v9 length] == 1)
@@ -51,7 +51,7 @@ LABEL_19:
         goto LABEL_14;
       }
 
-      if (a5)
+      if (error)
       {
         v16 = @"Expected BOOL in NSNumber";
         goto LABEL_26;
@@ -61,9 +61,9 @@ LABEL_19:
     }
   }
 
-  else if (a4 != 7)
+  else if (key != 7)
   {
-    if (a4 == 12)
+    if (key == 12)
     {
       v12 = [(LACStorageObjectEncoder *)self _lastBioAuthDataToNumber:v9];
       v13 = v12;
@@ -90,12 +90,12 @@ LABEL_19:
     goto LABEL_14;
   }
 
-  if (a5)
+  if (error)
   {
     v16 = @"Expected 1 byte in NSNumber";
 LABEL_26:
     [LACStorageError errorWithCode:1 debugDescription:v16];
-    *a5 = v15 = 0;
+    *error = v15 = 0;
     goto LABEL_28;
   }
 
@@ -106,9 +106,9 @@ LABEL_28:
   return v15;
 }
 
-- (id)_lastBioAuthDataToNumber:(id)a3
+- (id)_lastBioAuthDataToNumber:(id)number
 {
-  if (*[a3 bytes])
+  if (*[number bytes])
   {
     v3 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
   }

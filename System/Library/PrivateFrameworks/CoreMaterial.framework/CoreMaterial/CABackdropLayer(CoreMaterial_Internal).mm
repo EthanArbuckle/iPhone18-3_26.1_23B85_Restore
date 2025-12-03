@@ -26,17 +26,17 @@
 {
   v4 = MEMORY[0x1E6979280];
   v5 = *(MEMORY[0x1E6979280] + 48);
-  *(a1 + 32) = *(MEMORY[0x1E6979280] + 32);
-  *(a1 + 48) = v5;
-  *(a1 + 64) = v4[4];
+  *(self + 32) = *(MEMORY[0x1E6979280] + 32);
+  *(self + 48) = v5;
+  *(self + 64) = v4[4];
   v6 = v4[1];
-  *a1 = *v4;
-  *(a1 + 16) = v6;
+  *self = *v4;
+  *(self + 16) = v6;
   result = MTFloatIsOne(a2);
   if (!result)
   {
     v8 = a2;
-    *(a1 + 72) = v8;
+    *(self + 72) = v8;
   }
 
   return result;

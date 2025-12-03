@@ -1,7 +1,7 @@
 @interface SKUICellLayout
-- (SKUICellLayout)initWithCollectionViewCell:(id)a3;
-- (SKUICellLayout)initWithParentView:(id)a3;
-- (SKUICellLayout)initWithTableViewCell:(id)a3;
+- (SKUICellLayout)initWithCollectionViewCell:(id)cell;
+- (SKUICellLayout)initWithParentView:(id)view;
+- (SKUICellLayout)initWithTableViewCell:(id)cell;
 - (UIView)contentView;
 - (UIView)parentCellView;
 - (void)setNeedsLayout;
@@ -9,9 +9,9 @@
 
 @implementation SKUICellLayout
 
-- (SKUICellLayout)initWithCollectionViewCell:(id)a3
+- (SKUICellLayout)initWithCollectionViewCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -30,9 +30,9 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_cell, v4);
-    v15 = [v4 contentView];
-    objc_storeWeak(&v14->_contentView, v15);
+    objc_storeWeak(&v13->_cell, cellCopy);
+    contentView = [cellCopy contentView];
+    objc_storeWeak(&v14->_contentView, contentView);
 
     WeakRetained = objc_loadWeakRetained(&v14->_cell);
     v14->_parentWantsCellNeedsLayout = objc_opt_respondsToSelector() & 1;
@@ -41,9 +41,9 @@
   return v14;
 }
 
-- (SKUICellLayout)initWithParentView:(id)a3
+- (SKUICellLayout)initWithParentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -62,8 +62,8 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_cell, v4);
-    objc_storeWeak(&v14->_contentView, v4);
+    objc_storeWeak(&v13->_cell, viewCopy);
+    objc_storeWeak(&v14->_contentView, viewCopy);
     WeakRetained = objc_loadWeakRetained(&v14->_cell);
     v14->_parentWantsCellNeedsLayout = objc_opt_respondsToSelector() & 1;
   }
@@ -71,9 +71,9 @@
   return v14;
 }
 
-- (SKUICellLayout)initWithTableViewCell:(id)a3
+- (SKUICellLayout)initWithTableViewCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -92,9 +92,9 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_cell, v4);
-    v15 = [v4 contentView];
-    objc_storeWeak(&v14->_contentView, v15);
+    objc_storeWeak(&v13->_cell, cellCopy);
+    contentView = [cellCopy contentView];
+    objc_storeWeak(&v14->_contentView, contentView);
 
     WeakRetained = objc_loadWeakRetained(&v14->_cell);
     v14->_parentWantsCellNeedsLayout = objc_opt_respondsToSelector() & 1;

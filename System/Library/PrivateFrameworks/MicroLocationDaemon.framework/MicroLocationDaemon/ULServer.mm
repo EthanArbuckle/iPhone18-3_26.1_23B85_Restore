@@ -1,38 +1,38 @@
 @interface ULServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (ULServer)initWithQueue:(id)a3 serviceHandling:(id)a4 legacyServiceHandling:(id)a5 diagnosticsHandling:(id)a6;
-- (id)_remoteProxyForToken:(id)a3;
-- (void)clientConnectionSeveredConnection:(id)a3;
-- (void)didCompleteObservationWithMetaInformation:(id)a3 toConnection:(id)a4;
-- (void)didCompletePredictionWithMetaInformation:(id)a3 toConnection:(id)a4;
-- (void)didCompleteRequest:(id)a3 withError:(id)a4 toConnection:(id)a5;
-- (void)didCreateCustomLoiAtCurrentLocationWithError:(id)a3 forConnection:(id)a4;
-- (void)didFailWithError:(id)a3 toConnection:(id)a4;
-- (void)didRemoveCustomLoiWithIdentifier:(id)a3 forConnection:(id)a4 withError:(id)a5;
-- (void)didSendGenericEvent:(unint64_t)a3 withDescription:(id)a4 toConnection:(id)a5;
-- (void)didSendPredictionContextResults:(id)a3 toConnection:(id)a4;
-- (void)didUpdateMap:(id)a3 toConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (ULServer)initWithQueue:(id)queue serviceHandling:(id)handling legacyServiceHandling:(id)serviceHandling diagnosticsHandling:(id)diagnosticsHandling;
+- (id)_remoteProxyForToken:(id)token;
+- (void)clientConnectionSeveredConnection:(id)connection;
+- (void)didCompleteObservationWithMetaInformation:(id)information toConnection:(id)connection;
+- (void)didCompletePredictionWithMetaInformation:(id)information toConnection:(id)connection;
+- (void)didCompleteRequest:(id)request withError:(id)error toConnection:(id)connection;
+- (void)didCreateCustomLoiAtCurrentLocationWithError:(id)error forConnection:(id)connection;
+- (void)didFailWithError:(id)error toConnection:(id)connection;
+- (void)didRemoveCustomLoiWithIdentifier:(id)identifier forConnection:(id)connection withError:(id)error;
+- (void)didSendGenericEvent:(unint64_t)event withDescription:(id)description toConnection:(id)connection;
+- (void)didSendPredictionContextResults:(id)results toConnection:(id)connection;
+- (void)didUpdateMap:(id)map toConnection:(id)connection;
 @end
 
 @implementation ULServer
 
-- (ULServer)initWithQueue:(id)a3 serviceHandling:(id)a4 legacyServiceHandling:(id)a5 diagnosticsHandling:(id)a6
+- (ULServer)initWithQueue:(id)queue serviceHandling:(id)handling legacyServiceHandling:(id)serviceHandling diagnosticsHandling:(id)diagnosticsHandling
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  dispatch_assert_queue_V2(v10);
+  queueCopy = queue;
+  handlingCopy = handling;
+  serviceHandlingCopy = serviceHandling;
+  diagnosticsHandlingCopy = diagnosticsHandling;
+  dispatch_assert_queue_V2(queueCopy);
   v18.receiver = self;
   v18.super_class = ULServer;
   v14 = [(ULServer *)&v18 init];
   v15 = v14;
   if (v14)
   {
-    [(ULServer *)v14 setQueue:v10];
-    [(ULServer *)v15 setServiceHandling:v11];
-    [(ULServer *)v15 setLegacyServiceHandling:v12];
-    [(ULServer *)v15 setDiagnosticsHandling:v13];
+    [(ULServer *)v14 setQueue:queueCopy];
+    [(ULServer *)v15 setServiceHandling:handlingCopy];
+    [(ULServer *)v15 setLegacyServiceHandling:serviceHandlingCopy];
+    [(ULServer *)v15 setDiagnosticsHandling:diagnosticsHandlingCopy];
     v16 = [MEMORY[0x277CBEB58] set];
     [(ULServer *)v15 setClientConnections:v16];
   }
@@ -40,44 +40,44 @@
   return v15;
 }
 
-- (id)_remoteProxyForToken:(id)a3
+- (id)_remoteProxyForToken:(id)token
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ULServer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  tokenCopy = token;
+  queue = [(ULServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(ULServer *)self clientConnections];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
-  if (v7)
+  clientConnections = [(ULServer *)self clientConnections];
+  remoteObjectProxy = [clientConnections countByEnumeratingWithState:&v15 objects:v19 count:16];
+  if (remoteObjectProxy)
   {
     v8 = *v16;
     while (2)
     {
-      for (i = 0; i != v7; i = i + 1)
+      for (i = 0; i != remoteObjectProxy; i = i + 1)
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(clientConnections);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 connectionToken];
-        v12 = [v11 isEqual:v4];
+        connectionToken = [v10 connectionToken];
+        v12 = [connectionToken isEqual:tokenCopy];
 
         if (v12)
         {
-          v7 = [v10 remoteObjectProxy];
+          remoteObjectProxy = [v10 remoteObjectProxy];
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
-      if (v7)
+      remoteObjectProxy = [clientConnections countByEnumeratingWithState:&v15 objects:v19 count:16];
+      if (remoteObjectProxy)
       {
         continue;
       }
@@ -90,29 +90,29 @@ LABEL_11:
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return remoteObjectProxy;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [(ULServer *)self queue];
-  dispatch_assert_queue_not_V2(v6);
+  connectionCopy = connection;
+  queue = [(ULServer *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v7 = [(ULServer *)self queue];
+  queue2 = [(ULServer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__ULServer_NSXPCListenerDelegate__listener_shouldAcceptNewConnection___block_invoke;
   block[3] = &unk_2798D4B38;
-  v11 = v5;
-  v12 = self;
+  v11 = connectionCopy;
+  selfCopy = self;
   v13 = &v14;
-  v8 = v5;
-  dispatch_sync(v7, block);
+  v8 = connectionCopy;
+  dispatch_sync(queue2, block);
 
   LOBYTE(self) = *(v15 + 24);
   _Block_object_dispose(&v14, 8);
@@ -214,21 +214,21 @@ LABEL_21:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clientConnectionSeveredConnection:(id)a3
+- (void)clientConnectionSeveredConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(ULServer *)self queue];
-  dispatch_assert_queue_not_V2(v5);
+  connectionCopy = connection;
+  queue = [(ULServer *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
-  v6 = [(ULServer *)self queue];
+  queue2 = [(ULServer *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __81__ULServer_ULClientProcessConnectionDelegate__clientConnectionSeveredConnection___block_invoke;
   v8[3] = &unk_2798D44B0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = connectionCopy;
+  v7 = connectionCopy;
+  dispatch_sync(queue2, v8);
 }
 
 void __81__ULServer_ULClientProcessConnectionDelegate__clientConnectionSeveredConnection___block_invoke(uint64_t a1)
@@ -274,105 +274,105 @@ void __81__ULServer_ULClientProcessConnectionDelegate__clientConnectionSeveredCo
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didSendPredictionContextResults:(id)a3 toConnection:(id)a4
+- (void)didSendPredictionContextResults:(id)results toConnection:(id)connection
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(ULServer *)self queue];
-  dispatch_assert_queue_V2(v7);
+  resultsCopy = results;
+  connectionCopy = connection;
+  queue = [(ULServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v8 = [(ULServer *)self _remoteProxyForToken:v6];
-  [v8 didUpdatePredictionContext:v9];
+  v8 = [(ULServer *)self _remoteProxyForToken:connectionCopy];
+  [v8 didUpdatePredictionContext:resultsCopy];
 }
 
-- (void)didUpdateMap:(id)a3 toConnection:(id)a4
+- (void)didUpdateMap:(id)map toConnection:(id)connection
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(ULServer *)self queue];
-  dispatch_assert_queue_V2(v7);
+  mapCopy = map;
+  connectionCopy = connection;
+  queue = [(ULServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v8 = [(ULServer *)self _remoteProxyForToken:v6];
-  [v8 didUpdateMap:v9];
+  v8 = [(ULServer *)self _remoteProxyForToken:connectionCopy];
+  [v8 didUpdateMap:mapCopy];
 }
 
-- (void)didCompleteRequest:(id)a3 withError:(id)a4 toConnection:(id)a5
+- (void)didCompleteRequest:(id)request withError:(id)error toConnection:(id)connection
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ULServer *)self queue];
-  dispatch_assert_queue_V2(v10);
+  requestCopy = request;
+  errorCopy = error;
+  connectionCopy = connection;
+  queue = [(ULServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v11 = [(ULServer *)self _remoteProxyForToken:v9];
-  [v11 didCompleteRequest:v12 withError:v8];
+  v11 = [(ULServer *)self _remoteProxyForToken:connectionCopy];
+  [v11 didCompleteRequest:requestCopy withError:errorCopy];
 }
 
-- (void)didCreateCustomLoiAtCurrentLocationWithError:(id)a3 forConnection:(id)a4
+- (void)didCreateCustomLoiAtCurrentLocationWithError:(id)error forConnection:(id)connection
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(ULServer *)self queue];
-  dispatch_assert_queue_V2(v7);
+  errorCopy = error;
+  connectionCopy = connection;
+  queue = [(ULServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v8 = [(ULServer *)self _remoteProxyForToken:v6];
-  [v8 didCreateCustomLocationOfInterestWithError:v9];
+  v8 = [(ULServer *)self _remoteProxyForToken:connectionCopy];
+  [v8 didCreateCustomLocationOfInterestWithError:errorCopy];
 }
 
-- (void)didRemoveCustomLoiWithIdentifier:(id)a3 forConnection:(id)a4 withError:(id)a5
+- (void)didRemoveCustomLoiWithIdentifier:(id)identifier forConnection:(id)connection withError:(id)error
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ULServer *)self queue];
-  dispatch_assert_queue_V2(v10);
+  identifierCopy = identifier;
+  connectionCopy = connection;
+  errorCopy = error;
+  queue = [(ULServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v11 = [(ULServer *)self _remoteProxyForToken:v8];
-  [v11 didRemoveCustomLocationOfInterestWithIdentifier:v12 withError:v9];
+  v11 = [(ULServer *)self _remoteProxyForToken:connectionCopy];
+  [v11 didRemoveCustomLocationOfInterestWithIdentifier:identifierCopy withError:errorCopy];
 }
 
-- (void)didFailWithError:(id)a3 toConnection:(id)a4
+- (void)didFailWithError:(id)error toConnection:(id)connection
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(ULServer *)self queue];
-  dispatch_assert_queue_V2(v7);
+  errorCopy = error;
+  connectionCopy = connection;
+  queue = [(ULServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v8 = [(ULServer *)self _remoteProxyForToken:v6];
-  [v8 didFailWithError:v9];
+  v8 = [(ULServer *)self _remoteProxyForToken:connectionCopy];
+  [v8 didFailWithError:errorCopy];
 }
 
-- (void)didSendGenericEvent:(unint64_t)a3 withDescription:(id)a4 toConnection:(id)a5
+- (void)didSendGenericEvent:(unint64_t)event withDescription:(id)description toConnection:(id)connection
 {
-  v11 = a4;
-  v8 = a5;
-  v9 = [(ULServer *)self queue];
-  dispatch_assert_queue_V2(v9);
+  descriptionCopy = description;
+  connectionCopy = connection;
+  queue = [(ULServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v10 = [(ULServer *)self _remoteProxyForToken:v8];
-  [v10 didSendGenericEvent:a3 withDescription:v11];
+  v10 = [(ULServer *)self _remoteProxyForToken:connectionCopy];
+  [v10 didSendGenericEvent:event withDescription:descriptionCopy];
 }
 
-- (void)didCompleteObservationWithMetaInformation:(id)a3 toConnection:(id)a4
+- (void)didCompleteObservationWithMetaInformation:(id)information toConnection:(id)connection
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(ULServer *)self queue];
-  dispatch_assert_queue_V2(v7);
+  informationCopy = information;
+  connectionCopy = connection;
+  queue = [(ULServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v8 = [(ULServer *)self _remoteProxyForToken:v6];
-  [v8 didCompleteObservationWithMetaInformation:v9];
+  v8 = [(ULServer *)self _remoteProxyForToken:connectionCopy];
+  [v8 didCompleteObservationWithMetaInformation:informationCopy];
 }
 
-- (void)didCompletePredictionWithMetaInformation:(id)a3 toConnection:(id)a4
+- (void)didCompletePredictionWithMetaInformation:(id)information toConnection:(id)connection
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(ULServer *)self queue];
-  dispatch_assert_queue_V2(v7);
+  informationCopy = information;
+  connectionCopy = connection;
+  queue = [(ULServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v8 = [(ULServer *)self _remoteProxyForToken:v6];
-  [v8 didCompletePredictionWithMetaInformation:v9];
+  v8 = [(ULServer *)self _remoteProxyForToken:connectionCopy];
+  [v8 didCompletePredictionWithMetaInformation:informationCopy];
 }
 
 @end

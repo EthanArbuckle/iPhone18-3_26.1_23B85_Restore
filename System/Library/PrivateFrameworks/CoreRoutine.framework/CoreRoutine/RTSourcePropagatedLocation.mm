@@ -1,34 +1,34 @@
 @interface RTSourcePropagatedLocation
-- (BOOL)isEqual:(id)a3;
-- (RTSourcePropagatedLocation)initWithCoder:(id)a3;
-- (RTSourcePropagatedLocation)initWithDate:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (RTSourcePropagatedLocation)initWithCoder:(id)coder;
+- (RTSourcePropagatedLocation)initWithDate:(id)date;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTSourcePropagatedLocation
 
-- (RTSourcePropagatedLocation)initWithDate:(id)a3
+- (RTSourcePropagatedLocation)initWithDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v9.receiver = self;
   v9.super_class = RTSourcePropagatedLocation;
   v6 = [(RTSourcePropagatedLocation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_date, a3);
+    objc_storeStrong(&v6->_date, date);
   }
 
   return v7;
 }
 
-- (RTSourcePropagatedLocation)initWithCoder:(id)a3
+- (RTSourcePropagatedLocation)initWithCoder:(id)coder
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -41,18 +41,18 @@
     }
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
 
   v7 = [(RTSourcePropagatedLocation *)self initWithDate:v6];
   v8 = *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -65,28 +65,28 @@
     }
   }
 
-  v6 = [(RTSourcePropagatedLocation *)self date];
-  [v4 encodeObject:v6 forKey:@"date"];
+  date = [(RTSourcePropagatedLocation *)self date];
+  [coderCopy encodeObject:date forKey:@"date"];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = RTSourcePropagatedLocation;
-  if ([(RTSource *)&v12 isEqual:v5])
+  if ([(RTSource *)&v12 isEqual:equalCopy])
   {
-    v6 = v5;
-    v7 = [(RTSourcePropagatedLocation *)self date];
-    if (v7 || ([v6 date], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    v6 = equalCopy;
+    date = [(RTSourcePropagatedLocation *)self date];
+    if (date || ([v6 date], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v8 = [(RTSourcePropagatedLocation *)self date];
-      v9 = [v6 date];
-      v10 = [v8 isEqualToDate:v9];
+      date2 = [(RTSourcePropagatedLocation *)self date];
+      date3 = [v6 date];
+      v10 = [date2 isEqualToDate:date3];
 
-      if (v7)
+      if (date)
       {
 LABEL_9:
 
@@ -113,8 +113,8 @@ LABEL_10:
   v7.receiver = self;
   v7.super_class = RTSourcePropagatedLocation;
   v3 = [(RTSource *)&v7 hash];
-  v4 = [(RTSourcePropagatedLocation *)self date];
-  v5 = [v4 hash];
+  date = [(RTSourcePropagatedLocation *)self date];
+  v5 = [date hash];
 
   return v5 ^ v3;
 }
@@ -125,9 +125,9 @@ LABEL_10:
   v9.receiver = self;
   v9.super_class = RTSourcePropagatedLocation;
   v4 = [(RTSource *)&v9 description];
-  v5 = [(RTSourcePropagatedLocation *)self date];
-  v6 = [v5 stringFromDate];
-  v7 = [v3 stringWithFormat:@"%@, date, %@", v4, v6];
+  date = [(RTSourcePropagatedLocation *)self date];
+  stringFromDate = [date stringFromDate];
+  v7 = [v3 stringWithFormat:@"%@, date, %@", v4, stringFromDate];
 
   return v7;
 }

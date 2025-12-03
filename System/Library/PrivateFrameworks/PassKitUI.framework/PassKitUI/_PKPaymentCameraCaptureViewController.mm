@@ -1,21 +1,21 @@
 @interface _PKPaymentCameraCaptureViewController
 - (PKPaymentCameraCaptureViewControllerDelegate)flowItemDelegate;
 - (_PKPaymentCameraCaptureViewController)init;
-- (_PKPaymentCameraCaptureViewController)initWithWebService:(id)a3 context:(int64_t)a4;
+- (_PKPaymentCameraCaptureViewController)initWithWebService:(id)service context:(int64_t)context;
 - (void)_cancelButtonPressed;
-- (void)_manualEntryButtonPressed:(id)a3;
-- (void)_setupLater:(id)a3;
-- (void)_tapToProvisionButtonPressed:(id)a3;
-- (void)cameraReader:(id)a3 didFailWithError:(id)a4;
-- (void)cameraReader:(id)a3 didRecognizeObjects:(id)a4;
-- (void)cameraReaderDidEnd:(id)a3;
+- (void)_manualEntryButtonPressed:(id)pressed;
+- (void)_setupLater:(id)later;
+- (void)_tapToProvisionButtonPressed:(id)pressed;
+- (void)cameraReader:(id)reader didFailWithError:(id)error;
+- (void)cameraReader:(id)reader didRecognizeObjects:(id)objects;
+- (void)cameraReaderDidEnd:(id)end;
 - (void)configureForModalPresentation;
 - (void)loadView;
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation _PKPaymentCameraCaptureViewController
@@ -43,15 +43,15 @@
   return v2;
 }
 
-- (_PKPaymentCameraCaptureViewController)initWithWebService:(id)a3 context:(int64_t)a4
+- (_PKPaymentCameraCaptureViewController)initWithWebService:(id)service context:(int64_t)context
 {
-  v7 = a3;
+  serviceCopy = service;
   v8 = [(_PKPaymentCameraCaptureViewController *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_webService, a3);
-    v9->_context = a4;
+    objc_storeStrong(&v8->_webService, service);
+    v9->_context = context;
   }
 
   return v9;
@@ -63,8 +63,8 @@
   self->_showTapToProvisionButton = 0;
   self->_showTypeCardNumberButton = 0;
   v4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:24 target:self action:sel__cancelButtonPressed];
-  v3 = [(_PKPaymentCameraCaptureViewController *)self navigationItem];
-  [v3 setLeftBarButtonItem:v4];
+  navigationItem = [(_PKPaymentCameraCaptureViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v4];
 }
 
 - (void)loadView
@@ -72,16 +72,16 @@
   v41.receiver = self;
   v41.super_class = _PKPaymentCameraCaptureViewController;
   [(CRCameraReader *)&v41 loadView];
-  v3 = [(_PKPaymentCameraCaptureViewController *)self view];
+  view = [(_PKPaymentCameraCaptureViewController *)self view];
   cameraView = self->_cameraView;
-  self->_cameraView = v3;
+  self->_cameraView = view;
 
   [(UIView *)self->_cameraView pkui_setExcludedFromScreenCapture:1 andBroadcasting:1];
-  v5 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v6 = [(_PKPaymentCameraCaptureViewController *)self traitCollection];
-  v7 = [v6 userInterfaceIdiom];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  traitCollection = [(_PKPaymentCameraCaptureViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     IsSetupAssistant = PKPaymentSetupContextIsSetupAssistant();
   }
@@ -97,20 +97,20 @@
   v12 = *(MEMORY[0x1E695F058] + 16);
   v13 = *(MEMORY[0x1E695F058] + 24);
   v14 = [v9 initWithFrame:{*MEMORY[0x1E695F058], v11, v12, v13}];
-  [v14 setBackgroundColor:v5];
+  [v14 setBackgroundColor:systemBackgroundColor];
   [v14 addSubview:self->_cameraView];
   [(_PKPaymentCameraCaptureViewController *)self setView:v14];
   v15 = [[PKTableHeaderView alloc] initWithFrame:v10, v11, v12, v13];
   headerView = self->_headerView;
   self->_headerView = v15;
 
-  [(PKTableHeaderView *)self->_headerView setBackgroundColor:v5];
-  v17 = [(PKTableHeaderView *)self->_headerView titleLabel];
+  [(PKTableHeaderView *)self->_headerView setBackgroundColor:systemBackgroundColor];
+  titleLabel = [(PKTableHeaderView *)self->_headerView titleLabel];
   v18 = PKLocalizedPaymentString(&cfstr_AddCard.isa);
-  [v17 setText:v18];
+  [titleLabel setText:v18];
 
-  v19 = [(PKPaymentWebService *)self->_webService targetDevice];
-  v20 = [v19 deviceRegion];
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
+  deviceRegion = [targetDevice deviceRegion];
 
   if (PKDeviceRegionSupportsDebit())
   {
@@ -123,8 +123,8 @@
   }
 
   v22 = PKLocalizedPaymentString(&v21->isa);
-  v23 = [(PKTableHeaderView *)self->_headerView subtitleLabel];
-  [v23 setText:v22];
+  subtitleLabel = [(PKTableHeaderView *)self->_headerView subtitleLabel];
+  [subtitleLabel setText:v22];
 
   v24 = self->_headerView;
   if (IsSetupAssistant)
@@ -166,40 +166,40 @@
   dockView = self->_dockView;
   self->_dockView = v30;
 
-  [(PKPaymentSetupDockView *)self->_dockView setBackgroundColor:v5];
-  v32 = [(PKPaymentSetupDockView *)self->_dockView footerView];
-  [v32 setSetUpLaterButton:0];
+  [(PKPaymentSetupDockView *)self->_dockView setBackgroundColor:systemBackgroundColor];
+  footerView = [(PKPaymentSetupDockView *)self->_dockView footerView];
+  [footerView setSetUpLaterButton:0];
   [v14 addSubview:self->_dockView];
   if (self->_showTypeCardNumberButton)
   {
-    v33 = [(PKPaymentSetupDockView *)self->_dockView primaryButton];
-    [v33 setEnabled:1];
-    [v33 addTarget:self action:sel__manualEntryButtonPressed_ forControlEvents:0x2000];
+    primaryButton = [(PKPaymentSetupDockView *)self->_dockView primaryButton];
+    [primaryButton setEnabled:1];
+    [primaryButton addTarget:self action:sel__manualEntryButtonPressed_ forControlEvents:0x2000];
     v34 = PKLocalizedPaymentString(&cfstr_EnterCardDetai.isa);
-    [v33 setTitle:v34 forState:0];
+    [primaryButton setTitle:v34 forState:0];
   }
 
   v35 = MEMORY[0x1E69B9BE0];
   if (!self->_hideSetupLaterButton)
   {
-    v36 = [v32 secondaryActionButton];
+    secondaryActionButton = [footerView secondaryActionButton];
     v37 = PKLocalizedPaymentString(&cfstr_SetUpLaterButt.isa);
-    [v36 setTitle:v37 forState:0];
-    [v36 addTarget:self action:sel__setupLater_ forControlEvents:0x2000];
-    [v36 setAccessibilityIdentifier:*v35];
+    [secondaryActionButton setTitle:v37 forState:0];
+    [secondaryActionButton addTarget:self action:sel__setupLater_ forControlEvents:0x2000];
+    [secondaryActionButton setAccessibilityIdentifier:*v35];
   }
 
   if (self->_showTapToProvisionButton)
   {
-    v38 = [v32 secondaryActionButton];
+    secondaryActionButton2 = [footerView secondaryActionButton];
     v39 = PKLocalizedPaymentString(&cfstr_CameraCaptureT.isa);
-    [v38 setTitle:v39 forState:0];
-    [v38 addTarget:self action:sel__tapToProvisionButtonPressed_ forControlEvents:0x2000];
-    [v38 setAccessibilityIdentifier:*v35];
+    [secondaryActionButton2 setTitle:v39 forState:0];
+    [secondaryActionButton2 addTarget:self action:sel__tapToProvisionButtonPressed_ forControlEvents:0x2000];
+    [secondaryActionButton2 setAccessibilityIdentifier:*v35];
   }
 
-  v40 = [(_PKPaymentCameraCaptureViewController *)self view];
-  [v40 setAccessibilityIdentifier:*MEMORY[0x1E69B9A40]];
+  view2 = [(_PKPaymentCameraCaptureViewController *)self view];
+  [view2 setAccessibilityIdentifier:*MEMORY[0x1E69B9A40]];
 }
 
 - (void)viewDidLoad
@@ -209,19 +209,19 @@
   [(_PKPaymentCameraCaptureViewController *)&v9 viewDidLoad];
   if ((_UISolariumFeatureFlagEnabled() & 1) == 0)
   {
-    v3 = [(_PKPaymentCameraCaptureViewController *)self navigationItem];
+    navigationItem = [(_PKPaymentCameraCaptureViewController *)self navigationItem];
     v4 = objc_alloc(MEMORY[0x1E69DC708]);
     v5 = PKLocalizedString(&cfstr_BackButtonTitl.isa);
     v6 = [v4 initWithTitle:v5 style:0 target:0 action:0];
 
     [v6 setAccessibilityIdentifier:*MEMORY[0x1E69B9708]];
-    [v3 setBackBarButtonItem:v6];
-    [v3 pkui_enableManualScrollEdgeAppearanceWithInitialProgress:1.0];
+    [navigationItem setBackBarButtonItem:v6];
+    [navigationItem pkui_enableManualScrollEdgeAppearanceWithInitialProgress:1.0];
   }
 
   context = self->_context;
-  v8 = [(_PKPaymentCameraCaptureViewController *)self view];
-  PKPaymentSetupApplyContextAppearance(context, v8);
+  view = [(_PKPaymentCameraCaptureViewController *)self view];
+  PKPaymentSetupApplyContextAppearance(context, view);
 }
 
 - (void)viewDidLayoutSubviews
@@ -229,13 +229,13 @@
   v18.receiver = self;
   v18.super_class = _PKPaymentCameraCaptureViewController;
   [(CRCameraReader *)&v18 viewDidLayoutSubviews];
-  v3 = [(_PKPaymentCameraCaptureViewController *)self view];
-  [v3 bounds];
+  view = [(_PKPaymentCameraCaptureViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 safeAreaInsets];
+  [view safeAreaInsets];
   v13 = v12;
   memset(&slice, 0, sizeof(slice));
   v16.origin.x = v5;
@@ -258,37 +258,37 @@
   [(PKTableHeaderView *)self->_headerView setFrame:v16.origin.x, v16.origin.y, v16.size.width, v16.size.height];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = _PKPaymentCameraCaptureViewController;
-  [(CRCameraReader *)&v4 viewWillAppear:a3];
+  [(CRCameraReader *)&v4 viewWillAppear:appear];
   [(CRCameraReader *)self start];
   self->_cameraCaptureStartTime = mach_absolute_time();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = _PKPaymentCameraCaptureViewController;
-  [(_PKPaymentCameraCaptureViewController *)&v4 viewDidAppear:a3];
+  [(_PKPaymentCameraCaptureViewController *)&v4 viewDidAppear:appear];
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportViewAppeared];
 }
 
-- (void)cameraReader:(id)a3 didFailWithError:(id)a4
+- (void)cameraReader:(id)reader didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __71___PKPaymentCameraCaptureViewController_cameraReader_didFailWithError___block_invoke;
   v7[3] = &unk_1E8010A10;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
-- (void)cameraReaderDidEnd:(id)a3
+- (void)cameraReaderDidEnd:(id)end
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -298,41 +298,41 @@
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)cameraReader:(id)a3 didRecognizeObjects:(id)a4
+- (void)cameraReader:(id)reader didRecognizeObjects:(id)objects
 {
-  v5 = a4;
+  objectsCopy = objects;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __74___PKPaymentCameraCaptureViewController_cameraReader_didRecognizeObjects___block_invoke;
   v7[3] = &unk_1E8010A10;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = objectsCopy;
+  v6 = objectsCopy;
   dispatch_sync(MEMORY[0x1E69E96A0], v7);
 }
 
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated
 {
-  v4 = a3;
-  v6 = [(_PKPaymentCameraCaptureViewController *)self view:a3];
-  [v6 setUserInteractionEnabled:v4 ^ 1];
+  iCopy = i;
+  v6 = [(_PKPaymentCameraCaptureViewController *)self view:i];
+  [v6 setUserInteractionEnabled:iCopy ^ 1];
 
-  v7 = [(PKPaymentSetupDockView *)self->_dockView primaryButton];
-  [v7 setShowSpinner:v4];
+  primaryButton = [(PKPaymentSetupDockView *)self->_dockView primaryButton];
+  [primaryButton setShowSpinner:iCopy];
 
   dockView = self->_dockView;
 
-  [(PKPaymentSetupDockView *)dockView setButtonsEnabled:v4 ^ 1];
+  [(PKPaymentSetupDockView *)dockView setButtonsEnabled:iCopy ^ 1];
 }
 
-- (void)_manualEntryButtonPressed:(id)a3
+- (void)_manualEntryButtonPressed:(id)pressed
 {
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportButtonPressed:0];
   WeakRetained = objc_loadWeakRetained(&self->_flowItemDelegate);
   [WeakRetained cameraCaptureViewControllerDidSelectManualEntry:self];
 }
 
-- (void)_setupLater:(id)a3
+- (void)_setupLater:(id)later
 {
   v17 = *MEMORY[0x1E69E9840];
   v5 = PKLogFacilityTypeGetObject();
@@ -356,7 +356,7 @@
   [WeakRetained cameraCaptureViewControllerDidSelectSetupLater:self];
 }
 
-- (void)_tapToProvisionButtonPressed:(id)a3
+- (void)_tapToProvisionButtonPressed:(id)pressed
 {
   v17 = *MEMORY[0x1E69E9840];
   v5 = PKLogFacilityTypeGetObject();

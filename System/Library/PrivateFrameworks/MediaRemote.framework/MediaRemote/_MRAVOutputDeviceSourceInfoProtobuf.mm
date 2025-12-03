@@ -1,24 +1,24 @@
 @interface _MRAVOutputDeviceSourceInfoProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRAVOutputDeviceSourceInfoProtobuf
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   routingContextUID = self->_routingContextUID;
   if (routingContextUID)
   {
-    [v3 setObject:routingContextUID forKey:@"routingContextUID"];
+    [dictionary setObject:routingContextUID forKey:@"routingContextUID"];
   }
 
   if (*&self->_has)
@@ -36,51 +36,51 @@
   v8.receiver = self;
   v8.super_class = _MRAVOutputDeviceSourceInfoProtobuf;
   v4 = [(_MRAVOutputDeviceSourceInfoProtobuf *)&v8 description];
-  v5 = [(_MRAVOutputDeviceSourceInfoProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRAVOutputDeviceSourceInfoProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_routingContextUID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     multipleBuiltInDevices = self->_multipleBuiltInDevices;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_routingContextUID)
   {
-    v5 = v4;
-    [v4 setRoutingContextUID:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setRoutingContextUID:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[16] = self->_multipleBuiltInDevices;
-    v4[20] |= 1u;
+    toCopy[16] = self->_multipleBuiltInDevices;
+    toCopy[20] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_routingContextUID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_routingContextUID copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -93,16 +93,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_6;
   }
 
   routingContextUID = self->_routingContextUID;
-  if (routingContextUID | *(v4 + 1))
+  if (routingContextUID | *(equalCopy + 1))
   {
     if (![(NSString *)routingContextUID isEqual:?])
     {
@@ -110,10 +110,10 @@
     }
   }
 
-  v6 = (*(v4 + 20) & 1) == 0;
+  v6 = (*(equalCopy + 20) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0)
+    if ((*(equalCopy + 20) & 1) == 0)
     {
 LABEL_6:
       v6 = 0;
@@ -122,13 +122,13 @@ LABEL_6:
 
     if (self->_multipleBuiltInDevices)
     {
-      if ((*(v4 + 16) & 1) == 0)
+      if ((*(equalCopy + 16) & 1) == 0)
       {
         goto LABEL_6;
       }
     }
 
-    else if (*(v4 + 16))
+    else if (*(equalCopy + 16))
     {
       goto LABEL_6;
     }
@@ -157,19 +157,19 @@ LABEL_7:
   return v4 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(_MRAVOutputDeviceSourceInfoProtobuf *)self setRoutingContextUID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[20])
+  if (fromCopy[20])
   {
-    self->_multipleBuiltInDevices = v4[16];
+    self->_multipleBuiltInDevices = fromCopy[16];
     *&self->_has |= 1u;
   }
 }

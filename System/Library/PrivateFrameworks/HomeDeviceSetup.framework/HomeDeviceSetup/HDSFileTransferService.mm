@@ -2,23 +2,23 @@
 + (id)productionCacheDirectory;
 - (HDSFileTransferService)init;
 - (void)cleanupDiagnostics;
-- (void)handleSysDropEnablementProfileRequest:(id)a3 responseHandler:(id)a4;
-- (void)handleSysDropStartFileTransferRequest:(id)a3 responseHandler:(id)a4;
+- (void)handleSysDropEnablementProfileRequest:(id)request responseHandler:(id)handler;
+- (void)handleSysDropStartFileTransferRequest:(id)request responseHandler:(id)handler;
 - (void)invalidate;
-- (void)markCacheDeletable:(id)a3;
-- (void)writeFileToCache:(id)a3;
+- (void)markCacheDeletable:(id)deletable;
+- (void)writeFileToCache:(id)cache;
 @end
 
 @implementation HDSFileTransferService
 
 + (id)productionCacheDirectory
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v3 = +[HDSFileTransferService appGroupIdentifier];
-  v4 = [v2 containerURLForSecurityApplicationGroupIdentifier:v3];
-  v5 = [v4 path];
+  v4 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:v3];
+  path = [v4 path];
 
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v5, @"/Library/Caches"];
+  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", path, @"/Library/Caches"];
 
   return v6;
 }
@@ -42,10 +42,10 @@
   return v2;
 }
 
-- (void)handleSysDropEnablementProfileRequest:(id)a3 responseHandler:(id)a4
+- (void)handleSysDropEnablementProfileRequest:(id)request responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   if (gLogCategory_HDSFileTransfer <= 30 && (gLogCategory_HDSFileTransfer != -1 || _LogCategory_Initialize()))
   {
     [HDSFileTransferService handleSysDropEnablementProfileRequest:responseHandler:];
@@ -92,7 +92,7 @@
     [_fileTransferSession setReceivedItemHandler:v16];
     [_fileTransferSession activate];
     objc_autoreleasePoolPop(v9);
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -102,7 +102,7 @@
       [HDSFileTransferService handleSysDropEnablementProfileRequest:responseHandler:];
     }
 
-    (v7)[2](v7, v15);
+    (handlerCopy)[2](handlerCopy, v15);
     objc_autoreleasePoolPop(v9);
   }
 }
@@ -192,10 +192,10 @@ void __80__HDSFileTransferService_handleSysDropEnablementProfileRequest_response
   v6[2](v6, 0);
 }
 
-- (void)handleSysDropStartFileTransferRequest:(id)a3 responseHandler:(id)a4
+- (void)handleSysDropStartFileTransferRequest:(id)request responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   if (gLogCategory_HDSFileTransfer <= 30 && (gLogCategory_HDSFileTransfer != -1 || _LogCategory_Initialize()))
   {
     [HDSFileTransferService handleSysDropStartFileTransferRequest:responseHandler:];
@@ -242,7 +242,7 @@ void __80__HDSFileTransferService_handleSysDropEnablementProfileRequest_response
     [_fileTransferSession setReceivedItemHandler:v16];
     [_fileTransferSession activate];
     objc_autoreleasePoolPop(v9);
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -252,7 +252,7 @@ void __80__HDSFileTransferService_handleSysDropEnablementProfileRequest_response
       [HDSFileTransferService handleSysDropStartFileTransferRequest:responseHandler:];
     }
 
-    (v7)[2](v7, v15);
+    (handlerCopy)[2](handlerCopy, v15);
     objc_autoreleasePoolPop(v9);
   }
 }
@@ -354,7 +354,7 @@ void __80__HDSFileTransferService_handleSysDropStartFileTransferRequest_response
 - (void)cleanupDiagnostics
 {
   v27 = *MEMORY[0x277D85DE8];
-  v19 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v2 = MEMORY[0x277CBEBC0];
   v3 = +[HDSFileTransferService productionCacheDirectory];
   v4 = [v2 fileURLWithPath:v3 isDirectory:1 relativeToURL:0];
@@ -367,7 +367,7 @@ void __80__HDSFileTransferService_handleSysDropStartFileTransferRequest_response
     }
 
     v25 = 0;
-    v5 = [v19 contentsOfDirectoryAtURL:v4 includingPropertiesForKeys:MEMORY[0x277CBEBF8] options:0 error:&v25];
+    v5 = [defaultManager contentsOfDirectoryAtURL:v4 includingPropertiesForKeys:MEMORY[0x277CBEBF8] options:0 error:&v25];
     v6 = v25;
     if (v5)
     {
@@ -396,8 +396,8 @@ void __80__HDSFileTransferService_handleSysDropStartFileTransferRequest_response
                 objc_enumerationMutation(v7);
               }
 
-              v12 = [*(*(&v21 + 1) + 8 * v11) path];
-              if ([v12 containsString:@"HomePod"] && objc_msgSend(v12, "containsString:", @"sysdiagnose") && objc_msgSend(v12, "containsString:", @".tar.gz"))
+              path = [*(*(&v21 + 1) + 8 * v11) path];
+              if ([path containsString:@"HomePod"] && objc_msgSend(path, "containsString:", @"sysdiagnose") && objc_msgSend(path, "containsString:", @".tar.gz"))
               {
                 if (gLogCategory_HDSFileTransfer <= 30 && (gLogCategory_HDSFileTransfer != -1 || _LogCategory_Initialize()))
                 {
@@ -405,7 +405,7 @@ void __80__HDSFileTransferService_handleSysDropStartFileTransferRequest_response
                 }
 
                 v20 = 0;
-                [v19 removeItemAtPath:v12 error:&v20];
+                [defaultManager removeItemAtPath:path error:&v20];
                 v13 = v20;
                 if (v13 && gLogCategory_HDSFileTransfer <= 30 && (gLogCategory_HDSFileTransfer != -1 || _LogCategory_Initialize()))
                 {
@@ -444,14 +444,14 @@ void __80__HDSFileTransferService_handleSysDropStartFileTransferRequest_response
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)writeFileToCache:(id)a3
+- (void)writeFileToCache:(id)cache
 {
   v4 = MEMORY[0x277CCAA00];
-  v5 = a3;
+  cacheCopy = cache;
   v6 = objc_alloc_init(v4);
-  v7 = [v5 itemURL];
+  itemURL = [cacheCopy itemURL];
 
-  v8 = [v7 path];
+  path = [itemURL path];
 
   if (gLogCategory_HDSFileTransfer <= 30 && (gLogCategory_HDSFileTransfer != -1 || _LogCategory_Initialize()))
   {
@@ -473,9 +473,9 @@ void __80__HDSFileTransferService_handleSysDropStartFileTransferRequest_response
   }
 
   v11 = +[HDSFileTransferService productionCacheDirectory];
-  v12 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v27 = 0;
-  v13 = [v12 createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:&v27];
+  v13 = [defaultManager createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:&v27];
   v14 = v27;
 
   if (v13)
@@ -486,27 +486,27 @@ void __80__HDSFileTransferService_handleSysDropStartFileTransferRequest_response
     }
 
 LABEL_14:
-    v15 = [MEMORY[0x277CCAA00] defaultManager];
-    v16 = [v15 isReadableFileAtPath:v8];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    v16 = [defaultManager2 isReadableFileAtPath:path];
 
     if (v16)
     {
-      v17 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:v8 isDirectory:0];
+      v17 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:path isDirectory:0];
       v18 = +[HDSFileTransferService productionCacheDirectory];
-      v19 = [v8 lastPathComponent];
-      v20 = v19;
+      lastPathComponent = [path lastPathComponent];
+      v20 = lastPathComponent;
       v21 = &stru_2864DB950;
-      if (v19)
+      if (lastPathComponent)
       {
-        v21 = v19;
+        v21 = lastPathComponent;
       }
 
       v22 = [v18 stringByAppendingFormat:@"/%@", v21];
 
       v23 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:v22 isDirectory:0];
-      v24 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
       v26 = 0;
-      [v24 copyItemAtURL:v17 toURL:v23 error:&v26];
+      [defaultManager3 copyItemAtURL:v17 toURL:v23 error:&v26];
       v25 = v26;
 
       if (v25)
@@ -544,22 +544,22 @@ LABEL_14:
 LABEL_35:
 }
 
-- (void)markCacheDeletable:(id)a3
+- (void)markCacheDeletable:(id)deletable
 {
-  v3 = a3;
+  deletableCopy = deletable;
   v5 = 65541;
-  v4 = open([v3 UTF8String], 0);
+  v4 = open([deletableCopy UTF8String], 0);
   if (ffsctl(v4, 0xC0084A44uLL, &v5, 0))
   {
     if (gLogCategory_HDSFileTransfer <= 90 && (gLogCategory_HDSFileTransfer != -1 || _LogCategory_Initialize()))
     {
-      [(HDSFileTransferService *)v3 markCacheDeletable:?];
+      [(HDSFileTransferService *)deletableCopy markCacheDeletable:?];
     }
   }
 
   else if (gLogCategory_HDSFileTransfer <= 30 && (gLogCategory_HDSFileTransfer != -1 || _LogCategory_Initialize()))
   {
-    [(HDSFileTransferService *)v3 markCacheDeletable:?];
+    [(HDSFileTransferService *)deletableCopy markCacheDeletable:?];
   }
 
   close(v4);

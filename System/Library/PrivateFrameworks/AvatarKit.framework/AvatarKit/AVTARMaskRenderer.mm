@@ -1,42 +1,42 @@
 @interface AVTARMaskRenderer
 - (AVTARMaskRenderer)init;
-- (AVTARMaskRenderer)initWithOwner:(id)a3 presentationConfiguration:(id)a4 techniqueDidChangeHandler:(id)a5;
-- (BOOL)techniqueUsesSpecificMainPassClearColorForRenderer:(id)a3 clearColor:;
-- (id)_renderCommandEncoderWithCommandBuffer:(id)a3 renderTarget:(id)a4;
-- (id)_renderCommandEncoderWithCommandBuffer:(id)a3 renderTarget:(id)a4 shouldClear:(BOOL)a5 clearColor:(id)a6;
+- (AVTARMaskRenderer)initWithOwner:(id)owner presentationConfiguration:(id)configuration techniqueDidChangeHandler:(id)handler;
+- (BOOL)techniqueUsesSpecificMainPassClearColorForRenderer:(id)renderer clearColor:;
+- (id)_renderCommandEncoderWithCommandBuffer:(id)buffer renderTarget:(id)target;
+- (id)_renderCommandEncoderWithCommandBuffer:(id)buffer renderTarget:(id)target shouldClear:(BOOL)clear clearColor:(id)color;
 - (void)_updateMaskParametersWithRootJointPivotPosition:(AVTARMaskRenderer *)self;
-- (void)allocateTexturesIfNeededWithDestinationPixelFormat:(unint64_t)a3 framebufferSize:;
+- (void)allocateTexturesIfNeededWithDestinationPixelFormat:(unint64_t)format framebufferSize:;
 - (void)dealloc;
-- (void)encodeCompositePassWithEncoder:(id)a3 sceneColorTexture:(id)a4 sceneOnTopTexture:(id)a5 helper:(id)a6;
-- (void)encodeIntermediatePassesWithCommandBuffer:(id)a3 sceneColorTexture:(id)a4 sceneOnTopTexture:(id)a5 generatedMasksTexture:(id)a6 debugARFrameDepthTexture:(id)a7;
-- (void)encodeTechniqueCommandsForRenderer:(id)a3 atTime:(double)a4 helper:(id)a5;
-- (void)initPipelineKindSpecificResourcesIfNeededWithDestinationPixelFormat:(unint64_t)a3;
-- (void)initSharedResourcesIfNeededWithDestinationPixelFormat:(unint64_t)a3;
-- (void)setCapturedDepth:(id)a3;
-- (void)setClearWithCamera:(BOOL)a3 antialiasingMode:(unint64_t)a4;
-- (void)setFlipDepth:(BOOL)a3;
-- (void)setPresentationConfiguration:(id)a3;
-- (void)updateMaskParametersAtTime:(double)a3;
-- (void)updateMaskParametersWithRootJointNode:(id)a3;
-- (void)updateMaskParametersWithRootJointNodes:(id)a3;
-- (void)updateWithARFrame:(id)a3 fallBackDepthData:(id)a4 captureOrientation:(int64_t)a5 interfaceOrientation:(int64_t)a6 mirroredDepthData:(BOOL)a7;
-- (void)updateWithDepthTexture:(id)a3 captureOrientation:(int64_t)a4 interfaceOrientation:(int64_t)a5 mirroredDepthData:(BOOL)a6;
+- (void)encodeCompositePassWithEncoder:(id)encoder sceneColorTexture:(id)texture sceneOnTopTexture:(id)topTexture helper:(id)helper;
+- (void)encodeIntermediatePassesWithCommandBuffer:(id)buffer sceneColorTexture:(id)texture sceneOnTopTexture:(id)topTexture generatedMasksTexture:(id)masksTexture debugARFrameDepthTexture:(id)depthTexture;
+- (void)encodeTechniqueCommandsForRenderer:(id)renderer atTime:(double)time helper:(id)helper;
+- (void)initPipelineKindSpecificResourcesIfNeededWithDestinationPixelFormat:(unint64_t)format;
+- (void)initSharedResourcesIfNeededWithDestinationPixelFormat:(unint64_t)format;
+- (void)setCapturedDepth:(id)depth;
+- (void)setClearWithCamera:(BOOL)camera antialiasingMode:(unint64_t)mode;
+- (void)setFlipDepth:(BOOL)depth;
+- (void)setPresentationConfiguration:(id)configuration;
+- (void)updateMaskParametersAtTime:(double)time;
+- (void)updateMaskParametersWithRootJointNode:(id)node;
+- (void)updateMaskParametersWithRootJointNodes:(id)nodes;
+- (void)updateWithARFrame:(id)frame fallBackDepthData:(id)data captureOrientation:(int64_t)orientation interfaceOrientation:(int64_t)interfaceOrientation mirroredDepthData:(BOOL)depthData;
+- (void)updateWithDepthTexture:(id)texture captureOrientation:(int64_t)orientation interfaceOrientation:(int64_t)interfaceOrientation mirroredDepthData:(BOOL)data;
 @end
 
 @implementation AVTARMaskRenderer
 
-- (AVTARMaskRenderer)initWithOwner:(id)a3 presentationConfiguration:(id)a4 techniqueDidChangeHandler:(id)a5
+- (AVTARMaskRenderer)initWithOwner:(id)owner presentationConfiguration:(id)configuration techniqueDidChangeHandler:(id)handler
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  ownerCopy = owner;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v22.receiver = self;
   v22.super_class = AVTARMaskRenderer;
   v11 = [(AVTARMaskRenderer *)&v22 init];
   if (v11)
   {
-    if (([v9 usesAR] & 1) == 0)
+    if (([configurationCopy usesAR] & 1) == 0)
     {
       v12 = avt_default_log();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -45,13 +45,13 @@
       }
     }
 
-    objc_storeStrong(&v11->_presentationConfiguration, a4);
+    objc_storeStrong(&v11->_presentationConfiguration, configuration);
     v11->_lock._os_unfair_lock_opaque = 0;
     v11->_pipelineKind = 0;
-    objc_storeWeak(&v11->_owner, v8);
+    objc_storeWeak(&v11->_owner, ownerCopy);
     objc_opt_class();
     v11->_ownerIsView = objc_opt_isKindOfClass() & 1;
-    v13 = [v10 copy];
+    v13 = [handlerCopy copy];
     techniqueDidChangeHandler = v11->_techniqueDidChangeHandler;
     v11->_techniqueDidChangeHandler = v13;
 
@@ -66,9 +66,9 @@
     v11->_depthDataIsMirrored = 0;
     v11->_interfaceOrientation = 1;
     WeakRetained = objc_loadWeakRetained(&v11->_owner);
-    v16 = [WeakRetained device];
+    device = [WeakRetained device];
 
-    if (!v16)
+    if (!device)
     {
       v17 = avt_default_log();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -79,8 +79,8 @@
 
     v23 = *MEMORY[0x1E6966010];
     v24[0] = &unk_1F39D93B0;
-    CVMetalTextureCacheCreate(0, 0, v16, [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1], &v11->_textureCache);
-    v18 = [AVTMetalHelper helperForDevice:v16];
+    CVMetalTextureCacheCreate(0, 0, device, [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1], &v11->_textureCache);
+    v18 = [AVTMetalHelper helperForDevice:device];
     metalHelper = v11->_metalHelper;
     v11->_metalHelper = v18;
   }
@@ -96,13 +96,13 @@
   return 0;
 }
 
-- (void)setPresentationConfiguration:(id)a3
+- (void)setPresentationConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_presentationConfiguration != v5)
+  configurationCopy = configuration;
+  v6 = configurationCopy;
+  if (self->_presentationConfiguration != configurationCopy)
   {
-    if (![(AVTPresentationConfiguration *)v5 usesAR])
+    if (![(AVTPresentationConfiguration *)configurationCopy usesAR])
     {
       v7 = avt_default_log();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -111,7 +111,7 @@
       }
     }
 
-    objc_storeStrong(&self->_presentationConfiguration, a3);
+    objc_storeStrong(&self->_presentationConfiguration, configuration);
     [(AVTARMaskRenderer *)self reloadTechnique];
   }
 }
@@ -130,7 +130,7 @@
   [(AVTARMaskRenderer *)&v4 dealloc];
 }
 
-- (void)updateMaskParametersAtTime:(double)a3
+- (void)updateMaskParametersAtTime:(double)time
 {
   if (self->_pipelineKind == 1 && [(AVTPresentationConfiguration *)self->_presentationConfiguration internalStyle]== 3)
   {
@@ -142,17 +142,17 @@
   }
 }
 
-- (void)updateMaskParametersWithRootJointNode:(id)a3
+- (void)updateMaskParametersWithRootJointNode:(id)node
 {
-  [a3 worldPosition];
+  [node worldPosition];
 
   [(AVTARMaskRenderer *)self _updateMaskParametersWithRootJointPivotPosition:?];
 }
 
-- (void)updateMaskParametersWithRootJointNodes:(id)a3
+- (void)updateMaskParametersWithRootJointNodes:(id)nodes
 {
-  v4 = [a3 firstObject];
-  [v4 worldPosition];
+  firstObject = [nodes firstObject];
+  [firstObject worldPosition];
   v6 = v5;
 
   [(AVTARMaskRenderer *)self _updateMaskParametersWithRootJointPivotPosition:v6];
@@ -205,39 +205,39 @@
   }
 }
 
-- (void)updateWithARFrame:(id)a3 fallBackDepthData:(id)a4 captureOrientation:(int64_t)a5 interfaceOrientation:(int64_t)a6 mirroredDepthData:(BOOL)a7
+- (void)updateWithARFrame:(id)frame fallBackDepthData:(id)data captureOrientation:(int64_t)orientation interfaceOrientation:(int64_t)interfaceOrientation mirroredDepthData:(BOOL)depthData
 {
-  v7 = a7;
-  v26 = a3;
-  v12 = a4;
+  depthDataCopy = depthData;
+  frameCopy = frame;
+  dataCopy = data;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_arFrame == v26)
+  if (self->_arFrame == frameCopy)
   {
     goto LABEL_23;
   }
 
-  objc_storeStrong(&self->_arFrame, a3);
+  objc_storeStrong(&self->_arFrame, frame);
   arMatteTexture = self->_arMatteTexture;
   self->_arMatteTexture = 0;
 
-  if (self->_depthDataIsMirrored != v7 || self->_interfaceOrientation != a6)
+  if (self->_depthDataIsMirrored != depthDataCopy || self->_interfaceOrientation != interfaceOrientation)
   {
-    self->_depthDataIsMirrored = v7;
-    self->_interfaceOrientation = a6;
+    self->_depthDataIsMirrored = depthDataCopy;
+    self->_interfaceOrientation = interfaceOrientation;
     self->_isFirstFrame = 1;
   }
 
-  v14 = [(ARFrame *)v26 capturedImage];
-  v15 = [(ARFrame *)v26 capturedDepthData];
-  v16 = v15;
-  if (v15)
+  capturedImage = [(ARFrame *)frameCopy capturedImage];
+  capturedDepthData = [(ARFrame *)frameCopy capturedDepthData];
+  v16 = capturedDepthData;
+  if (capturedDepthData)
   {
-    v17 = v15;
+    v17 = capturedDepthData;
   }
 
   else
   {
-    v17 = v12;
+    v17 = dataCopy;
   }
 
   v18 = v17;
@@ -251,26 +251,26 @@
     if (v21)
     {
       objc_storeStrong(&self->_lastCapturedDepth, v21);
-      v22 = [v21 width];
+      width = [v21 width];
       Height = [v21 height];
-      if (self->_capturedDataWidth == v22 && self->_capturedDataHeight == Height)
+      if (self->_capturedDataWidth == width && self->_capturedDataHeight == Height)
       {
         goto LABEL_20;
       }
 
-      self->_capturedDataWidth = v22;
+      self->_capturedDataWidth = width;
       goto LABEL_19;
     }
   }
 
   v21 = 0;
-  if (self->_lastCapturedDepth || !v14)
+  if (self->_lastCapturedDepth || !capturedImage)
   {
     goto LABEL_20;
   }
 
-  Width = CVPixelBufferGetWidth(v14);
-  Height = CVPixelBufferGetHeight(v14);
+  Width = CVPixelBufferGetWidth(capturedImage);
+  Height = CVPixelBufferGetHeight(capturedImage);
   if (self->_capturedDataWidth != Width || self->_capturedDataHeight != Height)
   {
     v21 = 0;
@@ -283,7 +283,7 @@ LABEL_19:
 
   v21 = 0;
 LABEL_20:
-  v25 = [(ARFrame *)v26 segmentationBuffer]!= 0;
+  v25 = [(ARFrame *)frameCopy segmentationBuffer]!= 0;
   if (self->_pipelineKind != v25)
   {
     self->_pipelineKind = v25;
@@ -294,12 +294,12 @@ LABEL_23:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)updateWithDepthTexture:(id)a3 captureOrientation:(int64_t)a4 interfaceOrientation:(int64_t)a5 mirroredDepthData:(BOOL)a6
+- (void)updateWithDepthTexture:(id)texture captureOrientation:(int64_t)orientation interfaceOrientation:(int64_t)interfaceOrientation mirroredDepthData:(BOOL)data
 {
-  v6 = a6;
-  v14 = a3;
+  dataCopy = data;
+  textureCopy = texture;
   os_unfair_lock_lock(&self->_lock);
-  if (v14 && self->_lastCapturedDepth != v14)
+  if (textureCopy && self->_lastCapturedDepth != textureCopy)
   {
     arFrame = self->_arFrame;
     self->_arFrame = 0;
@@ -313,20 +313,20 @@ LABEL_23:
       [(AVTARMaskRenderer *)self reloadTechnique];
     }
 
-    if (self->_depthDataIsMirrored != v6 || self->_interfaceOrientation != a5)
+    if (self->_depthDataIsMirrored != dataCopy || self->_interfaceOrientation != interfaceOrientation)
     {
-      self->_depthDataIsMirrored = v6;
-      self->_interfaceOrientation = a5;
+      self->_depthDataIsMirrored = dataCopy;
+      self->_interfaceOrientation = interfaceOrientation;
       self->_isFirstFrame = 1;
     }
 
-    objc_storeStrong(&self->_lastCapturedDepth, a3);
-    v12 = [(MTLTexture *)v14 width];
-    v13 = [(MTLTexture *)v14 height];
-    if (self->_capturedDataWidth != v12 || self->_capturedDataHeight != v13)
+    objc_storeStrong(&self->_lastCapturedDepth, texture);
+    width = [(MTLTexture *)textureCopy width];
+    height = [(MTLTexture *)textureCopy height];
+    if (self->_capturedDataWidth != width || self->_capturedDataHeight != height)
     {
-      self->_capturedDataWidth = v12;
-      self->_capturedDataHeight = v13;
+      self->_capturedDataWidth = width;
+      self->_capturedDataHeight = height;
       self->_isFirstFrame = 1;
     }
   }
@@ -334,19 +334,19 @@ LABEL_23:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setCapturedDepth:(id)a3
+- (void)setCapturedDepth:(id)depth
 {
-  v7 = a3;
+  depthCopy = depth;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_lastCapturedDepth != v7)
+  if (self->_lastCapturedDepth != depthCopy)
   {
-    objc_storeStrong(&self->_lastCapturedDepth, a3);
-    v5 = [(MTLTexture *)v7 width];
-    v6 = [(MTLTexture *)v7 height];
-    if (self->_capturedDataWidth != v5 || self->_capturedDataHeight != v6)
+    objc_storeStrong(&self->_lastCapturedDepth, depth);
+    width = [(MTLTexture *)depthCopy width];
+    height = [(MTLTexture *)depthCopy height];
+    if (self->_capturedDataWidth != width || self->_capturedDataHeight != height)
     {
-      self->_capturedDataWidth = v5;
-      self->_capturedDataHeight = v6;
+      self->_capturedDataWidth = width;
+      self->_capturedDataHeight = height;
       self->_isFirstFrame = 1;
     }
   }
@@ -354,16 +354,16 @@ LABEL_23:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setFlipDepth:(BOOL)a3
+- (void)setFlipDepth:(BOOL)depth
 {
-  if (self->_depthDataIsMirrored != a3)
+  if (self->_depthDataIsMirrored != depth)
   {
-    self->_depthDataIsMirrored = a3;
+    self->_depthDataIsMirrored = depth;
     self->_isFirstFrame = 1;
   }
 }
 
-- (void)initSharedResourcesIfNeededWithDestinationPixelFormat:(unint64_t)a3
+- (void)initSharedResourcesIfNeededWithDestinationPixelFormat:(unint64_t)format
 {
   if (!self->_currentRenderPassDescriptor)
   {
@@ -444,7 +444,7 @@ LABEL_23:
       self->_debugConvertDepthPipelineState = v15;
 
       v17 = self->_metalHelper;
-      v19 = a3;
+      formatCopy = format;
       v20 = unk_1BB4F0C20;
       v21 = unk_1BB4F0C30;
       v22 = unk_1BB4F0C40;
@@ -463,7 +463,7 @@ LABEL_23:
   }
 }
 
-- (void)initPipelineKindSpecificResourcesIfNeededWithDestinationPixelFormat:(unint64_t)a3
+- (void)initPipelineKindSpecificResourcesIfNeededWithDestinationPixelFormat:(unint64_t)format
 {
   v5 = 0;
   v6 = 0;
@@ -479,7 +479,7 @@ LABEL_23:
         v29 = unk_1BB4F0C90;
         v30 = unk_1BB4F0CA0;
         v31 = unk_1BB4F0CB0;
-        v27 = a3;
+        formatCopy = format;
         v32 = @"avt_fullscreen_quad_orientation_vertex";
         v33 = @"avt_composite_fragment_matte_chroma_key";
         v34 = 1;
@@ -501,7 +501,7 @@ LABEL_15:
     {
 
       v10 = self->_metalHelper;
-      v19 = a3;
+      formatCopy2 = format;
       v20 = unk_1BB4F0C80;
       v21 = unk_1BB4F0C90;
       v22 = unk_1BB4F0CA0;
@@ -525,7 +525,7 @@ LABEL_15:
   {
 
     v9 = self->_metalHelper;
-    v11 = a3;
+    formatCopy3 = format;
     v12 = unk_1BB4F0C80;
     v13 = unk_1BB4F0C90;
     v14 = unk_1BB4F0CA0;
@@ -545,7 +545,7 @@ LABEL_15:
   }
 }
 
-- (void)allocateTexturesIfNeededWithDestinationPixelFormat:(unint64_t)a3 framebufferSize:
+- (void)allocateTexturesIfNeededWithDestinationPixelFormat:(unint64_t)format framebufferSize:
 {
   v5 = vmvn_s8(vceq_s32(*self->_framebufferSize, v4));
   if ((vpmax_u32(v5, v5).u32[0] & 0x80000000) != 0)
@@ -556,75 +556,75 @@ LABEL_15:
     v10 = v4.u32[1];
     self->_isFirstFrame = 1;
     v11 = ((v4.i32[1] + 3) >> 2);
-    v25 = [(AVTMetalHelper *)&self->_metalHelper->super.isa device];
+    device = [(AVTMetalHelper *)&self->_metalHelper->super.isa device];
     v12 = [MEMORY[0x1E69741B8] texture2DDescriptorWithPixelFormat:115 width:v9 height:v11 mipmapped:0];
     [v12 setUsage:5];
     [v12 setResourceOptions:32];
-    v13 = [v25 newTextureWithDescriptor:v12];
+    v13 = [device newTextureWithDescriptor:v12];
     v14 = self->_rawMaskTexture[0];
     self->_rawMaskTexture[0] = v13;
 
-    v15 = [v25 newTextureWithDescriptor:v12];
+    v15 = [device newTextureWithDescriptor:v12];
     v16 = self->_rawMaskTexture[1];
     self->_rawMaskTexture[1] = v15;
 
-    v17 = [v25 newTextureWithDescriptor:v12];
+    v17 = [device newTextureWithDescriptor:v12];
     tmpMaskBlurTexture = self->_tmpMaskBlurTexture;
     self->_tmpMaskBlurTexture = v17;
 
-    v19 = [v25 newTextureWithDescriptor:v12];
+    v19 = [device newTextureWithDescriptor:v12];
     generatedMasksTexture = self->_generatedMasksTexture;
     self->_generatedMasksTexture = v19;
 
     if (self->_debugMode)
     {
-      [v12 setPixelFormat:a3];
+      [v12 setPixelFormat:format];
       [v12 setWidth:v8];
       [v12 setHeight:v10];
-      v21 = [v25 newTextureWithDescriptor:v12];
+      v21 = [device newTextureWithDescriptor:v12];
       debugIntermediateTexture = self->_debugIntermediateTexture;
       self->_debugIntermediateTexture = v21;
 
       [v12 setPixelFormat:25];
       [v12 setWidth:v8 >> 1];
       [v12 setHeight:v10 >> 1];
-      v23 = [v25 newTextureWithDescriptor:v12];
+      v23 = [device newTextureWithDescriptor:v12];
       debugARFrameDepthTexture = self->_debugARFrameDepthTexture;
       self->_debugARFrameDepthTexture = v23;
     }
   }
 }
 
-- (id)_renderCommandEncoderWithCommandBuffer:(id)a3 renderTarget:(id)a4
+- (id)_renderCommandEncoderWithCommandBuffer:(id)buffer renderTarget:(id)target
 {
   currentRenderPassDescriptor = self->_currentRenderPassDescriptor;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(MTLRenderPassDescriptor *)currentRenderPassDescriptor colorAttachments];
-  v10 = [v9 objectAtIndexedSubscript:0];
+  targetCopy = target;
+  bufferCopy = buffer;
+  colorAttachments = [(MTLRenderPassDescriptor *)currentRenderPassDescriptor colorAttachments];
+  v10 = [colorAttachments objectAtIndexedSubscript:0];
 
   [v10 setLoadAction:0];
-  [v10 setTexture:v7];
+  [v10 setTexture:targetCopy];
 
-  v11 = [v8 renderCommandEncoderWithDescriptor:self->_currentRenderPassDescriptor];
+  v11 = [bufferCopy renderCommandEncoderWithDescriptor:self->_currentRenderPassDescriptor];
 
   return v11;
 }
 
-- (id)_renderCommandEncoderWithCommandBuffer:(id)a3 renderTarget:(id)a4 shouldClear:(BOOL)a5 clearColor:(id)a6
+- (id)_renderCommandEncoderWithCommandBuffer:(id)buffer renderTarget:(id)target shouldClear:(BOOL)clear clearColor:(id)color
 {
-  var3 = a6.var3;
-  var2 = a6.var2;
-  var1 = a6.var1;
-  var0 = a6.var0;
-  v10 = a5;
+  var3 = color.var3;
+  var2 = color.var2;
+  var1 = color.var1;
+  var0 = color.var0;
+  clearCopy = clear;
   currentRenderPassDescriptor = self->_currentRenderPassDescriptor;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(MTLRenderPassDescriptor *)currentRenderPassDescriptor colorAttachments];
-  v17 = [v16 objectAtIndexedSubscript:0];
+  targetCopy = target;
+  bufferCopy = buffer;
+  colorAttachments = [(MTLRenderPassDescriptor *)currentRenderPassDescriptor colorAttachments];
+  v17 = [colorAttachments objectAtIndexedSubscript:0];
 
-  if (v10)
+  if (clearCopy)
   {
     v18 = 2;
   }
@@ -636,23 +636,23 @@ LABEL_15:
 
   [v17 setLoadAction:v18];
   [v17 setClearColor:{var0, var1, var2, var3}];
-  [v17 setTexture:v14];
+  [v17 setTexture:targetCopy];
 
-  v19 = [v15 renderCommandEncoderWithDescriptor:self->_currentRenderPassDescriptor];
+  v19 = [bufferCopy renderCommandEncoderWithDescriptor:self->_currentRenderPassDescriptor];
 
   return v19;
 }
 
-- (void)encodeIntermediatePassesWithCommandBuffer:(id)a3 sceneColorTexture:(id)a4 sceneOnTopTexture:(id)a5 generatedMasksTexture:(id)a6 debugARFrameDepthTexture:(id)a7
+- (void)encodeIntermediatePassesWithCommandBuffer:(id)buffer sceneColorTexture:(id)texture sceneOnTopTexture:(id)topTexture generatedMasksTexture:(id)masksTexture debugARFrameDepthTexture:(id)depthTexture
 {
-  v12 = a3;
-  v13 = a7;
+  bufferCopy = buffer;
+  depthTextureCopy = depthTexture;
   capturedDataWidth = self->_capturedDataWidth;
   capturedDataHeight = self->_capturedDataHeight;
   interfaceOrientation = self->_interfaceOrientation;
-  v17 = a6;
-  v18 = a5;
-  v19 = AVTSceneKitTextureCoordinatesForCaptureDeviceTexture(a4, capturedDataWidth, capturedDataHeight, interfaceOrientation).n128_u64[0];
+  masksTextureCopy = masksTexture;
+  topTextureCopy = topTexture;
+  v19 = AVTSceneKitTextureCoordinatesForCaptureDeviceTexture(texture, capturedDataWidth, capturedDataHeight, interfaceOrientation).n128_u64[0];
   *&self->_anon_138[24] = v19;
   *&self->_anon_138[32] = v20;
   *&self->_anon_138[40] = v21;
@@ -669,17 +669,17 @@ LABEL_15:
     *&self->_anon_138[48] = v22;
   }
 
-  v23 = [(ARFrame *)self->_arFrame capturedImage];
-  v24 = [(ARFrame *)self->_arFrame segmentationBuffer];
+  capturedImage = [(ARFrame *)self->_arFrame capturedImage];
+  segmentationBuffer = [(ARFrame *)self->_arFrame segmentationBuffer];
   if (self->_pipelineKind == 1)
   {
-    Width = CVPixelBufferGetWidth(v23);
-    if (Width == CVPixelBufferGetWidth(v24))
+    Width = CVPixelBufferGetWidth(capturedImage);
+    if (Width == CVPixelBufferGetWidth(segmentationBuffer))
     {
-      Height = CVPixelBufferGetHeight(v23);
-      if (Height == CVPixelBufferGetHeight(v24))
+      Height = CVPixelBufferGetHeight(capturedImage);
+      if (Height == CVPixelBufferGetHeight(segmentationBuffer))
       {
-        v27 = AVTGetCapturedColorTexture(v24, self->_textureCache);
+        v27 = AVTGetCapturedColorTexture(segmentationBuffer, self->_textureCache);
         arMatteTexture = self->_arMatteTexture;
         self->_arMatteTexture = v27;
 
@@ -691,29 +691,29 @@ LABEL_15:
     if (!self->_arMatteGenerator)
     {
       v30 = objc_alloc(MEMORY[0x1E6986490]);
-      v31 = [(AVTMetalHelper *)&self->_metalHelper->super.isa device];
-      v32 = [v30 initWithDevice:v31 matteResolution:1 useSmoothing:1];
+      device = [(AVTMetalHelper *)&self->_metalHelper->super.isa device];
+      v32 = [v30 initWithDevice:device matteResolution:1 useSmoothing:1];
       arMatteGenerator = self->_arMatteGenerator;
       self->_arMatteGenerator = v32;
     }
 
-    [v12 pushDebugGroup:@"[AvatarKit] AVTARMaskRenderer - Matte generation"];
-    v34 = [(ARMatteGenerator *)self->_arMatteGenerator generateMatteFromFrame:self->_arFrame commandBuffer:v12];
+    [bufferCopy pushDebugGroup:@"[AvatarKit] AVTARMaskRenderer - Matte generation"];
+    v34 = [(ARMatteGenerator *)self->_arMatteGenerator generateMatteFromFrame:self->_arFrame commandBuffer:bufferCopy];
     v35 = self->_arMatteTexture;
     self->_arMatteTexture = v34;
 
-    [v12 popDebugGroup];
+    [bufferCopy popDebugGroup];
   }
 
   v29 = 0;
 LABEL_11:
   if (self->_debugMode)
   {
-    v36 = AVTGetCapturedColorTexture(v23, self->_textureCache);
+    v36 = AVTGetCapturedColorTexture(capturedImage, self->_textureCache);
     debugARFrameColorTexture = self->_debugARFrameColorTexture;
     self->_debugARFrameColorTexture = v36;
 
-    if (v24)
+    if (segmentationBuffer)
     {
       v38 = v29;
     }
@@ -730,25 +730,25 @@ LABEL_11:
 
     else
     {
-      v39 = AVTGetCapturedColorTexture(v24, self->_textureCache);
+      v39 = AVTGetCapturedColorTexture(segmentationBuffer, self->_textureCache);
     }
 
     debugARFrameSegmentationBufferTexture = self->_debugARFrameSegmentationBufferTexture;
     self->_debugARFrameSegmentationBufferTexture = v39;
   }
 
-  v41 = [(MTLRenderPassDescriptor *)self->_currentRenderPassDescriptor colorAttachments];
-  v42 = [v41 objectAtIndexedSubscript:0];
+  colorAttachments = [(MTLRenderPassDescriptor *)self->_currentRenderPassDescriptor colorAttachments];
+  v42 = [colorAttachments objectAtIndexedSubscript:0];
 
   [v42 setLoadAction:0];
   [v42 setStoreAction:1];
-  [v12 pushDebugGroup:@"[AvatarKit] AVTARMaskRenderer - Generate masks"];
-  v43 = [(AVTARMaskRenderer *)self _renderCommandEncoderWithCommandBuffer:v12 renderTarget:self->_rawMaskTexture[self->_writeID]];
+  [bufferCopy pushDebugGroup:@"[AvatarKit] AVTARMaskRenderer - Generate masks"];
+  v43 = [(AVTARMaskRenderer *)self _renderCommandEncoderWithCommandBuffer:bufferCopy renderTarget:self->_rawMaskTexture[self->_writeID]];
   [v43 setRenderPipelineState:self->_generateMasksPipelineState];
   [v43 setVertexBytes:&self->_anon_138[24] length:32 atIndex:0];
   [v43 setFragmentTexture:self->_lastCapturedDepth atIndex:0];
   [v43 setFragmentTexture:self->_rawMaskTexture[!self->_writeID] atIndex:1];
-  [v43 setFragmentTexture:v18 atIndex:2];
+  [v43 setFragmentTexture:topTextureCopy atIndex:2];
 
   if (self->_pipelineKind == 1)
   {
@@ -767,48 +767,48 @@ LABEL_11:
   [v43 drawPrimitives:4 vertexStart:0 vertexCount:4];
   [v43 endEncoding];
 
-  [v12 popDebugGroup];
-  [v12 pushDebugGroup:@"[AvatarKit] AVTARMaskRenderer - Blur masks"];
-  v45 = [(AVTARMaskRenderer *)self _renderCommandEncoderWithCommandBuffer:v12 renderTarget:self->_tmpMaskBlurTexture];
+  [bufferCopy popDebugGroup];
+  [bufferCopy pushDebugGroup:@"[AvatarKit] AVTARMaskRenderer - Blur masks"];
+  v45 = [(AVTARMaskRenderer *)self _renderCommandEncoderWithCommandBuffer:bufferCopy renderTarget:self->_tmpMaskBlurTexture];
   [v45 setRenderPipelineState:self->_horizontalBlurPipelineState];
   [v45 setFragmentTexture:self->_rawMaskTexture[self->_writeID] atIndex:0];
   [v45 drawPrimitives:4 vertexStart:0 vertexCount:4];
   [v45 endEncoding];
-  v46 = [(AVTARMaskRenderer *)self _renderCommandEncoderWithCommandBuffer:v12 renderTarget:v17];
+  v46 = [(AVTARMaskRenderer *)self _renderCommandEncoderWithCommandBuffer:bufferCopy renderTarget:masksTextureCopy];
 
   [v46 setRenderPipelineState:self->_verticalBlurPipelineState];
   [v46 setFragmentTexture:self->_tmpMaskBlurTexture atIndex:0];
   [v46 drawPrimitives:4 vertexStart:0 vertexCount:4];
   [v46 endEncoding];
 
-  [v12 popDebugGroup];
+  [bufferCopy popDebugGroup];
   if (self->_debugMode)
   {
-    [v12 pushDebugGroup:@"[AvatarKit] AVTARMaskRenderer - Convert depth texture"];
-    v47 = [(AVTARMaskRenderer *)self _renderCommandEncoderWithCommandBuffer:v12 renderTarget:v13];
+    [bufferCopy pushDebugGroup:@"[AvatarKit] AVTARMaskRenderer - Convert depth texture"];
+    v47 = [(AVTARMaskRenderer *)self _renderCommandEncoderWithCommandBuffer:bufferCopy renderTarget:depthTextureCopy];
     [v47 setRenderPipelineState:self->_debugConvertDepthPipelineState];
     [v47 setFragmentTexture:self->_lastCapturedDepth atIndex:0];
     [v47 drawPrimitives:4 vertexStart:0 vertexCount:4];
     [v47 endEncoding];
 
-    [v12 popDebugGroup];
+    [bufferCopy popDebugGroup];
   }
 
   self->_writeID ^= 1u;
   self->_isFirstFrame = 0;
 }
 
-- (void)encodeCompositePassWithEncoder:(id)a3 sceneColorTexture:(id)a4 sceneOnTopTexture:(id)a5 helper:(id)a6
+- (void)encodeCompositePassWithEncoder:(id)encoder sceneColorTexture:(id)texture sceneOnTopTexture:(id)topTexture helper:(id)helper
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  encoderCopy = encoder;
+  textureCopy = texture;
+  topTextureCopy = topTexture;
+  helperCopy = helper;
   if (self->_pipelineKind == 1)
   {
-    v14 = [(AVTPresentationConfiguration *)self->_presentationConfiguration internalStyle];
+    internalStyle = [(AVTPresentationConfiguration *)self->_presentationConfiguration internalStyle];
     v15 = 264;
-    if (v14 == 3)
+    if (internalStyle == 3)
     {
       v15 = 272;
     }
@@ -819,7 +819,7 @@ LABEL_11:
     v15 = 256;
   }
 
-  [v10 setRenderPipelineState:*(&self->super.isa + v15)];
+  [encoderCopy setRenderPipelineState:*(&self->super.isa + v15)];
   if ([(AVTPresentationConfiguration *)self->_presentationConfiguration internalStyle]== 3)
   {
     v23 = 0;
@@ -832,7 +832,7 @@ LABEL_11:
     *&v23 = self->_uniforms.shadowMaskSizeV;
     *(&v23 + 1) = shadowUVOffset;
     v25 = *&self->_anon_138[8];
-    v18 = v10;
+    v18 = encoderCopy;
     v19 = 48;
   }
 
@@ -845,104 +845,104 @@ LABEL_11:
     v21 = self->_uniforms.shadowUVOffset;
     *&v23 = self->_uniforms.shadowMaskSizeV;
     *(&v23 + 1) = v21;
-    v18 = v10;
+    v18 = encoderCopy;
     v19 = 24;
   }
 
   [v18 setFragmentBytes:&v22 length:v19 atIndex:{0, v22, v23, v24, v25}];
-  [v10 setVertexBytes:&self->_anon_138[24] length:32 atIndex:0];
-  [v10 setFragmentTexture:v11 atIndex:0];
-  [v10 setFragmentTexture:v12 atIndex:1];
-  [v10 setFragmentTexture:self->_generatedMasksTexture atIndex:2];
-  [v10 drawPrimitives:4 vertexStart:0 vertexCount:4];
+  [encoderCopy setVertexBytes:&self->_anon_138[24] length:32 atIndex:0];
+  [encoderCopy setFragmentTexture:textureCopy atIndex:0];
+  [encoderCopy setFragmentTexture:topTextureCopy atIndex:1];
+  [encoderCopy setFragmentTexture:self->_generatedMasksTexture atIndex:2];
+  [encoderCopy drawPrimitives:4 vertexStart:0 vertexCount:4];
 }
 
-- (BOOL)techniqueUsesSpecificMainPassClearColorForRenderer:(id)a3 clearColor:
+- (BOOL)techniqueUsesSpecificMainPassClearColorForRenderer:(id)renderer clearColor:
 {
   *v3 = 0;
   v3[1] = 0;
   return 1;
 }
 
-- (void)encodeTechniqueCommandsForRenderer:(id)a3 atTime:(double)a4 helper:(id)a5
+- (void)encodeTechniqueCommandsForRenderer:(id)renderer atTime:(double)time helper:(id)helper
 {
-  v6 = a5;
-  v7 = [v6 mainPassColorTextureAtIndex:0];
-  v8 = [v6 mainPassColorTextureAtIndex:1];
+  helperCopy = helper;
+  v7 = [helperCopy mainPassColorTextureAtIndex:0];
+  v8 = [helperCopy mainPassColorTextureAtIndex:1];
   if ([v7 width] && objc_msgSend(v7, "height"))
   {
-    v9 = [v7 width];
-    v20 = COERCE_DOUBLE(__PAIR64__([v7 height], v9));
-    v10 = [v6 commandBuffer];
-    v11 = [v6 destinationTexture];
-    v12 = [v11 pixelFormat];
+    width = [v7 width];
+    v20 = COERCE_DOUBLE(__PAIR64__([v7 height], width));
+    commandBuffer = [helperCopy commandBuffer];
+    destinationTexture = [helperCopy destinationTexture];
+    pixelFormat = [destinationTexture pixelFormat];
 
-    [(AVTARMaskRenderer *)self initSharedResourcesIfNeededWithDestinationPixelFormat:v12];
-    [(AVTARMaskRenderer *)self initPipelineKindSpecificResourcesIfNeededWithDestinationPixelFormat:v12];
-    [(AVTARMaskRenderer *)self allocateTexturesIfNeededWithDestinationPixelFormat:v12 framebufferSize:v20];
+    [(AVTARMaskRenderer *)self initSharedResourcesIfNeededWithDestinationPixelFormat:pixelFormat];
+    [(AVTARMaskRenderer *)self initPipelineKindSpecificResourcesIfNeededWithDestinationPixelFormat:pixelFormat];
+    [(AVTARMaskRenderer *)self allocateTexturesIfNeededWithDestinationPixelFormat:pixelFormat framebufferSize:v20];
     os_unfair_lock_lock(&self->_lock);
     debugMode = self->_debugMode;
-    v14 = [v10 commandQueue];
-    v15 = [v14 commandBuffer];
+    commandQueue = [commandBuffer commandQueue];
+    commandBuffer2 = [commandQueue commandBuffer];
 
     generatedMasksTexture = self->_generatedMasksTexture;
     if (debugMode)
     {
-      [(AVTARMaskRenderer *)self encodeIntermediatePassesWithCommandBuffer:v15 sceneColorTexture:v7 sceneOnTopTexture:v8 generatedMasksTexture:generatedMasksTexture debugARFrameDepthTexture:self->_debugARFrameDepthTexture];
-      [v15 pushDebugGroup:@"[AvatarKit] AVTARMaskRenderer - Composite"];
-      v17 = [(AVTARMaskRenderer *)self _renderCommandEncoderWithCommandBuffer:v15 renderTarget:self->_debugIntermediateTexture shouldClear:!self->_clearWithCamera clearColor:0.0, 0.0, 0.0, 0.0];
+      [(AVTARMaskRenderer *)self encodeIntermediatePassesWithCommandBuffer:commandBuffer2 sceneColorTexture:v7 sceneOnTopTexture:v8 generatedMasksTexture:generatedMasksTexture debugARFrameDepthTexture:self->_debugARFrameDepthTexture];
+      [commandBuffer2 pushDebugGroup:@"[AvatarKit] AVTARMaskRenderer - Composite"];
+      v17 = [(AVTARMaskRenderer *)self _renderCommandEncoderWithCommandBuffer:commandBuffer2 renderTarget:self->_debugIntermediateTexture shouldClear:!self->_clearWithCamera clearColor:0.0, 0.0, 0.0, 0.0];
       if (self->_clearWithCamera)
       {
-        [v6 drawSceneBackgroundUsingEncoder:v17 commandBuffer:v15 renderPassDescriptor:self->_currentRenderPassDescriptor];
+        [helperCopy drawSceneBackgroundUsingEncoder:v17 commandBuffer:commandBuffer2 renderPassDescriptor:self->_currentRenderPassDescriptor];
       }
 
-      [(AVTARMaskRenderer *)self encodeCompositePassWithEncoder:v17 sceneColorTexture:v7 sceneOnTopTexture:v8 helper:v6];
+      [(AVTARMaskRenderer *)self encodeCompositePassWithEncoder:v17 sceneColorTexture:v7 sceneOnTopTexture:v8 helper:helperCopy];
       [v17 endEncoding];
-      [v15 popDebugGroup];
-      [v15 commit];
+      [commandBuffer2 popDebugGroup];
+      [commandBuffer2 commit];
 
       v18 = CACurrentMediaTime();
       v21 = v18;
-      v15 = [v6 renderCommandEncoder];
-      [v15 pushDebugGroup:@"[AvatarKit] AVTARMaskRenderer - Debug view"];
-      [v15 setRenderPipelineState:self->_debugVisualizationPipelineState];
-      [v15 setFragmentTexture:self->_debugIntermediateTexture atIndex:0];
-      [v15 setFragmentTexture:v7 atIndex:1];
-      [v15 setFragmentTexture:v8 atIndex:2];
-      [v15 setFragmentTexture:self->_generatedMasksTexture atIndex:3];
-      [v15 setFragmentTexture:self->_debugARFrameColorTexture atIndex:4];
-      [v15 setFragmentTexture:self->_debugARFrameDepthTexture atIndex:5];
-      [v15 setFragmentTexture:self->_debugARFrameSegmentationBufferTexture atIndex:6];
-      [v15 setFragmentTexture:self->_arMatteTexture atIndex:7];
-      [v15 setFragmentBytes:&self->_anon_138[24] length:32 atIndex:0];
-      [v15 setFragmentBytes:&v21 length:4 atIndex:1];
-      [v15 drawPrimitives:4 vertexStart:0 vertexCount:4];
-      [v15 popDebugGroup];
+      commandBuffer2 = [helperCopy renderCommandEncoder];
+      [commandBuffer2 pushDebugGroup:@"[AvatarKit] AVTARMaskRenderer - Debug view"];
+      [commandBuffer2 setRenderPipelineState:self->_debugVisualizationPipelineState];
+      [commandBuffer2 setFragmentTexture:self->_debugIntermediateTexture atIndex:0];
+      [commandBuffer2 setFragmentTexture:v7 atIndex:1];
+      [commandBuffer2 setFragmentTexture:v8 atIndex:2];
+      [commandBuffer2 setFragmentTexture:self->_generatedMasksTexture atIndex:3];
+      [commandBuffer2 setFragmentTexture:self->_debugARFrameColorTexture atIndex:4];
+      [commandBuffer2 setFragmentTexture:self->_debugARFrameDepthTexture atIndex:5];
+      [commandBuffer2 setFragmentTexture:self->_debugARFrameSegmentationBufferTexture atIndex:6];
+      [commandBuffer2 setFragmentTexture:self->_arMatteTexture atIndex:7];
+      [commandBuffer2 setFragmentBytes:&self->_anon_138[24] length:32 atIndex:0];
+      [commandBuffer2 setFragmentBytes:&v21 length:4 atIndex:1];
+      [commandBuffer2 drawPrimitives:4 vertexStart:0 vertexCount:4];
+      [commandBuffer2 popDebugGroup];
     }
 
     else
     {
-      [(AVTARMaskRenderer *)self encodeIntermediatePassesWithCommandBuffer:v15 sceneColorTexture:v7 sceneOnTopTexture:v8 generatedMasksTexture:generatedMasksTexture debugARFrameDepthTexture:0];
-      [v15 commit];
-      v19 = [v6 renderCommandEncoder];
-      [v19 pushDebugGroup:@"[AvatarKit] AVTARMaskRenderer - Composite"];
+      [(AVTARMaskRenderer *)self encodeIntermediatePassesWithCommandBuffer:commandBuffer2 sceneColorTexture:v7 sceneOnTopTexture:v8 generatedMasksTexture:generatedMasksTexture debugARFrameDepthTexture:0];
+      [commandBuffer2 commit];
+      renderCommandEncoder = [helperCopy renderCommandEncoder];
+      [renderCommandEncoder pushDebugGroup:@"[AvatarKit] AVTARMaskRenderer - Composite"];
       if (self->_clearWithCamera)
       {
-        [v6 drawSceneBackgroundUsingEncoder:v19 commandBuffer:0 renderPassDescriptor:0];
+        [helperCopy drawSceneBackgroundUsingEncoder:renderCommandEncoder commandBuffer:0 renderPassDescriptor:0];
       }
 
-      [(AVTARMaskRenderer *)self encodeCompositePassWithEncoder:v19 sceneColorTexture:v7 sceneOnTopTexture:v8 helper:v6];
-      [v19 popDebugGroup];
+      [(AVTARMaskRenderer *)self encodeCompositePassWithEncoder:renderCommandEncoder sceneColorTexture:v7 sceneOnTopTexture:v8 helper:helperCopy];
+      [renderCommandEncoder popDebugGroup];
     }
 
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (void)setClearWithCamera:(BOOL)a3 antialiasingMode:(unint64_t)a4
+- (void)setClearWithCamera:(BOOL)camera antialiasingMode:(unint64_t)mode
 {
-  self->_clearWithCamera = a3;
-  self->_antialiasingMode = a4;
+  self->_clearWithCamera = camera;
+  self->_antialiasingMode = mode;
   [(AVTARMaskRenderer *)self reloadTechnique];
 }
 

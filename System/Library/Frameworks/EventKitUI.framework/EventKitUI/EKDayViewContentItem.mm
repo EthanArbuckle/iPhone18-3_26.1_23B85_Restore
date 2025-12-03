@@ -1,9 +1,9 @@
 @interface EKDayViewContentItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)stagedFrame;
 - (CGRect)unPinnedViewFrame;
 - (EKCalendarDate)startDateIncludingTravelTime;
-- (EKDayViewContentItem)initWithEventIndex:(unint64_t)a3 sizeClass:(int64_t)a4;
+- (EKDayViewContentItem)initWithEventIndex:(unint64_t)index sizeClass:(int64_t)class;
 - (NSDate)end;
 - (NSDate)start;
 - (NSDate)startWithTravelTime;
@@ -12,17 +12,17 @@
 - (double)enoughHeightForOneLine;
 - (double)travelTimeHeight;
 - (double)viewMaxNaturalTextHeight;
-- (void)_requestPayloadAnimated:(BOOL)a3 drawSynchronously:(BOOL)a4;
-- (void)_updateWithPayload:(id)a3;
-- (void)setBackgroundChangedCallback:(id)a3;
-- (void)setBottomPinningProximity:(double)a3;
-- (void)setEvent:(id)a3;
-- (void)setEvents:(id)a3;
-- (void)setStagedFrame:(CGRect)a3;
-- (void)setTopPinningProximity:(double)a3;
-- (void)setTravelTimeHeight:(double)a3;
-- (void)setView:(id)a3;
-- (void)setVisibleHeight:(double)a3;
+- (void)_requestPayloadAnimated:(BOOL)animated drawSynchronously:(BOOL)synchronously;
+- (void)_updateWithPayload:(id)payload;
+- (void)setBackgroundChangedCallback:(id)callback;
+- (void)setBottomPinningProximity:(double)proximity;
+- (void)setEvent:(id)event;
+- (void)setEvents:(id)events;
+- (void)setStagedFrame:(CGRect)frame;
+- (void)setTopPinningProximity:(double)proximity;
+- (void)setTravelTimeHeight:(double)height;
+- (void)setView:(id)view;
+- (void)setVisibleHeight:(double)height;
 - (void)stopRendering;
 - (void)synchronouslyRenderContentOnNextDisplay;
 - (void)updateViewBackgroundChangedCallback;
@@ -45,23 +45,23 @@
 
 - (NSDate)startWithTravelTime
 {
-  v2 = [(EKDayViewContentItem *)self startDateIncludingTravelTime];
-  v3 = [v2 date];
+  startDateIncludingTravelTime = [(EKDayViewContentItem *)self startDateIncludingTravelTime];
+  date = [startDateIncludingTravelTime date];
 
-  return v3;
+  return date;
 }
 
 - (EKCalendarDate)startDateIncludingTravelTime
 {
   v3 = MEMORY[0x1E69930C8];
-  v4 = [(EKDayViewContentItem *)self startDate];
-  [v4 absoluteTime];
+  startDate = [(EKDayViewContentItem *)self startDate];
+  [startDate absoluteTime];
   v6 = v5;
   [(EKDayViewContentItem *)self travelTime];
   v8 = v6 - v7;
-  v9 = [(EKDayViewContentItem *)self startDate];
-  v10 = [v9 timeZone];
-  v11 = [v3 calendarDateWithAbsoluteTime:v10 timeZone:v8];
+  startDate2 = [(EKDayViewContentItem *)self startDate];
+  timeZone = [startDate2 timeZone];
+  v11 = [v3 calendarDateWithAbsoluteTime:timeZone timeZone:v8];
 
   return v11;
 }
@@ -70,15 +70,15 @@
 {
   if ([(EKDayViewContentItem *)self isLoadingAsync]|| ([(EKDayViewContentItem *)self view], v3 = objc_claimAutoreleasedReturnValue(), v3, !v3))
   {
-    v4 = [(EKDayViewContentItem *)self event];
-    [EKDayOccurrenceView minNaturalTextHeightForEvent:v4 usingSmallText:[(EKDayViewContentItem *)self usesSmallText] sizeClass:self->_sizeClass];
+    event = [(EKDayViewContentItem *)self event];
+    [EKDayOccurrenceView minNaturalTextHeightForEvent:event usingSmallText:[(EKDayViewContentItem *)self usesSmallText] sizeClass:self->_sizeClass];
     v6 = v7 + self->_travelTimeHeight;
   }
 
   else
   {
-    v4 = [(EKDayViewContentItem *)self view];
-    [v4 viewMaxNaturalTextHeight];
+    event = [(EKDayViewContentItem *)self view];
+    [event viewMaxNaturalTextHeight];
     v6 = v5;
   }
 
@@ -87,10 +87,10 @@
 
 - (NSDate)end
 {
-  v2 = [(EKDayViewContentItem *)self endDate];
-  v3 = [v2 date];
+  endDate = [(EKDayViewContentItem *)self endDate];
+  date = [endDate date];
 
-  return v3;
+  return date;
 }
 
 - (double)travelTimeHeight
@@ -100,11 +100,11 @@
     return self->_travelTimeHeight;
   }
 
-  v4 = [(EKDayViewContentItem *)self view];
-  if (v4)
+  view = [(EKDayViewContentItem *)self view];
+  if (view)
   {
-    v5 = [(EKDayViewContentItem *)self view];
-    [v5 travelTimeSubviewHeightInPoints];
+    view2 = [(EKDayViewContentItem *)self view];
+    [view2 travelTimeSubviewHeightInPoints];
     travelTimeHeight = v6;
   }
 
@@ -129,7 +129,7 @@
   return result;
 }
 
-- (EKDayViewContentItem)initWithEventIndex:(unint64_t)a3 sizeClass:(int64_t)a4
+- (EKDayViewContentItem)initWithEventIndex:(unint64_t)index sizeClass:(int64_t)class
 {
   v13.receiver = self;
   v13.super_class = EKDayViewContentItem;
@@ -142,10 +142,10 @@
     *(v6 + 56) = v8;
     v9 = *(MEMORY[0x1E695F058] + 16);
     *(v6 + 8) = *MEMORY[0x1E695F058];
-    *(v6 + 19) = a3;
+    *(v6 + 19) = index;
     *(v6 + 24) = v9;
     *(v6 + 9) = 0x7FEFFFFFFFFFFFFFLL;
-    *(v6 + 12) = a4;
+    *(v6 + 12) = class;
     *(v6 + 13) = -1;
     v10 = objc_alloc_init(MEMORY[0x1E6993428]);
     currentState = v7->_currentState;
@@ -155,11 +155,11 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -169,7 +169,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (self->_eventIndex == v5->_eventIndex && (v6 = [(NSArray *)self->_events count], v6 == [(NSArray *)v5->_events count]))
       {
         if ([(NSArray *)self->_events count]< 2)
@@ -245,14 +245,14 @@ LABEL_23:
   return v13;
 }
 
-- (void)setEvent:(id)a3
+- (void)setEvent:(id)event
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_event, a3);
-  if (v5)
+  eventCopy = event;
+  objc_storeStrong(&self->_event, event);
+  if (eventCopy)
   {
-    v8[0] = v5;
+    v8[0] = eventCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
     events = self->_events;
     self->_events = v6;
@@ -265,15 +265,15 @@ LABEL_23:
   }
 }
 
-- (void)setEvents:(id)a3
+- (void)setEvents:(id)events
 {
-  v4 = [a3 sortedArrayUsingFunction:MEMORY[0x1E69932D8] context:0];
+  v4 = [events sortedArrayUsingFunction:MEMORY[0x1E69932D8] context:0];
   events = self->_events;
   self->_events = v4;
 
-  v6 = [(NSArray *)self->_events firstObject];
+  firstObject = [(NSArray *)self->_events firstObject];
   event = self->_event;
-  self->_event = v6;
+  self->_event = firstObject;
 }
 
 - (NSString)description
@@ -282,53 +282,53 @@ LABEL_23:
   v12.super_class = EKDayViewContentItem;
   v3 = [(EKDayViewContentItem *)&v12 description];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(EKDayViewContentItem *)self event];
-  v6 = [v5 title];
-  v7 = [(EKDayViewContentItem *)self startDate];
-  v8 = [(EKDayViewContentItem *)self endDate];
+  event = [(EKDayViewContentItem *)self event];
+  title = [event title];
+  startDate = [(EKDayViewContentItem *)self startDate];
+  endDate = [(EKDayViewContentItem *)self endDate];
   [(EKDayViewContentItem *)self travelTime];
   v9 = CUIKDisplayStringForTravelTimeUsingShortFormat();
-  v10 = [v4 stringWithFormat:@"%@ title: [%@], start date: [%@], end date: [%@], travelTime: [%@]", v3, v6, v7, v8, v9];
+  v10 = [v4 stringWithFormat:@"%@ title: [%@], start date: [%@], end date: [%@], travelTime: [%@]", v3, title, startDate, endDate, v9];
 
   return v10;
 }
 
-- (void)setTopPinningProximity:(double)a3
+- (void)setTopPinningProximity:(double)proximity
 {
-  self->_topPinningProximity = a3;
+  self->_topPinningProximity = proximity;
   if (![(EKDayViewContentItem *)self isLoadingAsync])
   {
-    v4 = [(EKDayViewContentItem *)self view];
+    view = [(EKDayViewContentItem *)self view];
 
-    if (v4)
+    if (view)
     {
       topPinningProximity = self->_topPinningProximity;
-      v6 = [(EKDayViewContentItem *)self view];
-      [v6 setTopPinningProximity:topPinningProximity];
+      view2 = [(EKDayViewContentItem *)self view];
+      [view2 setTopPinningProximity:topPinningProximity];
     }
   }
 }
 
-- (void)setBottomPinningProximity:(double)a3
+- (void)setBottomPinningProximity:(double)proximity
 {
-  self->_bottomPinningProximity = a3;
+  self->_bottomPinningProximity = proximity;
   if (![(EKDayViewContentItem *)self isLoadingAsync])
   {
-    v5 = [(EKDayViewContentItem *)self view];
+    view = [(EKDayViewContentItem *)self view];
 
-    if (v5)
+    if (view)
     {
-      v6 = [(EKDayViewContentItem *)self view];
-      [v6 setBottomPinningProximity:a3];
+      view2 = [(EKDayViewContentItem *)self view];
+      [view2 setBottomPinningProximity:proximity];
     }
   }
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  v17 = a3;
-  v5 = [(EKDayOccurrenceView *)self->_view backgroundViewForEventIndicator];
-  v6 = [v5 image];
+  viewCopy = view;
+  backgroundViewForEventIndicator = [(EKDayOccurrenceView *)self->_view backgroundViewForEventIndicator];
+  image = [backgroundViewForEventIndicator image];
 
   view = self->_view;
   if (view)
@@ -336,26 +336,26 @@ LABEL_23:
     [(EKDayOccurrenceView *)view setBackgroundChangedCallback:0];
   }
 
-  objc_storeStrong(&self->_view, a3);
-  if (v17)
+  objc_storeStrong(&self->_view, view);
+  if (viewCopy)
   {
-    [v17 setTopPinningProximity:self->_topPinningProximity];
-    [v17 setBottomPinningProximity:self->_bottomPinningProximity];
+    [viewCopy setTopPinningProximity:self->_topPinningProximity];
+    [viewCopy setBottomPinningProximity:self->_bottomPinningProximity];
     if (!CGRectIsEmpty(self->_stagedFrame))
     {
-      [v17 setFrame:{self->_stagedFrame.origin.x, self->_stagedFrame.origin.y, self->_stagedFrame.size.width, self->_stagedFrame.size.height}];
+      [viewCopy setFrame:{self->_stagedFrame.origin.x, self->_stagedFrame.origin.y, self->_stagedFrame.size.width, self->_stagedFrame.size.height}];
     }
 
-    [v17 setVisibleHeight:self->_visibleHeight];
-    [v17 setTravelTimeSubviewHeightInPoints:self->_travelTimeHeight];
+    [viewCopy setVisibleHeight:self->_visibleHeight];
+    [viewCopy setTravelTimeSubviewHeightInPoints:self->_travelTimeHeight];
     if (self->_stagedPayload)
     {
       v8 = objc_alloc(MEMORY[0x1E6993428]);
-      v9 = [(EKDayViewContentItem *)self currentState];
-      v10 = [v8 initWithState:v9];
-      [v17 setCurrentImageState:v10];
+      currentState = [(EKDayViewContentItem *)self currentState];
+      v10 = [v8 initWithState:currentState];
+      [viewCopy setCurrentImageState:v10];
 
-      [v17 forceUpdateContentWithPayload:self->_stagedPayload];
+      [viewCopy forceUpdateContentWithPayload:self->_stagedPayload];
       stagedPayload = self->_stagedPayload;
       self->_stagedPayload = 0;
     }
@@ -363,28 +363,28 @@ LABEL_23:
     else if (self->_synchronouslyRenderContentOnNextDisplay)
     {
       v12 = objc_alloc(MEMORY[0x1E6993428]);
-      v13 = [(EKDayViewContentItem *)self currentState];
-      v14 = [v12 initWithState:v13];
-      [v17 setCurrentImageState:v14];
+      currentState2 = [(EKDayViewContentItem *)self currentState];
+      v14 = [v12 initWithState:currentState2];
+      [viewCopy setCurrentImageState:v14];
 
-      [v17 synchronouslyRenderContentOnNextDisplay];
+      [viewCopy synchronouslyRenderContentOnNextDisplay];
     }
 
     self->_synchronouslyRenderContentOnNextDisplay = 0;
     [(EKDayViewContentItem *)self updateViewBackgroundChangedCallback];
-    v15 = [(EKDayOccurrenceView *)self->_view backgroundViewForEventIndicator];
-    v16 = [v15 image];
+    backgroundViewForEventIndicator2 = [(EKDayOccurrenceView *)self->_view backgroundViewForEventIndicator];
+    image2 = [backgroundViewForEventIndicator2 image];
 
-    if (self->_backgroundChangedCallback && v6 | v16 && ([v6 isEqual:v16] & 1) == 0)
+    if (self->_backgroundChangedCallback && image | image2 && ([image isEqual:image2] & 1) == 0)
     {
       (*(self->_backgroundChangedCallback + 2))();
     }
   }
 }
 
-- (void)setBackgroundChangedCallback:(id)a3
+- (void)setBackgroundChangedCallback:(id)callback
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(callback);
   backgroundChangedCallback = self->_backgroundChangedCallback;
   self->_backgroundChangedCallback = v4;
 
@@ -438,8 +438,8 @@ void __59__EKDayViewContentItem_updateViewBackgroundChangedCallback__block_invok
   if (self->_view)
   {
     v3 = objc_alloc(MEMORY[0x1E6993428]);
-    v4 = [(EKDayViewContentItem *)self currentState];
-    v5 = [v3 initWithState:v4];
+    currentState = [(EKDayViewContentItem *)self currentState];
+    v5 = [v3 initWithState:currentState];
     [(EKDayOccurrenceView *)self->_view setCurrentImageState:v5];
 
     view = self->_view;
@@ -455,89 +455,89 @@ void __59__EKDayViewContentItem_updateViewBackgroundChangedCallback__block_invok
 
 - (NSDate)start
 {
-  v2 = [(EKDayViewContentItem *)self startDate];
-  v3 = [v2 date];
+  startDate = [(EKDayViewContentItem *)self startDate];
+  date = [startDate date];
 
-  return v3;
+  return date;
 }
 
 - (NSString)eventIdentifier
 {
-  v2 = [(EKDayViewContentItem *)self event];
-  v3 = [v2 eventIdentifier];
+  event = [(EKDayViewContentItem *)self event];
+  eventIdentifier = [event eventIdentifier];
 
-  return v3;
+  return eventIdentifier;
 }
 
 - (double)enoughHeightForOneLine
 {
-  v3 = [(EKDayViewContentItem *)self events];
-  [EKDayOccurrenceView enoughHeightForOneLineForEvents:v3 usingSmallText:[(EKDayViewContentItem *)self usesSmallText] sizeClass:self->_sizeClass];
+  events = [(EKDayViewContentItem *)self events];
+  [EKDayOccurrenceView enoughHeightForOneLineForEvents:events usingSmallText:[(EKDayViewContentItem *)self usesSmallText] sizeClass:self->_sizeClass];
   v5 = v4;
 
-  v6 = [(EKDayViewContentItem *)self currentState];
-  v7 = [v6 reminderStackDepth];
+  currentState = [(EKDayViewContentItem *)self currentState];
+  reminderStackDepth = [currentState reminderStackDepth];
 
-  return v5 + (v7 - 1) * 2.0;
+  return v5 + (reminderStackDepth - 1) * 2.0;
 }
 
-- (void)setStagedFrame:(CGRect)a3
+- (void)setStagedFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(EKDayViewContentItem *)self resetVisibleHeight];
   self->_stagedFrame.origin.x = x;
   self->_stagedFrame.origin.y = y;
   self->_stagedFrame.size.width = width;
   self->_stagedFrame.size.height = height;
-  v10 = [(EKDayViewContentItem *)self view];
-  v8 = [(EKDayViewContentItem *)self isLoadingAsync];
-  v9 = v10;
-  if (!v8 && v10)
+  view = [(EKDayViewContentItem *)self view];
+  isLoadingAsync = [(EKDayViewContentItem *)self isLoadingAsync];
+  v9 = view;
+  if (!isLoadingAsync && view)
   {
-    [v10 setFrame:{x, y, width, height}];
-    v9 = v10;
+    [view setFrame:{x, y, width, height}];
+    v9 = view;
   }
 }
 
-- (void)setVisibleHeight:(double)a3
+- (void)setVisibleHeight:(double)height
 {
-  if (!self->_visibleHeightLocked && self->_visibleHeight != a3)
+  if (!self->_visibleHeightLocked && self->_visibleHeight != height)
   {
-    self->_visibleHeight = a3;
+    self->_visibleHeight = height;
     self->_visibleHeightLocked = 1;
     if (![(EKDayViewContentItem *)self isLoadingAsync])
     {
-      v5 = [(EKDayViewContentItem *)self view];
+      view = [(EKDayViewContentItem *)self view];
 
-      if (v5)
+      if (view)
       {
-        v6 = [(EKDayViewContentItem *)self view];
-        [v6 setVisibleHeight:a3];
+        view2 = [(EKDayViewContentItem *)self view];
+        [view2 setVisibleHeight:height];
       }
     }
   }
 }
 
-- (void)setTravelTimeHeight:(double)a3
+- (void)setTravelTimeHeight:(double)height
 {
   if ([(EKDayViewContentItem *)self isLoadingAsync]|| ([(EKDayViewContentItem *)self view], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
-    self->_travelTimeHeight = a3;
+    self->_travelTimeHeight = height;
   }
 
   else
   {
-    v6 = [(EKDayViewContentItem *)self view];
-    [v6 setTravelTimeSubviewHeightInPoints:a3];
+    view = [(EKDayViewContentItem *)self view];
+    [view setTravelTimeSubviewHeightInPoints:height];
   }
 }
 
-- (void)_requestPayloadAnimated:(BOOL)a3 drawSynchronously:(BOOL)a4
+- (void)_requestPayloadAnimated:(BOOL)animated drawSynchronously:(BOOL)synchronously
 {
-  if (a4)
+  if (synchronously)
   {
 
     [(EKDayViewContentItem *)self synchronouslyRenderContentOnNextDisplay];
@@ -545,24 +545,24 @@ void __59__EKDayViewContentItem_updateViewBackgroundChangedCallback__block_invok
 
   else
   {
-    v5 = a3;
-    v6 = [MEMORY[0x1E6993430] sharedProvider];
-    v7 = v6;
+    animatedCopy = animated;
+    mEMORY[0x1E6993430] = [MEMORY[0x1E6993430] sharedProvider];
+    v7 = mEMORY[0x1E6993430];
     if ((self->_currentRequestId & 0x8000000000000000) == 0)
     {
-      [v6 cancelRequest:?];
+      [mEMORY[0x1E6993430] cancelRequest:?];
       self->_currentRequestId = -1;
     }
 
-    v8 = [(EKDayViewContentItem *)self currentState];
-    [v8 travelTime];
+    currentState = [(EKDayViewContentItem *)self currentState];
+    [currentState travelTime];
     v9 = 3;
     if (v10 > 0.0)
     {
       v9 = 7;
     }
 
-    if (v5)
+    if (animatedCopy)
     {
       v11 = v9 | 8;
     }
@@ -578,7 +578,7 @@ void __59__EKDayViewContentItem_updateViewBackgroundChangedCallback__block_invok
     v13[2] = __66__EKDayViewContentItem__requestPayloadAnimated_drawSynchronously___block_invoke;
     v13[3] = &unk_1E843ECE8;
     objc_copyWeak(&v14, &location);
-    v12 = [v7 requestPayloadForState:v8 requestOptions:v11 resultHandler:v13];
+    v12 = [v7 requestPayloadForState:currentState requestOptions:v11 resultHandler:v13];
     if ((v12 & 0x8000000000000000) == 0)
     {
       self->_currentRequestId = v12;
@@ -596,28 +596,28 @@ void __66__EKDayViewContentItem__requestPayloadAnimated_drawSynchronously___bloc
   [WeakRetained _updateWithPayload:v3];
 }
 
-- (void)_updateWithPayload:(id)a3
+- (void)_updateWithPayload:(id)payload
 {
-  v12 = a3;
-  v5 = [v12 requestOptions];
+  payloadCopy = payload;
+  requestOptions = [payloadCopy requestOptions];
   currentRequestId = self->_currentRequestId;
-  v7 = [v12 requestId];
-  if ((v5 & 0x10) != 0 || currentRequestId == v7)
+  requestId = [payloadCopy requestId];
+  if ((requestOptions & 0x10) != 0 || currentRequestId == requestId)
   {
-    v8 = [(EKDayViewContentItem *)self view];
-    if (v8)
+    view = [(EKDayViewContentItem *)self view];
+    if (view)
     {
       v9 = objc_alloc(MEMORY[0x1E6993428]);
-      v10 = [(EKDayViewContentItem *)self currentState];
-      v11 = [v9 initWithState:v10];
-      [v8 setCurrentImageState:v11];
+      currentState = [(EKDayViewContentItem *)self currentState];
+      v11 = [v9 initWithState:currentState];
+      [view setCurrentImageState:v11];
 
-      [v8 forceUpdateContentWithPayload:v12];
+      [view forceUpdateContentWithPayload:payloadCopy];
     }
 
     else
     {
-      objc_storeStrong(&self->_stagedPayload, a3);
+      objc_storeStrong(&self->_stagedPayload, payload);
     }
 
     self->_currentRequestId = -1;
@@ -628,8 +628,8 @@ void __66__EKDayViewContentItem__requestPayloadAnimated_drawSynchronously___bloc
 {
   if ((self->_currentRequestId & 0x8000000000000000) == 0)
   {
-    v3 = [MEMORY[0x1E6993430] sharedProvider];
-    [v3 cancelRequest:self->_currentRequestId];
+    mEMORY[0x1E6993430] = [MEMORY[0x1E6993430] sharedProvider];
+    [mEMORY[0x1E6993430] cancelRequest:self->_currentRequestId];
 
     self->_currentRequestId = -1;
   }

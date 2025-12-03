@@ -1,27 +1,27 @@
 @interface AWDTCPConnectionInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsInterfaceType:(id)a3;
+- (int)StringAsInterfaceType:(id)type;
 - (int)interfaceType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasInterfaceType:(BOOL)a3;
-- (void)setHasTcpHandshakeLatency:(BOOL)a3;
-- (void)setHasTcpRetransmissions:(BOOL)a3;
-- (void)setHasTcpRxBytes:(BOOL)a3;
-- (void)setHasTcpTxBytes:(BOOL)a3;
-- (void)setHasTlsLatency:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasInterfaceType:(BOOL)type;
+- (void)setHasTcpHandshakeLatency:(BOOL)latency;
+- (void)setHasTcpRetransmissions:(BOOL)retransmissions;
+- (void)setHasTcpRxBytes:(BOOL)bytes;
+- (void)setHasTcpTxBytes:(BOOL)bytes;
+- (void)setHasTlsLatency:(BOOL)latency;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDTCPConnectionInfo
 
-- (void)setHasTcpHandshakeLatency:(BOOL)a3
+- (void)setHasTcpHandshakeLatency:(BOOL)latency
 {
-  if (a3)
+  if (latency)
   {
     v3 = 4;
   }
@@ -34,9 +34,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasTlsLatency:(BOOL)a3
+- (void)setHasTlsLatency:(BOOL)latency
 {
-  if (a3)
+  if (latency)
   {
     v3 = 64;
   }
@@ -62,9 +62,9 @@
   }
 }
 
-- (void)setHasInterfaceType:(BOOL)a3
+- (void)setHasInterfaceType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -77,24 +77,24 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsInterfaceType:(id)a3
+- (int)StringAsInterfaceType:(id)type
 {
-  if ([a3 isEqualToString:@"None"])
+  if ([type isEqualToString:@"None"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"WiFi"])
+  if ([type isEqualToString:@"WiFi"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"BT"])
+  if ([type isEqualToString:@"BT"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"Cellular"])
+  if ([type isEqualToString:@"Cellular"])
   {
     return 4;
   }
@@ -102,9 +102,9 @@
   return 1;
 }
 
-- (void)setHasTcpRetransmissions:(BOOL)a3
+- (void)setHasTcpRetransmissions:(BOOL)retransmissions
 {
-  if (a3)
+  if (retransmissions)
   {
     v3 = 8;
   }
@@ -117,9 +117,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasTcpTxBytes:(BOOL)a3
+- (void)setHasTcpTxBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 32;
   }
@@ -132,9 +132,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasTcpRxBytes:(BOOL)a3
+- (void)setHasTcpRxBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 16;
   }
@@ -156,11 +156,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dnsResolutionLatency), @"dnsResolutionLatency"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dnsResolutionLatency), @"dnsResolutionLatency"}];
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -179,7 +179,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_tcpHandshakeLatency), @"tcpHandshakeLatency"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_tcpHandshakeLatency), @"tcpHandshakeLatency"}];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -193,7 +193,7 @@ LABEL_4:
   }
 
 LABEL_12:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_tlsLatency), @"tlsLatency"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_tlsLatency), @"tlsLatency"}];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -218,7 +218,7 @@ LABEL_13:
     v7 = off_29EE33080[v6];
   }
 
-  [v3 setObject:v7 forKey:@"interfaceType"];
+  [dictionary setObject:v7 forKey:@"interfaceType"];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -229,17 +229,17 @@ LABEL_6:
     }
 
 LABEL_18:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_tcpTxBytes), @"tcpTxBytes"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_tcpTxBytes), @"tcpTxBytes"}];
     if ((*&self->_has & 0x10) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_8;
   }
 
 LABEL_17:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_tcpRetransmissions), @"tcpRetransmissions"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_tcpRetransmissions), @"tcpRetransmissions"}];
   has = self->_has;
   if ((has & 0x20) != 0)
   {
@@ -250,13 +250,13 @@ LABEL_7:
   if ((has & 0x10) != 0)
   {
 LABEL_8:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_tcpRxBytes), @"tcpRxBytes"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_tcpRxBytes), @"tcpRxBytes"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -354,13 +354,13 @@ LABEL_15:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 2) = self->_dnsResolutionLatency;
-    *(a3 + 36) |= 1u;
+    *(to + 2) = self->_dnsResolutionLatency;
+    *(to + 36) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -379,8 +379,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 4) = self->_tcpHandshakeLatency;
-  *(a3 + 36) |= 4u;
+  *(to + 4) = self->_tcpHandshakeLatency;
+  *(to + 36) |= 4u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -394,8 +394,8 @@ LABEL_4:
   }
 
 LABEL_11:
-  *(a3 + 8) = self->_tlsLatency;
-  *(a3 + 36) |= 0x40u;
+  *(to + 8) = self->_tlsLatency;
+  *(to + 36) |= 0x40u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -409,8 +409,8 @@ LABEL_5:
   }
 
 LABEL_12:
-  *(a3 + 3) = self->_interfaceType;
-  *(a3 + 36) |= 2u;
+  *(to + 3) = self->_interfaceType;
+  *(to + 36) |= 2u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -424,8 +424,8 @@ LABEL_6:
   }
 
 LABEL_13:
-  *(a3 + 5) = self->_tcpRetransmissions;
-  *(a3 + 36) |= 8u;
+  *(to + 5) = self->_tcpRetransmissions;
+  *(to + 36) |= 8u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -436,23 +436,23 @@ LABEL_7:
     }
 
 LABEL_15:
-    *(a3 + 6) = self->_tcpRxBytes;
-    *(a3 + 36) |= 0x10u;
+    *(to + 6) = self->_tcpRxBytes;
+    *(to + 36) |= 0x10u;
     return;
   }
 
 LABEL_14:
-  *(a3 + 7) = self->_tcpTxBytes;
-  *(a3 + 36) |= 0x20u;
+  *(to + 7) = self->_tcpTxBytes;
+  *(to + 36) |= 0x20u;
   if ((*&self->_has & 0x10) != 0)
   {
     goto LABEL_15;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -549,20 +549,20 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if (*&self->_has)
     {
-      if ((*(a3 + 36) & 1) == 0 || self->_dnsResolutionLatency != *(a3 + 2))
+      if ((*(equal + 36) & 1) == 0 || self->_dnsResolutionLatency != *(equal + 2))
       {
         goto LABEL_36;
       }
     }
 
-    else if (*(a3 + 36))
+    else if (*(equal + 36))
     {
 LABEL_36:
       LOBYTE(v5) = 0;
@@ -571,73 +571,73 @@ LABEL_36:
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 36) & 4) == 0 || self->_tcpHandshakeLatency != *(a3 + 4))
+      if ((*(equal + 36) & 4) == 0 || self->_tcpHandshakeLatency != *(equal + 4))
       {
         goto LABEL_36;
       }
     }
 
-    else if ((*(a3 + 36) & 4) != 0)
+    else if ((*(equal + 36) & 4) != 0)
     {
       goto LABEL_36;
     }
 
     if ((*&self->_has & 0x40) != 0)
     {
-      if ((*(a3 + 36) & 0x40) == 0 || self->_tlsLatency != *(a3 + 8))
+      if ((*(equal + 36) & 0x40) == 0 || self->_tlsLatency != *(equal + 8))
       {
         goto LABEL_36;
       }
     }
 
-    else if ((*(a3 + 36) & 0x40) != 0)
+    else if ((*(equal + 36) & 0x40) != 0)
     {
       goto LABEL_36;
     }
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 36) & 2) == 0 || self->_interfaceType != *(a3 + 3))
+      if ((*(equal + 36) & 2) == 0 || self->_interfaceType != *(equal + 3))
       {
         goto LABEL_36;
       }
     }
 
-    else if ((*(a3 + 36) & 2) != 0)
+    else if ((*(equal + 36) & 2) != 0)
     {
       goto LABEL_36;
     }
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 36) & 8) == 0 || self->_tcpRetransmissions != *(a3 + 5))
+      if ((*(equal + 36) & 8) == 0 || self->_tcpRetransmissions != *(equal + 5))
       {
         goto LABEL_36;
       }
     }
 
-    else if ((*(a3 + 36) & 8) != 0)
+    else if ((*(equal + 36) & 8) != 0)
     {
       goto LABEL_36;
     }
 
     if ((*&self->_has & 0x20) != 0)
     {
-      if ((*(a3 + 36) & 0x20) == 0 || self->_tcpTxBytes != *(a3 + 7))
+      if ((*(equal + 36) & 0x20) == 0 || self->_tcpTxBytes != *(equal + 7))
       {
         goto LABEL_36;
       }
     }
 
-    else if ((*(a3 + 36) & 0x20) != 0)
+    else if ((*(equal + 36) & 0x20) != 0)
     {
       goto LABEL_36;
     }
 
-    LOBYTE(v5) = (*(a3 + 36) & 0x10) == 0;
+    LOBYTE(v5) = (*(equal + 36) & 0x10) == 0;
     if ((*&self->_has & 0x10) != 0)
     {
-      if ((*(a3 + 36) & 0x10) == 0 || self->_tcpRxBytes != *(a3 + 6))
+      if ((*(equal + 36) & 0x10) == 0 || self->_tcpRxBytes != *(equal + 6))
       {
         goto LABEL_36;
       }
@@ -745,14 +745,14 @@ LABEL_8:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if (v3)
   {
-    self->_dnsResolutionLatency = *(a3 + 2);
+    self->_dnsResolutionLatency = *(from + 2);
     *&self->_has |= 1u;
-    v3 = *(a3 + 36);
+    v3 = *(from + 36);
     if ((v3 & 4) == 0)
     {
 LABEL_3:
@@ -765,14 +765,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 36) & 4) == 0)
+  else if ((*(from + 36) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_tcpHandshakeLatency = *(a3 + 4);
+  self->_tcpHandshakeLatency = *(from + 4);
   *&self->_has |= 4u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 0x40) == 0)
   {
 LABEL_4:
@@ -785,9 +785,9 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_tlsLatency = *(a3 + 8);
+  self->_tlsLatency = *(from + 8);
   *&self->_has |= 0x40u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 2) == 0)
   {
 LABEL_5:
@@ -800,9 +800,9 @@ LABEL_5:
   }
 
 LABEL_12:
-  self->_interfaceType = *(a3 + 3);
+  self->_interfaceType = *(from + 3);
   *&self->_has |= 2u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 8) == 0)
   {
 LABEL_6:
@@ -815,9 +815,9 @@ LABEL_6:
   }
 
 LABEL_13:
-  self->_tcpRetransmissions = *(a3 + 5);
+  self->_tcpRetransmissions = *(from + 5);
   *&self->_has |= 8u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 0x20) == 0)
   {
 LABEL_7:
@@ -827,15 +827,15 @@ LABEL_7:
     }
 
 LABEL_15:
-    self->_tcpRxBytes = *(a3 + 6);
+    self->_tcpRxBytes = *(from + 6);
     *&self->_has |= 0x10u;
     return;
   }
 
 LABEL_14:
-  self->_tcpTxBytes = *(a3 + 7);
+  self->_tcpTxBytes = *(from + 7);
   *&self->_has |= 0x20u;
-  if ((*(a3 + 36) & 0x10) != 0)
+  if ((*(from + 36) & 0x10) != 0)
   {
     goto LABEL_15;
   }

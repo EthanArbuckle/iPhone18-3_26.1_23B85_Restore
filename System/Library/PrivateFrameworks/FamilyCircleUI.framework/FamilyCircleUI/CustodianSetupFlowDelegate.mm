@@ -1,21 +1,21 @@
 @interface CustodianSetupFlowDelegate
 - (_TtC14FamilyCircleUI26CustodianSetupFlowDelegate)init;
-- (void)custodianSetupFlowControllerDidFinish:(id)a3;
+- (void)custodianSetupFlowControllerDidFinish:(id)finish;
 @end
 
 @implementation CustodianSetupFlowDelegate
 
-- (void)custodianSetupFlowControllerDidFinish:(id)a3
+- (void)custodianSetupFlowControllerDidFinish:(id)finish
 {
-  v4 = a3;
-  [v4 dismissViewControllerAnimated:1 completion:0];
-  v3 = [objc_opt_self() defaultCenter];
+  finishCopy = finish;
+  [finishCopy dismissViewControllerAnimated:1 completion:0];
+  defaultCenter = [objc_opt_self() defaultCenter];
   if (qword_27CDB4EB8 != -1)
   {
     swift_once();
   }
 
-  [v3 postNotificationName:qword_27CDB7E68 object:0 userInfo:0 deliverImmediately:1];
+  [defaultCenter postNotificationName:qword_27CDB7E68 object:0 userInfo:0 deliverImmediately:1];
 }
 
 - (_TtC14FamilyCircleUI26CustodianSetupFlowDelegate)init

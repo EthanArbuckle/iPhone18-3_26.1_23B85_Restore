@@ -1,25 +1,25 @@
 @interface CHFractionDecompositionStep
-- (id)process:(id)a3 options:(id)a4;
+- (id)process:(id)process options:(id)options;
 @end
 
 @implementation CHFractionDecompositionStep
 
-- (id)process:(id)a3 options:(id)a4
+- (id)process:(id)process options:(id)options
 {
   v360 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v10 = v4;
+  processCopy = process;
+  v10 = processCopy;
   v351 = 0u;
   v352 = 0u;
   v353 = 0u;
   v354 = 0u;
-  if (v4)
+  if (processCopy)
   {
-    v4 = v4[9];
+    processCopy = processCopy[9];
   }
 
   v322 = v10;
-  v11 = objc_msgSend_copy(v4, v5, v6, v7, v8, v9);
+  v11 = objc_msgSend_copy(processCopy, v5, v6, v7, v8, v9);
   obj = v11;
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v11, v12, &v351, v359, 16, v13);
   if (v14)
@@ -112,7 +112,7 @@
                 v328 = v345;
                 v134 = v109;
                 v324 = v134;
-                v325 = self;
+                selfCopy = self;
                 v329 = &v341;
                 v330 = &v337;
                 objc_msgSend_enumerateTokensInTopTranscriptionPathWithBlock_(v133, v135, v323, v136, v137, v138);

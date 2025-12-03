@@ -1,8 +1,8 @@
 @interface HPSAssertion
-- (HPSAssertion)initWithIdentifier:(id)a3 assertionType:(unint64_t)a4 connectionProvider:(id)a5;
+- (HPSAssertion)initWithIdentifier:(id)identifier assertionType:(unint64_t)type connectionProvider:(id)provider;
 - (NSString)identifier;
 - (void)invalidate;
-- (void)invalidateWithCompletion:(id)a3;
+- (void)invalidateWithCompletion:(id)completion;
 @end
 
 @implementation HPSAssertion
@@ -15,7 +15,7 @@
   return v2;
 }
 
-- (HPSAssertion)initWithIdentifier:(id)a3 assertionType:(unint64_t)a4 connectionProvider:(id)a5
+- (HPSAssertion)initWithIdentifier:(id)identifier assertionType:(unint64_t)type connectionProvider:(id)provider
 {
   sub_2543A2878();
   swift_unknownObjectRetain();
@@ -24,16 +24,16 @@
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   sub_2542E2A24();
 }
 
-- (void)invalidateWithCompletion:(id)a3
+- (void)invalidateWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   _Block_copy(v4);
-  v5 = self;
-  sub_2542E2A84(v5, v4);
+  selfCopy = self;
+  sub_2542E2A84(selfCopy, v4);
   _Block_release(v4);
 }
 

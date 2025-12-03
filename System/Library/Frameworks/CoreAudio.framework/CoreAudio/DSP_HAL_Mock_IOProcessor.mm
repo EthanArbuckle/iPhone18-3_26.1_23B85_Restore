@@ -1,18 +1,18 @@
 @interface DSP_HAL_Mock_IOProcessor
-- (BOOL)callAdaptHook:(const void *)a3;
-- (BOOL)callNegotiateHook:(const void *)a3;
+- (BOOL)callAdaptHook:(const void *)hook;
+- (BOOL)callNegotiateHook:(const void *)hook;
 - (DSP_HAL_Mock_IOProcessor)init;
-- (id)adaptToConfigurationChange:(id)a3 withCallbacks:(void *)a4 error:(id *)a5;
+- (id)adaptToConfigurationChange:(id)change withCallbacks:(void *)callbacks error:(id *)error;
 - (id)adaptToConfigurationChange:withCallbacks:error:;
-- (id)basic_negotiateConfigurationChange:(void *)a3 error:(id *)a4;
-- (id)conference_negotiateConfigurationChange:(void *)a3 error:(id *)a4;
-- (id)negotiateConfigurationChange:(id)a3 error:(id *)a4;
-- (id)simulateConfigurationChange:(id)a3 error:(id *)a4;
-- (id)spatial_negotiateConfigurationChange:(void *)a3 error:(id *)a4;
+- (id)basic_negotiateConfigurationChange:(void *)change error:(id *)error;
+- (id)conference_negotiateConfigurationChange:(void *)change error:(id *)error;
+- (id)negotiateConfigurationChange:(id)change error:(id *)error;
+- (id)simulateConfigurationChange:(id)change error:(id *)error;
+- (id)spatial_negotiateConfigurationChange:(void *)change error:(id *)error;
 - (uint64_t)adaptToConfigurationChange:withCallbacks:error:;
 - (void)adaptToConfigurationChange:withCallbacks:error:;
 - (void)dealloc;
-- (void)setDspCallbacks:(void *)a3;
+- (void)setDspCallbacks:(void *)callbacks;
 - (void)setTestHookFetcher:(function<DSP_HAL_Mock_TestHooks)(;
 @end
 
@@ -71,12 +71,12 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)adaptToConfigurationChange:(id)a3 withCallbacks:(void *)a4 error:(id *)a5
+- (id)adaptToConfigurationChange:(id)change withCallbacks:(void *)callbacks error:(id *)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [(DSP_HAL_Mock_IOProcessor *)self featureFlag];
-  applesauce::CF::DictionaryRef::from_get(&cf, v7);
+  changeCopy = change;
+  featureFlag = [(DSP_HAL_Mock_IOProcessor *)self featureFlag];
+  applesauce::CF::DictionaryRef::from_get(&cf, changeCopy);
   v9 = [(DSP_HAL_Mock_IOProcessor *)self callAdaptHook:&cf];
   if (cf)
   {
@@ -85,27 +85,27 @@
 
   if (v9)
   {
-    if ((v8 & 0x81) != 0x81)
+    if ((featureFlag & 0x81) != 0x81)
     {
-      v11 = [(DSP_HAL_Mock_IOProcessor *)self dspCallbacks];
-      if (v11)
+      dspCallbacks = [(DSP_HAL_Mock_IOProcessor *)self dspCallbacks];
+      if (dspCallbacks)
       {
-        atomic_load(v11 + 316);
+        atomic_load(dspCallbacks + 316);
         [(DSP_HAL_Mock_IOProcessor *)self setDspCallbacks:0];
       }
 
       operator new();
     }
 
-    if (a5)
+    if (error)
     {
       v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MockDSP Force Fail Adapt" code:-1 userInfo:0];
 LABEL_9:
-      *a5 = v10;
+      *error = v10;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MockDSP Failure" code:-1 userInfo:0];
     goto LABEL_9;
@@ -120,7 +120,7 @@ LABEL_9:
 {
   if (std::type_info::operator==[abi:ne200100](*(a2 + 8), "Z75-[DSP_HAL_Mock_IOProcessor adaptToConfigurationChange:withCallbacks:error:]E4$_13"))
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -131,7 +131,7 @@ LABEL_9:
 
 - (void)adaptToConfigurationChange:withCallbacks:error:
 {
-  objc_destroyWeak((a1 + 8));
+  objc_destroyWeak((self + 8));
 
   JUMPOUT(0x1E12C1730);
 }
@@ -139,17 +139,17 @@ LABEL_9:
 - (id)adaptToConfigurationChange:withCallbacks:error:
 {
   *a2 = &unk_1F59630C8;
-  result = *(a1 + 8);
+  result = *(self + 8);
   a2[1] = result;
   return result;
 }
 
-- (id)negotiateConfigurationChange:(id)a3 error:(id *)a4
+- (id)negotiateConfigurationChange:(id)change error:(id *)error
 {
-  v6 = a3;
+  changeCopy = change;
   DSP_Host_Types::ConfigurationChangeRequest::ConfigurationChangeRequest(&v13);
   v13 = &unk_1F5985AA8;
-  applesauce::CF::DictionaryRef::from_get(&cf, v6);
+  applesauce::CF::DictionaryRef::from_get(&cf, changeCopy);
   v13[4](&v13, &cf);
   if (cf)
   {
@@ -170,7 +170,7 @@ LABEL_9:
   if (v7 > 8)
   {
 LABEL_12:
-    v9 = [(DSP_HAL_Mock_IOProcessor *)self conference_negotiateConfigurationChange:&v13 error:a4];
+    v9 = [(DSP_HAL_Mock_IOProcessor *)self conference_negotiateConfigurationChange:&v13 error:error];
     goto LABEL_13;
   }
 
@@ -179,7 +179,7 @@ LABEL_12:
   {
     if ((v8 & 0x30) != 0)
     {
-      v9 = [(DSP_HAL_Mock_IOProcessor *)self spatial_negotiateConfigurationChange:&v13 error:a4];
+      v9 = [(DSP_HAL_Mock_IOProcessor *)self spatial_negotiateConfigurationChange:&v13 error:error];
       goto LABEL_13;
     }
 
@@ -187,7 +187,7 @@ LABEL_12:
   }
 
 LABEL_9:
-  v9 = [(DSP_HAL_Mock_IOProcessor *)self basic_negotiateConfigurationChange:&v13 error:a4];
+  v9 = [(DSP_HAL_Mock_IOProcessor *)self basic_negotiateConfigurationChange:&v13 error:error];
 LABEL_13:
   v10 = v9;
   v13 = &unk_1F598DC40;
@@ -205,18 +205,18 @@ LABEL_13:
   return v10;
 }
 
-- (id)simulateConfigurationChange:(id)a3 error:(id *)a4
+- (id)simulateConfigurationChange:(id)change error:(id *)error
 {
-  v4 = [(DSP_HAL_Mock_IOProcessor *)self negotiateConfigurationChange:a3 error:a4];
+  v4 = [(DSP_HAL_Mock_IOProcessor *)self negotiateConfigurationChange:change error:error];
 
   return v4;
 }
 
-- (id)basic_negotiateConfigurationChange:(void *)a3 error:(id *)a4
+- (id)basic_negotiateConfigurationChange:(void *)change error:(id *)error
 {
-  if (*(a3 + 41) == 1)
+  if (*(change + 41) == 1)
   {
-    v7 = *(a3 + 40);
+    v7 = *(change + 40);
   }
 
   else
@@ -224,7 +224,7 @@ LABEL_13:
     v7 = 0;
   }
 
-  DSP_Host_Types::DSP_Host_DictionaryData<DSP_Host_Types::ConfigurationChangeRequest>::operator applesauce::CF::DictionaryRef(&cf, a3);
+  DSP_Host_Types::DSP_Host_DictionaryData<DSP_Host_Types::ConfigurationChangeRequest>::operator applesauce::CF::DictionaryRef(&cf, change);
   v8 = [(DSP_HAL_Mock_IOProcessor *)self callNegotiateHook:&cf];
   if (cf)
   {
@@ -233,10 +233,10 @@ LABEL_13:
 
   if (!v8)
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:@"MockDSP Failure" code:-1 userInfo:0];
-      *a4 = v15 = 0;
+      *error = v15 = 0;
     }
 
     else
@@ -249,7 +249,7 @@ LABEL_13:
 
   if ((v7 & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       v12 = objc_alloc(MEMORY[0x1E696ABC0]);
       v13 = *MEMORY[0x1E696A798];
@@ -262,8 +262,8 @@ LABEL_19:
     goto LABEL_21;
   }
 
-  v9 = *(a3 + 84);
-  v10 = *(a3 + 85);
+  v9 = *(change + 84);
+  v10 = *(change + 85);
   if (v9 == v10)
   {
     goto LABEL_12;
@@ -287,13 +287,13 @@ LABEL_19:
   if (*(v11 + 664) == *(v11 + 672))
   {
 LABEL_12:
-    if (a4)
+    if (error)
     {
       v12 = objc_alloc(MEMORY[0x1E696ABC0]);
       v13 = *MEMORY[0x1E696A798];
       v14 = 2003329396;
 LABEL_18:
-      *a4 = [v12 initWithDomain:v13 code:v14 userInfo:0];
+      *error = [v12 initWithDomain:v13 code:v14 userInfo:0];
       goto LABEL_19;
     }
 
@@ -307,7 +307,7 @@ LABEL_18:
   v31 = &unk_1F598EA30;
   v36 = 0;
   v37 = -1;
-  DSP_Host_Types::FormatDescription::FormatDescription(&cf, (a3 + 120));
+  DSP_Host_Types::FormatDescription::FormatDescription(&cf, (change + 120));
   if (DSP_Dictionariable::DictionarySet::has_all_values(__p, v30) && v25 == 1 && v28 == 1 && v26[17] == 1 && v27[4] == 1 && v26[16] & 1 | (v24[4] == 1))
   {
     std::allocate_shared[abi:ne200100]<DSP_Host_Types::FormatDescription,std::allocator<DSP_Host_Types::FormatDescription>,DSP_Host_Types::FormatDescription&,0>();
@@ -363,12 +363,12 @@ LABEL_21:
   return v15;
 }
 
-- (id)conference_negotiateConfigurationChange:(void *)a3 error:(id *)a4
+- (id)conference_negotiateConfigurationChange:(void *)change error:(id *)error
 {
   v48 = *MEMORY[0x1E69E9840];
-  if (*(a3 + 41) == 1)
+  if (*(change + 41) == 1)
   {
-    v7 = *(a3 + 40);
+    v7 = *(change + 40);
   }
 
   else
@@ -376,9 +376,9 @@ LABEL_21:
     v7 = 0;
   }
 
-  if (*(a3 + 14))
+  if (*(change + 14))
   {
-    v8 = *(*(a3 + 12) + 28) != 6;
+    v8 = *(*(change + 12) + 28) != 6;
   }
 
   else
@@ -386,7 +386,7 @@ LABEL_21:
     v8 = 1;
   }
 
-  DSP_Host_Types::DSP_Host_DictionaryData<DSP_Host_Types::ConfigurationChangeRequest>::operator applesauce::CF::DictionaryRef(cf, a3);
+  DSP_Host_Types::DSP_Host_DictionaryData<DSP_Host_Types::ConfigurationChangeRequest>::operator applesauce::CF::DictionaryRef(cf, change);
   v9 = [(DSP_HAL_Mock_IOProcessor *)self callNegotiateHook:cf];
   if (*cf)
   {
@@ -398,14 +398,14 @@ LABEL_21:
     if (v7)
     {
       v10 = (~[(DSP_HAL_Mock_IOProcessor *)self featureFlag]& 0x21) != 0;
-      v11 = [(DSP_HAL_Mock_IOProcessor *)self featureFlag];
+      featureFlag = [(DSP_HAL_Mock_IOProcessor *)self featureFlag];
       v12 = v10 && v8;
-      if ((v11 & 0x41) == 65 && !v8)
+      if ((featureFlag & 0x41) == 65 && !v8)
       {
         v13 = atomic_load(StaticContainer<AMCP::Log::AMCP_Scope_Registry_Statics>::s_statics_initialized);
         if ((v13 & 1) == 0)
         {
-          AMCP::Log::AMCP_Scope_Registry::initialize(v11);
+          AMCP::Log::AMCP_Scope_Registry::initialize(featureFlag);
         }
 
         v14 = **StaticContainer<AMCP::Log::AMCP_Scope_Registry_Statics>::s_statics;
@@ -471,8 +471,8 @@ LABEL_21:
       v12 = 0;
     }
 
-    v18 = *(a3 + 84);
-    v19 = *(a3 + 85);
+    v18 = *(change + 84);
+    v19 = *(change + 85);
     if (v18 != v19)
     {
       v20 = 0;
@@ -597,19 +597,19 @@ LABEL_74:
       }
     }
 
-    if (a4)
+    if (error)
     {
       v36 = objc_alloc(MEMORY[0x1E696ABC0]);
-      *a4 = [v36 initWithDomain:*MEMORY[0x1E696A798] code:2003329396 userInfo:0];
+      *error = [v36 initWithDomain:*MEMORY[0x1E696A798] code:2003329396 userInfo:0];
     }
 
     v17 = objc_alloc_init(MEMORY[0x1E695DF18]);
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"MockDSP Failure" code:-1 userInfo:0];
-    *a4 = v17 = 0;
+    *error = v17 = 0;
   }
 
   else
@@ -622,12 +622,12 @@ LABEL_74:
   return v17;
 }
 
-- (id)spatial_negotiateConfigurationChange:(void *)a3 error:(id *)a4
+- (id)spatial_negotiateConfigurationChange:(void *)change error:(id *)error
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  if (*(a3 + 41) == 1)
+  if (*(change + 41) == 1)
   {
-    v7 = *(a3 + 40);
+    v7 = *(change + 40);
   }
 
   else
@@ -679,7 +679,7 @@ LABEL_14:
   std::__function::__value_func<DSP_HAL_Mock_TestHooks ()(void)>::~__value_func[abi:ne200100](&v23);
   if (v48[0])
   {
-    DSP_Host_Types::DSP_Host_DictionaryData<DSP_Host_Types::ConfigurationChangeRequest>::operator applesauce::CF::DictionaryRef(&cf, a3);
+    DSP_Host_Types::DSP_Host_DictionaryData<DSP_Host_Types::ConfigurationChangeRequest>::operator applesauce::CF::DictionaryRef(&cf, change);
     if (!v48[0])
     {
       std::__throw_bad_function_call[abi:ne200100]();
@@ -693,10 +693,10 @@ LABEL_14:
 
     if ((v9 & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         [MEMORY[0x1E696ABC0] errorWithDomain:@"MockDSP Failure" code:-1 userInfo:0];
-        *a4 = v13 = 0;
+        *error = v13 = 0;
       }
 
       else
@@ -708,14 +708,14 @@ LABEL_14:
     }
   }
 
-  for (i = *(a3 + 84); ; i += 2)
+  for (i = *(change + 84); ; i += 2)
   {
-    if (i == *(a3 + 85))
+    if (i == *(change + 85))
     {
-      if (a4)
+      if (error)
       {
         v12 = objc_alloc(MEMORY[0x1E696ABC0]);
-        *a4 = [v12 initWithDomain:*MEMORY[0x1E696A798] code:2003329396 userInfo:0];
+        *error = [v12 initWithDomain:*MEMORY[0x1E696A798] code:2003329396 userInfo:0];
       }
 
       goto LABEL_26;
@@ -730,10 +730,10 @@ LABEL_14:
 
   if (*(v11 + 688) == *(v11 + 696))
   {
-    if (a4)
+    if (error)
     {
       v18 = objc_alloc(MEMORY[0x1E696ABC0]);
-      *a4 = [v18 initWithDomain:*MEMORY[0x1E696A798] code:2003329396 userInfo:0];
+      *error = [v18 initWithDomain:*MEMORY[0x1E696A798] code:2003329396 userInfo:0];
     }
 
 LABEL_26:
@@ -748,23 +748,23 @@ LABEL_26:
   v27 = 0u;
   v28 = 0;
   v29 = -1;
-  DSP_Host_Types::FormatDescription::FormatDescription(&cf, (a3 + 272));
+  DSP_Host_Types::FormatDescription::FormatDescription(&cf, (change + 272));
   if (v7)
   {
-    if (*(a3 + 516) == 1)
+    if (*(change + 516) == 1)
     {
-      v14 = *(a3 + 128);
+      v14 = *(change + 128);
       if (v14)
       {
         if (v14 != 0x10000)
         {
-          v16 = *(a3 + 128);
+          v16 = *(change + 128);
           goto LABEL_50;
         }
 
-        if (*(a3 + 540) == 1)
+        if (*(change + 540) == 1)
         {
-          v15 = *(a3 + 134);
+          v15 = *(change + 134);
           if (v15)
           {
             v16 = 0;
@@ -789,9 +789,9 @@ LABEL_50:
         }
       }
 
-      else if (*(a3 + 564) == 1)
+      else if (*(change + 564) == 1)
       {
-        v16 = *(a3 + 140);
+        v16 = *(change + 140);
         goto LABEL_50;
       }
     }
@@ -873,7 +873,7 @@ LABEL_70:
   return v13;
 }
 
-- (void)setDspCallbacks:(void *)a3
+- (void)setDspCallbacks:(void *)callbacks
 {
   dspCallbacks = self->_dspCallbacks;
   if (dspCallbacks)
@@ -882,13 +882,13 @@ LABEL_70:
     self->_dspCallbacks = 0;
   }
 
-  if (a3)
+  if (callbacks)
   {
-    self->_dspCallbacks = a3;
+    self->_dspCallbacks = callbacks;
   }
 }
 
-- (BOOL)callAdaptHook:(const void *)a3
+- (BOOL)callAdaptHook:(const void *)hook
 {
   v19 = *MEMORY[0x1E69E9840];
   [(DSP_HAL_Mock_IOProcessor *)self testHookFetcher];
@@ -932,7 +932,7 @@ LABEL_8:
     std::__throw_bad_function_call[abi:ne200100]();
   }
 
-  v6 = (*(*v13 + 48))(v13, a3);
+  v6 = (*(*v13 + 48))(v13, hook);
   std::__function::__value_func<unsigned int ()(AudioObjectPropertyAddress const&,unsigned int)>::~__value_func[abi:ne200100](v16);
   std::__function::__value_func<void ()(DSP_HAL_Bypass_Utils::AMCP_IOData_Helper<(DSP_HAL_Bypass_Utils::InterleavePolicy)0> &,applesauce::CF::DictionaryRef const&)>::~__value_func[abi:ne200100](v15);
   std::__function::__value_func<void ()(BOOL)>::~__value_func[abi:ne200100](v14);
@@ -944,7 +944,7 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)callNegotiateHook:(const void *)a3
+- (BOOL)callNegotiateHook:(const void *)hook
 {
   v19 = *MEMORY[0x1E69E9840];
   [(DSP_HAL_Mock_IOProcessor *)self testHookFetcher];
@@ -988,7 +988,7 @@ LABEL_8:
     std::__throw_bad_function_call[abi:ne200100]();
   }
 
-  v6 = (*(*v12 + 48))(v12, a3);
+  v6 = (*(*v12 + 48))(v12, hook);
   std::__function::__value_func<unsigned int ()(AudioObjectPropertyAddress const&,unsigned int)>::~__value_func[abi:ne200100](v16);
   std::__function::__value_func<void ()(DSP_HAL_Bypass_Utils::AMCP_IOData_Helper<(DSP_HAL_Bypass_Utils::InterleavePolicy)0> &,applesauce::CF::DictionaryRef const&)>::~__value_func[abi:ne200100](v15);
   std::__function::__value_func<void ()(BOOL)>::~__value_func[abi:ne200100](v14);
@@ -1053,9 +1053,9 @@ LABEL_9:
     v8 = objc_alloc_init(DSP_HAL_Mock_PropertySet);
     [(DSP_HAL_Mock_IOProcessor *)v4 setProcessorProperties:v8];
 
-    v9 = [(DSP_HAL_Mock_IOProcessor *)v4 processorProperties];
+    processorProperties = [(DSP_HAL_Mock_IOProcessor *)v4 processorProperties];
     v14 = 0;
-    [v9 configureForProcessor:v13];
+    [processorProperties configureForProcessor:v13];
     std::__function::__value_func<void ()(unsigned int,unsigned int)>::~__value_func[abi:ne200100](v13);
   }
 

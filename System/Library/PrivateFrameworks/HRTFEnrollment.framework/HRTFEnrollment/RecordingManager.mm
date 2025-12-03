@@ -1,9 +1,9 @@
 @interface RecordingManager
-+ (id)movSummaryItem:(float)a3 appName:(id)a4;
-+ (void)copyBuffer:(__CVBuffer *)a3 dst:(__CVBuffer *)a4;
-- (RecordingManager)initWithFileURL:(id)a3 expectedFrameRate:(double)a4 colorStreamId:(id)a5 depthStreamId:(id)a6 appName:(id)a7;
++ (id)movSummaryItem:(float)item appName:(id)name;
++ (void)copyBuffer:(__CVBuffer *)buffer dst:(__CVBuffer *)dst;
+- (RecordingManager)initWithFileURL:(id)l expectedFrameRate:(double)rate colorStreamId:(id)id depthStreamId:(id)streamId appName:(id)name;
 - (RecordingManagerDelegate)delegate;
-- (uint64_t)process:(__n128)a3 depthFrame:(__n128)a4 faceObject:(__n128)a5 timestamp:(double)a6 intrinsics:(uint64_t)a7 calibration:(uint64_t)a8 exposureTime:(__CVBuffer *)a9;
+- (uint64_t)process:(__n128)process depthFrame:(__n128)frame faceObject:(__n128)object timestamp:(double)timestamp intrinsics:(uint64_t)intrinsics calibration:(uint64_t)calibration exposureTime:(__CVBuffer *)time;
 - (void)didFinishRecording;
 - (void)isReadyToRecord;
 - (void)stopRecording;
@@ -11,28 +11,28 @@
 
 @implementation RecordingManager
 
-+ (id)movSummaryItem:(float)a3 appName:(id)a4
++ (id)movSummaryItem:(float)item appName:(id)name
 {
   v18[5] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  nameCopy = name;
   v17[0] = @"frameRate";
-  *&v6 = a3;
+  *&v6 = item;
   v7 = [MEMORY[0x277CCABB0] numberWithFloat:v6];
   v18[0] = v7;
   v17[1] = @"depthFrameRate";
-  *&v8 = a3;
+  *&v8 = item;
   v9 = [MEMORY[0x277CCABB0] numberWithFloat:v8];
   v18[1] = v9;
   v17[2] = @"machTimeSince1970";
   v10 = MEMORY[0x277CCABB0];
-  v11 = [MEMORY[0x277CBEAA8] date];
-  [v11 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v13 = [v10 numberWithDouble:v12 - CACurrentMediaTime()];
   v18[2] = v13;
   v18[3] = MEMORY[0x277CBEC38];
   v17[3] = @"hasVisageMetadataFaceObject";
   v17[4] = @"RecorderApp";
-  v18[4] = v5;
+  v18[4] = nameCopy;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:5];
 
   v15 = *MEMORY[0x277D85DE8];
@@ -40,13 +40,13 @@
   return v14;
 }
 
-- (RecordingManager)initWithFileURL:(id)a3 expectedFrameRate:(double)a4 colorStreamId:(id)a5 depthStreamId:(id)a6 appName:(id)a7
+- (RecordingManager)initWithFileURL:(id)l expectedFrameRate:(double)rate colorStreamId:(id)id depthStreamId:(id)streamId appName:(id)name
 {
   v54[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  lCopy = l;
+  idCopy = id;
+  streamIdCopy = streamId;
+  nameCopy = name;
   v50.receiver = self;
   v50.super_class = RecordingManager;
   v16 = [(RecordingManager *)&v50 init];
@@ -55,21 +55,21 @@
     goto LABEL_4;
   }
 
-  v17 = [v13 copy];
+  v17 = [idCopy copy];
   colorStreamID = v16->_colorStreamID;
   v16->_colorStreamID = v17;
 
-  v19 = [v14 copy];
+  v19 = [streamIdCopy copy];
   depthStreamID = v16->_depthStreamID;
   v16->_depthStreamID = v19;
 
   v21 = objc_alloc(MEMORY[0x277CECD80]);
-  v22 = a4;
-  *&v23 = v22;
-  v24 = [RecordingManager movSummaryItem:v15 appName:v23];
+  rateCopy = rate;
+  *&v23 = rateCopy;
+  v24 = [RecordingManager movSummaryItem:nameCopy appName:v23];
   v25 = MEMORY[0x277D85CD0];
   v26 = MEMORY[0x277D85CD0];
-  v27 = [v21 initWithFileURL:v12 expectedFrameRate:v24 fileSummary:v25 callbackQueue:a4];
+  v27 = [v21 initWithFileURL:lCopy expectedFrameRate:v24 fileSummary:v25 callbackQueue:rate];
   writerInterface = v16->_writerInterface;
   v16->_writerInterface = v27;
 
@@ -85,7 +85,7 @@
 
     v32 = objc_alloc(MEMORY[0x277CECD88]);
     LODWORD(v33) = 1273291200;
-    *&v34 = a4;
+    *&v34 = rate;
     v35 = [v32 initWithLossless:0 bitrate:0 forceH264:v31 expectedFPS:v33 extraConfigs:v34];
     [(MOVWriterInterface *)v16->_writerInterface registerStreamID:v16->_colorStreamID withConfigObject:v35];
 
@@ -95,24 +95,24 @@
     v52[0] = &unk_2862DF300;
     v52[1] = &unk_2862DF318;
     v51[2] = *MEMORY[0x277D256D0];
-    v37 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+    v37 = [MEMORY[0x277CCABB0] numberWithDouble:rate];
     v52[2] = v37;
     v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v52 forKeys:v51 count:3];
 
     v39 = objc_alloc(MEMORY[0x277CECD88]);
-    *&v40 = a4;
+    *&v40 = rate;
     v41 = [v39 initWithLossless:1 bitrate:0 forceH264:v38 expectedFPS:0.0 extraConfigs:v40];
     [(MOVWriterInterface *)v16->_writerInterface registerStreamID:v16->_depthStreamID withConfigObject:v41];
 
     v42 = MGCopyAnswer();
     [(MOVWriterInterface *)v16->_writerInterface setSerialNumber:v42];
 
-    v43 = [MEMORY[0x277CECD80] makeDeviceString];
-    [(MOVWriterInterface *)v16->_writerInterface setDeviceString:v43];
+    makeDeviceString = [MEMORY[0x277CECD80] makeDeviceString];
+    [(MOVWriterInterface *)v16->_writerInterface setDeviceString:makeDeviceString];
 
-    v44 = [MEMORY[0x277D75418] currentDevice];
-    v45 = [v44 name];
-    [(MOVWriterInterface *)v16->_writerInterface setDeviceName:v45];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    name = [currentDevice name];
+    [(MOVWriterInterface *)v16->_writerInterface setDeviceName:name];
 
     v46 = MGCopyAnswer();
     [(MOVWriterInterface *)v16->_writerInterface setOsBuildVersion:v46];
@@ -130,11 +130,11 @@ LABEL_4:
   return v47;
 }
 
-+ (void)copyBuffer:(__CVBuffer *)a3 dst:(__CVBuffer *)a4
++ (void)copyBuffer:(__CVBuffer *)buffer dst:(__CVBuffer *)dst
 {
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
-  CVPixelBufferLockBaseAddress(a4, 0);
-  PlaneCount = CVPixelBufferGetPlaneCount(a3);
+  CVPixelBufferLockBaseAddress(buffer, 1uLL);
+  CVPixelBufferLockBaseAddress(dst, 0);
+  PlaneCount = CVPixelBufferGetPlaneCount(buffer);
   if (PlaneCount <= 1)
   {
     v7 = 1;
@@ -145,7 +145,7 @@ LABEL_4:
     v7 = PlaneCount;
   }
 
-  v8 = CVPixelBufferGetPlaneCount(a4);
+  v8 = CVPixelBufferGetPlaneCount(dst);
   if (v8 <= 1)
   {
     v9 = 1;
@@ -163,10 +163,10 @@ LABEL_4:
 
   for (i = 0; i != v7; ++i)
   {
-    BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, i);
-    BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, i);
-    v13 = CVPixelBufferGetBaseAddressOfPlane(a4, i);
-    v14 = CVPixelBufferGetBytesPerRowOfPlane(a4, i);
+    BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(buffer, i);
+    BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(buffer, i);
+    v13 = CVPixelBufferGetBaseAddressOfPlane(dst, i);
+    v14 = CVPixelBufferGetBytesPerRowOfPlane(dst, i);
     v15 = v14;
     if (v14 >= BytesPerRowOfPlane)
     {
@@ -178,7 +178,7 @@ LABEL_4:
       v16 = v14;
     }
 
-    HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, i);
+    HeightOfPlane = CVPixelBufferGetHeightOfPlane(buffer, i);
     if (HeightOfPlane >= 1)
     {
       v18 = HeightOfPlane;
@@ -194,23 +194,23 @@ LABEL_4:
     }
   }
 
-  CVPixelBufferUnlockBaseAddress(a4, 0);
-  CVPixelBufferUnlockBaseAddress(a3, 0);
-  v19 = CVBufferCopyAttachments(a3, kCVAttachmentMode_ShouldPropagate);
+  CVPixelBufferUnlockBaseAddress(dst, 0);
+  CVPixelBufferUnlockBaseAddress(buffer, 0);
+  v19 = CVBufferCopyAttachments(buffer, kCVAttachmentMode_ShouldPropagate);
 
-  CVBufferSetAttachments(a4, v19, kCVAttachmentMode_ShouldPropagate);
+  CVBufferSetAttachments(dst, v19, kCVAttachmentMode_ShouldPropagate);
 }
 
-- (uint64_t)process:(__n128)a3 depthFrame:(__n128)a4 faceObject:(__n128)a5 timestamp:(double)a6 intrinsics:(uint64_t)a7 calibration:(uint64_t)a8 exposureTime:(__CVBuffer *)a9
+- (uint64_t)process:(__n128)process depthFrame:(__n128)frame faceObject:(__n128)object timestamp:(double)timestamp intrinsics:(uint64_t)intrinsics calibration:(uint64_t)calibration exposureTime:(__CVBuffer *)time
 {
   v60[12] = *MEMORY[0x277D85DE8];
-  v56[0] = a3;
-  v56[1] = a4;
-  v56[2] = a5;
+  v56[0] = process;
+  v56[1] = frame;
+  v56[2] = object;
   v15 = a10;
   v48 = a11;
-  v49 = [objc_alloc(MEMORY[0x277CECD78]) initWithAVCameraCalibrationData:v48 timestamp:*(a1 + 16) streamID:a2];
-  [*(a1 + 8) processCVACameraCalibrationData:?];
+  v49 = [objc_alloc(MEMORY[0x277CECD78]) initWithAVCameraCalibrationData:v48 timestamp:*(self + 16) streamID:a2];
+  [*(self + 8) processCVACameraCalibrationData:?];
   memset(&v55, 0, sizeof(v55));
   CMTimeMakeWithSeconds(&v55, a2, 10000000);
   v52 = objc_opt_new();
@@ -273,15 +273,15 @@ LABEL_4:
     [v52 setObject:v34 forKeyedSubscript:@"VisageMetadataFaceObject"];
   }
 
-  [*(a1 + 8) addFrameMetadata:v52 streamID:*(a1 + 16)];
+  [*(self + 8) addFrameMetadata:v52 streamID:*(self + 16)];
   time = v55;
-  v35 = [*(a1 + 8) processPixelBuffer:a8 withTimeStamp:&time intrinsics:v56 exposureTime:*(a1 + 16) streamID:a6];
+  v35 = [*(self + 8) processPixelBuffer:calibration withTimeStamp:&time intrinsics:v56 exposureTime:*(self + 16) streamID:timestamp];
   pixelBufferOut = 0;
   v57 = *MEMORY[0x277CC4DE8];
   v58 = MEMORY[0x277CBEC10];
   v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
-  Width = CVPixelBufferGetWidth(a9);
-  Height = CVPixelBufferGetHeight(a9);
+  Width = CVPixelBufferGetWidth(time);
+  Height = CVPixelBufferGetHeight(time);
   if (CVPixelBufferCreate(*MEMORY[0x277CBECE8], Width, Height, 0x4C303066u, v36, &pixelBufferOut))
   {
     NSLog(&cfstr_HrtfappRecordi.isa);
@@ -290,10 +290,10 @@ LABEL_4:
 
   else
   {
-    [RecordingManager copyBuffer:a9 dst:pixelBufferOut];
-    v40 = *(a1 + 8);
+    [RecordingManager copyBuffer:time dst:pixelBufferOut];
+    v40 = *(self + 8);
     time = v55;
-    v39 = [v40 processPixelBuffer:pixelBufferOut withTimeStamp:&time intrinsics:0 exposureTime:*(a1 + 24) streamID:-1.0];
+    v39 = [v40 processPixelBuffer:pixelBufferOut withTimeStamp:&time intrinsics:0 exposureTime:*(self + 24) streamID:-1.0];
     CVPixelBufferRelease(pixelBufferOut);
   }
 
@@ -310,8 +310,8 @@ LABEL_4:
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 localizedDescription];
-    NSLog(&cfstr_HrtfappRecordi_0.isa, v5);
+    localizedDescription = [v3 localizedDescription];
+    NSLog(&cfstr_HrtfappRecordi_0.isa, localizedDescription);
   }
 }
 

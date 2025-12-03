@@ -1,7 +1,7 @@
 @interface HKUserTrackedConcept
-+ (id)_newUserTrackedConceptWithType:(id)a3 config:(id)a4;
++ (id)_newUserTrackedConceptWithType:(id)type config:(id)config;
 - (HKUserTrackedConcept)init;
-- (HKUserTrackedConcept)initWithCoder:(id)a3;
+- (HKUserTrackedConcept)initWithCoder:(id)coder;
 - (id)description;
 @end
 
@@ -20,21 +20,21 @@
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(HKObjectType *)self->_userTrackedConceptType identifier];
-  v4 = [v2 stringWithFormat:@"User Tracked Concept with data type identifier %@", v3];
+  identifier = [(HKObjectType *)self->_userTrackedConceptType identifier];
+  v4 = [v2 stringWithFormat:@"User Tracked Concept with data type identifier %@", identifier];
 
   return v4;
 }
 
-- (HKUserTrackedConcept)initWithCoder:(id)a3
+- (HKUserTrackedConcept)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HKUserTrackedConcept;
   v5 = [(HKUserTrackedConcept *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UserTrackedConceptType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UserTrackedConceptType"];
     userTrackedConceptType = v5->_userTrackedConceptType;
     v5->_userTrackedConceptType = v6;
   }
@@ -42,19 +42,19 @@
   return v5;
 }
 
-+ (id)_newUserTrackedConceptWithType:(id)a3 config:(id)a4
++ (id)_newUserTrackedConceptWithType:(id)type config:(id)config
 {
-  v7 = a3;
-  v8 = a4;
-  if (([a1 isConcreteUserTrackedConceptClass] & 1) == 0)
+  typeCopy = type;
+  configCopy = config;
+  if (([self isConcreteUserTrackedConceptClass] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = NSStringFromSelector(a2);
-    v16 = NSStringFromClass(a1);
-    [v14 handleFailureInMethod:a2 object:a1 file:@"HKUserTrackedConcept.m" lineNumber:31 description:{@"%@ should not be used for abstract class %@", v15, v16}];
+    v16 = NSStringFromClass(self);
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKUserTrackedConcept.m" lineNumber:31 description:{@"%@ should not be used for abstract class %@", v15, v16}];
   }
 
-  v9 = [a1 alloc];
+  v9 = [self alloc];
   if (v9)
   {
     v17.receiver = v9;
@@ -67,13 +67,13 @@
     v10 = 0;
   }
 
-  v11 = [v7 copy];
+  v11 = [typeCopy copy];
   v12 = v10[1];
   v10[1] = v11;
 
-  if (v8)
+  if (configCopy)
   {
-    v8[2](v8, v10);
+    configCopy[2](configCopy, v10);
   }
 
   return v10;

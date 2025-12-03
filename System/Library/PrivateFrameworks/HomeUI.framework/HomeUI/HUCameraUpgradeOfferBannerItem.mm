@@ -1,27 +1,27 @@
 @interface HUCameraUpgradeOfferBannerItem
-- (HUCameraUpgradeOfferBannerItem)initWithHome:(id)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HUCameraUpgradeOfferBannerItem)initWithHome:(id)home;
+- (id)_subclass_updateWithOptions:(id)options;
 - (id)fetchPlanLimit;
 - (id)fetchPremiumOffer;
 - (id)hiddenOfferDisplayOutcome;
 - (id)offerDisplayOutcome;
-- (void)savePlanLimit:(id)a3 error:(id)a4;
-- (void)savePremiumOffer:(id)a3 error:(id)a4;
+- (void)savePlanLimit:(id)limit error:(id)error;
+- (void)savePremiumOffer:(id)offer error:(id)error;
 @end
 
 @implementation HUCameraUpgradeOfferBannerItem
 
-- (HUCameraUpgradeOfferBannerItem)initWithHome:(id)a3
+- (HUCameraUpgradeOfferBannerItem)initWithHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v11.receiver = self;
   v11.super_class = HUCameraUpgradeOfferBannerItem;
-  v5 = [(HUBannerItem *)&v11 initWithHome:v4];
+  v5 = [(HUBannerItem *)&v11 initWithHome:homeCopy];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277D14C98]);
-    v7 = [v4 currentUser];
-    v8 = [v6 initWithHome:v4 user:v7 nameStyle:0];
+    currentUser = [homeCopy currentUser];
+    v8 = [v6 initWithHome:homeCopy user:currentUser nameStyle:0];
     userItem = v5->_userItem;
     v5->_userItem = v8;
   }
@@ -29,14 +29,14 @@
   return v5;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D13BB0]];
-  v6 = [v5 BOOLValue];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277D13BB0]];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     objc_initWeak(&location, self);
     v7 = MEMORY[0x277D2C900];
@@ -52,17 +52,17 @@
 
   else
   {
-    v9 = [(HUBannerItem *)self home];
-    v10 = [(HUBannerItem *)self home];
-    v11 = [v10 currentUser];
-    v12 = [v9 hf_userIsOwner:v11];
+    home = [(HUBannerItem *)self home];
+    home2 = [(HUBannerItem *)self home];
+    currentUser = [home2 currentUser];
+    v12 = [home hf_userIsOwner:currentUser];
 
-    v13 = [(HUCameraUpgradeOfferBannerItem *)self userItem];
-    v14 = [v13 hasDismissedCameraUpgradeBanner];
+    userItem = [(HUCameraUpgradeOfferBannerItem *)self userItem];
+    hasDismissedCameraUpgradeBanner = [userItem hasDismissedCameraUpgradeBanner];
 
-    v15 = [(HUBannerItem *)self home];
-    v16 = [v15 hf_allCameraProfilesSupportingRecording];
-    v17 = [v16 count];
+    home3 = [(HUBannerItem *)self home];
+    hf_allCameraProfilesSupportingRecording = [home3 hf_allCameraProfilesSupportingRecording];
+    v17 = [hf_allCameraProfilesSupportingRecording count];
 
     v18 = HFLogForCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -70,26 +70,26 @@
       LODWORD(location) = 67109632;
       HIDWORD(location) = v12;
       v33 = 1024;
-      v34 = v14;
+      v34 = hasDismissedCameraUpgradeBanner;
       v35 = 2048;
       v36 = v17;
       _os_log_impl(&dword_20CEB6000, v18, OS_LOG_TYPE_DEFAULT, "Subclass update with options called for OfferBannerItem (isOwner %d, hasDismissedBanner %d, cameraCount %lu)", &location, 0x18u);
     }
 
-    v19 = [(HUBannerItem *)self forceShowBanner];
-    if (v12 && (!v19 & v14 & 1) == 0 && v17)
+    forceShowBanner = [(HUBannerItem *)self forceShowBanner];
+    if (v12 && (!forceShowBanner & hasDismissedCameraUpgradeBanner & 1) == 0 && v17)
     {
       if ([(HUCameraUpgradeOfferBannerItem *)self hasFetchedOfferResults])
       {
         v20 = MEMORY[0x277D2C900];
-        v21 = [(HUCameraUpgradeOfferBannerItem *)self offerDisplayOutcome];
-        v8 = [v20 futureWithResult:v21];
+        offerDisplayOutcome = [(HUCameraUpgradeOfferBannerItem *)self offerDisplayOutcome];
+        v8 = [v20 futureWithResult:offerDisplayOutcome];
       }
 
       else
       {
         objc_initWeak(&location, self);
-        v23 = [(HUCameraUpgradeOfferBannerItem *)self fetchPremiumOffer];
+        fetchPremiumOffer = [(HUCameraUpgradeOfferBannerItem *)self fetchPremiumOffer];
         v25[0] = MEMORY[0x277D85DD0];
         v25[1] = 3221225472;
         v25[2] = __62__HUCameraUpgradeOfferBannerItem__subclass_updateWithOptions___block_invoke_2;
@@ -98,7 +98,7 @@
         v27 = v12;
         v28 = 0;
         v26[1] = v17;
-        v8 = [v23 flatMap:v25];
+        v8 = [fetchPremiumOffer flatMap:v25];
         objc_destroyWeak(v26);
 
         objc_destroyWeak(&location);
@@ -285,8 +285,8 @@ void __48__HUCameraUpgradeOfferBannerItem_fetchPlanLimit__block_invoke_3(uint64_
   v2 = MEMORY[0x277D2C900];
   v6 = MEMORY[0x277D85DD0];
   objc_copyWeak(&v7, &location);
-  v3 = [MEMORY[0x277D2C938] globalAsyncScheduler];
-  v4 = [v2 futureWithBlock:&v6 scheduler:v3];
+  globalAsyncScheduler = [MEMORY[0x277D2C938] globalAsyncScheduler];
+  v4 = [v2 futureWithBlock:&v6 scheduler:globalAsyncScheduler];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -355,24 +355,24 @@ void __51__HUCameraUpgradeOfferBannerItem_fetchPremiumOffer__block_invoke_3(uint
   [*(a1 + 48) finishWithNoResult];
 }
 
-- (void)savePlanLimit:(id)a3 error:(id)a4
+- (void)savePlanLimit:(id)limit error:(id)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  limitCopy = limit;
+  errorCopy = error;
+  if (errorCopy)
   {
     v8 = HFLogForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v7;
+      *(&buf + 4) = errorCopy;
       _os_log_error_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_ERROR, "Camera count request error:%@", &buf, 0xCu);
     }
   }
 
   [(HUCameraUpgradeOfferBannerItem *)self setMessageKey:0];
-  if ([v6 status] == 1)
+  if ([limitCopy status] == 1)
   {
     [(HUCameraUpgradeOfferBannerItem *)self setPlanLimit:&unk_282491B38];
     v23 = 0;
@@ -397,9 +397,9 @@ void __51__HUCameraUpgradeOfferBannerItem_fetchPremiumOffer__block_invoke_3(uint
     _Block_object_dispose(&v23, 8);
     if (!v9)
     {
-      v21 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getkICQOpportunitySheetUnlimitedKey(void)"];
-      [v21 handleFailureInFunction:v22 file:@"HUCameraUpgradeOfferBannerItem.m" lineNumber:32 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v22 file:@"HUCameraUpgradeOfferBannerItem.m" lineNumber:32 description:{@"%s", dlerror()}];
 
       __break(1u);
     }
@@ -409,8 +409,8 @@ void __51__HUCameraUpgradeOfferBannerItem_fetchPremiumOffer__block_invoke_3(uint
 
   else
   {
-    v12 = [v6 value];
-    v13 = v12 == 0;
+    value = [limitCopy value];
+    v13 = value == 0;
 
     if (v13)
     {
@@ -418,46 +418,46 @@ void __51__HUCameraUpgradeOfferBannerItem_fetchPremiumOffer__block_invoke_3(uint
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v6;
+        *(&buf + 4) = limitCopy;
         _os_log_error_impl(&dword_20CEB6000, v17, OS_LOG_TYPE_ERROR, "Missing planLimit for feature = %@", &buf, 0xCu);
       }
     }
 
     else
     {
-      v14 = [v6 value];
-      [(HUCameraUpgradeOfferBannerItem *)self setPlanLimit:v14];
+      value2 = [limitCopy value];
+      [(HUCameraUpgradeOfferBannerItem *)self setPlanLimit:value2];
 
-      v15 = [(HUCameraUpgradeOfferBannerItem *)self planLimit];
-      v16 = [v15 stringValue];
-      [(HUCameraUpgradeOfferBannerItem *)self setMessageKey:v16];
+      planLimit = [(HUCameraUpgradeOfferBannerItem *)self planLimit];
+      stringValue = [planLimit stringValue];
+      [(HUCameraUpgradeOfferBannerItem *)self setMessageKey:stringValue];
     }
   }
 
-  v18 = [(HUCameraUpgradeOfferBannerItem *)self sheetDetails];
-  v19 = [(HUCameraUpgradeOfferBannerItem *)self messageKey];
-  v20 = [v18 messageForKey:v19];
+  sheetDetails = [(HUCameraUpgradeOfferBannerItem *)self sheetDetails];
+  messageKey = [(HUCameraUpgradeOfferBannerItem *)self messageKey];
+  v20 = [sheetDetails messageForKey:messageKey];
   [(HUCameraUpgradeOfferBannerItem *)self setSheetMessage:v20];
 }
 
-- (void)savePremiumOffer:(id)a3 error:(id)a4
+- (void)savePremiumOffer:(id)offer error:(id)error
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  offerCopy = offer;
+  errorCopy = error;
+  if (errorCopy)
   {
     v8 = HFLogForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v7;
+      *(&buf + 4) = errorCopy;
       _os_log_error_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_ERROR, "Premium offer error:%@", &buf, 0xCu);
     }
   }
 
-  v9 = [v6 opportunityBubble];
-  v10 = v9 == 0;
+  opportunityBubble = [offerCopy opportunityBubble];
+  v10 = opportunityBubble == 0;
 
   if (v10)
   {
@@ -469,35 +469,35 @@ void __51__HUCameraUpgradeOfferBannerItem_fetchPremiumOffer__block_invoke_3(uint
     }
   }
 
-  v12 = [v6 opportunityBubble];
-  [(HUCameraUpgradeOfferBannerItem *)self setHasOpportunityBubble:v12 != 0];
+  opportunityBubble2 = [offerCopy opportunityBubble];
+  [(HUCameraUpgradeOfferBannerItem *)self setHasOpportunityBubble:opportunityBubble2 != 0];
 
   [(HUCameraUpgradeOfferBannerItem *)self setHasFetchedOfferResults:1];
-  v13 = [v6 opportunityBubble];
-  v14 = [v13 bubbleDetails];
+  opportunityBubble3 = [offerCopy opportunityBubble];
+  bubbleDetails = [opportunityBubble3 bubbleDetails];
 
-  v15 = [v6 opportunityBubble];
-  v16 = [v15 sheetDetails];
+  opportunityBubble4 = [offerCopy opportunityBubble];
+  sheetDetails = [opportunityBubble4 sheetDetails];
 
-  [(HUCameraUpgradeOfferBannerItem *)self setSheetDetails:v16];
-  v17 = [v14 title];
-  [(HUCameraUpgradeOfferBannerItem *)self setOfferTitle:v17];
+  [(HUCameraUpgradeOfferBannerItem *)self setSheetDetails:sheetDetails];
+  title = [bubbleDetails title];
+  [(HUCameraUpgradeOfferBannerItem *)self setOfferTitle:title];
 
-  v18 = [v14 message];
-  [(HUCameraUpgradeOfferBannerItem *)self setOfferMessage:v18];
+  message = [bubbleDetails message];
+  [(HUCameraUpgradeOfferBannerItem *)self setOfferMessage:message];
 
-  v19 = [v14 actions];
-  v20 = [v19 firstObject];
-  v21 = [v20 text];
-  [(HUCameraUpgradeOfferBannerItem *)self setOfferActionTitle:v21];
+  actions = [bubbleDetails actions];
+  firstObject = [actions firstObject];
+  text = [firstObject text];
+  [(HUCameraUpgradeOfferBannerItem *)self setOfferActionTitle:text];
 
-  v22 = [v16 actions];
-  v23 = [v22 firstObject];
-  v24 = [v23 text];
-  [(HUCameraUpgradeOfferBannerItem *)self setSheetActionText:v24];
+  actions2 = [sheetDetails actions];
+  firstObject2 = [actions2 firstObject];
+  text2 = [firstObject2 text];
+  [(HUCameraUpgradeOfferBannerItem *)self setSheetActionText:text2];
 
-  v25 = [v16 title];
-  [(HUCameraUpgradeOfferBannerItem *)self setSheetTitle:v25];
+  title2 = [sheetDetails title];
+  [(HUCameraUpgradeOfferBannerItem *)self setSheetTitle:title2];
 
   v38 = 0;
   v39 = &v38;
@@ -521,20 +521,20 @@ void __51__HUCameraUpgradeOfferBannerItem_fetchPremiumOffer__block_invoke_3(uint
   _Block_object_dispose(&v38, 8);
   if (!v26)
   {
-    v36 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v37 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getkICQOpportunitySheetDefaultKey(void)"];
-    [v36 handleFailureInFunction:v37 file:@"HUCameraUpgradeOfferBannerItem.m" lineNumber:33 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v37 file:@"HUCameraUpgradeOfferBannerItem.m" lineNumber:33 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
 
-  v29 = [v16 messageForKey:*v26];
+  v29 = [sheetDetails messageForKey:*v26];
   [(HUCameraUpgradeOfferBannerItem *)self setSheetMessage:v29];
 
   if ([MEMORY[0x277D14500] forceDisplaySingleCameraUpgradeBanner])
   {
-    v30 = [(HUCameraUpgradeOfferBannerItem *)self offerTitle];
-    v31 = v30 == 0;
+    offerTitle = [(HUCameraUpgradeOfferBannerItem *)self offerTitle];
+    v31 = offerTitle == 0;
 
     if (v31)
     {
@@ -574,16 +574,16 @@ LABEL_17:
 - (id)offerDisplayOutcome
 {
   v4 = objc_alloc_init(MEMORY[0x277D14858]);
-  v5 = [(HUCameraUpgradeOfferBannerItem *)self offerTitle];
-  [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x277D13F60]];
+  offerTitle = [(HUCameraUpgradeOfferBannerItem *)self offerTitle];
+  [v4 setObject:offerTitle forKeyedSubscript:*MEMORY[0x277D13F60]];
 
   [v4 setObject:@"Home.Banners.CameraUpgradeOffer" forKeyedSubscript:*MEMORY[0x277D13DC8]];
   v6 = MEMORY[0x277CCABB0];
-  v7 = [(HUCameraUpgradeOfferBannerItem *)self offerTitle];
-  if (v7)
+  offerTitle2 = [(HUCameraUpgradeOfferBannerItem *)self offerTitle];
+  if (offerTitle2)
   {
-    v2 = [(HUCameraUpgradeOfferBannerItem *)self offerMessage];
-    v8 = v2 == 0;
+    offerMessage = [(HUCameraUpgradeOfferBannerItem *)self offerMessage];
+    v8 = offerMessage == 0;
   }
 
   else
@@ -594,19 +594,19 @@ LABEL_17:
   v9 = [v6 numberWithInt:v8];
   [v4 setObject:v9 forKeyedSubscript:*MEMORY[0x277D13FB8]];
 
-  if (v7)
+  if (offerTitle2)
   {
   }
 
-  v10 = [(HUCameraUpgradeOfferBannerItem *)self offerMessage];
-  [v4 setObject:v10 forKeyedSubscript:*MEMORY[0x277D13E20]];
+  offerMessage2 = [(HUCameraUpgradeOfferBannerItem *)self offerMessage];
+  [v4 setObject:offerMessage2 forKeyedSubscript:*MEMORY[0x277D13E20]];
 
   v11 = objc_alloc(MEMORY[0x277D14440]);
   v12 = [v11 initWithPackageIdentifier:*MEMORY[0x277D13710] state:*MEMORY[0x277D13758]];
   [v4 setObject:v12 forKeyedSubscript:*MEMORY[0x277D13E88]];
 
-  v13 = [(HUCameraUpgradeOfferBannerItem *)self offerActionTitle];
-  [v4 setObject:v13 forKeyedSubscript:*MEMORY[0x277D13DE8]];
+  offerActionTitle = [(HUCameraUpgradeOfferBannerItem *)self offerActionTitle];
+  [v4 setObject:offerActionTitle forKeyedSubscript:*MEMORY[0x277D13DE8]];
 
   [v4 setObject:&unk_282491B80 forKeyedSubscript:@"bannerItemCategory"];
 

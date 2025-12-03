@@ -1,32 +1,32 @@
 @interface DSHardwareButtonEventHandler
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToHandler:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToHandler:(id)handler;
 - (SEL)action;
-- (void)setAction:(SEL)a3;
+- (void)setAction:(SEL)action;
 @end
 
 @implementation DSHardwareButtonEventHandler
 
-- (BOOL)isEqualToHandler:(id)a3
+- (BOOL)isEqualToHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [(DSHardwareButtonEventHandler *)self target];
-    v6 = [v4 target];
+    target = [(DSHardwareButtonEventHandler *)self target];
+    target2 = [handlerCopy target];
 
-    v7 = [(DSHardwareButtonEventHandler *)self action];
-    v8 = [v4 action];
-    v9 = [(DSHardwareButtonEventHandler *)self preventPropagation];
-    v10 = [v4 preventPropagation];
-    v11 = [(DSHardwareButtonEventHandler *)self events];
-    v12 = (v11 == [v4 events]) & ~(v9 ^ v10);
-    if (v7 != v8)
+    action = [(DSHardwareButtonEventHandler *)self action];
+    action2 = [handlerCopy action];
+    preventPropagation = [(DSHardwareButtonEventHandler *)self preventPropagation];
+    preventPropagation2 = [handlerCopy preventPropagation];
+    events = [(DSHardwareButtonEventHandler *)self events];
+    v12 = (events == [handlerCopy events]) & ~(preventPropagation ^ preventPropagation2);
+    if (action != action2)
     {
       v12 = 0;
     }
 
-    v13 = v5 == v6 && v12;
+    v13 = target == target2 && v12;
   }
 
   else
@@ -37,10 +37,10 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -48,7 +48,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(DSHardwareButtonEventHandler *)self isEqualToHandler:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(DSHardwareButtonEventHandler *)self isEqualToHandler:equalCopy];
   }
 
   return v5;
@@ -67,19 +67,19 @@
   }
 }
 
-- (void)setAction:(SEL)a3
+- (void)setAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_action = v3;
+  self->_action = actionCopy;
 }
 
 @end

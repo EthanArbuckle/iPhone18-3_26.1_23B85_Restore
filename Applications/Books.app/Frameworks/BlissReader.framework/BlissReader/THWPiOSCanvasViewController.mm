@@ -1,17 +1,17 @@
 @interface THWPiOSCanvasViewController
-- (THWPiOSCanvasViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
+- (THWPiOSCanvasViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation THWPiOSCanvasViewController
 
-- (THWPiOSCanvasViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (THWPiOSCanvasViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = THWPiOSCanvasViewController;
-  v4 = [(THWPiOSCanvasViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(THWPiOSCanvasViewController *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = +[UITraitCollection bc_allAPITraits];
@@ -30,21 +30,21 @@
   [(THWPiOSCanvasViewController *)self setTraitsCache:v3];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = THWPiOSCanvasViewController;
-  [(THWPiOSCanvasViewController *)&v6 viewWillAppear:a3];
-  v4 = [(THWPiOSCanvasViewController *)self traitsCache];
-  v5 = [(THWPiOSCanvasViewController *)self traitCollection];
-  [v4 updateTraitsWithCollection:v5];
+  [(THWPiOSCanvasViewController *)&v6 viewWillAppear:appear];
+  traitsCache = [(THWPiOSCanvasViewController *)self traitsCache];
+  traitCollection = [(THWPiOSCanvasViewController *)self traitCollection];
+  [traitsCache updateTraitsWithCollection:traitCollection];
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v6 = [(THWPiOSCanvasViewController *)self traitsCache:a3];
-  v5 = [(THWPiOSCanvasViewController *)self traitCollection];
-  [v6 updateTraitsWithCollection:v5];
+  v6 = [(THWPiOSCanvasViewController *)self traitsCache:change];
+  traitCollection = [(THWPiOSCanvasViewController *)self traitCollection];
+  [v6 updateTraitsWithCollection:traitCollection];
 }
 
 @end

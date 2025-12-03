@@ -1,17 +1,17 @@
 @interface SFPrivacyReportTrackerTableViewCell
-- (SFPrivacyReportTrackerTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)setTracker:(id)a3;
+- (SFPrivacyReportTrackerTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)setTracker:(id)tracker;
 @end
 
 @implementation SFPrivacyReportTrackerTableViewCell
 
-- (SFPrivacyReportTrackerTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SFPrivacyReportTrackerTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v4 = [(SFPrivacyReportTrackingTableViewCell *)self initWithDetailLabel:1 reuseIdentifier:a4];
+  v4 = [(SFPrivacyReportTrackingTableViewCell *)self initWithDetailLabel:1 reuseIdentifier:identifier];
   if (v4)
   {
-    v5 = [MEMORY[0x1E69DC888] systemTealColor];
-    [(SFPrivacyReportTrackerTableViewCell *)v4 setTintColor:v5];
+    systemTealColor = [MEMORY[0x1E69DC888] systemTealColor];
+    [(SFPrivacyReportTrackerTableViewCell *)v4 setTintColor:systemTealColor];
 
     v6 = v4;
   }
@@ -19,25 +19,25 @@
   return v4;
 }
 
-- (void)setTracker:(id)a3
+- (void)setTracker:(id)tracker
 {
-  v5 = a3;
-  if (self->_tracker != v5)
+  trackerCopy = tracker;
+  if (self->_tracker != trackerCopy)
   {
-    v11 = v5;
-    objc_storeStrong(&self->_tracker, a3);
-    v6 = [(WBSKnownTrackingThirdParty *)v11 domain];
-    v7 = [(SFPrivacyReportTrackingTableViewCell *)self domainLabel];
-    [v7 setText:v6];
+    v11 = trackerCopy;
+    objc_storeStrong(&self->_tracker, tracker);
+    domain = [(WBSKnownTrackingThirdParty *)v11 domain];
+    domainLabel = [(SFPrivacyReportTrackingTableViewCell *)self domainLabel];
+    [domainLabel setText:domain];
 
-    v8 = [(WBSKnownTrackingThirdParty *)v11 ownerName];
-    v9 = [(SFPrivacyReportTrackingTableViewCell *)self domainDetailLabel];
-    [v9 setText:v8];
+    ownerName = [(WBSKnownTrackingThirdParty *)v11 ownerName];
+    domainDetailLabel = [(SFPrivacyReportTrackingTableViewCell *)self domainDetailLabel];
+    [domainDetailLabel setText:ownerName];
 
-    v10 = [(WBSKnownTrackingThirdParty *)v11 firstParties];
-    -[SFPrivacyReportTrackingTableViewCell setCount:](self, "setCount:", [v10 count]);
+    firstParties = [(WBSKnownTrackingThirdParty *)v11 firstParties];
+    -[SFPrivacyReportTrackingTableViewCell setCount:](self, "setCount:", [firstParties count]);
 
-    v5 = v11;
+    trackerCopy = v11;
   }
 }
 

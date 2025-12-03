@@ -1,22 +1,22 @@
 @interface MFAttachmentMarkup
-+ (id)attachmentMarkupWithProperties:(id)a3 contentID:(id)a4 mimeType:(id)a5 filename:(id)a6 contextID:(id)a7;
++ (id)attachmentMarkupWithProperties:(id)properties contentID:(id)d mimeType:(id)type filename:(id)filename contextID:(id)iD;
 @end
 
 @implementation MFAttachmentMarkup
 
-+ (id)attachmentMarkupWithProperties:(id)a3 contentID:(id)a4 mimeType:(id)a5 filename:(id)a6 contextID:(id)a7
++ (id)attachmentMarkupWithProperties:(id)properties contentID:(id)d mimeType:(id)type filename:(id)filename contextID:(id)iD
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  propertiesCopy = properties;
+  dCopy = d;
+  typeCopy = type;
+  filenameCopy = filename;
+  iDCopy = iD;
   v16 = objc_alloc_init(MFAttachmentMarkup);
-  [(MFAttachmentMarkup *)v16 setAttachmentData:v11];
-  [(MFAttachmentMarkup *)v16 setContentID:v12];
-  [(MFAttachmentMarkup *)v16 setMimeType:v13];
-  [(MFAttachmentMarkup *)v16 setFilename:v14];
-  [(MFAttachmentMarkup *)v16 setContextID:v15];
+  [(MFAttachmentMarkup *)v16 setAttachmentData:propertiesCopy];
+  [(MFAttachmentMarkup *)v16 setContentID:dCopy];
+  [(MFAttachmentMarkup *)v16 setMimeType:typeCopy];
+  [(MFAttachmentMarkup *)v16 setFilename:filenameCopy];
+  [(MFAttachmentMarkup *)v16 setContextID:iDCopy];
 
   return v16;
 }

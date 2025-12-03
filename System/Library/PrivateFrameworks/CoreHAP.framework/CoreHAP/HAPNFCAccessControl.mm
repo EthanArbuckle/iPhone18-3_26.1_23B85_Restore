@@ -1,12 +1,12 @@
 @interface HAPNFCAccessControl
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPNFCAccessControl)init;
-- (HAPNFCAccessControl)initWithOperationType:(id)a3 issuerKeyRequest:(id)a4 issuerKeyResponse:(id)a5 deviceCredentialKeyRequest:(id)a6 deviceCredentialKeyResponse:(id)a7 readerKeyRequest:(id)a8 readerKeyResponse:(id)a9;
+- (HAPNFCAccessControl)initWithOperationType:(id)type issuerKeyRequest:(id)request issuerKeyResponse:(id)response deviceCredentialKeyRequest:(id)keyRequest deviceCredentialKeyResponse:(id)keyResponse readerKeyRequest:(id)readerKeyRequest readerKeyResponse:(id)readerKeyResponse;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPNFCAccessControl
@@ -14,22 +14,22 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAPNFCAccessControl *)self operationType];
-  v5 = [(HAPNFCAccessControl *)self issuerKeyRequest];
-  v6 = [(HAPNFCAccessControl *)self issuerKeyResponse];
-  v7 = [(HAPNFCAccessControl *)self deviceCredentialKeyRequest];
-  v8 = [(HAPNFCAccessControl *)self deviceCredentialKeyResponse];
-  v9 = [(HAPNFCAccessControl *)self readerKeyRequest];
-  v10 = [(HAPNFCAccessControl *)self readerKeyResponse];
-  v11 = [v3 stringWithFormat:@"<HAPNFCAccessControl operationType=%@, issuerKeyRequest=%@, issuerKeyResponse=%@, deviceCredentialKeyRequest=%@, deviceCredentialKeyResponse=%@, readerKeyRequest=%@, readerKeyResponse=%@>", v4, v5, v6, v7, v8, v9, v10];
+  operationType = [(HAPNFCAccessControl *)self operationType];
+  issuerKeyRequest = [(HAPNFCAccessControl *)self issuerKeyRequest];
+  issuerKeyResponse = [(HAPNFCAccessControl *)self issuerKeyResponse];
+  deviceCredentialKeyRequest = [(HAPNFCAccessControl *)self deviceCredentialKeyRequest];
+  deviceCredentialKeyResponse = [(HAPNFCAccessControl *)self deviceCredentialKeyResponse];
+  readerKeyRequest = [(HAPNFCAccessControl *)self readerKeyRequest];
+  readerKeyResponse = [(HAPNFCAccessControl *)self readerKeyResponse];
+  v11 = [v3 stringWithFormat:@"<HAPNFCAccessControl operationType=%@, issuerKeyRequest=%@, issuerKeyResponse=%@, deviceCredentialKeyRequest=%@, deviceCredentialKeyResponse=%@, readerKeyRequest=%@, readerKeyResponse=%@>", operationType, issuerKeyRequest, issuerKeyResponse, deviceCredentialKeyRequest, deviceCredentialKeyResponse, readerKeyRequest, readerKeyResponse];
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -39,34 +39,34 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HAPNFCAccessControl *)self operationType];
-      v7 = [(HAPNFCAccessControl *)v5 operationType];
-      if (v6 != v7)
+      v5 = equalCopy;
+      operationType = [(HAPNFCAccessControl *)self operationType];
+      operationType2 = [(HAPNFCAccessControl *)v5 operationType];
+      if (operationType != operationType2)
       {
-        v8 = [(HAPNFCAccessControl *)self operationType];
-        v58 = [(HAPNFCAccessControl *)v5 operationType];
-        v59 = v8;
-        if (![v8 isEqual:?])
+        operationType3 = [(HAPNFCAccessControl *)self operationType];
+        operationType4 = [(HAPNFCAccessControl *)v5 operationType];
+        v59 = operationType3;
+        if (![operationType3 isEqual:?])
         {
           v9 = 0;
           goto LABEL_39;
         }
       }
 
-      v10 = [(HAPNFCAccessControl *)self issuerKeyRequest];
-      v11 = [(HAPNFCAccessControl *)v5 issuerKeyRequest];
-      if (v10 != v11)
+      issuerKeyRequest = [(HAPNFCAccessControl *)self issuerKeyRequest];
+      issuerKeyRequest2 = [(HAPNFCAccessControl *)v5 issuerKeyRequest];
+      if (issuerKeyRequest != issuerKeyRequest2)
       {
-        v12 = [(HAPNFCAccessControl *)self issuerKeyRequest];
-        v55 = [(HAPNFCAccessControl *)v5 issuerKeyRequest];
-        if (![v12 isEqual:?])
+        issuerKeyRequest3 = [(HAPNFCAccessControl *)self issuerKeyRequest];
+        issuerKeyRequest4 = [(HAPNFCAccessControl *)v5 issuerKeyRequest];
+        if (![issuerKeyRequest3 isEqual:?])
         {
           v9 = 0;
 LABEL_37:
 
 LABEL_38:
-          if (v6 == v7)
+          if (operationType == operationType2)
           {
 LABEL_40:
 
@@ -78,26 +78,26 @@ LABEL_39:
           goto LABEL_40;
         }
 
-        v54 = v12;
+        v54 = issuerKeyRequest3;
       }
 
-      v13 = [(HAPNFCAccessControl *)self issuerKeyResponse];
-      v56 = [(HAPNFCAccessControl *)v5 issuerKeyResponse];
-      v57 = v13;
-      if (v13 != v56)
+      issuerKeyResponse = [(HAPNFCAccessControl *)self issuerKeyResponse];
+      issuerKeyResponse2 = [(HAPNFCAccessControl *)v5 issuerKeyResponse];
+      v57 = issuerKeyResponse;
+      if (issuerKeyResponse != issuerKeyResponse2)
       {
-        v14 = [(HAPNFCAccessControl *)self issuerKeyResponse];
-        v50 = [(HAPNFCAccessControl *)v5 issuerKeyResponse];
-        v51 = v14;
-        if (![v14 isEqual:?])
+        issuerKeyResponse3 = [(HAPNFCAccessControl *)self issuerKeyResponse];
+        issuerKeyResponse4 = [(HAPNFCAccessControl *)v5 issuerKeyResponse];
+        v51 = issuerKeyResponse3;
+        if (![issuerKeyResponse3 isEqual:?])
         {
           v9 = 0;
-          v15 = v56;
+          v15 = issuerKeyResponse2;
 LABEL_35:
 
 LABEL_36:
-          v12 = v54;
-          if (v10 == v11)
+          issuerKeyRequest3 = v54;
+          if (issuerKeyRequest == issuerKeyRequest2)
           {
             goto LABEL_38;
           }
@@ -106,29 +106,29 @@ LABEL_36:
         }
       }
 
-      v16 = [(HAPNFCAccessControl *)self deviceCredentialKeyRequest];
-      v17 = [(HAPNFCAccessControl *)v5 deviceCredentialKeyRequest];
-      v52 = v10;
-      v53 = v16;
-      v18 = v16 == v17;
-      v19 = v17;
+      deviceCredentialKeyRequest = [(HAPNFCAccessControl *)self deviceCredentialKeyRequest];
+      deviceCredentialKeyRequest2 = [(HAPNFCAccessControl *)v5 deviceCredentialKeyRequest];
+      v52 = issuerKeyRequest;
+      v53 = deviceCredentialKeyRequest;
+      v18 = deviceCredentialKeyRequest == deviceCredentialKeyRequest2;
+      v19 = deviceCredentialKeyRequest2;
       if (!v18)
       {
-        v20 = [(HAPNFCAccessControl *)self deviceCredentialKeyRequest];
-        v46 = [(HAPNFCAccessControl *)v5 deviceCredentialKeyRequest];
-        v47 = v20;
-        if (![v20 isEqual:?])
+        deviceCredentialKeyRequest3 = [(HAPNFCAccessControl *)self deviceCredentialKeyRequest];
+        deviceCredentialKeyRequest4 = [(HAPNFCAccessControl *)v5 deviceCredentialKeyRequest];
+        v47 = deviceCredentialKeyRequest3;
+        if (![deviceCredentialKeyRequest3 isEqual:?])
         {
-          v21 = v56;
+          v21 = issuerKeyResponse2;
           v9 = 0;
           v22 = v53;
 LABEL_33:
 
 LABEL_34:
-          v13 = v57;
+          issuerKeyResponse = v57;
           v15 = v21;
           v18 = v57 == v21;
-          v10 = v52;
+          issuerKeyRequest = v52;
           if (v18)
           {
             goto LABEL_36;
@@ -138,18 +138,18 @@ LABEL_34:
         }
       }
 
-      v23 = [(HAPNFCAccessControl *)self deviceCredentialKeyResponse];
-      v24 = [(HAPNFCAccessControl *)v5 deviceCredentialKeyResponse];
-      v48 = v23;
+      deviceCredentialKeyResponse = [(HAPNFCAccessControl *)self deviceCredentialKeyResponse];
+      deviceCredentialKeyResponse2 = [(HAPNFCAccessControl *)v5 deviceCredentialKeyResponse];
+      v48 = deviceCredentialKeyResponse;
       v49 = v19;
-      v18 = v23 == v24;
-      v25 = v24;
+      v18 = deviceCredentialKeyResponse == deviceCredentialKeyResponse2;
+      v25 = deviceCredentialKeyResponse2;
       if (!v18)
       {
-        v26 = [(HAPNFCAccessControl *)self deviceCredentialKeyResponse];
-        v42 = [(HAPNFCAccessControl *)v5 deviceCredentialKeyResponse];
-        v43 = v26;
-        if (![v26 isEqual:?])
+        deviceCredentialKeyResponse3 = [(HAPNFCAccessControl *)self deviceCredentialKeyResponse];
+        deviceCredentialKeyResponse4 = [(HAPNFCAccessControl *)v5 deviceCredentialKeyResponse];
+        v43 = deviceCredentialKeyResponse3;
+        if (![deviceCredentialKeyResponse3 isEqual:?])
         {
           v9 = 0;
           v31 = v48;
@@ -157,15 +157,15 @@ LABEL_34:
         }
       }
 
-      v27 = [(HAPNFCAccessControl *)self readerKeyRequest];
-      v44 = [(HAPNFCAccessControl *)v5 readerKeyRequest];
-      v45 = v27;
-      if (v27 == v44 || (-[HAPNFCAccessControl readerKeyRequest](self, "readerKeyRequest"), v28 = objc_claimAutoreleasedReturnValue(), -[HAPNFCAccessControl readerKeyRequest](v5, "readerKeyRequest"), v40 = objc_claimAutoreleasedReturnValue(), v41 = v28, [v28 isEqual:?]))
+      readerKeyRequest = [(HAPNFCAccessControl *)self readerKeyRequest];
+      readerKeyRequest2 = [(HAPNFCAccessControl *)v5 readerKeyRequest];
+      v45 = readerKeyRequest;
+      if (readerKeyRequest == readerKeyRequest2 || (-[HAPNFCAccessControl readerKeyRequest](self, "readerKeyRequest"), v28 = objc_claimAutoreleasedReturnValue(), -[HAPNFCAccessControl readerKeyRequest](v5, "readerKeyRequest"), v40 = objc_claimAutoreleasedReturnValue(), v41 = v28, [v28 isEqual:?]))
       {
-        v32 = [(HAPNFCAccessControl *)self readerKeyResponse];
-        v33 = [(HAPNFCAccessControl *)v5 readerKeyResponse];
-        v34 = v33;
-        if (v32 == v33)
+        readerKeyResponse = [(HAPNFCAccessControl *)self readerKeyResponse];
+        readerKeyResponse2 = [(HAPNFCAccessControl *)v5 readerKeyResponse];
+        v34 = readerKeyResponse2;
+        if (readerKeyResponse == readerKeyResponse2)
         {
 
           v9 = 1;
@@ -176,22 +176,22 @@ LABEL_34:
           [(HAPNFCAccessControl *)self readerKeyResponse];
           v36 = v35 = v25;
           [(HAPNFCAccessControl *)v5 readerKeyResponse];
-          v37 = v39 = v32;
+          v37 = v39 = readerKeyResponse;
           v9 = [v36 isEqual:v37];
 
           v25 = v35;
         }
 
-        v30 = v44;
+        v30 = readerKeyRequest2;
         v29 = v45;
-        if (v45 == v44)
+        if (v45 == readerKeyRequest2)
         {
 LABEL_29:
 
           v31 = v48;
           if (v48 == v25)
           {
-            v21 = v56;
+            v21 = issuerKeyResponse2;
 LABEL_32:
 
             v22 = v53;
@@ -205,7 +205,7 @@ LABEL_32:
           }
 
 LABEL_30:
-          v21 = v56;
+          v21 = issuerKeyResponse2;
 
           goto LABEL_32;
         }
@@ -214,7 +214,7 @@ LABEL_30:
       else
       {
         v9 = 0;
-        v30 = v44;
+        v30 = readerKeyRequest2;
         v29 = v45;
       }
 
@@ -229,22 +229,22 @@ LABEL_41:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPNFCAccessControl allocWithZone:a3];
-  v5 = [(HAPNFCAccessControl *)self operationType];
-  v6 = [(HAPNFCAccessControl *)self issuerKeyRequest];
-  v7 = [(HAPNFCAccessControl *)self issuerKeyResponse];
-  v8 = [(HAPNFCAccessControl *)self deviceCredentialKeyRequest];
-  v9 = [(HAPNFCAccessControl *)self deviceCredentialKeyResponse];
-  v10 = [(HAPNFCAccessControl *)self readerKeyRequest];
-  v11 = [(HAPNFCAccessControl *)self readerKeyResponse];
-  v12 = [(HAPNFCAccessControl *)v4 initWithOperationType:v5 issuerKeyRequest:v6 issuerKeyResponse:v7 deviceCredentialKeyRequest:v8 deviceCredentialKeyResponse:v9 readerKeyRequest:v10 readerKeyResponse:v11];
+  v4 = [HAPNFCAccessControl allocWithZone:zone];
+  operationType = [(HAPNFCAccessControl *)self operationType];
+  issuerKeyRequest = [(HAPNFCAccessControl *)self issuerKeyRequest];
+  issuerKeyResponse = [(HAPNFCAccessControl *)self issuerKeyResponse];
+  deviceCredentialKeyRequest = [(HAPNFCAccessControl *)self deviceCredentialKeyRequest];
+  deviceCredentialKeyResponse = [(HAPNFCAccessControl *)self deviceCredentialKeyResponse];
+  readerKeyRequest = [(HAPNFCAccessControl *)self readerKeyRequest];
+  readerKeyResponse = [(HAPNFCAccessControl *)self readerKeyResponse];
+  v12 = [(HAPNFCAccessControl *)v4 initWithOperationType:operationType issuerKeyRequest:issuerKeyRequest issuerKeyResponse:issuerKeyResponse deviceCredentialKeyRequest:deviceCredentialKeyRequest deviceCredentialKeyResponse:deviceCredentialKeyResponse readerKeyRequest:readerKeyRequest readerKeyResponse:readerKeyResponse];
 
   return v12;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v76 = *MEMORY[0x277D85DE8];
   v74 = 0u;
@@ -269,13 +269,13 @@ LABEL_41:
   v57 = 0u;
   v55 = 0u;
   TLV8BufferInit();
-  v5 = [(HAPNFCAccessControl *)self operationType];
+  operationType = [(HAPNFCAccessControl *)self operationType];
 
-  if (v5)
+  if (operationType)
   {
-    v6 = [(HAPNFCAccessControl *)self operationType];
+    operationType2 = [(HAPNFCAccessControl *)self operationType];
     v54 = 0;
-    v7 = [v6 serializeWithError:&v54];
+    v7 = [operationType2 serializeWithError:&v54];
     v8 = v54;
 
     if (v8)
@@ -290,11 +290,11 @@ LABEL_41:
     if (v9)
     {
 LABEL_54:
-      if (a3)
+      if (error)
       {
         HMErrorFromOSStatus(v9);
         v8 = 0;
-        *a3 = v39 = 0;
+        *error = v39 = 0;
         goto LABEL_58;
       }
 
@@ -303,30 +303,30 @@ LABEL_54:
     }
   }
 
-  v10 = [(HAPNFCAccessControl *)self issuerKeyRequest];
+  issuerKeyRequest = [(HAPNFCAccessControl *)self issuerKeyRequest];
 
-  if (v10)
+  if (issuerKeyRequest)
   {
-    v11 = [(HAPNFCAccessControl *)self issuerKeyRequest];
+    issuerKeyRequest2 = [(HAPNFCAccessControl *)self issuerKeyRequest];
     v53 = 0;
-    v7 = [v11 serializeWithError:&v53];
+    v7 = [issuerKeyRequest2 serializeWithError:&v53];
     v8 = v53;
 
     if (!v8)
     {
-      v12 = [v7 bytes];
-      v13 = v12 + [v7 length];
+      bytes = [v7 bytes];
+      v13 = bytes + [v7 length];
       while (1)
       {
-        v14 = (v13 - v12) >= 255 ? 255 : v13 - v12;
+        v14 = (v13 - bytes) >= 255 ? 255 : v13 - bytes;
         v15 = TLV8BufferAppend();
         if (v15)
         {
           goto LABEL_53;
         }
 
-        v12 += v14;
-        if (v12 >= v13)
+        bytes += v14;
+        if (bytes >= v13)
         {
 
           goto LABEL_13;
@@ -336,11 +336,11 @@ LABEL_54:
 
 LABEL_51:
 
-    if (a3)
+    if (error)
     {
       v38 = v8;
       v39 = 0;
-      *a3 = v8;
+      *error = v8;
       goto LABEL_58;
     }
 
@@ -350,13 +350,13 @@ LABEL_57:
   }
 
 LABEL_13:
-  v16 = [(HAPNFCAccessControl *)self issuerKeyResponse];
+  issuerKeyResponse = [(HAPNFCAccessControl *)self issuerKeyResponse];
 
-  if (v16)
+  if (issuerKeyResponse)
   {
-    v17 = [(HAPNFCAccessControl *)self issuerKeyResponse];
+    issuerKeyResponse2 = [(HAPNFCAccessControl *)self issuerKeyResponse];
     v52 = 0;
-    v7 = [v17 serializeWithError:&v52];
+    v7 = [issuerKeyResponse2 serializeWithError:&v52];
     v8 = v52;
 
     if (v8)
@@ -364,19 +364,19 @@ LABEL_13:
       goto LABEL_51;
     }
 
-    v18 = [v7 bytes];
-    v19 = v18 + [v7 length];
+    bytes2 = [v7 bytes];
+    v19 = bytes2 + [v7 length];
     while (1)
     {
-      v20 = (v19 - v18) >= 255 ? 255 : v19 - v18;
+      v20 = (v19 - bytes2) >= 255 ? 255 : v19 - bytes2;
       v15 = TLV8BufferAppend();
       if (v15)
       {
         goto LABEL_53;
       }
 
-      v18 += v20;
-      if (v18 >= v19)
+      bytes2 += v20;
+      if (bytes2 >= v19)
       {
 
         break;
@@ -384,13 +384,13 @@ LABEL_13:
     }
   }
 
-  v21 = [(HAPNFCAccessControl *)self deviceCredentialKeyRequest];
+  deviceCredentialKeyRequest = [(HAPNFCAccessControl *)self deviceCredentialKeyRequest];
 
-  if (v21)
+  if (deviceCredentialKeyRequest)
   {
-    v22 = [(HAPNFCAccessControl *)self deviceCredentialKeyRequest];
+    deviceCredentialKeyRequest2 = [(HAPNFCAccessControl *)self deviceCredentialKeyRequest];
     v51 = 0;
-    v7 = [v22 serializeWithError:&v51];
+    v7 = [deviceCredentialKeyRequest2 serializeWithError:&v51];
     v8 = v51;
 
     if (v8)
@@ -398,19 +398,19 @@ LABEL_13:
       goto LABEL_51;
     }
 
-    v23 = [v7 bytes];
-    v24 = v23 + [v7 length];
+    bytes3 = [v7 bytes];
+    v24 = bytes3 + [v7 length];
     while (1)
     {
-      v25 = (v24 - v23) >= 255 ? 255 : v24 - v23;
+      v25 = (v24 - bytes3) >= 255 ? 255 : v24 - bytes3;
       v15 = TLV8BufferAppend();
       if (v15)
       {
         goto LABEL_53;
       }
 
-      v23 += v25;
-      if (v23 >= v24)
+      bytes3 += v25;
+      if (bytes3 >= v24)
       {
 
         break;
@@ -418,13 +418,13 @@ LABEL_13:
     }
   }
 
-  v26 = [(HAPNFCAccessControl *)self deviceCredentialKeyResponse];
+  deviceCredentialKeyResponse = [(HAPNFCAccessControl *)self deviceCredentialKeyResponse];
 
-  if (v26)
+  if (deviceCredentialKeyResponse)
   {
-    v27 = [(HAPNFCAccessControl *)self deviceCredentialKeyResponse];
+    deviceCredentialKeyResponse2 = [(HAPNFCAccessControl *)self deviceCredentialKeyResponse];
     v50 = 0;
-    v7 = [v27 serializeWithError:&v50];
+    v7 = [deviceCredentialKeyResponse2 serializeWithError:&v50];
     v8 = v50;
 
     if (v8)
@@ -432,19 +432,19 @@ LABEL_13:
       goto LABEL_51;
     }
 
-    v28 = [v7 bytes];
-    v29 = v28 + [v7 length];
+    bytes4 = [v7 bytes];
+    v29 = bytes4 + [v7 length];
     while (1)
     {
-      v30 = (v29 - v28) >= 255 ? 255 : v29 - v28;
+      v30 = (v29 - bytes4) >= 255 ? 255 : v29 - bytes4;
       v15 = TLV8BufferAppend();
       if (v15)
       {
         goto LABEL_53;
       }
 
-      v28 += v30;
-      if (v28 >= v29)
+      bytes4 += v30;
+      if (bytes4 >= v29)
       {
 
         break;
@@ -452,13 +452,13 @@ LABEL_13:
     }
   }
 
-  v31 = [(HAPNFCAccessControl *)self readerKeyRequest];
+  readerKeyRequest = [(HAPNFCAccessControl *)self readerKeyRequest];
 
-  if (v31)
+  if (readerKeyRequest)
   {
-    v32 = [(HAPNFCAccessControl *)self readerKeyRequest];
+    readerKeyRequest2 = [(HAPNFCAccessControl *)self readerKeyRequest];
     v49 = 0;
-    v7 = [v32 serializeWithError:&v49];
+    v7 = [readerKeyRequest2 serializeWithError:&v49];
     v8 = v49;
 
     if (v8)
@@ -466,19 +466,19 @@ LABEL_13:
       goto LABEL_51;
     }
 
-    v33 = [v7 bytes];
-    v34 = v33 + [v7 length];
+    bytes5 = [v7 bytes];
+    v34 = bytes5 + [v7 length];
     while (1)
     {
-      v35 = (v34 - v33) >= 255 ? 255 : v34 - v33;
+      v35 = (v34 - bytes5) >= 255 ? 255 : v34 - bytes5;
       v15 = TLV8BufferAppend();
       if (v15)
       {
         break;
       }
 
-      v33 += v35;
-      if (v33 >= v34)
+      bytes5 += v35;
+      if (bytes5 >= v34)
       {
 
         goto LABEL_49;
@@ -492,13 +492,13 @@ LABEL_53:
   }
 
 LABEL_49:
-  v36 = [(HAPNFCAccessControl *)self readerKeyResponse];
+  readerKeyResponse = [(HAPNFCAccessControl *)self readerKeyResponse];
 
-  if (v36)
+  if (readerKeyResponse)
   {
-    v37 = [(HAPNFCAccessControl *)self readerKeyResponse];
+    readerKeyResponse2 = [(HAPNFCAccessControl *)self readerKeyResponse];
     v48 = 0;
-    v7 = [v37 serializeWithError:&v48];
+    v7 = [readerKeyResponse2 serializeWithError:&v48];
     v8 = v48;
 
     if (v8)
@@ -506,18 +506,18 @@ LABEL_49:
       goto LABEL_51;
     }
 
-    v42 = [v7 bytes];
-    v43 = v42 + [v7 length];
+    bytes6 = [v7 bytes];
+    v43 = bytes6 + [v7 length];
     do
     {
-      if ((v43 - v42) >= 255)
+      if ((v43 - bytes6) >= 255)
       {
         v44 = 255;
       }
 
       else
       {
-        v44 = v43 - v42;
+        v44 = v43 - bytes6;
       }
 
       v45 = TLV8BufferAppend();
@@ -531,7 +531,7 @@ LABEL_49:
         v46 = v44;
       }
 
-      v42 += v46;
+      bytes6 += v46;
       if (v45)
       {
         v47 = 1;
@@ -539,7 +539,7 @@ LABEL_49:
 
       else
       {
-        v47 = v42 >= v43;
+        v47 = bytes6 >= v43;
       }
     }
 
@@ -562,12 +562,12 @@ LABEL_58:
   return v39;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 bytes];
-  v39 = v5;
-  v7 = [v5 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v39 = dataCopy;
+  v7 = [dataCopy length];
   if (v7 >= 1)
   {
     v8 = 0;
@@ -578,7 +578,7 @@ LABEL_58:
     v37 = 0;
     v38 = 0;
     v12 = 0;
-    v13 = v6 + v7;
+    v13 = bytes + v7;
     while (1)
     {
       v56 = 0;
@@ -588,10 +588,10 @@ LABEL_58:
       Next = TLV8GetNext();
       if (Next)
       {
-        if (a4)
+        if (error)
         {
           HMErrorFromOSStatus(Next);
-          *a4 = v33 = 0;
+          *error = v33 = 0;
         }
 
         else
@@ -642,7 +642,7 @@ LABEL_28:
             goto LABEL_29;
           case 2u:
             v52 = v8;
-            v15 = HAPTLVParseContiguousTlvs(2, v6, v13, v54, &v52);
+            v15 = HAPTLVParseContiguousTlvs(2, bytes, v13, v54, &v52);
             v16 = v52;
 
             if (v16)
@@ -658,7 +658,7 @@ LABEL_28:
             goto LABEL_28;
           case 3u:
             v50 = v8;
-            v15 = HAPTLVParseContiguousTlvs(3, v6, v13, v54, &v50);
+            v15 = HAPTLVParseContiguousTlvs(3, bytes, v13, v54, &v50);
             v16 = v50;
 
             if (!v16)
@@ -680,7 +680,7 @@ LABEL_28:
         if (v56 == 6)
         {
           v44 = v8;
-          v15 = HAPTLVParseContiguousTlvs(6, v6, v13, v54, &v44);
+          v15 = HAPTLVParseContiguousTlvs(6, bytes, v13, v54, &v44);
           v16 = v44;
 
           if (v16)
@@ -699,7 +699,7 @@ LABEL_28:
         if (v56 == 7)
         {
           v42 = v8;
-          v15 = HAPTLVParseContiguousTlvs(7, v6, v13, v54, &v42);
+          v15 = HAPTLVParseContiguousTlvs(7, bytes, v13, v54, &v42);
           v16 = v42;
 
           if (!v16)
@@ -723,7 +723,7 @@ LABEL_29:
         if (v56 == 4)
         {
           v48 = v8;
-          v15 = HAPTLVParseContiguousTlvs(4, v6, v13, v54, &v48);
+          v15 = HAPTLVParseContiguousTlvs(4, bytes, v13, v54, &v48);
           v16 = v48;
 
           if (v16)
@@ -742,7 +742,7 @@ LABEL_29:
         if (v56 == 5)
         {
           v46 = v8;
-          v15 = HAPTLVParseContiguousTlvs(5, v6, v13, v54, &v46);
+          v15 = HAPTLVParseContiguousTlvs(5, bytes, v13, v54, &v46);
           v16 = v46;
 
           if (!v16)
@@ -759,7 +759,7 @@ LABEL_29:
         }
       }
 
-      v6 = v54[0];
+      bytes = v54[0];
       if (v54[0] >= v13)
       {
         if (v8)
@@ -768,11 +768,11 @@ LABEL_32:
           v29 = v40;
           v31 = v37;
           v30 = v38;
-          if (a4)
+          if (error)
           {
             v32 = v8;
             v33 = 0;
-            *a4 = v8;
+            *error = v8;
           }
 
           else
@@ -814,28 +814,28 @@ LABEL_43:
   return v33;
 }
 
-- (HAPNFCAccessControl)initWithOperationType:(id)a3 issuerKeyRequest:(id)a4 issuerKeyResponse:(id)a5 deviceCredentialKeyRequest:(id)a6 deviceCredentialKeyResponse:(id)a7 readerKeyRequest:(id)a8 readerKeyResponse:(id)a9
+- (HAPNFCAccessControl)initWithOperationType:(id)type issuerKeyRequest:(id)request issuerKeyResponse:(id)response deviceCredentialKeyRequest:(id)keyRequest deviceCredentialKeyResponse:(id)keyResponse readerKeyRequest:(id)readerKeyRequest readerKeyResponse:(id)readerKeyResponse
 {
-  v25 = a3;
-  v24 = a4;
-  v23 = a5;
-  v22 = a6;
-  v21 = a7;
-  v16 = a8;
-  v17 = a9;
+  typeCopy = type;
+  requestCopy = request;
+  responseCopy = response;
+  keyRequestCopy = keyRequest;
+  keyResponseCopy = keyResponse;
+  readerKeyRequestCopy = readerKeyRequest;
+  readerKeyResponseCopy = readerKeyResponse;
   v26.receiver = self;
   v26.super_class = HAPNFCAccessControl;
   v18 = [(HAPNFCAccessControl *)&v26 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_operationType, a3);
-    objc_storeStrong(&v19->_issuerKeyRequest, a4);
-    objc_storeStrong(&v19->_issuerKeyResponse, a5);
-    objc_storeStrong(&v19->_deviceCredentialKeyRequest, a6);
-    objc_storeStrong(&v19->_deviceCredentialKeyResponse, a7);
-    objc_storeStrong(&v19->_readerKeyRequest, a8);
-    objc_storeStrong(&v19->_readerKeyResponse, a9);
+    objc_storeStrong(&v18->_operationType, type);
+    objc_storeStrong(&v19->_issuerKeyRequest, request);
+    objc_storeStrong(&v19->_issuerKeyResponse, response);
+    objc_storeStrong(&v19->_deviceCredentialKeyRequest, keyRequest);
+    objc_storeStrong(&v19->_deviceCredentialKeyResponse, keyResponse);
+    objc_storeStrong(&v19->_readerKeyRequest, readerKeyRequest);
+    objc_storeStrong(&v19->_readerKeyResponse, readerKeyResponse);
   }
 
   return v19;
@@ -848,24 +848,24 @@ LABEL_43:
   return [(HAPNFCAccessControl *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPNFCAccessControl);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPNFCAccessControl *)v6 parseFromData:v5 error:&v11];
+    [(HAPNFCAccessControl *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

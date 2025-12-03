@@ -1,13 +1,13 @@
 @interface CRLWPHyperlinkField
-+ (BOOL)schemeIsValidForURL:(id)a3;
-+ (BOOL)schemeIsValidForURLReference:(id)a3;
++ (BOOL)schemeIsValidForURL:(id)l;
++ (BOOL)schemeIsValidForURLReference:(id)reference;
 + (id)defaultFileURL;
 + (id)invalidURLSchemes;
-+ (id)newURLFromURLReference:(id)a3;
-+ (id)urlWithEmailAddress:(id)a3 subject:(id)a4;
-+ (int64_t)schemeFromURL:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CRLWPHyperlinkField)initWithURL:(id)a3 range:(_NSRange)a4 displayText:(id)a5 uuidString:(id)a6;
++ (id)newURLFromURLReference:(id)reference;
++ (id)urlWithEmailAddress:(id)address subject:(id)subject;
++ (int64_t)schemeFromURL:(id)l;
+- (BOOL)isEqual:(id)equal;
+- (CRLWPHyperlinkField)initWithURL:(id)l range:(_NSRange)range displayText:(id)text uuidString:(id)string;
 - (NSString)filePath;
 - (NSString)fullPath;
 - (NSString)urlPrefix;
@@ -29,43 +29,43 @@
   return result;
 }
 
-+ (int64_t)schemeFromURL:(id)a3
++ (int64_t)schemeFromURL:(id)l
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  lCopy = l;
+  v4 = lCopy;
+  if (lCopy)
   {
-    v5 = [v3 scheme];
-    v6 = [v5 lowercaseString];
+    scheme = [lCopy scheme];
+    lowercaseString = [scheme lowercaseString];
 
-    if (v6)
+    if (lowercaseString)
     {
-      if ([v6 isEqualToString:@"http"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"https"))
+      if ([lowercaseString isEqualToString:@"http"] & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"https"))
       {
         v7 = 0;
       }
 
-      else if ([v6 isEqualToString:@"file"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"keynote"))
+      else if ([lowercaseString isEqualToString:@"file"] & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"keynote"))
       {
         v7 = 1;
       }
 
-      else if ([v6 isEqualToString:@"mailto"])
+      else if ([lowercaseString isEqualToString:@"mailto"])
       {
         v7 = 2;
       }
 
-      else if ([v6 isEqualToString:@"tel"])
+      else if ([lowercaseString isEqualToString:@"tel"])
       {
         v7 = 3;
       }
 
-      else if ([v6 isEqualToString:@"pages"])
+      else if ([lowercaseString isEqualToString:@"pages"])
       {
         v7 = 5;
       }
 
-      else if ([v6 isEqualToString:@"rdar"])
+      else if ([lowercaseString isEqualToString:@"rdar"])
       {
         v7 = 8;
       }
@@ -78,11 +78,11 @@
 
     else
     {
-      v8 = [v4 absoluteString];
-      v9 = v8;
-      if (v8)
+      absoluteString = [v4 absoluteString];
+      v9 = absoluteString;
+      if (absoluteString)
       {
-        v10 = [v8 rangeOfString:@"#"];
+        v10 = [absoluteString rangeOfString:@"#"];
         v11 = [v9 rangeOfString:@"?slide"];
         v12 = [v9 hasPrefix:@"?sectionid="];
         v13 = [v9 rangeOfString:@"?sheetid="];
@@ -152,16 +152,16 @@
   return v3;
 }
 
-+ (BOOL)schemeIsValidForURL:(id)a3
++ (BOOL)schemeIsValidForURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = +[CRLWPHyperlinkField invalidURLSchemes];
-  v5 = [v3 scheme];
-  v6 = [v5 lowercaseString];
+  scheme = [lCopy scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  if (v6)
+  if (lowercaseString)
   {
-    v7 = [v4 member:v6];
+    v7 = [v4 member:lowercaseString];
     v8 = v7 == 0;
   }
 
@@ -173,10 +173,10 @@
   return v8;
 }
 
-+ (BOOL)schemeIsValidForURLReference:(id)a3
++ (BOOL)schemeIsValidForURLReference:(id)reference
 {
-  v3 = a3;
-  v4 = [[NSURL alloc] initWithString:v3];
+  referenceCopy = reference;
+  v4 = [[NSURL alloc] initWithString:referenceCopy];
   if (v4)
   {
     v5 = [objc_opt_class() schemeIsValidForURL:v4];
@@ -190,11 +190,11 @@
   return v5;
 }
 
-+ (id)urlWithEmailAddress:(id)a3 subject:(id)a4
++ (id)urlWithEmailAddress:(id)address subject:(id)subject
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  addressCopy = address;
+  subjectCopy = subject;
+  if (!addressCopy)
   {
     v12 = 0;
     goto LABEL_14;
@@ -204,16 +204,16 @@
   v8 = [v7 mutableCopy];
 
   [v8 removeCharactersInString:@"&?"];
-  v9 = [v5 stringByAddingPercentEncodingWithAllowedCharacters:v8];
+  v9 = [addressCopy stringByAddingPercentEncodingWithAllowedCharacters:v8];
   if (![v9 length])
   {
     goto LABEL_12;
   }
 
-  if (v6 && [v6 length])
+  if (subjectCopy && [subjectCopy length])
   {
     [v8 addCharactersInString:@"?"];
-    v10 = [v6 stringByAddingPercentEncodingWithAllowedCharacters:v8];
+    v10 = [subjectCopy stringByAddingPercentEncodingWithAllowedCharacters:v8];
     if ([v10 length])
     {
       v11 = [[NSString alloc] initWithFormat:@"mailto:%@?subject=%@", v9, v10];
@@ -267,15 +267,15 @@ LABEL_14:
   return v4;
 }
 
-+ (id)newURLFromURLReference:(id)a3
++ (id)newURLFromURLReference:(id)reference
 {
-  v3 = a3;
-  if (!v3)
+  referenceCopy = reference;
+  if (!referenceCopy)
   {
     goto LABEL_13;
   }
 
-  v4 = [[NSURL alloc] initWithString:v3];
+  v4 = [[NSURL alloc] initWithString:referenceCopy];
   if (!v4)
   {
     v5 = +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -287,7 +287,7 @@ LABEL_14:
     v6 = off_1019EDA68;
     if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
     {
-      sub_101351BF8(v3, v5, v6);
+      sub_101351BF8(referenceCopy, v5, v6);
     }
 
     if (qword_101AD5A10 != -1)
@@ -304,9 +304,9 @@ LABEL_14:
 
     v9 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", "+[CRLWPHyperlinkField newURLFromURLReference:]");
     v10 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/CRLWPHyperlinkField.mm"];
-    [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:171 isFatal:0 description:"Failed to create an NSURL from %@", v3];
+    [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:171 isFatal:0 description:"Failed to create an NSURL from %@", referenceCopy];
 
-    if ([v3 hasPrefix:@"mailto:"])
+    if ([referenceCopy hasPrefix:@"mailto:"])
     {
       v11 = +[NSBundle mainBundle];
       v12 = [v11 localizedStringForKey:@"mailto:no_reply@apple.com" value:0 table:0];
@@ -324,24 +324,24 @@ LABEL_14:
   return v4;
 }
 
-- (CRLWPHyperlinkField)initWithURL:(id)a3 range:(_NSRange)a4 displayText:(id)a5 uuidString:(id)a6
+- (CRLWPHyperlinkField)initWithURL:(id)l range:(_NSRange)range displayText:(id)text uuidString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  length = range.length;
+  location = range.location;
+  lCopy = l;
+  textCopy = text;
+  stringCopy = string;
   v18.receiver = self;
   v18.super_class = CRLWPHyperlinkField;
   v15 = [(CRLWPHyperlinkField *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_url, a3);
+    objc_storeStrong(&v15->_url, l);
     v16->_range.location = location;
     v16->_range.length = length;
-    objc_storeStrong(&v16->_displayText, a5);
-    [(CRLWPSmartField *)v16 setTextAttributeUUIDString:v14];
+    objc_storeStrong(&v16->_displayText, text);
+    [(CRLWPSmartField *)v16 setTextAttributeUUIDString:stringCopy];
   }
 
   return v16;
@@ -352,19 +352,19 @@ LABEL_14:
   v3 = self->_url;
   if (!v3)
   {
-    v4 = [(CRLWPHyperlinkField *)self range];
-    if (v4 == 0x7FFFFFFFFFFFFFFFLL)
+    range = [(CRLWPHyperlinkField *)self range];
+    if (range == 0x7FFFFFFFFFFFFFFFLL)
     {
       v3 = 0;
     }
 
     else
     {
-      v6 = v4;
+      v6 = range;
       v7 = v5;
       v8 = objc_opt_class();
-      v9 = [(CRLWPSmartField *)self parentStorage];
-      v10 = [v9 substringWithRange:{v6, v7}];
+      parentStorage = [(CRLWPSmartField *)self parentStorage];
+      v10 = [parentStorage substringWithRange:{v6, v7}];
       v3 = [v8 newURLFromURLReference:v10];
     }
   }
@@ -383,9 +383,9 @@ LABEL_14:
 
 - (NSString)urlPrefix
 {
-  v2 = [(NSURL *)self->_url absoluteString];
-  v3 = v2;
-  if (!v2 || ((v4 = [v2 length], v5 = objc_msgSend(v3, "crlwp_findIndexOfCharacter:range:", 58, 0, v4), (v6 = v5) != 0) ? (v7 = v5 == 0x7FFFFFFFFFFFFFFFLL) : (v7 = 1), v7 || v5 >= objc_msgSend(v3, "crlwp_findIndexOfCharacter:range:", 47, 0, v4) || v6 >= objc_msgSend(v3, "crlwp_findIndexOfCharacter:range:", 63, 0, v4) || v6 >= objc_msgSend(v3, "crlwp_findIndexOfCharacter:range:", 35, 0, v4)))
+  absoluteString = [(NSURL *)self->_url absoluteString];
+  v3 = absoluteString;
+  if (!absoluteString || ((v4 = [absoluteString length], v5 = objc_msgSend(v3, "crlwp_findIndexOfCharacter:range:", 58, 0, v4), (v6 = v5) != 0) ? (v7 = v5 == 0x7FFFFFFFFFFFFFFFLL) : (v7 = 1), v7 || v5 >= objc_msgSend(v3, "crlwp_findIndexOfCharacter:range:", 47, 0, v4) || v6 >= objc_msgSend(v3, "crlwp_findIndexOfCharacter:range:", 63, 0, v4) || v6 >= objc_msgSend(v3, "crlwp_findIndexOfCharacter:range:", 35, 0, v4)))
   {
     v8 = &stru_1018BCA28;
   }
@@ -416,15 +416,15 @@ LABEL_14:
 
 - (NSString)fullPath
 {
-  v2 = [(CRLWPHyperlinkField *)self filePath];
-  v3 = v2;
-  if (v2 && ([v2 isAbsolutePath] & 1) == 0)
+  filePath = [(CRLWPHyperlinkField *)self filePath];
+  v3 = filePath;
+  if (filePath && ([filePath isAbsolutePath] & 1) == 0)
   {
-    v4 = [@"~" stringByExpandingTildeInPath];
-    v5 = v4;
-    if (v4)
+    stringByExpandingTildeInPath = [@"~" stringByExpandingTildeInPath];
+    v5 = stringByExpandingTildeInPath;
+    if (stringByExpandingTildeInPath)
     {
-      v6 = [v4 stringByAppendingPathComponent:v3];
+      v6 = [stringByExpandingTildeInPath stringByAppendingPathComponent:v3];
 
       v3 = v6;
     }
@@ -433,10 +433,10 @@ LABEL_14:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -444,16 +444,16 @@ LABEL_14:
   else
   {
     v5 = objc_opt_class();
-    v6 = sub_100014370(v5, v4);
+    v6 = sub_100014370(v5, equalCopy);
     if (v6 && [(NSString *)self->_urlString isEqual:v6[10]])
     {
-      v7 = [(CRLWPSmartField *)self textAttributeUUIDString];
-      v8 = [v6 textAttributeUUIDString];
-      if ([v7 isEqualToString:v8] && (self->_range.location == v6[6] ? (v9 = self->_range.length == v6[7]) : (v9 = 0), v9))
+      textAttributeUUIDString = [(CRLWPSmartField *)self textAttributeUUIDString];
+      textAttributeUUIDString2 = [v6 textAttributeUUIDString];
+      if ([textAttributeUUIDString isEqualToString:textAttributeUUIDString2] && (self->_range.location == v6[6] ? (v9 = self->_range.length == v6[7]) : (v9 = 0), v9))
       {
-        v11 = [(CRLWPHyperlinkField *)self displayText];
-        v12 = [v6 displayText];
-        v10 = [v11 isEqual:v12];
+        displayText = [(CRLWPHyperlinkField *)self displayText];
+        displayText2 = [v6 displayText];
+        v10 = [displayText isEqual:displayText2];
       }
 
       else
@@ -475,11 +475,11 @@ LABEL_14:
 {
   v3 = objc_alloc_init(CRLHasher);
   [(CRLHasher *)v3 addObject:self->_urlString];
-  v4 = [(CRLWPHyperlinkField *)self displayText];
-  [(CRLHasher *)v3 addObject:v4];
+  displayText = [(CRLWPHyperlinkField *)self displayText];
+  [(CRLHasher *)v3 addObject:displayText];
 
-  v5 = [(CRLHasher *)v3 hashValue];
-  return v5;
+  hashValue = [(CRLHasher *)v3 hashValue];
+  return hashValue;
 }
 
 @end

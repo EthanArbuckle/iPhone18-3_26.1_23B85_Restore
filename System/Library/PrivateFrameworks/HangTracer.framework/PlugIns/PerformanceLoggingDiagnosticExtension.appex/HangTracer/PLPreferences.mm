@@ -1,32 +1,32 @@
 @interface PLPreferences
-+ (void)setBool:(BOOL)a3 key:(__CFString *)a4 domain:(__CFString *)a5;
-+ (void)setDouble:(double)a3 key:(__CFString *)a4 domain:(__CFString *)a5;
-+ (void)setInteger:(int64_t)a3 key:(__CFString *)a4 domain:(__CFString *)a5;
++ (void)setBool:(BOOL)bool key:(__CFString *)key domain:(__CFString *)domain;
++ (void)setDouble:(double)double key:(__CFString *)key domain:(__CFString *)domain;
++ (void)setInteger:(int64_t)integer key:(__CFString *)key domain:(__CFString *)domain;
 @end
 
 @implementation PLPreferences
 
-+ (void)setDouble:(double)a3 key:(__CFString *)a4 domain:(__CFString *)a5
++ (void)setDouble:(double)double key:(__CFString *)key domain:(__CFString *)domain
 {
-  v7 = [NSNumber numberWithDouble:a3];
-  CFPreferencesSetValue(a4, v7, a5, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+  v7 = [NSNumber numberWithDouble:double];
+  CFPreferencesSetValue(key, v7, domain, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 }
 
-+ (void)setInteger:(int64_t)a3 key:(__CFString *)a4 domain:(__CFString *)a5
++ (void)setInteger:(int64_t)integer key:(__CFString *)key domain:(__CFString *)domain
 {
-  v7 = [NSNumber numberWithInteger:a3];
-  CFPreferencesSetValue(a4, v7, a5, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+  v7 = [NSNumber numberWithInteger:integer];
+  CFPreferencesSetValue(key, v7, domain, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 }
 
-+ (void)setBool:(BOOL)a3 key:(__CFString *)a4 domain:(__CFString *)a5
++ (void)setBool:(BOOL)bool key:(__CFString *)key domain:(__CFString *)domain
 {
   v5 = &kCFBooleanTrue;
-  if (!a3)
+  if (!bool)
   {
     v5 = &kCFBooleanFalse;
   }
 
-  CFPreferencesSetValue(a4, *v5, a5, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+  CFPreferencesSetValue(key, *v5, domain, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 }
 
 @end

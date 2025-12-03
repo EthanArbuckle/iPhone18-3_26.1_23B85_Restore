@@ -1,6 +1,6 @@
 @interface ChromeMapViewDelegateProxy
 + (id)protocols;
-- (id)delegatesForSelector:(SEL)a3 protocol:(id)a4;
+- (id)delegatesForSelector:(SEL)selector protocol:(id)protocol;
 @end
 
 @implementation ChromeMapViewDelegateProxy
@@ -17,20 +17,20 @@
   return v3;
 }
 
-- (id)delegatesForSelector:(SEL)a3 protocol:(id)a4
+- (id)delegatesForSelector:(SEL)selector protocol:(id)protocol
 {
   v6 = [[NSMutableArray alloc] initWithCapacity:2];
-  v7 = [(ChromeDelegateProxy *)self chromeViewController];
-  v8 = [v7 navigationDisplay];
-  v9 = [v8 mapViewDelegate];
+  chromeViewController = [(ChromeDelegateProxy *)self chromeViewController];
+  navigationDisplay = [chromeViewController navigationDisplay];
+  mapViewDelegate = [navigationDisplay mapViewDelegate];
 
-  if (v9)
+  if (mapViewDelegate)
   {
-    [v6 addObject:v9];
+    [v6 addObject:mapViewDelegate];
   }
 
-  v10 = [(ChromeDelegateProxy *)self chromeViewController];
-  v11 = [v10 mapViewDelegateForSelector:a3];
+  chromeViewController2 = [(ChromeDelegateProxy *)self chromeViewController];
+  v11 = [chromeViewController2 mapViewDelegateForSelector:selector];
 
   if (v11)
   {

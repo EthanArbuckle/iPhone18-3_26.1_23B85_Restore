@@ -1,23 +1,23 @@
 @interface CCUIControlCenterPositionProvider
-- (CCUIControlCenterPositionProvider)initWithPackingRules:(id)a3;
-- (CCUILayoutRect)layoutRectForIdentifier:(SEL)a3;
+- (CCUIControlCenterPositionProvider)initWithPackingRules:(id)rules;
+- (CCUILayoutRect)layoutRectForIdentifier:(SEL)identifier;
 - (CCUILayoutSize)layoutSize;
 - (CCUILayoutSize)maximumLayoutSize;
-- (id)_generateRectByIdentifierWithOrderedIdentifiers:(id)a3 orderedSizes:(id)a4 packingOrder:(unint64_t)a5 startPosition:(CCUILayoutPoint)a6 maximumSize:(CCUILayoutSize)a7 outputLayoutSize:(CCUILayoutSize *)a8;
-- (void)regenerateRectsWithOrderedIdentifiers:(id)a3 orderedSizes:(id)a4;
+- (id)_generateRectByIdentifierWithOrderedIdentifiers:(id)identifiers orderedSizes:(id)sizes packingOrder:(unint64_t)order startPosition:(CCUILayoutPoint)position maximumSize:(CCUILayoutSize)size outputLayoutSize:(CCUILayoutSize *)layoutSize;
+- (void)regenerateRectsWithOrderedIdentifiers:(id)identifiers orderedSizes:(id)sizes;
 @end
 
 @implementation CCUIControlCenterPositionProvider
 
-- (CCUIControlCenterPositionProvider)initWithPackingRules:(id)a3
+- (CCUIControlCenterPositionProvider)initWithPackingRules:(id)rules
 {
-  v4 = a3;
+  rulesCopy = rules;
   v11.receiver = self;
   v11.super_class = CCUIControlCenterPositionProvider;
   v5 = [(CCUIControlCenterPositionProvider *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [rulesCopy copy];
     packingRules = v5->_packingRules;
     v5->_packingRules = v6;
 
@@ -31,26 +31,26 @@
 
 - (CCUILayoutSize)maximumLayoutSize
 {
-  v2 = [(NSArray *)self->_packingRules lastObject];
-  v3 = [v2 sizeLimit];
+  lastObject = [(NSArray *)self->_packingRules lastObject];
+  sizeLimit = [lastObject sizeLimit];
   v5 = v4;
 
-  v6 = v3;
+  v6 = sizeLimit;
   v7 = v5;
   result.height = v7;
   result.width = v6;
   return result;
 }
 
-- (void)regenerateRectsWithOrderedIdentifiers:(id)a3 orderedSizes:(id)a4
+- (void)regenerateRectsWithOrderedIdentifiers:(id)identifiers orderedSizes:(id)sizes
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  sizesCopy = sizes;
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v36 = CCUILayoutSizeZero;
-  v30 = [v6 count];
-  v31 = self;
+  v30 = [identifiersCopy count];
+  selfCopy = self;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -72,14 +72,14 @@
 
         v12 = *(*(&v32 + 1) + 8 * i);
         v13 = objc_autoreleasePoolPush();
-        v14 = [v12 packFrom];
-        if (v14 == 1)
+        packFrom = [v12 packFrom];
+        if (packFrom == 1)
         {
           v16 = 0;
           v15 = v36;
         }
 
-        else if (v14)
+        else if (packFrom)
         {
           v16 = 0;
           v15 = 0;
@@ -91,9 +91,9 @@
           v16 = *(&v36 + 1);
         }
 
-        v17 = [v12 packingOrder];
-        v18 = [v12 sizeLimit];
-        v20 = [(CCUIControlCenterPositionProvider *)v31 _generateRectByIdentifierWithOrderedIdentifiers:v6 orderedSizes:v7 packingOrder:v17 startPosition:v15 maximumSize:v16 outputLayoutSize:v18, v19, &v36];
+        packingOrder = [v12 packingOrder];
+        sizeLimit = [v12 sizeLimit];
+        v20 = [(CCUIControlCenterPositionProvider *)selfCopy _generateRectByIdentifierWithOrderedIdentifiers:identifiersCopy orderedSizes:sizesCopy packingOrder:packingOrder startPosition:v15 maximumSize:v16 outputLayoutSize:sizeLimit, v19, &v36];
         [(NSDictionary *)v8 addEntriesFromDictionary:v20];
         if ([(NSDictionary *)v8 count]== v30)
         {
@@ -106,14 +106,14 @@
         if (v21)
         {
           v22 = v21;
-          v23 = [v6 count];
+          v23 = [identifiersCopy count];
           v24 = v23 - v22;
-          v25 = [v6 subarrayWithRange:{v22, v23 - v22}];
+          v25 = [identifiersCopy subarrayWithRange:{v22, v23 - v22}];
 
-          v26 = [v7 subarrayWithRange:{v22, v24}];
+          v26 = [sizesCopy subarrayWithRange:{v22, v24}];
 
-          v7 = v26;
-          v6 = v25;
+          sizesCopy = v26;
+          identifiersCopy = v25;
         }
 
         objc_autoreleasePoolPop(v13);
@@ -131,20 +131,20 @@
 
 LABEL_18:
 
-  rectByIdentifier = v31->_rectByIdentifier;
-  v31->_rectByIdentifier = v8;
+  rectByIdentifier = selfCopy->_rectByIdentifier;
+  selfCopy->_rectByIdentifier = v8;
 
-  v31->_layoutSize = v36;
+  selfCopy->_layoutSize = v36;
 }
 
-- (id)_generateRectByIdentifierWithOrderedIdentifiers:(id)a3 orderedSizes:(id)a4 packingOrder:(unint64_t)a5 startPosition:(CCUILayoutPoint)a6 maximumSize:(CCUILayoutSize)a7 outputLayoutSize:(CCUILayoutSize *)a8
+- (id)_generateRectByIdentifierWithOrderedIdentifiers:(id)identifiers orderedSizes:(id)sizes packingOrder:(unint64_t)order startPosition:(CCUILayoutPoint)position maximumSize:(CCUILayoutSize)size outputLayoutSize:(CCUILayoutSize *)layoutSize
 {
-  var1 = a6.var1;
-  var0 = a6.var0;
-  v12 = a3;
-  v49 = a4;
-  v57 = a5;
-  if (a5 == 1)
+  var1 = position.var1;
+  var0 = position.var0;
+  identifiersCopy = identifiers;
+  sizesCopy = sizes;
+  orderCopy = order;
+  if (order == 1)
   {
     v13 = var1;
   }
@@ -155,58 +155,58 @@ LABEL_18:
   }
 
   v52 = v13;
-  if (a5 == 1)
+  if (order == 1)
   {
     var1 = var0;
-    height = a7.height;
+    height = size.height;
   }
 
   else
   {
-    height = a7.width;
+    height = size.width;
   }
 
-  if (a5 == 1)
+  if (order == 1)
   {
-    width = a7.width;
+    width = size.width;
   }
 
   else
   {
-    width = a7.height;
+    width = size.height;
   }
 
   v46 = width;
   v47 = height;
   v48 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v16 = [MEMORY[0x277CBEB38] dictionary];
-  if ([v12 count])
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if ([identifiersCopy count])
   {
     v17 = 0;
     v56 = var1;
     v44 = var1;
-    v45 = v12;
+    v45 = identifiersCopy;
     while (2)
     {
-      v18 = [v12 objectAtIndex:v17];
+      v18 = [identifiersCopy objectAtIndex:v17];
       v55 = v17;
-      v19 = [v49 objectAtIndex:v17];
-      v20 = [v19 ccui_sizeValue];
-      if (v57 == 1)
+      v19 = [sizesCopy objectAtIndex:v17];
+      ccui_sizeValue = [v19 ccui_sizeValue];
+      if (orderCopy == 1)
       {
         v22 = v21;
       }
 
       else
       {
-        v22 = v20;
+        v22 = ccui_sizeValue;
       }
 
       v53 = v21;
-      v54 = v20;
-      if (v57 == 1)
+      v54 = ccui_sizeValue;
+      if (orderCopy == 1)
       {
-        v23 = v20;
+        v23 = ccui_sizeValue;
       }
 
       else
@@ -234,7 +234,7 @@ LABEL_19:
             goto LABEL_19;
           }
 
-          v12 = v45;
+          identifiersCopy = v45;
           goto LABEL_53;
         }
 
@@ -254,7 +254,7 @@ LABEL_19:
             do
             {
               v30 = [MEMORY[0x277CCAE60] ccui_valueWithLayoutPoint:{v25, v24}];
-              v31 = [v16 objectForKey:v30];
+              v31 = [dictionary objectForKey:v30];
 
               if (v31)
               {
@@ -284,7 +284,7 @@ LABEL_19:
       }
 
       while ((v27 & 1) == 0);
-      if (v57 == 1)
+      if (orderCopy == 1)
       {
         v33 = v24;
       }
@@ -294,7 +294,7 @@ LABEL_19:
         v33 = v25;
       }
 
-      if (v57 == 1)
+      if (orderCopy == 1)
       {
         v34 = v25;
       }
@@ -328,7 +328,7 @@ LABEL_19:
             do
             {
               v39 = [MEMORY[0x277CCAE60] ccui_valueWithLayoutPoint:{v38, v24}];
-              [v16 setObject:v18 forKey:v39];
+              [dictionary setObject:v18 forKey:v39];
 
               ++v38;
               --v37;
@@ -344,7 +344,7 @@ LABEL_19:
       }
 
       v17 = v55 + 1;
-      v12 = v45;
+      identifiersCopy = v45;
       var1 = v44;
       if (v55 + 1 < [v45 count])
       {
@@ -361,11 +361,11 @@ LABEL_19:
   }
 
 LABEL_53:
-  if (a8)
+  if (layoutSize)
   {
-    v41 = a7.height;
-    v40 = a7.width;
-    if (v57 == 1)
+    v41 = size.height;
+    v40 = size.width;
+    if (orderCopy == 1)
     {
       v40 = v56;
     }
@@ -375,18 +375,18 @@ LABEL_53:
       v41 = v56;
     }
 
-    if (a8->width > v40)
+    if (layoutSize->width > v40)
     {
-      v40 = a8->width;
+      v40 = layoutSize->width;
     }
 
-    if (a8->height > v41)
+    if (layoutSize->height > v41)
     {
-      v41 = a8->height;
+      v41 = layoutSize->height;
     }
 
-    a8->width = v40;
-    a8->height = v41;
+    layoutSize->width = v40;
+    layoutSize->height = v41;
   }
 
   v42 = [v48 copy];
@@ -394,7 +394,7 @@ LABEL_53:
   return v42;
 }
 
-- (CCUILayoutRect)layoutRectForIdentifier:(SEL)a3
+- (CCUILayoutRect)layoutRectForIdentifier:(SEL)identifier
 {
   v5 = [(NSDictionary *)self->_rectByIdentifier objectForKey:a4];
   if (v5)

@@ -1,42 +1,42 @@
 @interface CarplayUtilities
-+ (BOOL)eventCanDialIn:(id)a3;
-+ (BOOL)eventCanNavigate:(id)a3;
-+ (id)dateForSection:(int64_t)a3;
-+ (int64_t)numberOfLinesInString:(id)a3;
++ (BOOL)eventCanDialIn:(id)in;
++ (BOOL)eventCanNavigate:(id)navigate;
++ (id)dateForSection:(int64_t)section;
++ (int64_t)numberOfLinesInString:(id)string;
 @end
 
 @implementation CarplayUtilities
 
-+ (BOOL)eventCanNavigate:(id)a3
++ (BOOL)eventCanNavigate:(id)navigate
 {
-  v3 = [a3 preferredLocation];
-  v4 = [EKMapsUtilities mapsURLForFallbackLocationTitle:0 structuredLocation:v3 hasMapItemLaunchOptionFromTimeToLeaveNotification:0];
+  preferredLocation = [navigate preferredLocation];
+  v4 = [EKMapsUtilities mapsURLForFallbackLocationTitle:0 structuredLocation:preferredLocation hasMapItemLaunchOptionFromTimeToLeaveNotification:0];
 
   return v4 != 0;
 }
 
-+ (BOOL)eventCanDialIn:(id)a3
++ (BOOL)eventCanDialIn:(id)in
 {
-  v3 = a3;
-  v4 = [v3 virtualConference];
-  v5 = [v4 joinMethods];
-  v6 = [v5 firstObject];
-  v7 = [v6 URL];
+  inCopy = in;
+  virtualConference = [inCopy virtualConference];
+  joinMethods = [virtualConference joinMethods];
+  firstObject = [joinMethods firstObject];
+  v7 = [firstObject URL];
   v8 = v7;
   if (v7)
   {
-    v9 = v7;
+    conferenceURLForDisplay = v7;
   }
 
   else
   {
-    v9 = [v3 conferenceURLForDisplay];
+    conferenceURLForDisplay = [inCopy conferenceURLForDisplay];
   }
 
-  v10 = v9;
+  v10 = conferenceURLForDisplay;
 
-  v11 = [v10 absoluteString];
-  v12 = [v11 length];
+  absoluteString = [v10 absoluteString];
+  v12 = [absoluteString length];
 
   if (v12)
   {
@@ -48,11 +48,11 @@
     else
     {
       v13 = [EKConferenceUtils applicationRecordForURL:v10 incomplete:0];
-      v14 = [v13 bundleIdentifier];
+      bundleIdentifier = [v13 bundleIdentifier];
 
-      if ([v14 length])
+      if ([bundleIdentifier length])
       {
-        if (_os_feature_enabled_impl() && (+[EKConferenceUtils FacetimeAppBundleID](EKConferenceUtils, "FacetimeAppBundleID"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v14 isEqualToString:v15], v15, v16))
+        if (_os_feature_enabled_impl() && (+[EKConferenceUtils FacetimeAppBundleID](EKConferenceUtils, "FacetimeAppBundleID"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [bundleIdentifier isEqualToString:v15], v15, v16))
         {
           v17 = kCalUILogCarplayHandle;
           LOBYTE(v12) = 1;
@@ -67,7 +67,7 @@
         {
           v24 = 0;
           v18 = +[FBSOpenApplicationService dashboardService];
-          LOBYTE(v12) = [v18 canOpenApplication:v14 reason:&v24];
+          LOBYTE(v12) = [v18 canOpenApplication:bundleIdentifier reason:&v24];
 
           if ((v12 & 1) == 0)
           {
@@ -97,27 +97,27 @@
   return v12;
 }
 
-+ (int64_t)numberOfLinesInString:(id)a3
++ (int64_t)numberOfLinesInString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     return 1;
   }
 
   v8 = 0;
-  v3 = a3;
+  stringCopy = string;
   v4 = [NSRegularExpression regularExpressionWithPattern:@"\n" options:0 error:&v8];
-  v5 = [v4 numberOfMatchesInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+  v5 = [v4 numberOfMatchesInString:stringCopy options:0 range:{0, objc_msgSend(stringCopy, "length")}];
 
   v6 = v5 + 1;
   return v6;
 }
 
-+ (id)dateForSection:(int64_t)a3
++ (id)dateForSection:(int64_t)section
 {
   v4 = CUIKNowDate();
   v5 = v4;
-  if (a3)
+  if (section)
   {
     v6 = +[NSCalendar currentCalendar];
     v7 = CalCopyTimeZone();

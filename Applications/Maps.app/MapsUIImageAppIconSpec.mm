@@ -1,8 +1,8 @@
 @interface MapsUIImageAppIconSpec
-- (BOOL)isEqual:(id)a3;
-- (MapsUIImageAppIconSpec)initWithBundleIdentifier:(id)a3 format:(int)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)imageForScale:(double)a3 isCarPlay:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (MapsUIImageAppIconSpec)initWithBundleIdentifier:(id)identifier format:(int)format;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)imageForScale:(double)scale isCarPlay:(BOOL)play;
 - (unint64_t)hash;
 @end
 
@@ -10,26 +10,26 @@
 
 - (unint64_t)hash
 {
-  v3 = [(MapsUIImageAppIconSpec *)self bundleIdentifier];
-  v4 = [v3 hash];
-  v5 = [(MapsUIImageAppIconSpec *)self format];
+  bundleIdentifier = [(MapsUIImageAppIconSpec *)self bundleIdentifier];
+  v4 = [bundleIdentifier hash];
+  format = [(MapsUIImageAppIconSpec *)self format];
 
-  return v4 ^ v5;
+  return v4 ^ format;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(MapsUIImageAppIconSpec *)self format];
-    if (v6 == [v5 format])
+    v5 = equalCopy;
+    format = [(MapsUIImageAppIconSpec *)self format];
+    if (format == [v5 format])
     {
-      v7 = [(MapsUIImageAppIconSpec *)self bundleIdentifier];
-      v8 = [v5 bundleIdentifier];
-      v9 = [v7 isEqualToString:v8];
+      bundleIdentifier = [(MapsUIImageAppIconSpec *)self bundleIdentifier];
+      bundleIdentifier2 = [v5 bundleIdentifier];
+      v9 = [bundleIdentifier isEqualToString:bundleIdentifier2];
     }
 
     else
@@ -46,37 +46,37 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
-  v5 = [(MapsUIImageAppIconSpec *)self bundleIdentifier];
-  [v4 setBundleIdentifier:v5];
+  bundleIdentifier = [(MapsUIImageAppIconSpec *)self bundleIdentifier];
+  [v4 setBundleIdentifier:bundleIdentifier];
 
   [v4 setFormat:-[MapsUIImageAppIconSpec format](self, "format")];
   return v4;
 }
 
-- (id)imageForScale:(double)a3 isCarPlay:(BOOL)a4
+- (id)imageForScale:(double)scale isCarPlay:(BOOL)play
 {
-  v6 = [(MapsUIImageAppIconSpec *)self bundleIdentifier];
-  v7 = [UIImage _applicationIconImageForBundleIdentifier:v6 format:[(MapsUIImageAppIconSpec *)self format] scale:a3];
+  bundleIdentifier = [(MapsUIImageAppIconSpec *)self bundleIdentifier];
+  v7 = [UIImage _applicationIconImageForBundleIdentifier:bundleIdentifier format:[(MapsUIImageAppIconSpec *)self format] scale:scale];
 
   return v7;
 }
 
-- (MapsUIImageAppIconSpec)initWithBundleIdentifier:(id)a3 format:(int)a4
+- (MapsUIImageAppIconSpec)initWithBundleIdentifier:(id)identifier format:(int)format
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = MapsUIImageAppIconSpec;
   v7 = [(MapsUIImageAppIconSpec *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     v9 = *&v7->_format;
     *&v7->_format = v8;
 
-    *(&v7->super._isRTL + 3) = a4;
+    *(&v7->super._isRTL + 3) = format;
   }
 
   return v7;

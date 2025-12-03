@@ -1,8 +1,8 @@
 @interface MTLFunctionReflectionInternal
-- (MTLFunctionReflectionInternal)initWithArguments:(id *)a3 argumentCount:(unsigned int)a4 builtInArgumentCount:(unsigned int)a5 globalBindings:(id *)a6 globalBindingCount:(unsigned int)a7 pluginReturnData:(id)a8 primitiveKind:(unint64_t)a9 tags:(id *)a10 tagCount:(unsigned int)a11 returnType:(id)a12 userAnnotation:(id)a13 attributes:(id)a14;
-- (MTLFunctionReflectionInternal)initWithDevice:(id)a3 libReflectionData:(id)a4 functionType:(unint64_t)a5;
-- (MTLFunctionReflectionInternal)initWithDevice:(id)a3 reflectionData:(id)a4 functionType:(unint64_t)a5 options:(unint64_t)a6;
-- (id)formattedDescription:(unint64_t)a3;
+- (MTLFunctionReflectionInternal)initWithArguments:(id *)arguments argumentCount:(unsigned int)count builtInArgumentCount:(unsigned int)argumentCount globalBindings:(id *)bindings globalBindingCount:(unsigned int)bindingCount pluginReturnData:(id)data primitiveKind:(unint64_t)kind tags:(id *)self0 tagCount:(unsigned int)self1 returnType:(id)self2 userAnnotation:(id)self3 attributes:(id)self4;
+- (MTLFunctionReflectionInternal)initWithDevice:(id)device libReflectionData:(id)data functionType:(unint64_t)type;
+- (MTLFunctionReflectionInternal)initWithDevice:(id)device reflectionData:(id)data functionType:(unint64_t)type options:(unint64_t)options;
+- (id)formattedDescription:(unint64_t)description;
 - (void)dealloc;
 @end
 
@@ -15,15 +15,15 @@
   [(MTLFunctionReflectionInternal *)&v3 dealloc];
 }
 
-- (MTLFunctionReflectionInternal)initWithArguments:(id *)a3 argumentCount:(unsigned int)a4 builtInArgumentCount:(unsigned int)a5 globalBindings:(id *)a6 globalBindingCount:(unsigned int)a7 pluginReturnData:(id)a8 primitiveKind:(unint64_t)a9 tags:(id *)a10 tagCount:(unsigned int)a11 returnType:(id)a12 userAnnotation:(id)a13 attributes:(id)a14
+- (MTLFunctionReflectionInternal)initWithArguments:(id *)arguments argumentCount:(unsigned int)count builtInArgumentCount:(unsigned int)argumentCount globalBindings:(id *)bindings globalBindingCount:(unsigned int)bindingCount pluginReturnData:(id)data primitiveKind:(unint64_t)kind tags:(id *)self0 tagCount:(unsigned int)self1 returnType:(id)self2 userAnnotation:(id)self3 attributes:(id)self4
 {
-  LODWORD(v15) = a7;
+  LODWORD(v15) = bindingCount;
   v30.receiver = self;
   v30.super_class = MTLFunctionReflectionInternal;
   v20 = [(MTLFunctionReflectionInternal *)&v30 init];
   if (v20)
   {
-    v21 = a4 - a5;
+    v21 = count - argumentCount;
     if (v21 + v15)
     {
       v22 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:(v21 + v15)];
@@ -35,12 +35,12 @@
     }
 
     v20->_arguments = v22;
-    if (a4 != a5)
+    if (count != argumentCount)
     {
-      v23 = a3;
+      argumentsCopy = arguments;
       do
       {
-        v24 = *v23++;
+        v24 = *argumentsCopy++;
         [(NSArray *)v20->_arguments addObject:v24];
         --v21;
       }
@@ -53,7 +53,7 @@
       v15 = v15;
       do
       {
-        v25 = *a6++;
+        v25 = *bindings++;
         [(NSArray *)v20->_arguments addObject:v25];
         --v15;
       }
@@ -61,9 +61,9 @@
       while (v15);
     }
 
-    if (a5)
+    if (argumentCount)
     {
-      v26 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:&a3[a4] - a5 count:a5];
+      v26 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:&arguments[count] - argumentCount count:argumentCount];
     }
 
     else
@@ -72,7 +72,7 @@
     }
 
     v20->_builtInArguments = v26;
-    if (a4)
+    if (count)
     {
       v27 = v20->_arguments;
     }
@@ -83,11 +83,11 @@
     }
 
     v20->_bindings = v27;
-    v20->_pluginReturnData = a8;
-    v20->_primitiveKind = a9;
-    if (a11)
+    v20->_pluginReturnData = data;
+    v20->_primitiveKind = kind;
+    if (tagCount)
     {
-      v28 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:a10 count:a11];
+      v28 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:tags count:tagCount];
     }
 
     else
@@ -96,50 +96,50 @@
     }
 
     v20->_tags = v28;
-    v20->_returnType = a12;
-    v20->_userAnnotation = a13;
-    v20->_attributes = a14;
+    v20->_returnType = type;
+    v20->_userAnnotation = annotation;
+    v20->_attributes = attributes;
   }
 
   return v20;
 }
 
-- (MTLFunctionReflectionInternal)initWithDevice:(id)a3 libReflectionData:(id)a4 functionType:(unint64_t)a5
+- (MTLFunctionReflectionInternal)initWithDevice:(id)device libReflectionData:(id)data functionType:(unint64_t)type
 {
   v7 = objc_autoreleasePoolPush();
-  if (a5 <= 4)
+  if (type <= 4)
   {
-    switch(a5)
+    switch(type)
     {
       case 1uLL:
-        ReflectionReaderFactory<MTLVertexReflectionReader>::Create(0, a4);
+        ReflectionReaderFactory<MTLVertexReflectionReader>::Create(0, data);
       case 2uLL:
-        ReflectionReaderFactory<MTLFragmentReflectionReader>::Create(0, a4);
+        ReflectionReaderFactory<MTLFragmentReflectionReader>::Create(0, data);
       case 3uLL:
-        ReflectionReaderFactory<MTLComputeReflectionReader>::Create(0, a4);
+        ReflectionReaderFactory<MTLComputeReflectionReader>::Create(0, data);
     }
   }
 
   else
   {
-    if (a5 <= 6)
+    if (type <= 6)
     {
-      if (a5 != 5)
+      if (type != 5)
       {
-        ReflectionReaderFactory<MTLIntersectionReflectionReader>::Create(0, a4);
+        ReflectionReaderFactory<MTLIntersectionReflectionReader>::Create(0, data);
       }
 
-      ReflectionReaderFactory<MTLVisibleReflectionReader>::Create(0, a4);
+      ReflectionReaderFactory<MTLVisibleReflectionReader>::Create(0, data);
     }
 
-    if (a5 == 7)
+    if (type == 7)
     {
-      ReflectionReaderFactory<MTLMeshReflectionReader>::Create(0, a4);
+      ReflectionReaderFactory<MTLMeshReflectionReader>::Create(0, data);
     }
 
-    if (a5 == 8)
+    if (type == 8)
     {
-      ReflectionReaderFactory<MTLObjectReflectionReader>::Create(0, a4);
+      ReflectionReaderFactory<MTLObjectReflectionReader>::Create(0, data);
     }
   }
 
@@ -147,60 +147,60 @@
   return 0;
 }
 
-- (MTLFunctionReflectionInternal)initWithDevice:(id)a3 reflectionData:(id)a4 functionType:(unint64_t)a5 options:(unint64_t)a6
+- (MTLFunctionReflectionInternal)initWithDevice:(id)device reflectionData:(id)data functionType:(unint64_t)type options:(unint64_t)options
 {
-  if ((a6 & 0x200008000) != 0)
+  if ((options & 0x200008000) != 0)
   {
-    v10 = MTLNewEmulationReflectionData(a4);
+    v10 = MTLNewEmulationReflectionData(data);
   }
 
   else
   {
-    v10 = MTLNewReflectionData(a4);
+    v10 = MTLNewReflectionData(data);
   }
 
   v11 = v10;
-  MTLNewReflectionPluginData(a4);
+  MTLNewReflectionPluginData(data);
   v12 = objc_autoreleasePoolPush();
-  if (a5 <= 4)
+  if (type <= 4)
   {
-    switch(a5)
+    switch(type)
     {
       case 1uLL:
-        ReflectionValidator<MTLVertexReflectionReader>::Validate(a3, a6, a4);
-        ReflectionReaderFactory<MTLVertexReflectionReader>::Create(a6, v11);
+        ReflectionValidator<MTLVertexReflectionReader>::Validate(device, options, data);
+        ReflectionReaderFactory<MTLVertexReflectionReader>::Create(options, v11);
       case 2uLL:
-        ReflectionValidator<MTLFragmentReflectionReader>::Validate(a3, a6, a4);
-        ReflectionReaderFactory<MTLFragmentReflectionReader>::Create(a6, v11);
+        ReflectionValidator<MTLFragmentReflectionReader>::Validate(device, options, data);
+        ReflectionReaderFactory<MTLFragmentReflectionReader>::Create(options, v11);
       case 3uLL:
-        ReflectionValidator<MTLComputeReflectionReader>::Validate(a3, a6, a4);
-        ReflectionReaderFactory<MTLComputeReflectionReader>::Create(a6, v11);
+        ReflectionValidator<MTLComputeReflectionReader>::Validate(device, options, data);
+        ReflectionReaderFactory<MTLComputeReflectionReader>::Create(options, v11);
     }
   }
 
   else
   {
-    if (a5 <= 6)
+    if (type <= 6)
     {
-      if (a5 != 5)
+      if (type != 5)
       {
-        ReflectionValidator<MTLIntersectionReflectionReader>::Validate(a3, a6, a4);
-        ReflectionReaderFactory<MTLIntersectionReflectionReader>::Create(a6, v11);
+        ReflectionValidator<MTLIntersectionReflectionReader>::Validate(device, options, data);
+        ReflectionReaderFactory<MTLIntersectionReflectionReader>::Create(options, v11);
       }
 
-      ReflectionReaderFactory<MTLVisibleReflectionReader>::Create(a6, v11);
+      ReflectionReaderFactory<MTLVisibleReflectionReader>::Create(options, v11);
     }
 
-    if (a5 == 7)
+    if (type == 7)
     {
-      ReflectionValidator<MTLMeshReflectionReader>::Validate(a3, a6, a4);
-      ReflectionReaderFactory<MTLMeshReflectionReader>::Create(a6, v11);
+      ReflectionValidator<MTLMeshReflectionReader>::Validate(device, options, data);
+      ReflectionReaderFactory<MTLMeshReflectionReader>::Create(options, v11);
     }
 
-    if (a5 == 8)
+    if (type == 8)
     {
-      ReflectionValidator<MTLObjectReflectionReader>::Validate(a3, a6, a4);
-      ReflectionReaderFactory<MTLObjectReflectionReader>::Create(a6, v11);
+      ReflectionValidator<MTLObjectReflectionReader>::Validate(device, options, data);
+      ReflectionReaderFactory<MTLObjectReflectionReader>::Create(options, v11);
     }
   }
 
@@ -208,12 +208,12 @@
   return 0;
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v29[3] = *MEMORY[0x1E69E9840];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
-  v20 = [@"\n" stringByPaddingToLength:a3 + 8 withString:@" " startingAtIndex:0];
-  v6 = [@"\n" stringByPaddingToLength:a3 + 20 withString:@" " startingAtIndex:0];
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
+  v20 = [@"\n" stringByPaddingToLength:description + 8 withString:@" " startingAtIndex:0];
+  v6 = [@"\n" stringByPaddingToLength:description + 20 withString:@" " startingAtIndex:0];
   v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:128];
   v29[0] = v5;
   v29[1] = @"MTL Bindings =";
@@ -223,7 +223,7 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v17 = self;
+  selfCopy = self;
   obj = self->_bindings;
   v8 = [(NSArray *)obj countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v8)
@@ -241,15 +241,15 @@
 
         v11 = *(*(&v22 + 1) + 8 * i);
         v27[0] = v20;
-        v27[1] = [v11 formattedDescription:a3 + 20];
+        v27[1] = [v11 formattedDescription:description + 20];
         [v7 addObjectsFromArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v27, 2)}];
         if ([v11 type] == 37)
         {
-          v12 = [v11 dimensions];
-          if (v12)
+          dimensions = [v11 dimensions];
+          if (dimensions)
           {
-            v13 = v12;
-            if ([v12 rank])
+            v13 = dimensions;
+            if ([dimensions rank])
             {
               v14 = 0;
               do
@@ -272,7 +272,7 @@
     while (v9);
   }
 
-  v21.receiver = v17;
+  v21.receiver = selfCopy;
   v21.super_class = MTLFunctionReflectionInternal;
   result = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", -[MTLFunctionReflectionInternal description](&v21, sel_description), objc_msgSend(v7, "componentsJoinedByString:", @" "];
   v16 = *MEMORY[0x1E69E9840];

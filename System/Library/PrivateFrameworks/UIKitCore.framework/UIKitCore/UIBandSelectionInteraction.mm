@@ -1,52 +1,52 @@
 @interface UIBandSelectionInteraction
-- (BOOL)_gestureRecognizer:(id)a3 canBePreventedByGestureRecognizer:(id)a4;
-- (BOOL)_gestureRecognizer:(id)a3 canPreventGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (CGPoint)_locationInView:(id)a3;
-- (CGRect)_selectionRectWithLocation:(CGPoint)a3;
+- (BOOL)_gestureRecognizer:(id)recognizer canBePreventedByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)_gestureRecognizer:(id)recognizer canPreventGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (CGPoint)_locationInView:(id)view;
+- (CGRect)_selectionRectWithLocation:(CGPoint)location;
 - (CGRect)selectionRect;
 - (UIBandSelectionInteraction)initWithSelectionHandler:(void *)selectionHandler;
 - (UIView)view;
 - (unint64_t)_handleBeginEvent;
-- (void)_callHandlerWithState:(int64_t)a3;
+- (void)_callHandlerWithState:(int64_t)state;
 - (void)_handleDidBegin;
-- (void)_handleDidEndFromState:(unint64_t)a3;
+- (void)_handleDidEndFromState:(unint64_t)state;
 - (void)_handleDidMove;
-- (void)_handleHoverGesture:(id)a3;
-- (void)_handlePressGesture:(id)a3;
-- (void)_updateDebugUIWithGesture:(id)a3;
+- (void)_handleHoverGesture:(id)gesture;
+- (void)_handlePressGesture:(id)gesture;
+- (void)_updateDebugUIWithGesture:(id)gesture;
 - (void)_updateInteractionEnabled;
-- (void)_viewTraitCollectionDidChange:(id)a3;
+- (void)_viewTraitCollectionDidChange:(id)change;
 - (void)dealloc;
-- (void)didMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
 - (void)setEnabled:(BOOL)enabled;
-- (void)willMoveToView:(id)a3;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation UIBandSelectionInteraction
 
 - (void)_updateInteractionEnabled
 {
-  v3 = [(UIBandSelectionInteraction *)self view];
+  view = [(UIBandSelectionInteraction *)self view];
 
-  if (v3)
+  if (view)
   {
-    v4 = [(UIBandSelectionInteraction *)self view];
-    v5 = [v4 traitCollection];
-    v6 = [v5 userInterfaceIdiom];
+    view2 = [(UIBandSelectionInteraction *)self view];
+    traitCollection = [view2 traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    v7 = [(UIBandSelectionInteraction *)self isEnabled];
-    v3 = (v6 & 0xFFFFFFFFFFFFFFFBLL) == 1 && v7;
+    isEnabled = [(UIBandSelectionInteraction *)self isEnabled];
+    view = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 && isEnabled;
   }
 
-  v8 = [(UIBandSelectionInteraction *)self visualProvider];
-  [v8 setEnabled:v3];
+  visualProvider = [(UIBandSelectionInteraction *)self visualProvider];
+  [visualProvider setEnabled:view];
 
-  v9 = [(UIBandSelectionInteraction *)self hoverGR];
-  [v9 setEnabled:v3];
+  hoverGR = [(UIBandSelectionInteraction *)self hoverGR];
+  [hoverGR setEnabled:view];
 
-  v10 = [(UIBandSelectionInteraction *)self pressGR];
-  [v10 setEnabled:v3];
+  pressGR = [(UIBandSelectionInteraction *)self pressGR];
+  [pressGR setEnabled:view];
 }
 
 - (UIView)view
@@ -102,8 +102,8 @@
 
   else
   {
-    v3 = [(UIBandSelectionInteraction *)self view];
-    [(UIBandSelectionInteraction *)self _locationInView:v3];
+    view = [(UIBandSelectionInteraction *)self view];
+    [(UIBandSelectionInteraction *)self _locationInView:view];
     v5 = v4;
     v7 = v6;
 
@@ -117,106 +117,106 @@
   return result;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v4 = [(UIBandSelectionInteraction *)self hoverGR];
-  v5 = [v4 view];
-  v6 = [(UIBandSelectionInteraction *)self hoverGR];
-  [v5 removeGestureRecognizer:v6];
+  hoverGR = [(UIBandSelectionInteraction *)self hoverGR];
+  view = [hoverGR view];
+  hoverGR2 = [(UIBandSelectionInteraction *)self hoverGR];
+  [view removeGestureRecognizer:hoverGR2];
 
-  v7 = [(UIBandSelectionInteraction *)self pressGR];
-  v8 = [v7 view];
-  v9 = [(UIBandSelectionInteraction *)self pressGR];
-  [v8 removeGestureRecognizer:v9];
+  pressGR = [(UIBandSelectionInteraction *)self pressGR];
+  view2 = [pressGR view];
+  pressGR2 = [(UIBandSelectionInteraction *)self pressGR];
+  [view2 removeGestureRecognizer:pressGR2];
 
-  v10 = [(UIBandSelectionInteraction *)self visualProvider];
-  [v10 setView:0];
+  visualProvider = [(UIBandSelectionInteraction *)self visualProvider];
+  [visualProvider setView:0];
 
   objc_storeWeak(&self->_view, 0);
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  objc_storeWeak(&self->_view, a3);
-  v4 = [(UIBandSelectionInteraction *)self hoverGR];
+  objc_storeWeak(&self->_view, view);
+  hoverGR = [(UIBandSelectionInteraction *)self hoverGR];
 
-  if (!v4)
+  if (!hoverGR)
   {
     v5 = [[UIHoverGestureRecognizer alloc] initWithTarget:self action:sel__handleHoverGesture_];
     [(UIBandSelectionInteraction *)self setHoverGR:v5];
 
-    v6 = [(UIBandSelectionInteraction *)self hoverGR];
-    [v6 setName:@"com.apple.UIKit.bandSelectionHover"];
+    hoverGR2 = [(UIBandSelectionInteraction *)self hoverGR];
+    [hoverGR2 setName:@"com.apple.UIKit.bandSelectionHover"];
 
-    v7 = [(UIBandSelectionInteraction *)self hoverGR];
-    [v7 _setPausesWhilePanning:0];
+    hoverGR3 = [(UIBandSelectionInteraction *)self hoverGR];
+    [hoverGR3 _setPausesWhilePanning:0];
 
     v8 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:sel__handlePressGesture_];
     [(UIBandSelectionInteraction *)self setPressGR:v8];
 
-    v9 = [(UIBandSelectionInteraction *)self pressGR];
-    [v9 setName:@"com.apple.UIKit.bandSelectionInitiationPress"];
+    pressGR = [(UIBandSelectionInteraction *)self pressGR];
+    [pressGR setName:@"com.apple.UIKit.bandSelectionInitiationPress"];
 
-    v10 = [(UIBandSelectionInteraction *)self pressGR];
-    [v10 setMinimumPressDuration:0.0];
+    pressGR2 = [(UIBandSelectionInteraction *)self pressGR];
+    [pressGR2 setMinimumPressDuration:0.0];
 
-    v11 = [(UIBandSelectionInteraction *)self pressGR];
-    [v11 setButtonMaskRequired:1];
+    pressGR3 = [(UIBandSelectionInteraction *)self pressGR];
+    [pressGR3 setButtonMaskRequired:1];
 
-    v12 = [(UIBandSelectionInteraction *)self pressGR];
-    [v12 setDelegate:self];
+    pressGR4 = [(UIBandSelectionInteraction *)self pressGR];
+    [pressGR4 setDelegate:self];
 
-    v13 = [(UIBandSelectionInteraction *)self pressGR];
-    [v13 setDelaysTouchesEnded:0];
+    pressGR5 = [(UIBandSelectionInteraction *)self pressGR];
+    [pressGR5 setDelaysTouchesEnded:0];
 
-    v14 = [(UIBandSelectionInteraction *)self pressGR];
-    [v14 setCancelsTouchesInView:0];
+    pressGR6 = [(UIBandSelectionInteraction *)self pressGR];
+    [pressGR6 setCancelsTouchesInView:0];
 
     v15 = objc_opt_new();
     [(UIBandSelectionInteraction *)self setVisualProvider:v15];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v17 = [(UIBandSelectionInteraction *)self hoverGR];
-  [WeakRetained addGestureRecognizer:v17];
+  hoverGR4 = [(UIBandSelectionInteraction *)self hoverGR];
+  [WeakRetained addGestureRecognizer:hoverGR4];
 
   v18 = objc_loadWeakRetained(&self->_view);
-  v19 = [(UIBandSelectionInteraction *)self pressGR];
-  [v18 addGestureRecognizer:v19];
+  pressGR7 = [(UIBandSelectionInteraction *)self pressGR];
+  [v18 addGestureRecognizer:pressGR7];
 
-  v20 = [(UIBandSelectionInteraction *)self visualProvider];
+  visualProvider = [(UIBandSelectionInteraction *)self visualProvider];
   v21 = objc_loadWeakRetained(&self->_view);
-  [v20 setView:v21];
+  [visualProvider setView:v21];
 
   [(UIBandSelectionInteraction *)self _updateInteractionEnabled];
 }
 
-- (void)_viewTraitCollectionDidChange:(id)a3
+- (void)_viewTraitCollectionDidChange:(id)change
 {
-  v4 = [a3 userInterfaceIdiom];
-  v5 = [(UIBandSelectionInteraction *)self view];
-  v6 = [v5 traitCollection];
-  v7 = [v6 userInterfaceIdiom];
+  userInterfaceIdiom = [change userInterfaceIdiom];
+  view = [(UIBandSelectionInteraction *)self view];
+  traitCollection = [view traitCollection];
+  userInterfaceIdiom2 = [traitCollection userInterfaceIdiom];
 
-  if (v4 != v7)
+  if (userInterfaceIdiom != userInterfaceIdiom2)
   {
 
     [(UIBandSelectionInteraction *)self _updateInteractionEnabled];
   }
 }
 
-- (CGRect)_selectionRectWithLocation:(CGPoint)a3
+- (CGRect)_selectionRectWithLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(UIBandSelectionInteraction *)self view];
+  y = location.y;
+  x = location.x;
+  view = [(UIBandSelectionInteraction *)self view];
   v7 = self->_initialLocation.x;
   v8 = self->_initialLocation.y;
-  [v6 _currentScreenScale];
+  [view _currentScreenScale];
   v10 = UIPointRoundToScale(v7, v8, v9);
   v12 = v11;
-  v13 = [(UIBandSelectionInteraction *)self view];
-  [v13 _currentScreenScale];
+  view2 = [(UIBandSelectionInteraction *)self view];
+  [view2 _currentScreenScale];
   v15 = UIPointRoundToScale(x, y, v14);
   if (v10 >= v15)
   {
@@ -291,11 +291,11 @@
   return result;
 }
 
-- (CGPoint)_locationInView:(id)a3
+- (CGPoint)_locationInView:(id)view
 {
-  v4 = a3;
-  v5 = [(UIBandSelectionInteraction *)self hoverGR];
-  [v5 locationInView:v4];
+  viewCopy = view;
+  hoverGR = [(UIBandSelectionInteraction *)self hoverGR];
+  [hoverGR locationInView:viewCopy];
   v7 = v6;
   v9 = v8;
 
@@ -306,17 +306,17 @@
   return result;
 }
 
-- (void)_handlePressGesture:(id)a3
+- (void)_handlePressGesture:(id)gesture
 {
-  v6 = a3;
-  if ([v6 state] == 1)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 1)
   {
     v4 = 0;
   }
 
   else
   {
-    if ([v6 state] < 3)
+    if ([gestureCopy state] < 3)
     {
       goto LABEL_6;
     }
@@ -326,65 +326,65 @@
 
   handleEvent(stateMachineSpec_2, self->_internalState, v4, self, &self->_internalState);
 LABEL_6:
-  v5 = [(UIBandSelectionInteraction *)self hoverGR];
-  [(UIBandSelectionInteraction *)self _updateDebugUIWithGesture:v5];
+  hoverGR = [(UIBandSelectionInteraction *)self hoverGR];
+  [(UIBandSelectionInteraction *)self _updateDebugUIWithGesture:hoverGR];
 }
 
-- (void)_handleHoverGesture:(id)a3
+- (void)_handleHoverGesture:(id)gesture
 {
-  if ([a3 state] == 2)
+  if ([gesture state] == 2)
   {
     handleEvent(stateMachineSpec_2, self->_internalState, 1, self, &self->_internalState);
   }
 
   if (![(UIBandSelectionInteraction *)self _isSelecting])
   {
-    v4 = [(UIBandSelectionInteraction *)self view];
-    [(UIBandSelectionInteraction *)self _locationInView:v4];
+    view = [(UIBandSelectionInteraction *)self view];
+    [(UIBandSelectionInteraction *)self _locationInView:view];
     self->_initialLocation.x = v5;
     self->_initialLocation.y = v6;
   }
 
-  v7 = [(UIBandSelectionInteraction *)self hoverGR];
-  [(UIBandSelectionInteraction *)self _updateDebugUIWithGesture:v7];
+  hoverGR = [(UIBandSelectionInteraction *)self hoverGR];
+  [(UIBandSelectionInteraction *)self _updateDebugUIWithGesture:hoverGR];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIBandSelectionInteraction *)self pressGR];
+  touchCopy = touch;
+  recognizerCopy = recognizer;
+  pressGR = [(UIBandSelectionInteraction *)self pressGR];
 
-  if (v8 == v7)
+  if (pressGR == recognizerCopy)
   {
-    v9 = [v6 _isPointerTouch];
+    _isPointerTouch = [touchCopy _isPointerTouch];
   }
 
   else
   {
-    v9 = 1;
+    _isPointerTouch = 1;
   }
 
-  return v9;
+  return _isPointerTouch;
 }
 
-- (BOOL)_gestureRecognizer:(id)a3 canPreventGestureRecognizer:(id)a4
+- (BOOL)_gestureRecognizer:(id)recognizer canPreventGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a3;
-  v6 = [(UIBandSelectionInteraction *)self pressGR];
+  recognizerCopy = recognizer;
+  pressGR = [(UIBandSelectionInteraction *)self pressGR];
 
-  return v6 != v5;
+  return pressGR != recognizerCopy;
 }
 
-- (BOOL)_gestureRecognizer:(id)a3 canBePreventedByGestureRecognizer:(id)a4
+- (BOOL)_gestureRecognizer:(id)recognizer canBePreventedByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIBandSelectionInteraction *)self pressGR];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  pressGR = [(UIBandSelectionInteraction *)self pressGR];
 
-  if (v8 == v7)
+  if (pressGR == recognizerCopy)
   {
-    isDragInteractionGestureRecognizer = _isDragInteractionGestureRecognizer(v6);
+    isDragInteractionGestureRecognizer = _isDragInteractionGestureRecognizer(gestureRecognizerCopy);
   }
 
   else
@@ -397,23 +397,23 @@ LABEL_6:
 
 - (unint64_t)_handleBeginEvent
 {
-  v3 = [(UIBandSelectionInteraction *)self view];
-  [(UIBandSelectionInteraction *)self _locationInView:v3];
+  view = [(UIBandSelectionInteraction *)self view];
+  [(UIBandSelectionInteraction *)self _locationInView:view];
   self->_initialLocation.x = v4;
   self->_initialLocation.y = v5;
 
-  v6 = [(UIBandSelectionInteraction *)self pressGR];
-  self->_initialModifierFlags = [v6 modifierFlags];
+  pressGR = [(UIBandSelectionInteraction *)self pressGR];
+  self->_initialModifierFlags = [pressGR modifierFlags];
 
-  v7 = [(UIBandSelectionInteraction *)self shouldBeginHandler];
+  shouldBeginHandler = [(UIBandSelectionInteraction *)self shouldBeginHandler];
 
-  if (!v7)
+  if (!shouldBeginHandler)
   {
     return 2;
   }
 
-  v8 = [(UIBandSelectionInteraction *)self shouldBeginHandler];
-  v9 = (v8)[2](v8, self, self->_initialLocation.x, self->_initialLocation.y);
+  shouldBeginHandler2 = [(UIBandSelectionInteraction *)self shouldBeginHandler];
+  v9 = (shouldBeginHandler2)[2](shouldBeginHandler2, self, self->_initialLocation.x, self->_initialLocation.y);
 
   if (v9)
   {
@@ -428,11 +428,11 @@ LABEL_6:
 
 - (void)_handleDidBegin
 {
-  v3 = [(UIBandSelectionInteraction *)self _bandVisibilityHandler];
-  if (v3)
+  _bandVisibilityHandler = [(UIBandSelectionInteraction *)self _bandVisibilityHandler];
+  if (_bandVisibilityHandler)
   {
-    v4 = [(UIBandSelectionInteraction *)self _bandVisibilityHandler];
-    self->_hidesVisuals = v4[2](self->_initialLocation.x, self->_initialLocation.y) ^ 1;
+    _bandVisibilityHandler2 = [(UIBandSelectionInteraction *)self _bandVisibilityHandler];
+    self->_hidesVisuals = _bandVisibilityHandler2[2](self->_initialLocation.x, self->_initialLocation.y) ^ 1;
     p_hidesVisuals = &self->_hidesVisuals;
   }
 
@@ -444,8 +444,8 @@ LABEL_6:
 
   if (!*p_hidesVisuals)
   {
-    v6 = [(UIBandSelectionInteraction *)self visualProvider];
-    [v6 beginAtPoint:{self->_initialLocation.x, self->_initialLocation.y}];
+    visualProvider = [(UIBandSelectionInteraction *)self visualProvider];
+    [visualProvider beginAtPoint:{self->_initialLocation.x, self->_initialLocation.y}];
   }
 
   [(UIBandSelectionInteraction *)self _callHandlerWithState:1];
@@ -455,26 +455,26 @@ LABEL_6:
 {
   if (!self->_hidesVisuals)
   {
-    v3 = [(UIBandSelectionInteraction *)self visualProvider];
-    v4 = [(UIBandSelectionInteraction *)self view];
-    [(UIBandSelectionInteraction *)self _locationInView:v4];
-    [v3 updateWithPoint:?];
+    visualProvider = [(UIBandSelectionInteraction *)self visualProvider];
+    view = [(UIBandSelectionInteraction *)self view];
+    [(UIBandSelectionInteraction *)self _locationInView:view];
+    [visualProvider updateWithPoint:?];
   }
 
   [(UIBandSelectionInteraction *)self _callHandlerWithState:2];
 }
 
-- (void)_handleDidEndFromState:(unint64_t)a3
+- (void)_handleDidEndFromState:(unint64_t)state
 {
   if (!self->_hidesVisuals)
   {
-    v5 = [(UIBandSelectionInteraction *)self visualProvider];
-    v6 = [(UIBandSelectionInteraction *)self view];
-    [(UIBandSelectionInteraction *)self _locationInView:v6];
-    [v5 endAtPoint:?];
+    visualProvider = [(UIBandSelectionInteraction *)self visualProvider];
+    view = [(UIBandSelectionInteraction *)self view];
+    [(UIBandSelectionInteraction *)self _locationInView:view];
+    [visualProvider endAtPoint:?];
   }
 
-  if (a3 != 1)
+  if (state != 1)
   {
     [(UIBandSelectionInteraction *)self _callHandlerWithState:3];
   }
@@ -485,32 +485,32 @@ LABEL_6:
   self->_initialModifierFlags = 0;
 }
 
-- (void)_callHandlerWithState:(int64_t)a3
+- (void)_callHandlerWithState:(int64_t)state
 {
-  self->_state = a3;
-  v4 = [(UIBandSelectionInteraction *)self selectionHandler];
-  v4[2](v4, self);
+  self->_state = state;
+  selectionHandler = [(UIBandSelectionInteraction *)self selectionHandler];
+  selectionHandler[2](selectionHandler, self);
 }
 
-- (void)_updateDebugUIWithGesture:(id)a3
+- (void)_updateDebugUIWithGesture:(id)gesture
 {
-  v4 = a3;
-  if (-[UIBandSelectionInteraction _debugUIEnabled](self, "_debugUIEnabled") && [v4 state] < 3)
+  gestureCopy = gesture;
+  if (-[UIBandSelectionInteraction _debugUIEnabled](self, "_debugUIEnabled") && [gestureCopy state] < 3)
   {
     if (!_MergedGlobals_1186)
     {
-      v9 = [(UIBandSelectionInteraction *)self view];
-      v10 = [v9 window];
+      view = [(UIBandSelectionInteraction *)self view];
+      window = [view window];
       v11 = qword_1ED49F350;
-      qword_1ED49F350 = v10;
+      qword_1ED49F350 = window;
 
       v12 = [[_UIMIDebugPointerView alloc] initWithFrame:0.0, 0.0, 19.0, 19.0];
       v13 = _MergedGlobals_1186;
       _MergedGlobals_1186 = v12;
 
       [_MergedGlobals_1186 setUserInteractionEnabled:0];
-      v14 = [_MergedGlobals_1186 layer];
-      [v14 setZPosition:100000.0];
+      layer = [_MergedGlobals_1186 layer];
+      [layer setZPosition:100000.0];
 
       [qword_1ED49F350 addSubview:_MergedGlobals_1186];
     }
@@ -521,20 +521,20 @@ LABEL_6:
       v16 = qword_1ED49F348;
       qword_1ED49F348 = v15;
 
-      v17 = [qword_1ED49F348 shapeLayer];
-      [v17 setFillColor:0];
+      shapeLayer = [qword_1ED49F348 shapeLayer];
+      [shapeLayer setFillColor:0];
 
       v18 = [UIColor colorWithWhite:0.0 alpha:0.5];
-      v19 = [v18 CGColor];
-      v20 = [qword_1ED49F348 shapeLayer];
-      [v20 setStrokeColor:v19];
+      cGColor = [v18 CGColor];
+      shapeLayer2 = [qword_1ED49F348 shapeLayer];
+      [shapeLayer2 setStrokeColor:cGColor];
 
       v21 = *MEMORY[0x1E6979E90];
-      v22 = [qword_1ED49F348 shapeLayer];
-      [v22 setLineJoin:v21];
+      shapeLayer3 = [qword_1ED49F348 shapeLayer];
+      [shapeLayer3 setLineJoin:v21];
 
-      v23 = [qword_1ED49F348 shapeLayer];
-      [v23 setLineDashPattern:&unk_1EFE2CB98];
+      shapeLayer4 = [qword_1ED49F348 shapeLayer];
+      [shapeLayer4 setLineDashPattern:&unk_1EFE2CB98];
 
       [qword_1ED49F350 addSubview:qword_1ED49F348];
     }
@@ -547,8 +547,8 @@ LABEL_6:
     [qword_1ED49F348 frame];
     if (v29 != v33 || v31 != v32)
     {
-      v35 = [(UIBandSelectionInteraction *)self view];
-      [v35 convertRect:qword_1ED49F350 toView:{v25, v27, v29, v31}];
+      view2 = [(UIBandSelectionInteraction *)self view];
+      [view2 convertRect:qword_1ED49F350 toView:{v25, v27, v29, v31}];
       v37 = v36;
       v39 = v38;
       v41 = v40;
@@ -556,9 +556,9 @@ LABEL_6:
 
       [qword_1ED49F348 setFrame:{v37, v39, v41, v43}];
       v44 = [UIBezierPath bezierPathWithRect:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v41, v43];
-      v45 = [v44 CGPath];
-      v46 = [qword_1ED49F348 shapeLayer];
-      [v46 setPath:v45];
+      cGPath = [v44 CGPath];
+      shapeLayer5 = [qword_1ED49F348 shapeLayer];
+      [shapeLayer5 setPath:cGPath];
     }
 
     if (!qword_1ED49F358)
@@ -581,17 +581,17 @@ LABEL_6:
       [qword_1ED49F350 addSubview:qword_1ED49F360];
     }
 
-    v53 = [(UIBandSelectionInteraction *)self view];
-    [v4 locationInView:v53];
+    view3 = [(UIBandSelectionInteraction *)self view];
+    [gestureCopy locationInView:view3];
     v55 = v54;
     v57 = v56;
 
-    v58 = [(UIBandSelectionInteraction *)self view];
-    [v58 convertPoint:qword_1ED49F350 toView:{self->_initialLocation.x, self->_initialLocation.y}];
+    view4 = [(UIBandSelectionInteraction *)self view];
+    [view4 convertPoint:qword_1ED49F350 toView:{self->_initialLocation.x, self->_initialLocation.y}];
     [qword_1ED49F358 setCenter:?];
 
-    v59 = [(UIBandSelectionInteraction *)self view];
-    [v59 convertPoint:qword_1ED49F350 toView:{v55, v57}];
+    view5 = [(UIBandSelectionInteraction *)self view];
+    [view5 convertPoint:qword_1ED49F350 toView:{v55, v57}];
     [qword_1ED49F360 setCenter:?];
 
     v60 = *MEMORY[0x1E69796E0];
@@ -663,10 +663,10 @@ LABEL_6:
     v76[1] = 3221225472;
     v76[2] = __56__UIBandSelectionInteraction__updateDebugUIWithGesture___block_invoke_3;
     v76[3] = &unk_1E70F3FD8;
-    v77 = v4;
+    v77 = gestureCopy;
     [UIView _animateUsingSpringBehavior:v73 tracking:0 animations:v78 completion:v76];
-    v74 = [(UIBandSelectionInteraction *)self view];
-    [v74 convertPoint:qword_1ED49F350 toView:{v75, v57}];
+    view6 = [(UIBandSelectionInteraction *)self view];
+    [view6 convertPoint:qword_1ED49F350 toView:{v75, v57}];
     [_MergedGlobals_1186 setCenter:?];
   }
 

@@ -1,6 +1,6 @@
 @interface HDCarouselServicesManager
 - (HDCarouselServicesManager)init;
-- (id)takeSessionAssertionForOwnerIdentifier:(id)a3 supportsAOT:(BOOL)a4;
+- (id)takeSessionAssertionForOwnerIdentifier:(id)identifier supportsAOT:(BOOL)t;
 @end
 
 @implementation HDCarouselServicesManager
@@ -26,10 +26,10 @@
   return v2;
 }
 
-- (id)takeSessionAssertionForOwnerIdentifier:(id)a3 supportsAOT:(BOOL)a4
+- (id)takeSessionAssertionForOwnerIdentifier:(id)identifier supportsAOT:(BOOL)t
 {
-  v6 = a3;
-  v7 = v6;
+  identifierCopy = identifier;
+  v7 = identifierCopy;
   if (!self)
   {
 
@@ -67,7 +67,7 @@
     return 0;
   }
 
-  LOBYTE(v10[3]._assertionManager) = a4;
+  LOBYTE(v10[3]._assertionManager) = t;
   return v9;
 }
 

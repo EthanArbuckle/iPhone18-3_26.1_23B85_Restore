@@ -1,69 +1,69 @@
 @interface OKSettingsUtility
-+ ($3FD701315FC6B61C39B4A3183395B84E)coordinateRegionFromObject:(SEL)a3;
-+ (CGPoint)pointFromObject:(id)a3;
-+ (CGRect)rectFromObject:(id)a3;
-+ (CGSize)sizeFromObject:(id)a3;
-+ (CLLocationCoordinate2D)coordinateLocationFromObject:(id)a3;
-+ (UIEdgeInsets)edgeInsetsFromObject:(id)a3;
-+ (UIOffset)offsetFromObject:(id)a3;
-+ (id)_settingObjectForKey:(id)a3 settings:(id)a4 resolution:(id)a5;
-+ (id)arrayFromObject:(id)a3 type:(unint64_t)a4;
-+ (id)arrayOfDictionaryFromObject:(id)a3;
-+ (id)arrayOfDynamicSettingsObjectsFromObject:(id)a3 class:(Class)a4 resolution:(id)a5;
-+ (id)arrayOfSettingsObjectsFromObject:(id)a3 class:(Class)a4 resolution:(id)a5;
-+ (id)arrayOfStringFromObject:(id)a3;
-+ (id)arrayOfURLFromObject:(id)a3;
-+ (id)arrayOfWidgetFromObject:(id)a3;
-+ (id)attributedStringFromObject:(id)a3;
-+ (id)colorFromObject:(id)a3;
-+ (id)dictionaryFromObject:(id)a3 type:(unint64_t)a4;
-+ (id)dictionaryOfArrayFromObject:(id)a3;
-+ (id)dictionaryOfDictionaryFromObject:(id)a3;
-+ (id)dictionaryOfDynamicSettingsObjectsFromObject:(id)a3 class:(Class)a4 resolution:(id)a5;
-+ (id)dictionaryOfSettingsObjectsFromObject:(id)a3 class:(Class)a4 resolution:(id)a5;
-+ (id)dynamicSettingsObjectFromObject:(id)a3 class:(Class)a4 resolution:(id)a5;
-+ (id)enumFromObject:(id)a3 mapping:(id)a4;
-+ (id)indexPath2DFromObject:(id)a3;
-+ (id)normalizedObjectFromValue:(id)a3;
-+ (id)numberFromObject:(id)a3;
-+ (id)optionsFromObject:(id)a3 mapping:(id)a4;
-+ (id)settingsObjectFromObject:(id)a3 class:(Class)a4 resolution:(id)a5;
-+ (id)stringFromObject:(id)a3;
-+ (id)urlFromObject:(id)a3;
-+ (id)valueForKey:(id)a3 ofType:(unint64_t)a4 settings:(id)a5 optionalSubType:(unint64_t)a6 optionalClass:(Class)a7 optionalMapping:(id)a8 resolution:(id)a9;
-+ (id)valueForObject:(id)a3 ofType:(unint64_t)a4 optionalSubType:(unint64_t)a5 optionalClass:(Class)a6 optionalMapping:(id)a7 resolution:(id)a8;
-+ (id)widgetFromObject:(id)a3;
++ ($3FD701315FC6B61C39B4A3183395B84E)coordinateRegionFromObject:(SEL)object;
++ (CGPoint)pointFromObject:(id)object;
++ (CGRect)rectFromObject:(id)object;
++ (CGSize)sizeFromObject:(id)object;
++ (CLLocationCoordinate2D)coordinateLocationFromObject:(id)object;
++ (UIEdgeInsets)edgeInsetsFromObject:(id)object;
++ (UIOffset)offsetFromObject:(id)object;
++ (id)_settingObjectForKey:(id)key settings:(id)settings resolution:(id)resolution;
++ (id)arrayFromObject:(id)object type:(unint64_t)type;
++ (id)arrayOfDictionaryFromObject:(id)object;
++ (id)arrayOfDynamicSettingsObjectsFromObject:(id)object class:(Class)class resolution:(id)resolution;
++ (id)arrayOfSettingsObjectsFromObject:(id)object class:(Class)class resolution:(id)resolution;
++ (id)arrayOfStringFromObject:(id)object;
++ (id)arrayOfURLFromObject:(id)object;
++ (id)arrayOfWidgetFromObject:(id)object;
++ (id)attributedStringFromObject:(id)object;
++ (id)colorFromObject:(id)object;
++ (id)dictionaryFromObject:(id)object type:(unint64_t)type;
++ (id)dictionaryOfArrayFromObject:(id)object;
++ (id)dictionaryOfDictionaryFromObject:(id)object;
++ (id)dictionaryOfDynamicSettingsObjectsFromObject:(id)object class:(Class)class resolution:(id)resolution;
++ (id)dictionaryOfSettingsObjectsFromObject:(id)object class:(Class)class resolution:(id)resolution;
++ (id)dynamicSettingsObjectFromObject:(id)object class:(Class)class resolution:(id)resolution;
++ (id)enumFromObject:(id)object mapping:(id)mapping;
++ (id)indexPath2DFromObject:(id)object;
++ (id)normalizedObjectFromValue:(id)value;
++ (id)numberFromObject:(id)object;
++ (id)optionsFromObject:(id)object mapping:(id)mapping;
++ (id)settingsObjectFromObject:(id)object class:(Class)class resolution:(id)resolution;
++ (id)stringFromObject:(id)object;
++ (id)urlFromObject:(id)object;
++ (id)valueForKey:(id)key ofType:(unint64_t)type settings:(id)settings optionalSubType:(unint64_t)subType optionalClass:(Class)class optionalMapping:(id)mapping resolution:(id)resolution;
++ (id)valueForObject:(id)object ofType:(unint64_t)type optionalSubType:(unint64_t)subType optionalClass:(Class)class optionalMapping:(id)mapping resolution:(id)resolution;
++ (id)widgetFromObject:(id)object;
 @end
 
 @implementation OKSettingsUtility
 
-+ (id)_settingObjectForKey:(id)a3 settings:(id)a4 resolution:(id)a5
++ (id)_settingObjectForKey:(id)key settings:(id)settings resolution:(id)resolution
 {
   v50 = *MEMORY[0x277D85DE8];
-  v8 = [a4 objectForKey:?];
-  if (a5)
+  v8 = [settings objectForKey:?];
+  if (resolution)
   {
-    v9 = [a4 objectForKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"@%@", a3)}];
+    v9 = [settings objectForKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"@%@", key)}];
     if (v9)
     {
       v10 = v9;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [v10 objectForKey:a5];
+        v11 = [v10 objectForKey:resolution];
         if (!v11)
         {
-          v13 = [a5 componentsSeparatedByCharactersInSet:{objc_msgSend(MEMORY[0x277CCA900], "characterSetWithCharactersInString:", @"@"}];
-          v14 = [v13 firstObject];
+          v13 = [resolution componentsSeparatedByCharactersInSet:{objc_msgSend(MEMORY[0x277CCA900], "characterSetWithCharactersInString:", @"@"}];
+          firstObject = [v13 firstObject];
           if ([v13 count] == 2)
           {
-            v15 = [v13 lastObject];
+            lastObject = [v13 lastObject];
             v43 = 0u;
             v44 = 0u;
             v45 = 0u;
             v46 = 0u;
-            v16 = [v10 allKeys];
-            v17 = [v16 countByEnumeratingWithState:&v43 objects:v49 count:16];
+            allKeys = [v10 allKeys];
+            v17 = [allKeys countByEnumeratingWithState:&v43 objects:v49 count:16];
             if (v17)
             {
               v18 = v17;
@@ -74,13 +74,13 @@ LABEL_10:
               {
                 if (*v44 != v19)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v21 = *(*(&v43 + 1) + 8 * v20);
-                if ([v21 hasPrefix:v14])
+                if ([v21 hasPrefix:firstObject])
                 {
-                  if ([v21 rangeOfString:v15] != 0x7FFFFFFFFFFFFFFFLL)
+                  if ([v21 rangeOfString:lastObject] != 0x7FFFFFFFFFFFFFFFLL)
                   {
                     break;
                   }
@@ -88,7 +88,7 @@ LABEL_10:
 
                 if (v18 == ++v20)
                 {
-                  v18 = [v16 countByEnumeratingWithState:&v43 objects:v49 count:16];
+                  v18 = [allKeys countByEnumeratingWithState:&v43 objects:v49 count:16];
                   if (v18)
                   {
                     goto LABEL_10;
@@ -111,8 +111,8 @@ LABEL_19:
           v42 = 0u;
           v39 = 0u;
           v40 = 0u;
-          v22 = [v10 allKeys];
-          v23 = [v22 countByEnumeratingWithState:&v39 objects:v48 count:16];
+          allKeys2 = [v10 allKeys];
+          v23 = [allKeys2 countByEnumeratingWithState:&v39 objects:v48 count:16];
           if (v23)
           {
             v24 = v23;
@@ -123,18 +123,18 @@ LABEL_21:
             {
               if (*v40 != v25)
               {
-                objc_enumerationMutation(v22);
+                objc_enumerationMutation(allKeys2);
               }
 
               v27 = *(*(&v39 + 1) + 8 * v26);
-              if ([v27 hasPrefix:v14])
+              if ([v27 hasPrefix:firstObject])
               {
                 break;
               }
 
               if (v24 == ++v26)
               {
-                v24 = [v22 countByEnumeratingWithState:&v39 objects:v48 count:16];
+                v24 = [allKeys2 countByEnumeratingWithState:&v39 objects:v48 count:16];
                 if (v24)
                 {
                   goto LABEL_21;
@@ -152,13 +152,13 @@ LABEL_21:
           }
 
 LABEL_29:
-          v28 = [v13 lastObject];
+          lastObject2 = [v13 lastObject];
           v35 = 0u;
           v36 = 0u;
           v37 = 0u;
           v38 = 0u;
-          v29 = [v10 allKeys];
-          v30 = [v29 countByEnumeratingWithState:&v35 objects:v47 count:16];
+          allKeys3 = [v10 allKeys];
+          v30 = [allKeys3 countByEnumeratingWithState:&v35 objects:v47 count:16];
           if (v30)
           {
             v31 = v30;
@@ -169,18 +169,18 @@ LABEL_31:
             {
               if (*v36 != v32)
               {
-                objc_enumerationMutation(v29);
+                objc_enumerationMutation(allKeys3);
               }
 
               v34 = *(*(&v35 + 1) + 8 * v33);
-              if ([v34 rangeOfString:v28] != 0x7FFFFFFFFFFFFFFFLL)
+              if ([v34 rangeOfString:lastObject2] != 0x7FFFFFFFFFFFFFFFLL)
               {
                 break;
               }
 
               if (v31 == ++v33)
               {
-                v31 = [v29 countByEnumeratingWithState:&v35 objects:v47 count:16];
+                v31 = [allKeys3 countByEnumeratingWithState:&v35 objects:v47 count:16];
                 if (v31)
                 {
                   goto LABEL_31;
@@ -208,181 +208,181 @@ LABEL_31:
   return v8;
 }
 
-+ (id)valueForKey:(id)a3 ofType:(unint64_t)a4 settings:(id)a5 optionalSubType:(unint64_t)a6 optionalClass:(Class)a7 optionalMapping:(id)a8 resolution:(id)a9
++ (id)valueForKey:(id)key ofType:(unint64_t)type settings:(id)settings optionalSubType:(unint64_t)subType optionalClass:(Class)class optionalMapping:(id)mapping resolution:(id)resolution
 {
-  v15 = [a1 _settingObjectForKey:a3 settings:a5 resolution:a9];
+  v15 = [self _settingObjectForKey:key settings:settings resolution:resolution];
   if (v15)
   {
 
-    return [a1 valueForObject:v15 ofType:a4 optionalSubType:a6 optionalClass:a7 optionalMapping:a8 resolution:a9];
+    return [self valueForObject:v15 ofType:type optionalSubType:subType optionalClass:class optionalMapping:mapping resolution:resolution];
   }
 
   else
   {
-    if (a9)
+    if (resolution)
     {
       if (*MEMORY[0x277D62808] >= 4)
       {
-        [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Settings/OKSettingsUtility.m" line:116 andFormat:@"Value for key %@ cannot be found for the resolution %@", a3, a9];
+        [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Settings/OKSettingsUtility.m" line:116 andFormat:@"Value for key %@ cannot be found for the resolution %@", key, resolution];
       }
     }
 
     else if (*MEMORY[0x277D62808] >= 4)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Settings/OKSettingsUtility.m" line:112 andFormat:@"Value for key %@ cannot be found", a3, v17];
+      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Settings/OKSettingsUtility.m" line:112 andFormat:@"Value for key %@ cannot be found", key, v17];
     }
 
     return 0;
   }
 }
 
-+ (id)valueForObject:(id)a3 ofType:(unint64_t)a4 optionalSubType:(unint64_t)a5 optionalClass:(Class)a6 optionalMapping:(id)a7 resolution:(id)a8
++ (id)valueForObject:(id)object ofType:(unint64_t)type optionalSubType:(unint64_t)subType optionalClass:(Class)class optionalMapping:(id)mapping resolution:(id)resolution
 {
-  if (a4 > 303)
+  if (type > 303)
   {
-    if (a4 > 403)
+    if (type > 403)
     {
-      if (a4 <= 500)
+      if (type <= 500)
       {
-        if (a4 <= 405)
+        if (type <= 405)
         {
-          if (a4 == 404)
+          if (type == 404)
           {
 
-            return [OKSettingsUtility arrayOfDictionaryFromObject:a3];
+            return [OKSettingsUtility arrayOfDictionaryFromObject:object];
           }
 
           else
           {
 
-            return [OKSettingsUtility arrayOfWidgetFromObject:a3];
+            return [OKSettingsUtility arrayOfWidgetFromObject:object];
           }
         }
 
-        if (a4 == 406)
+        if (type == 406)
         {
 
-          return [OKSettingsUtility arrayOfSettingsObjectsFromObject:a3 class:a6 resolution:a8];
+          return [OKSettingsUtility arrayOfSettingsObjectsFromObject:object class:class resolution:resolution];
         }
 
-        if (a4 == 407)
+        if (type == 407)
         {
 
-          return [OKSettingsUtility arrayOfDynamicSettingsObjectsFromObject:a3 class:a6 resolution:a8];
+          return [OKSettingsUtility arrayOfDynamicSettingsObjectsFromObject:object class:class resolution:resolution];
         }
       }
 
       else
       {
-        if (a4 <= 502)
+        if (type <= 502)
         {
-          if (a4 == 501)
+          if (type == 501)
           {
 
-            return [OKSettingsUtility dictionaryFromObject:a3 type:a5];
+            return [OKSettingsUtility dictionaryFromObject:object type:subType];
           }
 
           else
           {
 
-            return [OKSettingsUtility dictionaryOfArrayFromObject:a3];
+            return [OKSettingsUtility dictionaryOfArrayFromObject:object];
           }
         }
 
-        switch(a4)
+        switch(type)
         {
           case 0x1F7uLL:
 
-            return [OKSettingsUtility dictionaryOfDictionaryFromObject:a3];
+            return [OKSettingsUtility dictionaryOfDictionaryFromObject:object];
           case 0x1F8uLL:
 
-            return [OKSettingsUtility dictionaryOfSettingsObjectsFromObject:a3 class:a6 resolution:a8];
+            return [OKSettingsUtility dictionaryOfSettingsObjectsFromObject:object class:class resolution:resolution];
           case 0x1F9uLL:
 
-            return [OKSettingsUtility dictionaryOfDynamicSettingsObjectsFromObject:a3 class:a6 resolution:a8];
+            return [OKSettingsUtility dictionaryOfDynamicSettingsObjectsFromObject:object class:class resolution:resolution];
         }
       }
     }
 
     else
     {
-      if (a4 <= 307)
+      if (type <= 307)
       {
-        if (a4 > 305)
+        if (type > 305)
         {
-          if (a4 == 306)
+          if (type == 306)
           {
 
-            return [OKSettingsUtility widgetFromObject:a3];
+            return [OKSettingsUtility widgetFromObject:object];
           }
 
           else
           {
 
-            return [OKSettingsUtility settingsObjectFromObject:a3 class:a6 resolution:a8];
+            return [OKSettingsUtility settingsObjectFromObject:object class:class resolution:resolution];
           }
         }
 
-        else if (a4 == 304)
+        else if (type == 304)
         {
 
-          return [OKSettingsUtility colorFromObject:a3];
+          return [OKSettingsUtility colorFromObject:object];
         }
 
         else
         {
 
-          return [OKSettingsUtility indexPath2DFromObject:a3];
+          return [OKSettingsUtility indexPath2DFromObject:object];
         }
       }
 
-      if (a4 > 400)
+      if (type > 400)
       {
-        if (a4 == 401)
+        if (type == 401)
         {
 
-          return [OKSettingsUtility arrayFromObject:a3 type:a5];
+          return [OKSettingsUtility arrayFromObject:object type:subType];
         }
 
-        else if (a4 == 402)
+        else if (type == 402)
         {
 
-          return [OKSettingsUtility arrayOfURLFromObject:a3];
+          return [OKSettingsUtility arrayOfURLFromObject:object];
         }
 
         else
         {
 
-          return [OKSettingsUtility arrayOfStringFromObject:a3];
+          return [OKSettingsUtility arrayOfStringFromObject:object];
         }
       }
 
-      if (a4 == 308)
+      if (type == 308)
       {
 
-        return [OKSettingsUtility dynamicSettingsObjectFromObject:a3 class:a6 resolution:a8];
+        return [OKSettingsUtility dynamicSettingsObjectFromObject:object class:class resolution:resolution];
       }
 
-      if (a4 == 309)
+      if (type == 309)
       {
 
-        return [OKSettingsUtility attributedStringFromObject:a3];
+        return [OKSettingsUtility attributedStringFromObject:object];
       }
     }
 
     goto LABEL_132;
   }
 
-  if (a4 > 201)
+  if (type > 201)
   {
-    if (a4 <= 205)
+    if (type <= 205)
     {
-      if (a4 > 203)
+      if (type > 203)
       {
-        if (a4 == 204)
+        if (type == 204)
         {
           v14 = MEMORY[0x277CCAE60];
-          [OKSettingsUtility edgeInsetsFromObject:a3, 204, a5, a6, a7, a8];
+          [OKSettingsUtility edgeInsetsFromObject:object, 204, subType, class, mapping, resolution];
 
           return [v14 valueWithUIEdgeInsets:?];
         }
@@ -390,16 +390,16 @@ LABEL_31:
         else
         {
           v11 = MEMORY[0x277CCAE60];
-          [OKSettingsUtility coordinateLocationFromObject:a3, 205, a5, a6, a7, a8];
+          [OKSettingsUtility coordinateLocationFromObject:object, 205, subType, class, mapping, resolution];
 
           return [v11 valueWithCLLocationCoordinate2D:?];
         }
       }
 
-      else if (a4 == 202)
+      else if (type == 202)
       {
         v13 = MEMORY[0x277CCAE60];
-        [OKSettingsUtility pointFromObject:a3, 202, a5, a6, a7, a8];
+        [OKSettingsUtility pointFromObject:object, 202, subType, class, mapping, resolution];
 
         return [v13 valueWithCGPoint:?];
       }
@@ -407,46 +407,46 @@ LABEL_31:
       else
       {
         v10 = MEMORY[0x277CCAE60];
-        [OKSettingsUtility sizeFromObject:a3, 203, a5, a6, a7, a8];
+        [OKSettingsUtility sizeFromObject:object, 203, subType, class, mapping, resolution];
 
         return [v10 valueWithCGSize:?];
       }
     }
 
-    if (a4 > 300)
+    if (type > 300)
     {
-      if (a4 != 301)
+      if (type != 301)
       {
-        if (a4 == 302)
+        if (type == 302)
         {
 
-          return [OKSettingsUtility stringFromObject:a3];
+          return [OKSettingsUtility stringFromObject:object];
         }
 
         else
         {
 
-          return [OKSettingsUtility urlFromObject:a3];
+          return [OKSettingsUtility urlFromObject:object];
         }
       }
 
 LABEL_67:
 
-      return [OKSettingsUtility numberFromObject:a3];
+      return [OKSettingsUtility numberFromObject:object];
     }
 
-    if (a4 == 206)
+    if (type == 206)
     {
       v15 = MEMORY[0x277CCAE60];
-      [OKSettingsUtility coordinateRegionFromObject:a3, 206, a5, a6, a7, a8];
+      [OKSettingsUtility coordinateRegionFromObject:object, 206, subType, class, mapping, resolution];
 
       return [v15 valueWithMKCoordinateRegion:?];
     }
 
-    if (a4 == 207)
+    if (type == 207)
     {
       v12 = MEMORY[0x277CCAE60];
-      [OKSettingsUtility offsetFromObject:a3, 207, a5, a6, a7, a8];
+      [OKSettingsUtility offsetFromObject:object, 207, subType, class, mapping, resolution];
 
       return [v12 valueWithUIOffset:?];
     }
@@ -454,15 +454,15 @@ LABEL_67:
 LABEL_132:
     if (*MEMORY[0x277D62808] >= 4)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Settings/OKSettingsUtility.m" line:341 andFormat:@"Unsupported value type %@", a7, a8, a4];
+      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Settings/OKSettingsUtility.m" line:341 andFormat:@"Unsupported value type %@", mapping, resolution, type];
     }
 
     return 0;
   }
 
-  if (a4 <= 104)
+  if (type <= 104)
   {
-    if (a4 > 102 || a4 == 101 || a4 == 102)
+    if (type > 102 || type == 101 || type == 102)
     {
       goto LABEL_67;
     }
@@ -470,22 +470,22 @@ LABEL_132:
     goto LABEL_132;
   }
 
-  if (a4 <= 106)
+  if (type <= 106)
   {
     goto LABEL_67;
   }
 
-  switch(a4)
+  switch(type)
   {
     case 0x6BuLL:
 
-      return [OKSettingsUtility enumFromObject:a3 mapping:a7, a5, a6];
+      return [OKSettingsUtility enumFromObject:object mapping:mapping, subType, class];
     case 0x6CuLL:
 
-      return [OKSettingsUtility optionsFromObject:a3 mapping:a7, a5, a6];
+      return [OKSettingsUtility optionsFromObject:object mapping:mapping, subType, class];
     case 0xC9uLL:
       v8 = MEMORY[0x277CCAE60];
-      [OKSettingsUtility rectFromObject:a3, 201, a5, a6, a7, a8];
+      [OKSettingsUtility rectFromObject:object, 201, subType, class, mapping, resolution];
 
       return [v8 valueWithCGRect:?];
     default:
@@ -493,26 +493,26 @@ LABEL_132:
   }
 }
 
-+ (id)normalizedObjectFromValue:(id)a3
++ (id)normalizedObjectFromValue:(id)value
 {
   v42 = *MEMORY[0x277D85DE8];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return a3;
+    return value;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return a3;
+    return value;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
 
-    return [a3 absoluteString];
+    return [value absoluteString];
   }
 
   objc_opt_class();
@@ -526,7 +526,7 @@ LABEL_132:
   if (objc_opt_isKindOfClass())
   {
 
-    return MEMORY[0x2821C9390](a3);
+    return MEMORY[0x2821C9390](value);
   }
 
   objc_opt_class();
@@ -535,12 +535,12 @@ LABEL_132:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v10 = [a3 countByEnumeratingWithState:&v36 objects:v41 count:16];
+      v10 = [value countByEnumeratingWithState:&v36 objects:v41 count:16];
       if (v10)
       {
         v11 = v10;
@@ -551,13 +551,13 @@ LABEL_132:
           {
             if (*v37 != v12)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(value);
             }
 
-            [v9 addObject:{objc_msgSend(a1, "normalizedObjectFromValue:", *(*(&v36 + 1) + 8 * i))}];
+            [array addObject:{objc_msgSend(self, "normalizedObjectFromValue:", *(*(&v36 + 1) + 8 * i))}];
           }
 
-          v11 = [a3 countByEnumeratingWithState:&v36 objects:v41 count:16];
+          v11 = [value countByEnumeratingWithState:&v36 objects:v41 count:16];
         }
 
         while (v11);
@@ -572,18 +572,18 @@ LABEL_132:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          return a3;
+          return value;
         }
 
-        return [a3 dictionary];
+        return [value dictionary];
       }
 
-      v9 = [MEMORY[0x277CBEB38] dictionary];
+      array = [MEMORY[0x277CBEB38] dictionary];
       v32 = 0u;
       v33 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v14 = [a3 countByEnumeratingWithState:&v32 objects:v40 count:16];
+      v14 = [value countByEnumeratingWithState:&v32 objects:v40 count:16];
       if (v14)
       {
         v15 = v14;
@@ -594,95 +594,95 @@ LABEL_132:
           {
             if (*v33 != v16)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(value);
             }
 
-            [v9 setObject:objc_msgSend(a1 forKey:{"normalizedObjectFromValue:", objc_msgSend(a3, "objectForKey:", *(*(&v32 + 1) + 8 * j))), *(*(&v32 + 1) + 8 * j)}];
+            [array setObject:objc_msgSend(self forKey:{"normalizedObjectFromValue:", objc_msgSend(value, "objectForKey:", *(*(&v32 + 1) + 8 * j))), *(*(&v32 + 1) + 8 * j)}];
           }
 
-          v15 = [a3 countByEnumeratingWithState:&v32 objects:v40 count:16];
+          v15 = [value countByEnumeratingWithState:&v32 objects:v40 count:16];
         }
 
         while (v15);
       }
     }
 
-    return v9;
+    return array;
   }
 
-  v6 = [a3 objCType];
-  if (!strcmp(v6, "{CGRect={CGPoint=dd}{CGSize=dd}}"))
+  objCType = [value objCType];
+  if (!strcmp(objCType, "{CGRect={CGPoint=dd}{CGSize=dd}}"))
   {
-    [a1 rectFromObject:a3];
+    [self rectFromObject:value];
 
     return NSStringFromCGRect(*&v18);
   }
 
-  else if (!strcmp(v6, "{CGPoint=dd}"))
+  else if (!strcmp(objCType, "{CGPoint=dd}"))
   {
-    [a1 pointFromObject:a3];
+    [self pointFromObject:value];
 
     return NSStringFromCGPoint(*&v22);
   }
 
-  else if (!strcmp(v6, "{CGSize=dd}"))
+  else if (!strcmp(objCType, "{CGSize=dd}"))
   {
-    [a1 sizeFromObject:a3];
+    [self sizeFromObject:value];
 
     return NSStringFromCGSize(*&v24);
   }
 
-  else if (!strcmp(v6, "{UIEdgeInsets=dddd}"))
+  else if (!strcmp(objCType, "{UIEdgeInsets=dddd}"))
   {
-    [a1 edgeInsetsFromObject:a3];
+    [self edgeInsetsFromObject:value];
 
     return NSStringFromUIEdgeInsets(*&v26);
   }
 
-  else if (!strcmp(v6, "{CLLocationCoordinate2D=dd}"))
+  else if (!strcmp(objCType, "{CLLocationCoordinate2D=dd}"))
   {
-    v30 = [a1 coordinateLocationFromObject:a3];
+    v30 = [self coordinateLocationFromObject:value];
 
     return MEMORY[0x2821C9380](v30);
   }
 
   else
   {
-    if (strcmp(v6, "{?={CLLocationCoordinate2D=dd}{?=dd}}"))
+    if (strcmp(objCType, "{?={CLLocationCoordinate2D=dd}{?=dd}}"))
     {
-      if (!strcmp(v6, "{UIOffset=dd}"))
+      if (!strcmp(objCType, "{UIOffset=dd}"))
       {
-        [a1 offsetFromObject:a3];
+        [self offsetFromObject:value];
 
         return NSStringFromUIOffset(*&v7);
       }
 
-      return a3;
+      return value;
     }
 
-    v31 = [a1 coordinateRegionFromObject:a3];
+    v31 = [self coordinateRegionFromObject:value];
 
     return MEMORY[0x2821C9388](v31);
   }
 }
 
-+ (id)enumFromObject:(id)a3 mapping:(id)a4
++ (id)enumFromObject:(id)object mapping:(id)mapping
 {
   v18 = *MEMORY[0x277D85DE8];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a3 = [a4 objectForKey:a3];
-    if (a3)
+    object = [mapping objectForKey:object];
+    if (object)
     {
-      return a3;
+      return object;
     }
 
     goto LABEL_13;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || (v15 = 0u, v16 = 0u, v13 = 0u, v14 = 0u, v6 = [a4 allKeys], (v7 = objc_msgSend(v6, "countByEnumeratingWithState:objects:count:", &v13, v17, 16)) == 0))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || (v15 = 0u, v16 = 0u, v13 = 0u, v14 = 0u, v6 = [mapping allKeys], (v7 = objc_msgSend(v6, "countByEnumeratingWithState:objects:count:", &v13, v17, 16)) == 0))
   {
 LABEL_13:
     if (*MEMORY[0x277D62808] >= 4)
@@ -704,10 +704,10 @@ LABEL_7:
       objc_enumerationMutation(v6);
     }
 
-    v11 = [objc_msgSend(a4 objectForKey:{*(*(&v13 + 1) + 8 * v10)), "unsignedIntegerValue"}];
-    if (v11 == [a3 unsignedIntegerValue])
+    v11 = [objc_msgSend(mapping objectForKey:{*(*(&v13 + 1) + 8 * v10)), "unsignedIntegerValue"}];
+    if (v11 == [object unsignedIntegerValue])
     {
-      return a3;
+      return object;
     }
 
     if (v8 == ++v10)
@@ -723,7 +723,7 @@ LABEL_7:
   }
 }
 
-+ (id)optionsFromObject:(id)a3 mapping:(id)a4
++ (id)optionsFromObject:(id)object mapping:(id)mapping
 {
   v18 = *MEMORY[0x277D85DE8];
   objc_opt_class();
@@ -733,7 +733,7 @@ LABEL_7:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v7 = [object countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -745,13 +745,13 @@ LABEL_7:
         {
           if (*v14 != v10)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(object);
           }
 
-          v9 |= [objc_msgSend(a1 enumFromObject:*(*(&v13 + 1) + 8 * i) mapping:{a4), "unsignedIntegerValue"}];
+          v9 |= [objc_msgSend(self enumFromObject:*(*(&v13 + 1) + 8 * i) mapping:{mapping), "unsignedIntegerValue"}];
         }
 
-        v8 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [object countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v8);
@@ -770,10 +770,10 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      a3 = [a4 objectForKey:a3];
-      if (a3)
+      object = [mapping objectForKey:object];
+      if (object)
       {
-        return a3;
+        return object;
       }
     }
 
@@ -782,7 +782,7 @@ LABEL_7:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        return a3;
+        return object;
       }
     }
 
@@ -795,20 +795,20 @@ LABEL_7:
   }
 }
 
-+ (CGRect)rectFromObject:(id)a3
++ (CGRect)rectFromObject:(id)object
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return CGRectFromString(a3);
+    return CGRectFromString(object);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (!strcmp([a3 objCType], "{CGRect={CGPoint=dd}{CGSize=dd}}"))
+    if (!strcmp([object objCType], "{CGRect={CGPoint=dd}{CGSize=dd}}"))
     {
-      [a3 CGRectValue];
+      [object CGRectValue];
       return result;
     }
   }
@@ -818,7 +818,7 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a3 toRect];
+      [object toRect];
       return result;
     }
   }
@@ -826,7 +826,7 @@ LABEL_7:
   return **&MEMORY[0x277CBF3A0];
 }
 
-+ (CGPoint)pointFromObject:(id)a3
++ (CGPoint)pointFromObject:(id)object
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -834,9 +834,9 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (!strcmp([a3 objCType], "{CGPoint=dd}"))
+      if (!strcmp([object objCType], "{CGPoint=dd}"))
       {
-        [a3 CGPointValue];
+        [object CGPointValue];
         goto LABEL_9;
       }
     }
@@ -846,7 +846,7 @@ LABEL_7:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [a3 toPoint];
+        [object toPoint];
         goto LABEL_9;
       }
     }
@@ -856,7 +856,7 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v6 = CGPointFromString(a3);
+  v6 = CGPointFromString(object);
   y = v6.y;
   x = v6.x;
 LABEL_9:
@@ -865,7 +865,7 @@ LABEL_9:
   return result;
 }
 
-+ (CGSize)sizeFromObject:(id)a3
++ (CGSize)sizeFromObject:(id)object
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -873,9 +873,9 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (!strcmp([a3 objCType], "{CGSize=dd}"))
+      if (!strcmp([object objCType], "{CGSize=dd}"))
       {
-        [a3 CGSizeValue];
+        [object CGSizeValue];
         goto LABEL_9;
       }
     }
@@ -885,7 +885,7 @@ LABEL_9:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [a3 toSize];
+        [object toSize];
         goto LABEL_9;
       }
     }
@@ -895,7 +895,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v6 = CGSizeFromString(a3);
+  v6 = CGSizeFromString(object);
   height = v6.height;
   width = v6.width;
 LABEL_9:
@@ -904,20 +904,20 @@ LABEL_9:
   return result;
 }
 
-+ (UIEdgeInsets)edgeInsetsFromObject:(id)a3
++ (UIEdgeInsets)edgeInsetsFromObject:(id)object
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return UIEdgeInsetsFromString(a3);
+    return UIEdgeInsetsFromString(object);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (!strcmp([a3 objCType], "{UIEdgeInsets=dddd}"))
+    if (!strcmp([object objCType], "{UIEdgeInsets=dddd}"))
     {
-      [a3 UIEdgeInsetsValue];
+      [object UIEdgeInsetsValue];
       return result;
     }
   }
@@ -927,7 +927,7 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a3 toEdgeInsets];
+      [object toEdgeInsets];
       return result;
     }
   }
@@ -935,7 +935,7 @@ LABEL_9:
   return **&MEMORY[0x277D768C8];
 }
 
-+ (CLLocationCoordinate2D)coordinateLocationFromObject:(id)a3
++ (CLLocationCoordinate2D)coordinateLocationFromObject:(id)object
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -943,9 +943,9 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (!strcmp([a3 objCType], "{CLLocationCoordinate2D=dd}"))
+      if (!strcmp([object objCType], "{CLLocationCoordinate2D=dd}"))
       {
-        [a3 CLLocationCoordinate2DValue];
+        [object CLLocationCoordinate2DValue];
         goto LABEL_9;
       }
     }
@@ -955,7 +955,7 @@ LABEL_9:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [a3 toLocationCoordinate2D];
+        [object toLocationCoordinate2D];
         goto LABEL_9;
       }
     }
@@ -972,7 +972,7 @@ LABEL_9:
   return result;
 }
 
-+ ($3FD701315FC6B61C39B4A3183395B84E)coordinateRegionFromObject:(SEL)a3
++ ($3FD701315FC6B61C39B4A3183395B84E)coordinateRegionFromObject:(SEL)object
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1003,7 +1003,7 @@ LABEL_9:
   return result;
 }
 
-+ (UIOffset)offsetFromObject:(id)a3
++ (UIOffset)offsetFromObject:(id)object
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1011,9 +1011,9 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (!strcmp([a3 objCType], "{UIOffset=dd}"))
+      if (!strcmp([object objCType], "{UIOffset=dd}"))
       {
-        [a3 UIOffsetValue];
+        [object UIOffsetValue];
         goto LABEL_9;
       }
     }
@@ -1023,7 +1023,7 @@ LABEL_9:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [a3 toOffset];
+        [object toOffset];
         goto LABEL_9;
       }
     }
@@ -1033,7 +1033,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v6 = UIOffsetFromString(a3);
+  v6 = UIOffsetFromString(object);
   vertical = v6.vertical;
   horizontal = v6.horizontal;
 LABEL_9:
@@ -1042,12 +1042,12 @@ LABEL_9:
   return result;
 }
 
-+ (id)colorFromObject:(id)a3
++ (id)colorFromObject:(id)object
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return a3;
+    return object;
   }
 
   objc_opt_class();
@@ -1065,35 +1065,35 @@ LABEL_9:
       return 0;
     }
 
-    return [a3 toObject];
+    return [object toObject];
   }
 }
 
-+ (id)numberFromObject:(id)a3
++ (id)numberFromObject:(id)object
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return a3;
+    return object;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [a3 uppercaseString];
-    if ([v4 isEqualToString:@"TRUE"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"YES"))
+    uppercaseString = [object uppercaseString];
+    if ([uppercaseString isEqualToString:@"TRUE"] & 1) != 0 || (objc_msgSend(uppercaseString, "isEqualToString:", @"YES"))
     {
       return MEMORY[0x277CBEC38];
     }
 
-    if ([v4 isEqualToString:@"FALSE"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"NO"))
+    if ([uppercaseString isEqualToString:@"FALSE"] & 1) != 0 || (objc_msgSend(uppercaseString, "isEqualToString:", @"NO"))
     {
       return MEMORY[0x277CBEC28];
     }
 
     v6 = MEMORY[0x277CCA980];
 
-    return [v6 decimalNumberWithString:a3];
+    return [v6 decimalNumberWithString:object];
   }
 
   else
@@ -1104,16 +1104,16 @@ LABEL_9:
       return 0;
     }
 
-    return [a3 toNumber];
+    return [object toNumber];
   }
 }
 
-+ (id)stringFromObject:(id)a3
++ (id)stringFromObject:(id)object
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return a3;
+    return object;
   }
 
   objc_opt_class();
@@ -1122,15 +1122,15 @@ LABEL_9:
     return 0;
   }
 
-  return [a3 toString];
+  return [object toString];
 }
 
-+ (id)attributedStringFromObject:(id)a3
++ (id)attributedStringFromObject:(id)object
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return a3;
+    return object;
   }
 
   else
@@ -1139,12 +1139,12 @@ LABEL_9:
   }
 }
 
-+ (id)urlFromObject:(id)a3
++ (id)urlFromObject:(id)object
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return a3;
+    return object;
   }
 
   objc_opt_class();
@@ -1155,17 +1155,17 @@ LABEL_9:
 
   v4 = MEMORY[0x277CBEBC0];
 
-  return [v4 URLWithString:a3];
+  return [v4 URLWithString:object];
 }
 
-+ (id)indexPath2DFromObject:(id)a3
++ (id)indexPath2DFromObject:(id)object
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([a3 length] == 2)
+    if ([object length] == 2)
     {
-      return a3;
+      return object;
     }
 
     return 0;
@@ -1177,15 +1177,15 @@ LABEL_9:
     return 0;
   }
 
-  return MEMORY[0x2821C9378](a3);
+  return MEMORY[0x2821C9378](object);
 }
 
-+ (id)widgetFromObject:(id)a3
++ (id)widgetFromObject:(id)object
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return a3;
+    return object;
   }
 
   objc_opt_class();
@@ -1194,23 +1194,23 @@ LABEL_9:
     return 0;
   }
 
-  v4 = [[OKPresentationWidget alloc] initWithDictionary:a3 forPresentation:0 andParent:0];
+  v4 = [[OKPresentationWidget alloc] initWithDictionary:object forPresentation:0 andParent:0];
 
   return v4;
 }
 
-+ (id)settingsObjectFromObject:(id)a3 class:(Class)a4 resolution:(id)a5
++ (id)settingsObjectFromObject:(id)object class:(Class)class resolution:(id)resolution
 {
-  if (!a4)
+  if (!class)
   {
     return 0;
   }
 
   if (objc_opt_isKindOfClass())
   {
-    if ([a3 conformsToProtocol:&unk_287AFD5D0])
+    if ([object conformsToProtocol:&unk_287AFD5D0])
     {
-      return a3;
+      return object;
     }
 
     return 0;
@@ -1222,14 +1222,14 @@ LABEL_9:
     return 0;
   }
 
-  return [OKSettings objectFromClass:a4 withSettings:a3 andResolution:a5];
+  return [OKSettings objectFromClass:class withSettings:object andResolution:resolution];
 }
 
-+ (id)dynamicSettingsObjectFromObject:(id)a3 class:(Class)a4 resolution:(id)a5
++ (id)dynamicSettingsObjectFromObject:(id)object class:(Class)class resolution:(id)resolution
 {
-  if (a4 && (objc_opt_isKindOfClass() & 1) != 0 && ([a3 conformsToProtocol:&unk_287AFD5D0] & 1) != 0)
+  if (class && (objc_opt_isKindOfClass() & 1) != 0 && ([object conformsToProtocol:&unk_287AFD5D0] & 1) != 0)
   {
-    return a3;
+    return object;
   }
 
   objc_opt_class();
@@ -1244,9 +1244,9 @@ LABEL_9:
         v15 = v14;
         if ([(objc_class *)v14 conformsToProtocol:&unk_287AFD5D0])
         {
-          if (!a4 || [(objc_class *)v15 isSubclassOfClass:a4])
+          if (!class || [(objc_class *)v15 isSubclassOfClass:class])
           {
-            v12 = v15;
+            classCopy = v15;
             v13 = 0;
             goto LABEL_27;
           }
@@ -1254,24 +1254,24 @@ LABEL_9:
       }
     }
 
-    else if ([a3 conformsToProtocol:&unk_287AFD5D0])
+    else if ([object conformsToProtocol:&unk_287AFD5D0])
     {
-      return a3;
+      return object;
     }
 
     return 0;
   }
 
-  v8 = [a3 objectForKey:@"class"];
+  v8 = [object objectForKey:@"class"];
   if (!v8)
   {
-    if (a4)
+    if (class)
     {
-      v16 = [a3 objectForKey:@"settings"];
+      v16 = [object objectForKey:@"settings"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) != 0 || !v16)
       {
-        v12 = a4;
+        classCopy = class;
         v13 = v16;
         goto LABEL_27;
       }
@@ -1287,12 +1287,12 @@ LABEL_9:
   }
 
   v10 = v9;
-  if (![v9 conformsToProtocol:&unk_287AFD5D0] || a4 && !objc_msgSend(v10, "isSubclassOfClass:", a4))
+  if (![v9 conformsToProtocol:&unk_287AFD5D0] || class && !objc_msgSend(v10, "isSubclassOfClass:", class))
   {
     return 0;
   }
 
-  v11 = [a3 objectForKey:@"settings"];
+  v11 = [object objectForKey:@"settings"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1302,24 +1302,24 @@ LABEL_9:
     }
   }
 
-  v12 = v10;
+  classCopy = v10;
   v13 = v11;
 LABEL_27:
 
-  return [OKSettings objectFromClass:v12 withSettings:v13 andResolution:a5];
+  return [OKSettings objectFromClass:classCopy withSettings:v13 andResolution:resolution];
 }
 
-+ (id)arrayFromObject:(id)a3 type:(unint64_t)a4
++ (id)arrayFromObject:(id)object type:(unint64_t)type
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (type)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v8 = [object countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1331,34 +1331,34 @@ LABEL_27:
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(object);
           }
 
-          v13 = [a1 valueForObject:*(*(&v15 + 1) + 8 * i) ofType:a4 optionalSubType:0 optionalClass:0 optionalMapping:0 resolution:0];
+          v13 = [self valueForObject:*(*(&v15 + 1) + 8 * i) ofType:type optionalSubType:0 optionalClass:0 optionalMapping:0 resolution:0];
           if (v13)
           {
-            [v7 addObject:v13];
+            [array addObject:v13];
           }
 
           else if (*v10 >= 4)
           {
-            [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Settings/OKSettingsUtility.m" line:977 andFormat:@"Object cannot be converted to type %ld", a4];
+            [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Settings/OKSettingsUtility.m" line:977 andFormat:@"Object cannot be converted to type %ld", type];
           }
         }
 
-        v9 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [object countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v9);
     }
 
-    return v7;
+    return array;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return a3;
+    return object;
   }
 
   objc_opt_class();
@@ -1367,10 +1367,10 @@ LABEL_27:
     return 0;
   }
 
-  return [a3 toArray];
+  return [object toArray];
 }
 
-+ (id)arrayOfURLFromObject:(id)a3
++ (id)arrayOfURLFromObject:(id)object
 {
   v18 = *MEMORY[0x277D85DE8];
   objc_opt_class();
@@ -1379,12 +1379,12 @@ LABEL_27:
     return 0;
   }
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [object countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1396,13 +1396,13 @@ LABEL_27:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(object);
         }
 
-        v11 = [a1 urlFromObject:*(*(&v13 + 1) + 8 * i)];
+        v11 = [self urlFromObject:*(*(&v13 + 1) + 8 * i)];
         if (v11)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
 
         else if (*v8 >= 4)
@@ -1411,16 +1411,16 @@ LABEL_27:
         }
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [object countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 
-  return v5;
+  return array;
 }
 
-+ (id)arrayOfStringFromObject:(id)a3
++ (id)arrayOfStringFromObject:(id)object
 {
   v18 = *MEMORY[0x277D85DE8];
   objc_opt_class();
@@ -1429,12 +1429,12 @@ LABEL_27:
     return 0;
   }
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [object countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1446,13 +1446,13 @@ LABEL_27:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(object);
         }
 
-        v11 = [a1 stringFromObject:*(*(&v13 + 1) + 8 * i)];
+        v11 = [self stringFromObject:*(*(&v13 + 1) + 8 * i)];
         if (v11)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
 
         else if (*v8 >= 4)
@@ -1461,16 +1461,16 @@ LABEL_27:
         }
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [object countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 
-  return v5;
+  return array;
 }
 
-+ (id)arrayOfDictionaryFromObject:(id)a3
++ (id)arrayOfDictionaryFromObject:(id)object
 {
   v18 = *MEMORY[0x277D85DE8];
   objc_opt_class();
@@ -1479,12 +1479,12 @@ LABEL_27:
     return 0;
   }
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [object countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1496,13 +1496,13 @@ LABEL_27:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(object);
         }
 
-        v11 = [a1 dictionaryFromObject:*(*(&v13 + 1) + 8 * i) type:0];
+        v11 = [self dictionaryFromObject:*(*(&v13 + 1) + 8 * i) type:0];
         if (v11)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
 
         else if (*v8 >= 4)
@@ -1511,16 +1511,16 @@ LABEL_27:
         }
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [object countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 
-  return v5;
+  return array;
 }
 
-+ (id)arrayOfWidgetFromObject:(id)a3
++ (id)arrayOfWidgetFromObject:(id)object
 {
   v18 = *MEMORY[0x277D85DE8];
   objc_opt_class();
@@ -1529,12 +1529,12 @@ LABEL_27:
     return 0;
   }
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [object countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1546,13 +1546,13 @@ LABEL_27:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(object);
         }
 
-        v11 = [a1 widgetFromObject:*(*(&v13 + 1) + 8 * i)];
+        v11 = [self widgetFromObject:*(*(&v13 + 1) + 8 * i)];
         if (v11)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
 
         else if (*v8 >= 4)
@@ -1561,16 +1561,16 @@ LABEL_27:
         }
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [object countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 
-  return v5;
+  return array;
 }
 
-+ (id)arrayOfSettingsObjectsFromObject:(id)a3 class:(Class)a4 resolution:(id)a5
++ (id)arrayOfSettingsObjectsFromObject:(id)object class:(Class)class resolution:(id)resolution
 {
   v22 = *MEMORY[0x277D85DE8];
   objc_opt_class();
@@ -1579,12 +1579,12 @@ LABEL_27:
     return 0;
   }
 
-  v9 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v10 = [object countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1596,13 +1596,13 @@ LABEL_27:
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(object);
         }
 
-        v15 = [a1 settingsObjectFromObject:*(*(&v17 + 1) + 8 * i) class:a4 resolution:a5];
+        v15 = [self settingsObjectFromObject:*(*(&v17 + 1) + 8 * i) class:class resolution:resolution];
         if (v15)
         {
-          [v9 addObject:v15];
+          [array addObject:v15];
         }
 
         else if (*v12 >= 4)
@@ -1611,16 +1611,16 @@ LABEL_27:
         }
       }
 
-      v11 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [object countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v11);
   }
 
-  return v9;
+  return array;
 }
 
-+ (id)arrayOfDynamicSettingsObjectsFromObject:(id)a3 class:(Class)a4 resolution:(id)a5
++ (id)arrayOfDynamicSettingsObjectsFromObject:(id)object class:(Class)class resolution:(id)resolution
 {
   v22 = *MEMORY[0x277D85DE8];
   objc_opt_class();
@@ -1629,12 +1629,12 @@ LABEL_27:
     return 0;
   }
 
-  v9 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v10 = [object countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1646,13 +1646,13 @@ LABEL_27:
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(object);
         }
 
-        v15 = [a1 dynamicSettingsObjectFromObject:*(*(&v17 + 1) + 8 * i) class:a4 resolution:a5];
+        v15 = [self dynamicSettingsObjectFromObject:*(*(&v17 + 1) + 8 * i) class:class resolution:resolution];
         if (v15)
         {
-          [v9 addObject:v15];
+          [array addObject:v15];
         }
 
         else if (*v12 >= 4)
@@ -1661,27 +1661,27 @@ LABEL_27:
         }
       }
 
-      v11 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [object countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v11);
   }
 
-  return v9;
+  return array;
 }
 
-+ (id)dictionaryFromObject:(id)a3 type:(unint64_t)a4
++ (id)dictionaryFromObject:(id)object type:(unint64_t)type
 {
   v22 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (type)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = [a3 allKeys];
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    allKeys = [object allKeys];
+    v9 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1693,42 +1693,42 @@ LABEL_27:
         {
           if (*v18 != v12)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allKeys);
           }
 
           v14 = *(*(&v17 + 1) + 8 * i);
-          v15 = [a1 valueForObject:objc_msgSend(a3 ofType:"objectForKey:" optionalSubType:v14) optionalClass:a4 optionalMapping:0 resolution:{0, 0, 0}];
+          v15 = [self valueForObject:objc_msgSend(object ofType:"objectForKey:" optionalSubType:v14) optionalClass:type optionalMapping:0 resolution:{0, 0, 0}];
           if (v15)
           {
-            [v7 setObject:v15 forKey:v14];
+            [dictionary setObject:v15 forKey:v14];
           }
 
           else if (*v11 >= 4)
           {
-            [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Settings/OKSettingsUtility.m" line:1178 andFormat:@"Object cannot be converted to type %d", a4];
+            [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Settings/OKSettingsUtility.m" line:1178 andFormat:@"Object cannot be converted to type %d", type];
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v10);
     }
 
-    return v7;
+    return dictionary;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return a3;
+    return object;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
 
-    return [a3 dictionary];
+    return [object dictionary];
   }
 
   else
@@ -1739,11 +1739,11 @@ LABEL_27:
       return 0;
     }
 
-    return [a3 toDictionary];
+    return [object toDictionary];
   }
 }
 
-+ (id)dictionaryOfDictionaryFromObject:(id)a3
++ (id)dictionaryOfDictionaryFromObject:(id)object
 {
   v20 = *MEMORY[0x277D85DE8];
   objc_opt_class();
@@ -1752,13 +1752,13 @@ LABEL_27:
     return 0;
   }
 
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [a3 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allKeys = [object allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1770,14 +1770,14 @@ LABEL_27:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        v13 = [a1 dictionaryFromObject:objc_msgSend(a3 type:{"objectForKey:", v12), 0}];
+        v13 = [self dictionaryFromObject:objc_msgSend(object type:{"objectForKey:", v12), 0}];
         if (v13)
         {
-          [v5 setObject:v13 forKey:v12];
+          [dictionary setObject:v13 forKey:v12];
         }
 
         else if (*v9 >= 4)
@@ -1786,16 +1786,16 @@ LABEL_27:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  return v5;
+  return dictionary;
 }
 
-+ (id)dictionaryOfArrayFromObject:(id)a3
++ (id)dictionaryOfArrayFromObject:(id)object
 {
   v20 = *MEMORY[0x277D85DE8];
   objc_opt_class();
@@ -1804,13 +1804,13 @@ LABEL_27:
     return 0;
   }
 
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [a3 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allKeys = [object allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1822,14 +1822,14 @@ LABEL_27:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        v13 = [a1 arrayFromObject:objc_msgSend(a3 type:{"objectForKey:", v12), 0}];
+        v13 = [self arrayFromObject:objc_msgSend(object type:{"objectForKey:", v12), 0}];
         if (v13)
         {
-          [v5 setObject:v13 forKey:v12];
+          [dictionary setObject:v13 forKey:v12];
         }
 
         else if (*v9 >= 4)
@@ -1838,16 +1838,16 @@ LABEL_27:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  return v5;
+  return dictionary;
 }
 
-+ (id)dictionaryOfSettingsObjectsFromObject:(id)a3 class:(Class)a4 resolution:(id)a5
++ (id)dictionaryOfSettingsObjectsFromObject:(id)object class:(Class)class resolution:(id)resolution
 {
   v23 = *MEMORY[0x277D85DE8];
   objc_opt_class();
@@ -1856,13 +1856,13 @@ LABEL_27:
     return 0;
   }
 
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [a3 allKeys];
-  v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  allKeys = [object allKeys];
+  v11 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1873,14 +1873,14 @@ LABEL_27:
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allKeys);
         }
 
         v15 = *(*(&v18 + 1) + 8 * i);
-        v16 = [a1 settingsObjectFromObject:objc_msgSend(a3 class:"objectForKey:" resolution:{v15), a4, a5}];
+        v16 = [self settingsObjectFromObject:objc_msgSend(object class:"objectForKey:" resolution:{v15), class, resolution}];
         if (v16)
         {
-          [v9 setObject:v16 forKey:v15];
+          [dictionary setObject:v16 forKey:v15];
         }
 
         else if (*MEMORY[0x277D62808] >= 4)
@@ -1889,16 +1889,16 @@ LABEL_27:
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v12 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v12);
   }
 
-  return v9;
+  return dictionary;
 }
 
-+ (id)dictionaryOfDynamicSettingsObjectsFromObject:(id)a3 class:(Class)a4 resolution:(id)a5
++ (id)dictionaryOfDynamicSettingsObjectsFromObject:(id)object class:(Class)class resolution:(id)resolution
 {
   v23 = *MEMORY[0x277D85DE8];
   objc_opt_class();
@@ -1907,13 +1907,13 @@ LABEL_27:
     return 0;
   }
 
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [a3 allKeys];
-  v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  allKeys = [object allKeys];
+  v11 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1924,14 +1924,14 @@ LABEL_27:
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allKeys);
         }
 
         v15 = *(*(&v18 + 1) + 8 * i);
-        v16 = [a1 dynamicSettingsObjectFromObject:objc_msgSend(a3 class:"objectForKey:" resolution:{v15), a4, a5}];
+        v16 = [self dynamicSettingsObjectFromObject:objc_msgSend(object class:"objectForKey:" resolution:{v15), class, resolution}];
         if (v16)
         {
-          [v9 setObject:v16 forKey:v15];
+          [dictionary setObject:v16 forKey:v15];
         }
 
         else if (*MEMORY[0x277D62808] >= 4)
@@ -1940,13 +1940,13 @@ LABEL_27:
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v12 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v12);
   }
 
-  return v9;
+  return dictionary;
 }
 
 @end

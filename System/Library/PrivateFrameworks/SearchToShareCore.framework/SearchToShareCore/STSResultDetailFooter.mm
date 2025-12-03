@@ -1,22 +1,22 @@
 @interface STSResultDetailFooter
 - (CGSize)providerIconSize;
-- (STSResultDetailFooter)initWithFrame:(CGRect)a3;
-- (void)setProviderIconSize:(CGSize)a3;
+- (STSResultDetailFooter)initWithFrame:(CGRect)frame;
+- (void)setProviderIconSize:(CGSize)size;
 - (void)updateConstraints;
 @end
 
 @implementation STSResultDetailFooter
 
-- (STSResultDetailFooter)initWithFrame:(CGRect)a3
+- (STSResultDetailFooter)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = STSResultDetailFooter;
-  v3 = [(STSResultDetailFooter *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(STSResultDetailFooter *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     constraints = v3->_constraints;
-    v3->_constraints = v4;
+    v3->_constraints = array;
 
     v6 = objc_alloc(MEMORY[0x277D755E8]);
     v7 = [v6 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -32,13 +32,13 @@
 
     [(UIButton *)v3->_providerButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIButton *)v3->_providerButton setContentEdgeInsets:10.0, 0.0, 10.0, 0.0];
-    v11 = [(UIButton *)v3->_providerButton titleLabel];
+    titleLabel = [(UIButton *)v3->_providerButton titleLabel];
     v12 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
-    [v11 setFont:v12];
+    [titleLabel setFont:v12];
 
     v13 = v3->_providerButton;
-    v14 = [MEMORY[0x277D75348] whiteColor];
-    [(UIButton *)v13 setTitleColor:v14 forState:0];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UIButton *)v13 setTitleColor:whiteColor forState:0];
 
     v15 = [MEMORY[0x277D75220] buttonWithType:0];
     sendButton = v3->_sendButton;
@@ -111,11 +111,11 @@
   [MEMORY[0x277CCAAD0] activateConstraints:self->_constraints];
 }
 
-- (void)setProviderIconSize:(CGSize)a3
+- (void)setProviderIconSize:(CGSize)size
 {
-  if (self->_providerIconSize.width != a3.width || self->_providerIconSize.height != a3.height)
+  if (self->_providerIconSize.width != size.width || self->_providerIconSize.height != size.height)
   {
-    self->_providerIconSize = a3;
+    self->_providerIconSize = size;
     [(STSResultDetailFooter *)self setNeedsUpdateConstraints];
   }
 }

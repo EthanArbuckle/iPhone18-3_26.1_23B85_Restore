@@ -1,17 +1,17 @@
 @interface RBSGPUAccessGrant
 + (id)grant;
-- (BOOL)isEqual:(id)a3;
-- (RBSGPUAccessGrant)initWithRBSXPCCoder:(id)a3;
-- (id)_initWithRole:(unsigned __int8)a3;
+- (BOOL)isEqual:(id)equal;
+- (RBSGPUAccessGrant)initWithRBSXPCCoder:(id)coder;
+- (id)_initWithRole:(unsigned __int8)role;
 - (id)description;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSGPUAccessGrant
 
 + (id)grant
 {
-  v2 = [[a1 alloc] _initWithRole:2];
+  v2 = [[self alloc] _initWithRole:2];
 
   return v2;
 }
@@ -26,9 +26,9 @@
   return v6;
 }
 
-- (id)_initWithRole:(unsigned __int8)a3
+- (id)_initWithRole:(unsigned __int8)role
 {
-  if ((a3 - 5) <= 0xFFFFFFFB)
+  if ((role - 5) <= 0xFFFFFFFB)
   {
     [(RBSGPUAccessGrant *)a2 _initWithRole:?];
   }
@@ -38,30 +38,30 @@
   result = [(RBSAttribute *)&v6 _init];
   if (result)
   {
-    *(result + 8) = a3;
+    *(result + 8) = role;
   }
 
   return result;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = RBSGPUAccessGrant;
-  v4 = a3;
-  [(RBSAttribute *)&v5 encodeWithRBSXPCCoder:v4];
-  [v4 encodeInt64:self->_role forKey:{@"role", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(RBSAttribute *)&v5 encodeWithRBSXPCCoder:coderCopy];
+  [coderCopy encodeInt64:self->_role forKey:{@"role", v5.receiver, v5.super_class}];
 }
 
-- (RBSGPUAccessGrant)initWithRBSXPCCoder:(id)a3
+- (RBSGPUAccessGrant)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = RBSGPUAccessGrant;
-  v5 = [(RBSAttribute *)&v8 initWithRBSXPCCoder:v4];
+  v5 = [(RBSAttribute *)&v8 initWithRBSXPCCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeInt64ForKey:@"role"];
+    v6 = [coderCopy decodeInt64ForKey:@"role"];
     if (v6 < 5u)
     {
       if (v6)
@@ -84,14 +84,14 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = RBSGPUAccessGrant;
-  if ([(RBSAttribute *)&v7 isEqual:v4])
+  if ([(RBSAttribute *)&v7 isEqual:equalCopy])
   {
-    v5 = self->_role == v4[8];
+    v5 = self->_role == equalCopy[8];
   }
 
   else

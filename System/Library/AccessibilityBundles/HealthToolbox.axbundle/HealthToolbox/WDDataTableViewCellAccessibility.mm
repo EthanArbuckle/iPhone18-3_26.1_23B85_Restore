@@ -1,17 +1,17 @@
 @interface WDDataTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation WDDataTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WDDataTableViewCell" hasInstanceMethod:@"source" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WDDataTableViewCell" hasInstanceMethod:@"displayValue" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WDDataTableViewCell" hasInstanceMethod:@"dateString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKSource" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WDDataTableViewCell" hasInstanceMethod:@"source" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WDDataTableViewCell" hasInstanceMethod:@"displayValue" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WDDataTableViewCell" hasInstanceMethod:@"dateString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKSource" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

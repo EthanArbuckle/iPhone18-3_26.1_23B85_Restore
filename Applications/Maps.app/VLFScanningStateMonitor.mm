@@ -1,8 +1,8 @@
 @interface VLFScanningStateMonitor
-- (VLFScanningStateMonitor)initWithDelegate:(id)a3 session:(id)a4;
+- (VLFScanningStateMonitor)initWithDelegate:(id)delegate session:(id)session;
 - (VLFScanningStateMonitorDelegate)delegate;
 - (void)dealloc;
-- (void)setCurrentState:(int64_t)a3;
+- (void)setCurrentState:(int64_t)state;
 @end
 
 @implementation VLFScanningStateMonitor
@@ -14,11 +14,11 @@
   return WeakRetained;
 }
 
-- (void)setCurrentState:(int64_t)a3
+- (void)setCurrentState:(int64_t)state
 {
-  if (self->_currentState != a3)
+  if (self->_currentState != state)
   {
-    self->_currentState = a3;
+    self->_currentState = state;
     if (qword_10195E3C8 != -1)
     {
       dispatch_once(&qword_10195E3C8, &stru_101636E48);
@@ -48,8 +48,8 @@
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%@ changing state to: %@", &v11, 0x16u);
     }
 
-    v10 = [(VLFScanningStateMonitor *)self delegate];
-    [v10 scanningStateMonitor:self didChangeState:self->_currentState];
+    delegate = [(VLFScanningStateMonitor *)self delegate];
+    [delegate scanningStateMonitor:self didChangeState:self->_currentState];
   }
 }
 
@@ -61,11 +61,11 @@
   [(VLFScanningStateMonitor *)&v3 dealloc];
 }
 
-- (VLFScanningStateMonitor)initWithDelegate:(id)a3 session:(id)a4
+- (VLFScanningStateMonitor)initWithDelegate:(id)delegate session:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  delegateCopy = delegate;
+  sessionCopy = session;
+  if (!delegateCopy)
   {
     v11 = sub_10006D178();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -94,7 +94,7 @@
     }
   }
 
-  if (!v7)
+  if (!sessionCopy)
   {
     v14 = sub_10006D178();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -130,8 +130,8 @@
   if (v8)
   {
     v8->_currentState = 1;
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v9->_session, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v9->_session, session);
     [(ARSession *)v9->_session _addObserver:v9];
   }
 

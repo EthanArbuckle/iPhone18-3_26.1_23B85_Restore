@@ -1,18 +1,18 @@
 @interface _SFTouchIconCache
 + (id)_generateDefaultFavoritesIcon;
 + (id)_monogramConfiguration;
-- (BOOL)canHandleRequest:(id)a3;
-- (id)_operationWithRequest:(id)a3 completionHandler:(id)a4;
-- (void)_didLoadTouchIcon:(id)a3 withCacheSettingsEntry:(id)a4;
+- (BOOL)canHandleRequest:(id)request;
+- (id)_operationWithRequest:(id)request completionHandler:(id)handler;
+- (void)_didLoadTouchIcon:(id)icon withCacheSettingsEntry:(id)entry;
 @end
 
 @implementation _SFTouchIconCache
 
-- (id)_operationWithRequest:(id)a3 completionHandler:(id)a4
+- (id)_operationWithRequest:(id)request completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(WBSTouchIconFetchOperation *)[_SFTouchIconFetchOperation alloc] initWithRequest:v6 completionHandler:v5];
+  handlerCopy = handler;
+  requestCopy = request;
+  v7 = [(WBSTouchIconFetchOperation *)[_SFTouchIconFetchOperation alloc] initWithRequest:requestCopy completionHandler:handlerCopy];
 
   return v7;
 }
@@ -40,18 +40,18 @@
   +[_SFSiteIcon defaultSize];
   v5 = v4;
   v7 = v6;
-  v8 = [a1 defaultBackgroundColor];
-  v9 = [v3 configurationWithIconSize:0 fontSize:0 fontWeight:v8 fontDesign:v5 baselineOffset:v7 backgroundColor:44.0 cornerRadius:{20.0, 0.0}];
+  defaultBackgroundColor = [self defaultBackgroundColor];
+  v9 = [v3 configurationWithIconSize:0 fontSize:0 fontWeight:defaultBackgroundColor fontDesign:v5 baselineOffset:v7 backgroundColor:44.0 cornerRadius:{20.0, 0.0}];
 
   return v9;
 }
 
-- (BOOL)canHandleRequest:(id)a3
+- (BOOL)canHandleRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v7.receiver = self;
   v7.super_class = _SFTouchIconCache;
-  if ([(WBSTouchIconCache *)&v7 canHandleRequest:v4])
+  if ([(WBSTouchIconCache *)&v7 canHandleRequest:requestCopy])
   {
     objc_opt_class();
     v5 = objc_opt_isKindOfClass() ^ 1;
@@ -65,20 +65,20 @@
   return v5 & 1;
 }
 
-- (void)_didLoadTouchIcon:(id)a3 withCacheSettingsEntry:(id)a4
+- (void)_didLoadTouchIcon:(id)icon withCacheSettingsEntry:(id)entry
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  iconCopy = icon;
+  entryCopy = entry;
+  if (iconCopy)
   {
     v10.receiver = self;
     v10.super_class = _SFTouchIconCache;
-    [(WBSTouchIconCache *)&v10 _didLoadTouchIcon:v6 withCacheSettingsEntry:v7];
-    v8 = [v6 safari_transparencyAnalysisResult];
-    if (v8 != [v7 transparencyAnalysisResult])
+    [(WBSTouchIconCache *)&v10 _didLoadTouchIcon:iconCopy withCacheSettingsEntry:entryCopy];
+    safari_transparencyAnalysisResult = [iconCopy safari_transparencyAnalysisResult];
+    if (safari_transparencyAnalysisResult != [entryCopy transparencyAnalysisResult])
     {
-      v9 = [v7 entryWithTransparencyAnalysisResult:v8];
-      [(WBSTouchIconCache *)self saveTouchIconSettings:v9 touchIcon:v6];
+      v9 = [entryCopy entryWithTransparencyAnalysisResult:safari_transparencyAnalysisResult];
+      [(WBSTouchIconCache *)self saveTouchIconSettings:v9 touchIcon:iconCopy];
     }
   }
 }

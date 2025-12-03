@@ -1,21 +1,21 @@
 @interface CNEqualsBuilder
-+ (BOOL)evaluateBuilderBlock:(id)a3 remainingBlocks:(char *)a4;
-+ (BOOL)isObject:(id)a3 equalToOther:(id)a4;
-+ (BOOL)isObject:(id)a3 equalToOther:(id)a4 withBlocks:(id)a5;
-+ (BOOL)isObject:(id)a3 kindOfClass:(Class)a4 andEqualToObject:(id)a5 withBlocks:(id)a6;
-+ (BOOL)isObject:(id)a3 memberOfClass:(Class)a4 andEqualToObject:(id)a5 withBlocks:(id)a6;
-+ (BOOL)isObject:(id)a3 memberOfSameClassAndEqualTo:(id)a4 withBlocks:(id)a5;
-+ (BOOL)isString:(id)a3 localizedCaseInsensitiveEqualToOther:(id)a4;
++ (BOOL)evaluateBuilderBlock:(id)block remainingBlocks:(char *)blocks;
++ (BOOL)isObject:(id)object equalToOther:(id)other;
++ (BOOL)isObject:(id)object equalToOther:(id)other withBlocks:(id)blocks;
++ (BOOL)isObject:(id)object kindOfClass:(Class)class andEqualToObject:(id)toObject withBlocks:(id)blocks;
++ (BOOL)isObject:(id)object memberOfClass:(Class)class andEqualToObject:(id)toObject withBlocks:(id)blocks;
++ (BOOL)isObject:(id)object memberOfSameClassAndEqualTo:(id)to withBlocks:(id)blocks;
++ (BOOL)isString:(id)string localizedCaseInsensitiveEqualToOther:(id)other;
 @end
 
 @implementation CNEqualsBuilder
 
-+ (BOOL)isObject:(id)a3 equalToOther:(id)a4 withBlocks:(id)a5
++ (BOOL)isObject:(id)object equalToOther:(id)other withBlocks:(id)blocks
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 == v9)
+  objectCopy = object;
+  otherCopy = other;
+  blocksCopy = blocks;
+  if (objectCopy == otherCopy)
   {
     v11 = 1;
   }
@@ -25,7 +25,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [a1 evaluateBuilderBlock:v10 remainingBlocks:&v13];
+      v11 = [self evaluateBuilderBlock:blocksCopy remainingBlocks:&v13];
     }
 
     else
@@ -37,19 +37,19 @@
   return v11;
 }
 
-+ (BOOL)isObject:(id)a3 kindOfClass:(Class)a4 andEqualToObject:(id)a5 withBlocks:(id)a6
++ (BOOL)isObject:(id)object kindOfClass:(Class)class andEqualToObject:(id)toObject withBlocks:(id)blocks
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  if (v10 == v9)
+  objectCopy = object;
+  toObjectCopy = toObject;
+  blocksCopy = blocks;
+  if (toObjectCopy == objectCopy)
   {
     v12 = 1;
   }
 
   else if (objc_opt_isKindOfClass())
   {
-    v12 = [a1 evaluateBuilderBlock:v11 remainingBlocks:&v14];
+    v12 = [self evaluateBuilderBlock:blocksCopy remainingBlocks:&v14];
   }
 
   else
@@ -60,19 +60,19 @@
   return v12;
 }
 
-+ (BOOL)isObject:(id)a3 memberOfClass:(Class)a4 andEqualToObject:(id)a5 withBlocks:(id)a6
++ (BOOL)isObject:(id)object memberOfClass:(Class)class andEqualToObject:(id)toObject withBlocks:(id)blocks
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (v11 == v10)
+  objectCopy = object;
+  toObjectCopy = toObject;
+  blocksCopy = blocks;
+  if (toObjectCopy == objectCopy)
   {
     v13 = 1;
   }
 
-  else if ([v10 isMemberOfClass:a4])
+  else if ([objectCopy isMemberOfClass:class])
   {
-    v13 = [a1 evaluateBuilderBlock:v12 remainingBlocks:&v15];
+    v13 = [self evaluateBuilderBlock:blocksCopy remainingBlocks:&v15];
   }
 
   else
@@ -83,12 +83,12 @@
   return v13;
 }
 
-+ (BOOL)isObject:(id)a3 memberOfSameClassAndEqualTo:(id)a4 withBlocks:(id)a5
++ (BOOL)isObject:(id)object memberOfSameClassAndEqualTo:(id)to withBlocks:(id)blocks
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9 == v8)
+  objectCopy = object;
+  toCopy = to;
+  blocksCopy = blocks;
+  if (toCopy == objectCopy)
   {
     v11 = 1;
   }
@@ -98,7 +98,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [a1 evaluateBuilderBlock:v10 remainingBlocks:&v13];
+      v11 = [self evaluateBuilderBlock:blocksCopy remainingBlocks:&v13];
     }
 
     else
@@ -110,11 +110,11 @@
   return v11;
 }
 
-+ (BOOL)evaluateBuilderBlock:(id)a3 remainingBlocks:(char *)a4
++ (BOOL)evaluateBuilderBlock:(id)block remainingBlocks:(char *)blocks
 {
-  v5 = a3;
-  v13 = a4;
-  v6 = _Block_copy(v5);
+  blockCopy = block;
+  blocksCopy = blocks;
+  v6 = _Block_copy(blockCopy);
   if (v6)
   {
     v7 = v6;
@@ -122,8 +122,8 @@
     {
       v8 = v7;
       v9 = v7[2](v7);
-      v10 = v13;
-      v13 += 8;
+      v10 = blocksCopy;
+      blocksCopy += 8;
       v7 = _Block_copy(*v10);
 
       if (v9)
@@ -148,11 +148,11 @@
   return v9;
 }
 
-+ (BOOL)isObject:(id)a3 equalToOther:(id)a4
++ (BOOL)isObject:(id)object equalToOther:(id)other
 {
-  if (a3 | a4)
+  if (object | other)
   {
-    return [a3 isEqual:a4];
+    return [object isEqual:other];
   }
 
   else
@@ -161,29 +161,29 @@
   }
 }
 
-+ (BOOL)isString:(id)a3 localizedCaseInsensitiveEqualToOther:(id)a4
++ (BOOL)isString:(id)string localizedCaseInsensitiveEqualToOther:(id)other
 {
-  if (a3)
+  if (string)
   {
-    v4 = a3;
+    stringCopy = string;
   }
 
   else
   {
-    v4 = &stru_1EF441028;
+    stringCopy = &stru_1EF441028;
   }
 
-  if (a4)
+  if (other)
   {
-    v5 = a4;
+    otherCopy = other;
   }
 
   else
   {
-    v5 = &stru_1EF441028;
+    otherCopy = &stru_1EF441028;
   }
 
-  return [(__CFString *)v4 localizedCaseInsensitiveCompare:v5]== 0;
+  return [(__CFString *)stringCopy localizedCaseInsensitiveCompare:otherCopy]== 0;
 }
 
 @end

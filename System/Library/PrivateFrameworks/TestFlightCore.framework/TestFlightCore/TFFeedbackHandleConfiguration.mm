@@ -1,31 +1,31 @@
 @interface TFFeedbackHandleConfiguration
-+ (id)configurationFromUserInfo:(id)a3;
-- (TFFeedbackHandleConfiguration)initWithBundleIdentifier:(id)a3;
-- (TFFeedbackHandleConfiguration)initWithBundleURL:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)configurationFromUserInfo:(id)info;
+- (TFFeedbackHandleConfiguration)initWithBundleIdentifier:(id)identifier;
+- (TFFeedbackHandleConfiguration)initWithBundleURL:(id)l;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)encodedAsUserInfo;
 @end
 
 @implementation TFFeedbackHandleConfiguration
 
-- (TFFeedbackHandleConfiguration)initWithBundleURL:(id)a3
+- (TFFeedbackHandleConfiguration)initWithBundleURL:(id)l
 {
-  v4 = [TFBundle bundleIdentifierForBundleURL:a3];
+  v4 = [TFBundle bundleIdentifierForBundleURL:l];
   v5 = [v4 copy];
 
   v6 = [(TFFeedbackHandleConfiguration *)self initWithBundleIdentifier:v5];
   return v6;
 }
 
-- (TFFeedbackHandleConfiguration)initWithBundleIdentifier:(id)a3
+- (TFFeedbackHandleConfiguration)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = TFFeedbackHandleConfiguration;
   v5 = [(TFFeedbackHandleConfiguration *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v6;
   }
@@ -36,28 +36,28 @@
 - (id)encodedAsUserInfo
 {
   v3 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:2];
-  v4 = [(TFFeedbackHandleConfiguration *)self bundleIdentifier];
-  [v3 setObject:v4 forKeyedSubscript:@"CONFIG_BUNDLE_ID"];
+  bundleIdentifier = [(TFFeedbackHandleConfiguration *)self bundleIdentifier];
+  [v3 setObject:bundleIdentifier forKeyedSubscript:@"CONFIG_BUNDLE_ID"];
 
-  v5 = [(TFFeedbackHandleConfiguration *)self incidentId];
+  incidentId = [(TFFeedbackHandleConfiguration *)self incidentId];
 
-  if (v5)
+  if (incidentId)
   {
-    v6 = [(TFFeedbackHandleConfiguration *)self incidentId];
-    [v3 setObject:v6 forKeyedSubscript:@"CONFIG_INCIDENT_ID"];
+    incidentId2 = [(TFFeedbackHandleConfiguration *)self incidentId];
+    [v3 setObject:incidentId2 forKeyedSubscript:@"CONFIG_INCIDENT_ID"];
   }
 
   return v3;
 }
 
-+ (id)configurationFromUserInfo:(id)a3
++ (id)configurationFromUserInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"CONFIG_BUNDLE_ID"];
+  infoCopy = info;
+  v4 = [infoCopy objectForKeyedSubscript:@"CONFIG_BUNDLE_ID"];
   if (v4)
   {
     v5 = [[TFFeedbackHandleConfiguration alloc] initWithBundleIdentifier:v4];
-    v6 = [v3 objectForKeyedSubscript:@"CONFIG_INCIDENT_ID"];
+    v6 = [infoCopy objectForKeyedSubscript:@"CONFIG_INCIDENT_ID"];
     if (v6)
     {
       [(TFFeedbackHandleConfiguration *)v5 setIncidentId:v6];
@@ -72,14 +72,14 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TFFeedbackHandleConfiguration alloc];
-  v5 = [(TFFeedbackHandleConfiguration *)self bundleIdentifier];
-  v6 = [(TFFeedbackHandleConfiguration *)v4 initWithBundleIdentifier:v5];
+  bundleIdentifier = [(TFFeedbackHandleConfiguration *)self bundleIdentifier];
+  v6 = [(TFFeedbackHandleConfiguration *)v4 initWithBundleIdentifier:bundleIdentifier];
 
-  v7 = [(TFFeedbackHandleConfiguration *)self incidentId];
-  [(TFFeedbackHandleConfiguration *)v6 setIncidentId:v7];
+  incidentId = [(TFFeedbackHandleConfiguration *)self incidentId];
+  [(TFFeedbackHandleConfiguration *)v6 setIncidentId:incidentId];
 
   return v6;
 }

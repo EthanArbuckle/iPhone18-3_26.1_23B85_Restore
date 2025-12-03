@@ -1,50 +1,50 @@
 @interface _UIMotionAttitudeAnalyzer
-- (BOOL)_shouldSuspendApplicationForHysteresisGivenNewViewerOffset:(UIOffset)a3 wasSuspendingApplicationForHysteresis:(BOOL)a4;
-- (BOOL)applyHysteresisWithReceivedEventTimestamp:(double)a3 timeSinceLastNewMotionEvent:(double)a4 slowUpdatesEnabled:(BOOL)a5 returningShouldToggleSlowUpdates:(BOOL *)a6 logger:(id)a7;
-- (UIOffset)_currentRawOffset:(_GLKQuaternion)a3;
+- (BOOL)_shouldSuspendApplicationForHysteresisGivenNewViewerOffset:(UIOffset)offset wasSuspendingApplicationForHysteresis:(BOOL)hysteresis;
+- (BOOL)applyHysteresisWithReceivedEventTimestamp:(double)timestamp timeSinceLastNewMotionEvent:(double)event slowUpdatesEnabled:(BOOL)enabled returningShouldToggleSlowUpdates:(BOOL *)updates logger:(id)logger;
+- (UIOffset)_currentRawOffset:(_GLKQuaternion)offset;
 - (_GLKQuaternion)_relativeQuaternion;
-- (_UIMotionAttitudeAnalyzer)initWithSettings:(id)a3;
+- (_UIMotionAttitudeAnalyzer)initWithSettings:(id)settings;
 - (int64_t)_directionLockStatus;
 - (void)_createDiagnosticsWindow;
 - (void)_createDirectionLockIndicators;
 - (void)_createIdleIndicator;
-- (void)_resetDirectionalLockWithViewerOffset:(UIOffset)a3;
-- (void)_shiftReferenceToYieldRelativeQuaternion:(_GLKQuaternion)a3;
+- (void)_resetDirectionalLockWithViewerOffset:(UIOffset)offset;
+- (void)_shiftReferenceToYieldRelativeQuaternion:(_GLKQuaternion)quaternion;
 - (void)_tearDownDiagnosticsWindow;
 - (void)_tearDownDirectionLockIndicators;
 - (void)_tearDownIdleIndicator;
-- (void)_updateAcceleratedOutputRangeFixingOffset:(UIOffset)a3;
+- (void)_updateAcceleratedOutputRangeFixingOffset:(UIOffset)offset;
 - (void)_updateDirectionalLockIndicators;
-- (void)_updateIdleStateForRawOffset:(UIOffset)a3 timestamp:(double)a4;
-- (void)_updateReferenceAttitude:(_GLKQuaternion)a3 timestamp:(double)a4;
+- (void)_updateIdleStateForRawOffset:(UIOffset)offset timestamp:(double)timestamp;
+- (void)_updateReferenceAttitude:(_GLKQuaternion)attitude timestamp:(double)timestamp;
 - (void)_updateSettings;
-- (void)_updateSmoothedOffsetForRawOffset:(UIOffset)a3;
+- (void)_updateSmoothedOffsetForRawOffset:(UIOffset)offset;
 - (void)dealloc;
 - (void)reset;
 - (void)resetHysteresis;
 - (void)updateHistory;
-- (void)updateWithEvent:(id)a3;
+- (void)updateWithEvent:(id)event;
 @end
 
 @implementation _UIMotionAttitudeAnalyzer
 
 - (void)_updateSettings
 {
-  v3 = [(_UIMotionAnalyzer *)self settings];
-  [v3 inputSmoothingFactor];
+  settings = [(_UIMotionAnalyzer *)self settings];
+  [settings inputSmoothingFactor];
   self->_smoothingDegree = v4 * 0.9;
 
-  v5 = [(_UIMotionAnalyzer *)self settings];
-  v6 = [v5 referenceShiftEnabled];
+  settings2 = [(_UIMotionAnalyzer *)self settings];
+  referenceShiftEnabled = [settings2 referenceShiftEnabled];
 
-  if (v6)
+  if (referenceShiftEnabled)
   {
-    v7 = [(_UIMotionAnalyzer *)self settings];
-    [v7 referenceShiftSpeed];
+    settings3 = [(_UIMotionAnalyzer *)self settings];
+    [settings3 referenceShiftSpeed];
     self->_referenceShiftSpeed = v8 * 0.1;
 
-    v9 = [(_UIMotionAnalyzer *)self settings];
-    [v9 referenceShiftDistanceDependence];
+    settings4 = [(_UIMotionAnalyzer *)self settings];
+    [settings4 referenceShiftDistanceDependence];
     self->_distanceMultiplier = v10 * 10.0;
   }
 
@@ -54,31 +54,31 @@
     self->_referenceShiftSpeed = 0.0;
   }
 
-  v11 = [(_UIMotionAnalyzer *)self settings];
-  if (([v11 referenceShiftEnabled] & 1) == 0)
+  settings5 = [(_UIMotionAnalyzer *)self settings];
+  if (([settings5 referenceShiftEnabled] & 1) == 0)
   {
 
     goto LABEL_9;
   }
 
-  v12 = [(_UIMotionAnalyzer *)self settings];
-  v13 = [v12 jumpEnabled];
+  settings6 = [(_UIMotionAnalyzer *)self settings];
+  jumpEnabled = [settings6 jumpEnabled];
 
-  if (!v13)
+  if (!jumpEnabled)
   {
 LABEL_9:
     self->_jumpThreshold = 3.40282347e38;
     goto LABEL_10;
   }
 
-  v14 = [(_UIMotionAnalyzer *)self settings];
-  [v14 jumpThreshold];
+  settings7 = [(_UIMotionAnalyzer *)self settings];
+  [settings7 jumpThreshold];
   self->_jumpThreshold = v15 * 1.57079633 + 1.57079633;
 
-  v16 = [(_UIMotionAnalyzer *)self settings];
-  v17 = [v16 playJumpSound];
+  settings8 = [(_UIMotionAnalyzer *)self settings];
+  playJumpSound = [settings8 playJumpSound];
 
-  if (v17)
+  if (playJumpSound)
   {
     v18 = +[UIDevice currentDevice];
     [v18 _registerForSystemSounds:self];
@@ -90,18 +90,18 @@ LABEL_10:
   [v18 _unregisterForSystemSounds:self];
 LABEL_11:
 
-  v19 = [(_UIMotionAnalyzer *)self settings];
-  [v19 idleLeeway];
+  settings9 = [(_UIMotionAnalyzer *)self settings];
+  [settings9 idleLeeway];
   self->_idleLeeway = v20 * 0.1;
 
-  v21 = [(_UIMotionAnalyzer *)self settings];
-  [v21 delayBeforeIdle];
+  settings10 = [(_UIMotionAnalyzer *)self settings];
+  [settings10 delayBeforeIdle];
   self->_secondsBeforeIdle = v22 * 1.4 + 0.1;
 
-  v23 = [(_UIMotionAnalyzer *)self settings];
-  v24 = [v23 showIdleIndicator];
+  settings11 = [(_UIMotionAnalyzer *)self settings];
+  showIdleIndicator = [settings11 showIdleIndicator];
 
-  if (v24)
+  if (showIdleIndicator)
   {
     [(_UIMotionAttitudeAnalyzer *)self _createIdleIndicator];
   }
@@ -111,13 +111,13 @@ LABEL_11:
     [(_UIMotionAttitudeAnalyzer *)self _tearDownIdleIndicator];
   }
 
-  v25 = [(_UIMotionAnalyzer *)self settings];
-  if ([v25 directionalLockEnabled])
+  settings12 = [(_UIMotionAnalyzer *)self settings];
+  if ([settings12 directionalLockEnabled])
   {
-    v26 = [(_UIMotionAnalyzer *)self settings];
-    v27 = [v26 showDirectionalLockIndicators];
+    settings13 = [(_UIMotionAnalyzer *)self settings];
+    showDirectionalLockIndicators = [settings13 showDirectionalLockIndicators];
 
-    if (v27)
+    if (showDirectionalLockIndicators)
     {
 
       [(_UIMotionAttitudeAnalyzer *)self _createDirectionLockIndicators];
@@ -130,7 +130,7 @@ LABEL_11:
   }
 
   [(_UIMotionAttitudeAnalyzer *)self _tearDownDirectionLockIndicators];
-  if ((v24 & 1) == 0)
+  if ((showIdleIndicator & 1) == 0)
   {
 
     [(_UIMotionAttitudeAnalyzer *)self _tearDownDiagnosticsWindow];
@@ -172,8 +172,8 @@ LABEL_11:
 
 - (void)dealloc
 {
-  v3 = [(_UIMotionAnalyzer *)self settings];
-  [v3 removeKeyObserver:self];
+  settings = [(_UIMotionAnalyzer *)self settings];
+  [settings removeKeyObserver:self];
 
   [(_UIMotionAttitudeAnalyzer *)self _tearDownDiagnosticsWindow];
   [(_UIMotionAttitudeAnalyzer *)self _tearDownDirectionLockIndicators];
@@ -190,8 +190,8 @@ LABEL_11:
 {
   self->_referenceQuaternion = self->_absoluteQuaternion;
   [(_UIMotionAttitudeAnalyzer *)self _resetDirectionalLockWithViewerOffset:0.0, 0.0];
-  v3 = [(_UIMotionAnalyzer *)self viewerRelativeDevicePose];
-  [v3 _reset];
+  viewerRelativeDevicePose = [(_UIMotionAnalyzer *)self viewerRelativeDevicePose];
+  [viewerRelativeDevicePose _reset];
 
   self->_idleStartTime = 1.79769313e308;
 }
@@ -206,8 +206,8 @@ LABEL_11:
   }
 
   p_lastAppliedViewerOffset = &self->_lastAppliedViewerOffset;
-  v4 = [(_UIMotionAnalyzer *)self viewerRelativeDevicePose];
-  [v4 viewerOffset];
+  viewerRelativeDevicePose = [(_UIMotionAnalyzer *)self viewerRelativeDevicePose];
+  [viewerRelativeDevicePose viewerOffset];
   p_lastAppliedViewerOffset->horizontal = v5;
   self->_lastAppliedViewerOffset.vertical = v6;
 
@@ -231,8 +231,8 @@ LABEL_11:
 
 - (int64_t)_directionLockStatus
 {
-  v3 = [(_UIMotionAnalyzer *)self settings];
-  [v3 directionalLockThreshold];
+  settings = [(_UIMotionAnalyzer *)self settings];
+  [settings directionalLockThreshold];
   v5 = v4;
 
   lockValue = self->_lockValue;
@@ -249,8 +249,8 @@ LABEL_11:
 
 - (void)_updateDirectionalLockIndicators
 {
-  v3 = [(_UIMotionAttitudeAnalyzer *)self _directionLockStatus];
-  if (v3 == 2)
+  _directionLockStatus = [(_UIMotionAttitudeAnalyzer *)self _directionLockStatus];
+  if (_directionLockStatus == 2)
   {
     [(UIView *)self->_verticalLockIndicator setHidden:0];
     verticalLockIndicator = self->_verticalLockIndicator;
@@ -261,7 +261,7 @@ LABEL_11:
     v5 = &OBJC_IVAR____UIMotionAttitudeAnalyzer__horizontalLockIndicator;
   }
 
-  else if (v3 == 1)
+  else if (_directionLockStatus == 1)
   {
     [(UIView *)self->_horizontalLockIndicator setHidden:0];
     horizontalLockIndicator = self->_horizontalLockIndicator;
@@ -281,17 +281,17 @@ LABEL_11:
   [v9 setHidden:1];
 }
 
-- (_UIMotionAttitudeAnalyzer)initWithSettings:(id)a3
+- (_UIMotionAttitudeAnalyzer)initWithSettings:(id)settings
 {
   v7.receiver = self;
   v7.super_class = _UIMotionAttitudeAnalyzer;
-  v3 = [(_UIMotionAnalyzer *)&v7 initWithSettings:a3];
+  v3 = [(_UIMotionAnalyzer *)&v7 initWithSettings:settings];
   if (v3)
   {
     v3->_lastUpdate = CFAbsoluteTimeGetCurrent();
     v3->_absoluteQuaternion = xmmword_18A65AB30;
-    v4 = [(_UIMotionAnalyzer *)v3 settings];
-    [v4 addKeyObserver:v3];
+    settings = [(_UIMotionAnalyzer *)v3 settings];
+    [settings addKeyObserver:v3];
 
     [(_UIMotionAttitudeAnalyzer *)v3 _updateSettings];
     v5 = v3;
@@ -300,15 +300,15 @@ LABEL_11:
   return v3;
 }
 
-- (void)updateWithEvent:(id)a3
+- (void)updateWithEvent:(id)event
 {
-  v4 = a3;
-  if (v4)
+  eventCopy = event;
+  if (eventCopy)
   {
-    v30 = v4;
+    v30 = eventCopy;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v4 = v30;
+    eventCopy = v30;
     if (isKindOfClass)
     {
       [v30 attitude];
@@ -348,36 +348,36 @@ LABEL_11:
       LODWORD(v28) = v17;
       LODWORD(v29) = v19;
       [(_UIMotionAttitudeAnalyzer *)self _updateReferenceAttitude:v25 timestamp:v27, v28, v29, v26];
-      v4 = v30;
+      eventCopy = v30;
     }
   }
 }
 
-- (void)_updateSmoothedOffsetForRawOffset:(UIOffset)a3
+- (void)_updateSmoothedOffsetForRawOffset:(UIOffset)offset
 {
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
-  v6 = [(_UIMotionAnalyzer *)self viewerRelativeDevicePose];
-  [v6 viewerOffset];
+  vertical = offset.vertical;
+  horizontal = offset.horizontal;
+  viewerRelativeDevicePose = [(_UIMotionAnalyzer *)self viewerRelativeDevicePose];
+  [viewerRelativeDevicePose viewerOffset];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(_UIMotionAnalyzer *)self settings];
-  v12 = [v11 directionalLockEnabled];
+  settings = [(_UIMotionAnalyzer *)self settings];
+  directionalLockEnabled = [settings directionalLockEnabled];
 
-  if (v12)
+  if (directionalLockEnabled)
   {
-    v13 = [(_UIMotionAnalyzer *)self settings];
-    [v13 directionalLockStickiness];
+    settings2 = [(_UIMotionAnalyzer *)self settings];
+    [settings2 directionalLockStickiness];
     v15 = v14 * 0.05 + 0.95;
 
     self->_lockValue = vabdd_f64(v8, horizontal) + v15 * self->_lockValue - vabdd_f64(v10, vertical);
-    v16 = [(_UIMotionAnalyzer *)self settings];
-    [v16 directionalLockThreshold];
+    settings3 = [(_UIMotionAnalyzer *)self settings];
+    [settings3 directionalLockThreshold];
     v18 = v17;
 
-    v19 = [(_UIMotionAnalyzer *)self settings];
-    [v19 directionalLockSharpness];
+    settings4 = [(_UIMotionAnalyzer *)self settings];
+    [settings4 directionalLockSharpness];
     v21 = v20;
 
     v22 = fmin((fabs(self->_lockValue) - v18) / v18 / (1.0 - v21 + 0.00000011920929), 1.0);
@@ -407,18 +407,18 @@ LABEL_11:
   smoothingDegree = self->_smoothingDegree;
   v25 = v8 * smoothingDegree + horizontal * (1.0 - smoothingDegree);
   v26 = v10 * smoothingDegree + vertical * (1.0 - smoothingDegree);
-  v27 = [(_UIMotionAnalyzer *)self viewerRelativeDevicePose];
-  [v27 setViewerOffset:{v25, v26}];
+  viewerRelativeDevicePose2 = [(_UIMotionAnalyzer *)self viewerRelativeDevicePose];
+  [viewerRelativeDevicePose2 setViewerOffset:{v25, v26}];
 
   [(_UIMotionAttitudeAnalyzer *)self _updateAcceleratedOutputRangeFixingOffset:v25, v26];
 }
 
-- (void)_updateAcceleratedOutputRangeFixingOffset:(UIOffset)a3
+- (void)_updateAcceleratedOutputRangeFixingOffset:(UIOffset)offset
 {
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
-  v6 = [(_UIMotionAttitudeAnalyzer *)self _directionLockStatus];
-  if (v6 == 2)
+  vertical = offset.vertical;
+  horizontal = offset.horizontal;
+  _directionLockStatus = [(_UIMotionAttitudeAnalyzer *)self _directionLockStatus];
+  if (_directionLockStatus == 2)
   {
     v9 = 0.0;
     v8 = 1.0;
@@ -427,7 +427,7 @@ LABEL_11:
   else
   {
     v7 = *MEMORY[0x1E695EFF8];
-    if (v6 == 1)
+    if (_directionLockStatus == 1)
     {
       v8 = 0.0;
     }
@@ -437,7 +437,7 @@ LABEL_11:
       v8 = *(MEMORY[0x1E695EFF8] + 8);
     }
 
-    if (v6 == 1)
+    if (_directionLockStatus == 1)
     {
       v9 = 1.0;
     }
@@ -448,11 +448,11 @@ LABEL_11:
     }
   }
 
-  v10 = [(_UIMotionAnalyzer *)self viewerRelativeDevicePose];
-  [v10 _setAcceleration:v9 fixingOutputForViewerOffset:{v8, horizontal, vertical}];
+  viewerRelativeDevicePose = [(_UIMotionAnalyzer *)self viewerRelativeDevicePose];
+  [viewerRelativeDevicePose _setAcceleration:v9 fixingOutputForViewerOffset:{v8, horizontal, vertical}];
 }
 
-- (UIOffset)_currentRawOffset:(_GLKQuaternion)a3
+- (UIOffset)_currentRawOffset:(_GLKQuaternion)offset
 {
   v7 = (v5 * 0.0) + (v6 * 0.0);
   v3.f32[1] = v4;
@@ -469,18 +469,18 @@ LABEL_11:
   return result;
 }
 
-- (void)_updateReferenceAttitude:(_GLKQuaternion)a3 timestamp:(double)a4
+- (void)_updateReferenceAttitude:(_GLKQuaternion)attitude timestamp:(double)timestamp
 {
   v8 = v7;
-  v10 = (v4 + ((*&a4 * 0.0) + (v6 * 0.0))) - (v5 * 0.0);
-  v11 = ((v5 * 0.0) + ((v4 * 0.0) + (v6 * 0.0))) - *&a4;
-  v12 = ((*&a4 * 0.0) + (v6 + (v5 * 0.0))) - (v4 * 0.0);
-  v13 = (((v6 * 0.0) - (*&a4 * 0.0)) - (v4 * 0.0)) - v5;
-  *(&a4 + 1) = v4;
+  v10 = (v4 + ((*&timestamp * 0.0) + (v6 * 0.0))) - (v5 * 0.0);
+  v11 = ((v5 * 0.0) + ((v4 * 0.0) + (v6 * 0.0))) - *&timestamp;
+  v12 = ((*&timestamp * 0.0) + (v6 + (v5 * 0.0))) - (v4 * 0.0);
+  v13 = (((v6 * 0.0) - (*&timestamp * 0.0)) - (v4 * 0.0)) - v5;
+  *(&timestamp + 1) = v4;
   v14 = __PAIR64__(LODWORD(v6), LODWORD(v5));
-  v15 = vmulq_f32(*&a4, *&a4);
+  v15 = vmulq_f32(*&timestamp, *&timestamp);
   v15.i64[0] = vpaddq_f32(v15, v15).u64[0];
-  v16 = veorq_s8(vmulq_n_f32(*&a4, 1.0 / vpadd_f32(*v15.f32, *v15.f32).f32[0]), xmmword_18A6808D0);
+  v16 = veorq_s8(vmulq_n_f32(*&timestamp, 1.0 / vpadd_f32(*v15.f32, *v15.f32).f32[0]), xmmword_18A6808D0);
   v15.f32[0] = (vmuls_lane_f32(v11, v16, 2) + ((v13 * v16.f32[0]) + vmuls_lane_f32(v10, v16, 3))) - vmuls_lane_f32(v12, *v16.f32, 1);
   v17 = ((v12 * v16.f32[0]) + (vmuls_lane_f32(v13, *v16.f32, 1) + vmuls_lane_f32(v11, v16, 3))) - vmuls_lane_f32(v10, v16, 2);
   v16.f32[0] = (vmuls_lane_f32(v10, *v16.f32, 1) + (vmuls_lane_f32(v13, v16, 2) + vmuls_lane_f32(v12, v16, 3))) - (v11 * v16.f32[0]);
@@ -594,7 +594,7 @@ LABEL_11:
   self->_lastUpdate = v8;
 }
 
-- (void)_shiftReferenceToYieldRelativeQuaternion:(_GLKQuaternion)a3
+- (void)_shiftReferenceToYieldRelativeQuaternion:(_GLKQuaternion)quaternion
 {
   v27 = v6;
   v28 = v5;
@@ -623,61 +623,61 @@ LABEL_11:
   v11.i32[3] = v11.i32[2];
   v20 = vmulq_f32(v11, vextq_s8(vuzp1q_s32(v10, v10), v10, 0xCuLL));
   self->_referenceQuaternion = vsubq_f32(v19, vuzp2q_s32(vextq_s8(v20, v20, 4uLL), v20));
-  v21 = [(_UIMotionAnalyzer *)self viewerRelativeDevicePose:*&a3.x];
+  v21 = [(_UIMotionAnalyzer *)self viewerRelativeDevicePose:*&quaternion.x];
   [v21 viewerOffset];
   [(_UIMotionAttitudeAnalyzer *)self _resetDirectionalLockWithViewerOffset:?];
 
   [(_UIMotionAttitudeAnalyzer *)self _currentRawOffset:v30, v29, v28, v27];
   v23 = v22;
   v25 = v24;
-  v26 = [(_UIMotionAnalyzer *)self viewerRelativeDevicePose];
-  [v26 setViewerOffset:{v23, v25}];
+  viewerRelativeDevicePose = [(_UIMotionAnalyzer *)self viewerRelativeDevicePose];
+  [viewerRelativeDevicePose setViewerOffset:{v23, v25}];
 
-  v31 = [(_UIMotionAnalyzer *)self viewerRelativeDevicePose];
-  [v31 viewerOffset];
+  viewerRelativeDevicePose2 = [(_UIMotionAnalyzer *)self viewerRelativeDevicePose];
+  [viewerRelativeDevicePose2 viewerOffset];
   [(_UIMotionAttitudeAnalyzer *)self _updateSmoothedOffsetForRawOffset:?];
 }
 
-- (void)_resetDirectionalLockWithViewerOffset:(UIOffset)a3
+- (void)_resetDirectionalLockWithViewerOffset:(UIOffset)offset
 {
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  vertical = offset.vertical;
+  horizontal = offset.horizontal;
   self->_lockValue = 0.0;
   self->_lockStrength = 0.0;
-  v5 = [(_UIMotionAnalyzer *)self viewerRelativeDevicePose];
-  [v5 _setAcceleration:*MEMORY[0x1E695EFF8] fixingOutputForViewerOffset:{*(MEMORY[0x1E695EFF8] + 8), horizontal, vertical}];
+  viewerRelativeDevicePose = [(_UIMotionAnalyzer *)self viewerRelativeDevicePose];
+  [viewerRelativeDevicePose _setAcceleration:*MEMORY[0x1E695EFF8] fixingOutputForViewerOffset:{*(MEMORY[0x1E695EFF8] + 8), horizontal, vertical}];
 }
 
-- (void)_updateIdleStateForRawOffset:(UIOffset)a3 timestamp:(double)a4
+- (void)_updateIdleStateForRawOffset:(UIOffset)offset timestamp:(double)timestamp
 {
   idleLeeway = self->_idleLeeway;
-  if (vabdd_f64(a3.horizontal, self->_idleStartOffset.horizontal) > idleLeeway || vabdd_f64(a3.vertical, self->_idleStartOffset.vertical) > idleLeeway)
+  if (vabdd_f64(offset.horizontal, self->_idleStartOffset.horizontal) > idleLeeway || vabdd_f64(offset.vertical, self->_idleStartOffset.vertical) > idleLeeway)
   {
-    self->_idleStartTime = a4;
+    self->_idleStartTime = timestamp;
   }
 
-  self->_idleStartOffset = a3;
-  v6 = [(_UIMotionAttitudeAnalyzer *)self _isIdleGivenTimestamp:a4];
+  self->_idleStartOffset = offset;
+  v6 = [(_UIMotionAttitudeAnalyzer *)self _isIdleGivenTimestamp:timestamp];
 
   [(_UIMotionAttitudeAnalyzer *)self _showIdleUI:v6];
 }
 
-- (BOOL)applyHysteresisWithReceivedEventTimestamp:(double)a3 timeSinceLastNewMotionEvent:(double)a4 slowUpdatesEnabled:(BOOL)a5 returningShouldToggleSlowUpdates:(BOOL *)a6 logger:(id)a7
+- (BOOL)applyHysteresisWithReceivedEventTimestamp:(double)timestamp timeSinceLastNewMotionEvent:(double)event slowUpdatesEnabled:(BOOL)enabled returningShouldToggleSlowUpdates:(BOOL *)updates logger:(id)logger
 {
-  v8 = a5;
-  v12 = a7;
+  enabledCopy = enabled;
+  loggerCopy = logger;
   if (!self->_hasHistory)
   {
     v19 = 0;
     goto LABEL_27;
   }
 
-  v13 = [(_UIMotionAnalyzer *)self viewerRelativeDevicePose];
-  [v13 viewerOffset];
+  viewerRelativeDevicePose = [(_UIMotionAnalyzer *)self viewerRelativeDevicePose];
+  [viewerRelativeDevicePose viewerOffset];
   v15 = v14;
   v17 = v16;
 
-  v18 = v8 && [(_UIMotionAttitudeAnalyzer *)self _shouldSuspendApplicationForHysteresisGivenNewViewerOffset:self->_isApplyingHysteresis wasSuspendingApplicationForHysteresis:v15, v17];
+  v18 = enabledCopy && [(_UIMotionAttitudeAnalyzer *)self _shouldSuspendApplicationForHysteresisGivenNewViewerOffset:self->_isApplyingHysteresis wasSuspendingApplicationForHysteresis:v15, v17];
   v20 = sqrt((self->_lastAppliedViewerOffset.horizontal - v15) * (self->_lastAppliedViewerOffset.horizontal - v15) + (self->_lastAppliedViewerOffset.vertical - v17) * (self->_lastAppliedViewerOffset.vertical - v17));
   if (!v18)
   {
@@ -697,9 +697,9 @@ LABEL_11:
       *&v25 = self->_relativeQuaternionOnHysteresisEntry.y;
       *&v22 = self->_relativeQuaternionOnHysteresisEntry.z;
       *&v23 = self->_relativeQuaternionOnHysteresisEntry.w;
-      if (a6 && v8)
+      if (updates && enabledCopy)
       {
-        *a6 = 1;
+        *updates = 1;
       }
     }
 
@@ -712,7 +712,7 @@ LABEL_11:
         v27 = 0.25;
       }
 
-      if (v27 > a4)
+      if (v27 > event)
       {
         goto LABEL_21;
       }
@@ -748,9 +748,9 @@ LABEL_11:
   }
 
 LABEL_21:
-  if (a3 > 0.0 && v12 && ![UIApp applicationState])
+  if (timestamp > 0.0 && loggerCopy && ![UIApp applicationState])
   {
-    [v12 recordMotionMagnitude:v20 atTimestamp:a3];
+    [loggerCopy recordMotionMagnitude:v20 atTimestamp:timestamp];
   }
 
 LABEL_27:
@@ -758,12 +758,12 @@ LABEL_27:
   return v19;
 }
 
-- (BOOL)_shouldSuspendApplicationForHysteresisGivenNewViewerOffset:(UIOffset)a3 wasSuspendingApplicationForHysteresis:(BOOL)a4
+- (BOOL)_shouldSuspendApplicationForHysteresisGivenNewViewerOffset:(UIOffset)offset wasSuspendingApplicationForHysteresis:(BOOL)hysteresis
 {
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  vertical = offset.vertical;
+  horizontal = offset.horizontal;
   v6 = self->_lastAppliedViewerOffset.horizontal * self->_lastAppliedViewerOffset.horizontal + self->_lastAppliedViewerOffset.vertical * self->_lastAppliedViewerOffset.vertical;
-  if (a4)
+  if (hysteresis)
   {
     v7 = _UIInternalPreferenceUsesDefault_1(&unk_1ED48B358, @"UIMotionEffectHysteresisExitThreshold");
     v8 = qword_1ED48B360;
@@ -812,15 +812,15 @@ LABEL_27:
 
     [(UILabel *)self->_idleIndicator setTextAlignment:1];
     [(UILabel *)self->_idleIndicator setText:@"Idle"];
-    v13 = [(UIView *)self->_idleIndicator layer];
+    layer = [(UIView *)self->_idleIndicator layer];
     v14 = +[UIColor whiteColor];
-    [v13 setBorderColor:{objc_msgSend(v14, "CGColor")}];
+    [layer setBorderColor:{objc_msgSend(v14, "CGColor")}];
 
-    v15 = [(UIView *)self->_idleIndicator layer];
-    [v15 setBorderWidth:2.0];
+    layer2 = [(UIView *)self->_idleIndicator layer];
+    [layer2 setBorderWidth:2.0];
 
-    v16 = [(UIView *)self->_idleIndicator layer];
-    [v16 setCornerRadius:10.0];
+    layer3 = [(UIView *)self->_idleIndicator layer];
+    [layer3 setCornerRadius:10.0];
 
     [(UIView *)self->_diagnosticsWindow addSubview:self->_idleIndicator];
     v17 = self->_idleIndicator;
@@ -878,8 +878,8 @@ LABEL_27:
   if (!self->_diagnosticsWindow)
   {
     v3 = [UIWindow alloc];
-    v4 = [objc_opt_self() mainScreen];
-    [v4 bounds];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen bounds];
     v5 = [(UIWindow *)v3 initWithFrame:?];
     diagnosticsWindow = self->_diagnosticsWindow;
     self->_diagnosticsWindow = v5;

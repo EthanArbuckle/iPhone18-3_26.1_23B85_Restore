@@ -1,54 +1,54 @@
 @interface BuddyIntentAndChildSetupFlow
 + (id)allowedFlowItems;
-- (BuddyIntentAndChildSetupFlow)initWithNavigationController:(id)a3 flowDelegate:(id)a4 flowStarter:(id)a5 dependencyInjector:(id)a6;
+- (BuddyIntentAndChildSetupFlow)initWithNavigationController:(id)controller flowDelegate:(id)delegate flowStarter:(id)starter dependencyInjector:(id)injector;
 - (void)_callShieldViewSetupLocationServicesCompletion;
 - (void)_callShieldViewSetupPasscodeCompletion;
-- (void)_finishFlowWithAISProvidedViewControllersToRemove:(id)a3;
-- (void)configureFlowItem:(id)a3;
+- (void)_finishFlowWithAISProvidedViewControllersToRemove:(id)remove;
+- (void)configureFlowItem:(id)item;
 - (void)controllerWasPopped;
-- (void)flowItemDone:(id)a3 nextItem:(id)a4;
-- (void)performAIDASignInWith:(id)a3 completion:(id)a4;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
-- (void)setupLocationServicesWithCompletion:(id)a3;
-- (void)setupPasscodeAndBiometricWithCompletion:(id)a3;
-- (void)shieldSetupDidFinishWithResult:(id)a3 error:(id)a4;
-- (void)shieldSetupDidFinishWithResult:(id)a3 viewControllersToRemove:(id)a4 error:(id)a5;
-- (void)shieldSetupSelectedAccount:(int64_t)a3 completion:(id)a4;
-- (void)shieldSetupUpdateCDPContext:(id)a3;
+- (void)flowItemDone:(id)done nextItem:(id)item;
+- (void)performAIDASignInWith:(id)with completion:(id)completion;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
+- (void)setupLocationServicesWithCompletion:(id)completion;
+- (void)setupPasscodeAndBiometricWithCompletion:(id)completion;
+- (void)shieldSetupDidFinishWithResult:(id)result error:(id)error;
+- (void)shieldSetupDidFinishWithResult:(id)result viewControllersToRemove:(id)remove error:(id)error;
+- (void)shieldSetupSelectedAccount:(int64_t)account completion:(id)completion;
+- (void)shieldSetupUpdateCDPContext:(id)context;
 @end
 
 @implementation BuddyIntentAndChildSetupFlow
 
-- (BuddyIntentAndChildSetupFlow)initWithNavigationController:(id)a3 flowDelegate:(id)a4 flowStarter:(id)a5 dependencyInjector:(id)a6
+- (BuddyIntentAndChildSetupFlow)initWithNavigationController:(id)controller flowDelegate:(id)delegate flowStarter:(id)starter dependencyInjector:(id)injector
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, delegate);
   v15 = 0;
-  objc_storeStrong(&v15, a5);
+  objc_storeStrong(&v15, starter);
   v14 = 0;
-  objc_storeStrong(&v14, a6);
-  v9 = v18;
-  v18 = 0;
+  objc_storeStrong(&v14, injector);
+  v9 = selfCopy;
+  selfCopy = 0;
   v13.receiver = v9;
   v13.super_class = BuddyIntentAndChildSetupFlow;
-  v18 = [(BuddyIntentAndChildSetupFlow *)&v13 initWithNavigationController:location[0] flowDelegate:v16 flowStarter:v15 dependencyInjector:v14];
-  objc_storeStrong(&v18, v18);
-  if (v18)
+  selfCopy = [(BuddyIntentAndChildSetupFlow *)&v13 initWithNavigationController:location[0] flowDelegate:v16 flowStarter:v15 dependencyInjector:v14];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v10 = +[BuddyAccountTools sharedBuddyAccountTools];
-    [v18 setAccountTools:v10];
+    [selfCopy setAccountTools:v10];
   }
 
-  v11 = v18;
+  v11 = selfCopy;
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v11;
 }
 
@@ -57,55 +57,55 @@
   v5[0] = objc_opt_class();
   v5[1] = objc_opt_class();
   v5[2] = objc_opt_class();
-  return [NSArray arrayWithObjects:v5 count:3, a2, a1];
+  return [NSArray arrayWithObjects:v5 count:3, a2, self];
 }
 
-- (void)configureFlowItem:(id)a3
+- (void)configureFlowItem:(id)item
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, item);
+  v3.receiver = selfCopy;
   v3.super_class = BuddyIntentAndChildSetupFlow;
   [(BuddyIntentAndChildSetupFlow *)&v3 configureFlowItem:location[0]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(BuddyIntentAndChildSetupFlow *)v5 setIntentAndChildSetupFlowItem:location[0]];
-    [location[0] setShieldViewControllerDelegate:v5];
+    [(BuddyIntentAndChildSetupFlow *)selfCopy setIntentAndChildSetupFlowItem:location[0]];
+    [location[0] setShieldViewControllerDelegate:selfCopy];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)flowItemDone:(id)a3 nextItem:(id)a4
+- (void)flowItemDone:(id)done nextItem:(id)item
 {
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, done);
   v31 = 0;
-  objc_storeStrong(&v31, a4);
+  objc_storeStrong(&v31, item);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(BuddyIntentAndChildSetupFlow *)v33 navigationController];
-    v6 = [v5 viewControllers];
-    v30 = [v6 mutableCopy];
+    navigationController = [(BuddyIntentAndChildSetupFlow *)selfCopy navigationController];
+    viewControllers = [navigationController viewControllers];
+    v30 = [viewControllers mutableCopy];
 
-    v29 = [location[0] allPasscodeViewControllers];
+    allPasscodeViewControllers = [location[0] allPasscodeViewControllers];
     oslog = _BYLoggingFacility();
     v27 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      sub_10006AE18(buf, v29);
+      sub_10006AE18(buf, allPasscodeViewControllers);
       _os_log_impl(&_mh_execute_header, oslog, v27, "Age attestation intent found passcode view controllers %@", buf, 0xCu);
     }
 
     objc_storeStrong(&oslog, 0);
     v7 = [v30 count];
-    v26 = v7 - [v29 count] - 1;
+    v26 = v7 - [allPasscodeViewControllers count] - 1;
     v25 = [v30 objectAtIndexedSubscript:v26];
     v24 = _BYLoggingFacility();
     v23 = OS_LOG_TYPE_DEFAULT;
@@ -118,11 +118,11 @@
     objc_storeStrong(&v24, 0);
     [v30 removeObjectAtIndex:v26];
     v8 = v30;
-    v9 = [(BuddyIntentAndChildSetupFlow *)v33 navigationController];
-    [v9 setViewControllers:v8];
+    navigationController2 = [(BuddyIntentAndChildSetupFlow *)selfCopy navigationController];
+    [navigationController2 setViewControllers:v8];
 
-    v10 = [(BuddyIntentAndChildSetupFlow *)v33 navigationFlowDelegate];
-    [v10 removeViewControllersOnNextPush:v29];
+    navigationFlowDelegate = [(BuddyIntentAndChildSetupFlow *)selfCopy navigationFlowDelegate];
+    [navigationFlowDelegate removeViewControllersOnNextPush:allPasscodeViewControllers];
 
     v22 = _BYLoggingFacility();
     v21 = OS_LOG_TYPE_DEFAULT;
@@ -133,20 +133,20 @@
     }
 
     objc_storeStrong(&v22, 0);
-    v11 = [(BuddyIntentAndChildSetupFlow *)v33 navigationController];
+    navigationController3 = [(BuddyIntentAndChildSetupFlow *)selfCopy navigationController];
     v12 = v25;
     v15 = _NSConcreteStackBlock;
     v16 = -1073741824;
     v17 = 0;
     v18 = sub_100164334;
     v19 = &unk_10032B0D0;
-    v20 = v33;
-    [v11 pushViewController:v12 completion:&v15];
+    v20 = selfCopy;
+    [navigationController3 pushViewController:v12 completion:&v15];
 
     v14 = 1;
     objc_storeStrong(&v20, 0);
     objc_storeStrong(&v25, 0);
-    objc_storeStrong(&v29, 0);
+    objc_storeStrong(&allPasscodeViewControllers, 0);
     objc_storeStrong(&v30, 0);
   }
 
@@ -155,7 +155,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(BuddyIntentAndChildSetupFlow *)v33 _callShieldViewSetupLocationServicesCompletion];
+      [(BuddyIntentAndChildSetupFlow *)selfCopy _callShieldViewSetupLocationServicesCompletion];
       v14 = 1;
     }
 
@@ -169,7 +169,7 @@
       }
 
       objc_storeStrong(&v13, 0);
-      [(BuddyIntentAndChildSetupFlow *)v33 _finishFlowWithAISProvidedViewControllersToRemove:0];
+      [(BuddyIntentAndChildSetupFlow *)selfCopy _finishFlowWithAISProvidedViewControllersToRemove:0];
       v14 = 0;
     }
   }
@@ -180,12 +180,12 @@
 
 - (void)_callShieldViewSetupPasscodeCompletion
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v2 = [(BuddyIntentAndChildSetupFlow *)self managedConfiguration];
-  v3 = [(MCProfileConnection *)v2 isPasscodeSet];
+  managedConfiguration = [(BuddyIntentAndChildSetupFlow *)self managedConfiguration];
+  isPasscodeSet = [(MCProfileConnection *)managedConfiguration isPasscodeSet];
 
-  v8 = v3 & 1;
+  v8 = isPasscodeSet & 1;
   oslog = _BYLoggingFacility();
   v6 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -195,11 +195,11 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  v4 = v10;
+  v4 = selfCopy;
   objc_sync_enter(v4);
-  location = [(BuddyIntentAndChildSetupFlow *)v10 shieldViewSetupPasscodeCompletion];
+  location = [(BuddyIntentAndChildSetupFlow *)selfCopy shieldViewSetupPasscodeCompletion];
 
-  [(BuddyIntentAndChildSetupFlow *)v10 setShieldViewSetupPasscodeCompletion:0];
+  [(BuddyIntentAndChildSetupFlow *)selfCopy setShieldViewSetupPasscodeCompletion:0];
   objc_sync_exit(v4);
 
   (*(location + 2))(location, v8 & 1);
@@ -208,7 +208,7 @@
 
 - (void)_callShieldViewSetupLocationServicesCompletion
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v6 = +[CLLocationManager locationServicesEnabled];
   oslog = _BYLoggingFacility();
@@ -220,25 +220,25 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  v2 = v8;
+  v2 = selfCopy;
   objc_sync_enter(v2);
-  location = [(BuddyIntentAndChildSetupFlow *)v8 shieldViewSetupLocationServicesCompletion];
+  location = [(BuddyIntentAndChildSetupFlow *)selfCopy shieldViewSetupLocationServicesCompletion];
 
-  [(BuddyIntentAndChildSetupFlow *)v8 setShieldViewSetupLocationServicesCompletion:0];
+  [(BuddyIntentAndChildSetupFlow *)selfCopy setShieldViewSetupLocationServicesCompletion:0];
   objc_sync_exit(v2);
 
   (*(location + 2))(location, v6 & 1);
   objc_storeStrong(&location, 0);
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v74 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyIntentAndChildSetupFlow *)v74 featureFlags];
-  v4 = [(BuddyFeatureFlags *)v3 isAgeAttestationPhase1Enabled]^ 1;
+  objc_storeStrong(location, completion);
+  featureFlags = [(BuddyIntentAndChildSetupFlow *)selfCopy featureFlags];
+  v4 = [(BuddyFeatureFlags *)featureFlags isAgeAttestationPhase1Enabled]^ 1;
 
   if (v4)
   {
@@ -259,10 +259,10 @@
 
   else
   {
-    v7 = [(BuddyIntentAndChildSetupFlow *)v74 runState];
-    v8 = [(BYRunState *)v7 hasCompletedInitialRun];
+    runState = [(BuddyIntentAndChildSetupFlow *)selfCopy runState];
+    hasCompletedInitialRun = [(BYRunState *)runState hasCompletedInitialRun];
 
-    if (v8)
+    if (hasCompletedInitialRun)
     {
       v68 = _BYLoggingFacility();
       v67 = OS_LOG_TYPE_DEFAULT;
@@ -281,10 +281,10 @@
 
     else
     {
-      v11 = [(BuddyIntentAndChildSetupFlow *)v74 proximitySetupController];
-      v12 = [(ProximitySetupController *)v11 hasConnection];
+      proximitySetupController = [(BuddyIntentAndChildSetupFlow *)selfCopy proximitySetupController];
+      hasConnection = [(ProximitySetupController *)proximitySetupController hasConnection];
 
-      if (v12)
+      if (hasConnection)
       {
         oslog = _BYLoggingFacility();
         v64 = OS_LOG_TYPE_DEFAULT;
@@ -303,10 +303,10 @@
 
       else
       {
-        v15 = [(BuddyIntentAndChildSetupFlow *)v74 accountTools];
-        v16 = [(BuddyAccountTools *)v15 primaryAccount];
+        accountTools = [(BuddyIntentAndChildSetupFlow *)selfCopy accountTools];
+        primaryAccount = [(BuddyAccountTools *)accountTools primaryAccount];
 
-        if (v16)
+        if (primaryAccount)
         {
           v62 = _BYLoggingFacility();
           v61 = OS_LOG_TYPE_DEFAULT;
@@ -319,13 +319,13 @@
           }
 
           objc_storeStrong(&v62, 0);
-          v19 = [(BuddyIntentAndChildSetupFlow *)v74 setupMethod];
-          v20 = [(BuddySetupMethod *)v19 intent];
+          setupMethod = [(BuddyIntentAndChildSetupFlow *)selfCopy setupMethod];
+          intent = [(BuddySetupMethod *)setupMethod intent];
 
-          if (!v20)
+          if (!intent)
           {
-            v21 = [(BuddyIntentAndChildSetupFlow *)v74 setupMethod];
-            [(BuddySetupMethod *)v21 setIntent:1];
+            setupMethod2 = [(BuddyIntentAndChildSetupFlow *)selfCopy setupMethod];
+            [(BuddySetupMethod *)setupMethod2 setIntent:1];
           }
 
           (*(location[0] + 2))(location[0], 0);
@@ -334,10 +334,10 @@
 
         else
         {
-          v22 = [(BuddyIntentAndChildSetupFlow *)v74 managedConfiguration];
-          v23 = [(MCProfileConnection *)v22 activationRecordIndicatesCloudConfigurationIsAvailable];
+          managedConfiguration = [(BuddyIntentAndChildSetupFlow *)selfCopy managedConfiguration];
+          activationRecordIndicatesCloudConfigurationIsAvailable = [(MCProfileConnection *)managedConfiguration activationRecordIndicatesCloudConfigurationIsAvailable];
 
-          if (v23)
+          if (activationRecordIndicatesCloudConfigurationIsAvailable)
           {
             v59 = _BYLoggingFacility();
             v58 = OS_LOG_TYPE_DEFAULT;
@@ -350,8 +350,8 @@
             }
 
             objc_storeStrong(&v59, 0);
-            v26 = [(BuddyIntentAndChildSetupFlow *)v74 setupMethod];
-            [(BuddySetupMethod *)v26 setIntent:1];
+            setupMethod3 = [(BuddyIntentAndChildSetupFlow *)selfCopy setupMethod];
+            [(BuddySetupMethod *)setupMethod3 setIntent:1];
 
             (*(location[0] + 2))(location[0], 0);
             v69 = 1;
@@ -359,10 +359,10 @@
 
           else
           {
-            v27 = [(BuddyIntentAndChildSetupFlow *)v74 managedConfiguration];
-            v28 = [(MCProfileConnection *)v27 isSupervised];
+            managedConfiguration2 = [(BuddyIntentAndChildSetupFlow *)selfCopy managedConfiguration];
+            isSupervised = [(MCProfileConnection *)managedConfiguration2 isSupervised];
 
-            if (v28)
+            if (isSupervised)
             {
               v56 = _BYLoggingFacility();
               v55 = OS_LOG_TYPE_DEFAULT;
@@ -375,8 +375,8 @@
               }
 
               objc_storeStrong(&v56, 0);
-              v31 = [(BuddyIntentAndChildSetupFlow *)v74 setupMethod];
-              [(BuddySetupMethod *)v31 setIntent:1];
+              setupMethod4 = [(BuddyIntentAndChildSetupFlow *)selfCopy setupMethod];
+              [(BuddySetupMethod *)setupMethod4 setIntent:1];
 
               (*(location[0] + 2))(location[0], 0);
               v69 = 1;
@@ -384,8 +384,8 @@
 
             else if (sub_100164EC8())
             {
-              v34 = [(BuddyIntentAndChildSetupFlow *)v74 networkProvider];
-              v35 = ![(BuddyNetworkProvider *)v34 networkReachable];
+              networkProvider = [(BuddyIntentAndChildSetupFlow *)selfCopy networkProvider];
+              v35 = ![(BuddyNetworkProvider *)networkProvider networkReachable];
 
               if (v35)
               {
@@ -457,7 +457,7 @@
 
 - (void)controllerWasPopped
 {
-  v15 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   v13 = OS_LOG_TYPE_DEFAULT;
@@ -470,10 +470,10 @@
   }
 
   objc_storeStrong(oslog, 0);
-  v4 = [(BuddyIntentAndChildSetupFlow *)v15 accountTools];
-  v5 = [(BuddyAccountTools *)v4 primaryAccount];
+  accountTools = [(BuddyIntentAndChildSetupFlow *)selfCopy accountTools];
+  primaryAccount = [(BuddyAccountTools *)accountTools primaryAccount];
 
-  if (!v5)
+  if (!primaryAccount)
   {
     v11 = _BYLoggingFacility();
     v10 = OS_LOG_TYPE_DEFAULT;
@@ -486,23 +486,23 @@
     }
 
     objc_storeStrong(&v11, 0);
-    v8 = [(BuddyIntentAndChildSetupFlow *)v15 setupMethod];
-    [(BuddySetupMethod *)v8 setIntent:0];
+    setupMethod = [(BuddyIntentAndChildSetupFlow *)selfCopy setupMethod];
+    [(BuddySetupMethod *)setupMethod setIntent:0];
   }
 }
 
-- (void)shieldSetupSelectedAccount:(int64_t)a3 completion:(id)a4
+- (void)shieldSetupSelectedAccount:(int64_t)account completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
+  accountCopy = account;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, completion);
   oslog = _BYLoggingFacility();
   v12 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    sub_100077E48(buf, v15);
+    sub_100077E48(buf, accountCopy);
     _os_log_impl(&_mh_execute_header, oslog, v12, "Age attestation intent shield view selected account type %ld", buf, 0xCu);
   }
 
@@ -513,8 +513,8 @@
   v7 = 0;
   v8 = sub_1001654DC;
   v9 = &unk_10032B7C8;
-  v10 = v17;
-  v11[1] = v15;
+  v10 = selfCopy;
+  v11[1] = accountCopy;
   v11[0] = location;
   dispatch_async(v4, &block);
 
@@ -523,12 +523,12 @@
   objc_storeStrong(&location, 0);
 }
 
-- (void)setupPasscodeAndBiometricWithCompletion:(id)a3
+- (void)setupPasscodeAndBiometricWithCompletion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   oslog = _BYLoggingFacility();
   v14 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -546,7 +546,7 @@
   v8 = 0;
   v9 = sub_1001656B8;
   v10 = &unk_10032AFD0;
-  v11 = v17;
+  v11 = selfCopy;
   v12 = location[0];
   dispatch_async(v5, &v6);
 
@@ -555,12 +555,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)shieldSetupUpdateCDPContext:(id)a3
+- (void)shieldSetupUpdateCDPContext:(id)context
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   oslog = _BYLoggingFacility();
   v17 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -570,16 +570,16 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  v3 = [(BuddyIntentAndChildSetupFlow *)v20 passcodeCacheManager];
-  v16 = [(BYPasscodeCacheManager *)v3 cachedLocalSecret];
+  passcodeCacheManager = [(BuddyIntentAndChildSetupFlow *)selfCopy passcodeCacheManager];
+  cachedLocalSecret = [(BYPasscodeCacheManager *)passcodeCacheManager cachedLocalSecret];
 
-  if (v16)
+  if (cachedLocalSecret)
   {
-    v6 = [v16 validatedSecret];
-    [location[0] setCachedLocalSecret:v6];
+    validatedSecret = [cachedLocalSecret validatedSecret];
+    [location[0] setCachedLocalSecret:validatedSecret];
 
-    v7 = [v16 secretType];
-    [location[0] setCachedLocalSecretType:v7];
+    secretType = [cachedLocalSecret secretType];
+    [location[0] setCachedLocalSecretType:secretType];
     v12 = _BYLoggingFacility();
     v11 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -608,16 +608,16 @@
     objc_storeStrong(&v15, 0);
   }
 
-  objc_storeStrong(&v16, 0);
+  objc_storeStrong(&cachedLocalSecret, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)setupLocationServicesWithCompletion:(id)a3
+- (void)setupLocationServicesWithCompletion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   oslog = _BYLoggingFacility();
   v14 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -635,7 +635,7 @@
   v8 = 0;
   v9 = sub_100165F74;
   v10 = &unk_10032AFD0;
-  v11 = v17;
+  v11 = selfCopy;
   v12 = location[0];
   dispatch_async(v5, &v6);
 
@@ -644,14 +644,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)performAIDASignInWith:(id)a3 completion:(id)a4
+- (void)performAIDASignInWith:(id)with completion:(id)completion
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, with);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, completion);
   oslog = _BYLoggingFacility();
   v17 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -669,7 +669,7 @@
   v10 = 0;
   v11 = sub_1001663A4;
   v12 = &unk_10032BC78;
-  v13 = v21;
+  v13 = selfCopy;
   v14 = location[0];
   v15 = v19;
   dispatch_async(v7, &block);
@@ -681,16 +681,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)shieldSetupDidFinishWithResult:(id)a3 viewControllersToRemove:(id)a4 error:(id)a5
+- (void)shieldSetupDidFinishWithResult:(id)result viewControllersToRemove:(id)remove error:(id)error
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, result);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
+  objc_storeStrong(&v24, remove);
   v23 = 0;
-  objc_storeStrong(&v23, a5);
+  objc_storeStrong(&v23, error);
   oslog = _BYLoggingFacility();
   v21 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -705,9 +705,9 @@
 
     else if (v23)
     {
-      v20 = [v23 domain];
+      domain = [v23 domain];
       v19 = 1;
-      v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v20, [v23 code]);
+      v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v23 code]);
       v18 = v8;
       v17 = 1;
     }
@@ -735,7 +735,7 @@
   v12 = 0;
   v13 = sub_100166AC8;
   v14 = &unk_10032B838;
-  v15 = v26;
+  v15 = selfCopy;
   v16 = v24;
   dispatch_async(v9, &block);
 
@@ -746,14 +746,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)shieldSetupDidFinishWithResult:(id)a3 error:(id)a4
+- (void)shieldSetupDidFinishWithResult:(id)result error:(id)error
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, result);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, error);
   oslog = _BYLoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -767,9 +767,9 @@
 
     else if (v12)
     {
-      v10 = [v12 domain];
+      domain = [v12 domain];
       v9 = 1;
-      v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v10, [v12 code]);
+      v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v12 code]);
       v8 = v6;
       v7 = 1;
     }
@@ -791,17 +791,17 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  [(BuddyIntentAndChildSetupFlow *)v14 shieldSetupDidFinishWithResult:location[0] viewControllersToRemove:0 error:v12];
+  [(BuddyIntentAndChildSetupFlow *)selfCopy shieldSetupDidFinishWithResult:location[0] viewControllersToRemove:0 error:v12];
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_finishFlowWithAISProvidedViewControllersToRemove:(id)a3
+- (void)_finishFlowWithAISProvidedViewControllersToRemove:(id)remove
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, remove);
   oslog = _BYLoggingFacility();
   v14 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -819,7 +819,7 @@
   v8 = 0;
   v9 = sub_100167264;
   v10 = &unk_10032B838;
-  v11 = v17;
+  v11 = selfCopy;
   v12 = location[0];
   dispatch_async(v5, &v6);
 

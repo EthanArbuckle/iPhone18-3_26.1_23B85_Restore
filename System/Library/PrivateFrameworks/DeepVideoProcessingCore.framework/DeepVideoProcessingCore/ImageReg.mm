@@ -1,48 +1,48 @@
 @interface ImageReg
 - (BOOL)allocResource;
 - (BOOL)allocResourceFlowBasedHomography;
-- (BOOL)setupResourcesWithFlowDerivedHomography:(BOOL)a3;
-- (ImageReg)initWithDevice:(id)a3 commmandQueue:(id)a4 flowDerivedHomography:(BOOL)a5;
-- (ImageReg)initWithSubmodules:(id)a3 WithDevice:(id)a4 commandQueue:(id)a5;
-- (ImageReg)initWithSubmodules:(id)a3 WithDevice:(id)a4 commandQueue:(id)a5 flowDerivedHomography:(BOOL)a6;
-- (_xform2D)extractHomographyFromFlow:(__CVBuffer *)a3 depth:(__CVBuffer *)a4 im1:(__CVBuffer *)a5 im2:(__CVBuffer *)a6 targetResolution:(CGSize)a7 currentPairFlow:(BOOL)a8;
-- (_xform2D)extractHomographyFromPrev:(id)a3 ToCurr:(id)a4;
-- (_xform2D)extractHomographyFromPrev:(id)a3 ToCurr:(id)a4 calculateIndex:(int)a5;
-- (_xform2D)getHomographyWithMatches:(_matchPair *)a3 matchCount:(int)a4 keypoints1:(_keyPointHdr *)a5 Keypoints2:(_keyPointHdr *)a6 imageDim:(unint64_t)a7 imageDim:(unint64_t)a8;
-- (_xform2D)registerImage0:(__CVBuffer *)a3 toImage1:(__CVBuffer *)a4 Normalize:(BOOL)a5;
-- (double)normalizeHomography:(uint64_t)a3 width:(unint64_t)a4 height:(unint64_t)a5;
-- (int64_t)asyncRansacFromMatchedPair:(id)a3 matchCount:(id)a4 homography:(_xform2D *)a5 index:(int)a6 height:(int)a7 width:(int)a8;
-- (int64_t)preprocessFramesFromImage0:(__CVBuffer *)a3 Image1:(__CVBuffer *)a4;
-- (uint64_t)preprocessFirst:(double)a3 warpedFirst:(double)a4 withHomography:(uint64_t)a5;
-- (void)PrintMatchKptDistance:(_matchPair *)a3 matchCount:(int)a4 kpt1:(_keyPointHdr *)a5 kpt2:(_keyPointHdr *)a6 frameId:(int)a7;
-- (void)Printkpt1:(_keyPointHdr *)a3 count:(int)a4;
-- (void)checkRun2RunFromMatch1:(_matchPair *)a3 match2:(_matchPair *)a4 matchCount1:(int)a5 matchCount2:(int)a6 frameId:(int)a7;
+- (BOOL)setupResourcesWithFlowDerivedHomography:(BOOL)homography;
+- (ImageReg)initWithDevice:(id)device commmandQueue:(id)queue flowDerivedHomography:(BOOL)homography;
+- (ImageReg)initWithSubmodules:(id)submodules WithDevice:(id)device commandQueue:(id)queue;
+- (ImageReg)initWithSubmodules:(id)submodules WithDevice:(id)device commandQueue:(id)queue flowDerivedHomography:(BOOL)homography;
+- (_xform2D)extractHomographyFromFlow:(__CVBuffer *)flow depth:(__CVBuffer *)depth im1:(__CVBuffer *)im1 im2:(__CVBuffer *)im2 targetResolution:(CGSize)resolution currentPairFlow:(BOOL)pairFlow;
+- (_xform2D)extractHomographyFromPrev:(id)prev ToCurr:(id)curr;
+- (_xform2D)extractHomographyFromPrev:(id)prev ToCurr:(id)curr calculateIndex:(int)index;
+- (_xform2D)getHomographyWithMatches:(_matchPair *)matches matchCount:(int)count keypoints1:(_keyPointHdr *)keypoints1 Keypoints2:(_keyPointHdr *)keypoints2 imageDim:(unint64_t)dim imageDim:(unint64_t)imageDim;
+- (_xform2D)registerImage0:(__CVBuffer *)image0 toImage1:(__CVBuffer *)image1 Normalize:(BOOL)normalize;
+- (double)normalizeHomography:(uint64_t)homography width:(unint64_t)width height:(unint64_t)height;
+- (int64_t)asyncRansacFromMatchedPair:(id)pair matchCount:(id)count homography:(_xform2D *)homography index:(int)index height:(int)height width:(int)width;
+- (int64_t)preprocessFramesFromImage0:(__CVBuffer *)image0 Image1:(__CVBuffer *)image1;
+- (uint64_t)preprocessFirst:(double)first warpedFirst:(double)warpedFirst withHomography:(uint64_t)homography;
+- (void)PrintMatchKptDistance:(_matchPair *)distance matchCount:(int)count kpt1:(_keyPointHdr *)kpt1 kpt2:(_keyPointHdr *)kpt2 frameId:(int)id;
+- (void)Printkpt1:(_keyPointHdr *)printkpt1 count:(int)count;
+- (void)checkRun2RunFromMatch1:(_matchPair *)match1 match2:(_matchPair *)match2 matchCount1:(int)count1 matchCount2:(int)count2 frameId:(int)id;
 - (void)dealloc;
-- (void)filterMatchedCnadidateKpt1:(_keyPointHdr *)a3 kpt2:(_keyPointHdr *)a4 count1:(int)a5 count2:(int)a6 closedDesIndex:(_closedDesIndex *)a7;
+- (void)filterMatchedCnadidateKpt1:(_keyPointHdr *)kpt1 kpt2:(_keyPointHdr *)kpt2 count1:(int)count1 count2:(int)count2 closedDesIndex:(_closedDesIndex *)index;
 - (void)freeResource;
 - (void)freeResourceFlowBasedHomography;
-- (void)getHomographyWithFlowMatches_async:(_flow_matchPair *)a3 matchCount:(int)a4 imageDim:(unint64_t)a5 imageDim:(unint64_t)a6 index:(int)a7 homoMatrix:(_xform2D *)a8;
+- (void)getHomographyWithFlowMatches_async:(_flow_matchPair *)matches_async matchCount:(int)count imageDim:(unint64_t)dim imageDim:(unint64_t)imageDim index:(int)index homoMatrix:(_xform2D *)matrix;
 @end
 
 @implementation ImageReg
 
-- (ImageReg)initWithSubmodules:(id)a3 WithDevice:(id)a4 commandQueue:(id)a5
+- (ImageReg)initWithSubmodules:(id)submodules WithDevice:(id)device commandQueue:(id)queue
 {
-  objc_storeStrong(&self->_homographyFlow, a3);
-  v8 = a5;
-  v9 = a4;
-  v10 = [(ImageReg *)self initWithDevice:v9 commmandQueue:v8 flowDerivedHomography:0];
+  objc_storeStrong(&self->_homographyFlow, submodules);
+  queueCopy = queue;
+  deviceCopy = device;
+  v10 = [(ImageReg *)self initWithDevice:deviceCopy commmandQueue:queueCopy flowDerivedHomography:0];
 
   return v10;
 }
 
-- (ImageReg)initWithSubmodules:(id)a3 WithDevice:(id)a4 commandQueue:(id)a5 flowDerivedHomography:(BOOL)a6
+- (ImageReg)initWithSubmodules:(id)submodules WithDevice:(id)device commandQueue:(id)queue flowDerivedHomography:(BOOL)homography
 {
-  v6 = a6;
-  objc_storeStrong(&self->_homographyFlow, a3);
-  v10 = a5;
-  v11 = a4;
-  v12 = [(ImageReg *)self initWithDevice:v11 commmandQueue:v10 flowDerivedHomography:v6];
+  homographyCopy = homography;
+  objc_storeStrong(&self->_homographyFlow, submodules);
+  queueCopy = queue;
+  deviceCopy = device;
+  v12 = [(ImageReg *)self initWithDevice:deviceCopy commmandQueue:queueCopy flowDerivedHomography:homographyCopy];
 
   return v12;
 }
@@ -191,7 +191,7 @@
   self->_processedFrameNum = 0;
 }
 
-- (_xform2D)getHomographyWithMatches:(_matchPair *)a3 matchCount:(int)a4 keypoints1:(_keyPointHdr *)a5 Keypoints2:(_keyPointHdr *)a6 imageDim:(unint64_t)a7 imageDim:(unint64_t)a8
+- (_xform2D)getHomographyWithMatches:(_matchPair *)matches matchCount:(int)count keypoints1:(_keyPointHdr *)keypoints1 Keypoints2:(_keyPointHdr *)keypoints2 imageDim:(unint64_t)dim imageDim:(unint64_t)imageDim
 {
   v9 = v8;
   v10 = *(MEMORY[0x277D860B0] + 16);
@@ -199,29 +199,29 @@
   v35 = v10;
   v36 = *(MEMORY[0x277D860B0] + 32);
   v37 = 0uLL;
-  if (!a3 || !a5 || !a6)
+  if (!matches || !keypoints1 || !keypoints2)
   {
     goto LABEL_9;
   }
 
-  v13 = *&a4;
-  v16 = a8;
-  v17 = [(MTLBuffer *)self->_X[0] contents];
-  v18 = [(MTLBuffer *)self->_Y[0] contents];
-  v19 = [(MTLBuffer *)self->_X[1] contents];
-  v20 = [(MTLBuffer *)self->_Y[1] contents];
+  v13 = *&count;
+  imageDimCopy = imageDim;
+  contents = [(MTLBuffer *)self->_X[0] contents];
+  contents2 = [(MTLBuffer *)self->_Y[0] contents];
+  contents3 = [(MTLBuffer *)self->_X[1] contents];
+  contents4 = [(MTLBuffer *)self->_Y[1] contents];
   if (v13)
   {
     v23 = v13;
-    p_var1 = &a3->var1;
+    p_var1 = &matches->var1;
     do
     {
-      v25 = &a5[*(p_var1 - 1)];
-      *v17++ = LODWORD(v25->var0);
-      *v18++ = LODWORD(v25->var1);
-      v26 = &a6[*p_var1];
-      *v19++ = LODWORD(v26->var0);
-      *v20++ = LODWORD(v26->var1);
+      v25 = &keypoints1[*(p_var1 - 1)];
+      *contents++ = LODWORD(v25->var0);
+      *contents2++ = LODWORD(v25->var1);
+      v26 = &keypoints2[*p_var1];
+      *contents3++ = LODWORD(v26->var0);
+      *contents4++ = LODWORD(v26->var1);
       p_var1 += 3;
       --v23;
     }
@@ -232,8 +232,8 @@
   *&v21 = self->_xscaleFactor;
   *&v22 = self->_yscaleFactor;
   LOBYTE(v32) = 1;
-  LODWORD(v31) = v16;
-  v27 = [self->_RansacEstimation ApplyRansacEstimation:self->_X[0] desMatchInput:self->_Y[0] desMatchInput:self->_X[1] desMatchInput:self->_Y[1] desMatchCountInput:v13 xscaleFactorInput:a7 yscaleFactorInput:v21 imageDimInput:v22 imageDimInput:v31 homographyMatrixOutput:&v34 waitForComplete:v32];
+  LODWORD(v31) = imageDimCopy;
+  v27 = [self->_RansacEstimation ApplyRansacEstimation:self->_X[0] desMatchInput:self->_Y[0] desMatchInput:self->_X[1] desMatchInput:self->_Y[1] desMatchCountInput:v13 xscaleFactorInput:dim yscaleFactorInput:v21 imageDimInput:v22 imageDimInput:v31 homographyMatrixOutput:&v34 waitForComplete:v32];
   if (v27)
   {
     v29 = v35;
@@ -257,82 +257,82 @@ LABEL_9:
   return result;
 }
 
-- (void)getHomographyWithFlowMatches_async:(_flow_matchPair *)a3 matchCount:(int)a4 imageDim:(unint64_t)a5 imageDim:(unint64_t)a6 index:(int)a7 homoMatrix:(_xform2D *)a8
+- (void)getHomographyWithFlowMatches_async:(_flow_matchPair *)matches_async matchCount:(int)count imageDim:(unint64_t)dim imageDim:(unint64_t)imageDim index:(int)index homoMatrix:(_xform2D *)matrix
 {
-  v30 = a6;
+  imageDimCopy = imageDim;
   v25 = *(MEMORY[0x277D860B0] + 16);
   v26 = *MEMORY[0x277D860B0];
   v31 = *MEMORY[0x277D860B0];
   v32 = v25;
   v24 = *(MEMORY[0x277D860B0] + 32);
   v33 = v24;
-  v11 = a7;
+  indexCopy = index;
   v34 = 0;
   X1 = self->X1;
-  v12 = [(MTLBuffer *)self->X1[a7] contents];
-  v13 = [(MTLBuffer *)self->Y1[a7] contents];
-  v14 = [(MTLBuffer *)self->X2[a7] contents];
-  v15 = [(MTLBuffer *)self->Y2[a7] contents];
-  if (a4)
+  contents = [(MTLBuffer *)self->X1[index] contents];
+  contents2 = [(MTLBuffer *)self->Y1[index] contents];
+  contents3 = [(MTLBuffer *)self->X2[index] contents];
+  contents4 = [(MTLBuffer *)self->Y2[index] contents];
+  if (count)
   {
-    v18 = a4;
-    p_var2 = &a3->var2;
+    countCopy = count;
+    p_var2 = &matches_async->var2;
     do
     {
-      *v12++ = *(p_var2 - 2);
-      *v13++ = *p_var2;
-      *v14++ = *(p_var2 - 1);
-      *v15++ = *(p_var2 + 1);
+      *contents++ = *(p_var2 - 2);
+      *contents2++ = *p_var2;
+      *contents3++ = *(p_var2 - 1);
+      *contents4++ = *(p_var2 + 1);
       p_var2 += 5;
-      --v18;
+      --countCopy;
     }
 
-    while (v18);
+    while (countCopy);
   }
 
   *&v16 = self->_xscaleFactor;
   *&v17 = self->_yscaleFactor;
   LOBYTE(v23) = 1;
-  LODWORD(v22) = v30;
-  if ([RansacEstimation ApplyRansacEstimation:"ApplyRansacEstimation:desMatchInput:desMatchInput:desMatchInput:desMatchCountInput:xscaleFactorInput:yscaleFactorInput:imageDimInput:imageDimInput:homographyMatrixOutput:waitForComplete:" desMatchInput:X1[v11] desMatchInput:self->Y1[v11] desMatchInput:self->X2[v11] desMatchCountInput:self->Y2[v11] xscaleFactorInput:v16 yscaleFactorInput:v17 imageDimInput:v22 imageDimInput:&v31 homographyMatrixOutput:v23 waitForComplete:?])
+  LODWORD(v22) = imageDimCopy;
+  if ([RansacEstimation ApplyRansacEstimation:"ApplyRansacEstimation:desMatchInput:desMatchInput:desMatchInput:desMatchCountInput:xscaleFactorInput:yscaleFactorInput:imageDimInput:imageDimInput:homographyMatrixOutput:waitForComplete:" desMatchInput:X1[indexCopy] desMatchInput:self->Y1[indexCopy] desMatchInput:self->X2[indexCopy] desMatchCountInput:self->Y2[indexCopy] xscaleFactorInput:v16 yscaleFactorInput:v17 imageDimInput:v22 imageDimInput:&v31 homographyMatrixOutput:v23 waitForComplete:?])
   {
     v20 = v32;
-    *a8 = v31;
-    a8[1] = v20;
+    *matrix = v31;
+    matrix[1] = v20;
     v21 = v34;
-    a8[2] = v33;
-    a8[3] = v21;
+    matrix[2] = v33;
+    matrix[3] = v21;
   }
 
   else
   {
-    *a8 = v26;
-    a8[1] = v25;
-    a8[2] = v24;
-    *&a8[3].confidence = 0;
-    *&a8[3].width = 0;
+    *matrix = v26;
+    matrix[1] = v25;
+    matrix[2] = v24;
+    *&matrix[3].confidence = 0;
+    *&matrix[3].width = 0;
   }
 }
 
-- (int64_t)asyncRansacFromMatchedPair:(id)a3 matchCount:(id)a4 homography:(_xform2D *)a5 index:(int)a6 height:(int)a7 width:(int)a8
+- (int64_t)asyncRansacFromMatchedPair:(id)pair matchCount:(id)count homography:(_xform2D *)homography index:(int)index height:(int)height width:(int)width
 {
-  v14 = a3;
-  v15 = a4;
+  pairCopy = pair;
+  countCopy = count;
   dispatchGroup = self->_dispatchGroup;
   concurrent_queue = self->_concurrent_queue;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __80__ImageReg_asyncRansacFromMatchedPair_matchCount_homography_index_height_width___block_invoke;
   v21[3] = &unk_278F53768;
-  v22 = v14;
-  v23 = v15;
-  v26 = a8;
-  v27 = a7;
-  v28 = a6;
-  v24 = self;
-  v25 = a5;
-  v18 = v15;
-  v19 = v14;
+  v22 = pairCopy;
+  v23 = countCopy;
+  widthCopy = width;
+  heightCopy = height;
+  indexCopy = index;
+  selfCopy = self;
+  homographyCopy = homography;
+  v18 = countCopy;
+  v19 = pairCopy;
   dispatch_group_async(dispatchGroup, concurrent_queue, v21);
 
   return 0;
@@ -346,10 +346,10 @@ uint64_t __80__ImageReg_asyncRansacFromMatchedPair_matchCount_homography_index_h
   return [*(a1 + 48) getHomographyWithFlowMatches_async:v2 matchCount:v4 imageDim:*(a1 + 64) imageDim:*(a1 + 68) index:*(a1 + 72) homoMatrix:*(a1 + 56)];
 }
 
-- (_xform2D)registerImage0:(__CVBuffer *)a3 toImage1:(__CVBuffer *)a4 Normalize:(BOOL)a5
+- (_xform2D)registerImage0:(__CVBuffer *)image0 toImage1:(__CVBuffer *)image1 Normalize:(BOOL)normalize
 {
   v6 = v5;
-  if (!a3 || !a4 || (v8 = a5, !self->_SIFTSetup) && ![(ImageReg *)self setupResourcesWithFlowDerivedHomography:0]|| [(ImageReg *)self preprocessFramesFromImage0:a3 Image1:a4])
+  if (!image0 || !image1 || (v8 = normalize, !self->_SIFTSetup) && ![(ImageReg *)self setupResourcesWithFlowDerivedHomography:0]|| [(ImageReg *)self preprocessFramesFromImage0:image0 Image1:image1])
   {
     [ImageReg getHomographyWithMatches:v6 matchCount:? keypoints1:? Keypoints2:? imageDim:? imageDim:?];
     goto LABEL_18;
@@ -393,8 +393,8 @@ LABEL_12:
     v23 = *&v14;
     v25 = *&v13;
     v21 = *&v15;
-    Width = CVPixelBufferGetWidth(a3);
-    v11 = [(ImageReg *)self normalizeHomography:Width width:CVPixelBufferGetHeight(a3) height:v25, v23, v21];
+    Width = CVPixelBufferGetWidth(image0);
+    v11 = [(ImageReg *)self normalizeHomography:Width width:CVPixelBufferGetHeight(image0) height:v25, v23, v21];
     if ((global_logLevel & 4) != 0)
     {
       v22 = v15;
@@ -429,35 +429,35 @@ LABEL_18:
   return result;
 }
 
-- (_xform2D)extractHomographyFromPrev:(id)a3 ToCurr:(id)a4
+- (_xform2D)extractHomographyFromPrev:(id)prev ToCurr:(id)curr
 {
   v7 = v4;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  prevCopy = prev;
+  currCopy = curr;
+  v10 = currCopy;
   v11 = 0;
   v26 = *MEMORY[0x277D860B0];
   v27 = *(MEMORY[0x277D860B0] + 16);
   v28 = *(MEMORY[0x277D860B0] + 32);
   v12 = 0;
   v13 = 0;
-  if (v8 && v9)
+  if (prevCopy && currCopy)
   {
-    if ([(SIFTFeatureExtraction *)self->_featureExtractor detect1:v8 toHdr1:self->_keyPoints[0] detect2:v9 toHdr2:self->_keyPoints[1] count1:self->count count2:&self->count[1], 0.0]|| (!self->_streamingMode || self->_refreshCalculation) && [(SIFTFeatureExtraction *)self->_featureExtractor calculateDescriptorsForKeypoints:self->_keyPoints[0] keypointsCount:self->count[0] intoHdr:self->_descriptors[0] waitForComplete:0 ind:0]|| [(SIFTFeatureExtraction *)self->_featureExtractor calculateDescriptorsForKeypoints:self->_keyPoints[1] keypointsCount:self->count[1] intoHdr:self->_descriptors[1] waitForComplete:0 ind:1])
+    if ([(SIFTFeatureExtraction *)self->_featureExtractor detect1:prevCopy toHdr1:self->_keyPoints[0] detect2:currCopy toHdr2:self->_keyPoints[1] count1:self->count count2:&self->count[1], 0.0]|| (!self->_streamingMode || self->_refreshCalculation) && [(SIFTFeatureExtraction *)self->_featureExtractor calculateDescriptorsForKeypoints:self->_keyPoints[0] keypointsCount:self->count[0] intoHdr:self->_descriptors[0] waitForComplete:0 ind:0]|| [(SIFTFeatureExtraction *)self->_featureExtractor calculateDescriptorsForKeypoints:self->_keyPoints[1] keypointsCount:self->count[1] intoHdr:self->_descriptors[1] waitForComplete:0 ind:1])
     {
       [ImageReg getHomographyWithMatches:v7 matchCount:? keypoints1:? Keypoints2:? imageDim:? imageDim:?];
       goto LABEL_13;
     }
 
     v14 = [self->_SIFTMatcher findMatchesBetweenDescriptorEarlyExist:self->_descriptors[0] objectCount:self->count[0] keypt1:self->_keyPoints[0] toTargetDescriptor:self->_descriptors[1] targetCount:self->count[1] keypt2:self->_keyPoints[1] filteredIndex:self->_closeDesIndex matches:self->_matches];
-    v15 = [(MTLBuffer *)self->_keyPoints[0] contents];
-    v16 = [(MTLBuffer *)self->_keyPoints[1] contents];
-    v17 = [(MTLBuffer *)self->_matches contents];
+    contents = [(MTLBuffer *)self->_keyPoints[0] contents];
+    contents2 = [(MTLBuffer *)self->_keyPoints[1] contents];
+    contents3 = [(MTLBuffer *)self->_matches contents];
     v11 = 0;
     v12 = 0;
-    if (v15 && v16 && v17)
+    if (contents && contents2 && contents3)
     {
-      -[ImageReg getHomographyWithMatches:matchCount:keypoints1:Keypoints2:imageDim:imageDim:](self, "getHomographyWithMatches:matchCount:keypoints1:Keypoints2:imageDim:imageDim:", v17, v14, v15, v16, [v8 width], objc_msgSend(v8, "height"));
+      -[ImageReg getHomographyWithMatches:matchCount:keypoints1:Keypoints2:imageDim:imageDim:](self, "getHomographyWithMatches:matchCount:keypoints1:Keypoints2:imageDim:imageDim:", contents3, v14, contents, contents2, [prevCopy width], objc_msgSend(prevCopy, "height"));
       v26 = v20;
       v27 = v21;
       v28 = v22;
@@ -482,7 +482,7 @@ LABEL_13:
   return result;
 }
 
-- (_xform2D)extractHomographyFromFlow:(__CVBuffer *)a3 depth:(__CVBuffer *)a4 im1:(__CVBuffer *)a5 im2:(__CVBuffer *)a6 targetResolution:(CGSize)a7 currentPairFlow:(BOOL)a8
+- (_xform2D)extractHomographyFromFlow:(__CVBuffer *)flow depth:(__CVBuffer *)depth im1:(__CVBuffer *)im1 im2:(__CVBuffer *)im2 targetResolution:(CGSize)resolution currentPairFlow:(BOOL)pairFlow
 {
   v9 = v8;
   v10 = 0;
@@ -492,9 +492,9 @@ LABEL_13:
   v82 = *MEMORY[0x277D860B0];
   v83 = v11;
   v84 = v12;
-  v13 = vmovn_s64(vcvtq_s64_f64(a7));
+  v13 = vmovn_s64(vcvtq_s64_f64(resolution));
   v14 = 0;
-  if (!a3 || !a5 || !a6)
+  if (!flow || !im1 || !im2)
   {
     v38 = v13;
 LABEL_39:
@@ -503,9 +503,9 @@ LABEL_39:
     goto LABEL_43;
   }
 
-  v19 = self;
-  width = a7.width;
-  height = a7.height;
+  selfCopy = self;
+  width = resolution.width;
+  height = resolution.height;
   if (!self->_flowDerivedSetup)
   {
     self = [(ImageReg *)self setupResourcesWithFlowDerivedHomography:1];
@@ -516,12 +516,12 @@ LABEL_39:
     }
   }
 
-  v20 = createRGBATextureFromCVPixelBuffer(a5, v19->_device);
-  v21 = createRGBATextureFromCVPixelBuffer(a6, v19->_device);
-  v22 = createTexturesFromCVPixelBuffer(a3, v19->_device, 2, 1uLL);
-  if (a4)
+  v20 = createRGBATextureFromCVPixelBuffer(im1, selfCopy->_device);
+  v21 = createRGBATextureFromCVPixelBuffer(im2, selfCopy->_device);
+  v22 = createTexturesFromCVPixelBuffer(flow, selfCopy->_device, 2, 1uLL);
+  if (depth)
   {
-    v23 = createTexturesFromCVPixelBuffer(a4, v19->_device, 2, 1uLL);
+    v23 = createTexturesFromCVPixelBuffer(depth, selfCopy->_device, 2, 1uLL);
   }
 
   else
@@ -529,75 +529,75 @@ LABEL_39:
     v23 = 0;
   }
 
-  v24 = [v22 width];
+  width = [v22 width];
   v25 = width;
-  v19->_xscaleFactor = v24 / v25;
-  v26 = [v22 height];
+  selfCopy->_xscaleFactor = width / v25;
+  height = [v22 height];
   v27 = height;
-  v19->_yscaleFactor = v26 / v27;
+  selfCopy->_yscaleFactor = height / v27;
   v72 = 0uLL;
   v73 = 0;
-  v28 = [(HomographyFlow *)v19->_homographyFlow analyzeRegionalFlowInformation:v22 depth:v23 quart1_angle:v78 quart2_angle:v79 quart3_angle:v80 quart4_angle:v81 depth_angle:&v72];
-  if (v19->_streamingMode)
+  v28 = [(HomographyFlow *)selfCopy->_homographyFlow analyzeRegionalFlowInformation:v22 depth:v23 quart1_angle:v78 quart2_angle:v79 quart3_angle:v80 quart4_angle:v81 depth_angle:&v72];
+  if (selfCopy->_streamingMode)
   {
     if (v78[0] == 0.0)
     {
-      v78[0] = v19->_prev_quart1.angle;
+      v78[0] = selfCopy->_prev_quart1.angle;
     }
 
     else
     {
-      v19->_prev_quart1.angle = v78[0];
+      selfCopy->_prev_quart1.angle = v78[0];
     }
 
     angle = v79[0];
     if (v79[0] == 0.0)
     {
-      angle = v19->_prev_quart2.angle;
+      angle = selfCopy->_prev_quart2.angle;
       v79[0] = angle;
     }
 
     else
     {
-      v19->_prev_quart2.angle = v79[0];
+      selfCopy->_prev_quart2.angle = v79[0];
     }
 
     if (v80[0] == 0.0)
     {
-      v80[0] = v19->_prev_quart3.angle;
+      v80[0] = selfCopy->_prev_quart3.angle;
     }
 
     else
     {
-      v19->_prev_quart3.angle = angle;
+      selfCopy->_prev_quart3.angle = angle;
     }
 
     if (v81[0] == 0.0)
     {
-      v81[0] = v19->_prev_quart4.angle;
+      v81[0] = selfCopy->_prev_quart4.angle;
     }
 
     else
     {
-      v19->_prev_quart4.angle = v81[0];
+      selfCopy->_prev_quart4.angle = v81[0];
     }
   }
 
   v67 = v23;
   v65 = v9;
-  v30 = [(MTLCommandQueue *)v19->_commandQueue commandBuffer];
-  v31 = v30;
+  commandBuffer = [(MTLCommandQueue *)selfCopy->_commandQueue commandBuffer];
+  v31 = commandBuffer;
   v63 = v28;
   v69 = v20;
   if (v28 == 1)
   {
-    SIFTMatcher = v19->_SIFTMatcher;
-    v33 = v19->flow_match[4];
-    v34 = v19->flow_count[4];
+    SIFTMatcher = selfCopy->_SIFTMatcher;
+    v33 = selfCopy->flow_match[4];
+    v34 = selfCopy->flow_count[4];
     v74 = v72;
     LODWORD(v75) = v73;
     v35 = v31;
-    LOBYTE(v62) = a8;
+    LOBYTE(v62) = pairFlow;
     v36 = v21;
     if ([SIFTMatcher findMatchesFromFlow:v22 im1:v20 im2:v21 matches:v33 background_angle:&v74 matchCount:v34 flipFlowValue:v62 commandBuffer:v31])
     {
@@ -617,13 +617,13 @@ LABEL_29:
       [v35 waitUntilCompleted];
       if (v63 == 1)
       {
-        v49 = sortFlowMatchingPair_org(v19->flow_match[4], *[(MTLBuffer *)v19->flow_count[4] contents]);
-        v50 = [(MTLBuffer *)v19->flow_match[4] contents];
+        v49 = sortFlowMatchingPair_org(selfCopy->flow_match[4], *[(MTLBuffer *)selfCopy->flow_count[4] contents]);
+        contents = [(MTLBuffer *)selfCopy->flow_match[4] contents];
         v76 = 0u;
         v77[0] = 0u;
         v74 = 0u;
         v75 = 0u;
-        -[ImageReg getHomographyWithFlowMatches_async:matchCount:imageDim:imageDim:index:homoMatrix:](v19, "getHomographyWithFlowMatches_async:matchCount:imageDim:imageDim:index:homoMatrix:", v50, v49, [v22 width], objc_msgSend(v22, "height"), 0, &v74);
+        -[ImageReg getHomographyWithFlowMatches_async:matchCount:imageDim:imageDim:index:homoMatrix:](selfCopy, "getHomographyWithFlowMatches_async:matchCount:imageDim:imageDim:index:homoMatrix:", contents, v49, [v22 width], objc_msgSend(v22, "height"), 0, &v74);
         v82 = v74;
         v83 = v75;
         v84 = v76;
@@ -641,14 +641,14 @@ LABEL_29:
         v55 = &v74;
         do
         {
-          -[ImageReg asyncRansacFromMatchedPair:matchCount:homography:index:height:width:](v19, "asyncRansacFromMatchedPair:matchCount:homography:index:height:width:", v19->flow_match[v54], v19->flow_count[v54], v55, v54, [v22 height], objc_msgSend(v22, "width"));
+          -[ImageReg asyncRansacFromMatchedPair:matchCount:homography:index:height:width:](selfCopy, "asyncRansacFromMatchedPair:matchCount:homography:index:height:width:", selfCopy->flow_match[v54], selfCopy->flow_count[v54], v55, v54, [v22 height], objc_msgSend(v22, "width"));
           ++v54;
           v55 += 4;
         }
 
         while (v54 != 4);
-        dispatch_barrier_sync(v19->_concurrent_queue, &__block_literal_global_0);
-        dispatch_group_wait(v19->_dispatchGroup, 0xFFFFFFFFFFFFFFFFLL);
+        dispatch_barrier_sync(selfCopy->_concurrent_queue, &__block_literal_global_0);
+        dispatch_group_wait(selfCopy->_dispatchGroup, 0xFFFFFFFFFFFFFFFFLL);
         v56 = 0;
         v10 = 0;
         v14 = 0;
@@ -697,21 +697,21 @@ LABEL_41:
     goto LABEL_43;
   }
 
-  v35 = v30;
+  v35 = commandBuffer;
   v36 = v21;
   v42 = 0;
-  flow_count = v19->flow_count;
+  flow_count = selfCopy->flow_count;
   while (1)
   {
     v44 = *(flow_count - 5);
     v74 = *&v78[v42];
     *&v75 = v78[v42 + 4];
     v45 = *flow_count;
-    v46 = v19->_SIFTMatcher;
+    v46 = selfCopy->_SIFTMatcher;
     v70 = v74;
     v71 = v75;
     v47 = v44;
-    LOBYTE(v62) = a8;
+    LOBYTE(v62) = pairFlow;
     v48 = [(SIFTMatcher *)v46 findMatchesFromFlow:v22 im1:v69 im2:v36 matches:v47 background_angle:&v70 matchCount:v45 flipFlowValue:v62 commandBuffer:v35];
 
     if (v48)
@@ -746,41 +746,41 @@ LABEL_43:
   return result;
 }
 
-- (_xform2D)extractHomographyFromPrev:(id)a3 ToCurr:(id)a4 calculateIndex:(int)a5
+- (_xform2D)extractHomographyFromPrev:(id)prev ToCurr:(id)curr calculateIndex:(int)index
 {
   v9 = v5;
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
+  prevCopy = prev;
+  currCopy = curr;
+  v12 = currCopy;
   v13 = 0;
   v29 = *MEMORY[0x277D860B0];
   v30 = *(MEMORY[0x277D860B0] + 16);
   v31 = *(MEMORY[0x277D860B0] + 32);
   if (self->_streamingMode)
   {
-    v14 = a5;
+    indexCopy = index;
   }
 
   else
   {
-    v14 = 1;
+    indexCopy = 1;
   }
 
-  v15 = v14 == 0;
+  v15 = indexCopy == 0;
   v16 = 0;
   v17 = 0;
-  if (v10 && v11)
+  if (prevCopy && currCopy)
   {
     keyPoints = self->_keyPoints;
     v19 = &self->count[v15];
-    v20 = &self->count[v14];
-    if ([(SIFTFeatureExtraction *)self->_featureExtractor detect1:v10 toHdr1:self->_keyPoints[v15] detect2:v11 toHdr2:self->_keyPoints[v14] count1:v19 count2:v20, 0.0, 0.0]|| (!self->_streamingMode || self->_refreshCalculation) && [(SIFTFeatureExtraction *)self->_featureExtractor calculateDescriptorsForKeypoints:keyPoints[v15] keypointsCount:*v19 intoHdr:self->_descriptors[v15] waitForComplete:0 ind:0]|| [(SIFTFeatureExtraction *)self->_featureExtractor calculateDescriptorsForKeypoints:keyPoints[v14] keypointsCount:*v20 intoHdr:self->_descriptors[v14] waitForComplete:0 ind:1])
+    v20 = &self->count[indexCopy];
+    if ([(SIFTFeatureExtraction *)self->_featureExtractor detect1:prevCopy toHdr1:self->_keyPoints[v15] detect2:currCopy toHdr2:self->_keyPoints[indexCopy] count1:v19 count2:v20, 0.0, 0.0]|| (!self->_streamingMode || self->_refreshCalculation) && [(SIFTFeatureExtraction *)self->_featureExtractor calculateDescriptorsForKeypoints:keyPoints[v15] keypointsCount:*v19 intoHdr:self->_descriptors[v15] waitForComplete:0 ind:0]|| [(SIFTFeatureExtraction *)self->_featureExtractor calculateDescriptorsForKeypoints:keyPoints[indexCopy] keypointsCount:*v20 intoHdr:self->_descriptors[indexCopy] waitForComplete:0 ind:1])
     {
       [ImageReg getHomographyWithMatches:v9 matchCount:? keypoints1:? Keypoints2:? imageDim:? imageDim:?];
       goto LABEL_14;
     }
 
-    -[ImageReg getHomographyWithMatches:matchCount:keypoints1:Keypoints2:imageDim:imageDim:](self, "getHomographyWithMatches:matchCount:keypoints1:Keypoints2:imageDim:imageDim:", -[MTLBuffer contents](self->_matches, "contents"), -[SIFTMatcher findMatchesBetweenDescriptorEarlyExist:objectCount:keypt1:toTargetDescriptor:targetCount:keypt2:filteredIndex:matches:](self->_SIFTMatcher, "findMatchesBetweenDescriptorEarlyExist:objectCount:keypt1:toTargetDescriptor:targetCount:keypt2:filteredIndex:matches:", self->_descriptors[v15], *v19, keyPoints[v15], self->_descriptors[v14], *v20, keyPoints[v14], self->_closeDesIndex, self->_matches), -[MTLBuffer contents](keyPoints[v15], "contents"), -[MTLBuffer contents](keyPoints[v14], "contents"), [v10 width], objc_msgSend(v10, "height"));
+    -[ImageReg getHomographyWithMatches:matchCount:keypoints1:Keypoints2:imageDim:imageDim:](self, "getHomographyWithMatches:matchCount:keypoints1:Keypoints2:imageDim:imageDim:", -[MTLBuffer contents](self->_matches, "contents"), -[SIFTMatcher findMatchesBetweenDescriptorEarlyExist:objectCount:keypt1:toTargetDescriptor:targetCount:keypt2:filteredIndex:matches:](self->_SIFTMatcher, "findMatchesBetweenDescriptorEarlyExist:objectCount:keypt1:toTargetDescriptor:targetCount:keypt2:filteredIndex:matches:", self->_descriptors[v15], *v19, keyPoints[v15], self->_descriptors[indexCopy], *v20, keyPoints[indexCopy], self->_closeDesIndex, self->_matches), -[MTLBuffer contents](keyPoints[v15], "contents"), -[MTLBuffer contents](keyPoints[indexCopy], "contents"), [prevCopy width], objc_msgSend(prevCopy, "height"));
     v29 = v23;
     v30 = v24;
     v31 = v25;
@@ -808,35 +808,35 @@ LABEL_14:
   return result;
 }
 
-- (double)normalizeHomography:(uint64_t)a3 width:(unint64_t)a4 height:(unint64_t)a5
+- (double)normalizeHomography:(uint64_t)homography width:(unint64_t)width height:(unint64_t)height
 {
-  v5 = a1.columns[1];
-  v6 = a1.columns[0];
+  v5 = self.columns[1];
+  v6 = self.columns[0];
   v7 = 0;
-  a1.columns[0].i32[1] = 0;
-  a1.columns[0].i64[1] = 0;
-  a1.columns[0].f32[0] = 1.0 / a4;
-  a1.columns[1].i32[0] = 0;
-  a1.columns[1].i64[1] = 0;
-  a1.columns[1].f32[1] = 1.0 / a5;
+  self.columns[0].i32[1] = 0;
+  self.columns[0].i64[1] = 0;
+  self.columns[0].f32[0] = 1.0 / width;
+  self.columns[1].i32[0] = 0;
+  self.columns[1].i64[1] = 0;
+  self.columns[1].f32[1] = 1.0 / height;
   v13.columns[0] = v6;
   v13.columns[1] = v5;
-  v13.columns[2] = a1.columns[2];
+  v13.columns[2] = self.columns[2];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   do
   {
-    *(&v14 + v7 * 16) = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a1.columns[0], COERCE_FLOAT(*&v13.columns[v7])), a1.columns[1], *v13.columns[v7].f32, 1), xmmword_2487C38A0, v13.columns[v7], 2);
+    *(&v14 + v7 * 16) = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(self.columns[0], COERCE_FLOAT(*&v13.columns[v7])), self.columns[1], *v13.columns[v7].f32, 1), xmmword_2487C38A0, v13.columns[v7], 2);
     ++v7;
   }
 
   while (v7 != 3);
-  a1.columns[2] = xmmword_2487C38A0;
+  self.columns[2] = xmmword_2487C38A0;
   v11 = v15;
   v12 = v14;
   v10 = v16;
-  v17 = __invert_f3(a1);
+  v17 = __invert_f3(self);
   v8 = 0;
   v13 = v17;
   v14 = 0u;
@@ -852,15 +852,15 @@ LABEL_14:
   return *v14.i64;
 }
 
-- (void)checkRun2RunFromMatch1:(_matchPair *)a3 match2:(_matchPair *)a4 matchCount1:(int)a5 matchCount2:(int)a6 frameId:(int)a7
+- (void)checkRun2RunFromMatch1:(_matchPair *)match1 match2:(_matchPair *)match2 matchCount1:(int)count1 matchCount2:(int)count2 frameId:(int)id
 {
   v40 = *MEMORY[0x277D85DE8];
-  if (a5 >= 1)
+  if (count1 >= 1)
   {
     v8 = 0;
-    v9 = a5;
-    p_var2 = &a4->var2;
-    v11 = &a3->var2;
+    count1Copy = count1;
+    p_var2 = &match2->var2;
+    v11 = &match1->var2;
     do
     {
       if ((*(v11 - 2) != *(p_var2 - 2) || *(v11 - 1) != *(p_var2 - 1) || *v11 != *p_var2) && (global_logLevel & 4) != 0)
@@ -875,7 +875,7 @@ LABEL_14:
           v17 = *v11;
           v18 = *p_var2;
           *buf = 67111424;
-          v21 = a7;
+          idCopy = id;
           v22 = 1024;
           v23 = v8;
           v24 = 1024;
@@ -891,9 +891,9 @@ LABEL_14:
           v34 = 2048;
           v35 = v18;
           v36 = 1024;
-          v37 = v9;
+          v37 = count1Copy;
           v38 = 1024;
-          v39 = a6;
+          count2Copy = count2;
           _os_log_impl(&dword_24874B000, v12, OS_LOG_TYPE_INFO, "The frame %d %d matched pair does not match : %d vs %d, %d vs %d. %.4f vs %.4f, total count:%d %d.\n", buf, 0x46u);
         }
       }
@@ -903,22 +903,22 @@ LABEL_14:
       v11 += 3;
     }
 
-    while (v9 != v8);
+    while (count1Copy != v8);
   }
 }
 
-- (void)filterMatchedCnadidateKpt1:(_keyPointHdr *)a3 kpt2:(_keyPointHdr *)a4 count1:(int)a5 count2:(int)a6 closedDesIndex:(_closedDesIndex *)a7
+- (void)filterMatchedCnadidateKpt1:(_keyPointHdr *)kpt1 kpt2:(_keyPointHdr *)kpt2 count1:(int)count1 count2:(int)count2 closedDesIndex:(_closedDesIndex *)index
 {
   v26 = *MEMORY[0x277D85DE8];
-  if (a5 >= 1)
+  if (count1 >= 1)
   {
     v9 = 0;
-    v10 = a5;
-    p_var8 = &a4->var8;
-    v11 = a6;
+    count1Copy = count1;
+    p_var8 = &kpt2->var8;
+    count2Copy = count2;
     do
     {
-      if (a6 < 1)
+      if (count2 < 1)
       {
         v13 = 0;
       }
@@ -928,21 +928,21 @@ LABEL_14:
         v12 = 0;
         v13 = 0;
         v14 = p_var8;
-        v15 = &a3[v9];
+        v15 = &kpt1[v9];
         v16 = *&v15->var0;
         do
         {
           v17 = vaddv_f32(vabd_f32(v16, *(v14 - 8))) >= 150.0 || v15->var4 == *(v14 - 4);
           if (!v17 && (v15->var8 - *v14) < 120.0 && v13 <= 999)
           {
-            a7[v9].var0[v13++] = v12;
+            index[v9].var0[v13++] = v12;
           }
 
           ++v12;
           v14 += 9;
         }
 
-        while (v11 != v12);
+        while (count2Copy != v12);
       }
 
       v18 = v13 - 1;
@@ -951,7 +951,7 @@ LABEL_14:
         v18 = 0;
       }
 
-      a7[v9].var1 = v18;
+      index[v9].var1 = v18;
       if ((global_logLevel & 4) != 0)
       {
         v19 = global_logger;
@@ -960,7 +960,7 @@ LABEL_14:
           *buf = 67109376;
           v23 = v13;
           v24 = 1024;
-          v25 = a6;
+          count2Copy2 = count2;
           _os_log_impl(&dword_24874B000, v19, OS_LOG_TYPE_INFO, "Number of matched count:%d Total key pt:%d.\n", buf, 0xEu);
         }
       }
@@ -968,15 +968,15 @@ LABEL_14:
       ++v9;
     }
 
-    while (v9 != v10);
+    while (v9 != count1Copy);
   }
 }
 
-- (void)PrintMatchKptDistance:(_matchPair *)a3 matchCount:(int)a4 kpt1:(_keyPointHdr *)a5 kpt2:(_keyPointHdr *)a6 frameId:(int)a7
+- (void)PrintMatchKptDistance:(_matchPair *)distance matchCount:(int)count kpt1:(_keyPointHdr *)kpt1 kpt2:(_keyPointHdr *)kpt2 frameId:(int)id
 {
   v35 = *MEMORY[0x277D85DE8];
   v7 = global_logLevel;
-  if (a4 < 1)
+  if (count < 1)
   {
     v11 = 0;
     if ((global_logLevel & 4) == 0)
@@ -988,11 +988,11 @@ LABEL_14:
   }
 
   v11 = 0;
-  v12 = a4;
+  countCopy = count;
   do
   {
-    v13 = &a5[a3->var0];
-    v14 = &a6[a3->var1];
+    v13 = &kpt1[distance->var0];
+    v14 = &kpt2[distance->var1];
     v15 = vabds_f32(v13->var0, v14->var0) + vabds_f32(v13->var1, v14->var1);
     v16 = v13->var8 - v14->var8;
     v17 = v13->var4 - v14->var4;
@@ -1001,13 +1001,13 @@ LABEL_14:
       v18 = global_logger;
       if (os_log_type_enabled(global_logger, OS_LOG_TYPE_INFO))
       {
-        var4 = a5[a3->var0].var4;
+        var4 = kpt1[distance->var0].var4;
         *buf = 67110400;
-        v26 = a7;
+        idCopy2 = id;
         v27 = 1024;
         v28 = v11;
         v29 = 1024;
-        v30 = var4;
+        countCopy2 = var4;
         v31 = 1024;
         *v32 = v17;
         *&v32[4] = 2048;
@@ -1038,11 +1038,11 @@ LABEL_14:
       }
     }
 
-    ++a3;
-    --v12;
+    ++distance;
+    --countCopy;
   }
 
-  while (v12);
+  while (countCopy);
   if ((v7 & 4) != 0)
   {
 LABEL_21:
@@ -1050,27 +1050,27 @@ LABEL_21:
     if (os_log_type_enabled(global_logger, OS_LOG_TYPE_INFO))
     {
       *buf = 67109888;
-      v26 = a7;
+      idCopy2 = id;
       v27 = 1024;
       v28 = v11;
       v29 = 1024;
-      v30 = a4;
+      countCopy2 = count;
       v31 = 2048;
-      *v32 = ((v11 / a4) * 100.0);
+      *v32 = ((v11 / count) * 100.0);
       _os_log_impl(&dword_24874B000, v22, OS_LOG_TYPE_INFO, "The frame %d: %d paired pts larger than max_dist, total count:%d , perc:%.4f .\n", buf, 0x1Eu);
     }
   }
 }
 
-- (void)Printkpt1:(_keyPointHdr *)a3 count:(int)a4
+- (void)Printkpt1:(_keyPointHdr *)printkpt1 count:(int)count
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (a4 >= 1)
+  if (count >= 1)
   {
     v4 = 0;
-    v5 = a4;
+    countCopy = count;
     v6 = global_logLevel;
-    p_var5 = &a3->var5;
+    p_var5 = &printkpt1->var5;
     do
     {
       if ((v6 & 4) != 0)
@@ -1096,13 +1096,13 @@ LABEL_21:
       p_var5 += 9;
     }
 
-    while (v5 != v4);
+    while (countCopy != v4);
   }
 }
 
-- (BOOL)setupResourcesWithFlowDerivedHomography:(BOOL)a3
+- (BOOL)setupResourcesWithFlowDerivedHomography:(BOOL)homography
 {
-  if (a3)
+  if (homography)
   {
     if (!self->_flowDerivedSetup)
     {
@@ -1122,10 +1122,10 @@ LABEL_21:
         v5 += 8;
         if (v5 == 80)
         {
-          v8 = [(ImageReg *)self allocResourceFlowBasedHomography];
-          if (!v8)
+          allocResourceFlowBasedHomography = [(ImageReg *)self allocResourceFlowBasedHomography];
+          if (!allocResourceFlowBasedHomography)
           {
-            return v8;
+            return allocResourceFlowBasedHomography;
           }
 
           v9 = dispatch_group_create();
@@ -1152,8 +1152,8 @@ LABEL_21:
   if (self->_SIFTSetup)
   {
 LABEL_11:
-    LOBYTE(v8) = 1;
-    return v8;
+    LOBYTE(allocResourceFlowBasedHomography) = 1;
+    return allocResourceFlowBasedHomography;
   }
 
   v13 = [[SIFTFeatureExtraction alloc] initWithDevice:self->_device commmandQueue:self->_commandQueue];
@@ -1163,32 +1163,32 @@ LABEL_11:
   if (!self->_featureExtractor || (v15 = [[RansacEstimation alloc] initWithDevice:self->_device commmandQueue:self->_commandQueue], RansacEstimation = self->_RansacEstimation, self->_RansacEstimation = v15, RansacEstimation, !self->_RansacEstimation))
   {
 LABEL_18:
-    LOBYTE(v8) = 0;
-    return v8;
+    LOBYTE(allocResourceFlowBasedHomography) = 0;
+    return allocResourceFlowBasedHomography;
   }
 
-  v8 = [(ImageReg *)self allocResource];
-  if (v8)
+  allocResourceFlowBasedHomography = [(ImageReg *)self allocResource];
+  if (allocResourceFlowBasedHomography)
   {
     p_flowDerivedSetup = &self->_SIFTSetup;
 LABEL_16:
-    LOBYTE(v8) = 1;
+    LOBYTE(allocResourceFlowBasedHomography) = 1;
     *p_flowDerivedSetup = 1;
   }
 
-  return v8;
+  return allocResourceFlowBasedHomography;
 }
 
-- (ImageReg)initWithDevice:(id)a3 commmandQueue:(id)a4 flowDerivedHomography:(BOOL)a5
+- (ImageReg)initWithDevice:(id)device commmandQueue:(id)queue flowDerivedHomography:(BOOL)homography
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
+  homographyCopy = homography;
+  deviceCopy = device;
+  queueCopy = queue;
   v23.receiver = self;
   v23.super_class = ImageReg;
   v11 = [(ImageReg *)&v23 init];
   v12 = v11;
-  if (v11 && ((v11->_SIFTSetup = 0, v11->_flowDerivedSetup = 0, !v9) || !v10 ? (v14 = MTLCreateSystemDefaultDevice(), device = v12->_device, v12->_device = v14, device, v13 = [(MTLDevice *)v12->_device newCommandQueue]) : (objc_storeStrong(&v11->_device, a3), v13 = v10), (commandQueue = v12->_commandQueue, v12->_commandQueue = v13, commandQueue, v12->_device) && v12->_commandQueue && (v17 = [[SIFTMatcher alloc] initWithDevice:v12->_device commmandQueue:v12->_commandQueue], SIFTMatcher = v12->_SIFTMatcher, v12->_SIFTMatcher = v17, SIFTMatcher, v12->_SIFTMatcher) && (v19 = [[MetalToolBox alloc] initWithDevice:v12->_device commmandQueue:v12->_commandQueue], toolBox = v12->_toolBox, v12->_toolBox = v19, toolBox, v12->_toolBox) && [(ImageReg *)v12 setupResourcesWithFlowDerivedHomography:v5]))
+  if (v11 && ((v11->_SIFTSetup = 0, v11->_flowDerivedSetup = 0, !deviceCopy) || !queueCopy ? (v14 = MTLCreateSystemDefaultDevice(), device = v12->_device, v12->_device = v14, device, v13 = [(MTLDevice *)v12->_device newCommandQueue]) : (objc_storeStrong(&v11->_device, device), v13 = queueCopy), (commandQueue = v12->_commandQueue, v12->_commandQueue = v13, commandQueue, v12->_device) && v12->_commandQueue && (v17 = [[SIFTMatcher alloc] initWithDevice:v12->_device commmandQueue:v12->_commandQueue], SIFTMatcher = v12->_SIFTMatcher, v12->_SIFTMatcher = v17, SIFTMatcher, v12->_SIFTMatcher) && (v19 = [[MetalToolBox alloc] initWithDevice:v12->_device commmandQueue:v12->_commandQueue], toolBox = v12->_toolBox, v12->_toolBox = v19, toolBox, v12->_toolBox) && [(ImageReg *)v12 setupResourcesWithFlowDerivedHomography:homographyCopy]))
   {
     v21 = v12;
   }
@@ -1271,11 +1271,11 @@ LABEL_16:
   return v4;
 }
 
-- (int64_t)preprocessFramesFromImage0:(__CVBuffer *)a3 Image1:(__CVBuffer *)a4
+- (int64_t)preprocessFramesFromImage0:(__CVBuffer *)image0 Image1:(__CVBuffer *)image1
 {
-  v7 = isPackedRGBA(a3);
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  v7 = isPackedRGBA(image0);
+  Width = CVPixelBufferGetWidth(image0);
+  Height = CVPixelBufferGetHeight(image0);
   self->_xscaleFactor = 640.0 / Width;
   self->_yscaleFactor = 360.0 / Height;
   v10 = self->_refreshCalculation || self->_testingMode;
@@ -1284,12 +1284,12 @@ LABEL_16:
     device = self->_device;
     if (v7)
     {
-      createRGBATextureFromCVPixelBuffer(a3, device);
+      createRGBATextureFromCVPixelBuffer(image0, device);
     }
 
     else
     {
-      createTexturesFromCVPixelBuffer(a3, device, 1, 3uLL);
+      createTexturesFromCVPixelBuffer(image0, device, 1, 3uLL);
     }
     v12 = ;
     image0Texture = self->_image0Texture;
@@ -1315,12 +1315,12 @@ LABEL_16:
     v16 = self->_device;
     if (v7)
     {
-      createRGBATextureFromCVPixelBuffer(a4, v16);
+      createRGBATextureFromCVPixelBuffer(image1, v16);
     }
 
     else
     {
-      createTexturesFromCVPixelBuffer(a4, v16, 1, 3uLL);
+      createTexturesFromCVPixelBuffer(image1, v16, 1, 3uLL);
     }
     v17 = ;
     image1Texture = self->_image1Texture;
@@ -1346,7 +1346,7 @@ LABEL_16:
   return 0;
 }
 
-- (uint64_t)preprocessFirst:(double)a3 warpedFirst:(double)a4 withHomography:(uint64_t)a5
+- (uint64_t)preprocessFirst:(double)first warpedFirst:(double)warpedFirst withHomography:(uint64_t)homography
 {
   if (!a6 || !a7)
   {
@@ -1355,8 +1355,8 @@ LABEL_16:
 
   Width = CVPixelBufferGetWidth(a6);
   *&v11 = Width / CVPixelBufferGetWidth(a7);
-  [*(a1 + 88) convertHomographyWithFactor:v11 input:{a2, a3, a4}];
-  v12 = *(a1 + 88);
+  [*(self + 88) convertHomographyWithFactor:v11 input:{a2, first, warpedFirst}];
+  v12 = *(self + 88);
 
   return [v12 proprocessFirst:a6 warpedFirst:a7 withHomography:?];
 }

@@ -1,58 +1,58 @@
 @interface SGXPCActivityManager
 + (id)sharedInstance;
-- (BOOL)shouldDefer:(id)a3;
+- (BOOL)shouldDefer:(id)defer;
 - (SGXPCActivityManager)init;
-- (id)_taskForActivity:(id)a3;
-- (id)copyCriteria:(id)a3;
+- (id)_taskForActivity:(id)activity;
+- (id)copyCriteria:(id)criteria;
 - (void)dealloc;
 - (void)registerActivitiesWithSystem;
-- (void)registerForActivity:(int)a3 handler:(id)a4;
-- (void)setCriteria:(id)a3 criteria:(id)a4 forActivity:(int)a5;
+- (void)registerForActivity:(int)activity handler:(id)handler;
+- (void)setCriteria:(id)criteria criteria:(id)a4 forActivity:(int)activity;
 @end
 
 @implementation SGXPCActivityManager
 
-- (id)copyCriteria:(id)a3
+- (id)copyCriteria:(id)criteria
 {
-  v5 = a3;
-  if (!v5)
+  criteriaCopy = criteria;
+  if (!criteriaCopy)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"SGXPCActivity.m" lineNumber:270 description:{@"Invalid parameter not satisfying: %@", @"activity"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGXPCActivity.m" lineNumber:270 description:{@"Invalid parameter not satisfying: %@", @"activity"}];
   }
 
-  v6 = xpc_activity_copy_criteria(v5);
+  v6 = xpc_activity_copy_criteria(criteriaCopy);
 
   return v6;
 }
 
-- (BOOL)shouldDefer:(id)a3
+- (BOOL)shouldDefer:(id)defer
 {
-  v4 = a3;
-  if (xpc_activity_should_defer(v4))
+  deferCopy = defer;
+  if (xpc_activity_should_defer(deferCopy))
   {
-    v5 = 1;
+    shouldDefer = 1;
   }
 
   else
   {
-    v6 = [(SGXPCActivityManager *)self _taskForActivity:v4];
-    v5 = [v6 shouldDefer];
+    v6 = [(SGXPCActivityManager *)self _taskForActivity:deferCopy];
+    shouldDefer = [v6 shouldDefer];
   }
 
-  return v5;
+  return shouldDefer;
 }
 
-- (id)_taskForActivity:(id)a3
+- (id)_taskForActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   pthread_mutex_lock(&self->_lock);
   v5 = 0;
   while (1)
   {
     v6 = [(NSMutableArray *)self->_activities objectAtIndexedSubscript:v5];
 
-    if (v6 == v4)
+    if (v6 == activityCopy)
     {
       break;
     }
@@ -74,22 +74,22 @@ LABEL_6:
   return v7;
 }
 
-- (void)setCriteria:(id)a3 criteria:(id)a4 forActivity:(int)a5
+- (void)setCriteria:(id)criteria criteria:(id)a4 forActivity:(int)activity
 {
   v34 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  criteriaCopy = criteria;
   v10 = a4;
   if (!v10)
   {
-    v29 = [MEMORY[0x277CCA890] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"SGXPCActivity.m" lineNumber:234 description:{@"Invalid parameter not satisfying: %@", @"criteria"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGXPCActivity.m" lineNumber:234 description:{@"Invalid parameter not satisfying: %@", @"criteria"}];
   }
 
   pthread_mutex_lock(&self->_lock);
-  v11 = a5;
-  v12 = [(NSMutableArray *)self->_lastCriteria objectAtIndexedSubscript:a5];
-  v13 = [MEMORY[0x277CBEB68] null];
-  if (v12 == v13)
+  activityCopy = activity;
+  v12 = [(NSMutableArray *)self->_lastCriteria objectAtIndexedSubscript:activity];
+  null = [MEMORY[0x277CBEB68] null];
+  if (v12 == null)
   {
     goto LABEL_12;
   }
@@ -123,32 +123,32 @@ LABEL_12:
   }
 
 LABEL_13:
-  [(NSMutableArray *)self->_lastCriteria setObject:v10 atIndexedSubscript:v11];
+  [(NSMutableArray *)self->_lastCriteria setObject:v10 atIndexedSubscript:activityCopy];
   v27 = sgLogHandle();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v31 = v9;
+    v31 = criteriaCopy;
     v32 = 2112;
     v33 = v10;
     _os_log_impl(&dword_231E60000, v27, OS_LOG_TYPE_INFO, "Setting CTS criteria for activity: %@, criteria: %@", buf, 0x16u);
   }
 
-  xpc_activity_set_criteria(v9, v10);
+  xpc_activity_set_criteria(criteriaCopy, v10);
 LABEL_16:
   pthread_mutex_unlock(&self->_lock);
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerForActivity:(int)a3 handler:(id)a4
+- (void)registerForActivity:(int)activity handler:(id)handler
 {
-  v7 = a4;
-  v12 = v7;
-  if (a3 >= 0xF)
+  handlerCopy = handler;
+  v12 = handlerCopy;
+  if (activity >= 0xF)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"SGXPCActivity.m" lineNumber:201 description:{@"Invalid parameter not satisfying: %@", @"0 <= activityId && activityId < _SGXPCActivityCount"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGXPCActivity.m" lineNumber:201 description:{@"Invalid parameter not satisfying: %@", @"0 <= activityId && activityId < _SGXPCActivityCount"}];
 
     if (v12)
     {
@@ -156,19 +156,19 @@ LABEL_16:
     }
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
     goto LABEL_3;
   }
 
-  v11 = [MEMORY[0x277CCA890] currentHandler];
-  [v11 handleFailureInMethod:a2 object:self file:@"SGXPCActivity.m" lineNumber:202 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGXPCActivity.m" lineNumber:202 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
 
 LABEL_3:
   pthread_mutex_lock(&self->_lock);
   v8 = [v12 copy];
   v9 = MEMORY[0x2383809F0]();
-  [(NSMutableArray *)self->_handlers setObject:v9 atIndexedSubscript:a3];
+  [(NSMutableArray *)self->_handlers setObject:v9 atIndexedSubscript:activity];
 
   pthread_mutex_unlock(&self->_lock);
 }
@@ -326,13 +326,13 @@ void __52__SGXPCActivityManager_registerActivitiesWithSystem__block_invoke(uint6
   if (v2)
   {
     pthread_mutex_init(&v2->_lock, 0);
-    v4 = [MEMORY[0x277CBEB68] null];
-    v5 = arrayFilledWith(v4);
+    null = [MEMORY[0x277CBEB68] null];
+    v5 = arrayFilledWith(null);
     activities = v3->_activities;
     v3->_activities = v5;
 
-    v7 = [MEMORY[0x277CBEB68] null];
-    v8 = arrayFilledWith(v7);
+    null2 = [MEMORY[0x277CBEB68] null];
+    v8 = arrayFilledWith(null2);
     lastCriteria = v3->_lastCriteria;
     v3->_lastCriteria = v8;
 

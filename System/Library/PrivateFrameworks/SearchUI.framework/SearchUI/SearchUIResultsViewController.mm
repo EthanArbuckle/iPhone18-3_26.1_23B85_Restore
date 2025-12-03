@@ -1,19 +1,19 @@
 @interface SearchUIResultsViewController
 - (BOOL)dragInteractionEnabled;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)scrollEnabled;
 - (BOOL)shouldHideResultsUnderKeyboard;
 - (BOOL)shouldUseInsetRoundedSections;
 - (BOOL)shouldUseStandardSectionInsets;
 - (BOOL)showsVerticalScrollIndicator;
-- (CGRect)scrollToIndexPath:(id)a3;
+- (CGRect)scrollToIndexPath:(id)path;
 - (CGSize)contentSize;
 - (Class)restorationContextClass;
 - (NSString)queryString;
 - (SFFeedbackListener)feedbackListener;
 - (SearchUICommandDelegate)commandDelegate;
 - (SearchUICustomViewProvider)customViewProvider;
-- (SearchUIResultsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SearchUIResultsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (SearchUIResultsViewDelegate)delegate;
 - (UISearchTextField)searchField;
 - (UIView)footerView;
@@ -23,46 +23,46 @@
 - (id)restorationContext;
 - (id)scrollViewForPocketInteraction;
 - (int64_t)numberOfSections;
-- (void)contentSizeDidChange:(CGSize)a3 animated:(BOOL)a4;
+- (void)contentSizeDidChange:(CGSize)change animated:(BOOL)animated;
 - (void)didBeginScrolling;
-- (void)didFocusOnCell:(id)a3;
-- (void)didPresentToResumeSearch:(BOOL)a3;
+- (void)didFocusOnCell:(id)cell;
+- (void)didPresentToResumeSearch:(BOOL)search;
 - (void)didScrollPastBottomOfContent;
 - (void)didTap;
-- (void)didUpdateKeyboardFocusToResult:(id)a3 cardSection:(id)a4;
-- (void)highlightResult:(id)a3;
-- (void)iterateIndexPaths:(id)a3;
-- (void)performRecapScrollTestWithTestName:(id)a3 completion:(id)a4;
+- (void)didUpdateKeyboardFocusToResult:(id)result cardSection:(id)section;
+- (void)highlightResult:(id)result;
+- (void)iterateIndexPaths:(id)paths;
+- (void)performRecapScrollTestWithTestName:(id)name completion:(id)completion;
 - (void)performReturnKeyPressAction;
-- (void)performScrollTestWithCompletion:(id)a3;
-- (void)performScrollTestWithHandlerForFirstScrollCompletion:(id)a3 completion:(id)a4;
+- (void)performScrollTestWithCompletion:(id)completion;
+- (void)performScrollTestWithHandlerForFirstScrollCompletion:(id)completion completion:(id)a4;
 - (void)purgeMemory;
-- (void)replaceResult:(id)a3 withResult:(id)a4;
+- (void)replaceResult:(id)result withResult:(id)withResult;
 - (void)restoreResultsIfNeeded;
 - (void)scrollAndSelectLastSelectedIndexPath;
-- (void)setAdditionalKeyboardHeight:(double)a3;
-- (void)setCommandDelegate:(id)a3;
-- (void)setCustomViewProvider:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDragInteractionEnabled:(BOOL)a3;
-- (void)setFeedbackListener:(id)a3;
-- (void)setFooterView:(id)a3;
-- (void)setQueryString:(id)a3;
-- (void)setRestorationContext:(id)a3;
-- (void)setRestorationContextClass:(Class)a3;
-- (void)setScrollEnabled:(BOOL)a3;
-- (void)setSearchField:(id)a3;
-- (void)setSections:(id)a3;
-- (void)setShouldHideResultsUnderKeyboard:(BOOL)a3;
-- (void)setShouldUseInsetRoundedSections:(BOOL)a3;
-- (void)setShouldUseStandardSectionInsets:(BOOL)a3;
-- (void)setShowsVerticalScrollIndicator:(BOOL)a3;
-- (void)setViewDidUpdateHandler:(id)a3;
-- (void)setViewWillUpdateHandler:(id)a3;
-- (void)tapAtIndexPath:(id)a3;
-- (void)toggleShowMoreForSection:(unint64_t)a3;
-- (void)updateWithResultSections:(id)a3 resetScrollPoint:(BOOL)a4 animated:(BOOL)a5;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setAdditionalKeyboardHeight:(double)height;
+- (void)setCommandDelegate:(id)delegate;
+- (void)setCustomViewProvider:(id)provider;
+- (void)setDelegate:(id)delegate;
+- (void)setDragInteractionEnabled:(BOOL)enabled;
+- (void)setFeedbackListener:(id)listener;
+- (void)setFooterView:(id)view;
+- (void)setQueryString:(id)string;
+- (void)setRestorationContext:(id)context;
+- (void)setRestorationContextClass:(Class)class;
+- (void)setScrollEnabled:(BOOL)enabled;
+- (void)setSearchField:(id)field;
+- (void)setSections:(id)sections;
+- (void)setShouldHideResultsUnderKeyboard:(BOOL)keyboard;
+- (void)setShouldUseInsetRoundedSections:(BOOL)sections;
+- (void)setShouldUseStandardSectionInsets:(BOOL)insets;
+- (void)setShowsVerticalScrollIndicator:(BOOL)indicator;
+- (void)setViewDidUpdateHandler:(id)handler;
+- (void)setViewWillUpdateHandler:(id)handler;
+- (void)tapAtIndexPath:(id)path;
+- (void)toggleShowMoreForSection:(unint64_t)section;
+- (void)updateWithResultSections:(id)sections resetScrollPoint:(BOOL)point animated:(BOOL)animated;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)willDismiss;
 @end
@@ -71,16 +71,16 @@
 
 - (UIView)footerView
 {
-  v2 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  v3 = [v2 footerView];
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  footerView = [resultsTableViewController footerView];
 
-  return v3;
+  return footerView;
 }
 
 - (void)purgeMemory
 {
-  v2 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v2 purgeMemory];
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController purgeMemory];
 }
 
 - (SearchUIResultsViewDelegate)delegate
@@ -92,24 +92,24 @@
 
 - (UISearchTextField)searchField
 {
-  v2 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  v3 = [v2 textField];
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  textField = [resultsTableViewController textField];
 
-  return v3;
+  return textField;
 }
 
 - (id)contentScrollView
 {
-  v2 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  v3 = [v2 majorScrollView];
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  majorScrollView = [resultsTableViewController majorScrollView];
 
-  return v3;
+  return majorScrollView;
 }
 
 - (double)distanceToTopOfAppIcons
 {
-  v2 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v2 headerHeight];
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController headerHeight];
   v4 = v3;
   +[SearchUITableViewCell distanceToTopOfAppIconsForMultiResultCell];
   v6 = v4 + v5;
@@ -127,8 +127,8 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = [(SearchUIResultsViewController *)self childViewControllers];
-  v4 = [v3 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  childViewControllers = [(SearchUIResultsViewController *)self childViewControllers];
+  v4 = [childViewControllers countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v4)
   {
     v5 = v4;
@@ -140,35 +140,35 @@
       {
         if (*v20 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childViewControllers);
         }
 
         v8 = *(*(&v19 + 1) + 8 * v7);
-        v9 = [(SearchUIResultsViewController *)self view];
-        [v9 bounds];
+        view = [(SearchUIResultsViewController *)self view];
+        [view bounds];
         v11 = v10;
         v13 = v12;
         v15 = v14;
         v17 = v16;
-        v18 = [v8 view];
-        [v18 setFrame:{v11, v13, v15, v17}];
+        view2 = [v8 view];
+        [view2 setFrame:{v11, v13, v15, v17}];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v5 = [childViewControllers countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v5);
   }
 }
 
-- (SearchUIResultsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SearchUIResultsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v14.receiver = self;
   v14.super_class = SearchUIResultsViewController;
-  v4 = [(SearchUIResultsViewController *)&v14 initWithNibName:a3 bundle:a4];
+  v4 = [(SearchUIResultsViewController *)&v14 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_opt_new();
@@ -178,18 +178,18 @@
     [v6 setInteractionDelegate:v4];
     [v6 setSizingDelegate:v4];
     [(SearchUIResultsViewController *)v4 addChildViewController:v6];
-    v7 = [(SearchUIResultsViewController *)v4 view];
-    v8 = [v6 view];
-    [v7 addSubview:v8];
+    view = [(SearchUIResultsViewController *)v4 view];
+    view2 = [v6 view];
+    [view addSubview:view2];
 
     v9 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v4 action:sel_didTap];
     [v9 setDelegate:v4];
-    v10 = [v6 view];
-    [v10 addGestureRecognizer:v9];
+    view3 = [v6 view];
+    [view3 addGestureRecognizer:v9];
 
-    v11 = [v6 majorScrollView];
-    v12 = [v11 panGestureRecognizer];
-    [v9 requireGestureRecognizerToFail:v12];
+    majorScrollView = [v6 majorScrollView];
+    panGestureRecognizer = [majorScrollView panGestureRecognizer];
+    [v9 requireGestureRecognizerToFail:panGestureRecognizer];
 
     [(SearchUIResultsViewController *)v4 setResultsTableViewController:v6];
   }
@@ -199,33 +199,33 @@
 
 - (void)restoreResultsIfNeeded
 {
-  v2 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v2 restoreResultsIfNeeded];
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController restoreResultsIfNeeded];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_delegate, obj);
-    v5 = [(SearchUIResultsViewController *)self resultsTableViewController];
-    [v5 setResultsViewDelegate:obj];
+    resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+    [resultsTableViewController setResultsViewDelegate:obj];
   }
 }
 
-- (void)setAdditionalKeyboardHeight:(double)a3
+- (void)setAdditionalKeyboardHeight:(double)height
 {
-  v4 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v4 setAdditionalKeyboardHeight:a3];
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController setAdditionalKeyboardHeight:height];
 }
 
 - (double)additionalKeyboardHeight
 {
-  v2 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v2 additionalKeyboardHeight];
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController additionalKeyboardHeight];
   v4 = v3;
 
   return v4;
@@ -233,214 +233,214 @@
 
 - (void)didScrollPastBottomOfContent
 {
-  v3 = [(SearchUIResultsViewController *)self delegate];
+  delegate = [(SearchUIResultsViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SearchUIResultsViewController *)self delegate];
-    [v5 didScrollPastBottomOfContent];
+    delegate2 = [(SearchUIResultsViewController *)self delegate];
+    [delegate2 didScrollPastBottomOfContent];
   }
 }
 
 - (void)didBeginScrolling
 {
-  v3 = [(SearchUIResultsViewController *)self delegate];
+  delegate = [(SearchUIResultsViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SearchUIResultsViewController *)self delegate];
-    [v5 didBeginScrollingResults];
+    delegate2 = [(SearchUIResultsViewController *)self delegate];
+    [delegate2 didBeginScrollingResults];
   }
 }
 
-- (void)didFocusOnCell:(id)a3
+- (void)didFocusOnCell:(id)cell
 {
-  v4 = a3;
-  v6 = [v4 keyboardResultForFocus];
-  v5 = [v4 keyboardCardSectionForFocus];
+  cellCopy = cell;
+  keyboardResultForFocus = [cellCopy keyboardResultForFocus];
+  keyboardCardSectionForFocus = [cellCopy keyboardCardSectionForFocus];
 
-  [(SearchUIResultsViewController *)self didUpdateKeyboardFocusToResult:v6 cardSection:v5];
+  [(SearchUIResultsViewController *)self didUpdateKeyboardFocusToResult:keyboardResultForFocus cardSection:keyboardCardSectionForFocus];
 }
 
-- (void)didUpdateKeyboardFocusToResult:(id)a3 cardSection:(id)a4
+- (void)didUpdateKeyboardFocusToResult:(id)result cardSection:(id)section
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(SearchUIResultsViewController *)self delegate];
+  resultCopy = result;
+  sectionCopy = section;
+  delegate = [(SearchUIResultsViewController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(SearchUIResultsViewController *)self delegate];
-    [v9 didUpdateKeyboardFocusToResult:v10 cardSection:v6];
+    delegate2 = [(SearchUIResultsViewController *)self delegate];
+    [delegate2 didUpdateKeyboardFocusToResult:resultCopy cardSection:sectionCopy];
   }
 }
 
-- (void)setFooterView:(id)a3
+- (void)setFooterView:(id)view
 {
-  v4 = a3;
-  v5 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v5 setFooterView:v4];
+  viewCopy = view;
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController setFooterView:viewCopy];
 }
 
-- (void)replaceResult:(id)a3 withResult:(id)a4
+- (void)replaceResult:(id)result withResult:(id)withResult
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v8 replaceResult:v7 withResult:v6];
+  withResultCopy = withResult;
+  resultCopy = result;
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController replaceResult:resultCopy withResult:withResultCopy];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  v6 = [v5 majorScrollView];
-  [v4 locationInView:v6];
+  beginCopy = begin;
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  majorScrollView = [resultsTableViewController majorScrollView];
+  [beginCopy locationInView:majorScrollView];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  v12 = [v11 majorScrollView];
-  [v12 contentSize];
-  v14 = v10 > v13;
+  resultsTableViewController2 = [(SearchUIResultsViewController *)self resultsTableViewController];
+  majorScrollView2 = [resultsTableViewController2 majorScrollView];
+  [majorScrollView2 contentSize];
+  isHidden = v10 > v13;
 
-  v15 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  v16 = [v15 majorScrollView];
+  resultsTableViewController3 = [(SearchUIResultsViewController *)self resultsTableViewController];
+  majorScrollView3 = [resultsTableViewController3 majorScrollView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v18 = [(SearchUIResultsViewController *)self resultsTableViewController];
-    v19 = [v18 majorScrollView];
+    resultsTableViewController4 = [(SearchUIResultsViewController *)self resultsTableViewController];
+    majorScrollView4 = [resultsTableViewController4 majorScrollView];
 
-    [v19 contentSize];
+    [majorScrollView4 contentSize];
     v21 = v20;
-    [v19 sectionFooterHeight];
+    [majorScrollView4 sectionFooterHeight];
     if (v10 <= v21 - v22)
     {
-      v23 = [v19 indexPathForRowAtPoint:{v8, v10}];
+      v23 = [majorScrollView4 indexPathForRowAtPoint:{v8, v10}];
       if (v23)
       {
-        v24 = [v19 cellForRowAtIndexPath:v23];
-        v14 = [v24 isHidden];
+        v24 = [majorScrollView4 cellForRowAtIndexPath:v23];
+        isHidden = [v24 isHidden];
       }
 
       else
       {
-        v14 = 0;
+        isHidden = 0;
       }
     }
 
     else
     {
-      v14 = 1;
+      isHidden = 1;
     }
   }
 
-  return v14;
+  return isHidden;
 }
 
 - (void)didTap
 {
-  v3 = [(SearchUIResultsViewController *)self delegate];
+  delegate = [(SearchUIResultsViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SearchUIResultsViewController *)self delegate];
-    [v5 didTapInEmptyRegion];
+    delegate2 = [(SearchUIResultsViewController *)self delegate];
+    [delegate2 didTapInEmptyRegion];
   }
 }
 
-- (void)setSearchField:(id)a3
+- (void)setSearchField:(id)field
 {
-  v4 = a3;
-  v5 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v5 setTextField:v4];
+  fieldCopy = field;
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController setTextField:fieldCopy];
 }
 
-- (void)setFeedbackListener:(id)a3
+- (void)setFeedbackListener:(id)listener
 {
-  v4 = a3;
-  v5 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v5 setFeedbackListener:v4];
+  listenerCopy = listener;
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController setFeedbackListener:listenerCopy];
 }
 
 - (SFFeedbackListener)feedbackListener
 {
-  v2 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  v3 = [v2 feedbackListener];
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  feedbackListener = [resultsTableViewController feedbackListener];
 
-  return v3;
+  return feedbackListener;
 }
 
-- (void)setCommandDelegate:(id)a3
+- (void)setCommandDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v5 setCommandDelegate:v4];
+  delegateCopy = delegate;
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController setCommandDelegate:delegateCopy];
 }
 
 - (SearchUICommandDelegate)commandDelegate
 {
-  v2 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  v3 = [v2 commandDelegate];
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  commandDelegate = [resultsTableViewController commandDelegate];
 
-  return v3;
+  return commandDelegate;
 }
 
-- (void)setCustomViewProvider:(id)a3
+- (void)setCustomViewProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v5 setCustomViewProvider:v4];
+  providerCopy = provider;
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController setCustomViewProvider:providerCopy];
 }
 
 - (SearchUICustomViewProvider)customViewProvider
 {
-  v2 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  v3 = [v2 customViewProvider];
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  customViewProvider = [resultsTableViewController customViewProvider];
 
-  return v3;
+  return customViewProvider;
 }
 
-- (void)setShouldHideResultsUnderKeyboard:(BOOL)a3
+- (void)setShouldHideResultsUnderKeyboard:(BOOL)keyboard
 {
-  v3 = a3;
-  v4 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v4 setShouldHideTableCellsUnderKeyboard:v3];
+  keyboardCopy = keyboard;
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController setShouldHideTableCellsUnderKeyboard:keyboardCopy];
 }
 
 - (BOOL)shouldHideResultsUnderKeyboard
 {
-  v2 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  v3 = [v2 shouldHideTableCellsUnderKeyboard];
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  shouldHideTableCellsUnderKeyboard = [resultsTableViewController shouldHideTableCellsUnderKeyboard];
 
-  return v3;
+  return shouldHideTableCellsUnderKeyboard;
 }
 
-- (void)setShouldUseInsetRoundedSections:(BOOL)a3
+- (void)setShouldUseInsetRoundedSections:(BOOL)sections
 {
-  v3 = a3;
+  sectionsCopy = sections;
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [(SearchUIResultsViewController *)self view];
-  [v5 setShouldUseInsetRoundedSections:v3];
+  view = [(SearchUIResultsViewController *)self view];
+  [view setShouldUseInsetRoundedSections:sectionsCopy];
 
-  v6 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v6 setShouldUseInsetRoundedSections:v3];
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController setShouldUseInsetRoundedSections:sectionsCopy];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(SearchUIResultsViewController *)self navigationController];
-  v8 = [v7 viewControllers];
+  navigationController = [(SearchUIResultsViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
 
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v9 = [viewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -452,21 +452,21 @@
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(viewControllers);
         }
 
         v13 = *(*(&v14 + 1) + 8 * v12);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v13 setShouldUseInsetRoundedSections:v3];
+          [v13 setShouldUseInsetRoundedSections:sectionsCopy];
         }
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [viewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
@@ -475,20 +475,20 @@
 
 - (BOOL)shouldUseInsetRoundedSections
 {
-  v2 = [(SearchUIResultsViewController *)self view];
-  v3 = [v2 shouldUseInsetRoundedSections];
+  view = [(SearchUIResultsViewController *)self view];
+  shouldUseInsetRoundedSections = [view shouldUseInsetRoundedSections];
 
-  return v3;
+  return shouldUseInsetRoundedSections;
 }
 
-- (void)setShowsVerticalScrollIndicator:(BOOL)a3
+- (void)setShowsVerticalScrollIndicator:(BOOL)indicator
 {
-  v3 = a3;
-  v5 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  v6 = [v5 majorScrollView];
-  [v6 setShowsVerticalScrollIndicator:v3];
+  indicatorCopy = indicator;
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  majorScrollView = [resultsTableViewController majorScrollView];
+  [majorScrollView setShowsVerticalScrollIndicator:indicatorCopy];
 
-  if (v3)
+  if (indicatorCopy)
   {
     v7 = dispatch_time(0, 0);
     block[0] = MEMORY[0x1E69E9820];
@@ -513,112 +513,112 @@ void __65__SearchUIResultsViewController_setShowsVerticalScrollIndicator___block
   }
 }
 
-- (void)setDragInteractionEnabled:(BOOL)a3
+- (void)setDragInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v4 setDragInteractionEnabled:v3];
+  enabledCopy = enabled;
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController setDragInteractionEnabled:enabledCopy];
 }
 
 - (BOOL)dragInteractionEnabled
 {
-  v2 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  v3 = [v2 dragInteractionEnabled];
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  dragInteractionEnabled = [resultsTableViewController dragInteractionEnabled];
 
-  return v3;
+  return dragInteractionEnabled;
 }
 
-- (void)setScrollEnabled:(BOOL)a3
+- (void)setScrollEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  v4 = [v5 majorScrollView];
-  [v4 setScrollEnabled:v3];
+  enabledCopy = enabled;
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  majorScrollView = [resultsTableViewController majorScrollView];
+  [majorScrollView setScrollEnabled:enabledCopy];
 }
 
 - (BOOL)scrollEnabled
 {
-  v2 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  v3 = [v2 majorScrollView];
-  v4 = [v3 isScrollEnabled];
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  majorScrollView = [resultsTableViewController majorScrollView];
+  isScrollEnabled = [majorScrollView isScrollEnabled];
 
-  return v4;
+  return isScrollEnabled;
 }
 
 - (BOOL)showsVerticalScrollIndicator
 {
-  v2 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  v3 = [v2 majorScrollView];
-  v4 = [v3 showsVerticalScrollIndicator];
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  majorScrollView = [resultsTableViewController majorScrollView];
+  showsVerticalScrollIndicator = [majorScrollView showsVerticalScrollIndicator];
 
-  return v4;
+  return showsVerticalScrollIndicator;
 }
 
-- (void)setShouldUseStandardSectionInsets:(BOOL)a3
+- (void)setShouldUseStandardSectionInsets:(BOOL)insets
 {
-  v3 = a3;
-  v4 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v4 setShouldUseStandardSectionInsets:v3];
+  insetsCopy = insets;
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController setShouldUseStandardSectionInsets:insetsCopy];
 }
 
 - (BOOL)shouldUseStandardSectionInsets
 {
-  v2 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  v3 = [v2 shouldUseStandardSectionInsets];
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  shouldUseStandardSectionInsets = [resultsTableViewController shouldUseStandardSectionInsets];
 
-  return v3;
+  return shouldUseStandardSectionInsets;
 }
 
-- (void)updateWithResultSections:(id)a3 resetScrollPoint:(BOOL)a4 animated:(BOOL)a5
+- (void)updateWithResultSections:(id)sections resetScrollPoint:(BOOL)point animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
-  objc_storeStrong(&self->_sections, a3);
-  v9 = a3;
-  v10 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v10 updateWithResultSections:v9 scrollToTop:v6 animated:v5];
+  animatedCopy = animated;
+  pointCopy = point;
+  objc_storeStrong(&self->_sections, sections);
+  sectionsCopy = sections;
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController updateWithResultSections:sectionsCopy scrollToTop:pointCopy animated:animatedCopy];
 }
 
-- (void)highlightResult:(id)a3
+- (void)highlightResult:(id)result
 {
-  v4 = a3;
-  v5 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v5 highlightResult:v4];
+  resultCopy = result;
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController highlightResult:resultCopy];
 }
 
 - (NSString)queryString
 {
-  v2 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  v3 = [v2 queryString];
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  queryString = [resultsTableViewController queryString];
 
-  return v3;
+  return queryString;
 }
 
-- (void)setQueryString:(id)a3
+- (void)setQueryString:(id)string
 {
-  v4 = a3;
-  v5 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v5 setQueryString:v4];
+  stringCopy = string;
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController setQueryString:stringCopy];
 }
 
-- (void)setSections:(id)a3
+- (void)setSections:(id)sections
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(SearchUIResultsViewController *)self updateWithResultSections:v4];
+  sectionsCopy = sections;
+  [(SearchUIResultsViewController *)self updateWithResultSections:sectionsCopy];
   if ([(SearchUIResultsViewController *)self immediatelyShowCardForSingleResult])
   {
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v5 = v4;
+    v5 = sectionsCopy;
     v6 = [v5 countByEnumeratingWithState:&v38 objects:v42 count:16];
     if (v6)
     {
       v7 = v6;
-      v36 = self;
-      v37 = v4;
+      selfCopy = self;
+      v37 = sectionsCopy;
       v8 = 0;
       v9 = 0;
       v10 = *v39;
@@ -632,17 +632,17 @@ void __65__SearchUIResultsViewController_setShowsVerticalScrollIndicator___block
           }
 
           v12 = *(*(&v38 + 1) + 8 * i);
-          v13 = [v12 bundleIdentifier];
-          v14 = [v13 hasPrefix:@"com.apple.lookup."];
+          bundleIdentifier = [v12 bundleIdentifier];
+          v14 = [bundleIdentifier hasPrefix:@"com.apple.lookup."];
 
           if ((v14 & 1) == 0)
           {
-            v15 = [v12 results];
-            v9 += [v15 count];
+            results = [v12 results];
+            v9 += [results count];
 
             if (v9 > 1)
             {
-              v4 = v37;
+              sectionsCopy = v37;
 LABEL_30:
 
               v5 = v8;
@@ -668,15 +668,15 @@ LABEL_30:
         break;
       }
 
-      v4 = v37;
+      sectionsCopy = v37;
       if (v8)
       {
-        v17 = [v8 results];
-        v18 = [v17 firstObject];
-        v5 = [SearchUITableModel tableModelWithResult:v18];
+        results2 = [v8 results];
+        firstObject = [results2 firstObject];
+        v5 = [SearchUITableModel tableModelWithResult:firstObject];
 
-        v35 = [v5 numberOfSections];
-        if (v35 >= 1)
+        numberOfSections = [v5 numberOfSections];
+        if (numberOfSections >= 1)
         {
           v19 = 0;
           v20 = 0;
@@ -690,11 +690,11 @@ LABEL_30:
               {
                 v24 = [MEMORY[0x1E696AC88] indexPathForRow:j inSection:v19];
                 v25 = [v5 rowModelForIndexPath:v24];
-                v26 = [v25 nextCard];
+                nextCard = [v25 nextCard];
 
-                if (v26)
+                if (nextCard)
                 {
-                  v27 = v26 == v20;
+                  v27 = nextCard == v20;
                 }
 
                 else
@@ -710,7 +710,7 @@ LABEL_30:
                     goto LABEL_28;
                   }
 
-                  v20 = v26;
+                  v20 = nextCard;
                 }
               }
             }
@@ -718,24 +718,24 @@ LABEL_30:
             ++v19;
           }
 
-          while (v19 != v35);
+          while (v19 != numberOfSections);
           if (v20)
           {
             v29 = [SearchUICardViewController alloc];
-            v30 = [(SearchUIResultsViewController *)v36 feedbackListener];
-            v26 = [(SearchUICardViewController *)v29 initWithCard:v20 feedbackListener:v30];
+            feedbackListener = [(SearchUIResultsViewController *)selfCopy feedbackListener];
+            nextCard = [(SearchUICardViewController *)v29 initWithCard:v20 feedbackListener:feedbackListener];
 
-            [(SearchUIResultsViewController *)v36 addChildViewController:v26];
-            v31 = [(SearchUIResultsViewController *)v36 view];
-            v32 = [(SearchUICardViewController *)v26 view];
-            [v31 addSubview:v32];
+            [(SearchUIResultsViewController *)selfCopy addChildViewController:nextCard];
+            view = [(SearchUIResultsViewController *)selfCopy view];
+            view2 = [(SearchUICardViewController *)nextCard view];
+            [view addSubview:view2];
 
-            v33 = [(SearchUIResultsViewController *)v36 resultsTableViewController];
-            v34 = [v33 view];
-            [v34 setHidden:1];
+            resultsTableViewController = [(SearchUIResultsViewController *)selfCopy resultsTableViewController];
+            view3 = [resultsTableViewController view];
+            [view3 setHidden:1];
 
             v28 = v20;
-            v4 = v37;
+            sectionsCopy = v37;
 LABEL_28:
           }
         }
@@ -751,37 +751,37 @@ LABEL_31:
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SearchUIResultsViewController;
-  [(SearchUIResultsViewController *)&v5 viewDidDisappear:a3];
+  [(SearchUIResultsViewController *)&v5 viewDidDisappear:disappear];
   if ([(SearchUIResultsViewController *)self shouldMonitorScrollingPastBottomOfContent])
   {
-    v4 = [(SearchUIResultsViewController *)self resultsTableViewController];
-    [v4 scrollTableToTop];
+    resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+    [resultsTableViewController scrollTableToTop];
   }
 }
 
 - (CGSize)contentSize
 {
-  v3 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  v4 = [v3 collectionView];
-  v5 = [v4 collectionViewLayout];
-  [v5 collectionViewContentSize];
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  collectionView = [resultsTableViewController collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout collectionViewContentSize];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  v11 = [v10 tableModel];
-  v12 = [v11 numberOfSections];
+  resultsTableViewController2 = [(SearchUIResultsViewController *)self resultsTableViewController];
+  tableModel = [resultsTableViewController2 tableModel];
+  numberOfSections = [tableModel numberOfSections];
 
-  if (v12)
+  if (numberOfSections)
   {
     if (v7 == *MEMORY[0x1E695F060] && v9 == *(MEMORY[0x1E695F060] + 8))
     {
-      v14 = [(SearchUIResultsViewController *)self view];
-      [v14 frame];
+      view = [(SearchUIResultsViewController *)self view];
+      [view frame];
       v7 = v15;
 
       v9 = 44.0;
@@ -795,11 +795,11 @@ LABEL_31:
   return result;
 }
 
-- (void)contentSizeDidChange:(CGSize)a3 animated:(BOOL)a4
+- (void)contentSizeDidChange:(CGSize)change animated:(BOOL)animated
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = [(SearchUIResultsViewController *)self delegate];
+  height = change.height;
+  width = change.width;
+  delegate = [(SearchUIResultsViewController *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
@@ -811,7 +811,7 @@ LABEL_31:
     v10[4] = self;
     *&v10[5] = width;
     *&v10[6] = height;
-    v11 = a4;
+    animatedCopy = animated;
     dispatch_async(MEMORY[0x1E69E96A0], v10);
   }
 }
@@ -822,70 +822,70 @@ void __63__SearchUIResultsViewController_contentSizeDidChange_animated___block_i
   [v2 resultsViewController:*(a1 + 32) didChangeContentSize:*(a1 + 56) animated:{*(a1 + 40), *(a1 + 48)}];
 }
 
-- (void)setViewWillUpdateHandler:(id)a3
+- (void)setViewWillUpdateHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v5 setViewWillUpdateHandler:v4];
+  handlerCopy = handler;
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController setViewWillUpdateHandler:handlerCopy];
 }
 
-- (void)setViewDidUpdateHandler:(id)a3
+- (void)setViewDidUpdateHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v5 setViewDidUpdateHandler:v4];
+  handlerCopy = handler;
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController setViewDidUpdateHandler:handlerCopy];
 }
 
-- (void)iterateIndexPaths:(id)a3
+- (void)iterateIndexPaths:(id)paths
 {
-  v4 = a3;
-  v5 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v5 iterateIndexPaths:v4];
+  pathsCopy = paths;
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController iterateIndexPaths:pathsCopy];
 }
 
-- (void)performScrollTestWithCompletion:(id)a3
+- (void)performScrollTestWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v5 performScrollTestWithCompletion:v4];
+  completionCopy = completion;
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController performScrollTestWithCompletion:completionCopy];
 }
 
 - (int64_t)numberOfSections
 {
-  v2 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  v3 = [v2 numberOfSections];
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  numberOfSections = [resultsTableViewController numberOfSections];
 
-  return v3;
+  return numberOfSections;
 }
 
-- (void)performScrollTestWithHandlerForFirstScrollCompletion:(id)a3 completion:(id)a4
+- (void)performScrollTestWithHandlerForFirstScrollCompletion:(id)completion completion:(id)a4
 {
   v6 = a4;
-  v7 = a3;
-  v8 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v8 performScrollTestWithHandlerForFirstScrollCompletion:v7 completion:v6];
+  completionCopy = completion;
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController performScrollTestWithHandlerForFirstScrollCompletion:completionCopy completion:v6];
 }
 
-- (void)performRecapScrollTestWithTestName:(id)a3 completion:(id)a4
+- (void)performRecapScrollTestWithTestName:(id)name completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v8 performRecapScrollTestWithTestName:v7 completion:v6];
+  completionCopy = completion;
+  nameCopy = name;
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController performRecapScrollTestWithTestName:nameCopy completion:completionCopy];
 }
 
-- (void)tapAtIndexPath:(id)a3
+- (void)tapAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v5 tapAtIndexPath:v4];
+  pathCopy = path;
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController tapAtIndexPath:pathCopy];
 }
 
-- (CGRect)scrollToIndexPath:(id)a3
+- (CGRect)scrollToIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v5 scrollToIndexPath:v4];
+  pathCopy = path;
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController scrollToIndexPath:pathCopy];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -902,72 +902,72 @@ void __63__SearchUIResultsViewController_contentSizeDidChange_animated___block_i
   return result;
 }
 
-- (void)toggleShowMoreForSection:(unint64_t)a3
+- (void)toggleShowMoreForSection:(unint64_t)section
 {
-  v4 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v4 toggleShowMoreForSection:a3];
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController toggleShowMoreForSection:section];
 }
 
 - (void)performReturnKeyPressAction
 {
-  v2 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v2 returnKeyPressed];
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController returnKeyPressed];
 }
 
-- (void)didPresentToResumeSearch:(BOOL)a3
+- (void)didPresentToResumeSearch:(BOOL)search
 {
-  v3 = a3;
-  v4 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v4 didPresentToResumeSearch:v3];
+  searchCopy = search;
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController didPresentToResumeSearch:searchCopy];
 }
 
 - (void)willDismiss
 {
-  v2 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v2 willDismiss];
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController willDismiss];
 }
 
 - (void)scrollAndSelectLastSelectedIndexPath
 {
-  v2 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v2 scrollAndSelectLastSelectedIndexPath];
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController scrollAndSelectLastSelectedIndexPath];
 }
 
-- (void)setRestorationContext:(id)a3
+- (void)setRestorationContext:(id)context
 {
-  v4 = a3;
-  v5 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v5 setRestorationContext:v4];
+  contextCopy = context;
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController setRestorationContext:contextCopy];
 }
 
 - (id)restorationContext
 {
-  v2 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  v3 = [v2 restorationContext];
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  restorationContext = [resultsTableViewController restorationContext];
 
-  return v3;
+  return restorationContext;
 }
 
-- (void)setRestorationContextClass:(Class)a3
+- (void)setRestorationContextClass:(Class)class
 {
-  v4 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  [v4 setRestorationContextClass:a3];
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  [resultsTableViewController setRestorationContextClass:class];
 }
 
 - (Class)restorationContextClass
 {
-  v2 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  v3 = [v2 restorationContextClass];
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  restorationContextClass = [resultsTableViewController restorationContextClass];
 
-  return v3;
+  return restorationContextClass;
 }
 
 - (id)scrollViewForPocketInteraction
 {
-  v2 = [(SearchUIResultsViewController *)self resultsTableViewController];
-  v3 = [v2 scrollViewForPocketInteraction];
+  resultsTableViewController = [(SearchUIResultsViewController *)self resultsTableViewController];
+  scrollViewForPocketInteraction = [resultsTableViewController scrollViewForPocketInteraction];
 
-  return v3;
+  return scrollViewForPocketInteraction;
 }
 
 @end

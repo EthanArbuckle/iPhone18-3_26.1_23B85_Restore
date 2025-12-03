@@ -1,11 +1,11 @@
 @interface FormatProgressCircleView.NonAnimatingLayerDelegate
 - (_TtCC8NewsFeed24FormatProgressCircleViewP33_BE65CBDFEC505C025C8981C6A836484825NonAnimatingLayerDelegate)init;
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
+- (id)actionForLayer:(id)layer forKey:(id)key;
 @end
 
 @implementation FormatProgressCircleView.NonAnimatingLayerDelegate
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
   v4 = [objc_allocWithZone(MEMORY[0x1E695DFB0]) init];
 

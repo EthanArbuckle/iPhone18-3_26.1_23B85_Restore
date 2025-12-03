@@ -6,39 +6,39 @@
 
 - (void)populateQueryDictionary
 {
-  v13 = [(DCMapsURLGenerator *)self queryDictionary];
-  v3 = [(DCMapsURLGenerator *)self mapsLink];
-  v4 = [v3 searchQuery];
-  v5 = [v3 centerLocation];
-  v6 = v5;
-  if (v5)
+  queryDictionary = [(DCMapsURLGenerator *)self queryDictionary];
+  mapsLink = [(DCMapsURLGenerator *)self mapsLink];
+  searchQuery = [mapsLink searchQuery];
+  centerLocation = [mapsLink centerLocation];
+  v6 = centerLocation;
+  if (centerLocation)
   {
-    v7 = v5;
+    searchLocation = centerLocation;
   }
 
   else
   {
-    v7 = [v3 searchLocation];
+    searchLocation = [mapsLink searchLocation];
   }
 
-  v8 = v7;
+  v8 = searchLocation;
 
-  v9 = [v3 destinationAddress];
-  if (v9)
+  destinationAddress = [mapsLink destinationAddress];
+  if (destinationAddress)
   {
-    [v13 setObject:v9 forKey:@"q"];
+    [queryDictionary setObject:destinationAddress forKey:@"q"];
     v10 = @"yes";
     v11 = @"navigate";
-    v12 = v13;
+    v12 = queryDictionary;
   }
 
   else
   {
-    v12 = v13;
-    if (v4)
+    v12 = queryDictionary;
+    if (searchQuery)
     {
       v11 = @"q";
-      v10 = v4;
+      v10 = searchQuery;
     }
 
     else
@@ -49,7 +49,7 @@
       }
 
       v11 = @"ll";
-      v12 = v13;
+      v12 = queryDictionary;
       v10 = v8;
     }
   }

@@ -1,9 +1,9 @@
 @interface PACoalescingIntervalTracker
 - (PAAccessLogger)logger;
-- (PACoalescingIntervalTracker)initWithLogger:(id)a3;
-- (void)coalesce:(id)a3;
+- (PACoalescingIntervalTracker)initWithLogger:(id)logger;
+- (void)coalesce:(id)coalesce;
 - (void)dealloc;
-- (void)expireIntervalWithMatcher:(id)a3 state:(id)a4;
+- (void)expireIntervalWithMatcher:(id)matcher state:(id)state;
 - (void)invalidate;
 @end
 
@@ -16,75 +16,75 @@
   return WeakRetained;
 }
 
-- (PACoalescingIntervalTracker)initWithLogger:(id)a3
+- (PACoalescingIntervalTracker)initWithLogger:(id)logger
 {
-  v4 = a3;
+  loggerCopy = logger;
   v10.receiver = self;
   v10.super_class = PACoalescingIntervalTracker;
   v5 = [(PACoalescingIntervalTracker *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_logger, v4);
+    objc_storeWeak(&v5->_logger, loggerCopy);
     v6->_intervalEndTime = 60.0;
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     coalescingIntervals = v6->_coalescingIntervals;
-    v6->_coalescingIntervals = v7;
+    v6->_coalescingIntervals = dictionary;
 
     v6->_collectAssetIdentifiers = _os_feature_enabled_impl();
-    v6->_loggingOptions = [v4 options];
+    v6->_loggingOptions = [loggerCopy options];
   }
 
   return v6;
 }
 
-- (void)coalesce:(id)a3
+- (void)coalesce:(id)coalesce
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coalesceCopy = coalesce;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [PAAccessMatcher coalescingMatcherForAccess:v4];
+  v5 = [PAAccessMatcher coalescingMatcherForAccess:coalesceCopy];
   v6 = [(NSMutableDictionary *)self->_coalescingIntervals objectForKeyedSubscript:v5];
   if (self->_loggingOptions)
   {
-    v7 = [v4 supportsSameMinuteAccessCountLogging];
+    supportsSameMinuteAccessCountLogging = [coalesceCopy supportsSameMinuteAccessCountLogging];
   }
 
   else
   {
-    v7 = 0;
+    supportsSameMinuteAccessCountLogging = 0;
   }
 
-  v8 = [v4 assetIdentifiers];
-  if (_os_feature_enabled_impl() && ![v8 count])
+  assetIdentifiers = [coalesceCopy assetIdentifiers];
+  if (_os_feature_enabled_impl() && ![assetIdentifiers count])
   {
     v9 = [MEMORY[0x1E695DEF0] dataWithBytes:&self->_injectedIdentifier length:8];
     ++self->_injectedIdentifier;
     v10 = [MEMORY[0x1E695DFD8] setWithObject:v9];
 
-    v8 = v10;
+    assetIdentifiers = v10;
   }
 
   v11 = v6;
   if (!v6)
   {
-    if (v7)
+    if (supportsSameMinuteAccessCountLogging)
     {
-      v12 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v13 = [MEMORY[0x1E695DF00] date];
-      v14 = [v12 components:128 fromDate:v13];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+      date = [MEMORY[0x1E695DF00] date];
+      v14 = [currentCalendar components:128 fromDate:date];
 
-      v15 = [v14 second];
-      v16 = [(PACoalescingIntervalTracker *)self logger];
-      v17 = [v16 beginIntervalForAccess:v4];
+      second = [v14 second];
+      logger = [(PACoalescingIntervalTracker *)self logger];
+      v17 = [logger beginIntervalForAccess:coalesceCopy];
 
-      v11 = [[PACoalescingIntervalState alloc] initWithInterval:v17 matcher:v5 tracker:self expiry:59.0 - v15];
+      v11 = [[PACoalescingIntervalState alloc] initWithInterval:v17 matcher:v5 tracker:self expiry:59.0 - second];
     }
 
     else
     {
-      v18 = [(PACoalescingIntervalTracker *)self logger];
-      v14 = [v18 beginIntervalForAccess:v4];
+      logger2 = [(PACoalescingIntervalTracker *)self logger];
+      v14 = [logger2 beginIntervalForAccess:coalesceCopy];
 
       v11 = [[PACoalescingIntervalState alloc] initWithInterval:v14 matcher:v5 tracker:self];
     }
@@ -96,7 +96,7 @@
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
     v23 = 138412802;
-    v24 = v4;
+    v24 = coalesceCopy;
     v25 = 2112;
     v26 = v11;
     v27 = 1024;
@@ -106,11 +106,11 @@
 
   if (self->_collectAssetIdentifiers)
   {
-    v20 = [(PACoalescingIntervalState *)v11 interval];
-    [v20 recordAccessToAssetIdentifiers:v8 withVisibilityState:0 accessEventCount:1];
+    interval = [(PACoalescingIntervalState *)v11 interval];
+    [interval recordAccessToAssetIdentifiers:assetIdentifiers withVisibilityState:0 accessEventCount:1];
   }
 
-  if (v7)
+  if (supportsSameMinuteAccessCountLogging)
   {
     [(PACoalescingIntervalState *)v11 setAccessCount:[(PACoalescingIntervalState *)v11 accessCount]+ 1];
   }
@@ -120,29 +120,29 @@
     [(PACoalescingIntervalState *)v11 touch];
   }
 
-  v21 = [(PACoalescingIntervalTracker *)self logger];
-  [v21 notifyDidCoalesceAccess:v4];
+  logger3 = [(PACoalescingIntervalTracker *)self logger];
+  [logger3 notifyDidCoalesceAccess:coalesceCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)expireIntervalWithMatcher:(id)a3 state:(id)a4
+- (void)expireIntervalWithMatcher:(id)matcher state:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  matcherCopy = matcher;
+  stateCopy = state;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(NSMutableDictionary *)self->_coalescingIntervals objectForKeyedSubscript:v6];
+  v8 = [(NSMutableDictionary *)self->_coalescingIntervals objectForKeyedSubscript:matcherCopy];
   v9 = logger_1();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     [PACoalescingIntervalTracker expireIntervalWithMatcher:v8 state:v9];
   }
 
-  [(NSMutableDictionary *)self->_coalescingIntervals setObject:0 forKeyedSubscript:v6];
-  v10 = [v8 interval];
+  [(NSMutableDictionary *)self->_coalescingIntervals setObject:0 forKeyedSubscript:matcherCopy];
+  interval = [v8 interval];
   [v8 timestampAdjustment];
-  [v10 endWithTimestampAdjustment:objc_msgSend(v8 accessCount:{"accessCount"), v11}];
+  [interval endWithTimestampAdjustment:objc_msgSend(v8 accessCount:{"accessCount"), v11}];
 
   os_unfair_lock_unlock(&self->_lock);
 }

@@ -1,11 +1,11 @@
 @interface IDSLinkSelectionStrategy
 + (IDSLinkSelectionStrategy)defaultStrategy;
-+ (id)adaptiveWithAllowedOverheadPerPacket:(int64_t)a3 allowedPacketsPerSecond:(double)a4;
-+ (id)createWithJSON:(id)a3 error:(id *)a4;
++ (id)adaptiveWithAllowedOverheadPerPacket:(int64_t)packet allowedPacketsPerSecond:(double)second;
++ (id)createWithJSON:(id)n error:(id *)error;
 - (BOOL)wrapsPacketsWithQualityMetadata;
 - (IDSLinkSelectionStrategy)init;
 - (NSString)description;
-- (id)jsonWithError:(id *)a3;
+- (id)jsonWithError:(id *)error;
 @end
 
 @implementation IDSLinkSelectionStrategy
@@ -21,9 +21,9 @@
   return v2;
 }
 
-+ (id)createWithJSON:(id)a3 error:(id *)a4
++ (id)createWithJSON:(id)n error:(id *)error
 {
-  v4 = a3;
+  nCopy = n;
   v5 = sub_1A7E21A10();
   v7 = v6;
 
@@ -46,22 +46,22 @@
   return v8;
 }
 
-+ (id)adaptiveWithAllowedOverheadPerPacket:(int64_t)a3 allowedPacketsPerSecond:(double)a4
++ (id)adaptiveWithAllowedOverheadPerPacket:(int64_t)packet allowedPacketsPerSecond:(double)second
 {
   v6 = [objc_allocWithZone(IDSLinkSelectionStrategy) init];
   v7 = &v6[OBJC_IVAR___IDSLinkSelectionStrategy_strategy];
   swift_beginAccess();
-  *v7 = a3;
-  v7[1] = a4;
+  *v7 = packet;
+  v7[1] = second;
   *(v7 + 8) = 0;
 
   return v6;
 }
 
-- (id)jsonWithError:(id *)a3
+- (id)jsonWithError:(id *)error
 {
   v3 = qword_1EB2B4868;
-  v4 = self;
+  selfCopy = self;
   if (v3 != -1)
   {
     swift_once();

@@ -1,21 +1,21 @@
 @interface HUFaceRecognitionItemModule
-- (HUFaceRecognitionItemModule)initWithItemUpdater:(id)a3 home:(id)a4;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (HUFaceRecognitionItemModule)initWithItemUpdater:(id)updater home:(id)home;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 - (id)itemProviders;
 @end
 
 @implementation HUFaceRecognitionItemModule
 
-- (HUFaceRecognitionItemModule)initWithItemUpdater:(id)a3 home:(id)a4
+- (HUFaceRecognitionItemModule)initWithItemUpdater:(id)updater home:(id)home
 {
-  v7 = a4;
+  homeCopy = home;
   v11.receiver = self;
   v11.super_class = HUFaceRecognitionItemModule;
-  v8 = [(HFItemModule *)&v11 initWithItemUpdater:a3];
+  v8 = [(HFItemModule *)&v11 initWithItemUpdater:updater];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_home, a4);
+    objc_storeStrong(&v8->_home, home);
   }
 
   return v9;
@@ -23,25 +23,25 @@
 
 - (id)itemProviders
 {
-  v3 = [(HUFaceRecognitionItemModule *)self home];
-  v4 = [(HUFaceRecognitionItemModule *)self home];
-  v5 = [v4 currentUser];
-  v6 = [v3 homeAccessControlForUser:v5];
+  home = [(HUFaceRecognitionItemModule *)self home];
+  home2 = [(HUFaceRecognitionItemModule *)self home];
+  currentUser = [home2 currentUser];
+  v6 = [home homeAccessControlForUser:currentUser];
 
   v7 = [v6 camerasAccessLevel] == 2;
   if ([MEMORY[0x277D14CE8] isPressDemoModeEnabled])
   {
-    v8 = 1;
+    isRunningInStoreDemoMode = 1;
   }
 
   else
   {
-    v8 = [MEMORY[0x277D14CE8] isRunningInStoreDemoMode];
+    isRunningInStoreDemoMode = [MEMORY[0x277D14CE8] isRunningInStoreDemoMode];
   }
 
-  v9 = [(HUFaceRecognitionItemModule *)self staticItemProvider];
+  staticItemProvider = [(HUFaceRecognitionItemModule *)self staticItemProvider];
 
-  if (!v9)
+  if (!staticItemProvider)
   {
     objc_initWeak(&location, self);
     v10 = objc_alloc(MEMORY[0x277D14B38]);
@@ -50,15 +50,15 @@
     v23 = __44__HUFaceRecognitionItemModule_itemProviders__block_invoke;
     v24 = &unk_277DB8B98;
     objc_copyWeak(&v25, &location);
-    v26 = v8;
+    v26 = isRunningInStoreDemoMode;
     v27 = v7;
     v11 = [v10 initWithResultsBlock:&v21];
     [(HUFaceRecognitionItemModule *)self setFaceRecognitionCellItem:v11];
 
     v12 = objc_alloc(MEMORY[0x277D14B40]);
     v13 = MEMORY[0x277CBEB98];
-    v14 = [(HUFaceRecognitionItemModule *)self faceRecognitionCellItem];
-    v15 = [v13 setWithObjects:{v14, 0, v21, v22, v23, v24}];
+    faceRecognitionCellItem = [(HUFaceRecognitionItemModule *)self faceRecognitionCellItem];
+    v15 = [v13 setWithObjects:{faceRecognitionCellItem, 0, v21, v22, v23, v24}];
     v16 = [v12 initWithItems:v15];
     [(HUFaceRecognitionItemModule *)self setStaticItemProvider:v16];
 
@@ -67,8 +67,8 @@
   }
 
   v17 = MEMORY[0x277CBEB98];
-  v18 = [(HUFaceRecognitionItemModule *)self staticItemProvider];
-  v19 = [v17 setWithObjects:{v18, 0}];
+  staticItemProvider2 = [(HUFaceRecognitionItemModule *)self staticItemProvider];
+  v19 = [v17 setWithObjects:{staticItemProvider2, 0}];
 
   return v19;
 }
@@ -132,13 +132,13 @@ id __44__HUFaceRecognitionItemModule_itemProviders__block_invoke(uint64_t a1)
   return v16;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:2];
   v5 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUFaceRecognitionItemModuleMainSectionIdentifier"];
-  v6 = [(HUFaceRecognitionItemModule *)self faceRecognitionCellItem];
-  v9[0] = v6;
+  faceRecognitionCellItem = [(HUFaceRecognitionItemModule *)self faceRecognitionCellItem];
+  v9[0] = faceRecognitionCellItem;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
   [v5 setItems:v7];
 

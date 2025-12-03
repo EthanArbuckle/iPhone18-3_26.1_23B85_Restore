@@ -1,20 +1,20 @@
 @interface STCoreOrganization
-+ (Class)internalClassForSerializableClassName:(id)a3;
++ (Class)internalClassForSerializableClassName:(id)name;
 + (id)fetchRequest;
 @end
 
 @implementation STCoreOrganization
 
-+ (Class)internalClassForSerializableClassName:(id)a3
++ (Class)internalClassForSerializableClassName:(id)name
 {
   v3 = internalClassForSerializableClassName__oneTime;
-  v4 = a3;
+  nameCopy = name;
   if (v3 != -1)
   {
     +[STCoreOrganization internalClassForSerializableClassName:];
   }
 
-  v5 = [internalClassForSerializableClassName__mapping objectForKey:v4];
+  v5 = [internalClassForSerializableClassName__mapping objectForKey:nameCopy];
 
   return v5;
 }
@@ -43,7 +43,7 @@ void __60__STCoreOrganization_internalClassForSerializableClassName___block_invo
 
 + (id)fetchRequest
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___STCoreOrganization;
   v2 = objc_msgSendSuper2(&v4, sel_fetchRequest);
 

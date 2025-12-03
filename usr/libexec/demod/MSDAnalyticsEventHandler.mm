@@ -1,28 +1,28 @@
 @interface MSDAnalyticsEventHandler
 + (id)sharedInstance;
 - (MSDAnalyticsEventHandler)init;
-- (id)getDemoBundleInfo:(id)a3;
-- (id)getDownloadSizeBucket:(int64_t)a3;
-- (id)getEmbeddedSimCarrier:(id)a3;
-- (id)getPhysicalSimCarrier:(id)a3;
-- (id)prepareCAData:(int)a3;
-- (void)sendAppUsageDataEvent:(id)a3 withExecutable:(id)a4 sessionUUID:(id)a5 sessionStart:(id)a6 sessionEnd:(id)a7 sessionDuration:(int64_t)a8 appOrder:(int64_t)a9 appDuration:(double)a10;
-- (void)sendAutoEnrollmentAbortEvent:(id)a3 languageCode:(id)a4 countryCode:(id)a5 networkInformation:(id)a6 wifiSSID:(id)a7;
-- (void)sendAutoEnrollmentResults:(id)a3;
-- (void)sendBgDownloadPausedEvent:(int64_t)a3 forReason:(id)a4;
-- (void)sendContinuityLinkingFailureEvent:(id)a3;
-- (void)sendEnrollmentFailureEvent:(id)a3;
-- (void)sendFMHFailureEvent:(id)a3;
-- (void)sendFileDownloadSourceEvent:(id)a3;
+- (id)getDemoBundleInfo:(id)info;
+- (id)getDownloadSizeBucket:(int64_t)bucket;
+- (id)getEmbeddedSimCarrier:(id)carrier;
+- (id)getPhysicalSimCarrier:(id)carrier;
+- (id)prepareCAData:(int)data;
+- (void)sendAppUsageDataEvent:(id)event withExecutable:(id)executable sessionUUID:(id)d sessionStart:(id)start sessionEnd:(id)end sessionDuration:(int64_t)duration appOrder:(int64_t)order appDuration:(double)self0;
+- (void)sendAutoEnrollmentAbortEvent:(id)event languageCode:(id)code countryCode:(id)countryCode networkInformation:(id)information wifiSSID:(id)d;
+- (void)sendAutoEnrollmentResults:(id)results;
+- (void)sendBgDownloadPausedEvent:(int64_t)event forReason:(id)reason;
+- (void)sendContinuityLinkingFailureEvent:(id)event;
+- (void)sendEnrollmentFailureEvent:(id)event;
+- (void)sendFMHFailureEvent:(id)event;
+- (void)sendFileDownloadSourceEvent:(id)event;
 - (void)sendHeartbeatEvent;
-- (void)sendLastShallowRefreshTime:(id)a3;
-- (void)sendNetworkAverageBandwidthEvent:(int64_t)a3 forServerType:(id)a4;
-- (void)sendNetworkAverageRTTEvent:(int64_t)a3 forServerType:(id)a4;
-- (void)sendNetworkFailureEvent:(id)a3 forServerType:(id)a4;
-- (void)sendNetworkPacketLossEvent:(int64_t)a3 forServerType:(id)a4;
-- (void)sendNetworkRawDataEvent:(id)a3 forServerType:(id)a4;
-- (void)sendOSUpdateFailureEvent:(id)a3;
-- (void)sendiCloudSigninFailureEvent:(id)a3;
+- (void)sendLastShallowRefreshTime:(id)time;
+- (void)sendNetworkAverageBandwidthEvent:(int64_t)event forServerType:(id)type;
+- (void)sendNetworkAverageRTTEvent:(int64_t)event forServerType:(id)type;
+- (void)sendNetworkFailureEvent:(id)event forServerType:(id)type;
+- (void)sendNetworkPacketLossEvent:(int64_t)event forServerType:(id)type;
+- (void)sendNetworkRawDataEvent:(id)event forServerType:(id)type;
+- (void)sendOSUpdateFailureEvent:(id)event;
+- (void)sendiCloudSigninFailureEvent:(id)event;
 @end
 
 @implementation MSDAnalyticsEventHandler
@@ -55,168 +55,168 @@
   return v3;
 }
 
-- (void)sendiCloudSigninFailureEvent:(id)a3
+- (void)sendiCloudSigninFailureEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v8 = [(MSDAnalyticsEventHandler *)self prepareCAData:0];
-  v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 code]);
+  v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [eventCopy code]);
   [v8 setObject:v5 forKey:@"errorCode"];
 
-  v6 = [v4 localizedDescription];
+  localizedDescription = [eventCopy localizedDescription];
 
-  [v8 setObject:v6 forKey:@"errorMessage"];
+  [v8 setObject:localizedDescription forKey:@"errorMessage"];
   v7 = +[MSDAnalytics sharedInstance];
   [v7 sendEvent:@"com.apple.MobileStoreDemo.icloudSignInFailure" withPayload:v8];
 }
 
-- (void)sendContinuityLinkingFailureEvent:(id)a3
+- (void)sendContinuityLinkingFailureEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v8 = [(MSDAnalyticsEventHandler *)self prepareCAData:0];
-  v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 code]);
+  v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [eventCopy code]);
   [v8 setObject:v5 forKey:@"errorCode"];
 
-  v6 = [v4 localizedDescription];
+  localizedDescription = [eventCopy localizedDescription];
 
-  [v8 setObject:v6 forKey:@"errorMessage"];
+  [v8 setObject:localizedDescription forKey:@"errorMessage"];
   v7 = +[MSDAnalytics sharedInstance];
   [v7 sendEvent:@"com.apple.MobileStoreDemo.continuityLinkingFailure" withPayload:v8];
 }
 
-- (void)sendOSUpdateFailureEvent:(id)a3
+- (void)sendOSUpdateFailureEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v8 = [(MSDAnalyticsEventHandler *)self prepareCAData:0];
-  v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 code]);
+  v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [eventCopy code]);
   [v8 setObject:v5 forKey:@"errorCode"];
 
-  v6 = [v4 localizedDescription];
+  localizedDescription = [eventCopy localizedDescription];
 
-  [v8 setObject:v6 forKey:@"errorMessage"];
+  [v8 setObject:localizedDescription forKey:@"errorMessage"];
   v7 = +[MSDAnalytics sharedInstance];
   [v7 sendEvent:@"com.apple.MobileStoreDemo.osUpdateFailure" withPayload:v8];
 }
 
-- (void)sendFMHFailureEvent:(id)a3
+- (void)sendFMHFailureEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v8 = [(MSDAnalyticsEventHandler *)self prepareCAData:0];
-  v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 code]);
+  v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [eventCopy code]);
   [v8 setObject:v5 forKey:@"errorCode"];
 
-  v6 = [v4 localizedDescription];
+  localizedDescription = [eventCopy localizedDescription];
 
-  [v8 setObject:v6 forKey:@"errorMessage"];
+  [v8 setObject:localizedDescription forKey:@"errorMessage"];
   v7 = +[MSDAnalytics sharedInstance];
   [v7 sendEvent:@"com.apple.MobileStoreDemo.fmhFailure" withPayload:v8];
 }
 
-- (void)sendEnrollmentFailureEvent:(id)a3
+- (void)sendEnrollmentFailureEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v8 = [(MSDAnalyticsEventHandler *)self prepareCAData:0];
-  v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 code]);
+  v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [eventCopy code]);
   [v8 setObject:v5 forKey:@"errorCode"];
 
-  v6 = [v4 localizedDescription];
+  localizedDescription = [eventCopy localizedDescription];
 
-  [v8 setObject:v6 forKey:@"errorMessage"];
+  [v8 setObject:localizedDescription forKey:@"errorMessage"];
   v7 = +[MSDAnalytics sharedInstance];
   [v7 sendEvent:@"com.apple.MobileStoreDemo.enrollmentFailure" withPayload:v8];
 }
 
-- (void)sendNetworkFailureEvent:(id)a3 forServerType:(id)a4
+- (void)sendNetworkFailureEvent:(id)event forServerType:(id)type
 {
-  v6 = a4;
-  v7 = a3;
+  typeCopy = type;
+  eventCopy = event;
   v11 = [(MSDAnalyticsEventHandler *)self prepareCAData:0];
-  v8 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v7 code]);
+  v8 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [eventCopy code]);
   [v11 setObject:v8 forKey:@"errorCode"];
 
-  [v11 setObject:v6 forKey:@"serverType"];
-  v9 = [v7 localizedDescription];
+  [v11 setObject:typeCopy forKey:@"serverType"];
+  localizedDescription = [eventCopy localizedDescription];
 
-  [v11 setObject:v9 forKey:@"errorMessage"];
+  [v11 setObject:localizedDescription forKey:@"errorMessage"];
   v10 = +[MSDAnalytics sharedInstance];
   [v10 sendEvent:@"com.apple.MobileStoreDemo.networkFailure" withPayload:v11];
 }
 
-- (void)sendBgDownloadPausedEvent:(int64_t)a3 forReason:(id)a4
+- (void)sendBgDownloadPausedEvent:(int64_t)event forReason:(id)reason
 {
-  v6 = a4;
+  reasonCopy = reason;
   v9 = [(MSDAnalyticsEventHandler *)self prepareCAData:0];
-  v7 = [NSNumber numberWithInt:a3];
+  v7 = [NSNumber numberWithInt:event];
   [v9 setObject:v7 forKey:@"pauseDuration"];
 
-  [v9 setObject:v6 forKey:@"pauseReason"];
+  [v9 setObject:reasonCopy forKey:@"pauseReason"];
   v8 = +[MSDAnalytics sharedInstance];
   [v8 sendEvent:@"com.apple.MobileStoreDemo.bgDownloadPaused" withPayload:v9];
 }
 
-- (void)sendFileDownloadSourceEvent:(id)a3
+- (void)sendFileDownloadSourceEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v6 = [(MSDAnalyticsEventHandler *)self prepareCAData:0];
-  [v6 setObject:v4 forKey:@"fileDownloadSource"];
+  [v6 setObject:eventCopy forKey:@"fileDownloadSource"];
 
   v5 = +[MSDAnalytics sharedInstance];
   [v5 sendEvent:@"com.apple.MobileStoreDemo.fileDownloadSource" withPayload:v6];
 }
 
-- (void)sendNetworkAverageRTTEvent:(int64_t)a3 forServerType:(id)a4
+- (void)sendNetworkAverageRTTEvent:(int64_t)event forServerType:(id)type
 {
-  v6 = a4;
+  typeCopy = type;
   v9 = [(MSDAnalyticsEventHandler *)self prepareCAData:0];
-  v7 = [NSNumber numberWithInt:a3];
+  v7 = [NSNumber numberWithInt:event];
   [v9 setObject:v7 forKey:@"avgRTT"];
 
-  [v9 setObject:v6 forKey:@"serverType"];
+  [v9 setObject:typeCopy forKey:@"serverType"];
   v8 = +[MSDAnalytics sharedInstance];
   [v8 sendEvent:@"com.apple.MobileStoreDemo.networkRTT" withPayload:v9];
 }
 
-- (void)sendNetworkPacketLossEvent:(int64_t)a3 forServerType:(id)a4
+- (void)sendNetworkPacketLossEvent:(int64_t)event forServerType:(id)type
 {
-  v6 = a4;
+  typeCopy = type;
   v9 = [(MSDAnalyticsEventHandler *)self prepareCAData:0];
-  v7 = [NSNumber numberWithInt:a3];
+  v7 = [NSNumber numberWithInt:event];
   [v9 setObject:v7 forKey:@"packetLoss"];
 
-  [v9 setObject:v6 forKey:@"serverType"];
+  [v9 setObject:typeCopy forKey:@"serverType"];
   v8 = +[MSDAnalytics sharedInstance];
   [v8 sendEvent:@"com.apple.MobileStoreDemo.networkPacketLoss" withPayload:v9];
 }
 
-- (void)sendNetworkAverageBandwidthEvent:(int64_t)a3 forServerType:(id)a4
+- (void)sendNetworkAverageBandwidthEvent:(int64_t)event forServerType:(id)type
 {
-  v6 = a4;
+  typeCopy = type;
   v9 = [(MSDAnalyticsEventHandler *)self prepareCAData:0];
-  v7 = [NSNumber numberWithInt:a3];
+  v7 = [NSNumber numberWithInt:event];
   [v9 setObject:v7 forKey:@"avgBandwidth"];
 
-  [v9 setObject:v6 forKey:@"serverType"];
+  [v9 setObject:typeCopy forKey:@"serverType"];
   v8 = +[MSDAnalytics sharedInstance];
   [v8 sendEvent:@"com.apple.MobileStoreDemo.networkBandwidth" withPayload:v9];
 }
 
-- (void)sendNetworkRawDataEvent:(id)a3 forServerType:(id)a4
+- (void)sendNetworkRawDataEvent:(id)event forServerType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  typeCopy = type;
   v8 = [(MSDAnalyticsEventHandler *)self prepareCAData:0];
-  v9 = [v6 objectForKey:@"_kCFNTimingDataResponseEnd"];
+  v9 = [eventCopy objectForKey:@"_kCFNTimingDataResponseEnd"];
   if (v9)
   {
     v10 = v9;
-    v11 = [v6 objectForKey:@"_kCFNTimingDataResponseStart"];
+    v11 = [eventCopy objectForKey:@"_kCFNTimingDataResponseStart"];
 
     if (v11)
     {
-      v12 = [v6 objectForKey:@"_kCFNTimingDataResponseEnd"];
+      v12 = [eventCopy objectForKey:@"_kCFNTimingDataResponseEnd"];
       [v12 doubleValue];
       v14 = v13;
 
-      v15 = [v6 objectForKey:@"_kCFNTimingDataResponseStart"];
+      v15 = [eventCopy objectForKey:@"_kCFNTimingDataResponseStart"];
       [v15 doubleValue];
       v17 = v16;
 
@@ -225,19 +225,19 @@
     }
   }
 
-  v19 = [v6 objectForKey:@"_kCFNTimingDataRequestEnd"];
+  v19 = [eventCopy objectForKey:@"_kCFNTimingDataRequestEnd"];
   if (v19)
   {
     v20 = v19;
-    v21 = [v6 objectForKey:@"_kCFNTimingDataRequestStart"];
+    v21 = [eventCopy objectForKey:@"_kCFNTimingDataRequestStart"];
 
     if (v21)
     {
-      v22 = [v6 objectForKey:@"_kCFNTimingDataRequestEnd"];
+      v22 = [eventCopy objectForKey:@"_kCFNTimingDataRequestEnd"];
       [v22 doubleValue];
       v24 = v23;
 
-      v25 = [v6 objectForKey:@"_kCFNTimingDataRequestStart"];
+      v25 = [eventCopy objectForKey:@"_kCFNTimingDataRequestStart"];
       [v25 doubleValue];
       v27 = v26;
 
@@ -250,7 +250,7 @@
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v29 = v6;
+  v29 = eventCopy;
   v30 = [v29 countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v30)
   {
@@ -267,8 +267,8 @@
         }
 
         v34 = *(*(&v39 + 1) + 8 * v33);
-        v35 = [(MSDAnalyticsEventHandler *)self rawDataKeyMapping];
-        v36 = [v35 objectForKey:v34];
+        rawDataKeyMapping = [(MSDAnalyticsEventHandler *)self rawDataKeyMapping];
+        v36 = [rawDataKeyMapping objectForKey:v34];
 
         if (v36)
         {
@@ -286,34 +286,34 @@
     while (v31);
   }
 
-  [v8 setObject:v7 forKey:@"serverType"];
+  [v8 setObject:typeCopy forKey:@"serverType"];
   v38 = +[MSDAnalytics sharedInstance];
   [v38 sendEvent:@"com.apple.MobileStoreDemo.networkRawData" withPayload:v8];
 }
 
-- (void)sendAppUsageDataEvent:(id)a3 withExecutable:(id)a4 sessionUUID:(id)a5 sessionStart:(id)a6 sessionEnd:(id)a7 sessionDuration:(int64_t)a8 appOrder:(int64_t)a9 appDuration:(double)a10
+- (void)sendAppUsageDataEvent:(id)event withExecutable:(id)executable sessionUUID:(id)d sessionStart:(id)start sessionEnd:(id)end sessionDuration:(int64_t)duration appOrder:(int64_t)order appDuration:(double)self0
 {
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
+  endCopy = end;
+  startCopy = start;
+  dCopy = d;
+  executableCopy = executable;
+  eventCopy = event;
   v27 = [(MSDAnalyticsEventHandler *)self prepareCAData:1];
-  [v27 setObject:v21 forKey:@"bundleID"];
+  [v27 setObject:eventCopy forKey:@"bundleID"];
 
-  [v27 setObject:v20 forKey:@"executableName"];
-  [v27 setObject:v19 forKey:@"sessionUUID"];
+  [v27 setObject:executableCopy forKey:@"executableName"];
+  [v27 setObject:dCopy forKey:@"sessionUUID"];
 
-  [v27 setObject:v18 forKey:@"sessionStartTime"];
-  [v27 setObject:v17 forKey:@"sessionEndTime"];
+  [v27 setObject:startCopy forKey:@"sessionStartTime"];
+  [v27 setObject:endCopy forKey:@"sessionEndTime"];
 
-  v22 = [NSNumber numberWithInteger:a8];
+  v22 = [NSNumber numberWithInteger:duration];
   [v27 setObject:v22 forKey:@"sessionDuration"];
 
-  v23 = [NSNumber numberWithInteger:a9];
+  v23 = [NSNumber numberWithInteger:order];
   [v27 setObject:v23 forKey:@"appOrder"];
 
-  *&v24 = a10;
+  *&v24 = appDuration;
   v25 = [NSNumber numberWithFloat:v24];
   [v27 setObject:v25 forKey:@"appDuration"];
 
@@ -328,11 +328,11 @@
   [v2 sendEvent:@"com.apple.MobileStoreDemo.heartbeat" withPayload:v3];
 }
 
-- (void)sendLastShallowRefreshTime:(id)a3
+- (void)sendLastShallowRefreshTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   v9 = [(MSDAnalyticsEventHandler *)self prepareCAData:1];
-  [v4 timeIntervalSince1970];
+  [timeCopy timeIntervalSince1970];
   v6 = v5;
 
   v7 = [NSString stringWithFormat:@"%lld", v6];
@@ -341,27 +341,27 @@
   [v8 sendEvent:@"com.apple.MobileStoreDemo.lastShallowRefreshTime" withPayload:v9];
 }
 
-- (void)sendAutoEnrollmentResults:(id)a3
+- (void)sendAutoEnrollmentResults:(id)results
 {
-  v27 = a3;
+  resultsCopy = results;
   v4 = [(MSDAnalyticsEventHandler *)self prepareCAData:1];
-  v5 = [v27 objectForKey:@"AutoEnrollmentTimeStamp"];
+  v5 = [resultsCopy objectForKey:@"AutoEnrollmentTimeStamp"];
   [v5 timeIntervalSince1970];
   v7 = v6;
 
   v8 = [NSString stringWithFormat:@"%d", v7];
   [v4 setObject:v8 forKey:@"AutoEnrollmentTimeStamp"];
-  v9 = [v27 objectForKey:@"AutoEnrollmentStatus"];
+  v9 = [resultsCopy objectForKey:@"AutoEnrollmentStatus"];
   [v4 setObject:v9 forKey:@"AutoEnrollmentStatus"];
 
-  v10 = [v27 objectForKey:@"ErrorCode"];
+  v10 = [resultsCopy objectForKey:@"ErrorCode"];
   [v4 setObject:v10 forKey:@"errorCode"];
 
-  v11 = [v27 objectForKey:@"ErrorMessage"];
+  v11 = [resultsCopy objectForKey:@"ErrorMessage"];
 
   if (v11)
   {
-    v12 = [v27 objectForKey:@"ErrorMessage"];
+    v12 = [resultsCopy objectForKey:@"ErrorMessage"];
     [v4 setObject:v12 forKey:@"errorMessage"];
   }
 
@@ -370,11 +370,11 @@
     [v4 setObject:@"<NOT_SET>" forKey:@"errorMessage"];
   }
 
-  v13 = [v27 objectForKey:@"AutoEnrollmentSelectedStoreID"];
+  v13 = [resultsCopy objectForKey:@"AutoEnrollmentSelectedStoreID"];
 
   if (v13)
   {
-    v14 = [v27 objectForKey:@"AutoEnrollmentSelectedStoreID"];
+    v14 = [resultsCopy objectForKey:@"AutoEnrollmentSelectedStoreID"];
     [v4 setObject:v14 forKey:@"AutoEnrollmentSelectedStoreID"];
   }
 
@@ -383,82 +383,82 @@
     [v4 setObject:@"<NOT_SET>" forKey:@"errorMessage"];
   }
 
-  v15 = [v27 objectForKey:@"AutoEnrollmentNetworkInfo"];
+  v15 = [resultsCopy objectForKey:@"AutoEnrollmentNetworkInfo"];
   v16 = [(MSDAnalyticsEventHandler *)self getPhysicalSimCarrier:v15];
 
-  v17 = [v27 objectForKey:@"AutoEnrollmentNetworkInfo"];
+  v17 = [resultsCopy objectForKey:@"AutoEnrollmentNetworkInfo"];
   v18 = [(MSDAnalyticsEventHandler *)self getEmbeddedSimCarrier:v17];
 
   [v4 setObject:v16 forKey:@"AutoEnrollmentPhyscialSIMCarrier"];
   [v4 setObject:v18 forKey:@"AutoEnrollmentEmbeddedSIMCarrier"];
-  v19 = [v27 objectForKey:@"AutoEnrollmentWiFiSSID"];
+  v19 = [resultsCopy objectForKey:@"AutoEnrollmentWiFiSSID"];
   [v4 setObject:v19 forKey:@"AutoEnrollmentWiFiSSID"];
 
-  v20 = [v27 objectForKey:@"AutoEnrollmentHelpMenuUserTapped"];
+  v20 = [resultsCopy objectForKey:@"AutoEnrollmentHelpMenuUserTapped"];
 
   if (v20)
   {
-    v21 = [v27 objectForKey:@"AutoEnrollmentHelpMenuUserTapped"];
-    v22 = [v21 allObjects];
-    v23 = [v22 componentsJoinedByString:{@", "}];
+    v21 = [resultsCopy objectForKey:@"AutoEnrollmentHelpMenuUserTapped"];
+    allObjects = [v21 allObjects];
+    v23 = [allObjects componentsJoinedByString:{@", "}];
 
     [v4 setObject:v23 forKey:@"AutoEnrollmentHelpMenuUserTapped"];
   }
 
-  v24 = [v27 objectForKey:@"AutoEnrollmentLanguageCodeInfo"];
+  v24 = [resultsCopy objectForKey:@"AutoEnrollmentLanguageCodeInfo"];
   [v4 setObject:v24 forKey:@"AutoEnrollmentLanguageCodeInfo"];
 
-  v25 = [v27 objectForKey:@"AutoEnrollmentCountryCodeInfo"];
+  v25 = [resultsCopy objectForKey:@"AutoEnrollmentCountryCodeInfo"];
   [v4 setObject:v25 forKey:@"AutoEnrollmentCountryCodeInfo"];
 
   v26 = +[MSDAnalytics sharedInstance];
   [v26 sendEvent:@"com.apple.MobileStoreDemo.autoEnrollment" withPayload:v4];
 }
 
-- (void)sendAutoEnrollmentAbortEvent:(id)a3 languageCode:(id)a4 countryCode:(id)a5 networkInformation:(id)a6 wifiSSID:(id)a7
+- (void)sendAutoEnrollmentAbortEvent:(id)event languageCode:(id)code countryCode:(id)countryCode networkInformation:(id)information wifiSSID:(id)d
 {
-  v23 = a3;
-  v12 = a4;
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
+  eventCopy = event;
+  codeCopy = code;
+  dCopy = d;
+  informationCopy = information;
+  countryCodeCopy = countryCode;
   v16 = [(MSDAnalyticsEventHandler *)self prepareCAData:1];
-  v17 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v23 code]);
+  v17 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [eventCopy code]);
   [v16 setObject:v17 forKey:@"errorCode"];
 
-  v18 = [v23 localizedDescription];
+  localizedDescription = [eventCopy localizedDescription];
 
-  if (v18)
+  if (localizedDescription)
   {
-    v19 = [v23 localizedDescription];
-    [v16 setObject:v19 forKey:@"errorMessage"];
+    localizedDescription2 = [eventCopy localizedDescription];
+    [v16 setObject:localizedDescription2 forKey:@"errorMessage"];
   }
 
-  [v16 setObject:v12 forKey:@"AutoEnrollmentAbortLanguageCodeInfo"];
-  [v16 setObject:v15 forKey:@"AutoEnrollmentAbortCountryCodeInfo"];
+  [v16 setObject:codeCopy forKey:@"AutoEnrollmentAbortLanguageCodeInfo"];
+  [v16 setObject:countryCodeCopy forKey:@"AutoEnrollmentAbortCountryCodeInfo"];
 
-  v20 = [(MSDAnalyticsEventHandler *)self getPhysicalSimCarrier:v14];
-  v21 = [(MSDAnalyticsEventHandler *)self getEmbeddedSimCarrier:v14];
+  v20 = [(MSDAnalyticsEventHandler *)self getPhysicalSimCarrier:informationCopy];
+  v21 = [(MSDAnalyticsEventHandler *)self getEmbeddedSimCarrier:informationCopy];
 
   [v16 setObject:v20 forKey:@"AutoEnrollmentPhyscialSIMCarrier"];
   [v16 setObject:v21 forKey:@"AutoEnrollmentEmbeddedSIMCarrier"];
-  [v16 setObject:v13 forKey:@"AutoEnrollmentWiFiSSID"];
+  [v16 setObject:dCopy forKey:@"AutoEnrollmentWiFiSSID"];
 
   v22 = +[MSDAnalytics sharedInstance];
   [v22 sendEvent:@"com.apple.MobileStoreDemo.autoEnrollmentAbort" withPayload:v16];
 }
 
-- (id)prepareCAData:(int)a3
+- (id)prepareCAData:(int)data
 {
   v5 = objc_alloc_init(NSMutableDictionary);
   v6 = +[MSDTargetDevice sharedInstance];
-  v7 = [v6 getDeviceOptions];
-  v8 = [v7 objectForKey:@"store_id"];
+  getDeviceOptions = [v6 getDeviceOptions];
+  v8 = [getDeviceOptions objectForKey:@"store_id"];
 
   if (v8)
   {
-    v9 = [v6 getDeviceOptions];
-    v10 = [v9 objectForKey:@"store_id"];
+    getDeviceOptions2 = [v6 getDeviceOptions];
+    v10 = [getDeviceOptions2 objectForKey:@"store_id"];
   }
 
   else
@@ -467,19 +467,19 @@
   }
 
   [v5 setObject:v10 forKey:@"storeID"];
-  v11 = [v6 serialNumber];
-  [v5 setObject:v11 forKey:@"deviceSerialNumber"];
-  if (a3 == 1)
+  serialNumber = [v6 serialNumber];
+  [v5 setObject:serialNumber forKey:@"deviceSerialNumber"];
+  if (data == 1)
   {
     v12 = +[MSDTargetDevice sharedInstance];
-    v13 = [v12 getDeviceOptions];
+    getDeviceOptions3 = [v12 getDeviceOptions];
 
-    v14 = [v13 objectForKey:@"store_type"];
+    v14 = [getDeviceOptions3 objectForKey:@"store_type"];
 
-    v35 = v13;
+    v35 = getDeviceOptions3;
     if (v14)
     {
-      v15 = [v13 objectForKey:@"store_type"];
+      v15 = [getDeviceOptions3 objectForKey:@"store_type"];
     }
 
     else
@@ -490,10 +490,10 @@
     v34 = v15;
     [v5 setObject:v15 forKey:@"storeType"];
     v16 = +[MSDProgressUpdater sharedInstance];
-    v17 = [v16 installedBundle];
+    installedBundle = [v16 installedBundle];
 
-    v18 = [v17 bundleInfo];
-    v19 = [(MSDAnalyticsEventHandler *)self getDemoBundleInfo:v18];
+    bundleInfo = [installedBundle bundleInfo];
+    v19 = [(MSDAnalyticsEventHandler *)self getDemoBundleInfo:bundleInfo];
 
     [v5 setObject:v19 forKey:@"demoBundleInfo"];
     v20 = objc_alloc_init(NSDateFormatter);
@@ -504,9 +504,9 @@
     v22 = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     [v20 setCalendar:v22];
 
-    v23 = [v17 getLastBundleUpdateDate];
-    v24 = v23;
-    if (v23 && ([v23 isEqualToString:@"<unknown>"] & 1) == 0)
+    getLastBundleUpdateDate = [installedBundle getLastBundleUpdateDate];
+    v24 = getLastBundleUpdateDate;
+    if (getLastBundleUpdateDate && ([getLastBundleUpdateDate isEqualToString:@"<unknown>"] & 1) == 0)
     {
       v33 = v19;
       v26 = objc_alloc_init(NSDateFormatter);
@@ -555,26 +555,26 @@
   return v5;
 }
 
-- (id)getDownloadSizeBucket:(int64_t)a3
+- (id)getDownloadSizeBucket:(int64_t)bucket
 {
-  v4 = [NSString stringWithFormat:@"%ld-%ld GB", a3 / 1000000000, a3 / 1000000000 + 1];
+  v4 = [NSString stringWithFormat:@"%ld-%ld GB", bucket / 1000000000, bucket / 1000000000 + 1];
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_1000D9D58(v4, a3, v5);
+    sub_1000D9D58(v4, bucket, v5);
   }
 
   return v4;
 }
 
-- (id)getDemoBundleInfo:(id)a3
+- (id)getDemoBundleInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"BundleName"];
+  infoCopy = info;
+  v4 = [infoCopy objectForKey:@"BundleName"];
 
   if (v4)
   {
-    v5 = [v3 objectForKey:@"BundleName"];
+    v5 = [infoCopy objectForKey:@"BundleName"];
   }
 
   else
@@ -582,11 +582,11 @@
     v5 = @"<unknown>";
   }
 
-  v6 = [v3 objectForKey:@"PartNumber"];
+  v6 = [infoCopy objectForKey:@"PartNumber"];
 
   if (v6)
   {
-    v7 = [v3 objectForKey:@"PartNumber"];
+    v7 = [infoCopy objectForKey:@"PartNumber"];
   }
 
   else
@@ -594,11 +594,11 @@
     v7 = @"<unknown>";
   }
 
-  v8 = [v3 objectForKey:@"Revision"];
+  v8 = [infoCopy objectForKey:@"Revision"];
 
   if (v8)
   {
-    v9 = [v3 objectForKey:@"Revision"];
+    v9 = [infoCopy objectForKey:@"Revision"];
   }
 
   else
@@ -611,14 +611,14 @@
   return v10;
 }
 
-- (id)getPhysicalSimCarrier:(id)a3
+- (id)getPhysicalSimCarrier:(id)carrier
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  carrierCopy = carrier;
+  v4 = [carrierCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -630,7 +630,7 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(carrierCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -643,7 +643,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [carrierCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -663,14 +663,14 @@ LABEL_12:
   return v7;
 }
 
-- (id)getEmbeddedSimCarrier:(id)a3
+- (id)getEmbeddedSimCarrier:(id)carrier
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  carrierCopy = carrier;
+  v4 = [carrierCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -682,7 +682,7 @@ LABEL_12:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(carrierCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -695,7 +695,7 @@ LABEL_12:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [carrierCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;

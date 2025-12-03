@@ -1,21 +1,21 @@
 @interface WFContentItemViewController
-- (WFContentItemViewController)initWithContentItem:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (WFContentItemViewController)initWithContentItem:(id)item;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation WFContentItemViewController
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   contentItem = self->_contentItem;
-  v6 = a4;
-  v7 = [(WFContentItem *)contentItem supportedTypes];
-  v8 = [v6 row];
+  pathCopy = path;
+  supportedTypes = [(WFContentItem *)contentItem supportedTypes];
+  v8 = [pathCopy row];
 
-  v9 = [v7 objectAtIndex:v8];
+  v9 = [supportedTypes objectAtIndex:v8];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -237,35 +237,35 @@ void __65__WFContentItemViewController_tableView_didSelectRowAtIndexPath___block
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"WFOutputTypeCellIdentifier" forIndexPath:v6];
-  v8 = [(WFContentItem *)self->_contentItem supportedTypes];
-  v9 = [v6 row];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"WFOutputTypeCellIdentifier" forIndexPath:pathCopy];
+  supportedTypes = [(WFContentItem *)self->_contentItem supportedTypes];
+  v9 = [pathCopy row];
 
-  v10 = [v8 objectAtIndex:v9];
+  v10 = [supportedTypes objectAtIndex:v9];
 
   [v7 setAccessoryType:1];
-  v11 = [v10 typeDescription];
-  v12 = [v7 textLabel];
-  [v12 setText:v11];
+  typeDescription = [v10 typeDescription];
+  textLabel = [v7 textLabel];
+  [textLabel setText:typeDescription];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [v10 documentIcon];
-    v14 = [v13 UIImage];
-    v15 = [v7 imageView];
-    [v15 setImage:v14];
+    documentIcon = [v10 documentIcon];
+    uIImage = [documentIcon UIImage];
+    imageView = [v7 imageView];
+    [imageView setImage:uIImage];
   }
 
   return v7;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(WFContentItem *)self->_contentItem supportedTypes:a3];
+  v4 = [(WFContentItem *)self->_contentItem supportedTypes:view];
   v5 = [v4 count];
 
   return v5;
@@ -276,17 +276,17 @@ void __65__WFContentItemViewController_tableView_didSelectRowAtIndexPath___block
   v4.receiver = self;
   v4.super_class = WFContentItemViewController;
   [(WFContentItemViewController *)&v4 viewDidLoad];
-  v3 = [(WFContentItemViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"WFOutputTypeCellIdentifier"];
+  tableView = [(WFContentItemViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"WFOutputTypeCellIdentifier"];
 }
 
-- (WFContentItemViewController)initWithContentItem:(id)a3
+- (WFContentItemViewController)initWithContentItem:(id)item
 {
-  v6 = a3;
-  if (!v6)
+  itemCopy = item;
+  if (!itemCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFContentItemViewController.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"contentItem"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFContentItemViewController.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"contentItem"}];
   }
 
   v12.receiver = self;
@@ -295,7 +295,7 @@ void __65__WFContentItemViewController_tableView_didSelectRowAtIndexPath___block
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_contentItem, a3);
+    objc_storeStrong(&v7->_contentItem, item);
     v9 = WFLocalizedString(@"Supported Types");
     [(WFContentItemViewController *)v8 setTitle:v9];
   }

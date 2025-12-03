@@ -1,21 +1,21 @@
 @interface RTAuthorizedLocationBiometricsManager
-- (BOOL)_getTimeSinceLastSuccessfulBiometricAuthentication:(double *)a3;
-- (BOOL)defaultOverrideTimeSinceLastSuccessfulBiometricAuthentication:(double *)a3;
-- (RTAuthorizedLocationBiometricsManager)initWithTrustedTimeCache:(id)a3 defaultsManager:(id)a4;
+- (BOOL)_getTimeSinceLastSuccessfulBiometricAuthentication:(double *)authentication;
+- (BOOL)defaultOverrideTimeSinceLastSuccessfulBiometricAuthentication:(double *)authentication;
+- (RTAuthorizedLocationBiometricsManager)initWithTrustedTimeCache:(id)cache defaultsManager:(id)manager;
 - (id)updateDateOfLastSuccessfulBiometricAuthentication;
 @end
 
 @implementation RTAuthorizedLocationBiometricsManager
 
-- (RTAuthorizedLocationBiometricsManager)initWithTrustedTimeCache:(id)a3 defaultsManager:(id)a4
+- (RTAuthorizedLocationBiometricsManager)initWithTrustedTimeCache:(id)cache defaultsManager:(id)manager
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  cacheCopy = cache;
+  managerCopy = manager;
+  v9 = managerCopy;
+  if (cacheCopy)
   {
-    if (v8)
+    if (managerCopy)
     {
       goto LABEL_10;
     }
@@ -53,15 +53,15 @@ LABEL_10:
   v12 = [(RTAuthorizedLocationBiometricsManager *)&v19 init];
   if (v12)
   {
-    v13 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     dateOfLastUpdate = v12->_dateOfLastUpdate;
-    v12->_dateOfLastUpdate = v13;
+    v12->_dateOfLastUpdate = distantPast;
 
     dateOfMostRecentBiometricAuthentication = v12->_dateOfMostRecentBiometricAuthentication;
     v12->_dateOfMostRecentBiometricAuthentication = 0;
 
-    objc_storeStrong(&v12->_trustedTimeCache, a3);
-    objc_storeStrong(&v12->_defaultsManager, a4);
+    objc_storeStrong(&v12->_trustedTimeCache, cache);
+    objc_storeStrong(&v12->_defaultsManager, manager);
     v16 = objc_opt_new();
     platform = v12->_platform;
     v12->_platform = v16;
@@ -73,9 +73,9 @@ LABEL_10:
 - (id)updateDateOfLastSuccessfulBiometricAuthentication
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = [(RTTrustedTimeCache *)self->_trustedTimeCache getApproximateTrustedDateNowWithUnsecureFallback];
-  v5 = v4;
-  if (!v4)
+  getApproximateTrustedDateNowWithUnsecureFallback = [(RTTrustedTimeCache *)self->_trustedTimeCache getApproximateTrustedDateNowWithUnsecureFallback];
+  v5 = getApproximateTrustedDateNowWithUnsecureFallback;
+  if (!getApproximateTrustedDateNowWithUnsecureFallback)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -94,7 +94,7 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  [v4 timeIntervalSinceDate:self->_dateOfLastUpdate];
+  [getApproximateTrustedDateNowWithUnsecureFallback timeIntervalSinceDate:self->_dateOfLastUpdate];
   v7 = v6;
   if (v6 > 900.0)
   {
@@ -176,13 +176,13 @@ LABEL_15:
   return v21;
 }
 
-- (BOOL)defaultOverrideTimeSinceLastSuccessfulBiometricAuthentication:(double *)a3
+- (BOOL)defaultOverrideTimeSinceLastSuccessfulBiometricAuthentication:(double *)authentication
 {
   v4 = [(RTDefaultsManager *)self->_defaultsManager objectForKey:@"RTDefaultsAuthorizedLocationSecondsSinceLastBiometricAuthentication"];
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     [v4 floatValue];
-    *a3 = v5;
+    *authentication = v5;
     v6 = 1;
   }
 
@@ -194,10 +194,10 @@ LABEL_15:
   return v6;
 }
 
-- (BOOL)_getTimeSinceLastSuccessfulBiometricAuthentication:(double *)a3
+- (BOOL)_getTimeSinceLastSuccessfulBiometricAuthentication:(double *)authentication
 {
   v34 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!authentication)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -215,7 +215,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if ([(RTPlatform *)self->_platform internalInstall]&& [(RTAuthorizedLocationBiometricsManager *)self defaultOverrideTimeSinceLastSuccessfulBiometricAuthentication:a3])
+  if ([(RTPlatform *)self->_platform internalInstall]&& [(RTAuthorizedLocationBiometricsManager *)self defaultOverrideTimeSinceLastSuccessfulBiometricAuthentication:authentication])
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -223,7 +223,7 @@ LABEL_15:
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
       v9 = NSStringFromSelector(a2);
-      v10 = *a3;
+      v10 = *authentication;
       *buf = 138412802;
       v27 = v8;
       v28 = 2112;
@@ -237,9 +237,9 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v12 = [MEMORY[0x277CD47B8] secureDomainStorage];
-  v6 = v12;
-  if (!v12)
+  secureDomainStorage = [MEMORY[0x277CD47B8] secureDomainStorage];
+  v6 = secureDomainStorage;
+  if (!secureDomainStorage)
   {
 LABEL_15:
     v11 = 0;
@@ -247,20 +247,20 @@ LABEL_15:
   }
 
   v25 = 0;
-  v13 = [v12 numberForKey:14 error:&v25];
+  v13 = [secureDomainStorage numberForKey:14 error:&v25];
   v14 = v25;
   v11 = v13 != 0;
   if (v13)
   {
     [v13 doubleValue];
-    *a3 = v15 * 0.001;
+    *authentication = v15 * 0.001;
     v16 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v17 = objc_opt_class();
       v18 = NSStringFromClass(v17);
       v19 = NSStringFromSelector(a2);
-      v20 = *a3;
+      v20 = *authentication;
       *buf = 138413058;
       v27 = v18;
       v28 = 2112;

@@ -3,30 +3,30 @@
 - (CHSToolServiceConnection)init;
 - (id)_init;
 - (id)_queue_remoteTarget;
-- (void)_queue_addClient:(id)a3;
+- (void)_queue_addClient:(id)client;
 - (void)_queue_createConnection;
 - (void)_queue_invalidateConnection;
-- (void)_queue_removeClient:(id)a3;
-- (void)addClient:(id)a3;
-- (void)allCachedSnapshotURLsWithCompletion:(id)a3;
-- (void)contentURLForActivityID:(id)a3 completion:(id)a4;
+- (void)_queue_removeClient:(id)client;
+- (void)addClient:(id)client;
+- (void)allCachedSnapshotURLsWithCompletion:(id)completion;
+- (void)contentURLForActivityID:(id)d completion:(id)completion;
 - (void)expireLocationGracePeriods;
-- (void)extensionInfo:(id)a3;
-- (void)extensionInfoForBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)fetchStateForItemWithIdentifier:(id)a3 completion:(id)a4;
-- (void)fetchStateWithCompletion:(id)a3;
-- (void)fetchWidgetSceneInfoWithCompletion:(id)a3;
-- (void)listStateCaptureIdentifiersWithCompletion:(id)a3;
-- (void)refreshDescriptorsForExtensionBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)reloadControlsOfKind:(id)a3 containedIn:(id)a4 reason:(id)a5 completion:(id)a6;
-- (void)reloadTimelinesOfKind:(id)a3 containedIn:(id)a4 reason:(id)a5 completion:(id)a6;
-- (void)removeClient:(id)a3;
-- (void)resetCaches:(unint64_t)a3 completion:(id)a4;
-- (void)runReaper:(id)a3 completion:(id)a4;
-- (void)subscribeToTaskServiceStateWithDelegate:(id)a3 completion:(id)a4;
-- (void)taskServiceStateDidChange:(id)a3;
-- (void)timelineForWidgetKey:(id)a3 completion:(id)a4;
-- (void)widgetsWithTimelines:(id)a3;
+- (void)extensionInfo:(id)info;
+- (void)extensionInfoForBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)fetchStateForItemWithIdentifier:(id)identifier completion:(id)completion;
+- (void)fetchStateWithCompletion:(id)completion;
+- (void)fetchWidgetSceneInfoWithCompletion:(id)completion;
+- (void)listStateCaptureIdentifiersWithCompletion:(id)completion;
+- (void)refreshDescriptorsForExtensionBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)reloadControlsOfKind:(id)kind containedIn:(id)in reason:(id)reason completion:(id)completion;
+- (void)reloadTimelinesOfKind:(id)kind containedIn:(id)in reason:(id)reason completion:(id)completion;
+- (void)removeClient:(id)client;
+- (void)resetCaches:(unint64_t)caches completion:(id)completion;
+- (void)runReaper:(id)reaper completion:(id)completion;
+- (void)subscribeToTaskServiceStateWithDelegate:(id)delegate completion:(id)completion;
+- (void)taskServiceStateDidChange:(id)change;
+- (void)timelineForWidgetKey:(id)key completion:(id)completion;
+- (void)widgetsWithTimelines:(id)timelines;
 @end
 
 @implementation CHSToolServiceConnection
@@ -52,8 +52,8 @@ void __42__CHSToolServiceConnection_sharedInstance__block_invoke()
 
 - (CHSToolServiceConnection)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"CHSToolServiceConnection.m" lineNumber:44 description:@"use +sharedInstance"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CHSToolServiceConnection.m" lineNumber:44 description:@"use +sharedInstance"];
 
   return 0;
 }
@@ -83,17 +83,17 @@ void __42__CHSToolServiceConnection_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__CHSToolServiceConnection_addClient___block_invoke;
   v7[3] = &unk_1E7453000;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = clientCopy;
+  v6 = clientCopy;
   dispatch_async(queue, v7);
 }
 
@@ -106,34 +106,34 @@ uint64_t __38__CHSToolServiceConnection_addClient___block_invoke(uint64_t a1)
   return [v2 _queue_addClient:v3];
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__CHSToolServiceConnection_removeClient___block_invoke;
   v7[3] = &unk_1E7453000;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = clientCopy;
+  v6 = clientCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)refreshDescriptorsForExtensionBundleIdentifier:(id)a3 completion:(id)a4
+- (void)refreshDescriptorsForExtensionBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __86__CHSToolServiceConnection_refreshDescriptorsForExtensionBundleIdentifier_completion___block_invoke;
   block[3] = &unk_1E7453160;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(queue, block);
 }
 
@@ -176,17 +176,17 @@ void __86__CHSToolServiceConnection_refreshDescriptorsForExtensionBundleIdentifi
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)allCachedSnapshotURLsWithCompletion:(id)a3
+- (void)allCachedSnapshotURLsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__CHSToolServiceConnection_allCachedSnapshotURLsWithCompletion___block_invoke;
   v7[3] = &unk_1E74535E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -220,17 +220,17 @@ void __64__CHSToolServiceConnection_allCachedSnapshotURLsWithCompletion___block_
   }
 }
 
-- (void)listStateCaptureIdentifiersWithCompletion:(id)a3
+- (void)listStateCaptureIdentifiersWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__CHSToolServiceConnection_listStateCaptureIdentifiersWithCompletion___block_invoke;
   v7[3] = &unk_1E74535E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -263,17 +263,17 @@ void __70__CHSToolServiceConnection_listStateCaptureIdentifiersWithCompletion___
   }
 }
 
-- (void)fetchStateWithCompletion:(id)a3
+- (void)fetchStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__CHSToolServiceConnection_fetchStateWithCompletion___block_invoke;
   v7[3] = &unk_1E74535E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -306,20 +306,20 @@ void __53__CHSToolServiceConnection_fetchStateWithCompletion___block_invoke(uint
   }
 }
 
-- (void)fetchStateForItemWithIdentifier:(id)a3 completion:(id)a4
+- (void)fetchStateForItemWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__CHSToolServiceConnection_fetchStateForItemWithIdentifier_completion___block_invoke;
   block[3] = &unk_1E7453160;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(queue, block);
 }
 
@@ -353,20 +353,20 @@ void __71__CHSToolServiceConnection_fetchStateForItemWithIdentifier_completion__
   }
 }
 
-- (void)extensionInfoForBundleIdentifier:(id)a3 completion:(id)a4
+- (void)extensionInfoForBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __72__CHSToolServiceConnection_extensionInfoForBundleIdentifier_completion___block_invoke;
   block[3] = &unk_1E7453160;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(queue, block);
 }
 
@@ -429,17 +429,17 @@ void __72__CHSToolServiceConnection_extensionInfoForBundleIdentifier_completion_
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)extensionInfo:(id)a3
+- (void)extensionInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__CHSToolServiceConnection_extensionInfo___block_invoke;
   v7[3] = &unk_1E74535E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = infoCopy;
+  v6 = infoCopy;
   dispatch_async(queue, v7);
 }
 
@@ -485,17 +485,17 @@ void __42__CHSToolServiceConnection_extensionInfo___block_invoke_2(uint64_t a1, 
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)widgetsWithTimelines:(id)a3
+- (void)widgetsWithTimelines:(id)timelines
 {
-  v4 = a3;
+  timelinesCopy = timelines;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__CHSToolServiceConnection_widgetsWithTimelines___block_invoke;
   v7[3] = &unk_1E74535E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = timelinesCopy;
+  v6 = timelinesCopy;
   dispatch_async(queue, v7);
 }
 
@@ -536,20 +536,20 @@ void __49__CHSToolServiceConnection_widgetsWithTimelines___block_invoke_2(uint64
   (*(v5 + 16))(v5, v6, v7);
 }
 
-- (void)timelineForWidgetKey:(id)a3 completion:(id)a4
+- (void)timelineForWidgetKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__CHSToolServiceConnection_timelineForWidgetKey_completion___block_invoke;
   block[3] = &unk_1E7453160;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = keyCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = keyCopy;
   dispatch_async(queue, block);
 }
 
@@ -619,18 +619,18 @@ void __60__CHSToolServiceConnection_timelineForWidgetKey_completion___block_invo
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resetCaches:(unint64_t)a3 completion:(id)a4
+- (void)resetCaches:(unint64_t)caches completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__CHSToolServiceConnection_resetCaches_completion___block_invoke;
   block[3] = &unk_1E74536D8;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  cachesCopy = caches;
   block[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -677,26 +677,26 @@ void __51__CHSToolServiceConnection_resetCaches_completion___block_invoke_2(uint
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)reloadControlsOfKind:(id)a3 containedIn:(id)a4 reason:(id)a5 completion:(id)a6
+- (void)reloadControlsOfKind:(id)kind containedIn:(id)in reason:(id)reason completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  kindCopy = kind;
+  inCopy = in;
+  reasonCopy = reason;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __79__CHSToolServiceConnection_reloadControlsOfKind_containedIn_reason_completion___block_invoke;
   block[3] = &unk_1E7453728;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = kindCopy;
+  v21 = inCopy;
+  v22 = reasonCopy;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = reasonCopy;
+  v17 = inCopy;
+  v18 = kindCopy;
   dispatch_async(queue, block);
 }
 
@@ -749,26 +749,26 @@ void __79__CHSToolServiceConnection_reloadControlsOfKind_containedIn_reason_comp
   (*(a1[7] + 16))();
 }
 
-- (void)reloadTimelinesOfKind:(id)a3 containedIn:(id)a4 reason:(id)a5 completion:(id)a6
+- (void)reloadTimelinesOfKind:(id)kind containedIn:(id)in reason:(id)reason completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  kindCopy = kind;
+  inCopy = in;
+  reasonCopy = reason;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __80__CHSToolServiceConnection_reloadTimelinesOfKind_containedIn_reason_completion___block_invoke;
   block[3] = &unk_1E7453728;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = kindCopy;
+  v21 = inCopy;
+  v22 = reasonCopy;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = reasonCopy;
+  v17 = inCopy;
+  v18 = kindCopy;
   dispatch_async(queue, block);
 }
 
@@ -852,20 +852,20 @@ void __54__CHSToolServiceConnection_expireLocationGracePeriods__block_invoke(uin
   }
 }
 
-- (void)contentURLForActivityID:(id)a3 completion:(id)a4
+- (void)contentURLForActivityID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __63__CHSToolServiceConnection_contentURLForActivityID_completion___block_invoke;
   block[3] = &unk_1E7453160;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
   dispatch_async(queue, block);
 }
 
@@ -888,20 +888,20 @@ void __63__CHSToolServiceConnection_contentURLForActivityID_completion___block_i
   }
 }
 
-- (void)runReaper:(id)a3 completion:(id)a4
+- (void)runReaper:(id)reaper completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  reaperCopy = reaper;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__CHSToolServiceConnection_runReaper_completion___block_invoke;
   block[3] = &unk_1E7453160;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = reaperCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = reaperCopy;
   dispatch_async(queue, block);
 }
 
@@ -924,17 +924,17 @@ void __49__CHSToolServiceConnection_runReaper_completion___block_invoke(uint64_t
   }
 }
 
-- (void)fetchWidgetSceneInfoWithCompletion:(id)a3
+- (void)fetchWidgetSceneInfoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__CHSToolServiceConnection_fetchWidgetSceneInfoWithCompletion___block_invoke;
   v7[3] = &unk_1E74535E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -957,20 +957,20 @@ void __63__CHSToolServiceConnection_fetchWidgetSceneInfoWithCompletion___block_i
   }
 }
 
-- (void)subscribeToTaskServiceStateWithDelegate:(id)a3 completion:(id)a4
+- (void)subscribeToTaskServiceStateWithDelegate:(id)delegate completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __79__CHSToolServiceConnection_subscribeToTaskServiceStateWithDelegate_completion___block_invoke;
   block[3] = &unk_1E7453160;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = delegateCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = delegateCopy;
   dispatch_async(queue, block);
 }
 
@@ -1004,17 +1004,17 @@ void __79__CHSToolServiceConnection_subscribeToTaskServiceStateWithDelegate_comp
   }
 }
 
-- (void)taskServiceStateDidChange:(id)a3
+- (void)taskServiceStateDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__CHSToolServiceConnection_taskServiceStateDidChange___block_invoke;
   v7[3] = &unk_1E7453000;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1076,14 +1076,14 @@ void __54__CHSToolServiceConnection_taskServiceStateDidChange___block_invoke_2(u
 - (id)_queue_remoteTarget
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(BSServiceConnection *)self->_queue_connection remoteTarget];
-  if (!v3)
+  remoteTarget = [(BSServiceConnection *)self->_queue_connection remoteTarget];
+  if (!remoteTarget)
   {
     [(CHSToolServiceConnection *)self _queue_createConnection];
-    v3 = [(BSServiceConnection *)self->_queue_connection remoteTarget];
+    remoteTarget = [(BSServiceConnection *)self->_queue_connection remoteTarget];
   }
 
-  return v3;
+  return remoteTarget;
 }
 
 - (void)_queue_createConnection
@@ -1165,15 +1165,15 @@ void __51__CHSToolServiceConnection__queue_createConnection__block_invoke_42()
   }
 }
 
-- (void)_queue_addClient:(id)a3
+- (void)_queue_addClient:(id)client
 {
-  v7 = a3;
+  clientCopy = client;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = v7;
-  if (!v7)
+  v5 = clientCopy;
+  if (!clientCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"CHSToolServiceConnection.m" lineNumber:376 description:{@"Invalid parameter not satisfying: %@", @"client != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CHSToolServiceConnection.m" lineNumber:376 description:{@"Invalid parameter not satisfying: %@", @"client != nil"}];
 
     v5 = 0;
   }
@@ -1181,15 +1181,15 @@ void __51__CHSToolServiceConnection__queue_createConnection__block_invoke_42()
   [(NSMutableSet *)self->_queue_clients addObject:v5];
 }
 
-- (void)_queue_removeClient:(id)a3
+- (void)_queue_removeClient:(id)client
 {
-  v7 = a3;
+  clientCopy = client;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = v7;
-  if (!v7)
+  v5 = clientCopy;
+  if (!clientCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"CHSToolServiceConnection.m" lineNumber:383 description:{@"Invalid parameter not satisfying: %@", @"client != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CHSToolServiceConnection.m" lineNumber:383 description:{@"Invalid parameter not satisfying: %@", @"client != nil"}];
 
     v5 = 0;
   }

@@ -1,30 +1,30 @@
 @interface VCPMADServiceImageDataAsset
 - (CGSize)resolution;
-- (VCPMADServiceImageDataAsset)initWithImageData:(id)a3 uniformTypeIdentifier:(id)a4 identifier:(id)a5 clientBundleID:(id)a6 clientTeamID:(id)a7;
+- (VCPMADServiceImageDataAsset)initWithImageData:(id)data uniformTypeIdentifier:(id)identifier identifier:(id)a5 clientBundleID:(id)d clientTeamID:(id)iD;
 - (id)cachedParseData;
 - (id)documentObservations;
-- (int)loadPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int *)a4;
-- (void)setCachedParseData:(id)a3 overwriteExisting:(BOOL)a4;
-- (void)setDocumentObservations:(id)a3;
+- (int)loadPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int *)orientation;
+- (void)setCachedParseData:(id)data overwriteExisting:(BOOL)existing;
+- (void)setDocumentObservations:(id)observations;
 @end
 
 @implementation VCPMADServiceImageDataAsset
 
-- (VCPMADServiceImageDataAsset)initWithImageData:(id)a3 uniformTypeIdentifier:(id)a4 identifier:(id)a5 clientBundleID:(id)a6 clientTeamID:(id)a7
+- (VCPMADServiceImageDataAsset)initWithImageData:(id)data uniformTypeIdentifier:(id)identifier identifier:(id)a5 clientBundleID:(id)d clientTeamID:(id)iD
 {
-  v13 = a3;
-  v14 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   v15 = a5;
   v19.receiver = self;
   v19.super_class = VCPMADServiceImageDataAsset;
-  v16 = [(VCPMADServiceImageAsset *)&v19 initWithClientBundleID:a6 clientTeamID:a7];
+  v16 = [(VCPMADServiceImageAsset *)&v19 initWithClientBundleID:d clientTeamID:iD];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_imageData, a3);
+    objc_storeStrong(&v16->_imageData, data);
     v17->_orientation = 1;
     objc_storeStrong(&v17->_identifier, a5);
-    objc_storeStrong(&v17->_uniformTypeIdentifier, a4);
+    objc_storeStrong(&v17->_uniformTypeIdentifier, identifier);
   }
 
   return v17;
@@ -57,7 +57,7 @@
   return result;
 }
 
-- (int)loadPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int *)a4
+- (int)loadPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int *)orientation
 {
   v20 = *MEMORY[0x1E69E9840];
   value = self->_pixelBuffer.value_;
@@ -70,9 +70,9 @@
     v11 = v10;
     if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
     {
-      v12 = [(VCPMADServiceImageAsset *)self signpostPayload];
+      signpostPayload = [(VCPMADServiceImageAsset *)self signpostPayload];
       *v19 = 138412290;
-      *&v19[4] = v12;
+      *&v19[4] = signpostPayload;
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "VCPMADServiceImageDataAsset_Decode", "%@", v19, 0xCu);
     }
 
@@ -85,9 +85,9 @@
     v15 = v14;
     if (v9 - 1 < 0xFFFFFFFFFFFFFFFELL && os_signpost_enabled(v14))
     {
-      v16 = [(VCPMADServiceImageAsset *)self signpostPayload];
+      signpostPayload2 = [(VCPMADServiceImageAsset *)self signpostPayload];
       *v19 = 138412290;
-      *&v19[4] = v16;
+      *&v19[4] = signpostPayload2;
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v15, OS_SIGNPOST_INTERVAL_END, v9, "VCPMADServiceImageDataAsset_Decode", "%@", v19, 0xCu);
     }
 
@@ -100,8 +100,8 @@
 
   v17 = CFRetain(value);
   result = 0;
-  *a3 = v17;
-  *a4 = self->_orientation;
+  *buffer = v17;
+  *orientation = self->_orientation;
   return result;
 }
 
@@ -121,10 +121,10 @@
   return documentObservations;
 }
 
-- (void)setDocumentObservations:(id)a3
+- (void)setDocumentObservations:(id)observations
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  observationsCopy = observations;
+  v4 = [observationsCopy copy];
   documentObservations = self->_documentObservations;
   self->_documentObservations = v4;
 }
@@ -145,10 +145,10 @@
   return cachedParseData;
 }
 
-- (void)setCachedParseData:(id)a3 overwriteExisting:(BOOL)a4
+- (void)setCachedParseData:(id)data overwriteExisting:(BOOL)existing
 {
-  v7 = a3;
-  v5 = [v7 copy];
+  dataCopy = data;
+  v5 = [dataCopy copy];
   cachedParseData = self->_cachedParseData;
   self->_cachedParseData = v5;
 

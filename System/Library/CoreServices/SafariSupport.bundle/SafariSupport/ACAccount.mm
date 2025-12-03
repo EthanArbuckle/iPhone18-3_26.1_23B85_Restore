@@ -7,20 +7,20 @@
 
 - (NSData)safari_deprecatedUsernameAccountHash
 {
-  v2 = [(ACAccount *)self username];
-  v3 = [v2 dataUsingEncoding:4];
-  v4 = [v3 safari_SHA1Hash];
+  username = [(ACAccount *)self username];
+  v3 = [username dataUsingEncoding:4];
+  safari_SHA1Hash = [v3 safari_SHA1Hash];
 
-  return v4;
+  return safari_SHA1Hash;
 }
 
 - (NSData)safari_accountHash
 {
-  v2 = [(ACAccount *)self aa_altDSID];
-  v3 = [v2 dataUsingEncoding:4];
-  v4 = [v3 safari_SHA1Hash];
+  aa_altDSID = [(ACAccount *)self aa_altDSID];
+  v3 = [aa_altDSID dataUsingEncoding:4];
+  safari_SHA1Hash = [v3 safari_SHA1Hash];
 
-  return v4;
+  return safari_SHA1Hash;
 }
 
 @end

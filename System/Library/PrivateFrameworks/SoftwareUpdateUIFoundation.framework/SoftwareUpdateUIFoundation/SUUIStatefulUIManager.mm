@@ -1,8 +1,8 @@
 @interface SUUIStatefulUIManager
 + (id)_generateStateTable;
-- (BOOL)assignScanResults:(id)a3;
-- (BOOL)doesTargetedUpdateMatchDescriptor:(id)a3;
-- (BOOL)doesTargetedUpdateMatchDescriptorRole:(unint64_t)a3;
+- (BOOL)assignScanResults:(id)results;
+- (BOOL)doesTargetedUpdateMatchDescriptor:(id)descriptor;
+- (BOOL)doesTargetedUpdateMatchDescriptorRole:(unint64_t)role;
 - (BOOL)getEnrollInBetaUpdatesStatus;
 - (BOOL)hasHiddenDescriptors;
 - (BOOL)isDelayingUpdate;
@@ -10,107 +10,107 @@
 - (BOOL)isPerformingRefresh;
 - (BOOL)isPerformingUpdate;
 - (BOOL)isPreferredUpdatePromotedAsAlternate;
-- (BOOL)updateOperationShouldPerformUnattendedPurge:(id)a3;
+- (BOOL)updateOperationShouldPerformUnattendedPurge:(id)purge;
 - (SUUIDownload)currentDownload;
 - (SUUIStatefulUIEnvironment)environment;
-- (SUUIStatefulUIManager)initWithEnvironment:(id)a3;
+- (SUUIStatefulUIManager)initWithEnvironment:(id)environment;
 - (SUUIStatefulUIManagerDelegate)delegate;
-- (id)contextForDownloadAndInstallUpdateOperation:(id)a3;
-- (id)contextForDownloadAndScheduleUpdateOperation:(id)a3;
-- (id)contextForDownloadUpdateOperation:(id)a3;
-- (id)contextForFullScanOperation:(id)a3 withThirdPartyScanResults:(id)a4 scanError:(id)a5 forceReloadScanResults:(BOOL)a6;
-- (id)contextForInstallUpdateOperation:(id)a3;
-- (id)contextForPurgeUpdateOperation:(id)a3 forUserRequestedOperation:(BOOL)a4 notifyUser:(BOOL)a5;
-- (id)contextForRefreshScanOperation:(id)a3 withPreviouslyDiscoveredDownload:(id)a4 encounteredError:(id)a5;
-- (id)contextForScheduleUpdateOperation:(id)a3;
-- (id)contextForUserPromotionUpdateOperation:(id)a3;
-- (id)contextForUserUnscheduleUpdateOperation:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)contextForDownloadAndInstallUpdateOperation:(id)operation;
+- (id)contextForDownloadAndScheduleUpdateOperation:(id)operation;
+- (id)contextForDownloadUpdateOperation:(id)operation;
+- (id)contextForFullScanOperation:(id)operation withThirdPartyScanResults:(id)results scanError:(id)error forceReloadScanResults:(BOOL)scanResults;
+- (id)contextForInstallUpdateOperation:(id)operation;
+- (id)contextForPurgeUpdateOperation:(id)operation forUserRequestedOperation:(BOOL)requestedOperation notifyUser:(BOOL)user;
+- (id)contextForRefreshScanOperation:(id)operation withPreviouslyDiscoveredDownload:(id)download encounteredError:(id)error;
+- (id)contextForScheduleUpdateOperation:(id)operation;
+- (id)contextForUserPromotionUpdateOperation:(id)operation;
+- (id)contextForUserUnscheduleUpdateOperation:(id)operation;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)currentInstalledNeRDInfo;
 - (id)latestUpdateStatefulDescriptor;
-- (id)targetedUpdateForDownload:(id)a3;
-- (id)targetedUpdateMatchingDescriptor:(id)a3;
+- (id)targetedUpdateForDownload:(id)download;
+- (id)targetedUpdateMatchingDescriptor:(id)descriptor;
 - (id)targetedUpdateStatefulDescriptor;
-- (int64_t)convertFSMStateToUIState:(id)a3;
-- (int64_t)fsmAction_CheckForAvailableUpdate:(id)a3 error:(id *)a4;
-- (int64_t)fsmAction_RefreshScanResults:(id)a3 error:(id *)a4;
-- (int64_t)fsmAction_ReportNoUpdateFound:(id)a3 error:(id *)a4;
-- (int64_t)fsmAction_ReportRefreshScanResults:(id)a3 error:(id *)a4;
-- (int64_t)fsmAction_ReportRefreshScanResultsFailed:(id)a3 error:(id *)a4;
-- (int64_t)fsmAction_ReportScanFailed:(id)a3 error:(id *)a4;
-- (int64_t)fsmAction_ReportUpdatesAvailable:(id)a3 error:(id *)a4;
-- (int64_t)fsmAction_actionUnknownAction:(id)a3 error:(id *)a4;
-- (int64_t)performAction:(id)a3 onEvent:(id)a4 inState:(id)a5 withInfo:(id)a6 nextState:(id)a7 error:(id *)a8;
-- (void)assignDescriptorOfType:(unint64_t)a3 fromSearchResults:(id)a4;
-- (void)assignDownloadAndScheduleUpdateResults:(id)a3;
-- (void)assignDownloadUpdateResults:(id)a3;
-- (void)assignFullScanResults:(id)a3;
-- (void)assignInstallUpdateResults:(id)a3;
-- (void)assignScheduleUpdateResults:(id)a3;
-- (void)assignUnscheduleUpdateResults:(id)a3;
-- (void)assignUserPromotionUpdateResults:(id)a3;
-- (void)checkForAvailableUpdates:(BOOL)a3 forceScan:(BOOL)a4;
-- (void)checkForAvailableUpdatesWithCompletion:(id)a3;
-- (void)checkForAvailableUpdatesWithForcedReload:(BOOL)a3 completion:(id)a4;
-- (void)checkForAvailableUpdatesWithRetriesCount:(unsigned __int8)a3;
-- (void)checkForUpdatesInBackground:(BOOL)a3 forceScan:(BOOL)a4;
-- (void)checkForUpdatesInBackgroundWithCompletion:(id)a3;
-- (void)checkForUpdatesInBackgroundWithForcedReload:(BOOL)a3 completion:(id)a4;
-- (void)clearPastDownload:(id)a3;
+- (int64_t)convertFSMStateToUIState:(id)state;
+- (int64_t)fsmAction_CheckForAvailableUpdate:(id)update error:(id *)error;
+- (int64_t)fsmAction_RefreshScanResults:(id)results error:(id *)error;
+- (int64_t)fsmAction_ReportNoUpdateFound:(id)found error:(id *)error;
+- (int64_t)fsmAction_ReportRefreshScanResults:(id)results error:(id *)error;
+- (int64_t)fsmAction_ReportRefreshScanResultsFailed:(id)failed error:(id *)error;
+- (int64_t)fsmAction_ReportScanFailed:(id)failed error:(id *)error;
+- (int64_t)fsmAction_ReportUpdatesAvailable:(id)available error:(id *)error;
+- (int64_t)fsmAction_actionUnknownAction:(id)action error:(id *)error;
+- (int64_t)performAction:(id)action onEvent:(id)event inState:(id)state withInfo:(id)info nextState:(id)nextState error:(id *)error;
+- (void)assignDescriptorOfType:(unint64_t)type fromSearchResults:(id)results;
+- (void)assignDownloadAndScheduleUpdateResults:(id)results;
+- (void)assignDownloadUpdateResults:(id)results;
+- (void)assignFullScanResults:(id)results;
+- (void)assignInstallUpdateResults:(id)results;
+- (void)assignScheduleUpdateResults:(id)results;
+- (void)assignUnscheduleUpdateResults:(id)results;
+- (void)assignUserPromotionUpdateResults:(id)results;
+- (void)checkForAvailableUpdates:(BOOL)updates forceScan:(BOOL)scan;
+- (void)checkForAvailableUpdatesWithCompletion:(id)completion;
+- (void)checkForAvailableUpdatesWithForcedReload:(BOOL)reload completion:(id)completion;
+- (void)checkForAvailableUpdatesWithRetriesCount:(unsigned __int8)count;
+- (void)checkForUpdatesInBackground:(BOOL)background forceScan:(BOOL)scan;
+- (void)checkForUpdatesInBackgroundWithCompletion:(id)completion;
+- (void)checkForUpdatesInBackgroundWithForcedReload:(BOOL)reload completion:(id)completion;
+- (void)clearPastDownload:(id)download;
 - (void)clearPastScanResults;
-- (void)doEnrollInBetaUpdatesProgram:(id)a3 activity:(suui_activity_s *)a4 completionHandler:(id)a5;
-- (void)doEnrollInBetaUpdatesProgram:(id)a3 afterPurgeConfirmation:(int64_t)a4 activity:(suui_activity_s *)a5 completionHandler:(id)a6;
-- (void)doUnenrollFromBetaUpdates:(suui_activity_s *)a3 completionHandler:(id)a4;
-- (void)doUnenrollFromBetaUpdatesAfterPurgeConfirmation:(int64_t)a3 activity:(suui_activity_s *)a4 completionHandler:(id)a5;
-- (void)downloadAndInstall:(id)a3 operationDelegate:(id)a4 delegateCallbackQueue:(id)a5 completionHandler:(id)a6;
-- (void)downloadAndScheduleUpdate:(id)a3 operationDelegate:(id)a4 delegateCallbackQueue:(id)a5 completionHandler:(id)a6;
-- (void)downloadUpdate:(id)a3 operationDelegate:(id)a4 delegateCallbackQueue:(id)a5 completionHandler:(id)a6;
-- (void)enrollInBetaUpdatesProgram:(id)a3 completionHandler:(id)a4;
-- (void)executeOperationOnDelegate:(SEL)a3 usingBlock:(id)a4;
-- (void)handleFailedFullScan:(id)a3;
-- (void)handleFullScanResults:(id)a3;
-- (void)handleRefreshScanResults:(id)a3;
+- (void)doEnrollInBetaUpdatesProgram:(id)program activity:(suui_activity_s *)activity completionHandler:(id)handler;
+- (void)doEnrollInBetaUpdatesProgram:(id)program afterPurgeConfirmation:(int64_t)confirmation activity:(suui_activity_s *)activity completionHandler:(id)handler;
+- (void)doUnenrollFromBetaUpdates:(suui_activity_s *)updates completionHandler:(id)handler;
+- (void)doUnenrollFromBetaUpdatesAfterPurgeConfirmation:(int64_t)confirmation activity:(suui_activity_s *)activity completionHandler:(id)handler;
+- (void)downloadAndInstall:(id)install operationDelegate:(id)delegate delegateCallbackQueue:(id)queue completionHandler:(id)handler;
+- (void)downloadAndScheduleUpdate:(id)update operationDelegate:(id)delegate delegateCallbackQueue:(id)queue completionHandler:(id)handler;
+- (void)downloadUpdate:(id)update operationDelegate:(id)delegate delegateCallbackQueue:(id)queue completionHandler:(id)handler;
+- (void)enrollInBetaUpdatesProgram:(id)program completionHandler:(id)handler;
+- (void)executeOperationOnDelegate:(SEL)delegate usingBlock:(id)block;
+- (void)handleFailedFullScan:(id)scan;
+- (void)handleFullScanResults:(id)results;
+- (void)handleRefreshScanResults:(id)results;
 - (void)hideAlternateUpdate;
 - (void)hideNonTargetedUpdateDescriptors;
 - (void)hidePreferredUpdate;
-- (void)installUpdate:(id)a3 operationDelegate:(id)a4 delegateCallbackQueue:(id)a5 completionHandler:(id)a6;
-- (void)notifyFullScanResultsDelegates:(id)a3 andError:(id)a4;
-- (void)notifyRefreshScanResultsDelegates:(id)a3 andError:(id)a4;
-- (void)performFullScan:(id)a3;
-- (void)performFullScanWithScanResults:(id)a3 andScanError:(id)a4;
-- (void)performPostUpdateOperationRefreshWithDownload:(id)a3 error:(id)a4 completionHandler:(id)a5;
-- (void)performRefreshScan:(id)a3;
-- (void)performSelector:(SEL)a3 onTarget:(id)a4 withObject:(id)a5 withObject:(id)a6 withObject:(id)a7 withObject:(id)a8;
-- (void)performUpdateOnDownloadByApplyingSelector:(SEL)a3 context:(id)a4 description:(id)a5 delegate:(id)a6 delegateCallbackQueue:(id)a7 resultsValidation:(id)a8 resultsAssignment:(id)a9 completion:(id)a10;
-- (void)performUpdateOperation:(int64_t)a3 withDescriptor:(id)a4 byApplyingSelector:(SEL)a5 context:(id)a6 auxiliaryOperation:(BOOL)a7 delegate:(id)a8 delegateCallbackQueue:(id)a9 resultsValidation:(id)a10 resultsAssignment:(id)a11 completion:(id)a12;
-- (void)promoteTargetedUpdateToUserInitiatedStatus:(id)a3 delegateCallbackQueue:(id)a4 completionHandler:(id)a5;
-- (void)refreshBetaUpdates:(id)a3;
-- (void)refreshBetaUpdates:(id)a3 withRecheckForAvailableUpdates:(BOOL)a4;
-- (void)refreshStateWithCompletion:(id)a3;
-- (void)refreshStateWithCompletion:(id)a3 forced:(BOOL)a4;
+- (void)installUpdate:(id)update operationDelegate:(id)delegate delegateCallbackQueue:(id)queue completionHandler:(id)handler;
+- (void)notifyFullScanResultsDelegates:(id)delegates andError:(id)error;
+- (void)notifyRefreshScanResultsDelegates:(id)delegates andError:(id)error;
+- (void)performFullScan:(id)scan;
+- (void)performFullScanWithScanResults:(id)results andScanError:(id)error;
+- (void)performPostUpdateOperationRefreshWithDownload:(id)download error:(id)error completionHandler:(id)handler;
+- (void)performRefreshScan:(id)scan;
+- (void)performSelector:(SEL)selector onTarget:(id)target withObject:(id)object withObject:(id)withObject withObject:(id)a7 withObject:(id)a8;
+- (void)performUpdateOnDownloadByApplyingSelector:(SEL)selector context:(id)context description:(id)description delegate:(id)delegate delegateCallbackQueue:(id)queue resultsValidation:(id)validation resultsAssignment:(id)assignment completion:(id)self0;
+- (void)performUpdateOperation:(int64_t)operation withDescriptor:(id)descriptor byApplyingSelector:(SEL)selector context:(id)context auxiliaryOperation:(BOOL)auxiliaryOperation delegate:(id)delegate delegateCallbackQueue:(id)queue resultsValidation:(id)self0 resultsAssignment:(id)self1 completion:(id)self2;
+- (void)promoteTargetedUpdateToUserInitiatedStatus:(id)status delegateCallbackQueue:(id)queue completionHandler:(id)handler;
+- (void)refreshBetaUpdates:(id)updates;
+- (void)refreshBetaUpdates:(id)updates withRecheckForAvailableUpdates:(BOOL)availableUpdates;
+- (void)refreshStateWithCompletion:(id)completion;
+- (void)refreshStateWithCompletion:(id)completion forced:(BOOL)forced;
 - (void)revealHiddenAlteranteUpdate;
 - (void)revealHiddenPreferredUpdate;
-- (void)scheduleUpdate:(id)a3 operationDelegate:(id)a4 delegateCallbackQueue:(id)a5 completionHandler:(id)a6;
-- (void)setCurrentDownload:(id)a3;
+- (void)scheduleUpdate:(id)update operationDelegate:(id)delegate delegateCallbackQueue:(id)queue completionHandler:(id)handler;
+- (void)setCurrentDownload:(id)download;
 - (void)setupFSM;
-- (void)unenrollFromBetaUpdatesWithCompletion:(id)a3;
-- (void)unscheduleTargetedUpdateAutomaticInstallation:(id)a3 delegateCallbackQueue:(id)a4 completionHandler:(id)a5;
-- (void)updateDescriptorsUsingScanResults:(id)a3 andWithConcreteError:(id)a4;
-- (void)updateNeRDVersionWithOptions:(id)a3;
+- (void)unenrollFromBetaUpdatesWithCompletion:(id)completion;
+- (void)unscheduleTargetedUpdateAutomaticInstallation:(id)installation delegateCallbackQueue:(id)queue completionHandler:(id)handler;
+- (void)updateDescriptorsUsingScanResults:(id)results andWithConcreteError:(id)error;
+- (void)updateNeRDVersionWithOptions:(id)options;
 @end
 
 @implementation SUUIStatefulUIManager
 
 - (SUUIDownload)currentDownload
 {
-  v5 = self;
+  selfCopy = self;
   v4[2] = a2;
   v4[0] = 3;
   p_lock = &self->_lock;
   v7 = 0;
   os_unfair_recursive_lock_lock_with_options();
   v4[1] = p_lock;
-  v6 = MEMORY[0x277D82BE0](v5->_currentDownload);
+  v6 = MEMORY[0x277D82BE0](selfCopy->_currentDownload);
   v9 = v4;
   os_unfair_recursive_lock_unlock();
   v2 = v6;
@@ -118,33 +118,33 @@
   return v2;
 }
 
-- (void)setCurrentDownload:(id)a3
+- (void)setCurrentDownload:(id)download
 {
   v29 = *MEMORY[0x277D85DE8];
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v22 = [(SUUIStatefulUIManager *)v24 currentDownload];
-  if (location[0] != v22 || ([v22 isUninitialized] & 1) != 0)
+  objc_storeStrong(location, download);
+  currentDownload = [(SUUIStatefulUIManager *)selfCopy currentDownload];
+  if (location[0] != currentDownload || ([currentDownload isUninitialized] & 1) != 0)
   {
     v6 = +[SUUILoggingContext statefulUILogger];
-    v21 = [v6 oslog];
+    oslog = [v6 oslog];
     MEMORY[0x277D82BD8](v6);
     v20 = OS_LOG_TYPE_DEFAULT;
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = v24;
+      v5 = selfCopy;
       v18 = 0;
       v16 = 0;
       v14 = 0;
-      if (v22 && (v19 = [v22 descriptor], v18 = 1, v19))
+      if (currentDownload && (v19 = [currentDownload descriptor], v18 = 1, v19))
       {
-        v17 = [v22 descriptor];
+        descriptor = [currentDownload descriptor];
         v16 = 1;
-        v15 = [v17 updateName];
+        updateName = [descriptor updateName];
         v14 = 1;
-        v4 = v15;
+        v4 = updateName;
       }
 
       else
@@ -157,11 +157,11 @@
       v8 = 0;
       if (location[0] && (v13 = [location[0] descriptor], v12 = 1, v13))
       {
-        v11 = [location[0] descriptor];
+        descriptor2 = [location[0] descriptor];
         v10 = 1;
-        v9 = [v11 updateName];
+        updateName2 = [descriptor2 updateName];
         v8 = 1;
-        v3 = v9;
+        v3 = updateName2;
       }
 
       else
@@ -169,16 +169,16 @@
         v3 = @"N/A";
       }
 
-      __os_log_helper_16_2_7_8_32_8_0_8_32_8_66_8_0_8_66_8_0(v28, "[SUUIStatefulUIManager setCurrentDownload:]", v5, "[SUUIStatefulUIManager setCurrentDownload:]", v4, v22, v3, location[0]);
-      _os_log_impl(&dword_26ADE5000, v21, v20, "%s [%p]: %s: Replacing the current download object with a new one.\n\tCurrent: %{public}@ (%p)\n\tNew: %{public}@ (%p)\n", v28, 0x48u);
+      __os_log_helper_16_2_7_8_32_8_0_8_32_8_66_8_0_8_66_8_0(v28, "[SUUIStatefulUIManager setCurrentDownload:]", v5, "[SUUIStatefulUIManager setCurrentDownload:]", v4, currentDownload, v3, location[0]);
+      _os_log_impl(&dword_26ADE5000, oslog, v20, "%s [%p]: %s: Replacing the current download object with a new one.\n\tCurrent: %{public}@ (%p)\n\tNew: %{public}@ (%p)\n", v28, 0x48u);
       if (v8)
       {
-        MEMORY[0x277D82BD8](v9);
+        MEMORY[0x277D82BD8](updateName2);
       }
 
       if (v10)
       {
-        MEMORY[0x277D82BD8](v11);
+        MEMORY[0x277D82BD8](descriptor2);
       }
 
       if (v12)
@@ -188,12 +188,12 @@
 
       if (v14)
       {
-        MEMORY[0x277D82BD8](v15);
+        MEMORY[0x277D82BD8](updateName);
       }
 
       if (v16)
       {
-        MEMORY[0x277D82BD8](v17);
+        MEMORY[0x277D82BD8](descriptor);
       }
 
       if (v18)
@@ -202,87 +202,87 @@
       }
     }
 
-    objc_storeStrong(&v21, 0);
+    objc_storeStrong(&oslog, 0);
     v7[0] = 3;
-    p_lock = &v24->_lock;
+    p_lock = &selfCopy->_lock;
     v25 = 0;
     os_unfair_recursive_lock_lock_with_options();
     v7[1] = p_lock;
-    objc_storeStrong(&v24->_currentDownload, location[0]);
+    objc_storeStrong(&selfCopy->_currentDownload, location[0]);
     v27 = v7;
     os_unfair_recursive_lock_unlock();
   }
 
-  objc_storeStrong(&v22, 0);
+  objc_storeStrong(&currentDownload, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (SUUIStatefulUIManager)initWithEnvironment:(id)a3
+- (SUUIStatefulUIManager)initWithEnvironment:(id)environment
 {
   v32 = *MEMORY[0x277D85DE8];
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v28;
-  v28 = 0;
+  objc_storeStrong(location, environment);
+  v3 = selfCopy;
+  selfCopy = 0;
   v26.receiver = v3;
   v26.super_class = SUUIStatefulUIManager;
   v21 = [(SUUIStatefulUIManager *)&v26 init];
-  v28 = v21;
-  objc_storeStrong(&v28, v21);
+  selfCopy = v21;
+  objc_storeStrong(&selfCopy, v21);
   if (!v21)
   {
 LABEL_9:
-    v29 = MEMORY[0x277D82BE0](v28);
+    v29 = MEMORY[0x277D82BE0](selfCopy);
     v23 = 1;
     goto LABEL_10;
   }
 
-  objc_storeWeak(v28 + 3, location[0]);
-  *(v28 + 5) = 0;
+  objc_storeWeak(selfCopy + 3, location[0]);
+  *(selfCopy + 5) = 0;
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v5 = *(v28 + 24);
-  *(v28 + 24) = v4;
+  v5 = *(selfCopy + 24);
+  *(selfCopy + 24) = v4;
   MEMORY[0x277D82BD8](v5);
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v7 = *(v28 + 29);
-  *(v28 + 29) = v6;
+  v7 = *(selfCopy + 29);
+  *(selfCopy + 29) = v6;
   MEMORY[0x277D82BD8](v7);
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v9 = *(v28 + 30);
-  *(v28 + 30) = v8;
+  v9 = *(selfCopy + 30);
+  *(selfCopy + 30) = v8;
   MEMORY[0x277D82BD8](v9);
   v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.stateful-ui.manager.operations-queue", @"com.apple.SoftwareUpdateUI"];
   v10 = v19;
   v11 = dispatch_queue_create([v19 UTF8String], 0);
-  v12 = *(v28 + 26);
-  *(v28 + 26) = v11;
+  v12 = *(selfCopy + 26);
+  *(selfCopy + 26) = v11;
   MEMORY[0x277D82BD8](v12);
   MEMORY[0x277D82BD8](v19);
   v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.stateful-ui.manager.mutation-queue", @"com.apple.SoftwareUpdateUI"];
   v13 = v20;
   v14 = dispatch_queue_create([v20 UTF8String], 0);
-  v15 = *(v28 + 27);
-  *(v28 + 27) = v14;
+  v15 = *(selfCopy + 27);
+  *(selfCopy + 27) = v14;
   MEMORY[0x277D82BD8](v15);
   MEMORY[0x277D82BD8](v20);
   v25[1] = 0;
-  *(v28 + 28) = 0;
-  [v28 setupFSM];
-  if (*(v28 + 25))
+  *(selfCopy + 28) = 0;
+  [selfCopy setupFSM];
+  if (*(selfCopy + 25))
   {
     v17 = +[SUUILoggingContext statefulUILogger];
-    v22 = [v17 oslog];
+    oslog = [v17 oslog];
     MEMORY[0x277D82BD8](v17);
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_2_8_32_8_0(v30, "[SUUIStatefulUIManager initWithEnvironment:]", v28);
-      _os_log_impl(&dword_26ADE5000, v22, OS_LOG_TYPE_DEFAULT, "%s [%p]: Initialized the Stateful UI Manager", v30, 0x16u);
+      __os_log_helper_16_2_2_8_32_8_0(v30, "[SUUIStatefulUIManager initWithEnvironment:]", selfCopy);
+      _os_log_impl(&dword_26ADE5000, oslog, OS_LOG_TYPE_DEFAULT, "%s [%p]: Initialized the Stateful UI Manager", v30, 0x16u);
     }
 
-    objc_storeStrong(&v22, 0);
+    objc_storeStrong(&oslog, 0);
     goto LABEL_9;
   }
 
@@ -292,7 +292,7 @@ LABEL_9:
   v24 = OS_LOG_TYPE_FAULT;
   if (os_log_type_enabled(v25[0], OS_LOG_TYPE_FAULT))
   {
-    __os_log_helper_16_2_2_8_32_8_0(v31, "[SUUIStatefulUIManager initWithEnvironment:]", v28);
+    __os_log_helper_16_2_2_8_32_8_0(v31, "[SUUIStatefulUIManager initWithEnvironment:]", selfCopy);
     _os_log_fault_impl(&dword_26ADE5000, v25[0], v24, "%s [%p]: Failed creating the manager FSM", v31, 0x16u);
   }
 
@@ -301,43 +301,43 @@ LABEL_9:
   v23 = 1;
 LABEL_10:
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v28, 0);
+  objc_storeStrong(&selfCopy, 0);
   *MEMORY[0x277D85DE8];
   return v29;
 }
 
-- (void)checkForAvailableUpdates:(BOOL)a3 forceScan:(BOOL)a4
+- (void)checkForAvailableUpdates:(BOOL)updates forceScan:(BOOL)scan
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
-  v5 = a4;
+  updatesCopy = updates;
+  scanCopy = scan;
   v4 = objc_alloc_init(SUUIStatefulUIManagerFSMParam);
-  [(SUUIStatefulUIManagerFSMParam *)v4 setForceReload:v6];
-  [(SUUIStatefulUIManagerFSMParam *)v4 setForceScan:v5];
-  [(SUCoreFSM *)v8->_managerFSM postEvent:@"CheckForAvailableUpdate" withInfo:v4];
+  [(SUUIStatefulUIManagerFSMParam *)v4 setForceReload:updatesCopy];
+  [(SUUIStatefulUIManagerFSMParam *)v4 setForceScan:scanCopy];
+  [(SUCoreFSM *)selfCopy->_managerFSM postEvent:@"CheckForAvailableUpdate" withInfo:v4];
   objc_storeStrong(&v4, 0);
 }
 
-- (void)checkForAvailableUpdatesWithCompletion:(id)a3
+- (void)checkForAvailableUpdatesWithCompletion:(id)completion
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SUUIStatefulUIManager *)v4 checkForAvailableUpdatesWithForcedReload:0 completion:location[0]];
+  objc_storeStrong(location, completion);
+  [(SUUIStatefulUIManager *)selfCopy checkForAvailableUpdatesWithForcedReload:0 completion:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)checkForAvailableUpdatesWithForcedReload:(BOOL)a3 completion:(id)a4
+- (void)checkForAvailableUpdatesWithForcedReload:(BOOL)reload completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
+  reloadCopy = reload;
   location = 0;
-  objc_storeStrong(&location, a4);
-  objc_initWeak(&v13, v17);
-  queue = v17->_operationsQueue;
+  objc_storeStrong(&location, completion);
+  objc_initWeak(&v13, selfCopy);
+  queue = selfCopy->_operationsQueue;
   v5 = MEMORY[0x277D85DD0];
   v6 = -1073741824;
   v7 = 0;
@@ -346,7 +346,7 @@ LABEL_10:
   objc_copyWeak(v11, &v13);
   v11[1] = v16;
   v10 = MEMORY[0x277D82BE0](location);
-  v12 = v15;
+  v12 = reloadCopy;
   dispatch_async(queue, &v5);
   objc_storeStrong(&v10, 0);
   objc_destroyWeak(v11);
@@ -434,25 +434,25 @@ void __77__SUUIStatefulUIManager_checkForAvailableUpdatesWithForcedReload_comple
   objc_storeStrong(location, 0);
 }
 
-- (void)refreshStateWithCompletion:(id)a3
+- (void)refreshStateWithCompletion:(id)completion
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SUUIStatefulUIManager *)v4 refreshStateWithCompletion:location[0] forced:0];
+  objc_storeStrong(location, completion);
+  [(SUUIStatefulUIManager *)selfCopy refreshStateWithCompletion:location[0] forced:0];
   objc_storeStrong(location, 0);
 }
 
-- (void)refreshStateWithCompletion:(id)a3 forced:(BOOL)a4
+- (void)refreshStateWithCompletion:(id)completion forced:(BOOL)forced
 {
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  v15 = a4;
-  objc_initWeak(&v14, v18);
-  queue = v18->_operationsQueue;
+  objc_storeStrong(&location, completion);
+  forcedCopy = forced;
+  objc_initWeak(&v14, selfCopy);
+  queue = selfCopy->_operationsQueue;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
@@ -461,7 +461,7 @@ void __77__SUUIStatefulUIManager_checkForAvailableUpdatesWithForcedReload_comple
   objc_copyWeak(v12, &v14);
   v12[1] = v17;
   v11 = MEMORY[0x277D82BE0](location);
-  v13 = v15;
+  v13 = forcedCopy;
   dispatch_async(queue, &v6);
   objc_storeStrong(&v11, 0);
   objc_destroyWeak(v12);
@@ -1045,38 +1045,38 @@ void __59__SUUIStatefulUIManager_refreshStateWithCompletion_forced___block_invok
   objc_storeStrong(location, 0);
 }
 
-- (void)checkForUpdatesInBackground:(BOOL)a3 forceScan:(BOOL)a4
+- (void)checkForUpdatesInBackground:(BOOL)background forceScan:(BOOL)scan
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
-  v5 = a4;
+  backgroundCopy = background;
+  scanCopy = scan;
   v4 = objc_alloc_init(SUUIStatefulUIManagerFSMParam);
-  [(SUUIStatefulUIManagerFSMParam *)v4 setForceReload:v6];
-  [(SUUIStatefulUIManagerFSMParam *)v4 setForceScan:v5];
-  [(SUUIStatefulUIManager *)v8 performFullScan:v4];
+  [(SUUIStatefulUIManagerFSMParam *)v4 setForceReload:backgroundCopy];
+  [(SUUIStatefulUIManagerFSMParam *)v4 setForceScan:scanCopy];
+  [(SUUIStatefulUIManager *)selfCopy performFullScan:v4];
   objc_storeStrong(&v4, 0);
 }
 
-- (void)checkForUpdatesInBackgroundWithCompletion:(id)a3
+- (void)checkForUpdatesInBackgroundWithCompletion:(id)completion
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SUUIStatefulUIManager *)v4 checkForUpdatesInBackgroundWithForcedReload:0 completion:location[0]];
+  objc_storeStrong(location, completion);
+  [(SUUIStatefulUIManager *)selfCopy checkForUpdatesInBackgroundWithForcedReload:0 completion:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)checkForUpdatesInBackgroundWithForcedReload:(BOOL)a3 completion:(id)a4
+- (void)checkForUpdatesInBackgroundWithForcedReload:(BOOL)reload completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
+  reloadCopy = reload;
   location = 0;
-  objc_storeStrong(&location, a4);
-  objc_initWeak(&v13, v17);
-  queue = v17->_operationsQueue;
+  objc_storeStrong(&location, completion);
+  objc_initWeak(&v13, selfCopy);
+  queue = selfCopy->_operationsQueue;
   v5 = MEMORY[0x277D85DD0];
   v6 = -1073741824;
   v7 = 0;
@@ -1085,7 +1085,7 @@ void __59__SUUIStatefulUIManager_refreshStateWithCompletion_forced___block_invok
   objc_copyWeak(v11, &v13);
   v11[1] = v16;
   v10 = MEMORY[0x277D82BE0](location);
-  v12 = v15;
+  v12 = reloadCopy;
   dispatch_async(queue, &v5);
   objc_storeStrong(&v10, 0);
   objc_destroyWeak(v11);
@@ -1173,42 +1173,42 @@ void __80__SUUIStatefulUIManager_checkForUpdatesInBackgroundWithForcedReload_com
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)doesTargetedUpdateMatchDescriptorRole:(unint64_t)a3
+- (BOOL)doesTargetedUpdateMatchDescriptorRole:(unint64_t)role
 {
   v88 = &v108;
   v89 = "[SUUIStatefulUIManager doesTargetedUpdateMatchDescriptorRole:]";
   v122 = *MEMORY[0x277D85DE8];
   v115[3] = self;
   v115[2] = a2;
-  v115[1] = a3;
-  if (!a3 || *(v88 + 11) == 1)
+  v115[1] = role;
+  if (!role || *(v88 + 11) == 1)
   {
     v24 = *(v88 + 11);
     v92 = 0;
     v90 = 0;
     if (v24)
     {
-      v91 = [*(v88 + 13) alternateStatefulDescriptor];
+      alternateStatefulDescriptor = [*(v88 + 13) alternateStatefulDescriptor];
       v90 = 1;
-      v30 = v91;
+      v30 = alternateStatefulDescriptor;
     }
 
     else
     {
-      v93 = [*(v88 + 13) preferredStatefulDescriptor];
+      preferredStatefulDescriptor = [*(v88 + 13) preferredStatefulDescriptor];
       v92 = 1;
-      v30 = v93;
+      v30 = preferredStatefulDescriptor;
     }
 
     v94 = MEMORY[0x277D82BE0](v30);
     if (v90)
     {
-      MEMORY[0x277D82BD8](v91);
+      MEMORY[0x277D82BD8](alternateStatefulDescriptor);
     }
 
     if (v92)
     {
-      MEMORY[0x277D82BD8](v93);
+      MEMORY[0x277D82BD8](preferredStatefulDescriptor);
     }
 
     v25 = *(v88 + 13);
@@ -1220,9 +1220,9 @@ void __80__SUUIStatefulUIManager_checkForUpdatesInBackgroundWithForcedReload_com
   else
   {
     v87 = +[SUUILoggingContext statefulUILogger];
-    v3 = [v87 oslog];
+    oslog = [v87 oslog];
     v4 = v87;
-    *(v88 + 10) = v3;
+    *(v88 + 10) = oslog;
     MEMORY[0x277D82BD8](v4);
     type = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(*(v88 + 10), OS_LOG_TYPE_DEFAULT))
@@ -1242,11 +1242,11 @@ void __80__SUUIStatefulUIManager_checkForUpdatesInBackgroundWithForcedReload_com
       v10 = v88;
       v84 = v9;
       *(v88 + 7) = v9;
-      v85 = [v10[13] currentState];
-      v86 = [*(v88 + 13) delegate];
+      currentState = [v10[13] currentState];
+      delegate = [*(v88 + 13) delegate];
       v111 = 0;
       v110 = 0;
-      if (v86)
+      if (delegate)
       {
         *(v88 + 6) = [*(v88 + 13) delegate];
         v76 = 1;
@@ -1264,26 +1264,26 @@ void __80__SUUIStatefulUIManager_checkForUpdatesInBackgroundWithForcedReload_com
       }
 
       v70 = v77;
-      v71 = [*(v88 + 13) delegate];
-      v72 = [*(v88 + 13) scanError];
-      v73 = [*(v88 + 13) preferredStatefulDescriptor];
-      v74 = [*(v88 + 13) alternateStatefulDescriptor];
-      v75 = [*(v88 + 13) currentDownload];
+      delegate2 = [*(v88 + 13) delegate];
+      scanError = [*(v88 + 13) scanError];
+      preferredStatefulDescriptor2 = [*(v88 + 13) preferredStatefulDescriptor];
+      alternateStatefulDescriptor2 = [*(v88 + 13) alternateStatefulDescriptor];
+      currentDownload = [*(v88 + 13) currentDownload];
       v109 = 0;
       v107 = 0;
       v105 = 0;
-      if (v75)
+      if (currentDownload)
       {
-        v13 = [*(v88 + 13) currentDownload];
-        *(v88 + 2) = v13;
+        currentDownload2 = [*(v88 + 13) currentDownload];
+        *(v88 + 2) = currentDownload2;
         v68 = 1;
         v109 = 1;
-        v14 = [v13 descriptor];
-        *v88 = v14;
+        descriptor = [currentDownload2 descriptor];
+        *v88 = descriptor;
         v107 = 1;
-        v106 = [v14 updateName];
+        updateName = [descriptor updateName];
         v105 = v68 & 1;
-        v69 = v106;
+        v69 = updateName;
       }
 
       else
@@ -1292,15 +1292,15 @@ void __80__SUUIStatefulUIManager_checkForUpdatesInBackgroundWithForcedReload_com
       }
 
       v45 = v69;
-      v46 = [*(v88 + 13) currentDownload];
+      currentDownload3 = [*(v88 + 13) currentDownload];
       v47 = SUUIUpdateContinuousOperationTypeToString([*(v88 + 13) currentUpdateOperationType]);
       v48 = MEMORY[0x277D82BE0](v47);
       v104 = v48;
-      v120 = [*(v88 + 13) isTargetedUpdateScheduledForAutoInstall];
+      isTargetedUpdateScheduledForAutoInstall = [*(v88 + 13) isTargetedUpdateScheduledForAutoInstall];
       v58 = @"NO";
       v59 = @"YES";
       v66 = 1;
-      if (v120)
+      if (isTargetedUpdateScheduledForAutoInstall)
       {
         v15 = @"YES";
       }
@@ -1315,8 +1315,8 @@ void __80__SUUIStatefulUIManager_checkForUpdatesInBackgroundWithForcedReload_com
       v50 = v49;
       v51 = MEMORY[0x277D82BE0](v50);
       v103 = v51;
-      v119 = [*(v88 + 13) hidingPreferredDescriptor];
-      if (v119)
+      hidingPreferredDescriptor = [*(v88 + 13) hidingPreferredDescriptor];
+      if (hidingPreferredDescriptor)
       {
         v17 = v59;
       }
@@ -1331,12 +1331,12 @@ void __80__SUUIStatefulUIManager_checkForUpdatesInBackgroundWithForcedReload_com
       v53 = v52;
       v54 = MEMORY[0x277D82BE0](v53);
       v102 = v54;
-      v55 = [*(v88 + 13) hiddenPreferredStatefulDescriptor];
-      v56 = [v55 updateName];
-      v57 = MEMORY[0x277D82BE0](v56);
+      hiddenPreferredStatefulDescriptor = [*(v88 + 13) hiddenPreferredStatefulDescriptor];
+      updateName2 = [hiddenPreferredStatefulDescriptor updateName];
+      v57 = MEMORY[0x277D82BE0](updateName2);
       v101 = v57;
-      v118 = [*(v88 + 13) hidingAlternateDescriptor];
-      if (v118)
+      hidingAlternateDescriptor = [*(v88 + 13) hidingAlternateDescriptor];
+      if (hidingAlternateDescriptor)
       {
         v19 = v59;
       }
@@ -1351,28 +1351,28 @@ void __80__SUUIStatefulUIManager_checkForUpdatesInBackgroundWithForcedReload_com
       v61 = v60;
       v62 = MEMORY[0x277D82BE0](v61);
       v100 = v62;
-      v63 = [*(v88 + 13) hiddenAlternateStatefulDescriptor];
-      v64 = [v63 updateName];
-      v65 = MEMORY[0x277D82BE0](v64);
+      hiddenAlternateStatefulDescriptor = [*(v88 + 13) hiddenAlternateStatefulDescriptor];
+      updateName3 = [hiddenAlternateStatefulDescriptor updateName];
+      v65 = MEMORY[0x277D82BE0](updateName3);
       v99 = v65;
-      v67 = [*(v88 + 13) enrolledBetaProgram];
+      enrolledBetaProgram = [*(v88 + 13) enrolledBetaProgram];
       v97 = 0;
-      if (v67)
+      if (enrolledBetaProgram)
       {
-        v98 = [*(v88 + 13) enrolledBetaProgram];
+        enrolledBetaProgram2 = [*(v88 + 13) enrolledBetaProgram];
         v97 = 1;
-        v44 = [v98 programID];
+        programID = [enrolledBetaProgram2 programID];
       }
 
       else
       {
-        v44 = 0;
+        programID = 0;
       }
 
-      v33 = v44;
+      v33 = programID;
       v34 = [*(*(v88 + 13) + 120) count];
-      v117 = [*(v88 + 13) canEnrollInBetaUpdates];
-      if (v117)
+      canEnrollInBetaUpdates = [*(v88 + 13) canEnrollInBetaUpdates];
+      if (canEnrollInBetaUpdates)
       {
         v21 = @"YES";
       }
@@ -1396,28 +1396,28 @@ void __80__SUUIStatefulUIManager_checkForUpdatesInBackgroundWithForcedReload_com
       v23 = *(v88 + 11);
       v40 = &v27;
       buf = v121;
-      __os_log_helper_16_2_27_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0_8_64_8_0(v121, v89, v80, v82, v84, v85, v70, v71, v72, v73, v74, v45, v46, v48, v51, v54, v57, v62, v65, v33, v34, v35, v36, v37, v38, v39, location, v23);
+      __os_log_helper_16_2_27_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0_8_64_8_0(v121, v89, v80, v82, v84, currentState, v70, delegate2, scanError, preferredStatefulDescriptor2, alternateStatefulDescriptor2, v45, currentDownload3, v48, v51, v54, v57, v62, v65, v33, v34, v35, v36, v37, v38, v39, location, v23);
       _os_log_impl(&dword_26ADE5000, log, v79[0], "%s [%p]: %{public}@ Checkpoint\n\tcurrentState: %{public}@ (%ld)\n\tdelegate: %{public}@ (%p)\n\tscanError: %{public}@\n\tpreferredDescriptor: %{public}@\n\talternateDescriptor: %{public}@\n\tdownload: %{public}@ (%p)\n\tcurrentUpdateOperationType: %{public}@\n\tscheduledForAutoInstall: %{public}@\n\thiddenUpdatesPostSelection: preferred[%{public}@, %{public}@]; alternate[%{public}@, %{public}@];\n\tselectedBetaProgram: %lu (count: %ld, enrollable: %{public}@)\n\tOpFSMs: scan[%p]; refresh[%p]; update[%p]; auxiliaryOperationsCount[%lu]\n\nThe given descriptor role, %@ (%ld), is invalid.", buf, 0x110u);
       MEMORY[0x277D82BD8](v42);
       MEMORY[0x277D82BD8](v43);
       if (v97)
       {
-        MEMORY[0x277D82BD8](v98);
+        MEMORY[0x277D82BD8](enrolledBetaProgram2);
       }
 
-      MEMORY[0x277D82BD8](v67);
-      MEMORY[0x277D82BD8](v64);
-      MEMORY[0x277D82BD8](v63);
+      MEMORY[0x277D82BD8](enrolledBetaProgram);
+      MEMORY[0x277D82BD8](updateName3);
+      MEMORY[0x277D82BD8](hiddenAlternateStatefulDescriptor);
       MEMORY[0x277D82BD8](v61);
-      MEMORY[0x277D82BD8](v56);
-      MEMORY[0x277D82BD8](v55);
+      MEMORY[0x277D82BD8](updateName2);
+      MEMORY[0x277D82BD8](hiddenPreferredStatefulDescriptor);
       MEMORY[0x277D82BD8](v53);
       MEMORY[0x277D82BD8](v50);
       MEMORY[0x277D82BD8](v47);
-      MEMORY[0x277D82BD8](v46);
+      MEMORY[0x277D82BD8](currentDownload3);
       if (v105)
       {
-        MEMORY[0x277D82BD8](v106);
+        MEMORY[0x277D82BD8](updateName);
       }
 
       if (v107)
@@ -1430,11 +1430,11 @@ void __80__SUUIStatefulUIManager_checkForUpdatesInBackgroundWithForcedReload_com
         MEMORY[0x277D82BD8](*(v88 + 2));
       }
 
-      MEMORY[0x277D82BD8](v75);
-      MEMORY[0x277D82BD8](v74);
-      MEMORY[0x277D82BD8](v73);
-      MEMORY[0x277D82BD8](v72);
-      MEMORY[0x277D82BD8](v71);
+      MEMORY[0x277D82BD8](currentDownload);
+      MEMORY[0x277D82BD8](alternateStatefulDescriptor2);
+      MEMORY[0x277D82BD8](preferredStatefulDescriptor2);
+      MEMORY[0x277D82BD8](scanError);
+      MEMORY[0x277D82BD8](delegate2);
       if (v110)
       {
         MEMORY[0x277D82BD8](*(v88 + 4));
@@ -1445,7 +1445,7 @@ void __80__SUUIStatefulUIManager_checkForUpdatesInBackgroundWithForcedReload_com
         MEMORY[0x277D82BD8](*(v88 + 6));
       }
 
-      MEMORY[0x277D82BD8](v86);
+      MEMORY[0x277D82BD8](delegate);
       MEMORY[0x277D82BD8](v83);
       MEMORY[0x277D82BD8](v81);
       obj = 0;
@@ -1470,47 +1470,47 @@ void __80__SUUIStatefulUIManager_checkForUpdatesInBackgroundWithForcedReload_com
   return v116 & 1;
 }
 
-- (BOOL)doesTargetedUpdateMatchDescriptor:(id)a3
+- (BOOL)doesTargetedUpdateMatchDescriptor:(id)descriptor
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = [(SUUIStatefulUIManager *)v11 currentDownload];
+  objc_storeStrong(location, descriptor);
+  currentDownload = [(SUUIStatefulUIManager *)selfCopy currentDownload];
   v7 = 0;
   v5 = 0;
   v4 = 0;
-  if (v9)
+  if (currentDownload)
   {
-    v8 = [v9 descriptor];
+    descriptor = [currentDownload descriptor];
     v7 = 1;
-    v6 = [location[0] descriptor];
+    descriptor2 = [location[0] descriptor];
     v5 = 1;
-    v4 = [v8 isEqual:?];
+    v4 = [descriptor isEqual:?];
   }
 
   v12 = v4 & 1;
   if (v5)
   {
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](descriptor2);
   }
 
   if (v7)
   {
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](descriptor);
   }
 
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&currentDownload, 0);
   objc_storeStrong(location, 0);
   return v12 & 1;
 }
 
 - (id)targetedUpdateStatefulDescriptor
 {
-  v5 = self;
+  selfCopy = self;
   v4[1] = a2;
   v4[0] = [(SUUIStatefulUIManager *)self currentDownload];
-  v3 = [(SUUIStatefulUIManager *)v5 targetedUpdateForDownload:v4[0]];
+  v3 = [(SUUIStatefulUIManager *)selfCopy targetedUpdateForDownload:v4[0]];
   objc_storeStrong(v4, 0);
 
   return v3;
@@ -1518,24 +1518,24 @@ void __80__SUUIStatefulUIManager_checkForUpdatesInBackgroundWithForcedReload_com
 
 - (id)latestUpdateStatefulDescriptor
 {
-  v12 = self;
+  selfCopy = self;
   v11[1] = a2;
   v11[0] = [(SUUIStatefulUIManager *)self preferredStatefulDescriptor];
-  v10 = [(SUUIStatefulUIManager *)v12 alternateStatefulDescriptor];
+  alternateStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy alternateStatefulDescriptor];
   location = MEMORY[0x277D82BE0](v11[0]);
-  if (location || !v10)
+  if (location || !alternateStatefulDescriptor)
   {
-    if (v11[0] && v10)
+    if (v11[0] && alternateStatefulDescriptor)
     {
-      v4 = [v11[0] descriptor];
-      v7 = [v4 productBuildVersion];
-      MEMORY[0x277D82BD8](v4);
-      v5 = [v10 descriptor];
-      v6 = [v5 productBuildVersion];
-      MEMORY[0x277D82BD8](v5);
-      if ([v7 compare:v6 options:64] == -1)
+      descriptor = [v11[0] descriptor];
+      productBuildVersion = [descriptor productBuildVersion];
+      MEMORY[0x277D82BD8](descriptor);
+      descriptor2 = [alternateStatefulDescriptor descriptor];
+      productBuildVersion2 = [descriptor2 productBuildVersion];
+      MEMORY[0x277D82BD8](descriptor2);
+      if ([productBuildVersion compare:productBuildVersion2 options:64] == -1)
       {
-        objc_storeStrong(&location, v10);
+        objc_storeStrong(&location, alternateStatefulDescriptor);
       }
 
       else
@@ -1543,8 +1543,8 @@ void __80__SUUIStatefulUIManager_checkForUpdatesInBackgroundWithForcedReload_com
         objc_storeStrong(&location, v11[0]);
       }
 
-      objc_storeStrong(&v6, 0);
-      objc_storeStrong(&v7, 0);
+      objc_storeStrong(&productBuildVersion2, 0);
+      objc_storeStrong(&productBuildVersion, 0);
     }
 
     v13 = MEMORY[0x277D82BE0](location);
@@ -1553,44 +1553,44 @@ void __80__SUUIStatefulUIManager_checkForUpdatesInBackgroundWithForcedReload_com
 
   else
   {
-    v13 = MEMORY[0x277D82BE0](v10);
+    v13 = MEMORY[0x277D82BE0](alternateStatefulDescriptor);
     v8 = 1;
   }
 
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&alternateStatefulDescriptor, 0);
   objc_storeStrong(v11, 0);
   v2 = v13;
 
   return v2;
 }
 
-- (void)downloadUpdate:(id)a3 operationDelegate:(id)a4 delegateCallbackQueue:(id)a5 completionHandler:(id)a6
+- (void)downloadUpdate:(id)update operationDelegate:(id)delegate delegateCallbackQueue:(id)queue completionHandler:(id)handler
 {
-  v46 = self;
+  selfCopy = self;
   v45 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, update);
   v43 = 0;
-  objc_storeStrong(&v43, a4);
+  objc_storeStrong(&v43, delegate);
   v42 = 0;
-  objc_storeStrong(&v42, a5);
+  objc_storeStrong(&v42, queue);
   v41 = 0;
-  objc_storeStrong(&v41, a6);
-  objc_initWeak(&v40, v46);
+  objc_storeStrong(&v41, handler);
+  objc_initWeak(&v40, selfCopy);
   v33 = MEMORY[0x277D85DD0];
   v34 = -1073741824;
   v35 = 0;
   v36 = __98__SUUIStatefulUIManager_downloadUpdate_operationDelegate_delegateCallbackQueue_completionHandler___block_invoke;
   v37 = &unk_279CC6230;
-  v38 = MEMORY[0x277D82BE0](v46);
+  v38 = MEMORY[0x277D82BE0](selfCopy);
   v39 = MEMORY[0x26D66ADC0](&v33);
   v32 = MEMORY[0x26D66ADC0](&__block_literal_global);
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __98__SUUIStatefulUIManager_downloadUpdate_operationDelegate_delegateCallbackQueue_completionHandler___block_invoke_3;
   v29[3] = &unk_279CC6278;
-  v30 = MEMORY[0x277D82BE0](v46);
+  v30 = MEMORY[0x277D82BE0](selfCopy);
   v31 = MEMORY[0x26D66ADC0](v29);
   v20 = MEMORY[0x277D85DD0];
   v21 = -1073741824;
@@ -1636,7 +1636,7 @@ void __80__SUUIStatefulUIManager_checkForUpdatesInBackgroundWithForcedReload_com
   }
 
   v19 = state;
-  [(SUUIStatefulUIManager *)v46 performUpdateOperation:1 withDescriptor:location byApplyingSelector:sel_downloadUpdate_withContext_delegate_completionHandler_ context:v39 auxiliaryOperation:0 delegate:v43 delegateCallbackQueue:v42 resultsValidation:&__block_literal_global resultsAssignment:v31 completion:v28];
+  [(SUUIStatefulUIManager *)selfCopy performUpdateOperation:1 withDescriptor:location byApplyingSelector:sel_downloadUpdate_withContext_delegate_completionHandler_ context:v39 auxiliaryOperation:0 delegate:v43 delegateCallbackQueue:v42 resultsValidation:&__block_literal_global resultsAssignment:v31 completion:v28];
   _SUUIActivityCleanup(&v19);
   objc_storeStrong(&v28, 0);
   objc_storeStrong(&v25, 0);
@@ -1877,32 +1877,32 @@ void __98__SUUIStatefulUIManager_downloadUpdate_operationDelegate_delegateCallba
   *MEMORY[0x277D85DE8];
 }
 
-- (void)downloadAndInstall:(id)a3 operationDelegate:(id)a4 delegateCallbackQueue:(id)a5 completionHandler:(id)a6
+- (void)downloadAndInstall:(id)install operationDelegate:(id)delegate delegateCallbackQueue:(id)queue completionHandler:(id)handler
 {
-  v46 = self;
+  selfCopy = self;
   v45 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, install);
   v43 = 0;
-  objc_storeStrong(&v43, a4);
+  objc_storeStrong(&v43, delegate);
   v42 = 0;
-  objc_storeStrong(&v42, a5);
+  objc_storeStrong(&v42, queue);
   v41 = 0;
-  objc_storeStrong(&v41, a6);
-  objc_initWeak(&v40, v46);
+  objc_storeStrong(&v41, handler);
+  objc_initWeak(&v40, selfCopy);
   v33 = MEMORY[0x277D85DD0];
   v34 = -1073741824;
   v35 = 0;
   v36 = __102__SUUIStatefulUIManager_downloadAndInstall_operationDelegate_delegateCallbackQueue_completionHandler___block_invoke;
   v37 = &unk_279CC62F0;
-  v38 = MEMORY[0x277D82BE0](v46);
+  v38 = MEMORY[0x277D82BE0](selfCopy);
   v39 = MEMORY[0x26D66ADC0](&v33);
   v32 = MEMORY[0x26D66ADC0](&__block_literal_global_339);
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __102__SUUIStatefulUIManager_downloadAndInstall_operationDelegate_delegateCallbackQueue_completionHandler___block_invoke_3;
   v29[3] = &unk_279CC6278;
-  v30 = MEMORY[0x277D82BE0](v46);
+  v30 = MEMORY[0x277D82BE0](selfCopy);
   v31 = MEMORY[0x26D66ADC0](v29);
   v20 = MEMORY[0x277D85DD0];
   v21 = -1073741824;
@@ -1948,7 +1948,7 @@ void __98__SUUIStatefulUIManager_downloadUpdate_operationDelegate_delegateCallba
   }
 
   v19 = state;
-  [(SUUIStatefulUIManager *)v46 performUpdateOperation:2 withDescriptor:location byApplyingSelector:sel_downloadAndInstallUpdate_withContext_delegate_completionHandler_ context:v39 auxiliaryOperation:0 delegate:v43 delegateCallbackQueue:v42 resultsValidation:&__block_literal_global_339 resultsAssignment:v31 completion:v28];
+  [(SUUIStatefulUIManager *)selfCopy performUpdateOperation:2 withDescriptor:location byApplyingSelector:sel_downloadAndInstallUpdate_withContext_delegate_completionHandler_ context:v39 auxiliaryOperation:0 delegate:v43 delegateCallbackQueue:v42 resultsValidation:&__block_literal_global_339 resultsAssignment:v31 completion:v28];
   _SUUIActivityCleanup(&v19);
   objc_storeStrong(&v28, 0);
   objc_storeStrong(&v25, 0);
@@ -2189,32 +2189,32 @@ void __102__SUUIStatefulUIManager_downloadAndInstall_operationDelegate_delegateC
   *MEMORY[0x277D85DE8];
 }
 
-- (void)downloadAndScheduleUpdate:(id)a3 operationDelegate:(id)a4 delegateCallbackQueue:(id)a5 completionHandler:(id)a6
+- (void)downloadAndScheduleUpdate:(id)update operationDelegate:(id)delegate delegateCallbackQueue:(id)queue completionHandler:(id)handler
 {
-  v46 = self;
+  selfCopy = self;
   v45 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, update);
   v43 = 0;
-  objc_storeStrong(&v43, a4);
+  objc_storeStrong(&v43, delegate);
   v42 = 0;
-  objc_storeStrong(&v42, a5);
+  objc_storeStrong(&v42, queue);
   v41 = 0;
-  objc_storeStrong(&v41, a6);
-  objc_initWeak(&v40, v46);
+  objc_storeStrong(&v41, handler);
+  objc_initWeak(&v40, selfCopy);
   v33 = MEMORY[0x277D85DD0];
   v34 = -1073741824;
   v35 = 0;
   v36 = __109__SUUIStatefulUIManager_downloadAndScheduleUpdate_operationDelegate_delegateCallbackQueue_completionHandler___block_invoke;
   v37 = &unk_279CC6318;
-  v38 = MEMORY[0x277D82BE0](v46);
+  v38 = MEMORY[0x277D82BE0](selfCopy);
   v39 = MEMORY[0x26D66ADC0](&v33);
   v32 = MEMORY[0x26D66ADC0](&__block_literal_global_346);
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __109__SUUIStatefulUIManager_downloadAndScheduleUpdate_operationDelegate_delegateCallbackQueue_completionHandler___block_invoke_3;
   v29[3] = &unk_279CC6278;
-  v30 = MEMORY[0x277D82BE0](v46);
+  v30 = MEMORY[0x277D82BE0](selfCopy);
   v31 = MEMORY[0x26D66ADC0](v29);
   v20 = MEMORY[0x277D85DD0];
   v21 = -1073741824;
@@ -2260,7 +2260,7 @@ void __102__SUUIStatefulUIManager_downloadAndInstall_operationDelegate_delegateC
   }
 
   v19 = state;
-  [(SUUIStatefulUIManager *)v46 performUpdateOperation:3 withDescriptor:location byApplyingSelector:sel_downloadAndScheduleUpdate_forInstallationTonightWithContext_delegate_completionHandler_ context:v39 auxiliaryOperation:0 delegate:v43 delegateCallbackQueue:v42 resultsValidation:&__block_literal_global_346 resultsAssignment:v31 completion:v28];
+  [(SUUIStatefulUIManager *)selfCopy performUpdateOperation:3 withDescriptor:location byApplyingSelector:sel_downloadAndScheduleUpdate_forInstallationTonightWithContext_delegate_completionHandler_ context:v39 auxiliaryOperation:0 delegate:v43 delegateCallbackQueue:v42 resultsValidation:&__block_literal_global_346 resultsAssignment:v31 completion:v28];
   _SUUIActivityCleanup(&v19);
   objc_storeStrong(&v28, 0);
   objc_storeStrong(&v25, 0);
@@ -2507,32 +2507,32 @@ void __109__SUUIStatefulUIManager_downloadAndScheduleUpdate_operationDelegate_de
   *MEMORY[0x277D85DE8];
 }
 
-- (void)installUpdate:(id)a3 operationDelegate:(id)a4 delegateCallbackQueue:(id)a5 completionHandler:(id)a6
+- (void)installUpdate:(id)update operationDelegate:(id)delegate delegateCallbackQueue:(id)queue completionHandler:(id)handler
 {
-  v46 = self;
+  selfCopy = self;
   v45 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, update);
   v43 = 0;
-  objc_storeStrong(&v43, a4);
+  objc_storeStrong(&v43, delegate);
   v42 = 0;
-  objc_storeStrong(&v42, a5);
+  objc_storeStrong(&v42, queue);
   v41 = 0;
-  objc_storeStrong(&v41, a6);
-  objc_initWeak(&v40, v46);
+  objc_storeStrong(&v41, handler);
+  objc_initWeak(&v40, selfCopy);
   v33 = MEMORY[0x277D85DD0];
   v34 = -1073741824;
   v35 = 0;
   v36 = __97__SUUIStatefulUIManager_installUpdate_operationDelegate_delegateCallbackQueue_completionHandler___block_invoke;
   v37 = &unk_279CC6340;
-  v38 = MEMORY[0x277D82BE0](v46);
+  v38 = MEMORY[0x277D82BE0](selfCopy);
   v39 = MEMORY[0x26D66ADC0](&v33);
   v32 = MEMORY[0x26D66ADC0](&__block_literal_global_354);
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __97__SUUIStatefulUIManager_installUpdate_operationDelegate_delegateCallbackQueue_completionHandler___block_invoke_3;
   v29[3] = &unk_279CC6278;
-  v30 = MEMORY[0x277D82BE0](v46);
+  v30 = MEMORY[0x277D82BE0](selfCopy);
   v31 = MEMORY[0x26D66ADC0](v29);
   v20 = MEMORY[0x277D85DD0];
   v21 = -1073741824;
@@ -2578,7 +2578,7 @@ void __109__SUUIStatefulUIManager_downloadAndScheduleUpdate_operationDelegate_de
   }
 
   v19 = state;
-  [(SUUIStatefulUIManager *)v46 performUpdateOperation:5 withDescriptor:location byApplyingSelector:sel_installUpdate_withContext_delegate_completionHandler_ context:v39 auxiliaryOperation:0 delegate:v43 delegateCallbackQueue:v42 resultsValidation:&__block_literal_global_354 resultsAssignment:v31 completion:v28];
+  [(SUUIStatefulUIManager *)selfCopy performUpdateOperation:5 withDescriptor:location byApplyingSelector:sel_installUpdate_withContext_delegate_completionHandler_ context:v39 auxiliaryOperation:0 delegate:v43 delegateCallbackQueue:v42 resultsValidation:&__block_literal_global_354 resultsAssignment:v31 completion:v28];
   _SUUIActivityCleanup(&v19);
   objc_storeStrong(&v28, 0);
   objc_storeStrong(&v25, 0);
@@ -2834,32 +2834,32 @@ void __97__SUUIStatefulUIManager_installUpdate_operationDelegate_delegateCallbac
   *MEMORY[0x277D85DE8];
 }
 
-- (void)scheduleUpdate:(id)a3 operationDelegate:(id)a4 delegateCallbackQueue:(id)a5 completionHandler:(id)a6
+- (void)scheduleUpdate:(id)update operationDelegate:(id)delegate delegateCallbackQueue:(id)queue completionHandler:(id)handler
 {
-  v45 = self;
+  selfCopy = self;
   v44 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, update);
   v42 = 0;
-  objc_storeStrong(&v42, a4);
+  objc_storeStrong(&v42, delegate);
   v41 = 0;
-  objc_storeStrong(&v41, a5);
+  objc_storeStrong(&v41, queue);
   v40 = 0;
-  objc_storeStrong(&v40, a6);
-  objc_initWeak(&v39, v45);
+  objc_storeStrong(&v40, handler);
+  objc_initWeak(&v39, selfCopy);
   v32 = MEMORY[0x277D85DD0];
   v33 = -1073741824;
   v34 = 0;
   v35 = __98__SUUIStatefulUIManager_scheduleUpdate_operationDelegate_delegateCallbackQueue_completionHandler___block_invoke;
   v36 = &unk_279CC6390;
-  v37 = MEMORY[0x277D82BE0](v45);
+  v37 = MEMORY[0x277D82BE0](selfCopy);
   v38 = MEMORY[0x26D66ADC0](&v32);
   v31 = MEMORY[0x26D66ADC0](&__block_literal_global_364);
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __98__SUUIStatefulUIManager_scheduleUpdate_operationDelegate_delegateCallbackQueue_completionHandler___block_invoke_3;
   v28[3] = &unk_279CC6278;
-  v29 = MEMORY[0x277D82BE0](v45);
+  v29 = MEMORY[0x277D82BE0](selfCopy);
   v30 = MEMORY[0x26D66ADC0](v28);
   v20 = MEMORY[0x277D85DD0];
   v21 = -1073741824;
@@ -2904,7 +2904,7 @@ void __97__SUUIStatefulUIManager_installUpdate_operationDelegate_delegateCallbac
   }
 
   v19 = state;
-  [(SUUIStatefulUIManager *)v45 performUpdateOperation:4 withDescriptor:location byApplyingSelector:sel_scheduleUpdate_forInstallationTonightWithContext_delegate_completionHandler_ context:v38 auxiliaryOperation:1 delegate:v42 delegateCallbackQueue:v41 resultsValidation:&__block_literal_global_364 resultsAssignment:v30 completion:v27];
+  [(SUUIStatefulUIManager *)selfCopy performUpdateOperation:4 withDescriptor:location byApplyingSelector:sel_scheduleUpdate_forInstallationTonightWithContext_delegate_completionHandler_ context:v38 auxiliaryOperation:1 delegate:v42 delegateCallbackQueue:v41 resultsValidation:&__block_literal_global_364 resultsAssignment:v30 completion:v27];
   _SUUIActivityCleanup(&v19);
   objc_storeStrong(&v27, 0);
   objc_storeStrong(&v25, 0);
@@ -3114,30 +3114,30 @@ void __98__SUUIStatefulUIManager_scheduleUpdate_operationDelegate_delegateCallba
   *MEMORY[0x277D85DE8];
 }
 
-- (void)promoteTargetedUpdateToUserInitiatedStatus:(id)a3 delegateCallbackQueue:(id)a4 completionHandler:(id)a5
+- (void)promoteTargetedUpdateToUserInitiatedStatus:(id)status delegateCallbackQueue:(id)queue completionHandler:(id)handler
 {
-  v43 = self;
+  selfCopy = self;
   v42 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, status);
   v40 = 0;
-  objc_storeStrong(&v40, a4);
+  objc_storeStrong(&v40, queue);
   v39 = 0;
-  objc_storeStrong(&v39, a5);
-  objc_initWeak(&v38, v43);
+  objc_storeStrong(&v39, handler);
+  objc_initWeak(&v38, selfCopy);
   v31 = MEMORY[0x277D85DD0];
   v32 = -1073741824;
   v33 = 0;
   v34 = __108__SUUIStatefulUIManager_promoteTargetedUpdateToUserInitiatedStatus_delegateCallbackQueue_completionHandler___block_invoke;
   v35 = &unk_279CC6408;
-  v36 = MEMORY[0x277D82BE0](v43);
+  v36 = MEMORY[0x277D82BE0](selfCopy);
   v37 = MEMORY[0x26D66ADC0](&v31);
   v30 = MEMORY[0x26D66ADC0](&__block_literal_global_374);
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __108__SUUIStatefulUIManager_promoteTargetedUpdateToUserInitiatedStatus_delegateCallbackQueue_completionHandler___block_invoke_3;
   v27[3] = &unk_279CC6278;
-  v28 = MEMORY[0x277D82BE0](v43);
+  v28 = MEMORY[0x277D82BE0](selfCopy);
   v29 = MEMORY[0x26D66ADC0](v27);
   v19 = MEMORY[0x277D85DD0];
   v20 = -1073741824;
@@ -3189,10 +3189,10 @@ void __98__SUUIStatefulUIManager_scheduleUpdate_operationDelegate_delegateCallba
 
   else
   {
-    operationsQueue = v43->_operationsQueue;
+    operationsQueue = selfCopy->_operationsQueue;
   }
 
-  [(SUUIStatefulUIManager *)v43 performUpdateOnDownloadByApplyingSelector:sel_promoteDownloadToUserInitiated_withContext_delegate_completionHandler_ context:v37 description:@"Promote to User Initiated Status" delegate:location delegateCallbackQueue:operationsQueue resultsValidation:&__block_literal_global_374 resultsAssignment:v29 completion:v26];
+  [(SUUIStatefulUIManager *)selfCopy performUpdateOnDownloadByApplyingSelector:sel_promoteDownloadToUserInitiated_withContext_delegate_completionHandler_ context:v37 description:@"Promote to User Initiated Status" delegate:location delegateCallbackQueue:operationsQueue resultsValidation:&__block_literal_global_374 resultsAssignment:v29 completion:v26];
   _SUUIActivityCleanup(&v18);
   objc_storeStrong(&v26, 0);
   objc_storeStrong(&v24, 0);
@@ -3397,30 +3397,30 @@ void __108__SUUIStatefulUIManager_promoteTargetedUpdateToUserInitiatedStatus_del
   *MEMORY[0x277D85DE8];
 }
 
-- (void)unscheduleTargetedUpdateAutomaticInstallation:(id)a3 delegateCallbackQueue:(id)a4 completionHandler:(id)a5
+- (void)unscheduleTargetedUpdateAutomaticInstallation:(id)installation delegateCallbackQueue:(id)queue completionHandler:(id)handler
 {
-  v45 = self;
+  selfCopy = self;
   v44 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, installation);
   v42 = 0;
-  objc_storeStrong(&v42, a4);
+  objc_storeStrong(&v42, queue);
   v41 = 0;
-  objc_storeStrong(&v41, a5);
-  objc_initWeak(&v40, v45);
+  objc_storeStrong(&v41, handler);
+  objc_initWeak(&v40, selfCopy);
   v33 = MEMORY[0x277D85DD0];
   v34 = -1073741824;
   v35 = 0;
   v36 = __111__SUUIStatefulUIManager_unscheduleTargetedUpdateAutomaticInstallation_delegateCallbackQueue_completionHandler___block_invoke;
   v37 = &unk_279CC6430;
-  v38 = MEMORY[0x277D82BE0](v45);
+  v38 = MEMORY[0x277D82BE0](selfCopy);
   v39 = MEMORY[0x26D66ADC0](&v33);
   v32 = MEMORY[0x26D66ADC0](&__block_literal_global_385);
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __111__SUUIStatefulUIManager_unscheduleTargetedUpdateAutomaticInstallation_delegateCallbackQueue_completionHandler___block_invoke_3;
   v29[3] = &unk_279CC6278;
-  v30 = MEMORY[0x277D82BE0](v45);
+  v30 = MEMORY[0x277D82BE0](selfCopy);
   v31 = MEMORY[0x26D66ADC0](v29);
   v21 = MEMORY[0x277D85DD0];
   v22 = -1073741824;
@@ -3465,8 +3465,8 @@ void __108__SUUIStatefulUIManager_promoteTargetedUpdateToUserInitiatedStatus_del
   }
 
   v20 = v19;
-  v8 = v45;
-  v7 = [(SUUIStatefulUIManager *)v45 targetedUpdateStatefulDescriptor];
+  v8 = selfCopy;
+  targetedUpdateStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy targetedUpdateStatefulDescriptor];
   if (v42)
   {
     operationsQueue = v42;
@@ -3474,11 +3474,11 @@ void __108__SUUIStatefulUIManager_promoteTargetedUpdateToUserInitiatedStatus_del
 
   else
   {
-    operationsQueue = v45->_operationsQueue;
+    operationsQueue = selfCopy->_operationsQueue;
   }
 
-  [(SUUIStatefulUIManager *)v8 performUpdateOperation:6 withDescriptor:v7 byApplyingSelector:sel_unscheduleUpdate_forInstallationTonightWithContext_delegate_completionHandler_ context:v39 auxiliaryOperation:1 delegate:location delegateCallbackQueue:operationsQueue resultsValidation:&__block_literal_global_385 resultsAssignment:v31 completion:v28];
-  MEMORY[0x277D82BD8](v7);
+  [(SUUIStatefulUIManager *)v8 performUpdateOperation:6 withDescriptor:targetedUpdateStatefulDescriptor byApplyingSelector:sel_unscheduleUpdate_forInstallationTonightWithContext_delegate_completionHandler_ context:v39 auxiliaryOperation:1 delegate:location delegateCallbackQueue:operationsQueue resultsValidation:&__block_literal_global_385 resultsAssignment:v31 completion:v28];
+  MEMORY[0x277D82BD8](targetedUpdateStatefulDescriptor);
   _SUUIActivityCleanup(&v20);
   objc_storeStrong(&v28, 0);
   objc_storeStrong(&v26, 0);
@@ -3685,30 +3685,30 @@ void __111__SUUIStatefulUIManager_unscheduleTargetedUpdateAutomaticInstallation_
 
 - (BOOL)isPerformingFullScan
 {
-  v2 = [(SUUIStatefulUIManager *)self currentFullScanOperation];
-  v4 = v2 != 0;
-  MEMORY[0x277D82BD8](v2);
+  currentFullScanOperation = [(SUUIStatefulUIManager *)self currentFullScanOperation];
+  v4 = currentFullScanOperation != 0;
+  MEMORY[0x277D82BD8](currentFullScanOperation);
   return v4;
 }
 
 - (BOOL)isPerformingRefresh
 {
-  v2 = [(SUUIStatefulUIManager *)self currentRefreshScanOperation];
-  v4 = v2 != 0;
-  MEMORY[0x277D82BD8](v2);
+  currentRefreshScanOperation = [(SUUIStatefulUIManager *)self currentRefreshScanOperation];
+  v4 = currentRefreshScanOperation != 0;
+  MEMORY[0x277D82BD8](currentRefreshScanOperation);
   return v4;
 }
 
 - (BOOL)isPerformingUpdate
 {
-  v3 = [(SUUIStatefulUIManager *)self currentUpdateOperation];
+  currentUpdateOperation = [(SUUIStatefulUIManager *)self currentUpdateOperation];
   v4 = 1;
-  if (!v3)
+  if (!currentUpdateOperation)
   {
     v4 = [(SUUIStatefulUIManager *)self currentUpdateOperationType]!= 0;
   }
 
-  MEMORY[0x277D82BD8](v3);
+  MEMORY[0x277D82BD8](currentUpdateOperation);
   return v4;
 }
 
@@ -3723,16 +3723,16 @@ void __111__SUUIStatefulUIManager_unscheduleTargetedUpdateAutomaticInstallation_
   return v3;
 }
 
-- (void)enrollInBetaUpdatesProgram:(id)a3 completionHandler:(id)a4
+- (void)enrollInBetaUpdatesProgram:(id)program completionHandler:(id)handler
 {
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, program);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  objc_initWeak(&v14, v18);
-  queue = v18->_operationsQueue;
+  objc_storeStrong(&v15, handler);
+  objc_initWeak(&v14, selfCopy);
+  queue = selfCopy->_operationsQueue;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
@@ -4988,14 +4988,14 @@ void __70__SUUIStatefulUIManager_enrollInBetaUpdatesProgram_completionHandler___
   objc_storeStrong(location, 0);
 }
 
-- (void)unenrollFromBetaUpdatesWithCompletion:(id)a3
+- (void)unenrollFromBetaUpdatesWithCompletion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  objc_initWeak(&v11, v14);
-  queue = v14->_operationsQueue;
+  objc_storeStrong(&location, completion);
+  objc_initWeak(&v11, selfCopy);
+  queue = selfCopy->_operationsQueue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
@@ -5916,25 +5916,25 @@ void __63__SUUIStatefulUIManager_unenrollFromBetaUpdatesWithCompletion___block_i
   objc_storeStrong(location, 0);
 }
 
-- (void)refreshBetaUpdates:(id)a3
+- (void)refreshBetaUpdates:(id)updates
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SUUIStatefulUIManager *)v4 refreshBetaUpdates:location[0] withRecheckForAvailableUpdates:1];
+  objc_storeStrong(location, updates);
+  [(SUUIStatefulUIManager *)selfCopy refreshBetaUpdates:location[0] withRecheckForAvailableUpdates:1];
   objc_storeStrong(location, 0);
 }
 
-- (void)refreshBetaUpdates:(id)a3 withRecheckForAvailableUpdates:(BOOL)a4
+- (void)refreshBetaUpdates:(id)updates withRecheckForAvailableUpdates:(BOOL)availableUpdates
 {
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  v15 = a4;
-  objc_initWeak(&v14, v18);
-  queue = v18->_operationsQueue;
+  objc_storeStrong(&location, updates);
+  availableUpdatesCopy = availableUpdates;
+  objc_initWeak(&v14, selfCopy);
+  queue = selfCopy->_operationsQueue;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
@@ -5943,7 +5943,7 @@ void __63__SUUIStatefulUIManager_unenrollFromBetaUpdatesWithCompletion___block_i
   objc_copyWeak(v12, &v14);
   v12[1] = v17;
   v11 = MEMORY[0x277D82BE0](location);
-  v13 = v15;
+  v13 = availableUpdatesCopy;
   dispatch_async(queue, &v6);
   objc_storeStrong(&v11, 0);
   objc_destroyWeak(v12);
@@ -7222,34 +7222,34 @@ void __75__SUUIStatefulUIManager_refreshBetaUpdates_withRecheckForAvailableUpdat
 {
   v6 = 0;
   v4 = 0;
-  v3 = 1;
+  isDelayingUpdate = 1;
   if (!self->_delayingUpdate)
   {
-    v7 = [(SUUIStatefulUIManager *)self scanError];
+    scanError = [(SUUIStatefulUIManager *)self scanError];
     v6 = 1;
-    v5 = [(SUUIStatefulError *)v7 traits];
+    traits = [(SUUIStatefulError *)scanError traits];
     v4 = 1;
-    v3 = [(SUUIErrorTraits *)v5 isDelayingUpdate];
+    isDelayingUpdate = [(SUUIErrorTraits *)traits isDelayingUpdate];
   }
 
   if (v4)
   {
-    MEMORY[0x277D82BD8](v5);
+    MEMORY[0x277D82BD8](traits);
   }
 
   if (v6)
   {
-    MEMORY[0x277D82BD8](v7);
+    MEMORY[0x277D82BD8](scanError);
   }
 
-  return v3 & 1;
+  return isDelayingUpdate & 1;
 }
 
 - (id)currentInstalledNeRDInfo
 {
   v109 = "[SUUIStatefulUIManager currentInstalledNeRDInfo]";
   v149 = *MEMORY[0x277D85DE8];
-  v143 = self;
+  selfCopy = self;
   v142[1] = a2;
   v110 = malloc_type_calloc(1uLL, 0x20uLL, 0x1080040925F9CD7uLL);
   v140 = v110;
@@ -7265,8 +7265,8 @@ void __75__SUUIStatefulUIManager_refreshBetaUpdates_withRecheckForAvailableUpdat
   {
     v108 = +[SUUILoggingContext softwareUpdateUILogger];
     v106 = v108;
-    v107 = [v106 oslog];
-    oslog = v107;
+    oslog = [v106 oslog];
+    oslog = oslog;
     MEMORY[0x277D82BD8](v106);
     type = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
@@ -7291,40 +7291,40 @@ void __75__SUUIStatefulUIManager_refreshBetaUpdates_withRecheckForAvailableUpdat
 
   v135[1] = state;
   v142[0] = state;
-  v102 = [MEMORY[0x277CCAD78] UUID];
-  v100 = v102;
-  v101 = [v100 UUIDString];
-  v135[0] = v101;
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v100 = uUID;
+  uUIDString = [v100 UUIDString];
+  v135[0] = uUIDString;
   MEMORY[0x277D82BD8](v100);
   v99 = +[SUUILoggingContext statefulUILogger];
   v97 = v99;
-  v98 = [v97 oslog];
-  v134 = v98;
+  oslog2 = [v97 oslog];
+  v134 = oslog2;
   MEMORY[0x277D82BD8](v97);
   v133 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v134, OS_LOG_TYPE_DEFAULT))
   {
     v93 = v134;
     *v94 = v133;
-    v95 = v143;
+    v95 = selfCopy;
     aClass = objc_opt_class();
     v92 = NSStringFromClass(aClass);
     v89 = v92;
     v90 = MEMORY[0x277D82BE0](v89);
     v132 = v90;
-    v91 = SUUIStatefulUIStateToString(v143->_currentState);
+    v91 = SUUIStatefulUIStateToString(selfCopy->_currentState);
     v86 = v91;
     v87 = MEMORY[0x277D82BE0](v86);
     v131 = v87;
-    v88 = [(SUUIStatefulUIManager *)v143 currentState];
+    currentState = [(SUUIStatefulUIManager *)selfCopy currentState];
     v129 = 0;
     v127 = 0;
-    v85 = [(SUUIStatefulUIManager *)v143 delegate];
-    v84 = v85;
+    delegate = [(SUUIStatefulUIManager *)selfCopy delegate];
+    v84 = delegate;
     if (v84)
     {
-      v83 = [(SUUIStatefulUIManager *)v143 delegate];
-      v130 = v83;
+      delegate2 = [(SUUIStatefulUIManager *)selfCopy delegate];
+      v130 = delegate2;
       v129 = 1;
       v82 = objc_opt_class();
       v81 = NSStringFromClass(v82);
@@ -7339,29 +7339,29 @@ void __75__SUUIStatefulUIManager_refreshBetaUpdates_withRecheckForAvailableUpdat
     }
 
     v78 = v80;
-    v79 = [(SUUIStatefulUIManager *)v143 delegate];
-    v76 = v79;
-    v77 = [(SUUIStatefulUIManager *)v143 scanError];
-    v74 = v77;
-    v75 = [(SUUIStatefulUIManager *)v143 preferredStatefulDescriptor];
-    v72 = v75;
-    v73 = [(SUUIStatefulUIManager *)v143 alternateStatefulDescriptor];
-    v70 = v73;
+    delegate3 = [(SUUIStatefulUIManager *)selfCopy delegate];
+    v76 = delegate3;
+    scanError = [(SUUIStatefulUIManager *)selfCopy scanError];
+    v74 = scanError;
+    preferredStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy preferredStatefulDescriptor];
+    v72 = preferredStatefulDescriptor;
+    alternateStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy alternateStatefulDescriptor];
+    v70 = alternateStatefulDescriptor;
     v125 = 0;
     v123 = 0;
     v121 = 0;
-    v71 = [(SUUIStatefulUIManager *)v143 currentDownload];
-    v69 = v71;
+    currentDownload = [(SUUIStatefulUIManager *)selfCopy currentDownload];
+    v69 = currentDownload;
     if (v69)
     {
-      v68 = [(SUUIStatefulUIManager *)v143 currentDownload];
-      v126 = v68;
+      currentDownload2 = [(SUUIStatefulUIManager *)selfCopy currentDownload];
+      v126 = currentDownload2;
       v125 = 1;
-      v67 = [v126 descriptor];
-      v124 = v67;
+      descriptor = [v126 descriptor];
+      v124 = descriptor;
       v123 = 1;
-      v66 = [v124 updateName];
-      v122 = v66;
+      updateName = [v124 updateName];
+      v122 = updateName;
       v121 = 1;
       v65 = v122;
     }
@@ -7372,16 +7372,16 @@ void __75__SUUIStatefulUIManager_refreshBetaUpdates_withRecheckForAvailableUpdat
     }
 
     v63 = v65;
-    v64 = [(SUUIStatefulUIManager *)v143 currentDownload];
-    v61 = v64;
-    v62 = [(SUUIStatefulUIManager *)v143 currentUpdateOperationType];
-    v60 = SUUIUpdateContinuousOperationTypeToString(v62);
+    currentDownload3 = [(SUUIStatefulUIManager *)selfCopy currentDownload];
+    v61 = currentDownload3;
+    currentUpdateOperationType = [(SUUIStatefulUIManager *)selfCopy currentUpdateOperationType];
+    v60 = SUUIUpdateContinuousOperationTypeToString(currentUpdateOperationType);
     v57 = v60;
     v58 = MEMORY[0x277D82BE0](v57);
     v120 = v58;
-    v59 = [(SUUIStatefulUIManager *)v143 isTargetedUpdateScheduledForAutoInstall];
-    v147 = v59;
-    if (v59)
+    isTargetedUpdateScheduledForAutoInstall = [(SUUIStatefulUIManager *)selfCopy isTargetedUpdateScheduledForAutoInstall];
+    v147 = isTargetedUpdateScheduledForAutoInstall;
+    if (isTargetedUpdateScheduledForAutoInstall)
     {
       v3 = @"YES";
     }
@@ -7396,9 +7396,9 @@ void __75__SUUIStatefulUIManager_refreshBetaUpdates_withRecheckForAvailableUpdat
     v53 = v56;
     v54 = MEMORY[0x277D82BE0](v53);
     v119 = v54;
-    v55 = [(SUUIStatefulUIManager *)v143 hidingPreferredDescriptor];
-    v146 = v55;
-    if (v55)
+    hidingPreferredDescriptor = [(SUUIStatefulUIManager *)selfCopy hidingPreferredDescriptor];
+    v146 = hidingPreferredDescriptor;
+    if (hidingPreferredDescriptor)
     {
       v5 = @"YES";
     }
@@ -7413,15 +7413,15 @@ void __75__SUUIStatefulUIManager_refreshBetaUpdates_withRecheckForAvailableUpdat
     v49 = v52;
     v50 = MEMORY[0x277D82BE0](v49);
     v118 = v50;
-    v51 = [(SUUIStatefulUIManager *)v143 hiddenPreferredStatefulDescriptor];
-    v47 = v51;
-    v48 = [v47 updateName];
-    v44 = v48;
+    hiddenPreferredStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy hiddenPreferredStatefulDescriptor];
+    v47 = hiddenPreferredStatefulDescriptor;
+    updateName2 = [v47 updateName];
+    v44 = updateName2;
     v45 = MEMORY[0x277D82BE0](v44);
     v117 = v45;
-    v46 = [(SUUIStatefulUIManager *)v143 hidingAlternateDescriptor];
-    v145 = v46;
-    if (v46)
+    hidingAlternateDescriptor = [(SUUIStatefulUIManager *)selfCopy hidingAlternateDescriptor];
+    v145 = hidingAlternateDescriptor;
+    if (hidingAlternateDescriptor)
     {
       v7 = @"YES";
     }
@@ -7436,22 +7436,22 @@ void __75__SUUIStatefulUIManager_refreshBetaUpdates_withRecheckForAvailableUpdat
     v40 = v43;
     v41 = MEMORY[0x277D82BE0](v40);
     v116 = v41;
-    v42 = [(SUUIStatefulUIManager *)v143 hiddenAlternateStatefulDescriptor];
-    v38 = v42;
-    v39 = [v38 updateName];
-    v35 = v39;
+    hiddenAlternateStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy hiddenAlternateStatefulDescriptor];
+    v38 = hiddenAlternateStatefulDescriptor;
+    updateName3 = [v38 updateName];
+    v35 = updateName3;
     v36 = MEMORY[0x277D82BE0](v35);
     v115 = v36;
     v113 = 0;
-    v37 = [(SUUIStatefulUIManager *)v143 enrolledBetaProgram];
-    v34 = v37;
+    enrolledBetaProgram = [(SUUIStatefulUIManager *)selfCopy enrolledBetaProgram];
+    v34 = enrolledBetaProgram;
     if (v34)
     {
-      v33 = [(SUUIStatefulUIManager *)v143 enrolledBetaProgram];
-      v114 = v33;
+      enrolledBetaProgram2 = [(SUUIStatefulUIManager *)selfCopy enrolledBetaProgram];
+      v114 = enrolledBetaProgram2;
       v113 = 1;
-      v32 = [v114 programID];
-      v31 = v32;
+      programID = [v114 programID];
+      v31 = programID;
     }
 
     else
@@ -7460,10 +7460,10 @@ void __75__SUUIStatefulUIManager_refreshBetaUpdates_withRecheckForAvailableUpdat
     }
 
     v29 = v31;
-    v30 = [(NSArray *)v143->_betaPrograms count];
-    v28 = [(SUUIStatefulUIManager *)v143 canEnrollInBetaUpdates];
-    v144 = v28;
-    if (v28)
+    v30 = [(NSArray *)selfCopy->_betaPrograms count];
+    canEnrollInBetaUpdates = [(SUUIStatefulUIManager *)selfCopy canEnrollInBetaUpdates];
+    v144 = canEnrollInBetaUpdates;
+    if (canEnrollInBetaUpdates)
     {
       v9 = @"YES";
     }
@@ -7478,13 +7478,13 @@ void __75__SUUIStatefulUIManager_refreshBetaUpdates_withRecheckForAvailableUpdat
     v21 = v27;
     v22 = MEMORY[0x277D82BE0](v21);
     location = v22;
-    currentFullScanOperation = v143->_currentFullScanOperation;
-    currentRefreshScanOperation = v143->_currentRefreshScanOperation;
-    currentUpdateOperation = v143->_currentUpdateOperation;
-    v26 = [(NSMutableSet *)v143->_auxiliaryOperations count];
+    currentFullScanOperation = selfCopy->_currentFullScanOperation;
+    currentRefreshScanOperation = selfCopy->_currentRefreshScanOperation;
+    currentUpdateOperation = selfCopy->_currentUpdateOperation;
+    v26 = [(NSMutableSet *)selfCopy->_auxiliaryOperations count];
     v19 = &v13;
     v20 = v148;
-    __os_log_helper_16_2_26_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0_8_66(v148, v109, v95, v90, v87, v88, v78, v76, v74, v72, v70, v63, v61, v58, v54, v50, v45, v41, v36, v29, v30, v22, currentFullScanOperation, currentRefreshScanOperation, currentUpdateOperation, v26, v135[0]);
+    __os_log_helper_16_2_26_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0_8_66(v148, v109, v95, v90, v87, currentState, v78, v76, v74, v72, v70, v63, v61, v58, v54, v50, v45, v41, v36, v29, v30, v22, currentFullScanOperation, currentRefreshScanOperation, currentUpdateOperation, v26, v135[0]);
     _os_log_impl(&dword_26ADE5000, v93, v94[0], "%s [%p]: %{public}@ Checkpoint\n\tcurrentState: %{public}@ (%ld)\n\tdelegate: %{public}@ (%p)\n\tscanError: %{public}@\n\tpreferredDescriptor: %{public}@\n\talternateDescriptor: %{public}@\n\tdownload: %{public}@ (%p)\n\tcurrentUpdateOperationType: %{public}@\n\tscheduledForAutoInstall: %{public}@\n\thiddenUpdatesPostSelection: preferred[%{public}@, %{public}@]; alternate[%{public}@, %{public}@];\n\tselectedBetaProgram: %lu (count: %ld, enrollable: %{public}@)\n\tOpFSMs: scan[%p]; refresh[%p]; update[%p]; auxiliaryOperationsCount[%lu]\n\nBeginning a NeRD Info operation with ID: %{public}@ ", v20, 0x106u);
     MEMORY[0x277D82BD8](v21);
     if (v113)
@@ -7547,13 +7547,13 @@ void __75__SUUIStatefulUIManager_refreshBetaUpdates_withRecheckForAvailableUpdat
   }
 
   objc_storeStrong(&v134, 0);
-  v18 = [(SUUIStatefulUIManager *)v143 environment];
-  v16 = v18;
-  v17 = [v16 nerdOperationWithManager:v143 identifier:v135[0] completionQueue:v143->_operationsQueue];
+  environment = [(SUUIStatefulUIManager *)selfCopy environment];
+  v16 = environment;
+  v17 = [v16 nerdOperationWithManager:selfCopy identifier:v135[0] completionQueue:selfCopy->_operationsQueue];
   v111 = v17;
   MEMORY[0x277D82BD8](v16);
-  v15 = [v111 currentInstalledNeRDInfo];
-  v14 = v15;
+  currentInstalledNeRDInfo = [v111 currentInstalledNeRDInfo];
+  v14 = currentInstalledNeRDInfo;
   objc_storeStrong(&v111, 0);
   objc_storeStrong(v135, 0);
   _SUUIActivityCleanup(v142);
@@ -7563,12 +7563,12 @@ void __75__SUUIStatefulUIManager_refreshBetaUpdates_withRecheckForAvailableUpdat
   return v11;
 }
 
-- (void)updateNeRDVersionWithOptions:(id)a3
+- (void)updateNeRDVersionWithOptions:(id)options
 {
-  v25 = self;
+  selfCopy = self;
   v24 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, options);
   v20 = malloc_type_calloc(1uLL, 0x20uLL, 0x1080040925F9CD7uLL);
   if (v20)
   {
@@ -7581,18 +7581,18 @@ void __75__SUUIStatefulUIManager_refreshBetaUpdates_withRecheckForAvailableUpdat
   else
   {
     v7 = +[SUUILoggingContext softwareUpdateUILogger];
-    v18 = [v7 oslog];
+    oslog = [v7 oslog];
     MEMORY[0x277D82BD8](v7);
     v17 = 16;
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      log = v18;
+      log = oslog;
       type = v17;
       __os_log_helper_16_0_0(v16);
       _os_log_error_impl(&dword_26ADE5000, log, type, "Failed to create an activity for: com.apple.SoftwareUpdateUI.StatefulUI.Manager.UpdateNeRD", v16, 2u);
     }
 
-    objc_storeStrong(&v18, 0);
+    objc_storeStrong(&oslog, 0);
   }
 
   v15[2] = v20;
@@ -7605,8 +7605,8 @@ void __75__SUUIStatefulUIManager_refreshBetaUpdates_withRecheckForAvailableUpdat
 
   v15[1] = v21;
   v22 = v21;
-  objc_initWeak(v15, v25);
-  queue = v25->_operationsQueue;
+  objc_initWeak(v15, selfCopy);
+  queue = selfCopy->_operationsQueue;
   v8 = MEMORY[0x277D85DD0];
   v9 = -1073741824;
   v10 = 0;
@@ -7914,35 +7914,35 @@ void __54__SUUIStatefulUIManager_updateNeRDVersionWithOptions___block_invoke(id 
 
 - (BOOL)isPreferredUpdatePromotedAsAlternate
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v8[0] = [(SUUIStatefulUIManager *)self preferredStatefulDescriptor];
-  location = [(SUUIStatefulUIManager *)v9 alternateStatefulDescriptor];
+  location = [(SUUIStatefulUIManager *)selfCopy alternateStatefulDescriptor];
   if (v8[0])
   {
     v5 = 0;
     LOBYTE(v4) = 0;
     if (!location)
     {
-      v6 = [v8[0] descriptor];
+      descriptor = [v8[0] descriptor];
       v5 = 1;
       LOBYTE(v4) = 0;
-      if ([v6 audienceType] == 1)
+      if ([descriptor audienceType] == 1)
       {
-        v4 = ![(SUUIStatefulUIManager *)v9 hidingPreferredDescriptor];
+        v4 = ![(SUUIStatefulUIManager *)selfCopy hidingPreferredDescriptor];
       }
     }
 
     if (v5)
     {
-      MEMORY[0x277D82BD8](v6);
+      MEMORY[0x277D82BD8](descriptor);
     }
 
     if (v4)
     {
-      v3 = [v8[0] descriptor];
-      v10 = [v3 promoteAlternateUpdate] & 1;
-      MEMORY[0x277D82BD8](v3);
+      descriptor2 = [v8[0] descriptor];
+      v10 = [descriptor2 promoteAlternateUpdate] & 1;
+      MEMORY[0x277D82BD8](descriptor2);
     }
 
     else
@@ -7961,83 +7961,83 @@ void __54__SUUIStatefulUIManager_updateNeRDVersionWithOptions___block_invoke(id 
   return v10 & 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v44 = self;
+  selfCopy = self;
   v43 = a2;
-  v42 = a3;
-  v29 = [objc_opt_class() allocWithZone:a3];
-  v30 = [(SUUIStatefulUIManager *)v44 environment];
+  zoneCopy = zone;
+  v29 = [objc_opt_class() allocWithZone:zone];
+  environment = [(SUUIStatefulUIManager *)selfCopy environment];
   v41 = [v29 initWithEnvironment:?];
-  MEMORY[0x277D82BD8](v30);
-  v31 = [(SUUIStatefulUIManager *)v44 delegate];
-  objc_storeWeak(v41 + 1, v31);
-  MEMORY[0x277D82BD8](v31);
-  v3 = [(SUUIStatefulUIManager *)v44 delegateCallbackQueue];
+  MEMORY[0x277D82BD8](environment);
+  delegate = [(SUUIStatefulUIManager *)selfCopy delegate];
+  objc_storeWeak(v41 + 1, delegate);
+  MEMORY[0x277D82BD8](delegate);
+  delegateCallbackQueue = [(SUUIStatefulUIManager *)selfCopy delegateCallbackQueue];
   v4 = v41[2];
-  v41[2] = v3;
+  v41[2] = delegateCallbackQueue;
   MEMORY[0x277D82BD8](v4);
-  v5 = [(SUUIStatefulUIManager *)v44 currentState];
-  v41[5] = v5;
-  v32 = [(SUUIStatefulUIManager *)v44 preferredStatefulDescriptor];
-  v6 = [(SUUIStatefulDescriptor *)v32 copyWithZone:v42];
+  currentState = [(SUUIStatefulUIManager *)selfCopy currentState];
+  v41[5] = currentState;
+  preferredStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy preferredStatefulDescriptor];
+  v6 = [(SUUIStatefulDescriptor *)preferredStatefulDescriptor copyWithZone:zoneCopy];
   v7 = v41[6];
   v41[6] = v6;
   MEMORY[0x277D82BD8](v7);
-  MEMORY[0x277D82BD8](v32);
-  v33 = [(SUUIStatefulUIManager *)v44 alternateStatefulDescriptor];
-  v8 = [(SUUIStatefulDescriptor *)v33 copyWithZone:v42];
+  MEMORY[0x277D82BD8](preferredStatefulDescriptor);
+  alternateStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy alternateStatefulDescriptor];
+  v8 = [(SUUIStatefulDescriptor *)alternateStatefulDescriptor copyWithZone:zoneCopy];
   v9 = v41[7];
   v41[7] = v8;
   MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v33);
-  v34 = [(SUUIStatefulUIManager *)v44 scanError];
-  v10 = [(SUUIStatefulError *)v34 copyWithZone:v42];
+  MEMORY[0x277D82BD8](alternateStatefulDescriptor);
+  scanError = [(SUUIStatefulUIManager *)selfCopy scanError];
+  v10 = [(SUUIStatefulError *)scanError copyWithZone:zoneCopy];
   v11 = v41[8];
   v41[8] = v10;
   MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v34);
-  v35 = [(SUUIStatefulUIManager *)v44 currentDownload];
-  v12 = [(SUUIDownload *)v35 copyWithZone:v42];
+  MEMORY[0x277D82BD8](scanError);
+  currentDownload = [(SUUIStatefulUIManager *)selfCopy currentDownload];
+  v12 = [(SUUIDownload *)currentDownload copyWithZone:zoneCopy];
   v13 = v41[9];
   v41[9] = v12;
   MEMORY[0x277D82BD8](v13);
-  MEMORY[0x277D82BD8](v35);
-  v14 = [(SUUIStatefulUIManager *)v44 isAutoUpdateScheduled];
-  *(v41 + 80) = v14;
-  v36 = [(SUUIStatefulUIManager *)v44 hiddenPreferredStatefulDescriptor];
-  v15 = [(SUUIStatefulDescriptor *)v36 copyWithZone:v42];
+  MEMORY[0x277D82BD8](currentDownload);
+  isAutoUpdateScheduled = [(SUUIStatefulUIManager *)selfCopy isAutoUpdateScheduled];
+  *(v41 + 80) = isAutoUpdateScheduled;
+  hiddenPreferredStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy hiddenPreferredStatefulDescriptor];
+  v15 = [(SUUIStatefulDescriptor *)hiddenPreferredStatefulDescriptor copyWithZone:zoneCopy];
   v16 = v41[11];
   v41[11] = v15;
   MEMORY[0x277D82BD8](v16);
-  MEMORY[0x277D82BD8](v36);
-  v37 = [(SUUIStatefulUIManager *)v44 hiddenAlternateStatefulDescriptor];
-  v17 = [(SUUIStatefulDescriptor *)v37 copyWithZone:v42];
+  MEMORY[0x277D82BD8](hiddenPreferredStatefulDescriptor);
+  hiddenAlternateStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy hiddenAlternateStatefulDescriptor];
+  v17 = [(SUUIStatefulDescriptor *)hiddenAlternateStatefulDescriptor copyWithZone:zoneCopy];
   v18 = v41[12];
   v41[12] = v17;
   MEMORY[0x277D82BD8](v18);
-  MEMORY[0x277D82BD8](v37);
-  v19 = [(SUUIStatefulUIManager *)v44 hidingPreferredDescriptor];
-  *(v41 + 104) = v19;
-  v20 = [(SUUIStatefulUIManager *)v44 hidingAlternateDescriptor];
-  *(v41 + 105) = v20;
-  v21 = [(SUUIStatefulUIManager *)v44 mdmPathRestrictions];
-  v41[18] = v21;
-  *(v41 + 160) = v44->_delayingUpdate;
-  v22 = [(SUUIStatefulUIManager *)v44 currentSeedingDevice];
+  MEMORY[0x277D82BD8](hiddenAlternateStatefulDescriptor);
+  hidingPreferredDescriptor = [(SUUIStatefulUIManager *)selfCopy hidingPreferredDescriptor];
+  *(v41 + 104) = hidingPreferredDescriptor;
+  hidingAlternateDescriptor = [(SUUIStatefulUIManager *)selfCopy hidingAlternateDescriptor];
+  *(v41 + 105) = hidingAlternateDescriptor;
+  mdmPathRestrictions = [(SUUIStatefulUIManager *)selfCopy mdmPathRestrictions];
+  v41[18] = mdmPathRestrictions;
+  *(v41 + 160) = selfCopy->_delayingUpdate;
+  currentSeedingDevice = [(SUUIStatefulUIManager *)selfCopy currentSeedingDevice];
   v23 = v41[14];
-  v41[14] = v22;
+  v41[14] = currentSeedingDevice;
   MEMORY[0x277D82BD8](v23);
   v38 = objc_alloc(MEMORY[0x277CBEA60]);
-  v39 = [(SUUIStatefulUIManager *)v44 betaPrograms];
+  betaPrograms = [(SUUIStatefulUIManager *)selfCopy betaPrograms];
   v24 = [v38 initWithArray:? copyItems:?];
   v25 = v41[15];
   v41[15] = v24;
   MEMORY[0x277D82BD8](v25);
-  MEMORY[0x277D82BD8](v39);
-  v26 = [(SUUIStatefulUIManager *)v44 enrolledBetaProgram];
+  MEMORY[0x277D82BD8](betaPrograms);
+  enrolledBetaProgram = [(SUUIStatefulUIManager *)selfCopy enrolledBetaProgram];
   v27 = v41[16];
-  v41[16] = v26;
+  v41[16] = enrolledBetaProgram;
   MEMORY[0x277D82BD8](v27);
   v40 = MEMORY[0x277D82BE0](v41);
   objc_storeStrong(&v41, 0);
@@ -8047,7 +8047,7 @@ void __54__SUUIStatefulUIManager_updateNeRDVersionWithOptions___block_invoke(id 
 + (id)_generateStateTable
 {
   v173[6] = *MEMORY[0x277D85DE8];
-  v63[2] = a1;
+  v63[2] = self;
   v63[1] = a2;
   v172[0] = @"Idle";
   v170[0] = @"CheckForAvailableUpdate";
@@ -8443,39 +8443,39 @@ void __54__SUUIStatefulUIManager_updateNeRDVersionWithOptions___block_invoke(id 
   return v61;
 }
 
-- (int64_t)performAction:(id)a3 onEvent:(id)a4 inState:(id)a5 withInfo:(id)a6 nextState:(id)a7 error:(id *)a8
+- (int64_t)performAction:(id)action onEvent:(id)event inState:(id)state withInfo:(id)info nextState:(id)nextState error:(id *)error
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, action);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, event);
   v28 = 0;
-  objc_storeStrong(&v28, a5);
+  objc_storeStrong(&v28, state);
   v27 = 0;
-  objc_storeStrong(&v27, a6);
+  objc_storeStrong(&v27, info);
   v26 = 0;
-  objc_storeStrong(&v26, a7);
-  v25 = a8;
-  v15 = [(SUCoreFSM *)v31->_managerFSM extendedStateQueue];
-  dispatch_assert_queue_V2(v15);
-  MEMORY[0x277D82BD8](v15);
+  objc_storeStrong(&v26, nextState);
+  errorCopy = error;
+  extendedStateQueue = [(SUCoreFSM *)selfCopy->_managerFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
   if (v26)
   {
-    v24 = [(SUUIStatefulUIManager *)v31 convertFSMStateToUIState:v26];
-    v23 = [(SUUIStatefulUIManager *)v31 currentState];
-    if (v24 != 0x7FFFFFFFFFFFFFFFLL && v23 != v24)
+    v24 = [(SUUIStatefulUIManager *)selfCopy convertFSMStateToUIState:v26];
+    currentState = [(SUUIStatefulUIManager *)selfCopy currentState];
+    if (v24 != 0x7FFFFFFFFFFFFFFFLL && currentState != v24)
     {
-      [(SUUIStatefulUIManager *)v31 setCurrentState:v24];
-      v9 = v31;
+      [(SUUIStatefulUIManager *)selfCopy setCurrentState:v24];
+      v9 = selfCopy;
       v17 = MEMORY[0x277D85DD0];
       v18 = -1073741824;
       v19 = 0;
       v20 = __80__SUUIStatefulUIManager_performAction_onEvent_inState_withInfo_nextState_error___block_invoke;
       v21 = &unk_279CC65E8;
-      v22[0] = MEMORY[0x277D82BE0](v31);
-      v22[1] = v23;
+      v22[0] = MEMORY[0x277D82BE0](selfCopy);
+      v22[1] = currentState;
       v22[2] = v24;
       [(SUUIStatefulUIManager *)v9 executeOperationOnDelegate:sel_statefulUIManager_didTransitionFromUIState_toState_ usingBlock:&v17];
       objc_storeStrong(v22, 0);
@@ -8489,42 +8489,42 @@ void __54__SUUIStatefulUIManager_updateNeRDVersionWithOptions___block_invoke(id 
 
   else if ([location[0] isEqualToString:@"CheckForAvailableUpdate"])
   {
-    v16 = [(SUUIStatefulUIManager *)v31 fsmAction_CheckForAvailableUpdate:v27 error:v25];
+    v16 = [(SUUIStatefulUIManager *)selfCopy fsmAction_CheckForAvailableUpdate:v27 error:errorCopy];
   }
 
   else if ([location[0] isEqualToString:@"ReportScanFailed"])
   {
-    v16 = [(SUUIStatefulUIManager *)v31 fsmAction_ReportScanFailed:v27 error:v25];
+    v16 = [(SUUIStatefulUIManager *)selfCopy fsmAction_ReportScanFailed:v27 error:errorCopy];
   }
 
   else if ([location[0] isEqualToString:@"ReportUpdatesAvailable"])
   {
-    v16 = [(SUUIStatefulUIManager *)v31 fsmAction_ReportUpdatesAvailable:v27 error:v25];
+    v16 = [(SUUIStatefulUIManager *)selfCopy fsmAction_ReportUpdatesAvailable:v27 error:errorCopy];
   }
 
   else if ([location[0] isEqualToString:@"ReportNoUpdateFound"])
   {
-    v16 = [(SUUIStatefulUIManager *)v31 fsmAction_ReportNoUpdateFound:v27 error:v25];
+    v16 = [(SUUIStatefulUIManager *)selfCopy fsmAction_ReportNoUpdateFound:v27 error:errorCopy];
   }
 
   else if ([location[0] isEqualToString:@"RefreshScanResults"])
   {
-    v16 = [(SUUIStatefulUIManager *)v31 fsmAction_RefreshScanResults:v27 error:v25];
+    v16 = [(SUUIStatefulUIManager *)selfCopy fsmAction_RefreshScanResults:v27 error:errorCopy];
   }
 
   else if ([location[0] isEqualToString:@"ReportRefreshScanResults"])
   {
-    v16 = [(SUUIStatefulUIManager *)v31 fsmAction_ReportRefreshScanResults:v27 error:v25];
+    v16 = [(SUUIStatefulUIManager *)selfCopy fsmAction_ReportRefreshScanResults:v27 error:errorCopy];
   }
 
   else if ([location[0] isEqualToString:@"ReportRefreshScanResultsFailed"])
   {
-    v16 = [(SUUIStatefulUIManager *)v31 fsmAction_ReportRefreshScanResultsFailed:v27 error:v25];
+    v16 = [(SUUIStatefulUIManager *)selfCopy fsmAction_ReportRefreshScanResultsFailed:v27 error:errorCopy];
   }
 
   else
   {
-    v16 = [(SUUIStatefulUIManager *)v31 fsmAction_actionUnknownAction:location[0] error:v25];
+    v16 = [(SUUIStatefulUIManager *)selfCopy fsmAction_actionUnknownAction:location[0] error:errorCopy];
   }
 
   objc_storeStrong(&v26, 0);
@@ -8544,7 +8544,7 @@ uint64_t __80__SUUIStatefulUIManager_performAction_onEvent_inState_withInfo_next
 
 - (void)setupFSM
 {
-  v16 = self;
+  selfCopy = self;
   v15[1] = a2;
   v18 = MGCopyAnswer();
   v2 = v18;
@@ -8558,36 +8558,36 @@ uint64_t __80__SUUIStatefulUIManager_performAction_onEvent_inState_withInfo_next
   v11 = NSStringFromClass(v4);
   v13 = [v10 initWithFormat:@"%@:%@(%@)", v11, v15[0], v14];
   MEMORY[0x277D82BD8](v11);
-  v5 = [objc_opt_class() _generateStateTable];
-  stateTable = v16->_stateTable;
-  v16->_stateTable = v5;
+  _generateStateTable = [objc_opt_class() _generateStateTable];
+  stateTable = selfCopy->_stateTable;
+  selfCopy->_stateTable = _generateStateTable;
   MEMORY[0x277D82BD8](stateTable);
   v12 = objc_alloc(MEMORY[0x277D64458]);
-  v7 = [v12 initMachine:v13 withTable:v16->_stateTable startingIn:@"Idle" usingDelegate:v16 registeringAllInfoClass:objc_opt_class()];
-  managerFSM = v16->_managerFSM;
-  v16->_managerFSM = v7;
+  v7 = [v12 initMachine:v13 withTable:selfCopy->_stateTable startingIn:@"Idle" usingDelegate:selfCopy registeringAllInfoClass:objc_opt_class()];
+  managerFSM = selfCopy->_managerFSM;
+  selfCopy->_managerFSM = v7;
   MEMORY[0x277D82BD8](managerFSM);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(v15, 0);
 }
 
-- (void)checkForAvailableUpdatesWithRetriesCount:(unsigned __int8)a3
+- (void)checkForAvailableUpdatesWithRetriesCount:(unsigned __int8)count
 {
   managerFSM = self->_managerFSM;
-  v4 = [[SUUIStatefulUIManagerFSMParam alloc] initWithRetriesCount:a3];
+  v4 = [[SUUIStatefulUIManagerFSMParam alloc] initWithRetriesCount:count];
   [(SUCoreFSM *)managerFSM postEvent:@"CheckForAvailableUpdate" withInfo:?];
   MEMORY[0x277D82BD8](v4);
 }
 
-- (void)performFullScan:(id)a3
+- (void)performFullScan:(id)scan
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  objc_initWeak(&v11, v14);
-  queue = v14->_operationsQueue;
+  objc_storeStrong(&location, scan);
+  objc_initWeak(&v11, selfCopy);
+  queue = selfCopy->_operationsQueue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
@@ -10238,15 +10238,15 @@ void __41__SUUIStatefulUIManager_performFullScan___block_invoke_441(uint64_t a1,
   *MEMORY[0x277D85DE8];
 }
 
-- (void)performFullScanWithScanResults:(id)a3 andScanError:(id)a4
+- (void)performFullScanWithScanResults:(id)results andScanError:(id)error
 {
-  obj = a4;
+  obj = error;
   v82 = "[SUUIStatefulUIManager performFullScanWithScanResults:andScanError:]";
   v131 = *MEMORY[0x277D85DE8];
   val = self;
   v124 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, results);
   v122 = 0;
   objc_storeStrong(&v122, obj);
   v120 = 0;
@@ -10254,15 +10254,15 @@ void __41__SUUIStatefulUIManager_performFullScan___block_invoke_441(uint64_t a1,
   v84 = 0;
   if (v122)
   {
-    v121 = [v122 traits];
+    traits = [v122 traits];
     v120 = 1;
     v81 = 0;
-    if (([v121 noUpdateFound] & 1) == 0)
+    if (([traits noUpdateFound] & 1) == 0)
     {
-      v119 = [v122 traits];
+      traits2 = [v122 traits];
       v80 = 1;
       v118 = 1;
-      v81 = [v119 isDelayingUpdate] ^ 1;
+      v81 = [traits2 isDelayingUpdate] ^ 1;
     }
 
     v84 = v81;
@@ -10271,12 +10271,12 @@ void __41__SUUIStatefulUIManager_performFullScan___block_invoke_441(uint64_t a1,
   v79 = v84;
   if (v118)
   {
-    MEMORY[0x277D82BD8](v119);
+    MEMORY[0x277D82BD8](traits2);
   }
 
   if (v120)
   {
-    MEMORY[0x277D82BD8](v121);
+    MEMORY[0x277D82BD8](traits);
   }
 
   if (v79)
@@ -10297,13 +10297,13 @@ void __41__SUUIStatefulUIManager_performFullScan___block_invoke_441(uint64_t a1,
       v74 = SUUIStatefulUIStateToString(*(val + 5));
       v75 = MEMORY[0x277D82BE0](v74);
       v114 = v75;
-      v76 = [val currentState];
-      v77 = [val delegate];
+      currentState = [val currentState];
+      delegate = [val delegate];
       v112 = 0;
       v110 = 0;
-      if (v77)
+      if (delegate)
       {
-        v113 = [val delegate];
+        delegate2 = [val delegate];
         v67 = 1;
         v112 = 1;
         v5 = objc_opt_class();
@@ -10318,24 +10318,24 @@ void __41__SUUIStatefulUIManager_performFullScan___block_invoke_441(uint64_t a1,
       }
 
       v61 = v68;
-      v62 = [val delegate];
-      v63 = [val scanError];
-      v64 = [val preferredStatefulDescriptor];
-      v65 = [val alternateStatefulDescriptor];
-      v66 = [val currentDownload];
+      delegate3 = [val delegate];
+      scanError = [val scanError];
+      preferredStatefulDescriptor = [val preferredStatefulDescriptor];
+      alternateStatefulDescriptor = [val alternateStatefulDescriptor];
+      currentDownload = [val currentDownload];
       v108 = 0;
       v106 = 0;
       v104 = 0;
-      if (v66)
+      if (currentDownload)
       {
-        v109 = [val currentDownload];
+        currentDownload2 = [val currentDownload];
         v59 = 1;
         v108 = 1;
-        v107 = [v109 descriptor];
+        descriptor = [currentDownload2 descriptor];
         v106 = 1;
-        v105 = [v107 updateName];
+        updateName = [descriptor updateName];
         v104 = 1;
-        v60 = v105;
+        v60 = updateName;
       }
 
       else
@@ -10344,15 +10344,15 @@ void __41__SUUIStatefulUIManager_performFullScan___block_invoke_441(uint64_t a1,
       }
 
       v36 = v60;
-      v37 = [val currentDownload];
+      currentDownload3 = [val currentDownload];
       v38 = SUUIUpdateContinuousOperationTypeToString([val currentUpdateOperationType]);
       v39 = MEMORY[0x277D82BE0](v38);
       v103 = v39;
-      v129 = [val isTargetedUpdateScheduledForAutoInstall];
+      isTargetedUpdateScheduledForAutoInstall = [val isTargetedUpdateScheduledForAutoInstall];
       v49 = @"NO";
       v50 = @"YES";
       v57 = 1;
-      if (v129)
+      if (isTargetedUpdateScheduledForAutoInstall)
       {
         v6 = @"YES";
       }
@@ -10367,8 +10367,8 @@ void __41__SUUIStatefulUIManager_performFullScan___block_invoke_441(uint64_t a1,
       v41 = v40;
       v42 = MEMORY[0x277D82BE0](v41);
       v102 = v42;
-      v128 = [val hidingPreferredDescriptor];
-      if (v128)
+      hidingPreferredDescriptor = [val hidingPreferredDescriptor];
+      if (hidingPreferredDescriptor)
       {
         v8 = v50;
       }
@@ -10383,12 +10383,12 @@ void __41__SUUIStatefulUIManager_performFullScan___block_invoke_441(uint64_t a1,
       v44 = v43;
       v45 = MEMORY[0x277D82BE0](v44);
       v101 = v45;
-      v46 = [val hiddenPreferredStatefulDescriptor];
-      v47 = [v46 updateName];
-      v48 = MEMORY[0x277D82BE0](v47);
+      hiddenPreferredStatefulDescriptor = [val hiddenPreferredStatefulDescriptor];
+      updateName2 = [hiddenPreferredStatefulDescriptor updateName];
+      v48 = MEMORY[0x277D82BE0](updateName2);
       v100 = v48;
-      v127 = [val hidingAlternateDescriptor];
-      if (v127)
+      hidingAlternateDescriptor = [val hidingAlternateDescriptor];
+      if (hidingAlternateDescriptor)
       {
         v10 = v50;
       }
@@ -10403,28 +10403,28 @@ void __41__SUUIStatefulUIManager_performFullScan___block_invoke_441(uint64_t a1,
       v52 = v51;
       v53 = MEMORY[0x277D82BE0](v52);
       v99 = v53;
-      v54 = [val hiddenAlternateStatefulDescriptor];
-      v55 = [v54 updateName];
-      v56 = MEMORY[0x277D82BE0](v55);
+      hiddenAlternateStatefulDescriptor = [val hiddenAlternateStatefulDescriptor];
+      updateName3 = [hiddenAlternateStatefulDescriptor updateName];
+      v56 = MEMORY[0x277D82BE0](updateName3);
       v98 = v56;
-      v58 = [val enrolledBetaProgram];
+      enrolledBetaProgram = [val enrolledBetaProgram];
       v96 = 0;
-      if (v58)
+      if (enrolledBetaProgram)
       {
-        v97 = [val enrolledBetaProgram];
+        enrolledBetaProgram2 = [val enrolledBetaProgram];
         v96 = 1;
-        v35 = [v97 programID];
+        programID = [enrolledBetaProgram2 programID];
       }
 
       else
       {
-        v35 = 0;
+        programID = 0;
       }
 
-      v26 = v35;
+      v26 = programID;
       v27 = [*(val + 15) count];
-      v126 = [val canEnrollInBetaUpdates];
-      if (v126)
+      canEnrollInBetaUpdates = [val canEnrollInBetaUpdates];
+      if (canEnrollInBetaUpdates)
       {
         v12 = @"YES";
       }
@@ -10445,44 +10445,44 @@ void __41__SUUIStatefulUIManager_performFullScan___block_invoke_441(uint64_t a1,
       v14 = [*(val + 24) count];
       v32 = &v15;
       buf = v130;
-      __os_log_helper_16_2_27_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0_8_66_8_66(v130, v82, v71, v73, v75, v76, v61, v62, v63, v64, v65, v36, v37, v39, v42, v45, v48, v53, v56, v26, v27, v28, v29, v30, v31, v14, v122, location);
+      __os_log_helper_16_2_27_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0_8_66_8_66(v130, v82, v71, v73, v75, currentState, v61, delegate3, scanError, preferredStatefulDescriptor, alternateStatefulDescriptor, v36, currentDownload3, v39, v42, v45, v48, v53, v56, v26, v27, v28, v29, v30, v31, v14, v122, location);
       _os_log_impl(&dword_26ADE5000, log, v70[0], "%s [%p]: %{public}@ Checkpoint\n\tcurrentState: %{public}@ (%ld)\n\tdelegate: %{public}@ (%p)\n\tscanError: %{public}@\n\tpreferredDescriptor: %{public}@\n\talternateDescriptor: %{public}@\n\tdownload: %{public}@ (%p)\n\tcurrentUpdateOperationType: %{public}@\n\tscheduledForAutoInstall: %{public}@\n\thiddenUpdatesPostSelection: preferred[%{public}@, %{public}@]; alternate[%{public}@, %{public}@];\n\tselectedBetaProgram: %lu (count: %ld, enrollable: %{public}@)\n\tOpFSMs: scan[%p]; refresh[%p]; update[%p]; auxiliaryOperationsCount[%lu]\n\nA full-scan request has been received for third-party scan results. We got a non up-to-date third-party scan error - Skipping.\nscanError: %{public}@\nscanResults: %{public}@", buf, 0x110u);
       MEMORY[0x277D82BD8](v34);
       if (v96)
       {
-        MEMORY[0x277D82BD8](v97);
+        MEMORY[0x277D82BD8](enrolledBetaProgram2);
       }
 
-      MEMORY[0x277D82BD8](v58);
-      MEMORY[0x277D82BD8](v55);
-      MEMORY[0x277D82BD8](v54);
+      MEMORY[0x277D82BD8](enrolledBetaProgram);
+      MEMORY[0x277D82BD8](updateName3);
+      MEMORY[0x277D82BD8](hiddenAlternateStatefulDescriptor);
       MEMORY[0x277D82BD8](v52);
-      MEMORY[0x277D82BD8](v47);
-      MEMORY[0x277D82BD8](v46);
+      MEMORY[0x277D82BD8](updateName2);
+      MEMORY[0x277D82BD8](hiddenPreferredStatefulDescriptor);
       MEMORY[0x277D82BD8](v44);
       MEMORY[0x277D82BD8](v41);
       MEMORY[0x277D82BD8](v38);
-      MEMORY[0x277D82BD8](v37);
+      MEMORY[0x277D82BD8](currentDownload3);
       if (v104)
       {
-        MEMORY[0x277D82BD8](v105);
+        MEMORY[0x277D82BD8](updateName);
       }
 
       if (v106)
       {
-        MEMORY[0x277D82BD8](v107);
+        MEMORY[0x277D82BD8](descriptor);
       }
 
       if (v108)
       {
-        MEMORY[0x277D82BD8](v109);
+        MEMORY[0x277D82BD8](currentDownload2);
       }
 
-      MEMORY[0x277D82BD8](v66);
-      MEMORY[0x277D82BD8](v65);
-      MEMORY[0x277D82BD8](v64);
-      MEMORY[0x277D82BD8](v63);
-      MEMORY[0x277D82BD8](v62);
+      MEMORY[0x277D82BD8](currentDownload);
+      MEMORY[0x277D82BD8](alternateStatefulDescriptor);
+      MEMORY[0x277D82BD8](preferredStatefulDescriptor);
+      MEMORY[0x277D82BD8](scanError);
+      MEMORY[0x277D82BD8](delegate3);
       if (v110)
       {
         MEMORY[0x277D82BD8](v111);
@@ -10490,10 +10490,10 @@ void __41__SUUIStatefulUIManager_performFullScan___block_invoke_441(uint64_t a1,
 
       if (v112)
       {
-        MEMORY[0x277D82BD8](v113);
+        MEMORY[0x277D82BD8](delegate2);
       }
 
-      MEMORY[0x277D82BD8](v77);
+      MEMORY[0x277D82BD8](delegate);
       MEMORY[0x277D82BD8](v74);
       MEMORY[0x277D82BD8](v72);
       v24 = 0;
@@ -11930,18 +11930,18 @@ void __69__SUUIStatefulUIManager_performFullScanWithScanResults_andScanError___b
   *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyFullScanResultsDelegates:(id)a3 andError:(id)a4
+- (void)notifyFullScanResultsDelegates:(id)delegates andError:(id)error
 {
-  v20 = self;
+  selfCopy = self;
   v19 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, delegates);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
-  objc_initWeak(&from, v20);
-  v6 = [MEMORY[0x277D643F8] sharedCore];
-  v5 = [(SUUIStatefulUIManager *)v20 delegateCallbackQueue];
-  queue = [v6 selectDelegateCallbackQueue:?];
+  objc_storeStrong(&v17, error);
+  objc_initWeak(&from, selfCopy);
+  mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+  delegateCallbackQueue = [(SUUIStatefulUIManager *)selfCopy delegateCallbackQueue];
+  queue = [mEMORY[0x277D643F8] selectDelegateCallbackQueue:?];
   v8 = MEMORY[0x277D85DD0];
   v9 = -1073741824;
   v10 = 0;
@@ -11953,8 +11953,8 @@ void __69__SUUIStatefulUIManager_performFullScanWithScanResults_andScanError___b
   v14 = MEMORY[0x277D82BE0](v17);
   dispatch_async(queue, &v8);
   MEMORY[0x277D82BD8](queue);
-  MEMORY[0x277D82BD8](v5);
-  MEMORY[0x277D82BD8](v6);
+  MEMORY[0x277D82BD8](delegateCallbackQueue);
+  MEMORY[0x277D82BD8](mEMORY[0x277D643F8]);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v13, 0);
   objc_destroyWeak(v15);
@@ -12091,14 +12091,14 @@ void __65__SUUIStatefulUIManager_notifyFullScanResultsDelegates_andError___block
   *MEMORY[0x277D85DE8];
 }
 
-- (void)performRefreshScan:(id)a3
+- (void)performRefreshScan:(id)scan
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  objc_initWeak(&v11, v14);
-  queue = v14->_operationsQueue;
+  objc_storeStrong(&location, scan);
+  objc_initWeak(&v11, selfCopy);
+  queue = selfCopy->_operationsQueue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
@@ -12820,18 +12820,18 @@ void __44__SUUIStatefulUIManager_performRefreshScan___block_invoke_445(uint64_t 
   *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyRefreshScanResultsDelegates:(id)a3 andError:(id)a4
+- (void)notifyRefreshScanResultsDelegates:(id)delegates andError:(id)error
 {
-  v20 = self;
+  selfCopy = self;
   v19 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, delegates);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
-  objc_initWeak(&from, v20);
-  v6 = [MEMORY[0x277D643F8] sharedCore];
-  v5 = [(SUUIStatefulUIManager *)v20 delegateCallbackQueue];
-  queue = [v6 selectDelegateCallbackQueue:?];
+  objc_storeStrong(&v17, error);
+  objc_initWeak(&from, selfCopy);
+  mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+  delegateCallbackQueue = [(SUUIStatefulUIManager *)selfCopy delegateCallbackQueue];
+  queue = [mEMORY[0x277D643F8] selectDelegateCallbackQueue:?];
   v8 = MEMORY[0x277D85DD0];
   v9 = -1073741824;
   v10 = 0;
@@ -12843,8 +12843,8 @@ void __44__SUUIStatefulUIManager_performRefreshScan___block_invoke_445(uint64_t 
   v14 = MEMORY[0x277D82BE0](v17);
   dispatch_async(queue, &v8);
   MEMORY[0x277D82BD8](queue);
-  MEMORY[0x277D82BD8](v5);
-  MEMORY[0x277D82BD8](v6);
+  MEMORY[0x277D82BD8](delegateCallbackQueue);
+  MEMORY[0x277D82BD8](mEMORY[0x277D643F8]);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v13, 0);
   objc_destroyWeak(v15);
@@ -12936,9 +12936,9 @@ void __68__SUUIStatefulUIManager_notifyRefreshScanResultsDelegates_andError___bl
   *MEMORY[0x277D85DE8];
 }
 
-- (void)handleFullScanResults:(id)a3
+- (void)handleFullScanResults:(id)results
 {
-  v3 = MEMORY[0x28223BE20](self, a2, a3);
+  v3 = MEMORY[0x28223BE20](self, a2, results);
   v442 = &v461;
   v443 = "[SUUIStatefulUIManager handleFullScanResults:]";
   v535 = *MEMORY[0x277D85DE8];
@@ -12946,12 +12946,12 @@ void __68__SUUIStatefulUIManager_notifyRefreshScanResultsDelegates_andError___bl
   location[1] = v4;
   location[0] = 0;
   objc_storeStrong(location, v5);
-  v441 = [location[0] fullScanResults];
-  v518 = v441;
+  fullScanResults = [location[0] fullScanResults];
+  v518 = fullScanResults;
   v440 = +[SUUILoggingContext statefulUILogger];
   v438 = v440;
-  v439 = [v438 oslog];
-  v517 = v439;
+  oslog = [v438 oslog];
+  v517 = oslog;
   MEMORY[0x277D82BD8](v438);
   type = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v517, OS_LOG_TYPE_DEFAULT))
@@ -12973,15 +12973,15 @@ void __68__SUUIStatefulUIManager_notifyRefreshScanResultsDelegates_andError___bl
     v10 = v442;
     v428 = v9;
     v442[78] = v9;
-    v429 = [v10[85] currentState];
-    v426 = [v442[85] delegate];
-    v425 = v426;
+    currentState = [v10[85] currentState];
+    delegate = [v442[85] delegate];
+    v425 = delegate;
     v513 = 0;
     v512 = 0;
     if (v425)
     {
-      v424 = [v442[85] delegate];
-      v442[77] = v424;
+      delegate2 = [v442[85] delegate];
+      v442[77] = delegate2;
       v513 = 1;
       v423 = objc_opt_class();
       v422 = NSStringFromClass(v423);
@@ -12997,31 +12997,31 @@ void __68__SUUIStatefulUIManager_notifyRefreshScanResultsDelegates_andError___bl
     }
 
     v419 = v421;
-    v420 = [v442[85] delegate];
-    v417 = v420;
-    v418 = [v442[85] scanError];
-    v415 = v418;
-    v416 = [v442[85] preferredStatefulDescriptor];
-    v413 = v416;
-    v414 = [v442[85] alternateStatefulDescriptor];
-    v411 = v414;
-    v412 = [v442[85] currentDownload];
-    v410 = v412;
+    delegate3 = [v442[85] delegate];
+    v417 = delegate3;
+    scanError = [v442[85] scanError];
+    v415 = scanError;
+    preferredStatefulDescriptor = [v442[85] preferredStatefulDescriptor];
+    v413 = preferredStatefulDescriptor;
+    alternateStatefulDescriptor = [v442[85] alternateStatefulDescriptor];
+    v411 = alternateStatefulDescriptor;
+    currentDownload = [v442[85] currentDownload];
+    v410 = currentDownload;
     v511 = 0;
     v510 = 0;
     v509 = 0;
     if (v410)
     {
-      v409 = [v442[85] currentDownload];
-      v12 = v409;
+      currentDownload2 = [v442[85] currentDownload];
+      v12 = currentDownload2;
       v442[73] = v12;
       v511 = 1;
-      v408 = [v12 descriptor];
-      v13 = v408;
+      descriptor = [v12 descriptor];
+      v13 = descriptor;
       v442[71] = v13;
       v510 = 1;
-      v407 = [v13 updateName];
-      v14 = v407;
+      updateName = [v13 updateName];
+      v14 = updateName;
       v442[69] = v14;
       v509 = 1;
       v406 = v14;
@@ -13033,18 +13033,18 @@ void __68__SUUIStatefulUIManager_notifyRefreshScanResultsDelegates_andError___bl
     }
 
     v404 = v406;
-    v405 = [v442[85] currentDownload];
-    v402 = v405;
-    v403 = [v442[85] currentUpdateOperationType];
-    v401 = SUUIUpdateContinuousOperationTypeToString(v403);
+    currentDownload3 = [v442[85] currentDownload];
+    v402 = currentDownload3;
+    currentUpdateOperationType = [v442[85] currentUpdateOperationType];
+    v401 = SUUIUpdateContinuousOperationTypeToString(currentUpdateOperationType);
     v398 = v401;
     v15 = MEMORY[0x277D82BE0](v398);
     v16 = v442;
     v399 = v15;
     v442[67] = v15;
-    v400 = [v16[85] isTargetedUpdateScheduledForAutoInstall];
-    v531 = v400;
-    if (v400)
+    isTargetedUpdateScheduledForAutoInstall = [v16[85] isTargetedUpdateScheduledForAutoInstall];
+    v531 = isTargetedUpdateScheduledForAutoInstall;
+    if (isTargetedUpdateScheduledForAutoInstall)
     {
       v17 = @"YES";
     }
@@ -13061,9 +13061,9 @@ void __68__SUUIStatefulUIManager_notifyRefreshScanResultsDelegates_andError___bl
     v20 = v442;
     v395 = v19;
     v442[66] = v19;
-    v396 = [v20[85] hidingPreferredDescriptor];
-    v530 = v396;
-    if (v396)
+    hidingPreferredDescriptor = [v20[85] hidingPreferredDescriptor];
+    v530 = hidingPreferredDescriptor;
+    if (hidingPreferredDescriptor)
     {
       v21 = @"YES";
     }
@@ -13080,17 +13080,17 @@ void __68__SUUIStatefulUIManager_notifyRefreshScanResultsDelegates_andError___bl
     v24 = v442;
     v391 = v23;
     v442[65] = v23;
-    v392 = [v24[85] hiddenPreferredStatefulDescriptor];
-    v388 = v392;
-    v389 = [v388 updateName];
-    v385 = v389;
+    hiddenPreferredStatefulDescriptor = [v24[85] hiddenPreferredStatefulDescriptor];
+    v388 = hiddenPreferredStatefulDescriptor;
+    updateName2 = [v388 updateName];
+    v385 = updateName2;
     v25 = MEMORY[0x277D82BE0](v385);
     v26 = v442;
     v386 = v25;
     v442[64] = v25;
-    v387 = [v26[85] hidingAlternateDescriptor];
-    v529 = v387;
-    if (v387)
+    hidingAlternateDescriptor = [v26[85] hidingAlternateDescriptor];
+    v529 = hidingAlternateDescriptor;
+    if (hidingAlternateDescriptor)
     {
       v27 = @"YES";
     }
@@ -13107,25 +13107,25 @@ void __68__SUUIStatefulUIManager_notifyRefreshScanResultsDelegates_andError___bl
     v30 = v442;
     v382 = v29;
     v442[63] = v29;
-    v383 = [v30[85] hiddenAlternateStatefulDescriptor];
-    v379 = v383;
-    v380 = [v379 updateName];
-    v376 = v380;
+    hiddenAlternateStatefulDescriptor = [v30[85] hiddenAlternateStatefulDescriptor];
+    v379 = hiddenAlternateStatefulDescriptor;
+    updateName3 = [v379 updateName];
+    v376 = updateName3;
     v31 = MEMORY[0x277D82BE0](v376);
     v32 = v442;
     v377 = v31;
     v442[62] = v31;
-    v378 = [v32[85] enrolledBetaProgram];
-    v375 = v378;
+    enrolledBetaProgram = [v32[85] enrolledBetaProgram];
+    v375 = enrolledBetaProgram;
     v502 = 0;
     if (v375)
     {
-      v374 = [v442[85] enrolledBetaProgram];
-      v33 = v374;
+      enrolledBetaProgram2 = [v442[85] enrolledBetaProgram];
+      v33 = enrolledBetaProgram2;
       v442[61] = v33;
       v502 = 1;
-      v373 = [v33 programID];
-      v372 = v373;
+      programID = [v33 programID];
+      v372 = programID;
     }
 
     else
@@ -13135,9 +13135,9 @@ void __68__SUUIStatefulUIManager_notifyRefreshScanResultsDelegates_andError___bl
 
     v370 = v372;
     v371 = [*(v442[85] + 15) count];
-    v369 = [v442[85] canEnrollInBetaUpdates];
-    v528 = v369;
-    if (v369)
+    canEnrollInBetaUpdates = [v442[85] canEnrollInBetaUpdates];
+    v528 = canEnrollInBetaUpdates;
+    if (canEnrollInBetaUpdates)
     {
       v34 = @"YES";
     }
@@ -13158,12 +13158,12 @@ void __68__SUUIStatefulUIManager_notifyRefreshScanResultsDelegates_andError___bl
     v365 = *(v37[85] + 22);
     v366 = *(v37[85] + 23);
     v367 = [*(v37[85] + 24) count];
-    v361 = [v442[82] identifier];
-    v360 = v361;
+    identifier = [v442[82] identifier];
+    v360 = identifier;
     v38 = v442[82];
     v358 = &v140;
     buf = v534;
-    __os_log_helper_16_2_27_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0_8_66_8_66(v534, v443, v436, v431, v428, v429, v419, v417, v415, v413, v411, v404, v402, v399, v395, v391, v386, v382, v377, v370, v371, v363, v364, v365, v366, v367, v360, v38);
+    __os_log_helper_16_2_27_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0_8_66_8_66(v534, v443, v436, v431, v428, currentState, v419, v417, v415, v413, v411, v404, v402, v399, v395, v391, v386, v382, v377, v370, v371, v363, v364, v365, v366, v367, v360, v38);
     _os_log_impl(&dword_26ADE5000, log, v435[0], "%s [%p]: %{public}@ Checkpoint\n\tcurrentState: %{public}@ (%ld)\n\tdelegate: %{public}@ (%p)\n\tscanError: %{public}@\n\tpreferredDescriptor: %{public}@\n\talternateDescriptor: %{public}@\n\tdownload: %{public}@ (%p)\n\tcurrentUpdateOperationType: %{public}@\n\tscheduledForAutoInstall: %{public}@\n\thiddenUpdatesPostSelection: preferred[%{public}@, %{public}@]; alternate[%{public}@, %{public}@];\n\tselectedBetaProgram: %lu (count: %ld, enrollable: %{public}@)\n\tOpFSMs: scan[%p]; refresh[%p]; update[%p]; auxiliaryOperationsCount[%lu]\n\nFinished to perform a full-scan with ID: %{public}@.\nResults: %{public}@", buf, 0x110u);
     MEMORY[0x277D82BD8](v360);
     MEMORY[0x277D82BD8](v362);
@@ -13228,32 +13228,32 @@ void __68__SUUIStatefulUIManager_notifyRefreshScanResultsDelegates_andError___bl
 
   objc_storeStrong(&v517, 0);
   objc_initWeak(&from, v442[85]);
-  v357 = [v442[85] preferredStatefulDescriptor];
-  v39 = v357;
+  preferredStatefulDescriptor2 = [v442[85] preferredStatefulDescriptor];
+  v39 = preferredStatefulDescriptor2;
   v40 = v442;
   v442[57] = v39;
-  v356 = [v40[85] alternateStatefulDescriptor];
-  v41 = v356;
+  alternateStatefulDescriptor2 = [v40[85] alternateStatefulDescriptor];
+  v41 = alternateStatefulDescriptor2;
   v42 = v442;
   v442[54] = v41;
-  v355 = [v42[85] currentUpdateOperation];
-  v43 = v355;
+  currentUpdateOperation = [v42[85] currentUpdateOperation];
+  v43 = currentUpdateOperation;
   v44 = v442;
   v442[53] = v43;
-  v354 = [v44[85] scanError];
-  v45 = v354;
+  scanError2 = [v44[85] scanError];
+  v45 = scanError2;
   v46 = v442;
   v442[52] = v45;
   if (v46[53])
   {
     v47 = v442[82];
     v495 = 0;
-    v353 = [v47 isEmptyScanResults];
+    isEmptyScanResults = [v47 isEmptyScanResults];
     v352 = 0;
-    if (v353)
+    if (isEmptyScanResults)
     {
-      v351 = [v442[82] currentDownload];
-      v48 = v351;
+      currentDownload4 = [v442[82] currentDownload];
+      v48 = currentDownload4;
       v442[51] = v48;
       v495 = 1;
       v352 = v48 == 0;
@@ -13269,8 +13269,8 @@ void __68__SUUIStatefulUIManager_notifyRefreshScanResultsDelegates_andError___bl
     {
       v349 = +[SUUILoggingContext statefulUILogger];
       v347 = v349;
-      v348 = [v347 oslog];
-      v49 = v348;
+      oslog2 = [v347 oslog];
+      v49 = oslog2;
       v50 = v347;
       v442[49] = v49;
       MEMORY[0x277D82BD8](v50);
@@ -13294,16 +13294,16 @@ void __68__SUUIStatefulUIManager_notifyRefreshScanResultsDelegates_andError___bl
         v55 = v442;
         v337 = v54;
         v442[46] = v54;
-        v338 = [v55[85] currentState];
+        currentState2 = [v55[85] currentState];
         v56 = v442[85];
         v490 = 0;
         v489 = 0;
-        v335 = [v56 delegate];
-        v334 = v335;
+        delegate4 = [v56 delegate];
+        v334 = delegate4;
         if (v334)
         {
-          v333 = [v442[85] delegate];
-          v57 = v333;
+          delegate5 = [v442[85] delegate];
+          v57 = delegate5;
           v442[45] = v57;
           v490 = 1;
           v332 = objc_opt_class();
@@ -13320,32 +13320,32 @@ void __68__SUUIStatefulUIManager_notifyRefreshScanResultsDelegates_andError___bl
         }
 
         v328 = v330;
-        v329 = [v442[85] delegate];
-        v326 = v329;
-        v327 = [v442[85] scanError];
-        v324 = v327;
-        v325 = [v442[85] preferredStatefulDescriptor];
-        v322 = v325;
-        v323 = [v442[85] alternateStatefulDescriptor];
-        v320 = v323;
+        delegate6 = [v442[85] delegate];
+        v326 = delegate6;
+        scanError3 = [v442[85] scanError];
+        v324 = scanError3;
+        preferredStatefulDescriptor3 = [v442[85] preferredStatefulDescriptor];
+        v322 = preferredStatefulDescriptor3;
+        alternateStatefulDescriptor3 = [v442[85] alternateStatefulDescriptor];
+        v320 = alternateStatefulDescriptor3;
         v59 = v442[85];
         v488 = 0;
         v487 = 0;
         v486 = 0;
-        v321 = [v59 currentDownload];
-        v319 = v321;
+        currentDownload5 = [v59 currentDownload];
+        v319 = currentDownload5;
         if (v319)
         {
-          v318 = [v442[85] currentDownload];
-          v60 = v318;
+          currentDownload6 = [v442[85] currentDownload];
+          v60 = currentDownload6;
           v442[41] = v60;
           v488 = 1;
-          v317 = [v60 descriptor];
-          v61 = v317;
+          descriptor2 = [v60 descriptor];
+          v61 = descriptor2;
           v442[39] = v61;
           v487 = 1;
-          v316 = [v61 updateName];
-          v62 = v316;
+          updateName4 = [v61 updateName];
+          v62 = updateName4;
           v442[37] = v62;
           v486 = 1;
           v315 = v62;
@@ -13357,18 +13357,18 @@ void __68__SUUIStatefulUIManager_notifyRefreshScanResultsDelegates_andError___bl
         }
 
         v313 = v315;
-        v314 = [v442[85] currentDownload];
-        v311 = v314;
-        v312 = [v442[85] currentUpdateOperationType];
-        v310 = SUUIUpdateContinuousOperationTypeToString(v312);
+        currentDownload7 = [v442[85] currentDownload];
+        v311 = currentDownload7;
+        currentUpdateOperationType2 = [v442[85] currentUpdateOperationType];
+        v310 = SUUIUpdateContinuousOperationTypeToString(currentUpdateOperationType2);
         v307 = v310;
         v63 = MEMORY[0x277D82BE0](v307);
         v64 = v442;
         v308 = v63;
         v442[35] = v63;
-        v309 = [v64[85] isTargetedUpdateScheduledForAutoInstall];
-        v527 = v309;
-        if (v309)
+        isTargetedUpdateScheduledForAutoInstall2 = [v64[85] isTargetedUpdateScheduledForAutoInstall];
+        v527 = isTargetedUpdateScheduledForAutoInstall2;
+        if (isTargetedUpdateScheduledForAutoInstall2)
         {
           v65 = @"YES";
         }
@@ -13385,9 +13385,9 @@ void __68__SUUIStatefulUIManager_notifyRefreshScanResultsDelegates_andError___bl
         v68 = v442;
         v304 = v67;
         v442[34] = v67;
-        v305 = [v68[85] hidingPreferredDescriptor];
-        v526 = v305;
-        if (v305)
+        hidingPreferredDescriptor2 = [v68[85] hidingPreferredDescriptor];
+        v526 = hidingPreferredDescriptor2;
+        if (hidingPreferredDescriptor2)
         {
           v69 = @"YES";
         }
@@ -13404,17 +13404,17 @@ void __68__SUUIStatefulUIManager_notifyRefreshScanResultsDelegates_andError___bl
         v72 = v442;
         v300 = v71;
         v442[33] = v71;
-        v301 = [v72[85] hiddenPreferredStatefulDescriptor];
-        v297 = v301;
-        v298 = [v297 updateName];
-        v294 = v298;
+        hiddenPreferredStatefulDescriptor2 = [v72[85] hiddenPreferredStatefulDescriptor];
+        v297 = hiddenPreferredStatefulDescriptor2;
+        updateName5 = [v297 updateName];
+        v294 = updateName5;
         v73 = MEMORY[0x277D82BE0](v294);
         v74 = v442;
         v295 = v73;
         v442[32] = v73;
-        v296 = [v74[85] hidingAlternateDescriptor];
-        v525 = v296;
-        if (v296)
+        hidingAlternateDescriptor2 = [v74[85] hidingAlternateDescriptor];
+        v525 = hidingAlternateDescriptor2;
+        if (hidingAlternateDescriptor2)
         {
           v75 = @"YES";
         }
@@ -13431,26 +13431,26 @@ void __68__SUUIStatefulUIManager_notifyRefreshScanResultsDelegates_andError___bl
         v78 = v442;
         v291 = v77;
         v442[31] = v77;
-        v292 = [v78[85] hiddenAlternateStatefulDescriptor];
-        v288 = v292;
-        v289 = [v288 updateName];
-        v285 = v289;
+        hiddenAlternateStatefulDescriptor2 = [v78[85] hiddenAlternateStatefulDescriptor];
+        v288 = hiddenAlternateStatefulDescriptor2;
+        updateName6 = [v288 updateName];
+        v285 = updateName6;
         v79 = MEMORY[0x277D82BE0](v285);
         v80 = v442;
         v286 = v79;
         v442[30] = v79;
         v81 = v80[85];
         v479 = 0;
-        v287 = [v81 enrolledBetaProgram];
-        v284 = v287;
+        enrolledBetaProgram3 = [v81 enrolledBetaProgram];
+        v284 = enrolledBetaProgram3;
         if (v284)
         {
-          v283 = [v442[85] enrolledBetaProgram];
-          v82 = v283;
+          enrolledBetaProgram4 = [v442[85] enrolledBetaProgram];
+          v82 = enrolledBetaProgram4;
           v442[29] = v82;
           v479 = 1;
-          v282 = [v82 programID];
-          v281 = v282;
+          programID2 = [v82 programID];
+          v281 = programID2;
         }
 
         else
@@ -13460,9 +13460,9 @@ void __68__SUUIStatefulUIManager_notifyRefreshScanResultsDelegates_andError___bl
 
         v279 = v281;
         v280 = [*(v442[85] + 15) count];
-        v278 = [v442[85] canEnrollInBetaUpdates];
-        v524 = v278;
-        if (v278)
+        canEnrollInBetaUpdates2 = [v442[85] canEnrollInBetaUpdates];
+        v524 = canEnrollInBetaUpdates2;
+        if (canEnrollInBetaUpdates2)
         {
           v83 = @"YES";
         }
@@ -13485,7 +13485,7 @@ void __68__SUUIStatefulUIManager_notifyRefreshScanResultsDelegates_andError___bl
         v276 = [*(v86[85] + 24) count];
         v269 = &v140;
         v270 = v533;
-        __os_log_helper_16_2_25_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0(v533, v443, v345, v340, v337, v338, v328, v326, v324, v322, v320, v313, v311, v308, v304, v300, v295, v291, v286, v279, v280, v272, v273, v274, v275, v276);
+        __os_log_helper_16_2_25_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0(v533, v443, v345, v340, v337, currentState2, v328, v326, v324, v322, v320, v313, v311, v308, v304, v300, v295, v291, v286, v279, v280, v272, v273, v274, v275, v276);
         _os_log_impl(&dword_26ADE5000, v343, v344[0], "%s [%p]: %{public}@ Checkpoint\n\tcurrentState: %{public}@ (%ld)\n\tdelegate: %{public}@ (%p)\n\tscanError: %{public}@\n\tpreferredDescriptor: %{public}@\n\talternateDescriptor: %{public}@\n\tdownload: %{public}@ (%p)\n\tcurrentUpdateOperationType: %{public}@\n\tscheduledForAutoInstall: %{public}@\n\thiddenUpdatesPostSelection: preferred[%{public}@, %{public}@]; alternate[%{public}@, %{public}@];\n\tselectedBetaProgram: %lu (count: %ld, enrollable: %{public}@)\n\tOpFSMs: scan[%p]; refresh[%p]; update[%p]; auxiliaryOperationsCount[%lu]\n\nThe full scan yielded empty scan results - cancelling the currently active update operation", v270, 0xFCu);
         MEMORY[0x277D82BD8](v271);
         if (v479)
@@ -13570,8 +13570,8 @@ void __68__SUUIStatefulUIManager_notifyRefreshScanResultsDelegates_andError___bl
       v473 = 0;
       v472 = 0;
       v471 = 0;
-      v266 = [v89 preferredDescriptor];
-      v263 = v266;
+      preferredDescriptor = [v89 preferredDescriptor];
+      v263 = preferredDescriptor;
       v264 = [v265 isEqualToDescriptor:? includeDocumentationComparison:?];
       if (v264)
       {
@@ -13579,8 +13579,8 @@ void __68__SUUIStatefulUIManager_notifyRefreshScanResultsDelegates_andError___bl
       }
 
       v261 = v442[57];
-      v262 = [v442[82] alternateDescriptor];
-      v90 = v262;
+      alternateDescriptor = [v442[82] alternateDescriptor];
+      v90 = alternateDescriptor;
       v91 = v261;
       v442[20] = v90;
       v473 = 1;
@@ -13590,8 +13590,8 @@ void __68__SUUIStatefulUIManager_notifyRefreshScanResultsDelegates_andError___bl
       {
 LABEL_80:
         v257 = v442[54];
-        v258 = [v442[82] preferredDescriptor];
-        v92 = v258;
+        preferredDescriptor2 = [v442[82] preferredDescriptor];
+        v92 = preferredDescriptor2;
         v93 = v257;
         v442[18] = v92;
         v472 = 1;
@@ -13600,8 +13600,8 @@ LABEL_80:
         if ((v256 & 1) == 0)
         {
           v253 = v442[54];
-          v254 = [v442[82] alternateDescriptor];
-          v94 = v254;
+          alternateDescriptor2 = [v442[82] alternateDescriptor];
+          v94 = alternateDescriptor2;
           v95 = v253;
           v442[16] = v94;
           v471 = 1;
@@ -13633,8 +13633,8 @@ LABEL_80:
       {
         v250 = +[SUUILoggingContext statefulUILogger];
         v248 = v250;
-        v249 = [v248 oslog];
-        v96 = v249;
+        oslog3 = [v248 oslog];
+        v96 = oslog3;
         v97 = v248;
         v442[14] = v96;
         MEMORY[0x277D82BD8](v97);
@@ -13658,16 +13658,16 @@ LABEL_80:
           v102 = v442;
           v238 = v101;
           v442[11] = v101;
-          v239 = [v102[85] currentState];
+          currentState3 = [v102[85] currentState];
           v103 = v442[85];
           v466 = 0;
           v465 = 0;
-          v236 = [v103 delegate];
-          v235 = v236;
+          delegate7 = [v103 delegate];
+          v235 = delegate7;
           if (v235)
           {
-            v234 = [v442[85] delegate];
-            v104 = v234;
+            delegate8 = [v442[85] delegate];
+            v104 = delegate8;
             v442[10] = v104;
             v466 = 1;
             v233 = objc_opt_class();
@@ -13684,32 +13684,32 @@ LABEL_80:
           }
 
           v229 = v231;
-          v230 = [v442[85] delegate];
-          v227 = v230;
-          v228 = [v442[85] scanError];
-          v225 = v228;
-          v226 = [v442[85] preferredStatefulDescriptor];
-          v223 = v226;
-          v224 = [v442[85] alternateStatefulDescriptor];
-          v221 = v224;
+          delegate9 = [v442[85] delegate];
+          v227 = delegate9;
+          scanError4 = [v442[85] scanError];
+          v225 = scanError4;
+          preferredStatefulDescriptor4 = [v442[85] preferredStatefulDescriptor];
+          v223 = preferredStatefulDescriptor4;
+          alternateStatefulDescriptor4 = [v442[85] alternateStatefulDescriptor];
+          v221 = alternateStatefulDescriptor4;
           v106 = v442[85];
           v464 = 0;
           v463 = 0;
           v462 = 0;
-          v222 = [v106 currentDownload];
-          v220 = v222;
+          currentDownload8 = [v106 currentDownload];
+          v220 = currentDownload8;
           if (v220)
           {
-            v219 = [v442[85] currentDownload];
-            v107 = v219;
+            currentDownload9 = [v442[85] currentDownload];
+            v107 = currentDownload9;
             v442[6] = v107;
             v464 = 1;
-            v218 = [v107 descriptor];
-            v108 = v218;
+            descriptor3 = [v107 descriptor];
+            v108 = descriptor3;
             v442[4] = v108;
             v463 = 1;
-            v217 = [v108 updateName];
-            v109 = v217;
+            updateName7 = [v108 updateName];
+            v109 = updateName7;
             v442[2] = v109;
             v462 = 1;
             v216 = v109;
@@ -13721,18 +13721,18 @@ LABEL_80:
           }
 
           v214 = v216;
-          v215 = [v442[85] currentDownload];
-          v212 = v215;
-          v213 = [v442[85] currentUpdateOperationType];
-          v211 = SUUIUpdateContinuousOperationTypeToString(v213);
+          currentDownload10 = [v442[85] currentDownload];
+          v212 = currentDownload10;
+          currentUpdateOperationType3 = [v442[85] currentUpdateOperationType];
+          v211 = SUUIUpdateContinuousOperationTypeToString(currentUpdateOperationType3);
           v208 = v211;
           v110 = MEMORY[0x277D82BE0](v208);
           v111 = v442;
           v209 = v110;
           *v442 = v110;
-          v210 = [v111[85] isTargetedUpdateScheduledForAutoInstall];
-          v523 = v210;
-          if (v210)
+          isTargetedUpdateScheduledForAutoInstall3 = [v111[85] isTargetedUpdateScheduledForAutoInstall];
+          v523 = isTargetedUpdateScheduledForAutoInstall3;
+          if (isTargetedUpdateScheduledForAutoInstall3)
           {
             v112 = @"YES";
           }
@@ -13747,9 +13747,9 @@ LABEL_80:
           v204 = v207;
           v205 = MEMORY[0x277D82BE0](v204);
           v460 = v205;
-          v206 = [v442[85] hidingPreferredDescriptor];
-          v522 = v206;
-          if (v206)
+          hidingPreferredDescriptor3 = [v442[85] hidingPreferredDescriptor];
+          v522 = hidingPreferredDescriptor3;
+          if (hidingPreferredDescriptor3)
           {
             v114 = @"YES";
           }
@@ -13764,15 +13764,15 @@ LABEL_80:
           v200 = v203;
           v201 = MEMORY[0x277D82BE0](v200);
           v459 = v201;
-          v202 = [v442[85] hiddenPreferredStatefulDescriptor];
-          v198 = v202;
-          v199 = [v198 updateName];
-          v195 = v199;
+          hiddenPreferredStatefulDescriptor3 = [v442[85] hiddenPreferredStatefulDescriptor];
+          v198 = hiddenPreferredStatefulDescriptor3;
+          updateName8 = [v198 updateName];
+          v195 = updateName8;
           v196 = MEMORY[0x277D82BE0](v195);
           v458 = v196;
-          v197 = [v442[85] hidingAlternateDescriptor];
-          v521 = v197;
-          if (v197)
+          hidingAlternateDescriptor3 = [v442[85] hidingAlternateDescriptor];
+          v521 = hidingAlternateDescriptor3;
+          if (hidingAlternateDescriptor3)
           {
             v116 = @"YES";
           }
@@ -13787,23 +13787,23 @@ LABEL_80:
           v191 = v194;
           v192 = MEMORY[0x277D82BE0](v191);
           v457 = v192;
-          v193 = [v442[85] hiddenAlternateStatefulDescriptor];
-          v189 = v193;
-          v190 = [v189 updateName];
-          v186 = v190;
+          hiddenAlternateStatefulDescriptor3 = [v442[85] hiddenAlternateStatefulDescriptor];
+          v189 = hiddenAlternateStatefulDescriptor3;
+          updateName9 = [v189 updateName];
+          v186 = updateName9;
           v187 = MEMORY[0x277D82BE0](v186);
           v456 = v187;
           v118 = v442[85];
           v454 = 0;
-          v188 = [v118 enrolledBetaProgram];
-          v185 = v188;
+          enrolledBetaProgram5 = [v118 enrolledBetaProgram];
+          v185 = enrolledBetaProgram5;
           if (v185)
           {
-            v184 = [v442[85] enrolledBetaProgram];
-            v455 = v184;
+            enrolledBetaProgram6 = [v442[85] enrolledBetaProgram];
+            v455 = enrolledBetaProgram6;
             v454 = 1;
-            v183 = [v455 programID];
-            v182 = v183;
+            programID3 = [v455 programID];
+            v182 = programID3;
           }
 
           else
@@ -13813,9 +13813,9 @@ LABEL_80:
 
           v180 = v182;
           v181 = [*(v442[85] + 15) count];
-          v179 = [v442[85] canEnrollInBetaUpdates];
-          v520 = v179;
-          if (v179)
+          canEnrollInBetaUpdates3 = [v442[85] canEnrollInBetaUpdates];
+          v520 = canEnrollInBetaUpdates3;
+          if (canEnrollInBetaUpdates3)
           {
             v119 = @"YES";
           }
@@ -13834,15 +13834,15 @@ LABEL_80:
           v175 = *(v442[85] + 22);
           v176 = *(v442[85] + 23);
           v177 = [*(v442[85] + 24) count];
-          v171 = [v442[82] preferredDescriptor];
-          v169 = v171;
-          v170 = [v169 updateName];
-          v166 = v170;
+          preferredDescriptor3 = [v442[82] preferredDescriptor];
+          v169 = preferredDescriptor3;
+          updateName10 = [v169 updateName];
+          v166 = updateName10;
           v167 = MEMORY[0x277D82BE0](v166);
           v452 = v167;
-          v168 = [v442[82] alternateDescriptor];
-          v164 = v168;
-          v165 = [v164 updateName];
+          alternateDescriptor3 = [v442[82] alternateDescriptor];
+          v164 = alternateDescriptor3;
+          updateName11 = [v164 updateName];
           v121 = v192;
           v122 = v196;
           v123 = v201;
@@ -13853,11 +13853,11 @@ LABEL_80:
           v128 = v221;
           v129 = v223;
           v130 = v225;
-          v163 = v165;
+          v163 = updateName11;
           v451 = MEMORY[0x277D82BE0](v163);
           v161 = &v140;
           v162 = v532;
-          __os_log_helper_16_2_27_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0_8_66_8_66(v532, v443, v246, v241, v238, v239, v229, v227, v130, v129, v128, v127, v126, v125, v124, v123, v122, v121, v187, v180, v181, v173, v174, v175, v176, v177, v167, v451);
+          __os_log_helper_16_2_27_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0_8_66_8_66(v532, v443, v246, v241, v238, currentState3, v229, v227, v130, v129, v128, v127, v126, v125, v124, v123, v122, v121, v187, v180, v181, v173, v174, v175, v176, v177, v167, v451);
           _os_log_impl(&dword_26ADE5000, v244, v245[0], "%s [%p]: %{public}@ Checkpoint\n\tcurrentState: %{public}@ (%ld)\n\tdelegate: %{public}@ (%p)\n\tscanError: %{public}@\n\tpreferredDescriptor: %{public}@\n\talternateDescriptor: %{public}@\n\tdownload: %{public}@ (%p)\n\tcurrentUpdateOperationType: %{public}@\n\tscheduledForAutoInstall: %{public}@\n\thiddenUpdatesPostSelection: preferred[%{public}@, %{public}@]; alternate[%{public}@, %{public}@];\n\tselectedBetaProgram: %lu (count: %ld, enrollable: %{public}@)\n\tOpFSMs: scan[%p]; refresh[%p]; update[%p]; auxiliaryOperationsCount[%lu]\n\nThe full scan yielded results that are different than the previously discovered results - cancelling the currently active update operation.\n\tresults.preferredDescriptor: %{public}@\n\tresults.alternateDescriptor: %{public}@", v162, 0x110u);
           MEMORY[0x277D82BD8](v163);
           MEMORY[0x277D82BD8](v164);
@@ -13942,37 +13942,37 @@ LABEL_80:
   }
 
   v157 = v442[85];
-  v158 = [v442[83] fullScanResults];
-  v156 = v158;
+  fullScanResults2 = [v442[83] fullScanResults];
+  v156 = fullScanResults2;
   [v157 assignFullScanResults:?];
   MEMORY[0x277D82BD8](v156);
-  v155 = [v442[85] preferredStatefulDescriptor];
-  v131 = v155;
+  preferredStatefulDescriptor5 = [v442[85] preferredStatefulDescriptor];
+  v131 = preferredStatefulDescriptor5;
   v132 = v442[57];
   v442[57] = v131;
   MEMORY[0x277D82BD8](v132);
-  v154 = [v442[85] alternateStatefulDescriptor];
-  v133 = v154;
+  alternateStatefulDescriptor5 = [v442[85] alternateStatefulDescriptor];
+  v133 = alternateStatefulDescriptor5;
   v134 = v442[54];
   v442[54] = v133;
   MEMORY[0x277D82BD8](v134);
-  v153 = [v442[85] currentUpdateOperation];
-  v135 = v153;
+  currentUpdateOperation2 = [v442[85] currentUpdateOperation];
+  v135 = currentUpdateOperation2;
   v136 = v442[53];
   v442[53] = v135;
   MEMORY[0x277D82BD8](v136);
-  v152 = [v442[85] scanError];
-  v137 = v152;
+  scanError5 = [v442[85] scanError];
+  v137 = scanError5;
   v138 = v442[52];
   v442[52] = v137;
   MEMORY[0x277D82BD8](v138);
   if (v442[52])
   {
-    v151 = [v442[52] traits];
-    v149 = v151;
-    v150 = [v149 noUpdateFound];
+    traits = [v442[52] traits];
+    v149 = traits;
+    noUpdateFound = [v149 noUpdateFound];
     MEMORY[0x277D82BD8](v149);
-    if (v150)
+    if (noUpdateFound)
     {
       [v442[85] clearPastScanResults];
     }
@@ -13983,11 +13983,11 @@ LABEL_80:
 
   else
   {
-    v148 = [v442[82] isEmptyScanResults];
-    if (v148)
+    isEmptyScanResults2 = [v442[82] isEmptyScanResults];
+    if (isEmptyScanResults2)
     {
-      v145 = [v442[85] currentDownload];
-      v143 = v145;
+      currentDownload11 = [v442[85] currentDownload];
+      v143 = currentDownload11;
       v144 = 0;
       if (v143)
       {
@@ -14026,8 +14026,8 @@ LABEL_80:
       [v442[85] setHiddenAlternateStatefulDescriptor:0];
       [v442[85] setHidingPreferredDescriptor:0];
       [v442[85] setHidingAlternateDescriptor:0];
-      v147 = [v442[85] currentDownload];
-      v146 = v147;
+      currentDownload12 = [v442[85] currentDownload];
+      v146 = currentDownload12;
       MEMORY[0x277D82BD8](v146);
       if (v146)
       {
@@ -14127,18 +14127,18 @@ void __47__SUUIStatefulUIManager_handleFullScanResults___block_invoke_447(uint64
   *MEMORY[0x277D85DE8];
 }
 
-- (void)handleFailedFullScan:(id)a3
+- (void)handleFailedFullScan:(id)scan
 {
   v121 = "[SUUIStatefulUIManager handleFailedFullScan:]";
   v176 = *MEMORY[0x277D85DE8];
   val = self;
   v167 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, scan);
   v120 = +[SUUILoggingContext statefulUILogger];
   v118 = v120;
-  v119 = [v118 oslog];
-  oslog = v119;
+  oslog = [v118 oslog];
+  oslog = oslog;
   MEMORY[0x277D82BD8](v118);
   type = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -14155,15 +14155,15 @@ void __47__SUUIStatefulUIManager_handleFullScanResults___block_invoke_447(uint64
     v107 = v112;
     v108 = MEMORY[0x277D82BE0](v107);
     v162 = v108;
-    v109 = [val currentState];
-    v106 = [val delegate];
-    v105 = v106;
+    currentState = [val currentState];
+    delegate = [val delegate];
+    v105 = delegate;
     v160 = 0;
     v158 = 0;
     if (v105)
     {
-      v104 = [val delegate];
-      v161 = v104;
+      delegate2 = [val delegate];
+      v161 = delegate2;
       v160 = 1;
       v103 = objc_opt_class();
       v102 = NSStringFromClass(v103);
@@ -14178,29 +14178,29 @@ void __47__SUUIStatefulUIManager_handleFullScanResults___block_invoke_447(uint64
     }
 
     v99 = v101;
-    v100 = [val delegate];
-    v97 = v100;
-    v98 = [val scanError];
-    v95 = v98;
-    v96 = [val preferredStatefulDescriptor];
-    v93 = v96;
-    v94 = [val alternateStatefulDescriptor];
-    v91 = v94;
-    v92 = [val currentDownload];
-    v90 = v92;
+    delegate3 = [val delegate];
+    v97 = delegate3;
+    scanError = [val scanError];
+    v95 = scanError;
+    preferredStatefulDescriptor = [val preferredStatefulDescriptor];
+    v93 = preferredStatefulDescriptor;
+    alternateStatefulDescriptor = [val alternateStatefulDescriptor];
+    v91 = alternateStatefulDescriptor;
+    currentDownload = [val currentDownload];
+    v90 = currentDownload;
     v156 = 0;
     v154 = 0;
     v152 = 0;
     if (v90)
     {
-      v89 = [val currentDownload];
-      v157 = v89;
+      currentDownload2 = [val currentDownload];
+      v157 = currentDownload2;
       v156 = 1;
-      v88 = [v157 descriptor];
-      v155 = v88;
+      descriptor = [v157 descriptor];
+      v155 = descriptor;
       v154 = 1;
-      v87 = [v155 updateName];
-      v153 = v87;
+      updateName = [v155 updateName];
+      v153 = updateName;
       v152 = 1;
       v86 = v153;
     }
@@ -14211,16 +14211,16 @@ void __47__SUUIStatefulUIManager_handleFullScanResults___block_invoke_447(uint64
     }
 
     v84 = v86;
-    v85 = [val currentDownload];
-    v82 = v85;
-    v83 = [val currentUpdateOperationType];
-    v81 = SUUIUpdateContinuousOperationTypeToString(v83);
+    currentDownload3 = [val currentDownload];
+    v82 = currentDownload3;
+    currentUpdateOperationType = [val currentUpdateOperationType];
+    v81 = SUUIUpdateContinuousOperationTypeToString(currentUpdateOperationType);
     v78 = v81;
     v79 = MEMORY[0x277D82BE0](v78);
     v151 = v79;
-    v80 = [val isTargetedUpdateScheduledForAutoInstall];
-    v172 = v80;
-    if (v80)
+    isTargetedUpdateScheduledForAutoInstall = [val isTargetedUpdateScheduledForAutoInstall];
+    v172 = isTargetedUpdateScheduledForAutoInstall;
+    if (isTargetedUpdateScheduledForAutoInstall)
     {
       v3 = @"YES";
     }
@@ -14235,9 +14235,9 @@ void __47__SUUIStatefulUIManager_handleFullScanResults___block_invoke_447(uint64
     v74 = v77;
     v75 = MEMORY[0x277D82BE0](v74);
     v150 = v75;
-    v76 = [val hidingPreferredDescriptor];
-    v171 = v76;
-    if (v76)
+    hidingPreferredDescriptor = [val hidingPreferredDescriptor];
+    v171 = hidingPreferredDescriptor;
+    if (hidingPreferredDescriptor)
     {
       v5 = @"YES";
     }
@@ -14252,15 +14252,15 @@ void __47__SUUIStatefulUIManager_handleFullScanResults___block_invoke_447(uint64
     v70 = v73;
     v71 = MEMORY[0x277D82BE0](v70);
     v149 = v71;
-    v72 = [val hiddenPreferredStatefulDescriptor];
-    v68 = v72;
-    v69 = [v68 updateName];
-    v65 = v69;
+    hiddenPreferredStatefulDescriptor = [val hiddenPreferredStatefulDescriptor];
+    v68 = hiddenPreferredStatefulDescriptor;
+    updateName2 = [v68 updateName];
+    v65 = updateName2;
     v66 = MEMORY[0x277D82BE0](v65);
     v148 = v66;
-    v67 = [val hidingAlternateDescriptor];
-    v170 = v67;
-    if (v67)
+    hidingAlternateDescriptor = [val hidingAlternateDescriptor];
+    v170 = hidingAlternateDescriptor;
+    if (hidingAlternateDescriptor)
     {
       v7 = @"YES";
     }
@@ -14275,22 +14275,22 @@ void __47__SUUIStatefulUIManager_handleFullScanResults___block_invoke_447(uint64
     v61 = v64;
     v62 = MEMORY[0x277D82BE0](v61);
     v147 = v62;
-    v63 = [val hiddenAlternateStatefulDescriptor];
-    v59 = v63;
-    v60 = [v59 updateName];
-    v56 = v60;
+    hiddenAlternateStatefulDescriptor = [val hiddenAlternateStatefulDescriptor];
+    v59 = hiddenAlternateStatefulDescriptor;
+    updateName3 = [v59 updateName];
+    v56 = updateName3;
     v57 = MEMORY[0x277D82BE0](v56);
     v146 = v57;
-    v58 = [val enrolledBetaProgram];
-    v55 = v58;
+    enrolledBetaProgram = [val enrolledBetaProgram];
+    v55 = enrolledBetaProgram;
     v144 = 0;
     if (v55)
     {
-      v54 = [val enrolledBetaProgram];
-      v145 = v54;
+      enrolledBetaProgram2 = [val enrolledBetaProgram];
+      v145 = enrolledBetaProgram2;
       v144 = 1;
-      v53 = [v145 programID];
-      v52 = v53;
+      programID = [v145 programID];
+      v52 = programID;
     }
 
     else
@@ -14300,9 +14300,9 @@ void __47__SUUIStatefulUIManager_handleFullScanResults___block_invoke_447(uint64
 
     v50 = v52;
     v51 = [*(val + 15) count];
-    v49 = [val canEnrollInBetaUpdates];
-    v169 = v49;
-    if (v49)
+    canEnrollInBetaUpdates = [val canEnrollInBetaUpdates];
+    v169 = canEnrollInBetaUpdates;
+    if (canEnrollInBetaUpdates)
     {
       v9 = @"YES";
     }
@@ -14321,11 +14321,11 @@ void __47__SUUIStatefulUIManager_handleFullScanResults___block_invoke_447(uint64
     v45 = *(val + 22);
     v46 = *(val + 23);
     v47 = [*(val + 24) count];
-    v41 = [location error];
-    v40 = v41;
+    error = [location error];
+    v40 = error;
     v38 = &v12;
     buf = v175;
-    __os_log_helper_16_2_26_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0_8_66(v175, v121, v116, v111, v108, v109, v99, v97, v95, v93, v91, v84, v82, v79, v75, v71, v66, v62, v57, v50, v51, v43, v44, v45, v46, v47, v40);
+    __os_log_helper_16_2_26_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0_8_66(v175, v121, v116, v111, v108, currentState, v99, v97, v95, v93, v91, v84, v82, v79, v75, v71, v66, v62, v57, v50, v51, v43, v44, v45, v46, v47, v40);
     _os_log_impl(&dword_26ADE5000, log, v115[0], "%s [%p]: %{public}@ Checkpoint\n\tcurrentState: %{public}@ (%ld)\n\tdelegate: %{public}@ (%p)\n\tscanError: %{public}@\n\tpreferredDescriptor: %{public}@\n\talternateDescriptor: %{public}@\n\tdownload: %{public}@ (%p)\n\tcurrentUpdateOperationType: %{public}@\n\tscheduledForAutoInstall: %{public}@\n\thiddenUpdatesPostSelection: preferred[%{public}@, %{public}@]; alternate[%{public}@, %{public}@];\n\tselectedBetaProgram: %lu (count: %ld, enrollable: %{public}@)\n\tOpFSMs: scan[%p]; refresh[%p]; update[%p]; auxiliaryOperationsCount[%lu]\n\nFinished to perform a full-scan with error: %{public}@", buf, 0x106u);
     MEMORY[0x277D82BD8](v40);
     MEMORY[0x277D82BD8](v42);
@@ -14391,14 +14391,14 @@ void __47__SUUIStatefulUIManager_handleFullScanResults___block_invoke_447(uint64
   objc_storeStrong(&oslog, 0);
   objc_initWeak(&from, val);
   [val clearPastScanResults];
-  v37 = [location error];
-  v141 = v37;
+  error2 = [location error];
+  v141 = error2;
   [val setScanError:v141];
-  v36 = [v141 traits];
-  v34 = v36;
-  v35 = [v34 networkUnavailable];
+  traits = [v141 traits];
+  v34 = traits;
+  networkUnavailable = [v34 networkUnavailable];
   MEMORY[0x277D82BD8](v34);
-  if ((v35 & 1) == 0)
+  if ((networkUnavailable & 1) == 0)
   {
     v15 = val;
     v122 = MEMORY[0x277D85DD0];
@@ -14419,10 +14419,10 @@ void __47__SUUIStatefulUIManager_handleFullScanResults___block_invoke_447(uint64
   }
 
   v140 = 0;
-  v33 = [location retries];
-  v11 = __OFSUB__(v33, 1);
-  v140 = v33 - 1;
-  v173 = v11 || v33 - 1 != (v33 - 1);
+  retries = [location retries];
+  v11 = __OFSUB__(retries, 1);
+  v140 = retries - 1;
+  v173 = v11 || retries - 1 != (retries - 1);
   v32 = v173;
   v139 = v173;
   if (v173)
@@ -14436,8 +14436,8 @@ void __47__SUUIStatefulUIManager_handleFullScanResults___block_invoke_447(uint64
   }
 
   [location setRetries:v31];
-  v30 = [location retries];
-  if (v30 <= 0)
+  retries2 = [location retries];
+  if (retries2 <= 0)
   {
     [*(val + 25) postEvent:@"FullScanFailed" withInfo:location];
 LABEL_49:
@@ -14447,8 +14447,8 @@ LABEL_49:
 
   v29 = +[SUUILoggingContext statefulUILogger];
   v27 = v29;
-  v28 = [v27 oslog];
-  v138 = v28;
+  oslog2 = [v27 oslog];
+  v138 = oslog2;
   MEMORY[0x277D82BD8](v27);
   v137 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v138, OS_LOG_TYPE_DEFAULT))
@@ -14456,9 +14456,9 @@ LABEL_49:
     v23 = v138;
     *v24 = v137;
     v25 = val;
-    v26 = [location retries];
+    retries3 = [location retries];
     v22 = v174;
-    __os_log_helper_16_2_3_8_32_8_0_4_0(v174, v121, v25, v26 + 1);
+    __os_log_helper_16_2_3_8_32_8_0_4_0(v174, v121, v25, retries3 + 1);
     _os_log_impl(&dword_26ADE5000, v23, v24[0], "%s [%p]: The scan failed but got %u retries left. Performing a retry.", v22, 0x1Cu);
   }
 
@@ -14571,7 +14571,7 @@ void __46__SUUIStatefulUIManager_handleFailedFullScan___block_invoke_448(uint64_
   *MEMORY[0x277D85DE8];
 }
 
-- (void)handleRefreshScanResults:(id)a3
+- (void)handleRefreshScanResults:(id)results
 {
   v128 = &v144;
   v129 = "[SUUIStatefulUIManager handleRefreshScanResults:]";
@@ -14579,13 +14579,13 @@ void __46__SUUIStatefulUIManager_handleFailedFullScan___block_invoke_448(uint64_
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v127 = [location[0] refreshScanResults];
-  v157 = v127;
+  objc_storeStrong(location, results);
+  refreshScanResults = [location[0] refreshScanResults];
+  v157 = refreshScanResults;
   v126 = +[SUUILoggingContext statefulUILogger];
   v124 = v126;
-  v125 = [v124 oslog];
-  v156 = v125;
+  oslog = [v124 oslog];
+  v156 = oslog;
   MEMORY[0x277D82BD8](v124);
   type = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v156, OS_LOG_TYPE_DEFAULT))
@@ -14607,15 +14607,15 @@ void __46__SUUIStatefulUIManager_handleFailedFullScan___block_invoke_448(uint64_
     v7 = v128;
     v114 = v6;
     v128[14] = v6;
-    v115 = [v7[21] currentState];
-    v112 = [v128[21] delegate];
-    v111 = v112;
+    currentState = [v7[21] currentState];
+    delegate = [v128[21] delegate];
+    v111 = delegate;
     v152 = 0;
     v151 = 0;
     if (v111)
     {
-      v110 = [v128[21] delegate];
-      v128[13] = v110;
+      delegate2 = [v128[21] delegate];
+      v128[13] = delegate2;
       v152 = 1;
       v109 = objc_opt_class();
       v108 = NSStringFromClass(v109);
@@ -14631,31 +14631,31 @@ void __46__SUUIStatefulUIManager_handleFailedFullScan___block_invoke_448(uint64_
     }
 
     v105 = v107;
-    v106 = [v128[21] delegate];
-    v103 = v106;
-    v104 = [v128[21] scanError];
-    v101 = v104;
-    v102 = [v128[21] preferredStatefulDescriptor];
-    v99 = v102;
-    v100 = [v128[21] alternateStatefulDescriptor];
-    v97 = v100;
-    v98 = [v128[21] currentDownload];
-    v96 = v98;
+    delegate3 = [v128[21] delegate];
+    v103 = delegate3;
+    scanError = [v128[21] scanError];
+    v101 = scanError;
+    preferredStatefulDescriptor = [v128[21] preferredStatefulDescriptor];
+    v99 = preferredStatefulDescriptor;
+    alternateStatefulDescriptor = [v128[21] alternateStatefulDescriptor];
+    v97 = alternateStatefulDescriptor;
+    currentDownload = [v128[21] currentDownload];
+    v96 = currentDownload;
     v150 = 0;
     v149 = 0;
     v148 = 0;
     if (v96)
     {
-      v95 = [v128[21] currentDownload];
-      v9 = v95;
+      currentDownload2 = [v128[21] currentDownload];
+      v9 = currentDownload2;
       v128[9] = v9;
       v150 = 1;
-      v94 = [v9 descriptor];
-      v10 = v94;
+      descriptor = [v9 descriptor];
+      v10 = descriptor;
       v128[7] = v10;
       v149 = 1;
-      v93 = [v10 updateName];
-      v11 = v93;
+      updateName = [v10 updateName];
+      v11 = updateName;
       v128[5] = v11;
       v148 = 1;
       v92 = v11;
@@ -14667,18 +14667,18 @@ void __46__SUUIStatefulUIManager_handleFailedFullScan___block_invoke_448(uint64_
     }
 
     v90 = v92;
-    v91 = [v128[21] currentDownload];
-    v88 = v91;
-    v89 = [v128[21] currentUpdateOperationType];
-    v87 = SUUIUpdateContinuousOperationTypeToString(v89);
+    currentDownload3 = [v128[21] currentDownload];
+    v88 = currentDownload3;
+    currentUpdateOperationType = [v128[21] currentUpdateOperationType];
+    v87 = SUUIUpdateContinuousOperationTypeToString(currentUpdateOperationType);
     v84 = v87;
     v12 = MEMORY[0x277D82BE0](v84);
     v13 = v128;
     v85 = v12;
     v128[3] = v12;
-    v86 = [v13[21] isTargetedUpdateScheduledForAutoInstall];
-    v162 = v86;
-    if (v86)
+    isTargetedUpdateScheduledForAutoInstall = [v13[21] isTargetedUpdateScheduledForAutoInstall];
+    v162 = isTargetedUpdateScheduledForAutoInstall;
+    if (isTargetedUpdateScheduledForAutoInstall)
     {
       v14 = @"YES";
     }
@@ -14695,9 +14695,9 @@ void __46__SUUIStatefulUIManager_handleFailedFullScan___block_invoke_448(uint64_
     v17 = v128;
     v81 = v16;
     v128[2] = v16;
-    v82 = [v17[21] hidingPreferredDescriptor];
-    v161 = v82;
-    if (v82)
+    hidingPreferredDescriptor = [v17[21] hidingPreferredDescriptor];
+    v161 = hidingPreferredDescriptor;
+    if (hidingPreferredDescriptor)
     {
       v18 = @"YES";
     }
@@ -14714,17 +14714,17 @@ void __46__SUUIStatefulUIManager_handleFailedFullScan___block_invoke_448(uint64_
     v21 = v128;
     v77 = v20;
     v128[1] = v20;
-    v78 = [v21[21] hiddenPreferredStatefulDescriptor];
-    v74 = v78;
-    v75 = [v74 updateName];
-    v71 = v75;
+    hiddenPreferredStatefulDescriptor = [v21[21] hiddenPreferredStatefulDescriptor];
+    v74 = hiddenPreferredStatefulDescriptor;
+    updateName2 = [v74 updateName];
+    v71 = updateName2;
     v22 = MEMORY[0x277D82BE0](v71);
     v23 = v128;
     v72 = v22;
     *v128 = v22;
-    v73 = [v23[21] hidingAlternateDescriptor];
-    v160 = v73;
-    if (v73)
+    hidingAlternateDescriptor = [v23[21] hidingAlternateDescriptor];
+    v160 = hidingAlternateDescriptor;
+    if (hidingAlternateDescriptor)
     {
       v24 = @"YES";
     }
@@ -14739,22 +14739,22 @@ void __46__SUUIStatefulUIManager_handleFailedFullScan___block_invoke_448(uint64_
     v67 = v70;
     v68 = MEMORY[0x277D82BE0](v67);
     v143 = v68;
-    v69 = [v128[21] hiddenAlternateStatefulDescriptor];
-    v65 = v69;
-    v66 = [v65 updateName];
-    v62 = v66;
+    hiddenAlternateStatefulDescriptor = [v128[21] hiddenAlternateStatefulDescriptor];
+    v65 = hiddenAlternateStatefulDescriptor;
+    updateName3 = [v65 updateName];
+    v62 = updateName3;
     v63 = MEMORY[0x277D82BE0](v62);
     v142 = v63;
-    v64 = [v128[21] enrolledBetaProgram];
-    v61 = v64;
+    enrolledBetaProgram = [v128[21] enrolledBetaProgram];
+    v61 = enrolledBetaProgram;
     v140 = 0;
     if (v61)
     {
-      v60 = [v128[21] enrolledBetaProgram];
-      v141 = v60;
+      enrolledBetaProgram2 = [v128[21] enrolledBetaProgram];
+      v141 = enrolledBetaProgram2;
       v140 = 1;
-      v59 = [v141 programID];
-      v58 = v59;
+      programID = [v141 programID];
+      v58 = programID;
     }
 
     else
@@ -14764,9 +14764,9 @@ void __46__SUUIStatefulUIManager_handleFailedFullScan___block_invoke_448(uint64_
 
     v56 = v58;
     v57 = [*(v128[21] + 15) count];
-    v55 = [v128[21] canEnrollInBetaUpdates];
-    v159 = v55;
-    if (v55)
+    canEnrollInBetaUpdates = [v128[21] canEnrollInBetaUpdates];
+    v159 = canEnrollInBetaUpdates;
+    if (canEnrollInBetaUpdates)
     {
       v26 = @"YES";
     }
@@ -14785,12 +14785,12 @@ void __46__SUUIStatefulUIManager_handleFailedFullScan___block_invoke_448(uint64_
     v51 = *(v128[21] + 22);
     v52 = *(v128[21] + 23);
     v53 = [*(v128[21] + 24) count];
-    v47 = [v128[18] identifier];
-    v46 = v47;
+    identifier = [v128[18] identifier];
+    v46 = identifier;
     v28 = v128[18];
     v44 = &v30;
     buf = v163;
-    __os_log_helper_16_2_27_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0_8_66_8_66(v163, v129, v122, v117, v114, v115, v105, v103, v101, v99, v97, v90, v88, v85, v81, v77, v72, v68, v63, v56, v57, v49, v50, v51, v52, v53, v46, v28);
+    __os_log_helper_16_2_27_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0_8_66_8_66(v163, v129, v122, v117, v114, currentState, v105, v103, v101, v99, v97, v90, v88, v85, v81, v77, v72, v68, v63, v56, v57, v49, v50, v51, v52, v53, v46, v28);
     _os_log_impl(&dword_26ADE5000, log, v121[0], "%s [%p]: %{public}@ Checkpoint\n\tcurrentState: %{public}@ (%ld)\n\tdelegate: %{public}@ (%p)\n\tscanError: %{public}@\n\tpreferredDescriptor: %{public}@\n\talternateDescriptor: %{public}@\n\tdownload: %{public}@ (%p)\n\tcurrentUpdateOperationType: %{public}@\n\tscheduledForAutoInstall: %{public}@\n\thiddenUpdatesPostSelection: preferred[%{public}@, %{public}@]; alternate[%{public}@, %{public}@];\n\tselectedBetaProgram: %lu (count: %ld, enrollable: %{public}@)\n\tOpFSMs: scan[%p]; refresh[%p]; update[%p]; auxiliaryOperationsCount[%lu]\n\nFinished to refresh the current scan results with ID: %{public}@.\nResults: %{public}@", buf, 0x110u);
     MEMORY[0x277D82BD8](v46);
     MEMORY[0x277D82BD8](v48);
@@ -14854,13 +14854,13 @@ void __46__SUUIStatefulUIManager_handleFailedFullScan___block_invoke_448(uint64_
   }
 
   objc_storeStrong(&v156, 0);
-  v43 = [v128[21] environment];
-  v40 = v43;
+  environment = [v128[21] environment];
+  v40 = environment;
   v41 = v128[21];
-  v42 = [MEMORY[0x277CCAD78] UUID];
-  v38 = v42;
-  v39 = [v38 UUIDString];
-  v36 = v39;
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v38 = uUID;
+  uUIDString = [v38 UUIDString];
+  v36 = uUIDString;
   v29 = *(v128[21] + 26);
   v37 = [v40 scanOperationWithManager:v41 identifier:? completionQueue:?];
   v138 = v37;
@@ -15338,40 +15338,40 @@ void __50__SUUIStatefulUIManager_handleRefreshScanResults___block_invoke(uint64_
   [(SUUIStatefulUIManager *)self setClearingSpaceForDownload:0];
 }
 
-- (void)clearPastDownload:(id)a3
+- (void)clearPastDownload:(id)download
 {
   v139 = "[SUUIStatefulUIManager clearPastDownload:]";
   v200 = *MEMORY[0x277D85DE8];
-  v189 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v187 = [(SUUIStatefulUIManager *)v189 targetedUpdateForDownload:location[0]];
+  objc_storeStrong(location, download);
+  v187 = [(SUUIStatefulUIManager *)selfCopy targetedUpdateForDownload:location[0]];
   if (v187)
   {
     v83 = +[SUUILoggingContext statefulUILogger];
-    v162 = [v83 oslog];
+    oslog = [v83 oslog];
     MEMORY[0x277D82BD8](v83);
     v161 = OS_LOG_TYPE_DEFAULT;
-    if (os_log_type_enabled(v162, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v74 = v162;
+      v74 = oslog;
       *v75 = v161;
-      v76 = v189;
+      v76 = selfCopy;
       v14 = objc_opt_class();
       v77 = NSStringFromClass(v14);
       v78 = MEMORY[0x277D82BE0](v77);
       v160 = v78;
-      v79 = SUUIStatefulUIStateToString(v189->_currentState);
+      v79 = SUUIStatefulUIStateToString(selfCopy->_currentState);
       v80 = MEMORY[0x277D82BE0](v79);
       v159 = v80;
-      v81 = [(SUUIStatefulUIManager *)v189 currentState];
-      v82 = [(SUUIStatefulUIManager *)v189 delegate];
+      currentState = [(SUUIStatefulUIManager *)selfCopy currentState];
+      delegate = [(SUUIStatefulUIManager *)selfCopy delegate];
       v157 = 0;
       v155 = 0;
-      if (v82)
+      if (delegate)
       {
-        v158 = [(SUUIStatefulUIManager *)v189 delegate];
+        delegate2 = [(SUUIStatefulUIManager *)selfCopy delegate];
         v72 = 1;
         v157 = 1;
         v15 = objc_opt_class();
@@ -15386,24 +15386,24 @@ void __50__SUUIStatefulUIManager_handleRefreshScanResults___block_invoke(uint64_
       }
 
       v66 = v73;
-      v67 = [(SUUIStatefulUIManager *)v189 delegate];
-      v68 = [(SUUIStatefulUIManager *)v189 scanError];
-      v69 = [(SUUIStatefulUIManager *)v189 preferredStatefulDescriptor];
-      v70 = [(SUUIStatefulUIManager *)v189 alternateStatefulDescriptor];
-      v71 = [(SUUIStatefulUIManager *)v189 currentDownload];
+      delegate3 = [(SUUIStatefulUIManager *)selfCopy delegate];
+      scanError = [(SUUIStatefulUIManager *)selfCopy scanError];
+      preferredStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy preferredStatefulDescriptor];
+      alternateStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy alternateStatefulDescriptor];
+      currentDownload = [(SUUIStatefulUIManager *)selfCopy currentDownload];
       v153 = 0;
       v151 = 0;
       v149 = 0;
-      if (v71)
+      if (currentDownload)
       {
-        v154 = [(SUUIStatefulUIManager *)v189 currentDownload];
+        currentDownload2 = [(SUUIStatefulUIManager *)selfCopy currentDownload];
         v64 = 1;
         v153 = 1;
-        v152 = [(SUUIDownload *)v154 descriptor];
+        descriptor = [(SUUIDownload *)currentDownload2 descriptor];
         v151 = 1;
-        v150 = [v152 updateName];
+        updateName = [descriptor updateName];
         v149 = 1;
-        v65 = v150;
+        v65 = updateName;
       }
 
       else
@@ -15412,15 +15412,15 @@ void __50__SUUIStatefulUIManager_handleRefreshScanResults___block_invoke(uint64_
       }
 
       v41 = v65;
-      v42 = [(SUUIStatefulUIManager *)v189 currentDownload];
-      v43 = SUUIUpdateContinuousOperationTypeToString([(SUUIStatefulUIManager *)v189 currentUpdateOperationType]);
+      currentDownload3 = [(SUUIStatefulUIManager *)selfCopy currentDownload];
+      v43 = SUUIUpdateContinuousOperationTypeToString([(SUUIStatefulUIManager *)selfCopy currentUpdateOperationType]);
       v44 = MEMORY[0x277D82BE0](v43);
       v148 = v44;
-      v193 = [(SUUIStatefulUIManager *)v189 isTargetedUpdateScheduledForAutoInstall];
+      isTargetedUpdateScheduledForAutoInstall = [(SUUIStatefulUIManager *)selfCopy isTargetedUpdateScheduledForAutoInstall];
       v54 = @"NO";
       v55 = @"YES";
       v62 = 1;
-      if (v193)
+      if (isTargetedUpdateScheduledForAutoInstall)
       {
         v16 = @"YES";
       }
@@ -15435,7 +15435,7 @@ void __50__SUUIStatefulUIManager_handleRefreshScanResults___block_invoke(uint64_
       v46 = v45;
       v47 = MEMORY[0x277D82BE0](v46);
       v147 = v47;
-      if ([(SUUIStatefulUIManager *)v189 hidingPreferredDescriptor])
+      if ([(SUUIStatefulUIManager *)selfCopy hidingPreferredDescriptor])
       {
         v18 = v55;
       }
@@ -15450,11 +15450,11 @@ void __50__SUUIStatefulUIManager_handleRefreshScanResults___block_invoke(uint64_
       v49 = v48;
       v50 = MEMORY[0x277D82BE0](v49);
       v146 = v50;
-      v51 = [(SUUIStatefulUIManager *)v189 hiddenPreferredStatefulDescriptor];
-      v52 = [(SUUIStatefulDescriptor *)v51 updateName];
-      v53 = MEMORY[0x277D82BE0](v52);
+      hiddenPreferredStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy hiddenPreferredStatefulDescriptor];
+      updateName2 = [(SUUIStatefulDescriptor *)hiddenPreferredStatefulDescriptor updateName];
+      v53 = MEMORY[0x277D82BE0](updateName2);
       v145 = v53;
-      if ([(SUUIStatefulUIManager *)v189 hidingAlternateDescriptor])
+      if ([(SUUIStatefulUIManager *)selfCopy hidingAlternateDescriptor])
       {
         v20 = v55;
       }
@@ -15469,27 +15469,27 @@ void __50__SUUIStatefulUIManager_handleRefreshScanResults___block_invoke(uint64_
       v57 = v56;
       v58 = MEMORY[0x277D82BE0](v57);
       v144 = v58;
-      v59 = [(SUUIStatefulUIManager *)v189 hiddenAlternateStatefulDescriptor];
-      v60 = [(SUUIStatefulDescriptor *)v59 updateName];
-      v61 = MEMORY[0x277D82BE0](v60);
+      hiddenAlternateStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy hiddenAlternateStatefulDescriptor];
+      updateName3 = [(SUUIStatefulDescriptor *)hiddenAlternateStatefulDescriptor updateName];
+      v61 = MEMORY[0x277D82BE0](updateName3);
       v143 = v61;
-      v63 = [(SUUIStatefulUIManager *)v189 enrolledBetaProgram];
+      enrolledBetaProgram = [(SUUIStatefulUIManager *)selfCopy enrolledBetaProgram];
       v141 = 0;
-      if (v63)
+      if (enrolledBetaProgram)
       {
-        v142 = [(SUUIStatefulUIManager *)v189 enrolledBetaProgram];
+        enrolledBetaProgram2 = [(SUUIStatefulUIManager *)selfCopy enrolledBetaProgram];
         v141 = 1;
-        v40 = [(SDBetaProgram *)v142 programID];
+        programID = [(SDBetaProgram *)enrolledBetaProgram2 programID];
       }
 
       else
       {
-        v40 = 0;
+        programID = 0;
       }
 
-      v31 = v40;
-      v32 = [(NSArray *)v189->_betaPrograms count];
-      if ([(SUUIStatefulUIManager *)v189 canEnrollInBetaUpdates])
+      v31 = programID;
+      v32 = [(NSArray *)selfCopy->_betaPrograms count];
+      if ([(SUUIStatefulUIManager *)selfCopy canEnrollInBetaUpdates])
       {
         v22 = @"YES";
       }
@@ -15504,50 +15504,50 @@ void __50__SUUIStatefulUIManager_handleRefreshScanResults___block_invoke(uint64_
       v39 = v30;
       v33 = MEMORY[0x277D82BE0](v39);
       v140 = v33;
-      currentFullScanOperation = v189->_currentFullScanOperation;
-      currentRefreshScanOperation = v189->_currentRefreshScanOperation;
-      currentUpdateOperation = v189->_currentUpdateOperation;
-      v24 = [(NSMutableSet *)v189->_auxiliaryOperations count];
+      currentFullScanOperation = selfCopy->_currentFullScanOperation;
+      currentRefreshScanOperation = selfCopy->_currentRefreshScanOperation;
+      currentUpdateOperation = selfCopy->_currentUpdateOperation;
+      v24 = [(NSMutableSet *)selfCopy->_auxiliaryOperations count];
       v37 = &v25;
       v38 = v198;
-      __os_log_helper_16_2_26_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0_8_66(v198, v139, v76, v78, v80, v81, v66, v67, v68, v69, v70, v41, v42, v44, v47, v50, v53, v58, v61, v31, v32, v33, currentFullScanOperation, currentRefreshScanOperation, currentUpdateOperation, v24, location[0]);
+      __os_log_helper_16_2_26_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0_8_66(v198, v139, v76, v78, v80, currentState, v66, delegate3, scanError, preferredStatefulDescriptor, alternateStatefulDescriptor, v41, currentDownload3, v44, v47, v50, v53, v58, v61, v31, v32, v33, currentFullScanOperation, currentRefreshScanOperation, currentUpdateOperation, v24, location[0]);
       _os_log_impl(&dword_26ADE5000, v74, v75[0], "%s [%p]: %{public}@ Checkpoint\n\tcurrentState: %{public}@ (%ld)\n\tdelegate: %{public}@ (%p)\n\tscanError: %{public}@\n\tpreferredDescriptor: %{public}@\n\talternateDescriptor: %{public}@\n\tdownload: %{public}@ (%p)\n\tcurrentUpdateOperationType: %{public}@\n\tscheduledForAutoInstall: %{public}@\n\thiddenUpdatesPostSelection: preferred[%{public}@, %{public}@]; alternate[%{public}@, %{public}@];\n\tselectedBetaProgram: %lu (count: %ld, enrollable: %{public}@)\n\tOpFSMs: scan[%p]; refresh[%p]; update[%p]; auxiliaryOperationsCount[%lu]\n\nCleaning the past download information: %{public}@", v38, 0x106u);
       MEMORY[0x277D82BD8](v39);
       if (v141)
       {
-        MEMORY[0x277D82BD8](v142);
+        MEMORY[0x277D82BD8](enrolledBetaProgram2);
       }
 
-      MEMORY[0x277D82BD8](v63);
-      MEMORY[0x277D82BD8](v60);
-      MEMORY[0x277D82BD8](v59);
+      MEMORY[0x277D82BD8](enrolledBetaProgram);
+      MEMORY[0x277D82BD8](updateName3);
+      MEMORY[0x277D82BD8](hiddenAlternateStatefulDescriptor);
       MEMORY[0x277D82BD8](v57);
-      MEMORY[0x277D82BD8](v52);
-      MEMORY[0x277D82BD8](v51);
+      MEMORY[0x277D82BD8](updateName2);
+      MEMORY[0x277D82BD8](hiddenPreferredStatefulDescriptor);
       MEMORY[0x277D82BD8](v49);
       MEMORY[0x277D82BD8](v46);
       MEMORY[0x277D82BD8](v43);
-      MEMORY[0x277D82BD8](v42);
+      MEMORY[0x277D82BD8](currentDownload3);
       if (v149)
       {
-        MEMORY[0x277D82BD8](v150);
+        MEMORY[0x277D82BD8](updateName);
       }
 
       if (v151)
       {
-        MEMORY[0x277D82BD8](v152);
+        MEMORY[0x277D82BD8](descriptor);
       }
 
       if (v153)
       {
-        MEMORY[0x277D82BD8](v154);
+        MEMORY[0x277D82BD8](currentDownload2);
       }
 
-      MEMORY[0x277D82BD8](v71);
-      MEMORY[0x277D82BD8](v70);
-      MEMORY[0x277D82BD8](v69);
-      MEMORY[0x277D82BD8](v68);
-      MEMORY[0x277D82BD8](v67);
+      MEMORY[0x277D82BD8](currentDownload);
+      MEMORY[0x277D82BD8](alternateStatefulDescriptor);
+      MEMORY[0x277D82BD8](preferredStatefulDescriptor);
+      MEMORY[0x277D82BD8](scanError);
+      MEMORY[0x277D82BD8](delegate3);
       if (v155)
       {
         MEMORY[0x277D82BD8](v156);
@@ -15555,10 +15555,10 @@ void __50__SUUIStatefulUIManager_handleRefreshScanResults___block_invoke(uint64_
 
       if (v157)
       {
-        MEMORY[0x277D82BD8](v158);
+        MEMORY[0x277D82BD8](delegate2);
       }
 
-      MEMORY[0x277D82BD8](v82);
+      MEMORY[0x277D82BD8](delegate);
       MEMORY[0x277D82BD8](v79);
       MEMORY[0x277D82BD8](v77);
       v29 = 0;
@@ -15573,21 +15573,21 @@ void __50__SUUIStatefulUIManager_handleRefreshScanResults___block_invoke(uint64_
       objc_storeStrong(&v160, v29);
     }
 
-    objc_storeStrong(&v162, 0);
+    objc_storeStrong(&oslog, 0);
     v27 = 0;
     [v187 updateStateFromProgressedDownload:?];
-    [(SUUIStatefulUIManager *)v189 setCurrentDownload:v27];
+    [(SUUIStatefulUIManager *)selfCopy setCurrentDownload:v27];
     v28 = 0;
-    [(SUUIStatefulUIManager *)v189 setIsAutoUpdateScheduled:0];
-    [(SUUIStatefulUIManager *)v189 setClearingSpaceForDownload:v28 & 1];
-    if ([(SUUIStatefulUIManager *)v189 hidingAlternateDescriptor])
+    [(SUUIStatefulUIManager *)selfCopy setIsAutoUpdateScheduled:0];
+    [(SUUIStatefulUIManager *)selfCopy setClearingSpaceForDownload:v28 & 1];
+    if ([(SUUIStatefulUIManager *)selfCopy hidingAlternateDescriptor])
     {
-      [(SUUIStatefulUIManager *)v189 revealHiddenAlteranteUpdate];
+      [(SUUIStatefulUIManager *)selfCopy revealHiddenAlteranteUpdate];
     }
 
-    if ([(SUUIStatefulUIManager *)v189 hidingPreferredDescriptor])
+    if ([(SUUIStatefulUIManager *)selfCopy hidingPreferredDescriptor])
     {
-      [(SUUIStatefulUIManager *)v189 revealHiddenPreferredUpdate];
+      [(SUUIStatefulUIManager *)selfCopy revealHiddenPreferredUpdate];
     }
 
     v163 = 0;
@@ -15603,21 +15603,21 @@ void __50__SUUIStatefulUIManager_handleRefreshScanResults___block_invoke(uint64_
     {
       log = oslog;
       *v130 = type;
-      v131 = v189;
+      v131 = selfCopy;
       v3 = objc_opt_class();
       v132 = NSStringFromClass(v3);
       v133 = MEMORY[0x277D82BE0](v132);
       v184 = v133;
-      v134 = SUUIStatefulUIStateToString(v189->_currentState);
+      v134 = SUUIStatefulUIStateToString(selfCopy->_currentState);
       v135 = MEMORY[0x277D82BE0](v134);
       v183 = v135;
-      v136 = [(SUUIStatefulUIManager *)v189 currentState];
-      v137 = [(SUUIStatefulUIManager *)v189 delegate];
+      currentState2 = [(SUUIStatefulUIManager *)selfCopy currentState];
+      delegate4 = [(SUUIStatefulUIManager *)selfCopy delegate];
       v181 = 0;
       v179 = 0;
-      if (v137)
+      if (delegate4)
       {
-        v182 = [(SUUIStatefulUIManager *)v189 delegate];
+        delegate5 = [(SUUIStatefulUIManager *)selfCopy delegate];
         v127 = 1;
         v181 = 1;
         v4 = objc_opt_class();
@@ -15632,24 +15632,24 @@ void __50__SUUIStatefulUIManager_handleRefreshScanResults___block_invoke(uint64_
       }
 
       v121 = v128;
-      v122 = [(SUUIStatefulUIManager *)v189 delegate];
-      v123 = [(SUUIStatefulUIManager *)v189 scanError];
-      v124 = [(SUUIStatefulUIManager *)v189 preferredStatefulDescriptor];
-      v125 = [(SUUIStatefulUIManager *)v189 alternateStatefulDescriptor];
-      v126 = [(SUUIStatefulUIManager *)v189 currentDownload];
+      delegate6 = [(SUUIStatefulUIManager *)selfCopy delegate];
+      scanError2 = [(SUUIStatefulUIManager *)selfCopy scanError];
+      preferredStatefulDescriptor2 = [(SUUIStatefulUIManager *)selfCopy preferredStatefulDescriptor];
+      alternateStatefulDescriptor2 = [(SUUIStatefulUIManager *)selfCopy alternateStatefulDescriptor];
+      currentDownload4 = [(SUUIStatefulUIManager *)selfCopy currentDownload];
       v177 = 0;
       v175 = 0;
       v173 = 0;
-      if (v126)
+      if (currentDownload4)
       {
-        v178 = [(SUUIStatefulUIManager *)v189 currentDownload];
+        currentDownload5 = [(SUUIStatefulUIManager *)selfCopy currentDownload];
         v119 = 1;
         v177 = 1;
-        v176 = [(SUUIDownload *)v178 descriptor];
+        descriptor2 = [(SUUIDownload *)currentDownload5 descriptor];
         v175 = 1;
-        v174 = [v176 updateName];
+        updateName4 = [descriptor2 updateName];
         v173 = 1;
-        v120 = v174;
+        v120 = updateName4;
       }
 
       else
@@ -15658,15 +15658,15 @@ void __50__SUUIStatefulUIManager_handleRefreshScanResults___block_invoke(uint64_
       }
 
       v96 = v120;
-      v97 = [(SUUIStatefulUIManager *)v189 currentDownload];
-      v98 = SUUIUpdateContinuousOperationTypeToString([(SUUIStatefulUIManager *)v189 currentUpdateOperationType]);
+      currentDownload6 = [(SUUIStatefulUIManager *)selfCopy currentDownload];
+      v98 = SUUIUpdateContinuousOperationTypeToString([(SUUIStatefulUIManager *)selfCopy currentUpdateOperationType]);
       v99 = MEMORY[0x277D82BE0](v98);
       v172 = v99;
-      v197 = [(SUUIStatefulUIManager *)v189 isTargetedUpdateScheduledForAutoInstall];
+      isTargetedUpdateScheduledForAutoInstall2 = [(SUUIStatefulUIManager *)selfCopy isTargetedUpdateScheduledForAutoInstall];
       v109 = @"NO";
       v110 = @"YES";
       v117 = 1;
-      if (v197)
+      if (isTargetedUpdateScheduledForAutoInstall2)
       {
         v5 = @"YES";
       }
@@ -15681,7 +15681,7 @@ void __50__SUUIStatefulUIManager_handleRefreshScanResults___block_invoke(uint64_
       v101 = v100;
       v102 = MEMORY[0x277D82BE0](v101);
       v171 = v102;
-      if ([(SUUIStatefulUIManager *)v189 hidingPreferredDescriptor])
+      if ([(SUUIStatefulUIManager *)selfCopy hidingPreferredDescriptor])
       {
         v7 = v110;
       }
@@ -15696,11 +15696,11 @@ void __50__SUUIStatefulUIManager_handleRefreshScanResults___block_invoke(uint64_
       v104 = v103;
       v105 = MEMORY[0x277D82BE0](v104);
       v170 = v105;
-      v106 = [(SUUIStatefulUIManager *)v189 hiddenPreferredStatefulDescriptor];
-      v107 = [(SUUIStatefulDescriptor *)v106 updateName];
-      v108 = MEMORY[0x277D82BE0](v107);
+      hiddenPreferredStatefulDescriptor2 = [(SUUIStatefulUIManager *)selfCopy hiddenPreferredStatefulDescriptor];
+      updateName5 = [(SUUIStatefulDescriptor *)hiddenPreferredStatefulDescriptor2 updateName];
+      v108 = MEMORY[0x277D82BE0](updateName5);
       v169 = v108;
-      if ([(SUUIStatefulUIManager *)v189 hidingAlternateDescriptor])
+      if ([(SUUIStatefulUIManager *)selfCopy hidingAlternateDescriptor])
       {
         v9 = v110;
       }
@@ -15715,27 +15715,27 @@ void __50__SUUIStatefulUIManager_handleRefreshScanResults___block_invoke(uint64_
       v112 = v111;
       v113 = MEMORY[0x277D82BE0](v112);
       v168 = v113;
-      v114 = [(SUUIStatefulUIManager *)v189 hiddenAlternateStatefulDescriptor];
-      v115 = [(SUUIStatefulDescriptor *)v114 updateName];
-      v116 = MEMORY[0x277D82BE0](v115);
+      hiddenAlternateStatefulDescriptor2 = [(SUUIStatefulUIManager *)selfCopy hiddenAlternateStatefulDescriptor];
+      updateName6 = [(SUUIStatefulDescriptor *)hiddenAlternateStatefulDescriptor2 updateName];
+      v116 = MEMORY[0x277D82BE0](updateName6);
       v167 = v116;
-      v118 = [(SUUIStatefulUIManager *)v189 enrolledBetaProgram];
+      enrolledBetaProgram3 = [(SUUIStatefulUIManager *)selfCopy enrolledBetaProgram];
       v165 = 0;
-      if (v118)
+      if (enrolledBetaProgram3)
       {
-        v166 = [(SUUIStatefulUIManager *)v189 enrolledBetaProgram];
+        enrolledBetaProgram4 = [(SUUIStatefulUIManager *)selfCopy enrolledBetaProgram];
         v165 = 1;
-        v95 = [(SDBetaProgram *)v166 programID];
+        programID2 = [(SDBetaProgram *)enrolledBetaProgram4 programID];
       }
 
       else
       {
-        v95 = 0;
+        programID2 = 0;
       }
 
-      v86 = v95;
-      v87 = [(NSArray *)v189->_betaPrograms count];
-      if ([(SUUIStatefulUIManager *)v189 canEnrollInBetaUpdates])
+      v86 = programID2;
+      v87 = [(NSArray *)selfCopy->_betaPrograms count];
+      if ([(SUUIStatefulUIManager *)selfCopy canEnrollInBetaUpdates])
       {
         v11 = @"YES";
       }
@@ -15750,50 +15750,50 @@ void __50__SUUIStatefulUIManager_handleRefreshScanResults___block_invoke(uint64_
       v94 = v85;
       v88 = MEMORY[0x277D82BE0](v94);
       v164 = v88;
-      v89 = v189->_currentFullScanOperation;
-      v90 = v189->_currentRefreshScanOperation;
-      v91 = v189->_currentUpdateOperation;
-      v13 = [(NSMutableSet *)v189->_auxiliaryOperations count];
+      v89 = selfCopy->_currentFullScanOperation;
+      v90 = selfCopy->_currentRefreshScanOperation;
+      v91 = selfCopy->_currentUpdateOperation;
+      v13 = [(NSMutableSet *)selfCopy->_auxiliaryOperations count];
       v92 = &v25;
       buf = v199;
-      __os_log_helper_16_2_26_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0_8_66(v199, v139, v131, v133, v135, v136, v121, v122, v123, v124, v125, v96, v97, v99, v102, v105, v108, v113, v116, v86, v87, v88, v89, v90, v91, v13, location[0]);
+      __os_log_helper_16_2_26_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0_8_66(v199, v139, v131, v133, v135, currentState2, v121, delegate6, scanError2, preferredStatefulDescriptor2, alternateStatefulDescriptor2, v96, currentDownload6, v99, v102, v105, v108, v113, v116, v86, v87, v88, v89, v90, v91, v13, location[0]);
       _os_log_impl(&dword_26ADE5000, log, v130[0], "%s [%p]: %{public}@ Checkpoint\n\tcurrentState: %{public}@ (%ld)\n\tdelegate: %{public}@ (%p)\n\tscanError: %{public}@\n\tpreferredDescriptor: %{public}@\n\talternateDescriptor: %{public}@\n\tdownload: %{public}@ (%p)\n\tcurrentUpdateOperationType: %{public}@\n\tscheduledForAutoInstall: %{public}@\n\thiddenUpdatesPostSelection: preferred[%{public}@, %{public}@]; alternate[%{public}@, %{public}@];\n\tselectedBetaProgram: %lu (count: %ld, enrollable: %{public}@)\n\tOpFSMs: scan[%p]; refresh[%p]; update[%p]; auxiliaryOperationsCount[%lu]\n\nCouldn't clean the past discovered download as the targeted update could not be retrieved from the given download.\nDownload: %{public}@", buf, 0x106u);
       MEMORY[0x277D82BD8](v94);
       if (v165)
       {
-        MEMORY[0x277D82BD8](v166);
+        MEMORY[0x277D82BD8](enrolledBetaProgram4);
       }
 
-      MEMORY[0x277D82BD8](v118);
-      MEMORY[0x277D82BD8](v115);
-      MEMORY[0x277D82BD8](v114);
+      MEMORY[0x277D82BD8](enrolledBetaProgram3);
+      MEMORY[0x277D82BD8](updateName6);
+      MEMORY[0x277D82BD8](hiddenAlternateStatefulDescriptor2);
       MEMORY[0x277D82BD8](v112);
-      MEMORY[0x277D82BD8](v107);
-      MEMORY[0x277D82BD8](v106);
+      MEMORY[0x277D82BD8](updateName5);
+      MEMORY[0x277D82BD8](hiddenPreferredStatefulDescriptor2);
       MEMORY[0x277D82BD8](v104);
       MEMORY[0x277D82BD8](v101);
       MEMORY[0x277D82BD8](v98);
-      MEMORY[0x277D82BD8](v97);
+      MEMORY[0x277D82BD8](currentDownload6);
       if (v173)
       {
-        MEMORY[0x277D82BD8](v174);
+        MEMORY[0x277D82BD8](updateName4);
       }
 
       if (v175)
       {
-        MEMORY[0x277D82BD8](v176);
+        MEMORY[0x277D82BD8](descriptor2);
       }
 
       if (v177)
       {
-        MEMORY[0x277D82BD8](v178);
+        MEMORY[0x277D82BD8](currentDownload5);
       }
 
-      MEMORY[0x277D82BD8](v126);
-      MEMORY[0x277D82BD8](v125);
-      MEMORY[0x277D82BD8](v124);
-      MEMORY[0x277D82BD8](v123);
-      MEMORY[0x277D82BD8](v122);
+      MEMORY[0x277D82BD8](currentDownload4);
+      MEMORY[0x277D82BD8](alternateStatefulDescriptor2);
+      MEMORY[0x277D82BD8](preferredStatefulDescriptor2);
+      MEMORY[0x277D82BD8](scanError2);
+      MEMORY[0x277D82BD8](delegate6);
       if (v179)
       {
         MEMORY[0x277D82BD8](v180);
@@ -15801,10 +15801,10 @@ void __50__SUUIStatefulUIManager_handleRefreshScanResults___block_invoke(uint64_
 
       if (v181)
       {
-        MEMORY[0x277D82BD8](v182);
+        MEMORY[0x277D82BD8](delegate5);
       }
 
-      MEMORY[0x277D82BD8](v137);
+      MEMORY[0x277D82BD8](delegate4);
       MEMORY[0x277D82BD8](v134);
       MEMORY[0x277D82BD8](v132);
       obj = 0;
@@ -15829,37 +15829,37 @@ void __50__SUUIStatefulUIManager_handleRefreshScanResults___block_invoke(uint64_
   *MEMORY[0x277D85DE8];
 }
 
-- (id)targetedUpdateForDownload:(id)a3
+- (id)targetedUpdateForDownload:(id)download
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = v8;
-  v5 = [location[0] descriptor];
+  objc_storeStrong(location, download);
+  v4 = selfCopy;
+  descriptor = [location[0] descriptor];
   v6 = [(SUUIStatefulUIManager *)v4 targetedUpdateMatchingDescriptor:?];
-  MEMORY[0x277D82BD8](v5);
+  MEMORY[0x277D82BD8](descriptor);
   objc_storeStrong(location, 0);
 
   return v6;
 }
 
-- (id)targetedUpdateMatchingDescriptor:(id)a3
+- (id)targetedUpdateMatchingDescriptor:(id)descriptor
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [(SUUIStatefulUIManager *)v8 preferredStatefulDescriptor];
-  v5 = [(SUUIStatefulUIManager *)v8 alternateStatefulDescriptor];
-  if ([v6 isEqualToDescriptor:location[0]])
+  objc_storeStrong(location, descriptor);
+  preferredStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy preferredStatefulDescriptor];
+  alternateStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy alternateStatefulDescriptor];
+  if ([preferredStatefulDescriptor isEqualToDescriptor:location[0]])
   {
-    v9 = MEMORY[0x277D82BE0](v6);
+    v9 = MEMORY[0x277D82BE0](preferredStatefulDescriptor);
   }
 
-  else if ([v5 isEqualToDescriptor:location[0]])
+  else if ([alternateStatefulDescriptor isEqualToDescriptor:location[0]])
   {
-    v9 = MEMORY[0x277D82BE0](v5);
+    v9 = MEMORY[0x277D82BE0](alternateStatefulDescriptor);
   }
 
   else
@@ -15867,37 +15867,37 @@ void __50__SUUIStatefulUIManager_handleRefreshScanResults___block_invoke(uint64_
     v9 = 0;
   }
 
-  objc_storeStrong(&v5, 0);
-  objc_storeStrong(&v6, 0);
+  objc_storeStrong(&alternateStatefulDescriptor, 0);
+  objc_storeStrong(&preferredStatefulDescriptor, 0);
   objc_storeStrong(location, 0);
   v3 = v9;
 
   return v3;
 }
 
-- (void)performUpdateOperation:(int64_t)a3 withDescriptor:(id)a4 byApplyingSelector:(SEL)a5 context:(id)a6 auxiliaryOperation:(BOOL)a7 delegate:(id)a8 delegateCallbackQueue:(id)a9 resultsValidation:(id)a10 resultsAssignment:(id)a11 completion:(id)a12
+- (void)performUpdateOperation:(int64_t)operation withDescriptor:(id)descriptor byApplyingSelector:(SEL)selector context:(id)context auxiliaryOperation:(BOOL)auxiliaryOperation delegate:(id)delegate delegateCallbackQueue:(id)queue resultsValidation:(id)self0 resultsAssignment:(id)self1 completion:(id)self2
 {
-  v43 = self;
+  selfCopy = self;
   v42 = a2;
-  v41 = a3;
+  operationCopy = operation;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v39 = a5;
+  objc_storeStrong(&location, descriptor);
+  selectorCopy = selector;
   v38 = 0;
-  objc_storeStrong(&v38, a6);
-  v37 = a7;
+  objc_storeStrong(&v38, context);
+  auxiliaryOperationCopy = auxiliaryOperation;
   v36 = 0;
-  objc_storeStrong(&v36, a8);
+  objc_storeStrong(&v36, delegate);
   v35 = 0;
-  objc_storeStrong(&v35, a9);
+  objc_storeStrong(&v35, queue);
   v34 = 0;
-  objc_storeStrong(&v34, a10);
+  objc_storeStrong(&v34, validation);
   v33 = 0;
-  objc_storeStrong(&v33, a11);
+  objc_storeStrong(&v33, assignment);
   v32 = 0;
-  objc_storeStrong(&v32, a12);
-  objc_initWeak(&v31, v43);
-  queue = v43->_operationsQueue;
+  objc_storeStrong(&v32, completion);
+  objc_initWeak(&v31, selfCopy);
+  queue = selfCopy->_operationsQueue;
   v17 = MEMORY[0x277D85DD0];
   v18 = -1073741824;
   v19 = 0;
@@ -15906,11 +15906,11 @@ void __50__SUUIStatefulUIManager_handleRefreshScanResults___block_invoke(uint64_
   objc_copyWeak(v29, &v31);
   v29[1] = v42;
   v25 = MEMORY[0x277D82BE0](v32);
-  v30 = v37;
-  v29[2] = v41;
+  v30 = auxiliaryOperationCopy;
+  v29[2] = operationCopy;
   v22 = MEMORY[0x277D82BE0](location);
   v23 = MEMORY[0x277D82BE0](v35);
-  v29[3] = v39;
+  v29[3] = selectorCopy;
   v26 = MEMORY[0x277D82BE0](v38);
   v24 = MEMORY[0x277D82BE0](v36);
   v27 = MEMORY[0x277D82BE0](v34);
@@ -17723,27 +17723,27 @@ void __187__SUUIStatefulUIManager_performUpdateOperation_withDescriptor_byApplyi
   objc_storeStrong(location, 0);
 }
 
-- (void)performUpdateOnDownloadByApplyingSelector:(SEL)a3 context:(id)a4 description:(id)a5 delegate:(id)a6 delegateCallbackQueue:(id)a7 resultsValidation:(id)a8 resultsAssignment:(id)a9 completion:(id)a10
+- (void)performUpdateOnDownloadByApplyingSelector:(SEL)selector context:(id)context description:(id)description delegate:(id)delegate delegateCallbackQueue:(id)queue resultsValidation:(id)validation resultsAssignment:(id)assignment completion:(id)self0
 {
-  v38 = self;
+  selfCopy = self;
   v37 = a2;
-  v36 = a3;
+  selectorCopy = selector;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, context);
   v34 = 0;
-  objc_storeStrong(&v34, a5);
+  objc_storeStrong(&v34, description);
   v33 = 0;
-  objc_storeStrong(&v33, a6);
+  objc_storeStrong(&v33, delegate);
   v32 = 0;
-  objc_storeStrong(&v32, a7);
+  objc_storeStrong(&v32, queue);
   v31 = 0;
-  objc_storeStrong(&v31, a8);
+  objc_storeStrong(&v31, validation);
   v30 = 0;
-  objc_storeStrong(&v30, a9);
+  objc_storeStrong(&v30, assignment);
   v29 = 0;
-  objc_storeStrong(&v29, a10);
-  objc_initWeak(&v28, v38);
-  queue = v38->_operationsQueue;
+  objc_storeStrong(&v29, completion);
+  objc_initWeak(&v28, selfCopy);
+  queue = selfCopy->_operationsQueue;
   v15 = MEMORY[0x277D85DD0];
   v16 = -1073741824;
   v17 = 0;
@@ -17753,7 +17753,7 @@ void __187__SUUIStatefulUIManager_performUpdateOperation_withDescriptor_byApplyi
   v27[1] = v37;
   v23 = MEMORY[0x277D82BE0](v29);
   v20 = MEMORY[0x277D82BE0](v32);
-  v27[2] = v36;
+  v27[2] = selectorCopy;
   v21 = MEMORY[0x277D82BE0](v34);
   v24 = MEMORY[0x277D82BE0](location);
   v22 = MEMORY[0x277D82BE0](v33);
@@ -19046,24 +19046,24 @@ void __165__SUUIStatefulUIManager_performUpdateOnDownloadByApplyingSelector_cont
   objc_storeStrong(location, 0);
 }
 
-- (void)performPostUpdateOperationRefreshWithDownload:(id)a3 error:(id)a4 completionHandler:(id)a5
+- (void)performPostUpdateOperationRefreshWithDownload:(id)download error:(id)error completionHandler:(id)handler
 {
-  obj = a4;
-  v126 = a5;
+  obj = error;
+  handlerCopy = handler;
   v127 = "[SUUIStatefulUIManager performPostUpdateOperationRefreshWithDownload:error:completionHandler:]";
   v185 = *MEMORY[0x277D85DE8];
   val = self;
   v178 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, download);
   v176 = 0;
   objc_storeStrong(&v176, obj);
   v175 = 0;
-  objc_storeStrong(&v175, v126);
-  v124 = [MEMORY[0x277CCAD78] UUID];
-  v122 = v124;
-  v123 = [v122 UUIDString];
-  v174 = v123;
+  objc_storeStrong(&v175, handlerCopy);
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v122 = uUID;
+  uUIDString = [v122 UUIDString];
+  v174 = uUIDString;
   MEMORY[0x277D82BD8](v122);
   v169 = 0;
   v170 = &v169;
@@ -19084,8 +19084,8 @@ void __165__SUUIStatefulUIManager_performUpdateOnDownloadByApplyingSelector_cont
   {
     v120 = +[SUUILoggingContext softwareUpdateUILogger];
     v118 = v120;
-    v119 = [v118 oslog];
-    oslog = v119;
+    oslog = [v118 oslog];
+    oslog = oslog;
     MEMORY[0x277D82BD8](v118);
     type = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
@@ -19112,8 +19112,8 @@ void __165__SUUIStatefulUIManager_performUpdateOnDownloadByApplyingSelector_cont
   v170[3] = state;
   v114 = +[SUUILoggingContext statefulUILogger];
   v112 = v114;
-  v113 = [v112 oslog];
-  v162[0] = v113;
+  oslog2 = [v112 oslog];
+  v162[0] = oslog2;
   MEMORY[0x277D82BD8](v112);
   v161 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v162[0], OS_LOG_TYPE_DEFAULT))
@@ -19130,15 +19130,15 @@ void __165__SUUIStatefulUIManager_performUpdateOnDownloadByApplyingSelector_cont
     v101 = v106;
     v102 = MEMORY[0x277D82BE0](v101);
     v159 = v102;
-    v103 = [val currentState];
+    currentState = [val currentState];
     v157 = 0;
     v155 = 0;
-    v100 = [val delegate];
-    v99 = v100;
+    delegate = [val delegate];
+    v99 = delegate;
     if (v99)
     {
-      v98 = [val delegate];
-      v158 = v98;
+      delegate2 = [val delegate];
+      v158 = delegate2;
       v157 = 1;
       v97 = objc_opt_class();
       v96 = NSStringFromClass(v97);
@@ -19153,29 +19153,29 @@ void __165__SUUIStatefulUIManager_performUpdateOnDownloadByApplyingSelector_cont
     }
 
     v93 = v95;
-    v94 = [val delegate];
-    v91 = v94;
-    v92 = [val scanError];
-    v89 = v92;
-    v90 = [val preferredStatefulDescriptor];
-    v87 = v90;
-    v88 = [val alternateStatefulDescriptor];
-    v85 = v88;
+    delegate3 = [val delegate];
+    v91 = delegate3;
+    scanError = [val scanError];
+    v89 = scanError;
+    preferredStatefulDescriptor = [val preferredStatefulDescriptor];
+    v87 = preferredStatefulDescriptor;
+    alternateStatefulDescriptor = [val alternateStatefulDescriptor];
+    v85 = alternateStatefulDescriptor;
     v153 = 0;
     v151 = 0;
     v149 = 0;
-    v86 = [val currentDownload];
-    v84 = v86;
+    currentDownload = [val currentDownload];
+    v84 = currentDownload;
     if (v84)
     {
-      v83 = [val currentDownload];
-      v154 = v83;
+      currentDownload2 = [val currentDownload];
+      v154 = currentDownload2;
       v153 = 1;
-      v82 = [v154 descriptor];
-      v152 = v82;
+      descriptor = [v154 descriptor];
+      v152 = descriptor;
       v151 = 1;
-      v81 = [v152 updateName];
-      v150 = v81;
+      updateName = [v152 updateName];
+      v150 = updateName;
       v149 = 1;
       v80 = v150;
     }
@@ -19186,16 +19186,16 @@ void __165__SUUIStatefulUIManager_performUpdateOnDownloadByApplyingSelector_cont
     }
 
     v78 = v80;
-    v79 = [val currentDownload];
-    v76 = v79;
-    v77 = [val currentUpdateOperationType];
-    v75 = SUUIUpdateContinuousOperationTypeToString(v77);
+    currentDownload3 = [val currentDownload];
+    v76 = currentDownload3;
+    currentUpdateOperationType = [val currentUpdateOperationType];
+    v75 = SUUIUpdateContinuousOperationTypeToString(currentUpdateOperationType);
     v72 = v75;
     v73 = MEMORY[0x277D82BE0](v72);
     v148 = v73;
-    v74 = [val isTargetedUpdateScheduledForAutoInstall];
-    v183 = v74;
-    if (v74)
+    isTargetedUpdateScheduledForAutoInstall = [val isTargetedUpdateScheduledForAutoInstall];
+    v183 = isTargetedUpdateScheduledForAutoInstall;
+    if (isTargetedUpdateScheduledForAutoInstall)
     {
       v6 = @"YES";
     }
@@ -19210,9 +19210,9 @@ void __165__SUUIStatefulUIManager_performUpdateOnDownloadByApplyingSelector_cont
     v68 = v71;
     v69 = MEMORY[0x277D82BE0](v68);
     v147 = v69;
-    v70 = [val hidingPreferredDescriptor];
-    v182 = v70;
-    if (v70)
+    hidingPreferredDescriptor = [val hidingPreferredDescriptor];
+    v182 = hidingPreferredDescriptor;
+    if (hidingPreferredDescriptor)
     {
       v8 = @"YES";
     }
@@ -19227,15 +19227,15 @@ void __165__SUUIStatefulUIManager_performUpdateOnDownloadByApplyingSelector_cont
     v64 = v67;
     v65 = MEMORY[0x277D82BE0](v64);
     v146 = v65;
-    v66 = [val hiddenPreferredStatefulDescriptor];
-    v62 = v66;
-    v63 = [v62 updateName];
-    v59 = v63;
+    hiddenPreferredStatefulDescriptor = [val hiddenPreferredStatefulDescriptor];
+    v62 = hiddenPreferredStatefulDescriptor;
+    updateName2 = [v62 updateName];
+    v59 = updateName2;
     v60 = MEMORY[0x277D82BE0](v59);
     v145 = v60;
-    v61 = [val hidingAlternateDescriptor];
-    v181 = v61;
-    if (v61)
+    hidingAlternateDescriptor = [val hidingAlternateDescriptor];
+    v181 = hidingAlternateDescriptor;
+    if (hidingAlternateDescriptor)
     {
       v10 = @"YES";
     }
@@ -19250,22 +19250,22 @@ void __165__SUUIStatefulUIManager_performUpdateOnDownloadByApplyingSelector_cont
     v55 = v58;
     v56 = MEMORY[0x277D82BE0](v55);
     v144 = v56;
-    v57 = [val hiddenAlternateStatefulDescriptor];
-    v53 = v57;
-    v54 = [v53 updateName];
-    v50 = v54;
+    hiddenAlternateStatefulDescriptor = [val hiddenAlternateStatefulDescriptor];
+    v53 = hiddenAlternateStatefulDescriptor;
+    updateName3 = [v53 updateName];
+    v50 = updateName3;
     v51 = MEMORY[0x277D82BE0](v50);
     v143 = v51;
     v141 = 0;
-    v52 = [val enrolledBetaProgram];
-    v49 = v52;
+    enrolledBetaProgram = [val enrolledBetaProgram];
+    v49 = enrolledBetaProgram;
     if (v49)
     {
-      v48 = [val enrolledBetaProgram];
-      v142 = v48;
+      enrolledBetaProgram2 = [val enrolledBetaProgram];
+      v142 = enrolledBetaProgram2;
       v141 = 1;
-      v47 = [v142 programID];
-      v46 = v47;
+      programID = [v142 programID];
+      v46 = programID;
     }
 
     else
@@ -19275,9 +19275,9 @@ void __165__SUUIStatefulUIManager_performUpdateOnDownloadByApplyingSelector_cont
 
     v44 = v46;
     v45 = [*(val + 15) count];
-    v43 = [val canEnrollInBetaUpdates];
-    v180 = v43;
-    if (v43)
+    canEnrollInBetaUpdates = [val canEnrollInBetaUpdates];
+    v180 = canEnrollInBetaUpdates;
+    if (canEnrollInBetaUpdates)
     {
       v12 = @"YES";
     }
@@ -19298,7 +19298,7 @@ void __165__SUUIStatefulUIManager_performUpdateOnDownloadByApplyingSelector_cont
     v41 = [*(val + 24) count];
     v34 = &v14;
     v35 = v184;
-    __os_log_helper_16_2_26_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0_8_66(v184, v127, v110, v105, v102, v103, v93, v91, v89, v87, v85, v78, v76, v73, v69, v65, v60, v56, v51, v44, v45, v37, v38, v39, v40, v41, v174);
+    __os_log_helper_16_2_26_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0_8_66(v184, v127, v110, v105, v102, currentState, v93, v91, v89, v87, v85, v78, v76, v73, v69, v65, v60, v56, v51, v44, v45, v37, v38, v39, v40, v41, v174);
     _os_log_impl(&dword_26ADE5000, v108, v109[0], "%s [%p]: %{public}@ Checkpoint\n\tcurrentState: %{public}@ (%ld)\n\tdelegate: %{public}@ (%p)\n\tscanError: %{public}@\n\tpreferredDescriptor: %{public}@\n\talternateDescriptor: %{public}@\n\tdownload: %{public}@ (%p)\n\tcurrentUpdateOperationType: %{public}@\n\tscheduledForAutoInstall: %{public}@\n\thiddenUpdatesPostSelection: preferred[%{public}@, %{public}@]; alternate[%{public}@, %{public}@];\n\tselectedBetaProgram: %lu (count: %ld, enrollable: %{public}@)\n\tOpFSMs: scan[%p]; refresh[%p]; update[%p]; auxiliaryOperationsCount[%lu]\n\nBeginning a post download refresh operation with scan ID: %{public}@", v35, 0x106u);
     MEMORY[0x277D82BD8](v36);
     if (v141)
@@ -19361,8 +19361,8 @@ void __165__SUUIStatefulUIManager_performUpdateOnDownloadByApplyingSelector_cont
   }
 
   objc_storeStrong(v162, 0);
-  v33 = [val environment];
-  v31 = v33;
+  environment = [val environment];
+  v31 = environment;
   v32 = [v31 scanOperationWithManager:val identifier:v174 completionQueue:*(val + 26)];
   v139 = v32;
   MEMORY[0x277D82BD8](v31);
@@ -19371,14 +19371,14 @@ void __165__SUUIStatefulUIManager_performUpdateOnDownloadByApplyingSelector_cont
   v138 = v30;
   objc_initWeak(&from, val);
   v28 = v139;
-  v29 = [val preferredStatefulDescriptor];
-  v26 = v29;
-  v27 = [v26 descriptor];
-  v24 = v27;
-  v25 = [val alternateStatefulDescriptor];
-  v22 = v25;
-  v23 = [v22 descriptor];
-  v19 = v23;
+  preferredStatefulDescriptor2 = [val preferredStatefulDescriptor];
+  v26 = preferredStatefulDescriptor2;
+  descriptor2 = [v26 descriptor];
+  v24 = descriptor2;
+  alternateStatefulDescriptor2 = [val alternateStatefulDescriptor];
+  v22 = alternateStatefulDescriptor2;
+  descriptor3 = [v22 descriptor];
+  v19 = descriptor3;
   v20 = v138;
   v128 = MEMORY[0x277D85DD0];
   v129 = -1073741824;
@@ -19779,39 +19779,39 @@ void __95__SUUIStatefulUIManager_performPostUpdateOperationRefreshWithDownload_e
 - (void)hidePreferredUpdate
 {
   v19 = *MEMORY[0x277D85DE8];
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
-  v8 = [(SUUIStatefulUIManager *)self environment];
-  v9 = [(SUUIStatefulUIEnvironment *)v8 options];
-  MEMORY[0x277D82BD8](v8);
-  if ((v9 & 4) != 0)
+  environment = [(SUUIStatefulUIManager *)self environment];
+  options = [(SUUIStatefulUIEnvironment *)environment options];
+  MEMORY[0x277D82BD8](environment);
+  if ((options & 4) != 0)
   {
-    v13 = [(SUUIStatefulUIManager *)v16 preferredStatefulDescriptor];
+    preferredStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy preferredStatefulDescriptor];
     v6 = +[SUUILoggingContext statefulUILogger];
-    v12 = [v6 oslog];
+    oslog = [v6 oslog];
     MEMORY[0x277D82BD8](v6);
     v11 = OS_LOG_TYPE_DEFAULT;
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v3 = v12;
+      v3 = oslog;
       v4 = v11;
-      v5 = [(SUUIStatefulDescriptor *)v13 updateName];
-      v10 = MEMORY[0x277D82BE0](v5);
-      __os_log_helper_16_2_3_8_32_8_0_8_66(v17, "[SUUIStatefulUIManager hidePreferredUpdate]", v16, v10);
+      updateName = [(SUUIStatefulDescriptor *)preferredStatefulDescriptor updateName];
+      v10 = MEMORY[0x277D82BE0](updateName);
+      __os_log_helper_16_2_3_8_32_8_0_8_66(v17, "[SUUIStatefulUIManager hidePreferredUpdate]", selfCopy, v10);
       _os_log_impl(&dword_26ADE5000, v3, v4, "%s [%p]: Hiding preferred update: %{public}@", v17, 0x20u);
-      MEMORY[0x277D82BD8](v5);
+      MEMORY[0x277D82BD8](updateName);
       objc_storeStrong(&v10, 0);
     }
 
-    objc_storeStrong(&v12, 0);
-    [(SUUIStatefulUIManager *)v16 setHiddenPreferredStatefulDescriptor:v13];
-    v2 = [(SUUIStatefulUIManager *)v16 alternateStatefulDescriptor];
-    [(SUUIStatefulUIManager *)v16 setPreferredStatefulDescriptor:?];
-    MEMORY[0x277D82BD8](v2);
-    [(SUUIStatefulUIManager *)v16 setAlternateStatefulDescriptor:?];
-    [(SUUIStatefulUIManager *)v16 setHidingPreferredDescriptor:1];
-    [(SUUIStatefulUIManager *)v16 setHidingAlternateDescriptor:0];
-    objc_storeStrong(&v13, 0);
+    objc_storeStrong(&oslog, 0);
+    [(SUUIStatefulUIManager *)selfCopy setHiddenPreferredStatefulDescriptor:preferredStatefulDescriptor];
+    alternateStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy alternateStatefulDescriptor];
+    [(SUUIStatefulUIManager *)selfCopy setPreferredStatefulDescriptor:?];
+    MEMORY[0x277D82BD8](alternateStatefulDescriptor);
+    [(SUUIStatefulUIManager *)selfCopy setAlternateStatefulDescriptor:?];
+    [(SUUIStatefulUIManager *)selfCopy setHidingPreferredDescriptor:1];
+    [(SUUIStatefulUIManager *)selfCopy setHidingAlternateDescriptor:0];
+    objc_storeStrong(&preferredStatefulDescriptor, 0);
   }
 
   else
@@ -19822,7 +19822,7 @@ void __95__SUUIStatefulUIManager_performPostUpdateOperationRefreshWithDownload_e
     v14 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(location[0], OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_2_8_32_8_0(v18, "[SUUIStatefulUIManager hidePreferredUpdate]", v16);
+      __os_log_helper_16_2_2_8_32_8_0(v18, "[SUUIStatefulUIManager hidePreferredUpdate]", selfCopy);
       _os_log_impl(&dword_26ADE5000, location[0], v14, "%s [%p]: A request to hide the preferred update was received. Rejecting this request as this ability was disabled via the manager's options.", v18, 0x16u);
     }
 
@@ -19835,36 +19835,36 @@ void __95__SUUIStatefulUIManager_performPostUpdateOperationRefreshWithDownload_e
 - (void)hideAlternateUpdate
 {
   v18 = *MEMORY[0x277D85DE8];
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
-  v7 = [(SUUIStatefulUIManager *)self environment];
-  v8 = [(SUUIStatefulUIEnvironment *)v7 options];
-  MEMORY[0x277D82BD8](v7);
-  if ((v8 & 4) != 0)
+  environment = [(SUUIStatefulUIManager *)self environment];
+  options = [(SUUIStatefulUIEnvironment *)environment options];
+  MEMORY[0x277D82BD8](environment);
+  if ((options & 4) != 0)
   {
-    v12 = [(SUUIStatefulUIManager *)v15 alternateStatefulDescriptor];
+    alternateStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy alternateStatefulDescriptor];
     v5 = +[SUUILoggingContext statefulUILogger];
-    v11 = [v5 oslog];
+    oslog = [v5 oslog];
     MEMORY[0x277D82BD8](v5);
     v10 = OS_LOG_TYPE_DEFAULT;
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v2 = v11;
+      v2 = oslog;
       v3 = v10;
-      v4 = [(SUUIStatefulDescriptor *)v12 updateName];
-      v9 = MEMORY[0x277D82BE0](v4);
-      __os_log_helper_16_2_3_8_32_8_0_8_66(v16, "[SUUIStatefulUIManager hideAlternateUpdate]", v15, v9);
+      updateName = [(SUUIStatefulDescriptor *)alternateStatefulDescriptor updateName];
+      v9 = MEMORY[0x277D82BE0](updateName);
+      __os_log_helper_16_2_3_8_32_8_0_8_66(v16, "[SUUIStatefulUIManager hideAlternateUpdate]", selfCopy, v9);
       _os_log_impl(&dword_26ADE5000, v2, v3, "%s [%p]: Hiding alternate update: %{public}@", v16, 0x20u);
-      MEMORY[0x277D82BD8](v4);
+      MEMORY[0x277D82BD8](updateName);
       objc_storeStrong(&v9, 0);
     }
 
-    objc_storeStrong(&v11, 0);
-    [(SUUIStatefulUIManager *)v15 setHiddenAlternateStatefulDescriptor:v12];
-    [(SUUIStatefulUIManager *)v15 setAlternateStatefulDescriptor:?];
-    [(SUUIStatefulUIManager *)v15 setHidingPreferredDescriptor:0];
-    [(SUUIStatefulUIManager *)v15 setHidingAlternateDescriptor:1];
-    objc_storeStrong(&v12, 0);
+    objc_storeStrong(&oslog, 0);
+    [(SUUIStatefulUIManager *)selfCopy setHiddenAlternateStatefulDescriptor:alternateStatefulDescriptor];
+    [(SUUIStatefulUIManager *)selfCopy setAlternateStatefulDescriptor:?];
+    [(SUUIStatefulUIManager *)selfCopy setHidingPreferredDescriptor:0];
+    [(SUUIStatefulUIManager *)selfCopy setHidingAlternateDescriptor:1];
+    objc_storeStrong(&alternateStatefulDescriptor, 0);
   }
 
   else
@@ -19875,7 +19875,7 @@ void __95__SUUIStatefulUIManager_performPostUpdateOperationRefreshWithDownload_e
     v13 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(location[0], OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_2_8_32_8_0(v17, "[SUUIStatefulUIManager hideAlternateUpdate]", v15);
+      __os_log_helper_16_2_2_8_32_8_0(v17, "[SUUIStatefulUIManager hideAlternateUpdate]", selfCopy);
       _os_log_impl(&dword_26ADE5000, location[0], v13, "%s [%p]: A request to hide the preferred update was received. Rejecting this request as this ability was disabled via the manager's options.", v17, 0x16u);
     }
 
@@ -19888,38 +19888,38 @@ void __95__SUUIStatefulUIManager_performPostUpdateOperationRefreshWithDownload_e
 - (void)revealHiddenPreferredUpdate
 {
   v19 = *MEMORY[0x277D85DE8];
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
-  v8 = [(SUUIStatefulUIManager *)self environment];
-  v9 = [(SUUIStatefulUIEnvironment *)v8 options];
-  MEMORY[0x277D82BD8](v8);
-  if ((v9 & 4) != 0)
+  environment = [(SUUIStatefulUIManager *)self environment];
+  options = [(SUUIStatefulUIEnvironment *)environment options];
+  MEMORY[0x277D82BD8](environment);
+  if ((options & 4) != 0)
   {
-    v13 = [(SUUIStatefulUIManager *)v16 hiddenPreferredStatefulDescriptor];
+    hiddenPreferredStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy hiddenPreferredStatefulDescriptor];
     v6 = +[SUUILoggingContext statefulUILogger];
-    v12 = [v6 oslog];
+    oslog = [v6 oslog];
     MEMORY[0x277D82BD8](v6);
     v11 = OS_LOG_TYPE_DEFAULT;
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v3 = v12;
+      v3 = oslog;
       v4 = v11;
-      v5 = [(SUUIStatefulDescriptor *)v13 updateName];
-      v10 = MEMORY[0x277D82BE0](v5);
-      __os_log_helper_16_2_3_8_32_8_0_8_66(v17, "[SUUIStatefulUIManager revealHiddenPreferredUpdate]", v16, v10);
+      updateName = [(SUUIStatefulDescriptor *)hiddenPreferredStatefulDescriptor updateName];
+      v10 = MEMORY[0x277D82BE0](updateName);
+      __os_log_helper_16_2_3_8_32_8_0_8_66(v17, "[SUUIStatefulUIManager revealHiddenPreferredUpdate]", selfCopy, v10);
       _os_log_impl(&dword_26ADE5000, v3, v4, "%s [%p]: Revealing the previously hidden preferred update: %{public}@", v17, 0x20u);
-      MEMORY[0x277D82BD8](v5);
+      MEMORY[0x277D82BD8](updateName);
       objc_storeStrong(&v10, 0);
     }
 
-    objc_storeStrong(&v12, 0);
-    v2 = [(SUUIStatefulUIManager *)v16 preferredStatefulDescriptor];
-    [(SUUIStatefulUIManager *)v16 setAlternateStatefulDescriptor:?];
-    MEMORY[0x277D82BD8](v2);
-    [(SUUIStatefulUIManager *)v16 setPreferredStatefulDescriptor:v13];
-    [(SUUIStatefulUIManager *)v16 setHiddenPreferredStatefulDescriptor:?];
-    [(SUUIStatefulUIManager *)v16 setHidingPreferredDescriptor:0];
-    objc_storeStrong(&v13, 0);
+    objc_storeStrong(&oslog, 0);
+    preferredStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy preferredStatefulDescriptor];
+    [(SUUIStatefulUIManager *)selfCopy setAlternateStatefulDescriptor:?];
+    MEMORY[0x277D82BD8](preferredStatefulDescriptor);
+    [(SUUIStatefulUIManager *)selfCopy setPreferredStatefulDescriptor:hiddenPreferredStatefulDescriptor];
+    [(SUUIStatefulUIManager *)selfCopy setHiddenPreferredStatefulDescriptor:?];
+    [(SUUIStatefulUIManager *)selfCopy setHidingPreferredDescriptor:0];
+    objc_storeStrong(&hiddenPreferredStatefulDescriptor, 0);
   }
 
   else
@@ -19930,7 +19930,7 @@ void __95__SUUIStatefulUIManager_performPostUpdateOperationRefreshWithDownload_e
     v14 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(location[0], OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_2_8_32_8_0(v18, "[SUUIStatefulUIManager revealHiddenPreferredUpdate]", v16);
+      __os_log_helper_16_2_2_8_32_8_0(v18, "[SUUIStatefulUIManager revealHiddenPreferredUpdate]", selfCopy);
       _os_log_impl(&dword_26ADE5000, location[0], v14, "%s [%p]: A request to hide the preferred update was received. Rejecting this request as this ability was disabled via the manager's options.", v18, 0x16u);
     }
 
@@ -19943,35 +19943,35 @@ void __95__SUUIStatefulUIManager_performPostUpdateOperationRefreshWithDownload_e
 - (void)revealHiddenAlteranteUpdate
 {
   v18 = *MEMORY[0x277D85DE8];
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
-  v7 = [(SUUIStatefulUIManager *)self environment];
-  v8 = [(SUUIStatefulUIEnvironment *)v7 options];
-  MEMORY[0x277D82BD8](v7);
-  if ((v8 & 4) != 0)
+  environment = [(SUUIStatefulUIManager *)self environment];
+  options = [(SUUIStatefulUIEnvironment *)environment options];
+  MEMORY[0x277D82BD8](environment);
+  if ((options & 4) != 0)
   {
-    v12 = [(SUUIStatefulUIManager *)v15 hiddenAlternateStatefulDescriptor];
+    hiddenAlternateStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy hiddenAlternateStatefulDescriptor];
     v5 = +[SUUILoggingContext statefulUILogger];
-    v11 = [v5 oslog];
+    oslog = [v5 oslog];
     MEMORY[0x277D82BD8](v5);
     v10 = OS_LOG_TYPE_DEFAULT;
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v2 = v11;
+      v2 = oslog;
       v3 = v10;
-      v4 = [(SUUIStatefulDescriptor *)v12 updateName];
-      v9 = MEMORY[0x277D82BE0](v4);
-      __os_log_helper_16_2_3_8_32_8_0_8_66(v16, "[SUUIStatefulUIManager revealHiddenAlteranteUpdate]", v15, v9);
+      updateName = [(SUUIStatefulDescriptor *)hiddenAlternateStatefulDescriptor updateName];
+      v9 = MEMORY[0x277D82BE0](updateName);
+      __os_log_helper_16_2_3_8_32_8_0_8_66(v16, "[SUUIStatefulUIManager revealHiddenAlteranteUpdate]", selfCopy, v9);
       _os_log_impl(&dword_26ADE5000, v2, v3, "%s [%p]: Reveal the previously hidden alternate update: %{public}@", v16, 0x20u);
-      MEMORY[0x277D82BD8](v4);
+      MEMORY[0x277D82BD8](updateName);
       objc_storeStrong(&v9, 0);
     }
 
-    objc_storeStrong(&v11, 0);
-    [(SUUIStatefulUIManager *)v15 setAlternateStatefulDescriptor:v12];
-    [(SUUIStatefulUIManager *)v15 setHiddenAlternateStatefulDescriptor:?];
-    [(SUUIStatefulUIManager *)v15 setHidingAlternateDescriptor:0];
-    objc_storeStrong(&v12, 0);
+    objc_storeStrong(&oslog, 0);
+    [(SUUIStatefulUIManager *)selfCopy setAlternateStatefulDescriptor:hiddenAlternateStatefulDescriptor];
+    [(SUUIStatefulUIManager *)selfCopy setHiddenAlternateStatefulDescriptor:?];
+    [(SUUIStatefulUIManager *)selfCopy setHidingAlternateDescriptor:0];
+    objc_storeStrong(&hiddenAlternateStatefulDescriptor, 0);
   }
 
   else
@@ -19982,7 +19982,7 @@ void __95__SUUIStatefulUIManager_performPostUpdateOperationRefreshWithDownload_e
     v13 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(location[0], OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_2_8_32_8_0(v17, "[SUUIStatefulUIManager revealHiddenAlteranteUpdate]", v15);
+      __os_log_helper_16_2_2_8_32_8_0(v17, "[SUUIStatefulUIManager revealHiddenAlteranteUpdate]", selfCopy);
       _os_log_impl(&dword_26ADE5000, location[0], v13, "%s [%p]: A request to hide the preferred update was received. Rejecting this request as this ability was disabled via the manager's options.", v17, 0x16u);
     }
 
@@ -19995,39 +19995,39 @@ void __95__SUUIStatefulUIManager_performPostUpdateOperationRefreshWithDownload_e
 - (BOOL)getEnrollInBetaUpdatesStatus
 {
   v4 = 0;
-  v3 = 0;
+  canCurrentDeviceEnrollInBetaUpdates = 0;
   if (_os_feature_enabled_impl())
   {
-    v5 = [MEMORY[0x277D4D310] sharedManager];
+    mEMORY[0x277D4D310] = [MEMORY[0x277D4D310] sharedManager];
     v4 = 1;
-    v3 = [v5 canCurrentDeviceEnrollInBetaUpdates];
+    canCurrentDeviceEnrollInBetaUpdates = [mEMORY[0x277D4D310] canCurrentDeviceEnrollInBetaUpdates];
   }
 
   if (v4)
   {
-    MEMORY[0x277D82BD8](v5);
+    MEMORY[0x277D82BD8](mEMORY[0x277D4D310]);
   }
 
-  return v3 & 1;
+  return canCurrentDeviceEnrollInBetaUpdates & 1;
 }
 
-- (void)doEnrollInBetaUpdatesProgram:(id)a3 activity:(suui_activity_s *)a4 completionHandler:(id)a5
+- (void)doEnrollInBetaUpdatesProgram:(id)program activity:(suui_activity_s *)activity completionHandler:(id)handler
 {
-  v25 = self;
+  selfCopy = self;
   v24 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  v22 = a4;
+  objc_storeStrong(&location, program);
+  activityCopy = activity;
   v21 = 0;
-  objc_storeStrong(&v21, a5);
-  objc_initWeak(&v20, v25);
+  objc_storeStrong(&v21, handler);
+  objc_initWeak(&v20, selfCopy);
   v16[0] = 0;
   v16[1] = v16;
   v17 = 0x20000000;
   v18 = 32;
-  v19 = *v22;
-  *v22 = 0;
-  queue = v25->_operationsQueue;
+  v19 = *activityCopy;
+  *activityCopy = 0;
+  queue = selfCopy->_operationsQueue;
   v8 = MEMORY[0x277D85DD0];
   v9 = -1073741824;
   v10 = 0;
@@ -21150,24 +21150,24 @@ void __81__SUUIStatefulUIManager_doEnrollInBetaUpdatesProgram_activity_completio
   objc_storeStrong(location, 0);
 }
 
-- (void)doEnrollInBetaUpdatesProgram:(id)a3 afterPurgeConfirmation:(int64_t)a4 activity:(suui_activity_s *)a5 completionHandler:(id)a6
+- (void)doEnrollInBetaUpdatesProgram:(id)program afterPurgeConfirmation:(int64_t)confirmation activity:(suui_activity_s *)activity completionHandler:(id)handler
 {
-  v28 = self;
+  selfCopy = self;
   v27 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  v25 = a4;
-  v24 = a5;
+  objc_storeStrong(&location, program);
+  confirmationCopy = confirmation;
+  activityCopy = activity;
   v23 = 0;
-  objc_storeStrong(&v23, a6);
-  objc_initWeak(&v22, v28);
+  objc_storeStrong(&v23, handler);
+  objc_initWeak(&v22, selfCopy);
   v18[0] = 0;
   v18[1] = v18;
   v19 = 0x20000000;
   v20 = 32;
-  v21 = *v24;
-  *v24 = 0;
-  queue = v28->_operationsQueue;
+  v21 = *activityCopy;
+  *activityCopy = 0;
+  queue = selfCopy->_operationsQueue;
   v10 = MEMORY[0x277D85DD0];
   v11 = -1073741824;
   v12 = 0;
@@ -21177,7 +21177,7 @@ void __81__SUUIStatefulUIManager_doEnrollInBetaUpdatesProgram_activity_completio
   v17[1] = v27;
   v16[0] = MEMORY[0x277D82BE0](v23);
   v15 = MEMORY[0x277D82BE0](location);
-  v17[2] = v25;
+  v17[2] = confirmationCopy;
   v16[1] = v18;
   dispatch_async(queue, &v10);
   objc_storeStrong(&v15, 0);
@@ -22106,21 +22106,21 @@ void __104__SUUIStatefulUIManager_doEnrollInBetaUpdatesProgram_afterPurgeConfirm
   objc_storeStrong(location, 0);
 }
 
-- (void)doUnenrollFromBetaUpdates:(suui_activity_s *)a3 completionHandler:(id)a4
+- (void)doUnenrollFromBetaUpdates:(suui_activity_s *)updates completionHandler:(id)handler
 {
-  v20 = self;
+  selfCopy = self;
   v19 = a2;
-  v18 = a3;
+  updatesCopy = updates;
   location = 0;
-  objc_storeStrong(&location, a4);
-  objc_initWeak(&v16, v20);
+  objc_storeStrong(&location, handler);
+  objc_initWeak(&v16, selfCopy);
   v12[0] = 0;
   v12[1] = v12;
   v13 = 0x20000000;
   v14 = 32;
-  v15 = *v18;
-  *v18 = 0;
-  queue = v20->_operationsQueue;
+  v15 = *updatesCopy;
+  *updatesCopy = 0;
+  queue = selfCopy->_operationsQueue;
   v5 = MEMORY[0x277D85DD0];
   v6 = -1073741824;
   v7 = 0;
@@ -23227,22 +23227,22 @@ void __69__SUUIStatefulUIManager_doUnenrollFromBetaUpdates_completionHandler___b
   objc_storeStrong(location, 0);
 }
 
-- (void)doUnenrollFromBetaUpdatesAfterPurgeConfirmation:(int64_t)a3 activity:(suui_activity_s *)a4 completionHandler:(id)a5
+- (void)doUnenrollFromBetaUpdatesAfterPurgeConfirmation:(int64_t)confirmation activity:(suui_activity_s *)activity completionHandler:(id)handler
 {
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
-  v20 = a3;
-  v19 = a4;
+  confirmationCopy = confirmation;
+  activityCopy = activity;
   location = 0;
-  objc_storeStrong(&location, a5);
-  objc_initWeak(&v17, v22);
+  objc_storeStrong(&location, handler);
+  objc_initWeak(&v17, selfCopy);
   v13[0] = 0;
   v13[1] = v13;
   v14 = 0x20000000;
   v15 = 32;
-  v16 = *v19;
-  *v19 = 0;
-  queue = v22->_operationsQueue;
+  v16 = *activityCopy;
+  *activityCopy = 0;
+  queue = selfCopy->_operationsQueue;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
@@ -23251,7 +23251,7 @@ void __69__SUUIStatefulUIManager_doUnenrollFromBetaUpdates_completionHandler___b
   objc_copyWeak(v12, &v17);
   v12[1] = v21;
   v11[0] = MEMORY[0x277D82BE0](location);
-  v12[2] = v20;
+  v12[2] = confirmationCopy;
   v11[1] = v13;
   dispatch_async(queue, &v6);
   objc_storeStrong(v11, 0);
@@ -24141,27 +24141,27 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
   objc_storeStrong(location, 0);
 }
 
-- (int64_t)fsmAction_CheckForAvailableUpdate:(id)a3 error:(id *)a4
+- (int64_t)fsmAction_CheckForAvailableUpdate:(id)update error:(id *)error
 {
   v205 = &v223;
-  v203 = a4;
+  errorCopy = error;
   v202 = "[SUUIStatefulUIManager fsmAction_CheckForAvailableUpdate:error:]";
   v263 = *MEMORY[0x277D85DE8];
-  v252 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v250[1] = v203;
-  v204 = [(SUCoreFSM *)v252->_managerFSM extendedStateQueue];
-  dispatch_assert_queue_V2(v204);
-  MEMORY[0x277D82BD8](v204);
-  v250[0] = [(SUUIStatefulUIManager *)v252 currentRefreshScanOperation];
+  objc_storeStrong(location, update);
+  v250[1] = errorCopy;
+  extendedStateQueue = [(SUCoreFSM *)selfCopy->_managerFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
+  v250[0] = [(SUUIStatefulUIManager *)selfCopy currentRefreshScanOperation];
   if (v250[0])
   {
     v201 = +[SUUILoggingContext statefulUILogger];
-    v4 = [v201 oslog];
+    oslog = [v201 oslog];
     v5 = v201;
-    *(v205 + 34) = v4;
+    *(v205 + 34) = oslog;
     MEMORY[0x277D82BD8](v5);
     type = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(*(v205 + 34), OS_LOG_TYPE_DEFAULT))
@@ -24181,11 +24181,11 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
       v11 = v205;
       v198 = v10;
       *(v205 + 31) = v10;
-      v199 = [v11[39] currentState];
-      v200 = [*(v205 + 39) delegate];
+      currentState = [v11[39] currentState];
+      delegate = [*(v205 + 39) delegate];
       v245 = 0;
       v244 = 0;
-      if (v200)
+      if (delegate)
       {
         *(v205 + 30) = [*(v205 + 39) delegate];
         v190 = 1;
@@ -24203,28 +24203,28 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
       }
 
       v184 = v191;
-      v185 = [*(v205 + 39) delegate];
-      v186 = [*(v205 + 39) scanError];
-      v187 = [*(v205 + 39) preferredStatefulDescriptor];
-      v188 = [*(v205 + 39) alternateStatefulDescriptor];
-      v189 = [*(v205 + 39) currentDownload];
+      delegate2 = [*(v205 + 39) delegate];
+      scanError = [*(v205 + 39) scanError];
+      preferredStatefulDescriptor = [*(v205 + 39) preferredStatefulDescriptor];
+      alternateStatefulDescriptor = [*(v205 + 39) alternateStatefulDescriptor];
+      currentDownload = [*(v205 + 39) currentDownload];
       v243 = 0;
       v242 = 0;
       v241 = 0;
-      if (v189)
+      if (currentDownload)
       {
-        v14 = [*(v205 + 39) currentDownload];
-        *(v205 + 26) = v14;
+        currentDownload2 = [*(v205 + 39) currentDownload];
+        *(v205 + 26) = currentDownload2;
         v182 = 1;
         v243 = 1;
-        v15 = [v14 descriptor];
-        *(v205 + 24) = v15;
+        descriptor = [currentDownload2 descriptor];
+        *(v205 + 24) = descriptor;
         v242 = 1;
-        v16 = [v15 updateName];
+        updateName = [descriptor updateName];
         v17 = v182;
-        *(v205 + 22) = v16;
+        *(v205 + 22) = updateName;
         v241 = v17 & 1;
-        v183 = v16;
+        v183 = updateName;
       }
 
       else
@@ -24233,17 +24233,17 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
       }
 
       v159 = v183;
-      v160 = [*(v205 + 39) currentDownload];
+      currentDownload3 = [*(v205 + 39) currentDownload];
       v161 = SUUIUpdateContinuousOperationTypeToString([*(v205 + 39) currentUpdateOperationType]);
       v18 = MEMORY[0x277D82BE0](v161);
       v19 = v205;
       v162 = v18;
       *(v205 + 20) = v18;
-      v260 = [v19[39] isTargetedUpdateScheduledForAutoInstall];
+      isTargetedUpdateScheduledForAutoInstall = [v19[39] isTargetedUpdateScheduledForAutoInstall];
       v172 = @"NO";
       v173 = @"YES";
       v180 = 1;
-      if (v260)
+      if (isTargetedUpdateScheduledForAutoInstall)
       {
         v20 = @"YES";
       }
@@ -24260,8 +24260,8 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
       v23 = v205;
       v165 = v22;
       *(v205 + 19) = v22;
-      v259 = [v23[39] hidingPreferredDescriptor];
-      if (v259)
+      hidingPreferredDescriptor = [v23[39] hidingPreferredDescriptor];
+      if (hidingPreferredDescriptor)
       {
         v24 = v173;
       }
@@ -24278,14 +24278,14 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
       v27 = v205;
       v168 = v26;
       *(v205 + 18) = v26;
-      v169 = [v27[39] hiddenPreferredStatefulDescriptor];
-      v170 = [v169 updateName];
-      v28 = MEMORY[0x277D82BE0](v170);
+      hiddenPreferredStatefulDescriptor = [v27[39] hiddenPreferredStatefulDescriptor];
+      updateName2 = [hiddenPreferredStatefulDescriptor updateName];
+      v28 = MEMORY[0x277D82BE0](updateName2);
       v29 = v205;
       v171 = v28;
       *(v205 + 17) = v28;
-      v258 = [v29[39] hidingAlternateDescriptor];
-      if (v258)
+      hidingAlternateDescriptor = [v29[39] hidingAlternateDescriptor];
+      if (hidingAlternateDescriptor)
       {
         v30 = v173;
       }
@@ -24302,39 +24302,39 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
       v33 = v205;
       v176 = v32;
       *(v205 + 16) = v32;
-      v177 = [v33[39] hiddenAlternateStatefulDescriptor];
-      v178 = [v177 updateName];
-      v34 = MEMORY[0x277D82BE0](v178);
+      hiddenAlternateStatefulDescriptor = [v33[39] hiddenAlternateStatefulDescriptor];
+      updateName3 = [hiddenAlternateStatefulDescriptor updateName];
+      v34 = MEMORY[0x277D82BE0](updateName3);
       v35 = v205;
       v179 = v34;
       *(v205 + 15) = v34;
-      v181 = [v35[39] enrolledBetaProgram];
+      enrolledBetaProgram = [v35[39] enrolledBetaProgram];
       v234 = 0;
-      if (v181)
+      if (enrolledBetaProgram)
       {
-        v36 = [*(v205 + 39) enrolledBetaProgram];
-        *(v205 + 14) = v36;
+        enrolledBetaProgram2 = [*(v205 + 39) enrolledBetaProgram];
+        *(v205 + 14) = enrolledBetaProgram2;
         v234 = 1;
-        v158 = [v36 programID];
+        programID = [enrolledBetaProgram2 programID];
       }
 
       else
       {
-        v158 = 0;
+        programID = 0;
       }
 
       v37 = v168;
       v38 = v165;
       v39 = v162;
-      v40 = v160;
+      v40 = currentDownload3;
       v41 = v159;
-      v42 = v188;
-      v43 = v187;
-      v44 = v186;
-      v149 = v158;
+      v42 = alternateStatefulDescriptor;
+      v43 = preferredStatefulDescriptor;
+      v44 = scanError;
+      v149 = programID;
       v150 = [*(*(v205 + 39) + 120) count];
-      v257 = [*(v205 + 39) canEnrollInBetaUpdates];
-      if (v257)
+      canEnrollInBetaUpdates = [*(v205 + 39) canEnrollInBetaUpdates];
+      if (canEnrollInBetaUpdates)
       {
         v45 = @"YES";
       }
@@ -24357,7 +24357,7 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
       v49 = [*(*(v48 + 39) + 192) count];
       v155 = &v85;
       buf = v262;
-      __os_log_helper_16_2_25_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0(v262, v202, v194, v196, v198, v199, v184, v185, v44, v43, v42, v41, v40, v39, v38, v37, v171, v176, v179, v149, v150, v151, v152, v153, v154, v49);
+      __os_log_helper_16_2_25_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0(v262, v202, v194, v196, v198, currentState, v184, delegate2, v44, v43, v42, v41, v40, v39, v38, v37, v171, v176, v179, v149, v150, v151, v152, v153, v154, v49);
       _os_log_impl(&dword_26ADE5000, log, v193[0], "%s [%p]: %{public}@ Checkpoint\n\tcurrentState: %{public}@ (%ld)\n\tdelegate: %{public}@ (%p)\n\tscanError: %{public}@\n\tpreferredDescriptor: %{public}@\n\talternateDescriptor: %{public}@\n\tdownload: %{public}@ (%p)\n\tcurrentUpdateOperationType: %{public}@\n\tscheduledForAutoInstall: %{public}@\n\thiddenUpdatesPostSelection: preferred[%{public}@, %{public}@]; alternate[%{public}@, %{public}@];\n\tselectedBetaProgram: %lu (count: %ld, enrollable: %{public}@)\n\tOpFSMs: scan[%p]; refresh[%p]; update[%p]; auxiliaryOperationsCount[%lu]\n\nA refresh operation is currently running. Canceling it as we start a full-scan.", buf, 0xFCu);
       MEMORY[0x277D82BD8](v157);
       if (v234)
@@ -24365,16 +24365,16 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
         MEMORY[0x277D82BD8](*(v205 + 14));
       }
 
-      MEMORY[0x277D82BD8](v181);
-      MEMORY[0x277D82BD8](v178);
-      MEMORY[0x277D82BD8](v177);
+      MEMORY[0x277D82BD8](enrolledBetaProgram);
+      MEMORY[0x277D82BD8](updateName3);
+      MEMORY[0x277D82BD8](hiddenAlternateStatefulDescriptor);
       MEMORY[0x277D82BD8](v175);
-      MEMORY[0x277D82BD8](v170);
-      MEMORY[0x277D82BD8](v169);
+      MEMORY[0x277D82BD8](updateName2);
+      MEMORY[0x277D82BD8](hiddenPreferredStatefulDescriptor);
       MEMORY[0x277D82BD8](v167);
       MEMORY[0x277D82BD8](v164);
       MEMORY[0x277D82BD8](v161);
-      MEMORY[0x277D82BD8](v160);
+      MEMORY[0x277D82BD8](currentDownload3);
       if (v241)
       {
         MEMORY[0x277D82BD8](*(v205 + 22));
@@ -24390,11 +24390,11 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
         MEMORY[0x277D82BD8](*(v205 + 26));
       }
 
-      MEMORY[0x277D82BD8](v189);
-      MEMORY[0x277D82BD8](v188);
-      MEMORY[0x277D82BD8](v187);
-      MEMORY[0x277D82BD8](v186);
-      MEMORY[0x277D82BD8](v185);
+      MEMORY[0x277D82BD8](currentDownload);
+      MEMORY[0x277D82BD8](alternateStatefulDescriptor);
+      MEMORY[0x277D82BD8](preferredStatefulDescriptor);
+      MEMORY[0x277D82BD8](scanError);
+      MEMORY[0x277D82BD8](delegate2);
       if (v244)
       {
         MEMORY[0x277D82BD8](*(v205 + 28));
@@ -24405,7 +24405,7 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
         MEMORY[0x277D82BD8](*(v205 + 30));
       }
 
-      MEMORY[0x277D82BD8](v200);
+      MEMORY[0x277D82BD8](delegate);
       MEMORY[0x277D82BD8](v197);
       MEMORY[0x277D82BD8](v195);
       obj = 0;
@@ -24439,14 +24439,14 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
     objc_storeStrong(v146, 0);
   }
 
-  v143 = [*(v205 + 39) currentFullScanOperation];
-  MEMORY[0x277D82BD8](v143);
-  if (v143)
+  currentFullScanOperation = [*(v205 + 39) currentFullScanOperation];
+  MEMORY[0x277D82BD8](currentFullScanOperation);
+  if (currentFullScanOperation)
   {
     v142 = +[SUUILoggingContext statefulUILogger];
-    v55 = [v142 oslog];
+    oslog2 = [v142 oslog];
     v56 = v142;
-    *(v205 + 6) = v55;
+    *(v205 + 6) = oslog2;
     MEMORY[0x277D82BD8](v56);
     v227 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(*(v205 + 6), OS_LOG_TYPE_DEFAULT))
@@ -24466,14 +24466,14 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
       v62 = v205;
       v139 = v61;
       *(v205 + 3) = v61;
-      v140 = [v62[39] currentState];
-      v141 = [*(v205 + 39) delegate];
+      currentState2 = [v62[39] currentState];
+      delegate3 = [*(v205 + 39) delegate];
       v224 = 0;
       v222 = 0;
-      if (v141)
+      if (delegate3)
       {
-        v63 = [*(v205 + 39) delegate];
-        *(v205 + 2) = v63;
+        delegate4 = [*(v205 + 39) delegate];
+        *(v205 + 2) = delegate4;
         v131 = 1;
         v224 = 1;
         v64 = objc_opt_class();
@@ -24490,24 +24490,24 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
       }
 
       v125 = v132;
-      v126 = [*(v205 + 39) delegate];
-      v127 = [*(v205 + 39) scanError];
-      v128 = [*(v205 + 39) preferredStatefulDescriptor];
-      v129 = [*(v205 + 39) alternateStatefulDescriptor];
-      v130 = [*(v205 + 39) currentDownload];
+      delegate5 = [*(v205 + 39) delegate];
+      scanError2 = [*(v205 + 39) scanError];
+      preferredStatefulDescriptor2 = [*(v205 + 39) preferredStatefulDescriptor];
+      alternateStatefulDescriptor2 = [*(v205 + 39) alternateStatefulDescriptor];
+      currentDownload4 = [*(v205 + 39) currentDownload];
       v220 = 0;
       v218 = 0;
       v216 = 0;
-      if (v130)
+      if (currentDownload4)
       {
-        v221 = [*(v205 + 39) currentDownload];
+        currentDownload5 = [*(v205 + 39) currentDownload];
         v123 = 1;
         v220 = 1;
-        v219 = [v221 descriptor];
+        descriptor2 = [currentDownload5 descriptor];
         v218 = v123 & 1;
-        v217 = [v219 updateName];
+        updateName4 = [descriptor2 updateName];
         v216 = v123 & 1;
-        v124 = v217;
+        v124 = updateName4;
       }
 
       else
@@ -24516,15 +24516,15 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
       }
 
       v100 = v124;
-      v101 = [*(v205 + 39) currentDownload];
+      currentDownload6 = [*(v205 + 39) currentDownload];
       v102 = SUUIUpdateContinuousOperationTypeToString([*(v205 + 39) currentUpdateOperationType]);
       v103 = MEMORY[0x277D82BE0](v102);
       v215 = v103;
-      v256 = [*(v205 + 39) isTargetedUpdateScheduledForAutoInstall];
+      isTargetedUpdateScheduledForAutoInstall2 = [*(v205 + 39) isTargetedUpdateScheduledForAutoInstall];
       v113 = @"NO";
       v114 = @"YES";
       v121 = 1;
-      if (v256)
+      if (isTargetedUpdateScheduledForAutoInstall2)
       {
         v67 = @"YES";
       }
@@ -24539,8 +24539,8 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
       v105 = v104;
       v106 = MEMORY[0x277D82BE0](v105);
       v214 = v106;
-      v255 = [*(v205 + 39) hidingPreferredDescriptor];
-      if (v255)
+      hidingPreferredDescriptor2 = [*(v205 + 39) hidingPreferredDescriptor];
+      if (hidingPreferredDescriptor2)
       {
         v69 = v114;
       }
@@ -24555,12 +24555,12 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
       v108 = v107;
       v109 = MEMORY[0x277D82BE0](v108);
       v213 = v109;
-      v110 = [*(v205 + 39) hiddenPreferredStatefulDescriptor];
-      v111 = [v110 updateName];
-      v112 = MEMORY[0x277D82BE0](v111);
+      hiddenPreferredStatefulDescriptor2 = [*(v205 + 39) hiddenPreferredStatefulDescriptor];
+      updateName5 = [hiddenPreferredStatefulDescriptor2 updateName];
+      v112 = MEMORY[0x277D82BE0](updateName5);
       v212 = v112;
-      v254 = [*(v205 + 39) hidingAlternateDescriptor];
-      if (v254)
+      hidingAlternateDescriptor2 = [*(v205 + 39) hidingAlternateDescriptor];
+      if (hidingAlternateDescriptor2)
       {
         v71 = v114;
       }
@@ -24575,36 +24575,36 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
       v116 = v115;
       v117 = MEMORY[0x277D82BE0](v116);
       v211 = v117;
-      v118 = [*(v205 + 39) hiddenAlternateStatefulDescriptor];
-      v119 = [v118 updateName];
-      v120 = MEMORY[0x277D82BE0](v119);
+      hiddenAlternateStatefulDescriptor2 = [*(v205 + 39) hiddenAlternateStatefulDescriptor];
+      updateName6 = [hiddenAlternateStatefulDescriptor2 updateName];
+      v120 = MEMORY[0x277D82BE0](updateName6);
       v210 = v120;
-      v122 = [*(v205 + 39) enrolledBetaProgram];
+      enrolledBetaProgram3 = [*(v205 + 39) enrolledBetaProgram];
       v208 = 0;
-      if (v122)
+      if (enrolledBetaProgram3)
       {
-        v209 = [*(v205 + 39) enrolledBetaProgram];
+        enrolledBetaProgram4 = [*(v205 + 39) enrolledBetaProgram];
         v208 = 1;
-        v99 = [v209 programID];
+        programID2 = [enrolledBetaProgram4 programID];
       }
 
       else
       {
-        v99 = 0;
+        programID2 = 0;
       }
 
       v73 = v109;
       v74 = v106;
       v75 = v103;
-      v76 = v101;
+      v76 = currentDownload6;
       v77 = v100;
-      v78 = v129;
-      v79 = v128;
-      v80 = v127;
-      v90 = v99;
+      v78 = alternateStatefulDescriptor2;
+      v79 = preferredStatefulDescriptor2;
+      v80 = scanError2;
+      v90 = programID2;
       v91 = [*(*(v205 + 39) + 120) count];
-      v253 = [*(v205 + 39) canEnrollInBetaUpdates];
-      if (v253)
+      canEnrollInBetaUpdates2 = [*(v205 + 39) canEnrollInBetaUpdates];
+      if (canEnrollInBetaUpdates2)
       {
         v81 = @"YES";
       }
@@ -24625,44 +24625,44 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
       v83 = [*(*(v205 + 39) + 192) count];
       v96 = &v85;
       v97 = v261;
-      __os_log_helper_16_2_25_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0(v261, v202, v135, v137, v139, v140, v125, v126, v80, v79, v78, v77, v76, v75, v74, v73, v112, v117, v120, v90, v91, v92, v93, v94, v95, v83);
+      __os_log_helper_16_2_25_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0(v261, v202, v135, v137, v139, currentState2, v125, delegate5, v80, v79, v78, v77, v76, v75, v74, v73, v112, v117, v120, v90, v91, v92, v93, v94, v95, v83);
       _os_log_impl(&dword_26ADE5000, v133, v134[0], "%s [%p]: %{public}@ Checkpoint\n\tcurrentState: %{public}@ (%ld)\n\tdelegate: %{public}@ (%p)\n\tscanError: %{public}@\n\tpreferredDescriptor: %{public}@\n\talternateDescriptor: %{public}@\n\tdownload: %{public}@ (%p)\n\tcurrentUpdateOperationType: %{public}@\n\tscheduledForAutoInstall: %{public}@\n\thiddenUpdatesPostSelection: preferred[%{public}@, %{public}@]; alternate[%{public}@, %{public}@];\n\tselectedBetaProgram: %lu (count: %ld, enrollable: %{public}@)\n\tOpFSMs: scan[%p]; refresh[%p]; update[%p]; auxiliaryOperationsCount[%lu]\n\nA full-scan operation is already running. Skipping on this full-scan request.", v97, 0xFCu);
       MEMORY[0x277D82BD8](v98);
       if (v208)
       {
-        MEMORY[0x277D82BD8](v209);
+        MEMORY[0x277D82BD8](enrolledBetaProgram4);
       }
 
-      MEMORY[0x277D82BD8](v122);
-      MEMORY[0x277D82BD8](v119);
-      MEMORY[0x277D82BD8](v118);
+      MEMORY[0x277D82BD8](enrolledBetaProgram3);
+      MEMORY[0x277D82BD8](updateName6);
+      MEMORY[0x277D82BD8](hiddenAlternateStatefulDescriptor2);
       MEMORY[0x277D82BD8](v116);
-      MEMORY[0x277D82BD8](v111);
-      MEMORY[0x277D82BD8](v110);
+      MEMORY[0x277D82BD8](updateName5);
+      MEMORY[0x277D82BD8](hiddenPreferredStatefulDescriptor2);
       MEMORY[0x277D82BD8](v108);
       MEMORY[0x277D82BD8](v105);
       MEMORY[0x277D82BD8](v102);
-      MEMORY[0x277D82BD8](v101);
+      MEMORY[0x277D82BD8](currentDownload6);
       if (v216)
       {
-        MEMORY[0x277D82BD8](v217);
+        MEMORY[0x277D82BD8](updateName4);
       }
 
       if (v218)
       {
-        MEMORY[0x277D82BD8](v219);
+        MEMORY[0x277D82BD8](descriptor2);
       }
 
       if (v220)
       {
-        MEMORY[0x277D82BD8](v221);
+        MEMORY[0x277D82BD8](currentDownload5);
       }
 
-      MEMORY[0x277D82BD8](v130);
-      MEMORY[0x277D82BD8](v129);
-      MEMORY[0x277D82BD8](v128);
-      MEMORY[0x277D82BD8](v127);
-      MEMORY[0x277D82BD8](v126);
+      MEMORY[0x277D82BD8](currentDownload4);
+      MEMORY[0x277D82BD8](alternateStatefulDescriptor2);
+      MEMORY[0x277D82BD8](preferredStatefulDescriptor2);
+      MEMORY[0x277D82BD8](scanError2);
+      MEMORY[0x277D82BD8](delegate5);
       if (v222)
       {
         MEMORY[0x277D82BD8](*v205);
@@ -24673,7 +24673,7 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
         MEMORY[0x277D82BD8](*(v205 + 2));
       }
 
-      MEMORY[0x277D82BD8](v141);
+      MEMORY[0x277D82BD8](delegate3);
       MEMORY[0x277D82BD8](v138);
       MEMORY[0x277D82BD8](v136);
       v88 = 0;
@@ -24708,24 +24708,24 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
   return v87;
 }
 
-- (int64_t)fsmAction_ReportUpdatesAvailable:(id)a3 error:(id *)a4
+- (int64_t)fsmAction_ReportUpdatesAvailable:(id)available error:(id *)error
 {
-  v138 = a4;
+  errorCopy = error;
   v139 = "[SUUIStatefulUIManager fsmAction_ReportUpdatesAvailable:error:]";
   v182 = *MEMORY[0x277D85DE8];
   val = self;
   v175 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  oslog[1] = v138;
-  v137 = [*(val + 25) extendedStateQueue];
-  v136 = v137;
+  objc_storeStrong(&location, available);
+  oslog[1] = errorCopy;
+  extendedStateQueue = [*(val + 25) extendedStateQueue];
+  v136 = extendedStateQueue;
   dispatch_assert_queue_V2(v136);
   MEMORY[0x277D82BD8](v136);
   v135 = +[SUUILoggingContext statefulUILogger];
   v133 = v135;
-  v134 = [v133 oslog];
-  oslog[0] = v134;
+  oslog = [v133 oslog];
+  oslog[0] = oslog;
   MEMORY[0x277D82BD8](v133);
   type = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEFAULT))
@@ -24742,15 +24742,15 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
     v122 = v127;
     v123 = MEMORY[0x277D82BE0](v122);
     v170 = v123;
-    v124 = [val currentState];
-    v121 = [val delegate];
-    v120 = v121;
+    currentState = [val currentState];
+    delegate = [val delegate];
+    v120 = delegate;
     v168 = 0;
     v166 = 0;
     if (v120)
     {
-      v119 = [val delegate];
-      v169 = v119;
+      delegate2 = [val delegate];
+      v169 = delegate2;
       v168 = 1;
       v118 = objc_opt_class();
       v117 = NSStringFromClass(v118);
@@ -24765,29 +24765,29 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
     }
 
     v114 = v116;
-    v115 = [val delegate];
-    v112 = v115;
-    v113 = [val scanError];
-    v110 = v113;
-    v111 = [val preferredStatefulDescriptor];
-    v108 = v111;
-    v109 = [val alternateStatefulDescriptor];
-    v106 = v109;
-    v107 = [val currentDownload];
-    v105 = v107;
+    delegate3 = [val delegate];
+    v112 = delegate3;
+    scanError = [val scanError];
+    v110 = scanError;
+    preferredStatefulDescriptor = [val preferredStatefulDescriptor];
+    v108 = preferredStatefulDescriptor;
+    alternateStatefulDescriptor = [val alternateStatefulDescriptor];
+    v106 = alternateStatefulDescriptor;
+    currentDownload = [val currentDownload];
+    v105 = currentDownload;
     v164 = 0;
     v162 = 0;
     v160 = 0;
     if (v105)
     {
-      v104 = [val currentDownload];
-      v165 = v104;
+      currentDownload2 = [val currentDownload];
+      v165 = currentDownload2;
       v164 = 1;
-      v103 = [v165 descriptor];
-      v163 = v103;
+      descriptor = [v165 descriptor];
+      v163 = descriptor;
       v162 = 1;
-      v102 = [v163 updateName];
-      v161 = v102;
+      updateName = [v163 updateName];
+      v161 = updateName;
       v160 = 1;
       v101 = v161;
     }
@@ -24798,16 +24798,16 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
     }
 
     v99 = v101;
-    v100 = [val currentDownload];
-    v97 = v100;
-    v98 = [val currentUpdateOperationType];
-    v96 = SUUIUpdateContinuousOperationTypeToString(v98);
+    currentDownload3 = [val currentDownload];
+    v97 = currentDownload3;
+    currentUpdateOperationType = [val currentUpdateOperationType];
+    v96 = SUUIUpdateContinuousOperationTypeToString(currentUpdateOperationType);
     v93 = v96;
     v94 = MEMORY[0x277D82BE0](v93);
     v159 = v94;
-    v95 = [val isTargetedUpdateScheduledForAutoInstall];
-    v180 = v95;
-    if (v95)
+    isTargetedUpdateScheduledForAutoInstall = [val isTargetedUpdateScheduledForAutoInstall];
+    v180 = isTargetedUpdateScheduledForAutoInstall;
+    if (isTargetedUpdateScheduledForAutoInstall)
     {
       v4 = @"YES";
     }
@@ -24822,9 +24822,9 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
     v89 = v92;
     v90 = MEMORY[0x277D82BE0](v89);
     v158 = v90;
-    v91 = [val hidingPreferredDescriptor];
-    v179 = v91;
-    if (v91)
+    hidingPreferredDescriptor = [val hidingPreferredDescriptor];
+    v179 = hidingPreferredDescriptor;
+    if (hidingPreferredDescriptor)
     {
       v6 = @"YES";
     }
@@ -24839,15 +24839,15 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
     v85 = v88;
     v86 = MEMORY[0x277D82BE0](v85);
     v157 = v86;
-    v87 = [val hiddenPreferredStatefulDescriptor];
-    v83 = v87;
-    v84 = [v83 updateName];
-    v80 = v84;
+    hiddenPreferredStatefulDescriptor = [val hiddenPreferredStatefulDescriptor];
+    v83 = hiddenPreferredStatefulDescriptor;
+    updateName2 = [v83 updateName];
+    v80 = updateName2;
     v81 = MEMORY[0x277D82BE0](v80);
     v156 = v81;
-    v82 = [val hidingAlternateDescriptor];
-    v178 = v82;
-    if (v82)
+    hidingAlternateDescriptor = [val hidingAlternateDescriptor];
+    v178 = hidingAlternateDescriptor;
+    if (hidingAlternateDescriptor)
     {
       v8 = @"YES";
     }
@@ -24862,22 +24862,22 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
     v76 = v79;
     v77 = MEMORY[0x277D82BE0](v76);
     v155 = v77;
-    v78 = [val hiddenAlternateStatefulDescriptor];
-    v74 = v78;
-    v75 = [v74 updateName];
-    v71 = v75;
+    hiddenAlternateStatefulDescriptor = [val hiddenAlternateStatefulDescriptor];
+    v74 = hiddenAlternateStatefulDescriptor;
+    updateName3 = [v74 updateName];
+    v71 = updateName3;
     v72 = MEMORY[0x277D82BE0](v71);
     v154 = v72;
-    v73 = [val enrolledBetaProgram];
-    v70 = v73;
+    enrolledBetaProgram = [val enrolledBetaProgram];
+    v70 = enrolledBetaProgram;
     v152 = 0;
     if (v70)
     {
-      v69 = [val enrolledBetaProgram];
-      v153 = v69;
+      enrolledBetaProgram2 = [val enrolledBetaProgram];
+      v153 = enrolledBetaProgram2;
       v152 = 1;
-      v68 = [v153 programID];
-      v67 = v68;
+      programID = [v153 programID];
+      v67 = programID;
     }
 
     else
@@ -24887,9 +24887,9 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
 
     v65 = v67;
     v66 = [*(val + 15) count];
-    v64 = [val canEnrollInBetaUpdates];
-    v177 = v64;
-    if (v64)
+    canEnrollInBetaUpdates = [val canEnrollInBetaUpdates];
+    v177 = canEnrollInBetaUpdates;
+    if (canEnrollInBetaUpdates)
     {
       v10 = @"YES";
     }
@@ -24908,33 +24908,33 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
     v60 = *(val + 22);
     v61 = *(val + 23);
     v62 = [*(val + 24) count];
-    v56 = [location fullScanResults];
-    v54 = v56;
-    v55 = [v54 preferredDescriptor];
-    v52 = v55;
-    v53 = [v52 updateName];
-    v49 = v53;
+    fullScanResults = [location fullScanResults];
+    v54 = fullScanResults;
+    preferredDescriptor = [v54 preferredDescriptor];
+    v52 = preferredDescriptor;
+    updateName4 = [v52 updateName];
+    v49 = updateName4;
     v50 = MEMORY[0x277D82BE0](v49);
     v150 = v50;
-    v51 = [location fullScanResults];
-    v47 = v51;
-    v48 = [v47 preferredDescriptor];
-    v45 = v48;
-    v46 = [location fullScanResults];
-    v43 = v46;
-    v44 = [v43 alternateDescriptor];
-    v41 = v44;
-    v42 = [v41 updateName];
-    v38 = v42;
+    fullScanResults2 = [location fullScanResults];
+    v47 = fullScanResults2;
+    preferredDescriptor2 = [v47 preferredDescriptor];
+    v45 = preferredDescriptor2;
+    fullScanResults3 = [location fullScanResults];
+    v43 = fullScanResults3;
+    alternateDescriptor = [v43 alternateDescriptor];
+    v41 = alternateDescriptor;
+    updateName5 = [v41 updateName];
+    v38 = updateName5;
     v39 = MEMORY[0x277D82BE0](v38);
     v149 = v39;
-    v40 = [location fullScanResults];
-    v36 = v40;
-    v37 = [v36 alternateDescriptor];
-    v35 = v37;
+    fullScanResults4 = [location fullScanResults];
+    v36 = fullScanResults4;
+    alternateDescriptor2 = [v36 alternateDescriptor];
+    v35 = alternateDescriptor2;
     v33 = &v13;
     buf = v181;
-    __os_log_helper_16_2_29_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0_8_66_8_0_8_66_8_0(v181, v139, v131, v126, v123, v124, v114, v112, v110, v108, v106, v99, v97, v94, v90, v86, v81, v77, v72, v65, v66, v58, v59, v60, v61, v62, v50, v45, v39, v35);
+    __os_log_helper_16_2_29_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0_8_66_8_0_8_66_8_0(v181, v139, v131, v126, v123, currentState, v114, v112, v110, v108, v106, v99, v97, v94, v90, v86, v81, v77, v72, v65, v66, v58, v59, v60, v61, v62, v50, v45, v39, v35);
     _os_log_impl(&dword_26ADE5000, log, v130[0], "%s [%p]: %{public}@ Checkpoint\n\tcurrentState: %{public}@ (%ld)\n\tdelegate: %{public}@ (%p)\n\tscanError: %{public}@\n\tpreferredDescriptor: %{public}@\n\talternateDescriptor: %{public}@\n\tdownload: %{public}@ (%p)\n\tcurrentUpdateOperationType: %{public}@\n\tscheduledForAutoInstall: %{public}@\n\thiddenUpdatesPostSelection: preferred[%{public}@, %{public}@]; alternate[%{public}@, %{public}@];\n\tselectedBetaProgram: %lu (count: %ld, enrollable: %{public}@)\n\tOpFSMs: scan[%p]; refresh[%p]; update[%p]; auxiliaryOperationsCount[%lu]\n\nReporting on available updates:\n\tPreferred update: %{public}@ (%p)\n\tAlternate update: %{public}@ (%p)", buf, 0x124u);
     MEMORY[0x277D82BD8](v35);
     MEMORY[0x277D82BD8](v36);
@@ -25012,15 +25012,15 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
   [val setCurrentFullScanOperation:0];
   [val setCurrentRefreshScanOperation:0];
   v31 = val;
-  v32 = [location fullScanResults];
-  v29 = v32;
-  v30 = [location error];
-  v28 = v30;
+  fullScanResults5 = [location fullScanResults];
+  v29 = fullScanResults5;
+  error = [location error];
+  v28 = error;
   [v31 notifyFullScanResultsDelegates:v29 andError:?];
   MEMORY[0x277D82BD8](v28);
   MEMORY[0x277D82BD8](v29);
-  v27 = [val delegate];
-  v26 = v27;
+  delegate4 = [val delegate];
+  v26 = delegate4;
   objc_initWeak(&v148, v26);
   MEMORY[0x277D82BD8](v26);
   v25 = objc_loadWeakRetained(&v148);
@@ -25033,10 +25033,10 @@ void __100__SUUIStatefulUIManager_doUnenrollFromBetaUpdatesAfterPurgeConfirmatio
     if (v23)
     {
       objc_initWeak(&from, val);
-      v22 = [MEMORY[0x277D643F8] sharedCore];
-      v20 = v22;
-      v21 = [val delegateCallbackQueue];
-      v18 = v21;
+      mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+      v20 = mEMORY[0x277D643F8];
+      delegateCallbackQueue = [val delegateCallbackQueue];
+      v18 = delegateCallbackQueue;
       v19 = [v20 selectDelegateCallbackQueue:?];
       queue = v19;
       v140 = MEMORY[0x277D85DD0];
@@ -25109,24 +25109,24 @@ void __64__SUUIStatefulUIManager_fsmAction_ReportUpdatesAvailable_error___block_
   *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)fsmAction_ReportNoUpdateFound:(id)a3 error:(id *)a4
+- (int64_t)fsmAction_ReportNoUpdateFound:(id)found error:(id *)error
 {
-  v116 = a4;
+  errorCopy = error;
   v117 = "[SUUIStatefulUIManager fsmAction_ReportNoUpdateFound:error:]";
   v158 = *MEMORY[0x277D85DE8];
   val = self;
   v151 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  oslog[1] = v116;
-  v115 = [*(val + 25) extendedStateQueue];
-  v114 = v115;
+  objc_storeStrong(&location, found);
+  oslog[1] = errorCopy;
+  extendedStateQueue = [*(val + 25) extendedStateQueue];
+  v114 = extendedStateQueue;
   dispatch_assert_queue_V2(v114);
   MEMORY[0x277D82BD8](v114);
   v113 = +[SUUILoggingContext statefulUILogger];
   v111 = v113;
-  v112 = [v111 oslog];
-  oslog[0] = v112;
+  oslog = [v111 oslog];
+  oslog[0] = oslog;
   MEMORY[0x277D82BD8](v111);
   type = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEFAULT))
@@ -25143,15 +25143,15 @@ void __64__SUUIStatefulUIManager_fsmAction_ReportUpdatesAvailable_error___block_
     v100 = v105;
     v101 = MEMORY[0x277D82BE0](v100);
     v146 = v101;
-    v102 = [val currentState];
-    v99 = [val delegate];
-    v98 = v99;
+    currentState = [val currentState];
+    delegate = [val delegate];
+    v98 = delegate;
     v144 = 0;
     v142 = 0;
     if (v98)
     {
-      v97 = [val delegate];
-      v145 = v97;
+      delegate2 = [val delegate];
+      v145 = delegate2;
       v144 = 1;
       v96 = objc_opt_class();
       v95 = NSStringFromClass(v96);
@@ -25166,29 +25166,29 @@ void __64__SUUIStatefulUIManager_fsmAction_ReportUpdatesAvailable_error___block_
     }
 
     v92 = v94;
-    v93 = [val delegate];
-    v90 = v93;
-    v91 = [val scanError];
-    v88 = v91;
-    v89 = [val preferredStatefulDescriptor];
-    v86 = v89;
-    v87 = [val alternateStatefulDescriptor];
-    v84 = v87;
-    v85 = [val currentDownload];
-    v83 = v85;
+    delegate3 = [val delegate];
+    v90 = delegate3;
+    scanError = [val scanError];
+    v88 = scanError;
+    preferredStatefulDescriptor = [val preferredStatefulDescriptor];
+    v86 = preferredStatefulDescriptor;
+    alternateStatefulDescriptor = [val alternateStatefulDescriptor];
+    v84 = alternateStatefulDescriptor;
+    currentDownload = [val currentDownload];
+    v83 = currentDownload;
     v140 = 0;
     v138 = 0;
     v136 = 0;
     if (v83)
     {
-      v82 = [val currentDownload];
-      v141 = v82;
+      currentDownload2 = [val currentDownload];
+      v141 = currentDownload2;
       v140 = 1;
-      v81 = [v141 descriptor];
-      v139 = v81;
+      descriptor = [v141 descriptor];
+      v139 = descriptor;
       v138 = 1;
-      v80 = [v139 updateName];
-      v137 = v80;
+      updateName = [v139 updateName];
+      v137 = updateName;
       v136 = 1;
       v79 = v137;
     }
@@ -25199,16 +25199,16 @@ void __64__SUUIStatefulUIManager_fsmAction_ReportUpdatesAvailable_error___block_
     }
 
     v77 = v79;
-    v78 = [val currentDownload];
-    v75 = v78;
-    v76 = [val currentUpdateOperationType];
-    v74 = SUUIUpdateContinuousOperationTypeToString(v76);
+    currentDownload3 = [val currentDownload];
+    v75 = currentDownload3;
+    currentUpdateOperationType = [val currentUpdateOperationType];
+    v74 = SUUIUpdateContinuousOperationTypeToString(currentUpdateOperationType);
     v71 = v74;
     v72 = MEMORY[0x277D82BE0](v71);
     v135 = v72;
-    v73 = [val isTargetedUpdateScheduledForAutoInstall];
-    v156 = v73;
-    if (v73)
+    isTargetedUpdateScheduledForAutoInstall = [val isTargetedUpdateScheduledForAutoInstall];
+    v156 = isTargetedUpdateScheduledForAutoInstall;
+    if (isTargetedUpdateScheduledForAutoInstall)
     {
       v4 = @"YES";
     }
@@ -25223,9 +25223,9 @@ void __64__SUUIStatefulUIManager_fsmAction_ReportUpdatesAvailable_error___block_
     v67 = v70;
     v68 = MEMORY[0x277D82BE0](v67);
     v134 = v68;
-    v69 = [val hidingPreferredDescriptor];
-    v155 = v69;
-    if (v69)
+    hidingPreferredDescriptor = [val hidingPreferredDescriptor];
+    v155 = hidingPreferredDescriptor;
+    if (hidingPreferredDescriptor)
     {
       v6 = @"YES";
     }
@@ -25240,15 +25240,15 @@ void __64__SUUIStatefulUIManager_fsmAction_ReportUpdatesAvailable_error___block_
     v63 = v66;
     v64 = MEMORY[0x277D82BE0](v63);
     v133 = v64;
-    v65 = [val hiddenPreferredStatefulDescriptor];
-    v61 = v65;
-    v62 = [v61 updateName];
-    v58 = v62;
+    hiddenPreferredStatefulDescriptor = [val hiddenPreferredStatefulDescriptor];
+    v61 = hiddenPreferredStatefulDescriptor;
+    updateName2 = [v61 updateName];
+    v58 = updateName2;
     v59 = MEMORY[0x277D82BE0](v58);
     v132 = v59;
-    v60 = [val hidingAlternateDescriptor];
-    v154 = v60;
-    if (v60)
+    hidingAlternateDescriptor = [val hidingAlternateDescriptor];
+    v154 = hidingAlternateDescriptor;
+    if (hidingAlternateDescriptor)
     {
       v8 = @"YES";
     }
@@ -25263,22 +25263,22 @@ void __64__SUUIStatefulUIManager_fsmAction_ReportUpdatesAvailable_error___block_
     v54 = v57;
     v55 = MEMORY[0x277D82BE0](v54);
     v131 = v55;
-    v56 = [val hiddenAlternateStatefulDescriptor];
-    v52 = v56;
-    v53 = [v52 updateName];
-    v49 = v53;
+    hiddenAlternateStatefulDescriptor = [val hiddenAlternateStatefulDescriptor];
+    v52 = hiddenAlternateStatefulDescriptor;
+    updateName3 = [v52 updateName];
+    v49 = updateName3;
     v50 = MEMORY[0x277D82BE0](v49);
     v130 = v50;
-    v51 = [val enrolledBetaProgram];
-    v48 = v51;
+    enrolledBetaProgram = [val enrolledBetaProgram];
+    v48 = enrolledBetaProgram;
     v128 = 0;
     if (v48)
     {
-      v47 = [val enrolledBetaProgram];
-      v129 = v47;
+      enrolledBetaProgram2 = [val enrolledBetaProgram];
+      v129 = enrolledBetaProgram2;
       v128 = 1;
-      v46 = [v129 programID];
-      v45 = v46;
+      programID = [v129 programID];
+      v45 = programID;
     }
 
     else
@@ -25288,9 +25288,9 @@ void __64__SUUIStatefulUIManager_fsmAction_ReportUpdatesAvailable_error___block_
 
     v43 = v45;
     v44 = [*(val + 15) count];
-    v42 = [val canEnrollInBetaUpdates];
-    v153 = v42;
-    if (v42)
+    canEnrollInBetaUpdates = [val canEnrollInBetaUpdates];
+    v153 = canEnrollInBetaUpdates;
+    if (canEnrollInBetaUpdates)
     {
       v10 = @"YES";
     }
@@ -25311,7 +25311,7 @@ void __64__SUUIStatefulUIManager_fsmAction_ReportUpdatesAvailable_error___block_
     v40 = [*(val + 24) count];
     v33 = &v13;
     buf = v157;
-    __os_log_helper_16_2_25_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0(v157, v117, v109, v104, v101, v102, v92, v90, v88, v86, v84, v77, v75, v72, v68, v64, v59, v55, v50, v43, v44, v36, v37, v38, v39, v40);
+    __os_log_helper_16_2_25_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0(v157, v117, v109, v104, v101, currentState, v92, v90, v88, v86, v84, v77, v75, v72, v68, v64, v59, v55, v50, v43, v44, v36, v37, v38, v39, v40);
     _os_log_impl(&dword_26ADE5000, log, v108[0], "%s [%p]: %{public}@ Checkpoint\n\tcurrentState: %{public}@ (%ld)\n\tdelegate: %{public}@ (%p)\n\tscanError: %{public}@\n\tpreferredDescriptor: %{public}@\n\talternateDescriptor: %{public}@\n\tdownload: %{public}@ (%p)\n\tcurrentUpdateOperationType: %{public}@\n\tscheduledForAutoInstall: %{public}@\n\thiddenUpdatesPostSelection: preferred[%{public}@, %{public}@]; alternate[%{public}@, %{public}@];\n\tselectedBetaProgram: %lu (count: %ld, enrollable: %{public}@)\n\tOpFSMs: scan[%p]; refresh[%p]; update[%p]; auxiliaryOperationsCount[%lu]\n\n", buf, 0xFCu);
     MEMORY[0x277D82BD8](v35);
     if (v128)
@@ -25377,15 +25377,15 @@ void __64__SUUIStatefulUIManager_fsmAction_ReportUpdatesAvailable_error___block_
   [val setCurrentFullScanOperation:0];
   [val setCurrentRefreshScanOperation:0];
   v31 = val;
-  v32 = [location fullScanResults];
-  v29 = v32;
-  v30 = [location error];
-  v28 = v30;
+  fullScanResults = [location fullScanResults];
+  v29 = fullScanResults;
+  error = [location error];
+  v28 = error;
   [v31 notifyFullScanResultsDelegates:v29 andError:?];
   MEMORY[0x277D82BD8](v28);
   MEMORY[0x277D82BD8](v29);
-  v27 = [val delegate];
-  v26 = v27;
+  delegate4 = [val delegate];
+  v26 = delegate4;
   objc_initWeak(&v126, v26);
   MEMORY[0x277D82BD8](v26);
   v25 = objc_loadWeakRetained(&v126);
@@ -25398,10 +25398,10 @@ void __64__SUUIStatefulUIManager_fsmAction_ReportUpdatesAvailable_error___block_
     if (v23)
     {
       objc_initWeak(&from, val);
-      v22 = [MEMORY[0x277D643F8] sharedCore];
-      v20 = v22;
-      v21 = [val delegateCallbackQueue];
-      v18 = v21;
+      mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+      v20 = mEMORY[0x277D643F8];
+      delegateCallbackQueue = [val delegateCallbackQueue];
+      v18 = delegateCallbackQueue;
       v19 = [v20 selectDelegateCallbackQueue:?];
       queue = v19;
       v118 = MEMORY[0x277D85DD0];
@@ -25474,24 +25474,24 @@ void __61__SUUIStatefulUIManager_fsmAction_ReportNoUpdateFound_error___block_inv
   *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)fsmAction_ReportScanFailed:(id)a3 error:(id *)a4
+- (int64_t)fsmAction_ReportScanFailed:(id)failed error:(id *)error
 {
-  v116 = a4;
+  errorCopy = error;
   v117 = "[SUUIStatefulUIManager fsmAction_ReportScanFailed:error:]";
   v158 = *MEMORY[0x277D85DE8];
   val = self;
   v151 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  oslog[1] = v116;
-  v115 = [*(val + 25) extendedStateQueue];
-  v114 = v115;
+  objc_storeStrong(&location, failed);
+  oslog[1] = errorCopy;
+  extendedStateQueue = [*(val + 25) extendedStateQueue];
+  v114 = extendedStateQueue;
   dispatch_assert_queue_V2(v114);
   MEMORY[0x277D82BD8](v114);
   v113 = +[SUUILoggingContext statefulUILogger];
   v111 = v113;
-  v112 = [v111 oslog];
-  oslog[0] = v112;
+  oslog = [v111 oslog];
+  oslog[0] = oslog;
   MEMORY[0x277D82BD8](v111);
   type = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEFAULT))
@@ -25508,15 +25508,15 @@ void __61__SUUIStatefulUIManager_fsmAction_ReportNoUpdateFound_error___block_inv
     v100 = v105;
     v101 = MEMORY[0x277D82BE0](v100);
     v146 = v101;
-    v102 = [val currentState];
-    v99 = [val delegate];
-    v98 = v99;
+    currentState = [val currentState];
+    delegate = [val delegate];
+    v98 = delegate;
     v144 = 0;
     v142 = 0;
     if (v98)
     {
-      v97 = [val delegate];
-      v145 = v97;
+      delegate2 = [val delegate];
+      v145 = delegate2;
       v144 = 1;
       v96 = objc_opt_class();
       v95 = NSStringFromClass(v96);
@@ -25531,29 +25531,29 @@ void __61__SUUIStatefulUIManager_fsmAction_ReportNoUpdateFound_error___block_inv
     }
 
     v92 = v94;
-    v93 = [val delegate];
-    v90 = v93;
-    v91 = [val scanError];
-    v88 = v91;
-    v89 = [val preferredStatefulDescriptor];
-    v86 = v89;
-    v87 = [val alternateStatefulDescriptor];
-    v84 = v87;
-    v85 = [val currentDownload];
-    v83 = v85;
+    delegate3 = [val delegate];
+    v90 = delegate3;
+    scanError = [val scanError];
+    v88 = scanError;
+    preferredStatefulDescriptor = [val preferredStatefulDescriptor];
+    v86 = preferredStatefulDescriptor;
+    alternateStatefulDescriptor = [val alternateStatefulDescriptor];
+    v84 = alternateStatefulDescriptor;
+    currentDownload = [val currentDownload];
+    v83 = currentDownload;
     v140 = 0;
     v138 = 0;
     v136 = 0;
     if (v83)
     {
-      v82 = [val currentDownload];
-      v141 = v82;
+      currentDownload2 = [val currentDownload];
+      v141 = currentDownload2;
       v140 = 1;
-      v81 = [v141 descriptor];
-      v139 = v81;
+      descriptor = [v141 descriptor];
+      v139 = descriptor;
       v138 = 1;
-      v80 = [v139 updateName];
-      v137 = v80;
+      updateName = [v139 updateName];
+      v137 = updateName;
       v136 = 1;
       v79 = v137;
     }
@@ -25564,16 +25564,16 @@ void __61__SUUIStatefulUIManager_fsmAction_ReportNoUpdateFound_error___block_inv
     }
 
     v77 = v79;
-    v78 = [val currentDownload];
-    v75 = v78;
-    v76 = [val currentUpdateOperationType];
-    v74 = SUUIUpdateContinuousOperationTypeToString(v76);
+    currentDownload3 = [val currentDownload];
+    v75 = currentDownload3;
+    currentUpdateOperationType = [val currentUpdateOperationType];
+    v74 = SUUIUpdateContinuousOperationTypeToString(currentUpdateOperationType);
     v71 = v74;
     v72 = MEMORY[0x277D82BE0](v71);
     v135 = v72;
-    v73 = [val isTargetedUpdateScheduledForAutoInstall];
-    v156 = v73;
-    if (v73)
+    isTargetedUpdateScheduledForAutoInstall = [val isTargetedUpdateScheduledForAutoInstall];
+    v156 = isTargetedUpdateScheduledForAutoInstall;
+    if (isTargetedUpdateScheduledForAutoInstall)
     {
       v4 = @"YES";
     }
@@ -25588,9 +25588,9 @@ void __61__SUUIStatefulUIManager_fsmAction_ReportNoUpdateFound_error___block_inv
     v67 = v70;
     v68 = MEMORY[0x277D82BE0](v67);
     v134 = v68;
-    v69 = [val hidingPreferredDescriptor];
-    v155 = v69;
-    if (v69)
+    hidingPreferredDescriptor = [val hidingPreferredDescriptor];
+    v155 = hidingPreferredDescriptor;
+    if (hidingPreferredDescriptor)
     {
       v6 = @"YES";
     }
@@ -25605,15 +25605,15 @@ void __61__SUUIStatefulUIManager_fsmAction_ReportNoUpdateFound_error___block_inv
     v63 = v66;
     v64 = MEMORY[0x277D82BE0](v63);
     v133 = v64;
-    v65 = [val hiddenPreferredStatefulDescriptor];
-    v61 = v65;
-    v62 = [v61 updateName];
-    v58 = v62;
+    hiddenPreferredStatefulDescriptor = [val hiddenPreferredStatefulDescriptor];
+    v61 = hiddenPreferredStatefulDescriptor;
+    updateName2 = [v61 updateName];
+    v58 = updateName2;
     v59 = MEMORY[0x277D82BE0](v58);
     v132 = v59;
-    v60 = [val hidingAlternateDescriptor];
-    v154 = v60;
-    if (v60)
+    hidingAlternateDescriptor = [val hidingAlternateDescriptor];
+    v154 = hidingAlternateDescriptor;
+    if (hidingAlternateDescriptor)
     {
       v8 = @"YES";
     }
@@ -25628,22 +25628,22 @@ void __61__SUUIStatefulUIManager_fsmAction_ReportNoUpdateFound_error___block_inv
     v54 = v57;
     v55 = MEMORY[0x277D82BE0](v54);
     v131 = v55;
-    v56 = [val hiddenAlternateStatefulDescriptor];
-    v52 = v56;
-    v53 = [v52 updateName];
-    v49 = v53;
+    hiddenAlternateStatefulDescriptor = [val hiddenAlternateStatefulDescriptor];
+    v52 = hiddenAlternateStatefulDescriptor;
+    updateName3 = [v52 updateName];
+    v49 = updateName3;
     v50 = MEMORY[0x277D82BE0](v49);
     v130 = v50;
-    v51 = [val enrolledBetaProgram];
-    v48 = v51;
+    enrolledBetaProgram = [val enrolledBetaProgram];
+    v48 = enrolledBetaProgram;
     v128 = 0;
     if (v48)
     {
-      v47 = [val enrolledBetaProgram];
-      v129 = v47;
+      enrolledBetaProgram2 = [val enrolledBetaProgram];
+      v129 = enrolledBetaProgram2;
       v128 = 1;
-      v46 = [v129 programID];
-      v45 = v46;
+      programID = [v129 programID];
+      v45 = programID;
     }
 
     else
@@ -25653,9 +25653,9 @@ void __61__SUUIStatefulUIManager_fsmAction_ReportNoUpdateFound_error___block_inv
 
     v43 = v45;
     v44 = [*(val + 15) count];
-    v42 = [val canEnrollInBetaUpdates];
-    v153 = v42;
-    if (v42)
+    canEnrollInBetaUpdates = [val canEnrollInBetaUpdates];
+    v153 = canEnrollInBetaUpdates;
+    if (canEnrollInBetaUpdates)
     {
       v10 = @"YES";
     }
@@ -25676,7 +25676,7 @@ void __61__SUUIStatefulUIManager_fsmAction_ReportNoUpdateFound_error___block_inv
     v40 = [*(val + 24) count];
     v33 = &v13;
     buf = v157;
-    __os_log_helper_16_2_25_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0(v157, v117, v109, v104, v101, v102, v92, v90, v88, v86, v84, v77, v75, v72, v68, v64, v59, v55, v50, v43, v44, v36, v37, v38, v39, v40);
+    __os_log_helper_16_2_25_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0(v157, v117, v109, v104, v101, currentState, v92, v90, v88, v86, v84, v77, v75, v72, v68, v64, v59, v55, v50, v43, v44, v36, v37, v38, v39, v40);
     _os_log_impl(&dword_26ADE5000, log, v108[0], "%s [%p]: %{public}@ Checkpoint\n\tcurrentState: %{public}@ (%ld)\n\tdelegate: %{public}@ (%p)\n\tscanError: %{public}@\n\tpreferredDescriptor: %{public}@\n\talternateDescriptor: %{public}@\n\tdownload: %{public}@ (%p)\n\tcurrentUpdateOperationType: %{public}@\n\tscheduledForAutoInstall: %{public}@\n\thiddenUpdatesPostSelection: preferred[%{public}@, %{public}@]; alternate[%{public}@, %{public}@];\n\tselectedBetaProgram: %lu (count: %ld, enrollable: %{public}@)\n\tOpFSMs: scan[%p]; refresh[%p]; update[%p]; auxiliaryOperationsCount[%lu]\n\n", buf, 0xFCu);
     MEMORY[0x277D82BD8](v35);
     if (v128)
@@ -25742,15 +25742,15 @@ void __61__SUUIStatefulUIManager_fsmAction_ReportNoUpdateFound_error___block_inv
   [val setCurrentFullScanOperation:0];
   [val setCurrentRefreshScanOperation:0];
   v31 = val;
-  v32 = [location fullScanResults];
-  v29 = v32;
-  v30 = [location error];
-  v28 = v30;
+  fullScanResults = [location fullScanResults];
+  v29 = fullScanResults;
+  error = [location error];
+  v28 = error;
   [v31 notifyFullScanResultsDelegates:v29 andError:?];
   MEMORY[0x277D82BD8](v28);
   MEMORY[0x277D82BD8](v29);
-  v27 = [val delegate];
-  v26 = v27;
+  delegate4 = [val delegate];
+  v26 = delegate4;
   objc_initWeak(&v126, v26);
   MEMORY[0x277D82BD8](v26);
   v25 = objc_loadWeakRetained(&v126);
@@ -25763,10 +25763,10 @@ void __61__SUUIStatefulUIManager_fsmAction_ReportNoUpdateFound_error___block_inv
     if (v23)
     {
       objc_initWeak(&from, val);
-      v22 = [MEMORY[0x277D643F8] sharedCore];
-      v20 = v22;
-      v21 = [val delegateCallbackQueue];
-      v18 = v21;
+      mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+      v20 = mEMORY[0x277D643F8];
+      delegateCallbackQueue = [val delegateCallbackQueue];
+      v18 = delegateCallbackQueue;
       v19 = [v20 selectDelegateCallbackQueue:?];
       queue = v19;
       v118 = MEMORY[0x277D85DD0];
@@ -25845,22 +25845,22 @@ void __58__SUUIStatefulUIManager_fsmAction_ReportScanFailed_error___block_invoke
   *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)fsmAction_RefreshScanResults:(id)a3 error:(id *)a4
+- (int64_t)fsmAction_RefreshScanResults:(id)results error:(id *)error
 {
-  v140 = a4;
+  errorCopy = error;
   v139 = "[SUUIStatefulUIManager fsmAction_RefreshScanResults:error:]";
   v203 = *MEMORY[0x277D85DE8];
-  v191 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  oslog[1] = v140;
-  v141 = [(SUCoreFSM *)v191->_managerFSM extendedStateQueue];
-  dispatch_assert_queue_V2(v141);
-  MEMORY[0x277D82BD8](v141);
-  v142 = [(SUUIStatefulUIManager *)v191 currentRefreshScanOperation];
-  MEMORY[0x277D82BD8](v142);
-  if (v142)
+  objc_storeStrong(location, results);
+  oslog[1] = errorCopy;
+  extendedStateQueue = [(SUCoreFSM *)selfCopy->_managerFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
+  currentRefreshScanOperation = [(SUUIStatefulUIManager *)selfCopy currentRefreshScanOperation];
+  MEMORY[0x277D82BD8](currentRefreshScanOperation);
+  if (currentRefreshScanOperation)
   {
     v138 = +[SUUILoggingContext statefulUILogger];
     oslog[0] = [v138 oslog];
@@ -25870,21 +25870,21 @@ void __58__SUUIStatefulUIManager_fsmAction_ReportScanFailed_error___block_invoke
     {
       log = oslog[0];
       *v130 = type;
-      v131 = v191;
+      v131 = selfCopy;
       v4 = objc_opt_class();
       v132 = NSStringFromClass(v4);
       v133 = MEMORY[0x277D82BE0](v132);
       v187 = v133;
-      v134 = SUUIStatefulUIStateToString(v191->_currentState);
+      v134 = SUUIStatefulUIStateToString(selfCopy->_currentState);
       v135 = MEMORY[0x277D82BE0](v134);
       v186 = v135;
-      v136 = [(SUUIStatefulUIManager *)v191 currentState];
-      v137 = [(SUUIStatefulUIManager *)v191 delegate];
+      currentState = [(SUUIStatefulUIManager *)selfCopy currentState];
+      delegate = [(SUUIStatefulUIManager *)selfCopy delegate];
       v184 = 0;
       v182 = 0;
-      if (v137)
+      if (delegate)
       {
-        v185 = [(SUUIStatefulUIManager *)v191 delegate];
+        delegate2 = [(SUUIStatefulUIManager *)selfCopy delegate];
         v127 = 1;
         v184 = 1;
         v5 = objc_opt_class();
@@ -25899,24 +25899,24 @@ void __58__SUUIStatefulUIManager_fsmAction_ReportScanFailed_error___block_invoke
       }
 
       v121 = v128;
-      v122 = [(SUUIStatefulUIManager *)v191 delegate];
-      v123 = [(SUUIStatefulUIManager *)v191 scanError];
-      v124 = [(SUUIStatefulUIManager *)v191 preferredStatefulDescriptor];
-      v125 = [(SUUIStatefulUIManager *)v191 alternateStatefulDescriptor];
-      v126 = [(SUUIStatefulUIManager *)v191 currentDownload];
+      delegate3 = [(SUUIStatefulUIManager *)selfCopy delegate];
+      scanError = [(SUUIStatefulUIManager *)selfCopy scanError];
+      preferredStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy preferredStatefulDescriptor];
+      alternateStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy alternateStatefulDescriptor];
+      currentDownload = [(SUUIStatefulUIManager *)selfCopy currentDownload];
       v180 = 0;
       v178 = 0;
       v176 = 0;
-      if (v126)
+      if (currentDownload)
       {
-        v181 = [(SUUIStatefulUIManager *)v191 currentDownload];
+        currentDownload2 = [(SUUIStatefulUIManager *)selfCopy currentDownload];
         v119 = 1;
         v180 = 1;
-        v179 = [(SUUIDownload *)v181 descriptor];
+        descriptor = [(SUUIDownload *)currentDownload2 descriptor];
         v178 = 1;
-        v177 = [v179 updateName];
+        updateName = [descriptor updateName];
         v176 = 1;
-        v120 = v177;
+        v120 = updateName;
       }
 
       else
@@ -25925,15 +25925,15 @@ void __58__SUUIStatefulUIManager_fsmAction_ReportScanFailed_error___block_invoke
       }
 
       v96 = v120;
-      v97 = [(SUUIStatefulUIManager *)v191 currentDownload];
-      v98 = SUUIUpdateContinuousOperationTypeToString([(SUUIStatefulUIManager *)v191 currentUpdateOperationType]);
+      currentDownload3 = [(SUUIStatefulUIManager *)selfCopy currentDownload];
+      v98 = SUUIUpdateContinuousOperationTypeToString([(SUUIStatefulUIManager *)selfCopy currentUpdateOperationType]);
       v99 = MEMORY[0x277D82BE0](v98);
       v175 = v99;
-      v200 = [(SUUIStatefulUIManager *)v191 isTargetedUpdateScheduledForAutoInstall];
+      isTargetedUpdateScheduledForAutoInstall = [(SUUIStatefulUIManager *)selfCopy isTargetedUpdateScheduledForAutoInstall];
       v109 = @"NO";
       v110 = @"YES";
       v117 = 1;
-      if (v200)
+      if (isTargetedUpdateScheduledForAutoInstall)
       {
         v6 = @"YES";
       }
@@ -25948,7 +25948,7 @@ void __58__SUUIStatefulUIManager_fsmAction_ReportScanFailed_error___block_invoke
       v101 = v100;
       v102 = MEMORY[0x277D82BE0](v101);
       v174 = v102;
-      if ([(SUUIStatefulUIManager *)v191 hidingPreferredDescriptor])
+      if ([(SUUIStatefulUIManager *)selfCopy hidingPreferredDescriptor])
       {
         v8 = v110;
       }
@@ -25963,11 +25963,11 @@ void __58__SUUIStatefulUIManager_fsmAction_ReportScanFailed_error___block_invoke
       v104 = v103;
       v105 = MEMORY[0x277D82BE0](v104);
       v173 = v105;
-      v106 = [(SUUIStatefulUIManager *)v191 hiddenPreferredStatefulDescriptor];
-      v107 = [(SUUIStatefulDescriptor *)v106 updateName];
-      v108 = MEMORY[0x277D82BE0](v107);
+      hiddenPreferredStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy hiddenPreferredStatefulDescriptor];
+      updateName2 = [(SUUIStatefulDescriptor *)hiddenPreferredStatefulDescriptor updateName];
+      v108 = MEMORY[0x277D82BE0](updateName2);
       v172 = v108;
-      if ([(SUUIStatefulUIManager *)v191 hidingAlternateDescriptor])
+      if ([(SUUIStatefulUIManager *)selfCopy hidingAlternateDescriptor])
       {
         v10 = v110;
       }
@@ -25982,27 +25982,27 @@ void __58__SUUIStatefulUIManager_fsmAction_ReportScanFailed_error___block_invoke
       v112 = v111;
       v113 = MEMORY[0x277D82BE0](v112);
       v171 = v113;
-      v114 = [(SUUIStatefulUIManager *)v191 hiddenAlternateStatefulDescriptor];
-      v115 = [(SUUIStatefulDescriptor *)v114 updateName];
-      v116 = MEMORY[0x277D82BE0](v115);
+      hiddenAlternateStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy hiddenAlternateStatefulDescriptor];
+      updateName3 = [(SUUIStatefulDescriptor *)hiddenAlternateStatefulDescriptor updateName];
+      v116 = MEMORY[0x277D82BE0](updateName3);
       v170 = v116;
-      v118 = [(SUUIStatefulUIManager *)v191 enrolledBetaProgram];
+      enrolledBetaProgram = [(SUUIStatefulUIManager *)selfCopy enrolledBetaProgram];
       v168 = 0;
-      if (v118)
+      if (enrolledBetaProgram)
       {
-        v169 = [(SUUIStatefulUIManager *)v191 enrolledBetaProgram];
+        enrolledBetaProgram2 = [(SUUIStatefulUIManager *)selfCopy enrolledBetaProgram];
         v168 = 1;
-        v95 = [(SDBetaProgram *)v169 programID];
+        programID = [(SDBetaProgram *)enrolledBetaProgram2 programID];
       }
 
       else
       {
-        v95 = 0;
+        programID = 0;
       }
 
-      v86 = v95;
-      v87 = [(NSArray *)v191->_betaPrograms count];
-      if ([(SUUIStatefulUIManager *)v191 canEnrollInBetaUpdates])
+      v86 = programID;
+      v87 = [(NSArray *)selfCopy->_betaPrograms count];
+      if ([(SUUIStatefulUIManager *)selfCopy canEnrollInBetaUpdates])
       {
         v12 = @"YES";
       }
@@ -26017,50 +26017,50 @@ void __58__SUUIStatefulUIManager_fsmAction_ReportScanFailed_error___block_invoke
       v94 = v85;
       v88 = MEMORY[0x277D82BE0](v94);
       v167 = v88;
-      currentFullScanOperation = v191->_currentFullScanOperation;
-      currentRefreshScanOperation = v191->_currentRefreshScanOperation;
-      currentUpdateOperation = v191->_currentUpdateOperation;
-      v14 = [(NSMutableSet *)v191->_auxiliaryOperations count];
+      currentFullScanOperation = selfCopy->_currentFullScanOperation;
+      currentRefreshScanOperation = selfCopy->_currentRefreshScanOperation;
+      currentUpdateOperation = selfCopy->_currentUpdateOperation;
+      v14 = [(NSMutableSet *)selfCopy->_auxiliaryOperations count];
       v92 = v27;
       buf = v202;
-      __os_log_helper_16_2_25_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0(v202, v139, v131, v133, v135, v136, v121, v122, v123, v124, v125, v96, v97, v99, v102, v105, v108, v113, v116, v86, v87, v88, currentFullScanOperation, currentRefreshScanOperation, currentUpdateOperation, v14);
+      __os_log_helper_16_2_25_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0(v202, v139, v131, v133, v135, currentState, v121, delegate3, scanError, preferredStatefulDescriptor, alternateStatefulDescriptor, v96, currentDownload3, v99, v102, v105, v108, v113, v116, v86, v87, v88, currentFullScanOperation, currentRefreshScanOperation, currentUpdateOperation, v14);
       _os_log_impl(&dword_26ADE5000, log, v130[0], "%s [%p]: %{public}@ Checkpoint\n\tcurrentState: %{public}@ (%ld)\n\tdelegate: %{public}@ (%p)\n\tscanError: %{public}@\n\tpreferredDescriptor: %{public}@\n\talternateDescriptor: %{public}@\n\tdownload: %{public}@ (%p)\n\tcurrentUpdateOperationType: %{public}@\n\tscheduledForAutoInstall: %{public}@\n\thiddenUpdatesPostSelection: preferred[%{public}@, %{public}@]; alternate[%{public}@, %{public}@];\n\tselectedBetaProgram: %lu (count: %ld, enrollable: %{public}@)\n\tOpFSMs: scan[%p]; refresh[%p]; update[%p]; auxiliaryOperationsCount[%lu]\n\nA refresh operation is already running. Skipping on this refresh request. This should never happen.", buf, 0xFCu);
       MEMORY[0x277D82BD8](v94);
       if (v168)
       {
-        MEMORY[0x277D82BD8](v169);
+        MEMORY[0x277D82BD8](enrolledBetaProgram2);
       }
 
-      MEMORY[0x277D82BD8](v118);
-      MEMORY[0x277D82BD8](v115);
-      MEMORY[0x277D82BD8](v114);
+      MEMORY[0x277D82BD8](enrolledBetaProgram);
+      MEMORY[0x277D82BD8](updateName3);
+      MEMORY[0x277D82BD8](hiddenAlternateStatefulDescriptor);
       MEMORY[0x277D82BD8](v112);
-      MEMORY[0x277D82BD8](v107);
-      MEMORY[0x277D82BD8](v106);
+      MEMORY[0x277D82BD8](updateName2);
+      MEMORY[0x277D82BD8](hiddenPreferredStatefulDescriptor);
       MEMORY[0x277D82BD8](v104);
       MEMORY[0x277D82BD8](v101);
       MEMORY[0x277D82BD8](v98);
-      MEMORY[0x277D82BD8](v97);
+      MEMORY[0x277D82BD8](currentDownload3);
       if (v176)
       {
-        MEMORY[0x277D82BD8](v177);
+        MEMORY[0x277D82BD8](updateName);
       }
 
       if (v178)
       {
-        MEMORY[0x277D82BD8](v179);
+        MEMORY[0x277D82BD8](descriptor);
       }
 
       if (v180)
       {
-        MEMORY[0x277D82BD8](v181);
+        MEMORY[0x277D82BD8](currentDownload2);
       }
 
-      MEMORY[0x277D82BD8](v126);
-      MEMORY[0x277D82BD8](v125);
-      MEMORY[0x277D82BD8](v124);
-      MEMORY[0x277D82BD8](v123);
-      MEMORY[0x277D82BD8](v122);
+      MEMORY[0x277D82BD8](currentDownload);
+      MEMORY[0x277D82BD8](alternateStatefulDescriptor);
+      MEMORY[0x277D82BD8](preferredStatefulDescriptor);
+      MEMORY[0x277D82BD8](scanError);
+      MEMORY[0x277D82BD8](delegate3);
       if (v182)
       {
         MEMORY[0x277D82BD8](v183);
@@ -26068,10 +26068,10 @@ void __58__SUUIStatefulUIManager_fsmAction_ReportScanFailed_error___block_invoke
 
       if (v184)
       {
-        MEMORY[0x277D82BD8](v185);
+        MEMORY[0x277D82BD8](delegate2);
       }
 
-      MEMORY[0x277D82BD8](v137);
+      MEMORY[0x277D82BD8](delegate);
       MEMORY[0x277D82BD8](v134);
       MEMORY[0x277D82BD8](v132);
       obj = 0;
@@ -26093,33 +26093,33 @@ void __58__SUUIStatefulUIManager_fsmAction_ReportScanFailed_error___block_invoke
 
   else
   {
-    v83 = [(SUUIStatefulUIManager *)v191 currentFullScanOperation];
-    MEMORY[0x277D82BD8](v83);
-    if (v83)
+    currentFullScanOperation = [(SUUIStatefulUIManager *)selfCopy currentFullScanOperation];
+    MEMORY[0x277D82BD8](currentFullScanOperation);
+    if (currentFullScanOperation)
     {
       v82 = +[SUUILoggingContext statefulUILogger];
-      v165 = [v82 oslog];
+      oslog = [v82 oslog];
       MEMORY[0x277D82BD8](v82);
       v164 = OS_LOG_TYPE_DEFAULT;
-      if (os_log_type_enabled(v165, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
-        v73 = v165;
+        v73 = oslog;
         *v74 = v164;
-        v75 = v191;
+        v75 = selfCopy;
         v15 = objc_opt_class();
         v76 = NSStringFromClass(v15);
         v77 = MEMORY[0x277D82BE0](v76);
         v163 = v77;
-        v78 = SUUIStatefulUIStateToString(v191->_currentState);
+        v78 = SUUIStatefulUIStateToString(selfCopy->_currentState);
         v79 = MEMORY[0x277D82BE0](v78);
         v162 = v79;
-        v80 = [(SUUIStatefulUIManager *)v191 currentState];
-        v81 = [(SUUIStatefulUIManager *)v191 delegate];
+        currentState2 = [(SUUIStatefulUIManager *)selfCopy currentState];
+        delegate4 = [(SUUIStatefulUIManager *)selfCopy delegate];
         v160 = 0;
         v158 = 0;
-        if (v81)
+        if (delegate4)
         {
-          v161 = [(SUUIStatefulUIManager *)v191 delegate];
+          delegate5 = [(SUUIStatefulUIManager *)selfCopy delegate];
           v71 = 1;
           v160 = 1;
           v16 = objc_opt_class();
@@ -26134,24 +26134,24 @@ void __58__SUUIStatefulUIManager_fsmAction_ReportScanFailed_error___block_invoke
         }
 
         v65 = v72;
-        v66 = [(SUUIStatefulUIManager *)v191 delegate];
-        v67 = [(SUUIStatefulUIManager *)v191 scanError];
-        v68 = [(SUUIStatefulUIManager *)v191 preferredStatefulDescriptor];
-        v69 = [(SUUIStatefulUIManager *)v191 alternateStatefulDescriptor];
-        v70 = [(SUUIStatefulUIManager *)v191 currentDownload];
+        delegate6 = [(SUUIStatefulUIManager *)selfCopy delegate];
+        scanError2 = [(SUUIStatefulUIManager *)selfCopy scanError];
+        preferredStatefulDescriptor2 = [(SUUIStatefulUIManager *)selfCopy preferredStatefulDescriptor];
+        alternateStatefulDescriptor2 = [(SUUIStatefulUIManager *)selfCopy alternateStatefulDescriptor];
+        currentDownload4 = [(SUUIStatefulUIManager *)selfCopy currentDownload];
         v156 = 0;
         v154 = 0;
         v152 = 0;
-        if (v70)
+        if (currentDownload4)
         {
-          v157 = [(SUUIStatefulUIManager *)v191 currentDownload];
+          currentDownload5 = [(SUUIStatefulUIManager *)selfCopy currentDownload];
           v63 = 1;
           v156 = 1;
-          v155 = [(SUUIDownload *)v157 descriptor];
+          descriptor2 = [(SUUIDownload *)currentDownload5 descriptor];
           v154 = 1;
-          v153 = [v155 updateName];
+          updateName4 = [descriptor2 updateName];
           v152 = 1;
-          v64 = v153;
+          v64 = updateName4;
         }
 
         else
@@ -26160,15 +26160,15 @@ void __58__SUUIStatefulUIManager_fsmAction_ReportScanFailed_error___block_invoke
         }
 
         v40 = v64;
-        v41 = [(SUUIStatefulUIManager *)v191 currentDownload];
-        v42 = SUUIUpdateContinuousOperationTypeToString([(SUUIStatefulUIManager *)v191 currentUpdateOperationType]);
+        currentDownload6 = [(SUUIStatefulUIManager *)selfCopy currentDownload];
+        v42 = SUUIUpdateContinuousOperationTypeToString([(SUUIStatefulUIManager *)selfCopy currentUpdateOperationType]);
         v43 = MEMORY[0x277D82BE0](v42);
         v151 = v43;
-        v196 = [(SUUIStatefulUIManager *)v191 isTargetedUpdateScheduledForAutoInstall];
+        isTargetedUpdateScheduledForAutoInstall2 = [(SUUIStatefulUIManager *)selfCopy isTargetedUpdateScheduledForAutoInstall];
         v53 = @"NO";
         v54 = @"YES";
         v61 = 1;
-        if (v196)
+        if (isTargetedUpdateScheduledForAutoInstall2)
         {
           v17 = @"YES";
         }
@@ -26183,7 +26183,7 @@ void __58__SUUIStatefulUIManager_fsmAction_ReportScanFailed_error___block_invoke
         v45 = v44;
         v46 = MEMORY[0x277D82BE0](v45);
         v150 = v46;
-        if ([(SUUIStatefulUIManager *)v191 hidingPreferredDescriptor])
+        if ([(SUUIStatefulUIManager *)selfCopy hidingPreferredDescriptor])
         {
           v19 = v54;
         }
@@ -26198,11 +26198,11 @@ void __58__SUUIStatefulUIManager_fsmAction_ReportScanFailed_error___block_invoke
         v48 = v47;
         v49 = MEMORY[0x277D82BE0](v48);
         v149 = v49;
-        v50 = [(SUUIStatefulUIManager *)v191 hiddenPreferredStatefulDescriptor];
-        v51 = [(SUUIStatefulDescriptor *)v50 updateName];
-        v52 = MEMORY[0x277D82BE0](v51);
+        hiddenPreferredStatefulDescriptor2 = [(SUUIStatefulUIManager *)selfCopy hiddenPreferredStatefulDescriptor];
+        updateName5 = [(SUUIStatefulDescriptor *)hiddenPreferredStatefulDescriptor2 updateName];
+        v52 = MEMORY[0x277D82BE0](updateName5);
         v148 = v52;
-        if ([(SUUIStatefulUIManager *)v191 hidingAlternateDescriptor])
+        if ([(SUUIStatefulUIManager *)selfCopy hidingAlternateDescriptor])
         {
           v21 = v54;
         }
@@ -26217,27 +26217,27 @@ void __58__SUUIStatefulUIManager_fsmAction_ReportScanFailed_error___block_invoke
         v56 = v55;
         v57 = MEMORY[0x277D82BE0](v56);
         v147 = v57;
-        v58 = [(SUUIStatefulUIManager *)v191 hiddenAlternateStatefulDescriptor];
-        v59 = [(SUUIStatefulDescriptor *)v58 updateName];
-        v60 = MEMORY[0x277D82BE0](v59);
+        hiddenAlternateStatefulDescriptor2 = [(SUUIStatefulUIManager *)selfCopy hiddenAlternateStatefulDescriptor];
+        updateName6 = [(SUUIStatefulDescriptor *)hiddenAlternateStatefulDescriptor2 updateName];
+        v60 = MEMORY[0x277D82BE0](updateName6);
         v146 = v60;
-        v62 = [(SUUIStatefulUIManager *)v191 enrolledBetaProgram];
+        enrolledBetaProgram3 = [(SUUIStatefulUIManager *)selfCopy enrolledBetaProgram];
         v144 = 0;
-        if (v62)
+        if (enrolledBetaProgram3)
         {
-          v145 = [(SUUIStatefulUIManager *)v191 enrolledBetaProgram];
+          enrolledBetaProgram4 = [(SUUIStatefulUIManager *)selfCopy enrolledBetaProgram];
           v144 = 1;
-          v39 = [(SDBetaProgram *)v145 programID];
+          programID2 = [(SDBetaProgram *)enrolledBetaProgram4 programID];
         }
 
         else
         {
-          v39 = 0;
+          programID2 = 0;
         }
 
-        v30 = v39;
-        v31 = [(NSArray *)v191->_betaPrograms count];
-        if ([(SUUIStatefulUIManager *)v191 canEnrollInBetaUpdates])
+        v30 = programID2;
+        v31 = [(NSArray *)selfCopy->_betaPrograms count];
+        if ([(SUUIStatefulUIManager *)selfCopy canEnrollInBetaUpdates])
         {
           v23 = @"YES";
         }
@@ -26252,50 +26252,50 @@ void __58__SUUIStatefulUIManager_fsmAction_ReportScanFailed_error___block_invoke
         v38 = v29;
         v32 = MEMORY[0x277D82BE0](v38);
         v143 = v32;
-        v33 = v191->_currentFullScanOperation;
-        v34 = v191->_currentRefreshScanOperation;
-        v35 = v191->_currentUpdateOperation;
-        v25 = [(NSMutableSet *)v191->_auxiliaryOperations count];
+        v33 = selfCopy->_currentFullScanOperation;
+        v34 = selfCopy->_currentRefreshScanOperation;
+        v35 = selfCopy->_currentUpdateOperation;
+        v25 = [(NSMutableSet *)selfCopy->_auxiliaryOperations count];
         v36 = v27;
         v37 = v201;
-        __os_log_helper_16_2_25_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0(v201, v139, v75, v77, v79, v80, v65, v66, v67, v68, v69, v40, v41, v43, v46, v49, v52, v57, v60, v30, v31, v32, v33, v34, v35, v25);
+        __os_log_helper_16_2_25_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0(v201, v139, v75, v77, v79, currentState2, v65, delegate6, scanError2, preferredStatefulDescriptor2, alternateStatefulDescriptor2, v40, currentDownload6, v43, v46, v49, v52, v57, v60, v30, v31, v32, v33, v34, v35, v25);
         _os_log_impl(&dword_26ADE5000, v73, v74[0], "%s [%p]: %{public}@ Checkpoint\n\tcurrentState: %{public}@ (%ld)\n\tdelegate: %{public}@ (%p)\n\tscanError: %{public}@\n\tpreferredDescriptor: %{public}@\n\talternateDescriptor: %{public}@\n\tdownload: %{public}@ (%p)\n\tcurrentUpdateOperationType: %{public}@\n\tscheduledForAutoInstall: %{public}@\n\thiddenUpdatesPostSelection: preferred[%{public}@, %{public}@]; alternate[%{public}@, %{public}@];\n\tselectedBetaProgram: %lu (count: %ld, enrollable: %{public}@)\n\tOpFSMs: scan[%p]; refresh[%p]; update[%p]; auxiliaryOperationsCount[%lu]\n\nA full scan operation is already running. Skipping on this refresh request. This should never happen.", v37, 0xFCu);
         MEMORY[0x277D82BD8](v38);
         if (v144)
         {
-          MEMORY[0x277D82BD8](v145);
+          MEMORY[0x277D82BD8](enrolledBetaProgram4);
         }
 
-        MEMORY[0x277D82BD8](v62);
-        MEMORY[0x277D82BD8](v59);
-        MEMORY[0x277D82BD8](v58);
+        MEMORY[0x277D82BD8](enrolledBetaProgram3);
+        MEMORY[0x277D82BD8](updateName6);
+        MEMORY[0x277D82BD8](hiddenAlternateStatefulDescriptor2);
         MEMORY[0x277D82BD8](v56);
-        MEMORY[0x277D82BD8](v51);
-        MEMORY[0x277D82BD8](v50);
+        MEMORY[0x277D82BD8](updateName5);
+        MEMORY[0x277D82BD8](hiddenPreferredStatefulDescriptor2);
         MEMORY[0x277D82BD8](v48);
         MEMORY[0x277D82BD8](v45);
         MEMORY[0x277D82BD8](v42);
-        MEMORY[0x277D82BD8](v41);
+        MEMORY[0x277D82BD8](currentDownload6);
         if (v152)
         {
-          MEMORY[0x277D82BD8](v153);
+          MEMORY[0x277D82BD8](updateName4);
         }
 
         if (v154)
         {
-          MEMORY[0x277D82BD8](v155);
+          MEMORY[0x277D82BD8](descriptor2);
         }
 
         if (v156)
         {
-          MEMORY[0x277D82BD8](v157);
+          MEMORY[0x277D82BD8](currentDownload5);
         }
 
-        MEMORY[0x277D82BD8](v70);
-        MEMORY[0x277D82BD8](v69);
-        MEMORY[0x277D82BD8](v68);
-        MEMORY[0x277D82BD8](v67);
-        MEMORY[0x277D82BD8](v66);
+        MEMORY[0x277D82BD8](currentDownload4);
+        MEMORY[0x277D82BD8](alternateStatefulDescriptor2);
+        MEMORY[0x277D82BD8](preferredStatefulDescriptor2);
+        MEMORY[0x277D82BD8](scanError2);
+        MEMORY[0x277D82BD8](delegate6);
         if (v158)
         {
           MEMORY[0x277D82BD8](v159);
@@ -26303,10 +26303,10 @@ void __58__SUUIStatefulUIManager_fsmAction_ReportScanFailed_error___block_invoke
 
         if (v160)
         {
-          MEMORY[0x277D82BD8](v161);
+          MEMORY[0x277D82BD8](delegate5);
         }
 
-        MEMORY[0x277D82BD8](v81);
+        MEMORY[0x277D82BD8](delegate4);
         MEMORY[0x277D82BD8](v78);
         MEMORY[0x277D82BD8](v76);
         v28 = 0;
@@ -26321,14 +26321,14 @@ void __58__SUUIStatefulUIManager_fsmAction_ReportScanFailed_error___block_invoke
         objc_storeStrong(&v163, v28);
       }
 
-      objc_storeStrong(&v165, 0);
+      objc_storeStrong(&oslog, 0);
       v192 = 0;
       v166 = 1;
     }
 
     else
     {
-      [(SUUIStatefulUIManager *)v191 performRefreshScan:location[0]];
+      [(SUUIStatefulUIManager *)selfCopy performRefreshScan:location[0]];
       v192 = 0;
       v166 = 1;
     }
@@ -26340,33 +26340,33 @@ void __58__SUUIStatefulUIManager_fsmAction_ReportScanFailed_error___block_invoke
   return v192;
 }
 
-- (int64_t)fsmAction_ReportRefreshScanResults:(id)a3 error:(id *)a4
+- (int64_t)fsmAction_ReportRefreshScanResults:(id)results error:(id *)error
 {
-  v201 = a4;
+  errorCopy = error;
   v202 = "[SUUIStatefulUIManager fsmAction_ReportRefreshScanResults:error:]";
   v273 = *MEMORY[0x277D85DE8];
   val = self;
   v260 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  from[1] = v201;
-  v200 = [*(val + 25) extendedStateQueue];
-  v199 = v200;
+  objc_storeStrong(&location, results);
+  from[1] = errorCopy;
+  extendedStateQueue = [*(val + 25) extendedStateQueue];
+  v199 = extendedStateQueue;
   dispatch_assert_queue_V2(v199);
   MEMORY[0x277D82BD8](v199);
   objc_initWeak(from, val);
   v256 = 0;
-  v198 = [val currentState];
-  v197 = [location refreshPreviousState];
+  currentState = [val currentState];
+  refreshPreviousState = [location refreshPreviousState];
   v196 = 0;
-  if (v198 == v197)
+  if (currentState == refreshPreviousState)
   {
-    v195 = [location refreshHasAnyChanges];
+    refreshHasAnyChanges = [location refreshHasAnyChanges];
     v196 = 0;
-    if ((v195 & 1) == 0)
+    if ((refreshHasAnyChanges & 1) == 0)
     {
-      v194 = [val scanError];
-      v257 = v194;
+      scanError = [val scanError];
+      v257 = scanError;
       v256 = 1;
       v196 = v257 == 0;
     }
@@ -26383,13 +26383,13 @@ void __58__SUUIStatefulUIManager_fsmAction_ReportScanFailed_error___block_invoke
     goto LABEL_80;
   }
 
-  v192 = [location forceReload];
-  if (v192)
+  forceReload = [location forceReload];
+  if (forceReload)
   {
     v110 = +[SUUILoggingContext statefulUILogger];
     v108 = v110;
-    v109 = [v108 oslog];
-    v231 = v109;
+    oslog = [v108 oslog];
+    v231 = oslog;
     MEMORY[0x277D82BD8](v108);
     v230 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v231, OS_LOG_TYPE_DEFAULT))
@@ -26406,15 +26406,15 @@ void __58__SUUIStatefulUIManager_fsmAction_ReportScanFailed_error___block_invoke
       v97 = v102;
       v98 = MEMORY[0x277D82BE0](v97);
       v228 = v98;
-      v99 = [val currentState];
+      currentState2 = [val currentState];
       v226 = 0;
       v224 = 0;
-      v96 = [val delegate];
-      v95 = v96;
+      delegate = [val delegate];
+      v95 = delegate;
       if (v95)
       {
-        v94 = [val delegate];
-        v227 = v94;
+        delegate2 = [val delegate];
+        v227 = delegate2;
         v226 = 1;
         v93 = objc_opt_class();
         v92 = NSStringFromClass(v93);
@@ -26429,29 +26429,29 @@ void __58__SUUIStatefulUIManager_fsmAction_ReportScanFailed_error___block_invoke
       }
 
       v89 = v91;
-      v90 = [val delegate];
-      v87 = v90;
-      v88 = [val scanError];
-      v85 = v88;
-      v86 = [val preferredStatefulDescriptor];
-      v83 = v86;
-      v84 = [val alternateStatefulDescriptor];
-      v81 = v84;
+      delegate3 = [val delegate];
+      v87 = delegate3;
+      scanError2 = [val scanError];
+      v85 = scanError2;
+      preferredStatefulDescriptor = [val preferredStatefulDescriptor];
+      v83 = preferredStatefulDescriptor;
+      alternateStatefulDescriptor = [val alternateStatefulDescriptor];
+      v81 = alternateStatefulDescriptor;
       v222 = 0;
       v220 = 0;
       v218 = 0;
-      v82 = [val currentDownload];
-      v80 = v82;
+      currentDownload = [val currentDownload];
+      v80 = currentDownload;
       if (v80)
       {
-        v79 = [val currentDownload];
-        v223 = v79;
+        currentDownload2 = [val currentDownload];
+        v223 = currentDownload2;
         v222 = 1;
-        v78 = [v223 descriptor];
-        v221 = v78;
+        descriptor = [v223 descriptor];
+        v221 = descriptor;
         v220 = 1;
-        v77 = [v221 updateName];
-        v219 = v77;
+        updateName = [v221 updateName];
+        v219 = updateName;
         v218 = 1;
         v76 = v219;
       }
@@ -26462,16 +26462,16 @@ void __58__SUUIStatefulUIManager_fsmAction_ReportScanFailed_error___block_invoke
       }
 
       v74 = v76;
-      v75 = [val currentDownload];
-      v72 = v75;
-      v73 = [val currentUpdateOperationType];
-      v71 = SUUIUpdateContinuousOperationTypeToString(v73);
+      currentDownload3 = [val currentDownload];
+      v72 = currentDownload3;
+      currentUpdateOperationType = [val currentUpdateOperationType];
+      v71 = SUUIUpdateContinuousOperationTypeToString(currentUpdateOperationType);
       v68 = v71;
       v69 = MEMORY[0x277D82BE0](v68);
       v217 = v69;
-      v70 = [val isTargetedUpdateScheduledForAutoInstall];
-      v266 = v70;
-      if (v70)
+      isTargetedUpdateScheduledForAutoInstall = [val isTargetedUpdateScheduledForAutoInstall];
+      v266 = isTargetedUpdateScheduledForAutoInstall;
+      if (isTargetedUpdateScheduledForAutoInstall)
       {
         v12 = @"YES";
       }
@@ -26486,9 +26486,9 @@ void __58__SUUIStatefulUIManager_fsmAction_ReportScanFailed_error___block_invoke
       v64 = v67;
       v65 = MEMORY[0x277D82BE0](v64);
       v216 = v65;
-      v66 = [val hidingPreferredDescriptor];
-      v265 = v66;
-      if (v66)
+      hidingPreferredDescriptor = [val hidingPreferredDescriptor];
+      v265 = hidingPreferredDescriptor;
+      if (hidingPreferredDescriptor)
       {
         v14 = @"YES";
       }
@@ -26503,15 +26503,15 @@ void __58__SUUIStatefulUIManager_fsmAction_ReportScanFailed_error___block_invoke
       v60 = v63;
       v61 = MEMORY[0x277D82BE0](v60);
       v215 = v61;
-      v62 = [val hiddenPreferredStatefulDescriptor];
-      v58 = v62;
-      v59 = [v58 updateName];
-      v55 = v59;
+      hiddenPreferredStatefulDescriptor = [val hiddenPreferredStatefulDescriptor];
+      v58 = hiddenPreferredStatefulDescriptor;
+      updateName2 = [v58 updateName];
+      v55 = updateName2;
       v56 = MEMORY[0x277D82BE0](v55);
       v214 = v56;
-      v57 = [val hidingAlternateDescriptor];
-      v264 = v57;
-      if (v57)
+      hidingAlternateDescriptor = [val hidingAlternateDescriptor];
+      v264 = hidingAlternateDescriptor;
+      if (hidingAlternateDescriptor)
       {
         v16 = @"YES";
       }
@@ -26526,22 +26526,22 @@ void __58__SUUIStatefulUIManager_fsmAction_ReportScanFailed_error___block_invoke
       v51 = v54;
       v52 = MEMORY[0x277D82BE0](v51);
       v213 = v52;
-      v53 = [val hiddenAlternateStatefulDescriptor];
-      v49 = v53;
-      v50 = [v49 updateName];
-      v46 = v50;
+      hiddenAlternateStatefulDescriptor = [val hiddenAlternateStatefulDescriptor];
+      v49 = hiddenAlternateStatefulDescriptor;
+      updateName3 = [v49 updateName];
+      v46 = updateName3;
       v47 = MEMORY[0x277D82BE0](v46);
       v212 = v47;
       v210 = 0;
-      v48 = [val enrolledBetaProgram];
-      v45 = v48;
+      enrolledBetaProgram = [val enrolledBetaProgram];
+      v45 = enrolledBetaProgram;
       if (v45)
       {
-        v44 = [val enrolledBetaProgram];
-        v211 = v44;
+        enrolledBetaProgram2 = [val enrolledBetaProgram];
+        v211 = enrolledBetaProgram2;
         v210 = 1;
-        v43 = [v211 programID];
-        v42 = v43;
+        programID = [v211 programID];
+        v42 = programID;
       }
 
       else
@@ -26551,9 +26551,9 @@ void __58__SUUIStatefulUIManager_fsmAction_ReportScanFailed_error___block_invoke
 
       v40 = v42;
       v41 = [*(val + 15) count];
-      v39 = [val canEnrollInBetaUpdates];
-      v263 = v39;
-      if (v39)
+      canEnrollInBetaUpdates = [val canEnrollInBetaUpdates];
+      v263 = canEnrollInBetaUpdates;
+      if (canEnrollInBetaUpdates)
       {
         v18 = @"YES";
       }
@@ -26574,7 +26574,7 @@ void __58__SUUIStatefulUIManager_fsmAction_ReportScanFailed_error___block_invoke
       v37 = [*(val + 24) count];
       v30 = v21;
       v31 = v271;
-      __os_log_helper_16_2_25_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0(v271, v202, v106, v101, v98, v99, v89, v87, v85, v83, v81, v74, v72, v69, v65, v61, v56, v52, v47, v40, v41, v33, v34, v35, v36, v37);
+      __os_log_helper_16_2_25_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0(v271, v202, v106, v101, v98, currentState2, v89, v87, v85, v83, v81, v74, v72, v69, v65, v61, v56, v52, v47, v40, v41, v33, v34, v35, v36, v37);
       _os_log_impl(&dword_26ADE5000, v104, v105[0], "%s [%p]: %{public}@ Checkpoint\n\tcurrentState: %{public}@ (%ld)\n\tdelegate: %{public}@ (%p)\n\tscanError: %{public}@\n\tpreferredDescriptor: %{public}@\n\talternateDescriptor: %{public}@\n\tdownload: %{public}@ (%p)\n\tcurrentUpdateOperationType: %{public}@\n\tscheduledForAutoInstall: %{public}@\n\thiddenUpdatesPostSelection: preferred[%{public}@, %{public}@]; alternate[%{public}@, %{public}@];\n\tselectedBetaProgram: %lu (count: %ld, enrollable: %{public}@)\n\tOpFSMs: scan[%p]; refresh[%p]; update[%p]; auxiliaryOperationsCount[%lu]\n\nThe descriptors states and errors are identical to the previous values (refreshHasAnyChanges = YES). Force load was requested - proceeding to ask the delegate to reload the UI.", v31, 0xFCu);
       MEMORY[0x277D82BD8](v32);
       if (v210)
@@ -26640,10 +26640,10 @@ void __58__SUUIStatefulUIManager_fsmAction_ReportScanFailed_error___block_invoke
 LABEL_80:
     [val setCurrentRefreshScanOperation:0];
     v28 = val;
-    v29 = [location refreshScanResults];
-    v26 = v29;
-    v27 = [location error];
-    v25 = v27;
+    refreshScanResults = [location refreshScanResults];
+    v26 = refreshScanResults;
+    error = [location error];
+    v25 = error;
     [v28 notifyRefreshScanResultsDelegates:v26 andError:?];
     MEMORY[0x277D82BD8](v25);
     MEMORY[0x277D82BD8](v26);
@@ -26666,8 +26666,8 @@ LABEL_80:
 
   v191 = +[SUUILoggingContext statefulUILogger];
   v189 = v191;
-  v190 = [v189 oslog];
-  oslog = v190;
+  oslog2 = [v189 oslog];
+  oslog = oslog2;
   MEMORY[0x277D82BD8](v189);
   type = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -26684,15 +26684,15 @@ LABEL_80:
     v178 = v183;
     v179 = MEMORY[0x277D82BE0](v178);
     v252 = v179;
-    v180 = [val currentState];
+    currentState3 = [val currentState];
     v250 = 0;
     v248 = 0;
-    v177 = [val delegate];
-    v176 = v177;
+    delegate4 = [val delegate];
+    v176 = delegate4;
     if (v176)
     {
-      v175 = [val delegate];
-      v251 = v175;
+      delegate5 = [val delegate];
+      v251 = delegate5;
       v250 = 1;
       v174 = objc_opt_class();
       v173 = NSStringFromClass(v174);
@@ -26707,29 +26707,29 @@ LABEL_80:
     }
 
     v170 = v172;
-    v171 = [val delegate];
-    v168 = v171;
-    v169 = [val scanError];
-    v166 = v169;
-    v167 = [val preferredStatefulDescriptor];
-    v164 = v167;
-    v165 = [val alternateStatefulDescriptor];
-    v162 = v165;
+    delegate6 = [val delegate];
+    v168 = delegate6;
+    scanError3 = [val scanError];
+    v166 = scanError3;
+    preferredStatefulDescriptor2 = [val preferredStatefulDescriptor];
+    v164 = preferredStatefulDescriptor2;
+    alternateStatefulDescriptor2 = [val alternateStatefulDescriptor];
+    v162 = alternateStatefulDescriptor2;
     v246 = 0;
     v244 = 0;
     v242 = 0;
-    v163 = [val currentDownload];
-    v161 = v163;
+    currentDownload4 = [val currentDownload];
+    v161 = currentDownload4;
     if (v161)
     {
-      v160 = [val currentDownload];
-      v247 = v160;
+      currentDownload5 = [val currentDownload];
+      v247 = currentDownload5;
       v246 = 1;
-      v159 = [v247 descriptor];
-      v245 = v159;
+      descriptor2 = [v247 descriptor];
+      v245 = descriptor2;
       v244 = 1;
-      v158 = [v245 updateName];
-      v243 = v158;
+      updateName4 = [v245 updateName];
+      v243 = updateName4;
       v242 = 1;
       v157 = v243;
     }
@@ -26740,16 +26740,16 @@ LABEL_80:
     }
 
     v155 = v157;
-    v156 = [val currentDownload];
-    v153 = v156;
-    v154 = [val currentUpdateOperationType];
-    v152 = SUUIUpdateContinuousOperationTypeToString(v154);
+    currentDownload6 = [val currentDownload];
+    v153 = currentDownload6;
+    currentUpdateOperationType2 = [val currentUpdateOperationType];
+    v152 = SUUIUpdateContinuousOperationTypeToString(currentUpdateOperationType2);
     v149 = v152;
     v150 = MEMORY[0x277D82BE0](v149);
     v241 = v150;
-    v151 = [val isTargetedUpdateScheduledForAutoInstall];
-    v270 = v151;
-    if (v151)
+    isTargetedUpdateScheduledForAutoInstall2 = [val isTargetedUpdateScheduledForAutoInstall];
+    v270 = isTargetedUpdateScheduledForAutoInstall2;
+    if (isTargetedUpdateScheduledForAutoInstall2)
     {
       v4 = @"YES";
     }
@@ -26764,9 +26764,9 @@ LABEL_80:
     v145 = v148;
     v146 = MEMORY[0x277D82BE0](v145);
     v240 = v146;
-    v147 = [val hidingPreferredDescriptor];
-    v269 = v147;
-    if (v147)
+    hidingPreferredDescriptor2 = [val hidingPreferredDescriptor];
+    v269 = hidingPreferredDescriptor2;
+    if (hidingPreferredDescriptor2)
     {
       v6 = @"YES";
     }
@@ -26781,15 +26781,15 @@ LABEL_80:
     v141 = v144;
     v142 = MEMORY[0x277D82BE0](v141);
     v239 = v142;
-    v143 = [val hiddenPreferredStatefulDescriptor];
-    v139 = v143;
-    v140 = [v139 updateName];
-    v136 = v140;
+    hiddenPreferredStatefulDescriptor2 = [val hiddenPreferredStatefulDescriptor];
+    v139 = hiddenPreferredStatefulDescriptor2;
+    updateName5 = [v139 updateName];
+    v136 = updateName5;
     v137 = MEMORY[0x277D82BE0](v136);
     v238 = v137;
-    v138 = [val hidingAlternateDescriptor];
-    v268 = v138;
-    if (v138)
+    hidingAlternateDescriptor2 = [val hidingAlternateDescriptor];
+    v268 = hidingAlternateDescriptor2;
+    if (hidingAlternateDescriptor2)
     {
       v8 = @"YES";
     }
@@ -26804,22 +26804,22 @@ LABEL_80:
     v132 = v135;
     v133 = MEMORY[0x277D82BE0](v132);
     v237 = v133;
-    v134 = [val hiddenAlternateStatefulDescriptor];
-    v130 = v134;
-    v131 = [v130 updateName];
-    v127 = v131;
+    hiddenAlternateStatefulDescriptor2 = [val hiddenAlternateStatefulDescriptor];
+    v130 = hiddenAlternateStatefulDescriptor2;
+    updateName6 = [v130 updateName];
+    v127 = updateName6;
     v128 = MEMORY[0x277D82BE0](v127);
     v236 = v128;
     v234 = 0;
-    v129 = [val enrolledBetaProgram];
-    v126 = v129;
+    enrolledBetaProgram3 = [val enrolledBetaProgram];
+    v126 = enrolledBetaProgram3;
     if (v126)
     {
-      v125 = [val enrolledBetaProgram];
-      v235 = v125;
+      enrolledBetaProgram4 = [val enrolledBetaProgram];
+      v235 = enrolledBetaProgram4;
       v234 = 1;
-      v124 = [v235 programID];
-      v123 = v124;
+      programID2 = [v235 programID];
+      v123 = programID2;
     }
 
     else
@@ -26829,9 +26829,9 @@ LABEL_80:
 
     v121 = v123;
     v122 = [*(val + 15) count];
-    v120 = [val canEnrollInBetaUpdates];
-    v267 = v120;
-    if (v120)
+    canEnrollInBetaUpdates2 = [val canEnrollInBetaUpdates];
+    v267 = canEnrollInBetaUpdates2;
+    if (canEnrollInBetaUpdates2)
     {
       v10 = @"YES";
     }
@@ -26852,7 +26852,7 @@ LABEL_80:
     v118 = [*(val + 24) count];
     v111 = v21;
     buf = v272;
-    __os_log_helper_16_2_25_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0(v272, v202, v187, v182, v179, v180, v170, v168, v166, v164, v162, v155, v153, v150, v146, v142, v137, v133, v128, v121, v122, v114, v115, v116, v117, v118);
+    __os_log_helper_16_2_25_8_32_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_0_8_66_8_66_8_66_8_66_8_66_8_66_8_0_8_0_8_66_8_0_8_0_8_0_8_0(v272, v202, v187, v182, v179, currentState3, v170, v168, v166, v164, v162, v155, v153, v150, v146, v142, v137, v133, v128, v121, v122, v114, v115, v116, v117, v118);
     _os_log_impl(&dword_26ADE5000, log, v186[0], "%s [%p]: %{public}@ Checkpoint\n\tcurrentState: %{public}@ (%ld)\n\tdelegate: %{public}@ (%p)\n\tscanError: %{public}@\n\tpreferredDescriptor: %{public}@\n\talternateDescriptor: %{public}@\n\tdownload: %{public}@ (%p)\n\tcurrentUpdateOperationType: %{public}@\n\tscheduledForAutoInstall: %{public}@\n\thiddenUpdatesPostSelection: preferred[%{public}@, %{public}@]; alternate[%{public}@, %{public}@];\n\tselectedBetaProgram: %lu (count: %ld, enrollable: %{public}@)\n\tOpFSMs: scan[%p]; refresh[%p]; update[%p]; auxiliaryOperationsCount[%lu]\n\nThe descriptors states and errors are identical to the previous values (refreshHasAnyChanges = YES). Dropping the refresh request.", buf, 0xFCu);
     MEMORY[0x277D82BD8](v113);
     if (v234)
@@ -26966,25 +26966,25 @@ void __66__SUUIStatefulUIManager_fsmAction_ReportRefreshScanResults_error___bloc
   *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)fsmAction_ReportRefreshScanResultsFailed:(id)a3 error:(id *)a4
+- (int64_t)fsmAction_ReportRefreshScanResultsFailed:(id)failed error:(id *)error
 {
-  v20 = self;
+  selfCopy = self;
   v19 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  from[1] = a4;
-  v10 = [(SUCoreFSM *)v20->_managerFSM extendedStateQueue];
-  dispatch_assert_queue_V2(v10);
-  MEMORY[0x277D82BD8](v10);
-  objc_initWeak(from, v20);
-  [(SUUIStatefulUIManager *)v20 setCurrentRefreshScanOperation:0];
-  v8 = v20;
-  v7 = [location refreshScanResults];
-  v6 = [location error];
-  [(SUUIStatefulUIManager *)v8 notifyRefreshScanResultsDelegates:v7 andError:?];
-  MEMORY[0x277D82BD8](v6);
-  MEMORY[0x277D82BD8](v7);
-  v5 = v20;
+  objc_storeStrong(&location, failed);
+  from[1] = error;
+  extendedStateQueue = [(SUCoreFSM *)selfCopy->_managerFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
+  objc_initWeak(from, selfCopy);
+  [(SUUIStatefulUIManager *)selfCopy setCurrentRefreshScanOperation:0];
+  v8 = selfCopy;
+  refreshScanResults = [location refreshScanResults];
+  error = [location error];
+  [(SUUIStatefulUIManager *)v8 notifyRefreshScanResultsDelegates:refreshScanResults andError:?];
+  MEMORY[0x277D82BD8](error);
+  MEMORY[0x277D82BD8](refreshScanResults);
+  v5 = selfCopy;
   v11 = MEMORY[0x277D85DD0];
   v12 = -1073741824;
   v13 = 0;
@@ -27039,84 +27039,84 @@ void __72__SUUIStatefulUIManager_fsmAction_ReportRefreshScanResultsFailed_error_
   *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)fsmAction_actionUnknownAction:(id)a3 error:(id *)a4
+- (int64_t)fsmAction_actionUnknownAction:(id)action error:(id *)error
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v14[1] = a4;
+  objc_storeStrong(location, action);
+  v14[1] = error;
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v14[0] = [v4 initWithFormat:location[0]];
-  v10 = [(SUCoreFSM *)v16->_managerFSM diag];
+  diag = [(SUCoreFSM *)selfCopy->_managerFSM diag];
   v5 = objc_alloc(MEMORY[0x277CCACA8]);
   v9 = [v5 initWithFormat:@"unknown action(%@)", location[0]];
-  [v10 dumpTracked:? dumpingTo:? usingFilename:? clearingStatistics:? clearingHistory:?];
+  [diag dumpTracked:? dumpingTo:? usingFilename:? clearingStatistics:? clearingHistory:?];
   MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v10);
-  v11 = [MEMORY[0x277D643F8] sharedCore];
-  v13 = [v11 buildError:8116 underlying:0 description:v14[0]];
-  MEMORY[0x277D82BD8](v11);
-  v12 = [(SUCoreFSM *)v16->_managerFSM diag];
-  v6 = [v13 code];
-  [v12 trackAnomaly:@"[SUUIStatefulUIManager]" forReason:@"Stateful UI FSM has reported an anomaly" withResult:v6 withError:v13];
-  MEMORY[0x277D82BD8](v12);
+  MEMORY[0x277D82BD8](diag);
+  mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+  v13 = [mEMORY[0x277D643F8] buildError:8116 underlying:0 description:v14[0]];
+  MEMORY[0x277D82BD8](mEMORY[0x277D643F8]);
+  diag2 = [(SUCoreFSM *)selfCopy->_managerFSM diag];
+  code = [v13 code];
+  [diag2 trackAnomaly:@"[SUUIStatefulUIManager]" forReason:@"Stateful UI FSM has reported an anomaly" withResult:code withError:v13];
+  MEMORY[0x277D82BD8](diag2);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(v14, 0);
   objc_storeStrong(location, 0);
   return 0;
 }
 
-- (void)updateDescriptorsUsingScanResults:(id)a3 andWithConcreteError:(id)a4
+- (void)updateDescriptorsUsingScanResults:(id)results andWithConcreteError:(id)error
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, results);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
-  [(SUUIStatefulUIManager *)v9 hideNonTargetedUpdateDescriptors];
-  v5 = [(SUUIStatefulUIManager *)v9 preferredStatefulDescriptor];
-  [(SUUIStatefulDescriptor *)v5 updateStateWithScanResults:location[0] andWithConcreteError:v7];
-  MEMORY[0x277D82BD8](v5);
-  v6 = [(SUUIStatefulUIManager *)v9 alternateStatefulDescriptor];
-  [(SUUIStatefulDescriptor *)v6 updateStateWithScanResults:location[0] andWithConcreteError:v7];
-  MEMORY[0x277D82BD8](v6);
+  objc_storeStrong(&v7, error);
+  [(SUUIStatefulUIManager *)selfCopy hideNonTargetedUpdateDescriptors];
+  preferredStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy preferredStatefulDescriptor];
+  [(SUUIStatefulDescriptor *)preferredStatefulDescriptor updateStateWithScanResults:location[0] andWithConcreteError:v7];
+  MEMORY[0x277D82BD8](preferredStatefulDescriptor);
+  alternateStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy alternateStatefulDescriptor];
+  [(SUUIStatefulDescriptor *)alternateStatefulDescriptor updateStateWithScanResults:location[0] andWithConcreteError:v7];
+  MEMORY[0x277D82BD8](alternateStatefulDescriptor);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)hideNonTargetedUpdateDescriptors
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(SUUIStatefulUIManager *)self currentDownload];
-  if (location[0] && ([location[0] isAutoDownload] & 1) == 0 && !-[SUUIStatefulUIManager hasHiddenDescriptors](v11, "hasHiddenDescriptors"))
+  if (location[0] && ([location[0] isAutoDownload] & 1) == 0 && !-[SUUIStatefulUIManager hasHiddenDescriptors](selfCopy, "hasHiddenDescriptors"))
   {
-    v8 = [location[0] descriptor];
-    v7 = [(SUUIStatefulUIManager *)v11 preferredStatefulDescriptor];
-    v6 = [(SUUIStatefulDescriptor *)v7 descriptor];
-    v9 = [v8 isEqual:?];
-    MEMORY[0x277D82BD8](v6);
-    MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v8);
+    descriptor = [location[0] descriptor];
+    preferredStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy preferredStatefulDescriptor];
+    descriptor2 = [(SUUIStatefulDescriptor *)preferredStatefulDescriptor descriptor];
+    v9 = [descriptor isEqual:?];
+    MEMORY[0x277D82BD8](descriptor2);
+    MEMORY[0x277D82BD8](preferredStatefulDescriptor);
+    MEMORY[0x277D82BD8](descriptor);
     if (v9)
     {
-      [(SUUIStatefulUIManager *)v11 hideAlternateUpdate];
+      [(SUUIStatefulUIManager *)selfCopy hideAlternateUpdate];
     }
 
     else
     {
-      v4 = [location[0] descriptor];
-      v3 = [(SUUIStatefulUIManager *)v11 alternateStatefulDescriptor];
-      v2 = [(SUUIStatefulDescriptor *)v3 descriptor];
-      v5 = [v4 isEqual:?];
-      MEMORY[0x277D82BD8](v2);
-      MEMORY[0x277D82BD8](v3);
-      MEMORY[0x277D82BD8](v4);
+      descriptor3 = [location[0] descriptor];
+      alternateStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy alternateStatefulDescriptor];
+      descriptor4 = [(SUUIStatefulDescriptor *)alternateStatefulDescriptor descriptor];
+      v5 = [descriptor3 isEqual:?];
+      MEMORY[0x277D82BD8](descriptor4);
+      MEMORY[0x277D82BD8](alternateStatefulDescriptor);
+      MEMORY[0x277D82BD8](descriptor3);
       if (v5)
       {
-        [(SUUIStatefulUIManager *)v11 hidePreferredUpdate];
+        [(SUUIStatefulUIManager *)selfCopy hidePreferredUpdate];
       }
     }
   }
@@ -27124,16 +27124,16 @@ void __72__SUUIStatefulUIManager_fsmAction_ReportRefreshScanResultsFailed_error_
   objc_storeStrong(location, 0);
 }
 
-- (void)executeOperationOnDelegate:(SEL)a3 usingBlock:(id)a4
+- (void)executeOperationOnDelegate:(SEL)delegate usingBlock:(id)block
 {
-  v20 = self;
+  selfCopy = self;
   location[2] = a2;
-  location[1] = a3;
+  location[1] = delegate;
   location[0] = 0;
-  objc_storeStrong(location, a4);
-  v7 = [(SUUIStatefulUIManager *)v20 delegate];
-  objc_initWeak(&v18, v7);
-  MEMORY[0x277D82BD8](v7);
+  objc_storeStrong(location, block);
+  delegate = [(SUUIStatefulUIManager *)selfCopy delegate];
+  objc_initWeak(&v18, delegate);
+  MEMORY[0x277D82BD8](delegate);
   v8 = objc_loadWeakRetained(&v18);
   v16 = 0;
   v9 = 0;
@@ -27152,9 +27152,9 @@ void __72__SUUIStatefulUIManager_fsmAction_ReportRefreshScanResultsFailed_error_
   MEMORY[0x277D82BD8](v8);
   if (v9)
   {
-    v6 = [MEMORY[0x277D643F8] sharedCore];
-    v5 = [(SUUIStatefulUIManager *)v20 delegateCallbackQueue];
-    queue = [v6 selectDelegateCallbackQueue:?];
+    mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+    delegateCallbackQueue = [(SUUIStatefulUIManager *)selfCopy delegateCallbackQueue];
+    queue = [mEMORY[0x277D643F8] selectDelegateCallbackQueue:?];
     v10 = MEMORY[0x277D85DD0];
     v11 = -1073741824;
     v12 = 0;
@@ -27163,8 +27163,8 @@ void __72__SUUIStatefulUIManager_fsmAction_ReportRefreshScanResultsFailed_error_
     v15 = MEMORY[0x277D82BE0](location[0]);
     dispatch_async(queue, &v10);
     MEMORY[0x277D82BD8](queue);
-    MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](delegateCallbackQueue);
+    MEMORY[0x277D82BD8](mEMORY[0x277D643F8]);
     objc_storeStrong(&v15, 0);
   }
 
@@ -27172,12 +27172,12 @@ void __72__SUUIStatefulUIManager_fsmAction_ReportRefreshScanResultsFailed_error_
   objc_storeStrong(location, 0);
 }
 
-- (int64_t)convertFSMStateToUIState:(id)a3
+- (int64_t)convertFSMStateToUIState:(id)state
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, state);
   if ([location[0] isEqualToString:@"Idle"])
   {
     v5 = 0;
@@ -27212,68 +27212,68 @@ void __72__SUUIStatefulUIManager_fsmAction_ReportRefreshScanResultsFailed_error_
   return v5;
 }
 
-- (void)assignDescriptorOfType:(unint64_t)a3 fromSearchResults:(id)a4
+- (void)assignDescriptorOfType:(unint64_t)type fromSearchResults:(id)results
 {
   v96 = *MEMORY[0x277D85DE8];
-  v88 = self;
+  selfCopy = self;
   v87 = a2;
-  v86 = a3;
+  typeCopy = type;
   location = 0;
-  objc_storeStrong(&location, a4);
-  if (v86 < 2)
+  objc_storeStrong(&location, results);
+  if (typeCopy < 2)
   {
     v78 = 0;
     v76 = 0;
-    if (v86)
+    if (typeCopy)
     {
-      v77 = [(SUUIStatefulUIManager *)v88 alternateStatefulDescriptor];
+      alternateStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy alternateStatefulDescriptor];
       v76 = 1;
-      v4 = MEMORY[0x277D82BE0](v77);
+      v4 = MEMORY[0x277D82BE0](alternateStatefulDescriptor);
     }
 
     else
     {
-      v79 = [(SUUIStatefulUIManager *)v88 preferredStatefulDescriptor];
+      preferredStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy preferredStatefulDescriptor];
       v78 = 1;
-      v4 = MEMORY[0x277D82BE0](v79);
+      v4 = MEMORY[0x277D82BE0](preferredStatefulDescriptor);
     }
 
     v80 = v4;
     if (v76)
     {
-      MEMORY[0x277D82BD8](v77);
+      MEMORY[0x277D82BD8](alternateStatefulDescriptor);
     }
 
     if (v78)
     {
-      MEMORY[0x277D82BD8](v79);
+      MEMORY[0x277D82BD8](preferredStatefulDescriptor);
     }
 
     v73 = 0;
     v71 = 0;
-    if (v86)
+    if (typeCopy)
     {
-      v72 = [location alternateDescriptor];
+      alternateDescriptor = [location alternateDescriptor];
       v71 = 1;
-      v5 = MEMORY[0x277D82BE0](v72);
+      v5 = MEMORY[0x277D82BE0](alternateDescriptor);
     }
 
     else
     {
-      v74 = [location preferredDescriptor];
+      preferredDescriptor = [location preferredDescriptor];
       v73 = 1;
-      v5 = MEMORY[0x277D82BE0](v74);
+      v5 = MEMORY[0x277D82BE0](preferredDescriptor);
     }
 
     v75 = v5;
     if (v71)
     {
-      MEMORY[0x277D82BD8](v72);
+      MEMORY[0x277D82BD8](alternateDescriptor);
     }
 
     if (v73)
     {
-      MEMORY[0x277D82BD8](v74);
+      MEMORY[0x277D82BD8](preferredDescriptor);
     }
 
     if (v80 || v75)
@@ -27281,26 +27281,26 @@ void __72__SUUIStatefulUIManager_fsmAction_ReportRefreshScanResultsFailed_error_
       if ([v80 isEqualToDescriptor:v75 includeDocumentationComparison:1])
       {
         v51 = +[SUUILoggingContext statefulUILogger];
-        v70 = [v51 oslog];
+        oslog = [v51 oslog];
         MEMORY[0x277D82BD8](v51);
         v69 = OS_LOG_TYPE_DEFAULT;
-        if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
-          v44 = v70;
+          v44 = oslog;
           v45 = v69;
-          v38 = v88;
-          v50 = SUUIStatefulDescriptorRoleToString(v86);
+          v38 = selfCopy;
+          v50 = SUUIStatefulDescriptorRoleToString(typeCopy);
           v39 = MEMORY[0x277D82BE0](v50);
           v68 = v39;
-          v49 = [v80 updateName];
-          v40 = MEMORY[0x277D82BE0](v49);
+          updateName = [v80 updateName];
+          v40 = MEMORY[0x277D82BE0](updateName);
           v67 = v40;
           v41 = v80;
-          v48 = [v75 updateName];
-          v42 = MEMORY[0x277D82BE0](v48);
+          updateName2 = [v75 updateName];
+          v42 = MEMORY[0x277D82BE0](updateName2);
           v66 = v42;
           v43 = v75;
-          if ([(SUUIStatefulUIManager *)v88 hidingPreferredDescriptor])
+          if ([(SUUIStatefulUIManager *)selfCopy hidingPreferredDescriptor])
           {
             v6 = @"YES";
           }
@@ -27315,7 +27315,7 @@ void __72__SUUIStatefulUIManager_fsmAction_ReportRefreshScanResultsFailed_error_
           v47 = v35;
           v37 = MEMORY[0x277D82BE0](v47);
           v65 = v37;
-          if ([(SUUIStatefulUIManager *)v88 hidingAlternateDescriptor])
+          if ([(SUUIStatefulUIManager *)selfCopy hidingAlternateDescriptor])
           {
             v8 = @"YES";
           }
@@ -27333,8 +27333,8 @@ void __72__SUUIStatefulUIManager_fsmAction_ReportRefreshScanResultsFailed_error_
           _os_log_impl(&dword_26ADE5000, v44, v45, "%s [%p]: %{public}@ descriptor assignment: the given descriptor is equal to the current stateful descriptor. Updating internal state instead of creation of an entirely new one.\n\tCurrent: %{public}@ (%p)\n\tNew: %{public}@ (%p)\n\tHiding: Preferred - %{public}@; Alternate: %{public}@", v94, 0x5Cu);
           MEMORY[0x277D82BD8](v46);
           MEMORY[0x277D82BD8](v47);
-          MEMORY[0x277D82BD8](v48);
-          MEMORY[0x277D82BD8](v49);
+          MEMORY[0x277D82BD8](updateName2);
+          MEMORY[0x277D82BD8](updateName);
           MEMORY[0x277D82BD8](v50);
           objc_storeStrong(&v64, 0);
           objc_storeStrong(&v65, 0);
@@ -27343,8 +27343,8 @@ void __72__SUUIStatefulUIManager_fsmAction_ReportRefreshScanResultsFailed_error_
           objc_storeStrong(&v68, 0);
         }
 
-        objc_storeStrong(&v70, 0);
-        [(SUUIStatefulUIManager *)v88 hideNonTargetedUpdateDescriptors];
+        objc_storeStrong(&oslog, 0);
+        [(SUUIStatefulUIManager *)selfCopy hideNonTargetedUpdateDescriptors];
         [v80 updateStateWithScanResults:location andWithConcreteError:0];
         v81 = 1;
       }
@@ -27352,26 +27352,26 @@ void __72__SUUIStatefulUIManager_fsmAction_ReportRefreshScanResultsFailed_error_
       else
       {
         v34 = +[SUUILoggingContext statefulUILogger];
-        v63 = [v34 oslog];
+        oslog2 = [v34 oslog];
         MEMORY[0x277D82BD8](v34);
         v62 = OS_LOG_TYPE_DEFAULT;
-        if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
         {
-          v27 = v63;
+          v27 = oslog2;
           v28 = v62;
-          v21 = v88;
-          v33 = SUUIStatefulDescriptorRoleToString(v86);
+          v21 = selfCopy;
+          v33 = SUUIStatefulDescriptorRoleToString(typeCopy);
           v22 = MEMORY[0x277D82BE0](v33);
           v61 = v22;
-          v32 = [v80 updateName];
-          v23 = MEMORY[0x277D82BE0](v32);
+          updateName3 = [v80 updateName];
+          v23 = MEMORY[0x277D82BE0](updateName3);
           v60 = v23;
           v24 = v80;
-          v31 = [v75 updateName];
-          v25 = MEMORY[0x277D82BE0](v31);
+          updateName4 = [v75 updateName];
+          v25 = MEMORY[0x277D82BE0](updateName4);
           v59 = v25;
           v26 = v75;
-          if ([(SUUIStatefulUIManager *)v88 hidingPreferredDescriptor])
+          if ([(SUUIStatefulUIManager *)selfCopy hidingPreferredDescriptor])
           {
             v10 = @"YES";
           }
@@ -27386,7 +27386,7 @@ void __72__SUUIStatefulUIManager_fsmAction_ReportRefreshScanResultsFailed_error_
           v30 = v18;
           v20 = MEMORY[0x277D82BE0](v30);
           v58 = v20;
-          if ([(SUUIStatefulUIManager *)v88 hidingAlternateDescriptor])
+          if ([(SUUIStatefulUIManager *)selfCopy hidingAlternateDescriptor])
           {
             v12 = @"YES";
           }
@@ -27404,8 +27404,8 @@ void __72__SUUIStatefulUIManager_fsmAction_ReportRefreshScanResultsFailed_error_
           _os_log_impl(&dword_26ADE5000, v27, v28, "%s [%p]: %{public}@ descriptor assignment: Replacing the current descriptor with a new descriptor.\n\tCurrent: %{public}@ (%p)\n\tNew: %{public}@ (%p)\n\tHiding: Preferred - %{public}@; Alternate: %{public}@", v93, 0x5Cu);
           MEMORY[0x277D82BD8](v29);
           MEMORY[0x277D82BD8](v30);
-          MEMORY[0x277D82BD8](v31);
-          MEMORY[0x277D82BD8](v32);
+          MEMORY[0x277D82BD8](updateName4);
+          MEMORY[0x277D82BD8](updateName3);
           MEMORY[0x277D82BD8](v33);
           objc_storeStrong(&v57, 0);
           objc_storeStrong(&v58, 0);
@@ -27414,34 +27414,34 @@ void __72__SUUIStatefulUIManager_fsmAction_ReportRefreshScanResultsFailed_error_
           objc_storeStrong(&v61, 0);
         }
 
-        objc_storeStrong(&v63, 0);
-        if (v86)
+        objc_storeStrong(&oslog2, 0);
+        if (typeCopy)
         {
           if (v75)
           {
             v15 = [SUUIStatefulDescriptor alloc];
-            v16 = [(SUUIStatefulDescriptor *)v15 initForDescriptor:v86 fromScanResults:location managedBy:v88];
-            [(SUUIStatefulUIManager *)v88 setAlternateStatefulDescriptor:?];
+            v16 = [(SUUIStatefulDescriptor *)v15 initForDescriptor:typeCopy fromScanResults:location managedBy:selfCopy];
+            [(SUUIStatefulUIManager *)selfCopy setAlternateStatefulDescriptor:?];
             MEMORY[0x277D82BD8](v16);
           }
 
           else
           {
-            [(SUUIStatefulUIManager *)v88 setAlternateStatefulDescriptor:0];
+            [(SUUIStatefulUIManager *)selfCopy setAlternateStatefulDescriptor:0];
           }
         }
 
         else if (v75)
         {
           v14 = [SUUIStatefulDescriptor alloc];
-          v17 = [(SUUIStatefulDescriptor *)v14 initForDescriptor:v86 fromScanResults:location managedBy:v88];
-          [(SUUIStatefulUIManager *)v88 setPreferredStatefulDescriptor:?];
+          v17 = [(SUUIStatefulDescriptor *)v14 initForDescriptor:typeCopy fromScanResults:location managedBy:selfCopy];
+          [(SUUIStatefulUIManager *)selfCopy setPreferredStatefulDescriptor:?];
           MEMORY[0x277D82BD8](v17);
         }
 
         else
         {
-          [(SUUIStatefulUIManager *)v88 setPreferredStatefulDescriptor:0];
+          [(SUUIStatefulUIManager *)selfCopy setPreferredStatefulDescriptor:0];
         }
 
         v81 = 0;
@@ -27466,12 +27466,12 @@ void __72__SUUIStatefulUIManager_fsmAction_ReportRefreshScanResultsFailed_error_
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       log = oslog;
-      v54 = type;
-      v52 = v88;
-      v55 = SUUIStatefulDescriptorRoleToString(v86);
+      typeCopy2 = type;
+      v52 = selfCopy;
+      v55 = SUUIStatefulDescriptorRoleToString(typeCopy);
       v82 = MEMORY[0x277D82BE0](v55);
       __os_log_helper_16_2_3_8_32_8_0_8_66(v95, "[SUUIStatefulUIManager assignDescriptorOfType:fromSearchResults:]", v52, v82);
-      _os_log_error_impl(&dword_26ADE5000, log, v54, "%s [%p]: Invalid descriptor type: %{public}@", v95, 0x20u);
+      _os_log_error_impl(&dword_26ADE5000, log, typeCopy2, "%s [%p]: Invalid descriptor type: %{public}@", v95, 0x20u);
       MEMORY[0x277D82BD8](v55);
       objc_storeStrong(&v82, 0);
     }
@@ -27484,36 +27484,36 @@ void __72__SUUIStatefulUIManager_fsmAction_ReportRefreshScanResultsFailed_error_
   *MEMORY[0x277D85DE8];
 }
 
-- (void)performSelector:(SEL)a3 onTarget:(id)a4 withObject:(id)a5 withObject:(id)a6 withObject:(id)a7 withObject:(id)a8
+- (void)performSelector:(SEL)selector onTarget:(id)target withObject:(id)object withObject:(id)withObject withObject:(id)a7 withObject:(id)a8
 {
-  obj = a5;
-  v10 = a6;
+  obj = object;
+  withObjectCopy = withObject;
   v11 = a7;
   v12 = a8;
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
-  v20 = a3;
+  selectorCopy = selector;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, target);
   v18 = 0;
   objc_storeStrong(&v18, obj);
   v17 = 0;
-  objc_storeStrong(&v17, v10);
+  objc_storeStrong(&v17, withObjectCopy);
   v16 = 0;
   objc_storeStrong(&v16, v11);
   v15 = 0;
   objc_storeStrong(&v15, v12);
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v8 = NSStringFromSelector(v20);
+    v8 = NSStringFromSelector(selectorCopy);
     _suui_precondition_failure_with_format(@"Target does not respond to selector %@", v8);
   }
 
-  v14 = [location methodSignatureForSelector:v20];
+  v14 = [location methodSignatureForSelector:selectorCopy];
   if (v14)
   {
     v13 = [MEMORY[0x277CBEAE8] invocationWithMethodSignature:v14];
-    [v13 setSelector:v20];
+    [v13 setSelector:selectorCopy];
     [v13 setTarget:location];
     [v13 setArgument:&v18 atIndex:2];
     [v13 setArgument:&v17 atIndex:3];
@@ -27545,18 +27545,18 @@ void __72__SUUIStatefulUIManager_fsmAction_ReportRefreshScanResultsFailed_error_
   return WeakRetained;
 }
 
-- (id)contextForFullScanOperation:(id)a3 withThirdPartyScanResults:(id)a4 scanError:(id)a5 forceReloadScanResults:(BOOL)a6
+- (id)contextForFullScanOperation:(id)operation withThirdPartyScanResults:(id)results scanError:(id)error forceReloadScanResults:(BOOL)scanResults
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, operation);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, results);
   v12 = 0;
-  objc_storeStrong(&v12, a5);
+  objc_storeStrong(&v12, error);
   v6 = [SUUIScanOperationFullScanContext alloc];
-  v11 = [(SUUIScanOperationFullScanContext *)v6 initWithPreviousThirdPartyScanResults:v13 previousScanError:v12 forceReloadScanResults:a6];
+  v11 = [(SUUIScanOperationFullScanContext *)v6 initWithPreviousThirdPartyScanResults:v13 previousScanError:v12 forceReloadScanResults:scanResults];
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
@@ -27564,16 +27564,16 @@ void __72__SUUIStatefulUIManager_fsmAction_ReportRefreshScanResultsFailed_error_
   return v11;
 }
 
-- (id)contextForRefreshScanOperation:(id)a3 withPreviouslyDiscoveredDownload:(id)a4 encounteredError:(id)a5
+- (id)contextForRefreshScanOperation:(id)operation withPreviouslyDiscoveredDownload:(id)download encounteredError:(id)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, operation);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, download);
   v10 = 0;
-  objc_storeStrong(&v10, a5);
+  objc_storeStrong(&v10, error);
   v5 = [SUUIScanOperationRefreshScanContext alloc];
   v9 = [(SUUIScanOperationRefreshScanContext *)v5 initWithPreviousDownload:v11 previousEncounteredError:v10];
   objc_storeStrong(&v10, 0);
@@ -27583,147 +27583,147 @@ void __72__SUUIStatefulUIManager_fsmAction_ReportRefreshScanResultsFailed_error_
   return v9;
 }
 
-- (id)contextForDownloadUpdateOperation:(id)a3
+- (id)contextForDownloadUpdateOperation:(id)operation
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, operation);
   v4 = [SUUIUpdateOperationDownloadContext alloc];
-  v5 = [(SUUIUpdateOperationDownloadContext *)v4 initWithUnattendedPurge:[(SUUIStatefulUIManager *)v7 updateOperationShouldPerformUnattendedPurge:location[0]]];
+  v5 = [(SUUIUpdateOperationDownloadContext *)v4 initWithUnattendedPurge:[(SUUIStatefulUIManager *)selfCopy updateOperationShouldPerformUnattendedPurge:location[0]]];
   objc_storeStrong(location, 0);
 
   return v5;
 }
 
-- (id)contextForDownloadAndInstallUpdateOperation:(id)a3
+- (id)contextForDownloadAndInstallUpdateOperation:(id)operation
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, operation);
   v4 = [SUUIUpdateOperationDownloadAndInstallContext alloc];
-  v5 = [(SUUIUpdateOperationDownloadAndInstallContext *)v4 initWithUnattendedPurge:[(SUUIStatefulUIManager *)v7 updateOperationShouldPerformUnattendedPurge:location[0]]];
+  v5 = [(SUUIUpdateOperationDownloadAndInstallContext *)v4 initWithUnattendedPurge:[(SUUIStatefulUIManager *)selfCopy updateOperationShouldPerformUnattendedPurge:location[0]]];
   objc_storeStrong(location, 0);
 
   return v5;
 }
 
-- (id)contextForDownloadAndScheduleUpdateOperation:(id)a3
+- (id)contextForDownloadAndScheduleUpdateOperation:(id)operation
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, operation);
   v4 = [SUUIUpdateOperationDownloadAndScheduleContext alloc];
-  v5 = [(SUUIUpdateOperationDownloadAndScheduleContext *)v4 initWithUnattendedPurge:[(SUUIStatefulUIManager *)v7 updateOperationShouldPerformUnattendedPurge:location[0]]];
+  v5 = [(SUUIUpdateOperationDownloadAndScheduleContext *)v4 initWithUnattendedPurge:[(SUUIStatefulUIManager *)selfCopy updateOperationShouldPerformUnattendedPurge:location[0]]];
   objc_storeStrong(location, 0);
 
   return v5;
 }
 
-- (id)contextForInstallUpdateOperation:(id)a3
+- (id)contextForInstallUpdateOperation:(id)operation
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, operation);
   v4 = [SUUIUpdateOperationInstallContext alloc];
-  v5 = [(SUUIUpdateOperationInstallContext *)v4 initWithUnattendedPurge:[(SUUIStatefulUIManager *)v7 updateOperationShouldPerformUnattendedPurge:location[0]]];
+  v5 = [(SUUIUpdateOperationInstallContext *)v4 initWithUnattendedPurge:[(SUUIStatefulUIManager *)selfCopy updateOperationShouldPerformUnattendedPurge:location[0]]];
   objc_storeStrong(location, 0);
 
   return v5;
 }
 
-- (id)contextForUserPromotionUpdateOperation:(id)a3
+- (id)contextForUserPromotionUpdateOperation:(id)operation
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, operation);
   v4 = objc_opt_new();
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-- (id)contextForPurgeUpdateOperation:(id)a3 forUserRequestedOperation:(BOOL)a4 notifyUser:(BOOL)a5
+- (id)contextForPurgeUpdateOperation:(id)operation forUserRequestedOperation:(BOOL)requestedOperation notifyUser:(BOOL)user
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = [[SUUIUpdateOperationPurgeContext alloc] initAsUserRequest:a4 notifyUser:a5];
+  objc_storeStrong(location, operation);
+  v8 = [[SUUIUpdateOperationPurgeContext alloc] initAsUserRequest:requestedOperation notifyUser:user];
   objc_storeStrong(location, 0);
 
   return v8;
 }
 
-- (id)contextForScheduleUpdateOperation:(id)a3
+- (id)contextForScheduleUpdateOperation:(id)operation
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, operation);
   v4 = [SUUIUpdateOperationScheduleContext alloc];
-  v5 = [(SUUIUpdateOperationScheduleContext *)v4 initWithUnattendedPurge:[(SUUIStatefulUIManager *)v7 updateOperationShouldPerformUnattendedPurge:location[0]]];
+  v5 = [(SUUIUpdateOperationScheduleContext *)v4 initWithUnattendedPurge:[(SUUIStatefulUIManager *)selfCopy updateOperationShouldPerformUnattendedPurge:location[0]]];
   objc_storeStrong(location, 0);
 
   return v5;
 }
 
-- (id)contextForUserUnscheduleUpdateOperation:(id)a3
+- (id)contextForUserUnscheduleUpdateOperation:(id)operation
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, operation);
   v4 = objc_opt_new();
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-- (BOOL)updateOperationShouldPerformUnattendedPurge:(id)a3
+- (BOOL)updateOperationShouldPerformUnattendedPurge:(id)purge
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v12 = [(SUUIStatefulUIManager *)v14 currentDownload];
-  v11 = [(SUUIStatefulUIManager *)v14 preferredStatefulDescriptor];
-  v10 = [(SUUIStatefulUIManager *)v14 alternateStatefulDescriptor];
-  if (!v12)
+  objc_storeStrong(location, purge);
+  currentDownload = [(SUUIStatefulUIManager *)selfCopy currentDownload];
+  preferredStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy preferredStatefulDescriptor];
+  alternateStatefulDescriptor = [(SUUIStatefulUIManager *)selfCopy alternateStatefulDescriptor];
+  if (!currentDownload)
   {
     goto LABEL_13;
   }
 
   v8 = 0;
   v5 = 0;
-  if (v11)
+  if (preferredStatefulDescriptor)
   {
-    v9 = [v12 descriptor];
+    descriptor = [currentDownload descriptor];
     v8 = 1;
-    v5 = [v11 isEqualToDescriptor:?];
+    v5 = [preferredStatefulDescriptor isEqualToDescriptor:?];
   }
 
   if (v8)
   {
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](descriptor);
   }
 
   v6 = 0;
   v4 = 0;
-  if (v10)
+  if (alternateStatefulDescriptor)
   {
-    v7 = [v12 descriptor];
+    descriptor2 = [currentDownload descriptor];
     v6 = 1;
-    v4 = [v10 isEqualToDescriptor:?];
+    v4 = [alternateStatefulDescriptor isEqualToDescriptor:?];
   }
 
   if (v6)
   {
-    MEMORY[0x277D82BD8](v7);
+    MEMORY[0x277D82BD8](descriptor2);
   }
 
   if (v5 & 1) != 0 || (v4)
@@ -27737,41 +27737,41 @@ LABEL_13:
     v15 = 1;
   }
 
-  objc_storeStrong(&v10, 0);
-  objc_storeStrong(&v11, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&alternateStatefulDescriptor, 0);
+  objc_storeStrong(&preferredStatefulDescriptor, 0);
+  objc_storeStrong(&currentDownload, 0);
   objc_storeStrong(location, 0);
   return v15 & 1;
 }
 
-- (BOOL)assignScanResults:(id)a3
+- (BOOL)assignScanResults:(id)results
 {
   v34 = *MEMORY[0x277D85DE8];
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, results);
   v29 = 0;
-  v21 = [(SUUIStatefulUIManager *)v31 isClearingSpaceForDownload];
-  if (v21 != [location[0] isClearingSpaceForDownload])
+  isClearingSpaceForDownload = [(SUUIStatefulUIManager *)selfCopy isClearingSpaceForDownload];
+  if (isClearingSpaceForDownload != [location[0] isClearingSpaceForDownload])
   {
-    v3 = [location[0] isClearingSpaceForDownload];
-    [(SUUIStatefulUIManager *)v31 setClearingSpaceForDownload:v3];
+    isClearingSpaceForDownload2 = [location[0] isClearingSpaceForDownload];
+    [(SUUIStatefulUIManager *)selfCopy setClearingSpaceForDownload:isClearingSpaceForDownload2];
     v29 = 1;
   }
 
-  v28 = [(SUUIStatefulUIManager *)v31 currentDownload];
-  v19 = [location[0] currentDownload];
+  currentDownload = [(SUUIStatefulUIManager *)selfCopy currentDownload];
+  currentDownload2 = [location[0] currentDownload];
   v26 = 0;
   v20 = 0;
-  if (v28 != v19)
+  if (currentDownload != currentDownload2)
   {
     LOBYTE(v18) = 1;
-    if (v28)
+    if (currentDownload)
     {
-      v27 = [location[0] currentDownload];
+      currentDownload3 = [location[0] currentDownload];
       v26 = 1;
-      v18 = [v27 isEqual:v28] ^ 1;
+      v18 = [currentDownload3 isEqual:currentDownload] ^ 1;
     }
 
     v20 = v18;
@@ -27779,43 +27779,43 @@ LABEL_13:
 
   if (v26)
   {
-    MEMORY[0x277D82BD8](v27);
+    MEMORY[0x277D82BD8](currentDownload3);
   }
 
-  MEMORY[0x277D82BD8](v19);
+  MEMORY[0x277D82BD8](currentDownload2);
   if (v20)
   {
-    v16 = v31;
-    v17 = [location[0] currentDownload];
+    v16 = selfCopy;
+    currentDownload4 = [location[0] currentDownload];
     [(SUUIStatefulUIManager *)v16 setCurrentDownload:?];
-    MEMORY[0x277D82BD8](v17);
+    MEMORY[0x277D82BD8](currentDownload4);
     v29 = 1;
   }
 
-  isAutoUpdateScheduled = v31->_isAutoUpdateScheduled;
+  isAutoUpdateScheduled = selfCopy->_isAutoUpdateScheduled;
   if (isAutoUpdateScheduled != [location[0] isAutoUpdateScheduled])
   {
-    v4 = [location[0] isAutoUpdateScheduled];
-    [(SUUIStatefulUIManager *)v31 setIsAutoUpdateScheduled:v4];
+    isAutoUpdateScheduled = [location[0] isAutoUpdateScheduled];
+    [(SUUIStatefulUIManager *)selfCopy setIsAutoUpdateScheduled:isAutoUpdateScheduled];
     v29 = 1;
   }
 
-  v25 = [(SUUIStatefulUIManager *)v31 getEnrollInBetaUpdatesStatus];
-  if (v31->_canEnrollInBetaUpdates != v25)
+  getEnrollInBetaUpdatesStatus = [(SUUIStatefulUIManager *)selfCopy getEnrollInBetaUpdatesStatus];
+  if (selfCopy->_canEnrollInBetaUpdates != getEnrollInBetaUpdatesStatus)
   {
-    [(SUUIStatefulUIManager *)v31 setCanEnrollInBetaUpdates:v25];
+    [(SUUIStatefulUIManager *)selfCopy setCanEnrollInBetaUpdates:getEnrollInBetaUpdatesStatus];
     v29 = 1;
     v14 = +[SUUILoggingContext statefulUILogger];
-    v24 = [v14 oslog];
+    oslog = [v14 oslog];
     MEMORY[0x277D82BD8](v14);
     v23 = OS_LOG_TYPE_DEFAULT;
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      log = v24;
+      log = oslog;
       type = v23;
-      v10 = v31;
-      v32 = v25;
-      if (v25)
+      v10 = selfCopy;
+      v32 = getEnrollInBetaUpdatesStatus;
+      if (getEnrollInBetaUpdatesStatus)
       {
         v5 = @"YES";
       }
@@ -27835,30 +27835,30 @@ LABEL_13:
       objc_storeStrong(&v22, 0);
     }
 
-    objc_storeStrong(&v24, 0);
+    objc_storeStrong(&oslog, 0);
   }
 
   v8 = v29;
-  objc_storeStrong(&v28, 0);
+  objc_storeStrong(&currentDownload, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
   return v8 & 1;
 }
 
-- (void)assignFullScanResults:(id)a3
+- (void)assignFullScanResults:(id)results
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SUUIStatefulUIManager *)v16 assignScanResults:location[0]];
-  v11 = [location[0] scanError];
+  objc_storeStrong(location, results);
+  [(SUUIStatefulUIManager *)selfCopy assignScanResults:location[0]];
+  scanError = [location[0] scanError];
   v13 = 0;
-  if (v11)
+  if (scanError)
   {
-    v14 = [location[0] scanError];
+    scanError2 = [location[0] scanError];
     v13 = 1;
-    v10 = v14;
+    v10 = scanError2;
   }
 
   else
@@ -27866,106 +27866,106 @@ LABEL_13:
     v10 = 0;
   }
 
-  [(SUUIStatefulUIManager *)v16 setScanError:v10];
+  [(SUUIStatefulUIManager *)selfCopy setScanError:v10];
   if (v13)
   {
-    MEMORY[0x277D82BD8](v14);
+    MEMORY[0x277D82BD8](scanError2);
   }
 
-  MEMORY[0x277D82BD8](v11);
-  v3 = [location[0] mdmPathRestrictions];
-  [(SUUIStatefulUIManager *)v16 setMdmPathRestrictions:v3];
-  v6 = [location[0] currentSeedingDevice];
-  [(SUUIStatefulUIManager *)v16 setCurrentSeedingDevice:?];
-  MEMORY[0x277D82BD8](v6);
-  v7 = [location[0] betaPrograms];
-  [(SUUIStatefulUIManager *)v16 setBetaPrograms:?];
-  MEMORY[0x277D82BD8](v7);
-  v8 = [location[0] enrolledBetaProgram];
-  [(SUUIStatefulUIManager *)v16 setEnrolledBetaProgram:?];
-  MEMORY[0x277D82BD8](v8);
-  v9 = [location[0] ddmDeclaration];
-  [(SUUIStatefulUIManager *)v16 setDDMDeclaration:?];
-  MEMORY[0x277D82BD8](v9);
-  [(SUUIStatefulUIManager *)v16 willChangeValueForKey:?];
-  v12[0] = v16;
+  MEMORY[0x277D82BD8](scanError);
+  mdmPathRestrictions = [location[0] mdmPathRestrictions];
+  [(SUUIStatefulUIManager *)selfCopy setMdmPathRestrictions:mdmPathRestrictions];
+  currentSeedingDevice = [location[0] currentSeedingDevice];
+  [(SUUIStatefulUIManager *)selfCopy setCurrentSeedingDevice:?];
+  MEMORY[0x277D82BD8](currentSeedingDevice);
+  betaPrograms = [location[0] betaPrograms];
+  [(SUUIStatefulUIManager *)selfCopy setBetaPrograms:?];
+  MEMORY[0x277D82BD8](betaPrograms);
+  enrolledBetaProgram = [location[0] enrolledBetaProgram];
+  [(SUUIStatefulUIManager *)selfCopy setEnrolledBetaProgram:?];
+  MEMORY[0x277D82BD8](enrolledBetaProgram);
+  ddmDeclaration = [location[0] ddmDeclaration];
+  [(SUUIStatefulUIManager *)selfCopy setDDMDeclaration:?];
+  MEMORY[0x277D82BD8](ddmDeclaration);
+  [(SUUIStatefulUIManager *)selfCopy willChangeValueForKey:?];
+  v12[0] = selfCopy;
   v12[1] = @"rollingBackSplatUpdate";
-  v5 = [location[0] isRollingBackSplatUpdate];
-  v16->_rollingBackSplatUpdate = v5;
+  isRollingBackSplatUpdate = [location[0] isRollingBackSplatUpdate];
+  selfCopy->_rollingBackSplatUpdate = isRollingBackSplatUpdate;
   v17 = v12;
   if (v12[0])
   {
     [*v17 didChangeValueForKey:v17[1]];
   }
 
-  v4 = [location[0] isDelayingUpdate];
-  v16->_delayingUpdate = v4;
+  isDelayingUpdate = [location[0] isDelayingUpdate];
+  selfCopy->_delayingUpdate = isDelayingUpdate;
   objc_storeStrong(location, 0);
 }
 
-- (void)assignDownloadUpdateResults:(id)a3
+- (void)assignDownloadUpdateResults:(id)results
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v6;
-  v4 = [location[0] download];
+  objc_storeStrong(location, results);
+  v3 = selfCopy;
+  download = [location[0] download];
   [(SUUIStatefulUIManager *)v3 setCurrentDownload:?];
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](download);
   objc_storeStrong(location, 0);
 }
 
-- (void)assignDownloadAndScheduleUpdateResults:(id)a3
+- (void)assignDownloadAndScheduleUpdateResults:(id)results
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v6;
-  v4 = [location[0] download];
+  objc_storeStrong(location, results);
+  v3 = selfCopy;
+  download = [location[0] download];
   [(SUUIStatefulUIManager *)v3 setCurrentDownload:?];
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](download);
   objc_storeStrong(location, 0);
 }
 
-- (void)assignInstallUpdateResults:(id)a3
+- (void)assignInstallUpdateResults:(id)results
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, results);
   objc_storeStrong(location, 0);
 }
 
-- (void)assignScheduleUpdateResults:(id)a3
+- (void)assignScheduleUpdateResults:(id)results
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, results);
   objc_storeStrong(location, 0);
 }
 
-- (void)assignUserPromotionUpdateResults:(id)a3
+- (void)assignUserPromotionUpdateResults:(id)results
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v6;
-  v4 = [location[0] download];
+  objc_storeStrong(location, results);
+  v3 = selfCopy;
+  download = [location[0] download];
   [(SUUIStatefulUIManager *)v3 setCurrentDownload:?];
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](download);
   objc_storeStrong(location, 0);
 }
 
-- (void)assignUnscheduleUpdateResults:(id)a3
+- (void)assignUnscheduleUpdateResults:(id)results
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, results);
   objc_storeStrong(location, 0);
 }
 

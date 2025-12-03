@@ -8,9 +8,9 @@
 {
   v4.receiver = self;
   v4.super_class = _SBSDFView;
-  v2 = [(_SBSDFView *)&v4 layer];
+  layer = [(_SBSDFView *)&v4 layer];
 
-  return v2;
+  return layer;
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface W5PeerSnifferListener
-- (BOOL)handleClientRequest:(id)a3;
-- (W5PeerSnifferListener)initWithInterface:(id)a3 snifferManager:(id)a4;
-- (id)_runSnifferOnChannels:(id)a3 interface:(id)a4 duration:(double)a5 noAutoStop:(BOOL)a6 rotationInternal:(int64_t)a7 uuid:(id)a8;
-- (void)stopSnifferWithUUID:(id)a3 interface:(id)a4;
+- (BOOL)handleClientRequest:(id)request;
+- (W5PeerSnifferListener)initWithInterface:(id)interface snifferManager:(id)manager;
+- (id)_runSnifferOnChannels:(id)channels interface:(id)interface duration:(double)duration noAutoStop:(BOOL)stop rotationInternal:(int64_t)internal uuid:(id)uuid;
+- (void)stopSnifferWithUUID:(id)d interface:(id)interface;
 @end
 
 @implementation W5PeerSnifferListener
 
-- (W5PeerSnifferListener)initWithInterface:(id)a3 snifferManager:(id)a4
+- (W5PeerSnifferListener)initWithInterface:(id)interface snifferManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  interfaceCopy = interface;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = W5PeerSnifferListener;
   v9 = [(W5PeerSnifferListener *)&v13 init];
   v10 = v9;
-  if (!v9 || (objc_storeStrong(&v9->_interface, a3), !v10->_interface) || (objc_storeStrong(&v10->_snifferManager, a4), !v10->_snifferManager))
+  if (!v9 || (objc_storeStrong(&v9->_interface, interface), !v10->_interface) || (objc_storeStrong(&v10->_snifferManager, manager), !v10->_snifferManager))
   {
 
     v11 = sub_100098A04();
@@ -36,79 +36,79 @@
   return v10;
 }
 
-- (BOOL)handleClientRequest:(id)a3
+- (BOOL)handleClientRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 payload];
-  v6 = [v5 version];
-  v7 = [v6 integerValue];
+  requestCopy = request;
+  payload = [requestCopy payload];
+  version = [payload version];
+  integerValue = [version integerValue];
 
   v8 = objc_alloc_init(W5PeerSnifferResponsePayload);
   [(W5PeerSnifferResponsePayload *)v8 setVersion:&off_1000EEEA0];
-  if (v7 == 1)
+  if (integerValue == 1)
   {
-    v9 = [v5 type];
-    v10 = [v5 channels];
-    [v5 duration];
+    type = [payload type];
+    channels = [payload channels];
+    [payload duration];
     v12 = v11;
-    v13 = [v5 uuid];
-    if (v9 == 2)
+    uuid = [payload uuid];
+    if (type == 2)
     {
       v18 = sub_100098A04();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         v25 = 138543362;
-        v26 = v13;
+        v26 = uuid;
         LODWORD(v24) = 12;
         v23 = &v25;
         _os_log_send_and_compose_impl();
       }
 
-      [(W5PeerSnifferListener *)self stopSnifferWithUUID:v13 interface:self->_interface];
+      [(W5PeerSnifferListener *)self stopSnifferWithUUID:uuid interface:self->_interface];
       [(W5PeerSnifferResponsePayload *)v8 setStatus:1];
     }
 
-    else if (v9 == 1 && v10)
+    else if (type == 1 && channels)
     {
       v14 = sub_100098A04();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v25 = 138543362;
-        v26 = v10;
+        v26 = channels;
         LODWORD(v24) = 12;
         v23 = &v25;
         _os_log_send_and_compose_impl();
       }
 
-      if (!v13)
+      if (!uuid)
       {
-        v13 = +[NSUUID UUID];
+        uuid = +[NSUUID UUID];
         v15 = sub_100098A04();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
           v25 = 138543362;
-          v26 = v13;
+          v26 = uuid;
           LODWORD(v24) = 12;
           v23 = &v25;
           _os_log_send_and_compose_impl();
         }
       }
 
-      v16 = [v5 noAutoStop];
-      if (v16)
+      noAutoStop = [payload noAutoStop];
+      if (noAutoStop)
       {
-        v17 = [v5 rotationInterval];
+        rotationInterval = [payload rotationInterval];
       }
 
       else
       {
-        v17 = 0;
+        rotationInterval = 0;
       }
 
-      v19 = [(W5PeerSnifferListener *)self _runSnifferOnChannels:v10 interface:self->_interface duration:v16 noAutoStop:v17 rotationInternal:v13 uuid:v12];
+      v19 = [(W5PeerSnifferListener *)self _runSnifferOnChannels:channels interface:self->_interface duration:noAutoStop noAutoStop:rotationInterval rotationInternal:uuid uuid:v12];
       [(W5PeerSnifferResponsePayload *)v8 setStatus:1];
       [(W5PeerSnifferResponsePayload *)v8 setFilePaths:v19];
-      [(W5PeerSnifferResponsePayload *)v8 setUuid:v13];
+      [(W5PeerSnifferResponsePayload *)v8 setUuid:uuid];
       v20 = sub_100098A04();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
@@ -119,7 +119,7 @@
         v29 = 1024;
         v30 = 83;
         v31 = 2114;
-        v32 = v13;
+        v32 = uuid;
         v33 = 2114;
         v34 = v19;
         LODWORD(v24) = 48;
@@ -129,17 +129,17 @@
     }
   }
 
-  v21 = [v4 handler];
-  (v21)[2](v21, v8, 0);
+  handler = [requestCopy handler];
+  (handler)[2](handler, v8, 0);
 
   return 1;
 }
 
-- (id)_runSnifferOnChannels:(id)a3 interface:(id)a4 duration:(double)a5 noAutoStop:(BOOL)a6 rotationInternal:(int64_t)a7 uuid:(id)a8
+- (id)_runSnifferOnChannels:(id)channels interface:(id)interface duration:(double)duration noAutoStop:(BOOL)stop rotationInternal:(int64_t)internal uuid:(id)uuid
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
+  channelsCopy = channels;
+  interfaceCopy = interface;
+  uuidCopy = uuid;
   v39[0] = 0;
   v39[1] = v39;
   v39[2] = 0x3032000000;
@@ -160,18 +160,18 @@
   v21[1] = 3221225472;
   v21[2] = sub_100012DD4;
   v21[3] = &unk_1000E1500;
-  v30 = a6;
-  v17 = v16;
+  stopCopy = stop;
+  v17 = uuidCopy;
   v22 = v17;
-  v28 = a5;
-  v29 = a7;
-  v18 = v15;
+  durationCopy = duration;
+  internalCopy = internal;
+  v18 = interfaceCopy;
   v25 = v37;
   v26 = v39;
   v23 = v18;
-  v24 = self;
+  selfCopy = self;
   v27 = &v31;
-  [v14 enumerateObjectsUsingBlock:v21];
+  [channelsCopy enumerateObjectsUsingBlock:v21];
   v19 = v32[5];
 
   _Block_object_dispose(&v31, 8);
@@ -181,15 +181,15 @@
   return v19;
 }
 
-- (void)stopSnifferWithUUID:(id)a3 interface:(id)a4
+- (void)stopSnifferWithUUID:(id)d interface:(id)interface
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  interfaceCopy = interface;
   v8 = sub_100098A04();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138543362;
-    v18 = v6;
+    v18 = dCopy;
     _os_log_send_and_compose_impl();
   }
 
@@ -198,16 +198,16 @@
   v15[1] = 3221225472;
   v15[2] = sub_10001369C;
   v15[3] = &unk_1000E1528;
-  v10 = v6;
+  v10 = dCopy;
   v16 = v10;
   [(W5WiFiSniffManager *)snifferManager cancelRequestWithUUID:v10 reply:v15];
   v14 = 0;
-  [v7 setUserAutoJoinDisabled:0 error:&v14];
+  [interfaceCopy setUserAutoJoinDisabled:0 error:&v14];
   v11 = v14;
   v12 = sub_100098A04();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v7 userAutoJoinDisabled];
+    userAutoJoinDisabled = [interfaceCopy userAutoJoinDisabled];
     v17 = 136316418;
     v18 = "[W5PeerSnifferListener stopSnifferWithUUID:interface:]";
     v19 = 2080;
@@ -217,7 +217,7 @@
     v23 = 1024;
     v24 = 0;
     v25 = 1024;
-    v26 = v13;
+    v26 = userAutoJoinDisabled;
     v27 = 2114;
     v28 = v11;
     _os_log_send_and_compose_impl();

@@ -1,29 +1,29 @@
 @interface NTKParmesanAssetReader
-+ (id)readerForAlbumWithResourceDirectory:(id)a3;
-+ (id)readerForResourceDirectory:(id)a3;
-- (NTKParmesanAssetReader)initWithResourceDirectory:(id)a3;
++ (id)readerForAlbumWithResourceDirectory:(id)directory;
++ (id)readerForResourceDirectory:(id)directory;
+- (NTKParmesanAssetReader)initWithResourceDirectory:(id)directory;
 - (NTKParmesanAssetReaderDelegate)delegate;
 - (NTKParmesanShuffleSelection)shuffleSelection;
 - (id)description;
 - (id)firstObject;
 - (id)lastObject;
 - (unint64_t)contentType;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 @end
 
 @implementation NTKParmesanAssetReader
 
-- (NTKParmesanAssetReader)initWithResourceDirectory:(id)a3
+- (NTKParmesanAssetReader)initWithResourceDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   v15.receiver = self;
   v15.super_class = NTKParmesanAssetReader;
   v8 = [(NTKParmesanAssetReader *)&v15 init];
   if (v8)
   {
-    if (v4)
+    if (directoryCopy)
     {
-      v9 = objc_msgSend_copy(v4, v5, v6, v7);
+      v9 = objc_msgSend_copy(directoryCopy, v5, v6, v7);
       resourceDirectory = v8->_resourceDirectory;
       v8->_resourceDirectory = v9;
     }
@@ -139,20 +139,20 @@ LABEL_15:
   return v35;
 }
 
-+ (id)readerForResourceDirectory:(id)a3
++ (id)readerForResourceDirectory:(id)directory
 {
-  v3 = a3;
+  directoryCopy = directory;
   v4 = [_NTKParmesanImageListReader alloc];
-  v7 = objc_msgSend_initWithResourceDirectory_(v4, v5, v3, v6);
+  v7 = objc_msgSend_initWithResourceDirectory_(v4, v5, directoryCopy, v6);
 
   return v7;
 }
 
-+ (id)readerForAlbumWithResourceDirectory:(id)a3
++ (id)readerForAlbumWithResourceDirectory:(id)directory
 {
-  v3 = a3;
+  directoryCopy = directory;
   v4 = [_NTKParmesanImageListReader alloc];
-  v7 = objc_msgSend_initWithResourceDirectory_(v4, v5, v3, v6);
+  v7 = objc_msgSend_initWithResourceDirectory_(v4, v5, directoryCopy, v6);
 
   return v7;
 }
@@ -180,13 +180,13 @@ LABEL_15:
   return v5;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  a3->var2 = &self->_mutationCount;
-  a3->var0 = 1;
-  v8 = a3->var3[0];
-  v9 = v8 + a5;
-  if (v8 + a5 > objc_msgSend_count(self, a2, a3, a4))
+  state->var2 = &self->_mutationCount;
+  state->var0 = 1;
+  v8 = state->var3[0];
+  v9 = v8 + count;
+  if (v8 + count > objc_msgSend_count(self, a2, state, objects))
   {
     v9 = objc_msgSend_count(self, v10, v11, v12);
   }
@@ -194,17 +194,17 @@ LABEL_15:
   v13 = v9 - v8;
   if (v9 > v8)
   {
-    v14 = a4;
+    objectsCopy = objects;
     do
     {
-      *v14++ = objc_msgSend_objectAtIndex_(self, v10, v8++, v12);
+      *objectsCopy++ = objc_msgSend_objectAtIndex_(self, v10, v8++, v12);
     }
 
     while (v9 != v8);
   }
 
-  a3->var3[0] = v9;
-  a3->var1 = a4;
+  state->var3[0] = v9;
+  state->var1 = objects;
   return v13;
 }
 

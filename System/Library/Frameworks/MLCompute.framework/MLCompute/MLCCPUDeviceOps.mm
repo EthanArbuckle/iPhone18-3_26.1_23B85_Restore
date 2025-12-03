@@ -1,38 +1,38 @@
 @interface MLCCPUDeviceOps
-- (MLCCPUDeviceOps)initWithType:(int)a3 params:(id)a4 inDeltaData:(id)a5 outDeltaData:(id)a6 weightsDeltaData:(id)a7 biasDeltaData:(id)a8 weightsMomentumData:(id)a9 biasMomentumData:(id)a10 betaDeltaData:(id)a11 gammaDeltaData:(id)a12 betaMomentumData:(id)a13 gammaMomentumData:(id)a14;
+- (MLCCPUDeviceOps)initWithType:(int)type params:(id)params inDeltaData:(id)data outDeltaData:(id)deltaData weightsDeltaData:(id)weightsDeltaData biasDeltaData:(id)biasDeltaData weightsMomentumData:(id)momentumData biasMomentumData:(id)self0 betaDeltaData:(id)self1 gammaDeltaData:(id)self2 betaMomentumData:(id)self3 gammaMomentumData:(id)self4;
 - (void)dealloc;
 @end
 
 @implementation MLCCPUDeviceOps
 
-- (MLCCPUDeviceOps)initWithType:(int)a3 params:(id)a4 inDeltaData:(id)a5 outDeltaData:(id)a6 weightsDeltaData:(id)a7 biasDeltaData:(id)a8 weightsMomentumData:(id)a9 biasMomentumData:(id)a10 betaDeltaData:(id)a11 gammaDeltaData:(id)a12 betaMomentumData:(id)a13 gammaMomentumData:(id)a14
+- (MLCCPUDeviceOps)initWithType:(int)type params:(id)params inDeltaData:(id)data outDeltaData:(id)deltaData weightsDeltaData:(id)weightsDeltaData biasDeltaData:(id)biasDeltaData weightsMomentumData:(id)momentumData biasMomentumData:(id)self0 betaDeltaData:(id)self1 gammaDeltaData:(id)self2 betaMomentumData:(id)self3 gammaMomentumData:(id)self4
 {
-  v50 = a4;
-  v18 = a5;
-  v19 = a6;
-  v40 = a7;
-  v49 = a7;
-  v48 = a8;
-  v47 = a9;
-  v46 = a10;
-  v45 = a11;
-  v44 = a12;
-  v43 = a13;
-  v42 = a14;
+  paramsCopy = params;
+  dataCopy = data;
+  deltaDataCopy = deltaData;
+  weightsDeltaDataCopy = weightsDeltaData;
+  weightsDeltaDataCopy2 = weightsDeltaData;
+  biasDeltaDataCopy = biasDeltaData;
+  momentumDataCopy = momentumData;
+  biasMomentumDataCopy = biasMomentumData;
+  betaDeltaDataCopy = betaDeltaData;
+  gammaDeltaDataCopy = gammaDeltaData;
+  betaMomentumDataCopy = betaMomentumData;
+  gammaMomentumDataCopy = gammaMomentumData;
   v51.receiver = self;
   v51.super_class = MLCCPUDeviceOps;
   v20 = [(MLCDeviceOps *)&v51 initWithSource:0 secondarySource:0 result:0 batchSize:1];
   v21 = v20;
   if (v20)
   {
-    v20->_deviceOpType = a3;
-    objc_storeStrong(&v20->_params, a4);
+    v20->_deviceOpType = type;
+    objc_storeStrong(&v20->_params, params);
     fusedPrimitiveParams = v21->_fusedPrimitiveParams;
     v21->_fusedPrimitiveParams = 0;
 
-    if (v18)
+    if (dataCopy)
     {
-      v23 = [MEMORY[0x277CBEA60] arrayWithArray:v18];
+      v23 = [MEMORY[0x277CBEA60] arrayWithArray:dataCopy];
     }
 
     else
@@ -41,13 +41,13 @@
     }
 
     objc_storeStrong(&v21->_inDeltaData, v23);
-    if (v18)
+    if (dataCopy)
     {
     }
 
-    if (v19)
+    if (deltaDataCopy)
     {
-      v24 = [MEMORY[0x277CBEA60] arrayWithArray:v19];
+      v24 = [MEMORY[0x277CBEA60] arrayWithArray:deltaDataCopy];
     }
 
     else
@@ -56,18 +56,18 @@
     }
 
     objc_storeStrong(&v21->_outDeltaData, v24);
-    if (v19)
+    if (deltaDataCopy)
     {
     }
 
-    objc_storeStrong(&v21->_weightsDeltaData, v40);
-    objc_storeStrong(&v21->_biasDeltaData, a8);
-    objc_storeStrong(&v21->_betaDeltaData, a11);
-    objc_storeStrong(&v21->_gammaDeltaData, a12);
-    objc_storeStrong(&v21->_weightsMomentumData, a9);
-    objc_storeStrong(&v21->_biasMomentumData, a10);
-    objc_storeStrong(&v21->_betaMomentumData, a13);
-    objc_storeStrong(&v21->_gammaMomentumData, a14);
+    objc_storeStrong(&v21->_weightsDeltaData, weightsDeltaDataCopy);
+    objc_storeStrong(&v21->_biasDeltaData, biasDeltaData);
+    objc_storeStrong(&v21->_betaDeltaData, betaDeltaData);
+    objc_storeStrong(&v21->_gammaDeltaData, gammaDeltaData);
+    objc_storeStrong(&v21->_weightsMomentumData, momentumData);
+    objc_storeStrong(&v21->_biasMomentumData, biasMomentumData);
+    objc_storeStrong(&v21->_betaMomentumData, betaMomentumData);
+    objc_storeStrong(&v21->_gammaMomentumData, gammaMomentumData);
     poolingIndicesBuffer = v21->_poolingIndicesBuffer;
     v21->_poolingIndicesBuffer = 0;
 
@@ -126,9 +126,9 @@
 
 - (void)dealloc
 {
-  v3 = [(MLCCPUDeviceOps *)self layer];
+  layer = [(MLCCPUDeviceOps *)self layer];
 
-  if (v3)
+  if (layer)
   {
     goto LABEL_4;
   }

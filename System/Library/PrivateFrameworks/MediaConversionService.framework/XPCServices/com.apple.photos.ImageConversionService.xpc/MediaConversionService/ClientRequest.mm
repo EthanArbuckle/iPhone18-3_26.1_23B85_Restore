@@ -3,7 +3,7 @@
 - (NSString)identifier;
 - (NSXPCConnection)connection;
 - (id)description;
-- (void)videoConversionTask:(id)a3 didUpdateFractionCompleted:(double)a4;
+- (void)videoConversionTask:(id)task didUpdateFractionCompleted:(double)completed;
 @end
 
 @implementation ClientRequest
@@ -38,52 +38,52 @@
 
 - (id)description
 {
-  v3 = [(MediaConversionRequestTracker *)self->_requestTracker requestNumber];
-  v4 = [(MediaConversionRequestTracker *)self->_requestTracker requestIdentifier];
-  v5 = [(MediaConversionRequestTracker *)self->_requestTracker effectivePriority];
-  if (v5 > 4)
+  requestNumber = [(MediaConversionRequestTracker *)self->_requestTracker requestNumber];
+  requestIdentifier = [(MediaConversionRequestTracker *)self->_requestTracker requestIdentifier];
+  effectivePriority = [(MediaConversionRequestTracker *)self->_requestTracker effectivePriority];
+  if (effectivePriority > 4)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = off_10003DAF8[v5];
+    v6 = off_10003DAF8[effectivePriority];
   }
 
   v7 = v6;
-  v8 = [NSString stringWithFormat:@"<Request #%lu (%p) %@ %@>", v3, self, v4, v7];
+  v8 = [NSString stringWithFormat:@"<Request #%lu (%p) %@ %@>", requestNumber, self, requestIdentifier, v7];
 
   return v8;
 }
 
-- (void)videoConversionTask:(id)a3 didUpdateFractionCompleted:(double)a4
+- (void)videoConversionTask:(id)task didUpdateFractionCompleted:(double)completed
 {
   if ([(ClientRequest *)self wantsProgress])
   {
-    v7 = [(ClientRequest *)self identifier];
-    if (!v7)
+    identifier = [(ClientRequest *)self identifier];
+    if (!identifier)
     {
       v13 = +[NSAssertionHandler currentHandler];
       [v13 handleFailureInMethod:a2 object:self file:@"PAMediaConversionServiceSharedUtilitiesServiceSide.m" lineNumber:124 description:@"Unexpected missing job identifier"];
     }
 
     v8 = +[NSMutableDictionary dictionary];
-    [v8 setObject:v7 forKeyedSubscript:@"PAMediaConversionServiceJobIdentifierKey"];
-    if (__fpclassifyd(a4) != 1)
+    [v8 setObject:identifier forKeyedSubscript:@"PAMediaConversionServiceJobIdentifierKey"];
+    if (__fpclassifyd(completed) != 1)
     {
-      v9 = [NSNumber numberWithDouble:a4];
+      v9 = [NSNumber numberWithDouble:completed];
       [v8 setObject:v9 forKeyedSubscript:@"PAMediaConversionServiceProgressKey"];
     }
 
-    v10 = [(ClientRequest *)self connection];
+    connection = [(ClientRequest *)self connection];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_10000EA94;
     v14[3] = &unk_10003D5F0;
-    v15 = v7;
-    v11 = v7;
-    v12 = [v10 remoteObjectProxyWithErrorHandler:v14];
+    v15 = identifier;
+    v11 = identifier;
+    v12 = [connection remoteObjectProxyWithErrorHandler:v14];
     [v12 updateProgress:v8];
   }
 }

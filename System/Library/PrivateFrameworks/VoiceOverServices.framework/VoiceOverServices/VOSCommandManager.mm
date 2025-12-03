@@ -1,36 +1,36 @@
 @interface VOSCommandManager
-- (BOOL)_validateUserProfileDiscrepancies:(id)a3;
-- (BOOL)commandHasAnyBindings:(id)a3 withResolver:(id)a4;
-- (BOOL)commandHasModifiedBindingsWhenZoomEnabled:(id)a3 withResolver:(id)a4;
+- (BOOL)_validateUserProfileDiscrepancies:(id)discrepancies;
+- (BOOL)commandHasAnyBindings:(id)bindings withResolver:(id)resolver;
+- (BOOL)commandHasModifiedBindingsWhenZoomEnabled:(id)enabled withResolver:(id)resolver;
 - (NSString)debugDescription;
 - (VOSCommandManager)initWithSystemProfile;
-- (id)addGesture:(id)a3 toCommand:(id)a4 withResolver:(id)a5;
-- (id)addKeyChord:(id)a3 toCommand:(id)a4 withResolver:(id)a5;
-- (id)allCommandsWithResolver:(id)a3;
-- (id)allShortcutBindingsWithResolver:(id)a3;
-- (id)allSiriShortcutCommandsWithResolver:(id)a3;
-- (id)availableSiriShortcuts:(id)a3;
-- (id)commandForKeyChord:(id)a3 withResolver:(id)a4;
-- (id)commandForTouchGesture:(id)a3 withResolver:(id)a4;
-- (id)gestureBindingsForCommand:(id)a3 withResolver:(id)a4;
+- (id)addGesture:(id)gesture toCommand:(id)command withResolver:(id)resolver;
+- (id)addKeyChord:(id)chord toCommand:(id)command withResolver:(id)resolver;
+- (id)allCommandsWithResolver:(id)resolver;
+- (id)allShortcutBindingsWithResolver:(id)resolver;
+- (id)allSiriShortcutCommandsWithResolver:(id)resolver;
+- (id)availableSiriShortcuts:(id)shortcuts;
+- (id)commandForKeyChord:(id)chord withResolver:(id)resolver;
+- (id)commandForTouchGesture:(id)gesture withResolver:(id)resolver;
+- (id)gestureBindingsForCommand:(id)command withResolver:(id)resolver;
 - (id)initPreferringUserProfile;
 - (id)initPreferringUserProfileWithoutShortcuts;
-- (id)removeGesture:(id)a3 fromCommand:(id)a4 withResolver:(id)a5;
-- (id)removeKeyChord:(id)a3 fromCommand:(id)a4 withResolver:(id)a5;
-- (id)shortcutBindingsForCommand:(id)a3 withResolver:(id)a4;
+- (id)removeGesture:(id)gesture fromCommand:(id)command withResolver:(id)resolver;
+- (id)removeKeyChord:(id)chord fromCommand:(id)command withResolver:(id)resolver;
+- (id)shortcutBindingsForCommand:(id)command withResolver:(id)resolver;
 - (id)systemProfile;
-- (id)userPresentableAllShortcutBindingsWithResolver:(id)a3;
-- (id)validateCanAddGesture:(id)a3 toCommand:(id)a4 withResolver:(id)a5;
-- (id)validateCanAddKeyChord:(id)a3 toCommand:(id)a4 withResolver:(id)a5;
-- (id)validateCanRemoveGesture:(id)a3 fromCommand:(id)a4 withResolver:(id)a5;
-- (id)validateCanRemoveKeyChord:(id)a3 fromCommand:(id)a4 withResolver:(id)a5;
-- (unint64_t)availabilityForCommand:(id)a3 withResolver:(id)a4;
-- (unint64_t)availabilityForGesture:(id)a3 withResolver:(id)a4;
-- (unint64_t)availabilityForShortcut:(id)a3 withResolver:(id)a4;
+- (id)userPresentableAllShortcutBindingsWithResolver:(id)resolver;
+- (id)validateCanAddGesture:(id)gesture toCommand:(id)command withResolver:(id)resolver;
+- (id)validateCanAddKeyChord:(id)chord toCommand:(id)command withResolver:(id)resolver;
+- (id)validateCanRemoveGesture:(id)gesture fromCommand:(id)command withResolver:(id)resolver;
+- (id)validateCanRemoveKeyChord:(id)chord fromCommand:(id)command withResolver:(id)resolver;
+- (unint64_t)availabilityForCommand:(id)command withResolver:(id)resolver;
+- (unint64_t)availabilityForGesture:(id)gesture withResolver:(id)resolver;
+- (unint64_t)availabilityForShortcut:(id)shortcut withResolver:(id)resolver;
 - (void)_commonInit;
 - (void)_commonUserProfileInit;
 - (void)_loadSystemProfile;
-- (void)batchUpdateActiveProfile:(id)a3 saveIfSuccessful:(BOOL)a4 completion:(id)a5;
+- (void)batchUpdateActiveProfile:(id)profile saveIfSuccessful:(BOOL)successful completion:(id)completion;
 - (void)dealloc;
 - (void)reloadPreferringUserProfile;
 - (void)reloadWithSystemProfile;
@@ -51,13 +51,13 @@
     [(VOSCommandManager *)v2 setLoadShortcuts:1];
     [(VOSCommandManager *)v3 _commonInit];
     objc_initWeak(&location, v3);
-    v4 = [MEMORY[0x277CE7E38] sharedManager];
+    mEMORY[0x277CE7E38] = [MEMORY[0x277CE7E38] sharedManager];
     v8 = MEMORY[0x277D85DD0];
     v9 = 3221225472;
     v10 = __42__VOSCommandManager_initWithSystemProfile__block_invoke;
     v11 = &unk_2784F3428;
     objc_copyWeak(&v12, &location);
-    v5 = [v4 registerShortcutsDidChangeBlock:&v8];
+    v5 = [mEMORY[0x277CE7E38] registerShortcutsDidChangeBlock:&v8];
     siriShortCutToken = v3->_siriShortCutToken;
     v3->_siriShortCutToken = v5;
 
@@ -128,13 +128,13 @@ void __42__VOSCommandManager_initWithSystemProfile__block_invoke(uint64_t a1)
   if ([(VOSCommandManager *)self loadShortcuts])
   {
     objc_initWeak(&location, self);
-    v5 = [MEMORY[0x277CE7E38] sharedManager];
+    mEMORY[0x277CE7E38] = [MEMORY[0x277CE7E38] sharedManager];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __32__VOSCommandManager__commonInit__block_invoke;
     v8[3] = &unk_2784F3428;
     objc_copyWeak(&v9, &location);
-    v6 = [v5 registerShortcutsDidChangeBlock:v8];
+    v6 = [mEMORY[0x277CE7E38] registerShortcutsDidChangeBlock:v8];
     siriShortCutToken = self->_siriShortCutToken;
     self->_siriShortCutToken = v6;
 
@@ -153,18 +153,18 @@ void __32__VOSCommandManager__commonInit__block_invoke(uint64_t a1)
 {
   if ([(VOSCommandManager *)self loadShortcuts])
   {
-    v3 = [MEMORY[0x277CE7E38] sharedManager];
-    v4 = [v3 shortcuts];
+    mEMORY[0x277CE7E38] = [MEMORY[0x277CE7E38] sharedManager];
+    shortcuts = [mEMORY[0x277CE7E38] shortcuts];
   }
 
   else
   {
-    v4 = 0;
+    shortcuts = 0;
   }
 
   v5 = MEMORY[0x277CCACA8];
   v6 = [(VOSCommandProfile *)self->_activeProfile debugDescription];
-  v7 = [v5 stringWithFormat:@"VOSCommadManager:<%p>.\nProfile: %@\nDiscovered Shortcuts: %@", self, v6, v4];
+  v7 = [v5 stringWithFormat:@"VOSCommadManager:<%p>.\nProfile: %@\nDiscovered Shortcuts: %@", self, v6, shortcuts];
 
   return v7;
 }
@@ -184,7 +184,7 @@ void __32__VOSCommandManager__commonInit__block_invoke(uint64_t a1)
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_223C70000, a2, OS_LOG_TYPE_ERROR, "Could not load user command profile: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -217,8 +217,8 @@ uint64_t __48__VOSCommandManager_reloadPreferringUserProfile__block_invoke(uint6
 {
   if ([(VOSCommandManager *)self loadShortcuts])
   {
-    v3 = [MEMORY[0x277CE7E38] sharedManager];
-    [v3 unregisterShortcutsDidChangeBlock:self->_siriShortCutToken];
+    mEMORY[0x277CE7E38] = [MEMORY[0x277CE7E38] sharedManager];
+    [mEMORY[0x277CE7E38] unregisterShortcutsDidChangeBlock:self->_siriShortCutToken];
   }
 
   v4.receiver = self;
@@ -226,12 +226,12 @@ uint64_t __48__VOSCommandManager_reloadPreferringUserProfile__block_invoke(uint6
   [(VOSCommandManager *)&v4 dealloc];
 }
 
-- (BOOL)_validateUserProfileDiscrepancies:(id)a3
+- (BOOL)_validateUserProfileDiscrepancies:(id)discrepancies
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  discrepanciesCopy = discrepancies;
   v5 = +[VOSCommandResolver resolverForCurrentHost];
-  v6 = [(VOSCommandManager *)self systemProfile];
+  systemProfile = [(VOSCommandManager *)self systemProfile];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -260,15 +260,15 @@ uint64_t __48__VOSCommandManager_reloadPreferringUserProfile__block_invoke(uint6
       }
 
       v13 = *(*(&v28 + 1) + 8 * v12);
-      if ([v6 availabilityForGesture:v13 withResolver:{v5, v26}] != 1)
+      if ([systemProfile availabilityForGesture:v13 withResolver:{v5, v26}] != 1)
       {
-        if ([v6 availabilityForGesture:v13 withResolver:v5])
+        if ([systemProfile availabilityForGesture:v13 withResolver:v5])
         {
           goto LABEL_20;
         }
 
-        v14 = [v4 commandForTouchGesture:v13 withResolver:v5];
-        v20 = [v6 commandForTouchGesture:v13 withResolver:v5];
+        v14 = [discrepanciesCopy commandForTouchGesture:v13 withResolver:v5];
+        v20 = [systemProfile commandForTouchGesture:v13 withResolver:v5];
         v15 = v20;
         if (v14)
         {
@@ -282,7 +282,7 @@ uint64_t __48__VOSCommandManager_reloadPreferringUserProfile__block_invoke(uint6
 
         if (!v21)
         {
-          v22 = [v4 addGesture:v13 toCommand:v20 withResolver:v5];
+          v22 = [discrepanciesCopy addGesture:v13 toCommand:v20 withResolver:v5];
           v17 = VOTLogCommon();
           if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
           {
@@ -307,13 +307,13 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v14 = [v4 commandForTouchGesture:v13 withResolver:v5];
+      v14 = [discrepanciesCopy commandForTouchGesture:v13 withResolver:v5];
       if (!v14)
       {
-        v15 = [v6 commandForTouchGesture:v13 withResolver:v5];
+        v15 = [systemProfile commandForTouchGesture:v13 withResolver:v5];
         if (v15)
         {
-          v16 = [v4 addGesture:v13 toCommand:v15 withResolver:v5];
+          v16 = [discrepanciesCopy addGesture:v13 toCommand:v15 withResolver:v5];
           v17 = VOTLogCommon();
           if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
           {
@@ -359,14 +359,14 @@ LABEL_27:
   block[3] = &unk_2784F3450;
   block[4] = self;
   dispatch_sync(queue, block);
-  v3 = [MEMORY[0x277CE7E20] sharedInstance];
-  [v3 setVoiceOverCustomCommandProfile:0];
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  [mEMORY[0x277CE7E20] setVoiceOverCustomCommandProfile:0];
 }
 
 - (void)saveAsUserProfile
 {
   v6 = *MEMORY[0x277D85DE8];
-  v2 = *(*a1 + 40);
+  v2 = *(*self + 40);
   v4 = 138412290;
   v5 = v2;
   _os_log_error_impl(&dword_223C70000, a2, OS_LOG_TYPE_ERROR, "Failed to archive VOSCommandProfile. error: %@", &v4, 0xCu);
@@ -385,11 +385,11 @@ void __38__VOSCommandManager_saveAsUserProfile__block_invoke(void *a1)
   *(v5 + 40) = v4;
 }
 
-- (void)batchUpdateActiveProfile:(id)a3 saveIfSuccessful:(BOOL)a4 completion:(id)a5
+- (void)batchUpdateActiveProfile:(id)profile saveIfSuccessful:(BOOL)successful completion:(id)completion
 {
-  v5 = a4;
-  v10 = a5;
-  v8 = (*(a3 + 2))(a3, self);
+  successfulCopy = successful;
+  completionCopy = completion;
+  v8 = (*(profile + 2))(profile, self);
   if (v8)
   {
     v9 = 1;
@@ -397,7 +397,7 @@ void __38__VOSCommandManager_saveAsUserProfile__block_invoke(void *a1)
 
   else
   {
-    v9 = !v5;
+    v9 = !successfulCopy;
   }
 
   if (!v9)
@@ -405,25 +405,25 @@ void __38__VOSCommandManager_saveAsUserProfile__block_invoke(void *a1)
     [(VOSCommandManager *)self saveAsUserProfile];
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, v8);
+    completionCopy[2](completionCopy, v8);
   }
 }
 
-- (id)availableSiriShortcuts:(id)a3
+- (id)availableSiriShortcuts:(id)shortcuts
 {
-  v3 = [MEMORY[0x277CE7E38] sharedManager];
-  v4 = [v3 shortcuts];
+  mEMORY[0x277CE7E38] = [MEMORY[0x277CE7E38] sharedManager];
+  shortcuts = [mEMORY[0x277CE7E38] shortcuts];
 
-  return v4;
+  return shortcuts;
 }
 
-- (id)addGesture:(id)a3 toCommand:(id)a4 withResolver:(id)a5
+- (id)addGesture:(id)gesture toCommand:(id)command withResolver:(id)resolver
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  gestureCopy = gesture;
+  commandCopy = command;
+  resolverCopy = resolver;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -435,14 +435,14 @@ void __38__VOSCommandManager_saveAsUserProfile__block_invoke(void *a1)
   block[1] = 3221225472;
   block[2] = __55__VOSCommandManager_addGesture_toCommand_withResolver___block_invoke;
   block[3] = &unk_2784F34C8;
-  v20 = v10;
+  v20 = resolverCopy;
   v21 = &v22;
   block[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v18 = gestureCopy;
+  v19 = commandCopy;
+  v12 = resolverCopy;
+  v13 = commandCopy;
+  v14 = gestureCopy;
   dispatch_sync(queue, block);
   v15 = v23[5];
 
@@ -461,11 +461,11 @@ uint64_t __55__VOSCommandManager_addGesture_toCommand_withResolver___block_invok
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)removeGesture:(id)a3 fromCommand:(id)a4 withResolver:(id)a5
+- (id)removeGesture:(id)gesture fromCommand:(id)command withResolver:(id)resolver
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  gestureCopy = gesture;
+  commandCopy = command;
+  resolverCopy = resolver;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -477,14 +477,14 @@ uint64_t __55__VOSCommandManager_addGesture_toCommand_withResolver___block_invok
   block[1] = 3221225472;
   block[2] = __60__VOSCommandManager_removeGesture_fromCommand_withResolver___block_invoke;
   block[3] = &unk_2784F34C8;
-  v20 = v10;
+  v20 = resolverCopy;
   v21 = &v22;
   block[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v18 = gestureCopy;
+  v19 = commandCopy;
+  v12 = resolverCopy;
+  v13 = commandCopy;
+  v14 = gestureCopy;
   dispatch_sync(queue, block);
   v15 = v23[5];
 
@@ -503,11 +503,11 @@ uint64_t __60__VOSCommandManager_removeGesture_fromCommand_withResolver___block_
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)addKeyChord:(id)a3 toCommand:(id)a4 withResolver:(id)a5
+- (id)addKeyChord:(id)chord toCommand:(id)command withResolver:(id)resolver
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  chordCopy = chord;
+  commandCopy = command;
+  resolverCopy = resolver;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -519,14 +519,14 @@ uint64_t __60__VOSCommandManager_removeGesture_fromCommand_withResolver___block_
   block[1] = 3221225472;
   block[2] = __56__VOSCommandManager_addKeyChord_toCommand_withResolver___block_invoke;
   block[3] = &unk_2784F34C8;
-  v20 = v10;
+  v20 = resolverCopy;
   v21 = &v22;
   block[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v18 = chordCopy;
+  v19 = commandCopy;
+  v12 = resolverCopy;
+  v13 = commandCopy;
+  v14 = chordCopy;
   dispatch_sync(queue, block);
   v15 = v23[5];
 
@@ -545,11 +545,11 @@ uint64_t __56__VOSCommandManager_addKeyChord_toCommand_withResolver___block_invo
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)removeKeyChord:(id)a3 fromCommand:(id)a4 withResolver:(id)a5
+- (id)removeKeyChord:(id)chord fromCommand:(id)command withResolver:(id)resolver
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  chordCopy = chord;
+  commandCopy = command;
+  resolverCopy = resolver;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -561,14 +561,14 @@ uint64_t __56__VOSCommandManager_addKeyChord_toCommand_withResolver___block_invo
   block[1] = 3221225472;
   block[2] = __61__VOSCommandManager_removeKeyChord_fromCommand_withResolver___block_invoke;
   block[3] = &unk_2784F34C8;
-  v20 = v10;
+  v20 = resolverCopy;
   v21 = &v22;
   block[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v18 = chordCopy;
+  v19 = commandCopy;
+  v12 = resolverCopy;
+  v13 = commandCopy;
+  v14 = chordCopy;
   dispatch_sync(queue, block);
   v15 = v23[5];
 
@@ -587,11 +587,11 @@ uint64_t __61__VOSCommandManager_removeKeyChord_fromCommand_withResolver___block
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)validateCanAddGesture:(id)a3 toCommand:(id)a4 withResolver:(id)a5
+- (id)validateCanAddGesture:(id)gesture toCommand:(id)command withResolver:(id)resolver
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  gestureCopy = gesture;
+  commandCopy = command;
+  resolverCopy = resolver;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -603,14 +603,14 @@ uint64_t __61__VOSCommandManager_removeKeyChord_fromCommand_withResolver___block
   block[1] = 3221225472;
   block[2] = __66__VOSCommandManager_validateCanAddGesture_toCommand_withResolver___block_invoke;
   block[3] = &unk_2784F34C8;
-  v20 = v10;
+  v20 = resolverCopy;
   v21 = &v22;
   block[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v18 = gestureCopy;
+  v19 = commandCopy;
+  v12 = resolverCopy;
+  v13 = commandCopy;
+  v14 = gestureCopy;
   dispatch_sync(queue, block);
   v15 = v23[5];
 
@@ -629,11 +629,11 @@ uint64_t __66__VOSCommandManager_validateCanAddGesture_toCommand_withResolver___
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)validateCanRemoveGesture:(id)a3 fromCommand:(id)a4 withResolver:(id)a5
+- (id)validateCanRemoveGesture:(id)gesture fromCommand:(id)command withResolver:(id)resolver
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  gestureCopy = gesture;
+  commandCopy = command;
+  resolverCopy = resolver;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -645,14 +645,14 @@ uint64_t __66__VOSCommandManager_validateCanAddGesture_toCommand_withResolver___
   block[1] = 3221225472;
   block[2] = __71__VOSCommandManager_validateCanRemoveGesture_fromCommand_withResolver___block_invoke;
   block[3] = &unk_2784F34C8;
-  v20 = v10;
+  v20 = resolverCopy;
   v21 = &v22;
   block[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v18 = gestureCopy;
+  v19 = commandCopy;
+  v12 = resolverCopy;
+  v13 = commandCopy;
+  v14 = gestureCopy;
   dispatch_sync(queue, block);
   v15 = v23[5];
 
@@ -671,11 +671,11 @@ uint64_t __71__VOSCommandManager_validateCanRemoveGesture_fromCommand_withResolv
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)validateCanAddKeyChord:(id)a3 toCommand:(id)a4 withResolver:(id)a5
+- (id)validateCanAddKeyChord:(id)chord toCommand:(id)command withResolver:(id)resolver
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  chordCopy = chord;
+  commandCopy = command;
+  resolverCopy = resolver;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -687,14 +687,14 @@ uint64_t __71__VOSCommandManager_validateCanRemoveGesture_fromCommand_withResolv
   block[1] = 3221225472;
   block[2] = __67__VOSCommandManager_validateCanAddKeyChord_toCommand_withResolver___block_invoke;
   block[3] = &unk_2784F34C8;
-  v20 = v10;
+  v20 = resolverCopy;
   v21 = &v22;
   block[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v18 = chordCopy;
+  v19 = commandCopy;
+  v12 = resolverCopy;
+  v13 = commandCopy;
+  v14 = chordCopy;
   dispatch_sync(queue, block);
   v15 = v23[5];
 
@@ -713,11 +713,11 @@ uint64_t __67__VOSCommandManager_validateCanAddKeyChord_toCommand_withResolver__
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)validateCanRemoveKeyChord:(id)a3 fromCommand:(id)a4 withResolver:(id)a5
+- (id)validateCanRemoveKeyChord:(id)chord fromCommand:(id)command withResolver:(id)resolver
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  chordCopy = chord;
+  commandCopy = command;
+  resolverCopy = resolver;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -729,14 +729,14 @@ uint64_t __67__VOSCommandManager_validateCanAddKeyChord_toCommand_withResolver__
   block[1] = 3221225472;
   block[2] = __72__VOSCommandManager_validateCanRemoveKeyChord_fromCommand_withResolver___block_invoke;
   block[3] = &unk_2784F34C8;
-  v20 = v10;
+  v20 = resolverCopy;
   v21 = &v22;
   block[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v18 = chordCopy;
+  v19 = commandCopy;
+  v12 = resolverCopy;
+  v13 = commandCopy;
+  v14 = chordCopy;
   dispatch_sync(queue, block);
   v15 = v23[5];
 
@@ -755,11 +755,11 @@ uint64_t __72__VOSCommandManager_validateCanRemoveKeyChord_fromCommand_withResol
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)commandForTouchGesture:(id)a3 withResolver:(id)a4
+- (id)commandForTouchGesture:(id)gesture withResolver:(id)resolver
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  gestureCopy = gesture;
+  resolverCopy = resolver;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -772,10 +772,10 @@ uint64_t __72__VOSCommandManager_validateCanRemoveKeyChord_fromCommand_withResol
   v21 = __57__VOSCommandManager_commandForTouchGesture_withResolver___block_invoke;
   v22 = &unk_2784F34F0;
   v26 = &v27;
-  v23 = self;
-  v9 = v6;
+  selfCopy = self;
+  v9 = gestureCopy;
   v24 = v9;
-  v10 = v7;
+  v10 = resolverCopy;
   v25 = v10;
   dispatch_sync(queue, &v19);
   v11 = v28[5];
@@ -825,11 +825,11 @@ uint64_t __57__VOSCommandManager_commandForTouchGesture_withResolver___block_inv
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)commandForKeyChord:(id)a3 withResolver:(id)a4
+- (id)commandForKeyChord:(id)chord withResolver:(id)resolver
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  chordCopy = chord;
+  resolverCopy = resolver;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -843,9 +843,9 @@ uint64_t __57__VOSCommandManager_commandForTouchGesture_withResolver___block_inv
   v16[3] = &unk_2784F34F0;
   v19 = &v20;
   v16[4] = self;
-  v9 = v6;
+  v9 = chordCopy;
   v17 = v9;
-  v10 = v7;
+  v10 = resolverCopy;
   v18 = v10;
   dispatch_sync(queue, v16);
   v11 = VOTLogCommon();
@@ -879,9 +879,9 @@ uint64_t __53__VOSCommandManager_commandForKeyChord_withResolver___block_invoke(
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)allCommandsWithResolver:(id)a3
+- (id)allCommandsWithResolver:(id)resolver
 {
-  v4 = a3;
+  resolverCopy = resolver;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -893,10 +893,10 @@ uint64_t __53__VOSCommandManager_commandForKeyChord_withResolver___block_invoke(
   block[1] = 3221225472;
   block[2] = __45__VOSCommandManager_allCommandsWithResolver___block_invoke;
   block[3] = &unk_2784F3518;
-  v10 = v4;
+  v10 = resolverCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = resolverCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -915,9 +915,9 @@ uint64_t __45__VOSCommandManager_allCommandsWithResolver___block_invoke(void *a1
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)allSiriShortcutCommandsWithResolver:(id)a3
+- (id)allSiriShortcutCommandsWithResolver:(id)resolver
 {
-  v4 = a3;
+  resolverCopy = resolver;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -929,10 +929,10 @@ uint64_t __45__VOSCommandManager_allCommandsWithResolver___block_invoke(void *a1
   block[1] = 3221225472;
   block[2] = __57__VOSCommandManager_allSiriShortcutCommandsWithResolver___block_invoke;
   block[3] = &unk_2784F3518;
-  v10 = v4;
+  v10 = resolverCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = resolverCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -951,9 +951,9 @@ uint64_t __57__VOSCommandManager_allSiriShortcutCommandsWithResolver___block_inv
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)allShortcutBindingsWithResolver:(id)a3
+- (id)allShortcutBindingsWithResolver:(id)resolver
 {
-  v4 = a3;
+  resolverCopy = resolver;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -965,10 +965,10 @@ uint64_t __57__VOSCommandManager_allSiriShortcutCommandsWithResolver___block_inv
   block[1] = 3221225472;
   block[2] = __53__VOSCommandManager_allShortcutBindingsWithResolver___block_invoke;
   block[3] = &unk_2784F3518;
-  v10 = v4;
+  v10 = resolverCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = resolverCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -987,9 +987,9 @@ uint64_t __53__VOSCommandManager_allShortcutBindingsWithResolver___block_invoke(
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)userPresentableAllShortcutBindingsWithResolver:(id)a3
+- (id)userPresentableAllShortcutBindingsWithResolver:(id)resolver
 {
-  v4 = a3;
+  resolverCopy = resolver;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1001,10 +1001,10 @@ uint64_t __53__VOSCommandManager_allShortcutBindingsWithResolver___block_invoke(
   block[1] = 3221225472;
   block[2] = __68__VOSCommandManager_userPresentableAllShortcutBindingsWithResolver___block_invoke;
   block[3] = &unk_2784F3518;
-  v10 = v4;
+  v10 = resolverCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = resolverCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -1023,10 +1023,10 @@ uint64_t __68__VOSCommandManager_userPresentableAllShortcutBindingsWithResolver_
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)gestureBindingsForCommand:(id)a3 withResolver:(id)a4
+- (id)gestureBindingsForCommand:(id)command withResolver:(id)resolver
 {
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  resolverCopy = resolver;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -1039,11 +1039,11 @@ uint64_t __68__VOSCommandManager_userPresentableAllShortcutBindingsWithResolver_
   v13[2] = __60__VOSCommandManager_gestureBindingsForCommand_withResolver___block_invoke;
   v13[3] = &unk_2784F34F0;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = commandCopy;
+  v15 = resolverCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = resolverCopy;
+  v10 = commandCopy;
   dispatch_sync(queue, v13);
   v11 = v18[5];
 
@@ -1062,10 +1062,10 @@ uint64_t __60__VOSCommandManager_gestureBindingsForCommand_withResolver___block_
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)shortcutBindingsForCommand:(id)a3 withResolver:(id)a4
+- (id)shortcutBindingsForCommand:(id)command withResolver:(id)resolver
 {
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  resolverCopy = resolver;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -1078,11 +1078,11 @@ uint64_t __60__VOSCommandManager_gestureBindingsForCommand_withResolver___block_
   v13[2] = __61__VOSCommandManager_shortcutBindingsForCommand_withResolver___block_invoke;
   v13[3] = &unk_2784F34F0;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = commandCopy;
+  v15 = resolverCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = resolverCopy;
+  v10 = commandCopy;
   dispatch_sync(queue, v13);
   v11 = v18[5];
 
@@ -1101,10 +1101,10 @@ uint64_t __61__VOSCommandManager_shortcutBindingsForCommand_withResolver___block
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)commandHasAnyBindings:(id)a3 withResolver:(id)a4
+- (BOOL)commandHasAnyBindings:(id)bindings withResolver:(id)resolver
 {
-  v6 = a3;
-  v7 = a4;
+  bindingsCopy = bindings;
+  resolverCopy = resolver;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -1115,11 +1115,11 @@ uint64_t __61__VOSCommandManager_shortcutBindingsForCommand_withResolver___block
   v12[2] = __56__VOSCommandManager_commandHasAnyBindings_withResolver___block_invoke;
   v12[3] = &unk_2784F34F0;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = bindingsCopy;
+  v14 = resolverCopy;
   v15 = &v16;
-  v9 = v7;
-  v10 = v6;
+  v9 = resolverCopy;
+  v10 = bindingsCopy;
   dispatch_sync(queue, v12);
   LOBYTE(queue) = *(v17 + 24);
 
@@ -1134,10 +1134,10 @@ uint64_t __56__VOSCommandManager_commandHasAnyBindings_withResolver___block_invo
   return result;
 }
 
-- (unint64_t)availabilityForGesture:(id)a3 withResolver:(id)a4
+- (unint64_t)availabilityForGesture:(id)gesture withResolver:(id)resolver
 {
-  v6 = a3;
-  v7 = a4;
+  gestureCopy = gesture;
+  resolverCopy = resolver;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -1148,11 +1148,11 @@ uint64_t __56__VOSCommandManager_commandHasAnyBindings_withResolver___block_invo
   v13[2] = __57__VOSCommandManager_availabilityForGesture_withResolver___block_invoke;
   v13[3] = &unk_2784F34F0;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = gestureCopy;
+  v15 = resolverCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = resolverCopy;
+  v10 = gestureCopy;
   dispatch_sync(queue, v13);
   v11 = v18[3];
 
@@ -1167,10 +1167,10 @@ uint64_t __57__VOSCommandManager_availabilityForGesture_withResolver___block_inv
   return result;
 }
 
-- (unint64_t)availabilityForShortcut:(id)a3 withResolver:(id)a4
+- (unint64_t)availabilityForShortcut:(id)shortcut withResolver:(id)resolver
 {
-  v6 = a3;
-  v7 = a4;
+  shortcutCopy = shortcut;
+  resolverCopy = resolver;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -1181,11 +1181,11 @@ uint64_t __57__VOSCommandManager_availabilityForGesture_withResolver___block_inv
   v13[2] = __58__VOSCommandManager_availabilityForShortcut_withResolver___block_invoke;
   v13[3] = &unk_2784F34F0;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = shortcutCopy;
+  v15 = resolverCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = resolverCopy;
+  v10 = shortcutCopy;
   dispatch_sync(queue, v13);
   v11 = v18[3];
 
@@ -1200,10 +1200,10 @@ uint64_t __58__VOSCommandManager_availabilityForShortcut_withResolver___block_in
   return result;
 }
 
-- (unint64_t)availabilityForCommand:(id)a3 withResolver:(id)a4
+- (unint64_t)availabilityForCommand:(id)command withResolver:(id)resolver
 {
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  resolverCopy = resolver;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -1214,11 +1214,11 @@ uint64_t __58__VOSCommandManager_availabilityForShortcut_withResolver___block_in
   v13[2] = __57__VOSCommandManager_availabilityForCommand_withResolver___block_invoke;
   v13[3] = &unk_2784F34F0;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = commandCopy;
+  v15 = resolverCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = resolverCopy;
+  v10 = commandCopy;
   dispatch_sync(queue, v13);
   v11 = v18[3];
 
@@ -1233,10 +1233,10 @@ uint64_t __57__VOSCommandManager_availabilityForCommand_withResolver___block_inv
   return result;
 }
 
-- (BOOL)commandHasModifiedBindingsWhenZoomEnabled:(id)a3 withResolver:(id)a4
+- (BOOL)commandHasModifiedBindingsWhenZoomEnabled:(id)enabled withResolver:(id)resolver
 {
-  v6 = a3;
-  v7 = a4;
+  enabledCopy = enabled;
+  resolverCopy = resolver;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -1247,11 +1247,11 @@ uint64_t __57__VOSCommandManager_availabilityForCommand_withResolver___block_inv
   v12[2] = __76__VOSCommandManager_commandHasModifiedBindingsWhenZoomEnabled_withResolver___block_invoke;
   v12[3] = &unk_2784F34F0;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = enabledCopy;
+  v14 = resolverCopy;
   v15 = &v16;
-  v9 = v7;
-  v10 = v6;
+  v9 = resolverCopy;
+  v10 = enabledCopy;
   dispatch_sync(queue, v12);
   LOBYTE(queue) = *(v17 + 24);
 
@@ -1291,9 +1291,9 @@ uint64_t __76__VOSCommandManager_commandHasModifiedBindingsWhenZoomEnabled_withR
 
 - (void)_loadSystemProfile
 {
-  v3 = [(VOSCommandManager *)self systemProfile];
+  systemProfile = [(VOSCommandManager *)self systemProfile];
   activeProfile = self->_activeProfile;
-  self->_activeProfile = v3;
+  self->_activeProfile = systemProfile;
 
   v5 = self->_activeProfile;
 

@@ -7,39 +7,39 @@
 - (CGRect)boundsForDisplay;
 - (CGRect)imageFrame;
 - (CGSize)attachmentContentSize;
-- (ICDrawingInlineView)initWithCoder:(id)a3;
-- (ICDrawingInlineView)initWithFrame:(CGRect)a3;
-- (ICDrawingInlineView)initWithFrame:(CGRect)a3 forManualRendering:(BOOL)a4;
+- (ICDrawingInlineView)initWithCoder:(id)coder;
+- (ICDrawingInlineView)initWithFrame:(CGRect)frame;
+- (ICDrawingInlineView)initWithFrame:(CGRect)frame forManualRendering:(BOOL)rendering;
 - (ICLoadingPieLayer)loadingProgressLayer;
 - (id)attachmentImage;
 - (id)lowestSuperScrollView;
 - (id)previewImage;
-- (void)animateImageArrivalWithAnimationDuration:(double)a3;
-- (void)attachmentPreviewDidStart:(id)a3;
-- (void)attachmentPreviewImagesDidUpdate:(id)a3;
+- (void)animateImageArrivalWithAnimationDuration:(double)duration;
+- (void)attachmentPreviewDidStart:(id)start;
+- (void)attachmentPreviewImagesDidUpdate:(id)update;
 - (void)commonInit;
 - (void)dealloc;
 - (void)delayedPreviewImageChanged;
 - (void)didMoveToWindow;
 - (void)didScrollIntoVisibleRange;
 - (void)didScrollOutOfVisibleRange;
-- (void)observePreviewGenerationProgress:(id)a3;
+- (void)observePreviewGenerationProgress:(id)progress;
 - (void)registerForTraitChanges;
-- (void)setAttachment:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setAttachment:(id)attachment;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 - (void)updateBorderWidth;
-- (void)updateImageWithAnimation:(BOOL)a3;
-- (void)updateLayerImage:(id)a3 animation:(BOOL)a4;
+- (void)updateImageWithAnimation:(BOOL)animation;
+- (void)updateLayerImage:(id)image animation:(BOOL)animation;
 @end
 
 @implementation ICDrawingInlineView
 
-- (ICDrawingInlineView)initWithFrame:(CGRect)a3
+- (ICDrawingInlineView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ICDrawingInlineView;
-  v3 = [(ICDrawingInlineView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICDrawingInlineView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -49,26 +49,26 @@
   return v4;
 }
 
-- (ICDrawingInlineView)initWithFrame:(CGRect)a3 forManualRendering:(BOOL)a4
+- (ICDrawingInlineView)initWithFrame:(CGRect)frame forManualRendering:(BOOL)rendering
 {
   v8.receiver = self;
   v8.super_class = ICDrawingInlineView;
-  v5 = [(ICDrawingInlineView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(ICDrawingInlineView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
     [(ICDrawingInlineView *)v5 commonInit];
-    v6->_forManualRendering = a4;
+    v6->_forManualRendering = rendering;
   }
 
   return v6;
 }
 
-- (ICDrawingInlineView)initWithCoder:(id)a3
+- (ICDrawingInlineView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ICDrawingInlineView;
-  v3 = [(ICDrawingInlineView *)&v6 initWithCoder:a3];
+  v3 = [(ICDrawingInlineView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -88,9 +88,9 @@
   [(CALayer *)self->_imageLayer setFrame:?];
   [(CALayer *)self->_imageLayer setMasksToBounds:1];
   [(ICDrawingInlineView *)self setClipsToBounds:1];
-  v5 = [(ICDrawingInlineView *)self layer];
-  v6 = [(ICDrawingInlineView *)self imageLayer];
-  [v5 addSublayer:v6];
+  layer = [(ICDrawingInlineView *)self layer];
+  imageLayer = [(ICDrawingInlineView *)self imageLayer];
+  [layer addSublayer:imageLayer];
 
   v7 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.1];
   [(ICDrawingInlineView *)self setBorderColor:v7];
@@ -103,11 +103,11 @@
 
 - (void)dealloc
 {
-  v3 = [(ICDrawingInlineView *)self previewImageUpdateDelayer];
-  [v3 cancelPreviousFireRequests];
+  previewImageUpdateDelayer = [(ICDrawingInlineView *)self previewImageUpdateDelayer];
+  [previewImageUpdateDelayer cancelPreviousFireRequests];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = ICDrawingInlineView;
@@ -116,107 +116,107 @@
 
 - (BOOL)shouldUseLightDrawingBackground
 {
-  v3 = [(ICDrawingInlineView *)self ic_appearanceInfo];
-  if ([v3 isDark])
+  ic_appearanceInfo = [(ICDrawingInlineView *)self ic_appearanceInfo];
+  if ([ic_appearanceInfo isDark])
   {
-    v4 = [(ICDrawingInlineView *)self isInAttachmentBrowser]|| [(ICDrawingInlineView *)self thumbnailDisplay];
+    thumbnailDisplay = [(ICDrawingInlineView *)self isInAttachmentBrowser]|| [(ICDrawingInlineView *)self thumbnailDisplay];
   }
 
   else
   {
-    v4 = 0;
+    thumbnailDisplay = 0;
   }
 
-  return v4;
+  return thumbnailDisplay;
 }
 
-- (void)setAttachment:(id)a3
+- (void)setAttachment:(id)attachment
 {
-  v5 = a3;
-  if (self->_attachment != v5)
+  attachmentCopy = attachment;
+  if (self->_attachment != attachmentCopy)
   {
-    v40 = v5;
-    v6 = [(ICDrawingInlineView *)self attachment];
+    v40 = attachmentCopy;
+    attachment = [(ICDrawingInlineView *)self attachment];
 
     v7 = MEMORY[0x277D35BB8];
     v8 = MEMORY[0x277D35B80];
     v9 = MEMORY[0x277D35BA8];
-    if (v6)
+    if (attachment)
     {
-      v10 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v11 = *MEMORY[0x277D35BB8];
-      v12 = [(ICDrawingInlineView *)self attachment];
-      v13 = [v12 objectID];
-      [v10 removeObserver:self name:v11 object:v13];
+      attachment2 = [(ICDrawingInlineView *)self attachment];
+      objectID = [attachment2 objectID];
+      [defaultCenter removeObserver:self name:v11 object:objectID];
 
-      v14 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
       v15 = *v8;
-      v16 = [(ICDrawingInlineView *)self attachment];
-      v17 = [v16 objectID];
-      [v14 removeObserver:self name:v15 object:v17];
+      attachment3 = [(ICDrawingInlineView *)self attachment];
+      objectID2 = [attachment3 objectID];
+      [defaultCenter2 removeObserver:self name:v15 object:objectID2];
 
-      v18 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
       v19 = *v9;
-      v20 = [(ICDrawingInlineView *)self attachment];
-      v21 = [v20 objectID];
+      attachment4 = [(ICDrawingInlineView *)self attachment];
+      objectID3 = [attachment4 objectID];
       v22 = v19;
       v7 = MEMORY[0x277D35BB8];
-      [v18 removeObserver:self name:v22 object:v21];
+      [defaultCenter3 removeObserver:self name:v22 object:objectID3];
     }
 
-    objc_storeStrong(&self->_attachment, a3);
-    v23 = [(ICDrawingInlineView *)self attachment];
+    objc_storeStrong(&self->_attachment, attachment);
+    attachment5 = [(ICDrawingInlineView *)self attachment];
 
-    if (v23)
+    if (attachment5)
     {
-      v24 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
       v25 = *v7;
-      v26 = [(ICDrawingInlineView *)self attachment];
-      v27 = [v26 objectID];
-      [v24 addObserver:self selector:sel_attachmentPreviewImagesDidUpdate_ name:v25 object:v27];
+      attachment6 = [(ICDrawingInlineView *)self attachment];
+      objectID4 = [attachment6 objectID];
+      [defaultCenter4 addObserver:self selector:sel_attachmentPreviewImagesDidUpdate_ name:v25 object:objectID4];
 
-      v28 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
       v29 = *v8;
-      v30 = [(ICDrawingInlineView *)self attachment];
-      v31 = [v30 objectID];
-      [v28 addObserver:self selector:sel_attachmentPreviewImagesDidUpdate_ name:v29 object:v31];
+      attachment7 = [(ICDrawingInlineView *)self attachment];
+      objectID5 = [attachment7 objectID];
+      [defaultCenter5 addObserver:self selector:sel_attachmentPreviewImagesDidUpdate_ name:v29 object:objectID5];
 
-      v32 = [MEMORY[0x277D366B0] sharedGenerator];
-      v33 = [(ICDrawingInlineView *)self attachment];
-      v34 = [v33 objectID];
-      v35 = [v32 progressForObjectID:v34];
+      mEMORY[0x277D366B0] = [MEMORY[0x277D366B0] sharedGenerator];
+      attachment8 = [(ICDrawingInlineView *)self attachment];
+      objectID6 = [attachment8 objectID];
+      v35 = [mEMORY[0x277D366B0] progressForObjectID:objectID6];
 
       if (v35)
       {
         [(ICDrawingInlineView *)self observePreviewGenerationProgress:v35];
       }
 
-      v36 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter6 = [MEMORY[0x277CCAB98] defaultCenter];
       v37 = *MEMORY[0x277D35BA8];
-      v38 = [(ICDrawingInlineView *)self attachment];
-      v39 = [v38 objectID];
-      [v36 addObserver:self selector:sel_attachmentPreviewDidStart_ name:v37 object:v39];
+      attachment9 = [(ICDrawingInlineView *)self attachment];
+      objectID7 = [attachment9 objectID];
+      [defaultCenter6 addObserver:self selector:sel_attachmentPreviewDidStart_ name:v37 object:objectID7];
     }
 
     [(ICDrawingInlineView *)self updateImageWithAnimation:1];
-    v5 = v40;
+    attachmentCopy = v40;
   }
 }
 
 - (CGRect)boundsForDisplay
 {
-  v3 = [(ICDrawingInlineView *)self attachment];
-  v4 = [v3 drawingModel];
-  v5 = [v4 drawing];
-  [v5 bounds];
+  attachment = [(ICDrawingInlineView *)self attachment];
+  drawingModel = [attachment drawingModel];
+  drawing = [drawingModel drawing];
+  [drawing bounds];
   x = v6;
   y = v8;
   height = v10;
 
-  v12 = [(ICDrawingInlineView *)self attachment];
-  v13 = [v12 drawingModel];
-  v14 = [v13 drawing];
-  [v14 fullBounds];
+  attachment2 = [(ICDrawingInlineView *)self attachment];
+  drawingModel2 = [attachment2 drawingModel];
+  drawing2 = [drawingModel2 drawing];
+  [drawing2 fullBounds];
   width = v15;
 
   if (TSDNearlyEqualSizes())
@@ -294,18 +294,18 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v7 = [(ICDrawingInlineView *)self thumbnailDisplay];
+  thumbnailDisplay = [(ICDrawingInlineView *)self thumbnailDisplay];
   [(ICDrawingInlineView *)self boundsForDisplay];
   v11 = v10;
   v13 = v12;
-  if (!v7)
+  if (!thumbnailDisplay)
   {
     v41 = MEMORY[0x277D35EC0];
     [MEMORY[0x277D35EC0] defaultSize];
     v43 = v42;
     v45 = v44;
-    v46 = [(ICDrawingInlineView *)self attachment];
-    [v41 fullSize:objc_msgSend(v46 forOrientation:{"orientation"), v43, v45}];
+    attachment = [(ICDrawingInlineView *)self attachment];
+    [v41 fullSize:objc_msgSend(attachment forOrientation:{"orientation"), v43, v45}];
     v48 = v47;
     v50 = v49;
 
@@ -338,8 +338,8 @@ LABEL_17:
   [MEMORY[0x277D35EC0] defaultSize];
   v18 = v17;
   v20 = v19;
-  v21 = [(ICDrawingInlineView *)self attachment];
-  [v16 fullSize:objc_msgSend(v21 forOrientation:{"orientation"), v18, v20}];
+  attachment2 = [(ICDrawingInlineView *)self attachment];
+  [v16 fullSize:objc_msgSend(attachment2 forOrientation:{"orientation"), v18, v20}];
   v23 = v22;
   v25 = v24;
 
@@ -376,8 +376,8 @@ LABEL_17:
   y = v60.origin.y;
   width = v60.size.width;
   height = v60.size.height;
-  v34 = [(ICDrawingInlineView *)self attachment];
-  [v34 bounds];
+  attachment3 = [(ICDrawingInlineView *)self attachment];
+  [attachment3 bounds];
   v36 = v35;
   v38 = v37;
 
@@ -404,33 +404,33 @@ LABEL_18:
   return result;
 }
 
-- (void)animateImageArrivalWithAnimationDuration:(double)a3
+- (void)animateImageArrivalWithAnimationDuration:(double)duration
 {
   v5 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
   [v5 setFromValue:&unk_28277E690];
   [v5 setToValue:&unk_28277E6A0];
-  [v5 setDuration:a3];
-  v6 = [(ICDrawingInlineView *)self imageLayer];
-  [v6 addAnimation:v5 forKey:@"opacity"];
+  [v5 setDuration:duration];
+  imageLayer = [(ICDrawingInlineView *)self imageLayer];
+  [imageLayer addAnimation:v5 forKey:@"opacity"];
 
-  v7 = [(ICDrawingInlineView *)self shouldUseLightDrawingBackground];
-  v8 = [(ICDrawingInlineView *)self ic_backgroundColor];
+  shouldUseLightDrawingBackground = [(ICDrawingInlineView *)self shouldUseLightDrawingBackground];
+  ic_backgroundColor = [(ICDrawingInlineView *)self ic_backgroundColor];
 
-  if (v8)
+  if (ic_backgroundColor)
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __64__ICDrawingInlineView_animateImageArrivalWithAnimationDuration___block_invoke;
     v11[3] = &unk_2781ACFF8;
     v11[4] = self;
-    v12 = v7;
+    v12 = shouldUseLightDrawingBackground;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __64__ICDrawingInlineView_animateImageArrivalWithAnimationDuration___block_invoke_2;
     v9[3] = &unk_2781ACFF8;
-    v10 = v7;
+    v10 = shouldUseLightDrawingBackground;
     v9[4] = self;
-    [MEMORY[0x277D75D18] ic_animateWithDuration:v11 animations:v9 completion:a3];
+    [MEMORY[0x277D75D18] ic_animateWithDuration:v11 animations:v9 completion:duration];
   }
 }
 
@@ -464,31 +464,31 @@ uint64_t __64__ICDrawingInlineView_animateImageArrivalWithAnimationDuration___bl
 
 - (id)attachmentImage
 {
-  v3 = [(ICDrawingInlineView *)self attachment];
+  attachment = [(ICDrawingInlineView *)self attachment];
   [MEMORY[0x277D35EC0] defaultPixelSize];
   v5 = v4;
   v7 = v6;
-  v8 = [(ICDrawingInlineView *)self ic_appearanceInfo];
-  v9 = [v3 attachmentPreviewImageWithMinSize:objc_msgSend(v8 scale:"type") appearanceType:1 requireAppearance:{v5, v7, 1.0}];
+  ic_appearanceInfo = [(ICDrawingInlineView *)self ic_appearanceInfo];
+  v9 = [attachment attachmentPreviewImageWithMinSize:objc_msgSend(ic_appearanceInfo scale:"type") appearanceType:1 requireAppearance:{v5, v7, 1.0}];
 
-  v10 = [v9 orientedImage];
+  orientedImage = [v9 orientedImage];
 
-  return v10;
+  return orientedImage;
 }
 
 - (id)previewImage
 {
-  v3 = [(ICDrawingInlineView *)self attachment];
+  attachment = [(ICDrawingInlineView *)self attachment];
 
-  if (v3)
+  if (attachment)
   {
     [(ICDrawingInlineView *)self ic_backingScaleFactor];
     v5 = v4;
     [MEMORY[0x277D35EC0] defaultSize];
     v7 = v6;
     v9 = v8;
-    v10 = [(ICDrawingInlineView *)self attachment];
-    [v10 bounds];
+    attachment2 = [(ICDrawingInlineView *)self attachment];
+    [attachment2 bounds];
     v12 = v11;
     v14 = v13;
 
@@ -522,8 +522,8 @@ uint64_t __64__ICDrawingInlineView_animateImageArrivalWithAnimationDuration___bl
 
     else
     {
-      v24 = [(ICDrawingInlineView *)self attachment];
-      [v24 orientation];
+      attachment3 = [(ICDrawingInlineView *)self attachment];
+      [attachment3 orientation];
       IsLandscape = ICDrawingOrientationIsLandscape();
 
       v26 = v7 / v12;
@@ -541,9 +541,9 @@ uint64_t __64__ICDrawingInlineView_animateImageArrivalWithAnimationDuration___bl
       }
     }
 
-    v28 = [(ICDrawingInlineView *)self attachment];
-    v29 = [(ICDrawingInlineView *)self ic_appearanceInfo];
-    v23 = [v28 attachmentPreviewImageWithMinSize:objc_msgSend(v29 scale:"type") appearanceType:1 requireAppearance:{v20, v22, v5}];
+    attachment4 = [(ICDrawingInlineView *)self attachment];
+    ic_appearanceInfo = [(ICDrawingInlineView *)self ic_appearanceInfo];
+    v23 = [attachment4 attachmentPreviewImageWithMinSize:objc_msgSend(ic_appearanceInfo scale:"type") appearanceType:1 requireAppearance:{v20, v22, v5}];
   }
 
   else
@@ -554,33 +554,33 @@ uint64_t __64__ICDrawingInlineView_animateImageArrivalWithAnimationDuration___bl
   return v23;
 }
 
-- (void)updateImageWithAnimation:(BOOL)a3
+- (void)updateImageWithAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   [(ICDrawingInlineView *)self bounds];
   if (v6 != *MEMORY[0x277CBF3A8] || v5 != *(MEMORY[0x277CBF3A8] + 8))
   {
-    v8 = [(ICDrawingInlineView *)self previewImage];
-    if (v8)
+    previewImage = [(ICDrawingInlineView *)self previewImage];
+    if (previewImage)
     {
       if ([(ICDrawingInlineView *)self forManualRendering])
       {
-        v9 = [v8 image];
-        [(ICDrawingInlineView *)self updateLayerImage:v9 animation:0];
+        image = [previewImage image];
+        [(ICDrawingInlineView *)self updateLayerImage:image animation:0];
       }
 
       else
       {
-        v10 = [(ICDrawingInlineView *)self imageLoadingCancelBlock];
+        imageLoadingCancelBlock = [(ICDrawingInlineView *)self imageLoadingCancelBlock];
 
-        if (v10)
+        if (imageLoadingCancelBlock)
         {
           [(ICDrawingInlineView *)self setNeedsToUpdateImage:1];
         }
 
         else
         {
-          if (![(ICDrawingInlineView *)self hasImage]&& ([(ICDrawingInlineView *)self thumbnailDisplay]|| v3))
+          if (![(ICDrawingInlineView *)self hasImage]&& ([(ICDrawingInlineView *)self thumbnailDisplay]|| animationCopy))
           {
             [MEMORY[0x277CD9FF0] begin];
             [MEMORY[0x277CD9FF0] setDisableActions:1];
@@ -590,13 +590,13 @@ uint64_t __64__ICDrawingInlineView_animateImageArrivalWithAnimationDuration___bl
             v14 = v13;
             v16 = v15;
             v18 = v17;
-            v19 = [(ICDrawingInlineView *)self imageLayer];
-            [v19 setFrame:{v12, v14, v16, v18}];
+            imageLayer = [(ICDrawingInlineView *)self imageLayer];
+            [imageLayer setFrame:{v12, v14, v16, v18}];
 
-            v20 = [(ICDrawingInlineView *)self borderColor];
-            v21 = [v20 CGColor];
-            v22 = [(ICDrawingInlineView *)self layer];
-            [v22 setBorderColor:v21];
+            borderColor = [(ICDrawingInlineView *)self borderColor];
+            cGColor = [borderColor CGColor];
+            layer = [(ICDrawingInlineView *)self layer];
+            [layer setBorderColor:cGColor];
 
             [(ICDrawingInlineView *)self updateBorderWidth];
             v23 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.04];
@@ -615,8 +615,8 @@ uint64_t __64__ICDrawingInlineView_animateImageArrivalWithAnimationDuration___bl
           v34[3] = &unk_2781AFA70;
           v34[4] = self;
           v34[5] = v36;
-          v35 = v3;
-          v24 = [v8 asyncImage:v34 aboutToLoadHandler:0];
+          v35 = animationCopy;
+          v24 = [previewImage asyncImage:v34 aboutToLoadHandler:0];
           v25 = [v24 copy];
 
           if (v25)
@@ -626,7 +626,7 @@ uint64_t __64__ICDrawingInlineView_animateImageArrivalWithAnimationDuration___bl
             v29 = __48__ICDrawingInlineView_updateImageWithAnimation___block_invoke_4;
             v30 = &unk_2781AFA98;
             v33 = v36;
-            v31 = self;
+            selfCopy = self;
             v32 = v25;
             v26 = _Block_copy(&v27);
             [(ICDrawingInlineView *)self setImageLoadingCancelBlock:v26, v27, v28, v29, v30];
@@ -730,79 +730,79 @@ void __48__ICDrawingInlineView_updateImageWithAnimation___block_invoke_4(uint64_
 
 - (BOOL)hasImage
 {
-  v2 = [(ICDrawingInlineView *)self imageLayer];
-  v3 = [v2 contents];
-  v4 = v3 != 0;
+  imageLayer = [(ICDrawingInlineView *)self imageLayer];
+  contents = [imageLayer contents];
+  v4 = contents != 0;
 
   return v4;
 }
 
-- (void)updateLayerImage:(id)a3 animation:(BOOL)a4
+- (void)updateLayerImage:(id)image animation:(BOOL)animation
 {
-  v4 = a4;
-  v6 = a3;
+  animationCopy = animation;
+  imageCopy = image;
   [(ICDrawingInlineView *)self setImageLoadingCancelBlock:0];
   [MEMORY[0x277CD9FF0] begin];
-  v54 = 1;
+  hasImage = 1;
   [MEMORY[0x277CD9FF0] setDisableActions:1];
   [MEMORY[0x277CD9FF0] setAnimationDuration:0.0];
-  v7 = [(ICDrawingInlineView *)self attachment];
-  v8 = [v7 orientation];
+  attachment = [(ICDrawingInlineView *)self attachment];
+  orientation = [attachment orientation];
 
-  [MEMORY[0x277D35EC0] defaultSizeOrientationTransform:v8];
-  v9 = [(ICDrawingInlineView *)self imageLayer];
+  [MEMORY[0x277D35EC0] defaultSizeOrientationTransform:orientation];
+  imageLayer = [(ICDrawingInlineView *)self imageLayer];
   v57[0] = *(&v57[3] + 8);
   v57[1] = *(&v57[4] + 8);
   v57[2] = *(&v57[5] + 8);
-  [v9 setAffineTransform:v57];
+  [imageLayer setAffineTransform:v57];
 
   [(ICDrawingInlineView *)self imageFrame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(ICDrawingInlineView *)self imageLayer];
-  [v18 setFrame:{v11, v13, v15, v17}];
+  imageLayer2 = [(ICDrawingInlineView *)self imageLayer];
+  [imageLayer2 setFrame:{v11, v13, v15, v17}];
 
   [MEMORY[0x277CD9FF0] commit];
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
   v19 = 0.1;
-  if (!v4)
+  if (!animationCopy)
   {
     v19 = 0.0;
   }
 
   [MEMORY[0x277CD9FF0] setAnimationDuration:v19];
-  v20 = [(ICDrawingInlineView *)self attachment];
-  v21 = [v20 previewUpdateDate];
-  v22 = [(ICDrawingInlineView *)self attachment];
-  v23 = [v22 modificationDate];
-  v24 = [v21 compare:v23];
+  attachment2 = [(ICDrawingInlineView *)self attachment];
+  previewUpdateDate = [attachment2 previewUpdateDate];
+  attachment3 = [(ICDrawingInlineView *)self attachment];
+  modificationDate = [attachment3 modificationDate];
+  v24 = [previewUpdateDate compare:modificationDate];
 
-  if (v4)
+  if (animationCopy)
   {
-    v54 = [(ICDrawingInlineView *)self hasImage];
+    hasImage = [(ICDrawingInlineView *)self hasImage];
   }
 
-  v25 = [(ICDrawingInlineView *)self attachment];
+  attachment4 = [(ICDrawingInlineView *)self attachment];
   [MEMORY[0x277D35EC0] defaultPixelSize];
   v27 = v26;
   v29 = v28;
-  v30 = [(ICDrawingInlineView *)self ic_appearanceInfo];
-  v31 = [v25 attachmentPreviewImageWithMinSize:objc_msgSend(v30 scale:"type") appearanceType:1 requireAppearance:{v27, v29, 1.0}];
+  ic_appearanceInfo = [(ICDrawingInlineView *)self ic_appearanceInfo];
+  v31 = [attachment4 attachmentPreviewImageWithMinSize:objc_msgSend(ic_appearanceInfo scale:"type") appearanceType:1 requireAppearance:{v27, v29, 1.0}];
 
-  if ((v6 || v24 != -1) && (v31 || ([0 size], v35 = v34, v37 = v36, objc_msgSend(MEMORY[0x277D35EC0], "defaultPixelSize"), v35 == v39) && v37 == v38))
+  if ((imageCopy || v24 != -1) && (v31 || ([0 size], v35 = v34, v37 = v36, objc_msgSend(MEMORY[0x277D35EC0], "defaultPixelSize"), v35 == v39) && v37 == v38))
   {
-    v40 = [(ICDrawingInlineView *)self thumbnailDisplay];
-    v32 = [v6 ic_CGImage];
-    if (!v40)
+    thumbnailDisplay = [(ICDrawingInlineView *)self thumbnailDisplay];
+    ic_CGImage = [imageCopy ic_CGImage];
+    if (!thumbnailDisplay)
     {
-      v46 = [(ICDrawingInlineView *)self layer];
-      [v46 setBorderColor:0];
+      layer = [(ICDrawingInlineView *)self layer];
+      [layer setBorderColor:0];
 
-      v47 = [(ICDrawingInlineView *)self layer];
-      [v47 setBorderWidth:0.0];
+      layer2 = [(ICDrawingInlineView *)self layer];
+      [layer2 setBorderWidth:0.0];
 
       goto LABEL_16;
     }
@@ -812,14 +812,14 @@ void __48__ICDrawingInlineView_updateImageWithAnimation___block_invoke_4(uint64_
 
   else
   {
-    v32 = [v6 ic_CGImage];
+    ic_CGImage = [imageCopy ic_CGImage];
     v33 = 1;
   }
 
-  v41 = [(ICDrawingInlineView *)self borderColor];
-  v42 = [v41 CGColor];
-  v43 = [(ICDrawingInlineView *)self layer];
-  [v43 setBorderColor:v42];
+  borderColor = [(ICDrawingInlineView *)self borderColor];
+  cGColor = [borderColor CGColor];
+  layer3 = [(ICDrawingInlineView *)self layer];
+  [layer3 setBorderColor:cGColor];
 
   [(ICDrawingInlineView *)self updateBorderWidth];
   if (v33)
@@ -835,8 +835,8 @@ void __48__ICDrawingInlineView_updateImageWithAnimation___block_invoke_4(uint64_
 LABEL_16:
   if ([(ICDrawingInlineView *)self shouldUseLightDrawingBackground])
   {
-    v48 = [(ICDrawingInlineView *)self drawingBackgroundColor];
-    [(ICDrawingInlineView *)self setIc_backgroundColor:v48];
+    drawingBackgroundColor = [(ICDrawingInlineView *)self drawingBackgroundColor];
+    [(ICDrawingInlineView *)self setIc_backgroundColor:drawingBackgroundColor];
   }
 
   else
@@ -844,18 +844,18 @@ LABEL_16:
     [(ICDrawingInlineView *)self setIc_backgroundColor:0];
   }
 
-  v49 = [(ICDrawingInlineView *)self loadingProgressLayer];
-  [v49 removeFromSuperlayer];
+  loadingProgressLayer = [(ICDrawingInlineView *)self loadingProgressLayer];
+  [loadingProgressLayer removeFromSuperlayer];
 
   [(ICDrawingInlineView *)self setLoadingProgressLayer:0];
   v45 = 1.0;
 LABEL_20:
-  if (!v54 || !v4)
+  if (!hasImage || !animationCopy)
   {
-    v51 = [(ICDrawingInlineView *)self imageLayer];
-    [v51 setContents:v32];
+    imageLayer3 = [(ICDrawingInlineView *)self imageLayer];
+    [imageLayer3 setContents:ic_CGImage];
 
-    if (!v6)
+    if (!imageCopy)
     {
       goto LABEL_25;
     }
@@ -869,15 +869,15 @@ LABEL_20:
   v55[2] = __50__ICDrawingInlineView_updateLayerImage_animation___block_invoke;
   v55[3] = &unk_2781ABEB8;
   v55[4] = self;
-  v56 = v32;
+  v56 = ic_CGImage;
   [v50 ic_animateWithDuration:v55 animations:0 completion:0.3];
 
-  if (v6)
+  if (imageCopy)
   {
 LABEL_24:
-    v52 = [(ICDrawingInlineView *)self imageLayer];
+    imageLayer4 = [(ICDrawingInlineView *)self imageLayer];
     *&v53 = v45;
-    [v52 setOpacity:v53];
+    [imageLayer4 setOpacity:v53];
   }
 
 LABEL_25:
@@ -885,7 +885,7 @@ LABEL_25:
   if ([(ICDrawingInlineView *)self needsToUpdateImage])
   {
     [(ICDrawingInlineView *)self setNeedsToUpdateImage:0];
-    [(ICDrawingInlineView *)self updateImageWithAnimation:v4];
+    [(ICDrawingInlineView *)self updateImageWithAnimation:animationCopy];
   }
 }
 
@@ -898,29 +898,29 @@ void __50__ICDrawingInlineView_updateLayerImage_animation___block_invoke(uint64_
 
 - (BOOL)isReadyToPresent
 {
-  v2 = [(ICDrawingInlineView *)self loadingProgressLayer];
-  v3 = v2 == 0;
+  loadingProgressLayer = [(ICDrawingInlineView *)self loadingProgressLayer];
+  v3 = loadingProgressLayer == 0;
 
   return v3;
 }
 
 - (void)didScrollOutOfVisibleRange
 {
-  v3 = [(ICDrawingInlineView *)self imageLoadingCancelBlock];
+  imageLoadingCancelBlock = [(ICDrawingInlineView *)self imageLoadingCancelBlock];
 
-  if (v3)
+  if (imageLoadingCancelBlock)
   {
-    v4 = [(ICDrawingInlineView *)self imageLoadingCancelBlock];
-    v4[2]();
+    imageLoadingCancelBlock2 = [(ICDrawingInlineView *)self imageLoadingCancelBlock];
+    imageLoadingCancelBlock2[2]();
 
     [(ICDrawingInlineView *)self setImageLoadingCancelBlock:0];
   }
 
-  v5 = [(ICDrawingInlineView *)self imageLayer];
-  [v5 setContents:0];
+  imageLayer = [(ICDrawingInlineView *)self imageLayer];
+  [imageLayer setContents:0];
 
-  v6 = [(ICDrawingInlineView *)self previewImageUpdateDelayer];
-  [v6 cancelPreviousFireRequests];
+  previewImageUpdateDelayer = [(ICDrawingInlineView *)self previewImageUpdateDelayer];
+  [previewImageUpdateDelayer cancelPreviousFireRequests];
 }
 
 - (void)didScrollIntoVisibleRange
@@ -934,42 +934,42 @@ void __50__ICDrawingInlineView_updateLayerImage_animation___block_invoke(uint64_
 
 - (BOOL)cancelDidScrollIntoVisibleRange
 {
-  v3 = [(ICDrawingInlineView *)self imageLoadingCancelBlock];
-  if (v3)
+  imageLoadingCancelBlock = [(ICDrawingInlineView *)self imageLoadingCancelBlock];
+  if (imageLoadingCancelBlock)
   {
-    v4 = v3;
-    v5 = [(ICDrawingInlineView *)self hasImage];
+    v4 = imageLoadingCancelBlock;
+    hasImage = [(ICDrawingInlineView *)self hasImage];
 
-    if (v5)
+    if (hasImage)
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(imageLoadingCancelBlock) = 0;
     }
 
     else
     {
-      v6 = [(ICDrawingInlineView *)self imageLoadingCancelBlock];
-      v6[2]();
+      imageLoadingCancelBlock2 = [(ICDrawingInlineView *)self imageLoadingCancelBlock];
+      imageLoadingCancelBlock2[2]();
 
       [(ICDrawingInlineView *)self setImageLoadingCancelBlock:0];
-      v7 = [(ICDrawingInlineView *)self previewImageUpdateDelayer];
-      [v7 cancelPreviousFireRequests];
+      previewImageUpdateDelayer = [(ICDrawingInlineView *)self previewImageUpdateDelayer];
+      [previewImageUpdateDelayer cancelPreviousFireRequests];
 
-      LOBYTE(v3) = 1;
+      LOBYTE(imageLoadingCancelBlock) = 1;
     }
   }
 
-  return v3;
+  return imageLoadingCancelBlock;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(ICDrawingInlineView *)self loadingProgressLayer];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  loadingProgressLayer = [(ICDrawingInlineView *)self loadingProgressLayer];
 
-  if (v8)
+  if (loadingProgressLayer)
   {
     v15.origin.x = x;
     v15.origin.y = y;
@@ -981,8 +981,8 @@ void __50__ICDrawingInlineView_updateLayerImage_animation___block_invoke(uint64_
     v16.size.width = width;
     v16.size.height = height;
     v10 = CGRectGetMaxY(v16) + -21.0;
-    v11 = [(ICDrawingInlineView *)self loadingProgressLayer];
-    [v11 setPosition:{v9, v10}];
+    loadingProgressLayer2 = [(ICDrawingInlineView *)self loadingProgressLayer];
+    [loadingProgressLayer2 setPosition:{v9, v10}];
   }
 
   [(ICDrawingInlineView *)self frame];
@@ -1022,16 +1022,16 @@ void __50__ICDrawingInlineView_updateLayerImage_animation___block_invoke(uint64_
     v3 = 1.0 / v4;
   }
 
-  v5 = [(ICDrawingInlineView *)self layer];
-  [v5 setBorderWidth:v3];
+  layer = [(ICDrawingInlineView *)self layer];
+  [layer setBorderWidth:v3];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(ICDrawingInlineView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -1044,16 +1044,16 @@ void __50__ICDrawingInlineView_updateLayerImage_animation___block_invoke(uint64_
   }
 }
 
-- (void)observePreviewGenerationProgress:(id)a3
+- (void)observePreviewGenerationProgress:(id)progress
 {
-  v11 = a3;
-  v4 = [(ICDrawingInlineView *)self hideLoadingProgress];
-  v5 = v11;
-  if (!v4)
+  progressCopy = progress;
+  hideLoadingProgress = [(ICDrawingInlineView *)self hideLoadingProgress];
+  v5 = progressCopy;
+  if (!hideLoadingProgress)
   {
-    v6 = [(ICDrawingInlineView *)self loadingProgressLayer];
+    loadingProgressLayer = [(ICDrawingInlineView *)self loadingProgressLayer];
 
-    if (!v6)
+    if (!loadingProgressLayer)
     {
       v7 = objc_alloc_init(MEMORY[0x277D36820]);
       [(ICDrawingInlineView *)self bounds];
@@ -1062,36 +1062,36 @@ void __50__ICDrawingInlineView_updateLayerImage_animation___block_invoke(uint64_
       [v7 setPosition:{v8, CGRectGetMaxY(v14) + -21.0}];
       [v7 setZPosition:1.0];
       [v7 setRemoveOnCompletion:1];
-      v9 = [(ICDrawingInlineView *)self layer];
-      [v9 addSublayer:v7];
+      layer = [(ICDrawingInlineView *)self layer];
+      [layer addSublayer:v7];
 
       [(ICDrawingInlineView *)self setLoadingProgressLayer:v7];
     }
 
-    v5 = v11;
-    if (v11)
+    v5 = progressCopy;
+    if (progressCopy)
     {
-      v10 = [(ICDrawingInlineView *)self loadingProgressLayer];
-      [v10 setObservedProgress:v11];
+      loadingProgressLayer2 = [(ICDrawingInlineView *)self loadingProgressLayer];
+      [loadingProgressLayer2 setObservedProgress:progressCopy];
 
-      v5 = v11;
+      v5 = progressCopy;
     }
   }
 }
 
-- (void)attachmentPreviewImagesDidUpdate:(id)a3
+- (void)attachmentPreviewImagesDidUpdate:(id)update
 {
-  v3 = [(ICDrawingInlineView *)self previewImageUpdateDelayer];
-  [v3 requestFire];
+  previewImageUpdateDelayer = [(ICDrawingInlineView *)self previewImageUpdateDelayer];
+  [previewImageUpdateDelayer requestFire];
 }
 
-- (void)attachmentPreviewDidStart:(id)a3
+- (void)attachmentPreviewDidStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   objc_opt_class();
-  v5 = [v4 userInfo];
+  userInfo = [startCopy userInfo];
 
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D35BB0]];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D35BB0]];
   v7 = ICDynamicCast();
 
   v9[0] = MEMORY[0x277D85DD0];
@@ -1115,16 +1115,16 @@ void __50__ICDrawingInlineView_updateLayerImage_animation___block_invoke(uint64_
 
 - (BOOL)isVisibleWithinScrollView
 {
-  v3 = [(ICDrawingInlineView *)self lowestSuperScrollView];
-  if (v3)
+  lowestSuperScrollView = [(ICDrawingInlineView *)self lowestSuperScrollView];
+  if (lowestSuperScrollView)
   {
     [(ICDrawingInlineView *)self bounds];
-    [(ICDrawingInlineView *)self convertRect:v3 toView:?];
+    [(ICDrawingInlineView *)self convertRect:lowestSuperScrollView toView:?];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    [v3 bounds];
+    [lowestSuperScrollView bounds];
     v15.origin.x = v5;
     v15.origin.y = v7;
     v15.size.width = v9;
@@ -1142,8 +1142,8 @@ void __50__ICDrawingInlineView_updateLayerImage_animation___block_invoke(uint64_
 
 - (id)lowestSuperScrollView
 {
-  v2 = self;
-  if (v2)
+  selfCopy = self;
+  if (selfCopy)
   {
     while (1)
     {
@@ -1153,21 +1153,21 @@ void __50__ICDrawingInlineView_updateLayerImage_animation___block_invoke(uint64_
         break;
       }
 
-      v3 = [(ICDrawingInlineView *)v2 superview];
+      superview = [(ICDrawingInlineView *)selfCopy superview];
 
-      v2 = v3;
-      if (!v3)
+      selfCopy = superview;
+      if (!superview)
       {
         goto LABEL_6;
       }
     }
 
-    v2 = v2;
+    selfCopy = selfCopy;
   }
 
 LABEL_6:
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)registerForTraitChanges

@@ -1,11 +1,11 @@
 @interface PKImageWandOnboarding
 + (uint64_t)hasSeenOnboardingUI;
-+ (void)setHasSeenOnboardingUI:(uint64_t)a1;
++ (void)setHasSeenOnboardingUI:(uint64_t)i;
 @end
 
 @implementation PKImageWandOnboarding
 
-+ (void)setHasSeenOnboardingUI:(uint64_t)a1
++ (void)setHasSeenOnboardingUI:(uint64_t)i
 {
   v10 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -24,17 +24,17 @@
       _os_log_impl(&dword_1C7CCA000, v6, OS_LOG_TYPE_DEFAULT, "Set hasSeenOnboardingUI to %{BOOL}d", v9, 8u);
     }
 
-    v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v7 setBool:a2 forKey:@"PKHasSeenImageWandOnboardingUI"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults setBool:a2 forKey:@"PKHasSeenImageWandOnboardingUI"];
 
-    v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v8 synchronize];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults2 synchronize];
   }
 
   else
   {
-    v8 = os_log_create("com.apple.pencilkit", "PKImageWandOnboarding");
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    standardUserDefaults2 = os_log_create("com.apple.pencilkit", "PKImageWandOnboarding");
+    if (os_log_type_enabled(standardUserDefaults2, OS_LOG_TYPE_ERROR))
     {
       LOWORD(v9[0]) = 0;
     }
@@ -49,17 +49,17 @@
     return 0;
   }
 
-  v0 = [MEMORY[0x1E696AAE8] mainBundle];
-  v1 = [v0 bundleIdentifier];
-  v2 = [v1 isEqualToString:@"com.apple.mobilenotes"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v2 = [bundleIdentifier isEqualToString:@"com.apple.mobilenotes"];
 
   if ((!v2 || PKIsQuickNoteOnPhone()) && !PKIsInternalTestApp())
   {
     return 0;
   }
 
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"PKHasSeenImageWandOnboardingUI"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"PKHasSeenImageWandOnboardingUI"];
 
   return v4;
 }

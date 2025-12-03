@@ -1,9 +1,9 @@
 @interface WifiScannerThread
 - (WifiScannerThread)init;
-- (WifiScannerThread)initWithBackend:(id)a3;
+- (WifiScannerThread)initWithBackend:(id)backend;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)runWifiThread:(id)a3;
+- (void)runWifiThread:(id)thread;
 - (void)setStopExpected;
 @end
 
@@ -16,9 +16,9 @@
   return 0;
 }
 
-- (WifiScannerThread)initWithBackend:(id)a3
+- (WifiScannerThread)initWithBackend:(id)backend
 {
-  v5 = a3;
+  backendCopy = backend;
   v9.receiver = self;
   v9.super_class = WifiScannerThread;
   v6 = [(WifiScannerThread *)&v9 init];
@@ -26,7 +26,7 @@
   if (v6)
   {
     *(v6 + 16) = 0;
-    objc_storeStrong(v6 + 1, a3);
+    objc_storeStrong(v6 + 1, backend);
   }
 
   return v7;
@@ -60,9 +60,9 @@
   }
 }
 
-- (void)runWifiThread:(id)a3
+- (void)runWifiThread:(id)thread
 {
-  v4 = a3;
+  threadCopy = thread;
   Current = CFRunLoopGetCurrent();
   v6 = objc_autoreleasePoolPush();
   v7 = _os_activity_create(&_mh_execute_header, "Wifi Framework", &_os_activity_current, OS_ACTIVITY_FLAG_DETACHED);
@@ -76,10 +76,10 @@
   v9 = qword_10045B058;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [*(self + 1) wifiThreadRunLoop];
+    wifiThreadRunLoop = [*(self + 1) wifiThreadRunLoop];
     v11 = *(self + 1);
     *buf = 134218240;
-    *&buf[4] = v10;
+    *&buf[4] = wifiThreadRunLoop;
     v23 = 2048;
     v24 = v11;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Created runloop %p on %p", buf, 0x16u);
@@ -105,7 +105,7 @@
     }
 
 LABEL_9:
-    v13 = [*(self + 1) wifiThreadShutdown];
+    wifiThreadShutdown = [*(self + 1) wifiThreadShutdown];
     v14 = *(self + 1);
     *(self + 1) = 0;
 
@@ -130,7 +130,7 @@ LABEL_9:
       block[1] = 3221225472;
       block[2] = sub_1002EF914;
       block[3] = &unk_100432828;
-      v20 = v4;
+      v20 = threadCopy;
       CFRunLoopPerformBlock(Current, kCFRunLoopCommonModes, block);
       if (qword_10045B050 != -1)
       {
@@ -149,11 +149,11 @@ LABEL_9:
 
     else
     {
-      dispatch_semaphore_signal(v4);
+      dispatch_semaphore_signal(threadCopy);
       [(WifiScannerThread *)self setStopExpected];
     }
 
-    dispatch_semaphore_signal(v13);
+    dispatch_semaphore_signal(wifiThreadShutdown);
     std::mutex::lock((self + 24));
     if (*(self + 16))
     {

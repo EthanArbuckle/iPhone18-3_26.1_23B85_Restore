@@ -13,8 +13,8 @@
 
 - (BOOL)isAnnounceSupported
 {
-  v1 = [a1 appleAnnounceAccessories];
-  v2 = [v1 count] != 0;
+  appleAnnounceAccessories = [self appleAnnounceAccessories];
+  v2 = [appleAnnounceAccessories count] != 0;
 
   return v2;
 }
@@ -22,75 +22,75 @@
 - (uint64_t)isAnnounceAvailable
 {
   v2 = +[ANHomeManager shared];
-  v3 = [v2 currentAccessory];
+  currentAccessory = [v2 currentAccessory];
 
-  if (!v3)
+  if (!currentAccessory)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 home];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [a1 uniqueIdentifier];
-  v7 = [v5 isEqual:v6];
+  home = [currentAccessory home];
+  uniqueIdentifier = [home uniqueIdentifier];
+  uniqueIdentifier2 = [self uniqueIdentifier];
+  v7 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
   if (!v7)
   {
 LABEL_5:
-    if (![a1 announceAccessAllowedForCurrentUser])
+    if (![self announceAccessAllowedForCurrentUser])
     {
       goto LABEL_4;
     }
 
 LABEL_6:
-    v8 = [a1 isAnnounceEnabledForAnyAccessoryOrUser];
+    isAnnounceEnabledForAnyAccessoryOrUser = [self isAnnounceEnabledForAnyAccessoryOrUser];
     goto LABEL_7;
   }
 
-  if ([v3 an_isAnnounceEnabled])
+  if ([currentAccessory an_isAnnounceEnabled])
   {
     goto LABEL_6;
   }
 
 LABEL_4:
-  v8 = 0;
+  isAnnounceEnabledForAnyAccessoryOrUser = 0;
 LABEL_7:
 
-  return v8;
+  return isAnnounceEnabledForAnyAccessoryOrUser;
 }
 
 - (BOOL)isAnnounceEnabledForAnyAccessory
 {
   v27 = *MEMORY[0x277D85DE8];
   v2 = +[ANHomeManager shared];
-  v3 = [v2 currentAccessory];
+  currentAccessory = [v2 currentAccessory];
 
-  if (!v3)
+  if (!currentAccessory)
   {
     goto LABEL_4;
   }
 
-  v4 = [v3 home];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [a1 uniqueIdentifier];
-  v7 = [v5 isEqual:v6];
+  home = [currentAccessory home];
+  uniqueIdentifier = [home uniqueIdentifier];
+  uniqueIdentifier2 = [self uniqueIdentifier];
+  v7 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
   if (v7)
   {
     v8 = MEMORY[0x277CD1650];
-    v9 = [a1 accessories];
-    v10 = [v8 announceAccessoriesWithAnnounceEnabledFromAccessories:v9];
+    accessories = [self accessories];
+    accessories2 = [v8 announceAccessoriesWithAnnounceEnabledFromAccessories:accessories];
 
-    v11 = [MEMORY[0x277CD1650] hmu_accessoriesExcludingCurrentAccessoryFromAccessories:v10];
-    v12 = [MEMORY[0x277CD1650] hmu_accessoriesFromAccessories:v11 excludingStereoCompanionForAccessory:v3];
+    v11 = [MEMORY[0x277CD1650] hmu_accessoriesExcludingCurrentAccessoryFromAccessories:accessories2];
+    v12 = [MEMORY[0x277CD1650] hmu_accessoriesFromAccessories:v11 excludingStereoCompanionForAccessory:currentAccessory];
   }
 
   else
   {
 LABEL_4:
     v13 = MEMORY[0x277CD1650];
-    v10 = [a1 accessories];
-    v12 = [v13 announceAccessoriesWithAnnounceEnabledFromAccessories:v10];
+    accessories2 = [self accessories];
+    v12 = [v13 announceAccessoriesWithAnnounceEnabledFromAccessories:accessories2];
   }
 
   v14 = ANLogHandleHome_Announce();
@@ -122,37 +122,37 @@ LABEL_4:
 {
   v35 = *MEMORY[0x277D85DE8];
   v2 = +[ANHomeManager shared];
-  v3 = [v2 currentAccessory];
+  currentAccessory = [v2 currentAccessory];
 
-  if (!v3)
+  if (!currentAccessory)
   {
     goto LABEL_4;
   }
 
-  v4 = [v3 home];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [a1 uniqueIdentifier];
-  v7 = [v5 isEqual:v6];
+  home = [currentAccessory home];
+  uniqueIdentifier = [home uniqueIdentifier];
+  uniqueIdentifier2 = [self uniqueIdentifier];
+  v7 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
   if (v7)
   {
     v8 = MEMORY[0x277CD1650];
-    v9 = [a1 accessories];
-    v10 = [v8 announceAccessoriesWithAnnounceEnabledFromAccessories:v9];
+    accessories = [self accessories];
+    v10 = [v8 announceAccessoriesWithAnnounceEnabledFromAccessories:accessories];
 
     v11 = [MEMORY[0x277CD1650] hmu_accessoriesExcludingCurrentAccessoryFromAccessories:v10];
-    v12 = [MEMORY[0x277CD1650] hmu_accessoriesFromAccessories:v11 excludingStereoCompanionForAccessory:v3];
-    v13 = [a1 usersIncludingCurrentUserWithAnnounceEnabled];
+    v12 = [MEMORY[0x277CD1650] hmu_accessoriesFromAccessories:v11 excludingStereoCompanionForAccessory:currentAccessory];
+    usersIncludingCurrentUserWithAnnounceEnabled = [self usersIncludingCurrentUserWithAnnounceEnabled];
   }
 
   else
   {
 LABEL_4:
     v14 = MEMORY[0x277CD1650];
-    v15 = [a1 accessories];
-    v12 = [v14 announceAccessoriesWithAnnounceEnabledFromAccessories:v15];
+    accessories2 = [self accessories];
+    v12 = [v14 announceAccessoriesWithAnnounceEnabledFromAccessories:accessories2];
 
-    v13 = [a1 usersWithAnnounceEnabled];
+    usersIncludingCurrentUserWithAnnounceEnabled = [self usersWithAnnounceEnabled];
   }
 
   v16 = ANLogHandleHome_Announce();
@@ -169,8 +169,8 @@ LABEL_4:
       v18 = "ies";
     }
 
-    v19 = [v13 count];
-    v20 = [v13 count];
+    v19 = [usersIncludingCurrentUserWithAnnounceEnabled count];
+    v20 = [usersIncludingCurrentUserWithAnnounceEnabled count];
     v25 = 138413314;
     v26 = &stru_2851BDB18;
     v21 = "s";
@@ -197,7 +197,7 @@ LABEL_4:
 
   else
   {
-    v22 = [v13 count] != 0;
+    v22 = [usersIncludingCurrentUserWithAnnounceEnabled count] != 0;
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -206,8 +206,8 @@ LABEL_4:
 
 - (uint64_t)announceAccessAllowedForCurrentUser
 {
-  v2 = [a1 currentUser];
-  v3 = [a1 announceAccessAllowedForUser:v2];
+  currentUser = [self currentUser];
+  v3 = [self announceAccessAllowedForUser:currentUser];
 
   return v3;
 }
@@ -216,42 +216,42 @@ LABEL_4:
 {
   v27 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 homeAccessControlForUser:v4];
-  v6 = [v5 isAnnounceAccessAllowed];
+  v5 = [self homeAccessControlForUser:v4];
+  isAnnounceAccessAllowed = [v5 isAnnounceAccessAllowed];
 
   v7 = ANLogHandleHome_Announce();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v4 name];
-    v9 = [v4 uniqueIdentifier];
-    v10 = [MEMORY[0x277CCABB0] numberWithBool:v6];
+    name = [v4 name];
+    uniqueIdentifier = [v4 uniqueIdentifier];
+    v10 = [MEMORY[0x277CCABB0] numberWithBool:isAnnounceAccessAllowed];
     v19 = 138413058;
     v20 = &stru_2851BDB18;
     v21 = 2112;
-    v22 = v8;
+    v22 = name;
     v23 = 2112;
-    v24 = v9;
+    v24 = uniqueIdentifier;
     v25 = 2112;
     v26 = v10;
     _os_log_impl(&dword_23F525000, v7, OS_LOG_TYPE_DEFAULT, "%@Announce Access Allowed For User (Name = %@, ID = %@): %@", &v19, 0x2Au);
   }
 
-  v11 = [MEMORY[0x277CEAB80] sharedInstance];
-  v12 = [v11 BOOLForDefault:*MEMORY[0x277CEA8C8]];
+  mEMORY[0x277CEAB80] = [MEMORY[0x277CEAB80] sharedInstance];
+  v12 = [mEMORY[0x277CEAB80] BOOLForDefault:*MEMORY[0x277CEA8C8]];
 
   if (v12)
   {
     v13 = ANLogHandleHome_Announce();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v4 name];
-      v15 = [v4 uniqueIdentifier];
+      name2 = [v4 name];
+      uniqueIdentifier2 = [v4 uniqueIdentifier];
       v19 = 138412802;
       v20 = &stru_2851BDB18;
       v21 = 2112;
-      v22 = v14;
+      v22 = name2;
       v23 = 2112;
-      v24 = v15;
+      v24 = uniqueIdentifier2;
       v16 = "%@[Override] Force Allow Announce For User (Name = %@, ID = %@) Enabled";
 LABEL_10:
       _os_log_impl(&dword_23F525000, v13, OS_LOG_TYPE_DEFAULT, v16, &v19, 0x20u);
@@ -262,19 +262,19 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ((v6 & 1) == 0)
+  if ((isAnnounceAccessAllowed & 1) == 0)
   {
     v13 = ANLogHandleHome_Announce();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v4 name];
-      v15 = [v4 uniqueIdentifier];
+      name2 = [v4 name];
+      uniqueIdentifier2 = [v4 uniqueIdentifier];
       v19 = 138412802;
       v20 = &stru_2851BDB18;
       v21 = 2112;
-      v22 = v14;
+      v22 = name2;
       v23 = 2112;
-      v24 = v15;
+      v24 = uniqueIdentifier2;
       v16 = "%@Announce is DISABLED For User (Name = %@, ID = %@)";
       goto LABEL_10;
     }
@@ -299,8 +299,8 @@ LABEL_12:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [a1 hmu_allUsersIncludingCurrentUser];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  hmu_allUsersIncludingCurrentUser = [self hmu_allUsersIncludingCurrentUser];
+  v4 = [hmu_allUsersIncludingCurrentUser countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -311,17 +311,17 @@ LABEL_12:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(hmu_allUsersIncludingCurrentUser);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        if ([a1 announceAccessAllowedForUser:v8] && objc_msgSend(a1, "hmu_isRemoteAccessAllowedForUser:", v8))
+        if ([self announceAccessAllowedForUser:v8] && objc_msgSend(self, "hmu_isRemoteAccessAllowedForUser:", v8))
         {
           [v2 addObject:v8];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [hmu_allUsersIncludingCurrentUser countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -337,19 +337,19 @@ LABEL_12:
   v22 = *MEMORY[0x277D85DE8];
   if (a3)
   {
-    [a1 hmu_allUsersIncludingCurrentUser];
+    [self hmu_allUsersIncludingCurrentUser];
   }
 
   else
   {
-    [a1 users];
+    [self users];
   }
   v5 = ;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __66__HMHome_Announce___usersWithAnnounceEnabledIncludingCurrentUser___block_invoke;
   v13[3] = &unk_278C86D78;
-  v13[4] = a1;
+  v13[4] = self;
   v6 = [v5 na_filter:v13];
   v7 = ANLogHandleHome_Announce();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))

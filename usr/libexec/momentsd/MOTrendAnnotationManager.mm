@@ -1,13 +1,13 @@
 @interface MOTrendAnnotationManager
-- (MOTrendAnnotationManager)initWithUniverse:(id)a3;
-- (void)performAnnotationWithEvents:(id)a3 withPatternEvents:(id)a4 handler:(id)a5;
+- (MOTrendAnnotationManager)initWithUniverse:(id)universe;
+- (void)performAnnotationWithEvents:(id)events withPatternEvents:(id)patternEvents handler:(id)handler;
 @end
 
 @implementation MOTrendAnnotationManager
 
-- (MOTrendAnnotationManager)initWithUniverse:(id)a3
+- (MOTrendAnnotationManager)initWithUniverse:(id)universe
 {
-  v5 = a3;
+  universeCopy = universe;
   v27.receiver = self;
   v27.super_class = MOTrendAnnotationManager;
   v6 = [(MOTrendAnnotationManager *)&v27 init];
@@ -18,10 +18,10 @@
     queue = v6->_queue;
     v6->_queue = v8;
 
-    objc_storeStrong(&v6->_universe, a3);
+    objc_storeStrong(&v6->_universe, universe);
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    v12 = [v5 getService:v11];
+    v12 = [universeCopy getService:v11];
     configurationManager = v6->_configurationManager;
     v6->_configurationManager = v12;
 
@@ -68,11 +68,11 @@
   return v6;
 }
 
-- (void)performAnnotationWithEvents:(id)a3 withPatternEvents:(id)a4 handler:(id)a5
+- (void)performAnnotationWithEvents:(id)events withPatternEvents:(id)patternEvents handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventsCopy = events;
+  patternEventsCopy = patternEvents;
+  handlerCopy = handler;
   if ([(NSArray *)self->_bundlers count])
   {
     v11 = [NSMutableArray arrayWithCapacity:[(NSArray *)self->_bundlers count]];
@@ -91,17 +91,17 @@
     }
 
     v14 = [(NSArray *)self->_bundlers count];
-    v15 = [(MOTrendAnnotationManager *)self queue];
+    queue = [(MOTrendAnnotationManager *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __82__MOTrendAnnotationManager_performAnnotationWithEvents_withPatternEvents_handler___block_invoke;
     block[3] = &unk_100335BE0;
     block[4] = self;
-    block[5] = v9;
-    block[6] = v8;
+    block[5] = patternEventsCopy;
+    block[6] = eventsCopy;
     v16 = v11;
     v29 = v16;
-    dispatch_apply(v14, v15, block);
+    dispatch_apply(v14, queue, block);
 
     v17 = objc_opt_new();
     v24 = 0u;
@@ -140,7 +140,7 @@
       while (v20);
     }
 
-    v10[2](v10, v17, 0);
+    handlerCopy[2](handlerCopy, v17, 0);
   }
 }
 

@@ -1,35 +1,35 @@
 @interface ICMarkdownRepresentation
-+ (BOOL)isMarkdownAttributedString:(id)a3;
-+ (id)attributedMarkdownStringFromPlainMarkdown:(id)a3 error:(id *)a4;
-+ (id)createMarkdownStringFrom:(id)a3 context:(id)a4 rangeMapping:(id *)a5;
-+ (id)parseExtendedAttribute:(id)a3 token:(id)a4 markdown:(id)a5;
-+ (id)parseExtendedAttributes:(id)a3;
-- (ICMarkdownRepresentation)initWithMarkdown:(id)a3;
-- (ICMarkdownRepresentation)initWithPlainMarkdown:(id)a3 error:(id *)a4;
++ (BOOL)isMarkdownAttributedString:(id)string;
++ (id)attributedMarkdownStringFromPlainMarkdown:(id)markdown error:(id *)error;
++ (id)createMarkdownStringFrom:(id)from context:(id)context rangeMapping:(id *)mapping;
++ (id)parseExtendedAttribute:(id)attribute token:(id)token markdown:(id)markdown;
++ (id)parseExtendedAttributes:(id)attributes;
+- (ICMarkdownRepresentation)initWithMarkdown:(id)markdown;
+- (ICMarkdownRepresentation)initWithPlainMarkdown:(id)markdown error:(id *)error;
 - (id)createRenderableAttributedString;
 @end
 
 @implementation ICMarkdownRepresentation
 
-+ (id)attributedMarkdownStringFromPlainMarkdown:(id)a3 error:(id *)a4
++ (id)attributedMarkdownStringFromPlainMarkdown:(id)markdown error:(id *)error
 {
   v5 = MEMORY[0x1E696AAB8];
-  v6 = a3;
+  markdownCopy = markdown;
   v7 = objc_alloc_init(v5);
   [v7 setAllowsExtendedAttributes:1];
   [v7 setAppliesSourcePositionAttributes:1];
   v14 = 0;
-  v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithMarkdownString:v6 options:v7 baseURL:0 error:&v14];
+  v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithMarkdownString:markdownCopy options:v7 baseURL:0 error:&v14];
 
   v9 = v14;
   v10 = v9;
   if (v9)
   {
-    if (a4)
+    if (error)
     {
       v11 = v9;
       v12 = 0;
-      *a4 = v10;
+      *error = v10;
     }
 
     else
@@ -46,16 +46,16 @@
   return v12;
 }
 
-- (ICMarkdownRepresentation)initWithPlainMarkdown:(id)a3 error:(id *)a4
+- (ICMarkdownRepresentation)initWithPlainMarkdown:(id)markdown error:(id *)error
 {
-  v6 = a3;
-  v7 = [ICMarkdownRepresentation attributedMarkdownStringFromPlainMarkdown:v6 error:a4];
+  markdownCopy = markdown;
+  v7 = [ICMarkdownRepresentation attributedMarkdownStringFromPlainMarkdown:markdownCopy error:error];
   if (!v7)
   {
     v8 = os_log_create("com.apple.notes", "Markdown");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      [ICMarkdownRepresentation initWithPlainMarkdown:v6 error:v8];
+      [ICMarkdownRepresentation initWithPlainMarkdown:markdownCopy error:v8];
     }
 
     v7 = objc_opt_new();
@@ -67,46 +67,46 @@
   return v10;
 }
 
-- (ICMarkdownRepresentation)initWithMarkdown:(id)a3
+- (ICMarkdownRepresentation)initWithMarkdown:(id)markdown
 {
-  v4 = a3;
+  markdownCopy = markdown;
   v8.receiver = self;
   v8.super_class = ICMarkdownRepresentation;
   v5 = [(ICMarkdownRepresentation *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ICMarkdownRepresentation *)v5 setMarkdown:v4];
+    [(ICMarkdownRepresentation *)v5 setMarkdown:markdownCopy];
   }
 
   return v6;
 }
 
-+ (BOOL)isMarkdownAttributedString:(id)a3
++ (BOOL)isMarkdownAttributedString:(id)string
 {
-  v3 = a3;
-  if ([v3 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v14 = 0;
     v15 = &v14;
     v16 = 0x2020000000;
     v17 = 0;
-    v4 = [v3 ic_range];
+    ic_range = [stringCopy ic_range];
     v5 = *MEMORY[0x1E696A4A0];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __55__ICMarkdownRepresentation_isMarkdownAttributedString___block_invoke;
     v13[3] = &unk_1E846A0D0;
     v13[4] = &v14;
-    [v3 enumerateAttribute:v5 inRange:v4 options:v6 usingBlock:{0, v13}];
-    v7 = [v3 ic_range];
+    [stringCopy enumerateAttribute:v5 inRange:ic_range options:v6 usingBlock:{0, v13}];
+    ic_range2 = [stringCopy ic_range];
     v8 = *MEMORY[0x1E696A7D0];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __55__ICMarkdownRepresentation_isMarkdownAttributedString___block_invoke_2;
     v12[3] = &unk_1E846A0D0;
     v12[4] = &v14;
-    [v3 enumerateAttribute:v8 inRange:v7 options:v9 usingBlock:{0, v12}];
+    [stringCopy enumerateAttribute:v8 inRange:ic_range2 options:v9 usingBlock:{0, v12}];
     v10 = *(v15 + 24);
     _Block_object_dispose(&v14, 8);
   }
@@ -141,20 +141,20 @@ uint64_t __55__ICMarkdownRepresentation_isMarkdownAttributedString___block_invok
   return result;
 }
 
-+ (id)parseExtendedAttribute:(id)a3 token:(id)a4 markdown:(id)a5
++ (id)parseExtendedAttribute:(id)attribute token:(id)token markdown:(id)markdown
 {
-  v36 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 mutableCopy];
-  v10 = [v8 string];
+  attributeCopy = attribute;
+  tokenCopy = token;
+  markdownCopy = markdown;
+  v9 = [markdownCopy mutableCopy];
+  string = [markdownCopy string];
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v34 = v8;
-  v12 = [v8 string];
-  v13 = [v12 ic_range];
+  v34 = markdownCopy;
+  string2 = [markdownCopy string];
+  ic_range = [string2 ic_range];
   v15 = v14;
 
-  v16 = [v10 rangeOfString:v7 options:0 range:{v13, v15}];
+  v16 = [string rangeOfString:tokenCopy options:0 range:{ic_range, v15}];
   if (v16 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v18 = v16;
@@ -164,37 +164,37 @@ uint64_t __55__ICMarkdownRepresentation_isMarkdownAttributedString___block_invok
       v20 = [MEMORY[0x1E696B098] valueWithRange:{v18, v19}];
       [v11 addObject:v20];
 
-      v18 = [v10 rangeOfString:v7 options:0 range:{v18 + v19, objc_msgSend(v10, "length") - (v18 + v19)}];
+      v18 = [string rangeOfString:tokenCopy options:0 range:{v18 + v19, objc_msgSend(string, "length") - (v18 + v19)}];
       v19 = v21;
     }
 
     while (v18 != 0x7FFFFFFFFFFFFFFFLL);
   }
 
-  v35 = v7;
+  v35 = tokenCopy;
   if ([v11 count])
   {
     [v11 removeLastObject];
   }
 
-  v22 = v36;
+  v22 = attributeCopy;
   if ([v11 count] >= 2)
   {
     v23 = MEMORY[0x1E695E118];
     do
     {
       v24 = [v11 objectAtIndexedSubscript:{objc_msgSend(v11, "count") - 1}];
-      v25 = [v24 rangeValue];
+      rangeValue = [v24 rangeValue];
       v27 = v26;
 
       v28 = [v11 objectAtIndexedSubscript:{objc_msgSend(v11, "count") - 2}];
-      v29 = [v28 rangeValue];
+      rangeValue2 = [v28 rangeValue];
       v31 = v30;
 
-      v22 = v36;
-      [v9 addAttribute:v36 value:v23 range:{v29 + v31, v25 - (v29 + v31)}];
-      [v9 replaceCharactersInRange:v25 withString:{v27, &stru_1F4F94F00}];
-      [v9 replaceCharactersInRange:v29 withString:{v31, &stru_1F4F94F00}];
+      v22 = attributeCopy;
+      [v9 addAttribute:attributeCopy value:v23 range:{rangeValue2 + v31, rangeValue - (rangeValue2 + v31)}];
+      [v9 replaceCharactersInRange:rangeValue withString:{v27, &stru_1F4F94F00}];
+      [v9 replaceCharactersInRange:rangeValue2 withString:{v31, &stru_1F4F94F00}];
       [v11 removeLastObject];
       [v11 removeLastObject];
     }
@@ -207,19 +207,19 @@ uint64_t __55__ICMarkdownRepresentation_isMarkdownAttributedString___block_invok
   return v32;
 }
 
-+ (id)parseExtendedAttributes:(id)a3
++ (id)parseExtendedAttributes:(id)attributes
 {
-  v4 = [a1 parseExtendedAttribute:ICNSAttributeNamePresentationIntentEmphasis token:@"==" markdown:a3];
-  v5 = [a1 parseExtendedAttribute:ICNSAttributeNamePresentationIntentUnderline token:@"++" markdown:v4];
+  v4 = [self parseExtendedAttribute:ICNSAttributeNamePresentationIntentEmphasis token:@"==" markdown:attributes];
+  v5 = [self parseExtendedAttribute:ICNSAttributeNamePresentationIntentUnderline token:@"++" markdown:v4];
 
   return v5;
 }
 
-+ (id)createMarkdownStringFrom:(id)a3 context:(id)a4 rangeMapping:(id *)a5
++ (id)createMarkdownStringFrom:(id)from context:(id)context rangeMapping:(id *)mapping
 {
   v55 = *MEMORY[0x1E69E9840];
-  v37 = a3;
-  v36 = a4;
+  fromCopy = from;
+  contextCopy = context;
   v53[0] = 0;
   v53[1] = v53;
   v53[2] = 0x2020000000;
@@ -230,9 +230,9 @@ uint64_t __55__ICMarkdownRepresentation_isMarkdownAttributedString___block_invok
   aBlock[3] = &unk_1E846E098;
   aBlock[4] = v53;
   v6 = _Block_copy(aBlock);
-  v7 = [v37 mutableCopy];
+  v7 = [fromCopy mutableCopy];
   v8 = *MEMORY[0x1E69B7600];
-  v9 = [v7 ic_range];
+  ic_range = [v7 ic_range];
   v11 = v10;
   v49[0] = MEMORY[0x1E69E9820];
   v49[1] = 3221225472;
@@ -242,9 +242,9 @@ uint64_t __55__ICMarkdownRepresentation_isMarkdownAttributedString___block_invok
   v51 = v12;
   v50 = v7;
   v41 = v50;
-  [v50 enumerateAttribute:v8 inRange:v9 options:v11 usingBlock:{0, v49}];
-  v13 = [MEMORY[0x1E695DF70] array];
-  v14 = [v41 ic_range];
+  [v50 enumerateAttribute:v8 inRange:ic_range options:v11 usingBlock:{0, v49}];
+  array = [MEMORY[0x1E695DF70] array];
+  ic_range2 = [v41 ic_range];
   v16 = v15;
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
@@ -252,10 +252,10 @@ uint64_t __55__ICMarkdownRepresentation_isMarkdownAttributedString___block_invok
   v46[3] = &unk_1E846E0E8;
   v33 = v12;
   v48 = v33;
-  v17 = v13;
+  v17 = array;
   v47 = v17;
-  [v41 ic_enumerateAttachmentsInContext:v36 range:v14 options:v16 usingBlock:{0, v46}];
-  v40 = [MEMORY[0x1E695DF90] dictionary];
+  [v41 ic_enumerateAttachmentsInContext:contextCopy range:ic_range2 options:v16 usingBlock:{0, v46}];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
@@ -276,17 +276,17 @@ uint64_t __55__ICMarkdownRepresentation_isMarkdownAttributedString___block_invok
         }
 
         v21 = *(*(&v42 + 1) + 8 * i);
-        v22 = [v21 firstObject];
-        v23 = [v22 rangeValue];
+        firstObject = [v21 firstObject];
+        rangeValue = [firstObject rangeValue];
         v25 = v24;
 
-        v26 = [v21 secondObject];
-        v27 = [v26 length];
-        [v41 replaceCharactersInRange:v23 + v19 withAttributedString:{v25, v26}];
-        v28 = [v26 length];
-        v29 = [MEMORY[0x1E696B098] valueWithRange:{v23, v25}];
-        v30 = [MEMORY[0x1E696B098] valueWithRange:{v23 + v19, v27}];
-        [v40 setObject:v29 forKeyedSubscript:v30];
+        secondObject = [v21 secondObject];
+        v27 = [secondObject length];
+        [v41 replaceCharactersInRange:rangeValue + v19 withAttributedString:{v25, secondObject}];
+        v28 = [secondObject length];
+        v29 = [MEMORY[0x1E696B098] valueWithRange:{rangeValue, v25}];
+        v30 = [MEMORY[0x1E696B098] valueWithRange:{rangeValue + v19, v27}];
+        [dictionary setObject:v29 forKeyedSubscript:v30];
 
         v19 += v28 - v25;
       }
@@ -297,9 +297,9 @@ uint64_t __55__ICMarkdownRepresentation_isMarkdownAttributedString___block_invok
     while (v18);
   }
 
-  if (a5)
+  if (mapping)
   {
-    *a5 = [v40 copy];
+    *mapping = [dictionary copy];
   }
 
   v31 = [v41 copy];
@@ -513,35 +513,35 @@ void __74__ICMarkdownRepresentation_createMarkdownStringFrom_context_rangeMappin
   v128 = *MEMORY[0x1E69E9840];
   if ([(ICMarkdownRepresentation *)self keepOriginalAttributes])
   {
-    v3 = [(ICMarkdownRepresentation *)self markdown];
-    v4 = [v3 mutableCopy];
+    markdown = [(ICMarkdownRepresentation *)self markdown];
+    v4 = [markdown mutableCopy];
   }
 
   else
   {
     v5 = objc_alloc(MEMORY[0x1E696AD40]);
-    v3 = [(ICMarkdownRepresentation *)self markdown];
-    v6 = [v3 string];
-    v4 = [v5 initWithString:v6];
+    markdown = [(ICMarkdownRepresentation *)self markdown];
+    string = [markdown string];
+    v4 = [v5 initWithString:string];
   }
 
   v7 = *MEMORY[0x1E69D93B0];
-  v8 = [v4 ic_range];
-  [v4 removeAttribute:v7 range:{v8, v9}];
+  ic_range = [v4 ic_range];
+  [v4 removeAttribute:v7 range:{ic_range, v9}];
   v10 = *MEMORY[0x1E69D93C8];
-  v11 = [v4 ic_range];
-  [v4 removeAttribute:v10 range:{v11, v12}];
+  ic_range2 = [v4 ic_range];
+  [v4 removeAttribute:v10 range:{ic_range2, v12}];
   if ([(ICMarkdownRepresentation *)self keepOriginalAttributes]&& [(ICMarkdownRepresentation *)self filterConflictingAttributes])
   {
     v13 = *MEMORY[0x1E69DB648];
-    v14 = [v4 ic_range];
-    [v4 removeAttribute:v13 range:{v14, v15}];
+    ic_range3 = [v4 ic_range];
+    [v4 removeAttribute:v13 range:{ic_range3, v15}];
   }
 
-  v16 = [(ICMarkdownRepresentation *)self markdown];
-  v17 = [(ICMarkdownRepresentation *)self markdown];
+  markdown2 = [(ICMarkdownRepresentation *)self markdown];
+  markdown3 = [(ICMarkdownRepresentation *)self markdown];
   v18 = *MEMORY[0x1E696A4A0];
-  v19 = [v17 length];
+  v19 = [markdown3 length];
   v124[0] = MEMORY[0x1E69E9820];
   v124[1] = 3221225472;
   v124[2] = __60__ICMarkdownRepresentation_createRenderableAttributedString__block_invoke;
@@ -549,23 +549,23 @@ void __74__ICMarkdownRepresentation_createMarkdownStringFrom_context_rangeMappin
   v20 = v4;
   v125 = v20;
   v84 = v18;
-  [v16 enumerateAttribute:v18 inRange:0 options:v19 usingBlock:{0, v124}];
+  [markdown2 enumerateAttribute:v18 inRange:0 options:v19 usingBlock:{0, v124}];
 
   v122[0] = 0;
   v122[1] = v122;
   v122[2] = 0x3032000000;
   v122[3] = __Block_byref_object_copy__76;
   v122[4] = __Block_byref_object_dispose__76;
-  v123 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v120[0] = 0;
   v120[1] = v120;
   v120[2] = 0x3032000000;
   v120[3] = __Block_byref_object_copy__76;
   v120[4] = __Block_byref_object_dispose__76;
   v121 = objc_opt_new();
-  v21 = [(ICMarkdownRepresentation *)self markdown];
-  v22 = [(ICMarkdownRepresentation *)self markdown];
-  v23 = [v22 length];
+  markdown4 = [(ICMarkdownRepresentation *)self markdown];
+  markdown5 = [(ICMarkdownRepresentation *)self markdown];
+  v23 = [markdown5 length];
   v24 = *MEMORY[0x1E696A7D0];
   v115[0] = MEMORY[0x1E69E9820];
   v115[1] = 3221225472;
@@ -573,14 +573,14 @@ void __74__ICMarkdownRepresentation_createMarkdownStringFrom_context_rangeMappin
   v115[3] = &unk_1E846E188;
   v25 = v20;
   v116 = v25;
-  v117 = self;
+  selfCopy = self;
   v118 = v122;
   v119 = v120;
-  [v21 enumerateAttribute:v24 inRange:0 options:v23 usingBlock:{0, v115}];
+  [markdown4 enumerateAttribute:v24 inRange:0 options:v23 usingBlock:{0, v115}];
 
-  v26 = [(ICMarkdownRepresentation *)self markdown];
-  v27 = [(ICMarkdownRepresentation *)self markdown];
-  v28 = [v27 ic_range];
+  markdown6 = [(ICMarkdownRepresentation *)self markdown];
+  markdown7 = [(ICMarkdownRepresentation *)self markdown];
+  ic_range4 = [markdown7 ic_range];
   v30 = v29;
   v31 = *MEMORY[0x1E69DB670];
   v113[0] = MEMORY[0x1E69E9820];
@@ -589,11 +589,11 @@ void __74__ICMarkdownRepresentation_createMarkdownStringFrom_context_rangeMappin
   v113[3] = &unk_1E846A170;
   v32 = v25;
   v114 = v32;
-  [v26 enumerateAttribute:v31 inRange:v28 options:v30 usingBlock:{0, v113}];
+  [markdown6 enumerateAttribute:v31 inRange:ic_range4 options:v30 usingBlock:{0, v113}];
 
-  v33 = [(ICMarkdownRepresentation *)self markdown];
-  v34 = [(ICMarkdownRepresentation *)self markdown];
-  v35 = [v34 ic_range];
+  markdown8 = [(ICMarkdownRepresentation *)self markdown];
+  markdown9 = [(ICMarkdownRepresentation *)self markdown];
+  ic_range5 = [markdown9 ic_range];
   v37 = v36;
   v38 = *MEMORY[0x1E696A488];
   v111[0] = MEMORY[0x1E69E9820];
@@ -602,12 +602,12 @@ void __74__ICMarkdownRepresentation_createMarkdownStringFrom_context_rangeMappin
   v111[3] = &unk_1E846A170;
   v39 = v32;
   v112 = v39;
-  [v33 enumerateAttribute:v38 inRange:v35 options:v37 usingBlock:{0, v111}];
+  [markdown8 enumerateAttribute:v38 inRange:ic_range5 options:v37 usingBlock:{0, v111}];
 
-  v40 = [(ICMarkdownRepresentation *)self markdown];
+  markdown10 = [(ICMarkdownRepresentation *)self markdown];
   v41 = ICNSAttributeNamePresentationIntentEmphasis;
-  v42 = [(ICMarkdownRepresentation *)self markdown];
-  v43 = [v42 ic_range];
+  markdown11 = [(ICMarkdownRepresentation *)self markdown];
+  ic_range6 = [markdown11 ic_range];
   v45 = v44;
   v109[0] = MEMORY[0x1E69E9820];
   v109[1] = 3221225472;
@@ -615,12 +615,12 @@ void __74__ICMarkdownRepresentation_createMarkdownStringFrom_context_rangeMappin
   v109[3] = &unk_1E846A170;
   v46 = v39;
   v110 = v46;
-  [v40 enumerateAttribute:v41 inRange:v43 options:v45 usingBlock:{0, v109}];
+  [markdown10 enumerateAttribute:v41 inRange:ic_range6 options:v45 usingBlock:{0, v109}];
 
-  v47 = [(ICMarkdownRepresentation *)self markdown];
+  markdown12 = [(ICMarkdownRepresentation *)self markdown];
   v48 = ICNSAttributeNamePresentationIntentUnderline;
-  v49 = [(ICMarkdownRepresentation *)self markdown];
-  v50 = [v49 ic_range];
+  markdown13 = [(ICMarkdownRepresentation *)self markdown];
+  ic_range7 = [markdown13 ic_range];
   v52 = v51;
   v107[0] = MEMORY[0x1E69E9820];
   v107[1] = 3221225472;
@@ -628,7 +628,7 @@ void __74__ICMarkdownRepresentation_createMarkdownStringFrom_context_rangeMappin
   v107[3] = &unk_1E846A170;
   v53 = v46;
   v108 = v53;
-  [v47 enumerateAttribute:v48 inRange:v50 options:v52 usingBlock:{0, v107}];
+  [markdown12 enumerateAttribute:v48 inRange:ic_range7 options:v52 usingBlock:{0, v107}];
 
   v106[0] = 0;
   v106[1] = v106;
@@ -655,9 +655,9 @@ void __74__ICMarkdownRepresentation_createMarkdownStringFrom_context_rangeMappin
   v98[1] = v98;
   v98[2] = 0x2020000000;
   v98[3] = 1;
-  v58 = [(ICMarkdownRepresentation *)self markdown];
-  v59 = [(ICMarkdownRepresentation *)self markdown];
-  v60 = [v59 ic_range];
+  markdown14 = [(ICMarkdownRepresentation *)self markdown];
+  markdown15 = [(ICMarkdownRepresentation *)self markdown];
+  ic_range8 = [markdown15 ic_range];
   v62 = v61;
   v63 = *MEMORY[0x1E696A5A8];
   v91[0] = MEMORY[0x1E69E9820];
@@ -670,13 +670,13 @@ void __74__ICMarkdownRepresentation_createMarkdownStringFrom_context_rangeMappin
   v65 = v55;
   v97 = v98;
   v92 = v65;
-  v93 = self;
+  selfCopy2 = self;
   v66 = v56;
   v94 = v66;
-  [v58 enumerateAttribute:v63 inRange:v60 options:v62 usingBlock:{0, v91}];
+  [markdown14 enumerateAttribute:v63 inRange:ic_range8 options:v62 usingBlock:{0, v91}];
 
   v67 = *MEMORY[0x1E69B7600];
-  v68 = [v65 ic_range];
+  ic_range9 = [v65 ic_range];
   v70 = v69;
   v89[0] = MEMORY[0x1E69E9820];
   v89[1] = 3221225472;
@@ -684,9 +684,9 @@ void __74__ICMarkdownRepresentation_createMarkdownStringFrom_context_rangeMappin
   v89[3] = &unk_1E846A170;
   v71 = v65;
   v90 = v71;
-  [v71 enumerateAttribute:v67 inRange:v68 options:v70 usingBlock:{2, v89}];
-  v72 = [(ICMarkdownRepresentation *)self markdown];
-  (*(v64 + 2))(v64, [v72 length]);
+  [v71 enumerateAttribute:v67 inRange:ic_range9 options:v70 usingBlock:{2, v89}];
+  markdown16 = [(ICMarkdownRepresentation *)self markdown];
+  (*(v64 + 2))(v64, [markdown16 length]);
 
   v87 = 0u;
   v88 = 0u;
@@ -714,8 +714,8 @@ void __74__ICMarkdownRepresentation_createMarkdownStringFrom_context_rangeMappin
         }
 
         v78 = *(*(&v85 + 1) + 8 * i);
-        v79 = [v71 ic_range];
-        [v71 removeAttribute:v78 range:{v79, v80}];
+        ic_range10 = [v71 ic_range];
+        [v71 removeAttribute:v78 range:{ic_range10, v80}];
       }
 
       v75 = [v74 countByEnumeratingWithState:&v85 objects:v127 count:16];

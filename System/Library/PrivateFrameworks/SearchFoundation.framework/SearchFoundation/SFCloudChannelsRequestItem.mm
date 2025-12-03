@@ -1,46 +1,46 @@
 @interface SFCloudChannelsRequestItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFCloudChannelsRequestItem)initWithCoder:(id)a3;
-- (SFCloudChannelsRequestItem)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFCloudChannelsRequestItem)initWithCoder:(id)coder;
+- (SFCloudChannelsRequestItem)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFCloudChannelsRequestItem
 
-- (SFCloudChannelsRequestItem)initWithProtobuf:(id)a3
+- (SFCloudChannelsRequestItem)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v14.receiver = self;
   v14.super_class = SFCloudChannelsRequestItem;
   v5 = [(SFCloudChannelsRequestItem *)&v14 init];
   if (v5)
   {
-    v6 = [v4 channelIdentifier];
+    channelIdentifier = [protobufCopy channelIdentifier];
 
-    if (v6)
+    if (channelIdentifier)
     {
-      v7 = [v4 channelIdentifier];
-      [(SFCloudChannelsRequestItem *)v5 setChannelIdentifier:v7];
+      channelIdentifier2 = [protobufCopy channelIdentifier];
+      [(SFCloudChannelsRequestItem *)v5 setChannelIdentifier:channelIdentifier2];
     }
 
-    v8 = [v4 pushTopic];
+    pushTopic = [protobufCopy pushTopic];
 
-    if (v8)
+    if (pushTopic)
     {
-      v9 = [v4 pushTopic];
-      [(SFCloudChannelsRequestItem *)v5 setPushTopic:v9];
+      pushTopic2 = [protobufCopy pushTopic];
+      [(SFCloudChannelsRequestItem *)v5 setPushTopic:pushTopic2];
     }
 
-    v10 = [v4 subscribedEntityIdentifier];
+    subscribedEntityIdentifier = [protobufCopy subscribedEntityIdentifier];
 
-    if (v10)
+    if (subscribedEntityIdentifier)
     {
-      v11 = [v4 subscribedEntityIdentifier];
-      [(SFCloudChannelsRequestItem *)v5 setSubscribedEntityIdentifier:v11];
+      subscribedEntityIdentifier2 = [protobufCopy subscribedEntityIdentifier];
+      [(SFCloudChannelsRequestItem *)v5 setSubscribedEntityIdentifier:subscribedEntityIdentifier2];
     }
 
     v12 = v5;
@@ -51,32 +51,32 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SFCloudChannelsRequestItem *)self channelIdentifier];
-  v4 = [v3 hash];
-  v5 = [(SFCloudChannelsRequestItem *)self pushTopic];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(SFCloudChannelsRequestItem *)self subscribedEntityIdentifier];
-  v8 = [v7 hash];
+  channelIdentifier = [(SFCloudChannelsRequestItem *)self channelIdentifier];
+  v4 = [channelIdentifier hash];
+  pushTopic = [(SFCloudChannelsRequestItem *)self pushTopic];
+  v6 = [pushTopic hash] ^ v4;
+  subscribedEntityIdentifier = [(SFCloudChannelsRequestItem *)self subscribedEntityIdentifier];
+  v8 = [subscribedEntityIdentifier hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFCloudChannelsRequestItem *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFCloudChannelsRequestItem *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(SFCloudChannelsRequestItem *)self channelIdentifier];
-      v8 = [(SFCloudChannelsRequestItem *)v6 channelIdentifier];
-      if ((v7 != 0) == (v8 == 0))
+      v6 = equalCopy;
+      channelIdentifier = [(SFCloudChannelsRequestItem *)self channelIdentifier];
+      channelIdentifier2 = [(SFCloudChannelsRequestItem *)v6 channelIdentifier];
+      if ((channelIdentifier != 0) == (channelIdentifier2 == 0))
       {
         v11 = 0;
 LABEL_30:
@@ -84,63 +84,63 @@ LABEL_30:
         goto LABEL_31;
       }
 
-      v9 = [(SFCloudChannelsRequestItem *)self channelIdentifier];
-      if (v9)
+      channelIdentifier3 = [(SFCloudChannelsRequestItem *)self channelIdentifier];
+      if (channelIdentifier3)
       {
-        v3 = [(SFCloudChannelsRequestItem *)self channelIdentifier];
-        v10 = [(SFCloudChannelsRequestItem *)v6 channelIdentifier];
-        if (![v3 isEqual:v10])
+        channelIdentifier4 = [(SFCloudChannelsRequestItem *)self channelIdentifier];
+        channelIdentifier5 = [(SFCloudChannelsRequestItem *)v6 channelIdentifier];
+        if (![channelIdentifier4 isEqual:channelIdentifier5])
         {
           v11 = 0;
           goto LABEL_28;
         }
 
-        v31 = v10;
+        v31 = channelIdentifier5;
       }
 
-      v12 = [(SFCloudChannelsRequestItem *)self pushTopic];
-      v13 = [(SFCloudChannelsRequestItem *)v6 pushTopic];
-      v14 = v13;
-      if ((v12 != 0) == (v13 == 0))
+      pushTopic = [(SFCloudChannelsRequestItem *)self pushTopic];
+      pushTopic2 = [(SFCloudChannelsRequestItem *)v6 pushTopic];
+      v14 = pushTopic2;
+      if ((pushTopic != 0) == (pushTopic2 == 0))
       {
 
         v11 = 0;
         goto LABEL_27;
       }
 
-      v15 = [(SFCloudChannelsRequestItem *)self pushTopic];
-      if (v15)
+      pushTopic3 = [(SFCloudChannelsRequestItem *)self pushTopic];
+      if (pushTopic3)
       {
-        v25 = v12;
-        v16 = [(SFCloudChannelsRequestItem *)self pushTopic];
-        v27 = [(SFCloudChannelsRequestItem *)v6 pushTopic];
-        v28 = v16;
-        if (![v16 isEqual:?])
+        v25 = pushTopic;
+        pushTopic4 = [(SFCloudChannelsRequestItem *)self pushTopic];
+        pushTopic5 = [(SFCloudChannelsRequestItem *)v6 pushTopic];
+        v28 = pushTopic4;
+        if (![pushTopic4 isEqual:?])
         {
           v11 = 0;
-          v12 = v25;
+          pushTopic = v25;
           goto LABEL_25;
         }
 
-        v29 = v15;
-        v30 = v3;
-        v12 = v25;
+        v29 = pushTopic3;
+        v30 = channelIdentifier4;
+        pushTopic = v25;
       }
 
       else
       {
         v29 = 0;
-        v30 = v3;
+        v30 = channelIdentifier4;
       }
 
-      v17 = [(SFCloudChannelsRequestItem *)self subscribedEntityIdentifier];
-      v18 = [(SFCloudChannelsRequestItem *)v6 subscribedEntityIdentifier];
-      if ((v17 != 0) == (v18 == 0))
+      subscribedEntityIdentifier = [(SFCloudChannelsRequestItem *)self subscribedEntityIdentifier];
+      subscribedEntityIdentifier2 = [(SFCloudChannelsRequestItem *)v6 subscribedEntityIdentifier];
+      if ((subscribedEntityIdentifier != 0) == (subscribedEntityIdentifier2 == 0))
       {
 
         v11 = 0;
-        v15 = v29;
-        v3 = v30;
+        pushTopic3 = v29;
+        channelIdentifier4 = v30;
         if (!v29)
         {
           goto LABEL_26;
@@ -149,16 +149,16 @@ LABEL_30:
 
       else
       {
-        v24 = v17;
-        v26 = v18;
-        v19 = [(SFCloudChannelsRequestItem *)self subscribedEntityIdentifier];
-        v15 = v29;
-        if (v19)
+        v24 = subscribedEntityIdentifier;
+        v26 = subscribedEntityIdentifier2;
+        subscribedEntityIdentifier3 = [(SFCloudChannelsRequestItem *)self subscribedEntityIdentifier];
+        pushTopic3 = v29;
+        if (subscribedEntityIdentifier3)
         {
-          v23 = v19;
-          v22 = [(SFCloudChannelsRequestItem *)self subscribedEntityIdentifier];
-          v20 = [(SFCloudChannelsRequestItem *)v6 subscribedEntityIdentifier];
-          v11 = [v22 isEqual:?];
+          v23 = subscribedEntityIdentifier3;
+          subscribedEntityIdentifier4 = [(SFCloudChannelsRequestItem *)self subscribedEntityIdentifier];
+          subscribedEntityIdentifier5 = [(SFCloudChannelsRequestItem *)v6 subscribedEntityIdentifier];
+          v11 = [subscribedEntityIdentifier4 isEqual:?];
         }
 
         else
@@ -167,7 +167,7 @@ LABEL_30:
           v11 = 1;
         }
 
-        v3 = v30;
+        channelIdentifier4 = v30;
         if (!v29)
         {
           goto LABEL_26;
@@ -178,8 +178,8 @@ LABEL_25:
 
 LABEL_26:
 LABEL_27:
-      v10 = v31;
-      if (!v9)
+      channelIdentifier5 = v31;
+      if (!channelIdentifier3)
       {
 LABEL_29:
 
@@ -199,19 +199,19 @@ LABEL_31:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFCloudChannelsRequestItem *)self channelIdentifier];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  channelIdentifier = [(SFCloudChannelsRequestItem *)self channelIdentifier];
+  v6 = [channelIdentifier copy];
   [v4 setChannelIdentifier:v6];
 
-  v7 = [(SFCloudChannelsRequestItem *)self pushTopic];
-  v8 = [v7 copy];
+  pushTopic = [(SFCloudChannelsRequestItem *)self pushTopic];
+  v8 = [pushTopic copy];
   [v4 setPushTopic:v8];
 
-  v9 = [(SFCloudChannelsRequestItem *)self subscribedEntityIdentifier];
-  v10 = [v9 copy];
+  subscribedEntityIdentifier = [(SFCloudChannelsRequestItem *)self subscribedEntityIdentifier];
+  v10 = [subscribedEntityIdentifier copy];
   [v4 setSubscribedEntityIdentifier:v10];
 
   return v4;
@@ -220,31 +220,31 @@ LABEL_31:
 - (NSData)jsonData
 {
   v2 = [[_SFPBCloudChannelsRequestItem alloc] initWithFacade:self];
-  v3 = [(_SFPBCloudChannelsRequestItem *)v2 jsonData];
+  jsonData = [(_SFPBCloudChannelsRequestItem *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBCloudChannelsRequestItem alloc] initWithFacade:self];
-  v3 = [(_SFPBCloudChannelsRequestItem *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBCloudChannelsRequestItem *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBCloudChannelsRequestItem alloc] initWithFacade:self];
-  v5 = [(_SFPBCloudChannelsRequestItem *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBCloudChannelsRequestItem *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFCloudChannelsRequestItem)initWithCoder:(id)a3
+- (SFCloudChannelsRequestItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBCloudChannelsRequestItem alloc] initWithData:v5];
   v7 = [(SFCloudChannelsRequestItem *)self initWithProtobuf:v6];

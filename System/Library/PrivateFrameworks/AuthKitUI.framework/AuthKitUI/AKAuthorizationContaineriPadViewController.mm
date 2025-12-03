@@ -1,68 +1,68 @@
 @interface AKAuthorizationContaineriPadViewController
-- (AKAuthorizationContaineriPadViewController)initWithRootViewController:(id)a3 authorizationContext:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (AKAuthorizationContaineriPadViewController)initWithRootViewController:(id)controller authorizationContext:(id)context;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation AKAuthorizationContaineriPadViewController
 
-- (AKAuthorizationContaineriPadViewController)initWithRootViewController:(id)a3 authorizationContext:(id)a4
+- (AKAuthorizationContaineriPadViewController)initWithRootViewController:(id)controller authorizationContext:(id)context
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v4 = v12;
-  v12 = 0;
+  objc_storeStrong(&v10, context);
+  v4 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v4;
   v9.super_class = AKAuthorizationContaineriPadViewController;
-  v12 = [(AKAuthorizationContainerViewController *)&v9 initWithRootViewController:location[0] authorizationContext:v10];
-  objc_storeStrong(&v12, v12);
-  if (v12)
+  selfCopy = [(AKAuthorizationContainerViewController *)&v9 initWithRootViewController:location[0] authorizationContext:v10];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    [(AKAuthorizationContaineriPadViewController *)v12 setModalPresentationStyle:5];
-    v7 = [(AKAuthorizationContainerViewController *)v12 rootViewController];
-    [(UIViewController *)v7 setModalPresentationStyle:2];
-    MEMORY[0x277D82BD8](v7);
+    [(AKAuthorizationContaineriPadViewController *)selfCopy setModalPresentationStyle:5];
+    rootViewController = [(AKAuthorizationContainerViewController *)selfCopy rootViewController];
+    [(UIViewController *)rootViewController setModalPresentationStyle:2];
+    MEMORY[0x277D82BD8](rootViewController);
   }
 
-  v6 = MEMORY[0x277D82BE0](v12);
+  v6 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = AKAuthorizationContaineriPadViewController;
-  [(AKAuthorizationContaineriPadViewController *)&v5 viewDidAppear:a3];
-  if (([(AKAuthorizationContaineriPadViewController *)v8 isBeingPresented]& 1) != 0)
+  [(AKAuthorizationContaineriPadViewController *)&v5 viewDidAppear:appear];
+  if (([(AKAuthorizationContaineriPadViewController *)selfCopy isBeingPresented]& 1) != 0)
   {
-    v3 = v8;
-    v4 = [(AKAuthorizationContainerViewController *)v8 rootViewController];
+    v3 = selfCopy;
+    rootViewController = [(AKAuthorizationContainerViewController *)selfCopy rootViewController];
     [AKAuthorizationContaineriPadViewController presentViewController:v3 animated:"presentViewController:animated:completion:" completion:?];
-    MEMORY[0x277D82BD8](v4);
+    MEMORY[0x277D82BD8](rootViewController);
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  disappearCopy = disappear;
   v3.receiver = self;
   v3.super_class = AKAuthorizationContaineriPadViewController;
-  [(AKAuthorizationContaineriPadViewController *)&v3 viewWillDisappear:a3];
-  if (([(AKAuthorizationContaineriPadViewController *)v6 isBeingDismissed]& 1) != 0)
+  [(AKAuthorizationContaineriPadViewController *)&v3 viewWillDisappear:disappear];
+  if (([(AKAuthorizationContaineriPadViewController *)selfCopy isBeingDismissed]& 1) != 0)
   {
-    [(AKAuthorizationContaineriPadViewController *)v6 dismissViewControllerAnimated:1 completion:0];
+    [(AKAuthorizationContaineriPadViewController *)selfCopy dismissViewControllerAnimated:1 completion:0];
   }
 }
 

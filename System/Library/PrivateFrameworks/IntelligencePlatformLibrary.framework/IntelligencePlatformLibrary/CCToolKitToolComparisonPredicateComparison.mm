@@ -1,7 +1,7 @@
 @interface CCToolKitToolComparisonPredicateComparison
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolComparisonPredicateComparison)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolComparisonPredicateComparison)initWithKind:(id)a3 kindType:(unsigned int)a4 error:(id *)a5;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolComparisonPredicateComparison)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolComparisonPredicateComparison)initWithKind:(id)kind kindType:(unsigned int)type error:(id *)error;
 - (CCToolKitToolComparisonPredicateComparisonPair)isBetween;
 - (CCToolKitToolTypedValue)beginsWith;
 - (CCToolKitToolTypedValue)contains;
@@ -16,21 +16,21 @@
 - (CCToolKitToolTypedValue)notContains;
 - (CCToolKitToolTypedValue)notEqualTo;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolComparisonPredicateComparison
 
-- (CCToolKitToolComparisonPredicateComparison)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolComparisonPredicateComparison)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v141[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"notEqualTo"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"notEqualTo"];
     v10 = off_1E73E6000;
     if (v9)
     {
@@ -50,7 +50,7 @@ LABEL_124:
       v9 = v11;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"equalTo"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"equalTo"];
     if (v13)
     {
       v14 = [CCToolKitToolTypedValue alloc];
@@ -70,9 +70,9 @@ LABEL_123:
       v13 = v15;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"hasValue"];
-    v126 = [v6 objectForKeyedSubscript:@"hasNoValue"];
-    v17 = [v6 objectForKeyedSubscript:@"greaterThan"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"hasValue"];
+    v126 = [dictionaryCopy objectForKeyedSubscript:@"hasNoValue"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"greaterThan"];
     if (v17)
     {
       v18 = [CCToolKitToolTypedValue alloc];
@@ -93,7 +93,7 @@ LABEL_122:
     }
 
     v128 = v17;
-    v21 = [v6 objectForKeyedSubscript:@"greaterThanOrEqualTo"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"greaterThanOrEqualTo"];
     if (v21)
     {
       v22 = v21;
@@ -122,14 +122,14 @@ LABEL_121:
       v20 = 0;
     }
 
-    v27 = [v6 objectForKeyedSubscript:@"lessThan"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"lessThan"];
     if (v27)
     {
       v124 = v13;
       v28 = v11;
       v29 = v8;
       v30 = v9;
-      v31 = self;
+      selfCopy = self;
       v32 = v27;
       v33 = objc_alloc(v10[1]);
       v137 = 0;
@@ -141,7 +141,7 @@ LABEL_121:
         v127 = v35;
         CCSetError();
         v26 = 0;
-        self = v31;
+        self = selfCopy;
         v9 = v30;
         v8 = v29;
         v11 = v28;
@@ -153,7 +153,7 @@ LABEL_120:
 
       v17 = v34;
       v10 = off_1E73E6000;
-      self = v31;
+      self = selfCopy;
       v9 = v30;
       v8 = v29;
       v11 = v28;
@@ -165,7 +165,7 @@ LABEL_120:
       v17 = 0;
     }
 
-    v36 = [v6 objectForKeyedSubscript:@"lessThanOrEqualTo"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"lessThanOrEqualTo"];
     if (v36)
     {
       v122 = v17;
@@ -199,7 +199,7 @@ LABEL_119:
       v127 = 0;
     }
 
-    v42 = [v6 objectForKeyedSubscript:@"contains"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"contains"];
     if (v42)
     {
       v119 = v20;
@@ -222,13 +222,13 @@ LABEL_119:
       v20 = v119;
     }
 
-    v46 = [v6 objectForKeyedSubscript:@"notContains"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"notContains"];
     v102 = v42;
     if (!v46)
     {
       v125 = 0;
 LABEL_46:
-      v51 = [v6 objectForKeyedSubscript:@"beginsWith"];
+      v51 = [dictionaryCopy objectForKeyedSubscript:@"beginsWith"];
       if (v51)
       {
         v52 = v51;
@@ -257,7 +257,7 @@ LABEL_117:
         v123 = 0;
       }
 
-      v56 = [v6 objectForKeyedSubscript:@"endsWith"];
+      v56 = [dictionaryCopy objectForKeyedSubscript:@"endsWith"];
       if (v56)
       {
         v57 = v56;
@@ -286,7 +286,7 @@ LABEL_116:
         v121 = 0;
       }
 
-      v61 = [v6 objectForKeyedSubscript:@"inTheNext"];
+      v61 = [dictionaryCopy objectForKeyedSubscript:@"inTheNext"];
       if (v61)
       {
         v62 = v61;
@@ -315,7 +315,7 @@ LABEL_115:
         v101 = 0;
       }
 
-      v66 = [v6 objectForKeyedSubscript:@"inTheLast"];
+      v66 = [dictionaryCopy objectForKeyedSubscript:@"inTheLast"];
       if (v66)
       {
         v67 = v66;
@@ -343,8 +343,8 @@ LABEL_115:
       }
 
       v34 = v102;
-      v96 = [v6 objectForKeyedSubscript:@"isToday"];
-      v71 = [v6 objectForKeyedSubscript:@"isBetween"];
+      v96 = [dictionaryCopy objectForKeyedSubscript:@"isToday"];
+      v71 = [dictionaryCopy objectForKeyedSubscript:@"isBetween"];
       if (!v71)
       {
         v74 = 0;
@@ -513,7 +513,7 @@ LABEL_76:
           v94 = v76;
         }
 
-        v26 = [[CCToolKitToolComparisonPredicateComparison alloc] initWithKind:v118 kindType:v94 error:a4];
+        v26 = [[CCToolKitToolComparisonPredicateComparison alloc] initWithKind:v118 kindType:v94 error:error];
 
         goto LABEL_113;
       }
@@ -568,9 +568,9 @@ LABEL_125:
       goto LABEL_46;
     }
 
-    v5 = [(CCToolKitToolComparisonPredicateComparison *)self notEqualTo];
-    v6 = [v5 jsonDictionary];
-    [v3 setObject:v6 forKeyedSubscript:@"notEqualTo"];
+    notEqualTo = [(CCToolKitToolComparisonPredicateComparison *)self notEqualTo];
+    jsonDictionary = [notEqualTo jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"notEqualTo"];
 
     kindType = self->_kindType;
   }
@@ -582,9 +582,9 @@ LABEL_125:
       goto LABEL_46;
     }
 
-    v7 = [(CCToolKitToolComparisonPredicateComparison *)self equalTo];
-    v8 = [v7 jsonDictionary];
-    [v3 setObject:v8 forKeyedSubscript:@"equalTo"];
+    equalTo = [(CCToolKitToolComparisonPredicateComparison *)self equalTo];
+    jsonDictionary2 = [equalTo jsonDictionary];
+    [v3 setObject:jsonDictionary2 forKeyedSubscript:@"equalTo"];
 
     kindType = self->_kindType;
   }
@@ -612,9 +612,9 @@ LABEL_125:
       goto LABEL_46;
     }
 
-    v11 = [(CCToolKitToolComparisonPredicateComparison *)self greaterThan];
-    v12 = [v11 jsonDictionary];
-    [v3 setObject:v12 forKeyedSubscript:@"greaterThan"];
+    greaterThan = [(CCToolKitToolComparisonPredicateComparison *)self greaterThan];
+    jsonDictionary3 = [greaterThan jsonDictionary];
+    [v3 setObject:jsonDictionary3 forKeyedSubscript:@"greaterThan"];
 
     kindType = self->_kindType;
   }
@@ -626,9 +626,9 @@ LABEL_125:
       goto LABEL_46;
     }
 
-    v13 = [(CCToolKitToolComparisonPredicateComparison *)self greaterThanOrEqualTo];
-    v14 = [v13 jsonDictionary];
-    [v3 setObject:v14 forKeyedSubscript:@"greaterThanOrEqualTo"];
+    greaterThanOrEqualTo = [(CCToolKitToolComparisonPredicateComparison *)self greaterThanOrEqualTo];
+    jsonDictionary4 = [greaterThanOrEqualTo jsonDictionary];
+    [v3 setObject:jsonDictionary4 forKeyedSubscript:@"greaterThanOrEqualTo"];
 
     kindType = self->_kindType;
   }
@@ -640,9 +640,9 @@ LABEL_125:
       goto LABEL_46;
     }
 
-    v15 = [(CCToolKitToolComparisonPredicateComparison *)self lessThan];
-    v16 = [v15 jsonDictionary];
-    [v3 setObject:v16 forKeyedSubscript:@"lessThan"];
+    lessThan = [(CCToolKitToolComparisonPredicateComparison *)self lessThan];
+    jsonDictionary5 = [lessThan jsonDictionary];
+    [v3 setObject:jsonDictionary5 forKeyedSubscript:@"lessThan"];
 
     kindType = self->_kindType;
   }
@@ -654,9 +654,9 @@ LABEL_125:
       goto LABEL_46;
     }
 
-    v17 = [(CCToolKitToolComparisonPredicateComparison *)self lessThanOrEqualTo];
-    v18 = [v17 jsonDictionary];
-    [v3 setObject:v18 forKeyedSubscript:@"lessThanOrEqualTo"];
+    lessThanOrEqualTo = [(CCToolKitToolComparisonPredicateComparison *)self lessThanOrEqualTo];
+    jsonDictionary6 = [lessThanOrEqualTo jsonDictionary];
+    [v3 setObject:jsonDictionary6 forKeyedSubscript:@"lessThanOrEqualTo"];
 
     kindType = self->_kindType;
   }
@@ -668,9 +668,9 @@ LABEL_125:
       goto LABEL_46;
     }
 
-    v19 = [(CCToolKitToolComparisonPredicateComparison *)self contains];
-    v20 = [v19 jsonDictionary];
-    [v3 setObject:v20 forKeyedSubscript:@"contains"];
+    contains = [(CCToolKitToolComparisonPredicateComparison *)self contains];
+    jsonDictionary7 = [contains jsonDictionary];
+    [v3 setObject:jsonDictionary7 forKeyedSubscript:@"contains"];
 
     kindType = self->_kindType;
   }
@@ -682,9 +682,9 @@ LABEL_125:
       goto LABEL_46;
     }
 
-    v21 = [(CCToolKitToolComparisonPredicateComparison *)self notContains];
-    v22 = [v21 jsonDictionary];
-    [v3 setObject:v22 forKeyedSubscript:@"notContains"];
+    notContains = [(CCToolKitToolComparisonPredicateComparison *)self notContains];
+    jsonDictionary8 = [notContains jsonDictionary];
+    [v3 setObject:jsonDictionary8 forKeyedSubscript:@"notContains"];
 
     kindType = self->_kindType;
   }
@@ -696,9 +696,9 @@ LABEL_125:
       goto LABEL_46;
     }
 
-    v23 = [(CCToolKitToolComparisonPredicateComparison *)self beginsWith];
-    v24 = [v23 jsonDictionary];
-    [v3 setObject:v24 forKeyedSubscript:@"beginsWith"];
+    beginsWith = [(CCToolKitToolComparisonPredicateComparison *)self beginsWith];
+    jsonDictionary9 = [beginsWith jsonDictionary];
+    [v3 setObject:jsonDictionary9 forKeyedSubscript:@"beginsWith"];
 
     kindType = self->_kindType;
   }
@@ -710,9 +710,9 @@ LABEL_125:
       goto LABEL_46;
     }
 
-    v25 = [(CCToolKitToolComparisonPredicateComparison *)self endsWith];
-    v26 = [v25 jsonDictionary];
-    [v3 setObject:v26 forKeyedSubscript:@"endsWith"];
+    endsWith = [(CCToolKitToolComparisonPredicateComparison *)self endsWith];
+    jsonDictionary10 = [endsWith jsonDictionary];
+    [v3 setObject:jsonDictionary10 forKeyedSubscript:@"endsWith"];
 
     kindType = self->_kindType;
   }
@@ -724,9 +724,9 @@ LABEL_125:
       goto LABEL_46;
     }
 
-    v27 = [(CCToolKitToolComparisonPredicateComparison *)self inTheNext];
-    v28 = [v27 jsonDictionary];
-    [v3 setObject:v28 forKeyedSubscript:@"inTheNext"];
+    inTheNext = [(CCToolKitToolComparisonPredicateComparison *)self inTheNext];
+    jsonDictionary11 = [inTheNext jsonDictionary];
+    [v3 setObject:jsonDictionary11 forKeyedSubscript:@"inTheNext"];
 
     kindType = self->_kindType;
   }
@@ -738,9 +738,9 @@ LABEL_125:
       goto LABEL_46;
     }
 
-    v29 = [(CCToolKitToolComparisonPredicateComparison *)self inTheLast];
-    v30 = [v29 jsonDictionary];
-    [v3 setObject:v30 forKeyedSubscript:@"inTheLast"];
+    inTheLast = [(CCToolKitToolComparisonPredicateComparison *)self inTheLast];
+    jsonDictionary12 = [inTheLast jsonDictionary];
+    [v3 setObject:jsonDictionary12 forKeyedSubscript:@"inTheLast"];
 
     kindType = self->_kindType;
   }
@@ -755,9 +755,9 @@ LABEL_125:
 
   if (kindType == 16 && self->_isBetween)
   {
-    v32 = [(CCToolKitToolComparisonPredicateComparison *)self isBetween];
-    v33 = [v32 jsonDictionary];
-    [v3 setObject:v33 forKeyedSubscript:@"isBetween"];
+    isBetween = [(CCToolKitToolComparisonPredicateComparison *)self isBetween];
+    jsonDictionary13 = [isBetween jsonDictionary];
+    [v3 setObject:jsonDictionary13 forKeyedSubscript:@"isBetween"];
   }
 
 LABEL_46:
@@ -766,11 +766,11 @@ LABEL_46:
   return v34;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = MEMORY[0x1E69939A8];
-  v25 = v5;
+  v25 = blockCopy;
   if (self->_notEqualTo)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] subMessageValue:self->_notEqualTo];
@@ -957,10 +957,10 @@ LABEL_46:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -1825,11 +1825,11 @@ LABEL_104:
   return v220;
 }
 
-- (CCToolKitToolComparisonPredicateComparison)initWithKind:(id)a3 kindType:(unsigned int)a4 error:(id *)a5
+- (CCToolKitToolComparisonPredicateComparison)initWithKind:(id)kind kindType:(unsigned int)type error:(id *)error
 {
-  v8 = a3;
+  kindCopy = kind;
   v9 = objc_opt_new();
-  if (v8 && a4 == 1)
+  if (kindCopy && type == 1)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -1841,20 +1841,20 @@ LABEL_104:
 
 LABEL_69:
     CCSetError();
-    v15 = 0;
+    selfCopy = 0;
     goto LABEL_70;
   }
 
-  if (!v8 || a4 != 2)
+  if (!kindCopy || type != 2)
   {
-    if (v8 && a4 == 3)
+    if (kindCopy && type == 3)
     {
       objc_opt_class();
       v16 = CCValidateIsInstanceOfExpectedClass();
       v17 = 0;
       if (v16)
       {
-        [v8 unsignedIntegerValue];
+        [kindCopy unsignedIntegerValue];
         v18 = CCValidateEnumField();
         v11 = v17;
 
@@ -1869,14 +1869,14 @@ LABEL_19:
       }
     }
 
-    else if (v8 && a4 == 4)
+    else if (kindCopy && type == 4)
     {
       objc_opt_class();
       v19 = CCValidateIsInstanceOfExpectedClass();
       v17 = 0;
       if (v19)
       {
-        [v8 unsignedIntegerValue];
+        [kindCopy unsignedIntegerValue];
         v20 = CCValidateEnumField();
         v11 = v17;
 
@@ -1891,7 +1891,7 @@ LABEL_19:
 
     else
     {
-      if (v8 && a4 == 5)
+      if (kindCopy && type == 5)
       {
         objc_opt_class();
         v21 = CCValidateIsInstanceOfExpectedClass();
@@ -1904,7 +1904,7 @@ LABEL_19:
         goto LABEL_69;
       }
 
-      if (v8 && a4 == 6)
+      if (kindCopy && type == 6)
       {
         objc_opt_class();
         v22 = CCValidateIsInstanceOfExpectedClass();
@@ -1917,7 +1917,7 @@ LABEL_19:
         goto LABEL_69;
       }
 
-      if (v8 && a4 == 7)
+      if (kindCopy && type == 7)
       {
         objc_opt_class();
         v23 = CCValidateIsInstanceOfExpectedClass();
@@ -1930,7 +1930,7 @@ LABEL_19:
         goto LABEL_69;
       }
 
-      if (v8 && a4 == 8)
+      if (kindCopy && type == 8)
       {
         objc_opt_class();
         v24 = CCValidateIsInstanceOfExpectedClass();
@@ -1943,7 +1943,7 @@ LABEL_19:
         goto LABEL_69;
       }
 
-      if (v8 && a4 == 9)
+      if (kindCopy && type == 9)
       {
         objc_opt_class();
         v25 = CCValidateIsInstanceOfExpectedClass();
@@ -1956,7 +1956,7 @@ LABEL_19:
         goto LABEL_69;
       }
 
-      if (v8 && a4 == 10)
+      if (kindCopy && type == 10)
       {
         objc_opt_class();
         v26 = CCValidateIsInstanceOfExpectedClass();
@@ -1969,7 +1969,7 @@ LABEL_19:
         goto LABEL_69;
       }
 
-      if (v8 && a4 == 11)
+      if (kindCopy && type == 11)
       {
         objc_opt_class();
         v27 = CCValidateIsInstanceOfExpectedClass();
@@ -1982,7 +1982,7 @@ LABEL_19:
         goto LABEL_69;
       }
 
-      if (v8 && a4 == 12)
+      if (kindCopy && type == 12)
       {
         objc_opt_class();
         v28 = CCValidateIsInstanceOfExpectedClass();
@@ -1995,7 +1995,7 @@ LABEL_19:
         goto LABEL_69;
       }
 
-      if (v8 && a4 == 13)
+      if (kindCopy && type == 13)
       {
         objc_opt_class();
         v29 = CCValidateIsInstanceOfExpectedClass();
@@ -2008,7 +2008,7 @@ LABEL_19:
         goto LABEL_69;
       }
 
-      if (v8 && a4 == 14)
+      if (kindCopy && type == 14)
       {
         objc_opt_class();
         v30 = CCValidateIsInstanceOfExpectedClass();
@@ -2021,11 +2021,11 @@ LABEL_19:
         goto LABEL_69;
       }
 
-      if (!v8 || a4 != 15)
+      if (!kindCopy || type != 15)
       {
-        v33 = a4;
+        typeCopy = type;
         v11 = 0;
-        if (!v8 || v33 != 16)
+        if (!kindCopy || typeCopy != 16)
         {
           goto LABEL_9;
         }
@@ -2046,7 +2046,7 @@ LABEL_19:
       v17 = 0;
       if (v31)
       {
-        [v8 unsignedIntegerValue];
+        [kindCopy unsignedIntegerValue];
         v32 = CCValidateEnumField();
         v11 = v17;
 
@@ -2060,7 +2060,7 @@ LABEL_19:
     }
 
     CCSetError();
-    v15 = 0;
+    selfCopy = 0;
     v11 = v17;
     goto LABEL_70;
   }
@@ -2074,17 +2074,17 @@ LABEL_19:
   }
 
 LABEL_8:
-  v13 = [v8 data];
+  data = [kindCopy data];
   CCPBDataWriterWriteDataField();
 
 LABEL_9:
-  v14 = [v9 immutableData];
-  self = [(CCItemMessage *)self initWithData:v14 error:a5];
+  immutableData = [v9 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v15 = self;
+  selfCopy = self;
 LABEL_70:
 
-  return v15;
+  return selfCopy;
 }
 
 @end

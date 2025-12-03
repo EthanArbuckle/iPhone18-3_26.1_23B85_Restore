@@ -1,18 +1,18 @@
 @interface WFItemProviderEntityRequestMetadata
-- (WFItemProviderEntityRequestMetadata)initWithCoder:(id)a3;
-- (WFItemProviderEntityRequestMetadata)initWithEntity:(id)a3 metadata:(id)a4;
+- (WFItemProviderEntityRequestMetadata)initWithCoder:(id)coder;
+- (WFItemProviderEntityRequestMetadata)initWithEntity:(id)entity metadata:(id)metadata;
 - (id)registeredTypeIdentifiers;
-- (void)encodeWithCoder:(id)a3;
-- (void)fetchLinkMetadataWithCompletion:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)fetchLinkMetadataWithCompletion:(id)completion;
 @end
 
 @implementation WFItemProviderEntityRequestMetadata
 
-- (WFItemProviderEntityRequestMetadata)initWithCoder:(id)a3
+- (WFItemProviderEntityRequestMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entity"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entity"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
 
   if (v5)
   {
@@ -26,45 +26,45 @@
 
   if (v7)
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(WFItemProviderEntityRequestMetadata *)self initWithEntity:v5 metadata:v6];
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFItemProviderEntityRequestMetadata *)self entity];
-  [v4 encodeObject:v5 forKey:@"entity"];
+  coderCopy = coder;
+  entity = [(WFItemProviderEntityRequestMetadata *)self entity];
+  [coderCopy encodeObject:entity forKey:@"entity"];
 
-  v6 = [(WFItemProviderEntityRequestMetadata *)self metadata];
-  [v4 encodeObject:v6 forKey:@"metadata"];
+  metadata = [(WFItemProviderEntityRequestMetadata *)self metadata];
+  [coderCopy encodeObject:metadata forKey:@"metadata"];
 }
 
 - (id)registeredTypeIdentifiers
 {
-  v2 = [(WFItemProviderEntityRequestMetadata *)self metadata];
-  v3 = [v2 transferableContentTypes];
-  v4 = [v3 exportableTypes];
-  v5 = [v4 if_map:&__block_literal_global_6255];
+  metadata = [(WFItemProviderEntityRequestMetadata *)self metadata];
+  transferableContentTypes = [metadata transferableContentTypes];
+  exportableTypes = [transferableContentTypes exportableTypes];
+  v5 = [exportableTypes if_map:&__block_literal_global_6255];
 
   return v5;
 }
 
-- (void)fetchLinkMetadataWithCompletion:(id)a3
+- (void)fetchLinkMetadataWithCompletion:(id)completion
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x1E69ACE68];
-  v6 = [(WFItemProviderEntityRequestMetadata *)self metadata];
-  v7 = [v5 policyWithEntityMetadata:v6];
+  metadata = [(WFItemProviderEntityRequestMetadata *)self metadata];
+  v7 = [v5 policyWithEntityMetadata:metadata];
 
   v22 = 0;
   v8 = [v7 connectionWithError:&v22];
@@ -72,28 +72,28 @@
   if (v8)
   {
     v10 = objc_alloc(MEMORY[0x1E69ACF00]);
-    v11 = [(WFItemProviderEntityRequestMetadata *)self entity];
-    v12 = [v11 identifier];
-    v23[0] = v12;
+    entity = [(WFItemProviderEntityRequestMetadata *)self entity];
+    identifier = [entity identifier];
+    v23[0] = identifier;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
     v14 = [v10 initWithEntityIdentifiers:v13];
 
     v15 = objc_alloc(MEMORY[0x1E69ACFC8]);
-    v16 = [(WFItemProviderEntityRequestMetadata *)self metadata];
-    v17 = [v15 initWithEntityMetadata:v16];
+    metadata2 = [(WFItemProviderEntityRequestMetadata *)self metadata];
+    v17 = [v15 initWithEntityMetadata:metadata2];
 
     v18 = [objc_alloc(MEMORY[0x1E69ACE08]) initWithQueryType:v14 target:v17 options:0];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __71__WFItemProviderEntityRequestMetadata_fetchLinkMetadataWithCompletion___block_invoke;
     v20[3] = &unk_1E7B00D90;
-    v21 = v4;
+    v21 = completionCopy;
     [v8 performConfigurableQuery:v18 completionHandler:v20];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, v9);
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -222,14 +222,14 @@ void __71__WFItemProviderEntityRequestMetadata_fetchLinkMetadataWithCompletion__
   (*(*(a1 + 40) + 16))();
 }
 
-- (WFItemProviderEntityRequestMetadata)initWithEntity:(id)a3 metadata:(id)a4
+- (WFItemProviderEntityRequestMetadata)initWithEntity:(id)entity metadata:(id)metadata
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  entityCopy = entity;
+  metadataCopy = metadata;
+  v10 = metadataCopy;
+  if (entityCopy)
   {
-    if (v9)
+    if (metadataCopy)
     {
       goto LABEL_3;
     }
@@ -237,8 +237,8 @@ void __71__WFItemProviderEntityRequestMetadata_fetchLinkMetadataWithCompletion__
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"WFItemProviderRequestMetadata.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"entity"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFItemProviderRequestMetadata.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"entity"}];
 
     if (v10)
     {
@@ -246,8 +246,8 @@ void __71__WFItemProviderEntityRequestMetadata_fetchLinkMetadataWithCompletion__
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"WFItemProviderRequestMetadata.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"metadata"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFItemProviderRequestMetadata.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"metadata"}];
 
 LABEL_3:
   v17.receiver = self;
@@ -256,8 +256,8 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_entity, a3);
-    objc_storeStrong(&v12->_metadata, a4);
+    objc_storeStrong(&v11->_entity, entity);
+    objc_storeStrong(&v12->_metadata, metadata);
     v13 = v12;
   }
 

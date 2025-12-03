@@ -1,5 +1,5 @@
 @interface SongCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_isSongDownloaded;
 - (id)_axPlaybackStateLabel;
 - (id)accessibilityLabel;
@@ -10,28 +10,28 @@
 
 @implementation SongCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.SongCell" hasInstanceMethod:@"accessibilityTrackNumberString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.SongCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.SongCell" hasInstanceMethod:@"artistName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.SongCell" hasInstanceMethod:@"albumTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.SongCell" hasInstanceMethod:@"duration" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"MusicApplication.SongCell" hasInstanceMethod:@"accessibilityIsExplicit" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MusicApplication.SongCell" hasInstanceMethod:@"isPopular" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MusicApplication.SongCell" hasInstanceMethod:@"isDisabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MusicApplication.SongCell" hasInstanceMethod:@"accessibilityIsVideoTrack" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MusicApplication.HorizontalLockupCollectionViewCell" hasInstanceMethod:@"wantsNowPlayingIndicator" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MusicApplication.HorizontalLockupCollectionViewCell" hasInstanceMethod:@"accessibilityLibraryStatusControl" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.SongCell" isKindOfClass:@"MusicApplication.HorizontalLockupCollectionViewCell"];
-  [v3 validateClass:@"MusicApplication.HorizontalLockupCollectionViewCell" hasInstanceMethod:@"accessibilityMediaPickerAddButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIImageAsset" hasInstanceMethod:@"assetName" withFullSignature:{"@", 0}];
-  [v3 validateSwiftEnum:@"MusicApplication.PlaybackIndicator[class].View"];
-  [v3 validateSwiftEnum:@"MusicApplication.PlaybackIndicator[class].View" hasCase:@"liveWaveform" withSwiftType:"WaveformPlayIndicator"];
-  [v3 validateSwiftEnum:@"MusicCoreUI.WaveformPlayIndicator[class].Mode"];
-  [v3 validateClass:@"MusicCoreUI.WaveformPlayIndicator" hasSwiftField:@"mode" withSwiftType:"Mode"];
-  [v3 validateClass:@"MusicApplication.HorizontalLockupCollectionViewCell" hasSwiftField:@"playbackIndicatorView" withSwiftType:"Optional<View>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.SongCell" hasInstanceMethod:@"accessibilityTrackNumberString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.SongCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.SongCell" hasInstanceMethod:@"artistName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.SongCell" hasInstanceMethod:@"albumTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.SongCell" hasInstanceMethod:@"duration" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"MusicApplication.SongCell" hasInstanceMethod:@"accessibilityIsExplicit" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MusicApplication.SongCell" hasInstanceMethod:@"isPopular" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MusicApplication.SongCell" hasInstanceMethod:@"isDisabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MusicApplication.SongCell" hasInstanceMethod:@"accessibilityIsVideoTrack" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MusicApplication.HorizontalLockupCollectionViewCell" hasInstanceMethod:@"wantsNowPlayingIndicator" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MusicApplication.HorizontalLockupCollectionViewCell" hasInstanceMethod:@"accessibilityLibraryStatusControl" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.SongCell" isKindOfClass:@"MusicApplication.HorizontalLockupCollectionViewCell"];
+  [validationsCopy validateClass:@"MusicApplication.HorizontalLockupCollectionViewCell" hasInstanceMethod:@"accessibilityMediaPickerAddButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIImageAsset" hasInstanceMethod:@"assetName" withFullSignature:{"@", 0}];
+  [validationsCopy validateSwiftEnum:@"MusicApplication.PlaybackIndicator[class].View"];
+  [validationsCopy validateSwiftEnum:@"MusicApplication.PlaybackIndicator[class].View" hasCase:@"liveWaveform" withSwiftType:"WaveformPlayIndicator"];
+  [validationsCopy validateSwiftEnum:@"MusicCoreUI.WaveformPlayIndicator[class].Mode"];
+  [validationsCopy validateClass:@"MusicCoreUI.WaveformPlayIndicator" hasSwiftField:@"mode" withSwiftType:"Mode"];
+  [validationsCopy validateClass:@"MusicApplication.HorizontalLockupCollectionViewCell" hasSwiftField:@"playbackIndicatorView" withSwiftType:"Optional<View>"];
 }
 
 - (id)accessibilityLabel
@@ -117,7 +117,7 @@
     v19 = 0;
   }
 
-  v21 = [(SongCellAccessibility *)self _axPlaybackStateLabel];
+  _axPlaybackStateLabel = [(SongCellAccessibility *)self _axPlaybackStateLabel];
   v22 = __UIAXStringForVariables();
 
   return v22;
@@ -134,9 +134,9 @@
 - (id)accessibilityValue
 {
   v2 = [(SongCellAccessibility *)self safeValueForKey:@"accessibilityLibraryStatusControl"];
-  v3 = [v2 accessibilityValue];
+  accessibilityValue = [v2 accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (unint64_t)accessibilityTraits
@@ -199,16 +199,16 @@ uint64_t __42__SongCellAccessibility__isSongDownloaded__block_invoke(uint64_t a1
 - (id)_axPlaybackStateLabel
 {
   v2 = [(SongCellAccessibility *)self safeSwiftValueForKey:@"playbackIndicatorView"];
-  v3 = [v2 safeSwiftEnumAssociatedObject];
-  v4 = [v3 safeSwiftValueForKey:@"mode"];
-  v5 = [v4 safeSwiftEnumCase];
+  safeSwiftEnumAssociatedObject = [v2 safeSwiftEnumAssociatedObject];
+  v4 = [safeSwiftEnumAssociatedObject safeSwiftValueForKey:@"mode"];
+  safeSwiftEnumCase = [v4 safeSwiftEnumCase];
   v6 = @"paused";
-  if ([v5 isEqualToString:@"paused"])
+  if ([safeSwiftEnumCase isEqualToString:@"paused"])
   {
     goto LABEL_5;
   }
 
-  if ([v5 isEqualToString:@"playing"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"simulated"))
+  if ([safeSwiftEnumCase isEqualToString:@"playing"] & 1) != 0 || (objc_msgSend(safeSwiftEnumCase, "isEqualToString:", @"simulated"))
   {
     v6 = @"now.playing";
 LABEL_5:
@@ -217,7 +217,7 @@ LABEL_5:
   }
 
   v6 = @"buffering";
-  if ([v5 isEqualToString:@"buffering"])
+  if ([safeSwiftEnumCase isEqualToString:@"buffering"])
   {
     goto LABEL_5;
   }

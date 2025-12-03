@@ -1,36 +1,36 @@
 @interface MSDServicesUpdated
-+ (id)servicesUpdated:(id)a3 cachedData:(id)a4;
-- (MSDServicesUpdated)initWithUpdatedData:(id)a3 cachedData:(id)a4;
-- (void)_handleDefaultServiceChanged:(id)a3;
-- (void)_handleServiceAdded:(id)a3 cachedDataIDS:(id)a4;
-- (void)_handleServiceRemoved:(id)a3 cachedDataIDS:(id)a4;
++ (id)servicesUpdated:(id)updated cachedData:(id)data;
+- (MSDServicesUpdated)initWithUpdatedData:(id)data cachedData:(id)cachedData;
+- (void)_handleDefaultServiceChanged:(id)changed;
+- (void)_handleServiceAdded:(id)added cachedDataIDS:(id)s;
+- (void)_handleServiceRemoved:(id)removed cachedDataIDS:(id)s;
 - (void)processChangesInServices;
 @end
 
 @implementation MSDServicesUpdated
 
-- (MSDServicesUpdated)initWithUpdatedData:(id)a3 cachedData:(id)a4
+- (MSDServicesUpdated)initWithUpdatedData:(id)data cachedData:(id)cachedData
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  cachedDataCopy = cachedData;
   v12.receiver = self;
   v12.super_class = MSDServicesUpdated;
   v9 = [(MSDServicesUpdated *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_cachedData, a4);
-    objc_storeStrong(&v10->_updatedData, a3);
+    objc_storeStrong(&v9->_cachedData, cachedData);
+    objc_storeStrong(&v10->_updatedData, data);
   }
 
   return v10;
 }
 
-+ (id)servicesUpdated:(id)a3 cachedData:(id)a4
++ (id)servicesUpdated:(id)updated cachedData:(id)data
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithUpdatedData:v7 cachedData:v6];
+  dataCopy = data;
+  updatedCopy = updated;
+  v8 = [[self alloc] initWithUpdatedData:updatedCopy cachedData:dataCopy];
 
   return v8;
 }
@@ -100,8 +100,8 @@
         }
 
         v20 = *(*(&v31 + 1) + 8 * i);
-        v21 = [v20 recordType];
-        v22 = [v21 isEqualToString:v18];
+        recordType = [v20 recordType];
+        v22 = [recordType isEqualToString:v18];
 
         if (v22)
         {
@@ -144,11 +144,11 @@
   }
 }
 
-- (void)_handleServiceAdded:(id)a3 cachedDataIDS:(id)a4
+- (void)_handleServiceAdded:(id)added cachedDataIDS:(id)s
 {
-  v6 = a4;
-  v7 = [a3 mutableCopy];
-  [v7 removeObjectsInArray:v6];
+  sCopy = s;
+  v7 = [added mutableCopy];
+  [v7 removeObjectsInArray:sCopy];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -158,11 +158,11 @@
   [v7 enumerateObjectsUsingBlock:v8];
 }
 
-- (void)_handleServiceRemoved:(id)a3 cachedDataIDS:(id)a4
+- (void)_handleServiceRemoved:(id)removed cachedDataIDS:(id)s
 {
-  v6 = a3;
-  v7 = [a4 mutableCopy];
-  [v7 removeObjectsInArray:v6];
+  removedCopy = removed;
+  v7 = [s mutableCopy];
+  [v7 removeObjectsInArray:removedCopy];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -172,25 +172,25 @@
   [v7 enumerateObjectsUsingBlock:v8];
 }
 
-- (void)_handleDefaultServiceChanged:(id)a3
+- (void)_handleDefaultServiceChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 service];
-  v6 = [v5 serviceID];
+  changedCopy = changed;
+  service = [changedCopy service];
+  serviceID = [service serviceID];
 
-  v7 = [v4 homeUserID];
+  homeUserID = [changedCopy homeUserID];
 
   cachedData = self->_cachedData;
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_100005DCC;
   v24[3] = &unk_100050A98;
-  v9 = v7;
+  v9 = homeUserID;
   v25 = v9;
   v10 = [(NSArray *)cachedData na_firstObjectPassingTest:v24];
-  v11 = [v10 service];
-  v12 = [v11 serviceID];
-  v13 = [v12 isEqual:v6];
+  service2 = [v10 service];
+  serviceID2 = [service2 serviceID];
+  v13 = [serviceID2 isEqual:serviceID];
 
   if ((v13 & 1) == 0)
   {
@@ -200,7 +200,7 @@
     v21[2] = sub_100005E50;
     v21[3] = &unk_100050B10;
     v22 = v9;
-    v23 = v6;
+    v23 = serviceID;
     v15 = [(NSArray *)updatedData na_firstObjectPassingTest:v21];
     if (v15)
     {

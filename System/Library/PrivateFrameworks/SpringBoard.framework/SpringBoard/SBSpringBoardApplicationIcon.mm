@@ -21,10 +21,10 @@
 
     else
     {
-      v4 = [MEMORY[0x277D75418] currentDevice];
-      v5 = [v4 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v5 == 1)
+      if (userInterfaceIdiom == 1)
       {
 LABEL_7:
         v7 = objc_alloc_init(SBSpringBoardApplicationIconDataSource);
@@ -34,8 +34,8 @@ LABEL_7:
       }
     }
 
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:v3 file:@"SBSpringBoardApplicationIcon.m" lineNumber:25 description:@"This icon can only be created on iPad"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:v3 file:@"SBSpringBoardApplicationIcon.m" lineNumber:25 description:@"This icon can only be created on iPad"];
 
     goto LABEL_7;
   }

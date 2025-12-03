@@ -1,5 +1,5 @@
 @interface CallRecordingRecordingView
-- (_TtC16CommunicationsUI26CallRecordingRecordingView)initWithFrame:(CGRect)a3;
+- (_TtC16CommunicationsUI26CallRecordingRecordingView)initWithFrame:(CGRect)frame;
 - (void)handleTapContainer;
 - (void)handleTapStopRecording;
 @end
@@ -15,7 +15,7 @@
     v4 = *(v3 + 1);
     ObjectType = swift_getObjectType();
     v6 = *(v4 + 16);
-    v7 = self;
+    selfCopy = self;
     v6(ObjectType, v4);
     swift_unknownObjectRelease();
   }
@@ -30,13 +30,13 @@
     v4 = *(v3 + 1);
     ObjectType = swift_getObjectType();
     v6 = *(v4 + 8);
-    v7 = self;
+    selfCopy = self;
     v6(ObjectType, v4);
     swift_unknownObjectRelease();
   }
 }
 
-- (_TtC16CommunicationsUI26CallRecordingRecordingView)initWithFrame:(CGRect)a3
+- (_TtC16CommunicationsUI26CallRecordingRecordingView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

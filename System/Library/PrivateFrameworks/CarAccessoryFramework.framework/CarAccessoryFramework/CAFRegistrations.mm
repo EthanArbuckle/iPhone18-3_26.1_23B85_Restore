@@ -1,162 +1,162 @@
 @interface CAFRegistrations
-+ (id)registrationDictionaryForIdentifier:(id)a3;
++ (id)registrationDictionaryForIdentifier:(id)identifier;
 @end
 
 @implementation CAFRegistrations
 
-+ (id)registrationDictionaryForIdentifier:(id)a3
++ (id)registrationDictionaryForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (([v4 isEqualToString:@"com.apple.caraccessoryd"] & 1) != 0 || !objc_msgSend(v4, "caseInsensitiveCompare:", @"caraccessoryd"))
+  identifierCopy = identifier;
+  if (([identifierCopy isEqualToString:@"com.apple.caraccessoryd"] & 1) != 0 || !objc_msgSend(identifierCopy, "caseInsensitiveCompare:", @"caraccessoryd"))
   {
-    v7 = [a1 caraccessoryd];
+    caraccessoryd = [self caraccessoryd];
 LABEL_57:
-    v6 = v7;
+    v6 = caraccessoryd;
     goto LABEL_58;
   }
 
-  if (([v4 isEqualToString:@"com.apple.CarClimate"] & 1) != 0 || !objc_msgSend(v4, "caseInsensitiveCompare:", @"Climate"))
+  if (([identifierCopy isEqualToString:@"com.apple.CarClimate"] & 1) != 0 || !objc_msgSend(identifierCopy, "caseInsensitiveCompare:", @"Climate"))
   {
-    v7 = [a1 climate];
+    caraccessoryd = [self climate];
     goto LABEL_57;
   }
 
-  if (([v4 isEqualToString:@"com.apple.CarRadio"] & 1) != 0 || !objc_msgSend(v4, "caseInsensitiveCompare:", @"Media"))
+  if (([identifierCopy isEqualToString:@"com.apple.CarRadio"] & 1) != 0 || !objc_msgSend(identifierCopy, "caseInsensitiveCompare:", @"Media"))
   {
-    v7 = [a1 media];
+    caraccessoryd = [self media];
     goto LABEL_57;
   }
 
-  if (([v4 isEqualToString:@"com.apple.AutoSettings"] & 1) != 0 || !objc_msgSend(v4, "caseInsensitiveCompare:", @"AutoSettings"))
+  if (([identifierCopy isEqualToString:@"com.apple.AutoSettings"] & 1) != 0 || !objc_msgSend(identifierCopy, "caseInsensitiveCompare:", @"AutoSettings"))
   {
-    v7 = [a1 autoSettings];
+    caraccessoryd = [self autoSettings];
     goto LABEL_57;
   }
 
-  if (([v4 isEqualToString:@"com.apple.CarTrip"] & 1) != 0 || !objc_msgSend(v4, "caseInsensitiveCompare:", @"Trip"))
+  if (([identifierCopy isEqualToString:@"com.apple.CarTrip"] & 1) != 0 || !objc_msgSend(identifierCopy, "caseInsensitiveCompare:", @"Trip"))
   {
-    v7 = [a1 trip];
+    caraccessoryd = [self trip];
     goto LABEL_57;
   }
 
-  if (([v4 isEqualToString:@"com.apple.CarTirePressure"] & 1) != 0 || !objc_msgSend(v4, "caseInsensitiveCompare:", @"TirePressure"))
+  if (([identifierCopy isEqualToString:@"com.apple.CarTirePressure"] & 1) != 0 || !objc_msgSend(identifierCopy, "caseInsensitiveCompare:", @"TirePressure"))
   {
-    v7 = [a1 tirePressure];
+    caraccessoryd = [self tirePressure];
     goto LABEL_57;
   }
 
-  if (([v4 isEqualToString:@"com.apple.CarClosures"] & 1) != 0 || !objc_msgSend(v4, "caseInsensitiveCompare:", @"Closures"))
+  if (([identifierCopy isEqualToString:@"com.apple.CarClosures"] & 1) != 0 || !objc_msgSend(identifierCopy, "caseInsensitiveCompare:", @"Closures"))
   {
-    v7 = [a1 closures];
+    caraccessoryd = [self closures];
     goto LABEL_57;
   }
 
-  if (([v4 isEqualToString:@"com.apple.CarCharge"] & 1) != 0 || !objc_msgSend(v4, "caseInsensitiveCompare:", @"Charge"))
+  if (([identifierCopy isEqualToString:@"com.apple.CarCharge"] & 1) != 0 || !objc_msgSend(identifierCopy, "caseInsensitiveCompare:", @"Charge"))
   {
-    v7 = [a1 charge];
+    caraccessoryd = [self charge];
     goto LABEL_57;
   }
 
-  if (([v4 isEqualToString:@"com.apple.CarVitals"] & 1) != 0 || !objc_msgSend(v4, "caseInsensitiveCompare:", @"Vitals"))
+  if (([identifierCopy isEqualToString:@"com.apple.CarVitals"] & 1) != 0 || !objc_msgSend(identifierCopy, "caseInsensitiveCompare:", @"Vitals"))
   {
-    v7 = [a1 vitals];
+    caraccessoryd = [self vitals];
     goto LABEL_57;
   }
 
-  if (([v4 isEqualToString:@"com.apple.CarPlayApp"] & 1) != 0 || !objc_msgSend(v4, "caseInsensitiveCompare:", @"CarPlayApp"))
+  if (([identifierCopy isEqualToString:@"com.apple.CarPlayApp"] & 1) != 0 || !objc_msgSend(identifierCopy, "caseInsensitiveCompare:", @"CarPlayApp"))
   {
-    v7 = [a1 carPlayApp];
+    caraccessoryd = [self carPlayApp];
     goto LABEL_57;
   }
 
-  if (([v4 isEqualToString:@"com.apple.CarCamera"] & 1) != 0 || !objc_msgSend(v4, "caseInsensitiveCompare:", @"CarCamera"))
+  if (([identifierCopy isEqualToString:@"com.apple.CarCamera"] & 1) != 0 || !objc_msgSend(identifierCopy, "caseInsensitiveCompare:", @"CarCamera"))
   {
-    v7 = [a1 carCamera];
+    caraccessoryd = [self carCamera];
     goto LABEL_57;
   }
 
-  if (([v4 isEqualToString:@"com.apple.CarPlaySettings"] & 1) != 0 || !objc_msgSend(v4, "caseInsensitiveCompare:", @"Settings"))
+  if (([identifierCopy isEqualToString:@"com.apple.CarPlaySettings"] & 1) != 0 || !objc_msgSend(identifierCopy, "caseInsensitiveCompare:", @"Settings"))
   {
-    v7 = [a1 settings];
+    caraccessoryd = [self settings];
     goto LABEL_57;
   }
 
-  if (![v4 caseInsensitiveCompare:@"Testing"])
+  if (![identifierCopy caseInsensitiveCompare:@"Testing"])
   {
-    v7 = [a1 testing];
+    caraccessoryd = [self testing];
     goto LABEL_57;
   }
 
-  if (([v4 isEqualToString:@"com.apple.SiriAudioApp"] & 1) != 0 || !objc_msgSend(v4, "caseInsensitiveCompare:", @"CarInspector"))
+  if (([identifierCopy isEqualToString:@"com.apple.SiriAudioApp"] & 1) != 0 || !objc_msgSend(identifierCopy, "caseInsensitiveCompare:", @"CarInspector"))
   {
-    v7 = [a1 carInspector];
+    caraccessoryd = [self carInspector];
     goto LABEL_57;
   }
 
-  if (![v4 caseInsensitiveCompare:@"CAFTool"])
+  if (![identifierCopy caseInsensitiveCompare:@"CAFTool"])
   {
-    v7 = [a1 cafTool];
+    caraccessoryd = [self cafTool];
     goto LABEL_57;
   }
 
-  if (([v4 isEqualToString:@"com.apple.AssistantServices"] & 1) != 0 || !objc_msgSend(v4, "caseInsensitiveCompare:", @"SiriCommands"))
+  if (([identifierCopy isEqualToString:@"com.apple.AssistantServices"] & 1) != 0 || !objc_msgSend(identifierCopy, "caseInsensitiveCompare:", @"SiriCommands"))
   {
-    v7 = [a1 siriCommands];
+    caraccessoryd = [self siriCommands];
     goto LABEL_57;
   }
 
-  if (([v4 isEqualToString:@"com.apple.siriknowledged"] & 1) != 0 || !objc_msgSend(v4, "caseInsensitiveCompare:", @"SiriDonations"))
+  if (([identifierCopy isEqualToString:@"com.apple.siriknowledged"] & 1) != 0 || !objc_msgSend(identifierCopy, "caseInsensitiveCompare:", @"SiriDonations"))
   {
-    v7 = [a1 siriDonations];
+    caraccessoryd = [self siriDonations];
     goto LABEL_57;
   }
 
-  if (![v4 caseInsensitiveCompare:@"MTBF"])
+  if (![identifierCopy caseInsensitiveCompare:@"MTBF"])
   {
-    v7 = [a1 MTBF];
+    caraccessoryd = [self MTBF];
     goto LABEL_57;
   }
 
-  if (([v4 isEqualToString:@"com.apple.Maps"] & 1) != 0 || !objc_msgSend(v4, "caseInsensitiveCompare:", @"Maps"))
+  if (([identifierCopy isEqualToString:@"com.apple.Maps"] & 1) != 0 || !objc_msgSend(identifierCopy, "caseInsensitiveCompare:", @"Maps"))
   {
-    v7 = [a1 maps];
+    caraccessoryd = [self maps];
     goto LABEL_57;
   }
 
-  if (([v4 isEqualToString:@"com.apple.CarPlayTemplateUIHost"] & 1) != 0 || !objc_msgSend(v4, "caseInsensitiveCompare:", @"CarPlayTemplateUIHost"))
+  if (([identifierCopy isEqualToString:@"com.apple.CarPlayTemplateUIHost"] & 1) != 0 || !objc_msgSend(identifierCopy, "caseInsensitiveCompare:", @"CarPlayTemplateUIHost"))
   {
-    v7 = [a1 carPlayTemplateUIHost];
+    caraccessoryd = [self carPlayTemplateUIHost];
     goto LABEL_57;
   }
 
-  if (![v4 caseInsensitiveCompare:@"CPNavTool"])
+  if (![identifierCopy caseInsensitiveCompare:@"CPNavTool"])
   {
-    v7 = [a1 cpNavTool];
+    caraccessoryd = [self cpNavTool];
     goto LABEL_57;
   }
 
-  if (![v4 caseInsensitiveCompare:@"FastStartup"])
+  if (![identifierCopy caseInsensitiveCompare:@"FastStartup"])
   {
-    v7 = [a1 fastStartup];
+    caraccessoryd = [self fastStartup];
     goto LABEL_57;
   }
 
-  if (![v4 caseInsensitiveCompare:@"NoLargePayload"])
+  if (![identifierCopy caseInsensitiveCompare:@"NoLargePayload"])
   {
-    v7 = [a1 noLargePayload];
+    caraccessoryd = [self noLargePayload];
     goto LABEL_57;
   }
 
-  if (![v4 caseInsensitiveCompare:@"iOSOnly"])
+  if (![identifierCopy caseInsensitiveCompare:@"iOSOnly"])
   {
-    v7 = [a1 iOSOnly];
+    caraccessoryd = [self iOSOnly];
     goto LABEL_57;
   }
 
   v5 = CAFRegistrationLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(CAFRegistrations *)v4 registrationDictionaryForIdentifier:v5];
+    [(CAFRegistrations *)identifierCopy registrationDictionaryForIdentifier:v5];
   }
 
   v6 = &unk_284683598;

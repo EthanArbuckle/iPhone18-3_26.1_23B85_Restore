@@ -1,5 +1,5 @@
 @interface HeadphoneWhatsNewUpsellViewController
-- (_TtC20HeadphoneProxService37HeadphoneWhatsNewUpsellViewController)initWithContentView:(id)a3;
+- (_TtC20HeadphoneProxService37HeadphoneWhatsNewUpsellViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -7,14 +7,14 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10008F728();
 }
 
-- (_TtC20HeadphoneProxService37HeadphoneWhatsNewUpsellViewController)initWithContentView:(id)a3
+- (_TtC20HeadphoneProxService37HeadphoneWhatsNewUpsellViewController)initWithContentView:(id)view
 {
-  v4 = a3;
-  v5 = sub_100090BB8(a3);
+  viewCopy = view;
+  v5 = sub_100090BB8(view);
 
   return v5;
 }

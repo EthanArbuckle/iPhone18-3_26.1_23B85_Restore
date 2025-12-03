@@ -1,13 +1,13 @@
 @interface SFRSA_WrappedKeyEncryptionOperation
 - (SFRSAEncryptionOperation)keyWrappingOperation;
 - (SFRSA_WrappedKeyEncryptionOperation)init;
-- (SFRSA_WrappedKeyEncryptionOperation)initWithCoder:(id)a3;
-- (SFRSA_WrappedKeyEncryptionOperation)initWithKeyWrappingOperation:(id)a3;
-- (SFRSA_WrappedKeyEncryptionOperation)initWithKeyWrappingOperation:(id)a3 sessionEncryptionOperation:(id)a4;
+- (SFRSA_WrappedKeyEncryptionOperation)initWithCoder:(id)coder;
+- (SFRSA_WrappedKeyEncryptionOperation)initWithKeyWrappingOperation:(id)operation;
+- (SFRSA_WrappedKeyEncryptionOperation)initWithKeyWrappingOperation:(id)operation sessionEncryptionOperation:(id)encryptionOperation;
 - (SFSymmetricEncryptionOperation)sessionEncryptionOperation;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setKeyWrappingOperation:(id)a3;
-- (void)setSessionEncryptionOperation:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setKeyWrappingOperation:(id)operation;
+- (void)setSessionEncryptionOperation:(id)operation;
 @end
 
 @implementation SFRSA_WrappedKeyEncryptionOperation
@@ -20,40 +20,40 @@
   return v4;
 }
 
-- (SFRSA_WrappedKeyEncryptionOperation)initWithKeyWrappingOperation:(id)a3
+- (SFRSA_WrappedKeyEncryptionOperation)initWithKeyWrappingOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v5 = +[SFSymmetricEncryptionOperation _defaultEncryptionOperation];
-  v6 = [(SFRSA_WrappedKeyEncryptionOperation *)self initWithKeyWrappingOperation:v4 sessionEncryptionOperation:v5];
+  v6 = [(SFRSA_WrappedKeyEncryptionOperation *)self initWithKeyWrappingOperation:operationCopy sessionEncryptionOperation:v5];
 
   return v6;
 }
 
-- (SFRSA_WrappedKeyEncryptionOperation)initWithKeyWrappingOperation:(id)a3 sessionEncryptionOperation:(id)a4
+- (SFRSA_WrappedKeyEncryptionOperation)initWithKeyWrappingOperation:(id)operation sessionEncryptionOperation:(id)encryptionOperation
 {
-  v7 = a3;
-  v8 = a4;
+  operationCopy = operation;
+  encryptionOperationCopy = encryptionOperation;
   v12.receiver = self;
   v12.super_class = SFRSA_WrappedKeyEncryptionOperation;
   v9 = [(SFRSA_WrappedKeyEncryptionOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(v9->_wrappedKeyEncryptionOperationInternal + 1, a3);
-    objc_storeStrong(v10->_wrappedKeyEncryptionOperationInternal + 2, a4);
+    objc_storeStrong(v9->_wrappedKeyEncryptionOperationInternal + 1, operation);
+    objc_storeStrong(v10->_wrappedKeyEncryptionOperationInternal + 2, encryptionOperation);
   }
 
   return v10;
 }
 
-- (SFRSA_WrappedKeyEncryptionOperation)initWithCoder:(id)a3
+- (SFRSA_WrappedKeyEncryptionOperation)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SFRSA_WrappedKeyEncryptionOperation;
   return [(SFRSA_WrappedKeyEncryptionOperation *)&v4 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   wrappedKeyEncryptionOperationInternal = self->_wrappedKeyEncryptionOperationInternal;
@@ -70,9 +70,9 @@
   return v2;
 }
 
-- (void)setKeyWrappingOperation:(id)a3
+- (void)setKeyWrappingOperation:(id)operation
 {
-  v4 = [a3 copy];
+  v4 = [operation copy];
   wrappedKeyEncryptionOperationInternal = self->_wrappedKeyEncryptionOperationInternal;
   v6 = wrappedKeyEncryptionOperationInternal[1];
   wrappedKeyEncryptionOperationInternal[1] = v4;
@@ -87,9 +87,9 @@
   return v2;
 }
 
-- (void)setSessionEncryptionOperation:(id)a3
+- (void)setSessionEncryptionOperation:(id)operation
 {
-  v4 = [a3 copy];
+  v4 = [operation copy];
   wrappedKeyEncryptionOperationInternal = self->_wrappedKeyEncryptionOperationInternal;
   v6 = wrappedKeyEncryptionOperationInternal[2];
   wrappedKeyEncryptionOperationInternal[2] = v4;

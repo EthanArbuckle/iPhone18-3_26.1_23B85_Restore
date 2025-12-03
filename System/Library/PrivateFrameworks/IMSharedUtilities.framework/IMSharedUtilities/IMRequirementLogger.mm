@@ -1,11 +1,11 @@
 @interface IMRequirementLogger
 + (id)sharedInstance;
-- (IMRequirementFailed_t)requirementDidFail:(const char *)a3;
+- (IMRequirementFailed_t)requirementDidFail:(const char *)fail;
 - (IMRequirementLogger)init;
 - (const)categoryOverride;
 - (id)description;
 - (void)dealloc;
-- (void)setCategoryOverride:(const char *)a3;
+- (void)setCategoryOverride:(const char *)override;
 - (void)updateSettingsFromUserDefaults;
 @end
 
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = sub_1A8662F2C;
   block[3] = &unk_1E7826200;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED8C9930 != -1)
   {
     dispatch_once(&qword_1ED8C9930, block);
@@ -45,11 +45,11 @@
 
 - (void)updateSettingsFromUserDefaults
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  -[IMRequirementLogger setThrowFailures:](self, "setThrowFailures:", [v3 BOOLForKey:@"throw-requirement-failures"]);
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  -[IMRequirementLogger setThrowFailures:](self, "setThrowFailures:", [standardUserDefaults BOOLForKey:@"throw-requirement-failures"]);
 
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v6 = [v4 valueForKey:@"requirements-logging-level"];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v6 = [standardUserDefaults2 valueForKey:@"requirements-logging-level"];
 
   v5 = v6;
   if (v6)
@@ -82,15 +82,15 @@
 
 - (const)categoryOverride
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  categoryOverride = v2->_categoryOverride;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  categoryOverride = selfCopy->_categoryOverride;
+  objc_sync_exit(selfCopy);
 
   return categoryOverride;
 }
 
-- (void)setCategoryOverride:(const char *)a3
+- (void)setCategoryOverride:(const char *)override
 {
   obj = self;
   objc_sync_enter(obj);
@@ -103,11 +103,11 @@
     obj->_categoryOverride = 0;
   }
 
-  if (a3)
+  if (override)
   {
-    v6 = strnlen(a3, 0x100uLL);
+    v6 = strnlen(override, 0x100uLL);
     v7 = malloc_type_malloc(v6 + 1, 0x100004077774924uLL);
-    v8 = strncpy(v7, a3, 0x100uLL);
+    v8 = strncpy(v7, override, 0x100uLL);
     v4 = obj;
     obj->_categoryOverride = v8;
   }
@@ -129,28 +129,28 @@
   [(IMRequirementLogger *)&v4 dealloc];
 }
 
-- (IMRequirementFailed_t)requirementDidFail:(const char *)a3
+- (IMRequirementFailed_t)requirementDidFail:(const char *)fail
 {
-  v5 = [(IMRequirementLogger *)self categoryOverride];
-  if (v5)
+  categoryOverride = [(IMRequirementLogger *)self categoryOverride];
+  if (categoryOverride)
   {
-    a3 = v5;
+    fail = categoryOverride;
   }
 
-  v6 = [(IMRequirementLogger *)self throwFailures];
-  v7 = [(IMRequirementLogger *)self loggingLevel];
+  throwFailures = [(IMRequirementLogger *)self throwFailures];
+  loggingLevel = [(IMRequirementLogger *)self loggingLevel];
   v8 = 256;
-  if (!v6)
+  if (!throwFailures)
   {
     v8 = 0;
   }
 
-  v9 = v8 | (v7 << 16) | 1;
-  v10 = a3;
+  v9 = v8 | (loggingLevel << 16) | 1;
+  failCopy = fail;
   result.var1 = v9;
   result.var2 = BYTE1(v9);
   result.var3 = BYTE2(v9);
-  result.var0 = v10;
+  result.var0 = failCopy;
   return result;
 }
 

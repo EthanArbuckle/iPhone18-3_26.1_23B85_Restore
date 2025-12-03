@@ -1,5 +1,5 @@
 @interface CSEraseDeviceUnblockViewModel
-- (id)bodyTextForTimeout:(id)a3;
+- (id)bodyTextForTimeout:(id)timeout;
 - (id)iconName;
 - (id)primaryButtonText;
 - (void)cancelButtonAction;
@@ -11,10 +11,10 @@
 
 - (id)iconName
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v4 = @"lock.ipad";
   }
@@ -27,16 +27,16 @@
   return v4;
 }
 
-- (id)bodyTextForTimeout:(id)a3
+- (id)bodyTextForTimeout:(id)timeout
 {
-  if (a3)
+  if (timeout)
   {
     v4 = MEMORY[0x277D75418];
-    v5 = a3;
-    v6 = [v4 currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    timeoutCopy = timeout;
+    currentDevice = [v4 currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v8 = @"DASHBOARD_BLOCK_ERASE_MESSAGE_PAD";
     }
@@ -47,28 +47,28 @@
     }
 
     v9 = [(CSDeviceUnblockViewModel *)self _localizedStringForKey:v8];
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:v9, v5];
+    timeoutCopy = [MEMORY[0x277CCACA8] stringWithFormat:v9, timeoutCopy];
   }
 
   else
   {
-    v10 = &stru_28302FDA0;
+    timeoutCopy = &stru_28302FDA0;
   }
 
-  return v10;
+  return timeoutCopy;
 }
 
 - (id)primaryButtonText
 {
-  v3 = [(CSDeviceUnblockViewModel *)self unblockPolicy];
-  v4 = [v3 canUnblockDeviceUsingErase];
+  unblockPolicy = [(CSDeviceUnblockViewModel *)self unblockPolicy];
+  canUnblockDeviceUsingErase = [unblockPolicy canUnblockDeviceUsingErase];
 
-  if (v4)
+  if (canUnblockDeviceUsingErase)
   {
     v5 = MEMORY[0x277CCACA8];
     v6 = [(CSDeviceUnblockViewModel *)self _localizedStringForKey:@"DASHBOARD_BLOCK_CONFIRM_ERASE_ACTION"];
-    v7 = [(CSDeviceUnblockViewModel *)self _localizedProductName];
-    v8 = [v5 stringWithFormat:v6, v7];
+    _localizedProductName = [(CSDeviceUnblockViewModel *)self _localizedProductName];
+    v8 = [v5 stringWithFormat:v6, _localizedProductName];
   }
 
   else
@@ -81,20 +81,20 @@
 
 - (void)primaryButtonAction
 {
-  v2 = [(CSDeviceUnblockViewModel *)self blockViewController];
-  [v2 deviceUnblockViewModelHandleDidRequestErase];
+  blockViewController = [(CSDeviceUnblockViewModel *)self blockViewController];
+  [blockViewController deviceUnblockViewModelHandleDidRequestErase];
 }
 
 - (void)secondaryButtonAction
 {
-  v2 = [(CSDeviceUnblockViewModel *)self blockViewController];
-  [v2 deviceUnblockViewModelHandleDidRequestCancel];
+  blockViewController = [(CSDeviceUnblockViewModel *)self blockViewController];
+  [blockViewController deviceUnblockViewModelHandleDidRequestCancel];
 }
 
 - (void)cancelButtonAction
 {
-  v2 = [(CSDeviceUnblockViewModel *)self blockViewController];
-  [v2 deviceUnblockViewModelHandleDidRequestCancel];
+  blockViewController = [(CSDeviceUnblockViewModel *)self blockViewController];
+  [blockViewController deviceUnblockViewModelHandleDidRequestCancel];
 }
 
 @end

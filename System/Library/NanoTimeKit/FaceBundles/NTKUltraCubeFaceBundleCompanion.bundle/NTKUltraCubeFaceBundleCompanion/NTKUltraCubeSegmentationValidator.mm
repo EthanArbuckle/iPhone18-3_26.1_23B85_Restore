@@ -1,19 +1,19 @@
 @interface NTKUltraCubeSegmentationValidator
-+ (BOOL)isAuxiliaryDictionarySegmentationValid:(id)a3;
-+ (NTKUltraCubeSegmentationBimodalScore)bimodalScoreForMaskImage:(CGImage *)a3;
++ (BOOL)isAuxiliaryDictionarySegmentationValid:(id)valid;
++ (NTKUltraCubeSegmentationBimodalScore)bimodalScoreForMaskImage:(CGImage *)image;
 @end
 
 @implementation NTKUltraCubeSegmentationValidator
 
-+ (BOOL)isAuxiliaryDictionarySegmentationValid:(id)a3
++ (BOOL)isAuxiliaryDictionarySegmentationValid:(id)valid
 {
-  v4 = a3;
-  if (v4)
+  validCopy = valid;
+  if (validCopy)
   {
-    v5 = [NTKUltraCubeSegmentation maskImageFromAuxiliaryDictionary:v4];
+    v5 = [NTKUltraCubeSegmentation maskImageFromAuxiliaryDictionary:validCopy];
     if (v5)
     {
-      [a1 bimodalScoreForMaskImage:v5];
+      [self bimodalScoreForMaskImage:v5];
       v7 = v6;
       v8 = _NTKLoggingObjectForDomain();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -38,9 +38,9 @@
   return v5;
 }
 
-+ (NTKUltraCubeSegmentationBimodalScore)bimodalScoreForMaskImage:(CGImage *)a3
++ (NTKUltraCubeSegmentationBimodalScore)bimodalScoreForMaskImage:(CGImage *)image
 {
-  if (a3)
+  if (image)
   {
     v3 = [CIImage imageWithCGImage:?];
     v4 = +[CIFilter areaHistogramFilter];
@@ -50,18 +50,18 @@
     [v4 setExtent:?];
     LODWORD(v5) = 1.0;
     [v4 setScale:v5];
-    v6 = [v4 outputImage];
-    if (v6)
+    outputImage = [v4 outputImage];
+    if (outputImage)
     {
       v7 = +[CIContext context];
       v8 = [[NSMutableData alloc] initWithLength:400];
-      v9 = [v8 mutableBytes];
+      mutableBytes = [v8 mutableBytes];
       v10 = [v8 length];
-      [v6 extent];
-      [v7 render:v6 toBitmap:v9 rowBytes:v10 bounds:kCIFormatRf format:0 colorSpace:?];
-      v11 = [v8 bytes];
-      v12 = *v11;
-      v13 = v11[99];
+      [outputImage extent];
+      [v7 render:outputImage toBitmap:mutableBytes rowBytes:v10 bounds:kCIFormatRf format:0 colorSpace:?];
+      bytes = [v8 bytes];
+      v12 = *bytes;
+      v13 = bytes[99];
       NTKSmoothstep();
       v15 = v14;
       NTKSmoothstep();

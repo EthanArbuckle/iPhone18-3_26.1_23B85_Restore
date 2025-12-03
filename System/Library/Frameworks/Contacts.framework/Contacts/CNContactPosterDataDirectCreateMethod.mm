@@ -1,6 +1,6 @@
 @interface CNContactPosterDataDirectCreateMethod
-+ (BOOL)execute:(id)a3 storeManager:(id)a4 error:(id *)a5;
-+ (BOOL)updateOrInsertNewItems:(id)a3 inContext:(id)a4 forContactIdentifier:(id)a5 updateIsCurrent:(BOOL)a6 error:(id *)a7;
++ (BOOL)execute:(id)execute storeManager:(id)manager error:(id *)error;
++ (BOOL)updateOrInsertNewItems:(id)items inContext:(id)context forContactIdentifier:(id)identifier updateIsCurrent:(BOOL)current error:(id *)error;
 + (id)log;
 @end
 
@@ -27,10 +27,10 @@ uint64_t __44__CNContactPosterDataDirectCreateMethod_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (BOOL)execute:(id)a3 storeManager:(id)a4 error:(id *)a5
++ (BOOL)execute:(id)execute storeManager:(id)manager error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  executeCopy = execute;
+  managerCopy = manager;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -45,19 +45,19 @@ uint64_t __44__CNContactPosterDataDirectCreateMethod_log__block_invoke()
   v15[1] = 3221225472;
   v15[2] = __68__CNContactPosterDataDirectCreateMethod_execute_storeManager_error___block_invoke;
   v15[3] = &unk_1E7412CE0;
-  v10 = v8;
+  v10 = executeCopy;
   v16 = v10;
   v17 = &v20;
   v18 = &v26;
-  v19 = a1;
+  selfCopy = self;
   v11 = (v21 + 5);
   obj = v21[5];
-  [v9 performWorkWithManagedObjectContext:v15 error:&obj];
+  [managerCopy performWorkWithManagedObjectContext:v15 error:&obj];
   objc_storeStrong(v11, obj);
   v12 = *(v27 + 24);
-  if (a5 && (v27[3] & 1) == 0)
+  if (error && (v27[3] & 1) == 0)
   {
-    *a5 = v21[5];
+    *error = v21[5];
   }
 
   _Block_object_dispose(&v20, 8);
@@ -152,21 +152,21 @@ void __68__CNContactPosterDataDirectCreateMethod_execute_storeManager_error___bl
   }
 }
 
-+ (BOOL)updateOrInsertNewItems:(id)a3 inContext:(id)a4 forContactIdentifier:(id)a5 updateIsCurrent:(BOOL)a6 error:(id *)a7
++ (BOOL)updateOrInsertNewItems:(id)items inContext:(id)context forContactIdentifier:(id)identifier updateIsCurrent:(BOOL)current error:(id *)error
 {
-  v8 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[_ExistingItemUpdater alloc] initWithContactIdentifier:v11 updateIsCurrent:v8 context:v12];
+  currentCopy = current;
+  identifierCopy = identifier;
+  contextCopy = context;
+  itemsCopy = items;
+  v14 = [[_ExistingItemUpdater alloc] initWithContactIdentifier:identifierCopy updateIsCurrent:currentCopy context:contextCopy];
 
   [(_ExistingItemUpdater *)v14 fetchExistingItems];
-  [(_ExistingItemUpdater *)v14 processCreatedAndUpdatedItems:v13];
+  [(_ExistingItemUpdater *)v14 processCreatedAndUpdatedItems:itemsCopy];
 
   [(_ExistingItemUpdater *)v14 enforceQuotas];
-  LOBYTE(a7) = [(_ExistingItemUpdater *)v14 getResult:a7];
+  LOBYTE(error) = [(_ExistingItemUpdater *)v14 getResult:error];
 
-  return a7;
+  return error;
 }
 
 void __68__CNContactPosterDataDirectCreateMethod_execute_storeManager_error___block_invoke_cold_1(uint64_t a1, NSObject *a2)

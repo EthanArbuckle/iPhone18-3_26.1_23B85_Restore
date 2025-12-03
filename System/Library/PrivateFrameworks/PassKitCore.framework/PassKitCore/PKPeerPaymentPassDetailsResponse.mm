@@ -1,23 +1,23 @@
 @interface PKPeerPaymentPassDetailsResponse
-- (PKPeerPaymentPassDetailsResponse)initWithData:(id)a3;
+- (PKPeerPaymentPassDetailsResponse)initWithData:(id)data;
 @end
 
 @implementation PKPeerPaymentPassDetailsResponse
 
-- (PKPeerPaymentPassDetailsResponse)initWithData:(id)a3
+- (PKPeerPaymentPassDetailsResponse)initWithData:(id)data
 {
   v29 = *MEMORY[0x1E69E9840];
   v24.receiver = self;
   v24.super_class = PKPeerPaymentPassDetailsResponse;
-  v3 = [(PKWebServiceResponse *)&v24 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v24 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = jSONObject;
       v7 = [v6 PKStringForKey:@"provisioningIdentifier"];
       provisioningIdentifier = v4->_provisioningIdentifier;
       v4->_provisioningIdentifier = v7;

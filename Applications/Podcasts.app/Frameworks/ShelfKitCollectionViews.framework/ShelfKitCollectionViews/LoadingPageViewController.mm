@@ -1,14 +1,14 @@
 @interface LoadingPageViewController
-- (_TtC23ShelfKitCollectionViews25LoadingPageViewController)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews25LoadingPageViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (_TtC23ShelfKitCollectionViews25LoadingPageViewController)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews25LoadingPageViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation LoadingPageViewController
 
-- (_TtC23ShelfKitCollectionViews25LoadingPageViewController)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews25LoadingPageViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews25LoadingPageViewController_overlayViewController) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews25LoadingPageViewController_loadTask) = 0;
@@ -17,23 +17,23 @@
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(LoadingPageViewController *)&v5 viewWillAppear:v3];
+  [(LoadingPageViewController *)&v5 viewWillAppear:appearCopy];
   sub_270A78();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(LoadingPageViewController *)&v5 viewWillDisappear:v3];
+  [(LoadingPageViewController *)&v5 viewWillDisappear:disappearCopy];
   if (*&v4[OBJC_IVAR____TtC23ShelfKitCollectionViews25LoadingPageViewController_loadTask])
   {
 
@@ -44,11 +44,11 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_270E28();
 }
 
-- (_TtC23ShelfKitCollectionViews25LoadingPageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC23ShelfKitCollectionViews25LoadingPageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

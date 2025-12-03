@@ -9,54 +9,54 @@
   v24.receiver = self;
   v24.super_class = SBHLibraryPodCloseSettings;
   [(SBHLibraryPodZoomSettings *)&v24 setDefaultValues];
-  v3 = [(SBHIconAnimationSettings *)self centralAnimationSettings];
-  v4 = [objc_opt_class() _defaultCentralAnimationSettings];
-  [v3 applySettings:v4];
+  centralAnimationSettings = [(SBHIconAnimationSettings *)self centralAnimationSettings];
+  _defaultCentralAnimationSettings = [objc_opt_class() _defaultCentralAnimationSettings];
+  [centralAnimationSettings applySettings:_defaultCentralAnimationSettings];
 
   [objc_opt_class() _defaultInnerFolderZoomDelay];
   v6 = v5 * 0.5;
-  v7 = [(SBHIconAnimationSettings *)self centralAnimationSettings];
-  [v7 setDelay:v6];
+  centralAnimationSettings2 = [(SBHIconAnimationSettings *)self centralAnimationSettings];
+  [centralAnimationSettings2 setDelay:v6];
 
   [(SBHIconZoomSettings *)self setLabelAlphaWithZoom:0];
   [(SBHScaleZoomSettings *)self setCrossfadeWithZoom:0];
-  v8 = [(SBHScaleZoomSettings *)self crossfadeSettings];
-  v9 = [objc_opt_class() _defaultCrossfadeSettings];
-  [v8 applySettings:v9];
+  crossfadeSettings = [(SBHScaleZoomSettings *)self crossfadeSettings];
+  _defaultCrossfadeSettings = [objc_opt_class() _defaultCrossfadeSettings];
+  [crossfadeSettings applySettings:_defaultCrossfadeSettings];
 
-  v10 = [(SBHScaleZoomSettings *)self outerFolderFadeSettings];
-  [v10 setDuration:0.2];
+  outerFolderFadeSettings = [(SBHScaleZoomSettings *)self outerFolderFadeSettings];
+  [outerFolderFadeSettings setDuration:0.2];
 
-  v11 = [(SBHScaleZoomSettings *)self outerFolderFadeSettings];
-  [v11 setDelay:0.1];
+  outerFolderFadeSettings2 = [(SBHScaleZoomSettings *)self outerFolderFadeSettings];
+  [outerFolderFadeSettings2 setDelay:0.1];
 
-  v12 = [(SBHScaleZoomSettings *)self outerFolderFadeSettings];
-  [v12 setCurve:0x10000];
+  outerFolderFadeSettings3 = [(SBHScaleZoomSettings *)self outerFolderFadeSettings];
+  [outerFolderFadeSettings3 setCurve:0x10000];
 
-  v13 = [(SBHLibraryPodZoomSettings *)self innerFolderEdgeZoomSettings];
-  [v13 setDefaultValues];
+  innerFolderEdgeZoomSettings = [(SBHLibraryPodZoomSettings *)self innerFolderEdgeZoomSettings];
+  [innerFolderEdgeZoomSettings setDefaultValues];
 
-  v14 = [(SBHLibraryPodZoomSettings *)self innerFolderEdgeZoomSettings];
-  v15 = [objc_opt_class() _defaultInnerFolderZoomAnimationSettings];
-  [v14 applySettings:v15];
+  innerFolderEdgeZoomSettings2 = [(SBHLibraryPodZoomSettings *)self innerFolderEdgeZoomSettings];
+  _defaultInnerFolderZoomAnimationSettings = [objc_opt_class() _defaultInnerFolderZoomAnimationSettings];
+  [innerFolderEdgeZoomSettings2 applySettings:_defaultInnerFolderZoomAnimationSettings];
 
   [objc_opt_class() _defaultInnerFolderZoomDelay];
   v17 = v16;
-  v18 = [(SBHLibraryPodZoomSettings *)self innerFolderEdgeZoomSettings];
-  [v18 setDelay:v17];
+  innerFolderEdgeZoomSettings3 = [(SBHLibraryPodZoomSettings *)self innerFolderEdgeZoomSettings];
+  [innerFolderEdgeZoomSettings3 setDelay:v17];
 
-  v19 = [(SBHLibraryPodZoomSettings *)self innerFolderCenterZoomSettings];
-  [v19 setDefaultValues];
+  innerFolderCenterZoomSettings = [(SBHLibraryPodZoomSettings *)self innerFolderCenterZoomSettings];
+  [innerFolderCenterZoomSettings setDefaultValues];
 
-  v20 = [(SBHLibraryPodZoomSettings *)self innerFolderCenterZoomSettings];
-  v21 = [objc_opt_class() _defaultInnerFolderZoomAnimationSettings];
-  [v20 applySettings:v21];
+  innerFolderCenterZoomSettings2 = [(SBHLibraryPodZoomSettings *)self innerFolderCenterZoomSettings];
+  _defaultInnerFolderZoomAnimationSettings2 = [objc_opt_class() _defaultInnerFolderZoomAnimationSettings];
+  [innerFolderCenterZoomSettings2 applySettings:_defaultInnerFolderZoomAnimationSettings2];
 
-  v22 = [(SBHFolderZoomSettings *)self innerFolderFadeSettings];
-  [v22 setDuration:0.2];
+  innerFolderFadeSettings = [(SBHFolderZoomSettings *)self innerFolderFadeSettings];
+  [innerFolderFadeSettings setDuration:0.2];
 
-  v23 = [(SBHFolderZoomSettings *)self innerFolderFadeSettings];
-  [v23 setCurve:0x20000];
+  innerFolderFadeSettings2 = [(SBHFolderZoomSettings *)self innerFolderFadeSettings];
+  [innerFolderFadeSettings2 setCurve:0x20000];
 }
 
 @end

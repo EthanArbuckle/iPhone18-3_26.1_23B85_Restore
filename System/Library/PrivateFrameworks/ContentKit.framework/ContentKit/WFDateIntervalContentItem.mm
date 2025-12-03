@@ -1,57 +1,57 @@
 @interface WFDateIntervalContentItem
 + (id)coercions;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
 - (LNCodableValue)dateIntervalValue;
 - (NSDateInterval)dateInterval;
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5;
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error;
 @end
 
 @implementation WFDateIntervalContentItem
 
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
-    v20 = [(WFDateIntervalContentItem *)self dateIntervalValue];
-    v10 = [v20 dateInterval];
+    dateIntervalValue = [(WFDateIntervalContentItem *)self dateIntervalValue];
+    dateInterval = [dateIntervalValue dateInterval];
 
-    if (v10)
+    if (dateInterval)
     {
       v21 = MEMORY[0x277CCACA8];
       v12 = WFLocalizedString(@"%.0f seconds since %@");
-      [v10 duration];
+      [dateInterval duration];
       v23 = v22;
-      v13 = [v10 startDate];
-      v16 = [v21 localizedStringWithFormat:v12, v23, v13];
-      v19 = [WFObjectRepresentation object:v10 named:v16];
+      startDate = [dateInterval startDate];
+      dateInterval4 = [v21 localizedStringWithFormat:v12, v23, startDate];
+      v19 = [WFObjectRepresentation object:dateInterval named:dateInterval4];
       goto LABEL_8;
     }
   }
 
-  else if ([MEMORY[0x277D237B0] wf_dateIntervalObjectClass] == a3)
+  else if ([MEMORY[0x277D237B0] wf_dateIntervalObjectClass] == class)
   {
-    v7 = [(WFDateIntervalContentItem *)self dateInterval];
+    dateInterval2 = [(WFDateIntervalContentItem *)self dateInterval];
 
-    if (v7)
+    if (dateInterval2)
     {
       v8 = objc_alloc(MEMORY[0x277D23950]);
-      v9 = [(WFDateIntervalContentItem *)self dateInterval];
-      v10 = [v8 initWithDateInterval:v9];
+      dateInterval3 = [(WFDateIntervalContentItem *)self dateInterval];
+      dateInterval = [v8 initWithDateInterval:dateInterval3];
 
-      if (v10)
+      if (dateInterval)
       {
         v11 = MEMORY[0x277CCACA8];
         v12 = WFLocalizedString(@"%.0f seconds since %@");
-        v13 = [(WFDateIntervalContentItem *)self dateInterval];
-        [v13 duration];
+        startDate = [(WFDateIntervalContentItem *)self dateInterval];
+        [startDate duration];
         v15 = v14;
-        v16 = [(WFDateIntervalContentItem *)self dateInterval];
-        v17 = [v16 startDate];
-        v18 = [v11 localizedStringWithFormat:v12, v15, v17];
-        v19 = [WFObjectRepresentation object:v10 named:v18];
+        dateInterval4 = [(WFDateIntervalContentItem *)self dateInterval];
+        startDate2 = [dateInterval4 startDate];
+        v18 = [v11 localizedStringWithFormat:v12, v15, startDate2];
+        v19 = [WFObjectRepresentation object:dateInterval named:v18];
 
 LABEL_8:
         goto LABEL_10;
@@ -67,9 +67,9 @@ LABEL_10:
 
 - (LNCodableValue)dateIntervalValue
 {
-  v3 = [MEMORY[0x277D237B0] wf_dateIntervalObjectClass];
+  wf_dateIntervalObjectClass = [MEMORY[0x277D237B0] wf_dateIntervalObjectClass];
 
-  return [(WFContentItem *)self objectForClass:v3];
+  return [(WFContentItem *)self objectForClass:wf_dateIntervalObjectClass];
 }
 
 - (NSDateInterval)dateInterval
@@ -79,20 +79,20 @@ LABEL_10:
   return [(WFContentItem *)self objectForClass:v3];
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Date Interval (multiple)", @"Date Intervals");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Date Interval (singular)", @"Date Interval");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -162,12 +162,12 @@ id __50__WFDateIntervalContentItem_stringCoercionHandler__block_invoke(uint64_t 
 {
   v11[2] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_class();
-  v4 = [a1 stringCoercionHandler];
-  v5 = [WFCoercion coercionToClass:v3 handler:v4];
+  stringCoercionHandler = [self stringCoercionHandler];
+  v5 = [WFCoercion coercionToClass:v3 handler:stringCoercionHandler];
   v11[0] = v5;
   v6 = objc_opt_class();
-  v7 = [a1 timeIntervalCoercionHandler];
-  v8 = [WFCoercion coercionToClass:v6 handler:v7];
+  timeIntervalCoercionHandler = [self timeIntervalCoercionHandler];
+  v8 = [WFCoercion coercionToClass:v6 handler:timeIntervalCoercionHandler];
   v11[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
 

@@ -9,15 +9,15 @@
   v4 = MEMORY[0x277CCD0F8];
   v5 = a3;
   v6 = [v4 alloc];
-  v7 = [v5 identifier];
-  v8 = [v5 provenance];
-  v9 = [v8 title];
-  v10 = [v5 provenance];
-  v11 = [v10 subtitle];
-  v12 = [v5 brand];
-  v13 = [v5 needsRelogin];
+  identifier = [v5 identifier];
+  provenance = [v5 provenance];
+  title = [provenance title];
+  provenance2 = [v5 provenance];
+  subtitle = [provenance2 subtitle];
+  brand = [v5 brand];
+  needsRelogin = [v5 needsRelogin];
 
-  v14 = [v6 initWithIdentifier:v7 title:v9 subtitle:v11 brand:v12 needsRelogin:v13];
+  v14 = [v6 initWithIdentifier:identifier title:title subtitle:subtitle brand:brand needsRelogin:needsRelogin];
   return v14;
 }
 

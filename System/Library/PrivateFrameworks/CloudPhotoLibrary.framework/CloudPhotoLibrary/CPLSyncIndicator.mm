@@ -1,21 +1,21 @@
 @interface CPLSyncIndicator
-+ (void)_doProtected:(id)a3;
++ (void)_doProtected:(id)protected;
 + (void)hideSyncIndicator;
-+ (void)setForeground:(BOOL)a3;
++ (void)setForeground:(BOOL)foreground;
 + (void)showSyncIndicator;
 @end
 
 @implementation CPLSyncIndicator
 
-+ (void)setForeground:(BOOL)a3
++ (void)setForeground:(BOOL)foreground
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __34__CPLSyncIndicator_setForeground___block_invoke;
   v3[3] = &__block_descriptor_41_e5_v8__0l;
-  v4 = a3;
-  v3[4] = a1;
-  [a1 _doProtected:v3];
+  foregroundCopy = foreground;
+  v3[4] = self;
+  [self _doProtected:v3];
 }
 
 uint64_t __34__CPLSyncIndicator_setForeground___block_invoke(uint64_t result)
@@ -48,8 +48,8 @@ uint64_t __34__CPLSyncIndicator_setForeground___block_invoke(uint64_t result)
   v2[1] = 3221225472;
   v2[2] = __37__CPLSyncIndicator_hideSyncIndicator__block_invoke;
   v2[3] = &__block_descriptor_40_e5_v8__0l;
-  v2[4] = a1;
-  [a1 _doProtected:v2];
+  v2[4] = self;
+  [self _doProtected:v2];
 }
 
 uint64_t __37__CPLSyncIndicator_hideSyncIndicator__block_invoke(uint64_t result)
@@ -73,8 +73,8 @@ uint64_t __37__CPLSyncIndicator_hideSyncIndicator__block_invoke(uint64_t result)
   v2[1] = 3221225472;
   v2[2] = __37__CPLSyncIndicator_showSyncIndicator__block_invoke;
   v2[3] = &__block_descriptor_40_e5_v8__0l;
-  v2[4] = a1;
-  [a1 _doProtected:v2];
+  v2[4] = self;
+  [self _doProtected:v2];
 }
 
 uint64_t __37__CPLSyncIndicator_showSyncIndicator__block_invoke(uint64_t result)
@@ -92,14 +92,14 @@ uint64_t __37__CPLSyncIndicator_showSyncIndicator__block_invoke(uint64_t result)
   return result;
 }
 
-+ (void)_doProtected:(id)a3
++ (void)_doProtected:(id)protected
 {
   v3 = _doProtected__onceToken_15352;
-  v4 = a3;
-  v6 = v4;
+  protectedCopy = protected;
+  v6 = protectedCopy;
   if (v3 == -1)
   {
-    v5 = v4;
+    v5 = protectedCopy;
   }
 
   else

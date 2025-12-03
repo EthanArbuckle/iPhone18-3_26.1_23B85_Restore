@@ -1,8 +1,8 @@
 @interface TSCECellDependenciesPrinter
-+ (id)stringForOwnerKind:(unsigned __int16)a3;
++ (id)stringForOwnerKind:(unsigned __int16)kind;
 - (TSCECellDependenciesPrinter)init;
 - (id)description;
-- (void)addDependencyRow:(id)a3;
+- (void)addDependencyRow:(id)row;
 @end
 
 @implementation TSCECellDependenciesPrinter
@@ -21,12 +21,12 @@
   return v6;
 }
 
-- (void)addDependencyRow:(id)a3
+- (void)addDependencyRow:(id)row
 {
-  v18 = a3;
-  if (v18)
+  rowCopy = row;
+  if (rowCopy)
   {
-    if (objc_msgSend_dirtyPrecedentCount(v18, v4, v5, v6, v7))
+    if (objc_msgSend_dirtyPrecedentCount(rowCopy, v4, v5, v6, v7))
     {
       dirtyCellDependencyRows = self->_dirtyCellDependencyRows;
       p_dirtyCellDependencyRows = &self->_dirtyCellDependencyRows;
@@ -34,7 +34,7 @@
       if (dirtyCellDependencyRows)
       {
 LABEL_8:
-        objc_msgSend_addObject_(v12, v8, v18, v10, v11);
+        objc_msgSend_addObject_(v12, v8, rowCopy, v10, v11);
         goto LABEL_9;
       }
     }
@@ -155,9 +155,9 @@ LABEL_9:
   return v20;
 }
 
-+ (id)stringForOwnerKind:(unsigned __int16)a3
++ (id)stringForOwnerKind:(unsigned __int16)kind
 {
-  v5 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"%d", v3, v4, a3);
+  v5 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"%d", v3, v4, kind);
 
   return v5;
 }

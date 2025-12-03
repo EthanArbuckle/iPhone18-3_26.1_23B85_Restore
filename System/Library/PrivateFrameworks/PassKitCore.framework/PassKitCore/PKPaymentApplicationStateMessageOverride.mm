@@ -1,20 +1,20 @@
 @interface PKPaymentApplicationStateMessageOverride
-- (PKPaymentApplicationStateMessageOverride)initWithCoder:(id)a3;
-- (PKPaymentApplicationStateMessageOverride)initWithDictionary:(id)a3 bundle:(id)a4 privateBundle:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKPaymentApplicationStateMessageOverride)initWithCoder:(id)coder;
+- (PKPaymentApplicationStateMessageOverride)initWithDictionary:(id)dictionary bundle:(id)bundle privateBundle:(id)privateBundle;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentApplicationStateMessageOverride
 
-- (PKPaymentApplicationStateMessageOverride)initWithDictionary:(id)a3 bundle:(id)a4 privateBundle:(id)a5
+- (PKPaymentApplicationStateMessageOverride)initWithDictionary:(id)dictionary bundle:(id)bundle privateBundle:(id)privateBundle
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 PKStringForKey:@"title"];
-  v12 = [v8 PKStringForKey:@"description"];
+  dictionaryCopy = dictionary;
+  bundleCopy = bundle;
+  privateBundleCopy = privateBundle;
+  v11 = [dictionaryCopy PKStringForKey:@"title"];
+  v12 = [dictionaryCopy PKStringForKey:@"description"];
   v13 = v12;
   if (v11)
   {
@@ -38,7 +38,7 @@
       _os_log_impl(&dword_1AD337000, v15, OS_LOG_TYPE_DEFAULT, "PKPaymentApplicationStateMessageOverride failed to initialize as title (%@) or description (%@) was missing", buf, 0x16u);
     }
 
-    v16 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -49,18 +49,18 @@
     v18 = v17;
     if (v17)
     {
-      v19 = PKLocalizedPassStringForPassBundle(v13, v9, v10);
+      v19 = PKLocalizedPassStringForPassBundle(v13, bundleCopy, privateBundleCopy);
       body = v18->_body;
       v18->_body = v19;
 
-      v21 = PKLocalizedPassStringForPassBundle(v11, v9, v10);
+      v21 = PKLocalizedPassStringForPassBundle(v11, bundleCopy, privateBundleCopy);
       title = v18->_title;
       v18->_title = v21;
 
-      v23 = [v8 PKDictionaryForKey:@"action"];
+      v23 = [dictionaryCopy PKDictionaryForKey:@"action"];
       if (v23)
       {
-        v24 = [v9 pathForResource:@"pass" ofType:@"strings"];
+        v24 = [bundleCopy pathForResource:@"pass" ofType:@"strings"];
         v25 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:v24];
         v26 = [[PKPaymentPassAction alloc] initWithDictionary:v23 localizations:v25];
         action = v18->_action;
@@ -69,29 +69,29 @@
     }
 
     self = v18;
-    v16 = self;
+    selfCopy = self;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-- (PKPaymentApplicationStateMessageOverride)initWithCoder:(id)a3
+- (PKPaymentApplicationStateMessageOverride)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKPaymentApplicationStateMessageOverride;
   v5 = [(PKPaymentApplicationStateMessageOverride *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"description"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"description"];
     body = v5->_body;
     v5->_body = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"action"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"action"];
     action = v5->_action;
     v5->_action = v10;
   }
@@ -99,27 +99,27 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"title"];
-  [v5 encodeObject:self->_body forKey:@"description"];
-  [v5 encodeObject:self->_action forKey:@"action"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"title"];
+  [coderCopy encodeObject:self->_body forKey:@"description"];
+  [coderCopy encodeObject:self->_action forKey:@"action"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSString *)self->_title copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSString *)self->_title copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_body copyWithZone:a3];
+  v8 = [(NSString *)self->_body copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(PKPaymentPassAction *)self->_action copyWithZone:a3];
+  v10 = [(PKPaymentPassAction *)self->_action copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 

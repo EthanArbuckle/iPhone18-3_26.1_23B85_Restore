@@ -1,24 +1,24 @@
 @interface WLKCanonicalContainerResponse
-+ (id)parseChannelsFromPayload:(id)a3;
++ (id)parseChannelsFromPayload:(id)payload;
 - (WLKCanonicalContainerResponse)init;
-- (WLKCanonicalContainerResponse)initWithDictionary:(id)a3;
+- (WLKCanonicalContainerResponse)initWithDictionary:(id)dictionary;
 @end
 
 @implementation WLKCanonicalContainerResponse
 
-- (WLKCanonicalContainerResponse)initWithDictionary:(id)a3
+- (WLKCanonicalContainerResponse)initWithDictionary:(id)dictionary
 {
   v64[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v62.receiver = self;
   v62.super_class = WLKCanonicalContainerResponse;
   v6 = [(WLKCanonicalContainerResponse *)&v62 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dictionary, a3);
-    v49 = v5;
-    v8 = [v5 wlk_dictionaryForKey:@"data"];
+    objc_storeStrong(&v6->_dictionary, dictionary);
+    v49 = dictionaryCopy;
+    v8 = [dictionaryCopy wlk_dictionaryForKey:@"data"];
     v9 = [v8 wlk_dictionaryForKey:@"content"];
     v10 = [v8 wlk_dictionaryForKey:@"channels"];
     v11 = [v8 wlk_dictionaryForKey:@"contentPersonalizedInfo"];
@@ -95,20 +95,20 @@
     if (v25 && [v25 count])
     {
       v44 = v28;
-      v32 = [v25 firstObject];
-      v33 = [v32 wlk_arrayForKey:@"seasons"];
+      firstObject = [v25 firstObject];
+      v33 = [firstObject wlk_arrayForKey:@"seasons"];
       v34 = v33;
       if (v33 && [v33 count])
       {
-        v35 = [v34 firstObject];
+        firstObject2 = [v34 firstObject];
         defaultSeason = v27->_defaultSeason;
-        v27->_defaultSeason = v35;
+        v27->_defaultSeason = firstObject2;
       }
 
       v28 = v44;
     }
 
-    v5 = v49;
+    dictionaryCopy = v49;
   }
 
   v37 = *MEMORY[0x277D85DE8];
@@ -135,18 +135,18 @@ uint64_t __52__WLKCanonicalContainerResponse_initWithDictionary___block_invoke_2
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)parseChannelsFromPayload:(id)a3
++ (id)parseChannelsFromPayload:(id)payload
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  payloadCopy = payload;
+  v5 = [[v3 alloc] initWithCapacity:{objc_msgSend(payloadCopy, "count")}];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __58__WLKCanonicalContainerResponse_parseChannelsFromPayload___block_invoke;
   v9[3] = &unk_279E5F2F8;
   v6 = v5;
   v10 = v6;
-  [v4 enumerateKeysAndObjectsUsingBlock:v9];
+  [payloadCopy enumerateKeysAndObjectsUsingBlock:v9];
 
   if ([v6 count])
   {

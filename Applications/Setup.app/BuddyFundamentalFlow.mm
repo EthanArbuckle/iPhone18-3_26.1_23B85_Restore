@@ -1,49 +1,49 @@
 @interface BuddyFundamentalFlow
 + (id)allowedFlowItems;
-- (BuddyFundamentalFlow)initWithFlowProvider:(id)a3 featureFlags:(id)a4;
+- (BuddyFundamentalFlow)initWithFlowProvider:(id)provider featureFlags:(id)flags;
 - (BuddyFundamentalFlowProvider)flowProvider;
 - (Class)_initialFlowItemClass;
 - (Class)debutFlowItemClass;
 - (Class)initialFlowItemClass;
-- (Class)potentialNextFlowItemClassFollowingFlowItemClass:(Class)a3;
+- (Class)potentialNextFlowItemClassFollowingFlowItemClass:(Class)class;
 - (id)_flowMapByClass;
-- (void)_addItems:(id)a3 toFlow:(id)a4;
-- (void)configureFlowItem:(id)a3;
-- (void)prepareWithCompletion:(id)a3;
+- (void)_addItems:(id)items toFlow:(id)flow;
+- (void)configureFlowItem:(id)item;
+- (void)prepareWithCompletion:(id)completion;
 @end
 
 @implementation BuddyFundamentalFlow
 
-- (BuddyFundamentalFlow)initWithFlowProvider:(id)a3 featureFlags:(id)a4
+- (BuddyFundamentalFlow)initWithFlowProvider:(id)provider featureFlags:(id)flags
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, provider);
   obj = 0;
-  objc_storeStrong(&obj, a4);
-  v5 = v11;
-  v11 = 0;
+  objc_storeStrong(&obj, flags);
+  v5 = selfCopy;
+  selfCopy = 0;
   v8.receiver = v5;
   v8.super_class = BuddyFundamentalFlow;
-  v11 = [(BuddyFundamentalFlow *)&v8 init];
-  objc_storeStrong(&v11, v11);
-  if (v11)
+  selfCopy = [(BuddyFundamentalFlow *)&v8 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(v11 + 2, obj);
-    objc_storeWeak(v11 + 3, location[0]);
+    objc_storeStrong(selfCopy + 2, obj);
+    objc_storeWeak(selfCopy + 3, location[0]);
   }
 
-  v6 = v11;
+  v6 = selfCopy;
   objc_storeStrong(&obj, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
 - (id)_flowMapByClass
 {
-  v86 = self;
+  selfCopy = self;
   v85[1] = a2;
   v2 = objc_opt_class();
   v3 = NSStringFromClass(v2);
@@ -93,15 +93,15 @@
   v111[10] = objc_opt_class();
   v111[11] = objc_opt_class();
   v84 = [NSArray arrayWithObjects:v111 count:12];
-  [(BuddyFundamentalFlow *)v86 _addItems:v84 toFlow:v85[0]];
-  v19 = [(BuddyFundamentalFlow *)v86 flowProvider];
-  v20 = [(BuddyFundamentalFlowProvider *)v19 hasCloudConfiguration];
+  [(BuddyFundamentalFlow *)selfCopy _addItems:v84 toFlow:v85[0]];
+  flowProvider = [(BuddyFundamentalFlow *)selfCopy flowProvider];
+  hasCloudConfiguration = [(BuddyFundamentalFlowProvider *)flowProvider hasCloudConfiguration];
 
-  v83 = (v20 & 1) == 0;
-  v21 = [(BuddyFundamentalFlow *)v86 featureFlags];
-  v22 = [(BuddyFeatureFlags *)v21 isMDMEnrollmentFlowControllerAdoptionEnabled];
+  v83 = (hasCloudConfiguration & 1) == 0;
+  featureFlags = [(BuddyFundamentalFlow *)selfCopy featureFlags];
+  isMDMEnrollmentFlowControllerAdoptionEnabled = [(BuddyFeatureFlags *)featureFlags isMDMEnrollmentFlowControllerAdoptionEnabled];
 
-  v82 = v22 & 1;
+  v82 = isMDMEnrollmentFlowControllerAdoptionEnabled & 1;
   v110[0] = objc_opt_class();
   v110[1] = objc_opt_class();
   v110[2] = objc_opt_class();
@@ -127,7 +127,7 @@
   v110[22] = objc_opt_class();
   v110[23] = objc_opt_class();
   location = [NSArray arrayWithObjects:v110 count:24];
-  if (v22)
+  if (isMDMEnrollmentFlowControllerAdoptionEnabled)
   {
     oslog = _BYLoggingFacility();
     v79 = OS_LOG_TYPE_DEFAULT;
@@ -165,29 +165,29 @@
     objc_storeStrong(v75, 0);
   }
 
-  [(BuddyFundamentalFlow *)v86 _addItems:location toFlow:v85[0]];
+  [(BuddyFundamentalFlow *)selfCopy _addItems:location toFlow:v85[0]];
   v108[0] = objc_opt_class();
   v108[1] = objc_opt_class();
   v108[2] = objc_opt_class();
   v74 = [NSArray arrayWithObjects:v108 count:3];
-  [(BuddyFundamentalFlow *)v86 _addItems:v74 toFlow:v85[0]];
-  v26 = [(BuddyFundamentalFlow *)v86 flowProvider];
-  v27 = [(BuddyFundamentalFlowProvider *)v26 remoteManagementProvider];
-  v28 = [v27 mdmEnrollmentChannel] == 2;
+  [(BuddyFundamentalFlow *)selfCopy _addItems:v74 toFlow:v85[0]];
+  flowProvider2 = [(BuddyFundamentalFlow *)selfCopy flowProvider];
+  remoteManagementProvider = [(BuddyFundamentalFlowProvider *)flowProvider2 remoteManagementProvider];
+  v28 = [remoteManagementProvider mdmEnrollmentChannel] == 2;
 
   v73 = v28;
-  v29 = [(BuddyFundamentalFlow *)v86 flowProvider];
-  v30 = [(BuddyFundamentalFlowProvider *)v29 restoreProvider];
+  flowProvider3 = [(BuddyFundamentalFlow *)selfCopy flowProvider];
+  restoreProvider = [(BuddyFundamentalFlowProvider *)flowProvider3 restoreProvider];
   v70 = 0;
   v68 = 0;
   v31 = 1;
-  if ([v30 intendedRestoreType] != 1)
+  if ([restoreProvider intendedRestoreType] != 1)
   {
-    v71 = [(BuddyFundamentalFlow *)v86 flowProvider];
+    flowProvider4 = [(BuddyFundamentalFlow *)selfCopy flowProvider];
     v70 = 1;
-    v69 = [v71 restoreProvider];
+    restoreProvider2 = [flowProvider4 restoreProvider];
     v68 = 1;
-    v31 = [v69 restoreType] == 1;
+    v31 = [restoreProvider2 restoreType] == 1;
   }
 
   if (v68)
@@ -212,7 +212,7 @@
     }
 
     objc_storeStrong(&v67, 0);
-    v34 = v86;
+    v34 = selfCopy;
     v107[0] = objc_opt_class();
     v107[1] = objc_opt_class();
     v35 = [NSArray arrayWithObjects:v107 count:2];
@@ -225,8 +225,8 @@
     v106[1] = objc_opt_class();
     v106[2] = objc_opt_class();
     v64 = [NSArray arrayWithObjects:v106 count:3];
-    [(BuddyFundamentalFlow *)v86 _addItems:v64 toFlow:v85[0]];
-    v36 = v86;
+    [(BuddyFundamentalFlow *)selfCopy _addItems:v64 toFlow:v85[0]];
+    v36 = selfCopy;
     if (v72)
     {
       v105[0] = objc_opt_class();
@@ -248,7 +248,7 @@
     objc_storeStrong(&v64, 0);
   }
 
-  v38 = v86;
+  v38 = selfCopy;
   v103[0] = objc_opt_class();
   v103[1] = objc_opt_class();
   v39 = [NSArray arrayWithObjects:v103 count:2];
@@ -322,7 +322,7 @@
     [v63 removeObject:objc_opt_class()];
   }
 
-  [(BuddyFundamentalFlow *)v86 _addItems:v63 toFlow:v85[0]];
+  [(BuddyFundamentalFlow *)selfCopy _addItems:v63 toFlow:v85[0]];
   v99[0] = objc_opt_class();
   v99[1] = objc_opt_class();
   v99[2] = objc_opt_class();
@@ -348,9 +348,9 @@
   v99[22] = objc_opt_class();
   v99[23] = objc_opt_class();
   v57[0] = [NSArray arrayWithObjects:v99 count:24];
-  [(BuddyFundamentalFlow *)v86 _addItems:v57[0] toFlow:v85[0]];
-  v44 = [(BuddyFundamentalFlow *)v86 flowProvider];
-  v45 = [(BuddyFundamentalFlowProvider *)v44 willSetUpAsNew]^ 1;
+  [(BuddyFundamentalFlow *)selfCopy _addItems:v57[0] toFlow:v85[0]];
+  flowProvider5 = [(BuddyFundamentalFlow *)selfCopy flowProvider];
+  v45 = [(BuddyFundamentalFlowProvider *)flowProvider5 willSetUpAsNew]^ 1;
 
   if (v45)
   {
@@ -374,13 +374,13 @@
       [v56 removeObject:objc_opt_class()];
     }
 
-    [(BuddyFundamentalFlow *)v86 _addItems:v56 toFlow:v85[0]];
+    [(BuddyFundamentalFlow *)selfCopy _addItems:v56 toFlow:v85[0]];
     objc_storeStrong(&v56, 0);
   }
 
   else
   {
-    v47 = v86;
+    v47 = selfCopy;
     v97[0] = objc_opt_class();
     v97[1] = objc_opt_class();
     v97[2] = objc_opt_class();
@@ -391,11 +391,11 @@
     v48 = [NSArray arrayWithObjects:v97 count:7];
     [(BuddyFundamentalFlow *)v47 _addItems:v48 toFlow:v85[0]];
 
-    v49 = [(BuddyFundamentalFlow *)v86 flowProvider];
-    v50 = [(BuddyFundamentalFlowProvider *)v49 flowItemDispositionProvider];
-    v51 = [v50 dispositions] & 8;
+    flowProvider6 = [(BuddyFundamentalFlow *)selfCopy flowProvider];
+    flowItemDispositionProvider = [(BuddyFundamentalFlowProvider *)flowProvider6 flowItemDispositionProvider];
+    v51 = [flowItemDispositionProvider dispositions] & 8;
 
-    v52 = v86;
+    v52 = selfCopy;
     if (v51 == 8)
     {
       v96[0] = objc_opt_class();
@@ -427,14 +427,14 @@
   return v54;
 }
 
-- (void)_addItems:(id)a3 toFlow:(id)a4
+- (void)_addItems:(id)items toFlow:(id)flow
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, items);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, flow);
   for (i = 0; i < [location[0] count] - 1; ++i)
   {
     aClass = [location[0] objectAtIndexedSubscript:i];
@@ -465,29 +465,29 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)prepareWithCompletion:(id)a3
+- (void)prepareWithCompletion:(id)completion
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyFundamentalFlow *)v6 flowProvider];
-  v4 = [(BuddyFundamentalFlowProvider *)v3 startupProvider];
-  [v4 prepareWithCompletion:location[0]];
+  objc_storeStrong(location, completion);
+  flowProvider = [(BuddyFundamentalFlow *)selfCopy flowProvider];
+  startupProvider = [(BuddyFundamentalFlowProvider *)flowProvider startupProvider];
+  [startupProvider prepareWithCompletion:location[0]];
 
   objc_storeStrong(location, 0);
 }
 
 - (Class)initialFlowItemClass
 {
-  v7 = [(BuddyFundamentalFlow *)self _initialFlowItemClass];
+  _initialFlowItemClass = [(BuddyFundamentalFlow *)self _initialFlowItemClass];
   v5 = 0;
   v2 = 0;
-  if (v7)
+  if (_initialFlowItemClass)
   {
-    v6 = [(BuddyFundamentalFlow *)self willSupplyInitialFlowItemClass];
+    willSupplyInitialFlowItemClass = [(BuddyFundamentalFlow *)self willSupplyInitialFlowItemClass];
     v5 = 1;
-    v2 = v6 != 0;
+    v2 = willSupplyInitialFlowItemClass != 0;
   }
 
   if (v5)
@@ -496,68 +496,68 @@
 
   if (v2)
   {
-    v3 = [(BuddyFundamentalFlow *)self willSupplyInitialFlowItemClass];
-    v3[2](v3, v7);
+    willSupplyInitialFlowItemClass2 = [(BuddyFundamentalFlow *)self willSupplyInitialFlowItemClass];
+    willSupplyInitialFlowItemClass2[2](willSupplyInitialFlowItemClass2, _initialFlowItemClass);
   }
 
-  return v7;
+  return _initialFlowItemClass;
 }
 
 - (Class)_initialFlowItemClass
 {
-  v2 = [(BuddyFundamentalFlow *)self flowProvider];
-  v3 = [(BuddyFundamentalFlowProvider *)v2 startupProvider];
-  v4 = [v3 startupCause];
+  flowProvider = [(BuddyFundamentalFlow *)self flowProvider];
+  startupProvider = [(BuddyFundamentalFlowProvider *)flowProvider startupProvider];
+  startupCause = [startupProvider startupCause];
 
-  if (!v4)
+  if (!startupCause)
   {
-    v5 = [(BuddyFundamentalFlow *)self flowProvider];
-    v6 = [(BuddyFundamentalFlowProvider *)v5 startupProvider];
-    v7 = [v6 shouldBeginRestore];
+    flowProvider2 = [(BuddyFundamentalFlow *)self flowProvider];
+    startupProvider2 = [(BuddyFundamentalFlowProvider *)flowProvider2 startupProvider];
+    shouldBeginRestore = [startupProvider2 shouldBeginRestore];
 
-    if ((v7 & 1) == 0)
+    if ((shouldBeginRestore & 1) == 0)
     {
-      v8 = [(BuddyFundamentalFlow *)self flowProvider];
-      v9 = [(BuddyFundamentalFlowProvider *)v8 startupProvider];
-      v10 = [v9 shouldBeginMigration];
+      flowProvider3 = [(BuddyFundamentalFlow *)self flowProvider];
+      startupProvider3 = [(BuddyFundamentalFlowProvider *)flowProvider3 startupProvider];
+      shouldBeginMigration = [startupProvider3 shouldBeginMigration];
 
-      if ((v10 & 1) == 0)
+      if ((shouldBeginMigration & 1) == 0)
       {
-        v11 = [(BuddyFundamentalFlow *)self flowProvider];
-        v12 = [(BuddyFundamentalFlowProvider *)v11 startupProvider];
-        v13 = [v12 isLanguageSet];
+        flowProvider4 = [(BuddyFundamentalFlow *)self flowProvider];
+        startupProvider4 = [(BuddyFundamentalFlowProvider *)flowProvider4 startupProvider];
+        isLanguageSet = [startupProvider4 isLanguageSet];
 
-        if (v13)
+        if (isLanguageSet)
         {
           v19 = [(BuddyFundamentalFlow *)self potentialNextFlowItemClassFollowingFlowItemClass:objc_opt_class()];
           goto LABEL_21;
         }
 
-        v14 = [(BuddyFundamentalFlow *)self featureFlags];
-        [(BuddyFeatureFlags *)v14 isLanguageAgnosticQuickStartEnabled];
+        featureFlags = [(BuddyFundamentalFlow *)self featureFlags];
+        [(BuddyFeatureFlags *)featureFlags isLanguageAgnosticQuickStartEnabled];
       }
     }
 
     goto LABEL_20;
   }
 
-  if ((v4 - 1) < 2)
+  if ((startupCause - 1) < 2)
   {
 LABEL_20:
     v19 = objc_opt_class();
     goto LABEL_21;
   }
 
-  if (v4 == 3)
+  if (startupCause == 3)
   {
-    v15 = [(BuddyFundamentalFlow *)self flowProvider];
-    v16 = [(BuddyFundamentalFlowProvider *)v15 startupProvider];
-    [v16 airplaneModeEnabled];
+    flowProvider5 = [(BuddyFundamentalFlow *)self flowProvider];
+    startupProvider5 = [(BuddyFundamentalFlowProvider *)flowProvider5 startupProvider];
+    [startupProvider5 airplaneModeEnabled];
 
     goto LABEL_20;
   }
 
-  if (v4 == 4 || v4 == 5 || v4 == 6 || v4 == 7 || v4 == 9 || v4 == 10)
+  if (startupCause == 4 || startupCause == 5 || startupCause == 6 || startupCause == 7 || startupCause == 9 || startupCause == 10)
   {
     goto LABEL_20;
   }
@@ -569,17 +569,17 @@ LABEL_21:
 
 - (Class)debutFlowItemClass
 {
-  v2 = [(BuddyFundamentalFlow *)self flowProvider];
-  v3 = [(BuddyFundamentalFlowProvider *)v2 startupProvider];
-  v4 = [v3 startupCause];
+  flowProvider = [(BuddyFundamentalFlow *)self flowProvider];
+  startupProvider = [(BuddyFundamentalFlowProvider *)flowProvider startupProvider];
+  startupCause = [startupProvider startupCause];
 
-  if (!v4)
+  if (!startupCause)
   {
-    v5 = [(BuddyFundamentalFlow *)self flowProvider];
-    v6 = [(BuddyFundamentalFlowProvider *)v5 startupProvider];
-    v7 = [v6 shouldBeginMigration];
+    flowProvider2 = [(BuddyFundamentalFlow *)self flowProvider];
+    startupProvider2 = [(BuddyFundamentalFlowProvider *)flowProvider2 startupProvider];
+    shouldBeginMigration = [startupProvider2 shouldBeginMigration];
 
-    if ((v7 & 1) == 0)
+    if ((shouldBeginMigration & 1) == 0)
     {
       goto LABEL_8;
     }
@@ -589,7 +589,7 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  if (v4 == 2)
+  if (startupCause == 2)
   {
     goto LABEL_5;
   }
@@ -601,37 +601,37 @@ LABEL_9:
   return v10;
 }
 
-- (void)configureFlowItem:(id)a3
+- (void)configureFlowItem:(id)item
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, item);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v15 = location[0];
-    v3 = [(BuddyFundamentalFlow *)v17 flowProvider];
-    v4 = [(BuddyFundamentalFlowProvider *)v3 languageLocaleReceiver];
-    [v15 setReceiver:v4];
+    flowProvider = [(BuddyFundamentalFlow *)selfCopy flowProvider];
+    languageLocaleReceiver = [(BuddyFundamentalFlowProvider *)flowProvider languageLocaleReceiver];
+    [v15 setReceiver:languageLocaleReceiver];
 
-    v5 = [(BuddyFundamentalFlow *)v17 flowProvider];
-    v6 = [(BuddyFundamentalFlowProvider *)v5 startupProvider];
-    [v15 setLanguageSet:{objc_msgSend(v6, "isLanguageSet") & 1}];
+    flowProvider2 = [(BuddyFundamentalFlow *)selfCopy flowProvider];
+    startupProvider = [(BuddyFundamentalFlowProvider *)flowProvider2 startupProvider];
+    [v15 setLanguageSet:{objc_msgSend(startupProvider, "isLanguageSet") & 1}];
 
-    v7 = [(BuddyFundamentalFlow *)v17 flowProvider];
-    v8 = [(BuddyFundamentalFlowProvider *)v7 startupProvider];
-    v9 = [v8 isLanguageSet];
+    flowProvider3 = [(BuddyFundamentalFlow *)selfCopy flowProvider];
+    startupProvider2 = [(BuddyFundamentalFlowProvider *)flowProvider3 startupProvider];
+    isLanguageSet = [startupProvider2 isLanguageSet];
     v13 = 0;
     v11 = 0;
     v10 = 0;
-    if (v9)
+    if (isLanguageSet)
     {
-      v14 = [(BuddyFundamentalFlow *)v17 flowProvider];
+      flowProvider4 = [(BuddyFundamentalFlow *)selfCopy flowProvider];
       v13 = 1;
-      v12 = [(BuddyFundamentalFlowProvider *)v14 startupProvider];
+      startupProvider3 = [(BuddyFundamentalFlowProvider *)flowProvider4 startupProvider];
       v11 = 1;
-      v10 = [v12 startupCause] == 1;
+      v10 = [startupProvider3 startupCause] == 1;
     }
 
     [v15 setResumingFromLanguageReboot:v10];
@@ -649,11 +649,11 @@ LABEL_9:
   objc_storeStrong(location, 0);
 }
 
-- (Class)potentialNextFlowItemClassFollowingFlowItemClass:(Class)a3
+- (Class)potentialNextFlowItemClassFollowingFlowItemClass:(Class)class
 {
-  v3 = [(BuddyFundamentalFlow *)self _flowMapByClass];
-  v4 = NSStringFromClass(a3);
-  v5 = [v3 objectForKey:v4];
+  _flowMapByClass = [(BuddyFundamentalFlow *)self _flowMapByClass];
+  v4 = NSStringFromClass(class);
+  v5 = [_flowMapByClass objectForKey:v4];
 
   return v5;
 }

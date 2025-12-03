@@ -1,31 +1,31 @@
 @interface HUNaturalLightingSetupViewController
-+ (id)moduleControllerInHome:(id)a3;
++ (id)moduleControllerInHome:(id)home;
 - (HUConfigurationViewControllerDelegate)delegate;
-- (HUNaturalLightingSetupViewController)initWithHome:(id)a3;
+- (HUNaturalLightingSetupViewController)initWithHome:(id)home;
 - (id)_markAllAccessoriesAsOnboarded;
 - (id)hu_preloadContent;
-- (void)_activateNaturalLighting:(id)a3;
-- (void)_doNotActivateNaturalLighting:(id)a3;
-- (void)_updateButtonWithNumberOfLightsSelected:(unint64_t)a3;
-- (void)naturalLanguageSetupModule:(id)a3 didUpdateSelectedItems:(id)a4;
+- (void)_activateNaturalLighting:(id)lighting;
+- (void)_doNotActivateNaturalLighting:(id)lighting;
+- (void)_updateButtonWithNumberOfLightsSelected:(unint64_t)selected;
+- (void)naturalLanguageSetupModule:(id)module didUpdateSelectedItems:(id)items;
 - (void)viewDidLoad;
 @end
 
 @implementation HUNaturalLightingSetupViewController
 
-- (HUNaturalLightingSetupViewController)initWithHome:(id)a3
+- (HUNaturalLightingSetupViewController)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v6 = _HULocalizedStringWithDefaultValue(@"HUNaturalLigthingSetup_Title", @"HUNaturalLigthingSetup_Title", 1);
   v7 = _HULocalizedStringWithDefaultValue(@"HUNaturalLightingSetup_Detail", @"HUNaturalLightingSetup_Detail", 1);
-  v8 = [HUNaturalLightingSetupViewController moduleControllerInHome:v5];
+  v8 = [HUNaturalLightingSetupViewController moduleControllerInHome:homeCopy];
   v12.receiver = self;
   v12.super_class = HUNaturalLightingSetupViewController;
   v9 = [(HUItemTableOBWelcomeController *)&v12 initWithTitle:v6 detailText:v7 icon:0 contentLayout:2 itemTableViewController:v8];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_home, a3);
+    objc_storeStrong(&v9->_home, home);
   }
 
   return v10;
@@ -33,14 +33,14 @@
 
 - (id)hu_preloadContent
 {
-  v3 = [(HUItemTableOBWelcomeController *)self itemTableViewController];
-  v4 = [v3 hu_preloadContent];
+  itemTableViewController = [(HUItemTableOBWelcomeController *)self itemTableViewController];
+  hu_preloadContent = [itemTableViewController hu_preloadContent];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__HUNaturalLightingSetupViewController_hu_preloadContent__block_invoke;
   v7[3] = &unk_277DC0788;
   v7[4] = self;
-  v5 = [v4 flatMap:v7];
+  v5 = [hu_preloadContent flatMap:v7];
 
   return v5;
 }
@@ -71,20 +71,20 @@ uint64_t __57__HUNaturalLightingSetupViewController_hu_preloadContent__block_inv
   return isKindOfClass & 1;
 }
 
-- (void)naturalLanguageSetupModule:(id)a3 didUpdateSelectedItems:(id)a4
+- (void)naturalLanguageSetupModule:(id)module didUpdateSelectedItems:(id)items
 {
-  v6 = a3;
-  v7 = a4;
+  moduleCopy = module;
+  itemsCopy = items;
   objc_initWeak(&location, self);
-  v8 = [MEMORY[0x277D2C938] mainThreadScheduler];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __90__HUNaturalLightingSetupViewController_naturalLanguageSetupModule_didUpdateSelectedItems___block_invoke;
   v10[3] = &unk_277DBA860;
   objc_copyWeak(&v12, &location);
-  v9 = v7;
+  v9 = itemsCopy;
   v11 = v9;
-  [v8 performBlock:v10];
+  [mainThreadScheduler performBlock:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -101,16 +101,16 @@ void __90__HUNaturalLightingSetupViewController_naturalLanguageSetupModule_didUp
   [WeakRetained _updateButtonWithNumberOfLightsSelected:{objc_msgSend(v5, "count")}];
 }
 
-- (void)_activateNaturalLighting:(id)a3
+- (void)_activateNaturalLighting:(id)lighting
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  lightingCopy = lighting;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v22 = self;
+    selfCopy = self;
     v23 = 2112;
     v24 = v7;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped button", buf, 0x16u);
@@ -121,30 +121,30 @@ void __90__HUNaturalLightingSetupViewController_naturalLanguageSetupModule_didUp
   {
     v9 = NSStringFromSelector(a2);
     *buf = 138412290;
-    v22 = v9;
+    selfCopy = v9;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@: Setting Up Natural Lighting", buf, 0xCu);
   }
 
-  v10 = [(HUNaturalLightingSetupViewController *)self useWithLightsButton];
-  v11 = [v10 activityIndicator];
-  [v11 startAnimating];
+  useWithLightsButton = [(HUNaturalLightingSetupViewController *)self useWithLightsButton];
+  activityIndicator = [useWithLightsButton activityIndicator];
+  [activityIndicator startAnimating];
 
-  [v5 setEnabled:0];
-  v12 = [(HUNaturalLightingSetupViewController *)self module];
-  v13 = [v12 commitSelectedItems];
+  [lightingCopy setEnabled:0];
+  module = [(HUNaturalLightingSetupViewController *)self module];
+  commitSelectedItems = [module commitSelectedItems];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __65__HUNaturalLightingSetupViewController__activateNaturalLighting___block_invoke;
   v20[3] = &unk_277DBA338;
   v20[4] = self;
-  v14 = [v13 addSuccessBlock:v20];
+  v14 = [commitSelectedItems addSuccessBlock:v20];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __65__HUNaturalLightingSetupViewController__activateNaturalLighting___block_invoke_13;
   v17[3] = &unk_277DB7E90;
-  v18 = v5;
-  v19 = self;
-  v15 = v5;
+  v18 = lightingCopy;
+  selfCopy2 = self;
+  v15 = lightingCopy;
   v16 = [v14 addFailureBlock:v17];
 }
 
@@ -177,7 +177,7 @@ void __65__HUNaturalLightingSetupViewController__activateNaturalLighting___block
   [v7 handleError:v4];
 }
 
-- (void)_doNotActivateNaturalLighting:(id)a3
+- (void)_doNotActivateNaturalLighting:(id)lighting
 {
   v16 = *MEMORY[0x277D85DE8];
   v5 = HFLogForCategory();
@@ -185,18 +185,18 @@ void __65__HUNaturalLightingSetupViewController__activateNaturalLighting___block
   {
     v6 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
     v15 = v6;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped button", buf, 0x16u);
   }
 
-  v7 = [(HUNaturalLightingSetupViewController *)self _markAllAccessoriesAsOnboarded];
-  v8 = [(HUNaturalLightingSetupViewController *)self delegate];
+  _markAllAccessoriesAsOnboarded = [(HUNaturalLightingSetupViewController *)self _markAllAccessoriesAsOnboarded];
+  delegate = [(HUNaturalLightingSetupViewController *)self delegate];
   v10 = @"HUNaturalLightingOnboardingKey_UserInput";
   v11 = &unk_282491C28;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-  [v8 viewController:self didFinishWithConfigurationResults:v9];
+  [delegate viewController:self didFinishWithConfigurationResults:v9];
 }
 
 - (void)viewDidLoad
@@ -205,39 +205,39 @@ void __65__HUNaturalLightingSetupViewController__activateNaturalLighting___block
   v19.receiver = self;
   v19.super_class = HUNaturalLightingSetupViewController;
   [(HUItemTableOBWelcomeController *)&v19 viewDidLoad];
-  v4 = [(HUNaturalLightingSetupViewController *)self headerView];
-  v5 = [v4 subviews];
-  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:v5 withIDDictionary:&unk_282493058];
+  headerView = [(HUNaturalLightingSetupViewController *)self headerView];
+  subviews = [headerView subviews];
+  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:subviews withIDDictionary:&unk_282493058];
 
-  v6 = [MEMORY[0x277D37618] boldButton];
-  [(HUNaturalLightingSetupViewController *)self setUseWithLightsButton:v6];
+  boldButton = [MEMORY[0x277D37618] boldButton];
+  [(HUNaturalLightingSetupViewController *)self setUseWithLightsButton:boldButton];
 
-  v7 = [(HUNaturalLightingSetupViewController *)self useWithLightsButton];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  useWithLightsButton = [(HUNaturalLightingSetupViewController *)self useWithLightsButton];
+  [useWithLightsButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(HUNaturalLightingSetupViewController *)self useWithLightsButton];
-  [v8 addTarget:self action:sel__activateNaturalLighting_ forControlEvents:64];
+  useWithLightsButton2 = [(HUNaturalLightingSetupViewController *)self useWithLightsButton];
+  [useWithLightsButton2 addTarget:self action:sel__activateNaturalLighting_ forControlEvents:64];
 
-  v9 = [(HUNaturalLightingSetupViewController *)self useWithLightsButton];
-  [v9 setAccessibilityIdentifier:@"Home.OnboardingView.NaturalLighting.SetUp.UseWithLightsButton"];
+  useWithLightsButton3 = [(HUNaturalLightingSetupViewController *)self useWithLightsButton];
+  [useWithLightsButton3 setAccessibilityIdentifier:@"Home.OnboardingView.NaturalLighting.SetUp.UseWithLightsButton"];
 
-  v10 = [(HUNaturalLightingSetupViewController *)self buttonTray];
-  v11 = [(HUNaturalLightingSetupViewController *)self useWithLightsButton];
-  [v10 addButton:v11];
+  buttonTray = [(HUNaturalLightingSetupViewController *)self buttonTray];
+  useWithLightsButton4 = [(HUNaturalLightingSetupViewController *)self useWithLightsButton];
+  [buttonTray addButton:useWithLightsButton4];
 
-  v12 = [(HUNaturalLightingSetupViewController *)self module];
-  v13 = [v12 selectedItems];
-  -[HUNaturalLightingSetupViewController _updateButtonWithNumberOfLightsSelected:](self, "_updateButtonWithNumberOfLightsSelected:", [v13 count]);
+  module = [(HUNaturalLightingSetupViewController *)self module];
+  selectedItems = [module selectedItems];
+  -[HUNaturalLightingSetupViewController _updateButtonWithNumberOfLightsSelected:](self, "_updateButtonWithNumberOfLightsSelected:", [selectedItems count]);
 
-  v14 = [MEMORY[0x277D37650] linkButton];
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+  linkButton = [MEMORY[0x277D37650] linkButton];
+  [linkButton setTranslatesAutoresizingMaskIntoConstraints:0];
   v15 = _HULocalizedStringWithDefaultValue(@"HUNaturalLightingTitle_NotNowButton", @"HUNaturalLightingTitle_NotNowButton", 1);
-  [v14 setTitle:v15 forState:0];
+  [linkButton setTitle:v15 forState:0];
 
-  [v14 setAccessibilityIdentifier:@"Home.OnboardingView.NaturalLighting.SetUp.NotNowButton"];
-  [v14 addTarget:self action:sel__doNotActivateNaturalLighting_ forControlEvents:64];
-  v16 = [(HUNaturalLightingSetupViewController *)self buttonTray];
-  [v16 addButton:v14];
+  [linkButton setAccessibilityIdentifier:@"Home.OnboardingView.NaturalLighting.SetUp.NotNowButton"];
+  [linkButton addTarget:self action:sel__doNotActivateNaturalLighting_ forControlEvents:64];
+  buttonTray2 = [(HUNaturalLightingSetupViewController *)self buttonTray];
+  [buttonTray2 addButton:linkButton];
 
   [(HUNaturalLightingSetupViewController *)self setModalInPresentation:1];
   v17 = HFLogForCategory();
@@ -245,28 +245,28 @@ void __65__HUNaturalLightingSetupViewController__activateNaturalLighting___block
   {
     v18 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v21 = self;
+    selfCopy = self;
     v22 = 2112;
     v23 = v18;
     _os_log_impl(&dword_20CEB6000, v17, OS_LOG_TYPE_DEFAULT, "%@:%@: presented: NLSVC", buf, 0x16u);
   }
 }
 
-- (void)_updateButtonWithNumberOfLightsSelected:(unint64_t)a3
+- (void)_updateButtonWithNumberOfLightsSelected:(unint64_t)selected
 {
-  v13 = HULocalizedStringWithFormat(@"HUNaturalLightingSetup_UseLightsButton", @"%lu", a3, v3, v4, v5, v6, v7, a3);
-  if (a3 == 1)
+  v13 = HULocalizedStringWithFormat(@"HUNaturalLightingSetup_UseLightsButton", @"%lu", selected, v3, v4, v5, v6, v7, selected);
+  if (selected == 1)
   {
     v10 = _HULocalizedStringWithDefaultValue(@"HUNaturalLightingSetup_UseLightsButtonSingular", @"HUNaturalLightingSetup_UseLightsButtonSingular", 1);
 
     v13 = v10;
   }
 
-  v11 = [(HUNaturalLightingSetupViewController *)self useWithLightsButton];
-  [v11 setTitle:v13 forState:0];
+  useWithLightsButton = [(HUNaturalLightingSetupViewController *)self useWithLightsButton];
+  [useWithLightsButton setTitle:v13 forState:0];
 
-  v12 = [(HUNaturalLightingSetupViewController *)self useWithLightsButton];
-  [v12 setEnabled:a3 != 0];
+  useWithLightsButton2 = [(HUNaturalLightingSetupViewController *)self useWithLightsButton];
+  [useWithLightsButton2 setEnabled:selected != 0];
 }
 
 - (id)_markAllAccessoriesAsOnboarded
@@ -277,8 +277,8 @@ void __65__HUNaturalLightingSetupViewController__activateNaturalLighting___block
   v6[2] = __70__HUNaturalLightingSetupViewController__markAllAccessoriesAsOnboarded__block_invoke;
   v6[3] = &unk_277DB7580;
   v6[4] = self;
-  v3 = [MEMORY[0x277D2C938] globalAsyncScheduler];
-  v4 = [v2 futureWithBlock:v6 scheduler:v3];
+  globalAsyncScheduler = [MEMORY[0x277D2C938] globalAsyncScheduler];
+  v4 = [v2 futureWithBlock:v6 scheduler:globalAsyncScheduler];
 
   return v4;
 }
@@ -364,22 +364,22 @@ id __70__HUNaturalLightingSetupViewController__markAllAccessoriesAsOnboarded__bl
   return v5;
 }
 
-+ (id)moduleControllerInHome:(id)a3
++ (id)moduleControllerInHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v6 = [HUSimpleItemModuleTableViewController alloc];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __63__HUNaturalLightingSetupViewController_moduleControllerInHome___block_invoke;
   v11[3] = &unk_277DB9F78;
-  v12 = v5;
+  v12 = homeCopy;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __63__HUNaturalLightingSetupViewController_moduleControllerInHome___block_invoke_4;
   v10[3] = &__block_descriptor_48_e46___HUItemModuleController_16__0__HFItemModule_8l;
   v10[4] = a2;
-  v10[5] = a1;
-  v7 = v5;
+  v10[5] = self;
+  v7 = homeCopy;
   v8 = [(HUSimpleItemModuleTableViewController *)v6 initWithTableViewStyle:1 moduleCreator:v11 moduleControllerBuilder:v10];
 
   return v8;

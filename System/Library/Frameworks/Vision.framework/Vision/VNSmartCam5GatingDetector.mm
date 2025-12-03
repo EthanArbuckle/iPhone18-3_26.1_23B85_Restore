@@ -1,32 +1,32 @@
 @interface VNSmartCam5GatingDetector
-+ (id)_inferenceNetworkDescriptorForConfiguration:(id)a3 error:(id *)a4;
-+ (id)inputImageBlobNameForConfiguration:(id)a3;
-+ (id)modelPathForConfiguration:(id)a3 error:(id *)a4;
-+ (id)sceneLabelsFilePathForConfiguration:(id)a3 error:(id *)a4;
-+ (id)segmentationLabelsFilePathForConfiguration:(id)a3 error:(id *)a4;
-+ (unsigned)analysisPixelFormatTypeForConfiguration:(id)a3;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (BOOL)configureImageAnalyzerOptions:(void *)a3 error:(id *)a4;
++ (id)_inferenceNetworkDescriptorForConfiguration:(id)configuration error:(id *)error;
++ (id)inputImageBlobNameForConfiguration:(id)configuration;
++ (id)modelPathForConfiguration:(id)configuration error:(id *)error;
++ (id)sceneLabelsFilePathForConfiguration:(id)configuration error:(id *)error;
++ (id)segmentationLabelsFilePathForConfiguration:(id)configuration error:(id *)error;
++ (unsigned)analysisPixelFormatTypeForConfiguration:(id)configuration;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (BOOL)configureImageAnalyzerOptions:(void *)options error:(id *)error;
 - (NSArray)supportedDocumentElementIdentifiers;
-- (id)observationsForLastAnalysisOfImageAnalyzer:(void *)a3 processOptions:(id)a4 originatingRequestSpecifier:(id)a5 qosClass:(unsigned int)a6 error:(id *)a7;
-- (id)supportedClassificationIdentifiersWithOptions:(id)a3 error:(id *)a4;
-- (uint64_t)_recordRecognizedObjectObservationsWithIdentifier:(void *)a3 inObservationsArray:(void *)a4 sceneLabelToConfidenceMap:(uint64x2_t *)a5 segmentationTensor:(uint64_t *)a6 segmentationChannelLabels:(void *)a7 originatingRequestSpecifier:(unsigned int)a8 qosClass:(void *)a9 session:(void *)a10 error:;
-- (unsigned)analysisTypesForProcessOptions:(id)a3;
+- (id)observationsForLastAnalysisOfImageAnalyzer:(void *)analyzer processOptions:(id)options originatingRequestSpecifier:(id)specifier qosClass:(unsigned int)class error:(id *)error;
+- (id)supportedClassificationIdentifiersWithOptions:(id)options error:(id *)error;
+- (uint64_t)_recordRecognizedObjectObservationsWithIdentifier:(void *)identifier inObservationsArray:(void *)array sceneLabelToConfidenceMap:(uint64x2_t *)map segmentationTensor:(uint64_t *)tensor segmentationChannelLabels:(void *)labels originatingRequestSpecifier:(unsigned int)specifier qosClass:(void *)class session:(void *)self0 error:;
+- (unsigned)analysisTypesForProcessOptions:(id)options;
 @end
 
 @implementation VNSmartCam5GatingDetector
 
-- (id)observationsForLastAnalysisOfImageAnalyzer:(void *)a3 processOptions:(id)a4 originatingRequestSpecifier:(id)a5 qosClass:(unsigned int)a6 error:(id *)a7
+- (id)observationsForLastAnalysisOfImageAnalyzer:(void *)analyzer processOptions:(id)options originatingRequestSpecifier:(id)specifier qosClass:(unsigned int)class error:(id *)error
 {
-  v8 = *&a6;
-  v11 = a4;
+  v8 = *&class;
+  optionsCopy = options;
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v13 = [v11 objectForKeyedSubscript:@"VNSmartCam5GatingDetectorProcessingOption_ClassificationEnabled"];
-  v14 = [v13 BOOLValue];
+  v13 = [optionsCopy objectForKeyedSubscript:@"VNSmartCam5GatingDetectorProcessingOption_ClassificationEnabled"];
+  bOOLValue = [v13 BOOLValue];
 
-  if (v14)
+  if (bOOLValue)
   {
-    v15 = v11;
+    v15 = optionsCopy;
     if (!self)
     {
 LABEL_58:
@@ -34,13 +34,13 @@ LABEL_58:
       goto LABEL_59;
     }
 
-    v16 = [VNValidationUtilities originatingRequestSpecifierForKey:@"VNSmartCam5GatingDetectorProcessingOption_ClassificationOriginatingRequestSpecifier" inOptions:v15 error:a7];
+    v16 = [VNValidationUtilities originatingRequestSpecifierForKey:@"VNSmartCam5GatingDetectorProcessingOption_ClassificationOriginatingRequestSpecifier" inOptions:v15 error:error];
     if (v16)
     {
-      v17 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNSmartCam5GatingDetectorProcessingOption_ClassificationObservationsArray" inOptions:v15 error:a7];
+      v17 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNSmartCam5GatingDetectorProcessingOption_ClassificationObservationsArray" inOptions:v15 error:error];
       if (v17)
       {
-        v18 = [(VNImageAnalyzerBasedDetector *)self observationsForSceneLabelsFromLastAnalysisOfImageAnalyzer:a3 identifierAcceptingBlock:0 operationPointsProvider:0 originatingRequestSpecifier:v16 qosClass:v8 error:a7];
+        v18 = [(VNImageAnalyzerBasedDetector *)self observationsForSceneLabelsFromLastAnalysisOfImageAnalyzer:analyzer identifierAcceptingBlock:0 operationPointsProvider:0 originatingRequestSpecifier:v16 qosClass:v8 error:error];
         if (v18)
         {
           [v17 addObjectsFromArray:v18];
@@ -67,16 +67,16 @@ LABEL_58:
     [v12 addObjectsFromArray:v18];
   }
 
-  v20 = [v11 objectForKeyedSubscript:@"VNSmartCam5GatingDetectorProcessingOption_DocumentRegionGatingEnabled"];
-  v21 = [v20 BOOLValue];
+  v20 = [optionsCopy objectForKeyedSubscript:@"VNSmartCam5GatingDetectorProcessingOption_DocumentRegionGatingEnabled"];
+  bOOLValue2 = [v20 BOOLValue];
 
-  v22 = [v11 objectForKeyedSubscript:@"VNSmartCam5GatingDetectorProcessingOption_TextRegionGatingEnabled"];
-  v23 = [v22 BOOLValue];
+  v22 = [optionsCopy objectForKeyedSubscript:@"VNSmartCam5GatingDetectorProcessingOption_TextRegionGatingEnabled"];
+  bOOLValue3 = [v22 BOOLValue];
 
-  v24 = [v11 objectForKeyedSubscript:@"VNSmartCam5GatingDetectorProcessingOption_MachineReadableCodesGatingEnabled"];
-  v25 = [v24 BOOLValue];
+  v24 = [optionsCopy objectForKeyedSubscript:@"VNSmartCam5GatingDetectorProcessingOption_MachineReadableCodesGatingEnabled"];
+  bOOLValue4 = [v24 BOOLValue];
 
-  if (((v21 | v23 | v25) & 1) == 0)
+  if (((bOOLValue2 | bOOLValue3 | bOOLValue4) & 1) == 0)
   {
 LABEL_57:
     v52 = v12;
@@ -84,13 +84,13 @@ LABEL_57:
   }
 
   v63 = v8;
-  v15 = v11;
+  v15 = optionsCopy;
   if (!self)
   {
     goto LABEL_58;
   }
 
-  v26 = [VNValidationUtilities requiredSessionInOptions:v15 error:a7];
+  v26 = [VNValidationUtilities requiredSessionInOptions:v15 error:error];
   if (!v26)
   {
     v31 = 0;
@@ -98,11 +98,11 @@ LABEL_57:
   }
 
   v64 = v26;
-  v27 = [VNValidationUtilities originatingRequestSpecifierForKey:@"VNSmartCam5GatingDetectorProcessingOption_GatingOriginatingRequestSpecifier" inOptions:v15 error:a7];
+  v27 = [VNValidationUtilities originatingRequestSpecifierForKey:@"VNSmartCam5GatingDetectorProcessingOption_GatingOriginatingRequestSpecifier" inOptions:v15 error:error];
   if (v27)
   {
     v62 = v27;
-    v61 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNSmartCam5GatingDetectorProcessingOption_GatingObservationsArray" inOptions:v15 error:a7];
+    v61 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNSmartCam5GatingDetectorProcessingOption_GatingObservationsArray" inOptions:v15 error:error];
     if (!v61)
     {
       v31 = 0;
@@ -113,7 +113,7 @@ LABEL_53:
       goto LABEL_54;
     }
 
-    vision::mod::ImageAnalyzer::getSceneLabelsConfidences(v80, v28, a3);
+    vision::mod::ImageAnalyzer::getSceneLabelsConfidences(v80, v28, analyzer);
     memset(v79, 0, sizeof(v79));
     v77 = 0u;
     *v78 = 0u;
@@ -127,12 +127,12 @@ LABEL_53:
     v70 = 0u;
     v68 = 0u;
     memset(&v67, 0, sizeof(v67));
-    if (v21)
+    if (bOOLValue2)
     {
       v29 = [v15 objectForKeyedSubscript:@"VNSmartCam5GatingDetectorProcessingOption_DocumentRegionGatingGenerateSegmentationMask"];
-      v57 = [v29 BOOLValue];
+      bOOLValue5 = [v29 BOOLValue];
 
-      if (!v23)
+      if (!bOOLValue3)
       {
         goto LABEL_20;
       }
@@ -140,26 +140,26 @@ LABEL_53:
 
     else
     {
-      v57 = 0;
-      if (!v23)
+      bOOLValue5 = 0;
+      if (!bOOLValue3)
       {
 LABEL_20:
-        v56 = 0;
-        if (v25)
+        bOOLValue7 = 0;
+        if (bOOLValue4)
         {
 LABEL_21:
           v30 = [v15 objectForKeyedSubscript:@"VNSmartCam5GatingDetectorProcessingOption_MachineReadableCodesGatingGenerateSegmentationMask"];
-          v55 = [v30 BOOLValue];
+          bOOLValue6 = [v30 BOOLValue];
 
           goto LABEL_28;
         }
 
 LABEL_27:
-        v55 = 0;
+        bOOLValue6 = 0;
 LABEL_28:
-        if (((v57 | v56) & 1) != 0 || v55)
+        if (((bOOLValue5 | bOOLValue7) & 1) != 0 || bOOLValue6)
         {
-          vision::mod::ImageAnalyzer::getSceneSegmentation(v65, a3);
+          vision::mod::ImageAnalyzer::getSceneSegmentation(v65, analyzer);
           free(v78[1]);
           v78[1] = 0;
           free(v79[1]);
@@ -178,7 +178,7 @@ LABEL_28:
           v70 = v65[2];
           v71 = v65[3];
           vision::mod::ImageAnalyzer_Tensor3D::~ImageAnalyzer_Tensor3D(v65);
-          LabelsList = vision::mod::ImageAnalyzer::getLabelsList(a3, 0x20u);
+          LabelsList = vision::mod::ImageAnalyzer::getLabelsList(analyzer, 0x20u);
           if (&v67 != LabelsList)
           {
             std::vector<std::string>::__assign_with_size[abi:ne200100]<std::string*,std::string*>(&v67, LabelsList->__begin_, LabelsList->__end_, 0xAAAAAAAAAAAAAAABLL * ((LabelsList->__end_ - LabelsList->__begin_) >> 3));
@@ -187,13 +187,13 @@ LABEL_28:
 
         v35 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v60 = v35;
-        if (!v21)
+        if (!bOOLValue2)
         {
           goto LABEL_65;
         }
 
         v36 = &v68;
-        if (!v57)
+        if (!bOOLValue5)
         {
           v36 = 0;
         }
@@ -203,19 +203,19 @@ LABEL_28:
         v38 = v62;
         v39 = v64;
         v58 = v37;
-        LOBYTE(v37) = [(VNSmartCam5GatingDetector *)self _recordRecognizedObjectObservationsWithIdentifier:v37 inObservationsArray:v80 sceneLabelToConfidenceMap:v54 segmentationTensor:&v67 segmentationChannelLabels:v38 originatingRequestSpecifier:v63 qosClass:v39 session:a7 error:?];
+        LOBYTE(v37) = [(VNSmartCam5GatingDetector *)self _recordRecognizedObjectObservationsWithIdentifier:v37 inObservationsArray:v80 sceneLabelToConfidenceMap:v54 segmentationTensor:&v67 segmentationChannelLabels:v38 originatingRequestSpecifier:v63 qosClass:v39 session:error error:?];
 
         v40 = v60;
         if (v37)
         {
 LABEL_65:
-          if (v23)
+          if (bOOLValue3)
           {
-            v41 = v56 ? &v68 : 0;
+            v41 = bOOLValue7 ? &v68 : 0;
             v42 = v60;
             v43 = v62;
             v44 = v64;
-            v45 = [(VNSmartCam5GatingDetector *)self _recordRecognizedObjectObservationsWithIdentifier:v42 inObservationsArray:v80 sceneLabelToConfidenceMap:v41 segmentationTensor:&v67 segmentationChannelLabels:v43 originatingRequestSpecifier:v63 qosClass:v44 session:a7 error:?];
+            v45 = [(VNSmartCam5GatingDetector *)self _recordRecognizedObjectObservationsWithIdentifier:v42 inObservationsArray:v80 sceneLabelToConfidenceMap:v41 segmentationTensor:&v67 segmentationChannelLabels:v43 originatingRequestSpecifier:v63 qosClass:v44 session:error error:?];
 
             if (!v45)
             {
@@ -227,7 +227,7 @@ LABEL_65:
           }
 
           v40 = v60;
-          if (!v25)
+          if (!bOOLValue4)
           {
 LABEL_47:
             v32 = v61;
@@ -236,7 +236,7 @@ LABEL_47:
             goto LABEL_51;
           }
 
-          if (v55)
+          if (bOOLValue6)
           {
             v46 = &v68;
           }
@@ -250,9 +250,9 @@ LABEL_47:
           v48 = v62;
           v49 = v64;
           v59 = v47;
-          if (([(VNSmartCam5GatingDetector *)self _recordRecognizedObjectObservationsWithIdentifier:v47 inObservationsArray:v80 sceneLabelToConfidenceMap:v46 segmentationTensor:&v67 segmentationChannelLabels:v48 originatingRequestSpecifier:v63 qosClass:v49 session:a7 error:?]& 1) != 0)
+          if (([(VNSmartCam5GatingDetector *)self _recordRecognizedObjectObservationsWithIdentifier:v47 inObservationsArray:v80 sceneLabelToConfidenceMap:v46 segmentationTensor:&v67 segmentationChannelLabels:v48 originatingRequestSpecifier:v63 qosClass:v49 session:error error:?]& 1) != 0)
           {
-            v50 = [(VNSmartCam5GatingDetector *)self _recordRecognizedObjectObservationsWithIdentifier:v47 inObservationsArray:v80 sceneLabelToConfidenceMap:v46 segmentationTensor:&v67 segmentationChannelLabels:v48 originatingRequestSpecifier:v63 qosClass:v49 session:a7 error:?];
+            v50 = [(VNSmartCam5GatingDetector *)self _recordRecognizedObjectObservationsWithIdentifier:v47 inObservationsArray:v80 sceneLabelToConfidenceMap:v46 segmentationTensor:&v67 segmentationChannelLabels:v48 originatingRequestSpecifier:v63 qosClass:v49 session:error error:?];
 
             if (v50)
             {
@@ -285,9 +285,9 @@ LABEL_51:
     }
 
     v33 = [v15 objectForKeyedSubscript:@"VNSmartCam5GatingDetectorProcessingOption_TextRegionGatingGenerateSegmentationMask"];
-    v56 = [v33 BOOLValue];
+    bOOLValue7 = [v33 BOOLValue];
 
-    if (v25)
+    if (bOOLValue4)
     {
       goto LABEL_21;
     }
@@ -315,16 +315,16 @@ LABEL_60:
   return v52;
 }
 
-- (uint64_t)_recordRecognizedObjectObservationsWithIdentifier:(void *)a3 inObservationsArray:(void *)a4 sceneLabelToConfidenceMap:(uint64x2_t *)a5 segmentationTensor:(uint64_t *)a6 segmentationChannelLabels:(void *)a7 originatingRequestSpecifier:(unsigned int)a8 qosClass:(void *)a9 session:(void *)a10 error:
+- (uint64_t)_recordRecognizedObjectObservationsWithIdentifier:(void *)identifier inObservationsArray:(void *)array sceneLabelToConfidenceMap:(uint64x2_t *)map segmentationTensor:(uint64_t *)tensor segmentationChannelLabels:(void *)labels originatingRequestSpecifier:(unsigned int)specifier qosClass:(void *)class session:(void *)self0 error:
 {
   v127[1] = *MEMORY[0x1E69E9840];
   v13 = a2;
-  v98 = a3;
-  v99 = a7;
-  v100 = a9;
-  v88 = a1;
+  identifierCopy = identifier;
+  labelsCopy = labels;
+  classCopy = class;
+  selfCopy = self;
   v97 = v13;
-  [*(a1 + 104) objectForKey:v13];
+  [*(self + 104) objectForKey:v13];
   v111 = 0u;
   v112 = 0u;
   v109 = 0u;
@@ -347,8 +347,8 @@ LABEL_3:
       objc_enumerationMutation(obj);
     }
 
-    v15 = [*(*(&v109 + 1) + 8 * v103) UTF8String];
-    v16 = strlen(v15);
+    uTF8String = [*(*(&v109 + 1) + 8 * v103) UTF8String];
+    v16 = strlen(uTF8String);
     if (v16 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -363,15 +363,15 @@ LABEL_3:
     v108 = v16;
     if (v16)
     {
-      memmove(&__dst, v15, v16);
+      memmove(&__dst, uTF8String, v16);
     }
 
     *(&__dst + v17) = 0;
     v102 = v97;
-    v104 = v98;
-    v105 = v99;
-    v101 = v100;
-    v18 = std::__hash_table<std::string,std::hash<std::string>,std::equal_to<std::string>,std::allocator<std::string>>::find<std::string>(a4, &__dst);
+    v104 = identifierCopy;
+    v105 = labelsCopy;
+    v101 = classCopy;
+    v18 = std::__hash_table<std::string,std::hash<std::string>,std::equal_to<std::string>,std::allocator<std::string>>::find<std::string>(array, &__dst);
     if (!v18)
     {
       goto LABEL_25;
@@ -411,23 +411,23 @@ LABEL_25:
     v117 = 0;
     v118 = 0;
     std::vector<CGRect>::push_back[abi:ne200100](&__p, &VNNormalizedIdentityRect);
-    if (!a5)
+    if (!map)
     {
       goto LABEL_70;
     }
 
-    v27 = *a6;
-    v28 = a6[1];
-    if (*a6 == v28)
+    v27 = *tensor;
+    v28 = tensor[1];
+    if (*tensor == v28)
     {
-      v31 = *a6;
+      v31 = *tensor;
     }
 
     else
     {
       v29 = (v108 & 0x80u) == 0 ? v108 : v107;
       v30 = (v108 & 0x80u) == 0 ? &__dst : __dst;
-      v31 = *a6;
+      v31 = *tensor;
       while (1)
       {
         v32 = *(v31 + 23);
@@ -505,15 +505,15 @@ LABEL_71:
       goto LABEL_78;
     }
 
-    v115 = vrev64_s32(vcvt_f32_f64(vcvtq_f64_u64(a5[5])));
+    v115 = vrev64_s32(vcvt_f32_f64(vcvtq_f64_u64(map[5])));
     v114 = 0;
     memset(v125, 0, sizeof(v125));
-    vision::mod::ImageAnalyzer_Tensor3D::getVImageBufferFromTensorChannel(v125, a5, 0xAAAAAAAAAAAAAAABLL * ((v31 - v27) >> 3), &v115, &v114);
+    vision::mod::ImageAnalyzer_Tensor3D::getVImageBufferFromTensorChannel(v125, map, 0xAAAAAAAAAAAAAAABLL * ((v31 - v27) >> 3), &v115, &v114);
     v113 = 0;
     DeepCopyCVPixelBufferFromVImageBuffer = ImageProcessing_createDeepCopyCVPixelBufferFromVImageBuffer(v125, v114, &v113);
     if (!DeepCopyCVPixelBufferFromVImageBuffer)
     {
-      if (a10)
+      if (session)
       {
         v77 = v113;
         p_dst = &__dst;
@@ -522,8 +522,8 @@ LABEL_71:
           p_dst = __dst;
         }
 
-        v79 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unable to create segmentation image for %s", p_dst];
-        *a10 = [VNError errorForOSStatus:v77 localizedDescription:v79];
+        p_dst = [MEMORY[0x1E696AEC0] stringWithFormat:@"unable to create segmentation image for %s", p_dst];
+        *session = [VNError errorForOSStatus:v77 localizedDescription:p_dst];
       }
 
       v61 = 0;
@@ -541,7 +541,7 @@ LABEL_71:
     v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:v127 count:1];
     v43 = [v41 initWithObjectsAndKeys:{v42, @"VNDetectorProcessOption_InputImageBuffers", v37, @"VNDetectorOption_OriginatingRequestSpecifier", 0}];
 
-    v44 = [*(v88 + 112) internalProcessUsingQualityOfServiceClass:a8 options:v43 regionOfInterest:0 warningRecorder:a10 error:0 progressHandler:{0.0, 0.0, 1.0, 1.0}];
+    v44 = [*(selfCopy + 112) internalProcessUsingQualityOfServiceClass:specifier options:v43 regionOfInterest:0 warningRecorder:session error:0 progressHandler:{0.0, 0.0, 1.0, 1.0}];
     if (v44)
     {
       v86 = v43;
@@ -715,16 +715,16 @@ LABEL_102:
   return v90;
 }
 
-- (unsigned)analysisTypesForProcessOptions:(id)a3
+- (unsigned)analysisTypesForProcessOptions:(id)options
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"VNSmartCam5GatingDetectorProcessingOption_ClassificationEnabled"];
+  optionsCopy = options;
+  v4 = [optionsCopy objectForKeyedSubscript:@"VNSmartCam5GatingDetectorProcessingOption_ClassificationEnabled"];
   if ([v4 BOOLValue])
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 objectForKeyedSubscript:@"VNSmartCam5GatingDetectorProcessingOption_DocumentRegionGatingEnabled"];
+  v5 = [optionsCopy objectForKeyedSubscript:@"VNSmartCam5GatingDetectorProcessingOption_DocumentRegionGatingEnabled"];
   if ([v5 BOOLValue])
   {
 LABEL_5:
@@ -735,33 +735,33 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v6 = [v3 objectForKeyedSubscript:@"VNSmartCam5GatingDetectorProcessingOption_TextRegionGatingEnabled"];
+  v6 = [optionsCopy objectForKeyedSubscript:@"VNSmartCam5GatingDetectorProcessingOption_TextRegionGatingEnabled"];
   if ([v6 BOOLValue])
   {
 
     goto LABEL_5;
   }
 
-  v13 = [v3 objectForKeyedSubscript:@"VNSmartCam5GatingDetectorProcessingOption_MachineReadableCodesGatingEnabled"];
-  v14 = [v13 BOOLValue];
+  v13 = [optionsCopy objectForKeyedSubscript:@"VNSmartCam5GatingDetectorProcessingOption_MachineReadableCodesGatingEnabled"];
+  bOOLValue = [v13 BOOLValue];
 
-  if (v14)
+  if (bOOLValue)
   {
     goto LABEL_7;
   }
 
   v7 = 0;
 LABEL_8:
-  v8 = [v3 objectForKeyedSubscript:@"VNSmartCam5GatingDetectorProcessingOption_DocumentRegionGatingGenerateSegmentationMask"];
+  v8 = [optionsCopy objectForKeyedSubscript:@"VNSmartCam5GatingDetectorProcessingOption_DocumentRegionGatingGenerateSegmentationMask"];
   if (([v8 BOOLValue] & 1) == 0)
   {
-    v9 = [v3 objectForKeyedSubscript:@"VNSmartCam5GatingDetectorProcessingOption_TextRegionGatingGenerateSegmentationMask"];
+    v9 = [optionsCopy objectForKeyedSubscript:@"VNSmartCam5GatingDetectorProcessingOption_TextRegionGatingGenerateSegmentationMask"];
     if (![v9 BOOLValue])
     {
-      v11 = [v3 objectForKeyedSubscript:@"VNSmartCam5GatingDetectorProcessingOption_MachineReadableCodesGatingGenerateSegmentationMask"];
-      v12 = [v11 BOOLValue];
+      v11 = [optionsCopy objectForKeyedSubscript:@"VNSmartCam5GatingDetectorProcessingOption_MachineReadableCodesGatingGenerateSegmentationMask"];
+      bOOLValue2 = [v11 BOOLValue];
 
-      if ((v12 & 1) == 0)
+      if ((bOOLValue2 & 1) == 0)
       {
         goto LABEL_13;
       }
@@ -777,33 +777,33 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)configureImageAnalyzerOptions:(void *)a3 error:(id *)a4
+- (BOOL)configureImageAnalyzerOptions:(void *)options error:(id *)error
 {
   v10.receiver = self;
   v10.super_class = VNSmartCam5GatingDetector;
-  v6 = [(VNImageAnalyzerBasedDetector *)&v10 configureImageAnalyzerOptions:a3 error:a4];
+  v6 = [(VNImageAnalyzerBasedDetector *)&v10 configureImageAnalyzerOptions:options error:error];
   if (v6)
   {
-    v7 = [(VisionCoreSmartCam5InferenceNetworkDescriptor *)self->_inferenceNetworkDescriptor sceneLabelsOutputBlobName];
-    std::string::__assign_external(a3 + 5, [v7 UTF8String]);
+    sceneLabelsOutputBlobName = [(VisionCoreSmartCam5InferenceNetworkDescriptor *)self->_inferenceNetworkDescriptor sceneLabelsOutputBlobName];
+    std::string::__assign_external(options + 5, [sceneLabelsOutputBlobName UTF8String]);
 
-    v8 = [(VisionCoreSmartCam5InferenceNetworkDescriptor *)self->_inferenceNetworkDescriptor sceneSegmentationOutputBlobName];
-    std::string::__assign_external(a3 + 12, [v8 UTF8String]);
+    sceneSegmentationOutputBlobName = [(VisionCoreSmartCam5InferenceNetworkDescriptor *)self->_inferenceNetworkDescriptor sceneSegmentationOutputBlobName];
+    std::string::__assign_external(options + 12, [sceneSegmentationOutputBlobName UTF8String]);
   }
 
   return v6;
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
   v18[4] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(VNDetector *)self configurationOptions];
-  v8 = [objc_opt_class() _inferenceNetworkDescriptorForConfiguration:v7 error:a4];
+  sessionCopy = session;
+  configurationOptions = [(VNDetector *)self configurationOptions];
+  v8 = [objc_opt_class() _inferenceNetworkDescriptorForConfiguration:configurationOptions error:error];
   inferenceNetworkDescriptor = self->_inferenceNetworkDescriptor;
   self->_inferenceNetworkDescriptor = v8;
 
-  if (self->_inferenceNetworkDescriptor && (v16.receiver = self, v16.super_class = VNSmartCam5GatingDetector, [(VNImageAnalyzerBasedDetector *)&v16 completeInitializationForSession:v6 error:a4]))
+  if (self->_inferenceNetworkDescriptor && (v16.receiver = self, v16.super_class = VNSmartCam5GatingDetector, [(VNImageAnalyzerBasedDetector *)&v16 completeInitializationForSession:sessionCopy error:error]))
   {
     v17[0] = @"VNRecognizeDocumentElementIdentifierDocument";
     v17[1] = @"VNRecognizeDocumentElementIdentifierText";
@@ -817,7 +817,7 @@ LABEL_13:
     documentIdentifierToSceneLabels = self->_documentIdentifierToSceneLabels;
     self->_documentIdentifierToSceneLabels = v10;
 
-    v12 = [v6 detectorOfType:@"VNObjectnessBasedSaliencyHeatmapBoundingBoxGeneratorType" configuredWithOptions:v7 error:a4];
+    v12 = [sessionCopy detectorOfType:@"VNObjectnessBasedSaliencyHeatmapBoundingBoxGeneratorType" configuredWithOptions:configurationOptions error:error];
     boundingBoxGenerator = self->_boundingBoxGenerator;
     self->_boundingBoxGenerator = v12;
 
@@ -844,21 +844,21 @@ LABEL_13:
   return v2;
 }
 
-- (id)supportedClassificationIdentifiersWithOptions:(id)a3 error:(id *)a4
+- (id)supportedClassificationIdentifiersWithOptions:(id)options error:(id *)error
 {
-  v4 = [(VNImageAnalyzerBasedDetector *)self supportedClassificationIdentifiersAcceptedByBlock:0 error:a4];
+  v4 = [(VNImageAnalyzerBasedDetector *)self supportedClassificationIdentifiersAcceptedByBlock:0 error:error];
 
   return v4;
 }
 
-+ (id)segmentationLabelsFilePathForConfiguration:(id)a3 error:(id *)a4
++ (id)segmentationLabelsFilePathForConfiguration:(id)configuration error:(id *)error
 {
-  v5 = [a1 _inferenceNetworkDescriptorForConfiguration:a3 error:?];
+  v5 = [self _inferenceNetworkDescriptorForConfiguration:configuration error:?];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 segmentationLabelsFileURL];
-    v8 = [v7 VisionCoreFileSystemPathAndReturnError:a4];
+    segmentationLabelsFileURL = [v5 segmentationLabelsFileURL];
+    v8 = [segmentationLabelsFileURL VisionCoreFileSystemPathAndReturnError:error];
   }
 
   else
@@ -869,33 +869,33 @@ LABEL_13:
   return v8;
 }
 
-+ (unsigned)analysisPixelFormatTypeForConfiguration:(id)a3
++ (unsigned)analysisPixelFormatTypeForConfiguration:(id)configuration
 {
-  v3 = [a1 _inferenceNetworkDescriptorForConfiguration:a3 error:0];
-  v4 = [v3 onlyInputImage];
-  v5 = [v4 pixelFormatType];
+  v3 = [self _inferenceNetworkDescriptorForConfiguration:configuration error:0];
+  onlyInputImage = [v3 onlyInputImage];
+  pixelFormatType = [onlyInputImage pixelFormatType];
 
-  return v5;
+  return pixelFormatType;
 }
 
-+ (id)inputImageBlobNameForConfiguration:(id)a3
++ (id)inputImageBlobNameForConfiguration:(id)configuration
 {
-  v3 = [a1 _inferenceNetworkDescriptorForConfiguration:a3 error:0];
-  v4 = [v3 onlyInputImage];
-  v5 = [v4 name];
+  v3 = [self _inferenceNetworkDescriptorForConfiguration:configuration error:0];
+  onlyInputImage = [v3 onlyInputImage];
+  name = [onlyInputImage name];
 
-  return v5;
+  return name;
 }
 
-+ (id)sceneLabelsFilePathForConfiguration:(id)a3 error:(id *)a4
++ (id)sceneLabelsFilePathForConfiguration:(id)configuration error:(id *)error
 {
-  v5 = [a1 _inferenceNetworkDescriptorForConfiguration:a3 error:?];
+  v5 = [self _inferenceNetworkDescriptorForConfiguration:configuration error:?];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 sceneLabelConfidencesOutput];
-    v8 = [v7 labelsFileURL];
-    v9 = [v8 VisionCoreFileSystemPathAndReturnError:a4];
+    sceneLabelConfidencesOutput = [v5 sceneLabelConfidencesOutput];
+    labelsFileURL = [sceneLabelConfidencesOutput labelsFileURL];
+    v9 = [labelsFileURL VisionCoreFileSystemPathAndReturnError:error];
   }
 
   else
@@ -906,14 +906,14 @@ LABEL_13:
   return v9;
 }
 
-+ (id)modelPathForConfiguration:(id)a3 error:(id *)a4
++ (id)modelPathForConfiguration:(id)configuration error:(id *)error
 {
-  v5 = [a1 _inferenceNetworkDescriptorForConfiguration:a3 error:?];
+  v5 = [self _inferenceNetworkDescriptorForConfiguration:configuration error:?];
   v6 = v5;
   if (v5)
   {
     v7 = [v5 URL];
-    v8 = [v7 VisionCoreFileSystemPathAndReturnError:a4];
+    v8 = [v7 VisionCoreFileSystemPathAndReturnError:error];
   }
 
   else
@@ -924,11 +924,11 @@ LABEL_13:
   return v8;
 }
 
-+ (id)_inferenceNetworkDescriptorForConfiguration:(id)a3 error:(id *)a4
++ (id)_inferenceNetworkDescriptorForConfiguration:(id)configuration error:(id *)error
 {
   v5 = +[VNFrameworkManager manager];
-  v6 = [v5 detectorDescriptorsCache];
-  v7 = [v6 objectForIdentifier:@"VNSmartCam5GatingDetector" creationBlock:&__block_literal_global_13348 error:a4];
+  detectorDescriptorsCache = [v5 detectorDescriptorsCache];
+  v7 = [detectorDescriptorsCache objectForIdentifier:@"VNSmartCam5GatingDetector" creationBlock:&__block_literal_global_13348 error:error];
 
   return v7;
 }

@@ -1,7 +1,7 @@
 @interface EmailCoreWebProcessPlugin
 - (EmailCoreWebProcessPlugin)init;
-- (void)webProcessPlugIn:(id)a3 didCreateBrowserContextController:(id)a4;
-- (void)webProcessPlugIn:(id)a3 willDestroyBrowserContextController:(id)a4;
+- (void)webProcessPlugIn:(id)in didCreateBrowserContextController:(id)controller;
+- (void)webProcessPlugIn:(id)in willDestroyBrowserContextController:(id)controller;
 @end
 
 @implementation EmailCoreWebProcessPlugin
@@ -21,19 +21,19 @@
   return v2;
 }
 
-- (void)webProcessPlugIn:(id)a3 didCreateBrowserContextController:(id)a4
+- (void)webProcessPlugIn:(id)in didCreateBrowserContextController:(id)controller
 {
-  v6 = a4;
-  v5 = [[ECBundlePageController_iOS alloc] initWithPlugIn:self contextController:v6];
-  [(NSMapTable *)self->_pageControllersByContext setObject:v5 forKey:v6];
+  controllerCopy = controller;
+  v5 = [[ECBundlePageController_iOS alloc] initWithPlugIn:self contextController:controllerCopy];
+  [(NSMapTable *)self->_pageControllersByContext setObject:v5 forKey:controllerCopy];
 }
 
-- (void)webProcessPlugIn:(id)a3 willDestroyBrowserContextController:(id)a4
+- (void)webProcessPlugIn:(id)in willDestroyBrowserContextController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   v5 = [(NSMapTable *)self->_pageControllersByContext objectForKey:?];
   [v5 invalidate];
-  [(NSMapTable *)self->_pageControllersByContext removeObjectForKey:v6];
+  [(NSMapTable *)self->_pageControllersByContext removeObjectForKey:controllerCopy];
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface HPCUIBatteryIconView
 - (HPCUIBatteryIconView)init;
-- (void)setIsCharging:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setIsCharging:(BOOL)charging;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HPCUIBatteryIconView
@@ -15,38 +15,38 @@
   if (v2)
   {
     [(_UIBatteryView *)v2 setSizeCategory:1];
-    v4 = [MEMORY[0x1E69DC888] systemGreenColor];
-    [(_UIBatteryView *)v3 setFillColor:v4];
+    systemGreenColor = [MEMORY[0x1E69DC888] systemGreenColor];
+    [(_UIBatteryView *)v3 setFillColor:systemGreenColor];
 
-    v5 = [MEMORY[0x1E69DC888] lightGrayColor];
-    [(_UIBatteryView *)v3 setBodyColor:v5];
+    lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
+    [(_UIBatteryView *)v3 setBodyColor:lightGrayColor];
 
-    v6 = [MEMORY[0x1E69DC888] lightGrayColor];
-    [(_UIBatteryView *)v3 setPinColor:v6];
+    lightGrayColor2 = [MEMORY[0x1E69DC888] lightGrayColor];
+    [(_UIBatteryView *)v3 setPinColor:lightGrayColor2];
 
-    v7 = [MEMORY[0x1E69DC888] systemBlackColor];
-    [(_UIBatteryView *)v3 setBoltColor:v7];
+    systemBlackColor = [MEMORY[0x1E69DC888] systemBlackColor];
+    [(_UIBatteryView *)v3 setBoltColor:systemBlackColor];
 
-    v8 = [(HPCUIBatteryIconView *)v3 traitCollection];
-    v9 = [v8 userInterfaceStyle];
+    traitCollection = [(HPCUIBatteryIconView *)v3 traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v9 == 2)
+    if (userInterfaceStyle == 2)
     {
-      v10 = [MEMORY[0x1E69DC888] whiteColor];
-      [(_UIBatteryView *)v3 setBoltColor:v10];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [(_UIBatteryView *)v3 setBoltColor:whiteColor];
     }
   }
 
   return v3;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = HPCUIBatteryIconView;
-  [(HPCUIBatteryIconView *)&v6 traitCollectionDidChange:a3];
-  v4 = [(HPCUIBatteryIconView *)self traitCollection];
-  if ([v4 userInterfaceStyle] == 2)
+  [(HPCUIBatteryIconView *)&v6 traitCollectionDidChange:change];
+  traitCollection = [(HPCUIBatteryIconView *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] == 2)
   {
     [MEMORY[0x1E69DC888] whiteColor];
   }
@@ -59,12 +59,12 @@
   [(_UIBatteryView *)self setBoltColor:v5];
 }
 
-- (void)setIsCharging:(BOOL)a3
+- (void)setIsCharging:(BOOL)charging
 {
-  v4 = a3;
+  chargingCopy = charging;
   [(_UIBatteryView *)self setShowsInlineChargingIndicator:?];
 
-  [(_UIBatteryView *)self setChargingState:v4];
+  [(_UIBatteryView *)self setChargingState:chargingCopy];
 }
 
 @end

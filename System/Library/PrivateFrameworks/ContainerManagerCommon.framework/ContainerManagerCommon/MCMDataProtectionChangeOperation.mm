@@ -1,18 +1,18 @@
 @interface MCMDataProtectionChangeOperation
-+ (BOOL)deleteUpdateFileWithContainerIdentity:(id)a3 error:(id *)a4;
-+ (id)_readAndValidateDataProtectionUpdateAtURL:(id)a3 userIdentityCache:(id)a4 error:(id *)a5;
-+ (id)dataProtectionChangeOperationAtURL:(id)a3 queue:(id)a4 error:(id *)a5;
-+ (id)urlForProtectionOperationWithContainerIdentity:(id)a3;
-- (BOOL)_deleteUpdateFileWithError:(id *)a3;
-- (BOOL)_onQueue_deleteUpdateFileWithError:(id *)a3;
++ (BOOL)deleteUpdateFileWithContainerIdentity:(id)identity error:(id *)error;
++ (id)_readAndValidateDataProtectionUpdateAtURL:(id)l userIdentityCache:(id)cache error:(id *)error;
++ (id)dataProtectionChangeOperationAtURL:(id)l queue:(id)queue error:(id *)error;
++ (id)urlForProtectionOperationWithContainerIdentity:(id)identity;
+- (BOOL)_deleteUpdateFileWithError:(id *)error;
+- (BOOL)_onQueue_deleteUpdateFileWithError:(id *)error;
 - (BOOL)_onQueue_stillMostCurrentUpdate;
-- (BOOL)_onQueue_writeToDiskWithError:(id *)a3;
-- (BOOL)_runChangeOperationNeedToRetry:(BOOL *)a3 error:(id *)a4;
+- (BOOL)_onQueue_writeToDiskWithError:(id *)error;
+- (BOOL)_runChangeOperationNeedToRetry:(BOOL *)retry error:(id *)error;
 - (BOOL)_stillMostCurrentUpdate;
 - (BOOL)retried;
 - (BOOL)retryIfLocked;
-- (BOOL)writeToDiskWithError:(id *)a3;
-- (MCMDataProtectionChangeOperation)initWithContainerMetadata:(id)a3 newClass:(int)a4 retryingIfLocked:(BOOL)a5 changeType:(unint64_t)a6 internalChangeID:(id)a7 queue:(id)a8 userIdentityCache:(id)a9;
+- (BOOL)writeToDiskWithError:(id *)error;
+- (MCMDataProtectionChangeOperation)initWithContainerMetadata:(id)metadata newClass:(int)class retryingIfLocked:(BOOL)locked changeType:(unint64_t)type internalChangeID:(id)d queue:(id)queue userIdentityCache:(id)cache;
 - (MCMMetadata)dataContainerMetadata;
 - (MCMUserIdentityCache)userIdentityCache;
 - (NSUUID)internalChangeID;
@@ -22,14 +22,14 @@
 - (int)newDataProtectionClass;
 - (unint64_t)changeType;
 - (void)performChangeOperation;
-- (void)setChangeType:(unint64_t)a3;
-- (void)setCompletionBlock:(id)a3;
-- (void)setDataContainerMetadata:(id)a3;
-- (void)setInternalChangeID:(id)a3;
-- (void)setNewDataProtectionClass:(int)a3;
-- (void)setRetried:(BOOL)a3;
-- (void)setRetryIfLocked:(BOOL)a3;
-- (void)setRetryStartBlock:(id)a3;
+- (void)setChangeType:(unint64_t)type;
+- (void)setCompletionBlock:(id)block;
+- (void)setDataContainerMetadata:(id)metadata;
+- (void)setInternalChangeID:(id)d;
+- (void)setNewDataProtectionClass:(int)class;
+- (void)setRetried:(BOOL)retried;
+- (void)setRetryIfLocked:(BOOL)locked;
+- (void)setRetryStartBlock:(id)block;
 @end
 
 @implementation MCMDataProtectionChangeOperation
@@ -50,13 +50,13 @@
   return result;
 }
 
-- (void)setInternalChangeID:(id)a3
+- (void)setInternalChangeID:(id)d
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
   p_internalChangeID = &self->_internalChangeID;
 
-  objc_storeStrong(p_internalChangeID, a3);
+  objc_storeStrong(p_internalChangeID, d);
 }
 
 - (NSUUID)internalChangeID
@@ -67,10 +67,10 @@
   return result;
 }
 
-- (void)setRetried:(BOOL)a3
+- (void)setRetried:(BOOL)retried
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_retried = a3;
+  self->_retried = retried;
   v3 = *MEMORY[0x1E69E9840];
 }
 
@@ -82,12 +82,12 @@
   return result;
 }
 
-- (void)setCompletionBlock:(id)a3
+- (void)setCompletionBlock:(id)block
 {
   v4 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
 
-  objc_setProperty_nonatomic_copy(self, a2, a3, 40);
+  objc_setProperty_nonatomic_copy(self, a2, block, 40);
 }
 
 - (id)completionBlock
@@ -98,12 +98,12 @@
   return result;
 }
 
-- (void)setRetryStartBlock:(id)a3
+- (void)setRetryStartBlock:(id)block
 {
   v4 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
 
-  objc_setProperty_nonatomic_copy(self, a2, a3, 32);
+  objc_setProperty_nonatomic_copy(self, a2, block, 32);
 }
 
 - (id)retryStartBlock
@@ -114,10 +114,10 @@
   return result;
 }
 
-- (void)setRetryIfLocked:(BOOL)a3
+- (void)setRetryIfLocked:(BOOL)locked
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_retryIfLocked = a3;
+  self->_retryIfLocked = locked;
   v3 = *MEMORY[0x1E69E9840];
 }
 
@@ -129,10 +129,10 @@
   return result;
 }
 
-- (void)setChangeType:(unint64_t)a3
+- (void)setChangeType:(unint64_t)type
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_changeType = a3;
+  self->_changeType = type;
   v3 = *MEMORY[0x1E69E9840];
 }
 
@@ -144,10 +144,10 @@
   return result;
 }
 
-- (void)setNewDataProtectionClass:(int)a3
+- (void)setNewDataProtectionClass:(int)class
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_newDataProtectionClass = a3;
+  self->_newDataProtectionClass = class;
   v3 = *MEMORY[0x1E69E9840];
 }
 
@@ -159,13 +159,13 @@
   return result;
 }
 
-- (void)setDataContainerMetadata:(id)a3
+- (void)setDataContainerMetadata:(id)metadata
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
   p_dataContainerMetadata = &self->_dataContainerMetadata;
 
-  objc_storeStrong(p_dataContainerMetadata, a3);
+  objc_storeStrong(p_dataContainerMetadata, metadata);
 }
 
 - (MCMMetadata)dataContainerMetadata
@@ -189,21 +189,21 @@
     v5 = container_log_handle_for_category();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v19 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
-      v20 = [v19 userIdentity];
-      v21 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
-      v22 = [v21 identifier];
-      v23 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
-      v24 = [v23 containerClass];
-      v25 = [(MCMDataProtectionChangeOperation *)self newDataProtectionClass];
+      dataContainerMetadata = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
+      userIdentity = [dataContainerMetadata userIdentity];
+      dataContainerMetadata2 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
+      identifier = [dataContainerMetadata2 identifier];
+      dataContainerMetadata3 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
+      containerClass = [dataContainerMetadata3 containerClass];
+      newDataProtectionClass = [(MCMDataProtectionChangeOperation *)self newDataProtectionClass];
       *block = 138413314;
-      *&block[4] = v20;
+      *&block[4] = userIdentity;
       *&block[12] = 2112;
-      *&block[14] = v22;
+      *&block[14] = identifier;
       *&block[22] = 2048;
-      *&block[24] = v24;
+      *&block[24] = containerClass;
       *&block[32] = 1024;
-      *&block[34] = v25;
+      *&block[34] = newDataProtectionClass;
       *&block[38] = 2112;
       v52 = v4;
       _os_log_error_impl(&dword_1DF2C3000, v5, OS_LOG_TYPE_ERROR, "Operation to update protection classes for user: %@, id: %@, containerClass: %llu to class %d failed with error %@", block, 0x30u);
@@ -217,21 +217,21 @@
       v6 = container_log_handle_for_category();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
-        v33 = [(MCMDataProtectionChangeOperation *)self newDataProtectionClass];
-        v34 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
-        v35 = [v34 userIdentity];
-        v36 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
-        v37 = [v36 identifier];
-        v38 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
-        v39 = [v38 containerClass];
+        newDataProtectionClass2 = [(MCMDataProtectionChangeOperation *)self newDataProtectionClass];
+        dataContainerMetadata4 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
+        userIdentity2 = [dataContainerMetadata4 userIdentity];
+        dataContainerMetadata5 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
+        identifier2 = [dataContainerMetadata5 identifier];
+        dataContainerMetadata6 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
+        containerClass2 = [dataContainerMetadata6 containerClass];
         *block = 67109890;
-        *&block[4] = v33;
+        *&block[4] = newDataProtectionClass2;
         *&block[8] = 2112;
-        *&block[10] = v35;
+        *&block[10] = userIdentity2;
         *&block[18] = 2112;
-        *&block[20] = v37;
+        *&block[20] = identifier2;
         *&block[28] = 2048;
-        *&block[30] = v39;
+        *&block[30] = containerClass2;
         _os_log_debug_impl(&dword_1DF2C3000, v6, OS_LOG_TYPE_DEBUG, "Retrying container protection update to %d on next unlock for user: %@, id: %@, containerClass: %llu", block, 0x26u);
       }
 
@@ -261,21 +261,21 @@
       v12 = container_log_handle_for_category();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v40 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
-        v41 = [v40 userIdentity];
-        v42 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
-        v43 = [v42 identifier];
-        v44 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
-        v45 = [v44 containerClass];
-        v46 = [(MCMDataProtectionChangeOperation *)self newDataProtectionClass];
+        dataContainerMetadata7 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
+        userIdentity3 = [dataContainerMetadata7 userIdentity];
+        dataContainerMetadata8 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
+        identifier3 = [dataContainerMetadata8 identifier];
+        dataContainerMetadata9 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
+        containerClass3 = [dataContainerMetadata9 containerClass];
+        newDataProtectionClass3 = [(MCMDataProtectionChangeOperation *)self newDataProtectionClass];
         *block = 138413058;
-        *&block[4] = v41;
+        *&block[4] = userIdentity3;
         *&block[12] = 2112;
-        *&block[14] = v43;
+        *&block[14] = identifier3;
         *&block[22] = 2048;
-        *&block[24] = v45;
+        *&block[24] = containerClass3;
         *&block[32] = 1024;
-        *&block[34] = v46;
+        *&block[34] = newDataProtectionClass3;
         _os_log_error_impl(&dword_1DF2C3000, v12, OS_LOG_TYPE_ERROR, "Tried to update user: %@, id: %@, containerClass: %llu to protection class %d, but was locked and didn't retry", block, 0x26u);
       }
     }
@@ -290,31 +290,31 @@
     v15 = container_log_handle_for_category();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v26 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
-      v27 = [v26 userIdentity];
-      v28 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
-      v29 = [v28 identifier];
-      v30 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
-      v31 = [v30 containerClass];
-      v32 = [(MCMDataProtectionChangeOperation *)self newDataProtectionClass];
+      dataContainerMetadata10 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
+      userIdentity4 = [dataContainerMetadata10 userIdentity];
+      dataContainerMetadata11 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
+      identifier4 = [dataContainerMetadata11 identifier];
+      dataContainerMetadata12 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
+      containerClass4 = [dataContainerMetadata12 containerClass];
+      newDataProtectionClass4 = [(MCMDataProtectionChangeOperation *)self newDataProtectionClass];
       *block = 138413058;
-      *&block[4] = v27;
+      *&block[4] = userIdentity4;
       *&block[12] = 2112;
-      *&block[14] = v29;
+      *&block[14] = identifier4;
       *&block[22] = 2048;
-      *&block[24] = v31;
+      *&block[24] = containerClass4;
       *&block[32] = 1024;
-      *&block[34] = v32;
+      *&block[34] = newDataProtectionClass4;
       _os_log_error_impl(&dword_1DF2C3000, v15, OS_LOG_TYPE_ERROR, "Failed to delete update file for user: %@, id: %@, containerClass: %llu, protection class %d", block, 0x26u);
     }
   }
 
-  v16 = [(MCMDataProtectionChangeOperation *)self completionBlock];
+  completionBlock = [(MCMDataProtectionChangeOperation *)self completionBlock];
 
-  if (v16)
+  if (completionBlock)
   {
-    v17 = [(MCMDataProtectionChangeOperation *)self completionBlock];
-    (v17)[2](v17, v14);
+    completionBlock2 = [(MCMDataProtectionChangeOperation *)self completionBlock];
+    (completionBlock2)[2](completionBlock2, v14);
   }
 
   v4 = v14;
@@ -344,7 +344,7 @@ uint64_t __58__MCMDataProtectionChangeOperation_performChangeOperation__block_in
   return [v4 performChangeOperation];
 }
 
-- (BOOL)_runChangeOperationNeedToRetry:(BOOL *)a3 error:(id *)a4
+- (BOOL)_runChangeOperationNeedToRetry:(BOOL *)retry error:(id *)error
 {
   v96 = *MEMORY[0x1E69E9840];
   v72 = 0;
@@ -374,19 +374,19 @@ uint64_t __58__MCMDataProtectionChangeOperation_performChangeOperation__block_in
     v39 = container_log_handle_for_category();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
     {
-      v40 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
-      v41 = [v40 userIdentity];
-      v42 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
-      v43 = [v42 identifier];
-      v44 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
-      v45 = [v44 containerClass];
+      dataContainerMetadata = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
+      userIdentity = [dataContainerMetadata userIdentity];
+      dataContainerMetadata2 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
+      identifier = [dataContainerMetadata2 identifier];
+      dataContainerMetadata3 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
+      containerClass = [dataContainerMetadata3 containerClass];
       v46 = v73[5];
       *buf = 138413058;
-      v89 = v41;
+      v89 = userIdentity;
       v90 = 2112;
-      v91 = v43;
+      v91 = identifier;
       v92 = 2048;
-      v93 = v45;
+      v93 = containerClass;
       v94 = 2112;
       v95 = v46;
       _os_log_error_impl(&dword_1DF2C3000, v39, OS_LOG_TYPE_ERROR, "Failed to lookup container to set data protection for user identity: %@, identifier: %@, Class: %llu; %@", buf, 0x2Au);
@@ -398,19 +398,19 @@ LABEL_39:
 LABEL_40:
 
     v38 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = v73[5];
+      *error = v73[5];
     }
 
     v62 = v52;
     goto LABEL_43;
   }
 
-  v6 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
-  v7 = [v6 containerPath];
-  v8 = [v67[5] containerPath];
-  v9 = [v7 isEqual:v8];
+  dataContainerMetadata4 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
+  containerPath = [dataContainerMetadata4 containerPath];
+  containerPath2 = [v67[5] containerPath];
+  v9 = [containerPath isEqual:containerPath2];
 
   if ((v9 & 1) == 0)
   {
@@ -449,14 +449,14 @@ LABEL_48:
   }
 
   v10 = containermanager_copy_global_configuration();
-  v11 = [v10 appUserDataItemNames];
+  appUserDataItemNames = [v10 appUserDataItemNames];
 
-  v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v11, "count")}];
+  v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(appUserDataItemNames, "count")}];
   v86 = 0u;
   v87 = 0u;
   v84 = 0u;
   v85 = 0u;
-  obj = v11;
+  obj = appUserDataItemNames;
   v13 = [obj countByEnumeratingWithState:&v84 objects:v83 count:16];
   if (v13)
   {
@@ -471,10 +471,10 @@ LABEL_48:
         }
 
         v16 = *(*(&v84 + 1) + 8 * i);
-        v17 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
-        v18 = [v17 containerPath];
-        v19 = [v18 containerDataURL];
-        v20 = [v19 URLByAppendingPathComponent:v16 isDirectory:1];
+        dataContainerMetadata5 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
+        containerPath3 = [dataContainerMetadata5 containerPath];
+        containerDataURL = [containerPath3 containerDataURL];
+        v20 = [containerDataURL URLByAppendingPathComponent:v16 isDirectory:1];
 
         if (v20)
         {
@@ -502,7 +502,7 @@ LABEL_48:
   v22 = +[MCMTestLocks sharedInstance];
   [v22 waitOnLock:10];
 
-  v61 = [(MCMDataProtectionChangeOperation *)self changeType];
+  changeType = [(MCMDataProtectionChangeOperation *)self changeType];
   v81 = 0u;
   v82 = 0u;
   v79 = 0u;
@@ -528,15 +528,15 @@ LABEL_48:
 
       v28 = *(*(&v79 + 1) + 8 * j);
       v29 = +[MCMFileManager defaultManager];
-      v30 = [(MCMDataProtectionChangeOperation *)self newDataProtectionClass];
+      newDataProtectionClass = [(MCMDataProtectionChangeOperation *)self newDataProtectionClass];
       v64 = 0;
-      v31 = [v29 setDataProtectionAtURL:v28 toDataProtectionClass:v30 directoriesOnly:(v61 & 2) == 0 recursive:1 error:&v64];
+      v31 = [v29 setDataProtectionAtURL:v28 toDataProtectionClass:newDataProtectionClass directoriesOnly:(changeType & 2) == 0 recursive:1 error:&v64];
       v32 = v64;
 
       if ((v31 & 1) == 0)
       {
-        v33 = [v32 domain];
-        if ([v33 isEqualToString:v26])
+        domain = [v32 domain];
+        if ([domain isEqualToString:v26])
         {
           v34 = [v32 code] == 1;
 
@@ -546,7 +546,7 @@ LABEL_48:
             v58 = v73[5];
             v73[5] = v57;
 
-            *a3 = 1;
+            *retry = 1;
             goto LABEL_46;
           }
         }
@@ -555,15 +555,15 @@ LABEL_48:
         {
         }
 
-        v35 = [v32 domain];
-        if ([v35 isEqualToString:v26] && objc_msgSend(v32, "code") == 2)
+        domain2 = [v32 domain];
+        if ([domain2 isEqualToString:v26] && objc_msgSend(v32, "code") == 2)
         {
         }
 
         else
         {
-          v36 = [v32 domain];
-          if (([v36 isEqualToString:v26] & 1) == 0)
+          domain3 = [v32 domain];
+          if (([domain3 isEqualToString:v26] & 1) == 0)
           {
 
 LABEL_45:
@@ -634,27 +634,27 @@ void __73__MCMDataProtectionChangeOperation__runChangeOperationNeedToRetry_error
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_deleteUpdateFileWithError:(id *)a3
+- (BOOL)_deleteUpdateFileWithError:(id *)error
 {
   v13 = *MEMORY[0x1E69E9840];
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [(MCMDataProtectionChangeOperation *)self queue];
+  queue = [(MCMDataProtectionChangeOperation *)self queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __63__MCMDataProtectionChangeOperation__deleteUpdateFileWithError___block_invoke;
   v8[3] = &unk_1E86B0708;
   v8[4] = self;
   v8[5] = &v9;
-  v8[6] = a3;
-  dispatch_sync(v5, v8);
+  v8[6] = error;
+  dispatch_sync(queue, v8);
 
-  LOBYTE(a3) = *(v10 + 24);
+  LOBYTE(error) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
   v6 = *MEMORY[0x1E69E9840];
-  return a3;
+  return error;
 }
 
 uint64_t __63__MCMDataProtectionChangeOperation__deleteUpdateFileWithError___block_invoke(uint64_t a1)
@@ -666,7 +666,7 @@ uint64_t __63__MCMDataProtectionChangeOperation__deleteUpdateFileWithError___blo
   return result;
 }
 
-- (BOOL)_onQueue_deleteUpdateFileWithError:(id *)a3
+- (BOOL)_onQueue_deleteUpdateFileWithError:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
   if (![(MCMDataProtectionChangeOperation *)self _onQueue_stillMostCurrentUpdate])
@@ -674,17 +674,17 @@ uint64_t __63__MCMDataProtectionChangeOperation__deleteUpdateFileWithError___blo
     v11 = container_log_handle_for_category();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v14 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
-      v15 = [v14 userIdentity];
-      v16 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
-      v17 = [v16 identifier];
-      v18 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
+      dataContainerMetadata = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
+      userIdentity = [dataContainerMetadata userIdentity];
+      dataContainerMetadata2 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
+      identifier = [dataContainerMetadata2 identifier];
+      dataContainerMetadata3 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
       *buf = 138412802;
-      v21 = v15;
+      v21 = userIdentity;
       v22 = 2112;
-      v23 = v17;
+      v23 = identifier;
       v24 = 2048;
-      v25 = [v18 containerClass];
+      containerClass = [dataContainerMetadata3 containerClass];
       _os_log_debug_impl(&dword_1DF2C3000, v11, OS_LOG_TYPE_DEBUG, "Nothing to delete because there is a newer update for user: %@, id: %@, containerClass: %llu", buf, 0x20u);
     }
 
@@ -692,10 +692,10 @@ uint64_t __63__MCMDataProtectionChangeOperation__deleteUpdateFileWithError___blo
     goto LABEL_8;
   }
 
-  v5 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
-  v6 = [v5 containerIdentity];
+  dataContainerMetadata4 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
+  containerIdentity = [dataContainerMetadata4 containerIdentity];
   v19 = 0;
-  v7 = [MCMDataProtectionChangeOperation deleteUpdateFileWithContainerIdentity:v6 error:&v19];
+  v7 = [MCMDataProtectionChangeOperation deleteUpdateFileWithContainerIdentity:containerIdentity error:&v19];
   v8 = v19;
 
   if (v7)
@@ -705,11 +705,11 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (a3)
+  if (error)
   {
     v9 = v8;
     v10 = 0;
-    *a3 = v8;
+    *error = v8;
   }
 
   else
@@ -725,25 +725,25 @@ LABEL_9:
 
 - (BOOL)_stillMostCurrentUpdate
 {
-  v2 = self;
+  selfCopy = self;
   v11 = *MEMORY[0x1E69E9840];
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(MCMDataProtectionChangeOperation *)self queue];
+  queue = [(MCMDataProtectionChangeOperation *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__MCMDataProtectionChangeOperation__stillMostCurrentUpdate__block_invoke;
   block[3] = &unk_1E86B07A8;
-  block[4] = v2;
+  block[4] = selfCopy;
   block[5] = &v7;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 
-  LOBYTE(v2) = *(v8 + 24);
+  LOBYTE(selfCopy) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
   v4 = *MEMORY[0x1E69E9840];
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __59__MCMDataProtectionChangeOperation__stillMostCurrentUpdate__block_invoke(uint64_t a1)
@@ -758,9 +758,9 @@ uint64_t __59__MCMDataProtectionChangeOperation__stillMostCurrentUpdate__block_i
 - (BOOL)_onQueue_stillMostCurrentUpdate
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
-  v4 = [v3 containerIdentity];
-  v5 = [MCMDataProtectionChangeOperation urlForProtectionOperationWithContainerIdentity:v4];
+  dataContainerMetadata = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
+  containerIdentity = [dataContainerMetadata containerIdentity];
+  v5 = [MCMDataProtectionChangeOperation urlForProtectionOperationWithContainerIdentity:containerIdentity];
 
   if (!v5)
   {
@@ -774,9 +774,9 @@ uint64_t __59__MCMDataProtectionChangeOperation__stillMostCurrentUpdate__block_i
     goto LABEL_9;
   }
 
-  v6 = [(MCMDataProtectionChangeOperation *)self userIdentityCache];
+  userIdentityCache = [(MCMDataProtectionChangeOperation *)self userIdentityCache];
   v18 = 0;
-  v7 = [MCMDataProtectionChangeOperation _readAndValidateDataProtectionUpdateAtURL:v5 userIdentityCache:v6 error:&v18];
+  v7 = [MCMDataProtectionChangeOperation _readAndValidateDataProtectionUpdateAtURL:v5 userIdentityCache:userIdentityCache error:&v18];
   v8 = v18;
 
   if (!v7)
@@ -784,9 +784,9 @@ uint64_t __59__MCMDataProtectionChangeOperation__stillMostCurrentUpdate__block_i
     v14 = container_log_handle_for_category();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v5 path];
+      path = [v5 path];
       *buf = 138412546;
-      v20 = v17;
+      v20 = path;
       v21 = 2112;
       v22 = v8;
       _os_log_error_impl(&dword_1DF2C3000, v14, OS_LOG_TYPE_ERROR, "Failed to read data protection update from %@; error = %@", buf, 0x16u);
@@ -801,35 +801,35 @@ LABEL_9:
   v10 = [v7 objectForKeyedSubscript:@"MCMDataOperationInternalID"];
   v11 = [v9 initWithUUIDString:v10];
 
-  v12 = [(MCMDataProtectionChangeOperation *)self internalChangeID];
-  v13 = [v12 isEqual:v11];
+  internalChangeID = [(MCMDataProtectionChangeOperation *)self internalChangeID];
+  v13 = [internalChangeID isEqual:v11];
 
 LABEL_10:
   v15 = *MEMORY[0x1E69E9840];
   return v13;
 }
 
-- (BOOL)writeToDiskWithError:(id *)a3
+- (BOOL)writeToDiskWithError:(id *)error
 {
   v13 = *MEMORY[0x1E69E9840];
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [(MCMDataProtectionChangeOperation *)self queue];
+  queue = [(MCMDataProtectionChangeOperation *)self queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __57__MCMDataProtectionChangeOperation_writeToDiskWithError___block_invoke;
   v8[3] = &unk_1E86B0708;
   v8[4] = self;
   v8[5] = &v9;
-  v8[6] = a3;
-  dispatch_sync(v5, v8);
+  v8[6] = error;
+  dispatch_sync(queue, v8);
 
-  LOBYTE(a3) = *(v10 + 24);
+  LOBYTE(error) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
   v6 = *MEMORY[0x1E69E9840];
-  return a3;
+  return error;
 }
 
 uint64_t __57__MCMDataProtectionChangeOperation_writeToDiskWithError___block_invoke(uint64_t a1)
@@ -841,21 +841,21 @@ uint64_t __57__MCMDataProtectionChangeOperation_writeToDiskWithError___block_inv
   return result;
 }
 
-- (BOOL)_onQueue_writeToDiskWithError:(id *)a3
+- (BOOL)_onQueue_writeToDiskWithError:(id *)error
 {
   v50 = *MEMORY[0x1E69E9840];
-  v5 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
-  if (!v5 || (v6 = v5, v7 = [(MCMDataProtectionChangeOperation *)self changeType], v6, !v7))
+  dataContainerMetadata = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
+  if (!dataContainerMetadata || (v6 = dataContainerMetadata, v7 = [(MCMDataProtectionChangeOperation *)self changeType], v6, !v7))
   {
     v30 = [[MCMError alloc] initWithErrorType:38 category:3];
     v32 = container_log_handle_for_category();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
-      v38 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
+      dataContainerMetadata2 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
       *buf = 138412546;
-      v47 = v38;
+      v47 = dataContainerMetadata2;
       v48 = 2048;
-      v49 = [(MCMDataProtectionChangeOperation *)self changeType];
+      changeType = [(MCMDataProtectionChangeOperation *)self changeType];
       _os_log_error_impl(&dword_1DF2C3000, v32, OS_LOG_TYPE_ERROR, "Invalid Update Info: metadata: %@, changeType: %lu", buf, 0x16u);
     }
 
@@ -865,15 +865,15 @@ uint64_t __57__MCMDataProtectionChangeOperation_writeToDiskWithError___block_inv
     goto LABEL_19;
   }
 
-  v39 = a3;
+  errorCopy = error;
   v44[0] = @"MCMDataOperationIdentifier";
-  v41 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
-  v40 = [v41 identifier];
-  v45[0] = v40;
+  dataContainerMetadata3 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
+  identifier = [dataContainerMetadata3 identifier];
+  v45[0] = identifier;
   v44[1] = @"MCMDataOperationContainerClass";
   v8 = MEMORY[0x1E696AD98];
-  v9 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
-  v10 = [v8 numberWithUnsignedLongLong:{objc_msgSend(v9, "containerClass")}];
+  dataContainerMetadata4 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
+  v10 = [v8 numberWithUnsignedLongLong:{objc_msgSend(dataContainerMetadata4, "containerClass")}];
   v45[1] = v10;
   v44[2] = @"MCMDataOperationProtectionClass";
   v11 = [MEMORY[0x1E696AD98] numberWithInt:{-[MCMDataProtectionChangeOperation newDataProtectionClass](self, "newDataProtectionClass")}];
@@ -885,26 +885,26 @@ uint64_t __57__MCMDataProtectionChangeOperation_writeToDiskWithError___block_inv
   v13 = [MEMORY[0x1E696AD98] numberWithBool:{-[MCMDataProtectionChangeOperation retryIfLocked](self, "retryIfLocked")}];
   v45[4] = v13;
   v44[5] = @"MCMDataOperationInternalID";
-  v14 = [(MCMDataProtectionChangeOperation *)self internalChangeID];
-  v15 = [v14 UUIDString];
-  v45[5] = v15;
+  internalChangeID = [(MCMDataProtectionChangeOperation *)self internalChangeID];
+  uUIDString = [internalChangeID UUIDString];
+  v45[5] = uUIDString;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:v44 count:6];
   v17 = [v16 mutableCopy];
 
-  v18 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
-  LODWORD(v14) = +[MCMUserIdentity isUserIdentityRequiredForContainerClass:](MCMUserIdentity, "isUserIdentityRequiredForContainerClass:", [v18 containerClass]);
+  dataContainerMetadata5 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
+  LODWORD(internalChangeID) = +[MCMUserIdentity isUserIdentityRequiredForContainerClass:](MCMUserIdentity, "isUserIdentityRequiredForContainerClass:", [dataContainerMetadata5 containerClass]);
 
-  if (v14)
+  if (internalChangeID)
   {
-    v19 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
-    v20 = [v19 userIdentity];
-    v21 = [v20 plist];
-    [v17 setObject:v21 forKeyedSubscript:@"MCMDataOperationUserIdentity"];
+    dataContainerMetadata6 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
+    userIdentity = [dataContainerMetadata6 userIdentity];
+    plist = [userIdentity plist];
+    [v17 setObject:plist forKeyedSubscript:@"MCMDataOperationUserIdentity"];
   }
 
-  v22 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
-  v23 = [v22 containerIdentity];
-  v24 = [MCMDataProtectionChangeOperation urlForProtectionOperationWithContainerIdentity:v23];
+  dataContainerMetadata7 = [(MCMDataProtectionChangeOperation *)self dataContainerMetadata];
+  containerIdentity = [dataContainerMetadata7 containerIdentity];
+  v24 = [MCMDataProtectionChangeOperation urlForProtectionOperationWithContainerIdentity:containerIdentity];
 
   if (!v24)
   {
@@ -948,9 +948,9 @@ uint64_t __57__MCMDataProtectionChangeOperation_writeToDiskWithError___block_inv
       goto LABEL_18;
     }
 
-    v33 = [v24 path];
+    path = [v24 path];
     *buf = 138412290;
-    v47 = v33;
+    v47 = path;
     v34 = "Failed to write data protection update dictionary to URL %@";
     goto LABEL_24;
   }
@@ -959,23 +959,23 @@ uint64_t __57__MCMDataProtectionChangeOperation_writeToDiskWithError___block_inv
   v32 = container_log_handle_for_category();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
   {
-    v33 = [v24 path];
+    path = [v24 path];
     *buf = 138412290;
-    v47 = v33;
+    v47 = path;
     v34 = "Failed to remove pending data protection file at %@";
 LABEL_24:
     _os_log_error_impl(&dword_1DF2C3000, v32, OS_LOG_TYPE_ERROR, v34, buf, 0xCu);
   }
 
 LABEL_18:
-  a3 = v39;
+  error = errorCopy;
 LABEL_19:
 
-  if (a3)
+  if (error)
   {
     v35 = v30;
     v31 = 0;
-    *a3 = v30;
+    *error = v30;
   }
 
   else
@@ -989,31 +989,31 @@ LABEL_22:
   return v31;
 }
 
-- (MCMDataProtectionChangeOperation)initWithContainerMetadata:(id)a3 newClass:(int)a4 retryingIfLocked:(BOOL)a5 changeType:(unint64_t)a6 internalChangeID:(id)a7 queue:(id)a8 userIdentityCache:(id)a9
+- (MCMDataProtectionChangeOperation)initWithContainerMetadata:(id)metadata newClass:(int)class retryingIfLocked:(BOOL)locked changeType:(unint64_t)type internalChangeID:(id)d queue:(id)queue userIdentityCache:(id)cache
 {
   v27 = *MEMORY[0x1E69E9840];
-  v25 = a3;
-  v24 = a7;
-  v16 = a8;
-  v17 = a9;
+  metadataCopy = metadata;
+  dCopy = d;
+  queueCopy = queue;
+  cacheCopy = cache;
   v26.receiver = self;
   v26.super_class = MCMDataProtectionChangeOperation;
   v18 = [(MCMDataProtectionChangeOperation *)&v26 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_dataContainerMetadata, a3);
-    v19->_newDataProtectionClass = a4;
-    v19->_retryIfLocked = a5;
-    v19->_changeType = a6;
-    objc_storeStrong(&v19->_internalChangeID, a7);
-    objc_storeStrong(&v19->_queue, a8);
-    objc_storeStrong(&v19->_userIdentityCache, a9);
+    objc_storeStrong(&v18->_dataContainerMetadata, metadata);
+    v19->_newDataProtectionClass = class;
+    v19->_retryIfLocked = locked;
+    v19->_changeType = type;
+    objc_storeStrong(&v19->_internalChangeID, d);
+    objc_storeStrong(&v19->_queue, queue);
+    objc_storeStrong(&v19->_userIdentityCache, cache);
     if (!v19->_internalChangeID)
     {
-      v20 = [MEMORY[0x1E696AFB0] UUID];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
       internalChangeID = v19->_internalChangeID;
-      v19->_internalChangeID = v20;
+      v19->_internalChangeID = uUID;
     }
   }
 
@@ -1021,10 +1021,10 @@ LABEL_22:
   return v19;
 }
 
-+ (BOOL)deleteUpdateFileWithContainerIdentity:(id)a3 error:(id *)a4
++ (BOOL)deleteUpdateFileWithContainerIdentity:(id)identity error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [MCMDataProtectionChangeOperation urlForProtectionOperationWithContainerIdentity:a3];
+  v5 = [MCMDataProtectionChangeOperation urlForProtectionOperationWithContainerIdentity:identity];
   if (v5)
   {
     v6 = +[MCMFileManager defaultManager];
@@ -1043,9 +1043,9 @@ LABEL_22:
     v11 = container_log_handle_for_category();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v15 = [v5 path];
+      path = [v5 path];
       *buf = 138412546;
-      v18 = v15;
+      v18 = path;
       v19 = 2112;
       v20 = v8;
       _os_log_error_impl(&dword_1DF2C3000, v11, OS_LOG_TYPE_ERROR, "Failed to remove data protection file at %@ : %@", buf, 0x16u);
@@ -1065,11 +1065,11 @@ LABEL_22:
     v8 = 0;
   }
 
-  if (a4)
+  if (error)
   {
     v12 = v9;
     v10 = 0;
-    *a4 = v9;
+    *error = v9;
   }
 
   else
@@ -1083,23 +1083,23 @@ LABEL_12:
   return v10;
 }
 
-+ (id)urlForProtectionOperationWithContainerIdentity:(id)a3
++ (id)urlForProtectionOperationWithContainerIdentity:(id)identity
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identityCopy = identity;
   v4 = containermanager_copy_global_configuration();
-  v5 = [v4 managedPathRegistry];
-  v6 = [v5 containermanagerPendingUpdates];
+  managedPathRegistry = [v4 managedPathRegistry];
+  containermanagerPendingUpdates = [managedPathRegistry containermanagerPendingUpdates];
 
-  v7 = [v6 url];
+  v7 = [containermanagerPendingUpdates url];
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [v3 identifier];
-  v10 = [v3 containerConfig];
-  v11 = [v10 containerClass];
-  v12 = [v3 userIdentity];
+  identifier = [identityCopy identifier];
+  containerConfig = [identityCopy containerConfig];
+  containerClass = [containerConfig containerClass];
+  userIdentity = [identityCopy userIdentity];
 
-  v13 = [v12 identifier];
-  v14 = [v8 stringWithFormat:@"%@-%llu-%@.plist", v9, v11, v13];
+  identifier2 = [userIdentity identifier];
+  v14 = [v8 stringWithFormat:@"%@-%llu-%@.plist", identifier, containerClass, identifier2];
   v15 = [v7 URLByAppendingPathComponent:v14 isDirectory:0];
 
   v16 = *MEMORY[0x1E69E9840];
@@ -1107,12 +1107,12 @@ LABEL_12:
   return v15;
 }
 
-+ (id)_readAndValidateDataProtectionUpdateAtURL:(id)a3 userIdentityCache:(id)a4 error:(id *)a5
++ (id)_readAndValidateDataProtectionUpdateAtURL:(id)l userIdentityCache:(id)cache error:(id *)error
 {
   v78 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  lCopy = l;
+  cacheCopy = cache;
+  if (!lCopy)
   {
     v14 = [[MCMError alloc] initWithErrorType:38];
     v15 = container_log_handle_for_category();
@@ -1125,16 +1125,16 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithContentsOfURL:v7];
+  v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithContentsOfURL:lCopy];
   if (!v9)
   {
     v14 = [[MCMError alloc] initWithErrorType:12];
     v15 = container_log_handle_for_category();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v59 = [v7 path];
+      path = [lCopy path];
       *buf = 138412290;
-      v73 = v59;
+      v73 = path;
       _os_log_error_impl(&dword_1DF2C3000, v15, OS_LOG_TYPE_ERROR, "Failed to read update info at URL %@", buf, 0xCu);
     }
 
@@ -1169,11 +1169,11 @@ LABEL_9:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       v65 = [v10 objectForKeyedSubscript:@"MCMDataOperationIdentifier"];
-      v66 = [v7 path];
+      path2 = [lCopy path];
       *buf = 138412546;
       v73 = v65;
       v74 = 2112;
-      v75 = v66;
+      v75 = path2;
       _os_log_error_impl(&dword_1DF2C3000, v22, OS_LOG_TYPE_ERROR, "Invalid update info Identifier: %@ at %@", buf, 0x16u);
     }
 
@@ -1196,18 +1196,18 @@ LABEL_9:
 
   if (v16)
   {
-    v23 = [v16 unsignedLongLongValue];
-    if ((v23 - 1) >= 0xE)
+    unsignedLongLongValue = [v16 unsignedLongLongValue];
+    if ((unsignedLongLongValue - 1) >= 0xE)
     {
       v14 = [[MCMError alloc] initWithErrorType:29];
       v24 = container_log_handle_for_category();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
-        v68 = [v7 path];
+        path3 = [lCopy path];
         *buf = 134218242;
-        v73 = v23;
+        v73 = unsignedLongLongValue;
         v74 = 2112;
-        v75 = v68;
+        v75 = path3;
         _os_log_error_impl(&dword_1DF2C3000, v24, OS_LOG_TYPE_ERROR, "Invalid update info container class: %ld at %@", buf, 0x16u);
       }
 
@@ -1222,10 +1222,10 @@ LABEL_71:
 
   else
   {
-    v23 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  if (![MCMUserIdentity isUserIdentityRequiredForContainerClass:v23])
+  if (![MCMUserIdentity isUserIdentityRequiredForContainerClass:unsignedLongLongValue])
   {
     v17 = 0;
     v18 = 0;
@@ -1268,11 +1268,11 @@ LABEL_71:
       if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
       {
         v54 = [v10 objectForKeyedSubscript:@"MCMDataOperationUserId"];
-        v55 = [v7 path];
+        path4 = [lCopy path];
         *buf = 138412546;
         v73 = v54;
         v74 = 2112;
-        v75 = v55;
+        v75 = path4;
         v56 = "Invalid update info user id: %@ at %@";
         v57 = v53;
         v58 = 22;
@@ -1286,7 +1286,7 @@ LABEL_70:
     }
 
     v52 = +[MCMPOSIXUser posixUserWithUID:](MCMPOSIXUser, "posixUserWithUID:", [v42 intValue]);
-    v17 = [v8 userIdentityForPersonalPersonaWithPOSIXUser:v52];
+    v17 = [cacheCopy userIdentityForPersonalPersonaWithPOSIXUser:v52];
 
     if (v17)
     {
@@ -1299,11 +1299,11 @@ LABEL_63:
     if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
     {
       v54 = [v10 objectForKeyedSubscript:@"MCMDataOperationUserIdentity"];
-      v55 = [v7 path];
+      path4 = [lCopy path];
       *buf = 138412802;
       v73 = v54;
       v74 = 2112;
-      v75 = v55;
+      v75 = path4;
       v76 = 2048;
       v77 = v71;
       v56 = "Invalid update info user identity: %@ at %@: %llu";
@@ -1318,7 +1318,7 @@ LABEL_80:
     goto LABEL_70;
   }
 
-  v17 = [MCMUserIdentity userIdentityWithPlist:v18 cache:v8 error:&v71];
+  v17 = [MCMUserIdentity userIdentityWithPlist:v18 cache:cacheCopy error:&v71];
   if (!v17)
   {
     goto LABEL_63;
@@ -1350,12 +1350,12 @@ LABEL_33:
     }
 
     v69 = [v10 objectForKeyedSubscript:@"MCMDataOperationProtectionClass"];
-    v34 = [v7 path];
+    path5 = [lCopy path];
     *buf = 138412546;
     v73 = v69;
     v74 = 2112;
-    v75 = v34;
-    v35 = v34;
+    v75 = path5;
+    v35 = path5;
     v36 = "Invalid update info protection class: %@ at %@";
 LABEL_67:
     _os_log_error_impl(&dword_1DF2C3000, v33, OS_LOG_TYPE_ERROR, v36, buf, 0x16u);
@@ -1386,12 +1386,12 @@ LABEL_67:
     }
 
     v69 = [v10 objectForKeyedSubscript:@"MCMDataOperationChangeType"];
-    v43 = [v7 path];
+    path6 = [lCopy path];
     *buf = 138412546;
     v73 = v69;
     v74 = 2112;
-    v75 = v43;
-    v35 = v43;
+    v75 = path6;
+    v35 = path6;
     v36 = "Invalid update info change type: %@ at %@";
     goto LABEL_67;
   }
@@ -1419,12 +1419,12 @@ LABEL_67:
     }
 
     v69 = [v10 objectForKeyedSubscript:@"MCMDataOperationRetryIfLocked"];
-    v47 = [v7 path];
+    path7 = [lCopy path];
     *buf = 138412546;
     v73 = v69;
     v74 = 2112;
-    v75 = v47;
-    v35 = v47;
+    v75 = path7;
+    v35 = path7;
     v36 = "Invalid update info retry: %@ at %@";
     goto LABEL_67;
   }
@@ -1449,12 +1449,12 @@ LABEL_67:
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
       v69 = [v10 objectForKeyedSubscript:@"MCMDataOperationInternalID"];
-      v60 = [v7 path];
+      path8 = [lCopy path];
       *buf = 138412546;
       v73 = v69;
       v74 = 2112;
-      v75 = v60;
-      v35 = v60;
+      v75 = path8;
+      v35 = path8;
       v36 = "Invalid update info UUID String: %@ at %@";
       goto LABEL_67;
     }
@@ -1477,17 +1477,17 @@ LABEL_68:
     v67 = container_log_handle_for_category();
     if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
     {
-      v70 = [v7 path];
+      path9 = [lCopy path];
       *buf = 138412546;
       v73 = v19;
       v74 = 2112;
-      v75 = v70;
+      v75 = path9;
       _os_log_error_impl(&dword_1DF2C3000, v67, OS_LOG_TYPE_ERROR, "Invalid update info UUID: %@ at %@", buf, 0x16u);
     }
 
 LABEL_72:
     v51 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_75;
     }
@@ -1497,7 +1497,7 @@ LABEL_72:
 
   v51 = [v10 copy];
   v14 = 0;
-  if (!a5)
+  if (!error)
   {
     goto LABEL_75;
   }
@@ -1506,7 +1506,7 @@ LABEL_73:
   if (!v51)
   {
     v61 = v14;
-    *a5 = v14;
+    *error = v14;
   }
 
 LABEL_75:
@@ -1516,27 +1516,27 @@ LABEL_75:
   return v51;
 }
 
-+ (id)dataProtectionChangeOperationAtURL:(id)a3 queue:(id)a4 error:(id *)a5
++ (id)dataProtectionChangeOperationAtURL:(id)l queue:(id)queue error:(id *)error
 {
   v85 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v73 = a4;
+  lCopy = l;
+  queueCopy = queue;
   v78 = 1;
   v9 = +[MCMUserIdentitySharedCache sharedInstance];
   v77 = 0;
-  v10 = [MCMDataProtectionChangeOperation _readAndValidateDataProtectionUpdateAtURL:v8 userIdentityCache:v9 error:&v77];
+  v10 = [MCMDataProtectionChangeOperation _readAndValidateDataProtectionUpdateAtURL:lCopy userIdentityCache:v9 error:&v77];
   v11 = v77;
-  v65 = a5;
-  v66 = v8;
+  errorCopy = error;
+  v66 = lCopy;
   v72 = v9;
   if (!v10)
   {
     v15 = container_log_handle_for_category();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v54 = [v8 path];
+      path = [lCopy path];
       *buf = 138412290;
-      *v80 = v54;
+      *v80 = path;
       _os_log_error_impl(&dword_1DF2C3000, v15, OS_LOG_TYPE_ERROR, "Failed to read data protection update at %@", buf, 0xCu);
     }
 
@@ -1560,7 +1560,7 @@ LABEL_7:
 
   v12 = [v10 objectForKeyedSubscript:@"MCMDataOperationUserIdentity"];
   v13 = v12;
-  v60 = a1;
+  selfCopy = self;
   if (v12)
   {
     v14 = v12;
@@ -1665,10 +1665,10 @@ LABEL_7:
     v17 = 0;
   }
 
-  v38 = [v17 unsignedLongLongValue];
+  unsignedLongLongValue = [v17 unsignedLongLongValue];
   v39 = containermanager_copy_global_configuration();
-  v40 = [v39 staticConfig];
-  v18 = [v40 configForContainerClass:v38];
+  staticConfig = [v39 staticConfig];
+  v18 = [staticConfig configForContainerClass:unsignedLongLongValue];
 
   v64 = v23;
   if (!v18)
@@ -1679,7 +1679,7 @@ LABEL_7:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      *v80 = v38;
+      *v80 = unsignedLongLongValue;
       _os_log_error_impl(&dword_1DF2C3000, v15, OS_LOG_TYPE_ERROR, "Container class [%llu] in operation undefined.", buf, 0xCu);
     }
 
@@ -1695,7 +1695,7 @@ LABEL_7:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      *v80 = v38;
+      *v80 = unsignedLongLongValue;
       _os_log_error_impl(&dword_1DF2C3000, v15, OS_LOG_TYPE_ERROR, "Container class [%llu] in operation unsupported.", buf, 0xCu);
     }
 
@@ -1716,10 +1716,10 @@ LABEL_42:
   if (v20)
   {
     v59 = v17;
-    v42 = [v74 context];
-    v43 = [v42 containerFactory];
+    context = [v74 context];
+    containerFactory = [context containerFactory];
     v76 = v11;
-    v19 = [v43 containerForContainerIdentity:v20 createIfNecessary:0 error:&v76];
+    v19 = [containerFactory containerForContainerIdentity:v20 createIfNecessary:0 error:&v76];
     v44 = v76;
 
     if (!v19)
@@ -1728,13 +1728,13 @@ LABEL_42:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         v16 = v63;
-        v57 = [v63 unsignedIntValue];
+        unsignedIntValue = [v63 unsignedIntValue];
         *buf = 67110146;
-        *v80 = v57;
+        *v80 = unsignedIntValue;
         *&v80[4] = 2112;
         *&v80[6] = v67;
         *&v80[14] = 2048;
-        *&v80[16] = v38;
+        *&v80[16] = unsignedLongLongValue;
         v81 = 2048;
         v82 = v78;
         v83 = 2112;
@@ -1764,12 +1764,12 @@ LABEL_55:
 
     if (v21)
     {
-      v45 = [v60 alloc];
-      v61 = [v71 intValue];
-      v46 = [v70 BOOLValue];
-      v47 = [v69 intValue];
+      v45 = [selfCopy alloc];
+      intValue = [v71 intValue];
+      bOOLValue = [v70 BOOLValue];
+      intValue2 = [v69 intValue];
       v15 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v68];
-      v22 = [v45 initWithContainerMetadata:v21 newClass:v61 retryingIfLocked:v46 changeType:v47 internalChangeID:v15 queue:v73 userIdentityCache:v72];
+      v22 = [v45 initWithContainerMetadata:v21 newClass:intValue retryingIfLocked:bOOLValue changeType:intValue2 internalChangeID:v15 queue:queueCopy userIdentityCache:v72];
       goto LABEL_54;
     }
 
@@ -1783,13 +1783,13 @@ LABEL_55:
     }
 
     v16 = v63;
-    v58 = [v63 unsignedIntValue];
+    unsignedIntValue2 = [v63 unsignedIntValue];
     *buf = 67110146;
-    *v80 = v58;
+    *v80 = unsignedIntValue2;
     *&v80[4] = 2112;
     *&v80[6] = v67;
     *&v80[14] = 2048;
-    *&v80[16] = v38;
+    *&v80[16] = unsignedLongLongValue;
     v81 = 2048;
     v82 = v78;
     v83 = 2112;
@@ -1821,10 +1821,10 @@ LABEL_55:
   v11 = v62;
 LABEL_43:
 
-  if (v65 && !v22)
+  if (errorCopy && !v22)
   {
     v49 = v11;
-    *v65 = v11;
+    *errorCopy = v11;
   }
 
   v50 = v22;

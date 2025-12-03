@@ -1,6 +1,6 @@
 @interface CRLZipFileDescriptorWrapper
 - (CRLZipFileDescriptorWrapper)init;
-- (CRLZipFileDescriptorWrapper)initWithFileDescriptor:(int)a3;
+- (CRLZipFileDescriptorWrapper)initWithFileDescriptor:(int)descriptor;
 - (void)dealloc;
 @end
 
@@ -56,16 +56,16 @@
   objc_exception_throw(v10);
 }
 
-- (CRLZipFileDescriptorWrapper)initWithFileDescriptor:(int)a3
+- (CRLZipFileDescriptorWrapper)initWithFileDescriptor:(int)descriptor
 {
-  v3 = self;
-  if ((a3 & 0x80000000) == 0)
+  selfCopy = self;
+  if ((descriptor & 0x80000000) == 0)
   {
-    v4 = *&a3;
+    v4 = *&descriptor;
     v14.receiver = self;
     v14.super_class = CRLZipFileDescriptorWrapper;
     v5 = [(CRLZipFileDescriptorWrapper *)&v14 init];
-    v3 = v5;
+    selfCopy = v5;
     if (!v5)
     {
       close(v4);
@@ -79,18 +79,18 @@
     v12[3] = &unk_10183A108;
     v13 = v4;
     v6 = [[CRLFileIOChannel alloc] initForReadingDescriptor:v4 cleanupHandler:v12];
-    readChannel = v3->_readChannel;
-    v3->_readChannel = v6;
+    readChannel = selfCopy->_readChannel;
+    selfCopy->_readChannel = v6;
 
-    if (v3->_readChannel)
+    if (selfCopy->_readChannel)
     {
       v8 = dispatch_group_create();
-      accessGroup = v3->_accessGroup;
-      v3->_accessGroup = v8;
+      accessGroup = selfCopy->_accessGroup;
+      selfCopy->_accessGroup = v8;
 
 LABEL_7:
-      v3 = v3;
-      v10 = v3;
+      selfCopy = selfCopy;
+      v10 = selfCopy;
       goto LABEL_8;
     }
   }

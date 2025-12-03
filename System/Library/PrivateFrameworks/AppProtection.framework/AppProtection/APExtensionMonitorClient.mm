@@ -1,12 +1,12 @@
 @interface APExtensionMonitorClient
 - (_TtC13AppProtection24APExtensionMonitorClient)init;
-- (void)beginMonitoringForExtensionUUID:(id)a3 monitorUUID:(id)a4;
-- (void)endMonitoringForMonitorUUID:(id)a3;
+- (void)beginMonitoringForExtensionUUID:(id)d monitorUUID:(id)iD;
+- (void)endMonitoringForMonitorUUID:(id)d;
 @end
 
 @implementation APExtensionMonitorClient
 
-- (void)beginMonitoringForExtensionUUID:(id)a3 monitorUUID:(id)a4
+- (void)beginMonitoringForExtensionUUID:(id)d monitorUUID:(id)iD
 {
   v5 = sub_185B67AFC();
   v6 = *(v5 - 8);
@@ -17,7 +17,7 @@
   v14 = &v17 - v13;
   sub_185B67ADC();
   sub_185B67ADC();
-  v15 = self;
+  selfCopy = self;
   sub_185B44980(v14, v11);
 
   v16 = *(v6 + 8);
@@ -25,7 +25,7 @@
   v16(v14, v5);
 }
 
-- (void)endMonitoringForMonitorUUID:(id)a3
+- (void)endMonitoringForMonitorUUID:(id)d
 {
   v4 = sub_185B67AFC();
   v5 = *(v4 - 8);
@@ -33,7 +33,7 @@
   MEMORY[0x1EEE9AC00](v4, v7);
   v9 = &v11 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_185B67ADC();
-  v10 = self;
+  selfCopy = self;
   sub_185B4542C(v9);
 
   (*(v5 + 8))(v9, v4);

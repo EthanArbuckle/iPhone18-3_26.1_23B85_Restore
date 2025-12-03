@@ -1,22 +1,22 @@
 @interface NMCTileLoader
-- (NMCTileLoader)initWithRequestIdentifier:(id)a3 manifestConfiguration:(id)a4 tileRequests:(id)a5 auditToken:(id)a6;
-- (id)tileRequester:(uint64_t)a3 receivedData:(uint64_t)a4 tileEdition:(uint64_t)a5 tileSetDB:(uint64_t)a6 tileSet:(uint64_t)a7 etag:(uint64_t)a8 forKey:(uint64_t)a9 userInfo:(uint64_t)a10;
-- (id)tileRequester:(uint64_t)a3 receivedError:(uint64_t)a4 forKey:(uint64_t)a5;
+- (NMCTileLoader)initWithRequestIdentifier:(id)identifier manifestConfiguration:(id)configuration tileRequests:(id)requests auditToken:(id)token;
+- (id)tileRequester:(uint64_t)requester receivedData:(uint64_t)data tileEdition:(uint64_t)edition tileSetDB:(uint64_t)b tileSet:(uint64_t)set etag:(uint64_t)etag forKey:(uint64_t)key userInfo:(uint64_t)self0;
+- (id)tileRequester:(uint64_t)requester receivedError:(uint64_t)error forKey:(uint64_t)key;
 - (void)_finish;
-- (void)_handleTile:(__int128 *)a3 tile:(void *)a4 ETag:(void *)a5 error:(void *)a6 userInfo:(void *)a7 populateCombinedBaseLocalizationData:(int)a8;
+- (void)_handleTile:(__int128 *)tile tile:(void *)a4 ETag:(void *)tag error:(void *)error userInfo:(void *)info populateCombinedBaseLocalizationData:(int)data;
 - (void)_requestTiles;
 - (void)cancel;
-- (void)startWithCallbackQueue:(id)a3 tileHandler:(id)a4 completionHandler:(id)a5;
+- (void)startWithCallbackQueue:(id)queue tileHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation NMCTileLoader
 
-- (NMCTileLoader)initWithRequestIdentifier:(id)a3 manifestConfiguration:(id)a4 tileRequests:(id)a5 auditToken:(id)a6
+- (NMCTileLoader)initWithRequestIdentifier:(id)identifier manifestConfiguration:(id)configuration tileRequests:(id)requests auditToken:(id)token
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  configurationCopy = configuration;
+  requestsCopy = requests;
+  tokenCopy = token;
   v22.receiver = self;
   v22.super_class = NMCTileLoader;
   v14 = [(NMCTileLoader *)&v22 init];
@@ -27,10 +27,10 @@
     workQueue = v14->_workQueue;
     v14->_workQueue = v16;
 
-    objc_storeStrong(&v14->_manifestConfiguration, a4);
-    objc_storeStrong(&v14->_requests, a5);
-    objc_storeStrong(&v14->_auditToken, a6);
-    v18 = [v10 copy];
+    objc_storeStrong(&v14->_manifestConfiguration, configuration);
+    objc_storeStrong(&v14->_requests, requests);
+    objc_storeStrong(&v14->_auditToken, token);
+    v18 = [identifierCopy copy];
     requestIdentifier = v14->_requestIdentifier;
     v14->_requestIdentifier = v18;
 
@@ -40,23 +40,23 @@
   return v14;
 }
 
-- (void)startWithCallbackQueue:(id)a3 tileHandler:(id)a4 completionHandler:(id)a5
+- (void)startWithCallbackQueue:(id)queue tileHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   workQueue = self->_workQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100009F0C;
   v15[3] = &unk_100085018;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = queueCopy;
+  v17 = handlerCopy;
+  v18 = completionHandlerCopy;
+  v12 = completionHandlerCopy;
+  v13 = handlerCopy;
+  v14 = queueCopy;
   dispatch_async(workQueue, v15);
 }
 
@@ -134,8 +134,8 @@ LABEL_31:
       v15 = [(GEOTileKeyMap *)self->_keyToRequest objectForKey:v14];
       if ([v15 hasCachedETag])
       {
-        v16 = [v15 cachedETag];
-        [v45 setObject:v16 forKey:v14];
+        cachedETag = [v15 cachedETag];
+        [v45 setObject:cachedETag forKey:v14];
       }
 
       if ([v15 hasPriority])
@@ -199,7 +199,7 @@ LABEL_31:
         {
           dispatch_group_enter(group);
           v24 = [v47 objectForKey:v23];
-          v46 = [v24 unsignedIntValue];
+          unsignedIntValue = [v24 unsignedIntValue];
 
           v25 = self->_tileLoaderForOfflineTiles;
           v26 = self->_tileLoaderClientIdentifier;
@@ -214,7 +214,7 @@ LABEL_31:
           v49[3] = &unk_100085040;
           v49[4] = self;
           v50 = group;
-          [(GEOTileLoader *)v25 loadKey:v23 priority:v46 forClient:v26 options:1027 reason:0 qos:v27 signpostID:v30 auditToken:0 createTime:auditToken callbackQ:workQueue beginNetwork:0 callback:v49];
+          [(GEOTileLoader *)v25 loadKey:v23 priority:unsignedIntValue forClient:v26 options:1027 reason:0 qos:v27 signpostID:v30 auditToken:0 createTime:auditToken callbackQ:workQueue beginNetwork:0 callback:v49];
         }
 
         else
@@ -302,28 +302,28 @@ LABEL_32:
   dispatch_async(self->_callbackQueue, v11);
 }
 
-- (id)tileRequester:(uint64_t)a3 receivedData:(uint64_t)a4 tileEdition:(uint64_t)a5 tileSetDB:(uint64_t)a6 tileSet:(uint64_t)a7 etag:(uint64_t)a8 forKey:(uint64_t)a9 userInfo:(uint64_t)a10
+- (id)tileRequester:(uint64_t)requester receivedData:(uint64_t)data tileEdition:(uint64_t)edition tileSetDB:(uint64_t)b tileSet:(uint64_t)set etag:(uint64_t)etag forKey:(uint64_t)key userInfo:(uint64_t)self0
 {
-  v12[0] = a9;
-  v12[1] = a10;
-  return [a1 _handleTile:v12 tile:a4 ETag:a8 error:0 userInfo:a11 populateCombinedBaseLocalizationData:0];
+  v12[0] = key;
+  v12[1] = info;
+  return [self _handleTile:v12 tile:data ETag:etag error:0 userInfo:a11 populateCombinedBaseLocalizationData:0];
 }
 
-- (id)tileRequester:(uint64_t)a3 receivedError:(uint64_t)a4 forKey:(uint64_t)a5
+- (id)tileRequester:(uint64_t)requester receivedError:(uint64_t)error forKey:(uint64_t)key
 {
-  v7[0] = a5;
+  v7[0] = key;
   v7[1] = a6;
-  return [a1 _handleTile:v7 tile:0 ETag:0 error:a4 userInfo:0 populateCombinedBaseLocalizationData:0];
+  return [self _handleTile:v7 tile:0 ETag:0 error:error userInfo:0 populateCombinedBaseLocalizationData:0];
 }
 
-- (void)_handleTile:(__int128 *)a3 tile:(void *)a4 ETag:(void *)a5 error:(void *)a6 userInfo:(void *)a7 populateCombinedBaseLocalizationData:(int)a8
+- (void)_handleTile:(__int128 *)tile tile:(void *)a4 ETag:(void *)tag error:(void *)error userInfo:(void *)info populateCombinedBaseLocalizationData:(int)data
 {
   v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  dispatch_assert_queue_V2(*(a1 + 8));
-  v77 = *a3;
+  tagCopy = tag;
+  errorCopy = error;
+  infoCopy = info;
+  dispatch_assert_queue_V2(*(self + 8));
+  v77 = *tile;
   if (v14)
   {
     v18 = sub_10000A164();
@@ -343,7 +343,7 @@ LABEL_7:
 
   else
   {
-    if (!v16)
+    if (!errorCopy)
     {
       goto LABEL_9;
     }
@@ -355,7 +355,7 @@ LABEL_7:
       LODWORD(v79) = 16;
       sub_10000AE3C();
       v80 = 2114;
-      v81 = v16;
+      v81 = errorCopy;
       v19 = "Error loading tile key %{private,geo:TileKey}.*P: %{public}@";
       v20 = v18;
       v21 = OS_LOG_TYPE_ERROR;
@@ -365,11 +365,11 @@ LABEL_7:
   }
 
 LABEL_9:
-  [*(a1 + 56) removeKey:a3];
-  v23 = [*(a1 + 64) objectForKey:a3];
+  [*(self + 56) removeKey:tile];
+  v23 = [*(self + 64) objectForKey:tile];
   if (v23)
   {
-    v24 = objc_retainBlock(*(a1 + 88));
+    v24 = objc_retainBlock(*(self + 88));
     v25 = v24;
     if (!v24)
     {
@@ -378,34 +378,34 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v26 = a8;
+    dataCopy = data;
     v66 = v24;
     v27 = v14;
-    v28 = v17;
-    v69 = v15;
+    v28 = infoCopy;
+    v69 = tagCopy;
     v29 = objc_alloc_init(NMMessage);
     [(NMMessage *)v29 setType:4];
     v30 = objc_alloc_init(NMArgument);
     [(NMArgument *)v30 setTag:103];
-    [(NMArgument *)v30 setStringValue:*(a1 + 24)];
+    [(NMArgument *)v30 setStringValue:*(self + 24)];
     sub_10000AE24();
-    v31 = objc_alloc_init(NMArgument);
+    data = objc_alloc_init(NMArgument);
 
-    [(NMArgument *)v31 setTag:100];
+    [(NMArgument *)data setTag:100];
     v68 = v23;
-    v32 = [v23 tileKey];
-    [(NMArgument *)v31 setDataValue:v32];
+    tileKey = [v23 tileKey];
+    [(NMArgument *)data setDataValue:tileKey];
 
-    [(NMMessage *)v29 addArgument:v31];
-    if (v16)
+    [(NMMessage *)v29 addArgument:data];
+    if (errorCopy)
     {
-      v33 = [[NMArgument alloc] _nm_initWithErrorValue:v16 tag:3];
+      v33 = [[NMArgument alloc] _nm_initWithErrorValue:errorCopy tag:3];
       v14 = v27;
       v25 = v66;
       goto LABEL_13;
     }
 
-    if (v26)
+    if (dataCopy)
     {
       if ([v69 length])
       {
@@ -414,11 +414,11 @@ LABEL_16:
         [(NMArgument *)v36 setTag:101];
         [(NMArgument *)v36 setStringValue:v69];
         sub_10000AE24();
-        v31 = v36;
+        data = v36;
       }
 
       v14 = v27;
-      v37 = [v17 objectForKeyedSubscript:GEOTileLoadStaleCachedDataWasCurrentKey];
+      v37 = [infoCopy objectForKeyedSubscript:GEOTileLoadStaleCachedDataWasCurrentKey];
       objc_opt_class();
       v25 = v66;
       if (objc_opt_isKindOfClass() & 1) != 0 && ([v37 BOOLValue])
@@ -426,7 +426,7 @@ LABEL_16:
         v38 = &OBJC_IVAR___NMTileRequest__localizationURL;
 LABEL_54:
 
-        if (!v17)
+        if (!infoCopy)
         {
           goto LABEL_15;
         }
@@ -435,15 +435,15 @@ LABEL_54:
 
         [(NMArgument *)v33 setTag:2];
         v55 = GEOTileLoadResultSourceKey;
-        v56 = [v17 objectForKeyedSubscript:GEOTileLoadResultSourceKey];
+        v56 = [infoCopy objectForKeyedSubscript:GEOTileLoadResultSourceKey];
 
         if (!v56)
         {
 LABEL_14:
           [(NMMessage *)v29 addArgument:v33];
-          v31 = v33;
+          data = v33;
 LABEL_15:
-          v34 = *(a1 + 80);
+          v34 = *(self + 80);
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
           block[2] = sub_10000A844;
@@ -454,16 +454,16 @@ LABEL_15:
           dispatch_async(v34, block);
 
           v23 = v68;
-          v15 = v69;
+          tagCopy = v69;
           goto LABEL_16;
         }
 
-        v31 = objc_alloc_init(NMStringToObjectTuple);
-        [(NMArgument *)v31 setKey:v55];
-        v57 = [v17 objectForKeyedSubscript:v55];
-        -[NMArgument setIntValue:](v31, "setIntValue:", [v57 unsignedLongLongValue]);
+        data = objc_alloc_init(NMStringToObjectTuple);
+        [(NMArgument *)data setKey:v55];
+        v57 = [infoCopy objectForKeyedSubscript:v55];
+        -[NMArgument setIntValue:](data, "setIntValue:", [v57 unsignedLongLongValue]);
 
-        [(NMArgument *)v33 addStringToObjectMap:v31];
+        [(NMArgument *)v33 addStringToObjectMap:data];
 LABEL_13:
 
         goto LABEL_14;
@@ -481,8 +481,8 @@ LABEL_13:
         v44 = objc_alloc_init(NMArgument);
 
         [(NMArgument *)v44 setTag:1];
-        v31 = [v14 data];
-        [(NMArgument *)v44 setDataValue:v31];
+        data = [v14 data];
+        [(NMArgument *)v44 setDataValue:data];
       }
 
       else
@@ -491,7 +491,7 @@ LABEL_13:
       }
 
       sub_10000AE24();
-      v31 = v44;
+      data = v44;
       v37 = v63;
 LABEL_53:
 
@@ -503,18 +503,18 @@ LABEL_53:
     GEOSimpleTileRequesterUnpackETag();
     v39 = 0;
     v65 = 0;
-    v40 = [v23 cachedBaseETag];
-    v62 = [v68 cachedLocalizationETag];
+    cachedBaseETag = [v23 cachedBaseETag];
+    cachedLocalizationETag = [v68 cachedLocalizationETag];
     v37 = v39;
     v41 = [v39 length];
-    v17 = v28;
-    v64 = v40;
+    infoCopy = v28;
+    v64 = cachedBaseETag;
     if (v41)
     {
       v14 = v27;
-      if ([v40 length])
+      if ([cachedBaseETag length])
       {
-        v60 = [v37 isEqualToString:v40];
+        v60 = [v37 isEqualToString:cachedBaseETag];
       }
 
       else
@@ -530,10 +530,10 @@ LABEL_53:
     }
 
     v25 = v66;
-    if ([v65 length] && objc_msgSend(v62, "length"))
+    if ([v65 length] && objc_msgSend(cachedLocalizationETag, "length"))
     {
       v45 = v65;
-      v67 = [v65 isEqualToString:v62];
+      v67 = [v65 isEqualToString:cachedLocalizationETag];
     }
 
     else
@@ -549,7 +549,7 @@ LABEL_53:
       [(NMArgument *)v46 setTag:105];
       [(NMArgument *)v46 setStringValue:v37];
       sub_10000AE24();
-      v31 = v46;
+      data = v46;
       v45 = v65;
     }
 
@@ -561,7 +561,7 @@ LABEL_53:
       [(NMArgument *)v48 setTag:107];
       [(NMArgument *)v48 setStringValue:v47];
       sub_10000AE24();
-      v31 = v48;
+      data = v48;
     }
 
     v49 = v60;
@@ -607,7 +607,7 @@ LABEL_50:
           [(NMArgument *)v54 setTag:106];
           [(NMArgument *)v54 setDataValue:v52];
           [(NMMessage *)v29 addArgument:v54];
-          v31 = v54;
+          data = v54;
         }
 
         v38 = &OBJC_IVAR___NMTileRequest__localizationURL;
@@ -620,7 +620,7 @@ LABEL_50:
     [(NMArgument *)v53 setTag:104];
     [(NMArgument *)v53 setDataValue:v59];
     [(NMMessage *)v29 addArgument:v53];
-    v31 = v53;
+    data = v53;
     goto LABEL_50;
   }
 

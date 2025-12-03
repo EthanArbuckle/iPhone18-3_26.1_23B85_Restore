@@ -8,9 +8,9 @@
 + (MANodeFilter)tripTypeNodeFilter;
 + (MARelation)highlightGroupOfType;
 + (id)filter;
-+ (id)typeNodeFilterForLabel:(id)a3;
++ (id)typeNodeFilterForLabel:(id)label;
 - (NSString)featureIdentifier;
-- (PGGraphHighlightTypeNode)initWithLabel:(id)a3;
+- (PGGraphHighlightTypeNode)initWithLabel:(id)label;
 @end
 
 @implementation PGGraphHighlightTypeNode
@@ -20,21 +20,21 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PGGraphHighlightTypeNode *)self label];
-  v7 = [v3 stringWithFormat:@"%@|%@", v5, v6];
+  label = [(PGGraphHighlightTypeNode *)self label];
+  v7 = [v3 stringWithFormat:@"%@|%@", v5, label];
 
   return v7;
 }
 
-- (PGGraphHighlightTypeNode)initWithLabel:(id)a3
+- (PGGraphHighlightTypeNode)initWithLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v9.receiver = self;
   v9.super_class = PGGraphHighlightTypeNode;
   v5 = [(PGGraphNode *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [labelCopy copy];
     label = v5->_label;
     v5->_label = v6;
   }
@@ -45,9 +45,9 @@
 + (MARelation)highlightGroupOfType
 {
   v2 = +[PGGraphHasTypeEdge filter];
-  v3 = [v2 inRelation];
+  inRelation = [v2 inRelation];
 
-  return v3;
+  return inRelation;
 }
 
 + (MANodeFilter)defaultTypeNodeFilter
@@ -103,11 +103,11 @@
   return v4;
 }
 
-+ (id)typeNodeFilterForLabel:(id)a3
++ (id)typeNodeFilterForLabel:(id)label
 {
   v3 = MEMORY[0x277D22C78];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithLabel:v4 domain:103];
+  labelCopy = label;
+  v5 = [[v3 alloc] initWithLabel:labelCopy domain:103];
 
   return v5;
 }

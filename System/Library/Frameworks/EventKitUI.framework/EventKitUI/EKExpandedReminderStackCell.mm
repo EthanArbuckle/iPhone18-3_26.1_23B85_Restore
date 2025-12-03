@@ -1,18 +1,18 @@
 @interface EKExpandedReminderStackCell
 + (id)exampleCell;
-- (EKExpandedReminderStackCell)initWithFrame:(CGRect)a3;
-- (void)setVisibleForExpandingAnimation:(BOOL)a3;
-- (void)setupCellWithTitle:(id)a3 completed:(BOOL)a4 editable:(BOOL)a5 date:(id)a6 buttonColor:(id)a7 buttonImageName:(id)a8 backgroundColor:(id)a9 recurringString:(id)a10 delegate:(id)a11;
+- (EKExpandedReminderStackCell)initWithFrame:(CGRect)frame;
+- (void)setVisibleForExpandingAnimation:(BOOL)animation;
+- (void)setupCellWithTitle:(id)title completed:(BOOL)completed editable:(BOOL)editable date:(id)date buttonColor:(id)color buttonImageName:(id)name backgroundColor:(id)backgroundColor recurringString:(id)self0 delegate:(id)self1;
 @end
 
 @implementation EKExpandedReminderStackCell
 
-- (EKExpandedReminderStackCell)initWithFrame:(CGRect)a3
+- (EKExpandedReminderStackCell)initWithFrame:(CGRect)frame
 {
   v97[17] = *MEMORY[0x1E69E9840];
   v96.receiver = self;
   v96.super_class = EKExpandedReminderStackCell;
-  v3 = [(EKExpandedReminderStackCell *)&v96 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(EKExpandedReminderStackCell *)&v96 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -22,8 +22,8 @@
     [(UILabel *)v3->_title setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v3->_title setNumberOfLines:1];
     [(UILabel *)v3->_title setAdjustsFontForContentSizeCategory:1];
-    v6 = [(EKExpandedReminderStackCell *)v3 contentView];
-    [v6 addSubview:v3->_title];
+    contentView = [(EKExpandedReminderStackCell *)v3 contentView];
+    [contentView addSubview:v3->_title];
 
     v7 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     time = v3->_time;
@@ -35,36 +35,36 @@
     v9 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDD80] addingSymbolicTraits:0x10000];
     [(UILabel *)v3->_time setFont:v9];
 
-    v10 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v3->_time setTextColor:v10];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v3->_time setTextColor:secondaryLabelColor];
 
-    v11 = [(EKExpandedReminderStackCell *)v3 contentView];
-    [v11 addSubview:v3->_time];
+    contentView2 = [(EKExpandedReminderStackCell *)v3 contentView];
+    [contentView2 addSubview:v3->_time];
 
     v12 = objc_alloc_init(MEMORY[0x1E69DD250]);
     backgroundColorView = v3->_backgroundColorView;
     v3->_backgroundColorView = v12;
 
     [(UIView *)v3->_backgroundColorView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v14 = [(UIView *)v3->_backgroundColorView layer];
-    [v14 setCornerRadius:12.0];
+    layer = [(UIView *)v3->_backgroundColorView layer];
+    [layer setCornerRadius:12.0];
 
-    v15 = [(EKExpandedReminderStackCell *)v3 contentView];
-    [v15 addSubview:v3->_backgroundColorView];
+    contentView3 = [(EKExpandedReminderStackCell *)v3 contentView];
+    [contentView3 addSubview:v3->_backgroundColorView];
 
-    v16 = [(EKExpandedReminderStackCell *)v3 contentView];
-    [v16 sendSubviewToBack:v3->_backgroundColorView];
+    contentView4 = [(EKExpandedReminderStackCell *)v3 contentView];
+    [contentView4 sendSubviewToBack:v3->_backgroundColorView];
 
     v17 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     backgroundImageView = v3->_backgroundImageView;
     v3->_backgroundImageView = v17;
 
     [(UIImageView *)v3->_backgroundImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v19 = [(EKExpandedReminderStackCell *)v3 contentView];
-    [v19 addSubview:v3->_backgroundImageView];
+    contentView5 = [(EKExpandedReminderStackCell *)v3 contentView];
+    [contentView5 addSubview:v3->_backgroundImageView];
 
-    v20 = [(EKExpandedReminderStackCell *)v3 contentView];
-    [v20 sendSubviewToBack:v3->_backgroundImageView];
+    contentView6 = [(EKExpandedReminderStackCell *)v3 contentView];
+    [contentView6 sendSubviewToBack:v3->_backgroundImageView];
 
     objc_initWeak(&location, v3);
     v21 = MEMORY[0x1E69DC628];
@@ -75,8 +75,8 @@
     objc_copyWeak(&v94, &location);
     v90 = [v21 actionWithHandler:v93];
     v22 = MEMORY[0x1E69DC738];
-    v23 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-    v24 = [v22 buttonWithConfiguration:v23 primaryAction:v90];
+    plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+    v24 = [v22 buttonWithConfiguration:plainButtonConfiguration primaryAction:v90];
     circle = v3->_circle;
     v3->_circle = v24;
 
@@ -84,91 +84,91 @@
     LODWORD(v26) = 1148846080;
     [(UIButton *)v3->_circle setContentCompressionResistancePriority:0 forAxis:v26];
     [(UIButton *)v3->_circle setTranslatesAutoresizingMaskIntoConstraints:0];
-    v27 = [(EKExpandedReminderStackCell *)v3 contentView];
-    [v27 addSubview:v3->_circle];
+    contentView7 = [(EKExpandedReminderStackCell *)v3 contentView];
+    [contentView7 addSubview:v3->_circle];
 
-    v28 = [(UILabel *)v3->_title topAnchor];
-    v29 = [(UIView *)v3->_backgroundColorView topAnchor];
-    v92 = [v28 constraintEqualToAnchor:v29 constant:11.0];
+    topAnchor = [(UILabel *)v3->_title topAnchor];
+    topAnchor2 = [(UIView *)v3->_backgroundColorView topAnchor];
+    v92 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:11.0];
 
     LODWORD(v30) = 1132068864;
     [v92 setPriority:v30];
-    v31 = [(UILabel *)v3->_time bottomAnchor];
-    v32 = [(UIView *)v3->_backgroundColorView bottomAnchor];
-    v91 = [v31 constraintEqualToAnchor:v32 constant:-11.0];
+    bottomAnchor = [(UILabel *)v3->_time bottomAnchor];
+    bottomAnchor2 = [(UIView *)v3->_backgroundColorView bottomAnchor];
+    v91 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-11.0];
 
     LODWORD(v33) = 1132068864;
     [v91 setPriority:v33];
     v44 = MEMORY[0x1E696ACD8];
-    v89 = [(UIButton *)v3->_circle leadingAnchor];
-    v88 = [(UIView *)v3->_backgroundColorView leadingAnchor];
-    v87 = [v89 constraintEqualToAnchor:v88 constant:11.0];
+    leadingAnchor = [(UIButton *)v3->_circle leadingAnchor];
+    leadingAnchor2 = [(UIView *)v3->_backgroundColorView leadingAnchor];
+    v87 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:11.0];
     v97[0] = v87;
-    v86 = [(UIButton *)v3->_circle firstBaselineAnchor];
-    v85 = [(UILabel *)v3->_title firstBaselineAnchor];
-    v84 = [v86 constraintEqualToAnchor:v85];
+    firstBaselineAnchor = [(UIButton *)v3->_circle firstBaselineAnchor];
+    firstBaselineAnchor2 = [(UILabel *)v3->_title firstBaselineAnchor];
+    v84 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
     v97[1] = v84;
-    v83 = [(UILabel *)v3->_title leadingAnchor];
-    v82 = [(UIButton *)v3->_circle trailingAnchor];
-    v81 = [v83 constraintEqualToAnchor:v82 constant:10.0];
+    leadingAnchor3 = [(UILabel *)v3->_title leadingAnchor];
+    trailingAnchor = [(UIButton *)v3->_circle trailingAnchor];
+    v81 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:10.0];
     v97[2] = v81;
-    v80 = [(UILabel *)v3->_title trailingAnchor];
-    v79 = [(UIView *)v3->_backgroundColorView trailingAnchor];
-    v78 = [v80 constraintLessThanOrEqualToAnchor:v79 constant:-11.0];
+    trailingAnchor2 = [(UILabel *)v3->_title trailingAnchor];
+    trailingAnchor3 = [(UIView *)v3->_backgroundColorView trailingAnchor];
+    v78 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:trailingAnchor3 constant:-11.0];
     v97[3] = v78;
-    v77 = [(UILabel *)v3->_time leadingAnchor];
-    v76 = [(UIButton *)v3->_circle trailingAnchor];
-    v75 = [v77 constraintEqualToAnchor:v76 constant:10.0];
+    leadingAnchor4 = [(UILabel *)v3->_time leadingAnchor];
+    trailingAnchor4 = [(UIButton *)v3->_circle trailingAnchor];
+    v75 = [leadingAnchor4 constraintEqualToAnchor:trailingAnchor4 constant:10.0];
     v97[4] = v75;
-    v74 = [(UILabel *)v3->_time trailingAnchor];
-    v73 = [(UIView *)v3->_backgroundColorView trailingAnchor];
-    v72 = [v74 constraintLessThanOrEqualToAnchor:v73 constant:-11.0];
+    trailingAnchor5 = [(UILabel *)v3->_time trailingAnchor];
+    trailingAnchor6 = [(UIView *)v3->_backgroundColorView trailingAnchor];
+    v72 = [trailingAnchor5 constraintLessThanOrEqualToAnchor:trailingAnchor6 constant:-11.0];
     v97[5] = v72;
-    v71 = [(UILabel *)v3->_time topAnchor];
-    v70 = [(UILabel *)v3->_title bottomAnchor];
-    v69 = [v71 constraintEqualToAnchor:v70 constant:2.0];
+    topAnchor3 = [(UILabel *)v3->_time topAnchor];
+    bottomAnchor3 = [(UILabel *)v3->_title bottomAnchor];
+    v69 = [topAnchor3 constraintEqualToAnchor:bottomAnchor3 constant:2.0];
     v97[6] = v69;
     v97[7] = v92;
     v97[8] = v91;
-    v67 = [(UIView *)v3->_backgroundColorView leadingAnchor];
-    v68 = [(EKExpandedReminderStackCell *)v3 contentView];
-    v66 = [v68 leadingAnchor];
-    v65 = [v67 constraintEqualToAnchor:v66];
+    leadingAnchor5 = [(UIView *)v3->_backgroundColorView leadingAnchor];
+    contentView8 = [(EKExpandedReminderStackCell *)v3 contentView];
+    leadingAnchor6 = [contentView8 leadingAnchor];
+    v65 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v97[9] = v65;
-    v63 = [(UIView *)v3->_backgroundColorView topAnchor];
-    v64 = [(EKExpandedReminderStackCell *)v3 contentView];
-    v62 = [v64 topAnchor];
-    v61 = [v63 constraintEqualToAnchor:v62];
+    topAnchor4 = [(UIView *)v3->_backgroundColorView topAnchor];
+    contentView9 = [(EKExpandedReminderStackCell *)v3 contentView];
+    topAnchor5 = [contentView9 topAnchor];
+    v61 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
     v97[10] = v61;
-    v59 = [(UIView *)v3->_backgroundColorView trailingAnchor];
-    v60 = [(EKExpandedReminderStackCell *)v3 contentView];
-    v58 = [v60 trailingAnchor];
-    v57 = [v59 constraintEqualToAnchor:v58];
+    trailingAnchor7 = [(UIView *)v3->_backgroundColorView trailingAnchor];
+    contentView10 = [(EKExpandedReminderStackCell *)v3 contentView];
+    trailingAnchor8 = [contentView10 trailingAnchor];
+    v57 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
     v97[11] = v57;
-    v55 = [(UIView *)v3->_backgroundColorView bottomAnchor];
-    v56 = [(EKExpandedReminderStackCell *)v3 contentView];
-    v54 = [v56 bottomAnchor];
-    v53 = [v55 constraintEqualToAnchor:v54];
+    bottomAnchor4 = [(UIView *)v3->_backgroundColorView bottomAnchor];
+    contentView11 = [(EKExpandedReminderStackCell *)v3 contentView];
+    bottomAnchor5 = [contentView11 bottomAnchor];
+    v53 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
     v97[12] = v53;
-    v51 = [(UIImageView *)v3->_backgroundImageView leadingAnchor];
-    v52 = [(EKExpandedReminderStackCell *)v3 contentView];
-    v50 = [v52 leadingAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50];
+    leadingAnchor7 = [(UIImageView *)v3->_backgroundImageView leadingAnchor];
+    contentView12 = [(EKExpandedReminderStackCell *)v3 contentView];
+    leadingAnchor8 = [contentView12 leadingAnchor];
+    v49 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
     v97[13] = v49;
-    v47 = [(UIImageView *)v3->_backgroundImageView topAnchor];
-    v48 = [(EKExpandedReminderStackCell *)v3 contentView];
-    v46 = [v48 topAnchor];
-    v45 = [v47 constraintEqualToAnchor:v46];
+    topAnchor6 = [(UIImageView *)v3->_backgroundImageView topAnchor];
+    contentView13 = [(EKExpandedReminderStackCell *)v3 contentView];
+    topAnchor7 = [contentView13 topAnchor];
+    v45 = [topAnchor6 constraintEqualToAnchor:topAnchor7];
     v97[14] = v45;
-    v34 = [(UIImageView *)v3->_backgroundImageView trailingAnchor];
-    v35 = [(EKExpandedReminderStackCell *)v3 contentView];
-    v36 = [v35 trailingAnchor];
-    v37 = [v34 constraintEqualToAnchor:v36];
+    trailingAnchor9 = [(UIImageView *)v3->_backgroundImageView trailingAnchor];
+    contentView14 = [(EKExpandedReminderStackCell *)v3 contentView];
+    trailingAnchor10 = [contentView14 trailingAnchor];
+    v37 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
     v97[15] = v37;
-    v38 = [(UIImageView *)v3->_backgroundImageView bottomAnchor];
-    v39 = [(EKExpandedReminderStackCell *)v3 contentView];
-    v40 = [v39 bottomAnchor];
-    v41 = [v38 constraintEqualToAnchor:v40];
+    bottomAnchor6 = [(UIImageView *)v3->_backgroundImageView bottomAnchor];
+    contentView15 = [(EKExpandedReminderStackCell *)v3 contentView];
+    bottomAnchor7 = [contentView15 bottomAnchor];
+    v41 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
     v97[16] = v41;
     v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:v97 count:17];
     [v44 activateConstraints:v42];
@@ -198,57 +198,57 @@ void __45__EKExpandedReminderStackCell_initWithFrame___block_invoke(uint64_t a1)
   v2 = [EKExpandedReminderStackCell alloc];
   v3 = [(EKExpandedReminderStackCell *)v2 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v4 = [MEMORY[0x1E695DF00] now];
-  v5 = [MEMORY[0x1E69DC888] blueColor];
+  blueColor = [MEMORY[0x1E69DC888] blueColor];
   v6 = *MEMORY[0x1E69932F8];
-  v7 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [(EKExpandedReminderStackCell *)v3 setupCellWithTitle:@"Example" completed:0 editable:1 date:v4 buttonColor:v5 buttonImageName:v6 backgroundColor:v7 recurringString:@"Daily" delegate:0];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [(EKExpandedReminderStackCell *)v3 setupCellWithTitle:@"Example" completed:0 editable:1 date:v4 buttonColor:blueColor buttonImageName:v6 backgroundColor:systemBackgroundColor recurringString:@"Daily" delegate:0];
 
   return v3;
 }
 
-- (void)setupCellWithTitle:(id)a3 completed:(BOOL)a4 editable:(BOOL)a5 date:(id)a6 buttonColor:(id)a7 buttonImageName:(id)a8 backgroundColor:(id)a9 recurringString:(id)a10 delegate:(id)a11
+- (void)setupCellWithTitle:(id)title completed:(BOOL)completed editable:(BOOL)editable date:(id)date buttonColor:(id)color buttonImageName:(id)name backgroundColor:(id)backgroundColor recurringString:(id)self0 delegate:(id)self1
 {
-  v14 = a5;
-  v15 = a4;
-  v54 = a3;
-  v53 = a10;
-  v17 = a9;
-  v50 = a8;
-  v51 = a7;
-  v18 = a6;
-  objc_storeWeak(&self->_delegate, a11);
-  [(UIView *)self->_backgroundColorView setBackgroundColor:v17];
+  editableCopy = editable;
+  completedCopy = completed;
+  titleCopy = title;
+  stringCopy = string;
+  backgroundColorCopy = backgroundColor;
+  nameCopy = name;
+  colorCopy = color;
+  dateCopy = date;
+  objc_storeWeak(&self->_delegate, delegate);
+  [(UIView *)self->_backgroundColorView setBackgroundColor:backgroundColorCopy];
 
-  [(UILabel *)self->_title setText:v54];
+  [(UILabel *)self->_title setText:titleCopy];
   v19 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v20 = *MEMORY[0x1E69DDCF8];
   v21 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
   v48 = *MEMORY[0x1E69DB648];
   [v19 setObject:v21 forKeyedSubscript:?];
 
-  if (!v14 || v15)
+  if (!editableCopy || completedCopy)
   {
-    v22 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
   }
 
   else
   {
-    v22 = [MEMORY[0x1E69DC888] labelColor];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] labelColor];
   }
 
-  v23 = v22;
+  v23 = tertiaryLabelColor;
   v24 = *MEMORY[0x1E69DB650];
-  [v19 setObject:v22 forKeyedSubscript:*MEMORY[0x1E69DB650]];
+  [v19 setObject:tertiaryLabelColor forKeyedSubscript:*MEMORY[0x1E69DB650]];
 
-  v49 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v54 attributes:v19];
+  v49 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:titleCopy attributes:v19];
   [(UILabel *)self->_title setAttributedText:?];
   v25 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v25 setTimeStyle:1];
   [v25 setDateStyle:0];
   [v25 setDoesRelativeDateFormatting:1];
-  v52 = [v25 stringFromDate:v18];
+  v52 = [v25 stringFromDate:dateCopy];
 
-  if (v53)
+  if (stringCopy)
   {
     v26 = MEMORY[0x1E69DB7F0];
     v27 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"repeat"];
@@ -259,60 +259,60 @@ void __45__EKExpandedReminderStackCell_initWithFrame___block_invoke(uint64_t a1)
     v30 = EventKitUIBundle();
     v31 = [v30 localizedStringForKey:@"%@ value:%@ %@" table:{&stru_1F4EF6790, 0}];
     v32 = v25;
-    v33 = self;
+    selfCopy = self;
     v34 = v24;
     v35 = v19;
     v36 = v20;
     v37 = [v29 initWithString:v31];
 
     v38 = 0x1E69DC000;
-    v39 = [MEMORY[0x1E696AD40] localizedAttributedStringWithFormat:v37, v52, v28, v53];
+    stringCopy = [MEMORY[0x1E696AD40] localizedAttributedStringWithFormat:v37, v52, v28, stringCopy];
 
     v20 = v36;
     v19 = v35;
     v24 = v34;
-    self = v33;
+    self = selfCopy;
     v25 = v32;
   }
 
   else
   {
     v38 = 0x1E69DC000uLL;
-    v39 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v52];
+    stringCopy = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v52];
   }
 
   v40 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v41 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
   [v40 setObject:v41 forKeyedSubscript:v48];
 
-  v42 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v40 setObject:v42 forKeyedSubscript:v24];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [v40 setObject:secondaryLabelColor forKeyedSubscript:v24];
 
-  [v39 addAttributes:v40 range:{0, objc_msgSend(v39, "length")}];
-  [(UILabel *)self->_time setAttributedText:v39];
-  v43 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-  [v43 contentInsets];
-  [v43 setContentInsets:?];
+  [stringCopy addAttributes:v40 range:{0, objc_msgSend(stringCopy, "length")}];
+  [(UILabel *)self->_time setAttributedText:stringCopy];
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  [plainButtonConfiguration contentInsets];
+  [plainButtonConfiguration setContentInsets:?];
   v44 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:v20 weight:*MEMORY[0x1E69DB980]];
   v45 = [MEMORY[0x1E69DCAD8] configurationWithFont:v44 scale:3];
-  v46 = [*(v38 + 2744) systemImageNamed:v50 withConfiguration:v45];
+  v46 = [*(v38 + 2744) systemImageNamed:nameCopy withConfiguration:v45];
 
-  [v43 setImage:v46];
-  [v43 setBaseForegroundColor:v51];
+  [plainButtonConfiguration setImage:v46];
+  [plainButtonConfiguration setBaseForegroundColor:colorCopy];
 
-  [(UIButton *)self->_circle setConfiguration:v43];
+  [(UIButton *)self->_circle setConfiguration:plainButtonConfiguration];
 }
 
-- (void)setVisibleForExpandingAnimation:(BOOL)a3
+- (void)setVisibleForExpandingAnimation:(BOOL)animation
 {
   circle = self->_circle;
-  if (a3)
+  if (animation)
   {
     [(UIButton *)circle setAlpha:1.0];
     [(UILabel *)self->_title setAlpha:1.0];
     [(UILabel *)self->_time setAlpha:1.0];
-    v5 = [(UIView *)self->_backgroundColorView layer];
-    [v5 setCornerRadius:12.0];
+    layer = [(UIView *)self->_backgroundColorView layer];
+    [layer setCornerRadius:12.0];
 
     [(UIView *)self->_backgroundColorView setAlpha:1.0];
     p_backgroundImageView = &self->_backgroundImageView;
@@ -324,8 +324,8 @@ void __45__EKExpandedReminderStackCell_initWithFrame___block_invoke(uint64_t a1)
     [(UILabel *)self->_title setAlpha:0.0];
     [(UILabel *)self->_time setAlpha:0.0];
     p_backgroundImageView = &self->_backgroundColorView;
-    v7 = [(UIView *)self->_backgroundColorView layer];
-    [v7 setCornerRadius:0.0];
+    layer2 = [(UIView *)self->_backgroundColorView layer];
+    [layer2 setCornerRadius:0.0];
 
     [(UIImageView *)self->_backgroundImageView setAlpha:1.0];
   }

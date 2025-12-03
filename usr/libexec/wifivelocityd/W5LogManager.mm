@@ -1,151 +1,151 @@
 @interface W5LogManager
-+ (id)__descriptionForNetwork:(id)a3;
-+ (id)__logBTCProfile:(apple80211_btc_profile_osx *)a3;
-+ (id)__logBluetoothStatus:(id)a3;
-+ (id)__logNetworkStatus:(id)a3;
-+ (id)__logScanResults:(id)a3;
-+ (id)__logTxPower:(apple80211_per_chain_power_data_get *)a3;
-+ (id)__logWiFiStatus:(id)a3;
++ (id)__descriptionForNetwork:(id)network;
++ (id)__logBTCProfile:(apple80211_btc_profile_osx *)profile;
++ (id)__logBluetoothStatus:(id)status;
++ (id)__logNetworkStatus:(id)status;
++ (id)__logScanResults:(id)results;
++ (id)__logTxPower:(apple80211_per_chain_power_data_get *)power;
++ (id)__logWiFiStatus:(id)status;
 + (id)__temporaryDirectory;
-+ (void)__parsePingOutput:(id)a3 result:(id)a4;
++ (void)__parsePingOutput:(id)output result:(id)result;
 - (BOOL)__allowCoreCapture;
-- (BOOL)__logItems:(id)a3 containsID:(int64_t)a4;
-- (BOOL)__wlCLIWithArguments:(id)a3 outputFilePath:(id)a4 outputData:(id)a5;
+- (BOOL)__logItems:(id)items containsID:(int64_t)d;
+- (BOOL)__wlCLIWithArguments:(id)arguments outputFilePath:(id)path outputData:(id)data;
 - (BOOL)waDeviceAnalyticsClientExists;
-- (W5LogManager)initWithStatusManager:(id)a3 diagnosticsManager:(id)a4 peerDiagnosticsManager:(id)a5;
-- (id)__basicWiFiLogsWithFilteredContent:(BOOL)a3 useMegaWiFiProfileLimits:(BOOL)a4;
-- (id)__browseBonjourInstancesWithServiceType:(id)a3 duration:(unint64_t)a4;
-- (id)__collect3barsCache:(id)a3;
-- (id)__collectAWDLStatus:(id)a3;
-- (id)__collectAdditionalLog:(id)a3 url:(id)a4;
-- (id)__collectAirPlayLogs:(id)a3;
-- (id)__collectBluetoothLogs:(id)a3;
-- (id)__collectBluetoothStatus:(id)a3;
-- (id)__collectBonjourRecords:(id)a3;
-- (id)__collectCoreCapture24:(id)a3;
-- (id)__collectCoreCapture:(id)a3;
-- (id)__collectCoreCaptureDump:(id)a3;
-- (id)__collectCrashesAndSpins24:(id)a3;
-- (id)__collectDatapathStats:(id)a3;
-- (id)__collectDeviceAnalyticsDeploymentGraph:(id)a3;
-- (id)__collectDeviceAnalyticsEntityCSVs:(id)a3;
-- (id)__collectDeviceAnalyticsStore:(id)a3;
-- (id)__collectDextCoreDump:(id)a3;
-- (id)__collectDiagnostics:(id)a3;
-- (id)__collectEAP8021XLogs:(id)a3;
-- (id)__collectEventHistory:(id)a3;
-- (id)__collectFileAtURL:(id)a3 outputDirectory:(id)a4 maxAge:(double)a5 maxSize:(unint64_t)a6 compress:(BOOL)a7 remainingSize:(unint64_t *)a8;
-- (id)__collectFilesInDirectories:(id)a3 include:(id)a4 exclude:(id)a5 maxAge:(double)a6 maxCount:(unint64_t)a7 maxSize:(unint64_t)a8 outputDirectory:(id)a9 compress:(BOOL)a10 remainingSize:(unint64_t *)a11 contentFilter:(id)a12;
-- (id)__collectFilteredWiFiManagerLogArchiveWithOutputURL:(id)a3 compress:(BOOL)a4 age:(unint64_t)a5;
-- (id)__collectIPConfigurationLogs:(id)a3;
-- (id)__collectIndividual:(id)a3 error:(id *)a4;
-- (id)__collectLeakyAPStats:(id)a3;
-- (id)__collectLogItem:(id)a3 error:(id *)a4;
-- (id)__collectMultiple:(id)a3;
-- (id)__collectNetworkPreferences:(id)a3;
-- (id)__collectNetworkStatus:(id)a3;
-- (id)__collectPeerDiagnostics:(id)a3;
-- (id)__collectPerSSIDDiagnosticsHistory:(id)a3;
-- (id)__collectPreviouslyCollected:(id)a3;
-- (id)__collectSharingLogs:(id)a3;
-- (id)__collectSystemConfiguration:(id)a3;
-- (id)__collectSystemLogs24:(id)a3;
-- (id)__collectSystemLogs:(id)a3;
-- (id)__collectSystemProfiler:(id)a3;
-- (id)__collectTCPDump_POST:(id)a3;
-- (id)__collectTCPDump_PRE:(id)a3;
-- (id)__collectWiFiDeviceConfig:(id)a3;
-- (id)__collectWiFiLogs24:(id)a3;
-- (id)__collectWiFiLogs:(id)a3;
-- (id)__collectWiFiLogsDump:(id)a3;
-- (id)__collectWiFiMemoryUsage:(id)a3;
-- (id)__collectWiFiPerfLogs:(id)a3;
-- (id)__collectWiFiPreferences:(id)a3;
-- (id)__collectWiFiScanResults:(id)a3;
-- (id)__collectWiFiStatsCLI:(id)a3;
-- (id)__collectWiFiStatsPost:(id)a3;
-- (id)__collectWiFiStatsPre:(id)a3;
-- (id)__collectWiFiStatus:(id)a3;
-- (id)__collectWiFiVelocityLog:(id)a3;
-- (id)__collectWirelessProxLogs:(id)a3;
-- (id)__collect_CFNetworkPing:(id)a3;
-- (id)__collect_IMFoundationPing:(id)a3;
-- (id)__collect_arp:(id)a3;
-- (id)__collect_configd:(id)a3;
-- (id)__collect_darwinup:(id)a3;
-- (id)__collect_hosts:(id)a3;
-- (id)__collect_ifconfig:(id)a3;
-- (id)__collect_ioreg:(id)a3;
-- (id)__collect_ipconfig:(id)a3;
-- (id)__collect_kextstat:(id)a3;
-- (id)__collect_mobilewifitool:(id)a3;
-- (id)__collect_ndp:(id)a3;
-- (id)__collect_netstat:(id)a3;
-- (id)__collect_ping:(id)a3;
-- (id)__collect_pmset:(id)a3;
-- (id)__collect_spindump:(id)a3;
-- (id)__collect_swvers:(id)a3;
-- (id)__collect_sysdiagnose:(id)a3;
-- (id)__collect_top:(id)a3;
-- (id)__collect_traceroute:(id)a3;
-- (id)__collect_wl_cca_get_stats:(id)a3;
-- (id)__collect_wl_curpower:(id)a3;
+- (W5LogManager)initWithStatusManager:(id)manager diagnosticsManager:(id)diagnosticsManager peerDiagnosticsManager:(id)peerDiagnosticsManager;
+- (id)__basicWiFiLogsWithFilteredContent:(BOOL)content useMegaWiFiProfileLimits:(BOOL)limits;
+- (id)__browseBonjourInstancesWithServiceType:(id)type duration:(unint64_t)duration;
+- (id)__collect3barsCache:(id)cache;
+- (id)__collectAWDLStatus:(id)status;
+- (id)__collectAdditionalLog:(id)log url:(id)url;
+- (id)__collectAirPlayLogs:(id)logs;
+- (id)__collectBluetoothLogs:(id)logs;
+- (id)__collectBluetoothStatus:(id)status;
+- (id)__collectBonjourRecords:(id)records;
+- (id)__collectCoreCapture24:(id)capture24;
+- (id)__collectCoreCapture:(id)capture;
+- (id)__collectCoreCaptureDump:(id)dump;
+- (id)__collectCrashesAndSpins24:(id)spins24;
+- (id)__collectDatapathStats:(id)stats;
+- (id)__collectDeviceAnalyticsDeploymentGraph:(id)graph;
+- (id)__collectDeviceAnalyticsEntityCSVs:(id)vs;
+- (id)__collectDeviceAnalyticsStore:(id)store;
+- (id)__collectDextCoreDump:(id)dump;
+- (id)__collectDiagnostics:(id)diagnostics;
+- (id)__collectEAP8021XLogs:(id)logs;
+- (id)__collectEventHistory:(id)history;
+- (id)__collectFileAtURL:(id)l outputDirectory:(id)directory maxAge:(double)age maxSize:(unint64_t)size compress:(BOOL)compress remainingSize:(unint64_t *)remainingSize;
+- (id)__collectFilesInDirectories:(id)directories include:(id)include exclude:(id)exclude maxAge:(double)age maxCount:(unint64_t)count maxSize:(unint64_t)size outputDirectory:(id)directory compress:(BOOL)self0 remainingSize:(unint64_t *)self1 contentFilter:(id)self2;
+- (id)__collectFilteredWiFiManagerLogArchiveWithOutputURL:(id)l compress:(BOOL)compress age:(unint64_t)age;
+- (id)__collectIPConfigurationLogs:(id)logs;
+- (id)__collectIndividual:(id)individual error:(id *)error;
+- (id)__collectLeakyAPStats:(id)stats;
+- (id)__collectLogItem:(id)item error:(id *)error;
+- (id)__collectMultiple:(id)multiple;
+- (id)__collectNetworkPreferences:(id)preferences;
+- (id)__collectNetworkStatus:(id)status;
+- (id)__collectPeerDiagnostics:(id)diagnostics;
+- (id)__collectPerSSIDDiagnosticsHistory:(id)history;
+- (id)__collectPreviouslyCollected:(id)collected;
+- (id)__collectSharingLogs:(id)logs;
+- (id)__collectSystemConfiguration:(id)configuration;
+- (id)__collectSystemLogs24:(id)logs24;
+- (id)__collectSystemLogs:(id)logs;
+- (id)__collectSystemProfiler:(id)profiler;
+- (id)__collectTCPDump_POST:(id)t;
+- (id)__collectTCPDump_PRE:(id)e;
+- (id)__collectWiFiDeviceConfig:(id)config;
+- (id)__collectWiFiLogs24:(id)logs24;
+- (id)__collectWiFiLogs:(id)logs;
+- (id)__collectWiFiLogsDump:(id)dump;
+- (id)__collectWiFiMemoryUsage:(id)usage;
+- (id)__collectWiFiPerfLogs:(id)logs;
+- (id)__collectWiFiPreferences:(id)preferences;
+- (id)__collectWiFiScanResults:(id)results;
+- (id)__collectWiFiStatsCLI:(id)i;
+- (id)__collectWiFiStatsPost:(id)post;
+- (id)__collectWiFiStatsPre:(id)pre;
+- (id)__collectWiFiStatus:(id)status;
+- (id)__collectWiFiVelocityLog:(id)log;
+- (id)__collectWirelessProxLogs:(id)logs;
+- (id)__collect_CFNetworkPing:(id)ping;
+- (id)__collect_IMFoundationPing:(id)ping;
+- (id)__collect_arp:(id)__collect_arp;
+- (id)__collect_configd:(id)__collect_configd;
+- (id)__collect_darwinup:(id)__collect_darwinup;
+- (id)__collect_hosts:(id)__collect_hosts;
+- (id)__collect_ifconfig:(id)__collect_ifconfig;
+- (id)__collect_ioreg:(id)__collect_ioreg;
+- (id)__collect_ipconfig:(id)__collect_ipconfig;
+- (id)__collect_kextstat:(id)__collect_kextstat;
+- (id)__collect_mobilewifitool:(id)__collect_mobilewifitool;
+- (id)__collect_ndp:(id)__collect_ndp;
+- (id)__collect_netstat:(id)__collect_netstat;
+- (id)__collect_ping:(id)__collect_ping;
+- (id)__collect_pmset:(id)__collect_pmset;
+- (id)__collect_spindump:(id)__collect_spindump;
+- (id)__collect_swvers:(id)__collect_swvers;
+- (id)__collect_sysdiagnose:(id)__collect_sysdiagnose;
+- (id)__collect_top:(id)__collect_top;
+- (id)__collect_traceroute:(id)__collect_traceroute;
+- (id)__collect_wl_cca_get_stats:(id)__collect_wl_cca_get_stats;
+- (id)__collect_wl_curpower:(id)__collect_wl_curpower;
 - (id)__concurrentConnectivityDiagnosticsTest;
-- (id)__configurationDiagnosticsLogItemWithTimeout:(double)a3;
-- (id)__connectivityDiagnosticsLogItemWithTimeout:(double)a3;
-- (id)__dnssdBrowseAll:(id)a3;
-- (id)__dnssdCacheAndState:(id)a3;
-- (id)__environmentDiagnosticsLogItemWithTimeout:(double)a3;
-- (id)__expandLogItems:(id)a3 configuration:(id)a4;
-- (id)__fastConnectivityDiagnosticsLogItemWithTimeout:(double)a3;
-- (id)__logAWDLStatus:(id)a3;
-- (id)__logDiagnosticsPingResults:(id)a3;
-- (id)__logDiagnosticsTestResults:(id)a3;
-- (id)__logItemsForDatapathStallEventWithFilteredContent:(BOOL)a3;
+- (id)__configurationDiagnosticsLogItemWithTimeout:(double)timeout;
+- (id)__connectivityDiagnosticsLogItemWithTimeout:(double)timeout;
+- (id)__dnssdBrowseAll:(id)all;
+- (id)__dnssdCacheAndState:(id)state;
+- (id)__environmentDiagnosticsLogItemWithTimeout:(double)timeout;
+- (id)__expandLogItems:(id)items configuration:(id)configuration;
+- (id)__fastConnectivityDiagnosticsLogItemWithTimeout:(double)timeout;
+- (id)__logAWDLStatus:(id)status;
+- (id)__logDiagnosticsPingResults:(id)results;
+- (id)__logDiagnosticsTestResults:(id)results;
+- (id)__logItemsForDatapathStallEventWithFilteredContent:(BOOL)content;
 - (id)__logItemsForFeedbackAssistant;
 - (id)__logItemsForInternalWiFiSettings;
-- (id)__logItemsForSysdiagnoseWithFilteredContent:(BOOL)a3 useMegaWiFiProfileLimits:(BOOL)a4 timeout:(int64_t)a5;
+- (id)__logItemsForSysdiagnoseWithFilteredContent:(BOOL)content useMegaWiFiProfileLimits:(BOOL)limits timeout:(int64_t)timeout;
 - (id)__logItemsForTapToRadar;
 - (id)__logItemsForWiFiDiagnosticsApp;
-- (id)__logItemsForWiFiDiagnosticsExtensionWithCoreCapturePrefix:(id)a3;
+- (id)__logItemsForWiFiDiagnosticsExtensionWithCoreCapturePrefix:(id)prefix;
 - (id)__model;
-- (id)__mostRecentInDirectories:(id)a3 include:(id)a4 exclude:(id)a5 maxAge:(double)a6;
-- (id)__mostRecentInDirectories:(id)a3 matchingPrefix:(id)a4 matchingSuffix:(id)a5 excludingPrefix:(id)a6 excludingSuffix:(id)a7 maxAge:(double)a8;
-- (id)__pendingRequestWithUUID:(id)a3;
-- (id)__ping6WithAddress:(id)a3 count:(int64_t)a4 wait:(double)a5 trafficClass:(id)a6 interfaceName:(id)a7 dataLength:(unint64_t)a8;
-- (id)__pingBroadcast:(id)a3;
-- (id)__pingSubnet:(id)a3;
-- (id)__pingUsingCFNetworkWithAddress:(id)a3 count:(int64_t)a4 timeout:(int64_t)a5 trafficClass:(id)a6 networkServiceType:(id)a7;
-- (id)__pingUsingIMFoundationWithAddress:(id)a3 timeout:(int64_t)a4;
-- (id)__pingWithAddress:(id)a3 count:(int64_t)a4 timeout:(double)a5 wait:(double)a6 interval:(double)a7 trafficClass:(id)a8 interfaceName:(id)a9 dataLength:(unint64_t)a10;
-- (id)__possibleCoreCapturePathsWithComponent:(id)a3;
-- (id)__resolveBonjourInstance:(id)a3 serviceType:(id)a4 duration:(unint64_t)a5;
-- (id)__runDiagnosticsTests:(id)a3 configuration:(id)a4 timeout:(int64_t)a5 error:(id *)a6;
-- (unint64_t)__calculateSizeAtPath:(id)a3;
-- (void)__dumpCoreCaptureLogsWithReason:(id)a3 component:(id)a4;
+- (id)__mostRecentInDirectories:(id)directories include:(id)include exclude:(id)exclude maxAge:(double)age;
+- (id)__mostRecentInDirectories:(id)directories matchingPrefix:(id)prefix matchingSuffix:(id)suffix excludingPrefix:(id)excludingPrefix excludingSuffix:(id)excludingSuffix maxAge:(double)age;
+- (id)__pendingRequestWithUUID:(id)d;
+- (id)__ping6WithAddress:(id)address count:(int64_t)count wait:(double)wait trafficClass:(id)class interfaceName:(id)name dataLength:(unint64_t)length;
+- (id)__pingBroadcast:(id)broadcast;
+- (id)__pingSubnet:(id)subnet;
+- (id)__pingUsingCFNetworkWithAddress:(id)address count:(int64_t)count timeout:(int64_t)timeout trafficClass:(id)class networkServiceType:(id)type;
+- (id)__pingUsingIMFoundationWithAddress:(id)address timeout:(int64_t)timeout;
+- (id)__pingWithAddress:(id)address count:(int64_t)count timeout:(double)timeout wait:(double)wait interval:(double)interval trafficClass:(id)class interfaceName:(id)name dataLength:(unint64_t)self0;
+- (id)__possibleCoreCapturePathsWithComponent:(id)component;
+- (id)__resolveBonjourInstance:(id)instance serviceType:(id)type duration:(unint64_t)duration;
+- (id)__runDiagnosticsTests:(id)tests configuration:(id)configuration timeout:(int64_t)timeout error:(id *)error;
+- (unint64_t)__calculateSizeAtPath:(id)path;
+- (void)__dumpCoreCaptureLogsWithReason:(id)reason component:(id)component;
 - (void)__dumpWiFiLogs;
 - (void)__endWiFiStats;
-- (void)__filterCoreCaptureContent:(id)a3;
+- (void)__filterCoreCaptureContent:(id)content;
 - (void)__nextRequest;
-- (void)__purgeFilesInDirectory:(id)a3 matching:(id)a4 maxAge:(unint64_t)a5 maxCount:(unint64_t)a6;
-- (void)__replyWithCachedSysdiagnoseContentForRequest:(id)a3 temporaryURL:(id)a4;
-- (void)__runRequest:(id)a3 reply:(id)a4;
-- (void)__runToolWithOutputFileHandle:(id)a3 readFromStandardError:(BOOL)a4 launchPath:(id)a5 arguments:(id)a6 addCommand:(BOOL)a7 addTimestamps:(BOOL)a8;
+- (void)__purgeFilesInDirectory:(id)directory matching:(id)matching maxAge:(unint64_t)age maxCount:(unint64_t)count;
+- (void)__replyWithCachedSysdiagnoseContentForRequest:(id)request temporaryURL:(id)l;
+- (void)__runRequest:(id)request reply:(id)reply;
+- (void)__runToolWithOutputFileHandle:(id)handle readFromStandardError:(BOOL)error launchPath:(id)path arguments:(id)arguments addCommand:(BOOL)command addTimestamps:(BOOL)timestamps;
 - (void)__setupWiFiStats;
 - (void)__startWiFiStats;
 - (void)__teardownWiFiStats;
-- (void)addRequest:(id)a3;
-- (void)cancelRequestWithUUID:(id)a3 reply:(id)a4;
+- (void)addRequest:(id)request;
+- (void)cancelRequestWithUUID:(id)d reply:(id)reply;
 - (void)dealloc;
-- (void)setCollectLogItemCallback:(id)a3;
-- (void)setCollectedItemCallback:(id)a3;
-- (void)setPingCallback:(id)a3;
-- (void)teardownAndNotify:(id)a3;
+- (void)setCollectLogItemCallback:(id)callback;
+- (void)setCollectedItemCallback:(id)callback;
+- (void)setPingCallback:(id)callback;
+- (void)teardownAndNotify:(id)notify;
 @end
 
 @implementation W5LogManager
 
-- (W5LogManager)initWithStatusManager:(id)a3 diagnosticsManager:(id)a4 peerDiagnosticsManager:(id)a5
+- (W5LogManager)initWithStatusManager:(id)manager diagnosticsManager:(id)diagnosticsManager peerDiagnosticsManager:(id)peerDiagnosticsManager
 {
   v20.receiver = self;
   v20.super_class = W5LogManager;
@@ -214,7 +214,7 @@
 
   v17 = objc_alloc_init(NSMutableArray);
   v8->_pendingRequests = v17;
-  if (a3 && v17 && (v8->_status = a3, a4) && (v8->_diagnostics = a4, v8->_peerDiagnostics = a5, v18 = objc_alloc_init(NSDateFormatter), (v8->_dateFormatter = v18) != 0))
+  if (manager && v17 && (v8->_status = manager, diagnosticsManager) && (v8->_diagnostics = diagnosticsManager, v8->_peerDiagnostics = peerDiagnosticsManager, v18 = objc_alloc_init(NSDateFormatter), (v8->_dateFormatter = v18) != 0))
   {
     [(NSDateFormatter *)v18 setDateFormat:@"HH:mm:ss.SSS"];
     v8->_model = [-[W5LogManager __model](v8 "__model")];
@@ -293,9 +293,9 @@ LABEL_16:
           _os_log_send_and_compose_impl();
         }
 
-        v5 = [sub_10005BE14() sharedDeviceAnalyticsClient];
-        self->_waDeviceAnalyticsClient = v5;
-        if (!v5)
+        sharedDeviceAnalyticsClient = [sub_10005BE14() sharedDeviceAnalyticsClient];
+        self->_waDeviceAnalyticsClient = sharedDeviceAnalyticsClient;
+        if (!sharedDeviceAnalyticsClient)
         {
           return 0;
         }
@@ -333,12 +333,12 @@ LABEL_16:
   return 1;
 }
 
-- (void)setCollectedItemCallback:(id)a3
+- (void)setCollectedItemCallback:(id)callback
 {
   if (dispatch_get_specific(&self->_queue))
   {
 
-    self->_collectedItemCallback = [a3 copy];
+    self->_collectedItemCallback = [callback copy];
   }
 
   else
@@ -349,17 +349,17 @@ LABEL_16:
     v6[2] = sub_10005BFA4;
     v6[3] = &unk_1000E1C70;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = callback;
     dispatch_sync(queue, v6);
   }
 }
 
-- (void)setPingCallback:(id)a3
+- (void)setPingCallback:(id)callback
 {
   if (dispatch_get_specific(&self->_queue))
   {
 
-    self->_pingCallback = [a3 copy];
+    self->_pingCallback = [callback copy];
   }
 
   else
@@ -370,17 +370,17 @@ LABEL_16:
     v6[2] = sub_10005C0A0;
     v6[3] = &unk_1000E1C70;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = callback;
     dispatch_sync(queue, v6);
   }
 }
 
-- (void)setCollectLogItemCallback:(id)a3
+- (void)setCollectLogItemCallback:(id)callback
 {
   if (dispatch_get_specific(&self->_queue))
   {
 
-    self->_collectLogItemCallback = [a3 copy];
+    self->_collectLogItemCallback = [callback copy];
   }
 
   else
@@ -391,68 +391,68 @@ LABEL_16:
     v6[2] = sub_10005C19C;
     v6[3] = &unk_1000E1C70;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = callback;
     dispatch_sync(queue, v6);
   }
 }
 
-- (void)__replyWithCachedSysdiagnoseContentForRequest:(id)a3 temporaryURL:(id)a4
+- (void)__replyWithCachedSysdiagnoseContentForRequest:(id)request temporaryURL:(id)l
 {
-  v6 = [objc_msgSend(objc_msgSend(a3 "configuration")];
-  if (a4)
+  v6 = [objc_msgSend(objc_msgSend(request "configuration")];
+  if (l)
   {
     v7 = v6;
     v14 = 0;
-    v8 = -[NSURL URLByAppendingPathComponent:](+[NSURL fileURLWithPath:](NSURL, "fileURLWithPath:", @"/var/run/com.apple.wifivelocity"), "URLByAppendingPathComponent:", [a3 filename]);
+    v8 = -[NSURL URLByAppendingPathComponent:](+[NSURL fileURLWithPath:](NSURL, "fileURLWithPath:", @"/var/run/com.apple.wifivelocity"), "URLByAppendingPathComponent:", [request filename]);
     if (v7)
     {
       v9 = &WiFiManagerClientCopyProperty_ptr;
-      sub_100098A4C(a4, v8, &v14);
+      sub_100098A4C(l, v8, &v14);
     }
 
     else
     {
-      sub_100099544(a4, v8, &v14);
+      sub_100099544(l, v8, &v14);
       v10 = +[NSFileManager defaultManager];
       v18[0] = &off_1000EF410;
       v17[0] = NSFilePosixPermissions;
       v17[1] = NSFileOwnerAccountID;
-      v18[1] = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [a3 uid]);
+      v18[1] = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [request uid]);
       v17[2] = NSFileGroupOwnerAccountID;
-      v18[2] = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [a3 gid]);
+      v18[2] = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [request gid]);
       v9 = &WiFiManagerClientCopyProperty_ptr;
       [(NSFileManager *)v10 setAttributes:[NSDictionary dictionaryWithObjects:v17 forKeys:3 count:?], [(NSURL *)v8 path], 0];
     }
 
-    if ([objc_msgSend(a3 "configuration")])
+    if ([objc_msgSend(request "configuration")])
     {
-      v11 = -[NSURL URLByAppendingPathComponent:](-[NSURL URLByAppendingPathComponent:](-[NSFileManager containerURLForSecurityApplicationGroupIdentifier:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "containerURLForSecurityApplicationGroupIdentifier:", @"group.com.apple.wifi.logs"), "URLByAppendingPathComponent:", @"previous"), "URLByAppendingPathComponent:", [a3 filename]);
+      v11 = -[NSURL URLByAppendingPathComponent:](-[NSURL URLByAppendingPathComponent:](-[NSFileManager containerURLForSecurityApplicationGroupIdentifier:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "containerURLForSecurityApplicationGroupIdentifier:", @"group.com.apple.wifi.logs"), "URLByAppendingPathComponent:", @"previous"), "URLByAppendingPathComponent:", [request filename]);
       sub_100099544(v8, v11, &v14);
       v12 = +[NSFileManager defaultManager];
       v16[0] = &off_1000EF410;
       v15[0] = NSFilePosixPermissions;
       v15[1] = NSFileOwnerAccountID;
-      v16[1] = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [a3 uid]);
+      v16[1] = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [request uid]);
       v15[2] = NSFileGroupOwnerAccountID;
-      v16[2] = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [a3 gid]);
+      v16[2] = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [request gid]);
       -[NSFileManager setAttributes:ofItemAtPath:error:](v12, "setAttributes:ofItemAtPath:error:", [v9[475] dictionaryWithObjects:v16 forKeys:v15 count:3], -[NSURL path](v11, "path"), 0);
     }
 
-    if ([a3 reply])
+    if ([request reply])
     {
-      v13 = [a3 reply];
-      v13[2](v13, v14, v8, 0);
+      reply = [request reply];
+      reply[2](reply, v14, v8, 0);
     }
   }
 }
 
-- (BOOL)__logItems:(id)a3 containsID:(int64_t)a4
+- (BOOL)__logItems:(id)items containsID:(int64_t)d
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [items countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -464,10 +464,10 @@ LABEL_16:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(items);
         }
 
-        if ([*(*(&v11 + 1) + 8 * v9) itemID] == a4)
+        if ([*(*(&v11 + 1) + 8 * v9) itemID] == d)
         {
           LOBYTE(v6) = 1;
           return v6;
@@ -477,7 +477,7 @@ LABEL_16:
       }
 
       while (v7 != v9);
-      v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [items countByEnumeratingWithState:&v11 objects:v15 count:16];
       v7 = v6;
       if (v6)
       {
@@ -491,19 +491,19 @@ LABEL_16:
   return v6;
 }
 
-- (void)addRequest:(id)a3
+- (void)addRequest:(id)request
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10005C65C;
   v4[3] = &unk_1000E1C98;
-  v4[4] = a3;
+  v4[4] = request;
   v4[5] = self;
   dispatch_async(queue, v4);
 }
 
-- (void)cancelRequestWithUUID:(id)a3 reply:(id)a4
+- (void)cancelRequestWithUUID:(id)d reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -511,12 +511,12 @@ LABEL_16:
   block[2] = sub_10005DA80;
   block[3] = &unk_1000E1CC0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = d;
+  block[6] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)teardownAndNotify:(id)a3
+- (void)teardownAndNotify:(id)notify
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -524,11 +524,11 @@ LABEL_16:
   v4[2] = sub_10005DDB8;
   v4[3] = &unk_1000E1C70;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = notify;
   dispatch_async(queue, v4);
 }
 
-- (id)__pendingRequestWithUUID:(id)a3
+- (id)__pendingRequestWithUUID:(id)d
 {
   v11 = 0u;
   v12 = 0u;
@@ -571,13 +571,13 @@ LABEL_3:
   }
 }
 
-- (void)__purgeFilesInDirectory:(id)a3 matching:(id)a4 maxAge:(unint64_t)a5 maxCount:(unint64_t)a6
+- (void)__purgeFilesInDirectory:(id)directory matching:(id)matching maxAge:(unint64_t)age maxCount:(unint64_t)count
 {
   v9 = +[NSMutableArray array];
   +[NSDate timeIntervalSinceReferenceDate];
   v11 = v10;
   v33 = +[NSMutableDictionary dictionary];
-  v12 = [+[NSFileManager defaultManager](NSFileManager contentsOfDirectoryAtPath:"contentsOfDirectoryAtPath:error:" error:a3, 0];
+  v12 = [+[NSFileManager defaultManager](NSFileManager contentsOfDirectoryAtPath:"contentsOfDirectoryAtPath:error:" error:directory, 0];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
@@ -587,7 +587,7 @@ LABEL_3:
   {
     v14 = v13;
     v15 = *v39;
-    v16 = a5;
+    ageCopy = age;
     do
     {
       for (i = 0; i != v14; i = i + 1)
@@ -598,12 +598,12 @@ LABEL_3:
         }
 
         v18 = *(*(&v38 + 1) + 8 * i);
-        -[NSDate timeIntervalSinceReferenceDate](-[NSDictionary fileCreationDate](-[NSFileManager attributesOfItemAtPath:error:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "attributesOfItemAtPath:error:", [a3 stringByAppendingPathComponent:v18], 0), "fileCreationDate"), "timeIntervalSinceReferenceDate");
+        -[NSDate timeIntervalSinceReferenceDate](-[NSDictionary fileCreationDate](-[NSFileManager attributesOfItemAtPath:error:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "attributesOfItemAtPath:error:", [directory stringByAppendingPathComponent:v18], 0), "fileCreationDate"), "timeIntervalSinceReferenceDate");
         v20 = v19;
-        if (!a4 || [a4 numberOfMatchesInString:v18 options:0 range:{0, objc_msgSend(v18, "length")}])
+        if (!matching || [matching numberOfMatchesInString:v18 options:0 range:{0, objc_msgSend(v18, "length")}])
         {
-          v21 = [a3 stringByAppendingPathComponent:v18];
-          if (v11 - v20 <= v16)
+          v21 = [directory stringByAppendingPathComponent:v18];
+          if (v11 - v20 <= ageCopy)
           {
             [v33 setObject:v21 forKeyedSubscript:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v20)}];
           }
@@ -623,7 +623,7 @@ LABEL_3:
 
   v22 = [objc_msgSend(v33 "allKeys")];
   [v22 sortUsingComparator:&stru_1000E2CA0];
-  if ([v22 count] > a6 && objc_msgSend(v22, "count") != a6)
+  if ([v22 count] > count && objc_msgSend(v22, "count") != count)
   {
     v23 = 0;
     do
@@ -631,7 +631,7 @@ LABEL_3:
       [v9 addObject:{objc_msgSend(v33, "objectForKeyedSubscript:", objc_msgSend(v22, "objectAtIndexedSubscript:", v23++))}];
     }
 
-    while (v23 < [v22 count] - a6);
+    while (v23 < [v22 count] - count);
   }
 
   v36 = 0u;
@@ -703,9 +703,9 @@ LABEL_3:
   }
 }
 
-- (id)__logItemsForDatapathStallEventWithFilteredContent:(BOOL)a3
+- (id)__logItemsForDatapathStallEventWithFilteredContent:(BOOL)content
 {
-  v8 = a3;
+  contentCopy = content;
   v4 = +[NSMutableArray array];
   [v4 addObject:{+[W5LogItemRequest requestWithItemID:configuration:](W5LogItemRequest, "requestWithItemID:configuration:", 39, 0)}];
   [v4 addObject:{+[W5LogItemRequest requestWithItemID:configuration:](W5LogItemRequest, "requestWithItemID:configuration:", 45, &off_1000F2388)}];
@@ -718,17 +718,17 @@ LABEL_3:
   [v4 addObject:{+[W5LogItemRequest requestWithItemID:configuration:](W5LogItemRequest, "requestWithItemID:configuration:", 58, 0)}];
   [v4 addObject:{+[W5LogItemRequest requestWithItemID:configuration:](W5LogItemRequest, "requestWithItemID:configuration:", 11, 0)}];
   [v4 addObject:{-[W5LogManager __configurationDiagnosticsLogItemWithTimeout:](self, "__configurationDiagnosticsLogItemWithTimeout:", 0.0)}];
-  v5 = [+[NSUUID UUID](NSUUID UUIDString];
+  uUIDString = [+[NSUUID UUID](NSUUID UUIDString];
   [v4 addObject:{+[W5LogItemRequest requestWithItemID:configuration:](W5LogItemRequest, "requestWithItemID:configuration:", 28, &off_1000F2428)}];
   [v4 addObject:{-[W5LogManager __environmentDiagnosticsLogItemWithTimeout:](self, "__environmentDiagnosticsLogItemWithTimeout:", 0.0)}];
   v17[0] = @"Reason";
   v17[1] = @"NameOverride";
-  v18[0] = [NSString stringWithFormat:@"%@~dps~PRE[%@]", @"WiFiDebug", [(NSString *)v5 substringToIndex:5]];
+  v18[0] = [NSString stringWithFormat:@"%@~dps~PRE[%@]", @"WiFiDebug", [(NSString *)uUIDString substringToIndex:5]];
   v18[1] = [NSString stringWithFormat:@"CoreCapture Dump (%@)", v18[0]];
   [v4 addObject:{+[W5LogItemRequest requestWithItemID:configuration:](W5LogItemRequest, "requestWithItemID:configuration:", 21, +[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v18, v17, 2))}];
-  v6 = [+[NSUUID UUID](NSUUID UUIDString];
+  uUIDString2 = [+[NSUUID UUID](NSUUID UUIDString];
   v15 = @"UUID";
-  v16 = v6;
+  v16 = uUIDString2;
   [v4 addObject:{+[W5LogItemRequest requestWithItemID:configuration:](W5LogItemRequest, "requestWithItemID:configuration:", 24, +[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v16, &v15, 1))}];
   [v4 addObject:{+[W5LogItemRequest requestWithItemID:configuration:](W5LogItemRequest, "requestWithItemID:configuration:", 69, &off_1000F2450)}];
   [v4 addObject:{+[W5LogItemRequest requestWithItemID:configuration:](W5LogItemRequest, "requestWithItemID:configuration:", 81, &off_1000F2478)}];
@@ -739,12 +739,12 @@ LABEL_3:
   [v4 addObject:{+[W5LogItemRequest requestWithItemID:configuration:](W5LogItemRequest, "requestWithItemID:configuration:", 3, &off_1000F2518)}];
   [v4 addObject:{+[W5LogItemRequest requestWithItemID:configuration:](W5LogItemRequest, "requestWithItemID:configuration:", 81, &off_1000F2540)}];
   v13 = @"UUID";
-  v14 = v6;
+  v14 = uUIDString2;
   [v4 addObject:{+[W5LogItemRequest requestWithItemID:configuration:](W5LogItemRequest, "requestWithItemID:configuration:", 25, +[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v14, &v13, 1))}];
   [v4 addObject:{+[W5LogItemRequest requestWithItemID:configuration:](W5LogItemRequest, "requestWithItemID:configuration:", 69, &off_1000F2568)}];
   v11[0] = @"Reason";
   v11[1] = @"NameOverride";
-  v12[0] = [NSString stringWithFormat:@"%@~dps~POST[%@]", @"WiFiDebug", [(NSString *)v5 substringToIndex:5]];
+  v12[0] = [NSString stringWithFormat:@"%@~dps~POST[%@]", @"WiFiDebug", [(NSString *)uUIDString substringToIndex:5]];
   v12[1] = [NSString stringWithFormat:@"CoreCapture Dump (%@)", v12[0]];
   [v4 addObject:{+[W5LogItemRequest requestWithItemID:configuration:](W5LogItemRequest, "requestWithItemID:configuration:", 21, +[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v12, v11, 2))}];
   [v4 addObject:{+[W5LogItemRequest requestWithItemID:configuration:](W5LogItemRequest, "requestWithItemID:configuration:", 4, 0)}];
@@ -754,10 +754,10 @@ LABEL_3:
   [v4 addObject:{+[W5LogItemRequest requestWithItemID:configuration:](W5LogItemRequest, "requestWithItemID:configuration:", 37, &off_1000F25B8)}];
   [v4 addObject:{+[W5LogItemRequest requestWithItemID:configuration:](W5LogItemRequest, "requestWithItemID:configuration:", 40, 0)}];
   v9[0] = @"IncludeMatching";
-  v10[0] = [NSRegularExpression escapedPatternForString:[(NSString *)v5 substringToIndex:5]];
+  v10[0] = [NSRegularExpression escapedPatternForString:[(NSString *)uUIDString substringToIndex:5]];
   v9[1] = @"FilterContent";
   v9[2] = @"Compress";
-  v10[1] = [NSNumber numberWithBool:v8];
+  v10[1] = [NSNumber numberWithBool:contentCopy];
   v10[2] = &__kCFBooleanTrue;
   [v4 addObject:{+[W5LogItemRequest requestWithItemID:configuration:](W5LogItemRequest, "requestWithItemID:configuration:", 19, +[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v10, v9, 3))}];
   return [v4 copy];
@@ -772,12 +772,12 @@ LABEL_3:
   return v2;
 }
 
-- (id)__logItemsForWiFiDiagnosticsExtensionWithCoreCapturePrefix:(id)a3
+- (id)__logItemsForWiFiDiagnosticsExtensionWithCoreCapturePrefix:(id)prefix
 {
   v4 = +[NSMutableArray array];
   v18 = [+[NSFileManager defaultManager](NSFileManager isExecutableFileAtPath:"isExecutableFileAtPath:", @"/sbin/ping"];
-  v5 = [+[NSUUID UUID](NSUUID UUIDString];
-  v6 = [NSString stringWithFormat:@"%@~PRE[%@]", a3, [(NSString *)v5 substringToIndex:5]];
+  uUIDString = [+[NSUUID UUID](NSUUID UUIDString];
+  v6 = [NSString stringWithFormat:@"%@~PRE[%@]", prefix, [(NSString *)uUIDString substringToIndex:5]];
   v46[0] = &off_1000EF470;
   v45[0] = @"MaxCount";
   v45[1] = @"IncludeMatching";
@@ -801,7 +801,7 @@ LABEL_3:
   v40[2] = @"NameOverride";
   v41[2] = @"CoreCapture (PRE)";
   v17 = [W5LogItemRequest requestWithItemID:53 configuration:[NSDictionary dictionaryWithObjects:v41 forKeys:v40 count:3]];
-  v8 = [NSString stringWithFormat:@"%@~POST[%@]", a3, [(NSString *)v5 substringToIndex:5]];
+  v8 = [NSString stringWithFormat:@"%@~POST[%@]", prefix, [(NSString *)uUIDString substringToIndex:5]];
   v38[0] = @"MaxAge";
   v38[1] = @"Compress";
   v39[0] = &off_1000EF4D0;
@@ -839,9 +839,9 @@ LABEL_3:
   v31[2] = @"Wi-Fi Logs (24h)";
   v31[3] = &off_1000EF4B8;
   v15 = [W5LogItemRequest requestWithItemID:53 configuration:[NSDictionary dictionaryWithObjects:v31 forKeys:v30 count:4]];
-  v10 = [+[NSUUID UUID](NSUUID UUIDString];
+  uUIDString2 = [+[NSUUID UUID](NSUUID UUIDString];
   v27 = @"UUID";
-  v28 = v10;
+  v28 = uUIDString2;
   v29[0] = [W5LogItemRequest requestWithItemID:24 configuration:[NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1]];
   v29[1] = [W5LogItemRequest requestWithItemID:69 configuration:&off_1000F26A8];
   v25[0] = @"Requests";
@@ -852,7 +852,7 @@ LABEL_3:
   v26[2] = @"TCP Dump (Begin)";
   v11 = [W5LogItemRequest requestWithItemID:53 configuration:[NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:3]];
   v22 = @"UUID";
-  v23 = v10;
+  v23 = uUIDString2;
   v24[0] = [W5LogItemRequest requestWithItemID:25 configuration:[NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1]];
   v24[1] = [W5LogItemRequest requestWithItemID:69 configuration:&off_1000F26D0];
   v20[0] = @"Requests";
@@ -1016,7 +1016,7 @@ LABEL_3:
   return v2;
 }
 
-- (id)__configurationDiagnosticsLogItemWithTimeout:(double)a3
+- (id)__configurationDiagnosticsLogItemWithTimeout:(double)timeout
 {
   v4 = +[NSMutableArray array];
   v5 = +[NSMutableDictionary dictionary];
@@ -1053,7 +1053,7 @@ LABEL_3:
   v8[0] = v4;
   v7[0] = @"DiagnosticsTests";
   v7[1] = @"Timeout";
-  v8[1] = [NSNumber numberWithDouble:a3];
+  v8[1] = [NSNumber numberWithDouble:timeout];
   v8[2] = @"WiFi Conf Diagnostics";
   v7[2] = @"NameOverride";
   v7[3] = @"FileNameOverride";
@@ -1061,7 +1061,7 @@ LABEL_3:
   return [W5LogItemRequest requestWithItemID:26 configuration:[NSDictionary dictionaryWithObjects:v8 forKeys:v7 count:4]];
 }
 
-- (id)__environmentDiagnosticsLogItemWithTimeout:(double)a3
+- (id)__environmentDiagnosticsLogItemWithTimeout:(double)timeout
 {
   v4 = +[NSMutableArray array];
   v5 = +[NSMutableDictionary dictionary];
@@ -1078,7 +1078,7 @@ LABEL_3:
   v8[0] = v4;
   v7[0] = @"DiagnosticsTests";
   v7[1] = @"Timeout";
-  v8[1] = [NSNumber numberWithDouble:a3];
+  v8[1] = [NSNumber numberWithDouble:timeout];
   v8[2] = @"WiFi Env Diagnostics";
   v7[2] = @"NameOverride";
   v7[3] = @"FileNameOverride";
@@ -1086,7 +1086,7 @@ LABEL_3:
   return [W5LogItemRequest requestWithItemID:26 configuration:[NSDictionary dictionaryWithObjects:v8 forKeys:v7 count:4]];
 }
 
-- (id)__connectivityDiagnosticsLogItemWithTimeout:(double)a3
+- (id)__connectivityDiagnosticsLogItemWithTimeout:(double)timeout
 {
   v4 = +[NSMutableArray array];
   v5 = [+[NSFileManager defaultManager](NSFileManager isExecutableFileAtPath:"isExecutableFileAtPath:", @"/sbin/ping"];
@@ -1148,7 +1148,7 @@ LABEL_3:
   v12[0] = v4;
   v11[0] = @"DiagnosticsTests";
   v11[1] = @"Timeout";
-  v12[1] = [NSNumber numberWithDouble:a3];
+  v12[1] = [NSNumber numberWithDouble:timeout];
   v12[2] = @"WiFi Conn Diagnostics";
   v11[2] = @"NameOverride";
   v11[3] = @"FileNameOverride";
@@ -1156,13 +1156,13 @@ LABEL_3:
   return [W5LogItemRequest requestWithItemID:26 configuration:[NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:4]];
 }
 
-- (id)__fastConnectivityDiagnosticsLogItemWithTimeout:(double)a3
+- (id)__fastConnectivityDiagnosticsLogItemWithTimeout:(double)timeout
 {
   v6[0] = @"DiagnosticsTests";
-  v5 = [(W5LogManager *)self __concurrentConnectivityDiagnosticsTest];
-  v7[0] = [NSArray arrayWithObjects:&v5 count:1];
+  __concurrentConnectivityDiagnosticsTest = [(W5LogManager *)self __concurrentConnectivityDiagnosticsTest];
+  v7[0] = [NSArray arrayWithObjects:&__concurrentConnectivityDiagnosticsTest count:1];
   v6[1] = @"Timeout";
-  v7[1] = [NSNumber numberWithDouble:a3];
+  v7[1] = [NSNumber numberWithDouble:timeout];
   v7[2] = @"WiFi Conn Diagnostics";
   v6[2] = @"NameOverride";
   v6[3] = @"FileNameOverride";
@@ -1180,12 +1180,12 @@ LABEL_3:
   return byte_100106C20;
 }
 
-- (id)__logItemsForSysdiagnoseWithFilteredContent:(BOOL)a3 useMegaWiFiProfileLimits:(BOOL)a4 timeout:(int64_t)a5
+- (id)__logItemsForSysdiagnoseWithFilteredContent:(BOOL)content useMegaWiFiProfileLimits:(BOOL)limits timeout:(int64_t)timeout
 {
-  v44 = a3;
+  contentCopy = content;
   v41 = +[NSMutableArray array];
-  v43 = [+[NSUUID UUID](NSUUID UUIDString];
-  v35 = a5 > 35999 && a4;
+  uUIDString = [+[NSUUID UUID](NSUUID UUIDString];
+  v35 = timeout > 35999 && limits;
   v8 = 4000;
   if (v35)
   {
@@ -1193,7 +1193,7 @@ LABEL_3:
   }
 
   v40 = v8;
-  if (a5 > 35999 && a4)
+  if (timeout > 35999 && limits)
   {
     v9 = 24000;
   }
@@ -1204,7 +1204,7 @@ LABEL_3:
   }
 
   v10 = 2000;
-  if (a5 > 35999 && a4)
+  if (timeout > 35999 && limits)
   {
     v10 = 3000;
   }
@@ -1212,13 +1212,13 @@ LABEL_3:
   v34 = v10;
   +[NSDate timeIntervalSinceReferenceDate];
   v12 = v11;
-  v42 = self;
+  selfCopy = self;
   [(NSDate *)[(W5LogItemRequestInternal *)self->_activeRequest addedAt] timeIntervalSinceReferenceDate];
   v14 = (v12 - v13);
   v15 = v9;
-  if ((a5 - v14) * 0.4 >= v9)
+  if ((timeout - v14) * 0.4 >= v9)
   {
-    v15 = (a5 - v14) * 0.4;
+    v15 = (timeout - v14) * 0.4;
   }
 
   v16 = v15;
@@ -1238,7 +1238,7 @@ LABEL_3:
       v97 = 2048;
       v98 = v16;
       v99 = 2048;
-      v100 = a5;
+      timeoutCopy = timeout;
       v101 = 2048;
       v102 = v14;
       LODWORD(v31) = 42;
@@ -1262,8 +1262,8 @@ LABEL_3:
   v91[2] = @"CoreCapture Dump (PRE)";
   v33 = [W5LogItemRequest requestWithItemID:53 configuration:[NSDictionary dictionaryWithObjects:v91 forKeys:v90 count:3]];
   v87 = @"UUID";
-  v39 = [+[NSUUID UUID](NSUUID UUIDString];
-  v88 = v39;
+  uUIDString2 = [+[NSUUID UUID](NSUUID UUIDString];
+  v88 = uUIDString2;
   v89[0] = [W5LogItemRequest requestWithItemID:24 configuration:[NSDictionary dictionaryWithObjects:&v88 forKeys:&v87 count:1]];
   v89[1] = [W5LogItemRequest requestWithItemID:69 configuration:&off_1000F2D10];
   v85[0] = @"Requests";
@@ -1277,7 +1277,7 @@ LABEL_3:
   v84[1] = [W5LogItemRequest requestWithItemID:57 configuration:0];
   v84[2] = [W5LogItemRequest requestWithItemID:45 configuration:&off_1000F2D38];
   v84[3] = [W5LogItemRequest requestWithItemID:46 configuration:&off_1000F2D60];
-  v84[4] = [(W5LogManager *)v42 __configurationDiagnosticsLogItemWithTimeout:0.0];
+  v84[4] = [(W5LogManager *)selfCopy __configurationDiagnosticsLogItemWithTimeout:0.0];
   v84[5] = [W5LogItemRequest requestWithItemID:48 configuration:0];
   v84[6] = [W5LogItemRequest requestWithItemID:28 configuration:&off_1000F2D88];
   v84[7] = [W5LogItemRequest requestWithItemID:80 configuration:0];
@@ -1306,7 +1306,7 @@ LABEL_3:
   v80[1] = @"MaxSize";
   v81[1] = [NSNumber numberWithInteger:v20];
   v80[2] = @"FilterContent";
-  v81[2] = [NSNumber numberWithBool:v44];
+  v81[2] = [NSNumber numberWithBool:contentCopy];
   v81[3] = &__kCFBooleanTrue;
   v80[3] = @"Compress";
   v80[4] = @"ExcludeMatching";
@@ -1326,7 +1326,7 @@ LABEL_3:
   v79[9] = [W5LogItemRequest requestWithItemID:19 configuration:v21];
   v79[10] = [W5LogItemRequest requestWithItemID:70 configuration:&off_1000F2EA0];
   v22 = [NSArray arrayWithObjects:v79 count:11];
-  if (!v44)
+  if (!contentCopy)
   {
     v22 = [(NSArray *)v22 arrayByAddingObject:v32];
   }
@@ -1335,7 +1335,7 @@ LABEL_3:
   v77[1] = @"RunConcurrent";
   v78[0] = v22;
   v78[1] = &__kCFBooleanTrue;
-  v78[2] = v43;
+  v78[2] = uUIDString;
   v77[2] = @"AddLeewayUUID";
   v77[3] = @"Timeout";
   v77[4] = @"NameOverride";
@@ -1344,7 +1344,7 @@ LABEL_3:
   [v41 addObject:{+[W5LogItemRequest requestWithItemID:configuration:](W5LogItemRequest, "requestWithItemID:configuration:", 53, +[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v78, v77, 5))}];
   v76[0] = [W5LogItemRequest requestWithItemID:81 configuration:&off_1000F2EC8];
   v76[1] = [W5LogItemRequest requestWithItemID:3 configuration:&off_1000F2EF0];
-  v76[2] = [(W5LogManager *)v42 __fastConnectivityDiagnosticsLogItemWithTimeout:2000.0];
+  v76[2] = [(W5LogManager *)selfCopy __fastConnectivityDiagnosticsLogItemWithTimeout:2000.0];
   v76[3] = [W5LogItemRequest requestWithItemID:3 configuration:&off_1000F2F18];
   v76[4] = [W5LogItemRequest requestWithItemID:81 configuration:&off_1000F2F40];
   v76[5] = [W5LogItemRequest requestWithItemID:62 configuration:&off_1000F2F68];
@@ -1352,7 +1352,7 @@ LABEL_3:
   v74[1] = @"RunConcurrent";
   v75[0] = [NSArray arrayWithObjects:v76 count:6];
   v75[1] = &__kCFBooleanFalse;
-  v75[2] = v43;
+  v75[2] = uUIDString;
   v74[2] = @"AddLeewayUUID";
   v74[3] = @"Timeout";
   v74[4] = @"NameOverride";
@@ -1363,7 +1363,7 @@ LABEL_3:
   v72[0] = @"IncludeMatching";
   v73[0] = [NSRegularExpression escapedPatternForString:v23];
   v72[1] = @"FilterContent";
-  v73[1] = [NSNumber numberWithBool:v44];
+  v73[1] = [NSNumber numberWithBool:contentCopy];
   v73[2] = &__kCFBooleanTrue;
   v72[2] = @"Compress";
   v72[3] = @"NameOverride";
@@ -1377,14 +1377,14 @@ LABEL_3:
   v67[0] = @"Delay";
   v67[1] = @"UseLeewayUUID";
   v68[0] = [NSNumber numberWithUnsignedInteger:v40 - 400];
-  v68[1] = v43;
+  v68[1] = uUIDString;
   v71[1] = [W5LogItemRequest requestWithItemID:69 configuration:[NSDictionary dictionaryWithObjects:v68 forKeys:v67 count:2]];
   v71[2] = [W5LogItemRequest requestWithItemID:19 configuration:v24];
   v65[0] = @"Requests";
   v65[1] = @"RunConcurrent";
   v66[0] = [NSArray arrayWithObjects:v71 count:3];
   v66[1] = &__kCFBooleanFalse;
-  v66[2] = v43;
+  v66[2] = uUIDString;
   v65[2] = @"UseLeewayUUID";
   v65[3] = @"Timeout";
   v65[4] = @"NameOverride";
@@ -1394,7 +1394,7 @@ LABEL_3:
   v63[0] = @"IncludeMatching";
   v64[0] = [NSRegularExpression escapedPatternForString:v38];
   v63[1] = @"FilterContent";
-  v64[1] = [NSNumber numberWithBool:v44];
+  v64[1] = [NSNumber numberWithBool:contentCopy];
   v64[2] = &__kCFBooleanTrue;
   v63[2] = @"Compress";
   v63[3] = @"NameOverride";
@@ -1403,14 +1403,14 @@ LABEL_3:
   v60[0] = @"Delay";
   v60[1] = @"UseLeewayUUID";
   v61[0] = &off_1000EF4B8;
-  v61[1] = v43;
+  v61[1] = uUIDString;
   v62[0] = [W5LogItemRequest requestWithItemID:69 configuration:[NSDictionary dictionaryWithObjects:v61 forKeys:v60 count:2]];
   v62[1] = [W5LogItemRequest requestWithItemID:19 configuration:v25];
   v58[0] = @"Requests";
   v58[1] = @"RunConcurrent";
   v59[0] = [NSArray arrayWithObjects:v62 count:2];
   v59[1] = &__kCFBooleanFalse;
-  v59[2] = v43;
+  v59[2] = uUIDString;
   v58[2] = @"UseLeewayUUID";
   v58[3] = @"Timeout";
   v58[4] = @"NameOverride";
@@ -1418,7 +1418,7 @@ LABEL_3:
   v59[4] = @"CoreCapture (PRE)";
   v26 = [W5LogItemRequest requestWithItemID:53 configuration:[NSDictionary dictionaryWithObjects:v59 forKeys:v58 count:5]];
   v55 = @"UUID";
-  v56 = v39;
+  v56 = uUIDString2;
   v57[0] = [W5LogItemRequest requestWithItemID:25 configuration:[NSDictionary dictionaryWithObjects:&v56 forKeys:&v55 count:1]];
   v57[1] = [W5LogItemRequest requestWithItemID:69 configuration:&off_1000F2F90];
   v53[0] = @"Requests";
@@ -1429,7 +1429,7 @@ LABEL_3:
   v54[2] = @"TCP Dump (POST)";
   v27 = [W5LogItemRequest requestWithItemID:53 configuration:[NSDictionary dictionaryWithObjects:v54 forKeys:v53 count:3]];
   v52[0] = [W5LogItemRequest requestWithItemID:28 configuration:&off_1000F2FB8];
-  v52[1] = [(W5LogManager *)v42 __environmentDiagnosticsLogItemWithTimeout:0.0];
+  v52[1] = [(W5LogManager *)selfCopy __environmentDiagnosticsLogItemWithTimeout:0.0];
   v50[0] = @"Requests";
   v50[1] = @"RunConcurrent";
   v51[0] = [NSArray arrayWithObjects:v52 count:2];
@@ -1444,10 +1444,10 @@ LABEL_3:
   v47[0] = @"Delay";
   v47[1] = @"UseLeewayUUID";
   v48[0] = [NSNumber numberWithUnsignedInteger:v40];
-  v48[1] = v43;
+  v48[1] = uUIDString;
   v49[5] = [W5LogItemRequest requestWithItemID:69 configuration:[NSDictionary dictionaryWithObjects:v48 forKeys:v47 count:2]];
   v28 = [NSArray arrayWithObjects:v49 count:6];
-  if (!v44)
+  if (!contentCopy)
   {
     v28 = [(NSArray *)v28 arrayByAddingObject:v27];
   }
@@ -1456,7 +1456,7 @@ LABEL_3:
   v45[1] = @"RunConcurrent";
   v46[0] = v28;
   v46[1] = &__kCFBooleanTrue;
-  v46[2] = v43;
+  v46[2] = uUIDString;
   v45[2] = @"UseLeewayUUID";
   v45[3] = @"Timeout";
   v45[4] = @"NameOverride";
@@ -1493,10 +1493,10 @@ LABEL_3:
   return v7;
 }
 
-- (id)__basicWiFiLogsWithFilteredContent:(BOOL)a3 useMegaWiFiProfileLimits:(BOOL)a4
+- (id)__basicWiFiLogsWithFilteredContent:(BOOL)content useMegaWiFiProfileLimits:(BOOL)limits
 {
-  v4 = a4;
-  v23 = a3;
+  limitsCopy = limits;
+  contentCopy = content;
   v6 = +[NSMutableArray array];
   model = self->_model;
   if (!model)
@@ -1521,7 +1521,7 @@ LABEL_3:
   else
   {
 LABEL_5:
-    if (v4)
+    if (limitsCopy)
     {
       v9 = 8;
     }
@@ -1552,7 +1552,7 @@ LABEL_11:
     v61 = 1024;
     v62 = v10;
     v63 = 1024;
-    v64 = v4;
+    v64 = limitsCopy;
     v65 = 1024;
     v66 = v10;
     LODWORD(v21) = 66;
@@ -1563,9 +1563,9 @@ LABEL_11:
   v13 = [+[NSUUID UUID](NSUUID UUIDString:v20];
   v14 = [NSString stringWithFormat:@"%@~sysdiag", @"WiFiDebug"];
   v48 = @"TimestampUUID";
-  v49 = [+[NSUUID UUID](NSUUID UUIDString];
-  v22 = v49;
-  v50[0] = [W5LogItemRequest requestWithItemID:39 configuration:[NSDictionary dictionaryWithObjects:&v49 forKeys:&v48 count:1]];
+  uUIDString = [+[NSUUID UUID](NSUUID UUIDString];
+  v22 = uUIDString;
+  v50[0] = [W5LogItemRequest requestWithItemID:39 configuration:[NSDictionary dictionaryWithObjects:&uUIDString forKeys:&v48 count:1]];
   v50[1] = [W5LogItemRequest requestWithItemID:45 configuration:&off_1000F3378];
   v50[2] = [W5LogItemRequest requestWithItemID:46 configuration:&off_1000F33A0];
   v50[3] = [W5LogItemRequest requestWithItemID:28 configuration:&off_1000F33C8];
@@ -1610,7 +1610,7 @@ LABEL_11:
   v37[0] = @"MaxCount";
   v38[0] = [NSNumber numberWithUnsignedInteger:v9];
   v37[1] = @"FilterContent";
-  v38[1] = [NSNumber numberWithBool:v23];
+  v38[1] = [NSNumber numberWithBool:contentCopy];
   v37[2] = @"Compress";
   v38[2] = [NSNumber numberWithBool:v10];
   v17 = [NSDictionary dictionaryWithObjects:v38 forKeys:v37 count:3];
@@ -1659,27 +1659,27 @@ LABEL_11:
   return v6;
 }
 
-- (id)__expandLogItems:(id)a3 configuration:(id)a4
+- (id)__expandLogItems:(id)items configuration:(id)configuration
 {
   v7 = +[NSMutableArray array];
-  v19 = [objc_msgSend(a4 objectForKeyedSubscript:{@"UseMegaWiFiProfileLimits", "BOOLValue"}];
-  v8 = [a4 objectForKeyedSubscript:@"FilterContent"];
+  v19 = [objc_msgSend(configuration objectForKeyedSubscript:{@"UseMegaWiFiProfileLimits", "BOOLValue"}];
+  v8 = [configuration objectForKeyedSubscript:@"FilterContent"];
   if (v8)
   {
-    v9 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
   }
 
   else
   {
     os_variant_has_internal_diagnostics();
-    v9 = 0;
+    bOOLValue = 0;
   }
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [a3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v10 = [items countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (!v10)
   {
     goto LABEL_41;
@@ -1693,47 +1693,47 @@ LABEL_11:
     {
       if (*v21 != v12)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(items);
       }
 
       v14 = *(*(&v20 + 1) + 8 * i);
-      v15 = [v14 itemID];
-      if (v15 > 70)
+      itemID = [v14 itemID];
+      if (itemID > 70)
       {
-        if (v15 <= 78)
+        if (itemID <= 78)
         {
-          if (v15 == 71)
+          if (itemID == 71)
           {
-            v17 = -[W5LogManager __logItemsForDumpLogsEventWithReason:filteredContent:](self, "__logItemsForDumpLogsEventWithReason:filteredContent:", [objc_msgSend(v14 "configuration")], v9);
+            __logItemsForWiFiDiagnosticsApp = -[W5LogManager __logItemsForDumpLogsEventWithReason:filteredContent:](self, "__logItemsForDumpLogsEventWithReason:filteredContent:", [objc_msgSend(v14 "configuration")], bOOLValue);
             goto LABEL_38;
           }
 
-          if (v15 == 72)
+          if (itemID == 72)
           {
-            v17 = [(W5LogManager *)self __logItemsForDatapathStallEventWithFilteredContent:v9];
+            __logItemsForWiFiDiagnosticsApp = [(W5LogManager *)self __logItemsForDatapathStallEventWithFilteredContent:bOOLValue];
             goto LABEL_38;
           }
 
-          if (v15 != 77)
+          if (itemID != 77)
           {
             goto LABEL_36;
           }
 
 LABEL_20:
-          v17 = [(W5LogManager *)self __logItemsForWiFiDiagnosticsApp];
+          __logItemsForWiFiDiagnosticsApp = [(W5LogManager *)self __logItemsForWiFiDiagnosticsApp];
           goto LABEL_38;
         }
 
-        switch(v15)
+        switch(itemID)
         {
           case 'O':
-            v17 = -[W5LogManager __logItemsForBTSysdiagnoseWithFilteredContent:timeout:](self, "__logItemsForBTSysdiagnoseWithFilteredContent:timeout:", v9, [objc_msgSend(a4 objectForKeyedSubscript:{@"Timeout", "integerValue"}]);
+            __logItemsForWiFiDiagnosticsApp = -[W5LogManager __logItemsForBTSysdiagnoseWithFilteredContent:timeout:](self, "__logItemsForBTSysdiagnoseWithFilteredContent:timeout:", bOOLValue, [objc_msgSend(configuration objectForKeyedSubscript:{@"Timeout", "integerValue"}]);
             break;
           case 'R':
-            v17 = -[W5LogManager __logItemsForABCWithReason:filteredContent:](self, "__logItemsForABCWithReason:filteredContent:", [objc_msgSend(v14 "configuration")], v9);
+            __logItemsForWiFiDiagnosticsApp = -[W5LogManager __logItemsForABCWithReason:filteredContent:](self, "__logItemsForABCWithReason:filteredContent:", [objc_msgSend(v14 "configuration")], bOOLValue);
             break;
           case 'S':
-            v17 = -[W5LogManager __logItemsForBackgroundEventWithReason:filteredContent:](self, "__logItemsForBackgroundEventWithReason:filteredContent:", [objc_msgSend(v14 "configuration")], v9);
+            __logItemsForWiFiDiagnosticsApp = -[W5LogManager __logItemsForBackgroundEventWithReason:filteredContent:](self, "__logItemsForBackgroundEventWithReason:filteredContent:", [objc_msgSend(v14 "configuration")], bOOLValue);
             break;
           default:
 LABEL_36:
@@ -1742,18 +1742,18 @@ LABEL_36:
         }
       }
 
-      else if (v15 > 58)
+      else if (itemID > 58)
       {
-        switch(v15)
+        switch(itemID)
         {
           case ';':
-            v17 = [(W5LogManager *)self __logItemsForFeedbackAssistant];
+            __logItemsForWiFiDiagnosticsApp = [(W5LogManager *)self __logItemsForFeedbackAssistant];
             break;
           case '<':
-            v17 = [(W5LogManager *)self __logItemsForTapToRadar];
+            __logItemsForWiFiDiagnosticsApp = [(W5LogManager *)self __logItemsForTapToRadar];
             break;
           case 'C':
-            v17 = [(W5LogManager *)self __logItemsForInternalWiFiSettings];
+            __logItemsForWiFiDiagnosticsApp = [(W5LogManager *)self __logItemsForInternalWiFiSettings];
             break;
           default:
             goto LABEL_36;
@@ -1762,23 +1762,23 @@ LABEL_36:
 
       else
       {
-        switch(v15)
+        switch(itemID)
         {
           case '6':
             goto LABEL_20;
           case '7':
-            v17 = [(W5LogManager *)self __logItemsForWiFiDiagnosticsExtensionWithCoreCapturePrefix:[NSString stringWithFormat:@"%@~wdext", @"WiFiDebug"]];
+            __logItemsForWiFiDiagnosticsApp = [(W5LogManager *)self __logItemsForWiFiDiagnosticsExtensionWithCoreCapturePrefix:[NSString stringWithFormat:@"%@~wdext", @"WiFiDebug"]];
             break;
           case '8':
-            v16 = [objc_msgSend(a4 objectForKeyedSubscript:{@"Timeout", "integerValue"}];
+            v16 = [objc_msgSend(configuration objectForKeyedSubscript:{@"Timeout", "integerValue"}];
             if (v16)
             {
-              v17 = [(W5LogManager *)self __logItemsForSysdiagnoseWithFilteredContent:v9 useMegaWiFiProfileLimits:v19 timeout:v16];
+              __logItemsForWiFiDiagnosticsApp = [(W5LogManager *)self __logItemsForSysdiagnoseWithFilteredContent:bOOLValue useMegaWiFiProfileLimits:v19 timeout:v16];
             }
 
             else
             {
-              v17 = [(W5LogManager *)self __logItemsForSysdiagnoseWithNoTimeoutAndFilteredContent:v9 useMegaWiFiProfileLimits:v19];
+              __logItemsForWiFiDiagnosticsApp = [(W5LogManager *)self __logItemsForSysdiagnoseWithNoTimeoutAndFilteredContent:bOOLValue useMegaWiFiProfileLimits:v19];
             }
 
             break;
@@ -1788,10 +1788,10 @@ LABEL_36:
       }
 
 LABEL_38:
-      [v7 addObjectsFromArray:{-[W5LogManager __expandLogItems:configuration:](self, "__expandLogItems:configuration:", v17, a4)}];
+      [v7 addObjectsFromArray:{-[W5LogManager __expandLogItems:configuration:](self, "__expandLogItems:configuration:", __logItemsForWiFiDiagnosticsApp, configuration)}];
     }
 
-    v11 = [a3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v11 = [items countByEnumeratingWithState:&v20 objects:v24 count:16];
   }
 
   while (v11);
@@ -1805,60 +1805,60 @@ LABEL_41:
   return result;
 }
 
-- (void)__runRequest:(id)a3 reply:(id)a4
+- (void)__runRequest:(id)request reply:(id)reply
 {
-  v7 = -[W5LogManager __expandLogItems:configuration:](self, "__expandLogItems:configuration:", [a3 itemRequests], objc_msgSend(a3, "configuration"));
+  v7 = -[W5LogManager __expandLogItems:configuration:](self, "__expandLogItems:configuration:", [request itemRequests], objc_msgSend(request, "configuration"));
   debugLogQueue = self->_debugLogQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100064560;
   block[3] = &unk_1000E1948;
   block[4] = self;
-  block[5] = a3;
+  block[5] = request;
   block[6] = v7;
   dispatch_sync(debugLogQueue, block);
-  v9 = -[NSURL URLByAppendingPathComponent:](+[NSURL fileURLWithPath:](NSURL, "fileURLWithPath:", @"/var/run/com.apple.wifivelocity"), "URLByAppendingPathComponent:", [a3 filename]);
-  if ([objc_msgSend(objc_msgSend(a3 "configuration")])
+  uRLByDeletingPathExtension = -[NSURL URLByAppendingPathComponent:](+[NSURL fileURLWithPath:](NSURL, "fileURLWithPath:", @"/var/run/com.apple.wifivelocity"), "URLByAppendingPathComponent:", [request filename]);
+  if ([objc_msgSend(objc_msgSend(request "configuration")])
   {
-    v9 = [(NSURL *)v9 URLByDeletingPathExtension];
+    uRLByDeletingPathExtension = [(NSURL *)uRLByDeletingPathExtension URLByDeletingPathExtension];
   }
 
   v10 = [NSURL fileURLWithPath:@"/var/mobile" isDirectory:1];
-  if (v9 && (v11 = v10) != 0)
+  if (uRLByDeletingPathExtension && (v11 = v10) != 0)
   {
-    [+[NSFileManager defaultManager](NSFileManager createDirectoryAtPath:"createDirectoryAtPath:withIntermediateDirectories:attributes:error:" withIntermediateDirectories:[(NSURL *)v9 path] attributes:1 error:0, 0];
-    v12 = [(W5StatusManager *)self->_status concurrentQueue];
+    [+[NSFileManager defaultManager](NSFileManager createDirectoryAtPath:"createDirectoryAtPath:withIntermediateDirectories:attributes:error:" withIntermediateDirectories:[(NSURL *)uRLByDeletingPathExtension path] attributes:1 error:0, 0];
+    concurrentQueue = [(W5StatusManager *)self->_status concurrentQueue];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000647B4;
     v13[3] = &unk_1000E21D0;
-    v13[4] = a3;
+    v13[4] = request;
     v13[5] = v7;
     v13[6] = self;
-    v13[7] = v9;
+    v13[7] = uRLByDeletingPathExtension;
     v13[8] = v11;
-    v13[9] = a4;
-    [(NSOperationQueue *)v12 addOperationWithBlock:v13];
+    v13[9] = reply;
+    [(NSOperationQueue *)concurrentQueue addOperationWithBlock:v13];
   }
 
-  else if (a4)
+  else if (reply)
   {
     v15 = NSLocalizedFailureReasonErrorKey;
     v16 = @"W5ResourceErr";
-    (*(a4 + 2))(a4, [NSError errorWithDomain:@"com.apple.wifivelocity.error" code:7 userInfo:[NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1]], 0, 0);
+    (*(reply + 2))(reply, [NSError errorWithDomain:@"com.apple.wifivelocity.error" code:7 userInfo:[NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1]], 0, 0);
   }
 }
 
-- (id)__collectWiFiScanResults:(id)a3
+- (id)__collectWiFiScanResults:(id)results
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:results];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(a3 "configuration")];
-  v7 = [objc_msgSend(objc_msgSend(a3 "configuration")];
-  v8 = [objc_msgSend(objc_msgSend(a3 "configuration")];
-  v9 = [v6 path];
+  v6 = [objc_msgSend(results "configuration")];
+  v7 = [objc_msgSend(objc_msgSend(results "configuration")];
+  v8 = [objc_msgSend(objc_msgSend(results "configuration")];
+  path = [v6 path];
   if (v7)
   {
     v10 = @"wifi_scan_cache.txt";
@@ -1869,7 +1869,7 @@ LABEL_41:
     v10 = @"wifi_scan.txt";
   }
 
-  v11 = [v9 stringByAppendingPathComponent:v10];
+  v11 = [path stringByAppendingPathComponent:v10];
   v12 = objc_alloc_init(CWFScanParameters);
   [v12 setIncludeHiddenNetworks:1];
   [v12 setMergeScanResults:0];
@@ -1898,18 +1898,18 @@ LABEL_41:
   return v5;
 }
 
-- (id)__collectDiagnostics:(id)a3
+- (id)__collectDiagnostics:(id)diagnostics
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:diagnostics];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
   v6 = +[NSMutableString string];
-  v7 = [objc_msgSend(a3 "configuration")];
-  v8 = [objc_msgSend(a3 "configuration")];
-  v9 = [objc_msgSend(a3 "configuration")];
+  v7 = [objc_msgSend(diagnostics "configuration")];
+  v8 = [objc_msgSend(diagnostics "configuration")];
+  v9 = [objc_msgSend(diagnostics "configuration")];
   v16 = 0;
-  v10 = -[W5LogManager __runDiagnosticsTests:configuration:timeout:error:](self, "__runDiagnosticsTests:configuration:timeout:error:", v8, [a3 configuration], 0, &v16);
+  v10 = -[W5LogManager __runDiagnosticsTests:configuration:timeout:error:](self, "__runDiagnosticsTests:configuration:timeout:error:", v8, [diagnostics configuration], 0, &v16);
   [v6 appendString:@"# --- Diagnostics\n\n"];
   if (([(CWFInterface *)[(W5StatusManager *)self->_status corewifi] powerOn]& 1) == 0)
   {
@@ -1926,7 +1926,7 @@ LABEL_41:
 
   [v6 appendString:@"\n\n"];
   v12 = +[NSFileManager defaultManager];
-  v13 = [v7 path];
+  path = [v7 path];
   if (v9)
   {
     v14 = v9;
@@ -1937,7 +1937,7 @@ LABEL_41:
     v14 = @"diagnostics.txt";
   }
 
-  if (-[NSFileManager createFileAtPath:contents:attributes:](v12, "createFileAtPath:contents:attributes:", [v13 stringByAppendingPathComponent:v14], objc_msgSend(v6, "dataUsingEncoding:", 4), 0))
+  if (-[NSFileManager createFileAtPath:contents:attributes:](v12, "createFileAtPath:contents:attributes:", [path stringByAppendingPathComponent:v14], objc_msgSend(v6, "dataUsingEncoding:", 4), 0))
   {
     v19 = [NSURL fileURLWithPath:v14];
     [v5 setRelativeURLs:{+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v19, 1)}];
@@ -1955,21 +1955,21 @@ LABEL_41:
   return v5;
 }
 
-- (id)__collectPerSSIDDiagnosticsHistory:(id)a3
+- (id)__collectPerSSIDDiagnosticsHistory:(id)history
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:history];
   +[NSDate timeIntervalSinceReferenceDate];
   v17 = v5;
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(a3 "configuration")];
+  v6 = [objc_msgSend(history "configuration")];
   v18 = +[NSMutableArray array];
-  v7 = [(W5DiagnosticsManager *)self->_diagnostics diagnosticsHistory];
+  diagnosticsHistory = [(W5DiagnosticsManager *)self->_diagnostics diagnosticsHistory];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = [v7 allKeys];
+  obj = [diagnosticsHistory allKeys];
   v8 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -1985,7 +1985,7 @@ LABEL_41:
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = [objc_msgSend(objc_msgSend(v7 objectForKeyedSubscript:{v12), "allValues"), "sortedArrayUsingComparator:", &stru_1000E2E18}];
+        v13 = [objc_msgSend(objc_msgSend(diagnosticsHistory objectForKeyedSubscript:{v12), "allValues"), "sortedArrayUsingComparator:", &stru_1000E2E18}];
         v14 = +[NSMutableString string];
         [v14 appendFormat:@"# --- Diagnostics (%@)\n\n", v12];
         [v14 appendString:{-[W5LogManager __logDiagnosticsTestResults:](self, "__logDiagnosticsTestResults:", v13)}];
@@ -2009,21 +2009,21 @@ LABEL_41:
   return v17;
 }
 
-- (id)__collectPeerDiagnostics:(id)a3
+- (id)__collectPeerDiagnostics:(id)diagnostics
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:diagnostics];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(a3 "configuration")];
+  v6 = [objc_msgSend(diagnostics "configuration")];
   v7 = +[NSMutableString string];
-  v8 = [(W5PeerDiagnosticsManager *)self->_peerDiagnostics gatherPeerDiagnostics];
-  [v7 appendFormat:@"# --- Peer Diagnostics from %lu devices\n\n", objc_msgSend(v8, "count")];
+  gatherPeerDiagnostics = [(W5PeerDiagnosticsManager *)self->_peerDiagnostics gatherPeerDiagnostics];
+  [v7 appendFormat:@"# --- Peer Diagnostics from %lu devices\n\n", objc_msgSend(gatherPeerDiagnostics, "count")];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  v9 = [gatherPeerDiagnostics countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2035,7 +2035,7 @@ LABEL_41:
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(gatherPeerDiagnostics);
         }
 
         [v7 appendFormat:@"%@\n", *(*(&v14 + 1) + 8 * v12)];
@@ -2043,7 +2043,7 @@ LABEL_41:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v10 = [gatherPeerDiagnostics countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v10);
@@ -2061,13 +2061,13 @@ LABEL_41:
   return v5;
 }
 
-- (id)__collectLeakyAPStats:(id)a3
+- (id)__collectLeakyAPStats:(id)stats
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:stats];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(a3 "configuration")];
+  v6 = [objc_msgSend(stats "configuration")];
   v7 = +[NSMutableString string];
   [v7 appendString:@"# --- Leaky AP Stats\n\n"];
   [-[CWFInterface leakyAPStats](-[W5StatusManager corewifi](self->_status "corewifi")];
@@ -2084,13 +2084,13 @@ LABEL_41:
   return v5;
 }
 
-- (id)__browseBonjourInstancesWithServiceType:(id)a3 duration:(unint64_t)a4
+- (id)__browseBonjourInstancesWithServiceType:(id)type duration:(unint64_t)duration
 {
   v6 = +[NSMutableArray array];
   v7 = [NSMutableData dataWithCapacity:0];
   v20[0] = @"-B";
-  v20[1] = a3;
-  [NSTask runTaskWithLaunchPath:@"/usr/bin/dns-sd" arguments:[NSArray arrayWithObjects:v20 count:2] timeout:v7 outputData:0 errorData:0 launchHandler:0 didLaunch:a4 error:0];
+  v20[1] = type;
+  [NSTask runTaskWithLaunchPath:@"/usr/bin/dns-sd" arguments:[NSArray arrayWithObjects:v20 count:2] timeout:v7 outputData:0 errorData:0 launchHandler:0 didLaunch:duration error:0];
   if ([(NSMutableData *)v7 length])
   {
     v8 = [objc_msgSend([NSString alloc] initWithData:v7 encoding:{4), "componentsSeparatedByString:", @"\n"}];
@@ -2134,13 +2134,13 @@ LABEL_41:
   return [v6 copy];
 }
 
-- (id)__resolveBonjourInstance:(id)a3 serviceType:(id)a4 duration:(unint64_t)a5
+- (id)__resolveBonjourInstance:(id)instance serviceType:(id)type duration:(unint64_t)duration
 {
   v8 = [NSMutableData dataWithCapacity:0];
   v10[0] = @"-L";
-  v10[1] = a3;
-  v10[2] = a4;
-  [NSTask runTaskWithLaunchPath:@"/usr/bin/dns-sd" arguments:[NSArray arrayWithObjects:v10 count:3] timeout:v8 outputData:0 errorData:0 launchHandler:0 didLaunch:a5 error:0];
+  v10[1] = instance;
+  v10[2] = type;
+  [NSTask runTaskWithLaunchPath:@"/usr/bin/dns-sd" arguments:[NSArray arrayWithObjects:v10 count:3] timeout:v8 outputData:0 errorData:0 launchHandler:0 didLaunch:duration error:0];
   result = [(NSMutableData *)v8 length];
   if (result)
   {
@@ -2150,13 +2150,13 @@ LABEL_41:
   return result;
 }
 
-- (id)__collectBonjourRecords:(id)a3
+- (id)__collectBonjourRecords:(id)records
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:records];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(a3 "configuration")];
+  v6 = [objc_msgSend(records "configuration")];
   v7 = +[NSMutableString string];
   [v7 appendString:@"# --- Bonjour Records\n\n"];
   v8 = [(W5LogManager *)self __browseBonjourInstancesWithServiceType:@"_appletv-v2._tcp" duration:1];
@@ -2294,27 +2294,27 @@ LABEL_41:
   return v5;
 }
 
-- (id)__collectAWDLStatus:(id)a3
+- (id)__collectAWDLStatus:(id)status
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:status];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(a3 "configuration")];
-  v7 = [objc_msgSend(a3 "configuration")];
-  v8 = [objc_msgSend(objc_msgSend(a3 "configuration")];
+  v6 = [objc_msgSend(status "configuration")];
+  v7 = [objc_msgSend(status "configuration")];
+  v8 = [objc_msgSend(objc_msgSend(status "configuration")];
   status = self->_status;
   if (v8)
   {
-    v10 = [-[W5StatusManager cachedStatusWithUUID:](status cachedStatusWithUUID:{v7), "awdl"}];
+    awdlStatus = [-[W5StatusManager cachedStatusWithUUID:](status cachedStatusWithUUID:{v7), "awdl"}];
   }
 
   else
   {
-    v10 = [(W5StatusManager *)status awdlStatus];
+    awdlStatus = [(W5StatusManager *)status awdlStatus];
   }
 
-  v11 = v10;
+  v11 = awdlStatus;
   v12 = +[NSMutableString string];
   [v12 appendString:@"# --- AWDL Status\n\n"];
   [v12 appendString:{-[W5LogManager __logAWDLStatus:](self, "__logAWDLStatus:", v11)}];
@@ -2322,10 +2322,10 @@ LABEL_41:
   v13 = [objc_msgSend(v6 "path")];
   if (-[NSFileManager createFileAtPath:contents:attributes:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "createFileAtPath:contents:attributes:", v13, [v12 dataUsingEncoding:4], 0))
   {
-    v14 = [v11 interfaceName];
-    if (v14)
+    interfaceName = [v11 interfaceName];
+    if (interfaceName)
     {
-      v15 = v14;
+      v15 = interfaceName;
       v16 = [NSFileHandle fileHandleForUpdatingAtPath:v13];
       [(NSFileHandle *)v16 seekToEndOfFile];
       v19[0] = v15;
@@ -2343,27 +2343,27 @@ LABEL_41:
   return v5;
 }
 
-- (id)__collectNetworkStatus:(id)a3
+- (id)__collectNetworkStatus:(id)status
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:status];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(a3 "configuration")];
-  v7 = [objc_msgSend(a3 "configuration")];
-  v8 = [objc_msgSend(objc_msgSend(a3 "configuration")];
+  v6 = [objc_msgSend(status "configuration")];
+  v7 = [objc_msgSend(status "configuration")];
+  v8 = [objc_msgSend(objc_msgSend(status "configuration")];
   status = self->_status;
   if (v8)
   {
-    v10 = [-[W5StatusManager cachedStatusWithUUID:](status cachedStatusWithUUID:{v7), "network"}];
+    networkStatus = [-[W5StatusManager cachedStatusWithUUID:](status cachedStatusWithUUID:{v7), "network"}];
   }
 
   else
   {
-    v10 = [(W5StatusManager *)status networkStatus];
+    networkStatus = [(W5StatusManager *)status networkStatus];
   }
 
-  v11 = v10;
+  v11 = networkStatus;
   v12 = +[NSMutableString string];
   [v12 appendString:@"# --- Network Status\n\n"];
   [v12 appendString:{+[W5LogManager __logNetworkStatus:](W5LogManager, "__logNetworkStatus:", v11)}];
@@ -2379,27 +2379,27 @@ LABEL_41:
   return v5;
 }
 
-- (id)__collectWiFiStatus:(id)a3
+- (id)__collectWiFiStatus:(id)status
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:status];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(a3 "configuration")];
-  v7 = [objc_msgSend(a3 "configuration")];
-  v8 = [objc_msgSend(objc_msgSend(a3 "configuration")];
+  v6 = [objc_msgSend(status "configuration")];
+  v7 = [objc_msgSend(status "configuration")];
+  v8 = [objc_msgSend(objc_msgSend(status "configuration")];
   status = self->_status;
   if (v8)
   {
-    v10 = [-[W5StatusManager cachedStatusWithUUID:](status cachedStatusWithUUID:{v7), "wifi"}];
+    wifiStatus = [-[W5StatusManager cachedStatusWithUUID:](status cachedStatusWithUUID:{v7), "wifi"}];
   }
 
   else
   {
-    v10 = [(W5StatusManager *)status wifiStatus];
+    wifiStatus = [(W5StatusManager *)status wifiStatus];
   }
 
-  v11 = v10;
+  v11 = wifiStatus;
   v12 = +[NSMutableString string];
   [v12 appendString:@"# --- Wi-Fi Status\n\n"];
   [v12 appendString:{+[W5LogManager __logWiFiStatus:](W5LogManager, "__logWiFiStatus:", v11)}];
@@ -2415,27 +2415,27 @@ LABEL_41:
   return v5;
 }
 
-- (id)__collectBluetoothStatus:(id)a3
+- (id)__collectBluetoothStatus:(id)status
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:status];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(a3 "configuration")];
-  v7 = [objc_msgSend(a3 "configuration")];
-  v8 = [objc_msgSend(objc_msgSend(a3 "configuration")];
+  v6 = [objc_msgSend(status "configuration")];
+  v7 = [objc_msgSend(status "configuration")];
+  v8 = [objc_msgSend(objc_msgSend(status "configuration")];
   status = self->_status;
   if (v8)
   {
-    v10 = [-[W5StatusManager cachedStatusWithUUID:](status cachedStatusWithUUID:{v7), "bluetooth"}];
+    bluetoothStatus = [-[W5StatusManager cachedStatusWithUUID:](status cachedStatusWithUUID:{v7), "bluetooth"}];
   }
 
   else
   {
-    v10 = [(W5StatusManager *)status bluetoothStatus];
+    bluetoothStatus = [(W5StatusManager *)status bluetoothStatus];
   }
 
-  v11 = v10;
+  v11 = bluetoothStatus;
   v12 = +[NSMutableString string];
   [v12 appendString:@"# --- Bluetooth Status\n\n"];
   [v12 appendString:{+[W5LogManager __logBluetoothStatus:](W5LogManager, "__logBluetoothStatus:", v11)}];
@@ -2451,13 +2451,13 @@ LABEL_41:
   return v5;
 }
 
-- (id)__collect_swvers:(id)a3
+- (id)__collect_swvers:(id)__collect_swvers
 {
   v4 = objc_alloc_init(W5LogItemReceipt);
-  [v4 setRequest:a3];
+  [v4 setRequest:__collect_swvers];
   +[NSDate timeIntervalSinceReferenceDate];
   [v4 setStartedAt:?];
-  if (+[NSTask runTaskWithLaunchPath:arguments:outputFilePath:error:](NSTask, "runTaskWithLaunchPath:arguments:outputFilePath:error:", @"/usr/bin/sw_vers", 0, [objc_msgSend(objc_msgSend(objc_msgSend(a3 "configuration")], 0))
+  if (+[NSTask runTaskWithLaunchPath:arguments:outputFilePath:error:](NSTask, "runTaskWithLaunchPath:arguments:outputFilePath:error:", @"/usr/bin/sw_vers", 0, [objc_msgSend(objc_msgSend(objc_msgSend(__collect_swvers "configuration")], 0))
   {
     v6 = [NSURL fileURLWithPath:@"sw_vers.txt"];
     [v4 setRelativeURLs:{+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v6, 1)}];
@@ -2468,14 +2468,14 @@ LABEL_41:
   return v4;
 }
 
-- (id)__collect_arp:(id)a3
+- (id)__collect_arp:(id)__collect_arp
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:__collect_arp];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(a3 "configuration")];
-  v7 = [objc_msgSend(objc_msgSend(a3 "configuration")];
+  v6 = [objc_msgSend(__collect_arp "configuration")];
+  v7 = [objc_msgSend(objc_msgSend(__collect_arp "configuration")];
   v8 = [objc_msgSend(v6 "path")];
   [+[NSFileManager defaultManager](NSFileManager removeItemAtPath:"removeItemAtPath:error:" error:v8, 0];
   [+[NSFileManager defaultManager](NSFileManager createFileAtPath:"createFileAtPath:contents:attributes:" contents:v8 attributes:0, 0];
@@ -2504,13 +2504,13 @@ LABEL_41:
   return v5;
 }
 
-- (id)__collectSystemProfiler:(id)a3
+- (id)__collectSystemProfiler:(id)profiler
 {
   v4 = objc_alloc_init(W5LogItemReceipt);
-  [v4 setRequest:a3];
+  [v4 setRequest:profiler];
   +[NSDate timeIntervalSinceReferenceDate];
   [v4 setStartedAt:?];
-  v5 = [objc_msgSend(objc_msgSend(a3 "configuration")];
+  v5 = [objc_msgSend(objc_msgSend(profiler "configuration")];
   v9[0] = @"-detailLevel";
   v9[1] = @"full";
   v9[2] = @"-timeout";
@@ -2528,13 +2528,13 @@ LABEL_41:
   return v4;
 }
 
-- (id)__collect_IMFoundationPing:(id)a3
+- (id)__collect_IMFoundationPing:(id)ping
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:ping];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v38 = [objc_msgSend(a3 "configuration")];
+  v38 = [objc_msgSend(ping "configuration")];
   v6 = +[NSMutableData data];
   v7 = +[NSMutableString string];
   if (([(CWFInterface *)[(W5StatusManager *)self->_status corewifi] powerOn]& 1) == 0)
@@ -2560,16 +2560,16 @@ LABEL_41:
   [v8 min];
   [v7 appendFormat:@"%@ -- %.2f ms\n\n", v10, v11];
   [v6 appendData:{objc_msgSend(v7, "dataUsingEncoding:", 4)}];
-  v12 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv4RouterAddress];
-  if (v12)
+  iPv4RouterAddress = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv4RouterAddress];
+  if (iPv4RouterAddress)
   {
-    v13 = v12;
+    iPv6RouterAddress = iPv4RouterAddress;
   }
 
   else
   {
-    v13 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv6RouterAddress];
-    if (!v13)
+    iPv6RouterAddress = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv6RouterAddress];
+    if (!iPv6RouterAddress)
     {
       goto LABEL_13;
     }
@@ -2577,9 +2577,9 @@ LABEL_41:
 
   v14 = +[NSMutableString string];
   [v14 appendString:@"————————————————————————————————————————————————————————————————————\n"];
-  [v14 appendFormat:@"Ping LAN (%@)\n", v13];
+  [v14 appendFormat:@"Ping LAN (%@)\n", iPv6RouterAddress];
   [v14 appendString:@"————————————————————————————————————————————————————————————————————\n"];
-  v15 = [(W5LogManager *)self __pingUsingIMFoundationWithAddress:v13 timeout:1];
+  v15 = [(W5LogManager *)self __pingUsingIMFoundationWithAddress:iPv6RouterAddress timeout:1];
   [v15 packetLoss];
   if (v16 >= 100.0)
   {
@@ -2632,9 +2632,9 @@ LABEL_13:
   [v6 appendData:{objc_msgSend(v19, "dataUsingEncoding:", 4)}];
   v30 = +[NSMutableString string];
   [v30 appendString:@"————————————————————————————————————————————————————————————————————\n"];
-  [v30 appendFormat:@"Ping Performance (%@)\n", v13];
+  [v30 appendFormat:@"Ping Performance (%@)\n", iPv6RouterAddress];
   [v30 appendString:@"————————————————————————————————————————————————————————————————————\n"];
-  v31 = [(W5LogManager *)self __pingUsingIMFoundationWithAddress:v13 timeout:10];
+  v31 = [(W5LogManager *)self __pingUsingIMFoundationWithAddress:iPv6RouterAddress timeout:10];
   [v30 appendFormat:@"count=%ld\n", objc_msgSend(v31, "count")];
   [v31 min];
   [v30 appendFormat:@"min=%.2f ms\n", v32];
@@ -2658,13 +2658,13 @@ LABEL_13:
   return v5;
 }
 
-- (id)__collect_ping:(id)a3
+- (id)__collect_ping:(id)__collect_ping
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:__collect_ping];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(a3 "configuration")];
+  v6 = [objc_msgSend(__collect_ping "configuration")];
   v7 = +[NSMutableArray array];
   v98 = +[NSMutableData data];
   v8 = +[NSMutableString string];
@@ -2697,19 +2697,19 @@ LABEL_13:
   [v9 min];
   [v8 appendFormat:@"%@ -- %.2f ms\n\n", v12, v13];
   [v98 appendData:{objc_msgSend(v8, "dataUsingEncoding:", 4)}];
-  v14 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv4RouterAddress];
+  iPv4RouterAddress = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv4RouterAddress];
   v95 = v5;
   obj = v7;
   v94 = v6;
-  if (v14)
+  if (iPv4RouterAddress)
   {
-    v15 = v14;
+    iPv6RouterAddress = iPv4RouterAddress;
   }
 
   else
   {
-    v15 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv6RouterAddress];
-    if (!v15)
+    iPv6RouterAddress = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv6RouterAddress];
+    if (!iPv6RouterAddress)
     {
       goto LABEL_17;
     }
@@ -2717,9 +2717,9 @@ LABEL_13:
 
   v16 = +[NSMutableString string];
   [v16 appendString:@"————————————————————————————————————————————————————————————————————\n"];
-  [v16 appendFormat:@"Ping LAN (%@)\n", v15];
+  [v16 appendFormat:@"Ping LAN (%@)\n", iPv6RouterAddress];
   [v16 appendString:@"————————————————————————————————————————————————————————————————————\n"];
-  v17 = [(W5LogManager *)self __pingWithAddress:v15 count:1 timeout:0 wait:[(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName] interval:11 trafficClass:2.0 interfaceName:2.0 dataLength:0.1];
+  v17 = [(W5LogManager *)self __pingWithAddress:iPv6RouterAddress count:1 timeout:0 wait:[(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName] interval:11 trafficClass:2.0 interfaceName:2.0 dataLength:0.1];
   if (v17)
   {
     [v7 addObject:v17];
@@ -2787,7 +2787,7 @@ LABEL_17:
   [v98 appendData:{objc_msgSend(v21, "dataUsingEncoding:", 4)}];
   v32 = +[NSMutableString string];
   [v32 appendString:@"————————————————————————————————————————————————————————————————————\n"];
-  [v32 appendFormat:@"Ping QOS (%@)\n", v15];
+  [v32 appendFormat:@"Ping QOS (%@)\n", iPv6RouterAddress];
   [v32 appendString:@"————————————————————————————————————————————————————————————————————\n"];
   v33 = [(W5LogManager *)self __pingWithAddress:v27 count:1 timeout:&off_1000EF548 wait:[(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName] interval:14 trafficClass:2.0 interfaceName:2.0 dataLength:0.1];
   if (v33)
@@ -2982,9 +2982,9 @@ LABEL_17:
   [v98 appendData:{objc_msgSend(v32, "dataUsingEncoding:", 4)}];
   v73 = +[NSMutableString string];
   [v73 appendString:@"————————————————————————————————————————————————————————————————————\n"];
-  [v73 appendFormat:@"Ping Performance (%@)\n", v15];
+  [v73 appendFormat:@"Ping Performance (%@)\n", iPv6RouterAddress];
   [v73 appendString:@"————————————————————————————————————————————————————————————————————\n"];
-  v74 = [(W5LogManager *)self __pingWithAddress:v15 count:10 timeout:&off_1000EF548 wait:[(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName] interval:24 trafficClass:21.0 interfaceName:2.0 dataLength:0.1];
+  v74 = [(W5LogManager *)self __pingWithAddress:iPv6RouterAddress count:10 timeout:&off_1000EF548 wait:[(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName] interval:24 trafficClass:21.0 interfaceName:2.0 dataLength:0.1];
   if (v74)
   {
     [obj addObject:v74];
@@ -3006,7 +3006,7 @@ LABEL_17:
   [v80 appendString:@"————————————————————————————————————————————————————————————————————\n"];
   [v80 appendFormat:@"Ping6 AWDL (%@)\n", @"ff02::fb"];
   [v80 appendString:@"————————————————————————————————————————————————————————————————————\n"];
-  v97 = self;
+  selfCopy = self;
   v81 = [(W5LogManager *)self __ping6WithAddress:@"ff02::fb" count:1 wait:0 trafficClass:[(W5WiFiInterface *)[(W5StatusManager *)self->_status awdl] interfaceName] interfaceName:25 dataLength:2.0];
   if (v81)
   {
@@ -3046,10 +3046,10 @@ LABEL_17:
           v88 = *(*(&v99 + 1) + 8 * i);
           v89 = +[NSMutableString string];
           [v89 appendString:@"————————————————————————————————————————————————————————————————————\n"];
-          dateFormatter = v97->_dateFormatter;
+          dateFormatter = selfCopy->_dateFormatter;
           [v88 startedAt];
           v91 = [(NSDateFormatter *)dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceReferenceDate:?]];
-          v92 = v97->_dateFormatter;
+          v92 = selfCopy->_dateFormatter;
           [v88 endedAt];
           [v89 appendFormat:@"[%@ - %@]\n", v91, -[NSDateFormatter stringFromDate:](v92, "stringFromDate:", +[NSDate dateWithTimeIntervalSinceReferenceDate:](NSDate, "dateWithTimeIntervalSinceReferenceDate:"))];
           [v89 appendFormat:@"%@\n", objc_msgSend(v88, "command")];
@@ -3075,13 +3075,13 @@ LABEL_17:
   return v95;
 }
 
-- (id)__collect_CFNetworkPing:(id)a3
+- (id)__collect_CFNetworkPing:(id)ping
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:ping];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v79 = [objc_msgSend(a3 "configuration")];
+  v79 = [objc_msgSend(ping "configuration")];
   v6 = +[NSMutableData data];
   v7 = +[NSMutableString string];
   if (([(CWFInterface *)[(W5StatusManager *)self->_status corewifi] powerOn]& 1) == 0)
@@ -3107,17 +3107,17 @@ LABEL_17:
   [v8 min];
   [v7 appendFormat:@"%@ -- %.2f ms\n\n", v10, v11];
   [v6 appendData:{objc_msgSend(v7, "dataUsingEncoding:", 4)}];
-  v12 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv4RouterAddress];
+  iPv4RouterAddress = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv4RouterAddress];
   v80 = v5;
-  if (v12)
+  if (iPv4RouterAddress)
   {
-    v13 = v12;
+    iPv6RouterAddress = iPv4RouterAddress;
   }
 
   else
   {
-    v13 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv6RouterAddress];
-    if (!v13)
+    iPv6RouterAddress = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv6RouterAddress];
+    if (!iPv6RouterAddress)
     {
       goto LABEL_13;
     }
@@ -3125,9 +3125,9 @@ LABEL_17:
 
   v14 = +[NSMutableString string];
   [v14 appendString:@"————————————————————————————————————————————————————————————————————\n"];
-  [v14 appendFormat:@"Ping LAN (%@)\n", v13];
+  [v14 appendFormat:@"Ping LAN (%@)\n", iPv6RouterAddress];
   [v14 appendString:@"————————————————————————————————————————————————————————————————————\n"];
-  v15 = [(W5LogManager *)self __pingUsingCFNetworkWithAddress:v13 count:1 timeout:1 trafficClass:0 networkServiceType:0];
+  v15 = [(W5LogManager *)self __pingUsingCFNetworkWithAddress:iPv6RouterAddress count:1 timeout:1 trafficClass:0 networkServiceType:0];
   [v15 packetLoss];
   if (v16 >= 100.0)
   {
@@ -3180,9 +3180,9 @@ LABEL_13:
   [v6 appendData:{objc_msgSend(v19, "dataUsingEncoding:", 4)}];
   v30 = +[NSMutableString string];
   [v30 appendString:@"————————————————————————————————————————————————————————————————————\n"];
-  [v30 appendFormat:@"Ping QOS (%@)\n", v13];
+  [v30 appendFormat:@"Ping QOS (%@)\n", iPv6RouterAddress];
   [v30 appendString:@"————————————————————————————————————————————————————————————————————\n"];
-  v31 = [(W5LogManager *)self __pingUsingCFNetworkWithAddress:v13 count:1 timeout:1 trafficClass:&off_1000EF548 networkServiceType:0];
+  v31 = [(W5LogManager *)self __pingUsingCFNetworkWithAddress:iPv6RouterAddress count:1 timeout:1 trafficClass:&off_1000EF548 networkServiceType:0];
   [v31 packetLoss];
   if (v32 >= 100.0)
   {
@@ -3196,7 +3196,7 @@ LABEL_13:
 
   [v31 min];
   [v30 appendFormat:@"BE -- %@ -- %.2f ms\n", v33, v34];
-  v35 = [(W5LogManager *)self __pingUsingCFNetworkWithAddress:v13 count:1 timeout:1 trafficClass:&off_1000EF9E0 networkServiceType:0];
+  v35 = [(W5LogManager *)self __pingUsingCFNetworkWithAddress:iPv6RouterAddress count:1 timeout:1 trafficClass:&off_1000EF9E0 networkServiceType:0];
   [v35 packetLoss];
   if (v36 >= 100.0)
   {
@@ -3210,7 +3210,7 @@ LABEL_13:
 
   [v35 min];
   [v30 appendFormat:@"BK_SYS -- %@ -- %.2f ms\n", v37, v38];
-  v39 = [(W5LogManager *)self __pingUsingCFNetworkWithAddress:v13 count:1 timeout:1 trafficClass:&off_1000EF560 networkServiceType:0];
+  v39 = [(W5LogManager *)self __pingUsingCFNetworkWithAddress:iPv6RouterAddress count:1 timeout:1 trafficClass:&off_1000EF560 networkServiceType:0];
   [v39 packetLoss];
   if (v40 >= 100.0)
   {
@@ -3224,7 +3224,7 @@ LABEL_13:
 
   [v39 min];
   [v30 appendFormat:@"BK -- %@ -- %.2f ms\n", v41, v42];
-  v43 = [(W5LogManager *)self __pingUsingCFNetworkWithAddress:v13 count:1 timeout:1 trafficClass:&off_1000EF9F8 networkServiceType:0];
+  v43 = [(W5LogManager *)self __pingUsingCFNetworkWithAddress:iPv6RouterAddress count:1 timeout:1 trafficClass:&off_1000EF9F8 networkServiceType:0];
   [v43 packetLoss];
   if (v44 >= 100.0)
   {
@@ -3238,7 +3238,7 @@ LABEL_13:
 
   [v43 min];
   [v30 appendFormat:@"RD -- %@ -- %.2f ms\n", v45, v46];
-  v47 = [(W5LogManager *)self __pingUsingCFNetworkWithAddress:v13 count:1 timeout:1 trafficClass:&off_1000EFA10 networkServiceType:0];
+  v47 = [(W5LogManager *)self __pingUsingCFNetworkWithAddress:iPv6RouterAddress count:1 timeout:1 trafficClass:&off_1000EFA10 networkServiceType:0];
   [v47 packetLoss];
   if (v48 >= 100.0)
   {
@@ -3252,7 +3252,7 @@ LABEL_13:
 
   [v47 min];
   [v30 appendFormat:@"OAM -- %@ -- %.2f ms\n", v49, v50];
-  v51 = [(W5LogManager *)self __pingUsingCFNetworkWithAddress:v13 count:1 timeout:1 trafficClass:&off_1000EFA28 networkServiceType:0];
+  v51 = [(W5LogManager *)self __pingUsingCFNetworkWithAddress:iPv6RouterAddress count:1 timeout:1 trafficClass:&off_1000EFA28 networkServiceType:0];
   [v51 packetLoss];
   if (v52 >= 100.0)
   {
@@ -3266,7 +3266,7 @@ LABEL_13:
 
   [v51 min];
   [v30 appendFormat:@"AV -- %@ -- %.2f ms\n", v53, v54];
-  v55 = [(W5LogManager *)self __pingUsingCFNetworkWithAddress:v13 count:1 timeout:1 trafficClass:&off_1000EFA40 networkServiceType:0];
+  v55 = [(W5LogManager *)self __pingUsingCFNetworkWithAddress:iPv6RouterAddress count:1 timeout:1 trafficClass:&off_1000EFA40 networkServiceType:0];
   [v55 packetLoss];
   if (v56 >= 100.0)
   {
@@ -3280,7 +3280,7 @@ LABEL_13:
 
   [v55 min];
   [v30 appendFormat:@"RV -- %@ -- %.2f ms\n", v57, v58];
-  v59 = [(W5LogManager *)self __pingUsingCFNetworkWithAddress:v13 count:1 timeout:1 trafficClass:&off_1000EF578 networkServiceType:0];
+  v59 = [(W5LogManager *)self __pingUsingCFNetworkWithAddress:iPv6RouterAddress count:1 timeout:1 trafficClass:&off_1000EF578 networkServiceType:0];
   [v59 packetLoss];
   if (v60 >= 100.0)
   {
@@ -3294,7 +3294,7 @@ LABEL_13:
 
   [v59 min];
   [v30 appendFormat:@"VI -- %@ -- %.2f ms\n", v61, v62];
-  v63 = [(W5LogManager *)self __pingUsingCFNetworkWithAddress:v13 count:1 timeout:1 trafficClass:&off_1000EF5A8 networkServiceType:0];
+  v63 = [(W5LogManager *)self __pingUsingCFNetworkWithAddress:iPv6RouterAddress count:1 timeout:1 trafficClass:&off_1000EF5A8 networkServiceType:0];
   [v63 packetLoss];
   if (v64 >= 100.0)
   {
@@ -3308,7 +3308,7 @@ LABEL_13:
 
   [v63 min];
   [v30 appendFormat:@"VO -- %@ -- %.2f ms\n", v65, v66];
-  v67 = [(W5LogManager *)self __pingUsingCFNetworkWithAddress:v13 count:1 timeout:1 trafficClass:&off_1000EFA58 networkServiceType:0];
+  v67 = [(W5LogManager *)self __pingUsingCFNetworkWithAddress:iPv6RouterAddress count:1 timeout:1 trafficClass:&off_1000EFA58 networkServiceType:0];
   [v67 packetLoss];
   if (v68 >= 100.0)
   {
@@ -3325,9 +3325,9 @@ LABEL_13:
   [v6 appendData:{objc_msgSend(v30, "dataUsingEncoding:", 4)}];
   v71 = +[NSMutableString string];
   [v71 appendString:@"————————————————————————————————————————————————————————————————————\n"];
-  [v71 appendFormat:@"Ping Performance (%@)\n", v13];
+  [v71 appendFormat:@"Ping Performance (%@)\n", iPv6RouterAddress];
   [v71 appendString:@"————————————————————————————————————————————————————————————————————\n"];
-  v72 = [(W5LogManager *)self __pingUsingCFNetworkWithAddress:v13 count:10 timeout:1 trafficClass:&off_1000EF548 networkServiceType:0];
+  v72 = [(W5LogManager *)self __pingUsingCFNetworkWithAddress:iPv6RouterAddress count:10 timeout:1 trafficClass:&off_1000EF548 networkServiceType:0];
   [v71 appendFormat:@"count=%ld\n", objc_msgSend(v72, "count")];
   [v72 min];
   [v71 appendFormat:@"min=%.2f ms\n", v73];
@@ -3351,13 +3351,13 @@ LABEL_13:
   return v80;
 }
 
-- (id)__collect_ifconfig:(id)a3
+- (id)__collect_ifconfig:(id)__collect_ifconfig
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:__collect_ifconfig];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(objc_msgSend(objc_msgSend(a3 "configuration")];
+  v6 = [objc_msgSend(objc_msgSend(objc_msgSend(__collect_ifconfig "configuration")];
   [+[NSFileManager defaultManager](NSFileManager removeItemAtPath:"removeItemAtPath:error:" error:v6, 0];
   [+[NSFileManager defaultManager](NSFileManager createFileAtPath:"createFileAtPath:contents:attributes:" contents:v6 attributes:0, 0];
   v7 = [NSFileHandle fileHandleForUpdatingAtPath:v6];
@@ -3375,18 +3375,18 @@ LABEL_13:
   return v5;
 }
 
-- (id)__collect_ipconfig:(id)a3
+- (id)__collect_ipconfig:(id)__collect_ipconfig
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:__collect_ipconfig];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(a3 "configuration")];
-  v7 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName];
-  if (v7)
+  v6 = [objc_msgSend(__collect_ipconfig "configuration")];
+  interfaceName = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName];
+  if (interfaceName)
   {
     v10[0] = @"getpacket";
-    v10[1] = v7;
+    v10[1] = interfaceName;
     if (+[NSTask runTaskWithLaunchPath:arguments:outputFilePath:error:](NSTask, "runTaskWithLaunchPath:arguments:outputFilePath:error:", @"/usr/sbin/ipconfig", +[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", v10, 2), [objc_msgSend(v6 "path")], 0))
     {
       v9 = [NSURL fileURLWithPath:@"ipconfig.txt"];
@@ -3399,21 +3399,21 @@ LABEL_13:
   return v5;
 }
 
-- (id)__collect_traceroute:(id)a3
+- (id)__collect_traceroute:(id)__collect_traceroute
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:__collect_traceroute];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(a3 "configuration")];
-  v7 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName];
-  if (v7)
+  v6 = [objc_msgSend(__collect_traceroute "configuration")];
+  interfaceName = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName];
+  if (interfaceName)
   {
     v10[0] = @"-n";
     v10[1] = @"-m";
     v10[2] = @"6";
     v10[3] = @"-i";
-    v10[4] = v7;
+    v10[4] = interfaceName;
     v10[5] = @"-w";
     v10[6] = @"2";
     v10[7] = @"-q";
@@ -3431,13 +3431,13 @@ LABEL_13:
   return v5;
 }
 
-- (id)__collect_kextstat:(id)a3
+- (id)__collect_kextstat:(id)__collect_kextstat
 {
   v4 = objc_alloc_init(W5LogItemReceipt);
-  [v4 setRequest:a3];
+  [v4 setRequest:__collect_kextstat];
   +[NSDate timeIntervalSinceReferenceDate];
   [v4 setStartedAt:?];
-  if (+[NSTask runTaskWithLaunchPath:arguments:outputFilePath:error:](NSTask, "runTaskWithLaunchPath:arguments:outputFilePath:error:", @"/usr/sbin/kextstat", 0, [objc_msgSend(objc_msgSend(objc_msgSend(a3 "configuration")], 0))
+  if (+[NSTask runTaskWithLaunchPath:arguments:outputFilePath:error:](NSTask, "runTaskWithLaunchPath:arguments:outputFilePath:error:", @"/usr/sbin/kextstat", 0, [objc_msgSend(objc_msgSend(objc_msgSend(__collect_kextstat "configuration")], 0))
   {
     v6 = [NSURL fileURLWithPath:@"kextstat.txt"];
     [v4 setRelativeURLs:{+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v6, 1)}];
@@ -3448,13 +3448,13 @@ LABEL_13:
   return v4;
 }
 
-- (id)__collect_ioreg:(id)a3
+- (id)__collect_ioreg:(id)__collect_ioreg
 {
   v4 = objc_alloc_init(W5LogItemReceipt);
-  [v4 setRequest:a3];
+  [v4 setRequest:__collect_ioreg];
   +[NSDate timeIntervalSinceReferenceDate];
   [v4 setStartedAt:?];
-  if (+[NSTask runTaskWithLaunchPath:arguments:outputFilePath:error:](NSTask, "runTaskWithLaunchPath:arguments:outputFilePath:error:", @"/usr/sbin/ioreg", &off_1000F41A0, [objc_msgSend(objc_msgSend(objc_msgSend(a3 "configuration")], 0))
+  if (+[NSTask runTaskWithLaunchPath:arguments:outputFilePath:error:](NSTask, "runTaskWithLaunchPath:arguments:outputFilePath:error:", @"/usr/sbin/ioreg", &off_1000F41A0, [objc_msgSend(objc_msgSend(objc_msgSend(__collect_ioreg "configuration")], 0))
   {
     v6 = [NSURL fileURLWithPath:@"ioreg.txt"];
     [v4 setRelativeURLs:{+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v6, 1)}];
@@ -3465,13 +3465,13 @@ LABEL_13:
   return v4;
 }
 
-- (id)__collect_top:(id)a3
+- (id)__collect_top:(id)__collect_top
 {
   v4 = objc_alloc_init(W5LogItemReceipt);
-  [v4 setRequest:a3];
+  [v4 setRequest:__collect_top];
   +[NSDate timeIntervalSinceReferenceDate];
   [v4 setStartedAt:?];
-  if (+[NSTask runTaskWithLaunchPath:arguments:outputFilePath:error:](NSTask, "runTaskWithLaunchPath:arguments:outputFilePath:error:", @"/usr/bin/top", &off_1000F41B8, [objc_msgSend(objc_msgSend(objc_msgSend(a3 "configuration")], 0))
+  if (+[NSTask runTaskWithLaunchPath:arguments:outputFilePath:error:](NSTask, "runTaskWithLaunchPath:arguments:outputFilePath:error:", @"/usr/bin/top", &off_1000F41B8, [objc_msgSend(objc_msgSend(objc_msgSend(__collect_top "configuration")], 0))
   {
     v6 = [NSURL fileURLWithPath:@"top.txt"];
     [v4 setRelativeURLs:{+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v6, 1)}];
@@ -3482,35 +3482,35 @@ LABEL_13:
   return v4;
 }
 
-- (id)__collect_netstat:(id)a3
+- (id)__collect_netstat:(id)__collect_netstat
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:__collect_netstat];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(a3 "configuration")];
-  v7 = [objc_msgSend(a3 "configuration")];
-  v8 = [v6 path];
+  v6 = [objc_msgSend(__collect_netstat "configuration")];
+  v7 = [objc_msgSend(__collect_netstat "configuration")];
+  path = [v6 path];
   if (!v7)
   {
     v7 = @"netstat.txt";
   }
 
-  v9 = [v8 stringByAppendingPathComponent:v7];
+  v9 = [path stringByAppendingPathComponent:v7];
   [+[NSFileManager defaultManager](NSFileManager removeItemAtPath:"removeItemAtPath:error:" error:v9, 0];
   [+[NSFileManager defaultManager](NSFileManager createFileAtPath:"createFileAtPath:contents:attributes:" contents:v9 attributes:0, 0];
   v10 = [NSFileHandle fileHandleForUpdatingAtPath:v9];
   if (v10)
   {
     v11 = v10;
-    v12 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName];
-    if (v12)
+    interfaceName = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName];
+    if (interfaceName)
     {
-      v13 = v12;
+      v13 = interfaceName;
       v18[0] = @"-n";
       v18[1] = @"-s";
       v18[2] = @"-I";
-      v18[3] = v12;
+      v18[3] = interfaceName;
       [(W5LogManager *)self __runToolWithOutputFileHandle:v11 launchPath:@"/usr/sbin/netstat" arguments:[NSArray arrayWithObjects:v18 count:4]];
       v17[0] = @"-n";
       v17[1] = @"-I";
@@ -3534,13 +3534,13 @@ LABEL_13:
   return v5;
 }
 
-- (id)__collectSystemConfiguration:(id)a3
+- (id)__collectSystemConfiguration:(id)configuration
 {
   v4 = objc_alloc_init(W5LogItemReceipt);
-  [v4 setRequest:a3];
+  [v4 setRequest:configuration];
   +[NSDate timeIntervalSinceReferenceDate];
   [v4 setStartedAt:?];
-  if (sub_100099544(+[NSURL fileURLWithPath:](NSURL, "fileURLWithPath:", @"/Library/Preferences/SystemConfiguration"), [objc_msgSend(objc_msgSend(a3 "configuration")], 0))
+  if (sub_100099544(+[NSURL fileURLWithPath:](NSURL, "fileURLWithPath:", @"/Library/Preferences/SystemConfiguration"), [objc_msgSend(objc_msgSend(configuration "configuration")], 0))
   {
     v6 = [NSURL fileURLWithPath:@"SystemConfiguration"];
     [v4 setRelativeURLs:{+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v6, 1)}];
@@ -3551,13 +3551,13 @@ LABEL_13:
   return v4;
 }
 
-- (id)__collect_configd:(id)a3
+- (id)__collect_configd:(id)__collect_configd
 {
   v4 = objc_alloc_init(W5LogItemReceipt);
-  [v4 setRequest:a3];
+  [v4 setRequest:__collect_configd];
   +[NSDate timeIntervalSinceReferenceDate];
   [v4 setStartedAt:?];
-  v5 = [objc_msgSend(a3 "configuration")];
+  v5 = [objc_msgSend(__collect_configd "configuration")];
   if ([NSTask runTaskWithLaunchPath:@"/usr/sbin/scutil" arguments:&off_1000F4200 error:0]&& sub_100099544([NSURL fileURLWithPath:@"/var/tmp/configd-store.plist"], v5, 0))
   {
     v7 = [NSURL fileURLWithPath:@"configd-store.plist"];
@@ -3569,13 +3569,13 @@ LABEL_13:
   return v4;
 }
 
-- (id)__collect_wl_curpower:(id)a3
+- (id)__collect_wl_curpower:(id)__collect_wl_curpower
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:__collect_wl_curpower];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  if (-[W5LogManager __wlCLIWithArguments:outputFilePath:outputData:](self, "__wlCLIWithArguments:outputFilePath:outputData:", &off_1000F4218, [objc_msgSend(objc_msgSend(objc_msgSend(a3 "configuration")], 0))
+  if (-[W5LogManager __wlCLIWithArguments:outputFilePath:outputData:](self, "__wlCLIWithArguments:outputFilePath:outputData:", &off_1000F4218, [objc_msgSend(objc_msgSend(objc_msgSend(__collect_wl_curpower "configuration")], 0))
   {
     v7 = [NSURL fileURLWithPath:@"wlan_curpower.txt"];
     [v5 setRelativeURLs:{+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v7, 1)}];
@@ -3586,13 +3586,13 @@ LABEL_13:
   return v5;
 }
 
-- (id)__collect_wl_cca_get_stats:(id)a3
+- (id)__collect_wl_cca_get_stats:(id)__collect_wl_cca_get_stats
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:__collect_wl_cca_get_stats];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  if (-[W5LogManager __wlCLIWithArguments:outputFilePath:outputData:](self, "__wlCLIWithArguments:outputFilePath:outputData:", &off_1000F4230, [objc_msgSend(objc_msgSend(objc_msgSend(a3 "configuration")], 0))
+  if (-[W5LogManager __wlCLIWithArguments:outputFilePath:outputData:](self, "__wlCLIWithArguments:outputFilePath:outputData:", &off_1000F4230, [objc_msgSend(objc_msgSend(objc_msgSend(__collect_wl_cca_get_stats "configuration")], 0))
   {
     v7 = [NSURL fileURLWithPath:@"wlan_cca_get_stats.txt"];
     [v5 setRelativeURLs:{+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v7, 1)}];
@@ -3603,13 +3603,13 @@ LABEL_13:
   return v5;
 }
 
-- (id)__collect_spindump:(id)a3
+- (id)__collect_spindump:(id)__collect_spindump
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:__collect_spindump];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(a3 "configuration")];
+  v6 = [objc_msgSend(__collect_spindump "configuration")];
   v10 = 0;
   if ([NSTask runTaskWithLaunchPath:@"/usr/sbin/spindump" arguments:0 timeout:0 outputData:0 errorData:0 launchHandler:0 didLaunch:60.0 error:&v10])
   {
@@ -3632,13 +3632,13 @@ LABEL_13:
   return v5;
 }
 
-- (id)__collect_darwinup:(id)a3
+- (id)__collect_darwinup:(id)__collect_darwinup
 {
   v4 = objc_alloc_init(W5LogItemReceipt);
-  [v4 setRequest:a3];
+  [v4 setRequest:__collect_darwinup];
   +[NSDate timeIntervalSinceReferenceDate];
   [v4 setStartedAt:?];
-  if (+[NSTask runTaskWithLaunchPath:arguments:outputFilePath:error:](NSTask, "runTaskWithLaunchPath:arguments:outputFilePath:error:", @"/usr/local/bin/darwinup", &off_1000F4260, [objc_msgSend(objc_msgSend(objc_msgSend(a3 "configuration")], 0))
+  if (+[NSTask runTaskWithLaunchPath:arguments:outputFilePath:error:](NSTask, "runTaskWithLaunchPath:arguments:outputFilePath:error:", @"/usr/local/bin/darwinup", &off_1000F4260, [objc_msgSend(objc_msgSend(objc_msgSend(__collect_darwinup "configuration")], 0))
   {
     v6 = [NSURL fileURLWithPath:@"darwinup_list.txt"];
     [v4 setRelativeURLs:{+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v6, 1)}];
@@ -3649,13 +3649,13 @@ LABEL_13:
   return v4;
 }
 
-- (id)__collect_hosts:(id)a3
+- (id)__collect_hosts:(id)__collect_hosts
 {
   v4 = objc_alloc_init(W5LogItemReceipt);
-  [v4 setRequest:a3];
+  [v4 setRequest:__collect_hosts];
   +[NSDate timeIntervalSinceReferenceDate];
   [v4 setStartedAt:?];
-  if (sub_100099544(+[NSURL fileURLWithPath:](NSURL, "fileURLWithPath:", @"/etc/hosts"), [objc_msgSend(objc_msgSend(a3 "configuration")], 0))
+  if (sub_100099544(+[NSURL fileURLWithPath:](NSURL, "fileURLWithPath:", @"/etc/hosts"), [objc_msgSend(objc_msgSend(__collect_hosts "configuration")], 0))
   {
     v6 = [NSURL fileURLWithPath:@"hosts"];
     [v4 setRelativeURLs:{+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v6, 1)}];
@@ -3666,13 +3666,13 @@ LABEL_13:
   return v4;
 }
 
-- (id)__collect_sysdiagnose:(id)a3
+- (id)__collect_sysdiagnose:(id)__collect_sysdiagnose
 {
   v4 = objc_alloc_init(W5LogItemReceipt);
-  [v4 setRequest:a3];
+  [v4 setRequest:__collect_sysdiagnose];
   +[NSDate timeIntervalSinceReferenceDate];
   [v4 setStartedAt:?];
-  v5 = [objc_msgSend(a3 "configuration")];
+  v5 = [objc_msgSend(__collect_sysdiagnose "configuration")];
   v14 = 0;
   *v19 = 0;
   *&v19[8] = v19;
@@ -3718,7 +3718,7 @@ LABEL_13:
     v10 = sub_100098A04();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v14 code];
+      code = [v14 code];
       *v19 = 136315906;
       *&v19[4] = "[W5LogManager __collect_sysdiagnose:]";
       *&v19[12] = 2080;
@@ -3726,7 +3726,7 @@ LABEL_13:
       *&v19[22] = 1024;
       LODWORD(v20) = 4163;
       WORD2(v20) = 2048;
-      *(&v20 + 6) = v11;
+      *(&v20 + 6) = code;
       LODWORD(v13) = 38;
       v12 = v19;
       _os_log_send_and_compose_impl();
@@ -3738,13 +3738,13 @@ LABEL_13:
   return v4;
 }
 
-- (id)__collect_ndp:(id)a3
+- (id)__collect_ndp:(id)__collect_ndp
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:__collect_ndp];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(objc_msgSend(objc_msgSend(a3 "configuration")];
+  v6 = [objc_msgSend(objc_msgSend(objc_msgSend(__collect_ndp "configuration")];
   [+[NSFileManager defaultManager](NSFileManager removeItemAtPath:"removeItemAtPath:error:" error:v6, 0];
   [+[NSFileManager defaultManager](NSFileManager createFileAtPath:"createFileAtPath:contents:attributes:" contents:v6 attributes:0, 0];
   v7 = [NSFileHandle fileHandleForUpdatingAtPath:v6];
@@ -3754,11 +3754,11 @@ LABEL_13:
     [(W5LogManager *)self __runToolWithOutputFileHandle:v7 launchPath:@"/usr/sbin/ndp" arguments:&off_1000F4278];
     [(W5LogManager *)self __runToolWithOutputFileHandle:v8 launchPath:@"/usr/sbin/ndp" arguments:&off_1000F4290];
     [(W5LogManager *)self __runToolWithOutputFileHandle:v8 launchPath:@"/usr/sbin/ndp" arguments:&off_1000F42A8];
-    v9 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName];
-    if (v9)
+    interfaceName = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName];
+    if (interfaceName)
     {
       v12[0] = @"-i";
-      v12[1] = v9;
+      v12[1] = interfaceName;
       [(W5LogManager *)self __runToolWithOutputFileHandle:v8 launchPath:@"/usr/sbin/ndp" arguments:[NSArray arrayWithObjects:v12 count:2]];
     }
 
@@ -3772,37 +3772,37 @@ LABEL_13:
   return v5;
 }
 
-- (id)__collectTCPDump_PRE:(id)a3
+- (id)__collectTCPDump_PRE:(id)e
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:e];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(a3 "configuration")];
-  v7 = [objc_msgSend(a3 "configuration")];
-  v8 = [objc_msgSend(a3 "configuration")];
+  v6 = [objc_msgSend(e "configuration")];
+  v7 = [objc_msgSend(e "configuration")];
+  v8 = [objc_msgSend(e "configuration")];
   if (v8)
   {
-    v9 = [v8 unsignedIntegerValue];
+    unsignedIntegerValue = [v8 unsignedIntegerValue];
   }
 
   else
   {
-    v9 = 60;
+    unsignedIntegerValue = 60;
   }
 
   v10 = dispatch_semaphore_create(0);
-  v11 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName];
-  if (v11)
+  interfaceName = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName];
+  if (interfaceName)
   {
-    v12 = v11;
+    v12 = interfaceName;
     v13 = [objc_msgSend(v6 "path")];
     v20[0] = @"-q";
     v20[1] = @"-n";
     v20[2] = @"-i";
     v20[3] = v12;
     v20[4] = @"-G";
-    v20[5] = [NSString stringWithFormat:@"%lu", v9];
+    v20[5] = [NSString stringWithFormat:@"%lu", unsignedIntegerValue];
     v20[6] = @"-W";
     v20[7] = @"1";
     v20[8] = @"-w";
@@ -3838,15 +3838,15 @@ LABEL_13:
   return v5;
 }
 
-- (id)__collectTCPDump_POST:(id)a3
+- (id)__collectTCPDump_POST:(id)t
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:t];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(a3 "configuration")];
-  v7 = [objc_msgSend(objc_msgSend(a3 "configuration")];
-  v8 = [objc_msgSend(a3 "configuration")];
+  v6 = [objc_msgSend(t "configuration")];
+  v7 = [objc_msgSend(objc_msgSend(t "configuration")];
+  v8 = [objc_msgSend(t "configuration")];
   if (v8)
   {
     queue = self->_queue;
@@ -3867,13 +3867,13 @@ LABEL_13:
   return v5;
 }
 
-- (id)__collect_pmset:(id)a3
+- (id)__collect_pmset:(id)__collect_pmset
 {
   v4 = objc_alloc_init(W5LogItemReceipt);
-  [v4 setRequest:a3];
+  [v4 setRequest:__collect_pmset];
   +[NSDate timeIntervalSinceReferenceDate];
   [v4 setStartedAt:?];
-  if (+[NSTask runTaskWithLaunchPath:arguments:outputFilePath:error:](NSTask, "runTaskWithLaunchPath:arguments:outputFilePath:error:", @"/usr/bin/pmset", &off_1000F42C0, [objc_msgSend(objc_msgSend(objc_msgSend(a3 "configuration")], 0))
+  if (+[NSTask runTaskWithLaunchPath:arguments:outputFilePath:error:](NSTask, "runTaskWithLaunchPath:arguments:outputFilePath:error:", @"/usr/bin/pmset", &off_1000F42C0, [objc_msgSend(objc_msgSend(objc_msgSend(__collect_pmset "configuration")], 0))
   {
     v6 = [NSURL fileURLWithPath:@"pmset_everything.txt"];
     [v4 setRelativeURLs:{+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v6, 1)}];
@@ -3884,7 +3884,7 @@ LABEL_13:
   return v4;
 }
 
-- (unint64_t)__calculateSizeAtPath:(id)a3
+- (unint64_t)__calculateSizeAtPath:(id)path
 {
   v16 = 0;
   v17 = &v16;
@@ -3900,9 +3900,9 @@ LABEL_13:
       v9[1] = 3221225472;
       v9[2] = sub_10006B53C;
       v9[3] = &unk_1000E2EE0;
-      v10 = [+[NSFileManager defaultManager](NSFileManager contentsOfDirectoryAtPath:"contentsOfDirectoryAtPath:error:" error:a3, 0];
-      v11 = self;
-      v12 = a3;
+      v10 = [+[NSFileManager defaultManager](NSFileManager contentsOfDirectoryAtPath:"contentsOfDirectoryAtPath:error:" error:path, 0];
+      selfCopy = self;
+      pathCopy = path;
       v13 = v5;
       v14 = &v16;
       dispatch_apply([(NSArray *)v10 count], 0, v9);
@@ -3914,7 +3914,7 @@ LABEL_13:
 
     else
     {
-      v6 = -[NSDictionary fileSize]([+[NSFileManager defaultManager](NSFileManager attributesOfItemAtPath:"attributesOfItemAtPath:error:" error:a3, 0], "fileSize");
+      v6 = -[NSDictionary fileSize]([+[NSFileManager defaultManager](NSFileManager attributesOfItemAtPath:"attributesOfItemAtPath:error:" error:path, 0], "fileSize");
       v17[3] += v6;
     }
   }
@@ -3924,11 +3924,11 @@ LABEL_13:
   return v7;
 }
 
-- (id)__collectFilesInDirectories:(id)a3 include:(id)a4 exclude:(id)a5 maxAge:(double)a6 maxCount:(unint64_t)a7 maxSize:(unint64_t)a8 outputDirectory:(id)a9 compress:(BOOL)a10 remainingSize:(unint64_t *)a11 contentFilter:(id)a12
+- (id)__collectFilesInDirectories:(id)directories include:(id)include exclude:(id)exclude maxAge:(double)age maxCount:(unint64_t)count maxSize:(unint64_t)size outputDirectory:(id)directory compress:(BOOL)self0 remainingSize:(unint64_t *)self1 contentFilter:(id)self2
 {
-  v18 = a11;
+  remainingSizeCopy2 = remainingSize;
   v47 = +[NSMutableArray array];
-  v19 = [(W5LogManager *)self __mostRecentInDirectories:a3 include:a4 exclude:a5 maxAge:a6];
+  v19 = [(W5LogManager *)self __mostRecentInDirectories:directories include:include exclude:exclude maxAge:age];
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
@@ -3937,7 +3937,7 @@ LABEL_13:
   if (!v20)
   {
     v51 = 0;
-    if (a11)
+    if (remainingSize)
     {
       goto LABEL_37;
     }
@@ -3962,7 +3962,7 @@ LABEL_3:
     v24 = [NSURL fileURLWithPath:*(*(&v55 + 1) + 8 * v23), v45, v46];
     v54 = 0;
     [+[NSFileManager defaultManager](NSFileManager fileExistsAtPath:"fileExistsAtPath:isDirectory:" isDirectory:[(NSURL *)v24 path], &v54];
-    if (a12 && (v54 & 1) != 0)
+    if (filter && (v54 & 1) != 0)
     {
       if (!v22)
       {
@@ -3971,13 +3971,13 @@ LABEL_3:
 
       v25 = [v22 URLByAppendingPathComponent:{-[NSURL lastPathComponent](v24, "lastPathComponent")}];
       sub_100099544(v24, v25, 0);
-      (*(a12 + 2))(a12, v25);
+      (*(filter + 2))(filter, v25);
       v24 = v25;
     }
 
-    v26 = [a9 URLByAppendingPathComponent:{-[NSURL lastPathComponent](v24, "lastPathComponent")}];
+    v26 = [directory URLByAppendingPathComponent:{-[NSURL lastPathComponent](v24, "lastPathComponent")}];
     v27 = v26;
-    if (a10)
+    if (compress)
     {
       v27 = [v26 URLByAppendingPathExtension:@"tgz"];
       if (-[NSFileManager fileExistsAtPath:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:", [v27 path]) || (sub_100098A4C(v24, v27, 0) & 1) == 0)
@@ -3992,9 +3992,9 @@ LABEL_22:
       v36 = sub_100098A04();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
       {
-        v37 = [v27 path];
+        path = [v27 path];
         v59 = 138543362;
-        v60 = v37;
+        v60 = path;
         LODWORD(v46) = 12;
         v45 = &v59;
         _os_log_send_and_compose_impl();
@@ -4005,18 +4005,18 @@ LABEL_22:
 
     v52 = v22;
     v28 = v19;
-    v29 = a9;
+    directoryCopy = directory;
     v30 = -[NSFileManager attributesOfItemAtPath:error:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "attributesOfItemAtPath:error:", [v27 path], 0);
-    v31 = [(NSDictionary *)v30 fileSize];
-    v32 = v31 + v51;
+    fileSize = [(NSDictionary *)v30 fileSize];
+    v32 = fileSize + v51;
     if (!v30)
     {
       v38 = sub_100098A04();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
       {
-        v39 = [v27 path];
+        path2 = [v27 path];
         v59 = 138543362;
-        v60 = v39;
+        v60 = path2;
         LODWORD(v46) = 12;
         v45 = &v59;
         _os_log_send_and_compose_impl();
@@ -4025,57 +4025,57 @@ LABEL_22:
       goto LABEL_30;
     }
 
-    v33 = v31;
-    if (v32 > a8)
+    v33 = fileSize;
+    if (v32 > size)
     {
       v34 = sub_100098A04();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
-        v35 = [v27 path];
+        path3 = [v27 path];
         v59 = 134219266;
         v60 = v32;
         v61 = 2048;
-        v62 = a8;
+        sizeCopy3 = size;
         v63 = 2048;
         v64 = v33;
         v65 = 2048;
         v66 = v50 + 1;
         v67 = 2048;
-        v68 = a7;
+        countCopy3 = count;
         v69 = 2114;
-        v70 = v35;
+        v70 = path3;
         LODWORD(v46) = 62;
         v45 = &v59;
         _os_log_send_and_compose_impl();
       }
 
       -[NSFileManager removeItemAtPath:error:](+[NSFileManager defaultManager](NSFileManager, "defaultManager", v45, v46), "removeItemAtPath:error:", [v27 path], 0);
-      a9 = v29;
+      directory = directoryCopy;
       goto LABEL_31;
     }
 
     v40 = sub_100098A04();
     v41 = os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT);
-    if (v50 + 1 > a7)
+    if (v50 + 1 > count)
     {
       break;
     }
 
     if (v41)
     {
-      v42 = [v27 path];
+      path4 = [v27 path];
       v59 = 134219266;
       v60 = v32;
       v61 = 2048;
-      v62 = a8;
+      sizeCopy3 = size;
       v63 = 2048;
       v64 = v33;
       v65 = 2048;
       v66 = v50 + 1;
       v67 = 2048;
-      v68 = a7;
+      countCopy3 = count;
       v69 = 2114;
-      v70 = v42;
+      v70 = path4;
       LODWORD(v46) = 62;
       v45 = &v59;
       _os_log_send_and_compose_impl();
@@ -4085,7 +4085,7 @@ LABEL_22:
 LABEL_30:
     ++v50;
     v51 = v32;
-    a9 = v29;
+    directory = directoryCopy;
 LABEL_31:
     v19 = v28;
     v22 = v52;
@@ -4109,19 +4109,19 @@ LABEL_32:
 
   if (v41)
   {
-    v44 = [v27 path];
+    path5 = [v27 path];
     v59 = 134219266;
     v60 = v32;
     v61 = 2048;
-    v62 = a8;
+    sizeCopy3 = size;
     v63 = 2048;
     v64 = v33;
     v65 = 2048;
     v66 = v50 + 1;
     v67 = 2048;
-    v68 = a7;
+    countCopy3 = count;
     v69 = 2114;
-    v70 = v44;
+    v70 = path5;
     LODWORD(v46) = 62;
     v45 = &v59;
     _os_log_send_and_compose_impl();
@@ -4136,39 +4136,39 @@ LABEL_35:
   }
 
 LABEL_36:
-  v18 = a11;
-  if (a11)
+  remainingSizeCopy2 = remainingSize;
+  if (remainingSize)
   {
 LABEL_37:
-    *v18 = a8 - v51;
+    *remainingSizeCopy2 = size - v51;
   }
 
   return [v47 copy];
 }
 
-- (id)__collectFileAtURL:(id)a3 outputDirectory:(id)a4 maxAge:(double)a5 maxSize:(unint64_t)a6 compress:(BOOL)a7 remainingSize:(unint64_t *)a8
+- (id)__collectFileAtURL:(id)l outputDirectory:(id)directory maxAge:(double)age maxSize:(unint64_t)size compress:(BOOL)compress remainingSize:(unint64_t *)remainingSize
 {
-  v9 = a7;
-  if (!-[NSFileManager fileExistsAtPath:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:", [a3 path]))
+  compressCopy = compress;
+  if (!-[NSFileManager fileExistsAtPath:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:", [l path]))
   {
     return 0;
   }
 
   +[NSDate timeIntervalSinceReferenceDate];
   v15 = v14;
-  v16 = [a4 URLByAppendingPathComponent:{objc_msgSend(a3, "lastPathComponent")}];
+  v16 = [directory URLByAppendingPathComponent:{objc_msgSend(l, "lastPathComponent")}];
   v17 = v16;
-  if (v9)
+  if (compressCopy)
   {
     v17 = [v16 URLByAppendingPathExtension:@"tgz"];
-    if (-[NSFileManager fileExistsAtPath:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:", [v17 path]) || (sub_100098A4C(a3, v17, 0) & 1) == 0)
+    if (-[NSFileManager fileExistsAtPath:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:", [v17 path]) || (sub_100098A4C(l, v17, 0) & 1) == 0)
     {
 LABEL_19:
       v29 = sub_100098A04();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
         v35 = 138543362;
-        v36 = [v17 path];
+        sizeCopy2 = [v17 path];
         _os_log_send_and_compose_impl();
       }
 
@@ -4176,7 +4176,7 @@ LABEL_19:
     }
   }
 
-  else if (-[NSFileManager fileExistsAtPath:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:", [v16 path]) || !sub_100099544(a3, v17, 0))
+  else if (-[NSFileManager fileExistsAtPath:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:", [v16 path]) || !sub_100099544(l, v17, 0))
   {
     goto LABEL_19;
   }
@@ -4189,24 +4189,24 @@ LABEL_19:
     v21 = v20;
     [(NSDate *)[(NSDictionary *)v19 fileModificationDate] timeIntervalSinceReferenceDate];
     v23 = v22;
-    v24 = [(NSDictionary *)v19 fileSize];
-    if (a6 < v24 || ((v25 = v15 - v21, v26 = v15 - v23, v15 - v21 > a5) ? (v27 = v26 <= a5) : (v27 = 1), !v27))
+    fileSize = [(NSDictionary *)v19 fileSize];
+    if (size < fileSize || ((v25 = v15 - v21, v26 = v15 - v23, v15 - v21 > age) ? (v27 = v26 <= age) : (v27 = 1), !v27))
     {
       v30 = sub_100098A04();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
         v35 = 134219266;
-        v36 = a6;
+        sizeCopy2 = size;
         v37 = 2048;
-        v38 = v24;
+        v38 = fileSize;
         v39 = 2048;
-        v40 = a5;
+        ageCopy2 = age;
         v41 = 2114;
         v42 = [NSDate dateWithTimeIntervalSinceReferenceDate:v21];
         v43 = 2114;
         v44 = [NSDate dateWithTimeIntervalSinceReferenceDate:v23];
         v45 = 2114;
-        v46 = [v17 path];
+        path = [v17 path];
         LODWORD(v34) = 62;
         v33 = &v35;
         _os_log_send_and_compose_impl();
@@ -4216,27 +4216,27 @@ LABEL_19:
       return 0;
     }
 
-    if (a8)
+    if (remainingSize)
     {
       v28 = sub_100098A04();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
         v35 = 134219266;
-        v36 = a6;
+        sizeCopy2 = size;
         v37 = 2048;
-        v38 = v24;
+        v38 = fileSize;
         v39 = 2048;
-        v40 = a5;
+        ageCopy2 = age;
         v41 = 2114;
         v42 = [NSDate dateWithTimeIntervalSinceReferenceDate:v21];
         v43 = 2114;
         v44 = [NSDate dateWithTimeIntervalSinceReferenceDate:v23];
         v45 = 2114;
-        v46 = [v17 path];
+        path = [v17 path];
         _os_log_send_and_compose_impl();
       }
 
-      *a8 = a6 - v24;
+      *remainingSize = size - fileSize;
     }
   }
 
@@ -4246,7 +4246,7 @@ LABEL_19:
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
       v35 = 138543362;
-      v36 = [v17 path];
+      sizeCopy2 = [v17 path];
       _os_log_send_and_compose_impl();
     }
   }
@@ -4259,7 +4259,7 @@ LABEL_19:
   return 0;
 }
 
-- (id)__mostRecentInDirectories:(id)a3 include:(id)a4 exclude:(id)a5 maxAge:(double)a6
+- (id)__mostRecentInDirectories:(id)directories include:(id)include exclude:(id)exclude maxAge:(double)age
 {
   v31 = +[NSMutableArray array];
   +[NSDate timeIntervalSinceReferenceDate];
@@ -4270,8 +4270,8 @@ LABEL_19:
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = a3;
-  v34 = [a3 countByEnumeratingWithState:&v43 objects:v48 count:16];
+  obj = directories;
+  v34 = [directories countByEnumeratingWithState:&v43 objects:v48 count:16];
   if (v34)
   {
     v33 = *v44;
@@ -4316,8 +4316,8 @@ LABEL_19:
               v25 = v24;
               v26 = v11 - v23;
               v27 = v11 - v25;
-              v28 = v11 - v23 > a6 && v27 > a6;
-              if (!v28 && (!a4 || [a4 numberOfMatchesInString:v19 options:0 range:{0, objc_msgSend(v19, "length", v26, v27)}]) && (!a5 || !objc_msgSend(a5, "numberOfMatchesInString:options:range:", v19, 0, 0, objc_msgSend(v19, "length", v26, v27))) && (objc_msgSend(v38, "containsObject:", v19, v26, v27) & 1) == 0)
+              v28 = v11 - v23 > age && v27 > age;
+              if (!v28 && (!include || [include numberOfMatchesInString:v19 options:0 range:{0, objc_msgSend(v19, "length", v26, v27)}]) && (!exclude || !objc_msgSend(exclude, "numberOfMatchesInString:options:range:", v19, 0, 0, objc_msgSend(v19, "length", v26, v27))) && (objc_msgSend(v38, "containsObject:", v19, v26, v27) & 1) == 0)
               {
                 if (v23 <= v25)
                 {
@@ -4357,7 +4357,7 @@ LABEL_19:
   return [v31 copy];
 }
 
-- (id)__mostRecentInDirectories:(id)a3 matchingPrefix:(id)a4 matchingSuffix:(id)a5 excludingPrefix:(id)a6 excludingSuffix:(id)a7 maxAge:(double)a8
+- (id)__mostRecentInDirectories:(id)directories matchingPrefix:(id)prefix matchingSuffix:(id)suffix excludingPrefix:(id)excludingPrefix excludingSuffix:(id)excludingSuffix maxAge:(double)age
 {
   v32 = +[NSMutableArray array];
   +[NSDate timeIntervalSinceReferenceDate];
@@ -4368,8 +4368,8 @@ LABEL_19:
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = a3;
-  v35 = [a3 countByEnumeratingWithState:&v47 objects:v52 count:16];
+  obj = directories;
+  v35 = [directories countByEnumeratingWithState:&v47 objects:v52 count:16];
   if (v35)
   {
     v34 = *v48;
@@ -4414,8 +4414,8 @@ LABEL_19:
               v26 = v25;
               v27 = v12 - v24;
               v28 = v12 - v26;
-              v29 = v12 - v24 > a8 && v28 > a8;
-              if (!v29 && (!a4 || [v20 hasPrefix:{a4, v27, v28}]) && (!a5 || objc_msgSend(v20, "hasSuffix:", a5, v27, v28)) && (!a6 || (objc_msgSend(v20, "hasPrefix:", a6, v27, v28) & 1) == 0) && (!a7 || (objc_msgSend(v20, "hasSuffix:", a7, v27, v28) & 1) == 0) && (objc_msgSend(v39, "containsObject:", v20, v27, v28) & 1) == 0)
+              v29 = v12 - v24 > age && v28 > age;
+              if (!v29 && (!prefix || [v20 hasPrefix:{prefix, v27, v28}]) && (!suffix || objc_msgSend(v20, "hasSuffix:", suffix, v27, v28)) && (!excludingPrefix || (objc_msgSend(v20, "hasPrefix:", excludingPrefix, v27, v28) & 1) == 0) && (!excludingSuffix || (objc_msgSend(v20, "hasSuffix:", excludingSuffix, v27, v28) & 1) == 0) && (objc_msgSend(v39, "containsObject:", v20, v27, v28) & 1) == 0)
               {
                 if (v24 <= v26)
                 {
@@ -4455,17 +4455,17 @@ LABEL_19:
   return [v32 copy];
 }
 
-- (id)__possibleCoreCapturePathsWithComponent:(id)a3
+- (id)__possibleCoreCapturePathsWithComponent:(id)component
 {
   v4 = +[NSMutableArray array];
-  if (!a3)
+  if (!component)
   {
-    a3 = @"WiFi";
+    component = @"WiFi";
   }
 
-  [v4 addObject:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"/Library/Logs/CrashReporter/CoreCapture/%@", a3)}];
-  [v4 addObject:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"/Library/Logs/CoreCapture/%@", a3)}];
-  [v4 addObject:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"/var/mobile/Library/Logs/CrashReporter/CoreCapture/%@", a3)}];
+  [v4 addObject:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"/Library/Logs/CrashReporter/CoreCapture/%@", component)}];
+  [v4 addObject:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"/Library/Logs/CoreCapture/%@", component)}];
+  [v4 addObject:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"/var/mobile/Library/Logs/CrashReporter/CoreCapture/%@", component)}];
   result = [v4 count];
   if (result)
   {
@@ -4477,12 +4477,12 @@ LABEL_19:
   return result;
 }
 
-- (void)__filterCoreCaptureContent:(id)a3
+- (void)__filterCoreCaptureContent:(id)content
 {
   v4 = +[NSMutableArray array];
   v5 = [NSRegularExpression regularExpressionWithPattern:@"\\.bin$|\\.pcapng\\.gz$" options:0 error:0];
   v27 = NSURLNameKey;
-  v6 = [+[NSFileManager defaultManager](NSFileManager enumeratorAtURL:"enumeratorAtURL:includingPropertiesForKeys:options:errorHandler:" includingPropertiesForKeys:a3 options:[NSArray errorHandler:"arrayWithObjects:count:" arrayWithObjects:1 count:?], 0, 0];
+  v6 = [+[NSFileManager defaultManager](NSFileManager enumeratorAtURL:"enumeratorAtURL:includingPropertiesForKeys:options:errorHandler:" includingPropertiesForKeys:content options:[NSArray errorHandler:"arrayWithObjects:count:" arrayWithObjects:1 count:?], 0, 0];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -4551,15 +4551,15 @@ LABEL_19:
   }
 }
 
-- (id)__collectCoreCaptureDump:(id)a3
+- (id)__collectCoreCaptureDump:(id)dump
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:dump];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
   if ([(W5LogManager *)self __allowCoreCapture])
   {
-    v6 = [objc_msgSend(a3 "configuration")];
+    v6 = [objc_msgSend(dump "configuration")];
     if (v6)
     {
       v7 = v6;
@@ -4570,7 +4570,7 @@ LABEL_19:
       v7 = @"WiFiDebug";
     }
 
-    v8 = [objc_msgSend(a3 "configuration")];
+    v8 = [objc_msgSend(dump "configuration")];
     if (v8)
     {
       v9 = v8;
@@ -4589,17 +4589,17 @@ LABEL_19:
   return v5;
 }
 
-- (id)__collectCoreCapture:(id)a3
+- (id)__collectCoreCapture:(id)capture
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:capture];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = self;
+  selfCopy = self;
   if ([(W5LogManager *)self __allowCoreCapture])
   {
-    v7 = [objc_msgSend(a3 "configuration")];
-    v8 = [objc_msgSend(a3 "configuration")];
+    v7 = [objc_msgSend(capture "configuration")];
+    v8 = [objc_msgSend(capture "configuration")];
     if (v8)
     {
       [v8 doubleValue];
@@ -4611,32 +4611,32 @@ LABEL_19:
       v10 = 1.79769313e308;
     }
 
-    v11 = [objc_msgSend(a3 "configuration")];
+    v11 = [objc_msgSend(capture "configuration")];
     if (v11)
     {
-      v29 = [v11 unsignedIntegerValue];
+      unsignedIntegerValue = [v11 unsignedIntegerValue];
     }
 
     else
     {
-      v29 = -1;
+      unsignedIntegerValue = -1;
     }
 
-    v12 = [objc_msgSend(a3 "configuration")];
+    v12 = [objc_msgSend(capture "configuration")];
     v30 = v5;
     if (v12)
     {
-      v28 = [v12 unsignedIntegerValue];
+      unsignedIntegerValue2 = [v12 unsignedIntegerValue];
     }
 
     else
     {
-      v28 = -1;
+      unsignedIntegerValue2 = -1;
     }
 
-    v27 = [objc_msgSend(objc_msgSend(a3 "configuration")];
-    v13 = [objc_msgSend(objc_msgSend(a3 "configuration")];
-    v14 = [objc_msgSend(a3 "configuration")];
+    v27 = [objc_msgSend(objc_msgSend(capture "configuration")];
+    v13 = [objc_msgSend(objc_msgSend(capture "configuration")];
+    v14 = [objc_msgSend(capture "configuration")];
     if (v14)
     {
       v15 = v14;
@@ -4647,8 +4647,8 @@ LABEL_19:
       v15 = @"WiFi";
     }
 
-    v16 = [objc_msgSend(a3 "configuration")];
-    v17 = [objc_msgSend(a3 "configuration")];
+    v16 = [objc_msgSend(capture "configuration")];
+    v17 = [objc_msgSend(capture "configuration")];
     v18 = +[NSMutableArray array];
     v19 = &stru_1000E4788;
     if (v13)
@@ -4667,7 +4667,7 @@ LABEL_19:
       v31[1] = 3221225472;
       v31[2] = sub_10006CFCC;
       v31[3] = &unk_1000E2F48;
-      v31[4] = v6;
+      v31[4] = selfCopy;
     }
 
     if (v16)
@@ -4686,9 +4686,9 @@ LABEL_19:
     }
 
     LOBYTE(v26) = v27;
-    -[W5LogManager __collectFilesInDirectories:include:exclude:maxAge:maxCount:maxSize:outputDirectory:compress:remainingSize:contentFilter:](v6, "__collectFilesInDirectories:include:exclude:maxAge:maxCount:maxSize:outputDirectory:compress:remainingSize:contentFilter:", -[W5LogManager __possibleCoreCapturePathsWithComponent:](v6, "__possibleCoreCapturePathsWithComponent:", v15), v16, v23, v29, v28, [objc_msgSend(v21 URLByAppendingPathComponent:{v20), "URLByAppendingPathComponent:", v15}], v10, v26, 0, v22);
+    -[W5LogManager __collectFilesInDirectories:include:exclude:maxAge:maxCount:maxSize:outputDirectory:compress:remainingSize:contentFilter:](selfCopy, "__collectFilesInDirectories:include:exclude:maxAge:maxCount:maxSize:outputDirectory:compress:remainingSize:contentFilter:", -[W5LogManager __possibleCoreCapturePathsWithComponent:](selfCopy, "__possibleCoreCapturePathsWithComponent:", v15), v16, v23, unsignedIntegerValue, unsignedIntegerValue2, [objc_msgSend(v21 URLByAppendingPathComponent:{v20), "URLByAppendingPathComponent:", v15}], v10, v26, 0, v22);
     [v18 addObject:{+[NSURL fileURLWithPath:](NSURL, "fileURLWithPath:", v20)}];
-    v24 = [(W5LogManager *)v6 __collectFileAtURL:[NSURL fileURLWithPath:?]maxSize:v21 compress:0x7FFFFFFFFFFFFFFFLL remainingSize:1, 0, 1.79769313e308];
+    v24 = [(W5LogManager *)selfCopy __collectFileAtURL:[NSURL fileURLWithPath:?]maxSize:v21 compress:0x7FFFFFFFFFFFFFFFLL remainingSize:1, 0, 1.79769313e308];
     if (v24)
     {
       [v18 addObject:v24];
@@ -4703,18 +4703,18 @@ LABEL_19:
   return v5;
 }
 
-- (id)__collectCoreCapture24:(id)a3
+- (id)__collectCoreCapture24:(id)capture24
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:capture24];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
   if ([(W5LogManager *)self __allowCoreCapture])
   {
-    v6 = [objc_msgSend(a3 "configuration")];
-    v19 = [objc_msgSend(objc_msgSend(a3 "configuration")];
-    v7 = [objc_msgSend(objc_msgSend(a3 "configuration")];
-    v8 = [objc_msgSend(a3 "configuration")];
+    v6 = [objc_msgSend(capture24 "configuration")];
+    v19 = [objc_msgSend(objc_msgSend(capture24 "configuration")];
+    v7 = [objc_msgSend(objc_msgSend(capture24 "configuration")];
+    v8 = [objc_msgSend(capture24 "configuration")];
     if (v8)
     {
       v9 = v8;
@@ -4725,8 +4725,8 @@ LABEL_19:
       v9 = @"WiFi";
     }
 
-    v10 = [objc_msgSend(a3 "configuration")];
-    v11 = [objc_msgSend(a3 "configuration")];
+    v10 = [objc_msgSend(capture24 "configuration")];
+    v11 = [objc_msgSend(capture24 "configuration")];
     v12 = +[NSMutableArray array];
     v13 = &stru_1000E4788;
     if (v7)
@@ -4775,14 +4775,14 @@ LABEL_19:
   return v5;
 }
 
-- (id)__collectWiFiPreferences:(id)a3
+- (id)__collectWiFiPreferences:(id)preferences
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:preferences];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(a3 "configuration")];
-  v7 = [objc_msgSend(objc_msgSend(a3 "configuration")];
+  v6 = [objc_msgSend(preferences "configuration")];
+  v7 = [objc_msgSend(objc_msgSend(preferences "configuration")];
   v8 = +[NSMutableArray array];
   if (-[NSFileManager fileExistsAtPath:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:", @"/Library/Preferences/SystemConfiguration/com.apple.wifi.plist") && sub_100099544(+[NSURL fileURLWithPath:](NSURL, "fileURLWithPath:", @"/Library/Preferences/SystemConfiguration/com.apple.wifi.plist"), [v6 URLByAppendingPathComponent:@"com.apple.wifi.plist"], 0))
   {
@@ -4801,11 +4801,11 @@ LABEL_19:
 
   if ((os_variant_has_internal_content() | v7))
   {
-    v9 = [NSString stringWithFormat:@"%@.plist", CWFKnownNetworksStoreIdentifier];
-    v10 = [NSString stringWithFormat:@"/Library/Preferences/%@", v9];
-    if (-[NSFileManager fileExistsAtPath:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:", v10) && sub_100099544(+[NSURL fileURLWithPath:](NSURL, "fileURLWithPath:", v10), [v6 URLByAppendingPathComponent:v9], 0))
+    cWFKnownNetworksStoreIdentifier = [NSString stringWithFormat:@"%@.plist", CWFKnownNetworksStoreIdentifier];
+    v10 = [NSString stringWithFormat:@"/Library/Preferences/%@", cWFKnownNetworksStoreIdentifier];
+    if (-[NSFileManager fileExistsAtPath:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:", v10) && sub_100099544(+[NSURL fileURLWithPath:](NSURL, "fileURLWithPath:", v10), [v6 URLByAppendingPathComponent:cWFKnownNetworksStoreIdentifier], 0))
     {
-      [v8 addObject:{+[NSURL fileURLWithPath:](NSURL, "fileURLWithPath:", v9)}];
+      [v8 addObject:{+[NSURL fileURLWithPath:](NSURL, "fileURLWithPath:", cWFKnownNetworksStoreIdentifier)}];
     }
 
     v11 = [+[NSFileManager defaultManager](NSFileManager containerURLForSecurityApplicationGroupIdentifier:"containerURLForSecurityApplicationGroupIdentifier:", @"group.com.apple.wifi.logs"];
@@ -4835,7 +4835,7 @@ LABEL_19:
     block[1] = 3221225472;
     block[2] = sub_10006D7C0;
     block[3] = &unk_1000E1C98;
-    block[4] = a3;
+    block[4] = preferences;
     block[5] = self;
     dispatch_async(debugLogQueue, block);
   }
@@ -4846,13 +4846,13 @@ LABEL_19:
   return v5;
 }
 
-- (id)__collectNetworkPreferences:(id)a3
+- (id)__collectNetworkPreferences:(id)preferences
 {
   v4 = objc_alloc_init(W5LogItemReceipt);
-  [v4 setRequest:a3];
+  [v4 setRequest:preferences];
   +[NSDate timeIntervalSinceReferenceDate];
   [v4 setStartedAt:?];
-  v5 = [objc_msgSend(a3 "configuration")];
+  v5 = [objc_msgSend(preferences "configuration")];
   v6 = +[NSMutableArray array];
   if (-[NSFileManager fileExistsAtPath:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:", @"/Library/Preferences/SystemConfiguration/preferences.plist") && sub_100099544(+[NSURL fileURLWithPath:](NSURL, "fileURLWithPath:", @"/Library/Preferences/SystemConfiguration/preferences.plist"), [v5 URLByAppendingPathComponent:@"preferences.plist"], 0))
   {
@@ -4867,24 +4867,24 @@ LABEL_19:
 
 - (void)__dumpWiFiLogs
 {
-  v2 = [(W5StatusManager *)self->_status concurrentQueue];
+  concurrentQueue = [(W5StatusManager *)self->_status concurrentQueue];
 
-  [(NSOperationQueue *)v2 addOperationWithBlock:&stru_1000E2F68];
+  [(NSOperationQueue *)concurrentQueue addOperationWithBlock:&stru_1000E2F68];
 }
 
-- (id)__collectFilteredWiFiManagerLogArchiveWithOutputURL:(id)a3 compress:(BOOL)a4 age:(unint64_t)a5
+- (id)__collectFilteredWiFiManagerLogArchiveWithOutputURL:(id)l compress:(BOOL)compress age:(unint64_t)age
 {
-  v6 = a4;
-  v9 = [objc_msgSend(a3 "path")];
-  v12[3] = [NSString stringWithFormat:@"--last=%lus", a5, @"show", @"--debug", @"--signpost"];
+  compressCopy = compress;
+  v9 = [objc_msgSend(l "path")];
+  v12[3] = [NSString stringWithFormat:@"--last=%lus", age, @"show", @"--debug", @"--signpost"];
   v12[4] = @"--style=compact";
   v12[5] = @"--predicate=(subsystem CONTAINS com.apple.WiFiManager) OR (subsystem CONTAINS wifi.analytics) OR (senderImagePath CONTAINS IO80211Family) OR (senderImagePath CONTAINS AppleBCMWLANCore) OR (process CONTAINS wifid)";
   v10 = 0;
   if ([NSTask runTaskWithLaunchPath:@"/usr/bin/log" arguments:[NSArray arrayWithObjects:v12 count:6] outputFilePath:v9 error:0])
   {
-    if (v6)
+    if (compressCopy)
     {
-      v10 = [(W5LogManager *)self __collectFileAtURL:[NSURL fileURLWithPath:?]maxSize:a3 compress:0x7FFFFFFFFFFFFFFFLL remainingSize:1, 0, 1.79769313e308];
+      v10 = [(W5LogManager *)self __collectFileAtURL:[NSURL fileURLWithPath:?]maxSize:l compress:0x7FFFFFFFFFFFFFFFLL remainingSize:1, 0, 1.79769313e308];
       [+[NSFileManager defaultManager](NSFileManager removeItemAtPath:"removeItemAtPath:error:" error:v9, 0];
     }
 
@@ -4897,14 +4897,14 @@ LABEL_19:
   return v10;
 }
 
-- (id)__collectWiFiLogs24:(id)a3
+- (id)__collectWiFiLogs24:(id)logs24
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:logs24];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(a3 "configuration")];
-  v7 = [objc_msgSend(objc_msgSend(a3 "configuration")];
+  v6 = [objc_msgSend(logs24 "configuration")];
+  v7 = [objc_msgSend(objc_msgSend(logs24 "configuration")];
   v8 = +[NSMutableArray array];
   v9 = [(W5LogManager *)self __collectFileAtURL:[NSURL fileURLWithPath:?]maxSize:v6 compress:0x7FFFFFFFFFFFFFFFLL remainingSize:v7, 0, 86400.0];
   if (v9)
@@ -4949,14 +4949,14 @@ LABEL_19:
   return v5;
 }
 
-- (id)__collectWiFiLogs:(id)a3
+- (id)__collectWiFiLogs:(id)logs
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:logs];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(a3 "configuration")];
-  v7 = [objc_msgSend(a3 "configuration")];
+  v6 = [objc_msgSend(logs "configuration")];
+  v7 = [objc_msgSend(logs "configuration")];
   if (v7)
   {
     [v7 doubleValue];
@@ -4968,23 +4968,23 @@ LABEL_19:
     v9 = 1.79769313e308;
   }
 
-  v10 = [objc_msgSend(a3 "configuration")];
+  v10 = [objc_msgSend(logs "configuration")];
   if (v10)
   {
-    v11 = [v10 unsignedIntegerValue];
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
   }
 
   else
   {
-    v11 = -1;
+    unsignedIntegerValue = -1;
   }
 
-  v12 = [objc_msgSend(objc_msgSend(a3 "configuration")];
-  v13 = [objc_msgSend(objc_msgSend(a3 "configuration")];
+  v12 = [objc_msgSend(objc_msgSend(logs "configuration")];
+  v13 = [objc_msgSend(objc_msgSend(logs "configuration")];
   v14 = +[NSMutableArray array];
   if (v13)
   {
-    v11 = 1;
+    unsignedIntegerValue = 1;
   }
 
   else
@@ -5015,7 +5015,7 @@ LABEL_19:
   }
 
   LOBYTE(v22) = v12;
-  v19 = [(W5LogManager *)self __collectFilesInDirectories:[(W5LogManager *)self __possibleTempWiFiLogPaths] include:0 exclude:[NSRegularExpression regularExpressionWithPattern:? options:? error:?]compress:v11 remainingSize:0x7FFFFFFFFFFFFFFFLL contentFilter:v6, v9, v22, 0, 0];
+  v19 = [(W5LogManager *)self __collectFilesInDirectories:[(W5LogManager *)self __possibleTempWiFiLogPaths] include:0 exclude:[NSRegularExpression regularExpressionWithPattern:? options:? error:?]compress:unsignedIntegerValue remainingSize:0x7FFFFFFFFFFFFFFFLL contentFilter:v6, v9, v22, 0, 0];
   if (v19)
   {
     [v14 addObjectsFromArray:v19];
@@ -5033,10 +5033,10 @@ LABEL_19:
   return v5;
 }
 
-- (id)__collectWiFiLogsDump:(id)a3
+- (id)__collectWiFiLogsDump:(id)dump
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:dump];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
   [(W5LogManager *)self __dumpWiFiLogs];
@@ -5045,13 +5045,13 @@ LABEL_19:
   return v5;
 }
 
-- (id)__collectEAP8021XLogs:(id)a3
+- (id)__collectEAP8021XLogs:(id)logs
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:logs];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(a3 "configuration")];
+  v6 = [objc_msgSend(logs "configuration")];
   v7 = +[NSMutableArray array];
   if ([[NSFileManager fileExistsAtPath:"fileExistsAtPath:" defaultManager:v6]
   {
@@ -5107,13 +5107,13 @@ LABEL_19:
   return v5;
 }
 
-- (id)__collectIPConfigurationLogs:(id)a3
+- (id)__collectIPConfigurationLogs:(id)logs
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:logs];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(a3 "configuration")];
+  v6 = [objc_msgSend(logs "configuration")];
   v7 = +[NSMutableArray array];
   v8 = [(W5LogManager *)self __mostRecentInDirectories:&off_1000F4308 matchingPrefix:@"com.apple.networking.IPConfiguration.log" matchingSuffix:0 excludingPrefix:0 excludingSuffix:0 maxAge:1.79769313e308];
   v17 = 0u;
@@ -5164,16 +5164,16 @@ LABEL_19:
   return v5;
 }
 
-- (id)__collectSystemLogs:(id)a3
+- (id)__collectSystemLogs:(id)logs
 {
   v4 = objc_alloc_init(W5LogItemReceipt);
-  [v4 setRequest:a3];
+  [v4 setRequest:logs];
   +[NSDate timeIntervalSinceReferenceDate];
   [v4 setStartedAt:?];
-  v5 = [objc_msgSend(a3 "configuration")];
-  v6 = [objc_msgSend(a3 "configuration")];
-  v7 = [objc_msgSend(a3 "configuration")];
-  v8 = [objc_msgSend(objc_msgSend(a3 "configuration")];
+  v5 = [objc_msgSend(logs "configuration")];
+  v6 = [objc_msgSend(logs "configuration")];
+  v7 = [objc_msgSend(logs "configuration")];
+  v8 = [objc_msgSend(objc_msgSend(logs "configuration")];
   v9 = +[NSMutableArray array];
   v18[0] = @"-B";
   v18[1] = @"-x";
@@ -5222,23 +5222,23 @@ LABEL_19:
   return v4;
 }
 
-- (id)__collectWiFiVelocityLog:(id)a3
+- (id)__collectWiFiVelocityLog:(id)log
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:log];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(a3 "configuration")];
-  v7 = [objc_msgSend(objc_msgSend(a3 "configuration")];
-  v8 = [objc_msgSend(a3 "configuration")];
+  v6 = [objc_msgSend(log "configuration")];
+  v7 = [objc_msgSend(objc_msgSend(log "configuration")];
+  v8 = [objc_msgSend(log "configuration")];
   if (v8)
   {
-    v9 = [v8 unsignedIntegerValue];
+    unsignedIntegerValue = [v8 unsignedIntegerValue];
   }
 
   else
   {
-    v9 = 300;
+    unsignedIntegerValue = 300;
   }
 
   v10 = [objc_msgSend(v6 "path")];
@@ -5246,7 +5246,7 @@ LABEL_19:
   v15[1] = @"--info";
   v15[2] = @"--debug";
   v15[3] = @"--signpost";
-  v15[4] = [NSString stringWithFormat:@"--last=%lus", v9];
+  v15[4] = [NSString stringWithFormat:@"--last=%lus", unsignedIntegerValue];
   v15[5] = @"--style=syslog";
   v15[6] = @"--predicate=message BEGINSWITH [wifivelocity]";
   if ([NSTask runTaskWithLaunchPath:@"/usr/bin/log" arguments:[NSArray arrayWithObjects:v15 count:7] outputFilePath:v10 error:0])
@@ -5275,23 +5275,23 @@ LABEL_19:
   return v5;
 }
 
-- (id)__collectSystemLogs24:(id)a3
+- (id)__collectSystemLogs24:(id)logs24
 {
-  v5 = [objc_msgSend(a3 "configuration")];
+  v5 = [objc_msgSend(logs24 "configuration")];
   [v5 setObject:0 forKeyedSubscript:@"MaxSize"];
   [v5 setObject:&off_1000EF4D0 forKeyedSubscript:@"MaxAge"];
-  [a3 setConfiguration:v5];
+  [logs24 setConfiguration:v5];
 
-  return [(W5LogManager *)self __collectSystemLogs:a3];
+  return [(W5LogManager *)self __collectSystemLogs:logs24];
 }
 
-- (id)__collectAirPlayLogs:(id)a3
+- (id)__collectAirPlayLogs:(id)logs
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:logs];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(a3 "configuration")];
+  v6 = [objc_msgSend(logs "configuration")];
   v7 = +[NSMutableArray array];
   v8 = [(W5LogManager *)self __mostRecentInDirectories:&off_1000F4320 matchingPrefix:@"AirPlay" matchingSuffix:0 excludingPrefix:0 excludingSuffix:0 maxAge:1.79769313e308];
   v17 = 0u;
@@ -5342,13 +5342,13 @@ LABEL_19:
   return v5;
 }
 
-- (id)__collectWirelessProxLogs:(id)a3
+- (id)__collectWirelessProxLogs:(id)logs
 {
   v4 = objc_alloc_init(W5LogItemReceipt);
-  [v4 setRequest:a3];
+  [v4 setRequest:logs];
   +[NSDate timeIntervalSinceReferenceDate];
   [v4 setStartedAt:?];
-  v5 = [objc_msgSend(a3 "configuration")];
+  v5 = [objc_msgSend(logs "configuration")];
   if ([[NSFileManager fileExistsAtPath:"fileExistsAtPath:" defaultManager:v5]
   {
     v7 = [NSURL fileURLWithPath:@"wirelessproxd.log"];
@@ -5360,14 +5360,14 @@ LABEL_19:
   return v4;
 }
 
-- (id)__collectSharingLogs:(id)a3
+- (id)__collectSharingLogs:(id)logs
 {
   v4 = objc_alloc_init(W5LogItemReceipt);
-  [v4 setRequest:a3];
+  [v4 setRequest:logs];
   +[NSDate timeIntervalSinceReferenceDate];
   [v4 setStartedAt:?];
-  v5 = [objc_msgSend(a3 "configuration")];
-  v6 = [objc_msgSend(a3 "configuration")];
+  v5 = [objc_msgSend(logs "configuration")];
+  v6 = [objc_msgSend(logs "configuration")];
   if (-[NSFileManager fileExistsAtPath:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:", [objc_msgSend(v6 "path")]) && sub_100099544(objc_msgSend(v6, "URLByAppendingPathComponent:", @"/Library/Logs/com.apple.sharingd/sharingd.log"), v5, 0))
   {
     v8 = [NSURL fileURLWithPath:@"sharingd.log"];
@@ -5379,13 +5379,13 @@ LABEL_19:
   return v4;
 }
 
-- (id)__collectBluetoothLogs:(id)a3
+- (id)__collectBluetoothLogs:(id)logs
 {
   v4 = objc_alloc_init(W5LogItemReceipt);
-  [v4 setRequest:a3];
+  [v4 setRequest:logs];
   +[NSDate timeIntervalSinceReferenceDate];
   [v4 setStartedAt:?];
-  v5 = [objc_msgSend(a3 "configuration")];
+  v5 = [objc_msgSend(logs "configuration")];
   v6 = +[NSMutableArray array];
   if ([[NSFileManager fileExistsAtPath:"fileExistsAtPath:" defaultManager:v5]
   {
@@ -5413,13 +5413,13 @@ LABEL_19:
   return v4;
 }
 
-- (id)__collectDextCoreDump:(id)a3
+- (id)__collectDextCoreDump:(id)dump
 {
   v4 = objc_alloc_init(W5LogItemReceipt);
-  [v4 setRequest:a3];
+  [v4 setRequest:dump];
   +[NSDate timeIntervalSinceReferenceDate];
   [v4 setStartedAt:?];
-  v5 = [objc_msgSend(a3 "configuration")];
+  v5 = [objc_msgSend(dump "configuration")];
   v24 = +[NSMutableArray array];
   v6 = +[NSURL fileURLWithPath:](NSURL, "fileURLWithPath:", [objc_msgSend(v5 "path")]);
   v7 = +[NSFileManager defaultManager];
@@ -5484,7 +5484,7 @@ LABEL_19:
       v19 = sub_100098A04();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [(NSURL *)v6 path];
+        path = [(NSURL *)v6 path];
         *v31 = 136316162;
         *&v31[4] = "[W5LogManager __collectDextCoreDump:]";
         v32 = 2080;
@@ -5492,9 +5492,9 @@ LABEL_19:
         v34 = 1024;
         v35 = 5757;
         v36 = 2114;
-        v37 = v20;
+        v37 = path;
         v38 = 2114;
-        v39 = a3;
+        dumpCopy = dump;
         LODWORD(v22) = 48;
         v21 = v31;
         _os_log_send_and_compose_impl();
@@ -5507,14 +5507,14 @@ LABEL_19:
   return v4;
 }
 
-- (id)__collectCrashesAndSpins24:(id)a3
+- (id)__collectCrashesAndSpins24:(id)spins24
 {
   v4 = objc_alloc_init(W5LogItemReceipt);
-  [v4 setRequest:a3];
+  [v4 setRequest:spins24];
   +[NSDate timeIntervalSinceReferenceDate];
   v24 = v4;
   [v4 setStartedAt:?];
-  v5 = [objc_msgSend(a3 "configuration")];
+  v5 = [objc_msgSend(spins24 "configuration")];
   v25 = +[NSMutableArray array];
   v26 = v5;
   -[NSFileManager createDirectoryAtPath:withIntermediateDirectories:attributes:error:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", [objc_msgSend(v5 "path")], 0, 0, 0);
@@ -5582,29 +5582,29 @@ LABEL_19:
   return v24;
 }
 
-- (id)__collectEventHistory:(id)a3
+- (id)__collectEventHistory:(id)history
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:history];
   v6 = &WiFiManagerClientCopyProperty_ptr;
   +[NSDate timeIntervalSinceReferenceDate];
   v84 = v5;
   [v5 setStartedAt:?];
-  v83 = [objc_msgSend(a3 "configuration")];
-  v7 = [(W5StatusManager *)self->_status eventHistory];
+  v83 = [objc_msgSend(history "configuration")];
+  eventHistory = [(W5StatusManager *)self->_status eventHistory];
   v8 = +[NSMutableString string];
   v90 = 0u;
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
-  v89 = [v7 countByEnumeratingWithState:&v90 objects:v95 count:16];
+  v89 = [eventHistory countByEnumeratingWithState:&v90 objects:v95 count:16];
   if (v89)
   {
     v9 = *v91;
     v86 = v8;
-    v87 = v7;
+    v87 = eventHistory;
     v88 = *v91;
-    v85 = self;
+    selfCopy = self;
     do
     {
       v10 = 0;
@@ -5612,7 +5612,7 @@ LABEL_19:
       {
         if (*v91 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(eventHistory);
         }
 
         v11 = *(*(&v90 + 1) + 8 * v10);
@@ -5628,9 +5628,9 @@ LABEL_19:
 
             v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Network Status: ipv4[if=%@ ip=%@ router=%@] ipv6[if=%@ ip=%@ router=%@] dns=%@ reach=%s", [v12 primaryIPv4InterfaceName], objc_msgSend(objc_msgSend(v12, "primaryIPv4Addresses"), "firstObject"), objc_msgSend(v12, "primaryIPv4Router"), objc_msgSend(v12, "primaryIPv6InterfaceName"), objc_msgSend(objc_msgSend(v12, "primaryIPv6Addresses"), "firstObject"), objc_msgSend(v12, "primaryIPv6Router"), objc_msgSend(objc_msgSend(v12, "primaryDNSAddresses"), "firstObject"), v13);
             v6 = &WiFiManagerClientCopyProperty_ptr;
-            self = v85;
+            self = selfCopy;
             v8 = v86;
-            v7 = v87;
+            eventHistory = v87;
             v9 = v88;
             if (v14)
             {
@@ -5645,28 +5645,28 @@ LABEL_19:
             v17 = @"BT Paging End";
             goto LABEL_42;
           case 0xEuLL:
-            v43 = [v11 info];
-            v44 = [v43 objectForKeyedSubscript:@"InterfaceName"];
-            [objc_msgSend(v43 objectForKeyedSubscript:{@"EAPControlMode", "unsignedIntValue"}];
-            [objc_msgSend(v43 objectForKeyedSubscript:{@"EAPControlState", "unsignedIntValue"}];
-            [objc_msgSend(v43 objectForKeyedSubscript:{@"EAPSupplicantState", "unsignedIntValue"}];
-            v45 = [objc_msgSend(v43 objectForKeyedSubscript:{@"EAPClientStatus", "intValue"}];
+            info = [v11 info];
+            v44 = [info objectForKeyedSubscript:@"InterfaceName"];
+            [objc_msgSend(info objectForKeyedSubscript:{@"EAPControlMode", "unsignedIntValue"}];
+            [objc_msgSend(info objectForKeyedSubscript:{@"EAPControlState", "unsignedIntValue"}];
+            [objc_msgSend(info objectForKeyedSubscript:{@"EAPSupplicantState", "unsignedIntValue"}];
+            v45 = [objc_msgSend(info objectForKeyedSubscript:{@"EAPClientStatus", "intValue"}];
             v46 = W5DescriptionForEAPOLControlState();
             v47 = W5DescriptionForEAPOLControlMode();
-            v7 = v87;
+            eventHistory = v87;
             v75 = v46;
             v9 = v88;
             v8 = v86;
             v18 = [NSString stringWithFormat:@"EAP8021X: %@ if=%@ mode=%@ supp=%@ status=%u", v75, v44, v47, W5DescriptionForEAPOLSupplicantState(), v45];
             break;
           case 0xFuLL:
-            v28 = [v11 info];
-            [objc_msgSend(v28 objectForKeyedSubscript:{@"PowerSourceType", "integerValue"}];
-            [objc_msgSend(v28 objectForKeyedSubscript:{@"BatteryEstimatedTime", "doubleValue"}];
+            info2 = [v11 info];
+            [objc_msgSend(info2 objectForKeyedSubscript:{@"PowerSourceType", "integerValue"}];
+            [objc_msgSend(info2 objectForKeyedSubscript:{@"BatteryEstimatedTime", "doubleValue"}];
             v30 = v29;
-            [objc_msgSend(v28 objectForKeyedSubscript:{@"BatteryLevel", "doubleValue"}];
+            [objc_msgSend(info2 objectForKeyedSubscript:{@"BatteryLevel", "doubleValue"}];
             v32 = v31;
-            [objc_msgSend(v28 objectForKeyedSubscript:{@"BatteryWarningLevel", "intValue"}];
+            [objc_msgSend(info2 objectForKeyedSubscript:{@"BatteryWarningLevel", "intValue"}];
             v33 = W5DescriptionForPowerSourceType();
             v80 = COERCE_DOUBLE(W5DescriptionForBatteryWarningLevel());
             v76 = v30;
@@ -5680,13 +5680,13 @@ LABEL_19:
             v17 = @"Power State: %@";
             goto LABEL_42;
           case 0x11uLL:
-            v50 = [v11 info];
-            [objc_msgSend(v50 objectForKeyedSubscript:{@"PowerSourceType", "integerValue"}];
-            [objc_msgSend(v50 objectForKeyedSubscript:{@"BatteryEstimatedTime", "doubleValue"}];
+            info3 = [v11 info];
+            [objc_msgSend(info3 objectForKeyedSubscript:{@"PowerSourceType", "integerValue"}];
+            [objc_msgSend(info3 objectForKeyedSubscript:{@"BatteryEstimatedTime", "doubleValue"}];
             v52 = v51;
-            [objc_msgSend(v50 objectForKeyedSubscript:{@"BatteryLevel", "doubleValue"}];
+            [objc_msgSend(info3 objectForKeyedSubscript:{@"BatteryLevel", "doubleValue"}];
             v54 = v53;
-            [objc_msgSend(v50 objectForKeyedSubscript:{@"BatteryWarningLevel", "intValue"}];
+            [objc_msgSend(info3 objectForKeyedSubscript:{@"BatteryWarningLevel", "intValue"}];
             v55 = W5DescriptionForPowerSourceType();
             v80 = COERCE_DOUBLE(W5DescriptionForBatteryWarningLevel());
             v76 = v52;
@@ -5695,9 +5695,9 @@ LABEL_19:
             v17 = @"Low Battery: ps=%@ est=%.3fs lvl=%.1f%% warn=%@";
             goto LABEL_35;
           case 0x12uLL:
-            v56 = [v11 info];
-            v57 = [v56 objectForKeyedSubscript:@"InterfaceName"];
-            v58 = [objc_msgSend(v56 objectForKeyedSubscript:{@"WiFiPowerOn", "BOOLValue"}];
+            info4 = [v11 info];
+            v57 = [info4 objectForKeyedSubscript:@"InterfaceName"];
+            v58 = [objc_msgSend(info4 objectForKeyedSubscript:{@"WiFiPowerOn", "BOOLValue"}];
             v59 = "OFF";
             if (v58)
             {
@@ -5707,23 +5707,23 @@ LABEL_19:
             v18 = [NSString stringWithFormat:@"Wi-Fi Power: if=%@ state=%s", v57, v59, v78, *&v80, v82];
             break;
           case 0x13uLL:
-            v67 = [v11 info];
-            v18 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Wi-Fi SSID: if=%@ ssid=%@", [v67 objectForKeyedSubscript:@"InterfaceName"], objc_msgSend(v67, "objectForKeyedSubscript:", @"WiFiSSIDString"), v78, *&v80, v82);
+            info5 = [v11 info];
+            v18 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Wi-Fi SSID: if=%@ ssid=%@", [info5 objectForKeyedSubscript:@"InterfaceName"], objc_msgSend(info5, "objectForKeyedSubscript:", @"WiFiSSIDString"), v78, *&v80, v82);
             break;
           case 0x14uLL:
-            v66 = [v11 info];
-            v18 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Wi-Fi BSSID: if=%@ bssid=%@", [v66 objectForKeyedSubscript:@"InterfaceName"], objc_msgSend(v66, "objectForKeyedSubscript:", @"WiFiBSSID"), v78, *&v80, v82);
+            info6 = [v11 info];
+            v18 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Wi-Fi BSSID: if=%@ bssid=%@", [info6 objectForKeyedSubscript:@"InterfaceName"], objc_msgSend(info6, "objectForKeyedSubscript:", @"WiFiBSSID"), v78, *&v80, v82);
             break;
           case 0x15uLL:
             v18 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Wi-Fi RSN Handshake: if=%@", [objc_msgSend(v11 "info")], v76, v78, *&v80, v82);
             break;
           case 0x16uLL:
-            v36 = [v11 info];
-            v37 = [v36 objectForKeyedSubscript:@"InterfaceName"];
-            v38 = [objc_msgSend(v36 objectForKeyedSubscript:{@"WiFiLinkUp", "BOOLValue"}];
-            v39 = [objc_msgSend(v36 objectForKeyedSubscript:{@"WiFiLinkChangeReason", "integerValue"}];
-            v40 = [objc_msgSend(v36 objectForKeyedSubscript:{@"WiFiLinkChangeSubreason", "integerValue"}];
-            v41 = [objc_msgSend(v36 objectForKeyedSubscript:{@"WiFiLinkChangeInvoluntary", "BOOLValue"}];
+            info7 = [v11 info];
+            v37 = [info7 objectForKeyedSubscript:@"InterfaceName"];
+            v38 = [objc_msgSend(info7 objectForKeyedSubscript:{@"WiFiLinkUp", "BOOLValue"}];
+            v39 = [objc_msgSend(info7 objectForKeyedSubscript:{@"WiFiLinkChangeReason", "integerValue"}];
+            v40 = [objc_msgSend(info7 objectForKeyedSubscript:{@"WiFiLinkChangeSubreason", "integerValue"}];
+            v41 = [objc_msgSend(info7 objectForKeyedSubscript:{@"WiFiLinkChangeInvoluntary", "BOOLValue"}];
             v42 = "DOWN";
             if (v38)
             {
@@ -5735,33 +5735,33 @@ LABEL_19:
             v9 = v88;
             v74 = v37;
             v8 = v86;
-            v7 = v87;
+            eventHistory = v87;
             v18 = [NSString stringWithFormat:@"Wi-Fi Link: if=%@ link=%s reason=%ld subreason=%ld involuntary=%d", v74, v42, v79, v81, v41];
             break;
           case 0x17uLL:
-            v34 = [v11 info];
-            v35 = [v34 objectForKeyedSubscript:@"InterfaceName"];
-            [objc_msgSend(v34 objectForKeyedSubscript:{@"WiFiMode", "intValue"}];
+            info8 = [v11 info];
+            v35 = [info8 objectForKeyedSubscript:@"InterfaceName"];
+            [objc_msgSend(info8 objectForKeyedSubscript:{@"WiFiMode", "intValue"}];
             v72 = v35;
             v76 = W5DescriptionForOpMode();
             v17 = @"Wi-Fi Mode: if=%@ mode=%@";
             goto LABEL_42;
           case 0x18uLL:
-            v19 = [v11 info];
-            v18 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Wi-Fi Country Code: if=%@ cc=%@", [v19 objectForKeyedSubscript:@"InterfaceName"], objc_msgSend(v19, "objectForKeyedSubscript:", @"WiFiCountryCode"), v78, *&v80, v82);
+            info9 = [v11 info];
+            v18 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Wi-Fi Country Code: if=%@ cc=%@", [info9 objectForKeyedSubscript:@"InterfaceName"], objc_msgSend(info9, "objectForKeyedSubscript:", @"WiFiCountryCode"), v78, *&v80, v82);
             break;
           case 0x19uLL:
-            v60 = [v11 info];
-            v61 = [v60 objectForKeyedSubscript:@"InterfaceName"];
-            v62 = [v60 objectForKeyedSubscript:@"WiFiLinkQualityUpdate"];
-            v63 = [v62 rssi];
-            v64 = [v62 txRate];
+            info10 = [v11 info];
+            v61 = [info10 objectForKeyedSubscript:@"InterfaceName"];
+            v62 = [info10 objectForKeyedSubscript:@"WiFiLinkQualityUpdate"];
+            rssi = [v62 rssi];
+            txRate = [v62 txRate];
             [v62 cca];
             v80 = v65;
-            v76 = v63;
-            v78 = v64;
+            v76 = rssi;
+            v78 = txRate;
             v8 = v86;
-            v7 = v87;
+            eventHistory = v87;
             v72 = v61;
             v17 = @"Wi-Fi Link Quality: if=%@ rssi=%lddBm txrate=%ldMbps cca=%.1f%%";
 LABEL_35:
@@ -5777,9 +5777,9 @@ LABEL_35:
             v18 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Wi-Fi Availabe: if=%@", [objc_msgSend(v11 "info")], v76, v78, *&v80, v82);
             break;
           case 0x1DuLL:
-            v15 = [v11 info];
-            v16 = [v15 objectForKeyedSubscript:@"InterfaceName"];
-            [v15 objectForKeyedSubscript:@"WiFiChannel"];
+            info11 = [v11 info];
+            v16 = [info11 objectForKeyedSubscript:@"InterfaceName"];
+            [info11 objectForKeyedSubscript:@"WiFiChannel"];
             v72 = v16;
             v76 = W5DescriptionForChannel();
             v17 = @"Wi-Fi Channel Switch: if=%@ ch=%@";
@@ -5799,23 +5799,23 @@ LABEL_35:
             break;
           case 0x22uLL:
             v20 = [objc_msgSend(v11 "info")];
-            v21 = [v20 interfaceName];
-            v22 = [v20 address];
+            interfaceName = [v20 interfaceName];
+            address = [v20 address];
             [v20 min];
             v24 = v23;
             [v20 max];
             v26 = v25;
             [v20 packetLoss];
-            v73 = v21;
-            v77 = v22;
-            v7 = v87;
+            v73 = interfaceName;
+            v77 = address;
+            eventHistory = v87;
             v9 = v88;
             v18 = [NSString stringWithFormat:@"Ping: if=%@ addr=%@ min=%.2fms max=%.2fms loss=%.2f%%", v73, v77, v24, v26, v27];
             break;
           case 0x23uLL:
-            v48 = [v11 info];
-            v49 = [v48 objectForKeyedSubscript:@"InterfaceName"];
-            [objc_msgSend(v48 objectForKeyedSubscript:{@"WiFiDropReason", "integerValue"}];
+            info12 = [v11 info];
+            v49 = [info12 objectForKeyedSubscript:@"InterfaceName"];
+            [objc_msgSend(info12 objectForKeyedSubscript:{@"WiFiDropReason", "integerValue"}];
             v72 = v49;
             v76 = W5DescriptionForWiFiDropReason();
             v17 = @"Wi-Fi Drop: if=%@ reason=%@";
@@ -5842,7 +5842,7 @@ LABEL_45:
       }
 
       while (v89 != v10);
-      v70 = [v7 countByEnumeratingWithState:&v90 objects:v95 count:16];
+      v70 = [eventHistory countByEnumeratingWithState:&v90 objects:v95 count:16];
       v89 = v70;
     }
 
@@ -5860,14 +5860,14 @@ LABEL_45:
   return v84;
 }
 
-- (id)__collectAdditionalLog:(id)a3 url:(id)a4
+- (id)__collectAdditionalLog:(id)log url:(id)url
 {
   v6 = objc_alloc_init(W5LogItemReceipt);
-  [v6 setRequest:a3];
+  [v6 setRequest:log];
   +[NSDate timeIntervalSinceReferenceDate];
   [v6 setStartedAt:?];
-  v7 = [objc_msgSend(a3 "configuration")];
-  if (-[NSFileManager fileExistsAtPath:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:", [a4 path]) && sub_100099544(a4, objc_msgSend(v7, "URLByAppendingPathComponent:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"additional.log")), 0))
+  v7 = [objc_msgSend(log "configuration")];
+  if (-[NSFileManager fileExistsAtPath:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:", [url path]) && sub_100099544(url, objc_msgSend(v7, "URLByAppendingPathComponent:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"additional.log")), 0))
   {
     v9 = [NSURL fileURLWithPath:@"additional.log"];
     [v6 setRelativeURLs:{+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v9, 1)}];
@@ -5878,31 +5878,31 @@ LABEL_45:
   return v6;
 }
 
-- (id)__collectMultiple:(id)a3
+- (id)__collectMultiple:(id)multiple
 {
   v4 = objc_alloc_init(W5LogItemReceipt);
-  [v4 setRequest:a3];
+  [v4 setRequest:multiple];
   +[NSDate timeIntervalSinceReferenceDate];
   [v4 setStartedAt:?];
-  v46 = [objc_msgSend(a3 "configuration")];
-  v45 = [objc_msgSend(a3 "configuration")];
-  v44 = [objc_msgSend(a3 "configuration")];
-  v43 = [objc_msgSend(objc_msgSend(a3 "configuration")];
-  v42 = [objc_msgSend(objc_msgSend(a3 "configuration")];
-  v5 = [objc_msgSend(a3 "configuration")];
-  v6 = [objc_msgSend(a3 "configuration")];
-  v7 = [objc_msgSend(a3 "configuration")];
-  v8 = [objc_msgSend(objc_msgSend(a3 "configuration")];
-  obj = [objc_msgSend(a3 "configuration")];
-  v9 = [objc_msgSend(a3 "configuration")];
+  v46 = [objc_msgSend(multiple "configuration")];
+  v45 = [objc_msgSend(multiple "configuration")];
+  v44 = [objc_msgSend(multiple "configuration")];
+  v43 = [objc_msgSend(objc_msgSend(multiple "configuration")];
+  v42 = [objc_msgSend(objc_msgSend(multiple "configuration")];
+  v5 = [objc_msgSend(multiple "configuration")];
+  v6 = [objc_msgSend(multiple "configuration")];
+  v7 = [objc_msgSend(multiple "configuration")];
+  v8 = [objc_msgSend(objc_msgSend(multiple "configuration")];
+  obj = [objc_msgSend(multiple "configuration")];
+  v9 = [objc_msgSend(multiple "configuration")];
   if (v9)
   {
-    v10 = [v9 unsignedIntegerValue];
+    unsignedIntegerValue = [v9 unsignedIntegerValue];
   }
 
   else
   {
-    v10 = 10000;
+    unsignedIntegerValue = 10000;
   }
 
   if (v5)
@@ -5922,12 +5922,12 @@ LABEL_45:
     dispatch_sync(queue, block);
     v12 = *(*&v68[8] + 24);
     v13 = sub_100098A04();
-    v10 += v12;
+    unsignedIntegerValue += v12;
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = *(*&v68[8] + 24);
       v15 = [v5 substringToIndex:5];
-      v16 = v10 - *(*&v68[8] + 24);
+      v16 = unsignedIntegerValue - *(*&v68[8] + 24);
       *v64 = 134218754;
       *&v64[4] = v14;
       *&v64[12] = 2114;
@@ -5935,7 +5935,7 @@ LABEL_45:
       *&v64[22] = 2048;
       v65 = v16;
       v66 = 2048;
-      v67 = v10;
+      v67 = unsignedIntegerValue;
       LODWORD(v36) = 42;
       v34 = v64;
       _os_log_send_and_compose_impl();
@@ -5950,14 +5950,14 @@ LABEL_45:
   *&v64[16] = 0x2020000000;
   LOBYTE(v65) = 0;
   v17 = dispatch_queue_create(0, 0);
-  v18 = objc_alloc_init(NSOperationQueue);
-  [(NSOperationQueue *)v18 setMaxConcurrentOperationCount:1];
+  concurrentQueue = objc_alloc_init(NSOperationQueue);
+  [(NSOperationQueue *)concurrentQueue setMaxConcurrentOperationCount:1];
   if (v8)
   {
-    v18 = [(W5StatusManager *)self->_status concurrentQueue];
+    concurrentQueue = [(W5StatusManager *)self->_status concurrentQueue];
   }
 
-  v39 = v10;
+  v39 = unsignedIntegerValue;
   v40 = v4;
   v19 = dispatch_group_create();
   v38 = mach_absolute_time();
@@ -5995,7 +5995,7 @@ LABEL_45:
         v53[11] = v19;
         v53[12] = v64;
         v53[10] = v47;
-        [(NSOperationQueue *)v18 addOperationWithBlock:v53];
+        [(NSOperationQueue *)concurrentQueue addOperationWithBlock:v53];
       }
 
       v20 = [obj countByEnumeratingWithState:&v56 objects:v63 count:16];
@@ -6081,13 +6081,13 @@ LABEL_45:
   return v40;
 }
 
-- (id)__collect_mobilewifitool:(id)a3
+- (id)__collect_mobilewifitool:(id)__collect_mobilewifitool
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:__collect_mobilewifitool];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(objc_msgSend(objc_msgSend(a3 "configuration")];
+  v6 = [objc_msgSend(objc_msgSend(objc_msgSend(__collect_mobilewifitool "configuration")];
   [+[NSFileManager defaultManager](NSFileManager removeItemAtPath:"removeItemAtPath:error:" error:v6, 0];
   [+[NSFileManager defaultManager](NSFileManager createFileAtPath:"createFileAtPath:contents:attributes:" contents:v6 attributes:0, 0];
   v7 = [NSFileHandle fileHandleForUpdatingAtPath:v6];
@@ -6295,10 +6295,10 @@ LABEL_18:
   }
 }
 
-- (id)__collectWiFiStatsPre:(id)a3
+- (id)__collectWiFiStatsPre:(id)pre
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:pre];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
   [(W5LogManager *)self __teardownWiFiStats];
@@ -6309,14 +6309,14 @@ LABEL_18:
   return v5;
 }
 
-- (id)__collectWiFiStatsPost:(id)a3
+- (id)__collectWiFiStatsPost:(id)post
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:post];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(a3 "configuration")];
-  v7 = [objc_msgSend(objc_msgSend(a3 "configuration")];
+  v6 = [objc_msgSend(post "configuration")];
+  v7 = [objc_msgSend(objc_msgSend(post "configuration")];
   [(W5LogManager *)self __endWiFiStats];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setCompletedAt:?];
@@ -6351,22 +6351,22 @@ LABEL_18:
   return v5;
 }
 
-- (id)__collectWiFiStatsCLI:(id)a3
+- (id)__collectWiFiStatsCLI:(id)i
 {
   v4 = objc_alloc_init(W5LogItemReceipt);
-  [v4 setRequest:a3];
+  [v4 setRequest:i];
   +[NSDate timeIntervalSinceReferenceDate];
   [v4 setStartedAt:?];
-  v5 = [objc_msgSend(a3 "configuration")];
-  v6 = [objc_msgSend(a3 "configuration")];
-  v7 = [objc_msgSend(objc_msgSend(a3 "configuration")];
-  v8 = [v5 path];
+  v5 = [objc_msgSend(i "configuration")];
+  v6 = [objc_msgSend(i "configuration")];
+  v7 = [objc_msgSend(objc_msgSend(i "configuration")];
+  path = [v5 path];
   if (!v6)
   {
     v6 = @"wifistats.xml";
   }
 
-  v9 = [v8 stringByAppendingPathComponent:v6];
+  v9 = [path stringByAppendingPathComponent:v6];
   if (v9)
   {
     v10 = v9;
@@ -6398,14 +6398,14 @@ LABEL_9:
   return v4;
 }
 
-- (id)__collectPreviouslyCollected:(id)a3
+- (id)__collectPreviouslyCollected:(id)collected
 {
   v4 = objc_alloc_init(W5LogItemReceipt);
-  [v4 setRequest:a3];
+  [v4 setRequest:collected];
   +[NSDate timeIntervalSinceReferenceDate];
   [v4 setStartedAt:?];
-  v5 = [objc_msgSend(a3 "configuration")];
-  v6 = [objc_msgSend(a3 "configuration")];
+  v5 = [objc_msgSend(collected "configuration")];
+  v6 = [objc_msgSend(collected "configuration")];
   if (v6)
   {
     [v6 doubleValue];
@@ -6417,31 +6417,31 @@ LABEL_9:
     v8 = 1.79769313e308;
   }
 
-  v9 = [objc_msgSend(a3 "configuration")];
+  v9 = [objc_msgSend(collected "configuration")];
   if (v9)
   {
-    v10 = [v9 unsignedIntegerValue];
+    unsignedIntegerValue = [v9 unsignedIntegerValue];
   }
 
   else
   {
-    v10 = -1;
+    unsignedIntegerValue = -1;
   }
 
-  v11 = [objc_msgSend(a3 "configuration")];
+  v11 = [objc_msgSend(collected "configuration")];
   if (v11)
   {
-    v12 = [v11 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v11 unsignedIntegerValue];
   }
 
   else
   {
-    v12 = -1;
+    unsignedIntegerValue2 = -1;
   }
 
-  v13 = [objc_msgSend(objc_msgSend(a3 "configuration")];
-  v14 = [objc_msgSend(a3 "configuration")];
-  v15 = [objc_msgSend(a3 "configuration")];
+  v13 = [objc_msgSend(objc_msgSend(collected "configuration")];
+  v14 = [objc_msgSend(collected "configuration")];
+  v15 = [objc_msgSend(collected "configuration")];
   v16 = +[NSMutableArray array];
   -[NSFileManager createDirectoryAtPath:withIntermediateDirectories:attributes:error:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", [objc_msgSend(v5 "path")], 0, 0, 0);
   if (v14)
@@ -6456,7 +6456,7 @@ LABEL_9:
 
   v20 = -[NSURL path]([(NSURL *)[+[NSFileManager defaultManager](NSFileManager containerURLForSecurityApplicationGroupIdentifier:"containerURLForSecurityApplicationGroupIdentifier:" URLByAppendingPathComponent:"URLByAppendingPathComponent:", @"previous"), "path"];
   LOBYTE(v18) = v13;
-  if ([-[W5LogManager __collectFilesInDirectories:include:exclude:maxAge:maxCount:maxSize:outputDirectory:compress:remainingSize:contentFilter:](self __collectFilesInDirectories:+[NSArray arrayWithObjects:count:](NSArray include:"arrayWithObjects:count:" exclude:&v20 maxAge:1) maxCount:v14 maxSize:v15 outputDirectory:v10 compress:v12 remainingSize:objc_msgSend(v5 contentFilter:{"URLByAppendingPathComponent:", @"Previous", v8, v18, 0, 0), "count"}])
+  if ([-[W5LogManager __collectFilesInDirectories:include:exclude:maxAge:maxCount:maxSize:outputDirectory:compress:remainingSize:contentFilter:](self __collectFilesInDirectories:+[NSArray arrayWithObjects:count:](NSArray include:"arrayWithObjects:count:" exclude:&v20 maxAge:1) maxCount:v14 maxSize:v15 outputDirectory:unsignedIntegerValue compress:unsignedIntegerValue2 remainingSize:objc_msgSend(v5 contentFilter:{"URLByAppendingPathComponent:", @"Previous", v8, v18, 0, 0), "count"}])
   {
     [v16 addObject:{+[NSURL fileURLWithPath:](NSURL, "fileURLWithPath:", @"Previous"}];
   }
@@ -6472,13 +6472,13 @@ LABEL_9:
   return v4;
 }
 
-- (id)__collectWiFiMemoryUsage:(id)a3
+- (id)__collectWiFiMemoryUsage:(id)usage
 {
   v4 = objc_alloc_init(W5LogItemReceipt);
-  [v4 setRequest:a3];
+  [v4 setRequest:usage];
   +[NSDate timeIntervalSinceReferenceDate];
   [v4 setStartedAt:?];
-  v5 = [objc_msgSend(a3 "configuration")];
+  v5 = [objc_msgSend(usage "configuration")];
   v6 = +[NSMutableArray array];
   if (+[NSTask runTaskWithLaunchPath:arguments:outputFilePath:error:](NSTask, "runTaskWithLaunchPath:arguments:outputFilePath:error:", @"/usr/bin/footprint", &off_1000F4368, [objc_msgSend(v5 "path")], 0))
   {
@@ -6536,14 +6536,14 @@ LABEL_9:
   return v4;
 }
 
-- (id)__collectWiFiDeviceConfig:(id)a3
+- (id)__collectWiFiDeviceConfig:(id)config
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:config];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(a3 "configuration")];
-  v7 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName];
+  v6 = [objc_msgSend(config "configuration")];
+  interfaceName = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName];
   v8 = [objc_msgSend(v6 "path")];
   [+[NSFileManager defaultManager](NSFileManager removeItemAtPath:"removeItemAtPath:error:" error:v8, 0];
   [+[NSFileManager defaultManager](NSFileManager createFileAtPath:"createFileAtPath:contents:attributes:" contents:v8 attributes:0, 0];
@@ -6552,68 +6552,68 @@ LABEL_9:
   {
     v10 = v9;
     v11 = [NSMutableData dataWithCapacity:0];
-    v36[0] = v7;
+    v36[0] = interfaceName;
     v36[1] = @"-cardcap";
     [NSTask runTaskWithLaunchPath:@"/usr/local/bin/apple80211" arguments:[NSArray arrayWithObjects:v36 count:2] outputData:v11 error:0];
     v12 = [objc_msgSend([NSString alloc] initWithData:v11 encoding:{4), "componentsSeparatedByString:", @"\n"}];
     [(NSMutableData *)v11 setLength:0];
     [(W5LogManager *)self __wlCLIWithArguments:&off_1000F4440 outputFilePath:0 outputData:v11];
     v13 = [objc_msgSend([NSString alloc] initWithData:v11 encoding:{4), "componentsSeparatedByString:", @" "}];
-    if (v7)
+    if (interfaceName)
     {
       v14 = v13;
-      v35[0] = v7;
+      v35[0] = interfaceName;
       v35[1] = @"-driver_ver";
       [(W5LogManager *)self __runToolWithOutputFileHandle:v10 launchPath:@"/usr/local/bin/apple80211" arguments:[NSArray arrayWithObjects:v35 count:2]];
-      v34[0] = v7;
+      v34[0] = interfaceName;
       v34[1] = @"-hardware_ver";
       [(W5LogManager *)self __runToolWithOutputFileHandle:v10 launchPath:@"/usr/local/bin/apple80211" arguments:[NSArray arrayWithObjects:v34 count:2]];
-      v33[0] = v7;
+      v33[0] = interfaceName;
       v33[1] = @"-ssid";
       [(W5LogManager *)self __runToolWithOutputFileHandle:v10 launchPath:@"/usr/local/bin/apple80211" arguments:[NSArray arrayWithObjects:v33 count:2]];
-      v32[0] = v7;
+      v32[0] = interfaceName;
       v32[1] = @"-bssid";
       [(W5LogManager *)self __runToolWithOutputFileHandle:v10 launchPath:@"/usr/local/bin/apple80211" arguments:[NSArray arrayWithObjects:v32 count:2]];
-      v31[0] = v7;
+      v31[0] = interfaceName;
       v31[1] = @"-rssi";
       [(W5LogManager *)self __runToolWithOutputFileHandle:v10 launchPath:@"/usr/local/bin/apple80211" arguments:[NSArray arrayWithObjects:v31 count:2]];
-      v30[0] = v7;
+      v30[0] = interfaceName;
       v30[1] = @"-noise";
       [(W5LogManager *)self __runToolWithOutputFileHandle:v10 launchPath:@"/usr/local/bin/apple80211" arguments:[NSArray arrayWithObjects:v30 count:2]];
-      v29[0] = v7;
+      v29[0] = interfaceName;
       v29[1] = @"-channel";
       [(W5LogManager *)self __runToolWithOutputFileHandle:v10 launchPath:@"/usr/local/bin/apple80211" arguments:[NSArray arrayWithObjects:v29 count:2]];
-      v28[0] = v7;
+      v28[0] = interfaceName;
       v28[1] = @"-authtype";
       [(W5LogManager *)self __runToolWithOutputFileHandle:v10 launchPath:@"/usr/local/bin/apple80211" arguments:[NSArray arrayWithObjects:v28 count:2]];
-      v27[0] = v7;
+      v27[0] = interfaceName;
       v27[1] = @"-country_code";
       [(W5LogManager *)self __runToolWithOutputFileHandle:v10 launchPath:@"/usr/local/bin/apple80211" arguments:[NSArray arrayWithObjects:v27 count:2]];
-      v26[0] = v7;
+      v26[0] = interfaceName;
       v26[1] = @"-rateset";
       [(W5LogManager *)self __runToolWithOutputFileHandle:v10 launchPath:@"/usr/local/bin/apple80211" arguments:[NSArray arrayWithObjects:v26 count:2]];
-      v25[0] = v7;
+      v25[0] = interfaceName;
       v25[1] = @"-leaky_ap_stats_mode";
       [(W5LogManager *)self __runToolWithOutputFileHandle:v10 launchPath:@"/usr/local/bin/apple80211" arguments:[NSArray arrayWithObjects:v25 count:2]];
-      v24[0] = v7;
+      v24[0] = interfaceName;
       v24[1] = @"-cardcap";
       [(W5LogManager *)self __runToolWithOutputFileHandle:v10 launchPath:@"/usr/local/bin/apple80211" arguments:[NSArray arrayWithObjects:v24 count:2]];
-      v23[0] = v7;
+      v23[0] = interfaceName;
       v23[1] = @"-dbg=mimopsstatus";
       [(W5LogManager *)self __runToolWithOutputFileHandle:v10 launchPath:@"/usr/local/bin/apple80211" arguments:[NSArray arrayWithObjects:v23 count:2]];
       if ([v12 containsObject:@"roam"])
       {
-        v22[0] = v7;
+        v22[0] = interfaceName;
         v22[1] = @"-dbg=print-roam";
         [(W5LogManager *)self __runToolWithOutputFileHandle:v10 launchPath:@"/usr/local/bin/apple80211" arguments:[NSArray arrayWithObjects:v22 count:2]];
       }
 
       if ([v12 containsObject:@"ocl"])
       {
-        v21[0] = v7;
+        v21[0] = interfaceName;
         v21[1] = @"-dbg=ocl_status";
         [(W5LogManager *)self __runToolWithOutputFileHandle:v10 launchPath:@"/usr/local/bin/apple80211" arguments:[NSArray arrayWithObjects:v21 count:2]];
-        v20[0] = v7;
+        v20[0] = interfaceName;
         v20[1] = @"-dbg=ocl_rssi_threshold";
         [(W5LogManager *)self __runToolWithOutputFileHandle:v10 launchPath:@"/usr/local/bin/apple80211" arguments:[NSArray arrayWithObjects:v20 count:2]];
       }
@@ -6628,13 +6628,13 @@ LABEL_9:
         [(W5LogManager *)self __runToolWithOutputFileHandle:v10 launchPath:@"/usr/local/bin/apple80211" arguments:&off_1000F4470];
       }
 
-      v19[0] = v7;
+      v19[0] = interfaceName;
       v19[1] = @"-dbg=bgscan-private-mac";
       [(W5LogManager *)self __runToolWithOutputFileHandle:v10 launchPath:@"/usr/local/bin/apple80211" arguments:[NSArray arrayWithObjects:v19 count:2]];
-      v18[0] = v7;
+      v18[0] = interfaceName;
       v18[1] = @"-dbg=dtim";
       [(W5LogManager *)self __runToolWithOutputFileHandle:v10 launchPath:@"/usr/local/bin/apple80211" arguments:[NSArray arrayWithObjects:v18 count:2]];
-      v17[0] = v7;
+      v17[0] = interfaceName;
       v17[1] = @"-dbg=private-mac";
       [(W5LogManager *)self __runToolWithOutputFileHandle:v10 launchPath:@"/usr/local/bin/apple80211" arguments:[NSArray arrayWithObjects:v17 count:2]];
       [(W5LogManager *)self __wlCLIWithArguments:&off_1000F4488 outputFileHandle:v10];
@@ -6742,15 +6742,15 @@ LABEL_9:
   return v5;
 }
 
-- (id)__collectWiFiPerfLogs:(id)a3
+- (id)__collectWiFiPerfLogs:(id)logs
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:logs];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(a3 "configuration")];
-  v7 = [objc_msgSend(objc_msgSend(a3 "configuration")];
-  v8 = [objc_msgSend(a3 "configuration")];
+  v6 = [objc_msgSend(logs "configuration")];
+  v7 = [objc_msgSend(objc_msgSend(logs "configuration")];
+  v8 = [objc_msgSend(logs "configuration")];
   if (v8)
   {
     v15 = [@"/var/run/com.apple.wifivelocity/wifiperf" stringByAppendingPathComponent:v8];
@@ -6765,8 +6765,8 @@ LABEL_9:
       goto LABEL_7;
     }
 
-    v14 = [v10 firstObject];
-    v9 = &v14;
+    firstObject = [v10 firstObject];
+    v9 = &firstObject;
   }
 
   LOBYTE(v13) = v7;
@@ -6782,13 +6782,13 @@ LABEL_7:
   return v5;
 }
 
-- (id)__collect3barsCache:(id)a3
+- (id)__collect3barsCache:(id)cache
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:cache];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(objc_msgSend(objc_msgSend(a3 "configuration")];
+  v6 = [objc_msgSend(objc_msgSend(objc_msgSend(cache "configuration")];
   [+[NSFileManager defaultManager](NSFileManager removeItemAtPath:"removeItemAtPath:error:" error:v6, 0];
   [+[NSFileManager defaultManager](NSFileManager createFileAtPath:"createFileAtPath:contents:attributes:" contents:v6 attributes:0, 0];
   v7 = [NSFileHandle fileHandleForUpdatingAtPath:v6];
@@ -6806,14 +6806,14 @@ LABEL_7:
   return v5;
 }
 
-- (id)__collectDeviceAnalyticsStore:(id)a3
+- (id)__collectDeviceAnalyticsStore:(id)store
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  v6 = [objc_msgSend(a3 "configuration")];
-  v7 = [objc_msgSend(objc_msgSend(a3 "configuration")];
-  v8 = [objc_msgSend(objc_msgSend(a3 "configuration")];
-  v9 = [objc_msgSend(objc_msgSend(a3 "configuration")];
-  [v5 setRequest:a3];
+  v6 = [objc_msgSend(store "configuration")];
+  v7 = [objc_msgSend(objc_msgSend(store "configuration")];
+  v8 = [objc_msgSend(objc_msgSend(store "configuration")];
+  v9 = [objc_msgSend(objc_msgSend(store "configuration")];
+  [v5 setRequest:store];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
   v10 = +[NSMutableString string];
@@ -6941,12 +6941,12 @@ LABEL_12:
   return v5;
 }
 
-- (id)__collectDeviceAnalyticsDeploymentGraph:(id)a3
+- (id)__collectDeviceAnalyticsDeploymentGraph:(id)graph
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  v6 = [objc_msgSend(a3 "configuration")];
-  v7 = [objc_msgSend(objc_msgSend(a3 "configuration")];
-  [v5 setRequest:a3];
+  v6 = [objc_msgSend(graph "configuration")];
+  v7 = [objc_msgSend(objc_msgSend(graph "configuration")];
+  [v5 setRequest:graph];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
   v8 = +[NSMutableString string];
@@ -7054,19 +7054,19 @@ LABEL_10:
   return v5;
 }
 
-- (id)__collectDeviceAnalyticsEntityCSVs:(id)a3
+- (id)__collectDeviceAnalyticsEntityCSVs:(id)vs
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  v6 = [objc_msgSend(a3 "configuration")];
+  v6 = [objc_msgSend(vs "configuration")];
   if (!v6)
   {
-    v6 = [objc_msgSend(a3 "configuration")];
+    v6 = [objc_msgSend(vs "configuration")];
   }
 
-  v31 = [objc_msgSend(objc_msgSend(a3 "configuration")];
-  v7 = [objc_msgSend(objc_msgSend(a3 "configuration")];
-  v8 = [objc_msgSend(objc_msgSend(a3 "configuration")];
-  [v5 setRequest:a3];
+  v31 = [objc_msgSend(objc_msgSend(vs "configuration")];
+  v7 = [objc_msgSend(objc_msgSend(vs "configuration")];
+  v8 = [objc_msgSend(objc_msgSend(vs "configuration")];
+  [v5 setRequest:vs];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
   v9 = +[NSMutableArray array];
@@ -7221,17 +7221,17 @@ LABEL_27:
   return v30;
 }
 
-- (id)__dnssdBrowseAll:(id)a3
+- (id)__dnssdBrowseAll:(id)all
 {
   v4 = objc_alloc_init(W5LogItemReceipt);
-  [v4 setRequest:a3];
+  [v4 setRequest:all];
   +[NSDate timeIntervalSinceReferenceDate];
   [v4 setStartedAt:?];
-  v5 = [objc_msgSend(a3 "configuration")];
-  v6 = [objc_msgSend(objc_msgSend(a3 "configuration")];
+  v5 = [objc_msgSend(all "configuration")];
+  v6 = [objc_msgSend(objc_msgSend(all "configuration")];
   v7 = [[W5DNSSDBrowser alloc] init:v6];
-  v8 = [v7 startBrowsing];
-  if (!v8)
+  startBrowsing = [v7 startBrowsing];
+  if (!startBrowsing)
   {
     v9 = dispatch_semaphore_create(0);
     if (v6)
@@ -7311,7 +7311,7 @@ LABEL_13:
     goto LABEL_15;
   }
 
-  v20 = v8;
+  v20 = startBrowsing;
   v21 = sub_100098A04();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
@@ -7334,13 +7334,13 @@ LABEL_15:
   return v4;
 }
 
-- (id)__dnssdCacheAndState:(id)a3
+- (id)__dnssdCacheAndState:(id)state
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:state];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(a3 "configuration")];
+  v6 = [objc_msgSend(state "configuration")];
   v7 = [objc_msgSend(v6 "path")];
   [+[NSFileManager defaultManager](NSFileManager removeItemAtPath:"removeItemAtPath:error:" error:v7, 0];
   [+[NSFileManager defaultManager](NSFileManager createFileAtPath:"createFileAtPath:contents:attributes:" contents:v7 attributes:0, 0];
@@ -7370,10 +7370,10 @@ LABEL_15:
   return v5;
 }
 
-- (id)__pingSubnet:(id)a3
+- (id)__pingSubnet:(id)subnet
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:subnet];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
   v6 = [objc_msgSend(-[W5StatusManager networkStatus](self->_status "networkStatus")];
@@ -7460,15 +7460,15 @@ LABEL_9:
   return v5;
 }
 
-- (id)__pingBroadcast:(id)a3
+- (id)__pingBroadcast:(id)broadcast
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:broadcast];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setStartedAt:?];
   if (([(CWFInterface *)[(W5StatusManager *)self->_status corewifi] powerOn]& 1) != 0)
   {
-    v6 = [objc_msgSend(objc_msgSend(objc_msgSend(a3 "configuration")];
+    v6 = [objc_msgSend(objc_msgSend(objc_msgSend(broadcast "configuration")];
     [+[NSFileManager defaultManager](NSFileManager removeItemAtPath:"removeItemAtPath:error:" error:v6, 0];
     [+[NSFileManager defaultManager](NSFileManager createFileAtPath:"createFileAtPath:contents:attributes:" contents:v6 attributes:0, 0];
     v7 = [NSFileHandle fileHandleForUpdatingAtPath:v6];
@@ -7502,16 +7502,16 @@ LABEL_9:
   return v5;
 }
 
-- (id)__collectDatapathStats:(id)a3
+- (id)__collectDatapathStats:(id)stats
 {
   v5 = objc_alloc_init(W5LogItemReceipt);
-  [v5 setRequest:a3];
+  [v5 setRequest:stats];
   +[NSDate timeIntervalSinceReferenceDate];
   v22 = v5;
   [v5 setStartedAt:?];
-  v6 = [objc_msgSend(a3 "configuration")];
-  v7 = [objc_msgSend(a3 "configuration")];
-  v8 = [v6 path];
+  v6 = [objc_msgSend(stats "configuration")];
+  v7 = [objc_msgSend(stats "configuration")];
+  path = [v6 path];
   if (v7)
   {
     v9 = v7;
@@ -7522,7 +7522,7 @@ LABEL_9:
     v9 = @"wifi_datapath.txt";
   }
 
-  v10 = [v8 stringByAppendingPathComponent:v9];
+  v10 = [path stringByAppendingPathComponent:v9];
   [+[NSFileManager defaultManager](NSFileManager removeItemAtPath:"removeItemAtPath:error:" error:v10, 0];
   [+[NSFileManager defaultManager](NSFileManager createFileAtPath:"createFileAtPath:contents:attributes:" contents:v10 attributes:0, 0];
   v11 = [NSFileHandle fileHandleForUpdatingAtPath:v10];
@@ -7530,16 +7530,16 @@ LABEL_9:
   {
     v12 = v11;
     v13 = +[NSMutableArray array];
-    v14 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] interfaceNames];
-    v15 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] virtualInterfaceNames];
-    if (v14)
+    interfaceNames = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] interfaceNames];
+    virtualInterfaceNames = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] virtualInterfaceNames];
+    if (interfaceNames)
     {
-      [v13 addObjectsFromArray:v14];
+      [v13 addObjectsFromArray:interfaceNames];
     }
 
-    if (v15)
+    if (virtualInterfaceNames)
     {
-      [v13 addObjectsFromArray:v15];
+      [v13 addObjectsFromArray:virtualInterfaceNames];
     }
 
     v26 = 0u;
@@ -7618,35 +7618,35 @@ LABEL_9:
   return v22;
 }
 
-- (id)__collectLogItem:(id)a3 error:(id *)a4
+- (id)__collectLogItem:(id)item error:(id *)error
 {
-  if ([a3 itemID] == 53)
+  if ([item itemID] == 53)
   {
     debugLogQueue = self->_debugLogQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100076004;
     block[3] = &unk_1000E1C98;
-    block[4] = a3;
+    block[4] = item;
     block[5] = self;
     dispatch_sync(debugLogQueue, block);
-    return [(W5LogManager *)self __collectMultiple:a3];
+    return [(W5LogManager *)self __collectMultiple:item];
   }
 
   else
   {
-    v9 = [objc_msgSend(a3 "configuration")];
-    v10 = [objc_msgSend(a3 "configuration")];
-    v37 = [objc_msgSend(a3 "configuration")];
-    v11 = [objc_msgSend(a3 "configuration")];
+    v9 = [objc_msgSend(item "configuration")];
+    v10 = [objc_msgSend(item "configuration")];
+    v37 = [objc_msgSend(item "configuration")];
+    v11 = [objc_msgSend(item "configuration")];
     if (v11)
     {
-      v12 = [v11 unsignedIntegerValue];
+      unsignedIntegerValue = [v11 unsignedIntegerValue];
     }
 
     else
     {
-      v12 = 10000;
+      unsignedIntegerValue = 10000;
     }
 
     if (v9)
@@ -7666,12 +7666,12 @@ LABEL_9:
       dispatch_sync(queue, v43);
       v14 = v45[3];
       v15 = sub_100098A04();
-      v12 += v14;
+      unsignedIntegerValue += v14;
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v16 = v45[3];
         v17 = [v9 substringToIndex:5];
-        v18 = (v12 - v45[3]);
+        v18 = (unsignedIntegerValue - v45[3]);
         *v53 = 134218754;
         *&v53[4] = v16;
         *&v53[12] = 2114;
@@ -7679,7 +7679,7 @@ LABEL_9:
         *&v53[22] = 2048;
         v54 = v18;
         LOWORD(v55) = 2048;
-        *(&v55 + 2) = v12;
+        *(&v55 + 2) = unsignedIntegerValue;
         LODWORD(v36) = 42;
         v35 = v53;
         _os_log_send_and_compose_impl();
@@ -7706,17 +7706,17 @@ LABEL_9:
     v42[2] = sub_1000761D0;
     v42[3] = &unk_1000E3078;
     v42[4] = self;
-    v42[5] = a3;
+    v42[5] = item;
     v42[6] = v21;
     v42[7] = &v44;
     v42[8] = v53;
-    v42[9] = a4;
+    v42[9] = error;
     v22 = dispatch_block_create(DISPATCH_BLOCK_ASSIGN_CURRENT, v42);
     v23 = mach_absolute_time();
     [(NSOperationQueue *)[(W5StatusManager *)self->_status concurrentQueue] addOperationWithBlock:v22];
-    if (v12)
+    if (unsignedIntegerValue)
     {
-      v24 = dispatch_time(0, 1000000 * v12);
+      v24 = dispatch_time(0, 1000000 * unsignedIntegerValue);
     }
 
     else
@@ -7731,11 +7731,11 @@ LABEL_9:
     v41[3] = &unk_1000E30A0;
     v41[6] = v53;
     v41[7] = v25;
-    v41[4] = a3;
+    v41[4] = item;
     v41[5] = &v44;
     v41[8] = v20;
     dispatch_sync(v21, v41);
-    if (!v25 && v10 && v12)
+    if (!v25 && v10 && unsignedIntegerValue)
     {
       info = 0;
       mach_timebase_info(&info);
@@ -7749,7 +7749,7 @@ LABEL_9:
         v26 = 0;
       }
 
-      v27 = v12 - v26;
+      v27 = unsignedIntegerValue - v26;
       v28 = self->_queue;
       v39[0] = _NSConcreteStackBlock;
       v39[1] = 3221225472;
@@ -7792,11 +7792,11 @@ LABEL_9:
   return v8;
 }
 
-- (id)__collectIndividual:(id)a3 error:(id *)a4
+- (id)__collectIndividual:(id)individual error:(id *)error
 {
-  [a3 itemID];
+  [individual itemID];
   v7 = W5DescriptionForLogItemID();
-  if (-[NSArray containsObject:](-[W5StatusManager bootArgs](self->_status, "bootArgs"), "containsObject:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@=%ld", @"wifivelocity-exclude-log", [a3 itemID])) || -[NSArray containsObject:](-[W5StatusManager bootArgs](self->_status, "bootArgs"), "containsObject:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@='%@'", @"wifivelocity-exclude-log", v7)))
+  if (-[NSArray containsObject:](-[W5StatusManager bootArgs](self->_status, "bootArgs"), "containsObject:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@=%ld", @"wifivelocity-exclude-log", [individual itemID])) || -[NSArray containsObject:](-[W5StatusManager bootArgs](self->_status, "bootArgs"), "containsObject:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@='%@'", @"wifivelocity-exclude-log", v7)))
   {
     v8 = sub_100098A04();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -7804,7 +7804,7 @@ LABEL_9:
       *info = 138543618;
       *&info[4] = v7;
       *&info[12] = 2048;
-      *&info[14] = [a3 itemID];
+      *&info[14] = [individual itemID];
       _os_log_send_and_compose_impl();
     }
 
@@ -7813,7 +7813,7 @@ LABEL_9:
 
   else
   {
-    [a3 itemID];
+    [individual itemID];
     v10 = [NSString stringWithFormat:@"com.apple.wifivelocity.log_item.%@", W5DescriptionForLogItemID()];
     [(NSString *)v10 UTF8String];
     v11 = os_transaction_create();
@@ -7823,155 +7823,155 @@ LABEL_9:
     block[1] = 3221225472;
     block[2] = sub_1000771DC;
     block[3] = &unk_1000E1948;
-    block[4] = a3;
+    block[4] = individual;
     block[5] = self;
     block[6] = v7;
     dispatch_sync(debugLogQueue, block);
-    switch([a3 itemID])
+    switch([individual itemID])
     {
       case 1uLL:
-        v13 = [(W5LogManager *)self __collect_spindump:a3];
+        v13 = [(W5LogManager *)self __collect_spindump:individual];
         goto LABEL_86;
       case 2uLL:
-        v13 = [(W5LogManager *)self __collect_ping:a3];
+        v13 = [(W5LogManager *)self __collect_ping:individual];
         goto LABEL_86;
       case 3uLL:
-        v13 = [(W5LogManager *)self __collect_netstat:a3];
+        v13 = [(W5LogManager *)self __collect_netstat:individual];
         goto LABEL_86;
       case 4uLL:
-        v13 = [(W5LogManager *)self __collect_arp:a3];
+        v13 = [(W5LogManager *)self __collect_arp:individual];
         goto LABEL_86;
       case 6uLL:
-        v13 = [(W5LogManager *)self __collect_ndp:a3];
+        v13 = [(W5LogManager *)self __collect_ndp:individual];
         goto LABEL_86;
       case 7uLL:
-        v13 = [(W5LogManager *)self __collect_ifconfig:a3];
+        v13 = [(W5LogManager *)self __collect_ifconfig:individual];
         goto LABEL_86;
       case 8uLL:
-        v13 = [(W5LogManager *)self __collect_ipconfig:a3];
+        v13 = [(W5LogManager *)self __collect_ipconfig:individual];
         goto LABEL_86;
       case 9uLL:
-        v13 = [(W5LogManager *)self __collect_traceroute:a3];
+        v13 = [(W5LogManager *)self __collect_traceroute:individual];
         goto LABEL_86;
       case 0xAuLL:
-        v13 = [(W5LogManager *)self __collect_ioreg:a3];
+        v13 = [(W5LogManager *)self __collect_ioreg:individual];
         goto LABEL_86;
       case 0xBuLL:
-        v13 = [(W5LogManager *)self __collect_kextstat:a3];
+        v13 = [(W5LogManager *)self __collect_kextstat:individual];
         goto LABEL_86;
       case 0xCuLL:
-        v13 = [(W5LogManager *)self __collect_darwinup:a3];
+        v13 = [(W5LogManager *)self __collect_darwinup:individual];
         goto LABEL_86;
       case 0xDuLL:
-        v13 = [(W5LogManager *)self __collect_hosts:a3];
+        v13 = [(W5LogManager *)self __collect_hosts:individual];
         goto LABEL_86;
       case 0xEuLL:
-        v13 = [(W5LogManager *)self __collect_sysdiagnose:a3];
+        v13 = [(W5LogManager *)self __collect_sysdiagnose:individual];
         goto LABEL_86;
       case 0xFuLL:
-        v13 = [(W5LogManager *)self __collect_pmset:a3];
+        v13 = [(W5LogManager *)self __collect_pmset:individual];
         goto LABEL_86;
       case 0x10uLL:
-        v13 = [(W5LogManager *)self __collect_configd:a3];
+        v13 = [(W5LogManager *)self __collect_configd:individual];
         goto LABEL_86;
       case 0x11uLL:
-        v13 = [(W5LogManager *)self __collect_top:a3];
+        v13 = [(W5LogManager *)self __collect_top:individual];
         goto LABEL_86;
       case 0x12uLL:
-        v13 = [(W5LogManager *)self __collect_swvers:a3];
+        v13 = [(W5LogManager *)self __collect_swvers:individual];
         goto LABEL_86;
       case 0x13uLL:
-        v13 = [(W5LogManager *)self __collectCoreCapture:a3];
+        v13 = [(W5LogManager *)self __collectCoreCapture:individual];
         goto LABEL_86;
       case 0x14uLL:
-        v13 = [(W5LogManager *)self __collectCoreCapture24:a3];
+        v13 = [(W5LogManager *)self __collectCoreCapture24:individual];
         goto LABEL_86;
       case 0x15uLL:
-        v13 = [(W5LogManager *)self __collectCoreCaptureDump:a3];
+        v13 = [(W5LogManager *)self __collectCoreCaptureDump:individual];
         goto LABEL_86;
       case 0x18uLL:
-        v13 = [(W5LogManager *)self __collectTCPDump_PRE:a3];
+        v13 = [(W5LogManager *)self __collectTCPDump_PRE:individual];
         goto LABEL_86;
       case 0x19uLL:
-        v13 = [(W5LogManager *)self __collectTCPDump_POST:a3];
+        v13 = [(W5LogManager *)self __collectTCPDump_POST:individual];
         goto LABEL_86;
       case 0x1AuLL:
-        v13 = [(W5LogManager *)self __collectDiagnostics:a3];
+        v13 = [(W5LogManager *)self __collectDiagnostics:individual];
         goto LABEL_86;
       case 0x1BuLL:
-        v13 = [(W5LogManager *)self __collectSystemConfiguration:a3];
+        v13 = [(W5LogManager *)self __collectSystemConfiguration:individual];
         goto LABEL_86;
       case 0x1CuLL:
-        v13 = [(W5LogManager *)self __collectWiFiScanResults:a3];
+        v13 = [(W5LogManager *)self __collectWiFiScanResults:individual];
         goto LABEL_86;
       case 0x1DuLL:
-        v13 = [(W5LogManager *)self __collectAirPlayLogs:a3];
+        v13 = [(W5LogManager *)self __collectAirPlayLogs:individual];
         goto LABEL_86;
       case 0x1EuLL:
-        v13 = [(W5LogManager *)self __collectBluetoothLogs:a3];
+        v13 = [(W5LogManager *)self __collectBluetoothLogs:individual];
         goto LABEL_86;
       case 0x1FuLL:
-        v13 = [(W5LogManager *)self __collectSystemLogs:a3];
+        v13 = [(W5LogManager *)self __collectSystemLogs:individual];
         goto LABEL_86;
       case 0x20uLL:
-        v13 = [(W5LogManager *)self __collectSystemLogs24:a3];
+        v13 = [(W5LogManager *)self __collectSystemLogs24:individual];
         goto LABEL_86;
       case 0x21uLL:
-        v13 = [(W5LogManager *)self __collectEAP8021XLogs:a3];
+        v13 = [(W5LogManager *)self __collectEAP8021XLogs:individual];
         goto LABEL_86;
       case 0x22uLL:
-        v13 = [(W5LogManager *)self __collectIPConfigurationLogs:a3];
+        v13 = [(W5LogManager *)self __collectIPConfigurationLogs:individual];
         goto LABEL_86;
       case 0x23uLL:
-        v13 = [(W5LogManager *)self __collectCrashesAndSpins24:a3];
+        v13 = [(W5LogManager *)self __collectCrashesAndSpins24:individual];
         goto LABEL_86;
       case 0x24uLL:
-        v13 = [(W5LogManager *)self __collectSharingLogs:a3];
+        v13 = [(W5LogManager *)self __collectSharingLogs:individual];
         goto LABEL_86;
       case 0x25uLL:
-        v13 = [(W5LogManager *)self __collectWiFiLogs:a3];
+        v13 = [(W5LogManager *)self __collectWiFiLogs:individual];
         goto LABEL_86;
       case 0x26uLL:
-        v13 = [(W5LogManager *)self __collectWiFiLogs24:a3];
+        v13 = [(W5LogManager *)self __collectWiFiLogs24:individual];
         goto LABEL_86;
       case 0x27uLL:
-        v13 = [(W5LogManager *)self __collectWiFiLogsDump:a3];
+        v13 = [(W5LogManager *)self __collectWiFiLogsDump:individual];
         goto LABEL_86;
       case 0x28uLL:
-        v13 = [(W5LogManager *)self __collectWiFiPreferences:a3];
+        v13 = [(W5LogManager *)self __collectWiFiPreferences:individual];
         goto LABEL_86;
       case 0x29uLL:
-        v13 = [(W5LogManager *)self __collectWirelessProxLogs:a3];
+        v13 = [(W5LogManager *)self __collectWirelessProxLogs:individual];
         goto LABEL_86;
       case 0x2AuLL:
-        v13 = [(W5LogManager *)self __collect_IMFoundationPing:a3];
+        v13 = [(W5LogManager *)self __collect_IMFoundationPing:individual];
         goto LABEL_86;
       case 0x2BuLL:
-        v13 = [(W5LogManager *)self __collect_CFNetworkPing:a3];
+        v13 = [(W5LogManager *)self __collect_CFNetworkPing:individual];
         goto LABEL_86;
       case 0x2CuLL:
-        v13 = [(W5LogManager *)self __collectNetworkStatus:a3];
+        v13 = [(W5LogManager *)self __collectNetworkStatus:individual];
         goto LABEL_86;
       case 0x2DuLL:
-        v13 = [(W5LogManager *)self __collectWiFiStatus:a3];
+        v13 = [(W5LogManager *)self __collectWiFiStatus:individual];
         goto LABEL_86;
       case 0x2EuLL:
-        v13 = [(W5LogManager *)self __collectAWDLStatus:a3];
+        v13 = [(W5LogManager *)self __collectAWDLStatus:individual];
         goto LABEL_86;
       case 0x2FuLL:
-        v13 = [(W5LogManager *)self __collectBluetoothStatus:a3];
+        v13 = [(W5LogManager *)self __collectBluetoothStatus:individual];
         goto LABEL_86;
       case 0x30uLL:
-        v13 = [(W5LogManager *)self __collectLeakyAPStats:a3];
+        v13 = [(W5LogManager *)self __collectLeakyAPStats:individual];
         goto LABEL_86;
       case 0x31uLL:
-        v13 = [(W5LogManager *)self __collectBonjourRecords:a3];
+        v13 = [(W5LogManager *)self __collectBonjourRecords:individual];
         goto LABEL_86;
       case 0x32uLL:
-        v13 = [(W5LogManager *)self __collectEventHistory:a3];
+        v13 = [(W5LogManager *)self __collectEventHistory:individual];
         goto LABEL_86;
       case 0x33uLL:
-        v13 = [(W5LogManager *)self __collectPerSSIDDiagnosticsHistory:a3];
+        v13 = [(W5LogManager *)self __collectPerSSIDDiagnosticsHistory:individual];
         goto LABEL_86;
       case 0x34uLL:
         *info = 0;
@@ -7989,19 +7989,19 @@ LABEL_9:
         v48[5] = info;
         dispatch_sync(queue, v48);
         v20 = *(*&info[8] + 40);
-        v9 = [(W5LogManager *)self __collectAdditionalLog:a3 url:*(*&info[8] + 40)];
+        v9 = [(W5LogManager *)self __collectAdditionalLog:individual url:*(*&info[8] + 40)];
         v21 = info;
         goto LABEL_104;
       case 0x39uLL:
-        v13 = [(W5LogManager *)self __collect_mobilewifitool:a3];
+        v13 = [(W5LogManager *)self __collect_mobilewifitool:individual];
         goto LABEL_86;
       case 0x3DuLL:
       case 0x3EuLL:
-        v13 = [(W5LogManager *)self __collectWiFiStatsCLI:a3];
+        v13 = [(W5LogManager *)self __collectWiFiStatsCLI:individual];
         goto LABEL_86;
       case 0x3FuLL:
         v9 = objc_alloc_init(W5LogItemReceipt);
-        [v9 setRequest:a3];
+        [v9 setRequest:individual];
         +[NSDate timeIntervalSinceReferenceDate];
         [v9 setStartedAt:?];
         [(W5DiagnosticsManager *)self->_diagnostics beginWiFiDefaultRoute];
@@ -8010,7 +8010,7 @@ LABEL_9:
         break;
       case 0x40uLL:
         v9 = objc_alloc_init(W5LogItemReceipt);
-        [v9 setRequest:a3];
+        [v9 setRequest:individual];
         +[NSDate timeIntervalSinceReferenceDate];
         [v9 setStartedAt:?];
         [(W5DiagnosticsManager *)self->_diagnostics endWiFiDefaultRoute];
@@ -8018,20 +8018,20 @@ LABEL_9:
         [v9 setCompletedAt:?];
         break;
       case 0x41uLL:
-        v13 = [(W5LogManager *)self __collect_wl_curpower:a3];
+        v13 = [(W5LogManager *)self __collect_wl_curpower:individual];
         goto LABEL_86;
       case 0x42uLL:
-        v13 = [(W5LogManager *)self __collect_wl_cca_get_stats:a3];
+        v13 = [(W5LogManager *)self __collect_wl_cca_get_stats:individual];
         goto LABEL_86;
       case 0x45uLL:
         v9 = objc_alloc_init(W5LogItemReceipt);
-        [v9 setRequest:a3];
+        [v9 setRequest:individual];
         +[NSDate timeIntervalSinceReferenceDate];
         [v9 setStartedAt:?];
-        v14 = [objc_msgSend(a3 "configuration")];
+        v14 = [objc_msgSend(individual "configuration")];
         if (v14)
         {
-          v37 = [v14 unsignedIntegerValue];
+          unsignedIntegerValue = [v14 unsignedIntegerValue];
         }
 
         else
@@ -8045,11 +8045,11 @@ LABEL_9:
             _os_log_send_and_compose_impl();
           }
 
-          v37 = 1000;
+          unsignedIntegerValue = 1000;
         }
 
-        v25 = [objc_msgSend(a3 configuration];
-        v26 = [objc_msgSend(a3 "configuration")];
+        configuration = [objc_msgSend(individual configuration];
+        v26 = [objc_msgSend(individual "configuration")];
         v44 = 0;
         v45 = &v44;
         v46 = 0x2020000000;
@@ -8063,7 +8063,7 @@ LABEL_9:
         v39[1] = 3221225472;
         v39[2] = sub_1000773B4;
         v39[3] = &unk_1000E30C8;
-        v39[4] = v25;
+        v39[4] = configuration;
         v39[5] = self;
         v39[7] = &v44;
         v39[8] = &v40;
@@ -8080,9 +8080,9 @@ LABEL_9:
         }
 
         v36 = v28;
-        if (v37 >= v28)
+        if (unsignedIntegerValue >= v28)
         {
-          v29 = v37 - v28;
+          v29 = unsignedIntegerValue - v28;
         }
 
         else
@@ -8097,7 +8097,7 @@ LABEL_9:
         {
           v33 = v45[3];
           *info = 134218752;
-          *&info[4] = v37;
+          *&info[4] = unsignedIntegerValue;
           *&info[12] = 2048;
           *&info[14] = v36;
           *&info[22] = 2048;
@@ -8116,50 +8116,50 @@ LABEL_104:
         _Block_object_dispose(v21, 8);
         break;
       case 0x46uLL:
-        v13 = [(W5LogManager *)self __collectPreviouslyCollected:a3];
+        v13 = [(W5LogManager *)self __collectPreviouslyCollected:individual];
         goto LABEL_86;
       case 0x49uLL:
-        v13 = [(W5LogManager *)self __collectNetworkPreferences:a3];
+        v13 = [(W5LogManager *)self __collectNetworkPreferences:individual];
         goto LABEL_86;
       case 0x4AuLL:
-        v13 = [(W5LogManager *)self __collectWiFiMemoryUsage:a3];
+        v13 = [(W5LogManager *)self __collectWiFiMemoryUsage:individual];
         goto LABEL_86;
       case 0x4BuLL:
-        v13 = [(W5LogManager *)self __collectWiFiDeviceConfig:a3];
+        v13 = [(W5LogManager *)self __collectWiFiDeviceConfig:individual];
         goto LABEL_86;
       case 0x4CuLL:
-        v13 = [(W5LogManager *)self __collectWiFiPerfLogs:a3];
+        v13 = [(W5LogManager *)self __collectWiFiPerfLogs:individual];
         goto LABEL_86;
       case 0x4EuLL:
-        v13 = [(W5LogManager *)self __collectWiFiVelocityLog:a3];
+        v13 = [(W5LogManager *)self __collectWiFiVelocityLog:individual];
         goto LABEL_86;
       case 0x50uLL:
-        v13 = [(W5LogManager *)self __collect3barsCache:a3];
+        v13 = [(W5LogManager *)self __collect3barsCache:individual];
         goto LABEL_86;
       case 0x51uLL:
-        v13 = [(W5LogManager *)self __collectDatapathStats:a3];
+        v13 = [(W5LogManager *)self __collectDatapathStats:individual];
         goto LABEL_86;
       case 0x54uLL:
-        v13 = [(W5LogManager *)self __collectDeviceAnalyticsStore:a3];
+        v13 = [(W5LogManager *)self __collectDeviceAnalyticsStore:individual];
         goto LABEL_86;
       case 0x55uLL:
-        v13 = [(W5LogManager *)self __collectDeviceAnalyticsDeploymentGraph:a3];
+        v13 = [(W5LogManager *)self __collectDeviceAnalyticsDeploymentGraph:individual];
         goto LABEL_86;
       case 0x56uLL:
-        v13 = [(W5LogManager *)self __collectPeerDiagnostics:a3];
+        v13 = [(W5LogManager *)self __collectPeerDiagnostics:individual];
         goto LABEL_86;
       case 0x57uLL:
-        v13 = [(W5LogManager *)self __collectDextCoreDump:a3];
+        v13 = [(W5LogManager *)self __collectDextCoreDump:individual];
         goto LABEL_86;
       case 0x58uLL:
-        if (![objc_msgSend(a3 "configuration")])
+        if (![objc_msgSend(individual "configuration")])
         {
           v15 = sub_100098A04();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
-            v16 = [a3 configuration];
+            configuration2 = [individual configuration];
             *info = 138412290;
-            *&info[4] = v16;
+            *&info[4] = configuration2;
             LODWORD(v35) = 12;
             v34 = info;
             _os_log_send_and_compose_impl();
@@ -8169,7 +8169,7 @@ LABEL_104:
         v17 = sub_100098A04();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [a3 configuration];
+          configuration3 = [individual configuration];
           *info = 136315906;
           *&info[4] = "[W5LogManager __collectIndividual:error:]";
           *&info[12] = 2080;
@@ -8177,40 +8177,40 @@ LABEL_104:
           *&info[22] = 1024;
           *v53 = 8167;
           *&v53[4] = 2112;
-          *&v53[6] = v18;
+          *&v53[6] = configuration3;
           LODWORD(v35) = 38;
           v34 = info;
           _os_log_send_and_compose_impl();
         }
 
-        v13 = [(W5LogManager *)self __collectDeviceAnalyticsEntityCSVs:a3, v34, v35];
+        v13 = [(W5LogManager *)self __collectDeviceAnalyticsEntityCSVs:individual, v34, v35];
         goto LABEL_86;
       case 0x59uLL:
-        v13 = [(W5LogManager *)self __dnssdBrowseAll:a3];
+        v13 = [(W5LogManager *)self __dnssdBrowseAll:individual];
         goto LABEL_86;
       case 0x5AuLL:
-        v13 = [(W5LogManager *)self __dnssdCacheAndState:a3];
+        v13 = [(W5LogManager *)self __dnssdCacheAndState:individual];
         goto LABEL_86;
       case 0x5BuLL:
-        v13 = [(W5LogManager *)self __pingSubnet:a3];
+        v13 = [(W5LogManager *)self __pingSubnet:individual];
         goto LABEL_86;
       case 0x5CuLL:
-        v13 = [(W5LogManager *)self __pingBroadcast:a3];
+        v13 = [(W5LogManager *)self __pingBroadcast:individual];
 LABEL_86:
         v9 = v13;
         break;
       default:
         v9 = objc_alloc_init(W5LogItemReceipt);
-        [v9 setRequest:a3];
+        [v9 setRequest:individual];
         +[NSDate timeIntervalSinceReferenceDate];
         [v9 setStartedAt:?];
         [v9 startedAt];
         [v9 setCompletedAt:?];
-        if (a4)
+        if (error)
         {
           v50 = NSLocalizedFailureReasonErrorKey;
           v51 = @"W5ParamErr";
-          *a4 = [NSError errorWithDomain:@"com.apple.wifivelocity.error" code:1 userInfo:[NSDictionary dictionaryWithObjects:&v51 forKeys:&v50 count:1]];
+          *error = [NSError errorWithDomain:@"com.apple.wifivelocity.error" code:1 userInfo:[NSDictionary dictionaryWithObjects:&v51 forKeys:&v50 count:1]];
         }
 
         break;
@@ -8221,7 +8221,7 @@ LABEL_86:
     v38[1] = 3221225472;
     v38[2] = sub_100077448;
     v38[3] = &unk_1000E1948;
-    v38[4] = a3;
+    v38[4] = individual;
     v38[5] = v9;
     v38[6] = self;
     dispatch_sync(v22, v38);
@@ -8231,7 +8231,7 @@ LABEL_86:
   return v9;
 }
 
-- (id)__runDiagnosticsTests:(id)a3 configuration:(id)a4 timeout:(int64_t)a5 error:(id *)a6
+- (id)__runDiagnosticsTests:(id)tests configuration:(id)configuration timeout:(int64_t)timeout error:(id *)error
 {
   v46 = 0;
   v47 = &v46;
@@ -8272,8 +8272,8 @@ LABEL_86:
   dispatch_sync(queue, block);
   v15 = v27[5];
   [(W5DiagnosticsTestRequestInternal *)v13 setUuid:v27[5]];
-  [(W5DiagnosticsTestRequestInternal *)v13 setTestRequests:a3];
-  -[W5DiagnosticsTestRequestInternal setIncludeEvents:](v13, "setIncludeEvents:", [objc_msgSend(a4 objectForKeyedSubscript:{@"IncludeEvents", "BOOLValue"}]);
+  [(W5DiagnosticsTestRequestInternal *)v13 setTestRequests:tests];
+  -[W5DiagnosticsTestRequestInternal setIncludeEvents:](v13, "setIncludeEvents:", [objc_msgSend(configuration objectForKeyedSubscript:{@"IncludeEvents", "BOOLValue"}]);
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_100077C30;
@@ -8286,9 +8286,9 @@ LABEL_86:
   v24[5] = v12;
   [(W5DiagnosticsTestRequestInternal *)v13 setReply:v24];
   [(W5DiagnosticsManager *)self->_diagnostics addRequest:v13];
-  if (a5)
+  if (timeout)
   {
-    v16 = dispatch_time(0, (a5 / 1000.0 * 1000000000.0));
+    v16 = dispatch_time(0, (timeout / 1000.0 * 1000000000.0));
     if (dispatch_semaphore_wait(v12, v16))
     {
       [v11 lock];
@@ -8318,12 +8318,12 @@ LABEL_86:
 
   v19 = v41[5];
   v20 = v47[5];
-  if (a6)
+  if (error)
   {
     v21 = v41[5];
     if (v21)
     {
-      *a6 = [v21 copy];
+      *error = [v21 copy];
     }
   }
 
@@ -8336,18 +8336,18 @@ LABEL_86:
   return v22;
 }
 
-+ (id)__descriptionForNetwork:(id)a3
++ (id)__descriptionForNetwork:(id)network
 {
-  if (!a3)
+  if (!network)
   {
     return 0;
   }
 
   v4 = +[NSMutableString string];
-  v5 = [a3 ssidString];
-  if (v5)
+  ssidString = [network ssidString];
+  if (ssidString)
   {
-    [v4 appendFormat:@"'%@' %@, ", v5, objc_msgSend(a3, "ssid")];
+    [v4 appendFormat:@"'%@' %@, ", ssidString, objc_msgSend(network, "ssid")];
   }
 
   else
@@ -8355,16 +8355,16 @@ LABEL_86:
     [v4 appendFormat:@"<HIDDEN>, ", v15, v16];
   }
 
-  [v4 appendFormat:@"bssid=%@, ", objc_msgSend(a3, "bssid")];
-  [a3 channel];
+  [v4 appendFormat:@"bssid=%@, ", objc_msgSend(network, "bssid")];
+  [network channel];
   [v4 appendFormat:@"channel=[%@], ", W5DescriptionForChannel()];
-  [v4 appendFormat:@"cc=%@, ", objc_msgSend(a3, "countryCode")];
-  [a3 fastestSupportedPHYMode];
+  [v4 appendFormat:@"cc=%@, ", objc_msgSend(network, "countryCode")];
+  [network fastestSupportedPHYMode];
   [v4 appendFormat:@"type=%@, ", W5DescriptionForPHYMode()];
-  [v4 appendFormat:@"rssi=%li, ", objc_msgSend(a3, "rssi")];
-  [v4 appendFormat:@"rsn=%@, ", sub_10001D1FC(a3)];
-  [v4 appendFormat:@"wpa=%@, ", sub_10001CEE4(a3)];
-  if ([objc_msgSend(a3 "supportedSecurityTypes")])
+  [v4 appendFormat:@"rssi=%li, ", objc_msgSend(network, "rssi")];
+  [v4 appendFormat:@"rsn=%@, ", sub_10001D1FC(network)];
+  [v4 appendFormat:@"wpa=%@, ", sub_10001CEE4(network)];
+  if ([objc_msgSend(network "supportedSecurityTypes")])
   {
     v6 = "yes";
   }
@@ -8375,14 +8375,14 @@ LABEL_86:
   }
 
   [v4 appendFormat:@"wep=%s, ", v6];
-  if ([objc_msgSend(a3 "supportedSecurityTypes")])
+  if ([objc_msgSend(network "supportedSecurityTypes")])
   {
     v7 = "cert";
   }
 
   else
   {
-    v8 = [objc_msgSend(a3 "supportedSecurityTypes")];
+    v8 = [objc_msgSend(network "supportedSecurityTypes")];
     v7 = "psk";
     if (!v8)
     {
@@ -8391,7 +8391,7 @@ LABEL_86:
   }
 
   [v4 appendFormat:@"wapi=%s, ", v7];
-  if ([a3 isIBSS])
+  if ([network isIBSS])
   {
     v9 = "yes";
   }
@@ -8402,7 +8402,7 @@ LABEL_86:
   }
 
   [v4 appendFormat:@"ibss=%s, ", v9];
-  if ([a3 isPersonalHotspot])
+  if ([network isPersonalHotspot])
   {
     v10 = "yes";
   }
@@ -8413,7 +8413,7 @@ LABEL_86:
   }
 
   [v4 appendFormat:@"ph=%s, ", v10];
-  if ([a3 isAppleSWAP])
+  if ([network isAppleSWAP])
   {
     v11 = "yes";
   }
@@ -8424,7 +8424,7 @@ LABEL_86:
   }
 
   [v4 appendFormat:@"swap=%s, ", v11];
-  if ([a3 isPasspoint])
+  if ([network isPasspoint])
   {
     v12 = "yes";
   }
@@ -8435,26 +8435,26 @@ LABEL_86:
   }
 
   [v4 appendFormat:@"hs20=%s, ", v12];
-  v13 = [a3 airPortBaseStationModelName];
-  if (v13)
+  airPortBaseStationModelName = [network airPortBaseStationModelName];
+  if (airPortBaseStationModelName)
   {
-    [v4 appendFormat:@"airport=[%@]", v13];
+    [v4 appendFormat:@"airport=[%@]", airPortBaseStationModelName];
   }
 
   return v4;
 }
 
-+ (id)__logScanResults:(id)a3
++ (id)__logScanResults:(id)results
 {
   v4 = +[NSMutableString string];
   v33[0] = [NSSortDescriptor sortDescriptorWithKey:@"networkName" ascending:1 selector:"caseInsensitiveCompare:"];
   v33[1] = [NSSortDescriptor sortDescriptorWithKey:@"BSSID" ascending:1];
-  v20 = a3;
+  resultsCopy = results;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = [a3 sortedArrayUsingDescriptors:{+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", v33, 2)}];
+  obj = [results sortedArrayUsingDescriptors:{+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", v33, 2)}];
   v5 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v5)
   {
@@ -8483,10 +8483,10 @@ LABEL_86:
         v14 = v4;
         [v4 appendFormat:@"%@\n\n", v13];
         v15 = [objc_msgSend(v13 "channel")];
-        v16 = [v13 channel];
+        channel = [v13 channel];
         if (v15)
         {
-          if ([v16 is6GHzPSC])
+          if ([channel is6GHzPSC])
           {
             ++v25;
           }
@@ -8499,11 +8499,11 @@ LABEL_86:
 
         else
         {
-          v17 = [v16 is5GHz];
-          v18 = [v13 channel];
-          if (v17)
+          is5GHz = [channel is5GHz];
+          channel2 = [v13 channel];
+          if (is5GHz)
           {
-            if ([v18 isDFS])
+            if ([channel2 isDFS])
             {
               ++v21;
             }
@@ -8516,7 +8516,7 @@ LABEL_86:
 
           else
           {
-            v23 += [v18 is2GHz];
+            v23 += [channel2 is2GHz];
           }
         }
 
@@ -8556,19 +8556,19 @@ LABEL_86:
     v23 = 0;
   }
 
-  [v4 insertString:+[NSString stringWithFormat:](NSString atIndex:{"stringWithFormat:", @"total=%lu, 6GHz(PSC)=%ld, 6GHz(NonPSC)=%ld, 5GHz(Active)=%ld, 5GHz(DFS)=%ld, 2GHz=%ld, ibss=%ld, hidden=%ld, passpoint=%ld, ph=%ld, airport=%ld\n\n\n", objc_msgSend(v20, "count"), v25, v24, v22, v21, v23, v7, v9, v10, v11, v8), 0}];
+  [v4 insertString:+[NSString stringWithFormat:](NSString atIndex:{"stringWithFormat:", @"total=%lu, 6GHz(PSC)=%ld, 6GHz(NonPSC)=%ld, 5GHz(Active)=%ld, 5GHz(DFS)=%ld, 2GHz=%ld, ibss=%ld, hidden=%ld, passpoint=%ld, ph=%ld, airport=%ld\n\n\n", objc_msgSend(resultsCopy, "count"), v25, v24, v22, v21, v23, v7, v9, v10, v11, v8), 0}];
   return v4;
 }
 
-- (id)__logDiagnosticsPingResults:(id)a3
+- (id)__logDiagnosticsPingResults:(id)results
 {
   v5 = +[NSMutableString string];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = a3;
-  v24 = [a3 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  obj = results;
+  v24 = [results countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v24)
   {
     v23 = *v31;
@@ -8583,17 +8583,17 @@ LABEL_86:
         }
 
         v7 = *(*(&v30 + 1) + 8 * v6);
-        v8 = [v7 testID];
-        v9 = [v7 info];
+        testID = [v7 testID];
+        info = [v7 info];
         v25 = v6;
-        if (v8 == 53)
+        if (testID == 53)
         {
-          [v5 appendString:{-[W5LogManager __logDiagnosticsPingResults:](self, "__logDiagnosticsPingResults:", objc_msgSend(v9, "objectForKeyedSubscript:", @"ConcurrentResults"}];
+          [v5 appendString:{-[W5LogManager __logDiagnosticsPingResults:](self, "__logDiagnosticsPingResults:", objc_msgSend(info, "objectForKeyedSubscript:", @"ConcurrentResults"}];
         }
 
         else
         {
-          v10 = [v9 objectForKeyedSubscript:@"PingResult"];
+          v10 = [info objectForKeyedSubscript:@"PingResult"];
           v11 = [objc_msgSend(v7 "info")];
           v12 = +[NSMutableArray array];
           if ([v11 count])
@@ -8659,7 +8659,7 @@ LABEL_86:
   return v5;
 }
 
-- (id)__logDiagnosticsTestResults:(id)a3
+- (id)__logDiagnosticsTestResults:(id)results
 {
   v4 = +[NSMutableString string];
   [v4 appendString:W5FormattedHeaderForDiagnosticsTestResults()];
@@ -8667,7 +8667,7 @@ LABEL_86:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  v5 = [results countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v5)
   {
     v6 = v5;
@@ -8678,7 +8678,7 @@ LABEL_86:
       {
         if (*v22 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(results);
         }
 
         v9 = *(*(&v21 + 1) + 8 * i);
@@ -8720,7 +8720,7 @@ LABEL_86:
         }
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v6 = [results countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v6);
@@ -8729,22 +8729,22 @@ LABEL_86:
   return v4;
 }
 
-+ (id)__logBTCProfile:(apple80211_btc_profile_osx *)a3
++ (id)__logBTCProfile:(apple80211_btc_profile_osx *)profile
 {
   v4 = [NSMutableString stringWithCapacity:0];
-  var0 = a3->var0;
+  var0 = profile->var0;
   [(NSMutableString *)v4 appendFormat:@"      Mode                        : %@\n", W5DescriptionForBTCMode()];
-  var1 = a3->var1;
+  var1 = profile->var1;
   [(NSMutableString *)v4 appendFormat:@"      Desense                     : %@\n", W5DescriptionForDesenseFlags()];
-  [(NSMutableString *)v4 appendFormat:@"      Desense Level               : %i\n", a3->var2];
-  [(NSMutableString *)v4 appendFormat:@"      Desense Thresh              : [%i, %i]\n", a3->var4, a3->var3];
+  [(NSMutableString *)v4 appendFormat:@"      Desense Level               : %i\n", profile->var2];
+  [(NSMutableString *)v4 appendFormat:@"      Desense Thresh              : [%i, %i]\n", profile->var4, profile->var3];
   [(NSMutableString *)v4 appendFormat:@"      Chain Ack                   : ["];
-  if (a3->var5)
+  if (profile->var5)
   {
     v7 = 0;
     do
     {
-      if (a3->var6[v7] == 1)
+      if (profile->var6[v7] == 1)
       {
         v8 = "On";
       }
@@ -8755,11 +8755,11 @@ LABEL_86:
       }
 
       [(NSMutableString *)v4 appendFormat:@"%s", v8];
-      var5 = a3->var5;
+      var5 = profile->var5;
       if (v7 < var5 - 1)
       {
         [(NSMutableString *)v4 appendString:@", "];
-        var5 = a3->var5;
+        var5 = profile->var5;
       }
 
       ++v7;
@@ -8770,17 +8770,17 @@ LABEL_86:
 
   [(NSMutableString *)v4 appendString:@"]\n"];
   [(NSMutableString *)v4 appendFormat:@"      Chain Tx Power Offset       : ["];
-  if (a3->var5)
+  if (profile->var5)
   {
     v10 = 0;
     do
     {
-      [(NSMutableString *)v4 appendFormat:@"%i", a3->var7[v10]];
-      v11 = a3->var5;
+      [(NSMutableString *)v4 appendFormat:@"%i", profile->var7[v10]];
+      v11 = profile->var5;
       if (v10 < v11 - 1)
       {
         [(NSMutableString *)v4 appendString:@", "];
-        v11 = a3->var5;
+        v11 = profile->var5;
       }
 
       ++v10;
@@ -8790,20 +8790,20 @@ LABEL_86:
   }
 
   [(NSMutableString *)v4 appendString:@"]\n"];
-  [(NSMutableString *)v4 appendFormat:@"      WiFi RSSI Thresh / Hyst     : %i/%i\n", a3->var8, a3->var9];
-  [(NSMutableString *)v4 appendFormat:@"      BT RSSI Thresh / Hyst       : %i/%i\n", a3->var10, a3->var11];
+  [(NSMutableString *)v4 appendFormat:@"      WiFi RSSI Thresh / Hyst     : %i/%i\n", profile->var8, profile->var9];
+  [(NSMutableString *)v4 appendFormat:@"      BT RSSI Thresh / Hyst       : %i/%i\n", profile->var10, profile->var11];
   [(NSMutableString *)v4 appendFormat:@"      SISO Resp Enable            : ["];
-  if (a3->var12)
+  if (profile->var12)
   {
     v12 = 0;
     do
     {
-      [(NSMutableString *)v4 appendFormat:@"%i", a3->var13[v12]];
-      var12 = a3->var12;
+      [(NSMutableString *)v4 appendFormat:@"%i", profile->var13[v12]];
+      var12 = profile->var12;
       if (v12 < var12 - 1)
       {
         [(NSMutableString *)v4 appendString:@", "];
-        var12 = a3->var12;
+        var12 = profile->var12;
       }
 
       ++v12;
@@ -8814,17 +8814,17 @@ LABEL_86:
 
   [(NSMutableString *)v4 appendString:@"]\n"];
   [(NSMutableString *)v4 appendFormat:@"      Max SISO Resp Power         : ["];
-  if (a3->var12)
+  if (profile->var12)
   {
     v14 = 0;
     do
     {
-      [(NSMutableString *)v4 appendFormat:@"%i", a3->var14[v14]];
-      v15 = a3->var12;
+      [(NSMutableString *)v4 appendFormat:@"%i", profile->var14[v14]];
+      v15 = profile->var12;
       if (v14 < v15 - 1)
       {
         [(NSMutableString *)v4 appendString:@", "];
-        v15 = a3->var12;
+        v15 = profile->var12;
       }
 
       ++v14;
@@ -8839,30 +8839,30 @@ LABEL_86:
   return v16;
 }
 
-+ (id)__logTxPower:(apple80211_per_chain_power_data_get *)a3
++ (id)__logTxPower:(apple80211_per_chain_power_data_get *)power
 {
   v4 = [NSMutableString stringWithCapacity:0];
-  [(NSMutableString *)v4 appendFormat:@"      Current            : %i\n", a3->var2];
-  [(NSMutableString *)v4 appendFormat:@"      Offset             : %i\n", a3->var1];
-  [(NSMutableString *)v4 appendFormat:@"      Min                : %i\n", a3->var3];
-  [(NSMutableString *)v4 appendFormat:@"      Max                : %i\n", a3->var4];
+  [(NSMutableString *)v4 appendFormat:@"      Current            : %i\n", power->var2];
+  [(NSMutableString *)v4 appendFormat:@"      Offset             : %i\n", power->var1];
+  [(NSMutableString *)v4 appendFormat:@"      Min                : %i\n", power->var3];
+  [(NSMutableString *)v4 appendFormat:@"      Max                : %i\n", power->var4];
   v5 = [(NSMutableString *)v4 copy];
 
   return v5;
 }
 
-+ (id)__logNetworkStatus:(id)a3
++ (id)__logNetworkStatus:(id)status
 {
   v4 = +[NSMutableString string];
-  if ([a3 primaryIPv4InterfaceName])
+  if ([status primaryIPv4InterfaceName])
   {
-    [v4 appendFormat:@"    Primary IPv4         : %s (%s / %s)\n", objc_msgSend(objc_msgSend(a3, "primaryIPv4InterfaceName"), "UTF8String"), objc_msgSend(objc_msgSend(a3, "primaryIPv4ServiceName"), "UTF8String"), objc_msgSend(objc_msgSend(a3, "primaryIPv4ServiceID"), "UTF8String")];
-    v5 = [a3 primaryIPv4Addresses];
+    [v4 appendFormat:@"    Primary IPv4         : %s (%s / %s)\n", objc_msgSend(objc_msgSend(status, "primaryIPv4InterfaceName"), "UTF8String"), objc_msgSend(objc_msgSend(status, "primaryIPv4ServiceName"), "UTF8String"), objc_msgSend(objc_msgSend(status, "primaryIPv4ServiceID"), "UTF8String")];
+    primaryIPv4Addresses = [status primaryIPv4Addresses];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+    v6 = [primaryIPv4Addresses countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v6)
     {
       v7 = v6;
@@ -8873,13 +8873,13 @@ LABEL_86:
         {
           if (*v26 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(primaryIPv4Addresses);
           }
 
           [v4 appendFormat:@"                         : %s\n", objc_msgSend(*(*(&v25 + 1) + 8 * i), "UTF8String")];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        v7 = [primaryIPv4Addresses countByEnumeratingWithState:&v25 objects:v30 count:16];
       }
 
       while (v7);
@@ -8891,15 +8891,15 @@ LABEL_86:
     [v4 appendFormat:@"    Primary IPv4         : None\n"];
   }
 
-  if ([a3 primaryIPv6InterfaceName])
+  if ([status primaryIPv6InterfaceName])
   {
-    [v4 appendFormat:@"    Primary IPv6         : %s (%s / %s)\n", objc_msgSend(objc_msgSend(a3, "primaryIPv6InterfaceName"), "UTF8String"), objc_msgSend(objc_msgSend(a3, "primaryIPv6ServiceName"), "UTF8String"), objc_msgSend(objc_msgSend(a3, "primaryIPv6ServiceID"), "UTF8String")];
-    v10 = [a3 primaryIPv6Addresses];
+    [v4 appendFormat:@"    Primary IPv6         : %s (%s / %s)\n", objc_msgSend(objc_msgSend(status, "primaryIPv6InterfaceName"), "UTF8String"), objc_msgSend(objc_msgSend(status, "primaryIPv6ServiceName"), "UTF8String"), objc_msgSend(objc_msgSend(status, "primaryIPv6ServiceID"), "UTF8String")];
+    primaryIPv6Addresses = [status primaryIPv6Addresses];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v11 = [v10 countByEnumeratingWithState:&v21 objects:v29 count:16];
+    v11 = [primaryIPv6Addresses countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (v11)
     {
       v12 = v11;
@@ -8910,13 +8910,13 @@ LABEL_86:
         {
           if (*v22 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(primaryIPv6Addresses);
           }
 
           [v4 appendFormat:@"                         : %s\n", objc_msgSend(*(*(&v21 + 1) + 8 * j), "UTF8String")];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        v12 = [primaryIPv6Addresses countByEnumeratingWithState:&v21 objects:v29 count:16];
       }
 
       while (v12);
@@ -8928,19 +8928,19 @@ LABEL_86:
     [v4 appendFormat:@"    Primary IPv6         : None\n"];
   }
 
-  v15 = [a3 primaryDNSAddresses];
-  if ([v15 count])
+  primaryDNSAddresses = [status primaryDNSAddresses];
+  if ([primaryDNSAddresses count])
   {
-    [v4 appendFormat:@"    DNS Addresses        : %s\n", objc_msgSend(objc_msgSend(v15, "firstObject"), "UTF8String")];
-    if ([v15 count] >= 2 && objc_msgSend(v15, "count") >= 2)
+    [v4 appendFormat:@"    DNS Addresses        : %s\n", objc_msgSend(objc_msgSend(primaryDNSAddresses, "firstObject"), "UTF8String")];
+    if ([primaryDNSAddresses count] >= 2 && objc_msgSend(primaryDNSAddresses, "count") >= 2)
     {
       v16 = 1;
       do
       {
-        [v4 appendFormat:@"                         : %s\n", objc_msgSend(objc_msgSend(v15, "objectAtIndexedSubscript:", v16++), "UTF8String")];
+        [v4 appendFormat:@"                         : %s\n", objc_msgSend(objc_msgSend(primaryDNSAddresses, "objectAtIndexedSubscript:", v16++), "UTF8String")];
       }
 
-      while (v16 < [v15 count]);
+      while (v16 < [primaryDNSAddresses count]);
     }
   }
 
@@ -8950,14 +8950,14 @@ LABEL_86:
   }
 
   v17 = "Not Reachable";
-  if (([a3 isAppleReachable] & 2) != 0 && (objc_msgSend(a3, "isAppleReachable") & 4) == 0)
+  if (([status isAppleReachable] & 2) != 0 && (objc_msgSend(status, "isAppleReachable") & 4) == 0)
   {
     v17 = "Reachable";
   }
 
-  v18 = [a3 isAppleReachable];
+  isAppleReachable = [status isAppleReachable];
   v19 = " (WWAN)";
-  if ((v18 & 0x40000) == 0)
+  if ((isAppleReachable & 0x40000) == 0)
   {
     v19 = "";
   }
@@ -8966,12 +8966,12 @@ LABEL_86:
   return v4;
 }
 
-+ (id)__logWiFiStatus:(id)a3
++ (id)__logWiFiStatus:(id)status
 {
   v5 = +[NSMutableString string];
-  [v5 appendFormat:@"    MAC Address          : %s (hw=%s)\n", objc_msgSend(objc_msgSend(a3, "macAddress"), "UTF8String"), objc_msgSend(objc_msgSend(a3, "hardwareMACAddress"), "UTF8String")];
-  [v5 appendFormat:@"    Interface Name       : %s\n", objc_msgSend(objc_msgSend(a3, "interfaceName"), "UTF8String")];
-  if ([a3 powerOn])
+  [v5 appendFormat:@"    MAC Address          : %s (hw=%s)\n", objc_msgSend(objc_msgSend(status, "macAddress"), "UTF8String"), objc_msgSend(objc_msgSend(status, "hardwareMACAddress"), "UTF8String")];
+  [v5 appendFormat:@"    Interface Name       : %s\n", objc_msgSend(objc_msgSend(status, "interfaceName"), "UTF8String")];
+  if ([status powerOn])
   {
     v6 = "On";
   }
@@ -8981,17 +8981,17 @@ LABEL_86:
     v6 = "Off";
   }
 
-  if ([objc_msgSend(a3 "power")] == 24)
+  if ([objc_msgSend(status "power")] == 24)
   {
-    [objc_msgSend(a3 "power")];
+    [objc_msgSend(status "power")];
   }
 
   [v5 appendFormat:@"    Power                : %s [%@]\n", v6, W5DescriptionForPower()];
-  [a3 opMode];
+  [status opMode];
   [v5 appendFormat:@"    Op Mode              : %s\n", objc_msgSend(W5DescriptionForOpMode(), "UTF8String")];
-  if ([objc_msgSend(objc_msgSend(a3 "ssidString")])
+  if ([objc_msgSend(objc_msgSend(status "ssidString")])
   {
-    v7 = [objc_msgSend(objc_msgSend(a3 "ssidString")];
+    v7 = [objc_msgSend(objc_msgSend(status "ssidString")];
   }
 
   else
@@ -9000,9 +9000,9 @@ LABEL_86:
   }
 
   [v5 appendFormat:@"    SSID                 : %s\n", v7];
-  if ([objc_msgSend(objc_msgSend(a3 "bssid")])
+  if ([objc_msgSend(objc_msgSend(status "bssid")])
   {
-    v8 = [objc_msgSend(objc_msgSend(a3 "bssid")];
+    v8 = [objc_msgSend(objc_msgSend(status "bssid")];
   }
 
   else
@@ -9011,13 +9011,13 @@ LABEL_86:
   }
 
   [v5 appendFormat:@"    BSSID                : %s\n", v8];
-  [v5 appendFormat:@"    RSSI                 : %i dBm\n", objc_msgSend(a3, "rssi")];
-  [v5 appendFormat:@"    Noise                : %i dBm\n", objc_msgSend(a3, "noise")];
-  [a3 txRate];
+  [v5 appendFormat:@"    RSSI                 : %i dBm\n", objc_msgSend(status, "rssi")];
+  [v5 appendFormat:@"    Noise                : %i dBm\n", objc_msgSend(status, "noise")];
+  [status txRate];
   [v5 appendFormat:@"    Tx Rate              : %.1f Mbps\n", v9];
-  if ([a3 ssid])
+  if ([status ssid])
   {
-    [a3 security];
+    [status security];
     [v5 appendFormat:@"    Security             : %s\n", objc_msgSend(W5DescriptionForSecurity(), "UTF8String")];
   }
 
@@ -9026,42 +9026,42 @@ LABEL_86:
     [v5 appendFormat:@"    Security             : None\n", v52];
   }
 
-  if ([a3 security] == 12 || objc_msgSend(a3, "security") == 11 || objc_msgSend(a3, "security") == 9 || objc_msgSend(a3, "security") == 10 || objc_msgSend(a3, "security") == 8)
+  if ([status security] == 12 || objc_msgSend(status, "security") == 11 || objc_msgSend(status, "security") == 9 || objc_msgSend(status, "security") == 10 || objc_msgSend(status, "security") == 8)
   {
-    [a3 eapolControlMode];
+    [status eapolControlMode];
     [v5 appendFormat:@"    802.1X Mode          : %s\n", objc_msgSend(W5DescriptionForEAPOLControlMode(), "UTF8String")];
-    [a3 eapolSupplicantState];
+    [status eapolSupplicantState];
     [v5 appendFormat:@"    802.1X Supplicant    : %s\n", objc_msgSend(W5DescriptionForEAPOLSupplicantState(), "UTF8String")];
   }
 
-  [a3 phyMode];
+  [status phyMode];
   [v5 appendFormat:@"    PHY Mode             : %s\n", objc_msgSend(W5DescriptionForPHYMode(), "UTF8String")];
-  [v5 appendFormat:@"    MCS Index            : %i\n", objc_msgSend(a3, "mcsIndex")];
-  v10 = [a3 ssid];
-  if (v10)
+  [v5 appendFormat:@"    MCS Index            : %i\n", objc_msgSend(status, "mcsIndex")];
+  ssid = [status ssid];
+  if (ssid)
   {
-    v10 = [a3 guardInterval];
+    ssid = [status guardInterval];
   }
 
-  [v5 appendFormat:@"    Guard Interval       : %i\n", v10];
-  [v5 appendFormat:@"    NSS                  : %i\n", objc_msgSend(a3, "numberOfSpacialStreams")];
-  [a3 channel];
+  [v5 appendFormat:@"    Guard Interval       : %i\n", ssid];
+  [v5 appendFormat:@"    NSS                  : %i\n", objc_msgSend(status, "numberOfSpacialStreams")];
+  [status channel];
   if ([W5DescriptionForChannel() UTF8String])
   {
-    [a3 channel];
-    v11 = [W5DescriptionForChannel() UTF8String];
+    [status channel];
+    uTF8String = [W5DescriptionForChannel() UTF8String];
   }
 
   else
   {
-    v11 = "None";
+    uTF8String = "None";
   }
 
-  [v5 appendFormat:@"    Channel              : %s\n", v11];
-  [v5 appendFormat:@"    Country Code         : %s\n", objc_msgSend(objc_msgSend(a3, "countryCode"), "UTF8String")];
-  if ([objc_msgSend(a3 "networkServiceID")])
+  [v5 appendFormat:@"    Channel              : %s\n", uTF8String];
+  [v5 appendFormat:@"    Country Code         : %s\n", objc_msgSend(objc_msgSend(status, "countryCode"), "UTF8String")];
+  if ([objc_msgSend(status "networkServiceID")])
   {
-    v12 = [objc_msgSend(a3 "networkServiceID")];
+    v12 = [objc_msgSend(status "networkServiceID")];
   }
 
   else
@@ -9070,11 +9070,11 @@ LABEL_86:
   }
 
   [v5 appendFormat:@"    NetworkServiceID     : %s\n", v12];
-  [a3 ipv4ConfigMethod];
+  [status ipv4ConfigMethod];
   [v5 appendFormat:@"    IPv4 Config Method   : %s\n", objc_msgSend(W5DescriptionForIPv4ConfigMethod(), "UTF8String")];
-  if ([objc_msgSend(objc_msgSend(a3 "ipv4Addresses")])
+  if ([objc_msgSend(objc_msgSend(status "ipv4Addresses")])
   {
-    v13 = [objc_msgSend(objc_msgSend(a3 "ipv4Addresses")];
+    v13 = [objc_msgSend(objc_msgSend(status "ipv4Addresses")];
   }
 
   else
@@ -9083,20 +9083,20 @@ LABEL_86:
   }
 
   [v5 appendFormat:@"    IPv4 Address         : %s\n", v13];
-  if ([objc_msgSend(a3 "ipv4Addresses")] >= 2)
+  if ([objc_msgSend(status "ipv4Addresses")] >= 2)
   {
     v14 = 1;
     do
     {
-      printf("                         : %s\n", [objc_msgSend(objc_msgSend(a3 "ipv4Addresses")]);
+      printf("                         : %s\n", [objc_msgSend(objc_msgSend(status "ipv4Addresses")]);
     }
 
-    while (v14 < [objc_msgSend(a3 "ipv4Addresses")]);
+    while (v14 < [objc_msgSend(status "ipv4Addresses")]);
   }
 
-  if ([objc_msgSend(a3 "ipv4RouterAddress")])
+  if ([objc_msgSend(status "ipv4RouterAddress")])
   {
-    v15 = [objc_msgSend(a3 "ipv4RouterAddress")];
+    v15 = [objc_msgSend(status "ipv4RouterAddress")];
   }
 
   else
@@ -9105,11 +9105,11 @@ LABEL_86:
   }
 
   [v5 appendFormat:@"    IPv4 Router          : %s\n", v15];
-  [a3 ipv6ConfigMethod];
+  [status ipv6ConfigMethod];
   [v5 appendFormat:@"    IPv6 Config Method   : %s\n", objc_msgSend(W5DescriptionForIPv6ConfigMethod(), "UTF8String")];
-  if ([objc_msgSend(objc_msgSend(a3 "ipv6Addresses")])
+  if ([objc_msgSend(objc_msgSend(status "ipv6Addresses")])
   {
-    v16 = [objc_msgSend(objc_msgSend(a3 "ipv6Addresses")];
+    v16 = [objc_msgSend(objc_msgSend(status "ipv6Addresses")];
   }
 
   else
@@ -9118,20 +9118,20 @@ LABEL_86:
   }
 
   [v5 appendFormat:@"    IPv6 Address         : %s\n", v16];
-  if ([objc_msgSend(a3 "ipv6Addresses")] >= 2)
+  if ([objc_msgSend(status "ipv6Addresses")] >= 2)
   {
     v17 = 1;
     do
     {
-      printf("                         : %s\n", [objc_msgSend(objc_msgSend(a3 "ipv6Addresses")]);
+      printf("                         : %s\n", [objc_msgSend(objc_msgSend(status "ipv6Addresses")]);
     }
 
-    while (v17 < [objc_msgSend(a3 "ipv6Addresses")]);
+    while (v17 < [objc_msgSend(status "ipv6Addresses")]);
   }
 
-  if ([objc_msgSend(a3 "ipv6RouterAddress")])
+  if ([objc_msgSend(status "ipv6RouterAddress")])
   {
-    v18 = [objc_msgSend(a3 "ipv6RouterAddress")];
+    v18 = [objc_msgSend(status "ipv6RouterAddress")];
   }
 
   else
@@ -9140,9 +9140,9 @@ LABEL_86:
   }
 
   [v5 appendFormat:@"    IPv6 Router          : %s\n", v18];
-  if ([objc_msgSend(objc_msgSend(a3 "dnsAddresses")])
+  if ([objc_msgSend(objc_msgSend(status "dnsAddresses")])
   {
-    v19 = [objc_msgSend(objc_msgSend(a3 "dnsAddresses")];
+    v19 = [objc_msgSend(objc_msgSend(status "dnsAddresses")];
   }
 
   else
@@ -9151,32 +9151,32 @@ LABEL_86:
   }
 
   [v5 appendFormat:@"    DNS                  : %s\n", v19];
-  if ([objc_msgSend(a3 "dnsAddresses")] >= 2)
+  if ([objc_msgSend(status "dnsAddresses")] >= 2)
   {
     v20 = 1;
     do
     {
-      [v5 appendFormat:@"                         : %s\n", objc_msgSend(objc_msgSend(objc_msgSend(a3, "dnsAddresses"), "objectAtIndexedSubscript:", v20++), "UTF8String")];
+      [v5 appendFormat:@"                         : %s\n", objc_msgSend(objc_msgSend(objc_msgSend(status, "dnsAddresses"), "objectAtIndexedSubscript:", v20++), "UTF8String")];
     }
 
-    while (v20 < [objc_msgSend(a3 "dnsAddresses")]);
+    while (v20 < [objc_msgSend(status "dnsAddresses")]);
   }
 
-  [a3 btcMode];
+  [status btcMode];
   [v5 appendFormat:@"    BTC Mode             : %s\n", objc_msgSend(W5DescriptionForBTCMode(), "UTF8String")];
-  if ([a3 desense])
+  if ([status desense])
   {
-    if ([objc_msgSend(a3 "desense")] == 16)
+    if ([objc_msgSend(status "desense")] == 16)
     {
-      [objc_msgSend(a3 "desense")];
+      [objc_msgSend(status "desense")];
     }
 
-    if ([objc_msgSend(a3 "desenseLevel")] == 8)
+    if ([objc_msgSend(status "desenseLevel")] == 8)
     {
-      [objc_msgSend(a3 "desenseLevel")];
+      [objc_msgSend(status "desenseLevel")];
     }
 
-    v53 = [W5DescriptionForDesense() UTF8String];
+    uTF8String2 = [W5DescriptionForDesense() UTF8String];
     v21 = @"    Desense              : %s\n";
   }
 
@@ -9185,15 +9185,15 @@ LABEL_86:
     v21 = @"    Desense              : Unavailable\n";
   }
 
-  [v5 appendFormat:v21, v53];
-  if ([a3 chainAck])
+  [v5 appendFormat:v21, uTF8String2];
+  if ([status chainAck])
   {
-    if ([objc_msgSend(a3 "chainAck")] == 24)
+    if ([objc_msgSend(status "chainAck")] == 24)
     {
-      [objc_msgSend(a3 "chainAck")];
+      [objc_msgSend(status "chainAck")];
     }
 
-    v54 = [W5DescriptionForChainAck() UTF8String];
+    uTF8String3 = [W5DescriptionForChainAck() UTF8String];
     v22 = @"    Chain Ack            : [%s]\n";
   }
 
@@ -9202,52 +9202,52 @@ LABEL_86:
     v22 = @"    Chain Ack            : Unavailable\n";
   }
 
-  [v5 appendFormat:v22, v54];
-  if ([a3 txChainPower])
+  [v5 appendFormat:v22, uTF8String3];
+  if ([status txChainPower])
   {
-    [objc_msgSend(a3 "txChainPower")];
-    if (*([objc_msgSend(a3 "txChainPower")] + 1))
+    [objc_msgSend(status "txChainPower")];
+    if (*([objc_msgSend(status "txChainPower")] + 1))
     {
-      [objc_msgSend(a3 "txChainPower")];
-      if (*([objc_msgSend(a3 "txChainPower")] + 1))
+      [objc_msgSend(status "txChainPower")];
+      if (*([objc_msgSend(status "txChainPower")] + 1))
       {
         v23 = 0;
         v24 = 8;
         do
         {
-          [objc_msgSend(a3 "txChainPower")];
-          v25 = *([objc_msgSend(a3 "txChainPower")] + v24);
+          [objc_msgSend(status "txChainPower")];
+          v25 = *([objc_msgSend(status "txChainPower")] + v24);
           [v5 appendFormat:@"    Tx Power [%lu]         : %s\n", v23, objc_msgSend(W5DescriptionForChainPowerState(), "UTF8String")];
-          [objc_msgSend(a3 "txChainPower")];
-          v26 = [objc_msgSend(a3 "txChainPower")];
+          [objc_msgSend(status "txChainPower")];
+          v26 = [objc_msgSend(status "txChainPower")];
           v27 = *&v26[v24];
           LODWORD(v56) = *&v26[v24 + 16];
           v55 = v27;
-          [v5 appendFormat:@"%s", objc_msgSend(objc_msgSend(a1, "__logTxPower:", &v55), "UTF8String")];
+          [v5 appendFormat:@"%s", objc_msgSend(objc_msgSend(self, "__logTxPower:", &v55), "UTF8String")];
           ++v23;
-          [objc_msgSend(a3 "txChainPower")];
+          [objc_msgSend(status "txChainPower")];
           v24 += 20;
         }
 
-        while (v23 < *([objc_msgSend(a3 "txChainPower")] + 1));
+        while (v23 < *([objc_msgSend(status "txChainPower")] + 1));
       }
     }
   }
 
-  if ([a3 btcProfiles2GHz])
+  if ([status btcProfiles2GHz])
   {
-    [objc_msgSend(a3 "btcProfiles2GHz")];
-    if (*([objc_msgSend(a3 "btcProfiles2GHz")] + 2))
+    [objc_msgSend(status "btcProfiles2GHz")];
+    if (*([objc_msgSend(status "btcProfiles2GHz")] + 2))
     {
       v28 = 0;
       v29 = 12;
       do
       {
-        [objc_msgSend(a3 "btcConfig")];
-        if (*([objc_msgSend(a3 "btcConfig")] + 1))
+        [objc_msgSend(status "btcConfig")];
+        if (*([objc_msgSend(status "btcConfig")] + 1))
         {
-          [objc_msgSend(a3 "btcConfig")];
-          if (v28 == *([objc_msgSend(a3 "btcConfig")] + 2))
+          [objc_msgSend(status "btcConfig")];
+          if (v28 == *([objc_msgSend(status "btcConfig")] + 2))
           {
             v30 = "Active";
           }
@@ -9264,8 +9264,8 @@ LABEL_86:
         }
 
         [v5 appendFormat:@"    BTC Profile 2.4GHz [%lu]        : %s\n", v28, v30];
-        [objc_msgSend(a3 "btcProfiles2GHz")];
-        v31 = [objc_msgSend(a3 "btcProfiles2GHz")];
+        [objc_msgSend(status "btcProfiles2GHz")];
+        v31 = [objc_msgSend(status "btcProfiles2GHz")];
         v55 = *&v31[v29];
         v32 = *&v31[v29 + 16];
         v33 = *&v31[v29 + 32];
@@ -9281,30 +9281,30 @@ LABEL_86:
         v61 = v36;
         *v62 = v37;
         v60 = v35;
-        [v5 appendFormat:@"%s", objc_msgSend(objc_msgSend(a1, "__logBTCProfile:", &v55), "UTF8String")];
+        [v5 appendFormat:@"%s", objc_msgSend(objc_msgSend(self, "__logBTCProfile:", &v55), "UTF8String")];
         ++v28;
-        [objc_msgSend(a3 "btcProfiles2GHz")];
+        [objc_msgSend(status "btcProfiles2GHz")];
         v29 += 140;
       }
 
-      while (v28 < *([objc_msgSend(a3 "btcProfiles2GHz")] + 2));
+      while (v28 < *([objc_msgSend(status "btcProfiles2GHz")] + 2));
     }
   }
 
-  if ([a3 btcProfiles5GHz])
+  if ([status btcProfiles5GHz])
   {
-    [objc_msgSend(a3 "btcProfiles5GHz")];
-    if (*([objc_msgSend(a3 "btcProfiles5GHz")] + 2))
+    [objc_msgSend(status "btcProfiles5GHz")];
+    if (*([objc_msgSend(status "btcProfiles5GHz")] + 2))
     {
       v38 = 0;
       v39 = 12;
       do
       {
-        [objc_msgSend(a3 "btcConfig")];
-        if (*([objc_msgSend(a3 "btcConfig")] + 3))
+        [objc_msgSend(status "btcConfig")];
+        if (*([objc_msgSend(status "btcConfig")] + 3))
         {
-          [objc_msgSend(a3 "btcConfig")];
-          if (v38 == *([objc_msgSend(a3 "btcConfig")] + 4))
+          [objc_msgSend(status "btcConfig")];
+          if (v38 == *([objc_msgSend(status "btcConfig")] + 4))
           {
             v40 = "Active";
           }
@@ -9321,8 +9321,8 @@ LABEL_86:
         }
 
         [v5 appendFormat:@"    BTC Profile 5GHz [%lu]          : %s\n", v38, v40];
-        [objc_msgSend(a3 "btcProfiles5GHz")];
-        v41 = [objc_msgSend(a3 "btcProfiles5GHz")];
+        [objc_msgSend(status "btcProfiles5GHz")];
+        v41 = [objc_msgSend(status "btcProfiles5GHz")];
         v55 = *&v41[v39];
         v42 = *&v41[v39 + 16];
         v43 = *&v41[v39 + 32];
@@ -9338,17 +9338,17 @@ LABEL_86:
         v61 = v46;
         *v62 = v47;
         v60 = v45;
-        [v5 appendFormat:@"%s", objc_msgSend(objc_msgSend(a1, "__logBTCProfile:", &v55), "UTF8String")];
+        [v5 appendFormat:@"%s", objc_msgSend(objc_msgSend(self, "__logBTCProfile:", &v55), "UTF8String")];
         ++v38;
-        [objc_msgSend(a3 "btcProfiles5GHz")];
+        [objc_msgSend(status "btcProfiles5GHz")];
         v39 += 140;
       }
 
-      while (v38 < *([objc_msgSend(a3 "btcProfiles5GHz")] + 2));
+      while (v38 < *([objc_msgSend(status "btcProfiles5GHz")] + 2));
     }
   }
 
-  if ([a3 smartCCADesenseSupported])
+  if ([status smartCCADesenseSupported])
   {
     v48 = "Supported";
   }
@@ -9358,8 +9358,8 @@ LABEL_86:
     v48 = "Not Supported";
   }
 
-  [v5 appendFormat:@"    SmartCCA/Desense     : %s (USB=%d)\n", v48, objc_msgSend(a3, "smartCCADesenseUSBPresence")];
-  v49 = [objc_msgSend(a3 "capabilities")];
+  [v5 appendFormat:@"    SmartCCA/Desense     : %s (USB=%d)\n", v48, objc_msgSend(status, "smartCCADesenseUSBPresence")];
+  v49 = [objc_msgSend(status "capabilities")];
   v50 = "No";
   if (v49)
   {
@@ -9367,24 +9367,24 @@ LABEL_86:
   }
 
   [v5 appendFormat:@"    Supports 6e          : %s\n", v50];
-  [v5 appendFormat:@"    Supported Channels   : %s\n", objc_msgSend(objc_msgSend(objc_msgSend(a3, "supportedChannels"), "componentsJoinedByString:", @", "), "UTF8String")];
+  [v5 appendFormat:@"    Supported Channels   : %s\n", objc_msgSend(objc_msgSend(objc_msgSend(status, "supportedChannels"), "componentsJoinedByString:", @", "), "UTF8String")];
   return v5;
 }
 
-+ (id)__logBluetoothStatus:(id)a3
++ (id)__logBluetoothStatus:(id)status
 {
   v4 = +[NSMutableString string];
-  v5 = [a3 powerOn];
+  powerOn = [status powerOn];
   v6 = "Off";
-  if (v5)
+  if (powerOn)
   {
     v6 = "On";
   }
 
   [v4 appendFormat:@"    Power                : %s\n", v6];
-  if ([objc_msgSend(a3 "address")])
+  if ([objc_msgSend(status "address")])
   {
-    v7 = [objc_msgSend(a3 "address")];
+    v7 = [objc_msgSend(status "address")];
   }
 
   else
@@ -9393,7 +9393,7 @@ LABEL_86:
   }
 
   [v4 appendFormat:@"    MAC Address          : %s\n", v7];
-  if ([a3 isDiscoverable])
+  if ([status isDiscoverable])
   {
     v8 = "Yes";
   }
@@ -9404,7 +9404,7 @@ LABEL_86:
   }
 
   [v4 appendFormat:@"    Discoverable         : %s\n", v8];
-  if ([a3 isConnectable])
+  if ([status isConnectable])
   {
     v9 = "Yes";
   }
@@ -9415,7 +9415,7 @@ LABEL_86:
   }
 
   [v4 appendFormat:@"    Connectable          : %s\n", v9];
-  if ([a3 isScanning])
+  if ([status isScanning])
   {
     v10 = "Yes";
   }
@@ -9430,8 +9430,8 @@ LABEL_86:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v30 = a3;
-  obj = [a3 devices];
+  statusCopy = status;
+  obj = [status devices];
   v11 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v11)
   {
@@ -9468,12 +9468,12 @@ LABEL_86:
     v15 = 0;
   }
 
-  [v4 appendFormat:@"    Devices              : %lu (paired=%lu cloud=%lu connected=%lu)\n\n", objc_msgSend(objc_msgSend(v30, "devices"), "count"), v13, v14, v15];
+  [v4 appendFormat:@"    Devices              : %lu (paired=%lu cloud=%lu connected=%lu)\n\n", objc_msgSend(objc_msgSend(statusCopy, "devices"), "count"), v13, v14, v15];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obja = [v30 devices];
+  obja = [statusCopy devices];
   v19 = [obja countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (v19)
   {
@@ -9567,16 +9567,16 @@ LABEL_86:
   return v4;
 }
 
-- (id)__logAWDLStatus:(id)a3
+- (id)__logAWDLStatus:(id)status
 {
   v5 = +[NSMutableString string];
-  v6 = [(W5StatusManager *)self->_status corewifi];
-  [v5 appendFormat:@"IPv6: %@\n\n", objc_msgSend(objc_msgSend(-[CWFInterface AWDL](v6, "AWDL"), "IPv6Addresses"), "firstObject")];
-  [a3 airDropDiscoverableMode];
+  corewifi = [(W5StatusManager *)self->_status corewifi];
+  [v5 appendFormat:@"IPv6: %@\n\n", objc_msgSend(objc_msgSend(-[CWFInterface AWDL](corewifi, "AWDL"), "IPv6Addresses"), "firstObject")];
+  [status airDropDiscoverableMode];
   [v5 appendFormat:@"AirDrop Discoverable Mode: %@\n\n", W5DescriptionForAirDropDiscoverableMode()];
   DWORD2(v49) = 0;
   *&v49 = 0;
-  [-[CWFInterface AWDLSyncEnabled](v6 "AWDLSyncEnabled")];
+  [-[CWFInterface AWDLSyncEnabled](corewifi "AWDLSyncEnabled")];
   if (DWORD2(v49))
   {
     v7 = "enabled";
@@ -9589,7 +9589,7 @@ LABEL_86:
 
   [v5 appendString:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"awdl is %s\n", v7)}];
   *&v49 = 0;
-  [-[CWFInterface AWDLOpMode](v6 "AWDLOpMode")];
+  [-[CWFInterface AWDLOpMode](corewifi "AWDLOpMode")];
   if (DWORD1(v49) <= 2)
   {
     v8 = (&off_1000E3140)[DWORD1(v49)];
@@ -9613,7 +9613,7 @@ LABEL_86:
   v50 = 0u;
   v51 = 0u;
   v49 = 0u;
-  [-[CWFInterface AWDLPeerTrafficRegistration](v6 "AWDLPeerTrafficRegistration")];
+  [-[CWFInterface AWDLPeerTrafficRegistration](corewifi "AWDLPeerTrafficRegistration")];
   if (DWORD2(v59))
   {
     v9 = " FAVOR INFRA HINT";
@@ -9632,10 +9632,10 @@ LABEL_86:
 
   [v5 appendString:v10];
   *&v49 = 0;
-  [-[CWFInterface AWDLMasterChannel](v6 "AWDLMasterChannel")];
+  [-[CWFInterface AWDLMasterChannel](corewifi "AWDLMasterChannel")];
   [v5 appendString:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"awdl master channel = %u\n", DWORD1(v49))}];
   *&v49 = 0;
-  [-[CWFInterface AWDLSecondaryMasterChannel](v6 "AWDLSecondaryMasterChannel")];
+  [-[CWFInterface AWDLSecondaryMasterChannel](corewifi "AWDLSecondaryMasterChannel")];
   [v5 appendString:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"awdl secondary master channel = %u\n", DWORD1(v49))}];
   v11 = +[NSMutableString string];
   v72 = 0u;
@@ -9663,7 +9663,7 @@ LABEL_86:
   v50 = 0u;
   v51 = 0u;
   v49 = 0u;
-  [-[CWFInterface AWDLSyncChannelSequence](v6 "AWDLSyncChannelSequence")];
+  [-[CWFInterface AWDLSyncChannelSequence](corewifi "AWDLSyncChannelSequence")];
   [v11 appendFormat:@"awdl channel sequence: strategy %u, step count %u, encoding %u, length=%u, duplicate=%u, fill=%u\n", HIDWORD(v73), BYTE7(v49), BYTE6(v49), BYTE5(v49), BYTE8(v49), BYTE9(v49)];
   if (BYTE5(v49))
   {
@@ -9719,7 +9719,7 @@ LABEL_22:
   v50 = 0u;
   v51 = 0u;
   v49 = 0u;
-  [-[CWFInterface AWDLElectionParameters](v6 "AWDLElectionParameters")];
+  [-[CWFInterface AWDLElectionParameters](corewifi "AWDLElectionParameters")];
   v16 = +[NSMutableString string];
   [v16 appendFormat:@"awdl election params:\n"];
   [v16 appendFormat:@"  electionID            %u\n", WORD1(v50)];
@@ -9731,12 +9731,12 @@ LABEL_22:
   [v5 appendString:{objc_msgSend(v16, "copy")}];
   DWORD2(v49) = 0;
   *&v49 = 0;
-  [-[CWFInterface AWDLElectionMetric](v6 "AWDLElectionMetric")];
+  [-[CWFInterface AWDLElectionMetric](corewifi "AWDLElectionMetric")];
   [v5 appendString:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"awdl election metric = %u\n", DWORD1(v49))}];
   v17 = +[NSMutableString string];
   v49 = 0uLL;
   LODWORD(v50) = 0;
-  [-[CWFInterface AWDLElectionRSSIThresholds](v6 "AWDLElectionRSSIThresholds")];
+  [-[CWFInterface AWDLElectionRSSIThresholds](corewifi "AWDLElectionRSSIThresholds")];
   [v17 appendString:@"awdl election rssi thresholds:\n"];
   [v17 appendFormat:@"  close     %d\n", DWORD2(v49)];
   [v17 appendFormat:@"  mid       %d\n", DWORD1(v49)];
@@ -9744,7 +9744,7 @@ LABEL_22:
   [v17 appendFormat:@"  closeSync %d\n", HIDWORD(v49)];
   [v5 appendString:{objc_msgSend(v17, "copy")}];
   *&v49 = 0;
-  [-[CWFInterface AWDLSocialTimeSlots](v6 "AWDLSocialTimeSlots")];
+  [-[CWFInterface AWDLSocialTimeSlots](corewifi "AWDLSocialTimeSlots")];
   v18 = "enabled";
   if (!BYTE4(v49))
   {
@@ -9753,7 +9753,7 @@ LABEL_22:
 
   [v5 appendString:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"awdl social time slots: %s\n", v18)}];
   *&v49 = 0;
-  [-[CWFInterface AWDLEncryptionType](v6 "AWDLEncryptionType")];
+  [-[CWFInterface AWDLEncryptionType](corewifi "AWDLEncryptionType")];
   if (DWORD1(v49))
   {
     v19 = "ENABLED";
@@ -9767,16 +9767,16 @@ LABEL_22:
   [v5 appendString:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"awdl encryption is %s\n", v19)}];
   v49 = 0uLL;
   *&v50 = 0;
-  [-[CWFInterface AWDLStrategy](v6 "AWDLStrategy")];
+  [-[CWFInterface AWDLStrategy](corewifi "AWDLStrategy")];
   [v5 appendString:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"awdl strategy: %u sched %@ [%llu.%03llu]\n", DWORD1(v49), W5DescriptionForAWDLScheduleState(), v50 / 0x3B9ACA00, v50 % 0x3B9ACA00 / 0xF4240)}];
   *&v49 = 0;
-  [-[CWFInterface AWDLPresenceMode](v6 "AWDLPresenceMode")];
+  [-[CWFInterface AWDLPresenceMode](corewifi "AWDLPresenceMode")];
   [v5 appendString:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"awdl presence mode = %u\n", DWORD1(v49))}];
   *&v49 = 0;
-  [-[CWFInterface AWDLGuardTime](v6 "AWDLGuardTime")];
+  [-[CWFInterface AWDLGuardTime](corewifi "AWDLGuardTime")];
   [v5 appendString:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"awdl guard time = %u\n", DWORD1(v49))}];
   v49 = 0uLL;
-  [-[CWFInterface AWDLAvailabilityWindowAPAlignment](v6 "AWDLAvailabilityWindowAPAlignment")];
+  [-[CWFInterface AWDLAvailabilityWindowAPAlignment](corewifi "AWDLAvailabilityWindowAPAlignment")];
   if (DWORD1(v49))
   {
     v20 = "ENABLED";
@@ -9789,7 +9789,7 @@ LABEL_22:
 
   [v5 appendString:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"awdl availability window ap beacon alignment: %s offset %d (ms)\n", v20, DWORD2(v49))}];
   *&v49 = 0;
-  [-[CWFInterface AWDLContinuousElectionAlgorithmEnabled](v6 "AWDLContinuousElectionAlgorithmEnabled")];
+  [-[CWFInterface AWDLContinuousElectionAlgorithmEnabled](corewifi "AWDLContinuousElectionAlgorithmEnabled")];
   if (DWORD1(v49))
   {
     v21 = "ENABLED";
@@ -9804,7 +9804,7 @@ LABEL_22:
   v22 = +[NSMutableString string];
   v49 = 0uLL;
   *&v50 = 0;
-  [-[CWFInterface AWDLSyncState](v6 "AWDLSyncState")];
+  [-[CWFInterface AWDLSyncState](corewifi "AWDLSyncState")];
   switch(DWORD1(v49))
   {
     case 1:
@@ -9823,15 +9823,15 @@ LABEL_22:
 
   [v5 appendString:{objc_msgSend(v22, "copy")}];
   *&v49 = 0;
-  [-[CWFInterface AWDLAFTxMode](v6 "AWDLAFTxMode")];
+  [-[CWFInterface AWDLAFTxMode](corewifi "AWDLAFTxMode")];
   [v5 appendString:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"awdl af tx mode = %u\n", DWORD1(v49))}];
   v49 = 0uLL;
   LODWORD(v50) = 0;
-  [-[CWFInterface AWDLExtensionStateMachineParameters](v6 "AWDLExtensionStateMachineParameters")];
+  [-[CWFInterface AWDLExtensionStateMachineParameters](corewifi "AWDLExtensionStateMachineParameters")];
   [v5 appendString:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"awdl ext params: min=%u, maxUni=%u, maxMulti=%u, maxAction=%u\n", v50, DWORD2(v49), DWORD1(v49), HIDWORD(v49))}];
   v49 = 0uLL;
   *&v50 = 0;
-  [-[CWFInterface AWDLSyncParameters](v6 "AWDLSyncParameters")];
+  [-[CWFInterface AWDLSyncParameters](corewifi "AWDLSyncParameters")];
   [v5 appendString:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"awdl sync params: aw_period=%d, aw_length=%d, extension_length=%d, sync_frame_period=%d, as non election master %d\n", DWORD2(v49), DWORD1(v49), HIDWORD(v49), v50, DWORD1(v50))}];
   v23 = +[NSMutableString string];
   v52 = 0u;
@@ -9839,7 +9839,7 @@ LABEL_22:
   v50 = 0u;
   v51 = 0u;
   v49 = 0u;
-  [-[CWFInterface AWDLSidecarDiagnostics](v6 "AWDLSidecarDiagnostics")];
+  [-[CWFInterface AWDLSidecarDiagnostics](corewifi "AWDLSidecarDiagnostics")];
   [v23 appendFormat:@"awdl sidecar diags: txLatencySumMS=%d, txFailCount=%d, txPacketCount=%d, txMaxPacketBurstSizeKB=%d, peerRssi24G=%d, peerRssi5G=%d\n", DWORD1(v49), DWORD2(v49), HIDWORD(v49), v50, DWORD1(v50), DWORD2(v50)];
   for (i = 0; i != 36; i += 12)
   {
@@ -9851,14 +9851,14 @@ LABEL_22:
   v25 = +[NSMutableString string];
   v48 = 0;
   v47 = 0;
-  [-[CWFInterface AWDLSyncEnabled](v6 "AWDLSyncEnabled")];
+  [-[CWFInterface AWDLSyncEnabled](corewifi "AWDLSyncEnabled")];
   [v25 appendString:@"----------------------------------------------------------------------\n"];
   [v25 appendString:@"AWDL Statistics\n"];
   [v25 appendString:@"----------------------------------------------------------------------\n"];
   if (v48)
   {
     bzero(&v49, 0xE88uLL);
-    [-[CWFInterface AWDLStatistics](v6 "AWDLStatistics")];
+    [-[CWFInterface AWDLStatistics](corewifi "AWDLStatistics")];
     [v25 appendFormat:@"Rx Bytes              = %d\n", DWORD2(v49)];
     [v25 appendFormat:@"Tx Bytes              = %d\n", HIDWORD(v49)];
     [v25 appendFormat:@"Self Infra Channel    = %d\n", DWORD1(v50)];
@@ -9996,29 +9996,29 @@ LABEL_22:
   return [v5 copy];
 }
 
-- (id)__pingWithAddress:(id)a3 count:(int64_t)a4 timeout:(double)a5 wait:(double)a6 interval:(double)a7 trafficClass:(id)a8 interfaceName:(id)a9 dataLength:(unint64_t)a10
+- (id)__pingWithAddress:(id)address count:(int64_t)count timeout:(double)timeout wait:(double)wait interval:(double)interval trafficClass:(id)class interfaceName:(id)name dataLength:(unint64_t)self0
 {
   v10 = 0;
-  if (a3 && a4 <= 2147483646 && a5 < 2147483650.0 && a9 != 0)
+  if (address && count <= 2147483646 && timeout < 2147483650.0 && name != 0)
   {
-    if (a8 && ([a8 integerValue], (v20 = W5DescriptionForPingTrafficClass()) != 0))
+    if (class && ([class integerValue], (v20 = W5DescriptionForPingTrafficClass()) != 0))
     {
       v21 = v20;
       v35[0] = @"-c";
-      v35[1] = [NSString stringWithFormat:@"%ld", a4];
+      v35[1] = [NSString stringWithFormat:@"%ld", count];
       v35[2] = @"-b";
-      v35[3] = a9;
+      v35[3] = name;
       v35[4] = @"-k";
       v35[5] = v21;
       v35[6] = @"-i";
-      v35[7] = [NSString stringWithFormat:@"%.1f", *&a7];
+      v35[7] = [NSString stringWithFormat:@"%.1f", *&interval];
       v35[8] = @"-t";
-      v35[9] = [NSString stringWithFormat:@"%.2f", *&a5];
+      v35[9] = [NSString stringWithFormat:@"%.2f", *&timeout];
       v35[10] = @"-W";
-      v35[11] = [NSString stringWithFormat:@"%ld", (a6 * 1000.0)];
+      v35[11] = [NSString stringWithFormat:@"%ld", (wait * 1000.0)];
       v35[12] = @"-s";
-      v35[13] = [NSString stringWithFormat:@"%ld", a10 + 56];
-      v35[14] = a3;
+      v35[13] = [NSString stringWithFormat:@"%ld", length + 56];
+      v35[14] = address;
       v22 = v35;
       v23 = 15;
     }
@@ -10026,18 +10026,18 @@ LABEL_22:
     else
     {
       v34[0] = @"-c";
-      v34[1] = [NSString stringWithFormat:@"%ld", a4];
+      v34[1] = [NSString stringWithFormat:@"%ld", count];
       v34[2] = @"-b";
-      v34[3] = a9;
+      v34[3] = name;
       v34[4] = @"-i";
-      v34[5] = [NSString stringWithFormat:@"%.1f", *&a7];
+      v34[5] = [NSString stringWithFormat:@"%.1f", *&interval];
       v34[6] = @"-t";
-      v34[7] = [NSString stringWithFormat:@"%.2f", *&a5];
+      v34[7] = [NSString stringWithFormat:@"%.2f", *&timeout];
       v34[8] = @"-W";
-      v34[9] = [NSString stringWithFormat:@"%ld", (a6 * 1000.0)];
+      v34[9] = [NSString stringWithFormat:@"%ld", (wait * 1000.0)];
       v34[10] = @"-s";
-      v34[11] = [NSString stringWithFormat:@"%ld", a10 + 56];
-      v34[12] = a3;
+      v34[11] = [NSString stringWithFormat:@"%ld", length + 56];
+      v34[12] = address;
       v22 = v34;
       v23 = 13;
     }
@@ -10048,14 +10048,14 @@ LABEL_22:
     v27 = [NSMutableData dataWithCapacity:0];
     [NSTask runTaskWithLaunchPath:@"/sbin/ping" arguments:v24 outputData:v27 error:0];
     v10 = objc_alloc_init(W5PingResult);
-    [v10 setInterfaceName:a9];
-    [v10 setAddress:a3];
-    [v10 setCount:a4];
-    [v10 setTimeout:a5];
-    [v10 setWait:a6];
-    [v10 setInterval:a7];
-    [v10 setTrafficClass:{objc_msgSend(a8, "integerValue")}];
-    [v10 setDataLength:a10];
+    [v10 setInterfaceName:name];
+    [v10 setAddress:address];
+    [v10 setCount:count];
+    [v10 setTimeout:timeout];
+    [v10 setWait:wait];
+    [v10 setInterval:interval];
+    [v10 setTrafficClass:{objc_msgSend(class, "integerValue")}];
+    [v10 setDataLength:length];
     [v10 setStartedAt:v26];
     +[NSDate timeIntervalSinceReferenceDate];
     [v10 setEndedAt:?];
@@ -10082,27 +10082,27 @@ LABEL_22:
   return v10;
 }
 
-- (id)__ping6WithAddress:(id)a3 count:(int64_t)a4 wait:(double)a5 trafficClass:(id)a6 interfaceName:(id)a7 dataLength:(unint64_t)a8
+- (id)__ping6WithAddress:(id)address count:(int64_t)count wait:(double)wait trafficClass:(id)class interfaceName:(id)name dataLength:(unint64_t)length
 {
   v8 = 0;
-  if (a3 && a4 <= 2147483646 && a7)
+  if (address && count <= 2147483646 && name)
   {
-    if (a6 && ([a6 integerValue], (v15 = W5DescriptionForPingTrafficClass()) != 0))
+    if (class && ([class integerValue], (v15 = W5DescriptionForPingTrafficClass()) != 0))
     {
       v16 = v15;
       v30[0] = @"-c";
-      v30[1] = [NSString stringWithFormat:@"%ld", a4];
+      v30[1] = [NSString stringWithFormat:@"%ld", count];
       v30[2] = @"-B";
-      v30[3] = a7;
+      v30[3] = name;
       v30[4] = @"-I";
-      v30[5] = a7;
+      v30[5] = name;
       v30[6] = @"-k";
       v30[7] = v16;
       v30[8] = @"-i";
-      v30[9] = [NSString stringWithFormat:@"%f", *&a5];
+      v30[9] = [NSString stringWithFormat:@"%f", *&wait];
       v30[10] = @"-s";
-      v30[11] = [NSString stringWithFormat:@"%ld", a8 + 56];
-      v30[12] = a3;
+      v30[11] = [NSString stringWithFormat:@"%ld", length + 56];
+      v30[12] = address;
       v17 = v30;
       v18 = 13;
     }
@@ -10110,16 +10110,16 @@ LABEL_22:
     else
     {
       v29[0] = @"-c";
-      v29[1] = [NSString stringWithFormat:@"%ld", a4];
+      v29[1] = [NSString stringWithFormat:@"%ld", count];
       v29[2] = @"-B";
-      v29[3] = a7;
+      v29[3] = name;
       v29[4] = @"-I";
-      v29[5] = a7;
+      v29[5] = name;
       v29[6] = @"-i";
-      v29[7] = [NSString stringWithFormat:@"%f", *&a5];
+      v29[7] = [NSString stringWithFormat:@"%f", *&wait];
       v29[8] = @"-s";
-      v29[9] = [NSString stringWithFormat:@"%ld", a8 + 56];
-      v29[10] = a3;
+      v29[9] = [NSString stringWithFormat:@"%ld", length + 56];
+      v29[10] = address;
       v17 = v29;
       v18 = 11;
     }
@@ -10130,12 +10130,12 @@ LABEL_22:
     v22 = [NSMutableData dataWithCapacity:0];
     [NSTask runTaskWithLaunchPath:@"/sbin/ping6" arguments:v19 outputData:v22 error:0];
     v8 = objc_alloc_init(W5PingResult);
-    [v8 setInterfaceName:a7];
-    [v8 setAddress:a3];
-    [v8 setCount:a4];
-    [v8 setWait:a5];
-    [v8 setTrafficClass:{objc_msgSend(a6, "integerValue")}];
-    [v8 setDataLength:a8];
+    [v8 setInterfaceName:name];
+    [v8 setAddress:address];
+    [v8 setCount:count];
+    [v8 setWait:wait];
+    [v8 setTrafficClass:{objc_msgSend(class, "integerValue")}];
+    [v8 setDataLength:length];
     [v8 setStartedAt:v21];
     +[NSDate timeIntervalSinceReferenceDate];
     [v8 setEndedAt:?];
@@ -10162,41 +10162,41 @@ LABEL_22:
   return v8;
 }
 
-- (id)__pingUsingCFNetworkWithAddress:(id)a3 count:(int64_t)a4 timeout:(int64_t)a5 trafficClass:(id)a6 networkServiceType:(id)a7
+- (id)__pingUsingCFNetworkWithAddress:(id)address count:(int64_t)count timeout:(int64_t)timeout trafficClass:(id)class networkServiceType:(id)type
 {
   v7 = 0;
-  if (a3 && a4 <= 2147483646 && a5 <= 2147483646)
+  if (address && count <= 2147483646 && timeout <= 2147483646)
   {
     +[NSDate timeIntervalSinceReferenceDate];
     v13 = v12;
     v14 = +[NSMutableArray array];
     v15 = 0.0;
     v16 = 0.0;
-    v46 = a4;
-    if (a4 >= 1)
+    countCopy = count;
+    if (count >= 1)
     {
       v17 = kCFNetDiagnosticPingOptionTimeout;
       v18 = kCFNetDiagnosticPingOptionPacketCount;
       v48 = kCFNetDiagnosticPingOptionTrafficClass;
       v47 = kCFNetDiagnosticPingOptionTypeOfService;
-      v19 = v46;
+      v19 = countCopy;
       do
       {
         v58[0] = v17;
-        v20 = [NSNumber numberWithInteger:a5];
+        v20 = [NSNumber numberWithInteger:timeout];
         v58[1] = v18;
         v59[0] = v20;
         v59[1] = &off_1000EF470;
         v21 = [+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary mutableCopy:v59];
         v22 = v21;
-        if (a6)
+        if (class)
         {
-          [v21 setObject:a6 forKeyedSubscript:v48];
+          [v21 setObject:class forKeyedSubscript:v48];
         }
 
-        if (a7)
+        if (type)
         {
-          [v22 setObject:a7 forKeyedSubscript:v47];
+          [v22 setObject:type forKeyedSubscript:v47];
         }
 
         +[NSDate timeIntervalSinceReferenceDate];
@@ -10310,13 +10310,13 @@ LABEL_22:
     v40 = sqrt(v33 / [v14 count]);
     v7 = objc_alloc_init(W5PingResult);
     [v7 setInterfaceName:{-[W5WiFiInterface interfaceName](-[W5StatusManager wifi](self->_status, "wifi"), "interfaceName")}];
-    [v7 setAddress:a3];
-    [v7 setCount:v46];
+    [v7 setAddress:address];
+    [v7 setCount:countCopy];
     [v7 setMin:v27];
     [v7 setMax:v15];
     [v7 setAvg:v34];
     [v7 setStddev:v40];
-    [v7 setPacketLoss:(v46 - v16) / v46];
+    [v7 setPacketLoss:(countCopy - v16) / countCopy];
     [v7 setStartedAt:v13];
     +[NSDate timeIntervalSinceReferenceDate];
     [v7 setEndedAt:?];
@@ -10341,7 +10341,7 @@ LABEL_22:
   return v7;
 }
 
-- (id)__pingUsingIMFoundationWithAddress:(id)a3 timeout:(int64_t)a4
+- (id)__pingUsingIMFoundationWithAddress:(id)address timeout:(int64_t)timeout
 {
   v19 = 0;
   v20 = &v19;
@@ -10350,7 +10350,7 @@ LABEL_22:
   v23 = sub_10005E500;
   v24 = 0;
   v7 = sub_10007E790();
-  if (a4 <= 2147483646 && a3 && v7)
+  if (timeout <= 2147483646 && address && v7)
   {
     v8 = dispatch_semaphore_create(0);
     *&buf = 0;
@@ -10372,18 +10372,18 @@ LABEL_22:
     }
 
     _Block_object_dispose(&buf, 8);
-    v10 = [[v9 alloc] initWithAddress:a3 wifi:1];
+    v10 = [[v9 alloc] initWithAddress:address wifi:1];
     +[NSDate timeIntervalSinceReferenceDate];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_10007BF28;
     v18[3] = &unk_1000E28B0;
-    v18[4] = a3;
+    v18[4] = address;
     v18[5] = self;
     v18[8] = v11;
     v18[6] = v8;
     v18[7] = &v19;
-    [v10 startWithTimeout:dispatch_get_global_queue(0 queue:0) completionHandler:{v18, a4}];
+    [v10 startWithTimeout:dispatch_get_global_queue(0 queue:0) completionHandler:{v18, timeout}];
     v12 = dispatch_time(0, 80000000000);
     if (dispatch_semaphore_wait(v8, v12) >= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
@@ -10416,13 +10416,13 @@ LABEL_22:
   return v16;
 }
 
-+ (void)__parsePingOutput:(id)a3 result:(id)a4
++ (void)__parsePingOutput:(id)output result:(id)result
 {
-  if (a3)
+  if (output)
   {
-    if (a4)
+    if (result)
     {
-      v5 = [[NSString alloc] initWithData:a3 encoding:4];
+      v5 = [[NSString alloc] initWithData:output encoding:4];
       if (v5)
       {
         v14 = v5;
@@ -10451,20 +10451,20 @@ LABEL_22:
               {
                 v12 = [v11 objectAtIndexedSubscript:6];
                 [objc_msgSend(v12 substringToIndex:{objc_msgSend(v12, "length") - 1), "doubleValue"}];
-                [a4 setPacketLoss:?];
+                [result setPacketLoss:?];
               }
 
               else if ([v11 containsObject:@"round-trip"])
               {
                 v13 = [objc_msgSend(v11 objectAtIndexedSubscript:{3), "componentsSeparatedByString:", @"/"}];
                 [objc_msgSend(v13 objectAtIndexedSubscript:{0), "doubleValue"}];
-                [a4 setMin:?];
+                [result setMin:?];
                 [objc_msgSend(v13 objectAtIndexedSubscript:{1), "doubleValue"}];
-                [a4 setAvg:?];
+                [result setAvg:?];
                 [objc_msgSend(v13 objectAtIndexedSubscript:{2), "doubleValue"}];
-                [a4 setMax:?];
+                [result setMax:?];
                 [objc_msgSend(v13 objectAtIndexedSubscript:{3), "doubleValue"}];
-                [a4 setStddev:?];
+                [result setStddev:?];
               }
 
               v10 = v10 + 1;
@@ -10477,135 +10477,135 @@ LABEL_22:
           while (v8);
         }
 
-        [a4 setOutput:v14];
+        [result setOutput:v14];
       }
     }
   }
 }
 
-- (void)__runToolWithOutputFileHandle:(id)a3 readFromStandardError:(BOOL)a4 launchPath:(id)a5 arguments:(id)a6 addCommand:(BOOL)a7 addTimestamps:(BOOL)a8
+- (void)__runToolWithOutputFileHandle:(id)handle readFromStandardError:(BOOL)error launchPath:(id)path arguments:(id)arguments addCommand:(BOOL)command addTimestamps:(BOOL)timestamps
 {
-  v8 = a8;
-  v9 = a7;
-  v12 = a4;
-  if (a7)
+  timestampsCopy = timestamps;
+  commandCopy = command;
+  errorCopy = error;
+  if (command)
   {
-    if ([a5 hasPrefix:@"/wl"])
+    if ([path hasPrefix:@"/wl"])
     {
-      v15 = @"[wlan]";
+      pathCopy = @"[wlan]";
     }
 
     else
     {
-      v15 = a5;
+      pathCopy = path;
     }
 
     v16 = +[NSMutableString string];
     [v16 appendString:@"--------------------------------------------------------------------\n"];
-    [v16 appendFormat:@"%@ %@\n", -[__CFString lastPathComponent](v15, "lastPathComponent"), objc_msgSend(a6, "componentsJoinedByString:", @" "];
+    [v16 appendFormat:@"%@ %@\n", -[__CFString lastPathComponent](pathCopy, "lastPathComponent"), objc_msgSend(arguments, "componentsJoinedByString:", @" "];
     [v16 appendString:@"--------------------------------------------------------------------\n"];
-    [a3 writeData:{objc_msgSend(v16, "dataUsingEncoding:", 4)}];
+    [handle writeData:{objc_msgSend(v16, "dataUsingEncoding:", 4)}];
   }
 
-  v17 = [a3 offsetInFile];
+  offsetInFile = [handle offsetInFile];
   v18 = +[NSDate date];
-  if (v8)
+  if (timestampsCopy)
   {
     v19 = v18;
     v20 = +[NSMutableString string];
     [v20 appendFormat:@"BEGIN: %@, END: 00:00:00.000\n", -[NSDateFormatter stringFromDate:](self->_dateFormatter, "stringFromDate:", v19)];
     [v20 appendString:@"--------------------------------------------------------------------\n"];
-    [a3 writeData:{objc_msgSend(v20, "dataUsingEncoding:", 4)}];
-    if (v12)
+    [handle writeData:{objc_msgSend(v20, "dataUsingEncoding:", 4)}];
+    if (errorCopy)
     {
-      v21 = 0;
+      handleCopy = 0;
     }
 
     else
     {
-      v21 = a3;
+      handleCopy = handle;
     }
 
-    if (v12)
+    if (errorCopy)
     {
-      v22 = a3;
+      handleCopy2 = handle;
     }
 
     else
     {
-      v22 = 0;
+      handleCopy2 = 0;
     }
 
-    [NSTask runTaskWithLaunchPath:a5 arguments:a6 timeout:v21 outputFileHandle:v22 errorFileHandle:0 launchHandler:0 didLaunch:10.0 error:0];
-    [a3 seekToFileOffset:v17];
+    [NSTask runTaskWithLaunchPath:path arguments:arguments timeout:handleCopy outputFileHandle:handleCopy2 errorFileHandle:0 launchHandler:0 didLaunch:10.0 error:0];
+    [handle seekToFileOffset:offsetInFile];
     v23 = +[NSMutableString string];
     [v23 appendFormat:@"BEGIN: %@, END: %@\n", -[NSDateFormatter stringFromDate:](self->_dateFormatter, "stringFromDate:", v19), -[NSDateFormatter stringFromDate:](self->_dateFormatter, "stringFromDate:", +[NSDate date](NSDate, "date"))];
     [v23 appendString:@"--------------------------------------------------------------------\n"];
-    [a3 writeData:{objc_msgSend(v23, "dataUsingEncoding:", 4)}];
-    [a3 seekToEndOfFile];
+    [handle writeData:{objc_msgSend(v23, "dataUsingEncoding:", 4)}];
+    [handle seekToEndOfFile];
 LABEL_21:
-    [a3 writeData:{objc_msgSend(@"\n", "dataUsingEncoding:", 4)}];
+    [handle writeData:{objc_msgSend(@"\n", "dataUsingEncoding:", 4)}];
     return;
   }
 
-  if (v12)
+  if (errorCopy)
   {
-    v24 = 0;
+    handleCopy3 = 0;
   }
 
   else
   {
-    v24 = a3;
+    handleCopy3 = handle;
   }
 
-  if (v12)
+  if (errorCopy)
   {
-    v25 = a3;
+    handleCopy4 = handle;
   }
 
   else
   {
-    v25 = 0;
+    handleCopy4 = 0;
   }
 
-  [NSTask runTaskWithLaunchPath:a5 arguments:a6 timeout:v24 outputFileHandle:v25 errorFileHandle:0 launchHandler:0 didLaunch:10.0 error:0];
-  if (v9)
+  [NSTask runTaskWithLaunchPath:path arguments:arguments timeout:handleCopy3 outputFileHandle:handleCopy4 errorFileHandle:0 launchHandler:0 didLaunch:10.0 error:0];
+  if (commandCopy)
   {
     goto LABEL_21;
   }
 }
 
-- (BOOL)__wlCLIWithArguments:(id)a3 outputFilePath:(id)a4 outputData:(id)a5
+- (BOOL)__wlCLIWithArguments:(id)arguments outputFilePath:(id)path outputData:(id)data
 {
   if (![(CWFInterface *)[(W5StatusManager *)self->_status corewifi] SSID])
   {
     return 0;
   }
 
-  if (a4)
+  if (path)
   {
 
-    return [NSTask runTaskWithLaunchPath:@"/usr/local/bin/wl" arguments:a3 outputFilePath:a4 error:0];
+    return [NSTask runTaskWithLaunchPath:@"/usr/local/bin/wl" arguments:arguments outputFilePath:path error:0];
   }
 
-  if (!a5)
+  if (!data)
   {
     return 0;
   }
 
-  return [NSTask runTaskWithLaunchPath:@"/usr/local/bin/wl" arguments:a3 outputData:a5 error:0];
+  return [NSTask runTaskWithLaunchPath:@"/usr/local/bin/wl" arguments:arguments outputData:data error:0];
 }
 
-- (void)__dumpCoreCaptureLogsWithReason:(id)a3 component:(id)a4
+- (void)__dumpCoreCaptureLogsWithReason:(id)reason component:(id)component
 {
-  v6 = [(W5StatusManager *)self->_status concurrentQueue];
+  concurrentQueue = [(W5StatusManager *)self->_status concurrentQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10007CC3C;
   v7[3] = &unk_1000E1C98;
-  v7[4] = a4;
-  v7[5] = a3;
-  [(NSOperationQueue *)v6 addOperationWithBlock:v7];
+  v7[4] = component;
+  v7[5] = reason;
+  [(NSOperationQueue *)concurrentQueue addOperationWithBlock:v7];
 }
 
 + (id)__temporaryDirectory

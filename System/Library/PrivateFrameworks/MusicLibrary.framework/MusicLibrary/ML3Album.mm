@@ -1,17 +1,17 @@
 @interface ML3Album
-+ (BOOL)collectionWithPersistentID:(int64_t)a3 addedToLibrary:(id)a4;
-+ (BOOL)deleteFromLibrary:(id)a3 deletionType:(int)a4 persistentIDs:(const int64_t *)a5 count:(unint64_t)a6 usingConnection:(id)a7;
-+ (BOOL)libraryContentsChangeForProperty:(id)a3;
-+ (id)countingQueryForBaseQuery:(id)a3 countProperty:(id)a4 forIdentifier:(int64_t)a5;
-+ (id)foreignPropertyForProperty:(id)a3 entityClass:(Class)a4;
-+ (id)joinClausesForProperty:(id)a3;
++ (BOOL)collectionWithPersistentID:(int64_t)d addedToLibrary:(id)library;
++ (BOOL)deleteFromLibrary:(id)library deletionType:(int)type persistentIDs:(const int64_t *)ds count:(unint64_t)count usingConnection:(id)connection;
++ (BOOL)libraryContentsChangeForProperty:(id)property;
++ (id)countingQueryForBaseQuery:(id)query countProperty:(id)property forIdentifier:(int64_t)identifier;
++ (id)foreignPropertyForProperty:(id)property entityClass:(Class)class;
++ (id)joinClausesForProperty:(id)property;
 + (id)propertiesForGroupingKey;
 + (id)propertiesForGroupingUniqueCollections;
-+ (id)protocolItemWithProperties:(id)a3 inLibrary:(id)a4;
++ (id)protocolItemWithProperties:(id)properties inLibrary:(id)library;
 + (void)initialize;
 - (id)multiverseIdentifier;
 - (id)protocolItem;
-- (void)updateTrackValues:(id)a3;
+- (void)updateTrackValues:(id)values;
 @end
 
 @implementation ML3Album
@@ -19,7 +19,7 @@
 + (void)initialize
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = [ML3OrderingTerm orderingTermWithProperty:?];
     v22[0] = v3;
@@ -72,7 +72,7 @@
     ML3AlbumContentsUnchangingProperties = v10;
 
     v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [a1 predisambiguateProperties:ML3AlbumAllProperties toDictionary:v12];
+    [self predisambiguateProperties:ML3AlbumAllProperties toDictionary:v12];
     v13 = ML3AlbumPredisambiguatedPropertyForProperties;
     ML3AlbumPredisambiguatedPropertyForProperties = v12;
     v14 = v12;
@@ -87,10 +87,10 @@
   }
 }
 
-- (void)updateTrackValues:(id)a3
+- (void)updateTrackValues:(id)values
 {
   v27[6] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valuesCopy = values;
   v5 = @"ROWID";
   v27[0] = @"ROWID";
   v27[1] = @"album";
@@ -104,41 +104,41 @@
   v26 = 0u;
   v24 = 0u;
   [(ML3Entity *)self getValues:&v24 forProperties:v27 count:6];
-  [v4 setValue:v24 forKey:@"album_pid"];
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v9 = [ML3Track trackValueAreInTheCloud:v4];
-  v10 = [*(&v26 + 1) integerValue];
-  v11 = [v4 objectForKey:@"ROWID"];
-  v12 = [v26 longLongValue];
-  if (v12)
+  [valuesCopy setValue:v24 forKey:@"album_pid"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v9 = [ML3Track trackValueAreInTheCloud:valuesCopy];
+  integerValue = [*(&v26 + 1) integerValue];
+  v11 = [valuesCopy objectForKey:@"ROWID"];
+  longLongValue = [v26 longLongValue];
+  if (longLongValue)
   {
-    v13 = v12;
-    [v4 setValue:*(&v24 + 1) forKey:@"album.album"];
-    [v4 setValue:v25 forKey:@"album.sort_album"];
-    [v4 setValue:*(&v25 + 1) forKey:@"item_video.season_number"];
+    v13 = longLongValue;
+    [valuesCopy setValue:*(&v24 + 1) forKey:@"album.album"];
+    [valuesCopy setValue:v25 forKey:@"album.sort_album"];
+    [valuesCopy setValue:*(&v25 + 1) forKey:@"item_video.season_number"];
     if (v9)
     {
-      if (v10)
+      if (integerValue)
       {
         goto LABEL_9;
       }
     }
 
-    else if (v10 != 2)
+    else if (integerValue != 2)
     {
       goto LABEL_9;
     }
 
     v19 = [MEMORY[0x277CCABB0] numberWithInteger:1];
-    [v8 setValue:v19 forKey:@"cloud_status"];
+    [dictionary setValue:v19 forKey:@"cloud_status"];
 
 LABEL_9:
-    [(ML3Collection *)self updateRepresentativeCollectionValues:v8 existingRepresentativePersistentID:v13 forUpdateTrackValues:v4];
-    v17 = [v8 objectForKey:@"representative_item_pid"];
-    v20 = [v17 longLongValue];
-    if (v20)
+    [(ML3Collection *)self updateRepresentativeCollectionValues:dictionary existingRepresentativePersistentID:v13 forUpdateTrackValues:valuesCopy];
+    v17 = [dictionary objectForKey:@"representative_item_pid"];
+    longLongValue2 = [v17 longLongValue];
+    if (longLongValue2)
     {
-      v18 = v20;
+      v18 = longLongValue2;
     }
 
     else
@@ -149,14 +149,14 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  v14 = [v4 objectForKey:@"album.album"];
-  [v8 setValue:v14 forKey:@"album"];
+  v14 = [valuesCopy objectForKey:@"album.album"];
+  [dictionary setValue:v14 forKey:@"album"];
 
-  v15 = [v4 objectForKey:@"album.sort_album"];
-  [v8 setValue:v15 forKey:@"sort_album"];
+  v15 = [valuesCopy objectForKey:@"album.sort_album"];
+  [dictionary setValue:v15 forKey:@"sort_album"];
 
-  v16 = [v4 objectForKey:@"item_video.season_number"];
-  [v8 setValue:v16 forKey:@"season_number"];
+  v16 = [valuesCopy objectForKey:@"item_video.season_number"];
+  [dictionary setValue:v16 forKey:@"season_number"];
 
   if (!v9)
   {
@@ -165,7 +165,7 @@ LABEL_9:
   }
 
   v17 = [MEMORY[0x277CCABB0] numberWithInteger:2];
-  [v8 setValue:v17 forKey:@"cloud_status"];
+  [dictionary setValue:v17 forKey:@"cloud_status"];
   v18 = 0;
 LABEL_12:
 
@@ -177,20 +177,20 @@ LABEL_13:
 
     if ((v22 & 1) == 0)
     {
-      [v8 setValue:v11 forKey:@"representative_item_pid"];
+      [dictionary setValue:v11 forKey:@"representative_item_pid"];
     }
   }
 
-  [(ML3Entity *)self setValuesForPropertiesWithDictionary:v8];
+  [(ML3Entity *)self setValuesForPropertiesWithDictionary:dictionary];
 
   for (i = 5; i != -1; --i)
   {
   }
 }
 
-+ (BOOL)collectionWithPersistentID:(int64_t)a3 addedToLibrary:(id)a4
++ (BOOL)collectionWithPersistentID:(int64_t)d addedToLibrary:(id)library
 {
-  v5 = a4;
+  libraryCopy = library;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -200,12 +200,12 @@ LABEL_13:
   v7[2] = __54__ML3Album_collectionWithPersistentID_addedToLibrary___block_invoke;
   v7[3] = &unk_278762B30;
   v7[4] = &v8;
-  v7[5] = a3;
-  [v5 databaseConnectionAllowingWrites:0 withBlock:v7];
-  LOBYTE(a3) = *(v9 + 24);
+  v7[5] = d;
+  [libraryCopy databaseConnectionAllowingWrites:0 withBlock:v7];
+  LOBYTE(d) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
 
-  return a3;
+  return d;
 }
 
 void __54__ML3Album_collectionWithPersistentID_addedToLibrary___block_invoke(uint64_t a1, void *a2)
@@ -222,15 +222,15 @@ void __54__ML3Album_collectionWithPersistentID_addedToLibrary___block_invoke(uin
   *(*(*(a1 + 32) + 8) + 24) = [v8 hasAtLeastOneRow];
 }
 
-+ (BOOL)deleteFromLibrary:(id)a3 deletionType:(int)a4 persistentIDs:(const int64_t *)a5 count:(unint64_t)a6 usingConnection:(id)a7
++ (BOOL)deleteFromLibrary:(id)library deletionType:(int)type persistentIDs:(const int64_t *)ds count:(unint64_t)count usingConnection:(id)connection
 {
-  v9 = *&a4;
+  v9 = *&type;
   v28[2] = *MEMORY[0x277D85DE8];
-  v12 = a7;
-  v25.receiver = a1;
+  connectionCopy = connection;
+  v25.receiver = self;
   v25.super_class = &OBJC_METACLASS___ML3Album;
-  v13 = objc_msgSendSuper2(&v25, sel_deleteFromLibrary_deletionType_persistentIDs_count_usingConnection_, a3, v9, a5, a6, v12);
-  if (a6)
+  v13 = objc_msgSendSuper2(&v25, sel_deleteFromLibrary_deletionType_persistentIDs_count_usingConnection_, library, v9, ds, count, connectionCopy);
+  if (count)
   {
     v15 = 0;
     *&v14 = 138543362;
@@ -238,13 +238,13 @@ void __54__ML3Album_collectionWithPersistentID_addedToLibrary___block_invoke(uin
     do
     {
       v16 = v15;
-      v17 = *a5++;
+      v17 = *ds++;
       v18 = [MEMORY[0x277CCABB0] numberWithLongLong:{v17, v23}];
       v28[0] = v18;
       v28[1] = &unk_2840C8D08;
       v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:2];
       v24 = v15;
-      v20 = [v12 executeUpdate:@"DELETE FROM library_pins WHERE entity_pid=? AND entity_type=?" withParameters:v19 error:&v24];
+      v20 = [connectionCopy executeUpdate:@"DELETE FROM library_pins WHERE entity_pid=? AND entity_type=?" withParameters:v19 error:&v24];
       v15 = v24;
 
       if ((v20 & 1) == 0)
@@ -258,10 +258,10 @@ void __54__ML3Album_collectionWithPersistentID_addedToLibrary___block_invoke(uin
         }
       }
 
-      --a6;
+      --count;
     }
 
-    while (a6);
+    while (count);
   }
 
   else
@@ -304,18 +304,18 @@ uint64_t __36__ML3Album_propertiesForGroupingKey__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)countingQueryForBaseQuery:(id)a3 countProperty:(id)a4 forIdentifier:(int64_t)a5
++ (id)countingQueryForBaseQuery:(id)query countProperty:(id)property forIdentifier:(int64_t)identifier
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 predicateIncludingSystemwidePredicates];
+  queryCopy = query;
+  propertyCopy = property;
+  predicateIncludingSystemwidePredicates = [queryCopy predicateIncludingSystemwidePredicates];
 
-  if (v10)
+  if (predicateIncludingSystemwidePredicates)
   {
-    v11 = [v8 predicateIncludingSystemwidePredicates];
-    v19[0] = v11;
-    v12 = [ML3ComparisonPredicate predicateWithProperty:@"album_pid" equalToInt64:a5];
+    predicateIncludingSystemwidePredicates2 = [queryCopy predicateIncludingSystemwidePredicates];
+    v19[0] = predicateIncludingSystemwidePredicates2;
+    v12 = [ML3ComparisonPredicate predicateWithProperty:@"album_pid" equalToInt64:identifier];
     v19[1] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:2];
     v14 = [(ML3CompoundPredicate *)ML3AllCompoundPredicate predicateMatchingPredicates:v13];
@@ -323,36 +323,36 @@ uint64_t __36__ML3Album_propertiesForGroupingKey__block_invoke()
 
   else
   {
-    v14 = [ML3ComparisonPredicate predicateWithProperty:@"album_pid" equalToInt64:a5];
+    v14 = [ML3ComparisonPredicate predicateWithProperty:@"album_pid" equalToInt64:identifier];
   }
 
-  if (v9 == @"item_pid")
+  if (propertyCopy == @"item_pid")
   {
-    v16 = [v8 library];
-    v15 = +[ML3Entity queryWithLibrary:predicate:options:](ML3Track, "queryWithLibrary:predicate:options:", v16, v14, [v8 options]);
+    library = [queryCopy library];
+    v15 = +[ML3Entity queryWithLibrary:predicate:options:](ML3Track, "queryWithLibrary:predicate:options:", library, v14, [queryCopy options]);
   }
 
   else
   {
-    v18.receiver = a1;
+    v18.receiver = self;
     v18.super_class = &OBJC_METACLASS___ML3Album;
-    v15 = objc_msgSendSuper2(&v18, sel_countingQueryForBaseQuery_countProperty_forIdentifier_, v8, v9, a5);
+    v15 = objc_msgSendSuper2(&v18, sel_countingQueryForBaseQuery_countProperty_forIdentifier_, queryCopy, propertyCopy, identifier);
   }
 
   return v15;
 }
 
-+ (id)foreignPropertyForProperty:(id)a3 entityClass:(Class)a4
++ (id)foreignPropertyForProperty:(id)property entityClass:(Class)class
 {
-  v6 = a3;
-  v9.receiver = a1;
+  propertyCopy = property;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___ML3Album;
-  v7 = objc_msgSendSuper2(&v9, sel_foreignPropertyForProperty_entityClass_, v6, a4);
+  v7 = objc_msgSendSuper2(&v9, sel_foreignPropertyForProperty_entityClass_, propertyCopy, class);
   if (!v7)
   {
-    if (objc_opt_class() == a4)
+    if (objc_opt_class() == class)
     {
-      v7 = [ML3TrackForeignPropertyForML3AlbumProperties objectForKey:v6];
+      v7 = [ML3TrackForeignPropertyForML3AlbumProperties objectForKey:propertyCopy];
     }
 
     else
@@ -364,21 +364,21 @@ uint64_t __36__ML3Album_propertiesForGroupingKey__block_invoke()
   return v7;
 }
 
-+ (BOOL)libraryContentsChangeForProperty:(id)a3
++ (BOOL)libraryContentsChangeForProperty:(id)property
 {
-  v3 = a3;
-  v4 = [v3 isEqualToString:@"date_played_local"];
-  v5 = [v3 isEqualToString:@"liked_state"];
-  v6 = [v3 isEqualToString:@"liked_state_changed_date"];
-  v7 = [v3 isEqualToString:@"app_data"];
+  propertyCopy = property;
+  v4 = [propertyCopy isEqualToString:@"date_played_local"];
+  v5 = [propertyCopy isEqualToString:@"liked_state"];
+  v6 = [propertyCopy isEqualToString:@"liked_state_changed_date"];
+  v7 = [propertyCopy isEqualToString:@"app_data"];
 
   return ((v4 | v5 | v6 | v7) & 1) == 0;
 }
 
-+ (id)joinClausesForProperty:(id)a3
++ (id)joinClausesForProperty:(id)property
 {
-  v4 = a3;
-  v5 = [ML3AlbumJoinsForProperties objectForKey:v4];
+  propertyCopy = property;
+  v5 = [ML3AlbumJoinsForProperties objectForKey:propertyCopy];
   v6 = v5;
   if (v5)
   {
@@ -387,9 +387,9 @@ uint64_t __36__ML3Album_propertiesForGroupingKey__block_invoke()
 
   else
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = &OBJC_METACLASS___ML3Album;
-    v7 = objc_msgSendSuper2(&v10, sel_joinClausesForProperty_, v4);
+    v7 = objc_msgSendSuper2(&v10, sel_joinClausesForProperty_, propertyCopy);
   }
 
   v8 = v7;
@@ -423,12 +423,12 @@ uint64_t __36__ML3Album_propertiesForGroupingKey__block_invoke()
   v3 = objc_alloc_init(MIPMultiverseIdentifier);
   [(MIPMultiverseIdentifier *)v3 setMediaObjectType:1];
   WeakRetained = objc_loadWeakRetained(&self->super.super._library);
-  v5 = [WeakRetained libraryUID];
-  v6 = [WeakRetained syncLibraryID];
+  libraryUID = [WeakRetained libraryUID];
+  syncLibraryID = [WeakRetained syncLibraryID];
   v7 = objc_alloc_init(MIPLibraryIdentifier);
   [(MIPLibraryIdentifier *)v7 setLibraryId:self->super.super._persistentID];
-  v17 = v5;
-  [(MIPLibraryIdentifier *)v7 setLibraryName:v5];
+  v17 = libraryUID;
+  [(MIPLibraryIdentifier *)v7 setLibraryName:libraryUID];
   [(MIPMultiverseIdentifier *)v3 addLibraryIdentifiers:v7];
   v18[0] = @"album";
   v18[1] = @"album_item_store.store_playlist_id";
@@ -446,62 +446,62 @@ uint64_t __36__ML3Album_propertiesForGroupingKey__block_invoke()
   [(MIPMultiverseIdentifier *)v3 setCloudUniversalLibraryId:v12];
 
   v13 = [v9 objectForKey:@"sync_id"];
-  v14 = [v13 longLongValue];
+  longLongValue = [v13 longLongValue];
 
-  if (v14 >= 1 && [v6 length])
+  if (longLongValue >= 1 && [syncLibraryID length])
   {
     v15 = objc_alloc_init(MIPLibraryIdentifier);
-    [(MIPLibraryIdentifier *)v15 setLibraryId:v14];
-    [(MIPLibraryIdentifier *)v15 setLibraryName:v6];
+    [(MIPLibraryIdentifier *)v15 setLibraryId:longLongValue];
+    [(MIPLibraryIdentifier *)v15 setLibraryName:syncLibraryID];
     [(MIPMultiverseIdentifier *)v3 addLibraryIdentifiers:v15];
   }
 
   return v3;
 }
 
-+ (id)protocolItemWithProperties:(id)a3 inLibrary:(id)a4
++ (id)protocolItemWithProperties:(id)properties inLibrary:(id)library
 {
-  v5 = a3;
-  v6 = a4;
+  propertiesCopy = properties;
+  libraryCopy = library;
   v7 = objc_alloc_init(MIPAlbum);
-  v8 = [v5 objectForKey:@"album_artist_pid"];
-  v9 = [v8 longLongValue];
+  v8 = [propertiesCopy objectForKey:@"album_artist_pid"];
+  longLongValue = [v8 longLongValue];
 
-  v10 = [v5 objectForKey:@"album_item_store.store_playlist_id"];
-  v11 = [v10 longLongValue];
+  v10 = [propertiesCopy objectForKey:@"album_item_store.store_playlist_id"];
+  longLongValue2 = [v10 longLongValue];
 
-  v24 = v6;
-  if (v9)
+  v24 = libraryCopy;
+  if (longLongValue)
   {
-    v12 = [(ML3Entity *)[ML3AlbumArtist alloc] initWithPersistentID:v9 inLibrary:v6];
-    v13 = [(ML3AlbumArtist *)v12 protocolItem];
+    v12 = [(ML3Entity *)[ML3AlbumArtist alloc] initWithPersistentID:longLongValue inLibrary:libraryCopy];
+    protocolItem = [(ML3AlbumArtist *)v12 protocolItem];
   }
 
   else
   {
-    v13 = 0;
+    protocolItem = 0;
   }
 
-  v14 = [v5 objectForKey:@"album"];
-  v15 = [v5 objectForKey:@"sort_album"];
-  v16 = [v5 objectForKey:@"user_rating"];
-  v17 = [v16 integerValue];
+  v14 = [propertiesCopy objectForKey:@"album"];
+  v15 = [propertiesCopy objectForKey:@"sort_album"];
+  v16 = [propertiesCopy objectForKey:@"user_rating"];
+  integerValue = [v16 integerValue];
 
-  v18 = [v5 objectForKey:@"liked_state"];
-  v19 = [v18 integerValue];
+  v18 = [propertiesCopy objectForKey:@"liked_state"];
+  integerValue2 = [v18 integerValue];
 
-  v20 = [v5 objectForKey:@"liked_state_changed_date"];
-  v21 = [v20 longLongValue];
+  v20 = [propertiesCopy objectForKey:@"liked_state_changed_date"];
+  longLongValue3 = [v20 longLongValue];
 
-  v22 = [v5 objectForKey:@"cloud_library_id"];
-  if (v11)
+  v22 = [propertiesCopy objectForKey:@"cloud_library_id"];
+  if (longLongValue2)
   {
-    [(MIPAlbum *)v7 setStoreId:v11];
+    [(MIPAlbum *)v7 setStoreId:longLongValue2];
   }
 
-  if (v13)
+  if (protocolItem)
   {
-    [(MIPAlbum *)v7 setArtist:v13];
+    [(MIPAlbum *)v7 setArtist:protocolItem];
   }
 
   if ([v14 length])
@@ -514,13 +514,13 @@ uint64_t __36__ML3Album_propertiesForGroupingKey__block_invoke()
     [(MIPAlbum *)v7 setSortName:v15];
   }
 
-  if (v17)
+  if (integerValue)
   {
-    [(MIPAlbum *)v7 setUserRating:v17];
+    [(MIPAlbum *)v7 setUserRating:integerValue];
   }
 
-  [(MIPAlbum *)v7 setLikedState:v19];
-  [(MIPAlbum *)v7 setLikedStateChangedDate:v21];
+  [(MIPAlbum *)v7 setLikedState:integerValue2];
+  [(MIPAlbum *)v7 setLikedStateChangedDate:longLongValue3];
   [(MIPAlbum *)v7 setCloudId:v22];
 
   return v7;

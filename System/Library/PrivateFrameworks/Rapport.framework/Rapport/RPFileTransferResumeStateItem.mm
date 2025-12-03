@@ -1,27 +1,27 @@
 @interface RPFileTransferResumeStateItem
-- (BOOL)outputFileItemUsable:(id)a3;
-- (BOOL)sourceFileItemUsable:(id)a3;
-- (RPFileTransferResumeStateItem)initWithFileTransferRequestDict:(id)a3;
-- (RPFileTransferResumeStateItem)initWithStateDict:(id)a3;
+- (BOOL)outputFileItemUsable:(id)usable;
+- (BOOL)sourceFileItemUsable:(id)usable;
+- (RPFileTransferResumeStateItem)initWithFileTransferRequestDict:(id)dict;
+- (RPFileTransferResumeStateItem)initWithStateDict:(id)dict;
 - (unint64_t)bytesWritten;
 - (unint64_t)fileModTime;
 - (unint64_t)fileModTimeNsec;
 - (unint64_t)fileOffset;
 - (unint64_t)fileSize;
 - (void)dealloc;
-- (void)setBytesWritten:(unint64_t)a3;
-- (void)setError:(id)a3;
-- (void)setFileModTime:(unint64_t)a3;
-- (void)setFileModTimeNsec:(unint64_t)a3;
-- (void)setFileOffset:(unint64_t)a3;
-- (void)setFileSize:(unint64_t)a3;
+- (void)setBytesWritten:(unint64_t)written;
+- (void)setError:(id)error;
+- (void)setFileModTime:(unint64_t)time;
+- (void)setFileModTimeNsec:(unint64_t)nsec;
+- (void)setFileOffset:(unint64_t)offset;
+- (void)setFileSize:(unint64_t)size;
 @end
 
 @implementation RPFileTransferResumeStateItem
 
-- (RPFileTransferResumeStateItem)initWithFileTransferRequestDict:(id)a3
+- (RPFileTransferResumeStateItem)initWithFileTransferRequestDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   v11.receiver = self;
   v11.super_class = RPFileTransferResumeStateItem;
   v5 = [(RPFileTransferResumeStateItem *)&v11 init];
@@ -50,16 +50,16 @@
   return v5;
 }
 
-- (RPFileTransferResumeStateItem)initWithStateDict:(id)a3
+- (RPFileTransferResumeStateItem)initWithStateDict:(id)dict
 {
-  v5 = a3;
+  dictCopy = dict;
   v10.receiver = self;
   v10.super_class = RPFileTransferResumeStateItem;
   v6 = [(RPFileTransferResumeStateItem *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fileInfo, a3);
+    objc_storeStrong(&v6->_fileInfo, dict);
     v8 = v7;
   }
 
@@ -82,21 +82,21 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedLongLongValue];
+    unsignedLongLongValue = [v2 unsignedLongLongValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
-- (void)setFileSize:(unint64_t)a3
+- (void)setFileSize:(unint64_t)size
 {
   fileInfo = self->_fileInfo;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:size];
   [(NSMutableDictionary *)fileInfo setValue:v4 forKey:@"fileSize"];
 }
 
@@ -106,21 +106,21 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedLongLongValue];
+    unsignedLongLongValue = [v2 unsignedLongLongValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
-- (void)setFileOffset:(unint64_t)a3
+- (void)setFileOffset:(unint64_t)offset
 {
   fileInfo = self->_fileInfo;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:offset];
   [(NSMutableDictionary *)fileInfo setValue:v4 forKey:@"fileOffset"];
 }
 
@@ -130,21 +130,21 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedLongLongValue];
+    unsignedLongLongValue = [v2 unsignedLongLongValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
-- (void)setFileModTime:(unint64_t)a3
+- (void)setFileModTime:(unint64_t)time
 {
   fileInfo = self->_fileInfo;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:time];
   [(NSMutableDictionary *)fileInfo setValue:v4 forKey:@"modTime"];
 }
 
@@ -154,21 +154,21 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedLongLongValue];
+    unsignedLongLongValue = [v2 unsignedLongLongValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
-- (void)setFileModTimeNsec:(unint64_t)a3
+- (void)setFileModTimeNsec:(unint64_t)nsec
 {
   fileInfo = self->_fileInfo;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:nsec];
   [(NSMutableDictionary *)fileInfo setValue:v4 forKey:@"modTimeNsec"];
 }
 
@@ -178,61 +178,61 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedLongLongValue];
+    unsignedLongLongValue = [v2 unsignedLongLongValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
-- (void)setBytesWritten:(unint64_t)a3
+- (void)setBytesWritten:(unint64_t)written
 {
   fileInfo = self->_fileInfo;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:written];
   [(NSMutableDictionary *)fileInfo setValue:v4 forKey:@"bytesWritten"];
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
   fileInfo = self->_fileInfo;
-  v4 = [a3 copy];
+  v4 = [error copy];
   [(NSMutableDictionary *)fileInfo setValue:v4 forKey:@"error"];
 }
 
-- (BOOL)sourceFileItemUsable:(id)a3
+- (BOOL)sourceFileItemUsable:(id)usable
 {
-  v4 = a3;
-  v5 = [(RPFileTransferResumeStateItem *)self error];
+  usableCopy = usable;
+  error = [(RPFileTransferResumeStateItem *)self error];
 
-  if (v5)
+  if (error)
   {
     if (gLogCategory_RPFileTransferSession <= 30 && (gLogCategory_RPFileTransferSession != -1 || _LogCategory_Initialize()))
     {
-      [RPFileTransferResumeStateItem sourceFileItemUsable:v4];
+      [RPFileTransferResumeStateItem sourceFileItemUsable:usableCopy];
     }
 
     goto LABEL_26;
   }
 
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v6 fileExistsAtPath:v4];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v7 = [defaultManager fileExistsAtPath:usableCopy];
 
   if ((v7 & 1) == 0)
   {
     if (gLogCategory_RPFileTransferSession <= 30 && (gLogCategory_RPFileTransferSession != -1 || _LogCategory_Initialize()))
     {
-      [RPFileTransferResumeStateItem sourceFileItemUsable:v4];
+      [RPFileTransferResumeStateItem sourceFileItemUsable:usableCopy];
     }
 
     goto LABEL_26;
   }
 
   memset(&v12, 0, sizeof(v12));
-  if (stat([v4 UTF8String], &v12))
+  if (stat([usableCopy UTF8String], &v12))
   {
     if (gLogCategory_RPFileTransferSession <= 30)
     {
@@ -306,24 +306,24 @@ LABEL_26:
   }
 
 LABEL_25:
-  [v4 UTF8String];
+  [usableCopy UTF8String];
   LogPrintF();
 LABEL_27:
 
   return v8;
 }
 
-- (BOOL)outputFileItemUsable:(id)a3
+- (BOOL)outputFileItemUsable:(id)usable
 {
-  v4 = a3;
-  v5 = [(RPFileTransferResumeStateItem *)self fileName];
-  v6 = [v4 stringByAppendingPathComponent:v5];
+  usableCopy = usable;
+  fileName = [(RPFileTransferResumeStateItem *)self fileName];
+  v6 = [usableCopy stringByAppendingPathComponent:fileName];
 
-  v7 = [(RPFileTransferResumeStateItem *)self fileOffset];
-  v8 = [(RPFileTransferResumeStateItem *)self bytesWritten];
-  v9 = [(RPFileTransferResumeStateItem *)self error];
+  fileOffset = [(RPFileTransferResumeStateItem *)self fileOffset];
+  bytesWritten = [(RPFileTransferResumeStateItem *)self bytesWritten];
+  error = [(RPFileTransferResumeStateItem *)self error];
 
-  if (v9)
+  if (error)
   {
     if (gLogCategory_RPFileTransferSession <= 30 && (gLogCategory_RPFileTransferSession != -1 || _LogCategory_Initialize()))
     {
@@ -335,8 +335,8 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v12 = v8 + v7;
-  if (!(v8 + v7))
+  v12 = bytesWritten + fileOffset;
+  if (!(bytesWritten + fileOffset))
   {
     if (gLogCategory_RPFileTransferSession <= 30 && (gLogCategory_RPFileTransferSession != -1 || _LogCategory_Initialize()))
     {
@@ -346,8 +346,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v13 = [MEMORY[0x1E696AC08] defaultManager];
-  v14 = [v13 fileExistsAtPath:v6];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v14 = [defaultManager fileExistsAtPath:v6];
 
   if ((v14 & 1) == 0)
   {

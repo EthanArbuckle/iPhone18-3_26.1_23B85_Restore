@@ -1,32 +1,32 @@
 @interface FPDExtensionSession
 - (BOOL)_evaluateExtensionForegroundness;
-- (BOOL)_setUpConnectionWithError:(id *)a3;
+- (BOOL)_setUpConnectionWithError:(id *)error;
 - (BOOL)hasFileProviderAttributionMDMAccess;
-- (BOOL)terminateExtensionWithReason:(id)a3 error:(id *)a4;
-- (FPDExtensionSession)initWithDomain:(id)a3 extension:(id)a4 queue:(id)a5;
+- (BOOL)terminateExtensionWithReason:(id)reason error:(id *)error;
+- (FPDExtensionSession)initWithDomain:(id)domain extension:(id)extension queue:(id)queue;
 - (NSString)description;
 - (id)_alternateContentsDictionary;
-- (id)_connectionWithError:(id *)a3;
-- (id)newAssertionWithAttributeName:(id)a3 reason:(id)a4;
-- (id)newFileProviderProxyWithTimeoutValue:(double)a3 pid:(int)a4 createIfNeeded:(BOOL)a5;
+- (id)_connectionWithError:(id *)error;
+- (id)newAssertionWithAttributeName:(id)name reason:(id)reason;
+- (id)newFileProviderProxyWithTimeoutValue:(double)value pid:(int)pid createIfNeeded:(BOOL)needed;
 - (void)__invalidate;
 - (void)_evaluateExtensionForegroundness;
 - (void)_invalidate;
 - (void)_invalidateExtensionIfPossible;
 - (void)_networkingGracePeriodOver;
-- (void)_notifyNetworkingProviderMonitorWithState:(BOOL)a3;
-- (void)_unregisterLifetimeExtensionForObject:(id)a3;
-- (void)assertionWasInvalidated:(id)a3;
-- (void)asyncUnregisterLifetimeExtensionForObject:(id)a3;
+- (void)_notifyNetworkingProviderMonitorWithState:(BOOL)state;
+- (void)_unregisterLifetimeExtensionForObject:(id)object;
+- (void)assertionWasInvalidated:(id)invalidated;
+- (void)asyncUnregisterLifetimeExtensionForObject:(id)object;
 - (void)cancelAsync;
 - (void)dealloc;
-- (void)dumpStateTo:(id)a3;
+- (void)dumpStateTo:(id)to;
 - (void)invalidate;
-- (void)processMonitor:(id)a3 didBecomeForeground:(BOOL)a4;
-- (void)registerLifetimeExtensionForObject:(id)a3;
+- (void)processMonitor:(id)monitor didBecomeForeground:(BOOL)foreground;
+- (void)registerLifetimeExtensionForObject:(id)object;
 - (void)start;
-- (void)terminateWithReason:(id)a3;
-- (void)unregisterLifetimeExtensionForObject:(id)a3;
+- (void)terminateWithReason:(id)reason;
+- (void)unregisterLifetimeExtensionForObject:(id)object;
 @end
 
 @implementation FPDExtensionSession
@@ -43,9 +43,9 @@
       [FPDExtensionSession _evaluateExtensionForegroundness];
     }
 
-    v4 = [(FPDProcessMonitor *)self->_processMonitor isForeground];
-    self->_isForeground = v4;
-    if (v4)
+    isForeground = [(FPDProcessMonitor *)self->_processMonitor isForeground];
+    self->_isForeground = isForeground;
+    if (isForeground)
     {
       [(FPGracePeriodTimer *)self->_networkingGracePeriodTimer suppress];
       if (self->_foregroundAssertion || (v5 = [(FPDExtensionSession *)self newForegroundAssertion], foregroundAssertion = self->_foregroundAssertion, self->_foregroundAssertion = v5, foregroundAssertion, self->_foregroundAssertion))
@@ -94,8 +94,8 @@ LABEL_14:
 {
   v33 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_fpdExtension);
-  v4 = [WeakRetained manager];
-  v5 = [v4 alternateContentsDictionaryForProviderIdentifier:self->_providerIdentifier];
+  manager = [WeakRetained manager];
+  v5 = [manager alternateContentsDictionaryForProviderIdentifier:self->_providerIdentifier];
 
   v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
   v24 = 0u;
@@ -134,12 +134,12 @@ LABEL_14:
           v17 = fp_current_or_default_log();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
           {
-            v22 = [v14 fp_shortDescription];
-            v21 = [v16 fp_prettyDescription];
+            fp_shortDescription = [v14 fp_shortDescription];
+            fp_prettyDescription = [v16 fp_prettyDescription];
             *buf = v20;
-            v29 = v22;
+            v29 = fp_shortDescription;
             v30 = 2112;
-            v31 = v21;
+            v31 = fp_prettyDescription;
             _os_log_error_impl(&dword_1CEFC7000, v17, OS_LOG_TYPE_ERROR, "[ERROR] couldn't get a URL wrapper for URL %@: %@ - this means iWork forgot to remove the alternate URL", buf, 0x16u);
           }
         }
@@ -159,7 +159,7 @@ LABEL_14:
 - (void)_invalidateExtensionIfPossible
 {
   *buf = 138543362;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_error_impl(&dword_1CEFC7000, log, OS_LOG_TYPE_ERROR, "[ERROR] could not terminate extension: %{public}@", buf, 0xCu);
 }
 
@@ -195,22 +195,22 @@ void __53__FPDExtensionSession__invalidateExtensionIfPossible__block_invoke(void
 
 - (NSString)description
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v15 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
-  WeakRetained = objc_loadWeakRetained(&v2->_domain);
-  v4 = [WeakRetained providerDomainID];
-  v5 = [v4 fp_obfuscatedProviderDomainID];
-  v6 = [(NSMutableDictionary *)v2->_inflightProxies allValues];
-  v7 = [v6 componentsJoinedByString:{@", "}];
-  v8 = [(NSMapTable *)v2->_lifetimeExtenders keyEnumerator];
-  v9 = [v8 allObjects];
-  v10 = [v9 fp_map:&__block_literal_global_242];
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_domain);
+  providerDomainID = [WeakRetained providerDomainID];
+  fp_obfuscatedProviderDomainID = [providerDomainID fp_obfuscatedProviderDomainID];
+  allValues = [(NSMutableDictionary *)selfCopy->_inflightProxies allValues];
+  v7 = [allValues componentsJoinedByString:{@", "}];
+  keyEnumerator = [(NSMapTable *)selfCopy->_lifetimeExtenders keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
+  v10 = [allObjects fp_map:&__block_literal_global_242];
   v11 = [v10 componentsJoinedByString:{@", "}];
-  v12 = [v15 stringWithFormat:@"<%@(%@): %p requests{%@}, extenders{%@}>", v3, v5, v2, v7, v11];
+  v12 = [v15 stringWithFormat:@"<%@(%@): %p requests{%@}, extenders{%@}>", v3, fp_obfuscatedProviderDomainID, selfCopy, v7, v11];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v12;
 }
@@ -223,45 +223,45 @@ void __53__FPDExtensionSession__invalidateExtensionIfPossible__block_invoke(void
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (FPDExtensionSession)initWithDomain:(id)a3 extension:(id)a4 queue:(id)a5
+- (FPDExtensionSession)initWithDomain:(id)domain extension:(id)extension queue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  domainCopy = domain;
+  extensionCopy = extension;
+  queueCopy = queue;
   v46.receiver = self;
   v46.super_class = FPDExtensionSession;
   v11 = [(FPDExtensionSession *)&v46 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_domain, v8);
-    v13 = [v8 log];
+    objc_storeWeak(&v11->_domain, domainCopy);
+    v13 = [domainCopy log];
     log = v12->_log;
     v12->_log = v13;
 
-    objc_storeWeak(&v12->_fpdExtension, v9);
+    objc_storeWeak(&v12->_fpdExtension, extensionCopy);
     v15 = objc_opt_new();
     inflightProxies = v12->_inflightProxies;
     v12->_inflightProxies = v15;
 
-    v17 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     lifetimeExtenders = v12->_lifetimeExtenders;
-    v12->_lifetimeExtenders = v17;
+    v12->_lifetimeExtenders = weakToStrongObjectsMapTable;
 
-    objc_storeStrong(&v12->_sessionQueue, a5);
+    objc_storeStrong(&v12->_sessionQueue, queue);
     WeakRetained = objc_loadWeakRetained(&v12->_fpdExtension);
-    v20 = [WeakRetained identifier];
+    identifier = [WeakRetained identifier];
     providerIdentifier = v12->_providerIdentifier;
-    v12->_providerIdentifier = v20;
+    v12->_providerIdentifier = identifier;
 
-    v22 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     sessionUUID = v12->_sessionUUID;
-    v12->_sessionUUID = v22;
+    v12->_sessionUUID = uUID;
 
     v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"extension session queue callback queue (%@)", v12->_providerIdentifier];
-    v25 = [v24 UTF8String];
+    uTF8String = [v24 UTF8String];
     v26 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v27 = dispatch_queue_create(v25, v26);
+    v27 = dispatch_queue_create(uTF8String, v26);
     callbackQueue = v12->_callbackQueue;
     v12->_callbackQueue = v27;
 
@@ -401,29 +401,29 @@ void __54__FPDExtensionSession_initWithDomain_extension_queue___block_invoke_14(
 - (void)__invalidate
 {
   v10 = *MEMORY[0x1E69E9840];
-  v1 = *(a1 + 136);
+  v1 = *(self + 136);
   OUTLINED_FUNCTION_2_2();
   OUTLINED_FUNCTION_1_2(&dword_1CEFC7000, v2, v3, "[DEBUG] Invalidating extension process %@", v4, v5, v6, v7, v9);
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)terminateExtensionWithReason:(id)a3 error:(id *)a4
+- (BOOL)terminateExtensionWithReason:(id)reason error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  reasonCopy = reason;
   v7 = fp_current_or_default_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [(_EXExtensionProcess *)self->_sessionProcess rbs_pid];
+    rbs_pid = [(_EXExtensionProcess *)self->_sessionProcess rbs_pid];
     *buf = 67109120;
-    v24 = v8;
+    v24 = rbs_pid;
     _os_log_impl(&dword_1CEFC7000, v7, OS_LOG_TYPE_INFO, "[INFO] Terminating session process for pid %u", buf, 8u);
   }
 
   if (self->_sessionProcess)
   {
     v9 = [MEMORY[0x1E69C7610] predicateMatching:?];
-    v10 = [objc_alloc(MEMORY[0x1E69C7650]) initWithExplanation:v6];
+    v10 = [objc_alloc(MEMORY[0x1E69C7650]) initWithExplanation:reasonCopy];
     [v10 setReportType:0];
     v11 = [objc_alloc(MEMORY[0x1E69C7660]) initWithPredicate:v9 context:v10];
     v22 = 0;
@@ -439,12 +439,12 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    v16 = [v13 domain];
-    if ([v16 isEqualToString:*MEMORY[0x1E69C76A0]])
+    domain = [v13 domain];
+    if ([domain isEqualToString:*MEMORY[0x1E69C76A0]])
     {
-      v17 = [v14 code];
+      code = [v14 code];
 
-      if (v17 == 3)
+      if (code == 3)
       {
         v18 = fp_current_or_default_log();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -464,10 +464,10 @@ LABEL_18:
     {
     }
 
-    if (a4)
+    if (error)
     {
       v19 = v14;
-      *a4 = v14;
+      *error = v14;
     }
 
     v18 = fp_current_or_default_log();
@@ -488,29 +488,29 @@ LABEL_20:
   return v15;
 }
 
-- (BOOL)_setUpConnectionWithError:(id *)a3
+- (BOOL)_setUpConnectionWithError:(id *)error
 {
   v43[1] = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_domain);
-  v6 = [WeakRetained provider];
-  v7 = [v6 descriptor];
-  v8 = [v7 personaIdentifier];
+  provider = [WeakRetained provider];
+  descriptor = [provider descriptor];
+  personaIdentifier = [descriptor personaIdentifier];
 
-  if (v8 || ([MEMORY[0x1E69DF068] sharedManager], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isSharedIPad"), v9, (v10 & 1) != 0))
+  if (personaIdentifier || ([MEMORY[0x1E69DF068] sharedManager], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isSharedIPad"), v9, (v10 & 1) != 0))
   {
     v11 = objc_alloc(MEMORY[0x1E6966CB0]);
     v12 = objc_loadWeakRetained(&self->_fpdExtension);
-    v13 = [v12 extensionRecord];
-    v14 = [v11 initWithApplicationExtensionRecord:v13];
+    extensionRecord = [v12 extensionRecord];
+    v14 = [v11 initWithApplicationExtensionRecord:extensionRecord];
 
     v15 = [objc_alloc(MEMORY[0x1E6966CB8]) initWithIdentifier:self->_sessionUUID];
     v16 = [objc_alloc(MEMORY[0x1E6966CC8]) initWithExtensionIdentity:v14 instanceIdentifier:v15];
-    v17 = [MEMORY[0x1E69DF068] sharedManager];
-    v18 = [v17 isSharedIPad];
+    mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+    isSharedIPad = [mEMORY[0x1E69DF068] isSharedIPad];
 
-    if ((v18 & 1) == 0)
+    if ((isSharedIPad & 1) == 0)
     {
-      v19 = [MEMORY[0x1E6966CD0] personaWithPersonaUniqueString:v8];
+      v19 = [MEMORY[0x1E6966CD0] personaWithPersonaUniqueString:personaIdentifier];
       [v16 setLaunchPersona:v19];
     }
 
@@ -519,7 +519,7 @@ LABEL_20:
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:1];
     [v16 setAssertionAttributes:v21];
 
-    v22 = [MEMORY[0x1E6966CC0] extensionProcessWithConfiguration:v16 error:a3];
+    v22 = [MEMORY[0x1E6966CC0] extensionProcessWithConfiguration:v16 error:error];
     sessionProcess = self->_sessionProcess;
     self->_sessionProcess = v22;
 
@@ -535,7 +535,7 @@ LABEL_20:
       _os_log_impl(&dword_1CEFC7000, v24, OS_LOG_TYPE_INFO, "[INFO] [helena] Creating new XPC connection for extension %@, instance %{public}@", &v39, 0x16u);
     }
 
-    v26 = [(_EXExtensionProcess *)self->_sessionProcess newXPCConnectionWithError:a3];
+    v26 = [(_EXExtensionProcess *)self->_sessionProcess newXPCConnectionWithError:error];
     connection = self->_connection;
     self->_connection = v26;
 
@@ -545,11 +545,11 @@ LABEL_20:
     [(NSXPCConnection *)self->_connection resume];
     v29 = self->_connection;
     v30 = v29 != 0;
-    if (a3 && !v29)
+    if (error && !v29)
     {
       providerIdentifier = self->_providerIdentifier;
-      v32 = *a3;
-      *a3 = FPProxyNotFoundError();
+      v32 = *error;
+      *error = FPProxyNotFoundError();
     }
   }
 
@@ -561,15 +561,15 @@ LABEL_20:
       [FPDExtensionSession _setUpConnectionWithError:];
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = FPInvalidParameterError();
+      *error = FPInvalidParameterError();
     }
 
     v36 = [MEMORY[0x1E69DF088] personaAttributesForPersonaType:0];
-    v37 = [v36 userPersonaUniqueString];
+    userPersonaUniqueString = [v36 userPersonaUniqueString];
 
-    if (!v37)
+    if (!userPersonaUniqueString)
     {
       v38 = fp_current_or_default_log();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_FAULT))
@@ -587,7 +587,7 @@ LABEL_20:
   return v30;
 }
 
-- (id)_connectionWithError:(id *)a3
+- (id)_connectionWithError:(id *)error
 {
   dispatch_assert_queue_V2(self->_sessionQueue);
   connection = self->_connection;
@@ -599,9 +599,9 @@ LABEL_20:
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_domain);
-    v8 = [WeakRetained provider];
-    v9 = v8;
-    if (WeakRetained && v8)
+    provider = [WeakRetained provider];
+    v9 = provider;
+    if (WeakRetained && provider)
     {
       v66[0] = 0;
       [(FPDExtensionSession *)self _setUpConnectionWithError:v66];
@@ -632,11 +632,11 @@ LABEL_20:
         self->_backgroundAssertion = 0;
 
         v15 = [FPDXPCDomainServicer alloc];
-        v16 = [WeakRetained provider];
-        v17 = [v16 manager];
-        v18 = [v17 server];
-        v19 = [WeakRetained providerDomainID];
-        v20 = [(FPDXPCDomainServicer *)v15 initWithServer:v18 providerDomainID:v19 domain:WeakRetained connection:v53];
+        provider2 = [WeakRetained provider];
+        manager = [provider2 manager];
+        server = [manager server];
+        providerDomainID = [WeakRetained providerDomainID];
+        v20 = [(FPDXPCDomainServicer *)v15 initWithServer:server providerDomainID:providerDomainID domain:WeakRetained connection:v53];
 
         objc_initWeak(&location, self);
         v61[0] = MEMORY[0x1E69E9820];
@@ -660,15 +660,15 @@ LABEL_20:
         v59 = v52;
         [(NSXPCConnection *)v23 setInvalidationHandler:v57];
         v24 = objc_alloc(MEMORY[0x1E69674C0]);
-        v25 = [WeakRetained providerDomainID];
-        v26 = [v24 initWithProviderDomainIdentifier:v25];
+        providerDomainID2 = [WeakRetained providerDomainID];
+        v26 = [v24 initWithProviderDomainIdentifier:providerDomainID2];
         [(NSXPCConnection *)v23 fp_annotateWithXPCSanitizer:v26];
 
-        v27 = [WeakRetained nsDomainOrNilForDefault];
-        v28 = v27;
-        if (v27)
+        nsDomainOrNilForDefault = [WeakRetained nsDomainOrNilForDefault];
+        v28 = nsDomainOrNilForDefault;
+        if (nsDomainOrNilForDefault)
         {
-          v54 = v27;
+          v54 = nsDomainOrNilForDefault;
         }
 
         else
@@ -677,36 +677,36 @@ LABEL_20:
           v54 = [v30 initWithIdentifier:*MEMORY[0x1E6967178] displayName:&stru_1F4C2FFD0 pathRelativeToDocumentStorage:&stru_1F4C2FFD0];
         }
 
-        v31 = [WeakRetained provider];
-        v32 = [v31 descriptor];
-        v33 = [v32 personaIdentifier];
-        [v54 setPersonaIdentifier:v33];
+        provider3 = [WeakRetained provider];
+        descriptor = [provider3 descriptor];
+        personaIdentifier = [descriptor personaIdentifier];
+        [v54 setPersonaIdentifier:personaIdentifier];
         v51 = v10;
 
-        v34 = [(NSXPCConnection *)v23 remoteObjectProxy];
+        remoteObjectProxy = [(NSXPCConnection *)v23 remoteObjectProxy];
         v55[0] = MEMORY[0x1E69E9820];
         v55[1] = 3221225472;
         v55[2] = __44__FPDExtensionSession__connectionWithError___block_invoke_2_62;
         v55[3] = &unk_1E83BDFC8;
         v35 = WeakRetained;
         v56 = v35;
-        v36 = [v34 remoteObjectProxyWithErrorHandler:v55];
+        v36 = [remoteObjectProxy remoteObjectProxyWithErrorHandler:v55];
 
         v37 = [v9 providerDomainForDomain:v35];
         if ([v37 isUsingFPFS])
         {
-          v38 = [v35 nsDomainOrNilForDefault];
-          if (v38)
+          nsDomainOrNilForDefault2 = [v35 nsDomainOrNilForDefault];
+          if (nsDomainOrNilForDefault2)
           {
-            v39 = [v35 volume];
-            v40 = [v39 role];
+            volume = [v35 volume];
+            role = [volume role];
 
-            if (v40 != 3)
+            if (role != 3)
             {
-              v41 = [v37 domain];
-              v42 = [v41 backingStoreIdentity];
+              domain = [v37 domain];
+              backingStoreIdentity = [domain backingStoreIdentity];
 
-              if (!v42)
+              if (!backingStoreIdentity)
               {
                 v49 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[ASSERT] ‼️ missing backing store identity for domain %@", v35];
                 v50 = fp_current_or_default_log();
@@ -721,10 +721,10 @@ LABEL_20:
           }
         }
 
-        v43 = [(FPDExtensionSession *)self _alternateContentsDictionary];
-        v44 = [v35 defaultBackend];
-        v45 = [v44 domainVersion];
-        [v36 beginRequestWithDomain:v54 alternateContentsDictionary:v43 domainServicer:v52 providerDomain:v37 domainVersion:v45 completionHandler:&__block_literal_global_33];
+        _alternateContentsDictionary = [(FPDExtensionSession *)self _alternateContentsDictionary];
+        defaultBackend = [v35 defaultBackend];
+        domainVersion = [defaultBackend domainVersion];
+        [v36 beginRequestWithDomain:v54 alternateContentsDictionary:_alternateContentsDictionary domainServicer:v52 providerDomain:v37 domainVersion:domainVersion completionHandler:&__block_literal_global_33];
 
         v6 = v23;
         objc_destroyWeak(&v60);
@@ -736,11 +736,11 @@ LABEL_20:
         v12 = v53;
       }
 
-      else if (a3)
+      else if (error)
       {
         v29 = v10;
         v6 = 0;
-        *a3 = v10;
+        *error = v10;
       }
 
       else
@@ -749,10 +749,10 @@ LABEL_20:
       }
     }
 
-    else if (a3)
+    else if (error)
     {
-      [MEMORY[0x1E696ABC0] fp_invalidArgumentError:{@"nil domain %@ or provider %@", WeakRetained, v8}];
-      *a3 = v6 = 0;
+      [MEMORY[0x1E696ABC0] fp_invalidArgumentError:{@"nil domain %@ or provider %@", WeakRetained, provider}];
+      *error = v6 = 0;
     }
 
     else
@@ -878,8 +878,8 @@ void __44__FPDExtensionSession__connectionWithError___block_invoke_67(uint64_t a
 {
   v3 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.fileproviderd"];
   WeakRetained = objc_loadWeakRetained(&self->_domain);
-  v5 = [WeakRetained nsDomain];
-  if (![v5 isContentManaged] || !objc_msgSend(v3, "objectIsForcedForKey:", @"AllowManagedFileProvidersToRequestAttribution"))
+  nsDomain = [WeakRetained nsDomain];
+  if (![nsDomain isContentManaged] || !objc_msgSend(v3, "objectIsForcedForKey:", @"AllowManagedFileProvidersToRequestAttribution"))
   {
 
     goto LABEL_6;
@@ -900,7 +900,7 @@ LABEL_7:
   return v7;
 }
 
-- (id)newFileProviderProxyWithTimeoutValue:(double)a3 pid:(int)a4 createIfNeeded:(BOOL)a5
+- (id)newFileProviderProxyWithTimeoutValue:(double)value pid:(int)pid createIfNeeded:(BOOL)needed
 {
   v11 = 0;
   v12 = &v11;
@@ -913,11 +913,11 @@ LABEL_7:
   block[1] = 3221225472;
   block[2] = __79__FPDExtensionSession_newFileProviderProxyWithTimeoutValue_pid_createIfNeeded___block_invoke;
   block[3] = &unk_1E83C1EE8;
-  v10 = a5;
+  neededCopy = needed;
   block[4] = self;
   block[5] = &v11;
-  v9 = a4;
-  *&block[6] = a3;
+  pidCopy = pid;
+  *&block[6] = value;
   block[7] = a2;
   dispatch_sync(sessionQueue, block);
   v6 = v12[5];
@@ -1171,17 +1171,17 @@ void __79__FPDExtensionSession_newFileProviderProxyWithTimeoutValue_pid_createIf
   __fp_pop_log();
 }
 
-- (void)registerLifetimeExtensionForObject:(id)a3
+- (void)registerLifetimeExtensionForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   sessionQueue = self->_sessionQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__FPDExtensionSession_registerLifetimeExtensionForObject___block_invoke;
   v7[3] = &unk_1E83BE158;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = objectCopy;
+  v6 = objectCopy;
   dispatch_sync(sessionQueue, v7);
 }
 
@@ -1247,17 +1247,17 @@ void __58__FPDExtensionSession_registerLifetimeExtensionForObject___block_invoke
   }
 }
 
-- (void)_unregisterLifetimeExtensionForObject:(id)a3
+- (void)_unregisterLifetimeExtensionForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   log = self->_log;
   v8 = fpfs_adopt_log();
   dispatch_assert_queue_V2(self->_sessionQueue);
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(NSMapTable *)v6->_lifetimeExtenders objectForKey:v4];
-  [(NSMapTable *)v6->_lifetimeExtenders removeObjectForKey:v4];
-  objc_sync_exit(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = [(NSMapTable *)selfCopy->_lifetimeExtenders objectForKey:objectCopy];
+  [(NSMapTable *)selfCopy->_lifetimeExtenders removeObjectForKey:objectCopy];
+  objc_sync_exit(selfCopy);
 
   if (v7)
   {
@@ -1267,39 +1267,39 @@ void __58__FPDExtensionSession_registerLifetimeExtensionForObject___block_invoke
       [v7 suppress];
     }
 
-    -[FPDProcessMonitor removePIDToObserve:](v6->_processMonitor, "removePIDToObserve:", [v4 requestEffectivePID]);
+    -[FPDProcessMonitor removePIDToObserve:](selfCopy->_processMonitor, "removePIDToObserve:", [objectCopy requestEffectivePID]);
   }
 
-  [(FPDExtensionSession *)v6 _invalidateExtensionIfPossible];
+  [(FPDExtensionSession *)selfCopy _invalidateExtensionIfPossible];
 
   __fp_pop_log();
 }
 
-- (void)unregisterLifetimeExtensionForObject:(id)a3
+- (void)unregisterLifetimeExtensionForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   sessionQueue = self->_sessionQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__FPDExtensionSession_unregisterLifetimeExtensionForObject___block_invoke;
   v7[3] = &unk_1E83BE158;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = objectCopy;
+  v6 = objectCopy;
   dispatch_sync(sessionQueue, v7);
 }
 
-- (void)asyncUnregisterLifetimeExtensionForObject:(id)a3
+- (void)asyncUnregisterLifetimeExtensionForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   sessionQueue = self->_sessionQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__FPDExtensionSession_asyncUnregisterLifetimeExtensionForObject___block_invoke;
   v7[3] = &unk_1E83BE158;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = objectCopy;
+  v6 = objectCopy;
   dispatch_async(sessionQueue, v7);
 }
 
@@ -1353,17 +1353,17 @@ void __28__FPDExtensionSession_start__block_invoke(uint64_t a1)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)terminateWithReason:(id)a3
+- (void)terminateWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   sessionQueue = self->_sessionQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__FPDExtensionSession_terminateWithReason___block_invoke;
   v7[3] = &unk_1E83BE158;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = reasonCopy;
+  v6 = reasonCopy;
   dispatch_async(sessionQueue, v7);
 }
 
@@ -1479,18 +1479,18 @@ void __33__FPDExtensionSession_invalidate__block_invoke(uint64_t a1)
 - (void)_networkingGracePeriodOver
 {
   v10 = *MEMORY[0x1E69E9840];
-  v1 = *a1;
+  v1 = *self;
   OUTLINED_FUNCTION_2_2();
   OUTLINED_FUNCTION_1_6(&dword_1CEFC7000, v2, v3, "[SIMCRASH] Networking grace period timer fired with foreground process for %@", v4, v5, v6, v7, v9);
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_notifyNetworkingProviderMonitorWithState:(BOOL)a3
+- (void)_notifyNetworkingProviderMonitorWithState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   dispatch_assert_queue_V2(self->_sessionQueue);
   v5 = [(NSString *)self->_providerIdentifier stringByAppendingString:@".foreground"];
-  v9 = [v5 fp_libnotifyPerUserNotificationName];
+  fp_libnotifyPerUserNotificationName = [v5 fp_libnotifyPerUserNotificationName];
 
   notifyTokenForFramework = self->_notifyTokenForFramework;
   p_notifyTokenForFramework = &self->_notifyTokenForFramework;
@@ -1500,39 +1500,39 @@ void __33__FPDExtensionSession_invalidate__block_invoke(uint64_t a1)
     goto LABEL_2;
   }
 
-  if (!notify_register_check([v9 UTF8String], p_notifyTokenForFramework))
+  if (!notify_register_check([fp_libnotifyPerUserNotificationName UTF8String], p_notifyTokenForFramework))
   {
     v6 = *p_notifyTokenForFramework;
 LABEL_2:
-    notify_set_state(v6, v3);
-    notify_post([v9 UTF8String]);
+    notify_set_state(v6, stateCopy);
+    notify_post([fp_libnotifyPerUserNotificationName UTF8String]);
   }
 }
 
-- (id)newAssertionWithAttributeName:(id)a3 reason:(id)a4
+- (id)newAssertionWithAttributeName:(id)name reason:(id)reason
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  reasonCopy = reason;
   v8 = fp_current_or_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     sessionProcess = self->_sessionProcess;
     *location = 138412802;
-    *&location[4] = v6;
+    *&location[4] = nameCopy;
     v26 = 2112;
     v27 = sessionProcess;
     v28 = 2112;
-    v29 = v7;
+    v29 = reasonCopy;
     _os_log_debug_impl(&dword_1CEFC7000, v8, OS_LOG_TYPE_DEBUG, "[DEBUG] creating a new assertion %@ for %@ (%@)", location, 0x20u);
   }
 
   v9 = [MEMORY[0x1E69C7640] targetWithProcessIdentifier:self->_sessionProcess];
   v10 = objc_alloc(MEMORY[0x1E69C7548]);
-  v11 = [MEMORY[0x1E69C7560] attributeWithDomain:@"com.apple.FileProvider" name:v6];
+  v11 = [MEMORY[0x1E69C7560] attributeWithDomain:@"com.apple.FileProvider" name:nameCopy];
   v24 = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
-  v13 = [v10 initWithExplanation:v7 target:v9 attributes:v12];
+  v13 = [v10 initWithExplanation:reasonCopy target:v9 attributes:v12];
 
   objc_initWeak(location, self);
   v22[0] = MEMORY[0x1E69E9820];
@@ -1574,17 +1574,17 @@ void __60__FPDExtensionSession_newAssertionWithAttributeName_reason___block_invo
   [WeakRetained assertionWasInvalidated:v3];
 }
 
-- (void)assertionWasInvalidated:(id)a3
+- (void)assertionWasInvalidated:(id)invalidated
 {
-  v4 = a3;
+  invalidatedCopy = invalidated;
   sessionQueue = self->_sessionQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__FPDExtensionSession_assertionWasInvalidated___block_invoke;
   v7[3] = &unk_1E83BE158;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = invalidatedCopy;
+  selfCopy = self;
+  v6 = invalidatedCopy;
   dispatch_async(sessionQueue, v7);
 }
 
@@ -1627,7 +1627,7 @@ void __47__FPDExtensionSession_assertionWasInvalidated___block_invoke(uint64_t a
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processMonitor:(id)a3 didBecomeForeground:(BOOL)a4
+- (void)processMonitor:(id)monitor didBecomeForeground:(BOOL)foreground
 {
   sessionQueue = self->_sessionQueue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -1635,7 +1635,7 @@ void __47__FPDExtensionSession_assertionWasInvalidated___block_invoke(uint64_t a
   v5[2] = __58__FPDExtensionSession_processMonitor_didBecomeForeground___block_invoke;
   v5[3] = &unk_1E83BFFD0;
   v5[4] = self;
-  v6 = a4;
+  foregroundCopy = foreground;
   dispatch_async(sessionQueue, v5);
 }
 
@@ -1665,17 +1665,17 @@ uint64_t __58__FPDExtensionSession_processMonitor_didBecomeForeground___block_in
   return result;
 }
 
-- (void)dumpStateTo:(id)a3
+- (void)dumpStateTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   sessionQueue = self->_sessionQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__FPDExtensionSession_dumpStateTo___block_invoke;
   v7[3] = &unk_1E83BE158;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = toCopy;
+  v6 = toCopy;
   dispatch_sync(sessionQueue, v7);
 }
 

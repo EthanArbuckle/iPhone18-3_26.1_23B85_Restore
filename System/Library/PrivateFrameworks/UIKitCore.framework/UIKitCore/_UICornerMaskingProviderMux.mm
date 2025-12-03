@@ -1,15 +1,15 @@
 @interface _UICornerMaskingProviderMux
 + (id)undefined;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_UICornerMaskingProviderMux)init;
-- (_UICornerMaskingProviderMux)initWithTopLeft:(id)a3 topRight:(id)a4 bottomLeft:(id)a5 bottomRight:(id)a6;
-- (_UICornerMaskingProviderMux)initWithUniformProvider:(id)a3;
+- (_UICornerMaskingProviderMux)initWithTopLeft:(id)left topRight:(id)right bottomLeft:(id)bottomLeft bottomRight:(id)bottomRight;
+- (_UICornerMaskingProviderMux)initWithUniformProvider:(id)provider;
 - (_UIRelativeCornerMaskingProvider)bottomLeft;
 - (_UIRelativeCornerMaskingProvider)bottomRight;
 - (_UIRelativeCornerMaskingProvider)topLeft;
 - (_UIRelativeCornerMaskingProvider)topRight;
-- (id)mergingWith:(id)a3;
-- (id)providerFor:(unint64_t)a3;
+- (id)mergingWith:(id)with;
+- (id)providerFor:(unint64_t)for;
 @end
 
 @implementation _UICornerMaskingProviderMux
@@ -56,106 +56,106 @@
   return v2;
 }
 
-- (_UICornerMaskingProviderMux)initWithTopLeft:(id)a3 topRight:(id)a4 bottomLeft:(id)a5 bottomRight:(id)a6
+- (_UICornerMaskingProviderMux)initWithTopLeft:(id)left topRight:(id)right bottomLeft:(id)bottomLeft bottomRight:(id)bottomRight
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  leftCopy = left;
+  rightCopy = right;
+  bottomLeftCopy = bottomLeft;
+  bottomRightCopy = bottomRight;
   v17.receiver = self;
   v17.super_class = _UICornerMaskingProviderMux;
   v14 = [(_UICornerMaskingProviderMux *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_topLeft, v10);
-    objc_storeWeak(&v15->_topRight, v11);
-    objc_storeWeak(&v15->_bottomLeft, v12);
-    objc_storeWeak(&v15->_bottomRight, v13);
+    objc_storeWeak(&v14->_topLeft, leftCopy);
+    objc_storeWeak(&v15->_topRight, rightCopy);
+    objc_storeWeak(&v15->_bottomLeft, bottomLeftCopy);
+    objc_storeWeak(&v15->_bottomRight, bottomRightCopy);
   }
 
   return v15;
 }
 
-- (_UICornerMaskingProviderMux)initWithUniformProvider:(id)a3
+- (_UICornerMaskingProviderMux)initWithUniformProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v8.receiver = self;
   v8.super_class = _UICornerMaskingProviderMux;
   v5 = [(_UICornerMaskingProviderMux *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_topLeft, v4);
-    objc_storeWeak(&v6->_topRight, v4);
-    objc_storeWeak(&v6->_bottomLeft, v4);
-    objc_storeWeak(&v6->_bottomRight, v4);
+    objc_storeWeak(&v5->_topLeft, providerCopy);
+    objc_storeWeak(&v6->_topRight, providerCopy);
+    objc_storeWeak(&v6->_bottomLeft, providerCopy);
+    objc_storeWeak(&v6->_bottomRight, providerCopy);
   }
 
   return v6;
 }
 
-- (id)mergingWith:(id)a3
+- (id)mergingWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   v5 = [_UICornerMaskingProviderMux alloc];
-  v6 = [(_UICornerMaskingProviderMux *)v4 topLeft];
-  if (v6)
+  topLeft = [(_UICornerMaskingProviderMux *)withCopy topLeft];
+  if (topLeft)
   {
-    v7 = v4;
+    selfCopy = withCopy;
   }
 
   else
   {
-    v7 = self;
+    selfCopy = self;
   }
 
-  v8 = [(_UICornerMaskingProviderMux *)v7 topLeft];
-  v9 = [(_UICornerMaskingProviderMux *)v4 topRight];
-  if (v9)
+  topLeft2 = [(_UICornerMaskingProviderMux *)selfCopy topLeft];
+  topRight = [(_UICornerMaskingProviderMux *)withCopy topRight];
+  if (topRight)
   {
-    v10 = v4;
+    selfCopy2 = withCopy;
   }
 
   else
   {
-    v10 = self;
+    selfCopy2 = self;
   }
 
-  v11 = [(_UICornerMaskingProviderMux *)v10 topRight];
-  v12 = [(_UICornerMaskingProviderMux *)v4 bottomLeft];
-  if (v12)
+  topRight2 = [(_UICornerMaskingProviderMux *)selfCopy2 topRight];
+  bottomLeft = [(_UICornerMaskingProviderMux *)withCopy bottomLeft];
+  if (bottomLeft)
   {
-    v13 = v4;
+    selfCopy3 = withCopy;
   }
 
   else
   {
-    v13 = self;
+    selfCopy3 = self;
   }
 
-  v14 = [(_UICornerMaskingProviderMux *)v13 bottomLeft];
-  v15 = [(_UICornerMaskingProviderMux *)v4 bottomRight];
-  if (v15)
+  bottomLeft2 = [(_UICornerMaskingProviderMux *)selfCopy3 bottomLeft];
+  bottomRight = [(_UICornerMaskingProviderMux *)withCopy bottomRight];
+  if (bottomRight)
   {
-    v16 = v4;
+    selfCopy4 = withCopy;
   }
 
   else
   {
-    v16 = self;
+    selfCopy4 = self;
   }
 
-  v17 = [(_UICornerMaskingProviderMux *)v16 bottomRight];
-  v18 = [(_UICornerMaskingProviderMux *)v5 initWithTopLeft:v8 topRight:v11 bottomLeft:v14 bottomRight:v17];
+  bottomRight2 = [(_UICornerMaskingProviderMux *)selfCopy4 bottomRight];
+  v18 = [(_UICornerMaskingProviderMux *)v5 initWithTopLeft:topLeft2 topRight:topRight2 bottomLeft:bottomLeft2 bottomRight:bottomRight2];
 
   return v18;
 }
 
-- (id)providerFor:(unint64_t)a3
+- (id)providerFor:(unint64_t)for
 {
-  v4 = a3 - 1;
-  if (a3 - 1 <= 7 && ((0x8Bu >> v4) & 1) != 0)
+  v4 = for - 1;
+  if (for - 1 <= 7 && ((0x8Bu >> v4) & 1) != 0)
   {
     WeakRetained = objc_loadWeakRetained((&self->super.isa + qword_18A67B480[v4]));
   }
@@ -168,10 +168,10 @@
   return WeakRetained;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v15 = 1;
   }
@@ -180,30 +180,30 @@
   {
     v18.receiver = self;
     v18.super_class = _UICornerMaskingProviderMux;
-    if ([(_UICornerMaskingProviderMux *)&v18 isEqual:v4])
+    if ([(_UICornerMaskingProviderMux *)&v18 isEqual:equalCopy])
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (v5)
       {
-        v7 = [(_UICornerMaskingProviderMux *)v5 topLeft];
+        topLeft = [(_UICornerMaskingProviderMux *)v5 topLeft];
         WeakRetained = objc_loadWeakRetained(&self->_topLeft);
-        if ([v7 isEqual:WeakRetained])
+        if ([topLeft isEqual:WeakRetained])
         {
-          v9 = [(_UICornerMaskingProviderMux *)v6 topRight];
+          topRight = [(_UICornerMaskingProviderMux *)v6 topRight];
           v10 = objc_loadWeakRetained(&self->_topRight);
-          if ([v9 isEqual:v10])
+          if ([topRight isEqual:v10])
           {
-            v11 = [(_UICornerMaskingProviderMux *)v6 bottomLeft];
+            bottomLeft = [(_UICornerMaskingProviderMux *)v6 bottomLeft];
             v12 = objc_loadWeakRetained(&self->_bottomLeft);
-            if ([v11 isEqual:v12])
+            if ([bottomLeft isEqual:v12])
             {
               [(_UICornerMaskingProviderMux *)v6 bottomRight];
-              v13 = v17 = v11;
+              v13 = v17 = bottomLeft;
               v14 = objc_loadWeakRetained(&self->_bottomRight);
               v15 = [v13 isEqual:v14];
 
-              v11 = v17;
+              bottomLeft = v17;
             }
 
             else

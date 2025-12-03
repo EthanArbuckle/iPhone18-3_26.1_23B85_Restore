@@ -1,21 +1,21 @@
 @interface TESMatcher
-- (TESMatcher)initWithLocale:(id)a3;
+- (TESMatcher)initWithLocale:(id)locale;
 - (void)_loadPatternMatchers;
-- (void)asynchronouslyEnumerateTextEffectCandidatesInString:(id)a3 searchRange:(_NSRange)a4 options:(unint64_t)a5 usingBlock:(id)a6;
-- (void)enumerateTextEffectCandidatesInString:(id)a3 searchRange:(_NSRange)a4 options:(unint64_t)a5 usingBlock:(id)a6;
+- (void)asynchronouslyEnumerateTextEffectCandidatesInString:(id)string searchRange:(_NSRange)range options:(unint64_t)options usingBlock:(id)block;
+- (void)enumerateTextEffectCandidatesInString:(id)string searchRange:(_NSRange)range options:(unint64_t)options usingBlock:(id)block;
 @end
 
 @implementation TESMatcher
 
-- (TESMatcher)initWithLocale:(id)a3
+- (TESMatcher)initWithLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v9.receiver = self;
   v9.super_class = TESMatcher;
   v5 = [(TESMatcher *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [localeCopy copy];
     locale = v5->_locale;
     v5->_locale = v6;
 
@@ -25,11 +25,11 @@
   return v5;
 }
 
-- (void)enumerateTextEffectCandidatesInString:(id)a3 searchRange:(_NSRange)a4 options:(unint64_t)a5 usingBlock:(id)a6
+- (void)enumerateTextEffectCandidatesInString:(id)string searchRange:(_NSRange)range options:(unint64_t)options usingBlock:(id)block
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a6;
+  stringCopy = string;
+  blockCopy = block;
   v30 = 0;
   v26 = 0u;
   v27 = 0u;
@@ -55,7 +55,7 @@ LABEL_3:
         break;
       }
 
-      v14 = [*(*(&v26 + 1) + 8 * v13) matchesForString:v8 searchRange:{a4.location, a4.length}];
+      v14 = [*(*(&v26 + 1) + 8 * v13) matchesForString:stringCopy searchRange:{range.location, range.length}];
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
@@ -80,7 +80,7 @@ LABEL_9:
             break;
           }
 
-          v9[2](v9, *(*(&v22 + 1) + 8 * v19++), &v30);
+          blockCopy[2](blockCopy, *(*(&v22 + 1) + 8 * v19++), &v30);
           if (v17 == v19)
           {
             v17 = [v15 countByEnumeratingWithState:&v22 objects:v31 count:16];
@@ -108,11 +108,11 @@ LABEL_9:
   }
 }
 
-- (void)asynchronouslyEnumerateTextEffectCandidatesInString:(id)a3 searchRange:(_NSRange)a4 options:(unint64_t)a5 usingBlock:(id)a6
+- (void)asynchronouslyEnumerateTextEffectCandidatesInString:(id)string searchRange:(_NSRange)range options:(unint64_t)options usingBlock:(id)block
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a6;
+  stringCopy = string;
+  blockCopy = block;
   v30 = 0;
   v26 = 0u;
   v27 = 0u;
@@ -138,7 +138,7 @@ LABEL_3:
         break;
       }
 
-      v14 = [*(*(&v26 + 1) + 8 * v13) matchesForString:v8 searchRange:{a4.location, a4.length}];
+      v14 = [*(*(&v26 + 1) + 8 * v13) matchesForString:stringCopy searchRange:{range.location, range.length}];
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
@@ -163,7 +163,7 @@ LABEL_9:
             break;
           }
 
-          v9[2](v9, *(*(&v22 + 1) + 8 * v19++), &v30);
+          blockCopy[2](blockCopy, *(*(&v22 + 1) + 8 * v19++), &v30);
           if (v17 == v19)
           {
             v17 = [v15 countByEnumeratingWithState:&v22 objects:v31 count:16];
@@ -194,8 +194,8 @@ LABEL_9:
 - (void)_loadPatternMatchers
 {
   v3 = [TESTriggerPhraseMatcher alloc];
-  v4 = [(TESMatcher *)self locale];
-  v5 = [(TESTriggerPhraseMatcher *)v3 initWithLocale:v4];
+  locale = [(TESMatcher *)self locale];
+  v5 = [(TESTriggerPhraseMatcher *)v3 initWithLocale:locale];
   phraseMatcher = self->_phraseMatcher;
   self->_phraseMatcher = v5;
 
@@ -203,12 +203,12 @@ LABEL_9:
   if (!matchers || ![(NSMutableArray *)matchers count])
   {
     v8 = [TESPatternMatcherLoader alloc];
-    v9 = [(TESMatcher *)self locale];
-    v12 = [(TESPatternMatcherLoader *)v8 initWithLocale:v9];
+    locale2 = [(TESMatcher *)self locale];
+    v12 = [(TESPatternMatcherLoader *)v8 initWithLocale:locale2];
 
-    v10 = [(TESPatternMatcherLoader *)v12 matchers];
+    matchers = [(TESPatternMatcherLoader *)v12 matchers];
     v11 = self->_matchers;
-    self->_matchers = v10;
+    self->_matchers = matchers;
   }
 }
 

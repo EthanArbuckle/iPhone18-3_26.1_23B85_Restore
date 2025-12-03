@@ -1,37 +1,37 @@
 @interface _TUIGradientContainerLayerConfig
-- (BOOL)isEqualToConfig:(id)a3;
+- (BOOL)isEqualToConfig:(id)config;
 - (Class)layerClass;
-- (_TUIGradientContainerLayerConfig)initWithStyle:(id)a3;
+- (_TUIGradientContainerLayerConfig)initWithStyle:(id)style;
 @end
 
 @implementation _TUIGradientContainerLayerConfig
 
-- (_TUIGradientContainerLayerConfig)initWithStyle:(id)a3
+- (_TUIGradientContainerLayerConfig)initWithStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
   v9.receiver = self;
   v9.super_class = _TUIGradientContainerLayerConfig;
   v6 = [(_TUIGradientContainerLayerConfig *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_style, a3);
+    objc_storeStrong(&v6->_style, style);
   }
 
   return v7;
 }
 
-- (BOOL)isEqualToConfig:(id)a3
+- (BOOL)isEqualToConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v5 = objc_opt_class();
-  v6 = TUIDynamicCast(v5, v4);
+  v6 = TUIDynamicCast(v5, configCopy);
 
   if (v6)
   {
     style = self->_style;
-    v8 = [v6 style];
-    v9 = [(_TUIGradientStyler *)style isEqualToStyle:v8];
+    style = [v6 style];
+    v9 = [(_TUIGradientStyler *)style isEqualToStyle:style];
   }
 
   else
@@ -44,8 +44,8 @@
 
 - (Class)layerClass
 {
-  v3 = [(_TUIGradientStyler *)self->_style blendMode];
-  if ([v3 isEqualToString:kCAFilterVariableBlur])
+  blendMode = [(_TUIGradientStyler *)self->_style blendMode];
+  if ([blendMode isEqualToString:kCAFilterVariableBlur])
   {
 
 LABEL_4:
@@ -53,15 +53,15 @@ LABEL_4:
     goto LABEL_6;
   }
 
-  v4 = [(_TUIGradientStyler *)self->_style blendMode];
-  v5 = [v4 isEqualToString:kCAFilterGaussianBlur];
+  blendMode2 = [(_TUIGradientStyler *)self->_style blendMode];
+  v5 = [blendMode2 isEqualToString:kCAFilterGaussianBlur];
 
   if (v5)
   {
     goto LABEL_4;
   }
 
-  v7 = [(_TUIGradientStyler *)self->_style opacityTriggers];
+  opacityTriggers = [(_TUIGradientStyler *)self->_style opacityTriggers];
   v6 = objc_opt_class();
 
 LABEL_6:

@@ -7,16 +7,16 @@
 
 - (void)bundleProgressNumerator:()BundleProgressReport denominator:
 {
-  v7 = [a1 objectForKeyedSubscript:@"itemsProcessed"];
+  v7 = [self objectForKeyedSubscript:@"itemsProcessed"];
   *a3 = [v7 unsignedIntegerValue];
 
-  v8 = [a1 objectForKeyedSubscript:@"totalItems"];
+  v8 = [self objectForKeyedSubscript:@"totalItems"];
   *a4 = [v8 unsignedIntegerValue];
 }
 
 - (uint64_t)featureCheckpointForProgress
 {
-  v1 = [a1 objectForKeyedSubscript:@"progress"];
+  v1 = [self objectForKeyedSubscript:@"progress"];
   [v1 doubleValue];
   v3 = v2;
 

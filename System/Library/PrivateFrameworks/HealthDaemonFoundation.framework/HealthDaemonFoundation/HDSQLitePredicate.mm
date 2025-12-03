@@ -1,12 +1,12 @@
 @interface HDSQLitePredicate
-+ (id)BOOLeanPredicateWithValue:(BOOL)a3;
-+ (id)compoundPredicateWithPredicate:(id)a3 otherPredicate:(id)a4;
-+ (id)compoundPredicateWithPredicate:(id)a3 otherPredicate:(id)a4 otherPredicate:(id)a5;
-+ (id)disjunctionWithPredicate:(id)a3 otherPredicate:(id)a4;
++ (id)BOOLeanPredicateWithValue:(BOOL)value;
++ (id)compoundPredicateWithPredicate:(id)predicate otherPredicate:(id)otherPredicate;
++ (id)compoundPredicateWithPredicate:(id)predicate otherPredicate:(id)otherPredicate otherPredicate:(id)a5;
++ (id)disjunctionWithPredicate:(id)predicate otherPredicate:(id)otherPredicate;
 + (id)falsePredicate;
 + (id)truePredicate;
-- (BOOL)isCompatibleWithPredicate:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isCompatibleWithPredicate:(id)predicate;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
@@ -24,11 +24,11 @@
   return v3;
 }
 
-- (BOOL)isCompatibleWithPredicate:(id)a3
+- (BOOL)isCompatibleWithPredicate:(id)predicate
 {
-  if (a3)
+  if (predicate)
   {
-    v3 = a3;
+    predicateCopy = predicate;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -48,39 +48,39 @@
   return [v2 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   v4 = objc_opt_class();
   v5 = objc_opt_class();
 
   return v4 == v5;
 }
 
-+ (id)compoundPredicateWithPredicate:(id)a3 otherPredicate:(id)a4
++ (id)compoundPredicateWithPredicate:(id)predicate otherPredicate:(id)otherPredicate
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  predicateCopy = predicate;
+  otherPredicateCopy = otherPredicate;
+  v7 = otherPredicateCopy;
+  if (predicateCopy && otherPredicateCopy)
   {
-    v13[0] = v5;
-    v13[1] = v6;
+    v13[0] = predicateCopy;
+    v13[1] = otherPredicateCopy;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
     v9 = [HDSQLiteCompoundPredicate predicateMatchingAllPredicates:v8];
   }
 
   else
   {
-    if (v5)
+    if (predicateCopy)
     {
-      v10 = v5;
+      v10 = predicateCopy;
     }
 
     else
     {
-      v10 = v6;
+      v10 = otherPredicateCopy;
     }
 
     v9 = v10;
@@ -91,33 +91,33 @@
   return v9;
 }
 
-+ (id)compoundPredicateWithPredicate:(id)a3 otherPredicate:(id)a4 otherPredicate:(id)a5
++ (id)compoundPredicateWithPredicate:(id)predicate otherPredicate:(id)otherPredicate otherPredicate:(id)a5
 {
   v19[3] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  predicateCopy = predicate;
+  otherPredicateCopy = otherPredicate;
   v10 = a5;
   v11 = v10;
-  if (!v8)
+  if (!predicateCopy)
   {
-    v14 = a1;
-    v15 = v9;
+    selfCopy3 = self;
+    v15 = otherPredicateCopy;
 LABEL_7:
     v16 = v11;
     goto LABEL_8;
   }
 
-  if (!v9)
+  if (!otherPredicateCopy)
   {
-    v14 = a1;
-    v15 = v8;
+    selfCopy3 = self;
+    v15 = predicateCopy;
     goto LABEL_7;
   }
 
   if (v10)
   {
-    v19[0] = v8;
-    v19[1] = v9;
+    v19[0] = predicateCopy;
+    v19[1] = otherPredicateCopy;
     v19[2] = v10;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:3];
     v13 = [HDSQLiteCompoundPredicate predicateMatchingAllPredicates:v12];
@@ -125,11 +125,11 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v14 = a1;
-  v15 = v8;
-  v16 = v9;
+  selfCopy3 = self;
+  v15 = predicateCopy;
+  v16 = otherPredicateCopy;
 LABEL_8:
-  v13 = [v14 compoundPredicateWithPredicate:v15 otherPredicate:v16];
+  v13 = [selfCopy3 compoundPredicateWithPredicate:v15 otherPredicate:v16];
 LABEL_9:
 
   v17 = *MEMORY[0x277D85DE8];
@@ -137,30 +137,30 @@ LABEL_9:
   return v13;
 }
 
-+ (id)disjunctionWithPredicate:(id)a3 otherPredicate:(id)a4
++ (id)disjunctionWithPredicate:(id)predicate otherPredicate:(id)otherPredicate
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  predicateCopy = predicate;
+  otherPredicateCopy = otherPredicate;
+  v7 = otherPredicateCopy;
+  if (predicateCopy && otherPredicateCopy)
   {
-    v13[0] = v5;
-    v13[1] = v6;
+    v13[0] = predicateCopy;
+    v13[1] = otherPredicateCopy;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
     v9 = [HDSQLiteCompoundPredicate predicateMatchingAnyPredicates:v8];
   }
 
   else
   {
-    if (v5)
+    if (predicateCopy)
     {
-      v10 = v5;
+      v10 = predicateCopy;
     }
 
     else
     {
-      v10 = v6;
+      v10 = otherPredicateCopy;
     }
 
     v9 = v10;
@@ -171,16 +171,16 @@ LABEL_9:
   return v9;
 }
 
-+ (id)BOOLeanPredicateWithValue:(BOOL)a3
++ (id)BOOLeanPredicateWithValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
-    [a1 truePredicate];
+    [self truePredicate];
   }
 
   else
   {
-    [a1 falsePredicate];
+    [self falsePredicate];
   }
   v3 = ;
 

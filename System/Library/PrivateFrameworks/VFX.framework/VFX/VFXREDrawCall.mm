@@ -5,7 +5,7 @@
 - (int64_t)emitterObjectID;
 - (int64_t)indexBufferOffset;
 - (int64_t)indexBufferSize;
-- (void)setRenderPassName:(id)a3;
+- (void)setRenderPassName:(id)name;
 @end
 
 @implementation VFXREDrawCall
@@ -76,7 +76,7 @@
   return v2;
 }
 
-- (void)setRenderPassName:(id)a3
+- (void)setRenderPassName:(id)name
 {
   v4 = sub_1AFDFCEF8();
   v5 = (self + OBJC_IVAR___VFXREDrawCall_renderPassName);

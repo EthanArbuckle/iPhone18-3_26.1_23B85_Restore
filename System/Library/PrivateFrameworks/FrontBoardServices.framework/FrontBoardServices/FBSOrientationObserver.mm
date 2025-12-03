@@ -1,16 +1,16 @@
 @interface FBSOrientationObserver
 + (int64_t)activeInterfaceOrientation;
-- (id)_getAndSetFreshestUpdateGivenUpdate:(id)a3 forced:(BOOL)a4;
-- (id)_initWithClient:(id)a3 callbackQueue:(id)a4;
-- (id)_lock_getAndSetFreshestUpdateGivenUpdate:(id)a3 forced:(BOOL)a4;
+- (id)_getAndSetFreshestUpdateGivenUpdate:(id)update forced:(BOOL)forced;
+- (id)_initWithClient:(id)client callbackQueue:(id)queue;
+- (id)_lock_getAndSetFreshestUpdateGivenUpdate:(id)update forced:(BOOL)forced;
 - (id)handler;
-- (void)_lock_setHandler:(id)a3;
-- (void)activeInterfaceOrientationWithCompletion:(id)a3;
-- (void)client:(id)a3 handleOrientationUpdate:(id)a4;
+- (void)_lock_setHandler:(id)handler;
+- (void)activeInterfaceOrientationWithCompletion:(id)completion;
+- (void)client:(id)client handleOrientationUpdate:(id)update;
 - (void)dealloc;
-- (void)handleOrientationResetForClient:(id)a3;
+- (void)handleOrientationResetForClient:(id)client;
 - (void)invalidate;
-- (void)setHandler:(id)a3;
+- (void)setHandler:(id)handler;
 @end
 
 @implementation FBSOrientationObserver
@@ -32,7 +32,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A2DBB000, v3, OS_LOG_TYPE_DEFAULT, "<%p> Invalidating client.", &v6, 0xCu);
   }
 
@@ -68,10 +68,10 @@
   _bs_set_crash_log_message();
 }
 
-- (id)_initWithClient:(id)a3 callbackQueue:(id)a4
+- (id)_initWithClient:(id)client callbackQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  clientCopy = client;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = FBSOrientationObserver;
   v9 = [(FBSOrientationObserver *)&v12 init];
@@ -79,8 +79,8 @@
   if (v9)
   {
     v9->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v9->_callback_queue, a4);
-    objc_storeStrong(p_isa + 1, a3);
+    objc_storeStrong(&v9->_callback_queue, queue);
+    objc_storeStrong(p_isa + 1, client);
     [p_isa[1] activate];
   }
 
@@ -110,10 +110,10 @@ uint64_t __52__FBSOrientationObserver_activeInterfaceOrientation__block_invoke()
   return [v2 activate];
 }
 
-- (void)activeInterfaceOrientationWithCompletion:(id)a3
+- (void)activeInterfaceOrientationWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     objc_initWeak(&location, self);
     client = self->_client;
@@ -122,7 +122,7 @@ uint64_t __52__FBSOrientationObserver_activeInterfaceOrientation__block_invoke()
     v6[2] = __67__FBSOrientationObserver_activeInterfaceOrientationWithCompletion___block_invoke;
     v6[3] = &unk_1E76BD820;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
+    v7 = completionCopy;
     [(FBSOrientationObserverClient *)client activeInterfaceOrientationWithCompletion:v6];
 
     objc_destroyWeak(&v8);
@@ -163,39 +163,39 @@ uint64_t __67__FBSOrientationObserver_activeInterfaceOrientationWithCompletion__
   return MEMORY[0x1EEE66BB8](v3, v2);
 }
 
-- (void)setHandler:(id)a3
+- (void)setHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
-  [(FBSOrientationObserver *)self _lock_setHandler:v4];
+  [(FBSOrientationObserver *)self _lock_setHandler:handlerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)_getAndSetFreshestUpdateGivenUpdate:(id)a3 forced:(BOOL)a4
+- (id)_getAndSetFreshestUpdateGivenUpdate:(id)update forced:(BOOL)forced
 {
-  v4 = a4;
-  v6 = a3;
+  forcedCopy = forced;
+  updateCopy = update;
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(FBSOrientationObserver *)self _lock_getAndSetFreshestUpdateGivenUpdate:v6 forced:v4];
+  v7 = [(FBSOrientationObserver *)self _lock_getAndSetFreshestUpdateGivenUpdate:updateCopy forced:forcedCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v7;
 }
 
-- (void)_lock_setHandler:(id)a3
+- (void)_lock_setHandler:(id)handler
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (self->_lock_handler != a3)
+  if (self->_lock_handler != handler)
   {
-    v5 = [a3 copy];
+    v5 = [handler copy];
     lock_handler = self->_lock_handler;
     self->_lock_handler = v5;
 
     v7 = FBLogInterfaceOrientationObserver();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-    if (a3)
+    if (handler)
     {
       if (v8)
       {
@@ -219,37 +219,37 @@ LABEL_7:
   }
 }
 
-- (id)_lock_getAndSetFreshestUpdateGivenUpdate:(id)a3 forced:(BOOL)a4
+- (id)_lock_getAndSetFreshestUpdateGivenUpdate:(id)update forced:(BOOL)forced
 {
-  v4 = a4;
+  forcedCopy = forced;
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  updateCopy = update;
   lock_freshestUpdate = self->_lock_freshestUpdate;
   if (!lock_freshestUpdate)
   {
     goto LABEL_10;
   }
 
-  if (v4)
+  if (forcedCopy)
   {
     v9 = FBLogInterfaceOrientationObserver();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 134218242;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2114;
-      v19 = v7;
+      v19 = updateCopy;
       _os_log_impl(&dword_1A2DBB000, v9, OS_LOG_TYPE_DEFAULT, "<%p>: Received orientation update: %{public}@ that we're forcefully updating", &v16, 0x16u);
     }
 
     goto LABEL_10;
   }
 
-  v10 = [(FBSOrientationUpdate *)lock_freshestUpdate sequenceNumber];
-  if (v10 <= [v7 sequenceNumber])
+  sequenceNumber = [(FBSOrientationUpdate *)lock_freshestUpdate sequenceNumber];
+  if (sequenceNumber <= [updateCopy sequenceNumber])
   {
 LABEL_10:
-    objc_storeStrong(&self->_lock_freshestUpdate, a3);
+    objc_storeStrong(&self->_lock_freshestUpdate, update);
     goto LABEL_11;
   }
 
@@ -258,9 +258,9 @@ LABEL_10:
   {
     v15 = self->_lock_freshestUpdate;
     v16 = 134218498;
-    v17 = self;
+    selfCopy2 = self;
     v18 = 2114;
-    v19 = v7;
+    v19 = updateCopy;
     v20 = 2114;
     v21 = v15;
     _os_log_error_impl(&dword_1A2DBB000, v11, OS_LOG_TYPE_ERROR, "<%p> Received orientation update: %{public}@ with a sequence number less than the last update received %{public}@.", &v16, 0x20u);
@@ -273,17 +273,17 @@ LABEL_11:
   return v12;
 }
 
-- (void)client:(id)a3 handleOrientationUpdate:(id)a4
+- (void)client:(id)client handleOrientationUpdate:(id)update
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  updateCopy = update;
   v6 = FBLogInterfaceOrientationObserver();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
-    v15 = v5;
+    v15 = updateCopy;
     _os_log_impl(&dword_1A2DBB000, v6, OS_LOG_TYPE_DEFAULT, "<%p> Received orientation update: %{public}@.", buf, 0x16u);
   }
 
@@ -294,8 +294,8 @@ LABEL_11:
   v9[2] = __57__FBSOrientationObserver_client_handleOrientationUpdate___block_invoke;
   v9[3] = &unk_1E76BD848;
   objc_copyWeak(&v11, buf);
-  v10 = v5;
-  v8 = v5;
+  v10 = updateCopy;
+  v8 = updateCopy;
   dispatch_async(callback_queue, v9);
 
   objc_destroyWeak(&v11);
@@ -320,14 +320,14 @@ void __57__FBSOrientationObserver_client_handleOrientationUpdate___block_invoke(
   }
 }
 
-- (void)handleOrientationResetForClient:(id)a3
+- (void)handleOrientationResetForClient:(id)client
 {
   v10 = *MEMORY[0x1E69E9840];
   v4 = FBLogInterfaceOrientationObserver();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A2DBB000, v4, OS_LOG_TYPE_DEFAULT, "<%p> Received orientation reset.", buf, 0xCu);
   }
 

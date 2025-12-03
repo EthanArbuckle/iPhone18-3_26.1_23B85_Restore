@@ -1,8 +1,8 @@
 @interface HMCUMessageSessionDeviceSetupOperation
 - (CUMessageSession)session;
 - (HMCUMessageSessionDeviceSetupOperation)init;
-- (HMCUMessageSessionDeviceSetupOperation)initWithSession:(id)a3 sessionIdentifier:(id)a4;
-- (HMCUMessageSessionDeviceSetupOperation)initWithSession:(id)a3 setupSessionFactory:(id)a4;
+- (HMCUMessageSessionDeviceSetupOperation)initWithSession:(id)session sessionIdentifier:(id)identifier;
+- (HMCUMessageSessionDeviceSetupOperation)initWithSession:(id)session setupSessionFactory:(id)factory;
 @end
 
 @implementation HMCUMessageSessionDeviceSetupOperation
@@ -11,11 +11,11 @@
 {
   v6.receiver = self;
   v6.super_class = HMCUMessageSessionDeviceSetupOperation;
-  v2 = [(HMDeviceSetupOperationBase *)&v6 sessionTransport];
+  sessionTransport = [(HMDeviceSetupOperationBase *)&v6 sessionTransport];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = sessionTransport;
   }
 
   else
@@ -28,23 +28,23 @@
   return v3;
 }
 
-- (HMCUMessageSessionDeviceSetupOperation)initWithSession:(id)a3 setupSessionFactory:(id)a4
+- (HMCUMessageSessionDeviceSetupOperation)initWithSession:(id)session setupSessionFactory:(id)factory
 {
   v5.receiver = self;
   v5.super_class = HMCUMessageSessionDeviceSetupOperation;
-  return [(HMDeviceSetupOperationBase *)&v5 initWithSessionTransport:a3 setupSessionFactory:a4];
+  return [(HMDeviceSetupOperationBase *)&v5 initWithSessionTransport:session setupSessionFactory:factory];
 }
 
-- (HMCUMessageSessionDeviceSetupOperation)initWithSession:(id)a3 sessionIdentifier:(id)a4
+- (HMCUMessageSessionDeviceSetupOperation)initWithSession:(id)session sessionIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __76__HMCUMessageSessionDeviceSetupOperation_initWithSession_sessionIdentifier___block_invoke;
   v10[3] = &unk_1E7549330;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(HMCUMessageSessionDeviceSetupOperation *)self initWithSession:a3 setupSessionFactory:v10];
+  v11 = identifierCopy;
+  v7 = identifierCopy;
+  v8 = [(HMCUMessageSessionDeviceSetupOperation *)self initWithSession:session setupSessionFactory:v10];
 
   return v8;
 }

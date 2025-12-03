@@ -1,39 +1,39 @@
 @interface LNEnumCaseMetadata
-- (BOOL)isEqual:(id)a3;
-- (LNEnumCaseMetadata)initWithCoder:(id)a3;
-- (LNEnumCaseMetadata)initWithIdentifier:(id)a3 displayRepresentation:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNEnumCaseMetadata)initWithCoder:(id)coder;
+- (LNEnumCaseMetadata)initWithIdentifier:(id)identifier displayRepresentation:(id)representation;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNEnumCaseMetadata
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNEnumCaseMetadata *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(LNEnumCaseMetadata *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(LNEnumCaseMetadata *)self displayRepresentation];
-  [v4 encodeObject:v6 forKey:@"displayRepresentation"];
+  displayRepresentation = [(LNEnumCaseMetadata *)self displayRepresentation];
+  [coderCopy encodeObject:displayRepresentation forKey:@"displayRepresentation"];
 }
 
-- (LNEnumCaseMetadata)initWithCoder:(id)a3
+- (LNEnumCaseMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayRepresentation"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayRepresentation"];
 
   v7 = [(LNEnumCaseMetadata *)self initWithIdentifier:v5 displayRepresentation:v6];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -42,10 +42,10 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v7 = [(LNEnumCaseMetadata *)self identifier];
-    v8 = [(LNEnumCaseMetadata *)v6 identifier];
-    v9 = v7;
-    v10 = v8;
+    identifier = [(LNEnumCaseMetadata *)self identifier];
+    identifier2 = [(LNEnumCaseMetadata *)v6 identifier];
+    v9 = identifier;
+    v10 = identifier2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -72,10 +72,10 @@ LABEL_19:
       }
     }
 
-    v15 = [(LNEnumCaseMetadata *)self displayRepresentation];
-    v16 = [(LNEnumCaseMetadata *)v6 displayRepresentation];
-    v14 = v15;
-    v17 = v16;
+    displayRepresentation = [(LNEnumCaseMetadata *)self displayRepresentation];
+    displayRepresentation2 = [(LNEnumCaseMetadata *)v6 displayRepresentation];
+    v14 = displayRepresentation;
+    v17 = displayRepresentation2;
     v13 = v17;
     if (v14 == v17)
     {
@@ -100,14 +100,14 @@ LABEL_21:
   return v12;
 }
 
-- (LNEnumCaseMetadata)initWithIdentifier:(id)a3 displayRepresentation:(id)a4
+- (LNEnumCaseMetadata)initWithIdentifier:(id)identifier displayRepresentation:(id)representation
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  identifierCopy = identifier;
+  representationCopy = representation;
+  v9 = representationCopy;
+  if (identifierCopy)
   {
-    if (v8)
+    if (representationCopy)
     {
       goto LABEL_3;
     }
@@ -115,8 +115,8 @@ LABEL_21:
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"LNEnumMetadata.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNEnumMetadata.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
     if (v9)
     {
@@ -124,8 +124,8 @@ LABEL_21:
     }
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"LNEnumMetadata.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"displayRepresentation"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNEnumMetadata.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"displayRepresentation"}];
 
 LABEL_3:
   v19.receiver = self;
@@ -133,7 +133,7 @@ LABEL_3:
   v10 = [(LNEnumCaseMetadata *)&v19 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [identifierCopy copy];
     identifier = v10->_identifier;
     v10->_identifier = v11;
 

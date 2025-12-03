@@ -3,21 +3,21 @@
 - (CGSize)be_fixedLayoutSize;
 - (double)be_initialScale;
 - (id)be_viewportArguments;
-- (id)be_viewportArgumentsAtScale:(double)a3;
-- (void)be_applyMetaViewportOverridesForFixedLayoutSize:(CGSize)a3;
+- (id)be_viewportArgumentsAtScale:(double)scale;
+- (void)be_applyMetaViewportOverridesForFixedLayoutSize:(CGSize)size;
 - (void)be_applyViewportArgumentsIfNeeded;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation _BEFixedLayoutWKWebView
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_BDEC;
   v5[3] = &unk_328450;
-  v6 = a3;
+  frameCopy = frame;
   v5[4] = self;
   v4 = objc_retainBlock(v5);
   if ([(BEWKWebView *)self be_finishedInit])
@@ -32,17 +32,17 @@
   }
 }
 
-- (void)be_applyMetaViewportOverridesForFixedLayoutSize:(CGSize)a3
+- (void)be_applyMetaViewportOverridesForFixedLayoutSize:(CGSize)size
 {
-  if (a3.height > 0.0 && a3.width > 0.0)
+  if (size.height > 0.0 && size.width > 0.0)
   {
     [(_BEFixedLayoutWKWebView *)self setBe_fixedLayoutSize:?];
     [(_BEFixedLayoutWKWebView *)self setBe_minScale:0.01];
     [(_BEFixedLayoutWKWebView *)self setBe_maxScale:10.0];
   }
 
-  v4 = [(_BEFixedLayoutWKWebView *)self be_viewportArguments];
-  [(_BEFixedLayoutWKWebView *)self _overrideViewportWithArguments:v4];
+  be_viewportArguments = [(_BEFixedLayoutWKWebView *)self be_viewportArguments];
+  [(_BEFixedLayoutWKWebView *)self _overrideViewportWithArguments:be_viewportArguments];
 }
 
 - (void)be_applyViewportArgumentsIfNeeded
@@ -50,10 +50,10 @@
   [(_BEFixedLayoutWKWebView *)self be_initialScale];
   v4 = v3;
   v5 = [NSNumber numberWithDouble:?];
-  v6 = [v5 stringValue];
+  stringValue = [v5 stringValue];
 
-  v7 = [(_BEFixedLayoutWKWebView *)self currentInitialScaleString];
-  v8 = [v6 isEqualToString:v7];
+  currentInitialScaleString = [(_BEFixedLayoutWKWebView *)self currentInitialScaleString];
+  v8 = [stringValue isEqualToString:currentInitialScaleString];
 
   if ((v8 & 1) == 0)
   {
@@ -116,33 +116,33 @@
   return [(_BEFixedLayoutWKWebView *)self be_viewportArgumentsAtScale:?];
 }
 
-- (id)be_viewportArgumentsAtScale:(double)a3
+- (id)be_viewportArgumentsAtScale:(double)scale
 {
-  v4 = [NSNumber numberWithDouble:a3];
-  v5 = [v4 stringValue];
+  v4 = [NSNumber numberWithDouble:scale];
+  stringValue = [v4 stringValue];
 
-  [(_BEFixedLayoutWKWebView *)self setCurrentInitialScaleString:v5];
-  v17[0] = v5;
+  [(_BEFixedLayoutWKWebView *)self setCurrentInitialScaleString:stringValue];
+  v17[0] = stringValue;
   v16[0] = @"initial-scale";
   v16[1] = @"width";
   v6 = [NSNumber numberWithDouble:self->_be_fixedLayoutSize.width];
-  v7 = [v6 stringValue];
-  v17[1] = v7;
+  stringValue2 = [v6 stringValue];
+  v17[1] = stringValue2;
   v16[2] = @"height";
   v8 = [NSNumber numberWithDouble:self->_be_fixedLayoutSize.height];
-  v9 = [v8 stringValue];
-  v17[2] = v9;
+  stringValue3 = [v8 stringValue];
+  v17[2] = stringValue3;
   v17[3] = @"no";
   v16[3] = @"user-scalable";
   v16[4] = @"minimum-scale";
   v10 = [NSNumber numberWithDouble:self->_be_minScale];
-  v11 = [v10 stringValue];
-  v17[4] = v11;
+  stringValue4 = [v10 stringValue];
+  v17[4] = stringValue4;
   v16[5] = @"maximum-scale";
   v12 = [NSNumber numberWithDouble:self->_be_maxScale];
-  v13 = [v12 stringValue];
+  stringValue5 = [v12 stringValue];
   v16[6] = @"shrink-to-fit";
-  v17[5] = v13;
+  v17[5] = stringValue5;
   v17[6] = @"yes";
   v14 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:7];
 
@@ -151,18 +151,18 @@
 
 - (CGRect)_visibleContentRect
 {
-  v3 = [(_BEFixedLayoutWKWebView *)self scrollView];
-  [v3 zoomScale];
+  scrollView = [(_BEFixedLayoutWKWebView *)self scrollView];
+  [scrollView zoomScale];
   v5 = v4;
 
-  v6 = [(_BEFixedLayoutWKWebView *)self _scroller];
-  if (v6)
+  _scroller = [(_BEFixedLayoutWKWebView *)self _scroller];
+  if (_scroller)
   {
-    v7 = [(_BEFixedLayoutWKWebView *)self be_contentView];
-    [v6 zoomScale];
+    be_contentView = [(_BEFixedLayoutWKWebView *)self be_contentView];
+    [_scroller zoomScale];
     if (v8 == 1.0)
     {
-      [v7 bounds];
+      [be_contentView bounds];
       x = v9;
       y = v11;
       width = v13;
@@ -171,13 +171,13 @@
 
     else
     {
-      [v6 visibleBounds];
-      [v7 convertRect:v6 fromView:?];
+      [_scroller visibleBounds];
+      [be_contentView convertRect:_scroller fromView:?];
       v22 = v21;
       v24 = v23;
       v26 = v25;
       v28 = v27;
-      [v7 bounds];
+      [be_contentView bounds];
       v44.origin.x = v22;
       v44.origin.y = v24;
       v44.size.width = v26;

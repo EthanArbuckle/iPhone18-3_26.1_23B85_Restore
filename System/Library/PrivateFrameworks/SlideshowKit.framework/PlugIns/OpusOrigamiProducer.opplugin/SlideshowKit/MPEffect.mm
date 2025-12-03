@@ -1,27 +1,27 @@
 @interface MPEffect
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
-+ (id)effectWithEffectID:(id)a3;
-+ (id)effectWithEffectID:(id)a3 andPaths:(id)a4;
-+ (id)effectWithEffectID:(id)a3 andStrings:(id)a4;
-+ (id)effectWithEffectID:(id)a3 strings:(id)a4 paths:(id)a5;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
++ (id)effectWithEffectID:(id)d;
++ (id)effectWithEffectID:(id)d andPaths:(id)paths;
++ (id)effectWithEffectID:(id)d andStrings:(id)strings;
++ (id)effectWithEffectID:(id)d strings:(id)strings paths:(id)paths;
 - (BOOL)hasMovies;
-- (BOOL)hasPanoramasInDocument:(id)a3;
+- (BOOL)hasPanoramasInDocument:(id)document;
 - (BOOL)isLive;
 - (BOOL)needsParallelizer;
 - (CGPoint)position;
 - (CGSize)size;
 - (MPEffect)init;
-- (MPEffect)initWithEffectID:(id)a3 andPaths:(id)a4;
-- (MPEffect)initWithEffectID:(id)a3 andStrings:(id)a4;
-- (MPEffect)initWithEffectID:(id)a3 strings:(id)a4 paths:(id)a5;
+- (MPEffect)initWithEffectID:(id)d andPaths:(id)paths;
+- (MPEffect)initWithEffectID:(id)d andStrings:(id)strings;
+- (MPEffect)initWithEffectID:(id)d strings:(id)strings paths:(id)paths;
 - (NSString)presetID;
 - (double)fullDuration;
 - (double)lowestDisplayTime;
 - (id)_effectAttributes;
-- (id)animationPathForKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)animationPathForKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)effectAttributeForKey:(id)a3;
+- (id)effectAttributeForKey:(id)key;
 - (id)formattedAttributes;
 - (id)fullDebugLog;
 - (id)nearestLayerGroup;
@@ -30,139 +30,139 @@
 - (id)parentDocument;
 - (id)plugID;
 - (id)scriptingAnimations;
-- (id)slideForMCSlide:(id)a3;
-- (id)slideInformationWithDocument:(id)a3;
+- (id)slideForMCSlide:(id)slide;
+- (id)slideInformationWithDocument:(id)document;
 - (id)videoPaths;
 - (int64_t)maxNumberOfSecondarySlides;
 - (int64_t)maxNumberOfSlides;
 - (int64_t)zIndex;
-- (void)_updateEffectTimingWithDocument:(id)a3 forExport:(BOOL)a4;
-- (void)_updateTiming:(BOOL)a3 forExport:(BOOL)a4;
-- (void)addFilter:(id)a3;
-- (void)addFilters:(id)a3;
-- (void)addSecondarySlide:(id)a3;
-- (void)addSecondarySlides:(id)a3;
-- (void)addSlide:(id)a3;
-- (void)addSlides:(id)a3;
-- (void)addText:(id)a3;
-- (void)addTexts:(id)a3;
+- (void)_updateEffectTimingWithDocument:(id)document forExport:(BOOL)export;
+- (void)_updateTiming:(BOOL)timing forExport:(BOOL)export;
+- (void)addFilter:(id)filter;
+- (void)addFilters:(id)filters;
+- (void)addSecondarySlide:(id)slide;
+- (void)addSecondarySlides:(id)slides;
+- (void)addSlide:(id)slide;
+- (void)addSlides:(id)slides;
+- (void)addText:(id)text;
+- (void)addTexts:(id)texts;
 - (void)applyFormattedAttributes;
 - (void)cleanup;
-- (void)copyAnimationPaths:(id)a3;
-- (void)copyAudioPlaylist:(id)a3;
-- (void)copyFilters:(id)a3;
-- (void)copySecondarySlides:(id)a3;
-- (void)copySlides:(id)a3;
-- (void)copyTexts:(id)a3;
-- (void)copyVars:(id)a3;
-- (void)createSecondarySlidesWithPaths:(id)a3;
-- (void)createSlidesWithPaths:(id)a3;
+- (void)copyAnimationPaths:(id)paths;
+- (void)copyAudioPlaylist:(id)playlist;
+- (void)copyFilters:(id)filters;
+- (void)copySecondarySlides:(id)slides;
+- (void)copySlides:(id)slides;
+- (void)copyTexts:(id)texts;
+- (void)copyVars:(id)vars;
+- (void)createSecondarySlidesWithPaths:(id)paths;
+- (void)createSlidesWithPaths:(id)paths;
 - (void)createTextsWithDefaultStrings;
-- (void)createTextsWithStrings:(id)a3 secondLineFactor:(double)a4 fillIn:(BOOL)a5;
+- (void)createTextsWithStrings:(id)strings secondLineFactor:(double)factor fillIn:(BOOL)in;
 - (void)dealloc;
-- (void)insertFilters:(id)a3 atIndex:(int64_t)a4;
-- (void)insertObject:(id)a3 inFiltersAtIndex:(int64_t)a4;
-- (void)insertObject:(id)a3 inSlidesAtIndex:(int64_t)a4;
-- (void)insertObject:(id)a3 inTextsAtIndex:(int64_t)a4;
-- (void)insertSecondarySlides:(id)a3 atIndex:(int64_t)a4;
-- (void)insertSlides:(id)a3 atIndex:(int64_t)a4;
-- (void)insertTexts:(id)a3 atIndex:(int64_t)a4;
-- (void)moveFiltersFromIndices:(id)a3 toIndex:(int64_t)a4;
-- (void)moveSlidesFromIndices:(id)a3 toIndex:(int64_t)a4;
-- (void)moveTextsFromIndices:(id)a3 toIndex:(int64_t)a4;
+- (void)insertFilters:(id)filters atIndex:(int64_t)index;
+- (void)insertObject:(id)object inFiltersAtIndex:(int64_t)index;
+- (void)insertObject:(id)object inSlidesAtIndex:(int64_t)index;
+- (void)insertObject:(id)object inTextsAtIndex:(int64_t)index;
+- (void)insertSecondarySlides:(id)slides atIndex:(int64_t)index;
+- (void)insertSlides:(id)slides atIndex:(int64_t)index;
+- (void)insertTexts:(id)texts atIndex:(int64_t)index;
+- (void)moveFiltersFromIndices:(id)indices toIndex:(int64_t)index;
+- (void)moveSlidesFromIndices:(id)indices toIndex:(int64_t)index;
+- (void)moveTextsFromIndices:(id)indices toIndex:(int64_t)index;
 - (void)reconfigureSlides;
 - (void)removeAllFilters;
 - (void)removeAllSecondarySlides;
 - (void)removeAllSlides;
 - (void)removeAllTexts;
-- (void)removeAnimationPathForKey:(id)a3;
-- (void)removeFiltersAtIndices:(id)a3;
-- (void)removeObjectFromFiltersAtIndex:(int64_t)a3;
-- (void)removeObjectFromSlidesAtIndex:(int64_t)a3;
-- (void)removeObjectFromTextsAtIndex:(int64_t)a3;
-- (void)removeSecondarySlidesAtIndices:(id)a3;
-- (void)removeSlidesAtIndices:(id)a3;
-- (void)removeTextsAtIndices:(id)a3;
-- (void)replaceObjectInFiltersAtIndex:(int64_t)a3 withObject:(id)a4;
-- (void)replaceObjectInSlidesAtIndex:(int64_t)a3 withObject:(id)a4;
-- (void)replaceObjectInTextsAtIndex:(int64_t)a3 withObject:(id)a4;
-- (void)replaceSlideAtIndex:(int64_t)a3 withSlide:(id)a4;
-- (void)replaceTextsWitStrings:(id)a3;
+- (void)removeAnimationPathForKey:(id)key;
+- (void)removeFiltersAtIndices:(id)indices;
+- (void)removeObjectFromFiltersAtIndex:(int64_t)index;
+- (void)removeObjectFromSlidesAtIndex:(int64_t)index;
+- (void)removeObjectFromTextsAtIndex:(int64_t)index;
+- (void)removeSecondarySlidesAtIndices:(id)indices;
+- (void)removeSlidesAtIndices:(id)indices;
+- (void)removeTextsAtIndices:(id)indices;
+- (void)replaceObjectInFiltersAtIndex:(int64_t)index withObject:(id)object;
+- (void)replaceObjectInSlidesAtIndex:(int64_t)index withObject:(id)object;
+- (void)replaceObjectInTextsAtIndex:(int64_t)index withObject:(id)object;
+- (void)replaceSlideAtIndex:(int64_t)index withSlide:(id)slide;
+- (void)replaceTextsWitStrings:(id)strings;
 - (void)scaleMainDuration;
-- (void)setAnimationPath:(id)a3 forKey:(id)a4;
-- (void)setAudioPlaylist:(id)a3;
-- (void)setContainer:(id)a3;
-- (void)setEffectAttribute:(id)a3 forKey:(id)a4;
-- (void)setEffectAttributes:(id)a3;
-- (void)setEffectID:(id)a3;
-- (void)setFullDuration:(double)a3;
-- (void)setHeight:(double)a3;
-- (void)setMainDuration:(double)a3;
-- (void)setOpacity:(double)a3;
-- (void)setParentContainer:(id)a3;
-- (void)setPhaseInDuration:(double)a3;
-- (void)setPhaseOutDuration:(double)a3;
-- (void)setPlug:(id)a3;
-- (void)setPosition:(CGPoint)a3;
-- (void)setPresetID:(id)a3;
-- (void)setRandomSeed:(int64_t)a3;
-- (void)setRotationAngle:(double)a3;
-- (void)setScale:(double)a3;
-- (void)setScriptingAnimations:(id)a3;
-- (void)setSize:(CGSize)a3;
-- (void)setWidth:(double)a3;
-- (void)setXPosition:(double)a3;
-- (void)setXRotationAngle:(double)a3;
-- (void)setYPosition:(double)a3;
-- (void)setYRotationAngle:(double)a3;
-- (void)setZPosition:(double)a3;
+- (void)setAnimationPath:(id)path forKey:(id)key;
+- (void)setAudioPlaylist:(id)playlist;
+- (void)setContainer:(id)container;
+- (void)setEffectAttribute:(id)attribute forKey:(id)key;
+- (void)setEffectAttributes:(id)attributes;
+- (void)setEffectID:(id)d;
+- (void)setFullDuration:(double)duration;
+- (void)setHeight:(double)height;
+- (void)setMainDuration:(double)duration;
+- (void)setOpacity:(double)opacity;
+- (void)setParentContainer:(id)container;
+- (void)setPhaseInDuration:(double)duration;
+- (void)setPhaseOutDuration:(double)duration;
+- (void)setPlug:(id)plug;
+- (void)setPosition:(CGPoint)position;
+- (void)setPresetID:(id)d;
+- (void)setRandomSeed:(int64_t)seed;
+- (void)setRotationAngle:(double)angle;
+- (void)setScale:(double)scale;
+- (void)setScriptingAnimations:(id)animations;
+- (void)setSize:(CGSize)size;
+- (void)setWidth:(double)width;
+- (void)setXPosition:(double)position;
+- (void)setXRotationAngle:(double)angle;
+- (void)setYPosition:(double)position;
+- (void)setYRotationAngle:(double)angle;
+- (void)setZPosition:(double)position;
 - (void)updateEffectAttributes;
 @end
 
 @implementation MPEffect
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  if ([a3 isEqualToString:@"slides"])
+  if ([key isEqualToString:@"slides"])
   {
     return 0;
   }
 
   else
   {
-    return [a3 isEqualToString:@"texts"] ^ 1;
+    return [key isEqualToString:@"texts"] ^ 1;
   }
 }
 
-+ (id)effectWithEffectID:(id)a3
++ (id)effectWithEffectID:(id)d
 {
-  v3 = [[a1 alloc] initWithEffectID:a3];
+  v3 = [[self alloc] initWithEffectID:d];
 
   return v3;
 }
 
-+ (id)effectWithEffectID:(id)a3 andPaths:(id)a4
++ (id)effectWithEffectID:(id)d andPaths:(id)paths
 {
-  v4 = [[a1 alloc] initWithEffectID:a3 andPaths:a4];
+  v4 = [[self alloc] initWithEffectID:d andPaths:paths];
 
   return v4;
 }
 
-+ (id)effectWithEffectID:(id)a3 andStrings:(id)a4
++ (id)effectWithEffectID:(id)d andStrings:(id)strings
 {
-  v4 = [[a1 alloc] initWithEffectID:a3 andStrings:a4];
+  v4 = [[self alloc] initWithEffectID:d andStrings:strings];
 
   return v4;
 }
 
-+ (id)effectWithEffectID:(id)a3 strings:(id)a4 paths:(id)a5
++ (id)effectWithEffectID:(id)d strings:(id)strings paths:(id)paths
 {
-  v5 = [[a1 alloc] initWithEffectID:a3 strings:a4 paths:a5];
+  v5 = [[self alloc] initWithEffectID:d strings:strings paths:paths];
 
   return v5;
 }
 
-- (MPEffect)initWithEffectID:(id)a3 andPaths:(id)a4
+- (MPEffect)initWithEffectID:(id)d andPaths:(id)paths
 {
   v6 = [(MPEffect *)self init];
   v7 = v6;
@@ -175,7 +175,7 @@
       v7->_effectID = 0;
     }
 
-    v7->_effectID = [a3 copy];
+    v7->_effectID = [d copy];
     presetID = v7->_presetID;
     if (presetID)
     {
@@ -190,14 +190,14 @@
       v7->_randomSeed = arc4random();
     }
 
-    [(MPEffect *)v7 createSlidesWithPaths:a4];
+    [(MPEffect *)v7 createSlidesWithPaths:paths];
     [(MPEffect *)v7 _updateTiming:0];
   }
 
   return v7;
 }
 
-- (MPEffect)initWithEffectID:(id)a3 andStrings:(id)a4
+- (MPEffect)initWithEffectID:(id)d andStrings:(id)strings
 {
   v6 = [(MPEffect *)self init];
   v7 = v6;
@@ -210,7 +210,7 @@
       v7->_effectID = 0;
     }
 
-    v7->_effectID = [a3 copy];
+    v7->_effectID = [d copy];
     presetID = v7->_presetID;
     if (presetID)
     {
@@ -225,14 +225,14 @@
       v7->_randomSeed = arc4random();
     }
 
-    [(MPEffect *)v7 createTextsWithStrings:a4 secondLineFactor:1.0];
+    [(MPEffect *)v7 createTextsWithStrings:strings secondLineFactor:1.0];
     [(MPEffect *)v7 _updateTiming:0];
   }
 
   return v7;
 }
 
-- (MPEffect)initWithEffectID:(id)a3 strings:(id)a4 paths:(id)a5
+- (MPEffect)initWithEffectID:(id)d strings:(id)strings paths:(id)paths
 {
   v8 = [(MPEffect *)self init];
   v9 = v8;
@@ -245,7 +245,7 @@
       v9->_effectID = 0;
     }
 
-    v9->_effectID = [a3 copy];
+    v9->_effectID = [d copy];
     presetID = v9->_presetID;
     if (presetID)
     {
@@ -260,8 +260,8 @@
       v9->_randomSeed = arc4random();
     }
 
-    [(MPEffect *)v9 createTextsWithStrings:a4 secondLineFactor:1.0];
-    [(MPEffect *)v9 createSlidesWithPaths:a5];
+    [(MPEffect *)v9 createTextsWithStrings:strings secondLineFactor:1.0];
+    [(MPEffect *)v9 createSlidesWithPaths:paths];
     [(MPEffect *)v9 _updateTiming:0];
   }
 
@@ -311,23 +311,23 @@
     slides = [(NSMutableArray *)slides count];
   }
 
-  v5 = [(NSString *)v3 stringByAppendingFormat:@"\t                Slide Count: %d\n", slides];
+  slides = [(NSString *)v3 stringByAppendingFormat:@"\t                Slide Count: %d\n", slides];
   texts = self->_texts;
   if (texts)
   {
     texts = [(NSMutableArray *)texts count];
   }
 
-  v7 = [(NSString *)v5 stringByAppendingFormat:@"\t                 Text Count: %d\n", texts];
+  texts = [(NSString *)slides stringByAppendingFormat:@"\t                 Text Count: %d\n", texts];
   filters = self->_filters;
   if (filters)
   {
     filters = [(NSMutableArray *)filters count];
   }
 
-  v9 = [(NSString *)v7 stringByAppendingFormat:@"\t               Filter Count: %d\n", filters];
+  filters = [(NSString *)texts stringByAppendingFormat:@"\t               Filter Count: %d\n", filters];
   [(MPEffect *)self mainDuration];
-  v11 = [(NSString *)v9 stringByAppendingFormat:@"\t              Main Duration: %f\n", v10];
+  v11 = [(NSString *)filters stringByAppendingFormat:@"\t              Main Duration: %f\n", v10];
   [(MPEffect *)self phaseInDuration];
   v13 = [(NSString *)v11 stringByAppendingFormat:@"\t          Phase In Duration: %f\n", v12];
   [(MPEffect *)self phaseOutDuration];
@@ -370,9 +370,9 @@
   return [v29 stringByAppendingFormat:@"\t Has Effect EffectContainer: %@\n", v30];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 copyVars:self];
   [v4 copySlides:self->_slides];
   [v4 copySecondarySlides:self->_secondarySlides];
@@ -420,7 +420,7 @@
   [(MPEffect *)&v5 dealloc];
 }
 
-- (void)setEffectID:(id)a3
+- (void)setEffectID:(id)d
 {
   effectID = self->_effectID;
   if (effectID)
@@ -429,7 +429,7 @@
     self->_effectID = 0;
   }
 
-  self->_effectID = [a3 copy];
+  self->_effectID = [d copy];
   self->_supportsEffectTiming = [+[MREffectManager sharedManager](MREffectManager "sharedManager")];
   [(MPEffect *)self _updateTiming:1];
   if (self->_randomSeed == -1 && [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")])
@@ -447,7 +447,7 @@
   if (container)
   {
 
-    [(MCContainerEffect *)container setEffectID:a3];
+    [(MCContainerEffect *)container setEffectID:d];
   }
 }
 
@@ -464,7 +464,7 @@
   }
 }
 
-- (void)setPresetID:(id)a3
+- (void)setPresetID:(id)d
 {
   presetID = self->_presetID;
   if (presetID)
@@ -473,7 +473,7 @@
     self->_presetID = 0;
   }
 
-  self->_presetID = [a3 copy];
+  self->_presetID = [d copy];
   attributes = self->_attributes;
   if (attributes)
   {
@@ -489,7 +489,7 @@
   }
 }
 
-- (void)setEffectAttributes:(id)a3
+- (void)setEffectAttributes:(id)attributes
 {
   attributes = self->_attributes;
   if (attributes)
@@ -498,7 +498,7 @@
     self->_attributes = 0;
   }
 
-  self->_attributes = [a3 mutableCopy];
+  self->_attributes = [attributes mutableCopy];
   [(MPEffect *)self applyFormattedAttributes];
   if (self->_supportsEffectTiming)
   {
@@ -507,14 +507,14 @@
   }
 }
 
-- (id)effectAttributeForKey:(id)a3
+- (id)effectAttributeForKey:(id)key
 {
-  v4 = [(MPEffect *)self _effectAttributes];
+  _effectAttributes = [(MPEffect *)self _effectAttributes];
 
-  return [v4 objectForKey:a3];
+  return [_effectAttributes objectForKey:key];
 }
 
-- (void)setEffectAttribute:(id)a3 forKey:(id)a4
+- (void)setEffectAttribute:(id)attribute forKey:(id)key
 {
   attributes = self->_attributes;
   if (!attributes)
@@ -523,21 +523,21 @@
     self->_attributes = attributes;
   }
 
-  [(NSMutableDictionary *)attributes setValue:a3 forKey:a4];
+  [(NSMutableDictionary *)attributes setValue:attribute forKey:key];
   container = self->_container;
   if (container)
   {
 
-    [(MCContainerEffect *)container setEffectAttribute:a3 forKey:a4];
+    [(MCContainerEffect *)container setEffectAttribute:attribute forKey:key];
   }
 }
 
-- (void)setOpacity:(double)a3
+- (void)setOpacity:(double)opacity
 {
-  self->_opacity = a3;
+  self->_opacity = opacity;
   if (self->_container)
   {
-    if (a3 == 1.0 && self->_plug && (v5 = self->_parentContainer) != 0 && ![(MPEffectContainer *)v5 shouldBeParallelizer])
+    if (opacity == 1.0 && self->_plug && (v5 = self->_parentContainer) != 0 && ![(MPEffectContainer *)v5 shouldBeParallelizer])
     {
       parentContainer = self->_parentContainer;
 
@@ -547,7 +547,7 @@
     else
     {
       plug = self->_plug;
-      if (a3 != 1.0 && plug == 0)
+      if (opacity != 1.0 && plug == 0)
       {
         v8 = self->_parentContainer;
 
@@ -557,18 +557,18 @@
       else if (plug)
       {
 
-        [(MCPlugParallel *)plug setOpacity:a3];
+        [(MCPlugParallel *)plug setOpacity:opacity];
       }
     }
   }
 }
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
-  self->_scale = a3;
+  self->_scale = scale;
   if (self->_container)
   {
-    if (a3 != 1.0 && self->_plug && (v5 = self->_parentContainer) != 0 && ![(MPEffectContainer *)v5 shouldBeParallelizer])
+    if (scale != 1.0 && self->_plug && (v5 = self->_parentContainer) != 0 && ![(MPEffectContainer *)v5 shouldBeParallelizer])
     {
       parentContainer = self->_parentContainer;
 
@@ -578,7 +578,7 @@
     else
     {
       plug = self->_plug;
-      if (a3 == 1.0 && plug == 0)
+      if (scale == 1.0 && plug == 0)
       {
         v8 = self->_parentContainer;
 
@@ -588,7 +588,7 @@
       else if (plug)
       {
 
-        [(MCPlugParallel *)plug setScale:a3];
+        [(MCPlugParallel *)plug setScale:scale];
       }
     }
   }
@@ -603,18 +603,18 @@
   return result;
 }
 
-- (void)setPosition:(CGPoint)a3
+- (void)setPosition:(CGPoint)position
 {
-  self->_position = a3;
+  self->_position = position;
   if (!self->_container)
   {
     return;
   }
 
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   plug = self->_plug;
-  if (a3.x != CGPointZero.x || a3.y != CGPointZero.y)
+  if (position.x != CGPointZero.x || position.y != CGPointZero.y)
   {
     if (!plug)
     {
@@ -651,12 +651,12 @@ LABEL_13:
   [(MPEffectContainer *)v9 convertFromParallelizerToEffectContainer];
 }
 
-- (void)setZPosition:(double)a3
+- (void)setZPosition:(double)position
 {
-  self->_zPosition = a3;
+  self->_zPosition = position;
   if (self->_container)
   {
-    if (a3 == 0.0 && self->_plug && (v5 = self->_parentContainer) != 0 && ![(MPEffectContainer *)v5 shouldBeParallelizer])
+    if (position == 0.0 && self->_plug && (v5 = self->_parentContainer) != 0 && ![(MPEffectContainer *)v5 shouldBeParallelizer])
     {
       parentContainer = self->_parentContainer;
 
@@ -666,7 +666,7 @@ LABEL_13:
     else
     {
       plug = self->_plug;
-      if (a3 != 0.0 && plug == 0)
+      if (position != 0.0 && plug == 0)
       {
         v8 = self->_parentContainer;
 
@@ -676,18 +676,18 @@ LABEL_13:
       else if (plug)
       {
 
-        [(MCPlugParallel *)plug setZPosition:a3];
+        [(MCPlugParallel *)plug setZPosition:position];
       }
     }
   }
 }
 
-- (void)setRotationAngle:(double)a3
+- (void)setRotationAngle:(double)angle
 {
-  self->_rotationAngle = a3;
+  self->_rotationAngle = angle;
   if (self->_container)
   {
-    if (a3 == 0.0 && self->_plug && (v5 = self->_parentContainer) != 0 && ![(MPEffectContainer *)v5 shouldBeParallelizer])
+    if (angle == 0.0 && self->_plug && (v5 = self->_parentContainer) != 0 && ![(MPEffectContainer *)v5 shouldBeParallelizer])
     {
       parentContainer = self->_parentContainer;
 
@@ -697,7 +697,7 @@ LABEL_13:
     else
     {
       plug = self->_plug;
-      if (a3 != 0.0 && plug == 0)
+      if (angle != 0.0 && plug == 0)
       {
         v8 = self->_parentContainer;
 
@@ -707,7 +707,7 @@ LABEL_13:
       else if (plug)
       {
 
-        [(MCPlugParallel *)plug setRotationAngle:a3];
+        [(MCPlugParallel *)plug setRotationAngle:angle];
       }
     }
   }
@@ -722,18 +722,18 @@ LABEL_13:
   return result;
 }
 
-- (void)setSize:(CGSize)a3
+- (void)setSize:(CGSize)size
 {
-  self->_size = a3;
+  self->_size = size;
   if (!self->_container)
   {
     return;
   }
 
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   plug = self->_plug;
-  if (a3.width != 2.0 || a3.height != 2.0)
+  if (size.width != 2.0 || size.height != 2.0)
   {
     if (!plug)
     {
@@ -775,12 +775,12 @@ LABEL_14:
   [(MPEffectContainer *)v9 convertFromParallelizerToEffectContainer];
 }
 
-- (void)setXRotationAngle:(double)a3
+- (void)setXRotationAngle:(double)angle
 {
-  self->_xRotationAngle = a3;
+  self->_xRotationAngle = angle;
   if (self->_container)
   {
-    if (a3 == 0.0 && self->_plug && (v5 = self->_parentContainer) != 0 && ![(MPEffectContainer *)v5 shouldBeParallelizer])
+    if (angle == 0.0 && self->_plug && (v5 = self->_parentContainer) != 0 && ![(MPEffectContainer *)v5 shouldBeParallelizer])
     {
       parentContainer = self->_parentContainer;
 
@@ -790,7 +790,7 @@ LABEL_14:
     else
     {
       plug = self->_plug;
-      if (a3 != 0.0 && plug == 0)
+      if (angle != 0.0 && plug == 0)
       {
         v8 = self->_parentContainer;
 
@@ -800,18 +800,18 @@ LABEL_14:
       else if (plug)
       {
 
-        [(MCPlugParallel *)plug setXRotationAngle:a3];
+        [(MCPlugParallel *)plug setXRotationAngle:angle];
       }
     }
   }
 }
 
-- (void)setYRotationAngle:(double)a3
+- (void)setYRotationAngle:(double)angle
 {
-  self->_yRotationAngle = a3;
+  self->_yRotationAngle = angle;
   if (self->_container)
   {
-    if (a3 == 0.0 && self->_plug && (v5 = self->_parentContainer) != 0 && ![(MPEffectContainer *)v5 shouldBeParallelizer])
+    if (angle == 0.0 && self->_plug && (v5 = self->_parentContainer) != 0 && ![(MPEffectContainer *)v5 shouldBeParallelizer])
     {
       parentContainer = self->_parentContainer;
 
@@ -821,7 +821,7 @@ LABEL_14:
     else
     {
       plug = self->_plug;
-      if (a3 != 0.0 && plug == 0)
+      if (angle != 0.0 && plug == 0)
       {
         v8 = self->_parentContainer;
 
@@ -831,7 +831,7 @@ LABEL_14:
       else if (plug)
       {
 
-        [(MCPlugParallel *)plug setYRotationAngle:a3];
+        [(MCPlugParallel *)plug setYRotationAngle:angle];
       }
     }
   }
@@ -847,42 +847,42 @@ LABEL_14:
   return v6 + v7;
 }
 
-- (void)setFullDuration:(double)a3
+- (void)setFullDuration:(double)duration
 {
   [(MPEffect *)self fullDuration];
-  v6 = v5 - a3;
+  v6 = v5 - duration;
   [(MPEffect *)self mainDuration];
   v8 = v7 + v6;
 
   [(MPEffect *)self setMainDuration:v8];
 }
 
-- (void)setPhaseInDuration:(double)a3
+- (void)setPhaseInDuration:(double)duration
 {
-  if (a3 >= 0.0)
+  if (duration >= 0.0)
   {
-    v3 = a3;
+    durationCopy = duration;
     [(MPEffect *)self phaseInDuration];
-    if (v5 != v3)
+    if (v5 != durationCopy)
     {
       v6 = [objc_msgSend(-[MPEffect parentContainer](self "parentContainer")];
-      v7 = [(MPEffect *)self nearestLayerGroup];
-      if (v7)
+      nearestLayerGroup = [(MPEffect *)self nearestLayerGroup];
+      if (nearestLayerGroup)
       {
-        v8 = [v7 autoAdjustDuration];
+        autoAdjustDuration = [nearestLayerGroup autoAdjustDuration];
       }
 
       else
       {
-        v8 = 1;
+        autoAdjustDuration = 1;
       }
 
       if (self->_parentContainer)
       {
-        if (([objc_msgSend(v6 documentAttributeForKey:{kMPDocumentEnforceSafeTiming), "BOOLValue"}] & v8) == 1)
+        if (([objc_msgSend(v6 documentAttributeForKey:{kMPDocumentEnforceSafeTiming), "BOOLValue"}] & autoAdjustDuration) == 1)
         {
           [(MPEffect *)self phaseInDuration];
-          v10 = v9 - v3;
+          v10 = v9 - durationCopy;
           [(MPEffect *)self fullDuration];
           v12 = v11 - v10;
           [(MPEffectContainer *)self->_parentContainer findMinDuration];
@@ -893,16 +893,16 @@ LABEL_14:
             [(MPEffect *)self phaseOutDuration];
             v17 = v15 - v16;
             [(MPEffect *)self mainDuration];
-            v3 = v17 - v18;
+            durationCopy = v17 - v18;
           }
         }
       }
 
       [(MPEffect *)self phaseInDuration];
-      self->_phaseInDuration = v3;
-      if (v8)
+      self->_phaseInDuration = durationCopy;
+      if (autoAdjustDuration)
       {
-        [(MPEffectContainer *)self->_parentContainer calculateDurationToSmallest:v3 < v19];
+        [(MPEffectContainer *)self->_parentContainer calculateDurationToSmallest:durationCopy < v19];
       }
 
       if (self->_container)
@@ -913,7 +913,7 @@ LABEL_14:
           plug = [(MPEffectContainer *)self->_parentContainer plug];
         }
 
-        [(MCPlug *)plug setPhaseInDuration:v3];
+        [(MCPlug *)plug setPhaseInDuration:durationCopy];
       }
 
       effectTiming = self->_effectTiming;
@@ -929,32 +929,32 @@ LABEL_14:
   }
 }
 
-- (void)setPhaseOutDuration:(double)a3
+- (void)setPhaseOutDuration:(double)duration
 {
-  if (a3 >= 0.0)
+  if (duration >= 0.0)
   {
-    v3 = a3;
+    durationCopy = duration;
     [(MPEffect *)self phaseOutDuration];
-    if (v5 != v3)
+    if (v5 != durationCopy)
     {
       v6 = [objc_msgSend(-[MPEffect parentContainer](self "parentContainer")];
-      v7 = [(MPEffect *)self nearestLayerGroup];
-      if (v7)
+      nearestLayerGroup = [(MPEffect *)self nearestLayerGroup];
+      if (nearestLayerGroup)
       {
-        v8 = [v7 autoAdjustDuration];
+        autoAdjustDuration = [nearestLayerGroup autoAdjustDuration];
       }
 
       else
       {
-        v8 = 1;
+        autoAdjustDuration = 1;
       }
 
       if (self->_parentContainer)
       {
-        if (([objc_msgSend(v6 documentAttributeForKey:{kMPDocumentEnforceSafeTiming), "BOOLValue"}] & v8) == 1)
+        if (([objc_msgSend(v6 documentAttributeForKey:{kMPDocumentEnforceSafeTiming), "BOOLValue"}] & autoAdjustDuration) == 1)
         {
           [(MPEffect *)self phaseOutDuration];
-          v10 = v9 - v3;
+          v10 = v9 - durationCopy;
           [(MPEffect *)self fullDuration];
           v12 = v11 - v10;
           [(MPEffectContainer *)self->_parentContainer findMinDuration];
@@ -965,16 +965,16 @@ LABEL_14:
             [(MPEffect *)self phaseInDuration];
             v17 = v15 - v16;
             [(MPEffect *)self mainDuration];
-            v3 = v17 - v18;
+            durationCopy = v17 - v18;
           }
         }
       }
 
       [(MPEffect *)self phaseOutDuration];
-      self->_phaseOutDuration = v3;
-      if (v8)
+      self->_phaseOutDuration = durationCopy;
+      if (autoAdjustDuration)
       {
-        [(MPEffectContainer *)self->_parentContainer calculateDurationToSmallest:v3 < v19];
+        [(MPEffectContainer *)self->_parentContainer calculateDurationToSmallest:durationCopy < v19];
       }
 
       if (self->_container)
@@ -985,7 +985,7 @@ LABEL_14:
           plug = [(MPEffectContainer *)self->_parentContainer plug];
         }
 
-        [(MCPlug *)plug setPhaseOutDuration:v3];
+        [(MCPlug *)plug setPhaseOutDuration:durationCopy];
       }
 
       effectTiming = self->_effectTiming;
@@ -1001,32 +1001,32 @@ LABEL_14:
   }
 }
 
-- (void)setMainDuration:(double)a3
+- (void)setMainDuration:(double)duration
 {
-  if (a3 >= 0.0)
+  if (duration >= 0.0)
   {
-    v3 = a3;
+    durationCopy = duration;
     [(MPEffect *)self mainDuration];
-    if (v5 != v3)
+    if (v5 != durationCopy)
     {
       v6 = [objc_msgSend(-[MPEffect parentContainer](self "parentContainer")];
-      v7 = [(MPEffect *)self nearestLayerGroup];
-      if (v7)
+      nearestLayerGroup = [(MPEffect *)self nearestLayerGroup];
+      if (nearestLayerGroup)
       {
-        v8 = [v7 autoAdjustDuration];
+        autoAdjustDuration = [nearestLayerGroup autoAdjustDuration];
       }
 
       else
       {
-        v8 = 1;
+        autoAdjustDuration = 1;
       }
 
       if (self->_parentContainer)
       {
-        if (([objc_msgSend(v6 documentAttributeForKey:{kMPDocumentEnforceSafeTiming), "BOOLValue"}] & v8) == 1)
+        if (([objc_msgSend(v6 documentAttributeForKey:{kMPDocumentEnforceSafeTiming), "BOOLValue"}] & autoAdjustDuration) == 1)
         {
           [(MPEffect *)self mainDuration];
-          v10 = v9 - v3;
+          v10 = v9 - durationCopy;
           [(MPEffect *)self fullDuration];
           v12 = v11 - v10;
           [(MPEffectContainer *)self->_parentContainer findMinDuration];
@@ -1037,16 +1037,16 @@ LABEL_14:
             [(MPEffect *)self phaseInDuration];
             v17 = v15 - v16;
             [(MPEffect *)self phaseOutDuration];
-            v3 = v17 - v18;
+            durationCopy = v17 - v18;
           }
         }
       }
 
       [(MPEffect *)self mainDuration];
-      self->_mainDuration = v3;
-      if (v8)
+      self->_mainDuration = durationCopy;
+      if (autoAdjustDuration)
       {
-        [(MPEffectContainer *)self->_parentContainer calculateDurationToSmallest:v3 < v19];
+        [(MPEffectContainer *)self->_parentContainer calculateDurationToSmallest:durationCopy < v19];
       }
 
       if (self->_container)
@@ -1057,7 +1057,7 @@ LABEL_14:
           plug = [(MPEffectContainer *)self->_parentContainer plug];
         }
 
-        [(MCPlug *)plug setLoopDuration:v3];
+        [(MCPlug *)plug setLoopDuration:durationCopy];
       }
 
       effectTiming = self->_effectTiming;
@@ -1086,14 +1086,14 @@ LABEL_14:
     return [(MCPlugParallel *)self->_plug zIndex];
   }
 
-  v5 = [(MPEffectContainer *)parentContainer effects];
+  effects = [(MPEffectContainer *)parentContainer effects];
 
-  return [v5 indexOfObject:self];
+  return [effects indexOfObject:self];
 }
 
-- (void)addSlide:(id)a3
+- (void)addSlide:(id)slide
 {
-  v6 = [[NSArray alloc] initWithObjects:{a3, 0}];
+  v6 = [[NSArray alloc] initWithObjects:{slide, 0}];
   slides = self->_slides;
   if (slides)
   {
@@ -1108,7 +1108,7 @@ LABEL_14:
   [(MPEffect *)self insertSlides:v6 atIndex:v5];
 }
 
-- (void)addSlides:(id)a3
+- (void)addSlides:(id)slides
 {
   slides = self->_slides;
   if (slides)
@@ -1121,10 +1121,10 @@ LABEL_14:
     v6 = 0;
   }
 
-  [(MPEffect *)self insertSlides:a3 atIndex:v6];
+  [(MPEffect *)self insertSlides:slides atIndex:v6];
 }
 
-- (void)insertSlides:(id)a3 atIndex:(int64_t)a4
+- (void)insertSlides:(id)slides atIndex:(int64_t)index
 {
   v7 = objc_autoreleasePoolPush();
   if (!self->_slides)
@@ -1132,7 +1132,7 @@ LABEL_14:
     self->_slides = objc_alloc_init(NSMutableArray);
   }
 
-  v8 = [[NSIndexSet alloc] initWithIndexesInRange:{a4, objc_msgSend(a3, "count")}];
+  v8 = [[NSIndexSet alloc] initWithIndexesInRange:{index, objc_msgSend(slides, "count")}];
   if (!self->_replaceSlides)
   {
     [(MPEffect *)self willChange:2 valuesAtIndexes:v8 forKey:@"slides"];
@@ -1140,21 +1140,21 @@ LABEL_14:
 
   if ([(NSMutableArray *)self->_slides count])
   {
-    v9 = [(MCContainerEffect *)self->_container isLive];
+    isLive = [(MCContainerEffect *)self->_container isLive];
   }
 
   else
   {
-    v9 = 0;
+    isLive = 0;
   }
 
   v59 = v8;
-  [(NSMutableArray *)self->_slides insertObjects:a3 atIndexes:v8];
+  [(NSMutableArray *)self->_slides insertObjects:slides atIndexes:v8];
   v83 = 0u;
   v84 = 0u;
   v81 = 0u;
   v82 = 0u;
-  v10 = [a3 countByEnumeratingWithState:&v81 objects:v90 count:16];
+  v10 = [slides countByEnumeratingWithState:&v81 objects:v90 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1165,13 +1165,13 @@ LABEL_14:
       {
         if (*v82 != v12)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(slides);
         }
 
         [*(*(&v81 + 1) + 8 * i) setParent:self];
       }
 
-      v11 = [a3 countByEnumeratingWithState:&v81 objects:v90 count:16];
+      v11 = [slides countByEnumeratingWithState:&v81 objects:v90 count:16];
     }
 
     while (v11);
@@ -1181,16 +1181,16 @@ LABEL_14:
   {
     v57 = v7;
     v14 = objc_alloc_init(NSMutableArray);
-    if (v9)
+    if (isLive)
     {
-      a4 = [(MCContainerEffect *)self->_container nextAvailableSlideIndex];
+      index = [(MCContainerEffect *)self->_container nextAvailableSlideIndex];
     }
 
     v79 = 0u;
     v80 = 0u;
     v77 = 0u;
     v78 = 0u;
-    v15 = [a3 countByEnumeratingWithState:&v77 objects:v89 count:16];
+    v15 = [slides countByEnumeratingWithState:&v77 objects:v89 count:16];
     if (v15)
     {
       v16 = v15;
@@ -1204,23 +1204,23 @@ LABEL_14:
         {
           if (*v78 != v60)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(slides);
           }
 
-          v20 = [*(*(&v77 + 1) + 8 * v18) path];
-          v21 = v20;
-          v17 = v20 == 0;
+          path = [*(*(&v77 + 1) + 8 * v18) path];
+          v21 = path;
+          v17 = path == 0;
           if (v19 != -1 && v19 != v17)
           {
             goto LABEL_36;
           }
 
           v18 = v18 + 1;
-          v19 = v20 == 0;
+          v19 = path == 0;
         }
 
         while (v16 != v18);
-        v16 = [a3 countByEnumeratingWithState:&v77 objects:v89 count:16];
+        v16 = [slides countByEnumeratingWithState:&v77 objects:v89 count:16];
         if (v16)
         {
           continue;
@@ -1236,7 +1236,7 @@ LABEL_36:
         v76 = 0u;
         v73 = 0u;
         v74 = 0u;
-        v27 = [a3 countByEnumeratingWithState:&v73 objects:v88 count:16];
+        v27 = [slides countByEnumeratingWithState:&v73 objects:v88 count:16];
         if (v27)
         {
           v28 = v27;
@@ -1247,33 +1247,33 @@ LABEL_36:
             {
               if (*v74 != v29)
               {
-                objc_enumerationMutation(a3);
+                objc_enumerationMutation(slides);
               }
 
               v31 = *(*(&v73 + 1) + 8 * j);
               if ([v31 path])
               {
-                v32 = -[MCContainerEffect insertSlideForAsset:atIndex:](self->_container, "insertSlideForAsset:atIndex:", [objc_msgSend(-[MPEffectContainer parentLayer](self->_parentContainer "parentLayer")], a4);
+                v32 = -[MCContainerEffect insertSlideForAsset:atIndex:](self->_container, "insertSlideForAsset:atIndex:", [objc_msgSend(-[MPEffectContainer parentLayer](self->_parentContainer "parentLayer")], index);
               }
 
               else
               {
-                v32 = [(MCContainerEffect *)self->_container insertSlideAtIndex:a4];
+                v32 = [(MCContainerEffect *)self->_container insertSlideAtIndex:index];
               }
 
               [v14 addObject:v32];
-              if (v9)
+              if (isLive)
               {
-                a4 = [(MCContainerEffect *)self->_container nextAvailableSlideIndex];
+                index = [(MCContainerEffect *)self->_container nextAvailableSlideIndex];
               }
 
               else
               {
-                ++a4;
+                ++index;
               }
             }
 
-            v28 = [a3 countByEnumeratingWithState:&v73 objects:v88 count:16];
+            v28 = [slides countByEnumeratingWithState:&v73 objects:v88 count:16];
           }
 
           while (v28);
@@ -1288,7 +1288,7 @@ LABEL_36:
     v70 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v23 = [a3 countByEnumeratingWithState:&v69 objects:v87 count:16];
+    v23 = [slides countByEnumeratingWithState:&v69 objects:v87 count:16];
     if (v23)
     {
       v24 = v23;
@@ -1299,27 +1299,27 @@ LABEL_36:
         {
           if (*v70 != v25)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(slides);
           }
 
           [v22 addObject:{objc_msgSend(objc_msgSend(-[MPEffectContainer parentLayer](self->_parentContainer, "parentLayer"), "montage"), "videoAssetForFileAtPath:", objc_msgSend(*(*(&v69 + 1) + 8 * k), "path"))}];
         }
 
-        v24 = [a3 countByEnumeratingWithState:&v69 objects:v87 count:16];
+        v24 = [slides countByEnumeratingWithState:&v69 objects:v87 count:16];
       }
 
       while (v24);
     }
 
-    [v14 addObjectsFromArray:{-[MCContainerEffect insertSlidesForAssets:atIndex:](self->_container, "insertSlidesForAssets:atIndex:", v22, a4)}];
+    [v14 addObjectsFromArray:{-[MCContainerEffect insertSlidesForAssets:atIndex:](self->_container, "insertSlidesForAssets:atIndex:", v22, index)}];
 
 LABEL_49:
-    v33 = [v14 objectEnumerator];
+    objectEnumerator = [v14 objectEnumerator];
     v65 = 0u;
     v66 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v34 = [a3 countByEnumeratingWithState:&v65 objects:v86 count:16];
+    v34 = [slides countByEnumeratingWithState:&v65 objects:v86 count:16];
     if (v34)
     {
       v35 = v34;
@@ -1330,13 +1330,13 @@ LABEL_49:
         {
           if (*v66 != v36)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(slides);
           }
 
-          [*(*(&v65 + 1) + 8 * m) setSlide:{objc_msgSend(v33, "nextObject")}];
+          [*(*(&v65 + 1) + 8 * m) setSlide:{objc_msgSend(objectEnumerator, "nextObject")}];
         }
 
-        v35 = [a3 countByEnumeratingWithState:&v65 objects:v86 count:16];
+        v35 = [slides countByEnumeratingWithState:&v65 objects:v86 count:16];
       }
 
       while (v35);
@@ -1353,22 +1353,22 @@ LABEL_49:
 
   if (self->_supportsEffectTiming)
   {
-    v39 = [(MPEffect *)self parentDocument];
-    if (!v39)
+    parentDocument = [(MPEffect *)self parentDocument];
+    if (!parentDocument)
     {
       if ([+[MPAuthoringController sharedController](MPAuthoringController "sharedController")])
       {
-        v39 = [+[MPAuthoringController sharedController](MPAuthoringController "sharedController")];
+        parentDocument = [+[MPAuthoringController sharedController](MPAuthoringController "sharedController")];
       }
 
       else
       {
-        v39 = 0;
+        parentDocument = 0;
       }
     }
 
     v40 = [+[MPAuthoringController sharedController](MPAuthoringController "sharedController")];
-    if ([v39 isLive] && (objc_opt_respondsToSelector() & 1) != 0)
+    if ([parentDocument isLive] && (objc_opt_respondsToSelector() & 1) != 0)
     {
       v58 = v7;
       v41 = objc_alloc_init(NSMutableArray);
@@ -1376,7 +1376,7 @@ LABEL_49:
       v62 = 0u;
       v63 = 0u;
       v64 = 0u;
-      v42 = [a3 countByEnumeratingWithState:&v61 objects:v85 count:16];
+      v42 = [slides countByEnumeratingWithState:&v61 objects:v85 count:16];
       if (v42)
       {
         v43 = v42;
@@ -1388,17 +1388,17 @@ LABEL_49:
           {
             if (*v62 != v44)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(slides);
             }
 
-            v47 = [*(*(&v61 + 1) + 8 * n) path];
-            if (v47)
+            path2 = [*(*(&v61 + 1) + 8 * n) path];
+            if (path2)
             {
-              v48 = v47;
+              v48 = path2;
               v49 = objc_alloc_init(NSMutableDictionary);
-              if (v39)
+              if (parentDocument)
               {
-                [v39 resolutionForPath:v48];
+                [parentDocument resolutionForPath:v48];
               }
 
               else
@@ -1418,7 +1418,7 @@ LABEL_49:
             }
           }
 
-          v43 = [a3 countByEnumeratingWithState:&v61 objects:v85 count:16];
+          v43 = [slides countByEnumeratingWithState:&v61 objects:v85 count:16];
         }
 
         while (v43);
@@ -1461,15 +1461,15 @@ LABEL_49:
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)removeSlidesAtIndices:(id)a3
+- (void)removeSlidesAtIndices:(id)indices
 {
   slides = self->_slides;
   if (slides)
   {
     if ([(NSMutableArray *)slides count])
     {
-      v6 = [a3 lastIndex];
-      if (v6 < [(NSMutableArray *)self->_slides count])
+      lastIndex = [indices lastIndex];
+      if (lastIndex < [(NSMutableArray *)self->_slides count])
       {
         v7 = objc_autoreleasePoolPush();
         if (self->_replaceSlides)
@@ -1482,22 +1482,22 @@ LABEL_49:
           v8 = 3;
         }
 
-        [(MPEffect *)self willChange:v8 valuesAtIndexes:a3 forKey:@"slides"];
+        [(MPEffect *)self willChange:v8 valuesAtIndexes:indices forKey:@"slides"];
         if (self->_container)
         {
-          v9 = [a3 mutableCopy];
+          v9 = [indices mutableCopy];
           if ([(MCContainerEffect *)self->_container isLive])
           {
-            [v9 shiftIndexesStartingAtIndex:objc_msgSend(v9 by:{"firstIndex"), self->_liveIndex - objc_msgSend(a3, "count")}];
+            [v9 shiftIndexesStartingAtIndex:objc_msgSend(v9 by:{"firstIndex"), self->_liveIndex - objc_msgSend(indices, "count")}];
           }
 
           [(MCContainerEffect *)self->_container removeSlidesAtIndices:v9];
         }
 
-        v10 = [a3 lastIndex];
-        if (v10 != 0x7FFFFFFFFFFFFFFFLL)
+        lastIndex2 = [indices lastIndex];
+        if (lastIndex2 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          for (i = v10; i != 0x7FFFFFFFFFFFFFFFLL; i = [a3 indexLessThanIndex:i])
+          for (i = lastIndex2; i != 0x7FFFFFFFFFFFFFFFLL; i = [indices indexLessThanIndex:i])
           {
             v12 = [(NSMutableArray *)self->_slides objectAtIndex:i];
             [v12 setParent:0];
@@ -1505,13 +1505,13 @@ LABEL_49:
           }
         }
 
-        [(NSMutableArray *)self->_slides removeObjectsAtIndexes:a3];
+        [(NSMutableArray *)self->_slides removeObjectsAtIndexes:indices];
         if (self->_replaceSlides)
         {
-          v13 = [a3 firstIndex];
-          if (v13 != 0x7FFFFFFFFFFFFFFFLL)
+          firstIndex = [indices firstIndex];
+          if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
           {
-            for (j = v13; j != 0x7FFFFFFFFFFFFFFFLL; j = [a3 indexGreaterThanIndex:j])
+            for (j = firstIndex; j != 0x7FFFFFFFFFFFFFFFLL; j = [indices indexGreaterThanIndex:j])
             {
               v15 = [[NSArray alloc] initWithObjects:{+[MPSlide slide](MPSlide, "slide"), 0}];
               [(MPEffect *)self insertSlides:v15 atIndex:j];
@@ -1519,29 +1519,29 @@ LABEL_49:
           }
         }
 
-        [(MPEffect *)self didChange:v8 valuesAtIndexes:a3 forKey:@"slides"];
+        [(MPEffect *)self didChange:v8 valuesAtIndexes:indices forKey:@"slides"];
         if (self->_supportsEffectTiming)
         {
-          v16 = [(MPEffect *)self parentDocument];
-          if (!v16)
+          parentDocument = [(MPEffect *)self parentDocument];
+          if (!parentDocument)
           {
             if ([+[MPAuthoringController sharedController](MPAuthoringController "sharedController")])
             {
-              v16 = [+[MPAuthoringController sharedController](MPAuthoringController "sharedController")];
+              parentDocument = [+[MPAuthoringController sharedController](MPAuthoringController "sharedController")];
             }
 
             else
             {
-              v16 = 0;
+              parentDocument = 0;
             }
           }
 
-          if (![v16 isLive] || (objc_opt_respondsToSelector() & 1) == 0)
+          if (![parentDocument isLive] || (objc_opt_respondsToSelector() & 1) == 0)
           {
             [(MPEffect *)self _updateTiming:1];
           }
 
-          if ([v16 isLive])
+          if ([parentDocument isLive])
           {
             if ([(NSMutableArray *)self->_slides count])
             {
@@ -1586,17 +1586,17 @@ LABEL_49:
   }
 }
 
-- (void)replaceSlideAtIndex:(int64_t)a3 withSlide:(id)a4
+- (void)replaceSlideAtIndex:(int64_t)index withSlide:(id)slide
 {
   if (self->_slides)
   {
-    v7 = [[NSIndexSet alloc] initWithIndex:a3];
+    v7 = [[NSIndexSet alloc] initWithIndex:index];
     [(MPEffect *)self willChange:4 valuesAtIndexes:v7 forKey:@"slides"];
     container = self->_container;
     if (container)
     {
       [(MCContainerEffect *)container removeSlidesAtIndices:v7];
-      v9 = [(NSMutableArray *)self->_slides objectAtIndex:a3];
+      v9 = [(NSMutableArray *)self->_slides objectAtIndex:index];
       [v9 setParent:0];
       [v9 setSlide:0];
     }
@@ -1604,8 +1604,8 @@ LABEL_49:
     [(NSMutableArray *)self->_slides removeObjectsAtIndexes:v7];
     replaceSlides = self->_replaceSlides;
     self->_replaceSlides = 1;
-    v11 = [[NSArray alloc] initWithObjects:{a4, 0}];
-    [(MPEffect *)self insertSlides:v11 atIndex:a3];
+    v11 = [[NSArray alloc] initWithObjects:{slide, 0}];
+    [(MPEffect *)self insertSlides:v11 atIndex:index];
 
     self->_replaceSlides = replaceSlides;
     [(MPEffect *)self didChange:4 valuesAtIndexes:v7 forKey:@"slides"];
@@ -1618,27 +1618,27 @@ LABEL_49:
   }
 }
 
-- (void)moveSlidesFromIndices:(id)a3 toIndex:(int64_t)a4
+- (void)moveSlidesFromIndices:(id)indices toIndex:(int64_t)index
 {
   slides = self->_slides;
   if (slides)
   {
     if (self->_container)
     {
-      [(MCContainerEffect *)self->_container moveSlidesAtIndices:a3 toIndex:a4];
+      [(MCContainerEffect *)self->_container moveSlidesAtIndices:indices toIndex:index];
       slides = self->_slides;
     }
 
-    v8 = [(NSMutableArray *)slides objectsAtIndexes:a3];
-    [(NSMutableArray *)self->_slides removeObjectsAtIndexes:a3];
-    v9 = [[NSIndexSet alloc] initWithIndexesInRange:{a4, objc_msgSend(v8, "count")}];
+    v8 = [(NSMutableArray *)slides objectsAtIndexes:indices];
+    [(NSMutableArray *)self->_slides removeObjectsAtIndexes:indices];
+    v9 = [[NSIndexSet alloc] initWithIndexesInRange:{index, objc_msgSend(v8, "count")}];
     [(NSMutableArray *)self->_slides insertObjects:v8 atIndexes:v9];
   }
 }
 
-- (void)addSecondarySlide:(id)a3
+- (void)addSecondarySlide:(id)slide
 {
-  v6 = [[NSArray alloc] initWithObjects:{a3, 0}];
+  v6 = [[NSArray alloc] initWithObjects:{slide, 0}];
   secondarySlides = self->_secondarySlides;
   if (secondarySlides)
   {
@@ -1653,7 +1653,7 @@ LABEL_49:
   [(MPEffect *)self insertSecondarySlides:v6 atIndex:v5];
 }
 
-- (void)addSecondarySlides:(id)a3
+- (void)addSecondarySlides:(id)slides
 {
   secondarySlides = self->_secondarySlides;
   if (secondarySlides)
@@ -1666,10 +1666,10 @@ LABEL_49:
     v6 = 0;
   }
 
-  [(MPEffect *)self insertSecondarySlides:a3 atIndex:v6];
+  [(MPEffect *)self insertSecondarySlides:slides atIndex:v6];
 }
 
-- (void)insertSecondarySlides:(id)a3 atIndex:(int64_t)a4
+- (void)insertSecondarySlides:(id)slides atIndex:(int64_t)index
 {
   v7 = objc_autoreleasePoolPush();
   if (!self->_secondarySlides)
@@ -1677,18 +1677,18 @@ LABEL_49:
     self->_secondarySlides = objc_alloc_init(NSMutableArray);
   }
 
-  v8 = [[NSIndexSet alloc] initWithIndexesInRange:{a4, objc_msgSend(a3, "count")}];
+  v8 = [[NSIndexSet alloc] initWithIndexesInRange:{index, objc_msgSend(slides, "count")}];
   if (!self->_replaceSlides)
   {
     [(MPEffect *)self willChange:2 valuesAtIndexes:v8 forKey:@"secondarySlides"];
   }
 
-  [(NSMutableArray *)self->_secondarySlides insertObjects:a3 atIndexes:v8];
+  [(NSMutableArray *)self->_secondarySlides insertObjects:slides atIndexes:v8];
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v9 = [a3 countByEnumeratingWithState:&v35 objects:v41 count:16];
+  v9 = [slides countByEnumeratingWithState:&v35 objects:v41 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1699,7 +1699,7 @@ LABEL_49:
       {
         if (*v36 != v11)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(slides);
         }
 
         v13 = *(*(&v35 + 1) + 8 * i);
@@ -1707,7 +1707,7 @@ LABEL_49:
         [v13 setIsSecondary:1];
       }
 
-      v10 = [a3 countByEnumeratingWithState:&v35 objects:v41 count:16];
+      v10 = [slides countByEnumeratingWithState:&v35 objects:v41 count:16];
     }
 
     while (v10);
@@ -1721,7 +1721,7 @@ LABEL_49:
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v15 = [a3 countByEnumeratingWithState:&v31 objects:v40 count:16];
+    v15 = [slides countByEnumeratingWithState:&v31 objects:v40 count:16];
     if (v15)
     {
       v16 = v15;
@@ -1732,36 +1732,36 @@ LABEL_49:
         {
           if (*v32 != v17)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(slides);
           }
 
           v19 = *(*(&v31 + 1) + 8 * j);
           if ([v19 path])
           {
-            v20 = -[MCContainerEffect insertSlideForAsset:atIndex:](self->_container, "insertSlideForAsset:atIndex:", [objc_msgSend(-[MPEffectContainer parentLayer](self->_parentContainer "parentLayer")], -[MPEffect maxNumberOfSlides](self, "maxNumberOfSlides") + a4);
+            index = -[MCContainerEffect insertSlideForAsset:atIndex:](self->_container, "insertSlideForAsset:atIndex:", [objc_msgSend(-[MPEffectContainer parentLayer](self->_parentContainer "parentLayer")], -[MPEffect maxNumberOfSlides](self, "maxNumberOfSlides") + index);
           }
 
           else
           {
-            v20 = [(MCContainerEffect *)self->_container insertSlideAtIndex:[(MPEffect *)self maxNumberOfSlides]+ a4];
+            index = [(MCContainerEffect *)self->_container insertSlideAtIndex:[(MPEffect *)self maxNumberOfSlides]+ index];
           }
 
-          [v14 addObject:v20];
-          ++a4;
+          [v14 addObject:index];
+          ++index;
         }
 
-        v16 = [a3 countByEnumeratingWithState:&v31 objects:v40 count:16];
+        v16 = [slides countByEnumeratingWithState:&v31 objects:v40 count:16];
       }
 
       while (v16);
     }
 
-    v21 = [v14 objectEnumerator];
+    objectEnumerator = [v14 objectEnumerator];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v22 = [a3 countByEnumeratingWithState:&v27 objects:v39 count:16];
+    v22 = [slides countByEnumeratingWithState:&v27 objects:v39 count:16];
     v7 = v26;
     if (v22)
     {
@@ -1773,13 +1773,13 @@ LABEL_49:
         {
           if (*v28 != v24)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(slides);
           }
 
-          [*(*(&v27 + 1) + 8 * k) setSlide:{objc_msgSend(v21, "nextObject")}];
+          [*(*(&v27 + 1) + 8 * k) setSlide:{objc_msgSend(objectEnumerator, "nextObject")}];
         }
 
-        v23 = [a3 countByEnumeratingWithState:&v27 objects:v39 count:16];
+        v23 = [slides countByEnumeratingWithState:&v27 objects:v39 count:16];
       }
 
       while (v23);
@@ -1794,15 +1794,15 @@ LABEL_49:
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)removeSecondarySlidesAtIndices:(id)a3
+- (void)removeSecondarySlidesAtIndices:(id)indices
 {
   secondarySlides = self->_secondarySlides;
   if (secondarySlides)
   {
     if ([(NSMutableArray *)secondarySlides count])
     {
-      v6 = [a3 lastIndex];
-      if (v6 < [(NSMutableArray *)self->_secondarySlides count])
+      lastIndex = [indices lastIndex];
+      if (lastIndex < [(NSMutableArray *)self->_secondarySlides count])
       {
         v7 = objc_autoreleasePoolPush();
         if (self->_replaceSlides)
@@ -1815,14 +1815,14 @@ LABEL_49:
           v8 = 3;
         }
 
-        [(MPEffect *)self willChange:v8 valuesAtIndexes:a3 forKey:@"secondarySlides"];
+        [(MPEffect *)self willChange:v8 valuesAtIndexes:indices forKey:@"secondarySlides"];
         if (self->_container)
         {
           v9 = +[NSMutableIndexSet indexSet];
-          v10 = [a3 firstIndex];
-          if (v10 != 0x7FFFFFFFFFFFFFFFLL)
+          firstIndex = [indices firstIndex];
+          if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
           {
-            for (i = v10; i != 0x7FFFFFFFFFFFFFFFLL; i = [a3 indexGreaterThanIndex:i])
+            for (i = firstIndex; i != 0x7FFFFFFFFFFFFFFFLL; i = [indices indexGreaterThanIndex:i])
             {
               [v9 addIndex:{&i[-[MPEffect maxNumberOfSlides](self, "maxNumberOfSlides")]}];
             }
@@ -1831,10 +1831,10 @@ LABEL_49:
           [(MCContainerEffect *)self->_container removeSlidesAtIndices:v9];
         }
 
-        v12 = [a3 lastIndex];
-        if (v12 != 0x7FFFFFFFFFFFFFFFLL)
+        lastIndex2 = [indices lastIndex];
+        if (lastIndex2 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          for (j = v12; j != 0x7FFFFFFFFFFFFFFFLL; j = [a3 indexLessThanIndex:j])
+          for (j = lastIndex2; j != 0x7FFFFFFFFFFFFFFFLL; j = [indices indexLessThanIndex:j])
           {
             v14 = [(NSMutableArray *)self->_secondarySlides objectAtIndex:j];
             [v14 setParent:0];
@@ -1842,8 +1842,8 @@ LABEL_49:
           }
         }
 
-        [(NSMutableArray *)self->_secondarySlides removeObjectsAtIndexes:a3];
-        [(MPEffect *)self didChange:v8 valuesAtIndexes:a3 forKey:@"secondarySlides"];
+        [(NSMutableArray *)self->_secondarySlides removeObjectsAtIndexes:indices];
+        [(MPEffect *)self didChange:v8 valuesAtIndexes:indices forKey:@"secondarySlides"];
 
         objc_autoreleasePoolPop(v7);
       }
@@ -1872,23 +1872,23 @@ LABEL_49:
   }
 }
 
-- (void)_updateEffectTimingWithDocument:(id)a3 forExport:(BOOL)a4
+- (void)_updateEffectTimingWithDocument:(id)document forExport:(BOOL)export
 {
   if (!self->_supportsEffectTiming || self->_skipEffectTiming)
   {
     return;
   }
 
-  v5 = a4;
+  exportCopy = export;
 
   self->_effectTiming = 0;
-  v7 = [(MPEffect *)self formattedAttributes];
-  if (!a3)
+  formattedAttributes = [(MPEffect *)self formattedAttributes];
+  if (!document)
   {
-    v8 = [(MPEffect *)self parentDocument];
-    if (v8)
+    parentDocument = [(MPEffect *)self parentDocument];
+    if (parentDocument)
     {
-      a3 = v8;
+      document = parentDocument;
     }
 
     else
@@ -1896,40 +1896,40 @@ LABEL_49:
       v10 = 1.77777779;
       if (![+[MPAuthoringController sharedController](MPAuthoringController "sharedController")])
       {
-        a3 = 0;
+        document = 0;
         goto LABEL_8;
       }
 
-      a3 = [+[MPAuthoringController sharedController](MPAuthoringController "sharedController")];
-      if (!a3)
+      document = [+[MPAuthoringController sharedController](MPAuthoringController "sharedController")];
+      if (!document)
       {
         goto LABEL_8;
       }
     }
   }
 
-  [a3 aspectRatio];
+  [document aspectRatio];
   v10 = v9;
 LABEL_8:
-  if (v5)
+  if (exportCopy)
   {
-    v7 = [NSMutableDictionary dictionaryWithDictionary:v7];
-    [(NSMutableDictionary *)v7 setObject:[NSNumber forKey:"numberWithBool:" numberWithBool:?], @"updateEffectAuthoredTimingForExport"];
+    formattedAttributes = [NSMutableDictionary dictionaryWithDictionary:formattedAttributes];
+    [(NSMutableDictionary *)formattedAttributes setObject:[NSNumber forKey:"numberWithBool:" numberWithBool:?], @"updateEffectAuthoredTimingForExport"];
   }
 
   self->_effectTiming = [+[MREffectManager sharedManager](MREffectManager "sharedManager")];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && v5)
+  if ((objc_opt_respondsToSelector() & 1) != 0 && exportCopy)
   {
-    v11 = [(MZEffectTiming *)self->_effectTiming effectAuthoredAttributes];
-    if (v11)
+    effectAuthoredAttributes = [(MZEffectTiming *)self->_effectTiming effectAuthoredAttributes];
+    if (effectAuthoredAttributes)
     {
-      v12 = v11;
+      v12 = effectAuthoredAttributes;
       v20 = 0u;
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v13 = [v11 keyEnumerator];
-      v14 = [v13 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      keyEnumerator = [effectAuthoredAttributes keyEnumerator];
+      v14 = [keyEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v14)
       {
         v15 = v14;
@@ -1940,13 +1940,13 @@ LABEL_8:
           {
             if (*v19 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(keyEnumerator);
             }
 
             -[MPEffect setEffectAttribute:forKey:](self, "setEffectAttribute:forKey:", [v12 objectForKey:*(*(&v18 + 1) + 8 * i)], *(*(&v18 + 1) + 8 * i));
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v18 objects:v22 count:16];
+          v15 = [keyEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
         }
 
         while (v15);
@@ -1955,26 +1955,26 @@ LABEL_8:
   }
 }
 
-- (void)_updateTiming:(BOOL)a3 forExport:(BOOL)a4
+- (void)_updateTiming:(BOOL)timing forExport:(BOOL)export
 {
   if (!self->_cleaningUp)
   {
-    v4 = a4;
-    v5 = a3;
+    exportCopy = export;
+    timingCopy = timing;
     v7 = +[MPEffectManager sharedManager];
     v15 = 0.0;
     v16 = 0.0;
     v14 = 0.0;
     if (self->_supportsEffectTiming)
     {
-      [(MPEffect *)self _updateEffectTimingWithDocument:0 forExport:v4];
+      [(MPEffect *)self _updateEffectTimingWithDocument:0 forExport:exportCopy];
       [(MZEffectTiming *)self->_effectTiming phaseInDuration];
       v9 = v8;
       [(MZEffectTiming *)self->_effectTiming phaseOutDuration];
       v11 = v10;
       [(MZEffectTiming *)self->_effectTiming mainDuration];
       v13 = v12;
-      if (v5)
+      if (timingCopy)
       {
         if (self->_supportsEffectTiming)
         {
@@ -1989,7 +1989,7 @@ LABEL_8:
 
     else
     {
-      if (v5)
+      if (timingCopy)
       {
         return;
       }
@@ -2018,9 +2018,9 @@ LABEL_8:
   return result;
 }
 
-- (void)addText:(id)a3
+- (void)addText:(id)text
 {
-  v6 = [[NSArray alloc] initWithObjects:{a3, 0}];
+  v6 = [[NSArray alloc] initWithObjects:{text, 0}];
   texts = self->_texts;
   if (texts)
   {
@@ -2035,7 +2035,7 @@ LABEL_8:
   [(MPEffect *)self insertTexts:v6 atIndex:v5];
 }
 
-- (void)addTexts:(id)a3
+- (void)addTexts:(id)texts
 {
   texts = self->_texts;
   if (texts)
@@ -2048,10 +2048,10 @@ LABEL_8:
     v6 = 0;
   }
 
-  [(MPEffect *)self insertTexts:a3 atIndex:v6];
+  [(MPEffect *)self insertTexts:texts atIndex:v6];
 }
 
-- (void)insertTexts:(id)a3 atIndex:(int64_t)a4
+- (void)insertTexts:(id)texts atIndex:(int64_t)index
 {
   v7 = objc_autoreleasePoolPush();
   if (!self->_texts)
@@ -2059,14 +2059,14 @@ LABEL_8:
     self->_texts = objc_alloc_init(NSMutableArray);
   }
 
-  v8 = [[NSIndexSet alloc] initWithIndexesInRange:{a4, objc_msgSend(a3, "count")}];
+  v8 = [[NSIndexSet alloc] initWithIndexesInRange:{index, objc_msgSend(texts, "count")}];
   [(MPEffect *)self willChange:2 valuesAtIndexes:v8 forKey:@"texts"];
-  [(NSMutableArray *)self->_texts insertObjects:a3 atIndexes:v8];
+  [(NSMutableArray *)self->_texts insertObjects:texts atIndexes:v8];
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v9 = [a3 countByEnumeratingWithState:&v31 objects:v37 count:16];
+  v9 = [texts countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2078,7 +2078,7 @@ LABEL_8:
       {
         if (*v32 != v11)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(texts);
         }
 
         [*(*(&v31 + 1) + 8 * v12) setParent:self];
@@ -2086,7 +2086,7 @@ LABEL_8:
       }
 
       while (v10 != v12);
-      v10 = [a3 countByEnumeratingWithState:&v31 objects:v37 count:16];
+      v10 = [texts countByEnumeratingWithState:&v31 objects:v37 count:16];
     }
 
     while (v10);
@@ -2099,7 +2099,7 @@ LABEL_8:
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v14 = [a3 countByEnumeratingWithState:&v27 objects:v36 count:16];
+    v14 = [texts countByEnumeratingWithState:&v27 objects:v36 count:16];
     if (v14)
     {
       v15 = v14;
@@ -2111,7 +2111,7 @@ LABEL_8:
         {
           if (*v28 != v16)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(texts);
           }
 
           [v13 addObject:{objc_msgSend(*(*(&v27 + 1) + 8 * v17), "attributedString")}];
@@ -2119,18 +2119,18 @@ LABEL_8:
         }
 
         while (v15 != v17);
-        v15 = [a3 countByEnumeratingWithState:&v27 objects:v36 count:16];
+        v15 = [texts countByEnumeratingWithState:&v27 objects:v36 count:16];
       }
 
       while (v15);
     }
 
-    v18 = [-[MCContainerEffect insertTextsForAttributedStrings:atIndex:](self->_container insertTextsForAttributedStrings:v13 atIndex:{a4), "objectEnumerator"}];
+    v18 = [-[MCContainerEffect insertTextsForAttributedStrings:atIndex:](self->_container insertTextsForAttributedStrings:v13 atIndex:{index), "objectEnumerator"}];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v19 = [a3 countByEnumeratingWithState:&v23 objects:v35 count:16];
+    v19 = [texts countByEnumeratingWithState:&v23 objects:v35 count:16];
     if (v19)
     {
       v20 = v19;
@@ -2142,7 +2142,7 @@ LABEL_8:
         {
           if (*v24 != v21)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(texts);
           }
 
           [*(*(&v23 + 1) + 8 * v22) setText:{objc_msgSend(v18, "nextObject")}];
@@ -2150,7 +2150,7 @@ LABEL_8:
         }
 
         while (v20 != v22);
-        v20 = [a3 countByEnumeratingWithState:&v23 objects:v35 count:16];
+        v20 = [texts countByEnumeratingWithState:&v23 objects:v35 count:16];
       }
 
       while (v20);
@@ -2162,23 +2162,23 @@ LABEL_8:
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)removeTextsAtIndices:(id)a3
+- (void)removeTextsAtIndices:(id)indices
 {
   texts = self->_texts;
   if (texts && [(NSMutableArray *)texts count])
   {
     v6 = objc_autoreleasePoolPush();
-    [(MPEffect *)self willChange:3 valuesAtIndexes:a3 forKey:@"texts"];
+    [(MPEffect *)self willChange:3 valuesAtIndexes:indices forKey:@"texts"];
     container = self->_container;
     if (container)
     {
-      [(MCContainerEffect *)container removeTextsAtIndices:a3];
+      [(MCContainerEffect *)container removeTextsAtIndices:indices];
     }
 
-    v8 = [a3 lastIndex];
-    if (v8 != 0x7FFFFFFFFFFFFFFFLL)
+    lastIndex = [indices lastIndex];
+    if (lastIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      for (i = v8; i != 0x7FFFFFFFFFFFFFFFLL; i = [a3 indexLessThanIndex:i])
+      for (i = lastIndex; i != 0x7FFFFFFFFFFFFFFFLL; i = [indices indexLessThanIndex:i])
       {
         v10 = [(NSMutableArray *)self->_texts objectAtIndex:i];
         [v10 setParent:0];
@@ -2186,8 +2186,8 @@ LABEL_8:
       }
     }
 
-    [(NSMutableArray *)self->_texts removeObjectsAtIndexes:a3];
-    [(MPEffect *)self didChange:3 valuesAtIndexes:a3 forKey:@"texts"];
+    [(NSMutableArray *)self->_texts removeObjectsAtIndexes:indices];
+    [(MPEffect *)self didChange:3 valuesAtIndexes:indices forKey:@"texts"];
 
     objc_autoreleasePoolPop(v6);
   }
@@ -2202,27 +2202,27 @@ LABEL_8:
   }
 }
 
-- (void)moveTextsFromIndices:(id)a3 toIndex:(int64_t)a4
+- (void)moveTextsFromIndices:(id)indices toIndex:(int64_t)index
 {
   texts = self->_texts;
   if (texts)
   {
     if (self->_container)
     {
-      [(MCContainerEffect *)self->_container moveTextsAtIndices:a3 toIndex:a4];
+      [(MCContainerEffect *)self->_container moveTextsAtIndices:indices toIndex:index];
       texts = self->_texts;
     }
 
-    v8 = [(NSMutableArray *)texts objectsAtIndexes:a3];
-    [(NSMutableArray *)self->_texts removeObjectsAtIndexes:a3];
-    v9 = [[NSIndexSet alloc] initWithIndexesInRange:{a4, objc_msgSend(v8, "count")}];
+    v8 = [(NSMutableArray *)texts objectsAtIndexes:indices];
+    [(NSMutableArray *)self->_texts removeObjectsAtIndexes:indices];
+    v9 = [[NSIndexSet alloc] initWithIndexesInRange:{index, objc_msgSend(v8, "count")}];
     [(NSMutableArray *)self->_texts insertObjects:v8 atIndexes:v9];
   }
 }
 
-- (void)addFilter:(id)a3
+- (void)addFilter:(id)filter
 {
-  v4 = [NSArray arrayWithObject:a3];
+  v4 = [NSArray arrayWithObject:filter];
   filters = self->_filters;
   if (filters)
   {
@@ -2237,7 +2237,7 @@ LABEL_8:
   [(MPEffect *)self insertFilters:v4 atIndex:v6];
 }
 
-- (void)addFilters:(id)a3
+- (void)addFilters:(id)filters
 {
   filters = self->_filters;
   if (filters)
@@ -2250,13 +2250,13 @@ LABEL_8:
     v6 = 0;
   }
 
-  [(MPEffect *)self insertFilters:a3 atIndex:v6];
+  [(MPEffect *)self insertFilters:filters atIndex:v6];
 }
 
-- (void)insertFilters:(id)a3 atIndex:(int64_t)a4
+- (void)insertFilters:(id)filters atIndex:(int64_t)index
 {
-  v4 = a4;
-  v7 = [[NSIndexSet alloc] initWithIndexesInRange:{a4, objc_msgSend(a3, "count")}];
+  indexCopy = index;
+  v7 = [[NSIndexSet alloc] initWithIndexesInRange:{index, objc_msgSend(filters, "count")}];
   [(MPEffect *)self willChange:2 valuesAtIndexes:v7 forKey:@"filters"];
   filters = self->_filters;
   if (!filters)
@@ -2265,12 +2265,12 @@ LABEL_8:
     self->_filters = filters;
   }
 
-  [(NSMutableArray *)filters insertObjects:a3 atIndexes:v7];
+  [(NSMutableArray *)filters insertObjects:filters atIndexes:v7];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = [a3 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  v9 = [filters countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2282,7 +2282,7 @@ LABEL_8:
       {
         if (*v25 != v11)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(filters);
         }
 
         [*(*(&v24 + 1) + 8 * v12) setParent:self];
@@ -2290,7 +2290,7 @@ LABEL_8:
       }
 
       while (v10 != v12);
-      v10 = [a3 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v10 = [filters countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v10);
@@ -2316,7 +2316,7 @@ LABEL_8:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v15 = [a3 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  v15 = [filters countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v15)
   {
     v16 = v15;
@@ -2324,22 +2324,22 @@ LABEL_8:
     do
     {
       v18 = 0;
-      v19 = v4;
+      v19 = indexCopy;
       do
       {
         if (*v21 != v17)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(filters);
         }
 
-        v4 = v19 + 1;
+        indexCopy = v19 + 1;
         [*(*(&v20 + 1) + 8 * v18) setFilter:{-[MCPlugParallel insertFilterWithFilterID:atIndex:](self->_plug, "insertFilterWithFilterID:atIndex:", objc_msgSend(*(*(&v20 + 1) + 8 * v18), "filterID"), v19)}];
         v18 = v18 + 1;
         ++v19;
       }
 
       while (v16 != v18);
-      v16 = [a3 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v16 = [filters countByEnumeratingWithState:&v20 objects:v28 count:16];
     }
 
     while (v16);
@@ -2349,16 +2349,16 @@ LABEL_21:
   [(MPEffect *)self didChange:2 valuesAtIndexes:v7 forKey:@"filters"];
 }
 
-- (void)removeFiltersAtIndices:(id)a3
+- (void)removeFiltersAtIndices:(id)indices
 {
   filters = self->_filters;
   if (filters && [(NSMutableArray *)filters count])
   {
-    [(MPEffect *)self willChange:3 valuesAtIndexes:a3 forKey:@"filters"];
-    v6 = [a3 lastIndex];
-    if (v6 != 0x7FFFFFFFFFFFFFFFLL)
+    [(MPEffect *)self willChange:3 valuesAtIndexes:indices forKey:@"filters"];
+    lastIndex = [indices lastIndex];
+    if (lastIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      for (i = v6; i != 0x7FFFFFFFFFFFFFFFLL; i = [a3 indexLessThanIndex:i])
+      for (i = lastIndex; i != 0x7FFFFFFFFFFFFFFFLL; i = [indices indexLessThanIndex:i])
       {
         v8 = [(NSMutableArray *)self->_filters objectAtIndex:i];
         [v8 setParent:0];
@@ -2369,16 +2369,16 @@ LABEL_21:
     plug = self->_plug;
     if (plug)
     {
-      [(MCPlugParallel *)plug removeFiltersAtIndices:a3];
+      [(MCPlugParallel *)plug removeFiltersAtIndices:indices];
     }
 
-    [(NSMutableArray *)self->_filters removeObjectsAtIndexes:a3];
+    [(NSMutableArray *)self->_filters removeObjectsAtIndexes:indices];
     if (![(NSMutableArray *)self->_filters count]&& self->_plug && ![(MPEffect *)self needsParallelizer])
     {
       [(MPEffectContainer *)self->_parentContainer convertFromParallelizerToEffectContainer];
     }
 
-    [(MPEffect *)self didChange:3 valuesAtIndexes:a3 forKey:@"filters"];
+    [(MPEffect *)self didChange:3 valuesAtIndexes:indices forKey:@"filters"];
   }
 }
 
@@ -2391,21 +2391,21 @@ LABEL_21:
   }
 }
 
-- (void)moveFiltersFromIndices:(id)a3 toIndex:(int64_t)a4
+- (void)moveFiltersFromIndices:(id)indices toIndex:(int64_t)index
 {
   if (self->_filters)
   {
-    v7 = [a3 firstIndex];
-    if (v7 != 0x7FFFFFFFFFFFFFFFLL)
+    firstIndex = [indices firstIndex];
+    if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v8 = v7;
+      v8 = firstIndex;
       do
       {
         v9 = [(NSMutableArray *)self->_filters objectAtIndex:v8];
         [(NSMutableArray *)self->_filters removeObjectAtIndex:v8];
-        [(NSMutableArray *)self->_filters insertObject:v9 atIndex:a4 - (v8 < a4)];
-        v8 = [a3 indexGreaterThanIndex:v8];
-        ++a4;
+        [(NSMutableArray *)self->_filters insertObject:v9 atIndex:index - (v8 < index)];
+        v8 = [indices indexGreaterThanIndex:v8];
+        ++index;
       }
 
       while (v8 != 0x7FFFFFFFFFFFFFFFLL);
@@ -2415,32 +2415,32 @@ LABEL_21:
     if (plug)
     {
 
-      [(MCPlugParallel *)plug moveFiltersAtIndices:a3 toIndex:a4];
+      [(MCPlugParallel *)plug moveFiltersAtIndices:indices toIndex:index];
     }
   }
 }
 
-- (id)animationPathForKey:(id)a3
+- (id)animationPathForKey:(id)key
 {
   result = self->_animationPaths;
   if (result)
   {
-    return [result objectForKey:a3];
+    return [result objectForKey:key];
   }
 
   return result;
 }
 
-- (void)setAnimationPath:(id)a3 forKey:(id)a4
+- (void)setAnimationPath:(id)path forKey:(id)key
 {
-  if (a3)
+  if (path)
   {
     if (!self->_animationPaths)
     {
       self->_animationPaths = objc_alloc_init(NSMutableDictionary);
     }
 
-    v7 = [(MPEffect *)self animationPathForKey:a4];
+    v7 = [(MPEffect *)self animationPathForKey:key];
     if (v7)
     {
       v8 = v7;
@@ -2448,12 +2448,12 @@ LABEL_21:
       [v8 setAnimationPath:0];
     }
 
-    [a3 setParent:self];
-    [(NSMutableDictionary *)self->_animationPaths setObject:a3 forKey:a4];
+    [path setParent:self];
+    [(NSMutableDictionary *)self->_animationPaths setObject:path forKey:key];
     plug = self->_plug;
     if (plug)
     {
-      [(MCPlug *)plug removeAnimationPathForKey:a4];
+      [(MCPlug *)plug removeAnimationPathForKey:key];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       v11 = off_1A4CB0;
@@ -2462,21 +2462,21 @@ LABEL_21:
         v11 = off_1A4CB8;
       }
 
-      v12 = [(__objc2_class *)*v11 animationPathWithKey:a4];
+      v12 = [(__objc2_class *)*v11 animationPathWithKey:key];
       [(MCPlug *)self->_plug addAnimationPath:v12];
 
-      [a3 setAnimationPath:v12];
+      [path setAnimationPath:v12];
     }
   }
 
   else
   {
 
-    [(MPEffect *)self removeAnimationPathForKey:a4];
+    [(MPEffect *)self removeAnimationPathForKey:key];
   }
 }
 
-- (void)removeAnimationPathForKey:(id)a3
+- (void)removeAnimationPathForKey:(id)key
 {
   if (self->_animationPaths)
   {
@@ -2484,18 +2484,18 @@ LABEL_21:
     plug = self->_plug;
     if (plug)
     {
-      [(MCPlug *)plug removeAnimationPathForKey:a3];
+      [(MCPlug *)plug removeAnimationPathForKey:key];
       [v5 setAnimationPath:0];
     }
 
     [v5 setParent:0];
     animationPaths = self->_animationPaths;
 
-    [(NSMutableDictionary *)animationPaths removeObjectForKey:a3];
+    [(NSMutableDictionary *)animationPaths removeObjectForKey:key];
   }
 }
 
-- (void)setAudioPlaylist:(id)a3
+- (void)setAudioPlaylist:(id)playlist
 {
   audioPlaylist = self->_audioPlaylist;
   if (audioPlaylist)
@@ -2507,25 +2507,25 @@ LABEL_21:
     self->_audioPlaylist = 0;
   }
 
-  if (a3)
+  if (playlist)
   {
-    v6 = a3;
-    self->_audioPlaylist = v6;
-    [(MPAudioPlaylist *)v6 setParentObject:self];
+    playlistCopy = playlist;
+    self->_audioPlaylist = playlistCopy;
+    [(MPAudioPlaylist *)playlistCopy setParentObject:self];
     if (self->_container)
     {
       -[MPAudioPlaylist setMontage:](self->_audioPlaylist, "setMontage:", [-[MPEffectContainer parentLayer](self->_parentContainer "parentLayer")]);
       v7 = self->_audioPlaylist;
-      v8 = [(MCContainer *)self->_container audioPlaylistCreateIfNeeded];
+      audioPlaylistCreateIfNeeded = [(MCContainer *)self->_container audioPlaylistCreateIfNeeded];
 
-      [(MPAudioPlaylist *)v7 setAudioPlaylist:v8];
+      [(MPAudioPlaylist *)v7 setAudioPlaylist:audioPlaylistCreateIfNeeded];
     }
   }
 }
 
-- (void)setRandomSeed:(int64_t)a3
+- (void)setRandomSeed:(int64_t)seed
 {
-  self->_randomSeed = a3;
+  self->_randomSeed = seed;
   container = self->_container;
   if (container)
   {
@@ -2542,17 +2542,17 @@ LABEL_21:
 - (int64_t)maxNumberOfSlides
 {
   v3 = +[MPEffectManager sharedManager];
-  v4 = [(MPEffect *)self effectID];
+  effectID = [(MPEffect *)self effectID];
 
-  return [v3 numberOfSlidesForEffectID:v4];
+  return [v3 numberOfSlidesForEffectID:effectID];
 }
 
 - (int64_t)maxNumberOfSecondarySlides
 {
   v3 = +[MPEffectManager sharedManager];
-  v4 = [(MPEffect *)self effectID];
+  effectID = [(MPEffect *)self effectID];
 
-  return [v3 numberOfSecondarySlidesForEffectID:v4];
+  return [v3 numberOfSecondarySlidesForEffectID:effectID];
 }
 
 - (void)createTextsWithDefaultStrings
@@ -2599,12 +2599,12 @@ LABEL_21:
   while (v4 != v6);
 }
 
-- (void)replaceTextsWitStrings:(id)a3
+- (void)replaceTextsWitStrings:(id)strings
 {
-  if (a3)
+  if (strings)
   {
-    v3 = a3;
-    v5 = [a3 count];
+    stringsCopy = strings;
+    v5 = [strings count];
     if (v5 >= 1)
     {
       v6 = v5;
@@ -2620,7 +2620,7 @@ LABEL_15:
         }
       }
 
-      v10 = [v3 objectAtIndex:v7];
+      v10 = [stringsCopy objectAtIndex:v7];
       v11 = [(NSMutableArray *)self->_texts objectAtIndex:v7];
       if (v10)
       {
@@ -2644,7 +2644,7 @@ LABEL_14:
       if ([0 length])
       {
         v14 = objc_alloc(v8[22]);
-        v15 = [v11 attributedString];
+        attributedString = [v11 attributedString];
         v16 = v14;
       }
 
@@ -2653,23 +2653,23 @@ LABEL_14:
         v27 = +[MPEffectManager sharedManager];
         v17 = v12;
         v18 = v6;
-        v19 = v3;
+        v19 = stringsCopy;
         v20 = v8;
         v21 = v9;
-        v22 = [(MPEffect *)self effectID];
-        v23 = [(MPEffect *)self presetID];
-        v24 = v22;
+        effectID = [(MPEffect *)self effectID];
+        presetID = [(MPEffect *)self presetID];
+        v24 = effectID;
         v9 = v21;
         v8 = v20;
-        v3 = v19;
+        stringsCopy = v19;
         v6 = v18;
         v12 = v17;
-        v25 = [v27 defaultStringForTextInEffectID:v24 presetID:v23 atIndex:v7];
+        v25 = [v27 defaultStringForTextInEffectID:v24 presetID:presetID atIndex:v7];
         v16 = objc_alloc(v8[22]);
-        v15 = v25;
+        attributedString = v25;
       }
 
-      v26 = [v16 initWithAttributedString:v15];
+      v26 = [v16 initWithAttributedString:attributedString];
       v13 = v26;
       if (v10)
       {
@@ -2681,19 +2681,19 @@ LABEL_14:
   }
 }
 
-- (void)createTextsWithStrings:(id)a3 secondLineFactor:(double)a4 fillIn:(BOOL)a5
+- (void)createTextsWithStrings:(id)strings secondLineFactor:(double)factor fillIn:(BOOL)in
 {
-  v5 = a5;
-  if (a3 && !self->_texts && [a3 count])
+  inCopy = in;
+  if (strings && !self->_texts && [strings count])
   {
     self->_texts = objc_alloc_init(NSMutableArray);
   }
 
   p_superclass = MCGenericAction.superclass;
   v10 = [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
-  if (a3)
+  if (strings)
   {
-    v11 = [a3 count];
+    v11 = [strings count];
   }
 
   else
@@ -2711,7 +2711,7 @@ LABEL_14:
     v12 = v11;
   }
 
-  if (!v5)
+  if (!inCopy)
   {
     v10 = v12;
   }
@@ -2722,19 +2722,19 @@ LABEL_14:
     v29 = v11;
     do
     {
-      if (a3)
+      if (strings)
       {
         if (v13 >= v11)
         {
-          v14 = [a3 lastObject];
+          lastObject = [strings lastObject];
         }
 
         else
         {
-          v14 = [a3 objectAtIndex:v13];
+          lastObject = [strings objectAtIndex:v13];
         }
 
-        v15 = v14;
+        v15 = lastObject;
       }
 
       else
@@ -2755,7 +2755,7 @@ LABEL_14:
         if (v15)
         {
           [v17 replaceCharactersInRange:0 withString:{objc_msgSend(v17, "length"), v15}];
-          if (a4 != 1.0)
+          if (factor != 1.0)
           {
             if ([v15 length])
             {
@@ -2771,7 +2771,7 @@ LABEL_14:
                 v23 = p_superclass;
                 v24 = CTFontCopyPostScriptName(v22);
                 Size = CTFontGetSize(v22);
-                v26 = CTFontCreateWithName(v24, Size * a4, 0);
+                v26 = CTFontCreateWithName(v24, Size * factor, 0);
                 v27 = v24;
                 p_superclass = v23;
                 CFRelease(v27);
@@ -2796,12 +2796,12 @@ LABEL_14:
   }
 }
 
-- (void)createSlidesWithPaths:(id)a3
+- (void)createSlidesWithPaths:(id)paths
 {
   v5 = [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [a3 count];
+    v5 = [paths count];
   }
 
   if (self->_slides || v5 < 1)
@@ -2819,7 +2819,7 @@ LABEL_14:
 
   for (i = 0; i != v5; ++i)
   {
-    if (i < [a3 count] && (v7 = objc_msgSend(a3, "objectAtIndex:", i)) != 0)
+    if (i < [paths count] && (v7 = objc_msgSend(paths, "objectAtIndex:", i)) != 0)
     {
       v8 = [[MPSlide alloc] initWithPath:v7];
     }
@@ -2835,7 +2835,7 @@ LABEL_14:
   }
 }
 
-- (void)createSecondarySlidesWithPaths:(id)a3
+- (void)createSecondarySlidesWithPaths:(id)paths
 {
   v5 = [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
   v6 = v5;
@@ -2865,7 +2865,7 @@ LABEL_14:
   v8 = 0;
   do
   {
-    if (a3 && v8 < [a3 count] && (v9 = objc_msgSend(a3, "objectAtIndex:", v8)) != 0)
+    if (paths && v8 < [paths count] && (v9 = objc_msgSend(paths, "objectAtIndex:", v8)) != 0)
     {
       v10 = [[MPSlide alloc] initWithPath:v9];
     }
@@ -2907,7 +2907,7 @@ LABEL_14:
     v15 = [NSDictionary dictionaryWithObjectsAndKeys:v14, @"slides", 0];
     v9 = +[NSNotificationCenter defaultCenter];
     v10 = MPEffectDidRemoveSlidesNotification;
-    v11 = self;
+    selfCopy2 = self;
     v12 = v15;
   }
 
@@ -2933,11 +2933,11 @@ LABEL_14:
 
     v9 = +[NSNotificationCenter defaultCenter];
     v10 = MPEffectDidAddSlidesNotification;
-    v11 = self;
+    selfCopy2 = self;
     v12 = v8;
   }
 
-  [(NSNotificationCenter *)v9 postNotificationName:v10 object:v11 userInfo:v12];
+  [(NSNotificationCenter *)v9 postNotificationName:v10 object:selfCopy2 userInfo:v12];
 }
 
 - (id)fullDebugLog
@@ -3039,8 +3039,8 @@ LABEL_14:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(MPEffect *)self slides];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  slides = [(MPEffect *)self slides];
+  v5 = [(NSArray *)slides countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3052,20 +3052,20 @@ LABEL_14:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(slides);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * v8) path];
-        if (v9)
+        path = [*(*(&v11 + 1) + 8 * v8) path];
+        if (path)
         {
-          [v3 addObject:v9];
+          [v3 addObject:path];
         }
 
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [(NSArray *)slides countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -3134,22 +3134,22 @@ LABEL_14:
   }
 }
 
-- (id)slideInformationWithDocument:(id)a3
+- (id)slideInformationWithDocument:(id)document
 {
   v23 = +[NSMutableArray array];
-  if (!a3)
+  if (!document)
   {
-    a3 = [(MPEffect *)self parentDocument];
-    if (!a3)
+    document = [(MPEffect *)self parentDocument];
+    if (!document)
     {
       if ([+[MPAuthoringController sharedController](MPAuthoringController "sharedController")])
       {
-        a3 = [+[MPAuthoringController sharedController](MPAuthoringController "sharedController")];
+        document = [+[MPAuthoringController sharedController](MPAuthoringController "sharedController")];
       }
 
       else
       {
-        a3 = 0;
+        document = 0;
       }
     }
   }
@@ -3177,14 +3177,14 @@ LABEL_14:
         }
 
         v12 = *(*(&v24 + 1) + 8 * v11);
-        v13 = [v12 path];
-        if (v13)
+        path = [v12 path];
+        if (path)
         {
-          v14 = v13;
+          v14 = path;
           v15 = objc_alloc_init(NSMutableDictionary);
-          if (a3)
+          if (document)
           {
-            [a3 resolutionForPath:v14];
+            [document resolutionForPath:v14];
           }
 
           else
@@ -3208,11 +3208,11 @@ LABEL_14:
             }
           }
 
-          else if ([a3 isMovieAtPath:v14])
+          else if ([document isMovieAtPath:v14])
           {
 LABEL_25:
             [v15 setObject:+[NSNumber numberWithBool:](NSNumber forKey:{"numberWithBool:", 1), @"isMovie"}];
-            [a3 durationForPath:v14];
+            [document durationForPath:v14];
             [v15 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"duration"}];
           }
 
@@ -3239,25 +3239,25 @@ LABEL_25:
   if (v3)
   {
     v4 = v3;
-    v5 = [(MPEffect *)self effectAttributes];
-    [v5 addEntriesFromDictionary:v4];
+    effectAttributes = [(MPEffect *)self effectAttributes];
+    [effectAttributes addEntriesFromDictionary:v4];
 
-    [(MPEffect *)self setEffectAttributes:v5];
+    [(MPEffect *)self setEffectAttributes:effectAttributes];
   }
 }
 
 - (id)plugID
 {
-  v2 = [(MPEffect *)self nearestPlug];
+  nearestPlug = [(MPEffect *)self nearestPlug];
 
-  return [v2 objectID];
+  return [nearestPlug objectID];
 }
 
 - (id)objectID
 {
-  v2 = [(MPEffect *)self nearestPlug];
+  nearestPlug = [(MPEffect *)self nearestPlug];
 
-  return [v2 objectID];
+  return [nearestPlug objectID];
 }
 
 - (id)parentDocument
@@ -3274,26 +3274,26 @@ LABEL_25:
     return self->_plug;
   }
 
-  v5 = [(MPEffect *)self parentContainer];
+  parentContainer = [(MPEffect *)self parentContainer];
 
-  return [v5 plug];
+  return [parentContainer plug];
 }
 
-- (void)copyVars:(id)a3
+- (void)copyVars:(id)vars
 {
-  self->_position = *(a3 + 7);
-  self->_size = *(a3 + 136);
-  self->_zPosition = *(a3 + 16);
-  self->_rotationAngle = *(a3 + 19);
-  self->_xRotationAngle = *(a3 + 20);
-  self->_yRotationAngle = *(a3 + 21);
-  self->_scale = *(a3 + 22);
-  self->_opacity = *(a3 + 13);
-  self->_timeIn = *(a3 + 23);
-  self->_phaseInDuration = *(a3 + 24);
-  self->_phaseOutDuration = *(a3 + 25);
-  self->_mainDuration = *(a3 + 26);
-  self->_audioPriority = *(a3 + 29);
+  self->_position = *(vars + 7);
+  self->_size = *(vars + 136);
+  self->_zPosition = *(vars + 16);
+  self->_rotationAngle = *(vars + 19);
+  self->_xRotationAngle = *(vars + 20);
+  self->_yRotationAngle = *(vars + 21);
+  self->_scale = *(vars + 22);
+  self->_opacity = *(vars + 13);
+  self->_timeIn = *(vars + 23);
+  self->_phaseInDuration = *(vars + 24);
+  self->_phaseOutDuration = *(vars + 25);
+  self->_mainDuration = *(vars + 26);
+  self->_audioPriority = *(vars + 29);
   effectID = self->_effectID;
   if (effectID)
   {
@@ -3301,7 +3301,7 @@ LABEL_25:
     self->_effectID = 0;
   }
 
-  self->_effectID = [*(a3 + 27) copy];
+  self->_effectID = [*(vars + 27) copy];
   presetID = self->_presetID;
   if (presetID)
   {
@@ -3309,7 +3309,7 @@ LABEL_25:
     self->_presetID = 0;
   }
 
-  self->_presetID = [*(a3 + 28) copy];
+  self->_presetID = [*(vars + 28) copy];
   uuid = self->_uuid;
   if (uuid)
   {
@@ -3318,16 +3318,16 @@ LABEL_25:
   }
 }
 
-- (void)copySlides:(id)a3
+- (void)copySlides:(id)slides
 {
-  if (a3)
+  if (slides)
   {
     v5 = objc_alloc_init(NSMutableArray);
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v6 = [slides countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -3339,7 +3339,7 @@ LABEL_25:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(slides);
           }
 
           v10 = [*(*(&v11 + 1) + 8 * v9) copy];
@@ -3349,7 +3349,7 @@ LABEL_25:
         }
 
         while (v7 != v9);
-        v7 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [slides countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -3359,16 +3359,16 @@ LABEL_25:
   }
 }
 
-- (void)copySecondarySlides:(id)a3
+- (void)copySecondarySlides:(id)slides
 {
-  if (a3)
+  if (slides)
   {
     v5 = objc_alloc_init(NSMutableArray);
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v6 = [slides countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -3380,7 +3380,7 @@ LABEL_25:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(slides);
           }
 
           v10 = [*(*(&v11 + 1) + 8 * v9) copy];
@@ -3390,7 +3390,7 @@ LABEL_25:
         }
 
         while (v7 != v9);
-        v7 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [slides countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -3400,16 +3400,16 @@ LABEL_25:
   }
 }
 
-- (void)copyTexts:(id)a3
+- (void)copyTexts:(id)texts
 {
-  if (a3)
+  if (texts)
   {
     v5 = objc_alloc_init(NSMutableArray);
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v6 = [texts countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -3421,7 +3421,7 @@ LABEL_25:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(texts);
           }
 
           v10 = [*(*(&v11 + 1) + 8 * v9) copy];
@@ -3431,7 +3431,7 @@ LABEL_25:
         }
 
         while (v7 != v9);
-        v7 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [texts countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -3441,16 +3441,16 @@ LABEL_25:
   }
 }
 
-- (void)copyFilters:(id)a3
+- (void)copyFilters:(id)filters
 {
-  if (a3)
+  if (filters)
   {
     v5 = objc_alloc_init(NSMutableArray);
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v6 = [filters countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -3462,7 +3462,7 @@ LABEL_25:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(filters);
           }
 
           v10 = [*(*(&v11 + 1) + 8 * v9) copy];
@@ -3472,25 +3472,25 @@ LABEL_25:
         }
 
         while (v7 != v9);
-        v7 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [filters countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
     }
 
-    [(MPEffect *)self addFilters:a3];
+    [(MPEffect *)self addFilters:filters];
   }
 }
 
-- (void)copyAnimationPaths:(id)a3
+- (void)copyAnimationPaths:(id)paths
 {
-  if (a3)
+  if (paths)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v5 = [paths countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -3501,15 +3501,15 @@ LABEL_25:
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(paths);
           }
 
           v9 = *(*(&v11 + 1) + 8 * i);
-          v10 = [objc_msgSend(a3 objectForKey:{v9), "copy"}];
+          v10 = [objc_msgSend(paths objectForKey:{v9), "copy"}];
           [(MPEffect *)self setAnimationPath:v10 forKey:v9];
         }
 
-        v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [paths countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v6);
@@ -3517,9 +3517,9 @@ LABEL_25:
   }
 }
 
-- (void)copyAudioPlaylist:(id)a3
+- (void)copyAudioPlaylist:(id)playlist
 {
-  v4 = [a3 copy];
+  v4 = [playlist copy];
   [(MPEffect *)self setAudioPlaylist:v4];
 }
 
@@ -3532,12 +3532,12 @@ LABEL_25:
   [(MPEffect *)self removeAllTexts];
   [(MPEffect *)self removeAllFilters];
   [(MPEffect *)self setAudioPlaylist:0];
-  v3 = [(NSMutableDictionary *)self->_animationPaths allKeys];
+  allKeys = [(NSMutableDictionary *)self->_animationPaths allKeys];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [allKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3549,7 +3549,7 @@ LABEL_25:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         [(MPEffect *)self removeAnimationPathForKey:*(*(&v8 + 1) + 8 * v7)];
@@ -3557,14 +3557,14 @@ LABEL_25:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)setPlug:(id)a3
+- (void)setPlug:(id)plug
 {
   plug = self->_plug;
   if (plug)
@@ -3573,9 +3573,9 @@ LABEL_25:
     self->_plug = 0;
   }
 
-  v6 = a3;
-  self->_plug = v6;
-  if (v6)
+  plugCopy = plug;
+  self->_plug = plugCopy;
+  if (plugCopy)
   {
     [(MPEffect *)self opacity];
     [(MCPlugParallel *)self->_plug setOpacity:?];
@@ -3730,7 +3730,7 @@ LABEL_25:
   }
 }
 
-- (void)setContainer:(id)a3
+- (void)setContainer:(id)container
 {
   container = self->_container;
   if (container)
@@ -3739,9 +3739,9 @@ LABEL_25:
     self->_container = 0;
   }
 
-  v6 = [a3 specialRetain];
-  self->_container = v6;
-  if (v6)
+  specialRetain = [container specialRetain];
+  self->_container = specialRetain;
+  if (specialRetain)
   {
     if ([-[MPEffect parentDocument](self "parentDocument")])
     {
@@ -3775,7 +3775,7 @@ LABEL_25:
           v15 = *(*(&v92 + 1) + 8 * i);
           if ([v15 path])
           {
-            v16 = [v7 videoAssetForFileAtPath:{objc_msgSend(v15, "path")}];
+            addSlide = [v7 videoAssetForFileAtPath:{objc_msgSend(v15, "path")}];
             v17 = v9;
           }
 
@@ -3783,11 +3783,11 @@ LABEL_25:
           {
             [v8 addObjectsFromArray:{-[MCContainerEffect addSlidesForAssets:](self->_container, "addSlidesForAssets:", v9)}];
             [v9 removeAllObjects];
-            v16 = [(MCContainerEffect *)self->_container addSlide];
+            addSlide = [(MCContainerEffect *)self->_container addSlide];
             v17 = v8;
           }
 
-          [v17 addObject:v16];
+          [v17 addObject:addSlide];
         }
 
         v12 = [(NSMutableArray *)slides countByEnumeratingWithState:&v92 objects:v103 count:16];
@@ -3820,7 +3820,7 @@ LABEL_25:
           v23 = *(*(&v88 + 1) + 8 * j);
           if ([v23 path])
           {
-            v24 = [v7 videoAssetForFileAtPath:{objc_msgSend(v23, "path")}];
+            addSlide2 = [v7 videoAssetForFileAtPath:{objc_msgSend(v23, "path")}];
             v25 = v9;
           }
 
@@ -3828,11 +3828,11 @@ LABEL_25:
           {
             [v8 addObjectsFromArray:{-[MCContainerEffect addSlidesForAssets:](self->_container, "addSlidesForAssets:", v9)}];
             [v9 removeAllObjects];
-            v24 = [(MCContainerEffect *)self->_container addSlide];
+            addSlide2 = [(MCContainerEffect *)self->_container addSlide];
             v25 = v8;
           }
 
-          [v25 addObject:v24];
+          [v25 addObject:addSlide2];
         }
 
         v20 = [(NSMutableArray *)secondarySlides countByEnumeratingWithState:&v88 objects:v102 count:16];
@@ -3843,7 +3843,7 @@ LABEL_25:
 
     [v8 addObjectsFromArray:{-[MCContainerEffect addSlidesForAssets:](self->_container, "addSlidesForAssets:", v9)}];
 
-    v26 = [v8 objectEnumerator];
+    objectEnumerator = [v8 objectEnumerator];
     v84 = 0u;
     v85 = 0u;
     v86 = 0u;
@@ -3863,7 +3863,7 @@ LABEL_25:
             objc_enumerationMutation(v27);
           }
 
-          [*(*(&v84 + 1) + 8 * k) setSlide:{objc_msgSend(v26, "nextObject")}];
+          [*(*(&v84 + 1) + 8 * k) setSlide:{objc_msgSend(objectEnumerator, "nextObject")}];
         }
 
         v29 = [(NSMutableArray *)v27 countByEnumeratingWithState:&v84 objects:v101 count:16];
@@ -3891,7 +3891,7 @@ LABEL_25:
             objc_enumerationMutation(v32);
           }
 
-          [*(*(&v80 + 1) + 8 * m) setSlide:{objc_msgSend(v26, "nextObject")}];
+          [*(*(&v80 + 1) + 8 * m) setSlide:{objc_msgSend(objectEnumerator, "nextObject")}];
         }
 
         v34 = [(NSMutableArray *)v32 countByEnumeratingWithState:&v80 objects:v100 count:16];
@@ -3963,10 +3963,10 @@ LABEL_25:
     {
       -[MPAudioPlaylist setMontage:](audioPlaylist, "setMontage:", [-[MPEffectContainer parentLayer](self->_parentContainer "parentLayer")]);
       v50 = self->_audioPlaylist;
-      v51 = [(MCContainer *)self->_container audioPlaylistCreateIfNeeded];
+      audioPlaylistCreateIfNeeded = [(MCContainer *)self->_container audioPlaylistCreateIfNeeded];
       v52 = v50;
 LABEL_72:
-      [(MPAudioPlaylist *)v52 setAudioPlaylist:v51];
+      [(MPAudioPlaylist *)v52 setAudioPlaylist:audioPlaylistCreateIfNeeded];
     }
   }
 
@@ -4033,20 +4033,20 @@ LABEL_72:
     {
       [(MPAudioPlaylist *)v63 setMontage:0];
       v52 = self->_audioPlaylist;
-      v51 = 0;
+      audioPlaylistCreateIfNeeded = 0;
       goto LABEL_72;
     }
   }
 }
 
-- (void)setParentContainer:(id)a3
+- (void)setParentContainer:(id)container
 {
-  if (a3 && self->_parentContainer)
+  if (container && self->_parentContainer)
   {
     objc_exception_throw([NSException exceptionWithName:@"ManyToOneException" reason:@"An effect container may one have one parent.  Please remove it first.  This is unsupported." userInfo:0, v3, v4]);
   }
 
-  self->_parentContainer = a3;
+  self->_parentContainer = container;
 }
 
 - (BOOL)needsParallelizer
@@ -4171,29 +4171,29 @@ LABEL_72:
 
       if (self->_container)
       {
-        v17 = self->_plug;
-        if (!v17)
+        plug = self->_plug;
+        if (!plug)
         {
-          v17 = [(MPEffectContainer *)self->_parentContainer plug];
+          plug = [(MPEffectContainer *)self->_parentContainer plug];
         }
 
-        [(MCPlug *)v17 phaseInDuration];
+        [(MCPlug *)plug phaseInDuration];
         if (v18 != v14)
         {
-          [(MCPlug *)v17 setPhaseInDuration:v14];
+          [(MCPlug *)plug setPhaseInDuration:v14];
         }
 
-        [(MCPlug *)v17 phaseOutDuration];
+        [(MCPlug *)plug phaseOutDuration];
         if (v19 != v16)
         {
-          [(MCPlug *)v17 setPhaseOutDuration:v16];
+          [(MCPlug *)plug setPhaseOutDuration:v16];
         }
 
-        [(MCPlug *)v17 loopDuration];
+        [(MCPlug *)plug loopDuration];
         if (v20 != 0.0)
         {
           v21 = 0.0;
-          v22 = v17;
+          v22 = plug;
 LABEL_25:
           [(MCPlug *)v22 setLoopDuration:v21];
         }
@@ -4258,7 +4258,7 @@ LABEL_25:
   return v3;
 }
 
-- (BOOL)hasPanoramasInDocument:(id)a3
+- (BOOL)hasPanoramasInDocument:(id)document
 {
   v10 = 0u;
   v11 = 0u;
@@ -4280,7 +4280,7 @@ LABEL_25:
           objc_enumerationMutation(slides);
         }
 
-        if ([*(*(&v10 + 1) + 8 * v8) isPanoramaInDocument:a3])
+        if ([*(*(&v10 + 1) + 8 * v8) isPanoramaInDocument:document])
         {
           LOBYTE(v5) = 1;
           return v5;
@@ -4306,12 +4306,12 @@ LABEL_25:
 
 - (id)nearestLayerGroup
 {
-  v2 = [(MPEffect *)self parentContainer];
+  parentContainer = [(MPEffect *)self parentContainer];
 
-  return [v2 nearestLayerGroup];
+  return [parentContainer nearestLayerGroup];
 }
 
-- (id)slideForMCSlide:(id)a3
+- (id)slideForMCSlide:(id)slide
 {
   v5 = [(NSArray *)[(MPEffect *)self slides] copy];
   v23 = 0u;
@@ -4334,7 +4334,7 @@ LABEL_3:
 
       v10 = *(*(&v23 + 1) + 8 * v9);
       v11 = [objc_msgSend(v10 "slide")];
-      if (v11 == [a3 index])
+      if (v11 == [slide index])
       {
         break;
       }
@@ -4383,7 +4383,7 @@ LABEL_13:
 
       v10 = *(*(&v19 + 1) + 8 * v16);
       v17 = [objc_msgSend(v10 "slide")];
-      if (v17 == [a3 index])
+      if (v17 == [slide index])
       {
         break;
       }
@@ -4410,98 +4410,98 @@ LABEL_19:
   return v10;
 }
 
-- (void)insertObject:(id)a3 inSlidesAtIndex:(int64_t)a4
+- (void)insertObject:(id)object inSlidesAtIndex:(int64_t)index
 {
-  v6 = [NSArray arrayWithObject:a3];
+  v6 = [NSArray arrayWithObject:object];
 
-  [(MPEffect *)self insertSlides:v6 atIndex:a4];
+  [(MPEffect *)self insertSlides:v6 atIndex:index];
 }
 
-- (void)removeObjectFromSlidesAtIndex:(int64_t)a3
+- (void)removeObjectFromSlidesAtIndex:(int64_t)index
 {
-  v4 = [NSIndexSet indexSetWithIndex:a3];
+  v4 = [NSIndexSet indexSetWithIndex:index];
 
   [(MPEffect *)self removeSlidesAtIndices:v4];
 }
 
-- (void)replaceObjectInSlidesAtIndex:(int64_t)a3 withObject:(id)a4
+- (void)replaceObjectInSlidesAtIndex:(int64_t)index withObject:(id)object
 {
   [(MPEffect *)self removeSlidesAtIndices:[NSIndexSet indexSetWithIndex:?]];
-  v7 = [NSArray arrayWithObject:a4];
+  v7 = [NSArray arrayWithObject:object];
 
-  [(MPEffect *)self insertSlides:v7 atIndex:a3];
+  [(MPEffect *)self insertSlides:v7 atIndex:index];
 }
 
-- (void)insertObject:(id)a3 inTextsAtIndex:(int64_t)a4
+- (void)insertObject:(id)object inTextsAtIndex:(int64_t)index
 {
-  v6 = [NSArray arrayWithObject:a3];
+  v6 = [NSArray arrayWithObject:object];
 
-  [(MPEffect *)self insertTexts:v6 atIndex:a4];
+  [(MPEffect *)self insertTexts:v6 atIndex:index];
 }
 
-- (void)removeObjectFromTextsAtIndex:(int64_t)a3
+- (void)removeObjectFromTextsAtIndex:(int64_t)index
 {
-  v4 = [NSIndexSet indexSetWithIndex:a3];
+  v4 = [NSIndexSet indexSetWithIndex:index];
 
   [(MPEffect *)self removeTextsAtIndices:v4];
 }
 
-- (void)replaceObjectInTextsAtIndex:(int64_t)a3 withObject:(id)a4
+- (void)replaceObjectInTextsAtIndex:(int64_t)index withObject:(id)object
 {
   [(MPEffect *)self removeTextsAtIndices:[NSIndexSet indexSetWithIndex:?]];
-  v7 = [NSArray arrayWithObject:a4];
+  v7 = [NSArray arrayWithObject:object];
 
-  [(MPEffect *)self insertTexts:v7 atIndex:a3];
+  [(MPEffect *)self insertTexts:v7 atIndex:index];
 }
 
-- (void)insertObject:(id)a3 inFiltersAtIndex:(int64_t)a4
+- (void)insertObject:(id)object inFiltersAtIndex:(int64_t)index
 {
-  v6 = [NSArray arrayWithObject:a3];
+  v6 = [NSArray arrayWithObject:object];
 
-  [(MPEffect *)self insertFilters:v6 atIndex:a4];
+  [(MPEffect *)self insertFilters:v6 atIndex:index];
 }
 
-- (void)removeObjectFromFiltersAtIndex:(int64_t)a3
+- (void)removeObjectFromFiltersAtIndex:(int64_t)index
 {
-  v4 = [NSIndexSet indexSetWithIndex:a3];
+  v4 = [NSIndexSet indexSetWithIndex:index];
 
   [(MPEffect *)self removeFiltersAtIndices:v4];
 }
 
-- (void)replaceObjectInFiltersAtIndex:(int64_t)a3 withObject:(id)a4
+- (void)replaceObjectInFiltersAtIndex:(int64_t)index withObject:(id)object
 {
   [(MPEffect *)self removeFiltersAtIndices:[NSIndexSet indexSetWithIndex:?]];
-  v7 = [NSArray arrayWithObject:a4];
+  v7 = [NSArray arrayWithObject:object];
 
-  [(MPEffect *)self insertFilters:v7 atIndex:a3];
+  [(MPEffect *)self insertFilters:v7 atIndex:index];
 }
 
-- (void)setXPosition:(double)a3
+- (void)setXPosition:(double)position
 {
   [(MPEffect *)self yPosition];
 
-  [(MPEffect *)self setPosition:a3, v5];
+  [(MPEffect *)self setPosition:position, v5];
 }
 
-- (void)setYPosition:(double)a3
+- (void)setYPosition:(double)position
 {
   [(MPEffect *)self xPosition];
 
   [(MPEffect *)self setPosition:?];
 }
 
-- (void)setHeight:(double)a3
+- (void)setHeight:(double)height
 {
   [(MPEffect *)self width];
 
   [(MPEffect *)self setSize:?];
 }
 
-- (void)setWidth:(double)a3
+- (void)setWidth:(double)width
 {
   [(MPEffect *)self height];
 
-  [(MPEffect *)self setSize:a3, v5];
+  [(MPEffect *)self setSize:width, v5];
 }
 
 - (id)scriptingAnimations
@@ -4536,8 +4536,8 @@ LABEL_19:
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v7 = [v4 orderedKeyframes];
-        v8 = [v7 countByEnumeratingWithState:&v25 objects:v33 count:16];
+        orderedKeyframes = [v4 orderedKeyframes];
+        v8 = [orderedKeyframes countByEnumeratingWithState:&v25 objects:v33 count:16];
         if (v8)
         {
           v9 = v8;
@@ -4548,7 +4548,7 @@ LABEL_19:
             {
               if (*v26 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(orderedKeyframes);
               }
 
               v12 = *(*(&v25 + 1) + 8 * i);
@@ -4573,7 +4573,7 @@ LABEL_19:
               [v5 addObject:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:")}];
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v25 objects:v33 count:16];
+            v9 = [orderedKeyframes countByEnumeratingWithState:&v25 objects:v33 count:16];
           }
 
           while (v9);
@@ -4595,13 +4595,13 @@ LABEL_19:
   return v20;
 }
 
-- (void)setScriptingAnimations:(id)a3
+- (void)setScriptingAnimations:(id)animations
 {
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v21 = [a3 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v21 = [animations countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v21)
   {
     v19 = *v24;
@@ -4611,11 +4611,11 @@ LABEL_19:
       {
         if (*v24 != v19)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(animations);
         }
 
         v5 = *(*(&v23 + 1) + 8 * i);
-        v6 = [a3 objectForKey:{v5, v19}];
+        v6 = [animations objectForKey:{v5, v19}];
         v7 = [v6 objectForKey:@"times"];
         v8 = [v6 objectForKey:@"values"];
         v9 = +[MPAnimationPathKeyframed animationPath];
@@ -4648,7 +4648,7 @@ LABEL_19:
         [(MPEffect *)self setAnimationPath:v9 forKey:v5];
       }
 
-      v21 = [a3 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v21 = [animations countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v21);

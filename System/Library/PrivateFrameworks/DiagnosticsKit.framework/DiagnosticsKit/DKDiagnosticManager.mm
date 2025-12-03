@@ -1,53 +1,53 @@
 @interface DKDiagnosticManager
-- (BOOL)_checkPrerequisitesForDiagnostic:(id)a3 parameters:(id)a4 error:(id *)a5;
-- (BOOL)_freeSpaceAvailable:(id)a3;
+- (BOOL)_checkPrerequisitesForDiagnostic:(id)diagnostic parameters:(id)parameters error:(id *)error;
+- (BOOL)_freeSpaceAvailable:(id)available;
 - (BOOL)_isDeviceLocked;
 - (DKAccessoryResponder)accessoryResponder;
 - (DKAssetResponder)assetResponder;
 - (DKBrightnessResponder)brightnessResponder;
-- (DKDiagnosticManager)initWithBundleIdentifier:(id)a3 connectionRoute:(unint64_t)a4;
+- (DKDiagnosticManager)initWithBundleIdentifier:(id)identifier connectionRoute:(unint64_t)route;
 - (DKProgressResponder)progressResponder;
 - (DKStatusBarResponder)statusBarResponder;
 - (DKUserAlertResponder)userAlertResponder;
 - (DKViewControllerDelegate)viewControllerDelegate;
 - (DKVolumeHUDResponder)volumeHUDResponder;
-- (id)adapterForIdentifier:(id)a3;
-- (id)attributesForIdentifier:(id)a3;
+- (id)adapterForIdentifier:(id)identifier;
+- (id)attributesForIdentifier:(id)identifier;
 - (void)_reloadUpdatedPlugins;
-- (void)allowSessionAccessoryDisconnectForDuration:(id)a3;
-- (void)beginDiagnosticWithIdentifier:(id)a3 parameters:(id)a4 completion:(id)a5;
+- (void)allowSessionAccessoryDisconnectForDuration:(id)duration;
+- (void)beginDiagnosticWithIdentifier:(id)identifier parameters:(id)parameters completion:(id)completion;
 - (void)cancelAllDiagnostics;
 - (void)clearAllowSessionAccessoryDisconnect;
-- (void)diagnosticsWithCompletion:(id)a3;
-- (void)displayAlertWithHeader:(id)a3 message:(id)a4 buttonStrings:(id)a5 completion:(id)a6;
-- (void)displayInstructions:(id)a3 style:(int)a4 imageLocators:(id)a5 title:(id)a6 subtitle:(id)a7 iconLocator:(id)a8 options:(id)a9 navigationBarActions:(id)a10 completion:(id)a11;
-- (void)getAsset:(id)a3 completion:(id)a4;
+- (void)diagnosticsWithCompletion:(id)completion;
+- (void)displayAlertWithHeader:(id)header message:(id)message buttonStrings:(id)strings completion:(id)completion;
+- (void)displayInstructions:(id)instructions style:(int)style imageLocators:(id)locators title:(id)title subtitle:(id)subtitle iconLocator:(id)locator options:(id)options navigationBarActions:(id)self0 completion:(id)self1;
+- (void)getAsset:(id)asset completion:(id)completion;
 - (void)hideStatusBar;
-- (void)request:(id)a3 dismissViewController:(id)a4 completion:(id)a5;
-- (void)request:(id)a3 presentViewController:(id)a4 completion:(id)a5;
-- (void)request:(id)a3 presentViewController:(id)a4 completion:(id)a5 responderChainUpdateHandler:(id)a6;
-- (void)requestPluginReloadOnFinishWithCompletion:(id)a3;
-- (void)requestSessionAccessoryIdentifierWithCompletion:(id)a3;
-- (void)setStatusBarStyle:(int64_t)a3;
+- (void)request:(id)request dismissViewController:(id)controller completion:(id)completion;
+- (void)request:(id)request presentViewController:(id)controller completion:(id)completion;
+- (void)request:(id)request presentViewController:(id)controller completion:(id)completion responderChainUpdateHandler:(id)handler;
+- (void)requestPluginReloadOnFinishWithCompletion:(id)completion;
+- (void)requestSessionAccessoryIdentifierWithCompletion:(id)completion;
+- (void)setStatusBarStyle:(int64_t)style;
 - (void)showStatusBar;
 - (void)unpairSessionAccessoryOnTestCompletion;
-- (void)updateProgress:(id)a3 forTest:(id)a4;
-- (void)uploadAssets:(id)a3 completion:(id)a4;
+- (void)updateProgress:(id)progress forTest:(id)test;
+- (void)uploadAssets:(id)assets completion:(id)completion;
 @end
 
 @implementation DKDiagnosticManager
 
-- (DKDiagnosticManager)initWithBundleIdentifier:(id)a3 connectionRoute:(unint64_t)a4
+- (DKDiagnosticManager)initWithBundleIdentifier:(id)identifier connectionRoute:(unint64_t)route
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v22.receiver = self;
   v22.super_class = DKDiagnosticManager;
   v8 = [(DKDiagnosticManager *)&v22 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_bundleIdentifier, a3);
-    v9->_connectionRoute = a4;
+    objc_storeStrong(&v8->_bundleIdentifier, identifier);
+    v9->_connectionRoute = route;
     v9->_pluginReloadRequested = 0;
     v10 = MEMORY[0x277D85CD8];
     v11 = dispatch_queue_create("com.apple.DiagnosticsKit.diagnosticsManager", MEMORY[0x277D85CD8]);
@@ -58,7 +58,7 @@
     diagnosticListQueue = v9->_diagnosticListQueue;
     v9->_diagnosticListQueue = v13;
 
-    if (!a4)
+    if (!route)
     {
       v15 = objc_opt_new();
       registry = v9->_registry;
@@ -75,24 +75,24 @@
   return v9;
 }
 
-- (void)beginDiagnosticWithIdentifier:(id)a3 parameters:(id)a4 completion:(id)a5
+- (void)beginDiagnosticWithIdentifier:(id)identifier parameters:(id)parameters completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(DKDiagnosticManager *)self diagnosticsManagerQueue];
+  identifierCopy = identifier;
+  parametersCopy = parameters;
+  completionCopy = completion;
+  diagnosticsManagerQueue = [(DKDiagnosticManager *)self diagnosticsManagerQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __75__DKDiagnosticManager_beginDiagnosticWithIdentifier_parameters_completion___block_invoke;
   v15[3] = &unk_278F6C2D8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = identifierCopy;
+  v17 = parametersCopy;
+  v18 = completionCopy;
+  v12 = parametersCopy;
+  v13 = completionCopy;
+  v14 = identifierCopy;
+  dispatch_async(diagnosticsManagerQueue, v15);
 }
 
 void __75__DKDiagnosticManager_beginDiagnosticWithIdentifier_parameters_completion___block_invoke(uint64_t a1)
@@ -214,18 +214,18 @@ void __75__DKDiagnosticManager_beginDiagnosticWithIdentifier_parameters_completi
   }
 }
 
-- (void)diagnosticsWithCompletion:(id)a3
+- (void)diagnosticsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(DKDiagnosticManager *)self diagnosticListQueue];
+  completionCopy = completion;
+  diagnosticListQueue = [(DKDiagnosticManager *)self diagnosticListQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__DKDiagnosticManager_diagnosticsWithCompletion___block_invoke;
   v7[3] = &unk_278F6C108;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(diagnosticListQueue, v7);
 }
 
 void __49__DKDiagnosticManager_diagnosticsWithCompletion___block_invoke(uint64_t a1)
@@ -239,286 +239,286 @@ void __49__DKDiagnosticManager_diagnosticsWithCompletion___block_invoke(uint64_t
   (*(v3 + 16))(v3, v4);
 }
 
-- (id)attributesForIdentifier:(id)a3
+- (id)attributesForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DKDiagnosticManager *)self discovery];
-  [v5 waitUntilComplete];
+  identifierCopy = identifier;
+  discovery = [(DKDiagnosticManager *)self discovery];
+  [discovery waitUntilComplete];
 
-  v6 = [(DKDiagnosticManager *)self registry];
-  v7 = [v6 diagnosticForIdentifier:v4];
+  registry = [(DKDiagnosticManager *)self registry];
+  v7 = [registry diagnosticForIdentifier:identifierCopy];
 
   return v7;
 }
 
-- (id)adapterForIdentifier:(id)a3
+- (id)adapterForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DKDiagnosticManager *)self discovery];
-  [v5 waitUntilComplete];
+  identifierCopy = identifier;
+  discovery = [(DKDiagnosticManager *)self discovery];
+  [discovery waitUntilComplete];
 
-  v6 = [(DKDiagnosticManager *)self registry];
-  v7 = [v6 adapterForIdentifier:v4];
+  registry = [(DKDiagnosticManager *)self registry];
+  v7 = [registry adapterForIdentifier:identifierCopy];
 
   return v7;
 }
 
 - (void)cancelAllDiagnostics
 {
-  v2 = [(DKDiagnosticManager *)self registry];
-  [v2 enumerateExtensionAdaptersWithBlock:&__block_literal_global_11];
+  registry = [(DKDiagnosticManager *)self registry];
+  [registry enumerateExtensionAdaptersWithBlock:&__block_literal_global_11];
 }
 
-- (void)updateProgress:(id)a3 forTest:(id)a4
+- (void)updateProgress:(id)progress forTest:(id)test
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(DKDiagnosticManager *)self progressResponder];
-  if (v7)
+  progressCopy = progress;
+  testCopy = test;
+  progressResponder = [(DKDiagnosticManager *)self progressResponder];
+  if (progressResponder)
   {
-    v8 = v7;
-    v9 = [(DKDiagnosticManager *)self progressResponder];
+    v8 = progressResponder;
+    progressResponder2 = [(DKDiagnosticManager *)self progressResponder];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(DKDiagnosticManager *)self progressResponder];
-      [v11 updateProgress:v12 forTest:v6];
+      progressResponder3 = [(DKDiagnosticManager *)self progressResponder];
+      [progressResponder3 updateProgress:progressCopy forTest:testCopy];
     }
   }
 }
 
-- (void)getAsset:(id)a3 completion:(id)a4
+- (void)getAsset:(id)asset completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(DKDiagnosticManager *)self assetResponder];
+  assetCopy = asset;
+  completionCopy = completion;
+  assetResponder = [(DKDiagnosticManager *)self assetResponder];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(DKDiagnosticManager *)self assetResponder];
-    [v9 getAsset:v10 completion:v6];
+    assetResponder2 = [(DKDiagnosticManager *)self assetResponder];
+    [assetResponder2 getAsset:assetCopy completion:completionCopy];
   }
 }
 
-- (void)uploadAssets:(id)a3 completion:(id)a4
+- (void)uploadAssets:(id)assets completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(DKDiagnosticManager *)self assetResponder];
+  assetsCopy = assets;
+  completionCopy = completion;
+  assetResponder = [(DKDiagnosticManager *)self assetResponder];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(DKDiagnosticManager *)self assetResponder];
-    [v9 uploadAssets:v10 completion:v6];
+    assetResponder2 = [(DKDiagnosticManager *)self assetResponder];
+    [assetResponder2 uploadAssets:assetsCopy completion:completionCopy];
   }
 }
 
-- (void)requestSessionAccessoryIdentifierWithCompletion:(id)a3
+- (void)requestSessionAccessoryIdentifierWithCompletion:(id)completion
 {
-  v9 = a3;
-  v4 = [(DKDiagnosticManager *)self accessoryResponder];
-  if (v4)
+  completionCopy = completion;
+  accessoryResponder = [(DKDiagnosticManager *)self accessoryResponder];
+  if (accessoryResponder)
   {
-    v5 = v4;
-    v6 = [(DKDiagnosticManager *)self accessoryResponder];
+    v5 = accessoryResponder;
+    accessoryResponder2 = [(DKDiagnosticManager *)self accessoryResponder];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(DKDiagnosticManager *)self accessoryResponder];
-      [v8 requestSessionAccessoryIdentifierWithCompletion:v9];
+      accessoryResponder3 = [(DKDiagnosticManager *)self accessoryResponder];
+      [accessoryResponder3 requestSessionAccessoryIdentifierWithCompletion:completionCopy];
     }
   }
 }
 
 - (void)unpairSessionAccessoryOnTestCompletion
 {
-  v3 = [(DKDiagnosticManager *)self accessoryResponder];
-  if (v3)
+  accessoryResponder = [(DKDiagnosticManager *)self accessoryResponder];
+  if (accessoryResponder)
   {
-    v4 = v3;
-    v5 = [(DKDiagnosticManager *)self accessoryResponder];
+    v4 = accessoryResponder;
+    accessoryResponder2 = [(DKDiagnosticManager *)self accessoryResponder];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(DKDiagnosticManager *)self accessoryResponder];
-      [v7 unpairSessionAccessoryOnTestCompletion];
+      accessoryResponder3 = [(DKDiagnosticManager *)self accessoryResponder];
+      [accessoryResponder3 unpairSessionAccessoryOnTestCompletion];
     }
   }
 }
 
-- (void)allowSessionAccessoryDisconnectForDuration:(id)a3
+- (void)allowSessionAccessoryDisconnectForDuration:(id)duration
 {
-  v9 = a3;
-  v4 = [(DKDiagnosticManager *)self accessoryResponder];
-  if (v4)
+  durationCopy = duration;
+  accessoryResponder = [(DKDiagnosticManager *)self accessoryResponder];
+  if (accessoryResponder)
   {
-    v5 = v4;
-    v6 = [(DKDiagnosticManager *)self accessoryResponder];
+    v5 = accessoryResponder;
+    accessoryResponder2 = [(DKDiagnosticManager *)self accessoryResponder];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(DKDiagnosticManager *)self accessoryResponder];
-      [v8 allowSessionAccessoryDisconnectForDuration:v9];
+      accessoryResponder3 = [(DKDiagnosticManager *)self accessoryResponder];
+      [accessoryResponder3 allowSessionAccessoryDisconnectForDuration:durationCopy];
     }
   }
 }
 
 - (void)clearAllowSessionAccessoryDisconnect
 {
-  v3 = [(DKDiagnosticManager *)self accessoryResponder];
-  if (v3)
+  accessoryResponder = [(DKDiagnosticManager *)self accessoryResponder];
+  if (accessoryResponder)
   {
-    v4 = v3;
-    v5 = [(DKDiagnosticManager *)self accessoryResponder];
+    v4 = accessoryResponder;
+    accessoryResponder2 = [(DKDiagnosticManager *)self accessoryResponder];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(DKDiagnosticManager *)self accessoryResponder];
-      [v7 clearAllowSessionAccessoryDisconnect];
+      accessoryResponder3 = [(DKDiagnosticManager *)self accessoryResponder];
+      [accessoryResponder3 clearAllowSessionAccessoryDisconnect];
     }
   }
 }
 
-- (void)displayAlertWithHeader:(id)a3 message:(id)a4 buttonStrings:(id)a5 completion:(id)a6
+- (void)displayAlertWithHeader:(id)header message:(id)message buttonStrings:(id)strings completion:(id)completion
 {
-  v18 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(DKDiagnosticManager *)self userAlertResponder];
-  if (v13)
+  headerCopy = header;
+  messageCopy = message;
+  stringsCopy = strings;
+  completionCopy = completion;
+  userAlertResponder = [(DKDiagnosticManager *)self userAlertResponder];
+  if (userAlertResponder)
   {
-    v14 = v13;
-    v15 = [(DKDiagnosticManager *)self userAlertResponder];
+    v14 = userAlertResponder;
+    userAlertResponder2 = [(DKDiagnosticManager *)self userAlertResponder];
     v16 = objc_opt_respondsToSelector();
 
     if (v16)
     {
-      v17 = [(DKDiagnosticManager *)self userAlertResponder];
-      [v17 displayAlertWithHeader:v18 message:v10 buttonStrings:v11 completion:v12];
+      userAlertResponder3 = [(DKDiagnosticManager *)self userAlertResponder];
+      [userAlertResponder3 displayAlertWithHeader:headerCopy message:messageCopy buttonStrings:stringsCopy completion:completionCopy];
     }
   }
 }
 
-- (void)displayInstructions:(id)a3 style:(int)a4 imageLocators:(id)a5 title:(id)a6 subtitle:(id)a7 iconLocator:(id)a8 options:(id)a9 navigationBarActions:(id)a10 completion:(id)a11
+- (void)displayInstructions:(id)instructions style:(int)style imageLocators:(id)locators title:(id)title subtitle:(id)subtitle iconLocator:(id)locator options:(id)options navigationBarActions:(id)self0 completion:(id)self1
 {
-  v29 = a3;
-  v28 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  v21 = a11;
-  v22 = [(DKDiagnosticManager *)self userAlertResponder];
-  if (v22)
+  instructionsCopy = instructions;
+  locatorsCopy = locators;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  locatorCopy = locator;
+  optionsCopy = options;
+  actionsCopy = actions;
+  completionCopy = completion;
+  userAlertResponder = [(DKDiagnosticManager *)self userAlertResponder];
+  if (userAlertResponder)
   {
-    v23 = v22;
-    v24 = [(DKDiagnosticManager *)self userAlertResponder];
+    v23 = userAlertResponder;
+    userAlertResponder2 = [(DKDiagnosticManager *)self userAlertResponder];
     v25 = objc_opt_respondsToSelector();
 
     if (v25)
     {
-      v26 = [(DKDiagnosticManager *)self userAlertResponder];
-      [v26 displayInstructions:v29 style:a4 imageLocators:v28 title:v16 subtitle:v17 iconLocator:v18 options:v19 navigationBarActions:v20 completion:v21];
+      userAlertResponder3 = [(DKDiagnosticManager *)self userAlertResponder];
+      [userAlertResponder3 displayInstructions:instructionsCopy style:style imageLocators:locatorsCopy title:titleCopy subtitle:subtitleCopy iconLocator:locatorCopy options:optionsCopy navigationBarActions:actionsCopy completion:completionCopy];
     }
   }
 }
 
 - (void)showStatusBar
 {
-  v3 = [(DKDiagnosticManager *)self statusBarResponder];
+  statusBarResponder = [(DKDiagnosticManager *)self statusBarResponder];
 
-  if (v3)
+  if (statusBarResponder)
   {
-    v4 = [(DKDiagnosticManager *)self statusBarResponder];
-    [v4 showStatusBar];
+    statusBarResponder2 = [(DKDiagnosticManager *)self statusBarResponder];
+    [statusBarResponder2 showStatusBar];
   }
 }
 
 - (void)hideStatusBar
 {
-  v3 = [(DKDiagnosticManager *)self statusBarResponder];
+  statusBarResponder = [(DKDiagnosticManager *)self statusBarResponder];
 
-  if (v3)
+  if (statusBarResponder)
   {
-    v4 = [(DKDiagnosticManager *)self statusBarResponder];
-    [v4 hideStatusBar];
+    statusBarResponder2 = [(DKDiagnosticManager *)self statusBarResponder];
+    [statusBarResponder2 hideStatusBar];
   }
 }
 
-- (void)setStatusBarStyle:(int64_t)a3
+- (void)setStatusBarStyle:(int64_t)style
 {
-  v5 = [(DKDiagnosticManager *)self statusBarResponder];
+  statusBarResponder = [(DKDiagnosticManager *)self statusBarResponder];
 
-  if (v5)
+  if (statusBarResponder)
   {
-    v6 = [(DKDiagnosticManager *)self statusBarResponder];
-    [v6 setStatusBarStyle:a3];
+    statusBarResponder2 = [(DKDiagnosticManager *)self statusBarResponder];
+    [statusBarResponder2 setStatusBarStyle:style];
   }
 }
 
-- (void)request:(id)a3 presentViewController:(id)a4 completion:(id)a5
+- (void)request:(id)request presentViewController:(id)controller completion:(id)completion
 {
-  v11 = a4;
-  v7 = a5;
-  v8 = [(DKDiagnosticManager *)self viewControllerDelegate];
+  controllerCopy = controller;
+  completionCopy = completion;
+  viewControllerDelegate = [(DKDiagnosticManager *)self viewControllerDelegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    [v11 setModalPresentationStyle:0];
-    v10 = [(DKDiagnosticManager *)self viewControllerDelegate];
-    [v10 diagnosticManager:self presentViewController:v11 completion:v7];
+    [controllerCopy setModalPresentationStyle:0];
+    viewControllerDelegate2 = [(DKDiagnosticManager *)self viewControllerDelegate];
+    [viewControllerDelegate2 diagnosticManager:self presentViewController:controllerCopy completion:completionCopy];
   }
 }
 
-- (void)request:(id)a3 dismissViewController:(id)a4 completion:(id)a5
+- (void)request:(id)request dismissViewController:(id)controller completion:(id)completion
 {
-  v11 = a4;
-  v7 = a5;
-  v8 = [(DKDiagnosticManager *)self viewControllerDelegate];
+  controllerCopy = controller;
+  completionCopy = completion;
+  viewControllerDelegate = [(DKDiagnosticManager *)self viewControllerDelegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(DKDiagnosticManager *)self viewControllerDelegate];
-    [v10 diagnosticManager:self dismissViewController:v11 completion:v7];
+    viewControllerDelegate2 = [(DKDiagnosticManager *)self viewControllerDelegate];
+    [viewControllerDelegate2 diagnosticManager:self dismissViewController:controllerCopy completion:completionCopy];
   }
 }
 
-- (void)request:(id)a3 presentViewController:(id)a4 completion:(id)a5 responderChainUpdateHandler:(id)a6
+- (void)request:(id)request presentViewController:(id)controller completion:(id)completion responderChainUpdateHandler:(id)handler
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(DKDiagnosticManager *)self viewControllerDelegate];
+  requestCopy = request;
+  controllerCopy = controller;
+  completionCopy = completion;
+  handlerCopy = handler;
+  viewControllerDelegate = [(DKDiagnosticManager *)self viewControllerDelegate];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    [v10 setModalPresentationStyle:0];
-    v15 = [(DKDiagnosticManager *)self viewControllerDelegate];
-    [v15 diagnosticManager:self presentViewController:v10 completion:v11 responderChainUpdateHandler:v12];
+    [controllerCopy setModalPresentationStyle:0];
+    viewControllerDelegate2 = [(DKDiagnosticManager *)self viewControllerDelegate];
+    [viewControllerDelegate2 diagnosticManager:self presentViewController:controllerCopy completion:completionCopy responderChainUpdateHandler:handlerCopy];
   }
 
   else
   {
-    [(DKDiagnosticManager *)self request:v16 presentViewController:v10 completion:v11];
+    [(DKDiagnosticManager *)self request:requestCopy presentViewController:controllerCopy completion:completionCopy];
   }
 }
 
-- (void)requestPluginReloadOnFinishWithCompletion:(id)a3
+- (void)requestPluginReloadOnFinishWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = DiagnosticsKitLogHandleForCategory(1);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -527,68 +527,68 @@ void __49__DKDiagnosticManager_diagnosticsWithCompletion___block_invoke(uint64_t
   }
 
   [(DKDiagnosticManager *)self setPluginReloadRequested:1];
-  v4[2](v4);
+  completionCopy[2](completionCopy);
 }
 
 - (void)_reloadUpdatedPlugins
 {
-  v3 = [(DKDiagnosticManager *)self registry];
+  registry = [(DKDiagnosticManager *)self registry];
   v4 = [MEMORY[0x277CBEB98] setWithObjects:{@"com.apple.diagnostics-service", @"com.apple.diagnostics-ui-service", @"com.apple.diagnostics-restricted-service", @"com.apple.diagnostics-restricted-ui-service", 0}];
-  v5 = [(DKDiagnosticManager *)self bundleIdentifier];
-  v6 = [DKExtensionDiscovery discoveryUsingExtensionRegistry:v3 services:v4 bundleIdentifier:v5];
+  bundleIdentifier = [(DKDiagnosticManager *)self bundleIdentifier];
+  v6 = [DKExtensionDiscovery discoveryUsingExtensionRegistry:registry services:v4 bundleIdentifier:bundleIdentifier];
   [(DKDiagnosticManager *)self setDiscovery:v6];
 
-  v7 = [(DKDiagnosticManager *)self discovery];
-  [v7 waitUntilComplete];
+  discovery = [(DKDiagnosticManager *)self discovery];
+  [discovery waitUntilComplete];
 
   [(DKDiagnosticManager *)self setPluginReloadRequested:0];
 }
 
-- (BOOL)_checkPrerequisitesForDiagnostic:(id)a3 parameters:(id)a4 error:(id *)a5
+- (BOOL)_checkPrerequisitesForDiagnostic:(id)diagnostic parameters:(id)parameters error:(id *)error
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [a4 specifications];
-  if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  diagnosticCopy = diagnostic;
+  specifications = [parameters specifications];
+  if (!specifications || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v10 = 0;
 LABEL_7:
-    v11 = [v8 freeSpaceRequired];
+    freeSpaceRequired = [diagnosticCopy freeSpaceRequired];
 
     goto LABEL_8;
   }
 
-  v10 = [v9 objectForKeyedSubscript:@"freeSpaceRequired"];
+  v10 = [specifications objectForKeyedSubscript:@"freeSpaceRequired"];
   if (!v10)
   {
     goto LABEL_7;
   }
 
   objc_opt_class();
-  v11 = v10;
+  freeSpaceRequired = v10;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_7;
   }
 
 LABEL_8:
-  v12 = [(DKDiagnosticManager *)self _freeSpaceAvailable:v11];
+  v12 = [(DKDiagnosticManager *)self _freeSpaceAvailable:freeSpaceRequired];
   v13 = v12;
-  if (a5 && !v12)
+  if (error && !v12)
   {
     v14 = MEMORY[0x277CCA9B8];
     v25 = *MEMORY[0x277CCA450];
     v15 = DKErrorLocalizedDescriptionForCode(-1005);
     v26[0] = v15;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
-    *a5 = [v14 errorWithDomain:@"DKErrorDomain" code:-1005 userInfo:v16];
+    *error = [v14 errorWithDomain:@"DKErrorDomain" code:-1005 userInfo:v16];
   }
 
-  if ([v8 requiresUnlock])
+  if ([diagnosticCopy requiresUnlock])
   {
     v17 = ![(DKDiagnosticManager *)self _isDeviceLocked];
     v13 &= v17;
-    if (a5)
+    if (error)
     {
       if ((v17 & 1) == 0)
       {
@@ -597,7 +597,7 @@ LABEL_8:
         v19 = DKErrorLocalizedDescriptionForCode(-1007);
         v24 = v19;
         v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-        *a5 = [v18 errorWithDomain:@"DKErrorDomain" code:-1007 userInfo:v20];
+        *error = [v18 errorWithDomain:@"DKErrorDomain" code:-1007 userInfo:v20];
 
         v13 = 0;
       }
@@ -624,10 +624,10 @@ LABEL_8:
   return v2;
 }
 
-- (BOOL)_freeSpaceAvailable:(id)a3
+- (BOOL)_freeSpaceAvailable:(id)available
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  availableCopy = available;
   v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:@"/private/var"];
   v14 = 0;
   v5 = *MEMORY[0x277CBEA00];
@@ -642,13 +642,13 @@ LABEL_8:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v16 = v3;
+      v16 = availableCopy;
       v17 = 2112;
       v18 = v6;
       _os_log_impl(&dword_248B9D000, v9, OS_LOG_TYPE_DEFAULT, "Free space required by diagnostic: %@, available space: %@", buf, 0x16u);
     }
 
-    v10 = [v6 compare:v3] != -1;
+    v10 = [v6 compare:availableCopy] != -1;
   }
 
   else

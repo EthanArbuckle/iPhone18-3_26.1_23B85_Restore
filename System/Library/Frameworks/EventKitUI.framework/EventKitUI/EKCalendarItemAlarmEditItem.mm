@@ -1,38 +1,38 @@
 @interface EKCalendarItemAlarmEditItem
 - (BOOL)_alarmsMatchCalendarItem;
 - (BOOL)_calendarItemHasLeaveNowAlarm;
-- (BOOL)configureForCalendarConstraints:(id)a3;
-- (BOOL)saveAndDismissWithForce:(BOOL)a3;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
+- (BOOL)configureForCalendarConstraints:(id)constraints;
+- (BOOL)saveAndDismissWithForce:(BOOL)force;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
 - (id)footerTitle;
 - (unint64_t)numberOfSubitems;
 - (void)_updateAlarms;
 - (void)refreshFromCalendarItemAndStore;
-- (void)setCalendarItem:(id)a3 store:(id)a4;
-- (void)ttlLocationStatusChanged:(id)a3;
+- (void)setCalendarItem:(id)item store:(id)store;
+- (void)ttlLocationStatusChanged:(id)changed;
 @end
 
 @implementation EKCalendarItemAlarmEditItem
 
-- (void)setCalendarItem:(id)a3 store:(id)a4
+- (void)setCalendarItem:(id)item store:(id)store
 {
-  v6 = a3;
+  itemCopy = item;
   v13.receiver = self;
   v13.super_class = EKCalendarItemAlarmEditItem;
-  [(EKCalendarItemEditItem *)&v13 setCalendarItem:v6 store:a4];
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
+  [(EKCalendarItemEditItem *)&v13 setCalendarItem:itemCopy store:store];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v8 = *MEMORY[0x1E69932B0];
-  v9 = [(EKCalendarItemAlarmEditItem *)self alarmsViewModel];
-  [v7 removeObserver:self name:v8 object:v9];
+  alarmsViewModel = [(EKCalendarItemAlarmEditItem *)self alarmsViewModel];
+  [defaultCenter removeObserver:self name:v8 object:alarmsViewModel];
 
-  if (v6)
+  if (itemCopy)
   {
-    v10 = [objc_alloc(MEMORY[0x1E6993378]) initWithCalendarItem:v6];
+    v10 = [objc_alloc(MEMORY[0x1E6993378]) initWithCalendarItem:itemCopy];
     [(EKCalendarItemAlarmEditItem *)self setAlarmsViewModel:v10];
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    v12 = [(EKCalendarItemAlarmEditItem *)self alarmsViewModel];
-    [v11 addObserver:self selector:sel_ttlLocationStatusChanged_ name:v8 object:v12];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    alarmsViewModel2 = [(EKCalendarItemAlarmEditItem *)self alarmsViewModel];
+    [defaultCenter2 addObserver:self selector:sel_ttlLocationStatusChanged_ name:v8 object:alarmsViewModel2];
   }
 
   else
@@ -45,11 +45,11 @@
 
 - (unint64_t)numberOfSubitems
 {
-  v3 = [(EKCalendarItemEditItem *)self calendarItem];
-  v4 = [v3 calendar];
-  v5 = [v4 source];
-  v6 = [v5 constraints];
-  v7 = [v6 maxAlarmsAllowed];
+  calendarItem = [(EKCalendarItemEditItem *)self calendarItem];
+  calendar = [calendarItem calendar];
+  source = [calendar source];
+  constraints = [source constraints];
+  maxAlarmsAllowed = [constraints maxAlarmsAllowed];
 
   v8 = [(NSArray *)self->_alarms count];
   v9 = 1;
@@ -59,14 +59,14 @@
   }
 
   v10 = v9 + v8;
-  if (v7 == -1)
+  if (maxAlarmsAllowed == -1)
   {
     v11 = 2;
   }
 
   else
   {
-    v11 = v7;
+    v11 = maxAlarmsAllowed;
   }
 
   if (v10 >= v11)
@@ -82,24 +82,24 @@
   return v12;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
-  if ([(NSArray *)self->_alarms count]<= a3)
+  if ([(NSArray *)self->_alarms count]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSArray *)self->_alarms objectAtIndexedSubscript:a3];
+    v5 = [(NSArray *)self->_alarms objectAtIndexedSubscript:index];
   }
 
   v6 = [[EKUIPopupTableViewCell alloc] initWithStyle:1 reuseIdentifier:0];
   v7 = v6;
   if (v5)
   {
-    v8 = [(EKCalendarItemAlarmEditItem *)self alarmsViewModel];
-    -[EKUIPopupTableViewCell setTitleStrikethrough:](v7, "setTitleStrikethrough:", [v8 isAlarmEffectivelyDisabled:v5]);
+    alarmsViewModel = [(EKCalendarItemAlarmEditItem *)self alarmsViewModel];
+    -[EKUIPopupTableViewCell setTitleStrikethrough:](v7, "setTitleStrikethrough:", [alarmsViewModel isAlarmEffectivelyDisabled:v5]);
   }
 
   else
@@ -107,21 +107,21 @@
     [(EKUIPopupTableViewCell *)v6 setTitleStrikethrough:0];
   }
 
-  v9 = [(EKCalendarItemAlarmEditItem *)self alarmsViewModel];
+  alarmsViewModel2 = [(EKCalendarItemAlarmEditItem *)self alarmsViewModel];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __53__EKCalendarItemAlarmEditItem_cellForSubitemAtIndex___block_invoke;
   v15[3] = &unk_1E8442018;
   v15[4] = self;
-  v15[5] = a3;
-  v10 = [v9 menuForAlarmAtIndex:a3 actionHandler:v15];
+  v15[5] = index;
+  v10 = [alarmsViewModel2 menuForAlarmAtIndex:index actionHandler:v15];
   [(EKUIPopupTableViewCell *)v7 setPopupMenu:v10];
 
-  v11 = [MEMORY[0x1E6993378] labelTextForIndex:a3];
-  v12 = [(EKUIPopupTableViewCell *)v7 textLabel];
-  [v12 setText:v11];
+  v11 = [MEMORY[0x1E6993378] labelTextForIndex:index];
+  textLabel = [(EKUIPopupTableViewCell *)v7 textLabel];
+  [textLabel setText:v11];
 
-  v13 = [MEMORY[0x1E6993378] accessibilityIdentifierForIndex:a3];
+  v13 = [MEMORY[0x1E6993378] accessibilityIdentifierForIndex:index];
   [(EKUIPopupTableViewCell *)v7 setAccessibilityIdentifier:v13];
 
   return v7;
@@ -175,14 +175,14 @@ uint64_t __53__EKCalendarItemAlarmEditItem_cellForSubitemAtIndex___block_invoke_
 
 - (id)footerTitle
 {
-  v3 = [(EKCalendarItemEditItem *)self calendarItem];
-  v4 = [v3 calendar];
-  v5 = [v4 isIgnoringEventAlerts];
+  calendarItem = [(EKCalendarItemEditItem *)self calendarItem];
+  calendar = [calendarItem calendar];
+  isIgnoringEventAlerts = [calendar isIgnoringEventAlerts];
 
-  if (v5)
+  if (isIgnoringEventAlerts)
   {
-    v6 = [(EKCalendarItemEditItem *)self calendarItem];
-    v7 = [v6 calendar];
+    calendarItem2 = [(EKCalendarItemEditItem *)self calendarItem];
+    calendar2 = [calendarItem2 calendar];
     v8 = CUIKDisplayedTitleForCalendar();
 
     v9 = EventKitUIBundle();
@@ -191,38 +191,38 @@ uint64_t __53__EKCalendarItemAlarmEditItem_cellForSubitemAtIndex___block_invoke_
     v11 = MEMORY[0x1E696AEC0];
     v12 = EventKitUIBundle();
     v13 = [v12 localizedStringForKey:@"Alerts for this calendar are disabled.\nTo allow this alert to fire value:enable ‘%@’ in the calendar settings for ‘%@’." table:{&stru_1F4EF6790, 0}];
-    v14 = [v11 localizedStringWithFormat:v13, v10, v8];
+    footerTitle = [v11 localizedStringWithFormat:v13, v10, v8];
   }
 
   else
   {
     v16.receiver = self;
     v16.super_class = EKCalendarItemAlarmEditItem;
-    v14 = [(EKCalendarItemEditItem *)&v16 footerTitle];
+    footerTitle = [(EKCalendarItemEditItem *)&v16 footerTitle];
   }
 
-  return v14;
+  return footerTitle;
 }
 
-- (BOOL)configureForCalendarConstraints:(id)a3
+- (BOOL)configureForCalendarConstraints:(id)constraints
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  constraintsCopy = constraints;
   [(EKCalendarItemAlarmEditItem *)self _updateAlarms];
-  v5 = [(EKCalendarItemEditItem *)self calendarItem];
+  calendarItem = [(EKCalendarItemEditItem *)self calendarItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v23 = self;
-    v7 = [(EKCalendarItemEditItem *)self calendarItem];
+    selfCopy = self;
+    calendarItem2 = [(EKCalendarItemEditItem *)self calendarItem];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v8 = [v7 alarms];
-    v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    alarms = [calendarItem2 alarms];
+    v9 = [alarms countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (!v9)
     {
       goto LABEL_15;
@@ -236,15 +236,15 @@ uint64_t __53__EKCalendarItemAlarmEditItem_cellForSubitemAtIndex___block_invoke_
       {
         if (*v26 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(alarms);
         }
 
         v13 = *(*(&v25 + 1) + 8 * i);
         if ([v13 isAbsolute])
         {
-          v14 = [v13 absoluteDate];
-          v15 = [v7 startDate];
-          v16 = [v14 compare:v15];
+          absoluteDate = [v13 absoluteDate];
+          startDate = [calendarItem2 startDate];
+          v16 = [absoluteDate compare:startDate];
 
           if (v16 != 1)
           {
@@ -261,22 +261,22 @@ uint64_t __53__EKCalendarItemAlarmEditItem_cellForSubitemAtIndex___block_invoke_
           }
         }
 
-        v18 = [v4 source];
-        v19 = [v18 constraints];
-        v20 = [v19 supportsAlarmsTriggeringAfterStartDate];
+        source = [constraintsCopy source];
+        constraints = [source constraints];
+        supportsAlarmsTriggeringAfterStartDate = [constraints supportsAlarmsTriggeringAfterStartDate];
 
-        if ((v20 & 1) == 0)
+        if ((supportsAlarmsTriggeringAfterStartDate & 1) == 0)
         {
-          [v7 removeAlarm:v13];
+          [calendarItem2 removeAlarm:v13];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v10 = [alarms countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (!v10)
       {
 LABEL_15:
 
-        self = v23;
+        self = selfCopy;
         break;
       }
     }
@@ -284,14 +284,14 @@ LABEL_15:
 
   v24.receiver = self;
   v24.super_class = EKCalendarItemAlarmEditItem;
-  v21 = [(EKCalendarItemEditItem *)&v24 configureForCalendarConstraints:v4];
+  v21 = [(EKCalendarItemEditItem *)&v24 configureForCalendarConstraints:constraintsCopy];
 
   return v21;
 }
 
 - (BOOL)_calendarItemHasLeaveNowAlarm
 {
-  v3 = [(EKCalendarItemEditItem *)self calendarItem];
+  calendarItem = [(EKCalendarItemEditItem *)self calendarItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -300,30 +300,30 @@ LABEL_15:
     return 0;
   }
 
-  v5 = [(EKCalendarItemEditItem *)self calendarItem];
-  if ([v5 eligibleForTravelAdvisories])
+  calendarItem2 = [(EKCalendarItemEditItem *)self calendarItem];
+  if ([calendarItem2 eligibleForTravelAdvisories])
   {
-    v6 = [v5 travelAdvisoryBehaviorIsEffectivelyEnabled];
+    travelAdvisoryBehaviorIsEffectivelyEnabled = [calendarItem2 travelAdvisoryBehaviorIsEffectivelyEnabled];
   }
 
   else
   {
-    v6 = 0;
+    travelAdvisoryBehaviorIsEffectivelyEnabled = 0;
   }
 
-  return v6;
+  return travelAdvisoryBehaviorIsEffectivelyEnabled;
 }
 
 - (void)_updateAlarms
 {
-  v3 = [(EKCalendarItemAlarmEditItem *)self alarmsViewModel];
-  [v3 setNeedsUpdate];
+  alarmsViewModel = [(EKCalendarItemAlarmEditItem *)self alarmsViewModel];
+  [alarmsViewModel setNeedsUpdate];
 
-  v4 = [(EKCalendarItemAlarmEditItem *)self alarmsViewModel];
-  v5 = [v4 uiAlarms];
+  alarmsViewModel2 = [(EKCalendarItemAlarmEditItem *)self alarmsViewModel];
+  uiAlarms = [alarmsViewModel2 uiAlarms];
 
   alarms = self->_alarms;
-  self->_alarms = v5;
+  self->_alarms = uiAlarms;
 }
 
 - (void)refreshFromCalendarItemAndStore
@@ -334,10 +334,10 @@ LABEL_15:
   [(EKCalendarItemAlarmEditItem *)self _updateAlarms];
 }
 
-- (void)ttlLocationStatusChanged:(id)a3
+- (void)ttlLocationStatusChanged:(id)changed
 {
-  v4 = [(EKCalendarItemEditItem *)self delegate];
-  v5 = [v4 rowNumberForEditItem:self];
+  delegate = [(EKCalendarItemEditItem *)self delegate];
+  v5 = [delegate rowNumberForEditItem:self];
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -365,23 +365,23 @@ void __56__EKCalendarItemAlarmEditItem_ttlLocationStatusChanged___block_invoke(u
 
 - (BOOL)_alarmsMatchCalendarItem
 {
-  v3 = [(EKCalendarItemEditItem *)self calendarItem];
-  v4 = [(EKCalendarItemAlarmEditItem *)self _calendarItemHasLeaveNowAlarm];
-  if (self->_hasLeaveNowAlarm == v4 && (v5 = v4, [v3 alarms], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, -[NSArray count](self->_alarms, "count") == v7 + v5))
+  calendarItem = [(EKCalendarItemEditItem *)self calendarItem];
+  _calendarItemHasLeaveNowAlarm = [(EKCalendarItemAlarmEditItem *)self _calendarItemHasLeaveNowAlarm];
+  if (self->_hasLeaveNowAlarm == _calendarItemHasLeaveNowAlarm && (v5 = _calendarItemHasLeaveNowAlarm, [calendarItem alarms], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, -[NSArray count](self->_alarms, "count") == v7 + v5))
   {
     v13 = 0;
     v14 = &v13;
     v15 = 0x2020000000;
     v16 = 1;
-    v8 = [(EKCalendarItemEditItem *)self calendarItem];
-    v9 = [v8 alarms];
+    calendarItem2 = [(EKCalendarItemEditItem *)self calendarItem];
+    alarms = [calendarItem2 alarms];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __55__EKCalendarItemAlarmEditItem__alarmsMatchCalendarItem__block_invoke;
     v12[3] = &unk_1E8442040;
     v12[4] = self;
     v12[5] = &v13;
-    [v9 enumerateObjectsUsingBlock:v12];
+    [alarms enumerateObjectsUsingBlock:v12];
 
     v10 = *(v14 + 24);
     _Block_object_dispose(&v13, 8);
@@ -410,15 +410,15 @@ void __55__EKCalendarItemAlarmEditItem__alarmsMatchCalendarItem__block_invoke(ui
   }
 }
 
-- (BOOL)saveAndDismissWithForce:(BOOL)a3
+- (BOOL)saveAndDismissWithForce:(BOOL)force
 {
-  v4 = [(EKCalendarItemAlarmEditItem *)self _alarmsMatchCalendarItem];
-  if (!v4)
+  _alarmsMatchCalendarItem = [(EKCalendarItemAlarmEditItem *)self _alarmsMatchCalendarItem];
+  if (!_alarmsMatchCalendarItem)
   {
     [(EKCalendarItemAlarmEditItem *)self _updateAlarms];
   }
 
-  return !v4;
+  return !_alarmsMatchCalendarItem;
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface BAAppExtensionInfo
 - (BAAppExtensionInfo)init;
-- (BAAppExtensionInfo)initWithCoder:(id)a3;
+- (BAAppExtensionInfo)initWithCoder:(id)coder;
 - (id)initPrivately;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BAAppExtensionInfo
@@ -40,49 +40,49 @@
   return v3;
 }
 
-- (BAAppExtensionInfo)initWithCoder:(id)a3
+- (BAAppExtensionInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BAAppExtensionInfo *)self initPrivately];
-  if (v5)
+  coderCopy = coder;
+  initPrivately = [(BAAppExtensionInfo *)self initPrivately];
+  if (initPrivately)
   {
-    if ([v4 containsValueForKey:@"restrictedDownloadSizeRemaining"])
+    if ([coderCopy containsValueForKey:@"restrictedDownloadSizeRemaining"])
     {
       v6 = [NSSet setWithObjects:objc_opt_class(), 0];
-      v7 = [v4 decodeObjectOfClasses:v6 forKey:@"restrictedDownloadSizeRemaining"];
-      restrictedDownloadSizeRemaining = v5->_restrictedDownloadSizeRemaining;
-      v5->_restrictedDownloadSizeRemaining = v7;
+      v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"restrictedDownloadSizeRemaining"];
+      restrictedDownloadSizeRemaining = initPrivately->_restrictedDownloadSizeRemaining;
+      initPrivately->_restrictedDownloadSizeRemaining = v7;
     }
 
-    if ([v4 containsValueForKey:@"restrictedEssentialDownloadSizeRemaining"])
+    if ([coderCopy containsValueForKey:@"restrictedEssentialDownloadSizeRemaining"])
     {
       v9 = [NSSet setWithObjects:objc_opt_class(), 0];
-      v10 = [v4 decodeObjectOfClasses:v9 forKey:@"restrictedEssentialDownloadSizeRemaining"];
-      restrictedEssentialDownloadSizeRemaining = v5->_restrictedEssentialDownloadSizeRemaining;
-      v5->_restrictedEssentialDownloadSizeRemaining = v10;
+      v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"restrictedEssentialDownloadSizeRemaining"];
+      restrictedEssentialDownloadSizeRemaining = initPrivately->_restrictedEssentialDownloadSizeRemaining;
+      initPrivately->_restrictedEssentialDownloadSizeRemaining = v10;
     }
   }
 
-  return v5;
+  return initPrivately;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(BAAppExtensionInfo *)self restrictedDownloadSizeRemaining];
+  coderCopy = coder;
+  restrictedDownloadSizeRemaining = [(BAAppExtensionInfo *)self restrictedDownloadSizeRemaining];
 
-  if (v4)
+  if (restrictedDownloadSizeRemaining)
   {
-    v5 = [(BAAppExtensionInfo *)self restrictedDownloadSizeRemaining];
-    [v8 encodeObject:v5 forKey:@"restrictedDownloadSizeRemaining"];
+    restrictedDownloadSizeRemaining2 = [(BAAppExtensionInfo *)self restrictedDownloadSizeRemaining];
+    [coderCopy encodeObject:restrictedDownloadSizeRemaining2 forKey:@"restrictedDownloadSizeRemaining"];
   }
 
-  v6 = [(BAAppExtensionInfo *)self restrictedEssentialDownloadSizeRemaining];
+  restrictedEssentialDownloadSizeRemaining = [(BAAppExtensionInfo *)self restrictedEssentialDownloadSizeRemaining];
 
-  if (v6)
+  if (restrictedEssentialDownloadSizeRemaining)
   {
-    v7 = [(BAAppExtensionInfo *)self restrictedEssentialDownloadSizeRemaining];
-    [v8 encodeObject:v7 forKey:@"restrictedEssentialDownloadSizeRemaining"];
+    restrictedEssentialDownloadSizeRemaining2 = [(BAAppExtensionInfo *)self restrictedEssentialDownloadSizeRemaining];
+    [coderCopy encodeObject:restrictedEssentialDownloadSizeRemaining2 forKey:@"restrictedEssentialDownloadSizeRemaining"];
   }
 }
 

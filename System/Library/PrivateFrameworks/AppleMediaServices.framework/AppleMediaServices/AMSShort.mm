@@ -1,53 +1,53 @@
 @interface AMSShort
-+ (id)shortWithShort:(signed __int16)a3;
-- (AMSShort)initWithShort:(signed __int16)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToShort:(id)a3;
++ (id)shortWithShort:(signed __int16)short;
+- (AMSShort)initWithShort:(signed __int16)short;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToShort:(id)short;
 @end
 
 @implementation AMSShort
 
-- (AMSShort)initWithShort:(signed __int16)a3
+- (AMSShort)initWithShort:(signed __int16)short
 {
   v5.receiver = self;
   v5.super_class = AMSShort;
   result = [(AMSShort *)&v5 init];
   if (result)
   {
-    result->_value = a3;
+    result->_value = short;
   }
 
   return result;
 }
 
-+ (id)shortWithShort:(signed __int16)a3
++ (id)shortWithShort:(signed __int16)short
 {
-  v3 = [[a1 alloc] initWithShort:a3];
+  v3 = [[self alloc] initWithShort:short];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AMSShort *)self isEqualToShort:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AMSShort *)self isEqualToShort:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToShort:(id)a3
+- (BOOL)isEqualToShort:(id)short
 {
-  if (!a3)
+  if (!short)
   {
     return 0;
   }
 
-  v4 = a3;
+  shortCopy = short;
   LODWORD(self) = [(AMSShort *)self value];
-  v5 = [v4 value];
+  value = [shortCopy value];
 
-  return self == v5;
+  return self == value;
 }
 
 @end

@@ -3,7 +3,7 @@
 - (CGSize)_size;
 - (CLLocationCoordinate2D)centerCoordinate;
 - (MKMapView)mapView;
-- (POIShapeUserLocation)initWithMapView:(id)a3 coordinate:(CLLocationCoordinate2D)a4;
+- (POIShapeUserLocation)initWithMapView:(id)view coordinate:(CLLocationCoordinate2D)coordinate;
 @end
 
 @implementation POIShapeUserLocation
@@ -31,25 +31,25 @@
   longitude = v24.longitude;
   if (CLLocationCoordinate2DIsValid(v24))
   {
-    v5 = [(POIShapeUserLocation *)self mapView];
-    v6 = [(POIShapeUserLocation *)self mapView];
-    [v5 convertCoordinate:v6 toPointToView:{latitude, longitude}];
+    mapView = [(POIShapeUserLocation *)self mapView];
+    mapView2 = [(POIShapeUserLocation *)self mapView];
+    [mapView convertCoordinate:mapView2 toPointToView:{latitude, longitude}];
 
     [(POIShapeUserLocation *)self _size];
-    v7 = [(POIShapeUserLocation *)self mapView];
-    v8 = [v7 window];
-    v9 = [v8 screen];
-    if (v9)
+    mapView3 = [(POIShapeUserLocation *)self mapView];
+    window = [mapView3 window];
+    screen = [window screen];
+    if (screen)
     {
-      v10 = [v7 window];
-      v11 = [v10 screen];
-      [v11 nativeScale];
+      window2 = [mapView3 window];
+      screen2 = [window2 screen];
+      [screen2 nativeScale];
     }
 
     else
     {
-      v10 = +[UIScreen mainScreen];
-      [v10 nativeScale];
+      window2 = +[UIScreen mainScreen];
+      [window2 nativeScale];
     }
 
     UIRectCenteredAboutPointScale();
@@ -87,11 +87,11 @@
   if (!CLLocationCoordinate2DIsValid(v11))
   {
     v4 = +[MKLocationManager sharedLocationManager];
-    v5 = [v4 lastLocation];
-    v6 = v5;
-    if (v5)
+    lastLocation = [v4 lastLocation];
+    v6 = lastLocation;
+    if (lastLocation)
     {
-      [v5 coordinate];
+      [lastLocation coordinate];
       latitude = v7;
       longitude = v8;
     }
@@ -104,18 +104,18 @@
   return result;
 }
 
-- (POIShapeUserLocation)initWithMapView:(id)a3 coordinate:(CLLocationCoordinate2D)a4
+- (POIShapeUserLocation)initWithMapView:(id)view coordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v7 = a3;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  viewCopy = view;
   v12.receiver = self;
   v12.super_class = POIShapeUserLocation;
   v8 = [(POIShapeUserLocation *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_mapView, v7);
+    objc_storeWeak(&v8->_mapView, viewCopy);
     v9->_coordinate.latitude = latitude;
     v9->_coordinate.longitude = longitude;
     v10 = v9;

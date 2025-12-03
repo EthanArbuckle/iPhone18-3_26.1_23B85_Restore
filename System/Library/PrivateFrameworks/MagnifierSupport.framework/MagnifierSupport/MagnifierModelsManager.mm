@@ -35,11 +35,11 @@ void __32__MagnifierModelsManager_shared__block_invoke()
     v3 = +[MagnifierAssetsManager sharedInstance];
     [(MagnifierModelsManager *)v2 setDownloadManager:v3];
 
-    v4 = [(MagnifierModelsManager *)v2 downloadManager];
-    [v4 setDelegate:v2];
+    downloadManager = [(MagnifierModelsManager *)v2 downloadManager];
+    [downloadManager setDelegate:v2];
 
-    v5 = [(MagnifierModelsManager *)v2 downloadManager];
-    [v5 refreshAssets];
+    downloadManager2 = [(MagnifierModelsManager *)v2 downloadManager];
+    [downloadManager2 refreshAssets];
 
     [(MagnifierModelsManager *)v2 updateAssetURLs];
   }

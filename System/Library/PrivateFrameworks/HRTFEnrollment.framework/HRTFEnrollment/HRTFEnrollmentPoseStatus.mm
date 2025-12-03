@@ -1,29 +1,29 @@
 @interface HRTFEnrollmentPoseStatus
 - (CGRect)faceBoundingBox;
-- (HRTFEnrollmentPoseStatus)initWithCoder:(id)a3;
-- (HRTFEnrollmentPoseStatus)initWithCurrentYawPose:(id)a3 pitchPose:(id)a4 yawAngle:(double)a5 pitchAngle:(double)a6 faceBoundingBox:(CGRect)a7;
-- (HRTFEnrollmentPoseStatus)initWithYawPose:(id)a3 pitchPose:(id)a4 isEarTracking:(unsigned __int8)a5 yawAngle:(double)a6 pitchAngle:(double)a7;
+- (HRTFEnrollmentPoseStatus)initWithCoder:(id)coder;
+- (HRTFEnrollmentPoseStatus)initWithCurrentYawPose:(id)pose pitchPose:(id)pitchPose yawAngle:(double)angle pitchAngle:(double)pitchAngle faceBoundingBox:(CGRect)box;
+- (HRTFEnrollmentPoseStatus)initWithYawPose:(id)pose pitchPose:(id)pitchPose isEarTracking:(unsigned __int8)tracking yawAngle:(double)angle pitchAngle:(double)pitchAngle;
 - (NSArray)remainingPitchAngles;
 - (NSArray)remainingYawAngles;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HRTFEnrollmentPoseStatus
 
-- (HRTFEnrollmentPoseStatus)initWithYawPose:(id)a3 pitchPose:(id)a4 isEarTracking:(unsigned __int8)a5 yawAngle:(double)a6 pitchAngle:(double)a7
+- (HRTFEnrollmentPoseStatus)initWithYawPose:(id)pose pitchPose:(id)pitchPose isEarTracking:(unsigned __int8)tracking yawAngle:(double)angle pitchAngle:(double)pitchAngle
 {
   v63 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
+  poseCopy = pose;
+  pitchPoseCopy = pitchPose;
   v60.receiver = self;
   v60.super_class = HRTFEnrollmentPoseStatus;
   v14 = [(HRTFEnrollmentPoseStatus *)&v60 init];
   if (v14)
   {
     v50 = v14;
-    v15 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v12, "count")}];
-    v16 = [v12 allKeys];
-    v17 = [v16 sortedArrayUsingSelector:?];
+    v15 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(poseCopy, "count")}];
+    allKeys = [poseCopy allKeys];
+    v17 = [allKeys sortedArrayUsingSelector:?];
 
     v18 = v14;
     v58 = 0u;
@@ -49,7 +49,7 @@
           v24 = [HRTFEnrollmentCaptureAngle alloc];
           [v23 doubleValue];
           v26 = v25;
-          v27 = [v12 objectForKeyedSubscript:v23];
+          v27 = [poseCopy objectForKeyedSubscript:v23];
           v28 = -[HRTFEnrollmentCaptureAngle initWithAngle:captured:](v24, "initWithAngle:captured:", [v27 BOOLValue], v26);
 
           [(NSArray *)v15 addObject:v28];
@@ -70,9 +70,9 @@
     v18->_faceBoundingBox.size = v31;
     v32 = objc_alloc(MEMORY[0x277CBEB18]);
 
-    v33 = [v32 initWithCapacity:{objc_msgSend(v13, "count")}];
-    v34 = [v13 allKeys];
-    v35 = [v34 sortedArrayUsingSelector:sel_compare_];
+    v33 = [v32 initWithCapacity:{objc_msgSend(pitchPoseCopy, "count")}];
+    allKeys2 = [pitchPoseCopy allKeys];
+    v35 = [allKeys2 sortedArrayUsingSelector:sel_compare_];
 
     v54 = 0u;
     v55 = 0u;
@@ -97,7 +97,7 @@
           v42 = [HRTFEnrollmentCaptureAngle alloc];
           [v41 doubleValue];
           v44 = v43;
-          v45 = [v13 objectForKeyedSubscript:v41];
+          v45 = [pitchPoseCopy objectForKeyedSubscript:v41];
           v46 = -[HRTFEnrollmentCaptureAngle initWithAngle:captured:](v42, "initWithAngle:captured:", [v45 BOOLValue], v44);
 
           [(NSArray *)v33 addObject:v46];
@@ -113,30 +113,30 @@
     pitchAngles = v50->_pitchAngles;
     v50->_pitchAngles = v33;
 
-    v50->_currentYawAngle = a6;
-    v50->_currentPitchAngle = a7;
-    v50->_hasYawAngle = a5;
-    v50->_hasPitchAngle = a5;
+    v50->_currentYawAngle = angle;
+    v50->_currentPitchAngle = pitchAngle;
+    v50->_hasYawAngle = tracking;
+    v50->_hasPitchAngle = tracking;
   }
 
   v48 = *MEMORY[0x277D85DE8];
   return v14;
 }
 
-- (HRTFEnrollmentPoseStatus)initWithCurrentYawPose:(id)a3 pitchPose:(id)a4 yawAngle:(double)a5 pitchAngle:(double)a6 faceBoundingBox:(CGRect)a7
+- (HRTFEnrollmentPoseStatus)initWithCurrentYawPose:(id)pose pitchPose:(id)pitchPose yawAngle:(double)angle pitchAngle:(double)pitchAngle faceBoundingBox:(CGRect)box
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[HRTFEnrollmentPoseStatus alloc] initWithYawPose:v16 pitchPose:v15 isEarTracking:0 yawAngle:-100.0 pitchAngle:-100.0];
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  pitchPoseCopy = pitchPose;
+  poseCopy = pose;
+  v17 = [[HRTFEnrollmentPoseStatus alloc] initWithYawPose:poseCopy pitchPose:pitchPoseCopy isEarTracking:0 yawAngle:-100.0 pitchAngle:-100.0];
 
   if (v17)
   {
-    v17->_currentYawAngle = a5;
-    v17->_currentPitchAngle = a6;
+    v17->_currentYawAngle = angle;
+    v17->_currentPitchAngle = pitchAngle;
     *&v17->_hasYawAngle = 257;
     v17->_faceBoundingBox.origin.x = x;
     v17->_faceBoundingBox.origin.y = y;
@@ -147,27 +147,27 @@
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   yawAngles = self->_yawAngles;
-  v5 = a3;
-  [v5 encodeObject:yawAngles forKey:@"YawAngles"];
-  [v5 encodeObject:self->_pitchAngles forKey:@"PitchAngles"];
-  [v5 encodeDouble:@"CurrentYaw" forKey:self->_currentYawAngle];
-  [v5 encodeDouble:@"CurrentPitch" forKey:self->_currentPitchAngle];
-  [v5 encodeBool:self->_hasYawAngle != 0 forKey:@"HasYaw"];
-  [v5 encodeBool:self->_hasPitchAngle != 0 forKey:@"HasPitch"];
-  [v5 encodeDouble:@"FaceBoundingBox.origin.x" forKey:self->_faceBoundingBox.origin.x];
-  [v5 encodeDouble:@"FaceBoundingBox.origin.y" forKey:self->_faceBoundingBox.origin.y];
-  [v5 encodeDouble:@"FaceBoundingBox.size.width" forKey:self->_faceBoundingBox.size.width];
-  [v5 encodeDouble:@"FaceBoundingBox.size.height" forKey:self->_faceBoundingBox.size.height];
+  coderCopy = coder;
+  [coderCopy encodeObject:yawAngles forKey:@"YawAngles"];
+  [coderCopy encodeObject:self->_pitchAngles forKey:@"PitchAngles"];
+  [coderCopy encodeDouble:@"CurrentYaw" forKey:self->_currentYawAngle];
+  [coderCopy encodeDouble:@"CurrentPitch" forKey:self->_currentPitchAngle];
+  [coderCopy encodeBool:self->_hasYawAngle != 0 forKey:@"HasYaw"];
+  [coderCopy encodeBool:self->_hasPitchAngle != 0 forKey:@"HasPitch"];
+  [coderCopy encodeDouble:@"FaceBoundingBox.origin.x" forKey:self->_faceBoundingBox.origin.x];
+  [coderCopy encodeDouble:@"FaceBoundingBox.origin.y" forKey:self->_faceBoundingBox.origin.y];
+  [coderCopy encodeDouble:@"FaceBoundingBox.size.width" forKey:self->_faceBoundingBox.size.width];
+  [coderCopy encodeDouble:@"FaceBoundingBox.size.height" forKey:self->_faceBoundingBox.size.height];
 }
 
-- (HRTFEnrollmentPoseStatus)initWithCoder:(id)a3
+- (HRTFEnrollmentPoseStatus)initWithCoder:(id)coder
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 containsValueForKey:@"YawAngles"] && objc_msgSend(v4, "containsValueForKey:", @"PitchAngles") && objc_msgSend(v4, "containsValueForKey:", @"CurrentYaw") && objc_msgSend(v4, "containsValueForKey:", @"CurrentPitch") && objc_msgSend(v4, "containsValueForKey:", @"HasYaw") && objc_msgSend(v4, "containsValueForKey:", @"HasPitch") && objc_msgSend(v4, "containsValueForKey:", @"FaceBoundingBox.origin.x") && objc_msgSend(v4, "containsValueForKey:", @"FaceBoundingBox.origin.y") && objc_msgSend(v4, "containsValueForKey:", @"FaceBoundingBox.size.width") && objc_msgSend(v4, "containsValueForKey:", @"FaceBoundingBox.size.height"))
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"YawAngles"] && objc_msgSend(coderCopy, "containsValueForKey:", @"PitchAngles") && objc_msgSend(coderCopy, "containsValueForKey:", @"CurrentYaw") && objc_msgSend(coderCopy, "containsValueForKey:", @"CurrentPitch") && objc_msgSend(coderCopy, "containsValueForKey:", @"HasYaw") && objc_msgSend(coderCopy, "containsValueForKey:", @"HasPitch") && objc_msgSend(coderCopy, "containsValueForKey:", @"FaceBoundingBox.origin.x") && objc_msgSend(coderCopy, "containsValueForKey:", @"FaceBoundingBox.origin.y") && objc_msgSend(coderCopy, "containsValueForKey:", @"FaceBoundingBox.size.width") && objc_msgSend(coderCopy, "containsValueForKey:", @"FaceBoundingBox.size.height"))
   {
     v22.receiver = self;
     v22.super_class = HRTFEnrollmentPoseStatus;
@@ -180,41 +180,41 @@
       v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
       v8 = [v6 setWithArray:v7];
 
-      v9 = [v4 decodeObjectOfClasses:v8 forKey:@"YawAngles"];
+      v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"YawAngles"];
       yawAngles = v5->_yawAngles;
       v5->_yawAngles = v9;
 
-      v11 = [v4 decodeObjectOfClasses:v8 forKey:@"PitchAngles"];
+      v11 = [coderCopy decodeObjectOfClasses:v8 forKey:@"PitchAngles"];
       pitchAngles = v5->_pitchAngles;
       v5->_pitchAngles = v11;
 
-      v5->_hasYawAngle = [v4 decodeBoolForKey:@"HasYaw"];
-      v5->_hasPitchAngle = [v4 decodeBoolForKey:@"HasPitch"];
-      [v4 decodeDoubleForKey:@"CurrentYaw"];
+      v5->_hasYawAngle = [coderCopy decodeBoolForKey:@"HasYaw"];
+      v5->_hasPitchAngle = [coderCopy decodeBoolForKey:@"HasPitch"];
+      [coderCopy decodeDoubleForKey:@"CurrentYaw"];
       v5->_currentYawAngle = v13;
-      [v4 decodeDoubleForKey:@"CurrentPitch"];
+      [coderCopy decodeDoubleForKey:@"CurrentPitch"];
       v5->_currentPitchAngle = v14;
-      [v4 decodeDoubleForKey:@"FaceBoundingBox.origin.x"];
+      [coderCopy decodeDoubleForKey:@"FaceBoundingBox.origin.x"];
       v5->_faceBoundingBox.origin.x = v15;
-      [v4 decodeDoubleForKey:@"FaceBoundingBox.origin.y"];
+      [coderCopy decodeDoubleForKey:@"FaceBoundingBox.origin.y"];
       v5->_faceBoundingBox.origin.y = v16;
-      [v4 decodeDoubleForKey:@"FaceBoundingBox.size.width"];
+      [coderCopy decodeDoubleForKey:@"FaceBoundingBox.size.width"];
       v5->_faceBoundingBox.size.width = v17;
-      [v4 decodeDoubleForKey:@"FaceBoundingBox.size.height"];
+      [coderCopy decodeDoubleForKey:@"FaceBoundingBox.size.height"];
       v5->_faceBoundingBox.size.height = v18;
     }
 
     self = v5;
-    v19 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v19 = 0;
+    selfCopy = 0;
   }
 
   v20 = *MEMORY[0x277D85DE8];
-  return v19;
+  return selfCopy;
 }
 
 - (NSArray)remainingYawAngles

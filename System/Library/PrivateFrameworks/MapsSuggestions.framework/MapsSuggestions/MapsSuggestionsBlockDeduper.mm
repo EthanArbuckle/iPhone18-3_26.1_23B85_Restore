@@ -1,28 +1,28 @@
 @interface MapsSuggestionsBlockDeduper
-+ (id)deduperWithBlock:(id)a3;
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4;
-- (MapsSuggestionsBlockDeduper)initWithBlock:(id)a3;
++ (id)deduperWithBlock:(id)block;
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry;
+- (MapsSuggestionsBlockDeduper)initWithBlock:(id)block;
 @end
 
 @implementation MapsSuggestionsBlockDeduper
 
-+ (id)deduperWithBlock:(id)a3
++ (id)deduperWithBlock:(id)block
 {
-  v3 = a3;
-  v4 = [[MapsSuggestionsBlockDeduper alloc] initWithBlock:v3];
+  blockCopy = block;
+  v4 = [[MapsSuggestionsBlockDeduper alloc] initWithBlock:blockCopy];
 
   return v4;
 }
 
-- (MapsSuggestionsBlockDeduper)initWithBlock:(id)a3
+- (MapsSuggestionsBlockDeduper)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = MapsSuggestionsBlockDeduper;
   v5 = [(MapsSuggestionsBlockDeduper *)&v9 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(blockCopy);
     block = v5->_block;
     v5->_block = v6;
   }
@@ -30,13 +30,13 @@
   return v5;
 }
 
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  entryCopy = entry;
+  withEntryCopy = withEntry;
+  v8 = withEntryCopy;
+  if (!entryCopy)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -60,7 +60,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v7)
+  if (!withEntryCopy)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))

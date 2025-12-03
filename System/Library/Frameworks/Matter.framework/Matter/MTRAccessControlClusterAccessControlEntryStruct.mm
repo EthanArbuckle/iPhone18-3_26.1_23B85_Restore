@@ -1,6 +1,6 @@
 @interface MTRAccessControlClusterAccessControlEntryStruct
 - (MTRAccessControlClusterAccessControlEntryStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -33,23 +33,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRAccessControlClusterAccessControlEntryStruct);
-  v5 = [(MTRAccessControlClusterAccessControlEntryStruct *)self privilege];
-  [(MTRAccessControlClusterAccessControlEntryStruct *)v4 setPrivilege:v5];
+  privilege = [(MTRAccessControlClusterAccessControlEntryStruct *)self privilege];
+  [(MTRAccessControlClusterAccessControlEntryStruct *)v4 setPrivilege:privilege];
 
-  v6 = [(MTRAccessControlClusterAccessControlEntryStruct *)self authMode];
-  [(MTRAccessControlClusterAccessControlEntryStruct *)v4 setAuthMode:v6];
+  authMode = [(MTRAccessControlClusterAccessControlEntryStruct *)self authMode];
+  [(MTRAccessControlClusterAccessControlEntryStruct *)v4 setAuthMode:authMode];
 
-  v7 = [(MTRAccessControlClusterAccessControlEntryStruct *)self subjects];
-  [(MTRAccessControlClusterAccessControlEntryStruct *)v4 setSubjects:v7];
+  subjects = [(MTRAccessControlClusterAccessControlEntryStruct *)self subjects];
+  [(MTRAccessControlClusterAccessControlEntryStruct *)v4 setSubjects:subjects];
 
-  v8 = [(MTRAccessControlClusterAccessControlEntryStruct *)self targets];
-  [(MTRAccessControlClusterAccessControlEntryStruct *)v4 setTargets:v8];
+  targets = [(MTRAccessControlClusterAccessControlEntryStruct *)self targets];
+  [(MTRAccessControlClusterAccessControlEntryStruct *)v4 setTargets:targets];
 
-  v9 = [(MTRAccessControlClusterAccessControlEntryStruct *)self fabricIndex];
-  [(MTRAccessControlClusterAccessControlEntryStruct *)v4 setFabricIndex:v9];
+  fabricIndex = [(MTRAccessControlClusterAccessControlEntryStruct *)self fabricIndex];
+  [(MTRAccessControlClusterAccessControlEntryStruct *)v4 setFabricIndex:fabricIndex];
 
   return v4;
 }

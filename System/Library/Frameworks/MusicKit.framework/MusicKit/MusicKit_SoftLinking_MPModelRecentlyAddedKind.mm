@@ -1,10 +1,10 @@
 @interface MusicKit_SoftLinking_MPModelRecentlyAddedKind
-- (MusicKit_SoftLinking_MPModelRecentlyAddedKind)initWithIncludeOnlyDownloadedContent:(BOOL)a3;
+- (MusicKit_SoftLinking_MPModelRecentlyAddedKind)initWithIncludeOnlyDownloadedContent:(BOOL)content;
 @end
 
 @implementation MusicKit_SoftLinking_MPModelRecentlyAddedKind
 
-- (MusicKit_SoftLinking_MPModelRecentlyAddedKind)initWithIncludeOnlyDownloadedContent:(BOOL)a3
+- (MusicKit_SoftLinking_MPModelRecentlyAddedKind)initWithIncludeOnlyDownloadedContent:(BOOL)content
 {
   v22[4] = *MEMORY[0x277D85DE8];
   MPModelGenericObjectClass_1 = getMPModelGenericObjectClass_1();
@@ -33,7 +33,7 @@
   v15 = v14;
   if (v14)
   {
-    v14->_includeOnlyDownloadedContent = a3;
+    v14->_includeOnlyDownloadedContent = content;
   }
 
   v16 = *MEMORY[0x277D85DE8];

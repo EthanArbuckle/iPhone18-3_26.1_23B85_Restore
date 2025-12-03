@@ -1,8 +1,8 @@
 @interface _MFDigestMD5Authenticator
-- (id)responseForServerData:(id)a3;
+- (id)responseForServerData:(id)data;
 - (void)dealloc;
-- (void)setAuthenticationState:(int)a3;
-- (void)setCryptInfo:(void *)a3;
+- (void)setAuthenticationState:(int)state;
+- (void)setCryptInfo:(void *)info;
 @end
 
 @implementation _MFDigestMD5Authenticator
@@ -20,12 +20,12 @@
   [(MFSASLAuthenticator *)&v4 dealloc];
 }
 
-- (void)setAuthenticationState:(int)a3
+- (void)setAuthenticationState:(int)state
 {
   v6.receiver = self;
   v6.super_class = _MFDigestMD5Authenticator;
   [(MFSASLAuthenticator *)&v6 setAuthenticationState:?];
-  if (a3 != 1)
+  if (state != 1)
   {
     v5 = *(self + 5);
     if (v5)
@@ -38,33 +38,33 @@
   }
 }
 
-- (id)responseForServerData:(id)a3
+- (id)responseForServerData:(id)data
 {
   v103 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   if ([(MFSASLAuthenticator *)self authenticationState]!= 1)
   {
-    v50 = 0;
+    data = 0;
     goto LABEL_159;
   }
 
   v95 = 0u;
   v94 = 0u;
-  v91 = [v4 bytes];
-  v92 = &v91[[v4 length]];
+  bytes = [dataCopy bytes];
+  v92 = &bytes[[dataCopy length]];
   v93 = 1;
   bzero_server_message(&v94);
-  while (v91 < v92)
+  while (bytes < v92)
   {
     if (!v93)
     {
       goto LABEL_146;
     }
 
-    v5 = copyToken(&v91);
+    v5 = copyToken(&bytes);
     v6 = v5;
-    v7 = v91;
-    if (v91 >= v92)
+    v7 = bytes;
+    if (bytes >= v92)
     {
       v8 = 0;
     }
@@ -76,7 +76,7 @@ LABEL_5:
     }
 
     v9 = v7;
-    v7 = v91;
+    v7 = bytes;
     do
     {
       while (1)
@@ -98,14 +98,14 @@ LABEL_5:
         v9 = v7;
         if (v7 < v92)
         {
-          v91 = v7;
+          bytes = v7;
           goto LABEL_5;
         }
       }
     }
 
     while (v10);
-    v91 = v7;
+    bytes = v7;
     if (v5)
     {
       if (v9 >= v92 || *v9 != 61)
@@ -113,14 +113,14 @@ LABEL_5:
         v13 = vm_imap_log();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          if (v91 >= v92)
+          if (bytes >= v92)
           {
             v14 = 0;
           }
 
           else
           {
-            v14 = *v91;
+            v14 = *bytes;
           }
 
           buf.A = 67109120;
@@ -135,7 +135,7 @@ LABEL_56:
       }
 
       v11 = v9 + 1;
-      v91 = v9 + 1;
+      bytes = v9 + 1;
       if (v9 + 1 >= v92)
       {
         v12 = 0;
@@ -148,7 +148,7 @@ LABEL_18:
       }
 
       v16 = v11;
-      v11 = v91;
+      v11 = bytes;
       do
       {
         while (1)
@@ -170,17 +170,17 @@ LABEL_18:
           v16 = v11;
           if (v11 < v92)
           {
-            v91 = v11;
+            bytes = v11;
             goto LABEL_18;
           }
         }
       }
 
       while (v17);
-      v91 = v11;
+      bytes = v11;
       if (![v5 caseInsensitiveCompare:@"realm"])
       {
-        v22 = quoted_string(&v91);
+        v22 = quoted_string(&bytes);
         v23 = v22;
         if (v22)
         {
@@ -224,7 +224,7 @@ LABEL_79:
 
       if (![v6 caseInsensitiveCompare:@"nonce"])
       {
-        v20 = quoted_string(&v91);
+        v20 = quoted_string(&bytes);
         if (v20)
         {
           if (!*(&v94 + 1))
@@ -259,7 +259,7 @@ LABEL_96:
 
       if (![v6 caseInsensitiveCompare:@"qop"])
       {
-        v28 = copyQuotedTokenList(&v91);
+        v28 = copyQuotedTokenList(&bytes);
         v20 = v28;
         if (v28)
         {
@@ -307,7 +307,7 @@ LABEL_96:
         {
           if (![v6 caseInsensitiveCompare:@"charset"])
           {
-            v41 = copyToken(&v91);
+            v41 = copyToken(&bytes);
             v20 = v41;
             if (v41)
             {
@@ -347,13 +347,13 @@ LABEL_96:
             if ([v6 caseInsensitiveCompare:@"cipher-opts"])
             {
               v18 = [v6 caseInsensitiveCompare:@"rspauth"];
-              v19 = copyToken(&v91);
+              v19 = copyToken(&bytes);
               v20 = v19;
               if (v18)
               {
                 if (!v19)
                 {
-                  v20 = quoted_string(&v91);
+                  v20 = quoted_string(&bytes);
                   if (!v20)
                   {
                     v21 = vm_imap_log();
@@ -401,7 +401,7 @@ LABEL_139:
               goto LABEL_57;
             }
 
-            v45 = copyQuotedTokenList(&v91);
+            v45 = copyQuotedTokenList(&bytes);
             v20 = v45;
             if (v45)
             {
@@ -431,10 +431,10 @@ LABEL_134:
             goto LABEL_139;
           }
 
-          v20 = copyToken(&v91);
+          v20 = copyToken(&bytes);
           if (!v20)
           {
-            v49 = quoted_string(&v91);
+            v49 = quoted_string(&bytes);
             if (!v49 || (v20 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v49 encoding:4], v49, !v20))
             {
               v20 = vm_imap_log();
@@ -471,14 +471,14 @@ LABEL_111:
           goto LABEL_139;
         }
 
-        v39 = copyToken(&v91);
+        v39 = copyToken(&bytes);
         v35 = v39;
         if (v39)
         {
-          v40 = [v39 intValue];
-          if ((v40 - 1) <= 0xFFFD)
+          intValue = [v39 intValue];
+          if ((intValue - 1) <= 0xFFFD)
           {
-            v96 = v96 & 0xFFC0003F | (v40 << 6);
+            v96 = v96 & 0xFFC0003F | (intValue << 6);
           }
         }
 
@@ -496,7 +496,7 @@ LABEL_111:
 
       else
       {
-        v34 = copyToken(&v91);
+        v34 = copyToken(&bytes);
         v35 = v34;
         if (v34)
         {
@@ -533,14 +533,14 @@ LABEL_111:
         v13 = vm_imap_log();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          if (v91 >= v92)
+          if (bytes >= v92)
           {
             v15 = 0;
           }
 
           else
           {
-            v15 = *v91;
+            v15 = *bytes;
           }
 
           buf.A = 67109120;
@@ -551,7 +551,7 @@ LABEL_111:
         goto LABEL_56;
       }
 
-      v91 = v9 + 1;
+      bytes = v9 + 1;
     }
 
 LABEL_57:
@@ -562,7 +562,7 @@ LABEL_57:
 LABEL_146:
     [(_MFDigestMD5Authenticator *)self setAuthenticationState:3];
 LABEL_157:
-    v50 = 0;
+    data = 0;
     goto LABEL_158;
   }
 
@@ -572,16 +572,16 @@ LABEL_157:
     v100 = 0u;
     v97 = 0u;
     v98 = 0u;
-    v51 = self;
+    selfCopy = self;
     bzero_client_response_info(&v97);
     if ((v96 & 0x20) != 0)
     {
       if (MFGetRandomBytes())
       {
         v57 = CFDataCreateWithBytesNoCopy(0, &buf, 16, *MEMORY[0x277CBED00]);
-        v58 = [(__CFData *)v57 mf_encodeBase64WithoutLineBreaks];
+        mf_encodeBase64WithoutLineBreaks = [(__CFData *)v57 mf_encodeBase64WithoutLineBreaks];
         v59 = v97;
-        *&v97 = v58;
+        *&v97 = mf_encodeBase64WithoutLineBreaks;
 
         CFRelease(v57);
         v60 = [MEMORY[0x277CCACA8] stringWithFormat:@"%08x", 1];
@@ -591,33 +591,33 @@ LABEL_157:
 
         if ((v96 & 4) != 0)
         {
-          [(_MFDigestMD5Authenticator *)v51 setSecurityLevel:2];
-          [(_MFDigestMD5Authenticator *)v51 setMaxBuffer:(v96 >> 6)];
+          [(_MFDigestMD5Authenticator *)selfCopy setSecurityLevel:2];
+          [(_MFDigestMD5Authenticator *)selfCopy setMaxBuffer:(v96 >> 6)];
         }
 
         else
         {
-          [(_MFDigestMD5Authenticator *)v51 setSecurityLevel:1];
+          [(_MFDigestMD5Authenticator *)selfCopy setSecurityLevel:1];
         }
 
-        v63 = [(_MFDigestMD5Authenticator *)v51 securityLevel]- 1;
+        v63 = [(_MFDigestMD5Authenticator *)selfCopy securityLevel]- 1;
         v64 = v63 > 2 ? 0 : QOP_NAMES[v63];
         v65 = MFCreateDataWithString();
         v66 = v98;
         *&v98 = v65;
 
-        v67 = [(MFSASLAuthenticator *)v51 account];
+        account = [(MFSASLAuthenticator *)selfCopy account];
         v68 = MEMORY[0x277CCACA8];
-        v69 = [objc_opt_class() saslProfileName];
-        v70 = [v67 hostname];
-        v71 = [v68 stringWithFormat:@"%@/%@", v69, v70];
+        saslProfileName = [objc_opt_class() saslProfileName];
+        hostname = [account hostname];
+        v71 = [v68 stringWithFormat:@"%@/%@", saslProfileName, hostname];
 
-        v72 = [v67 username];
+        username = [account username];
         v73 = MFCreateDataWithString();
         v74 = *(&v98 + 1);
         *(&v98 + 1) = v73;
 
-        v75 = [v67 password];
+        password = [account password];
         v76 = MFCreateDataWithString();
         v77 = v99;
         *&v99 = v76;
@@ -630,28 +630,28 @@ LABEL_157:
         v81 = v100;
         *&v100 = v80;
 
-        v82 = _createResponseData(v51, &v94, &v97, 1);
+        v82 = _createResponseData(selfCopy, &v94, &v97, 1);
         v83 = *(&v100 + 1);
         *(&v100 + 1) = v82;
 
         if (v82)
         {
-          v84 = [(_MFDigestMD5Authenticator *)v51 securityLevel];
-          if (v84 == 2)
+          securityLevel = [(_MFDigestMD5Authenticator *)selfCopy securityLevel];
+          if (securityLevel == 2)
           {
             memset(&buf, 0, sizeof(buf));
-            [(_MFDigestMD5Authenticator *)v51 setCryptInfo:malloc_type_calloc(1uLL, 0x28uLL, 0x10000400A747E1EuLL)];
+            [(_MFDigestMD5Authenticator *)selfCopy setCryptInfo:malloc_type_calloc(1uLL, 0x28uLL, 0x10000400A747E1EuLL)];
             CC_MD5_Init(&buf);
             CC_MD5_Update(&buf, v101, 0x10u);
             CC_MD5_Update(&buf, "Digest session key to server-to-client signing key magic constant", 0x41u);
-            CC_MD5_Final(&v51->_expectedResponse[3], &buf);
+            CC_MD5_Final(&selfCopy->_expectedResponse[3], &buf);
             CC_MD5_Init(&buf);
             CC_MD5_Update(&buf, v101, 0x10u);
             CC_MD5_Update(&buf, "Digest session key to client-to-server signing key magic constant", 0x41u);
-            CC_MD5_Final(&v51->_expectedResponse[1], &buf);
+            CC_MD5_Final(&selfCopy->_expectedResponse[1], &buf);
           }
 
-          else if (v84 == 3)
+          else if (securityLevel == 3)
           {
             v85 = vm_imap_log();
             if (os_log_type_enabled(v85, OS_LOG_TYPE_DEFAULT))
@@ -661,11 +661,11 @@ LABEL_157:
             }
           }
 
-          v86 = _createResponseData(v51, &v94, &v97, 0);
-          [(_MFDigestMD5Authenticator *)v51 setExpectedResponse:v86];
+          v86 = _createResponseData(selfCopy, &v94, &v97, 0);
+          [(_MFDigestMD5Authenticator *)selfCopy setExpectedResponse:v86];
 
           v87 = [objc_allocWithZone(MEMORY[0x277CBEB28]) init];
-          v50 = v87;
+          data = v87;
           if (*(&v98 + 1))
           {
             _appendQuotedString(v87, "username", *(&v98 + 1));
@@ -673,31 +673,31 @@ LABEL_157:
 
           if (v94)
           {
-            _appendQuotedString(v50, "realm", v94);
+            _appendQuotedString(data, "realm", v94);
           }
 
           if (*(&v94 + 1))
           {
-            _appendQuotedString(v50, "nonce", *(&v94 + 1));
+            _appendQuotedString(data, "nonce", *(&v94 + 1));
           }
 
-          _appendQuotedString(v50, "cnonce", v97);
-          _appendValue(v50, "nc", *(&v97 + 1));
-          _appendValue(v50, "qop", v98);
-          _appendQuotedString(v50, "digest-uri", *(&v99 + 1));
-          _appendValue(v50, "response", *(&v100 + 1));
-          if (*(&v51->super._authenticationState + 2))
+          _appendQuotedString(data, "cnonce", v97);
+          _appendValue(data, "nc", *(&v97 + 1));
+          _appendValue(data, "qop", v98);
+          _appendQuotedString(data, "digest-uri", *(&v99 + 1));
+          _appendValue(data, "response", *(&v100 + 1));
+          if (*(&selfCopy->super._authenticationState + 2))
           {
-            v88 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", *(&v51->super._authenticationState + 2)];
+            v88 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", *(&selfCopy->super._authenticationState + 2)];
             v89 = MFCreateDataWithString();
 
-            _appendValue(v50, "maxbuf", v89);
+            _appendValue(data, "maxbuf", v89);
           }
 
           if ((v96 & 0x10) != 0)
           {
             v90 = [@"utf-8" dataUsingEncoding:1];
-            _appendValue(v50, "charset", v90);
+            _appendValue(data, "charset", v90);
           }
 
           goto LABEL_176;
@@ -715,8 +715,8 @@ LABEL_157:
       }
     }
 
-    [(_MFDigestMD5Authenticator *)v51 setAuthenticationState:3];
-    v50 = 0;
+    [(_MFDigestMD5Authenticator *)selfCopy setAuthenticationState:3];
+    data = 0;
 LABEL_176:
     __destructor_8_s0_s8_s16_s24_s32_s40_s48_s56(&v97);
     goto LABEL_158;
@@ -753,17 +753,17 @@ LABEL_156:
   }
 
   [(_MFDigestMD5Authenticator *)self setAuthenticationState:4];
-  v50 = [MEMORY[0x277CBEA90] data];
+  data = [MEMORY[0x277CBEA90] data];
 LABEL_158:
   __destructor_8_s0_s8_s16_s24(&v94);
 LABEL_159:
 
   v55 = *MEMORY[0x277D85DE8];
 
-  return v50;
+  return data;
 }
 
-- (void)setCryptInfo:(void *)a3
+- (void)setCryptInfo:(void *)info
 {
   expectedResponse = self->_expectedResponse;
   if (expectedResponse)
@@ -771,7 +771,7 @@ LABEL_159:
     free(expectedResponse);
   }
 
-  self->_expectedResponse = a3;
+  self->_expectedResponse = info;
 }
 
 @end

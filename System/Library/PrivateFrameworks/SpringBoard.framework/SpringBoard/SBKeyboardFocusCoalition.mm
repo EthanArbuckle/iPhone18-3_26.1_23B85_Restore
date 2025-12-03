@@ -3,19 +3,19 @@
 - (NSSet)keyboardFocusEvaluationSupressionReasons;
 - (NSString)debugDescription;
 - (SBKeyboardFocusCoalitionDelegate)delegate;
-- (id)_initWithDebugName:(id)a3;
-- (id)acquireMemberForWindowScene:(id)a3 delegate:(id)a4;
+- (id)_initWithDebugName:(id)name;
+- (id)acquireMemberForWindowScene:(id)scene delegate:(id)delegate;
 - (id)succinctDescription;
-- (id)suppressKeyboardFocusEvaluationForReason:(id)a3;
-- (void)_registerMember:(id)a3;
-- (void)_unregisterMember:(id)a3;
-- (void)addedMember:(id)a3;
-- (void)appendDescriptionToStream:(id)a3;
+- (id)suppressKeyboardFocusEvaluationForReason:(id)reason;
+- (void)_registerMember:(id)member;
+- (void)_unregisterMember:(id)member;
+- (void)addedMember:(id)member;
+- (void)appendDescriptionToStream:(id)stream;
 - (void)dealloc;
 - (void)invalidate;
-- (void)memberRequestsArbitration:(id)a3 forReason:(id)a4;
-- (void)removedMember:(id)a3;
-- (void)setNeedsArbitrationForReason:(id)a3;
+- (void)memberRequestsArbitration:(id)arbitration forReason:(id)reason;
+- (void)removedMember:(id)member;
+- (void)setNeedsArbitrationForReason:(id)reason;
 @end
 
 @implementation SBKeyboardFocusCoalition
@@ -27,15 +27,15 @@
   return WeakRetained;
 }
 
-- (id)_initWithDebugName:(id)a3
+- (id)_initWithDebugName:(id)name
 {
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
     [SBKeyboardFocusCoalition _initWithDebugName:a2];
   }
 
-  v6 = v5;
+  v6 = nameCopy;
   v19.receiver = self;
   v19.super_class = SBKeyboardFocusCoalition;
   v7 = [(SBKeyboardFocusCoalition *)&v19 init];
@@ -72,9 +72,9 @@ id __47__SBKeyboardFocusCoalition__initWithDebugName___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)suppressKeyboardFocusEvaluationForReason:(id)a3
+- (id)suppressKeyboardFocusEvaluationForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   suppressKeyboardFocusEvaluationAssertion = self->_suppressKeyboardFocusEvaluationAssertion;
   if (!suppressKeyboardFocusEvaluationAssertion)
   {
@@ -103,7 +103,7 @@ id __47__SBKeyboardFocusCoalition__initWithDebugName___block_invoke(uint64_t a1)
     suppressKeyboardFocusEvaluationAssertion = self->_suppressKeyboardFocusEvaluationAssertion;
   }
 
-  v14 = [(BSCompoundAssertion *)suppressKeyboardFocusEvaluationAssertion acquireForReason:v4];
+  v14 = [(BSCompoundAssertion *)suppressKeyboardFocusEvaluationAssertion acquireForReason:reasonCopy];
 
   return v14;
 }
@@ -132,11 +132,11 @@ void __69__SBKeyboardFocusCoalition_suppressKeyboardFocusEvaluationForReason___b
 
 - (NSSet)keyboardFocusEvaluationSupressionReasons
 {
-  v2 = [(BSCompoundAssertion *)self->_suppressKeyboardFocusEvaluationAssertion reasons];
-  v3 = v2;
-  if (v2)
+  reasons = [(BSCompoundAssertion *)self->_suppressKeyboardFocusEvaluationAssertion reasons];
+  v3 = reasons;
+  if (reasons)
   {
-    v4 = v2;
+    v4 = reasons;
   }
 
   else
@@ -156,14 +156,14 @@ void __69__SBKeyboardFocusCoalition_suppressKeyboardFocusEvaluationForReason___b
   return v2;
 }
 
-- (id)acquireMemberForWindowScene:(id)a3 delegate:(id)a4
+- (id)acquireMemberForWindowScene:(id)scene delegate:(id)delegate
 {
-  v6 = a4;
-  v7 = a3;
+  delegateCopy = delegate;
+  sceneCopy = scene;
   v8 = [SBKeyboardFocusCoalitionMember alloc];
-  v9 = [v7 _FBSScene];
-  v10 = [v9 identifier];
-  v11 = [(SBKeyboardFocusCoalitionMember *)v8 initWithUniqueIdentifier:v10 windowScene:v7 delegate:v6 coalition:self];
+  _FBSScene = [sceneCopy _FBSScene];
+  identifier = [_FBSScene identifier];
+  v11 = [(SBKeyboardFocusCoalitionMember *)v8 initWithUniqueIdentifier:identifier windowScene:sceneCopy delegate:delegateCopy coalition:self];
 
   [(SBKeyboardFocusCoalition *)self _registerMember:v11];
 
@@ -189,13 +189,13 @@ void __69__SBKeyboardFocusCoalition_suppressKeyboardFocusEvaluationForReason___b
   __break(0);
 }
 
-- (void)_registerMember:(id)a3
+- (void)_registerMember:(id)member
 {
   internalMembers = self->_internalMembers;
-  v5 = a3;
-  [(NSMutableArray *)internalMembers addObject:v5];
+  memberCopy = member;
+  [(NSMutableArray *)internalMembers addObject:memberCopy];
   [(NSMutableArray *)self->_internalMembers sortUsingComparator:&__block_literal_global_410];
-  [(SBKeyboardFocusCoalition *)self addedMember:v5];
+  [(SBKeyboardFocusCoalition *)self addedMember:memberCopy];
 }
 
 BOOL __44__SBKeyboardFocusCoalition__registerMember___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -207,48 +207,48 @@ BOOL __44__SBKeyboardFocusCoalition__registerMember___block_invoke(uint64_t a1, 
   return v5 < v6;
 }
 
-- (void)_unregisterMember:(id)a3
+- (void)_unregisterMember:(id)member
 {
   internalMembers = self->_internalMembers;
-  v5 = a3;
-  [(NSMutableArray *)internalMembers removeObject:v5];
-  [(SBKeyboardFocusCoalition *)self removedMember:v5];
+  memberCopy = member;
+  [(NSMutableArray *)internalMembers removeObject:memberCopy];
+  [(SBKeyboardFocusCoalition *)self removedMember:memberCopy];
 
-  v8 = [(SBKeyboardFocusCoalition *)self delegate];
+  delegate = [(SBKeyboardFocusCoalition *)self delegate];
   v6 = +[SBKeyboardFocusArbitrationReason removedCoalitionMember];
   v7 = [v6 annotatedWithSourceName:self->_debugName];
-  [v8 requestArbitrationForReason:v7];
+  [delegate requestArbitrationForReason:v7];
 }
 
-- (void)memberRequestsArbitration:(id)a3 forReason:(id)a4
+- (void)memberRequestsArbitration:(id)arbitration forReason:(id)reason
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  arbitrationCopy = arbitration;
+  reasonCopy = reason;
   v8 = SBLogKeyboardFocus();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     debugName = self->_debugName;
-    v10 = [v6 uniqueIdentifier];
+    uniqueIdentifier = [arbitrationCopy uniqueIdentifier];
     v11 = 138543874;
     v12 = debugName;
     v13 = 2114;
-    v14 = v10;
+    v14 = uniqueIdentifier;
     v15 = 2114;
-    v16 = v7;
+    v16 = reasonCopy;
     _os_log_debug_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEBUG, "[%{public}@] member %{public}@ requests update for reason: %{public}@", &v11, 0x20u);
   }
 }
 
-- (void)setNeedsArbitrationForReason:(id)a3
+- (void)setNeedsArbitrationForReason:(id)reason
 {
-  v5 = a3;
-  if (!v5)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [SBKeyboardFocusCoalition setNeedsArbitrationForReason:a2];
   }
 
-  v6 = v5;
+  v6 = reasonCopy;
   objc_opt_class();
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -263,23 +263,23 @@ BOOL __44__SBKeyboardFocusCoalition__registerMember___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)addedMember:(id)a3
+- (void)addedMember:(id)member
 {
-  v4 = a3;
+  memberCopy = member;
   v5 = SBLogKeyboardFocus();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(SBKeyboardFocusCoalition *)self addedMember:v4];
+    [(SBKeyboardFocusCoalition *)self addedMember:memberCopy];
   }
 }
 
-- (void)removedMember:(id)a3
+- (void)removedMember:(id)member
 {
-  v4 = a3;
+  memberCopy = member;
   v5 = SBLogKeyboardFocus();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(SBKeyboardFocusCoalition *)self removedMember:v4];
+    [(SBKeyboardFocusCoalition *)self removedMember:memberCopy];
   }
 }
 
@@ -293,8 +293,8 @@ BOOL __44__SBKeyboardFocusCoalition__registerMember___block_invoke(uint64_t a1, 
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v3 = [(SBKeyboardFocusCoalition *)self members];
-    v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    members = [(SBKeyboardFocusCoalition *)self members];
+    v4 = [members countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v4)
     {
       v5 = v4;
@@ -306,14 +306,14 @@ BOOL __44__SBKeyboardFocusCoalition__registerMember___block_invoke(uint64_t a1, 
         {
           if (*v9 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(members);
           }
 
           [(SBKeyboardFocusCoalition *)self _unregisterMember:*(*(&v8 + 1) + 8 * v7++)];
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v5 = [members countByEnumeratingWithState:&v8 objects:v12 count:16];
       }
 
       while (v5);
@@ -328,8 +328,8 @@ BOOL __44__SBKeyboardFocusCoalition__registerMember___block_invoke(uint64_t a1, 
 - (NSString)debugDescription
 {
   v3 = MEMORY[0x277CF0C08];
-  v4 = [MEMORY[0x277CF0C10] debugStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  debugStyle = [MEMORY[0x277CF0C10] debugStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:debugStyle];
 
   return v5;
 }
@@ -337,22 +337,22 @@ BOOL __44__SBKeyboardFocusCoalition__registerMember___block_invoke(uint64_t a1, 
 - (id)succinctDescription
 {
   v3 = MEMORY[0x277CF0C08];
-  v4 = [MEMORY[0x277CF0C10] succinctStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  succinctStyle = [MEMORY[0x277CF0C10] succinctStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:succinctStyle];
 
   return v5;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__SBKeyboardFocusCoalition_appendDescriptionToStream___block_invoke;
   v8[3] = &unk_2783A92D8;
-  v5 = v4;
+  v5 = streamCopy;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   [v5 appendProem:self block:v8];
   if (([v5 hasSuccinctStyle] & 1) == 0)
   {

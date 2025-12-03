@@ -9,13 +9,13 @@
 {
   [(PUPhotoKitActionPerformer *)self instantlyExcludeAssetsFromDataSource];
   [(PUAssetActionPerformer *)self completeBackgroundTaskWithSuccess:1 error:0];
-  v3 = [(PUPhotoKitHideActionPerformer *)self hideActionController];
+  hideActionController = [(PUPhotoKitHideActionPerformer *)self hideActionController];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __54__PUPhotoKitHideActionPerformer_performBackgroundTask__block_invoke;
   v4[3] = &unk_1E7B80280;
   v4[4] = self;
-  [v3 performActionWithCompletionHandler:v4];
+  [hideActionController performActionWithCompletionHandler:v4];
 }
 
 uint64_t __54__PUPhotoKitHideActionPerformer_performBackgroundTask__block_invoke(uint64_t result, char a2)
@@ -31,9 +31,9 @@ uint64_t __54__PUPhotoKitHideActionPerformer_performBackgroundTask__block_invoke
 - (void)performUserInteractionTask
 {
   v3 = [PUHidePhotosActionController alloc];
-  v4 = [(PUAssetActionPerformer *)self assets];
-  v5 = [(PUAssetActionPerformer *)self undoManager];
-  v6 = [(PUHidePhotosActionController *)v3 initWithAssets:v4 undoManager:v5];
+  assets = [(PUAssetActionPerformer *)self assets];
+  undoManager = [(PUAssetActionPerformer *)self undoManager];
+  v6 = [(PUHidePhotosActionController *)v3 initWithAssets:assets undoManager:undoManager];
 
   [(PUPhotoKitHideActionPerformer *)self setHideActionController:v6];
   v8[0] = MEMORY[0x1E69E9820];

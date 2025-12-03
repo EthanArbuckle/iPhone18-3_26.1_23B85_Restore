@@ -1,25 +1,25 @@
 @interface MCProfileTitlePageViewModel
-- (BOOL)_installErrorIsUserCancelledError:(id)a3;
+- (BOOL)_installErrorIsUserCancelledError:(id)error;
 - (DMCProfileViewModel)profileViewModel;
 - (MCProfileTitlePageViewModel)init;
-- (MCProfileTitlePageViewModel)initWithProfile:(id)a3 profileData:(id)a4;
+- (MCProfileTitlePageViewModel)initWithProfile:(id)profile profileData:(id)data;
 - (MCProfileTitlePageViewModelDelegate)delegate;
 - (NSString)accountIdentifier;
-- (id)_createAuthenticationContext:(id)a3 presentingViewController:(id)a4;
+- (id)_createAuthenticationContext:(id)context presentingViewController:(id)controller;
 - (void)_continueInstallAfterPresentingWarnings;
-- (void)_handleMAIDSignInRequestWithAccountID:(id)a3 personaID:(id)a4 connection:(id)a5;
-- (void)_handleUserInputRequest:(id)a3;
-- (void)_installFinishedWithIdentifier:(id)a3 error:(id)a4;
-- (void)_respondToMAIDAuthenticationRequestIfNeeded:(id)a3 successful:(BOOL)a4 error:(id)a5 isCancelled:(BOOL)a6;
-- (void)_respondToUserInputRequest:(id)a3 cancelled:(BOOL)a4;
+- (void)_handleMAIDSignInRequestWithAccountID:(id)d personaID:(id)iD connection:(id)connection;
+- (void)_handleUserInputRequest:(id)request;
+- (void)_installFinishedWithIdentifier:(id)identifier error:(id)error;
+- (void)_respondToMAIDAuthenticationRequestIfNeeded:(id)needed successful:(BOOL)successful error:(id)error isCancelled:(BOOL)cancelled;
+- (void)_respondToUserInputRequest:(id)request cancelled:(BOOL)cancelled;
 - (void)_setup;
-- (void)_signInMAID:(id)a3 authenticationResult:(id)a4 personaID:(id)a5 completionHandler:(id)a6;
+- (void)_signInMAID:(id)d authenticationResult:(id)result personaID:(id)iD completionHandler:(id)handler;
 - (void)dealloc;
-- (void)doesUserWantToRestoreSnapshot:(id)a3 withConflictingApps:(id)a4 completion:(id)a5;
-- (void)profileConnection:(id)a3 didFinishPreflightWithError:(id)a4;
-- (void)profileConnection:(id)a3 didRequestManagedRestoreWithManagedAppleID:(id)a4 personaID:(id)a5;
-- (void)profileConnectionDidRequestCurrentPasscode:(id)a3;
-- (void)setInstallState:(int)a3;
+- (void)doesUserWantToRestoreSnapshot:(id)snapshot withConflictingApps:(id)apps completion:(id)completion;
+- (void)profileConnection:(id)connection didFinishPreflightWithError:(id)error;
+- (void)profileConnection:(id)connection didRequestManagedRestoreWithManagedAppleID:(id)d personaID:(id)iD;
+- (void)profileConnectionDidRequestCurrentPasscode:(id)passcode;
+- (void)setInstallState:(int)state;
 - (void)startProfileInstallationFlow;
 - (void)terminateProfileInstallationFlow;
 - (void)terminateProfileInstallationFlowAndDeleteProfile;
@@ -27,16 +27,16 @@
 
 @implementation MCProfileTitlePageViewModel
 
-- (MCProfileTitlePageViewModel)initWithProfile:(id)a3 profileData:(id)a4
+- (MCProfileTitlePageViewModel)initWithProfile:(id)profile profileData:(id)data
 {
-  v7 = a3;
-  v8 = a4;
+  profileCopy = profile;
+  dataCopy = data;
   v9 = [(MCProfileTitlePageViewModel *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_profile, a3);
-    objc_storeStrong(&v10->_profileData, a4);
+    objc_storeStrong(&v9->_profile, profile);
+    objc_storeStrong(&v10->_profileData, data);
   }
 
   return v10;
@@ -79,8 +79,8 @@
   if (!profileViewModel)
   {
     v4 = objc_alloc(MEMORY[0x277D03288]);
-    v5 = [(MCProfileTitlePageViewModel *)self profile];
-    v6 = [v4 initWithProfile:v5 managedPayloads:0];
+    profile = [(MCProfileTitlePageViewModel *)self profile];
+    v6 = [v4 initWithProfile:profile managedPayloads:0];
     v7 = self->_profileViewModel;
     self->_profileViewModel = v6;
 
@@ -93,20 +93,20 @@
 - (NSString)accountIdentifier
 {
   v2 = MEMORY[0x277D03490];
-  v3 = [(MCProfileTitlePageViewModel *)self personaID];
-  v4 = [v2 accountIdentifierForAppleAccountWithPersonaID:v3];
+  personaID = [(MCProfileTitlePageViewModel *)self personaID];
+  v4 = [v2 accountIdentifierForAppleAccountWithPersonaID:personaID];
 
   return v4;
 }
 
-- (void)setInstallState:(int)a3
+- (void)setInstallState:(int)state
 {
-  if (self->_installState != a3)
+  if (self->_installState != state)
   {
     block[7] = v3;
     block[8] = v4;
-    self->_installState = a3;
-    NSLog(&cfstr_SetStateD.isa, a2, a3);
+    self->_installState = state;
+    NSLog(&cfstr_SetStateD.isa, a2, state);
     installState = self->_installState;
     if ((installState - 4) < 6)
     {
@@ -152,13 +152,13 @@ void __47__MCProfileTitlePageViewModel_setInstallState___block_invoke_2(uint64_t
 
 - (void)startProfileInstallationFlow
 {
-  v3 = [(MCProfileTitlePageViewModel *)self serialQueue];
+  serialQueue = [(MCProfileTitlePageViewModel *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__MCProfileTitlePageViewModel_startProfileInstallationFlow__block_invoke;
   block[3] = &unk_279861968;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(serialQueue, block);
 }
 
 void __59__MCProfileTitlePageViewModel_startProfileInstallationFlow__block_invoke(uint64_t a1)
@@ -241,8 +241,8 @@ void __59__MCProfileTitlePageViewModel_startProfileInstallationFlow__block_invok
 
 - (void)_continueInstallAfterPresentingWarnings
 {
-  v2 = [(MCProfileTitlePageViewModel *)self serialQueue];
-  dispatch_async(v2, &__block_literal_global_0);
+  serialQueue = [(MCProfileTitlePageViewModel *)self serialQueue];
+  dispatch_async(serialQueue, &__block_literal_global_0);
 }
 
 void __70__MCProfileTitlePageViewModel__continueInstallAfterPresentingWarnings__block_invoke()
@@ -251,18 +251,18 @@ void __70__MCProfileTitlePageViewModel__continueInstallAfterPresentingWarnings__
   [v0 respondToWarningsContinueInstallation:1];
 }
 
-- (void)_installFinishedWithIdentifier:(id)a3 error:(id)a4
+- (void)_installFinishedWithIdentifier:(id)identifier error:(id)error
 {
-  v5 = a4;
-  v6 = [(MCProfileTitlePageViewModel *)self serialQueue];
+  errorCopy = error;
+  serialQueue = [(MCProfileTitlePageViewModel *)self serialQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __68__MCProfileTitlePageViewModel__installFinishedWithIdentifier_error___block_invoke;
   v8[3] = &unk_279861C40;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = errorCopy;
+  v7 = errorCopy;
+  dispatch_async(serialQueue, v8);
 }
 
 void __68__MCProfileTitlePageViewModel__installFinishedWithIdentifier_error___block_invoke(uint64_t a1)
@@ -358,12 +358,12 @@ void __68__MCProfileTitlePageViewModel__installFinishedWithIdentifier_error___bl
 - (void)terminateProfileInstallationFlow
 {
   NSLog(&cfstr_Terminateprofi.isa, a2);
-  v3 = [(MCProfileTitlePageViewModel *)self cleanupTask];
+  cleanupTask = [(MCProfileTitlePageViewModel *)self cleanupTask];
 
-  if (v3)
+  if (cleanupTask)
   {
-    v4 = [(MCProfileTitlePageViewModel *)self cleanupTask];
-    v4[2]();
+    cleanupTask2 = [(MCProfileTitlePageViewModel *)self cleanupTask];
+    cleanupTask2[2]();
 
     [(MCProfileTitlePageViewModel *)self setCleanupTask:0];
   }
@@ -373,16 +373,16 @@ void __68__MCProfileTitlePageViewModel__installFinishedWithIdentifier_error___bl
 {
   [(MCProfileTitlePageViewModel *)self terminateProfileInstallationFlow];
   NSLog(&cfstr_WillDeleteProf.isa);
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  v4 = [(MCProfileTitlePageViewModel *)self profile];
-  v5 = [v4 identifier];
-  v6 = [MEMORY[0x277D26290] thisDeviceType];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  profile = [(MCProfileTitlePageViewModel *)self profile];
+  identifier = [profile identifier];
+  thisDeviceType = [MEMORY[0x277D26290] thisDeviceType];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __79__MCProfileTitlePageViewModel_terminateProfileInstallationFlowAndDeleteProfile__block_invoke;
   v7[3] = &unk_279861968;
   v7[4] = self;
-  [v3 removeUninstalledProfileWithIdentifier:v5 installationType:1 targetDeviceType:v6 completion:v7];
+  [mEMORY[0x277D262A0] removeUninstalledProfileWithIdentifier:identifier installationType:1 targetDeviceType:thisDeviceType completion:v7];
 }
 
 void __79__MCProfileTitlePageViewModel_terminateProfileInstallationFlowAndDeleteProfile__block_invoke(uint64_t a1)
@@ -407,18 +407,18 @@ void __79__MCProfileTitlePageViewModel_terminateProfileInstallationFlowAndDelete
   }
 }
 
-- (void)_handleUserInputRequest:(id)a3
+- (void)_handleUserInputRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(MCProfileTitlePageViewModel *)self serialQueue];
+  requestCopy = request;
+  serialQueue = [(MCProfileTitlePageViewModel *)self serialQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__MCProfileTitlePageViewModel__handleUserInputRequest___block_invoke;
   v7[3] = &unk_279861C40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = requestCopy;
+  v6 = requestCopy;
+  dispatch_async(serialQueue, v7);
 }
 
 void __55__MCProfileTitlePageViewModel__handleUserInputRequest___block_invoke(uint64_t a1)
@@ -454,19 +454,19 @@ void __55__MCProfileTitlePageViewModel__handleUserInputRequest___block_invoke_3(
   [v2 promptForUserInput:v3 completionHandler:v4];
 }
 
-- (void)_respondToUserInputRequest:(id)a3 cancelled:(BOOL)a4
+- (void)_respondToUserInputRequest:(id)request cancelled:(BOOL)cancelled
 {
-  v6 = a3;
-  v7 = [(MCProfileTitlePageViewModel *)self serialQueue];
+  requestCopy = request;
+  serialQueue = [(MCProfileTitlePageViewModel *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__MCProfileTitlePageViewModel__respondToUserInputRequest_cancelled___block_invoke;
   block[3] = &unk_279861CB8;
-  v11 = a4;
+  cancelledCopy = cancelled;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = requestCopy;
+  v8 = requestCopy;
+  dispatch_async(serialQueue, block);
 }
 
 void __68__MCProfileTitlePageViewModel__respondToUserInputRequest_cancelled___block_invoke(uint64_t a1)
@@ -487,24 +487,24 @@ void __68__MCProfileTitlePageViewModel__respondToUserInputRequest_cancelled___bl
   }
 }
 
-- (void)_handleMAIDSignInRequestWithAccountID:(id)a3 personaID:(id)a4 connection:(id)a5
+- (void)_handleMAIDSignInRequestWithAccountID:(id)d personaID:(id)iD connection:(id)connection
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MCProfileTitlePageViewModel *)self serialQueue];
+  dCopy = d;
+  iDCopy = iD;
+  connectionCopy = connection;
+  serialQueue = [(MCProfileTitlePageViewModel *)self serialQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __90__MCProfileTitlePageViewModel__handleMAIDSignInRequestWithAccountID_personaID_connection___block_invoke;
   v15[3] = &unk_279861C68;
   v15[4] = self;
-  v16 = v9;
-  v17 = v10;
-  v18 = v8;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
-  dispatch_async(v11, v15);
+  v16 = iDCopy;
+  v17 = connectionCopy;
+  v18 = dCopy;
+  v12 = dCopy;
+  v13 = connectionCopy;
+  v14 = iDCopy;
+  dispatch_async(serialQueue, v15);
 }
 
 void __90__MCProfileTitlePageViewModel__handleMAIDSignInRequestWithAccountID_personaID_connection___block_invoke(id *a1)
@@ -629,23 +629,23 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)_respondToMAIDAuthenticationRequestIfNeeded:(id)a3 successful:(BOOL)a4 error:(id)a5 isCancelled:(BOOL)a6
+- (void)_respondToMAIDAuthenticationRequestIfNeeded:(id)needed successful:(BOOL)successful error:(id)error isCancelled:(BOOL)cancelled
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [(MCProfileTitlePageViewModel *)self serialQueue];
+  neededCopy = needed;
+  errorCopy = error;
+  serialQueue = [(MCProfileTitlePageViewModel *)self serialQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __104__MCProfileTitlePageViewModel__respondToMAIDAuthenticationRequestIfNeeded_successful_error_isCancelled___block_invoke;
   v15[3] = &unk_279861DA8;
   v15[4] = self;
-  v16 = v10;
-  v18 = a4;
-  v17 = v11;
-  v19 = a6;
-  v13 = v11;
-  v14 = v10;
-  dispatch_async(v12, v15);
+  v16 = neededCopy;
+  successfulCopy = successful;
+  v17 = errorCopy;
+  cancelledCopy = cancelled;
+  v13 = errorCopy;
+  v14 = neededCopy;
+  dispatch_async(serialQueue, v15);
 }
 
 uint64_t __104__MCProfileTitlePageViewModel__respondToMAIDAuthenticationRequestIfNeeded_successful_error_isCancelled___block_invoke(uint64_t a1)
@@ -666,16 +666,16 @@ uint64_t __104__MCProfileTitlePageViewModel__respondToMAIDAuthenticationRequestI
   return result;
 }
 
-- (void)_signInMAID:(id)a3 authenticationResult:(id)a4 personaID:(id)a5 completionHandler:(id)a6
+- (void)_signInMAID:(id)d authenticationResult:(id)result personaID:(id)iD completionHandler:(id)handler
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  resultCopy = result;
+  iDCopy = iD;
+  handlerCopy = handler;
   if ([(MCProfileTitlePageViewModel *)self isInstallingProfile])
   {
-    NSLog(&cfstr_Mcprofiletitle_6.isa, v10);
+    NSLog(&cfstr_Mcprofiletitle_6.isa, dCopy);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __92__MCProfileTitlePageViewModel__signInMAID_authenticationResult_personaID_completionHandler___block_invoke;
@@ -688,13 +688,13 @@ uint64_t __104__MCProfileTitlePageViewModel__respondToMAIDAuthenticationRequestI
     v22[0] = *MEMORY[0x277CB8BA0];
     v22[1] = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:2];
-    v17 = [(MCProfileTitlePageViewModel *)self delegate];
+    delegate = [(MCProfileTitlePageViewModel *)self delegate];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __92__MCProfileTitlePageViewModel__signInMAID_authenticationResult_personaID_completionHandler___block_invoke_2;
     v19[3] = &unk_279861DD0;
-    v20 = v13;
-    [v14 signInAccountsWithTypes:v16 authenticationResult:v11 personaID:v12 canMakeAccountActive:0 baseViewController:v17 completionHandler:v19];
+    v20 = handlerCopy;
+    [v14 signInAccountsWithTypes:v16 authenticationResult:resultCopy personaID:iDCopy canMakeAccountActive:0 baseViewController:delegate completionHandler:v19];
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -706,18 +706,18 @@ void __92__MCProfileTitlePageViewModel__signInMAID_authenticationResult_personaI
   [v1 presentSpinnerViewController];
 }
 
-- (id)_createAuthenticationContext:(id)a3 presentingViewController:(id)a4
+- (id)_createAuthenticationContext:(id)context presentingViewController:(id)controller
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CF0380];
-  v6 = a4;
-  v7 = a3;
+  controllerCopy = controller;
+  contextCopy = context;
   v8 = objc_alloc_init(v5);
   [v8 setIsEphemeral:0];
   [v8 setAuthenticationType:2];
-  [v8 setPresentingViewController:v6];
+  [v8 setPresentingViewController:controllerCopy];
 
-  [v8 setUsername:v7];
+  [v8 setUsername:contextCopy];
   [v8 setIsUsernameEditable:0];
   v12 = @"shouldAllowManagedAppleIDOnly";
   v13[0] = MEMORY[0x277CBEC38];
@@ -729,28 +729,28 @@ void __92__MCProfileTitlePageViewModel__signInMAID_authenticationResult_personaI
   return v8;
 }
 
-- (void)profileConnectionDidRequestCurrentPasscode:(id)a3
+- (void)profileConnectionDidRequestCurrentPasscode:(id)passcode
 {
-  v4 = a3;
+  passcodeCopy = passcode;
   v5 = [(MCProfileTitlePageViewModel *)self pin];
-  [v4 respondToCurrentPasscodeRequestContinue:1 passcode:v5];
+  [passcodeCopy respondToCurrentPasscodeRequestContinue:1 passcode:v5];
 }
 
-- (void)profileConnection:(id)a3 didFinishPreflightWithError:(id)a4
+- (void)profileConnection:(id)connection didFinishPreflightWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MCProfileTitlePageViewModel *)self serialQueue];
+  connectionCopy = connection;
+  errorCopy = error;
+  serialQueue = [(MCProfileTitlePageViewModel *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__MCProfileTitlePageViewModel_profileConnection_didFinishPreflightWithError___block_invoke;
   block[3] = &unk_279861DF8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = errorCopy;
+  v13 = connectionCopy;
+  v9 = connectionCopy;
+  v10 = errorCopy;
+  dispatch_async(serialQueue, block);
 }
 
 void __77__MCProfileTitlePageViewModel_profileConnection_didFinishPreflightWithError___block_invoke(uint64_t a1)
@@ -759,24 +759,24 @@ void __77__MCProfileTitlePageViewModel_profileConnection_didFinishPreflightWithE
   [v2 informQuestionViewControllerOfPreflightResult:*(a1 + 40) profileConnection:*(a1 + 48)];
 }
 
-- (void)profileConnection:(id)a3 didRequestManagedRestoreWithManagedAppleID:(id)a4 personaID:(id)a5
+- (void)profileConnection:(id)connection didRequestManagedRestoreWithManagedAppleID:(id)d personaID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MCProfileTitlePageViewModel *)self serialQueue];
+  connectionCopy = connection;
+  dCopy = d;
+  iDCopy = iD;
+  serialQueue = [(MCProfileTitlePageViewModel *)self serialQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __102__MCProfileTitlePageViewModel_profileConnection_didRequestManagedRestoreWithManagedAppleID_personaID___block_invoke;
   v15[3] = &unk_279861C68;
   v15[4] = self;
-  v16 = v9;
-  v17 = v10;
-  v18 = v8;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
-  dispatch_async(v11, v15);
+  v16 = dCopy;
+  v17 = iDCopy;
+  v18 = connectionCopy;
+  v12 = connectionCopy;
+  v13 = iDCopy;
+  v14 = dCopy;
+  dispatch_async(serialQueue, v15);
 }
 
 void __102__MCProfileTitlePageViewModel_profileConnection_didRequestManagedRestoreWithManagedAppleID_personaID___block_invoke(uint64_t a1)
@@ -867,22 +867,22 @@ void __102__MCProfileTitlePageViewModel_profileConnection_didRequestManagedResto
   }
 }
 
-- (void)doesUserWantToRestoreSnapshot:(id)a3 withConflictingApps:(id)a4 completion:(id)a5
+- (void)doesUserWantToRestoreSnapshot:(id)snapshot withConflictingApps:(id)apps completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(MCProfileTitlePageViewModel *)self delegate];
-  v12 = [(MCProfileTitlePageViewModel *)self managedAppleID];
-  v13 = [v9 allObjects];
+  completionCopy = completion;
+  appsCopy = apps;
+  snapshotCopy = snapshot;
+  delegate = [(MCProfileTitlePageViewModel *)self delegate];
+  managedAppleID = [(MCProfileTitlePageViewModel *)self managedAppleID];
+  allObjects = [appsCopy allObjects];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __92__MCProfileTitlePageViewModel_doesUserWantToRestoreSnapshot_withConflictingApps_completion___block_invoke;
   v15[3] = &unk_279861E48;
-  v16 = v8;
-  v14 = v8;
-  [v11 promptForManagedRestoreWithManagedAppleID:v12 snapshot:v10 conflictingApps:v13 completionHandler:v15];
+  v16 = completionCopy;
+  v14 = completionCopy;
+  [delegate promptForManagedRestoreWithManagedAppleID:managedAppleID snapshot:snapshotCopy conflictingApps:allObjects completionHandler:v15];
 }
 
 uint64_t __92__MCProfileTitlePageViewModel_doesUserWantToRestoreSnapshot_withConflictingApps_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -896,25 +896,25 @@ uint64_t __92__MCProfileTitlePageViewModel_doesUserWantToRestoreSnapshot_withCon
   return result;
 }
 
-- (BOOL)_installErrorIsUserCancelledError:(id)a3
+- (BOOL)_installErrorIsUserCancelledError:(id)error
 {
-  v3 = a3;
-  if (!v3)
+  errorCopy = error;
+  if (!errorCopy)
   {
     return 0;
   }
 
-  v4 = v3;
+  v4 = errorCopy;
   v5 = *MEMORY[0x277D26108];
   v6 = *MEMORY[0x277CCA7E8];
   do
   {
-    v7 = [v4 domain];
-    if ([v7 isEqualToString:v5])
+    domain = [v4 domain];
+    if ([domain isEqualToString:v5])
     {
-      v8 = [v4 code];
+      code = [v4 code];
 
-      if (v8 == 4004)
+      if (code == 4004)
       {
         v11 = 1;
         goto LABEL_10;
@@ -925,8 +925,8 @@ uint64_t __92__MCProfileTitlePageViewModel_doesUserWantToRestoreSnapshot_withCon
     {
     }
 
-    v9 = [v4 userInfo];
-    v10 = [v9 objectForKey:v6];
+    userInfo = [v4 userInfo];
+    v10 = [userInfo objectForKey:v6];
 
     v4 = v10;
   }

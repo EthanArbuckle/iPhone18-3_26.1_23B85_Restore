@@ -1,46 +1,46 @@
 @interface VUIMediaEntitiesDataSourceFactory
-+ (id)_dataSourceForShelfType:(int64_t)a3 withLibrary:(id)a4 withOwnerIdentifier:(id)a5;
-+ (id)_fetchRequestForGenre:(id)a3;
-+ (id)dataSourceForCategoryType:(int64_t)a3;
-+ (id)dataSourceForCategoryType:(int64_t)a3 withFamilyMember:(id)a4;
-+ (id)dataSourceForCategoryType:(int64_t)a3 withLibrary:(id)a4 withOwnerIdentifier:(id)a5;
-+ (id)dataSourceForFetchRequest:(id)a3 withLibrary:(id)a4;
-+ (id)dataSourceForGenre:(id)a3 withFamilyMember:(id)a4;
-+ (id)dataSourceForGenre:(id)a3 withLibrary:(id)a4;
-+ (id)dataSourceForShelf:(int64_t)a3 withFamilyMember:(id)a4;
-+ (id)episodesDataSourceForSeasonIdentifier:(id)a3 showIdentifier:(id)a4 withFamilyMember:(id)a5;
-+ (id)episodesDataSourceForShowIdentifier:(id)a3 withFamilyMember:(id)a4;
-+ (id)seasonsDataSourceForSeasonIdentifier:(id)a3 showIdentifier:(id)a4 withFamilyMember:(id)a5;
-+ (id)seasonsDataSourceForShowIdentifier:(id)a3 withFamilyMember:(id)a4;
++ (id)_dataSourceForShelfType:(int64_t)type withLibrary:(id)library withOwnerIdentifier:(id)identifier;
++ (id)_fetchRequestForGenre:(id)genre;
++ (id)dataSourceForCategoryType:(int64_t)type;
++ (id)dataSourceForCategoryType:(int64_t)type withFamilyMember:(id)member;
++ (id)dataSourceForCategoryType:(int64_t)type withLibrary:(id)library withOwnerIdentifier:(id)identifier;
++ (id)dataSourceForFetchRequest:(id)request withLibrary:(id)library;
++ (id)dataSourceForGenre:(id)genre withFamilyMember:(id)member;
++ (id)dataSourceForGenre:(id)genre withLibrary:(id)library;
++ (id)dataSourceForShelf:(int64_t)shelf withFamilyMember:(id)member;
++ (id)episodesDataSourceForSeasonIdentifier:(id)identifier showIdentifier:(id)showIdentifier withFamilyMember:(id)member;
++ (id)episodesDataSourceForShowIdentifier:(id)identifier withFamilyMember:(id)member;
++ (id)seasonsDataSourceForSeasonIdentifier:(id)identifier showIdentifier:(id)showIdentifier withFamilyMember:(id)member;
++ (id)seasonsDataSourceForShowIdentifier:(id)identifier withFamilyMember:(id)member;
 @end
 
 @implementation VUIMediaEntitiesDataSourceFactory
 
-+ (id)dataSourceForCategoryType:(int64_t)a3
++ (id)dataSourceForCategoryType:(int64_t)type
 {
   v5 = +[VUIMediaLibraryManager defaultManager];
-  v6 = [v5 deviceMediaLibrary];
-  v7 = [a1 dataSourceForCategoryType:a3 withLibrary:v6 withOwnerIdentifier:0];
+  deviceMediaLibrary = [v5 deviceMediaLibrary];
+  v7 = [self dataSourceForCategoryType:type withLibrary:deviceMediaLibrary withOwnerIdentifier:0];
 
   return v7;
 }
 
-+ (id)dataSourceForFetchRequest:(id)a3 withLibrary:(id)a4
++ (id)dataSourceForFetchRequest:(id)request withLibrary:(id)library
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[VUIMPMediaEntitiesDataSource alloc] initWithMediaLibrary:v5 fetchRequest:v6];
+  libraryCopy = library;
+  requestCopy = request;
+  v7 = [[VUIMPMediaEntitiesDataSource alloc] initWithMediaLibrary:libraryCopy fetchRequest:requestCopy];
 
   return v7;
 }
 
-+ (id)seasonsDataSourceForShowIdentifier:(id)a3 withFamilyMember:(id)a4
++ (id)seasonsDataSourceForShowIdentifier:(id)identifier withFamilyMember:(id)member
 {
-  v5 = a3;
-  v6 = [a4 memberIdentifier];
-  v7 = [v6 stringValue];
+  identifierCopy = identifier;
+  memberIdentifier = [member memberIdentifier];
+  stringValue = [memberIdentifier stringValue];
 
-  v8 = [VUIMediaAPIRequestFactory seasonsRequestWithShowIdentifier:v5 withOwnerIdentifier:v7];
+  v8 = [VUIMediaAPIRequestFactory seasonsRequestWithShowIdentifier:identifierCopy withOwnerIdentifier:stringValue];
 
   v9 = [[VUIFamilySharingMediaEntitiesDataSource alloc] initWithNSURLRequest:v8];
   [(VUIFamilySharingMediaEntitiesDataSource *)v9 setShouldCoalesceEpisodesToSeasons:1];
@@ -48,13 +48,13 @@
   return v9;
 }
 
-+ (id)episodesDataSourceForShowIdentifier:(id)a3 withFamilyMember:(id)a4
++ (id)episodesDataSourceForShowIdentifier:(id)identifier withFamilyMember:(id)member
 {
-  v5 = a3;
-  v6 = [a4 memberIdentifier];
-  v7 = [v6 stringValue];
+  identifierCopy = identifier;
+  memberIdentifier = [member memberIdentifier];
+  stringValue = [memberIdentifier stringValue];
 
-  v8 = [VUIMediaAPIRequestFactory episodesRequestWithShowIdentifier:v5 withOwnerIdentifier:v7];
+  v8 = [VUIMediaAPIRequestFactory episodesRequestWithShowIdentifier:identifierCopy withOwnerIdentifier:stringValue];
 
   v9 = [[VUIFamilySharingMediaEntitiesDataSource alloc] initWithNSURLRequest:v8];
   [(VUIFamilySharingMediaEntitiesDataSource *)v9 setShouldGroupBySeason:1];
@@ -63,47 +63,47 @@
   return v9;
 }
 
-+ (id)seasonsDataSourceForSeasonIdentifier:(id)a3 showIdentifier:(id)a4 withFamilyMember:(id)a5
++ (id)seasonsDataSourceForSeasonIdentifier:(id)identifier showIdentifier:(id)showIdentifier withFamilyMember:(id)member
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [a5 memberIdentifier];
-  v10 = [v9 stringValue];
+  showIdentifierCopy = showIdentifier;
+  identifierCopy = identifier;
+  memberIdentifier = [member memberIdentifier];
+  stringValue = [memberIdentifier stringValue];
 
-  v11 = [VUIMediaAPIRequestFactory seasonsRequestWithShowIdentifier:v7 withOwnerIdentifier:v10];
+  v11 = [VUIMediaAPIRequestFactory seasonsRequestWithShowIdentifier:showIdentifierCopy withOwnerIdentifier:stringValue];
 
   v12 = [[VUIFamilySharingMediaEntitiesDataSource alloc] initWithNSURLRequest:v11];
   [(VUIFamilySharingMediaEntitiesDataSource *)v12 setShouldCoalesceEpisodesToSeasons:1];
-  [(VUIFamilySharingMediaEntitiesDataSource *)v12 setSeasonIdentifierFilter:v8];
+  [(VUIFamilySharingMediaEntitiesDataSource *)v12 setSeasonIdentifierFilter:identifierCopy];
 
   return v12;
 }
 
-+ (id)episodesDataSourceForSeasonIdentifier:(id)a3 showIdentifier:(id)a4 withFamilyMember:(id)a5
++ (id)episodesDataSourceForSeasonIdentifier:(id)identifier showIdentifier:(id)showIdentifier withFamilyMember:(id)member
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [a5 memberIdentifier];
-  v10 = [v9 stringValue];
+  showIdentifierCopy = showIdentifier;
+  identifierCopy = identifier;
+  memberIdentifier = [member memberIdentifier];
+  stringValue = [memberIdentifier stringValue];
 
-  v11 = [VUIMediaAPIRequestFactory episodesRequestWithShowIdentifier:v7 withOwnerIdentifier:v10];
+  v11 = [VUIMediaAPIRequestFactory episodesRequestWithShowIdentifier:showIdentifierCopy withOwnerIdentifier:stringValue];
 
   v12 = [[VUIFamilySharingMediaEntitiesDataSource alloc] initWithNSURLRequest:v11];
   [(VUIFamilySharingMediaEntitiesDataSource *)v12 setShouldGroupBySeason:1];
   [(VUIFamilySharingMediaEntitiesDataSource *)v12 setOrderEpisodesByEpisodeNumber:1];
-  [(VUIFamilySharingMediaEntitiesDataSource *)v12 setSeasonIdentifierFilter:v8];
+  [(VUIFamilySharingMediaEntitiesDataSource *)v12 setSeasonIdentifierFilter:identifierCopy];
 
   return v12;
 }
 
-+ (id)dataSourceForCategoryType:(int64_t)a3 withFamilyMember:(id)a4
++ (id)dataSourceForCategoryType:(int64_t)type withFamilyMember:(id)member
 {
-  if (a4)
+  if (member)
   {
-    v5 = [a4 memberIdentifier];
-    v6 = [v5 stringValue];
+    memberIdentifier = [member memberIdentifier];
+    stringValue = [memberIdentifier stringValue];
 
-    v7 = [VUIMediaEntitiesDataSourceFactory dataSourceForCategoryType:a3 withLibrary:0 withOwnerIdentifier:v6];
+    v7 = [VUIMediaEntitiesDataSourceFactory dataSourceForCategoryType:type withLibrary:0 withOwnerIdentifier:stringValue];
   }
 
   else
@@ -114,23 +114,23 @@
   return v7;
 }
 
-+ (id)dataSourceForCategoryType:(int64_t)a3 withLibrary:(id)a4 withOwnerIdentifier:(id)a5
++ (id)dataSourceForCategoryType:(int64_t)type withLibrary:(id)library withOwnerIdentifier:(id)identifier
 {
   v49[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  if (!v7)
+  libraryCopy = library;
+  identifierCopy = identifier;
+  if (!libraryCopy)
   {
     v9 = +[VUIMediaLibraryManager defaultManager];
-    v7 = [v9 deviceMediaLibrary];
+    libraryCopy = [v9 deviceMediaLibrary];
   }
 
   v10 = 0;
-  if (a3 > 3)
+  if (type > 3)
   {
-    if (a3 > 5)
+    if (type > 5)
     {
-      if (a3 == 6)
+      if (type == 6)
       {
         v11 = +[VUIMediaEntityFetchRequest movieRentalsFetchRequest];
         v28 = objc_alloc(MEMORY[0x1E695DEC8]);
@@ -138,12 +138,12 @@
         v30 = [v28 initWithObjects:{v29, 0}];
 
         [(VUIMediaEntityFetchRequest *)v11 setSortDescriptors:v30];
-        v10 = [[VUIMPMediaEntitiesDataSource alloc] initWithMediaLibrary:v7 fetchRequest:v11];
+        v10 = [[VUIMPMediaEntitiesDataSource alloc] initWithMediaLibrary:libraryCopy fetchRequest:v11];
 
         goto LABEL_34;
       }
 
-      if (a3 != 8)
+      if (type != 8)
       {
         goto LABEL_35;
       }
@@ -171,7 +171,7 @@
       goto LABEL_32;
     }
 
-    if (a3 == 4)
+    if (type == 4)
     {
       v11 = +[VUIMediaEntityFetchRequest moviesFetchRequest];
       [(VUIMediaEntityFetchRequest *)v11 addHDRColorCapabilityOr4KResolutionPredicate];
@@ -185,15 +185,15 @@
 LABEL_31:
     v25 = VUIMPMediaEntitiesDataSource;
 LABEL_32:
-    v27 = [[v25 alloc] initWithMediaLibrary:v7 fetchRequest:v11];
+    v27 = [[v25 alloc] initWithMediaLibrary:libraryCopy fetchRequest:v11];
     goto LABEL_33;
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (!a3)
+    if (!type)
     {
-      if (!v8)
+      if (!identifierCopy)
       {
         v31 = [VUIMediaEntityFetchRequest alloc];
         v32 = objc_alloc_init(MEMORY[0x1E695DFD8]);
@@ -203,26 +203,26 @@ LABEL_32:
         [(VUIMediaEntityFetchRequest *)v33 setProperties:v34];
 
         [(VUIMediaEntityFetchRequest *)v33 addRecentlyAddedSortDescriptorWithLimit:0];
-        v10 = [[VUIMPMediaEntitiesDataSource alloc] initWithMediaLibrary:v7 fetchRequest:v33];
+        v10 = [[VUIMPMediaEntitiesDataSource alloc] initWithMediaLibrary:libraryCopy fetchRequest:v33];
 
         goto LABEL_35;
       }
 
-      v11 = [VUIMediaAPIRequestFactory recentPurchasesRequestWithOwnerIdentifier:v8];
+      v11 = [VUIMediaAPIRequestFactory recentPurchasesRequestWithOwnerIdentifier:identifierCopy];
       v10 = [[VUIFamilySharingMediaEntitiesDataSource alloc] initWithNSURLRequest:v11];
       v12 = MEMORY[0x1E696AD98];
       v13 = 0;
       goto LABEL_20;
     }
 
-    if (a3 != 1)
+    if (type != 1)
     {
       goto LABEL_35;
     }
 
-    if (v8)
+    if (identifierCopy)
     {
-      v11 = [VUIMediaAPIRequestFactory recentPurchasesRequestWithOwnerIdentifier:v8];
+      v11 = [VUIMediaAPIRequestFactory recentPurchasesRequestWithOwnerIdentifier:identifierCopy];
       v10 = [[VUIFamilySharingMediaEntitiesDataSource alloc] initWithNSURLRequest:v11];
       v12 = MEMORY[0x1E696AD98];
       v13 = 25;
@@ -258,11 +258,11 @@ LABEL_20:
     goto LABEL_31;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
-    if (v8)
+    if (identifierCopy)
     {
-      v11 = [VUIMediaAPIRequestFactory moviesPurchasesRequestWithOwnerIdentifier:v8 sortType:0];
+      v11 = [VUIMediaAPIRequestFactory moviesPurchasesRequestWithOwnerIdentifier:identifierCopy sortType:0];
       v27 = [[VUIFamilySharingMediaEntitiesDataSource alloc] initWithNSURLRequest:v11];
 LABEL_33:
       v10 = v27;
@@ -273,7 +273,7 @@ LABEL_33:
     goto LABEL_30;
   }
 
-  if (!v8)
+  if (!identifierCopy)
   {
     v35 = +[VUIMediaEntityFetchRequest showsFetchRequest];
 LABEL_30:
@@ -282,7 +282,7 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v11 = [VUIMediaAPIRequestFactory showsPurchasesRequestWithOwnerIdentifier:v8 sortType:0];
+  v11 = [VUIMediaAPIRequestFactory showsPurchasesRequestWithOwnerIdentifier:identifierCopy sortType:0];
   v14 = [[VUIFamilySharingMediaEntitiesDataSource alloc] initWithNSURLRequest:v11];
   v10 = v14;
 LABEL_21:
@@ -294,13 +294,13 @@ LABEL_35:
   return v10;
 }
 
-+ (id)dataSourceForGenre:(id)a3 withFamilyMember:(id)a4
++ (id)dataSourceForGenre:(id)genre withFamilyMember:(id)member
 {
-  v5 = a3;
-  v6 = [a4 memberIdentifier];
-  v7 = [v6 stringValue];
+  genreCopy = genre;
+  memberIdentifier = [member memberIdentifier];
+  stringValue = [memberIdentifier stringValue];
 
-  v8 = [VUIMediaAPIRequestFactory genresRequestForVUIFamilySharingGenre:v5 withOwnerIdentifier:v7];
+  v8 = [VUIMediaAPIRequestFactory genresRequestForVUIFamilySharingGenre:genreCopy withOwnerIdentifier:stringValue];
 
   v9 = [[VUIFamilySharingMediaEntitiesDataSource alloc] initWithNSURLRequest:v8];
   [(VUIFamilySharingMediaEntitiesDataSource *)v9 setShouldCoalesceEpisodesToShows:1];
@@ -308,19 +308,19 @@ LABEL_35:
   return v9;
 }
 
-+ (id)dataSourceForGenre:(id)a3 withLibrary:(id)a4
++ (id)dataSourceForGenre:(id)genre withLibrary:(id)library
 {
-  v5 = a4;
-  v6 = [VUIMediaEntitiesDataSourceFactory _fetchRequestForGenre:a3];
-  v7 = [[VUIMPMediaEntitiesDataSource alloc] initWithMediaLibrary:v5 fetchRequest:v6];
+  libraryCopy = library;
+  v6 = [VUIMediaEntitiesDataSourceFactory _fetchRequestForGenre:genre];
+  v7 = [[VUIMPMediaEntitiesDataSource alloc] initWithMediaLibrary:libraryCopy fetchRequest:v6];
 
   return v7;
 }
 
-+ (id)_fetchRequestForGenre:(id)a3
++ (id)_fetchRequestForGenre:(id)genre
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  genreCopy = genre;
   v4 = [VUIMediaEntityFetchRequest alloc];
   v5 = MEMORY[0x1E695DFD8];
   v6 = +[VUIMediaEntityType movie];
@@ -336,39 +336,39 @@ LABEL_35:
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
   [(VUIMediaEntityFetchRequest *)v9 setSortDescriptors:v12];
 
-  v13 = [MEMORY[0x1E696AE18] vui_equalPredicateWithKeyPath:@"genreTitle" value:v3];
+  v13 = [MEMORY[0x1E696AE18] vui_equalPredicateWithKeyPath:@"genreTitle" value:genreCopy];
 
   [(VUIMediaEntityFetchRequest *)v9 setPredicate:v13];
 
   return v9;
 }
 
-+ (id)dataSourceForShelf:(int64_t)a3 withFamilyMember:(id)a4
++ (id)dataSourceForShelf:(int64_t)shelf withFamilyMember:(id)member
 {
-  v5 = [a4 memberIdentifier];
-  v6 = [v5 stringValue];
+  memberIdentifier = [member memberIdentifier];
+  stringValue = [memberIdentifier stringValue];
 
-  v7 = [VUIMediaEntitiesDataSourceFactory _dataSourceForShelfType:a3 withLibrary:0 withOwnerIdentifier:v6];
+  v7 = [VUIMediaEntitiesDataSourceFactory _dataSourceForShelfType:shelf withLibrary:0 withOwnerIdentifier:stringValue];
 
   return v7;
 }
 
-+ (id)_dataSourceForShelfType:(int64_t)a3 withLibrary:(id)a4 withOwnerIdentifier:(id)a5
++ (id)_dataSourceForShelfType:(int64_t)type withLibrary:(id)library withOwnerIdentifier:(id)identifier
 {
-  v7 = a4;
-  v8 = a5;
-  if (!v7)
+  libraryCopy = library;
+  identifierCopy = identifier;
+  if (!libraryCopy)
   {
     v9 = +[VUIMediaLibraryManager defaultManager];
-    v7 = [v9 deviceMediaLibrary];
+    libraryCopy = [v9 deviceMediaLibrary];
   }
 
   v10 = 0;
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 != 2)
+    if (type != 2)
     {
-      if (a3 != 3)
+      if (type != 3)
       {
         goto LABEL_20;
       }
@@ -378,9 +378,9 @@ LABEL_35:
       goto LABEL_17;
     }
 
-    if (v8)
+    if (identifierCopy)
     {
-      v11 = [VUIMediaAPIRequestFactory moviesPurchasesRequestWithOwnerIdentifier:v8 sortType:3];
+      v11 = [VUIMediaAPIRequestFactory moviesPurchasesRequestWithOwnerIdentifier:identifierCopy sortType:3];
       v15 = [[VUIFamilySharingMediaEntitiesDataSource alloc] initWithNSURLRequest:v11];
 LABEL_18:
       v10 = v15;
@@ -393,11 +393,11 @@ LABEL_16:
     [v16 addRecentlyAddedSortDescriptorWithLimit:25];
     [v11 setGroupingKeyPath:@"genreTitle"];
 LABEL_17:
-    v15 = [[VUIMPMediaEntitiesDataSource alloc] initWithMediaLibrary:v7 fetchRequest:v11];
+    v15 = [[VUIMPMediaEntitiesDataSource alloc] initWithMediaLibrary:libraryCopy fetchRequest:v11];
     goto LABEL_18;
   }
 
-  if (!a3)
+  if (!type)
   {
     v11 = +[VUIMediaEntityFetchRequest movieRentalsFetchRequest];
     v12 = objc_alloc(MEMORY[0x1E695DEC8]);
@@ -405,23 +405,23 @@ LABEL_17:
     v14 = [v12 initWithObjects:{v13, 0}];
 
     [v11 setSortDescriptors:v14];
-    v10 = [[VUIMPMediaEntitiesDataSource alloc] initWithMediaLibrary:v7 fetchRequest:v11];
+    v10 = [[VUIMPMediaEntitiesDataSource alloc] initWithMediaLibrary:libraryCopy fetchRequest:v11];
 
     goto LABEL_19;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     goto LABEL_20;
   }
 
-  if (!v8)
+  if (!identifierCopy)
   {
     v16 = +[VUIMediaEntityFetchRequest showsFetchRequest];
     goto LABEL_16;
   }
 
-  v11 = [VUIMediaAPIRequestFactory showsPurchasesRequestWithOwnerIdentifier:v8 sortType:3];
+  v11 = [VUIMediaAPIRequestFactory showsPurchasesRequestWithOwnerIdentifier:identifierCopy sortType:3];
   v10 = [[VUIFamilySharingMediaEntitiesDataSource alloc] initWithNSURLRequest:v11];
   [(VUIMPMediaEntitiesDataSource *)v10 setShouldCoalesceEpisodesToShows:1];
 LABEL_19:

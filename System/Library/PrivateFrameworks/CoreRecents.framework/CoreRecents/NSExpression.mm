@@ -7,18 +7,18 @@
 
 - (id)cr_expressionValue
 {
-  v4 = [(NSExpression *)self expressionType];
-  if (v4 == NSVariableExpressionType)
+  expressionType = [(NSExpression *)self expressionType];
+  if (expressionType == NSVariableExpressionType)
   {
 
     return [(NSExpression *)self variable];
   }
 
-  else if (v4 == NSAggregateExpressionType)
+  else if (expressionType == NSAggregateExpressionType)
   {
-    v6 = [(NSExpression *)self collection];
+    collection = [(NSExpression *)self collection];
 
-    return [v6 arrayByApplyingSelector:"cr_expressionValue"];
+    return [collection arrayByApplyingSelector:"cr_expressionValue"];
   }
 
   else
@@ -37,8 +37,8 @@
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(NSExpression *)self collection];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    collection = [(NSExpression *)self collection];
+    v6 = [collection countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -49,13 +49,13 @@
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(collection);
           }
 
           [v4 addObjectsFromArray:{objc_msgSend(*(*(&v11 + 1) + 8 * i), "cr_sqlBindings")}];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [collection countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);

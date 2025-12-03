@@ -1,15 +1,15 @@
 @interface OrgApacheLuceneSearchScoringRewrite_ParallelArraysTermCollector
-- (BOOL)collectWithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (BOOL)collectWithOrgApacheLuceneUtilBytesRef:(id)ref;
 - (void)dealloc;
-- (void)setNextEnumWithOrgApacheLuceneIndexTermsEnum:(id)a3;
+- (void)setNextEnumWithOrgApacheLuceneIndexTermsEnum:(id)enum;
 @end
 
 @implementation OrgApacheLuceneSearchScoringRewrite_ParallelArraysTermCollector
 
-- (void)setNextEnumWithOrgApacheLuceneIndexTermsEnum:(id)a3
+- (void)setNextEnumWithOrgApacheLuceneIndexTermsEnum:(id)enum
 {
-  JreStrongAssign(&self->termsEnum_, a3);
-  if (!a3 || (v5 = [a3 attributes]) == 0)
+  JreStrongAssign(&self->termsEnum_, enum);
+  if (!enum || (v5 = [enum attributes]) == 0)
   {
     JreThrowNullPointerException();
   }
@@ -19,7 +19,7 @@
   JreStrongAssign(&self->boostAtt_, v6);
 }
 
-- (BOOL)collectWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (BOOL)collectWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
   terms = self->terms_;
   if (!terms)
@@ -27,14 +27,14 @@
     goto LABEL_18;
   }
 
-  v5 = [(OrgApacheLuceneUtilBytesRefHash *)terms addWithOrgApacheLuceneUtilBytesRef:a3];
+  v5 = [(OrgApacheLuceneUtilBytesRefHash *)terms addWithOrgApacheLuceneUtilBytesRef:ref];
   termsEnum = self->termsEnum_;
   if (!termsEnum)
   {
     goto LABEL_18;
   }
 
-  v7 = [(OrgApacheLuceneIndexTermsEnum *)termsEnum termState];
+  termState = [(OrgApacheLuceneIndexTermsEnum *)termsEnum termState];
   if ((v5 & 0x80000000) != 0)
   {
     array = self->array_;
@@ -56,7 +56,7 @@
           readerContext = self->super.readerContext_;
           if (readerContext)
           {
-            [(IOSClass *)v21 register__WithOrgApacheLuceneIndexTermState:v7 withInt:*(&readerContext->super.ordInParent_ + 1) withInt:[(OrgApacheLuceneIndexTermsEnum *)self->termsEnum_ docFreq] withLong:[(OrgApacheLuceneIndexTermsEnum *)self->termsEnum_ totalTermFreq]];
+            [(IOSClass *)v21 register__WithOrgApacheLuceneIndexTermState:termState withInt:*(&readerContext->super.ordInParent_ + 1) withInt:[(OrgApacheLuceneIndexTermsEnum *)self->termsEnum_ docFreq] withLong:[(OrgApacheLuceneIndexTermsEnum *)self->termsEnum_ totalTermFreq]];
             return 1;
           }
         }
@@ -106,7 +106,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v16 = new_OrgApacheLuceneIndexTermContext_initWithOrgApacheLuceneIndexIndexReaderContext_withOrgApacheLuceneIndexTermState_withInt_withInt_withLong_(self->super.topReaderContext_, v7, *(&v15->super.ordInParent_ + 1), [(OrgApacheLuceneIndexTermsEnum *)self->termsEnum_ docFreq], [(OrgApacheLuceneIndexTermsEnum *)self->termsEnum_ totalTermFreq]);
+  v16 = new_OrgApacheLuceneIndexTermContext_initWithOrgApacheLuceneIndexIndexReaderContext_withOrgApacheLuceneIndexTermState_withInt_withInt_withLong_(self->super.topReaderContext_, termState, *(&v15->super.ordInParent_ + 1), [(OrgApacheLuceneIndexTermsEnum *)self->termsEnum_ docFreq], [(OrgApacheLuceneIndexTermsEnum *)self->termsEnum_ totalTermFreq]);
   IOSObjectArray_SetAndConsume(v14, v12, v16);
   [(OrgApacheLuceneSearchScoringRewrite *)self->this$0_ checkMaxClauseCountWithInt:[(OrgApacheLuceneUtilBytesRefHash *)self->terms_ size]];
   return 1;

@@ -1,11 +1,11 @@
 @interface RMModelStatusSoftwareUpdateFailureReason
 + (NSSet)allowedStatusKeys;
-+ (id)buildRequiredOnlyWithCount:(id)a3;
-+ (id)buildWithCount:(id)a3 reason:(id)a4 timestamp:(id)a5;
++ (id)buildRequiredOnlyWithCount:(id)count;
++ (id)buildWithCount:(id)count reason:(id)reason timestamp:(id)timestamp;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelStatusSoftwareUpdateFailureReason
@@ -25,25 +25,25 @@
   return v4;
 }
 
-+ (id)buildWithCount:(id)a3 reason:(id)a4 timestamp:(id)a5
++ (id)buildWithCount:(id)count reason:(id)reason timestamp:(id)timestamp
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  timestampCopy = timestamp;
+  reasonCopy = reason;
+  countCopy = count;
   v10 = objc_opt_new();
-  [v10 setStatusCount:v9];
+  [v10 setStatusCount:countCopy];
 
-  [v10 setStatusReason:v8];
-  [v10 setStatusTimestamp:v7];
+  [v10 setStatusReason:reasonCopy];
+  [v10 setStatusTimestamp:timestampCopy];
 
   return v10;
 }
 
-+ (id)buildRequiredOnlyWithCount:(id)a3
++ (id)buildRequiredOnlyWithCount:(id)count
 {
-  v3 = a3;
+  countCopy = count;
   v4 = objc_opt_new();
-  [v4 setStatusCount:v3];
+  [v4 setStatusCount:countCopy];
 
   return v4;
 }
@@ -93,12 +93,12 @@
   return v11;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelStatusSoftwareUpdateFailureReason allowedStatusKeys];
   [v10 minusSet:v11];
@@ -106,32 +106,32 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  v13 = [(RMModelPayloadBase *)self loadIntegerFromDictionary:v7 usingKey:@"count" forKeyPath:@"statusCount" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"reason" forKeyPath:@"statusReason" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"timestamp" forKeyPath:@"statusTimestamp" isRequired:0 defaultValue:0 error:a5];
+  v13 = [(RMModelPayloadBase *)self loadIntegerFromDictionary:dictionaryCopy usingKey:@"count" forKeyPath:@"statusCount" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"reason" forKeyPath:@"statusReason" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"timestamp" forKeyPath:@"statusTimestamp" isRequired:0 defaultValue:0 error:error];
   return v13;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelStatusSoftwareUpdateFailureReason *)self statusCount];
-  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v4 usingKey:@"count" value:v5 isRequired:1 defaultValue:0];
+  statusCount = [(RMModelStatusSoftwareUpdateFailureReason *)self statusCount];
+  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v4 usingKey:@"count" value:statusCount isRequired:1 defaultValue:0];
 
-  v6 = [(RMModelStatusSoftwareUpdateFailureReason *)self statusReason];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"reason" value:v6 isRequired:0 defaultValue:0];
+  statusReason = [(RMModelStatusSoftwareUpdateFailureReason *)self statusReason];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"reason" value:statusReason isRequired:0 defaultValue:0];
 
-  v7 = [(RMModelStatusSoftwareUpdateFailureReason *)self statusTimestamp];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"timestamp" value:v7 isRequired:0 defaultValue:0];
+  statusTimestamp = [(RMModelStatusSoftwareUpdateFailureReason *)self statusTimestamp];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"timestamp" value:statusTimestamp isRequired:0 defaultValue:0];
 
   v8 = [v4 copy];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = RMModelStatusSoftwareUpdateFailureReason;
-  v4 = [(RMModelPayloadBase *)&v12 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v12 copyWithZone:zone];
   v5 = [(NSNumber *)self->_statusCount copy];
   v6 = v4[2];
   v4[2] = v5;

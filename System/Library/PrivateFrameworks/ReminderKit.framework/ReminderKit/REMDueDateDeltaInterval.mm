@@ -1,52 +1,52 @@
 @interface REMDueDateDeltaInterval
-- (BOOL)isEqual:(id)a3;
-- (REMDueDateDeltaInterval)initWithCoder:(id)a3;
-- (REMDueDateDeltaInterval)initWithUnit:(int64_t)a3 count:(int64_t)a4;
-- (REMDueDateDeltaInterval)initWithUnitInteger:(int64_t)a3 count:(int64_t)a4;
-- (id)addedTo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMDueDateDeltaInterval)initWithCoder:(id)coder;
+- (REMDueDateDeltaInterval)initWithUnit:(int64_t)unit count:(int64_t)count;
+- (REMDueDateDeltaInterval)initWithUnitInteger:(int64_t)integer count:(int64_t)count;
+- (id)addedTo:(id)to;
 - (id)description;
 - (id)inverted;
 - (unint64_t)hash;
 - (void)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMDueDateDeltaInterval
 
-- (REMDueDateDeltaInterval)initWithUnit:(int64_t)a3 count:(int64_t)a4
+- (REMDueDateDeltaInterval)initWithUnit:(int64_t)unit count:(int64_t)count
 {
   v7.receiver = self;
   v7.super_class = REMDueDateDeltaInterval;
   result = [(REMDueDateDeltaInterval *)&v7 init];
   if (result)
   {
-    result->_unit = a3;
-    result->_count = a4;
+    result->_unit = unit;
+    result->_count = count;
   }
 
   return result;
 }
 
-- (REMDueDateDeltaInterval)initWithUnitInteger:(int64_t)a3 count:(int64_t)a4
+- (REMDueDateDeltaInterval)initWithUnitInteger:(int64_t)integer count:(int64_t)count
 {
   v12.receiver = self;
   v12.super_class = REMDueDateDeltaInterval;
   v6 = [(REMDueDateDeltaInterval *)&v12 init];
   v7 = v6;
-  if (a3 <= 4 && v6)
+  if (integer <= 4 && v6)
   {
-    if ((a3 - 1) >= 4)
+    if ((integer - 1) >= 4)
     {
-      v8 = 0;
+      integerCopy = 0;
     }
 
     else
     {
-      v8 = a3;
+      integerCopy = integer;
     }
 
-    v6->_unit = v8;
-    v6->_count = a4;
+    v6->_unit = integerCopy;
+    v6->_count = count;
     v9 = v6;
   }
 
@@ -64,14 +64,14 @@
   return v9;
 }
 
-- (id)addedTo:(id)a3
+- (id)addedTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = objc_alloc_init(MEMORY[0x1E695DF10]);
-  v6 = [(REMDueDateDeltaInterval *)self unit];
-  if (v6 > 1)
+  unit = [(REMDueDateDeltaInterval *)self unit];
+  if (unit > 1)
   {
-    switch(v6)
+    switch(unit)
     {
       case 2:
         v7 = [(REMDueDateDeltaInterval *)self count];
@@ -90,13 +90,13 @@
     goto LABEL_16;
   }
 
-  if (!v6)
+  if (!unit)
   {
     [v5 setMinute:{-[REMDueDateDeltaInterval count](self, "count")}];
     goto LABEL_16;
   }
 
-  if (v6 == 1)
+  if (unit == 1)
   {
     [v5 setHour:{-[REMDueDateDeltaInterval count](self, "count")}];
     goto LABEL_16;
@@ -110,18 +110,18 @@ LABEL_13:
   }
 
 LABEL_16:
-  v9 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v10 = [v9 dateByAddingComponents:v5 toDate:v4 options:0];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v10 = [currentCalendar dateByAddingComponents:v5 toDate:toCopy options:0];
   v11 = v10;
   if (!v10)
   {
     v12 = +[REMLog utility];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
     {
-      [(REMDueDateDeltaInterval *)v9 addedTo:?];
+      [(REMDueDateDeltaInterval *)currentCalendar addedTo:?];
     }
 
-    v11 = v4;
+    v11 = toCopy;
   }
 
   v13 = v11;
@@ -160,22 +160,22 @@ LABEL_16:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = REMDynamicCast(v5, v4);
+  v6 = REMDynamicCast(v5, equalCopy);
 
   v7 = [(REMDueDateDeltaInterval *)self count];
   if (v7 == [v6 count])
   {
-    v8 = [(REMDueDateDeltaInterval *)self unit];
-    v9 = v8 == [v6 unit];
+    unit = [(REMDueDateDeltaInterval *)self unit];
+    v9 = unit == [v6 unit];
   }
 
   else
@@ -205,10 +205,10 @@ LABEL_16:
   return v4 & 0xFFFFFFFFFC000000 | v5 & 0x3FFFFFF;
 }
 
-- (REMDueDateDeltaInterval)initWithCoder:(id)a3
+- (REMDueDateDeltaInterval)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"unit"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"unit"];
   v6 = v5;
   if (v5 >= 5)
   {
@@ -218,7 +218,7 @@ LABEL_16:
       [REMDueDateDeltaInterval initWithCoder:];
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -228,18 +228,18 @@ LABEL_16:
       v6 = 0;
     }
 
-    self = -[REMDueDateDeltaInterval initWithUnit:count:](self, "initWithUnit:count:", v6, [v4 decodeIntForKey:@"count"]);
-    v7 = self;
+    self = -[REMDueDateDeltaInterval initWithUnit:count:](self, "initWithUnit:count:", v6, [coderCopy decodeIntForKey:@"count"]);
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[REMDueDateDeltaInterval unit](self forKey:{"unit"), @"unit"}];
-  [v4 encodeInteger:-[REMDueDateDeltaInterval count](self forKey:{"count"), @"count"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[REMDueDateDeltaInterval unit](self forKey:{"unit"), @"unit"}];
+  [coderCopy encodeInteger:-[REMDueDateDeltaInterval count](self forKey:{"count"), @"count"}];
 }
 
 - (void)initWithUnitInteger:count:.cold.1()
@@ -274,7 +274,7 @@ LABEL_16:
 - (void)description
 {
   v7 = *MEMORY[0x1E69E9840];
-  [a1 unit];
+  [self unit];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_0_2();
   _os_log_fault_impl(v1, v2, v3, v4, v5, 0xCu);

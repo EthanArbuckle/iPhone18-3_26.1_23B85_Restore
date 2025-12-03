@@ -1,21 +1,21 @@
 @interface REMAccountPinnedListsContextChangeItem
-- (REMAccountPinnedListsContextChangeItem)initWithAccountChangeItem:(id)a3;
+- (REMAccountPinnedListsContextChangeItem)initWithAccountChangeItem:(id)item;
 - (REMManualOrdering)unsavedManualOrdering;
-- (void)updateManualOrdering:(id)a3;
+- (void)updateManualOrdering:(id)ordering;
 @end
 
 @implementation REMAccountPinnedListsContextChangeItem
 
-- (REMAccountPinnedListsContextChangeItem)initWithAccountChangeItem:(id)a3
+- (REMAccountPinnedListsContextChangeItem)initWithAccountChangeItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = REMAccountPinnedListsContextChangeItem;
   v6 = [(REMAccountPinnedListsContextChangeItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountChangeItem, a3);
+    objc_storeStrong(&v6->_accountChangeItem, item);
   }
 
   return v7;
@@ -23,17 +23,17 @@
 
 - (REMManualOrdering)unsavedManualOrdering
 {
-  v2 = [(REMAccountPinnedListsContextChangeItem *)self accountChangeItem];
-  v3 = [v2 pinnedListsManualOrdering];
+  accountChangeItem = [(REMAccountPinnedListsContextChangeItem *)self accountChangeItem];
+  pinnedListsManualOrdering = [accountChangeItem pinnedListsManualOrdering];
 
-  return v3;
+  return pinnedListsManualOrdering;
 }
 
-- (void)updateManualOrdering:(id)a3
+- (void)updateManualOrdering:(id)ordering
 {
-  v4 = a3;
-  v5 = [(REMAccountPinnedListsContextChangeItem *)self accountChangeItem];
-  [v5 setPinnedListsManualOrdering:v4];
+  orderingCopy = ordering;
+  accountChangeItem = [(REMAccountPinnedListsContextChangeItem *)self accountChangeItem];
+  [accountChangeItem setPinnedListsManualOrdering:orderingCopy];
 }
 
 @end

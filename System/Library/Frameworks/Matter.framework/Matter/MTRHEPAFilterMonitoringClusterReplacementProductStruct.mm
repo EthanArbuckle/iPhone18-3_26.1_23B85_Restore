@@ -1,6 +1,6 @@
 @interface MTRHEPAFilterMonitoringClusterReplacementProductStruct
 - (MTRHEPAFilterMonitoringClusterReplacementProductStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRHEPAFilterMonitoringClusterReplacementProductStruct);
-  v5 = [(MTRHEPAFilterMonitoringClusterReplacementProductStruct *)self productIdentifierType];
-  [(MTRHEPAFilterMonitoringClusterReplacementProductStruct *)v4 setProductIdentifierType:v5];
+  productIdentifierType = [(MTRHEPAFilterMonitoringClusterReplacementProductStruct *)self productIdentifierType];
+  [(MTRHEPAFilterMonitoringClusterReplacementProductStruct *)v4 setProductIdentifierType:productIdentifierType];
 
-  v6 = [(MTRHEPAFilterMonitoringClusterReplacementProductStruct *)self productIdentifierValue];
-  [(MTRHEPAFilterMonitoringClusterReplacementProductStruct *)v4 setProductIdentifierValue:v6];
+  productIdentifierValue = [(MTRHEPAFilterMonitoringClusterReplacementProductStruct *)self productIdentifierValue];
+  [(MTRHEPAFilterMonitoringClusterReplacementProductStruct *)v4 setProductIdentifierValue:productIdentifierValue];
 
   return v4;
 }

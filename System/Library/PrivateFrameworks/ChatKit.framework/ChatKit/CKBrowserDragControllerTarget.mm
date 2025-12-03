@@ -1,5 +1,5 @@
 @interface CKBrowserDragControllerTarget
-+ (id)targetWithScreenCoordinate:(CGPoint)a3 initialSize:(CGSize)a4 scale:(double)a5 meshScaleFactor:(double)a6 rotation:(double)a7 associatedLayoutIntent:(unint64_t)a8 stickerIsRepositioning:(BOOL)a9 stickerChatItem:(id)a10;
++ (id)targetWithScreenCoordinate:(CGPoint)coordinate initialSize:(CGSize)size scale:(double)scale meshScaleFactor:(double)factor rotation:(double)rotation associatedLayoutIntent:(unint64_t)intent stickerIsRepositioning:(BOOL)repositioning stickerChatItem:(id)self0;
 - (CGPoint)screenCoordinate;
 - (CGSize)initialSize;
 - (id)description;
@@ -7,24 +7,24 @@
 
 @implementation CKBrowserDragControllerTarget
 
-+ (id)targetWithScreenCoordinate:(CGPoint)a3 initialSize:(CGSize)a4 scale:(double)a5 meshScaleFactor:(double)a6 rotation:(double)a7 associatedLayoutIntent:(unint64_t)a8 stickerIsRepositioning:(BOOL)a9 stickerChatItem:(id)a10
++ (id)targetWithScreenCoordinate:(CGPoint)coordinate initialSize:(CGSize)size scale:(double)scale meshScaleFactor:(double)factor rotation:(double)rotation associatedLayoutIntent:(unint64_t)intent stickerIsRepositioning:(BOOL)repositioning stickerChatItem:(id)self0
 {
-  height = a4.height;
-  width = a4.width;
-  y = a3.y;
-  x = a3.x;
-  v19 = a10;
+  height = size.height;
+  width = size.width;
+  y = coordinate.y;
+  x = coordinate.x;
+  itemCopy = item;
   v20 = objc_alloc_init(CKBrowserDragControllerTarget);
   [(CKBrowserDragControllerTarget *)v20 setScreenCoordinate:x, y];
   [(CKBrowserDragControllerTarget *)v20 setInitialSize:width, height];
-  [(CKBrowserDragControllerTarget *)v20 setScale:a5];
-  [(CKBrowserDragControllerTarget *)v20 setMeshScaleFactor:a6];
-  [(CKBrowserDragControllerTarget *)v20 setRotation:a7];
-  [(CKBrowserDragControllerTarget *)v20 setAssociatedLayoutIntent:a8];
-  if (a9)
+  [(CKBrowserDragControllerTarget *)v20 setScale:scale];
+  [(CKBrowserDragControllerTarget *)v20 setMeshScaleFactor:factor];
+  [(CKBrowserDragControllerTarget *)v20 setRotation:rotation];
+  [(CKBrowserDragControllerTarget *)v20 setAssociatedLayoutIntent:intent];
+  if (repositioning)
   {
-    v21 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    -[CKBrowserDragControllerTarget setStickerIsRepositioning:](v20, "setStickerIsRepositioning:", [v21 isStickerRepositioningEnabled]);
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    -[CKBrowserDragControllerTarget setStickerIsRepositioning:](v20, "setStickerIsRepositioning:", [mEMORY[0x1E69A8070] isStickerRepositioningEnabled]);
   }
 
   else
@@ -32,7 +32,7 @@
     [(CKBrowserDragControllerTarget *)v20 setStickerIsRepositioning:0];
   }
 
-  [(CKBrowserDragControllerTarget *)v20 setStickerChatItem:v19];
+  [(CKBrowserDragControllerTarget *)v20 setStickerChatItem:itemCopy];
 
   return v20;
 }
@@ -48,15 +48,15 @@
   v7 = v6;
   [(CKBrowserDragControllerTarget *)self rotation];
   v9 = v8;
-  v10 = [(CKBrowserDragControllerTarget *)self associatedLayoutIntent];
-  v11 = [(CKBrowserDragControllerTarget *)self stickerIsRepositioning];
+  associatedLayoutIntent = [(CKBrowserDragControllerTarget *)self associatedLayoutIntent];
+  stickerIsRepositioning = [(CKBrowserDragControllerTarget *)self stickerIsRepositioning];
   v12 = @"No";
-  if (v11)
+  if (stickerIsRepositioning)
   {
     v12 = @"Yes";
   }
 
-  v13 = [v3 stringWithFormat:@"CKBrowserDragControllerTarget coord: %@ size %@ scale %f rotation %f associatedIntent %tu isStickerRepositioning: %@", v4, v5, v7, v9, v10, v12];
+  v13 = [v3 stringWithFormat:@"CKBrowserDragControllerTarget coord: %@ size %@ scale %f rotation %f associatedIntent %tu isStickerRepositioning: %@", v4, v5, v7, v9, associatedLayoutIntent, v12];
 
   return v13;
 }

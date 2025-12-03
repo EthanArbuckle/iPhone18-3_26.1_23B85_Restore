@@ -1,8 +1,8 @@
 @interface WLTipsListViewController
 - (WLTipsListViewController)initWithItems;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)userInterfaceStyleDidChange;
 - (void)viewDidLoad;
 @end
@@ -17,10 +17,10 @@
   v5 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"TIPS_DESCRIPTION"];
   v6 = WLLocalizedString();
 
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
   v9 = @"ipad";
-  if (!v8)
+  if (!userInterfaceIdiom)
   {
     v9 = @"iphone";
   }
@@ -54,21 +54,21 @@
   v4 = [v3 initWithFrame:0 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(OBTableWelcomeController *)self setTableView:v4];
 
-  v5 = [(OBTableWelcomeController *)self tableView];
-  [v5 registerClass:objc_opt_class() forCellReuseIdentifier:@"WLTipsListViewCell"];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"WLTipsListViewCell"];
 
-  v6 = [(OBTableWelcomeController *)self tableView];
-  v7 = [MEMORY[0x277D75348] clearColor];
-  [v6 setBackgroundColor:v7];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [tableView2 setBackgroundColor:clearColor];
 
-  v8 = [(OBTableWelcomeController *)self tableView];
-  [v8 setDataSource:self];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  [tableView3 setDataSource:self];
 
-  v9 = [(OBTableWelcomeController *)self tableView];
-  [v9 setDelegate:self];
+  tableView4 = [(OBTableWelcomeController *)self tableView];
+  [tableView4 setDelegate:self];
 
-  v10 = [(OBTableWelcomeController *)self tableView];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView5 = [(OBTableWelcomeController *)self tableView];
+  [tableView5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v11 = objc_opt_self();
   v16[0] = v11;
@@ -80,72 +80,72 @@
 
 - (void)userInterfaceStyleDidChange
 {
-  v2 = [(OBTableWelcomeController *)self tableView];
-  [v2 reloadData];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView reloadData];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"WLTipsListViewCell" forIndexPath:v6];
-  v8 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v7 setBackgroundColor:v8];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"WLTipsListViewCell" forIndexPath:pathCopy];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [v7 setBackgroundColor:systemBackgroundColor];
 
   [v7 setAccessoryType:1];
-  v9 = [v7 imageView];
-  v10 = [MEMORY[0x277D75348] systemLightGrayColor];
-  [v9 setBackgroundColor:v10];
+  imageView = [v7 imageView];
+  systemLightGrayColor = [MEMORY[0x277D75348] systemLightGrayColor];
+  [imageView setBackgroundColor:systemLightGrayColor];
 
   tips = self->_tips;
-  v12 = [v6 row];
+  v12 = [pathCopy row];
 
   v13 = [(NSArray *)tips objectAtIndexedSubscript:v12];
-  v14 = [(WLTipsListViewController *)self view];
-  v15 = [v14 window];
-  v16 = [v15 traitCollection];
-  v17 = [v16 userInterfaceStyle];
+  view = [(WLTipsListViewController *)self view];
+  window = [view window];
+  traitCollection = [window traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  v18 = [MEMORY[0x277D756E0] valueCellConfiguration];
+  valueCellConfiguration = [MEMORY[0x277D756E0] valueCellConfiguration];
   v19 = MEMORY[0x277D755B8];
-  v20 = [v13 thumbnail];
-  v21 = v20;
-  if (v17 == 2)
+  thumbnail = [v13 thumbnail];
+  v21 = thumbnail;
+  if (userInterfaceStyle == 2)
   {
-    [v20 dark];
+    [thumbnail dark];
   }
 
   else
   {
-    [v20 light];
+    [thumbnail light];
   }
   v22 = ;
-  v23 = [v22 localFile];
-  v24 = [v19 imageNamed:v23];
+  localFile = [v22 localFile];
+  v24 = [v19 imageNamed:localFile];
 
-  [v18 setImage:v24];
-  v25 = [v18 imageProperties];
-  [v25 setMaximumSize:{100.0, 100.0}];
+  [valueCellConfiguration setImage:v24];
+  imageProperties = [valueCellConfiguration imageProperties];
+  [imageProperties setMaximumSize:{100.0, 100.0}];
 
-  v26 = [v13 title];
-  [v18 setText:v26];
+  title = [v13 title];
+  [valueCellConfiguration setText:title];
 
   v27 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
-  v28 = [v18 textProperties];
-  [v28 setFont:v27];
+  textProperties = [valueCellConfiguration textProperties];
+  [textProperties setFont:v27];
 
-  v29 = [v13 desc];
-  [v18 setSecondaryText:v29];
+  desc = [v13 desc];
+  [valueCellConfiguration setSecondaryText:desc];
 
   v30 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769D0]];
-  v31 = [v18 secondaryTextProperties];
-  [v31 setFont:v30];
+  secondaryTextProperties = [valueCellConfiguration secondaryTextProperties];
+  [secondaryTextProperties setFont:v30];
 
-  [v7 setContentConfiguration:v18];
+  [v7 setContentConfiguration:valueCellConfiguration];
 
   return v7;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
   v4 = objc_alloc(MEMORY[0x277D75D18]);
   v5 = [v4 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -154,17 +154,17 @@
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
   tips = self->_tips;
-  v8 = [v6 row];
+  v8 = [pathCopy row];
 
   v11 = [(NSArray *)tips objectAtIndexedSubscript:v8];
   v9 = [[WLTipsViewController alloc] initWithTips:v11];
-  v10 = [(WLTipsListViewController *)self navigationController];
-  [v10 pushViewController:v9 animated:1];
+  navigationController = [(WLTipsListViewController *)self navigationController];
+  [navigationController pushViewController:v9 animated:1];
 }
 
 @end

@@ -1,9 +1,9 @@
 @interface HUCCSmartGridContentViewController
 - (BOOL)_shouldDisplayHomeControlService;
-- (BOOL)isDeviceUnlockedForGridViewController:(id)a3;
+- (BOOL)isDeviceUnlockedForGridViewController:(id)controller;
 - (BOOL)shouldBeginTransitionToExpandedContentModule;
 - (BOOL)shouldPerformClickInteraction;
-- (CCUIModuleLayoutSize)moduleLayoutSizeForOrientation:(int64_t)a3;
+- (CCUIModuleLayoutSize)moduleLayoutSizeForOrientation:(int64_t)orientation;
 - (CGRect)_homeNameLabelInHomeGridCellFrame;
 - (CGRect)_homeNameLabelInNavigationHeaderViewFrame;
 - (CGRect)_iconViewInHomeGridCellFrame;
@@ -12,46 +12,46 @@
 - (CGRect)_roomNameLabelInNavigationHeaderViewFrame;
 - (CGRect)transitionCompressedViewFrame;
 - (HUCCAccessoryControlsHosting)accessoryControlsViewController;
-- (HUCCSmartGridContentViewController)initWithDelegate:(id)a3;
+- (HUCCSmartGridContentViewController)initWithDelegate:(id)delegate;
 - (HUCCSmartGridContentViewControllerDelegate)delegate;
 - (UIViewPropertyAnimator)customAnimator;
 - (double)preferredExpandedContentHeight;
 - (double)preferredExpandedContentWidth;
-- (id)prepareForActionRequiringDeviceUnlockForGridViewController:(id)a3;
+- (id)prepareForActionRequiringDeviceUnlockForGridViewController:(id)controller;
 - (void)_cleanupTransitionSubviews;
 - (void)_openHomeApp;
 - (void)_prepareTransitionSubviews;
 - (void)_setUpSmartGridContent;
 - (void)_tearDownSmartGridContent;
 - (void)dealloc;
-- (void)didTransitionToExpandedContentMode:(BOOL)a3;
-- (void)displayHome:(id)a3;
+- (void)didTransitionToExpandedContentMode:(BOOL)mode;
+- (void)displayHome:(id)home;
 - (void)displayWillTurnOff;
 - (void)gridSizeMayHaveChanged;
 - (void)loadView;
-- (void)propertyAnimatorDidStartAnimating:(id)a3;
-- (void)remoteDashboard:(id)a3 viewServiceDidTerminateWithError:(id)a4;
-- (void)requestAuthenticationIfLockedWithCompletionHandler:(id)a3;
+- (void)propertyAnimatorDidStartAnimating:(id)animating;
+- (void)remoteDashboard:(id)dashboard viewServiceDidTerminateWithError:(id)error;
+- (void)requestAuthenticationIfLockedWithCompletionHandler:(id)handler;
 - (void)requestDismissal;
-- (void)setURLHandler:(id)a3;
+- (void)setURLHandler:(id)handler;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willDismissAccessoryControlsViewController:(id)a3;
-- (void)willPresentAccessoryControlsViewController:(id)a3;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willDismissAccessoryControlsViewController:(id)controller;
+- (void)willPresentAccessoryControlsViewController:(id)controller;
 @end
 
 @implementation HUCCSmartGridContentViewController
 
-- (HUCCSmartGridContentViewController)initWithDelegate:(id)a3
+- (HUCCSmartGridContentViewController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = HUCCSmartGridContentViewController;
   v5 = [(HUCCSmartGridContentViewController *)&v12 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v6->_expandedContentMode = 0;
     v7 = [HUCCSmartGridViewController alloc];
     v9 = objc_msgSend_initWithItemType_delegate_(v7, v8, 0, v6);
@@ -135,14 +135,14 @@
   v14 = *MEMORY[0x29EDCA608];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v12.receiver = self;
   v12.super_class = HUCCSmartGridContentViewController;
-  [(HUCCSmartGridContentViewController *)&v12 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(HUCCSmartGridContentViewController *)&v12 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   if (objc_msgSend_expandedContentMode(self, v8, v9) == 1)
   {
     v11[0] = MEMORY[0x29EDCA5F8];
@@ -150,7 +150,7 @@
     v11[2] = sub_29C99F1A4;
     v11[3] = &unk_29F33ABF8;
     v11[4] = self;
-    objc_msgSend_animateAlongsideTransition_completion_(v7, v10, v11, 0);
+    objc_msgSend_animateAlongsideTransition_completion_(coordinatorCopy, v10, v11, 0);
   }
 }
 
@@ -162,20 +162,20 @@
   [(HUCCSmartGridContentViewController *)&v4 dealloc];
 }
 
-- (CCUIModuleLayoutSize)moduleLayoutSizeForOrientation:(int64_t)a3
+- (CCUIModuleLayoutSize)moduleLayoutSizeForOrientation:(int64_t)orientation
 {
   v26 = *MEMORY[0x29EDCA608];
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = HUCCStringForOrientation(a3);
+    v7 = HUCCStringForOrientation(orientation);
     v20 = 138412290;
     v21 = v7;
     _os_log_impl(&dword_29C992000, v6, OS_LOG_TYPE_DEFAULT, "Computing module layout size for orientiation: %@", &v20, 0xCu);
   }
 
   v10 = objc_msgSend_smartGridViewController(self, v8, v9);
-  v12 = objc_msgSend_occupiedGridSizeForOrientation_(v10, v11, a3);
+  v12 = objc_msgSend_occupiedGridSizeForOrientation_(v10, v11, orientation);
   v14 = v13;
 
   v15 = HFLogForCategory();
@@ -328,9 +328,9 @@ LABEL_10:
   return v4;
 }
 
-- (void)didTransitionToExpandedContentMode:(BOOL)a3
+- (void)didTransitionToExpandedContentMode:(BOOL)mode
 {
-  if (!a3)
+  if (!mode)
   {
     objc_msgSend_setExpandedContentMode_(self, a2, 0);
   }
@@ -357,9 +357,9 @@ LABEL_10:
   objc_msgSend_setHidden_(v31, v32, 0);
 }
 
-- (void)propertyAnimatorDidStartAnimating:(id)a3
+- (void)propertyAnimatorDidStartAnimating:(id)animating
 {
-  v8 = objc_msgSend_dashboardContainerViewController(self, a2, a3);
+  v8 = objc_msgSend_dashboardContainerViewController(self, a2, animating);
   isExpanded = objc_msgSend_isExpanded(self, v4, v5);
   objc_msgSend_willBeginTransition_forCompactModule_(v8, v7, isExpanded, 0);
 }
@@ -872,24 +872,24 @@ LABEL_10:
   return result;
 }
 
-- (void)setURLHandler:(id)a3
+- (void)setURLHandler:(id)handler
 {
-  objc_storeStrong(&self->_URLHandler, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_URLHandler, handler);
+  handlerCopy = handler;
   v9 = objc_msgSend_smartGridViewController(self, v6, v7);
-  objc_msgSend_setURLHandler_(v9, v8, v5);
+  objc_msgSend_setURLHandler_(v9, v8, handlerCopy);
 }
 
-- (BOOL)isDeviceUnlockedForGridViewController:(id)a3
+- (BOOL)isDeviceUnlockedForGridViewController:(id)controller
 {
-  v3 = self;
-  v4 = objc_msgSend_delegate(self, a2, a3);
-  LOBYTE(v3) = objc_msgSend_isDeviceUnlockedForSmartGridContentViewController_(v4, v5, v3);
+  selfCopy = self;
+  v4 = objc_msgSend_delegate(self, a2, controller);
+  LOBYTE(selfCopy) = objc_msgSend_isDeviceUnlockedForSmartGridContentViewController_(v4, v5, selfCopy);
 
-  return v3;
+  return selfCopy;
 }
 
-- (id)prepareForActionRequiringDeviceUnlockForGridViewController:(id)a3
+- (id)prepareForActionRequiringDeviceUnlockForGridViewController:(id)controller
 {
   v4 = objc_alloc_init(MEMORY[0x29EDC5E50]);
   v7 = objc_msgSend_delegate(self, v5, v6);
@@ -924,10 +924,10 @@ LABEL_10:
   return v12;
 }
 
-- (void)displayHome:(id)a3
+- (void)displayHome:(id)home
 {
   v45 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  homeCopy = home;
   shouldDisplayHomeControlService = objc_msgSend__shouldDisplayHomeControlService(self, v5, v6);
   v8 = HFLogForCategory();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
@@ -942,7 +942,7 @@ LABEL_10:
       v41 = 2080;
       v42 = "[HUCCSmartGridContentViewController displayHome:]";
       v43 = 2112;
-      v44 = v4;
+      v44 = homeCopy;
       _os_log_impl(&dword_29C992000, v8, OS_LOG_TYPE_DEFAULT, "%@:%s displaying Home Control Service for %@", &v39, 0x20u);
     }
 
@@ -969,7 +969,7 @@ LABEL_10:
       v41 = 2080;
       v42 = "[HUCCSmartGridContentViewController displayHome:]";
       v43 = 2112;
-      v44 = v4;
+      v44 = homeCopy;
       _os_log_impl(&dword_29C992000, v8, OS_LOG_TYPE_DEFAULT, "%@:%s Opening Home app for %@", &v39, 0x20u);
     }
 
@@ -993,20 +993,20 @@ LABEL_10:
   objc_msgSend_requestLayoutSizeUpdate(v9, v10, v11);
 }
 
-- (void)willPresentAccessoryControlsViewController:(id)a3
+- (void)willPresentAccessoryControlsViewController:(id)controller
 {
   v19 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412290;
-    v18 = v4;
+    v18 = controllerCopy;
     _os_log_impl(&dword_29C992000, v5, OS_LOG_TYPE_DEFAULT, "Accessory controls will present: %@", &v17, 0xCu);
   }
 
   objc_msgSend_setExpandedContentMode_(self, v6, 1);
-  objc_msgSend_setAccessoryControlsViewController_(self, v7, v4);
+  objc_msgSend_setAccessoryControlsViewController_(self, v7, controllerCopy);
   v10 = objc_msgSend_delegate(self, v8, v9);
   v13 = objc_msgSend_contentModuleContext(v10, v11, v12);
   objc_msgSend_requestExpandModule(v13, v14, v15);
@@ -1014,15 +1014,15 @@ LABEL_10:
   v16 = *MEMORY[0x29EDCA608];
 }
 
-- (void)willDismissAccessoryControlsViewController:(id)a3
+- (void)willDismissAccessoryControlsViewController:(id)controller
 {
   v18 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = v4;
+    v17 = controllerCopy;
     _os_log_impl(&dword_29C992000, v5, OS_LOG_TYPE_DEFAULT, "Accessory controls will dismiss: %@", &v16, 0xCu);
   }
 
@@ -1034,22 +1034,22 @@ LABEL_10:
   v15 = *MEMORY[0x29EDCA608];
 }
 
-- (void)remoteDashboard:(id)a3 viewServiceDidTerminateWithError:(id)a4
+- (void)remoteDashboard:(id)dashboard viewServiceDidTerminateWithError:(id)error
 {
-  v8 = objc_msgSend_delegate(self, a2, a3, a4);
+  v8 = objc_msgSend_delegate(self, a2, dashboard, error);
   v6 = objc_msgSend_contentModuleContext(v8, v4, v5);
   objc_msgSend_setHomeGestureDismissalAllowed_(v6, v7, 1);
 }
 
-- (void)requestAuthenticationIfLockedWithCompletionHandler:(id)a3
+- (void)requestAuthenticationIfLockedWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7 = objc_msgSend_delegate(self, v5, v6);
   isDeviceUnlockedForSmartGridContentViewController = objc_msgSend_isDeviceUnlockedForSmartGridContentViewController_(v7, v8, self);
 
   if (isDeviceUnlockedForSmartGridContentViewController)
   {
-    v4[2](v4, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 
   else
@@ -1063,13 +1063,13 @@ LABEL_10:
       v17[1] = 3221225472;
       v17[2] = sub_29C9A33FC;
       v17[3] = &unk_29F33A920;
-      v18 = v4;
+      v18 = handlerCopy;
       objc_msgSend_requestAuthenticationWithCompletionHandler_(v15, v16, v17);
     }
 
     else
     {
-      v4[2](v4, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 }

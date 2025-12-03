@@ -6,26 +6,26 @@
 - (_TtC8Freeform27CRLCollaborationParticipant)followingParticipant;
 - (_TtC8Freeform27CRLCollaborationParticipant)localParticipant;
 - (_TtC8Freeform43CRLFollowAccessibilityExperienceCoordinator)accessibilityExperienceCoordinator;
-- (void)addInteractiveCanvasController:(id)a3;
-- (void)addUIDelegate:(id)a3;
-- (void)canvasDidZoomOrScrollWhileFollowingNotification:(id)a3;
+- (void)addInteractiveCanvasController:(id)controller;
+- (void)addUIDelegate:(id)delegate;
+- (void)canvasDidZoomOrScrollWhileFollowingNotification:(id)notification;
 - (void)crlaxEndFollowingForCanvasScrollIfNeeded;
 - (void)crlaxNotifyFollowFeatureOfBenignScrollViewDidScrollEvent;
 - (void)dealloc;
-- (void)deviceDidRotateWhileFollowingNotification:(id)a3;
+- (void)deviceDidRotateWhileFollowingNotification:(id)notification;
 - (void)didProcessViewportUpdates;
-- (void)endFollowSessionForLocalParticipantWithShouldShowRefollowPlacard:(BOOL)a3;
-- (void)groupSessionPresenceWasAddedWithNotification:(id)a3;
-- (void)localParticipantWantsToStartFollowingCollaborator:(id)a3;
-- (void)localParticipantWantsToStartFollowingCollaborator:(id)a3 isRefollow:(BOOL)a4;
-- (void)removeInteractiveCanvasController:(id)a3;
-- (void)removeUIDelegate:(id)a3;
-- (void)selectionPathDidChangeWithNotification:(id)a3;
+- (void)endFollowSessionForLocalParticipantWithShouldShowRefollowPlacard:(BOOL)placard;
+- (void)groupSessionPresenceWasAddedWithNotification:(id)notification;
+- (void)localParticipantWantsToStartFollowingCollaborator:(id)collaborator;
+- (void)localParticipantWantsToStartFollowingCollaborator:(id)collaborator isRefollow:(BOOL)refollow;
+- (void)removeInteractiveCanvasController:(id)controller;
+- (void)removeUIDelegate:(id)delegate;
+- (void)selectionPathDidChangeWithNotification:(id)notification;
 - (void)sendUpdateIfNeeded;
-- (void)setAccessibilityExperienceCoordinator:(id)a3;
-- (void)setExpectingViewportForOneTimeScrollFrom:(id)a3;
-- (void)setExpectingViewportFromUUID:(id)a3;
-- (void)setFollowingParticipant:(id)a3;
+- (void)setAccessibilityExperienceCoordinator:(id)coordinator;
+- (void)setExpectingViewportForOneTimeScrollFrom:(id)from;
+- (void)setExpectingViewportFromUUID:(id)d;
+- (void)setFollowingParticipant:(id)participant;
 - (void)willProcessViewportUpdates;
 @end
 
@@ -33,7 +33,7 @@
 
 - (BOOL)isFollowing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1008FB7A4();
 
   return v3 & 1;
@@ -43,24 +43,24 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   return v5;
 }
 
-- (void)setFollowingParticipant:(id)a3
+- (void)setFollowingParticipant:(id)participant
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v5 = a3;
-  v6 = self;
+  participantCopy = participant;
+  selfCopy = self;
   static Published.subscript.setter();
 }
 
 - (_TtC8Freeform27CRLCollaborationParticipant)localParticipant
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1008FBA1C();
 
   return v3;
@@ -68,7 +68,7 @@
 
 - (NSSet)participantsFollowingLocalParticipant
 {
-  v2 = self;
+  selfCopy = self;
   sub_1008FBCE0();
 
   type metadata accessor for CRLCollaborationParticipant(0);
@@ -100,12 +100,12 @@
   return v10;
 }
 
-- (void)setExpectingViewportFromUUID:(id)a3
+- (void)setExpectingViewportFromUUID:(id)d
 {
   v5 = sub_1005B981C(&qword_1019F6990);
   __chkstk_darwin(v5 - 8);
   v7 = &v12 - v6;
-  if (a3)
+  if (d)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = type metadata accessor for UUID();
@@ -120,7 +120,7 @@
 
   v10 = OBJC_IVAR____TtC8Freeform20CRLFollowCoordinator_expectingViewportFromUUID;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   sub_10002C638(v7, self + v10, &qword_1019F6990);
   swift_endAccess();
 }
@@ -128,7 +128,7 @@
 - (void)dealloc
 {
   v3 = *(self + OBJC_IVAR____TtC8Freeform20CRLFollowCoordinator_followingParticipantsStartEndFollowTimer);
-  v4 = self;
+  selfCopy = self;
   if (v3)
   {
     [v3 invalidate];
@@ -139,72 +139,72 @@
   [(CRLFollowCoordinator *)&v5 dealloc];
 }
 
-- (void)addInteractiveCanvasController:(id)a3
+- (void)addInteractiveCanvasController:(id)controller
 {
   v4 = OBJC_IVAR____TtC8Freeform20CRLFollowCoordinator_interactiveCanvasControllers;
   v5 = *(self + OBJC_IVAR____TtC8Freeform20CRLFollowCoordinator_interactiveCanvasControllers);
-  v8 = a3;
-  v6 = self;
-  if ([v5 containsObject:v8])
+  controllerCopy = controller;
+  selfCopy = self;
+  if ([v5 containsObject:controllerCopy])
   {
-    v7 = v8;
-    v8 = v6;
+    v7 = controllerCopy;
+    controllerCopy = selfCopy;
   }
 
   else
   {
-    [*(self + v4) addObject:v8];
-    v7 = v6;
+    [*(self + v4) addObject:controllerCopy];
+    v7 = selfCopy;
   }
 }
 
-- (void)removeInteractiveCanvasController:(id)a3
+- (void)removeInteractiveCanvasController:(id)controller
 {
   v4 = OBJC_IVAR____TtC8Freeform20CRLFollowCoordinator_interactiveCanvasControllers;
   v5 = *(self + OBJC_IVAR____TtC8Freeform20CRLFollowCoordinator_interactiveCanvasControllers);
-  v8 = a3;
-  v6 = self;
-  if ([v5 containsObject:v8])
+  controllerCopy = controller;
+  selfCopy = self;
+  if ([v5 containsObject:controllerCopy])
   {
-    [*(self + v4) removeObject:v8];
-    v7 = v6;
+    [*(self + v4) removeObject:controllerCopy];
+    v7 = selfCopy;
   }
 
   else
   {
-    v7 = v8;
-    v8 = v6;
+    v7 = controllerCopy;
+    controllerCopy = selfCopy;
   }
 }
 
-- (void)addUIDelegate:(id)a3
+- (void)addUIDelegate:(id)delegate
 {
   v5 = OBJC_IVAR____TtC8Freeform20CRLFollowCoordinator_uiDelegates;
   v6 = *(self + OBJC_IVAR____TtC8Freeform20CRLFollowCoordinator_uiDelegates);
   swift_unknownObjectRetain();
-  v7 = self;
-  if ([v6 containsObject:a3])
+  selfCopy = self;
+  if ([v6 containsObject:delegate])
   {
     swift_unknownObjectRelease();
   }
 
   else
   {
-    [*(self + v5) addObject:a3];
+    [*(self + v5) addObject:delegate];
 
     swift_unknownObjectRelease();
   }
 }
 
-- (void)removeUIDelegate:(id)a3
+- (void)removeUIDelegate:(id)delegate
 {
   v5 = OBJC_IVAR____TtC8Freeform20CRLFollowCoordinator_uiDelegates;
   v6 = *(self + OBJC_IVAR____TtC8Freeform20CRLFollowCoordinator_uiDelegates);
   swift_unknownObjectRetain();
-  v7 = self;
-  if ([v6 containsObject:a3])
+  selfCopy = self;
+  if ([v6 containsObject:delegate])
   {
-    [*(self + v5) removeObject:a3];
+    [*(self + v5) removeObject:delegate];
 
     swift_unknownObjectRelease();
   }
@@ -215,45 +215,45 @@
   }
 }
 
-- (void)endFollowSessionForLocalParticipantWithShouldShowRefollowPlacard:(BOOL)a3
+- (void)endFollowSessionForLocalParticipantWithShouldShowRefollowPlacard:(BOOL)placard
 {
-  v4 = self;
-  sub_1008FEE94(a3);
+  selfCopy = self;
+  sub_1008FEE94(placard);
 }
 
-- (void)localParticipantWantsToStartFollowingCollaborator:(id)a3 isRefollow:(BOOL)a4
+- (void)localParticipantWantsToStartFollowingCollaborator:(id)collaborator isRefollow:(BOOL)refollow
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  sub_100900650(v6, v4);
+  refollowCopy = refollow;
+  collaboratorCopy = collaborator;
+  selfCopy = self;
+  sub_100900650(collaboratorCopy, refollowCopy);
 }
 
-- (void)localParticipantWantsToStartFollowingCollaborator:(id)a3
+- (void)localParticipantWantsToStartFollowingCollaborator:(id)collaborator
 {
-  v4 = a3;
-  v5 = self;
-  sub_100900650(v4, 0);
+  collaboratorCopy = collaborator;
+  selfCopy = self;
+  sub_100900650(collaboratorCopy, 0);
 }
 
-- (void)selectionPathDidChangeWithNotification:(id)a3
+- (void)selectionPathDidChangeWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
+  notificationCopy = notification;
+  selfCopy = self;
   sub_10090FA78();
 }
 
-- (void)deviceDidRotateWhileFollowingNotification:(id)a3
+- (void)deviceDidRotateWhileFollowingNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
+  notificationCopy = notification;
+  selfCopy = self;
   sub_10090FB9C();
 }
 
-- (void)canvasDidZoomOrScrollWhileFollowingNotification:(id)a3
+- (void)canvasDidZoomOrScrollWhileFollowingNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
+  notificationCopy = notification;
+  selfCopy = self;
   sub_10090FC64();
 }
 
@@ -261,31 +261,31 @@
 {
   if (*(self + OBJC_IVAR____TtC8Freeform20CRLFollowCoordinator_isFollowed) == 1)
   {
-    v3 = self;
+    selfCopy = self;
     sub_1009056EC(0, 1);
   }
 }
 
-- (void)groupSessionPresenceWasAddedWithNotification:(id)a3
+- (void)groupSessionPresenceWasAddedWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_100909550(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_100909550(notificationCopy);
 }
 
 - (void)willProcessViewportUpdates
 {
-  v2 = self;
+  selfCopy = self;
   sub_100909C00();
 }
 
 - (void)didProcessViewportUpdates
 {
-  v2 = self;
+  selfCopy = self;
   sub_10090A820();
 }
 
-- (void)setExpectingViewportForOneTimeScrollFrom:(id)a3
+- (void)setExpectingViewportForOneTimeScrollFrom:(id)from
 {
   v5 = sub_1005B981C(&qword_101A07B80);
   __chkstk_darwin(v5 - 8);
@@ -295,7 +295,7 @@
   v10 = &v20 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   __chkstk_darwin(v11);
   v13 = &v20 - v12;
-  if (a3)
+  if (from)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v14 = type metadata accessor for UUID();
@@ -311,14 +311,14 @@
   sub_10063FD1C(v13, v10);
   v16 = OBJC_IVAR____TtC8Freeform20CRLFollowCoordinator_expectingViewportFromUUID;
   swift_beginAccess();
-  v17 = self;
+  selfCopy = self;
   sub_10002C638(v10, self + v16, &qword_1019F6990);
   swift_endAccess();
   v18 = type metadata accessor for CRLFollowViewportState();
   (*(*(v18 - 8) + 56))(v7, 1, 1, v18);
   v19 = OBJC_IVAR____TtC8Freeform20CRLFollowCoordinator_viewportToApply;
   swift_beginAccess();
-  sub_10002C638(v7, v17 + v19, &qword_101A07B80);
+  sub_10002C638(v7, selfCopy + v19, &qword_101A07B80);
   swift_endAccess();
 }
 
@@ -327,35 +327,35 @@
   v3 = sub_1005B981C(&qword_101A0A320);
   __chkstk_darwin(v3 - 8);
   v5 = &v9 - v4;
-  v6 = self;
+  selfCopy = self;
   static Date.now.getter();
   v7 = type metadata accessor for Date();
   (*(*(v7 - 8) + 56))(v5, 0, 1, v7);
   v8 = OBJC_IVAR____TtC8Freeform20CRLFollowCoordinator_crlaxFollowFeatureLastScrollTimestamp;
   swift_beginAccess();
-  sub_10002C638(v5, v6 + v8, &qword_101A0A320);
+  sub_10002C638(v5, selfCopy + v8, &qword_101A0A320);
   swift_endAccess();
 }
 
 - (_TtC8Freeform43CRLFollowAccessibilityExperienceCoordinator)accessibilityExperienceCoordinator
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10090E86C();
 
   return v3;
 }
 
-- (void)setAccessibilityExperienceCoordinator:(id)a3
+- (void)setAccessibilityExperienceCoordinator:(id)coordinator
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform20CRLFollowCoordinator____lazy_storage___accessibilityExperienceCoordinator);
-  *(self + OBJC_IVAR____TtC8Freeform20CRLFollowCoordinator____lazy_storage___accessibilityExperienceCoordinator) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform20CRLFollowCoordinator____lazy_storage___accessibilityExperienceCoordinator) = coordinator;
+  coordinatorCopy = coordinator;
 }
 
 - (NSArray)crlaxCurrentICCs
 {
   v2 = *(self + OBJC_IVAR____TtC8Freeform20CRLFollowCoordinator_interactiveCanvasControllers);
-  v3 = self;
+  selfCopy = self;
   isa = [v2 allObjects];
   if (!isa)
   {
@@ -369,7 +369,7 @@
 
 - (void)crlaxEndFollowingForCanvasScrollIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_10090E9DC();
 }
 

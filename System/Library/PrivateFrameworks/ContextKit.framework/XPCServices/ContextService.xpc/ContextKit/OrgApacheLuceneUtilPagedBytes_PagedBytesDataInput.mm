@@ -3,27 +3,27 @@
 - (id)clone;
 - (id)nextBlock;
 - (void)dealloc;
-- (void)setPositionWithLong:(int64_t)a3;
+- (void)setPositionWithLong:(int64_t)long;
 @end
 
 @implementation OrgApacheLuceneUtilPagedBytes_PagedBytesDataInput
 
 - (id)clone
 {
-  v3 = [(OrgApacheLuceneUtilPagedBytes *)self->this$0_ getDataInput];
-  if (!v3)
+  getDataInput = [(OrgApacheLuceneUtilPagedBytes *)self->this$0_ getDataInput];
+  if (!getDataInput)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = v3;
-  [v3 setPositionWithLong:{-[OrgApacheLuceneUtilPagedBytes_PagedBytesDataInput getPosition](self, "getPosition")}];
+  v4 = getDataInput;
+  [getDataInput setPositionWithLong:{-[OrgApacheLuceneUtilPagedBytes_PagedBytesDataInput getPosition](self, "getPosition")}];
   return v4;
 }
 
-- (void)setPositionWithLong:(int64_t)a3
+- (void)setPositionWithLong:(int64_t)long
 {
-  v3 = a3 >> self->this$0_->blockBits_;
+  v3 = long >> self->this$0_->blockBits_;
   self->currentBlockIndex_ = v3;
   blocks = self->this$0_->blocks_;
   if (!blocks)
@@ -31,7 +31,7 @@
     JreThrowNullPointerException();
   }
 
-  v5 = a3;
+  longCopy = long;
   size = blocks->super.size_;
   if ((v3 & 0x80000000) != 0 || size <= v3)
   {
@@ -39,7 +39,7 @@
   }
 
   JreStrongAssign(&self->currentBlock_, (&blocks->elementType_)[v3]);
-  self->currentBlockUpto_ = self->this$0_->blockMask_ & v5;
+  self->currentBlockUpto_ = self->this$0_->blockMask_ & longCopy;
 }
 
 - (char)readByte
@@ -68,14 +68,14 @@
 
 - (id)nextBlock
 {
-  *(a1 + 24) = (*(a1 + 24) + 1);
-  v1 = *(*(a1 + 16) + 8);
+  *(self + 24) = (*(self + 24) + 1);
+  v1 = *(*(self + 16) + 8);
   if (!v1)
   {
     JreThrowNullPointerException();
   }
 
-  v3 = *(a1 + 24);
+  v3 = *(self + 24);
   v4 = *(v1 + 8);
   if (v3 < 0 || v3 >= v4)
   {
@@ -84,7 +84,7 @@
 
   v5 = *(v1 + 24 + 8 * v3);
 
-  return JreStrongAssign((a1 + 32), v5);
+  return JreStrongAssign((self + 32), v5);
 }
 
 - (void)dealloc

@@ -1,13 +1,13 @@
 @interface GenerativeStoryFeedbackButton
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC12PhotosUICore29GenerativeStoryFeedbackButton)initWithCoder:(id)a3;
-- (_TtC12PhotosUICore29GenerativeStoryFeedbackButton)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC12PhotosUICore29GenerativeStoryFeedbackButton)initWithCoder:(id)coder;
+- (_TtC12PhotosUICore29GenerativeStoryFeedbackButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation GenerativeStoryFeedbackButton
 
-- (_TtC12PhotosUICore29GenerativeStoryFeedbackButton)initWithCoder:(id)a3
+- (_TtC12PhotosUICore29GenerativeStoryFeedbackButton)initWithCoder:(id)coder
 {
   result = sub_1A524E6E4();
   __break(1u);
@@ -25,7 +25,7 @@
   [v3 setFrame_];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   [*(&self->super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore29GenerativeStoryFeedbackButton_button) sizeThatFits_];
   result.height = v4;
@@ -33,7 +33,7 @@
   return result;
 }
 
-- (_TtC12PhotosUICore29GenerativeStoryFeedbackButton)initWithFrame:(CGRect)a3
+- (_TtC12PhotosUICore29GenerativeStoryFeedbackButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,24 +1,24 @@
 @interface RTStateModel
-+ (double)deriveClusterThresholdFromUncClustAplha:(double)a3 andUncClustBeta:(double)a4;
-+ (double)getOutOfStateConfidenceWithOneStatePred:(id)a3;
-- (BOOL)anyClusterOfInterestWithinDistance:(double)a3 ofLocation:(id)a4 andEnteredEarlierThan:(double)a5;
-- (CLLocationCoordinate2D)getEndingCoordinateWithStartingLocation:(id)a3 distance:(double)a4;
-- (RTStateModel)initWithLearnedLocationsOfInterest:(id)a3 metricManager:(id)a4 queue:(id)a5;
-- (double)getMaxDistFromInterval:(double)a3 withVelocity:(double)a4;
++ (double)deriveClusterThresholdFromUncClustAplha:(double)aplha andUncClustBeta:(double)beta;
++ (double)getOutOfStateConfidenceWithOneStatePred:(id)pred;
+- (BOOL)anyClusterOfInterestWithinDistance:(double)distance ofLocation:(id)location andEnteredEarlierThan:(double)than;
+- (CLLocationCoordinate2D)getEndingCoordinateWithStartingLocation:(id)location distance:(double)distance;
+- (RTStateModel)initWithLearnedLocationsOfInterest:(id)interest metricManager:(id)manager queue:(id)queue;
+- (double)getMaxDistFromInterval:(double)interval withVelocity:(double)velocity;
 - (double)getNumberOfWeeksInStateModel;
-- (id)_getNextPredictedLocationsOfInterestFromLocation:(id)a3 startDate:(id)a4 timeInterval:(double)a5;
-- (id)_getRecursivelyAllLOIsWithinDistance:(double)a3 ofLocation:(id)a4 previouslyFoundLocationsOfInterest:(id)a5;
-- (id)findClusterWithLocation:(id)a3;
-- (id)getAllLOIsWithinDistance:(double)a3 ofLocation:(id)a4;
-- (id)getLocationsOfInterestWithinDistance:(double)a3 ofLocation:(id)a4;
-- (id)getMostRecentLocationForDate:(id)a3;
-- (id)getOOStClusterData:(double)a3 predictionWindow:(double)a4 numOfWeeks:(int)a5 refLoc:(id)a6;
-- (id)getPredictedExitDatesFromLocation:(id)a3 onDate:(id)a4;
-- (id)getPredictedLocationsOfInterestBetweenStartDate:(id)a3 endDate:(id)a4;
-- (id)getPredictedLocationsOfInterestWithCriteria:(id)a3;
-- (unsigned)calculateStateModelAvailabilityPrecisionRecallOnDate:(id)a3 predictedLocations:(id)a4 isHighConfidenceOnly:(BOOL)a5;
-- (void)collectMetricsWithIntervalSinceLastUpdate:(double)a3;
-- (void)logStateModelAvailabilityMetricWithIntervalSinceLastUpdate:(double)a3 untilNow:(id)a4;
+- (id)_getNextPredictedLocationsOfInterestFromLocation:(id)location startDate:(id)date timeInterval:(double)interval;
+- (id)_getRecursivelyAllLOIsWithinDistance:(double)distance ofLocation:(id)location previouslyFoundLocationsOfInterest:(id)interest;
+- (id)findClusterWithLocation:(id)location;
+- (id)getAllLOIsWithinDistance:(double)distance ofLocation:(id)location;
+- (id)getLocationsOfInterestWithinDistance:(double)distance ofLocation:(id)location;
+- (id)getMostRecentLocationForDate:(id)date;
+- (id)getOOStClusterData:(double)data predictionWindow:(double)window numOfWeeks:(int)weeks refLoc:(id)loc;
+- (id)getPredictedExitDatesFromLocation:(id)location onDate:(id)date;
+- (id)getPredictedLocationsOfInterestBetweenStartDate:(id)date endDate:(id)endDate;
+- (id)getPredictedLocationsOfInterestWithCriteria:(id)criteria;
+- (unsigned)calculateStateModelAvailabilityPrecisionRecallOnDate:(id)date predictedLocations:(id)locations isHighConfidenceOnly:(BOOL)only;
+- (void)collectMetricsWithIntervalSinceLastUpdate:(double)update;
+- (void)logStateModelAvailabilityMetricWithIntervalSinceLastUpdate:(double)update untilNow:(id)now;
 - (void)updateInternalState;
 @end
 
@@ -47,7 +47,7 @@
   v11[3] = __Block_byref_object_copy__142;
   v11[4] = __Block_byref_object_dispose__142;
   v12 = 0;
-  v3 = [(RTStateModel *)self stateModelLut];
+  stateModelLut = [(RTStateModel *)self stateModelLut];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __35__RTStateModel_updateInternalState__block_invoke;
@@ -56,7 +56,7 @@
   v10[5] = &v15;
   v10[6] = v11;
   v10[7] = v13;
-  [v3 enumerateKeysAndObjectsUsingBlock:v10];
+  [stateModelLut enumerateKeysAndObjectsUsingBlock:v10];
 
   v4 = [RTStateModelEarliestLatestEl alloc];
   v5 = [(RTStateModelEarliestLatestEl *)v4 initWithEarliest:v20[3] andLatest:v16[3]];
@@ -122,12 +122,12 @@ void __35__RTStateModel_updateInternalState__block_invoke(void *a1, uint64_t a2,
 
 - (double)getNumberOfWeeksInStateModel
 {
-  v3 = [(RTStateModel *)self earliestLatestStateModelEl];
-  [v3 latestEl_s];
+  earliestLatestStateModelEl = [(RTStateModel *)self earliestLatestStateModelEl];
+  [earliestLatestStateModelEl latestEl_s];
   v5 = v4;
 
-  v6 = [(RTStateModel *)self earliestLatestStateModelEl];
-  [v6 earliestEl_s];
+  earliestLatestStateModelEl2 = [(RTStateModel *)self earliestLatestStateModelEl];
+  [earliestLatestStateModelEl2 earliestEl_s];
   v8 = v7;
 
   result = (v5 - v8) / 604800.0;
@@ -139,13 +139,13 @@ void __35__RTStateModel_updateInternalState__block_invoke(void *a1, uint64_t a2,
   return result;
 }
 
-- (RTStateModel)initWithLearnedLocationsOfInterest:(id)a3 metricManager:(id)a4 queue:(id)a5
+- (RTStateModel)initWithLearnedLocationsOfInterest:(id)interest metricManager:(id)manager queue:(id)queue
 {
   v136 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  interestCopy = interest;
+  managerCopy = manager;
+  queueCopy = queue;
+  if (queueCopy)
   {
     v123.receiver = self;
     v123.super_class = RTStateModel;
@@ -153,23 +153,23 @@ void __35__RTStateModel_updateInternalState__block_invoke(void *a1, uint64_t a2,
     v13 = v12;
     if (v12)
     {
-      v88 = v11;
-      v89 = v10;
-      objc_storeStrong(&v12->_metricManager, a4);
-      objc_storeStrong(&v13->_queue, a5);
+      v88 = queueCopy;
+      v89 = managerCopy;
+      objc_storeStrong(&v12->_metricManager, manager);
+      objc_storeStrong(&v13->_queue, queue);
       v14 = objc_opt_new();
       stateModelLut = v13->_stateModelLut;
       v95 = v13;
       v13->_stateModelLut = v14;
 
-      v104 = [MEMORY[0x277CBEB38] dictionary];
-      v16 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
       v119 = 0u;
       v120 = 0u;
       v121 = 0u;
       v122 = 0u;
-      v90 = v9;
-      obj = v9;
+      v90 = interestCopy;
+      obj = interestCopy;
       v96 = [obj countByEnumeratingWithState:&v119 objects:v135 count:16];
       if (v96)
       {
@@ -187,47 +187,47 @@ void __35__RTStateModel_updateInternalState__block_invoke(void *a1, uint64_t a2,
             v105 = v17;
             v18 = *(*(&v119 + 1) + 8 * v17);
             v19 = [RTStateModelLocation alloc];
-            v20 = [v18 location];
-            v21 = [v20 location];
-            v22 = [(RTStateModelLocation *)v19 initWithRTLocation:v21];
+            location = [v18 location];
+            v20Location = [location location];
+            v22 = [(RTStateModelLocation *)v19 initWithRTLocation:v20Location];
 
             v23 = MEMORY[0x277D01170];
-            v24 = [v18 place];
-            v25 = [v23 typeFromPlaceType:{objc_msgSend(v24, "type")}];
+            place = [v18 place];
+            v25 = [v23 typeFromPlaceType:{objc_msgSend(place, "type")}];
 
             v26 = MEMORY[0x277D01170];
-            v27 = [v18 place];
-            v28 = [v26 typeSourceFromPlaceTypeSource:{objc_msgSend(v27, "typeSource")}];
+            place2 = [v18 place];
+            v28 = [v26 typeSourceFromPlaceTypeSource:{objc_msgSend(place2, "typeSource")}];
 
-            v29 = [v18 place];
-            v30 = [v29 customLabel];
+            place3 = [v18 place];
+            customLabel = [place3 customLabel];
 
             v31 = [RTStateDepiction alloc];
-            v32 = [v18 place];
-            v33 = [v32 mapItem];
+            place4 = [v18 place];
+            mapItem = [place4 mapItem];
             v102 = v22;
-            v100 = v30;
-            v34 = [(RTStateDepiction *)v31 initWithLocation:v22 type:v25 typeSource:v28 customLabel:v30 mapItem:v33];
+            v100 = customLabel;
+            v34 = [(RTStateDepiction *)v31 initWithLocation:v22 type:v25 typeSource:v28 customLabel:customLabel mapItem:mapItem];
 
             v35 = objc_opt_new();
-            v36 = [v18 identifier];
-            [v35 setUniqueId:v36];
+            identifier = [v18 identifier];
+            [v35 setUniqueId:identifier];
 
             [v35 setStateDepiction:v34];
-            v37 = [(RTStateModel *)v95 stateModelLut];
-            v38 = [v35 uniqueId];
-            [v37 setObject:v35 forKey:v38];
+            stateModelLut = [(RTStateModel *)v95 stateModelLut];
+            uniqueId = [v35 uniqueId];
+            [stateModelLut setObject:v35 forKey:uniqueId];
 
-            v39 = [v18 identifier];
+            identifier2 = [v18 identifier];
             v98 = v35;
-            [v104 setObject:v35 forKey:v39];
+            [dictionary setObject:v35 forKey:identifier2];
 
             v117 = 0u;
             v118 = 0u;
             v115 = 0u;
             v116 = 0u;
-            v40 = [v18 visits];
-            v41 = [v40 countByEnumeratingWithState:&v115 objects:v134 count:16];
+            visits = [v18 visits];
+            v41 = [visits countByEnumeratingWithState:&v115 objects:v134 count:16];
             if (v41)
             {
               v42 = v41;
@@ -238,22 +238,22 @@ void __35__RTStateModel_updateInternalState__block_invoke(void *a1, uint64_t a2,
                 {
                   if (*v116 != v43)
                   {
-                    objc_enumerationMutation(v40);
+                    objc_enumerationMutation(visits);
                   }
 
                   v45 = *(*(&v115 + 1) + 8 * i);
-                  v46 = [v45 entryDate];
-                  [v46 timeIntervalSinceReferenceDate];
+                  entryDate = [v45 entryDate];
+                  [entryDate timeIntervalSinceReferenceDate];
                   v48 = v47;
-                  v49 = [v45 exitDate];
-                  [v49 timeIntervalSinceReferenceDate];
+                  exitDate = [v45 exitDate];
+                  [exitDate timeIntervalSinceReferenceDate];
                   [(RTStateDepiction *)v34 submitEntry:v48 exit:v50];
 
-                  v51 = [v45 identifier];
-                  [v16 setObject:v18 forKey:v51];
+                  identifier3 = [v45 identifier];
+                  [dictionary2 setObject:v18 forKey:identifier3];
                 }
 
-                v42 = [v40 countByEnumeratingWithState:&v115 objects:v134 count:16];
+                v42 = [visits countByEnumeratingWithState:&v115 objects:v134 count:16];
               }
 
               while (v42);
@@ -278,7 +278,7 @@ void __35__RTStateModel_updateInternalState__block_invoke(void *a1, uint64_t a2,
       if (v97)
       {
         v94 = *v112;
-        v101 = v16;
+        v101 = dictionary2;
         do
         {
           v52 = 0;
@@ -295,8 +295,8 @@ void __35__RTStateModel_updateInternalState__block_invoke(void *a1, uint64_t a2,
             v108 = 0u;
             v109 = 0u;
             v110 = 0u;
-            v103 = [v53 transitions];
-            v106 = [v103 countByEnumeratingWithState:&v107 objects:v132 count:16];
+            transitions = [v53 transitions];
+            v106 = [transitions countByEnumeratingWithState:&v107 objects:v132 count:16];
             if (v106)
             {
               v54 = *v108;
@@ -306,21 +306,21 @@ void __35__RTStateModel_updateInternalState__block_invoke(void *a1, uint64_t a2,
                 {
                   if (*v108 != v54)
                   {
-                    objc_enumerationMutation(v103);
+                    objc_enumerationMutation(transitions);
                   }
 
                   v56 = *(*(&v107 + 1) + 8 * j);
-                  v57 = [v56 visitIdentifierOrigin];
-                  v58 = [v16 objectForKey:v57];
+                  visitIdentifierOrigin = [v56 visitIdentifierOrigin];
+                  v58 = [dictionary2 objectForKey:visitIdentifierOrigin];
 
-                  v59 = [v56 visitIdentifierDestination];
-                  v60 = [v16 objectForKey:v59];
+                  visitIdentifierDestination = [v56 visitIdentifierDestination];
+                  v60 = [dictionary2 objectForKey:visitIdentifierDestination];
 
-                  v61 = [v58 identifier];
-                  v62 = [v104 objectForKey:v61];
+                  identifier4 = [v58 identifier];
+                  v62 = [dictionary objectForKey:identifier4];
 
-                  v63 = [v60 identifier];
-                  v64 = [v104 objectForKey:v63];
+                  identifier5 = [v60 identifier];
+                  v64 = [dictionary objectForKey:identifier5];
 
                   if (v62)
                   {
@@ -358,38 +358,38 @@ void __35__RTStateModel_updateInternalState__block_invoke(void *a1, uint64_t a2,
                   {
                     v66 = v54;
                     v67 = [RTStateTransitionOneTimeTrans alloc];
-                    v68 = [v56 startDate];
-                    [v68 timeIntervalSinceReferenceDate];
+                    startDate = [v56 startDate];
+                    [startDate timeIntervalSinceReferenceDate];
                     v70 = v69;
-                    v71 = [v56 stopDate];
-                    [v71 timeIntervalSinceReferenceDate];
+                    stopDate = [v56 stopDate];
+                    [stopDate timeIntervalSinceReferenceDate];
                     v73 = [(RTStateTransitionOneTimeTrans *)v67 initWithStart:0 stop:v70 motionActivityType:v72];
 
-                    v74 = [v62 stateTransitions];
-                    v75 = [v64 uniqueId];
-                    v76 = [v74 objectForKey:v75];
+                    stateTransitions = [v62 stateTransitions];
+                    uniqueId2 = [v64 uniqueId];
+                    v76 = [stateTransitions objectForKey:uniqueId2];
 
                     if (!v76)
                     {
-                      v77 = [v62 stateTransitions];
+                      stateTransitions2 = [v62 stateTransitions];
                       v78 = objc_opt_new();
-                      v79 = [v64 uniqueId];
-                      [v77 setObject:v78 forKey:v79];
+                      uniqueId3 = [v64 uniqueId];
+                      [stateTransitions2 setObject:v78 forKey:uniqueId3];
                     }
 
-                    v80 = [v62 stateTransitions];
-                    v81 = [v64 uniqueId];
-                    v82 = [v80 objectForKey:v81];
+                    stateTransitions3 = [v62 stateTransitions];
+                    uniqueId4 = [v64 uniqueId];
+                    v82 = [stateTransitions3 objectForKey:uniqueId4];
                     [v82 submitTransition:v73];
 
                     v54 = v66;
-                    v16 = v101;
+                    dictionary2 = v101;
                   }
 
 LABEL_39:
                 }
 
-                v106 = [v103 countByEnumeratingWithState:&v107 objects:v132 count:16];
+                v106 = [transitions countByEnumeratingWithState:&v107 objects:v132 count:16];
               }
 
               while (v106);
@@ -408,13 +408,13 @@ LABEL_39:
       v13 = v95;
       [(RTStateModel *)v95 updateInternalState];
 
-      v10 = v89;
-      v9 = v90;
-      v11 = v88;
+      managerCopy = v89;
+      interestCopy = v90;
+      queueCopy = v88;
     }
 
     self = v13;
-    v83 = self;
+    selfCopy = self;
   }
 
   else
@@ -438,36 +438,36 @@ LABEL_39:
       _os_log_error_impl(&dword_2304B3000, v85, OS_LOG_TYPE_ERROR, "%@ failed due to null parameter", buf, 0xCu);
     }
 
-    v83 = 0;
+    selfCopy = 0;
   }
 
-  return v83;
+  return selfCopy;
 }
 
-- (id)_getNextPredictedLocationsOfInterestFromLocation:(id)a3 startDate:(id)a4 timeInterval:(double)a5
+- (id)_getNextPredictedLocationsOfInterestFromLocation:(id)location startDate:(id)date timeInterval:(double)interval
 {
   v138 = *MEMORY[0x277D85DE8];
-  v92 = a3;
-  v88 = a4;
-  [v88 timeIntervalSinceReferenceDate];
+  locationCopy = location;
+  dateCopy = date;
+  [dateCopy timeIntervalSinceReferenceDate];
   v10 = v9;
-  v11 = 3600.0;
-  if (a5 >= 3600.0)
+  intervalCopy = 3600.0;
+  if (interval >= 3600.0)
   {
-    v11 = a5;
-    if (a5 <= 86400.0)
+    intervalCopy = interval;
+    if (interval <= 86400.0)
     {
       goto LABEL_9;
     }
 
-    v11 = 86400.0;
+    intervalCopy = 86400.0;
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
       goto LABEL_9;
     }
 
     v12 = _rt_log_facility_get_os_log(RTLogFacilityStateModel);
-    v11 = 86400.0;
+    intervalCopy = 86400.0;
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       goto LABEL_8;
@@ -485,7 +485,7 @@ LABEL_39:
   }
 
   v12 = _rt_log_facility_get_os_log(RTLogFacilityStateModel);
-  v11 = 3600.0;
+  intervalCopy = 3600.0;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
@@ -498,25 +498,25 @@ LABEL_106:
 LABEL_8:
 
 LABEL_9:
-  [(RTStateModel *)self getMaxDistFromInterval:v11 withVelocity:20.0];
+  [(RTStateModel *)self getMaxDistFromInterval:intervalCopy withVelocity:20.0];
   v15 = v14;
-  v94 = [[RTStateModelLocation alloc] initWithRTLocation:v92];
+  v94 = [[RTStateModelLocation alloc] initWithRTLocation:locationCopy];
   v89 = objc_opt_new();
-  v16 = [(RTStateModel *)self earliestLatestStateModelEl];
+  earliestLatestStateModelEl = [(RTStateModel *)self earliestLatestStateModelEl];
 
-  if (v16)
+  if (earliestLatestStateModelEl)
   {
     [(RTStateModel *)self getNumberOfWeeksInStateModel];
     v18 = v17;
     v19 = vcvtmd_s64_f64(v17);
     if (v17 <= 6.0)
     {
-      LODWORD(v16) = v19;
+      LODWORD(earliestLatestStateModelEl) = v19;
     }
 
     else
     {
-      LODWORD(v16) = 6;
+      LODWORD(earliestLatestStateModelEl) = 6;
     }
   }
 
@@ -535,7 +535,7 @@ LABEL_9:
     v93 = 0;
   }
 
-  v91 = [(RTStateModel *)self anyClusterOfInterestWithinDistance:v92 ofLocation:v15 andEnteredEarlierThan:v10 + -1209600.0];
+  v91 = [(RTStateModel *)self anyClusterOfInterestWithinDistance:locationCopy ofLocation:v15 andEnteredEarlierThan:v10 + -1209600.0];
   v20 = 0.0;
   if (v18 >= 2.0)
   {
@@ -554,7 +554,7 @@ LABEL_9:
 
   if (v91)
   {
-    v22 = v16;
+    v22 = earliestLatestStateModelEl;
   }
 
   else
@@ -568,8 +568,8 @@ LABEL_9:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
       v24 = NSStringFromSelector(a2);
-      v25 = [v88 stringFromDate];
-      v26 = v25;
+      stringFromDate = [dateCopy stringFromDate];
+      v26 = stringFromDate;
       v27 = @"YES";
       *buf = 138413827;
       *&buf[4] = v24;
@@ -581,9 +581,9 @@ LABEL_9:
 
       *&buf[14] = v94;
       *&buf[22] = 2112;
-      v132 = v25;
+      v132 = stringFromDate;
       *v133 = 2048;
-      *&v133[2] = v11;
+      *&v133[2] = intervalCopy;
       *&v133[10] = 2053;
       *&v133[12] = v18;
       v134 = 1029;
@@ -594,7 +594,7 @@ LABEL_9:
     }
   }
 
-  v90 = [(RTStateModel *)self getOOStClusterData:v22 predictionWindow:v94 numOfWeeks:v10 refLoc:v11];
+  v90 = [(RTStateModel *)self getOOStClusterData:v22 predictionWindow:v94 numOfWeeks:v10 refLoc:intervalCopy];
   v28 = !v91;
   if (v93)
   {
@@ -631,16 +631,16 @@ LABEL_9:
     v132 = __Block_byref_object_copy__142;
     *v133 = __Block_byref_object_dispose__142;
     *&v133[8] = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v33 = [v93 stateTransitions];
+    stateTransitions = [v93 stateTransitions];
     v129[0] = MEMORY[0x277D85DD0];
     v129[1] = 3221225472;
     v129[2] = __88__RTStateModel__getNextPredictedLocationsOfInterestFromLocation_startDate_timeInterval___block_invoke;
     v129[3] = &unk_2788CFBE0;
     *&v129[5] = v10;
-    *&v129[6] = v11;
+    *&v129[6] = intervalCopy;
     v130 = v22;
     v129[4] = buf;
-    [v33 enumerateKeysAndObjectsUsingBlock:v129];
+    [stateTransitions enumerateKeysAndObjectsUsingBlock:v129];
 
     v34 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v87 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -693,10 +693,10 @@ LABEL_9:
       v38 = [v30 count] == 0;
     }
 
-    v40 = [v30 firstObject];
-    v41 = [v40 stateUUID];
-    v42 = [v93 uniqueId];
-    v43 = v41 == v42;
+    firstObject = [v30 firstObject];
+    stateUUID = [firstObject stateUUID];
+    uniqueId = [v93 uniqueId];
+    v43 = stateUUID == uniqueId;
 
     if (v43)
     {
@@ -736,10 +736,10 @@ LABEL_9:
       _Block_object_dispose(v118, 8);
     }
 
-    v45 = [(RTStateModel *)self stateModelLut];
-    v46 = [v30 firstObject];
-    v47 = [v46 stateUUID];
-    v48 = [v45 objectForKey:v47];
+    stateModelLut = [(RTStateModel *)self stateModelLut];
+    firstObject2 = [v30 firstObject];
+    stateUUID2 = [firstObject2 stateUUID];
+    v48 = [stateModelLut objectForKey:stateUUID2];
 
     if (v48 && ([v48 stateDepiction], v49 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v49, "location"), v50 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v50, "Latitude_deg"), objc_msgSend(v48, "stateDepiction"), v51 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v51, "location"), v52 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v52, "Longitude_deg"), -[RTStateModelLocation Latitude_deg](v94, "Latitude_deg"), -[RTStateModelLocation Longitude_deg](v94, "Longitude_deg"), RTCommonCalculateDistanceHighPrecision(), v54 = v53, v52, v51, v50, v49, v54 < 700.0))
     {
@@ -840,7 +840,7 @@ LABEL_9:
 
     v62 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v63 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v64 = [v90 selectOOStStates];
+    selectOOStStates = [v90 selectOOStStates];
     v103[0] = MEMORY[0x277D85DD0];
     v103[1] = 3221225472;
     v103[2] = __88__RTStateModel__getNextPredictedLocationsOfInterestFromLocation_startDate_timeInterval___block_invoke_76;
@@ -856,7 +856,7 @@ LABEL_9:
     v106 = v66;
     v67 = v62;
     v107 = v67;
-    [v64 enumerateObjectsUsingBlock:v103];
+    [selectOOStStates enumerateObjectsUsingBlock:v103];
 
     if (v91)
     {
@@ -893,13 +893,13 @@ LABEL_9:
     v71 = v68;
     if (v31)
     {
-      v72 = [v68 firstObject];
-      v73 = [v72 weekly];
-      [v73 density];
+      firstObject3 = [v68 firstObject];
+      weekly = [firstObject3 weekly];
+      [weekly density];
       v75 = v74;
-      v76 = [v30 firstObject];
-      v77 = [v76 weekly];
-      [v77 density];
+      firstObject4 = [v30 firstObject];
+      weekly2 = [firstObject4 weekly];
+      [weekly2 density];
       v79 = v75 > v78;
 
       if (v79)
@@ -931,7 +931,7 @@ LABEL_9:
     v68 = 0;
   }
 
-  v81 = [(RTStateModel *)self stateModelLut];
+  stateModelLut2 = [(RTStateModel *)self stateModelLut];
   v95[0] = MEMORY[0x277D85DD0];
   v95[1] = 3221225472;
   v95[2] = __88__RTStateModel__getNextPredictedLocationsOfInterestFromLocation_startDate_timeInterval___block_invoke_3;
@@ -942,7 +942,7 @@ LABEL_9:
   v82 = v89;
   v97 = v82;
   v83 = v94;
-  [v81 enumerateKeysAndObjectsUsingBlock:v95];
+  [stateModelLut2 enumerateKeysAndObjectsUsingBlock:v95];
 
   v84 = v97;
   v85 = v82;
@@ -1745,29 +1745,29 @@ LABEL_10:
 LABEL_11:
 }
 
-- (id)getPredictedLocationsOfInterestWithCriteria:(id)a3
+- (id)getPredictedLocationsOfInterestWithCriteria:(id)criteria
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  criteriaCopy = criteria;
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v7 = [v5 referenceDate];
-  [v7 timeIntervalSinceReferenceDate];
+  referenceDate = [criteriaCopy referenceDate];
+  [referenceDate timeIntervalSinceReferenceDate];
   v9 = v8;
 
   [(RTStateModel *)self getNumberOfWeeksInStateModel];
-  LODWORD(v7) = v10;
-  v11 = [(RTStateModel *)self stateModelLut];
+  LODWORD(referenceDate) = v10;
+  stateModelLut = [(RTStateModel *)self stateModelLut];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __60__RTStateModel_getPredictedLocationsOfInterestWithCriteria___block_invoke;
   v24[3] = &unk_2788CFC80;
   v27 = v9;
-  v12 = v5;
+  v12 = criteriaCopy;
   v25 = v12;
-  v28 = v7;
+  v28 = referenceDate;
   v13 = v6;
   v26 = v13;
-  [v11 enumerateKeysAndObjectsUsingBlock:v24];
+  [stateModelLut enumerateKeysAndObjectsUsingBlock:v24];
 
   [v13 sortUsingComparator:&__block_literal_global_94_0];
   v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -1784,13 +1784,13 @@ LABEL_11:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       v18 = NSStringFromSelector(a2);
-      v19 = [v12 referenceDate];
-      v20 = [v19 stringFromDate];
+      referenceDate2 = [v12 referenceDate];
+      stringFromDate = [referenceDate2 stringFromDate];
       v21 = [v15 count];
       *buf = 138412802;
       v30 = v18;
       v31 = 2112;
-      v32 = v20;
+      v32 = stringFromDate;
       v33 = 2048;
       v34 = v21;
       _os_log_debug_impl(&dword_2304B3000, v16, OS_LOG_TYPE_DEBUG, "%@%@ found %lu PLOIs", buf, 0x20u);
@@ -1848,9 +1848,9 @@ void __60__RTStateModel_getPredictedLocationsOfInterestWithCriteria___block_invo
   [*(a1 + 32) addObject:v5];
 }
 
-- (id)findClusterWithLocation:(id)a3
+- (id)findClusterWithLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -1861,16 +1861,16 @@ void __60__RTStateModel_getPredictedLocationsOfInterestWithCriteria___block_invo
   v13[1] = v13;
   v13[2] = 0x2020000000;
   v13[3] = 0x7FF0000000000000;
-  v5 = [(RTStateModel *)self stateModelLut];
+  stateModelLut = [(RTStateModel *)self stateModelLut];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __40__RTStateModel_findClusterWithLocation___block_invoke;
   v9[3] = &unk_2788CFCA8;
-  v6 = v4;
+  v6 = locationCopy;
   v10 = v6;
   v11 = v13;
   v12 = &v14;
-  [v5 enumerateKeysAndObjectsUsingBlock:v9];
+  [stateModelLut enumerateKeysAndObjectsUsingBlock:v9];
 
   v7 = v15[5];
   _Block_object_dispose(v13, 8);
@@ -1924,23 +1924,23 @@ void __40__RTStateModel_findClusterWithLocation___block_invoke(uint64_t a1, uint
   }
 }
 
-- (id)getLocationsOfInterestWithinDistance:(double)a3 ofLocation:(id)a4
+- (id)getLocationsOfInterestWithinDistance:(double)distance ofLocation:(id)location
 {
-  v6 = a4;
-  v7 = [[RTStateModelLocation alloc] initWithCLLocation:v6];
+  locationCopy = location;
+  v7 = [[RTStateModelLocation alloc] initWithCLLocation:locationCopy];
 
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (a3 > 0.0)
+  if (distance > 0.0)
   {
-    v9 = [(RTStateModel *)self stateModelLut];
+    stateModelLut = [(RTStateModel *)self stateModelLut];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __64__RTStateModel_getLocationsOfInterestWithinDistance_ofLocation___block_invoke;
     v11[3] = &unk_2788CFCD0;
-    v14 = a3;
+    distanceCopy = distance;
     v12 = v7;
     v13 = v8;
-    [v9 enumerateKeysAndObjectsUsingBlock:v11];
+    [stateModelLut enumerateKeysAndObjectsUsingBlock:v11];
   }
 
   [v8 sortUsingComparator:&__block_literal_global_97_1];
@@ -2009,26 +2009,26 @@ uint64_t __64__RTStateModel_getLocationsOfInterestWithinDistance_ofLocation___bl
   }
 }
 
-- (BOOL)anyClusterOfInterestWithinDistance:(double)a3 ofLocation:(id)a4 andEnteredEarlierThan:(double)a5
+- (BOOL)anyClusterOfInterestWithinDistance:(double)distance ofLocation:(id)location andEnteredEarlierThan:(double)than
 {
-  v8 = a4;
+  locationCopy = location;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v9 = [[RTStateModelLocation alloc] initWithRTLocation:v8];
-  if (a3 > 0.0 && a5 > 0.0)
+  v9 = [[RTStateModelLocation alloc] initWithRTLocation:locationCopy];
+  if (distance > 0.0 && than > 0.0)
   {
-    v10 = [(RTStateModel *)self stateModelLut];
+    stateModelLut = [(RTStateModel *)self stateModelLut];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __84__RTStateModel_anyClusterOfInterestWithinDistance_ofLocation_andEnteredEarlierThan___block_invoke;
     v13[3] = &unk_2788CFCF8;
-    v16 = a3;
-    v17 = a5;
+    distanceCopy = distance;
+    thanCopy = than;
     v14 = v9;
     v15 = &v18;
-    [v10 enumerateKeysAndObjectsUsingBlock:v13];
+    [stateModelLut enumerateKeysAndObjectsUsingBlock:v13];
   }
 
   v11 = *(v19 + 24);
@@ -2069,10 +2069,10 @@ void __84__RTStateModel_anyClusterOfInterestWithinDistance_ofLocation_andEntered
   }
 }
 
-- (double)getMaxDistFromInterval:(double)a3 withVelocity:(double)a4
+- (double)getMaxDistFromInterval:(double)interval withVelocity:(double)velocity
 {
-  v4 = a4 <= 0.0 || a3 <= 0.0;
-  result = a3 * a4;
+  v4 = velocity <= 0.0 || interval <= 0.0;
+  result = interval * velocity;
   if (v4)
   {
     return 72000.0;
@@ -2081,45 +2081,45 @@ void __84__RTStateModel_anyClusterOfInterestWithinDistance_ofLocation_andEntered
   return result;
 }
 
-- (id)getOOStClusterData:(double)a3 predictionWindow:(double)a4 numOfWeeks:(int)a5 refLoc:(id)a6
+- (id)getOOStClusterData:(double)data predictionWindow:(double)window numOfWeeks:(int)weeks refLoc:(id)loc
 {
   v49 = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  locCopy = loc;
   v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v14 = [(RTStateModel *)self stateModelLut];
+  stateModelLut = [(RTStateModel *)self stateModelLut];
   v29 = MEMORY[0x277D85DD0];
   v30 = 3221225472;
   v31 = __70__RTStateModel_getOOStClusterData_predictionWindow_numOfWeeks_refLoc___block_invoke;
   v32 = &unk_2788CFD20;
-  v38 = a3;
-  v39 = a4;
-  v40 = a5;
+  dataCopy = data;
+  windowCopy = window;
+  weeksCopy = weeks;
   v33 = v13;
-  v34 = v10;
-  v35 = self;
+  v34 = locCopy;
+  selfCopy = self;
   v15 = v11;
   v36 = v15;
   v16 = v12;
   v37 = v16;
-  v17 = v10;
+  v17 = locCopy;
   v18 = v13;
-  [v14 enumerateKeysAndObjectsUsingBlock:&v29];
+  [stateModelLut enumerateKeysAndObjectsUsingBlock:&v29];
 
-  v19 = a5;
+  weeksCopy2 = weeks;
   v20 = 1.0;
-  v21 = a5;
+  weeksCopy3 = weeks;
   v22 = 1.0;
-  if ([v15 count] < a5)
+  if ([v15 count] < weeks)
   {
-    v22 = v21 / (a5 - [v15 count]);
+    v22 = weeksCopy3 / (weeks - [v15 count]);
   }
 
-  v23 = 7 * a5;
-  if ([v16 count] < (7 * v19))
+  v23 = 7 * weeks;
+  if ([v16 count] < (7 * weeksCopy2))
   {
-    v20 = v21 * 7.0 / (v23 - [v15 count]);
+    v20 = weeksCopy3 * 7.0 / (v23 - [v15 count]);
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -2277,12 +2277,12 @@ void __70__RTStateModel_getOOStClusterData_predictionWindow_numOfWeeks_refLoc___
   }
 }
 
-+ (double)getOutOfStateConfidenceWithOneStatePred:(id)a3
++ (double)getOutOfStateConfidenceWithOneStatePred:(id)pred
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 daily];
-  if ([v4 numOfClustEntries] <= 0)
+  predCopy = pred;
+  daily = [predCopy daily];
+  if ([daily numOfClustEntries] <= 0)
   {
 
     v8 = 0.0;
@@ -2290,8 +2290,8 @@ void __70__RTStateModel_getOOStClusterData_predictionWindow_numOfWeeks_refLoc___
 
   else
   {
-    v5 = [v3 daily];
-    [v5 aggregateTime_s];
+    daily2 = [predCopy daily];
+    [daily2 aggregateTime_s];
     v7 = v6;
 
     v8 = 0.0;
@@ -2300,8 +2300,8 @@ void __70__RTStateModel_getOOStClusterData_predictionWindow_numOfWeeks_refLoc___
       goto LABEL_6;
     }
 
-    v9 = [v3 daily];
-    [v9 aggregateTime_s];
+    daily3 = [predCopy daily];
+    [daily3 aggregateTime_s];
     v11 = v10;
 
     if (v11 > 1800.0)
@@ -2309,21 +2309,21 @@ void __70__RTStateModel_getOOStClusterData_predictionWindow_numOfWeeks_refLoc___
       goto LABEL_4;
     }
 
-    v14 = [v3 weekly];
-    if ([v14 numOfClustEntries] <= 0)
+    weekly = [predCopy weekly];
+    if ([weekly numOfClustEntries] <= 0)
     {
     }
 
     else
     {
-      v15 = [v3 weekly];
-      [v15 aggregateTime_s];
+      weekly2 = [predCopy weekly];
+      [weekly2 aggregateTime_s];
       v17 = v16;
 
       if (v17 > 0.0)
       {
-        v18 = [v3 weekly];
-        [v18 aggregateTime_s];
+        weekly3 = [predCopy weekly];
+        [weekly3 aggregateTime_s];
         v20 = v19;
 
         if (v20 > 1800.0)
@@ -2341,21 +2341,21 @@ LABEL_6:
     v12 = _rt_log_facility_get_os_log(RTLogFacilityStateModel);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v21 = [v3 daily];
-      v22 = [v21 numOfClustEntries];
-      v23 = [v3 daily];
-      [v23 aggregateTime_s];
+      daily4 = [predCopy daily];
+      numOfClustEntries = [daily4 numOfClustEntries];
+      daily5 = [predCopy daily];
+      [daily5 aggregateTime_s];
       v25 = v24;
-      v26 = [v3 weekly];
-      v27 = [v26 numOfClustEntries];
-      v28 = [v3 weekly];
-      [v28 aggregateTime_s];
+      weekly4 = [predCopy weekly];
+      numOfClustEntries2 = [weekly4 numOfClustEntries];
+      weekly5 = [predCopy weekly];
+      [weekly5 aggregateTime_s];
       v30[0] = 67437825;
-      v30[1] = v22;
+      v30[1] = numOfClustEntries;
       v31 = 2053;
       v32 = v25;
       v33 = 1029;
-      v34 = v27;
+      v34 = numOfClustEntries2;
       v35 = 2053;
       v36 = v29;
       v37 = 2048;
@@ -2367,9 +2367,9 @@ LABEL_6:
   return v8;
 }
 
-+ (double)deriveClusterThresholdFromUncClustAplha:(double)a3 andUncClustBeta:(double)a4
++ (double)deriveClusterThresholdFromUncClustAplha:(double)aplha andUncClustBeta:(double)beta
 {
-  v4 = a3 + a4;
+  v4 = aplha + beta;
   result = 250.0;
   if (v4 <= 250.0)
   {
@@ -2383,37 +2383,37 @@ LABEL_6:
   return result;
 }
 
-- (id)getPredictedExitDatesFromLocation:(id)a3 onDate:(id)a4
+- (id)getPredictedExitDatesFromLocation:(id)location onDate:(id)date
 {
   v83 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  locationCopy = location;
+  dateCopy = date;
+  v8 = dateCopy;
   v65 = 0;
-  if (v6 && v7)
+  if (locationCopy && dateCopy)
   {
     v9 = [RTStateModelLocation alloc];
-    [v6 latitude];
+    [locationCopy latitude];
     v11 = v10;
-    [v6 longitude];
+    [locationCopy longitude];
     v13 = v12;
-    [v6 horizontalUncertainty];
+    [locationCopy horizontalUncertainty];
     v15 = v14;
-    v16 = [v6 date];
-    [v16 timeIntervalSinceReferenceDate];
+    date = [locationCopy date];
+    [date timeIntervalSinceReferenceDate];
     v18 = [(RTStateModelLocation *)v9 initWithLat:v11 Lon:v13 Uncertainty:v15 confidence:0.0 andTimestamp_s:v17];
 
     v19 = [(RTStateModel *)self findClusterWithLocation:v18];
-    v20 = [v19 stateDepiction];
-    v21 = [v20 getRecentVisits:0.0];
+    stateDepiction = [v19 stateDepiction];
+    v21 = [stateDepiction getRecentVisits:0.0];
 
     if ([v21 count])
     {
       v60 = v19;
       v61 = v18;
-      v63 = v6;
-      v22 = [MEMORY[0x277CBEA80] currentCalendar];
-      v23 = [v22 components:764 fromDate:v8];
+      v63 = locationCopy;
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      v23 = [currentCalendar components:764 fromDate:v8];
 
       v24 = objc_opt_new();
       v25 = objc_opt_new();
@@ -2435,9 +2435,9 @@ LABEL_6:
         v29 = _rt_log_facility_get_os_log(RTLogFacilityStateModel);
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
         {
-          v55 = [v28 stringFromDate];
+          stringFromDate = [v28 stringFromDate];
           *buf = 138412290;
-          v77 = v55;
+          v77 = stringFromDate;
           _os_log_debug_impl(&dword_2304B3000, v29, OS_LOG_TYPE_DEBUG, "latest exit date, %@", buf, 0xCu);
         }
       }
@@ -2477,9 +2477,9 @@ LABEL_6:
               v40 = _rt_log_facility_get_os_log(RTLogFacilityStateModel);
               if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
               {
-                v48 = [v39 numOfDates];
+                numOfDates = [v39 numOfDates];
                 *buf = 134218242;
-                v77 = v48;
+                v77 = numOfDates;
                 v78 = 2112;
                 v79 = v38;
                 _os_log_debug_impl(&dword_2304B3000, v40, OS_LOG_TYPE_DEBUG, "%lu exit dates in bucket %@", buf, 0x16u);
@@ -2512,9 +2512,9 @@ LABEL_6:
             {
               fmin([v39 numOfDates] / 7.0, 1.0);
               v45 = objc_alloc(MEMORY[0x277D01268]);
-              v46 = [v39 averageDate];
+              averageDate = [v39 averageDate];
               [v39 stdDeviation];
-              v41 = [v45 initWithDate:v46 uncertainty:? confidence:?];
+              v41 = [v45 initWithDate:averageDate uncertainty:? confidence:?];
 
               [v65 addObject:v41];
               if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
@@ -2522,10 +2522,10 @@ LABEL_6:
                 v47 = _rt_log_facility_get_os_log(RTLogFacilityStateModel);
                 if (os_log_type_enabled(v47, OS_LOG_TYPE_DEBUG))
                 {
-                  v64 = [v39 averageDate];
+                  averageDate2 = [v39 averageDate];
                   [v39 stdDeviation];
                   *buf = 138412802;
-                  v77 = v64;
+                  v77 = averageDate2;
                   v78 = 2048;
                   v79 = v49;
                   v80 = 2112;
@@ -2575,7 +2575,7 @@ LABEL_29:
       [v65 sortUsingDescriptors:v53];
 
       v8 = v62;
-      v6 = v63;
+      locationCopy = v63;
       v19 = v60;
       v18 = v61;
       v21 = v59;
@@ -2667,16 +2667,16 @@ void __57__RTStateModel_getPredictedExitDatesFromLocation_onDate___block_invoke(
   }
 }
 
-- (id)getPredictedLocationsOfInterestBetweenStartDate:(id)a3 endDate:(id)a4
+- (id)getPredictedLocationsOfInterestBetweenStartDate:(id)date endDate:(id)endDate
 {
   v46[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  dateCopy = date;
+  endDateCopy = endDate;
+  v9 = endDateCopy;
   v10 = 0;
-  if (v7 && v8)
+  if (dateCopy && endDateCopy)
   {
-    v11 = [v8 earlierDate:v7];
+    v11 = [endDateCopy earlierDate:dateCopy];
 
     if (v11 == v9)
     {
@@ -2686,13 +2686,13 @@ void __57__RTStateModel_getPredictedExitDatesFromLocation_onDate___block_invoke(
     else
     {
       v12 = objc_opt_new();
-      [v7 timeIntervalSinceReferenceDate];
+      [dateCopy timeIntervalSinceReferenceDate];
       v14 = v13;
       [(RTStateModel *)self getNumberOfWeeksInStateModel];
       v16 = v15;
-      [v9 timeIntervalSinceDate:v7];
+      [v9 timeIntervalSinceDate:dateCopy];
       v18 = v17;
-      v19 = [(RTStateModel *)self stateModelLut];
+      stateModelLut = [(RTStateModel *)self stateModelLut];
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
       v33[2] = __72__RTStateModel_getPredictedLocationsOfInterestBetweenStartDate_endDate___block_invoke;
@@ -2702,7 +2702,7 @@ void __57__RTStateModel_getPredictedExitDatesFromLocation_onDate___block_invoke(
       v37 = v16;
       v20 = v12;
       v34 = v20;
-      [v19 enumerateKeysAndObjectsUsingBlock:v33];
+      [stateModelLut enumerateKeysAndObjectsUsingBlock:v33];
 
       v21 = objc_opt_new();
       v22 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"stateDepiction.getNumOfVisitsOverall" ascending:1];
@@ -2724,16 +2724,16 @@ void __57__RTStateModel_getPredictedExitDatesFromLocation_onDate___block_invoke(
         {
           v26 = NSStringFromSelector(a2);
           v27 = [v10 count];
-          v28 = [v7 stringFromDate];
-          v29 = [v9 stringFromDate];
+          stringFromDate = [dateCopy stringFromDate];
+          stringFromDate2 = [v9 stringFromDate];
           *buf = 138413058;
           v39 = v26;
           v40 = 2048;
           v41 = v27;
           v42 = 2112;
-          v43 = v28;
+          v43 = stringFromDate;
           v44 = 2112;
-          v45 = v29;
+          v45 = stringFromDate2;
           _os_log_impl(&dword_2304B3000, v25, OS_LOG_TYPE_INFO, "%@ found %lu PLOIs the device may travel to between startDate, %@, endDate, %@", buf, 0x2Au);
         }
       }
@@ -2767,20 +2767,20 @@ void __72__RTStateModel_getPredictedLocationsOfInterestBetweenStartDate_endDate_
   [*(a1 + 32) addObject:v5];
 }
 
-- (void)collectMetricsWithIntervalSinceLastUpdate:(double)a3
+- (void)collectMetricsWithIntervalSinceLastUpdate:(double)update
 {
-  v5 = [(RTStateModel *)self metricManager];
+  metricManager = [(RTStateModel *)self metricManager];
 
-  if (v5)
+  if (metricManager)
   {
-    v6 = [(RTStateModel *)self metricManager];
+    metricManager2 = [(RTStateModel *)self metricManager];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __58__RTStateModel_collectMetricsWithIntervalSinceLastUpdate___block_invoke;
     v7[3] = &unk_2788CFD70;
     v7[4] = self;
-    *&v7[5] = a3;
-    [v6 fetchDiagnosticsEnabled:v7];
+    *&v7[5] = update;
+    [metricManager2 fetchDiagnosticsEnabled:v7];
   }
 }
 
@@ -2805,24 +2805,24 @@ void __58__RTStateModel_collectMetricsWithIntervalSinceLastUpdate___block_invoke
   [*(a1 + 32) logStateModelAvailabilityMetricWithIntervalSinceLastUpdate:v2 untilNow:*(a1 + 40)];
 }
 
-- (void)logStateModelAvailabilityMetricWithIntervalSinceLastUpdate:(double)a3 untilNow:(id)a4
+- (void)logStateModelAvailabilityMetricWithIntervalSinceLastUpdate:(double)update untilNow:(id)now
 {
-  v6 = a4;
-  v7 = -a3;
-  if (a3 >= 4233600.0)
+  nowCopy = now;
+  v7 = -update;
+  if (update >= 4233600.0)
   {
     v7 = -4233600.0;
   }
 
-  v21 = v6;
+  v21 = nowCopy;
   v8 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v7 sinceDate:?];
-  v9 = [MEMORY[0x277CBEA80] currentCalendar];
-  v10 = [v9 components:124 fromDate:v8];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v10 = [currentCalendar components:124 fromDate:v8];
 
   [v10 setMinute:0];
   [v10 setSecond:0];
-  v11 = [MEMORY[0x277CBEA80] currentCalendar];
-  v12 = [v11 dateFromComponents:v10];
+  currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+  v12 = [currentCalendar2 dateFromComponents:v10];
 
   if (v12)
   {
@@ -2866,18 +2866,18 @@ void __58__RTStateModel_collectMetricsWithIntervalSinceLastUpdate___block_invoke
   }
 }
 
-- (unsigned)calculateStateModelAvailabilityPrecisionRecallOnDate:(id)a3 predictedLocations:(id)a4 isHighConfidenceOnly:(BOOL)a5
+- (unsigned)calculateStateModelAvailabilityPrecisionRecallOnDate:(id)date predictedLocations:(id)locations isHighConfidenceOnly:(BOOL)only
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  onlyCopy = only;
+  dateCopy = date;
+  locationsCopy = locations;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
-  if ([v9 count])
+  if ([locationsCopy count])
   {
-    if (v5)
+    if (onlyCopy)
     {
       v10 = 6;
     }
@@ -2892,16 +2892,16 @@ void __58__RTStateModel_collectMetricsWithIntervalSinceLastUpdate___block_invoke
     v19[1] = 3221225472;
     v19[2] = __126__RTStateModel_RTMetricManager__calculateStateModelAvailabilityPrecisionRecallOnDate_predictedLocations_isHighConfidenceOnly___block_invoke;
     v19[3] = &unk_2788CFDC0;
-    v20[0] = v8;
+    v20[0] = dateCopy;
     v20[1] = &v22;
-    v21 = v5;
-    [v9 enumerateObjectsUsingBlock:v19];
+    v21 = onlyCopy;
+    [locationsCopy enumerateObjectsUsingBlock:v19];
     v11 = v20;
   }
 
   else
   {
-    if (v5)
+    if (onlyCopy)
     {
       v12 = 7;
     }
@@ -2912,15 +2912,15 @@ void __58__RTStateModel_collectMetricsWithIntervalSinceLastUpdate___block_invoke
     }
 
     *(v23 + 6) = v12;
-    v13 = [(RTStateModel *)self stateModelLut];
+    stateModelLut = [(RTStateModel *)self stateModelLut];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __126__RTStateModel_RTMetricManager__calculateStateModelAvailabilityPrecisionRecallOnDate_predictedLocations_isHighConfidenceOnly___block_invoke_3;
     v16[3] = &unk_2788CFDE8;
-    v17[0] = v8;
+    v17[0] = dateCopy;
     v17[1] = &v22;
-    v18 = v5;
-    [v13 enumerateKeysAndObjectsUsingBlock:v16];
+    v18 = onlyCopy;
+    [stateModelLut enumerateKeysAndObjectsUsingBlock:v16];
     v11 = v17;
   }
 
@@ -3010,10 +3010,10 @@ void __126__RTStateModel_RTMetricManager__calculateStateModelAvailabilityPrecisi
   }
 }
 
-- (id)getMostRecentLocationForDate:(id)a3
+- (id)getMostRecentLocationForDate:(id)date
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v54 = 0;
   v55 = &v54;
   v56 = 0x3032000000;
@@ -3028,34 +3028,34 @@ void __126__RTStateModel_RTMetricManager__calculateStateModelAvailabilityPrecisi
   v49[1] = v49;
   v49[2] = 0x2020000000;
   v49[3] = 0x7FF0000000000000;
-  v5 = [(RTStateModel *)self stateModelLut];
+  stateModelLut = [(RTStateModel *)self stateModelLut];
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
   v45[2] = __62__RTStateModel_RTMetricManager__getMostRecentLocationForDate___block_invoke;
   v45[3] = &unk_2788CFCA8;
-  v40 = v4;
+  v40 = dateCopy;
   v46 = v40;
   v47 = &v54;
   v48 = &v50;
-  [v5 enumerateKeysAndObjectsUsingBlock:v45];
+  [stateModelLut enumerateKeysAndObjectsUsingBlock:v45];
 
   if (v55[5] || (-[RTStateModel stateModelLut](self, "stateModelLut"), v6 = objc_claimAutoreleasedReturnValue(), v41[0] = MEMORY[0x277D85DD0], v41[1] = 3221225472, v41[2] = __62__RTStateModel_RTMetricManager__getMostRecentLocationForDate___block_invoke_3, v41[3] = &unk_2788CFCA8, v42 = v40, v43 = v49, v44 = &v54, [v6 enumerateKeysAndObjectsUsingBlock:v41], v6, v42, v55[5]))
   {
     v7 = objc_alloc(MEMORY[0x277CE41F8]);
-    v8 = [v55[5] stateDepiction];
-    v9 = [v8 location];
-    [v9 Latitude_deg];
+    stateDepiction = [v55[5] stateDepiction];
+    location = [stateDepiction location];
+    [location Latitude_deg];
     v11 = v10;
-    v12 = [v55[5] stateDepiction];
-    v13 = [v12 location];
-    [v13 Longitude_deg];
+    stateDepiction2 = [v55[5] stateDepiction];
+    location2 = [stateDepiction2 location];
+    [location2 Longitude_deg];
     v15 = CLLocationCoordinate2DMake(v11, v14);
-    v16 = [v55[5] stateDepiction];
-    v17 = [v16 location];
-    [v17 uncertainty_m];
+    stateDepiction3 = [v55[5] stateDepiction];
+    location3 = [stateDepiction3 location];
+    [location3 uncertainty_m];
     v19 = v18;
-    v20 = [MEMORY[0x277CBEAA8] date];
-    v21 = [v7 initWithCoordinate:v20 altitude:v15.latitude horizontalAccuracy:v15.longitude verticalAccuracy:0.0 course:v19 speed:0.0 timestamp:{0.0, 0.0}];
+    date = [MEMORY[0x277CBEAA8] date];
+    v21 = [v7 initWithCoordinate:date altitude:v15.latitude horizontalAccuracy:v15.longitude verticalAccuracy:0.0 course:v19 speed:0.0 timestamp:{0.0, 0.0}];
 
     if (v51[3])
     {
@@ -3068,12 +3068,12 @@ void __126__RTStateModel_RTMetricManager__calculateStateModelAvailabilityPrecisi
       v24 = v23;
       v26 = v25;
       v27 = objc_alloc(MEMORY[0x277CE41F8]);
-      v28 = [v55[5] stateDepiction];
-      v29 = [v28 location];
-      [v29 uncertainty_m];
+      stateDepiction4 = [v55[5] stateDepiction];
+      location4 = [stateDepiction4 location];
+      [location4 uncertainty_m];
       v31 = v30;
-      v32 = [MEMORY[0x277CBEAA8] date];
-      v22 = [v27 initWithCoordinate:v32 altitude:v24 horizontalAccuracy:v26 verticalAccuracy:0.0 timestamp:{v31, 0.0}];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      v22 = [v27 initWithCoordinate:date2 altitude:v24 horizontalAccuracy:v26 verticalAccuracy:0.0 timestamp:{v31, 0.0}];
 
       v33 = [[RTStateModelLocation alloc] initWithCLLocation:v22];
       v34 = [(RTStateModel *)self findClusterWithLocation:v33];
@@ -3192,11 +3192,11 @@ void __62__RTStateModel_RTMetricManager__getMostRecentLocationForDate___block_in
   }
 }
 
-- (CLLocationCoordinate2D)getEndingCoordinateWithStartingLocation:(id)a3 distance:(double)a4
+- (CLLocationCoordinate2D)getEndingCoordinateWithStartingLocation:(id)location distance:(double)distance
 {
-  v6 = a3;
-  v7 = [[RTStateModelLocation alloc] initWithCLLocation:v6];
-  v8 = [(RTStateModel *)self getAllLOIsWithinDistance:v7 ofLocation:a4];
+  locationCopy = location;
+  v7 = [[RTStateModelLocation alloc] initWithCLLocation:locationCopy];
+  v8 = [(RTStateModel *)self getAllLOIsWithinDistance:v7 ofLocation:distance];
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -3207,9 +3207,9 @@ void __62__RTStateModel_RTMetricManager__getMostRecentLocationForDate___block_in
   v23[3] = &unk_2788CA700;
   v23[4] = &v24;
   [v8 enumerateObjectsUsingBlock:v23];
-  [v6 coordinate];
+  [locationCopy coordinate];
   v10 = v9;
-  [v6 coordinate];
+  [locationCopy coordinate];
   v11 = v10 * 0.0174532925;
   v13 = v12 * 0.0174532925;
   v14 = (v25[3] + 1000.0) / 1000.0 / 6371.0;
@@ -3236,49 +3236,49 @@ void __82__RTStateModel_RTMetricManager__getEndingCoordinateWithStartingLocation
   *(*(*(a1 + 32) + 8) + 24) = v4 + *(*(*(a1 + 32) + 8) + 24);
 }
 
-- (id)getAllLOIsWithinDistance:(double)a3 ofLocation:(id)a4
+- (id)getAllLOIsWithinDistance:(double)distance ofLocation:(id)location
 {
-  v6 = a4;
+  locationCopy = location;
   v7 = objc_opt_new();
-  v8 = [(RTStateModel *)self _getRecursivelyAllLOIsWithinDistance:v6 ofLocation:v7 previouslyFoundLocationsOfInterest:a3];
+  v8 = [(RTStateModel *)self _getRecursivelyAllLOIsWithinDistance:locationCopy ofLocation:v7 previouslyFoundLocationsOfInterest:distance];
 
-  v9 = [v8 allObjects];
+  allObjects = [v8 allObjects];
 
-  return v9;
+  return allObjects;
 }
 
-- (id)_getRecursivelyAllLOIsWithinDistance:(double)a3 ofLocation:(id)a4 previouslyFoundLocationsOfInterest:(id)a5
+- (id)_getRecursivelyAllLOIsWithinDistance:(double)distance ofLocation:(id)location previouslyFoundLocationsOfInterest:(id)interest
 {
-  v8 = a4;
-  v9 = a5;
+  locationCopy = location;
+  interestCopy = interest;
   v10 = objc_opt_new();
-  v11 = [(RTStateModel *)self stateModelLut];
+  stateModelLut = [(RTStateModel *)self stateModelLut];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __116__RTStateModel_RTMetricManager___getRecursivelyAllLOIsWithinDistance_ofLocation_previouslyFoundLocationsOfInterest___block_invoke;
   v23[3] = &unk_2788CFCD0;
-  v12 = v8;
+  v12 = locationCopy;
   v24 = v12;
-  v26 = a3;
+  distanceCopy = distance;
   v13 = v10;
   v25 = v13;
-  [v11 enumerateKeysAndObjectsUsingBlock:v23];
+  [stateModelLut enumerateKeysAndObjectsUsingBlock:v23];
 
-  [v13 minusSet:v9];
+  [v13 minusSet:interestCopy];
   if ([v13 count])
   {
-    v14 = [objc_alloc(MEMORY[0x277CBEB58]) initWithSet:v9];
+    v14 = [objc_alloc(MEMORY[0x277CBEB58]) initWithSet:interestCopy];
     [v14 unionSet:v13];
-    v15 = [v13 allObjects];
+    allObjects = [v13 allObjects];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __116__RTStateModel_RTMetricManager___getRecursivelyAllLOIsWithinDistance_ofLocation_previouslyFoundLocationsOfInterest___block_invoke_2;
     v19[3] = &unk_2788CF890;
     v16 = v14;
     v20 = v16;
-    v21 = self;
-    v22 = a3;
-    [v15 enumerateObjectsUsingBlock:v19];
+    selfCopy = self;
+    distanceCopy2 = distance;
+    [allObjects enumerateObjectsUsingBlock:v19];
 
     v17 = v16;
   }

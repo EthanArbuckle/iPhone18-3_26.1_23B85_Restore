@@ -1,16 +1,16 @@
 @interface WAAnswerSnippetFactory
-- (id)viewControllerForSnippet:(id)a3;
+- (id)viewControllerForSnippet:(id)snippet;
 @end
 
 @implementation WAAnswerSnippetFactory
 
-- (id)viewControllerForSnippet:(id)a3
+- (id)viewControllerForSnippet:(id)snippet
 {
-  v3 = a3;
+  snippetCopy = snippet;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [[WADetailedSnippetViewController alloc] initWithAnswerSnippet:v3];
+    v4 = [[WADetailedSnippetViewController alloc] initWithAnswerSnippet:snippetCopy];
   }
 
   else

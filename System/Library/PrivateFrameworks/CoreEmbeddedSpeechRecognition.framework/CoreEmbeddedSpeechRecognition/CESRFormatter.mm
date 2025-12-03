@@ -1,15 +1,15 @@
 @interface CESRFormatter
-- (CESRFormatter)initWithAssetConfig:(id)a3;
-- (id)formatSpeechTokensWithAutoPunctuation:(id)a3;
+- (CESRFormatter)initWithAssetConfig:(id)config;
+- (id)formatSpeechTokensWithAutoPunctuation:(id)punctuation;
 @end
 
 @implementation CESRFormatter
 
-- (id)formatSpeechTokensWithAutoPunctuation:(id)a3
+- (id)formatSpeechTokensWithAutoPunctuation:(id)punctuation
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [CESRUtilities earTokensForAFTokens:v4 appendedAutoPunctuation:0];
+  punctuationCopy = punctuation;
+  v5 = [CESRUtilities earTokensForAFTokens:punctuationCopy appendedAutoPunctuation:0];
   formatter = self->_formatter;
   if (objc_opt_respondsToSelector())
   {
@@ -27,7 +27,7 @@
       _os_log_error_impl(&dword_225EEB000, v9, OS_LOG_TYPE_ERROR, "%s Method 'formatWords' not found in EARFormatter", &v12, 0xCu);
     }
 
-    v8 = v4;
+    v8 = punctuationCopy;
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -35,18 +35,18 @@
   return v8;
 }
 
-- (CESRFormatter)initWithAssetConfig:(id)a3
+- (CESRFormatter)initWithAssetConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v18.receiver = self;
   v18.super_class = CESRFormatter;
   v6 = [(CESRFormatter *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_assetConfig, a3);
-    v8 = [MEMORY[0x277CDCE98] sharedInstance];
-    v9 = [v8 installedAssetWithConfig:v7->_assetConfig];
+    objc_storeStrong(&v6->_assetConfig, config);
+    mEMORY[0x277CDCE98] = [MEMORY[0x277CDCE98] sharedInstance];
+    v9 = [mEMORY[0x277CDCE98] installedAssetWithConfig:v7->_assetConfig];
 
     if (v9 && [v9 length])
     {
@@ -62,8 +62,8 @@
       }
 
       v13 = objc_alloc(MEMORY[0x277D07250]);
-      v14 = [(SFEntitledAssetConfig *)v7->_assetConfig language];
-      v15 = [v13 initWithQuasarConfig:v10 overrideConfigFiles:0 supportEmojiRecognition:v11 language:v14];
+      language = [(SFEntitledAssetConfig *)v7->_assetConfig language];
+      v15 = [v13 initWithQuasarConfig:v10 overrideConfigFiles:0 supportEmojiRecognition:v11 language:language];
       formatter = v7->_formatter;
       v7->_formatter = v15;
 

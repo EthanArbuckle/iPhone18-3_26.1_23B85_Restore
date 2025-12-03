@@ -1,14 +1,14 @@
 @interface ICSScheduleForceSendParameter
-+ (id)scheduleForceSendParameterFromCode:(int)a3;
-+ (id)scheduleForceSendParameterFromICSString:(id)a3;
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4;
++ (id)scheduleForceSendParameterFromCode:(int)code;
++ (id)scheduleForceSendParameterFromICSString:(id)string;
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string;
 @end
 
 @implementation ICSScheduleForceSendParameter
 
-+ (id)scheduleForceSendParameterFromICSString:(id)a3
++ (id)scheduleForceSendParameterFromICSString:(id)string
 {
-  v3 = [ICSUserAddress scheduleForceSendFromICSString:a3];
+  v3 = [ICSUserAddress scheduleForceSendFromICSString:string];
   if (v3)
   {
     v4 = [ICSScheduleForceSendParameter scheduleForceSendParameterFromCode:v3];
@@ -22,19 +22,19 @@
   return v4;
 }
 
-+ (id)scheduleForceSendParameterFromCode:(int)a3
++ (id)scheduleForceSendParameterFromCode:(int)code
 {
-  v3 = [(ICSPredefinedValue *)[ICSScheduleForceSendParameter alloc] initWithLong:a3];
+  v3 = [(ICSPredefinedValue *)[ICSScheduleForceSendParameter alloc] initWithLong:code];
 
   return v3;
 }
 
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string
 {
-  v4 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  stringCopy = string;
   v7 = [ICSUserAddress ICSStringFromScheduleForceSend:[(ICSPredefinedValue *)self longValue]];
-  iCalendarAppendStringToStringWithOptions(v7, v6, v4);
+  iCalendarAppendStringToStringWithOptions(v7, stringCopy, optionsCopy);
 }
 
 @end

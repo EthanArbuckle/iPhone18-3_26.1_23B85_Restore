@@ -1,12 +1,12 @@
 @interface CNCardStaticIdentityGroup
 - (BOOL)saveChangesToKTStore;
-- (CNCardStaticIdentityGroup)initWithContact:(id)a3;
+- (CNCardStaticIdentityGroup)initWithContact:(id)contact;
 - (id)currentIdentity;
 - (id)displayItems;
 - (id)editingItems;
-- (void)addIdentity:(id)a3 isNew:(BOOL)a4;
+- (void)addIdentity:(id)identity isNew:(BOOL)new;
 - (void)clearDisplay;
-- (void)removeEditingItem:(id)a3;
+- (void)removeEditingItem:(id)item;
 @end
 
 @implementation CNCardStaticIdentityGroup
@@ -18,22 +18,22 @@
     return 1;
   }
 
-  v3 = [(CNCardStaticIdentityGroup *)self staticIdentities];
-  v4 = [v3 count];
+  staticIdentities = [(CNCardStaticIdentityGroup *)self staticIdentities];
+  v4 = [staticIdentities count];
 
   v5 = MEMORY[0x1E6996BC8];
   if (v4)
   {
-    v6 = [(CNCardStaticIdentityGroup *)self staticIdentities];
-    v7 = [v6 objectAtIndexedSubscript:0];
-    v8 = [(CNCardGroup *)self contact];
-    v9 = [v5 addStaticKeyWithPublicIDString:v7 contact:v8];
+    staticIdentities2 = [(CNCardStaticIdentityGroup *)self staticIdentities];
+    v7 = [staticIdentities2 objectAtIndexedSubscript:0];
+    contact = [(CNCardGroup *)self contact];
+    v9 = [v5 addStaticKeyWithPublicIDString:v7 contact:contact];
   }
 
   else
   {
-    v6 = [(CNCardGroup *)self contact];
-    [v5 removeAccountKeyFromContact:v6];
+    staticIdentities2 = [(CNCardGroup *)self contact];
+    [v5 removeAccountKeyFromContact:staticIdentities2];
     v9 = 1;
   }
 
@@ -44,10 +44,10 @@
 - (id)editingItems
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(CNCardStaticIdentityGroup *)self displayItems];
-  if ([v2 count])
+  displayItems = [(CNCardStaticIdentityGroup *)self displayItems];
+  if ([displayItems count])
   {
-    v3 = v2;
+    v3 = displayItems;
   }
 
   else
@@ -62,8 +62,8 @@
 
 - (id)displayItems
 {
-  v2 = [(CNCardStaticIdentityGroup *)self staticIdentities];
-  v3 = [v2 _cn_map:&__block_literal_global_38040];
+  staticIdentities = [(CNCardStaticIdentityGroup *)self staticIdentities];
+  v3 = [staticIdentities _cn_map:&__block_literal_global_38040];
 
   return v3;
 }
@@ -76,29 +76,29 @@ CNCardStaticIdentityGroupItem *__41__CNCardStaticIdentityGroup_displayItems__blo
   return v3;
 }
 
-- (void)removeEditingItem:(id)a3
+- (void)removeEditingItem:(id)item
 {
-  v7 = a3;
+  itemCopy = item;
   if (![(CNCardStaticIdentityGroup *)self didChange])
   {
-    v4 = [v7 identity];
-    -[CNCardStaticIdentityGroup setDidChange:](self, "setDidChange:", [v4 isEqualToString:@" "] ^ 1);
+    identity = [itemCopy identity];
+    -[CNCardStaticIdentityGroup setDidChange:](self, "setDidChange:", [identity isEqualToString:@" "] ^ 1);
   }
 
-  v5 = [MEMORY[0x1E695DEC8] array];
+  array = [MEMORY[0x1E695DEC8] array];
   staticIdentities = self->_staticIdentities;
-  self->_staticIdentities = v5;
+  self->_staticIdentities = array;
 }
 
 - (id)currentIdentity
 {
-  v3 = [(CNCardStaticIdentityGroup *)self staticIdentities];
-  v4 = [v3 count];
+  staticIdentities = [(CNCardStaticIdentityGroup *)self staticIdentities];
+  v4 = [staticIdentities count];
 
   if (v4)
   {
-    v5 = [(CNCardStaticIdentityGroup *)self staticIdentities];
-    v6 = [v5 objectAtIndexedSubscript:0];
+    staticIdentities2 = [(CNCardStaticIdentityGroup *)self staticIdentities];
+    v6 = [staticIdentities2 objectAtIndexedSubscript:0];
   }
 
   else
@@ -111,31 +111,31 @@ CNCardStaticIdentityGroupItem *__41__CNCardStaticIdentityGroup_displayItems__blo
 
 - (void)clearDisplay
 {
-  v3 = [MEMORY[0x1E695DEC8] array];
+  array = [MEMORY[0x1E695DEC8] array];
   staticIdentities = self->_staticIdentities;
-  self->_staticIdentities = v3;
+  self->_staticIdentities = array;
 
   self->_didChange = 0;
 }
 
-- (void)addIdentity:(id)a3 isNew:(BOOL)a4
+- (void)addIdentity:(id)identity isNew:(BOOL)new
 {
-  v4 = a4;
-  v7 = a3;
+  newCopy = new;
+  identityCopy = identity;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObject:?];
   [(CNCardStaticIdentityGroup *)self setStaticIdentities:v6];
 
-  if (v4 && ([v7 isEqualToString:@" "] & 1) == 0)
+  if (newCopy && ([identityCopy isEqualToString:@" "] & 1) == 0)
   {
     self->_didChange = 1;
   }
 }
 
-- (CNCardStaticIdentityGroup)initWithContact:(id)a3
+- (CNCardStaticIdentityGroup)initWithContact:(id)contact
 {
   v7.receiver = self;
   v7.super_class = CNCardStaticIdentityGroup;
-  v3 = [(CNCardGroup *)&v7 initWithContact:a3];
+  v3 = [(CNCardGroup *)&v7 initWithContact:contact];
   v4 = v3;
   if (v3)
   {

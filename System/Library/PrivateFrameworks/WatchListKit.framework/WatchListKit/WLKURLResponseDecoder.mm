@@ -1,30 +1,30 @@
 @interface WLKURLResponseDecoder
-+ (void)logNetworkHeaders:(id)a3 identifier:(id)a4;
-- (id)resultFromResult:(id)a3 error:(id *)a4;
++ (void)logNetworkHeaders:(id)headers identifier:(id)identifier;
+- (id)resultFromResult:(id)result error:(id *)error;
 @end
 
 @implementation WLKURLResponseDecoder
 
-- (id)resultFromResult:(id)a3 error:(id *)a4
+- (id)resultFromResult:(id)result error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 responseHeaders];
+  resultCopy = result;
+  responseHeaders = [resultCopy responseHeaders];
   v8 = objc_opt_class();
-  v9 = [v6 logUUID];
-  [v8 logNetworkHeaders:v7 identifier:v9];
+  logUUID = [resultCopy logUUID];
+  [v8 logNetworkHeaders:responseHeaders identifier:logUUID];
 
   v12.receiver = self;
   v12.super_class = WLKURLResponseDecoder;
-  v10 = [(AMSURLResponseDecoder *)&v12 resultFromResult:v6 error:a4];
+  v10 = [(AMSURLResponseDecoder *)&v12 resultFromResult:resultCopy error:error];
 
   return v10;
 }
 
-+ (void)logNetworkHeaders:(id)a3 identifier:(id)a4
++ (void)logNetworkHeaders:(id)headers identifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  headersCopy = headers;
+  identifierCopy = identifier;
   if (logNetworkHeaders_identifier__onceToken != -1)
   {
     +[WLKURLResponseDecoder logNetworkHeaders:identifier:];
@@ -32,19 +32,19 @@
 
   if (logNetworkHeaders_identifier__isInternalBuild == 1)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __54__WLKURLResponseDecoder_logNetworkHeaders_identifier___block_invoke_2;
     v11[3] = &unk_279E5F2F8;
-    v8 = v7;
+    v8 = dictionary;
     v12 = v8;
-    [v5 enumerateKeysAndObjectsUsingBlock:v11];
+    [headersCopy enumerateKeysAndObjectsUsingBlock:v11];
     v9 = WLKNetworkingLogObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v14 = v6;
+      v14 = identifierCopy;
       v15 = 2112;
       v16 = v8;
       _os_log_impl(&dword_272A0F000, v9, OS_LOG_TYPE_DEFAULT, "WLKURLResponseDecoder - id: %@ response headers: %@", buf, 0x16u);

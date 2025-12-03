@@ -33,7 +33,7 @@
     v14 = &unk_1E7F18E30;
     v10 = v4;
     v15 = v10;
-    v16 = self;
+    selfCopy = self;
     objc_copyWeak(&v17, &location);
     [(BSServiceConnectionClient *)v9 configureConnection:&v11];
     [(BSServiceConnectionClient *)self->_connection activate:v11];
@@ -103,9 +103,9 @@ void __33__PLHUDControl__ensureConnection__block_invoke_2(uint64_t a1, void *a2)
 
 - (BOOL)internalHUDEnabled
 {
-  v2 = [(PLHUDControl *)self _hudServer];
+  _hudServer = [(PLHUDControl *)self _hudServer];
   v6 = 0;
-  v3 = [v2 isHUDVisibleWithError:&v6];
+  v3 = [_hudServer isHUDVisibleWithError:&v6];
   v4 = v6;
 
   if (v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -129,7 +129,7 @@ void __33__PLHUDControl__ensureConnection__block_invoke_2_cold_1(uint64_t a1)
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1BACB7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "HUD: service encountered error when querying state %@", &v2, 0xCu);
   v1 = *MEMORY[0x1E69E9840];
 }

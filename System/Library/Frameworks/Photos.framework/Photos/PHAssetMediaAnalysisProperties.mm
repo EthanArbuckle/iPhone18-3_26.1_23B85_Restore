@@ -5,7 +5,7 @@
 - ($73DE6CFC58B34F5FFCF9CF852B54AD9C)bestVideoTimeRange;
 - (CGRect)bestPlaybackRect;
 - (PHAssetMediaAnalysisProperties)initWithDefaultValues;
-- (PHAssetMediaAnalysisProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5;
+- (PHAssetMediaAnalysisProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched;
 @end
 
 @implementation PHAssetMediaAnalysisProperties
@@ -41,11 +41,11 @@
   return self;
 }
 
-- (PHAssetMediaAnalysisProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5
+- (PHAssetMediaAnalysisProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  prefetchedCopy = prefetched;
+  dictionaryCopy = dictionary;
+  assetCopy = asset;
   v179.receiver = self;
   v179.super_class = PHAssetMediaAnalysisProperties;
   v10 = [(PHAssetMediaAnalysisProperties *)&v179 init];
@@ -55,9 +55,9 @@
     goto LABEL_174;
   }
 
-  v175 = v9;
-  objc_storeWeak(&v10->super._asset, v9);
-  if (v5)
+  v175 = assetCopy;
+  objc_storeWeak(&v10->super._asset, assetCopy);
+  if (prefetchedCopy)
   {
     v11 = @"mediaAnalysisAttributes.mediaAnalysisTimeStamp";
   }
@@ -67,11 +67,11 @@
     v11 = @"mediaAnalysisTimeStamp";
   }
 
-  v12 = [v8 objectForKey:v11];
+  v12 = [dictionaryCopy objectForKey:v11];
 
   if (!v12)
   {
-    if (v5)
+    if (prefetchedCopy)
     {
       v98 = @"mediaAnalysisAttributes.blurrinessScore";
     }
@@ -82,7 +82,7 @@
     }
 
     [(PHAssetMediaAnalysisProperties *)v10 initWithDefaultValues];
-    v99 = [v8 objectForKeyedSubscript:v98];
+    v99 = [dictionaryCopy objectForKeyedSubscript:v98];
     v100 = v99;
     if (v99)
     {
@@ -90,7 +90,7 @@
       v10->_blurrinessScore = v101;
     }
 
-    if (v5)
+    if (prefetchedCopy)
     {
       v102 = @"mediaAnalysisAttributes.exposureScore";
     }
@@ -100,7 +100,7 @@
       v102 = @"exposureScore";
     }
 
-    v103 = [v8 objectForKeyedSubscript:v102];
+    v103 = [dictionaryCopy objectForKeyedSubscript:v102];
     v104 = v103;
     if (v103)
     {
@@ -108,7 +108,7 @@
       v10->_exposureScore = v105;
     }
 
-    if (v5)
+    if (prefetchedCopy)
     {
       v106 = @"mediaAnalysisAttributes.wallpaperScore";
     }
@@ -118,7 +118,7 @@
       v106 = @"wallpaperScore";
     }
 
-    v107 = [v8 objectForKeyedSubscript:v106];
+    v107 = [dictionaryCopy objectForKeyedSubscript:v106];
     v108 = v107;
     if (v107)
     {
@@ -126,7 +126,7 @@
       v10->_wallpaperScore = v109;
     }
 
-    if (v5)
+    if (prefetchedCopy)
     {
       v110 = @"mediaAnalysisAttributes.syndicationProcessingValue";
     }
@@ -136,14 +136,14 @@
       v110 = @"syndicationProcessingValue";
     }
 
-    v111 = [v8 objectForKeyedSubscript:v110];
+    v111 = [dictionaryCopy objectForKeyedSubscript:v110];
     v112 = v111;
     if (v111)
     {
       v10->_syndicationProcessingValue = [v111 unsignedShortValue];
     }
 
-    if (v5)
+    if (prefetchedCopy)
     {
       v113 = @"mediaAnalysisAttributes.syndicationProcessingVersion";
     }
@@ -153,7 +153,7 @@
       v113 = @"syndicationProcessingVersion";
     }
 
-    v114 = [v8 objectForKeyedSubscript:v113];
+    v114 = [dictionaryCopy objectForKeyedSubscript:v113];
     v115 = v114;
     if (v114)
     {
@@ -161,7 +161,7 @@
     }
 
     v174 = v104;
-    if (v5)
+    if (prefetchedCopy)
     {
       v116 = @"mediaAnalysisAttributes.colorNormalizationData";
     }
@@ -171,14 +171,14 @@
       v116 = @"colorNormalizationData";
     }
 
-    v117 = [v8 objectForKeyedSubscript:v116];
+    v117 = [dictionaryCopy objectForKeyedSubscript:v116];
     if (v117)
     {
       objc_storeStrong(&v10->_colorNormalizationData, v117);
     }
 
     v118 = v100;
-    if (v5)
+    if (prefetchedCopy)
     {
       v119 = @"mediaAnalysisAttributes.probableRotationDirection";
     }
@@ -188,14 +188,14 @@
       v119 = @"probableRotationDirection";
     }
 
-    v120 = [v8 objectForKeyedSubscript:v119];
+    v120 = [dictionaryCopy objectForKeyedSubscript:v119];
     v121 = v120;
     if (v120)
     {
       v10->_probableRotationDirection = [v120 unsignedIntegerValue];
     }
 
-    if (v5)
+    if (prefetchedCopy)
     {
       v122 = @"mediaAnalysisAttributes.probableRotationDirectionConfidence";
     }
@@ -205,7 +205,7 @@
       v122 = @"probableRotationDirectionConfidence";
     }
 
-    v123 = [v8 objectForKeyedSubscript:v122];
+    v123 = [dictionaryCopy objectForKeyedSubscript:v122];
     v124 = v123;
     if (v123)
     {
@@ -213,7 +213,7 @@
       v10->_probableRotationDirectionConfidence = v125;
     }
 
-    if (v5)
+    if (prefetchedCopy)
     {
       goto LABEL_87;
     }
@@ -223,11 +223,11 @@ LABEL_129:
     goto LABEL_130;
   }
 
-  v13 = [v8 objectForKeyedSubscript:v11];
+  v13 = [dictionaryCopy objectForKeyedSubscript:v11];
   mediaAnalysisTimeStamp = v10->_mediaAnalysisTimeStamp;
   v10->_mediaAnalysisTimeStamp = v13;
 
-  if (v5)
+  if (prefetchedCopy)
   {
     v15 = @"mediaAnalysisAttributes.bestVideoRangeDurationTimeScale";
   }
@@ -237,7 +237,7 @@ LABEL_129:
     v15 = @"bestVideoRangeDurationTimeScale";
   }
 
-  if (v5)
+  if (prefetchedCopy)
   {
     v16 = @"mediaAnalysisAttributes.bestVideoRangeDurationValue";
   }
@@ -247,7 +247,7 @@ LABEL_129:
     v16 = @"bestVideoRangeDurationValue";
   }
 
-  if (v5)
+  if (prefetchedCopy)
   {
     v17 = @"mediaAnalysisAttributes.bestVideoRangeStartTimeScale";
   }
@@ -257,7 +257,7 @@ LABEL_129:
     v17 = @"bestVideoRangeStartTimeScale";
   }
 
-  if (v5)
+  if (prefetchedCopy)
   {
     v18 = @"mediaAnalysisAttributes.bestVideoRangeStartValue";
   }
@@ -267,7 +267,7 @@ LABEL_129:
     v18 = @"bestVideoRangeStartValue";
   }
 
-  if (v5)
+  if (prefetchedCopy)
   {
     v19 = @"mediaAnalysisAttributes.animatedStickerRangeDurationTimeScale";
   }
@@ -277,7 +277,7 @@ LABEL_129:
     v19 = @"animatedStickerRangeDurationTimeScale";
   }
 
-  if (v5)
+  if (prefetchedCopy)
   {
     v20 = @"mediaAnalysisAttributes.animatedStickerRangeDurationValue";
   }
@@ -287,7 +287,7 @@ LABEL_129:
     v20 = @"animatedStickerRangeDurationValue";
   }
 
-  if (v5)
+  if (prefetchedCopy)
   {
     v21 = @"mediaAnalysisAttributes.animatedStickerRangeStartTimeScale";
   }
@@ -298,7 +298,7 @@ LABEL_129:
   }
 
   v22 = @"animatedStickerRangeStartValue";
-  if (v5)
+  if (prefetchedCopy)
   {
     v22 = @"mediaAnalysisAttributes.animatedStickerRangeStartValue";
   }
@@ -306,61 +306,61 @@ LABEL_129:
   v168 = v21;
   v170 = v22;
   v23 = @"mediaAnalysisAttributes.packedBestPlaybackRect";
-  if (!v5)
+  if (!prefetchedCopy)
   {
     v23 = @"packedBestPlaybackRect";
   }
 
   v172 = v23;
-  v24 = [v8 objectForKeyedSubscript:v15];
-  v25 = [v24 intValue];
+  v24 = [dictionaryCopy objectForKeyedSubscript:v15];
+  intValue = [v24 intValue];
 
-  v26 = [v8 objectForKeyedSubscript:v16];
-  v27 = [v26 longLongValue];
+  v26 = [dictionaryCopy objectForKeyedSubscript:v16];
+  longLongValue = [v26 longLongValue];
 
-  v28 = [v8 objectForKeyedSubscript:v17];
-  v29 = [v28 intValue];
+  v28 = [dictionaryCopy objectForKeyedSubscript:v17];
+  intValue2 = [v28 intValue];
 
-  v30 = [v8 objectForKeyedSubscript:v18];
-  v31 = [v30 longLongValue];
+  v30 = [dictionaryCopy objectForKeyedSubscript:v18];
+  longLongValue2 = [v30 longLongValue];
 
-  CMTimeMake(&start, v31, v29);
-  CMTimeMake(&duration, v27, v25);
+  CMTimeMake(&start, longLongValue2, intValue2);
+  CMTimeMake(&duration, longLongValue, intValue);
   CMTimeRangeMake(&v178, &start, &duration);
   v32 = *&v178.start.value;
   v33 = *&v178.duration.timescale;
   *&v10->_bestVideoTimeRange.start.epoch = *&v178.start.epoch;
   *&v10->_bestVideoTimeRange.duration.timescale = v33;
   *&v10->_bestVideoTimeRange.start.value = v32;
-  v34 = [v8 objectForKeyedSubscript:v19];
-  v35 = [v34 intValue];
+  v34 = [dictionaryCopy objectForKeyedSubscript:v19];
+  intValue3 = [v34 intValue];
 
-  v36 = [v8 objectForKeyedSubscript:v20];
-  v37 = [v36 longLongValue];
+  v36 = [dictionaryCopy objectForKeyedSubscript:v20];
+  longLongValue3 = [v36 longLongValue];
 
-  v38 = [v8 objectForKeyedSubscript:v168];
-  LODWORD(v27) = [v38 intValue];
+  v38 = [dictionaryCopy objectForKeyedSubscript:v168];
+  LODWORD(longLongValue) = [v38 intValue];
 
-  v39 = [v8 objectForKeyedSubscript:v170];
-  v40 = [v39 longLongValue];
+  v39 = [dictionaryCopy objectForKeyedSubscript:v170];
+  longLongValue4 = [v39 longLongValue];
 
-  CMTimeMake(&start, v40, v27);
-  CMTimeMake(&duration, v37, v35);
+  CMTimeMake(&start, longLongValue4, longLongValue);
+  CMTimeMake(&duration, longLongValue3, intValue3);
   CMTimeRangeMake(&v178, &start, &duration);
   v41 = *&v178.start.value;
   v42 = *&v178.duration.timescale;
   *&v10->_animatedStickerTimeRange.start.epoch = *&v178.start.epoch;
   *&v10->_animatedStickerTimeRange.duration.timescale = v42;
   *&v10->_animatedStickerTimeRange.start.value = v41;
-  v43 = [v8 objectForKeyedSubscript:v172];
-  v44 = [v43 longLongValue];
+  v43 = [dictionaryCopy objectForKeyedSubscript:v172];
+  longLongValue5 = [v43 longLongValue];
 
-  if (v44)
+  if (longLongValue5)
   {
     PLSplitToCGRectFromInt64();
   }
 
-  if (v5)
+  if (prefetchedCopy)
   {
     v45 = @"mediaAnalysisAttributes.blurrinessScore";
   }
@@ -370,7 +370,7 @@ LABEL_129:
     v45 = @"blurrinessScore";
   }
 
-  if (v5)
+  if (prefetchedCopy)
   {
     v46 = @"mediaAnalysisAttributes.exposureScore";
   }
@@ -380,7 +380,7 @@ LABEL_129:
     v46 = @"exposureScore";
   }
 
-  if (v5)
+  if (prefetchedCopy)
   {
     v47 = @"mediaAnalysisAttributes.wallpaperScore";
   }
@@ -390,7 +390,7 @@ LABEL_129:
     v47 = @"wallpaperScore";
   }
 
-  if (v5)
+  if (prefetchedCopy)
   {
     v48 = @"mediaAnalysisAttributes.autoplaySuggestionScore";
   }
@@ -400,7 +400,7 @@ LABEL_129:
     v48 = @"autoplaySuggestionScore";
   }
 
-  if (v5)
+  if (prefetchedCopy)
   {
     v49 = @"mediaAnalysisAttributes.videoStickerSuggestionScore";
   }
@@ -410,7 +410,7 @@ LABEL_129:
     v49 = @"videoStickerSuggestionScore";
   }
 
-  if (v5)
+  if (prefetchedCopy)
   {
     v50 = @"mediaAnalysisAttributes.videoScore";
   }
@@ -420,7 +420,7 @@ LABEL_129:
     v50 = @"videoScore";
   }
 
-  if (v5)
+  if (prefetchedCopy)
   {
     v51 = @"mediaAnalysisAttributes.activityScore";
   }
@@ -431,20 +431,20 @@ LABEL_129:
   }
 
   v52 = @"mediaAnalysisAttributes.audioScore";
-  if (!v5)
+  if (!prefetchedCopy)
   {
     v52 = @"audioScore";
   }
 
   v158 = v52;
   v53 = @"settlingEffectScore";
-  if (v5)
+  if (prefetchedCopy)
   {
     v53 = @"mediaAnalysisAttributes.settlingEffectScore";
   }
 
   v159 = v53;
-  if (v5)
+  if (prefetchedCopy)
   {
     v54 = @"mediaAnalysisAttributes.faceCount";
   }
@@ -455,7 +455,7 @@ LABEL_129:
   }
 
   v160 = v54;
-  if (v5)
+  if (prefetchedCopy)
   {
     v55 = @"mediaAnalysisAttributes.audioClassification";
   }
@@ -466,14 +466,14 @@ LABEL_129:
   }
 
   v56 = @"probableRotationDirection";
-  if (v5)
+  if (prefetchedCopy)
   {
     v56 = @"mediaAnalysisAttributes.probableRotationDirection";
   }
 
   v161 = v55;
   v162 = v56;
-  if (v5)
+  if (prefetchedCopy)
   {
     v57 = @"mediaAnalysisAttributes.probableRotationDirectionConfidence";
   }
@@ -484,7 +484,7 @@ LABEL_129:
   }
 
   v58 = @"mediaAnalysisAttributes.colorNormalizationData";
-  if (!v5)
+  if (!prefetchedCopy)
   {
     v58 = @"colorNormalizationData";
   }
@@ -492,13 +492,13 @@ LABEL_129:
   v163 = v57;
   v164 = v58;
   v59 = @"screenTimeDeviceImageSensitivity";
-  if (v5)
+  if (prefetchedCopy)
   {
     v59 = @"mediaAnalysisAttributes.screenTimeDeviceImageSensitivity";
   }
 
   v165 = v59;
-  if (v5)
+  if (prefetchedCopy)
   {
     v60 = @"mediaAnalysisAttributes.syndicationProcessingValue";
   }
@@ -509,7 +509,7 @@ LABEL_129:
   }
 
   v166 = v60;
-  if (v5)
+  if (prefetchedCopy)
   {
     v61 = @"mediaAnalysisAttributes.syndicationProcessingVersion";
   }
@@ -520,14 +520,14 @@ LABEL_129:
   }
 
   v62 = @"vaAnalysisVersion";
-  if (v5)
+  if (prefetchedCopy)
   {
     v62 = @"mediaAnalysisAttributes.vaAnalysisVersion";
   }
 
   v167 = v61;
   v169 = v62;
-  if (v5)
+  if (prefetchedCopy)
   {
     v63 = @"mediaAnalysisAttributes.vaAnalysisTimestamp";
   }
@@ -538,86 +538,86 @@ LABEL_129:
   }
 
   v64 = @"mediaAnalysisAttributes.vaLocationAnalysisVersion";
-  if (!v5)
+  if (!prefetchedCopy)
   {
     v64 = @"vaLocationAnalysisVersion";
   }
 
   v171 = v63;
   v173 = v64;
-  v65 = [v8 objectForKeyedSubscript:v45];
+  v65 = [dictionaryCopy objectForKeyedSubscript:v45];
   [v65 floatValue];
   v10->_blurrinessScore = v66;
 
-  v67 = [v8 objectForKeyedSubscript:v46];
+  v67 = [dictionaryCopy objectForKeyedSubscript:v46];
   [v67 floatValue];
   v10->_exposureScore = v68;
 
-  v69 = [v8 objectForKeyedSubscript:v47];
+  v69 = [dictionaryCopy objectForKeyedSubscript:v47];
   [v69 floatValue];
   v10->_wallpaperScore = v70;
 
-  v71 = [v8 objectForKeyedSubscript:v48];
+  v71 = [dictionaryCopy objectForKeyedSubscript:v48];
   [v71 floatValue];
   v10->_autoplaySuggestionScore = v72;
 
-  v73 = [v8 objectForKeyedSubscript:v49];
+  v73 = [dictionaryCopy objectForKeyedSubscript:v49];
   [v73 floatValue];
   v10->_videoStickerSuggestionScore = v74;
 
-  v75 = [v8 objectForKeyedSubscript:v50];
+  v75 = [dictionaryCopy objectForKeyedSubscript:v50];
   [v75 floatValue];
   v10->_videoScore = v76;
 
-  v77 = [v8 objectForKeyedSubscript:v51];
+  v77 = [dictionaryCopy objectForKeyedSubscript:v51];
   [v77 floatValue];
   v10->_activityScore = v78;
 
-  v79 = [v8 objectForKeyedSubscript:v158];
+  v79 = [dictionaryCopy objectForKeyedSubscript:v158];
   [v79 floatValue];
   v10->_audioScore = v80;
 
-  v81 = [v8 objectForKeyedSubscript:v159];
+  v81 = [dictionaryCopy objectForKeyedSubscript:v159];
   [v81 floatValue];
   v10->_settlingEffectScore = v82;
 
-  v83 = [v8 objectForKeyedSubscript:v160];
+  v83 = [dictionaryCopy objectForKeyedSubscript:v160];
   v10->_faceCount = [v83 unsignedIntegerValue];
 
-  v84 = [v8 objectForKeyedSubscript:v161];
+  v84 = [dictionaryCopy objectForKeyedSubscript:v161];
   v10->_audioClassification = [v84 shortValue];
 
-  v85 = [v8 objectForKeyedSubscript:v162];
+  v85 = [dictionaryCopy objectForKeyedSubscript:v162];
   v10->_probableRotationDirection = [v85 shortValue];
 
-  v86 = [v8 objectForKeyedSubscript:v163];
+  v86 = [dictionaryCopy objectForKeyedSubscript:v163];
   [v86 floatValue];
   v10->_probableRotationDirectionConfidence = v87;
 
-  v88 = [v8 objectForKeyedSubscript:v164];
+  v88 = [dictionaryCopy objectForKeyedSubscript:v164];
   colorNormalizationData = v10->_colorNormalizationData;
   v10->_colorNormalizationData = v88;
 
-  v90 = [v8 objectForKeyedSubscript:v165];
+  v90 = [dictionaryCopy objectForKeyedSubscript:v165];
   v10->_screenTimeDeviceImageSensitivity = [v90 shortValue];
 
-  v91 = [v8 objectForKeyedSubscript:v166];
+  v91 = [dictionaryCopy objectForKeyedSubscript:v166];
   v10->_syndicationProcessingValue = [v91 unsignedShortValue];
 
-  v92 = [v8 objectForKeyedSubscript:v167];
+  v92 = [dictionaryCopy objectForKeyedSubscript:v167];
   v10->_syndicationProcessingVersion = [v92 unsignedLongLongValue];
 
-  v93 = [v8 objectForKeyedSubscript:v169];
+  v93 = [dictionaryCopy objectForKeyedSubscript:v169];
   v10->_privateEncryptedComputeAnalysisVersion = [v93 integerValue];
 
-  v94 = [v8 objectForKeyedSubscript:v171];
+  v94 = [dictionaryCopy objectForKeyedSubscript:v171];
   privateEncryptedComputeAnalysisTimestamp = v10->_privateEncryptedComputeAnalysisTimestamp;
   v10->_privateEncryptedComputeAnalysisTimestamp = v94;
 
-  v96 = [v8 objectForKeyedSubscript:v173];
+  v96 = [dictionaryCopy objectForKeyedSubscript:v173];
   v10->_privateEncryptedComputeLocationAnalysisVersion = [v96 integerValue];
 
-  if (!v5)
+  if (!prefetchedCopy)
   {
     goto LABEL_129;
   }
@@ -625,10 +625,10 @@ LABEL_129:
 LABEL_87:
   v97 = @"mediaAnalysisAttributes.mediaAnalysisVersion";
 LABEL_130:
-  v126 = [v8 objectForKeyedSubscript:v97];
+  v126 = [dictionaryCopy objectForKeyedSubscript:v97];
   v10->_mediaAnalysisVersion = [v126 unsignedLongLongValue];
 
-  if (v5)
+  if (prefetchedCopy)
   {
     v127 = @"mediaAnalysisAttributes.mediaAnalysisImageVersion";
   }
@@ -638,7 +638,7 @@ LABEL_130:
     v127 = @"mediaAnalysisImageVersion";
   }
 
-  if (v5)
+  if (prefetchedCopy)
   {
     v128 = @"mediaAnalysisAttributes.imageCaptionVersion";
   }
@@ -648,7 +648,7 @@ LABEL_130:
     v128 = @"imageCaptionVersion";
   }
 
-  if (v5)
+  if (prefetchedCopy)
   {
     v129 = @"mediaAnalysisAttributes.videoCaptionVersion";
   }
@@ -658,7 +658,7 @@ LABEL_130:
     v129 = @"videoCaptionVersion";
   }
 
-  if (v5)
+  if (prefetchedCopy)
   {
     v130 = @"mediaAnalysisAttributes.imageEmbeddingVersion";
   }
@@ -668,7 +668,7 @@ LABEL_130:
     v130 = @"imageEmbeddingVersion";
   }
 
-  if (v5)
+  if (prefetchedCopy)
   {
     v131 = @"mediaAnalysisAttributes.videoEmbeddingVersion";
   }
@@ -678,7 +678,7 @@ LABEL_130:
     v131 = @"videoEmbeddingVersion";
   }
 
-  if (v5)
+  if (prefetchedCopy)
   {
     v132 = @"videoKeyFrameTimeScale";
   }
@@ -688,7 +688,7 @@ LABEL_130:
     v132 = @"asset.videoKeyFrameTimeScale";
   }
 
-  if (v5)
+  if (prefetchedCopy)
   {
     v133 = @"videoKeyFrameValue";
   }
@@ -698,23 +698,23 @@ LABEL_130:
     v133 = @"asset.videoKeyFrameValue";
   }
 
-  v134 = [v8 objectForKeyedSubscript:v127];
+  v134 = [dictionaryCopy objectForKeyedSubscript:v127];
   v10->_mediaAnalysisImageVersion = [v134 shortValue];
 
-  v135 = [v8 objectForKeyedSubscript:v128];
+  v135 = [dictionaryCopy objectForKeyedSubscript:v128];
   v10->_imageCaptionVersion = [v135 shortValue];
 
-  v136 = [v8 objectForKeyedSubscript:v129];
+  v136 = [dictionaryCopy objectForKeyedSubscript:v129];
   v10->_videoCaptionVersion = [v136 shortValue];
 
-  v137 = [v8 objectForKeyedSubscript:v130];
+  v137 = [dictionaryCopy objectForKeyedSubscript:v130];
   v10->_imageEmbeddingVersion = [v137 shortValue];
 
-  v138 = [v8 objectForKeyedSubscript:v131];
+  v138 = [dictionaryCopy objectForKeyedSubscript:v131];
   v10->_videoEmbeddingVersion = [v138 shortValue];
 
-  v139 = [v8 objectForKeyedSubscript:v132];
-  v140 = [v8 objectForKeyedSubscript:v133];
+  v139 = [dictionaryCopy objectForKeyedSubscript:v132];
+  v140 = [dictionaryCopy objectForKeyedSubscript:v133];
   v141 = v140;
   p_bestKeyFrameTime = &v10->_bestKeyFrameTime;
   if (v140 && v139)
@@ -732,7 +732,7 @@ LABEL_130:
     v10->_bestKeyFrameTime.epoch = *(v144 + 16);
   }
 
-  if (v5)
+  if (prefetchedCopy)
   {
     v145 = @"computeSyncAttributes.localAnalysisStage";
   }
@@ -742,14 +742,14 @@ LABEL_130:
     v145 = @"asset.computeSyncAttributes.localAnalysisStage";
   }
 
-  v146 = [v8 objectForKeyedSubscript:v145];
+  v146 = [dictionaryCopy objectForKeyedSubscript:v145];
   v147 = v146;
   if (v146)
   {
     v10->_localAnalysisStage = [v146 integerValue];
   }
 
-  if (v5)
+  if (prefetchedCopy)
   {
     v148 = @"computeSyncAttributes.localAnalysisMajorVersion";
   }
@@ -759,14 +759,14 @@ LABEL_130:
     v148 = @"asset.computeSyncAttributes.localAnalysisMajorVersion";
   }
 
-  v149 = [v8 objectForKeyedSubscript:v148];
+  v149 = [dictionaryCopy objectForKeyedSubscript:v148];
   v150 = v149;
   if (v149)
   {
     v10->_localAnalysisMajorVersion = [v149 integerValue];
   }
 
-  if (v5)
+  if (prefetchedCopy)
   {
     v151 = @"computeSyncAttributes.cloudComputeStateVersion";
   }
@@ -776,7 +776,7 @@ LABEL_130:
     v151 = @"asset.computeSyncAttributes.cloudComputeStateVersion";
   }
 
-  v152 = [v8 objectForKeyedSubscript:v151];
+  v152 = [dictionaryCopy objectForKeyedSubscript:v151];
   v153 = [objc_alloc(MEMORY[0x1E6994B78]) initWithString:v152];
   if ([v153 majorVersion])
   {
@@ -784,7 +784,7 @@ LABEL_130:
     v10->_cloudAnalysisStage = [v153 stage];
   }
 
-  if (v5)
+  if (prefetchedCopy)
   {
     v154 = @"mediaAnalysisAttributes.videoSensitivityAnalysisVersion";
   }
@@ -794,10 +794,10 @@ LABEL_130:
     v154 = @"videoSensitivityAnalysisVersion";
   }
 
-  v155 = [v8 objectForKeyedSubscript:v154];
+  v155 = [dictionaryCopy objectForKeyedSubscript:v154];
   v10->_videoSensitivityAnalysisVersion = [v155 shortValue];
 
-  v9 = v175;
+  assetCopy = v175;
 LABEL_174:
   v156 = v10;
 

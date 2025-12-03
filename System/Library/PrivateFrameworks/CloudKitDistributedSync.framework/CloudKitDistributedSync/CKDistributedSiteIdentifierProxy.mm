@@ -4,8 +4,8 @@
 - (id)siteIdentifier;
 - (unint64_t)identifierSize;
 - (unint64_t)modifierSize;
-- (void)copyIdentifierBytes:(void *)a3 length:(unint64_t *)a4 isNull:(BOOL *)a5;
-- (void)copyModifierBytes:(void *)a3 length:(unint64_t *)a4 isNull:(BOOL *)a5;
+- (void)copyIdentifierBytes:(void *)bytes length:(unint64_t *)length isNull:(BOOL *)null;
+- (void)copyModifierBytes:(void *)bytes length:(unint64_t *)length isNull:(BOOL *)null;
 @end
 
 @implementation CKDistributedSiteIdentifierProxy
@@ -44,28 +44,28 @@
   return v22;
 }
 
-- (void)copyIdentifierBytes:(void *)a3 length:(unint64_t *)a4 isNull:(BOOL *)a5
+- (void)copyIdentifierBytes:(void *)bytes length:(unint64_t *)length isNull:(BOOL *)null
 {
-  v11 = objc_msgSend_backingStore(self, a2, a3, a4, a5, v5, v6);
+  v11 = objc_msgSend_backingStore(self, a2, bytes, length, null, v5, v6);
   if (v11)
   {
     v21 = v11;
     v18 = objc_msgSend_binding(v11, v12, v13, v14, v15, v16, v17);
-    objc_msgSend_copyBytes_length_isNull_forToken_(self, v19, a3, a4, a5, v18[2], v20);
+    objc_msgSend_copyBytes_length_isNull_forToken_(self, v19, bytes, length, null, v18[2], v20);
 
     v11 = v21;
   }
 
   else
   {
-    if (a4)
+    if (length)
     {
-      *a4 = 0;
+      *length = 0;
     }
 
-    if (a5)
+    if (null)
     {
-      *a5 = 1;
+      *null = 1;
     }
   }
 }
@@ -104,28 +104,28 @@
   return v22;
 }
 
-- (void)copyModifierBytes:(void *)a3 length:(unint64_t *)a4 isNull:(BOOL *)a5
+- (void)copyModifierBytes:(void *)bytes length:(unint64_t *)length isNull:(BOOL *)null
 {
-  v11 = objc_msgSend_backingStore(self, a2, a3, a4, a5, v5, v6);
+  v11 = objc_msgSend_backingStore(self, a2, bytes, length, null, v5, v6);
   if (v11)
   {
     v21 = v11;
     v18 = objc_msgSend_binding(v11, v12, v13, v14, v15, v16, v17);
-    objc_msgSend_copyBytes_length_isNull_forToken_(self, v19, a3, a4, a5, v18[3], v20);
+    objc_msgSend_copyBytes_length_isNull_forToken_(self, v19, bytes, length, null, v18[3], v20);
 
     v11 = v21;
   }
 
   else
   {
-    if (a4)
+    if (length)
     {
-      *a4 = 0;
+      *length = 0;
     }
 
-    if (a5)
+    if (null)
     {
-      *a5 = 1;
+      *null = 1;
     }
   }
 }

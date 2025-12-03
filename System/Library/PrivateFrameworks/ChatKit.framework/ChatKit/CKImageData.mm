@@ -1,21 +1,21 @@
 @interface CKImageData
-+ (id)UTITypeForData:(id)a3;
++ (id)UTITypeForData:(id)data;
 - (CGSize)ptSize;
 - (CGSize)pxSize;
-- (CGSize)sizeForImageSource:(CGImageSource *)a3 index:(unint64_t)a4;
-- (CKImageData)initWithData:(id)a3;
-- (CKImageData)initWithURL:(id)a3;
+- (CGSize)sizeForImageSource:(CGImageSource *)source index:(unint64_t)index;
+- (CKImageData)initWithData:(id)data;
+- (CKImageData)initWithURL:(id)l;
 - (NSData)data;
 - (NSString)MIMEType;
 - (UIImage)image;
-- (id)_defaultDurationsWithMaxCount:(unint64_t)a3;
-- (id)_thumbnailFillToSize:(CGSize)a3 atIndex:(unint64_t)a4;
-- (id)_thumbnailFitToSize:(CGSize)a3 atIndex:(unint64_t)a4;
-- (id)durationsWithMaxCount:(unint64_t)a3;
-- (id)thumbnailAtIndex:(unint64_t)a3 fillToSize:(CGSize)a4 maxCount:(unint64_t)a5;
-- (id)thumbnailFillToSizeCropping:(CGSize)a3;
-- (id)thumbnailsFillToSize:(CGSize)a3 maxCount:(unint64_t)a4;
-- (id)thumbnailsFitToSize:(CGSize)a3 maxCount:(unint64_t)a4;
+- (id)_defaultDurationsWithMaxCount:(unint64_t)count;
+- (id)_thumbnailFillToSize:(CGSize)size atIndex:(unint64_t)index;
+- (id)_thumbnailFitToSize:(CGSize)size atIndex:(unint64_t)index;
+- (id)durationsWithMaxCount:(unint64_t)count;
+- (id)thumbnailAtIndex:(unint64_t)index fillToSize:(CGSize)size maxCount:(unint64_t)count;
+- (id)thumbnailFillToSizeCropping:(CGSize)cropping;
+- (id)thumbnailsFillToSize:(CGSize)size maxCount:(unint64_t)count;
+- (id)thumbnailsFitToSize:(CGSize)size maxCount:(unint64_t)count;
 - (unint64_t)count;
 - (void)_initializeProperties;
 - (void)dealloc;
@@ -36,29 +36,29 @@
   [(CKImageData *)&v4 dealloc];
 }
 
-+ (id)UTITypeForData:(id)a3
++ (id)UTITypeForData:(id)data
 {
-  v3 = a3;
-  v4 = [[CKImageData alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[CKImageData alloc] initWithData:dataCopy];
 
-  v5 = [(CKImageData *)v4 UTIType];
+  uTIType = [(CKImageData *)v4 UTIType];
 
-  return v5;
+  return uTIType;
 }
 
-- (CKImageData)initWithData:(id)a3
+- (CKImageData)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v7.receiver = self;
   v7.super_class = CKImageData;
   v5 = [(CKImageData *)&v7 init];
   if (v5)
   {
-    if (v4)
+    if (dataCopy)
     {
-      v5->_imageSource = CGImageSourceCreateWithData(v4, 0);
+      v5->_imageSource = CGImageSourceCreateWithData(dataCopy, 0);
       v5->_count = 0x7FFFFFFFFFFFFFFFLL;
-      [(CKImageData *)v5 setData:v4];
+      [(CKImageData *)v5 setData:dataCopy];
     }
 
     if (!v5->_imageSource)
@@ -71,20 +71,20 @@
   return v5;
 }
 
-- (CKImageData)initWithURL:(id)a3
+- (CKImageData)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v8.receiver = self;
   v8.super_class = CKImageData;
   v5 = [(CKImageData *)&v8 init];
   v6 = v5;
-  if (v4)
+  if (lCopy)
   {
     if (v5)
     {
-      v5->_imageSource = CGImageSourceCreateWithURL(v4, 0);
+      v5->_imageSource = CGImageSourceCreateWithURL(lCopy, 0);
       v6->_count = 0x7FFFFFFFFFFFFFFFLL;
-      [(CKImageData *)v6 setUrl:v4];
+      [(CKImageData *)v6 setUrl:lCopy];
       if (!v6->_imageSource)
       {
 
@@ -121,8 +121,8 @@
   if (!image)
   {
     v4 = MEMORY[0x1E69DCAB8];
-    v5 = [(CKImageData *)self data];
-    v6 = [v4 ckImageWithData:v5];
+    data = [(CKImageData *)self data];
+    v6 = [v4 ckImageWithData:data];
     v7 = self->_image;
     self->_image = v6;
 
@@ -132,12 +132,12 @@
   return image;
 }
 
-- (id)thumbnailFillToSizeCropping:(CGSize)a3
+- (id)thumbnailFillToSizeCropping:(CGSize)cropping
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v6 scale];
+  height = cropping.height;
+  width = cropping.width;
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v8 = v7;
 
   [(CKImageData *)self ptSize];
@@ -168,8 +168,8 @@
   }
 
   v17 = v8 * fmax(ceil(v14 * v16) / v16, ceil(v15 * v16) / v16);
-  v18 = [(CKImageData *)self UTIType];
-  if (!UTTypeConformsTo(v18, *MEMORY[0x1E6963808]) || [(CKImageData *)self count]> 1 || ([(CKImageData *)self data], (ThumbnailWithImageSourceAtIndexForMaxDimension = _CreateThumbnailWithJPEGForMaxDimension(v17)) == 0))
+  uTIType = [(CKImageData *)self UTIType];
+  if (!UTTypeConformsTo(uTIType, *MEMORY[0x1E6963808]) || [(CKImageData *)self count]> 1 || ([(CKImageData *)self data], (ThumbnailWithImageSourceAtIndexForMaxDimension = _CreateThumbnailWithJPEGForMaxDimension(v17)) == 0))
   {
     ThumbnailWithImageSourceAtIndexForMaxDimension = _CreateThumbnailWithImageSourceAtIndexForMaxDimension(self->_imageSource, 0, v17);
   }
@@ -190,31 +190,31 @@
   return v21;
 }
 
-- (id)thumbnailsFitToSize:(CGSize)a3 maxCount:(unint64_t)a4
+- (id)thumbnailsFitToSize:(CGSize)size maxCount:(unint64_t)count
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v27 = *MEMORY[0x1E69E9840];
   v8 = [(CKImageData *)self count];
   v9 = v8;
   v10 = 1.0;
-  if (v8 > a4)
+  if (v8 > count)
   {
-    v10 = v8 / a4;
+    v10 = v8 / count;
   }
 
   v11 = objc_alloc(MEMORY[0x1E695DF70]);
-  if (v9 >= a4)
+  if (v9 >= count)
   {
-    v12 = a4;
+    countCopy = count;
   }
 
   else
   {
-    v12 = v9;
+    countCopy = v9;
   }
 
-  v13 = [v11 initWithCapacity:v12];
+  v13 = [v11 initWithCapacity:countCopy];
   if (v9)
   {
     v14 = 0;
@@ -223,10 +223,10 @@
     {
       if (v15 <= v14)
       {
-        v16 = [(CKImageData *)self _thumbnailFitToSize:v14 atIndex:width, height];
-        if (v16)
+        height = [(CKImageData *)self _thumbnailFitToSize:v14 atIndex:width, height];
+        if (height)
         {
-          [v13 addObject:v16];
+          [v13 addObject:height];
         }
 
         v15 = v10 + v15;
@@ -238,7 +238,7 @@
     while (v9 != v14);
   }
 
-  if (v9 > a4)
+  if (v9 > count)
   {
     if (IMOSLoggingEnabled())
     {
@@ -249,7 +249,7 @@
         *buf = 134218752;
         v20 = v9;
         v21 = 2048;
-        v22 = a4;
+        countCopy2 = count;
         v23 = 2048;
         v24 = v10;
         v25 = 2048;
@@ -268,50 +268,50 @@
   return v13;
 }
 
-- (id)thumbnailAtIndex:(unint64_t)a3 fillToSize:(CGSize)a4 maxCount:(unint64_t)a5
+- (id)thumbnailAtIndex:(unint64_t)index fillToSize:(CGSize)size maxCount:(unint64_t)count
 {
-  height = a4.height;
-  width = a4.width;
-  if (a3 >= a5)
+  height = size.height;
+  width = size.width;
+  if (index >= count)
   {
     [CKImageData thumbnailAtIndex:a2 fillToSize:self maxCount:?];
   }
 
   v10 = [(CKImageData *)self count];
   v11 = 1.0;
-  if (v10 > a5)
+  if (v10 > count)
   {
-    v11 = v10 / a5;
+    v11 = v10 / count;
   }
 
-  return [(CKImageData *)self _thumbnailFitToSize:(v11 * a3) atIndex:width, height];
+  return [(CKImageData *)self _thumbnailFitToSize:(v11 * index) atIndex:width, height];
 }
 
-- (id)thumbnailsFillToSize:(CGSize)a3 maxCount:(unint64_t)a4
+- (id)thumbnailsFillToSize:(CGSize)size maxCount:(unint64_t)count
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v27 = *MEMORY[0x1E69E9840];
   v8 = [(CKImageData *)self count];
   v9 = v8;
   v10 = 1.0;
-  if (v8 > a4)
+  if (v8 > count)
   {
-    v10 = v8 / a4;
+    v10 = v8 / count;
   }
 
   v11 = objc_alloc(MEMORY[0x1E695DF70]);
-  if (v9 >= a4)
+  if (v9 >= count)
   {
-    v12 = a4;
+    countCopy = count;
   }
 
   else
   {
-    v12 = v9;
+    countCopy = v9;
   }
 
-  v13 = [v11 initWithCapacity:v12];
+  v13 = [v11 initWithCapacity:countCopy];
   if (v9)
   {
     v14 = 0;
@@ -320,10 +320,10 @@
     {
       if (v15 <= v14)
       {
-        v16 = [(CKImageData *)self _thumbnailFillToSize:v14 atIndex:width, height];
-        if (v16)
+        height = [(CKImageData *)self _thumbnailFillToSize:v14 atIndex:width, height];
+        if (height)
         {
-          [v13 addObject:v16];
+          [v13 addObject:height];
         }
 
         v15 = v10 + v15;
@@ -335,7 +335,7 @@
     while (v9 != v14);
   }
 
-  if (v9 > a4)
+  if (v9 > count)
   {
     if (IMOSLoggingEnabled())
     {
@@ -346,7 +346,7 @@
         *buf = 134218752;
         v20 = v9;
         v21 = 2048;
-        v22 = a4;
+        countCopy2 = count;
         v23 = 2048;
         v24 = v10;
         v25 = 2048;
@@ -365,21 +365,21 @@
   return v13;
 }
 
-- (id)_defaultDurationsWithMaxCount:(unint64_t)a3
+- (id)_defaultDurationsWithMaxCount:(unint64_t)count
 {
-  v3 = a3;
+  countCopy = count;
   v12[1] = *MEMORY[0x1E69E9840];
-  if ([(CKImageData *)self count]< a3)
+  if ([(CKImageData *)self count]< count)
   {
-    v3 = [(CKImageData *)self count];
+    countCopy = [(CKImageData *)self count];
   }
 
-  v5 = v3;
-  bzero(v12 - ((8 * v3 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * v3);
-  if (v3)
+  v5 = countCopy;
+  bzero(v12 - ((8 * countCopy + 15) & 0xFFFFFFFFFFFFFFF0), 8 * countCopy);
+  if (countCopy)
   {
-    v6 = v3;
-    v7 = (v12 - ((8 * v3 + 15) & 0xFFFFFFFFFFFFFFF0));
+    v6 = countCopy;
+    v7 = (v12 - ((8 * countCopy + 15) & 0xFFFFFFFFFFFFFFF0));
     do
     {
       v8 = [MEMORY[0x1E696AD98] numberWithDouble:0.0666666667];
@@ -392,8 +392,8 @@
     while (v6);
   }
 
-  v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 - ((8 * v3 + 15) & 0xFFFFFFFFFFFFFFF0) count:v3];
-  if (v3)
+  v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 - ((8 * countCopy + 15) & 0xFFFFFFFFFFFFFFF0) count:countCopy];
+  if (countCopy)
   {
     do
     {
@@ -405,10 +405,10 @@
   return v10;
 }
 
-- (id)durationsWithMaxCount:(unint64_t)a3
+- (id)durationsWithMaxCount:(unint64_t)count
 {
   v57 = *MEMORY[0x1E69E9840];
-  v4 = [(CKImageData *)self UTIType];
+  uTIType = [(CKImageData *)self UTIType];
   IsSupportedAnimatedImage = IMUTTypeIsSupportedAnimatedImage();
 
   if (IsSupportedAnimatedImage)
@@ -416,23 +416,23 @@
     v6 = [(CKImageData *)self count];
     v7 = v6;
     v8 = 1.0;
-    if (v6 > a3)
+    if (v6 > count)
     {
-      v8 = v6 / a3;
+      v8 = v6 / count;
     }
 
     v9 = objc_alloc(MEMORY[0x1E695DF70]);
-    if (v7 >= a3)
+    if (v7 >= count)
     {
-      v10 = a3;
+      countCopy = count;
     }
 
     else
     {
-      v10 = v7;
+      countCopy = v7;
     }
 
-    v11 = [v9 initWithCapacity:v10];
+    v11 = [v9 initWithCapacity:countCopy];
     if (v7)
     {
       v12 = 0;
@@ -539,7 +539,7 @@
 
     v36 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:v17];
     [v11 addObject:v36];
-    if (v7 > a3)
+    if (v7 > count)
     {
       if (IMOSLoggingEnabled())
       {
@@ -551,7 +551,7 @@
           *&valuePtr = 3.8523e-34;
           v50 = v7;
           v51 = 2048;
-          v52 = a3;
+          countCopy2 = count;
           v53 = 2048;
           v54 = v8;
           v55 = 2048;
@@ -578,25 +578,25 @@
 
 - (NSString)MIMEType
 {
-  v2 = [(CKImageData *)self UTIType];
-  if (UTTypeConformsTo(v2, *MEMORY[0x1E6963808]))
+  uTIType = [(CKImageData *)self UTIType];
+  if (UTTypeConformsTo(uTIType, *MEMORY[0x1E6963808]))
   {
     v3 = @"image/jpeg";
   }
 
-  else if (UTTypeConformsTo(v2, *MEMORY[0x1E6963860]))
+  else if (UTTypeConformsTo(uTIType, *MEMORY[0x1E6963860]))
   {
     v3 = @"image/png";
   }
 
-  else if (UTTypeConformsTo(v2, *MEMORY[0x1E69637D8]))
+  else if (UTTypeConformsTo(uTIType, *MEMORY[0x1E69637D8]))
   {
     v3 = @"image/gif";
   }
 
   else
   {
-    NSLog(&cfstr_NoMimeTypeForI.isa, v2);
+    NSLog(&cfstr_NoMimeTypeForI.isa, uTIType);
     v3 = 0;
   }
 
@@ -608,8 +608,8 @@
   [(CKImageData *)self pxSize];
   v3 = v2;
   v5 = v4;
-  v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v6 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v8 = v7;
 
   v9 = v3 / v8;
@@ -716,16 +716,16 @@ LABEL_20:
       }
     }
 
-    v14 = [v11 integerValue];
+    integerValue = [v11 integerValue];
     v15 = 2;
     v16 = 3;
-    v17 = v14 != 6;
-    if (v14 != 6)
+    v17 = integerValue != 6;
+    if (integerValue != 6)
     {
       v16 = 0;
     }
 
-    if (v14 == 8)
+    if (integerValue == 8)
     {
       v17 = 0;
     }
@@ -735,8 +735,8 @@ LABEL_20:
       v15 = v16;
     }
 
-    v18 = v14 == 3 || v17;
-    if (v14 == 3)
+    v18 = integerValue == 3 || v17;
+    if (integerValue == 3)
     {
       v12 = 1;
     }
@@ -750,12 +750,12 @@ LABEL_20:
   }
 }
 
-- (id)_thumbnailFitToSize:(CGSize)a3 atIndex:(unint64_t)a4
+- (id)_thumbnailFitToSize:(CGSize)size atIndex:(unint64_t)index
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v8 scale];
+  height = size.height;
+  width = size.width;
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v10 = v9;
 
   [(CKImageData *)self ptSize];
@@ -773,21 +773,21 @@ LABEL_20:
 
   v15 = fmin(v13, v14);
   v16 = v10 * fmax(floor(v11 * v15), floor(v12 * v15));
-  v17 = [(CKImageData *)self UTIType];
-  v18 = [v17 isEqualToString:@"public.heics"];
+  uTIType = [(CKImageData *)self UTIType];
+  v18 = [uTIType isEqualToString:@"public.heics"];
 
-  v19 = [(CKImageData *)self UTIType];
-  v20 = [*MEMORY[0x1E6982E58] identifier];
-  v21 = [v19 isEqualToString:v20];
+  uTIType2 = [(CKImageData *)self UTIType];
+  identifier = [*MEMORY[0x1E6982E58] identifier];
+  v21 = [uTIType2 isEqualToString:identifier];
 
-  if (a4 || !v21 || [(CKImageData *)self count]> 1)
+  if (index || !v21 || [(CKImageData *)self count]> 1)
   {
     if (!v18)
     {
       goto LABEL_15;
     }
 
-    [(CKImageData *)self sizeForImageSource:self->_imageSource index:a4];
+    [(CKImageData *)self sizeForImageSource:self->_imageSource index:index];
     if (v23 <= v24)
     {
       v23 = v24;
@@ -798,7 +798,7 @@ LABEL_20:
       goto LABEL_15;
     }
 
-    ThumbnailFromHEICSWithMaxDimension = _CreateThumbnailFromHEICSWithMaxDimension(self->_imageSource, a4);
+    ThumbnailFromHEICSWithMaxDimension = _CreateThumbnailFromHEICSWithMaxDimension(self->_imageSource, index);
   }
 
   else
@@ -817,7 +817,7 @@ LABEL_16:
   }
 
 LABEL_15:
-  ThumbnailWithImageSourceAtIndexForMaxDimension = _CreateThumbnailWithImageSourceAtIndexForMaxDimension(self->_imageSource, a4, v16);
+  ThumbnailWithImageSourceAtIndexForMaxDimension = _CreateThumbnailWithImageSourceAtIndexForMaxDimension(self->_imageSource, index, v16);
   if (ThumbnailWithImageSourceAtIndexForMaxDimension)
   {
     goto LABEL_16;
@@ -829,9 +829,9 @@ LABEL_18:
   return v26;
 }
 
-- (CGSize)sizeForImageSource:(CGImageSource *)a3 index:(unint64_t)a4
+- (CGSize)sizeForImageSource:(CGImageSource *)source index:(unint64_t)index
 {
-  v4 = CGImageSourceCopyPropertiesAtIndex(a3, a4, 0);
+  v4 = CGImageSourceCopyPropertiesAtIndex(source, index, 0);
   v5 = v4;
   if (v4)
   {
@@ -857,12 +857,12 @@ LABEL_18:
   return result;
 }
 
-- (id)_thumbnailFillToSize:(CGSize)a3 atIndex:(unint64_t)a4
+- (id)_thumbnailFillToSize:(CGSize)size atIndex:(unint64_t)index
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v8 scale];
+  height = size.height;
+  width = size.width;
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v10 = v9;
 
   [(CKImageData *)self ptSize];
@@ -880,7 +880,7 @@ LABEL_18:
 
   v15 = fmax(v13, v14);
   v16 = v10 * fmax(round(v10 * (v11 * v15)) / v10, round(v10 * (v12 * v15)) / v10);
-  if (!a4 && (v20 = [(CKImageData *)self UTIType], UTTypeConformsTo(v20, *MEMORY[0x1E6963808])) && [(CKImageData *)self count]<= 1 && ([(CKImageData *)self data], (ThumbnailWithJPEGForMaxDimension = _CreateThumbnailWithJPEGForMaxDimension(v16)) != 0) || (ThumbnailWithJPEGForMaxDimension = _CreateThumbnailWithImageSourceAtIndexForMaxDimension(self->_imageSource, a4, v16)) != 0)
+  if (!index && (v20 = [(CKImageData *)self UTIType], UTTypeConformsTo(v20, *MEMORY[0x1E6963808])) && [(CKImageData *)self count]<= 1 && ([(CKImageData *)self data], (ThumbnailWithJPEGForMaxDimension = _CreateThumbnailWithJPEGForMaxDimension(v16)) != 0) || (ThumbnailWithJPEGForMaxDimension = _CreateThumbnailWithImageSourceAtIndexForMaxDimension(self->_imageSource, index, v16)) != 0)
   {
     v18 = ThumbnailWithJPEGForMaxDimension;
     v19 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:ThumbnailWithJPEGForMaxDimension scale:0 orientation:v10];

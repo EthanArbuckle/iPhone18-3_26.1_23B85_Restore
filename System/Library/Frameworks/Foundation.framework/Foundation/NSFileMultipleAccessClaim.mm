@@ -1,33 +1,33 @@
 @interface NSFileMultipleAccessClaim
-- (BOOL)blocksClaim:(id)a3;
-- (BOOL)evaluateSelfWithRootNode:(id)a3 checkSubarbitrability:(BOOL)a4;
-- (BOOL)isBlockedByReadingItemAtLocation:(id)a3 options:(unint64_t)a4;
-- (BOOL)isBlockedByWritingItemAtLocation:(id)a3 options:(unint64_t)a4;
+- (BOOL)blocksClaim:(id)claim;
+- (BOOL)evaluateSelfWithRootNode:(id)node checkSubarbitrability:(BOOL)subarbitrability;
+- (BOOL)isBlockedByReadingItemAtLocation:(id)location options:(unint64_t)options;
+- (BOOL)isBlockedByWritingItemAtLocation:(id)location options:(unint64_t)options;
 - (BOOL)shouldBeRevokedPriorToInvokingAccessor;
 - (BOOL)shouldCancelInsteadOfWaiting;
-- (NSFileMultipleAccessClaim)initWithCoder:(id)a3;
-- (NSFileMultipleAccessClaim)initWithPurposeID:(id)a3 intents:(id)a4 claimer:(id)a5;
+- (NSFileMultipleAccessClaim)initWithCoder:(id)coder;
+- (NSFileMultipleAccessClaim)initWithPurposeID:(id)d intents:(id)intents claimer:(id)claimer;
 - (id)allURLs;
 - (void)dealloc;
 - (void)devalueSelf;
-- (void)encodeWithCoder:(id)a3;
-- (void)forwardUsingConnection:(id)a3 crashHandler:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)forwardUsingConnection:(id)connection crashHandler:(id)handler;
 - (void)granted;
 - (void)invokeClaimer;
-- (void)itemAtLocation:(id)a3 wasReplacedByItemAtLocation:(id)a4;
+- (void)itemAtLocation:(id)location wasReplacedByItemAtLocation:(id)atLocation;
 - (void)protectFilesAgainstEviction;
-- (void)resolveURLsThenMaybeContinueInvokingClaimer:(id)a3;
+- (void)resolveURLsThenMaybeContinueInvokingClaimer:(id)claimer;
 @end
 
 @implementation NSFileMultipleAccessClaim
 
-- (NSFileMultipleAccessClaim)initWithPurposeID:(id)a3 intents:(id)a4 claimer:(id)a5
+- (NSFileMultipleAccessClaim)initWithPurposeID:(id)d intents:(id)intents claimer:(id)claimer
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = [(NSFileAccessClaim *)self initWithClient:0 claimID:0 purposeID:a3];
+  v7 = [(NSFileAccessClaim *)self initWithClient:0 claimID:0 purposeID:d];
   if (v7)
   {
-    v7->super._claimerOrNil = [a5 copy];
+    v7->super._claimerOrNil = [claimer copy];
     v7->_readingURLs = objc_opt_new();
     v7->_writingURLs = objc_opt_new();
     v17[0] = MEMORY[0x1E69E9820];
@@ -35,7 +35,7 @@
     v17[2] = __63__NSFileMultipleAccessClaim_initWithPurposeID_intents_claimer___block_invoke;
     v17[3] = &unk_1E69F8640;
     v17[4] = v7;
-    [a4 enumerateObjectsUsingBlock:v17];
+    [intents enumerateObjectsUsingBlock:v17];
     v7->_readingURLsDidChange = malloc_type_calloc(1uLL, [(NSMutableArray *)v7->_readingURLs count], 0x509CE79AuLL);
     v7->_writingURLsDidChange = malloc_type_calloc(1uLL, [(NSMutableArray *)v7->_writingURLs count], 0xC7731C4AuLL);
     v7->_readingOptions = malloc_type_calloc(8uLL, [(NSMutableArray *)v7->_readingURLs count], 0x6D0E1DE6uLL);
@@ -44,7 +44,7 @@
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = [a4 countByEnumeratingWithState:&v19 objects:v18 count:16];
+    v8 = [intents countByEnumeratingWithState:&v19 objects:v18 count:16];
     if (v8)
     {
       v9 = v8;
@@ -57,14 +57,14 @@
         {
           if (*v20 != v12)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(intents);
           }
 
           v14 = *(*(&v19 + 1) + 8 * i);
           if ([v14 isRead])
           {
-            v15 = [v14 readingOptions];
-            v7->_readingOptions[v10++] = (v15 << 14) & 0x20000 | v15;
+            readingOptions = [v14 readingOptions];
+            v7->_readingOptions[v10++] = (readingOptions << 14) & 0x20000 | readingOptions;
           }
 
           else
@@ -73,7 +73,7 @@
           }
         }
 
-        v9 = [a4 countByEnumeratingWithState:&v19 objects:v18 count:16];
+        v9 = [intents countByEnumeratingWithState:&v19 objects:v18 count:16];
       }
 
       while (v9);
@@ -112,7 +112,7 @@ uint64_t __63__NSFileMultipleAccessClaim_initWithPurposeID_intents_claimer___blo
   [(NSFileAccessClaim *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = *MEMORY[0x1E69E9840];
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -120,16 +120,16 @@ uint64_t __63__NSFileMultipleAccessClaim_initWithPurposeID_intents_claimer___blo
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"NSFileAccessClaims should only ever be encoded by XPC" userInfo:0]);
   }
 
-  [a3 encodeObject:pairsForURLs(self->_readingURLs) forKey:@"NSReadingURLPairsKey"];
-  [a3 encodeBytes:self->_readingOptions length:8 * -[NSMutableArray count](self->_readingURLs forKey:{"count"), @"NSReadingOptionsKey"}];
-  [a3 encodeObject:pairsForURLs(self->_writingURLs) forKey:@"NSWritingURLPairsKey"];
-  [a3 encodeBytes:self->_writingOptions length:8 * -[NSMutableArray count](self->_writingURLs forKey:{"count"), @"NSWritingOptionsKey"}];
+  [coder encodeObject:pairsForURLs(self->_readingURLs) forKey:@"NSReadingURLPairsKey"];
+  [coder encodeBytes:self->_readingOptions length:8 * -[NSMutableArray count](self->_readingURLs forKey:{"count"), @"NSReadingOptionsKey"}];
+  [coder encodeObject:pairsForURLs(self->_writingURLs) forKey:@"NSWritingURLPairsKey"];
+  [coder encodeBytes:self->_writingOptions length:8 * -[NSMutableArray count](self->_writingURLs forKey:{"count"), @"NSWritingOptionsKey"}];
   v5.receiver = self;
   v5.super_class = NSFileMultipleAccessClaim;
-  [(NSFileAccessClaim *)&v5 encodeWithCoder:a3];
+  [(NSFileAccessClaim *)&v5 encodeWithCoder:coder];
 }
 
-- (NSFileMultipleAccessClaim)initWithCoder:(id)a3
+- (NSFileMultipleAccessClaim)initWithCoder:(id)coder
 {
   v28[2] = *MEMORY[0x1E69E9840];
   v27.receiver = self;
@@ -146,16 +146,16 @@ uint64_t __63__NSFileMultipleAccessClaim_initWithPurposeID_intents_claimer___blo
       goto LABEL_16;
     }
 
-    v5 = [a3 allowedClasses];
+    allowedClasses = [coder allowedClasses];
     v6 = MEMORY[0x1E695DFD8];
     v28[0] = objc_opt_class();
     v28[1] = objc_opt_class();
-    v7 = [v5 setByAddingObjectsFromSet:{objc_msgSend(v6, "setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v28, 2))}];
+    v7 = [allowedClasses setByAddingObjectsFromSet:{objc_msgSend(v6, "setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v28, 2))}];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v22 = __43__NSFileMultipleAccessClaim_initWithCoder___block_invoke;
     v23 = &unk_1E69F8668;
-    v24 = a3;
+    coderCopy = coder;
     v25 = v7;
     v26 = v4;
     v4->_readingURLs = [__43__NSFileMultipleAccessClaim_initWithCoder___block_invoke(v21 @"NSReadingURLPairsKey")];
@@ -164,7 +164,7 @@ uint64_t __63__NSFileMultipleAccessClaim_initWithPurposeID_intents_claimer___blo
     if (v8)
     {
       v20 = 0;
-      v9 = [a3 decodeBytesForKey:@"NSReadingOptionsKey" returnedLength:&v20];
+      v9 = [coder decodeBytesForKey:@"NSReadingOptionsKey" returnedLength:&v20];
       if (v20 != v8)
       {
 
@@ -193,7 +193,7 @@ LABEL_11:
     }
 
     v20 = 0;
-    v13 = [a3 decodeBytesForKey:@"NSWritingOptionsKey" returnedLength:&v20];
+    v13 = [coder decodeBytesForKey:@"NSWritingOptionsKey" returnedLength:&v20];
     if (v20 == v12)
     {
       v14 = v13;
@@ -274,14 +274,14 @@ LABEL_13:
   return v5;
 }
 
-- (void)forwardUsingConnection:(id)a3 crashHandler:(id)a4
+- (void)forwardUsingConnection:(id)connection crashHandler:(id)handler
 {
   v13 = *MEMORY[0x1E69E9840];
   v7 = _NSFCClaimsLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v12 = [(NSFileAccessClaim *)self claimID];
+    claimID = [(NSFileAccessClaim *)self claimID];
     _os_log_debug_impl(&dword_18075C000, v7, OS_LOG_TYPE_DEBUG, "%{public}@ blocked pending grantAccessClaim", buf, 0xCu);
   }
 
@@ -291,8 +291,8 @@ LABEL_13:
   v10[2] = __65__NSFileMultipleAccessClaim_forwardUsingConnection_crashHandler___block_invoke;
   v10[3] = &unk_1E69F61A0;
   v10[4] = self;
-  v10[5] = a4;
-  v8 = [a3 remoteObjectProxyWithErrorHandler:v10];
+  v10[5] = handler;
+  v8 = [connection remoteObjectProxyWithErrorHandler:v10];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __65__NSFileMultipleAccessClaim_forwardUsingConnection_crashHandler___block_invoke_474;
@@ -425,9 +425,9 @@ uint64_t __65__NSFileMultipleAccessClaim_forwardUsingConnection_crashHandler___b
   return result;
 }
 
-- (BOOL)evaluateSelfWithRootNode:(id)a3 checkSubarbitrability:(BOOL)a4
+- (BOOL)evaluateSelfWithRootNode:(id)node checkSubarbitrability:(BOOL)subarbitrability
 {
-  v4 = a4;
+  subarbitrabilityCopy = subarbitrability;
   v84 = *MEMORY[0x1E69E9840];
   v49 = *&byte_1EEEFD650[16];
   v50 = *byte_1EEEFD650;
@@ -453,11 +453,11 @@ uint64_t __65__NSFileMultipleAccessClaim_forwardUsingConnection_crashHandler___b
           objc_enumerationMutation(readingURLs);
         }
 
-        v14 = [a3 descendantForFileURL:*(*(&v80 + 1) + 8 * i)];
+        v14 = [node descendantForFileURL:*(*(&v80 + 1) + 8 * i)];
         if (v14)
         {
           v15 = v14;
-          if (v4 && ![v14 itemIsSubarbitrable])
+          if (subarbitrabilityCopy && ![v14 itemIsSubarbitrable])
           {
             v35 = v15;
 LABEL_46:
@@ -502,11 +502,11 @@ LABEL_46:
           objc_enumerationMutation(writingURLs);
         }
 
-        v22 = [a3 descendantForFileURL:*(*(&v75 + 1) + 8 * j)];
+        v22 = [node descendantForFileURL:*(*(&v75 + 1) + 8 * j)];
         if (v22)
         {
           v23 = v22;
-          if (v4 && ![v22 itemIsSubarbitrable])
+          if (subarbitrabilityCopy && ![v22 itemIsSubarbitrable])
           {
             v35 = v23;
             goto LABEL_46;
@@ -602,7 +602,7 @@ LABEL_46:
       }
     }
 
-    self->_rootNode = a3;
+    self->_rootNode = node;
   }
 
 LABEL_50:
@@ -679,7 +679,7 @@ LABEL_50:
   return result;
 }
 
-- (BOOL)isBlockedByReadingItemAtLocation:(id)a3 options:(unint64_t)a4
+- (BOOL)isBlockedByReadingItemAtLocation:(id)location options:(unint64_t)options
 {
   v12 = *MEMORY[0x1E69E9840];
   v8 = 0;
@@ -692,9 +692,9 @@ LABEL_50:
   v7[2] = __70__NSFileMultipleAccessClaim_isBlockedByReadingItemAtLocation_options___block_invoke;
   v7[3] = &unk_1E69F86B8;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = location;
   v7[6] = &v8;
-  v7[7] = a4;
+  v7[7] = options;
   [(NSMutableArray *)writingLocations enumerateObjectsUsingBlock:v7];
   v5 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -713,7 +713,7 @@ uint64_t __70__NSFileMultipleAccessClaim_isBlockedByReadingItemAtLocation_option
   return result;
 }
 
-- (BOOL)isBlockedByWritingItemAtLocation:(id)a3 options:(unint64_t)a4
+- (BOOL)isBlockedByWritingItemAtLocation:(id)location options:(unint64_t)options
 {
   v18 = *MEMORY[0x1E69E9840];
   v7 = objc_opt_class();
@@ -729,8 +729,8 @@ uint64_t __70__NSFileMultipleAccessClaim_isBlockedByReadingItemAtLocation_option
   v13[4] = v7;
   v13[5] = self;
   v13[7] = &v14;
-  v13[8] = a4;
-  v13[6] = a3;
+  v13[8] = options;
+  v13[6] = location;
   [(NSMutableArray *)readingLocations enumerateObjectsUsingBlock:v13];
   if (v15[3])
   {
@@ -746,9 +746,9 @@ uint64_t __70__NSFileMultipleAccessClaim_isBlockedByReadingItemAtLocation_option
     v12[3] = &unk_1E69F86E0;
     v12[4] = v7;
     v12[5] = self;
-    v12[6] = a3;
+    v12[6] = location;
     v12[7] = &v14;
-    v12[8] = a4;
+    v12[8] = options;
     [(NSMutableArray *)writingLocations enumerateObjectsUsingBlock:v12];
     v9 = *(v15 + 24);
   }
@@ -793,12 +793,12 @@ uint64_t __70__NSFileMultipleAccessClaim_isBlockedByWritingItemAtLocation_option
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v25 = [(NSFileAccessClaim *)self claimID];
+        claimID = [(NSFileAccessClaim *)self claimID];
         _os_log_impl(&dword_18075C000, v4, OS_LOG_TYPE_DEFAULT, "Claim %{public}@ granted in server", buf, 0xCu);
       }
     }
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     writingLocations = self->_writingLocations;
     v23[0] = MEMORY[0x1E69E9820];
@@ -807,7 +807,7 @@ uint64_t __70__NSFileMultipleAccessClaim_isBlockedByWritingItemAtLocation_option
     v23[3] = &unk_1E69F8758;
     v23[4] = self;
     v23[5] = v6;
-    v23[6] = v5;
+    v23[6] = array;
     [(NSMutableArray *)writingLocations enumerateObjectsUsingBlock:v23];
     readingLocations = self->_readingLocations;
     v22[0] = MEMORY[0x1E69E9820];
@@ -816,7 +816,7 @@ uint64_t __70__NSFileMultipleAccessClaim_isBlockedByWritingItemAtLocation_option
     v22[3] = &unk_1E69F8758;
     v22[4] = self;
     v22[5] = v6;
-    v22[6] = v5;
+    v22[6] = array;
     [(NSMutableArray *)readingLocations enumerateObjectsUsingBlock:v22];
 
     v9 = self->_readingLocations;
@@ -827,7 +827,7 @@ uint64_t __70__NSFileMultipleAccessClaim_isBlockedByWritingItemAtLocation_option
     v21[1] = 3221225472;
     v21[2] = __36__NSFileMultipleAccessClaim_granted__block_invoke_7;
     v21[3] = &unk_1E69F8460;
-    v21[4] = v5;
+    v21[4] = array;
     [(NSFileAccessClaim *)self makeProvidersProvideItemsForReadingLocations:v9 options:readingOptions andWritingLocationsIfNecessary:v11 options:writingOptions thenContinue:v21];
     if (self->_writingLocations)
     {
@@ -850,7 +850,7 @@ uint64_t __70__NSFileMultipleAccessClaim_isBlockedByWritingItemAtLocation_option
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v25 = [(NSFileAccessClaim *)self claimID];
+        claimID = [(NSFileAccessClaim *)self claimID];
         _os_log_error_impl(&dword_18075C000, v15, OS_LOG_TYPE_ERROR, "Claim %{public}@ can't be granted in daemon", buf, 0xCu);
       }
     }
@@ -860,7 +860,7 @@ uint64_t __70__NSFileMultipleAccessClaim_isBlockedByWritingItemAtLocation_option
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v25 = [(NSFileAccessClaim *)self claimID];
+        claimID = [(NSFileAccessClaim *)self claimID];
         _os_log_impl(&dword_18075C000, v15, OS_LOG_TYPE_DEFAULT, "Claim %{public}@ granted in client", buf, 0xCu);
       }
 
@@ -1057,7 +1057,7 @@ uint64_t __36__NSFileMultipleAccessClaim_granted__block_invoke_2_478(uint64_t a1
   }
 }
 
-- (void)resolveURLsThenMaybeContinueInvokingClaimer:(id)a3
+- (void)resolveURLsThenMaybeContinueInvokingClaimer:(id)claimer
 {
   v10[5] = *MEMORY[0x1E69E9840];
   if ([(NSFileAccessClaim *)self didWait])
@@ -1080,7 +1080,7 @@ uint64_t __36__NSFileMultipleAccessClaim_granted__block_invoke_2_478(uint64_t a1
 
   if ([(NSFileAccessClaim *)self claimerError])
   {
-    (*(a3 + 2))(a3, 0, 0);
+    (*(claimer + 2))(claimer, 0, 0);
   }
 
   else
@@ -1095,7 +1095,7 @@ uint64_t __36__NSFileMultipleAccessClaim_granted__block_invoke_2_478(uint64_t a1
     v7[2] = __73__NSFileMultipleAccessClaim_resolveURLsThenMaybeContinueInvokingClaimer___block_invoke_6;
     v7[3] = &unk_1E69F5678;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = claimer;
     __73__NSFileMultipleAccessClaim_resolveURLsThenMaybeContinueInvokingClaimer___block_invoke_3(v8, v7);
   }
 }
@@ -1548,7 +1548,7 @@ id __42__NSFileMultipleAccessClaim_invokeClaimer__block_invoke(uint64_t a1, void
   [(NSFileAccessClaim *)&v25 devalueSelf];
 }
 
-- (void)itemAtLocation:(id)a3 wasReplacedByItemAtLocation:(id)a4
+- (void)itemAtLocation:(id)location wasReplacedByItemAtLocation:(id)atLocation
 {
   v14[5] = *MEMORY[0x1E69E9840];
   writingLocations = self->_writingLocations;
@@ -1556,30 +1556,30 @@ id __42__NSFileMultipleAccessClaim_invokeClaimer__block_invoke(uint64_t a1, void
   v14[1] = 3221225472;
   v14[2] = __72__NSFileMultipleAccessClaim_itemAtLocation_wasReplacedByItemAtLocation___block_invoke;
   v14[3] = &unk_1E69F8910;
-  v14[4] = a3;
+  v14[4] = location;
   v8 = [(NSMutableArray *)writingLocations indexesOfObjectsPassingTest:v14];
   readingLocations = self->_readingLocations;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __72__NSFileMultipleAccessClaim_itemAtLocation_wasReplacedByItemAtLocation___block_invoke_2;
   v13[3] = &unk_1E69F8910;
-  v13[4] = a3;
+  v13[4] = location;
   v10 = [(NSMutableArray *)readingLocations indexesOfObjectsPassingTest:v13];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __72__NSFileMultipleAccessClaim_itemAtLocation_wasReplacedByItemAtLocation___block_invoke_3;
   v12[3] = &unk_1E69F8938;
-  v12[4] = a4;
+  v12[4] = atLocation;
   v12[5] = self;
-  v12[6] = a3;
+  v12[6] = location;
   [v8 enumerateIndexesUsingBlock:v12];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __72__NSFileMultipleAccessClaim_itemAtLocation_wasReplacedByItemAtLocation___block_invoke_4;
   v11[3] = &unk_1E69F8938;
-  v11[4] = a4;
+  v11[4] = atLocation;
   v11[5] = self;
-  v11[6] = a3;
+  v11[6] = location;
   [v10 enumerateIndexesUsingBlock:v11];
 }
 
@@ -1603,7 +1603,7 @@ uint64_t __72__NSFileMultipleAccessClaim_itemAtLocation_wasReplacedByItemAtLocat
   return [v5 replaceObjectAtIndex:a2 withObject:v4];
 }
 
-- (BOOL)blocksClaim:(id)a3
+- (BOOL)blocksClaim:(id)claim
 {
   v15 = *MEMORY[0x1E69E9840];
   v11 = 0;
@@ -1615,7 +1615,7 @@ uint64_t __72__NSFileMultipleAccessClaim_itemAtLocation_wasReplacedByItemAtLocat
   v10[1] = 3221225472;
   v10[2] = __41__NSFileMultipleAccessClaim_blocksClaim___block_invoke;
   v10[3] = &unk_1E69F8960;
-  v10[4] = a3;
+  v10[4] = claim;
   v10[5] = self;
   v10[6] = &v11;
   [(NSMutableArray *)readingLocations enumerateObjectsUsingBlock:v10];
@@ -1631,7 +1631,7 @@ uint64_t __72__NSFileMultipleAccessClaim_itemAtLocation_wasReplacedByItemAtLocat
     v9[1] = 3221225472;
     v9[2] = __41__NSFileMultipleAccessClaim_blocksClaim___block_invoke_2;
     v9[3] = &unk_1E69F8960;
-    v9[4] = a3;
+    v9[4] = claim;
     v9[5] = self;
     v9[6] = &v11;
     [(NSMutableArray *)writingLocations enumerateObjectsUsingBlock:v9];
@@ -1699,11 +1699,11 @@ uint64_t __41__NSFileMultipleAccessClaim_blocksClaim___block_invoke_2(uint64_t a
 
 - (id)allURLs
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_readingURLs)
   {
-    [v3 addObjectsFromArray:?];
+    [array addObjectsFromArray:?];
   }
 
   if (self->_writingURLs)

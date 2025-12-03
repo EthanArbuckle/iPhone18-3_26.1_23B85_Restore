@@ -1,6 +1,6 @@
 @interface WFGetNetworkDetailsAction
 - (id)outputContentClasses;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFGetNetworkDetailsAction
@@ -9,12 +9,12 @@
 {
   v27[1] = *MEMORY[0x277D85DE8];
   v3 = [(WFGetNetworkDetailsAction *)self parameterStateForKey:@"WFNetworkDetailsNetwork"];
-  v4 = [v3 value];
-  if ([v4 isEqualToString:@"Wi-Fi"])
+  value = [v3 value];
+  if ([value isEqualToString:@"Wi-Fi"])
   {
     v5 = [(WFGetNetworkDetailsAction *)self parameterStateForKey:@"WFWiFiDetail"];
-    v6 = [v5 value];
-    if (([v6 isEqualToString:@"TX Rate"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"RX Rate") & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"RSSI") & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"Noise") & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"Channel Number"))
+    value2 = [v5 value];
+    if (([value2 isEqualToString:@"TX Rate"] & 1) != 0 || (objc_msgSend(value2, "isEqualToString:", @"RX Rate") & 1) != 0 || (objc_msgSend(value2, "isEqualToString:", @"RSSI") & 1) != 0 || (objc_msgSend(value2, "isEqualToString:", @"Noise") & 1) != 0 || objc_msgSend(value2, "isEqualToString:", @"Channel Number"))
     {
       v27[0] = objc_opt_class();
       v7 = v27;
@@ -26,23 +26,23 @@
       v7 = &v26;
     }
 
-    v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
+    outputContentClasses2 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
 
     goto LABEL_23;
   }
 
-  if ([v4 isEqualToString:@"Cellular"])
+  if ([value isEqualToString:@"Cellular"])
   {
     v5 = [(WFGetNetworkDetailsAction *)self parameterStateForKey:@"WFCellularDetail"];
-    v9 = [v5 value];
-    if ([v9 isEqualToString:@"Is Roaming Abroad"])
+    value3 = [v5 value];
+    if ([value3 isEqualToString:@"Is Roaming Abroad"])
     {
       v25 = objc_opt_class();
       v10 = MEMORY[0x277CBEA60];
       v11 = &v25;
     }
 
-    else if ([v9 isEqualToString:@"Number of Signal Bars"])
+    else if ([value3 isEqualToString:@"Number of Signal Bars"])
     {
       v24 = objc_opt_class();
       v10 = MEMORY[0x277CBEA60];
@@ -51,7 +51,7 @@
 
     else
     {
-      if (([v9 isEqualToString:@"Carrier Name"] & 1) == 0 && (objc_msgSend(v9, "isEqualToString:", @"Country Code") & 1) == 0 && !objc_msgSend(v9, "isEqualToString:", @"Radio Technology"))
+      if (([value3 isEqualToString:@"Carrier Name"] & 1) == 0 && (objc_msgSend(value3, "isEqualToString:", @"Country Code") & 1) == 0 && !objc_msgSend(value3, "isEqualToString:", @"Radio Technology"))
       {
         v16 = getWFActionsLogObject();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
@@ -59,13 +59,13 @@
           *buf = 136315394;
           v20 = "[WFGetNetworkDetailsAction outputContentClasses]";
           v21 = 2112;
-          v22 = v9;
+          v22 = value3;
           _os_log_impl(&dword_23DE30000, v16, OS_LOG_TYPE_FAULT, "%s Unexpected cellularSubject: %@", buf, 0x16u);
         }
 
         v18.receiver = self;
         v18.super_class = WFGetNetworkDetailsAction;
-        v13 = [(WFGetNetworkDetailsAction *)&v18 outputContentClasses];
+        outputContentClasses = [(WFGetNetworkDetailsAction *)&v18 outputContentClasses];
         goto LABEL_22;
       }
 
@@ -74,9 +74,9 @@
       v11 = &v23;
     }
 
-    v13 = [v10 arrayWithObjects:v11 count:1];
+    outputContentClasses = [v10 arrayWithObjects:v11 count:1];
 LABEL_22:
-    v8 = v13;
+    outputContentClasses2 = outputContentClasses;
 
 LABEL_23:
     goto LABEL_24;
@@ -88,25 +88,25 @@ LABEL_23:
     *buf = 136315394;
     v20 = "[WFGetNetworkDetailsAction outputContentClasses]";
     v21 = 2112;
-    v22 = v4;
+    v22 = value;
     _os_log_impl(&dword_23DE30000, v12, OS_LOG_TYPE_FAULT, "%s Unexpected subject: %@", buf, 0x16u);
   }
 
   v17.receiver = self;
   v17.super_class = WFGetNetworkDetailsAction;
-  v8 = [(WFGetNetworkDetailsAction *)&v17 outputContentClasses];
+  outputContentClasses2 = [(WFGetNetworkDetailsAction *)&v17 outputContentClasses];
 LABEL_24:
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return outputContentClasses2;
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v190 = *MEMORY[0x277D85DE8];
-  v118 = a3;
-  v137 = self;
+  inputCopy = input;
+  selfCopy = self;
   v119 = [(WFGetNetworkDetailsAction *)self parameterValueForKey:@"WFNetworkDetailsNetwork" ofClass:objc_opt_class()];
   if (![v119 isEqualToString:@"Wi-Fi"])
   {
@@ -157,8 +157,8 @@ LABEL_24:
     v150 = 0;
     v10 = [v136 getActiveContexts:&v150];
     v11 = v150;
-    v12 = [v10 subscriptions];
-    v13 = [v12 if_map:&__block_literal_global_5806];
+    subscriptions = [v10 subscriptions];
+    v13 = [subscriptions if_map:&__block_literal_global_5806];
 
     v148 = 0u;
     v149 = 0u;
@@ -170,7 +170,7 @@ LABEL_24:
     {
 LABEL_86:
 
-      [(WFGetNetworkDetailsAction *)v137 finishRunningWithError:v11];
+      [(WFGetNetworkDetailsAction *)selfCopy finishRunningWithError:v11];
       goto LABEL_87;
     }
 
@@ -189,12 +189,12 @@ LABEL_10:
       v16 = [v136 getLocalizedOperatorName:v15 error:&v145];
       v17 = v145;
 
-      v18 = [(WFGetNetworkDetailsAction *)v137 parameterValueForKey:@"WFCellularDetail" ofClass:objc_opt_class()];
+      v18 = [(WFGetNetworkDetailsAction *)selfCopy parameterValueForKey:@"WFCellularDetail" ofClass:objc_opt_class()];
       v138 = [objc_alloc(MEMORY[0x277CFC290]) initWithDisplayedCarrierName:v16];
       if ([v18 isEqualToString:@"Carrier Name"])
       {
-        v19 = v16;
-        if (!v19)
+        uppercaseString = v16;
+        if (!uppercaseString)
         {
           goto LABEL_70;
         }
@@ -208,10 +208,10 @@ LABEL_10:
       }
 
       v20 = [getCTServiceDescriptorClass() descriptorWithSubscriptionContext:v15];
-      v133 = [v20 identifier];
+      identifier = [v20 identifier];
 
-      v21 = [v121 serviceCurrentRadioAccessTechnology];
-      v132 = [v21 objectForKeyedSubscript:v133];
+      serviceCurrentRadioAccessTechnology = [v121 serviceCurrentRadioAccessTechnology];
+      v132 = [serviceCurrentRadioAccessTechnology objectForKeyedSubscript:identifier];
 
       if (v132)
       {
@@ -238,9 +238,9 @@ LABEL_10:
         _Block_object_dispose(&v164, 8);
         if (!v22)
         {
-          v92 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
           v93 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getCTRadioAccessTechnologyGPRS(void)"];
-          [v92 handleFailureInFunction:v93 file:@"WFGetNetworkDetailsAction.m" lineNumber:29 description:{@"%s", dlerror(), v118}];
+          [currentHandler handleFailureInFunction:v93 file:@"WFGetNetworkDetailsAction.m" lineNumber:29 description:{@"%s", dlerror(), inputCopy}];
 
           goto LABEL_101;
         }
@@ -270,9 +270,9 @@ LABEL_10:
         _Block_object_dispose(&v158, 8);
         if (!v26)
         {
-          v94 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
           v95 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getCTRadioAccessTechnologyEdge(void)"];
-          [v94 handleFailureInFunction:v95 file:@"WFGetNetworkDetailsAction.m" lineNumber:30 description:{@"%s", dlerror(), v118}];
+          [currentHandler2 handleFailureInFunction:v95 file:@"WFGetNetworkDetailsAction.m" lineNumber:30 description:{@"%s", dlerror(), inputCopy}];
 
           goto LABEL_101;
         }
@@ -302,9 +302,9 @@ LABEL_10:
         _Block_object_dispose(&v158, 8);
         if (!v30)
         {
-          v96 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
           v97 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getCTRadioAccessTechnologyWCDMA(void)"];
-          [v96 handleFailureInFunction:v97 file:@"WFGetNetworkDetailsAction.m" lineNumber:31 description:{@"%s", dlerror(), v118}];
+          [currentHandler3 handleFailureInFunction:v97 file:@"WFGetNetworkDetailsAction.m" lineNumber:31 description:{@"%s", dlerror(), inputCopy}];
 
           goto LABEL_101;
         }
@@ -334,9 +334,9 @@ LABEL_10:
         _Block_object_dispose(&v158, 8);
         if (!v33)
         {
-          v98 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
           v99 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getCTRadioAccessTechnologyHSDPA(void)"];
-          [v98 handleFailureInFunction:v99 file:@"WFGetNetworkDetailsAction.m" lineNumber:32 description:{@"%s", dlerror(), v118}];
+          [currentHandler4 handleFailureInFunction:v99 file:@"WFGetNetworkDetailsAction.m" lineNumber:32 description:{@"%s", dlerror(), inputCopy}];
 
           goto LABEL_101;
         }
@@ -366,9 +366,9 @@ LABEL_10:
         _Block_object_dispose(&v158, 8);
         if (!v36)
         {
-          v100 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
           v101 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getCTRadioAccessTechnologyHSUPA(void)"];
-          [v100 handleFailureInFunction:v101 file:@"WFGetNetworkDetailsAction.m" lineNumber:33 description:{@"%s", dlerror(), v118}];
+          [currentHandler5 handleFailureInFunction:v101 file:@"WFGetNetworkDetailsAction.m" lineNumber:33 description:{@"%s", dlerror(), inputCopy}];
 
           goto LABEL_101;
         }
@@ -398,9 +398,9 @@ LABEL_10:
         _Block_object_dispose(&v158, 8);
         if (!v39)
         {
-          v102 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
           v103 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getCTRadioAccessTechnologyCDMA1x(void)"];
-          [v102 handleFailureInFunction:v103 file:@"WFGetNetworkDetailsAction.m" lineNumber:34 description:{@"%s", dlerror(), v118}];
+          [currentHandler6 handleFailureInFunction:v103 file:@"WFGetNetworkDetailsAction.m" lineNumber:34 description:{@"%s", dlerror(), inputCopy}];
 
           goto LABEL_101;
         }
@@ -430,9 +430,9 @@ LABEL_10:
         _Block_object_dispose(&v158, 8);
         if (!v42)
         {
-          v104 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler7 = [MEMORY[0x277CCA890] currentHandler];
           v105 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getCTRadioAccessTechnologyCDMAEVDORev0(void)"];
-          [v104 handleFailureInFunction:v105 file:@"WFGetNetworkDetailsAction.m" lineNumber:35 description:{@"%s", dlerror(), v118}];
+          [currentHandler7 handleFailureInFunction:v105 file:@"WFGetNetworkDetailsAction.m" lineNumber:35 description:{@"%s", dlerror(), inputCopy}];
 
           goto LABEL_101;
         }
@@ -462,9 +462,9 @@ LABEL_10:
         _Block_object_dispose(&v158, 8);
         if (!v45)
         {
-          v106 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler8 = [MEMORY[0x277CCA890] currentHandler];
           v107 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getCTRadioAccessTechnologyCDMAEVDORevA(void)"];
-          [v106 handleFailureInFunction:v107 file:@"WFGetNetworkDetailsAction.m" lineNumber:36 description:{@"%s", dlerror(), v118}];
+          [currentHandler8 handleFailureInFunction:v107 file:@"WFGetNetworkDetailsAction.m" lineNumber:36 description:{@"%s", dlerror(), inputCopy}];
 
           goto LABEL_101;
         }
@@ -494,9 +494,9 @@ LABEL_10:
         _Block_object_dispose(&v158, 8);
         if (!v48)
         {
-          v108 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler9 = [MEMORY[0x277CCA890] currentHandler];
           v109 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getCTRadioAccessTechnologyCDMAEVDORevB(void)"];
-          [v108 handleFailureInFunction:v109 file:@"WFGetNetworkDetailsAction.m" lineNumber:37 description:{@"%s", dlerror(), v118}];
+          [currentHandler9 handleFailureInFunction:v109 file:@"WFGetNetworkDetailsAction.m" lineNumber:37 description:{@"%s", dlerror(), inputCopy}];
 
           goto LABEL_101;
         }
@@ -526,9 +526,9 @@ LABEL_10:
         _Block_object_dispose(&v158, 8);
         if (!v51)
         {
-          v110 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler10 = [MEMORY[0x277CCA890] currentHandler];
           v111 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getCTRadioAccessTechnologyeHRPD(void)"];
-          [v110 handleFailureInFunction:v111 file:@"WFGetNetworkDetailsAction.m" lineNumber:38 description:{@"%s", dlerror(), v118}];
+          [currentHandler10 handleFailureInFunction:v111 file:@"WFGetNetworkDetailsAction.m" lineNumber:38 description:{@"%s", dlerror(), inputCopy}];
 
           goto LABEL_101;
         }
@@ -558,9 +558,9 @@ LABEL_10:
         _Block_object_dispose(&v158, 8);
         if (!v55)
         {
-          v112 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler11 = [MEMORY[0x277CCA890] currentHandler];
           v113 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getCTRadioAccessTechnologyLTE(void)"];
-          [v112 handleFailureInFunction:v113 file:@"WFGetNetworkDetailsAction.m" lineNumber:39 description:{@"%s", dlerror(), v118}];
+          [currentHandler11 handleFailureInFunction:v113 file:@"WFGetNetworkDetailsAction.m" lineNumber:39 description:{@"%s", dlerror(), inputCopy}];
 
           goto LABEL_101;
         }
@@ -590,9 +590,9 @@ LABEL_10:
         _Block_object_dispose(&v158, 8);
         if (!v59)
         {
-          v114 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler12 = [MEMORY[0x277CCA890] currentHandler];
           v115 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getCTRadioAccessTechnologyNRNSA(void)"];
-          [v114 handleFailureInFunction:v115 file:@"WFGetNetworkDetailsAction.m" lineNumber:40 description:{@"%s", dlerror(), v118}];
+          [currentHandler12 handleFailureInFunction:v115 file:@"WFGetNetworkDetailsAction.m" lineNumber:40 description:{@"%s", dlerror(), inputCopy}];
 
           goto LABEL_101;
         }
@@ -623,9 +623,9 @@ LABEL_10:
         _Block_object_dispose(&v158, 8);
         if (!v63)
         {
-          v116 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler13 = [MEMORY[0x277CCA890] currentHandler];
           v117 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getCTRadioAccessTechnologyNR(void)"];
-          [v116 handleFailureInFunction:v117 file:@"WFGetNetworkDetailsAction.m" lineNumber:41 description:{@"%s", dlerror(), v118}];
+          [currentHandler13 handleFailureInFunction:v117 file:@"WFGetNetworkDetailsAction.m" lineNumber:41 description:{@"%s", dlerror(), inputCopy}];
 
 LABEL_101:
           __break(1u);
@@ -637,20 +637,20 @@ LABEL_101:
         v67 = v176;
         v68 = [v66 dictionaryWithObjects:&v177 forKeys:&v164 count:13];
 
-        v19 = [v68 objectForKeyedSubscript:v130];
-        if (!v19)
+        uppercaseString = [v68 objectForKeyedSubscript:v130];
+        if (!uppercaseString)
         {
-          v19 = [v130 stringByReplacingOccurrencesOfString:@"CTRadioAccessTechnology" withString:&stru_2850323E8];
+          uppercaseString = [v130 stringByReplacingOccurrencesOfString:@"CTRadioAccessTechnology" withString:&stru_2850323E8];
         }
       }
 
       else
       {
-        v19 = 0;
+        uppercaseString = 0;
       }
 
 LABEL_68:
-      if (v19)
+      if (uppercaseString)
       {
         goto LABEL_69;
       }
@@ -683,33 +683,33 @@ LABEL_70:
         v71 = [v136 copyMobileSubscriberIsoCountryCode:v69 error:&v143];
         v72 = v143;
 
-        v19 = [v71 uppercaseString];
+        uppercaseString = [v71 uppercaseString];
 
         v70 = v72;
       }
 
       else
       {
-        v19 = 0;
+        uppercaseString = 0;
       }
 
 LABEL_80:
       v17 = v70;
-      if (!v19)
+      if (!uppercaseString)
       {
         goto LABEL_70;
       }
 
 LABEL_69:
       v78 = MEMORY[0x277CFC300];
-      v79 = [MEMORY[0x277CFC318] networkLocation];
+      networkLocation = [MEMORY[0x277CFC318] networkLocation];
       v162 = v138;
       v80 = [MEMORY[0x277CBEA60] arrayWithObjects:&v162 count:1];
-      v81 = [v78 configurationWithOrigin:v79 disclosureLevel:1 disclosureWarnings:v80];
+      v81 = [v78 configurationWithOrigin:networkLocation disclosureLevel:1 disclosureWarnings:v80];
 
-      v82 = [MEMORY[0x277CFC2F8] itemWithObject:v19 privacyConfiguration:v81];
-      v83 = [(WFGetNetworkDetailsAction *)v137 output];
-      [v83 addItem:v82];
+      v82 = [MEMORY[0x277CFC2F8] itemWithObject:uppercaseString privacyConfiguration:v81];
+      output = [(WFGetNetworkDetailsAction *)selfCopy output];
+      [output addItem:v82];
 
       goto LABEL_70;
     }
@@ -726,8 +726,8 @@ LABEL_69:
         v74 = [v136 copyIsInHomeCountry:v15 error:&v141];
         v75 = v141;
 
-        v76 = [v74 BOOLValue];
-        v77 = v76 ^ 1u;
+        bOOLValue = [v74 BOOLValue];
+        v77 = bOOLValue ^ 1u;
         v70 = v75;
       }
 
@@ -736,7 +736,7 @@ LABEL_69:
         v77 = 0;
       }
 
-      v19 = [MEMORY[0x277CCABB0] numberWithBool:v77];
+      uppercaseString = [MEMORY[0x277CCABB0] numberWithBool:v77];
       goto LABEL_80;
     }
 
@@ -756,12 +756,12 @@ LABEL_69:
       v87 = [v136 copyServingPlmn:v15 error:&v139];
       v17 = v139;
 
-      v88 = [v87 BOOLValue];
-      if (v88)
+      bOOLValue2 = [v87 BOOLValue];
+      if (bOOLValue2)
       {
-        v89 = [v85 displayBars];
+        displayBars = [v85 displayBars];
 LABEL_84:
-        v19 = v89;
+        uppercaseString = displayBars;
 
         goto LABEL_68;
       }
@@ -772,7 +772,7 @@ LABEL_84:
       v17 = v86;
     }
 
-    v89 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:0];
+    displayBars = [MEMORY[0x277CCABB0] numberWithUnsignedInt:0];
     goto LABEL_84;
   }
 

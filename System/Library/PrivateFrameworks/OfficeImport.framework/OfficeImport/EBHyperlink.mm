@@ -1,32 +1,32 @@
 @interface EBHyperlink
-+ (id)edHyperlinkFromXlHLink:(XlHLink *)a3 edResources:(id)a4;
-+ (int)edTypeFromXlHyperlinkType:(int)a3;
-+ (int)xlTypeFromEDHyperlinkType:(int)a3;
-+ (void)addToolTip:(XlHLinkToolTip *)a3 toEdHyperLink:(id)a4 edResources:(id)a5;
++ (id)edHyperlinkFromXlHLink:(XlHLink *)link edResources:(id)resources;
++ (int)edTypeFromXlHyperlinkType:(int)type;
++ (int)xlTypeFromEDHyperlinkType:(int)type;
++ (void)addToolTip:(XlHLinkToolTip *)tip toEdHyperLink:(id)link edResources:(id)resources;
 @end
 
 @implementation EBHyperlink
 
-+ (id)edHyperlinkFromXlHLink:(XlHLink *)a3 edResources:(id)a4
++ (id)edHyperlinkFromXlHLink:(XlHLink *)link edResources:(id)resources
 {
-  v6 = a4;
-  if (a3)
+  resourcesCopy = resources;
+  if (link)
   {
     v7 = objc_alloc_init(EDHyperlink);
-    -[EDHyperlink setType:](v7, "setType:", [a1 edTypeFromXlHyperlinkType:a3->var3]);
-    v8 = [EBString edStringFromXlString:a3->var7 edResources:v6];
+    -[EDHyperlink setType:](v7, "setType:", [self edTypeFromXlHyperlinkType:link->var3]);
+    v8 = [EBString edStringFromXlString:link->var7 edResources:resourcesCopy];
     [(EDHyperlink *)v7 setDescriptionText:v8];
 
-    v9 = [EBString edStringFromXlString:a3->var9 edResources:v6];
+    v9 = [EBString edStringFromXlString:link->var9 edResources:resourcesCopy];
     [(EDHyperlink *)v7 setPath:v9];
 
-    v10 = [EBString edStringFromXlString:a3->var10 edResources:v6];
+    v10 = [EBString edStringFromXlString:link->var10 edResources:resourcesCopy];
     [(EDHyperlink *)v7 setDosPath:v10];
 
-    v11 = [EBString edStringFromXlString:a3->var6 edResources:v6];
+    v11 = [EBString edStringFromXlString:link->var6 edResources:resourcesCopy];
     [(EDHyperlink *)v7 setTextMark:v11];
 
-    v12 = [EBReference edReferenceFromXlRef:a3->var2];
+    v12 = [EBReference edReferenceFromXlRef:link->var2];
     [(EDHyperlink *)v7 setReference:v12];
   }
 
@@ -38,36 +38,36 @@
   return v7;
 }
 
-+ (void)addToolTip:(XlHLinkToolTip *)a3 toEdHyperLink:(id)a4 edResources:(id)a5
++ (void)addToolTip:(XlHLinkToolTip *)tip toEdHyperLink:(id)link edResources:(id)resources
 {
-  v8 = a4;
-  v7 = [EBString edStringFromXlString:a3->var3 edResources:a5];
-  [v8 setToolTip:v7];
+  linkCopy = link;
+  v7 = [EBString edStringFromXlString:tip->var3 edResources:resources];
+  [linkCopy setToolTip:v7];
 }
 
-+ (int)edTypeFromXlHyperlinkType:(int)a3
++ (int)edTypeFromXlHyperlinkType:(int)type
 {
-  if ((a3 - 1) >= 3)
+  if ((type - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 
-+ (int)xlTypeFromEDHyperlinkType:(int)a3
++ (int)xlTypeFromEDHyperlinkType:(int)type
 {
-  if (a3 >= 3)
+  if (type >= 3)
   {
     return 3;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 

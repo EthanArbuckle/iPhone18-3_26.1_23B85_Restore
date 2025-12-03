@@ -1,26 +1,26 @@
 @interface HDAlarmEventChanges
-- (BOOL)isEqual:(id)a3;
-- (HDAlarmEventChanges)initWithOldEvents:(id)a3 scheduledEvents:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HDAlarmEventChanges)initWithOldEvents:(id)events scheduledEvents:(id)scheduledEvents;
 - (NSSet)addedEvents;
 - (NSSet)removedEvents;
 @end
 
 @implementation HDAlarmEventChanges
 
-- (HDAlarmEventChanges)initWithOldEvents:(id)a3 scheduledEvents:(id)a4
+- (HDAlarmEventChanges)initWithOldEvents:(id)events scheduledEvents:(id)scheduledEvents
 {
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  scheduledEventsCopy = scheduledEvents;
   v14.receiver = self;
   v14.super_class = HDAlarmEventChanges;
   v8 = [(HDAlarmEventChanges *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [eventsCopy copy];
     oldEvents = v8->_oldEvents;
     v8->_oldEvents = v9;
 
-    v11 = [v7 copy];
+    v11 = [scheduledEventsCopy copy];
     scheduledEvents = v8->_scheduledEvents;
     v8->_scheduledEvents = v11;
   }
@@ -50,10 +50,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -63,7 +63,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       oldEvents = self->_oldEvents;
       v7 = v5->_oldEvents;
       if (oldEvents != v7 && (!v7 || ![(NSArray *)oldEvents isEqual:?]))

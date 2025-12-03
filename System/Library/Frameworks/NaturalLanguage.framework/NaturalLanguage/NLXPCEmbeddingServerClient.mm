@@ -1,14 +1,14 @@
 @interface NLXPCEmbeddingServerClient
 + (id)sharedClient;
 - (NLXPCEmbeddingServerClient)init;
-- (void)batchDataFromTokenVectorEmbeddingForStrings:(id)a3 language:(id)a4 identifier:(id)a5 completionHandler:(id)a6;
-- (void)compileModelWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)dataFromSentenceVectorEmbeddingForString:(id)a3 language:(id)a4 identifier:(id)a5 completionHandler:(id)a6;
-- (void)dataFromTokenVectorEmbeddingForString:(id)a3 language:(id)a4 identifier:(id)a5 completionHandler:(id)a6;
-- (void)loadModelWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)synchronousBatchDataFromTokenVectorEmbeddingForStrings:(id)a3 language:(id)a4 identifier:(id)a5 completionHandler:(id)a6;
-- (void)synchronousDataFromTokenVectorEmbeddingForString:(id)a3 language:(id)a4 identifier:(id)a5 completionHandler:(id)a6;
-- (void)synchronousLoadModelWithIdentifier:(id)a3 timeout:(double)a4 completionHandler:(id)a5;
+- (void)batchDataFromTokenVectorEmbeddingForStrings:(id)strings language:(id)language identifier:(id)identifier completionHandler:(id)handler;
+- (void)compileModelWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)dataFromSentenceVectorEmbeddingForString:(id)string language:(id)language identifier:(id)identifier completionHandler:(id)handler;
+- (void)dataFromTokenVectorEmbeddingForString:(id)string language:(id)language identifier:(id)identifier completionHandler:(id)handler;
+- (void)loadModelWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)synchronousBatchDataFromTokenVectorEmbeddingForStrings:(id)strings language:(id)language identifier:(id)identifier completionHandler:(id)handler;
+- (void)synchronousDataFromTokenVectorEmbeddingForString:(id)string language:(id)language identifier:(id)identifier completionHandler:(id)handler;
+- (void)synchronousLoadModelWithIdentifier:(id)identifier timeout:(double)timeout completionHandler:(id)handler;
 @end
 
 @implementation NLXPCEmbeddingServerClient
@@ -95,19 +95,19 @@ uint64_t __42__NLXPCEmbeddingServerClient_sharedClient__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)dataFromTokenVectorEmbeddingForString:(id)a3 language:(id)a4 identifier:(id)a5 completionHandler:(id)a6
+- (void)dataFromTokenVectorEmbeddingForString:(id)string language:(id)language identifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a6;
+  handlerCopy = handler;
   connection = self->_connection;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __106__NLXPCEmbeddingServerClient_dataFromTokenVectorEmbeddingForString_language_identifier_completionHandler___block_invoke;
   v20[3] = &unk_1E7628FF0;
-  v12 = v10;
+  v12 = handlerCopy;
   v21 = v12;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  identifierCopy = identifier;
+  languageCopy = language;
+  stringCopy = string;
   v16 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v20];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
@@ -115,7 +115,7 @@ uint64_t __42__NLXPCEmbeddingServerClient_sharedClient__block_invoke()
   v18[3] = &unk_1E7629018;
   v19 = v12;
   v17 = v12;
-  [v16 _xpc_dataFromTokenVectorEmbeddingForString:v15 language:v14 identifier:v13 completionHandler:v18];
+  [v16 _xpc_dataFromTokenVectorEmbeddingForString:stringCopy language:languageCopy identifier:identifierCopy completionHandler:v18];
 }
 
 void __106__NLXPCEmbeddingServerClient_dataFromTokenVectorEmbeddingForString_language_identifier_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -125,19 +125,19 @@ void __106__NLXPCEmbeddingServerClient_dataFromTokenVectorEmbeddingForString_lan
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)synchronousDataFromTokenVectorEmbeddingForString:(id)a3 language:(id)a4 identifier:(id)a5 completionHandler:(id)a6
+- (void)synchronousDataFromTokenVectorEmbeddingForString:(id)string language:(id)language identifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a6;
+  handlerCopy = handler;
   connection = self->_connection;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __117__NLXPCEmbeddingServerClient_synchronousDataFromTokenVectorEmbeddingForString_language_identifier_completionHandler___block_invoke;
   v20[3] = &unk_1E7628FF0;
-  v12 = v10;
+  v12 = handlerCopy;
   v21 = v12;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  identifierCopy = identifier;
+  languageCopy = language;
+  stringCopy = string;
   v16 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v20];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
@@ -145,7 +145,7 @@ void __106__NLXPCEmbeddingServerClient_dataFromTokenVectorEmbeddingForString_lan
   v18[3] = &unk_1E7629018;
   v19 = v12;
   v17 = v12;
-  [v16 _xpc_dataFromTokenVectorEmbeddingForString:v15 language:v14 identifier:v13 completionHandler:v18];
+  [v16 _xpc_dataFromTokenVectorEmbeddingForString:stringCopy language:languageCopy identifier:identifierCopy completionHandler:v18];
 }
 
 void __117__NLXPCEmbeddingServerClient_synchronousDataFromTokenVectorEmbeddingForString_language_identifier_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -155,19 +155,19 @@ void __117__NLXPCEmbeddingServerClient_synchronousDataFromTokenVectorEmbeddingFo
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)batchDataFromTokenVectorEmbeddingForStrings:(id)a3 language:(id)a4 identifier:(id)a5 completionHandler:(id)a6
+- (void)batchDataFromTokenVectorEmbeddingForStrings:(id)strings language:(id)language identifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a6;
+  handlerCopy = handler;
   connection = self->_connection;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __112__NLXPCEmbeddingServerClient_batchDataFromTokenVectorEmbeddingForStrings_language_identifier_completionHandler___block_invoke;
   v20[3] = &unk_1E7628FF0;
-  v12 = v10;
+  v12 = handlerCopy;
   v21 = v12;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  identifierCopy = identifier;
+  languageCopy = language;
+  stringsCopy = strings;
   v16 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v20];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
@@ -175,7 +175,7 @@ void __117__NLXPCEmbeddingServerClient_synchronousDataFromTokenVectorEmbeddingFo
   v18[3] = &unk_1E7629040;
   v19 = v12;
   v17 = v12;
-  [v16 _xpc_batchDataFromTokenVectorEmbeddingForStrings:v15 language:v14 identifier:v13 completionHandler:v18];
+  [v16 _xpc_batchDataFromTokenVectorEmbeddingForStrings:stringsCopy language:languageCopy identifier:identifierCopy completionHandler:v18];
 }
 
 void __112__NLXPCEmbeddingServerClient_batchDataFromTokenVectorEmbeddingForStrings_language_identifier_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -185,19 +185,19 @@ void __112__NLXPCEmbeddingServerClient_batchDataFromTokenVectorEmbeddingForStrin
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)synchronousBatchDataFromTokenVectorEmbeddingForStrings:(id)a3 language:(id)a4 identifier:(id)a5 completionHandler:(id)a6
+- (void)synchronousBatchDataFromTokenVectorEmbeddingForStrings:(id)strings language:(id)language identifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a6;
+  handlerCopy = handler;
   connection = self->_connection;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __123__NLXPCEmbeddingServerClient_synchronousBatchDataFromTokenVectorEmbeddingForStrings_language_identifier_completionHandler___block_invoke;
   v20[3] = &unk_1E7628FF0;
-  v12 = v10;
+  v12 = handlerCopy;
   v21 = v12;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  identifierCopy = identifier;
+  languageCopy = language;
+  stringsCopy = strings;
   v16 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v20];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
@@ -205,7 +205,7 @@ void __112__NLXPCEmbeddingServerClient_batchDataFromTokenVectorEmbeddingForStrin
   v18[3] = &unk_1E7629040;
   v19 = v12;
   v17 = v12;
-  [v16 _xpc_batchDataFromTokenVectorEmbeddingForStrings:v15 language:v14 identifier:v13 completionHandler:v18];
+  [v16 _xpc_batchDataFromTokenVectorEmbeddingForStrings:stringsCopy language:languageCopy identifier:identifierCopy completionHandler:v18];
 }
 
 void __123__NLXPCEmbeddingServerClient_synchronousBatchDataFromTokenVectorEmbeddingForStrings_language_identifier_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -215,19 +215,19 @@ void __123__NLXPCEmbeddingServerClient_synchronousBatchDataFromTokenVectorEmbedd
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)dataFromSentenceVectorEmbeddingForString:(id)a3 language:(id)a4 identifier:(id)a5 completionHandler:(id)a6
+- (void)dataFromSentenceVectorEmbeddingForString:(id)string language:(id)language identifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a6;
+  handlerCopy = handler;
   connection = self->_connection;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __109__NLXPCEmbeddingServerClient_dataFromSentenceVectorEmbeddingForString_language_identifier_completionHandler___block_invoke;
   v20[3] = &unk_1E7628FF0;
-  v12 = v10;
+  v12 = handlerCopy;
   v21 = v12;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  identifierCopy = identifier;
+  languageCopy = language;
+  stringCopy = string;
   v16 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v20];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
@@ -235,7 +235,7 @@ void __123__NLXPCEmbeddingServerClient_synchronousBatchDataFromTokenVectorEmbedd
   v18[3] = &unk_1E7629068;
   v19 = v12;
   v17 = v12;
-  [v16 _xpc_dataFromSentenceVectorEmbeddingForString:v15 language:v14 identifier:v13 completionHandler:v18];
+  [v16 _xpc_dataFromSentenceVectorEmbeddingForString:stringCopy language:languageCopy identifier:identifierCopy completionHandler:v18];
 }
 
 void __109__NLXPCEmbeddingServerClient_dataFromSentenceVectorEmbeddingForString_language_identifier_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -245,17 +245,17 @@ void __109__NLXPCEmbeddingServerClient_dataFromSentenceVectorEmbeddingForString_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)loadModelWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)loadModelWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   connection = self->_connection;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __72__NLXPCEmbeddingServerClient_loadModelWithIdentifier_completionHandler___block_invoke;
   v14[3] = &unk_1E7628FF0;
-  v8 = v6;
+  v8 = handlerCopy;
   v15 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -263,7 +263,7 @@ void __109__NLXPCEmbeddingServerClient_dataFromSentenceVectorEmbeddingForString_
   v12[3] = &unk_1E7629090;
   v13 = v8;
   v11 = v8;
-  [v10 _xpc_loadTokenVectorEmbeddingForIdentifier:v9 timeout:v12 completionHandler:0.0];
+  [v10 _xpc_loadTokenVectorEmbeddingForIdentifier:identifierCopy timeout:v12 completionHandler:0.0];
 }
 
 void __72__NLXPCEmbeddingServerClient_loadModelWithIdentifier_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -273,17 +273,17 @@ void __72__NLXPCEmbeddingServerClient_loadModelWithIdentifier_completionHandler_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)synchronousLoadModelWithIdentifier:(id)a3 timeout:(double)a4 completionHandler:(id)a5
+- (void)synchronousLoadModelWithIdentifier:(id)identifier timeout:(double)timeout completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   connection = self->_connection;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __91__NLXPCEmbeddingServerClient_synchronousLoadModelWithIdentifier_timeout_completionHandler___block_invoke;
   v16[3] = &unk_1E7628FF0;
-  v10 = v8;
+  v10 = handlerCopy;
   v17 = v10;
-  v11 = a3;
+  identifierCopy = identifier;
   v12 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v16];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -291,7 +291,7 @@ void __72__NLXPCEmbeddingServerClient_loadModelWithIdentifier_completionHandler_
   v14[3] = &unk_1E7629090;
   v15 = v10;
   v13 = v10;
-  [v12 _xpc_loadTokenVectorEmbeddingForIdentifier:v11 timeout:v14 completionHandler:a4];
+  [v12 _xpc_loadTokenVectorEmbeddingForIdentifier:identifierCopy timeout:v14 completionHandler:timeout];
 }
 
 void __91__NLXPCEmbeddingServerClient_synchronousLoadModelWithIdentifier_timeout_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -301,17 +301,17 @@ void __91__NLXPCEmbeddingServerClient_synchronousLoadModelWithIdentifier_timeout
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)compileModelWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)compileModelWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   connection = self->_connection;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __75__NLXPCEmbeddingServerClient_compileModelWithIdentifier_completionHandler___block_invoke;
   v14[3] = &unk_1E7628FF0;
-  v8 = v6;
+  v8 = handlerCopy;
   v15 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -319,7 +319,7 @@ void __91__NLXPCEmbeddingServerClient_synchronousLoadModelWithIdentifier_timeout
   v12[3] = &unk_1E7629090;
   v13 = v8;
   v11 = v8;
-  [v10 _xpc_compileEmbeddingForIdentifier:v9 completionHandler:v12];
+  [v10 _xpc_compileEmbeddingForIdentifier:identifierCopy completionHandler:v12];
 }
 
 void __75__NLXPCEmbeddingServerClient_compileModelWithIdentifier_completionHandler___block_invoke(uint64_t a1, void *a2)

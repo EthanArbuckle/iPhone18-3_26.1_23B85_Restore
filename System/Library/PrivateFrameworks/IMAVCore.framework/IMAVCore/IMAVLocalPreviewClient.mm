@@ -4,21 +4,21 @@
 - (BOOL)_shouldPreviewBeRunning;
 - (BOOL)isPreviewRunning;
 - (IMAVLocalPreviewClient)init;
-- (id)localScreenAttributesForVideoAttributes:(id)a3;
+- (id)localScreenAttributesForVideoAttributes:(id)attributes;
 - (unsigned)cameraOrientation;
 - (unsigned)cameraType;
 - (void)_avDaemonConnected;
 - (void)_updatePreviewState;
-- (void)avChat:(id)a3 setLocalPortraitRatio:(CGSize)a4 localLandscapeRatio:(CGSize)a5;
+- (void)avChat:(id)chat setLocalPortraitRatio:(CGSize)ratio localLandscapeRatio:(CGSize)landscapeRatio;
 - (void)beginAnimationToPIP;
 - (void)beginAnimationToPreview;
-- (void)cameraDidBecomeAvailableForUniqueID:(id)a3;
+- (void)cameraDidBecomeAvailableForUniqueID:(id)d;
 - (void)dealloc;
-- (void)didChangeLocalScreenAttributes:(id)a3;
-- (void)didChangeLocalVideoAttributes:(id)a3;
+- (void)didChangeLocalScreenAttributes:(id)attributes;
+- (void)didChangeLocalVideoAttributes:(id)attributes;
 - (void)didPausePreview;
-- (void)didReceiveErrorFromCameraUniqueID:(id)a3 error:(id)a4;
-- (void)didReceiveFirstPreviewFrameFromCameraUniqueID:(id)a3;
+- (void)didReceiveErrorFromCameraUniqueID:(id)d error:(id)error;
+- (void)didReceiveFirstPreviewFrameFromCameraUniqueID:(id)d;
 - (void)didStartPreview;
 - (void)didStopPreview;
 - (void)endAnimationToPIP;
@@ -26,9 +26,9 @@
 - (void)localVideoBackLayer;
 - (void)localVideoLayer;
 - (void)pausePreview;
-- (void)setLocalScreenAttributes:(id)a3;
-- (void)setLocalVideoBackLayer:(void *)a3;
-- (void)setLocalVideoLayer:(void *)a3;
+- (void)setLocalScreenAttributes:(id)attributes;
+- (void)setLocalVideoBackLayer:(void *)layer;
+- (void)setLocalVideoLayer:(void *)layer;
 - (void)startPreview;
 - (void)stopPreview;
 - (void)systemApplicationDidEnterBackground;
@@ -186,18 +186,18 @@
   return v17;
 }
 
-- (void)setLocalVideoLayer:(void *)a3
+- (void)setLocalVideoLayer:(void *)layer
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = objc_msgSend_conferencePreview(self, a2, a3, v3, v4);
-  objc_msgSend_setLocalVideoLayer_front_(v7, v8, a3, 1, v9);
+  v7 = objc_msgSend_conferencePreview(self, a2, layer, v3, v4);
+  objc_msgSend_setLocalVideoLayer_front_(v7, v8, layer, 1, v9);
 
   v10 = sub_254761764();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v15 = objc_msgSend_conferencePreview(self, v11, v12, v13, v14);
     v17 = 134218242;
-    v18 = a3;
+    layerCopy = layer;
     v19 = 2112;
     v20 = v15;
     _os_log_impl(&dword_254743000, v10, OS_LOG_TYPE_DEFAULT, "Setting local video layer: %p on preview: %@", &v17, 0x16u);
@@ -225,18 +225,18 @@
   return v17;
 }
 
-- (void)setLocalVideoBackLayer:(void *)a3
+- (void)setLocalVideoBackLayer:(void *)layer
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = objc_msgSend_conferencePreview(self, a2, a3, v3, v4);
-  objc_msgSend_setLocalVideoLayer_front_(v7, v8, a3, 0, v9);
+  v7 = objc_msgSend_conferencePreview(self, a2, layer, v3, v4);
+  objc_msgSend_setLocalVideoLayer_front_(v7, v8, layer, 0, v9);
 
   v10 = sub_254761764();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v15 = objc_msgSend_conferencePreview(self, v11, v12, v13, v14);
     v17 = 134218242;
-    v18 = a3;
+    layerCopy = layer;
     v19 = 2112;
     v20 = v15;
     _os_log_impl(&dword_254743000, v10, OS_LOG_TYPE_DEFAULT, "Setting local video back-layer: %p on preview: %@", &v17, 0x16u);
@@ -245,10 +245,10 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)localScreenAttributesForVideoAttributes:(id)a3
+- (id)localScreenAttributesForVideoAttributes:(id)attributes
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  attributesCopy = attributes;
   v5 = sub_254761764();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -259,26 +259,26 @@
   }
 
   v15 = objc_msgSend_conferencePreview(self, v11, v12, v13, v14);
-  v19 = objc_msgSend_localScreenAttributesForVideoAttributes_(v15, v16, v4, v17, v18);
+  v19 = objc_msgSend_localScreenAttributesForVideoAttributes_(v15, v16, attributesCopy, v17, v18);
 
   v20 = *MEMORY[0x277D85DE8];
 
   return v19;
 }
 
-- (void)setLocalScreenAttributes:(id)a3
+- (void)setLocalScreenAttributes:(id)attributes
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  attributesCopy = attributes;
   v9 = objc_msgSend_conferencePreview(self, v5, v6, v7, v8);
-  objc_msgSend_setLocalScreenAttributes_(v9, v10, v4, v11, v12);
+  objc_msgSend_setLocalScreenAttributes_(v9, v10, attributesCopy, v11, v12);
 
   v13 = sub_254761764();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v18 = objc_msgSend_conferencePreview(self, v14, v15, v16, v17);
     v20 = 138412546;
-    v21 = v4;
+    v21 = attributesCopy;
     v22 = 2112;
     v23 = v18;
     _os_log_impl(&dword_254743000, v13, OS_LOG_TYPE_DEFAULT, "Setting local screen attributes: %@ on preview: %@", &v20, 0x16u);
@@ -287,14 +287,14 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)avChat:(id)a3 setLocalPortraitRatio:(CGSize)a4 localLandscapeRatio:(CGSize)a5
+- (void)avChat:(id)chat setLocalPortraitRatio:(CGSize)ratio localLandscapeRatio:(CGSize)landscapeRatio
 {
-  height = a5.height;
-  width = a5.width;
-  v7 = a4.height;
-  v8 = a4.width;
+  height = landscapeRatio.height;
+  width = landscapeRatio.width;
+  v7 = ratio.height;
+  v8 = ratio.width;
   v81 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  chatCopy = chat;
   v11 = MEMORY[0x259C18990](@"VideoAttributes", @"AVConference");
   v12 = sub_254761764();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
@@ -327,21 +327,21 @@
     objc_msgSend_setOrientation_(v17, v21, 3, v22, v23);
     v27 = objc_msgSend_localScreenAttributesForVideoAttributes_(self, v24, v12, v25, v26);
     objc_msgSend_setRatio_(v27, v28, v29, v30, v31, v8, v7);
-    v36 = objc_msgSend__timings(v10, v32, v33, v34, v35);
+    v36 = objc_msgSend__timings(chatCopy, v32, v33, v34, v35);
     objc_msgSend_startTimingForKey_(v36, v37, @"setting-local-screen-attributes", v38, v39);
 
     objc_msgSend_setLocalScreenAttributes_(self, v40, v27, v41, v42);
-    v47 = objc_msgSend__timings(v10, v43, v44, v45, v46);
+    v47 = objc_msgSend__timings(chatCopy, v43, v44, v45, v46);
     objc_msgSend_stopTimingForKey_(v47, v48, @"setting-local-screen-attributes", v49, v50);
 
     v54 = objc_msgSend_localScreenAttributesForVideoAttributes_(self, v51, v17, v52, v53);
 
     objc_msgSend_setRatio_(v54, v55, v56, v57, v58, width, height);
-    v63 = objc_msgSend__timings(v10, v59, v60, v61, v62);
+    v63 = objc_msgSend__timings(chatCopy, v59, v60, v61, v62);
     objc_msgSend_startTimingForKey_(v63, v64, @"setting-local-screen-attributes", v65, v66);
 
     objc_msgSend_setLocalScreenAttributes_(self, v67, v54, v68, v69);
-    v74 = objc_msgSend__timings(v10, v70, v71, v72, v73);
+    v74 = objc_msgSend__timings(chatCopy, v70, v71, v72, v73);
     objc_msgSend_stopTimingForKey_(v74, v75, @"setting-local-screen-attributes", v76, v77);
   }
 
@@ -908,78 +908,78 @@
   }
 }
 
-- (void)didReceiveFirstPreviewFrameFromCameraUniqueID:(id)a3
+- (void)didReceiveFirstPreviewFrameFromCameraUniqueID:(id)d
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dCopy = d;
   v4 = sub_254761764();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = dCopy;
     _os_log_impl(&dword_254743000, v4, OS_LOG_TYPE_DEFAULT, "cameraUID: %@", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didChangeLocalVideoAttributes:(id)a3
+- (void)didChangeLocalVideoAttributes:(id)attributes
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  attributesCopy = attributes;
   v4 = sub_254761764();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = attributesCopy;
     _os_log_impl(&dword_254743000, v4, OS_LOG_TYPE_DEFAULT, "videoAttributes: %@", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didChangeLocalScreenAttributes:(id)a3
+- (void)didChangeLocalScreenAttributes:(id)attributes
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  attributesCopy = attributes;
   v4 = sub_254761764();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = attributesCopy;
     _os_log_impl(&dword_254743000, v4, OS_LOG_TYPE_DEFAULT, "videoAttributes: %@", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didReceiveErrorFromCameraUniqueID:(id)a3 error:(id)a4
+- (void)didReceiveErrorFromCameraUniqueID:(id)d error:(id)error
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  errorCopy = error;
   v7 = sub_254761764();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = v5;
+    v10 = dCopy;
     v11 = 2112;
-    v12 = v6;
+    v12 = errorCopy;
     _os_log_impl(&dword_254743000, v7, OS_LOG_TYPE_DEFAULT, "cameraUID: %@ error: %@", &v9, 0x16u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cameraDidBecomeAvailableForUniqueID:(id)a3
+- (void)cameraDidBecomeAvailableForUniqueID:(id)d
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = sub_254761764();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = dCopy;
     _os_log_impl(&dword_254743000, v5, OS_LOG_TYPE_DEFAULT, "cameraUID: %@", &v11, 0xCu);
   }
 

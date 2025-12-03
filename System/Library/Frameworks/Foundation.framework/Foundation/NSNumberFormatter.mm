@@ -5,12 +5,12 @@
 - (BOOL)_hasSetCurrencyCode;
 - (BOOL)_hasSetCurrencySymbol;
 - (BOOL)_hasSetInternationalCurrencySymbol;
-- (BOOL)_mayDecorateAttributedStringForObjectValue:(id)a3;
+- (BOOL)_mayDecorateAttributedStringForObjectValue:(id)value;
 - (BOOL)_usesCharacterDirection;
 - (BOOL)allowsFloats;
 - (BOOL)alwaysShowsDecimalSeparator;
 - (BOOL)generatesDecimalNumbers;
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5;
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description;
 - (BOOL)isLenient;
 - (BOOL)isPartialStringValidationEnabled;
 - (BOOL)usesGroupingSeparator;
@@ -30,7 +30,7 @@
 - (NSNumber)numberFromString:(NSString *)string;
 - (NSNumber)roundingIncrement;
 - (NSNumberFormatter)init;
-- (NSNumberFormatter)initWithCoder:(id)a3;
+- (NSNumberFormatter)initWithCoder:(id)coder;
 - (NSNumberFormatterPadPosition)paddingPosition;
 - (NSNumberFormatterRoundingMode)roundingMode;
 - (NSNumberFormatterStyle)numberStyle;
@@ -68,18 +68,18 @@
 - (NSUInteger)minimumIntegerDigits;
 - (NSUInteger)minimumSignificantDigits;
 - (NSUInteger)secondaryGroupingSize;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)stringForObjectValue:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)stringForObjectValue:(id)value;
 - (int64_t)_cacheGenerationCount;
 - (int64_t)minimumGroupingDigits;
 - (void)_clearFormatter;
 - (void)_regenerateFormatter;
 - (void)_reset;
-- (void)_setUsesCharacterDirection:(BOOL)a3;
+- (void)_setUsesCharacterDirection:(BOOL)direction;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)getFormatter;
-- (void)receiveObservedValue:(id)a3;
+- (void)receiveObservedValue:(id)value;
 - (void)setAllowsFloats:(BOOL)allowsFloats;
 - (void)setAlwaysShowsDecimalSeparator:(BOOL)alwaysShowsDecimalSeparator;
 - (void)setCurrencyCode:(NSString *)currencyCode;
@@ -102,7 +102,7 @@
 - (void)setMaximumSignificantDigits:(NSUInteger)maximumSignificantDigits;
 - (void)setMinimum:(NSNumber *)minimum;
 - (void)setMinimumFractionDigits:(NSUInteger)minimumFractionDigits;
-- (void)setMinimumGroupingDigits:(int64_t)a3;
+- (void)setMinimumGroupingDigits:(int64_t)digits;
 - (void)setMinimumIntegerDigits:(NSUInteger)minimumIntegerDigits;
 - (void)setMinimumSignificantDigits:(NSUInteger)minimumSignificantDigits;
 - (void)setMinusSign:(NSString *)minusSign;
@@ -149,32 +149,32 @@
   }
 
   self->_counter = _localeNotificationCount();
-  v3 = [(NSMutableDictionary *)self->_attributes objectForKey:@"locale"];
+  currentLocale = [(NSMutableDictionary *)self->_attributes objectForKey:@"locale"];
   v4 = [(NSMutableDictionary *)self->_attributes objectForKey:@"numberStyle"];
   v5 = v4;
   v6 = *MEMORY[0x1E695E4A8];
-  if (v3)
+  if (currentLocale)
   {
     if (v4)
     {
 LABEL_5:
-      v7 = [v5 integerValue];
+      integerValue = [v5 integerValue];
       goto LABEL_8;
     }
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DF58] currentLocale];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
     if (v5)
     {
       goto LABEL_5;
     }
   }
 
-  v7 = kCFNumberFormatterNoStyle;
+  integerValue = kCFNumberFormatterNoStyle;
 LABEL_8:
-  v8 = CFNumberFormatterCreate(v6, v3, v7);
+  v8 = CFNumberFormatterCreate(v6, currentLocale, integerValue);
   self->_formatter = v8;
   if (!v8)
   {
@@ -465,7 +465,7 @@ LABEL_20:
 {
   if (!__NSNumberFormatterDefaultBehavior)
   {
-    [a1 setDefaultFormatterBehavior:0];
+    [self setDefaultFormatterBehavior:0];
   }
 }
 
@@ -811,7 +811,7 @@ LABEL_20:
   if (v3)
   {
 LABEL_2:
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
     goto LABEL_3;
   }
 
@@ -821,28 +821,28 @@ LABEL_2:
     [(NSNumberFormatter *)self _clearFormatter];
   }
 
-  v4 = *v6;
+  integerValue = *v6;
   if (!self->_formatter)
   {
     [(NSNumberFormatter *)self _regenerateFormatter];
   }
 
-  if (v4)
+  if (integerValue)
   {
     formatter = self->_formatter;
     if (!formatter)
     {
-      v4 = 0;
+      integerValue = 0;
       goto LABEL_3;
     }
 
-    v3 = CFNumberFormatterCopyProperty(formatter, v4);
+    v3 = CFNumberFormatterCopyProperty(formatter, integerValue);
     goto LABEL_2;
   }
 
 LABEL_3:
   [(NSRecursiveLock *)self->_lock unlock];
-  return v4;
+  return integerValue;
 }
 
 - (NSString)currencyGroupingSeparator
@@ -932,7 +932,7 @@ LABEL_3:
   }
 
   v3 = [(NSMutableDictionary *)self->_attributes objectForKey:@"usesGroupingSeparator"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
   if (!v3)
   {
     formatter = self->_formatter;
@@ -947,10 +947,10 @@ LABEL_3:
       }
     }
 
-    v4 = [CFNumberFormatterCopyProperty(formatter *MEMORY[0x1E695E850])];
+    bOOLValue = [CFNumberFormatterCopyProperty(formatter *MEMORY[0x1E695E850])];
   }
 
-  v6 = v4;
+  v6 = bOOLValue;
 LABEL_8:
   [(NSRecursiveLock *)self->_lock unlock];
   return v6;
@@ -996,7 +996,7 @@ LABEL_8:
   if (v3)
   {
 LABEL_2:
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
     goto LABEL_3;
   }
 
@@ -1006,28 +1006,28 @@ LABEL_2:
     [(NSNumberFormatter *)self _clearFormatter];
   }
 
-  v4 = *v6;
+  integerValue = *v6;
   if (!self->_formatter)
   {
     [(NSNumberFormatter *)self _regenerateFormatter];
   }
 
-  if (v4)
+  if (integerValue)
   {
     formatter = self->_formatter;
     if (!formatter)
     {
-      v4 = 0;
+      integerValue = 0;
       goto LABEL_3;
     }
 
-    v3 = CFNumberFormatterCopyProperty(formatter, v4);
+    v3 = CFNumberFormatterCopyProperty(formatter, integerValue);
     goto LABEL_2;
   }
 
 LABEL_3:
   [(NSRecursiveLock *)self->_lock unlock];
-  return v4;
+  return integerValue;
 }
 
 - (NSUInteger)secondaryGroupingSize
@@ -1037,7 +1037,7 @@ LABEL_3:
   if (v3)
   {
 LABEL_2:
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
     goto LABEL_3;
   }
 
@@ -1047,28 +1047,28 @@ LABEL_2:
     [(NSNumberFormatter *)self _clearFormatter];
   }
 
-  v4 = *v6;
+  integerValue = *v6;
   if (!self->_formatter)
   {
     [(NSNumberFormatter *)self _regenerateFormatter];
   }
 
-  if (v4)
+  if (integerValue)
   {
     formatter = self->_formatter;
     if (!formatter)
     {
-      v4 = 0;
+      integerValue = 0;
       goto LABEL_3;
     }
 
-    v3 = CFNumberFormatterCopyProperty(formatter, v4);
+    v3 = CFNumberFormatterCopyProperty(formatter, integerValue);
     goto LABEL_2;
   }
 
 LABEL_3:
   [(NSRecursiveLock *)self->_lock unlock];
-  return v4;
+  return integerValue;
 }
 
 - (BOOL)usesSignificantDigits
@@ -1103,16 +1103,16 @@ LABEL_5:
   formatter = self->_formatter;
   if (!formatter)
   {
-    v7 = 0;
+    bOOLValue = 0;
     goto LABEL_10;
   }
 
   v5 = CFNumberFormatterCopyProperty(formatter, *MEMORY[0x1E695E858]);
 LABEL_9:
-  v7 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 LABEL_10:
   [(NSRecursiveLock *)self->_lock unlock];
-  return v7;
+  return bOOLValue;
 }
 
 - (NSUInteger)maximumSignificantDigits
@@ -1122,7 +1122,7 @@ LABEL_10:
   if (v3)
   {
 LABEL_2:
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
     goto LABEL_3;
   }
 
@@ -1132,28 +1132,28 @@ LABEL_2:
     [(NSNumberFormatter *)self _clearFormatter];
   }
 
-  v4 = *v6;
+  integerValue = *v6;
   if (!self->_formatter)
   {
     [(NSNumberFormatter *)self _regenerateFormatter];
   }
 
-  if (v4)
+  if (integerValue)
   {
     formatter = self->_formatter;
     if (!formatter)
     {
-      v4 = 0;
+      integerValue = 0;
       goto LABEL_3;
     }
 
-    v3 = CFNumberFormatterCopyProperty(formatter, v4);
+    v3 = CFNumberFormatterCopyProperty(formatter, integerValue);
     goto LABEL_2;
   }
 
 LABEL_3:
   [(NSRecursiveLock *)self->_lock unlock];
-  return v4;
+  return integerValue;
 }
 
 - (NSUInteger)maximumIntegerDigits
@@ -1163,7 +1163,7 @@ LABEL_3:
   if (v3)
   {
 LABEL_2:
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
     goto LABEL_3;
   }
 
@@ -1173,28 +1173,28 @@ LABEL_2:
     [(NSNumberFormatter *)self _clearFormatter];
   }
 
-  v4 = *v6;
+  integerValue = *v6;
   if (!self->_formatter)
   {
     [(NSNumberFormatter *)self _regenerateFormatter];
   }
 
-  if (v4)
+  if (integerValue)
   {
     formatter = self->_formatter;
     if (!formatter)
     {
-      v4 = 0;
+      integerValue = 0;
       goto LABEL_3;
     }
 
-    v3 = CFNumberFormatterCopyProperty(formatter, v4);
+    v3 = CFNumberFormatterCopyProperty(formatter, integerValue);
     goto LABEL_2;
   }
 
 LABEL_3:
   [(NSRecursiveLock *)self->_lock unlock];
-  return v4;
+  return integerValue;
 }
 
 - (NSUInteger)minimumFractionDigits
@@ -1204,7 +1204,7 @@ LABEL_3:
   if (v3)
   {
 LABEL_2:
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
     goto LABEL_3;
   }
 
@@ -1214,28 +1214,28 @@ LABEL_2:
     [(NSNumberFormatter *)self _clearFormatter];
   }
 
-  v4 = *v6;
+  integerValue = *v6;
   if (!self->_formatter)
   {
     [(NSNumberFormatter *)self _regenerateFormatter];
   }
 
-  if (v4)
+  if (integerValue)
   {
     formatter = self->_formatter;
     if (!formatter)
     {
-      v4 = 0;
+      integerValue = 0;
       goto LABEL_3;
     }
 
-    v3 = CFNumberFormatterCopyProperty(formatter, v4);
+    v3 = CFNumberFormatterCopyProperty(formatter, integerValue);
     goto LABEL_2;
   }
 
 LABEL_3:
   [(NSRecursiveLock *)self->_lock unlock];
-  return v4;
+  return integerValue;
 }
 
 - (NSNumberFormatterRoundingMode)roundingMode
@@ -1245,7 +1245,7 @@ LABEL_3:
   if (v3)
   {
 LABEL_2:
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
     goto LABEL_3;
   }
 
@@ -1255,35 +1255,35 @@ LABEL_2:
     [(NSNumberFormatter *)self _clearFormatter];
   }
 
-  v4 = *v6;
+  integerValue = *v6;
   if (!self->_formatter)
   {
     [(NSNumberFormatter *)self _regenerateFormatter];
   }
 
-  if (v4)
+  if (integerValue)
   {
     formatter = self->_formatter;
     if (!formatter)
     {
-      v4 = 0;
+      integerValue = 0;
       goto LABEL_3;
     }
 
-    v3 = CFNumberFormatterCopyProperty(formatter, v4);
+    v3 = CFNumberFormatterCopyProperty(formatter, integerValue);
     goto LABEL_2;
   }
 
 LABEL_3:
   [(NSRecursiveLock *)self->_lock unlock];
-  return v4;
+  return integerValue;
 }
 
 - (NSFormattingContext)formattingContext
 {
   [(NSRecursiveLock *)self->_lock lock];
   v3 = [(NSMutableDictionary *)self->_attributes objectForKey:@"formattingContext"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
   if (!v3)
   {
     formatter = self->_formatter;
@@ -1293,10 +1293,10 @@ LABEL_3:
       formatter = self->_formatter;
     }
 
-    v4 = [CFNumberFormatterCopyProperty(formatter @"kCFNumberFormatterFormattingContextKey")];
+    intValue = [CFNumberFormatterCopyProperty(formatter @"kCFNumberFormatterFormattingContextKey")];
   }
 
-  v6 = v4;
+  v6 = intValue;
   [(NSRecursiveLock *)self->_lock unlock];
   if (v6 > 257)
   {
@@ -1372,16 +1372,16 @@ LABEL_3:
   v3 = [(NSMutableDictionary *)self->_attributes objectForKey:@"generatesDecimalNumbers"];
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
   [(NSRecursiveLock *)self->_lock unlock];
-  return v4;
+  return bOOLValue;
 }
 
 + (void)setDefaultFormatterBehavior:(NSNumberFormatterBehavior)behavior
@@ -1410,33 +1410,33 @@ LABEL_3:
   [(NSNumberFormatter *)self _clearFormatter];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   [(NSRecursiveLock *)self->_lock lock];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5[1] setDictionary:self->_attributes];
   [(NSRecursiveLock *)self->_lock unlock];
   [v5 _clearFormatter];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
   v5.super_class = NSNumberFormatter;
   [(NSFormatter *)&v5 encodeWithCoder:?];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSNumberFormatters cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
   [(NSRecursiveLock *)self->_lock lock];
-  [a3 encodeObject:self->_attributes forKey:@"NS.attributes"];
+  [coder encodeObject:self->_attributes forKey:@"NS.attributes"];
   [(NSRecursiveLock *)self->_lock unlock];
 }
 
-- (NSNumberFormatter)initWithCoder:(id)a3
+- (NSNumberFormatter)initWithCoder:(id)coder
 {
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
@@ -1445,13 +1445,13 @@ LABEL_3:
   if (v4)
   {
     v4->_lock = objc_alloc_init(NSRecursiveLock);
-    if (([a3 allowsKeyedCoding] & 1) == 0)
+    if (([coder allowsKeyedCoding] & 1) == 0)
     {
 
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSNumberFormatters cannot be decoded by non-keyed archivers" userInfo:0]);
     }
 
-    v5 = [a3 decodeObjectForKey:@"NS.attributes"];
+    v5 = [coder decodeObjectForKey:@"NS.attributes"];
     v4->_attributes = v5;
     v6 = [-[NSMutableDictionary objectForKey:](v5 objectForKey:{@"formatterBehavior", "integerValue"}];
     if (v6 != 1040)
@@ -1459,15 +1459,15 @@ LABEL_3:
       attributes = v4->_attributes;
       if (v6)
       {
-        v8 = 1040;
+        defaultFormatterBehavior = 1040;
       }
 
       else
       {
-        v8 = [objc_opt_class() defaultFormatterBehavior];
+        defaultFormatterBehavior = [objc_opt_class() defaultFormatterBehavior];
       }
 
-      [(NSMutableDictionary *)attributes setValue:[NSNumber forKey:"numberWithInteger:" numberWithInteger:v8], @"formatterBehavior"];
+      [(NSMutableDictionary *)attributes setValue:[NSNumber forKey:"numberWithInteger:" numberWithInteger:defaultFormatterBehavior], @"formatterBehavior"];
     }
 
     v4->_behavior = [-[NSMutableDictionary objectForKey:](v4->_attributes objectForKey:{@"formatterBehavior", "integerValue"}];
@@ -1477,9 +1477,9 @@ LABEL_3:
   return v4;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  if (a3)
+  if (value)
   {
     if ((_NSIsNSNumber() & 1) == 0)
     {
@@ -1487,7 +1487,7 @@ LABEL_3:
     }
 
     [(NSRecursiveLock *)self->_lock lock];
-    [a3 doubleValue];
+    [value doubleValue];
     v6 = v5;
     v7 = __fpclassifyd(v5);
     if (v7 > 2)
@@ -1497,12 +1497,12 @@ LABEL_3:
         goto LABEL_18;
       }
 
-      v8 = [(NSNumberFormatter *)self zeroSymbol];
+      zeroSymbol = [(NSNumberFormatter *)self zeroSymbol];
     }
 
     else if (v7 == 1)
     {
-      v8 = [(NSNumberFormatter *)self notANumberSymbol];
+      zeroSymbol = [(NSNumberFormatter *)self notANumberSymbol];
     }
 
     else
@@ -1514,24 +1514,24 @@ LABEL_3:
 
       if ((*&v6 & 0x8000000000000000) != 0)
       {
-        v8 = [(NSNumberFormatter *)self negativeInfinitySymbol];
+        zeroSymbol = [(NSNumberFormatter *)self negativeInfinitySymbol];
       }
 
       else
       {
-        v8 = [(NSNumberFormatter *)self positiveInfinitySymbol];
+        zeroSymbol = [(NSNumberFormatter *)self positiveInfinitySymbol];
       }
     }
 
-    v10 = v8;
-    if (v8)
+    v10 = zeroSymbol;
+    if (zeroSymbol)
     {
 LABEL_23:
       if ([-[NSMutableDictionary objectForKey:](self->_attributes objectForKey:{@"formattingContext", "intValue"}] == -1)
       {
         v12 = objc_alloc_init(_NSStringProxyForContext);
         [(_NSStringProxyForContext *)v12 setString:v10];
-        [(_NSStringProxyForContext *)v12 setItem:a3];
+        [(_NSStringProxyForContext *)v12 setItem:value];
         v13 = [objc_allocWithZone(objc_opt_class()) init];
         [v13[1] setDictionary:self->_attributes];
         [(_NSStringProxyForContext *)v12 _retainFormatter:v13];
@@ -1553,7 +1553,7 @@ LABEL_18:
     formatter = self->_formatter;
     if (formatter || ([(NSNumberFormatter *)self _regenerateFormatter], (formatter = self->_formatter) != 0))
     {
-      v10 = CFNumberFormatterCreateStringWithNumber(*MEMORY[0x1E695E4A8], formatter, a3);
+      v10 = CFNumberFormatterCreateStringWithNumber(*MEMORY[0x1E695E4A8], formatter, value);
     }
 
     else
@@ -1582,14 +1582,14 @@ LABEL_18:
   return self->_cacheGeneration;
 }
 
-- (BOOL)_mayDecorateAttributedStringForObjectValue:(id)a3
+- (BOOL)_mayDecorateAttributedStringForObjectValue:(id)value
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a3 && (_NSIsNSNumber() & 1) == 0)
+  if (value && (_NSIsNSNumber() & 1) == 0)
   {
     v13.receiver = self;
     v13.super_class = NSNumberFormatter;
-    return [(NSFormatter *)&v13 _mayDecorateAttributedStringForObjectValue:a3];
+    return [(NSFormatter *)&v13 _mayDecorateAttributedStringForObjectValue:value];
   }
 
   v5 = objc_opt_class();
@@ -1600,9 +1600,9 @@ LABEL_18:
     return 1;
   }
 
-  if (a3)
+  if (value)
   {
-    [a3 doubleValue];
+    [value doubleValue];
     v10 = v9;
     v11 = __fpclassifyd(v9);
     if (v11 > 2)
@@ -1612,7 +1612,7 @@ LABEL_18:
         goto LABEL_16;
       }
 
-      v12 = [(NSNumberFormatter *)self textAttributesForZero];
+      textAttributesForZero = [(NSNumberFormatter *)self textAttributesForZero];
     }
 
     else
@@ -1623,44 +1623,44 @@ LABEL_18:
         {
           if ((*&v10 & 0x8000000000000000) != 0)
           {
-            v12 = [(NSNumberFormatter *)self textAttributesForNegativeInfinity];
+            textAttributesForZero = [(NSNumberFormatter *)self textAttributesForNegativeInfinity];
           }
 
           else
           {
-            v12 = [(NSNumberFormatter *)self textAttributesForPositiveInfinity];
+            textAttributesForZero = [(NSNumberFormatter *)self textAttributesForPositiveInfinity];
           }
 
-          return v12 != 0;
+          return textAttributesForZero != 0;
         }
 
 LABEL_16:
         if ((*&v10 & 0x8000000000000000) != 0)
         {
-          v12 = [(NSNumberFormatter *)self textAttributesForNegativeValues];
+          textAttributesForZero = [(NSNumberFormatter *)self textAttributesForNegativeValues];
         }
 
         else
         {
-          v12 = [(NSNumberFormatter *)self textAttributesForPositiveValues];
+          textAttributesForZero = [(NSNumberFormatter *)self textAttributesForPositiveValues];
         }
 
-        return v12 != 0;
+        return textAttributesForZero != 0;
       }
 
-      v12 = [(NSNumberFormatter *)self textAttributesForNotANumber];
+      textAttributesForZero = [(NSNumberFormatter *)self textAttributesForNotANumber];
     }
   }
 
   else
   {
-    v12 = [(NSNumberFormatter *)self textAttributesForNil];
+    textAttributesForZero = [(NSNumberFormatter *)self textAttributesForNil];
   }
 
-  return v12 != 0;
+  return textAttributesForZero != 0;
 }
 
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v16[0] = 0;
@@ -1672,7 +1672,7 @@ LABEL_16:
 
   v10 = objc_opt_class();
   MethodImplementation = class_getMethodImplementation(v10, sel_getObjectValue_forString_range_error_);
-  if (a5)
+  if (description)
   {
     v12 = v16;
   }
@@ -1684,18 +1684,18 @@ LABEL_16:
 
   if (MethodImplementation == getObjectValue_forString_errorDescription__baseIMP_0)
   {
-    ObjectValue_0 = getObjectValue_0(self, a3, a4, 0, 1, v12);
+    ObjectValue_0 = getObjectValue_0(self, value, string, 0, 1, v12);
   }
 
   else
   {
-    ObjectValue_0 = [(NSNumberFormatter *)self getObjectValue:a3 forString:a4 range:0 error:v12];
+    ObjectValue_0 = [(NSNumberFormatter *)self getObjectValue:value forString:string range:0 error:v12];
   }
 
   v14 = ObjectValue_0;
-  if (a5)
+  if (description)
   {
-    *a5 = [v16[0] localizedDescription];
+    *description = [v16[0] localizedDescription];
   }
 
   return v14;
@@ -2184,7 +2184,7 @@ LABEL_10:
   }
 
   v3 = [(NSMutableDictionary *)self->_attributes objectForKey:@"alwaysShowsDecimalSeparator"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
   if (!v3)
   {
     formatter = self->_formatter;
@@ -2199,10 +2199,10 @@ LABEL_10:
       }
     }
 
-    v4 = [CFNumberFormatterCopyProperty(formatter *MEMORY[0x1E695E740])];
+    bOOLValue = [CFNumberFormatterCopyProperty(formatter *MEMORY[0x1E695E740])];
   }
 
-  v6 = v4;
+  v6 = bOOLValue;
 LABEL_8:
   [(NSRecursiveLock *)self->_lock unlock];
   return v6;
@@ -3581,7 +3581,7 @@ LABEL_8:
   if (v3)
   {
 LABEL_2:
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
     goto LABEL_3;
   }
 
@@ -3591,28 +3591,28 @@ LABEL_2:
     [(NSNumberFormatter *)self _clearFormatter];
   }
 
-  v4 = *v6;
+  integerValue = *v6;
   if (!self->_formatter)
   {
     [(NSNumberFormatter *)self _regenerateFormatter];
   }
 
-  if (v4)
+  if (integerValue)
   {
     formatter = self->_formatter;
     if (!formatter)
     {
-      v4 = 0;
+      integerValue = 0;
       goto LABEL_3;
     }
 
-    v3 = CFNumberFormatterCopyProperty(formatter, v4);
+    v3 = CFNumberFormatterCopyProperty(formatter, integerValue);
     goto LABEL_2;
   }
 
 LABEL_3:
   [(NSRecursiveLock *)self->_lock unlock];
-  return v4;
+  return integerValue;
 }
 
 - (void)setFormatWidth:(NSUInteger)formatWidth
@@ -3787,7 +3787,7 @@ LABEL_3:
   if (v3)
   {
 LABEL_2:
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
     goto LABEL_3;
   }
 
@@ -3797,28 +3797,28 @@ LABEL_2:
     [(NSNumberFormatter *)self _clearFormatter];
   }
 
-  v4 = *v6;
+  integerValue = *v6;
   if (!self->_formatter)
   {
     [(NSNumberFormatter *)self _regenerateFormatter];
   }
 
-  if (v4)
+  if (integerValue)
   {
     formatter = self->_formatter;
     if (!formatter)
     {
-      v4 = 0;
+      integerValue = 0;
       goto LABEL_3;
     }
 
-    v3 = CFNumberFormatterCopyProperty(formatter, v4);
+    v3 = CFNumberFormatterCopyProperty(formatter, integerValue);
     goto LABEL_2;
   }
 
 LABEL_3:
   [(NSRecursiveLock *)self->_lock unlock];
-  return v4;
+  return integerValue;
 }
 
 - (void)setPaddingPosition:(NSNumberFormatterPadPosition)paddingPosition
@@ -3948,7 +3948,7 @@ LABEL_3:
   if (v3)
   {
 LABEL_2:
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
     goto LABEL_3;
   }
 
@@ -3958,28 +3958,28 @@ LABEL_2:
     [(NSNumberFormatter *)self _clearFormatter];
   }
 
-  v4 = *v6;
+  integerValue = *v6;
   if (!self->_formatter)
   {
     [(NSNumberFormatter *)self _regenerateFormatter];
   }
 
-  if (v4)
+  if (integerValue)
   {
     formatter = self->_formatter;
     if (!formatter)
     {
-      v4 = 0;
+      integerValue = 0;
       goto LABEL_3;
     }
 
-    v3 = CFNumberFormatterCopyProperty(formatter, v4);
+    v3 = CFNumberFormatterCopyProperty(formatter, integerValue);
     goto LABEL_2;
   }
 
 LABEL_3:
   [(NSRecursiveLock *)self->_lock unlock];
-  return v4;
+  return integerValue;
 }
 
 - (void)setMinimumIntegerDigits:(NSUInteger)minimumIntegerDigits
@@ -4022,7 +4022,7 @@ LABEL_3:
     }
 
 LABEL_24:
-    v11 = 0;
+    integerValue = 0;
     goto LABEL_8;
   }
 
@@ -4033,16 +4033,16 @@ LABEL_24:
   }
 
 LABEL_21:
-  v11 = self->_formatter;
-  if (v11)
+  integerValue = self->_formatter;
+  if (integerValue)
   {
-    v10 = CFNumberFormatterCopyProperty(v11, v9);
+    v10 = CFNumberFormatterCopyProperty(integerValue, v9);
 LABEL_7:
-    v11 = [v10 integerValue];
+    integerValue = [v10 integerValue];
   }
 
 LABEL_8:
-  if (v11 < minimumIntegerDigits)
+  if (integerValue < minimumIntegerDigits)
   {
     v12 = [(NSMutableDictionary *)self->_attributes objectForKey:@"maximumIntegerDigits"];
     if (!v12 || [v12 integerValue] != minimumIntegerDigits)
@@ -4176,7 +4176,7 @@ LABEL_7:
     }
 
 LABEL_24:
-    v11 = 0;
+    integerValue = 0;
     goto LABEL_8;
   }
 
@@ -4187,16 +4187,16 @@ LABEL_24:
   }
 
 LABEL_21:
-  v11 = self->_formatter;
-  if (v11)
+  integerValue = self->_formatter;
+  if (integerValue)
   {
-    v10 = CFNumberFormatterCopyProperty(v11, v9);
+    v10 = CFNumberFormatterCopyProperty(integerValue, v9);
 LABEL_7:
-    v11 = [v10 integerValue];
+    integerValue = [v10 integerValue];
   }
 
 LABEL_8:
-  if (v11 < minimumFractionDigits)
+  if (integerValue < minimumFractionDigits)
   {
     v12 = [(NSMutableDictionary *)self->_attributes objectForKey:@"maximumFractionDigits"];
     if (!v12 || [v12 integerValue] != minimumFractionDigits)
@@ -4400,16 +4400,16 @@ LABEL_5:
   formatter = self->_formatter;
   if (!formatter)
   {
-    v7 = 0;
+    bOOLValue = 0;
     goto LABEL_10;
   }
 
   v5 = CFNumberFormatterCopyProperty(formatter, *MEMORY[0x1E695E798]);
 LABEL_9:
-  v7 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 LABEL_10:
   [(NSRecursiveLock *)self->_lock unlock];
-  return v7;
+  return bOOLValue;
 }
 
 - (void)setLenient:(BOOL)lenient
@@ -4473,7 +4473,7 @@ LABEL_10:
   if (v3)
   {
 LABEL_2:
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
     goto LABEL_3;
   }
 
@@ -4483,28 +4483,28 @@ LABEL_2:
     [(NSNumberFormatter *)self _clearFormatter];
   }
 
-  v4 = *v6;
+  integerValue = *v6;
   if (!self->_formatter)
   {
     [(NSNumberFormatter *)self _regenerateFormatter];
   }
 
-  if (v4)
+  if (integerValue)
   {
     formatter = self->_formatter;
     if (!formatter)
     {
-      v4 = 0;
+      integerValue = 0;
       goto LABEL_3;
     }
 
-    v3 = CFNumberFormatterCopyProperty(formatter, v4);
+    v3 = CFNumberFormatterCopyProperty(formatter, integerValue);
     goto LABEL_2;
   }
 
 LABEL_3:
   [(NSRecursiveLock *)self->_lock unlock];
-  return v4;
+  return integerValue;
 }
 
 - (void)setMinimumSignificantDigits:(NSUInteger)minimumSignificantDigits
@@ -4688,16 +4688,16 @@ LABEL_10:
   v3 = [(NSMutableDictionary *)self->_attributes objectForKey:@"partialStringValidationEnabled"];
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
   [(NSRecursiveLock *)self->_lock unlock];
-  return v4;
+  return bOOLValue;
 }
 
 - (void)setPartialStringValidationEnabled:(BOOL)partialStringValidationEnabled
@@ -4756,22 +4756,22 @@ LABEL_5:
   formatter = self->_formatter;
   if (!formatter)
   {
-    v7 = 0;
+    bOOLValue = 0;
     goto LABEL_10;
   }
 
   v5 = CFNumberFormatterCopyProperty(formatter, *MEMORY[0x1E695E860]);
 LABEL_9:
-  v7 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 LABEL_10:
   [(NSRecursiveLock *)self->_lock unlock];
-  return v7;
+  return bOOLValue;
 }
 
-- (void)_setUsesCharacterDirection:(BOOL)a3
+- (void)_setUsesCharacterDirection:(BOOL)direction
 {
   v4 = MEMORY[0x1E695E4D0];
-  if (!a3)
+  if (!direction)
   {
     v4 = MEMORY[0x1E695E4C0];
   }
@@ -4798,7 +4798,7 @@ LABEL_10:
   if (v3)
   {
 LABEL_2:
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
     goto LABEL_3;
   }
 
@@ -4808,38 +4808,38 @@ LABEL_2:
     [(NSNumberFormatter *)self _clearFormatter];
   }
 
-  v4 = *v6;
+  integerValue = *v6;
   if (!self->_formatter)
   {
     [(NSNumberFormatter *)self _regenerateFormatter];
   }
 
-  if (v4)
+  if (integerValue)
   {
     formatter = self->_formatter;
     if (!formatter)
     {
-      v4 = 0;
+      integerValue = 0;
       goto LABEL_3;
     }
 
-    v3 = CFNumberFormatterCopyProperty(formatter, v4);
+    v3 = CFNumberFormatterCopyProperty(formatter, integerValue);
     goto LABEL_2;
   }
 
 LABEL_3:
   [(NSRecursiveLock *)self->_lock unlock];
-  return v4;
+  return integerValue;
 }
 
-- (void)setMinimumGroupingDigits:(int64_t)a3
+- (void)setMinimumGroupingDigits:(int64_t)digits
 {
   [(NSRecursiveLock *)self->_lock lock];
   v5 = [(NSMutableDictionary *)self->_attributes objectForKey:@"minimumGroupingDigits"];
-  if (!v5 || [v5 integerValue] != a3)
+  if (!v5 || [v5 integerValue] != digits)
   {
     v6 = *MEMORY[0x1E695E7C0];
-    v7 = [NSNumber numberWithInteger:a3];
+    v7 = [NSNumber numberWithInteger:digits];
     [(NSMutableDictionary *)self->_attributes setValue:v7 forKey:@"minimumGroupingDigits"];
     ++self->_cacheGeneration;
     if (v6)
@@ -4857,10 +4857,10 @@ LABEL_3:
   [(NSRecursiveLock *)lock unlock];
 }
 
-- (void)receiveObservedValue:(id)a3
+- (void)receiveObservedValue:(id)value
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (value)
   {
     if ((_NSIsNSNumber() & 1) == 0)
     {
@@ -4869,7 +4869,7 @@ LABEL_3:
 
     v6.receiver = self;
     v6.super_class = NSNumberFormatter;
-    [(NSNumberFormatter *)&v6 receiveObservedValue:[(NSNumberFormatter *)self stringFromNumber:a3]];
+    [(NSNumberFormatter *)&v6 receiveObservedValue:[(NSNumberFormatter *)self stringFromNumber:value]];
   }
 
   else

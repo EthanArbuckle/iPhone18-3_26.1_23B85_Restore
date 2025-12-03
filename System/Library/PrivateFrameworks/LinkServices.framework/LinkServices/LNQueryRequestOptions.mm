@@ -1,27 +1,27 @@
 @interface LNQueryRequestOptions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (LNQueryRequestOptions)init;
-- (LNQueryRequestOptions)initWithCoder:(id)a3;
+- (LNQueryRequestOptions)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNQueryRequestOptions
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [(LNQueryRequestOptions *)self convertArrayResultToAsyncSequence];
-        if (v7 != [(LNQueryRequestOptions *)v6 convertArrayResultToAsyncSequence])
+        convertArrayResultToAsyncSequence = [(LNQueryRequestOptions *)self convertArrayResultToAsyncSequence];
+        if (convertArrayResultToAsyncSequence != [(LNQueryRequestOptions *)v6 convertArrayResultToAsyncSequence])
         {
           v8 = 0;
 LABEL_16:
@@ -29,10 +29,10 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        v10 = [(LNQueryRequestOptions *)self exportConfiguration];
-        v11 = [(LNQueryRequestOptions *)v6 exportConfiguration];
-        v9 = v10;
-        v12 = v11;
+        exportConfiguration = [(LNQueryRequestOptions *)self exportConfiguration];
+        exportConfiguration2 = [(LNQueryRequestOptions *)v6 exportConfiguration];
+        v9 = exportConfiguration;
+        v12 = exportConfiguration2;
         v13 = v12;
         if (v9 == v12)
         {
@@ -87,17 +87,17 @@ LABEL_17:
     v6 = @"NO";
   }
 
-  v7 = [(LNQueryRequestOptions *)self exportConfiguration];
-  v8 = [v3 stringWithFormat:@"<%@ convertArrayResultToAsyncSequence: %@, exportConfiguration: %@>", v5, v6, v7];
+  exportConfiguration = [(LNQueryRequestOptions *)self exportConfiguration];
+  v8 = [v3 stringWithFormat:@"<%@ convertArrayResultToAsyncSequence: %@, exportConfiguration: %@>", v5, v6, exportConfiguration];
 
   return v8;
 }
 
-- (LNQueryRequestOptions)initWithCoder:(id)a3
+- (LNQueryRequestOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"convertArrayResultToAsyncSequence"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"exportConfiguration"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"convertArrayResultToAsyncSequence"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"exportConfiguration"];
 
   v7 = [(LNQueryRequestOptions *)self init];
   v8 = v7;
@@ -110,12 +110,12 @@ LABEL_17:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[LNQueryRequestOptions convertArrayResultToAsyncSequence](self forKey:{"convertArrayResultToAsyncSequence"), @"convertArrayResultToAsyncSequence"}];
-  v5 = [(LNQueryRequestOptions *)self exportConfiguration];
-  [v4 encodeObject:v5 forKey:@"exportConfiguration"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[LNQueryRequestOptions convertArrayResultToAsyncSequence](self forKey:{"convertArrayResultToAsyncSequence"), @"convertArrayResultToAsyncSequence"}];
+  exportConfiguration = [(LNQueryRequestOptions *)self exportConfiguration];
+  [coderCopy encodeObject:exportConfiguration forKey:@"exportConfiguration"];
 }
 
 - (LNQueryRequestOptions)init

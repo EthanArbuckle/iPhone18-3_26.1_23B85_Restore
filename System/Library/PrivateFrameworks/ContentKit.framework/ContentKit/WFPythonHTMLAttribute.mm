@@ -1,5 +1,5 @@
 @interface WFPythonHTMLAttribute
-- (WFPythonHTMLAttribute)initWithName:(id)a3 value:(id)a4;
+- (WFPythonHTMLAttribute)initWithName:(id)name value:(id)value;
 - (id)description;
 @end
 
@@ -11,27 +11,27 @@
   v9.receiver = self;
   v9.super_class = WFPythonHTMLAttribute;
   v4 = [(WFPythonHTMLAttribute *)&v9 description];
-  v5 = [(WFPythonHTMLAttribute *)self name];
-  v6 = [(WFPythonHTMLAttribute *)self value];
-  v7 = [v3 stringWithFormat:@"%@: %@=%@", v4, v5, v6];
+  name = [(WFPythonHTMLAttribute *)self name];
+  value = [(WFPythonHTMLAttribute *)self value];
+  v7 = [v3 stringWithFormat:@"%@: %@=%@", v4, name, value];
 
   return v7;
 }
 
-- (WFPythonHTMLAttribute)initWithName:(id)a3 value:(id)a4
+- (WFPythonHTMLAttribute)initWithName:(id)name value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  valueCopy = value;
   v15.receiver = self;
   v15.super_class = WFPythonHTMLAttribute;
   v8 = [(WFPythonHTMLAttribute *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 
-    v11 = [v7 copy];
+    v11 = [valueCopy copy];
     value = v8->_value;
     v8->_value = v11;
 

@@ -1,40 +1,40 @@
 @interface SearchUIHeroCardSectionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_axPerformCustomAction:(id)a3;
-- (BOOL)_axWatchListStateForButton:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_axPerformCustomAction:(id)action;
+- (BOOL)_axWatchListStateForButton:(id)button;
 - (id)_axCommandButtons;
-- (id)_axLocalizedKeyForBundleID:(id)a3;
+- (id)_axLocalizedKeyForBundleID:(id)d;
 - (id)accessibilityCustomActions;
 - (id)accessibilityValue;
-- (unint64_t)_axApplicationForBundleIdentifier:(id)a3;
-- (void)buttonPressed:(id)a3;
+- (unint64_t)_axApplicationForBundleIdentifier:(id)identifier;
+- (void)buttonPressed:(id)pressed;
 @end
 
 @implementation SearchUIHeroCardSectionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SearchUIHeroCardSectionView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SearchUIHeroCardSectionView" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SearchUIHeroCardSectionView" hasInstanceMethod:@"buttonPressed:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SearchUIHeroCardSectionView" hasInstanceMethod:@"punchoutIndicatorImageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SearchUIImageView"];
-  [v3 validateClass:@"SearchUIImageView" hasInstanceMethod:@"currentImage" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SearchUIAppIconImage"];
-  [v3 validateClass:@"SearchUIAppIconImage" hasInstanceMethod:@"bundleIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SearchUIHeroButton"];
-  [v3 validateClass:@"SearchUICommandButton"];
-  [v3 validateProtocol:@"SearchUICommandButton" hasRequiredInstanceMethod:@"buttonItem"];
-  [v3 validateProtocol:@"SFCommandButtonItem" hasRequiredInstanceMethod:@"command"];
-  [v3 validateClass:@"SearchUIHeroButton" conformsToProtocol:@"SearchUICommandButton"];
-  [v3 validateClass:@"SearchUICommandButton" conformsToProtocol:@"SearchUICommandButton"];
-  [v3 validateClass:@"SFToggleWatchListStatusCommand"];
-  [v3 validateClass:@"SearchUICommandButton" hasInstanceMethod:@"watchListState" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SearchUIWatchListState"];
-  [v3 validateClass:@"SearchUIWatchListState" hasInstanceMethod:@"isWatchListed" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SearchUIUtilities"];
-  [v3 validateClass:@"SearchUIUtilities" hasClassMethod:@"bundleIdentifierForApp:" withFullSignature:{"@", "Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SearchUIHeroCardSectionView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SearchUIHeroCardSectionView" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SearchUIHeroCardSectionView" hasInstanceMethod:@"buttonPressed:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SearchUIHeroCardSectionView" hasInstanceMethod:@"punchoutIndicatorImageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SearchUIImageView"];
+  [validationsCopy validateClass:@"SearchUIImageView" hasInstanceMethod:@"currentImage" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SearchUIAppIconImage"];
+  [validationsCopy validateClass:@"SearchUIAppIconImage" hasInstanceMethod:@"bundleIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SearchUIHeroButton"];
+  [validationsCopy validateClass:@"SearchUICommandButton"];
+  [validationsCopy validateProtocol:@"SearchUICommandButton" hasRequiredInstanceMethod:@"buttonItem"];
+  [validationsCopy validateProtocol:@"SFCommandButtonItem" hasRequiredInstanceMethod:@"command"];
+  [validationsCopy validateClass:@"SearchUIHeroButton" conformsToProtocol:@"SearchUICommandButton"];
+  [validationsCopy validateClass:@"SearchUICommandButton" conformsToProtocol:@"SearchUICommandButton"];
+  [validationsCopy validateClass:@"SFToggleWatchListStatusCommand"];
+  [validationsCopy validateClass:@"SearchUICommandButton" hasInstanceMethod:@"watchListState" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SearchUIWatchListState"];
+  [validationsCopy validateClass:@"SearchUIWatchListState" hasInstanceMethod:@"isWatchListed" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SearchUIUtilities"];
+  [validationsCopy validateClass:@"SearchUIUtilities" hasClassMethod:@"bundleIdentifierForApp:" withFullSignature:{"@", "Q", 0}];
 }
 
 - (id)accessibilityValue
@@ -45,29 +45,29 @@
   if (v5)
   {
     v6 = [(SearchUIHeroCardSectionViewAccessibility *)self _axLocalizedKeyForBundleID:v5];
-    v7 = accessibilityLocalizedString(v6);
+    accessibilityValue = accessibilityLocalizedString(v6);
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = SearchUIHeroCardSectionViewAccessibility;
-    v7 = [(SearchUIHeroCardSectionViewAccessibility *)&v9 accessibilityValue];
+    accessibilityValue = [(SearchUIHeroCardSectionViewAccessibility *)&v9 accessibilityValue];
   }
 
-  return v7;
+  return accessibilityValue;
 }
 
 - (id)accessibilityCustomActions
 {
   v24 = *MEMORY[0x29EDCA608];
-  v3 = [(SearchUIHeroCardSectionViewAccessibility *)self _axCommandButtons];
-  v17 = [objc_alloc(MEMORY[0x29EDB8DE8]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  _axCommandButtons = [(SearchUIHeroCardSectionViewAccessibility *)self _axCommandButtons];
+  v17 = [objc_alloc(MEMORY[0x29EDB8DE8]) initWithCapacity:{objc_msgSend(_axCommandButtons, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v3;
+  obj = _axCommandButtons;
   v4 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v4)
   {
@@ -119,14 +119,14 @@
   return v17;
 }
 
-- (BOOL)_axPerformCustomAction:(id)a3
+- (BOOL)_axPerformCustomAction:(id)action
 {
-  v3 = a3;
+  actionCopy = action;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v6 = [v3 _accessibilityValueForKey:@"AXHeroCommandButtonKey"];
+  v6 = [actionCopy _accessibilityValueForKey:@"AXHeroCommandButtonKey"];
   AXPerformSafeBlock();
   v4 = *(v8 + 24);
 
@@ -141,19 +141,19 @@ uint64_t __67__SearchUIHeroCardSectionViewAccessibility__axPerformCustomAction__
   return result;
 }
 
-- (void)buttonPressed:(id)a3
+- (void)buttonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   v9.receiver = self;
   v9.super_class = SearchUIHeroCardSectionViewAccessibility;
-  [(SearchUIHeroCardSectionViewAccessibility *)&v9 buttonPressed:v4];
-  v5 = [v4 safeValueForKey:@"command"];
+  [(SearchUIHeroCardSectionViewAccessibility *)&v9 buttonPressed:pressedCopy];
+  v5 = [pressedCopy safeValueForKey:@"command"];
   NSClassFromString(&cfstr_Sftogglewatchl.isa);
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    if ([(SearchUIHeroCardSectionViewAccessibility *)self _axWatchListStateForButton:v4])
+    if ([(SearchUIHeroCardSectionViewAccessibility *)self _axWatchListStateForButton:pressedCopy])
     {
       v7 = @"watchlist.did.remove";
     }
@@ -202,14 +202,14 @@ uint64_t __61__SearchUIHeroCardSectionViewAccessibility__axCommandButtons__block
   return v3;
 }
 
-- (BOOL)_axWatchListStateForButton:(id)a3
+- (BOOL)_axWatchListStateForButton:(id)button
 {
-  v3 = a3;
-  v4 = [v3 safeValueForKey:@"command"];
+  buttonCopy = button;
+  v4 = [buttonCopy safeValueForKey:@"command"];
   NSClassFromString(&cfstr_Sftogglewatchl.isa);
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v3 safeValueForKey:@"watchListState"];
+    v5 = [buttonCopy safeValueForKey:@"watchListState"];
     v6 = [v5 safeBoolForKey:@"isWatchListed"];
   }
 
@@ -221,9 +221,9 @@ uint64_t __61__SearchUIHeroCardSectionViewAccessibility__axCommandButtons__block
   return v6;
 }
 
-- (id)_axLocalizedKeyForBundleID:(id)a3
+- (id)_axLocalizedKeyForBundleID:(id)d
 {
-  v3 = [(SearchUIHeroCardSectionViewAccessibility *)self _axApplicationForBundleIdentifier:a3];
+  v3 = [(SearchUIHeroCardSectionViewAccessibility *)self _axApplicationForBundleIdentifier:d];
   if (v3 - 1 > 0x15)
   {
     return @"app.generic";
@@ -235,23 +235,23 @@ uint64_t __61__SearchUIHeroCardSectionViewAccessibility__axCommandButtons__block
   }
 }
 
-- (unint64_t)_axApplicationForBundleIdentifier:(id)a3
+- (unint64_t)_axApplicationForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SearchUIHeroCardSectionViewAccessibility *)self _axCachedBundleIdentifiers];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  _axCachedBundleIdentifiers = [(SearchUIHeroCardSectionViewAccessibility *)self _axCachedBundleIdentifiers];
+  v6 = [_axCachedBundleIdentifiers objectForKeyedSubscript:identifierCopy];
 
   if (v6)
   {
-    v7 = [v5 objectForKeyedSubscript:v4];
-    v8 = [v7 intValue];
+    v7 = [_axCachedBundleIdentifiers objectForKeyedSubscript:identifierCopy];
+    intValue = [v7 intValue];
 
     goto LABEL_12;
   }
 
   if (_axApplicationForBundleIdentifier__onceToken == -1)
   {
-    if (v5)
+    if (_axCachedBundleIdentifiers)
     {
       goto LABEL_6;
     }
@@ -260,7 +260,7 @@ uint64_t __61__SearchUIHeroCardSectionViewAccessibility__axCommandButtons__block
   }
 
   [SearchUIHeroCardSectionViewAccessibility _axApplicationForBundleIdentifier:];
-  if (!v5)
+  if (!_axCachedBundleIdentifiers)
   {
 LABEL_5:
     v9 = objc_opt_new();
@@ -290,20 +290,20 @@ LABEL_6:
       abort();
     }
 
-    if ([v12 isEqualToString:v4])
+    if ([v12 isEqualToString:identifierCopy])
     {
       v13 = [MEMORY[0x29EDBA070] numberWithInt:v10];
-      [v5 setObject:v13 forKeyedSubscript:v4];
+      [_axCachedBundleIdentifiers setObject:v13 forKeyedSubscript:identifierCopy];
     }
 
     v10 = (v10 + 1);
   }
 
   while (v10 != 23);
-  v8 = 0;
+  intValue = 0;
 LABEL_12:
 
-  return v8;
+  return intValue;
 }
 
 Class __78__SearchUIHeroCardSectionViewAccessibility__axApplicationForBundleIdentifier___block_invoke()

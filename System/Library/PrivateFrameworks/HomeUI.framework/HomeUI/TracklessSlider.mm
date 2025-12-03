@@ -1,19 +1,19 @@
 @interface TracklessSlider
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5;
-- (_TtC6HomeUIP33_924B9BACA428215473DADD2D3F844A0415TracklessSlider)initWithCoder:(id)a3;
-- (_TtC6HomeUIP33_924B9BACA428215473DADD2D3F844A0415TracklessSlider)initWithFrame:(CGRect)a3;
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value;
+- (_TtC6HomeUIP33_924B9BACA428215473DADD2D3F844A0415TracklessSlider)initWithCoder:(id)coder;
+- (_TtC6HomeUIP33_924B9BACA428215473DADD2D3F844A0415TracklessSlider)initWithFrame:(CGRect)frame;
 @end
 
 @implementation TracklessSlider
 
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = self;
-  v10 = sub_20D0841A4(x, y, width, height, a5);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  selfCopy = self;
+  v10 = sub_20D0841A4(x, y, width, height, value);
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -29,23 +29,23 @@
   return result;
 }
 
-- (_TtC6HomeUIP33_924B9BACA428215473DADD2D3F844A0415TracklessSlider)initWithFrame:(CGRect)a3
+- (_TtC6HomeUIP33_924B9BACA428215473DADD2D3F844A0415TracklessSlider)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for TracklessSlider();
   return [(TracklessSlider *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC6HomeUIP33_924B9BACA428215473DADD2D3F844A0415TracklessSlider)initWithCoder:(id)a3
+- (_TtC6HomeUIP33_924B9BACA428215473DADD2D3F844A0415TracklessSlider)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for TracklessSlider();
-  v4 = a3;
-  v5 = [(TracklessSlider *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(TracklessSlider *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

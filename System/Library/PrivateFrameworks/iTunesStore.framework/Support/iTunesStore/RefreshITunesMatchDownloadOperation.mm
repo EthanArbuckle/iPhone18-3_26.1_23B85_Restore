@@ -1,21 +1,21 @@
 @interface RefreshITunesMatchDownloadOperation
-- (BOOL)_applyResultsOfOperation:(id)a3 toDownload:(id)a4 error:(id *)a5;
-- (BOOL)_refreshDownload:(id)a3 error:(id *)a4;
-- (RefreshITunesMatchDownloadOperation)initWithDownloadIdentifier:(int64_t)a3;
-- (id)_newPurchaseForDownload:(id)a3;
+- (BOOL)_applyResultsOfOperation:(id)operation toDownload:(id)download error:(id *)error;
+- (BOOL)_refreshDownload:(id)download error:(id *)error;
+- (RefreshITunesMatchDownloadOperation)initWithDownloadIdentifier:(int64_t)identifier;
+- (id)_newPurchaseForDownload:(id)download;
 - (void)run;
 @end
 
 @implementation RefreshITunesMatchDownloadOperation
 
-- (RefreshITunesMatchDownloadOperation)initWithDownloadIdentifier:(int64_t)a3
+- (RefreshITunesMatchDownloadOperation)initWithDownloadIdentifier:(int64_t)identifier
 {
   v5.receiver = self;
   v5.super_class = RefreshITunesMatchDownloadOperation;
   result = [(RefreshITunesMatchDownloadOperation *)&v5 init];
   if (result)
   {
-    result->_downloadID = a3;
+    result->_downloadID = identifier;
   }
 
   return result;
@@ -44,17 +44,17 @@
   _Block_object_dispose(&v6, 8);
 }
 
-- (BOOL)_applyResultsOfOperation:(id)a3 toDownload:(id)a4 error:(id *)a5
+- (BOOL)_applyResultsOfOperation:(id)operation toDownload:(id)download error:(id *)error
 {
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
   v38 = 0;
-  v7 = -[StoreDownloadQueueResponse initWithDictionary:userIdentifier:preferredAssetFlavor:]([StoreDownloadQueueResponse alloc], "initWithDictionary:userIdentifier:preferredAssetFlavor:", [a3 rawOutput], objc_msgSend(a4, "valueForProperty:", @"store_account_id"), objc_msgSend(a4, "valueForProperty:", @"preferred_asset_flavor"));
-  v8 = [(StoreDownloadQueueResponse *)v7 downloads];
-  if ([(NSOrderedSet *)v8 count]== 1)
+  v7 = -[StoreDownloadQueueResponse initWithDictionary:userIdentifier:preferredAssetFlavor:]([StoreDownloadQueueResponse alloc], "initWithDictionary:userIdentifier:preferredAssetFlavor:", [operation rawOutput], objc_msgSend(download, "valueForProperty:", @"store_account_id"), objc_msgSend(download, "valueForProperty:", @"preferred_asset_flavor"));
+  downloads = [(StoreDownloadQueueResponse *)v7 downloads];
+  if ([(NSOrderedSet *)downloads count]== 1)
   {
-    v9 = [[Download alloc] initWithStoreDownload:[(NSOrderedSet *)v8 objectAtIndex:0]];
+    v9 = [[Download alloc] initWithStoreDownload:[(NSOrderedSet *)downloads objectAtIndex:0]];
     if (v9)
     {
       v10 = +[SSLogConfig sharedDaemonConfig];
@@ -63,20 +63,20 @@
         v10 = +[SSLogConfig sharedConfig];
       }
 
-      v11 = [v10 shouldLog];
-      v12 = [v10 shouldLogToDisk];
-      v13 = [v10 OSLogObject];
-      if (v12)
+      shouldLog = [v10 shouldLog];
+      shouldLogToDisk = [v10 shouldLogToDisk];
+      oSLogObject = [v10 OSLogObject];
+      if (shouldLogToDisk)
       {
-        v11 |= 2u;
+        shouldLog |= 2u;
       }
 
-      if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
-        v11 &= 2u;
+        shouldLog &= 2u;
       }
 
-      if (v11)
+      if (shouldLog)
       {
         v14 = objc_opt_class();
         downloadID = self->_downloadID;
@@ -119,24 +119,24 @@
       v20 = +[SSLogConfig sharedConfig];
     }
 
-    v21 = [v20 shouldLog];
-    v22 = [v20 shouldLogToDisk];
-    v23 = [v20 OSLogObject];
-    if (v22)
+    shouldLog2 = [v20 shouldLog];
+    shouldLogToDisk2 = [v20 shouldLogToDisk];
+    oSLogObject2 = [v20 OSLogObject];
+    if (shouldLogToDisk2)
     {
-      v21 |= 2u;
+      shouldLog2 |= 2u;
     }
 
-    if (!os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
-      v21 &= 2u;
+      shouldLog2 &= 2u;
     }
 
-    if (v21)
+    if (shouldLog2)
     {
       v24 = objc_opt_class();
       v25 = self->_downloadID;
-      v26 = [(NSOrderedSet *)v8 count];
+      v26 = [(NSOrderedSet *)downloads count];
       v39 = 138412802;
       v40 = v24;
       v41 = 2048;
@@ -157,9 +157,9 @@
 
   v29 = v36;
   v30 = *(v36 + 24);
-  if (a5 && (v36[3] & 1) == 0)
+  if (error && (v36[3] & 1) == 0)
   {
-    *a5 = 0;
+    *error = 0;
     v30 = *(v29 + 24);
   }
 
@@ -167,10 +167,10 @@
   return v30 & 1;
 }
 
-- (id)_newPurchaseForDownload:(id)a3
+- (id)_newPurchaseForDownload:(id)download
 {
-  v4 = [a3 valueForProperty:@"store_account_id"];
-  v5 = [a3 valueForProperty:@"store_redownload_parameters"];
+  v4 = [download valueForProperty:@"store_account_id"];
+  v5 = [download valueForProperty:@"store_redownload_parameters"];
   if (v4)
   {
     v6 = v5 == 0;
@@ -198,14 +198,14 @@
   return v8;
 }
 
-- (BOOL)_refreshDownload:(id)a3 error:(id *)a4
+- (BOOL)_refreshDownload:(id)download error:(id *)error
 {
   v22 = 0;
   v7 = [(RefreshITunesMatchDownloadOperation *)self _newPurchaseForDownload:?];
   if (!v7)
   {
     v18 = 0;
-    if (!a4)
+    if (!error)
     {
       return v18;
     }
@@ -222,15 +222,15 @@
     v10 = +[SSLogConfig sharedConfig];
   }
 
-  v11 = [v10 shouldLog];
+  shouldLog = [v10 shouldLog];
   if ([v10 shouldLogToDisk])
   {
-    v12 = v11 | 2;
+    v12 = shouldLog | 2;
   }
 
   else
   {
-    v12 = v11;
+    v12 = shouldLog;
   }
 
   if (!os_log_type_enabled([v10 OSLogObject], OS_LOG_TYPE_INFO))
@@ -247,7 +247,7 @@
     v25 = 2048;
     v26 = downloadID;
     v27 = 2112;
-    v28 = [v8 buyParameters];
+    buyParameters = [v8 buyParameters];
     LODWORD(v21) = 32;
     v20 = &v23;
     v15 = _os_log_send_and_compose_impl();
@@ -263,7 +263,7 @@
 
   if ([(RefreshITunesMatchDownloadOperation *)self runSubOperation:v9 returningError:&v22, v20])
   {
-    v18 = [(RefreshITunesMatchDownloadOperation *)self _applyResultsOfOperation:v9 toDownload:a3 error:&v22];
+    v18 = [(RefreshITunesMatchDownloadOperation *)self _applyResultsOfOperation:v9 toDownload:download error:&v22];
   }
 
   else
@@ -271,12 +271,12 @@
     v18 = 0;
   }
 
-  if (a4)
+  if (error)
   {
 LABEL_18:
     if (!v18)
     {
-      *a4 = v22;
+      *error = v22;
     }
   }
 

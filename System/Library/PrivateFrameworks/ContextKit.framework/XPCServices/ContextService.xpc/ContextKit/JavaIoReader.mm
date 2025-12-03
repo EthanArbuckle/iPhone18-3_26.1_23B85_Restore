@@ -1,8 +1,8 @@
 @interface JavaIoReader
 - (int)read;
-- (int)readWithCharArray:(id)a3;
-- (int)readWithJavaNioCharBuffer:(id)a3;
-- (int64_t)skipWithLong:(int64_t)a3;
+- (int)readWithCharArray:(id)array;
+- (int)readWithJavaNioCharBuffer:(id)buffer;
+- (int64_t)skipWithLong:(int64_t)long;
 - (void)dealloc;
 @end
 
@@ -33,62 +33,62 @@
   return v6;
 }
 
-- (int)readWithCharArray:(id)a3
+- (int)readWithCharArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = *(a3 + 2);
+  v4 = *(array + 2);
 
-  return [(JavaIoReader *)self readWithCharArray:a3 withInt:0 withInt:v4];
+  return [(JavaIoReader *)self readWithCharArray:array withInt:0 withInt:v4];
 }
 
-- (int64_t)skipWithLong:(int64_t)a3
+- (int64_t)skipWithLong:(int64_t)long
 {
-  if (a3 < 0)
+  if (long < 0)
   {
-    v17 = JreStrcat("$J", a2, a3, v3, v4, v5, v6, v7, @"charCount < 0: ");
+    v17 = JreStrcat("$J", a2, long, v3, v4, v5, v6, v7, @"charCount < 0: ");
     v18 = new_JavaLangIllegalArgumentException_initWithNSString_(v17);
     objc_exception_throw(v18);
   }
 
   lock = self->lock_;
   objc_sync_enter(lock);
-  if (a3 >= 0x200)
+  if (long >= 0x200)
   {
-    v11 = 512;
+    longCopy = 512;
   }
 
   else
   {
-    v11 = a3;
+    longCopy = long;
   }
 
-  v12 = [IOSCharArray arrayWithLength:v11];
-  if (a3)
+  v12 = [IOSCharArray arrayWithLength:longCopy];
+  if (long)
   {
     v13 = v12;
     v14 = 0;
     do
     {
-      v15 = [(JavaIoReader *)self readWithCharArray:v13 withInt:0 withInt:v11];
+      v15 = [(JavaIoReader *)self readWithCharArray:v13 withInt:0 withInt:longCopy];
       if (v15 == -1)
       {
         break;
       }
 
       v14 += v15;
-      if (v15 < v11)
+      if (v15 < longCopy)
       {
         break;
       }
 
-      v11 = a3 - v14 >= v11 ? v11 : (a3 - v14);
+      longCopy = long - v14 >= longCopy ? longCopy : (long - v14);
     }
 
-    while (a3 > v14);
+    while (long > v14);
   }
 
   else
@@ -100,19 +100,19 @@
   return v14;
 }
 
-- (int)readWithJavaNioCharBuffer:(id)a3
+- (int)readWithJavaNioCharBuffer:(id)buffer
 {
-  if (!a3)
+  if (!buffer)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = [a3 length];
+  v5 = [buffer length];
   v6 = [IOSCharArray arrayWithLength:v5];
   v7 = JavaLangMath_minWithInt_withInt_(v5, [(JavaIoReader *)self readWithCharArray:v6]);
   if (v7 >= 1)
   {
-    [a3 putWithCharArray:v6 withInt:0 withInt:v7];
+    [buffer putWithCharArray:v6 withInt:0 withInt:v7];
   }
 
   return v7;

@@ -1,16 +1,16 @@
 @interface CCSComplicationController
 - (CCSComplicationController)init;
-- (id)_iconForSpecifier:(id)a3;
+- (id)_iconForSpecifier:(id)specifier;
 - (id)_specifiersFromSettingsManager;
-- (id)activeStateForSpecifier:(id)a3;
+- (id)activeStateForSpecifier:(id)specifier;
 - (id)specifiers;
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4;
-- (int64_t)findIndexOfComplicationWithIdentifier:(id)a3;
-- (int64_t)findIndexOfNthComplication:(int64_t)a3 withActiveState:(BOOL)a4;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (void)setActiveState:(id)a3 forSpecifier:(id)a4;
-- (void)setActiveState:(id)a3 forSpecifier:(id)a4 save:(BOOL)a5;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path;
+- (int64_t)findIndexOfComplicationWithIdentifier:(id)identifier;
+- (int64_t)findIndexOfNthComplication:(int64_t)complication withActiveState:(BOOL)state;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (void)setActiveState:(id)state forSpecifier:(id)specifier;
+- (void)setActiveState:(id)state forSpecifier:(id)specifier save:(BOOL)save;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -43,9 +43,9 @@
   v4 = *&self->PSEditableListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(CCSComplicationController *)self _specifiersFromSettingsManager];
+    _specifiersFromSettingsManager = [(CCSComplicationController *)self _specifiersFromSettingsManager];
     v6 = *&self->PSEditableListController_opaque[v3];
-    *&self->PSEditableListController_opaque[v3] = v5;
+    *&self->PSEditableListController_opaque[v3] = _specifiersFromSettingsManager;
 
     v7 = [NSBundle bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"NANO_COMPLICATION_GROUP_NAME" value:&stru_42F8 table:@"CompanionComplicationSettings"];
@@ -64,43 +64,43 @@
   [(CCSComplicationController *)&v2 viewDidLoad];
 }
 
-- (id)_iconForSpecifier:(id)a3
+- (id)_iconForSpecifier:(id)specifier
 {
-  v4 = [a3 complication];
+  complication = [specifier complication];
   appIcons = self->_appIcons;
-  v6 = [v4 complicationIdentifier];
-  v7 = [(NSMutableDictionary *)appIcons objectForKeyedSubscript:v6];
+  complicationIdentifier = [complication complicationIdentifier];
+  v7 = [(NSMutableDictionary *)appIcons objectForKeyedSubscript:complicationIdentifier];
 
   return v7;
 }
 
-- (void)setActiveState:(id)a3 forSpecifier:(id)a4 save:(BOOL)a5
+- (void)setActiveState:(id)state forSpecifier:(id)specifier save:(BOOL)save
 {
-  v5 = a5;
-  v15 = a4;
-  v8 = a3;
-  v9 = [v15 complication];
-  v10 = [v8 BOOLValue];
+  saveCopy = save;
+  specifierCopy = specifier;
+  stateCopy = state;
+  complication = [specifierCopy complication];
+  bOOLValue = [stateCopy BOOLValue];
 
-  [v9 setActive:v10];
-  if (v5)
+  [complication setActive:bOOLValue];
+  if (saveCopy)
   {
-    [(CCSComplicationController *)self removeSpecifier:v15 animated:1];
-    if ([v9 isActive])
+    [(CCSComplicationController *)self removeSpecifier:specifierCopy animated:1];
+    if ([complication isActive])
     {
-      [(CCSComplicationController *)self insertSpecifier:v15 atEndOfGroup:0 animated:1];
+      [(CCSComplicationController *)self insertSpecifier:specifierCopy atEndOfGroup:0 animated:1];
     }
 
     else
     {
       v11 = [(NSMutableArray *)self->_groupSpecifiers objectAtIndexedSubscript:1];
-      [(CCSComplicationController *)self insertSpecifier:v15 afterSpecifier:v11 animated:1];
+      [(CCSComplicationController *)self insertSpecifier:specifierCopy afterSpecifier:v11 animated:1];
     }
 
-    v12 = [v15 identifier];
-    v13 = [(CCSComplicationController *)self findIndexOfComplicationWithIdentifier:v12];
+    identifier = [specifierCopy identifier];
+    v13 = [(CCSComplicationController *)self findIndexOfComplicationWithIdentifier:identifier];
 
-    if ([v9 isActive])
+    if ([complication isActive])
     {
       v14 = 0x7FFFFFFFFFFFFFFFLL;
     }
@@ -110,21 +110,21 @@
       v14 = 0;
     }
 
-    -[NCSSettingsManager moveComplicationDefinitionFromIndex:toIndex:](self->_settingsManager, "moveComplicationDefinitionFromIndex:toIndex:", v13, -[CCSComplicationController findIndexOfNthComplication:withActiveState:](self, "findIndexOfNthComplication:withActiveState:", v14, [v9 isActive]));
+    -[NCSSettingsManager moveComplicationDefinitionFromIndex:toIndex:](self->_settingsManager, "moveComplicationDefinitionFromIndex:toIndex:", v13, -[CCSComplicationController findIndexOfNthComplication:withActiveState:](self, "findIndexOfNthComplication:withActiveState:", v14, [complication isActive]));
   }
 }
 
-- (void)setActiveState:(id)a3 forSpecifier:(id)a4
+- (void)setActiveState:(id)state forSpecifier:(id)specifier
 {
-  [(CCSComplicationController *)self setActiveState:a3 forSpecifier:a4 save:1];
+  [(CCSComplicationController *)self setActiveState:state forSpecifier:specifier save:1];
 
   [(CCSComplicationController *)self reloadSpecifiers];
 }
 
-- (id)activeStateForSpecifier:(id)a3
+- (id)activeStateForSpecifier:(id)specifier
 {
-  v3 = [a3 complication];
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isActive]);
+  complication = [specifier complication];
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [complication isActive]);
 
   return v4;
 }
@@ -168,11 +168,11 @@
     v21 = 3221225472;
     v22 = sub_16CC;
     v23 = &unk_4248;
-    v24 = self;
+    selfCopy = self;
     v13 = v3;
     v25 = v13;
     v14 = objc_retainBlock(&v20);
-    [v11 enumerateObjectsUsingBlock:{v14, v20, v21, v22, v23, v24}];
+    [v11 enumerateObjectsUsingBlock:{v14, v20, v21, v22, v23, selfCopy}];
     if ([v11 count] || objc_msgSend(v12, "count"))
     {
       if ([v12 count])
@@ -211,9 +211,9 @@ LABEL_14:
   return v3;
 }
 
-- (int64_t)findIndexOfComplicationWithIdentifier:(id)a3
+- (int64_t)findIndexOfComplicationWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -223,7 +223,7 @@ LABEL_14:
   v9[1] = 3221225472;
   v9[2] = sub_1B9C;
   v9[3] = &unk_4270;
-  v6 = v4;
+  v6 = identifierCopy;
   v10 = v6;
   v11 = &v12;
   [(NCSSettingsManager *)settingsManager enumerateComplicationDefinitionsUsingBlock:v9];
@@ -233,7 +233,7 @@ LABEL_14:
   return v7;
 }
 
-- (int64_t)findIndexOfNthComplication:(int64_t)a3 withActiveState:(BOOL)a4
+- (int64_t)findIndexOfNthComplication:(int64_t)complication withActiveState:(BOOL)state
 {
   v14 = 0;
   v15 = &v14;
@@ -252,11 +252,11 @@ LABEL_14:
   v7[1] = 3221225472;
   v7[2] = sub_1D40;
   v7[3] = &unk_4298;
-  v8 = a4;
+  stateCopy = state;
   v7[4] = v13;
   v7[5] = &v9;
   v7[6] = &v14;
-  v7[7] = a3;
+  v7[7] = complication;
   [(NCSSettingsManager *)settingsManager enumerateComplicationDefinitionsUsingBlock:v7];
   v5 = v15[3];
   if ((v10[3] & 1) == 0)
@@ -270,14 +270,14 @@ LABEL_14:
   return v5;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v4 = [(CCSComplicationController *)self specifierAtIndexPath:a4];
-  v5 = [v4 complication];
-  v6 = v5;
-  if (v5)
+  v4 = [(CCSComplicationController *)self specifierAtIndexPath:path];
+  complication = [v4 complication];
+  v6 = complication;
+  if (complication)
   {
-    if ([v5 isActive])
+    if ([complication isActive])
     {
       v7 = 1;
     }
@@ -296,7 +296,7 @@ LABEL_14:
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path
 {
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"NANO_COMPLICATION_REMOVE" value:&stru_42F8 table:@"CompanionComplicationSettings"];
@@ -304,17 +304,17 @@ LABEL_14:
   return v5;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(CCSComplicationController *)self specifierAtIndexPath:v8];
+  pathCopy = path;
+  viewCopy = view;
+  v10 = [(CCSComplicationController *)self specifierAtIndexPath:pathCopy];
   v13.receiver = self;
   v13.super_class = CCSComplicationController;
-  [(CCSComplicationController *)&v13 tableView:v9 commitEditingStyle:a4 forRowAtIndexPath:v8];
+  [(CCSComplicationController *)&v13 tableView:viewCopy commitEditingStyle:style forRowAtIndexPath:pathCopy];
 
-  v11 = [v10 complication];
-  v12 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v11 isActive] ^ 1);
+  complication = [v10 complication];
+  v12 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [complication isActive] ^ 1);
   [(CCSComplicationController *)self setActiveState:v12 forSpecifier:v10 save:1];
 
   [(CCSComplicationController *)self reloadSpecifiers];

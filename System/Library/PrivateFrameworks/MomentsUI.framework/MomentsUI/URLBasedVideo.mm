@@ -1,21 +1,21 @@
 @interface URLBasedVideo
 - (_TtC9MomentsUI13URLBasedVideo)init;
-- (_TtC9MomentsUI13URLBasedVideo)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC9MomentsUI13URLBasedVideo)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation URLBasedVideo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  URLBasedVideo.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  URLBasedVideo.encode(with:)(coderCopy);
 }
 
-- (_TtC9MomentsUI13URLBasedVideo)initWithCoder:(id)a3
+- (_TtC9MomentsUI13URLBasedVideo)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = specialized URLBasedVideo.init(coder:)();
 
   return v4;

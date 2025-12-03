@@ -1,7 +1,7 @@
 @interface _HDClinicalAPIReminderEntityEncoder
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6;
-- (id)_clientSourceForRow:(HDSQLiteRow *)a3 error:(id *)a4;
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3;
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)_clientSourceForRow:(HDSQLiteRow *)row error:(id *)error;
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row;
 - (id)orderedProperties;
 @end
 
@@ -17,43 +17,43 @@
   return v2;
 }
 
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row
 {
-  v3 = [[HDClinicalAPIReminder alloc] _init];
+  _init = [[HDClinicalAPIReminder alloc] _init];
 
-  return v3;
+  return _init;
 }
 
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v10 = a3;
-  v11 = [(_HDClinicalAPIReminderEntityEncoder *)self superclassEncoder];
+  objectCopy = object;
+  superclassEncoder = [(_HDClinicalAPIReminderEntityEncoder *)self superclassEncoder];
 
-  if (v11)
+  if (superclassEncoder)
   {
     sub_A708C(a2, self);
   }
 
-  v12 = [(_HDClinicalAPIReminderEntityEncoder *)self _clientSourceForRow:a5 error:a6];
+  v12 = [(_HDClinicalAPIReminderEntityEncoder *)self _clientSourceForRow:row error:error];
   if (v12)
   {
-    [v10 _setSource:v12];
+    [objectCopy _setSource:v12];
     v13 = HDSQLiteColumnWithNameAsDate();
-    [v10 _setCreationDate:v13];
+    [objectCopy _setCreationDate:v13];
 
     v14 = HDSQLiteColumnWithNameAsDate();
-    [v10 _setPostDate:v14];
+    [objectCopy _setPostDate:v14];
   }
 
   return v12 != 0;
 }
 
-- (id)_clientSourceForRow:(HDSQLiteRow *)a3 error:(id *)a4
+- (id)_clientSourceForRow:(HDSQLiteRow *)row error:(id *)error
 {
   v6 = [[HDSourceEntity alloc] initWithPersistentID:HDSQLiteColumnWithNameAsInt64()];
-  v7 = [(_HDClinicalAPIReminderEntityEncoder *)self profile];
-  v8 = [v7 sourceManager];
-  v9 = [v8 clientSourceForSourceEntity:v6 error:a4];
+  profile = [(_HDClinicalAPIReminderEntityEncoder *)self profile];
+  sourceManager = [profile sourceManager];
+  v9 = [sourceManager clientSourceForSourceEntity:v6 error:error];
 
   return v9;
 }

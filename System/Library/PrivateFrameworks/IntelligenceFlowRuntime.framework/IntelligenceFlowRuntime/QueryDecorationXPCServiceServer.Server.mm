@@ -1,14 +1,14 @@
 @interface QueryDecorationXPCServiceServer.Server
-- (void)queryDecorationCollectionWithQdInputData:(id)a3 with:(id)a4;
+- (void)queryDecorationCollectionWithQdInputData:(id)data with:(id)with;
 @end
 
 @implementation QueryDecorationXPCServiceServer.Server
 
-- (void)queryDecorationCollectionWithQdInputData:(id)a3 with:(id)a4
+- (void)queryDecorationCollectionWithQdInputData:(id)data with:(id)with
 {
-  v6 = _Block_copy(a4);
-  v7 = a3;
-  v11 = self;
+  v6 = _Block_copy(with);
+  dataCopy = data;
+  selfCopy = self;
   v8 = sub_22BDB4304();
   v10 = v9;
 

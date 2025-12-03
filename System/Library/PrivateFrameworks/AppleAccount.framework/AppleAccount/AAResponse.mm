@@ -1,22 +1,22 @@
 @interface AAResponse
-- (AAResponse)initWithHTTPResponse:(id)a3 data:(id)a4 bodyIsPlist:(BOOL)a5;
-- (AAResponse)initWithHTTPResponse:(id)a3 data:(id)a4 mediaType:(id)a5;
-- (id)_deviceSpecificLocalizedString:(id)a3;
-- (id)_stringWithDescriptionForResponseError:(id)a3;
-- (void)_parseResponse:(id)a3 ofType:(id)a4;
+- (AAResponse)initWithHTTPResponse:(id)response data:(id)data bodyIsPlist:(BOOL)plist;
+- (AAResponse)initWithHTTPResponse:(id)response data:(id)data mediaType:(id)type;
+- (id)_deviceSpecificLocalizedString:(id)string;
+- (id)_stringWithDescriptionForResponseError:(id)error;
+- (void)_parseResponse:(id)response ofType:(id)type;
 @end
 
 @implementation AAResponse
 
-- (void)_parseResponse:(id)a3 ofType:(id)a4
+- (void)_parseResponse:(id)response ofType:(id)type
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  objc_storeStrong(&self->_mediaType, a4);
-  v8 = a3;
-  v9 = [MEMORY[0x1E6985E00] ofType:v7];
+  typeCopy = type;
+  objc_storeStrong(&self->_mediaType, type);
+  responseCopy = response;
+  v9 = [MEMORY[0x1E6985E00] ofType:typeCopy];
   v22 = 0;
-  v10 = [v9 dictionaryFromObject:v8 error:&v22];
+  v10 = [v9 dictionaryFromObject:responseCopy error:&v22];
 
   v11 = v22;
   responseDictionary = self->_responseDictionary;
@@ -28,20 +28,20 @@
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v11 localizedDescription];
+      localizedDescription = [v11 localizedDescription];
       *buf = 138412546;
-      v24 = v7;
+      v24 = typeCopy;
       v25 = 2112;
-      v26 = v15;
+      v26 = localizedDescription;
       _os_log_impl(&dword_1B6F6A000, v14, OS_LOG_TYPE_DEFAULT, "Unable to parse response of type: '%@', error: %@", buf, 0x16u);
     }
 
-    v16 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v17 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v18 = [v17 localizedStringForKey:@"COMMUNICATIONS_ERROR" value:&stru_1F2EF6280 table:@"Localizable"];
-    [v16 setObject:v18 forKey:*MEMORY[0x1E696A578]];
+    [dictionary setObject:v18 forKey:*MEMORY[0x1E696A578]];
 
-    v19 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.appleaccount" code:objc_msgSend(v11 userInfo:{"code"), v16}];
+    v19 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.appleaccount" code:objc_msgSend(v11 userInfo:{"code"), dictionary}];
     [(AAResponse *)self setError:v19];
   }
 
@@ -56,8 +56,8 @@
 
     if (objc_opt_respondsToSelector())
     {
-      v16 = _AALogSystem();
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+      dictionary = _AALogSystem();
+      if (os_log_type_enabled(dictionary, OS_LOG_TYPE_DEBUG))
       {
         [AAResponse _parseResponse:? ofType:?];
       }
@@ -70,8 +70,8 @@
         goto LABEL_6;
       }
 
-      v16 = _AALogSystem();
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+      dictionary = _AALogSystem();
+      if (os_log_type_enabled(dictionary, OS_LOG_TYPE_DEBUG))
       {
         [AAResponse _parseResponse:? ofType:?];
       }
@@ -82,74 +82,74 @@ LABEL_6:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (AAResponse)initWithHTTPResponse:(id)a3 data:(id)a4 bodyIsPlist:(BOOL)a5
+- (AAResponse)initWithHTTPResponse:(id)response data:(id)data bodyIsPlist:(BOOL)plist
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 MIMEType];
-  v11 = [MEMORY[0x1E6985E00] ofType:v10];
+  plistCopy = plist;
+  responseCopy = response;
+  dataCopy = data;
+  mIMEType = [responseCopy MIMEType];
+  v11 = [MEMORY[0x1E6985E00] ofType:mIMEType];
 
   if (!v11)
   {
     v12 = @"application/json";
-    if (v5)
+    if (plistCopy)
     {
       v12 = @"application/x-plist";
     }
 
     v13 = v12;
 
-    v10 = v13;
+    mIMEType = v13;
   }
 
-  v14 = [(AAResponse *)self initWithHTTPResponse:v8 data:v9 mediaType:v10];
+  v14 = [(AAResponse *)self initWithHTTPResponse:responseCopy data:dataCopy mediaType:mIMEType];
 
   return v14;
 }
 
-- (AAResponse)initWithHTTPResponse:(id)a3 data:(id)a4 mediaType:(id)a5
+- (AAResponse)initWithHTTPResponse:(id)response data:(id)data mediaType:(id)type
 {
   v60 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  responseCopy = response;
+  dataCopy = data;
+  typeCopy = type;
   v57.receiver = self;
   v57.super_class = AAResponse;
   v12 = [(AAResponse *)&v57 init];
   v13 = v12;
   if (v12)
   {
-    if (v9)
+    if (responseCopy)
     {
-      objc_storeStrong(&v12->_httpResponse, a3);
-      v13->_statusCode = [v9 statusCode];
-      objc_storeStrong(&v13->_data, a4);
+      objc_storeStrong(&v12->_httpResponse, response);
+      v13->_statusCode = [responseCopy statusCode];
+      objc_storeStrong(&v13->_data, data);
     }
 
     v14 = _AALogSystem();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(NSHTTPURLResponse *)v13->_httpResponse statusCode];
+      statusCode = [(NSHTTPURLResponse *)v13->_httpResponse statusCode];
       *buf = 134217984;
-      v59 = v15;
+      v59 = statusCode;
       _os_log_impl(&dword_1B6F6A000, v14, OS_LOG_TYPE_DEFAULT, "Response code: %ld", buf, 0xCu);
     }
 
     v16 = _AALogSystem();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(NSHTTPURLResponse *)v13->_httpResponse allHeaderFields];
+      allHeaderFields = [(NSHTTPURLResponse *)v13->_httpResponse allHeaderFields];
       *buf = 138412290;
-      v59 = v17;
+      v59 = allHeaderFields;
       _os_log_impl(&dword_1B6F6A000, v16, OS_LOG_TYPE_DEFAULT, "Response headers: %@", buf, 0xCu);
     }
 
-    [(AAResponse *)v13 _parseResponse:v10 ofType:v11];
+    [(AAResponse *)v13 _parseResponse:dataCopy ofType:typeCopy];
     if ([(NSHTTPURLResponse *)v13->_httpResponse statusCode]== 200)
     {
-      v18 = [(NSHTTPURLResponse *)v13->_httpResponse allHeaderFields];
-      v19 = [v18 objectForKeyedSubscript:@"Cache-control"];
+      allHeaderFields2 = [(NSHTTPURLResponse *)v13->_httpResponse allHeaderFields];
+      v19 = [allHeaderFields2 objectForKeyedSubscript:@"Cache-control"];
 
       if (!v19)
       {
@@ -162,16 +162,16 @@ LABEL_6:
         goto LABEL_66;
       }
 
-      v20 = [v19 componentsSeparatedByString:@"="];
-      if ([v20 count] != 2)
+      dictionary = [v19 componentsSeparatedByString:@"="];
+      if ([dictionary count] != 2)
       {
         goto LABEL_65;
       }
 
-      v21 = [v20 objectAtIndexedSubscript:0];
+      v21 = [dictionary objectAtIndexedSubscript:0];
       v22 = [v21 isEqual:@"max-age"];
 
-      if (!v22 || ([v20 objectAtIndexedSubscript:1], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "integerValue"), v23, v24 < 1))
+      if (!v22 || ([dictionary objectAtIndexedSubscript:1], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "integerValue"), v23, v24 < 1))
       {
 LABEL_65:
 
@@ -187,13 +187,13 @@ LABEL_64:
       goto LABEL_65;
     }
 
-    v20 = [MEMORY[0x1E695DF90] dictionary];
-    v27 = [(NSHTTPURLResponse *)v13->_httpResponse statusCode];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    statusCode2 = [(NSHTTPURLResponse *)v13->_httpResponse statusCode];
     v28 = _AALogSystem();
     v29 = os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT);
-    if (v27 > 404)
+    if (statusCode2 > 404)
     {
-      if (v27 == 405)
+      if (statusCode2 == 405)
       {
         if (v29)
         {
@@ -204,66 +204,66 @@ LABEL_64:
 
 LABEL_37:
 
-        v38 = [(AAResponse *)v13 responseDictionary];
-        v39 = [v38 objectForKey:@"message"];
+        responseDictionary = [(AAResponse *)v13 responseDictionary];
+        v39 = [responseDictionary objectForKey:@"message"];
 
         if (v39)
         {
 LABEL_38:
-          v34 = [(AAResponse *)v13 responseDictionary];
-          v40 = [v34 objectForKey:@"message"];
+          responseDictionary2 = [(AAResponse *)v13 responseDictionary];
+          v40 = [responseDictionary2 objectForKey:@"message"];
 LABEL_41:
           v19 = v40;
 LABEL_55:
 
           if (v19)
           {
-            [v20 setObject:v19 forKey:*MEMORY[0x1E696A578]];
+            [dictionary setObject:v19 forKey:*MEMORY[0x1E696A578]];
           }
 
-          v49 = [(AAResponse *)v13 responseDictionary];
+          responseDictionary3 = [(AAResponse *)v13 responseDictionary];
 
-          if (v49)
+          if (responseDictionary3)
           {
-            v50 = [(AAResponse *)v13 responseDictionary];
-            [v20 setObject:v50 forKey:@"responseDictionary"];
+            responseDictionary4 = [(AAResponse *)v13 responseDictionary];
+            [dictionary setObject:responseDictionary4 forKey:@"responseDictionary"];
           }
 
-          v51 = [(AAResponse *)v13 error];
+          error = [(AAResponse *)v13 error];
 
-          if (v51)
+          if (error)
           {
             goto LABEL_65;
           }
 
-          v52 = [(NSHTTPURLResponse *)v13->_httpResponse statusCode];
+          statusCode3 = [(NSHTTPURLResponse *)v13->_httpResponse statusCode];
           v53 = MEMORY[0x1E696ABC0];
-          if (v52 == 409)
+          if (statusCode3 == 409)
           {
-            v54 = 403;
+            statusCode4 = 403;
           }
 
           else
           {
-            v54 = [(NSHTTPURLResponse *)v13->_httpResponse statusCode];
+            statusCode4 = [(NSHTTPURLResponse *)v13->_httpResponse statusCode];
           }
 
-          maxAge = [v53 errorWithDomain:@"com.apple.appleaccount" code:v54 userInfo:v20];
+          maxAge = [v53 errorWithDomain:@"com.apple.appleaccount" code:statusCode4 userInfo:dictionary];
           [(AAResponse *)v13 setError:maxAge];
           goto LABEL_64;
         }
 
         v33 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-        v34 = v33;
+        responseDictionary2 = v33;
         v35 = @"COMMUNICATIONS_ERROR";
 LABEL_40:
         v40 = [v33 localizedStringForKey:v35 value:&stru_1F2EF6280 table:@"Localizable"];
         goto LABEL_41;
       }
 
-      if (v27 != 409)
+      if (statusCode2 != 409)
       {
-        if (v27 == 503)
+        if (statusCode2 == 503)
         {
           if (v29)
           {
@@ -271,8 +271,8 @@ LABEL_40:
             _os_log_impl(&dword_1B6F6A000, v28, OS_LOG_TYPE_DEFAULT, "Scheduled maintenance.", buf, 2u);
           }
 
-          v31 = [(AAResponse *)v13 responseDictionary];
-          v32 = [v31 objectForKey:@"message"];
+          responseDictionary5 = [(AAResponse *)v13 responseDictionary];
+          v32 = [responseDictionary5 objectForKey:@"message"];
 
           if (v32)
           {
@@ -280,7 +280,7 @@ LABEL_40:
           }
 
           v33 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-          v34 = v33;
+          responseDictionary2 = v33;
           v35 = @"SCHEDULED_MAINTENENCE";
           goto LABEL_40;
         }
@@ -294,27 +294,27 @@ LABEL_40:
         _os_log_impl(&dword_1B6F6A000, v28, OS_LOG_TYPE_DEFAULT, "Forbidden. (409)", buf, 2u);
       }
 
-      v46 = [(AAResponse *)v13 responseDictionary];
-      v34 = [v46 objectForKey:@"localizedError"];
+      responseDictionary6 = [(AAResponse *)v13 responseDictionary];
+      responseDictionary2 = [responseDictionary6 objectForKey:@"localizedError"];
 
-      if (v34)
+      if (responseDictionary2)
       {
-        [v20 setObject:v34 forKey:@"localizedError"];
+        [dictionary setObject:responseDictionary2 forKey:@"localizedError"];
       }
 
-      v47 = [(AAResponse *)v13 responseDictionary];
-      v48 = [v47 objectForKey:@"message"];
+      responseDictionary7 = [(AAResponse *)v13 responseDictionary];
+      v48 = [responseDictionary7 objectForKey:@"message"];
 
       if (!v48)
       {
-        v40 = [(AAResponse *)v13 _stringWithDescriptionForResponseError:v34];
+        v40 = [(AAResponse *)v13 _stringWithDescriptionForResponseError:responseDictionary2];
         goto LABEL_41;
       }
     }
 
     else
     {
-      if (v27 == 401)
+      if (statusCode2 == 401)
       {
         if (v29)
         {
@@ -322,8 +322,8 @@ LABEL_40:
           _os_log_impl(&dword_1B6F6A000, v28, OS_LOG_TYPE_DEFAULT, "Password is bad.", buf, 2u);
         }
 
-        v36 = [(AAResponse *)v13 responseDictionary];
-        v37 = [v36 objectForKey:@"message"];
+        responseDictionary8 = [(AAResponse *)v13 responseDictionary];
+        v37 = [responseDictionary8 objectForKey:@"message"];
 
         if (v37)
         {
@@ -331,14 +331,14 @@ LABEL_40:
         }
 
         v33 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-        v34 = v33;
+        responseDictionary2 = v33;
         v35 = @"INVALID_PASSWORD";
         goto LABEL_40;
       }
 
-      if (v27 != 403)
+      if (statusCode2 != 403)
       {
-        if (v27 == 404)
+        if (statusCode2 == 404)
         {
           if (v29)
           {
@@ -369,21 +369,21 @@ LABEL_34:
         _os_log_impl(&dword_1B6F6A000, v28, OS_LOG_TYPE_DEFAULT, "Forbidden.", buf, 2u);
       }
 
-      v41 = [(AAResponse *)v13 responseDictionary];
-      v34 = [v41 objectForKey:@"localizedError"];
+      responseDictionary9 = [(AAResponse *)v13 responseDictionary];
+      responseDictionary2 = [responseDictionary9 objectForKey:@"localizedError"];
 
-      if (v34)
+      if (responseDictionary2)
       {
-        [v20 setObject:v34 forKey:@"localizedError"];
+        [dictionary setObject:responseDictionary2 forKey:@"localizedError"];
       }
 
-      v42 = [(AAResponse *)v13 responseDictionary];
-      v43 = [v42 objectForKey:@"message"];
+      responseDictionary10 = [(AAResponse *)v13 responseDictionary];
+      v43 = [responseDictionary10 objectForKey:@"message"];
 
       if (!v43)
       {
-        v44 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-        v45 = [v44 localizedStringForKey:v34 value:&stru_1F2EF6280 table:@"Localizable"];
+        responseDictionary11 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
+        v45 = [responseDictionary11 localizedStringForKey:responseDictionary2 value:&stru_1F2EF6280 table:@"Localizable"];
 LABEL_54:
         v19 = v45;
 
@@ -391,8 +391,8 @@ LABEL_54:
       }
     }
 
-    v44 = [(AAResponse *)v13 responseDictionary];
-    v45 = [v44 objectForKey:@"message"];
+    responseDictionary11 = [(AAResponse *)v13 responseDictionary];
+    v45 = [responseDictionary11 objectForKey:@"message"];
     goto LABEL_54;
   }
 
@@ -402,18 +402,18 @@ LABEL_67:
   return v13;
 }
 
-- (id)_stringWithDescriptionForResponseError:(id)a3
+- (id)_stringWithDescriptionForResponseError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (!errorCopy)
   {
     v8 = 0;
     goto LABEL_8;
   }
 
   v6 = @"MOBILEME_CREATE_UNAVAILABLE";
-  if ([v4 isEqualToString:@"MOBILEME_CREATE_UNAVAILABLE"])
+  if ([errorCopy isEqualToString:@"MOBILEME_CREATE_UNAVAILABLE"])
   {
     goto LABEL_3;
   }
@@ -442,9 +442,9 @@ LABEL_8:
   return v8;
 }
 
-- (id)_deviceSpecificLocalizedString:(id)a3
+- (id)_deviceSpecificLocalizedString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = MGCopyAnswer();
   if (v4)
   {
@@ -456,10 +456,10 @@ LABEL_8:
     v5 = @"iPhone";
   }
 
-  v6 = [(__CFString *)v5 uppercaseString];
-  v7 = [v6 stringByReplacingOccurrencesOfString:@" " withString:@"_"];
+  uppercaseString = [(__CFString *)v5 uppercaseString];
+  v7 = [uppercaseString stringByReplacingOccurrencesOfString:@" " withString:@"_"];
 
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", v3, v7];
+  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", stringCopy, v7];
 
   v9 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:v8 value:&stru_1F2EF6280 table:@"Localizable"];

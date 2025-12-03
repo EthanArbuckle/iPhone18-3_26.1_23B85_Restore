@@ -1,6 +1,6 @@
 @interface TUIElementGradient
 + (id)supportedAttributes;
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation TUIElementGradient
@@ -17,49 +17,49 @@
   return v3;
 }
 
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v10 colorForAttribute:198 node:a4.var0];
-  [v9 setGradientStartColor:v12];
+  boxCopy = box;
+  attributesCopy = attributes;
+  contextCopy = context;
+  v12 = [attributesCopy colorForAttribute:198 node:node.var0];
+  [boxCopy setGradientStartColor:v12];
 
-  v13 = [v10 colorForAttribute:75 node:a4.var0];
-  [v9 setGradientEndColor:v13];
+  v13 = [attributesCopy colorForAttribute:75 node:node.var0];
+  [boxCopy setGradientEndColor:v13];
 
-  [v10 floatForAttribute:199 withDefault:a4.var0 node:0.0];
-  [v9 setGradientStartPosition:?];
-  [v10 floatForAttribute:76 withDefault:a4.var0 node:1.0];
-  [v9 setGradientEndPosition:?];
-  v14 = [v10 stringForAttribute:68 node:a4.var0];
-  [v9 setGradientDirection:{+[TUIGradient directionFromString:](TUIGradient, "directionFromString:", v14)}];
+  [attributesCopy floatForAttribute:199 withDefault:node.var0 node:0.0];
+  [boxCopy setGradientStartPosition:?];
+  [attributesCopy floatForAttribute:76 withDefault:node.var0 node:1.0];
+  [boxCopy setGradientEndPosition:?];
+  v14 = [attributesCopy stringForAttribute:68 node:node.var0];
+  [boxCopy setGradientDirection:{+[TUIGradient directionFromString:](TUIGradient, "directionFromString:", v14)}];
 
-  v15 = [v10 stringForAttribute:37 node:a4.var0];
+  v15 = [attributesCopy stringForAttribute:37 node:node.var0];
   v16 = [(TUIBox *)TUIGradient blendModeFromString:v15];
-  [v9 setBlendMode:v16];
+  [boxCopy setBlendMode:v16];
 
-  [v9 setContinuousCorners:{objc_msgSend(v10, "BOOLForAttribute:withDefault:node:", 59, 1, a4.var0)}];
-  [v10 floatForAttribute:38 withDefault:a4.var0 node:0.0];
-  [v9 setGradientBlurOffset:?];
-  [v10 floatForAttribute:39 withDefault:a4.var0 node:0.0];
-  [v9 setGradientBlurRadius:?];
-  v17 = [v9 gradientStartColor];
+  [boxCopy setContinuousCorners:{objc_msgSend(attributesCopy, "BOOLForAttribute:withDefault:node:", 59, 1, node.var0)}];
+  [attributesCopy floatForAttribute:38 withDefault:node.var0 node:0.0];
+  [boxCopy setGradientBlurOffset:?];
+  [attributesCopy floatForAttribute:39 withDefault:node.var0 node:0.0];
+  [boxCopy setGradientBlurRadius:?];
+  gradientStartColor = [boxCopy gradientStartColor];
 
-  if (!v17)
+  if (!gradientStartColor)
   {
-    [v11 reportError:1022];
+    [contextCopy reportError:1022];
   }
 
-  v18 = [v9 gradientEndColor];
+  gradientEndColor = [boxCopy gradientEndColor];
 
-  if (!v18)
+  if (!gradientEndColor)
   {
-    [v11 reportError:1023];
+    [contextCopy reportError:1023];
   }
 
   v19 = objc_opt_class();
-  v20 = [v10 objectForAttribute:146 node:a4.var0];
+  v20 = [attributesCopy objectForAttribute:146 node:node.var0];
   v21 = TUIDynamicCast(v19, v20);
 
   v25 = 0;
@@ -74,20 +74,20 @@
   [v21 enumerateKeysAndObjectsUsingBlock:v24];
   if (*(v26 + 24) == 1)
   {
-    [v9 setOpacityTriggers:v21];
-    [v9 setOpacity:1.0];
+    [boxCopy setOpacityTriggers:v21];
+    [boxCopy setOpacity:1.0];
   }
 
   else
   {
-    [v10 floatForAttribute:146 withDefault:a4.var0 node:1.0];
+    [attributesCopy floatForAttribute:146 withDefault:node.var0 node:1.0];
     v23 = fmin(v22, 1.0);
     if (v23 < 0.0)
     {
       v23 = 0.0;
     }
 
-    [v9 setOpacity:v23];
+    [boxCopy setOpacity:v23];
   }
 
   _Block_object_dispose(&v25, 8);

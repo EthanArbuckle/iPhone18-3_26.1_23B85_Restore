@@ -1,16 +1,16 @@
 @interface PodcastsPlayActivityFeedConsumer
 + (NSString)identifier;
-- (void)subscribeToEventStream:(id)a3;
-- (void)unsubscribeFromEventStream:(id)a3;
+- (void)subscribeToEventStream:(id)stream;
+- (void)unsubscribeFromEventStream:(id)stream;
 @end
 
 @implementation PodcastsPlayActivityFeedConsumer
 
-- (void)subscribeToEventStream:(id)a3
+- (void)subscribeToEventStream:(id)stream
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1C5C7F7C4(a3);
+  selfCopy = self;
+  sub_1C5C7F7C4(stream);
   swift_unknownObjectRelease();
 }
 
@@ -22,10 +22,10 @@
   return v2;
 }
 
-- (void)unsubscribeFromEventStream:(id)a3
+- (void)unsubscribeFromEventStream:(id)stream
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1C5CBE7E8();
   swift_unknownObjectRelease();
 }

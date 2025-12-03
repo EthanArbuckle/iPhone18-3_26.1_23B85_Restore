@@ -1,8 +1,8 @@
 @interface SPSecureLocationsStewiePublishResult
 - (SPSecureLocationsStewiePublishResult)init;
-- (SPSecureLocationsStewiePublishResult)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SPSecureLocationsStewiePublishResult)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPSecureLocationsStewiePublishResult
@@ -24,33 +24,33 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SPSecureLocationsStewiePublishResult);
-  v5 = [(SPSecureLocationsStewiePublishResult *)self lastPublished];
-  [(SPSecureLocationsStewiePublishResult *)v4 setLastPublished:v5];
+  lastPublished = [(SPSecureLocationsStewiePublishResult *)self lastPublished];
+  [(SPSecureLocationsStewiePublishResult *)v4 setLastPublished:lastPublished];
 
   [(SPSecureLocationsStewiePublishResult *)self nextAllowedPublish];
   [(SPSecureLocationsStewiePublishResult *)v4 setNextAllowedPublish:?];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   lastPublished = self->_lastPublished;
-  v5 = a3;
-  [v5 encodeObject:lastPublished forKey:@"lastPublished"];
-  [v5 encodeDouble:@"nextAllowedPublish" forKey:self->_nextAllowedPublish];
+  coderCopy = coder;
+  [coderCopy encodeObject:lastPublished forKey:@"lastPublished"];
+  [coderCopy encodeDouble:@"nextAllowedPublish" forKey:self->_nextAllowedPublish];
 }
 
-- (SPSecureLocationsStewiePublishResult)initWithCoder:(id)a3
+- (SPSecureLocationsStewiePublishResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastPublished"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastPublished"];
   lastPublished = self->_lastPublished;
   self->_lastPublished = v5;
 
-  [v4 decodeDoubleForKey:@"nextAllowedPublish"];
+  [coderCopy decodeDoubleForKey:@"nextAllowedPublish"];
   v8 = v7;
 
   self->_nextAllowedPublish = v8;

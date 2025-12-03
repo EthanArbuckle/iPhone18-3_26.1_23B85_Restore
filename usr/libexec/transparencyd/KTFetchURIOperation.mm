@@ -1,24 +1,24 @@
 @interface KTFetchURIOperation
-- (KTFetchURIOperation)initWithURI:(id)a3 application:(id)a4 dependencies:(id)a5;
+- (KTFetchURIOperation)initWithURI:(id)i application:(id)application dependencies:(id)dependencies;
 - (void)groupStart;
 @end
 
 @implementation KTFetchURIOperation
 
-- (KTFetchURIOperation)initWithURI:(id)a3 application:(id)a4 dependencies:(id)a5
+- (KTFetchURIOperation)initWithURI:(id)i application:(id)application dependencies:(id)dependencies
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  iCopy = i;
+  applicationCopy = application;
+  dependenciesCopy = dependencies;
   v16.receiver = self;
   v16.super_class = KTFetchURIOperation;
   v11 = [(KTGroupOperation *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    [(KTFetchURIOperation *)v11 setUri:v8];
-    [(KTFetchURIOperation *)v12 setApplication:v9];
-    [(KTFetchURIOperation *)v12 setDeps:v10];
+    [(KTFetchURIOperation *)v11 setUri:iCopy];
+    [(KTFetchURIOperation *)v12 setApplication:applicationCopy];
+    [(KTFetchURIOperation *)v12 setDeps:dependenciesCopy];
     v13 = objc_alloc_init(NSOperation);
     [(KTFetchURIOperation *)v12 setFinishedOp:v13];
 
@@ -31,14 +31,14 @@
 - (void)groupStart
 {
   v3 = [(KTFetchURIOperation *)self uri];
-  v4 = [(KTFetchURIOperation *)self application];
+  application = [(KTFetchURIOperation *)self application];
   v19 = 0;
-  v5 = [TransparencyRPCRequestBuilder buildQueryRequest:v3 application:v4 error:&v19];
+  v5 = [TransparencyRPCRequestBuilder buildQueryRequest:v3 application:application error:&v19];
   v6 = v19;
   [(KTFetchURIOperation *)self setQueryRequest:v5];
 
-  v7 = [(KTFetchURIOperation *)self queryRequest];
-  LODWORD(v3) = v7 == 0;
+  queryRequest = [(KTFetchURIOperation *)self queryRequest];
+  LODWORD(v3) = queryRequest == 0;
 
   if (v3)
   {
@@ -69,20 +69,20 @@
     v8 = objc_alloc_init(NSOperation);
     [(KTFetchURIOperation *)self setFinishedOp:v8];
 
-    v9 = [(KTFetchURIOperation *)self finishedOp];
-    [(KTGroupOperation *)self dependOnBeforeGroupFinished:v9];
+    finishedOp = [(KTFetchURIOperation *)self finishedOp];
+    [(KTGroupOperation *)self dependOnBeforeGroupFinished:finishedOp];
 
     v10 = +[NSUUID UUID];
     objc_initWeak(location, self);
-    v11 = [(KTFetchURIOperation *)self deps];
-    v12 = [v11 logClient];
-    v13 = [(KTFetchURIOperation *)self queryRequest];
+    deps = [(KTFetchURIOperation *)self deps];
+    logClient = [deps logClient];
+    queryRequest2 = [(KTFetchURIOperation *)self queryRequest];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_1001D33BC;
     v17[3] = &unk_100327BA8;
     objc_copyWeak(&v18, location);
-    [v12 fetchQuery:v13 uuid:v10 completionHandler:v17];
+    [logClient fetchQuery:queryRequest2 uuid:v10 completionHandler:v17];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(location);

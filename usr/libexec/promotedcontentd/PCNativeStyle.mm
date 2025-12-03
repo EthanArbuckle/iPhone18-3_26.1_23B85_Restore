@@ -1,39 +1,39 @@
 @interface PCNativeStyle
-- (id)initWithStyle:(id)a3;
+- (id)initWithStyle:(id)style;
 @end
 
 @implementation PCNativeStyle
 
-- (id)initWithStyle:(id)a3
+- (id)initWithStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   v5 = [(PCNativeStyle *)self init];
   v6 = v5;
-  if (v4 && v5)
+  if (styleCopy && v5)
   {
     v7 = [PCNativeColor alloc];
-    v8 = [v4 backgroundColor];
-    v9 = [v7 initWithColor:v8];
+    backgroundColor = [styleCopy backgroundColor];
+    v9 = [v7 initWithColor:backgroundColor];
     [(PCNativeStyle *)v6 setBackgroundColor:v9];
 
     v10 = [PCNativeBorderStyle alloc];
-    v11 = [v4 borderStyle];
-    v12 = [v10 initWithBorderStyle:v11];
+    borderStyle = [styleCopy borderStyle];
+    v12 = [v10 initWithBorderStyle:borderStyle];
     [(PCNativeStyle *)v6 setBorderStyle:v12];
 
     v13 = [PCNativeButtonStyle alloc];
-    v14 = [v4 buttonStyle];
-    v15 = [v13 initWithButtonStyle:v14];
+    buttonStyle = [styleCopy buttonStyle];
+    v15 = [v13 initWithButtonStyle:buttonStyle];
     [(PCNativeStyle *)v6 setButtonStyle:v15];
 
     v16 = [PCNativeShadowStyle alloc];
-    v17 = [v4 shadowStyle];
-    v18 = [v16 initWithShadowStyle:v17];
+    shadowStyle = [styleCopy shadowStyle];
+    v18 = [v16 initWithShadowStyle:shadowStyle];
     [(PCNativeStyle *)v6 setShadowStyle:v18];
 
     v19 = [PCNativeColor alloc];
-    v20 = [v4 textColor];
-    v21 = [v19 initWithColor:v20];
+    textColor = [styleCopy textColor];
+    v21 = [v19 initWithColor:textColor];
     [(PCNativeStyle *)v6 setTextColor:v21];
   }
 

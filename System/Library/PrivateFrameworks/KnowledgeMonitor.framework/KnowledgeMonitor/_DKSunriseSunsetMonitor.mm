@@ -1,18 +1,18 @@
 @interface _DKSunriseSunsetMonitor
-- (BOOL)currentSunriseSunsetTimes:(id)a3 differsFromPreviousTimes:(id)a4 byInterval:(double)a5;
+- (BOOL)currentSunriseSunsetTimes:(id)times differsFromPreviousTimes:(id)previousTimes byInterval:(double)interval;
 - (BOOL)isAirplaneModeEnabled;
-- (BOOL)isAirplaneModeEnabledWithPreferences:(__SCPreferences *)a3;
+- (BOOL)isAirplaneModeEnabledWithPreferences:(__SCPreferences *)preferences;
 - (_DKSunriseSunsetMonitor)init;
-- (id)contextDictionaryWithGeoAlmanac:(id)a3 authorizationStatus:(int)a4;
+- (id)contextDictionaryWithGeoAlmanac:(id)almanac authorizationStatus:(int)status;
 - (void)dealloc;
 - (void)init;
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
 - (void)respondToAirplaneModeStatusChanged;
-- (void)respondToTimeChange:(id)a3;
+- (void)respondToTimeChange:(id)change;
 - (void)start;
 - (void)stop;
-- (void)unprotectedUpdateSunriseSunsetTime:(id)a3;
+- (void)unprotectedUpdateSunriseSunsetTime:(id)time;
 @end
 
 @implementation _DKSunriseSunsetMonitor
@@ -29,8 +29,8 @@
     v4 = *(v2 + 24);
     *(v2 + 24) = v3;
 
-    v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v5 doubleForKey:@"sunriseSunsetUpdateIntervalSeconds"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults doubleForKey:@"sunriseSunsetUpdateIntervalSeconds"];
     if (*&v6 == 0.0)
     {
       v6 = kUpdateIntervalSeconds;
@@ -42,8 +42,8 @@
     }
 
     *(v2 + 21) = *&v6;
-    v7 = [v2 queue];
-    v8 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v7);
+    queue = [v2 queue];
+    v8 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queue);
     v9 = *(v2 + 20);
     *(v2 + 20) = v8;
 
@@ -56,18 +56,18 @@
     v11 = v2;
     v41 = v11;
     dispatch_source_set_event_handler(v10, handler);
-    v12 = [v11 queue];
+    queue2 = [v11 queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __31___DKSunriseSunsetMonitor_init__block_invoke_2;
     block[3] = &unk_27856F060;
     v13 = v11;
     v39 = v13;
-    dispatch_sync(v12, block);
+    dispatch_sync(queue2, block);
 
     [v13[22] setDesiredAccuracy:*MEMORY[0x277CE4270]];
     *(v13 + 39) = 0;
-    v14 = [v13 queue];
+    queue3 = [v13 queue];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __31___DKSunriseSunsetMonitor_init__block_invoke_3;
@@ -83,7 +83,7 @@
     context.copyDescription = v17;
     v44 = v16;
     v18 = v17;
-    dispatch_async(v14, &context);
+    dispatch_async(queue3, &context);
 
     v19 = SCPreferencesCreate(*MEMORY[0x277CBECE8], @"com.apple.duetknowledged.sunrisesunset.airplaneMode", @"com.apple.radios.plist");
     v15[25] = v19;
@@ -95,8 +95,8 @@
       if (SCPreferencesSetCallback(v19, scRadioPreferencesCallBackHandler_0, &context))
       {
         v20 = v15[25];
-        v21 = [v15 queue];
-        LODWORD(v20) = SCPreferencesSetDispatchQueue(v20, v21);
+        queue4 = [v15 queue];
+        LODWORD(v20) = SCPreferencesSetDispatchQueue(v20, queue4);
 
         if (!v20)
         {
@@ -139,17 +139,17 @@
       _os_log_impl(&dword_22595A000, v28, OS_LOG_TYPE_DEFAULT, "Location authorization status: %@", &context, 0xCu);
     }
 
-    v30 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v30 addObserver:v15 selector:sel_respondToTimeChange_ name:*MEMORY[0x277CBE778] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v15 selector:sel_respondToTimeChange_ name:*MEMORY[0x277CBE778] object:0];
 
     LODWORD(context.version) = 0;
-    v31 = [v15 queue];
+    queue5 = [v15 queue];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __31___DKSunriseSunsetMonitor_init__block_invoke_32;
     v34[3] = &unk_27856F408;
     v35 = v15;
-    notify_register_dispatch("com.apple.mobile.keybagd.first_unlock", &context, v31, v34);
+    notify_register_dispatch("com.apple.mobile.keybagd.first_unlock", &context, queue5, v34);
   }
 
   v32 = *MEMORY[0x277D85DE8];
@@ -172,8 +172,8 @@
     }
   }
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   radioPrefs = self->_radioPrefs;
   if (radioPrefs)
@@ -181,8 +181,8 @@
     CFRelease(radioPrefs);
   }
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 removeObserver:self name:*MEMORY[0x277CBE778] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277CBE778] object:0];
 
   v8.receiver = self;
   v8.super_class = _DKSunriseSunsetMonitor;
@@ -206,27 +206,27 @@
   v5.super_class = _DKSunriseSunsetMonitor;
   if ([(_DKMonitor *)&v5 instantMonitorNeedsDeactivation])
   {
-    v3 = [(_DKMonitor *)self queue];
+    queue = [(_DKMonitor *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __31___DKSunriseSunsetMonitor_stop__block_invoke;
     block[3] = &unk_27856F060;
     block[4] = self;
-    dispatch_sync(v3, block);
+    dispatch_sync(queue, block);
 
     [(_DKSunriseSunsetMonitor *)self deactivate];
   }
 }
 
-- (id)contextDictionaryWithGeoAlmanac:(id)a3 authorizationStatus:(int)a4
+- (id)contextDictionaryWithGeoAlmanac:(id)almanac authorizationStatus:(int)status
 {
   v48[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (a4 && a4 != 3)
+  almanacCopy = almanac;
+  v6 = almanacCopy;
+  if (status && status != 3)
   {
-    v24 = [MEMORY[0x277CFE338] sunriseSunsetAvailabilityStatusKey];
-    v47 = v24;
+    sunriseSunsetAvailabilityStatusKey = [MEMORY[0x277CFE338] sunriseSunsetAvailabilityStatusKey];
+    v47 = sunriseSunsetAvailabilityStatusKey;
     v48[0] = &unk_2838F79C0;
     v25 = MEMORY[0x277CBEAC0];
     v26 = v48;
@@ -236,10 +236,10 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  if (!v5)
+  if (!almanacCopy)
   {
-    v24 = [MEMORY[0x277CFE338] sunriseSunsetAvailabilityStatusKey];
-    v45 = v24;
+    sunriseSunsetAvailabilityStatusKey = [MEMORY[0x277CFE338] sunriseSunsetAvailabilityStatusKey];
+    v45 = sunriseSunsetAvailabilityStatusKey;
     v46 = &unk_2838F79D8;
     v25 = MEMORY[0x277CBEAC0];
     v26 = &v46;
@@ -247,92 +247,92 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v7 = [v5 isDayLightForTime:CFAbsoluteTimeGetCurrent()];
-  v8 = [MEMORY[0x277CFE338] sunriseSunsetAvailabilityStatusKey];
-  v43[0] = v8;
+  v7 = [almanacCopy isDayLightForTime:CFAbsoluteTimeGetCurrent()];
+  sunriseSunsetAvailabilityStatusKey2 = [MEMORY[0x277CFE338] sunriseSunsetAvailabilityStatusKey];
+  v43[0] = sunriseSunsetAvailabilityStatusKey2;
   v44[0] = &unk_2838F79F0;
-  v41 = [MEMORY[0x277CFE338] currentSunriseKey];
-  v43[1] = v41;
-  v9 = [v6 sunrise];
-  v10 = v9;
-  if (!v9)
+  currentSunriseKey = [MEMORY[0x277CFE338] currentSunriseKey];
+  v43[1] = currentSunriseKey;
+  sunrise = [v6 sunrise];
+  v10 = sunrise;
+  if (!sunrise)
   {
-    v9 = [MEMORY[0x277CBEAA8] distantFuture];
+    sunrise = [MEMORY[0x277CBEAA8] distantFuture];
   }
 
-  v33 = v9;
-  v44[1] = v9;
-  v39 = [MEMORY[0x277CFE338] currentSunsetKey];
-  v43[2] = v39;
-  v11 = [v6 sunset];
-  v12 = v11;
-  if (!v11)
+  v33 = sunrise;
+  v44[1] = sunrise;
+  currentSunsetKey = [MEMORY[0x277CFE338] currentSunsetKey];
+  v43[2] = currentSunsetKey;
+  sunset = [v6 sunset];
+  v12 = sunset;
+  if (!sunset)
   {
-    v11 = [MEMORY[0x277CBEAA8] distantPast];
+    sunset = [MEMORY[0x277CBEAA8] distantPast];
   }
 
-  v32 = v11;
-  v44[2] = v11;
-  v37 = [MEMORY[0x277CFE338] nextSunriseKey];
-  v43[3] = v37;
-  v13 = [v6 nextSunrise];
-  v36 = v13;
-  if (!v13)
+  v32 = sunset;
+  v44[2] = sunset;
+  nextSunriseKey = [MEMORY[0x277CFE338] nextSunriseKey];
+  v43[3] = nextSunriseKey;
+  nextSunrise = [v6 nextSunrise];
+  v36 = nextSunrise;
+  if (!nextSunrise)
   {
-    v13 = [MEMORY[0x277CBEAA8] distantFuture];
+    nextSunrise = [MEMORY[0x277CBEAA8] distantFuture];
   }
 
   v38 = v12;
   v40 = v10;
-  v31 = v13;
-  v44[3] = v13;
-  v35 = [MEMORY[0x277CFE338] nextSunsetKey];
-  v43[4] = v35;
-  v14 = [v6 nextSunset];
-  v15 = v14;
-  if (!v14)
+  v31 = nextSunrise;
+  v44[3] = nextSunrise;
+  nextSunsetKey = [MEMORY[0x277CFE338] nextSunsetKey];
+  v43[4] = nextSunsetKey;
+  nextSunset = [v6 nextSunset];
+  v15 = nextSunset;
+  if (!nextSunset)
   {
-    v14 = [MEMORY[0x277CBEAA8] distantPast];
+    nextSunset = [MEMORY[0x277CBEAA8] distantPast];
   }
 
-  v42 = v8;
-  v30 = v14;
-  v44[4] = v14;
-  v34 = [MEMORY[0x277CFE338] previousSunriseKey];
-  v43[5] = v34;
-  v16 = [v6 previousSunrise];
-  v17 = v16;
-  if (!v16)
+  v42 = sunriseSunsetAvailabilityStatusKey2;
+  v30 = nextSunset;
+  v44[4] = nextSunset;
+  previousSunriseKey = [MEMORY[0x277CFE338] previousSunriseKey];
+  v43[5] = previousSunriseKey;
+  previousSunrise = [v6 previousSunrise];
+  distantFuture = previousSunrise;
+  if (!previousSunrise)
   {
-    v17 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
   }
 
-  v44[5] = v17;
-  v18 = [MEMORY[0x277CFE338] previousSunsetKey];
-  v43[6] = v18;
-  v19 = [v6 previousSunset];
-  v20 = v19;
-  if (!v19)
+  v44[5] = distantFuture;
+  previousSunsetKey = [MEMORY[0x277CFE338] previousSunsetKey];
+  v43[6] = previousSunsetKey;
+  previousSunset = [v6 previousSunset];
+  distantPast = previousSunset;
+  if (!previousSunset)
   {
-    v20 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
   }
 
-  v44[6] = v20;
-  v21 = [MEMORY[0x277CFE338] isDaylightKey];
-  v43[7] = v21;
+  v44[6] = distantPast;
+  isDaylightKey = [MEMORY[0x277CFE338] isDaylightKey];
+  v43[7] = isDaylightKey;
   v22 = [MEMORY[0x277CCABB0] numberWithBool:v7];
   v44[7] = v22;
   v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:v43 count:8];
 
-  if (!v19)
+  if (!previousSunset)
   {
   }
 
-  if (!v16)
+  if (!previousSunrise)
   {
   }
 
-  v24 = v42;
+  sunriseSunsetAvailabilityStatusKey = v42;
   if (!v15)
   {
   }
@@ -355,14 +355,14 @@ LABEL_32:
   return v23;
 }
 
-- (BOOL)currentSunriseSunsetTimes:(id)a3 differsFromPreviousTimes:(id)a4 byInterval:(double)a5
+- (BOOL)currentSunriseSunsetTimes:(id)times differsFromPreviousTimes:(id)previousTimes byInterval:(double)interval
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277CFE338] sunriseSunsetAvailabilityStatusKey];
-  v10 = [v8 objectForKeyedSubscript:v9];
-  v11 = [MEMORY[0x277CFE338] sunriseSunsetAvailabilityStatusKey];
-  v12 = [v7 objectForKeyedSubscript:v11];
+  timesCopy = times;
+  previousTimesCopy = previousTimes;
+  sunriseSunsetAvailabilityStatusKey = [MEMORY[0x277CFE338] sunriseSunsetAvailabilityStatusKey];
+  v10 = [previousTimesCopy objectForKeyedSubscript:sunriseSunsetAvailabilityStatusKey];
+  sunriseSunsetAvailabilityStatusKey2 = [MEMORY[0x277CFE338] sunriseSunsetAvailabilityStatusKey];
+  v12 = [timesCopy objectForKeyedSubscript:sunriseSunsetAvailabilityStatusKey2];
   v13 = [v10 isEqual:v12];
 
   if (!v13)
@@ -370,40 +370,40 @@ LABEL_32:
     goto LABEL_13;
   }
 
-  v14 = [MEMORY[0x277CFE338] isDaylightKey];
-  v15 = [v8 objectForKeyedSubscript:v14];
-  v16 = [MEMORY[0x277CFE338] isDaylightKey];
-  v17 = [v7 objectForKeyedSubscript:v16];
+  isDaylightKey = [MEMORY[0x277CFE338] isDaylightKey];
+  v15 = [previousTimesCopy objectForKeyedSubscript:isDaylightKey];
+  isDaylightKey2 = [MEMORY[0x277CFE338] isDaylightKey];
+  v17 = [timesCopy objectForKeyedSubscript:isDaylightKey2];
   v18 = [v15 isEqual:v17];
 
   if (v18)
   {
-    v19 = [MEMORY[0x277CFE338] currentSunriseKey];
-    v20 = [v8 objectForKeyedSubscript:v19];
+    currentSunriseKey = [MEMORY[0x277CFE338] currentSunriseKey];
+    v20 = [previousTimesCopy objectForKeyedSubscript:currentSunriseKey];
 
-    v21 = [MEMORY[0x277CFE338] currentSunriseKey];
-    v22 = [v7 objectForKeyedSubscript:v21];
+    currentSunriseKey2 = [MEMORY[0x277CFE338] currentSunriseKey];
+    v22 = [timesCopy objectForKeyedSubscript:currentSunriseKey2];
 
-    v23 = [MEMORY[0x277CFE338] nextSunriseKey];
-    v24 = [v8 objectForKeyedSubscript:v23];
+    nextSunriseKey = [MEMORY[0x277CFE338] nextSunriseKey];
+    v24 = [previousTimesCopy objectForKeyedSubscript:nextSunriseKey];
 
-    v25 = [MEMORY[0x277CFE338] nextSunriseKey];
-    v26 = [v7 objectForKeyedSubscript:v25];
+    nextSunriseKey2 = [MEMORY[0x277CFE338] nextSunriseKey];
+    v26 = [timesCopy objectForKeyedSubscript:nextSunriseKey2];
 
-    v27 = [MEMORY[0x277CFE338] previousSunriseKey];
-    v28 = [v8 objectForKeyedSubscript:v27];
+    previousSunriseKey = [MEMORY[0x277CFE338] previousSunriseKey];
+    v28 = [previousTimesCopy objectForKeyedSubscript:previousSunriseKey];
 
-    v29 = [MEMORY[0x277CFE338] previousSunriseKey];
-    v30 = [v7 objectForKeyedSubscript:v29];
+    previousSunriseKey2 = [MEMORY[0x277CFE338] previousSunriseKey];
+    v30 = [timesCopy objectForKeyedSubscript:previousSunriseKey2];
 
     v34 = 1;
     if ((v20 == 0) != (v22 != 0) && (v28 == 0) != (v30 != 0) && (v24 == 0) != (v26 != 0))
     {
-      if (!v22 || ([v22 timeIntervalSinceDate:v20], fabs(v31) < a5))
+      if (!v22 || ([v22 timeIntervalSinceDate:v20], fabs(v31) < interval))
       {
-        if (!v30 || ([v30 timeIntervalSinceDate:v28], fabs(v32) < a5))
+        if (!v30 || ([v30 timeIntervalSinceDate:v28], fabs(v32) < interval))
         {
-          if (!v26 || ([v26 timeIntervalSinceDate:v24], fabs(v33) < a5))
+          if (!v26 || ([v26 timeIntervalSinceDate:v24], fabs(v33) < interval))
           {
             v34 = 0;
           }
@@ -421,25 +421,25 @@ LABEL_13:
   return v34;
 }
 
-- (void)unprotectedUpdateSunriseSunsetTime:(id)a3
+- (void)unprotectedUpdateSunriseSunsetTime:(id)time
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  timeCopy = time;
   if (self->_enabled)
   {
     dispatch_suspend(self->_updateTimer);
     [(CLLocationManager *)self->_manager stopUpdatingLocation];
-    if (v4)
+    if (timeCopy)
     {
-      v5 = v4;
+      location = timeCopy;
     }
 
     else
     {
-      v5 = [(CLLocationManager *)self->_manager location];
+      location = [(CLLocationManager *)self->_manager location];
     }
 
-    v6 = v5;
+    v6 = location;
     if (self->_awaitingLocationAfterDisabledAirplaneMode)
     {
       goto LABEL_6;
@@ -473,8 +473,8 @@ LABEL_6:
     }
 
     previousDataDictionary = self->_previousDataDictionary;
-    v10 = [MEMORY[0x277CFE338] currentSunriseKey];
-    v11 = [(NSDictionary *)previousDataDictionary objectForKeyedSubscript:v10];
+    currentSunriseKey = [MEMORY[0x277CFE338] currentSunriseKey];
+    v11 = [(NSDictionary *)previousDataDictionary objectForKeyedSubscript:currentSunriseKey];
     if (v11)
     {
     }
@@ -494,9 +494,9 @@ LABEL_6:
 
         [(CLLocationManager *)self->_manager startUpdatingLocation];
         v6 = [(_DKSunriseSunsetMonitor *)self contextDictionaryWithGeoAlmanac:0 authorizationStatus:self->_authorizationStatus];
-        v14 = [MEMORY[0x277CFE318] userContext];
-        v15 = [MEMORY[0x277CFE338] keyPathForSunriseSunsetDataDictionary];
-        [v14 setObject:v6 forKeyedSubscript:v15];
+        userContext = [MEMORY[0x277CFE318] userContext];
+        keyPathForSunriseSunsetDataDictionary = [MEMORY[0x277CFE338] keyPathForSunriseSunsetDataDictionary];
+        [userContext setObject:v6 forKeyedSubscript:keyPathForSunriseSunsetDataDictionary];
         goto LABEL_32;
       }
     }
@@ -519,21 +519,21 @@ LABEL_21:
 
     if (v6)
     {
-      v14 = objc_opt_new();
+      userContext = objc_opt_new();
       [v6 coordinate];
       v23 = v22;
       [v6 coordinate];
       v24 = *MEMORY[0x277D0E7B8];
-      [v14 calculateAstronomicalTimeForLocation:v23 altitudeInDegrees:?];
+      [userContext calculateAstronomicalTimeForLocation:v23 altitudeInDegrees:?];
     }
 
     else
     {
-      v14 = 0;
+      userContext = 0;
     }
 
-    v15 = [(_DKSunriseSunsetMonitor *)self contextDictionaryWithGeoAlmanac:v14 authorizationStatus:self->_authorizationStatus];
-    v25 = [(_DKSunriseSunsetMonitor *)self currentSunriseSunsetTimes:v15 differsFromPreviousTimes:self->_previousDataDictionary byInterval:5.0];
+    keyPathForSunriseSunsetDataDictionary = [(_DKSunriseSunsetMonitor *)self contextDictionaryWithGeoAlmanac:userContext authorizationStatus:self->_authorizationStatus];
+    v25 = [(_DKSunriseSunsetMonitor *)self currentSunriseSunsetTimes:keyPathForSunriseSunsetDataDictionary differsFromPreviousTimes:self->_previousDataDictionary byInterval:5.0];
     v26 = self->_log;
     v27 = os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT);
     if (v25)
@@ -541,22 +541,22 @@ LABEL_21:
       if (v27)
       {
         v34 = 138412290;
-        v35 = v15;
+        v35 = keyPathForSunriseSunsetDataDictionary;
         _os_log_impl(&dword_22595A000, v26, OS_LOG_TYPE_DEFAULT, "Saving new values: %@", &v34, 0xCu);
       }
 
-      v28 = [MEMORY[0x277CFE318] userContext];
-      v29 = [MEMORY[0x277CFE338] keyPathForSunriseSunsetDataDictionary];
-      [v28 setObject:v15 forKeyedSubscript:v29];
+      userContext2 = [MEMORY[0x277CFE318] userContext];
+      keyPathForSunriseSunsetDataDictionary2 = [MEMORY[0x277CFE338] keyPathForSunriseSunsetDataDictionary];
+      [userContext2 setObject:keyPathForSunriseSunsetDataDictionary forKeyedSubscript:keyPathForSunriseSunsetDataDictionary2];
 
-      objc_storeStrong(&self->_previousDataDictionary, v15);
+      objc_storeStrong(&self->_previousDataDictionary, keyPathForSunriseSunsetDataDictionary);
     }
 
     else if (v27)
     {
       v30 = self->_previousDataDictionary;
       v34 = 138412546;
-      v35 = v15;
+      v35 = keyPathForSunriseSunsetDataDictionary;
       v36 = 2112;
       v37 = v30;
       _os_log_impl(&dword_22595A000, v26, OS_LOG_TYPE_DEFAULT, "Not saving new values: %@ (Old=%@)", &v34, 0x16u);
@@ -574,7 +574,7 @@ LABEL_33:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)respondToTimeChange:(id)a3
+- (void)respondToTimeChange:(id)change
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -583,22 +583,22 @@ LABEL_33:
     _os_log_impl(&dword_22595A000, log, OS_LOG_TYPE_DEFAULT, "Time changed; reevaluating sunrise/sunset times", buf, 2u);
   }
 
-  v5 = [(_DKMonitor *)self queue];
+  queue = [(_DKMonitor *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47___DKSunriseSunsetMonitor_respondToTimeChange___block_invoke;
   block[3] = &unk_27856F060;
   block[4] = self;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 }
 
 - (void)respondToAirplaneModeStatusChanged
 {
   if (self->_authorizationStatus == 3)
   {
-    v3 = [(_DKSunriseSunsetMonitor *)self isAirplaneModeEnabled];
-    self->_awaitingLocationAfterDisabledAirplaneMode = !v3;
-    if (!v3)
+    isAirplaneModeEnabled = [(_DKSunriseSunsetMonitor *)self isAirplaneModeEnabled];
+    self->_awaitingLocationAfterDisabledAirplaneMode = !isAirplaneModeEnabled;
+    if (!isAirplaneModeEnabled)
     {
       manager = self->_manager;
 
@@ -614,18 +614,18 @@ LABEL_33:
 
 - (BOOL)isAirplaneModeEnabled
 {
-  v3 = [(_DKSunriseSunsetMonitor *)self radioPrefs];
+  radioPrefs = [(_DKSunriseSunsetMonitor *)self radioPrefs];
 
-  return [(_DKSunriseSunsetMonitor *)self isAirplaneModeEnabledWithPreferences:v3];
+  return [(_DKSunriseSunsetMonitor *)self isAirplaneModeEnabledWithPreferences:radioPrefs];
 }
 
-- (BOOL)isAirplaneModeEnabledWithPreferences:(__SCPreferences *)a3
+- (BOOL)isAirplaneModeEnabledWithPreferences:(__SCPreferences *)preferences
 {
-  if (a3)
+  if (preferences)
   {
-    SCPreferencesLock(a3, 1u);
-    v4 = SCPreferencesGetValue(a3, @"AirplaneMode") == *MEMORY[0x277CBED28];
-    SCPreferencesUnlock(a3);
+    SCPreferencesLock(preferences, 1u);
+    v4 = SCPreferencesGetValue(preferences, @"AirplaneMode") == *MEMORY[0x277CBED28];
+    SCPreferencesUnlock(preferences);
   }
 
   else
@@ -642,14 +642,14 @@ LABEL_33:
   return v4;
 }
 
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status
 {
-  if ([a3 isEqual:self->_manager])
+  if ([manager isEqual:self->_manager])
   {
-    if (self->_authorizationStatus != a4)
+    if (self->_authorizationStatus != status)
     {
-      self->_authorizationStatus = a4;
-      v6 = [(_DKMonitor *)self queue];
+      self->_authorizationStatus = status;
+      queue = [(_DKMonitor *)self queue];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __72___DKSunriseSunsetMonitor_locationManager_didChangeAuthorizationStatus___block_invoke;
@@ -664,16 +664,16 @@ LABEL_33:
       v12 = v8;
       v13 = v7;
       v9 = v8;
-      dispatch_async(v6, block);
+      dispatch_async(queue, block);
     }
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v5 = a4;
+  locationsCopy = locations;
   self->_awaitingLocationAfterDisabledAirplaneMode = 0;
-  if ([v5 count])
+  if ([locationsCopy count])
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -683,15 +683,15 @@ LABEL_33:
     }
   }
 
-  v7 = [(_DKMonitor *)self queue];
+  queue = [(_DKMonitor *)self queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __62___DKSunriseSunsetMonitor_locationManager_didUpdateLocations___block_invoke;
   v12[3] = &unk_27856F0B0;
   v12[4] = self;
-  v13 = v5;
+  v13 = locationsCopy;
   v8 = v12;
-  v9 = v5;
+  v9 = locationsCopy;
   v10 = os_transaction_create();
   *buf = MEMORY[0x277D85DD0];
   v15 = 3221225472;
@@ -700,13 +700,13 @@ LABEL_33:
   v18 = v10;
   v19 = v8;
   v11 = v10;
-  dispatch_async(v7, buf);
+  dispatch_async(queue, buf);
 }
 
 - (void)init
 {
   v10 = *MEMORY[0x277D85DE8];
-  v1 = a1;
+  selfCopy = self;
   v2 = SCError();
   SCErrorString(v2);
   OUTLINED_FUNCTION_0_1(&dword_22595A000, v3, v4, "SCPreferencesSetCallback() failed: %s", v5, v6, v7, v8, 2u);

@@ -1,13 +1,13 @@
 @interface CalXMLElementRedactionRule
-- (id)redactionRuleForAttribute:(id)a3;
+- (id)redactionRuleForAttribute:(id)attribute;
 @end
 
 @implementation CalXMLElementRedactionRule
 
-- (id)redactionRuleForAttribute:(id)a3
+- (id)redactionRuleForAttribute:(id)attribute
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_attributes objectForKeyedSubscript:v4];
+  attributeCopy = attribute;
+  v5 = [(NSDictionary *)self->_attributes objectForKeyedSubscript:attributeCopy];
   v6 = v5;
   if (v5)
   {
@@ -26,7 +26,7 @@
     block[1] = 3221225472;
     block[2] = __56__CalXMLElementRedactionRule_redactionRuleForAttribute___block_invoke_2;
     block[3] = &unk_27851AAD8;
-    v11 = v4;
+    v11 = attributeCopy;
     dispatch_sync(v8, block);
   }
 

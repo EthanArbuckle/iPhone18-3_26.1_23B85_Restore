@@ -3,34 +3,34 @@
 - (BOOL)isNavigationAutoLaunchInProgress;
 - (BOOL)shouldStartNavigationAutoLaunchTimer;
 - (ChromeViewController)chromeViewController;
-- (NavigationStateMonitoringTask)initWithPlatformController:(id)a3 navigationService:(id)a4;
+- (NavigationStateMonitoringTask)initWithPlatformController:(id)controller navigationService:(id)service;
 - (PlatformController)platformController;
 - (id)currentRoutePlanningSessionConfiguration;
-- (void)_checkAnimationsForAndromeda:(id)a3;
+- (void)_checkAnimationsForAndromeda:(id)andromeda;
 - (void)_checkAnimationsMitigation;
 - (void)_checkETAUpdatesMitigation;
 - (void)_checkMapViewMitigation;
 - (void)_checkModernMapMitigation;
-- (void)beginNavigationWithRouteCollection:(id)a3 navigationDetailsOptions:(NavigationDetailsOptions *)a4 mapServiceTraits:(id)a5 sessionInitiator:(unint64_t)a6 isResumingMultipointRoute:(BOOL)a7;
+- (void)beginNavigationWithRouteCollection:(id)collection navigationDetailsOptions:(NavigationDetailsOptions *)options mapServiceTraits:(id)traits sessionInitiator:(unint64_t)initiator isResumingMultipointRoute:(BOOL)route;
 - (void)callNavigationCompletionBlocksIfNecessary;
 - (void)cancelNavigationAutoLaunchIfNeccessary;
 - (void)dealloc;
-- (void)didUpdateMitigationNamed:(id)a3;
-- (void)endNavigationWithCompletion:(id)a3;
-- (void)handoffDestinationToExternalDevice:(id)a3;
-- (void)navigationService:(id)a3 didArriveAtWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5;
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)navigationService:(id)a3 didSwitchToNewTransportType:(int)a4 newRoute:(id)a5 traffic:(id)a6;
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
-- (void)platformController:(id)a3 willChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
-- (void)platformControllerDidChangeChromeViewControllerNotification:(id)a3;
-- (void)presentHandoffAlertForDestination:(id)a3;
+- (void)didUpdateMitigationNamed:(id)named;
+- (void)endNavigationWithCompletion:(id)completion;
+- (void)handoffDestinationToExternalDevice:(id)device;
+- (void)navigationService:(id)service didArriveAtWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index;
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)navigationService:(id)service didSwitchToNewTransportType:(int)type newRoute:(id)route traffic:(id)traffic;
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
+- (void)platformController:(id)controller willChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
+- (void)platformControllerDidChangeChromeViewControllerNotification:(id)notification;
+- (void)presentHandoffAlertForDestination:(id)destination;
 - (void)releaseAutoLaunchAssertion;
-- (void)routePlanningSession:(id)a3 didChangeCurrentTransportType:(int64_t)a4 userInitiated:(BOOL)a5;
-- (void)routePlanningSession:(id)a3 didUpdateRouteCollectionResult:(id)a4 forTransportType:(int64_t)a5;
-- (void)setChromeViewController:(id)a3;
-- (void)setObservedNavigationSession:(id)a3;
-- (void)setObservedRoutePlanningSession:(id)a3;
+- (void)routePlanningSession:(id)session didChangeCurrentTransportType:(int64_t)type userInitiated:(BOOL)initiated;
+- (void)routePlanningSession:(id)session didUpdateRouteCollectionResult:(id)result forTransportType:(int64_t)type;
+- (void)setChromeViewController:(id)controller;
+- (void)setObservedNavigationSession:(id)session;
+- (void)setObservedRoutePlanningSession:(id)session;
 - (void)startNavigationAutoLaunchTimer;
 - (void)takeAutoLaunchAssertion;
 - (void)updateHikingMapConfiguration;
@@ -121,8 +121,8 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Acquiring thermal pressure chrome deactivation token", buf, 2u);
     }
 
-    v7 = [(NavigationStateMonitoringTask *)self iosBasedChromeViewController];
-    v8 = [v7 acquireChromeDeactivationTokenForReason:@"thermal"];
+    iosBasedChromeViewController = [(NavigationStateMonitoringTask *)self iosBasedChromeViewController];
+    v8 = [iosBasedChromeViewController acquireChromeDeactivationTokenForReason:@"thermal"];
     v9 = self->_thermalPressureChromeDeactivationToken;
     self->_thermalPressureChromeDeactivationToken = v8;
   }
@@ -141,42 +141,42 @@
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Releasing thermal pressure chrome deactivation token", v11, 2u);
     }
 
-    v7 = self->_thermalPressureChromeDeactivationToken;
+    iosBasedChromeViewController = self->_thermalPressureChromeDeactivationToken;
     self->_thermalPressureChromeDeactivationToken = 0;
   }
 }
 
 - (BOOL)_shouldSuppressAnimationsForAndromeda
 {
-  v3 = [(NavigationStateMonitoringTask *)self iosChromeViewController];
-  v4 = [v3 isTransitioningToLockScreen];
+  iosChromeViewController = [(NavigationStateMonitoringTask *)self iosChromeViewController];
+  isTransitioningToLockScreen = [iosChromeViewController isTransitioningToLockScreen];
 
-  if (v4)
+  if (isTransitioningToLockScreen)
   {
     return 1;
   }
 
-  v6 = [(NavigationStateMonitoringTask *)self chromeViewController];
-  v7 = [v6 traitCollection];
-  v8 = [v7 isLuminanceReduced];
+  chromeViewController = [(NavigationStateMonitoringTask *)self chromeViewController];
+  traitCollection = [chromeViewController traitCollection];
+  isLuminanceReduced = [traitCollection isLuminanceReduced];
 
-  v9 = [(NavigationStateMonitoringTask *)self navigationService];
-  if ([v9 navigationState] == 6)
+  navigationService = [(NavigationStateMonitoringTask *)self navigationService];
+  if ([navigationService navigationState] == 6)
   {
     v10 = 1;
   }
 
   else
   {
-    v11 = [(NavigationStateMonitoringTask *)self navigationService];
-    v10 = [v11 navigationState] == 7;
+    navigationService2 = [(NavigationStateMonitoringTask *)self navigationService];
+    v10 = [navigationService2 navigationState] == 7;
   }
 
-  v12 = [(NavigationStateMonitoringTask *)self navigationService];
-  [v12 state];
+  navigationService3 = [(NavigationStateMonitoringTask *)self navigationService];
+  [navigationService3 state];
   v13 = MNNavigationServiceStateIsNavigating() & v10;
 
-  return v8 & (v13 ^ 1);
+  return isLuminanceReduced & (v13 ^ 1);
 }
 
 - (ChromeViewController)chromeViewController
@@ -206,8 +206,8 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Acquiring thermal pressure map mode token", buf, 2u);
     }
 
-    v7 = [(NavigationStateMonitoringTask *)self iosBasedChromeViewController];
-    v8 = [v7 acquireModernMapTokenForReason:1];
+    iosBasedChromeViewController = [(NavigationStateMonitoringTask *)self iosBasedChromeViewController];
+    v8 = [iosBasedChromeViewController acquireModernMapTokenForReason:1];
     v9 = self->_thermalPressureMapToken;
     self->_thermalPressureMapToken = v8;
   }
@@ -226,7 +226,7 @@
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Releasing thermal pressure map mode token", v11, 2u);
     }
 
-    v7 = self->_thermalPressureMapToken;
+    iosBasedChromeViewController = self->_thermalPressureMapToken;
     self->_thermalPressureMapToken = 0;
   }
 }
@@ -238,21 +238,21 @@
   return WeakRetained;
 }
 
-- (void)platformControllerDidChangeChromeViewControllerNotification:(id)a3
+- (void)platformControllerDidChangeChromeViewControllerNotification:(id)notification
 {
-  v5 = [(NavigationStateMonitoringTask *)self platformController];
-  v4 = [v5 chromeViewController];
-  [(NavigationStateMonitoringTask *)self setChromeViewController:v4];
+  platformController = [(NavigationStateMonitoringTask *)self platformController];
+  chromeViewController = [platformController chromeViewController];
+  [(NavigationStateMonitoringTask *)self setChromeViewController:chromeViewController];
 }
 
-- (void)_checkAnimationsForAndromeda:(id)a3
+- (void)_checkAnimationsForAndromeda:(id)andromeda
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  andromedaCopy = andromeda;
+  v5 = andromedaCopy;
+  if (andromedaCopy)
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKey:@"kBacklightLuminanceInitialSetupDoneKey"];
+    userInfo = [andromedaCopy userInfo];
+    v7 = [userInfo objectForKey:@"kBacklightLuminanceInitialSetupDoneKey"];
     v8 = v7 != 0;
   }
 
@@ -294,48 +294,48 @@ LABEL_15:
   }
 }
 
-- (void)didUpdateMitigationNamed:(id)a3
+- (void)didUpdateMitigationNamed:(id)named
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1006C3228;
   v5[3] = &unk_101661A90;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  namedCopy = named;
+  selfCopy = self;
+  v4 = namedCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
-- (void)navigationService:(id)a3 didArriveAtWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5
+- (void)navigationService:(id)service didArriveAtWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index
 {
-  v6 = [(NavigationStateMonitoringTask *)self chromeViewController:a3];
-  v7 = [v6 traitCollection];
-  v8 = [v7 isLuminanceReduced];
+  v6 = [(NavigationStateMonitoringTask *)self chromeViewController:service];
+  traitCollection = [v6 traitCollection];
+  isLuminanceReduced = [traitCollection isLuminanceReduced];
 
-  if (v8)
+  if (isLuminanceReduced)
   {
 
     [(NavigationStateMonitoringTask *)self _checkAnimationsForAndromeda:0];
   }
 }
 
-- (void)navigationService:(id)a3 didSwitchToNewTransportType:(int)a4 newRoute:(id)a5 traffic:(id)a6
+- (void)navigationService:(id)service didSwitchToNewTransportType:(int)type newRoute:(id)route traffic:(id)traffic
 {
-  v10 = a5;
-  if (([v10 transportType] & 0xFFFFFFFE) == 2 && !self->_navigationModernMapToken)
+  routeCopy = route;
+  if (([routeCopy transportType] & 0xFFFFFFFE) == 2 && !self->_navigationModernMapToken)
   {
-    v7 = [(NavigationStateMonitoringTask *)self iosBasedChromeViewController];
-    v8 = [v7 acquireModernMapTokenForReason:0];
+    iosBasedChromeViewController = [(NavigationStateMonitoringTask *)self iosBasedChromeViewController];
+    v8 = [iosBasedChromeViewController acquireModernMapTokenForReason:0];
     navigationModernMapToken = self->_navigationModernMapToken;
     self->_navigationModernMapToken = v8;
 
     goto LABEL_7;
   }
 
-  if (([v10 transportType] & 0xFFFFFFFE) != 2)
+  if (([routeCopy transportType] & 0xFFFFFFFE) != 2)
   {
-    v7 = self->_navigationModernMapToken;
-    if (v7)
+    iosBasedChromeViewController = self->_navigationModernMapToken;
+    if (iosBasedChromeViewController)
     {
       self->_navigationModernMapToken = 0;
 LABEL_7:
@@ -345,19 +345,19 @@ LABEL_7:
   [(NavigationStateMonitoringTask *)self updateHikingMapConfiguration];
 }
 
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v6 = a3;
-  v7 = +[UIDevice currentDevice];
-  if ([v7 userInterfaceIdiom] || (MNNavigationServiceStateChangedToNavigating() & 1) == 0)
+  serviceCopy = service;
+  route = +[UIDevice currentDevice];
+  if ([route userInterfaceIdiom] || (MNNavigationServiceStateChangedToNavigating() & 1) == 0)
   {
 LABEL_16:
 
 LABEL_17:
     if (MNNavigationServiceStateChangedFromNavigatingToStopped())
     {
-      v24 = [(NavigationStateMonitoringTask *)self platformController];
-      v25 = [v24 currentSession];
+      platformController = [(NavigationStateMonitoringTask *)self platformController];
+      currentSession = [platformController currentSession];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -370,8 +370,8 @@ LABEL_17:
           _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "Detected MNNavigationService ended navigation with a currently active NavigationSession; clearing session stack", buf, 2u);
         }
 
-        v28 = [(NavigationStateMonitoringTask *)self platformController];
-        [v28 clearSessions];
+        platformController2 = [(NavigationStateMonitoringTask *)self platformController];
+        [platformController2 clearSessions];
       }
 
       else
@@ -383,8 +383,8 @@ LABEL_17:
     goto LABEL_23;
   }
 
-  v8 = [(NavigationStateMonitoringTask *)self platformController];
-  v9 = [v8 currentSession];
+  platformController3 = [(NavigationStateMonitoringTask *)self platformController];
+  currentSession2 = [platformController3 currentSession];
   objc_opt_class();
   v10 = objc_opt_isKindOfClass();
 
@@ -393,10 +393,10 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v7 = [v6 route];
+  route = [serviceCopy route];
   v11 = sub_1006C30F8();
   v12 = v11;
-  if (v7)
+  if (route)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -404,37 +404,37 @@ LABEL_17:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Detected MNNavigationService started navigation without a currently active NavigationSession; pushing new NavigationSession", buf, 2u);
     }
 
-    v13 = [NSMutableArray arrayWithObject:v7];
-    v14 = [v6 alternateRoutes];
+    v13 = [NSMutableArray arrayWithObject:route];
+    alternateRoutes = [serviceCopy alternateRoutes];
 
-    if (v14)
+    if (alternateRoutes)
     {
-      v15 = [v6 alternateRoutes];
-      v16 = [v13 arrayByAddingObjectsFromArray:v15];
+      alternateRoutes2 = [serviceCopy alternateRoutes];
+      v16 = [v13 arrayByAddingObjectsFromArray:alternateRoutes2];
     }
 
     v30 = v13;
     v17 = [[RouteCollection alloc] initWithRoutes:v13 currentRouteIndex:0];
-    v18 = [(NavigationStateMonitoringTask *)self observedRoutePlanningSession];
-    v19 = [v18 configuration];
-    v20 = [v19 traits];
-    v21 = v20;
-    if (v20)
+    observedRoutePlanningSession = [(NavigationStateMonitoringTask *)self observedRoutePlanningSession];
+    configuration = [observedRoutePlanningSession configuration];
+    traits = [configuration traits];
+    v21 = traits;
+    if (traits)
     {
-      v22 = v20;
+      currentTraits = traits;
     }
 
     else
     {
       [(NavigationStateMonitoringTask *)self chromeViewController];
-      v23 = v29 = v7;
-      v22 = [v23 currentTraits];
+      v23 = v29 = route;
+      currentTraits = [v23 currentTraits];
 
-      v7 = v29;
+      route = v29;
     }
 
     +[StartNavigationDetailsBuilder defaultNavigationDetailsOptions];
-    [(NavigationStateMonitoringTask *)self beginNavigationWithRouteCollection:v17 navigationDetailsOptions:buf mapServiceTraits:v22 sessionInitiator:3 isResumingMultipointRoute:0];
+    [(NavigationStateMonitoringTask *)self beginNavigationWithRouteCollection:v17 navigationDetailsOptions:buf mapServiceTraits:currentTraits sessionInitiator:3 isResumingMultipointRoute:0];
 
     goto LABEL_16;
   }
@@ -445,39 +445,39 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_FAULT, "Navigation started without an active nav session but the service didn't have a route.  Telling navd to exit navigation state", buf, 2u);
   }
 
-  [v6 stopNavigationWithReason:1];
+  [serviceCopy stopNavigationWithReason:1];
 LABEL_23:
 }
 
-- (void)routePlanningSession:(id)a3 didUpdateRouteCollectionResult:(id)a4 forTransportType:(int64_t)a5
+- (void)routePlanningSession:(id)session didUpdateRouteCollectionResult:(id)result forTransportType:(int64_t)type
 {
-  v8 = a4;
-  if ([a3 currentTransportType] == a5 && objc_msgSend(v8, "isSuccess") && -[NavigationStateMonitoringTask shouldStartNavigationAutoLaunchTimer](self, "shouldStartNavigationAutoLaunchTimer"))
+  resultCopy = result;
+  if ([session currentTransportType] == type && objc_msgSend(resultCopy, "isSuccess") && -[NavigationStateMonitoringTask shouldStartNavigationAutoLaunchTimer](self, "shouldStartNavigationAutoLaunchTimer"))
   {
     [(NavigationStateMonitoringTask *)self startNavigationAutoLaunchTimer];
   }
 }
 
-- (void)routePlanningSession:(id)a3 didChangeCurrentTransportType:(int64_t)a4 userInitiated:(BOOL)a5
+- (void)routePlanningSession:(id)session didChangeCurrentTransportType:(int64_t)type userInitiated:(BOOL)initiated
 {
-  v10 = a3;
-  if (a4 == 5 || a4 == 2)
+  sessionCopy = session;
+  if (type == 5 || type == 2)
   {
     if (self->_routePlanningModernMapToken)
     {
       goto LABEL_8;
     }
 
-    v7 = [(NavigationStateMonitoringTask *)self iosBasedChromeViewController];
-    v8 = [v7 acquireModernMapTokenForReason:0];
+    iosBasedChromeViewController = [(NavigationStateMonitoringTask *)self iosBasedChromeViewController];
+    v8 = [iosBasedChromeViewController acquireModernMapTokenForReason:0];
     routePlanningModernMapToken = self->_routePlanningModernMapToken;
     self->_routePlanningModernMapToken = v8;
   }
 
   else
   {
-    v7 = self->_routePlanningModernMapToken;
-    if (!v7)
+    iosBasedChromeViewController = self->_routePlanningModernMapToken;
+    if (!iosBasedChromeViewController)
     {
       goto LABEL_8;
     }
@@ -489,31 +489,31 @@ LABEL_8:
   [(NavigationStateMonitoringTask *)self updateHikingMapConfiguration];
 }
 
-- (void)setObservedNavigationSession:(id)a3
+- (void)setObservedNavigationSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   observedNavigationSession = self->_observedNavigationSession;
-  if (observedNavigationSession != v5)
+  if (observedNavigationSession != sessionCopy)
   {
-    v7 = v5;
+    v7 = sessionCopy;
     [observedNavigationSession unregisterObserver:self];
-    objc_storeStrong(&self->_observedNavigationSession, a3);
+    objc_storeStrong(&self->_observedNavigationSession, session);
     [self->_observedNavigationSession registerObserver:self];
     [(NavigationStateMonitoringTask *)self updateHikingMapConfiguration];
-    v5 = v7;
+    sessionCopy = v7;
   }
 }
 
-- (void)setObservedRoutePlanningSession:(id)a3
+- (void)setObservedRoutePlanningSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   observedRoutePlanningSession = self->_observedRoutePlanningSession;
-  if (observedRoutePlanningSession != v5)
+  if (observedRoutePlanningSession != sessionCopy)
   {
-    v12 = v5;
+    v12 = sessionCopy;
     [observedRoutePlanningSession unregisterObserver:self];
     [self->_observedRoutePlanningSession setNavigationStateMonitoringTask:0];
-    objc_storeStrong(&self->_observedRoutePlanningSession, a3);
+    objc_storeStrong(&self->_observedRoutePlanningSession, session);
     [self->_observedRoutePlanningSession registerObserver:self];
     [self->_observedRoutePlanningSession setNavigationStateMonitoringTask:self];
     v7 = self->_observedRoutePlanningSession;
@@ -521,11 +521,11 @@ LABEL_8:
     {
       if (!self->_routePlanningModernMapToken)
       {
-        v8 = [(RoutePlanningSession *)v7 currentTransportType];
-        if (v8 == 5 || v8 == 2)
+        currentTransportType = [(RoutePlanningSession *)v7 currentTransportType];
+        if (currentTransportType == 5 || currentTransportType == 2)
         {
-          v9 = [(NavigationStateMonitoringTask *)self iosBasedChromeViewController];
-          v10 = [v9 acquireModernMapTokenForReason:0];
+          iosBasedChromeViewController = [(NavigationStateMonitoringTask *)self iosBasedChromeViewController];
+          v10 = [iosBasedChromeViewController acquireModernMapTokenForReason:0];
           routePlanningModernMapToken = self->_routePlanningModernMapToken;
           self->_routePlanningModernMapToken = v10;
         }
@@ -533,14 +533,14 @@ LABEL_8:
     }
 
     [(NavigationStateMonitoringTask *)self updateHikingMapConfiguration];
-    v5 = v12;
+    sessionCopy = v12;
   }
 }
 
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v18 = a4;
-  v7 = a5;
+  sessionCopy = session;
+  toSessionCopy = toSession;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -552,7 +552,7 @@ LABEL_8:
     self->_routePlanningHikingMapToken = 0;
   }
 
-  v10 = v7;
+  v10 = toSessionCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -595,25 +595,25 @@ LABEL_8:
   [(NavigationStateMonitoringTask *)self setObservedNavigationSession:v17];
 }
 
-- (void)platformController:(id)a3 willChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller willChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v12 = a5;
+  toSessionCopy = toSession;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v7 = v12;
+  v7 = toSessionCopy;
   if (isKindOfClass)
   {
-    v8 = [v12 currentTransportType];
-    if ((v8 == 5 || v8 == 2) && !self->_navigationModernMapToken)
+    currentTransportType = [toSessionCopy currentTransportType];
+    if ((currentTransportType == 5 || currentTransportType == 2) && !self->_navigationModernMapToken)
     {
-      v9 = [(NavigationStateMonitoringTask *)self iosBasedChromeViewController];
-      v10 = [v9 acquireModernMapTokenForReason:0];
+      iosBasedChromeViewController = [(NavigationStateMonitoringTask *)self iosBasedChromeViewController];
+      v10 = [iosBasedChromeViewController acquireModernMapTokenForReason:0];
       navigationModernMapToken = self->_navigationModernMapToken;
       self->_navigationModernMapToken = v10;
     }
 
     [(NavigationStateMonitoringTask *)self updateHikingMapConfiguration];
-    v7 = v12;
+    v7 = toSessionCopy;
   }
 }
 
@@ -683,8 +683,8 @@ LABEL_8:
     v8 = 0;
   }
 
-  v9 = [(NavigationStateMonitoringTask *)self observedRoutePlanningSession];
-  v10 = v9 == 0;
+  observedRoutePlanningSession = [(NavigationStateMonitoringTask *)self observedRoutePlanningSession];
+  v10 = observedRoutePlanningSession == 0;
 
   if (v10)
   {
@@ -692,8 +692,8 @@ LABEL_8:
     val->_routePlanningHikingMapToken = 0;
   }
 
-  v12 = [(NavigationStateMonitoringTask *)val observedNavigationSession];
-  v13 = v12 == 0;
+  observedNavigationSession = [(NavigationStateMonitoringTask *)val observedNavigationSession];
+  v13 = observedNavigationSession == 0;
 
   if (v13)
   {
@@ -702,19 +702,19 @@ LABEL_8:
   }
 
   v101 = +[NSMutableArray array];
-  v105 = [(NavigationStateMonitoringTask *)val observedRoutePlanningSession];
-  v15 = [v105 currentRouteCollection];
-  v99 = [v15 currentRoute];
+  observedRoutePlanningSession2 = [(NavigationStateMonitoringTask *)val observedRoutePlanningSession];
+  currentRouteCollection = [observedRoutePlanningSession2 currentRouteCollection];
+  currentRoute = [currentRouteCollection currentRoute];
 
-  v102 = [v105 resolvedWaypoints];
-  v98 = [v102 waypointsOrNull];
-  v103 = [(NavigationStateMonitoringTask *)val observedNavigationSession];
-  v16 = [v103 currentRouteCollection];
-  v104 = [v16 currentRoute];
+  resolvedWaypoints = [observedRoutePlanningSession2 resolvedWaypoints];
+  waypointsOrNull = [resolvedWaypoints waypointsOrNull];
+  observedNavigationSession2 = [(NavigationStateMonitoringTask *)val observedNavigationSession];
+  currentRouteCollection2 = [observedNavigationSession2 currentRouteCollection];
+  currentRoute2 = [currentRouteCollection2 currentRoute];
 
-  v97 = [v104 anchorPoints];
-  v96 = [v104 waypoints];
-  if (v105)
+  anchorPoints = [currentRoute2 anchorPoints];
+  waypoints = [currentRoute2 waypoints];
+  if (observedRoutePlanningSession2)
   {
     v17 = sub_1006C30F8();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -724,7 +724,7 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "[%{public}p] Updating hiking map configuration in route planning", buf, 0xCu);
     }
 
-    if (![v102 areAllValidWaypoints] || objc_msgSend(v105, "currentTransportType") != 2 || (MapsFeature_IsEnabled_HikingiOS() & 1) == 0)
+    if (![resolvedWaypoints areAllValidWaypoints] || objc_msgSend(observedRoutePlanningSession2, "currentTransportType") != 2 || (MapsFeature_IsEnabled_HikingiOS() & 1) == 0)
     {
       v22 = sub_1006C30F8();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
@@ -734,12 +734,12 @@ LABEL_8:
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "[%{public}p] Waypoints are not all valid or we are in an unsupported transport type; disabling topographic map", buf, 0xCu);
       }
 
-      v19 = val->_routePlanningHikingMapToken;
+      chromeViewController = val->_routePlanningHikingMapToken;
       val->_routePlanningHikingMapToken = 0;
       goto LABEL_44;
     }
 
-    if ([v99 source] == 2)
+    if ([currentRoute source] == 2)
     {
       v18 = sub_1006C30F8();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -749,10 +749,10 @@ LABEL_8:
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "[%{public}p] Found curated route; enabling topographic map", buf, 0xCu);
       }
 
-      v19 = [(NavigationStateMonitoringTask *)val chromeViewController];
-      v20 = [v19 acquireHikingMapToken];
+      chromeViewController = [(NavigationStateMonitoringTask *)val chromeViewController];
+      acquireHikingMapToken = [chromeViewController acquireHikingMapToken];
       v21 = val->_routePlanningHikingMapToken;
-      val->_routePlanningHikingMapToken = v20;
+      val->_routePlanningHikingMapToken = acquireHikingMapToken;
 
       goto LABEL_44;
     }
@@ -761,8 +761,8 @@ LABEL_8:
     v133 = 0u;
     v130 = 0u;
     v131 = 0u;
-    v19 = v98;
-    v47 = [v19 countByEnumeratingWithState:&v130 objects:v142 count:16];
+    chromeViewController = waypointsOrNull;
+    v47 = [chromeViewController countByEnumeratingWithState:&v130 objects:v142 count:16];
     if (!v47)
     {
       goto LABEL_44;
@@ -775,7 +775,7 @@ LABEL_64:
     {
       if (*v131 != v48)
       {
-        objc_enumerationMutation(v19);
+        objc_enumerationMutation(chromeViewController);
       }
 
       v50 = *(*(&v130 + 1) + 8 * v49);
@@ -792,11 +792,11 @@ LABEL_64:
         v79 = sub_1006C30F8();
         if (os_log_type_enabled(v79, OS_LOG_TYPE_INFO))
         {
-          v80 = [v50 name];
+          name = [v50 name];
           *buf = 134349314;
           *&buf[4] = val;
           *&buf[12] = 2112;
-          *&buf[14] = v80;
+          *&buf[14] = name;
           _os_log_impl(&_mh_execute_header, v79, OS_LOG_TYPE_INFO, "[%{public}p] Found waypoint with topographic map display type; enabling topographic map (%@)", buf, 0x16u);
         }
 
@@ -809,20 +809,20 @@ LABEL_64:
         v79 = sub_1006C30F8();
         if (os_log_type_enabled(v79, OS_LOG_TYPE_INFO))
         {
-          v81 = [v50 name];
+          name2 = [v50 name];
           *buf = 134349314;
           *&buf[4] = val;
           *&buf[12] = 2112;
-          *&buf[14] = v81;
+          *&buf[14] = name2;
           _os_log_impl(&_mh_execute_header, v79, OS_LOG_TYPE_INFO, "[%{public}p] Found waypoint to route; enabling topographic map (%@)", buf, 0x16u);
         }
 
 LABEL_131:
 
-        v82 = [(NavigationStateMonitoringTask *)val chromeViewController];
-        v83 = [v82 acquireHikingMapToken];
+        chromeViewController2 = [(NavigationStateMonitoringTask *)val chromeViewController];
+        acquireHikingMapToken2 = [chromeViewController2 acquireHikingMapToken];
         v84 = val->_routePlanningHikingMapToken;
-        val->_routePlanningHikingMapToken = v83;
+        val->_routePlanningHikingMapToken = acquireHikingMapToken2;
 
         goto LABEL_44;
       }
@@ -832,11 +832,11 @@ LABEL_131:
         v56 = sub_1006C30F8();
         if (os_log_type_enabled(v56, OS_LOG_TYPE_INFO))
         {
-          v57 = [v50 name];
+          name3 = [v50 name];
           *buf = 134349314;
           *&buf[4] = val;
           *&buf[12] = 2112;
-          *&buf[14] = v57;
+          *&buf[14] = name3;
           _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_INFO, "[%{public}p] Found current location waypoint: %@", buf, 0x16u);
         }
 
@@ -851,11 +851,11 @@ LABEL_131:
         v58 = sub_1006C30F8();
         if (os_log_type_enabled(v58, OS_LOG_TYPE_INFO))
         {
-          v59 = [v50 name];
+          name4 = [v50 name];
           *buf = 134349314;
           *&buf[4] = val;
           *&buf[12] = 2112;
-          *&buf[14] = v59;
+          *&buf[14] = name4;
           _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_INFO, "[%{public}p] Found location waypoint: %@", buf, 0x16u);
         }
 
@@ -867,18 +867,18 @@ LABEL_131:
 
       else
       {
-        v60 = [v50 isAddressWaypointType];
+        isAddressWaypointType = [v50 isAddressWaypointType];
         v54 = sub_1006C30F8();
         v61 = os_log_type_enabled(v54, OS_LOG_TYPE_INFO);
-        if (!v60)
+        if (!isAddressWaypointType)
         {
           if (v61)
           {
-            v63 = [v50 name];
+            name5 = [v50 name];
             *buf = 134349314;
             *&buf[4] = val;
             *&buf[12] = 2112;
-            *&buf[14] = v63;
+            *&buf[14] = name5;
             _os_log_impl(&_mh_execute_header, v54, OS_LOG_TYPE_INFO, "[%{public}p] Found other waypoint: %@", buf, 0x16u);
           }
 
@@ -889,11 +889,11 @@ LABEL_93:
 
         if (v61)
         {
-          v62 = [v50 name];
+          name6 = [v50 name];
           *buf = 134349314;
           *&buf[4] = val;
           *&buf[12] = 2112;
-          *&buf[14] = v62;
+          *&buf[14] = name6;
           _os_log_impl(&_mh_execute_header, v54, OS_LOG_TYPE_INFO, "[%{public}p] Found address waypoint: %@", buf, 0x16u);
         }
 
@@ -907,7 +907,7 @@ LABEL_93:
 LABEL_94:
       if (v47 == ++v49)
       {
-        v47 = [v19 countByEnumeratingWithState:&v130 objects:v142 count:16];
+        v47 = [chromeViewController countByEnumeratingWithState:&v130 objects:v142 count:16];
         if (v47)
         {
           goto LABEL_64;
@@ -947,7 +947,7 @@ LABEL_94:
   }
 
   v23 = val;
-  if (!v103)
+  if (!observedNavigationSession2)
   {
     goto LABEL_45;
   }
@@ -960,14 +960,14 @@ LABEL_94:
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "[%{public}p] Updating hiking map configuration in navigation", buf, 0xCu);
   }
 
-  v25 = [v103 currentRouteCollection];
-  v26 = [v25 currentRoute];
-  if (!v26)
+  currentRouteCollection3 = [observedNavigationSession2 currentRouteCollection];
+  currentRoute3 = [currentRouteCollection3 currentRoute];
+  if (!currentRoute3)
   {
     goto LABEL_40;
   }
 
-  if ([v103 currentTransportType] != 2)
+  if ([observedNavigationSession2 currentTransportType] != 2)
   {
 
 LABEL_40:
@@ -987,12 +987,12 @@ LABEL_41:
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "[%{public}p] We have no route or we are in an unsupported transport type; disabling topographic map", buf, 0xCu);
     }
 
-    v19 = val->_navigationHikingMapToken;
+    chromeViewController = val->_navigationHikingMapToken;
     val->_navigationHikingMapToken = 0;
     goto LABEL_44;
   }
 
-  if ([v104 source] == 2)
+  if ([currentRoute2 source] == 2)
   {
     v28 = sub_1006C30F8();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
@@ -1002,10 +1002,10 @@ LABEL_41:
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "[%{public}p] Found curated route; enabling topographic map", buf, 0xCu);
     }
 
-    v19 = [(NavigationStateMonitoringTask *)val chromeViewController];
-    v29 = [v19 acquireHikingMapToken];
+    chromeViewController = [(NavigationStateMonitoringTask *)val chromeViewController];
+    acquireHikingMapToken3 = [chromeViewController acquireHikingMapToken];
     v30 = val->_navigationHikingMapToken;
-    val->_navigationHikingMapToken = v29;
+    val->_navigationHikingMapToken = acquireHikingMapToken3;
 
     goto LABEL_44;
   }
@@ -1014,15 +1014,15 @@ LABEL_41:
   v129 = 0u;
   v126 = 0u;
   v127 = 0u;
-  v64 = [v97 count];
-  v65 = v97;
+  v64 = [anchorPoints count];
+  v65 = anchorPoints;
   if (!v64)
   {
-    v65 = v96;
+    v65 = waypoints;
   }
 
-  v19 = v65;
-  v66 = [v19 countByEnumeratingWithState:&v126 objects:v141 count:16];
+  chromeViewController = v65;
+  v66 = [chromeViewController countByEnumeratingWithState:&v126 objects:v141 count:16];
   if (v66)
   {
     v67 = *v127;
@@ -1032,7 +1032,7 @@ LABEL_41:
       {
         if (*v127 != v67)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(chromeViewController);
         }
 
         v69 = *(*(&v126 + 1) + 8 * i);
@@ -1041,11 +1041,11 @@ LABEL_41:
           v85 = sub_1006C30F8();
           if (os_log_type_enabled(v85, OS_LOG_TYPE_INFO))
           {
-            v86 = [v69 name];
+            name7 = [v69 name];
             *buf = 134349314;
             *&buf[4] = val;
             *&buf[12] = 2112;
-            *&buf[14] = v86;
+            *&buf[14] = name7;
             _os_log_impl(&_mh_execute_header, v85, OS_LOG_TYPE_INFO, "[%{public}p] Found waypoint with topographic map display type; enabling topographic map (%@)", buf, 0x16u);
           }
 
@@ -1058,20 +1058,20 @@ LABEL_41:
           v85 = sub_1006C30F8();
           if (os_log_type_enabled(v85, OS_LOG_TYPE_INFO))
           {
-            v87 = [v69 name];
+            name8 = [v69 name];
             *buf = 134349314;
             *&buf[4] = val;
             *&buf[12] = 2112;
-            *&buf[14] = v87;
+            *&buf[14] = name8;
             _os_log_impl(&_mh_execute_header, v85, OS_LOG_TYPE_INFO, "[%{public}p] Found waypoint to route; enabling topographic map (%@)", buf, 0x16u);
           }
 
 LABEL_136:
 
-          v88 = [(NavigationStateMonitoringTask *)val chromeViewController];
-          v89 = [v88 acquireHikingMapToken];
+          chromeViewController3 = [(NavigationStateMonitoringTask *)val chromeViewController];
+          acquireHikingMapToken4 = [chromeViewController3 acquireHikingMapToken];
           v90 = val->_navigationHikingMapToken;
-          val->_navigationHikingMapToken = v89;
+          val->_navigationHikingMapToken = acquireHikingMapToken4;
 
           goto LABEL_44;
         }
@@ -1081,11 +1081,11 @@ LABEL_136:
           v70 = sub_1006C30F8();
           if (os_log_type_enabled(v70, OS_LOG_TYPE_INFO))
           {
-            v71 = [v69 name];
+            name9 = [v69 name];
             *buf = 134349314;
             *&buf[4] = val;
             *&buf[12] = 2112;
-            *&buf[14] = v71;
+            *&buf[14] = name9;
             _os_log_impl(&_mh_execute_header, v70, OS_LOG_TYPE_INFO, "[%{public}p] Found current location waypoint: %@", buf, 0x16u);
           }
 
@@ -1100,11 +1100,11 @@ LABEL_136:
           v72 = sub_1006C30F8();
           if (os_log_type_enabled(v72, OS_LOG_TYPE_INFO))
           {
-            v73 = [v69 name];
+            name10 = [v69 name];
             *buf = 134349314;
             *&buf[4] = val;
             *&buf[12] = 2112;
-            *&buf[14] = v73;
+            *&buf[14] = name10;
             _os_log_impl(&_mh_execute_header, v72, OS_LOG_TYPE_INFO, "[%{public}p] Found location waypoint: %@", buf, 0x16u);
           }
 
@@ -1116,18 +1116,18 @@ LABEL_136:
 
         else
         {
-          v74 = [v69 isAddressWaypointType];
+          isAddressWaypointType2 = [v69 isAddressWaypointType];
           v75 = sub_1006C30F8();
           v76 = os_log_type_enabled(v75, OS_LOG_TYPE_INFO);
-          if (v74)
+          if (isAddressWaypointType2)
           {
             if (v76)
             {
-              v77 = [v69 name];
+              name11 = [v69 name];
               *buf = 134349314;
               *&buf[4] = val;
               *&buf[12] = 2112;
-              *&buf[14] = v77;
+              *&buf[14] = name11;
               _os_log_impl(&_mh_execute_header, v75, OS_LOG_TYPE_INFO, "[%{public}p] Found address waypoint: %@", buf, 0x16u);
             }
 
@@ -1143,18 +1143,18 @@ LABEL_120:
           {
             if (v76)
             {
-              v78 = [v69 name];
+              name12 = [v69 name];
               *buf = 134349314;
               *&buf[4] = val;
               *&buf[12] = 2112;
-              *&buf[14] = v78;
+              *&buf[14] = name12;
               _os_log_impl(&_mh_execute_header, v75, OS_LOG_TYPE_INFO, "[%{public}p] Found other waypoint: %@", buf, 0x16u);
             }
           }
         }
       }
 
-      v66 = [v19 countByEnumeratingWithState:&v126 objects:v141 count:16];
+      v66 = [chromeViewController countByEnumeratingWithState:&v126 objects:v141 count:16];
     }
 
     while (v66);
@@ -1229,7 +1229,7 @@ LABEL_45:
             _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_INFO, "[%{public}p] Checking location %{private}f, %{private}f", v134, 0x20u);
           }
 
-          v44 = [(NavigationStateMonitoringTask *)val chromeViewController];
+          chromeViewController4 = [(NavigationStateMonitoringTask *)val chromeViewController];
           v113[0] = _NSConcreteStackBlock;
           v113[1] = 3221225472;
           v113[2] = sub_1006C5170;
@@ -1238,7 +1238,7 @@ LABEL_45:
           v117 = v42;
           v115 = buf;
           v114 = v34;
-          [v44 checkIfCoordinate:v113 isInHikingContextualRegionWithCompletionHandler:{v42.latitude, v42.longitude}];
+          [chromeViewController4 checkIfCoordinate:v113 isInHikingContextualRegionWithCompletionHandler:{v42.latitude, v42.longitude}];
 
           objc_destroyWeak(&v116);
         }
@@ -1255,7 +1255,7 @@ LABEL_45:
     block[3] = &unk_101626730;
     objc_copyWeak(&v112, &location);
     v111 = buf;
-    v109 = v105;
+    v109 = observedRoutePlanningSession2;
     v110 = v100;
     v45 = dispatch_block_create(DISPATCH_BLOCK_INHERIT_QOS_CLASS, block);
     v46 = val->_droppedPinBlock;
@@ -1274,8 +1274,8 @@ LABEL_45:
 
 - (void)callNavigationCompletionBlocksIfNecessary
 {
-  v13 = [(NavigationStateMonitoringTask *)self platformController];
-  v3 = [v13 currentSession];
+  platformController = [(NavigationStateMonitoringTask *)self platformController];
+  currentSession = [platformController currentSession];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1283,41 +1283,41 @@ LABEL_45:
 
   else
   {
-    v4 = [(NavigationStateMonitoringTask *)self navigationService];
-    v5 = [v4 isInNavigatingState];
+    navigationService = [(NavigationStateMonitoringTask *)self navigationService];
+    isInNavigatingState = [navigationService isInNavigatingState];
 
-    if ((v5 & 1) == 0)
+    if ((isInNavigatingState & 1) == 0)
     {
-      v6 = [(NavigationStateMonitoringTask *)self navigationCompletionBlocks];
-      objc_sync_enter(v6);
-      v7 = [(NavigationStateMonitoringTask *)self navigationCompletionBlocks];
-      v8 = [v7 count];
+      navigationCompletionBlocks = [(NavigationStateMonitoringTask *)self navigationCompletionBlocks];
+      objc_sync_enter(navigationCompletionBlocks);
+      navigationCompletionBlocks2 = [(NavigationStateMonitoringTask *)self navigationCompletionBlocks];
+      v8 = [navigationCompletionBlocks2 count];
 
       if (v8)
       {
-        v9 = [(NavigationStateMonitoringTask *)self navigationCompletionBlocks];
-        v10 = [v9 allObjects];
+        navigationCompletionBlocks3 = [(NavigationStateMonitoringTask *)self navigationCompletionBlocks];
+        allObjects = [navigationCompletionBlocks3 allObjects];
 
-        v11 = [(NavigationStateMonitoringTask *)self navigationCompletionBlocks];
-        [v11 removeAllObjects];
+        navigationCompletionBlocks4 = [(NavigationStateMonitoringTask *)self navigationCompletionBlocks];
+        [navigationCompletionBlocks4 removeAllObjects];
 
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_1006C5584;
         block[3] = &unk_101661B18;
-        v15 = v10;
-        v12 = v10;
+        v15 = allObjects;
+        v12 = allObjects;
         dispatch_async(&_dispatch_main_q, block);
       }
 
-      objc_sync_exit(v6);
+      objc_sync_exit(navigationCompletionBlocks);
     }
   }
 }
 
-- (void)handoffDestinationToExternalDevice:(id)a3
+- (void)handoffDestinationToExternalDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = sub_1006C30F8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1331,14 +1331,14 @@ LABEL_45:
   v8[2] = sub_1006C57D4;
   v8[3] = &unk_10163BE28;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = deviceCopy;
+  v7 = deviceCopy;
   [v6 handoffDestination:v7 completion:v8];
 }
 
-- (void)presentHandoffAlertForDestination:(id)a3
+- (void)presentHandoffAlertForDestination:(id)destination
 {
-  v21 = a3;
+  destinationCopy = destination;
   v3 = sub_1006C30F8();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
@@ -1347,17 +1347,17 @@ LABEL_45:
   }
 
   v4 = +[MapsExternalDevice sharedInstance];
-  v5 = [v4 mapsDisplayName];
+  mapsDisplayName = [v4 mapsDisplayName];
 
   v6 = +[NSBundle mainBundle];
-  if (v5)
+  if (mapsDisplayName)
   {
     v7 = [v6 localizedStringForKey:@"Destination handoff alert title [phone]" value:@"localized string not found" table:0];
-    v8 = [NSString stringWithFormat:v7, v5];
+    v8 = [NSString stringWithFormat:v7, mapsDisplayName];
 
     v9 = +[NSBundle mainBundle];
     v10 = [v9 localizedStringForKey:@"Destination handoff alert message [phone]" value:@"localized string not found" table:0];
-    v11 = [NSString stringWithFormat:v10, v5];
+    v11 = [NSString stringWithFormat:v10, mapsDisplayName];
   }
 
   else
@@ -1381,26 +1381,26 @@ LABEL_45:
   v23[2] = sub_1006C5C70;
   v23[3] = &unk_1016383E0;
   v23[4] = self;
-  v24 = v21;
-  v18 = v21;
+  v24 = destinationCopy;
+  v18 = destinationCopy;
   v19 = [UIAlertAction actionWithTitle:v17 style:0 handler:v23];
 
   [v12 addAction:v19];
   [v12 setPreferredAction:v19];
-  v20 = [(NavigationStateMonitoringTask *)self chromeViewController];
-  [v20 _maps_topMostPresentViewController:v12 animated:1 completion:0];
+  chromeViewController = [(NavigationStateMonitoringTask *)self chromeViewController];
+  [chromeViewController _maps_topMostPresentViewController:v12 animated:1 completion:0];
 }
 
 - (void)startNavigationAutoLaunchTimer
 {
-  v3 = [(NavigationStateMonitoringTask *)self navigationAutoLaunchTimer];
+  navigationAutoLaunchTimer = [(NavigationStateMonitoringTask *)self navigationAutoLaunchTimer];
 
-  if (!v3)
+  if (!navigationAutoLaunchTimer)
   {
     [(NavigationStateMonitoringTask *)self takeAutoLaunchAssertion];
-    v4 = [(NavigationStateMonitoringTask *)self currentRoutePlanningSessionConfiguration];
-    v5 = [v4 navigationAutoLaunchDelay];
-    [v5 doubleValue];
+    currentRoutePlanningSessionConfiguration = [(NavigationStateMonitoringTask *)self currentRoutePlanningSessionConfiguration];
+    navigationAutoLaunchDelay = [currentRoutePlanningSessionConfiguration navigationAutoLaunchDelay];
+    [navigationAutoLaunchDelay doubleValue];
     v7 = v6;
 
     v8 = sub_1006C30F8();
@@ -1457,8 +1457,8 @@ LABEL_45:
     }
 
     v4 = +[NSBundle mainBundle];
-    v5 = [v4 bundleIdentifier];
-    v6 = [v5 stringByAppendingString:@".Maps.PrepareNavigation"];
+    bundleIdentifier = [v4 bundleIdentifier];
+    v6 = [bundleIdentifier stringByAppendingString:@".Maps.PrepareNavigation"];
 
     objc_initWeak(buf, self);
     v7 = [BKSProcessAssertion alloc];
@@ -1478,44 +1478,44 @@ LABEL_45:
 
 - (BOOL)shouldStartNavigationAutoLaunchTimer
 {
-  v2 = [(NavigationStateMonitoringTask *)self currentRoutePlanningSessionConfiguration];
-  v3 = [v2 shouldAutoLaunchNavigation];
+  currentRoutePlanningSessionConfiguration = [(NavigationStateMonitoringTask *)self currentRoutePlanningSessionConfiguration];
+  shouldAutoLaunchNavigation = [currentRoutePlanningSessionConfiguration shouldAutoLaunchNavigation];
 
-  return v3;
+  return shouldAutoLaunchNavigation;
 }
 
 - (id)currentRoutePlanningSessionConfiguration
 {
-  v2 = [(NavigationStateMonitoringTask *)self observedRoutePlanningSession];
-  v3 = [v2 configuration];
+  observedRoutePlanningSession = [(NavigationStateMonitoringTask *)self observedRoutePlanningSession];
+  configuration = [observedRoutePlanningSession configuration];
 
-  return v3;
+  return configuration;
 }
 
-- (void)endNavigationWithCompletion:(id)a3
+- (void)endNavigationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(NavigationStateMonitoringTask *)self navigationService];
-  if ([v5 isInNavigatingState])
+  completionCopy = completion;
+  navigationService = [(NavigationStateMonitoringTask *)self navigationService];
+  if ([navigationService isInNavigatingState])
   {
 
 LABEL_4:
-    if (v4)
+    if (completionCopy)
     {
-      v9 = [(NavigationStateMonitoringTask *)self navigationCompletionBlocks];
-      objc_sync_enter(v9);
-      v10 = [(NavigationStateMonitoringTask *)self navigationCompletionBlocks];
-      v11 = objc_retainBlock(v4);
-      [v10 addObject:v11];
+      navigationCompletionBlocks = [(NavigationStateMonitoringTask *)self navigationCompletionBlocks];
+      objc_sync_enter(navigationCompletionBlocks);
+      navigationCompletionBlocks2 = [(NavigationStateMonitoringTask *)self navigationCompletionBlocks];
+      v11 = objc_retainBlock(completionCopy);
+      [navigationCompletionBlocks2 addObject:v11];
 
-      objc_sync_exit(v9);
+      objc_sync_exit(navigationCompletionBlocks);
     }
 
     v12 = sub_1006C30F8();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = @"with";
-      if (!v4)
+      if (!completionCopy)
       {
         v13 = @"without";
       }
@@ -1525,14 +1525,14 @@ LABEL_4:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Ending navigation %@ a completion block", &v16, 0xCu);
     }
 
-    v14 = [(NavigationStateMonitoringTask *)self platformController];
-    [v14 clearIfCurrentSessionIsKindOfClass:objc_opt_class()];
+    platformController = [(NavigationStateMonitoringTask *)self platformController];
+    [platformController clearIfCurrentSessionIsKindOfClass:objc_opt_class()];
 
     goto LABEL_11;
   }
 
-  v6 = [(NavigationStateMonitoringTask *)self platformController];
-  v7 = [v6 currentSession];
+  platformController2 = [(NavigationStateMonitoringTask *)self platformController];
+  currentSession = [platformController2 currentSession];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1548,20 +1548,20 @@ LABEL_4:
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "Cannot end navigation when navigation is not running", &v16, 2u);
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_11:
 }
 
-- (void)beginNavigationWithRouteCollection:(id)a3 navigationDetailsOptions:(NavigationDetailsOptions *)a4 mapServiceTraits:(id)a5 sessionInitiator:(unint64_t)a6 isResumingMultipointRoute:(BOOL)a7
+- (void)beginNavigationWithRouteCollection:(id)collection navigationDetailsOptions:(NavigationDetailsOptions *)options mapServiceTraits:(id)traits sessionInitiator:(unint64_t)initiator isResumingMultipointRoute:(BOOL)route
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a5;
-  if (!v12)
+  routeCopy = route;
+  collectionCopy = collection;
+  traitsCopy = traits;
+  if (!collectionCopy)
   {
     v51 = sub_10006D178();
     if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
@@ -1590,7 +1590,7 @@ LABEL_11:
     }
   }
 
-  if (!v13)
+  if (!traitsCopy)
   {
     v54 = sub_10006D178();
     if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
@@ -1627,8 +1627,8 @@ LABEL_11:
   }
 
   [(NavigationStateMonitoringTask *)self cancelNavigationAutoLaunchIfNeccessary];
-  v15 = [(NavigationStateMonitoringTask *)self platformController];
-  v16 = [v15 currentSession];
+  platformController = [(NavigationStateMonitoringTask *)self platformController];
+  currentSession = [platformController currentSession];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1658,14 +1658,14 @@ LABEL_11:
       }
     }
 
-    v21 = sub_1006C30F8();
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    lastObject = sub_1006C30F8();
+    if (os_log_type_enabled(lastObject, OS_LOG_TYPE_ERROR))
     {
-      v22 = [(NavigationStateMonitoringTask *)self platformController];
-      v23 = [v22 currentSession];
+      platformController2 = [(NavigationStateMonitoringTask *)self platformController];
+      currentSession2 = [platformController2 currentSession];
       *buf = 138412290;
-      *&buf[4] = v23;
-      _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Attempted to begin navigation, but there is already a NavigationSession on the sessionStack: %@", buf, 0xCu);
+      *&buf[4] = currentSession2;
+      _os_log_impl(&_mh_execute_header, lastObject, OS_LOG_TYPE_ERROR, "Attempted to begin navigation, but there is already a NavigationSession on the sessionStack: %@", buf, 0xCu);
 LABEL_24:
 
       goto LABEL_35;
@@ -1674,80 +1674,80 @@ LABEL_24:
     goto LABEL_35;
   }
 
-  v57 = a4;
-  v24 = [(NavigationStateMonitoringTask *)self platformController];
-  v25 = [v24 currentRoutePlanningSession];
-  v58 = self;
-  if (!v25)
+  optionsCopy = options;
+  platformController3 = [(NavigationStateMonitoringTask *)self platformController];
+  currentRoutePlanningSession = [platformController3 currentRoutePlanningSession];
+  selfCopy = self;
+  if (!currentRoutePlanningSession)
   {
 
 LABEL_26:
-    v39 = [v12 currentRoute];
-    v40 = [v39 carplayDestinationHandoffRequired];
+    currentRoute = [collectionCopy currentRoute];
+    carplayDestinationHandoffRequired = [currentRoute carplayDestinationHandoffRequired];
 
-    if (v40)
+    if (carplayDestinationHandoffRequired)
     {
-      v41 = [v12 currentRoute];
-      v42 = [v41 _maps_directionsWaypoints];
-      v21 = [v42 lastObject];
+      currentRoute2 = [collectionCopy currentRoute];
+      _maps_directionsWaypoints = [currentRoute2 _maps_directionsWaypoints];
+      lastObject = [_maps_directionsWaypoints lastObject];
 
-      v43 = [v21 pin];
-      if ([(NavigationStateMonitoringTask *)v58 shouldStartNavigationAutoLaunchTimer])
+      v43 = [lastObject pin];
+      if ([(NavigationStateMonitoringTask *)selfCopy shouldStartNavigationAutoLaunchTimer])
       {
-        [(NavigationStateMonitoringTask *)v58 handoffDestinationToExternalDevice:v43];
+        [(NavigationStateMonitoringTask *)selfCopy handoffDestinationToExternalDevice:v43];
       }
 
       else
       {
-        [(NavigationStateMonitoringTask *)v58 presentHandoffAlertForDestination:v43];
+        [(NavigationStateMonitoringTask *)selfCopy presentHandoffAlertForDestination:v43];
       }
     }
 
     else
     {
-      if (a6 == 6)
+      if (initiator == 6)
       {
-        v44 = [(NavigationStateMonitoringTask *)v58 observedRoutePlanningSession];
-        v45 = [v44 configuration];
-        v21 = [v45 tracePlaybackPath];
+        observedRoutePlanningSession = [(NavigationStateMonitoringTask *)selfCopy observedRoutePlanningSession];
+        configuration = [observedRoutePlanningSession configuration];
+        lastObject = [configuration tracePlaybackPath];
       }
 
       else
       {
-        v21 = 0;
+        lastObject = 0;
       }
 
       v46 = [NavigationSessionBuilder alloc];
-      v47 = *&v57->guidanceType;
-      *buf = *&v57->shouldSimulateLocations;
+      v47 = *&optionsCopy->guidanceType;
+      *buf = *&optionsCopy->shouldSimulateLocations;
       *&buf[16] = v47;
-      *&buf[32] = *&v57->isReconnecting;
-      navigationModeContext = v57->navigationModeContext;
-      v48 = [(NavigationSessionBuilder *)v46 initWithRouteCollection:v12 navigationDetailsOptions:buf mapServiceTraits:v13 sessionInitiator:a6 isResumingMultipointRoute:v7 tracePlaybackPath:v21];
-      v49 = [(NavigationSessionBuilder *)v48 build];
+      *&buf[32] = *&optionsCopy->isReconnecting;
+      navigationModeContext = optionsCopy->navigationModeContext;
+      v48 = [(NavigationSessionBuilder *)v46 initWithRouteCollection:collectionCopy navigationDetailsOptions:buf mapServiceTraits:traitsCopy sessionInitiator:initiator isResumingMultipointRoute:routeCopy tracePlaybackPath:lastObject];
+      build = [(NavigationSessionBuilder *)v48 build];
 
-      v50 = [(NavigationStateMonitoringTask *)v58 platformController];
-      [v50 pushSession:v49];
+      platformController4 = [(NavigationStateMonitoringTask *)selfCopy platformController];
+      [platformController4 pushSession:build];
     }
 
     goto LABEL_35;
   }
 
-  v26 = v25;
-  v27 = [(NavigationStateMonitoringTask *)self platformController];
-  [v27 chromeViewController];
-  v28 = v12;
-  v29 = a6;
-  v30 = v13;
-  v32 = v31 = v7;
-  v33 = [v32 topMostPresentedViewController];
+  v26 = currentRoutePlanningSession;
+  platformController5 = [(NavigationStateMonitoringTask *)self platformController];
+  [platformController5 chromeViewController];
+  v28 = collectionCopy;
+  initiatorCopy = initiator;
+  v30 = traitsCopy;
+  v32 = v31 = routeCopy;
+  topMostPresentedViewController = [v32 topMostPresentedViewController];
   objc_opt_class();
   v34 = objc_opt_isKindOfClass();
 
-  v7 = v31;
-  v13 = v30;
-  a6 = v29;
-  v12 = v28;
+  routeCopy = v31;
+  traitsCopy = v30;
+  initiator = initiatorCopy;
+  collectionCopy = v28;
 
   if (v34)
   {
@@ -1778,15 +1778,15 @@ LABEL_26:
     }
   }
 
-  v21 = sub_1006C30F8();
-  if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+  lastObject = sub_1006C30F8();
+  if (os_log_type_enabled(lastObject, OS_LOG_TYPE_ERROR))
   {
-    v22 = [(NavigationStateMonitoringTask *)v58 platformController];
-    v23 = [v22 chromeViewController];
-    v38 = [v23 topMostPresentedViewController];
+    platformController2 = [(NavigationStateMonitoringTask *)selfCopy platformController];
+    currentSession2 = [platformController2 chromeViewController];
+    topMostPresentedViewController2 = [currentSession2 topMostPresentedViewController];
     *buf = 138412290;
-    *&buf[4] = v38;
-    _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Attempted to begin navigation but there is an unexpected VC at the top of the stack: %@", buf, 0xCu);
+    *&buf[4] = topMostPresentedViewController2;
+    _os_log_impl(&_mh_execute_header, lastObject, OS_LOG_TYPE_ERROR, "Attempted to begin navigation but there is an unexpected VC at the top of the stack: %@", buf, 0xCu);
 
     goto LABEL_24;
   }
@@ -1804,31 +1804,31 @@ LABEL_35:
   }
 
   [(NavigationStateMonitoringTask *)self releaseAutoLaunchAssertion];
-  v4 = [(NavigationStateMonitoringTask *)self navigationAutoLaunchTimer];
+  navigationAutoLaunchTimer = [(NavigationStateMonitoringTask *)self navigationAutoLaunchTimer];
 
-  if (v4)
+  if (navigationAutoLaunchTimer)
   {
-    v5 = [(NavigationStateMonitoringTask *)self navigationAutoLaunchTimer];
-    [v5 invalidate];
+    navigationAutoLaunchTimer2 = [(NavigationStateMonitoringTask *)self navigationAutoLaunchTimer];
+    [navigationAutoLaunchTimer2 invalidate];
 
     [(NavigationStateMonitoringTask *)self setNavigationAutoLaunchTimer:0];
   }
 
-  v6 = [(NavigationStateMonitoringTask *)self currentRoutePlanningSessionConfiguration];
-  [v6 setNavigationAutoLaunchDelay:0];
+  currentRoutePlanningSessionConfiguration = [(NavigationStateMonitoringTask *)self currentRoutePlanningSessionConfiguration];
+  [currentRoutePlanningSessionConfiguration setNavigationAutoLaunchDelay:0];
 }
 
 - (BOOL)isNavigationAutoLaunchInProgress
 {
-  v2 = [(NavigationStateMonitoringTask *)self navigationAutoLaunchTimer];
-  v3 = v2 != 0;
+  navigationAutoLaunchTimer = [(NavigationStateMonitoringTask *)self navigationAutoLaunchTimer];
+  v3 = navigationAutoLaunchTimer != 0;
 
   return v3;
 }
 
-- (void)setChromeViewController:(id)a3
+- (void)setChromeViewController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
 
   if (WeakRetained != obj)
@@ -1867,29 +1867,29 @@ LABEL_35:
   [(NavigationStateMonitoringTask *)&v3 dealloc];
 }
 
-- (NavigationStateMonitoringTask)initWithPlatformController:(id)a3 navigationService:(id)a4
+- (NavigationStateMonitoringTask)initWithPlatformController:(id)controller navigationService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  serviceCopy = service;
   v22.receiver = self;
   v22.super_class = NavigationStateMonitoringTask;
   v8 = [(NavigationStateMonitoringTask *)&v22 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_platformController, v6);
+    objc_storeWeak(&v8->_platformController, controllerCopy);
     v10 = +[NSNotificationCenter defaultCenter];
     WeakRetained = objc_loadWeakRetained(&v9->_platformController);
     [v10 addObserver:v9 selector:"platformControllerDidChangeChromeViewControllerNotification:" name:@"PlatformControllerDidChangeChromeViewControllerNotification" object:WeakRetained];
 
     v12 = objc_loadWeakRetained(&v9->_platformController);
-    v13 = [v12 chromeViewController];
-    [(NavigationStateMonitoringTask *)v9 setChromeViewController:v13];
+    chromeViewController = [v12 chromeViewController];
+    [(NavigationStateMonitoringTask *)v9 setChromeViewController:chromeViewController];
 
     v14 = +[NSNotificationCenter defaultCenter];
     [v14 addObserver:v9 selector:"_checkAnimationsForAndromeda:" name:@"BacklightLuminanceDidChangeNotification" object:0];
 
-    objc_storeStrong(&v9->_navigationService, a4);
+    objc_storeStrong(&v9->_navigationService, service);
     v15 = [NSHashTable hashTableWithOptions:66048];
     navigationCompletionBlocks = v9->_navigationCompletionBlocks;
     v9->_navigationCompletionBlocks = v15;

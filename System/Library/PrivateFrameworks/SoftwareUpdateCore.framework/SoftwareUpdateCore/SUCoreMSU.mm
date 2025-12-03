@@ -1,103 +1,103 @@
 @interface SUCoreMSU
-- (SUCoreMSU)initWithDelegate:(id)a3 withCallbackQueue:(id)a4;
-- (id)_newMSUOptionsUsingPolicy:(id)a3 descriptor:(id)a4 baseOptions:(id)a5;
-- (id)_newMSURollbackOptionsUsingPolicy:(id)a3 rollbackDescriptor:(id)a4 baseOptions:(id)a5 additionalOptions:(id)a6;
-- (id)_newPreflightOptionsUsingPolicy:(id)a3 subPolicyClass:(Class)a4 descriptor:(id)a5 baseOptions:(id)a6 additionalOptions:(id)a7;
-- (id)_newPrepareOptionsUsingPolicy:(id)a3 descriptor:(id)a4;
-- (id)_newRollbackPrepareOptionsUsingPolicy:(id)a3 rollbackDescriptor:(id)a4;
+- (SUCoreMSU)initWithDelegate:(id)delegate withCallbackQueue:(id)queue;
+- (id)_newMSUOptionsUsingPolicy:(id)policy descriptor:(id)descriptor baseOptions:(id)options;
+- (id)_newMSURollbackOptionsUsingPolicy:(id)policy rollbackDescriptor:(id)descriptor baseOptions:(id)options additionalOptions:(id)additionalOptions;
+- (id)_newPreflightOptionsUsingPolicy:(id)policy subPolicyClass:(Class)class descriptor:(id)descriptor baseOptions:(id)options additionalOptions:(id)additionalOptions;
+- (id)_newPrepareOptionsUsingPolicy:(id)policy descriptor:(id)descriptor;
+- (id)_newRollbackPrepareOptionsUsingPolicy:(id)policy rollbackDescriptor:(id)descriptor;
 - (id)msuDelegate;
-- (int)applyProgress:(__CFDictionary *)a3;
-- (int)prepareProgress:(__CFDictionary *)a3;
-- (void)_addRemoteServerAccessControlToMSUOptions:(id)a3 usingPolicy:(id)a4;
-- (void)_addUpdateMetricsEventFieldsToMSUOptions:(id)a3 usingPolicy:(id)a4 descriptor:(id)a5;
-- (void)_addUpdateMetricsEventFieldsToMSURollbackOptions:(id)a3 usingPolicy:(id)a4 rollbackDescriptor:(id)a5;
-- (void)_operationApplyUpdate:(id)a3;
-- (void)_operationLoadBrain:(id)a3;
-- (void)_operationPreflightFDRRecovery:(id)a3;
-- (void)_operationPreflightPersonalize:(id)a3;
-- (void)_operationPreflightPrerequisiteCheck:(id)a3;
-- (void)_operationPreflightSUDownload:(id)a3;
-- (void)_operationPreflightWakeup:(id)a3;
-- (void)_operationPrepareUpdate:(id)a3;
-- (void)_operationResumeUpdate:(id)a3;
-- (void)_operationRollbackUpdateApply:(id)a3;
-- (void)_operationRollbackUpdatePrepare:(id)a3;
-- (void)_operationRollbackUpdateResume:(id)a3;
-- (void)_operationRollbackUpdateSuspend:(id)a3;
+- (int)applyProgress:(__CFDictionary *)progress;
+- (int)prepareProgress:(__CFDictionary *)progress;
+- (void)_addRemoteServerAccessControlToMSUOptions:(id)options usingPolicy:(id)policy;
+- (void)_addUpdateMetricsEventFieldsToMSUOptions:(id)options usingPolicy:(id)policy descriptor:(id)descriptor;
+- (void)_addUpdateMetricsEventFieldsToMSURollbackOptions:(id)options usingPolicy:(id)policy rollbackDescriptor:(id)descriptor;
+- (void)_operationApplyUpdate:(id)update;
+- (void)_operationLoadBrain:(id)brain;
+- (void)_operationPreflightFDRRecovery:(id)recovery;
+- (void)_operationPreflightPersonalize:(id)personalize;
+- (void)_operationPreflightPrerequisiteCheck:(id)check;
+- (void)_operationPreflightSUDownload:(id)download;
+- (void)_operationPreflightWakeup:(id)wakeup;
+- (void)_operationPrepareUpdate:(id)update;
+- (void)_operationResumeUpdate:(id)update;
+- (void)_operationRollbackUpdateApply:(id)apply;
+- (void)_operationRollbackUpdatePrepare:(id)prepare;
+- (void)_operationRollbackUpdateResume:(id)resume;
+- (void)_operationRollbackUpdateSuspend:(id)suspend;
 - (void)_operationSuspendUpdate;
 - (void)_removePrepared;
-- (void)_reportAnomaly:(id)a3;
+- (void)_reportAnomaly:(id)anomaly;
 - (void)_reportApplied;
-- (void)_reportApplyFailed:(id)a3;
-- (void)_reportApplyProgress:(id)a3;
-- (void)_reportBrainLoadFailed:(id)a3;
-- (void)_reportBrainLoadProgress:(id)a3;
-- (void)_reportBrainLoadStalled:(id)a3;
-- (void)_reportBrainLoaded:(id)a3;
-- (void)_reportFDRRecoveryPreflightFailed:(id)a3;
+- (void)_reportApplyFailed:(id)failed;
+- (void)_reportApplyProgress:(id)progress;
+- (void)_reportBrainLoadFailed:(id)failed;
+- (void)_reportBrainLoadProgress:(id)progress;
+- (void)_reportBrainLoadStalled:(id)stalled;
+- (void)_reportBrainLoaded:(id)loaded;
+- (void)_reportFDRRecoveryPreflightFailed:(id)failed;
 - (void)_reportFDRRecoveryPreflighted;
-- (void)_reportPersonalizePreflightFailed:(id)a3;
+- (void)_reportPersonalizePreflightFailed:(id)failed;
 - (void)_reportPersonalizePreflighted;
-- (void)_reportPrepareFailed:(id)a3;
-- (void)_reportPrepareProgress:(id)a3;
-- (void)_reportPrepared:(id)a3;
-- (void)_reportPrerequisiteCheckPreflightFailed:(id)a3;
+- (void)_reportPrepareFailed:(id)failed;
+- (void)_reportPrepareProgress:(id)progress;
+- (void)_reportPrepared:(id)prepared;
+- (void)_reportPrerequisiteCheckPreflightFailed:(id)failed;
 - (void)_reportPrerequisiteCheckPreflighted;
-- (void)_reportRemoveFailed:(id)a3;
+- (void)_reportRemoveFailed:(id)failed;
 - (void)_reportRemoved;
-- (void)_reportResumeFailed:(id)a3;
+- (void)_reportResumeFailed:(id)failed;
 - (void)_reportResumed;
-- (void)_reportRollbackApplyFailed:(id)a3;
+- (void)_reportRollbackApplyFailed:(id)failed;
 - (void)_reportRollbackApplySuccess;
-- (void)_reportRollbackFailed:(id)a3;
+- (void)_reportRollbackFailed:(id)failed;
 - (void)_reportRollbackPrepareSuccess;
 - (void)_reportRollbackResumeSuccess;
 - (void)_reportRollbackSuspendSuccess;
-- (void)_reportSUDownloadPreflightFailed:(id)a3;
+- (void)_reportSUDownloadPreflightFailed:(id)failed;
 - (void)_reportSUDownloadPreflighted;
-- (void)_reportSuspendFailed:(id)a3;
+- (void)_reportSuspendFailed:(id)failed;
 - (void)_reportSuspended;
-- (void)_reportWakeupPreflightFailed:(id)a3;
+- (void)_reportWakeupPreflightFailed:(id)failed;
 - (void)_reportWakeupPreflighted;
-- (void)_trackMSUAnomaly:(id)a3 result:(int64_t)a4 description:(id)a5 underlying:(id)a6;
-- (void)_trackMSUBegin:(id)a3;
-- (void)_trackMSUEnd:(id)a3 withResult:(int64_t)a4 withError:(id)a5;
-- (void)_trackMSUOptions:(id)a3 optionsName:(id)a4 withMSUOptions:(id)a5;
-- (void)applyUpdate:(id)a3;
-- (void)assignDescriptor:(id)a3 updateUUID:(id)a4;
-- (void)assignRollbackDescriptor:(id)a3 updateUUID:(id)a4;
+- (void)_trackMSUAnomaly:(id)anomaly result:(int64_t)result description:(id)description underlying:(id)underlying;
+- (void)_trackMSUBegin:(id)begin;
+- (void)_trackMSUEnd:(id)end withResult:(int64_t)result withError:(id)error;
+- (void)_trackMSUOptions:(id)options optionsName:(id)name withMSUOptions:(id)uOptions;
+- (void)applyUpdate:(id)update;
+- (void)assignDescriptor:(id)descriptor updateUUID:(id)d;
+- (void)assignRollbackDescriptor:(id)descriptor updateUUID:(id)d;
 - (void)cancelPrepare;
-- (void)loadBrain:(id)a3;
-- (void)loadBrainProgress:(id)a3 error:(id)a4;
-- (void)preflightDownloadSU:(id)a3;
-- (void)preflightFDRRecovery:(id)a3;
-- (void)preflightPersonalize:(id)a3;
-- (void)preflightPrerequisiteCheck:(id)a3;
-- (void)preflightWakeup:(id)a3;
-- (void)prepareUpdate:(id)a3;
+- (void)loadBrain:(id)brain;
+- (void)loadBrainProgress:(id)progress error:(id)error;
+- (void)preflightDownloadSU:(id)u;
+- (void)preflightFDRRecovery:(id)recovery;
+- (void)preflightPersonalize:(id)personalize;
+- (void)preflightPrerequisiteCheck:(id)check;
+- (void)preflightWakeup:(id)wakeup;
+- (void)prepareUpdate:(id)update;
 - (void)removePrepared;
-- (void)resumeUpdate:(id)a3;
-- (void)rollbackUpdateApply:(id)a3;
-- (void)rollbackUpdatePrepare:(id)a3;
-- (void)rollbackUpdateResume:(id)a3;
-- (void)rollbackUpdateSuspend:(id)a3;
+- (void)resumeUpdate:(id)update;
+- (void)rollbackUpdateApply:(id)apply;
+- (void)rollbackUpdatePrepare:(id)prepare;
+- (void)rollbackUpdateResume:(id)resume;
+- (void)rollbackUpdateSuspend:(id)suspend;
 - (void)suspendUpdate;
-- (void)updatePrepareOptions:(id)a3 withPolicy:(id)a4;
+- (void)updatePrepareOptions:(id)options withPolicy:(id)policy;
 @end
 
 @implementation SUCoreMSU
 
-- (SUCoreMSU)initWithDelegate:(id)a3 withCallbackQueue:(id)a4
+- (SUCoreMSU)initWithDelegate:(id)delegate withCallbackQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v34.receiver = self;
   v34.super_class = SUCoreMSU;
   v8 = [(SUCoreMSU *)&v34 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_msuDelegate, v6);
+    objc_storeWeak(&v8->_msuDelegate, delegateCopy);
     updateUUID = v9->_updateUUID;
     v9->_updateUUID = 0;
 
@@ -117,29 +117,29 @@
     v9->_brainLoader = 0;
 
     v9->_msuHandle = 0;
-    v15 = [MEMORY[0x277D643F8] sharedCore];
-    v16 = [v15 commonDomain];
+    mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+    commonDomain = [mEMORY[0x277D643F8] commonDomain];
 
-    v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@.%@", v16, @"msu.control"];
-    v18 = [v17 UTF8String];
+    v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@.%@", commonDomain, @"msu.control"];
+    uTF8String = [v17 UTF8String];
     v19 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v20 = dispatch_queue_create(v18, v19);
+    v20 = dispatch_queue_create(uTF8String, v19);
     msuControlQueue = v9->_msuControlQueue;
     v9->_msuControlQueue = v20;
 
     if (v9->_msuControlQueue)
     {
-      v22 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@.%@", v16, @"msu.operation"];
-      v23 = [v22 UTF8String];
+      v22 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@.%@", commonDomain, @"msu.operation"];
+      uTF8String2 = [v22 UTF8String];
       v24 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-      v25 = dispatch_queue_create(v23, v24);
+      v25 = dispatch_queue_create(uTF8String2, v24);
       msuOperationQueue = v9->_msuOperationQueue;
       v9->_msuOperationQueue = v25;
 
       if (v9->_msuOperationQueue)
       {
-        v27 = [MEMORY[0x277D643F8] sharedCore];
-        v28 = [v27 selectDelegateCallbackQueue:v7];
+        mEMORY[0x277D643F8]2 = [MEMORY[0x277D643F8] sharedCore];
+        v28 = [mEMORY[0x277D643F8]2 selectDelegateCallbackQueue:queueCopy];
         clientDelegateCallbackQueue = v9->_clientDelegateCallbackQueue;
         v9->_clientDelegateCallbackQueue = v28;
 
@@ -159,8 +159,8 @@
       v31 = @"unable to create MSU control dispatch queue";
     }
 
-    v32 = [MEMORY[0x277D64428] sharedDiag];
-    [v32 trackError:@"[MSU]" forReason:v31 withResult:8100 withError:0];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    [mEMORY[0x277D64428] trackError:@"[MSU]" forReason:v31 withResult:8100 withError:0];
 
     v30 = 0;
     goto LABEL_11;
@@ -343,36 +343,36 @@ uint64_t __48__SUCoreMSU_initWithDelegate_withCallbackQueue___block_invoke()
   return [v2 attributesOfErrorForDomain:v1 withCode:5010 codeName:@"kAMAuthInstallErrorZipVersionError"];
 }
 
-- (void)assignDescriptor:(id)a3 updateUUID:(id)a4
+- (void)assignDescriptor:(id)descriptor updateUUID:(id)d
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D64460] sharedLogger];
-  v9 = [v8 oslog];
+  descriptorCopy = descriptor;
+  dCopy = d;
+  mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+  oslog = [mEMORY[0x277D64460] oslog];
 
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
-    v20 = v7;
+    v20 = dCopy;
     v21 = 2114;
-    v22 = v6;
-    _os_log_impl(&dword_23193C000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ ASSIGN_DESCRIPTOR: Client provided updateUUID: %{public}@; descriptor: %{public}@", buf, 0x20u);
+    v22 = descriptorCopy;
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ ASSIGN_DESCRIPTOR: Client provided updateUUID: %{public}@; descriptor: %{public}@", buf, 0x20u);
   }
 
-  v10 = [(SUCoreMSU *)self msuControlQueue];
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__SUCoreMSU_assignDescriptor_updateUUID___block_invoke;
   block[3] = &unk_27892D340;
   block[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v11 = v7;
-  v12 = v6;
-  dispatch_async(v10, block);
+  v15 = descriptorCopy;
+  v16 = dCopy;
+  v11 = dCopy;
+  v12 = descriptorCopy;
+  dispatch_async(msuControlQueue, block);
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -510,36 +510,36 @@ LABEL_11:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)assignRollbackDescriptor:(id)a3 updateUUID:(id)a4
+- (void)assignRollbackDescriptor:(id)descriptor updateUUID:(id)d
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D64460] sharedLogger];
-  v9 = [v8 oslog];
+  descriptorCopy = descriptor;
+  dCopy = d;
+  mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+  oslog = [mEMORY[0x277D64460] oslog];
 
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
-    v20 = v7;
+    v20 = dCopy;
     v21 = 2114;
-    v22 = v6;
-    _os_log_impl(&dword_23193C000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ ASSIGN_ROLLBACK_DESCRIPTOR: Client provided updateUUID: %{public}@; rollbackDescriptor: %{public}@", buf, 0x20u);
+    v22 = descriptorCopy;
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ ASSIGN_ROLLBACK_DESCRIPTOR: Client provided updateUUID: %{public}@; rollbackDescriptor: %{public}@", buf, 0x20u);
   }
 
-  v10 = [(SUCoreMSU *)self msuControlQueue];
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__SUCoreMSU_assignRollbackDescriptor_updateUUID___block_invoke;
   block[3] = &unk_27892D340;
   block[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v11 = v7;
-  v12 = v6;
-  dispatch_async(v10, block);
+  v15 = descriptorCopy;
+  v16 = dCopy;
+  v11 = dCopy;
+  v12 = descriptorCopy;
+  dispatch_async(msuControlQueue, block);
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -592,9 +592,9 @@ void __49__SUCoreMSU_assignRollbackDescriptor_updateUUID___block_invoke(uint64_t
   }
 }
 
-- (void)loadBrain:(id)a3
+- (void)loadBrain:(id)brain
 {
-  v4 = a3;
+  brainCopy = brain;
   v5 = [MEMORY[0x277D643F8] beginTransactionWithName:@"msu.LoadBrain"];
   v20 = 0;
   v6 = *MEMORY[0x277D29480];
@@ -604,10 +604,10 @@ void __49__SUCoreMSU_assignRollbackDescriptor_updateUUID___block_invoke(uint64_t
   v14 = 3221225472;
   v15 = __23__SUCoreMSU_loadBrain___block_invoke;
   v16 = &unk_27892D340;
-  v17 = self;
+  selfCopy = self;
   v18 = v5;
-  v19 = v4;
-  v9 = v4;
+  v19 = brainCopy;
+  v9 = brainCopy;
   v10 = v5;
   v11 = MEMORY[0x2383746D0](&v13);
   v12 = [(SUCoreMSU *)self msuControlQueue:v13];
@@ -643,9 +643,9 @@ uint64_t __23__SUCoreMSU_loadBrain___block_invoke(uint64_t a1)
   }
 }
 
-- (void)preflightDownloadSU:(id)a3
+- (void)preflightDownloadSU:(id)u
 {
-  v4 = a3;
+  uCopy = u;
   v5 = [MEMORY[0x277D643F8] beginTransactionWithName:@"msu.PreflightDownloadSU"];
   v20 = 0;
   v6 = *MEMORY[0x277D29488];
@@ -655,10 +655,10 @@ uint64_t __23__SUCoreMSU_loadBrain___block_invoke(uint64_t a1)
   v14 = 3221225472;
   v15 = __33__SUCoreMSU_preflightDownloadSU___block_invoke;
   v16 = &unk_27892D340;
-  v17 = self;
+  selfCopy = self;
   v18 = v5;
-  v19 = v4;
-  v9 = v4;
+  v19 = uCopy;
+  v9 = uCopy;
   v10 = v5;
   v11 = MEMORY[0x2383746D0](&v13);
   v12 = [(SUCoreMSU *)self msuControlQueue:v13];
@@ -694,9 +694,9 @@ uint64_t __33__SUCoreMSU_preflightDownloadSU___block_invoke(uint64_t a1)
   }
 }
 
-- (void)preflightPersonalize:(id)a3
+- (void)preflightPersonalize:(id)personalize
 {
-  v4 = a3;
+  personalizeCopy = personalize;
   v5 = [MEMORY[0x277D643F8] beginTransactionWithName:@"msu.PreflightPersonalize"];
   v20 = 0;
   v6 = *MEMORY[0x277D29498];
@@ -706,10 +706,10 @@ uint64_t __33__SUCoreMSU_preflightDownloadSU___block_invoke(uint64_t a1)
   v14 = 3221225472;
   v15 = __34__SUCoreMSU_preflightPersonalize___block_invoke;
   v16 = &unk_27892D340;
-  v17 = self;
+  selfCopy = self;
   v18 = v5;
-  v19 = v4;
-  v9 = v4;
+  v19 = personalizeCopy;
+  v9 = personalizeCopy;
   v10 = v5;
   v11 = MEMORY[0x2383746D0](&v13);
   v12 = [(SUCoreMSU *)self msuControlQueue:v13];
@@ -745,9 +745,9 @@ uint64_t __34__SUCoreMSU_preflightPersonalize___block_invoke(uint64_t a1)
   }
 }
 
-- (void)preflightFDRRecovery:(id)a3
+- (void)preflightFDRRecovery:(id)recovery
 {
-  v4 = a3;
+  recoveryCopy = recovery;
   v5 = [MEMORY[0x277D643F8] beginTransactionWithName:@"msu.PreflightFDRRecovery"];
   v20 = 0;
   v6 = *MEMORY[0x277D29490];
@@ -757,10 +757,10 @@ uint64_t __34__SUCoreMSU_preflightPersonalize___block_invoke(uint64_t a1)
   v14 = 3221225472;
   v15 = __34__SUCoreMSU_preflightFDRRecovery___block_invoke;
   v16 = &unk_27892D340;
-  v17 = self;
+  selfCopy = self;
   v18 = v5;
-  v19 = v4;
-  v9 = v4;
+  v19 = recoveryCopy;
+  v9 = recoveryCopy;
   v10 = v5;
   v11 = MEMORY[0x2383746D0](&v13);
   v12 = [(SUCoreMSU *)self msuControlQueue:v13];
@@ -796,9 +796,9 @@ uint64_t __34__SUCoreMSU_preflightFDRRecovery___block_invoke(uint64_t a1)
   }
 }
 
-- (void)preflightWakeup:(id)a3
+- (void)preflightWakeup:(id)wakeup
 {
-  v4 = a3;
+  wakeupCopy = wakeup;
   v5 = [MEMORY[0x277D643F8] beginTransactionWithName:@"msu.PreflightWakeup"];
   v20 = 0;
   v6 = *MEMORY[0x277D294A8];
@@ -808,10 +808,10 @@ uint64_t __34__SUCoreMSU_preflightFDRRecovery___block_invoke(uint64_t a1)
   v14 = 3221225472;
   v15 = __29__SUCoreMSU_preflightWakeup___block_invoke;
   v16 = &unk_27892D340;
-  v17 = self;
+  selfCopy = self;
   v18 = v5;
-  v19 = v4;
-  v9 = v4;
+  v19 = wakeupCopy;
+  v9 = wakeupCopy;
   v10 = v5;
   v11 = MEMORY[0x2383746D0](&v13);
   v12 = [(SUCoreMSU *)self msuControlQueue:v13];
@@ -847,9 +847,9 @@ uint64_t __29__SUCoreMSU_preflightWakeup___block_invoke(uint64_t a1)
   }
 }
 
-- (void)preflightPrerequisiteCheck:(id)a3
+- (void)preflightPrerequisiteCheck:(id)check
 {
-  v4 = a3;
+  checkCopy = check;
   v5 = [MEMORY[0x277D643F8] beginTransactionWithName:@"msu.PreflightPrerequisiteCheck"];
   v20 = 0;
   v6 = *MEMORY[0x277D294A0];
@@ -859,10 +859,10 @@ uint64_t __29__SUCoreMSU_preflightWakeup___block_invoke(uint64_t a1)
   v14 = 3221225472;
   v15 = __40__SUCoreMSU_preflightPrerequisiteCheck___block_invoke;
   v16 = &unk_27892D340;
-  v17 = self;
+  selfCopy = self;
   v18 = v5;
-  v19 = v4;
-  v9 = v4;
+  v19 = checkCopy;
+  v9 = checkCopy;
   v10 = v5;
   v11 = MEMORY[0x2383746D0](&v13);
   v12 = [(SUCoreMSU *)self msuControlQueue:v13];
@@ -898,9 +898,9 @@ uint64_t __40__SUCoreMSU_preflightPrerequisiteCheck___block_invoke(uint64_t a1)
   }
 }
 
-- (void)prepareUpdate:(id)a3
+- (void)prepareUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = [MEMORY[0x277D643F8] beginTransactionWithName:@"msu.PrepareUpdate"];
   v20 = 0;
   v6 = *MEMORY[0x277D294B0];
@@ -910,10 +910,10 @@ uint64_t __40__SUCoreMSU_preflightPrerequisiteCheck___block_invoke(uint64_t a1)
   v14 = 3221225472;
   v15 = __27__SUCoreMSU_prepareUpdate___block_invoke;
   v16 = &unk_27892D340;
-  v17 = self;
+  selfCopy = self;
   v18 = v5;
-  v19 = v4;
-  v9 = v4;
+  v19 = updateCopy;
+  v9 = updateCopy;
   v10 = v5;
   v11 = MEMORY[0x2383746D0](&v13);
   v12 = [(SUCoreMSU *)self msuControlQueue:v13];
@@ -964,15 +964,15 @@ uint64_t __27__SUCoreMSU_prepareUpdate___block_invoke(uint64_t a1)
   v11 = v3;
   v7 = v3;
   v8 = MEMORY[0x2383746D0](v10);
-  v9 = [(SUCoreMSU *)self msuControlQueue];
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
   if (v6)
   {
-    dispatch_after(v6, v9, v8);
+    dispatch_after(v6, msuControlQueue, v8);
   }
 
   else
   {
-    dispatch_async(v9, v8);
+    dispatch_async(msuControlQueue, v8);
   }
 }
 
@@ -996,9 +996,9 @@ uint64_t __26__SUCoreMSU_suspendUpdate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)resumeUpdate:(id)a3
+- (void)resumeUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = [MEMORY[0x277D643F8] beginTransactionWithName:@"msu.ResumeUpdate"];
   v20 = 0;
   v6 = *MEMORY[0x277D294C0];
@@ -1008,10 +1008,10 @@ uint64_t __26__SUCoreMSU_suspendUpdate__block_invoke(uint64_t a1)
   v14 = 3221225472;
   v15 = __26__SUCoreMSU_resumeUpdate___block_invoke;
   v16 = &unk_27892D340;
-  v17 = self;
+  selfCopy = self;
   v18 = v5;
-  v19 = v4;
-  v9 = v4;
+  v19 = updateCopy;
+  v9 = updateCopy;
   v10 = v5;
   v11 = MEMORY[0x2383746D0](&v13);
   v12 = [(SUCoreMSU *)self msuControlQueue:v13];
@@ -1047,9 +1047,9 @@ uint64_t __26__SUCoreMSU_resumeUpdate___block_invoke(uint64_t a1)
   }
 }
 
-- (void)applyUpdate:(id)a3
+- (void)applyUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = [MEMORY[0x277D643F8] beginTransactionWithName:@"msu.ApplyUpdate"];
   v20 = 0;
   v6 = *MEMORY[0x277D29470];
@@ -1059,10 +1059,10 @@ uint64_t __26__SUCoreMSU_resumeUpdate___block_invoke(uint64_t a1)
   v14 = 3221225472;
   v15 = __25__SUCoreMSU_applyUpdate___block_invoke;
   v16 = &unk_27892D340;
-  v17 = self;
+  selfCopy = self;
   v18 = v5;
-  v19 = v4;
-  v9 = v4;
+  v19 = updateCopy;
+  v9 = updateCopy;
   v10 = v5;
   v11 = MEMORY[0x2383746D0](&v13);
   v12 = [(SUCoreMSU *)self msuControlQueue:v13];
@@ -1098,9 +1098,9 @@ uint64_t __25__SUCoreMSU_applyUpdate___block_invoke(uint64_t a1)
   }
 }
 
-- (void)rollbackUpdatePrepare:(id)a3
+- (void)rollbackUpdatePrepare:(id)prepare
 {
-  v4 = a3;
+  prepareCopy = prepare;
   v5 = [MEMORY[0x277D643F8] beginTransactionWithName:@"msu.RollbackUpdate"];
   v20 = 0;
   v6 = *MEMORY[0x277D294D0];
@@ -1110,10 +1110,10 @@ uint64_t __25__SUCoreMSU_applyUpdate___block_invoke(uint64_t a1)
   v14 = 3221225472;
   v15 = __35__SUCoreMSU_rollbackUpdatePrepare___block_invoke;
   v16 = &unk_27892D340;
-  v17 = self;
+  selfCopy = self;
   v18 = v5;
-  v19 = v4;
-  v9 = v4;
+  v19 = prepareCopy;
+  v9 = prepareCopy;
   v10 = v5;
   v11 = MEMORY[0x2383746D0](&v13);
   v12 = [(SUCoreMSU *)self msuControlQueue:v13];
@@ -1149,9 +1149,9 @@ uint64_t __35__SUCoreMSU_rollbackUpdatePrepare___block_invoke(uint64_t a1)
   }
 }
 
-- (void)rollbackUpdateSuspend:(id)a3
+- (void)rollbackUpdateSuspend:(id)suspend
 {
-  v4 = a3;
+  suspendCopy = suspend;
   v5 = [MEMORY[0x277D643F8] beginTransactionWithName:@"msu.RollbackUpdate"];
   v20 = 0;
   v6 = *MEMORY[0x277D294E0];
@@ -1161,10 +1161,10 @@ uint64_t __35__SUCoreMSU_rollbackUpdatePrepare___block_invoke(uint64_t a1)
   v14 = 3221225472;
   v15 = __35__SUCoreMSU_rollbackUpdateSuspend___block_invoke;
   v16 = &unk_27892D340;
-  v17 = self;
+  selfCopy = self;
   v18 = v5;
-  v19 = v4;
-  v9 = v4;
+  v19 = suspendCopy;
+  v9 = suspendCopy;
   v10 = v5;
   v11 = MEMORY[0x2383746D0](&v13);
   v12 = [(SUCoreMSU *)self msuControlQueue:v13];
@@ -1200,9 +1200,9 @@ uint64_t __35__SUCoreMSU_rollbackUpdateSuspend___block_invoke(uint64_t a1)
   }
 }
 
-- (void)rollbackUpdateResume:(id)a3
+- (void)rollbackUpdateResume:(id)resume
 {
-  v4 = a3;
+  resumeCopy = resume;
   v5 = [MEMORY[0x277D643F8] beginTransactionWithName:@"msu.RollbackUpdate"];
   v20 = 0;
   v6 = *MEMORY[0x277D294D8];
@@ -1212,10 +1212,10 @@ uint64_t __35__SUCoreMSU_rollbackUpdateSuspend___block_invoke(uint64_t a1)
   v14 = 3221225472;
   v15 = __34__SUCoreMSU_rollbackUpdateResume___block_invoke;
   v16 = &unk_27892D340;
-  v17 = self;
+  selfCopy = self;
   v18 = v5;
-  v19 = v4;
-  v9 = v4;
+  v19 = resumeCopy;
+  v9 = resumeCopy;
   v10 = v5;
   v11 = MEMORY[0x2383746D0](&v13);
   v12 = [(SUCoreMSU *)self msuControlQueue:v13];
@@ -1251,9 +1251,9 @@ uint64_t __34__SUCoreMSU_rollbackUpdateResume___block_invoke(uint64_t a1)
   }
 }
 
-- (void)rollbackUpdateApply:(id)a3
+- (void)rollbackUpdateApply:(id)apply
 {
-  v4 = a3;
+  applyCopy = apply;
   v5 = [MEMORY[0x277D643F8] beginTransactionWithName:@"msu.RollbackUpdate"];
   v20 = 0;
   v6 = *MEMORY[0x277D294C8];
@@ -1263,10 +1263,10 @@ uint64_t __34__SUCoreMSU_rollbackUpdateResume___block_invoke(uint64_t a1)
   v14 = 3221225472;
   v15 = __33__SUCoreMSU_rollbackUpdateApply___block_invoke;
   v16 = &unk_27892D340;
-  v17 = self;
+  selfCopy = self;
   v18 = v5;
-  v19 = v4;
-  v9 = v4;
+  v19 = applyCopy;
+  v9 = applyCopy;
   v10 = v5;
   v11 = MEMORY[0x2383746D0](&v13);
   v12 = [(SUCoreMSU *)self msuControlQueue:v13];
@@ -1314,15 +1314,15 @@ uint64_t __33__SUCoreMSU_rollbackUpdateApply___block_invoke(uint64_t a1)
   v8[3] = &unk_27892C8A8;
   v8[4] = self;
   v6 = MEMORY[0x2383746D0](v8);
-  v7 = [(SUCoreMSU *)self msuControlQueue];
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
   if (v5)
   {
-    dispatch_after(v5, v7, v6);
+    dispatch_after(v5, msuControlQueue, v6);
   }
 
   else
   {
-    dispatch_async(v7, v6);
+    dispatch_async(msuControlQueue, v6);
   }
 }
 
@@ -1378,15 +1378,15 @@ LABEL_4:
   v11 = v3;
   v7 = v3;
   v8 = MEMORY[0x2383746D0](v10);
-  v9 = [(SUCoreMSU *)self msuControlQueue];
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
   if (v6)
   {
-    dispatch_after(v6, v9, v8);
+    dispatch_after(v6, msuControlQueue, v8);
   }
 
   else
   {
-    dispatch_async(v9, v8);
+    dispatch_async(msuControlQueue, v8);
   }
 }
 
@@ -1410,220 +1410,220 @@ uint64_t __27__SUCoreMSU_removePrepared__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_addUpdateMetricsEventFieldsToMSUOptions:(id)a3 usingPolicy:(id)a4 descriptor:(id)a5
+- (void)_addUpdateMetricsEventFieldsToMSUOptions:(id)options usingPolicy:(id)policy descriptor:(id)descriptor
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SUCoreMSU *)self msuOperationQueue];
-  dispatch_assert_queue_V2(v11);
+  optionsCopy = options;
+  policyCopy = policy;
+  descriptorCopy = descriptor;
+  msuOperationQueue = [(SUCoreMSU *)self msuOperationQueue];
+  dispatch_assert_queue_V2(msuOperationQueue);
 
-  v12 = [(SUCoreMSU *)self updateUUID];
+  updateUUID = [(SUCoreMSU *)self updateUUID];
 
-  if (!v12)
+  if (!updateUUID)
   {
-    v15 = [MEMORY[0x277D64428] sharedDiag];
-    [v15 trackAnomaly:@"NEW_UPDATE_METRIC_EVENT_FIELDS" forReason:@"Could not get everything needed to provide a sessionID on for update metric event fields (missing updateUUID)" withResult:8116 withError:0];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    [mEMORY[0x277D64428] trackAnomaly:@"NEW_UPDATE_METRIC_EVENT_FIELDS" forReason:@"Could not get everything needed to provide a sessionID on for update metric event fields (missing updateUUID)" withResult:8116 withError:0];
     goto LABEL_21;
   }
 
   v13 = *MEMORY[0x277D29438];
-  v14 = [v8 safeObjectForKey:*MEMORY[0x277D29438] ofClass:objc_opt_class()];
-  v15 = [v14 mutableCopy];
+  v14 = [optionsCopy safeObjectForKey:*MEMORY[0x277D29438] ofClass:objc_opt_class()];
+  mEMORY[0x277D64428] = [v14 mutableCopy];
 
-  if (!v15)
+  if (!mEMORY[0x277D64428])
   {
-    v15 = objc_alloc_init(MEMORY[0x277CBEB38]);
+    mEMORY[0x277D64428] = objc_alloc_init(MEMORY[0x277CBEB38]);
   }
 
-  [v8 setSafeObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D293D0]];
-  v16 = [(SUCoreMSU *)self updateUUID];
-  [v15 setSafeObject:v16 forKey:*MEMORY[0x277D29410]];
+  [optionsCopy setSafeObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D293D0]];
+  updateUUID2 = [(SUCoreMSU *)self updateUUID];
+  [mEMORY[0x277D64428] setSafeObject:updateUUID2 forKey:*MEMORY[0x277D29410]];
 
-  v17 = [v9 updateMetricContext];
-  [v15 setSafeObject:v17 forKey:*MEMORY[0x277D646F8]];
+  updateMetricContext = [policyCopy updateMetricContext];
+  [mEMORY[0x277D64428] setSafeObject:updateMetricContext forKey:*MEMORY[0x277D646F8]];
 
-  v18 = [v10 productBuildVersion];
+  productBuildVersion = [descriptorCopy productBuildVersion];
 
-  if (v18)
+  if (productBuildVersion)
   {
-    v19 = [v10 productBuildVersion];
-    [v15 setSafeObject:v19 forKey:*MEMORY[0x277D29318]];
+    productBuildVersion2 = [descriptorCopy productBuildVersion];
+    [mEMORY[0x277D64428] setSafeObject:productBuildVersion2 forKey:*MEMORY[0x277D29318]];
   }
 
-  v20 = [v9 updateMetricEventFields];
+  updateMetricEventFields = [policyCopy updateMetricEventFields];
 
-  if (v20)
+  if (updateMetricEventFields)
   {
-    v21 = [v9 updateMetricEventFields];
-    [v8 setSafeObject:v21 forKey:*MEMORY[0x277D29390]];
+    updateMetricEventFields2 = [policyCopy updateMetricEventFields];
+    [optionsCopy setSafeObject:updateMetricEventFields2 forKey:*MEMORY[0x277D29390]];
   }
 
-  v22 = [(SUCoreMSU *)self updateDescriptor];
-  if ([v22 descriptorType] == 1)
+  updateDescriptor = [(SUCoreMSU *)self updateDescriptor];
+  if ([updateDescriptor descriptorType] == 1)
   {
   }
 
   else
   {
-    v23 = [(SUCoreMSU *)self updateDescriptor];
-    v24 = [v23 descriptorType];
+    updateDescriptor2 = [(SUCoreMSU *)self updateDescriptor];
+    descriptorType = [updateDescriptor2 descriptorType];
 
-    if (v24 != 3)
+    if (descriptorType != 3)
     {
-      if ([v10 descriptorType] == 2 || objc_msgSend(v10, "descriptorType") == 4)
+      if ([descriptorCopy descriptorType] == 2 || objc_msgSend(descriptorCopy, "descriptorType") == 4)
       {
-        v26 = [v10 bundleAttributes];
+        bundleAttributes = [descriptorCopy bundleAttributes];
       }
 
       else
       {
-        v26 = 0;
+        bundleAttributes = 0;
       }
 
       goto LABEL_13;
     }
   }
 
-  v25 = [v10 softwareUpdateAsset];
-  v26 = [v25 attributes];
+  softwareUpdateAsset = [descriptorCopy softwareUpdateAsset];
+  bundleAttributes = [softwareUpdateAsset attributes];
 
 LABEL_13:
-  v27 = [v26 safeObjectForKey:@"_EventRecordingServiceURL" ofClass:objc_opt_class()];
+  v27 = [bundleAttributes safeObjectForKey:@"_EventRecordingServiceURL" ofClass:objc_opt_class()];
   if (!v27)
   {
     v27 = *MEMORY[0x277D64808];
   }
 
-  [v8 setSafeObject:v27 forKey:@"_EventRecordingServiceURL"];
-  [v15 setSafeObject:v27 forKey:@"_EventRecordingServiceURL"];
-  if ([v10 descriptorType] == 4)
+  [optionsCopy setSafeObject:v27 forKey:@"_EventRecordingServiceURL"];
+  [mEMORY[0x277D64428] setSafeObject:v27 forKey:@"_EventRecordingServiceURL"];
+  if ([descriptorCopy descriptorType] == 4)
   {
-    v28 = [MEMORY[0x277D64460] sharedLogger];
-    v29 = [v28 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *v30 = 0;
-      _os_log_impl(&dword_23193C000, v29, OS_LOG_TYPE_DEFAULT, "Not setting update attributes for the SUCoreDescriptorTypeSFRPackage descriptor type", v30, 2u);
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "Not setting update attributes for the SUCoreDescriptorTypeSFRPackage descriptor type", v30, 2u);
     }
   }
 
   else
   {
-    [v8 setSafeObject:v15 forKey:v13];
+    [optionsCopy setSafeObject:mEMORY[0x277D64428] forKey:v13];
   }
 
 LABEL_21:
 }
 
-- (void)_addUpdateMetricsEventFieldsToMSURollbackOptions:(id)a3 usingPolicy:(id)a4 rollbackDescriptor:(id)a5
+- (void)_addUpdateMetricsEventFieldsToMSURollbackOptions:(id)options usingPolicy:(id)policy rollbackDescriptor:(id)descriptor
 {
-  v25 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(SUCoreMSU *)self msuOperationQueue];
-  dispatch_assert_queue_V2(v10);
+  optionsCopy = options;
+  policyCopy = policy;
+  descriptorCopy = descriptor;
+  msuOperationQueue = [(SUCoreMSU *)self msuOperationQueue];
+  dispatch_assert_queue_V2(msuOperationQueue);
 
-  v11 = [(SUCoreMSU *)self updateUUID];
+  updateUUID = [(SUCoreMSU *)self updateUUID];
 
-  if (v11)
+  if (updateUUID)
   {
     v12 = *MEMORY[0x277D29438];
-    v13 = [v25 safeObjectForKey:*MEMORY[0x277D29438] ofClass:objc_opt_class()];
-    v14 = [v13 mutableCopy];
+    v13 = [optionsCopy safeObjectForKey:*MEMORY[0x277D29438] ofClass:objc_opt_class()];
+    mEMORY[0x277D64428] = [v13 mutableCopy];
 
-    if (!v14)
+    if (!mEMORY[0x277D64428])
     {
-      v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
+      mEMORY[0x277D64428] = objc_alloc_init(MEMORY[0x277CBEB38]);
     }
 
-    v15 = [(SUCoreMSU *)self updateUUID];
-    [v14 setSafeObject:v15 forKey:*MEMORY[0x277D29410]];
+    updateUUID2 = [(SUCoreMSU *)self updateUUID];
+    [mEMORY[0x277D64428] setSafeObject:updateUUID2 forKey:*MEMORY[0x277D29410]];
 
-    v16 = [v8 updateMetricContext];
-    [v14 setSafeObject:v16 forKey:*MEMORY[0x277D646F8]];
+    updateMetricContext = [policyCopy updateMetricContext];
+    [mEMORY[0x277D64428] setSafeObject:updateMetricContext forKey:*MEMORY[0x277D646F8]];
 
-    [v14 setSafeObject:*MEMORY[0x277D647A8] forKey:*MEMORY[0x277D64768]];
-    v17 = [v9 productBuildVersion];
+    [mEMORY[0x277D64428] setSafeObject:*MEMORY[0x277D647A8] forKey:*MEMORY[0x277D64768]];
+    productBuildVersion = [descriptorCopy productBuildVersion];
 
-    if (v17)
+    if (productBuildVersion)
     {
-      v18 = [v9 productBuildVersion];
-      [v14 setSafeObject:v18 forKey:*MEMORY[0x277D29318]];
+      productBuildVersion2 = [descriptorCopy productBuildVersion];
+      [mEMORY[0x277D64428] setSafeObject:productBuildVersion2 forKey:*MEMORY[0x277D29318]];
     }
 
-    v19 = [v9 restoreVersion];
+    restoreVersion = [descriptorCopy restoreVersion];
 
-    if (v19)
+    if (restoreVersion)
     {
-      v20 = [v9 restoreVersion];
-      [v14 setSafeObject:v20 forKey:*MEMORY[0x277D293D8]];
+      restoreVersion2 = [descriptorCopy restoreVersion];
+      [mEMORY[0x277D64428] setSafeObject:restoreVersion2 forKey:*MEMORY[0x277D293D8]];
     }
 
-    v21 = [v8 updateMetricEventFields];
+    updateMetricEventFields = [policyCopy updateMetricEventFields];
 
-    v22 = v25;
-    if (v21)
+    v22 = optionsCopy;
+    if (updateMetricEventFields)
     {
-      v23 = [v8 updateMetricEventFields];
-      [v25 setSafeObject:v23 forKey:*MEMORY[0x277D29390]];
+      updateMetricEventFields2 = [policyCopy updateMetricEventFields];
+      [optionsCopy setSafeObject:updateMetricEventFields2 forKey:*MEMORY[0x277D29390]];
 
-      v22 = v25;
+      v22 = optionsCopy;
     }
 
     v24 = *MEMORY[0x277D64808];
     [v22 setSafeObject:*MEMORY[0x277D64808] forKey:@"_EventRecordingServiceURL"];
-    [v14 setSafeObject:v24 forKey:@"_EventRecordingServiceURL"];
-    [v25 setSafeObject:v14 forKey:v12];
+    [mEMORY[0x277D64428] setSafeObject:v24 forKey:@"_EventRecordingServiceURL"];
+    [optionsCopy setSafeObject:mEMORY[0x277D64428] forKey:v12];
   }
 
   else
   {
-    v14 = [MEMORY[0x277D64428] sharedDiag];
-    [v14 trackAnomaly:@"NEW_UPDATE_METRIC_EVENT_FIELDS" forReason:@"Could not get everything needed to provide a sessionID on for update metric event fields (missing updateUUID)" withResult:8116 withError:0];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    [mEMORY[0x277D64428] trackAnomaly:@"NEW_UPDATE_METRIC_EVENT_FIELDS" forReason:@"Could not get everything needed to provide a sessionID on for update metric event fields (missing updateUUID)" withResult:8116 withError:0];
   }
 }
 
-- (void)_addRemoteServerAccessControlToMSUOptions:(id)a3 usingPolicy:(id)a4
+- (void)_addRemoteServerAccessControlToMSUOptions:(id)options usingPolicy:(id)policy
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = [(SUCoreMSU *)self msuOperationQueue];
-  dispatch_assert_queue_V2(v7);
+  optionsCopy = options;
+  policyCopy = policy;
+  msuOperationQueue = [(SUCoreMSU *)self msuOperationQueue];
+  dispatch_assert_queue_V2(msuOperationQueue);
 
-  v8 = [v6 personalizationServerURL];
-  [v15 setSafeObject:v8 forKey:*MEMORY[0x277D293B8]];
+  personalizationServerURL = [policyCopy personalizationServerURL];
+  [optionsCopy setSafeObject:personalizationServerURL forKey:*MEMORY[0x277D293B8]];
 
-  v9 = [v6 proxyHostName];
-  if (v9)
+  proxyHostName = [policyCopy proxyHostName];
+  if (proxyHostName)
   {
 
 LABEL_4:
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     if (v11)
     {
-      v12 = [v6 proxyHostName];
-      [v11 setSafeObject:v12 forKey:@"SOCKSProxy"];
+      proxyHostName2 = [policyCopy proxyHostName];
+      [v11 setSafeObject:proxyHostName2 forKey:@"SOCKSProxy"];
 
-      v13 = [v6 proxyPortNumber];
-      [v11 setSafeObject:v13 forKey:@"SOCKSPort"];
+      proxyPortNumber = [policyCopy proxyPortNumber];
+      [v11 setSafeObject:proxyPortNumber forKey:@"SOCKSPort"];
 
-      [v15 setSafeObject:v11 forKey:*MEMORY[0x277D293F0]];
+      [optionsCopy setSafeObject:v11 forKey:*MEMORY[0x277D293F0]];
     }
 
     else
     {
-      v14 = [MEMORY[0x277D64428] sharedDiag];
-      [v14 trackAnomaly:@"ADD_REMOTE_SERVER_ACCESS_CONTROL_TO_MSU_OPTIONS" forReason:@"could not create proxy dictionary" withResult:8100 withError:0];
+      mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+      [mEMORY[0x277D64428] trackAnomaly:@"ADD_REMOTE_SERVER_ACCESS_CONTROL_TO_MSU_OPTIONS" forReason:@"could not create proxy dictionary" withResult:8100 withError:0];
     }
 
     goto LABEL_8;
   }
 
-  v10 = [v6 proxyPortNumber];
+  proxyPortNumber2 = [policyCopy proxyPortNumber];
 
-  if (v10)
+  if (proxyPortNumber2)
   {
     goto LABEL_4;
   }
@@ -1631,20 +1631,20 @@ LABEL_4:
 LABEL_8:
 }
 
-- (id)_newMSUOptionsUsingPolicy:(id)a3 descriptor:(id)a4 baseOptions:(id)a5
+- (id)_newMSUOptionsUsingPolicy:(id)policy descriptor:(id)descriptor baseOptions:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SUCoreMSU *)self msuOperationQueue];
-  dispatch_assert_queue_V2(v11);
+  policyCopy = policy;
+  descriptorCopy = descriptor;
+  optionsCopy = options;
+  msuOperationQueue = [(SUCoreMSU *)self msuOperationQueue];
+  dispatch_assert_queue_V2(msuOperationQueue);
 
-  v12 = [(SUCoreMSU *)self updateUUID];
+  updateUUID = [(SUCoreMSU *)self updateUUID];
 
-  if (!v12)
+  if (!updateUUID)
   {
-    v25 = [MEMORY[0x277D64428] sharedDiag];
-    [v25 trackAnomaly:@"NEW_MSU_OPTIONS" forReason:@"Could not get everything needed to provide a sessionID creation of MSU options (missing updateUUID)" withResult:8116 withError:0];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    [mEMORY[0x277D64428] trackAnomaly:@"NEW_MSU_OPTIONS" forReason:@"Could not get everything needed to provide a sessionID creation of MSU options (missing updateUUID)" withResult:8116 withError:0];
 
     v14 = 0;
     goto LABEL_55;
@@ -1652,49 +1652,49 @@ LABEL_8:
 
   v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v14 = v13;
-  if (v10)
+  if (optionsCopy)
   {
-    [v13 addEntriesFromDictionary:v10];
+    [v13 addEntriesFromDictionary:optionsCopy];
   }
 
   v15 = objc_opt_new();
-  v16 = [(SUCoreMSU *)self updateDescriptor];
-  v17 = [v16 updateBrainPath];
+  updateDescriptor = [(SUCoreMSU *)self updateDescriptor];
+  updateBrainPath = [updateDescriptor updateBrainPath];
   v18 = *MEMORY[0x277D292D8];
-  [v15 setSafeObject:v17 forKey:*MEMORY[0x277D292D8]];
+  [v15 setSafeObject:updateBrainPath forKey:*MEMORY[0x277D292D8]];
 
-  v19 = [MEMORY[0x277D64418] sharedDevice];
-  if ([v19 isBootedOSSecureInternal])
+  mEMORY[0x277D64418] = [MEMORY[0x277D64418] sharedDevice];
+  if ([mEMORY[0x277D64418] isBootedOSSecureInternal])
   {
-    v20 = [v8 updateBrainLocationOverride];
+    updateBrainLocationOverride = [policyCopy updateBrainLocationOverride];
 
-    if (!v20)
+    if (!updateBrainLocationOverride)
     {
       goto LABEL_10;
     }
 
-    v21 = [MEMORY[0x277D64460] sharedLogger];
-    v22 = [v21 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      [SUCoreMSU _newMSUOptionsUsingPolicy:v8 descriptor:v22 baseOptions:?];
+      [SUCoreMSU _newMSUOptionsUsingPolicy:policyCopy descriptor:oslog baseOptions:?];
     }
 
-    v19 = [v8 updateBrainLocationOverride];
-    [v15 setSafeObject:v19 forKey:v18];
+    mEMORY[0x277D64418] = [policyCopy updateBrainLocationOverride];
+    [v15 setSafeObject:mEMORY[0x277D64418] forKey:v18];
   }
 
 LABEL_10:
-  if ([v9 descriptorType] == 4)
+  if ([descriptorCopy descriptorType] == 4)
   {
-    v23 = [MEMORY[0x277D64460] sharedLogger];
-    v24 = [v23 oslog];
+    mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+    oslog2 = [mEMORY[0x277D64460]2 oslog];
 
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_23193C000, v24, OS_LOG_TYPE_DEFAULT, "Not setting update attributes for the SUCoreDescriptorTypeSFRPackage descriptor type", buf, 2u);
+      _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "Not setting update attributes for the SUCoreDescriptorTypeSFRPackage descriptor type", buf, 2u);
     }
   }
 
@@ -1704,50 +1704,50 @@ LABEL_10:
   }
 
   v86 = v15;
-  [(SUCoreMSU *)self _addUpdateMetricsEventFieldsToMSUOptions:v14 usingPolicy:v8 descriptor:v9];
-  [(SUCoreMSU *)self _addRemoteServerAccessControlToMSUOptions:v14 usingPolicy:v8];
-  v26 = [v8 updateMetricEventFields];
-  [v14 setSafeObject:v26 forKey:*MEMORY[0x277D29390]];
+  [(SUCoreMSU *)self _addUpdateMetricsEventFieldsToMSUOptions:v14 usingPolicy:policyCopy descriptor:descriptorCopy];
+  [(SUCoreMSU *)self _addRemoteServerAccessControlToMSUOptions:v14 usingPolicy:policyCopy];
+  updateMetricEventFields = [policyCopy updateMetricEventFields];
+  [v14 setSafeObject:updateMetricEventFields forKey:*MEMORY[0x277D29390]];
 
-  v27 = [v8 userAgentString];
-  [v14 setSafeObject:v27 forKey:*MEMORY[0x277D29418]];
+  userAgentString = [policyCopy userAgentString];
+  [v14 setSafeObject:userAgentString forKey:*MEMORY[0x277D29418]];
 
-  v28 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v8, "performPreflightEncryptedCheck")}];
+  v28 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(policyCopy, "performPreflightEncryptedCheck")}];
   [v14 setSafeObject:v28 forKey:*MEMORY[0x277D29440]];
 
-  v29 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v8, "performPreflightSnapshotCheck")}];
+  v29 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(policyCopy, "performPreflightSnapshotCheck")}];
   [v14 setSafeObject:v29 forKey:*MEMORY[0x277D29448]];
 
-  v30 = [v8 ssoToken];
+  ssoToken = [policyCopy ssoToken];
 
-  if (v30)
+  if (ssoToken)
   {
     v31 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v32 = [v8 ssoToken];
+    ssoToken2 = [policyCopy ssoToken];
     v33 = *MEMORY[0x277D292F0];
-    [v31 setSafeObject:v32 forKey:*MEMORY[0x277D292F0]];
+    [v31 setSafeObject:ssoToken2 forKey:*MEMORY[0x277D292F0]];
 
     [v14 setSafeObject:v31 forKey:*MEMORY[0x277D292E8]];
-    v34 = [v8 ssoToken];
-    [v14 setSafeObject:v34 forKey:v33];
+    ssoToken3 = [policyCopy ssoToken];
+    [v14 setSafeObject:ssoToken3 forKey:v33];
   }
 
-  v35 = [v8 personalizedManifestRootsPath];
-  [v14 setSafeObject:v35 forKey:*MEMORY[0x277D293C0]];
+  personalizedManifestRootsPath = [policyCopy personalizedManifestRootsPath];
+  [v14 setSafeObject:personalizedManifestRootsPath forKey:*MEMORY[0x277D293C0]];
 
-  v36 = [v8 localAuthenticationContext];
-  [v14 setSafeObject:v36 forKey:*MEMORY[0x277D293A0]];
+  localAuthenticationContext = [policyCopy localAuthenticationContext];
+  [v14 setSafeObject:localAuthenticationContext forKey:*MEMORY[0x277D293A0]];
 
-  v37 = [v8 localAuthenticationUserID];
-  [v14 setSafeObject:v37 forKey:*MEMORY[0x277D293A8]];
+  localAuthenticationUserID = [policyCopy localAuthenticationUserID];
+  [v14 setSafeObject:localAuthenticationUserID forKey:*MEMORY[0x277D293A8]];
 
-  v38 = [v8 mdmBootstrapToken];
-  [v14 setSafeObject:v38 forKey:*MEMORY[0x277D293B0]];
+  mdmBootstrapToken = [policyCopy mdmBootstrapToken];
+  [v14 setSafeObject:mdmBootstrapToken forKey:*MEMORY[0x277D293B0]];
 
-  v39 = [v8 bridgeOSIgnoreMinimumVersionCheck];
+  bridgeOSIgnoreMinimumVersionCheck = [policyCopy bridgeOSIgnoreMinimumVersionCheck];
   v40 = MEMORY[0x277CBEC28];
   v41 = MEMORY[0x277CBEC38];
-  if (v39)
+  if (bridgeOSIgnoreMinimumVersionCheck)
   {
     v42 = MEMORY[0x277CBEC38];
   }
@@ -1758,10 +1758,10 @@ LABEL_10:
   }
 
   [v14 setSafeObject:v42 forKey:*MEMORY[0x277D29310]];
-  v43 = [v8 bridgeOSDownloadDirectory];
-  [v14 setSafeObject:v43 forKey:*MEMORY[0x277D29308]];
+  bridgeOSDownloadDirectory = [policyCopy bridgeOSDownloadDirectory];
+  [v14 setSafeObject:bridgeOSDownloadDirectory forKey:*MEMORY[0x277D29308]];
 
-  if ([v8 enableEmbeddedOSInstall])
+  if ([policyCopy enableEmbeddedOSInstall])
   {
     v44 = v41;
   }
@@ -1772,7 +1772,7 @@ LABEL_10:
   }
 
   [v14 setSafeObject:v44 forKey:*MEMORY[0x277D29378]];
-  if ([v8 enableBridgeOSInstall])
+  if ([policyCopy enableBridgeOSInstall])
   {
     v45 = v41;
   }
@@ -1783,7 +1783,7 @@ LABEL_10:
   }
 
   [v14 setSafeObject:v45 forKey:*MEMORY[0x277D29370]];
-  if ([v8 enableOSPersonalization])
+  if ([policyCopy enableOSPersonalization])
   {
     v46 = v41;
   }
@@ -1794,7 +1794,7 @@ LABEL_10:
   }
 
   [v14 setSafeObject:v46 forKey:*MEMORY[0x277D29388]];
-  if ([v8 userInitiated])
+  if ([policyCopy userInitiated])
   {
     v47 = v41;
   }
@@ -1805,7 +1805,7 @@ LABEL_10:
   }
 
   [v14 setSafeObject:v47 forKey:*MEMORY[0x277D29420]];
-  if ([v8 skipVolumeSealing])
+  if ([policyCopy skipVolumeSealing])
   {
     v48 = v41;
   }
@@ -1816,81 +1816,81 @@ LABEL_10:
   }
 
   [v14 setSafeObject:v48 forKey:*MEMORY[0x277D293E8]];
-  v49 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v8, "qualityOfService")}];
+  v49 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(policyCopy, "qualityOfService")}];
   [v14 setSafeObject:v49 forKey:*MEMORY[0x277D293C8]];
 
-  v50 = [v8 targetVolumeUUID];
-  [v14 setSafeObject:v50 forKey:*MEMORY[0x277D29408]];
+  targetVolumeUUID = [policyCopy targetVolumeUUID];
+  [v14 setSafeObject:targetVolumeUUID forKey:*MEMORY[0x277D29408]];
 
-  v51 = [v8 prerequisiteBuildVersion];
-  [v14 setSafeObject:v51 forKey:*MEMORY[0x277D29300]];
+  prerequisiteBuildVersion = [policyCopy prerequisiteBuildVersion];
+  [v14 setSafeObject:prerequisiteBuildVersion forKey:*MEMORY[0x277D29300]];
 
-  v52 = [MEMORY[0x277D64418] sharedDevice];
-  v53 = [v52 rootVolumeUUID];
-  [v14 setSafeObject:v53 forKey:*MEMORY[0x277D292F8]];
+  mEMORY[0x277D64418]2 = [MEMORY[0x277D64418] sharedDevice];
+  rootVolumeUUID = [mEMORY[0x277D64418]2 rootVolumeUUID];
+  [v14 setSafeObject:rootVolumeUUID forKey:*MEMORY[0x277D292F8]];
 
-  v54 = [v8 targetVolumeUUID];
-  [v14 setSafeObject:v54 forKey:*MEMORY[0x277D29320]];
+  targetVolumeUUID2 = [policyCopy targetVolumeUUID];
+  [v14 setSafeObject:targetVolumeUUID2 forKey:*MEMORY[0x277D29320]];
 
-  if ([v9 descriptorType] == 2)
+  if ([descriptorCopy descriptorType] == 2)
   {
-    v55 = [v9 updateBundlePath];
-    [v14 setSafeObject:v55 forKey:*MEMORY[0x277D293F8]];
+    updateBundlePath = [descriptorCopy updateBundlePath];
+    [v14 setSafeObject:updateBundlePath forKey:*MEMORY[0x277D293F8]];
 LABEL_48:
 
     goto LABEL_49;
   }
 
-  if ([v9 descriptorType] == 1)
+  if ([descriptorCopy descriptorType] == 1)
   {
-    v56 = [v9 softwareUpdateAsset];
-    v57 = [v56 getLocalUrl];
-    v55 = [v57 fileSystemRepresentation];
+    softwareUpdateAsset = [descriptorCopy softwareUpdateAsset];
+    getLocalUrl = [softwareUpdateAsset getLocalUrl];
+    updateBundlePath = [getLocalUrl fileSystemRepresentation];
 
-    if (v55)
+    if (updateBundlePath)
     {
-      v55 = [MEMORY[0x277CCACA8] stringWithUTF8String:v55];
+      updateBundlePath = [MEMORY[0x277CCACA8] stringWithUTF8String:updateBundlePath];
     }
 
-    [v14 setSafeObject:v55 forKey:*MEMORY[0x277D293F8]];
-    v58 = [v9 associatedSplatDescriptor];
-    if (v58)
+    [v14 setSafeObject:updateBundlePath forKey:*MEMORY[0x277D293F8]];
+    associatedSplatDescriptor = [descriptorCopy associatedSplatDescriptor];
+    if (associatedSplatDescriptor)
     {
-      v59 = v58;
-      v60 = [v9 associatedSplatDescriptor];
-      v61 = [v60 descriptorType];
+      v59 = associatedSplatDescriptor;
+      associatedSplatDescriptor2 = [descriptorCopy associatedSplatDescriptor];
+      descriptorType = [associatedSplatDescriptor2 descriptorType];
 
-      if (v61 == 1)
+      if (descriptorType == 1)
       {
-        v62 = [v9 associatedSplatDescriptor];
-        v63 = [v62 softwareUpdateAsset];
-        [v63 refreshState];
+        associatedSplatDescriptor3 = [descriptorCopy associatedSplatDescriptor];
+        softwareUpdateAsset2 = [associatedSplatDescriptor3 softwareUpdateAsset];
+        [softwareUpdateAsset2 refreshState];
 
-        v64 = [v9 associatedSplatDescriptor];
-        v65 = [v64 softwareUpdateAsset];
-        v66 = [v65 wasLocal];
+        associatedSplatDescriptor4 = [descriptorCopy associatedSplatDescriptor];
+        softwareUpdateAsset3 = [associatedSplatDescriptor4 softwareUpdateAsset];
+        wasLocal = [softwareUpdateAsset3 wasLocal];
 
-        if (v66)
+        if (wasLocal)
         {
-          v85 = v10;
-          v67 = [v9 associatedSplatDescriptor];
-          v68 = [v67 softwareUpdateAsset];
-          v69 = [v68 getLocalUrl];
-          v70 = [v69 fileSystemRepresentation];
+          v85 = optionsCopy;
+          associatedSplatDescriptor5 = [descriptorCopy associatedSplatDescriptor];
+          softwareUpdateAsset4 = [associatedSplatDescriptor5 softwareUpdateAsset];
+          getLocalUrl2 = [softwareUpdateAsset4 getLocalUrl];
+          fileSystemRepresentation = [getLocalUrl2 fileSystemRepresentation];
 
-          if (v70)
+          if (fileSystemRepresentation)
           {
-            v70 = [MEMORY[0x277CCACA8] stringWithUTF8String:v70];
+            fileSystemRepresentation = [MEMORY[0x277CCACA8] stringWithUTF8String:fileSystemRepresentation];
           }
 
-          [v14 setSafeObject:v70 forKey:@"SplatComboBundlePath"];
+          [v14 setSafeObject:fileSystemRepresentation forKey:@"SplatComboBundlePath"];
 
-          v10 = v85;
+          optionsCopy = v85;
         }
 
-        v71 = [v9 associatedSplatDescriptor];
-        v72 = [v71 bundleAttributes];
-        [v14 setSafeObject:v72 forKey:@"__msu-splat-combo-update-attributes-dictionary-key"];
+        associatedSplatDescriptor6 = [descriptorCopy associatedSplatDescriptor];
+        bundleAttributes = [associatedSplatDescriptor6 bundleAttributes];
+        [v14 setSafeObject:bundleAttributes forKey:@"__msu-splat-combo-update-attributes-dictionary-key"];
       }
     }
 
@@ -1898,37 +1898,37 @@ LABEL_48:
   }
 
 LABEL_49:
-  if ([v9 splatOnly])
+  if ([descriptorCopy splatOnly])
   {
     [v14 setSafeObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D29400]];
   }
 
   v73 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v74 = [v8 hwModelStr];
-  [v73 setSafeObject:v74 forKey:*MEMORY[0x277D29338]];
+  hwModelStr = [policyCopy hwModelStr];
+  [v73 setSafeObject:hwModelStr forKey:*MEMORY[0x277D29338]];
 
-  v75 = [v8 deviceClass];
-  [v73 setSafeObject:v75 forKey:*MEMORY[0x277D29330]];
+  deviceClass = [policyCopy deviceClass];
+  [v73 setSafeObject:deviceClass forKey:*MEMORY[0x277D29330]];
 
-  v76 = [v8 productType];
-  [v73 setSafeObject:v76 forKey:*MEMORY[0x277D29348]];
+  productType = [policyCopy productType];
+  [v73 setSafeObject:productType forKey:*MEMORY[0x277D29348]];
 
-  v77 = [v8 releaseType];
-  [v73 setSafeObject:v77 forKey:*MEMORY[0x277D29350]];
+  releaseType = [policyCopy releaseType];
+  [v73 setSafeObject:releaseType forKey:*MEMORY[0x277D29350]];
 
-  v78 = [MEMORY[0x277D64418] sharedDevice];
-  v79 = [v78 deviceBoardID];
-  [v73 setSafeObject:v79 forKey:*MEMORY[0x277D29328]];
+  mEMORY[0x277D64418]3 = [MEMORY[0x277D64418] sharedDevice];
+  deviceBoardID = [mEMORY[0x277D64418]3 deviceBoardID];
+  [v73 setSafeObject:deviceBoardID forKey:*MEMORY[0x277D29328]];
 
   [v14 setSafeObject:v73 forKey:*MEMORY[0x277D29340]];
-  v80 = +[SUCoreDescriptor nameForDescriptorAudienceType:](SUCoreDescriptor, "nameForDescriptorAudienceType:", [v9 descriptorAudienceType]);
+  v80 = +[SUCoreDescriptor nameForDescriptorAudienceType:](SUCoreDescriptor, "nameForDescriptorAudienceType:", [descriptorCopy descriptorAudienceType]);
   [v14 setSafeObject:v80 forKey:*MEMORY[0x277D29358]];
 
-  v81 = +[SUCoreDescriptor nameForDescriptorPreferredUpdateType:](SUCoreDescriptor, "nameForDescriptorPreferredUpdateType:", [v9 preferredUpdateType]);
+  v81 = +[SUCoreDescriptor nameForDescriptorPreferredUpdateType:](SUCoreDescriptor, "nameForDescriptorPreferredUpdateType:", [descriptorCopy preferredUpdateType]);
   [v14 setSafeObject:v81 forKey:*MEMORY[0x277D29360]];
 
-  v82 = [v8 softwareUpdateScanPolicy];
-  if ([v82 allowSameVersion])
+  softwareUpdateScanPolicy = [policyCopy softwareUpdateScanPolicy];
+  if ([softwareUpdateScanPolicy allowSameVersion])
   {
     v83 = v41;
   }
@@ -1944,117 +1944,117 @@ LABEL_55:
   return v14;
 }
 
-- (id)_newMSURollbackOptionsUsingPolicy:(id)a3 rollbackDescriptor:(id)a4 baseOptions:(id)a5 additionalOptions:(id)a6
+- (id)_newMSURollbackOptionsUsingPolicy:(id)policy rollbackDescriptor:(id)descriptor baseOptions:(id)options additionalOptions:(id)additionalOptions
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(SUCoreMSU *)self _newMSUOptionsUsingPolicy:v12 descriptor:0 baseOptions:a5];
-  [(SUCoreMSU *)self _addUpdateMetricsEventFieldsToMSURollbackOptions:v13 usingPolicy:v12 rollbackDescriptor:v11];
+  additionalOptionsCopy = additionalOptions;
+  descriptorCopy = descriptor;
+  policyCopy = policy;
+  v13 = [(SUCoreMSU *)self _newMSUOptionsUsingPolicy:policyCopy descriptor:0 baseOptions:options];
+  [(SUCoreMSU *)self _addUpdateMetricsEventFieldsToMSURollbackOptions:v13 usingPolicy:policyCopy rollbackDescriptor:descriptorCopy];
 
   [v13 setSafeObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D293E0]];
   [v13 setSafeObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D293D0]];
-  [v13 addEntriesFromDictionary:v10];
+  [v13 addEntriesFromDictionary:additionalOptionsCopy];
 
   return v13;
 }
 
-- (id)_newPreflightOptionsUsingPolicy:(id)a3 subPolicyClass:(Class)a4 descriptor:(id)a5 baseOptions:(id)a6 additionalOptions:(id)a7
+- (id)_newPreflightOptionsUsingPolicy:(id)policy subPolicyClass:(Class)class descriptor:(id)descriptor baseOptions:(id)options additionalOptions:(id)additionalOptions
 {
-  v12 = a7;
-  v13 = [(SUCoreMSU *)self _newMSUOptionsUsingPolicy:a3 descriptor:a5 baseOptions:a6];
-  if (objc_opt_class() == a4 || objc_opt_class() == a4)
+  additionalOptionsCopy = additionalOptions;
+  v13 = [(SUCoreMSU *)self _newMSUOptionsUsingPolicy:policy descriptor:descriptor baseOptions:options];
+  if (objc_opt_class() == class || objc_opt_class() == class)
   {
     [v13 setSafeObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D29398]];
   }
 
-  [v13 addEntriesFromDictionary:v12];
+  [v13 addEntriesFromDictionary:additionalOptionsCopy];
 
   return v13;
 }
 
-- (id)_newPrepareOptionsUsingPolicy:(id)a3 descriptor:(id)a4
+- (id)_newPrepareOptionsUsingPolicy:(id)policy descriptor:(id)descriptor
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 preparePolicy];
-  v9 = [v8 basePrepareOptions];
-  v10 = [(SUCoreMSU *)self _newMSUOptionsUsingPolicy:v7 descriptor:v6 baseOptions:v9];
+  descriptorCopy = descriptor;
+  policyCopy = policy;
+  preparePolicy = [policyCopy preparePolicy];
+  basePrepareOptions = [preparePolicy basePrepareOptions];
+  v10 = [(SUCoreMSU *)self _newMSUOptionsUsingPolicy:policyCopy descriptor:descriptorCopy baseOptions:basePrepareOptions];
 
-  [(SUCoreMSU *)self updatePrepareOptions:v10 withPolicy:v7];
+  [(SUCoreMSU *)self updatePrepareOptions:v10 withPolicy:policyCopy];
   return v10;
 }
 
-- (id)_newRollbackPrepareOptionsUsingPolicy:(id)a3 rollbackDescriptor:(id)a4
+- (id)_newRollbackPrepareOptionsUsingPolicy:(id)policy rollbackDescriptor:(id)descriptor
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 rollbackPolicy];
-  v9 = [v8 baseRollbackOptions];
-  v10 = [v7 rollbackPolicy];
-  v11 = [v10 additionalOptions];
-  v12 = [(SUCoreMSU *)self _newMSURollbackOptionsUsingPolicy:v7 rollbackDescriptor:v6 baseOptions:v9 additionalOptions:v11];
+  descriptorCopy = descriptor;
+  policyCopy = policy;
+  rollbackPolicy = [policyCopy rollbackPolicy];
+  baseRollbackOptions = [rollbackPolicy baseRollbackOptions];
+  rollbackPolicy2 = [policyCopy rollbackPolicy];
+  additionalOptions = [rollbackPolicy2 additionalOptions];
+  v12 = [(SUCoreMSU *)self _newMSURollbackOptionsUsingPolicy:policyCopy rollbackDescriptor:descriptorCopy baseOptions:baseRollbackOptions additionalOptions:additionalOptions];
 
-  [(SUCoreMSU *)self updatePrepareOptions:v12 withPolicy:v7];
-  [v7 updateRollbackOptionsWithExtensions:v12];
+  [(SUCoreMSU *)self updatePrepareOptions:v12 withPolicy:policyCopy];
+  [policyCopy updateRollbackOptionsWithExtensions:v12];
 
   return v12;
 }
 
-- (void)updatePrepareOptions:(id)a3 withPolicy:(id)a4
+- (void)updatePrepareOptions:(id)options withPolicy:(id)policy
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [(SUCoreMSU *)self doNotPatchList];
+  optionsCopy = options;
+  policyCopy = policy;
+  doNotPatchList = [(SUCoreMSU *)self doNotPatchList];
   v8 = *MEMORY[0x277D29368];
-  v9 = [v16 safeObjectForKey:*MEMORY[0x277D29368] ofClass:objc_opt_class()];
+  v9 = [optionsCopy safeObjectForKey:*MEMORY[0x277D29368] ofClass:objc_opt_class()];
   if (v9)
   {
     v10 = v9;
-    v11 = [v9 arrayByAddingObjectsFromArray:v7];
+    v11 = [v9 arrayByAddingObjectsFromArray:doNotPatchList];
 
     v12 = [MEMORY[0x277CBEB98] setWithArray:v11];
-    v13 = [v12 allObjects];
+    allObjects = [v12 allObjects];
   }
 
   else
   {
-    v13 = v7;
+    allObjects = doNotPatchList;
   }
 
-  [v16 setSafeObject:v13 forKey:v8];
-  [(SUCoreMSU *)self _addRemoteServerAccessControlToMSUOptions:v16 usingPolicy:v6];
-  v14 = [v6 preparePolicy];
+  [optionsCopy setSafeObject:allObjects forKey:v8];
+  [(SUCoreMSU *)self _addRemoteServerAccessControlToMSUOptions:optionsCopy usingPolicy:policyCopy];
+  preparePolicy = [policyCopy preparePolicy];
 
-  v15 = [v14 additionalOptions];
-  [v16 addEntriesFromDictionary:v15];
+  additionalOptions = [preparePolicy additionalOptions];
+  [optionsCopy addEntriesFromDictionary:additionalOptions];
 }
 
-- (void)_operationLoadBrain:(id)a3
+- (void)_operationLoadBrain:(id)brain
 {
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  brainCopy = brain;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v6 = [(SUCoreMSU *)self brainLoader];
+  brainLoader = [(SUCoreMSU *)self brainLoader];
 
-  if (v6)
+  if (brainLoader)
   {
     [(SUCoreMSU *)self setPerformingOperation:1];
-    v7 = [(SUCoreMSU *)self msuOperationQueue];
+    msuOperationQueue = [(SUCoreMSU *)self msuOperationQueue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __33__SUCoreMSU__operationLoadBrain___block_invoke;
     v10[3] = &unk_27892D478;
     v10[4] = self;
-    v11 = v4;
-    dispatch_async(v7, v10);
+    v11 = brainCopy;
+    dispatch_async(msuOperationQueue, v10);
   }
 
   else
   {
-    v8 = [MEMORY[0x277D643F8] sharedCore];
-    v9 = [v8 buildError:8102 underlying:0 description:@"Missing required brain loader when attempting to load an update brain"];
+    mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+    v9 = [mEMORY[0x277D643F8] buildError:8102 underlying:0 description:@"Missing required brain loader when attempting to load an update brain"];
     [(SUCoreMSU *)self _reportBrainLoadFailed:v9];
 
     [(SUCoreMSU *)self setPerformingOperation:0];
@@ -2182,54 +2182,54 @@ void __33__SUCoreMSU__operationLoadBrain___block_invoke(uint64_t a1)
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_operationPreflightSUDownload:(id)a3
+- (void)_operationPreflightSUDownload:(id)download
 {
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  downloadCopy = download;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v6 = [(SUCoreMSU *)self updateDescriptor];
+  updateDescriptor = [(SUCoreMSU *)self updateDescriptor];
 
-  if (!v6)
+  if (!updateDescriptor)
   {
-    v15 = [MEMORY[0x277D643F8] sharedCore];
-    v16 = [v15 buildError:8803 underlying:0 description:@"Missing required descriptor for PreflightSUDownload"];
+    mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+    v16 = [mEMORY[0x277D643F8] buildError:8803 underlying:0 description:@"Missing required descriptor for PreflightSUDownload"];
 
     [(SUCoreMSU *)self _reportSUDownloadPreflightFailed:v16];
     goto LABEL_8;
   }
 
-  v7 = [(SUCoreMSU *)self updateDescriptor];
-  if ([v7 descriptorType] == 1)
+  updateDescriptor2 = [(SUCoreMSU *)self updateDescriptor];
+  if ([updateDescriptor2 descriptorType] == 1)
   {
     goto LABEL_5;
   }
 
-  v8 = [(SUCoreMSU *)self updateDescriptor];
-  v9 = [v8 descriptorType];
+  updateDescriptor3 = [(SUCoreMSU *)self updateDescriptor];
+  descriptorType = [updateDescriptor3 descriptorType];
 
-  if (v9 != 3)
+  if (descriptorType != 3)
   {
     v10 = objc_alloc(MEMORY[0x277CCACA8]);
-    v11 = [(SUCoreMSU *)self updateDescriptor];
-    v12 = +[SUCoreDescriptor nameForDescriptorType:](SUCoreDescriptor, "nameForDescriptorType:", [v11 descriptorType]);
-    v7 = [v10 initWithFormat:@"Unexpected descriptor type %@, expecting SUCoreDescriptorTypeAsset or SUCoreDescriptorTypeSFRAsset", v12];
+    updateDescriptor4 = [(SUCoreMSU *)self updateDescriptor];
+    v12 = +[SUCoreDescriptor nameForDescriptorType:](SUCoreDescriptor, "nameForDescriptorType:", [updateDescriptor4 descriptorType]);
+    updateDescriptor2 = [v10 initWithFormat:@"Unexpected descriptor type %@, expecting SUCoreDescriptorTypeAsset or SUCoreDescriptorTypeSFRAsset", v12];
 
-    v13 = [MEMORY[0x277D64428] sharedDiag];
-    [v13 trackAnomaly:@"PreflightSUDownload" forReason:v7 withResult:8116 withError:0];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    [mEMORY[0x277D64428] trackAnomaly:@"PreflightSUDownload" forReason:updateDescriptor2 withResult:8116 withError:0];
 
 LABEL_5:
   }
 
   [(SUCoreMSU *)self setPerformingOperation:1];
-  v14 = [(SUCoreMSU *)self msuOperationQueue];
+  msuOperationQueue = [(SUCoreMSU *)self msuOperationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__SUCoreMSU__operationPreflightSUDownload___block_invoke;
   block[3] = &unk_27892D478;
   block[4] = self;
-  v18 = v4;
-  dispatch_async(v14, block);
+  v18 = downloadCopy;
+  dispatch_async(msuOperationQueue, block);
 
 LABEL_8:
 }
@@ -2309,31 +2309,31 @@ uint64_t __43__SUCoreMSU__operationPreflightSUDownload___block_invoke_2(uint64_t
   return [v8 setPerformingOperation:0];
 }
 
-- (void)_operationPreflightPersonalize:(id)a3
+- (void)_operationPreflightPersonalize:(id)personalize
 {
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  personalizeCopy = personalize;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v6 = [(SUCoreMSU *)self updateDescriptor];
+  updateDescriptor = [(SUCoreMSU *)self updateDescriptor];
 
-  if (v6)
+  if (updateDescriptor)
   {
     [(SUCoreMSU *)self setPerformingOperation:1];
-    v7 = [(SUCoreMSU *)self msuOperationQueue];
+    msuOperationQueue = [(SUCoreMSU *)self msuOperationQueue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __44__SUCoreMSU__operationPreflightPersonalize___block_invoke;
     v10[3] = &unk_27892D478;
     v10[4] = self;
-    v11 = v4;
-    dispatch_async(v7, v10);
+    v11 = personalizeCopy;
+    dispatch_async(msuOperationQueue, v10);
   }
 
   else
   {
-    v8 = [MEMORY[0x277D643F8] sharedCore];
-    v9 = [v8 buildError:8803 underlying:0 description:@"Missing required descriptor for PreflightPersonalize"];
+    mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+    v9 = [mEMORY[0x277D643F8] buildError:8803 underlying:0 description:@"Missing required descriptor for PreflightPersonalize"];
 
     [(SUCoreMSU *)self _reportPersonalizePreflightFailed:v9];
   }
@@ -2394,31 +2394,31 @@ uint64_t __44__SUCoreMSU__operationPreflightPersonalize___block_invoke_2(uint64_
   return [v8 setPerformingOperation:0];
 }
 
-- (void)_operationPreflightFDRRecovery:(id)a3
+- (void)_operationPreflightFDRRecovery:(id)recovery
 {
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  recoveryCopy = recovery;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v6 = [(SUCoreMSU *)self updateDescriptor];
+  updateDescriptor = [(SUCoreMSU *)self updateDescriptor];
 
-  if (v6)
+  if (updateDescriptor)
   {
     [(SUCoreMSU *)self setPerformingOperation:1];
-    v7 = [(SUCoreMSU *)self msuOperationQueue];
+    msuOperationQueue = [(SUCoreMSU *)self msuOperationQueue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __44__SUCoreMSU__operationPreflightFDRRecovery___block_invoke;
     v10[3] = &unk_27892D478;
     v10[4] = self;
-    v11 = v4;
-    dispatch_async(v7, v10);
+    v11 = recoveryCopy;
+    dispatch_async(msuOperationQueue, v10);
   }
 
   else
   {
-    v8 = [MEMORY[0x277D643F8] sharedCore];
-    v9 = [v8 buildError:8803 underlying:0 description:@"Missing required descriptor for PreflightFDRRecovery"];
+    mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+    v9 = [mEMORY[0x277D643F8] buildError:8803 underlying:0 description:@"Missing required descriptor for PreflightFDRRecovery"];
 
     [(SUCoreMSU *)self _reportFDRRecoveryPreflightFailed:v9];
   }
@@ -2479,31 +2479,31 @@ uint64_t __44__SUCoreMSU__operationPreflightFDRRecovery___block_invoke_2(uint64_
   return [v8 setPerformingOperation:0];
 }
 
-- (void)_operationPreflightWakeup:(id)a3
+- (void)_operationPreflightWakeup:(id)wakeup
 {
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  wakeupCopy = wakeup;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v6 = [(SUCoreMSU *)self updateDescriptor];
+  updateDescriptor = [(SUCoreMSU *)self updateDescriptor];
 
-  if (v6)
+  if (updateDescriptor)
   {
     [(SUCoreMSU *)self setPerformingOperation:1];
-    v7 = [(SUCoreMSU *)self msuOperationQueue];
+    msuOperationQueue = [(SUCoreMSU *)self msuOperationQueue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __39__SUCoreMSU__operationPreflightWakeup___block_invoke;
     v10[3] = &unk_27892D478;
     v10[4] = self;
-    v11 = v4;
-    dispatch_async(v7, v10);
+    v11 = wakeupCopy;
+    dispatch_async(msuOperationQueue, v10);
   }
 
   else
   {
-    v8 = [MEMORY[0x277D643F8] sharedCore];
-    v9 = [v8 buildError:8803 underlying:0 description:@"Missing required descriptor for PreflightWakeup"];
+    mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+    v9 = [mEMORY[0x277D643F8] buildError:8803 underlying:0 description:@"Missing required descriptor for PreflightWakeup"];
 
     [(SUCoreMSU *)self _reportWakeupPreflightFailed:v9];
   }
@@ -2590,31 +2590,31 @@ uint64_t __39__SUCoreMSU__operationPreflightWakeup___block_invoke_2(uint64_t a1)
   return [v8 setPerformingOperation:0];
 }
 
-- (void)_operationPreflightPrerequisiteCheck:(id)a3
+- (void)_operationPreflightPrerequisiteCheck:(id)check
 {
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  checkCopy = check;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v6 = [(SUCoreMSU *)self updateDescriptor];
+  updateDescriptor = [(SUCoreMSU *)self updateDescriptor];
 
-  if (v6)
+  if (updateDescriptor)
   {
     [(SUCoreMSU *)self setPerformingOperation:1];
-    v7 = [(SUCoreMSU *)self msuOperationQueue];
+    msuOperationQueue = [(SUCoreMSU *)self msuOperationQueue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __50__SUCoreMSU__operationPreflightPrerequisiteCheck___block_invoke;
     v10[3] = &unk_27892D478;
     v10[4] = self;
-    v11 = v4;
-    dispatch_async(v7, v10);
+    v11 = checkCopy;
+    dispatch_async(msuOperationQueue, v10);
   }
 
   else
   {
-    v8 = [MEMORY[0x277D643F8] sharedCore];
-    v9 = [v8 buildError:8803 underlying:0 description:@"Missing required descriptor for PreflightPrerequisiteCheck"];
+    mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+    v9 = [mEMORY[0x277D643F8] buildError:8803 underlying:0 description:@"Missing required descriptor for PreflightPrerequisiteCheck"];
 
     [(SUCoreMSU *)self _reportPrerequisiteCheckPreflightFailed:v9];
   }
@@ -2675,48 +2675,48 @@ uint64_t __50__SUCoreMSU__operationPreflightPrerequisiteCheck___block_invoke_2(u
   return [v8 setPerformingOperation:0];
 }
 
-- (void)_operationPrepareUpdate:(id)a3
+- (void)_operationPrepareUpdate:(id)update
 {
-  v5 = a3;
-  v6 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v6);
+  updateCopy = update;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v7 = [(SUCoreMSU *)self updateDescriptor];
+  updateDescriptor = [(SUCoreMSU *)self updateDescriptor];
 
-  if (v7)
+  if (updateDescriptor)
   {
-    v8 = [(SUCoreMSU *)self updateDescriptor];
-    v9 = [v8 descriptorType];
-    if (v9 == 2 || (-[SUCoreMSU updateDescriptor](self, "updateDescriptor"), v3 = objc_claimAutoreleasedReturnValue(), [v3 descriptorType] == 4))
+    updateDescriptor2 = [(SUCoreMSU *)self updateDescriptor];
+    descriptorType = [updateDescriptor2 descriptorType];
+    if (descriptorType == 2 || (-[SUCoreMSU updateDescriptor](self, "updateDescriptor"), v3 = objc_claimAutoreleasedReturnValue(), [v3 descriptorType] == 4))
     {
-      v10 = [(SUCoreMSU *)self updateDescriptor];
-      v11 = [v10 updateBrainPath];
+      updateDescriptor3 = [(SUCoreMSU *)self updateDescriptor];
+      updateBrainPath = [updateDescriptor3 updateBrainPath];
 
-      if (v9 != 2)
+      if (descriptorType != 2)
       {
       }
 
-      if (v11)
+      if (updateBrainPath)
       {
 LABEL_11:
-        v14 = [(SUCoreMSU *)self updateDescriptor];
-        v15 = [v14 descriptorType];
-        if (v15 == 2 || (-[SUCoreMSU updateDescriptor](self, "updateDescriptor"), v3 = objc_claimAutoreleasedReturnValue(), [v3 descriptorType] == 4))
+        updateDescriptor4 = [(SUCoreMSU *)self updateDescriptor];
+        descriptorType2 = [updateDescriptor4 descriptorType];
+        if (descriptorType2 == 2 || (-[SUCoreMSU updateDescriptor](self, "updateDescriptor"), v3 = objc_claimAutoreleasedReturnValue(), [v3 descriptorType] == 4))
         {
-          v16 = [(SUCoreMSU *)self updateDescriptor];
-          v17 = [v16 updateBundlePath];
+          updateDescriptor5 = [(SUCoreMSU *)self updateDescriptor];
+          updateBundlePath = [updateDescriptor5 updateBundlePath];
 
-          if (v15 != 2)
+          if (descriptorType2 != 2)
           {
           }
 
-          if (v17)
+          if (updateBundlePath)
           {
             goto LABEL_19;
           }
 
-          v14 = [MEMORY[0x277D64428] sharedDiag];
-          [v14 trackAnomaly:@"MSUPrepare" forReason:@"An update bundle path is required for prepare withResult:yet none was provided" withError:{8116, 0}];
+          updateDescriptor4 = [MEMORY[0x277D64428] sharedDiag];
+          [updateDescriptor4 trackAnomaly:@"MSUPrepare" forReason:@"An update bundle path is required for prepare withResult:yet none was provided" withError:{8116, 0}];
         }
 
         else
@@ -2728,20 +2728,20 @@ LABEL_19:
         [(SUCoreMSU *)self setCancelingPrepare:0];
         [(SUCoreMSU *)self setNextProgressThreshold:0.0];
         [(SUCoreMSU *)self setPrepareProgressFinal:0];
-        v18 = [(SUCoreMSU *)self msuOperationQueue];
+        msuOperationQueue = [(SUCoreMSU *)self msuOperationQueue];
         v19[0] = MEMORY[0x277D85DD0];
         v19[1] = 3221225472;
         v19[2] = __37__SUCoreMSU__operationPrepareUpdate___block_invoke;
         v19[3] = &unk_27892D478;
         v19[4] = self;
-        v20 = v5;
-        dispatch_async(v18, v19);
+        v20 = updateCopy;
+        dispatch_async(msuOperationQueue, v19);
 
         goto LABEL_20;
       }
 
-      v8 = [MEMORY[0x277D64428] sharedDiag];
-      [v8 trackAnomaly:@"MSUPrepare" forReason:@"An update brain path is required for prepare withResult:yet none was provided" withError:{8116, 0}];
+      updateDescriptor2 = [MEMORY[0x277D64428] sharedDiag];
+      [updateDescriptor2 trackAnomaly:@"MSUPrepare" forReason:@"An update brain path is required for prepare withResult:yet none was provided" withError:{8116, 0}];
     }
 
     else
@@ -2751,8 +2751,8 @@ LABEL_19:
     goto LABEL_11;
   }
 
-  v12 = [MEMORY[0x277D643F8] sharedCore];
-  v13 = [v12 buildError:8803 underlying:0 description:@"Missing required descriptor for PrepareUpdate"];
+  mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+  v13 = [mEMORY[0x277D643F8] buildError:8803 underlying:0 description:@"Missing required descriptor for PrepareUpdate"];
 
   [(SUCoreMSU *)self _reportPrepareFailed:v13];
 LABEL_20:
@@ -2916,17 +2916,17 @@ LABEL_14:
 
 - (void)_operationSuspendUpdate
 {
-  v3 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v3);
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
   [(SUCoreMSU *)self setPerformingOperation:1];
-  v4 = [(SUCoreMSU *)self msuOperationQueue];
+  msuOperationQueue = [(SUCoreMSU *)self msuOperationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__SUCoreMSU__operationSuspendUpdate__block_invoke;
   block[3] = &unk_27892C8A8;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(msuOperationQueue, block);
 }
 
 void __36__SUCoreMSU__operationSuspendUpdate__block_invoke(uint64_t a1)
@@ -2989,22 +2989,22 @@ uint64_t __36__SUCoreMSU__operationSuspendUpdate__block_invoke_1055(uint64_t a1)
   return [v8 setPerformingOperation:0];
 }
 
-- (void)_operationResumeUpdate:(id)a3
+- (void)_operationResumeUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  updateCopy = update;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
   [(SUCoreMSU *)self setPerformingOperation:1];
-  v6 = [(SUCoreMSU *)self msuOperationQueue];
+  msuOperationQueue = [(SUCoreMSU *)self msuOperationQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __36__SUCoreMSU__operationResumeUpdate___block_invoke;
   v8[3] = &unk_27892D478;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = updateCopy;
+  v7 = updateCopy;
+  dispatch_async(msuOperationQueue, v8);
 }
 
 void __36__SUCoreMSU__operationResumeUpdate___block_invoke(uint64_t a1)
@@ -3086,25 +3086,25 @@ uint64_t __36__SUCoreMSU__operationResumeUpdate___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)_operationApplyUpdate:(id)a3
+- (void)_operationApplyUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  updateCopy = update;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
   [(SUCoreMSU *)self setPerformingOperation:1];
   [(SUCoreMSU *)self setNextProgressThreshold:0.0];
   [(SUCoreMSU *)self setApplyProgressFinal:0];
   [(SUCoreMSU *)self setApplyProgressActionText:0];
-  v6 = [(SUCoreMSU *)self msuOperationQueue];
+  msuOperationQueue = [(SUCoreMSU *)self msuOperationQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __35__SUCoreMSU__operationApplyUpdate___block_invoke;
   v8[3] = &unk_27892D478;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = updateCopy;
+  v7 = updateCopy;
+  dispatch_async(msuOperationQueue, v8);
 }
 
 void __35__SUCoreMSU__operationApplyUpdate___block_invoke(uint64_t a1)
@@ -3184,16 +3184,16 @@ uint64_t __35__SUCoreMSU__operationApplyUpdate___block_invoke_1068(uint64_t a1)
 
 - (void)_removePrepared
 {
-  v3 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v3);
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v4 = [(SUCoreMSU *)self msuOperationQueue];
+  msuOperationQueue = [(SUCoreMSU *)self msuOperationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __28__SUCoreMSU__removePrepared__block_invoke;
   block[3] = &unk_27892C8A8;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(msuOperationQueue, block);
 }
 
 void __28__SUCoreMSU__removePrepared__block_invoke(uint64_t a1)
@@ -3239,22 +3239,22 @@ uint64_t __28__SUCoreMSU__removePrepared__block_invoke_2(uint64_t a1)
   return [v8 setRemovingPrepared:0];
 }
 
-- (void)_operationRollbackUpdatePrepare:(id)a3
+- (void)_operationRollbackUpdatePrepare:(id)prepare
 {
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  prepareCopy = prepare;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
   [(SUCoreMSU *)self setPerformingOperation:1];
-  v6 = [(SUCoreMSU *)self msuOperationQueue];
+  msuOperationQueue = [(SUCoreMSU *)self msuOperationQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__SUCoreMSU__operationRollbackUpdatePrepare___block_invoke;
   v8[3] = &unk_27892D478;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = prepareCopy;
+  selfCopy = self;
+  v7 = prepareCopy;
+  dispatch_async(msuOperationQueue, v8);
 }
 
 void __45__SUCoreMSU__operationRollbackUpdatePrepare___block_invoke(uint64_t a1)
@@ -3399,22 +3399,22 @@ uint64_t __45__SUCoreMSU__operationRollbackUpdatePrepare___block_invoke_2(uint64
   return result;
 }
 
-- (void)_operationRollbackUpdateSuspend:(id)a3
+- (void)_operationRollbackUpdateSuspend:(id)suspend
 {
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  suspendCopy = suspend;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
   [(SUCoreMSU *)self setPerformingOperation:1];
-  v6 = [(SUCoreMSU *)self msuOperationQueue];
+  msuOperationQueue = [(SUCoreMSU *)self msuOperationQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__SUCoreMSU__operationRollbackUpdateSuspend___block_invoke;
   v8[3] = &unk_27892D478;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = suspendCopy;
+  selfCopy = self;
+  v7 = suspendCopy;
+  dispatch_async(msuOperationQueue, v8);
 }
 
 void __45__SUCoreMSU__operationRollbackUpdateSuspend___block_invoke(uint64_t a1)
@@ -3561,22 +3561,22 @@ uint64_t __45__SUCoreMSU__operationRollbackUpdateSuspend___block_invoke_1093(uin
   return result;
 }
 
-- (void)_operationRollbackUpdateResume:(id)a3
+- (void)_operationRollbackUpdateResume:(id)resume
 {
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  resumeCopy = resume;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
   [(SUCoreMSU *)self setPerformingOperation:1];
-  v6 = [(SUCoreMSU *)self msuOperationQueue];
+  msuOperationQueue = [(SUCoreMSU *)self msuOperationQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __44__SUCoreMSU__operationRollbackUpdateResume___block_invoke;
   v8[3] = &unk_27892D478;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = resumeCopy;
+  selfCopy = self;
+  v7 = resumeCopy;
+  dispatch_async(msuOperationQueue, v8);
 }
 
 void __44__SUCoreMSU__operationRollbackUpdateResume___block_invoke(uint64_t a1)
@@ -3726,22 +3726,22 @@ uint64_t __44__SUCoreMSU__operationRollbackUpdateResume___block_invoke_1101(uint
   return result;
 }
 
-- (void)_operationRollbackUpdateApply:(id)a3
+- (void)_operationRollbackUpdateApply:(id)apply
 {
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  applyCopy = apply;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
   [(SUCoreMSU *)self setPerformingOperation:1];
-  v6 = [(SUCoreMSU *)self msuOperationQueue];
+  msuOperationQueue = [(SUCoreMSU *)self msuOperationQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __43__SUCoreMSU__operationRollbackUpdateApply___block_invoke;
   v8[3] = &unk_27892D478;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = applyCopy;
+  selfCopy = self;
+  v7 = applyCopy;
+  dispatch_async(msuOperationQueue, v8);
 }
 
 void __43__SUCoreMSU__operationRollbackUpdateApply___block_invoke(uint64_t a1)
@@ -3898,21 +3898,21 @@ uint64_t __43__SUCoreMSU__operationRollbackUpdateApply___block_invoke_1112(uint6
   return result;
 }
 
-- (void)loadBrainProgress:(id)a3 error:(id)a4
+- (void)loadBrainProgress:(id)progress error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUCoreMSU *)self msuControlQueue];
+  progressCopy = progress;
+  errorCopy = error;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__SUCoreMSU_loadBrainProgress_error___block_invoke;
   block[3] = &unk_27892D340;
-  v12 = v7;
-  v13 = v6;
-  v14 = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = errorCopy;
+  v13 = progressCopy;
+  selfCopy = self;
+  v9 = progressCopy;
+  v10 = errorCopy;
+  dispatch_async(msuControlQueue, block);
 }
 
 void __37__SUCoreMSU_loadBrainProgress_error___block_invoke(id *a1)
@@ -3964,25 +3964,25 @@ void __37__SUCoreMSU_loadBrainProgress_error___block_invoke(id *a1)
   }
 }
 
-- (int)prepareProgress:(__CFDictionary *)a3
+- (int)prepareProgress:(__CFDictionary *)progress
 {
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __29__SUCoreMSU_prepareProgress___block_invoke;
   block[3] = &unk_27892D570;
   block[4] = self;
   block[5] = &v8;
-  block[6] = a3;
-  dispatch_sync(v5, block);
+  block[6] = progress;
+  dispatch_sync(msuControlQueue, block);
 
-  LODWORD(a3) = *(v9 + 6);
+  LODWORD(progress) = *(v9 + 6);
   _Block_object_dispose(&v8, 8);
-  return a3;
+  return progress;
 }
 
 void __29__SUCoreMSU_prepareProgress___block_invoke(uint64_t a1)
@@ -4043,16 +4043,16 @@ void __29__SUCoreMSU_prepareProgress___block_invoke(uint64_t a1)
   }
 }
 
-- (int)applyProgress:(__CFDictionary *)a3
+- (int)applyProgress:(__CFDictionary *)progress
 {
-  v5 = [(SUCoreMSU *)self msuControlQueue];
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __27__SUCoreMSU_applyProgress___block_invoke;
   v7[3] = &unk_27892E5D0;
   v7[4] = self;
-  v7[5] = a3;
-  dispatch_sync(v5, v7);
+  v7[5] = progress;
+  dispatch_sync(msuControlQueue, v7);
 
   return 0;
 }
@@ -4150,41 +4150,41 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)_reportBrainLoadProgress:(id)a3
+- (void)_reportBrainLoadProgress:(id)progress
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  progressCopy = progress;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v6 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __38__SUCoreMSU__reportBrainLoadProgress___block_invoke;
     v13[3] = &unk_27892D478;
     v13[4] = self;
-    v14 = v4;
-    dispatch_async(v8, v13);
+    v14 = progressCopy;
+    dispatch_async(clientDelegateCallbackQueue, v13);
   }
 
   else
   {
-    v9 = [MEMORY[0x277D64460] sharedLogger];
-    v10 = [v9 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v4 summary];
+      summary = [progressCopy summary];
       *buf = 138543618;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
-      v18 = v11;
-      _os_log_impl(&dword_23193C000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuBrainLoadProgress:); so not reporting progress=%{public}@", buf, 0x16u);
+      v18 = summary;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuBrainLoadProgress:); so not reporting progress=%{public}@", buf, 0x16u);
     }
   }
 
@@ -4197,41 +4197,41 @@ void __38__SUCoreMSU__reportBrainLoadProgress___block_invoke(uint64_t a1)
   [v2 msuBrainLoadProgress:*(a1 + 40)];
 }
 
-- (void)_reportBrainLoadStalled:(id)a3
+- (void)_reportBrainLoadStalled:(id)stalled
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  stalledCopy = stalled;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v6 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __37__SUCoreMSU__reportBrainLoadStalled___block_invoke;
     v13[3] = &unk_27892D478;
     v13[4] = self;
-    v14 = v4;
-    dispatch_async(v8, v13);
+    v14 = stalledCopy;
+    dispatch_async(clientDelegateCallbackQueue, v13);
   }
 
   else
   {
-    v9 = [MEMORY[0x277D64460] sharedLogger];
-    v10 = [v9 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v4 summary];
+      summary = [stalledCopy summary];
       *buf = 138543618;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
-      v18 = v11;
-      _os_log_impl(&dword_23193C000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuBrainLoadStalled:); so not reporting stalled with progress=%{public}@", buf, 0x16u);
+      v18 = summary;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuBrainLoadStalled:); so not reporting stalled with progress=%{public}@", buf, 0x16u);
     }
   }
 
@@ -4244,47 +4244,47 @@ void __37__SUCoreMSU__reportBrainLoadStalled___block_invoke(uint64_t a1)
   [v2 msuBrainLoadStalled:*(a1 + 40)];
 }
 
-- (void)_reportBrainLoaded:(id)a3
+- (void)_reportBrainLoaded:(id)loaded
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  loadedCopy = loaded;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v6 = [(SUCoreMSU *)self loadBrainTransaction];
+  loadBrainTransaction = [(SUCoreMSU *)self loadBrainTransaction];
   [(SUCoreMSU *)self setLoadBrainTransaction:0];
-  v7 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __32__SUCoreMSU__reportBrainLoaded___block_invoke;
     block[3] = &unk_27892D340;
     block[4] = self;
-    v15 = v4;
-    v16 = v6;
-    dispatch_async(v9, block);
+    v15 = loadedCopy;
+    v16 = loadBrainTransaction;
+    dispatch_async(clientDelegateCallbackQueue, block);
   }
 
   else
   {
-    v10 = [MEMORY[0x277D64460] sharedLogger];
-    v11 = [v10 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v4 summary];
+      summary = [loadedCopy summary];
       *buf = 138543618;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
-      v20 = v12;
-      _os_log_impl(&dword_23193C000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuBrainLoaded:); so not reporting brain loaded with progress=%{public}@", buf, 0x16u);
+      v20 = summary;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuBrainLoaded:); so not reporting brain loaded with progress=%{public}@", buf, 0x16u);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v6 withName:@"msu.LoadBrain"];
+    [MEMORY[0x277D643F8] endTransaction:loadBrainTransaction withName:@"msu.LoadBrain"];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -4301,46 +4301,46 @@ uint64_t __32__SUCoreMSU__reportBrainLoaded___block_invoke(uint64_t a1)
   return [v3 endTransaction:v4 withName:@"msu.LoadBrain"];
 }
 
-- (void)_reportBrainLoadFailed:(id)a3
+- (void)_reportBrainLoadFailed:(id)failed
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  failedCopy = failed;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v6 = [(SUCoreMSU *)self loadBrainTransaction];
+  loadBrainTransaction = [(SUCoreMSU *)self loadBrainTransaction];
   [(SUCoreMSU *)self setLoadBrainTransaction:0];
-  v7 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __36__SUCoreMSU__reportBrainLoadFailed___block_invoke;
     block[3] = &unk_27892D340;
     block[4] = self;
-    v14 = v4;
-    v15 = v6;
-    dispatch_async(v9, block);
+    v14 = failedCopy;
+    v15 = loadBrainTransaction;
+    dispatch_async(clientDelegateCallbackQueue, block);
   }
 
   else
   {
-    v10 = [MEMORY[0x277D64460] sharedLogger];
-    v11 = [v10 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
-      v19 = v4;
-      _os_log_impl(&dword_23193C000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuBrainLoadFailed:); so not reporting brain load failed error=%{public}@", buf, 0x16u);
+      v19 = failedCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuBrainLoadFailed:); so not reporting brain load failed error=%{public}@", buf, 0x16u);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v6 withName:@"msu.LoadBrain"];
+    [MEMORY[0x277D643F8] endTransaction:loadBrainTransaction withName:@"msu.LoadBrain"];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -4360,39 +4360,39 @@ uint64_t __36__SUCoreMSU__reportBrainLoadFailed___block_invoke(uint64_t a1)
 - (void)_reportSUDownloadPreflighted
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v3);
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v4 = [(SUCoreMSU *)self preflightDownloadSUTransaction];
+  preflightDownloadSUTransaction = [(SUCoreMSU *)self preflightDownloadSUTransaction];
   [(SUCoreMSU *)self setPreflightDownloadSUTransaction:0];
-  v5 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __41__SUCoreMSU__reportSUDownloadPreflighted__block_invoke;
     v11[3] = &unk_27892D478;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v7, v11);
+    v12 = preflightDownloadSUTransaction;
+    dispatch_async(clientDelegateCallbackQueue, v11);
   }
 
   else
   {
-    v8 = [MEMORY[0x277D64460] sharedLogger];
-    v9 = [v8 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v14 = self;
-      _os_log_impl(&dword_23193C000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuSUDownloadPreflighted); so not reporting SU download preflighted", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuSUDownloadPreflighted); so not reporting SU download preflighted", buf, 0xCu);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v4 withName:@"msu.PreflightDownloadSU"];
+    [MEMORY[0x277D643F8] endTransaction:preflightDownloadSUTransaction withName:@"msu.PreflightDownloadSU"];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -4409,46 +4409,46 @@ uint64_t __41__SUCoreMSU__reportSUDownloadPreflighted__block_invoke(uint64_t a1)
   return [v3 endTransaction:v4 withName:@"msu.PreflightDownloadSU"];
 }
 
-- (void)_reportSUDownloadPreflightFailed:(id)a3
+- (void)_reportSUDownloadPreflightFailed:(id)failed
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  failedCopy = failed;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v6 = [(SUCoreMSU *)self preflightDownloadSUTransaction];
+  preflightDownloadSUTransaction = [(SUCoreMSU *)self preflightDownloadSUTransaction];
   [(SUCoreMSU *)self setPreflightDownloadSUTransaction:0];
-  v7 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __46__SUCoreMSU__reportSUDownloadPreflightFailed___block_invoke;
     block[3] = &unk_27892D340;
     block[4] = self;
-    v14 = v4;
-    v15 = v6;
-    dispatch_async(v9, block);
+    v14 = failedCopy;
+    v15 = preflightDownloadSUTransaction;
+    dispatch_async(clientDelegateCallbackQueue, block);
   }
 
   else
   {
-    v10 = [MEMORY[0x277D64460] sharedLogger];
-    v11 = [v10 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
-      v19 = v4;
-      _os_log_impl(&dword_23193C000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuSUDownloadPreflightFailed:); so not reporting SU download preflight failed error=%{public}@", buf, 0x16u);
+      v19 = failedCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuSUDownloadPreflightFailed:); so not reporting SU download preflight failed error=%{public}@", buf, 0x16u);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v6 withName:@"msu.PreflightDownloadSU"];
+    [MEMORY[0x277D643F8] endTransaction:preflightDownloadSUTransaction withName:@"msu.PreflightDownloadSU"];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -4468,39 +4468,39 @@ uint64_t __46__SUCoreMSU__reportSUDownloadPreflightFailed___block_invoke(uint64_
 - (void)_reportPersonalizePreflighted
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v3);
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v4 = [(SUCoreMSU *)self preflightPersonalizeTransaction];
+  preflightPersonalizeTransaction = [(SUCoreMSU *)self preflightPersonalizeTransaction];
   [(SUCoreMSU *)self setPreflightPersonalizeTransaction:0];
-  v5 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __42__SUCoreMSU__reportPersonalizePreflighted__block_invoke;
     v11[3] = &unk_27892D478;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v7, v11);
+    v12 = preflightPersonalizeTransaction;
+    dispatch_async(clientDelegateCallbackQueue, v11);
   }
 
   else
   {
-    v8 = [MEMORY[0x277D64460] sharedLogger];
-    v9 = [v8 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v14 = self;
-      _os_log_impl(&dword_23193C000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuPersonalizePreflighted); so not reporting personalization preflighted", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuPersonalizePreflighted); so not reporting personalization preflighted", buf, 0xCu);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v4 withName:@"msu.PreflightPersonalize"];
+    [MEMORY[0x277D643F8] endTransaction:preflightPersonalizeTransaction withName:@"msu.PreflightPersonalize"];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -4517,46 +4517,46 @@ uint64_t __42__SUCoreMSU__reportPersonalizePreflighted__block_invoke(uint64_t a1
   return [v3 endTransaction:v4 withName:@"msu.PreflightPersonalize"];
 }
 
-- (void)_reportPersonalizePreflightFailed:(id)a3
+- (void)_reportPersonalizePreflightFailed:(id)failed
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  failedCopy = failed;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v6 = [(SUCoreMSU *)self preflightPersonalizeTransaction];
+  preflightPersonalizeTransaction = [(SUCoreMSU *)self preflightPersonalizeTransaction];
   [(SUCoreMSU *)self setPreflightPersonalizeTransaction:0];
-  v7 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __47__SUCoreMSU__reportPersonalizePreflightFailed___block_invoke;
     block[3] = &unk_27892D340;
     block[4] = self;
-    v14 = v4;
-    v15 = v6;
-    dispatch_async(v9, block);
+    v14 = failedCopy;
+    v15 = preflightPersonalizeTransaction;
+    dispatch_async(clientDelegateCallbackQueue, block);
   }
 
   else
   {
-    v10 = [MEMORY[0x277D64460] sharedLogger];
-    v11 = [v10 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
-      v19 = v4;
-      _os_log_impl(&dword_23193C000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuPersonalizePreflightFailed:); so not reporting personalization preflight failed error=%{public}@", buf, 0x16u);
+      v19 = failedCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuPersonalizePreflightFailed:); so not reporting personalization preflight failed error=%{public}@", buf, 0x16u);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v6 withName:@"msu.PreflightDownloadSU"];
+    [MEMORY[0x277D643F8] endTransaction:preflightPersonalizeTransaction withName:@"msu.PreflightDownloadSU"];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -4576,39 +4576,39 @@ uint64_t __47__SUCoreMSU__reportPersonalizePreflightFailed___block_invoke(uint64
 - (void)_reportFDRRecoveryPreflighted
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v3);
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v4 = [(SUCoreMSU *)self preflightFDRRecoveryTransaction];
+  preflightFDRRecoveryTransaction = [(SUCoreMSU *)self preflightFDRRecoveryTransaction];
   [(SUCoreMSU *)self setPreflightFDRRecoveryTransaction:0];
-  v5 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __42__SUCoreMSU__reportFDRRecoveryPreflighted__block_invoke;
     v11[3] = &unk_27892D478;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v7, v11);
+    v12 = preflightFDRRecoveryTransaction;
+    dispatch_async(clientDelegateCallbackQueue, v11);
   }
 
   else
   {
-    v8 = [MEMORY[0x277D64460] sharedLogger];
-    v9 = [v8 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v14 = self;
-      _os_log_impl(&dword_23193C000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuFDRRecoveryPreflighted); so not reporting FDRRecovery preflighted", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuFDRRecoveryPreflighted); so not reporting FDRRecovery preflighted", buf, 0xCu);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v4 withName:@"msu.PreflightFDRRecovery"];
+    [MEMORY[0x277D643F8] endTransaction:preflightFDRRecoveryTransaction withName:@"msu.PreflightFDRRecovery"];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -4625,46 +4625,46 @@ uint64_t __42__SUCoreMSU__reportFDRRecoveryPreflighted__block_invoke(uint64_t a1
   return [v3 endTransaction:v4 withName:@"msu.PreflightFDRRecovery"];
 }
 
-- (void)_reportFDRRecoveryPreflightFailed:(id)a3
+- (void)_reportFDRRecoveryPreflightFailed:(id)failed
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  failedCopy = failed;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v6 = [(SUCoreMSU *)self preflightFDRRecoveryTransaction];
+  preflightFDRRecoveryTransaction = [(SUCoreMSU *)self preflightFDRRecoveryTransaction];
   [(SUCoreMSU *)self setPreflightFDRRecoveryTransaction:0];
-  v7 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __47__SUCoreMSU__reportFDRRecoveryPreflightFailed___block_invoke;
     block[3] = &unk_27892D340;
     block[4] = self;
-    v14 = v4;
-    v15 = v6;
-    dispatch_async(v9, block);
+    v14 = failedCopy;
+    v15 = preflightFDRRecoveryTransaction;
+    dispatch_async(clientDelegateCallbackQueue, block);
   }
 
   else
   {
-    v10 = [MEMORY[0x277D64460] sharedLogger];
-    v11 = [v10 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
-      v19 = v4;
-      _os_log_impl(&dword_23193C000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuFDRRecoveryPreflightFailed:); so not reporting FDRRecovery preflight failed error=%{public}@", buf, 0x16u);
+      v19 = failedCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuFDRRecoveryPreflightFailed:); so not reporting FDRRecovery preflight failed error=%{public}@", buf, 0x16u);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v6 withName:@"msu.PreflightFDRRecovery"];
+    [MEMORY[0x277D643F8] endTransaction:preflightFDRRecoveryTransaction withName:@"msu.PreflightFDRRecovery"];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -4684,39 +4684,39 @@ uint64_t __47__SUCoreMSU__reportFDRRecoveryPreflightFailed___block_invoke(uint64
 - (void)_reportWakeupPreflighted
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v3);
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v4 = [(SUCoreMSU *)self preflightWakeupTransaction];
+  preflightWakeupTransaction = [(SUCoreMSU *)self preflightWakeupTransaction];
   [(SUCoreMSU *)self setPreflightWakeupTransaction:0];
-  v5 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __37__SUCoreMSU__reportWakeupPreflighted__block_invoke;
     v11[3] = &unk_27892D478;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v7, v11);
+    v12 = preflightWakeupTransaction;
+    dispatch_async(clientDelegateCallbackQueue, v11);
   }
 
   else
   {
-    v8 = [MEMORY[0x277D64460] sharedLogger];
-    v9 = [v8 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v14 = self;
-      _os_log_impl(&dword_23193C000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuWakeupPreflighted); so not reporting wakeup preflighted", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuWakeupPreflighted); so not reporting wakeup preflighted", buf, 0xCu);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v4 withName:@"msu.PreflightWakeup"];
+    [MEMORY[0x277D643F8] endTransaction:preflightWakeupTransaction withName:@"msu.PreflightWakeup"];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -4733,46 +4733,46 @@ uint64_t __37__SUCoreMSU__reportWakeupPreflighted__block_invoke(uint64_t a1)
   return [v3 endTransaction:v4 withName:@"msu.PreflightWakeup"];
 }
 
-- (void)_reportWakeupPreflightFailed:(id)a3
+- (void)_reportWakeupPreflightFailed:(id)failed
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  failedCopy = failed;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v6 = [(SUCoreMSU *)self preflightWakeupTransaction];
+  preflightWakeupTransaction = [(SUCoreMSU *)self preflightWakeupTransaction];
   [(SUCoreMSU *)self setPreflightWakeupTransaction:0];
-  v7 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __42__SUCoreMSU__reportWakeupPreflightFailed___block_invoke;
     block[3] = &unk_27892D340;
     block[4] = self;
-    v14 = v4;
-    v15 = v6;
-    dispatch_async(v9, block);
+    v14 = failedCopy;
+    v15 = preflightWakeupTransaction;
+    dispatch_async(clientDelegateCallbackQueue, block);
   }
 
   else
   {
-    v10 = [MEMORY[0x277D64460] sharedLogger];
-    v11 = [v10 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
-      v19 = v4;
-      _os_log_impl(&dword_23193C000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuWakeupPreflightFailed:); so not reporting wakeup preflight failed error=%{public}@", buf, 0x16u);
+      v19 = failedCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuWakeupPreflightFailed:); so not reporting wakeup preflight failed error=%{public}@", buf, 0x16u);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v6 withName:@"msu.PreflightWakeup"];
+    [MEMORY[0x277D643F8] endTransaction:preflightWakeupTransaction withName:@"msu.PreflightWakeup"];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -4792,39 +4792,39 @@ uint64_t __42__SUCoreMSU__reportWakeupPreflightFailed___block_invoke(uint64_t a1
 - (void)_reportPrerequisiteCheckPreflighted
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v3);
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v4 = [(SUCoreMSU *)self preflightPrerequisiteCheckTransaction];
+  preflightPrerequisiteCheckTransaction = [(SUCoreMSU *)self preflightPrerequisiteCheckTransaction];
   [(SUCoreMSU *)self setPreflightPrerequisiteCheckTransaction:0];
-  v5 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __48__SUCoreMSU__reportPrerequisiteCheckPreflighted__block_invoke;
     v11[3] = &unk_27892D478;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v7, v11);
+    v12 = preflightPrerequisiteCheckTransaction;
+    dispatch_async(clientDelegateCallbackQueue, v11);
   }
 
   else
   {
-    v8 = [MEMORY[0x277D64460] sharedLogger];
-    v9 = [v8 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v14 = self;
-      _os_log_impl(&dword_23193C000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuPrerequisiteCheckPreflighted); so not reporting prerequisite check preflighted", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuPrerequisiteCheckPreflighted); so not reporting prerequisite check preflighted", buf, 0xCu);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v4 withName:@"msu.PreflightPrerequisiteCheck"];
+    [MEMORY[0x277D643F8] endTransaction:preflightPrerequisiteCheckTransaction withName:@"msu.PreflightPrerequisiteCheck"];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -4841,46 +4841,46 @@ uint64_t __48__SUCoreMSU__reportPrerequisiteCheckPreflighted__block_invoke(uint6
   return [v3 endTransaction:v4 withName:@"msu.PreflightPrerequisiteCheck"];
 }
 
-- (void)_reportPrerequisiteCheckPreflightFailed:(id)a3
+- (void)_reportPrerequisiteCheckPreflightFailed:(id)failed
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  failedCopy = failed;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v6 = [(SUCoreMSU *)self preflightPrerequisiteCheckTransaction];
+  preflightPrerequisiteCheckTransaction = [(SUCoreMSU *)self preflightPrerequisiteCheckTransaction];
   [(SUCoreMSU *)self setPreflightPrerequisiteCheckTransaction:0];
-  v7 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __53__SUCoreMSU__reportPrerequisiteCheckPreflightFailed___block_invoke;
     block[3] = &unk_27892D340;
     block[4] = self;
-    v14 = v4;
-    v15 = v6;
-    dispatch_async(v9, block);
+    v14 = failedCopy;
+    v15 = preflightPrerequisiteCheckTransaction;
+    dispatch_async(clientDelegateCallbackQueue, block);
   }
 
   else
   {
-    v10 = [MEMORY[0x277D64460] sharedLogger];
-    v11 = [v10 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
-      v19 = v4;
-      _os_log_impl(&dword_23193C000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuPrerequisiteCheckPreflightFailed:); so not reporting prerequisite check preflight failed error=%{public}@", buf, 0x16u);
+      v19 = failedCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuPrerequisiteCheckPreflightFailed:); so not reporting prerequisite check preflight failed error=%{public}@", buf, 0x16u);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v6 withName:@"msu.PreflightPrerequisiteCheck"];
+    [MEMORY[0x277D643F8] endTransaction:preflightPrerequisiteCheckTransaction withName:@"msu.PreflightPrerequisiteCheck"];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -4897,47 +4897,47 @@ uint64_t __53__SUCoreMSU__reportPrerequisiteCheckPreflightFailed___block_invoke(
   return [v3 endTransaction:v4 withName:@"msu.PreflightPrerequisiteCheck"];
 }
 
-- (void)_reportPrepared:(id)a3
+- (void)_reportPrepared:(id)prepared
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  preparedCopy = prepared;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v6 = [(SUCoreMSU *)self prepareUpdateTransaction];
+  prepareUpdateTransaction = [(SUCoreMSU *)self prepareUpdateTransaction];
   [(SUCoreMSU *)self setPrepareUpdateTransaction:0];
-  v7 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __29__SUCoreMSU__reportPrepared___block_invoke;
     block[3] = &unk_27892D340;
     block[4] = self;
-    v15 = v4;
-    v16 = v6;
-    dispatch_async(v9, block);
+    v15 = preparedCopy;
+    v16 = prepareUpdateTransaction;
+    dispatch_async(clientDelegateCallbackQueue, block);
   }
 
   else
   {
-    v10 = [MEMORY[0x277D64460] sharedLogger];
-    v11 = [v10 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v4 summary];
+      summary = [preparedCopy summary];
       *buf = 138543618;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
-      v20 = v12;
-      _os_log_impl(&dword_23193C000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuPrepared:); so not reporting prepared with progress=%{public}@", buf, 0x16u);
+      v20 = summary;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuPrepared:); so not reporting prepared with progress=%{public}@", buf, 0x16u);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v6 withName:@"msu.PrepareUpdate"];
+    [MEMORY[0x277D643F8] endTransaction:prepareUpdateTransaction withName:@"msu.PrepareUpdate"];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -4954,41 +4954,41 @@ uint64_t __29__SUCoreMSU__reportPrepared___block_invoke(uint64_t a1)
   return [v3 endTransaction:v4 withName:@"msu.PrepareUpdate"];
 }
 
-- (void)_reportPrepareProgress:(id)a3
+- (void)_reportPrepareProgress:(id)progress
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  progressCopy = progress;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v6 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __36__SUCoreMSU__reportPrepareProgress___block_invoke;
     v13[3] = &unk_27892D478;
     v13[4] = self;
-    v14 = v4;
-    dispatch_async(v8, v13);
+    v14 = progressCopy;
+    dispatch_async(clientDelegateCallbackQueue, v13);
   }
 
   else
   {
-    v9 = [MEMORY[0x277D64460] sharedLogger];
-    v10 = [v9 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v4 summary];
+      summary = [progressCopy summary];
       *buf = 138543618;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
-      v18 = v11;
-      _os_log_impl(&dword_23193C000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuPrepareProgress:); so not reporting prepare progress=%{public}@", buf, 0x16u);
+      v18 = summary;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuPrepareProgress:); so not reporting prepare progress=%{public}@", buf, 0x16u);
     }
   }
 
@@ -5001,41 +5001,41 @@ void __36__SUCoreMSU__reportPrepareProgress___block_invoke(uint64_t a1)
   [v2 msuPrepareProgress:*(a1 + 40)];
 }
 
-- (void)_reportApplyProgress:(id)a3
+- (void)_reportApplyProgress:(id)progress
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  progressCopy = progress;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v6 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __34__SUCoreMSU__reportApplyProgress___block_invoke;
     v13[3] = &unk_27892D478;
     v13[4] = self;
-    v14 = v4;
-    dispatch_async(v8, v13);
+    v14 = progressCopy;
+    dispatch_async(clientDelegateCallbackQueue, v13);
   }
 
   else
   {
-    v9 = [MEMORY[0x277D64460] sharedLogger];
-    v10 = [v9 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v4 summary];
+      summary = [progressCopy summary];
       *buf = 138543618;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
-      v18 = v11;
-      _os_log_impl(&dword_23193C000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuApplyProgress:); so not reporting apply progress=%{public}@", buf, 0x16u);
+      v18 = summary;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuApplyProgress:); so not reporting apply progress=%{public}@", buf, 0x16u);
     }
   }
 
@@ -5048,46 +5048,46 @@ void __34__SUCoreMSU__reportApplyProgress___block_invoke(uint64_t a1)
   [v2 msuApplyProgress:*(a1 + 40)];
 }
 
-- (void)_reportPrepareFailed:(id)a3
+- (void)_reportPrepareFailed:(id)failed
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  failedCopy = failed;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v6 = [(SUCoreMSU *)self prepareUpdateTransaction];
+  prepareUpdateTransaction = [(SUCoreMSU *)self prepareUpdateTransaction];
   [(SUCoreMSU *)self setPrepareUpdateTransaction:0];
-  v7 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __34__SUCoreMSU__reportPrepareFailed___block_invoke;
     block[3] = &unk_27892D340;
     block[4] = self;
-    v14 = v4;
-    v15 = v6;
-    dispatch_async(v9, block);
+    v14 = failedCopy;
+    v15 = prepareUpdateTransaction;
+    dispatch_async(clientDelegateCallbackQueue, block);
   }
 
   else
   {
-    v10 = [MEMORY[0x277D64460] sharedLogger];
-    v11 = [v10 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
-      v19 = v4;
-      _os_log_impl(&dword_23193C000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuPrepareFailed:); so not reporting prepare failed error=%{public}@", buf, 0x16u);
+      v19 = failedCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuPrepareFailed:); so not reporting prepare failed error=%{public}@", buf, 0x16u);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v6 withName:@"msu.PrepareUpdate"];
+    [MEMORY[0x277D643F8] endTransaction:prepareUpdateTransaction withName:@"msu.PrepareUpdate"];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -5107,39 +5107,39 @@ uint64_t __34__SUCoreMSU__reportPrepareFailed___block_invoke(uint64_t a1)
 - (void)_reportSuspended
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v3);
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v4 = [(SUCoreMSU *)self suspendUpdateTransaction];
+  suspendUpdateTransaction = [(SUCoreMSU *)self suspendUpdateTransaction];
   [(SUCoreMSU *)self setSuspendUpdateTransaction:0];
-  v5 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __29__SUCoreMSU__reportSuspended__block_invoke;
     v11[3] = &unk_27892D478;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v7, v11);
+    v12 = suspendUpdateTransaction;
+    dispatch_async(clientDelegateCallbackQueue, v11);
   }
 
   else
   {
-    v8 = [MEMORY[0x277D64460] sharedLogger];
-    v9 = [v8 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v14 = self;
-      _os_log_impl(&dword_23193C000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuSuspended); so not reporting suspended", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuSuspended); so not reporting suspended", buf, 0xCu);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v4 withName:@"msu.SuspendUpdate"];
+    [MEMORY[0x277D643F8] endTransaction:suspendUpdateTransaction withName:@"msu.SuspendUpdate"];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -5156,46 +5156,46 @@ uint64_t __29__SUCoreMSU__reportSuspended__block_invoke(uint64_t a1)
   return [v3 endTransaction:v4 withName:@"msu.SuspendUpdate"];
 }
 
-- (void)_reportSuspendFailed:(id)a3
+- (void)_reportSuspendFailed:(id)failed
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  failedCopy = failed;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v6 = [(SUCoreMSU *)self suspendUpdateTransaction];
+  suspendUpdateTransaction = [(SUCoreMSU *)self suspendUpdateTransaction];
   [(SUCoreMSU *)self setSuspendUpdateTransaction:0];
-  v7 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __34__SUCoreMSU__reportSuspendFailed___block_invoke;
     block[3] = &unk_27892D340;
     block[4] = self;
-    v14 = v4;
-    v15 = v6;
-    dispatch_async(v9, block);
+    v14 = failedCopy;
+    v15 = suspendUpdateTransaction;
+    dispatch_async(clientDelegateCallbackQueue, block);
   }
 
   else
   {
-    v10 = [MEMORY[0x277D64460] sharedLogger];
-    v11 = [v10 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
-      v19 = v4;
-      _os_log_impl(&dword_23193C000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuSuspendFailed:); so not reporting suspend failed error=%{public}@", buf, 0x16u);
+      v19 = failedCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuSuspendFailed:); so not reporting suspend failed error=%{public}@", buf, 0x16u);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v6 withName:@"msu.SuspendUpdate"];
+    [MEMORY[0x277D643F8] endTransaction:suspendUpdateTransaction withName:@"msu.SuspendUpdate"];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -5215,39 +5215,39 @@ uint64_t __34__SUCoreMSU__reportSuspendFailed___block_invoke(uint64_t a1)
 - (void)_reportResumed
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v3);
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v4 = [(SUCoreMSU *)self resumeUpdateTransaction];
+  resumeUpdateTransaction = [(SUCoreMSU *)self resumeUpdateTransaction];
   [(SUCoreMSU *)self setResumeUpdateTransaction:0];
-  v5 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __27__SUCoreMSU__reportResumed__block_invoke;
     v11[3] = &unk_27892D478;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v7, v11);
+    v12 = resumeUpdateTransaction;
+    dispatch_async(clientDelegateCallbackQueue, v11);
   }
 
   else
   {
-    v8 = [MEMORY[0x277D64460] sharedLogger];
-    v9 = [v8 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v14 = self;
-      _os_log_impl(&dword_23193C000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuResumed); so not reporting resumed", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuResumed); so not reporting resumed", buf, 0xCu);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v4 withName:@"msu.ResumeUpdate"];
+    [MEMORY[0x277D643F8] endTransaction:resumeUpdateTransaction withName:@"msu.ResumeUpdate"];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -5264,46 +5264,46 @@ uint64_t __27__SUCoreMSU__reportResumed__block_invoke(uint64_t a1)
   return [v3 endTransaction:v4 withName:@"msu.ResumeUpdate"];
 }
 
-- (void)_reportResumeFailed:(id)a3
+- (void)_reportResumeFailed:(id)failed
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  failedCopy = failed;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v6 = [(SUCoreMSU *)self resumeUpdateTransaction];
+  resumeUpdateTransaction = [(SUCoreMSU *)self resumeUpdateTransaction];
   [(SUCoreMSU *)self setResumeUpdateTransaction:0];
-  v7 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __33__SUCoreMSU__reportResumeFailed___block_invoke;
     block[3] = &unk_27892D340;
     block[4] = self;
-    v14 = v4;
-    v15 = v6;
-    dispatch_async(v9, block);
+    v14 = failedCopy;
+    v15 = resumeUpdateTransaction;
+    dispatch_async(clientDelegateCallbackQueue, block);
   }
 
   else
   {
-    v10 = [MEMORY[0x277D64460] sharedLogger];
-    v11 = [v10 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
-      v19 = v4;
-      _os_log_impl(&dword_23193C000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuResumeFailed:); so not reporting resume failed error=%{public}@", buf, 0x16u);
+      v19 = failedCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuResumeFailed:); so not reporting resume failed error=%{public}@", buf, 0x16u);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v6 withName:@"msu.ResumeUpdate"];
+    [MEMORY[0x277D643F8] endTransaction:resumeUpdateTransaction withName:@"msu.ResumeUpdate"];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -5323,39 +5323,39 @@ uint64_t __33__SUCoreMSU__reportResumeFailed___block_invoke(uint64_t a1)
 - (void)_reportApplied
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v3);
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v4 = [(SUCoreMSU *)self applyUpdateTransaction];
+  applyUpdateTransaction = [(SUCoreMSU *)self applyUpdateTransaction];
   [(SUCoreMSU *)self setApplyUpdateTransaction:0];
-  v5 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __27__SUCoreMSU__reportApplied__block_invoke;
     v11[3] = &unk_27892D478;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v7, v11);
+    v12 = applyUpdateTransaction;
+    dispatch_async(clientDelegateCallbackQueue, v11);
   }
 
   else
   {
-    v8 = [MEMORY[0x277D64460] sharedLogger];
-    v9 = [v8 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v14 = self;
-      _os_log_impl(&dword_23193C000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuApplied); so not reporting applied", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuApplied); so not reporting applied", buf, 0xCu);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v4 withName:@"msu.ApplyUpdate"];
+    [MEMORY[0x277D643F8] endTransaction:applyUpdateTransaction withName:@"msu.ApplyUpdate"];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -5372,46 +5372,46 @@ uint64_t __27__SUCoreMSU__reportApplied__block_invoke(uint64_t a1)
   return [v3 endTransaction:v4 withName:@"msu.ApplyUpdate"];
 }
 
-- (void)_reportApplyFailed:(id)a3
+- (void)_reportApplyFailed:(id)failed
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  failedCopy = failed;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v6 = [(SUCoreMSU *)self applyUpdateTransaction];
+  applyUpdateTransaction = [(SUCoreMSU *)self applyUpdateTransaction];
   [(SUCoreMSU *)self setApplyUpdateTransaction:0];
-  v7 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __32__SUCoreMSU__reportApplyFailed___block_invoke;
     block[3] = &unk_27892D340;
     block[4] = self;
-    v14 = v4;
-    v15 = v6;
-    dispatch_async(v9, block);
+    v14 = failedCopy;
+    v15 = applyUpdateTransaction;
+    dispatch_async(clientDelegateCallbackQueue, block);
   }
 
   else
   {
-    v10 = [MEMORY[0x277D64460] sharedLogger];
-    v11 = [v10 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
-      v19 = v4;
-      _os_log_impl(&dword_23193C000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuApplyFailed:); so not reporting apply failed error=%{public}@", buf, 0x16u);
+      v19 = failedCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuApplyFailed:); so not reporting apply failed error=%{public}@", buf, 0x16u);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v6 withName:@"msu.ApplyUpdate"];
+    [MEMORY[0x277D643F8] endTransaction:applyUpdateTransaction withName:@"msu.ApplyUpdate"];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -5431,39 +5431,39 @@ uint64_t __32__SUCoreMSU__reportApplyFailed___block_invoke(uint64_t a1)
 - (void)_reportRollbackPrepareSuccess
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v3);
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v4 = [(SUCoreMSU *)self rollbackUpdateTransaction];
+  rollbackUpdateTransaction = [(SUCoreMSU *)self rollbackUpdateTransaction];
   [(SUCoreMSU *)self setRollbackUpdateTransaction:0];
-  v5 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __42__SUCoreMSU__reportRollbackPrepareSuccess__block_invoke;
     v11[3] = &unk_27892D478;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v7, v11);
+    v12 = rollbackUpdateTransaction;
+    dispatch_async(clientDelegateCallbackQueue, v11);
   }
 
   else
   {
-    v8 = [MEMORY[0x277D64460] sharedLogger];
-    v9 = [v8 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v14 = self;
-      _os_log_impl(&dword_23193C000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuRollbackPrepareSuccess); so not reporting msuRollbackPrepareSuccess", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuRollbackPrepareSuccess); so not reporting msuRollbackPrepareSuccess", buf, 0xCu);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v4 withName:@"msu.RollbackUpdate"];
+    [MEMORY[0x277D643F8] endTransaction:rollbackUpdateTransaction withName:@"msu.RollbackUpdate"];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -5483,39 +5483,39 @@ uint64_t __42__SUCoreMSU__reportRollbackPrepareSuccess__block_invoke(uint64_t a1
 - (void)_reportRollbackSuspendSuccess
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v3);
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v4 = [(SUCoreMSU *)self rollbackUpdateTransaction];
+  rollbackUpdateTransaction = [(SUCoreMSU *)self rollbackUpdateTransaction];
   [(SUCoreMSU *)self setRollbackUpdateTransaction:0];
-  v5 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __42__SUCoreMSU__reportRollbackSuspendSuccess__block_invoke;
     v11[3] = &unk_27892D478;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v7, v11);
+    v12 = rollbackUpdateTransaction;
+    dispatch_async(clientDelegateCallbackQueue, v11);
   }
 
   else
   {
-    v8 = [MEMORY[0x277D64460] sharedLogger];
-    v9 = [v8 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v14 = self;
-      _os_log_impl(&dword_23193C000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuRollbackSuspendSuccess); so not reporting msuRollbackSuspendSuccess", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuRollbackSuspendSuccess); so not reporting msuRollbackSuspendSuccess", buf, 0xCu);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v4 withName:@"msu.RollbackUpdate"];
+    [MEMORY[0x277D643F8] endTransaction:rollbackUpdateTransaction withName:@"msu.RollbackUpdate"];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -5535,39 +5535,39 @@ uint64_t __42__SUCoreMSU__reportRollbackSuspendSuccess__block_invoke(uint64_t a1
 - (void)_reportRollbackResumeSuccess
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v3);
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v4 = [(SUCoreMSU *)self rollbackUpdateTransaction];
+  rollbackUpdateTransaction = [(SUCoreMSU *)self rollbackUpdateTransaction];
   [(SUCoreMSU *)self setRollbackUpdateTransaction:0];
-  v5 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __41__SUCoreMSU__reportRollbackResumeSuccess__block_invoke;
     v11[3] = &unk_27892D478;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v7, v11);
+    v12 = rollbackUpdateTransaction;
+    dispatch_async(clientDelegateCallbackQueue, v11);
   }
 
   else
   {
-    v8 = [MEMORY[0x277D64460] sharedLogger];
-    v9 = [v8 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v14 = self;
-      _os_log_impl(&dword_23193C000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuRollbackResumeSuccess); so not reporting msuRollbackResumeSuccess", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuRollbackResumeSuccess); so not reporting msuRollbackResumeSuccess", buf, 0xCu);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v4 withName:@"msu.RollbackUpdate"];
+    [MEMORY[0x277D643F8] endTransaction:rollbackUpdateTransaction withName:@"msu.RollbackUpdate"];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -5587,39 +5587,39 @@ uint64_t __41__SUCoreMSU__reportRollbackResumeSuccess__block_invoke(uint64_t a1)
 - (void)_reportRollbackApplySuccess
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v3);
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v4 = [(SUCoreMSU *)self rollbackUpdateTransaction];
+  rollbackUpdateTransaction = [(SUCoreMSU *)self rollbackUpdateTransaction];
   [(SUCoreMSU *)self setRollbackUpdateTransaction:0];
-  v5 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __40__SUCoreMSU__reportRollbackApplySuccess__block_invoke;
     v11[3] = &unk_27892D478;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v7, v11);
+    v12 = rollbackUpdateTransaction;
+    dispatch_async(clientDelegateCallbackQueue, v11);
   }
 
   else
   {
-    v8 = [MEMORY[0x277D64460] sharedLogger];
-    v9 = [v8 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v14 = self;
-      _os_log_impl(&dword_23193C000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuRollbackApplySuccess); so not reporting msuRollbackApplySuccess", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuRollbackApplySuccess); so not reporting msuRollbackApplySuccess", buf, 0xCu);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v4 withName:@"msu.RollbackUpdate"];
+    [MEMORY[0x277D643F8] endTransaction:rollbackUpdateTransaction withName:@"msu.RollbackUpdate"];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -5636,46 +5636,46 @@ uint64_t __40__SUCoreMSU__reportRollbackApplySuccess__block_invoke(uint64_t a1)
   return [v3 endTransaction:v4 withName:@"msu.RollbackUpdate"];
 }
 
-- (void)_reportRollbackApplyFailed:(id)a3
+- (void)_reportRollbackApplyFailed:(id)failed
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  failedCopy = failed;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v6 = [(SUCoreMSU *)self rollbackUpdateTransaction];
+  rollbackUpdateTransaction = [(SUCoreMSU *)self rollbackUpdateTransaction];
   [(SUCoreMSU *)self setRollbackUpdateTransaction:0];
-  v7 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __40__SUCoreMSU__reportRollbackApplyFailed___block_invoke;
     block[3] = &unk_27892D340;
     block[4] = self;
-    v14 = v4;
-    v15 = v6;
-    dispatch_async(v9, block);
+    v14 = failedCopy;
+    v15 = rollbackUpdateTransaction;
+    dispatch_async(clientDelegateCallbackQueue, block);
   }
 
   else
   {
-    v10 = [MEMORY[0x277D64460] sharedLogger];
-    v11 = [v10 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
-      v19 = v4;
-      _os_log_impl(&dword_23193C000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuRollbackApplyFailed:); so not reporting apply failed error=%{public}@", buf, 0x16u);
+      v19 = failedCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuRollbackApplyFailed:); so not reporting apply failed error=%{public}@", buf, 0x16u);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v6 withName:@"msu.RollbackUpdate"];
+    [MEMORY[0x277D643F8] endTransaction:rollbackUpdateTransaction withName:@"msu.RollbackUpdate"];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -5692,46 +5692,46 @@ uint64_t __40__SUCoreMSU__reportRollbackApplyFailed___block_invoke(uint64_t a1)
   return [v3 endTransaction:v4 withName:@"msu.RollbackUpdate"];
 }
 
-- (void)_reportRollbackFailed:(id)a3
+- (void)_reportRollbackFailed:(id)failed
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  failedCopy = failed;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v6 = [(SUCoreMSU *)self rollbackUpdateTransaction];
+  rollbackUpdateTransaction = [(SUCoreMSU *)self rollbackUpdateTransaction];
   [(SUCoreMSU *)self setRollbackUpdateTransaction:0];
-  v7 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __35__SUCoreMSU__reportRollbackFailed___block_invoke;
     block[3] = &unk_27892D340;
     block[4] = self;
-    v14 = v4;
-    v15 = v6;
-    dispatch_async(v9, block);
+    v14 = failedCopy;
+    v15 = rollbackUpdateTransaction;
+    dispatch_async(clientDelegateCallbackQueue, block);
   }
 
   else
   {
-    v10 = [MEMORY[0x277D64460] sharedLogger];
-    v11 = [v10 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
-      v19 = v4;
-      _os_log_impl(&dword_23193C000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuRollbackFailed:); so not reporting rollback failed error=%{public}@", buf, 0x16u);
+      v19 = failedCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuRollbackFailed:); so not reporting rollback failed error=%{public}@", buf, 0x16u);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v6 withName:@"msu.RollbackUpdate"];
+    [MEMORY[0x277D643F8] endTransaction:rollbackUpdateTransaction withName:@"msu.RollbackUpdate"];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -5751,39 +5751,39 @@ uint64_t __35__SUCoreMSU__reportRollbackFailed___block_invoke(uint64_t a1)
 - (void)_reportRemoved
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v3);
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v4 = [(SUCoreMSU *)self removePreparedTransaction];
+  removePreparedTransaction = [(SUCoreMSU *)self removePreparedTransaction];
   [(SUCoreMSU *)self setRemovePreparedTransaction:0];
-  v5 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __27__SUCoreMSU__reportRemoved__block_invoke;
     v11[3] = &unk_27892D478;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v7, v11);
+    v12 = removePreparedTransaction;
+    dispatch_async(clientDelegateCallbackQueue, v11);
   }
 
   else
   {
-    v8 = [MEMORY[0x277D64460] sharedLogger];
-    v9 = [v8 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v14 = self;
-      _os_log_impl(&dword_23193C000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuRemoved); so not reporting removed", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuRemoved); so not reporting removed", buf, 0xCu);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v4 withName:@"msu.RemovePrepared"];
+    [MEMORY[0x277D643F8] endTransaction:removePreparedTransaction withName:@"msu.RemovePrepared"];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -5800,46 +5800,46 @@ uint64_t __27__SUCoreMSU__reportRemoved__block_invoke(uint64_t a1)
   return [v3 endTransaction:v4 withName:@"msu.RemovePrepared"];
 }
 
-- (void)_reportRemoveFailed:(id)a3
+- (void)_reportRemoveFailed:(id)failed
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuControlQueue];
-  dispatch_assert_queue_V2(v5);
+  failedCopy = failed;
+  msuControlQueue = [(SUCoreMSU *)self msuControlQueue];
+  dispatch_assert_queue_V2(msuControlQueue);
 
-  v6 = [(SUCoreMSU *)self removePreparedTransaction];
+  removePreparedTransaction = [(SUCoreMSU *)self removePreparedTransaction];
   [(SUCoreMSU *)self setRemovePreparedTransaction:0];
-  v7 = [(SUCoreMSU *)self msuDelegate];
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __33__SUCoreMSU__reportRemoveFailed___block_invoke;
     block[3] = &unk_27892D340;
     block[4] = self;
-    v14 = v4;
-    v15 = v6;
-    dispatch_async(v9, block);
+    v14 = failedCopy;
+    v15 = removePreparedTransaction;
+    dispatch_async(clientDelegateCallbackQueue, block);
   }
 
   else
   {
-    v10 = [MEMORY[0x277D64460] sharedLogger];
-    v11 = [v10 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
-      v19 = v4;
-      _os_log_impl(&dword_23193C000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuRemoveFailed:); so not reporting remove failed error=%{public}@", buf, 0x16u);
+      v19 = failedCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuRemoveFailed:); so not reporting remove failed error=%{public}@", buf, 0x16u);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v6 withName:@"msu.RemovePrepared"];
+    [MEMORY[0x277D643F8] endTransaction:removePreparedTransaction withName:@"msu.RemovePrepared"];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -5856,37 +5856,37 @@ uint64_t __33__SUCoreMSU__reportRemoveFailed___block_invoke(uint64_t a1)
   return [v3 endTransaction:v4 withName:@"msu.RemovePrepared"];
 }
 
-- (void)_reportAnomaly:(id)a3
+- (void)_reportAnomaly:(id)anomaly
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreMSU *)self msuDelegate];
+  anomalyCopy = anomaly;
+  msuDelegate = [(SUCoreMSU *)self msuDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SUCoreMSU *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMSU *)self clientDelegateCallbackQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __28__SUCoreMSU__reportAnomaly___block_invoke;
     v11[3] = &unk_27892D478;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v7, v11);
+    v12 = anomalyCopy;
+    dispatch_async(clientDelegateCallbackQueue, v11);
   }
 
   else
   {
-    v8 = [MEMORY[0x277D64460] sharedLogger];
-    v9 = [v8 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
-      v16 = v4;
-      _os_log_impl(&dword_23193C000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuAnomaly:); so not reporting anomaly error=%{public}@", buf, 0x16u);
+      v16 = anomalyCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(msuAnomaly:); so not reporting anomaly error=%{public}@", buf, 0x16u);
     }
   }
 
@@ -5899,44 +5899,44 @@ void __28__SUCoreMSU__reportAnomaly___block_invoke(uint64_t a1)
   [v2 msuAnomaly:*(a1 + 40)];
 }
 
-- (void)_trackMSUBegin:(id)a3
+- (void)_trackMSUBegin:(id)begin
 {
   v3 = MEMORY[0x277D64428];
-  v4 = a3;
-  v5 = [v3 sharedDiag];
-  [v5 trackBegin:v4 atLevel:1 forModule:@"msu"];
+  beginCopy = begin;
+  sharedDiag = [v3 sharedDiag];
+  [sharedDiag trackBegin:beginCopy atLevel:1 forModule:@"msu"];
 }
 
-- (void)_trackMSUEnd:(id)a3 withResult:(int64_t)a4 withError:(id)a5
+- (void)_trackMSUEnd:(id)end withResult:(int64_t)result withError:(id)error
 {
   v7 = MEMORY[0x277D64428];
-  v8 = a5;
-  v9 = a3;
-  v10 = [v7 sharedDiag];
-  [v10 trackEnd:v9 atLevel:1 forModule:@"msu" withResult:a4 withError:v8];
+  errorCopy = error;
+  endCopy = end;
+  sharedDiag = [v7 sharedDiag];
+  [sharedDiag trackEnd:endCopy atLevel:1 forModule:@"msu" withResult:result withError:errorCopy];
 }
 
-- (void)_trackMSUOptions:(id)a3 optionsName:(id)a4 withMSUOptions:(id)a5
+- (void)_trackMSUOptions:(id)options optionsName:(id)name withMSUOptions:(id)uOptions
 {
   v59 = *MEMORY[0x277D85DE8];
-  v39 = a3;
-  v7 = a4;
-  v8 = a5;
+  optionsCopy = options;
+  nameCopy = name;
+  uOptionsCopy = uOptions;
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v40 = v8;
-  v10 = [v8 safeDescriptionWithName:v7 maxNestedLevel:0 withMaxValueLength:64 providingSubstitutionMap:v9];
-  v11 = [MEMORY[0x277D64460] sharedLogger];
-  v12 = [v11 oslog];
+  v40 = uOptionsCopy;
+  v10 = [uOptionsCopy safeDescriptionWithName:nameCopy maxNestedLevel:0 withMaxValueLength:64 providingSubstitutionMap:v9];
+  mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+  oslog = [mEMORY[0x277D64460] oslog];
 
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v54 = self;
+    selfCopy2 = self;
     v55 = 2114;
-    v56 = v39;
+    v56 = optionsCopy;
     v57 = 2114;
     v58 = v10;
-    _os_log_impl(&dword_23193C000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ | %{public}@ | %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ | %{public}@ | %{public}@", buf, 0x20u);
   }
 
   v37 = v10;
@@ -5961,14 +5961,14 @@ void __28__SUCoreMSU__reportAnomaly___block_invoke(uint64_t a1)
         }
 
         v18 = *(*(&v47 + 1) + 8 * i);
-        v19 = [MEMORY[0x277D64460] sharedLogger];
-        v20 = [v19 oslog];
+        mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+        oslog2 = [mEMORY[0x277D64460]2 oslog];
 
-        if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v54 = v18;
-          _os_log_impl(&dword_23193C000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+          selfCopy2 = v18;
+          _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
         }
       }
 
@@ -5987,18 +5987,18 @@ void __28__SUCoreMSU__reportAnomaly___block_invoke(uint64_t a1)
     do
     {
       v42 = v24;
-      v25 = [MEMORY[0x277D64460] sharedLogger];
-      v26 = [v25 oslog];
+      mEMORY[0x277D64460]3 = [MEMORY[0x277D64460] sharedLogger];
+      oslog3 = [mEMORY[0x277D64460]3 oslog];
 
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543874;
-        v54 = self;
+        selfCopy2 = self;
         v55 = 2114;
-        v56 = v39;
+        v56 = optionsCopy;
         v57 = 2114;
         v58 = v23;
-        _os_log_impl(&dword_23193C000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@ | %{public}@ | %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_23193C000, oslog3, OS_LOG_TYPE_DEFAULT, "%{public}@ | %{public}@ | %{public}@", buf, 0x20u);
       }
 
       v41 = v23;
@@ -6023,14 +6023,14 @@ void __28__SUCoreMSU__reportAnomaly___block_invoke(uint64_t a1)
             }
 
             v32 = *(*(&v43 + 1) + 8 * j);
-            v33 = [MEMORY[0x277D64460] sharedLogger];
-            v34 = [v33 oslog];
+            mEMORY[0x277D64460]4 = [MEMORY[0x277D64460] sharedLogger];
+            oslog4 = [mEMORY[0x277D64460]4 oslog];
 
-            if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              v54 = v32;
-              _os_log_impl(&dword_23193C000, v34, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+              selfCopy2 = v32;
+              _os_log_impl(&dword_23193C000, oslog4, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
             }
           }
 
@@ -6059,20 +6059,20 @@ void __28__SUCoreMSU__reportAnomaly___block_invoke(uint64_t a1)
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_trackMSUAnomaly:(id)a3 result:(int64_t)a4 description:(id)a5 underlying:(id)a6
+- (void)_trackMSUAnomaly:(id)anomaly result:(int64_t)result description:(id)description underlying:(id)underlying
 {
   v10 = MEMORY[0x277D643F8];
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  v14 = [v10 sharedCore];
-  v18 = [v14 buildError:a4 underlying:v11 description:v12];
+  underlyingCopy = underlying;
+  descriptionCopy = description;
+  anomalyCopy = anomaly;
+  sharedCore = [v10 sharedCore];
+  v18 = [sharedCore buildError:result underlying:underlyingCopy description:descriptionCopy];
 
-  v15 = [MEMORY[0x277D64428] sharedDiag];
-  v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"[MSU] %@", v13];
+  mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+  anomalyCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"[MSU] %@", anomalyCopy];
 
-  v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@ %@", self, v12];
-  [v15 trackAnomaly:v16 forReason:v17 withResult:a4 withError:v18];
+  descriptionCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@ %@", self, descriptionCopy];
+  [mEMORY[0x277D64428] trackAnomaly:anomalyCopy forReason:descriptionCopy withResult:result withError:v18];
 
   [(SUCoreMSU *)self _reportAnomaly:v18];
 }

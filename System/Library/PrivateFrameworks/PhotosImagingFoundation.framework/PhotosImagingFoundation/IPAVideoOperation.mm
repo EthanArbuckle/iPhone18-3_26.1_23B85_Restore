@@ -6,14 +6,14 @@
 
 - (id)archivalRepresentation
 {
-  v3 = [(IPAEditOperation *)self settingsDictionary];
-  if (v3)
+  settingsDictionary = [(IPAEditOperation *)self settingsDictionary];
+  if (settingsDictionary)
   {
-    v4 = [(IPAEditOperation *)self identifier];
+    identifier = [(IPAEditOperation *)self identifier];
     v5 = objc_opt_new();
-    [v5 setIdentifier:v4];
-    [v5 setSettings:v3];
-    v6 = IPAAdjustmentCurrentVersionForIdentifier(v4);
+    [v5 setIdentifier:identifier];
+    [v5 setSettings:settingsDictionary];
+    v6 = IPAAdjustmentCurrentVersionForIdentifier(identifier);
     [v5 setVersion:v6];
   }
 

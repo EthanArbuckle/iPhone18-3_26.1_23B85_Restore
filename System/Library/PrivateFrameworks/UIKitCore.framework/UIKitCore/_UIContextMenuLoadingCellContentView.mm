@@ -1,5 +1,5 @@
 @interface _UIContextMenuLoadingCellContentView
-- (_UIContextMenuLoadingCellContentView)initWithFrame:(CGRect)a3;
+- (_UIContextMenuLoadingCellContentView)initWithFrame:(CGRect)frame;
 - (id)_contentsCompositingFilter;
 - (id)_contentsTintColor;
 - (id)iconView;
@@ -8,12 +8,12 @@
 
 @implementation _UIContextMenuLoadingCellContentView
 
-- (_UIContextMenuLoadingCellContentView)initWithFrame:(CGRect)a3
+- (_UIContextMenuLoadingCellContentView)initWithFrame:(CGRect)frame
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = _UIContextMenuLoadingCellContentView;
-  v3 = [(_UIContextMenuCellContentView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_UIContextMenuCellContentView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = _UINSLocalizedStringWithDefaultValue(@"CONTEXT_MENU_LOADING", @"Loading…");
@@ -30,18 +30,18 @@
 
 - (id)iconView
 {
-  v3 = [(_UIContextMenuLoadingCellContentView *)self activityIndicatorView];
+  activityIndicatorView = [(_UIContextMenuLoadingCellContentView *)self activityIndicatorView];
 
-  if (!v3)
+  if (!activityIndicatorView)
   {
     v4 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
     [(_UIContextMenuLoadingCellContentView *)self setActivityIndicatorView:v4];
 
-    v5 = [(_UIContextMenuLoadingCellContentView *)self activityIndicatorView];
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+    activityIndicatorView2 = [(_UIContextMenuLoadingCellContentView *)self activityIndicatorView];
+    [activityIndicatorView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v6 = [(_UIContextMenuLoadingCellContentView *)self activityIndicatorView];
-    [v6 startAnimating];
+    activityIndicatorView3 = [(_UIContextMenuLoadingCellContentView *)self activityIndicatorView];
+    [activityIndicatorView3 startAnimating];
   }
 
   return [(_UIContextMenuLoadingCellContentView *)self activityIndicatorView];
@@ -49,23 +49,23 @@
 
 - (void)_updateContentAppearance
 {
-  v3 = [(_UIContextMenuLoadingCellContentView *)self _contentsTintColor];
-  v4 = [(_UIContextMenuCellContentView *)self titleLabel];
-  [v4 setTextColor:v3];
+  _contentsTintColor = [(_UIContextMenuLoadingCellContentView *)self _contentsTintColor];
+  titleLabel = [(_UIContextMenuCellContentView *)self titleLabel];
+  [titleLabel setTextColor:_contentsTintColor];
 
-  v5 = [(_UIContextMenuLoadingCellContentView *)self _contentsCompositingFilter];
-  v6 = [(_UIContextMenuCellContentView *)self titleLabel];
-  v7 = [v6 layer];
-  [v7 setCompositingFilter:v5];
+  _contentsCompositingFilter = [(_UIContextMenuLoadingCellContentView *)self _contentsCompositingFilter];
+  titleLabel2 = [(_UIContextMenuCellContentView *)self titleLabel];
+  layer = [titleLabel2 layer];
+  [layer setCompositingFilter:_contentsCompositingFilter];
 
-  v8 = [(_UIContextMenuLoadingCellContentView *)self _contentsTintColor];
-  v9 = [(_UIContextMenuLoadingCellContentView *)self activityIndicatorView];
-  [v9 setColor:v8];
+  _contentsTintColor2 = [(_UIContextMenuLoadingCellContentView *)self _contentsTintColor];
+  activityIndicatorView = [(_UIContextMenuLoadingCellContentView *)self activityIndicatorView];
+  [activityIndicatorView setColor:_contentsTintColor2];
 
-  v12 = [(_UIContextMenuLoadingCellContentView *)self _contentsCompositingFilter];
-  v10 = [(_UIContextMenuLoadingCellContentView *)self activityIndicatorView];
-  v11 = [v10 layer];
-  [v11 setCompositingFilter:v12];
+  _contentsCompositingFilter2 = [(_UIContextMenuLoadingCellContentView *)self _contentsCompositingFilter];
+  activityIndicatorView2 = [(_UIContextMenuLoadingCellContentView *)self activityIndicatorView];
+  layer2 = [activityIndicatorView2 layer];
+  [layer2 setCompositingFilter:_contentsCompositingFilter2];
 }
 
 - (id)_contentsTintColor
@@ -79,11 +79,11 @@
 
 - (id)_contentsCompositingFilter
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
   v4 = MEMORY[0x1E6979CF8];
-  if (v3 != 2)
+  if (userInterfaceStyle != 2)
   {
     v4 = MEMORY[0x1E6979CE8];
   }

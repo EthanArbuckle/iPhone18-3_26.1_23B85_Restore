@@ -3,16 +3,16 @@
 - (BOOL)isAssessing;
 - (PKODIAssessment)init;
 - (id)currentAssessment;
-- (void)_callAssessmentComputedBlocksAndDidTimeout:(BOOL)a3;
+- (void)_callAssessmentComputedBlocksAndDidTimeout:(BOOL)timeout;
 - (void)computeAssessment;
-- (void)getAssessmentWithCompletion:(id)a3;
-- (void)provideSessionFeedback:(unint64_t)a3;
+- (void)getAssessmentWithCompletion:(id)completion;
+- (void)provideSessionFeedback:(unint64_t)feedback;
 - (void)startAssessment;
-- (void)startAssessmentWithHostBundleIdentifier:(id)a3;
-- (void)updateAssessment:(id)a3;
-- (void)updateAssessmentWithHostBundleIdentifier:(id)a3;
-- (void)updateAssessmentWithModel:(id)a3;
-- (void)waitForAssessmentWithTimeout:(unint64_t)a3 startTimeoutFromAssessmentStart:(BOOL)a4 continueBlock:(id)a5;
+- (void)startAssessmentWithHostBundleIdentifier:(id)identifier;
+- (void)updateAssessment:(id)assessment;
+- (void)updateAssessmentWithHostBundleIdentifier:(id)identifier;
+- (void)updateAssessmentWithModel:(id)model;
+- (void)waitForAssessmentWithTimeout:(unint64_t)timeout startTimeoutFromAssessmentStart:(BOOL)start continueBlock:(id)block;
 @end
 
 @implementation PKODIAssessment
@@ -84,24 +84,24 @@ void __34__PKODIAssessment_startAssessment__block_invoke(uint64_t a1)
   os_unfair_lock_unlock((*(a1 + 32) + 20));
 }
 
-- (void)startAssessmentWithHostBundleIdentifier:(id)a3
+- (void)startAssessmentWithHostBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(PKODIAssessment *)self startAssessment];
-  [(PKODIAssessment *)self updateAssessmentWithHostBundleIdentifier:v4];
+  [(PKODIAssessment *)self updateAssessmentWithHostBundleIdentifier:identifierCopy];
 }
 
-- (void)updateAssessment:(id)a3
+- (void)updateAssessment:(id)assessment
 {
-  v4 = a3;
+  assessmentCopy = assessment;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__PKODIAssessment_updateAssessment___block_invoke;
   v7[3] = &unk_1E79C4DD8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assessmentCopy;
+  v6 = assessmentCopy;
   dispatch_async(workQueue, v7);
 }
 
@@ -142,17 +142,17 @@ void __36__PKODIAssessment_updateAssessment___block_invoke(uint64_t a1)
   return isAssessing;
 }
 
-- (void)updateAssessmentWithHostBundleIdentifier:(id)a3
+- (void)updateAssessmentWithHostBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__PKODIAssessment_updateAssessmentWithHostBundleIdentifier___block_invoke;
   v7[3] = &unk_1E79C4DD8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(workQueue, v7);
 }
 
@@ -187,17 +187,17 @@ void __60__PKODIAssessment_updateAssessmentWithHostBundleIdentifier___block_invo
   }
 }
 
-- (void)updateAssessmentWithModel:(id)a3
+- (void)updateAssessmentWithModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__PKODIAssessment_updateAssessmentWithModel___block_invoke;
   v7[3] = &unk_1E79C4DD8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = modelCopy;
+  v6 = modelCopy;
   dispatch_async(workQueue, v7);
 }
 
@@ -458,11 +458,11 @@ void __36__PKODIAssessment_computeAssessment__block_invoke_2(uint64_t a1)
   return currentAssessmentDidTimeout;
 }
 
-- (void)waitForAssessmentWithTimeout:(unint64_t)a3 startTimeoutFromAssessmentStart:(BOOL)a4 continueBlock:(id)a5
+- (void)waitForAssessmentWithTimeout:(unint64_t)timeout startTimeoutFromAssessmentStart:(BOOL)start continueBlock:(id)block
 {
-  v8 = a5;
-  v9 = v8;
-  if (v8)
+  blockCopy = block;
+  v9 = blockCopy;
+  if (blockCopy)
   {
     workQueue = self->_workQueue;
     v11[0] = MEMORY[0x1E69E9820];
@@ -470,9 +470,9 @@ void __36__PKODIAssessment_computeAssessment__block_invoke_2(uint64_t a1)
     v11[2] = __94__PKODIAssessment_waitForAssessmentWithTimeout_startTimeoutFromAssessmentStart_continueBlock___block_invoke;
     v11[3] = &unk_1E79D0000;
     v11[4] = self;
-    v12 = v8;
-    v13 = a3;
-    v14 = a4;
+    v12 = blockCopy;
+    timeoutCopy = timeout;
+    startCopy = start;
     dispatch_async(workQueue, v11);
   }
 }
@@ -604,33 +604,33 @@ uint64_t __94__PKODIAssessment_waitForAssessmentWithTimeout_startTimeoutFromAsse
   return [v4 _callAssessmentComputedBlocksAndDidTimeout:0];
 }
 
-- (void)provideSessionFeedback:(unint64_t)a3
+- (void)provideSessionFeedback:(unint64_t)feedback
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PKODIAssessment *)self odiSession];
+    odiSession = [(PKODIAssessment *)self odiSession];
     v8 = 134218242;
-    v9 = a3;
+    feedbackCopy = feedback;
     v10 = 2112;
-    v11 = v6;
+    v11 = odiSession;
     _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "Providing ODISession feedback %ld on session %@", &v8, 0x16u);
   }
 
-  v7 = [(PKODIAssessment *)self odiSession];
-  [v7 provideFeedbackOnPayloadOutcome:a3];
+  odiSession2 = [(PKODIAssessment *)self odiSession];
+  [odiSession2 provideFeedbackOnPayloadOutcome:feedback];
 }
 
-- (void)getAssessmentWithCompletion:(id)a3
+- (void)getAssessmentWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, 0, 0);
+    (*(completion + 2))(completion, 0, 0);
   }
 }
 
-- (void)_callAssessmentComputedBlocksAndDidTimeout:(BOOL)a3
+- (void)_callAssessmentComputedBlocksAndDidTimeout:(BOOL)timeout
 {
   workQueue = self->_workQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -638,7 +638,7 @@ uint64_t __94__PKODIAssessment_waitForAssessmentWithTimeout_startTimeoutFromAsse
   v4[2] = __62__PKODIAssessment__callAssessmentComputedBlocksAndDidTimeout___block_invoke;
   v4[3] = &unk_1E79C4EC8;
   v4[4] = self;
-  v5 = a3;
+  timeoutCopy = timeout;
   dispatch_async(workQueue, v4);
 }
 

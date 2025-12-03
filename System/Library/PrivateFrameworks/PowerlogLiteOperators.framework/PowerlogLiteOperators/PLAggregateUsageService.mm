@@ -2,17 +2,17 @@
 + (void)load;
 - (PLAggregateUsageService)init;
 - (int)numIntervalsToFill;
-- (void)handleAudioStateChange:(id)a3;
-- (void)handleChargingChange:(id)a3;
-- (void)handleConnectedChange:(id)a3;
-- (void)handleExternalConnectedChange:(id)a3;
+- (void)handleAudioStateChange:(id)change;
+- (void)handleChargingChange:(id)change;
+- (void)handleConnectedChange:(id)change;
+- (void)handleExternalConnectedChange:(id)change;
 - (void)handleLargeTimeGap;
-- (void)handleLockStateChange:(id)a3;
+- (void)handleLockStateChange:(id)change;
 - (void)initOperatorDependancies;
 - (void)initializeMetrics;
 - (void)instantiateMetrics;
 - (void)registerForEntryNotifications;
-- (void)scheduleSubmissionAfter:(unint64_t)a3;
+- (void)scheduleSubmissionAfter:(unint64_t)after;
 - (void)submitMetricsToAggd;
 - (void)updateSampledMetrics;
 @end
@@ -21,10 +21,10 @@
 
 - (void)submitMetricsToAggd
 {
-  v3 = [(PLAggregateUsageService *)self numIntervalsToFill];
-  if (v3 >= 1)
+  numIntervalsToFill = [(PLAggregateUsageService *)self numIntervalsToFill];
+  if (numIntervalsToFill >= 1)
   {
-    v4 = v3;
+    v4 = numIntervalsToFill;
     do
     {
       if (v4 == 1)
@@ -32,8 +32,8 @@
         [(PLAggregateUsageService *)self updateSampledMetrics];
       }
 
-      v5 = [(PLAggregateUsageService *)self intervalData];
-      [v5 submitIntervalData];
+      intervalData = [(PLAggregateUsageService *)self intervalData];
+      [intervalData submitIntervalData];
 
       --v4;
     }
@@ -45,10 +45,10 @@
 - (int)numIntervalsToFill
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [(PLAggregateUsageService *)self intervalData];
-  v5 = [v4 currentInterval];
-  [v3 timeIntervalSinceDate:v5];
+  date = [MEMORY[0x277CBEAA8] date];
+  intervalData = [(PLAggregateUsageService *)self intervalData];
+  currentInterval = [intervalData currentInterval];
+  [date timeIntervalSinceDate:currentInterval];
   v7 = v6;
 
   if (v7 < 0)
@@ -79,9 +79,9 @@ LABEL_22:
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Intervals to fill = 0"];
     v18 = MEMORY[0x277D3F178];
     v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLAggregateUsageService.m"];
-    v20 = [v19 lastPathComponent];
+    lastPathComponent = [v19 lastPathComponent];
     v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAggregateUsageService numIntervalsToFill]"];
-    [v18 logMessage:v11 fromFile:v20 fromFunction:v21 fromLineNumber:724];
+    [v18 logMessage:v11 fromFile:lastPathComponent fromFunction:v21 fromLineNumber:724];
 
     v16 = PLLogCommon();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -141,9 +141,9 @@ LABEL_22:
       v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Intervals to fill = %d", v8];
       v12 = MEMORY[0x277D3F178];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLAggregateUsageService.m"];
-      v14 = [v13 lastPathComponent];
+      lastPathComponent2 = [v13 lastPathComponent];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAggregateUsageService numIntervalsToFill]"];
-      [v12 logMessage:v11 fromFile:v14 fromFunction:v15 fromLineNumber:732];
+      [v12 logMessage:v11 fromFile:lastPathComponent2 fromFunction:v15 fromLineNumber:732];
 
       v16 = PLLogCommon();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -164,7 +164,7 @@ LABEL_23:
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLAggregateUsageService;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -173,7 +173,7 @@ LABEL_23:
 {
   if ([MEMORY[0x277D3F208] isHomePod] & 1) != 0 || (objc_msgSend(MEMORY[0x277D3F208], "nonUIBuild"))
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -181,25 +181,25 @@ LABEL_23:
     v5.receiver = self;
     v5.super_class = PLAggregateUsageService;
     self = [(PLOperator *)&v5 init];
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)initOperatorDependancies
 {
   [(PLAggregateUsageService *)self instantiateMetrics];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [v3 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v5 = v4;
 
   [(PLOperator *)self defaultDoubleForKey:@"IntervalDuration"];
   v7 = v6 + v5 / v6 * v6 - v5;
   v8 = v6 + v5 / v6 * v6;
-  v9 = [(PLAggregateUsageService *)self intervalData];
+  intervalData = [(PLAggregateUsageService *)self intervalData];
   v10 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v8];
-  [v9 setCurrentInterval:v10];
+  [intervalData setCurrentInterval:v10];
 
   [(PLAggregateUsageService *)self initializeMetrics];
   [(PLAggregateUsageService *)self registerForEntryNotifications];
@@ -285,8 +285,8 @@ uint64_t __45__PLAggregateUsageService_instantiateMetrics__block_invoke(uint64_t
 {
   v3 = *MEMORY[0x277D3F5D0];
   v4 = [(PLOperator *)PLSleepWakeAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"PowerState"];
-  v5 = [(PLOperator *)self storage];
-  v6 = [v5 lastEntryForKey:v4];
+  storage = [(PLOperator *)self storage];
+  v6 = [storage lastEntryForKey:v4];
 
   if (v6)
   {
@@ -302,53 +302,53 @@ uint64_t __45__PLAggregateUsageService_instantiateMetrics__block_invoke(uint64_t
     }
 
     v8 = -*&qword_2811F4EF8;
-    v9 = [(PLAggregateUsageService *)self intervalData];
-    v10 = [v9 currentInterval];
-    v11 = [v7 dateWithTimeInterval:v10 sinceDate:v8];
+    intervalData = [(PLAggregateUsageService *)self intervalData];
+    currentInterval = [intervalData currentInterval];
+    v11 = [v7 dateWithTimeInterval:currentInterval sinceDate:v8];
 
     v12 = [v6 objectForKeyedSubscript:@"State"];
     v13 = [v12 intValue] == 0;
 
-    v14 = [(PLAggregateUsageService *)self intervalData];
-    [v14 updateMetric:@"WakeDuration" withTimestamp:v11 forEvent:v13 withValue:0xFFFFFFFFLL];
+    intervalData2 = [(PLAggregateUsageService *)self intervalData];
+    [intervalData2 updateMetric:@"WakeDuration" withTimestamp:v11 forEvent:v13 withValue:0xFFFFFFFFLL];
   }
 
   v15 = [(PLOperator *)PLBatteryAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"Battery"];
-  v16 = [(PLOperator *)self storage];
-  v17 = [v16 lastEntryForKey:v15];
+  storage2 = [(PLOperator *)self storage];
+  v17 = [storage2 lastEntryForKey:v15];
 
   if (v17)
   {
-    v18 = [(PLAggregateUsageService *)self intervalData];
+    intervalData3 = [(PLAggregateUsageService *)self intervalData];
     v19 = [v17 objectForKeyedSubscript:@"Level"];
-    [v18 updateMetric:@"BatteryLevel" withTimestamp:0 forEvent:1 withValue:{objc_msgSend(v19, "intValue")}];
+    [intervalData3 updateMetric:@"BatteryLevel" withTimestamp:0 forEvent:1 withValue:{objc_msgSend(v19, "intValue")}];
 
-    v20 = [(PLAggregateUsageService *)self intervalData];
+    intervalData4 = [(PLAggregateUsageService *)self intervalData];
     v21 = [v17 objectForKeyedSubscript:@"Temperature"];
-    [v20 updateMetric:@"BatteryTemperature" withTimestamp:0 forEvent:1 withValue:{objc_msgSend(v21, "intValue")}];
+    [intervalData4 updateMetric:@"BatteryTemperature" withTimestamp:0 forEvent:1 withValue:{objc_msgSend(v21, "intValue")}];
   }
 
   v22 = [(PLOperator *)PLSpringBoardAgent entryKeyForType:v3 andName:@"SBLock"];
-  v23 = [(PLOperator *)self storage];
-  v24 = [v23 lastEntryForKey:v22];
+  storage3 = [(PLOperator *)self storage];
+  v24 = [storage3 lastEntryForKey:v22];
 
   if (v24)
   {
     v25 = [v24 objectForKeyedSubscript:@"Locked"];
     v37 = v17;
     v26 = v6;
-    v27 = [v25 BOOLValue];
-    v28 = [(PLAggregateUsageService *)self intervalData];
+    bOOLValue = [v25 BOOLValue];
+    intervalData5 = [(PLAggregateUsageService *)self intervalData];
     [v24 entryDate];
     v29 = v36 = self;
     [v29 convertFromMonotonicToSystem];
     v30 = v15;
     v32 = v31 = v4;
-    v33 = [v25 BOOLValue];
-    v34 = v27 ^ 1u;
+    bOOLValue2 = [v25 BOOLValue];
+    v34 = bOOLValue ^ 1u;
     v6 = v26;
     v17 = v37;
-    [v28 updateMetric:@"LockState" withTimestamp:v32 forEvent:v34 withValue:v33 ^ 1u];
+    [intervalData5 updateMetric:@"LockState" withTimestamp:v32 forEvent:v34 withValue:bOOLValue2 ^ 1u];
 
     v4 = v31;
     v15 = v30;
@@ -356,8 +356,8 @@ uint64_t __45__PLAggregateUsageService_instantiateMetrics__block_invoke(uint64_t
     self = v36;
   }
 
-  v35 = [(PLAggregateUsageService *)self intervalData];
-  [v35 updateMetric:@"PowerlogInit" withTimestamp:0 forEvent:1 withValue:1];
+  intervalData6 = [(PLAggregateUsageService *)self intervalData];
+  [intervalData6 updateMetric:@"PowerlogInit" withTimestamp:0 forEvent:1 withValue:1];
 }
 
 uint64_t __44__PLAggregateUsageService_initializeMetrics__block_invoke(uint64_t a1)
@@ -407,8 +407,8 @@ uint64_t __44__PLAggregateUsageService_initializeMetrics__block_invoke(uint64_t 
   v8 = objc_alloc(MEMORY[0x277D3F1A8]);
   v58 = @"Active";
   v56 = &unk_282C11B98;
-  v9 = [MEMORY[0x277CBEB68] null];
-  v57 = v9;
+  null = [MEMORY[0x277CBEB68] null];
+  v57 = null;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
   v59[0] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v59 forKeys:&v58 count:1];
@@ -434,8 +434,8 @@ uint64_t __44__PLAggregateUsageService_initializeMetrics__block_invoke(uint64_t 
   v15 = objc_alloc(MEMORY[0x277D3F1A8]);
   v54 = @"Connected";
   v52 = &unk_282C11B98;
-  v16 = [MEMORY[0x277CBEB68] null];
-  v53 = v16;
+  null2 = [MEMORY[0x277CBEB68] null];
+  v53 = null2;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
   v55 = v17;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
@@ -451,8 +451,8 @@ uint64_t __44__PLAggregateUsageService_initializeMetrics__block_invoke(uint64_t 
   v21 = objc_alloc(MEMORY[0x277D3F1A8]);
   v50 = @"IsCharging";
   v48 = &unk_282C11B98;
-  v22 = [MEMORY[0x277CBEB68] null];
-  v49 = v22;
+  null3 = [MEMORY[0x277CBEB68] null];
+  v49 = null3;
   v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
   v51 = v23;
   v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v51 forKeys:&v50 count:1];
@@ -467,8 +467,8 @@ uint64_t __44__PLAggregateUsageService_initializeMetrics__block_invoke(uint64_t 
   v26 = objc_alloc(MEMORY[0x277D3F1A8]);
   v46 = @"ExternalConnected";
   v44 = &unk_282C11B98;
-  v27 = [MEMORY[0x277CBEB68] null];
-  v45 = v27;
+  null4 = [MEMORY[0x277CBEB68] null];
+  v45 = null4;
   v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
   v47 = v28;
   v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
@@ -497,17 +497,17 @@ uint64_t __59__PLAggregateUsageService_handleWakeStateChange_withState___block_i
   return result;
 }
 
-- (void)handleAudioStateChange:(id)a3
+- (void)handleAudioStateChange:(id)change
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   [(PLAggregateUsageService *)self submitMetricsToAggd];
-  v5 = [v4 objectForKey:@"entry"];
+  v5 = [changeCopy objectForKey:@"entry"];
 
   if (v5)
   {
     v6 = [v5 objectForKeyedSubscript:@"Active"];
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
 
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
@@ -525,7 +525,7 @@ uint64_t __59__PLAggregateUsageService_handleWakeStateChange_withState___block_i
       if (byte_2811F4EAF == 1)
       {
         v9 = @"OFF";
-        if (v7)
+        if (bOOLValue)
         {
           v9 = @"ON";
         }
@@ -533,9 +533,9 @@ uint64_t __59__PLAggregateUsageService_handleWakeStateChange_withState___block_i
         v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Handle audio %@", v9, block, v21, v22, v23, v24];
         v11 = MEMORY[0x277D3F178];
         v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLAggregateUsageService.m"];
-        v13 = [v12 lastPathComponent];
+        lastPathComponent = [v12 lastPathComponent];
         v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAggregateUsageService handleAudioStateChange:]"];
-        [v11 logMessage:v10 fromFile:v13 fromFunction:v14 fromLineNumber:609];
+        [v11 logMessage:v10 fromFile:lastPathComponent fromFunction:v14 fromLineNumber:609];
 
         v15 = PLLogCommon();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -547,10 +547,10 @@ uint64_t __59__PLAggregateUsageService_handleWakeStateChange_withState___block_i
       }
     }
 
-    v16 = [(PLAggregateUsageService *)self intervalData];
-    v17 = [v5 entryDate];
-    v18 = [v17 convertFromMonotonicToSystem];
-    [v16 updateMetric:@"AudioOnDuration" withTimestamp:v18 forEvent:v7 withValue:0xFFFFFFFFLL];
+    intervalData = [(PLAggregateUsageService *)self intervalData];
+    entryDate = [v5 entryDate];
+    convertFromMonotonicToSystem = [entryDate convertFromMonotonicToSystem];
+    [intervalData updateMetric:@"AudioOnDuration" withTimestamp:convertFromMonotonicToSystem forEvent:bOOLValue withValue:0xFFFFFFFFLL];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -563,17 +563,17 @@ uint64_t __50__PLAggregateUsageService_handleAudioStateChange___block_invoke(uin
   return result;
 }
 
-- (void)handleLockStateChange:(id)a3
+- (void)handleLockStateChange:(id)change
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   [(PLAggregateUsageService *)self submitMetricsToAggd];
-  v5 = [v4 objectForKey:@"entry"];
+  v5 = [changeCopy objectForKey:@"entry"];
 
   if (v5)
   {
     v6 = [v5 objectForKeyedSubscript:@"Locked"];
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
 
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
@@ -591,7 +591,7 @@ uint64_t __50__PLAggregateUsageService_handleAudioStateChange___block_invoke(uin
       if (byte_2811F4EB0 == 1)
       {
         v9 = @"Unlock";
-        if (v7)
+        if (bOOLValue)
         {
           v9 = @"Lock";
         }
@@ -599,9 +599,9 @@ uint64_t __50__PLAggregateUsageService_handleAudioStateChange___block_invoke(uin
         v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Handle device %@", v9, block, v21, v22, v23, v24];
         v11 = MEMORY[0x277D3F178];
         v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLAggregateUsageService.m"];
-        v13 = [v12 lastPathComponent];
+        lastPathComponent = [v12 lastPathComponent];
         v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAggregateUsageService handleLockStateChange:]"];
-        [v11 logMessage:v10 fromFile:v13 fromFunction:v14 fromLineNumber:621];
+        [v11 logMessage:v10 fromFile:lastPathComponent fromFunction:v14 fromLineNumber:621];
 
         v15 = PLLogCommon();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -613,10 +613,10 @@ uint64_t __50__PLAggregateUsageService_handleAudioStateChange___block_invoke(uin
       }
     }
 
-    v16 = [(PLAggregateUsageService *)self intervalData];
-    v17 = [v5 entryDate];
-    v18 = [v17 convertFromMonotonicToSystem];
-    [v16 updateMetric:@"LockState" withTimestamp:v18 forEvent:v7 ^ 1u withValue:v7 ^ 1u];
+    intervalData = [(PLAggregateUsageService *)self intervalData];
+    entryDate = [v5 entryDate];
+    convertFromMonotonicToSystem = [entryDate convertFromMonotonicToSystem];
+    [intervalData updateMetric:@"LockState" withTimestamp:convertFromMonotonicToSystem forEvent:bOOLValue ^ 1u withValue:bOOLValue ^ 1u];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -629,12 +629,12 @@ uint64_t __49__PLAggregateUsageService_handleLockStateChange___block_invoke(uint
   return result;
 }
 
-- (void)handleConnectedChange:(id)a3
+- (void)handleConnectedChange:(id)change
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   [(PLAggregateUsageService *)self submitMetricsToAggd];
-  v5 = [v4 objectForKey:@"entry"];
+  v5 = [changeCopy objectForKey:@"entry"];
 
   if (v5)
   {
@@ -657,9 +657,9 @@ uint64_t __49__PLAggregateUsageService_handleLockStateChange___block_invoke(uint
         v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Handle charger change: %@", v6, block, v20, v21, v22, v23];
         v9 = MEMORY[0x277D3F178];
         v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLAggregateUsageService.m"];
-        v11 = [v10 lastPathComponent];
+        lastPathComponent = [v10 lastPathComponent];
         v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAggregateUsageService handleConnectedChange:]"];
-        [v9 logMessage:v8 fromFile:v11 fromFunction:v12 fromLineNumber:632];
+        [v9 logMessage:v8 fromFile:lastPathComponent fromFunction:v12 fromLineNumber:632];
 
         v13 = PLLogCommon();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -673,11 +673,11 @@ uint64_t __49__PLAggregateUsageService_handleLockStateChange___block_invoke(uint
 
     if (([v6 intValue] & 0x80000000) == 0)
     {
-      v14 = [v6 BOOLValue];
-      v15 = [(PLAggregateUsageService *)self intervalData];
-      v16 = [v5 entryDate];
-      v17 = [v16 convertFromMonotonicToSystem];
-      [v15 updateMetric:@"AdapterType" withTimestamp:v17 forEvent:v14 withValue:{objc_msgSend(v6, "intValue")}];
+      bOOLValue = [v6 BOOLValue];
+      intervalData = [(PLAggregateUsageService *)self intervalData];
+      entryDate = [v5 entryDate];
+      convertFromMonotonicToSystem = [entryDate convertFromMonotonicToSystem];
+      [intervalData updateMetric:@"AdapterType" withTimestamp:convertFromMonotonicToSystem forEvent:bOOLValue withValue:{objc_msgSend(v6, "intValue")}];
     }
   }
 
@@ -691,23 +691,23 @@ uint64_t __49__PLAggregateUsageService_handleConnectedChange___block_invoke(uint
   return result;
 }
 
-- (void)handleChargingChange:(id)a3
+- (void)handleChargingChange:(id)change
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   [(PLAggregateUsageService *)self submitMetricsToAggd];
-  v5 = [v4 objectForKey:@"entry"];
+  v5 = [changeCopy objectForKey:@"entry"];
 
   if (v5)
   {
     v6 = [v5 objectForKeyedSubscript:@"IsCharging"];
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
 
     v8 = [v5 objectForKeyedSubscript:@"Amperage"];
-    v9 = [v8 intValue];
+    intValue = [v8 intValue];
 
     v10 = [v5 objectForKeyedSubscript:@"AdapterVoltage"];
-    v11 = [v10 intValue];
+    intValue2 = [v10 intValue];
 
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
@@ -725,17 +725,17 @@ uint64_t __49__PLAggregateUsageService_handleConnectedChange___block_invoke(uint
       if (byte_2811F4EB2 == 1)
       {
         v13 = @"Stop";
-        if (v7)
+        if (bOOLValue)
         {
           v13 = @"Start";
         }
 
-        v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Handle charging: %@ Current: %d, Voltage: %d", v13, v9, v11, block, v31, v32, v33, v34];
+        v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Handle charging: %@ Current: %d, Voltage: %d", v13, intValue, intValue2, block, v31, v32, v33, v34];
         v15 = MEMORY[0x277D3F178];
         v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLAggregateUsageService.m"];
-        v17 = [v16 lastPathComponent];
+        lastPathComponent = [v16 lastPathComponent];
         v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAggregateUsageService handleChargingChange:]"];
-        [v15 logMessage:v14 fromFile:v17 fromFunction:v18 fromLineNumber:649];
+        [v15 logMessage:v14 fromFile:lastPathComponent fromFunction:v18 fromLineNumber:649];
 
         v19 = PLLogCommon();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -747,20 +747,20 @@ uint64_t __49__PLAggregateUsageService_handleConnectedChange___block_invoke(uint
       }
     }
 
-    v20 = [(PLAggregateUsageService *)self intervalData];
-    v21 = [v5 entryDate];
-    v22 = [v21 convertFromMonotonicToSystem];
-    [v20 updateMetric:@"ChargingState" withTimestamp:v22 forEvent:v7 withValue:v7];
+    intervalData = [(PLAggregateUsageService *)self intervalData];
+    entryDate = [v5 entryDate];
+    convertFromMonotonicToSystem = [entryDate convertFromMonotonicToSystem];
+    [intervalData updateMetric:@"ChargingState" withTimestamp:convertFromMonotonicToSystem forEvent:bOOLValue withValue:bOOLValue];
 
-    v23 = [(PLAggregateUsageService *)self intervalData];
-    v24 = [v5 entryDate];
-    v25 = [v24 convertFromMonotonicToSystem];
-    [v23 updateMetric:@"ChargerCurrent" withTimestamp:v25 forEvent:v7 withValue:v9];
+    intervalData2 = [(PLAggregateUsageService *)self intervalData];
+    entryDate2 = [v5 entryDate];
+    convertFromMonotonicToSystem2 = [entryDate2 convertFromMonotonicToSystem];
+    [intervalData2 updateMetric:@"ChargerCurrent" withTimestamp:convertFromMonotonicToSystem2 forEvent:bOOLValue withValue:intValue];
 
-    v26 = [(PLAggregateUsageService *)self intervalData];
-    v27 = [v5 entryDate];
-    v28 = [v27 convertFromMonotonicToSystem];
-    [v26 updateMetric:@"ChargerVoltage" withTimestamp:v28 forEvent:v7 withValue:v11];
+    intervalData3 = [(PLAggregateUsageService *)self intervalData];
+    entryDate3 = [v5 entryDate];
+    convertFromMonotonicToSystem3 = [entryDate3 convertFromMonotonicToSystem];
+    [intervalData3 updateMetric:@"ChargerVoltage" withTimestamp:convertFromMonotonicToSystem3 forEvent:bOOLValue withValue:intValue2];
   }
 
   v29 = *MEMORY[0x277D85DE8];
@@ -773,17 +773,17 @@ uint64_t __48__PLAggregateUsageService_handleChargingChange___block_invoke(uint6
   return result;
 }
 
-- (void)handleExternalConnectedChange:(id)a3
+- (void)handleExternalConnectedChange:(id)change
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   [(PLAggregateUsageService *)self submitMetricsToAggd];
-  v5 = [v4 objectForKey:@"entry"];
+  v5 = [changeCopy objectForKey:@"entry"];
 
   if (v5)
   {
     v6 = [v5 objectForKeyedSubscript:@"ExternalConnected"];
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
 
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
@@ -800,12 +800,12 @@ uint64_t __48__PLAggregateUsageService_handleChargingChange___block_invoke(uint6
 
       if (byte_2811F4EB3 == 1)
       {
-        v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Handle external connected change: %d", v7, block, v20, v21, v22, v23];
+        v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Handle external connected change: %d", bOOLValue, block, v20, v21, v22, v23];
         v10 = MEMORY[0x277D3F178];
         v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLAggregateUsageService.m"];
-        v12 = [v11 lastPathComponent];
+        lastPathComponent = [v11 lastPathComponent];
         v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAggregateUsageService handleExternalConnectedChange:]"];
-        [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:663];
+        [v10 logMessage:v9 fromFile:lastPathComponent fromFunction:v13 fromLineNumber:663];
 
         v14 = PLLogCommon();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -817,10 +817,10 @@ uint64_t __48__PLAggregateUsageService_handleChargingChange___block_invoke(uint6
       }
     }
 
-    v15 = [(PLAggregateUsageService *)self intervalData];
-    v16 = [v5 entryDate];
-    v17 = [v16 convertFromMonotonicToSystem];
-    [v15 updateMetric:@"ConnectedState" withTimestamp:v17 forEvent:v7 withValue:v7];
+    intervalData = [(PLAggregateUsageService *)self intervalData];
+    entryDate = [v5 entryDate];
+    convertFromMonotonicToSystem = [entryDate convertFromMonotonicToSystem];
+    [intervalData updateMetric:@"ConnectedState" withTimestamp:convertFromMonotonicToSystem forEvent:bOOLValue withValue:bOOLValue];
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -833,17 +833,17 @@ uint64_t __57__PLAggregateUsageService_handleExternalConnectedChange___block_inv
   return result;
 }
 
-- (void)scheduleSubmissionAfter:(unint64_t)a3
+- (void)scheduleSubmissionAfter:(unint64_t)after
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = dispatch_walltime(0, 1000000000 * a3);
-  v5 = [(PLOperator *)self workQueue];
+  v4 = dispatch_walltime(0, 1000000000 * after);
+  workQueue = [(PLOperator *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__PLAggregateUsageService_scheduleSubmissionAfter___block_invoke;
   block[3] = &unk_2782591D0;
   block[4] = self;
-  dispatch_after(v4, v5, block);
+  dispatch_after(v4, workQueue, block);
 
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
@@ -861,14 +861,14 @@ uint64_t __57__PLAggregateUsageService_handleExternalConnectedChange___block_inv
     if (byte_2811F4EB5 == 1)
     {
       v7 = MEMORY[0x277CCACA8];
-      v8 = [MEMORY[0x277CBEAA8] date];
-      v9 = [v7 stringWithFormat:@"Scheduled submission at %@!", v8];
+      date = [MEMORY[0x277CBEAA8] date];
+      v9 = [v7 stringWithFormat:@"Scheduled submission at %@!", date];
 
       v10 = MEMORY[0x277D3F178];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLAggregateUsageService.m"];
-      v12 = [v11 lastPathComponent];
+      lastPathComponent = [v11 lastPathComponent];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAggregateUsageService scheduleSubmissionAfter:]"];
-      [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:683];
+      [v10 logMessage:v9 fromFile:lastPathComponent fromFunction:v13 fromLineNumber:683];
 
       v14 = PLLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -966,18 +966,18 @@ uint64_t __51__PLAggregateUsageService_scheduleSubmissionAfter___block_invoke_2_
 - (void)updateSampledMetrics
 {
   v20 = [(PLOperator *)PLBatteryAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"Battery"];
-  v3 = [(PLOperator *)self storage];
-  v4 = [v3 lastEntryForKey:v20];
+  storage = [(PLOperator *)self storage];
+  v4 = [storage lastEntryForKey:v20];
 
   if (v4)
   {
-    v5 = [(PLAggregateUsageService *)self intervalData];
+    intervalData = [(PLAggregateUsageService *)self intervalData];
     v6 = [v4 objectForKeyedSubscript:@"Level"];
-    [v5 updateMetric:@"BatteryLevel" withTimestamp:0 forEvent:1 withValue:{objc_msgSend(v6, "intValue")}];
+    [intervalData updateMetric:@"BatteryLevel" withTimestamp:0 forEvent:1 withValue:{objc_msgSend(v6, "intValue")}];
 
-    v7 = [(PLAggregateUsageService *)self intervalData];
+    intervalData2 = [(PLAggregateUsageService *)self intervalData];
     v8 = [v4 objectForKeyedSubscript:@"Temperature"];
-    [v7 updateMetric:@"BatteryTemperature" withTimestamp:0 forEvent:1 withValue:{objc_msgSend(v8, "intValue")}];
+    [intervalData2 updateMetric:@"BatteryTemperature" withTimestamp:0 forEvent:1 withValue:{objc_msgSend(v8, "intValue")}];
 
     v9 = [v4 objectForKeyedSubscript:@"IsCharging"];
     LODWORD(v8) = [v9 BOOLValue];
@@ -985,20 +985,20 @@ uint64_t __51__PLAggregateUsageService_scheduleSubmissionAfter___block_invoke_2_
     if (v8)
     {
       v10 = [v4 objectForKeyedSubscript:@"Amperage"];
-      v11 = [v10 intValue];
+      intValue = [v10 intValue];
 
-      v12 = [(PLAggregateUsageService *)self intervalData];
-      v13 = [v4 entryDate];
-      v14 = [v13 convertFromMonotonicToSystem];
-      [v12 updateMetric:@"ChargerCurrent" withTimestamp:v14 forEvent:1 withValue:v11];
+      intervalData3 = [(PLAggregateUsageService *)self intervalData];
+      entryDate = [v4 entryDate];
+      convertFromMonotonicToSystem = [entryDate convertFromMonotonicToSystem];
+      [intervalData3 updateMetric:@"ChargerCurrent" withTimestamp:convertFromMonotonicToSystem forEvent:1 withValue:intValue];
 
       v15 = [v4 objectForKeyedSubscript:@"AdapterVoltage"];
-      v16 = [v15 intValue];
+      intValue2 = [v15 intValue];
 
-      v17 = [(PLAggregateUsageService *)self intervalData];
-      v18 = [v4 entryDate];
-      v19 = [v18 convertFromMonotonicToSystem];
-      [v17 updateMetric:@"ChargerVoltage" withTimestamp:v19 forEvent:1 withValue:v16];
+      intervalData4 = [(PLAggregateUsageService *)self intervalData];
+      entryDate2 = [v4 entryDate];
+      convertFromMonotonicToSystem2 = [entryDate2 convertFromMonotonicToSystem];
+      [intervalData4 updateMetric:@"ChargerVoltage" withTimestamp:convertFromMonotonicToSystem2 forEvent:1 withValue:intValue2];
     }
   }
 }
@@ -1033,18 +1033,18 @@ uint64_t __45__PLAggregateUsageService_numIntervalsToFill__block_invoke_3(uint64
 
 - (void)handleLargeTimeGap
 {
-  v3 = [(PLAggregateUsageService *)self intervalData];
-  [v3 resetMetrics];
+  intervalData = [(PLAggregateUsageService *)self intervalData];
+  [intervalData resetMetrics];
 
-  v4 = [MEMORY[0x277CBEAA8] date];
-  [v4 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v6 = v5;
 
   [(PLOperator *)self defaultDoubleForKey:@"IntervalDuration"];
   v8 = v7 + v6 / v7 * v7;
-  v10 = [(PLAggregateUsageService *)self intervalData];
+  intervalData2 = [(PLAggregateUsageService *)self intervalData];
   v9 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v8];
-  [v10 setCurrentInterval:v9];
+  [intervalData2 setCurrentInterval:v9];
 }
 
 @end

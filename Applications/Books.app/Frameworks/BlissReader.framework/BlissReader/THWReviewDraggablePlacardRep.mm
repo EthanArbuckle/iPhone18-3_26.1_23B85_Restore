@@ -1,17 +1,17 @@
 @interface THWReviewDraggablePlacardRep
-- (BOOL)canHandleGesture:(id)a3;
-- (BOOL)handleGesture:(id)a3;
-- (CGPath)p_cachedPathForSize:(CGSize)a3 arrowDirection:(int)a4;
-- (id)calloutPathAnimationWithduration:(double)a3;
+- (BOOL)canHandleGesture:(id)gesture;
+- (BOOL)handleGesture:(id)gesture;
+- (CGPath)p_cachedPathForSize:(CGSize)size arrowDirection:(int)direction;
+- (id)calloutPathAnimationWithduration:(double)withduration;
 - (id)contentTextRep;
 - (id)p_dragHosting;
-- (id)p_pathWithDirection:(int)a3 size:(CGSize)a4 includeWedge:(BOOL)a5;
-- (void)addAdditionalChildBackgroundLayersToArray:(id)a3;
-- (void)addAdditionalChildLayersToArray:(id)a3;
+- (id)p_pathWithDirection:(int)direction size:(CGSize)size includeWedge:(BOOL)wedge;
+- (void)addAdditionalChildBackgroundLayersToArray:(id)array;
+- (void)addAdditionalChildLayersToArray:(id)array;
 - (void)dealloc;
 - (void)p_updateLayers;
-- (void)setArrowDirection:(int)a3;
-- (void)setPressed:(BOOL)a3;
+- (void)setArrowDirection:(int)direction;
+- (void)setPressed:(BOOL)pressed;
 - (void)updateLayerBoundsAndWPPosition;
 @end
 
@@ -33,8 +33,8 @@
 
 - (void)updateLayerBoundsAndWPPosition
 {
-  v3 = [(THWReviewDraggablePlacardRep *)self interactiveCanvasController];
-  v4 = [v3 layerForRep:self];
+  interactiveCanvasController = [(THWReviewDraggablePlacardRep *)self interactiveCanvasController];
+  v4 = [interactiveCanvasController layerForRep:self];
   [(THWReviewDraggablePlacardRep *)self layerFrameInScaledCanvasRelativeToParent];
   TSDRectWithSize();
   v6 = v5;
@@ -54,7 +54,7 @@
   v13 = [-[THWReviewDraggablePlacardRep layout](self "layout")];
   if (v13)
   {
-    v14 = [v3 layerForRep:{objc_msgSend(v3, "repForLayout:", v13)}];
+    v14 = [interactiveCanvasController layerForRep:{objc_msgSend(interactiveCanvasController, "repForLayout:", v13)}];
     [v14 position];
 
     [v14 setPosition:v10 * 0.5];
@@ -78,15 +78,15 @@
 
 - (void)p_updateLayers
 {
-  v3 = [(THWReviewDraggablePlacardRep *)self layout];
-  [objc_msgSend(v3 "geometry")];
+  layout = [(THWReviewDraggablePlacardRep *)self layout];
+  [objc_msgSend(layout "geometry")];
   TSDRectWithSize();
   v5 = v4;
   v7 = v6;
   [-[THWReviewDraggablePlacardRep canvas](self "canvas")];
   memset(&v30, 0, sizeof(v30));
   CGAffineTransformMakeScale(&v30, v8, v8);
-  v9 = [objc_msgSend(v3 "contentImage")];
+  v9 = [objc_msgSend(layout "contentImage")];
   if (v9)
   {
     v10 = v9;
@@ -170,7 +170,7 @@
   [(CAShapeLayer *)self->_calloutLayer setAffineTransform:&v29];
 }
 
-- (void)addAdditionalChildLayersToArray:(id)a3
+- (void)addAdditionalChildLayersToArray:(id)array
 {
   v5.receiver = self;
   v5.super_class = THWReviewDraggablePlacardRep;
@@ -178,54 +178,54 @@
   [(THWReviewDraggablePlacardRep *)self p_updateLayers];
   if (self->_imageLayer)
   {
-    [a3 addObject:?];
+    [array addObject:?];
   }
 }
 
-- (void)addAdditionalChildBackgroundLayersToArray:(id)a3
+- (void)addAdditionalChildBackgroundLayersToArray:(id)array
 {
   [(THWReviewDraggablePlacardRep *)self p_updateLayers];
   if (self->_calloutLayer)
   {
 
-    [a3 addObject:?];
+    [array addObject:?];
   }
 }
 
-- (BOOL)canHandleGesture:(id)a3
+- (BOOL)canHandleGesture:(id)gesture
 {
-  v5 = [a3 gestureKind];
-  if (v5 != TSWPImmediatePress)
+  gestureKind = [gesture gestureKind];
+  if (gestureKind != TSWPImmediatePress)
   {
-    v6 = [a3 gestureKind];
-    if (v6 != TSWPTapAndTouch)
+    gestureKind2 = [gesture gestureKind];
+    if (gestureKind2 != TSWPTapAndTouch)
     {
       return 0;
     }
   }
 
-  v8 = [(THWReviewDraggablePlacardRep *)self p_dragHosting];
+  p_dragHosting = [(THWReviewDraggablePlacardRep *)self p_dragHosting];
 
-  return [v8 reviewDragAllowDraggingForRep:self];
+  return [p_dragHosting reviewDragAllowDraggingForRep:self];
 }
 
-- (BOOL)handleGesture:(id)a3
+- (BOOL)handleGesture:(id)gesture
 {
-  v5 = [a3 gestureKind];
-  if (v5 != TSWPImmediatePress)
+  gestureKind = [gesture gestureKind];
+  if (gestureKind != TSWPImmediatePress)
   {
-    v6 = [a3 gestureKind];
-    return v6 == TSWPTapAndTouch;
+    gestureKind2 = [gesture gestureKind];
+    return gestureKind2 == TSWPTapAndTouch;
   }
 
-  v8 = [a3 gestureState];
-  if (v8 - 2 < 4)
+  gestureState = [gesture gestureState];
+  if (gestureState - 2 < 4)
   {
     [-[THWReviewDraggablePlacardRep p_dragHosting](self "p_dragHosting")];
     return 1;
   }
 
-  if (v8 == 1)
+  if (gestureState == 1)
   {
     [-[THWReviewDraggablePlacardRep p_dragHosting](self "p_dragHosting")];
     return 1;
@@ -234,30 +234,30 @@
   return 0;
 }
 
-- (void)setArrowDirection:(int)a3
+- (void)setArrowDirection:(int)direction
 {
-  if (self->_arrowDirection != a3)
+  if (self->_arrowDirection != direction)
   {
-    self->_arrowDirection = a3;
-    v5 = [(THWReviewDraggablePlacardRep *)self canvas];
+    self->_arrowDirection = direction;
+    canvas = [(THWReviewDraggablePlacardRep *)self canvas];
 
-    [v5 invalidateLayers];
+    [canvas invalidateLayers];
   }
 }
 
-- (void)setPressed:(BOOL)a3
+- (void)setPressed:(BOOL)pressed
 {
-  if (self->_pressed != a3)
+  if (self->_pressed != pressed)
   {
-    self->_pressed = a3;
+    self->_pressed = pressed;
     self->_shadowValid = 0;
-    v5 = [(THWReviewDraggablePlacardRep *)self canvas];
+    canvas = [(THWReviewDraggablePlacardRep *)self canvas];
 
-    [v5 invalidateLayers];
+    [canvas invalidateLayers];
   }
 }
 
-- (id)calloutPathAnimationWithduration:(double)a3
+- (id)calloutPathAnimationWithduration:(double)withduration
 {
   prevArrowDirection = self->_prevArrowDirection;
   arrowDirection = self->_arrowDirection;
@@ -294,18 +294,18 @@
   v18 = [NSNumber numberWithFloat:v17];
   LODWORD(v19) = 1.0;
   [(CAKeyframeAnimation *)v9 setKeyTimes:[NSArray arrayWithObjects:v14, v16, v18, [NSNumber numberWithFloat:v19], 0]];
-  [(CAKeyframeAnimation *)v9 setDuration:a3];
+  [(CAKeyframeAnimation *)v9 setDuration:withduration];
   [(CAKeyframeAnimation *)v9 setFillMode:kCAFillModeBoth];
   return v9;
 }
 
-- (CGPath)p_cachedPathForSize:(CGSize)a3 arrowDirection:(int)a4
+- (CGPath)p_cachedPathForSize:(CGSize)size arrowDirection:(int)direction
 {
-  v4 = *&a4;
-  height = a3.height;
-  width = a3.width;
+  v4 = *&direction;
+  height = size.height;
+  width = size.width;
   result = self->_cachedPath;
-  if (!result || (a3.width == self->_cachedPathSize.width ? (v9 = a3.height == self->_cachedPathSize.height) : (v9 = 0), !v9 || self->_cachedPathArrowDirection != a4))
+  if (!result || (size.width == self->_cachedPathSize.width ? (v9 = size.height == self->_cachedPathSize.height) : (v9 = 0), !v9 || self->_cachedPathArrowDirection != direction))
   {
     self->_prevArrowDirection = self->_cachedPathArrowDirection;
     self->_prevPathSize = self->_cachedPathSize;
@@ -326,12 +326,12 @@
   return result;
 }
 
-- (id)p_pathWithDirection:(int)a3 size:(CGSize)a4 includeWedge:(BOOL)a5
+- (id)p_pathWithDirection:(int)direction size:(CGSize)size includeWedge:(BOOL)wedge
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   memset(&m.c, 0, 32);
-  if (a3 != 0 && a5)
+  if (direction != 0 && wedge)
   {
     v8 = 13.0;
   }
@@ -347,7 +347,7 @@
   Mutable = CGPathCreateMutable();
   CGPathMoveToPoint(Mutable, &m, 3.5, 0.0);
   v31 = -v8;
-  if (a3 == 1)
+  if (direction == 1)
   {
     v9 = -v8;
   }
@@ -363,7 +363,7 @@
   CGPathAddCurveToPoint(Mutable, &m, v24, v9, v23, 0.0, x, 0.0);
   CGPathAddLineToPoint(Mutable, &m, width + -3.5, 0.0);
   CGPathAddArcToPoint(Mutable, &m, width, 0.0, width, 3.5, 3.5);
-  if (a3 == 2)
+  if (direction == 2)
   {
     v11 = v8;
   }
@@ -386,7 +386,7 @@
   CGPathAddCurveToPoint(Mutable, &m, v13, v14, width, v15, width, v16);
   CGPathAddLineToPoint(Mutable, &m, width, height + -3.5);
   CGPathAddArcToPoint(Mutable, &m, width, height, width + -3.5, height, 3.5);
-  if (a3 == 3)
+  if (direction == 3)
   {
     v17 = v12;
   }
@@ -402,7 +402,7 @@
   CGPathAddCurveToPoint(Mutable, &m, v29, v18, v30 + 7.0, height, v30, height);
   CGPathAddLineToPoint(Mutable, &m, 3.5, height);
   CGPathAddArcToPoint(Mutable, &m, 0.0, height, 0.0, height + -3.5, 3.5);
-  if (a3 == 4)
+  if (direction == 4)
   {
     v19 = v31;
   }
@@ -425,9 +425,9 @@
 
 - (id)p_dragHosting
 {
-  v3 = [(THWReviewDraggablePlacardRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWReviewDraggablePlacardRep *)self interactiveCanvasController];
 
-  return [v3 ancestorRepOfRep:self orDelegateConformingToProtocol:&OBJC_PROTOCOL___THWReviewDragHosting];
+  return [interactiveCanvasController ancestorRepOfRep:self orDelegateConformingToProtocol:&OBJC_PROTOCOL___THWReviewDragHosting];
 }
 
 @end

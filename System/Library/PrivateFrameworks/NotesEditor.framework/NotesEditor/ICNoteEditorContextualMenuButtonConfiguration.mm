@@ -1,20 +1,20 @@
 @interface ICNoteEditorContextualMenuButtonConfiguration
 - (ICNoteEditorContextualMenuButtonConfiguration)init;
-- (ICNoteEditorContextualMenuButtonConfiguration)initWithImage:(id)a3 activeImageForContext:(id)a4 menuOptions:(id)a5 defaultMenuOption:(id)a6 stateChangedHandler:(id)a7;
+- (ICNoteEditorContextualMenuButtonConfiguration)initWithImage:(id)image activeImageForContext:(id)context menuOptions:(id)options defaultMenuOption:(id)option stateChangedHandler:(id)handler;
 @end
 
 @implementation ICNoteEditorContextualMenuButtonConfiguration
 
-- (ICNoteEditorContextualMenuButtonConfiguration)initWithImage:(id)a3 activeImageForContext:(id)a4 menuOptions:(id)a5 defaultMenuOption:(id)a6 stateChangedHandler:(id)a7
+- (ICNoteEditorContextualMenuButtonConfiguration)initWithImage:(id)image activeImageForContext:(id)context menuOptions:(id)options defaultMenuOption:(id)option stateChangedHandler:(id)handler
 {
-  v10 = _Block_copy(a6);
-  v11 = _Block_copy(a7);
-  if (a4)
+  v10 = _Block_copy(option);
+  v11 = _Block_copy(handler);
+  if (context)
   {
     sub_2151A6C9C(0, &qword_2811994B0);
     sub_2151A6C9C(0, &qword_2811994B8);
     sub_2153DDB08();
-    a4 = sub_2154A1C8C();
+    context = sub_2154A1C8C();
   }
 
   type metadata accessor for ICNoteEditorContextualMenuButton.Configuration.MenuState();
@@ -33,7 +33,7 @@
 
   v14 = swift_allocObject();
   *(v14 + 16) = v11;
-  return ICNoteEditorContextualMenuButton.Configuration.init(image:activeImageForContext:menuOptions:defaultMenuOption:stateChangedHandler:)(a3, a4, v12, v10, v13, sub_2153DDABC, v14);
+  return ICNoteEditorContextualMenuButton.Configuration.init(image:activeImageForContext:menuOptions:defaultMenuOption:stateChangedHandler:)(image, context, v12, v10, v13, sub_2153DDABC, v14);
 }
 
 - (ICNoteEditorContextualMenuButtonConfiguration)init

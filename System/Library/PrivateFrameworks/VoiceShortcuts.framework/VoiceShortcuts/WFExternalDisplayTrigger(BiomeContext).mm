@@ -9,19 +9,19 @@
 {
   v16 = *MEMORY[0x277D85DE8];
   v7 = a5;
-  v8 = [a3 eventBody];
-  if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  eventBody = [a3 eventBody];
+  if (eventBody && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v9 = [v8 starting];
-    if (v9 == [a1 onConnect])
+    starting = [eventBody starting];
+    if (starting == [self onConnect])
     {
       v11 = 1;
     }
 
     else
     {
-      v10 = [v8 starting];
-      v11 = v10 ^ [a1 onDisconnect];
+      starting2 = [eventBody starting];
+      v11 = starting2 ^ [self onDisconnect];
     }
 
     v7[2](v7, v11);
@@ -48,11 +48,11 @@
 {
   v3 = a3;
   v4 = BiomeLibrary();
-  v5 = [v4 SpringBoard];
-  v6 = [v5 ExternalDisplay];
-  v7 = [v6 DisplayConnected];
+  springBoard = [v4 SpringBoard];
+  externalDisplay = [springBoard ExternalDisplay];
+  displayConnected = [externalDisplay DisplayConnected];
 
-  v8 = [v7 DSLPublisherWithUseCase:@"Automation.Trigger"];
+  v8 = [displayConnected DSLPublisherWithUseCase:@"Automation.Trigger"];
   v9 = [v8 subscribeOn:v3];
 
   return v9;

@@ -1,21 +1,21 @@
 @interface LNAssistantIntentNegativePhrases
-- (BOOL)isEqual:(id)a3;
-- (LNAssistantIntentNegativePhrases)initWithCoder:(id)a3;
-- (LNAssistantIntentNegativePhrases)initWithIntentIdentifier:(id)a3 phrases:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (LNAssistantIntentNegativePhrases)initWithCoder:(id)coder;
+- (LNAssistantIntentNegativePhrases)initWithIntentIdentifier:(id)identifier phrases:(id)phrases;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNAssistantIntentNegativePhrases
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -24,10 +24,10 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v7 = [(LNAssistantIntentNegativePhrases *)self intentIdentifier];
-    v8 = [(LNAssistantIntentNegativePhrases *)v6 intentIdentifier];
-    v9 = v7;
-    v10 = v8;
+    intentIdentifier = [(LNAssistantIntentNegativePhrases *)self intentIdentifier];
+    intentIdentifier2 = [(LNAssistantIntentNegativePhrases *)v6 intentIdentifier];
+    v9 = intentIdentifier;
+    v10 = intentIdentifier2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -54,10 +54,10 @@ LABEL_19:
       }
     }
 
-    v15 = [(LNAssistantIntentNegativePhrases *)self phrases];
-    v16 = [(LNAssistantIntentNegativePhrases *)v6 phrases];
-    v14 = v15;
-    v17 = v16;
+    phrases = [(LNAssistantIntentNegativePhrases *)self phrases];
+    phrases2 = [(LNAssistantIntentNegativePhrases *)v6 phrases];
+    v14 = phrases;
+    v17 = phrases2;
     v13 = v17;
     if (v14 == v17)
     {
@@ -84,10 +84,10 @@ LABEL_21:
 
 - (unint64_t)hash
 {
-  v3 = [(LNAssistantIntentNegativePhrases *)self intentIdentifier];
-  v4 = [v3 hash];
-  v5 = [(LNAssistantIntentNegativePhrases *)self phrases];
-  v6 = [v5 hash];
+  intentIdentifier = [(LNAssistantIntentNegativePhrases *)self intentIdentifier];
+  v4 = [intentIdentifier hash];
+  phrases = [(LNAssistantIntentNegativePhrases *)self phrases];
+  v6 = [phrases hash];
 
   return v6 ^ v4;
 }
@@ -97,62 +97,62 @@ LABEL_21:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNAssistantIntentNegativePhrases *)self intentIdentifier];
-  v7 = [(LNAssistantIntentNegativePhrases *)self phrases];
-  v8 = [v3 stringWithFormat:@"<%@: %p, intentIdentifier: %@, phrase: %@>", v5, self, v6, v7];
+  intentIdentifier = [(LNAssistantIntentNegativePhrases *)self intentIdentifier];
+  phrases = [(LNAssistantIntentNegativePhrases *)self phrases];
+  v8 = [v3 stringWithFormat:@"<%@: %p, intentIdentifier: %@, phrase: %@>", v5, self, intentIdentifier, phrases];
 
   return v8;
 }
 
-- (LNAssistantIntentNegativePhrases)initWithCoder:(id)a3
+- (LNAssistantIntentNegativePhrases)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"intentIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intentIdentifier"];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"phrases"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"phrases"];
 
     if (v9)
     {
       self = [(LNAssistantIntentNegativePhrases *)self initWithIntentIdentifier:v5 phrases:v9];
-      v10 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNAssistantIntentNegativePhrases *)self intentIdentifier];
-  [v4 encodeObject:v5 forKey:@"intentIdentifier"];
+  coderCopy = coder;
+  intentIdentifier = [(LNAssistantIntentNegativePhrases *)self intentIdentifier];
+  [coderCopy encodeObject:intentIdentifier forKey:@"intentIdentifier"];
 
-  v6 = [(LNAssistantIntentNegativePhrases *)self phrases];
-  [v4 encodeObject:v6 forKey:@"phrases"];
+  phrases = [(LNAssistantIntentNegativePhrases *)self phrases];
+  [coderCopy encodeObject:phrases forKey:@"phrases"];
 }
 
-- (LNAssistantIntentNegativePhrases)initWithIntentIdentifier:(id)a3 phrases:(id)a4
+- (LNAssistantIntentNegativePhrases)initWithIntentIdentifier:(id)identifier phrases:(id)phrases
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  identifierCopy = identifier;
+  phrasesCopy = phrases;
+  v9 = phrasesCopy;
+  if (identifierCopy)
   {
-    if (v8)
+    if (phrasesCopy)
     {
       goto LABEL_3;
     }
@@ -160,8 +160,8 @@ LABEL_21:
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"LNAssistantIntentNegativePhrases.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"intentIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNAssistantIntentNegativePhrases.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"intentIdentifier"}];
 
     if (v9)
     {
@@ -169,8 +169,8 @@ LABEL_21:
     }
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"LNAssistantIntentNegativePhrases.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"phrases"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNAssistantIntentNegativePhrases.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"phrases"}];
 
 LABEL_3:
   v19.receiver = self;
@@ -178,7 +178,7 @@ LABEL_3:
   v10 = [(LNAssistantIntentNegativePhrases *)&v19 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [identifierCopy copy];
     intentIdentifier = v10->_intentIdentifier;
     v10->_intentIdentifier = v11;
 

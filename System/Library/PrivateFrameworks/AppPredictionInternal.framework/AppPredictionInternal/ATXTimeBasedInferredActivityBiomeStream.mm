@@ -1,25 +1,25 @@
 @interface ATXTimeBasedInferredActivityBiomeStream
-- (id)sessionPublisherFromStartTime:(double)a3;
-- (id)transitionPublisherFromStartTime:(double)a3;
-- (void)_addBedtimeTransitionsForDate:(id)a3 calendar:(id)a4 toArray:(id)a5;
-- (void)_addHomeTransitionsForDate:(id)a3 calendar:(id)a4 toArray:(id)a5;
-- (void)_addWorkTransitionsForDate:(id)a3 calendar:(id)a4 toArray:(id)a5;
+- (id)sessionPublisherFromStartTime:(double)time;
+- (id)transitionPublisherFromStartTime:(double)time;
+- (void)_addBedtimeTransitionsForDate:(id)date calendar:(id)calendar toArray:(id)array;
+- (void)_addHomeTransitionsForDate:(id)date calendar:(id)calendar toArray:(id)array;
+- (void)_addWorkTransitionsForDate:(id)date calendar:(id)calendar toArray:(id)array;
 @end
 
 @implementation ATXTimeBasedInferredActivityBiomeStream
 
-- (id)sessionPublisherFromStartTime:(double)a3
+- (id)sessionPublisherFromStartTime:(double)time
 {
-  v3 = [(ATXTimeBasedInferredActivityBiomeStream *)self transitionPublisherFromStartTime:a3];
+  v3 = [(ATXTimeBasedInferredActivityBiomeStream *)self transitionPublisherFromStartTime:time];
   v4 = [_ATXUnifiedActivityStreamConversions sessionPublisherFromTransitionPublisher:v3];
 
   return v4;
 }
 
-- (id)transitionPublisherFromStartTime:(double)a3
+- (id)transitionPublisherFromStartTime:(double)time
 {
   v36 = *MEMORY[0x277D85DE8];
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v22 = __atxlog_handle_modes();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
@@ -27,15 +27,15 @@
       [ATXTimeBasedInferredActivityBiomeStream transitionPublisherFromStartTime:v22];
     }
 
-    v21 = [MEMORY[0x277CBEBF8] bpsPublisher];
+    bpsPublisher = [MEMORY[0x277CBEBF8] bpsPublisher];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
     v6 = objc_opt_new();
-    v7 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:a3];
-    v8 = [v5 startOfDayForDate:v7];
+    v7 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:time];
+    v8 = [currentCalendar startOfDayForDate:v7];
 
     v9 = [MEMORY[0x277CBEAA8] now];
     v10 = objc_alloc_init(MEMORY[0x277CBEAB8]);
@@ -47,7 +47,7 @@
     v31[1] = 3221225472;
     v31[2] = __76__ATXTimeBasedInferredActivityBiomeStream_transitionPublisherFromStartTime___block_invoke;
     v31[3] = &unk_27859FE30;
-    v12 = v5;
+    v12 = currentCalendar;
     v32 = v12;
     v25 = v9;
     v33 = v25;
@@ -88,12 +88,12 @@
       while (v16);
     }
 
-    v21 = [v6 bpsPublisher];
+    bpsPublisher = [v6 bpsPublisher];
   }
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v21;
+  return bpsPublisher;
 }
 
 void __76__ATXTimeBasedInferredActivityBiomeStream_transitionPublisherFromStartTime___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -121,43 +121,43 @@ void __76__ATXTimeBasedInferredActivityBiomeStream_transitionPublisherFromStartT
 LABEL_6:
 }
 
-- (void)_addBedtimeTransitionsForDate:(id)a3 calendar:(id)a4 toArray:(id)a5
+- (void)_addBedtimeTransitionsForDate:(id)date calendar:(id)calendar toArray:(id)array
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [(ATXTimeBasedInferredActivityBiomeStream *)self _addTransitionForDate:v10 transitionHour:0 transitionMinute:1 calendar:v9 isEntry:1 activity:5 toArray:v8];
-  [(ATXTimeBasedInferredActivityBiomeStream *)self _addTransitionForDate:v10 transitionHour:6 transitionMinute:30 calendar:v9 isEntry:0 activity:5 toArray:v8];
+  arrayCopy = array;
+  calendarCopy = calendar;
+  dateCopy = date;
+  [(ATXTimeBasedInferredActivityBiomeStream *)self _addTransitionForDate:dateCopy transitionHour:0 transitionMinute:1 calendar:calendarCopy isEntry:1 activity:5 toArray:arrayCopy];
+  [(ATXTimeBasedInferredActivityBiomeStream *)self _addTransitionForDate:dateCopy transitionHour:6 transitionMinute:30 calendar:calendarCopy isEntry:0 activity:5 toArray:arrayCopy];
 }
 
-- (void)_addWorkTransitionsForDate:(id)a3 calendar:(id)a4 toArray:(id)a5
+- (void)_addWorkTransitionsForDate:(id)date calendar:(id)calendar toArray:(id)array
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (([v8 isDateInWeekend:v10] & 1) == 0)
+  dateCopy = date;
+  calendarCopy = calendar;
+  arrayCopy = array;
+  if (([calendarCopy isDateInWeekend:dateCopy] & 1) == 0)
   {
-    [(ATXTimeBasedInferredActivityBiomeStream *)self _addTransitionForDate:v10 transitionHour:9 transitionMinute:0 calendar:v8 isEntry:1 activity:2 toArray:v9];
-    [(ATXTimeBasedInferredActivityBiomeStream *)self _addTransitionForDate:v10 transitionHour:17 transitionMinute:0 calendar:v8 isEntry:0 activity:2 toArray:v9];
+    [(ATXTimeBasedInferredActivityBiomeStream *)self _addTransitionForDate:dateCopy transitionHour:9 transitionMinute:0 calendar:calendarCopy isEntry:1 activity:2 toArray:arrayCopy];
+    [(ATXTimeBasedInferredActivityBiomeStream *)self _addTransitionForDate:dateCopy transitionHour:17 transitionMinute:0 calendar:calendarCopy isEntry:0 activity:2 toArray:arrayCopy];
   }
 }
 
-- (void)_addHomeTransitionsForDate:(id)a3 calendar:(id)a4 toArray:(id)a5
+- (void)_addHomeTransitionsForDate:(id)date calendar:(id)calendar toArray:(id)array
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  if ([v9 isDateInWeekend:?])
+  arrayCopy = array;
+  calendarCopy = calendar;
+  dateCopy = date;
+  if ([calendarCopy isDateInWeekend:?])
   {
-    [(ATXTimeBasedInferredActivityBiomeStream *)self _addTransitionForDate:v10 transitionHour:9 transitionMinute:0 calendar:v9 isEntry:1 activity:1 toArray:v8];
+    [(ATXTimeBasedInferredActivityBiomeStream *)self _addTransitionForDate:dateCopy transitionHour:9 transitionMinute:0 calendar:calendarCopy isEntry:1 activity:1 toArray:arrayCopy];
   }
 
   else
   {
-    [(ATXTimeBasedInferredActivityBiomeStream *)self _addTransitionForDate:v10 transitionHour:17 transitionMinute:30 calendar:v9 isEntry:1 activity:1 toArray:v8];
+    [(ATXTimeBasedInferredActivityBiomeStream *)self _addTransitionForDate:dateCopy transitionHour:17 transitionMinute:30 calendar:calendarCopy isEntry:1 activity:1 toArray:arrayCopy];
   }
 
-  [(ATXTimeBasedInferredActivityBiomeStream *)self _addTransitionForDate:v10 transitionHour:22 transitionMinute:0 calendar:v9 isEntry:0 activity:1 toArray:v8];
+  [(ATXTimeBasedInferredActivityBiomeStream *)self _addTransitionForDate:dateCopy transitionHour:22 transitionMinute:0 calendar:calendarCopy isEntry:0 activity:1 toArray:arrayCopy];
 }
 
 @end

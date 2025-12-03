@@ -1,15 +1,15 @@
 @interface CNCardSharedProfileCellMenuButton
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3;
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration;
 - (CNCardSharedProfileCellMenuButton)init;
 @end
 
 @implementation CNCardSharedProfileCellMenuButton
 
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration
 {
   v9.receiver = self;
   v9.super_class = CNCardSharedProfileCellMenuButton;
-  [(CNCardSharedProfileCellMenuButton *)&v9 menuAttachmentPointForConfiguration:a3];
+  [(CNCardSharedProfileCellMenuButton *)&v9 menuAttachmentPointForConfiguration:configuration];
   v5 = v4;
   [(CNCardSharedProfileCellMenuButton *)self frame];
   v7 = v6;
@@ -26,8 +26,8 @@
   v2 = [(CNCardSharedProfileCellMenuButton *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69DC888] clearColor];
-    [(CNCardSharedProfileCellMenuButton *)v2 setBackgroundColor:v3];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(CNCardSharedProfileCellMenuButton *)v2 setBackgroundColor:clearColor];
 
     v4 = v2;
   }

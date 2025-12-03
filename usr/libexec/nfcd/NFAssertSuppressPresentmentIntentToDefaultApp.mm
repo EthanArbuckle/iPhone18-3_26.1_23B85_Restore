@@ -1,48 +1,48 @@
 @interface NFAssertSuppressPresentmentIntentToDefaultApp
-- (BOOL)isEntitled:(id)a3;
+- (BOOL)isEntitled:(id)entitled;
 - (id)onAssert;
 - (id)onDeassert;
 @end
 
 @implementation NFAssertSuppressPresentmentIntentToDefaultApp
 
-- (BOOL)isEntitled:(id)a3
+- (BOOL)isEntitled:(id)entitled
 {
-  v3 = a3;
-  v4 = [v3 NF_serviceType];
-  v5 = v4;
-  if (!v4)
+  entitledCopy = entitled;
+  nF_serviceType = [entitledCopy NF_serviceType];
+  v5 = nF_serviceType;
+  if (!nF_serviceType)
   {
-    v9 = [v3 NF_whitelistChecker];
+    nF_whitelistChecker = [entitledCopy NF_whitelistChecker];
     goto LABEL_9;
   }
 
-  v6 = [v4 unsignedIntegerValue];
-  v7 = [v5 unsignedIntegerValue];
-  v8 = [v3 NF_whitelistChecker];
-  v9 = v8;
-  if (v6 == 2)
+  unsignedIntegerValue = [nF_serviceType unsignedIntegerValue];
+  unsignedIntegerValue2 = [v5 unsignedIntegerValue];
+  nF_whitelistChecker2 = [entitledCopy NF_whitelistChecker];
+  nF_whitelistChecker = nF_whitelistChecker2;
+  if (unsignedIntegerValue == 2)
   {
-    v10 = [v8 nfcCardSessionAccess];
+    nfcCardSessionAccess = [nF_whitelistChecker2 nfcCardSessionAccess];
     goto LABEL_4;
   }
 
-  if (v7 != 1)
+  if (unsignedIntegerValue2 != 1)
   {
 LABEL_9:
     v11 = 0;
     goto LABEL_10;
   }
 
-  if ([v8 seCredentialManagerAccess])
+  if ([nF_whitelistChecker2 seCredentialManagerAccess])
   {
     v11 = 1;
     goto LABEL_10;
   }
 
-  v10 = [v9 internalAccess];
+  nfcCardSessionAccess = [nF_whitelistChecker internalAccess];
 LABEL_4:
-  v11 = v10;
+  v11 = nfcCardSessionAccess;
 LABEL_10:
 
   return v11;
@@ -136,8 +136,8 @@ LABEL_6:
   v8 = 0;
 LABEL_17:
   *buf = 0;
-  v18 = [(NFAsserter *)self remoteAssertion];
-  v19 = [v18 description];
+  remoteAssertion = [(NFAsserter *)self remoteAssertion];
+  v19 = [remoteAssertion description];
   v20 = [v8 assert:v7 requestor:v19 isFirst:&v32 updatedVal:buf];
 
   if (v20)
@@ -161,15 +161,15 @@ LABEL_17:
     v29 = v28;
     [v29 queueSuspend];
 
-    v23 = [v5 expressModeManager];
-    sub_100031A1C(v23, 1, 0);
+    expressModeManager = [v5 expressModeManager];
+    sub_100031A1C(expressModeManager, 1, 0);
     v21 = 0;
   }
 
   else
   {
     v22 = [NSError alloc];
-    v23 = [NSString stringWithUTF8String:"nfcd"];
+    expressModeManager = [NSString stringWithUTF8String:"nfcd"];
     v33[0] = NSLocalizedDescriptionKey;
     v24 = [NSString stringWithUTF8String:"Invalid State"];
     v34[0] = v24;
@@ -182,7 +182,7 @@ LABEL_17:
     v26 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 112];
     v34[3] = v26;
     v27 = [NSDictionary dictionaryWithObjects:v34 forKeys:v33 count:4];
-    v21 = [v22 initWithDomain:v23 code:12 userInfo:v27];
+    v21 = [v22 initWithDomain:expressModeManager code:12 userInfo:v27];
   }
 
 LABEL_25:
@@ -278,8 +278,8 @@ LABEL_6:
   v8 = 0;
 LABEL_17:
   v63 = 0;
-  v18 = [(NFAsserter *)self remoteAssertion];
-  v19 = [v18 description];
+  remoteAssertion = [(NFAsserter *)self remoteAssertion];
+  v19 = [remoteAssertion description];
   v20 = [v8 deassert:v7 requestor:v19 isLast:&v64 updatedVal:&v63];
 
   if (v20)
@@ -290,7 +290,7 @@ LABEL_17:
       goto LABEL_52;
     }
 
-    v23 = [v5 expressModeManager];
+    expressModeManager = [v5 expressModeManager];
     if (v5)
     {
       v28 = v5[52];
@@ -304,12 +304,12 @@ LABEL_17:
     v29 = v28;
     [v29 queueResume];
 
-    v30 = [v5 expressModeManager];
-    sub_100031A1C(v30, 0, 0);
+    expressModeManager2 = [v5 expressModeManager];
+    sub_100031A1C(expressModeManager2, 0, 0);
 
-    if (v23)
+    if (expressModeManager)
     {
-      v31 = v23[181];
+      v31 = expressModeManager[181];
     }
 
     else
@@ -317,7 +317,7 @@ LABEL_17:
       v31 = 0;
     }
 
-    v32 = sub_100006030(v23);
+    v32 = sub_100006030(expressModeManager);
     if (sub_1000065FC(v5))
     {
       v33 = [(NFAsserter *)self xpc];
@@ -381,10 +381,10 @@ LABEL_17:
         goto LABEL_51;
       }
 
-      v45 = [v5 lastKnownRoutingConfig];
-      v46 = [v45 contactlessOnAny];
+      lastKnownRoutingConfig = [v5 lastKnownRoutingConfig];
+      contactlessOnAny = [lastKnownRoutingConfig contactlessOnAny];
 
-      if (v46)
+      if (contactlessOnAny)
       {
         goto LABEL_50;
       }
@@ -448,7 +448,7 @@ LABEL_17:
       }
     }
 
-    sub_10002E9BC(v23);
+    sub_10002E9BC(expressModeManager);
     [v5 maybeStartNextSession];
 LABEL_50:
     v21 = 0;
@@ -456,7 +456,7 @@ LABEL_50:
   }
 
   v22 = [NSError alloc];
-  v23 = [NSString stringWithUTF8String:"nfcd"];
+  expressModeManager = [NSString stringWithUTF8String:"nfcd"];
   v65[0] = NSLocalizedDescriptionKey;
   v24 = [NSString stringWithUTF8String:"Invalid State"];
   v66[0] = v24;
@@ -469,7 +469,7 @@ LABEL_50:
   v26 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 188];
   v66[3] = v26;
   v27 = [NSDictionary dictionaryWithObjects:v66 forKeys:v65 count:4];
-  v21 = [v22 initWithDomain:v23 code:12 userInfo:v27];
+  v21 = [v22 initWithDomain:expressModeManager code:12 userInfo:v27];
 
 LABEL_51:
 LABEL_52:

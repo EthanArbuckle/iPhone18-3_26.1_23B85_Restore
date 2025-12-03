@@ -1,39 +1,39 @@
 @interface MAAutoAssetSetAtomicEntry
-- (MAAutoAssetSetAtomicEntry)initWithCoder:(id)a3;
-- (MAAutoAssetSetAtomicEntry)initWithFullAssetSelector:(id)a3 withAssetID:(id)a4 withLocalContentURL:(id)a5 withAssetAttributes:(id)a6 inhibitedFromEmergencyRemoval:(BOOL)a7;
+- (MAAutoAssetSetAtomicEntry)initWithCoder:(id)coder;
+- (MAAutoAssetSetAtomicEntry)initWithFullAssetSelector:(id)selector withAssetID:(id)d withLocalContentURL:(id)l withAssetAttributes:(id)attributes inhibitedFromEmergencyRemoval:(BOOL)removal;
 - (id)copy;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MAAutoAssetSetAtomicEntry
 
-- (MAAutoAssetSetAtomicEntry)initWithFullAssetSelector:(id)a3 withAssetID:(id)a4 withLocalContentURL:(id)a5 withAssetAttributes:(id)a6 inhibitedFromEmergencyRemoval:(BOOL)a7
+- (MAAutoAssetSetAtomicEntry)initWithFullAssetSelector:(id)selector withAssetID:(id)d withLocalContentURL:(id)l withAssetAttributes:(id)attributes inhibitedFromEmergencyRemoval:(BOOL)removal
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  selectorCopy = selector;
+  dCopy = d;
+  lCopy = l;
+  attributesCopy = attributes;
   v20.receiver = self;
   v20.super_class = MAAutoAssetSetAtomicEntry;
   v17 = [(MAAutoAssetSetAtomicEntry *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_fullAssetSelector, a3);
-    objc_storeStrong(&v18->_assetID, a4);
-    objc_storeStrong(&v18->_localContentURL, a5);
-    objc_storeStrong(&v18->_assetAttributes, a6);
-    v18->_inhibitedFromEmergencyRemoval = a7;
+    objc_storeStrong(&v17->_fullAssetSelector, selector);
+    objc_storeStrong(&v18->_assetID, d);
+    objc_storeStrong(&v18->_localContentURL, l);
+    objc_storeStrong(&v18->_assetAttributes, attributes);
+    v18->_inhibitedFromEmergencyRemoval = removal;
   }
 
   return v18;
 }
 
-- (MAAutoAssetSetAtomicEntry)initWithCoder:(id)a3
+- (MAAutoAssetSetAtomicEntry)initWithCoder:(id)coder
 {
   v20[8] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = MAAutoAssetSetAtomicEntry;
   v5 = [(MAAutoAssetSetAtomicEntry *)&v19 init];
@@ -51,55 +51,55 @@
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:8];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fullAssetSelector"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fullAssetSelector"];
     fullAssetSelector = v5->_fullAssetSelector;
     v5->_fullAssetSelector = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetID"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetID"];
     assetID = v5->_assetID;
     v5->_assetID = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localContentURL"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localContentURL"];
     localContentURL = v5->_localContentURL;
     v5->_localContentURL = v13;
 
-    v15 = [v4 decodeObjectOfClasses:v8 forKey:@"assetAttributes"];
+    v15 = [coderCopy decodeObjectOfClasses:v8 forKey:@"assetAttributes"];
     assetAttributes = v5->_assetAttributes;
     v5->_assetAttributes = v15;
 
-    v5->_inhibitedFromEmergencyRemoval = [v4 decodeBoolForKey:@"inhibitedFromEmergencyRemoval"];
+    v5->_inhibitedFromEmergencyRemoval = [coderCopy decodeBoolForKey:@"inhibitedFromEmergencyRemoval"];
   }
 
   v17 = *MEMORY[0x1E69E9840];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(MAAutoAssetSetAtomicEntry *)self fullAssetSelector];
-  [v8 encodeObject:v4 forKey:@"fullAssetSelector"];
+  coderCopy = coder;
+  fullAssetSelector = [(MAAutoAssetSetAtomicEntry *)self fullAssetSelector];
+  [coderCopy encodeObject:fullAssetSelector forKey:@"fullAssetSelector"];
 
-  v5 = [(MAAutoAssetSetAtomicEntry *)self assetID];
-  [v8 encodeObject:v5 forKey:@"assetID"];
+  assetID = [(MAAutoAssetSetAtomicEntry *)self assetID];
+  [coderCopy encodeObject:assetID forKey:@"assetID"];
 
-  v6 = [(MAAutoAssetSetAtomicEntry *)self localContentURL];
-  [v8 encodeObject:v6 forKey:@"localContentURL"];
+  localContentURL = [(MAAutoAssetSetAtomicEntry *)self localContentURL];
+  [coderCopy encodeObject:localContentURL forKey:@"localContentURL"];
 
-  v7 = [(MAAutoAssetSetAtomicEntry *)self assetAttributes];
-  [v8 encodeObject:v7 forKey:@"assetAttributes"];
+  assetAttributes = [(MAAutoAssetSetAtomicEntry *)self assetAttributes];
+  [coderCopy encodeObject:assetAttributes forKey:@"assetAttributes"];
 
-  [v8 encodeBool:-[MAAutoAssetSetAtomicEntry inhibitedFromEmergencyRemoval](self forKey:{"inhibitedFromEmergencyRemoval"), @"inhibitedFromEmergencyRemoval"}];
+  [coderCopy encodeBool:-[MAAutoAssetSetAtomicEntry inhibitedFromEmergencyRemoval](self forKey:{"inhibitedFromEmergencyRemoval"), @"inhibitedFromEmergencyRemoval"}];
 }
 
 - (id)copy
 {
   v3 = [MAAutoAssetSetAtomicEntry alloc];
-  v4 = [(MAAutoAssetSetAtomicEntry *)self fullAssetSelector];
-  v5 = [(MAAutoAssetSetAtomicEntry *)self assetID];
-  v6 = [(MAAutoAssetSetAtomicEntry *)self localContentURL];
-  v7 = [(MAAutoAssetSetAtomicEntry *)self assetAttributes];
-  v8 = [(MAAutoAssetSetAtomicEntry *)v3 initWithFullAssetSelector:v4 withAssetID:v5 withLocalContentURL:v6 withAssetAttributes:v7 inhibitedFromEmergencyRemoval:[(MAAutoAssetSetAtomicEntry *)self inhibitedFromEmergencyRemoval]];
+  fullAssetSelector = [(MAAutoAssetSetAtomicEntry *)self fullAssetSelector];
+  assetID = [(MAAutoAssetSetAtomicEntry *)self assetID];
+  localContentURL = [(MAAutoAssetSetAtomicEntry *)self localContentURL];
+  assetAttributes = [(MAAutoAssetSetAtomicEntry *)self assetAttributes];
+  v8 = [(MAAutoAssetSetAtomicEntry *)v3 initWithFullAssetSelector:fullAssetSelector withAssetID:assetID withLocalContentURL:localContentURL withAssetAttributes:assetAttributes inhibitedFromEmergencyRemoval:[(MAAutoAssetSetAtomicEntry *)self inhibitedFromEmergencyRemoval]];
 
   return v8;
 }
@@ -107,31 +107,31 @@
 - (id)summary
 {
   v14 = MEMORY[0x1E696AEC0];
-  v15 = [(MAAutoAssetSetAtomicEntry *)self fullAssetSelector];
-  if (v15)
+  fullAssetSelector = [(MAAutoAssetSetAtomicEntry *)self fullAssetSelector];
+  if (fullAssetSelector)
   {
-    v13 = [(MAAutoAssetSetAtomicEntry *)self fullAssetSelector];
-    v3 = [v13 summary];
+    fullAssetSelector2 = [(MAAutoAssetSetAtomicEntry *)self fullAssetSelector];
+    summary = [fullAssetSelector2 summary];
   }
 
   else
   {
-    v3 = @"N";
+    summary = @"N";
   }
 
-  v4 = [(MAAutoAssetSetAtomicEntry *)self assetID];
-  if (v4)
+  assetID = [(MAAutoAssetSetAtomicEntry *)self assetID];
+  if (assetID)
   {
-    v5 = [(MAAutoAssetSetAtomicEntry *)self assetID];
+    assetID2 = [(MAAutoAssetSetAtomicEntry *)self assetID];
   }
 
   else
   {
-    v5 = @"N";
+    assetID2 = @"N";
   }
 
-  v6 = [(MAAutoAssetSetAtomicEntry *)self localContentURL];
-  if (v6)
+  localContentURL = [(MAAutoAssetSetAtomicEntry *)self localContentURL];
+  if (localContentURL)
   {
     v7 = @"Y";
   }
@@ -141,8 +141,8 @@
     v7 = @"N";
   }
 
-  v8 = [(MAAutoAssetSetAtomicEntry *)self assetAttributes];
-  if (v8)
+  assetAttributes = [(MAAutoAssetSetAtomicEntry *)self assetAttributes];
+  if (assetAttributes)
   {
     v9 = @"Y";
   }
@@ -162,13 +162,13 @@
     v10 = @"N";
   }
 
-  v11 = [v14 stringWithFormat:@"fullAssetSelector:%@|assetID:%@|localContentURL:%@|assetAttributes:%@|inhibitedFromEmergencyRemoval:%@", v3, v5, v7, v9, v10];
+  v11 = [v14 stringWithFormat:@"fullAssetSelector:%@|assetID:%@|localContentURL:%@|assetAttributes:%@|inhibitedFromEmergencyRemoval:%@", summary, assetID2, v7, v9, v10];
 
-  if (v4)
+  if (assetID)
   {
   }
 
-  if (v15)
+  if (fullAssetSelector)
   {
   }
 

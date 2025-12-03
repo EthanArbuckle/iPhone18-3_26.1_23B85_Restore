@@ -1,8 +1,8 @@
 @interface WiFiP2PXPCExportedObjectProxy
 - (id)exportedObject;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
-- (void)setExportedObject:(id)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
+- (void)setExportedObject:(id)object;
 @end
 
 @implementation WiFiP2PXPCExportedObjectProxy
@@ -14,35 +14,35 @@
   return WeakRetained;
 }
 
-- (void)setExportedObject:(id)a3
+- (void)setExportedObject:(id)object
 {
-  v4 = a3;
-  objc_storeWeak(&self->_exportedObject, v4);
+  objectCopy = object;
+  objc_storeWeak(&self->_exportedObject, objectCopy);
   v5 = objc_opt_class();
 
   self->_exportedObjectClass = v5;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v5 = [(WiFiP2PXPCExportedObjectProxy *)self exportedObject];
-  v6 = [v5 methodSignatureForSelector:a3];
+  exportedObject = [(WiFiP2PXPCExportedObjectProxy *)self exportedObject];
+  v6 = [exportedObject methodSignatureForSelector:selector];
 
   if (!v6)
   {
-    v6 = [(objc_class *)self->_exportedObjectClass instanceMethodSignatureForSelector:a3];
+    v6 = [(objc_class *)self->_exportedObjectClass instanceMethodSignatureForSelector:selector];
   }
 
   return v6;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v5 = a3;
-  v4 = [(WiFiP2PXPCExportedObjectProxy *)self exportedObject];
-  if (v4)
+  invocationCopy = invocation;
+  exportedObject = [(WiFiP2PXPCExportedObjectProxy *)self exportedObject];
+  if (exportedObject)
   {
-    [v5 invokeWithTarget:v4];
+    [invocationCopy invokeWithTarget:exportedObject];
   }
 }
 

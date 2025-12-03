@@ -2,13 +2,13 @@
 + (NSArray)keysToFetch;
 - (CNScheduler)backgroundOrImmediateScheduler;
 - (CNUICoreFamilyMemberContactsModelRetriever)init;
-- (CNUICoreFamilyMemberContactsModelRetriever)initWithContactStoreFacade:(id)a3 familyInfoFetcher:(id)a4 downtimeContainerFetcher:(id)a5 schedulerProvider:(id)a6;
-- (CNUICoreFamilyMemberContactsModelRetriever)initWithDowntimeContainerFetcher:(id)a3 schedulerProvider:(id)a4;
-- (CNUICoreFamilyMemberContactsModelRetriever)initWithFamilyMember:(id)a3 schedulerProvider:(id)a4;
+- (CNUICoreFamilyMemberContactsModelRetriever)initWithContactStoreFacade:(id)facade familyInfoFetcher:(id)fetcher downtimeContainerFetcher:(id)containerFetcher schedulerProvider:(id)provider;
+- (CNUICoreFamilyMemberContactsModelRetriever)initWithDowntimeContainerFetcher:(id)fetcher schedulerProvider:(id)provider;
+- (CNUICoreFamilyMemberContactsModelRetriever)initWithFamilyMember:(id)member schedulerProvider:(id)provider;
 - (id)allContacts;
 - (id)allContactsModel;
-- (id)modelBuilderForContacts:(id)a3 familyInfo:(id)a4;
-- (id)modelBuilderForWhitelistedContacts:(id)a3 familyInfo:(id)a4;
+- (id)modelBuilderForContacts:(id)contacts familyInfo:(id)info;
+- (id)modelBuilderForWhitelistedContacts:(id)contacts familyInfo:(id)info;
 - (id)whitelistedContactsModel;
 @end
 
@@ -17,7 +17,7 @@
 + (NSArray)keysToFetch
 {
   v11[9] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695CD80] descriptorForRequiredKeysForStyle:{objc_msgSend(a1, "contactFormatterStyle")}];
+  v2 = [MEMORY[0x1E695CD80] descriptorForRequiredKeysForStyle:{objc_msgSend(self, "contactFormatterStyle")}];
   v3 = +[CNUICoreFamilyInfoRetriever keysToFetch];
   v4 = *MEMORY[0x1E695C278];
   v11[1] = v3;
@@ -32,57 +32,57 @@
   v11[7] = *MEMORY[0x1E695C208];
   v11[8] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:9];
-  v9 = [v8 _cn_flatten];
+  _cn_flatten = [v8 _cn_flatten];
 
-  return v9;
+  return _cn_flatten;
 }
 
 - (CNUICoreFamilyMemberContactsModelRetriever)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-- (CNUICoreFamilyMemberContactsModelRetriever)initWithDowntimeContainerFetcher:(id)a3 schedulerProvider:(id)a4
+- (CNUICoreFamilyMemberContactsModelRetriever)initWithDowntimeContainerFetcher:(id)fetcher schedulerProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
+  providerCopy = provider;
+  fetcherCopy = fetcher;
   v8 = [CNUICoreContactStoreProductionFacade alloc];
   v9 = objc_alloc_init(MEMORY[0x1E695CE18]);
   v10 = [(CNUICoreContactStoreProductionFacade *)v8 initWithContactStore:v9];
 
-  v11 = [[CNUICoreFamilyInfoRetriever alloc] initWithMainContactStoreFacade:v10 matchFamilyMembersWithContacts:0 schedulerProvider:v6];
-  v12 = [(CNUICoreFamilyMemberContactsModelRetriever *)self initWithContactStoreFacade:v10 familyInfoFetcher:v11 downtimeContainerFetcher:v7 schedulerProvider:v6];
+  v11 = [[CNUICoreFamilyInfoRetriever alloc] initWithMainContactStoreFacade:v10 matchFamilyMembersWithContacts:0 schedulerProvider:providerCopy];
+  v12 = [(CNUICoreFamilyMemberContactsModelRetriever *)self initWithContactStoreFacade:v10 familyInfoFetcher:v11 downtimeContainerFetcher:fetcherCopy schedulerProvider:providerCopy];
 
   return v12;
 }
 
-- (CNUICoreFamilyMemberContactsModelRetriever)initWithFamilyMember:(id)a3 schedulerProvider:(id)a4
+- (CNUICoreFamilyMemberContactsModelRetriever)initWithFamilyMember:(id)member schedulerProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
+  providerCopy = provider;
+  memberCopy = member;
   v8 = [CNUICoreContactStoreProductionFacade alloc];
-  v9 = [MEMORY[0x1E695CE18] storeForFamilyMember:v7];
+  v9 = [MEMORY[0x1E695CE18] storeForFamilyMember:memberCopy];
 
   v10 = [(CNUICoreContactStoreProductionFacade *)v8 initWithContactStore:v9];
   v11 = [CNUICoreContactStoreProductionFacade alloc];
   v12 = objc_alloc_init(MEMORY[0x1E695CE18]);
   v13 = [(CNUICoreContactStoreProductionFacade *)v11 initWithContactStore:v12];
 
-  v14 = [[CNUICoreFamilyInfoRetriever alloc] initWithMainContactStoreFacade:v13 matchFamilyMembersWithContacts:0 schedulerProvider:v6];
-  v15 = [(CNUICoreFamilyMemberContactsModelRetriever *)self initWithContactStoreFacade:v10 familyInfoFetcher:v14 downtimeContainerFetcher:0 schedulerProvider:v6];
+  v14 = [[CNUICoreFamilyInfoRetriever alloc] initWithMainContactStoreFacade:v13 matchFamilyMembersWithContacts:0 schedulerProvider:providerCopy];
+  v15 = [(CNUICoreFamilyMemberContactsModelRetriever *)self initWithContactStoreFacade:v10 familyInfoFetcher:v14 downtimeContainerFetcher:0 schedulerProvider:providerCopy];
 
   return v15;
 }
 
-- (CNUICoreFamilyMemberContactsModelRetriever)initWithContactStoreFacade:(id)a3 familyInfoFetcher:(id)a4 downtimeContainerFetcher:(id)a5 schedulerProvider:(id)a6
+- (CNUICoreFamilyMemberContactsModelRetriever)initWithContactStoreFacade:(id)facade familyInfoFetcher:(id)fetcher downtimeContainerFetcher:(id)containerFetcher schedulerProvider:(id)provider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  facadeCopy = facade;
+  fetcherCopy = fetcher;
+  containerFetcherCopy = containerFetcher;
+  providerCopy = provider;
+  if (facadeCopy)
   {
     goto LABEL_5;
   }
@@ -96,7 +96,7 @@
   if (os_log_type_enabled(CNGuardOSLog_cn_once_object_0_3, OS_LOG_TYPE_FAULT))
   {
     [(CNUICoreContactRefetcher *)v15 initWithContactStore:v16 contactsToRefetch:v17 keysToFetch:v18, v19, v20, v21, v22];
-    if (v12)
+    if (fetcherCopy)
     {
       goto LABEL_10;
     }
@@ -105,7 +105,7 @@
   else
   {
 LABEL_5:
-    if (v12)
+    if (fetcherCopy)
     {
       goto LABEL_10;
     }
@@ -123,7 +123,7 @@ LABEL_5:
   }
 
 LABEL_10:
-  if (!v14)
+  if (!providerCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_3 != -1)
     {
@@ -143,10 +143,10 @@ LABEL_10:
   v40 = v39;
   if (v39)
   {
-    objc_storeStrong(&v39->_contactStore, a3);
-    objc_storeStrong(&v40->_familyInfoFetcher, a4);
-    objc_storeStrong(&v40->_downtimeContainerFetcher, a5);
-    objc_storeStrong(&v40->_schedulerProvider, a6);
+    objc_storeStrong(&v39->_contactStore, facade);
+    objc_storeStrong(&v40->_familyInfoFetcher, fetcher);
+    objc_storeStrong(&v40->_downtimeContainerFetcher, containerFetcher);
+    objc_storeStrong(&v40->_schedulerProvider, provider);
     v41 = v40;
   }
 
@@ -155,17 +155,17 @@ LABEL_10:
 
 - (CNScheduler)backgroundOrImmediateScheduler
 {
-  v3 = [MEMORY[0x1E696AF00] isMainThread];
-  v4 = [(CNUICoreFamilyMemberContactsModelRetriever *)self schedulerProvider];
-  v5 = v4;
-  if (v3)
+  isMainThread = [MEMORY[0x1E696AF00] isMainThread];
+  schedulerProvider = [(CNUICoreFamilyMemberContactsModelRetriever *)self schedulerProvider];
+  v5 = schedulerProvider;
+  if (isMainThread)
   {
-    [v4 backgroundScheduler];
+    [schedulerProvider backgroundScheduler];
   }
 
   else
   {
-    [v4 immediateScheduler];
+    [schedulerProvider immediateScheduler];
   }
   v6 = ;
 
@@ -174,13 +174,13 @@ LABEL_10:
 
 - (id)whitelistedContactsModel
 {
-  v3 = [(CNUICoreFamilyMemberContactsModelRetriever *)self familyInfoFetcher];
-  v4 = [(CNUICoreFamilyMemberContactsModelRetriever *)self allContacts];
+  familyInfoFetcher = [(CNUICoreFamilyMemberContactsModelRetriever *)self familyInfoFetcher];
+  allContacts = [(CNUICoreFamilyMemberContactsModelRetriever *)self allContacts];
   v9 = MEMORY[0x1E69E9820];
-  v10 = v3;
-  v5 = v3;
+  v10 = familyInfoFetcher;
+  v5 = familyInfoFetcher;
   v6 = [(CNUICoreFamilyMemberContactsModelRetriever *)self schedulerProvider:v9];
-  v7 = [v4 flatMap:&v9 schedulerProvider:v6];
+  v7 = [allContacts flatMap:&v9 schedulerProvider:v6];
 
   return v7;
 }
@@ -201,14 +201,14 @@ id __70__CNUICoreFamilyMemberContactsModelRetriever_whitelistedContactsModel__bl
 
 - (id)allContacts
 {
-  v3 = [(CNUICoreFamilyMemberContactsModelRetriever *)self contactStore];
+  contactStore = [(CNUICoreFamilyMemberContactsModelRetriever *)self contactStore];
   v4 = MEMORY[0x1E6996720];
   v10 = MEMORY[0x1E69E9820];
-  v11 = v3;
-  v5 = v3;
+  v11 = contactStore;
+  v5 = contactStore;
   v6 = [(CNUICoreFamilyMemberContactsModelRetriever *)self backgroundOrImmediateScheduler:v10];
-  v7 = [(CNUICoreFamilyMemberContactsModelRetriever *)self schedulerProvider];
-  v8 = [v4 futureWithBlock:&v10 scheduler:v6 schedulerProvider:v7];
+  schedulerProvider = [(CNUICoreFamilyMemberContactsModelRetriever *)self schedulerProvider];
+  v8 = [v4 futureWithBlock:&v10 scheduler:v6 schedulerProvider:schedulerProvider];
 
   return v8;
 }
@@ -274,22 +274,22 @@ LABEL_12:
   return v15;
 }
 
-- (id)modelBuilderForWhitelistedContacts:(id)a3 familyInfo:(id)a4
+- (id)modelBuilderForWhitelistedContacts:(id)contacts familyInfo:(id)info
 {
-  v4 = [(CNUICoreFamilyMemberContactsModelRetriever *)self modelBuilderForContacts:a3 familyInfo:a4];
+  v4 = [(CNUICoreFamilyMemberContactsModelRetriever *)self modelBuilderForContacts:contacts familyInfo:info];
   [v4 setIncludeWhitelistedContactsOnly:1];
 
   return v4;
 }
 
-- (id)modelBuilderForContacts:(id)a3 familyInfo:(id)a4
+- (id)modelBuilderForContacts:(id)contacts familyInfo:(id)info
 {
-  v5 = a4;
-  v6 = a3;
+  infoCopy = info;
+  contactsCopy = contacts;
   v7 = objc_alloc_init(CNUICoreFamilyMemberContactsModelBuilder);
-  [(CNUICoreFamilyMemberContactsModelBuilder *)v7 setContacts:v6];
+  [(CNUICoreFamilyMemberContactsModelBuilder *)v7 setContacts:contactsCopy];
 
-  v8 = [[CNUICoreContactTypeAssessor alloc] initWithFamilyInfoFuture:v5];
+  v8 = [[CNUICoreContactTypeAssessor alloc] initWithFamilyInfoFuture:infoCopy];
   [(CNUICoreFamilyMemberContactsModelBuilder *)v7 setContactTypeAssessor:v8];
 
   [(CNUICoreFamilyMemberContactsModelBuilder *)v7 setContactFormatterStyle:+[CNUICoreFamilyMemberContactsModelRetriever contactFormatterStyle]];
@@ -300,13 +300,13 @@ LABEL_12:
 
 - (id)allContactsModel
 {
-  v3 = [(CNUICoreFamilyMemberContactsModelRetriever *)self familyInfoFetcher];
-  v4 = [(CNUICoreFamilyMemberContactsModelRetriever *)self allContacts];
+  familyInfoFetcher = [(CNUICoreFamilyMemberContactsModelRetriever *)self familyInfoFetcher];
+  allContacts = [(CNUICoreFamilyMemberContactsModelRetriever *)self allContacts];
   v9 = MEMORY[0x1E69E9820];
-  v10 = v3;
-  v5 = v3;
+  v10 = familyInfoFetcher;
+  v5 = familyInfoFetcher;
   v6 = [(CNUICoreFamilyMemberContactsModelRetriever *)self schedulerProvider:v9];
-  v7 = [v4 flatMap:&v9 schedulerProvider:v6];
+  v7 = [allContacts flatMap:&v9 schedulerProvider:v6];
 
   return v7;
 }

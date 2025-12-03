@@ -1,60 +1,60 @@
 @interface HUQuickControlMediaPlayerViewController
 + (id)controlItemPredicate;
-- (HUQuickControlMediaPlayerViewController)initWithControlItems:(id)a3 home:(id)a4 itemUpdater:(id)a5 controlOrientation:(unint64_t)a6 preferredControl:(unint64_t)a7;
-- (id)intrinsicSizeDescriptorForControlSize:(unint64_t)a3;
+- (HUQuickControlMediaPlayerViewController)initWithControlItems:(id)items home:(id)home itemUpdater:(id)updater controlOrientation:(unint64_t)orientation preferredControl:(unint64_t)control;
+- (id)intrinsicSizeDescriptorForControlSize:(unint64_t)size;
 - (void)_addMediaControlView;
 - (void)_updateConstraints;
-- (void)_updateMediaControlAppearanceForTraitCollection:(id)a3;
+- (void)_updateMediaControlAppearanceForTraitCollection:(id)collection;
 - (void)dealloc;
-- (void)nowPlayingViewController:(id)a3 didChangeSizeWithAnimations:(id)a4 completion:(id)a5;
-- (void)nowPlayingViewControllerDidChangeLayout:(id)a3;
-- (void)platterViewController:(id)a3 didReceiveInteractionEvent:(id)a4;
-- (void)platterViewController:(id)a3 didUpdateEndpointWithReason:(id)a4;
-- (void)setPreferredFrameLayoutGuide:(id)a3;
+- (void)nowPlayingViewController:(id)controller didChangeSizeWithAnimations:(id)animations completion:(id)completion;
+- (void)nowPlayingViewControllerDidChangeLayout:(id)layout;
+- (void)platterViewController:(id)controller didReceiveInteractionEvent:(id)event;
+- (void)platterViewController:(id)controller didUpdateEndpointWithReason:(id)reason;
+- (void)setPreferredFrameLayoutGuide:(id)guide;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation HUQuickControlMediaPlayerViewController
 
-- (HUQuickControlMediaPlayerViewController)initWithControlItems:(id)a3 home:(id)a4 itemUpdater:(id)a5 controlOrientation:(unint64_t)a6 preferredControl:(unint64_t)a7
+- (HUQuickControlMediaPlayerViewController)initWithControlItems:(id)items home:(id)home itemUpdater:(id)updater controlOrientation:(unint64_t)orientation preferredControl:(unint64_t)control
 {
-  v12 = a3;
+  itemsCopy = items;
   v27.receiver = self;
   v27.super_class = HUQuickControlMediaPlayerViewController;
-  v13 = [(HUQuickControlViewController *)&v27 initWithControlItems:v12 home:a4 itemUpdater:a5 controlOrientation:a6 preferredControl:a7];
+  v13 = [(HUQuickControlViewController *)&v27 initWithControlItems:itemsCopy home:home itemUpdater:updater controlOrientation:orientation preferredControl:control];
   v14 = v13;
   if (v13)
   {
     mediaControlViewControllerConstraints = v13->_mediaControlViewControllerConstraints;
     v13->_mediaControlViewControllerConstraints = MEMORY[0x277CBEBF8];
 
-    v16 = [v12 na_firstObjectPassingTest:&__block_literal_global_13];
-    v17 = [v16 mediaProfileContainer];
-    v18 = [v17 hf_mediaRouteIdentifier];
+    v16 = [itemsCopy na_firstObjectPassingTest:&__block_literal_global_13];
+    mediaProfileContainer = [v16 mediaProfileContainer];
+    hf_mediaRouteIdentifier = [mediaProfileContainer hf_mediaRouteIdentifier];
     mediaRoutingIdentifier = v14->_mediaRoutingIdentifier;
-    v14->_mediaRoutingIdentifier = v18;
+    v14->_mediaRoutingIdentifier = hf_mediaRouteIdentifier;
 
     if (!v14->_mediaRoutingIdentifier)
     {
-      v20 = [v16 mediaRoutingIdentifier];
+      mediaRoutingIdentifier = [v16 mediaRoutingIdentifier];
 
-      if (v20)
+      if (mediaRoutingIdentifier)
       {
-        v21 = [v16 mediaRoutingIdentifier];
+        mediaRoutingIdentifier2 = [v16 mediaRoutingIdentifier];
         v22 = v14->_mediaRoutingIdentifier;
-        v14->_mediaRoutingIdentifier = v21;
+        v14->_mediaRoutingIdentifier = mediaRoutingIdentifier2;
       }
     }
 
     v14->_mediaAccessoryItemType = [v16 mediaAccessoryItemType];
-    v23 = [v16 mediaProfileContainer];
-    v24 = [v23 accessories];
-    v25 = [v24 anyObject];
+    mediaProfileContainer2 = [v16 mediaProfileContainer];
+    accessories = [mediaProfileContainer2 accessories];
+    anyObject = [accessories anyObject];
 
-    v14->_siriEndPointAccessory = [v25 hf_isSiriEndpoint];
-    v14->_speakerAccessory = [v25 hf_isDumbSpeaker];
+    v14->_siriEndPointAccessory = [anyObject hf_isSiriEndpoint];
+    v14->_speakerAccessory = [anyObject hf_isDumbSpeaker];
   }
 
   return v14;
@@ -92,10 +92,10 @@ uint64_t __117__HUQuickControlMediaPlayerViewController_initWithControlItems_hom
   v5.receiver = self;
   v5.super_class = HUQuickControlMediaPlayerViewController;
   [(HUQuickControlMediaPlayerViewController *)&v5 viewDidLayoutSubviews];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     [(HUQuickControlMediaPlayerViewController *)self _updateConstraints];
   }
@@ -108,12 +108,12 @@ uint64_t __117__HUQuickControlMediaPlayerViewController_initWithControlItems_hom
   return [HUQuickControlSingleItemPredicate predicateWithControlItemClass:v2];
 }
 
-- (void)setPreferredFrameLayoutGuide:(id)a3
+- (void)setPreferredFrameLayoutGuide:(id)guide
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  guideCopy = guide;
   objc_opt_class();
-  v5 = v4;
+  v5 = guideCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -127,10 +127,10 @@ uint64_t __117__HUQuickControlMediaPlayerViewController_initWithControlItems_hom
   v7 = v6;
 
   objc_opt_class();
-  v8 = [(HUQuickControlViewController *)self preferredFrameLayoutGuide];
+  preferredFrameLayoutGuide = [(HUQuickControlViewController *)self preferredFrameLayoutGuide];
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = preferredFrameLayoutGuide;
   }
 
   else
@@ -141,10 +141,10 @@ uint64_t __117__HUQuickControlMediaPlayerViewController_initWithControlItems_hom
   v10 = v9;
 
   objc_opt_class();
-  v11 = [(HUQuickControlViewController *)self preferredFrameLayoutGuide];
+  preferredFrameLayoutGuide2 = [(HUQuickControlViewController *)self preferredFrameLayoutGuide];
   if (objc_opt_isKindOfClass())
   {
-    v12 = v11;
+    v12 = preferredFrameLayoutGuide2;
   }
 
   else
@@ -219,8 +219,8 @@ LABEL_17:
     _os_log_impl(&dword_20CEB6000, v17, OS_LOG_TYPE_DEFAULT, "^^^^ preferredFrameLayoutGuide: [%@] newLayoutGuide: [%@] currentLayoutGuide: [%@] currentLayoutGuideView: [%@] ^^^^^", buf, 0x2Au);
   }
 
-  v18 = [(HUQuickControlViewController *)self preferredFrameLayoutGuide];
-  if ([v5 isEqual:v18])
+  preferredFrameLayoutGuide3 = [(HUQuickControlViewController *)self preferredFrameLayoutGuide];
+  if ([v5 isEqual:preferredFrameLayoutGuide3])
   {
   }
 
@@ -248,47 +248,47 @@ LABEL_17:
 LABEL_26:
 }
 
-- (void)platterViewController:(id)a3 didUpdateEndpointWithReason:(id)a4
+- (void)platterViewController:(id)controller didUpdateEndpointWithReason:(id)reason
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  reasonCopy = reason;
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
-    v9 = v5;
+    v9 = controllerCopy;
     v10 = 2112;
-    v11 = v6;
+    v11 = reasonCopy;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "Media player view %@ updated endpoint with reason %@", &v8, 0x16u);
   }
 }
 
-- (void)platterViewController:(id)a3 didReceiveInteractionEvent:(id)a4
+- (void)platterViewController:(id)controller didReceiveInteractionEvent:(id)event
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  eventCopy = event;
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
-    v9 = v5;
+    v9 = controllerCopy;
     v10 = 2112;
-    v11 = v6;
+    v11 = eventCopy;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "Media player view %@ received interaction event from %@", &v8, 0x16u);
   }
 }
 
-- (void)nowPlayingViewController:(id)a3 didChangeSizeWithAnimations:(id)a4 completion:(id)a5
+- (void)nowPlayingViewController:(id)controller didChangeSizeWithAnimations:(id)animations completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  animationsCopy = animations;
+  completionCopy = completion;
   objc_opt_class();
-  v9 = [(HUQuickControlViewController *)self itemUpdater];
+  itemUpdater = [(HUQuickControlViewController *)self itemUpdater];
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = itemUpdater;
   }
 
   else
@@ -298,11 +298,11 @@ LABEL_26:
 
   v11 = v10;
 
-  v12 = [v11 collectionViewLayout];
+  collectionViewLayout = [v11 collectionViewLayout];
 
-  [v12 invalidateLayout];
-  v13 = [(HUQuickControlMediaPlayerViewController *)self view];
-  [v13 setNeedsLayout];
+  [collectionViewLayout invalidateLayout];
+  view = [(HUQuickControlMediaPlayerViewController *)self view];
+  [view setNeedsLayout];
 
   v14 = MEMORY[0x277D75D18];
   v19[0] = MEMORY[0x277D85DD0];
@@ -310,15 +310,15 @@ LABEL_26:
   v19[2] = __107__HUQuickControlMediaPlayerViewController_nowPlayingViewController_didChangeSizeWithAnimations_completion___block_invoke;
   v19[3] = &unk_277DB8068;
   v19[4] = self;
-  v20 = v7;
+  v20 = animationsCopy;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __107__HUQuickControlMediaPlayerViewController_nowPlayingViewController_didChangeSizeWithAnimations_completion___block_invoke_2;
   v17[3] = &unk_277DB8090;
   v17[4] = self;
-  v18 = v8;
-  v15 = v7;
-  v16 = v8;
+  v18 = completionCopy;
+  v15 = animationsCopy;
+  v16 = completionCopy;
   [v14 animateWithDuration:4 delay:v19 usingSpringWithDamping:v17 initialSpringVelocity:0.7 options:0.0 animations:0.8165 completion:0.0];
 }
 
@@ -359,13 +359,13 @@ uint64_t __107__HUQuickControlMediaPlayerViewController_nowPlayingViewController
   return result;
 }
 
-- (void)nowPlayingViewControllerDidChangeLayout:(id)a3
+- (void)nowPlayingViewControllerDidChangeLayout:(id)layout
 {
   objc_opt_class();
-  v4 = [(HUQuickControlViewController *)self itemUpdater];
+  itemUpdater = [(HUQuickControlViewController *)self itemUpdater];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = itemUpdater;
   }
 
   else
@@ -375,9 +375,9 @@ uint64_t __107__HUQuickControlMediaPlayerViewController_nowPlayingViewController
 
   v6 = v5;
 
-  v7 = [v6 collectionViewLayout];
+  collectionViewLayout = [v6 collectionViewLayout];
 
-  [v7 invalidateLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
 - (void)_addMediaControlView
@@ -386,114 +386,114 @@ uint64_t __107__HUQuickControlMediaPlayerViewController_nowPlayingViewController
   v3 = HFLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(HUQuickControlMediaPlayerViewController *)self mediaRoutingIdentifier];
+    mediaRoutingIdentifier = [(HUQuickControlMediaPlayerViewController *)self mediaRoutingIdentifier];
     v31 = 138412290;
-    v32 = v4;
+    v32 = mediaRoutingIdentifier;
     _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_DEFAULT, "Media Route %@; showing quick controls", &v31, 0xCu);
   }
 
   v5 = objc_alloc(MEMORY[0x277D268B8]);
-  v6 = [(HUQuickControlMediaPlayerViewController *)self mediaRoutingIdentifier];
-  v7 = [v5 initWithRouteUID:v6];
+  mediaRoutingIdentifier2 = [(HUQuickControlMediaPlayerViewController *)self mediaRoutingIdentifier];
+  v7 = [v5 initWithRouteUID:mediaRoutingIdentifier2];
   [(HUQuickControlMediaPlayerViewController *)self setMediaControlsNowPlayingViewController:v7];
 
-  v8 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
-  v9 = [v8 view];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  mediaControlsNowPlayingViewController = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
+  view = [mediaControlsNowPlayingViewController view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v10 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
-  [v10 setLayout:2];
+  mediaControlsNowPlayingViewController2 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
+  [mediaControlsNowPlayingViewController2 setLayout:2];
 
   if ([(HUQuickControlMediaPlayerViewController *)self isSiriEndPointAccessory]&& ![(HUQuickControlMediaPlayerViewController *)self isSpeakerAccessory])
   {
-    v11 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
-    [v11 setLayout:4];
+    mediaControlsNowPlayingViewController3 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
+    [mediaControlsNowPlayingViewController3 setLayout:4];
   }
 
-  v12 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
-  [v12 setSupportsHorizontalLayout:1];
+  mediaControlsNowPlayingViewController4 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
+  [mediaControlsNowPlayingViewController4 setSupportsHorizontalLayout:1];
 
-  v13 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
-  [v13 setContext:3];
+  mediaControlsNowPlayingViewController5 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
+  [mediaControlsNowPlayingViewController5 setContext:3];
 
-  v14 = [MEMORY[0x277D14670] sharedInstance];
-  v15 = [v14 hostProcess];
+  mEMORY[0x277D14670] = [MEMORY[0x277D14670] sharedInstance];
+  hostProcess = [mEMORY[0x277D14670] hostProcess];
 
-  if (v15 == 100)
+  if (hostProcess == 100)
   {
     v16 = [MEMORY[0x277D26740] _visualStylingProviderForRecipe:8 andCategory:1];
-    v17 = [objc_alloc(MEMORY[0x277D268C0]) initWithVisualStylingProvider:v16];
-    v18 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
-    [v18 setStylingProvider:v17];
+    mediaControlsNowPlayingViewController7 = [objc_alloc(MEMORY[0x277D268C0]) initWithVisualStylingProvider:v16];
+    mediaControlsNowPlayingViewController6 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
+    [mediaControlsNowPlayingViewController6 setStylingProvider:mediaControlsNowPlayingViewController7];
   }
 
   else
   {
     v16 = objc_opt_new();
-    v17 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
-    [v17 setStylingProvider:v16];
+    mediaControlsNowPlayingViewController7 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
+    [mediaControlsNowPlayingViewController7 setStylingProvider:v16];
   }
 
-  v19 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
-  [v19 setContentEdgeInsets:{24.0, 40.0, 24.0, 40.0}];
+  mediaControlsNowPlayingViewController8 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
+  [mediaControlsNowPlayingViewController8 setContentEdgeInsets:{24.0, 40.0, 24.0, 40.0}];
 
-  v20 = [(HUQuickControlMediaPlayerViewController *)self traitCollection];
-  [(HUQuickControlMediaPlayerViewController *)self _updateMediaControlAppearanceForTraitCollection:v20];
+  traitCollection = [(HUQuickControlMediaPlayerViewController *)self traitCollection];
+  [(HUQuickControlMediaPlayerViewController *)self _updateMediaControlAppearanceForTraitCollection:traitCollection];
 
-  v21 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
-  [(HUQuickControlMediaPlayerViewController *)self addChildViewController:v21];
+  mediaControlsNowPlayingViewController9 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
+  [(HUQuickControlMediaPlayerViewController *)self addChildViewController:mediaControlsNowPlayingViewController9];
 
-  v22 = [(HUQuickControlMediaPlayerViewController *)self view];
-  v23 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
-  v24 = [v23 view];
-  [v22 addSubview:v24];
+  view2 = [(HUQuickControlMediaPlayerViewController *)self view];
+  mediaControlsNowPlayingViewController10 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
+  view3 = [mediaControlsNowPlayingViewController10 view];
+  [view2 addSubview:view3];
 
   [(HUQuickControlMediaPlayerViewController *)self _updateConstraints];
-  v25 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
-  [v25 didMoveToParentViewController:self];
+  mediaControlsNowPlayingViewController11 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
+  [mediaControlsNowPlayingViewController11 didMoveToParentViewController:self];
 
-  v26 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
-  [v26 setDelegate:self];
+  mediaControlsNowPlayingViewController12 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
+  [mediaControlsNowPlayingViewController12 setDelegate:self];
 
   v27 = HFLogForCategory();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
-    v28 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
+    mediaControlsNowPlayingViewController13 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
     v31 = 138412290;
-    v32 = v28;
+    v32 = mediaControlsNowPlayingViewController13;
     _os_log_impl(&dword_20CEB6000, v27, OS_LOG_TYPE_DEFAULT, "Setting HUHomePodMediaUIVendor to ->  self.mediaControlsNowPlayingViewController = %@", &v31, 0xCu);
   }
 
-  v29 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
+  mediaControlsNowPlayingViewController14 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
   v30 = +[HUHomePodMediaUIVendor sharedInstance];
-  [v30 setNowPlayingViewController:v29];
+  [v30 setNowPlayingViewController:mediaControlsNowPlayingViewController14];
 }
 
-- (void)_updateMediaControlAppearanceForTraitCollection:(id)a3
+- (void)_updateMediaControlAppearanceForTraitCollection:(id)collection
 {
-  v4 = [a3 userInterfaceStyle];
-  v5 = [(HUQuickControlMediaPlayerViewController *)self mediaControlViewController];
-  v6 = v5;
-  if (v4 == 2)
+  userInterfaceStyle = [collection userInterfaceStyle];
+  mediaControlViewController = [(HUQuickControlMediaPlayerViewController *)self mediaControlViewController];
+  v6 = mediaControlViewController;
+  if (userInterfaceStyle == 2)
   {
-    [v5 setStyle:0];
+    [mediaControlViewController setStyle:0];
 
     [MEMORY[0x277D75348] systemDarkGrayColor];
   }
 
   else
   {
-    [v5 setStyle:4];
+    [mediaControlViewController setStyle:4];
 
     [MEMORY[0x277D75348] hf_mediaPlatterBackgroundColor];
   }
   v12 = ;
   v7 = v12;
-  v8 = [v12 CGColor];
-  v9 = [(HUQuickControlMediaPlayerViewController *)self mediaControlViewController];
-  v10 = [v9 view];
-  v11 = [v10 layer];
-  [v11 setBackgroundColor:v8];
+  cGColor = [v12 CGColor];
+  mediaControlViewController2 = [(HUQuickControlMediaPlayerViewController *)self mediaControlViewController];
+  view = [mediaControlViewController2 view];
+  layer = [view layer];
+  [layer setBackgroundColor:cGColor];
 }
 
 - (void)_updateConstraints
@@ -501,35 +501,35 @@ uint64_t __107__HUQuickControlMediaPlayerViewController_nowPlayingViewController
   v78 = *MEMORY[0x277D85DE8];
   v3 = 0x277CCA000uLL;
   v4 = MEMORY[0x277CCAAD0];
-  v5 = [(HUQuickControlMediaPlayerViewController *)self mediaControlViewControllerConstraints];
-  [v4 deactivateConstraints:v5];
+  mediaControlViewControllerConstraints = [(HUQuickControlMediaPlayerViewController *)self mediaControlViewControllerConstraints];
+  [v4 deactivateConstraints:mediaControlViewControllerConstraints];
 
-  v6 = [(HUQuickControlMediaPlayerViewController *)self viewHeightConstraint];
-  [v6 setActive:0];
+  viewHeightConstraint = [(HUQuickControlMediaPlayerViewController *)self viewHeightConstraint];
+  [viewHeightConstraint setActive:0];
 
-  v7 = [MEMORY[0x277D14670] sharedInstance];
-  if ([v7 hostProcess] == 100)
+  mEMORY[0x277D14670] = [MEMORY[0x277D14670] sharedInstance];
+  if ([mEMORY[0x277D14670] hostProcess] == 100)
   {
   }
 
   else
   {
-    v8 = [MEMORY[0x277D14670] sharedInstance];
-    v9 = [v8 hostProcess];
+    mEMORY[0x277D14670]2 = [MEMORY[0x277D14670] sharedInstance];
+    hostProcess = [mEMORY[0x277D14670]2 hostProcess];
 
-    if (v9 != 3)
+    if (hostProcess != 3)
     {
       v20 = 3.40282347e38;
       goto LABEL_9;
     }
   }
 
-  v10 = [(HUQuickControlMediaPlayerViewController *)self view];
-  [v10 bounds];
+  view = [(HUQuickControlMediaPlayerViewController *)self view];
+  [view bounds];
   v12 = v11;
-  v13 = [MEMORY[0x277D759A0] mainScreen];
-  v14 = [v13 fixedCoordinateSpace];
-  [v14 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  fixedCoordinateSpace = [mainScreen fixedCoordinateSpace];
+  [fixedCoordinateSpace bounds];
   v16 = v15;
 
   if (v12 <= v16)
@@ -542,31 +542,31 @@ uint64_t __107__HUQuickControlMediaPlayerViewController_nowPlayingViewController
     v17 = 4.0;
   }
 
-  v18 = [MEMORY[0x277D759A0] mainScreen];
-  [v18 bounds];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 bounds];
   v20 = v19 + v17 * -20.0;
 
 LABEL_9:
-  v21 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
-  v22 = [v21 view];
-  v23 = [(HUQuickControlMediaPlayerViewController *)self view];
-  [v23 bounds];
-  [v22 sizeThatFits:{v24, v20}];
+  mediaControlsNowPlayingViewController = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
+  view2 = [mediaControlsNowPlayingViewController view];
+  view3 = [(HUQuickControlMediaPlayerViewController *)self view];
+  [view3 bounds];
+  [view2 sizeThatFits:{v24, v20}];
   v26 = v25;
   v28 = v27;
 
   v29 = HFLogForCategory();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
-    v30 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
+    mediaControlsNowPlayingViewController2 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
     v79.width = v26;
     v79.height = v28;
     v31 = NSStringFromCGSize(v79);
-    v32 = [(HUQuickControlMediaPlayerViewController *)self view];
-    [v32 bounds];
+    view4 = [(HUQuickControlMediaPlayerViewController *)self view];
+    [view4 bounds];
     v33 = NSStringFromCGRect(v80);
     *buf = 138412802;
-    v73 = v30;
+    v73 = mediaControlsNowPlayingViewController2;
     v74 = 2112;
     v75 = v31;
     v76 = 2112;
@@ -574,58 +574,58 @@ LABEL_9:
     _os_log_impl(&dword_20CEB6000, v29, OS_LOG_TYPE_DEFAULT, "** Inside _updateConstraints. self.mediaControlsNowPlayingViewController = %@, sizeThatFits returned by mediaControlsNowPlayingViewController = %@; self.view.bounds.size = %@", buf, 0x20u);
   }
 
-  v34 = [(HUQuickControlViewController *)self preferredFrameLayoutGuide];
+  preferredFrameLayoutGuide = [(HUQuickControlViewController *)self preferredFrameLayoutGuide];
 
-  if (v34)
+  if (preferredFrameLayoutGuide)
   {
     v35 = HFLogForCategory();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
-      v36 = [(HUQuickControlViewController *)self preferredFrameLayoutGuide];
+      preferredFrameLayoutGuide2 = [(HUQuickControlViewController *)self preferredFrameLayoutGuide];
       *buf = 138412290;
-      v73 = v36;
+      v73 = preferredFrameLayoutGuide2;
       _os_log_impl(&dword_20CEB6000, v35, OS_LOG_TYPE_DEFAULT, "*** self.preferredFrameLayoutGuide = %@ ***", buf, 0xCu);
     }
 
-    v70 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
-    v69 = [v70 view];
-    v67 = [v69 topAnchor];
-    v68 = [(HUQuickControlMediaPlayerViewController *)self view];
-    v66 = [v68 safeAreaLayoutGuide];
-    v65 = [v66 topAnchor];
-    v64 = [v67 constraintEqualToAnchor:v65];
+    mediaControlsNowPlayingViewController3 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
+    view5 = [mediaControlsNowPlayingViewController3 view];
+    topAnchor = [view5 topAnchor];
+    view6 = [(HUQuickControlMediaPlayerViewController *)self view];
+    safeAreaLayoutGuide = [view6 safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide topAnchor];
+    v64 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v71[0] = v64;
-    v63 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
-    v62 = [v63 view];
-    v61 = [v62 heightAnchor];
-    v60 = [v61 constraintEqualToConstant:v28];
+    mediaControlsNowPlayingViewController4 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
+    view7 = [mediaControlsNowPlayingViewController4 view];
+    heightAnchor = [view7 heightAnchor];
+    v60 = [heightAnchor constraintEqualToConstant:v28];
     v71[1] = v60;
-    v59 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
-    v58 = [v59 view];
-    v56 = [v58 leadingAnchor];
-    v57 = [(HUQuickControlMediaPlayerViewController *)self view];
-    v55 = [v57 safeAreaLayoutGuide];
-    v54 = [v55 leadingAnchor];
-    v37 = [v56 constraintEqualToAnchor:v54];
+    mediaControlsNowPlayingViewController5 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
+    view8 = [mediaControlsNowPlayingViewController5 view];
+    leadingAnchor = [view8 leadingAnchor];
+    view9 = [(HUQuickControlMediaPlayerViewController *)self view];
+    safeAreaLayoutGuide2 = [view9 safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide2 leadingAnchor];
+    v37 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v71[2] = v37;
-    v38 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
-    v39 = [v38 view];
-    v40 = [v39 trailingAnchor];
-    v41 = [(HUQuickControlMediaPlayerViewController *)self view];
-    v42 = [v41 safeAreaLayoutGuide];
-    v43 = [v42 trailingAnchor];
-    v44 = [v40 constraintEqualToAnchor:v43];
+    mediaControlsNowPlayingViewController6 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
+    view10 = [mediaControlsNowPlayingViewController6 view];
+    trailingAnchor = [view10 trailingAnchor];
+    view11 = [(HUQuickControlMediaPlayerViewController *)self view];
+    safeAreaLayoutGuide3 = [view11 safeAreaLayoutGuide];
+    trailingAnchor2 = [safeAreaLayoutGuide3 trailingAnchor];
+    v44 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v71[3] = v44;
     v45 = [MEMORY[0x277CBEA60] arrayWithObjects:v71 count:4];
     [(HUQuickControlMediaPlayerViewController *)self setMediaControlViewControllerConstraints:v45];
 
-    v46 = [(HUQuickControlMediaPlayerViewController *)self view];
-    v47 = [v46 heightAnchor];
-    v48 = [v47 constraintEqualToConstant:v28];
+    view12 = [(HUQuickControlMediaPlayerViewController *)self view];
+    heightAnchor2 = [view12 heightAnchor];
+    v48 = [heightAnchor2 constraintEqualToConstant:v28];
     [(HUQuickControlMediaPlayerViewController *)self setViewHeightConstraint:v48];
 
-    v49 = [(HUQuickControlMediaPlayerViewController *)self viewHeightConstraint];
-    [v49 setActive:1];
+    viewHeightConstraint2 = [(HUQuickControlMediaPlayerViewController *)self viewHeightConstraint];
+    [viewHeightConstraint2 setActive:1];
 
     v3 = 0x277CCA000;
   }
@@ -638,55 +638,55 @@ LABEL_9:
   v50 = HFLogForCategory();
   if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
   {
-    v51 = [(HUQuickControlMediaPlayerViewController *)self mediaControlViewControllerConstraints];
+    mediaControlViewControllerConstraints2 = [(HUQuickControlMediaPlayerViewController *)self mediaControlViewControllerConstraints];
     *buf = 138412290;
-    v73 = v51;
+    v73 = mediaControlViewControllerConstraints2;
     _os_log_impl(&dword_20CEB6000, v50, OS_LOG_TYPE_DEFAULT, "*** Activating constraints = %@ ***", buf, 0xCu);
   }
 
   v52 = *(v3 + 2768);
-  v53 = [(HUQuickControlMediaPlayerViewController *)self mediaControlViewControllerConstraints];
-  [v52 activateConstraints:v53];
+  mediaControlViewControllerConstraints3 = [(HUQuickControlMediaPlayerViewController *)self mediaControlViewControllerConstraints];
+  [v52 activateConstraints:mediaControlViewControllerConstraints3];
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v8 = a3;
-  v5 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
-  if (v5)
+  collectionCopy = collection;
+  mediaControlsNowPlayingViewController = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
+  if (mediaControlsNowPlayingViewController)
   {
   }
 
   else
   {
-    v6 = [(HUQuickControlMediaPlayerViewController *)self mediaControlViewController];
+    mediaControlViewController = [(HUQuickControlMediaPlayerViewController *)self mediaControlViewController];
 
-    v7 = v8;
-    if (!v6)
+    v7 = collectionCopy;
+    if (!mediaControlViewController)
     {
       goto LABEL_5;
     }
   }
 
-  [(HUQuickControlMediaPlayerViewController *)self _updateMediaControlAppearanceForTraitCollection:v8];
-  v7 = v8;
+  [(HUQuickControlMediaPlayerViewController *)self _updateMediaControlAppearanceForTraitCollection:collectionCopy];
+  v7 = collectionCopy;
 LABEL_5:
 }
 
-- (id)intrinsicSizeDescriptorForControlSize:(unint64_t)a3
+- (id)intrinsicSizeDescriptorForControlSize:(unint64_t)size
 {
-  v4 = [(HUQuickControlMediaPlayerViewController *)self parentViewController];
+  parentViewController = [(HUQuickControlMediaPlayerViewController *)self parentViewController];
   do
   {
-    v5 = v4;
-    v4 = [v4 parentViewController];
+    v5 = parentViewController;
+    parentViewController = [parentViewController parentViewController];
 
-    v6 = [(HUQuickControlMediaPlayerViewController *)self parentViewController];
+    parentViewController2 = [(HUQuickControlMediaPlayerViewController *)self parentViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
 
-      if (v4)
+      if (parentViewController)
       {
         goto LABEL_5;
       }
@@ -694,20 +694,20 @@ LABEL_5:
       goto LABEL_7;
     }
 
-    v7 = [v4 parentViewController];
+    v4ParentViewController = [parentViewController parentViewController];
   }
 
-  while (v7);
-  if (v4)
+  while (v4ParentViewController);
+  if (parentViewController)
   {
 LABEL_5:
-    v8 = [v4 view];
-    [v8 frame];
+    view = [parentViewController view];
+    [view frame];
     v10 = v9;
 
-    v11 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
-    v12 = [v11 view];
-    [v12 frame];
+    mediaControlsNowPlayingViewController = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
+    view2 = [mediaControlsNowPlayingViewController view];
+    [view2 frame];
     v14 = v13;
 
     v15 = [HUIntrinsicSizeDescriptor descriptorWithIntrinsicSize:0 flexType:v10, v14];
@@ -715,9 +715,9 @@ LABEL_5:
   }
 
 LABEL_7:
-  v16 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
-  v17 = [v16 view];
-  [v17 frame];
+  mediaControlsNowPlayingViewController2 = [(HUQuickControlMediaPlayerViewController *)self mediaControlsNowPlayingViewController];
+  view3 = [mediaControlsNowPlayingViewController2 view];
+  [view3 frame];
   v15 = [HUIntrinsicSizeDescriptor descriptorWithIntrinsicSize:0 flexType:v18, v19];
 
 LABEL_8:

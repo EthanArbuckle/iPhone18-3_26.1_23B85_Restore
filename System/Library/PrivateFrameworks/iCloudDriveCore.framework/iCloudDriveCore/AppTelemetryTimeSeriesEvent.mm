@@ -1,81 +1,81 @@
 @interface AppTelemetryTimeSeriesEvent
-+ (id)_errorsChainIfNecessaryForAppTelemetryIdentifier:(int)a3 error:(id)a4;
-+ (id)itemStatsInvestigationWithFoundInfo:(id)a3;
++ (id)_errorsChainIfNecessaryForAppTelemetryIdentifier:(int)identifier error:(id)error;
++ (id)itemStatsInvestigationWithFoundInfo:(id)info;
 + (id)newConsistencyCheckerFailedEvent;
-+ (id)newDBResetEventWithError:(id)a3 description:(id)a4;
-+ (id)newDatabaseIDMismatchEventWithFPDatabaseID:(id)a3 cloudDocsDatabaseID:(id)a4;
-+ (id)newDeepScanEventWithReason:(id)a3 appLibrary:(id)a4;
-+ (id)newFSEventToSyncUpEventWithDuration:(double)a3;
++ (id)newDBResetEventWithError:(id)error description:(id)description;
++ (id)newDatabaseIDMismatchEventWithFPDatabaseID:(id)d cloudDocsDatabaseID:(id)iD;
++ (id)newDeepScanEventWithReason:(id)reason appLibrary:(id)library;
++ (id)newFSEventToSyncUpEventWithDuration:(double)duration;
 + (id)newFileBouncedManyTimes;
-+ (id)newFromSqliteValue:(sqlite3_value *)a3;
++ (id)newFromSqliteValue:(sqlite3_value *)value;
 + (id)newFullyConsistentEvent;
-+ (id)newMissingPushEventWithNumberOutOfSync:(unsigned int)a3 zonesType:(unsigned int)a4;
-+ (id)newNonMigratedItemEvent:(id)a3 foundInfo:(id)a4;
-+ (id)newQBSDirFaultsCountEvent:(unint64_t)a3 serverTruthDirFaultCount:(unint64_t)a4 serverTruthDirCount:(unint64_t)a5 timeSinceLogin:(unint64_t)a6 serverTruthTotalItemsCount:(unint64_t)a7 zonesNeverFullSync:(unint64_t)a8;
-+ (id)newQBSOperationPrformanceEventWithTime:(double)a3 type:(id)a4 recordsFetched:(unint64_t)a5 recordsFetchedTotalMetadataSize:(unint64_t)a6 xattrsFetchedTotalSize:(unint64_t)a7;
-+ (id)newReimportDomainFailureEventWithError:(id)a3 description:(id)a4;
-+ (id)newShareSaveEventWithError:(id)a3;
-+ (id)newUploadErrorForEventName:(id)a3 foundInfo:(id)a4;
-+ (id)newUserDownloadEventWithDuration:(double)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)newMissingPushEventWithNumberOutOfSync:(unsigned int)sync zonesType:(unsigned int)type;
++ (id)newNonMigratedItemEvent:(id)event foundInfo:(id)info;
++ (id)newQBSDirFaultsCountEvent:(unint64_t)event serverTruthDirFaultCount:(unint64_t)count serverTruthDirCount:(unint64_t)dirCount timeSinceLogin:(unint64_t)login serverTruthTotalItemsCount:(unint64_t)itemsCount zonesNeverFullSync:(unint64_t)sync;
++ (id)newQBSOperationPrformanceEventWithTime:(double)time type:(id)type recordsFetched:(unint64_t)fetched recordsFetchedTotalMetadataSize:(unint64_t)size xattrsFetchedTotalSize:(unint64_t)totalSize;
++ (id)newReimportDomainFailureEventWithError:(id)error description:(id)description;
++ (id)newShareSaveEventWithError:(id)error;
++ (id)newUploadErrorForEventName:(id)name foundInfo:(id)info;
++ (id)newUserDownloadEventWithDuration:(double)duration;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsMagnitude:(id)a3;
+- (int)StringAsMagnitude:(id)magnitude;
 - (int)magnitude;
 - (unint64_t)hash;
-- (void)_populateUUID:(id)a3;
+- (void)_populateUUID:(id)d;
 - (void)clearOneofValuesForMagnitude;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMagnitude:(BOOL)a3;
-- (void)setHasMagnitudeBool:(BOOL)a3;
-- (void)setHasMagnitudeFloat:(BOOL)a3;
-- (void)setHasMagnitudeInt:(BOOL)a3;
-- (void)setHasMagnitudeLong:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setMagnitudeBool:(BOOL)a3;
-- (void)setMagnitudeDouble:(double)a3;
-- (void)setMagnitudeFloat:(float)a3;
-- (void)setMagnitudeInt:(int)a3;
-- (void)setMagnitudeLong:(int64_t)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMagnitude:(BOOL)magnitude;
+- (void)setHasMagnitudeBool:(BOOL)bool;
+- (void)setHasMagnitudeFloat:(BOOL)float;
+- (void)setHasMagnitudeInt:(BOOL)int;
+- (void)setHasMagnitudeLong:(BOOL)long;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setMagnitudeBool:(BOOL)bool;
+- (void)setMagnitudeDouble:(double)double;
+- (void)setMagnitudeFloat:(float)float;
+- (void)setMagnitudeInt:(int)int;
+- (void)setMagnitudeLong:(int64_t)long;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AppTelemetryTimeSeriesEvent
 
-+ (id)newFromSqliteValue:(sqlite3_value *)a3
++ (id)newFromSqliteValue:(sqlite3_value *)value
 {
-  if (sqlite3_value_type(a3) != 4)
+  if (sqlite3_value_type(value) != 4)
   {
     return 0;
   }
 
   v4 = objc_alloc(objc_opt_class());
-  v5 = [MEMORY[0x277CBEA90] newFromSqliteValue:a3];
+  v5 = [MEMORY[0x277CBEA90] newFromSqliteValue:value];
   v6 = [v4 initWithData:v5];
 
   return v6;
 }
 
-+ (id)_errorsChainIfNecessaryForAppTelemetryIdentifier:(int)a3 error:(id)a4
++ (id)_errorsChainIfNecessaryForAppTelemetryIdentifier:(int)identifier error:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = [BRCUserDefaults defaultsForMangledID:0];
-  v7 = [v6 telemetryEventIdentifiersToReportErrorsChain];
-  v8 = [v7 containsIndex:a3];
+  telemetryEventIdentifiersToReportErrorsChain = [v6 telemetryEventIdentifiersToReportErrorsChain];
+  v8 = [telemetryEventIdentifiersToReportErrorsChain containsIndex:identifier];
 
   v9 = 0;
   if (v8)
   {
-    v10 = v5;
-    v11 = [v10 userInfo];
-    v12 = [v11 objectForKeyedSubscript:@"brc-error-for-errors-chain"];
+    v10 = errorCopy;
+    userInfo = [v10 userInfo];
+    v12 = [userInfo objectForKeyedSubscript:@"brc-error-for-errors-chain"];
 
     if (v12)
     {
-      v13 = [v10 userInfo];
-      v14 = [v13 objectForKeyedSubscript:@"brc-error-for-errors-chain"];
+      userInfo2 = [v10 userInfo];
+      v14 = [userInfo2 objectForKeyedSubscript:@"brc-error-for-errors-chain"];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -84,8 +84,8 @@
         +[AppTelemetryTimeSeriesEvent(BRCAdditions) _errorsChainIfNecessaryForAppTelemetryIdentifier:error:];
       }
 
-      v16 = [v10 userInfo];
-      v17 = [v16 objectForKeyedSubscript:@"brc-error-for-errors-chain"];
+      userInfo3 = [v10 userInfo];
+      v17 = [userInfo3 objectForKeyedSubscript:@"brc-error-for-errors-chain"];
 
       v10 = v17;
     }
@@ -110,166 +110,166 @@
   return v9;
 }
 
-+ (id)newMissingPushEventWithNumberOutOfSync:(unsigned int)a3 zonesType:(unsigned int)a4
++ (id)newMissingPushEventWithNumberOutOfSync:(unsigned int)sync zonesType:(unsigned int)type
 {
-  v6 = [a1 newTelemetryEventWithIdentifier:3 zoneWithMangledID:0];
-  [v6 setMagnitudeInt:a4 | (a3 << 8)];
+  v6 = [self newTelemetryEventWithIdentifier:3 zoneWithMangledID:0];
+  [v6 setMagnitudeInt:type | (sync << 8)];
   return v6;
 }
 
-+ (id)newDBResetEventWithError:(id)a3 description:(id)a4
++ (id)newDBResetEventWithError:(id)error description:(id)description
 {
-  v6 = a4;
-  v7 = a3;
+  descriptionCopy = description;
+  errorCopy = error;
   v8 = [BRCUserDefaults defaultsForMangledID:0];
-  v9 = [a1 newTelemetryEventWithIdentifier:10 zoneWithMangledID:0 enhancedDrivePrivacyEnabled:objc_msgSend(v8 fromError:"supportsEnhancedDrivePrivacy") errorDescription:v7 itemIDString:{v6, 0}];
+  v9 = [self newTelemetryEventWithIdentifier:10 zoneWithMangledID:0 enhancedDrivePrivacyEnabled:objc_msgSend(v8 fromError:"supportsEnhancedDrivePrivacy") errorDescription:errorCopy itemIDString:{descriptionCopy, 0}];
 
   [v9 setMagnitudeInt:1];
   return v9;
 }
 
-+ (id)newReimportDomainFailureEventWithError:(id)a3 description:(id)a4
++ (id)newReimportDomainFailureEventWithError:(id)error description:(id)description
 {
-  v6 = a4;
-  v7 = a3;
+  descriptionCopy = description;
+  errorCopy = error;
   v8 = [BRCUserDefaults defaultsForMangledID:0];
-  v9 = [a1 newTelemetryEventWithIdentifier:43 zoneWithMangledID:0 enhancedDrivePrivacyEnabled:objc_msgSend(v8 fromError:"supportsEnhancedDrivePrivacy") errorDescription:v7 itemIDString:{v6, 0}];
+  v9 = [self newTelemetryEventWithIdentifier:43 zoneWithMangledID:0 enhancedDrivePrivacyEnabled:objc_msgSend(v8 fromError:"supportsEnhancedDrivePrivacy") errorDescription:errorCopy itemIDString:{descriptionCopy, 0}];
 
   [v9 setMagnitudeInt:1];
   return v9;
 }
 
-+ (id)newShareSaveEventWithError:(id)a3
++ (id)newShareSaveEventWithError:(id)error
 {
-  v3 = [a1 _newTelemetryEventWithIdentifier:47 error:a3];
+  v3 = [self _newTelemetryEventWithIdentifier:47 error:error];
   [v3 setMagnitudeInt:1];
   return v3;
 }
 
-+ (id)newFSEventToSyncUpEventWithDuration:(double)a3
++ (id)newFSEventToSyncUpEventWithDuration:(double)duration
 {
-  v4 = [a1 newTelemetryEventWithIdentifier:19 zoneWithMangledID:0];
-  [v4 setMagnitudeDouble:a3];
+  v4 = [self newTelemetryEventWithIdentifier:19 zoneWithMangledID:0];
+  [v4 setMagnitudeDouble:duration];
   return v4;
 }
 
-+ (id)newUserDownloadEventWithDuration:(double)a3
++ (id)newUserDownloadEventWithDuration:(double)duration
 {
-  v4 = [a1 newTelemetryEventWithIdentifier:20 zoneWithMangledID:0];
-  [v4 setMagnitudeDouble:a3];
+  v4 = [self newTelemetryEventWithIdentifier:20 zoneWithMangledID:0];
+  [v4 setMagnitudeDouble:duration];
   return v4;
 }
 
-+ (id)newDeepScanEventWithReason:(id)a3 appLibrary:(id)a4
++ (id)newDeepScanEventWithReason:(id)reason appLibrary:(id)library
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 newTelemetryEventWithIdentifier:24 zoneWithMangledID:0];
+  libraryCopy = library;
+  reasonCopy = reason;
+  v8 = [self newTelemetryEventWithIdentifier:24 zoneWithMangledID:0];
   [v8 setMagnitudeInt:1];
-  v9 = [v6 dataUsingEncoding:4];
+  v9 = [libraryCopy dataUsingEncoding:4];
 
-  v10 = [v8 investigation];
-  [v10 setZoneName:v9];
+  investigation = [v8 investigation];
+  [investigation setZoneName:v9];
 
-  v11 = [v8 investigation];
-  [v11 setReason:v7];
+  investigation2 = [v8 investigation];
+  [investigation2 setReason:reasonCopy];
 
   return v8;
 }
 
-+ (id)newQBSOperationPrformanceEventWithTime:(double)a3 type:(id)a4 recordsFetched:(unint64_t)a5 recordsFetchedTotalMetadataSize:(unint64_t)a6 xattrsFetchedTotalSize:(unint64_t)a7
++ (id)newQBSOperationPrformanceEventWithTime:(double)time type:(id)type recordsFetched:(unint64_t)fetched recordsFetchedTotalMetadataSize:(unint64_t)size xattrsFetchedTotalSize:(unint64_t)totalSize
 {
-  v12 = a4;
-  v13 = [a1 newTelemetryEventWithIdentifier:32 zoneWithMangledID:0];
-  [v13 setMagnitudeDouble:(a7 + a6) / a3];
-  v14 = [v13 investigation];
-  v15 = [v14 qbsPerformance];
-  [v15 setOperationType:v12];
+  typeCopy = type;
+  v13 = [self newTelemetryEventWithIdentifier:32 zoneWithMangledID:0];
+  [v13 setMagnitudeDouble:(totalSize + size) / time];
+  investigation = [v13 investigation];
+  qbsPerformance = [investigation qbsPerformance];
+  [qbsPerformance setOperationType:typeCopy];
 
-  v16 = [v13 investigation];
-  v17 = [v16 qbsPerformance];
-  [v17 setRecordsFetched:a5];
+  investigation2 = [v13 investigation];
+  qbsPerformance2 = [investigation2 qbsPerformance];
+  [qbsPerformance2 setRecordsFetched:fetched];
 
-  v18 = [v13 investigation];
-  v19 = [v18 qbsPerformance];
-  [v19 setRecordsFetchedTotalMetadataSize:a6];
+  investigation3 = [v13 investigation];
+  qbsPerformance3 = [investigation3 qbsPerformance];
+  [qbsPerformance3 setRecordsFetchedTotalMetadataSize:size];
 
-  v20 = [v13 investigation];
-  v21 = [v20 qbsPerformance];
-  [v21 setXattrsFetchedTotalSize:a7];
+  investigation4 = [v13 investigation];
+  qbsPerformance4 = [investigation4 qbsPerformance];
+  [qbsPerformance4 setXattrsFetchedTotalSize:totalSize];
 
   return v13;
 }
 
 + (id)newFileBouncedManyTimes
 {
-  v2 = [a1 newTelemetryEventWithIdentifier:29 zoneWithMangledID:0];
+  v2 = [self newTelemetryEventWithIdentifier:29 zoneWithMangledID:0];
   [v2 setMagnitudeInt:1];
   return v2;
 }
 
 + (id)newFullyConsistentEvent
 {
-  v2 = [a1 newTelemetryEventWithIdentifier:100 zoneWithMangledID:0];
+  v2 = [self newTelemetryEventWithIdentifier:100 zoneWithMangledID:0];
   [v2 setMagnitudeInt:1];
   return v2;
 }
 
 + (id)newConsistencyCheckerFailedEvent
 {
-  v2 = [a1 newTelemetryEventWithIdentifier:107 zoneWithMangledID:0];
+  v2 = [self newTelemetryEventWithIdentifier:107 zoneWithMangledID:0];
   [v2 setMagnitudeInt:1];
   return v2;
 }
 
-+ (id)newQBSDirFaultsCountEvent:(unint64_t)a3 serverTruthDirFaultCount:(unint64_t)a4 serverTruthDirCount:(unint64_t)a5 timeSinceLogin:(unint64_t)a6 serverTruthTotalItemsCount:(unint64_t)a7 zonesNeverFullSync:(unint64_t)a8
++ (id)newQBSDirFaultsCountEvent:(unint64_t)event serverTruthDirFaultCount:(unint64_t)count serverTruthDirCount:(unint64_t)dirCount timeSinceLogin:(unint64_t)login serverTruthTotalItemsCount:(unint64_t)itemsCount zonesNeverFullSync:(unint64_t)sync
 {
   v14 = objc_alloc_init(AppTelemetryTimeSeriesEvent);
   v15 = objc_alloc_init(AppTelemetryInvestigation);
   [(AppTelemetryTimeSeriesEvent *)v14 setInvestigation:v15];
 
   v16 = objc_alloc_init(AppTelemetryQBSInvestigation);
-  v17 = [(AppTelemetryTimeSeriesEvent *)v14 investigation];
-  [v17 setQbsInvestigation:v16];
+  investigation = [(AppTelemetryTimeSeriesEvent *)v14 investigation];
+  [investigation setQbsInvestigation:v16];
 
   [(AppTelemetryTimeSeriesEvent *)v14 setTelemetrySchema:28];
   [(AppTelemetryTimeSeriesEvent *)v14 setTimestamp:time(0)];
-  v18 = [(AppTelemetryTimeSeriesEvent *)v14 investigation];
-  v19 = [v18 qbsInvestigation];
-  [v19 setClientTruthDirFaultCount:a3];
+  investigation2 = [(AppTelemetryTimeSeriesEvent *)v14 investigation];
+  qbsInvestigation = [investigation2 qbsInvestigation];
+  [qbsInvestigation setClientTruthDirFaultCount:event];
 
-  v20 = [(AppTelemetryTimeSeriesEvent *)v14 investigation];
-  v21 = [v20 qbsInvestigation];
-  [v21 setServerTruthDirFaultCount:a4];
+  investigation3 = [(AppTelemetryTimeSeriesEvent *)v14 investigation];
+  qbsInvestigation2 = [investigation3 qbsInvestigation];
+  [qbsInvestigation2 setServerTruthDirFaultCount:count];
 
-  v22 = [(AppTelemetryTimeSeriesEvent *)v14 investigation];
-  v23 = [v22 qbsInvestigation];
-  [v23 setServerTruthDirCount:a5];
+  investigation4 = [(AppTelemetryTimeSeriesEvent *)v14 investigation];
+  qbsInvestigation3 = [investigation4 qbsInvestigation];
+  [qbsInvestigation3 setServerTruthDirCount:dirCount];
 
-  v24 = [(AppTelemetryTimeSeriesEvent *)v14 investigation];
-  v25 = [v24 qbsInvestigation];
-  [v25 setTimeSinceLogin:a6];
+  investigation5 = [(AppTelemetryTimeSeriesEvent *)v14 investigation];
+  qbsInvestigation4 = [investigation5 qbsInvestigation];
+  [qbsInvestigation4 setTimeSinceLogin:login];
 
-  v26 = [(AppTelemetryTimeSeriesEvent *)v14 investigation];
-  v27 = [v26 qbsInvestigation];
-  [v27 setServerTruthTotalItemsCount:a7];
+  investigation6 = [(AppTelemetryTimeSeriesEvent *)v14 investigation];
+  qbsInvestigation5 = [investigation6 qbsInvestigation];
+  [qbsInvestigation5 setServerTruthTotalItemsCount:itemsCount];
 
-  if (a8)
+  if (sync)
   {
     v28 = [BRCUserDefaults defaultsForMangledID:0];
-    v29 = [v28 qbsExpectedItemsFetchedPerInterval];
+    qbsExpectedItemsFetchedPerInterval = [v28 qbsExpectedItemsFetchedPerInterval];
     [v28 qbsExpectedItemsFetchedCheckInterval];
-    if (v29 * (a6 / v30) > a7)
+    if (qbsExpectedItemsFetchedPerInterval * (login / v30) > itemsCount)
     {
-      v31 = a8;
+      syncCopy = sync;
     }
 
     else
     {
-      v31 = -a8;
+      syncCopy = -sync;
     }
 
-    [(AppTelemetryTimeSeriesEvent *)v14 setMagnitudeInt:v31];
+    [(AppTelemetryTimeSeriesEvent *)v14 setMagnitudeInt:syncCopy];
   }
 
   else
@@ -280,112 +280,112 @@
   return v14;
 }
 
-- (void)_populateUUID:(id)a3
+- (void)_populateUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(AppTelemetryTimeSeriesEvent *)self telemetrySchema];
-  v6 = [(AppTelemetryTimeSeriesEvent *)self investigation];
-  v7 = v6;
-  if (v5 < 0x190)
+  dCopy = d;
+  telemetrySchema = [(AppTelemetryTimeSeriesEvent *)self telemetrySchema];
+  investigation = [(AppTelemetryTimeSeriesEvent *)self investigation];
+  v7 = investigation;
+  if (telemetrySchema < 0x190)
   {
-    [v6 setEventGroupUUID:v4];
+    [investigation setEventGroupUUID:dCopy];
   }
 
   else
   {
-    [v6 setMigrationUUID:v4];
+    [investigation setMigrationUUID:dCopy];
   }
 }
 
-+ (id)itemStatsInvestigationWithFoundInfo:(id)a3
++ (id)itemStatsInvestigationWithFoundInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = objc_alloc_init(AppTelemetryItemStatsInvestigation);
-  v5 = [v3 objectForKey:*MEMORY[0x277CC61E0]];
+  v5 = [infoCopy objectForKey:*MEMORY[0x277CC61E0]];
   v6 = v5;
   if (v5)
   {
     -[AppTelemetryItemStatsInvestigation setItemNumber:](v4, "setItemNumber:", [v5 longLongValue]);
   }
 
-  v7 = [v3 objectForKey:*MEMORY[0x277CC6218]];
+  v7 = [infoCopy objectForKey:*MEMORY[0x277CC6218]];
   v8 = v7;
   if (v7)
   {
     -[AppTelemetryItemStatsInvestigation setStMode:](v4, "setStMode:", [v7 longLongValue]);
   }
 
-  v9 = [v3 objectForKey:*MEMORY[0x277CC61A8]];
+  v9 = [infoCopy objectForKey:*MEMORY[0x277CC61A8]];
   v10 = v9;
   if (v9)
   {
     -[AppTelemetryItemStatsInvestigation setStFlags:](v4, "setStFlags:", [v9 longLongValue]);
   }
 
-  v11 = [v3 objectForKey:*MEMORY[0x277CC61F8]];
+  v11 = [infoCopy objectForKey:*MEMORY[0x277CC61F8]];
   v12 = v11;
   if (v11)
   {
     -[AppTelemetryItemStatsInvestigation setHasMoreLinks:](v4, "setHasMoreLinks:", [v11 longLongValue]);
   }
 
-  v13 = [v3 objectForKey:*MEMORY[0x277CC6208]];
+  v13 = [infoCopy objectForKey:*MEMORY[0x277CC6208]];
   v14 = v13;
   if (v13)
   {
     -[AppTelemetryItemStatsInvestigation setHasAcls:](v4, "setHasAcls:", [v13 BOOLValue]);
   }
 
-  v15 = [v3 objectForKey:*MEMORY[0x277CC6228]];
+  v15 = [infoCopy objectForKey:*MEMORY[0x277CC6228]];
   v16 = v15;
   if (v15)
   {
     -[AppTelemetryItemStatsInvestigation setParentHasAcls:](v4, "setParentHasAcls:", [v15 BOOLValue]);
   }
 
-  v17 = [v3 objectForKey:*MEMORY[0x277CC61C8]];
+  v17 = [infoCopy objectForKey:*MEMORY[0x277CC61C8]];
   v18 = v17;
   if (v17)
   {
     -[AppTelemetryItemStatsInvestigation setDataProtectionClass:](v4, "setDataProtectionClass:", [v17 intValue]);
   }
 
-  v19 = [v3 objectForKey:*MEMORY[0x277CC6200]];
+  v19 = [infoCopy objectForKey:*MEMORY[0x277CC6200]];
   v20 = v19;
   if (v19)
   {
     -[AppTelemetryItemStatsInvestigation setIsUnderDirStatFolder:](v4, "setIsUnderDirStatFolder:", [v19 BOOLValue]);
   }
 
-  v21 = [v3 objectForKey:*MEMORY[0x277CC61D8]];
+  v21 = [infoCopy objectForKey:*MEMORY[0x277CC61D8]];
   v22 = v21;
   if (v21)
   {
     -[AppTelemetryItemStatsInvestigation setStatDocID:](v4, "setStatDocID:", [v21 longLongValue]);
   }
 
-  v23 = [v3 objectForKey:*MEMORY[0x277CC6210]];
+  v23 = [infoCopy objectForKey:*MEMORY[0x277CC6210]];
   v24 = v23;
   if (v23)
   {
     -[AppTelemetryItemStatsInvestigation setStatLogicalSize:](v4, "setStatLogicalSize:", [v23 longLongValue]);
   }
 
-  v25 = [v3 objectForKey:*MEMORY[0x277CC6230]];
+  v25 = [infoCopy objectForKey:*MEMORY[0x277CC6230]];
   v26 = v25;
   if (v25)
   {
     -[AppTelemetryItemStatsInvestigation setStatPhysicalSize:](v4, "setStatPhysicalSize:", [v25 longLongValue]);
   }
 
-  v27 = [v3 objectForKey:*MEMORY[0x277CC61D0]];
+  v27 = [infoCopy objectForKey:*MEMORY[0x277CC61D0]];
   v28 = v27;
   if (v27)
   {
     -[AppTelemetryItemStatsInvestigation setStatDirEntryCount:](v4, "setStatDirEntryCount:", [v27 longLongValue]);
   }
 
-  v29 = [v3 objectForKey:*MEMORY[0x277CC6240]];
+  v29 = [infoCopy objectForKey:*MEMORY[0x277CC6240]];
   v30 = v29;
   if (v29)
   {
@@ -393,93 +393,93 @@
     -[AppTelemetryItemStatsInvestigation setIsOwnedByRoot:](v4, "setIsOwnedByRoot:", [v30 unsignedIntValue] == 1);
   }
 
-  v31 = [v3 objectForKey:*MEMORY[0x277CC61E8]];
+  v31 = [infoCopy objectForKey:*MEMORY[0x277CC61E8]];
   v32 = v31;
   if (v31)
   {
     v33 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v31, "intValue")}];
-    v34 = [v33 stringValue];
-    [(AppTelemetryItemStatsInvestigation *)v4 setFinderInfoFlagsBase64:v34];
+    stringValue = [v33 stringValue];
+    [(AppTelemetryItemStatsInvestigation *)v4 setFinderInfoFlagsBase64:stringValue];
   }
 
-  v35 = [v3 objectForKey:*MEMORY[0x277CC6238]];
+  v35 = [infoCopy objectForKey:*MEMORY[0x277CC6238]];
   v36 = v35;
   if (v35)
   {
     -[AppTelemetryItemStatsInvestigation setIsResourceFork:](v4, "setIsResourceFork:", [v35 BOOLValue]);
   }
 
-  v37 = [v3 objectForKey:*MEMORY[0x277CC61C0]];
+  v37 = [infoCopy objectForKey:*MEMORY[0x277CC61C0]];
   v38 = v37;
   if (v37)
   {
     -[AppTelemetryItemStatsInvestigation setSyncRootEnum:](v4, "setSyncRootEnum:", [v37 intValue]);
   }
 
-  v39 = [v3 objectForKey:*MEMORY[0x277CC61B0]];
+  v39 = [infoCopy objectForKey:*MEMORY[0x277CC61B0]];
   v40 = v39;
   if (v39)
   {
     -[AppTelemetryItemStatsInvestigation setBTime:](v4, "setBTime:", [v39 longLongValue]);
   }
 
-  v41 = [v3 objectForKey:*MEMORY[0x277CC61B8]];
+  v41 = [infoCopy objectForKey:*MEMORY[0x277CC61B8]];
   v42 = v41;
   if (v41)
   {
     -[AppTelemetryItemStatsInvestigation setBTimeIsBusy:](v4, "setBTimeIsBusy:", [v41 BOOLValue]);
   }
 
-  v43 = [v3 objectForKey:*MEMORY[0x277CC6220]];
+  v43 = [infoCopy objectForKey:*MEMORY[0x277CC6220]];
   v44 = v43;
   if (v43)
   {
     -[AppTelemetryItemStatsInvestigation setMTime:](v4, "setMTime:", [v43 longLongValue]);
   }
 
-  v45 = [v3 objectForKey:*MEMORY[0x277CC6270]];
+  v45 = [infoCopy objectForKey:*MEMORY[0x277CC6270]];
   v46 = v45;
   if (v45)
   {
     -[AppTelemetryItemStatsInvestigation setXattrCount:](v4, "setXattrCount:", [v45 intValue]);
   }
 
-  v47 = [v3 objectForKey:*MEMORY[0x277CC6268]];
+  v47 = [infoCopy objectForKey:*MEMORY[0x277CC6268]];
   v48 = v47;
   if (v47)
   {
     -[AppTelemetryItemStatsInvestigation setCompressionType:](v4, "setCompressionType:", [v47 intValue]);
   }
 
-  v49 = [v3 objectForKey:*MEMORY[0x277CC6290]];
+  v49 = [infoCopy objectForKey:*MEMORY[0x277CC6290]];
   v50 = v49;
   if (v49)
   {
     -[AppTelemetryItemStatsInvestigation setIsQuarantined:](v4, "setIsQuarantined:", [v49 BOOLValue]);
   }
 
-  v51 = [v3 objectForKey:*MEMORY[0x277CC6280]];
+  v51 = [infoCopy objectForKey:*MEMORY[0x277CC6280]];
   v52 = v51;
   if (v51)
   {
     -[AppTelemetryItemStatsInvestigation setXattrHasDemotion:](v4, "setXattrHasDemotion:", [v51 BOOLValue]);
   }
 
-  v53 = [v3 objectForKey:*MEMORY[0x277CC6288]];
+  v53 = [infoCopy objectForKey:*MEMORY[0x277CC6288]];
   v54 = v53;
   if (v53)
   {
     -[AppTelemetryItemStatsInvestigation setXattrHasPromotion:](v4, "setXattrHasPromotion:", [v53 BOOLValue]);
   }
 
-  v55 = [v3 objectForKey:*MEMORY[0x277CC6278]];
+  v55 = [infoCopy objectForKey:*MEMORY[0x277CC6278]];
   v56 = v55;
   if (v55)
   {
     -[AppTelemetryItemStatsInvestigation setXattrHasBeforeBounce:](v4, "setXattrHasBeforeBounce:", [v55 BOOLValue]);
   }
 
-  v57 = [v3 objectForKey:*MEMORY[0x277CC6178]];
+  v57 = [infoCopy objectForKey:*MEMORY[0x277CC6178]];
   if (v57)
   {
     objc_opt_class();
@@ -489,35 +489,35 @@
     }
   }
 
-  v58 = [v3 objectForKey:*MEMORY[0x277CC6160]];
+  v58 = [infoCopy objectForKey:*MEMORY[0x277CC6160]];
   v59 = v58;
   if (v58)
   {
     -[AppTelemetryItemStatsInvestigation setFileNameLength:](v4, "setFileNameLength:", [v58 longLongValue]);
   }
 
-  v60 = [v3 objectForKey:*MEMORY[0x277CC6170]];
+  v60 = [infoCopy objectForKey:*MEMORY[0x277CC6170]];
   v61 = v60;
   if (v60)
   {
     -[AppTelemetryItemStatsInvestigation setPathLength:](v4, "setPathLength:", [v60 longLongValue]);
   }
 
-  v62 = [v3 objectForKey:*MEMORY[0x277CC6150]];
+  v62 = [infoCopy objectForKey:*MEMORY[0x277CC6150]];
   v63 = v62;
   if (v62)
   {
     -[AppTelemetryItemStatsInvestigation setIsAppleDouble:](v4, "setIsAppleDouble:", [v62 BOOLValue]);
   }
 
-  v64 = [v3 objectForKey:*MEMORY[0x277CC6168]];
+  v64 = [infoCopy objectForKey:*MEMORY[0x277CC6168]];
   v65 = v64;
   if (v64)
   {
     -[AppTelemetryItemStatsInvestigation setPathDepth:](v4, "setPathDepth:", [v64 longLongValue]);
   }
 
-  v66 = [v3 objectForKey:*MEMORY[0x277CC6148]];
+  v66 = [infoCopy objectForKey:*MEMORY[0x277CC6148]];
   if (v66)
   {
     objc_opt_class();
@@ -527,7 +527,7 @@
     }
   }
 
-  v67 = [v3 objectForKey:*MEMORY[0x277CC6180]];
+  v67 = [infoCopy objectForKey:*MEMORY[0x277CC6180]];
   if (v67)
   {
     objc_opt_class();
@@ -537,35 +537,35 @@
     }
   }
 
-  v68 = [v3 objectForKey:*MEMORY[0x277CC6158]];
+  v68 = [infoCopy objectForKey:*MEMORY[0x277CC6158]];
   v69 = v68;
   if (v68)
   {
     -[AppTelemetryItemStatsInvestigation setNameIsTrashed:](v4, "setNameIsTrashed:", [v68 BOOLValue]);
   }
 
-  v70 = [v3 objectForKey:*MEMORY[0x277CC6258]];
+  v70 = [infoCopy objectForKey:*MEMORY[0x277CC6258]];
   v71 = v70;
   if (v70)
   {
     -[AppTelemetryItemStatsInvestigation setReadErrorCode:](v4, "setReadErrorCode:", [v70 longLongValue]);
   }
 
-  v72 = [v3 objectForKey:*MEMORY[0x277CC6250]];
+  v72 = [infoCopy objectForKey:*MEMORY[0x277CC6250]];
   v73 = v72;
   if (v72)
   {
     -[AppTelemetryItemStatsInvestigation setSysPageSize:](v4, "setSysPageSize:", [v72 longLongValue]);
   }
 
-  v74 = [v3 objectForKey:*MEMORY[0x277CC6260]];
+  v74 = [infoCopy objectForKey:*MEMORY[0x277CC6260]];
   v75 = v74;
   if (v74)
   {
     -[AppTelemetryItemStatsInvestigation setSysUID:](v4, "setSysUID:", [v74 longLongValue]);
   }
 
-  v76 = [v3 objectForKey:*MEMORY[0x277CC6248]];
+  v76 = [infoCopy objectForKey:*MEMORY[0x277CC6248]];
   v77 = v76;
   if (v76)
   {
@@ -573,50 +573,50 @@
   }
 
   v78 = *MEMORY[0x277CC6190];
-  v79 = [v3 objectForKey:*MEMORY[0x277CC6190]];
+  v79 = [infoCopy objectForKey:*MEMORY[0x277CC6190]];
   v80 = v79;
   if (v79)
   {
     -[AppTelemetryItemStatsInvestigation setIsPurgable:](v4, "setIsPurgable:", [v79 BOOLValue]);
   }
 
-  v81 = [v3 objectForKey:v78];
-  v82 = [v3 objectForKey:*MEMORY[0x277CC6198]];
+  v81 = [infoCopy objectForKey:v78];
+  v82 = [infoCopy objectForKey:*MEMORY[0x277CC6198]];
   v83 = v82;
   if (v82)
   {
     -[AppTelemetryItemStatsInvestigation setPurgeGenCount:](v4, "setPurgeGenCount:", [v82 longLongValue]);
   }
 
-  v84 = [v3 objectForKey:*MEMORY[0x277CC6188]];
+  v84 = [infoCopy objectForKey:*MEMORY[0x277CC6188]];
   v85 = v84;
   if (v84)
   {
     -[AppTelemetryItemStatsInvestigation setPurgeATime:](v4, "setPurgeATime:", [v84 longLongValue]);
   }
 
-  v86 = [v3 objectForKey:*MEMORY[0x277CC61A0]];
+  v86 = [infoCopy objectForKey:*MEMORY[0x277CC61A0]];
   v87 = v86;
   if (v86)
   {
     -[AppTelemetryItemStatsInvestigation setPurgeSyncRoot:](v4, "setPurgeSyncRoot:", [v86 longLongValue]);
   }
 
-  v88 = [v3 objectForKey:*MEMORY[0x277CC61F0]];
+  v88 = [infoCopy objectForKey:*MEMORY[0x277CC61F0]];
   v89 = v88;
   if (v88)
   {
     -[AppTelemetryItemStatsInvestigation setFsGenCount:](v4, "setFsGenCount:", [v88 longLongValue]);
   }
 
-  v90 = [v3 objectForKey:*MEMORY[0x277CC60B8]];
+  v90 = [infoCopy objectForKey:*MEMORY[0x277CC60B8]];
   v91 = v90;
   if (v90)
   {
     -[AppTelemetryItemStatsInvestigation setDbErrorCode:](v4, "setDbErrorCode:", [v90 longLongValue]);
   }
 
-  v92 = [v3 objectForKey:*MEMORY[0x277CC60C0]];
+  v92 = [infoCopy objectForKey:*MEMORY[0x277CC60C0]];
   if (v92)
   {
     objc_opt_class();
@@ -626,112 +626,112 @@
     }
   }
 
-  v93 = [v3 objectForKey:*MEMORY[0x277CC60A8]];
+  v93 = [infoCopy objectForKey:*MEMORY[0x277CC60A8]];
   v94 = v93;
   if (v93)
   {
     -[AppTelemetryItemStatsInvestigation setDbCapabilities:](v4, "setDbCapabilities:", [v93 longLongValue]);
   }
 
-  v95 = [v3 objectForKey:*MEMORY[0x277CC6118]];
+  v95 = [infoCopy objectForKey:*MEMORY[0x277CC6118]];
   v96 = v95;
   if (v95)
   {
     -[AppTelemetryItemStatsInvestigation setDbTransferState:](v4, "setDbTransferState:", [v95 longLongValue]);
   }
 
-  v97 = [v3 objectForKey:*MEMORY[0x277CC6110]];
+  v97 = [infoCopy objectForKey:*MEMORY[0x277CC6110]];
   v98 = v97;
   if (v97)
   {
     -[AppTelemetryItemStatsInvestigation setDbSharingState:](v4, "setDbSharingState:", [v97 longLongValue]);
   }
 
-  v99 = [v3 objectForKey:*MEMORY[0x277CC6100]];
+  v99 = [infoCopy objectForKey:*MEMORY[0x277CC6100]];
   v100 = v99;
   if (v99)
   {
     -[AppTelemetryItemStatsInvestigation setDbIsApplibrary:](v4, "setDbIsApplibrary:", [v99 BOOLValue]);
   }
 
-  v101 = [v3 objectForKey:*MEMORY[0x277CC60B0]];
+  v101 = [infoCopy objectForKey:*MEMORY[0x277CC60B0]];
   v102 = v101;
   if (v101)
   {
     -[AppTelemetryItemStatsInvestigation setDbEffectiveContentPolicy:](v4, "setDbEffectiveContentPolicy:", [v101 longLongValue]);
   }
 
-  v103 = [v3 objectForKey:*MEMORY[0x277CC6108]];
+  v103 = [infoCopy objectForKey:*MEMORY[0x277CC6108]];
   v104 = v103;
   if (v103)
   {
     -[AppTelemetryItemStatsInvestigation setDbIsPackage:](v4, "setDbIsPackage:", [v103 BOOLValue]);
   }
 
-  v105 = [v3 objectForKey:*MEMORY[0x277CC60E8]];
+  v105 = [infoCopy objectForKey:*MEMORY[0x277CC60E8]];
   v106 = v105;
   if (v105)
   {
     -[AppTelemetryItemStatsInvestigation setDbFsContentStatus:](v4, "setDbFsContentStatus:", [v105 longLongValue]);
   }
 
-  v107 = [v3 objectForKey:*MEMORY[0x277CC60C8]];
+  v107 = [infoCopy objectForKey:*MEMORY[0x277CC60C8]];
   v108 = v107;
   if (v107)
   {
     -[AppTelemetryItemStatsInvestigation setDbFpContentStatus:](v4, "setDbFpContentStatus:", [v107 longLongValue]);
   }
 
-  v109 = [v3 objectForKey:*MEMORY[0x277CC60F8]];
+  v109 = [infoCopy objectForKey:*MEMORY[0x277CC60F8]];
   v110 = v109;
   if (v109)
   {
     -[AppTelemetryItemStatsInvestigation setDbFsImportStatus:](v4, "setDbFsImportStatus:", [v109 longLongValue]);
   }
 
-  v111 = [v3 objectForKey:*MEMORY[0x277CC60D8]];
+  v111 = [infoCopy objectForKey:*MEMORY[0x277CC60D8]];
   v112 = v111;
   if (v111)
   {
     -[AppTelemetryItemStatsInvestigation setDbFpImportStatus:](v4, "setDbFpImportStatus:", [v111 longLongValue]);
   }
 
-  v113 = [v3 objectForKey:*MEMORY[0x277CC60F0]];
+  v113 = [infoCopy objectForKey:*MEMORY[0x277CC60F0]];
   v114 = v113;
   if (v113)
   {
     -[AppTelemetryItemStatsInvestigation setDbFsDeletionStatus:](v4, "setDbFsDeletionStatus:", [v113 longLongValue]);
   }
 
-  v115 = [v3 objectForKey:*MEMORY[0x277CC60D0]];
+  v115 = [infoCopy objectForKey:*MEMORY[0x277CC60D0]];
   v116 = v115;
   if (v115)
   {
     -[AppTelemetryItemStatsInvestigation setDbFpDeletionStatus:](v4, "setDbFpDeletionStatus:", [v115 longLongValue]);
   }
 
-  v117 = [v3 objectForKey:*MEMORY[0x277CC6130]];
+  v117 = [infoCopy objectForKey:*MEMORY[0x277CC6130]];
   v118 = v117;
   if (v117)
   {
     -[AppTelemetryItemStatsInvestigation setDiagFailuresBitmap:](v4, "setDiagFailuresBitmap:", [v117 longLongValue]);
   }
 
-  v119 = [v3 objectForKey:*MEMORY[0x277CC6120]];
+  v119 = [infoCopy objectForKey:*MEMORY[0x277CC6120]];
   v120 = v119;
   if (v119)
   {
     -[AppTelemetryItemStatsInvestigation setDiagErrorCode:](v4, "setDiagErrorCode:", [v119 longLongValue]);
   }
 
-  v121 = [v3 objectForKey:*MEMORY[0x277CC6138]];
+  v121 = [infoCopy objectForKey:*MEMORY[0x277CC6138]];
   v122 = v121;
   if (v121)
   {
     -[AppTelemetryItemStatsInvestigation setDiagUnderlyingErrorCode:](v4, "setDiagUnderlyingErrorCode:", [v121 longLongValue]);
   }
 
-  v123 = [v3 objectForKey:*MEMORY[0x277CC6128]];
+  v123 = [infoCopy objectForKey:*MEMORY[0x277CC6128]];
   if (v123)
   {
     objc_opt_class();
@@ -741,7 +741,7 @@
     }
   }
 
-  v124 = [v3 objectForKey:*MEMORY[0x277CC6140]];
+  v124 = [infoCopy objectForKey:*MEMORY[0x277CC6140]];
   if (v124)
   {
     objc_opt_class();
@@ -751,35 +751,35 @@
     }
   }
 
-  v125 = [v3 objectForKey:*MEMORY[0x277CC6080]];
+  v125 = [infoCopy objectForKey:*MEMORY[0x277CC6080]];
   v126 = v125;
   if (v125)
   {
     -[AppTelemetryItemStatsInvestigation setApfsAvailableSpace:](v4, "setApfsAvailableSpace:", [v125 longLongValue]);
   }
 
-  v127 = [v3 objectForKey:*MEMORY[0x277CC6098]];
+  v127 = [infoCopy objectForKey:*MEMORY[0x277CC6098]];
   v128 = v127;
   if (v127)
   {
     -[AppTelemetryItemStatsInvestigation setApfsFlags:](v4, "setApfsFlags:", [v127 longLongValue]);
   }
 
-  v129 = [v3 objectForKey:*MEMORY[0x277CC6088]];
+  v129 = [infoCopy objectForKey:*MEMORY[0x277CC6088]];
   v130 = v129;
   if (v129)
   {
     -[AppTelemetryItemStatsInvestigation setApfsBlockSize:](v4, "setApfsBlockSize:", [v129 longLongValue]);
   }
 
-  v131 = [v3 objectForKey:*MEMORY[0x277CC60A0]];
+  v131 = [infoCopy objectForKey:*MEMORY[0x277CC60A0]];
   v132 = v131;
   if (v131)
   {
     -[AppTelemetryItemStatsInvestigation setApfsRole:](v4, "setApfsRole:", [v131 longLongValue]);
   }
 
-  v133 = [v3 objectForKey:*MEMORY[0x277CC6090]];
+  v133 = [infoCopy objectForKey:*MEMORY[0x277CC6090]];
   v134 = v133;
   if (v133)
   {
@@ -790,52 +790,52 @@
   return v4;
 }
 
-+ (id)newNonMigratedItemEvent:(id)a3 foundInfo:(id)a4
++ (id)newNonMigratedItemEvent:(id)event foundInfo:(id)info
 {
-  v5 = a4;
-  v6 = [AppTelemetryTimeSeriesEvent newIntEvent:403 UUID:a3 value:1];
-  v7 = [AppTelemetryTimeSeriesEvent itemStatsInvestigationWithFoundInfo:v5];
+  infoCopy = info;
+  v6 = [AppTelemetryTimeSeriesEvent newIntEvent:403 UUID:event value:1];
+  v7 = [AppTelemetryTimeSeriesEvent itemStatsInvestigationWithFoundInfo:infoCopy];
 
-  v8 = [v6 investigation];
-  [v8 setItemStatsInvestigation:v7];
+  investigation = [v6 investigation];
+  [investigation setItemStatsInvestigation:v7];
 
   return v6;
 }
 
-+ (id)newUploadErrorForEventName:(id)a3 foundInfo:(id)a4
++ (id)newUploadErrorForEventName:(id)name foundInfo:(id)info
 {
-  v5 = a4;
-  v6 = [AppTelemetryTimeSeriesEvent newIntEvent:210 UUID:a3 value:1];
-  v7 = [AppTelemetryTimeSeriesEvent itemStatsInvestigationWithFoundInfo:v5];
+  infoCopy = info;
+  v6 = [AppTelemetryTimeSeriesEvent newIntEvent:210 UUID:name value:1];
+  v7 = [AppTelemetryTimeSeriesEvent itemStatsInvestigationWithFoundInfo:infoCopy];
 
-  v8 = [v6 investigation];
-  [v8 setItemStatsInvestigation:v7];
+  investigation = [v6 investigation];
+  [investigation setItemStatsInvestigation:v7];
 
   return v6;
 }
 
-+ (id)newDatabaseIDMismatchEventWithFPDatabaseID:(id)a3 cloudDocsDatabaseID:(id)a4
++ (id)newDatabaseIDMismatchEventWithFPDatabaseID:(id)d cloudDocsDatabaseID:(id)iD
 {
-  v5 = a4;
-  v6 = [AppTelemetryTimeSeriesEvent newIntEvent:38 UUID:a3 value:1];
-  v7 = [v6 investigation];
-  [v7 setMigrationUUID:v5];
+  iDCopy = iD;
+  v6 = [AppTelemetryTimeSeriesEvent newIntEvent:38 UUID:d value:1];
+  investigation = [v6 investigation];
+  [investigation setMigrationUUID:iDCopy];
 
   return v6;
 }
 
-- (void)setMagnitudeFloat:(float)a3
+- (void)setMagnitudeFloat:(float)float
 {
   [(AppTelemetryTimeSeriesEvent *)self clearOneofValuesForMagnitude];
   *&self->_has |= 8u;
   self->_magnitude = 1;
   *&self->_has |= 0x10u;
-  self->_magnitudeFloat = a3;
+  self->_magnitudeFloat = float;
 }
 
-- (void)setHasMagnitudeFloat:(BOOL)a3
+- (void)setHasMagnitudeFloat:(BOOL)float
 {
-  if (a3)
+  if (float)
   {
     v3 = 16;
   }
@@ -848,27 +848,27 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setMagnitudeDouble:(double)a3
+- (void)setMagnitudeDouble:(double)double
 {
   [(AppTelemetryTimeSeriesEvent *)self clearOneofValuesForMagnitude];
   *&self->_has |= 8u;
   self->_magnitude = 2;
   *&self->_has |= 1u;
-  self->_magnitudeDouble = a3;
+  self->_magnitudeDouble = double;
 }
 
-- (void)setMagnitudeInt:(int)a3
+- (void)setMagnitudeInt:(int)int
 {
   [(AppTelemetryTimeSeriesEvent *)self clearOneofValuesForMagnitude];
   *&self->_has |= 8u;
   self->_magnitude = 3;
   *&self->_has |= 0x20u;
-  self->_magnitudeInt = a3;
+  self->_magnitudeInt = int;
 }
 
-- (void)setHasMagnitudeInt:(BOOL)a3
+- (void)setHasMagnitudeInt:(BOOL)int
 {
-  if (a3)
+  if (int)
   {
     v3 = 32;
   }
@@ -881,18 +881,18 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setMagnitudeBool:(BOOL)a3
+- (void)setMagnitudeBool:(BOOL)bool
 {
   [(AppTelemetryTimeSeriesEvent *)self clearOneofValuesForMagnitude];
   *&self->_has |= 8u;
   self->_magnitude = 4;
   *&self->_has |= 0x40u;
-  self->_magnitudeBool = a3;
+  self->_magnitudeBool = bool;
 }
 
-- (void)setHasMagnitudeBool:(BOOL)a3
+- (void)setHasMagnitudeBool:(BOOL)bool
 {
-  if (a3)
+  if (bool)
   {
     v3 = 64;
   }
@@ -905,18 +905,18 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setMagnitudeLong:(int64_t)a3
+- (void)setMagnitudeLong:(int64_t)long
 {
   [(AppTelemetryTimeSeriesEvent *)self clearOneofValuesForMagnitude];
   *&self->_has |= 8u;
   self->_magnitude = 5;
   *&self->_has |= 2u;
-  self->_magnitudeLong = a3;
+  self->_magnitudeLong = long;
 }
 
-- (void)setHasMagnitudeLong:(BOOL)a3
+- (void)setHasMagnitudeLong:(BOOL)long
 {
-  if (a3)
+  if (long)
   {
     v3 = 2;
   }
@@ -942,9 +942,9 @@
   }
 }
 
-- (void)setHasMagnitude:(BOOL)a3
+- (void)setHasMagnitude:(BOOL)magnitude
 {
-  if (a3)
+  if (magnitude)
   {
     v3 = 8;
   }
@@ -957,35 +957,35 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsMagnitude:(id)a3
+- (int)StringAsMagnitude:(id)magnitude
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PBUNSET"])
+  magnitudeCopy = magnitude;
+  if ([magnitudeCopy isEqualToString:@"PBUNSET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"magnitude_float"])
+  else if ([magnitudeCopy isEqualToString:@"magnitude_float"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"magnitude_double"])
+  else if ([magnitudeCopy isEqualToString:@"magnitude_double"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"magnitude_int"])
+  else if ([magnitudeCopy isEqualToString:@"magnitude_int"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"magnitude_BOOL"])
+  else if ([magnitudeCopy isEqualToString:@"magnitude_BOOL"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"magnitude_long"])
+  else if ([magnitudeCopy isEqualToString:@"magnitude_long"])
   {
     v4 = 5;
   }
@@ -1014,9 +1014,9 @@
   self->_magnitudeLong = 0;
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }
@@ -1035,24 +1035,24 @@
   v8.receiver = self;
   v8.super_class = AppTelemetryTimeSeriesEvent;
   v4 = [(AppTelemetryTimeSeriesEvent *)&v8 description];
-  v5 = [(AppTelemetryTimeSeriesEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AppTelemetryTimeSeriesEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_telemetrySchema];
-  [v3 setObject:v4 forKey:@"telemetrySchema"];
+  [dictionary setObject:v4 forKey:@"telemetrySchema"];
 
   has = self->_has;
   if ((has & 0x10) != 0)
   {
     *&v5 = self->_magnitudeFloat;
     v11 = [MEMORY[0x277CCABB0] numberWithFloat:v5];
-    [v3 setObject:v11 forKey:@"magnitude_float"];
+    [dictionary setObject:v11 forKey:@"magnitude_float"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -1073,7 +1073,7 @@ LABEL_3:
   }
 
   v12 = [MEMORY[0x277CCABB0] numberWithDouble:self->_magnitudeDouble];
-  [v3 setObject:v12 forKey:@"magnitude_double"];
+  [dictionary setObject:v12 forKey:@"magnitude_double"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -1089,7 +1089,7 @@ LABEL_4:
 
 LABEL_16:
   v13 = [MEMORY[0x277CCABB0] numberWithInt:self->_magnitudeInt];
-  [v3 setObject:v13 forKey:@"magnitude_int"];
+  [dictionary setObject:v13 forKey:@"magnitude_int"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -1105,7 +1105,7 @@ LABEL_5:
 
 LABEL_17:
   v14 = [MEMORY[0x277CCABB0] numberWithBool:self->_magnitudeBool];
-  [v3 setObject:v14 forKey:@"magnitude_BOOL"];
+  [dictionary setObject:v14 forKey:@"magnitude_BOOL"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -1121,7 +1121,7 @@ LABEL_6:
 
 LABEL_18:
   v15 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_magnitudeLong];
-  [v3 setObject:v15 forKey:@"magnitude_long"];
+  [dictionary setObject:v15 forKey:@"magnitude_long"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -1147,31 +1147,31 @@ LABEL_19:
     v17 = off_278506AE8[magnitude];
   }
 
-  [v3 setObject:v17 forKey:@"magnitude"];
+  [dictionary setObject:v17 forKey:@"magnitude"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_8:
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v7 forKey:@"timestamp"];
+    [dictionary setObject:v7 forKey:@"timestamp"];
   }
 
 LABEL_9:
   investigation = self->_investigation;
   if (investigation)
   {
-    v9 = [(AppTelemetryInvestigation *)investigation dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"investigation"];
+    dictionaryRepresentation = [(AppTelemetryInvestigation *)investigation dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"investigation"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   telemetrySchema = self->_telemetrySchema;
-  v14 = v4;
+  v14 = toCopy;
   PBDataWriterWriteUint32Field();
   has = self->_has;
   if ((has & 0x10) != 0)
@@ -1247,21 +1247,21 @@ LABEL_10:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 8) != 0)
   {
-    v4[10] = self->_magnitude;
-    *(v4 + 60) |= 8u;
+    toCopy[10] = self->_magnitude;
+    *(toCopy + 60) |= 8u;
   }
 
-  v4[13] = self->_telemetrySchema;
+  toCopy[13] = self->_telemetrySchema;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    v4[11] = LODWORD(self->_magnitudeFloat);
-    *(v4 + 60) |= 0x10u;
+    toCopy[11] = LODWORD(self->_magnitudeFloat);
+    *(toCopy + 60) |= 0x10u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -1280,8 +1280,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 1) = *&self->_magnitudeDouble;
-  *(v4 + 60) |= 1u;
+  *(toCopy + 1) = *&self->_magnitudeDouble;
+  *(toCopy + 60) |= 1u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -1295,8 +1295,8 @@ LABEL_6:
   }
 
 LABEL_17:
-  v4[12] = self->_magnitudeInt;
-  *(v4 + 60) |= 0x20u;
+  toCopy[12] = self->_magnitudeInt;
+  *(toCopy + 60) |= 0x20u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -1310,8 +1310,8 @@ LABEL_7:
   }
 
 LABEL_18:
-  *(v4 + 56) = self->_magnitudeBool;
-  *(v4 + 60) |= 0x40u;
+  *(toCopy + 56) = self->_magnitudeBool;
+  *(toCopy + 60) |= 0x40u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -1325,27 +1325,27 @@ LABEL_8:
   }
 
 LABEL_19:
-  *(v4 + 2) = self->_magnitudeLong;
-  *(v4 + 60) |= 2u;
+  *(toCopy + 2) = self->_magnitudeLong;
+  *(toCopy + 60) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_9:
-    *(v4 + 3) = self->_timestamp;
-    *(v4 + 60) |= 4u;
+    *(toCopy + 3) = self->_timestamp;
+    *(toCopy + 60) |= 4u;
   }
 
 LABEL_10:
   if (self->_investigation)
   {
-    v6 = v4;
-    [v4 setInvestigation:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setInvestigation:?];
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 8) != 0)
   {
@@ -1432,82 +1432,82 @@ LABEL_9:
   }
 
 LABEL_10:
-  v8 = [(AppTelemetryInvestigation *)self->_investigation copyWithZone:a3];
+  v8 = [(AppTelemetryInvestigation *)self->_investigation copyWithZone:zone];
   v9 = v6[4];
   v6[4] = v8;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_43;
   }
 
-  v5 = *(v4 + 60);
+  v5 = *(equalCopy + 60);
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 60) & 8) == 0 || self->_magnitude != *(v4 + 10))
+    if ((*(equalCopy + 60) & 8) == 0 || self->_magnitude != *(equalCopy + 10))
     {
       goto LABEL_43;
     }
   }
 
-  else if ((*(v4 + 60) & 8) != 0)
+  else if ((*(equalCopy + 60) & 8) != 0)
   {
     goto LABEL_43;
   }
 
-  if (self->_telemetrySchema != *(v4 + 13))
+  if (self->_telemetrySchema != *(equalCopy + 13))
   {
     goto LABEL_43;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 60) & 0x10) == 0 || self->_magnitudeFloat != *(v4 + 11))
+    if ((*(equalCopy + 60) & 0x10) == 0 || self->_magnitudeFloat != *(equalCopy + 11))
     {
       goto LABEL_43;
     }
   }
 
-  else if ((*(v4 + 60) & 0x10) != 0)
+  else if ((*(equalCopy + 60) & 0x10) != 0)
   {
     goto LABEL_43;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 60) & 1) == 0 || self->_magnitudeDouble != *(v4 + 1))
+    if ((*(equalCopy + 60) & 1) == 0 || self->_magnitudeDouble != *(equalCopy + 1))
     {
       goto LABEL_43;
     }
   }
 
-  else if (*(v4 + 60))
+  else if (*(equalCopy + 60))
   {
     goto LABEL_43;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 60) & 0x20) == 0 || self->_magnitudeInt != *(v4 + 12))
+    if ((*(equalCopy + 60) & 0x20) == 0 || self->_magnitudeInt != *(equalCopy + 12))
     {
       goto LABEL_43;
     }
   }
 
-  else if ((*(v4 + 60) & 0x20) != 0)
+  else if ((*(equalCopy + 60) & 0x20) != 0)
   {
     goto LABEL_43;
   }
 
   if ((*&self->_has & 0x40) == 0)
   {
-    if ((*(v4 + 60) & 0x40) == 0)
+    if ((*(equalCopy + 60) & 0x40) == 0)
     {
       goto LABEL_25;
     }
@@ -1517,21 +1517,21 @@ LABEL_43:
     goto LABEL_44;
   }
 
-  if ((*(v4 + 60) & 0x40) == 0)
+  if ((*(equalCopy + 60) & 0x40) == 0)
   {
     goto LABEL_43;
   }
 
-  v6 = *(v4 + 56);
+  v6 = *(equalCopy + 56);
   if (self->_magnitudeBool)
   {
-    if ((*(v4 + 56) & 1) == 0)
+    if ((*(equalCopy + 56) & 1) == 0)
     {
       goto LABEL_43;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
     goto LABEL_43;
   }
@@ -1539,32 +1539,32 @@ LABEL_43:
 LABEL_25:
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 60) & 2) == 0 || self->_magnitudeLong != *(v4 + 2))
+    if ((*(equalCopy + 60) & 2) == 0 || self->_magnitudeLong != *(equalCopy + 2))
     {
       goto LABEL_43;
     }
   }
 
-  else if ((*(v4 + 60) & 2) != 0)
+  else if ((*(equalCopy + 60) & 2) != 0)
   {
     goto LABEL_43;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 60) & 4) == 0 || self->_timestamp != *(v4 + 3))
+    if ((*(equalCopy + 60) & 4) == 0 || self->_timestamp != *(equalCopy + 3))
     {
       goto LABEL_43;
     }
   }
 
-  else if ((*(v4 + 60) & 4) != 0)
+  else if ((*(equalCopy + 60) & 4) != 0)
   {
     goto LABEL_43;
   }
 
   investigation = self->_investigation;
-  if (investigation | *(v4 + 4))
+  if (investigation | *(equalCopy + 4))
   {
     v8 = [(AppTelemetryInvestigation *)investigation isEqual:?];
   }
@@ -1707,23 +1707,23 @@ LABEL_30:
   return (2654435761 * telemetrySchema) ^ v8 ^ v12 ^ v13 ^ v17 ^ v18 ^ v20 ^ v21 ^ [(AppTelemetryInvestigation *)self->_investigation hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((*(v4 + 60) & 8) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((*(fromCopy + 60) & 8) != 0)
   {
-    self->_magnitude = *(v4 + 10);
+    self->_magnitude = *(fromCopy + 10);
     *&self->_has |= 8u;
   }
 
-  self->_telemetrySchema = *(v4 + 13);
-  v6 = *(v4 + 60);
+  self->_telemetrySchema = *(fromCopy + 13);
+  v6 = *(fromCopy + 60);
   if ((v6 & 0x10) != 0)
   {
-    self->_magnitudeFloat = *(v4 + 11);
+    self->_magnitudeFloat = *(fromCopy + 11);
     *&self->_has |= 0x10u;
-    v6 = *(v4 + 60);
+    v6 = *(fromCopy + 60);
     if ((v6 & 1) == 0)
     {
 LABEL_5:
@@ -1736,14 +1736,14 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 60) & 1) == 0)
+  else if ((*(fromCopy + 60) & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_magnitudeDouble = *(v4 + 1);
+  self->_magnitudeDouble = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v6 = *(v4 + 60);
+  v6 = *(fromCopy + 60);
   if ((v6 & 0x20) == 0)
   {
 LABEL_6:
@@ -1756,9 +1756,9 @@ LABEL_6:
   }
 
 LABEL_15:
-  self->_magnitudeInt = *(v4 + 12);
+  self->_magnitudeInt = *(fromCopy + 12);
   *&self->_has |= 0x20u;
-  v6 = *(v4 + 60);
+  v6 = *(fromCopy + 60);
   if ((v6 & 0x40) == 0)
   {
 LABEL_7:
@@ -1771,9 +1771,9 @@ LABEL_7:
   }
 
 LABEL_16:
-  self->_magnitudeBool = *(v4 + 56);
+  self->_magnitudeBool = *(fromCopy + 56);
   *&self->_has |= 0x40u;
-  v6 = *(v4 + 60);
+  v6 = *(fromCopy + 60);
   if ((v6 & 2) == 0)
   {
 LABEL_8:
@@ -1786,12 +1786,12 @@ LABEL_8:
   }
 
 LABEL_17:
-  self->_magnitudeLong = *(v4 + 2);
+  self->_magnitudeLong = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if ((*(v4 + 60) & 4) != 0)
+  if ((*(fromCopy + 60) & 4) != 0)
   {
 LABEL_9:
-    self->_timestamp = *(v4 + 3);
+    self->_timestamp = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 

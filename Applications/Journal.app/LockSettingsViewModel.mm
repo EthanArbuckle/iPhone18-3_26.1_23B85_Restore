@@ -1,7 +1,7 @@
 @interface LockSettingsViewModel
 - (_TtC7Journal21LockSettingsViewModel)init;
-- (void)environment:(id)a3 stateDidChangeFromOldState:(id)a4;
-- (void)systemProtectionDidChange:(id)a3;
+- (void)environment:(id)environment stateDidChangeFromOldState:(id)state;
+- (void)systemProtectionDidChange:(id)change;
 @end
 
 @implementation LockSettingsViewModel
@@ -13,7 +13,7 @@
   return result;
 }
 
-- (void)systemProtectionDidChange:(id)a3
+- (void)systemProtectionDidChange:(id)change
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
@@ -23,13 +23,13 @@
   swift_getKeyPath();
   v9[1] = self;
   sub_10051721C();
-  v8 = self;
+  selfCopy = self;
   ObservationRegistrar.withMutation<A, B, C>(of:keyPath:_:)();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)environment:(id)a3 stateDidChangeFromOldState:(id)a4
+- (void)environment:(id)environment stateDidChangeFromOldState:(id)state
 {
   v5 = sub_1000F24EC(&qword_100AD5170);
   __chkstk_darwin(v5 - 8);
@@ -37,12 +37,12 @@
   v8 = type metadata accessor for TaskPriority();
   (*(*(v8 - 8) + 56))(v7, 1, 1, v8);
   type metadata accessor for MainActor();
-  v9 = self;
+  selfCopy = self;
   v10 = static MainActor.shared.getter();
   v11 = swift_allocObject();
   v11[2] = v10;
   v11[3] = &protocol witness table for MainActor;
-  v11[4] = v9;
+  v11[4] = selfCopy;
   sub_1003E9628(0, 0, v7, &unk_10096CB60, v11);
 }
 

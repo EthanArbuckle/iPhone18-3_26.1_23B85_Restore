@@ -1,9 +1,9 @@
 @interface WKParameterizedCAWallpaper
 + (id)na_identity;
-- (BOOL)copyWallpaperContentsToDestinationDirectoryURL:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (WKParameterizedCAWallpaper)initWithIdentifier:(int64_t)a3 name:(id)a4 fileURL:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)copyWallpaperContentsToDestinationDirectoryURL:(id)l error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (WKParameterizedCAWallpaper)initWithIdentifier:(int64_t)identifier name:(id)name fileURL:(id)l;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionBuilderBlock;
 - (id)propertyListRepresentation;
 - (unint64_t)hash;
@@ -11,15 +11,15 @@
 
 @implementation WKParameterizedCAWallpaper
 
-- (WKParameterizedCAWallpaper)initWithIdentifier:(int64_t)a3 name:(id)a4 fileURL:(id)a5
+- (WKParameterizedCAWallpaper)initWithIdentifier:(int64_t)identifier name:(id)name fileURL:(id)l
 {
-  v8 = a5;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = WKParameterizedCAWallpaper;
-  v9 = [(WKAbstractWallpaper *)&v13 initWithIdentifier:a3 name:a4 type:8 representedType:8 backingType:1];
+  v9 = [(WKAbstractWallpaper *)&v13 initWithIdentifier:identifier name:name type:8 representedType:8 backingType:1];
   if (v9)
   {
-    v10 = [[WKParameterizedCAWallpaperInput alloc] initWithFileURL:v8];
+    v10 = [[WKParameterizedCAWallpaperInput alloc] initWithFileURL:lCopy];
     wallpaperValue = v9->__wallpaperValue;
     v9->__wallpaperValue = v10;
   }
@@ -27,14 +27,14 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(WKAbstractWallpaper *)self identifier];
-  v6 = [(WKAbstractWallpaper *)self name];
-  v7 = [(WKParameterizedCAWallpaper *)self wallpaperValue];
-  v8 = [v7 fileURL];
-  v9 = [v4 initWithIdentifier:v5 name:v6 fileURL:v8];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  identifier = [(WKAbstractWallpaper *)self identifier];
+  name = [(WKAbstractWallpaper *)self name];
+  wallpaperValue = [(WKParameterizedCAWallpaper *)self wallpaperValue];
+  fileURL = [wallpaperValue fileURL];
+  v9 = [v4 initWithIdentifier:identifier name:name fileURL:fileURL];
 
   return v9;
 }
@@ -43,42 +43,42 @@
 {
   v10.receiver = self;
   v10.super_class = WKParameterizedCAWallpaper;
-  v3 = [(WKAbstractWallpaper *)&v10 propertyListRepresentation];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = v4;
-  if (v3)
+  propertyListRepresentation = [(WKAbstractWallpaper *)&v10 propertyListRepresentation];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v5 = dictionary;
+  if (propertyListRepresentation)
   {
-    [v4 addEntriesFromDictionary:v3];
+    [dictionary addEntriesFromDictionary:propertyListRepresentation];
   }
 
-  v6 = [(WKParameterizedCAWallpaper *)self wallpaperValue];
-  v7 = [v6 fileURL];
-  v8 = [v7 lastPathComponent];
-  [v5 na_safeSetObject:v8 forKey:@"assetFileName"];
+  wallpaperValue = [(WKParameterizedCAWallpaper *)self wallpaperValue];
+  fileURL = [wallpaperValue fileURL];
+  lastPathComponent = [fileURL lastPathComponent];
+  [v5 na_safeSetObject:lastPathComponent forKey:@"assetFileName"];
 
   return v5;
 }
 
-- (BOOL)copyWallpaperContentsToDestinationDirectoryURL:(id)a3 error:(id *)a4
+- (BOOL)copyWallpaperContentsToDestinationDirectoryURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WKParameterizedCAWallpaper *)self wallpaperValue];
-  v8 = [v7 fileURL];
-  if (v8)
+  lCopy = l;
+  wallpaperValue = [(WKParameterizedCAWallpaper *)self wallpaperValue];
+  fileURL = [wallpaperValue fileURL];
+  if (fileURL)
   {
-    v20 = [MEMORY[0x1E696AC08] defaultManager];
-    v9 = [(WKParameterizedCAWallpaper *)self wallpaperValue];
-    v10 = [v9 fileURL];
-    v11 = [(WKParameterizedCAWallpaper *)self wallpaperValue];
-    v12 = [v11 fileURL];
-    v13 = [v12 lastPathComponent];
-    v14 = [v6 URLByAppendingPathComponent:v13];
-    v15 = a4;
-    v16 = v6;
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    wallpaperValue2 = [(WKParameterizedCAWallpaper *)self wallpaperValue];
+    fileURL2 = [wallpaperValue2 fileURL];
+    wallpaperValue3 = [(WKParameterizedCAWallpaper *)self wallpaperValue];
+    fileURL3 = [wallpaperValue3 fileURL];
+    lastPathComponent = [fileURL3 lastPathComponent];
+    v14 = [lCopy URLByAppendingPathComponent:lastPathComponent];
+    errorCopy = error;
+    v16 = lCopy;
     v17 = v14;
-    v18 = [v20 copyItemAtURL:v10 toURL:v14 error:v15];
+    v18 = [defaultManager copyItemAtURL:fileURL2 toURL:v14 error:errorCopy];
 
-    v6 = v16;
+    lCopy = v16;
   }
 
   else
@@ -95,7 +95,7 @@
   v4[1] = 3221225472;
   v4[2] = __41__WKParameterizedCAWallpaper_na_identity__block_invoke;
   v4[3] = &__block_descriptor_40_e5__8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   v2 = __41__WKParameterizedCAWallpaper_na_identity__block_invoke(v4);
 
   return v2;
@@ -144,19 +144,19 @@ id __41__WKParameterizedCAWallpaper_na_identity__block_invoke_3(uint64_t a1)
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
@@ -165,14 +165,14 @@ id __41__WKParameterizedCAWallpaper_na_identity__block_invoke_3(uint64_t a1)
 {
   v9.receiver = self;
   v9.super_class = WKParameterizedCAWallpaper;
-  v3 = [(WKAbstractWallpaper *)&v9 descriptionBuilderBlock];
+  descriptionBuilderBlock = [(WKAbstractWallpaper *)&v9 descriptionBuilderBlock];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __53__WKParameterizedCAWallpaper_descriptionBuilderBlock__block_invoke;
   aBlock[3] = &unk_1E8766BF0;
   objc_copyWeak(&v7, &location);
-  aBlock[4] = v3;
+  aBlock[4] = descriptionBuilderBlock;
   v4 = _Block_copy(aBlock);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);

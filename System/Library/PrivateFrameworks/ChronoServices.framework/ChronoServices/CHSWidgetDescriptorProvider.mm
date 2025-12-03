@@ -1,43 +1,43 @@
 @interface CHSWidgetDescriptorProvider
 - (BOOL)_isEDUMode;
-- (CHSWidgetDescriptorProvider)initWithConnection:(id)a3 extensionProvider:(id)a4;
-- (CHSWidgetDescriptorProvider)initWithConnection:(id)a3 extensionProvider:(id)a4 providerOptions:(id)a5;
+- (CHSWidgetDescriptorProvider)initWithConnection:(id)connection extensionProvider:(id)provider;
+- (CHSWidgetDescriptorProvider)initWithConnection:(id)connection extensionProvider:(id)provider providerOptions:(id)options;
 - (NSDictionary)descriptorsByExtensionIdentifier;
 - (NSSet)descriptors;
-- (id)_descriptorsFromExtensions:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)descriptorForPersonality:(id)a3;
+- (id)_descriptorsFromExtensions:(id)extensions;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptorForPersonality:(id)personality;
 - (id)succinctDescription;
-- (void)_lock_addNewDescriptorsFromDescriptors:(id)a3;
+- (void)_lock_addNewDescriptorsFromDescriptors:(id)descriptors;
 - (void)_lock_notifyObserversDescriptorsDidChange;
-- (void)_lock_reloadContentAsynchronouslyForContainerIdentifier:(id)a3 completion:(id)a4;
-- (void)addObserver:(id)a3;
+- (void)_lock_reloadContentAsynchronouslyForContainerIdentifier:(id)identifier completion:(id)completion;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)extensionsDidChangeForExtensionProvider:(id)a3;
-- (void)fetchDescriptorsForContainerIdentifier:(id)a3 completion:(id)a4;
-- (void)removeObserver:(id)a3;
+- (void)extensionsDidChangeForExtensionProvider:(id)provider;
+- (void)fetchDescriptorsForContainerIdentifier:(id)identifier completion:(id)completion;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation CHSWidgetDescriptorProvider
 
-- (CHSWidgetDescriptorProvider)initWithConnection:(id)a3 extensionProvider:(id)a4
+- (CHSWidgetDescriptorProvider)initWithConnection:(id)connection extensionProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  providerCopy = provider;
   v8 = [CHSWidgetExtensionProviderOptions alloc];
   v9 = objc_alloc_init(CHSWidgetDescriptorsPredicate);
   v10 = [(CHSWidgetExtensionProviderOptions *)v8 initWithWidgetsPredicate:v9 controlsPredicate:0 includeIntents:1];
 
-  v11 = [(CHSWidgetDescriptorProvider *)self initWithConnection:v6 extensionProvider:v7 providerOptions:v10];
+  v11 = [(CHSWidgetDescriptorProvider *)self initWithConnection:connectionCopy extensionProvider:providerCopy providerOptions:v10];
   return v11;
 }
 
-- (CHSWidgetDescriptorProvider)initWithConnection:(id)a3 extensionProvider:(id)a4 providerOptions:(id)a5
+- (CHSWidgetDescriptorProvider)initWithConnection:(id)connection extensionProvider:(id)provider providerOptions:(id)options
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  connectionCopy = connection;
+  providerCopy = provider;
+  optionsCopy = options;
   if (initWithConnection_extensionProvider_providerOptions____once != -1)
   {
     [CHSWidgetDescriptorProvider initWithConnection:extensionProvider:providerOptions:];
@@ -54,14 +54,14 @@
     lock_observers = v13->_lock_observers;
     v13->_lock_observers = v14;
 
-    objc_storeStrong(&v13->_lock_connection, a3);
-    objc_storeStrong(&v13->_extensionProvider, a4);
+    objc_storeStrong(&v13->_lock_connection, connection);
+    objc_storeStrong(&v13->_extensionProvider, provider);
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __84__CHSWidgetDescriptorProvider_initWithConnection_extensionProvider_providerOptions___block_invoke_2;
     v17[3] = &unk_1E7453000;
     v18 = v13;
-    v19 = v11;
+    v19 = optionsCopy;
     os_unfair_lock_assert_not_owner(&v13->_lock);
     os_unfair_lock_lock(&v13->_lock);
     __84__CHSWidgetDescriptorProvider_initWithConnection_extensionProvider_providerOptions___block_invoke_2(v17);
@@ -173,42 +173,42 @@ LABEL_5:
 - (NSSet)descriptors
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(CHSWidgetDescriptorProvider *)self descriptorsByExtensionIdentifier];
-  v4 = [v3 allValues];
-  v5 = [v4 bs_flatten];
-  v6 = [v2 setWithArray:v5];
+  descriptorsByExtensionIdentifier = [(CHSWidgetDescriptorProvider *)self descriptorsByExtensionIdentifier];
+  allValues = [descriptorsByExtensionIdentifier allValues];
+  bs_flatten = [allValues bs_flatten];
+  v6 = [v2 setWithArray:bs_flatten];
 
   return v6;
 }
 
-- (id)descriptorForPersonality:(id)a3
+- (id)descriptorForPersonality:(id)personality
 {
-  v4 = a3;
-  v5 = [(CHSWidgetDescriptorProvider *)self descriptorsByExtensionIdentifier];
-  v6 = [v4 extensionBundleIdentifier];
-  v7 = [v5 objectForKey:v6];
+  personalityCopy = personality;
+  descriptorsByExtensionIdentifier = [(CHSWidgetDescriptorProvider *)self descriptorsByExtensionIdentifier];
+  extensionBundleIdentifier = [personalityCopy extensionBundleIdentifier];
+  v7 = [descriptorsByExtensionIdentifier objectForKey:extensionBundleIdentifier];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __56__CHSWidgetDescriptorProvider_descriptorForPersonality___block_invoke;
   v11[3] = &unk_1E7453138;
-  v8 = v4;
+  v8 = personalityCopy;
   v12 = v8;
   v9 = [v7 bs_firstObjectPassingTest:v11];
 
   return v9;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__CHSWidgetDescriptorProvider_addObserver___block_invoke;
   v6[3] = &unk_1E7453000;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   __43__CHSWidgetDescriptorProvider_addObserver___block_invoke(v6);
@@ -230,35 +230,35 @@ uint64_t __43__CHSWidgetDescriptorProvider_addObserver___block_invoke(uint64_t a
   return result;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__CHSWidgetDescriptorProvider_removeObserver___block_invoke;
   v6[3] = &unk_1E7453000;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   __46__CHSWidgetDescriptorProvider_removeObserver___block_invoke(v6);
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)fetchDescriptorsForContainerIdentifier:(id)a3 completion:(id)a4
+- (void)fetchDescriptorsForContainerIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __81__CHSWidgetDescriptorProvider_fetchDescriptorsForContainerIdentifier_completion___block_invoke;
   v10[3] = &unk_1E7453160;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = identifierCopy;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   __81__CHSWidgetDescriptorProvider_fetchDescriptorsForContainerIdentifier_completion___block_invoke(v10);
@@ -267,32 +267,32 @@ uint64_t __43__CHSWidgetDescriptorProvider_addObserver___block_invoke(uint64_t a
 
 - (id)succinctDescription
 {
-  v2 = [(CHSWidgetDescriptorProvider *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CHSWidgetDescriptorProvider *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CHSWidgetDescriptorProvider *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CHSWidgetDescriptorProvider *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(CHSWidgetDescriptorProvider *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(CHSWidgetDescriptorProvider *)self succinctDescriptionBuilder];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __69__CHSWidgetDescriptorProvider_descriptionBuilderWithMultilinePrefix___block_invoke;
   v10[3] = &unk_1E7453000;
   v10[4] = self;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v11 = v6;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v10];
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
   v7 = v11;
   v8 = v6;
 
@@ -324,18 +324,18 @@ void __69__CHSWidgetDescriptorProvider_descriptionBuilderWithMultilinePrefix___b
   [v1 appendArraySection:v2 withName:@"descriptors" skipIfEmpty:0];
 }
 
-- (void)extensionsDidChangeForExtensionProvider:(id)a3
+- (void)extensionsDidChangeForExtensionProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [v4 extensions];
-  v6 = [(CHSWidgetDescriptorProvider *)self _descriptorsFromExtensions:v5];
+  providerCopy = provider;
+  extensions = [providerCopy extensions];
+  v6 = [(CHSWidgetDescriptorProvider *)self _descriptorsFromExtensions:extensions];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __71__CHSWidgetDescriptorProvider_extensionsDidChangeForExtensionProvider___block_invoke;
   v8[3] = &unk_1E7453000;
   v9 = v6;
-  v10 = self;
+  selfCopy = self;
   v7 = v6;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
@@ -357,9 +357,9 @@ uint64_t __71__CHSWidgetDescriptorProvider_extensionsDidChangeForExtensionProvid
   return result;
 }
 
-- (id)_descriptorsFromExtensions:(id)a3
+- (id)_descriptorsFromExtensions:(id)extensions
 {
-  v3 = a3;
+  extensionsCopy = extensions;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -371,7 +371,7 @@ uint64_t __71__CHSWidgetDescriptorProvider_extensionsDidChangeForExtensionProvid
   v6[2] = __58__CHSWidgetDescriptorProvider__descriptorsFromExtensions___block_invoke;
   v6[3] = &unk_1E7453188;
   v6[4] = &v7;
-  [v3 bs_each:v6];
+  [extensionsCopy bs_each:v6];
   v4 = [v8[5] copy];
   _Block_object_dispose(&v7, 8);
 
@@ -399,10 +399,10 @@ void __58__CHSWidgetDescriptorProvider__descriptorsFromExtensions___block_invoke
   return eduModeProvider;
 }
 
-- (void)_lock_reloadContentAsynchronouslyForContainerIdentifier:(id)a3 completion:(id)a4
+- (void)_lock_reloadContentAsynchronouslyForContainerIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   lock_connection = self->_lock_connection;
   v11[0] = MEMORY[0x1E69E9820];
@@ -410,11 +410,11 @@ void __58__CHSWidgetDescriptorProvider__descriptorsFromExtensions___block_invoke
   v11[2] = __98__CHSWidgetDescriptorProvider__lock_reloadContentAsynchronouslyForContainerIdentifier_completion___block_invoke;
   v11[3] = &unk_1E74531B0;
   v11[4] = self;
-  v9 = v6;
+  v9 = identifierCopy;
   v12 = v9;
   objc_copyWeak(&v14, &location);
-  v13 = v7;
-  v10 = v7;
+  v13 = completionCopy;
+  v10 = completionCopy;
   [(CHSChronoServicesConnection *)lock_connection fetchDescriptorsForContainerBundleIdentifier:v9 completion:v11];
 
   objc_destroyWeak(&v14);
@@ -479,10 +479,10 @@ LABEL_13:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_lock_addNewDescriptorsFromDescriptors:(id)a3
+- (void)_lock_addNewDescriptorsFromDescriptors:(id)descriptors
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptorsCopy = descriptors;
   v5 = [(NSDictionary *)self->_lock_descriptorsByExtensionIdentifier mutableCopy];
   v19 = 0;
   v20 = &v19;
@@ -495,7 +495,7 @@ LABEL_13:
   v6 = v5;
   v17 = v6;
   v18 = &v19;
-  [v4 enumerateKeysAndObjectsUsingBlock:&v13];
+  [descriptorsCopy enumerateKeysAndObjectsUsingBlock:&v13];
   if (*(v20 + 24) == 1)
   {
     objc_storeStrong(&self->_lock_descriptorsByExtensionIdentifier, v5);
@@ -505,9 +505,9 @@ LABEL_13:
     {
       v8 = [v6 count];
       *buf = 134218498;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2112;
-      v26 = v4;
+      v26 = descriptorsCopy;
       v27 = 2048;
       v28 = v8;
       v9 = "<CHSWidgetDescriptorProvider:%p> Added descriptors: %@ for extension count: %lu";
@@ -524,9 +524,9 @@ LABEL_6:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2112;
-      v26 = v4;
+      v26 = descriptorsCopy;
       v9 = "<CHSWidgetDescriptorProvider:%p> No descriptor update needed. Already discovered descriptors: %@";
       v10 = v7;
       v11 = 22;

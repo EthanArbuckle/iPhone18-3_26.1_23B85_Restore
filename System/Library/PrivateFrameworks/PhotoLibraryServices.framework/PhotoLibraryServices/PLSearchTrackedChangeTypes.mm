@@ -1,20 +1,20 @@
 @interface PLSearchTrackedChangeTypes
-+ (BOOL)isEntityIndexedBySearch:(id)a3;
++ (BOOL)isEntityIndexedBySearch:(id)search;
 + (id)entityNamesIndexedBySearch;
-- (BOOL)shouldUpdateSearchIndexForChange:(id)a3 entityName:(id)a4 photoLibrary:(id)a5;
+- (BOOL)shouldUpdateSearchIndexForChange:(id)change entityName:(id)name photoLibrary:(id)library;
 - (PLSearchTrackedAttributes)searchTrackedAttributes;
-- (id)_changesTrackedBySearchForEntity:(id)a3;
-- (id)trackedEntityNameForChange:(id)a3 photoLibrary:(id)a4;
-- (id)uuidForPersistentHistoryDeletionChange:(id)a3 photoLibrary:(id)a4;
+- (id)_changesTrackedBySearchForEntity:(id)entity;
+- (id)trackedEntityNameForChange:(id)change photoLibrary:(id)library;
+- (id)uuidForPersistentHistoryDeletionChange:(id)change photoLibrary:(id)library;
 @end
 
 @implementation PLSearchTrackedChangeTypes
 
-+ (BOOL)isEntityIndexedBySearch:(id)a3
++ (BOOL)isEntityIndexedBySearch:(id)search
 {
-  v4 = a3;
-  v5 = [a1 entityNamesIndexedBySearch];
-  v6 = [v5 containsObject:v4];
+  searchCopy = search;
+  entityNamesIndexedBySearch = [self entityNamesIndexedBySearch];
+  v6 = [entityNamesIndexedBySearch containsObject:searchCopy];
 
   return v6;
 }
@@ -39,18 +39,18 @@
   return v8;
 }
 
-- (id)uuidForPersistentHistoryDeletionChange:(id)a3 photoLibrary:(id)a4
+- (id)uuidForPersistentHistoryDeletionChange:(id)change photoLibrary:(id)library
 {
   v33[5] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 changeType] != 2)
+  changeCopy = change;
+  libraryCopy = library;
+  if ([changeCopy changeType] != 2)
   {
     v24 = 0;
     goto LABEL_15;
   }
 
-  v8 = [(PLSearchTrackedChangeTypes *)self trackedEntityNameForChange:v6 photoLibrary:v7];
+  v8 = [(PLSearchTrackedChangeTypes *)self trackedEntityNameForChange:changeCopy photoLibrary:libraryCopy];
   v9 = +[PLManagedAsset entityName];
   v33[0] = v9;
   v10 = +[PLManagedAlbum entityName];
@@ -70,8 +70,8 @@
   {
     v22 = @"uuid";
 LABEL_7:
-    v23 = [v6 tombstone];
-    v24 = [v23 objectForKeyedSubscript:v22];
+    tombstone = [changeCopy tombstone];
+    v24 = [tombstone objectForKeyedSubscript:v22];
 
     goto LABEL_8;
   }
@@ -93,7 +93,7 @@ LABEL_8:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
       v29 = 138412546;
-      v30 = v6;
+      v30 = changeCopy;
       v31 = 2112;
       v32 = v8;
       _os_log_impl(&dword_19BF1F000, v25, OS_LOG_TYPE_ERROR, "Unable to locate UUID from deletion change: %@ for entity: %@", &v29, 0x16u);
@@ -105,42 +105,42 @@ LABEL_15:
   return v24;
 }
 
-- (id)trackedEntityNameForChange:(id)a3 photoLibrary:(id)a4
+- (id)trackedEntityNameForChange:(id)change photoLibrary:(id)library
 {
-  v5 = a4;
-  v6 = [a3 changedObjectID];
-  v7 = [v5 managedObjectContext];
+  libraryCopy = library;
+  changedObjectID = [change changedObjectID];
+  managedObjectContext = [libraryCopy managedObjectContext];
 
   v8 = MEMORY[0x1E695D5B8];
   v9 = +[PLManagedAsset entityName];
-  v10 = [v8 entityForName:v9 inManagedObjectContext:v7];
+  v10 = [v8 entityForName:v9 inManagedObjectContext:managedObjectContext];
 
   v11 = MEMORY[0x1E695D5B8];
   v12 = +[PLMediaAnalysisAssetAttributes entityName];
-  v44 = [v11 entityForName:v12 inManagedObjectContext:v7];
+  v44 = [v11 entityForName:v12 inManagedObjectContext:managedObjectContext];
 
   v13 = MEMORY[0x1E695D5B8];
   v14 = +[PLManagedAlbum entityName];
-  v43 = [v13 entityForName:v14 inManagedObjectContext:v7];
+  v43 = [v13 entityForName:v14 inManagedObjectContext:managedObjectContext];
 
   v15 = MEMORY[0x1E695D5B8];
   v16 = +[PLMemory entityName];
-  v17 = [v15 entityForName:v16 inManagedObjectContext:v7];
+  v17 = [v15 entityForName:v16 inManagedObjectContext:managedObjectContext];
 
   v18 = MEMORY[0x1E695D5B8];
   v19 = +[PLPhotosHighlight entityName];
-  v20 = [v18 entityForName:v19 inManagedObjectContext:v7];
+  v20 = [v18 entityForName:v19 inManagedObjectContext:managedObjectContext];
 
   v21 = MEMORY[0x1E695D5B8];
   v22 = +[PLPerson entityName];
-  v23 = [v21 entityForName:v22 inManagedObjectContext:v7];
+  v23 = [v21 entityForName:v22 inManagedObjectContext:managedObjectContext];
 
   v24 = MEMORY[0x1E695D5B8];
   v25 = +[PLDetectedFace entityName];
-  v26 = [v24 entityForName:v25 inManagedObjectContext:v7];
+  v26 = [v24 entityForName:v25 inManagedObjectContext:managedObjectContext];
 
-  v27 = [v6 entity];
-  LOBYTE(v13) = [v27 isEqual:v10];
+  entity = [changedObjectID entity];
+  LOBYTE(v13) = [entity isEqual:v10];
 
   v28 = off_1E75601A8;
   if (v13)
@@ -148,19 +148,19 @@ LABEL_15:
     goto LABEL_14;
   }
 
-  v29 = [v6 entity];
-  v30 = [v29 isEqual:v44];
+  entity2 = [changedObjectID entity];
+  v30 = [entity2 isEqual:v44];
 
   if (v30)
   {
     v28 = off_1E7560228;
 LABEL_14:
-    v41 = [(__objc2_class *)*v28 entityName];
+    entityName = [(__objc2_class *)*v28 entityName];
     goto LABEL_15;
   }
 
-  v31 = [v6 entity];
-  v32 = [v31 isEqual:v43];
+  entity3 = [changedObjectID entity];
+  v32 = [entity3 isEqual:v43];
 
   if (v32)
   {
@@ -168,8 +168,8 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v33 = [v6 entity];
-  v34 = [v33 isEqual:v17];
+  entity4 = [changedObjectID entity];
+  v34 = [entity4 isEqual:v17];
 
   if (v34)
   {
@@ -177,8 +177,8 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v35 = [v6 entity];
-  v36 = [v35 isEqual:v20];
+  entity5 = [changedObjectID entity];
+  v36 = [entity5 isEqual:v20];
 
   if (v36)
   {
@@ -186,8 +186,8 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v37 = [v6 entity];
-  v38 = [v37 isEqual:v23];
+  entity6 = [changedObjectID entity];
+  v38 = [entity6 isEqual:v23];
 
   if (v38)
   {
@@ -195,8 +195,8 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v39 = [v6 entity];
-  v40 = [v39 isEqual:v26];
+  entity7 = [changedObjectID entity];
+  v40 = [entity7 isEqual:v26];
 
   if (v40)
   {
@@ -204,96 +204,96 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v41 = 0;
+  entityName = 0;
 LABEL_15:
 
-  return v41;
+  return entityName;
 }
 
-- (id)_changesTrackedBySearchForEntity:(id)a3
+- (id)_changesTrackedBySearchForEntity:(id)entity
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  entityCopy = entity;
   v5 = +[PLManagedAsset entityName];
-  v6 = [v4 isEqualToString:v5];
+  v6 = [entityCopy isEqualToString:v5];
 
   if (v6)
   {
-    v7 = [(PLSearchTrackedChangeTypes *)self searchTrackedAttributes];
-    v8 = [v7 assetAttributesTrackedForSearch];
+    searchTrackedAttributes = [(PLSearchTrackedChangeTypes *)self searchTrackedAttributes];
+    assetAttributesTrackedForSearch = [searchTrackedAttributes assetAttributesTrackedForSearch];
 LABEL_17:
-    v23 = v8;
+    v23 = assetAttributesTrackedForSearch;
 
     goto LABEL_18;
   }
 
   v9 = +[PLMediaAnalysisAssetAttributes entityName];
-  v10 = [v4 isEqualToString:v9];
+  v10 = [entityCopy isEqualToString:v9];
 
   if (v10)
   {
-    v7 = [(PLSearchTrackedChangeTypes *)self searchTrackedAttributes];
-    v8 = [v7 mediaAnalysisAssetAttributesTrackedForSearch];
+    searchTrackedAttributes = [(PLSearchTrackedChangeTypes *)self searchTrackedAttributes];
+    assetAttributesTrackedForSearch = [searchTrackedAttributes mediaAnalysisAssetAttributesTrackedForSearch];
     goto LABEL_17;
   }
 
   v11 = +[PLManagedAlbum entityName];
-  v12 = [v4 isEqualToString:v11];
+  v12 = [entityCopy isEqualToString:v11];
 
   if (v12)
   {
-    v7 = [(PLSearchTrackedChangeTypes *)self searchTrackedAttributes];
-    v8 = [v7 managedAlbumAttributesTrackedForSearch];
+    searchTrackedAttributes = [(PLSearchTrackedChangeTypes *)self searchTrackedAttributes];
+    assetAttributesTrackedForSearch = [searchTrackedAttributes managedAlbumAttributesTrackedForSearch];
     goto LABEL_17;
   }
 
   v13 = +[PLFetchingAlbum entityName];
-  v14 = [v4 isEqualToString:v13];
+  v14 = [entityCopy isEqualToString:v13];
 
   if (v14)
   {
-    v7 = [(PLSearchTrackedChangeTypes *)self searchTrackedAttributes];
-    v8 = [v7 fetchingAlbumAttributesTrackedForSearch];
+    searchTrackedAttributes = [(PLSearchTrackedChangeTypes *)self searchTrackedAttributes];
+    assetAttributesTrackedForSearch = [searchTrackedAttributes fetchingAlbumAttributesTrackedForSearch];
     goto LABEL_17;
   }
 
   v15 = +[PLMemory entityName];
-  v16 = [v4 isEqualToString:v15];
+  v16 = [entityCopy isEqualToString:v15];
 
   if (v16)
   {
-    v7 = [(PLSearchTrackedChangeTypes *)self searchTrackedAttributes];
-    v8 = [v7 memoryAttributesTrackedForSearch];
+    searchTrackedAttributes = [(PLSearchTrackedChangeTypes *)self searchTrackedAttributes];
+    assetAttributesTrackedForSearch = [searchTrackedAttributes memoryAttributesTrackedForSearch];
     goto LABEL_17;
   }
 
   v17 = +[PLPhotosHighlight entityName];
-  v18 = [v4 isEqualToString:v17];
+  v18 = [entityCopy isEqualToString:v17];
 
   if (v18)
   {
-    v7 = [(PLSearchTrackedChangeTypes *)self searchTrackedAttributes];
-    v8 = [v7 highlightAttributesTrackedForSearch];
+    searchTrackedAttributes = [(PLSearchTrackedChangeTypes *)self searchTrackedAttributes];
+    assetAttributesTrackedForSearch = [searchTrackedAttributes highlightAttributesTrackedForSearch];
     goto LABEL_17;
   }
 
   v19 = +[PLPerson entityName];
-  v20 = [v4 isEqualToString:v19];
+  v20 = [entityCopy isEqualToString:v19];
 
   if (v20)
   {
-    v7 = [(PLSearchTrackedChangeTypes *)self searchTrackedAttributes];
-    v8 = [v7 personAttributesTrackedForSearch];
+    searchTrackedAttributes = [(PLSearchTrackedChangeTypes *)self searchTrackedAttributes];
+    assetAttributesTrackedForSearch = [searchTrackedAttributes personAttributesTrackedForSearch];
     goto LABEL_17;
   }
 
   v21 = +[PLDetectedFace entityName];
-  v22 = [v4 isEqualToString:v21];
+  v22 = [entityCopy isEqualToString:v21];
 
   if (v22)
   {
-    v7 = [(PLSearchTrackedChangeTypes *)self searchTrackedAttributes];
-    v8 = [v7 detectedFaceAttributesTrackedForSearch];
+    searchTrackedAttributes = [(PLSearchTrackedChangeTypes *)self searchTrackedAttributes];
+    assetAttributesTrackedForSearch = [searchTrackedAttributes detectedFaceAttributesTrackedForSearch];
     goto LABEL_17;
   }
 
@@ -301,7 +301,7 @@ LABEL_17:
   if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
   {
     v26 = 138412290;
-    v27 = v4;
+    v27 = entityCopy;
     _os_log_impl(&dword_19BF1F000, v25, OS_LOG_TYPE_ERROR, "Changes for entity: %@ are not tracked by Photos Search", &v26, 0xCu);
   }
 
@@ -311,34 +311,34 @@ LABEL_18:
   return v23;
 }
 
-- (BOOL)shouldUpdateSearchIndexForChange:(id)a3 entityName:(id)a4 photoLibrary:(id)a5
+- (BOOL)shouldUpdateSearchIndexForChange:(id)change entityName:(id)name photoLibrary:(id)library
 {
   v34 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  changeCopy = change;
+  nameCopy = name;
+  libraryCopy = library;
+  if (!changeCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PLSearchTrackedChangeTypes.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"change"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSearchTrackedChangeTypes.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"change"}];
 
-    if (v10)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v12 = [(PLSearchTrackedChangeTypes *)self trackedEntityNameForChange:v9 photoLibrary:v11];
+    v12 = [(PLSearchTrackedChangeTypes *)self trackedEntityNameForChange:changeCopy photoLibrary:libraryCopy];
     goto LABEL_6;
   }
 
-  if (!v10)
+  if (!nameCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v12 = v10;
+  v12 = nameCopy;
 LABEL_6:
   v14 = v12;
   if (![v12 length])
@@ -346,26 +346,26 @@ LABEL_6:
     goto LABEL_18;
   }
 
-  v15 = [v9 changeType];
-  if ((v15 & 0xFFFFFFFFFFFFFFFDLL) == 0)
+  changeType = [changeCopy changeType];
+  if ((changeType & 0xFFFFFFFFFFFFFFFDLL) == 0)
   {
     v25 = 1;
     goto LABEL_24;
   }
 
-  if (v15 == 1)
+  if (changeType == 1)
   {
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v16 = [v9 updatedProperties];
-    v17 = [v16 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    updatedProperties = [changeCopy updatedProperties];
+    v17 = [updatedProperties countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v17)
     {
       v18 = v17;
-      v27 = v11;
-      v28 = v10;
+      v27 = libraryCopy;
+      v28 = nameCopy;
       v19 = *v30;
       while (2)
       {
@@ -373,13 +373,13 @@ LABEL_6:
         {
           if (*v30 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(updatedProperties);
           }
 
           v21 = *(*(&v29 + 1) + 8 * i);
           v22 = [(PLSearchTrackedChangeTypes *)self _changesTrackedBySearchForEntity:v14];
-          v23 = [v21 name];
-          v24 = [v22 containsObject:v23];
+          name = [v21 name];
+          v24 = [v22 containsObject:name];
 
           if (v24)
           {
@@ -388,7 +388,7 @@ LABEL_6:
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v18 = [updatedProperties countByEnumeratingWithState:&v29 objects:v33 count:16];
         if (v18)
         {
           continue;
@@ -399,8 +399,8 @@ LABEL_6:
 
       v25 = 0;
 LABEL_21:
-      v11 = v27;
-      v10 = v28;
+      libraryCopy = v27;
+      nameCopy = v28;
     }
 
     else

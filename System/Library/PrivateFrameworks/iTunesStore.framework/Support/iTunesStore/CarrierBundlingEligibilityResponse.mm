@@ -1,12 +1,12 @@
 @interface CarrierBundlingEligibilityResponse
-- (CarrierBundlingEligibilityResponse)initWithEligibilityDictionary:(id)a3;
+- (CarrierBundlingEligibilityResponse)initWithEligibilityDictionary:(id)dictionary;
 @end
 
 @implementation CarrierBundlingEligibilityResponse
 
-- (CarrierBundlingEligibilityResponse)initWithEligibilityDictionary:(id)a3
+- (CarrierBundlingEligibilityResponse)initWithEligibilityDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v40.receiver = self;
   v40.super_class = CarrierBundlingEligibilityResponse;
   v5 = [(CarrierBundlingEligibilityResponse *)&v40 init];
@@ -15,9 +15,9 @@
     goto LABEL_25;
   }
 
-  v6 = [v4 objectForKey:@"failureType"];
-  v7 = [v4 objectForKey:@"status"];
-  v8 = [v4 objectForKey:@"errorCode"];
+  v6 = [dictionaryCopy objectForKey:@"failureType"];
+  v7 = [dictionaryCopy objectForKey:@"status"];
+  v8 = [dictionaryCopy objectForKey:@"errorCode"];
   if ([v7 integerValue])
   {
     v9 = v7;
@@ -34,64 +34,64 @@ LABEL_6:
 
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    error = [v4 objectForKey:@"fuseCarrierBundleStatus"];
+    error = [dictionaryCopy objectForKey:@"fuseCarrierBundleStatus"];
     if (objc_opt_respondsToSelector())
     {
-      v34 = [error integerValue];
+      integerValue = [error integerValue];
     }
 
     else
     {
-      v35 = [v4 objectForKey:@"checkBack"];
-      v38 = [v4 objectForKey:@"startFuseHeaderEnrichment"];
-      v39 = [v4 objectForKey:@"startFuseManualSms"];
-      v36 = [v4 objectForKey:@"hasFuseCarrierBundleSubscription"];
+      v35 = [dictionaryCopy objectForKey:@"checkBack"];
+      v38 = [dictionaryCopy objectForKey:@"startFuseHeaderEnrichment"];
+      v39 = [dictionaryCopy objectForKey:@"startFuseManualSms"];
+      v36 = [dictionaryCopy objectForKey:@"hasFuseCarrierBundleSubscription"];
       if (objc_opt_respondsToSelector() & 1) != 0 && ([v35 BOOLValue])
       {
-        v34 = 6;
+        integerValue = 6;
       }
 
       else if (objc_opt_respondsToSelector() & 1) != 0 && ([v36 BOOLValue])
       {
-        v34 = 1;
+        integerValue = 1;
       }
 
       else if (objc_opt_respondsToSelector() & 1) != 0 && ([v39 BOOLValue])
       {
-        v34 = 5;
+        integerValue = 5;
       }
 
       else if (objc_opt_respondsToSelector())
       {
         if ([v38 BOOLValue])
         {
-          v34 = 4;
+          integerValue = 4;
         }
 
         else
         {
-          v34 = 2;
+          integerValue = 2;
         }
       }
 
       else
       {
-        v34 = 2;
+        integerValue = 2;
       }
     }
 
-    if (v34 <= 3)
+    if (integerValue <= 3)
     {
-      if (v34 == 1)
+      if (integerValue == 1)
       {
         v37 = 1;
       }
 
       else
       {
-        if (v34 != 2)
+        if (integerValue != 2)
         {
-          if (v34 == 3)
+          if (integerValue == 3)
           {
             v5->_bundlingStatus = 0;
           }
@@ -105,15 +105,15 @@ LABEL_6:
 
     else
     {
-      if (v34 > 5)
+      if (integerValue > 5)
       {
-        if (v34 == 6)
+        if (integerValue == 6)
         {
           v5->_bundlingStatus = 0;
           v5->_wantsDelayedRetry = 1;
         }
 
-        else if (v34 == 7)
+        else if (integerValue == 7)
         {
           v5->_bundlingStatus = 0;
           v5->_needsSilentSMS = 1;
@@ -122,7 +122,7 @@ LABEL_6:
         goto LABEL_8;
       }
 
-      if (v34 == 4)
+      if (integerValue == 4)
       {
         v5->_bundlingStatus = 0;
         v5->_needsHeaderEnrichment = 1;
@@ -143,7 +143,7 @@ LABEL_7:
   v5->_error = v10;
 LABEL_8:
 
-  v12 = [v4 objectForKey:@"fuseHeaderEnrichmentMessage"];
+  v12 = [dictionaryCopy objectForKey:@"fuseHeaderEnrichmentMessage"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -152,7 +152,7 @@ LABEL_8:
     v5->_headerEnrichmentMessage = v13;
   }
 
-  v15 = [v4 objectForKey:@"fuseHeaderEnrichmentSessionId"];
+  v15 = [dictionaryCopy objectForKey:@"fuseHeaderEnrichmentSessionId"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -162,7 +162,7 @@ LABEL_8:
     v5->_headerEnrichmentSessionIdentifier = v16;
   }
 
-  v18 = [v4 objectForKey:@"fuseHeaderEnrichmentUrl"];
+  v18 = [dictionaryCopy objectForKey:@"fuseHeaderEnrichmentUrl"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -172,7 +172,7 @@ LABEL_8:
     v5->_headerEnrichmentURL = v19;
   }
 
-  v21 = [v4 objectForKey:@"fuseSilentSMSMessage"];
+  v21 = [dictionaryCopy objectForKey:@"fuseSilentSMSMessage"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -182,7 +182,7 @@ LABEL_8:
     v5->_silentSMSMessage = v22;
   }
 
-  v24 = [v4 objectForKey:@"fuseSilentSMSNumber"];
+  v24 = [dictionaryCopy objectForKey:@"fuseSilentSMSNumber"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -192,7 +192,7 @@ LABEL_8:
     v5->_silentSMSNumber = v25;
   }
 
-  v27 = [v4 objectForKey:@"fuseSmsSessionId"];
+  v27 = [dictionaryCopy objectForKey:@"fuseSmsSessionId"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -202,14 +202,14 @@ LABEL_8:
     v5->_smsSessionIdentifier = v28;
   }
 
-  v30 = [v4 objectForKey:@"waitTime"];
+  v30 = [dictionaryCopy objectForKey:@"waitTime"];
   if (objc_opt_respondsToSelector())
   {
     [v30 doubleValue];
     v5->_delayInterval = v31 / 1000.0;
   }
 
-  v32 = [v4 objectForKey:@"isFamily"];
+  v32 = [dictionaryCopy objectForKey:@"isFamily"];
   if (objc_opt_respondsToSelector())
   {
     v5->_familySubscription = [v32 BOOLValue];

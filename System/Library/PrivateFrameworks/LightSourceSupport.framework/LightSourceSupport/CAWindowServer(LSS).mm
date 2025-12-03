@@ -9,15 +9,15 @@
 - (id)lss_extendedDisplays
 {
   v20 = *MEMORY[0x277D85DE8];
-  v2 = [a1 _lss_primaryDisplay];
-  v3 = [v2 clones];
+  _lss_primaryDisplay = [self _lss_primaryDisplay];
+  clones = [_lss_primaryDisplay clones];
   v4 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [a1 displays];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  displays = [self displays];
+  v6 = [displays countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -28,7 +28,7 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(displays);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
@@ -36,14 +36,14 @@
         if (v11 != 0.0)
         {
           [v10 nativeSize];
-          if (v12 != 0.0 && ([v10 displayType] == 1 || objc_msgSend(v10, "displayType") == 2) && (objc_msgSend(v3, "containsObject:", v10) & 1) == 0)
+          if (v12 != 0.0 && ([v10 displayType] == 1 || objc_msgSend(v10, "displayType") == 2) && (objc_msgSend(clones, "containsObject:", v10) & 1) == 0)
           {
             [v4 addObject:v10];
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [displays countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -61,8 +61,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v1 = [a1 displays];
-  v2 = [v1 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  displays = [self displays];
+  v2 = [displays countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v2)
   {
     v3 = *v9;
@@ -72,7 +72,7 @@
       {
         if (*v9 != v3)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(displays);
         }
 
         v5 = *(*(&v8 + 1) + 8 * i);
@@ -83,7 +83,7 @@
         }
       }
 
-      v2 = [v1 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v2 = [displays countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v2)
       {
         continue;
@@ -109,8 +109,8 @@ LABEL_11:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [a1 displays];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  displays = [self displays];
+  v9 = [displays countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -121,7 +121,7 @@ LABEL_11:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(displays);
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
@@ -131,7 +131,7 @@ LABEL_11:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [displays countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);

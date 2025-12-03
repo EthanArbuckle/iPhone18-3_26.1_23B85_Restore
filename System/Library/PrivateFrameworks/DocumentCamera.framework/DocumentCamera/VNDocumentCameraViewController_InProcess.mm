@@ -2,12 +2,12 @@
 - (VNDocumentCameraViewController_InProcess)init;
 - (void)_autoDismiss;
 - (void)didReceiveMemoryWarning;
-- (void)documentCameraController:(id)a3 didFinishWithDocInfoCollection:(id)a4 imageCache:(id)a5 warnUser:(BOOL)a6;
-- (void)documentCameraController:(id)a3 didFinishWithImage:(id)a4;
-- (void)documentCameraControllerDidCancel:(id)a3;
-- (void)remoteDocumentCameraController:(id)a3 didFailWithError:(id)a4;
-- (void)remoteDocumentCameraController:(id)a3 didFinishWithInfoCollection:(id)a4;
-- (void)remoteDocumentCameraControllerDidCancel:(id)a3;
+- (void)documentCameraController:(id)controller didFinishWithDocInfoCollection:(id)collection imageCache:(id)cache warnUser:(BOOL)user;
+- (void)documentCameraController:(id)controller didFinishWithImage:(id)image;
+- (void)documentCameraControllerDidCancel:(id)cancel;
+- (void)remoteDocumentCameraController:(id)controller didFailWithError:(id)error;
+- (void)remoteDocumentCameraController:(id)controller didFinishWithInfoCollection:(id)collection;
+- (void)remoteDocumentCameraControllerDidCancel:(id)cancel;
 - (void)removeSaveActionBlockerForFiles;
 @end
 
@@ -58,18 +58,18 @@
   [(VNDocumentCameraViewController_InProcess *)&v2 didReceiveMemoryWarning];
 }
 
-- (void)documentCameraController:(id)a3 didFinishWithDocInfoCollection:(id)a4 imageCache:(id)a5 warnUser:(BOOL)a6
+- (void)documentCameraController:(id)controller didFinishWithDocInfoCollection:(id)collection imageCache:(id)cache warnUser:(BOOL)user
 {
-  v13 = a4;
-  v8 = a5;
-  v9 = [(VNDocumentCameraViewController *)self delegate];
+  collectionCopy = collection;
+  cacheCopy = cache;
+  delegate = [(VNDocumentCameraViewController *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [[VNDocumentCameraScan alloc] initWithDocInfoCollection:v13 imageCache:v8];
-    v12 = [(VNDocumentCameraViewController *)self delegate];
-    [v12 documentCameraViewController:self didFinishWithScan:v11];
+    v11 = [[VNDocumentCameraScan alloc] initWithDocInfoCollection:collectionCopy imageCache:cacheCopy];
+    delegate2 = [(VNDocumentCameraViewController *)self delegate];
+    [delegate2 documentCameraViewController:self didFinishWithScan:v11];
   }
 
   else
@@ -78,15 +78,15 @@
   }
 }
 
-- (void)documentCameraController:(id)a3 didFinishWithImage:(id)a4
+- (void)documentCameraController:(id)controller didFinishWithImage:(id)image
 {
-  v5 = [(VNDocumentCameraViewController *)self delegate:a3];
+  v5 = [(VNDocumentCameraViewController *)self delegate:controller];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(VNDocumentCameraViewController *)self delegate];
-    [v7 documentCameraViewControllerDidCancel:self];
+    delegate = [(VNDocumentCameraViewController *)self delegate];
+    [delegate documentCameraViewControllerDidCancel:self];
   }
 
   else
@@ -96,32 +96,32 @@
   }
 }
 
-- (void)documentCameraControllerDidCancel:(id)a3
+- (void)documentCameraControllerDidCancel:(id)cancel
 {
-  v11 = a3;
-  if (![v11 setupResult])
+  cancelCopy = cancel;
+  if (![cancelCopy setupResult])
   {
-    v4 = [(VNDocumentCameraViewController *)self delegate];
+    delegate = [(VNDocumentCameraViewController *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(VNDocumentCameraViewController *)self delegate];
-      [v6 documentCameraViewControllerDidCancel:self];
+      delegate2 = [(VNDocumentCameraViewController *)self delegate];
+      [delegate2 documentCameraViewControllerDidCancel:self];
 LABEL_10:
 
       goto LABEL_12;
     }
   }
 
-  if ([v11 setupResult])
+  if ([cancelCopy setupResult])
   {
-    v7 = [(VNDocumentCameraViewController *)self delegate];
+    delegate3 = [(VNDocumentCameraViewController *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      if ([v11 setupResult] == 1)
+      if ([cancelCopy setupResult] == 1)
       {
         v9 = -11852;
       }
@@ -131,9 +131,9 @@ LABEL_10:
         v9 = -11800;
       }
 
-      v6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CE5DC0] code:v9 userInfo:0];
-      v10 = [(VNDocumentCameraViewController *)self delegate];
-      [v10 documentCameraViewController:self didFailWithError:v6];
+      delegate2 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CE5DC0] code:v9 userInfo:0];
+      delegate4 = [(VNDocumentCameraViewController *)self delegate];
+      [delegate4 documentCameraViewController:self didFailWithError:delegate2];
 
       goto LABEL_10;
     }
@@ -143,16 +143,16 @@ LABEL_10:
 LABEL_12:
 }
 
-- (void)remoteDocumentCameraControllerDidCancel:(id)a3
+- (void)remoteDocumentCameraControllerDidCancel:(id)cancel
 {
-  v4 = [(VNDocumentCameraViewController *)self delegate];
+  delegate = [(VNDocumentCameraViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
-  v6 = [(VNDocumentCameraViewController *)self delegate];
-  v9 = v6;
+  delegate2 = [(VNDocumentCameraViewController *)self delegate];
+  v9 = delegate2;
   if (v5)
   {
-    [v6 documentCameraViewControllerDidCancel:self];
+    [delegate2 documentCameraViewControllerDidCancel:self];
 LABEL_5:
 
     return;
@@ -163,8 +163,8 @@ LABEL_5:
   if (v7)
   {
     v9 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CE5DC0] code:-11800 userInfo:0];
-    v8 = [(VNDocumentCameraViewController *)self delegate];
-    [v8 documentCameraViewController:self didFailWithError:v9];
+    delegate3 = [(VNDocumentCameraViewController *)self delegate];
+    [delegate3 documentCameraViewController:self didFailWithError:v9];
 
     goto LABEL_5;
   }
@@ -172,21 +172,21 @@ LABEL_5:
   [(VNDocumentCameraViewController_InProcess *)self _autoDismiss];
 }
 
-- (void)remoteDocumentCameraController:(id)a3 didFinishWithInfoCollection:(id)a4
+- (void)remoteDocumentCameraController:(id)controller didFinishWithInfoCollection:(id)collection
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(VNDocumentCameraViewController *)self delegate];
+  controllerCopy = controller;
+  collectionCopy = collection;
+  delegate = [(VNDocumentCameraViewController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = [VNDocumentCameraScan alloc];
-    v10 = [v13 imageCache];
-    v11 = [(VNDocumentCameraScan *)v9 initWithDocInfoCollection:v6 imageCache:v10];
+    imageCache = [controllerCopy imageCache];
+    v11 = [(VNDocumentCameraScan *)v9 initWithDocInfoCollection:collectionCopy imageCache:imageCache];
 
-    v12 = [(VNDocumentCameraViewController *)self delegate];
-    [v12 documentCameraViewController:self didFinishWithScan:v11];
+    delegate2 = [(VNDocumentCameraViewController *)self delegate];
+    [delegate2 documentCameraViewController:self didFinishWithScan:v11];
   }
 
   else
@@ -195,16 +195,16 @@ LABEL_5:
   }
 }
 
-- (void)remoteDocumentCameraController:(id)a3 didFailWithError:(id)a4
+- (void)remoteDocumentCameraController:(id)controller didFailWithError:(id)error
 {
-  v8 = a4;
-  v5 = [(VNDocumentCameraViewController *)self delegate];
+  errorCopy = error;
+  delegate = [(VNDocumentCameraViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(VNDocumentCameraViewController *)self delegate];
-    [v7 documentCameraViewController:self didFailWithError:v8];
+    delegate2 = [(VNDocumentCameraViewController *)self delegate];
+    [delegate2 documentCameraViewController:self didFailWithError:errorCopy];
   }
 
   else
@@ -215,8 +215,8 @@ LABEL_5:
 
 - (void)_autoDismiss
 {
-  v2 = [(VNDocumentCameraViewController_InProcess *)self presentingViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(VNDocumentCameraViewController_InProcess *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)removeSaveActionBlockerForFiles
@@ -228,8 +228,8 @@ LABEL_5:
   }
 
   v4 = objc_opt_class();
-  v5 = [(VNDocumentCameraViewController_InProcess *)self viewController];
-  v6 = DCDynamicCast(v4, v5);
+  viewController = [(VNDocumentCameraViewController_InProcess *)self viewController];
+  v6 = DCDynamicCast(v4, viewController);
 
   [v6 removeSaveActionBlockerForFiles];
 }

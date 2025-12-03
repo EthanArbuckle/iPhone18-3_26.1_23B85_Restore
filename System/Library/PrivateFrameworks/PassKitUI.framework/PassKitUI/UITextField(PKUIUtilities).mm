@@ -8,7 +8,7 @@
 - (void)pkui_attachDoneToolbarWithAdditionalItems:()PKUIUtilities
 {
   v4 = a3;
-  objc_initWeak(&location, a1);
+  objc_initWeak(&location, self);
   v5 = MEMORY[0x1E69DC628];
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
@@ -16,7 +16,7 @@
   v10 = &unk_1E8010A60;
   objc_copyWeak(&v11, &location);
   v6 = [v5 actionWithHandler:&v7];
-  [a1 pkui_attachDoneToolbarWithAdditionalItems:v4 doneAction:{v6, v7, v8, v9, v10}];
+  [self pkui_attachDoneToolbarWithAdditionalItems:v4 doneAction:{v6, v7, v8, v9, v10}];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -54,17 +54,17 @@
     [v14 sizeToFit];
     [v14 frame];
     [v14 setFrame:?];
-    [a1 setInputAccessoryView:v14];
+    [self setInputAccessoryView:v14];
   }
 
   else
   {
-    [a1 setInputAccessoryView:0];
+    [self setInputAccessoryView:0];
   }
 
-  if ([a1 isFirstResponder])
+  if ([self isFirstResponder])
   {
-    [a1 reloadInputViews];
+    [self reloadInputViews];
   }
 }
 

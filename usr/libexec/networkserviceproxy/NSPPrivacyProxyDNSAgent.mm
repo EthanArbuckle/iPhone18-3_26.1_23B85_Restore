@@ -1,15 +1,15 @@
 @interface NSPPrivacyProxyDNSAgent
 + (id)agentType;
-- (NSPPrivacyProxyDNSAgent)initWithDelegate:(id)a3;
+- (NSPPrivacyProxyDNSAgent)initWithDelegate:(id)delegate;
 - (NSPPrivacyProxyDNSAgentDelegate)delegate;
 - (id)copyAgentData;
 @end
 
 @implementation NSPPrivacyProxyDNSAgent
 
-- (NSPPrivacyProxyDNSAgent)initWithDelegate:(id)a3
+- (NSPPrivacyProxyDNSAgent)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = NSPPrivacyProxyDNSAgent;
   v5 = [(NSPPrivacyProxyDNSAgent *)&v9 init];
@@ -20,10 +20,10 @@
     [(NSPPrivacyProxyDNSAgent *)v6 setKernelActivated:0];
     [(NSPPrivacyProxyDNSAgent *)v6 setUserActivated:0];
     [(NSPPrivacyProxyDNSAgent *)v6 setVoluntary:1];
-    objc_storeWeak(&v6->_delegate, v4);
+    objc_storeWeak(&v6->_delegate, delegateCopy);
     [(NSPPrivacyProxyDNSAgent *)v6 setAgentDescription:@"iCloud Private Relay"];
-    v7 = [objc_opt_class() dnsAgentUUID];
-    [(NSPPrivacyProxyDNSAgent *)v6 setAgentUUID:v7];
+    dnsAgentUUID = [objc_opt_class() dnsAgentUUID];
+    [(NSPPrivacyProxyDNSAgent *)v6 setAgentUUID:dnsAgentUUID];
   }
 
   return v6;
@@ -43,39 +43,39 @@
 
 - (id)copyAgentData
 {
-  v3 = [(NSPPrivacyProxyDNSAgent *)self resolver];
-  if (v3)
+  resolver = [(NSPPrivacyProxyDNSAgent *)self resolver];
+  if (resolver)
   {
     v4 = nw_resolver_config_create();
-    v5 = [v3 obliviousDoHConfig];
+    obliviousDoHConfig = [resolver obliviousDoHConfig];
     [(NSPPrivacyProxyDNSAgent *)self proxyAgentUUID];
 
     nw_resolver_config_set_class();
     nw_resolver_config_set_protocol();
     nw_resolver_config_set_allow_failover();
-    v6 = [v3 dohURL];
-    v7 = [NSURL URLWithString:v6];
+    dohURL = [resolver dohURL];
+    v7 = [NSURL URLWithString:dohURL];
 
     v8 = [[NSURLComponents alloc] initWithURL:v7 resolvingAgainstBaseURL:0];
-    v9 = [v8 percentEncodedHost];
-    v10 = [v8 percentEncodedPath];
-    [v9 UTF8String];
+    percentEncodedHost = [v8 percentEncodedHost];
+    percentEncodedPath = [v8 percentEncodedPath];
+    [percentEncodedHost UTF8String];
     nw_resolver_config_set_provider_name();
-    [v10 UTF8String];
+    [percentEncodedPath UTF8String];
     nw_resolver_config_set_provider_path();
-    v11 = [(NSPPrivacyProxyDNSAgent *)self proxyAgentUUID];
-    v12 = [v11 UUIDString];
+    proxyAgentUUID = [(NSPPrivacyProxyDNSAgent *)self proxyAgentUUID];
+    uUIDString = [proxyAgentUUID UUIDString];
 
-    if (v12)
+    if (uUIDString)
     {
-      [v12 UTF8String];
+      [uUIDString UTF8String];
       nw_resolver_config_set_proxy_agent();
     }
 
-    if (v5 && [v5 length])
+    if (obliviousDoHConfig && [obliviousDoHConfig length])
     {
-      [v5 bytes];
-      [v5 length];
+      [obliviousDoHConfig bytes];
+      [obliviousDoHConfig length];
       nw_resolver_config_set_odoh_config();
     }
 

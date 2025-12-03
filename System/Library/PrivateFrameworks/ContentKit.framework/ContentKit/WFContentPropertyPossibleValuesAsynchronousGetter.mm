@@ -1,7 +1,7 @@
 @interface WFContentPropertyPossibleValuesAsynchronousGetter
 - (NSString)description;
-- (WFContentPropertyPossibleValuesAsynchronousGetter)initWithAsynchronousGetter:(id)a3;
-- (void)getValuesWithCompletionBlock:(id)a3;
+- (WFContentPropertyPossibleValuesAsynchronousGetter)initWithAsynchronousGetter:(id)getter;
+- (void)getValuesWithCompletionBlock:(id)block;
 @end
 
 @implementation WFContentPropertyPossibleValuesAsynchronousGetter
@@ -17,29 +17,29 @@
   return v7;
 }
 
-- (void)getValuesWithCompletionBlock:(id)a3
+- (void)getValuesWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   getter = self->_getter;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __82__WFContentPropertyPossibleValuesAsynchronousGetter_getValuesWithCompletionBlock___block_invoke;
   v8[3] = &unk_278347F28;
-  v9 = v4;
+  v9 = blockCopy;
   v6 = getter[2];
-  v7 = v4;
+  v7 = blockCopy;
   v6(getter, v8);
 }
 
-- (WFContentPropertyPossibleValuesAsynchronousGetter)initWithAsynchronousGetter:(id)a3
+- (WFContentPropertyPossibleValuesAsynchronousGetter)initWithAsynchronousGetter:(id)getter
 {
-  v4 = a3;
+  getterCopy = getter;
   v10.receiver = self;
   v10.super_class = WFContentPropertyPossibleValuesAsynchronousGetter;
   v5 = [(WFContentPropertyPossibleValuesAsynchronousGetter *)&v10 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(getterCopy);
     getter = v5->_getter;
     v5->_getter = v6;
 

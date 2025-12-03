@@ -1,42 +1,42 @@
 @interface CSAdjunctListActionManager
-- (BOOL)_actionIsInRelevantSlot:(id)a3;
-- (BOOL)_handleLockScreenContentAction:(id)a3;
-- (BOOL)handleAction:(id)a3 forProvider:(id)a4;
-- (BOOL)handlesActionWithClass:(Class)a3;
-- (CSAdjunctListActionManager)initWithItemDestination:(id)a3;
+- (BOOL)_actionIsInRelevantSlot:(id)slot;
+- (BOOL)_handleLockScreenContentAction:(id)action;
+- (BOOL)handleAction:(id)action forProvider:(id)provider;
+- (BOOL)handlesActionWithClass:(Class)class;
+- (CSAdjunctListActionManager)initWithItemDestination:(id)destination;
 @end
 
 @implementation CSAdjunctListActionManager
 
-- (CSAdjunctListActionManager)initWithItemDestination:(id)a3
+- (CSAdjunctListActionManager)initWithItemDestination:(id)destination
 {
-  v5 = a3;
+  destinationCopy = destination;
   v9.receiver = self;
   v9.super_class = CSAdjunctListActionManager;
   v6 = [(CSAdjunctListActionManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_itemDestination, a3);
+    objc_storeStrong(&v6->_itemDestination, destination);
   }
 
   return v7;
 }
 
-- (BOOL)handlesActionWithClass:(Class)a3
+- (BOOL)handlesActionWithClass:(Class)class
 {
   v4 = objc_opt_class();
 
-  return [(objc_class *)a3 isSubclassOfClass:v4];
+  return [(objc_class *)class isSubclassOfClass:v4];
 }
 
-- (BOOL)handleAction:(id)a3 forProvider:(id)a4
+- (BOOL)handleAction:(id)action forProvider:(id)provider
 {
-  v5 = a3;
-  if ([v5 isValid])
+  actionCopy = action;
+  if ([actionCopy isValid])
   {
     v6 = objc_opt_class();
-    v7 = v5;
+    v7 = actionCopy;
     if (v6)
     {
       if (objc_opt_isKindOfClass())
@@ -76,38 +76,38 @@
   return v9;
 }
 
-- (BOOL)_actionIsInRelevantSlot:(id)a3
+- (BOOL)_actionIsInRelevantSlot:(id)slot
 {
-  if (!a3)
+  if (!slot)
   {
     return 0;
   }
 
-  v3 = [a3 slot];
-  v4 = [v3 isEqualToString:*MEMORY[0x277D67020]];
+  slot = [slot slot];
+  v4 = [slot isEqualToString:*MEMORY[0x277D67020]];
 
   return v4;
 }
 
-- (BOOL)_handleLockScreenContentAction:(id)a3
+- (BOOL)_handleLockScreenContentAction:(id)action
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 isValid])
+  actionCopy = action;
+  v5 = actionCopy;
+  if (actionCopy && [actionCopy isValid])
   {
     objc_initWeak(&location, self);
-    v6 = [v5 identifier];
+    identifier = [v5 identifier];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __61__CSAdjunctListActionManager__handleLockScreenContentAction___block_invoke;
     v12[3] = &unk_27838DA08;
-    v7 = v6;
+    v7 = identifier;
     v13 = v7;
     objc_copyWeak(&v14, &location);
     [v5 setNullificationHandler:v12];
     v8 = [CSAdjunctListItem alloc];
-    v9 = [v5 identifier];
-    v10 = [(CSAdjunctListItem *)v8 initWithIdentifier:v9];
+    identifier2 = [v5 identifier];
+    v10 = [(CSAdjunctListItem *)v8 initWithIdentifier:identifier2];
 
     [(CSAdjunctListItem *)v10 addAction:v5];
     [(CSItemDestination *)self->_itemDestination addOrUpdateItem:v10];

@@ -1,22 +1,22 @@
 @interface TPSGenerativeModelsUseCaseAvailabilityValidation
 - (TPSGenerativeModelsUseCaseAvailabilityValidation)init;
-- (TPSGenerativeModelsUseCaseAvailabilityValidation)initWithTargetContext:(id)a3;
-- (void)validateWithCompletion:(id)a3;
+- (TPSGenerativeModelsUseCaseAvailabilityValidation)initWithTargetContext:(id)context;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSGenerativeModelsUseCaseAvailabilityValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   _Block_copy(v4);
-  v5 = self;
-  sub_232DE8ECC(v5, v4);
+  selfCopy = self;
+  sub_232DE8ECC(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (TPSGenerativeModelsUseCaseAvailabilityValidation)initWithTargetContext:(id)a3
+- (TPSGenerativeModelsUseCaseAvailabilityValidation)initWithTargetContext:(id)context
 {
   sub_232E01470();
   v4 = sub_232E01450();

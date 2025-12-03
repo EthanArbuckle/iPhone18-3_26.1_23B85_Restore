@@ -1,20 +1,20 @@
 @interface FMInitialCardController
-- (_TtC6FindMy23FMInitialCardController)initWithCoder:(id)a3;
-- (_TtC6FindMy23FMInitialCardController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)presentationAnchorForWebAuthenticationSession:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (_TtC6FindMy23FMInitialCardController)initWithCoder:(id)coder;
+- (_TtC6FindMy23FMInitialCardController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)presentationAnchorForWebAuthenticationSession:(id)session;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation FMInitialCardController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1000273D8(a3);
+  selfCopy = self;
+  sub_1000273D8(appear);
 }
 
-- (_TtC6FindMy23FMInitialCardController)initWithCoder:(id)a3
+- (_TtC6FindMy23FMInitialCardController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC6FindMy23FMInitialCardController_selectionSubscription) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC6FindMy23FMInitialCardController_discoveryCoordinator) = 0;
@@ -24,33 +24,33 @@
   return result;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1004803E4(a3);
+  selfCopy = self;
+  sub_1004803E4(disappear);
 }
 
-- (_TtC6FindMy23FMInitialCardController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC6FindMy23FMInitialCardController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)presentationAnchorForWebAuthenticationSession:(id)a3
+- (id)presentationAnchorForWebAuthenticationSession:(id)session
 {
-  v3 = self;
-  v4 = [(FMInitialCardController *)v3 view];
-  if (!v4)
+  selfCopy = self;
+  view = [(FMInitialCardController *)selfCopy view];
+  if (!view)
   {
     __break(1u);
     goto LABEL_7;
   }
 
-  v5 = v4;
-  v6 = [v4 window];
+  v5 = view;
+  window = [view window];
 
-  if (!v6)
+  if (!window)
   {
 LABEL_7:
     result = _assertionFailure(_:_:file:line:flags:)();
@@ -58,7 +58,7 @@ LABEL_7:
     return result;
   }
 
-  return v6;
+  return window;
 }
 
 @end

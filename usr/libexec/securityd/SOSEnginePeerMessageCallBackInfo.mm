@@ -1,15 +1,15 @@
 @interface SOSEnginePeerMessageCallBackInfo
-- (SOSEnginePeerMessageCallBackInfo)initWithEngine:(__OpaqueSOSEngine *)a3 peer:(__OpaqueSOSPeer *)a4 localManifest:(__OpaqueSOSManifest *)a5 proposedManifest:(__OpaqueSOSManifest *)a6 confirmedManifest:(__OpaqueSOSManifest *)a7 andMessage:(__OpaqueSOSMessage *)a8;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)callCallback:(BOOL)a3;
+- (SOSEnginePeerMessageCallBackInfo)initWithEngine:(__OpaqueSOSEngine *)engine peer:(__OpaqueSOSPeer *)peer localManifest:(__OpaqueSOSManifest *)manifest proposedManifest:(__OpaqueSOSManifest *)proposedManifest confirmedManifest:(__OpaqueSOSManifest *)confirmedManifest andMessage:(__OpaqueSOSMessage *)message;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)callCallback:(BOOL)callback;
 - (void)dealloc;
-- (void)setCallback:(id)a3;
-- (void)setCoder:(__OpaqueSOSCoder *)a3;
+- (void)setCallback:(id)callback;
+- (void)setCoder:(__OpaqueSOSCoder *)coder;
 @end
 
 @implementation SOSEnginePeerMessageCallBackInfo
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (qword_10039E0F8 != -1)
   {
@@ -136,7 +136,7 @@
   [(SOSEnginePeerMessageCallBackInfo *)&v10 dealloc];
 }
 
-- (void)setCoder:(__OpaqueSOSCoder *)a3
+- (void)setCoder:(__OpaqueSOSCoder *)coder
 {
   if (qword_10039E0F8 != -1)
   {
@@ -145,37 +145,37 @@
 
   if (byte_10039CB18 == 1)
   {
-    if (a3)
+    if (coder)
     {
-      CFRetain(a3);
+      CFRetain(coder);
     }
 
-    self->_coder = a3;
+    self->_coder = coder;
   }
 }
 
-- (void)setCallback:(id)a3
+- (void)setCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   if (qword_10039E0F8 != -1)
   {
-    v8 = v4;
+    v8 = callbackCopy;
     dispatch_once(&qword_10039E0F8, &stru_100342098);
-    v4 = v8;
+    callbackCopy = v8;
   }
 
   if (byte_10039CB18 == 1)
   {
-    v7 = v4;
-    v5 = objc_retainBlock(v4);
+    v7 = callbackCopy;
+    v5 = objc_retainBlock(callbackCopy);
     callbackBlock = self->_callbackBlock;
     self->_callbackBlock = v5;
 
-    v4 = v7;
+    callbackCopy = v7;
   }
 }
 
-- (void)callCallback:(BOOL)a3
+- (void)callCallback:(BOOL)callback
 {
   if (qword_10039E0F8 != -1)
   {
@@ -190,7 +190,7 @@
   }
 }
 
-- (SOSEnginePeerMessageCallBackInfo)initWithEngine:(__OpaqueSOSEngine *)a3 peer:(__OpaqueSOSPeer *)a4 localManifest:(__OpaqueSOSManifest *)a5 proposedManifest:(__OpaqueSOSManifest *)a6 confirmedManifest:(__OpaqueSOSManifest *)a7 andMessage:(__OpaqueSOSMessage *)a8
+- (SOSEnginePeerMessageCallBackInfo)initWithEngine:(__OpaqueSOSEngine *)engine peer:(__OpaqueSOSPeer *)peer localManifest:(__OpaqueSOSManifest *)manifest proposedManifest:(__OpaqueSOSManifest *)proposedManifest confirmedManifest:(__OpaqueSOSManifest *)confirmedManifest andMessage:(__OpaqueSOSMessage *)message
 {
   if (qword_10039E0F8 != -1)
   {
@@ -208,54 +208,54 @@
       callbackBlock = v15->_callbackBlock;
       v15->_callbackBlock = 0;
 
-      if (a3)
+      if (engine)
       {
-        CFRetain(a3);
+        CFRetain(engine);
       }
 
-      v16->_engine = a3;
-      if (a4)
+      v16->_engine = engine;
+      if (peer)
       {
-        CFRetain(a4);
+        CFRetain(peer);
       }
 
-      v16->_peer = a4;
-      if (a5)
+      v16->_peer = peer;
+      if (manifest)
       {
-        CFRetain(a5);
+        CFRetain(manifest);
       }
 
-      v16->_local = a5;
-      if (a6)
+      v16->_local = manifest;
+      if (proposedManifest)
       {
-        CFRetain(a6);
+        CFRetain(proposedManifest);
       }
 
-      v16->_proposed = a6;
-      if (a7)
+      v16->_proposed = proposedManifest;
+      if (confirmedManifest)
       {
-        CFRetain(a7);
+        CFRetain(confirmedManifest);
       }
 
-      v16->_confirmed = a7;
-      if (a8)
+      v16->_confirmed = confirmedManifest;
+      if (message)
       {
-        CFRetain(a8);
+        CFRetain(message);
       }
 
-      v16->_message = a8;
+      v16->_message = message;
     }
 
     self = v16;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
 @end

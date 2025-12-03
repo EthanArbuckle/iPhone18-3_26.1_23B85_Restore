@@ -1,10 +1,10 @@
 @interface LPThemeParametersObserver
 + (id)shared;
 - (LPThemeParametersObserver)init;
-- (void)addClient:(id)a3;
+- (void)addClient:(id)client;
 - (void)dealloc;
 - (void)didChangeThemeParameters;
-- (void)removeClient:(id)a3;
+- (void)removeClient:(id)client;
 @end
 
 @implementation LPThemeParametersObserver
@@ -16,8 +16,8 @@
   v2 = [(LPThemeParametersObserver *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel_didChangeDarkenColorsStatus_ name:*MEMORY[0x1E69DD8B8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_didChangeDarkenColorsStatus_ name:*MEMORY[0x1E69DD8B8] object:0];
 
     v4 = v2;
   }
@@ -42,30 +42,30 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = LPThemeParametersObserver;
   [(LPThemeParametersObserver *)&v4 dealloc];
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   clients = self->_clients;
-  v8 = v4;
+  v8 = clientCopy;
   if (!clients)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_clients;
-    self->_clients = v6;
+    self->_clients = weakObjectsHashTable;
 
     clients = self->_clients;
-    v4 = v8;
+    clientCopy = v8;
   }
 
-  if ([(NSHashTable *)clients containsObject:v4])
+  if ([(NSHashTable *)clients containsObject:clientCopy])
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Trying to add a LPThemeClient that is already a client."];
   }
@@ -73,13 +73,13 @@
   [(NSHashTable *)self->_clients addObject:v8];
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   clients = self->_clients;
   if (clients)
   {
-    [(NSHashTable *)clients removeObject:v5];
+    [(NSHashTable *)clients removeObject:clientCopy];
   }
 }
 

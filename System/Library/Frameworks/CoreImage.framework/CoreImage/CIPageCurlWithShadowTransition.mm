@@ -313,7 +313,7 @@
   v88 = v87;
   v102 = v87;
   v122 = v89;
-  v90 = [(CIPageCurlWithShadowTransition *)self _CIPageCurlWithShadowTransition];
+  _CIPageCurlWithShadowTransition = [(CIPageCurlWithShadowTransition *)self _CIPageCurlWithShadowTransition];
   v155[0] = MEMORY[0x1E69E9820];
   v155[1] = 3221225472;
   v155[2] = __45__CIPageCurlWithShadowTransition_outputImage__block_invoke;
@@ -373,8 +373,8 @@
   v158[11] = [MEMORY[0x1E696AD98] numberWithDouble:v129];
   v158[12] = v117;
   v158[13] = v116;
-  v94 = [v90 applyWithExtent:v155 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v158, 14), v131, v126, v124, v133}];
-  v95 = [(CIPageCurlWithShadowTransition *)self _CIPageCurlNoShadowTransition];
+  v94 = [_CIPageCurlWithShadowTransition applyWithExtent:v155 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v158, 14), v131, v126, v124, v133}];
+  _CIPageCurlNoShadowTransition = [(CIPageCurlWithShadowTransition *)self _CIPageCurlNoShadowTransition];
   v154[0] = MEMORY[0x1E69E9820];
   v154[1] = 3221225472;
   v154[2] = __45__CIPageCurlWithShadowTransition_outputImage__block_invoke_2;
@@ -412,7 +412,7 @@
   v157[8] = [MEMORY[0x1E696AD98] numberWithDouble:v149];
   v157[9] = v117;
   v157[10] = v116;
-  result = [v95 applyWithExtent:v154 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v157, 11), v131, v126, v124, v133}];
+  result = [_CIPageCurlNoShadowTransition applyWithExtent:v154 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v157, 11), v131, v126, v124, v133}];
   if (v129 > 0.001)
   {
     result = v94;

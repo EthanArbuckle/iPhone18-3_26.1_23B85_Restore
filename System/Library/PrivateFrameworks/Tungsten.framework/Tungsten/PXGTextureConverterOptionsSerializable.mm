@@ -1,6 +1,6 @@
 @interface PXGTextureConverterOptionsSerializable
 - ($F568B5DBA4E111E952B4B8D02A66CA82)textureConverterOptions;
-- (PXGTextureConverterOptionsSerializable)initWithSerializableObject:(id)a3;
+- (PXGTextureConverterOptionsSerializable)initWithSerializableObject:(id)object;
 - (id)createSerializableObject;
 @end
 
@@ -18,20 +18,20 @@
 
 - (id)createSerializableObject
 {
-  v2 = [(PXGTextureConverterOptionsSerializable *)self textureConverterOptions];
+  textureConverterOptions = [(PXGTextureConverterOptionsSerializable *)self textureConverterOptions];
 
-  return PXGSerializeTextureConverterOptions(v2);
+  return PXGSerializeTextureConverterOptions(textureConverterOptions);
 }
 
-- (PXGTextureConverterOptionsSerializable)initWithSerializableObject:(id)a3
+- (PXGTextureConverterOptionsSerializable)initWithSerializableObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = PXGTextureConverterOptionsSerializable;
   v5 = [(PXGTextureConverterOptionsSerializable *)&v9 init];
   if (v5)
   {
-    v6 = PXGDeserializeTextureConverterOptions(v4);
+    v6 = PXGDeserializeTextureConverterOptions(objectCopy);
     [(PXGTextureConverterOptionsSerializable *)v5 setTextureConverterOptions:v6, v7];
   }
 

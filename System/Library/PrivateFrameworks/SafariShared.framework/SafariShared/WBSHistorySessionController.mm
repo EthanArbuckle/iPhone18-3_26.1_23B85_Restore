@@ -1,29 +1,29 @@
 @interface WBSHistorySessionController
 + (id)sharedSessionController;
-- (BOOL)_getKey:(id *)a3 forDate:(double)a4;
+- (BOOL)_getKey:(id *)key forDate:(double)date;
 - (NSArray)orderedSessions;
-- (WBSHistorySessionController)initWithHistory:(id)a3;
+- (WBSHistorySessionController)initWithHistory:(id)history;
 - (id)_orderedSessionKeys;
-- (id)itemLastVisitedInSession:(id)a3 atIndex:(unint64_t)a4;
-- (id)itemsLastVisitedInSession:(id)a3;
-- (id)sessionForItem:(id)a3;
-- (unint64_t)_insertItem:(id)a3 withSessionKey:(id)a4;
-- (unint64_t)numberOfItemsVisitedInSession:(id)a3;
+- (id)itemLastVisitedInSession:(id)session atIndex:(unint64_t)index;
+- (id)itemsLastVisitedInSession:(id)session;
+- (id)sessionForItem:(id)item;
+- (unint64_t)_insertItem:(id)item withSessionKey:(id)key;
+- (unint64_t)numberOfItemsVisitedInSession:(id)session;
 - (unint64_t)numberOfSessions;
-- (void)_addItemsToSessionCache:(id)a3 shouldPostChangeNotification:(BOOL)a4;
+- (void)_addItemsToSessionCache:(id)cache shouldPostChangeNotification:(BOOL)notification;
 - (void)_clearSessionCache;
 - (void)_dispatchHistorySessionsDidChangeNotification;
-- (void)_historyItemsWereAdded:(id)a3;
-- (void)_historyItemsWereRemoved:(id)a3;
-- (void)_historyWasClearedWithInterval:(id)a3;
-- (void)_historyWasSignificantlyChanged:(id)a3;
+- (void)_historyItemsWereAdded:(id)added;
+- (void)_historyItemsWereRemoved:(id)removed;
+- (void)_historyWasClearedWithInterval:(id)interval;
+- (void)_historyWasSignificantlyChanged:(id)changed;
 - (void)_loadSessionCache;
-- (void)_removeItemsFromSessionCache:(id)a3;
-- (void)_requestSessionKeyForDate:(id)a3 withBlock:(id)a4;
-- (void)_timeZoneDidChange:(id)a3;
-- (void)enumerateOrderedItemsLastVisitedInSession:(id)a3 usingBlock:(id)a4;
-- (void)orderedItemsNewerThanDate:(id)a3 maxCount:(unint64_t)a4 completionHandler:(id)a5;
-- (void)orderedSessionsWithCompletionHandler:(id)a3;
+- (void)_removeItemsFromSessionCache:(id)cache;
+- (void)_requestSessionKeyForDate:(id)date withBlock:(id)block;
+- (void)_timeZoneDidChange:(id)change;
+- (void)enumerateOrderedItemsLastVisitedInSession:(id)session usingBlock:(id)block;
+- (void)orderedItemsNewerThanDate:(id)date maxCount:(unint64_t)count completionHandler:(id)handler;
+- (void)orderedSessionsWithCompletionHandler:(id)handler;
 @end
 
 @implementation WBSHistorySessionController
@@ -49,30 +49,30 @@ void __54__WBSHistorySessionController_sharedSessionController__block_invoke()
   +[WBSHistorySessionController sharedSessionController]::shared = v1;
 }
 
-- (WBSHistorySessionController)initWithHistory:(id)a3
+- (WBSHistorySessionController)initWithHistory:(id)history
 {
   v48 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  historyCopy = history;
   v41.receiver = self;
   v41.super_class = WBSHistorySessionController;
   v6 = [(WBSHistorySessionController *)&v41 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_history, a3);
+    objc_storeStrong(&v6->_history, history);
     v8 = dispatch_queue_create("com.apple.SafariShared.WBSHistorySessionController.sessionCacheAccess", 0);
     sessionCacheAccessQueue = v7->_sessionCacheAccessQueue;
     v7->_sessionCacheAccessQueue = v8;
 
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     itemsBySession = v7->_itemsBySession;
-    v7->_itemsBySession = v10;
+    v7->_itemsBySession = dictionary;
 
     v12 = objc_alloc_init(WBSHistorySessionIntervalCache);
     intervalCache = v7->_intervalCache;
     v7->_intervalCache = v12;
 
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
@@ -93,7 +93,7 @@ void __54__WBSHistorySessionController_sharedSessionController__block_invoke()
             objc_enumerationMutation(v15);
           }
 
-          [v14 addObserver:v7 selector:sel__historyItemsWereAdded_ name:*(*(&v37 + 1) + 8 * i) object:v5];
+          [defaultCenter addObserver:v7 selector:sel__historyItemsWereAdded_ name:*(*(&v37 + 1) + 8 * i) object:historyCopy];
         }
 
         v16 = [v15 countByEnumeratingWithState:&v37 objects:v47 count:16];
@@ -122,7 +122,7 @@ void __54__WBSHistorySessionController_sharedSessionController__block_invoke()
             objc_enumerationMutation(v19);
           }
 
-          [v14 addObserver:v7 selector:sel__historyItemsWereRemoved_ name:*(*(&v33 + 1) + 8 * j) object:v5];
+          [defaultCenter addObserver:v7 selector:sel__historyItemsWereRemoved_ name:*(*(&v33 + 1) + 8 * j) object:historyCopy];
         }
 
         v20 = [v19 countByEnumeratingWithState:&v33 objects:v45 count:16];
@@ -151,7 +151,7 @@ void __54__WBSHistorySessionController_sharedSessionController__block_invoke()
             objc_enumerationMutation(v23);
           }
 
-          [v14 addObserver:v7 selector:sel__historyWasSignificantlyChanged_ name:*(*(&v29 + 1) + 8 * k) object:v5];
+          [defaultCenter addObserver:v7 selector:sel__historyWasSignificantlyChanged_ name:*(*(&v29 + 1) + 8 * k) object:historyCopy];
         }
 
         v24 = [v23 countByEnumeratingWithState:&v29 objects:v43 count:16];
@@ -160,8 +160,8 @@ void __54__WBSHistorySessionController_sharedSessionController__block_invoke()
       while (v24);
     }
 
-    [v14 addObserver:v7 selector:sel__historyWasClearedWithInterval_ name:@"WBSHistoryWasClearedWithIntervalNotification" object:v5];
-    [v14 addObserver:v7 selector:sel__timeZoneDidChange_ name:*MEMORY[0x1E695DA68] object:0];
+    [defaultCenter addObserver:v7 selector:sel__historyWasClearedWithInterval_ name:@"WBSHistoryWasClearedWithIntervalNotification" object:historyCopy];
+    [defaultCenter addObserver:v7 selector:sel__timeZoneDidChange_ name:*MEMORY[0x1E695DA68] object:0];
     [(WBSHistorySessionController *)v7 _loadSessionCache];
     v27 = v7;
   }
@@ -169,20 +169,20 @@ void __54__WBSHistorySessionController_sharedSessionController__block_invoke()
   return v7;
 }
 
-- (void)enumerateOrderedItemsLastVisitedInSession:(id)a3 usingBlock:(id)a4
+- (void)enumerateOrderedItemsLastVisitedInSession:(id)session usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  blockCopy = block;
   sessionCacheAccessQueue = self->_sessionCacheAccessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __84__WBSHistorySessionController_enumerateOrderedItemsLastVisitedInSession_usingBlock___block_invoke;
   block[3] = &unk_1E7FB7CC0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = sessionCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = sessionCopy;
   dispatch_sync(sessionCacheAccessQueue, block);
 }
 
@@ -230,11 +230,11 @@ void __84__WBSHistorySessionController_enumerateOrderedItemsLastVisitedInSession
   }
 }
 
-- (void)orderedItemsNewerThanDate:(id)a3 maxCount:(unint64_t)a4 completionHandler:(id)a5
+- (void)orderedItemsNewerThanDate:(id)date maxCount:(unint64_t)count completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  [v8 timeIntervalSinceReferenceDate];
+  dateCopy = date;
+  handlerCopy = handler;
+  [dateCopy timeIntervalSinceReferenceDate];
   sessionCacheAccessQueue = self->_sessionCacheAccessQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -242,9 +242,9 @@ void __84__WBSHistorySessionController_enumerateOrderedItemsLastVisitedInSession
   v13[3] = &unk_1E7FC7538;
   v15 = v11;
   v13[4] = self;
-  v14 = v9;
-  v16 = a4;
-  v12 = v9;
+  v14 = handlerCopy;
+  countCopy = count;
+  v12 = handlerCopy;
   dispatch_async(sessionCacheAccessQueue, v13);
 }
 
@@ -337,9 +337,9 @@ void __84__WBSHistorySessionController_orderedItemsNewerThanDate_maxCount_comple
 LABEL_19:
 }
 
-- (id)itemLastVisitedInSession:(id)a3 atIndex:(unint64_t)a4
+- (id)itemLastVisitedInSession:(id)session atIndex:(unint64_t)index
 {
-  v6 = a3;
+  sessionCopy = session;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -352,10 +352,10 @@ LABEL_19:
   v11[2] = __64__WBSHistorySessionController_itemLastVisitedInSession_atIndex___block_invoke;
   v11[3] = &unk_1E7FC80D8;
   v11[4] = self;
-  v12 = v6;
+  v12 = sessionCopy;
   v13 = &v15;
-  v14 = a4;
-  v8 = v6;
+  indexCopy = index;
+  v8 = sessionCopy;
   dispatch_sync(sessionCacheAccessQueue, v11);
   v9 = v16[5];
 
@@ -418,9 +418,9 @@ uint64_t __47__WBSHistorySessionController_numberOfSessions__block_invoke(uint64
   return result;
 }
 
-- (unint64_t)numberOfItemsVisitedInSession:(id)a3
+- (unint64_t)numberOfItemsVisitedInSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -431,9 +431,9 @@ uint64_t __47__WBSHistorySessionController_numberOfSessions__block_invoke(uint64
   block[2] = __61__WBSHistorySessionController_numberOfItemsVisitedInSession___block_invoke;
   block[3] = &unk_1E7FC6870;
   block[4] = self;
-  v10 = v4;
+  v10 = sessionCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = sessionCopy;
   dispatch_sync(sessionCacheAccessQueue, block);
   v7 = v13[3];
 
@@ -457,9 +457,9 @@ void __61__WBSHistorySessionController_numberOfItemsVisitedInSession___block_inv
   }
 }
 
-- (id)itemsLastVisitedInSession:(id)a3
+- (id)itemsLastVisitedInSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -472,9 +472,9 @@ void __61__WBSHistorySessionController_numberOfItemsVisitedInSession___block_inv
   block[2] = __57__WBSHistorySessionController_itemsLastVisitedInSession___block_invoke;
   block[3] = &unk_1E7FC6870;
   block[4] = self;
-  v10 = v4;
+  v10 = sessionCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = sessionCopy;
   dispatch_sync(sessionCacheAccessQueue, block);
   v7 = v13[5];
 
@@ -544,17 +544,17 @@ WBSHistorySession *__46__WBSHistorySessionController_orderedSessions__block_invo
   return v6;
 }
 
-- (void)orderedSessionsWithCompletionHandler:(id)a3
+- (void)orderedSessionsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   sessionCacheAccessQueue = self->_sessionCacheAccessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __68__WBSHistorySessionController_orderedSessionsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FB6F08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(sessionCacheAccessQueue, v7);
 }
 
@@ -578,9 +578,9 @@ WBSHistorySession *__68__WBSHistorySessionController_orderedSessionsWithCompleti
   return v6;
 }
 
-- (id)sessionForItem:(id)a3
+- (id)sessionForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -593,9 +593,9 @@ WBSHistorySession *__68__WBSHistorySessionController_orderedSessionsWithCompleti
   block[2] = __46__WBSHistorySessionController_sessionForItem___block_invoke;
   block[3] = &unk_1E7FC6870;
   block[4] = self;
-  v10 = v4;
+  v10 = itemCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = itemCopy;
   dispatch_sync(sessionCacheAccessQueue, block);
   v7 = v13[5];
 
@@ -622,12 +622,12 @@ void __46__WBSHistorySessionController_sessionForItem___block_invoke(uint64_t a1
 {
   if (![(NSArray *)self->_orderedSessions count]&& [(NSMutableDictionary *)self->_itemsBySession count])
   {
-    v3 = [(NSMutableDictionary *)self->_itemsBySession allKeys];
-    v4 = [v3 sortedArrayUsingSelector:sel_compare_];
-    v5 = [v4 reverseObjectEnumerator];
-    v6 = [v5 allObjects];
+    allKeys = [(NSMutableDictionary *)self->_itemsBySession allKeys];
+    v4 = [allKeys sortedArrayUsingSelector:sel_compare_];
+    reverseObjectEnumerator = [v4 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
     orderedSessions = self->_orderedSessions;
-    self->_orderedSessions = v6;
+    self->_orderedSessions = allObjects;
   }
 
   v8 = self->_orderedSessions;
@@ -635,32 +635,32 @@ void __46__WBSHistorySessionController_sessionForItem___block_invoke(uint64_t a1
   return v8;
 }
 
-- (BOOL)_getKey:(id *)a3 forDate:(double)a4
+- (BOOL)_getKey:(id *)key forDate:(double)date
 {
   v6 = MEMORY[0x1E696AD98];
-  [(WBSHistorySessionIntervalCache *)self->_intervalCache beginningOfSessionContainingTime:a4];
+  [(WBSHistorySessionIntervalCache *)self->_intervalCache beginningOfSessionContainingTime:date];
   v7 = [v6 numberWithDouble:?];
-  *a3 = v7;
+  *key = v7;
   v8 = [(NSMutableDictionary *)self->_itemsBySession objectForKey:v7];
-  LOBYTE(a3) = v8 != 0;
+  LOBYTE(key) = v8 != 0;
 
-  return a3;
+  return key;
 }
 
-- (void)_requestSessionKeyForDate:(id)a3 withBlock:(id)a4
+- (void)_requestSessionKeyForDate:(id)date withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  blockCopy = block;
   sessionCacheAccessQueue = self->_sessionCacheAccessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__WBSHistorySessionController__requestSessionKeyForDate_withBlock___block_invoke;
   block[3] = &unk_1E7FB7CC0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dateCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = dateCopy;
   dispatch_sync(sessionCacheAccessQueue, block);
 }
 
@@ -677,24 +677,24 @@ void __67__WBSHistorySessionController__requestSessionKeyForDate_withBlock___blo
   }
 }
 
-- (unint64_t)_insertItem:(id)a3 withSessionKey:(id)a4
+- (unint64_t)_insertItem:(id)item withSessionKey:(id)key
 {
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_itemsBySession objectForKeyedSubscript:a4];
+  itemCopy = item;
+  v7 = [(NSMutableDictionary *)self->_itemsBySession objectForKeyedSubscript:key];
   if (v7)
   {
-    [v6 lastVisitedTimeInterval];
+    [itemCopy lastVisitedTimeInterval];
     v9 = v8;
     v10 = [v7 count];
     if (v10 && ([v7 objectAtIndexedSubscript:0], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "lastVisitedTimeInterval"), v13 = v12, v11, v13 >= v9))
     {
-      v15 = [v7 lastObject];
-      [v15 lastVisitedTimeInterval];
+      lastObject = [v7 lastObject];
+      [lastObject lastVisitedTimeInterval];
       v17 = v16;
 
       if (v17 >= v9)
       {
-        [v7 addObject:v6];
+        [v7 addObject:itemCopy];
         v14 = [v7 count] - 1;
       }
 
@@ -725,13 +725,13 @@ void __67__WBSHistorySessionController__requestSessionKeyForDate_withBlock___blo
         }
 
         while (v14 < v10);
-        [v7 insertObject:v6 atIndex:v14];
+        [v7 insertObject:itemCopy atIndex:v14];
       }
     }
 
     else
     {
-      [v7 insertObject:v6 atIndex:0];
+      [v7 insertObject:itemCopy atIndex:0];
       v14 = 0;
     }
   }
@@ -744,18 +744,18 @@ void __67__WBSHistorySessionController__requestSessionKeyForDate_withBlock___blo
   return v14;
 }
 
-- (void)_addItemsToSessionCache:(id)a3 shouldPostChangeNotification:(BOOL)a4
+- (void)_addItemsToSessionCache:(id)cache shouldPostChangeNotification:(BOOL)notification
 {
-  v6 = a3;
+  cacheCopy = cache;
   sessionCacheAccessQueue = self->_sessionCacheAccessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __84__WBSHistorySessionController__addItemsToSessionCache_shouldPostChangeNotification___block_invoke;
   block[3] = &unk_1E7FB76A8;
-  v12 = a4;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
+  notificationCopy = notification;
+  v10 = cacheCopy;
+  selfCopy = self;
+  v8 = cacheCopy;
   dispatch_async(sessionCacheAccessQueue, block);
 }
 
@@ -869,17 +869,17 @@ void __84__WBSHistorySessionController__addItemsToSessionCache_shouldPostChangeN
   [v2 postNotificationName:@"WBSHistorySessionsDidChangeNotification" object:v4 userInfo:v5];
 }
 
-- (void)_removeItemsFromSessionCache:(id)a3
+- (void)_removeItemsFromSessionCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   sessionCacheAccessQueue = self->_sessionCacheAccessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__WBSHistorySessionController__removeItemsFromSessionCache___block_invoke;
   v7[3] = &unk_1E7FB7F10;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = cacheCopy;
+  selfCopy = self;
+  v6 = cacheCopy;
   dispatch_async(sessionCacheAccessQueue, v7);
 }
 
@@ -1072,20 +1072,20 @@ void __49__WBSHistorySessionController__clearSessionCache__block_invoke(uint64_t
 
 - (void)_loadSessionCache
 {
-  v3 = [(WBSHistory *)self->_history allItems];
+  allItems = [(WBSHistory *)self->_history allItems];
   [WBSHistorySessionController _addItemsToSessionCache:"_addItemsToSessionCache:shouldPostChangeNotification:" shouldPostChangeNotification:?];
 }
 
 - (void)_dispatchHistorySessionsDidChangeNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"WBSHistorySessionsDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"WBSHistorySessionsDidChangeNotification" object:self];
 }
 
-- (void)_historyItemsWereAdded:(id)a3
+- (void)_historyItemsWereAdded:(id)added
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 safari_arrayForKey:@"WBSHistoryItemsKey"];
+  userInfo = [added userInfo];
+  v5 = [userInfo safari_arrayForKey:@"WBSHistoryItemsKey"];
 
   if ([v5 count])
   {
@@ -1093,14 +1093,14 @@ void __49__WBSHistorySessionController__clearSessionCache__block_invoke(uint64_t
   }
 }
 
-- (void)_historyWasClearedWithInterval:(id)a3
+- (void)_historyWasClearedWithInterval:(id)interval
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 safari_dateForKey:@"WBSHistoryClearStartDateKey"];
+  intervalCopy = interval;
+  userInfo = [intervalCopy userInfo];
+  v6 = [userInfo safari_dateForKey:@"WBSHistoryClearStartDateKey"];
 
-  v7 = [v4 userInfo];
-  v8 = [v7 safari_dateForKey:@"WBSHistoryClearEndDateKey"];
+  userInfo2 = [intervalCopy userInfo];
+  v8 = [userInfo2 safari_dateForKey:@"WBSHistoryClearEndDateKey"];
 
   if (v6)
   {
@@ -1215,7 +1215,7 @@ BOOL __62__WBSHistorySessionController__historyWasClearedWithInterval___block_in
   return v7;
 }
 
-- (void)_historyWasSignificantlyChanged:(id)a3
+- (void)_historyWasSignificantlyChanged:(id)changed
 {
   [(WBSHistorySessionController *)self _clearSessionCache];
   [(WBSHistorySessionController *)self _loadSessionCache];
@@ -1223,23 +1223,23 @@ BOOL __62__WBSHistorySessionController__historyWasClearedWithInterval___block_in
   [(WBSHistorySessionController *)self _dispatchHistorySessionsDidChangeNotification];
 }
 
-- (void)_historyItemsWereRemoved:(id)a3
+- (void)_historyItemsWereRemoved:(id)removed
 {
-  v4 = [a3 userInfo];
-  if (v4)
+  userInfo = [removed userInfo];
+  if (userInfo)
   {
-    v6 = v4;
-    v5 = [v4 safari_arrayForKey:@"WBSHistoryItemsKey"];
+    v6 = userInfo;
+    v5 = [userInfo safari_arrayForKey:@"WBSHistoryItemsKey"];
     if ([v5 count])
     {
       [(WBSHistorySessionController *)self _removeItemsFromSessionCache:v5];
     }
 
-    v4 = v6;
+    userInfo = v6;
   }
 }
 
-- (void)_timeZoneDidChange:(id)a3
+- (void)_timeZoneDidChange:(id)change
 {
   v4 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];

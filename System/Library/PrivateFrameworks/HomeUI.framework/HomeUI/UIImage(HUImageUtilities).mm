@@ -19,7 +19,7 @@
 
 + (double)hu_scaleSize:()HUImageUtilities toSize:contentMode:
 {
-  v7 = a1 / a2;
+  v7 = self / a2;
   v8 = a3 / a4;
   if (a7 == 2)
   {
@@ -42,35 +42,35 @@
 - (id)hu_imageScaledToSize:()HUImageUtilities contentMode:
 {
   v5 = objc_opt_class();
-  [a1 size];
+  [self size];
   [v5 hu_scaleSize:a3 toSize:? contentMode:?];
   v7 = v6;
   v9 = v8;
-  [a1 size];
+  [self size];
   if (v11 == v7 && v10 == v9)
   {
-    v23 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    [a1 scale];
+    [self scale];
     UIRectIntegralWithScale();
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    [a1 scale];
+    [self scale];
     v22 = v21;
     v26.width = v18;
     v26.height = v20;
     UIGraphicsBeginImageContextWithOptions(v26, 0, v22);
-    [a1 drawInRect:{v14, v16, v18, v20}];
-    v23 = UIGraphicsGetImageFromCurrentImageContext();
+    [self drawInRect:{v14, v16, v18, v20}];
+    selfCopy = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
   }
 
-  return v23;
+  return selfCopy;
 }
 
 + (id)hu_systemImageNamed:()HUImageUtilities withBackgroundColor:symbolColor:size:cornerRadius:configuration:
@@ -85,14 +85,14 @@
   {
     [v19 scale];
     v21 = v20;
-    v29.width = a1;
+    v29.width = self;
     v29.height = a2;
     UIGraphicsBeginImageContextWithOptions(v29, 0, v21);
     [v15 setFill];
-    v22 = [MEMORY[0x277D75208] bezierPathWithRoundedRect:*MEMORY[0x277CBF348] cornerRadius:{*(MEMORY[0x277CBF348] + 8), a1, a2, a3}];
+    v22 = [MEMORY[0x277D75208] bezierPathWithRoundedRect:*MEMORY[0x277CBF348] cornerRadius:{*(MEMORY[0x277CBF348] + 8), self, a2, a3}];
     [v22 fill];
     [v19 size];
-    v24 = (a1 - v23) * 0.5;
+    v24 = (self - v23) * 0.5;
     [v19 size];
     [v19 drawAtPoint:{v24, (a2 - v25) * 0.5}];
     v26 = UIGraphicsGetImageFromCurrentImageContext();
@@ -111,20 +111,20 @@
 {
   v39 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [v4 productInfo];
-  v6 = [v5 productClass];
+  productInfo = [v4 productInfo];
+  productClass = [productInfo productClass];
 
-  if (v6 <= 4)
+  if (productClass <= 4)
   {
-    if (v6 <= 1)
+    if (productClass <= 1)
     {
-      if (!v6)
+      if (!productClass)
       {
-        v11 = [a1 hu_symbolFromProductPlatform:v4];
+        v11 = [self hu_symbolFromProductPlatform:v4];
         goto LABEL_42;
       }
 
-      if (v6 != 1)
+      if (productClass != 1)
       {
         goto LABEL_45;
       }
@@ -133,13 +133,13 @@
       v10 = MEMORY[0x277D14220];
     }
 
-    else if (v6 == 2)
+    else if (productClass == 2)
     {
       v9 = MEMORY[0x277D755B8];
       v10 = MEMORY[0x277D14228];
     }
 
-    else if (v6 == 3)
+    else if (productClass == 3)
     {
       v12 = HFLogForCategory();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -176,9 +176,9 @@
 
   else
   {
-    if (v6 <= 7)
+    if (productClass <= 7)
     {
-      if (v6 == 5)
+      if (productClass == 5)
       {
         v9 = MEMORY[0x277D755B8];
         v10 = MEMORY[0x277D141B8];
@@ -186,17 +186,17 @@
 
       else
       {
-        if (v6 == 6)
+        if (productClass == 6)
         {
           v32 = 0u;
           v33 = 0u;
           v30 = 0u;
           v31 = 0u;
-          v14 = [MEMORY[0x277D146E8] sharedDispatcher];
-          v15 = [v14 home];
-          v16 = [v15 accessories];
+          mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+          home = [mEMORY[0x277D146E8] home];
+          accessories = [home accessories];
 
-          v17 = [v16 countByEnumeratingWithState:&v30 objects:v34 count:16];
+          v17 = [accessories countByEnumeratingWithState:&v30 objects:v34 count:16];
           if (v17)
           {
             v18 = v17;
@@ -209,12 +209,12 @@
               {
                 if (*v31 != v19)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(accessories);
                 }
 
                 v23 = *(*(&v30 + 1) + 8 * i);
-                v24 = [v23 device];
-                v25 = [v24 isEqual:v4];
+                device = [v23 device];
+                v25 = [device isEqual:v4];
 
                 if (v25)
                 {
@@ -227,16 +227,16 @@
                   {
                     v20 = v21;
 LABEL_49:
-                    v26 = [MEMORY[0x277D755B8] systemImageNamed:*v20];
-                    v29 = [MEMORY[0x277D75348] hu_keyColor];
-                    v11 = [v26 imageWithTintColor:v29];
+                    hu_keyColor2 = [MEMORY[0x277D755B8] systemImageNamed:*v20];
+                    hu_keyColor = [MEMORY[0x277D75348] hu_keyColor];
+                    v11 = [hu_keyColor2 imageWithTintColor:hu_keyColor];
 
                     goto LABEL_41;
                   }
                 }
               }
 
-              v18 = [v16 countByEnumeratingWithState:&v30 objects:v34 count:16];
+              v18 = [accessories countByEnumeratingWithState:&v30 objects:v34 count:16];
               if (v18)
               {
                 continue;
@@ -254,7 +254,7 @@ LABEL_49:
       goto LABEL_40;
     }
 
-    switch(v6)
+    switch(productClass)
     {
       case 8:
         v9 = MEMORY[0x277D755B8];
@@ -284,9 +284,9 @@ LABEL_45:
   }
 
 LABEL_40:
-  v16 = [v9 systemImageNamed:*v10];
-  v26 = [MEMORY[0x277D75348] hu_keyColor];
-  v11 = [v16 imageWithTintColor:v26];
+  accessories = [v9 systemImageNamed:*v10];
+  hu_keyColor2 = [MEMORY[0x277D75348] hu_keyColor];
+  v11 = [accessories imageWithTintColor:hu_keyColor2];
 LABEL_41:
 
 LABEL_42:
@@ -298,15 +298,15 @@ LABEL_42:
 {
   v33 = *MEMORY[0x277D85DE8];
   v3 = a3;
-  v4 = [v3 productInfo];
-  v5 = [v4 productPlatform];
+  productInfo = [v3 productInfo];
+  productPlatform = [productInfo productPlatform];
 
-  v6 = [v3 productInfo];
-  v7 = [v6 productClass];
+  productInfo2 = [v3 productInfo];
+  productClass = [productInfo2 productClass];
 
-  if (v5 > 2)
+  if (productPlatform > 2)
   {
-    if (v5 == 3)
+    if (productPlatform == 3)
     {
       v8 = MEMORY[0x277D755B8];
       v9 = MEMORY[0x277D141B8];
@@ -314,22 +314,22 @@ LABEL_42:
 
     else
     {
-      if (v5 != 4)
+      if (productPlatform != 4)
       {
         goto LABEL_20;
       }
 
-      if (v7 == 6)
+      if (productClass == 6)
       {
         v30 = 0u;
         v31 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v10 = [MEMORY[0x277D146E8] sharedDispatcher];
-        v11 = [v10 home];
-        v12 = [v11 accessories];
+        mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+        home = [mEMORY[0x277D146E8] home];
+        accessories = [home accessories];
 
-        v13 = [v12 countByEnumeratingWithState:&v28 objects:v32 count:16];
+        v13 = [accessories countByEnumeratingWithState:&v28 objects:v32 count:16];
         if (v13)
         {
           v14 = v13;
@@ -342,12 +342,12 @@ LABEL_42:
             {
               if (*v29 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(accessories);
               }
 
               v19 = *(*(&v28 + 1) + 8 * i);
-              v20 = [v19 device];
-              v21 = [v20 isEqual:v3];
+              device = [v19 device];
+              v21 = [device isEqual:v3];
 
               if (v21)
               {
@@ -360,16 +360,16 @@ LABEL_42:
                 {
                   v16 = v17;
 LABEL_32:
-                  v24 = [MEMORY[0x277D755B8] systemImageNamed:*v16];
-                  v26 = [MEMORY[0x277D75348] hu_keyColor];
-                  v23 = [v24 imageWithTintColor:v26];
+                  hu_keyColor2 = [MEMORY[0x277D755B8] systemImageNamed:*v16];
+                  hu_keyColor = [MEMORY[0x277D75348] hu_keyColor];
+                  v23 = [hu_keyColor2 imageWithTintColor:hu_keyColor];
 
                   goto LABEL_27;
                 }
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v28 objects:v32 count:16];
+            v14 = [accessories countByEnumeratingWithState:&v28 objects:v32 count:16];
             if (v14)
             {
               continue;
@@ -389,9 +389,9 @@ LABEL_32:
 
   else
   {
-    if (v5 != 1)
+    if (productPlatform != 1)
     {
-      if (v5 == 2)
+      if (productPlatform == 2)
       {
         v8 = MEMORY[0x277D755B8];
         v9 = MEMORY[0x277D14220];
@@ -415,9 +415,9 @@ LABEL_20:
   }
 
 LABEL_26:
-  v12 = [v8 systemImageNamed:*v9];
-  v24 = [MEMORY[0x277D75348] hu_keyColor];
-  v23 = [v12 imageWithTintColor:v24];
+  accessories = [v8 systemImageNamed:*v9];
+  hu_keyColor2 = [MEMORY[0x277D75348] hu_keyColor];
+  v23 = [accessories imageWithTintColor:hu_keyColor2];
 LABEL_27:
 
 LABEL_28:

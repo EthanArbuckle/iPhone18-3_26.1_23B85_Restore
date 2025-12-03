@@ -1,23 +1,23 @@
 @interface APGraphLayer
-+ (CGColor)copyGraphColorWithIndex:(int)a3;
++ (CGColor)copyGraphColorWithIndex:(int)index;
 - (APGraphLayer)init;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3;
-- (void)setUpGraph:(int)a3 min:(float)a4 max:(float)a5 numValues:(int)a6;
-- (void)setUpGraphs:(int)a3;
-- (void)updateValue:(int)a3 value:(float)a4;
+- (void)drawInContext:(CGContext *)context;
+- (void)setUpGraph:(int)graph min:(float)min max:(float)max numValues:(int)values;
+- (void)setUpGraphs:(int)graphs;
+- (void)updateValue:(int)value value:(float)a4;
 @end
 
 @implementation APGraphLayer
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   v70[10] = *MEMORY[0x277D85DE8];
-  ClipBoundingBox = CGContextGetClipBoundingBox(a3);
+  ClipBoundingBox = CGContextGetClipBoundingBox(context);
   width = ClipBoundingBox.size.width;
   height = ClipBoundingBox.size.height;
-  c = a3;
-  v72 = CGContextGetClipBoundingBox(a3);
+  c = context;
+  v72 = CGContextGetClipBoundingBox(context);
   x = v72.origin.x;
   y = v72.origin.y;
   v8 = v72.size.width;
@@ -68,12 +68,12 @@ LABEL_12:
   }
 
   v16 = CGColorCreateWithRGB();
-  CGContextSetFillColorWithColor(a3, v16);
+  CGContextSetFillColorWithColor(context, v16);
   v73.origin.x = x;
   v73.origin.y = y;
   v73.size.width = v8;
   v73.size.height = v9;
-  CGContextFillRect(a3, v73);
+  CGContextFillRect(context, v73);
   CFRelease(v16);
   v17 = v70;
   v18 = -3;
@@ -89,8 +89,8 @@ LABEL_12:
 
   while (!__CFADD__(v18++, 1));
   v21 = CGColorCreateWithRGB();
-  CGContextSetStrokeColorWithColor(a3, v21);
-  CGContextStrokeLineSegments(a3, &points, 6uLL);
+  CGContextSetStrokeColorWithColor(context, v21);
+  CGContextStrokeLineSegments(context, &points, 6uLL);
   CFRelease(v21);
   if (self->_Lines && self->_NumValues && self->_Values)
   {
@@ -152,8 +152,8 @@ LABEL_12:
 
             while (v33 != v32);
             v42 = [APGraphLayer copyGraphColorWithIndex:v23];
-            CGContextSetStrokeColorWithColor(a3, v42);
-            CGContextStrokeLineSegments(a3, self->_Lines, (2 * v33));
+            CGContextSetStrokeColorWithColor(context, v42);
+            CGContextStrokeLineSegments(context, self->_Lines, (2 * v33));
             CFRelease(v42);
             v22 = self->_NumGraphs;
           }
@@ -166,7 +166,7 @@ LABEL_12:
     }
 
     CGAffineTransformMakeScale(&v68, 1.0, -1.0);
-    CGContextSetTextMatrix(a3, &v68);
+    CGContextSetTextMatrix(context, &v68);
     if (self->_Font == *MEMORY[0x277CBEEE8])
     {
       v43 = CTFontCreateWithName(@"Helvetica", 12.0, 0);
@@ -374,48 +374,48 @@ LABEL_12:
   return v5;
 }
 
-- (void)updateValue:(int)a3 value:(float)a4
+- (void)updateValue:(int)value value:(float)a4
 {
-  if (self->_NumGraphs > a3)
+  if (self->_NumGraphs > value)
   {
     Maxes = self->_Maxes;
-    if (Maxes[a3] < a4)
+    if (Maxes[value] < a4)
     {
-      a4 = Maxes[a3];
+      a4 = Maxes[value];
     }
 
     Mins = self->_Mins;
-    if (a4 < Mins[a3])
+    if (a4 < Mins[value])
     {
-      a4 = Mins[a3];
+      a4 = Mins[value];
     }
 
     StartIndex = self->_StartIndex;
-    v7 = StartIndex[a3];
-    self->_Values[a3][v7] = a4;
-    StartIndex[a3] = (v7 + 1) % self->_NumValues[a3];
+    v7 = StartIndex[value];
+    self->_Values[value][v7] = a4;
+    StartIndex[value] = (v7 + 1) % self->_NumValues[value];
   }
 }
 
-- (void)setUpGraph:(int)a3 min:(float)a4 max:(float)a5 numValues:(int)a6
+- (void)setUpGraph:(int)graph min:(float)min max:(float)max numValues:(int)values
 {
-  v10 = a3;
-  if (self->_NumValues[a3] == a6)
+  graphCopy = graph;
+  if (self->_NumValues[graph] == values)
   {
     goto LABEL_5;
   }
 
-  v11 = self->_Values[a3];
+  v11 = self->_Values[graph];
   if (v11)
   {
     free(v11);
   }
 
-  self->_Values[v10] = malloc_type_malloc(4 * a6, 0x100004052888210uLL);
-  if (self->_Values[v10])
+  self->_Values[graphCopy] = malloc_type_malloc(4 * values, 0x100004052888210uLL);
+  if (self->_Values[graphCopy])
   {
 LABEL_5:
-    if (self->_MaxLength < a6)
+    if (self->_MaxLength < values)
     {
       Lines = self->_Lines;
       if (Lines)
@@ -423,15 +423,15 @@ LABEL_5:
         free(Lines);
       }
 
-      self->_Lines = malloc_type_malloc(32 * a6, 0x1000040451B5BE8uLL);
-      self->_MaxLength = a6;
+      self->_Lines = malloc_type_malloc(32 * values, 0x1000040451B5BE8uLL);
+      self->_MaxLength = values;
     }
 
-    if (a6 >= 1)
+    if (values >= 1)
     {
-      v13 = (a6 + 3) & 0xFFFFFFFC;
-      v14 = vdupq_n_s64(a6 - 1);
-      v15 = self->_Values[v10] + 2;
+      v13 = (values + 3) & 0xFFFFFFFC;
+      v14 = vdupq_n_s64(values - 1);
+      v15 = self->_Values[graphCopy] + 2;
       v16 = xmmword_23EAA1850;
       v17 = xmmword_23EAA1810;
       v18 = vdupq_n_s64(4uLL);
@@ -440,18 +440,18 @@ LABEL_5:
         v19 = vmovn_s64(vcgeq_u64(v14, v17));
         if (vuzp1_s16(v19, *v14.i8).u8[0])
         {
-          *(v15 - 2) = a4;
+          *(v15 - 2) = min;
         }
 
         if (vuzp1_s16(v19, *&v14).i8[2])
         {
-          *(v15 - 1) = a4;
+          *(v15 - 1) = min;
         }
 
         if (vuzp1_s16(*&v14, vmovn_s64(vcgeq_u64(v14, *&v16))).i32[1])
         {
-          *v15 = a4;
-          v15[1] = a4;
+          *v15 = min;
+          v15[1] = min;
         }
 
         v16 = vaddq_s64(v16, v18);
@@ -463,16 +463,16 @@ LABEL_5:
       while (v13);
     }
 
-    self->_Mins[v10] = a4;
-    self->_Maxes[v10] = a5;
-    self->_NumValues[v10] = a6;
-    self->_StartIndex[v10] = 0;
+    self->_Mins[graphCopy] = min;
+    self->_Maxes[graphCopy] = max;
+    self->_NumValues[graphCopy] = values;
+    self->_StartIndex[graphCopy] = 0;
   }
 }
 
-- (void)setUpGraphs:(int)a3
+- (void)setUpGraphs:(int)graphs
 {
-  if (self->_NumGraphs != a3)
+  if (self->_NumGraphs != graphs)
   {
     Mins = self->_Mins;
     if (Mins)
@@ -480,29 +480,29 @@ LABEL_5:
       free(Mins);
     }
 
-    self->_Mins = malloc_type_malloc(4 * a3, 0x100004052888210uLL);
+    self->_Mins = malloc_type_malloc(4 * graphs, 0x100004052888210uLL);
     Maxes = self->_Maxes;
     if (Maxes)
     {
       free(Maxes);
     }
 
-    self->_Maxes = malloc_type_malloc(4 * a3, 0x100004052888210uLL);
+    self->_Maxes = malloc_type_malloc(4 * graphs, 0x100004052888210uLL);
     NumValues = self->_NumValues;
     if (NumValues)
     {
       free(NumValues);
     }
 
-    self->_NumValues = malloc_type_malloc(4 * a3, 0x100004052888210uLL);
+    self->_NumValues = malloc_type_malloc(4 * graphs, 0x100004052888210uLL);
     Values = self->_Values;
     if (Values)
     {
       free(Values);
     }
 
-    self->_Values = malloc_type_malloc(8 * a3, 0x80040B8603338uLL);
-    if (a3 >= 1)
+    self->_Values = malloc_type_malloc(8 * graphs, 0x80040B8603338uLL);
+    if (graphs >= 1)
     {
       v9 = 0;
       do
@@ -513,7 +513,7 @@ LABEL_5:
         self->_Values[v9++] = 0;
       }
 
-      while (a3 != v9);
+      while (graphs != v9);
     }
 
     StartIndex = self->_StartIndex;
@@ -522,16 +522,16 @@ LABEL_5:
       free(StartIndex);
     }
 
-    self->_StartIndex = malloc_type_malloc(4 * a3, 0x100004052888210uLL);
-    self->_NumGraphs = a3;
+    self->_StartIndex = malloc_type_malloc(4 * graphs, 0x100004052888210uLL);
+    self->_NumGraphs = graphs;
   }
 }
 
-+ (CGColor)copyGraphColorWithIndex:(int)a3
++ (CGColor)copyGraphColorWithIndex:(int)index
 {
   RGB = CGColorSpaceGetRGB();
 
-  return CGColorCreate(RGB, &copyGraphColorWithIndex__graphColors[4 * a3]);
+  return CGColorCreate(RGB, &copyGraphColorWithIndex__graphColors[4 * index]);
 }
 
 @end

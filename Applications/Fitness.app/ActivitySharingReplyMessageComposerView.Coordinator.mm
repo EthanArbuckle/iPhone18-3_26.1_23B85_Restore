@@ -1,15 +1,15 @@
 @interface ActivitySharingReplyMessageComposerView.Coordinator
 - (_TtCV10FitnessApp39ActivitySharingReplyMessageComposerView11Coordinator)init;
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4;
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result;
 @end
 
 @implementation ActivitySharingReplyMessageComposerView.Coordinator
 
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result
 {
-  v6 = a3;
-  v7 = self;
-  sub_1001B086C(a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1001B086C(result);
 }
 
 - (_TtCV10FitnessApp39ActivitySharingReplyMessageComposerView11Coordinator)init

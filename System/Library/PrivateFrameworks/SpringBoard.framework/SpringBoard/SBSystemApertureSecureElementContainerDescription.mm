@@ -1,41 +1,41 @@
 @interface SBSystemApertureSecureElementContainerDescription
 - (CGRect)captureBounds;
-- (SBSystemApertureSecureElementContainerDescription)initWithSupportedLayoutMode:(int64_t)a3 layoutOverriderDelegate:(id)a4;
-- (id)allowedNextStatesForState:(id)a3;
-- (void)resetToState:(id)a3 completion:(id)a4;
-- (void)transitionToState:(id)a3 completion:(id)a4;
+- (SBSystemApertureSecureElementContainerDescription)initWithSupportedLayoutMode:(int64_t)mode layoutOverriderDelegate:(id)delegate;
+- (id)allowedNextStatesForState:(id)state;
+- (void)resetToState:(id)state completion:(id)completion;
+- (void)transitionToState:(id)state completion:(id)completion;
 @end
 
 @implementation SBSystemApertureSecureElementContainerDescription
 
-- (SBSystemApertureSecureElementContainerDescription)initWithSupportedLayoutMode:(int64_t)a3 layoutOverriderDelegate:(id)a4
+- (SBSystemApertureSecureElementContainerDescription)initWithSupportedLayoutMode:(int64_t)mode layoutOverriderDelegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = SBSystemApertureSecureElementContainerDescription;
   v7 = [(SBSystemApertureSecureElementContainerDescription *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    v7->_supportedLayoutMode = a3;
-    objc_storeWeak(&v7->_delegate, v6);
+    v7->_supportedLayoutMode = mode;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
   }
 
   return v8;
 }
 
-- (id)allowedNextStatesForState:(id)a3
+- (id)allowedNextStatesForState:(id)state
 {
-  v5 = a3;
-  if ([v5 isEqual:@"hidden"] & 1) != 0 || (objc_msgSend(v5, "isEqual:", @"presented"))
+  stateCopy = state;
+  if ([stateCopy isEqual:@"hidden"] & 1) != 0 || (objc_msgSend(stateCopy, "isEqual:", @"presented"))
   {
     v6 = &unk_28336E7D8;
   }
 
   else
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"SBSystemApertureSecureElementContainerDescription.m" lineNumber:48 description:{@"Unhandled state: %@", v5}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBSystemApertureSecureElementContainerDescription.m" lineNumber:48 description:{@"Unhandled state: %@", stateCopy}];
 
     v6 = MEMORY[0x277CBEBF8];
   }
@@ -56,28 +56,28 @@
   return result;
 }
 
-- (void)resetToState:(id)a3 completion:(id)a4
+- (void)resetToState:(id)state completion:(id)completion
 {
-  v11 = a3;
-  v8 = a4;
+  stateCopy = state;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (!WeakRetained)
   {
     [SBSystemApertureSecureElementContainerDescription resetToState:a2 completion:self];
   }
 
-  if ([v11 isEqual:self->_currentState])
+  if ([stateCopy isEqual:self->_currentState])
   {
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8);
+      completionCopy[2](completionCopy);
     }
   }
 
   else
   {
-    objc_storeStrong(&self->_currentState, a3);
-    if ([v11 isEqual:@"hidden"])
+    objc_storeStrong(&self->_currentState, state);
+    if ([stateCopy isEqual:@"hidden"])
     {
       supportedLayoutMode = 0;
     }
@@ -87,32 +87,32 @@
       supportedLayoutMode = self->_supportedLayoutMode;
     }
 
-    [WeakRetained containerDescription:self resetToLayoutMode:supportedLayoutMode completion:v8];
+    [WeakRetained containerDescription:self resetToLayoutMode:supportedLayoutMode completion:completionCopy];
   }
 }
 
-- (void)transitionToState:(id)a3 completion:(id)a4
+- (void)transitionToState:(id)state completion:(id)completion
 {
-  v11 = a3;
-  v8 = a4;
+  stateCopy = state;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (!WeakRetained)
   {
     [SBSystemApertureSecureElementContainerDescription transitionToState:a2 completion:self];
   }
 
-  if ([v11 isEqual:self->_currentState])
+  if ([stateCopy isEqual:self->_currentState])
   {
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8);
+      completionCopy[2](completionCopy);
     }
   }
 
   else
   {
-    objc_storeStrong(&self->_currentState, a3);
-    if ([v11 isEqual:@"hidden"])
+    objc_storeStrong(&self->_currentState, state);
+    if ([stateCopy isEqual:@"hidden"])
     {
       supportedLayoutMode = 0;
     }
@@ -122,7 +122,7 @@
       supportedLayoutMode = self->_supportedLayoutMode;
     }
 
-    [WeakRetained containerDescription:self transitionToLayoutMode:supportedLayoutMode completion:v8];
+    [WeakRetained containerDescription:self transitionToLayoutMode:supportedLayoutMode completion:completionCopy];
   }
 }
 

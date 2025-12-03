@@ -1,11 +1,11 @@
 @interface AXSpringBoardAccessibility
-- (void)_handleOpenAppSwitcherShortcut:(id)a3;
-- (void)_takeScreenshotWithPresentationMode:(unint64_t)a3;
+- (void)_handleOpenAppSwitcherShortcut:(id)shortcut;
+- (void)_takeScreenshotWithPresentationMode:(unint64_t)mode;
 @end
 
 @implementation AXSpringBoardAccessibility
 
-- (void)_takeScreenshotWithPresentationMode:(unint64_t)a3
+- (void)_takeScreenshotWithPresentationMode:(unint64_t)mode
 {
   if (_AXSVoiceOverTouchEnabled() || _AXSAssistiveTouchEnabled() || _AXSZoomTouchEnabled())
   {
@@ -16,8 +16,8 @@
     v8 = 3221225472;
     v9 = __66__AXSpringBoardAccessibility__takeScreenshotWithPresentationMode___block_invoke;
     v10 = &unk_27842BBD0;
-    v11 = self;
-    v12 = a3;
+    selfCopy = self;
+    modeCopy = mode;
     AXPerformBlockOnMainThreadAfterDelay();
   }
 
@@ -25,7 +25,7 @@
   {
     v6.receiver = self;
     v6.super_class = AXSpringBoardAccessibility;
-    [(AXSpringBoardAccessibility *)&v6 _takeScreenshotWithPresentationMode:a3];
+    [(AXSpringBoardAccessibility *)&v6 _takeScreenshotWithPresentationMode:mode];
   }
 }
 
@@ -51,11 +51,11 @@ void __66__AXSpringBoardAccessibility__takeScreenshotWithPresentationMode___bloc
   [v0 springBoardActionOccurred:7];
 }
 
-- (void)_handleOpenAppSwitcherShortcut:(id)a3
+- (void)_handleOpenAppSwitcherShortcut:(id)shortcut
 {
   v5.receiver = self;
   v5.super_class = AXSpringBoardAccessibility;
-  [(AXSpringBoardAccessibility *)&v5 _handleOpenAppSwitcherShortcut:a3];
+  [(AXSpringBoardAccessibility *)&v5 _handleOpenAppSwitcherShortcut:shortcut];
   v3 = AXLogTemp();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {

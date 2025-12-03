@@ -1,12 +1,12 @@
 @interface PDDPEERequestZone
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPEERequestZone
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = PDDPEERequestZone;
   v3 = [(PDDPEERequestZone *)&v7 description];
-  v4 = [(PDDPEERequestZone *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPEERequestZone *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -47,76 +47,76 @@
   requestor = self->_requestor;
   if (requestor)
   {
-    v9 = [(PDDPAdminRequestRequestor *)requestor dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"requestor"];
+    dictionaryRepresentation = [(PDDPAdminRequestRequestor *)requestor dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"requestor"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_zoneName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     limit = self->_limit;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_cursor)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_requestor)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_zoneName)
   {
-    [v4 setZoneName:?];
-    v4 = v5;
+    [toCopy setZoneName:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 4) = self->_limit;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 4) = self->_limit;
+    *(toCopy + 40) |= 1u;
   }
 
   if (self->_cursor)
   {
     [v5 setCursor:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_requestor)
   {
     [v5 setRequestor:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_zoneName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_zoneName copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
@@ -126,27 +126,27 @@
     *(v5 + 40) |= 1u;
   }
 
-  v8 = [(NSData *)self->_cursor copyWithZone:a3];
+  v8 = [(NSData *)self->_cursor copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
-  v10 = [(PDDPAdminRequestRequestor *)self->_requestor copyWithZone:a3];
+  v10 = [(PDDPAdminRequestRequestor *)self->_requestor copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   zoneName = self->_zoneName;
-  if (zoneName | *(v4 + 4))
+  if (zoneName | *(equalCopy + 4))
   {
     if (![(NSString *)zoneName isEqual:?])
     {
@@ -154,16 +154,16 @@
     }
   }
 
-  v6 = *(v4 + 40);
+  v6 = *(equalCopy + 40);
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_limit != *(v4 + 4))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_limit != *(equalCopy + 4))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_13:
     v9 = 0;
@@ -171,13 +171,13 @@ LABEL_13:
   }
 
   cursor = self->_cursor;
-  if (cursor | *(v4 + 1) && ![(NSData *)cursor isEqual:?])
+  if (cursor | *(equalCopy + 1) && ![(NSData *)cursor isEqual:?])
   {
     goto LABEL_13;
   }
 
   requestor = self->_requestor;
-  if (requestor | *(v4 + 3))
+  if (requestor | *(equalCopy + 3))
   {
     v9 = [(PDDPAdminRequestRequestor *)requestor isEqual:?];
   }
@@ -210,30 +210,30 @@ LABEL_14:
   return v5 ^ v6 ^ [(PDDPAdminRequestRequestor *)self->_requestor hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v7 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(PDDPEERequestZone *)self setZoneName:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (v4[10])
+  if (fromCopy[10])
   {
-    self->_limit = v4[4];
+    self->_limit = fromCopy[4];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(PDDPEERequestZone *)self setCursor:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
   requestor = self->_requestor;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (requestor)
   {
     if (!v6)
@@ -254,10 +254,10 @@ LABEL_14:
     requestor = [(PDDPEERequestZone *)self setRequestor:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_13:
 
-  _objc_release_x1(requestor, v4);
+  _objc_release_x1(requestor, fromCopy);
 }
 
 @end

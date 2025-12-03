@@ -1,8 +1,8 @@
 @interface ICDelegationNetServiceTXTRecord
-- (BOOL)isEqual:(id)a3;
-- (ICDelegationNetServiceTXTRecord)initWithTXTRecordData:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (ICDelegationNetServiceTXTRecord)initWithTXTRecordData:(id)data;
 - (NSData)TXTRecordData;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -55,8 +55,8 @@
       securityMode = 0;
     }
 
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%li", securityMode];
-    v15 = [v14 dataUsingEncoding:4];
+    securityMode = [MEMORY[0x1E696AEC0] stringWithFormat:@"%li", securityMode];
+    v15 = [securityMode dataUsingEncoding:4];
     if (v15)
     {
       [v3 setObject:v15 forKey:@"SecurityMode"];
@@ -74,7 +74,7 @@
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v26 = self;
+    selfCopy = self;
     v27 = 2114;
     v28 = v3;
     _os_log_impl(&dword_1B4491000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ - TXTRecord dictionary for data encoding: %{public}@", buf, 0x16u);
@@ -85,9 +85,9 @@
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -137,22 +137,22 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     goto LABEL_14;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_serviceVersion != v4->_serviceVersion)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_serviceVersion != equalCopy->_serviceVersion)
   {
     goto LABEL_13;
   }
 
   delegationAccountUUIDs = self->_delegationAccountUUIDs;
-  v6 = v4->_delegationAccountUUIDs;
+  v6 = equalCopy->_delegationAccountUUIDs;
   if (delegationAccountUUIDs != v6)
   {
     v7 = 0;
@@ -167,7 +167,7 @@
     }
   }
 
-  if (self->_securityMode != v4->_securityMode)
+  if (self->_securityMode != equalCopy->_securityMode)
   {
 LABEL_13:
     v7 = 0;
@@ -175,7 +175,7 @@ LABEL_13:
   }
 
   deviceName = self->_deviceName;
-  v9 = v4->_deviceName;
+  v9 = equalCopy->_deviceName;
   if (deviceName == v9)
   {
 LABEL_14:
@@ -202,10 +202,10 @@ LABEL_15:
   return v3 ^ serviceVersion ^ securityMode ^ ~[(NSString *)self->_deviceName hash];
 }
 
-- (ICDelegationNetServiceTXTRecord)initWithTXTRecordData:(id)a3
+- (ICDelegationNetServiceTXTRecord)initWithTXTRecordData:(id)data
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v5 = [(ICDelegationNetServiceTXTRecord *)self init];
   if (v5)
   {
@@ -215,7 +215,7 @@ LABEL_15:
     v22 = __Block_byref_object_copy__32046;
     v23 = __Block_byref_object_dispose__32047;
     v24 = 0;
-    v6 = [MEMORY[0x1E695AC20] dictionaryFromTXTRecordData:v4];
+    v6 = [MEMORY[0x1E695AC20] dictionaryFromTXTRecordData:dataCopy];
     v7 = os_log_create("com.apple.amp.iTunesCloud", "Delegation");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -256,15 +256,15 @@ LABEL_15:
       v11 = 0;
     }
 
-    v12 = [v11 integerValue];
-    if ((v12 - 1) >= 4)
+    integerValue = [v11 integerValue];
+    if ((integerValue - 1) >= 4)
     {
       v13 = 0;
     }
 
     else
     {
-      v13 = v12;
+      v13 = integerValue;
     }
 
     v5->_securityMode = v13;

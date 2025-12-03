@@ -1,6 +1,6 @@
 @interface SCLSettingsSyncStateFailed
-- (id)retryCriteriaWithInterval:(int64_t)a3;
-- (void)didEnterWithPreviousState:(id)a3;
+- (id)retryCriteriaWithInterval:(int64_t)interval;
+- (void)didEnterWithPreviousState:(id)state;
 - (void)settingsDidChange;
 - (void)significantUserInteractionOccurred;
 - (void)transitionToPendingState;
@@ -9,36 +9,36 @@
 
 @implementation SCLSettingsSyncStateFailed
 
-- (void)didEnterWithPreviousState:(id)a3
+- (void)didEnterWithPreviousState:(id)state
 {
   v18.receiver = self;
   v18.super_class = SCLSettingsSyncStateFailed;
-  [(SCLSettingsSyncState *)&v18 didEnterWithPreviousState:a3];
-  v4 = [(SCLSettingsSyncState *)self stateMachine];
-  v5 = [v4 context];
-  v6 = [v5 recoveryHistory];
+  [(SCLSettingsSyncState *)&v18 didEnterWithPreviousState:state];
+  stateMachine = [(SCLSettingsSyncState *)self stateMachine];
+  context = [stateMachine context];
+  recoveryHistory = [context recoveryHistory];
 
-  v7 = [(SCLSettingsSyncState *)self stateMachine];
-  v8 = [v7 context];
-  v9 = [v8 error];
+  stateMachine2 = [(SCLSettingsSyncState *)self stateMachine];
+  context2 = [stateMachine2 context];
+  error = [context2 error];
 
-  v10 = [(SCLSettingsSyncState *)self stateMachine];
-  v11 = [v10 errorHandler];
-  v12 = [v11 behaviorForError:v9 history:v6];
+  stateMachine3 = [(SCLSettingsSyncState *)self stateMachine];
+  errorHandler = [stateMachine3 errorHandler];
+  v12 = [errorHandler behaviorForError:error history:recoveryHistory];
 
-  v13 = [(SCLSettingsSyncState *)self stateMachine];
-  v14 = [v13 context];
-  [v14 addRecoveryHistory:{objc_msgSend(v12, "recoveryType")}];
+  stateMachine4 = [(SCLSettingsSyncState *)self stateMachine];
+  context3 = [stateMachine4 context];
+  [context3 addRecoveryHistory:{objc_msgSend(v12, "recoveryType")}];
 
-  v15 = [v12 recoveryType];
-  if (v15 == 1)
+  recoveryType = [v12 recoveryType];
+  if (recoveryType == 1)
   {
-    v16 = [(SCLSettingsSyncState *)self stateMachine];
+    stateMachine5 = [(SCLSettingsSyncState *)self stateMachine];
     v17 = -[SCLSettingsSyncStateFailed retryCriteriaWithInterval:](self, "retryCriteriaWithInterval:", [v12 retryInterval]);
-    [v16 scheduleRetryWithActivityCriteria:v17];
+    [stateMachine5 scheduleRetryWithActivityCriteria:v17];
   }
 
-  else if (!v15)
+  else if (!recoveryType)
   {
     [(SCLSettingsSyncStateFailed *)self transitionToPendingState];
   }
@@ -49,10 +49,10 @@
   v6.receiver = self;
   v6.super_class = SCLSettingsSyncStateFailed;
   [(SCLSettingsSyncState *)&v6 settingsDidChange];
-  v3 = [(SCLSettingsSyncState *)self stateMachine];
-  v4 = [(SCLSettingsSyncState *)self stateMachine];
-  v5 = [v4 pendingSendState];
-  [v3 transitionToState:v5];
+  stateMachine = [(SCLSettingsSyncState *)self stateMachine];
+  stateMachine2 = [(SCLSettingsSyncState *)self stateMachine];
+  pendingSendState = [stateMachine2 pendingSendState];
+  [stateMachine transitionToState:pendingSendState];
 }
 
 - (void)significantUserInteractionOccurred
@@ -60,10 +60,10 @@
   v6.receiver = self;
   v6.super_class = SCLSettingsSyncStateFailed;
   [(SCLSettingsSyncState *)&v6 significantUserInteractionOccurred];
-  v3 = [(SCLSettingsSyncState *)self stateMachine];
-  v4 = [(SCLSettingsSyncState *)self stateMachine];
-  v5 = [v4 pendingSendState];
-  [v3 transitionToState:v5];
+  stateMachine = [(SCLSettingsSyncState *)self stateMachine];
+  stateMachine2 = [(SCLSettingsSyncState *)self stateMachine];
+  pendingSendState = [stateMachine2 pendingSendState];
+  [stateMachine transitionToState:pendingSendState];
 }
 
 - (void)xpcActivityStarted
@@ -76,17 +76,17 @@
 
 - (void)transitionToPendingState
 {
-  v5 = [(SCLSettingsSyncState *)self stateMachine];
-  v3 = [(SCLSettingsSyncState *)self stateMachine];
-  v4 = [v3 pendingSendState];
-  [v5 transitionToState:v4];
+  stateMachine = [(SCLSettingsSyncState *)self stateMachine];
+  stateMachine2 = [(SCLSettingsSyncState *)self stateMachine];
+  pendingSendState = [stateMachine2 pendingSendState];
+  [stateMachine transitionToState:pendingSendState];
 }
 
-- (id)retryCriteriaWithInterval:(int64_t)a3
+- (id)retryCriteriaWithInterval:(int64_t)interval
 {
   v4 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D86360], 0);
-  xpc_dictionary_set_int64(v4, *MEMORY[0x277D86250], a3);
+  xpc_dictionary_set_int64(v4, *MEMORY[0x277D86250], interval);
   xpc_dictionary_set_string(v4, *MEMORY[0x277D86340], *MEMORY[0x277D86350]);
   xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D86398], 1);
   xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D86380], 1);

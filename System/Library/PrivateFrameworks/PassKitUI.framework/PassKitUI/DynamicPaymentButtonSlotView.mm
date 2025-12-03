@@ -1,17 +1,17 @@
 @interface DynamicPaymentButtonSlotView
-- (_TtC9PassKitUI28DynamicPaymentButtonSlotView)initWithCoder:(id)a3;
-- (_TtC9PassKitUI28DynamicPaymentButtonSlotView)initWithFrame:(CGRect)a3;
-- (_TtC9PassKitUI28DynamicPaymentButtonSlotView)initWithType:(int64_t)a3 style:(int64_t)a4 paymentRequest:(id)a5 buttonSize:(CGSize)a6 interfaceStyle:(int64_t)a7 action:(id)a8;
+- (_TtC9PassKitUI28DynamicPaymentButtonSlotView)initWithCoder:(id)coder;
+- (_TtC9PassKitUI28DynamicPaymentButtonSlotView)initWithFrame:(CGRect)frame;
+- (_TtC9PassKitUI28DynamicPaymentButtonSlotView)initWithType:(int64_t)type style:(int64_t)style paymentRequest:(id)request buttonSize:(CGSize)size interfaceStyle:(int64_t)interfaceStyle action:(id)action;
 - (void)layoutSubviews;
 @end
 
 @implementation DynamicPaymentButtonSlotView
 
-- (_TtC9PassKitUI28DynamicPaymentButtonSlotView)initWithType:(int64_t)a3 style:(int64_t)a4 paymentRequest:(id)a5 buttonSize:(CGSize)a6 interfaceStyle:(int64_t)a7 action:(id)a8
+- (_TtC9PassKitUI28DynamicPaymentButtonSlotView)initWithType:(int64_t)type style:(int64_t)style paymentRequest:(id)request buttonSize:(CGSize)size interfaceStyle:(int64_t)interfaceStyle action:(id)action
 {
-  height = a6.height;
-  width = a6.width;
-  v14 = _Block_copy(a8);
+  height = size.height;
+  width = size.width;
+  v14 = _Block_copy(action);
   if (v14)
   {
     v15 = swift_allocObject();
@@ -24,11 +24,11 @@
     v15 = 0;
   }
 
-  v16 = a5;
-  return DynamicPaymentButtonSlotView.init(type:style:paymentRequest:buttonSize:interfaceStyle:action:)(a3, a4, a5, a7, v14, v15, width, height);
+  requestCopy = request;
+  return DynamicPaymentButtonSlotView.init(type:style:paymentRequest:buttonSize:interfaceStyle:action:)(type, style, request, interfaceStyle, v14, v15, width, height);
 }
 
-- (_TtC9PassKitUI28DynamicPaymentButtonSlotView)initWithCoder:(id)a3
+- (_TtC9PassKitUI28DynamicPaymentButtonSlotView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC9PassKitUI28DynamicPaymentButtonSlotView_action);
   *v3 = 0;
@@ -50,7 +50,7 @@
   [v3 setFrame_];
 }
 
-- (_TtC9PassKitUI28DynamicPaymentButtonSlotView)initWithFrame:(CGRect)a3
+- (_TtC9PassKitUI28DynamicPaymentButtonSlotView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

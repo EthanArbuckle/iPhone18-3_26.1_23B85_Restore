@@ -1,61 +1,61 @@
 @interface AXUIInstructionalCell
 - (double)instrinsicContentHeight;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation AXUIInstructionalCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v52[4] = *MEMORY[0x277D85DE8];
   v51.receiver = self;
   v51.super_class = AXUIInstructionalCell;
-  v4 = a3;
-  [(PSTableCell *)&v51 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:@"Title"];
-  v6 = [v4 propertyForKey:@"Icon"];
-  v7 = [v4 propertyForKey:@"IconIgnoresInvertColors"];
-  v8 = [v4 propertyForKey:@"Description"];
-  v9 = [v4 propertyForKey:@"URLText"];
-  v10 = [v4 propertyForKey:@"ButtonCallback"];
-  v11 = [v4 propertyForKey:@"CloseCallback"];
-  v12 = [v4 propertyForKey:@"tipType"];
+  specifierCopy = specifier;
+  [(PSTableCell *)&v51 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:@"Title"];
+  v6 = [specifierCopy propertyForKey:@"Icon"];
+  v7 = [specifierCopy propertyForKey:@"IconIgnoresInvertColors"];
+  v8 = [specifierCopy propertyForKey:@"Description"];
+  v9 = [specifierCopy propertyForKey:@"URLText"];
+  v10 = [specifierCopy propertyForKey:@"ButtonCallback"];
+  v11 = [specifierCopy propertyForKey:@"CloseCallback"];
+  v12 = [specifierCopy propertyForKey:@"tipType"];
 
-  v13 = [v12 integerValue];
-  v14 = [(AXUIInstructionalCell *)self hostingController];
+  integerValue = [v12 integerValue];
+  hostingController = [(AXUIInstructionalCell *)self hostingController];
 
-  if (!v14)
+  if (!hostingController)
   {
-    v15 = [[_TtC23AccessibilitySettingsUI37AXUIInstructionalCellContentViewModel alloc] initWithTipType:v13 title:v5 image:v6 imageIgnoresInvertColors:v7 != 0 description:v8 linkTitle:v9 linkCallback:v10 closeCallback:v11];
+    v15 = [[_TtC23AccessibilitySettingsUI37AXUIInstructionalCellContentViewModel alloc] initWithTipType:integerValue title:v5 image:v6 imageIgnoresInvertColors:v7 != 0 description:v8 linkTitle:v9 linkCallback:v10 closeCallback:v11];
     [(AXUIInstructionalCell *)self setViewModel:v15];
 
     v16 = objc_opt_new();
     v17 = [v16 makeContentViewControllerWithViewModel:self->_viewModel];
     [(AXUIInstructionalCell *)self setHostingController:v17];
 
-    v18 = [(AXUIInstructionalCell *)self hostingController];
-    [v18 view];
+    hostingController2 = [(AXUIInstructionalCell *)self hostingController];
+    [hostingController2 view];
     v19 = v47 = v10;
 
     [v19 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v20 = [(AXUIInstructionalCell *)self contentView];
-    [v20 addSubview:v19];
+    contentView = [(AXUIInstructionalCell *)self contentView];
+    [contentView addSubview:v19];
 
     v39 = MEMORY[0x277CCAAD0];
-    v44 = [v19 topAnchor];
-    v45 = [(AXUIInstructionalCell *)self contentView];
-    v43 = [v45 topAnchor];
-    v42 = [v44 constraintEqualToAnchor:v43 constant:0.0];
+    topAnchor = [v19 topAnchor];
+    contentView2 = [(AXUIInstructionalCell *)self contentView];
+    topAnchor2 = [contentView2 topAnchor];
+    v42 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
     v52[0] = v42;
-    v40 = [v19 leadingAnchor];
-    v41 = [(AXUIInstructionalCell *)self contentView];
-    v38 = [v41 leadingAnchor];
-    v37 = [v40 constraintEqualToAnchor:v38 constant:0.0];
+    leadingAnchor = [v19 leadingAnchor];
+    contentView3 = [(AXUIInstructionalCell *)self contentView];
+    leadingAnchor2 = [contentView3 leadingAnchor];
+    v37 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
     v52[1] = v37;
-    v35 = [v19 trailingAnchor];
-    v36 = [(AXUIInstructionalCell *)self contentView];
-    v34 = [v36 trailingAnchor];
-    [v35 constraintEqualToAnchor:v34 constant:0.0];
+    trailingAnchor = [v19 trailingAnchor];
+    contentView4 = [(AXUIInstructionalCell *)self contentView];
+    trailingAnchor2 = [contentView4 trailingAnchor];
+    [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:0.0];
     v21 = v50 = v5;
     v52[2] = v21;
     [v19 bottomAnchor];
@@ -83,21 +83,21 @@
     v10 = v47;
   }
 
-  v29 = [(AXUIInstructionalCell *)self hostingController];
-  v30 = [v29 view];
-  [v30 setNeedsLayout];
+  hostingController3 = [(AXUIInstructionalCell *)self hostingController];
+  view = [hostingController3 view];
+  [view setNeedsLayout];
 
-  v31 = [(AXUIInstructionalCell *)self hostingController];
-  v32 = [v31 view];
-  [v32 layoutIfNeeded];
+  hostingController4 = [(AXUIInstructionalCell *)self hostingController];
+  view2 = [hostingController4 view];
+  [view2 layoutIfNeeded];
 
   v33 = *MEMORY[0x277D85DE8];
 }
 
 - (double)instrinsicContentHeight
 {
-  v2 = [(UIViewController *)self->_hostingController view];
-  [v2 intrinsicContentSize];
+  view = [(UIViewController *)self->_hostingController view];
+  [view intrinsicContentSize];
   v4 = v3;
 
   return v4;

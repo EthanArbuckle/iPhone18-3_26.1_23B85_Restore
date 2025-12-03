@@ -1,32 +1,32 @@
 @interface PFLivePhotoExportDestination
-+ (id)destinationWithPhotoURL:(id)a3 videoURL:(id)a4;
-- (PFLivePhotoExportDestination)initWithPhotoURL:(id)a3 videoURL:(id)a4;
++ (id)destinationWithPhotoURL:(id)l videoURL:(id)rL;
+- (PFLivePhotoExportDestination)initWithPhotoURL:(id)l videoURL:(id)rL;
 @end
 
 @implementation PFLivePhotoExportDestination
 
-- (PFLivePhotoExportDestination)initWithPhotoURL:(id)a3 videoURL:(id)a4
+- (PFLivePhotoExportDestination)initWithPhotoURL:(id)l videoURL:(id)rL
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v13.receiver = self;
   v13.super_class = PFLivePhotoExportDestination;
   v8 = [(PFLivePhotoExportDestination *)&v13 init];
   photoURL = v8->_photoURL;
-  v8->_photoURL = v6;
-  v10 = v6;
+  v8->_photoURL = lCopy;
+  v10 = lCopy;
 
   videoURL = v8->_videoURL;
-  v8->_videoURL = v7;
+  v8->_videoURL = rLCopy;
 
   return v8;
 }
 
-+ (id)destinationWithPhotoURL:(id)a3 videoURL:(id)a4
++ (id)destinationWithPhotoURL:(id)l videoURL:(id)rL
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithPhotoURL:v7 videoURL:v6];
+  rLCopy = rL;
+  lCopy = l;
+  v8 = [[self alloc] initWithPhotoURL:lCopy videoURL:rLCopy];
 
   return v8;
 }

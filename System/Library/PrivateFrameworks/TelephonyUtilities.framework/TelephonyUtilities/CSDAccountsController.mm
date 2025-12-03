@@ -1,6 +1,6 @@
 @interface CSDAccountsController
 - (BOOL)faceTimeIDMatchesAppleID;
-- (BOOL)isValidOutgoingCallerID:(id)a3;
+- (BOOL)isValidOutgoingCallerID:(id)d;
 - (CSDAccountsController)init;
 - (CSDAccountsControllerDelegate)delegate;
 - (NSString)debugDescription;
@@ -8,11 +8,11 @@
 - (int64_t)_faceTimeAudioAvailability;
 - (int64_t)_faceTimeVideoAvailability;
 - (void)_updateOutgoingCallerID;
-- (void)callerIDChanged:(id)a3;
+- (void)callerIDChanged:(id)changed;
 - (void)dealloc;
-- (void)devicesChanged:(id)a3;
-- (void)service:(id)a3 activeAccountsChanged:(id)a4;
-- (void)serviceAvailabilityChanged:(id)a3;
+- (void)devicesChanged:(id)changed;
+- (void)service:(id)service activeAccountsChanged:(id)changed;
+- (void)serviceAvailabilityChanged:(id)changed;
 - (void)updateOutgoingCallerIDAndSendDelegateCallbacksIfNecessary;
 @end
 
@@ -71,9 +71,9 @@
 - (NSString)debugDescription
 {
   v3 = [NSMutableString stringWithFormat:@"%@\n", self];
-  v4 = [(CSDAccountsController *)self faceTimeIDMatchesAppleID];
+  faceTimeIDMatchesAppleID = [(CSDAccountsController *)self faceTimeIDMatchesAppleID];
   v5 = @"NO";
-  if (v4)
+  if (faceTimeIDMatchesAppleID)
   {
     v5 = @"YES";
   }
@@ -81,98 +81,98 @@
   [v3 appendFormat:@"    faceTimeIDMatchesAppleID: %@\n", v5];
   [v3 appendFormat:@"    faceTimeAudioAvailability: %ld\n", -[CSDAccountsController _faceTimeAudioAvailability](self, "_faceTimeAudioAvailability")];
   [v3 appendFormat:@"    faceTimeVideoAvailability: %ld\n", -[CSDAccountsController _faceTimeVideoAvailability](self, "_faceTimeVideoAvailability")];
-  v6 = [(CSDAccountsController *)self outgoingCallerID];
-  [v3 appendFormat:@"    outgoingCallerID: %@\n", v6];
+  outgoingCallerID = [(CSDAccountsController *)self outgoingCallerID];
+  [v3 appendFormat:@"    outgoingCallerID: %@\n", outgoingCallerID];
 
   return v3;
 }
 
-- (void)service:(id)a3 activeAccountsChanged:(id)a4
+- (void)service:(id)service activeAccountsChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDAccountsController *)self queue];
-  dispatch_assert_queue_V2(v8);
+  serviceCopy = service;
+  changedCopy = changed;
+  queue = [(CSDAccountsController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = sub_100004778();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v6;
+    v12 = serviceCopy;
     v13 = 2112;
-    v14 = v7;
+    v14 = changedCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Active accounts changed for service %@: %@", &v11, 0x16u);
   }
 
-  v10 = [(CSDAccountsController *)self delegate];
-  [v10 accountsChanged];
+  delegate = [(CSDAccountsController *)self delegate];
+  [delegate accountsChanged];
 
   [(CSDAccountsController *)self updateOutgoingCallerIDAndSendDelegateCallbacksIfNecessary];
 }
 
-- (void)callerIDChanged:(id)a3
+- (void)callerIDChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(CSDAccountsController *)self queue];
+  changedCopy = changed;
+  queue = [(CSDAccountsController *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000CF464;
   v7[3] = &unk_100619D88;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)serviceAvailabilityChanged:(id)a3
+- (void)serviceAvailabilityChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(CSDAccountsController *)self queue];
+  changedCopy = changed;
+  queue = [(CSDAccountsController *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000CF5C8;
   v7[3] = &unk_100619D88;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)devicesChanged:(id)a3
+- (void)devicesChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(CSDAccountsController *)self queue];
+  changedCopy = changed;
+  queue = [(CSDAccountsController *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000CF73C;
   v7[3] = &unk_100619D88;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
+  dispatch_async(queue, v7);
 }
 
 - (BOOL)faceTimeIDMatchesAppleID
 {
   v2 = +[CSDFaceTimeVideoIDSService sharedInstance];
-  v3 = [v2 service];
-  v4 = [v3 iCloudAccount];
+  service = [v2 service];
+  iCloudAccount = [service iCloudAccount];
 
   v5 = +[CSDRelayIDSService sharedInstance];
-  v6 = [v5 service];
-  v7 = [v6 iCloudAccount];
+  service2 = [v5 service];
+  iCloudAccount2 = [service2 iCloudAccount];
 
-  if ([v4 isActive] && objc_msgSend(v7, "isActive"))
+  if ([iCloudAccount isActive] && objc_msgSend(iCloudAccount2, "isActive"))
   {
-    v8 = [v4 profileID];
-    if (v8)
+    profileID = [iCloudAccount profileID];
+    if (profileID)
     {
-      v9 = [v7 profileID];
-      if (v9)
+      profileID2 = [iCloudAccount2 profileID];
+      if (profileID2)
       {
-        v10 = [v4 profileID];
-        v11 = [v7 profileID];
-        v12 = [v10 isEqualToIgnoringCase:v11];
+        profileID3 = [iCloudAccount profileID];
+        profileID4 = [iCloudAccount2 profileID];
+        v12 = [profileID3 isEqualToIgnoringCase:profileID4];
       }
 
       else
@@ -195,22 +195,22 @@
   v13 = sub_100004778();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v4 isActive];
-    v15 = [v4 profileID];
-    v16 = [v7 isActive];
-    v17 = [v7 profileID];
+    isActive = [iCloudAccount isActive];
+    profileID5 = [iCloudAccount profileID];
+    isActive2 = [iCloudAccount2 isActive];
+    profileID6 = [iCloudAccount2 profileID];
     v19 = 138413570;
-    v20 = v4;
+    v20 = iCloudAccount;
     v21 = 1024;
-    v22 = v14;
+    v22 = isActive;
     v23 = 2112;
-    v24 = v15;
+    v24 = profileID5;
     v25 = 2112;
-    v26 = v7;
+    v26 = iCloudAccount2;
     v27 = 1024;
-    v28 = v16;
+    v28 = isActive2;
     v29 = 2112;
-    v30 = v17;
+    v30 = profileID6;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "FaceTime iCloud account is %@ (isActive=%d, profileID=%@) and relay iCloud account is %@ (isActive=%d, profileID=%@)", &v19, 0x36u);
   }
 
@@ -225,14 +225,14 @@
   v10 = sub_100028644;
   v11 = sub_1000328AC;
   v12 = 0;
-  v3 = [(CSDAccountsController *)self queue];
+  queue = [(CSDAccountsController *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000CFB7C;
   v6[3] = &unk_100619E80;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -258,26 +258,26 @@
 
 - (void)updateOutgoingCallerIDAndSendDelegateCallbacksIfNecessary
 {
-  v3 = [(CSDAccountsController *)self queue];
+  queue = [(CSDAccountsController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000CFCB0;
   block[3] = &unk_100619D38;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_updateOutgoingCallerID
 {
-  v3 = [(CSDAccountsController *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDAccountsController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = +[CSDFaceTimeVideoIDSService sharedInstance];
-  v5 = [v4 callerID];
+  callerID = [v4 callerID];
 
-  if ([(CSDAccountsController *)self isValidOutgoingCallerID:v5])
+  if ([(CSDAccountsController *)self isValidOutgoingCallerID:callerID])
   {
-    v6 = [v5 copy];
+    v6 = [callerID copy];
     outgoingCallerID = self->_outgoingCallerID;
     self->_outgoingCallerID = v6;
 
@@ -288,18 +288,18 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v31 = v5;
+    v31 = callerID;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "FaceTime caller ID %@ is not a valid outgoing relay caller ID", buf, 0xCu);
   }
 
   v9 = +[CSDRelayIDSService sharedInstance];
-  v10 = [v9 availableOutgoingRelayCallerIDs];
+  availableOutgoingRelayCallerIDs = [v9 availableOutgoingRelayCallerIDs];
 
   v11 = sub_100004778();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v31 = v10;
+    v31 = availableOutgoingRelayCallerIDs;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Attempting to find a valid outgoing caller ID in set of available outgoing caller IDs %@", buf, 0xCu);
   }
 
@@ -308,21 +308,21 @@
   v29[2] = sub_1000D0224;
   v29[3] = &unk_10061AE48;
   v29[4] = self;
-  v12 = [(NSString *)v10 objectsPassingTest:v29];
+  v12 = [(NSString *)availableOutgoingRelayCallerIDs objectsPassingTest:v29];
   if ([v12 count] == 1)
   {
-    v13 = [v12 anyObject];
+    anyObject = [v12 anyObject];
     v14 = sub_100004778();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v31 = v13;
+      v31 = anyObject;
       v32 = 2112;
-      v33 = v10;
+      v33 = availableOutgoingRelayCallerIDs;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Selected outgoing caller ID %@ from list of available outgoing caller IDs %@", buf, 0x16u);
     }
 
-    if (v13)
+    if (anyObject)
     {
       goto LABEL_25;
     }
@@ -334,20 +334,20 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v31 = v10;
+      v31 = availableOutgoingRelayCallerIDs;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Could not automatically select an outgoing caller ID; multiple telephone numbers are listed in the set of available outgoing caller IDs %@", buf, 0xCu);
     }
   }
 
   v16 = +[CSDFaceTimeVideoIDSService sharedInstance];
-  v17 = [v16 account];
-  v18 = [v17 vettedAliases];
+  account = [v16 account];
+  vettedAliases = [account vettedAliases];
 
   v19 = sub_100004778();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v31 = v18;
+    v31 = vettedAliases;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Attempting to find a valid outgoing caller ID in list of vetted account aliases %@", buf, 0xCu);
   }
 
@@ -356,7 +356,7 @@
   v28[2] = sub_1000D0230;
   v28[3] = &unk_10061AE70;
   v28[4] = self;
-  v20 = [(NSString *)v18 indexesOfObjectsPassingTest:v28];
+  v20 = [(NSString *)vettedAliases indexesOfObjectsPassingTest:v28];
   v21 = [v20 count];
   v22 = sub_100004778();
   v23 = os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
@@ -367,11 +367,11 @@
       *buf = 138412546;
       v31 = 0;
       v32 = 2112;
-      v33 = v10;
+      v33 = availableOutgoingRelayCallerIDs;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Selected outgoing caller ID %@ from list of vetted account aliases %@", buf, 0x16u);
     }
 
-    v13 = -[NSString objectAtIndexedSubscript:](v18, "objectAtIndexedSubscript:", [v20 firstIndex]);
+    anyObject = -[NSString objectAtIndexedSubscript:](vettedAliases, "objectAtIndexedSubscript:", [v20 firstIndex]);
   }
 
   else
@@ -379,15 +379,15 @@
     if (v23)
     {
       *buf = 138412290;
-      v31 = v18;
+      v31 = vettedAliases;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Could not automatically select an outgoing caller ID; multiple telephone numbers are listed in the set of vetted account aliases IDs %@", buf, 0xCu);
     }
 
-    v13 = 0;
+    anyObject = 0;
   }
 
 LABEL_25:
-  v24 = [(NSString *)v13 copy];
+  v24 = [(NSString *)anyObject copy];
   v25 = self->_outgoingCallerID;
   self->_outgoingCallerID = v24;
 
@@ -402,17 +402,17 @@ LABEL_26:
   }
 }
 
-- (BOOL)isValidOutgoingCallerID:(id)a3
+- (BOOL)isValidOutgoingCallerID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   if (qword_1006ACC28 != -1)
   {
     sub_100473EF8();
   }
 
-  if ([v3 length])
+  if ([dCopy length])
   {
-    v4 = off_1006ACC20(v3);
+    v4 = off_1006ACC20(dCopy);
   }
 
   else

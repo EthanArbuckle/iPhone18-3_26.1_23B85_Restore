@@ -1,6 +1,6 @@
 @interface LDAPAgent
-- (void)account:(id)a3 isValid:(BOOL)a4 validationError:(id)a5;
-- (void)requestAgentStopMonitoringWithCompletionBlock:(id)a3;
+- (void)account:(id)account isValid:(BOOL)valid validationError:(id)error;
+- (void)requestAgentStopMonitoringWithCompletionBlock:(id)block;
 - (void)startMonitoring;
 @end
 
@@ -18,47 +18,47 @@
 
   type = v3;
 
-  v4 = [(LDAPAgent *)self account];
-  v5 = [v4 searchSettings];
-  v6 = [v5 mutableCopy];
+  account = [(LDAPAgent *)self account];
+  searchSettings = [account searchSettings];
+  v6 = [searchSettings mutableCopy];
 
   v73 = v6;
   v79 = [v6 count];
   v7 = +[LDAPLocalDBHelper sharedInstance];
-  v8 = [(LDAPAgent *)self account];
-  v9 = [v8 changeTrackingID];
-  [v7 abOpenDBWithClientIdentifier:v9];
+  account2 = [(LDAPAgent *)self account];
+  changeTrackingID = [account2 changeTrackingID];
+  [v7 abOpenDBWithClientIdentifier:changeTrackingID];
 
   v10 = +[LDAPLocalDBHelper sharedInstance];
-  v11 = [v10 abDB];
+  abDB = [v10 abDB];
 
-  v12 = [(LDAPAgent *)self account];
-  v13 = [v12 accountID];
+  account3 = [(LDAPAgent *)self account];
+  accountID = [account3 accountID];
   v14 = ABAddressBookCopyAccountWithIdentifier();
 
   v66 = v14 == 0;
   v15 = v14;
   v62 = v14;
-  addressBook = v11;
+  addressBook = abDB;
   if (!v14)
   {
     v16 = DALoggingwithCategory();
     v17 = _CPLog_to_os_log_type[3];
     if (os_log_type_enabled(v16, v17))
     {
-      v18 = [(LDAPAgent *)self account];
-      v19 = [v18 accountID];
+      account4 = [(LDAPAgent *)self account];
+      accountID2 = [account4 accountID];
       *buf = 138543362;
-      v92 = v19;
+      v92 = accountID2;
       _os_log_impl(&dword_0, v16, v17, "ACCOUNTDCOERROR Didn't find account with identifier %{public}@ in AB db. Creating one", buf, 0xCu);
     }
 
     v15 = ABAccountCreate();
-    v20 = [(LDAPAgent *)self account];
-    v21 = [v20 accountID];
+    account5 = [(LDAPAgent *)self account];
+    accountID3 = [account5 accountID];
     ABAccountSetIdentifier();
 
-    ABAddressBookAddRecord(v11, v15, 0);
+    ABAddressBookAddRecord(abDB, v15, 0);
     ABAddressBookProcessAddedRecords();
   }
 
@@ -144,8 +144,8 @@
 
           if (v79 < 2)
           {
-            v39 = [(LDAPAgent *)self account];
-            v38 = [v39 accountDescription];
+            account6 = [(LDAPAgent *)self account];
+            accountDescription = [account6 accountDescription];
 
             if (!v25)
             {
@@ -155,14 +155,14 @@
 
           else
           {
-            v38 = [v37 searchDescription];
+            accountDescription = [v37 searchDescription];
             if (!v25)
             {
               goto LABEL_32;
             }
           }
 
-          if ([v25 isEqual:v38])
+          if ([v25 isEqual:accountDescription])
           {
 LABEL_33:
             [v31 removeObject:v37];
@@ -171,7 +171,7 @@ LABEL_33:
           }
 
 LABEL_32:
-          ABRecordSetValue(v24, kABSourceNameProperty, v38, 0);
+          ABRecordSetValue(v24, kABSourceNameProperty, accountDescription, 0);
           v66 = 1;
           goto LABEL_33;
         }
@@ -225,12 +225,12 @@ LABEL_35:
         }
 
         v46 = *(*(&v81 + 1) + 8 * j);
-        v47 = [v46 scope];
+        scope = [v46 scope];
         v48 = *property;
-        if (v47)
+        if (scope)
         {
           v48 = v74;
-          if (v47 != &dword_0 + 1)
+          if (scope != &dword_0 + 1)
           {
             v48 = *v69;
           }
@@ -242,20 +242,20 @@ LABEL_35:
         ABAddressBookSetAccountForSource();
         if (v79 < 2)
         {
-          v52 = [(LDAPAgent *)self account];
-          v51 = [v52 accountDescription];
+          account7 = [(LDAPAgent *)self account];
+          accountDescription2 = [account7 accountDescription];
         }
 
         else
         {
-          v51 = [v46 searchDescription];
-          v52 = v51;
+          accountDescription2 = [v46 searchDescription];
+          account7 = accountDescription2;
         }
 
-        ABRecordSetValue(v50, kABSourceNameProperty, v51, 0);
+        ABRecordSetValue(v50, kABSourceNameProperty, accountDescription2, 0);
 
-        v53 = [v46 searchBase];
-        ABRecordSetValue(v50, v43, v53, 0);
+        searchBase = [v46 searchBase];
+        ABRecordSetValue(v50, v43, searchBase, 0);
 
         ABRecordSetValue(v50, v44, v49, 0);
         ABAddressBookAddRecord(addressBook, v50, 0);
@@ -277,7 +277,7 @@ LABEL_35:
 
   if ([v72 count])
   {
-    v54 = 0;
+    shouldDoInitialAutodiscovery = 0;
     if ((v41 & 1) == 0)
     {
       goto LABEL_57;
@@ -286,8 +286,8 @@ LABEL_35:
 
   else
   {
-    v55 = [(LDAPAgent *)self account];
-    v54 = [v55 shouldDoInitialAutodiscovery];
+    account8 = [(LDAPAgent *)self account];
+    shouldDoInitialAutodiscovery = [account8 shouldDoInitialAutodiscovery];
 
     if ((v41 & 1) == 0)
     {
@@ -309,62 +309,62 @@ LABEL_57:
   v58 = +[LDAPLocalDBHelper sharedInstance];
   [v58 abCloseDBAndSave:0];
 
-  if (v54)
+  if (shouldDoInitialAutodiscovery)
   {
     v59 = DALoggingwithCategory();
     if (os_log_type_enabled(v59, type))
     {
-      v60 = [(LDAPAgent *)self account];
+      account9 = [(LDAPAgent *)self account];
       *buf = 138412290;
-      v92 = v60;
+      v92 = account9;
       _os_log_impl(&dword_0, v59, type, "Account %@ has no search base.  Doing autodiscovery", buf, 0xCu);
     }
 
-    v61 = [(LDAPAgent *)self account];
-    [v61 discoverInitialPropertiesWithConsumer:self];
+    account10 = [(LDAPAgent *)self account];
+    [account10 discoverInitialPropertiesWithConsumer:self];
   }
 }
 
-- (void)requestAgentStopMonitoringWithCompletionBlock:(id)a3
+- (void)requestAgentStopMonitoringWithCompletionBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(LDAPAgent *)self setIsMonitoring:0];
-  v4 = [(LDAPAgent *)self account];
-  v5 = [v4 taskManager];
-  [v5 shutdown];
+  account = [(LDAPAgent *)self account];
+  taskManager = [account taskManager];
+  [taskManager shutdown];
 
-  v6[2](v6, self);
+  blockCopy[2](blockCopy, self);
 }
 
-- (void)account:(id)a3 isValid:(BOOL)a4 validationError:(id)a5
+- (void)account:(id)account isValid:(BOOL)valid validationError:(id)error
 {
-  v5 = a4;
+  validCopy = valid;
   v7 = DALoggingwithCategory();
   v8 = _CPLog_to_os_log_type[6];
   v9 = os_log_type_enabled(v7, v8);
-  if (v5)
+  if (validCopy)
   {
     if (v9)
     {
-      v10 = [(LDAPAgent *)self account];
+      account = [(LDAPAgent *)self account];
       v13 = 138412290;
-      v14 = v10;
+      v14 = account;
       _os_log_impl(&dword_0, v7, v8, "Account %@ was successfully autodiscovered, saving account settings", &v13, 0xCu);
     }
 
     v7 = sharedDAAccountStore();
-    v11 = [(LDAPAgent *)self account];
-    v12 = [v11 backingAccountInfo];
-    [v7 saveVerifiedAccount:v12 withCompletionHandler:0];
+    account2 = [(LDAPAgent *)self account];
+    backingAccountInfo = [account2 backingAccountInfo];
+    [v7 saveVerifiedAccount:backingAccountInfo withCompletionHandler:0];
 
     goto LABEL_7;
   }
 
   if (v9)
   {
-    v11 = [(LDAPAgent *)self account];
+    account2 = [(LDAPAgent *)self account];
     v13 = 138412290;
-    v14 = v11;
+    v14 = account2;
     _os_log_impl(&dword_0, v7, v8, "Account %@ could not be autodiscovered.  We'll stick around, but we're pretty useless, what with no search bases", &v13, 0xCu);
 LABEL_7:
   }

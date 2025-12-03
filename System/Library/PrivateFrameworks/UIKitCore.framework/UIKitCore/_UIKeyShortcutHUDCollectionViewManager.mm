@@ -1,121 +1,121 @@
 @interface _UIKeyShortcutHUDCollectionViewManager
-- (BOOL)client:(id)a3 isCategoryVisibleForCellAtIndexPath:(id)a4;
-- (BOOL)client:(id)a3 shouldHideSeparatorAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 selectionFollowsFocusForItemAtIndexPath:(id)a4;
+- (BOOL)client:(id)client isCategoryVisibleForCellAtIndexPath:(id)path;
+- (BOOL)client:(id)client shouldHideSeparatorAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view selectionFollowsFocusForItemAtIndexPath:(id)path;
 - (NSArray)allClients;
 - (NSArray)preferredFocusEnvironments;
 - (_UIKeyShortcutHUDCollectionViewManagerClient)menu;
 - (_UIKeyShortcutHUDCollectionViewManagerClient)searchButton;
 - (_UIKeyShortcutHUDCollectionViewManagerClient)toolbar;
 - (_UIKeyShortcutHUDViewController)hudVC;
-- (id)_clientForCollectionView:(id)a3;
-- (void)_client:(id)a3 deselectCellAtIndexPath:(id)a4;
-- (void)_client:(id)a3 highlightCellAtIndexPath:(id)a4;
-- (void)_client:(id)a3 performBookkeepingForDeselectingCellAtIndexPath:(id)a4;
-- (void)_client:(id)a3 performBookkeepingForHighlightingCellAtIndexPath:(id)a4;
-- (void)_client:(id)a3 performBookkeepingForRemovingCategoryVisibleForCellAtIndexPath:(id)a4;
-- (void)_client:(id)a3 performBookkeepingForSelectingCellAtIndexPath:(id)a4;
-- (void)_client:(id)a3 performBookkeepingForSettingCategoryVisibleForCellAtIndexPath:(id)a4;
-- (void)_client:(id)a3 performBookkeepingForUnhighlightingCellAtIndexPath:(id)a4;
-- (void)_client:(id)a3 removeCategoryVisibleForCellAtIndexPath:(id)a4;
-- (void)_client:(id)a3 selectCellAtIndexPath:(id)a4;
-- (void)_client:(id)a3 setCategoryVisibleForCellAtIndexPath:(id)a4;
-- (void)_client:(id)a3 unhighlightCellAtIndexPath:(id)a4;
-- (void)_collectionView:(id)a3 performActionForSelectingCellAtIndexPath:(id)a4;
-- (void)_collectionView:(id)a3 updateSeparatorVisibilityForCellAtIndexPath:(id)a4;
-- (void)_configureCollectionView:(id)a3;
-- (void)client:(id)a3 flashCellIfPossibleAtIndexPath:(id)a4 completionHandler:(id)a5;
-- (void)client:(id)a3 highlightCellAtIndexPath:(id)a4;
-- (void)client:(id)a3 reloadSeparatorAtIndexPath:(id)a4;
-- (void)client:(id)a3 selectCellAtIndexPath:(id)a4;
-- (void)client:(id)a3 setCategoryVisibleForCellAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didUnhighlightItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6;
+- (id)_clientForCollectionView:(id)view;
+- (void)_client:(id)_client deselectCellAtIndexPath:(id)path;
+- (void)_client:(id)_client highlightCellAtIndexPath:(id)path;
+- (void)_client:(id)_client performBookkeepingForDeselectingCellAtIndexPath:(id)path;
+- (void)_client:(id)_client performBookkeepingForHighlightingCellAtIndexPath:(id)path;
+- (void)_client:(id)_client performBookkeepingForRemovingCategoryVisibleForCellAtIndexPath:(id)path;
+- (void)_client:(id)_client performBookkeepingForSelectingCellAtIndexPath:(id)path;
+- (void)_client:(id)_client performBookkeepingForSettingCategoryVisibleForCellAtIndexPath:(id)path;
+- (void)_client:(id)_client performBookkeepingForUnhighlightingCellAtIndexPath:(id)path;
+- (void)_client:(id)_client removeCategoryVisibleForCellAtIndexPath:(id)path;
+- (void)_client:(id)_client selectCellAtIndexPath:(id)path;
+- (void)_client:(id)_client setCategoryVisibleForCellAtIndexPath:(id)path;
+- (void)_client:(id)_client unhighlightCellAtIndexPath:(id)path;
+- (void)_collectionView:(id)view performActionForSelectingCellAtIndexPath:(id)path;
+- (void)_collectionView:(id)view updateSeparatorVisibilityForCellAtIndexPath:(id)path;
+- (void)_configureCollectionView:(id)view;
+- (void)client:(id)client flashCellIfPossibleAtIndexPath:(id)path completionHandler:(id)handler;
+- (void)client:(id)client highlightCellAtIndexPath:(id)path;
+- (void)client:(id)client reloadSeparatorAtIndexPath:(id)path;
+- (void)client:(id)client selectCellAtIndexPath:(id)path;
+- (void)client:(id)client setCategoryVisibleForCellAtIndexPath:(id)path;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didUnhighlightItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path;
 - (void)deselectCurrentlySelectedCell;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)reloadAllVisibleSeparatorsForClient:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setMenu:(id)a3;
-- (void)setSearchButton:(id)a3;
-- (void)setToolbar:(id)a3;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)reloadAllVisibleSeparatorsForClient:(id)client;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setMenu:(id)menu;
+- (void)setSearchButton:(id)button;
+- (void)setToolbar:(id)toolbar;
 @end
 
 @implementation _UIKeyShortcutHUDCollectionViewManager
 
-- (void)setMenu:(id)a3
+- (void)setMenu:(id)menu
 {
-  obj = a3;
+  obj = menu;
   WeakRetained = objc_loadWeakRetained(&self->_menu);
 
   if (WeakRetained != obj)
   {
     v5 = objc_storeWeak(&self->_menu, obj);
-    v6 = [obj collectionView];
-    [(_UIKeyShortcutHUDCollectionViewManager *)self _configureCollectionView:v6];
+    collectionView = [obj collectionView];
+    [(_UIKeyShortcutHUDCollectionViewManager *)self _configureCollectionView:collectionView];
   }
 }
 
-- (void)setToolbar:(id)a3
+- (void)setToolbar:(id)toolbar
 {
-  obj = a3;
+  obj = toolbar;
   WeakRetained = objc_loadWeakRetained(&self->_toolbar);
 
   if (WeakRetained != obj)
   {
     v5 = objc_storeWeak(&self->_toolbar, obj);
-    v6 = [obj collectionView];
-    [(_UIKeyShortcutHUDCollectionViewManager *)self _configureCollectionView:v6];
+    collectionView = [obj collectionView];
+    [(_UIKeyShortcutHUDCollectionViewManager *)self _configureCollectionView:collectionView];
   }
 }
 
-- (void)setSearchButton:(id)a3
+- (void)setSearchButton:(id)button
 {
-  obj = a3;
+  obj = button;
   WeakRetained = objc_loadWeakRetained(&self->_searchButton);
 
   if (WeakRetained != obj)
   {
     v5 = objc_storeWeak(&self->_searchButton, obj);
-    v6 = [obj collectionView];
-    [(_UIKeyShortcutHUDCollectionViewManager *)self _configureCollectionView:v6];
+    collectionView = [obj collectionView];
+    [(_UIKeyShortcutHUDCollectionViewManager *)self _configureCollectionView:collectionView];
   }
 }
 
-- (void)_configureCollectionView:(id)a3
+- (void)_configureCollectionView:(id)view
 {
-  v6 = a3;
+  viewCopy = view;
   v4 = +[UIColor clearColor];
-  [v6 setBackgroundColor:v4];
+  [viewCopy setBackgroundColor:v4];
 
-  [v6 setDelegate:self];
-  [v6 setSelectionFollowsFocus:1];
+  [viewCopy setDelegate:self];
+  [viewCopy setSelectionFollowsFocus:1];
   v5 = +[_UIKeyShortcutHUDUtilities sharedFocusGroupIdentifier];
-  [v6 setFocusGroupIdentifier:v5];
+  [viewCopy setFocusGroupIdentifier:v5];
 
-  [v6 setAlwaysBounceHorizontal:0];
-  [v6 setAlwaysBounceVertical:0];
-  [v6 setShowsHorizontalScrollIndicator:0];
-  [v6 setShowsVerticalScrollIndicator:0];
+  [viewCopy setAlwaysBounceHorizontal:0];
+  [viewCopy setAlwaysBounceVertical:0];
+  [viewCopy setShowsHorizontalScrollIndicator:0];
+  [viewCopy setShowsVerticalScrollIndicator:0];
 }
 
-- (id)_clientForCollectionView:(id)a3
+- (id)_clientForCollectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   p_toolbar = &self->_toolbar;
   WeakRetained = objc_loadWeakRetained(&self->_toolbar);
-  v7 = [WeakRetained collectionView];
+  collectionView = [WeakRetained collectionView];
 
-  if (v7 != v4)
+  if (collectionView != viewCopy)
   {
     p_toolbar = &self->_menu;
     v8 = objc_loadWeakRetained(&self->_menu);
-    v9 = [v8 collectionView];
+    collectionView2 = [v8 collectionView];
 
-    if (v9 != v4)
+    if (collectionView2 != viewCopy)
     {
       p_toolbar = &self->_searchButton;
     }
@@ -143,26 +143,26 @@
 - (NSArray)preferredFocusEnvironments
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  if (!-[_UIKeyShortcutHUDCollectionViewManager nextFocusUpdatePrefersTopSearchResult](self, "nextFocusUpdatePrefersTopSearchResult") || (-[_UIKeyShortcutHUDCollectionViewManager setNextFocusUpdatePrefersTopSearchResult:](self, "setNextFocusUpdatePrefersTopSearchResult:", 0), v3 = objc_loadWeakRetained(&self->_menu), [v3 collectionView], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E696AC88], "indexPathForItem:inSection:", 0, 0), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "cellForItemAtIndexPath:", v5), v6 = objc_claimAutoreleasedReturnValue(), v5, v4, v3, !v6))
+  if (!-[_UIKeyShortcutHUDCollectionViewManager nextFocusUpdatePrefersTopSearchResult](self, "nextFocusUpdatePrefersTopSearchResult") || (-[_UIKeyShortcutHUDCollectionViewManager setNextFocusUpdatePrefersTopSearchResult:](self, "setNextFocusUpdatePrefersTopSearchResult:", 0), v3 = objc_loadWeakRetained(&self->_menu), [v3 collectionView], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E696AC88], "indexPathForItem:inSection:", 0, 0), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "cellForItemAtIndexPath:", v5), firstObject = objc_claimAutoreleasedReturnValue(), v5, v4, v3, !firstObject))
   {
-    v7 = [(_UIKeyShortcutHUDIndexPath *)self->_selectedIndexPath client];
-    v8 = [v7 collectionView];
-    v9 = [(_UIKeyShortcutHUDIndexPath *)self->_selectedIndexPath indexPath];
-    v6 = [v8 cellForItemAtIndexPath:v9];
+    client = [(_UIKeyShortcutHUDIndexPath *)self->_selectedIndexPath client];
+    collectionView = [client collectionView];
+    indexPath = [(_UIKeyShortcutHUDIndexPath *)self->_selectedIndexPath indexPath];
+    firstObject = [collectionView cellForItemAtIndexPath:indexPath];
 
-    if (!v6)
+    if (!firstObject)
     {
-      v10 = [(_UIKeyShortcutHUDIndexPath *)self->_categoryVisibleIndexPath client];
-      v11 = [v10 collectionView];
-      v12 = [(_UIKeyShortcutHUDIndexPath *)self->_categoryVisibleIndexPath indexPath];
-      v6 = [v11 cellForItemAtIndexPath:v12];
+      client2 = [(_UIKeyShortcutHUDIndexPath *)self->_categoryVisibleIndexPath client];
+      collectionView2 = [client2 collectionView];
+      indexPath2 = [(_UIKeyShortcutHUDIndexPath *)self->_categoryVisibleIndexPath indexPath];
+      firstObject = [collectionView2 cellForItemAtIndexPath:indexPath2];
 
-      if (!v6)
+      if (!firstObject)
       {
         WeakRetained = objc_loadWeakRetained(&self->_searchButton);
-        v14 = [WeakRetained collectionView];
-        v15 = [v14 visibleCells];
-        v6 = [v15 firstObject];
+        collectionView3 = [WeakRetained collectionView];
+        visibleCells = [collectionView3 visibleCells];
+        firstObject = [visibleCells firstObject];
       }
     }
   }
@@ -184,9 +184,9 @@
   {
   }
 
-  if (v6)
+  if (firstObject)
   {
-    v21[0] = v6;
+    v21[0] = firstObject;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
 
     goto LABEL_13;
@@ -199,20 +199,20 @@ LABEL_13:
   return v19;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v12 = [a3 nextFocusedItem];
+  nextFocusedItem = [context nextFocusedItem];
   v5 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = v12;
-    v8 = [v7 _collectionView];
-    v9 = [(_UIKeyShortcutHUDCollectionViewManager *)self _clientForCollectionView:v8];
-    v10 = [v8 indexPathForCell:v7];
+    v7 = nextFocusedItem;
+    _collectionView = [v7 _collectionView];
+    indexPath = [(_UIKeyShortcutHUDCollectionViewManager *)self _clientForCollectionView:_collectionView];
+    v10 = [_collectionView indexPathForCell:v7];
 
-    [(_UIKeyShortcutHUDCollectionViewManager *)self client:v9 selectCellAtIndexPath:v10];
+    [(_UIKeyShortcutHUDCollectionViewManager *)self client:indexPath selectCellAtIndexPath:v10];
   }
 
   else
@@ -223,25 +223,25 @@ LABEL_13:
       goto LABEL_6;
     }
 
-    v8 = [(_UIKeyShortcutHUDIndexPath *)selectedIndexPath client];
-    v9 = [(_UIKeyShortcutHUDIndexPath *)self->_selectedIndexPath indexPath];
-    [(_UIKeyShortcutHUDCollectionViewManager *)self _client:v8 deselectCellAtIndexPath:v9];
+    _collectionView = [(_UIKeyShortcutHUDIndexPath *)selectedIndexPath client];
+    indexPath = [(_UIKeyShortcutHUDIndexPath *)self->_selectedIndexPath indexPath];
+    [(_UIKeyShortcutHUDCollectionViewManager *)self _client:_collectionView deselectCellAtIndexPath:indexPath];
   }
 
 LABEL_6:
 }
 
-- (BOOL)client:(id)a3 shouldHideSeparatorAtIndexPath:(id)a4
+- (BOOL)client:(id)client shouldHideSeparatorAtIndexPath:(id)path
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = [_UIKeyShortcutHUDIndexPath hudIndexPathWithClient:a3 indexPath:a4];
+  v5 = [_UIKeyShortcutHUDIndexPath hudIndexPathWithClient:client indexPath:path];
   v6 = [MEMORY[0x1E695DFA8] set];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v7 = [(_UIKeyShortcutHUDCollectionViewManager *)self allClients];
-  v8 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  allClients = [(_UIKeyShortcutHUDCollectionViewManager *)self allClients];
+  v8 = [allClients countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v8)
   {
     v9 = v8;
@@ -252,14 +252,14 @@ LABEL_6:
       {
         if (*v28 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allClients);
         }
 
         v12 = [*(*(&v27 + 1) + 8 * i) indexPathsForCellsUsingSeparatorAtIndexPath:v5];
         [v6 unionSet:v12];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v9 = [allClients countByEnumeratingWithState:&v27 objects:v32 count:16];
     }
 
     while (v9);
@@ -286,13 +286,13 @@ LABEL_6:
           }
 
           v17 = *(*(&v23 + 1) + 8 * j);
-          v18 = [v17 client];
-          v19 = [v18 collectionView];
-          v20 = [v17 indexPath];
-          v21 = [v19 cellForItemAtIndexPath:v20];
+          client = [v17 client];
+          collectionView = [client collectionView];
+          indexPath = [v17 indexPath];
+          v21 = [collectionView cellForItemAtIndexPath:indexPath];
 
-          LOBYTE(v20) = [v21 isBackgroundVisible];
-          if (v20)
+          LOBYTE(indexPath) = [v21 isBackgroundVisible];
+          if (indexPath)
           {
             LOBYTE(v14) = 1;
             goto LABEL_19;
@@ -320,26 +320,26 @@ LABEL_19:
   return v14;
 }
 
-- (void)client:(id)a3 reloadSeparatorAtIndexPath:(id)a4
+- (void)client:(id)client reloadSeparatorAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 collectionView];
+  pathCopy = path;
+  clientCopy = client;
+  collectionView = [clientCopy collectionView];
   v9 = +[_UIKeyShortcutHUDUtilities separatorElementKind];
-  v12 = [v8 supplementaryViewForElementKind:v9 atIndexPath:v6];
+  v12 = [collectionView supplementaryViewForElementKind:v9 atIndexPath:pathCopy];
 
-  v10 = [(_UIKeyShortcutHUDCollectionViewManager *)self client:v7 shouldHideSeparatorAtIndexPath:v6];
-  v11 = [v12 separatorView];
-  [v11 setSeparatorHidden:v10];
+  v10 = [(_UIKeyShortcutHUDCollectionViewManager *)self client:clientCopy shouldHideSeparatorAtIndexPath:pathCopy];
+  separatorView = [v12 separatorView];
+  [separatorView setSeparatorHidden:v10];
 }
 
-- (void)reloadAllVisibleSeparatorsForClient:(id)a3
+- (void)reloadAllVisibleSeparatorsForClient:(id)client
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 collectionView];
+  clientCopy = client;
+  collectionView = [clientCopy collectionView];
   v6 = +[_UIKeyShortcutHUDUtilities separatorElementKind];
-  v7 = [v5 indexPathsForVisibleSupplementaryElementsOfKind:v6];
+  v7 = [collectionView indexPathsForVisibleSupplementaryElementsOfKind:v6];
 
   v15 = 0u;
   v16 = 0u;
@@ -361,7 +361,7 @@ LABEL_19:
           objc_enumerationMutation(v8);
         }
 
-        [(_UIKeyShortcutHUDCollectionViewManager *)self client:v4 reloadSeparatorAtIndexPath:*(*(&v13 + 1) + 8 * v12++), v13];
+        [(_UIKeyShortcutHUDCollectionViewManager *)self client:clientCopy reloadSeparatorAtIndexPath:*(*(&v13 + 1) + 8 * v12++), v13];
       }
 
       while (v10 != v12);
@@ -372,22 +372,22 @@ LABEL_19:
   }
 }
 
-- (void)client:(id)a3 flashCellIfPossibleAtIndexPath:(id)a4 completionHandler:(id)a5
+- (void)client:(id)client flashCellIfPossibleAtIndexPath:(id)path completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 collectionView];
-  v12 = [v11 cellForItemAtIndexPath:v9];
+  clientCopy = client;
+  pathCopy = path;
+  handlerCopy = handler;
+  collectionView = [clientCopy collectionView];
+  v12 = [collectionView cellForItemAtIndexPath:pathCopy];
   if (v12)
   {
-    [v11 bounds];
+    [collectionView bounds];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
     [v12 bounds];
-    [v11 convertRect:v12 fromView:?];
+    [collectionView convertRect:v12 fromView:?];
     v40.origin.x = v21;
     v40.origin.y = v22;
     v40.size.width = v23;
@@ -398,18 +398,18 @@ LABEL_19:
     v39.size.height = v20;
     if (CGRectIntersectsRect(v39, v40))
     {
-      v25 = [(_UIKeyShortcutHUDIndexPath *)self->_selectedIndexPath client];
-      v26 = v25;
-      if (v25 == v8)
+      client = [(_UIKeyShortcutHUDIndexPath *)self->_selectedIndexPath client];
+      v26 = client;
+      if (client == clientCopy)
       {
-        v27 = [(_UIKeyShortcutHUDIndexPath *)self->_selectedIndexPath indexPath];
-        v28 = [v27 isEqual:v9];
+        indexPath = [(_UIKeyShortcutHUDIndexPath *)self->_selectedIndexPath indexPath];
+        v28 = [indexPath isEqual:pathCopy];
 
         if (v28)
         {
 LABEL_8:
           [v12 setFlashing:1];
-          [(_UIKeyShortcutHUDCollectionViewManager *)self _collectionView:v11 updateSeparatorVisibilityForCellAtIndexPath:v9];
+          [(_UIKeyShortcutHUDCollectionViewManager *)self _collectionView:collectionView updateSeparatorVisibilityForCellAtIndexPath:pathCopy];
           v29 = +[UIKeyShortcutHUDMetrics currentMetrics];
           [v29 cellFlashDuration];
           v31 = v30;
@@ -420,10 +420,10 @@ LABEL_8:
           block[2] = __98___UIKeyShortcutHUDCollectionViewManager_client_flashCellIfPossibleAtIndexPath_completionHandler___block_invoke;
           block[3] = &unk_1E7103108;
           v34 = v12;
-          v35 = self;
-          v36 = v11;
-          v37 = v9;
-          v38 = v10;
+          selfCopy = self;
+          v36 = collectionView;
+          v37 = pathCopy;
+          v38 = handlerCopy;
           dispatch_after(v32, MEMORY[0x1E69E96A0], block);
 
           goto LABEL_9;
@@ -434,71 +434,71 @@ LABEL_8:
       {
       }
 
-      [(_UIKeyShortcutHUDCollectionViewManager *)self client:v8 selectCellAtIndexPath:0];
+      [(_UIKeyShortcutHUDCollectionViewManager *)self client:clientCopy selectCellAtIndexPath:0];
       goto LABEL_8;
     }
   }
 
-  (*(v10 + 2))(v10, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0);
 LABEL_9:
 }
 
-- (void)client:(id)a3 selectCellAtIndexPath:(id)a4
+- (void)client:(id)client selectCellAtIndexPath:(id)path
 {
   selectedIndexPath = self->_selectedIndexPath;
-  v7 = a4;
-  v10 = a3;
-  v8 = [(_UIKeyShortcutHUDIndexPath *)selectedIndexPath client];
-  v9 = [(_UIKeyShortcutHUDIndexPath *)self->_selectedIndexPath indexPath];
-  [(_UIKeyShortcutHUDCollectionViewManager *)self _client:v8 deselectCellAtIndexPath:v9];
+  pathCopy = path;
+  clientCopy = client;
+  client = [(_UIKeyShortcutHUDIndexPath *)selectedIndexPath client];
+  indexPath = [(_UIKeyShortcutHUDIndexPath *)self->_selectedIndexPath indexPath];
+  [(_UIKeyShortcutHUDCollectionViewManager *)self _client:client deselectCellAtIndexPath:indexPath];
 
-  [(_UIKeyShortcutHUDCollectionViewManager *)self _client:v10 selectCellAtIndexPath:v7];
+  [(_UIKeyShortcutHUDCollectionViewManager *)self _client:clientCopy selectCellAtIndexPath:pathCopy];
 }
 
-- (void)_client:(id)a3 deselectCellAtIndexPath:(id)a4
+- (void)_client:(id)_client deselectCellAtIndexPath:(id)path
 {
-  if (a4)
+  if (path)
   {
-    v6 = a4;
-    v8 = a3;
-    v7 = [v8 collectionView];
-    [v7 deselectItemAtIndexPath:v6 animated:0];
+    pathCopy = path;
+    _clientCopy = _client;
+    collectionView = [_clientCopy collectionView];
+    [collectionView deselectItemAtIndexPath:pathCopy animated:0];
 
-    [(_UIKeyShortcutHUDCollectionViewManager *)self _client:v8 performBookkeepingForDeselectingCellAtIndexPath:v6];
+    [(_UIKeyShortcutHUDCollectionViewManager *)self _client:_clientCopy performBookkeepingForDeselectingCellAtIndexPath:pathCopy];
   }
 }
 
-- (void)_client:(id)a3 performBookkeepingForDeselectingCellAtIndexPath:(id)a4
+- (void)_client:(id)_client performBookkeepingForDeselectingCellAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 collectionView];
-  [(_UIKeyShortcutHUDCollectionViewManager *)self _collectionView:v7 updateSeparatorVisibilityForCellAtIndexPath:v6];
+  pathCopy = path;
+  collectionView = [_client collectionView];
+  [(_UIKeyShortcutHUDCollectionViewManager *)self _collectionView:collectionView updateSeparatorVisibilityForCellAtIndexPath:pathCopy];
 
   selectedIndexPath = self->_selectedIndexPath;
   self->_selectedIndexPath = 0;
 }
 
-- (void)_client:(id)a3 selectCellAtIndexPath:(id)a4
+- (void)_client:(id)_client selectCellAtIndexPath:(id)path
 {
-  if (a4)
+  if (path)
   {
-    v6 = a4;
-    v8 = a3;
-    v7 = [v8 collectionView];
-    [v7 selectItemAtIndexPath:v6 animated:0 scrollPosition:0];
+    pathCopy = path;
+    _clientCopy = _client;
+    collectionView = [_clientCopy collectionView];
+    [collectionView selectItemAtIndexPath:pathCopy animated:0 scrollPosition:0];
 
-    [(_UIKeyShortcutHUDCollectionViewManager *)self _client:v8 performBookkeepingForSelectingCellAtIndexPath:v6];
+    [(_UIKeyShortcutHUDCollectionViewManager *)self _client:_clientCopy performBookkeepingForSelectingCellAtIndexPath:pathCopy];
   }
 }
 
-- (void)_client:(id)a3 performBookkeepingForSelectingCellAtIndexPath:(id)a4
+- (void)_client:(id)_client performBookkeepingForSelectingCellAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 collectionView];
-  [(_UIKeyShortcutHUDCollectionViewManager *)self _collectionView:v8 updateSeparatorVisibilityForCellAtIndexPath:v6];
+  pathCopy = path;
+  _clientCopy = _client;
+  collectionView = [_clientCopy collectionView];
+  [(_UIKeyShortcutHUDCollectionViewManager *)self _collectionView:collectionView updateSeparatorVisibilityForCellAtIndexPath:pathCopy];
 
-  v9 = [_UIKeyShortcutHUDIndexPath hudIndexPathWithClient:v7 indexPath:v6];
+  v9 = [_UIKeyShortcutHUDIndexPath hudIndexPathWithClient:_clientCopy indexPath:pathCopy];
 
   selectedIndexPath = self->_selectedIndexPath;
   self->_selectedIndexPath = v9;
@@ -509,86 +509,86 @@ LABEL_9:
   selectedIndexPath = self->_selectedIndexPath;
   if (selectedIndexPath)
   {
-    v5 = [(_UIKeyShortcutHUDIndexPath *)selectedIndexPath client];
-    v4 = [(_UIKeyShortcutHUDIndexPath *)self->_selectedIndexPath indexPath];
-    [(_UIKeyShortcutHUDCollectionViewManager *)self _client:v5 deselectCellAtIndexPath:v4];
+    client = [(_UIKeyShortcutHUDIndexPath *)selectedIndexPath client];
+    indexPath = [(_UIKeyShortcutHUDIndexPath *)self->_selectedIndexPath indexPath];
+    [(_UIKeyShortcutHUDCollectionViewManager *)self _client:client deselectCellAtIndexPath:indexPath];
   }
 }
 
-- (void)client:(id)a3 highlightCellAtIndexPath:(id)a4
+- (void)client:(id)client highlightCellAtIndexPath:(id)path
 {
   highlightedIndexPath = self->_highlightedIndexPath;
-  v7 = a4;
-  v10 = a3;
-  v8 = [(_UIKeyShortcutHUDIndexPath *)highlightedIndexPath client];
-  v9 = [(_UIKeyShortcutHUDIndexPath *)self->_highlightedIndexPath indexPath];
-  [(_UIKeyShortcutHUDCollectionViewManager *)self _client:v8 unhighlightCellAtIndexPath:v9];
+  pathCopy = path;
+  clientCopy = client;
+  client = [(_UIKeyShortcutHUDIndexPath *)highlightedIndexPath client];
+  indexPath = [(_UIKeyShortcutHUDIndexPath *)self->_highlightedIndexPath indexPath];
+  [(_UIKeyShortcutHUDCollectionViewManager *)self _client:client unhighlightCellAtIndexPath:indexPath];
 
-  [(_UIKeyShortcutHUDCollectionViewManager *)self _client:v10 highlightCellAtIndexPath:v7];
+  [(_UIKeyShortcutHUDCollectionViewManager *)self _client:clientCopy highlightCellAtIndexPath:pathCopy];
 }
 
-- (void)_client:(id)a3 unhighlightCellAtIndexPath:(id)a4
+- (void)_client:(id)_client unhighlightCellAtIndexPath:(id)path
 {
-  if (a4)
+  if (path)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [v7 collectionView];
-    v9 = [v8 cellForItemAtIndexPath:v6];
+    pathCopy = path;
+    _clientCopy = _client;
+    collectionView = [_clientCopy collectionView];
+    v9 = [collectionView cellForItemAtIndexPath:pathCopy];
 
     [v9 setHighlighted:0];
-    [(_UIKeyShortcutHUDCollectionViewManager *)self _client:v7 performBookkeepingForUnhighlightingCellAtIndexPath:v6];
+    [(_UIKeyShortcutHUDCollectionViewManager *)self _client:_clientCopy performBookkeepingForUnhighlightingCellAtIndexPath:pathCopy];
   }
 }
 
-- (void)_client:(id)a3 performBookkeepingForUnhighlightingCellAtIndexPath:(id)a4
+- (void)_client:(id)_client performBookkeepingForUnhighlightingCellAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 collectionView];
-  [(_UIKeyShortcutHUDCollectionViewManager *)self _collectionView:v7 updateSeparatorVisibilityForCellAtIndexPath:v6];
+  pathCopy = path;
+  collectionView = [_client collectionView];
+  [(_UIKeyShortcutHUDCollectionViewManager *)self _collectionView:collectionView updateSeparatorVisibilityForCellAtIndexPath:pathCopy];
 
   highlightedIndexPath = self->_highlightedIndexPath;
   self->_highlightedIndexPath = 0;
 }
 
-- (void)_client:(id)a3 highlightCellAtIndexPath:(id)a4
+- (void)_client:(id)_client highlightCellAtIndexPath:(id)path
 {
-  if (a4)
+  if (path)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [v7 collectionView];
-    v9 = [v8 cellForItemAtIndexPath:v6];
+    pathCopy = path;
+    _clientCopy = _client;
+    collectionView = [_clientCopy collectionView];
+    v9 = [collectionView cellForItemAtIndexPath:pathCopy];
 
     [v9 setHighlighted:1];
-    [(_UIKeyShortcutHUDCollectionViewManager *)self _client:v7 performBookkeepingForHighlightingCellAtIndexPath:v6];
+    [(_UIKeyShortcutHUDCollectionViewManager *)self _client:_clientCopy performBookkeepingForHighlightingCellAtIndexPath:pathCopy];
   }
 }
 
-- (void)_client:(id)a3 performBookkeepingForHighlightingCellAtIndexPath:(id)a4
+- (void)_client:(id)_client performBookkeepingForHighlightingCellAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 collectionView];
-  [(_UIKeyShortcutHUDCollectionViewManager *)self _collectionView:v8 updateSeparatorVisibilityForCellAtIndexPath:v6];
+  pathCopy = path;
+  _clientCopy = _client;
+  collectionView = [_clientCopy collectionView];
+  [(_UIKeyShortcutHUDCollectionViewManager *)self _collectionView:collectionView updateSeparatorVisibilityForCellAtIndexPath:pathCopy];
 
-  v9 = [_UIKeyShortcutHUDIndexPath hudIndexPathWithClient:v7 indexPath:v6];
+  v9 = [_UIKeyShortcutHUDIndexPath hudIndexPathWithClient:_clientCopy indexPath:pathCopy];
 
   highlightedIndexPath = self->_highlightedIndexPath;
   self->_highlightedIndexPath = v9;
 }
 
-- (BOOL)client:(id)a3 isCategoryVisibleForCellAtIndexPath:(id)a4
+- (BOOL)client:(id)client isCategoryVisibleForCellAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   categoryVisibleIndexPath = self->_categoryVisibleIndexPath;
-  v8 = a3;
-  v9 = [(_UIKeyShortcutHUDIndexPath *)categoryVisibleIndexPath client];
+  clientCopy = client;
+  client = [(_UIKeyShortcutHUDIndexPath *)categoryVisibleIndexPath client];
 
-  if (v9 == v8)
+  if (client == clientCopy)
   {
-    v11 = [(_UIKeyShortcutHUDIndexPath *)self->_categoryVisibleIndexPath indexPath];
-    v10 = [v11 isEqual:v6];
+    indexPath = [(_UIKeyShortcutHUDIndexPath *)self->_categoryVisibleIndexPath indexPath];
+    v10 = [indexPath isEqual:pathCopy];
   }
 
   else
@@ -599,174 +599,174 @@ LABEL_9:
   return v10;
 }
 
-- (void)client:(id)a3 setCategoryVisibleForCellAtIndexPath:(id)a4
+- (void)client:(id)client setCategoryVisibleForCellAtIndexPath:(id)path
 {
   categoryVisibleIndexPath = self->_categoryVisibleIndexPath;
-  v7 = a4;
-  v10 = a3;
-  v8 = [(_UIKeyShortcutHUDIndexPath *)categoryVisibleIndexPath client];
-  v9 = [(_UIKeyShortcutHUDIndexPath *)self->_categoryVisibleIndexPath indexPath];
-  [(_UIKeyShortcutHUDCollectionViewManager *)self _client:v8 removeCategoryVisibleForCellAtIndexPath:v9];
+  pathCopy = path;
+  clientCopy = client;
+  client = [(_UIKeyShortcutHUDIndexPath *)categoryVisibleIndexPath client];
+  indexPath = [(_UIKeyShortcutHUDIndexPath *)self->_categoryVisibleIndexPath indexPath];
+  [(_UIKeyShortcutHUDCollectionViewManager *)self _client:client removeCategoryVisibleForCellAtIndexPath:indexPath];
 
-  [(_UIKeyShortcutHUDCollectionViewManager *)self _client:v10 setCategoryVisibleForCellAtIndexPath:v7];
+  [(_UIKeyShortcutHUDCollectionViewManager *)self _client:clientCopy setCategoryVisibleForCellAtIndexPath:pathCopy];
 }
 
-- (void)_client:(id)a3 removeCategoryVisibleForCellAtIndexPath:(id)a4
+- (void)_client:(id)_client removeCategoryVisibleForCellAtIndexPath:(id)path
 {
-  if (a4)
+  if (path)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [v7 collectionView];
-    v9 = [v8 cellForItemAtIndexPath:v6];
+    pathCopy = path;
+    _clientCopy = _client;
+    collectionView = [_clientCopy collectionView];
+    v9 = [collectionView cellForItemAtIndexPath:pathCopy];
 
     [v9 setCategoryVisible:0];
-    [(_UIKeyShortcutHUDCollectionViewManager *)self _client:v7 performBookkeepingForRemovingCategoryVisibleForCellAtIndexPath:v6];
+    [(_UIKeyShortcutHUDCollectionViewManager *)self _client:_clientCopy performBookkeepingForRemovingCategoryVisibleForCellAtIndexPath:pathCopy];
   }
 }
 
-- (void)_client:(id)a3 performBookkeepingForRemovingCategoryVisibleForCellAtIndexPath:(id)a4
+- (void)_client:(id)_client performBookkeepingForRemovingCategoryVisibleForCellAtIndexPath:(id)path
 {
   categoryVisibleIndexPath = self->_categoryVisibleIndexPath;
   self->_categoryVisibleIndexPath = 0;
 }
 
-- (void)_client:(id)a3 setCategoryVisibleForCellAtIndexPath:(id)a4
+- (void)_client:(id)_client setCategoryVisibleForCellAtIndexPath:(id)path
 {
-  if (a4)
+  if (path)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [v7 collectionView];
-    v9 = [v8 cellForItemAtIndexPath:v6];
+    pathCopy = path;
+    _clientCopy = _client;
+    collectionView = [_clientCopy collectionView];
+    v9 = [collectionView cellForItemAtIndexPath:pathCopy];
 
     [v9 setCategoryVisible:1];
-    [(_UIKeyShortcutHUDCollectionViewManager *)self _client:v7 performBookkeepingForSettingCategoryVisibleForCellAtIndexPath:v6];
+    [(_UIKeyShortcutHUDCollectionViewManager *)self _client:_clientCopy performBookkeepingForSettingCategoryVisibleForCellAtIndexPath:pathCopy];
   }
 }
 
-- (void)_client:(id)a3 performBookkeepingForSettingCategoryVisibleForCellAtIndexPath:(id)a4
+- (void)_client:(id)_client performBookkeepingForSettingCategoryVisibleForCellAtIndexPath:(id)path
 {
-  v5 = [_UIKeyShortcutHUDIndexPath hudIndexPathWithClient:a3 indexPath:a4];
+  v5 = [_UIKeyShortcutHUDIndexPath hudIndexPathWithClient:_client indexPath:path];
   categoryVisibleIndexPath = self->_categoryVisibleIndexPath;
   self->_categoryVisibleIndexPath = v5;
 }
 
-- (void)collectionView:(id)a3 didUnhighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didUnhighlightItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [(_UIKeyShortcutHUDCollectionViewManager *)self _clientForCollectionView:a3];
-  [(_UIKeyShortcutHUDCollectionViewManager *)self _client:v7 performBookkeepingForUnhighlightingCellAtIndexPath:v6];
+  pathCopy = path;
+  v7 = [(_UIKeyShortcutHUDCollectionViewManager *)self _clientForCollectionView:view];
+  [(_UIKeyShortcutHUDCollectionViewManager *)self _client:v7 performBookkeepingForUnhighlightingCellAtIndexPath:pathCopy];
 }
 
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [(_UIKeyShortcutHUDCollectionViewManager *)self _clientForCollectionView:a3];
-  [(_UIKeyShortcutHUDCollectionViewManager *)self client:v7 highlightCellAtIndexPath:v6];
+  pathCopy = path;
+  v7 = [(_UIKeyShortcutHUDCollectionViewManager *)self _clientForCollectionView:view];
+  [(_UIKeyShortcutHUDCollectionViewManager *)self client:v7 highlightCellAtIndexPath:pathCopy];
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [(_UIKeyShortcutHUDCollectionViewManager *)self _clientForCollectionView:a3];
-  [(_UIKeyShortcutHUDCollectionViewManager *)self _client:v7 performBookkeepingForDeselectingCellAtIndexPath:v6];
+  pathCopy = path;
+  v7 = [(_UIKeyShortcutHUDCollectionViewManager *)self _clientForCollectionView:view];
+  [(_UIKeyShortcutHUDCollectionViewManager *)self _client:v7 performBookkeepingForDeselectingCellAtIndexPath:pathCopy];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(_UIKeyShortcutHUDCollectionViewManager *)self _clientForCollectionView:v9];
-  v8 = [v9 cellForItemAtIndexPath:v6];
-  if ([v7 shouldPersistSelectionForCellAtIndexPath:v6] & 1) != 0 || (objc_msgSend(v8, "isFocused"))
+  viewCopy = view;
+  pathCopy = path;
+  v7 = [(_UIKeyShortcutHUDCollectionViewManager *)self _clientForCollectionView:viewCopy];
+  v8 = [viewCopy cellForItemAtIndexPath:pathCopy];
+  if ([v7 shouldPersistSelectionForCellAtIndexPath:pathCopy] & 1) != 0 || (objc_msgSend(v8, "isFocused"))
   {
-    [(_UIKeyShortcutHUDCollectionViewManager *)self client:v7 selectCellAtIndexPath:v6];
+    [(_UIKeyShortcutHUDCollectionViewManager *)self client:v7 selectCellAtIndexPath:pathCopy];
   }
 
   else
   {
-    [v9 deselectItemAtIndexPath:v6 animated:0];
+    [viewCopy deselectItemAtIndexPath:pathCopy animated:0];
   }
 
-  [(_UIKeyShortcutHUDCollectionViewManager *)self _collectionView:v9 performActionForSelectingCellAtIndexPath:v6];
+  [(_UIKeyShortcutHUDCollectionViewManager *)self _collectionView:viewCopy performActionForSelectingCellAtIndexPath:pathCopy];
 }
 
-- (BOOL)collectionView:(id)a3 selectionFollowsFocusForItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view selectionFollowsFocusForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [(_UIKeyShortcutHUDCollectionViewManager *)self _clientForCollectionView:a3];
-  LOBYTE(self) = [v7 selectionFollowsFocusForItemAtIndexPath:v6];
+  pathCopy = path;
+  v7 = [(_UIKeyShortcutHUDCollectionViewManager *)self _clientForCollectionView:view];
+  LOBYTE(self) = [v7 selectionFollowsFocusForItemAtIndexPath:pathCopy];
 
   return self;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(_UIKeyShortcutHUDCollectionViewManager *)self _clientForCollectionView:v14];
+  viewCopy = view;
+  cellCopy = cell;
+  pathCopy = path;
+  v10 = [(_UIKeyShortcutHUDCollectionViewManager *)self _clientForCollectionView:viewCopy];
   WeakRetained = objc_loadWeakRetained(&self->_toolbar);
 
   if (v10 == WeakRetained)
   {
-    v12 = v8;
-    v13 = [(_UIKeyShortcutHUDCollectionViewManager *)self _clientForCollectionView:v14];
-    [v12 setCategoryVisible:{-[_UIKeyShortcutHUDCollectionViewManager client:isCategoryVisibleForCellAtIndexPath:](self, "client:isCategoryVisibleForCellAtIndexPath:", v13, v9)}];
+    v12 = cellCopy;
+    v13 = [(_UIKeyShortcutHUDCollectionViewManager *)self _clientForCollectionView:viewCopy];
+    [v12 setCategoryVisible:{-[_UIKeyShortcutHUDCollectionViewManager client:isCategoryVisibleForCellAtIndexPath:](self, "client:isCategoryVisibleForCellAtIndexPath:", v13, pathCopy)}];
   }
 }
 
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path
 {
-  v17 = a3;
-  v9 = a4;
-  v10 = a6;
+  viewCopy = view;
+  supplementaryViewCopy = supplementaryView;
+  pathCopy = path;
   v11 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v13 = [(_UIKeyShortcutHUDCollectionViewManager *)self _clientForCollectionView:v17];
-    v14 = v9;
-    v15 = [(_UIKeyShortcutHUDCollectionViewManager *)self client:v13 shouldHideSeparatorAtIndexPath:v10];
-    v16 = [v14 separatorView];
+    v13 = [(_UIKeyShortcutHUDCollectionViewManager *)self _clientForCollectionView:viewCopy];
+    v14 = supplementaryViewCopy;
+    v15 = [(_UIKeyShortcutHUDCollectionViewManager *)self client:v13 shouldHideSeparatorAtIndexPath:pathCopy];
+    separatorView = [v14 separatorView];
 
-    [v16 setSeparatorHidden:v15];
+    [separatorView setSeparatorHidden:v15];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v3 = [(_UIKeyShortcutHUDCollectionViewManager *)self _clientForCollectionView:a3];
+  v3 = [(_UIKeyShortcutHUDCollectionViewManager *)self _clientForCollectionView:scroll];
   [v3 didScrollCollectionView];
 }
 
-- (void)_collectionView:(id)a3 performActionForSelectingCellAtIndexPath:(id)a4
+- (void)_collectionView:(id)view performActionForSelectingCellAtIndexPath:(id)path
 {
-  if (a4)
+  if (path)
   {
-    v6 = a4;
-    v7 = [(_UIKeyShortcutHUDCollectionViewManager *)self _clientForCollectionView:a3];
-    [v7 performActionForSelectingCellAtIndexPath:v6];
+    pathCopy = path;
+    v7 = [(_UIKeyShortcutHUDCollectionViewManager *)self _clientForCollectionView:view];
+    [v7 performActionForSelectingCellAtIndexPath:pathCopy];
   }
 }
 
-- (void)_collectionView:(id)a3 updateSeparatorVisibilityForCellAtIndexPath:(id)a4
+- (void)_collectionView:(id)view updateSeparatorVisibilityForCellAtIndexPath:(id)path
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v6)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v7 = [(_UIKeyShortcutHUDCollectionViewManager *)self _clientForCollectionView:a3];
-    v8 = [_UIKeyShortcutHUDIndexPath hudIndexPathWithClient:v7 indexPath:v6];
+    v7 = [(_UIKeyShortcutHUDCollectionViewManager *)self _clientForCollectionView:view];
+    v8 = [_UIKeyShortcutHUDIndexPath hudIndexPathWithClient:v7 indexPath:pathCopy];
     v9 = [MEMORY[0x1E695DFA8] set];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v10 = [(_UIKeyShortcutHUDCollectionViewManager *)self allClients];
-    v11 = [v10 countByEnumeratingWithState:&v28 objects:v33 count:16];
+    allClients = [(_UIKeyShortcutHUDCollectionViewManager *)self allClients];
+    v11 = [allClients countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v11)
     {
       v12 = v11;
@@ -777,14 +777,14 @@ LABEL_9:
         {
           if (*v29 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allClients);
           }
 
           v15 = [*(*(&v28 + 1) + 8 * i) indexPathsForSeparatorsUsedByCellAtIndexPath:v8];
           [v9 unionSet:v15];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v28 objects:v33 count:16];
+        v12 = [allClients countByEnumeratingWithState:&v28 objects:v33 count:16];
       }
 
       while (v12);
@@ -810,9 +810,9 @@ LABEL_9:
           }
 
           v21 = *(*(&v24 + 1) + 8 * j);
-          v22 = [v21 client];
-          v23 = [v21 indexPath];
-          [(_UIKeyShortcutHUDCollectionViewManager *)self client:v22 reloadSeparatorAtIndexPath:v23];
+          client = [v21 client];
+          indexPath = [v21 indexPath];
+          [(_UIKeyShortcutHUDCollectionViewManager *)self client:client reloadSeparatorAtIndexPath:indexPath];
         }
 
         v18 = [v16 countByEnumeratingWithState:&v24 objects:v32 count:16];

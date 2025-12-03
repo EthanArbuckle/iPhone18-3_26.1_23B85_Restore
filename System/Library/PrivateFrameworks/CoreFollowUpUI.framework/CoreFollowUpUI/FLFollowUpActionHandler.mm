@@ -2,9 +2,9 @@
 - (NSString)description;
 - (id)_extensionLoader;
 - (void)dealloc;
-- (void)extensionDidFinishWithError:(id)a3 userInfo:(id)a4 completionHandler:(id)a5;
-- (void)handleExtensionBasedAction:(id)a3 completion:(id)a4;
-- (void)handleExtensionBasedAction:(id)a3 completionWithUserInfo:(id)a4;
+- (void)extensionDidFinishWithError:(id)error userInfo:(id)info completionHandler:(id)handler;
+- (void)handleExtensionBasedAction:(id)action completion:(id)completion;
+- (void)handleExtensionBasedAction:(id)action completionWithUserInfo:(id)info;
 @end
 
 @implementation FLFollowUpActionHandler
@@ -15,8 +15,8 @@
   if (!extensionLoader)
   {
     v4 = [FLViewExtensionLoader alloc];
-    v5 = [(FLHeadlessActionHandler *)self item];
-    v6 = [(FLHeadlessExtensionLoader *)v4 initWithFollowUp:v5 andDelegate:self];
+    item = [(FLHeadlessActionHandler *)self item];
+    v6 = [(FLHeadlessExtensionLoader *)v4 initWithFollowUp:item andDelegate:self];
     v7 = self->_extensionLoader;
     self->_extensionLoader = v6;
 
@@ -49,16 +49,16 @@ void __43__FLFollowUpActionHandler__extensionLoader__block_invoke(uint64_t a1)
   }
 }
 
-- (void)handleExtensionBasedAction:(id)a3 completion:(id)a4
+- (void)handleExtensionBasedAction:(id)action completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __65__FLFollowUpActionHandler_handleExtensionBasedAction_completion___block_invoke;
   v8[3] = &unk_278E358D0;
-  v9 = v6;
-  v7 = v6;
-  [(FLFollowUpActionHandler *)self handleExtensionBasedAction:a3 completionWithUserInfo:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(FLFollowUpActionHandler *)self handleExtensionBasedAction:action completionWithUserInfo:v8];
 }
 
 uint64_t __65__FLFollowUpActionHandler_handleExtensionBasedAction_completion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -72,11 +72,11 @@ uint64_t __65__FLFollowUpActionHandler_handleExtensionBasedAction_completion___b
   return result;
 }
 
-- (void)handleExtensionBasedAction:(id)a3 completionWithUserInfo:(id)a4
+- (void)handleExtensionBasedAction:(id)action completionWithUserInfo:(id)info
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  infoCopy = info;
   v8 = _FLSignpostCreate();
   v10 = v9;
   v11 = _FLSignpostLogSystem();
@@ -91,7 +91,7 @@ uint64_t __65__FLFollowUpActionHandler_handleExtensionBasedAction_completion___b
   v22[3] = &unk_278E358F8;
   v24 = v8;
   v25 = v10;
-  v12 = v7;
+  v12 = infoCopy;
   v23 = v12;
   v13 = MEMORY[0x245D69850](v22);
   completionHandler = self->_completionHandler;
@@ -100,21 +100,21 @@ uint64_t __65__FLFollowUpActionHandler_handleExtensionBasedAction_completion___b
   v15 = _FLLogSystem();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(FLHeadlessActionHandler *)self item];
+    item = [(FLHeadlessActionHandler *)self item];
     *buf = 138412290;
-    v27 = v16;
+    v27 = item;
     _os_log_impl(&dword_245383000, v15, OS_LOG_TYPE_DEFAULT, "Starting to load extension for follow up: %@", buf, 0xCu);
   }
 
-  v17 = [MEMORY[0x277CFE520] sharedExtensionQueue];
+  mEMORY[0x277CFE520] = [MEMORY[0x277CFE520] sharedExtensionQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__FLFollowUpActionHandler_handleExtensionBasedAction_completionWithUserInfo___block_invoke_3;
   block[3] = &unk_278E35970;
   block[4] = self;
-  v21 = v6;
-  v18 = v6;
-  dispatch_async(v17, block);
+  v21 = actionCopy;
+  v18 = actionCopy;
+  dispatch_async(mEMORY[0x277CFE520], block);
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -216,22 +216,22 @@ void __77__FLFollowUpActionHandler_handleExtensionBasedAction_completionWithUser
   }
 }
 
-- (void)extensionDidFinishWithError:(id)a3 userInfo:(id)a4 completionHandler:(id)a5
+- (void)extensionDidFinishWithError:(id)error userInfo:(id)info completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  errorCopy = error;
+  infoCopy = info;
+  handlerCopy = handler;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __82__FLFollowUpActionHandler_extensionDidFinishWithError_userInfo_completionHandler___block_invoke;
   v18[3] = &unk_278E35998;
   v18[4] = self;
-  v19 = v8;
-  v20 = v9;
-  v21 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v19 = errorCopy;
+  v20 = infoCopy;
+  v21 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = infoCopy;
+  v13 = errorCopy;
   v14 = MEMORY[0x245D69850](v18);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -316,7 +316,7 @@ void __82__FLFollowUpActionHandler_extensionDidFinishWithError_userInfo_completi
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_245383000, v3, OS_LOG_TYPE_DEFAULT, "%@ going away", buf, 0xCu);
   }
 

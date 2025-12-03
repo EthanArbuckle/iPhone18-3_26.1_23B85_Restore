@@ -1,15 +1,15 @@
 @interface PKPassMessageFooterContentView
-- (PKPassMessageFooterContentView)initWithPass:(id)a3 presentationContext:(id)a4;
+- (PKPassMessageFooterContentView)initWithPass:(id)pass presentationContext:(id)context;
 - (void)layoutSubviews;
 @end
 
 @implementation PKPassMessageFooterContentView
 
-- (PKPassMessageFooterContentView)initWithPass:(id)a3 presentationContext:(id)a4
+- (PKPassMessageFooterContentView)initWithPass:(id)pass presentationContext:(id)context
 {
   v9.receiver = self;
   v9.super_class = PKPassMessageFooterContentView;
-  v4 = [(PKPassFooterContentView *)&v9 initWithPass:a3 presentationContext:0];
+  v4 = [(PKPassFooterContentView *)&v9 initWithPass:pass presentationContext:0];
   if (v4)
   {
     v5 = [PKDashboardMessagesView alloc];

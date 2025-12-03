@@ -1,15 +1,15 @@
 @interface PDDPRole
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRoleType:(id)a3;
+- (int)StringAsRoleType:(id)type;
 - (int)roleType;
 - (unint64_t)hash;
-- (void)addPrivileges:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPrivileges:(id)privileges;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPRole
@@ -27,45 +27,45 @@
   }
 }
 
-- (int)StringAsRoleType:(id)a3
+- (int)StringAsRoleType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_ROLE_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_ROLE_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ADMINISTRATOR"])
+  else if ([typeCopy isEqualToString:@"ADMINISTRATOR"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SITE_MANAGER"])
+  else if ([typeCopy isEqualToString:@"SITE_MANAGER"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MANAGER"])
+  else if ([typeCopy isEqualToString:@"MANAGER"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"INSTRUCTOR"])
+  else if ([typeCopy isEqualToString:@"INSTRUCTOR"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"STAFF"])
+  else if ([typeCopy isEqualToString:@"STAFF"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"STUDENT"])
+  else if ([typeCopy isEqualToString:@"STUDENT"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"CUSTOM"])
+  else if ([typeCopy isEqualToString:@"CUSTOM"])
   {
     v4 = 7;
   }
@@ -78,22 +78,22 @@
   return v4;
 }
 
-- (void)addPrivileges:(id)a3
+- (void)addPrivileges:(id)privileges
 {
-  v4 = a3;
+  privilegesCopy = privileges;
   privileges = self->_privileges;
-  v8 = v4;
+  v8 = privilegesCopy;
   if (!privileges)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_privileges;
     self->_privileges = v6;
 
-    v4 = v8;
+    privilegesCopy = v8;
     privileges = self->_privileges;
   }
 
-  [(NSMutableArray *)privileges addObject:v4];
+  [(NSMutableArray *)privileges addObject:privilegesCopy];
 }
 
 - (id)description
@@ -101,8 +101,8 @@
   v7.receiver = self;
   v7.super_class = PDDPRole;
   v3 = [(PDDPRole *)&v7 description];
-  v4 = [(PDDPRole *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPRole *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -155,8 +155,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -171,16 +171,16 @@
   entityMeta = self->_entityMeta;
   if (entityMeta)
   {
-    v16 = [(PDDPEntityMeta *)entityMeta dictionaryRepresentation];
-    [v4 setObject:v16 forKey:@"entity_meta"];
+    dictionaryRepresentation2 = [(PDDPEntityMeta *)entityMeta dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"entity_meta"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_roleId)
   {
     PBDataWriterWriteStringField();
@@ -230,29 +230,29 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_roleId)
   {
-    [v4 setRoleId:?];
-    v4 = v9;
+    [toCopy setRoleId:?];
+    toCopy = v9;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 8) = self->_roleType;
-    *(v4 + 36) |= 1u;
+    *(toCopy + 8) = self->_roleType;
+    *(toCopy + 36) |= 1u;
   }
 
   if ([(PDDPRole *)self privilegesCount])
   {
     [v9 clearPrivileges];
-    v5 = [(PDDPRole *)self privilegesCount];
-    if (v5)
+    privilegesCount = [(PDDPRole *)self privilegesCount];
+    if (privilegesCount)
     {
-      v6 = v5;
+      v6 = privilegesCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(PDDPRole *)self privilegesAtIndex:i];
@@ -267,10 +267,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_roleId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_roleId copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
@@ -299,7 +299,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v17 + 1) + 8 * i) copyWithZone:{a3, v17}];
+        v13 = [*(*(&v17 + 1) + 8 * i) copyWithZone:{zone, v17}];
         [v5 addPrivileges:v13];
       }
 
@@ -309,23 +309,23 @@
     while (v10);
   }
 
-  v14 = [(PDDPEntityMeta *)self->_entityMeta copyWithZone:a3];
+  v14 = [(PDDPEntityMeta *)self->_entityMeta copyWithZone:zone];
   v15 = v5[1];
   v5[1] = v14;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   roleId = self->_roleId;
-  if (roleId | *(v4 + 3))
+  if (roleId | *(equalCopy + 3))
   {
     if (![(NSString *)roleId isEqual:?])
     {
@@ -333,16 +333,16 @@
     }
   }
 
-  v6 = *(v4 + 36);
+  v6 = *(equalCopy + 36);
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_roleType != *(v4 + 8))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_roleType != *(equalCopy + 8))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
 LABEL_13:
     v9 = 0;
@@ -350,13 +350,13 @@ LABEL_13:
   }
 
   privileges = self->_privileges;
-  if (privileges | *(v4 + 2) && ![(NSMutableArray *)privileges isEqual:?])
+  if (privileges | *(equalCopy + 2) && ![(NSMutableArray *)privileges isEqual:?])
   {
     goto LABEL_13;
   }
 
   entityMeta = self->_entityMeta;
-  if (entityMeta | *(v4 + 1))
+  if (entityMeta | *(equalCopy + 1))
   {
     v9 = [(PDDPEntityMeta *)entityMeta isEqual:?];
   }
@@ -389,17 +389,17 @@ LABEL_14:
   return v5 ^ v6 ^ [(PDDPEntityMeta *)self->_entityMeta hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
     [(PDDPRole *)self setRoleId:?];
   }
 
-  if (*(v4 + 36))
+  if (*(fromCopy + 36))
   {
-    self->_roleType = *(v4 + 8);
+    self->_roleType = *(fromCopy + 8);
     *&self->_has |= 1u;
   }
 
@@ -407,7 +407,7 @@ LABEL_14:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -432,7 +432,7 @@ LABEL_14:
   }
 
   entityMeta = self->_entityMeta;
-  v11 = *(v4 + 1);
+  v11 = *(fromCopy + 1);
   if (entityMeta)
   {
     if (v11)

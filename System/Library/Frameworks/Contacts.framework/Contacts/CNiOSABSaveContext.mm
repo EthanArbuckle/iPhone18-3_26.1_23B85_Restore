@@ -1,5 +1,5 @@
 @interface CNiOSABSaveContext
-- (CNiOSABSaveContext)initWithSaveRequest:(id)a3 response:(id)a4 addressBook:(void *)a5 posterDataStore:(id)a6;
+- (CNiOSABSaveContext)initWithSaveRequest:(id)request response:(id)response addressBook:(void *)book posterDataStore:(id)store;
 - (void)_populateSaveRequestIndexTables;
 - (void)addressBook;
 - (void)dealloc;
@@ -7,22 +7,22 @@
 
 @implementation CNiOSABSaveContext
 
-- (CNiOSABSaveContext)initWithSaveRequest:(id)a3 response:(id)a4 addressBook:(void *)a5 posterDataStore:(id)a6
+- (CNiOSABSaveContext)initWithSaveRequest:(id)request response:(id)response addressBook:(void *)book posterDataStore:(id)store
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  requestCopy = request;
+  responseCopy = response;
+  storeCopy = store;
   v37.receiver = self;
   v37.super_class = CNiOSABSaveContext;
   v14 = [(CNiOSABSaveContext *)&v37 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_saveRequest, a3);
-    objc_storeStrong(&v15->_saveResponse, a4);
-    if (a5)
+    objc_storeStrong(&v14->_saveRequest, request);
+    objc_storeStrong(&v15->_saveResponse, response);
+    if (book)
     {
-      v16 = CFRetain(a5);
+      v16 = CFRetain(book);
     }
 
     else
@@ -31,7 +31,7 @@
     }
 
     v15->_addressBook = v16;
-    objc_storeStrong(&v15->_posterDataStore, a6);
+    objc_storeStrong(&v15->_posterDataStore, store);
     v17 = objc_alloc_init(MEMORY[0x1E695DF90]);
     abPersonsByIdentifier = v15->_abPersonsByIdentifier;
     v15->_abPersonsByIdentifier = v17;
@@ -107,28 +107,28 @@
 
 - (void)_populateSaveRequestIndexTables
 {
-  v3 = [(CNSaveRequest *)self->_saveRequest allContacts];
+  allContacts = [(CNSaveRequest *)self->_saveRequest allContacts];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __53__CNiOSABSaveContext__populateSaveRequestIndexTables__block_invoke;
   v8[3] = &unk_1E7413B00;
   v8[4] = self;
-  [v3 enumerateObjectsUsingBlock:v8];
-  v4 = [(CNSaveRequest *)self->_saveRequest allGroups];
+  [allContacts enumerateObjectsUsingBlock:v8];
+  allGroups = [(CNSaveRequest *)self->_saveRequest allGroups];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__CNiOSABSaveContext__populateSaveRequestIndexTables__block_invoke_3;
   v7[3] = &unk_1E7413B28;
   v7[4] = self;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [allGroups enumerateObjectsUsingBlock:v7];
 
-  v5 = [(CNSaveRequest *)self->_saveRequest allContainers];
+  allContainers = [(CNSaveRequest *)self->_saveRequest allContainers];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__CNiOSABSaveContext__populateSaveRequestIndexTables__block_invoke_4;
   v6[3] = &unk_1E7413B50;
   v6[4] = self;
-  [v5 enumerateObjectsUsingBlock:v6];
+  [allContainers enumerateObjectsUsingBlock:v6];
 }
 
 void __53__CNiOSABSaveContext__populateSaveRequestIndexTables__block_invoke(uint64_t a1, void *a2, uint64_t a3)

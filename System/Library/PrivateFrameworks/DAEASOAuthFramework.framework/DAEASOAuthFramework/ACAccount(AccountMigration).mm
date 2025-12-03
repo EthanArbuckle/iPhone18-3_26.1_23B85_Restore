@@ -9,37 +9,37 @@
 - (uint64_t)migrationStatus
 {
   v2 = *MEMORY[0x277D07A70];
-  v3 = [a1 objectForKeyedSubscript:*MEMORY[0x277D07A70]];
+  v3 = [self objectForKeyedSubscript:*MEMORY[0x277D07A70]];
 
   if (!v3)
   {
     return 5;
   }
 
-  v4 = [a1 objectForKeyedSubscript:v2];
-  v5 = [v4 unsignedIntegerValue];
+  v4 = [self objectForKeyedSubscript:v2];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
 - (__CFString)migrationStatusString
 {
-  v1 = [a1 migrationStatus];
-  if ((v1 - 1) > 4)
+  migrationStatus = [self migrationStatus];
+  if ((migrationStatus - 1) > 4)
   {
     return @"Attempting";
   }
 
   else
   {
-    return off_278EE0510[v1 - 1];
+    return off_278EE0510[migrationStatus - 1];
   }
 }
 
 - (void)setMigrationStatus:()AccountMigration
 {
   v2 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
-  [a1 setObject:v2 forKeyedSubscript:*MEMORY[0x277D07A70]];
+  [self setObject:v2 forKeyedSubscript:*MEMORY[0x277D07A70]];
 }
 
 @end

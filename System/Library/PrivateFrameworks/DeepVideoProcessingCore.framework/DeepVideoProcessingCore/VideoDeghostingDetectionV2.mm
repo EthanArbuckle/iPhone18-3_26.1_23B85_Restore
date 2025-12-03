@@ -1,26 +1,26 @@
 @interface VideoDeghostingDetectionV2
 - ($DC080E558804126FE14A0ED6851A46A4)configuration;
-- (BOOL)process:(VideoDeghostingDetectionV2 *)self futureFrames:(SEL)a2 opticalCenter:(__CVBuffer *)a3 futureOpticalCenter:(id *)a4 opticalCenterMvShift:(float)a5 outputImgBufTMinus1:(__CVBuffer *)a6 outputImgBufTMinus2:(__CVBuffer *)a7;
-- (VideoDeghostingDetectionV2)initWithMetalToolBox:(id)a3 config:(id *)a4 imageDimensions:(id)a5;
-- (int64_t)_getProbMapInput:(id)a3 reflLs:(id)a4 trackingRef:(id)a5 trackingRefProb:(id)a6 trackingRefSpaProb:(id)a7 trackingRefErrRescaleProb:(id)a8 trackingRefLs:(id)a9 inputBuf:(__CVBuffer *)a10 reflLsBuf:(__CVBuffer *)a11 trackingRefBuf:(__CVBuffer *)a12 trackingRefProbBuf:(__CVBuffer *)a13 trackingRefSpaProbBuf:(__CVBuffer *)a14 trackingRefErrRescaleProbBuf:(__CVBuffer *)a15 trackingRefLsBuf:(__CVBuffer *)a16 trackingMvf:(id)a17 metaBuf:(id)a18 metaBufArray:(id *)a19 trackingRefMetaBuf:(id)a20 probMap:(id)a21 errRescaleProbMap:(id)a22 rawRefinedProbMap:(id)a23 refinedProbMap:(id)a24 refinedReflLs:(id)a25 probMapStash4FutureTracking:(id)a26 probMapBuf:(__CVBuffer *)a27 errRescaleProbMapBuf:(__CVBuffer *)a28 rawRefinedProbMapBuf:(__CVBuffer *)a29 refinedProbMapBuf:(__CVBuffer *)a30 refinedReflLsBuf:(__CVBuffer *)a31 probMapStash4FutureTrackingBuf:(__CVBuffer *)a32 doTracking:(BOOL)a33 waitForComplete:(BOOL)a34;
-- (int64_t)_getProbMapsLiteTarget:(id)a3 refProbMap:(id)a4 refLsMap:(id)a5 refRefinedLsMap:(id)a6 refProbMapStash4FutureTracking:(id)a7 refErrRescaleProbMap:(id)a8 refRawRefinedProbMap:(id)a9 refRefinedProbMap:(id)a10 mvf:(id)a11 probMap:(id)a12 lsMap:(id)a13 refinedLsMap:(id)a14 probMapStash4FutureTracking:(id)a15 errRescaleProbMap:(id)a16 rawRefinedProbMap:(id)a17 refinedProbMap:(id)a18 metaBufArray:(id *)a19 waitForComplete:(BOOL)a20;
-- (int64_t)_initDetection:(__CVBuffer *)a3 futureFrames:(id *)a4 outputImgBufTMinus1:(__CVBuffer *)a5 outputImgBufTMinus2:(__CVBuffer *)a6;
-- (int64_t)dlSpatialRepairYUV:(__CVBuffer *)a3 output:(__CVBuffer *)a4 repairMask:(__CVBuffer *)a5 blendMask:(__CVBuffer *)a6 inputTex:(id)a7 repairMaskTex:(id)a8 blendMaskTex:(id)a9 wRepairedY:(float)a10 wRepairedUV:(float)a11 metaBuf:(id)a12;
-- (int64_t)doTrackingToNextFrameCurrMetaWithDetectionResults:(VideoDeghostingDetectionV2 *)self currMetaWithMvToFuture:(SEL)a2 futureMeta:(id)a3 opticalCenter:(id)a4 futureOpticalCenter:(id)a5 futureFrameCnt:(int)a6 doLite:(BOOL)a7 waitForComplete:(BOOL)a8;
-- (int64_t)getFlowTarget:(id)a3 ref:(id)a4 targetBuf:(__CVBuffer *)a5 refBuf:(__CVBuffer *)a6 mvf:(__CVBuffer *)a7 backwardMvf:(__CVBuffer *)a8 metaBuf:(id)a9 skipRescaling:(BOOL)a10;
-- (int64_t)getMvfToNextFrameForTrackingCurrMeta:(VideoDeghostingDetectionV2 *)self lsMap:(SEL)a2 futureLsMap:(id)a3 lsMapBuf:(id)a4 futureLsMapBuf:(id)a5 opticalCenter:(__CVBuffer *)a6 futureOpticalCenter:(__CVBuffer *)a7 waitForComplete:(BOOL)a8;
-- (int64_t)getProbMapsTarget:(VideoDeghostingDetectionV2 *)self ref:(SEL)a2 rawProbMap:(id)a3 probMap:(id)a4 errRescaleProbMap:(id)a5 rawRefinedProbMap:(id)a6 refinedProbMap:(id)a7 reflLsMap:(id)a8 refinedReflLsMap:(id)a9 reflLsMap4TrackingRef:(id)a10 metaBuf:(id)a11 metaBufArray:(id)a12 trackingMvf:(id)a13 useRefProbMap:(id *)a14 opticalCenter:(id)a15 trackingRefOpticalCenter:(BOOL)a16 waitForComplete:(BOOL)a17;
-- (int64_t)processHwLsMaskAndGetRoisOpticalCenter:(id)a3 inputFrame:(id *)a4 prevMetaContainer:considerDist2PrevGhostWhenSort:outputMask:outputMaskTexture:isLowLight:outputArray:;
-- (int64_t)processHwLsMaskNormalizedCenter:(id)a3 input:(id)a4 output:(BOOL)a5 waitForComplete:;
-- (int64_t)repairTarget:(VideoDeghostingDetectionV2 *)self opticalCenter:(SEL)a2 frRef0:(id)a3 frRef1:(id)a4 nextFrame:(id)a5 nextFrameMvf:(id)a6 nextFrameMvfBuf:(id)a7 nextOpticalCenter:(__CVBuffer *)a8 probMap:(id)a9 errRescaleProbMap:(id)a10 prevProbMap:(id)a11 refinedProbMap:(id)a12 probMap4TrRefW:(id)a13 metaBuf:(id)a14 metaBufArray:(id *)a15 forceToSpatial:(BOOL)a16 waitForComplete:(BOOL)a17;
-- (int64_t)unpackIspLsMaskAndRoisForNextFrameLiteWithFrameData:(id *)a3 futureOpticalCenter:(int *)a4 outputFutureFrameCnt:(id *)a5 outputFutureMetaBuf:;
-- (int64_t)unpackIspLsMaskAndRoisForNextFrameWithFrameData:(id *)a3 futureOpticalCenter:(id *)a4 currFrameMetaContainer:outputFutureFrameCnt:outputMTLBuffer:;
-- (int64_t)warpTrackingRefProbMap:(id)a3 refSpaProbMap:(id)a4 refReflLs:(id)a5 mvf:(id)a6 metaBuf:(id)a7 metaBufArray:(id *)a8 waitForComplete:(BOOL)a9;
-- (void)_initParamsWithLowLight:(BOOL)a3;
+- (BOOL)process:(VideoDeghostingDetectionV2 *)self futureFrames:(SEL)frames opticalCenter:(__CVBuffer *)center futureOpticalCenter:(id *)opticalCenter opticalCenterMvShift:(float)shift outputImgBufTMinus1:(__CVBuffer *)minus1 outputImgBufTMinus2:(__CVBuffer *)minus2;
+- (VideoDeghostingDetectionV2)initWithMetalToolBox:(id)box config:(id *)config imageDimensions:(id)dimensions;
+- (int64_t)_getProbMapInput:(id)input reflLs:(id)ls trackingRef:(id)ref trackingRefProb:(id)prob trackingRefSpaProb:(id)spaProb trackingRefErrRescaleProb:(id)rescaleProb trackingRefLs:(id)refLs inputBuf:(__CVBuffer *)self0 reflLsBuf:(__CVBuffer *)self1 trackingRefBuf:(__CVBuffer *)self2 trackingRefProbBuf:(__CVBuffer *)self3 trackingRefSpaProbBuf:(__CVBuffer *)self4 trackingRefErrRescaleProbBuf:(__CVBuffer *)self5 trackingRefLsBuf:(__CVBuffer *)self6 trackingMvf:(id)self7 metaBuf:(id)self8 metaBufArray:(id *)self9 trackingRefMetaBuf:(id)refMetaBuf probMap:(id)map errRescaleProbMap:(id)probMap rawRefinedProbMap:(id)refinedProbMap refinedProbMap:(id)a24 refinedReflLs:(id)reflLs probMapStash4FutureTracking:(id)tracking probMapBuf:(__CVBuffer *)mapBuf errRescaleProbMapBuf:(__CVBuffer *)probMapBuf rawRefinedProbMapBuf:(__CVBuffer *)refinedProbMapBuf refinedProbMapBuf:(__CVBuffer *)input0 refinedReflLsBuf:(__CVBuffer *)input1 probMapStash4FutureTrackingBuf:(__CVBuffer *)input2 doTracking:(BOOL)input3 waitForComplete:(BOOL)input4;
+- (int64_t)_getProbMapsLiteTarget:(id)target refProbMap:(id)map refLsMap:(id)lsMap refRefinedLsMap:(id)refinedLsMap refProbMapStash4FutureTracking:(id)tracking refErrRescaleProbMap:(id)probMap refRawRefinedProbMap:(id)refinedProbMap refRefinedProbMap:(id)self0 mvf:(id)self1 probMap:(id)self2 lsMap:(id)self3 refinedLsMap:(id)self4 probMapStash4FutureTracking:(id)self5 errRescaleProbMap:(id)self6 rawRefinedProbMap:(id)self7 refinedProbMap:(id)self8 metaBufArray:(id *)self9 waitForComplete:(BOOL)complete;
+- (int64_t)_initDetection:(__CVBuffer *)detection futureFrames:(id *)frames outputImgBufTMinus1:(__CVBuffer *)minus1 outputImgBufTMinus2:(__CVBuffer *)minus2;
+- (int64_t)dlSpatialRepairYUV:(__CVBuffer *)v output:(__CVBuffer *)output repairMask:(__CVBuffer *)mask blendMask:(__CVBuffer *)blendMask inputTex:(id)tex repairMaskTex:(id)maskTex blendMaskTex:(id)blendMaskTex wRepairedY:(float)self0 wRepairedUV:(float)self1 metaBuf:(id)self2;
+- (int64_t)doTrackingToNextFrameCurrMetaWithDetectionResults:(VideoDeghostingDetectionV2 *)self currMetaWithMvToFuture:(SEL)future futureMeta:(id)meta opticalCenter:(id)center futureOpticalCenter:(id)opticalCenter futureFrameCnt:(int)cnt doLite:(BOOL)lite waitForComplete:(BOOL)complete;
+- (int64_t)getFlowTarget:(id)target ref:(id)ref targetBuf:(__CVBuffer *)buf refBuf:(__CVBuffer *)refBuf mvf:(__CVBuffer *)mvf backwardMvf:(__CVBuffer *)backwardMvf metaBuf:(id)metaBuf skipRescaling:(BOOL)self0;
+- (int64_t)getMvfToNextFrameForTrackingCurrMeta:(VideoDeghostingDetectionV2 *)self lsMap:(SEL)map futureLsMap:(id)lsMap lsMapBuf:(id)buf futureLsMapBuf:(id)mapBuf opticalCenter:(__CVBuffer *)center futureOpticalCenter:(__CVBuffer *)opticalCenter waitForComplete:(BOOL)complete;
+- (int64_t)getProbMapsTarget:(VideoDeghostingDetectionV2 *)self ref:(SEL)ref rawProbMap:(id)map probMap:(id)probMap errRescaleProbMap:(id)rescaleProbMap rawRefinedProbMap:(id)refinedProbMap refinedProbMap:(id)a7 reflLsMap:(id)lsMap refinedReflLsMap:(id)reflLsMap reflLsMap4TrackingRef:(id)self0 metaBuf:(id)self1 metaBufArray:(id)self2 trackingMvf:(id)self3 useRefProbMap:(id *)self4 opticalCenter:(id)self5 trackingRefOpticalCenter:(BOOL)self6 waitForComplete:(BOOL)self7;
+- (int64_t)processHwLsMaskAndGetRoisOpticalCenter:(id)center inputFrame:(id *)frame prevMetaContainer:considerDist2PrevGhostWhenSort:outputMask:outputMaskTexture:isLowLight:outputArray:;
+- (int64_t)processHwLsMaskNormalizedCenter:(id)center input:(id)input output:(BOOL)output waitForComplete:;
+- (int64_t)repairTarget:(VideoDeghostingDetectionV2 *)self opticalCenter:(SEL)center frRef0:(id)ref0 frRef1:(id)ref1 nextFrame:(id)frame nextFrameMvf:(id)mvf nextFrameMvfBuf:(id)buf nextOpticalCenter:(__CVBuffer *)opticalCenter probMap:(id)map errRescaleProbMap:(id)self0 prevProbMap:(id)self1 refinedProbMap:(id)self2 probMap4TrRefW:(id)self3 metaBuf:(id)self4 metaBufArray:(id *)self5 forceToSpatial:(BOOL)self6 waitForComplete:(BOOL)self7;
+- (int64_t)unpackIspLsMaskAndRoisForNextFrameLiteWithFrameData:(id *)data futureOpticalCenter:(int *)center outputFutureFrameCnt:(id *)cnt outputFutureMetaBuf:;
+- (int64_t)unpackIspLsMaskAndRoisForNextFrameWithFrameData:(id *)data futureOpticalCenter:(id *)center currFrameMetaContainer:outputFutureFrameCnt:outputMTLBuffer:;
+- (int64_t)warpTrackingRefProbMap:(id)map refSpaProbMap:(id)probMap refReflLs:(id)ls mvf:(id)mvf metaBuf:(id)buf metaBufArray:(id *)array waitForComplete:(BOOL)complete;
+- (void)_initParamsWithLowLight:(BOOL)light;
 - (void)_resetIntermediateVariables;
 - (void)dealloc;
 - (void)reset;
-- (void)setConfiguration:(id *)a3;
+- (void)setConfiguration:(id *)configuration;
 @end
 
 @implementation VideoDeghostingDetectionV2
@@ -131,9 +131,9 @@
   self->_currSegmentProcessedFrameCnt = 0;
 }
 
-- (void)_initParamsWithLowLight:(BOOL)a3
+- (void)_initParamsWithLowLight:(BOOL)light
 {
-  v3 = a3;
+  lightCopy = light;
   p_searchRadiusMin = &self->_params.tempDetect.searchRadiusMin;
   *&self->_params.luxLevelGatingThresholdON = 0x3E800000320;
   self->_params.lightSourceBoxSizeThreshold = 8.0;
@@ -145,7 +145,7 @@
   *&self->_params.colorScore.saturationUpperThreshold = 1036831949;
   self->_params.colorScore.valueUpperThreshold = 1.0;
   *&self->_params.colorScore.hueLowerRange = xmmword_2487C3B40;
-  if (v3)
+  if (lightCopy)
   {
     v6 = 128;
   }
@@ -164,7 +164,7 @@
   *&self->_params.maxAllowedOpticalCenterOffset = 0x3E19999A00000014;
 }
 
-- (int64_t)unpackIspLsMaskAndRoisForNextFrameWithFrameData:(id *)a3 futureOpticalCenter:(id *)a4 currFrameMetaContainer:outputFutureFrameCnt:outputMTLBuffer:
+- (int64_t)unpackIspLsMaskAndRoisForNextFrameWithFrameData:(id *)data futureOpticalCenter:(id *)center currFrameMetaContainer:outputFutureFrameCnt:outputMTLBuffer:
 {
   v7 = v5;
   v8 = v4;
@@ -172,7 +172,7 @@
   v13 = isLowLightingCondition();
   processedFrameCnt = self->_processedFrameCnt;
   *v8 = processedFrameCnt + 1;
-  v15 = createSingleCachedTextureFromPixelBuffer(a3->var0, [(GGMMetalToolBox *)self->_metalToolBox cvMetalTextureCacheRef], self->_device, 0, 0);
+  v15 = createSingleCachedTextureFromPixelBuffer(data->var0, [(GGMMetalToolBox *)self->_metalToolBox cvMetalTextureCacheRef], self->_device, 0, 0);
   frameTPlus1Texture = self->_frameTPlus1Texture;
   self->_frameTPlus1Texture = v15;
 
@@ -184,12 +184,12 @@
 
   if (processedFrameCnt)
   {
-    v24 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v25 = self->_frameTPlus1Texture;
     lrHwLsMask0 = self->_lrHwLsMask0;
     lrHwLsMask0Texture = self->_lrHwLsMask0Texture;
-    v38 = v24;
-    v21 = [(VideoDeghostingDetectionV2 *)self processHwLsMaskAndGetRoisOpticalCenter:v25 inputFrame:a4 prevMetaContainer:1 considerDist2PrevGhostWhenSort:lrHwLsMask0 outputMask:lrHwLsMask0Texture outputMaskTexture:v13 isLowLight:v10 outputArray:&v38];
+    v38 = array;
+    v21 = [(VideoDeghostingDetectionV2 *)self processHwLsMaskAndGetRoisOpticalCenter:v25 inputFrame:center prevMetaContainer:1 considerDist2PrevGhostWhenSort:lrHwLsMask0 outputMask:lrHwLsMask0Texture outputMaskTexture:v13 isLowLight:v10 outputArray:&v38];
     v22 = v38;
 
     if (!v21)
@@ -201,12 +201,12 @@
 
   else
   {
-    v17 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v18 = self->_frameTPlus1Texture;
     lrHwLsMask1 = self->_lrHwLsMask1;
     lrHwLsMask1Texture = self->_lrHwLsMask1Texture;
-    v37 = v17;
-    v21 = [(VideoDeghostingDetectionV2 *)self processHwLsMaskAndGetRoisOpticalCenter:v18 inputFrame:a4 prevMetaContainer:1 considerDist2PrevGhostWhenSort:lrHwLsMask1 outputMask:lrHwLsMask1Texture outputMaskTexture:v13 isLowLight:v10 outputArray:&v37];
+    v37 = array2;
+    v21 = [(VideoDeghostingDetectionV2 *)self processHwLsMaskAndGetRoisOpticalCenter:v18 inputFrame:center prevMetaContainer:1 considerDist2PrevGhostWhenSort:lrHwLsMask1 outputMask:lrHwLsMask1Texture outputMaskTexture:v13 isLowLight:v10 outputArray:&v37];
     v22 = v37;
 
     if (!v21)
@@ -216,7 +216,7 @@ LABEL_7:
       v28 = *(&self->super.isa + v23);
       *(&self->super.isa + v23) = v22;
 
-      v29 = [MEMORY[0x277CBEB18] array];
+      array3 = [MEMORY[0x277CBEB18] array];
       detectionUtils = self->_detectionUtils;
       v31 = 96;
       if ((processedFrameCnt & 1) == 0)
@@ -225,16 +225,16 @@ LABEL_7:
       }
 
       v32 = *(&self->super.isa + v31);
-      v36 = v29;
+      v36 = array3;
       v21 = [(VDGDetectionUtilsV2 *)detectionUtils generateDetectionRoiList:v32 outputArray:&v36];
       v22 = v36;
 
       if (!v21)
       {
-        v33 = [*v7 contents];
-        if (v33)
+        contents = [*v7 contents];
+        if (contents)
         {
-          bzero(v33, 0x11650uLL);
+          bzero(contents, 0x11650uLL);
           *&v34 = self->_filteredOpticalCenterShift;
           [(GGMMetalToolBox *)self->_metalToolBox updateMetaContainerBuffer:self->_futureMetaTmp withDetectedROI:v22 isLowLight:v13 opticalCenter:v10 opticalCenterShift:v34];
           [VideoDeghostingDetectionV2 unpackIspLsMaskAndRoisForNextFrameWithFrameData:[(MTLBuffer *)self->_futureMeta4RedoTracking contents] futureOpticalCenter:[(MTLBuffer *)self->_futureMetaTmp contents] currFrameMetaContainer:? outputFutureFrameCnt:? outputMTLBuffer:?];
@@ -250,39 +250,39 @@ LABEL_7:
   }
 
 LABEL_13:
-  __destructor_8_s8_s16_s24_s32_s40(a3);
+  __destructor_8_s8_s16_s24_s32_s40(data);
   return v21;
 }
 
-- (int64_t)unpackIspLsMaskAndRoisForNextFrameLiteWithFrameData:(id *)a3 futureOpticalCenter:(int *)a4 outputFutureFrameCnt:(id *)a5 outputFutureMetaBuf:
+- (int64_t)unpackIspLsMaskAndRoisForNextFrameLiteWithFrameData:(id *)data futureOpticalCenter:(int *)center outputFutureFrameCnt:(id *)cnt outputFutureMetaBuf:
 {
   v8 = v5;
   v11 = isLowLightingCondition();
-  *a4 = LODWORD(self->_processedFrameCnt) + 1;
-  var0 = a3->var0;
-  self->_frameTPlus1Buf = a3->var0;
+  *center = LODWORD(self->_processedFrameCnt) + 1;
+  var0 = data->var0;
+  self->_frameTPlus1Buf = data->var0;
   v13 = createSingleCachedTextureFromPixelBuffer(var0, [(GGMMetalToolBox *)self->_metalToolBox cvMetalTextureCacheRef], self->_device, 0, 0);
   frameTPlus1Texture = self->_frameTPlus1Texture;
   self->_frameTPlus1Texture = v13;
 
-  bzero([*a5 contents], 0x11650uLL);
+  bzero([*cnt contents], 0x11650uLL);
   metalToolBox = self->_metalToolBox;
-  v16 = *a5;
+  v16 = *cnt;
   v17 = objc_alloc_init(MEMORY[0x277CBEA60]);
   *&v18 = self->_filteredOpticalCenterShift;
   [(GGMMetalToolBox *)metalToolBox updateMetaContainerBuffer:v16 withDetectedROI:v17 isLowLight:v11 opticalCenter:v8 opticalCenterShift:v18];
 
-  __destructor_8_s8_s16_s24_s32_s40(a3);
+  __destructor_8_s8_s16_s24_s32_s40(data);
   return 0;
 }
 
-- (BOOL)process:(VideoDeghostingDetectionV2 *)self futureFrames:(SEL)a2 opticalCenter:(__CVBuffer *)a3 futureOpticalCenter:(id *)a4 opticalCenterMvShift:(float)a5 outputImgBufTMinus1:(__CVBuffer *)a6 outputImgBufTMinus2:(__CVBuffer *)a7
+- (BOOL)process:(VideoDeghostingDetectionV2 *)self futureFrames:(SEL)frames opticalCenter:(__CVBuffer *)center futureOpticalCenter:(id *)opticalCenter opticalCenterMvShift:(float)shift outputImgBufTMinus1:(__CVBuffer *)minus1 outputImgBufTMinus2:(__CVBuffer *)minus2
 {
   v9 = v7;
-  v10 = *&a5;
+  v10 = *&shift;
   self->_filteredOpticalCenterShift = v8;
   v12 = self->_currSegmentProcessedFrameCnt != 0;
-  if ([(VideoDeghostingDetectionV2 *)self _initDetection:a3 futureFrames:a4 outputImgBufTMinus1:a6 outputImgBufTMinus2:a7])
+  if ([(VideoDeghostingDetectionV2 *)self _initDetection:center futureFrames:opticalCenter outputImgBufTMinus1:minus1 outputImgBufTMinus2:minus2])
   {
     return 0;
   }
@@ -294,16 +294,16 @@ LABEL_13:
   v16 = (processedFrameCnt - 1) % 3;
   v17 = self->_metaBufferArray[v16];
   v18 = self->_metaBufferArray[v15];
-  v19 = [(MTLBuffer *)v18 contents];
+  contents = [(MTLBuffer *)v18 contents];
   v126 = v17;
   v127 = v18;
   if (!self->_currSegmentProcessedFrameCnt)
   {
-    v20 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     inputTexture = self->_inputTexture;
     lrHwLsMask0 = self->_lrHwLsMask0;
     lrHwLsMask0Texture = self->_lrHwLsMask0Texture;
-    v159[0] = v20;
+    v159[0] = array;
     v128 = v13;
     v24 = [(VideoDeghostingDetectionV2 *)self processHwLsMaskAndGetRoisOpticalCenter:inputTexture inputFrame:0 prevMetaContainer:0 considerDist2PrevGhostWhenSort:lrHwLsMask0 outputMask:lrHwLsMask0Texture outputMaskTexture:v13 isLowLight:v10 outputArray:v159];
     v25 = v159[0];
@@ -311,8 +311,8 @@ LABEL_13:
     if (!v24)
     {
       v122 = v16;
-      v26 = [MEMORY[0x277CBEB18] array];
-      if (v26)
+      array2 = [MEMORY[0x277CBEB18] array];
+      if (array2)
       {
         if ([v25 count])
         {
@@ -321,7 +321,7 @@ LABEL_13:
           do
           {
             v29 = [v25 objectAtIndexedSubscript:v27];
-            [v26 addObject:v29];
+            [array2 addObject:v29];
 
             v27 = ++v28;
             v30 = [v25 count];
@@ -339,10 +339,10 @@ LABEL_13:
           while (v31 > v28);
         }
 
-        v124 = [(MTLTexture *)self->_inputTexture width];
-        v32 = [(MTLTexture *)self->_inputTexture height];
-        v33.f32[0] = v124;
-        v33.f32[1] = v32;
+        width = [(MTLTexture *)self->_inputTexture width];
+        height = [(MTLTexture *)self->_inputTexture height];
+        v33.f32[0] = width;
+        v33.f32[1] = height;
         v34 = COERCE_DOUBLE(vdiv_f32(*&v10, v33));
         v35 = 352;
         if ((self->_processedFrameCnt & 1) == 0)
@@ -352,21 +352,21 @@ LABEL_13:
 
         if (![(VideoDeghostingDetectionV2 *)self processHwLsMaskNormalizedCenter:*(&self->super.isa + v35) input:self->_reflHwLsMask0Texture output:0 waitForComplete:v34])
         {
-          v36 = [MEMORY[0x277CBEB18] array];
+          array3 = [MEMORY[0x277CBEB18] array];
           detectionUtils = self->_detectionUtils;
-          v158 = v36;
-          v38 = [(VDGDetectionUtilsV2 *)detectionUtils generateDetectionRoiList:v26 outputArray:&v158];
+          v158 = array3;
+          v38 = [(VDGDetectionUtilsV2 *)detectionUtils generateDetectionRoiList:array2 outputArray:&v158];
           v39 = v158;
 
           if (!v38)
           {
-            bzero(v19, 0x11650uLL);
+            bzero(contents, 0x11650uLL);
             *&v40 = self->_filteredOpticalCenterShift;
             [(GGMMetalToolBox *)self->_metalToolBox updateMetaContainerBuffer:v127 withDetectedROI:v39 isLowLight:v128 opticalCenter:v10 opticalCenterShift:v40];
-            v41 = *v19;
+            v41 = *contents;
             if (v41 >= 1)
             {
-              v42 = v19;
+              v42 = contents;
               do
               {
                 LSTrackID = self->_LSTrackID;
@@ -396,7 +396,7 @@ LABEL_13:
   }
 
 LABEL_19:
-  memcpy([(MTLBuffer *)self->_currMetaTmp contents], v19, 0x11650uLL);
+  memcpy([(MTLBuffer *)self->_currMetaTmp contents], contents, 0x11650uLL);
   v125 = v15;
   v44 = [(GGMMetalToolBox *)self->_metalToolBox generateMetaContainerArrayBufFromMetaContainerBuf:v18 imageRect:0.0, 0.0, [(MTLTexture *)self->_inputTexture width], [(MTLTexture *)self->_inputTexture height]];
   v154 = 0;
@@ -419,8 +419,8 @@ LABEL_19:
   block[1] = 3221225472;
   block[2] = __146__VideoDeghostingDetectionV2_process_futureFrames_opticalCenter_futureOpticalCenter_opticalCenterMvShift_outputImgBufTMinus1_outputImgBufTMinus2___block_invoke;
   block[3] = &unk_278F538C0;
-  block[8] = a4;
-  block[9] = v19;
+  block[8] = opticalCenter;
+  block[9] = contents;
   block[4] = self;
   block[5] = &v148;
   *&block[10] = v9;
@@ -435,9 +435,9 @@ LABEL_19:
   v136[3] = &unk_278F538E8;
   v136[4] = self;
   v139 = v147;
-  v140 = v19;
+  v140 = contents;
   v143 = v16;
-  v141 = a3;
+  centerCopy = center;
   v49 = v18;
   v137 = v49;
   v142 = v44;
@@ -447,16 +447,16 @@ LABEL_19:
   v145 = v12;
   dispatch_group_async(v47, v48, v136);
   dispatch_group_wait(self->_dispatchGroup, 0xFFFFFFFFFFFFFFFFLL);
-  if (a4->var2 < 1)
+  if (opticalCenter->var2 < 1)
   {
     goto LABEL_33;
   }
 
   v51 = self->_inputTexture;
-  if (v19[4116])
+  if (contents[4116])
   {
-    v52 = [(MTLTexture *)v51 width];
-    v53 = [(MTLTexture *)self->_inputTexture height];
+    width2 = [(MTLTexture *)v51 width];
+    height2 = [(MTLTexture *)self->_inputTexture height];
     v55 = 352;
     if ((v155[3] & 1) == 0)
     {
@@ -464,8 +464,8 @@ LABEL_19:
     }
 
     v56 = *(&self->super.isa + v55);
-    v54.f32[1] = v53;
-    v54.f32[0] = v52;
+    v54.f32[1] = height2;
+    v54.f32[0] = width2;
     v57 = COERCE_DOUBLE(vdiv_f32(*&v9, v54));
     v58 = 384;
     if ((v155[3] & 1) == 0)
@@ -478,8 +478,8 @@ LABEL_19:
 
   else
   {
-    v60 = [(MTLTexture *)v51 width];
-    v61 = [(MTLTexture *)self->_inputTexture height];
+    width3 = [(MTLTexture *)v51 width];
+    height3 = [(MTLTexture *)self->_inputTexture height];
     v63 = 352;
     if ((v155[3] & 1) == 0)
     {
@@ -487,8 +487,8 @@ LABEL_19:
     }
 
     v64 = *(&self->super.isa + v63);
-    v62.f32[1] = v61;
-    v62.f32[0] = v60;
+    v62.f32[1] = height3;
+    v62.f32[0] = width3;
     v65 = COERCE_DOUBLE(vdiv_f32(*&v9, v62));
     v66 = 384;
     if ((v155[3] & 1) == 0)
@@ -514,17 +514,17 @@ LABEL_81:
 
 LABEL_33:
   v67 = v50;
-  v68 = [MEMORY[0x277CBEB18] array];
-  v129 = [MEMORY[0x277CBEB18] array];
-  if ((v19[4116] & 1) == 0)
+  array4 = [MEMORY[0x277CBEB18] array];
+  array5 = [MEMORY[0x277CBEB18] array];
+  if ((contents[4116] & 1) == 0)
   {
     maskToRoi = self->_maskToRoi;
     probMap4RoiGen = self->_probMap4RoiGen;
-    v77 = vcvtq_s32_f32(*(v19 + 4));
+    v77 = vcvtq_s32_f32(*(contents + 4));
     v78 = vshrq_n_s32(vsraq_n_u32(v77, v77, 0x1FuLL), 1uLL);
     v79 = vrev64q_s32(v78);
     *&v80 = vuzp1q_s32(v78, v79).u64[0];
-    v135 = v68;
+    v135 = array4;
     v78.i32[0] = 1124007936;
     v79.i32[0] = 4.0;
     v81 = [(MaskToRoi *)maskToRoi getBBoxesUsingGraphTraversalFrom:probMap4RoiGen pixValThreshold:2 bboxSizeThreshold:1 scaleFactor:&v135 roi:*v78.i64 returnAsDetectedROI:*v79.i64 outputArray:v80];
@@ -532,25 +532,25 @@ LABEL_33:
 
     if (!v81)
     {
-      v82 = [MEMORY[0x277CBEB18] array];
+      array6 = [MEMORY[0x277CBEB18] array];
       v83 = self->_detectionUtils;
-      v134 = v82;
-      v84 = [(VDGDetectionUtilsV2 *)v83 getDetectionRoiListFromMeta:v19 outputArray:&v134];
+      v134 = array6;
+      v84 = [(VDGDetectionUtilsV2 *)v83 getDetectionRoiListFromMeta:contents outputArray:&v134];
       v85 = v134;
 
       if (!v84)
       {
-        if (!self->_configuration.externalCfg.drawBoundingBox || (v86 = self->_detectionUtils, v133 = v129, v87 = [(VDGDetectionUtilsV2 *)v86 getReflLsListFromMeta:v19 outputArray:&v133], v88 = v133, v129, v129 = v88, !v87))
+        if (!self->_configuration.externalCfg.drawBoundingBox || (v86 = self->_detectionUtils, v133 = array5, v87 = [(VDGDetectionUtilsV2 *)v86 getReflLsListFromMeta:contents outputArray:&v133], v88 = v133, array5, array5 = v88, !v87))
         {
           v89 = [(VDGDetectionUtilsV2 *)self->_detectionUtils pruneGhostList:v72 againstReflLsList:v85 dilation:0.0];
-          [(VDGDetectionUtilsV2 *)self->_detectionUtils getRoiMvForRoiList:v72 fromMeta:v19];
+          [(VDGDetectionUtilsV2 *)self->_detectionUtils getRoiMvForRoiList:v72 fromMeta:contents];
           *&v90 = self->_filteredOpticalCenterShift;
-          [(GGMMetalToolBox *)self->_metalToolBox updateMetaContainerBuffer:v49 withDetectedROI:v72 isLowLight:*(v19 + 8232) opticalCenter:*(v19 + 1478) opticalCenterShift:v90];
-          [(VDGDetectionUtilsV2 *)self->_detectionUtils setRoiMvForMeta:v19 fromRoiList:v72];
+          [(GGMMetalToolBox *)self->_metalToolBox updateMetaContainerBuffer:v49 withDetectedROI:v72 isLowLight:*(contents + 8232) opticalCenter:*(contents + 1478) opticalCenterShift:v90];
+          [(VDGDetectionUtilsV2 *)self->_detectionUtils setRoiMvForMeta:contents fromRoiList:v72];
           if (self->_currSegmentProcessedFrameCnt)
           {
-            [(VDGDetectionUtilsV2 *)self->_detectionUtils trackMeta:v19 refMeta:[(MTLBuffer *)v67 contents] currMaxTrackId:&self->_trackID];
-            if (*v19 < 1)
+            [(VDGDetectionUtilsV2 *)self->_detectionUtils trackMeta:contents refMeta:[(MTLBuffer *)v67 contents] currMaxTrackId:&self->_trackID];
+            if (*contents < 1)
             {
               goto LABEL_48;
             }
@@ -558,7 +558,7 @@ LABEL_33:
 
           else
           {
-            v91 = *v19;
+            v91 = *contents;
             if (v91 < 1)
             {
 LABEL_48:
@@ -567,7 +567,7 @@ LABEL_48:
               goto LABEL_49;
             }
 
-            v92 = (v19 + 4118);
+            v92 = (contents + 4118);
             do
             {
               trackID = self->_trackID;
@@ -582,14 +582,14 @@ LABEL_48:
           v94 = 2059;
           do
           {
-            v95 = [v72 objectAtIndexedSubscript:v94 - 2059];
-            [v95 setTrackID:*&v19[2 * v94]];
+            2059 = [v72 objectAtIndexedSubscript:v94 - 2059];
+            [2059 setTrackID:*&contents[2 * v94]];
 
             v96 = v94 - 2058;
             ++v94;
           }
 
-          while (v96 < *v19);
+          while (v96 < *contents);
           goto LABEL_48;
         }
       }
@@ -602,8 +602,8 @@ LABEL_83:
 
   v69 = v44;
   v70 = self->_detectionUtils;
-  v132 = v68;
-  v71 = [(VDGDetectionUtilsV2 *)v70 getDetectionRoiListFromMeta:v19 outputArray:&v132];
+  v132 = array4;
+  v71 = [(VDGDetectionUtilsV2 *)v70 getDetectionRoiListFromMeta:contents outputArray:&v132];
   v72 = v132;
 
   if (v71)
@@ -615,7 +615,7 @@ LABEL_49:
   probMap4RepairQueue = self->_probMap4RepairQueue;
   LODWORD(v73) = 1.0;
   LODWORD(v74) = 1.0;
-  if ([(VideoDeghostingDetectionV2 *)self dlSpatialRepairYUV:a3 output:self->_dlSpatialMitigated repairMask:self->_probMap4RepairQueue[v125] blendMask:self->_probMap4RepairQueue[v125] inputTex:self->_inputTexture repairMaskTex:v73 blendMaskTex:v74 wRepairedY:self->_probMap4RepairTexQueue[v125] wRepairedUV:v49 metaBuf:?])
+  if ([(VideoDeghostingDetectionV2 *)self dlSpatialRepairYUV:center output:self->_dlSpatialMitigated repairMask:self->_probMap4RepairQueue[v125] blendMask:self->_probMap4RepairQueue[v125] inputTex:self->_inputTexture repairMaskTex:v73 blendMaskTex:v74 wRepairedY:self->_probMap4RepairTexQueue[v125] wRepairedUV:v49 metaBuf:?])
   {
     goto LABEL_83;
   }
@@ -630,7 +630,7 @@ LABEL_49:
   if (self->_currSegmentProcessedFrameCnt < 2)
   {
     v105 = &self->super.isa + v125;
-    var2 = a4->var2;
+    var2 = opticalCenter->var2;
     if (var2 < 1)
     {
       frameTPlus1Texture = 0;
@@ -651,9 +651,9 @@ LABEL_49:
     v114 = v105[31];
     v115 = v105[80];
     v116 = var2 < 1 ? 0 : self->_frameTPlus1Buf;
-    BYTE1(v121) = (var2 < 1) | *(v19 + 8232) ^ 1;
+    BYTE1(v121) = (var2 < 1) | *(contents + 8232) ^ 1;
     LOBYTE(v121) = 1;
-    v117 = [VideoDeghostingDetectionV2 updateRepairedRefYUVInput:"updateRepairedRefYUVInput:opticalCenter:prob:errRescaleProb:prevProb:refinedProb:probMap4TrRefW:frRef0:frRef1:nextFrame:nextFrameMvf:nextFrameMvfBuf:nextOpticalCenter:inputBuf:probBuf:errRescaleProbBuf:prevProbBuf:refinedProbBuf:probMap4TrRefWBuf:frRef0Buf:frRef1Buf:nextFrameBuf:metaBuf:metaBufArray:forceToSpatial:waitForComplete:" opticalCenter:v10 prob:v9 errRescaleProb:v98 prevProb:v98 refinedProb:frameTPlus1Texture probMap4TrRefW:self->_mvf4FutureTexture frRef0:self->_mvf4Future frRef1:a3 nextFrame:probMap4RepairQueue[v125] nextFrameMvf:v113 nextFrameMvfBuf:probMap4RepairQueue[v125] nextOpticalCenter:v114 inputBuf:v115 probBuf:a3 errRescaleProbBuf:a3 prevProbBuf:v116 refinedProbBuf:v49 probMap4TrRefWBuf:v69 frRef0Buf:v121 frRef1Buf:? nextFrameBuf:? metaBuf:? metaBufArray:? forceToSpatial:? waitForComplete:?];
+    v117 = [VideoDeghostingDetectionV2 updateRepairedRefYUVInput:"updateRepairedRefYUVInput:opticalCenter:prob:errRescaleProb:prevProb:refinedProb:probMap4TrRefW:frRef0:frRef1:nextFrame:nextFrameMvf:nextFrameMvfBuf:nextOpticalCenter:inputBuf:probBuf:errRescaleProbBuf:prevProbBuf:refinedProbBuf:probMap4TrRefWBuf:frRef0Buf:frRef1Buf:nextFrameBuf:metaBuf:metaBufArray:forceToSpatial:waitForComplete:" opticalCenter:v10 prob:v9 errRescaleProb:v98 prevProb:v98 refinedProb:frameTPlus1Texture probMap4TrRefW:self->_mvf4FutureTexture frRef0:self->_mvf4Future frRef1:center nextFrame:probMap4RepairQueue[v125] nextFrameMvf:v113 nextFrameMvfBuf:probMap4RepairQueue[v125] nextOpticalCenter:v114 inputBuf:v115 probBuf:center errRescaleProbBuf:center prevProbBuf:v116 refinedProbBuf:v49 probMap4TrRefWBuf:v69 frRef0Buf:v121 frRef1Buf:? nextFrameBuf:? metaBuf:? metaBufArray:? forceToSpatial:? waitForComplete:?];
   }
 
   else
@@ -661,7 +661,7 @@ LABEL_49:
     v100 = &self->super.isa + v125;
     v101 = v100[34];
     v102 = v100[83];
-    v103 = a4->var2;
+    v103 = opticalCenter->var2;
     if (v103 < 1)
     {
       v104 = 0;
@@ -681,12 +681,12 @@ LABEL_49:
     v109 = v100[31];
     v110 = v100[80];
     v111 = v103 < 1 ? 0 : self->_frameTPlus1Buf;
-    BYTE1(v121) = (v103 < 1) | *(v19 + 8232) ^ 1;
+    BYTE1(v121) = (v103 < 1) | *(contents + 8232) ^ 1;
     LOBYTE(v121) = 0;
-    v117 = [(VideoDeghostingDetectionV2 *)self updateRepairedRefYUVInput:v98 opticalCenter:self->_probMap4RepairTexQueue[v125] prob:*(&self->super.isa + v99) errRescaleProb:self->_probMap4RepairTexQueue[(v123 - 2) % 3] prevProb:v101 refinedProb:v102 probMap4TrRefW:v10 frRef0:v9 frRef1:self->_frameTMinus1Texture nextFrame:self->_frameTMinus2Texture nextFrameMvf:v104 nextFrameMvfBuf:self->_mvf4FutureTexture nextOpticalCenter:self->_mvf4Future inputBuf:a3 probBuf:probMap4RepairQueue[v125] errRescaleProbBuf:*(&self->super.isa + v108) prevProbBuf:probMap4RepairQueue[(v123 - 2) % 3] refinedProbBuf:v109 probMap4TrRefWBuf:v110 frRef0Buf:self->_frameTMinus1 frRef1Buf:self->_frameTMinus2 nextFrameBuf:v111 metaBuf:v49 metaBufArray:v69 forceToSpatial:v121 waitForComplete:?];
+    v117 = [(VideoDeghostingDetectionV2 *)self updateRepairedRefYUVInput:v98 opticalCenter:self->_probMap4RepairTexQueue[v125] prob:*(&self->super.isa + v99) errRescaleProb:self->_probMap4RepairTexQueue[(v123 - 2) % 3] prevProb:v101 refinedProb:v102 probMap4TrRefW:v10 frRef0:v9 frRef1:self->_frameTMinus1Texture nextFrame:self->_frameTMinus2Texture nextFrameMvf:v104 nextFrameMvfBuf:self->_mvf4FutureTexture nextOpticalCenter:self->_mvf4Future inputBuf:center probBuf:probMap4RepairQueue[v125] errRescaleProbBuf:*(&self->super.isa + v108) prevProbBuf:probMap4RepairQueue[(v123 - 2) % 3] refinedProbBuf:v109 probMap4TrRefWBuf:v110 frRef0Buf:self->_frameTMinus1 frRef1Buf:self->_frameTMinus2 nextFrameBuf:v111 metaBuf:v49 metaBufArray:v69 forceToSpatial:v121 waitForComplete:?];
   }
 
-  if (v117 || *(v19 + 8232) == 1 && a4->var2 >= 1 && [(VideoDeghostingDetectionV2 *)self doTrackingToNextFrameCurrMetaWithDetectionResults:v49 currMetaWithMvToFuture:self->_currMetaTmp futureMeta:v149[5] opticalCenter:*(v155 + 6) futureOpticalCenter:0 futureFrameCnt:1 doLite:v10 waitForComplete:v9])
+  if (v117 || *(contents + 8232) == 1 && opticalCenter->var2 >= 1 && [(VideoDeghostingDetectionV2 *)self doTrackingToNextFrameCurrMetaWithDetectionResults:v49 currMetaWithMvToFuture:self->_currMetaTmp futureMeta:v149[5] opticalCenter:*(v155 + 6) futureOpticalCenter:0 futureFrameCnt:1 doLite:v10 waitForComplete:v9])
   {
     goto LABEL_83;
   }
@@ -806,27 +806,27 @@ uint64_t __146__VideoDeghostingDetectionV2_process_futureFrames_opticalCenter_fu
   return result;
 }
 
-- (int64_t)repairTarget:(VideoDeghostingDetectionV2 *)self opticalCenter:(SEL)a2 frRef0:(id)a3 frRef1:(id)a4 nextFrame:(id)a5 nextFrameMvf:(id)a6 nextFrameMvfBuf:(id)a7 nextOpticalCenter:(__CVBuffer *)a8 probMap:(id)a9 errRescaleProbMap:(id)a10 prevProbMap:(id)a11 refinedProbMap:(id)a12 probMap4TrRefW:(id)a13 metaBuf:(id)a14 metaBufArray:(id *)a15 forceToSpatial:(BOOL)a16 waitForComplete:(BOOL)a17
+- (int64_t)repairTarget:(VideoDeghostingDetectionV2 *)self opticalCenter:(SEL)center frRef0:(id)ref0 frRef1:(id)ref1 nextFrame:(id)frame nextFrameMvf:(id)mvf nextFrameMvfBuf:(id)buf nextOpticalCenter:(__CVBuffer *)opticalCenter probMap:(id)map errRescaleProbMap:(id)self0 prevProbMap:(id)self1 refinedProbMap:(id)self2 probMap4TrRefW:(id)self3 metaBuf:(id)self4 metaBufArray:(id *)self5 forceToSpatial:(BOOL)self6 waitForComplete:(BOOL)self7
 {
   v23 = v18;
   v24 = v17;
-  v26 = a3;
-  v27 = a4;
-  v58 = a5;
-  v56 = a6;
-  v55 = a7;
-  v57 = a9;
-  v54 = a10;
-  v53 = a11;
-  v59 = a12;
-  v28 = a13;
-  v29 = a14;
+  ref0Copy = ref0;
+  ref1Copy = ref1;
+  frameCopy = frame;
+  mvfCopy = mvf;
+  bufCopy = buf;
+  mapCopy = map;
+  probMapCopy = probMap;
+  prevProbMapCopy = prevProbMap;
+  refinedProbMapCopy = refinedProbMap;
+  wCopy = w;
+  metaBufCopy = metaBuf;
   v94 = 0;
   v95 = &v94;
   v96 = 0x3032000000;
   v97 = __Block_byref_object_copy__1;
   v98 = __Block_byref_object_dispose__1;
-  v99 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
   v30 = v95[5];
   if (!v30)
   {
@@ -836,29 +836,29 @@ LABEL_32:
   }
 
   [v30 setLabel:@"detection"];
-  if (a15->var1 >= 1)
+  if (array->var1 >= 1)
   {
     v31 = 0;
     do
     {
-      v32 = [v95[5] computeCommandEncoder];
-      if (!v32)
+      computeCommandEncoder = [v95[5] computeCommandEncoder];
+      if (!computeCommandEncoder)
       {
         goto LABEL_32;
       }
 
-      v33 = a15->var0[v31];
-      v34 = [(GGMMetalToolBox *)self->_metalToolBox encodeGetOverlapWithRefs:v32 input:v26 probMap:v28 metaBuf:v33];
-      if (v34 || (v34 = [(GGMMetalToolBox *)self->_metalToolBox encodeCollectClusterOverlapWithRefs:v32 clusterMetaBuf:v33 metaBuf:v29]) != 0 || (v34 = [(GGMMetalToolBox *)self->_metalToolBox encodeCopyMvfToCommandEncoder:v32 fullResTarget:v26 mvf0:self->_flowMvf0Texture outMvf0:self->_flowMvf1Texture mvf1:self->_backwarpFlowMvf0Texture outMvf1:self->_backwarpFlowMvf1Texture meta:v33]) != 0)
+      v33 = array->var0[v31];
+      v34 = [(GGMMetalToolBox *)self->_metalToolBox encodeGetOverlapWithRefs:computeCommandEncoder input:ref0Copy probMap:wCopy metaBuf:v33];
+      if (v34 || (v34 = [(GGMMetalToolBox *)self->_metalToolBox encodeCollectClusterOverlapWithRefs:computeCommandEncoder clusterMetaBuf:v33 metaBuf:metaBufCopy]) != 0 || (v34 = [(GGMMetalToolBox *)self->_metalToolBox encodeCopyMvfToCommandEncoder:computeCommandEncoder fullResTarget:ref0Copy mvf0:self->_flowMvf0Texture outMvf0:self->_flowMvf1Texture mvf1:self->_backwarpFlowMvf0Texture outMvf1:self->_backwarpFlowMvf1Texture meta:v33]) != 0)
       {
 
         goto LABEL_29;
       }
 
-      [v32 endEncoding];
+      [computeCommandEncoder endEncoding];
     }
 
-    while (++v31 < a15->var1);
+    while (++v31 < array->var1);
   }
 
   v88 = 0;
@@ -866,33 +866,33 @@ LABEL_32:
   v90 = 0x3032000000;
   v91 = __Block_byref_object_copy__1;
   v92 = __Block_byref_object_dispose__1;
-  v93 = [v95[5] computeCommandEncoder];
-  v34 = [(GGMMetalToolBox *)self->_metalToolBox encodeBilinearRescale2ImgsYUV:v89[5] fullResInput:v26 input0:v27 output0:self->_lrBmRef0Texture input1:v58 output1:self->_lrBmRef1Texture meta:v29];
+  computeCommandEncoder2 = [v95[5] computeCommandEncoder];
+  v34 = [(GGMMetalToolBox *)self->_metalToolBox encodeBilinearRescale2ImgsYUV:v89[5] fullResInput:ref0Copy input0:ref1Copy output0:self->_lrBmRef0Texture input1:frameCopy output1:self->_lrBmRef1Texture meta:metaBufCopy];
   if (!v34)
   {
-    v34 = [(GGMMetalToolBox *)self->_metalToolBox encodeSpatialRepairYUVToCommandEncoder:v89[5] input:v26 probMap4Spatial:v59 spatialOutput:self->_tradSpatialMitigatedTexture metaBuf:v29];
+    v34 = [(GGMMetalToolBox *)self->_metalToolBox encodeSpatialRepairYUVToCommandEncoder:v89[5] input:ref0Copy probMap4Spatial:refinedProbMapCopy spatialOutput:self->_tradSpatialMitigatedTexture metaBuf:metaBufCopy];
     if (!v34)
     {
-      v34 = [(GGMMetalToolBox *)self->_metalToolBox encodeBlendSpatialMitigatedYUVToCommandEncoder:v89[5] inputTexture:v26 probMapTexture:v57 probMap4TradSpatialTexture:v59 tradSpatialMitTexture:self->_tradSpatialMitigatedTexture dlSpatialMitTexture:self->_dlSpatialMitigatedTexture outputTexture:self->_spatialMitigatedTexture metaBuf:v29];
+      v34 = [(GGMMetalToolBox *)self->_metalToolBox encodeBlendSpatialMitigatedYUVToCommandEncoder:v89[5] inputTexture:ref0Copy probMapTexture:mapCopy probMap4TradSpatialTexture:refinedProbMapCopy tradSpatialMitTexture:self->_tradSpatialMitigatedTexture dlSpatialMitTexture:self->_dlSpatialMitigatedTexture outputTexture:self->_spatialMitigatedTexture metaBuf:metaBufCopy];
       if (!v34)
       {
         [v89[5] endEncoding];
         commitCommandBuffer(v95[5], 1);
         LOBYTE(v47) = 0;
-        v34 = [(VideoDeghostingDetectionV2 *)self getFlowTarget:self->_lrBmRef0Texture ref:self->_spatialMitigatedTexture targetBuf:0 refBuf:0 mvf:self->_flowMvf0 backwardMvf:self->_backwarpFlowMvf0 metaBuf:v29 skipRescaling:v47];
+        v34 = [(VideoDeghostingDetectionV2 *)self getFlowTarget:self->_lrBmRef0Texture ref:self->_spatialMitigatedTexture targetBuf:0 refBuf:0 mvf:self->_flowMvf0 backwardMvf:self->_backwarpFlowMvf0 metaBuf:metaBufCopy skipRescaling:v47];
         if (!v34)
         {
           if (self->_currSegmentProcessedFrameCnt <= 2)
           {
             LOBYTE(v48) = 0;
-            v34 = [(VideoDeghostingDetectionV2 *)self getFlowTarget:self->_lrBmRef1Texture ref:self->_spatialMitigatedTexture targetBuf:0 refBuf:0 mvf:self->_flowMvf1 backwardMvf:self->_backwarpFlowMvf1 metaBuf:v29 skipRescaling:v48];
+            v34 = [(VideoDeghostingDetectionV2 *)self getFlowTarget:self->_lrBmRef1Texture ref:self->_spatialMitigatedTexture targetBuf:0 refBuf:0 mvf:self->_flowMvf1 backwardMvf:self->_backwarpFlowMvf1 metaBuf:metaBufCopy skipRescaling:v48];
             if (v34)
             {
               goto LABEL_28;
             }
 
 LABEL_25:
-            v52 = v27;
+            v52 = ref1Copy;
             v84 = 0;
             v85 = &v84;
             v86 = 0x2020000000;
@@ -903,17 +903,17 @@ LABEL_25:
             block[1] = 3221225472;
             block[2] = __248__VideoDeghostingDetectionV2_repairTarget_opticalCenter_frRef0_frRef1_nextFrame_nextFrameMvf_nextFrameMvfBuf_nextOpticalCenter_probMap_errRescaleProbMap_prevProbMap_refinedProbMap_probMap4TrRefW_metaBuf_metaBufArray_forceToSpatial_waitForComplete___block_invoke;
             block[3] = &unk_278F53910;
-            v75 = v56;
-            v76 = self;
+            v75 = mvfCopy;
+            selfCopy = self;
             v80 = &v84;
-            v44 = v26;
+            v44 = ref0Copy;
             v77 = v44;
-            v45 = v29;
+            v45 = metaBufCopy;
             v78 = v45;
             v81 = v23;
             v82 = v24;
-            v83 = a8;
-            v79 = v55;
+            opticalCenterCopy = opticalCenter;
+            v79 = bufCopy;
             dispatch_group_async(dispatchGroup, concurrentQueue, block);
             v34 = v85[3];
             if (!v34)
@@ -928,34 +928,34 @@ LABEL_25:
               v60[4] = self;
               v69 = &v84;
               v70 = &v88;
-              v71 = a15;
+              arrayCopy = array;
               v61 = v52;
-              v62 = v58;
+              v62 = frameCopy;
               v63 = v44;
-              v64 = v57;
+              v64 = mapCopy;
               v65 = v45;
-              v66 = v54;
-              v67 = v53;
-              v72 = a16;
-              v73 = a17;
+              v66 = probMapCopy;
+              v67 = prevProbMapCopy;
+              spatialCopy = spatial;
+              completeCopy = complete;
               dispatch_group_async(v51, v50, v60);
               dispatch_group_wait(self->_dispatchGroup, 0xFFFFFFFFFFFFFFFFLL);
             }
 
             _Block_object_dispose(&v84, 8);
-            v27 = v52;
+            ref1Copy = v52;
             goto LABEL_28;
           }
 
-          v35 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+          commandBuffer2 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
           v36 = v95[5];
-          v95[5] = v35;
+          v95[5] = commandBuffer2;
 
           v37 = v95[5];
           if (v37)
           {
             [v37 setLabel:@"detection"];
-            if (a15->var1 < 1)
+            if (array->var1 < 1)
             {
 LABEL_24:
               commitCommandBuffer(v95[5], 0);
@@ -965,18 +965,18 @@ LABEL_24:
             v38 = 0;
             while (1)
             {
-              v39 = [v95[5] computeCommandEncoder];
+              computeCommandEncoder3 = [v95[5] computeCommandEncoder];
               v40 = v89[5];
-              v89[5] = v39;
+              v89[5] = computeCommandEncoder3;
 
               if (!v89[5])
               {
                 break;
               }
 
-              v41 = a15->var0[v38];
-              v34 = [(GGMMetalToolBox *)self->_metalToolBox encodeWarpMvf0WithMvf1ThenAddToMvf2ToCommandEncoder:v89[5] fullResTarget:v26 mvf0:self->_flowMvf0Texture mvf1:self->_flowMvf1Texture mvf2:self->_flowMvf1Texture outMvf:self->_flowMvf1Texture meta:v41];
-              if (v34 || (v34 = [(GGMMetalToolBox *)self->_metalToolBox encodeWarpMvf0WithMvf1ToCommandEncoder:v89[5] fullResTarget:v26 mvf0:self->_backwarpFlowMvf1Texture mvf1:self->_backwarpFlowMvf0Texture outMvf:self->_warpedFlowMvfTexture meta:v41]) != 0 || (v34 = [(GGMMetalToolBox *)self->_metalToolBox encodeAddMvf0ToMvf1ToCommandEncoder:v89[5] fullResTarget:v26 mvf0:self->_warpedFlowMvfTexture mvf1:self->_backwarpFlowMvf0Texture outMvf:self->_backwarpFlowMvf1Texture meta:v41]) != 0)
+              v41 = array->var0[v38];
+              v34 = [(GGMMetalToolBox *)self->_metalToolBox encodeWarpMvf0WithMvf1ThenAddToMvf2ToCommandEncoder:v89[5] fullResTarget:ref0Copy mvf0:self->_flowMvf0Texture mvf1:self->_flowMvf1Texture mvf2:self->_flowMvf1Texture outMvf:self->_flowMvf1Texture meta:v41];
+              if (v34 || (v34 = [(GGMMetalToolBox *)self->_metalToolBox encodeWarpMvf0WithMvf1ToCommandEncoder:v89[5] fullResTarget:ref0Copy mvf0:self->_backwarpFlowMvf1Texture mvf1:self->_backwarpFlowMvf0Texture outMvf:self->_warpedFlowMvfTexture meta:v41]) != 0 || (v34 = [(GGMMetalToolBox *)self->_metalToolBox encodeAddMvf0ToMvf1ToCommandEncoder:v89[5] fullResTarget:ref0Copy mvf0:self->_warpedFlowMvfTexture mvf1:self->_backwarpFlowMvf0Texture outMvf:self->_backwarpFlowMvf1Texture meta:v41]) != 0)
               {
 
                 goto LABEL_28;
@@ -984,7 +984,7 @@ LABEL_24:
 
               [v89[5] endEncoding];
 
-              if (++v38 >= a15->var1)
+              if (++v38 >= array->var1)
               {
                 goto LABEL_24;
               }
@@ -1139,18 +1139,18 @@ void __248__VideoDeghostingDetectionV2_repairTarget_opticalCenter_frRef0_frRef1_
   return self;
 }
 
-- (void)setConfiguration:(id *)a3
+- (void)setConfiguration:(id *)configuration
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var0.var7;
-  v5 = *&a3->var1.var0;
-  *&self->_configuration.externalCfg.frameDelay = *&a3->var1.var4;
+  v3 = *&configuration->var0.var0;
+  v4 = *&configuration->var0.var7;
+  v5 = *&configuration->var1.var0;
+  *&self->_configuration.externalCfg.frameDelay = *&configuration->var1.var4;
   *&self->_configuration.externalCfg.lightMode = v5;
   *&self->_configuration.internalCfg.enableColorMask = v4;
   *&self->_configuration.internalCfg.clipThreshold = v3;
 }
 
-- (VideoDeghostingDetectionV2)initWithMetalToolBox:(id)a3 config:(id *)a4 imageDimensions:(id)a5
+- (VideoDeghostingDetectionV2)initWithMetalToolBox:(id)box config:(id *)config imageDimensions:(id)dimensions
 {
   OUTLINED_FUNCTION_21_1();
   v502 = v5;
@@ -1214,13 +1214,13 @@ void __248__VideoDeghostingDetectionV2_repairTarget_opticalCenter_frRef0_frRef1_
             if (v16->_flowPreprocessor)
             {
               [(VideoDeghostingDetectionV2 *)v16 _resetIntermediateVariables];
-              v31 = [(GGMMetalToolBox *)v16->_metalToolBox getDevice];
+              getDevice = [(GGMMetalToolBox *)v16->_metalToolBox getDevice];
               device = v16->_device;
-              v16->_device = v31;
+              v16->_device = getDevice;
 
-              v33 = [(GGMMetalToolBox *)v16->_metalToolBox getCommandqueue];
+              getCommandqueue = [(GGMMetalToolBox *)v16->_metalToolBox getCommandqueue];
               commandQueue = v16->_commandQueue;
-              v16->_commandQueue = v33;
+              v16->_commandQueue = getCommandqueue;
 
               v35 = [[MitigationANE alloc] initWithMetalContext:v16->_device commandQueue:v16->_commandQueue imageDimensions:v8 netSize:0 metalToolBox:v16->_metalToolBox];
               mitigationANE = v16->_mitigationANE;
@@ -1246,8 +1246,8 @@ void __248__VideoDeghostingDetectionV2_repairTarget_opticalCenter_frRef0_frRef1_
                       break;
                     }
 
-                    v42 = [(GGMMetalToolBox *)v16->_metalToolBox getDevice];
-                    v43 = [v42 newBufferWithBytesNoCopy:objc_msgSend(v40[22] length:"mutableBytes") options:71248 deallocator:{0, 0}];
+                    getDevice2 = [(GGMMetalToolBox *)v16->_metalToolBox getDevice];
+                    v43 = [getDevice2 newBufferWithBytesNoCopy:objc_msgSend(v40[22] length:"mutableBytes") options:71248 deallocator:{0, 0}];
                     v44 = v40[19];
                     v40[19] = v43;
 
@@ -1910,29 +1910,29 @@ void __248__VideoDeghostingDetectionV2_repairTarget_opticalCenter_frRef0_frRef1_
 
                                                                                                                                                                                                                                             if (v16->_errRescaleProbMap1Texture)
                                                                                                                                                                                                                                             {
-                                                                                                                                                                                                                                              v449 = [(GGMMetalToolBox *)v16->_metalToolBox getDevice];
-                                                                                                                                                                                                                                              v451 = OUTLINED_FUNCTION_9_5(v449, v450);
+                                                                                                                                                                                                                                              getDevice3 = [(GGMMetalToolBox *)v16->_metalToolBox getDevice];
+                                                                                                                                                                                                                                              v451 = OUTLINED_FUNCTION_9_5(getDevice3, v450);
                                                                                                                                                                                                                                               currMetaTmp = v16->_currMetaTmp;
                                                                                                                                                                                                                                               v16->_currMetaTmp = v451;
 
                                                                                                                                                                                                                                               if (v16->_currMetaTmp)
                                                                                                                                                                                                                                               {
-                                                                                                                                                                                                                                                v453 = [(GGMMetalToolBox *)v16->_metalToolBox getDevice];
-                                                                                                                                                                                                                                                v455 = OUTLINED_FUNCTION_9_5(v453, v454);
+                                                                                                                                                                                                                                                getDevice4 = [(GGMMetalToolBox *)v16->_metalToolBox getDevice];
+                                                                                                                                                                                                                                                v455 = OUTLINED_FUNCTION_9_5(getDevice4, v454);
                                                                                                                                                                                                                                                 futureMetaTmp = v16->_futureMetaTmp;
                                                                                                                                                                                                                                                 v16->_futureMetaTmp = v455;
 
                                                                                                                                                                                                                                                 if (v16->_futureMetaTmp)
                                                                                                                                                                                                                                                 {
-                                                                                                                                                                                                                                                  v457 = [(GGMMetalToolBox *)v16->_metalToolBox getDevice];
-                                                                                                                                                                                                                                                  v459 = OUTLINED_FUNCTION_9_5(v457, v458);
+                                                                                                                                                                                                                                                  getDevice5 = [(GGMMetalToolBox *)v16->_metalToolBox getDevice];
+                                                                                                                                                                                                                                                  v459 = OUTLINED_FUNCTION_9_5(getDevice5, v458);
                                                                                                                                                                                                                                                   futureMeta4LsCheck = v16->_futureMeta4LsCheck;
                                                                                                                                                                                                                                                   v16->_futureMeta4LsCheck = v459;
 
                                                                                                                                                                                                                                                   if (v16->_futureMeta4LsCheck)
                                                                                                                                                                                                                                                   {
-                                                                                                                                                                                                                                                    v461 = [(GGMMetalToolBox *)v16->_metalToolBox getDevice];
-                                                                                                                                                                                                                                                    v463 = OUTLINED_FUNCTION_9_5(v461, v462);
+                                                                                                                                                                                                                                                    getDevice6 = [(GGMMetalToolBox *)v16->_metalToolBox getDevice];
+                                                                                                                                                                                                                                                    v463 = OUTLINED_FUNCTION_9_5(getDevice6, v462);
                                                                                                                                                                                                                                                     futureMeta4RedoTracking = v16->_futureMeta4RedoTracking;
                                                                                                                                                                                                                                                     v16->_futureMeta4RedoTracking = v463;
 
@@ -2170,40 +2170,40 @@ LABEL_147:
   return result;
 }
 
-- (int64_t)getMvfToNextFrameForTrackingCurrMeta:(VideoDeghostingDetectionV2 *)self lsMap:(SEL)a2 futureLsMap:(id)a3 lsMapBuf:(id)a4 futureLsMapBuf:(id)a5 opticalCenter:(__CVBuffer *)a6 futureOpticalCenter:(__CVBuffer *)a7 waitForComplete:(BOOL)a8
+- (int64_t)getMvfToNextFrameForTrackingCurrMeta:(VideoDeghostingDetectionV2 *)self lsMap:(SEL)map futureLsMap:(id)lsMap lsMapBuf:(id)buf futureLsMapBuf:(id)mapBuf opticalCenter:(__CVBuffer *)center futureOpticalCenter:(__CVBuffer *)opticalCenter waitForComplete:(BOOL)complete
 {
-  v10 = a8;
+  completeCopy = complete;
   v11 = v9;
   v12 = v8;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  [v19 setLabel:@"detection"];
-  v20 = [v19 computeCommandEncoder];
-  v21 = [v16 contents];
+  lsMapCopy = lsMap;
+  bufCopy = buf;
+  mapBufCopy = mapBuf;
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  [commandBuffer setLabel:@"detection"];
+  computeCommandEncoder = [commandBuffer computeCommandEncoder];
+  contents = [lsMapCopy contents];
   metalToolBox = self->_metalToolBox;
   inputTexture = self->_inputTexture;
-  if (*(v21 + 8232) == 1)
+  if (*(contents + 8232) == 1)
   {
     frameTPlus1Texture = self->_frameTPlus1Texture;
-    v33 = [(MTLTexture *)self->_inputTexture width];
-    v25 = [(MTLTexture *)self->_inputTexture height];
-    v26.f32[0] = v33;
-    v26.f32[1] = v25;
+    width = [(MTLTexture *)self->_inputTexture width];
+    height = [(MTLTexture *)self->_inputTexture height];
+    v26.f32[0] = width;
+    v26.f32[1] = height;
     v27 = COERCE_DOUBLE(vdiv_f32(*&v12, v26));
-    v34 = [(MTLTexture *)self->_inputTexture width];
-    v28 = [(MTLTexture *)self->_inputTexture height];
-    v29.f32[0] = v34;
-    v29.f32[1] = v28;
-    v30 = [(GGMMetalToolBox *)metalToolBox encodeBMSearch1RefToCommandEncoder:v20 target:inputTexture ref:frameTPlus1Texture reflect:1 normalizedTargetCenter:self->_mvf4FutureTexture normalizedRefCenter:v16 bestMatchLoc:v27 meta:COERCE_DOUBLE(vdiv_f32(*&v11, v29))];
+    width2 = [(MTLTexture *)self->_inputTexture width];
+    height2 = [(MTLTexture *)self->_inputTexture height];
+    v29.f32[0] = width2;
+    v29.f32[1] = height2;
+    v30 = [(GGMMetalToolBox *)metalToolBox encodeBMSearch1RefToCommandEncoder:computeCommandEncoder target:inputTexture ref:frameTPlus1Texture reflect:1 normalizedTargetCenter:self->_mvf4FutureTexture normalizedRefCenter:lsMapCopy bestMatchLoc:v27 meta:COERCE_DOUBLE(vdiv_f32(*&v11, v29))];
     if (v30)
     {
       v31 = v30;
       goto LABEL_7;
     }
 
-    v31 = [(GGMMetalToolBox *)self->_metalToolBox encodeCollectMvToFuture:v20 metaBuf:v16];
+    v31 = [(GGMMetalToolBox *)self->_metalToolBox encodeCollectMvToFuture:computeCommandEncoder metaBuf:lsMapCopy];
     if (v31)
     {
       goto LABEL_7;
@@ -2212,40 +2212,40 @@ LABEL_147:
 
   else
   {
-    v31 = [(GGMMetalToolBox *)self->_metalToolBox encodeGetMvFromLsToCommandEncoder:v20 target:self->_inputTexture lsMap:v17 refLsMap:v18 targetCenter:v16 refCenter:v12 meta:v11];
+    v31 = [(GGMMetalToolBox *)self->_metalToolBox encodeGetMvFromLsToCommandEncoder:computeCommandEncoder target:self->_inputTexture lsMap:bufCopy refLsMap:mapBufCopy targetCenter:lsMapCopy refCenter:v12 meta:v11];
   }
 
-  [v20 endEncoding];
-  commitCommandBuffer(v19, v10);
+  [computeCommandEncoder endEncoding];
+  commitCommandBuffer(commandBuffer, completeCopy);
 LABEL_7:
 
   return v31;
 }
 
-- (int64_t)doTrackingToNextFrameCurrMetaWithDetectionResults:(VideoDeghostingDetectionV2 *)self currMetaWithMvToFuture:(SEL)a2 futureMeta:(id)a3 opticalCenter:(id)a4 futureOpticalCenter:(id)a5 futureFrameCnt:(int)a6 doLite:(BOOL)a7 waitForComplete:(BOOL)a8
+- (int64_t)doTrackingToNextFrameCurrMetaWithDetectionResults:(VideoDeghostingDetectionV2 *)self currMetaWithMvToFuture:(SEL)future futureMeta:(id)meta opticalCenter:(id)center futureOpticalCenter:(id)opticalCenter futureFrameCnt:(int)cnt doLite:(BOOL)lite waitForComplete:(BOOL)complete
 {
-  v10 = a8;
-  v11 = a7;
-  v12 = a6;
+  completeCopy = complete;
+  liteCopy = lite;
+  cntCopy = cnt;
   v13 = v9;
   v14 = v8;
-  v17 = a4;
-  v18 = a5;
-  v19 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  v20 = v19;
-  if (v11)
+  centerCopy = center;
+  opticalCenterCopy = opticalCenter;
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  v20 = commandBuffer;
+  if (liteCopy)
   {
-    if (v19)
+    if (commandBuffer)
     {
-      [v19 setLabel:@"detection"];
-      v21 = [v20 computeCommandEncoder];
-      if (v21)
+      [commandBuffer setLabel:@"detection"];
+      computeCommandEncoder = [v20 computeCommandEncoder];
+      if (computeCommandEncoder)
       {
-        v22 = [(GGMMetalToolBox *)self->_metalToolBox encodeWarpRefMetaLite:v21 refMetaBuf:v17 outMetaBuf:v18];
+        v22 = [(GGMMetalToolBox *)self->_metalToolBox encodeWarpRefMetaLite:computeCommandEncoder refMetaBuf:centerCopy outMetaBuf:opticalCenterCopy];
         if (!v22)
         {
-          [v21 endEncoding];
-          commitCommandBuffer(v20, v10);
+          [computeCommandEncoder endEncoding];
+          commitCommandBuffer(v20, completeCopy);
         }
 
         goto LABEL_6;
@@ -2259,14 +2259,14 @@ LABEL_21:
     goto LABEL_19;
   }
 
-  if (!v19)
+  if (!commandBuffer)
   {
     goto LABEL_21;
   }
 
-  [v19 setLabel:@"detection"];
-  v21 = [v20 computeCommandEncoder];
-  if (!v21)
+  [commandBuffer setLabel:@"detection"];
+  computeCommandEncoder = [v20 computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
 LABEL_22:
     v22 = 6;
@@ -2274,19 +2274,19 @@ LABEL_22:
   }
 
   LOBYTE(v31) = self->_currSegmentProcessedFrameCnt == 0;
-  v23 = [(GGMMetalToolBox *)self->_metalToolBox encodeWarpRefMeta:v21 refMetaBuf:v17 metaBuf:self->_futureMetaTmp outMetaBuf:v18 lsCheckOutmetaBuf:self->_futureMeta4LsCheck redoTrackingOutmetaBuf:self->_futureMeta4RedoTracking capRefMetaCnt:v31];
+  v23 = [(GGMMetalToolBox *)self->_metalToolBox encodeWarpRefMeta:computeCommandEncoder refMetaBuf:centerCopy metaBuf:self->_futureMetaTmp outMetaBuf:opticalCenterCopy lsCheckOutmetaBuf:self->_futureMeta4LsCheck redoTrackingOutmetaBuf:self->_futureMeta4RedoTracking capRefMetaCnt:v31];
   if (v23)
   {
     goto LABEL_20;
   }
 
   v24 = 368;
-  if ((v12 & 1) == 0)
+  if ((cntCopy & 1) == 0)
   {
     v24 = 384;
   }
 
-  v23 = [(GGMMetalToolBox *)self->_metalToolBox encodeBMTransferGrayToCommandEncoder:v21 ref:*(&self->super.isa + v24) warpedRef:self->_warpedHwLsMask4TrackTexture bestMatchLoc:self->_mvf4FutureTexture meta:self->_futureMeta4LsCheck sf:2];
+  v23 = [(GGMMetalToolBox *)self->_metalToolBox encodeBMTransferGrayToCommandEncoder:computeCommandEncoder ref:*(&self->super.isa + v24) warpedRef:self->_warpedHwLsMask4TrackTexture bestMatchLoc:self->_mvf4FutureTexture meta:self->_futureMeta4LsCheck sf:2];
   if (v23)
   {
     goto LABEL_20;
@@ -2294,24 +2294,24 @@ LABEL_22:
 
   metalToolBox = self->_metalToolBox;
   inputTexture = self->_inputTexture;
-  v33 = [(MTLTexture *)inputTexture width];
-  v27 = [(MTLTexture *)self->_inputTexture height];
-  v28.f32[0] = v33;
-  v28.f32[1] = v27;
+  width = [(MTLTexture *)inputTexture width];
+  height = [(MTLTexture *)self->_inputTexture height];
+  v28.f32[0] = width;
+  v28.f32[1] = height;
   LODWORD(v32) = 1;
-  v23 = [(GGMMetalToolBox *)metalToolBox encodeBMTransferYUVToCommandEncoder:v21 ref:inputTexture reflect:1 normalizedCenter:self->_warpedReflTrackingRefTexture warpedRef:self->_mvf4FutureTexture bestMatchLoc:self->_futureMeta4LsCheck meta:COERCE_DOUBLE(vdiv_f32(v14 sf:v28)), v32];
+  v23 = [(GGMMetalToolBox *)metalToolBox encodeBMTransferYUVToCommandEncoder:computeCommandEncoder ref:inputTexture reflect:1 normalizedCenter:self->_warpedReflTrackingRefTexture warpedRef:self->_mvf4FutureTexture bestMatchLoc:self->_futureMeta4LsCheck meta:COERCE_DOUBLE(vdiv_f32(v14 sf:v28)), v32];
   if (v23)
   {
     goto LABEL_20;
   }
 
   v29 = 384;
-  if ((v12 & 1) == 0)
+  if ((cntCopy & 1) == 0)
   {
     v29 = 368;
   }
 
-  v23 = [(GGMMetalToolBox *)self->_metalToolBox encodeRefineFutureHwLsMapWithTrackingToEncoder:v21 reflHwMap:*(&self->super.isa + v29) target:self->_frameTPlus1Texture opticalCenter:self->_warpedHwLsMask4TrackTexture warpedRefReflHwMap:self->_warpedReflTrackingRefTexture warpedReflRef:self->_futureMeta4LsCheck metaBuf:v13];
+  v23 = [(GGMMetalToolBox *)self->_metalToolBox encodeRefineFutureHwLsMapWithTrackingToEncoder:computeCommandEncoder reflHwMap:*(&self->super.isa + v29) target:self->_frameTPlus1Texture opticalCenter:self->_warpedHwLsMask4TrackTexture warpedRefReflHwMap:self->_warpedReflTrackingRefTexture warpedReflRef:self->_futureMeta4LsCheck metaBuf:v13];
   if (v23)
   {
 LABEL_20:
@@ -2320,12 +2320,12 @@ LABEL_20:
 
   else
   {
-    v22 = [(GGMMetalToolBox *)self->_metalToolBox encodeCollectMetaContainers:v21 metaBuf:v18 lsCheckOutmetaBuf:self->_futureMeta4LsCheck redoTrackingOutmetaBuf:self->_futureMeta4RedoTracking currTrackId:self->_LSTrackID];
+    v22 = [(GGMMetalToolBox *)self->_metalToolBox encodeCollectMetaContainers:computeCommandEncoder metaBuf:opticalCenterCopy lsCheckOutmetaBuf:self->_futureMeta4LsCheck redoTrackingOutmetaBuf:self->_futureMeta4RedoTracking currTrackId:self->_LSTrackID];
     if (!v22)
     {
-      [v21 endEncoding];
+      [computeCommandEncoder endEncoding];
 
-      commitCommandBuffer(v20, v10);
+      commitCommandBuffer(v20, completeCopy);
       goto LABEL_19;
     }
   }
@@ -2336,44 +2336,44 @@ LABEL_19:
   return v22;
 }
 
-- (int64_t)dlSpatialRepairYUV:(__CVBuffer *)a3 output:(__CVBuffer *)a4 repairMask:(__CVBuffer *)a5 blendMask:(__CVBuffer *)a6 inputTex:(id)a7 repairMaskTex:(id)a8 blendMaskTex:(id)a9 wRepairedY:(float)a10 wRepairedUV:(float)a11 metaBuf:(id)a12
+- (int64_t)dlSpatialRepairYUV:(__CVBuffer *)v output:(__CVBuffer *)output repairMask:(__CVBuffer *)mask blendMask:(__CVBuffer *)blendMask inputTex:(id)tex repairMaskTex:(id)maskTex blendMaskTex:(id)blendMaskTex wRepairedY:(float)self0 wRepairedUV:(float)self1 metaBuf:(id)self2
 {
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a12;
-  v21 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  v22 = v21;
-  if (v21)
+  texCopy = tex;
+  maskTexCopy = maskTex;
+  blendMaskTexCopy = blendMaskTex;
+  bufCopy = buf;
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  v22 = commandBuffer;
+  if (commandBuffer)
   {
-    [v21 setLabel:@"detection"];
-    v23 = [v22 computeCommandEncoder];
-    v24 = [(GGMMetalToolBox *)self->_metalToolBox encodeBilinearRescaleYUV:v23 fullResInput:v17 input:v17 meta:v20 blurBeforeSample:1 output:self->_dlSpaInputTexture];
+    [commandBuffer setLabel:@"detection"];
+    computeCommandEncoder = [v22 computeCommandEncoder];
+    v24 = [(GGMMetalToolBox *)self->_metalToolBox encodeBilinearRescaleYUV:computeCommandEncoder fullResInput:texCopy input:texCopy meta:bufCopy blurBeforeSample:1 output:self->_dlSpaInputTexture];
     if (!v24)
     {
-      [v23 endEncoding];
+      [computeCommandEncoder endEncoding];
       metalToolBox = self->_metalToolBox;
-      v26 = [(MTLTexture *)self->_dlSpaRepairMaskTexture width];
-      v27 = v26 / [v18 width];
-      v28 = [(MTLTexture *)self->_dlSpaRepairMaskTexture height];
-      *&v29 = v28 / [v18 height];
+      width = [(MTLTexture *)self->_dlSpaRepairMaskTexture width];
+      v27 = width / [maskTexCopy width];
+      height = [(MTLTexture *)self->_dlSpaRepairMaskTexture height];
+      *&v29 = height / [maskTexCopy height];
       *&v30 = v27;
-      v24 = [(GGMMetalToolBox *)metalToolBox resizeImageCmdBuf:v22 inputTexture:v18 withFactorX:self->_dlSpaRepairMaskTexture withFactorY:v30 outputTexture:v29];
+      v24 = [(GGMMetalToolBox *)metalToolBox resizeImageCmdBuf:v22 inputTexture:maskTexCopy withFactorX:self->_dlSpaRepairMaskTexture withFactorY:v30 outputTexture:v29];
       if (!v24)
       {
         v31 = self->_metalToolBox;
-        v32 = [(MTLTexture *)self->_dlSpaBlendMaskTexture width];
-        v33 = v32 / [v19 width];
-        v34 = [(MTLTexture *)self->_dlSpaBlendMaskTexture height];
-        *&v35 = v34 / [v19 height];
+        width2 = [(MTLTexture *)self->_dlSpaBlendMaskTexture width];
+        v33 = width2 / [blendMaskTexCopy width];
+        height2 = [(MTLTexture *)self->_dlSpaBlendMaskTexture height];
+        *&v35 = height2 / [blendMaskTexCopy height];
         *&v36 = v33;
-        v24 = [(GGMMetalToolBox *)v31 resizeImageCmdBuf:v22 inputTexture:v19 withFactorX:self->_dlSpaBlendMaskTexture withFactorY:v36 outputTexture:v35];
+        v24 = [(GGMMetalToolBox *)v31 resizeImageCmdBuf:v22 inputTexture:blendMaskTexCopy withFactorX:self->_dlSpaBlendMaskTexture withFactorY:v36 outputTexture:v35];
         if (!v24)
         {
           commitCommandBuffer(v22, 0);
-          *&v37 = a10;
-          *&v38 = a11;
-          v24 = [(MitigationANE *)self->_mitigationANE process:self->_dlSpaInput outputBuf:a4 roi:self->_dlSpaRepairMask repairMask:self->_dlSpaBlendMask blendMask:0.0 wRepairedY:0.0 wRepairedUV:480.0, 272.0, v37, v38];
+          *&v37 = y;
+          *&v38 = uV;
+          v24 = [(MitigationANE *)self->_mitigationANE process:self->_dlSpaInput outputBuf:output roi:self->_dlSpaRepairMask repairMask:self->_dlSpaBlendMask blendMask:0.0 wRepairedY:0.0 wRepairedUV:480.0, 272.0, v37, v38];
         }
       }
     }
@@ -2389,7 +2389,7 @@ LABEL_19:
   return v39;
 }
 
-- (int64_t)getFlowTarget:(id)a3 ref:(id)a4 targetBuf:(__CVBuffer *)a5 refBuf:(__CVBuffer *)a6 mvf:(__CVBuffer *)a7 backwardMvf:(__CVBuffer *)a8 metaBuf:(id)a9 skipRescaling:(BOOL)a10
+- (int64_t)getFlowTarget:(id)target ref:(id)ref targetBuf:(__CVBuffer *)buf refBuf:(__CVBuffer *)refBuf mvf:(__CVBuffer *)mvf backwardMvf:(__CVBuffer *)backwardMvf metaBuf:(id)metaBuf skipRescaling:(BOOL)self0
 {
   OUTLINED_FUNCTION_21_1();
   v11 = v10;
@@ -2410,22 +2410,22 @@ LABEL_19:
 
   else
   {
-    v29 = [*(v21 + 16) commandBuffer];
-    if (!v29)
+    commandBuffer = [*(v21 + 16) commandBuffer];
+    if (!commandBuffer)
     {
       goto LABEL_11;
     }
 
-    v30 = v29;
-    [v29 setLabel:@"detection"];
-    v31 = [v30 computeCommandEncoder];
-    if (!v31 || [*(v21 + 32) encodeBilinearRescale2ImgsYUV:v31 fullResInput:*(v21 + 112) input0:v23 output0:*(v21 + 984) input1:v24 output1:*(v21 + 1000) meta:?])
+    v30 = commandBuffer;
+    [commandBuffer setLabel:@"detection"];
+    computeCommandEncoder = [v30 computeCommandEncoder];
+    if (!computeCommandEncoder || [*(v21 + 32) encodeBilinearRescale2ImgsYUV:computeCommandEncoder fullResInput:*(v21 + 112) input0:v23 output0:*(v21 + 984) input1:v24 output1:*(v21 + 1000) meta:?])
     {
 
       goto LABEL_11;
     }
 
-    [v31 endEncoding];
+    [computeCommandEncoder endEncoding];
     commitCommandBuffer(v30, 0);
 
     v26 = *(v21 + 1416);
@@ -2455,25 +2455,25 @@ LABEL_11:
   return result;
 }
 
-- (int64_t)processHwLsMaskNormalizedCenter:(id)a3 input:(id)a4 output:(BOOL)a5 waitForComplete:
+- (int64_t)processHwLsMaskNormalizedCenter:(id)center input:(id)input output:(BOOL)output waitForComplete:
 {
-  v6 = a5;
+  outputCopy = output;
   v8 = v5;
-  v10 = a3;
-  v11 = a4;
-  v12 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  v13 = v12;
-  if (v12)
+  centerCopy = center;
+  inputCopy = input;
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  v13 = commandBuffer;
+  if (commandBuffer)
   {
-    [v12 setLabel:@"detection"];
-    v14 = [v13 computeCommandEncoder];
-    if (v14)
+    [commandBuffer setLabel:@"detection"];
+    computeCommandEncoder = [v13 computeCommandEncoder];
+    if (computeCommandEncoder)
     {
-      v15 = [(GGMMetalToolBox *)self->_metalToolBox encodeUpscaleThenReflectLsMap:v14 input:v10 normalizedCenter:v11 output:v8];
+      v15 = [(GGMMetalToolBox *)self->_metalToolBox encodeUpscaleThenReflectLsMap:computeCommandEncoder input:centerCopy normalizedCenter:inputCopy output:v8];
       if (!v15)
       {
-        [v14 endEncoding];
-        commitCommandBuffer(v13, v6);
+        [computeCommandEncoder endEncoding];
+        commitCommandBuffer(v13, outputCopy);
       }
     }
 
@@ -2491,25 +2491,25 @@ LABEL_11:
   return v15;
 }
 
-- (int64_t)processHwLsMaskAndGetRoisOpticalCenter:(id)a3 inputFrame:(id *)a4 prevMetaContainer:considerDist2PrevGhostWhenSort:outputMask:outputMaskTexture:isLowLight:outputArray:
+- (int64_t)processHwLsMaskAndGetRoisOpticalCenter:(id)center inputFrame:(id *)frame prevMetaContainer:considerDist2PrevGhostWhenSort:outputMask:outputMaskTexture:isLowLight:outputArray:
 {
   v8 = v6;
   v9 = v5;
   v10 = v4;
   v12 = v7;
   v92 = *MEMORY[0x277D85DE8];
-  v14 = a3;
+  centerCopy = center;
   v15 = v9;
-  v16 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  if (v16)
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  if (commandBuffer)
   {
     [*v93 removeAllObjects];
-    [v16 setLabel:@"detection"];
-    v17 = [v16 computeCommandEncoder];
-    if (v17)
+    [commandBuffer setLabel:@"detection"];
+    computeCommandEncoder = [commandBuffer computeCommandEncoder];
+    if (computeCommandEncoder)
     {
-      v18 = [(GGMMetalToolBox *)self->_metalToolBox encodeGetLsMapYUVToCommandEncoder:v17 input:v14 map:v15];
-      if (v18 || (v18 = [(GGMMetalToolBox *)self->_metalToolBox encodeCopyFullFrameMapToMap4RoiGenToCommandEncoder:v17 input:v15 output:self->_lsMap4RoiGenTexture]) != 0)
+      v18 = [(GGMMetalToolBox *)self->_metalToolBox encodeGetLsMapYUVToCommandEncoder:computeCommandEncoder input:centerCopy map:v15];
+      if (v18 || (v18 = [(GGMMetalToolBox *)self->_metalToolBox encodeCopyFullFrameMapToMap4RoiGenToCommandEncoder:computeCommandEncoder input:v15 output:self->_lsMap4RoiGenTexture]) != 0)
       {
         v73 = v18;
       }
@@ -2517,15 +2517,15 @@ LABEL_11:
       else
       {
         v84 = v8;
-        v79 = v17;
-        [v17 endEncoding];
-        commitCommandBuffer(v16, 1);
+        v79 = computeCommandEncoder;
+        [computeCommandEncoder endEncoding];
+        commitCommandBuffer(commandBuffer, 1);
         maskToRoi = self->_maskToRoi;
         lsMap4RoiGen = self->_lsMap4RoiGen;
-        v21 = [v14 width];
-        v22 = [v14 height];
+        width = [centerCopy width];
+        height = [centerCopy height];
         v23.i64[0] = 0;
-        v23.i64[1] = __PAIR64__(v22, v21);
+        v23.i64[1] = __PAIR64__(height, width);
         v24 = vsraq_n_u32(v23, v23, 0x1FuLL);
         *&v25 = vshrq_n_s32(v24, 1uLL).u64[0];
         v24.i32[0] = 1132396544;
@@ -2538,10 +2538,10 @@ LABEL_11:
 
         else
         {
-          v75 = a4;
-          v76 = v16;
+          frameCopy = frame;
+          v76 = commandBuffer;
           v77 = v15;
-          v78 = v14;
+          v78 = centerCopy;
           v89 = 0u;
           v90 = 0u;
           v87 = 0u;
@@ -2579,7 +2579,7 @@ LABEL_11:
             mergeBboxesForMitigation(*v93);
           }
 
-          v16 = v76;
+          commandBuffer = v76;
           v15 = v77;
           if ([*v93 count])
           {
@@ -2623,12 +2623,12 @@ LABEL_11:
               [v43 setTrackedCnt:30];
               if (v10)
               {
-                var0 = v75->var0;
+                var0 = frameCopy->var0;
                 if (var0 >= 1)
                 {
                   v56 = 64.0;
-                  v57 = &v75[3].var11[236];
-                  v58 = &v75->var9[1];
+                  v57 = &frameCopy[3].var11[236];
+                  v58 = &frameCopy->var9[1];
                   while (1)
                   {
                     if (v57[512] >= 0x10 && *v57 <= 1)
@@ -2712,10 +2712,10 @@ LABEL_37:
 
           [(VideoDeghostingDetectionV2 *)self sortLsList:*v93];
           *v93 = v73 = 0;
-          v14 = v78;
+          centerCopy = v78;
         }
 
-        v17 = v79;
+        computeCommandEncoder = v79;
       }
     }
 
@@ -2733,7 +2733,7 @@ LABEL_37:
   return v73;
 }
 
-- (int64_t)warpTrackingRefProbMap:(id)a3 refSpaProbMap:(id)a4 refReflLs:(id)a5 mvf:(id)a6 metaBuf:(id)a7 metaBufArray:(id *)a8 waitForComplete:(BOOL)a9
+- (int64_t)warpTrackingRefProbMap:(id)map refSpaProbMap:(id)probMap refReflLs:(id)ls mvf:(id)mvf metaBuf:(id)buf metaBufArray:(id *)array waitForComplete:(BOOL)complete
 {
   OUTLINED_FUNCTION_21_1();
   v10 = v9;
@@ -2745,11 +2745,11 @@ LABEL_37:
   v20 = v16;
   v21 = v14;
   v22 = v12;
-  v23 = [*(v18 + 16) commandBuffer];
-  v24 = v23;
-  if (v23)
+  commandBuffer = [*(v18 + 16) commandBuffer];
+  v24 = commandBuffer;
+  if (commandBuffer)
   {
-    [v23 setLabel:@"detection"];
+    [commandBuffer setLabel:@"detection"];
     if (*(v10 + 2048) < 1)
     {
 LABEL_9:
@@ -2761,26 +2761,26 @@ LABEL_9:
       v25 = 0;
       while (1)
       {
-        v26 = [v24 computeCommandEncoder];
+        computeCommandEncoder = [v24 computeCommandEncoder];
         v27 = *(v10 + 8 * v25);
-        if (OUTLINED_FUNCTION_17_1(*(v18 + 32), v28, v26, v34, *(v18 + 488)))
+        if (OUTLINED_FUNCTION_17_1(*(v18 + 32), v28, computeCommandEncoder, v34, *(v18 + 488)))
         {
           break;
         }
 
-        if (OUTLINED_FUNCTION_17_1(*(v18 + 32), v29, v26, v20, *(v18 + 504)))
+        if (OUTLINED_FUNCTION_17_1(*(v18 + 32), v29, computeCommandEncoder, v20, *(v18 + 504)))
         {
           break;
         }
 
         LODWORD(v30) = 4.0;
         LODWORD(v31) = 4.0;
-        if ([*(v18 + 32) encodeDilateProbMap:v26 input:*(v18 + 488) output:*(v18 + 472) hardDilationRadius:v27 softDilationRadius:v30 meta:v31] || OUTLINED_FUNCTION_17_1(*(v18 + 32), v32, v26, v21, *(v18 + 520)))
+        if ([*(v18 + 32) encodeDilateProbMap:computeCommandEncoder input:*(v18 + 488) output:*(v18 + 472) hardDilationRadius:v27 softDilationRadius:v30 meta:v31] || OUTLINED_FUNCTION_17_1(*(v18 + 32), v32, computeCommandEncoder, v21, *(v18 + 520)))
         {
           break;
         }
 
-        [v26 endEncoding];
+        [computeCommandEncoder endEncoding];
 
         if (++v25 >= *(v10 + 2048))
         {
@@ -2794,32 +2794,32 @@ LABEL_9:
   return result;
 }
 
-- (int64_t)_getProbMapsLiteTarget:(id)a3 refProbMap:(id)a4 refLsMap:(id)a5 refRefinedLsMap:(id)a6 refProbMapStash4FutureTracking:(id)a7 refErrRescaleProbMap:(id)a8 refRawRefinedProbMap:(id)a9 refRefinedProbMap:(id)a10 mvf:(id)a11 probMap:(id)a12 lsMap:(id)a13 refinedLsMap:(id)a14 probMapStash4FutureTracking:(id)a15 errRescaleProbMap:(id)a16 rawRefinedProbMap:(id)a17 refinedProbMap:(id)a18 metaBufArray:(id *)a19 waitForComplete:(BOOL)a20
+- (int64_t)_getProbMapsLiteTarget:(id)target refProbMap:(id)map refLsMap:(id)lsMap refRefinedLsMap:(id)refinedLsMap refProbMapStash4FutureTracking:(id)tracking refErrRescaleProbMap:(id)probMap refRawRefinedProbMap:(id)refinedProbMap refRefinedProbMap:(id)self0 mvf:(id)self1 probMap:(id)self2 lsMap:(id)self3 refinedLsMap:(id)self4 probMapStash4FutureTracking:(id)self5 errRescaleProbMap:(id)self6 rawRefinedProbMap:(id)self7 refinedProbMap:(id)self8 metaBufArray:(id *)self9 waitForComplete:(BOOL)complete
 {
-  v69 = a4;
-  v68 = a5;
-  v66 = a6;
-  v64 = a7;
-  v58 = a8;
-  v62 = a9;
-  v60 = a10;
-  v25 = a11;
+  mapCopy = map;
+  lsMapCopy = lsMap;
+  refinedLsMapCopy = refinedLsMap;
+  trackingCopy = tracking;
+  probMapCopy = probMap;
+  refinedProbMapCopy = refinedProbMap;
+  refRefinedProbMapCopy = refRefinedProbMap;
+  mvfCopy = mvf;
   v26 = a12;
   v67 = a13;
   v65 = a14;
-  v63 = a15;
-  v57 = a16;
-  v61 = a17;
+  futureTrackingCopy = futureTracking;
+  rescaleProbMapCopy = rescaleProbMap;
+  rawRefinedProbMapCopy = rawRefinedProbMap;
   v59 = a18;
-  v27 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  v28 = v27;
-  if (v27)
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  v28 = commandBuffer;
+  if (commandBuffer)
   {
-    [v27 setLabel:@"detection"];
-    if (a19->var1 < 1)
+    [commandBuffer setLabel:@"detection"];
+    if (array->var1 < 1)
     {
 LABEL_14:
-      commitCommandBuffer(v28, a20);
+      commitCommandBuffer(v28, complete);
       v55 = 0;
     }
 
@@ -2828,70 +2828,70 @@ LABEL_14:
       v29 = 0;
       while (1)
       {
-        v30 = [v28 computeCommandEncoder];
-        v31 = a19->var0[v29];
-        v32 = [v31 contents];
+        computeCommandEncoder = [v28 computeCommandEncoder];
+        v31 = array->var0[v29];
+        contents = [v31 contents];
         v33 = OUTLINED_FUNCTION_13_1();
-        v36 = OUTLINED_FUNCTION_7_6(v33, v34, v35, v69, v26);
+        v36 = OUTLINED_FUNCTION_7_6(v33, v34, v35, mapCopy, v26);
         if (v36)
         {
           break;
         }
 
         v37 = OUTLINED_FUNCTION_13_1();
-        v36 = OUTLINED_FUNCTION_7_6(v37, v38, v39, v68, v67);
+        v36 = OUTLINED_FUNCTION_7_6(v37, v38, v39, lsMapCopy, v67);
         if (v36)
         {
           break;
         }
 
         v40 = OUTLINED_FUNCTION_13_1();
-        v36 = OUTLINED_FUNCTION_7_6(v40, v41, v42, v66, v65);
+        v36 = OUTLINED_FUNCTION_7_6(v40, v41, v42, refinedLsMapCopy, v65);
         if (v36)
         {
           break;
         }
 
         v43 = OUTLINED_FUNCTION_13_1();
-        v36 = OUTLINED_FUNCTION_7_6(v43, v44, v45, v64, v63);
+        v36 = OUTLINED_FUNCTION_7_6(v43, v44, v45, trackingCopy, futureTrackingCopy);
         if (v36)
         {
           break;
         }
 
         v46 = OUTLINED_FUNCTION_13_1();
-        v36 = OUTLINED_FUNCTION_7_6(v46, v47, v48, v62, v61);
+        v36 = OUTLINED_FUNCTION_7_6(v46, v47, v48, refinedProbMapCopy, rawRefinedProbMapCopy);
         if (v36)
         {
           break;
         }
 
         v49 = OUTLINED_FUNCTION_13_1();
-        v36 = OUTLINED_FUNCTION_7_6(v49, v50, v51, v60, v59);
+        v36 = OUTLINED_FUNCTION_7_6(v49, v50, v51, refRefinedProbMapCopy, v59);
         if (v36)
         {
           break;
         }
 
         v52 = OUTLINED_FUNCTION_13_1();
-        v36 = OUTLINED_FUNCTION_7_6(v52, v53, v54, v58, v57);
+        v36 = OUTLINED_FUNCTION_7_6(v52, v53, v54, probMapCopy, rescaleProbMapCopy);
         if (v36)
         {
           break;
         }
 
-        if ((*(v32 + 8232) & 1) == 0)
+        if ((*(contents + 8232) & 1) == 0)
         {
-          v36 = [(GGMMetalToolBox *)self->_metalToolBox encodeCopyMapToMap4RoiGenToCommandEncoder:v30 input:v26 output:self->_probMap4RoiGenTexture metaBuf:v31];
+          v36 = [(GGMMetalToolBox *)self->_metalToolBox encodeCopyMapToMap4RoiGenToCommandEncoder:computeCommandEncoder input:v26 output:self->_probMap4RoiGenTexture metaBuf:v31];
           if (v36)
           {
             break;
           }
         }
 
-        [v30 endEncoding];
+        [computeCommandEncoder endEncoding];
 
-        if (++v29 >= a19->var1)
+        if (++v29 >= array->var1)
         {
           goto LABEL_14;
         }
@@ -2909,46 +2909,46 @@ LABEL_14:
   return v55;
 }
 
-- (int64_t)getProbMapsTarget:(VideoDeghostingDetectionV2 *)self ref:(SEL)a2 rawProbMap:(id)a3 probMap:(id)a4 errRescaleProbMap:(id)a5 rawRefinedProbMap:(id)a6 refinedProbMap:(id)a7 reflLsMap:(id)a8 refinedReflLsMap:(id)a9 reflLsMap4TrackingRef:(id)a10 metaBuf:(id)a11 metaBufArray:(id)a12 trackingMvf:(id)a13 useRefProbMap:(id *)a14 opticalCenter:(id)a15 trackingRefOpticalCenter:(BOOL)a16 waitForComplete:(BOOL)a17
+- (int64_t)getProbMapsTarget:(VideoDeghostingDetectionV2 *)self ref:(SEL)ref rawProbMap:(id)map probMap:(id)probMap errRescaleProbMap:(id)rescaleProbMap rawRefinedProbMap:(id)refinedProbMap refinedProbMap:(id)a7 reflLsMap:(id)lsMap refinedReflLsMap:(id)reflLsMap reflLsMap4TrackingRef:(id)self0 metaBuf:(id)self1 metaBufArray:(id)self2 trackingMvf:(id)self3 useRefProbMap:(id *)self4 opticalCenter:(id)self5 trackingRefOpticalCenter:(BOOL)self6 waitForComplete:(BOOL)self7
 {
   v24 = v18;
   v25 = v17;
-  v27 = a3;
-  v66 = a4;
-  v28 = a5;
-  v68 = a6;
+  mapCopy = map;
+  probMapCopy = probMap;
+  rescaleProbMapCopy = rescaleProbMap;
+  refinedProbMapCopy = refinedProbMap;
   v63 = a7;
-  v29 = a8;
-  v64 = a9;
-  v67 = a10;
-  v30 = a11;
-  v65 = a12;
-  v31 = a13;
-  v69 = a15;
-  v32 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  v33 = v32;
-  if (v32)
+  lsMapCopy = lsMap;
+  reflLsMapCopy = reflLsMap;
+  trackingRefCopy = trackingRef;
+  bufCopy = buf;
+  arrayCopy = array;
+  mvfCopy = mvf;
+  centerCopy = center;
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  v33 = commandBuffer;
+  if (commandBuffer)
   {
-    v34 = a14;
-    [v32 setLabel:@"detection"];
-    v62 = v31;
-    if (a14->var1 < 1)
+    refProbMapCopy2 = refProbMap;
+    [commandBuffer setLabel:@"detection"];
+    v62 = mvfCopy;
+    if (refProbMap->var1 < 1)
     {
 LABEL_32:
-      v37 = [v33 computeCommandEncoder];
-      v49 = [(GGMMetalToolBox *)self->_metalToolBox encodeCopyCurrMetaForProcFuture:v37 metaBuf:v31 outMetaBuf:self->_currMetaTmp];
+      computeCommandEncoder = [v33 computeCommandEncoder];
+      v49 = [(GGMMetalToolBox *)self->_metalToolBox encodeCopyCurrMetaForProcFuture:computeCommandEncoder metaBuf:mvfCopy outMetaBuf:self->_currMetaTmp];
       if (!v49)
       {
-        [v37 endEncoding];
-        v31 = v62;
-        commitCommandBuffer(v33, a17);
+        [computeCommandEncoder endEncoding];
+        mvfCopy = v62;
+        commitCommandBuffer(v33, complete);
       }
     }
 
     else
     {
       v35 = 0;
-      if (a16)
+      if (opticalCenter)
       {
         v36 = 0.99;
       }
@@ -2961,9 +2961,9 @@ LABEL_32:
       v61 = v33;
       while (1)
       {
-        v37 = [v33 computeCommandEncoder];
-        v38 = v34->var0[v35];
-        v70 = [v38 contents];
+        computeCommandEncoder = [v33 computeCommandEncoder];
+        v38 = refProbMapCopy2->var0[v35];
+        contents = [v38 contents];
         OUTLINED_FUNCTION_15_1();
         v40 = [v39 encodeDilateReflLsMap:? inputYUV:? lsMap:? dilatedLsMap:? hardDilationRadius:? softDilationRadius:? meta:?];
         if (v40)
@@ -2973,7 +2973,7 @@ LABEL_32:
 
         LODWORD(v41) = 2.0;
         LODWORD(v42) = 2.0;
-        v40 = [(GGMMetalToolBox *)self->_metalToolBox encodeDilateProbMap:v37 input:v30 output:self->_dilatedLsMapTexture hardDilationRadius:v38 softDilationRadius:v41 meta:v42];
+        v40 = [(GGMMetalToolBox *)self->_metalToolBox encodeDilateProbMap:computeCommandEncoder input:bufCopy output:self->_dilatedLsMapTexture hardDilationRadius:v38 softDilationRadius:v41 meta:v42];
         if (v40)
         {
           break;
@@ -3000,22 +3000,22 @@ LABEL_32:
           break;
         }
 
-        v40 = [(GGMMetalToolBox *)self->_metalToolBox encodeGetMotionMapYUVToCommandEncoder:v37 ref:self->_ref4MotionCueTexture target:self->_input4MotionCueTexture motionMap:self->_motionMapTexture meta:v38];
+        v40 = [(GGMMetalToolBox *)self->_metalToolBox encodeGetMotionMapYUVToCommandEncoder:computeCommandEncoder ref:self->_ref4MotionCueTexture target:self->_input4MotionCueTexture motionMap:self->_motionMapTexture meta:v38];
         if (v40)
         {
           break;
         }
 
-        v45 = v29;
-        v46 = v28;
-        v47 = *(v70 + 8232);
-        v48 = [(GGMMetalToolBox *)self->_metalToolBox encodeGetRoiMaxAndAvgLumaYUV:v37 target:v27 lsMap:v30 meta:v38];
+        v45 = lsMapCopy;
+        v46 = rescaleProbMapCopy;
+        v47 = *(contents + 8232);
+        v48 = [(GGMMetalToolBox *)self->_metalToolBox encodeGetRoiMaxAndAvgLumaYUV:computeCommandEncoder target:mapCopy lsMap:bufCopy meta:v38];
         v49 = v48;
         if (v47)
         {
-          v28 = v46;
-          v29 = v45;
-          v31 = v62;
+          rescaleProbMapCopy = v46;
+          lsMapCopy = v45;
+          mvfCopy = v62;
           if (v48)
           {
             goto LABEL_37;
@@ -3037,9 +3037,9 @@ LABEL_32:
 
         else
         {
-          v28 = v46;
-          v29 = v45;
-          v31 = v62;
+          rescaleProbMapCopy = v46;
+          lsMapCopy = v45;
+          mvfCopy = v62;
           if (v48)
           {
             goto LABEL_37;
@@ -3068,13 +3068,13 @@ LABEL_32:
         }
 
         saliencyMapTexture = self->_saliencyMapTexture;
-        if (*(v70 + 8232) == 1)
+        if (*(contents + 8232) == 1)
         {
           saliencyMapTexture = self->_blobSaliencyMapTexture;
         }
 
         *&v53 = v36;
-        v40 = [(GGMMetalToolBox *)self->_metalToolBox encodeCombineMapWithRefMapToEncoder:v37 map:self->_rawProbMapTexture ref:self->_rawWarpedRefProbMapTexture dilatedRef:self->_warpedRefProbMapTexture lsMap:v30 dilatedLsMap:self->_dilatedLsMapTexture refLsMap:v53 motion:v65 saliency:self->_motionMapTexture targetFrameYUV:self->_saliencyMapTexture blobSaliency:self->_inputTexture spaRef:saliencyMapTexture mvf:self->_rawWarpedRefSpaProbMapTexture output:v69 spaOutput:v28 meta:v29 wRef:v38];
+        v40 = [(GGMMetalToolBox *)self->_metalToolBox encodeCombineMapWithRefMapToEncoder:computeCommandEncoder map:self->_rawProbMapTexture ref:self->_rawWarpedRefProbMapTexture dilatedRef:self->_warpedRefProbMapTexture lsMap:bufCopy dilatedLsMap:self->_dilatedLsMapTexture refLsMap:v53 motion:arrayCopy saliency:self->_motionMapTexture targetFrameYUV:self->_saliencyMapTexture blobSaliency:self->_inputTexture spaRef:saliencyMapTexture mvf:self->_rawWarpedRefSpaProbMapTexture output:centerCopy spaOutput:rescaleProbMapCopy meta:lsMapCopy wRef:v38];
         if (v40)
         {
           break;
@@ -3086,7 +3086,7 @@ LABEL_32:
           break;
         }
 
-        v40 = [(GGMMetalToolBox *)self->_metalToolBox encodeUpscaleProbMap:v37 probMap:v28 refinedProbMap:v29 inputFrame:v27 upscaledProbMap:self->_fullResStashedProbMap4FutureTrackingTexture upscaledRefinedProbMap:self->_fullResRawRefinedProbMapTexture meta:v38];
+        v40 = [(GGMMetalToolBox *)self->_metalToolBox encodeUpscaleProbMap:computeCommandEncoder probMap:rescaleProbMapCopy refinedProbMap:lsMapCopy inputFrame:mapCopy upscaledProbMap:self->_fullResStashedProbMap4FutureTrackingTexture upscaledRefinedProbMap:self->_fullResRawRefinedProbMapTexture meta:v38];
         if (v40)
         {
           break;
@@ -3101,27 +3101,27 @@ LABEL_32:
 
         LODWORD(v56) = 2.0;
         LODWORD(v57) = 4.0;
-        v40 = [(GGMMetalToolBox *)self->_metalToolBox encodeDilateGrayImg:v37 input:self->_fullResStashedProbMap4FutureTrackingTexture output:v68 hardDilationOutput:v63 hardDilationRadius:v38 softDilationRadius:v56 meta:v57];
+        v40 = [(GGMMetalToolBox *)self->_metalToolBox encodeDilateGrayImg:computeCommandEncoder input:self->_fullResStashedProbMap4FutureTrackingTexture output:refinedProbMapCopy hardDilationOutput:v63 hardDilationRadius:v38 softDilationRadius:v56 meta:v57];
         if (v40)
         {
           break;
         }
 
-        if ((*(v70 + 8232) & 1) == 0)
+        if ((*(contents + 8232) & 1) == 0)
         {
-          v40 = [(GGMMetalToolBox *)self->_metalToolBox encodeCopyMapToMap4RoiGenToCommandEncoder:v37 input:v68 output:self->_probMap4RoiGenTexture metaBuf:v38];
+          v40 = [(GGMMetalToolBox *)self->_metalToolBox encodeCopyMapToMap4RoiGenToCommandEncoder:computeCommandEncoder input:refinedProbMapCopy output:self->_probMap4RoiGenTexture metaBuf:v38];
           if (v40)
           {
             break;
           }
         }
 
-        [v37 endEncoding];
+        [computeCommandEncoder endEncoding];
 
         ++v35;
-        v34 = a14;
+        refProbMapCopy2 = refProbMap;
         v33 = v61;
-        if (v35 >= a14->var1)
+        if (v35 >= refProbMap->var1)
         {
           goto LABEL_32;
         }
@@ -3142,64 +3142,64 @@ LABEL_37:
   return v49;
 }
 
-- (int64_t)_getProbMapInput:(id)a3 reflLs:(id)a4 trackingRef:(id)a5 trackingRefProb:(id)a6 trackingRefSpaProb:(id)a7 trackingRefErrRescaleProb:(id)a8 trackingRefLs:(id)a9 inputBuf:(__CVBuffer *)a10 reflLsBuf:(__CVBuffer *)a11 trackingRefBuf:(__CVBuffer *)a12 trackingRefProbBuf:(__CVBuffer *)a13 trackingRefSpaProbBuf:(__CVBuffer *)a14 trackingRefErrRescaleProbBuf:(__CVBuffer *)a15 trackingRefLsBuf:(__CVBuffer *)a16 trackingMvf:(id)a17 metaBuf:(id)a18 metaBufArray:(id *)a19 trackingRefMetaBuf:(id)a20 probMap:(id)a21 errRescaleProbMap:(id)a22 rawRefinedProbMap:(id)a23 refinedProbMap:(id)a24 refinedReflLs:(id)a25 probMapStash4FutureTracking:(id)a26 probMapBuf:(__CVBuffer *)a27 errRescaleProbMapBuf:(__CVBuffer *)a28 rawRefinedProbMapBuf:(__CVBuffer *)a29 refinedProbMapBuf:(__CVBuffer *)a30 refinedReflLsBuf:(__CVBuffer *)a31 probMapStash4FutureTrackingBuf:(__CVBuffer *)a32 doTracking:(BOOL)a33 waitForComplete:(BOOL)a34
+- (int64_t)_getProbMapInput:(id)input reflLs:(id)ls trackingRef:(id)ref trackingRefProb:(id)prob trackingRefSpaProb:(id)spaProb trackingRefErrRescaleProb:(id)rescaleProb trackingRefLs:(id)refLs inputBuf:(__CVBuffer *)self0 reflLsBuf:(__CVBuffer *)self1 trackingRefBuf:(__CVBuffer *)self2 trackingRefProbBuf:(__CVBuffer *)self3 trackingRefSpaProbBuf:(__CVBuffer *)self4 trackingRefErrRescaleProbBuf:(__CVBuffer *)self5 trackingRefLsBuf:(__CVBuffer *)self6 trackingMvf:(id)self7 metaBuf:(id)self8 metaBufArray:(id *)self9 trackingRefMetaBuf:(id)refMetaBuf probMap:(id)map errRescaleProbMap:(id)probMap rawRefinedProbMap:(id)refinedProbMap refinedProbMap:(id)a24 refinedReflLs:(id)reflLs probMapStash4FutureTracking:(id)tracking probMapBuf:(__CVBuffer *)mapBuf errRescaleProbMapBuf:(__CVBuffer *)probMapBuf rawRefinedProbMapBuf:(__CVBuffer *)refinedProbMapBuf refinedProbMapBuf:(__CVBuffer *)input0 refinedReflLsBuf:(__CVBuffer *)input1 probMapStash4FutureTrackingBuf:(__CVBuffer *)input2 doTracking:(BOOL)input3 waitForComplete:(BOOL)input4
 {
-  v69 = a3;
-  v66 = a4;
-  v65 = a5;
-  v36 = a17;
-  v37 = a18;
-  v64 = a21;
-  v63 = a22;
-  v62 = a23;
+  inputCopy = input;
+  lsCopy = ls;
+  refCopy = ref;
+  mvfCopy = mvf;
+  metaBufCopy = metaBuf;
+  mapCopy = map;
+  probMapCopy = probMap;
+  refinedProbMapCopy = refinedProbMap;
   v61 = a24;
-  v68 = a25;
-  v67 = a26;
-  v38 = v37;
-  v39 = a20;
-  v40 = a9;
-  v41 = a7;
-  v42 = a6;
-  v43 = [v37 contents];
-  v44 = [v39 contents];
+  reflLsCopy = reflLs;
+  trackingCopy = tracking;
+  v38 = metaBufCopy;
+  refMetaBufCopy = refMetaBuf;
+  refLsCopy = refLs;
+  spaProbCopy = spaProb;
+  probCopy = prob;
+  contents = [metaBufCopy contents];
+  contents2 = [refMetaBufCopy contents];
 
   LOBYTE(v56) = 0;
-  v45 = [(VideoDeghostingDetectionV2 *)self warpTrackingRefProbMap:v42 refSpaProbMap:v41 refReflLs:v40 mvf:v36 metaBuf:v37 metaBufArray:v56 waitForComplete:?];
+  v45 = [(VideoDeghostingDetectionV2 *)self warpTrackingRefProbMap:probCopy refSpaProbMap:spaProbCopy refReflLs:refLsCopy mvf:mvfCopy metaBuf:metaBufCopy metaBufArray:v56 waitForComplete:?];
 
   if (v45)
   {
-    v50 = v65;
-    v48 = v66;
-    v49 = v36;
-    v52 = v63;
-    v51 = v64;
+    v50 = refCopy;
+    v48 = lsCopy;
+    v49 = mvfCopy;
+    v52 = probMapCopy;
+    v51 = mapCopy;
     v54 = v61;
-    v53 = v62;
+    v53 = refinedProbMapCopy;
   }
 
   else
   {
-    v46 = *(v43 + 11824);
-    v47 = *(v44 + 11824);
-    LOWORD(v57) = __PAIR16__(a34, a33);
-    v48 = v66;
-    v49 = v36;
-    v50 = v65;
-    v51 = v64;
-    v45 = [(VideoDeghostingDetectionV2 *)self getProbMapsTarget:v69 ref:v65 rawProbMap:v67 probMap:v64 errRescaleProbMap:v63 rawRefinedProbMap:v62 refinedProbMap:v46 reflLsMap:v47 refinedReflLsMap:v61 reflLsMap4TrackingRef:v66 metaBuf:v68 metaBufArray:self->_refinedReflLs4trackingRefWarpedTexture trackingMvf:v37 useRefProbMap:a19 opticalCenter:v36 trackingRefOpticalCenter:v57 waitForComplete:?];
-    v52 = v63;
-    v53 = v62;
+    v46 = *(contents + 11824);
+    v47 = *(contents2 + 11824);
+    LOWORD(v57) = __PAIR16__(complete, doTracking);
+    v48 = lsCopy;
+    v49 = mvfCopy;
+    v50 = refCopy;
+    v51 = mapCopy;
+    v45 = [(VideoDeghostingDetectionV2 *)self getProbMapsTarget:inputCopy ref:refCopy rawProbMap:trackingCopy probMap:mapCopy errRescaleProbMap:probMapCopy rawRefinedProbMap:refinedProbMapCopy refinedProbMap:v46 reflLsMap:v47 refinedReflLsMap:v61 reflLsMap4TrackingRef:lsCopy metaBuf:reflLsCopy metaBufArray:self->_refinedReflLs4trackingRefWarpedTexture trackingMvf:metaBufCopy useRefProbMap:array opticalCenter:mvfCopy trackingRefOpticalCenter:v57 waitForComplete:?];
+    v52 = probMapCopy;
+    v53 = refinedProbMapCopy;
     v54 = v61;
   }
 
   return v45;
 }
 
-- (int64_t)_initDetection:(__CVBuffer *)a3 futureFrames:(id *)a4 outputImgBufTMinus1:(__CVBuffer *)a5 outputImgBufTMinus2:(__CVBuffer *)a6
+- (int64_t)_initDetection:(__CVBuffer *)detection futureFrames:(id *)frames outputImgBufTMinus1:(__CVBuffer *)minus1 outputImgBufTMinus2:(__CVBuffer *)minus2
 {
-  self->_frameTMinus1 = a5;
-  self->_frameTMinus2 = a6;
-  v10 = createSingleTextureFromYuvBuffer(a3, self->_device, 0, 0);
+  self->_frameTMinus1 = minus1;
+  self->_frameTMinus2 = minus2;
+  v10 = createSingleTextureFromYuvBuffer(detection, self->_device, 0, 0);
   inputTexture = self->_inputTexture;
   self->_inputTexture = v10;
 
@@ -3208,9 +3208,9 @@ LABEL_37:
     return 6;
   }
 
-  if (a5)
+  if (minus1)
   {
-    v12 = createSingleTextureFromYuvBuffer(a5, self->_device, 0, 0);
+    v12 = createSingleTextureFromYuvBuffer(minus1, self->_device, 0, 0);
     frameTMinus1Texture = self->_frameTMinus1Texture;
     self->_frameTMinus1Texture = v12;
 
@@ -3220,9 +3220,9 @@ LABEL_37:
     }
   }
 
-  if (a6)
+  if (minus2)
   {
-    v14 = createSingleTextureFromYuvBuffer(a6, self->_device, 0, 0);
+    v14 = createSingleTextureFromYuvBuffer(minus2, self->_device, 0, 0);
     frameTMinus2Texture = self->_frameTMinus2Texture;
     self->_frameTMinus2Texture = v14;
 
@@ -3233,7 +3233,7 @@ LABEL_37:
   }
 
   result = 0;
-  self->_frameT = a3;
+  self->_frameT = detection;
   return result;
 }
 

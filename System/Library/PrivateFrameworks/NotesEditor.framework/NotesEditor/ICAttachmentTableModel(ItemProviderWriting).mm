@@ -7,11 +7,11 @@
 
 - (id)writableTypeIdentifiersForItemProvider
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &off_28280AD60;
   v1 = objc_msgSendSuper2(&v5, sel_writableTypeIdentifiersForItemProvider);
-  v2 = [*MEMORY[0x277CE1E50] identifier];
-  v3 = [v1 arrayByAddingObject:v2];
+  identifier = [*MEMORY[0x277CE1E50] identifier];
+  v3 = [v1 arrayByAddingObject:identifier];
 
   return v3;
 }
@@ -21,17 +21,17 @@
   v24[1] = *MEMORY[0x277D85DE8];
   v6 = a3;
   v7 = a4;
-  v8 = [*MEMORY[0x277CE1E50] identifier];
-  v9 = [v6 isEqualToString:v8];
+  identifier = [*MEMORY[0x277CE1E50] identifier];
+  v9 = [v6 isEqualToString:identifier];
 
   if (v9)
   {
-    v10 = [a1 table];
-    if (v10)
+    table = [self table];
+    if (table)
     {
-      v11 = [a1 attachment];
-      v12 = [v11 managedObjectContext];
-      v13 = [v10 attributedStringWithNSTextTablesForColumns:0 rows:0 context:v12];
+      attachment = [self attachment];
+      managedObjectContext = [attachment managedObjectContext];
+      v13 = [table attributedStringWithNSTextTablesForColumns:0 rows:0 context:managedObjectContext];
 
       if (v13)
       {
@@ -66,7 +66,7 @@
 
   else
   {
-    v21.receiver = a1;
+    v21.receiver = self;
     v21.super_class = &off_28280AD60;
     v19 = objc_msgSendSuper2(&v21, sel_loadDataWithTypeIdentifier_forItemProviderCompletionHandler_, v6, v7);
   }

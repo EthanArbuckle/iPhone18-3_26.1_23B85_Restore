@@ -1,7 +1,7 @@
 @interface RCBackgroundURLSessionHandler
 - (RCBackgroundURLSessionHandler)init;
-- (void)networkSessionDidFinishWithTasks:(id)a3;
-- (void)reestablishBackgroundSessionWithConfigurationSettings:(id)a3 sessionCompletionHandler:(id)a4;
+- (void)networkSessionDidFinishWithTasks:(id)tasks;
+- (void)reestablishBackgroundSessionWithConfigurationSettings:(id)settings sessionCompletionHandler:(id)handler;
 @end
 
 @implementation RCBackgroundURLSessionHandler
@@ -13,48 +13,48 @@
   return [(RCBackgroundURLSessionHandler *)&v3 init];
 }
 
-- (void)reestablishBackgroundSessionWithConfigurationSettings:(id)a3 sessionCompletionHandler:(id)a4
+- (void)reestablishBackgroundSessionWithConfigurationSettings:(id)settings sessionCompletionHandler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  [(RCBackgroundURLSessionHandler *)self setConfigurationSettings:v7];
-  [(RCBackgroundURLSessionHandler *)self setSessionCompletionHandler:v6];
+  handlerCopy = handler;
+  settingsCopy = settings;
+  [(RCBackgroundURLSessionHandler *)self setConfigurationSettings:settingsCopy];
+  [(RCBackgroundURLSessionHandler *)self setSessionCompletionHandler:handlerCopy];
 
-  v8 = [v7 backgroundFetchConfiguration];
+  backgroundFetchConfiguration = [settingsCopy backgroundFetchConfiguration];
 
-  v9 = [v8 sessionIdentifier];
-  [(RCBackgroundURLSessionHandler *)self setSessionIdentifier:v9];
+  sessionIdentifier = [backgroundFetchConfiguration sessionIdentifier];
+  [(RCBackgroundURLSessionHandler *)self setSessionIdentifier:sessionIdentifier];
 
   v10 = RCSharedLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v8 sessionIdentifier];
+    sessionIdentifier2 = [backgroundFetchConfiguration sessionIdentifier];
     *buf = 138543362;
-    v17 = v11;
+    v17 = sessionIdentifier2;
     _os_log_impl(&dword_2179FC000, v10, OS_LOG_TYPE_DEFAULT, "RCBackgroundURLSessionHandler will reestablish background URL session, id: %{public}@", buf, 0xCu);
   }
 
   v15 = 0;
-  v12 = [RCURLSession backgroundSessionForFetchConfig:v8 delegateReference:&v15];
+  v12 = [RCURLSession backgroundSessionForFetchConfig:backgroundFetchConfiguration delegateReference:&v15];
   v13 = v15;
   [v13 addObserver:self];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)networkSessionDidFinishWithTasks:(id)a3
+- (void)networkSessionDidFinishWithTasks:(id)tasks
 {
   v47 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  tasksCopy = tasks;
   v4 = RCSharedLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(RCBackgroundURLSessionHandler *)self sessionIdentifier];
+    sessionIdentifier = [(RCBackgroundURLSessionHandler *)self sessionIdentifier];
     *buf = 138543618;
-    *&buf[4] = v5;
+    *&buf[4] = sessionIdentifier;
     *&buf[12] = 2048;
-    *&buf[14] = [v3 count];
+    *&buf[14] = [tasksCopy count];
     _os_log_impl(&dword_2179FC000, v4, OS_LOG_TYPE_DEFAULT, "RCBackgroundURLSessionHandler networkSessionDidFinish, id: %{public}@, taskCount: %lu", buf, 0x16u);
   }
 
@@ -65,7 +65,7 @@
   *&buf[16] = 0x3032000000;
   v44 = __Block_byref_object_copy__2;
   v45 = __Block_byref_object_dispose__2;
-  v46 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  v46 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(tasksCopy, "count")}];
   v36[0] = 0;
   v36[1] = v36;
   v36[2] = 0x3032000000;
@@ -76,7 +76,7 @@
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v3;
+  obj = tasksCopy;
   v25 = [obj countByEnumeratingWithState:&v32 objects:v42 count:16];
   if (v25)
   {
@@ -92,10 +92,10 @@
 
         v8 = *(*(&v32 + 1) + 8 * i);
         dispatch_group_enter(v6);
-        v9 = [v8 data];
-        v10 = [v8 httpResponse];
-        v11 = [v10 allHeaderFields];
-        v12 = [v11 objectForKeyedSubscript:@"Cache-Control"];
+        data = [v8 data];
+        httpResponse = [v8 httpResponse];
+        allHeaderFields = [httpResponse allHeaderFields];
+        v12 = [allHeaderFields objectForKeyedSubscript:@"Cache-Control"];
         v13 = [v12 rc_numberFollowingString:@"max-age="];
 
         if (!v13 || ([v13 doubleValue], v14 == 0.0))
@@ -103,21 +103,21 @@
           v15 = RCSharedLog();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
-            v16 = [v10 URL];
-            v17 = [v16 absoluteString];
-            v18 = [v8 identifier];
+            v16 = [httpResponse URL];
+            absoluteString = [v16 absoluteString];
+            identifier = [v8 identifier];
             *v38 = 138543618;
-            v39 = v17;
+            v39 = absoluteString;
             v40 = 2114;
-            v41 = v18;
+            v41 = identifier;
             _os_log_impl(&dword_2179FC000, v15, OS_LOG_TYPE_DEFAULT, "max-age missing from Cache-Control header for URL: %{public}@, taskID: %{public}@", v38, 0x16u);
           }
 
           v13 = 0;
         }
 
-        v19 = [(RCBackgroundURLSessionHandler *)self configurationSettings];
-        v20 = [v8 identifier];
+        configurationSettings = [(RCBackgroundURLSessionHandler *)self configurationSettings];
+        identifier2 = [v8 identifier];
         v28[0] = MEMORY[0x277D85DD0];
         v28[1] = 3221225472;
         v28[2] = __66__RCBackgroundURLSessionHandler_networkSessionDidFinishWithTasks___block_invoke;
@@ -127,7 +127,7 @@
         v30 = v36;
         v31 = buf;
         v29 = v6;
-        [RCEndpointResponseProcessing parseEndpointResponse:v9 configurationSettings:v19 maxAge:v13 loggingPrefix:v20 completion:v28];
+        [RCEndpointResponseProcessing parseEndpointResponse:data configurationSettings:configurationSettings maxAge:v13 loggingPrefix:identifier2 completion:v28];
       }
 
       v25 = [obj countByEnumeratingWithState:&v32 objects:v42 count:16];

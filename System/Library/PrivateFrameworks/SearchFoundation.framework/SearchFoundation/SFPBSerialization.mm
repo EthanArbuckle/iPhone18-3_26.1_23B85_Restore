@@ -1,25 +1,25 @@
 @interface SFPBSerialization
-+ (id)_cardWithPBCard:(id)a3;
-+ (id)cardWithPBData:(id)a3 encoding:(unint64_t)a4;
++ (id)_cardWithPBCard:(id)card;
++ (id)cardWithPBData:(id)data encoding:(unint64_t)encoding;
 @end
 
 @implementation SFPBSerialization
 
-+ (id)_cardWithPBCard:(id)a3
++ (id)_cardWithPBCard:(id)card
 {
-  v3 = a3;
-  v4 = [[SFCard alloc] initWithProtobuf:v3];
-  v5 = [v3 data];
+  cardCopy = card;
+  v4 = [[SFCard alloc] initWithProtobuf:cardCopy];
+  data = [cardCopy data];
 
-  [(SFCard *)v4 _setOriginalCardData:v5];
+  [(SFCard *)v4 _setOriginalCardData:data];
 
   return v4;
 }
 
-+ (id)cardWithPBData:(id)a3 encoding:(unint64_t)a4
++ (id)cardWithPBData:(id)data encoding:(unint64_t)encoding
 {
-  v6 = a3;
-  if (a4 || (v8 = [[_SFPBCard alloc] initWithData:v6]) == 0)
+  dataCopy = data;
+  if (encoding || (v8 = [[_SFPBCard alloc] initWithData:dataCopy]) == 0)
   {
     v7 = 0;
   }
@@ -27,7 +27,7 @@
   else
   {
     v9 = v8;
-    v7 = [a1 _cardWithPBCard:v8];
+    v7 = [self _cardWithPBCard:v8];
   }
 
   return v7;

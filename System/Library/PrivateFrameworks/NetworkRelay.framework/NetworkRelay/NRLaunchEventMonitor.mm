@@ -1,10 +1,10 @@
 @interface NRLaunchEventMonitor
 + (id)copySharedMonitor;
 - (NRLaunchEventMonitor)init;
-- (uint64_t)processSCDUpdate:(uint64_t)a1;
+- (uint64_t)processSCDUpdate:(uint64_t)update;
 - (void)cancel;
-- (void)processCWFEvent:(int)a3 forced:;
-- (void)setLaunchFlags:(uint64_t)a1;
+- (void)processCWFEvent:(int)event forced:;
+- (void)setLaunchFlags:(uint64_t)flags;
 - (void)start;
 - (void)triggerLaunchIfNeeded;
 @end
@@ -296,58 +296,58 @@ uint64_t __34__NRLaunchEventMonitor_startInner__block_invoke_3(uint64_t a1)
   return result;
 }
 
-- (void)processCWFEvent:(int)a3 forced:
+- (void)processCWFEvent:(int)event forced:
 {
   v5 = a2;
   v6 = v5;
-  if (a1 && ([v5 type] == 30 || a3))
+  if (self && ([v5 type] == 30 || event))
   {
-    v7 = *(a1 + 16) + 1;
-    *(a1 + 16) = v7;
+    v7 = *(self + 16) + 1;
+    *(self + 16) = v7;
     v8 = dispatch_time(0, 2000000000);
-    v9 = *(a1 + 24);
+    v9 = *(self + 24);
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __47__NRLaunchEventMonitor_processCWFEvent_forced___block_invoke;
     v10[3] = &unk_27996AE30;
-    v10[4] = a1;
+    v10[4] = self;
     v11 = v7;
     dispatch_after(v8, v9, v10);
   }
 }
 
-- (uint64_t)processSCDUpdate:(uint64_t)a1
+- (uint64_t)processSCDUpdate:(uint64_t)update
 {
   v3 = a2;
   v4 = v3;
-  if ((*(a1 + 9) & 1) == 0)
+  if ((*(update + 9) & 1) == 0)
   {
     v11 = v3;
-    v5 = SCDynamicStoreCopyMultiple(*(a1 + 48), v3, 0);
-    if ([(__CFArray *)v11 containsObject:*(a1 + 56)])
+    v5 = SCDynamicStoreCopyMultiple(*(update + 48), v3, 0);
+    if ([(__CFArray *)v11 containsObject:*(update + 56)])
     {
-      v6 = [(__CFDictionary *)v5 objectForKeyedSubscript:*(a1 + 56)];
+      v6 = [(__CFDictionary *)v5 objectForKeyedSubscript:*(update + 56)];
       v7 = v6;
       if (v6)
       {
         v8 = [v6 objectForKeyedSubscript:*MEMORY[0x277CE17A0]];
-        v9 = [v8 BOOLValue];
+        bOOLValue = [v8 BOOLValue];
       }
 
       else
       {
-        v9 = 0;
+        bOOLValue = 0;
       }
 
-      if (v9 == (*(a1 + 40) & 1))
+      if (bOOLValue == (*(update + 40) & 1))
       {
       }
 
       else
       {
-        [(NRLaunchEventMonitor *)a1 setLaunchFlags:?];
+        [(NRLaunchEventMonitor *)update setLaunchFlags:?];
 
-        [(NRLaunchEventMonitor *)a1 triggerLaunchIfNeeded];
+        [(NRLaunchEventMonitor *)update triggerLaunchIfNeeded];
       }
     }
 
@@ -357,21 +357,21 @@ uint64_t __34__NRLaunchEventMonitor_startInner__block_invoke_3(uint64_t a1)
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-- (void)setLaunchFlags:(uint64_t)a1
+- (void)setLaunchFlags:(uint64_t)flags
 {
-  if (a1 && *(a1 + 40) != a2)
+  if (flags && *(flags + 40) != a2)
   {
-    *(a1 + 40) = a2;
+    *(flags + 40) = a2;
     if (nrCopyLogObj_onceToken_7 != -1)
     {
-      v15 = a1;
+      flagsCopy = flags;
       dispatch_once(&nrCopyLogObj_onceToken_7, &__block_literal_global_48);
-      a1 = v15;
+      flags = flagsCopy;
     }
 
-    if ((sNRCopyLogToStdErr & 1) != 0 || (v2 = a1, v3 = os_log_type_enabled(nrCopyLogObj_sNRLogObj_8, OS_LOG_TYPE_DEFAULT), a1 = v2, v3))
+    if ((sNRCopyLogToStdErr & 1) != 0 || (v2 = flags, v3 = os_log_type_enabled(nrCopyLogObj_sNRLogObj_8, OS_LOG_TYPE_DEFAULT), flags = v2, v3))
     {
-      v4 = *(a1 + 40);
+      v4 = *(flags + 40);
       v5 = MEMORY[0x277CBEB18];
       v6 = nrCopyLogObj_sNRLogObj_8;
       v7 = objc_alloc_init(v5);
@@ -405,7 +405,7 @@ uint64_t __34__NRLaunchEventMonitor_startInner__block_invoke_3(uint64_t a1)
 
 - (void)triggerLaunchIfNeeded
 {
-  if (a1 && *(a1 + 40))
+  if (self && *(self + 40))
   {
     if (nrCopyLogObj_onceToken_7 != -1)
     {
@@ -414,7 +414,7 @@ uint64_t __34__NRLaunchEventMonitor_startInner__block_invoke_3(uint64_t a1)
 
     if ((sNRCopyLogToStdErr & 1) != 0 || os_log_type_enabled(nrCopyLogObj_sNRLogObj_8, OS_LOG_TYPE_DEFAULT))
     {
-      v2 = *(a1 + 40);
+      v2 = *(self + 40);
       v3 = MEMORY[0x277CBEB18];
       v4 = nrCopyLogObj_sNRLogObj_8;
       v5 = objc_alloc_init(v3);
@@ -442,7 +442,7 @@ uint64_t __34__NRLaunchEventMonitor_startInner__block_invoke_3(uint64_t a1)
       _NRLogWithArgs(v4, 0, "%s%.30s:%-4d issuing launch notify w/ flags: %@", v8, v9, v10, v11, v12, "");
     }
 
-    if ((*(a1 + 40) & 3) != 0)
+    if ((*(self + 40) & 3) != 0)
     {
 
       notify_post("com.apple.networkrelay.launch.phs");

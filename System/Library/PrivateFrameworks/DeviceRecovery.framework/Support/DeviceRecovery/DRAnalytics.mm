@@ -1,10 +1,10 @@
 @interface DRAnalytics
 - (DRAnalytics)init;
-- (void)_queue_addEvent:(id)a3;
-- (void)_queue_removeEvent:(id)a3;
+- (void)_queue_addEvent:(id)event;
+- (void)_queue_removeEvent:(id)event;
 - (void)_queue_submitAllEvents;
-- (void)_queue_submitEvent:(id)a3;
-- (void)addEvent:(id)a3;
+- (void)_queue_submitEvent:(id)event;
+- (void)addEvent:(id)event;
 - (void)submitAllEvents;
 @end
 
@@ -30,18 +30,18 @@
   return v2;
 }
 
-- (void)addEvent:(id)a3
+- (void)addEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000015A4;
   v7[3] = &unk_100034AC0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = eventCopy;
+  selfCopy = self;
+  v6 = eventCopy;
   dispatch_sync(stateQueue, v7);
 }
 
@@ -57,15 +57,15 @@
   dispatch_sync(stateQueue, block);
 }
 
-- (void)_queue_addEvent:(id)a3
+- (void)_queue_addEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_stateQueue);
-  if (v4)
+  if (eventCopy)
   {
-    v5 = [v4 eventUUID];
+    eventUUID = [eventCopy eventUUID];
 
-    if (v5)
+    if (eventUUID)
     {
       goto LABEL_8;
     }
@@ -93,26 +93,26 @@ LABEL_8:
     v24 = 136446466;
     v25 = "[DRAnalytics _queue_addEvent:]";
     v26 = 2114;
-    v27 = v4;
+    v27 = eventCopy;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%{public}s: ADD_EVENT: Adding CoreAnalytics event to the submission queue: %{public}@", &v24, 0x16u);
   }
 
   events = self->_events;
-  v23 = [v4 eventUUID];
-  [(NSMutableDictionary *)events setObject:v4 forKey:v23];
+  eventUUID2 = [eventCopy eventUUID];
+  [(NSMutableDictionary *)events setObject:eventCopy forKey:eventUUID2];
 }
 
 - (void)_queue_submitAllEvents
 {
   dispatch_assert_queue_V2(self->_stateQueue);
-  v3 = [(NSMutableDictionary *)self->_events allValues];
+  allValues = [(NSMutableDictionary *)self->_events allValues];
   v4 = sub_1000118BC();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
     v19 = "[DRAnalytics _queue_submitAllEvents]";
     v20 = 2050;
-    v21 = [v3 count];
+    v21 = [allValues count];
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}s: SUBMIT_ALL_EVENTS: Will submit %{public}lu total events to CoreAnalytics", buf, 0x16u);
   }
 
@@ -120,7 +120,7 @@ LABEL_8:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v3;
+  v5 = allValues;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -139,11 +139,11 @@ LABEL_8:
         v11 = sub_1000118BC();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
-          v12 = [v10 eventName];
+          eventName = [v10 eventName];
           *buf = 136446466;
           v19 = "[DRAnalytics _queue_submitAllEvents]";
           v20 = 2114;
-          v21 = v12;
+          v21 = eventName;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}s: SUBMIT_ALL_EVENTS: Sending event %{public}@", buf, 0x16u);
         }
 
@@ -158,14 +158,14 @@ LABEL_8:
   }
 }
 
-- (void)_queue_submitEvent:(id)a3
+- (void)_queue_submitEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_stateQueue);
-  if (v4)
+  if (eventCopy)
   {
-    v5 = [v4 eventName];
-    v14 = v4;
+    eventName = [eventCopy eventName];
+    v14 = eventCopy;
     AnalyticsSendEventLazy();
 
     v6 = v14;
@@ -181,15 +181,15 @@ LABEL_8:
   }
 }
 
-- (void)_queue_removeEvent:(id)a3
+- (void)_queue_removeEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_stateQueue);
-  if (v4)
+  if (eventCopy)
   {
-    v5 = [v4 eventUUID];
+    eventUUID = [eventCopy eventUUID];
 
-    if (v5)
+    if (eventUUID)
     {
       goto LABEL_8;
     }
@@ -212,11 +212,11 @@ LABEL_8:
 
 LABEL_8:
   events = self->_events;
-  v22 = [v4 eventUUID];
-  v23 = [(NSMutableDictionary *)events objectForKey:v22];
+  eventUUID2 = [eventCopy eventUUID];
+  v23 = [(NSMutableDictionary *)events objectForKey:eventUUID2];
 
   v24 = sub_1000118BC();
-  v25 = v24;
+  eventUUID3 = v24;
   if (v23)
   {
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -225,17 +225,17 @@ LABEL_8:
       v28 = "[DRAnalytics _queue_removeEvent:]";
       v29 = 2114;
       v30 = v23;
-      _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%{public}s: REMOVE_EVENT: Removed event %{public}@ from queue", &v27, 0x16u);
+      _os_log_impl(&_mh_execute_header, eventUUID3, OS_LOG_TYPE_DEFAULT, "%{public}s: REMOVE_EVENT: Removed event %{public}@ from queue", &v27, 0x16u);
     }
 
     v26 = self->_events;
-    v25 = [v4 eventUUID];
-    [(NSMutableDictionary *)v26 removeObjectForKey:v25];
+    eventUUID3 = [eventCopy eventUUID];
+    [(NSMutableDictionary *)v26 removeObjectForKey:eventUUID3];
   }
 
   else if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
   {
-    sub_100018088(v4, v25);
+    sub_100018088(eventCopy, eventUUID3);
   }
 }
 

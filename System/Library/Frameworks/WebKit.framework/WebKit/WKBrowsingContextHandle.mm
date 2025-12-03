@@ -1,24 +1,24 @@
 @interface WKBrowsingContextHandle
-- (BOOL)isEqual:(id)a3;
-- (WKBrowsingContextHandle)initWithCoder:(id)a3;
-- (id)_initWithPageProxyID:()ObjectIdentifierGeneric<WebKit:()WTF:(unsigned long long>)a3 :()ObjectIdentifierGeneric<WebCore:()WTF:(unsigned long long>)a4 :ObjectIdentifierMainThreadAccessTraits<uint64_t> :PageIdentifierType ObjectIdentifierMainThreadAccessTraits<uint64_t> :WebPageProxyIdentifierType andWebPageID:;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (WKBrowsingContextHandle)initWithCoder:(id)coder;
+- (id)_initWithPageProxyID:()ObjectIdentifierGeneric<WebKit:()WTF:(unsigned long long>)f :()ObjectIdentifierGeneric<WebCore:()WTF:(unsigned long long>)tF :ObjectIdentifierMainThreadAccessTraits<uint64_t> :PageIdentifierType ObjectIdentifierMainThreadAccessTraits<uint64_t> :WebPageProxyIdentifierType andWebPageID:;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WKBrowsingContextHandle
 
-- (id)_initWithPageProxyID:()ObjectIdentifierGeneric<WebKit:()WTF:(unsigned long long>)a3 :()ObjectIdentifierGeneric<WebCore:()WTF:(unsigned long long>)a4 :ObjectIdentifierMainThreadAccessTraits<uint64_t> :PageIdentifierType ObjectIdentifierMainThreadAccessTraits<uint64_t> :WebPageProxyIdentifierType andWebPageID:
+- (id)_initWithPageProxyID:()ObjectIdentifierGeneric<WebKit:()WTF:(unsigned long long>)f :()ObjectIdentifierGeneric<WebCore:()WTF:(unsigned long long>)tF :ObjectIdentifierMainThreadAccessTraits<uint64_t> :PageIdentifierType ObjectIdentifierMainThreadAccessTraits<uint64_t> :WebPageProxyIdentifierType andWebPageID:
 {
   v7.receiver = self;
   v7.super_class = WKBrowsingContextHandle;
   result = [(WKBrowsingContextHandle *)&v7 init];
   if (result)
   {
-    *(result + 1) = a3;
-    *(result + 2) = a4;
+    *(result + 1) = f;
+    *(result + 2) = tF;
   }
 
   return result;
@@ -50,7 +50,7 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -60,7 +60,7 @@
 
   m_identifier = self->_pageProxyID.m_value.m_identifier;
   v6 = m_identifier != 0;
-  v7 = *(a3 + 1);
+  v7 = *(equal + 1);
   v8 = v7 != 0;
   v9 = m_identifier == v7;
   if (!v6 || !v8)
@@ -68,18 +68,18 @@
     v9 = v6 ^ v8 ^ 1;
   }
 
-  return v9 == 1 && self->_webPageID == *(a3 + 2);
+  return v9 == 1 && self->_webPageID == *(equal + 2);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   m_identifier = self->_pageProxyID.m_value.m_identifier;
   if (m_identifier)
   {
-    [a3 encodeInt64:m_identifier forKey:@"pageProxyID"];
+    [coder encodeInt64:m_identifier forKey:@"pageProxyID"];
     webPageID = self->_webPageID;
 
-    [a3 encodeInt64:webPageID forKey:@"webPageID"];
+    [coder encodeInt64:webPageID forKey:@"webPageID"];
   }
 
   else
@@ -88,10 +88,10 @@
   }
 }
 
-- (WKBrowsingContextHandle)initWithCoder:(id)a3
+- (WKBrowsingContextHandle)initWithCoder:(id)coder
 {
-  v5 = [a3 decodeInt64ForKey:@"pageProxyID"];
-  if ((v5 - 1) >= 0xFFFFFFFFFFFFFFFELL || (v6 = v5, v7 = [a3 decodeInt64ForKey:@"webPageID"], (v7 - 1) >= 0xFFFFFFFFFFFFFFFELL))
+  v5 = [coder decodeInt64ForKey:@"pageProxyID"];
+  if ((v5 - 1) >= 0xFFFFFFFFFFFFFFFELL || (v6 = v5, v7 = [coder decodeInt64ForKey:@"webPageID"], (v7 - 1) >= 0xFFFFFFFFFFFFFFFELL))
   {
     __break(0xC471u);
     JUMPOUT(0x19D9848ACLL);
@@ -100,9 +100,9 @@
   return [(WKBrowsingContextHandle *)self _initWithPageProxyID:v6 andWebPageID:v7];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [WKBrowsingContextHandle allocWithZone:a3];
+  v4 = [WKBrowsingContextHandle allocWithZone:zone];
   if (!self->_pageProxyID.m_value.m_identifier || self->_webPageID - 1 >= 0xFFFFFFFFFFFFFFFELL)
   {
     __break(0xC471u);

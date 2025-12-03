@@ -1,8 +1,8 @@
 @interface _UIHyperGesture
 - (_UIHyperGesture)init;
-- (_UIHyperGesture)initWithInteractor:(id)a3;
+- (_UIHyperGesture)initWithInteractor:(id)interactor;
 - (_UIHyperGestureDelegate)_delegate;
-- (void)_handleGesture:(id)a3;
+- (void)_handleGesture:(id)gesture;
 @end
 
 @implementation _UIHyperGesture
@@ -15,38 +15,38 @@
   return v4;
 }
 
-- (_UIHyperGesture)initWithInteractor:(id)a3
+- (_UIHyperGesture)initWithInteractor:(id)interactor
 {
-  v5 = a3;
+  interactorCopy = interactor;
   v9.receiver = self;
   v9.super_class = _UIHyperGesture;
   v6 = [(_UIHyperGesture *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->__interactor, a3);
+    objc_storeStrong(&v6->__interactor, interactor);
   }
 
   return v7;
 }
 
-- (void)_handleGesture:(id)a3
+- (void)_handleGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(_UIHyperGesture *)self _delegate];
-  v6 = [v4 state];
+  gestureCopy = gesture;
+  _delegate = [(_UIHyperGesture *)self _delegate];
+  state = [gestureCopy state];
 
-  if ((v6 - 3) < 2)
+  if ((state - 3) < 2)
   {
-    v10 = [(_UIHyperGesture *)self _interactor];
+    _interactor = [(_UIHyperGesture *)self _interactor];
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __34___UIHyperGesture__handleGesture___block_invoke_4;
     v15 = &unk_1E70F35B8;
-    v11 = v5;
+    v11 = _delegate;
     v16 = v11;
-    v17 = self;
-    [v10 _interactionEndedMutatingState:&v12];
+    selfCopy = self;
+    [_interactor _interactionEndedMutatingState:&v12];
 
     if (objc_opt_respondsToSelector())
     {
@@ -57,10 +57,10 @@
     goto LABEL_10;
   }
 
-  if (v6 == 2)
+  if (state == 2)
   {
 LABEL_6:
-    v8 = [(_UIHyperGesture *)self _interactor];
+    _interactor2 = [(_UIHyperGesture *)self _interactor];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __34___UIHyperGesture__handleGesture___block_invoke;
@@ -75,9 +75,9 @@ LABEL_6:
     v18[1] = 3221225472;
     v18[2] = __34___UIHyperGesture__handleGesture___block_invoke_3;
     v18[3] = &unk_1E70F35B8;
-    v19 = v5;
-    v20 = self;
-    [v8 _interactionChangedMutatingTranslation:v22 velocity:v21 mutatingState:v18];
+    v19 = _delegate;
+    selfCopy2 = self;
+    [_interactor2 _interactionChangedMutatingTranslation:v22 velocity:v21 mutatingState:v18];
 
     v9 = v19;
 LABEL_10:
@@ -85,14 +85,14 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (v6 == 1)
+  if (state == 1)
   {
-    v7 = [(_UIHyperGesture *)self _interactor];
-    [v7 _interactionBegan];
+    _interactor3 = [(_UIHyperGesture *)self _interactor];
+    [_interactor3 _interactionBegan];
 
     if (objc_opt_respondsToSelector())
     {
-      [v5 _hyperGestureInteractionDidBegin:self];
+      [_delegate _hyperGestureInteractionDidBegin:self];
     }
 
     goto LABEL_6;

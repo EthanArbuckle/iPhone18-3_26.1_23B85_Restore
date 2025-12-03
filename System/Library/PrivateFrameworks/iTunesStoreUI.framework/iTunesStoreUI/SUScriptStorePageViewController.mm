@@ -1,9 +1,9 @@
 @interface SUScriptStorePageViewController
-+ (BOOL)copyURLStrings:(id *)a3 forValue:(id)a4;
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (BOOL)copyURLStrings:(id *)strings forValue:(id)value;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
-- (BOOL)_isSegmentedControlValid:(id)a3;
+- (BOOL)_isSegmentedControlValid:(id)valid;
 - (BOOL)doubleTapEnabled;
 - (BOOL)flashesScrollIndicators;
 - (BOOL)scrollingEnabled;
@@ -13,57 +13,57 @@
 - (NSNumber)timeoutInterval;
 - (NSString)userInfo;
 - (SUScriptSegmentedControl)segmentedControl;
-- (SUScriptStorePageViewController)initWithURLStrings:(id)a3;
+- (SUScriptStorePageViewController)initWithURLStrings:(id)strings;
 - (id)URLs;
-- (id)_copyURLsFromURLStrings:(id)a3;
-- (id)_pathForWebArchiveWithIdentifier:(id)a3 inDirectory:(id)a4;
+- (id)_copyURLsFromURLStrings:(id)strings;
+- (id)_pathForWebArchiveWithIdentifier:(id)identifier inDirectory:(id)directory;
 - (id)_storePageViewController;
 - (id)alwaysDispatchesScrollEvents;
 - (id)inputViewObeysDOMFocus;
-- (id)loadWebArchiveWithIdentifier:(id)a3 fromDirectory:(id)a4;
+- (id)loadWebArchiveWithIdentifier:(id)identifier fromDirectory:(id)directory;
 - (id)loadingTextColor;
 - (id)loadingTextShadowColor;
 - (id)loadsWhenHidden;
 - (id)newNativeViewController;
 - (id)placeholderBackgroundStyle;
 - (id)rootObject;
-- (id)saveWebArchiveWithIdentifier:(id)a3 toDirectory:(id)a4;
+- (id)saveWebArchiveWithIdentifier:(id)identifier toDirectory:(id)directory;
 - (id)scriptAttributeKeys;
 - (id)shouldShowFormAccessory;
 - (id)showsHorizontalScrollIndicator;
 - (id)showsVerticalScrollIndicator;
 - (int64_t)loadingIndicatorStyle;
-- (void)_setURLs:(id)a3;
-- (void)_setValue:(id)a3 forScriptPropertyKey:(id)a4;
-- (void)applyURLStrings:(id)a3 toViewController:(id)a4;
-- (void)reloadWithCallback:(id)a3;
-- (void)setAlwaysDispatchesScrollEvents:(id)a3;
-- (void)setInputViewObeysDOMFocus:(id)a3;
-- (void)setLoadingTextColor:(id)a3;
-- (void)setLoadingTextShadowColor:(id)a3;
-- (void)setLoadsWhenHidden:(id)a3;
-- (void)setNativeViewController:(id)a3;
-- (void)setPlaceholderBackgroundStyle:(id)a3;
-- (void)setSegmentedControl:(id)a3;
-- (void)setShouldShowFormAccessory:(id)a3;
-- (void)setShowsHorizontalScrollIndicator:(id)a3;
-- (void)setShowsVerticalScrollIndicator:(id)a3;
-- (void)setTimeoutInterval:(id)a3;
-- (void)setURLs:(id)a3;
-- (void)setUserInfo:(id)a3;
+- (void)_setURLs:(id)ls;
+- (void)_setValue:(id)value forScriptPropertyKey:(id)key;
+- (void)applyURLStrings:(id)strings toViewController:(id)controller;
+- (void)reloadWithCallback:(id)callback;
+- (void)setAlwaysDispatchesScrollEvents:(id)events;
+- (void)setInputViewObeysDOMFocus:(id)focus;
+- (void)setLoadingTextColor:(id)color;
+- (void)setLoadingTextShadowColor:(id)color;
+- (void)setLoadsWhenHidden:(id)hidden;
+- (void)setNativeViewController:(id)controller;
+- (void)setPlaceholderBackgroundStyle:(id)style;
+- (void)setSegmentedControl:(id)control;
+- (void)setShouldShowFormAccessory:(id)accessory;
+- (void)setShowsHorizontalScrollIndicator:(id)indicator;
+- (void)setShowsVerticalScrollIndicator:(id)indicator;
+- (void)setTimeoutInterval:(id)interval;
+- (void)setURLs:(id)ls;
+- (void)setUserInfo:(id)info;
 @end
 
 @implementation SUScriptStorePageViewController
 
-- (SUScriptStorePageViewController)initWithURLStrings:(id)a3
+- (SUScriptStorePageViewController)initWithURLStrings:(id)strings
 {
-  v4 = a3;
+  stringsCopy = strings;
   v9.receiver = self;
   v9.super_class = SUScriptStorePageViewController;
   v5 = [(SUScriptObject *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [stringsCopy copy];
     initialURLStrings = v5->_initialURLStrings;
     v5->_initialURLStrings = v6;
   }
@@ -71,22 +71,22 @@
   return v5;
 }
 
-+ (BOOL)copyURLStrings:(id *)a3 forValue:(id)a4
++ (BOOL)copyURLStrings:(id *)strings forValue:(id)value
 {
-  v5 = a4;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (SUURLValidator(v5))
+    if (SUURLValidator(valueCopy))
     {
-      v6 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v5, 0}];
+      v6 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{valueCopy, 0}];
       goto LABEL_11;
     }
 
 LABEL_8:
     v7 = 0;
     v6 = 0;
-    if (!a3)
+    if (!strings)
     {
       goto LABEL_13;
     }
@@ -97,7 +97,7 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 copyArrayValueWithValidator:SUURLValidator context:0];
+    v6 = [valueCopy copyArrayValueWithValidator:SUURLValidator context:0];
     if (!v6)
     {
       goto LABEL_8;
@@ -106,7 +106,7 @@ LABEL_8:
 
   else
   {
-    if (v5)
+    if (valueCopy)
     {
       goto LABEL_8;
     }
@@ -116,11 +116,11 @@ LABEL_8:
 
 LABEL_11:
   v7 = 1;
-  if (a3)
+  if (strings)
   {
 LABEL_12:
     v6 = v6;
-    *a3 = v6;
+    *strings = v6;
   }
 
 LABEL_13:
@@ -128,38 +128,38 @@ LABEL_13:
   return v7;
 }
 
-- (void)applyURLStrings:(id)a3 toViewController:(id)a4
+- (void)applyURLStrings:(id)strings toViewController:(id)controller
 {
-  v10 = a4;
-  v6 = [(SUScriptStorePageViewController *)self _copyURLsFromURLStrings:a3];
-  v7 = [v10 URLRequestProperties];
-  v8 = [v7 mutableCopy];
+  controllerCopy = controller;
+  v6 = [(SUScriptStorePageViewController *)self _copyURLsFromURLStrings:strings];
+  uRLRequestProperties = [controllerCopy URLRequestProperties];
+  v8 = [uRLRequestProperties mutableCopy];
 
   if ([v6 count] >= 2)
   {
     [v8 setAllowedRetryCount:0];
   }
 
-  v9 = [v10 isViewLoaded];
+  isViewLoaded = [controllerCopy isViewLoaded];
   [v8 setURLs:v6];
-  if (v9)
+  if (isViewLoaded)
   {
-    [v10 performSelector:sel_reloadWithURLRequestProperties_ withObject:v8 afterDelay:0.0];
+    [controllerCopy performSelector:sel_reloadWithURLRequestProperties_ withObject:v8 afterDelay:0.0];
   }
 
   else
   {
-    [v10 setURLRequestProperties:v8];
+    [controllerCopy setURLRequestProperties:v8];
   }
 }
 
 - (id)newNativeViewController
 {
-  v3 = [(SUScriptObject *)self viewControllerFactory];
-  v4 = v3;
-  if (v3)
+  viewControllerFactory = [(SUScriptObject *)self viewControllerFactory];
+  v4 = viewControllerFactory;
+  if (viewControllerFactory)
   {
-    v5 = [v3 newStorePageViewControllerWithSection:0];
+    v5 = [viewControllerFactory newStorePageViewControllerWithSection:0];
   }
 
   else
@@ -174,15 +174,15 @@ LABEL_13:
     [(SUScriptStorePageViewController *)self applyURLStrings:initialURLStrings toViewController:v5];
   }
 
-  v8 = [(SUScriptObject *)self clientInterface];
-  [(SUViewController *)v6 setClientInterface:v8];
+  clientInterface = [(SUScriptObject *)self clientInterface];
+  [(SUViewController *)v6 setClientInterface:clientInterface];
 
   return v6;
 }
 
-- (void)setNativeViewController:(id)a3
+- (void)setNativeViewController:(id)controller
 {
-  if (a3)
+  if (controller)
   {
     v4 = [(SUScriptNativeObject *)SUScriptStorePageNativeObject objectWithNativeObject:?];
     [(SUScriptObject *)self setNativeObject:v4];
@@ -195,10 +195,10 @@ LABEL_13:
   }
 }
 
-- (id)loadWebArchiveWithIdentifier:(id)a3 fromDirectory:(id)a4
+- (id)loadWebArchiveWithIdentifier:(id)identifier fromDirectory:(id)directory
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  directoryCopy = directory;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -207,14 +207,14 @@ LABEL_13:
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v6 = 0;
+    directoryCopy = 0;
   }
 
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass())))
+  if (objc_opt_isKindOfClass() & 1) != 0 && (!directoryCopy || (objc_opt_class(), (objc_opt_isKindOfClass())))
   {
-    v10 = v5;
-    v11 = v6;
+    v10 = identifierCopy;
+    v11 = directoryCopy;
     WebThreadRunOnMainThread();
   }
 
@@ -368,17 +368,17 @@ LABEL_24:
 LABEL_27:
 }
 
-- (void)reloadWithCallback:(id)a3
+- (void)reloadWithCallback:(id)callback
 {
-  v3 = a3;
+  callbackCopy = callback;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v3 = 0;
+    callbackCopy = 0;
   }
 
-  v4 = v3;
+  v4 = callbackCopy;
   WebThreadRunOnMainThread();
 }
 
@@ -425,11 +425,11 @@ uint64_t __54__SUScriptStorePageViewController_reloadWithCallback___block_invoke
   return [v7 setThisObject:0];
 }
 
-- (id)saveWebArchiveWithIdentifier:(id)a3 toDirectory:(id)a4
+- (id)saveWebArchiveWithIdentifier:(id)identifier toDirectory:(id)directory
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  directoryCopy = directory;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -438,15 +438,15 @@ uint64_t __54__SUScriptStorePageViewController_reloadWithCallback___block_invoke
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v7 = 0;
+    directoryCopy = 0;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (!directoryCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v8 = [(SUScriptStorePageViewController *)self _pathForWebArchiveWithIdentifier:v6 inDirectory:v7];
+      v8 = [(SUScriptStorePageViewController *)self _pathForWebArchiveWithIdentifier:identifierCopy inDirectory:directoryCopy];
       if (v8)
       {
         v27[1] = MEMORY[0x1E69E9820];
@@ -462,13 +462,13 @@ uint64_t __54__SUScriptStorePageViewController_reloadWithCallback___block_invoke
         goto LABEL_21;
       }
 
-      v9 = [(SUScriptObject *)self webFrame];
-      v10 = [v9 dataSource];
-      v26 = [v10 webArchive];
+      webFrame = [(SUScriptObject *)self webFrame];
+      dataSource = [webFrame dataSource];
+      webArchive = [dataSource webArchive];
 
-      v11 = [v26 data];
+      data = [webArchive data];
       v27[0] = 0;
-      v12 = [v11 writeToFile:v8 options:0 error:v27];
+      v12 = [data writeToFile:v8 options:0 error:v27];
       v13 = v27[0];
       *(v29 + 24) = v12;
 
@@ -480,22 +480,22 @@ LABEL_21:
         goto LABEL_23;
       }
 
-      v14 = [MEMORY[0x1E69D4938] sharedConfig];
-      v15 = [v14 shouldLog];
-      v16 = [v14 shouldLogToDisk];
-      v17 = [v14 OSLogObject];
-      v18 = v17;
-      if (v16)
+      mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+      shouldLogToDisk = [mEMORY[0x1E69D4938] shouldLogToDisk];
+      oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+      v18 = oSLogObject;
+      if (shouldLogToDisk)
       {
-        v15 |= 2u;
+        shouldLog |= 2u;
       }
 
-      if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
-        v15 &= 2u;
+        shouldLog &= 2u;
       }
 
-      if (v15)
+      if (shouldLog)
       {
         v19 = objc_opt_class();
         v32 = 138412802;
@@ -809,21 +809,21 @@ void __61__SUScriptStorePageViewController_placeholderBackgroundStyle__block_inv
 
 - (id)rootObject
 {
-  v2 = [(SUScriptObject *)self webFrame];
-  v3 = [v2 webView];
-  v4 = [v3 windowScriptObject];
+  webFrame = [(SUScriptObject *)self webFrame];
+  webView = [webFrame webView];
+  windowScriptObject = [webView windowScriptObject];
 
-  if (v4)
+  if (windowScriptObject)
   {
-    v5 = v4;
+    null = windowScriptObject;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v6 = v5;
+  v6 = null;
 
   return v6;
 }
@@ -861,15 +861,15 @@ void __51__SUScriptStorePageViewController_scrollingEnabled__block_invoke(uint64
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
 
   return v4;
@@ -896,23 +896,23 @@ void __51__SUScriptStorePageViewController_segmentedControl__block_invoke(uint64
   }
 }
 
-- (void)setAlwaysDispatchesScrollEvents:(id)a3
+- (void)setAlwaysDispatchesScrollEvents:(id)events
 {
-  v3 = a3;
+  eventsCopy = events;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v3 = 0;
+    eventsCopy = 0;
   }
 
-  else if (v3 && (objc_opt_respondsToSelector() & 1) == 0)
+  else if (eventsCopy && (objc_opt_respondsToSelector() & 1) == 0)
   {
     [MEMORY[0x1E69E2F88] throwException:@"Invalid argument"];
     goto LABEL_5;
   }
 
-  v3 = v3;
+  eventsCopy = eventsCopy;
   WebThreadRunOnMainThread();
 
 LABEL_5:
@@ -942,23 +942,23 @@ void __62__SUScriptStorePageViewController_setFlashesScrollIndicators___block_in
   [v3 setScriptProperties:v2];
 }
 
-- (void)setInputViewObeysDOMFocus:(id)a3
+- (void)setInputViewObeysDOMFocus:(id)focus
 {
-  v3 = a3;
+  focusCopy = focus;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v3 = 0;
+    focusCopy = 0;
   }
 
-  else if (v3 && (objc_opt_respondsToSelector() & 1) == 0)
+  else if (focusCopy && (objc_opt_respondsToSelector() & 1) == 0)
   {
     [MEMORY[0x1E69E2F88] throwException:@"Invalid argument"];
     goto LABEL_5;
   }
 
-  v3 = v3;
+  focusCopy = focusCopy;
   WebThreadRunOnMainThread();
 
 LABEL_5:
@@ -980,9 +980,9 @@ void __60__SUScriptStorePageViewController_setLoadingIndicatorStyle___block_invo
   [v3 setScriptProperties:v2];
 }
 
-- (void)setLoadingTextColor:(id)a3
+- (void)setLoadingTextColor:(id)color
 {
-  v3 = [(SUScriptViewController *)self newScriptColorWithValue:a3];
+  v3 = [(SUScriptViewController *)self newScriptColorWithValue:color];
   v4 = v3;
   if (v3)
   {
@@ -1006,9 +1006,9 @@ void __55__SUScriptStorePageViewController_setLoadingTextColor___block_invoke(ui
   [v4 setScriptProperties:v2];
 }
 
-- (void)setLoadingTextShadowColor:(id)a3
+- (void)setLoadingTextShadowColor:(id)color
 {
-  v3 = [(SUScriptViewController *)self newScriptColorWithValue:a3];
+  v3 = [(SUScriptViewController *)self newScriptColorWithValue:color];
   v4 = v3;
   if (v3)
   {
@@ -1032,23 +1032,23 @@ void __61__SUScriptStorePageViewController_setLoadingTextShadowColor___block_inv
   [v4 setScriptProperties:v2];
 }
 
-- (void)setLoadsWhenHidden:(id)a3
+- (void)setLoadsWhenHidden:(id)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v3 = 0;
+    hiddenCopy = 0;
   }
 
-  else if (v3 && (objc_opt_respondsToSelector() & 1) == 0)
+  else if (hiddenCopy && (objc_opt_respondsToSelector() & 1) == 0)
   {
     [MEMORY[0x1E69E2F88] throwException:@"Invalid argument"];
     goto LABEL_5;
   }
 
-  v3 = v3;
+  hiddenCopy = hiddenCopy;
   WebThreadRunOnMainThread();
 
 LABEL_5:
@@ -1060,29 +1060,29 @@ void __54__SUScriptStorePageViewController_setLoadsWhenHidden___block_invoke(uin
   [v2 setLoadsWhenHidden:{objc_msgSend(*(a1 + 40), "BOOLValue")}];
 }
 
-- (void)setPlaceholderBackgroundStyle:(id)a3
+- (void)setPlaceholderBackgroundStyle:(id)style
 {
-  v3 = a3;
+  styleCopy = style;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v3 = 0;
+    styleCopy = 0;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [[SUScriptColor alloc] initWithStyleString:v3];
+    v4 = [[SUScriptColor alloc] initWithStyleString:styleCopy];
 
-    v3 = v4;
+    styleCopy = v4;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(SUScriptColor *)v3 copyNativeGradient];
-    if (!v3)
+    copyNativeGradient = [(SUScriptColor *)styleCopy copyNativeGradient];
+    if (!styleCopy)
     {
       goto LABEL_15;
     }
@@ -1093,11 +1093,11 @@ void __54__SUScriptStorePageViewController_setLoadsWhenHidden___block_invoke(uin
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [[SUGradient alloc] initWithType:0];
-      v6 = [(SUScriptColor *)v3 nativeColor];
-      -[SUGradient addColorStopWithOffset:color:](v5, "addColorStopWithOffset:color:", [v6 CGColor], 0.0);
+      copyNativeGradient = [[SUGradient alloc] initWithType:0];
+      nativeColor = [(SUScriptColor *)styleCopy nativeColor];
+      -[SUGradient addColorStopWithOffset:color:](copyNativeGradient, "addColorStopWithOffset:color:", [nativeColor CGColor], 0.0);
 
-      if (!v3)
+      if (!styleCopy)
       {
         goto LABEL_15;
       }
@@ -1105,11 +1105,11 @@ void __54__SUScriptStorePageViewController_setLoadsWhenHidden___block_invoke(uin
 
     else
     {
-      v5 = 0;
-      if (!v3)
+      copyNativeGradient = 0;
+      if (!styleCopy)
       {
 LABEL_15:
-        v7 = v5;
+        v7 = copyNativeGradient;
         WebThreadRunOnMainThread();
 
         goto LABEL_16;
@@ -1117,7 +1117,7 @@ LABEL_15:
     }
   }
 
-  if (v5)
+  if (copyNativeGradient)
   {
     goto LABEL_15;
   }
@@ -1142,17 +1142,17 @@ void __55__SUScriptStorePageViewController_setScrollingEnabled___block_invoke(ui
   [v3 setScriptProperties:v2];
 }
 
-- (void)setSegmentedControl:(id)a3
+- (void)setSegmentedControl:(id)control
 {
-  v4 = a3;
+  controlCopy = control;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v4 = 0;
+    controlCopy = 0;
   }
 
-  else if (v4)
+  else if (controlCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1161,10 +1161,10 @@ void __55__SUScriptStorePageViewController_setScrollingEnabled___block_invoke(ui
       goto LABEL_5;
     }
 
-    [(SUScriptStorePageViewController *)self _isSegmentedControlValid:v4];
+    [(SUScriptStorePageViewController *)self _isSegmentedControlValid:controlCopy];
   }
 
-  v4 = v4;
+  controlCopy = controlCopy;
   WebThreadRunOnMainThread();
 
 LABEL_5:
@@ -1214,12 +1214,12 @@ void __62__SUScriptStorePageViewController_setShouldLoadProgressively___block_in
   [v3 setScriptProperties:v2];
 }
 
-- (void)setShouldShowFormAccessory:(id)a3
+- (void)setShouldShowFormAccessory:(id)accessory
 {
-  v3 = a3;
+  accessoryCopy = accessory;
   if (objc_opt_respondsToSelector())
   {
-    v4 = v3;
+    v4 = accessoryCopy;
     WebThreadRunOnMainThread();
   }
 
@@ -1245,12 +1245,12 @@ void __60__SUScriptStorePageViewController_setShowsBackgroundShadow___block_invo
   [v3 setScriptProperties:v2];
 }
 
-- (void)setShowsHorizontalScrollIndicator:(id)a3
+- (void)setShowsHorizontalScrollIndicator:(id)indicator
 {
-  v3 = a3;
+  indicatorCopy = indicator;
   if (objc_opt_respondsToSelector())
   {
-    v4 = v3;
+    v4 = indicatorCopy;
     WebThreadRunOnMainThread();
   }
 
@@ -1268,12 +1268,12 @@ void __69__SUScriptStorePageViewController_setShowsHorizontalScrollIndicator___b
   [v3 setScriptProperties:v2];
 }
 
-- (void)setShowsVerticalScrollIndicator:(id)a3
+- (void)setShowsVerticalScrollIndicator:(id)indicator
 {
-  v3 = a3;
+  indicatorCopy = indicator;
   if (objc_opt_respondsToSelector())
   {
-    v4 = v3;
+    v4 = indicatorCopy;
     WebThreadRunOnMainThread();
   }
 
@@ -1291,12 +1291,12 @@ void __67__SUScriptStorePageViewController_setShowsVerticalScrollIndicator___blo
   [v3 setScriptProperties:v2];
 }
 
-- (void)setTimeoutInterval:(id)a3
+- (void)setTimeoutInterval:(id)interval
 {
-  v3 = a3;
+  intervalCopy = interval;
   if (objc_opt_respondsToSelector())
   {
-    v4 = v3;
+    v4 = intervalCopy;
     WebThreadRunOnMainThread();
   }
 
@@ -1317,37 +1317,37 @@ void __54__SUScriptStorePageViewController_setTimeoutInterval___block_invoke(uin
   [v4 setURLRequestProperties:v3];
 }
 
-- (void)setURLs:(id)a3
+- (void)setURLs:(id)ls
 {
-  v4 = a3;
+  lsCopy = ls;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v4 = 0;
+    lsCopy = 0;
   }
 
   v8 = 0;
-  v5 = [objc_opt_class() copyURLStrings:&v8 forValue:v4];
+  v5 = [objc_opt_class() copyURLStrings:&v8 forValue:lsCopy];
   v6 = v8;
   if (v5)
   {
-    v7 = [(SUScriptObject *)self webThreadMainThreadBatchProxy];
-    [v7 _setURLs:v6];
+    webThreadMainThreadBatchProxy = [(SUScriptObject *)self webThreadMainThreadBatchProxy];
+    [webThreadMainThreadBatchProxy _setURLs:v6];
   }
 }
 
-- (void)setUserInfo:(id)a3
+- (void)setUserInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v3 = 0;
+    infoCopy = 0;
   }
 
-  else if (v3)
+  else if (infoCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1357,7 +1357,7 @@ void __54__SUScriptStorePageViewController_setTimeoutInterval___block_invoke(uin
     }
   }
 
-  v3 = v3;
+  infoCopy = infoCopy;
   WebThreadRunOnMainThread();
 
 LABEL_5:
@@ -1533,15 +1533,15 @@ void __63__SUScriptStorePageViewController_showsVerticalScrollIndicator__block_i
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
 
   return v4;
@@ -1572,15 +1572,15 @@ void __50__SUScriptStorePageViewController_timeoutInterval__block_invoke(uint64_
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
 
   return v4;
@@ -1620,23 +1620,23 @@ void __43__SUScriptStorePageViewController_userInfo__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)_setURLs:(id)a3
+- (void)_setURLs:(id)ls
 {
-  v4 = a3;
-  v5 = [(SUScriptStorePageViewController *)self _storePageViewController];
-  [(SUScriptStorePageViewController *)self applyURLStrings:v4 toViewController:v5];
+  lsCopy = ls;
+  _storePageViewController = [(SUScriptStorePageViewController *)self _storePageViewController];
+  [(SUScriptStorePageViewController *)self applyURLStrings:lsCopy toViewController:_storePageViewController];
 }
 
-- (id)_copyURLsFromURLStrings:(id)a3
+- (id)_copyURLsFromURLStrings:(id)strings
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  stringsCopy = strings;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = stringsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -1673,10 +1673,10 @@ void __43__SUScriptStorePageViewController_userInfo__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (BOOL)_isSegmentedControlValid:(id)a3
+- (BOOL)_isSegmentedControlValid:(id)valid
 {
   v16 = *MEMORY[0x1E69E9840];
-  [a3 segments];
+  [valid segments];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -1695,9 +1695,9 @@ void __43__SUScriptStorePageViewController_userInfo__block_invoke(uint64_t a1)
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) newPageSection];
+        newPageSection = [*(*(&v11 + 1) + 8 * i) newPageSection];
 
-        if (!v8)
+        if (!newPageSection)
         {
           v9 = 0;
           goto LABEL_11;
@@ -1720,19 +1720,19 @@ LABEL_11:
   return v9;
 }
 
-- (id)_pathForWebArchiveWithIdentifier:(id)a3 inDirectory:(id)a4
+- (id)_pathForWebArchiveWithIdentifier:(id)identifier inDirectory:(id)directory
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  identifierCopy = identifier;
+  directoryCopy = directory;
+  if (!directoryCopy)
   {
-    v6 = NSTemporaryDirectory();
+    directoryCopy = NSTemporaryDirectory();
   }
 
-  if ([MEMORY[0x1E696AC08] ensureDirectoryExists:v6])
+  if ([MEMORY[0x1E696AC08] ensureDirectoryExists:directoryCopy])
   {
-    v7 = [v5 stringByAppendingPathExtension:@"webarchive"];
-    v8 = [v6 stringByAppendingPathComponent:v7];
+    v7 = [identifierCopy stringByAppendingPathExtension:@"webarchive"];
+    v8 = [directoryCopy stringByAppendingPathComponent:v7];
   }
 
   else
@@ -1743,21 +1743,21 @@ LABEL_11:
   return v8;
 }
 
-- (void)_setValue:(id)a3 forScriptPropertyKey:(id)a4
+- (void)_setValue:(id)value forScriptPropertyKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(SUScriptStorePageViewController *)self _storePageViewController];
-  v8 = [v9 copyScriptProperties];
-  [v8 setValue:v7 forKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  _storePageViewController = [(SUScriptStorePageViewController *)self _storePageViewController];
+  copyScriptProperties = [_storePageViewController copyScriptProperties];
+  [copyScriptProperties setValue:valueCopy forKey:keyCopy];
 
-  [v9 setScriptProperties:v8];
+  [_storePageViewController setScriptProperties:copyScriptProperties];
 }
 
 - (id)_storePageViewController
 {
-  v2 = [(SUScriptViewController *)self nativeViewController];
-  if (v2)
+  nativeViewController = [(SUScriptViewController *)self nativeViewController];
+  if (nativeViewController)
   {
     do
     {
@@ -1767,39 +1767,39 @@ LABEL_11:
         break;
       }
 
-      v3 = [v2 parentViewController];
+      parentViewController = [nativeViewController parentViewController];
 
-      v2 = v3;
+      nativeViewController = parentViewController;
     }
 
-    while (v3);
+    while (parentViewController);
   }
 
-  return v2;
+  return nativeViewController;
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
-  v4 = a3;
-  v5 = [__KeyMapping_21 objectForKey:v4];
+  nameCopy = name;
+  v5 = [__KeyMapping_21 objectForKey:nameCopy];
   if (!v5)
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SUScriptStorePageViewController;
-    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForKeyName_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForKeyName_, nameCopy);
   }
 
   return v5;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  v5 = SUWebScriptNameForSelector2(a3, &__SelectorMapping_16, 4);
+  v5 = SUWebScriptNameForSelector2(selector, &__SelectorMapping_16, 4);
   if (!v5)
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SUScriptStorePageViewController;
-    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForSelector_, a3);
+    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForSelector_, selector);
   }
 
   return v5;
@@ -1809,16 +1809,16 @@ LABEL_11:
 {
   v5.receiver = self;
   v5.super_class = SUScriptStorePageViewController;
-  v2 = [(SUScriptViewController *)&v5 scriptAttributeKeys];
-  v3 = [__KeyMapping_21 allKeys];
-  [v2 addObjectsFromArray:v3];
+  scriptAttributeKeys = [(SUScriptViewController *)&v5 scriptAttributeKeys];
+  allKeys = [__KeyMapping_21 allKeys];
+  [scriptAttributeKeys addObjectsFromArray:allKeys];
 
-  return v2;
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_16 = sel_loadWebArchiveWithIdentifier_fromDirectory_;
     unk_1EBF3AB90 = @"loadWebArchive";

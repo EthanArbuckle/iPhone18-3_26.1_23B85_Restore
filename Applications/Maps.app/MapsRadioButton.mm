@@ -1,15 +1,15 @@
 @interface MapsRadioButton
-+ (id)buttonWithGroupIdentifier:(id)a3;
++ (id)buttonWithGroupIdentifier:(id)identifier;
 - (CGSize)intrinsicContentSize;
-- (MapsRadioButton)initWithFrame:(CGRect)a3;
+- (MapsRadioButton)initWithFrame:(CGRect)frame;
 - (UILabel)associatedLabel;
 - (double)sizingLength;
 - (void)_fireAction;
-- (void)_otherButtonDidChange:(id)a3;
-- (void)setAssociatedLabel:(id)a3;
-- (void)setControlSize:(int)a3;
-- (void)setGroupIdentifier:(id)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)_otherButtonDidChange:(id)change;
+- (void)setAssociatedLabel:(id)label;
+- (void)setControlSize:(int)size;
+- (void)setGroupIdentifier:(id)identifier;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation MapsRadioButton
@@ -43,9 +43,9 @@
   }
 }
 
-- (void)setAssociatedLabel:(id)a3
+- (void)setAssociatedLabel:(id)label
 {
-  obj = a3;
+  obj = label;
   WeakRetained = objc_loadWeakRetained(&self->_associatedLabel);
 
   if (WeakRetained != obj)
@@ -88,24 +88,24 @@
   [(MapsRadioButton *)self sendActionsForControlEvents:4096];
 }
 
-- (void)_otherButtonDidChange:(id)a3
+- (void)_otherButtonDidChange:(id)change
 {
-  v8 = a3;
-  v4 = [v8 object];
-  if (v4 && [(MapsRadioButton *)self isSelected])
+  changeCopy = change;
+  object = [changeCopy object];
+  if (object && [(MapsRadioButton *)self isSelected])
   {
-    v5 = [v8 object];
-    v6 = [v5 isEqual:self->_groupIdentifier];
+    object2 = [changeCopy object];
+    v6 = [object2 isEqual:self->_groupIdentifier];
 
     if (!v6)
     {
       goto LABEL_7;
     }
 
-    v7 = [v8 userInfo];
-    v4 = [v7 objectForKeyedSubscript:@"button"];
+    userInfo = [changeCopy userInfo];
+    object = [userInfo objectForKeyedSubscript:@"button"];
 
-    if (v4 != self)
+    if (object != self)
     {
       [(MapsRadioButton *)self setSelected:0];
     }
@@ -114,11 +114,11 @@
 LABEL_7:
 }
 
-- (void)setGroupIdentifier:(id)a3
+- (void)setGroupIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   groupIdentifier = self->_groupIdentifier;
-  v13 = v4;
+  v13 = identifierCopy;
   v6 = groupIdentifier;
   v7 = v13;
   if (v13 | v6)
@@ -150,38 +150,38 @@ LABEL_7:
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  if ([(UIButton *)self->_button isSelected]!= a3)
+  selectedCopy = selected;
+  if ([(UIButton *)self->_button isSelected]!= selected)
   {
-    [(UIButton *)self->_button setSelected:v3];
-    if (v3)
+    [(UIButton *)self->_button setSelected:selectedCopy];
+    if (selectedCopy)
     {
       v5 = +[NSNotificationCenter defaultCenter];
-      v6 = [(MapsRadioButton *)self groupIdentifier];
+      groupIdentifier = [(MapsRadioButton *)self groupIdentifier];
       v8 = @"button";
-      v9 = self;
-      v7 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
-      [v5 postNotificationName:@"MapsRadioButtonDidChangeNotification" object:v6 userInfo:v7];
+      selfCopy = self;
+      v7 = [NSDictionary dictionaryWithObjects:&selfCopy forKeys:&v8 count:1];
+      [v5 postNotificationName:@"MapsRadioButtonDidChangeNotification" object:groupIdentifier userInfo:v7];
     }
   }
 }
 
-- (void)setControlSize:(int)a3
+- (void)setControlSize:(int)size
 {
-  if (self->_controlSize != a3)
+  if (self->_controlSize != size)
   {
-    self->_controlSize = a3;
+    self->_controlSize = size;
     [(MapsRadioButton *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (MapsRadioButton)initWithFrame:(CGRect)a3
+- (MapsRadioButton)initWithFrame:(CGRect)frame
 {
   v18.receiver = self;
   v18.super_class = MapsRadioButton;
-  v3 = [(MapsRadioButton *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MapsRadioButton *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIButton buttonWithType:0];
@@ -201,12 +201,12 @@ LABEL_7:
     [(MapsRadioButton *)v3 addSubview:v3->_button];
     LODWORD(v10) = 1148846080;
     v11 = [(UIButton *)v3->_button _maps_constraintsEqualToEdgesOfView:v3 priority:v10];
-    v12 = [v11 allConstraints];
-    [NSLayoutConstraint activateConstraints:v12];
+    allConstraints = [v11 allConstraints];
+    [NSLayoutConstraint activateConstraints:allConstraints];
 
-    v13 = [(MapsRadioButton *)v3 heightAnchor];
-    v14 = [(MapsRadioButton *)v3 widthAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    heightAnchor = [(MapsRadioButton *)v3 heightAnchor];
+    widthAnchor = [(MapsRadioButton *)v3 widthAnchor];
+    v15 = [heightAnchor constraintEqualToAnchor:widthAnchor];
     v19 = v15;
     v16 = [NSArray arrayWithObjects:&v19 count:1];
     [NSLayoutConstraint activateConstraints:v16];
@@ -215,11 +215,11 @@ LABEL_7:
   return v3;
 }
 
-+ (id)buttonWithGroupIdentifier:(id)a3
++ (id)buttonWithGroupIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-  [v5 setGroupIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[self alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
+  [v5 setGroupIdentifier:identifierCopy];
 
   return v5;
 }

@@ -1,33 +1,33 @@
 @interface MTLIOAccelDevice
 - (BOOL)lazyInitialize;
-- (BOOL)supportsVertexAmplificationCount:(unint64_t)a3;
-- (MTLIOAccelDevice)initWithAcceleratorPort:(unsigned int)a3;
+- (BOOL)supportsVertexAmplificationCount:(unint64_t)count;
+- (MTLIOAccelDevice)initWithAcceleratorPort:(unsigned int)port;
 - (id)_deviceWrapper;
-- (id)allocBufferSubDataWithLength:(unint64_t)a3 options:(unint64_t)a4 alignment:(unint64_t)a5 heapIndex:(signed __int16 *)a6 bufferIndex:(signed __int16 *)a7 bufferOffset:(unint64_t *)a8;
-- (id)newAccelerationStructureWithBuffer:(id)a3 offset:(unint64_t)a4;
-- (id)newAccelerationStructureWithBuffer:(id)a3 offset:(unint64_t)a4 resourceIndex:(unint64_t)a5;
-- (id)newAccelerationStructureWithSize:(unint64_t)a3;
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 resourceIndex:(unint64_t)a4;
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 withDescriptor:(id)a4;
-- (id)newCommandQueueWithDescriptor:(id)a3;
+- (id)allocBufferSubDataWithLength:(unint64_t)length options:(unint64_t)options alignment:(unint64_t)alignment heapIndex:(signed __int16 *)index bufferIndex:(signed __int16 *)bufferIndex bufferOffset:(unint64_t *)offset;
+- (id)newAccelerationStructureWithBuffer:(id)buffer offset:(unint64_t)offset;
+- (id)newAccelerationStructureWithBuffer:(id)buffer offset:(unint64_t)offset resourceIndex:(unint64_t)index;
+- (id)newAccelerationStructureWithSize:(unint64_t)size;
+- (id)newAccelerationStructureWithSize:(unint64_t)size resourceIndex:(unint64_t)index;
+- (id)newAccelerationStructureWithSize:(unint64_t)size withDescriptor:(id)descriptor;
+- (id)newCommandQueueWithDescriptor:(id)descriptor;
 - (id)newEvent;
-- (id)newEventWithOptions:(int64_t)a3;
+- (id)newEventWithOptions:(int64_t)options;
 - (id)newFence;
-- (id)newIOCommandQueueWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newIOHandleWithURL:(id)a3 compressionMethod:(int64_t)a4 error:(id *)a5;
-- (id)newIOHandleWithURL:(id)a3 error:(id *)a4;
-- (id)newIndirectCommandBufferWithDescriptor:(id)a3 maxCommandCount:(unint64_t)a4 options:(unint64_t)a5;
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3;
-- (id)newUncachedIOHandleWithURL:(id)a3 compressionType:(int64_t)a4 error:(id *)a5;
-- (id)newUncachedIOHandleWithURL:(id)a3 error:(id *)a4;
+- (id)newIOCommandQueueWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newIOHandleWithURL:(id)l compressionMethod:(int64_t)method error:(id *)error;
+- (id)newIOHandleWithURL:(id)l error:(id *)error;
+- (id)newIndirectCommandBufferWithDescriptor:(id)descriptor maxCommandCount:(unint64_t)count options:(unint64_t)options;
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor;
+- (id)newUncachedIOHandleWithURL:(id)l compressionType:(int64_t)type error:(id *)error;
+- (id)newUncachedIOHandleWithURL:(id)l error:(id *)error;
 - (unint64_t)currentAllocatedSize;
 - (unint64_t)maxBufferLength;
 - (unint64_t)recommendedMaxWorkingSetSize;
 - (void)_purgeDevice;
 - (void)dealloc;
-- (void)deallocBufferSubData:(id)a3 heapIndex:(signed __int16)a4 bufferIndex:(signed __int16)a5 bufferOffset:(unint64_t)a6 length:(unint64_t)a7;
+- (void)deallocBufferSubData:(id)data heapIndex:(signed __int16)index bufferIndex:(signed __int16)bufferIndex bufferOffset:(unint64_t)offset length:(unint64_t)length;
 - (void)kickCleanupQueue;
-- (void)setHwResourcePool:(id *)a3 count:(int)a4;
+- (void)setHwResourcePool:(id *)pool count:(int)count;
 - (void)updateResourcePoolPurgeability;
 @end
 
@@ -116,7 +116,7 @@ void __27__MTLIOAccelDevice_dealloc__block_invoke(uint64_t a1)
   dispatch_release(v4);
 }
 
-- (MTLIOAccelDevice)initWithAcceleratorPort:(unsigned int)a3
+- (MTLIOAccelDevice)initWithAcceleratorPort:(unsigned int)port
 {
   v10.receiver = self;
   v10.super_class = MTLIOAccelDevice;
@@ -132,9 +132,9 @@ LABEL_7:
       return 0;
     }
 
-    IORegistryEntryGetRegistryEntryID(a3, &v4->_registryID);
-    v4->_acceleratorPort = a3;
-    IOObjectRetain(a3);
+    IORegistryEntryGetRegistryEntryID(port, &v4->_registryID);
+    v4->_acceleratorPort = port;
+    IOObjectRetain(port);
     v4->_storageCreateParams.hwResourcePools = 0;
     v4->_storageCreateParams.var0 = 0;
     deviceRef = v4->_deviceRef;
@@ -201,22 +201,22 @@ LABEL_7:
   return v4;
 }
 
-- (void)setHwResourcePool:(id *)a3 count:(int)a4
+- (void)setHwResourcePool:(id *)pool count:(int)count
 {
-  self->_storageCreateParams.hwResourcePools = malloc_type_malloc(8 * a4, 0x80040B8603338uLL);
-  if (a4 >= 1)
+  self->_storageCreateParams.hwResourcePools = malloc_type_malloc(8 * count, 0x80040B8603338uLL);
+  if (count >= 1)
   {
     v7 = 0;
     do
     {
-      self->_storageCreateParams.hwResourcePools[v7] = a3[v7];
+      self->_storageCreateParams.hwResourcePools[v7] = pool[v7];
       ++v7;
     }
 
-    while (a4 != v7);
+    while (count != v7);
   }
 
-  self->_storageCreateParams.var0 = a4;
+  self->_storageCreateParams.var0 = count;
 }
 
 - (void)_purgeDevice
@@ -253,15 +253,15 @@ LABEL_7:
   return videoRam;
 }
 
-- (BOOL)supportsVertexAmplificationCount:(unint64_t)a3
+- (BOOL)supportsVertexAmplificationCount:(unint64_t)count
 {
-  if (a3 == 1)
+  if (count == 1)
   {
     return 1;
   }
 
   result = [(MTLIOAccelDevice *)self supportsVertexAmplification];
-  if (a3 != 2)
+  if (count != 2)
   {
     return 0;
   }
@@ -269,9 +269,9 @@ LABEL_7:
   return result;
 }
 
-- (id)allocBufferSubDataWithLength:(unint64_t)a3 options:(unint64_t)a4 alignment:(unint64_t)a5 heapIndex:(signed __int16 *)a6 bufferIndex:(signed __int16 *)a7 bufferOffset:(unint64_t *)a8
+- (id)allocBufferSubDataWithLength:(unint64_t)length options:(unint64_t)options alignment:(unint64_t)alignment heapIndex:(signed __int16 *)index bufferIndex:(signed __int16 *)bufferIndex bufferOffset:(unint64_t *)offset
 {
-  v12 = a4;
+  optionsCopy = options;
   v36 = 0;
   v37 = &v36;
   v38 = 0x3052000000;
@@ -290,7 +290,7 @@ LABEL_7:
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  v15 = [(MTLIOAccelDevice *)self heapIndexWithOptions:a4];
+  v15 = [(MTLIOAccelDevice *)self heapIndexWithOptions:options];
   v16 = v15;
   if (v15 < 0)
   {
@@ -301,9 +301,9 @@ LABEL_7:
   {
     v37[5] = 0;
     *(v29 + 12) = -1;
-    if ((v12 & 0xF0) == 0x20)
+    if ((optionsCopy & 0xF0) == 0x20)
     {
-      v12 |= 0x20000uLL;
+      optionsCopy |= 0x20000uLL;
     }
 
     device_dispatch_queue = self->_device_dispatch_queue;
@@ -317,20 +317,20 @@ LABEL_7:
     block[6] = &v24;
     block[7] = &v36;
     block[8] = &v28;
-    block[9] = a3;
-    block[10] = a5;
-    block[11] = v12;
+    block[9] = length;
+    block[10] = alignment;
+    block[11] = optionsCopy;
     dispatch_sync(device_dispatch_queue, block);
     v18 = v37;
     if (v37[5])
     {
-      *a6 = v16;
-      *a7 = *(v33 + 12);
-      *a8 = v25[3];
-      if ((v12 & 0x90000) == 0 && v29[3] < 0)
+      *index = v16;
+      *bufferIndex = *(v33 + 12);
+      *offset = v25[3];
+      if ((optionsCopy & 0x90000) == 0 && v29[3] < 0)
       {
-        v19 = [v18[5] virtualAddress];
-        bzero((v19 + v25[3]), a3);
+        virtualAddress = [v18[5] virtualAddress];
+        bzero((virtualAddress + v25[3]), length);
         v18 = v37;
       }
     }
@@ -415,19 +415,19 @@ LABEL_11:
   }
 }
 
-- (void)deallocBufferSubData:(id)a3 heapIndex:(signed __int16)a4 bufferIndex:(signed __int16)a5 bufferOffset:(unint64_t)a6 length:(unint64_t)a7
+- (void)deallocBufferSubData:(id)data heapIndex:(signed __int16)index bufferIndex:(signed __int16)bufferIndex bufferOffset:(unint64_t)offset length:(unint64_t)length
 {
   device_dispatch_queue = self->_device_dispatch_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __83__MTLIOAccelDevice_deallocBufferSubData_heapIndex_bufferIndex_bufferOffset_length___block_invoke;
   block[3] = &unk_1E6EEB8A0;
-  block[4] = a3;
+  block[4] = data;
   block[5] = self;
-  v9 = a4;
-  v10 = a5;
-  block[6] = a6;
-  block[7] = a7;
+  indexCopy = index;
+  bufferIndexCopy = bufferIndex;
+  block[6] = offset;
+  block[7] = length;
   dispatch_sync(device_dispatch_queue, block);
 }
 
@@ -453,11 +453,11 @@ void __83__MTLIOAccelDevice_deallocBufferSubData_heapIndex_bufferIndex_bufferOff
   }
 }
 
-- (id)newCommandQueueWithDescriptor:(id)a3
+- (id)newCommandQueueWithDescriptor:(id)descriptor
 {
-  v4 = [a3 maxCommandBufferCount];
+  maxCommandBufferCount = [descriptor maxCommandBufferCount];
 
-  return [(_MTLDevice *)self newCommandQueueWithMaxCommandBufferCount:v4];
+  return [(_MTLDevice *)self newCommandQueueWithMaxCommandBufferCount:maxCommandBufferCount];
 }
 
 - (id)newFence
@@ -588,13 +588,13 @@ uint64_t __38__MTLIOAccelDevice_releaseFenceIndex___block_invoke(uint64_t result
   return result;
 }
 
-- (id)newIndirectCommandBufferWithDescriptor:(id)a3 maxCommandCount:(unint64_t)a4 options:(unint64_t)a5
+- (id)newIndirectCommandBufferWithDescriptor:(id)descriptor maxCommandCount:(unint64_t)count options:(unint64_t)options
 {
-  result = [(MTLIOAccelDevice *)self newIndirectCommandBufferWithDescriptor:a3 maxCount:a4 options:a5];
+  result = [(MTLIOAccelDevice *)self newIndirectCommandBufferWithDescriptor:descriptor maxCount:count options:options];
   if (result)
   {
     v8 = result;
-    v9 = [[MTLIOAccelIndirectCommandBuffer alloc] initWithBuffer:result descriptor:a3 maxCommandCount:a4];
+    v9 = [[MTLIOAccelIndirectCommandBuffer alloc] initWithBuffer:result descriptor:descriptor maxCommandCount:count];
 
     return v9;
   }
@@ -633,11 +633,11 @@ uint64_t __38__MTLIOAccelDevice_releaseFenceIndex___block_invoke(uint64_t result
   }
 }
 
-- (id)newEventWithOptions:(int64_t)a3
+- (id)newEventWithOptions:(int64_t)options
 {
   v5 = [_MTLIOAccelMTLEvent alloc];
 
-  return [(_MTLIOAccelMTLEvent *)v5 initWithDevice:self options:a3];
+  return [(_MTLIOAccelMTLEvent *)v5 initWithDevice:self options:options];
 }
 
 - (unint64_t)maxBufferLength
@@ -712,11 +712,11 @@ LABEL_6:
   return [Weak _deviceWrapper];
 }
 
-- (id)newAccelerationStructureWithSize:(unint64_t)a3
+- (id)newAccelerationStructureWithSize:(unint64_t)size
 {
   if ([(_MTLDevice *)self requiresRaytracingEmulation])
   {
-    v6 = [(MTLIOAccelDevice *)self newBufferWithLength:a3 options:32];
+    v6 = [(MTLIOAccelDevice *)self newBufferWithLength:size options:32];
     if (v6)
     {
       v7 = v6;
@@ -734,7 +734,7 @@ LABEL_6:
   return 0;
 }
 
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 withDescriptor:(id)a4
+- (id)newAccelerationStructureWithSize:(unint64_t)size withDescriptor:(id)descriptor
 {
   if (![(_MTLDevice *)self requiresRaytracingEmulation])
   {
@@ -742,18 +742,18 @@ LABEL_6:
     return 0;
   }
 
-  v8 = -[MTLIOAccelDevice newBufferWithLength:options:](self, "newBufferWithLength:options:", a3, 16 * ([a4 storageMode] & 0xF));
+  v8 = -[MTLIOAccelDevice newBufferWithLength:options:](self, "newBufferWithLength:options:", size, 16 * ([descriptor storageMode] & 0xF));
   if (!v8)
   {
     return 0;
   }
 
   v9 = v8;
-  v10 = [a4 forceResourceIndex];
+  forceResourceIndex = [descriptor forceResourceIndex];
   v11 = [MTLIOAccelAccelerationStructure alloc];
-  if (v10)
+  if (forceResourceIndex)
   {
-    v12 = -[MTLIOAccelAccelerationStructure initWithBuffer:offset:resourceIndex:](v11, "initWithBuffer:offset:resourceIndex:", v9, 0, [a4 resourceIndex]);
+    v12 = -[MTLIOAccelAccelerationStructure initWithBuffer:offset:resourceIndex:](v11, "initWithBuffer:offset:resourceIndex:", v9, 0, [descriptor resourceIndex]);
   }
 
   else
@@ -766,15 +766,15 @@ LABEL_6:
   return v13;
 }
 
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 resourceIndex:(unint64_t)a4
+- (id)newAccelerationStructureWithSize:(unint64_t)size resourceIndex:(unint64_t)index
 {
   if ([(_MTLDevice *)self requiresRaytracingEmulation])
   {
-    v8 = [(MTLIOAccelDevice *)self newBufferWithLength:a3 options:32];
+    v8 = [(MTLIOAccelDevice *)self newBufferWithLength:size options:32];
     if (v8)
     {
       v9 = v8;
-      v10 = [[MTLIOAccelAccelerationStructure alloc] initWithBuffer:v8 offset:0 resourceIndex:a4];
+      v10 = [[MTLIOAccelAccelerationStructure alloc] initWithBuffer:v8 offset:0 resourceIndex:index];
 
       return v10;
     }
@@ -788,7 +788,7 @@ LABEL_6:
   return 0;
 }
 
-- (id)newAccelerationStructureWithBuffer:(id)a3 offset:(unint64_t)a4
+- (id)newAccelerationStructureWithBuffer:(id)buffer offset:(unint64_t)offset
 {
   if (![(_MTLDevice *)self requiresRaytracingEmulation])
   {
@@ -796,17 +796,17 @@ LABEL_6:
     return 0;
   }
 
-  if (!a3)
+  if (!buffer)
   {
     return 0;
   }
 
   v8 = [MTLIOAccelAccelerationStructure alloc];
 
-  return [(MTLIOAccelAccelerationStructure *)v8 initWithBuffer:a3 offset:a4];
+  return [(MTLIOAccelAccelerationStructure *)v8 initWithBuffer:buffer offset:offset];
 }
 
-- (id)newAccelerationStructureWithBuffer:(id)a3 offset:(unint64_t)a4 resourceIndex:(unint64_t)a5
+- (id)newAccelerationStructureWithBuffer:(id)buffer offset:(unint64_t)offset resourceIndex:(unint64_t)index
 {
   if (![(_MTLDevice *)self requiresRaytracingEmulation])
   {
@@ -814,24 +814,24 @@ LABEL_6:
     return 0;
   }
 
-  if (!a3)
+  if (!buffer)
   {
     return 0;
   }
 
   v10 = [MTLIOAccelAccelerationStructure alloc];
 
-  return [(MTLIOAccelAccelerationStructure *)v10 initWithBuffer:a3 offset:a4 resourceIndex:a5];
+  return [(MTLIOAccelAccelerationStructure *)v10 initWithBuffer:buffer offset:offset resourceIndex:index];
 }
 
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor
 {
   if ([(_MTLDevice *)self requiresRaytracingEmulation])
   {
     v6 = objc_alloc_init(MTLVisibleFunctionTableDescriptor);
-    -[MTLVisibleFunctionTableDescriptor setFunctionCount:](v6, "setFunctionCount:", [a3 functionCount]);
-    -[MTLVisibleFunctionTableDescriptor setResourceIndex:](v6, "setResourceIndex:", [a3 resourceIndex]);
-    -[MTLVisibleFunctionTableDescriptor setForceResourceIndex:](v6, "setForceResourceIndex:", [a3 forceResourceIndex]);
+    -[MTLVisibleFunctionTableDescriptor setFunctionCount:](v6, "setFunctionCount:", [descriptor functionCount]);
+    -[MTLVisibleFunctionTableDescriptor setResourceIndex:](v6, "setResourceIndex:", [descriptor resourceIndex]);
+    -[MTLVisibleFunctionTableDescriptor setForceResourceIndex:](v6, "setForceResourceIndex:", [descriptor forceResourceIndex]);
     v7 = [(MTLIOAccelDevice *)self newVisibleFunctionTableWithDescriptor:v6];
 
     v8 = [[MTLIOAccelIntersectionFunctionTable alloc] initWithVisibleFunctionTable:v7];
@@ -845,107 +845,107 @@ LABEL_6:
   }
 }
 
-- (id)newIOCommandQueueWithDescriptor:(id)a3 error:(id *)a4
+- (id)newIOCommandQueueWithDescriptor:(id)descriptor error:(id *)error
 {
   v6 = [MTLIOAccelIOCommandQueue alloc];
 
-  return [(MTLIOAccelIOCommandQueue *)v6 initWithDevice:self descriptor:a3];
+  return [(MTLIOAccelIOCommandQueue *)v6 initWithDevice:self descriptor:descriptor];
 }
 
-- (id)newIOHandleWithURL:(id)a3 compressionMethod:(int64_t)a4 error:(id *)a5
+- (id)newIOHandleWithURL:(id)l compressionMethod:(int64_t)method error:(id *)error
 {
-  if (![a3 isFileURL])
+  if (![l isFileURL])
   {
-    if (a5)
+    if (error)
     {
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObject:@"URL is not a file" forKey:*MEMORY[0x1E696A578]];
-      *a5 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLIOError" code:1 userInfo:v12];
+      *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLIOError" code:1 userInfo:v12];
     }
 
     return 0;
   }
 
-  if (![a3 checkResourceIsReachableAndReturnError:a5])
+  if (![l checkResourceIsReachableAndReturnError:error])
   {
     return 0;
   }
 
   v9 = [MTLIOAccelIOHandleCompressed alloc];
-  v10 = [a3 fileSystemRepresentation];
+  fileSystemRepresentation = [l fileSystemRepresentation];
 
-  return [(MTLIOAccelIOHandleCompressed *)v9 initWithDevice:self path:v10 compressionType:a4 error:a5 uncached:0];
+  return [(MTLIOAccelIOHandleCompressed *)v9 initWithDevice:self path:fileSystemRepresentation compressionType:method error:error uncached:0];
 }
 
-- (id)newIOHandleWithURL:(id)a3 error:(id *)a4
+- (id)newIOHandleWithURL:(id)l error:(id *)error
 {
-  if (![a3 isFileURL])
+  if (![l isFileURL])
   {
-    if (a4)
+    if (error)
     {
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObject:@"URL is not a file" forKey:*MEMORY[0x1E696A578]];
-      *a4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLIOError" code:1 userInfo:v10];
+      *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLIOError" code:1 userInfo:v10];
     }
 
     return 0;
   }
 
-  if (![a3 checkResourceIsReachableAndReturnError:a4])
+  if (![l checkResourceIsReachableAndReturnError:error])
   {
     return 0;
   }
 
   v7 = [MTLIOAccelIOHandleRaw alloc];
-  v8 = [a3 fileSystemRepresentation];
+  fileSystemRepresentation = [l fileSystemRepresentation];
 
-  return [(MTLIOAccelIOHandleRaw *)v7 initWithDevice:self path:v8 error:a4 uncached:0];
+  return [(MTLIOAccelIOHandleRaw *)v7 initWithDevice:self path:fileSystemRepresentation error:error uncached:0];
 }
 
-- (id)newUncachedIOHandleWithURL:(id)a3 compressionType:(int64_t)a4 error:(id *)a5
+- (id)newUncachedIOHandleWithURL:(id)l compressionType:(int64_t)type error:(id *)error
 {
-  if (![a3 isFileURL])
+  if (![l isFileURL])
   {
-    if (a5)
+    if (error)
     {
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObject:@"URL is not a file" forKey:*MEMORY[0x1E696A578]];
-      *a5 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLIOError" code:1 userInfo:v12];
+      *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLIOError" code:1 userInfo:v12];
     }
 
     return 0;
   }
 
-  if (![a3 checkResourceIsReachableAndReturnError:a5])
+  if (![l checkResourceIsReachableAndReturnError:error])
   {
     return 0;
   }
 
   v9 = [MTLIOAccelIOHandleCompressed alloc];
-  v10 = [a3 fileSystemRepresentation];
+  fileSystemRepresentation = [l fileSystemRepresentation];
 
-  return [(MTLIOAccelIOHandleCompressed *)v9 initWithDevice:self path:v10 compressionType:a4 error:a5 uncached:1];
+  return [(MTLIOAccelIOHandleCompressed *)v9 initWithDevice:self path:fileSystemRepresentation compressionType:type error:error uncached:1];
 }
 
-- (id)newUncachedIOHandleWithURL:(id)a3 error:(id *)a4
+- (id)newUncachedIOHandleWithURL:(id)l error:(id *)error
 {
-  if (![a3 isFileURL])
+  if (![l isFileURL])
   {
-    if (a4)
+    if (error)
     {
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObject:@"URL is not a file" forKey:*MEMORY[0x1E696A578]];
-      *a4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLIOError" code:1 userInfo:v10];
+      *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLIOError" code:1 userInfo:v10];
     }
 
     return 0;
   }
 
-  if (![a3 checkResourceIsReachableAndReturnError:a4])
+  if (![l checkResourceIsReachableAndReturnError:error])
   {
     return 0;
   }
 
   v7 = [MTLIOAccelIOHandleRaw alloc];
-  v8 = [a3 fileSystemRepresentation];
+  fileSystemRepresentation = [l fileSystemRepresentation];
 
-  return [(MTLIOAccelIOHandleRaw *)v7 initWithDevice:self path:v8 error:a4 uncached:1];
+  return [(MTLIOAccelIOHandleRaw *)v7 initWithDevice:self path:fileSystemRepresentation error:error uncached:1];
 }
 
 @end

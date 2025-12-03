@@ -1,5 +1,5 @@
 @interface HMBLocalSQLContextQueryIndex
-- (HMBLocalSQLContextQueryIndex)initWithColumns:(id)a3;
+- (HMBLocalSQLContextQueryIndex)initWithColumns:(id)columns;
 - (id)description;
 @end
 
@@ -8,22 +8,22 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMBLocalSQLContextQueryIndex *)self columns];
-  v4 = [v2 stringWithFormat:@"[%@]", v3];
+  columns = [(HMBLocalSQLContextQueryIndex *)self columns];
+  v4 = [v2 stringWithFormat:@"[%@]", columns];
 
   return v4;
 }
 
-- (HMBLocalSQLContextQueryIndex)initWithColumns:(id)a3
+- (HMBLocalSQLContextQueryIndex)initWithColumns:(id)columns
 {
-  v5 = a3;
+  columnsCopy = columns;
   v9.receiver = self;
   v9.super_class = HMBLocalSQLContextQueryIndex;
   v6 = [(HMBLocalSQLContextQueryIndex *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_columns, a3);
+    objc_storeStrong(&v6->_columns, columns);
   }
 
   return v7;

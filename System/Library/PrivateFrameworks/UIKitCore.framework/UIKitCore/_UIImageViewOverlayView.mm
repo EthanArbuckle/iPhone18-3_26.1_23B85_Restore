@@ -1,18 +1,18 @@
 @interface _UIImageViewOverlayView
 - (_UIImageViewOverlayViewDelegate)overlayViewDelegate;
-- (void)setClipsToBounds:(BOOL)a3;
+- (void)setClipsToBounds:(BOOL)bounds;
 @end
 
 @implementation _UIImageViewOverlayView
 
-- (void)setClipsToBounds:(BOOL)a3
+- (void)setClipsToBounds:(BOOL)bounds
 {
-  v3 = a3;
+  boundsCopy = bounds;
   v6.receiver = self;
   v6.super_class = _UIImageViewOverlayView;
   [(UIView *)&v6 setClipsToBounds:?];
-  v5 = [(_UIImageViewOverlayView *)self overlayViewDelegate];
-  [v5 overlayView:self didChangeClipsToBounds:v3];
+  overlayViewDelegate = [(_UIImageViewOverlayView *)self overlayViewDelegate];
+  [overlayViewDelegate overlayView:self didChangeClipsToBounds:boundsCopy];
 }
 
 - (_UIImageViewOverlayViewDelegate)overlayViewDelegate

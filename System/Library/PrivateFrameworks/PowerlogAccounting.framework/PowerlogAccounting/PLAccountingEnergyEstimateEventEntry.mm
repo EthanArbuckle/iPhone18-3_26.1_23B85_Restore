@@ -1,13 +1,13 @@
 @interface PLAccountingEnergyEstimateEventEntry
 + (id)entryKey;
 + (void)load;
-- (PLAccountingEnergyEstimateEventEntry)initWithNodeID:(id)a3 withRootNodeID:(id)a4 withParentEntryID:(int)a5 withNumAncestors:(int)a6 withEnergy:(double)a7 withRange:(id)a8 withEntryDate:(id)a9;
+- (PLAccountingEnergyEstimateEventEntry)initWithNodeID:(id)d withRootNodeID:(id)iD withParentEntryID:(int)entryID withNumAncestors:(int)ancestors withEnergy:(double)energy withRange:(id)range withEntryDate:(id)date;
 - (double)correctionEnergy;
 - (double)terminationRatio;
 - (int)numAncestors;
 - (int)parentEntryID;
-- (void)setCorrectionEnergy:(double)a3;
-- (void)setTerminationRatio:(double)a3;
+- (void)setCorrectionEnergy:(double)energy;
+- (void)setTerminationRatio:(double)ratio;
 @end
 
 @implementation PLAccountingEnergyEstimateEventEntry
@@ -27,9 +27,9 @@
 - (int)numAncestors
 {
   v2 = [(PLEntry *)self objectForKeyedSubscript:*MEMORY[0x277D3F378]];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (double)terminationRatio
@@ -52,7 +52,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLAccountingEnergyEstimateEventEntry;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -64,48 +64,48 @@ uint64_t __48__PLAccountingEnergyEstimateEventEntry_entryKey__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (PLAccountingEnergyEstimateEventEntry)initWithNodeID:(id)a3 withRootNodeID:(id)a4 withParentEntryID:(int)a5 withNumAncestors:(int)a6 withEnergy:(double)a7 withRange:(id)a8 withEntryDate:(id)a9
+- (PLAccountingEnergyEstimateEventEntry)initWithNodeID:(id)d withRootNodeID:(id)iD withParentEntryID:(int)entryID withNumAncestors:(int)ancestors withEnergy:(double)energy withRange:(id)range withEntryDate:(id)date
 {
   v78 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a8;
-  v19 = a9;
-  v20 = [v17 intValue];
-  v21 = 0;
-  if ((a5 & 0x80000000) == 0 && v20 >= 1)
+  dCopy = d;
+  iDCopy = iD;
+  rangeCopy = range;
+  dateCopy = date;
+  intValue = [iDCopy intValue];
+  selfCopy = 0;
+  if ((entryID & 0x80000000) == 0 && intValue >= 1)
   {
     v74.receiver = self;
     v74.super_class = PLAccountingEnergyEstimateEventEntry;
-    v22 = [(PLAccountingEnergyEventEntry *)&v74 initWithNodeID:v16 withEnergy:v18 withRange:v19 withEntryDate:a7];
+    v22 = [(PLAccountingEnergyEventEntry *)&v74 initWithNodeID:dCopy withEnergy:rangeCopy withRange:dateCopy withEntryDate:energy];
     if (v22)
     {
       v23 = +[PLAccountingDistributionRuleManager sharedInstance];
-      v24 = [v23 distributionRuleForRootNodeID:v17 andNodeID:v16];
+      v24 = [v23 distributionRuleForRootNodeID:iDCopy andNodeID:dCopy];
 
       if (v24)
       {
-        v62 = [v24 entryID];
+        entryID = [v24 entryID];
       }
 
       else
       {
-        v62 = 0;
+        entryID = 0;
       }
 
       v25 = +[PLAccountingQualificationRuleManager sharedInstance];
-      v26 = [v25 qualificationRulesForRootNodeID:v17];
+      v26 = [v25 qualificationRulesForRootNodeID:iDCopy];
 
-      v64 = a5;
-      v65 = a6;
+      entryIDCopy = entryID;
+      ancestorsCopy = ancestors;
       v63 = v26;
       if (v26 && [v26 count])
       {
         v57 = v24;
-        v58 = v19;
-        v59 = v18;
-        v60 = v17;
-        v61 = v16;
+        v58 = dateCopy;
+        v59 = rangeCopy;
+        v60 = iDCopy;
+        v61 = dCopy;
         v72 = 0u;
         v73 = 0u;
         v70 = 0u;
@@ -151,9 +151,9 @@ uint64_t __48__PLAccountingEnergyEstimateEventEntry_entryKey__block_invoke()
                   v38 = [MEMORY[0x277CCACA8] stringWithFormat:@"qualificationRule=%@", v34];
                   v39 = MEMORY[0x277D3F178];
                   v40 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Entries/Energy/PLAccountingEnergyEstimateEventEntry.m"];
-                  v41 = [v40 lastPathComponent];
+                  lastPathComponent = [v40 lastPathComponent];
                   v42 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingEnergyEstimateEventEntry initWithNodeID:withRootNodeID:withParentEntryID:withNumAncestors:withEnergy:withRange:withEntryDate:]"];
-                  [v39 logMessage:v38 fromFile:v41 fromFunction:v42 fromLineNumber:60];
+                  [v39 logMessage:v38 fromFile:lastPathComponent fromFunction:v42 fromLineNumber:60];
 
                   v43 = PLLogCommon();
                   if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
@@ -190,9 +190,9 @@ uint64_t __48__PLAccountingEnergyEstimateEventEntry_entryKey__block_invoke()
                   v45 = [MEMORY[0x277CCACA8] stringWithFormat:@"qualificationRuleIDSum=%llu", v30];
                   v46 = MEMORY[0x277D3F178];
                   v47 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Entries/Energy/PLAccountingEnergyEstimateEventEntry.m"];
-                  v48 = [v47 lastPathComponent];
+                  lastPathComponent2 = [v47 lastPathComponent];
                   v49 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingEnergyEstimateEventEntry initWithNodeID:withRootNodeID:withParentEntryID:withNumAncestors:withEnergy:withRange:withEntryDate:]"];
-                  [v46 logMessage:v45 fromFile:v48 fromFunction:v49 fromLineNumber:64];
+                  [v46 logMessage:v45 fromFile:lastPathComponent2 fromFunction:v49 fromLineNumber:64];
 
                   v50 = PLLogCommon();
                   if (os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
@@ -223,10 +223,10 @@ uint64_t __48__PLAccountingEnergyEstimateEventEntry_entryKey__block_invoke()
           v30 = 0;
         }
 
-        v17 = v60;
-        v16 = v61;
-        v19 = v58;
-        v18 = v59;
+        iDCopy = v60;
+        dCopy = v61;
+        dateCopy = v58;
+        rangeCopy = v59;
         v24 = v57;
       }
 
@@ -235,14 +235,14 @@ uint64_t __48__PLAccountingEnergyEstimateEventEntry_entryKey__block_invoke()
         v30 = 0;
       }
 
-      [(PLEntry *)v22 setObject:v17 forKeyedSubscript:*MEMORY[0x277D3F398]];
-      v51 = [MEMORY[0x277CCABB0] numberWithInt:v64];
+      [(PLEntry *)v22 setObject:iDCopy forKeyedSubscript:*MEMORY[0x277D3F398]];
+      v51 = [MEMORY[0x277CCABB0] numberWithInt:entryIDCopy];
       [(PLEntry *)v22 setObject:v51 forKeyedSubscript:*MEMORY[0x277D3F380]];
 
-      v52 = [MEMORY[0x277CCABB0] numberWithInt:v65];
+      v52 = [MEMORY[0x277CCABB0] numberWithInt:ancestorsCopy];
       [(PLEntry *)v22 setObject:v52 forKeyedSubscript:*MEMORY[0x277D3F378]];
 
-      v53 = [MEMORY[0x277CCABB0] numberWithInt:v62];
+      v53 = [MEMORY[0x277CCABB0] numberWithInt:entryID];
       [(PLEntry *)v22 setObject:v53 forKeyedSubscript:*MEMORY[0x277D3F358]];
 
       v54 = [MEMORY[0x277CCABB0] numberWithLongLong:v30];
@@ -254,11 +254,11 @@ uint64_t __48__PLAccountingEnergyEstimateEventEntry_entryKey__block_invoke()
     }
 
     self = v22;
-    v21 = self;
+    selfCopy = self;
   }
 
   v55 = *MEMORY[0x277D85DE8];
-  return v21;
+  return selfCopy;
 }
 
 uint64_t __140__PLAccountingEnergyEstimateEventEntry_initWithNodeID_withRootNodeID_withParentEntryID_withNumAncestors_withEnergy_withRange_withEntryDate___block_invoke(uint64_t a1)
@@ -278,22 +278,22 @@ uint64_t __140__PLAccountingEnergyEstimateEventEntry_initWithNodeID_withRootNode
 - (int)parentEntryID
 {
   v2 = [(PLEntry *)self objectForKeyedSubscript:*MEMORY[0x277D3F380]];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
-- (void)setCorrectionEnergy:(double)a3
+- (void)setCorrectionEnergy:(double)energy
 {
-  v5 = [MEMORY[0x277D3F2A0] sharedCore];
-  v6 = [v5 storage];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  storage = [mEMORY[0x277D3F2A0] storage];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__PLAccountingEnergyEstimateEventEntry_setCorrectionEnergy___block_invoke;
   v7[3] = &unk_279A55D20;
   v7[4] = self;
-  *&v7[5] = a3;
-  [v6 blockingUpdateEntry:self withBlock:v7];
+  *&v7[5] = energy;
+  [storage blockingUpdateEntry:self withBlock:v7];
 }
 
 void __60__PLAccountingEnergyEstimateEventEntry_setCorrectionEnergy___block_invoke(uint64_t a1)
@@ -302,17 +302,17 @@ void __60__PLAccountingEnergyEstimateEventEntry_setCorrectionEnergy___block_invo
   [*(a1 + 32) setObject:v2 forKeyedSubscript:*MEMORY[0x277D3F348]];
 }
 
-- (void)setTerminationRatio:(double)a3
+- (void)setTerminationRatio:(double)ratio
 {
-  v5 = [MEMORY[0x277D3F2A0] sharedCore];
-  v6 = [v5 storage];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  storage = [mEMORY[0x277D3F2A0] storage];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__PLAccountingEnergyEstimateEventEntry_setTerminationRatio___block_invoke;
   v7[3] = &unk_279A55D20;
   v7[4] = self;
-  *&v7[5] = a3;
-  [v6 blockingUpdateEntry:self withBlock:v7];
+  *&v7[5] = ratio;
+  [storage blockingUpdateEntry:self withBlock:v7];
 }
 
 void __60__PLAccountingEnergyEstimateEventEntry_setTerminationRatio___block_invoke(uint64_t a1)

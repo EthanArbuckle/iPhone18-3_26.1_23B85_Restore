@@ -1,6 +1,6 @@
 @interface JumpAndSlamAnimationHelper
 + (JumpAndSlamAnimationHelper)shared;
-+ (void)setShared:(id)a3;
++ (void)setShared:(id)shared;
 @end
 
 @implementation JumpAndSlamAnimationHelper
@@ -17,18 +17,18 @@
   return v3;
 }
 
-+ (void)setShared:(id)a3
++ (void)setShared:(id)shared
 {
   v3 = qword_1ED8B3548;
-  v4 = a3;
+  sharedCopy = shared;
   if (v3 != -1)
   {
-    v5 = v4;
+    v5 = sharedCopy;
     swift_once();
-    v4 = v5;
+    sharedCopy = v5;
   }
 
-  qword_1ED8B42B8 = v4;
+  qword_1ED8B42B8 = sharedCopy;
 
   MEMORY[0x1EEE66BB8]();
 }

@@ -1,83 +1,83 @@
 @interface IDSTransparentEndpointViewer
 - (id)_cloudKitContainer;
-- (void)internal_fetchCurrentDeviceKVSKey:(id)a3;
-- (void)internal_fetchEndpointCacheStateForServiceIdentifier:(id)a3 localURI:(id)a4 remoteURI:(id)a5 completion:(id)a6;
-- (void)internal_fetchTransparentEndpointsForServiceIdentifier:(id)a3 localURI:(id)a4 remoteURI:(id)a5 verifyAgainstTrustCircle:(BOOL)a6 completion:(id)a7;
-- (void)internal_fetchVerifierKVSTrustedDevicesWithCompletion:(id)a3;
-- (void)internal_kickVerificationForServiceIdentifier:(id)a3 localURI:(id)a4 remoteURI:(id)a5 completion:(id)a6;
-- (void)internal_nukeTransparencyState:(id)a3;
-- (void)internal_removeAllKVSTrustedDevices:(id)a3;
-- (void)internal_triggerKTCDPAccountStatusNotificationWithAccountStatus:(int64_t)a3;
-- (void)internal_updateCurrentDeviceInKVS:(id)a3;
+- (void)internal_fetchCurrentDeviceKVSKey:(id)key;
+- (void)internal_fetchEndpointCacheStateForServiceIdentifier:(id)identifier localURI:(id)i remoteURI:(id)rI completion:(id)completion;
+- (void)internal_fetchTransparentEndpointsForServiceIdentifier:(id)identifier localURI:(id)i remoteURI:(id)rI verifyAgainstTrustCircle:(BOOL)circle completion:(id)completion;
+- (void)internal_fetchVerifierKVSTrustedDevicesWithCompletion:(id)completion;
+- (void)internal_kickVerificationForServiceIdentifier:(id)identifier localURI:(id)i remoteURI:(id)rI completion:(id)completion;
+- (void)internal_nukeTransparencyState:(id)state;
+- (void)internal_removeAllKVSTrustedDevices:(id)devices;
+- (void)internal_triggerKTCDPAccountStatusNotificationWithAccountStatus:(int64_t)status;
+- (void)internal_updateCurrentDeviceInKVS:(id)s;
 @end
 
 @implementation IDSTransparentEndpointViewer
 
 - (id)_cloudKitContainer
 {
-  v2 = [(IDSTransparentEndpointViewer *)self _verifier];
-  v3 = [v2 keyTransparencyStore];
+  _verifier = [(IDSTransparentEndpointViewer *)self _verifier];
+  keyTransparencyStore = [_verifier keyTransparencyStore];
 
-  return v3;
+  return keyTransparencyStore;
 }
 
-- (void)internal_fetchEndpointCacheStateForServiceIdentifier:(id)a3 localURI:(id)a4 remoteURI:(id)a5 completion:(id)a6
+- (void)internal_fetchEndpointCacheStateForServiceIdentifier:(id)identifier localURI:(id)i remoteURI:(id)rI completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v19 = [[IDSPeerIDKey alloc] initWithService:v13 fromURI:v12 toURI:v11];
+  completionCopy = completion;
+  rICopy = rI;
+  iCopy = i;
+  identifierCopy = identifier;
+  v19 = [[IDSPeerIDKey alloc] initWithService:identifierCopy fromURI:iCopy toURI:rICopy];
 
-  v14 = [(IDSTransparentEndpointViewer *)self _peerIDManager];
-  v15 = [v14 pleaseDontCopyCacheDictionaryRepresentation];
-  v16 = [v15 objectForKeyedSubscript:v19];
+  _peerIDManager = [(IDSTransparentEndpointViewer *)self _peerIDManager];
+  pleaseDontCopyCacheDictionaryRepresentation = [_peerIDManager pleaseDontCopyCacheDictionaryRepresentation];
+  v16 = [pleaseDontCopyCacheDictionaryRepresentation objectForKeyedSubscript:v19];
 
-  v17 = [v16 keyTransparencyContext];
-  v18 = [v16 endpoints];
-  v10[2](v10, v17, v18, 0);
+  keyTransparencyContext = [v16 keyTransparencyContext];
+  endpoints = [v16 endpoints];
+  completionCopy[2](completionCopy, keyTransparencyContext, endpoints, 0);
 }
 
-- (void)internal_fetchTransparentEndpointsForServiceIdentifier:(id)a3 localURI:(id)a4 remoteURI:(id)a5 verifyAgainstTrustCircle:(BOOL)a6 completion:(id)a7
+- (void)internal_fetchTransparentEndpointsForServiceIdentifier:(id)identifier localURI:(id)i remoteURI:(id)rI verifyAgainstTrustCircle:(BOOL)circle completion:(id)completion
 {
-  v11 = a7;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[IDSPeerIDKey alloc] initWithService:v14 fromURI:v13 toURI:v12];
+  completionCopy = completion;
+  rICopy = rI;
+  iCopy = i;
+  identifierCopy = identifier;
+  v15 = [[IDSPeerIDKey alloc] initWithService:identifierCopy fromURI:iCopy toURI:rICopy];
 
-  v16 = [(IDSTransparentEndpointViewer *)self _peerIDManager];
-  v17 = [v16 pleaseDontCopyCacheDictionaryRepresentation];
-  v18 = [v17 objectForKeyedSubscript:v15];
+  _peerIDManager = [(IDSTransparentEndpointViewer *)self _peerIDManager];
+  pleaseDontCopyCacheDictionaryRepresentation = [_peerIDManager pleaseDontCopyCacheDictionaryRepresentation];
+  v18 = [pleaseDontCopyCacheDictionaryRepresentation objectForKeyedSubscript:v15];
 
-  v19 = [v18 keyTransparencyContext];
-  v20 = [v19 ticket];
+  keyTransparencyContext = [v18 keyTransparencyContext];
+  ticket = [keyTransparencyContext ticket];
 
   v21 = [IDSKeyTransparencyIndex alloc];
-  v22 = [v18 keyTransparencyContext];
-  v23 = [v22 accountKey];
-  v24 = [(IDSKeyTransparencyIndex *)v21 initWithServiceIdentifier:v14 accountKey:v23 URI:v12];
+  keyTransparencyContext2 = [v18 keyTransparencyContext];
+  accountKey = [keyTransparencyContext2 accountKey];
+  v24 = [(IDSKeyTransparencyIndex *)v21 initWithServiceIdentifier:identifierCopy accountKey:accountKey URI:rICopy];
 
-  v25 = [(IDSTransparentEndpointViewer *)self _verifier];
-  v26 = [v25 currentPeerVerificationResultsForQueriedIndex:v24 ticket:v20];
+  _verifier = [(IDSTransparentEndpointViewer *)self _verifier];
+  v26 = [_verifier currentPeerVerificationResultsForQueriedIndex:v24 ticket:ticket];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_1006BE86C;
   v28[3] = &unk_100BD9940;
-  v29 = v11;
-  v27 = v11;
+  v29 = completionCopy;
+  v27 = completionCopy;
   [v26 registerResultBlock:v28];
 }
 
-- (void)internal_kickVerificationForServiceIdentifier:(id)a3 localURI:(id)a4 remoteURI:(id)a5 completion:(id)a6
+- (void)internal_kickVerificationForServiceIdentifier:(id)identifier localURI:(id)i remoteURI:(id)rI completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  iCopy = i;
+  rICopy = rI;
+  completionCopy = completion;
   v14 = +[IDSDAccountController sharedInstance];
   v15 = +[IDSDServiceController sharedInstance];
-  v16 = [v15 serviceWithIdentifier:v10];
+  v16 = [v15 serviceWithIdentifier:identifierCopy];
   v17 = [v14 appleIDAccountOnService:v16];
 
   v26 = [[IDSPeerIDQueryContext alloc] initWithSending:0 forceToServer:1 messaging:0 resultExpected:0 preventNewQuery:0];
@@ -89,109 +89,109 @@
   }
 
   v19 = +[IDSPeerIDManager sharedInstance];
-  v34 = v12;
+  v34 = rICopy;
   v20 = [NSArray arrayWithObjects:&v34 count:1];
-  v21 = [v17 _registrationCert];
+  _registrationCert = [v17 _registrationCert];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_1006BEBB8;
   v27[3] = &unk_100BE5340;
-  v28 = v10;
-  v29 = v11;
-  v30 = v12;
-  v31 = self;
-  v32 = v13;
-  v22 = v13;
-  v23 = v12;
-  v24 = v11;
-  v25 = v10;
-  [v19 startQueryForURIs:v20 fromIdentity:v21 fromURI:v24 fromService:v25 context:v26 reason:@"KTKickVerification" completionBlock:v27];
+  v28 = identifierCopy;
+  v29 = iCopy;
+  v30 = rICopy;
+  selfCopy = self;
+  v32 = completionCopy;
+  v22 = completionCopy;
+  v23 = rICopy;
+  v24 = iCopy;
+  v25 = identifierCopy;
+  [v19 startQueryForURIs:v20 fromIdentity:_registrationCert fromURI:v24 fromService:v25 context:v26 reason:@"KTKickVerification" completionBlock:v27];
 }
 
-- (void)internal_fetchVerifierKVSTrustedDevicesWithCompletion:(id)a3
+- (void)internal_fetchVerifierKVSTrustedDevicesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IDSTransparentEndpointViewer *)self _verifier];
-  v6 = [v5 forceSyncKVS];
+  completionCopy = completion;
+  _verifier = [(IDSTransparentEndpointViewer *)self _verifier];
+  forceSyncKVS = [_verifier forceSyncKVS];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1006BEEDC;
   v8[3] = &unk_100BDBC10;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 registerResultBlock:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [forceSyncKVS registerResultBlock:v8];
 }
 
-- (void)internal_removeAllKVSTrustedDevices:(id)a3
+- (void)internal_removeAllKVSTrustedDevices:(id)devices
 {
-  v4 = a3;
-  v5 = [(IDSTransparentEndpointViewer *)self _verifier];
-  [v5 removeAllKVSEntries];
+  devicesCopy = devices;
+  _verifier = [(IDSTransparentEndpointViewer *)self _verifier];
+  [_verifier removeAllKVSEntries];
 
-  v6 = [(IDSTransparentEndpointViewer *)self _verifier];
-  v7 = [v6 forceSyncKVS];
+  _verifier2 = [(IDSTransparentEndpointViewer *)self _verifier];
+  forceSyncKVS = [_verifier2 forceSyncKVS];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1006BF068;
   v9[3] = &unk_100BD9940;
-  v10 = v4;
-  v8 = v4;
-  [v7 registerResultBlock:v9];
+  v10 = devicesCopy;
+  v8 = devicesCopy;
+  [forceSyncKVS registerResultBlock:v9];
 }
 
-- (void)internal_fetchCurrentDeviceKVSKey:(id)a3
+- (void)internal_fetchCurrentDeviceKVSKey:(id)key
 {
-  v4 = a3;
-  v5 = [(IDSTransparentEndpointViewer *)self _verifier];
+  keyCopy = key;
+  _verifier = [(IDSTransparentEndpointViewer *)self _verifier];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1006BF1A0;
   v7[3] = &unk_100BDAC88;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchCurrentDeviceKVSKey:v7];
+  v8 = keyCopy;
+  v6 = keyCopy;
+  [_verifier fetchCurrentDeviceKVSKey:v7];
 }
 
-- (void)internal_updateCurrentDeviceInKVS:(id)a3
+- (void)internal_updateCurrentDeviceInKVS:(id)s
 {
-  v4 = a3;
-  v5 = [(IDSTransparentEndpointViewer *)self _verifier];
+  sCopy = s;
+  _verifier = [(IDSTransparentEndpointViewer *)self _verifier];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1006BF3C8;
   v7[3] = &unk_100BDACB0;
-  v8 = v4;
-  v6 = v4;
-  [v5 updateCurrentDeviceInKVS:v7];
+  v8 = sCopy;
+  v6 = sCopy;
+  [_verifier updateCurrentDeviceInKVS:v7];
 }
 
-- (void)internal_nukeTransparencyState:(id)a3
+- (void)internal_nukeTransparencyState:(id)state
 {
-  v4 = a3;
-  v5 = [(IDSTransparentEndpointViewer *)self _verifier];
+  stateCopy = state;
+  _verifier = [(IDSTransparentEndpointViewer *)self _verifier];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1006BF668;
   v7[3] = &unk_100BDA9F0;
-  v8 = v4;
-  v6 = v4;
-  [v5 nukeKeyTransparencyStateWithCompletion:v7];
+  v8 = stateCopy;
+  v6 = stateCopy;
+  [_verifier nukeKeyTransparencyStateWithCompletion:v7];
 }
 
-- (void)internal_triggerKTCDPAccountStatusNotificationWithAccountStatus:(int64_t)a3
+- (void)internal_triggerKTCDPAccountStatusNotificationWithAccountStatus:(int64_t)status
 {
   v5 = [NSNotification alloc];
   v10 = @"accountStatus";
-  v6 = [NSNumber numberWithInteger:a3];
+  v6 = [NSNumber numberWithInteger:status];
   v11 = v6;
   v7 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v8 = [v5 initWithName:@"TransparencyAccountStatusChanged" object:0 userInfo:v7];
 
-  v9 = [(IDSTransparentEndpointViewer *)self _verifier];
-  [v9 _handleKTCDPStatusUpdate:v8];
+  _verifier = [(IDSTransparentEndpointViewer *)self _verifier];
+  [_verifier _handleKTCDPStatusUpdate:v8];
 }
 
 @end

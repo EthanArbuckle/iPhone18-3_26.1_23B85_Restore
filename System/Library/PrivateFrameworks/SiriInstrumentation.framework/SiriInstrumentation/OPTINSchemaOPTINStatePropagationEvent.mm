@@ -1,41 +1,41 @@
 @interface OPTINSchemaOPTINStatePropagationEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (OPTINSchemaOPTINStatePropagationEvent)initWithDictionary:(id)a3;
-- (OPTINSchemaOPTINStatePropagationEvent)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (OPTINSchemaOPTINStatePropagationEvent)initWithDictionary:(id)dictionary;
+- (OPTINSchemaOPTINStatePropagationEvent)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasPropagationState:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasPropagationState:(BOOL)state;
+- (void)writeTo:(id)to;
 @end
 
 @implementation OPTINSchemaOPTINStatePropagationEvent
 
-- (OPTINSchemaOPTINStatePropagationEvent)initWithDictionary:(id)a3
+- (OPTINSchemaOPTINStatePropagationEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = OPTINSchemaOPTINStatePropagationEvent;
   v5 = [(OPTINSchemaOPTINStatePropagationEvent *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"optInState"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"optInState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[OPTINSchemaOPTINStatePropagationEvent setOptInState:](v5, "setOptInState:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"propagationState"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"propagationState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[OPTINSchemaOPTINStatePropagationEvent setPropagationState:](v5, "setPropagationState:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"hashedHomeKitAccessoryId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"hashedHomeKitAccessoryId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (OPTINSchemaOPTINStatePropagationEvent)initWithJSON:(id)a3
+- (OPTINSchemaOPTINStatePropagationEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(OPTINSchemaOPTINStatePropagationEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(OPTINSchemaOPTINStatePropagationEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(OPTINSchemaOPTINStatePropagationEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,20 +85,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_hashedHomeKitAccessoryId)
   {
-    v4 = [(OPTINSchemaOPTINStatePropagationEvent *)self hashedHomeKitAccessoryId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    hashedHomeKitAccessoryId = [(OPTINSchemaOPTINStatePropagationEvent *)self hashedHomeKitAccessoryId];
+    dictionaryRepresentation = [hashedHomeKitAccessoryId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"hashedHomeKitAccessoryId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"hashedHomeKitAccessoryId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"hashedHomeKitAccessoryId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"hashedHomeKitAccessoryId"];
     }
   }
 
@@ -116,7 +116,7 @@
       v9 = off_1E78DE618[v8];
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"optInState"];
+    [dictionary setObject:v9 forKeyedSubscript:@"optInState"];
     has = self->_has;
   }
 
@@ -133,12 +133,12 @@
       v11 = off_1E78DE630[v10];
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"propagationState"];
+    [dictionary setObject:v11 forKeyedSubscript:@"propagationState"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -167,16 +167,16 @@ LABEL_3:
   return v7 ^ v6 ^ [(SISchemaUUID *)self->_hashedHomeKitAccessoryId hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -185,27 +185,27 @@ LABEL_3:
   if (*&has)
   {
     optInState = self->_optInState;
-    if (optInState != [v4 optInState])
+    if (optInState != [equalCopy optInState])
     {
       goto LABEL_14;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
   if (v8 == ((v6 >> 1) & 1))
   {
-    if (!v8 || (propagationState = self->_propagationState, propagationState == [v4 propagationState]))
+    if (!v8 || (propagationState = self->_propagationState, propagationState == [equalCopy propagationState]))
     {
-      v10 = [(OPTINSchemaOPTINStatePropagationEvent *)self hashedHomeKitAccessoryId];
-      v11 = [v4 hashedHomeKitAccessoryId];
-      v12 = v11;
-      if ((v10 != 0) != (v11 == 0))
+      hashedHomeKitAccessoryId = [(OPTINSchemaOPTINStatePropagationEvent *)self hashedHomeKitAccessoryId];
+      hashedHomeKitAccessoryId2 = [equalCopy hashedHomeKitAccessoryId];
+      v12 = hashedHomeKitAccessoryId2;
+      if ((hashedHomeKitAccessoryId != 0) != (hashedHomeKitAccessoryId2 == 0))
       {
-        v13 = [(OPTINSchemaOPTINStatePropagationEvent *)self hashedHomeKitAccessoryId];
-        if (!v13)
+        hashedHomeKitAccessoryId3 = [(OPTINSchemaOPTINStatePropagationEvent *)self hashedHomeKitAccessoryId];
+        if (!hashedHomeKitAccessoryId3)
         {
 
 LABEL_17:
@@ -213,10 +213,10 @@ LABEL_17:
           goto LABEL_15;
         }
 
-        v14 = v13;
-        v15 = [(OPTINSchemaOPTINStatePropagationEvent *)self hashedHomeKitAccessoryId];
-        v16 = [v4 hashedHomeKitAccessoryId];
-        v17 = [v15 isEqual:v16];
+        v14 = hashedHomeKitAccessoryId3;
+        hashedHomeKitAccessoryId4 = [(OPTINSchemaOPTINStatePropagationEvent *)self hashedHomeKitAccessoryId];
+        hashedHomeKitAccessoryId5 = [equalCopy hashedHomeKitAccessoryId];
+        v17 = [hashedHomeKitAccessoryId4 isEqual:hashedHomeKitAccessoryId5];
 
         if (v17)
         {
@@ -237,9 +237,9 @@ LABEL_15:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -252,21 +252,21 @@ LABEL_15:
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(OPTINSchemaOPTINStatePropagationEvent *)self hashedHomeKitAccessoryId];
+  hashedHomeKitAccessoryId = [(OPTINSchemaOPTINStatePropagationEvent *)self hashedHomeKitAccessoryId];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (hashedHomeKitAccessoryId)
   {
-    v7 = [(OPTINSchemaOPTINStatePropagationEvent *)self hashedHomeKitAccessoryId];
+    hashedHomeKitAccessoryId2 = [(OPTINSchemaOPTINStatePropagationEvent *)self hashedHomeKitAccessoryId];
     PBDataWriterWriteSubmessage();
 
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (void)setHasPropagationState:(BOOL)a3
+- (void)setHasPropagationState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }
@@ -279,17 +279,17 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = OPTINSchemaOPTINStatePropagationEvent;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(OPTINSchemaOPTINStatePropagationEvent *)self hashedHomeKitAccessoryId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(OPTINSchemaOPTINStatePropagationEvent *)self deleteHashedHomeKitAccessoryId];
   }

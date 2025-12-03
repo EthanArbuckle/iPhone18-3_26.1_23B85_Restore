@@ -1,23 +1,23 @@
 @interface PFParallaxPaletteSuggestion
-+ (id)dictionaryWithPaletteSuggestion:(id)a3;
-+ (id)paletteSuggestionWithDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSuggestion:(id)a3;
-- (PFParallaxPaletteSuggestion)initWithCoder:(id)a3;
-- (PFParallaxPaletteSuggestion)initWithPrimaryColor:(id)a3 secondaryColor:(id)a4;
++ (id)dictionaryWithPaletteSuggestion:(id)suggestion;
++ (id)paletteSuggestionWithDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSuggestion:(id)suggestion;
+- (PFParallaxPaletteSuggestion)initWithCoder:(id)coder;
+- (PFParallaxPaletteSuggestion)initWithPrimaryColor:(id)color secondaryColor:(id)secondaryColor;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PFParallaxPaletteSuggestion
 
-- (PFParallaxPaletteSuggestion)initWithCoder:(id)a3
+- (PFParallaxPaletteSuggestion)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryColor"];
-  if ([v4 decodeBoolForKey:@"hasSecondaryColor"])
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryColor"];
+  if ([coderCopy decodeBoolForKey:@"hasSecondaryColor"])
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondaryColor"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondaryColor"];
   }
 
   else
@@ -30,44 +30,44 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(PFParallaxPaletteSuggestion *)self secondaryColor];
+  coderCopy = coder;
+  secondaryColor = [(PFParallaxPaletteSuggestion *)self secondaryColor];
 
-  v5 = [(PFParallaxPaletteSuggestion *)self primaryColor];
-  [v7 encodeObject:v5 forKey:@"primaryColor"];
+  primaryColor = [(PFParallaxPaletteSuggestion *)self primaryColor];
+  [coderCopy encodeObject:primaryColor forKey:@"primaryColor"];
 
-  [v7 encodeBool:v4 != 0 forKey:@"hasSecondaryColor"];
-  if (v4)
+  [coderCopy encodeBool:secondaryColor != 0 forKey:@"hasSecondaryColor"];
+  if (secondaryColor)
   {
-    v6 = [(PFParallaxPaletteSuggestion *)self secondaryColor];
-    [v7 encodeObject:v6 forKey:@"secondaryColor"];
+    secondaryColor2 = [(PFParallaxPaletteSuggestion *)self secondaryColor];
+    [coderCopy encodeObject:secondaryColor2 forKey:@"secondaryColor"];
   }
 }
 
-- (BOOL)isEqualToSuggestion:(id)a3
+- (BOOL)isEqualToSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [(PFParallaxPaletteSuggestion *)self primaryColor];
-  v6 = [v4 primaryColor];
-  v7 = [v5 isEqualToParallaxColor:v6];
+  suggestionCopy = suggestion;
+  primaryColor = [(PFParallaxPaletteSuggestion *)self primaryColor];
+  primaryColor2 = [suggestionCopy primaryColor];
+  v7 = [primaryColor isEqualToParallaxColor:primaryColor2];
 
   if (!v7)
   {
     goto LABEL_7;
   }
 
-  v8 = [(PFParallaxPaletteSuggestion *)self secondaryColor];
-  if (v8)
+  secondaryColor = [(PFParallaxPaletteSuggestion *)self secondaryColor];
+  if (secondaryColor)
   {
 
     goto LABEL_4;
   }
 
-  v14 = [v4 secondaryColor];
+  secondaryColor2 = [suggestionCopy secondaryColor];
 
-  if (v14)
+  if (secondaryColor2)
   {
 LABEL_7:
     v13 = 0;
@@ -75,13 +75,13 @@ LABEL_7:
   }
 
 LABEL_4:
-  v9 = [(PFParallaxPaletteSuggestion *)self secondaryColor];
-  if (v9)
+  secondaryColor3 = [(PFParallaxPaletteSuggestion *)self secondaryColor];
+  if (secondaryColor3)
   {
-    v10 = v9;
-    v11 = [(PFParallaxPaletteSuggestion *)self secondaryColor];
-    v12 = [v4 secondaryColor];
-    v13 = [v11 isEqualToParallaxColor:v12];
+    v10 = secondaryColor3;
+    secondaryColor4 = [(PFParallaxPaletteSuggestion *)self secondaryColor];
+    secondaryColor5 = [suggestionCopy secondaryColor];
+    v13 = [secondaryColor4 isEqualToParallaxColor:secondaryColor5];
   }
 
   else
@@ -94,11 +94,11 @@ LABEL_8:
   return v13 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PFParallaxPaletteSuggestion *)self isEqualToSuggestion:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PFParallaxPaletteSuggestion *)self isEqualToSuggestion:equalCopy];
 
   return v5;
 }
@@ -107,38 +107,38 @@ LABEL_8:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PFParallaxPaletteSuggestion *)self primaryColor];
-  v6 = [(PFParallaxPaletteSuggestion *)self secondaryColor];
-  v7 = [v3 stringWithFormat:@"<%@: %p, primary: %@, secondary: %@>", v4, self, v5, v6];
+  primaryColor = [(PFParallaxPaletteSuggestion *)self primaryColor];
+  secondaryColor = [(PFParallaxPaletteSuggestion *)self secondaryColor];
+  v7 = [v3 stringWithFormat:@"<%@: %p, primary: %@, secondary: %@>", v4, self, primaryColor, secondaryColor];
 
   return v7;
 }
 
-- (PFParallaxPaletteSuggestion)initWithPrimaryColor:(id)a3 secondaryColor:(id)a4
+- (PFParallaxPaletteSuggestion)initWithPrimaryColor:(id)color secondaryColor:(id)secondaryColor
 {
-  v6 = a3;
-  v7 = a4;
+  colorCopy = color;
+  secondaryColorCopy = secondaryColor;
   v13.receiver = self;
   v13.super_class = PFParallaxPaletteSuggestion;
   v8 = [(PFParallaxPaletteSuggestion *)&v13 init];
   primaryColor = v8->_primaryColor;
-  v8->_primaryColor = v6;
-  v10 = v6;
+  v8->_primaryColor = colorCopy;
+  v10 = colorCopy;
 
   secondaryColor = v8->_secondaryColor;
-  v8->_secondaryColor = v7;
+  v8->_secondaryColor = secondaryColorCopy;
 
   return v8;
 }
 
-+ (id)paletteSuggestionWithDictionary:(id)a3 error:(id *)a4
++ (id)paletteSuggestionWithDictionary:(id)dictionary error:(id *)error
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"primaryColor"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"primaryColor"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    if (!a4)
+    if (!error)
     {
       v11 = 0;
       goto LABEL_20;
@@ -146,24 +146,24 @@ LABEL_8:
 
     v10 = MEMORY[0x1E696ABC0];
     v17 = *MEMORY[0x1E696A278];
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid primary color array: %@", v5];
-    v18[0] = v7;
+    dictionaryCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid primary color array: %@", dictionaryCopy];
+    v18[0] = dictionaryCopy;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     [v10 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v8];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
     goto LABEL_18;
   }
 
-  v7 = [PFParallaxColor colorWithRGBValues:v6 error:a4];
-  if (v7)
+  dictionaryCopy = [PFParallaxColor colorWithRGBValues:v6 error:error];
+  if (dictionaryCopy)
   {
-    v8 = [v5 objectForKeyedSubscript:@"secondaryColor"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"secondaryColor"];
     if (v8)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
 LABEL_17:
           v11 = 0;
@@ -171,10 +171,10 @@ LABEL_17:
         }
 
         v12 = MEMORY[0x1E696ABC0];
-        v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid secondary color array: %@", v5, *MEMORY[0x1E696A278]];
+        v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid secondary color array: %@", dictionaryCopy, *MEMORY[0x1E696A278]];
         v16 = v9;
         v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-        *a4 = [v12 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v13];
+        *error = [v12 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v13];
 
         v11 = 0;
 LABEL_16:
@@ -183,7 +183,7 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v9 = [PFParallaxColor colorWithRGBValues:v8 error:a4];
+      v9 = [PFParallaxColor colorWithRGBValues:v8 error:error];
       if (!v9)
       {
         goto LABEL_17;
@@ -195,7 +195,7 @@ LABEL_18:
       v9 = 0;
     }
 
-    v11 = [[PFParallaxPaletteSuggestion alloc] initWithPrimaryColor:v7 secondaryColor:v9];
+    v11 = [[PFParallaxPaletteSuggestion alloc] initWithPrimaryColor:dictionaryCopy secondaryColor:v9];
     goto LABEL_16;
   }
 
@@ -207,21 +207,21 @@ LABEL_20:
   return v11;
 }
 
-+ (id)dictionaryWithPaletteSuggestion:(id)a3
++ (id)dictionaryWithPaletteSuggestion:(id)suggestion
 {
-  v3 = a3;
+  suggestionCopy = suggestion;
   v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:2];
-  v5 = [v3 primaryColor];
-  v6 = [v5 RGBValues];
-  [v4 setObject:v6 forKeyedSubscript:@"primaryColor"];
+  primaryColor = [suggestionCopy primaryColor];
+  rGBValues = [primaryColor RGBValues];
+  [v4 setObject:rGBValues forKeyedSubscript:@"primaryColor"];
 
-  v7 = [v3 secondaryColor];
+  secondaryColor = [suggestionCopy secondaryColor];
 
-  if (v7)
+  if (secondaryColor)
   {
-    v8 = [v3 secondaryColor];
-    v9 = [v8 RGBValues];
-    [v4 setObject:v9 forKeyedSubscript:@"secondaryColor"];
+    secondaryColor2 = [suggestionCopy secondaryColor];
+    rGBValues2 = [secondaryColor2 RGBValues];
+    [v4 setObject:rGBValues2 forKeyedSubscript:@"secondaryColor"];
   }
 
   return v4;

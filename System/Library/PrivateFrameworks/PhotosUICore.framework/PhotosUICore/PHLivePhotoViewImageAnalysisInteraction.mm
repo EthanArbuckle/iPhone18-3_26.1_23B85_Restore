@@ -1,8 +1,8 @@
 @interface PHLivePhotoViewImageAnalysisInteraction
-- (BOOL)livePhotoView:(id)a3 canBeginInteractivePlaybackAtPoint:(CGPoint)a4 inView:(id)a5;
+- (BOOL)livePhotoView:(id)view canBeginInteractivePlaybackAtPoint:(CGPoint)point inView:(id)inView;
 - (PHLivePhotoView)livePhotoView;
 - (_TtC12PhotosUICore39PHLivePhotoViewImageAnalysisInteraction)init;
-- (void)imageAnalysisInteraction:(id)a3 livePhotoShouldPlay:(BOOL)a4;
+- (void)imageAnalysisInteraction:(id)interaction livePhotoShouldPlay:(BOOL)play;
 @end
 
 @implementation PHLivePhotoViewImageAnalysisInteraction
@@ -15,14 +15,14 @@
   return Strong;
 }
 
-- (BOOL)livePhotoView:(id)a3 canBeginInteractivePlaybackAtPoint:(CGPoint)a4 inView:(id)a5
+- (BOOL)livePhotoView:(id)view canBeginInteractivePlaybackAtPoint:(CGPoint)point inView:(id)inView
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_1A4424AB0(v10, x, y);
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  inViewCopy = inView;
+  selfCopy = self;
+  v12 = sub_1A4424AB0(inViewCopy, x, y);
 
   return v12 & 1;
 }
@@ -34,16 +34,16 @@
   return result;
 }
 
-- (void)imageAnalysisInteraction:(id)a3 livePhotoShouldPlay:(BOOL)a4
+- (void)imageAnalysisInteraction:(id)interaction livePhotoShouldPlay:(BOOL)play
 {
-  v4 = a4;
+  playCopy = play;
   v5 = *((*MEMORY[0x1E69E7D40] & *self) + 0x60);
-  v9 = self;
+  selfCopy = self;
   v6 = v5();
   if (v6)
   {
     v7 = &selRef_livePhotoViewInteractionStartPlayback_;
-    if (!v4)
+    if (!playCopy)
     {
       v7 = &selRef_livePhotoViewInteractionStopPlayback_;
     }

@@ -1,27 +1,27 @@
 @interface FRAppActivityMonitor
-+ (id)recordedExposureDateForObserver:(id)a3;
-+ (void)recordExposureEventForObserver:(id)a3;
-+ (void)saveViewAppearanceDateForObserver:(id)a3;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (FRAppActivityMonitor)initWithAnalyticsController:(id)a3 appActivityMonitor:(id)a4 cloudContext:(id)a5 window:(id)a6;
++ (id)recordedExposureDateForObserver:(id)observer;
++ (void)recordExposureEventForObserver:(id)observer;
++ (void)saveViewAppearanceDateForObserver:(id)observer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (FRAppActivityMonitor)initWithAnalyticsController:(id)controller appActivityMonitor:(id)monitor cloudContext:(id)context window:(id)window;
 - (FRAppActivityObserving)appSessionCloseObserver;
 - (void)_checkForNeedToResetIdentifier;
-- (void)_closeAppSessionForReason:(int64_t)a3 startNewSession:(BOOL)a4 resetUserID:(BOOL)a5 forSceneID:(id)a6;
-- (void)activityObservingApplicationDidBecomeActiveWithURL:(id)a3 sourceApplication:(id)a4 sceneID:(id)a5;
-- (void)activityObservingApplicationDidEnterBackgroundWithSceneID:(id)a3;
+- (void)_closeAppSessionForReason:(int64_t)reason startNewSession:(BOOL)session resetUserID:(BOOL)d forSceneID:(id)iD;
+- (void)activityObservingApplicationDidBecomeActiveWithURL:(id)l sourceApplication:(id)application sceneID:(id)d;
+- (void)activityObservingApplicationDidEnterBackgroundWithSceneID:(id)d;
 - (void)activityObservingApplicationDidFinishLaunching;
 - (void)activityObservingApplicationWillEnterForeground;
-- (void)activityObservingApplicationWillResignActiveWithSceneID:(id)a3;
+- (void)activityObservingApplicationWillResignActiveWithSceneID:(id)d;
 - (void)activityObservingApplicationWindowDidBecomeBackground;
 - (void)activityObservingApplicationWindowDidBecomeForeground;
-- (void)addAppSessionCloseObserver:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)addAppSessionCloseObserver:(id)observer;
+- (void)addObserver:(id)observer;
 - (void)applicationWillFinishLaunching;
-- (void)applicationWillResignActive:(id)a3;
-- (void)applicationWillTerminate:(id)a3;
+- (void)applicationWillResignActive:(id)active;
+- (void)applicationWillTerminate:(id)terminate;
 - (void)dealloc;
-- (void)readingHistoryDidClear:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)readingHistoryDidClear:(id)clear;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation FRAppActivityMonitor
@@ -42,8 +42,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(FRAppActivityMonitor *)self observers];
-  v3 = [v2 copy];
+  observers = [(FRAppActivityMonitor *)self observers];
+  v3 = [observers copy];
 
   v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
@@ -88,8 +88,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(FRAppActivityMonitor *)self observers];
-  v4 = [v3 copy];
+  observers = [(FRAppActivityMonitor *)self observers];
+  v4 = [observers copy];
 
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
@@ -136,8 +136,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(FRAppActivityMonitor *)self observers];
-  v4 = [v3 copy];
+  observers = [(FRAppActivityMonitor *)self observers];
+  v4 = [observers copy];
 
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
@@ -174,20 +174,20 @@
 - (void)_checkForNeedToResetIdentifier
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 key_window];
-  v5 = [v4 windowScene];
-  v6 = [v5 session];
-  v9 = [v6 persistentIdentifier];
+  key_window = [v3 key_window];
+  windowScene = [key_window windowScene];
+  session = [windowScene session];
+  persistentIdentifier = [session persistentIdentifier];
 
   v7 = +[NSUserDefaults standardUserDefaults];
-  LODWORD(v5) = [v7 BOOLForKey:@"reset_identifier"];
+  LODWORD(windowScene) = [v7 BOOLForKey:@"reset_identifier"];
 
-  if (v5)
+  if (windowScene)
   {
     v8 = +[NSUserDefaults standardUserDefaults];
     [v8 setBool:0 forKey:@"reset_identifier"];
 
-    [(FRAppActivityMonitor *)self _closeAppSessionForReason:4 startNewSession:1 resetUserID:1 forSceneID:v9];
+    [(FRAppActivityMonitor *)self _closeAppSessionForReason:4 startNewSession:1 resetUserID:1 forSceneID:persistentIdentifier];
   }
 }
 
@@ -198,21 +198,21 @@
   return WeakRetained;
 }
 
-- (FRAppActivityMonitor)initWithAnalyticsController:(id)a3 appActivityMonitor:(id)a4 cloudContext:(id)a5 window:(id)a6
+- (FRAppActivityMonitor)initWithAnalyticsController:(id)controller appActivityMonitor:(id)monitor cloudContext:(id)context window:(id)window
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  controllerCopy = controller;
+  monitorCopy = monitor;
+  contextCopy = context;
+  windowCopy = window;
   v25.receiver = self;
   v25.super_class = FRAppActivityMonitor;
   v15 = [(FRAppActivityMonitor *)&v25 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_analyticsController, a3);
-    [v12 addObserver:v16];
-    objc_storeStrong(&v16->_cloudContext, a5);
+    objc_storeStrong(&v15->_analyticsController, controller);
+    [monitorCopy addObserver:v16];
+    objc_storeStrong(&v16->_cloudContext, context);
     v17 = [NSHashTable hashTableWithOptions:517];
     observers = v16->_observers;
     v16->_observers = v17;
@@ -223,35 +223,35 @@
     v20 = +[NSNotificationCenter defaultCenter];
     [v20 addObserver:v16 selector:"applicationWillTerminate:" name:UIApplicationWillTerminateNotification object:0];
 
-    v21 = [(FRAppActivityMonitor *)v16 cloudContext];
-    v22 = [v21 readingHistory];
-    [v22 addObserver:v16];
+    cloudContext = [(FRAppActivityMonitor *)v16 cloudContext];
+    readingHistory = [cloudContext readingHistory];
+    [readingHistory addObserver:v16];
 
     v23 = [[UILongPressGestureRecognizer alloc] initWithTarget:0 action:0];
     [v23 setMinimumPressDuration:0.001];
     [v23 setDelegate:v16];
-    [v14 addGestureRecognizer:v23];
+    [windowCopy addGestureRecognizer:v23];
   }
 
   return v16;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   +[NSThread isMainThread];
-  if (v4)
+  if (observerCopy)
   {
-    v5 = [(FRAppActivityMonitor *)self observers];
-    v6 = [v5 containsObject:v4];
+    observers = [(FRAppActivityMonitor *)self observers];
+    v6 = [observers containsObject:observerCopy];
 
     if (v6 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      sub_10006EC9C(v4);
+      sub_10006EC9C(observerCopy);
     }
 
-    v7 = [(FRAppActivityMonitor *)self observers];
-    [v7 addObject:v4];
+    observers2 = [(FRAppActivityMonitor *)self observers];
+    [observers2 addObject:observerCopy];
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -260,28 +260,28 @@
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   +[NSThread isMainThread];
-  if (v4)
+  if (observerCopy)
   {
-    v5 = [(FRAppActivityMonitor *)self appSessionCloseObserver];
+    appSessionCloseObserver = [(FRAppActivityMonitor *)self appSessionCloseObserver];
 
-    if (v5 == v4)
+    if (appSessionCloseObserver == observerCopy)
     {
       [(FRAppActivityMonitor *)self setAppSessionCloseObserver:0];
     }
 
     else
     {
-      v6 = [(FRAppActivityMonitor *)self observers];
-      v7 = [v6 containsObject:v4];
+      observers = [(FRAppActivityMonitor *)self observers];
+      v7 = [observers containsObject:observerCopy];
 
       if (v7)
       {
-        v8 = [(FRAppActivityMonitor *)self observers];
-        [v8 removeObject:v4];
+        observers2 = [(FRAppActivityMonitor *)self observers];
+        [observers2 removeObject:observerCopy];
       }
     }
   }
@@ -292,12 +292,12 @@
   }
 }
 
-- (void)addAppSessionCloseObserver:(id)a3
+- (void)addAppSessionCloseObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(FRAppActivityMonitor *)self appSessionCloseObserver];
+  observerCopy = observer;
+  appSessionCloseObserver = [(FRAppActivityMonitor *)self appSessionCloseObserver];
 
-  if (v5)
+  if (appSessionCloseObserver)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
@@ -307,7 +307,7 @@
 
   else
   {
-    [(FRAppActivityMonitor *)self setAppSessionCloseObserver:v4];
+    [(FRAppActivityMonitor *)self setAppSessionCloseObserver:observerCopy];
   }
 }
 
@@ -316,18 +316,18 @@
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 removeObserver:self];
 
-  v4 = [(FRAppActivityMonitor *)self cloudContext];
-  v5 = [v4 readingHistory];
-  [v5 removeObserver:self];
+  cloudContext = [(FRAppActivityMonitor *)self cloudContext];
+  readingHistory = [cloudContext readingHistory];
+  [readingHistory removeObserver:self];
 
   v6.receiver = self;
   v6.super_class = FRAppActivityMonitor;
   [(FRAppActivityMonitor *)&v6 dealloc];
 }
 
-+ (void)saveViewAppearanceDateForObserver:(id)a3
++ (void)saveViewAppearanceDateForObserver:(id)observer
 {
-  object = a3;
+  object = observer;
   if (objc_opt_respondsToSelector())
   {
     v3 = objc_getAssociatedObject(object, "FRViewAppearanceDate");
@@ -346,9 +346,9 @@
   _objc_release_x2();
 }
 
-+ (void)recordExposureEventForObserver:(id)a3
++ (void)recordExposureEventForObserver:(id)observer
 {
-  object = a3;
+  object = observer;
   if (objc_opt_respondsToSelector())
   {
     v3 = objc_getAssociatedObject(object, "FRViewAppearanceDate");
@@ -360,10 +360,10 @@
   }
 }
 
-+ (id)recordedExposureDateForObserver:(id)a3
++ (id)recordedExposureDateForObserver:(id)observer
 {
-  v3 = a3;
-  if ((objc_opt_respondsToSelector() & 1) == 0 || (objc_getAssociatedObject(v3, "FRViewAppearanceDate"), (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  observerCopy = observer;
+  if ((objc_opt_respondsToSelector() & 1) == 0 || (objc_getAssociatedObject(observerCopy, "FRViewAppearanceDate"), (v4 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v4 = +[NSDate date];
   }
@@ -371,13 +371,13 @@
   return v4;
 }
 
-- (void)applicationWillResignActive:(id)a3
+- (void)applicationWillResignActive:(id)active
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(FRAppActivityMonitor *)self observers:a3];
+  v3 = [(FRAppActivityMonitor *)self observers:active];
   v4 = [v3 copy];
 
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
@@ -412,7 +412,7 @@
   }
 }
 
-- (void)applicationWillTerminate:(id)a3
+- (void)applicationWillTerminate:(id)terminate
 {
   if (![(FRAppActivityMonitor *)self hasBeenNotifiedOfApplicationLaunch]&& os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
@@ -423,8 +423,8 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(FRAppActivityMonitor *)self observers];
-  v5 = [v4 copy];
+  observers = [(FRAppActivityMonitor *)self observers];
+  v5 = [observers copy];
 
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
@@ -458,34 +458,34 @@
   }
 }
 
-- (void)readingHistoryDidClear:(id)a3
+- (void)readingHistoryDidClear:(id)clear
 {
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 key_window];
-  v6 = [v5 windowScene];
-  v7 = [v6 session];
-  v8 = [v7 persistentIdentifier];
+  key_window = [v4 key_window];
+  windowScene = [key_window windowScene];
+  session = [windowScene session];
+  persistentIdentifier = [session persistentIdentifier];
 
-  [(FRAppActivityMonitor *)self _closeAppSessionForReason:1 startNewSession:1 resetUserID:1 forSceneID:v8];
+  [(FRAppActivityMonitor *)self _closeAppSessionForReason:1 startNewSession:1 resetUserID:1 forSceneID:persistentIdentifier];
 }
 
-- (void)_closeAppSessionForReason:(int64_t)a3 startNewSession:(BOOL)a4 resetUserID:(BOOL)a5 forSceneID:(id)a6
+- (void)_closeAppSessionForReason:(int64_t)reason startNewSession:(BOOL)session resetUserID:(BOOL)d forSceneID:(id)iD
 {
-  v6 = a5;
-  v7 = a4;
-  v10 = a6;
+  dCopy = d;
+  sessionCopy = session;
+  iDCopy = iD;
   +[NSThread isMainThread];
-  v11 = [(FRAppActivityMonitor *)self analyticsController];
-  [v11 endSessionForReason:a3 byStartingNewSession:v7 resetUserID:v6 forSceneID:v10];
+  analyticsController = [(FRAppActivityMonitor *)self analyticsController];
+  [analyticsController endSessionForReason:reason byStartingNewSession:sessionCopy resetUserID:dCopy forSceneID:iDCopy];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(FRAppActivityMonitor *)self observers:a3];
+  v3 = [(FRAppActivityMonitor *)self observers:begin];
   v4 = [v3 copy];
 
   v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -522,11 +522,11 @@
   return 0;
 }
 
-- (void)activityObservingApplicationDidBecomeActiveWithURL:(id)a3 sourceApplication:(id)a4 sceneID:(id)a5
+- (void)activityObservingApplicationDidBecomeActiveWithURL:(id)l sourceApplication:(id)application sceneID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  applicationCopy = application;
+  dCopy = d;
   if (![(FRAppActivityMonitor *)self hasBeenNotifiedOfApplicationLaunch]&& os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10006F10C();
@@ -539,38 +539,38 @@
   v32[3] = &unk_1000C3C00;
   v32[4] = self;
   v11 = objc_retainBlock(v32);
-  if (v8)
+  if (lCopy)
   {
-    v12 = [(FRAppActivityMonitor *)self analyticsReferralFactory];
-    v13 = [v12 analyticsReferralForURL:v8 sourceApplication:v9];
+    analyticsReferralFactory = [(FRAppActivityMonitor *)self analyticsReferralFactory];
+    v13 = [analyticsReferralFactory analyticsReferralForURL:lCopy sourceApplication:applicationCopy];
     [(FRAppActivityMonitor *)self setAppSessionStartReferral:v13];
   }
 
-  v27 = v9;
+  v27 = applicationCopy;
   [(FRAppActivityMonitor *)self _checkForNeedToResetIdentifier];
-  v14 = [(FRAppActivityMonitor *)self analyticsController];
-  v15 = [(FRAppActivityMonitor *)self appSessionStartReferral];
-  [v14 startSessionIfNeededWithReferral:v15 sceneID:v10];
+  analyticsController = [(FRAppActivityMonitor *)self analyticsController];
+  appSessionStartReferral = [(FRAppActivityMonitor *)self appSessionStartReferral];
+  [analyticsController startSessionIfNeededWithReferral:appSessionStartReferral sceneID:dCopy];
 
   [(FRAppActivityMonitor *)self setAppSessionStartReferral:0];
-  v16 = [(FRAppActivityMonitor *)self appSessionCloseObserver];
+  appSessionCloseObserver = [(FRAppActivityMonitor *)self appSessionCloseObserver];
   v17 = objc_opt_respondsToSelector();
 
   if (v17)
   {
-    v18 = [(FRAppActivityMonitor *)self appSessionCloseObserver];
-    [v18 activityObservingApplicationDidBecomeActive];
+    appSessionCloseObserver2 = [(FRAppActivityMonitor *)self appSessionCloseObserver];
+    [appSessionCloseObserver2 activityObservingApplicationDidBecomeActive];
   }
 
-  v19 = [(FRAppActivityMonitor *)self appSessionCloseObserver];
-  (v11[2])(v11, v19);
+  appSessionCloseObserver3 = [(FRAppActivityMonitor *)self appSessionCloseObserver];
+  (v11[2])(v11, appSessionCloseObserver3);
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v20 = [(FRAppActivityMonitor *)self observers];
-  v21 = [v20 copy];
+  observers = [(FRAppActivityMonitor *)self observers];
+  v21 = [observers copy];
 
   v22 = [v21 countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v22)
@@ -605,15 +605,15 @@
   }
 }
 
-- (void)activityObservingApplicationWillResignActiveWithSceneID:(id)a3
+- (void)activityObservingApplicationWillResignActiveWithSceneID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(FRAppActivityMonitor *)self observers];
-  v6 = [v5 copy];
+  observers = [(FRAppActivityMonitor *)self observers];
+  v6 = [observers copy];
 
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
@@ -646,13 +646,13 @@
     while (v8);
   }
 
-  v12 = [(FRAppActivityMonitor *)self analyticsController];
-  [v12 resignSessionForSceneID:v4];
+  analyticsController = [(FRAppActivityMonitor *)self analyticsController];
+  [analyticsController resignSessionForSceneID:dCopy];
 }
 
-- (void)activityObservingApplicationDidEnterBackgroundWithSceneID:(id)a3
+- (void)activityObservingApplicationDidEnterBackgroundWithSceneID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (![(FRAppActivityMonitor *)self hasBeenNotifiedOfApplicationLaunch]&& os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10006F1C4();
@@ -660,7 +660,7 @@
 
   if ([(FRAppActivityMonitor *)self isActive])
   {
-    v19 = v4;
+    v19 = dCopy;
     [(FRAppActivityMonitor *)self setIsActive:0];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
@@ -672,8 +672,8 @@
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v6 = [(FRAppActivityMonitor *)self observers];
-    v7 = [v6 copy];
+    observers = [(FRAppActivityMonitor *)self observers];
+    v7 = [observers copy];
 
     v8 = [v7 countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v8)
@@ -707,24 +707,24 @@
       while (v9);
     }
 
-    v13 = [(FRAppActivityMonitor *)self appSessionCloseObserver];
-    if (v13)
+    appSessionCloseObserver = [(FRAppActivityMonitor *)self appSessionCloseObserver];
+    if (appSessionCloseObserver)
     {
-      v14 = v13;
-      v15 = [(FRAppActivityMonitor *)self appSessionCloseObserver];
+      v14 = appSessionCloseObserver;
+      appSessionCloseObserver2 = [(FRAppActivityMonitor *)self appSessionCloseObserver];
       v16 = objc_opt_respondsToSelector();
 
       if (v16)
       {
-        v17 = [(FRAppActivityMonitor *)self appSessionCloseObserver];
-        [v17 activityObservingApplicationDidEnterBackground];
+        appSessionCloseObserver3 = [(FRAppActivityMonitor *)self appSessionCloseObserver];
+        [appSessionCloseObserver3 activityObservingApplicationDidEnterBackground];
       }
     }
 
-    v18 = [(FRAppActivityMonitor *)self appSessionCloseObserver];
-    (v5[2])(v5, v18);
+    appSessionCloseObserver4 = [(FRAppActivityMonitor *)self appSessionCloseObserver];
+    (v5[2])(v5, appSessionCloseObserver4);
 
-    v4 = v19;
+    dCopy = v19;
     [(FRAppActivityMonitor *)self _closeAppSessionForReason:2 startNewSession:0 resetUserID:0 forSceneID:v19];
   }
 }
@@ -742,8 +742,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(FRAppActivityMonitor *)self observers];
-  v4 = [v3 copy];
+  observers = [(FRAppActivityMonitor *)self observers];
+  v4 = [observers copy];
 
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)

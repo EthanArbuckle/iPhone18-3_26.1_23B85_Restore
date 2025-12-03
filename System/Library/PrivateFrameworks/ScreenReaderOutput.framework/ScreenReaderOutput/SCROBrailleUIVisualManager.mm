@@ -1,24 +1,24 @@
 @interface SCROBrailleUIVisualManager
 - (AXUIClient)uiClient;
 - (SCROBrailleUIAppDelegate)delegate;
-- (SCROBrailleUIVisualManager)initWithDelegate:(id)a3;
-- (void)_sendMessage:(id)a3 withIdentifier:(int64_t)a4;
+- (SCROBrailleUIVisualManager)initWithDelegate:(id)delegate;
+- (void)_sendMessage:(id)message withIdentifier:(int64_t)identifier;
 - (void)updateEnabledStatus;
-- (void)updateWith:(id)a3;
+- (void)updateWith:(id)with;
 @end
 
 @implementation SCROBrailleUIVisualManager
 
-- (SCROBrailleUIVisualManager)initWithDelegate:(id)a3
+- (SCROBrailleUIVisualManager)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = SCROBrailleUIVisualManager;
   v5 = [(SCROBrailleUIVisualManager *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = +[SCROBrailleUISettingsManager sharedInstance];
     v6->_isEnabled = [v7 isVisualsEnabled];
   }
@@ -52,24 +52,24 @@ uint64_t __38__SCROBrailleUIVisualManager_uiClient__block_invoke()
   return MEMORY[0x2821F96F8](v0);
 }
 
-- (void)updateWith:(id)a3
+- (void)updateWith:(id)with
 {
-  v4 = [a3 dictionaryForUIMessage];
-  [(SCROBrailleUIVisualManager *)self _sendMessage:v4 withIdentifier:2];
+  dictionaryForUIMessage = [with dictionaryForUIMessage];
+  [(SCROBrailleUIVisualManager *)self _sendMessage:dictionaryForUIMessage withIdentifier:2];
 }
 
-- (void)_sendMessage:(id)a3 withIdentifier:(int64_t)a4
+- (void)_sendMessage:(id)message withIdentifier:(int64_t)identifier
 {
-  v6 = a3;
+  messageCopy = message;
   if ([(SCROBrailleUIVisualManager *)self isEnabled])
   {
-    v7 = [(SCROBrailleUIVisualManager *)self uiClient];
+    uiClient = [(SCROBrailleUIVisualManager *)self uiClient];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __58__SCROBrailleUIVisualManager__sendMessage_withIdentifier___block_invoke;
     v8[3] = &__block_descriptor_40_e34_v24__0__NSDictionary_8__NSError_16l;
-    v8[4] = a4;
-    [v7 sendAsynchronousMessage:v6 withIdentifier:a4 targetAccessQueue:0 completion:v8];
+    v8[4] = identifier;
+    [uiClient sendAsynchronousMessage:messageCopy withIdentifier:identifier targetAccessQueue:0 completion:v8];
   }
 }
 

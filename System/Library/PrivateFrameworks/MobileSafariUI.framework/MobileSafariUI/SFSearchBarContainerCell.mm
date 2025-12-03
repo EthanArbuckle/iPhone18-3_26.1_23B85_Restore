@@ -1,7 +1,7 @@
 @interface SFSearchBarContainerCell
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setSearchBar:(id)a3;
+- (void)setSearchBar:(id)bar;
 @end
 
 @implementation SFSearchBarContainerCell
@@ -15,26 +15,26 @@
   [(UISearchBar *)self->_searchBar setFrame:?];
 }
 
-- (void)setSearchBar:(id)a3
+- (void)setSearchBar:(id)bar
 {
-  v5 = a3;
+  barCopy = bar;
   searchBar = self->_searchBar;
-  if (searchBar != v5)
+  if (searchBar != barCopy)
   {
-    v7 = v5;
+    v7 = barCopy;
     [(UISearchBar *)searchBar removeFromSuperview];
-    objc_storeStrong(&self->_searchBar, a3);
+    objc_storeStrong(&self->_searchBar, bar);
     [(SFSearchBarContainerCell *)self addSubview:v7];
     [(SFSearchBarContainerCell *)self setNeedsLayout];
-    v5 = v7;
+    barCopy = v7;
   }
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
   v8.receiver = self;
   v8.super_class = SFSearchBarContainerCell;
-  v4 = [(SFSearchBarContainerCell *)&v8 preferredLayoutAttributesFittingAttributes:a3];
+  v4 = [(SFSearchBarContainerCell *)&v8 preferredLayoutAttributesFittingAttributes:attributes];
   [(UISearchBar *)self->_searchBar frame];
   [v4 setSize:{v5, v6}];
 

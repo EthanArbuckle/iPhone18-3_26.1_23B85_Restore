@@ -1,28 +1,28 @@
 @interface DTAssertionPidInfo
 - (BOOL)hasNoMoreClients;
-- (BOOL)removeClaimFromClient:(id)a3;
-- (id)initForPid:(int)a3 withRemoveBlocks:(id)a4 onBehalfOfClient:(id)a5;
+- (BOOL)removeClaimFromClient:(id)client;
+- (id)initForPid:(int)pid withRemoveBlocks:(id)blocks onBehalfOfClient:(id)client;
 - (void)removeAssertions;
 @end
 
 @implementation DTAssertionPidInfo
 
-- (id)initForPid:(int)a3 withRemoveBlocks:(id)a4 onBehalfOfClient:(id)a5
+- (id)initForPid:(int)pid withRemoveBlocks:(id)blocks onBehalfOfClient:(id)client
 {
-  v8 = a4;
-  v9 = a5;
+  blocksCopy = blocks;
+  clientCopy = client;
   v17.receiver = self;
   v17.super_class = DTAssertionPidInfo;
   v10 = [(DTAssertionPidInfo *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_pid = a3;
-    v12 = [v8 copy];
+    v10->_pid = pid;
+    v12 = [blocksCopy copy];
     blocks = v11->_blocks;
     v11->_blocks = v12;
 
-    v14 = [MEMORY[0x277CBEB58] setWithObject:v9];
+    v14 = [MEMORY[0x277CBEB58] setWithObject:clientCopy];
     clientsWithClaim = v11->_clientsWithClaim;
     v11->_clientsWithClaim = v14;
   }
@@ -41,13 +41,13 @@
   [(NSArray *)blocks enumerateObjectsUsingBlock:v3];
 }
 
-- (BOOL)removeClaimFromClient:(id)a3
+- (BOOL)removeClaimFromClient:(id)client
 {
-  v4 = a3;
-  v5 = [(NSMutableSet *)self->_clientsWithClaim containsObject:v4];
+  clientCopy = client;
+  v5 = [(NSMutableSet *)self->_clientsWithClaim containsObject:clientCopy];
   if (v5)
   {
-    [(NSMutableSet *)self->_clientsWithClaim removeObject:v4];
+    [(NSMutableSet *)self->_clientsWithClaim removeObject:clientCopy];
   }
 
   return v5;
@@ -55,8 +55,8 @@
 
 - (BOOL)hasNoMoreClients
 {
-  v2 = [(NSMutableSet *)self->_clientsWithClaim anyObject];
-  v3 = v2 == 0;
+  anyObject = [(NSMutableSet *)self->_clientsWithClaim anyObject];
+  v3 = anyObject == 0;
 
   return v3;
 }

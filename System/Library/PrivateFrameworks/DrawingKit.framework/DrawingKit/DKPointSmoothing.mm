@@ -1,11 +1,11 @@
 @interface DKPointSmoothing
-+ (void)_interpolateFromPoint:(float)a3 toPoint:(id)a4 withControlPoint:atUnitScale:emissionHandler:;
-- (DKPointSmoothing)initWithWidth:(unint64_t)a3 spacing:(float)a4;
++ (void)_interpolateFromPoint:(float)point toPoint:(id)toPoint withControlPoint:atUnitScale:emissionHandler:;
+- (DKPointSmoothing)initWithWidth:(unint64_t)width spacing:(float)spacing;
 @end
 
 @implementation DKPointSmoothing
 
-- (DKPointSmoothing)initWithWidth:(unint64_t)a3 spacing:(float)a4
+- (DKPointSmoothing)initWithWidth:(unint64_t)width spacing:(float)spacing
 {
   v17.receiver = self;
   v17.super_class = DKPointSmoothing;
@@ -13,8 +13,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_width = a3;
-    v6->_spacing = a4;
+    v6->_width = width;
+    v6->_spacing = spacing;
     v8 = [objc_alloc(MEMORY[0x277D74320]) initWithFIFO:0];
     interpolatingFIFO = v7->_interpolatingFIFO;
     v7->_interpolatingFIFO = v8;
@@ -34,24 +34,24 @@
   return v7;
 }
 
-+ (void)_interpolateFromPoint:(float)a3 toPoint:(id)a4 withControlPoint:atUnitScale:emissionHandler:
++ (void)_interpolateFromPoint:(float)point toPoint:(id)toPoint withControlPoint:atUnitScale:emissionHandler:
 {
   v7 = v6;
   v25 = v4;
   v26 = v5;
-  v27 = *&a3;
-  v8 = a4;
+  v27 = *&point;
+  toPointCopy = toPoint;
   v9 = vsub_f32(v26, v25);
   v10 = vmul_f32(v9, v9);
   v11 = vsub_f32(*&v27, v26);
   v12 = vmul_f32(v11, v11);
   v13 = vaddv_f32(vsqrt_f32(vadd_f32(vzip1_s32(v12, v10), vzip2_s32(v12, v10)))) / v7;
   v14 = vcvtps_u32_f32(v13);
-  v24 = v8;
+  v24 = toPointCopy;
   if (!v14)
   {
     v19 = malloc_type_malloc(0x10uLL, 0x1000040451B5BE8uLL);
-    v8 = v24;
+    toPointCopy = v24;
     if (!v19)
     {
       goto LABEL_14;
@@ -73,7 +73,7 @@
     v17 = *&v25;
     v18 = *&v26;
     v19 = v15;
-    v8 = v24;
+    toPointCopy = v24;
     if (v19)
     {
       v20 = *&v27;
@@ -103,7 +103,7 @@ LABEL_12:
       v23();
 LABEL_13:
       free(v19);
-      v8 = v24;
+      toPointCopy = v24;
     }
   }
 

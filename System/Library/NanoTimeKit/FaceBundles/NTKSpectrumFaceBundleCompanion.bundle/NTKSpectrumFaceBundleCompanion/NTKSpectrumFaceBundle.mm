@@ -1,18 +1,18 @@
 @interface NTKSpectrumFaceBundle
-- (id)_galleryFacesWithColorOptions:(id)a3 device:(id)a4;
-- (id)_legacyGalleryFacesForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryTitleForDevice:(id)a3;
-- (id)heroGraceDefaultFacesForDevice:(id)a3;
-- (id)heroSpring2020DefaultFacesForDevice:(id)a3;
+- (id)_galleryFacesWithColorOptions:(id)options device:(id)device;
+- (id)_legacyGalleryFacesForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryTitleForDevice:(id)device;
+- (id)heroGraceDefaultFacesForDevice:(id)device;
+- (id)heroSpring2020DefaultFacesForDevice:(id)device;
 @end
 
 @implementation NTKSpectrumFaceBundle
 
-- (id)galleryTitleForDevice:(id)a3
+- (id)galleryTitleForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 isRunningNapiliGMOrLater])
+  deviceCopy = device;
+  if ([deviceCopy isRunningNapiliGMOrLater])
   {
     v5 = 0;
   }
@@ -21,24 +21,24 @@
   {
     v7.receiver = self;
     v7.super_class = NTKSpectrumFaceBundle;
-    v5 = [(NTKSpectrumFaceBundle *)&v7 galleryTitleForDevice:v4];
+    v5 = [(NTKSpectrumFaceBundle *)&v7 galleryTitleForDevice:deviceCopy];
   }
 
   return v5;
 }
 
-- (id)heroSpring2020DefaultFacesForDevice:(id)a3
+- (id)heroSpring2020DefaultFacesForDevice:(id)device
 {
-  v3 = a3;
-  if ([v3 deviceCategory] == &dword_0 + 1)
+  deviceCopy = device;
+  if ([deviceCopy deviceCategory] == &dword_0 + 1)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [NTKFace defaultFaceOfStyle:41 forDevice:v3];
-    v6 = [NTKSpectrumAnalogColorEditOption optionWithColor:3004 forDevice:v3];
+    v5 = [NTKFace defaultFaceOfStyle:41 forDevice:deviceCopy];
+    v6 = [NTKSpectrumAnalogColorEditOption optionWithColor:3004 forDevice:deviceCopy];
     [v5 selectOption:v6 forCustomEditMode:10 slot:0];
 
     if (v5)
@@ -56,18 +56,18 @@
   return v4;
 }
 
-- (id)heroGraceDefaultFacesForDevice:(id)a3
+- (id)heroGraceDefaultFacesForDevice:(id)device
 {
-  v3 = a3;
-  if ([v3 deviceCategory] == &dword_0 + 1)
+  deviceCopy = device;
+  if ([deviceCopy deviceCategory] == &dword_0 + 1)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [NTKFace defaultFaceOfStyle:41 forDevice:v3];
-    v6 = [NTKSpectrumAnalogColorEditOption optionWithColor:6 forDevice:v3];
+    v5 = [NTKFace defaultFaceOfStyle:41 forDevice:deviceCopy];
+    v6 = [NTKSpectrumAnalogColorEditOption optionWithColor:6 forDevice:deviceCopy];
     [v5 selectOption:v6 forCustomEditMode:10 slot:0];
 
     v10[0] = NTKComplicationSlotTopLeft;
@@ -98,33 +98,33 @@
   return v4;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(NTKSpectrumFaceBundle *)self defaultFaceForDevice:v4];
+  deviceCopy = device;
+  v5 = [(NTKSpectrumFaceBundle *)self defaultFaceForDevice:deviceCopy];
   if ([v5 deviceSupportsPigmentEditOption])
   {
-    v6 = [(NTKSpectrumFaceBundle *)self galleryDefaultPigmentOptionsForDevice:v4];
-    v7 = [(NTKSpectrumFaceBundle *)self _galleryFacesWithColorOptions:v6 device:v4];
+    v6 = [(NTKSpectrumFaceBundle *)self galleryDefaultPigmentOptionsForDevice:deviceCopy];
+    v7 = [(NTKSpectrumFaceBundle *)self _galleryFacesWithColorOptions:v6 device:deviceCopy];
   }
 
   else
   {
-    v7 = [(NTKSpectrumFaceBundle *)self _legacyGalleryFacesForDevice:v4];
+    v7 = [(NTKSpectrumFaceBundle *)self _legacyGalleryFacesForDevice:deviceCopy];
   }
 
   return v7;
 }
 
-- (id)_legacyGalleryFacesForDevice:(id)a3
+- (id)_legacyGalleryFacesForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 supportsPDRCapability:2919474315])
+  deviceCopy = device;
+  if ([deviceCopy supportsPDRCapability:2919474315])
   {
     v5 = &off_11228;
   }
 
-  else if ([v4 supportsPDRCapability:753405533])
+  else if ([deviceCopy supportsPDRCapability:753405533])
   {
     v5 = &off_11240;
   }
@@ -153,7 +153,7 @@
           objc_enumerationMutation(v5);
         }
 
-        v11 = +[NTKSpectrumAnalogColorEditOption optionWithFaceColor:forDevice:](NTKSpectrumAnalogColorEditOption, "optionWithFaceColor:forDevice:", [*(*(&v14 + 1) + 8 * i) integerValue], v4);
+        v11 = +[NTKSpectrumAnalogColorEditOption optionWithFaceColor:forDevice:](NTKSpectrumAnalogColorEditOption, "optionWithFaceColor:forDevice:", [*(*(&v14 + 1) + 8 * i) integerValue], deviceCopy);
         if (v11)
         {
           [v6 addObject:v11];
@@ -166,31 +166,31 @@
     while (v8);
   }
 
-  v12 = [(NTKSpectrumFaceBundle *)self _galleryFacesWithColorOptions:v6 device:v4];
+  v12 = [(NTKSpectrumFaceBundle *)self _galleryFacesWithColorOptions:v6 device:deviceCopy];
 
   return v12;
 }
 
-- (id)_galleryFacesWithColorOptions:(id)a3 device:(id)a4
+- (id)_galleryFacesWithColorOptions:(id)options device:(id)device
 {
-  v5 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  deviceCopy = device;
   v7 = objc_opt_new();
-  v8 = 2 * [v5 count];
+  v8 = 2 * [optionsCopy count];
   if (v8 >= 1)
   {
     for (i = 0; i != v8; ++i)
     {
-      v10 = [NTKFace defaultFaceOfStyle:41 forDevice:v6];
+      v10 = [NTKFace defaultFaceOfStyle:41 forDevice:deviceCopy];
       if (v10)
       {
-        v11 = [NTKSpectrumStyleEditOption optionWithStyle:2 forDevice:v6];
+        v11 = [NTKSpectrumStyleEditOption optionWithStyle:2 forDevice:deviceCopy];
         [v10 selectOption:v11 forCustomEditMode:15 slot:0];
 
-        v12 = [NTKAnalogDialShapeEditOption optionWithShape:(i & 1) == 0 forDevice:v6];
+        v12 = [NTKAnalogDialShapeEditOption optionWithShape:(i & 1) == 0 forDevice:deviceCopy];
         [v10 selectOption:v12 forCustomEditMode:12 slot:0];
 
-        v13 = [v5 objectAtIndexedSubscript:i >> 1];
+        v13 = [optionsCopy objectAtIndexedSubscript:i >> 1];
         [v10 selectOption:v13 forCustomEditMode:10 slot:0];
 
         [v7 addObject:v10];

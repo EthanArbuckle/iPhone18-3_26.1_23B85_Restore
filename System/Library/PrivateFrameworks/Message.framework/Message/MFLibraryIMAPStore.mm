@@ -1,32 +1,32 @@
 @interface MFLibraryIMAPStore
-+ (id)copyRemoteIDForTemporaryUid:(unsigned int)a3;
++ (id)copyRemoteIDForTemporaryUid:(unsigned int)uid;
 + (id)log;
-- (BOOL)_fetchDataForMimePart:(id)a3 range:(_NSRange)a4 isComplete:(BOOL *)a5 consumer:(id)a6;
+- (BOOL)_fetchDataForMimePart:(id)part range:(_NSRange)range isComplete:(BOOL *)complete consumer:(id)consumer;
 - (BOOL)canCompact;
 - (BOOL)canFetchMessageIDs;
-- (BOOL)downloadMimePartNumber:(id)a3 message:(id)a4 withProgressBlock:(id)a5;
-- (id)_dataForMessage:(int)a3 readHeadersOnly:;
-- (id)_fetchFullBodyDataForMessage:(id)a3 andHeaderDataIfReadilyAvailable:(id *)a4 downloadIfNecessary:(BOOL)a5 didDownload:(BOOL *)a6;
+- (BOOL)downloadMimePartNumber:(id)number message:(id)message withProgressBlock:(id)block;
+- (id)_dataForMessage:(int)message readHeadersOnly:;
+- (id)_fetchFullBodyDataForMessage:(id)message andHeaderDataIfReadilyAvailable:(id *)available downloadIfNecessary:(BOOL)necessary didDownload:(BOOL *)download;
 - (id)_serverMessageIndexer;
-- (id)flagsForRemoteIDs:(id)a3;
+- (id)flagsForRemoteIDs:(id)ds;
 - (id)mailboxPersistence;
-- (id)messageForRemoteID:(id)a3;
-- (id)messageIdRollCall:(id)a3;
-- (id)messagesWithRemoteIDs:(id)a3;
-- (id)replayAction:(id)a3;
-- (int64_t)fetchMessagesWithMessageIDs:(id)a3 andSetFlags:(unint64_t)a4;
-- (int64_t)fetchNumMessages:(unint64_t)a3 preservingUID:(id)a4 options:(unint64_t)a5;
+- (id)messageForRemoteID:(id)d;
+- (id)messageIdRollCall:(id)call;
+- (id)messagesWithRemoteIDs:(id)ds;
+- (id)replayAction:(id)action;
+- (int64_t)fetchMessagesWithMessageIDs:(id)ds andSetFlags:(unint64_t)flags;
+- (int64_t)fetchNumMessages:(unint64_t)messages preservingUID:(id)d options:(unint64_t)options;
 - (uint64_t)close;
 - (uint64_t)mailboxRowID;
 - (unint64_t)growFetchWindow;
 - (unsigned)uidNext;
 - (unsigned)uidValidity;
-- (void)_handleFlagsChangedForMessages:(id)a3 flags:(id)a4 oldFlagsByMessage:(id)a5;
+- (void)_handleFlagsChangedForMessages:(id)messages flags:(id)flags oldFlagsByMessage:(id)message;
 - (void)close;
 - (void)doCompact;
-- (void)fetchBodyDataForMessage:(id)a3 completionHandler:(id)a4;
+- (void)fetchBodyDataForMessage:(id)message completionHandler:(id)handler;
 - (void)reselectMailbox;
-- (void)setLibrary:(id)a3;
+- (void)setLibrary:(id)library;
 @end
 
 @implementation MFLibraryIMAPStore
@@ -59,32 +59,32 @@ void __25__MFLibraryIMAPStore_log__block_invoke(uint64_t a1)
 
 - (id)mailboxPersistence
 {
-  if (a1)
+  if (self)
   {
-    v1 = [a1 library];
-    v2 = [v1 persistence];
-    v3 = [v2 mailboxPersistence];
+    library = [self library];
+    persistence = [library persistence];
+    mailboxPersistence = [persistence mailboxPersistence];
   }
 
   else
   {
-    v3 = 0;
+    mailboxPersistence = 0;
   }
 
-  return v3;
+  return mailboxPersistence;
 }
 
 - (uint64_t)mailboxRowID
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [a1 mailbox];
-  v2 = [v1 mailboxRowID];
+  mailbox = [self mailbox];
+  mailboxRowID = [mailbox mailboxRowID];
 
-  return v2;
+  return mailboxRowID;
 }
 
 - (void)close
@@ -102,16 +102,16 @@ void __25__MFLibraryIMAPStore_log__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setLibrary:(id)a3
+- (void)setLibrary:(id)library
 {
-  v5 = a3;
-  v6 = [(MFLibraryStore *)self library];
+  libraryCopy = library;
+  library = [(MFLibraryStore *)self library];
 
-  if (v6 != v5)
+  if (library != libraryCopy)
   {
     v15.receiver = self;
     v15.super_class = MFLibraryIMAPStore;
-    [(MFLibraryStore *)&v15 setLibrary:v5];
+    [(MFLibraryStore *)&v15 setLibrary:libraryCopy];
     if (self)
     {
       taskManager = self->_taskManager;
@@ -122,8 +122,8 @@ void __25__MFLibraryIMAPStore_log__block_invoke(uint64_t a1)
       taskManager = 0;
     }
 
-    [(MFIMAPMailboxTaskManager *)taskManager setLibrary:v5];
-    if (v5)
+    [(MFIMAPMailboxTaskManager *)taskManager setLibrary:libraryCopy];
+    if (libraryCopy)
     {
       objc_initWeak(&location, self);
       v8 = MEMORY[0x1E699B7C8];
@@ -133,7 +133,7 @@ void __25__MFLibraryIMAPStore_log__block_invoke(uint64_t a1)
       v11[3] = &unk_1E7AA2CD8;
       objc_copyWeak(v13, &location);
       v13[1] = a2;
-      v12 = v5;
+      v12 = libraryCopy;
       v9 = [v8 lazyFutureWithBlock:v11];
       serverMessagePersistenceFuture = self->_serverMessagePersistenceFuture;
       self->_serverMessagePersistenceFuture = v9;
@@ -179,8 +179,8 @@ id __33__MFLibraryIMAPStore_setLibrary___block_invoke(uint64_t a1, void *a2)
   v6.super_class = MFLibraryIMAPStore;
   if ([(MFLibraryStore *)&v6 canCompact]&& self->super._state == 3)
   {
-    v3 = [(MFLibraryStore *)self account];
-    v4 = [v3 isOffline] ^ 1;
+    account = [(MFLibraryStore *)self account];
+    v4 = [account isOffline] ^ 1;
   }
 
   else
@@ -193,19 +193,19 @@ id __33__MFLibraryIMAPStore_setLibrary___block_invoke(uint64_t a1, void *a2)
 
 - (id)_serverMessageIndexer
 {
-  if (a1)
+  if (self)
   {
-    v1 = [a1 library];
-    v2 = [v1 persistence];
-    v3 = [v2 serverMessagesIndexer];
+    library = [self library];
+    persistence = [library persistence];
+    serverMessagesIndexer = [persistence serverMessagesIndexer];
   }
 
   else
   {
-    v3 = 0;
+    serverMessagesIndexer = 0;
   }
 
-  return v3;
+  return serverMessagesIndexer;
 }
 
 void __90__MFLibraryIMAPStore_storeSearchResultMatchingQuery_criterion_limit_offset_useLocalIndex___block_invoke(uint64_t a1, void *a2)
@@ -302,49 +302,49 @@ id __90__MFLibraryIMAPStore_storeSearchResultMatchingQuery_criterion_limit_offse
   return v4;
 }
 
-- (id)_dataForMessage:(int)a3 readHeadersOnly:
+- (id)_dataForMessage:(int)message readHeadersOnly:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     if (([v5 hasTemporaryUid] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
 LABEL_9:
-      a1 = 0;
+      self = 0;
       goto LABEL_10;
     }
 
-    v7 = [v6 messageData];
-    a1 = v7;
-    if (a3 && v7)
+    messageData = [v6 messageData];
+    self = messageData;
+    if (message && messageData)
     {
-      v9 = [v7 mf_rangeOfRFC822HeaderData];
-      if (v9 != 0x7FFFFFFFFFFFFFFFLL)
+      mf_rangeOfRFC822HeaderData = [messageData mf_rangeOfRFC822HeaderData];
+      if (mf_rangeOfRFC822HeaderData != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v10 = [a1 mf_subdataWithRange:{v9, v8}];
+        v10 = [self mf_subdataWithRange:{mf_rangeOfRFC822HeaderData, v8}];
 
-        a1 = v10;
+        self = v10;
         goto LABEL_10;
       }
 
       v11 = +[MFLibraryIMAPStore log];
-      [MFLibraryIMAPStore _dataForMessage:v11 readHeadersOnly:a1];
+      [MFLibraryIMAPStore _dataForMessage:v11 readHeadersOnly:self];
       goto LABEL_9;
     }
   }
 
 LABEL_10:
 
-  return a1;
+  return self;
 }
 
-- (BOOL)downloadMimePartNumber:(id)a3 message:(id)a4 withProgressBlock:(id)a5
+- (BOOL)downloadMimePartNumber:(id)number message:(id)message withProgressBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v9;
+  numberCopy = number;
+  messageCopy = message;
+  blockCopy = block;
+  v11 = messageCopy;
   if ([v11 conformsToProtocol:&unk_1F2786168])
   {
     if (self)
@@ -357,7 +357,7 @@ LABEL_10:
       taskManager = 0;
     }
 
-    v13 = [(MFIMAPMailboxTaskManager *)taskManager downloadMimePartNumber:v8 message:v11 withProgressBlock:v10];
+    v13 = [(MFIMAPMailboxTaskManager *)taskManager downloadMimePartNumber:numberCopy message:v11 withProgressBlock:blockCopy];
   }
 
   else
@@ -429,14 +429,14 @@ void __64__MFLibraryIMAPStore_fetchBodyDataForMessage_completionHandler___block_
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleFlagsChangedForMessages:(id)a3 flags:(id)a4 oldFlagsByMessage:(id)a5
+- (void)_handleFlagsChangedForMessages:(id)messages flags:(id)flags oldFlagsByMessage:(id)message
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messagesCopy = messages;
+  flagsCopy = flags;
+  messageCopy = message;
   v12.receiver = self;
   v12.super_class = MFLibraryIMAPStore;
-  [(MFLibraryStore *)&v12 _handleFlagsChangedForMessages:v8 flags:v9 oldFlagsByMessage:v10];
+  [(MFLibraryStore *)&v12 _handleFlagsChangedForMessages:messagesCopy flags:flagsCopy oldFlagsByMessage:messageCopy];
   if (self)
   {
     taskManager = self->_taskManager;
@@ -447,50 +447,50 @@ void __64__MFLibraryIMAPStore_fetchBodyDataForMessage_completionHandler___block_
     taskManager = 0;
   }
 
-  [(MFIMAPMailboxTaskManager *)taskManager handleFlagsChangedForMessages:v8 flags:v9 oldFlagsByMessage:v10];
+  [(MFIMAPMailboxTaskManager *)taskManager handleFlagsChangedForMessages:messagesCopy flags:flagsCopy oldFlagsByMessage:messageCopy];
 }
 
-- (id)messageForRemoteID:(id)a3
+- (id)messageForRemoteID:(id)d
 {
-  v4 = a3;
-  v5 = [(MFLibraryStore *)self library];
-  v6 = [(MFLibraryStore *)self mailbox];
-  v7 = [v6 URLString];
-  v8 = [v5 messageWithRemoteID:v4 inRemoteMailbox:v7];
+  dCopy = d;
+  library = [(MFLibraryStore *)self library];
+  mailbox = [(MFLibraryStore *)self mailbox];
+  uRLString = [mailbox URLString];
+  v8 = [library messageWithRemoteID:dCopy inRemoteMailbox:uRLString];
 
   [v8 setMessageStore:self];
 
   return v8;
 }
 
-- (id)messagesWithRemoteIDs:(id)a3
+- (id)messagesWithRemoteIDs:(id)ds
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithArray:a3];
-  v5 = [(MFLibraryStore *)self mailbox];
-  v6 = [(MFLibraryStore *)self copyMessagesWithRemoteIDs:v4 options:7346239 inMailbox:v5];
+  v4 = [MEMORY[0x1E695DFD8] setWithArray:ds];
+  mailbox = [(MFLibraryStore *)self mailbox];
+  v6 = [(MFLibraryStore *)self copyMessagesWithRemoteIDs:v4 options:7346239 inMailbox:mailbox];
 
   return v6;
 }
 
-- (id)flagsForRemoteIDs:(id)a3
+- (id)flagsForRemoteIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(MFLibraryStore *)self library];
-  v6 = [(MFLibraryStore *)self mailbox];
-  v7 = [v6 URLString];
-  v8 = [v5 flagsForRemoteIDs:v4 inRemoteMailbox:v7];
+  dsCopy = ds;
+  library = [(MFLibraryStore *)self library];
+  mailbox = [(MFLibraryStore *)self mailbox];
+  uRLString = [mailbox URLString];
+  v8 = [library flagsForRemoteIDs:dsCopy inRemoteMailbox:uRLString];
 
   return v8;
 }
 
-+ (id)copyRemoteIDForTemporaryUid:(unsigned int)a3
++ (id)copyRemoteIDForTemporaryUid:(unsigned int)uid
 {
   if (copyRemoteIDForTemporaryUid__sRemoteIDHandlerPred != -1)
   {
     +[MFLibraryIMAPStore copyRemoteIDForTemporaryUid:];
   }
 
-  v4 = __50__MFLibraryIMAPStore_copyRemoteIDForTemporaryUid___block_invoke_2(copyRemoteIDForTemporaryUid__sRemoteIDHandler, a3);
+  v4 = __50__MFLibraryIMAPStore_copyRemoteIDForTemporaryUid___block_invoke_2(copyRemoteIDForTemporaryUid__sRemoteIDHandler, uid);
   v5 = [v4 copy];
 
   return v5;
@@ -511,20 +511,20 @@ id __50__MFLibraryIMAPStore_copyRemoteIDForTemporaryUid___block_invoke_2(uint64_
 
 - (unsigned)uidNext
 {
-  v2 = self;
-  v3 = [(MFLibraryIMAPStore *)self mailboxPersistence];
-  LODWORD(v2) = [v3 uidNextForMailbox:-[MFLibraryIMAPStore mailboxRowID](v2)];
+  selfCopy = self;
+  mailboxPersistence = [(MFLibraryIMAPStore *)self mailboxPersistence];
+  LODWORD(selfCopy) = [mailboxPersistence uidNextForMailbox:-[MFLibraryIMAPStore mailboxRowID](selfCopy)];
 
-  return v2;
+  return selfCopy;
 }
 
 - (unsigned)uidValidity
 {
-  v2 = self;
-  v3 = [(MFLibraryIMAPStore *)self mailboxPersistence];
-  LODWORD(v2) = [v3 uidValidityForMailbox:-[MFLibraryIMAPStore mailboxRowID](v2)];
+  selfCopy = self;
+  mailboxPersistence = [(MFLibraryIMAPStore *)self mailboxPersistence];
+  LODWORD(selfCopy) = [mailboxPersistence uidValidityForMailbox:-[MFLibraryIMAPStore mailboxRowID](selfCopy)];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)canFetchMessageIDs
@@ -539,21 +539,21 @@ id __50__MFLibraryIMAPStore_copyRemoteIDForTemporaryUid___block_invoke_2(uint64_
 
 - (unint64_t)growFetchWindow
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_taskManager;
   }
 
   [(MFLibraryIMAPStore *)self growFetchWindow];
-  v4.receiver = v2;
+  v4.receiver = selfCopy;
   v4.super_class = MFLibraryIMAPStore;
   return [(MFLibraryStore *)&v4 growFetchWindow];
 }
 
-- (int64_t)fetchMessagesWithMessageIDs:(id)a3 andSetFlags:(unint64_t)a4
+- (int64_t)fetchMessagesWithMessageIDs:(id)ds andSetFlags:(unint64_t)flags
 {
-  v6 = a3;
+  dsCopy = ds;
   if (self)
   {
     taskManager = self->_taskManager;
@@ -564,14 +564,14 @@ id __50__MFLibraryIMAPStore_copyRemoteIDForTemporaryUid___block_invoke_2(uint64_
     taskManager = 0;
   }
 
-  v8 = [(MFIMAPMailboxTaskManager *)taskManager fetchMessagesWithMessageIDs:v6 andSetFlags:a4];
+  v8 = [(MFIMAPMailboxTaskManager *)taskManager fetchMessagesWithMessageIDs:dsCopy andSetFlags:flags];
 
   return v8;
 }
 
-- (int64_t)fetchNumMessages:(unint64_t)a3 preservingUID:(id)a4 options:(unint64_t)a5
+- (int64_t)fetchNumMessages:(unint64_t)messages preservingUID:(id)d options:(unint64_t)options
 {
-  v8 = a4;
+  dCopy = d;
   if (self)
   {
     taskManager = self->_taskManager;
@@ -582,14 +582,14 @@ id __50__MFLibraryIMAPStore_copyRemoteIDForTemporaryUid___block_invoke_2(uint64_
     taskManager = 0;
   }
 
-  v10 = [(MFIMAPMailboxTaskManager *)taskManager fetchNumMessages:a3 preservingUID:v8 options:a5];
+  v10 = [(MFIMAPMailboxTaskManager *)taskManager fetchNumMessages:messages preservingUID:dCopy options:options];
 
   return v10;
 }
 
-- (id)messageIdRollCall:(id)a3
+- (id)messageIdRollCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   if (self)
   {
     taskManager = self->_taskManager;
@@ -600,7 +600,7 @@ id __50__MFLibraryIMAPStore_copyRemoteIDForTemporaryUid___block_invoke_2(uint64_
     taskManager = 0;
   }
 
-  v6 = [(MFIMAPMailboxTaskManager *)taskManager messageIdRollCall:v4];
+  v6 = [(MFIMAPMailboxTaskManager *)taskManager messageIdRollCall:callCopy];
 
   return v6;
 }
@@ -615,12 +615,12 @@ id __50__MFLibraryIMAPStore_copyRemoteIDForTemporaryUid___block_invoke_2(uint64_
   [(MFLibraryIMAPStore *)self compact];
 }
 
-- (BOOL)_fetchDataForMimePart:(id)a3 range:(_NSRange)a4 isComplete:(BOOL *)a5 consumer:(id)a6
+- (BOOL)_fetchDataForMimePart:(id)part range:(_NSRange)range isComplete:(BOOL *)complete consumer:(id)consumer
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = a3;
-  v12 = a6;
+  length = range.length;
+  location = range.location;
+  partCopy = part;
+  consumerCopy = consumer;
   v17 = 0;
   if (self)
   {
@@ -632,25 +632,25 @@ id __50__MFLibraryIMAPStore_copyRemoteIDForTemporaryUid___block_invoke_2(uint64_
     taskManager = 0;
   }
 
-  v14 = [(MFIMAPMailboxTaskManager *)taskManager fetchDataForMimePart:v11 range:location isComplete:length consumer:&v17, v12];
-  v15 = v14 ^ 1;
-  if (!a5)
+  consumerCopy = [(MFIMAPMailboxTaskManager *)taskManager fetchDataForMimePart:partCopy range:location isComplete:length consumer:&v17, consumerCopy];
+  v15 = consumerCopy ^ 1;
+  if (!complete)
   {
     v15 = 1;
   }
 
   if ((v15 & 1) == 0)
   {
-    *a5 = v17;
+    *complete = v17;
   }
 
-  return v14;
+  return consumerCopy;
 }
 
-- (void)fetchBodyDataForMessage:(id)a3 completionHandler:(id)a4
+- (void)fetchBodyDataForMessage:(id)message completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  handlerCopy = handler;
   if (self)
   {
     taskManager = self->_taskManager;
@@ -666,18 +666,18 @@ id __50__MFLibraryIMAPStore_copyRemoteIDForTemporaryUid___block_invoke_2(uint64_
   v12[1] = 3221225472;
   v12[2] = __64__MFLibraryIMAPStore_fetchBodyDataForMessage_completionHandler___block_invoke;
   v12[3] = &unk_1E7AA2DA0;
-  v14 = self;
-  v15 = v7;
-  v13 = v6;
-  v10 = v6;
-  v11 = v7;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v13 = messageCopy;
+  v10 = messageCopy;
+  v11 = handlerCopy;
   [(MFIMAPMailboxTaskManager *)v9 fetchDataForMessage:v10 completionHandler:v12];
 }
 
-- (id)_fetchFullBodyDataForMessage:(id)a3 andHeaderDataIfReadilyAvailable:(id *)a4 downloadIfNecessary:(BOOL)a5 didDownload:(BOOL *)a6
+- (id)_fetchFullBodyDataForMessage:(id)message andHeaderDataIfReadilyAvailable:(id *)available downloadIfNecessary:(BOOL)necessary didDownload:(BOOL *)download
 {
   v34 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  messageCopy = message;
   if (self)
   {
     taskManager = self->_taskManager;
@@ -689,7 +689,7 @@ id __50__MFLibraryIMAPStore_copyRemoteIDForTemporaryUid___block_invoke_2(uint64_
   }
 
   v11 = taskManager;
-  v12 = [(MFIMAPMailboxTaskManager *)v11 fetchDataForMessage:v9 didDownload:a6];
+  v12 = [(MFIMAPMailboxTaskManager *)v11 fetchDataForMessage:messageCopy didDownload:download];
 
   if (v12 && (v13 = [v12 mf_rangeOfRFC822HeaderData], v15 = v14, v16 = v13 + v14, v13 + v14 <= objc_msgSend(v12, "length")))
   {
@@ -701,29 +701,29 @@ id __50__MFLibraryIMAPStore_copyRemoteIDForTemporaryUid___block_invoke_2(uint64_
       {
         v25 = [v17 length];
         v24 = [v12 length];
-        v19 = [v9 ef_publicDescription];
+        ef_publicDescription = [messageCopy ef_publicDescription];
         *buf = 134218754;
         v27 = v25;
         v28 = 2048;
         v29 = v24;
         v30 = 2114;
-        v31 = v19;
+        v31 = ef_publicDescription;
         v32 = 2048;
-        v33 = [v9 messageSize];
+        messageSize = [messageCopy messageSize];
         _os_log_impl(&dword_1B0389000, v18, OS_LOG_TYPE_DEFAULT, "Caching body data of length %lu from total data of length %lu for message %{public}@ (messageSize = %lu)", buf, 0x2Au);
       }
 
       v20 = [objc_alloc(MEMORY[0x1E69AD6E8]) initWithData:v17 partial:0 incomplete:0];
-      v21 = [(MFLibraryStore *)self _cachedBodyDataContainerForMessage:v9 valueIfNotPresent:v20];
-      if (a6)
+      v21 = [(MFLibraryStore *)self _cachedBodyDataContainerForMessage:messageCopy valueIfNotPresent:v20];
+      if (download)
       {
-        *a6 = 1;
+        *download = 1;
       }
     }
 
-    if (a4)
+    if (available)
     {
-      *a4 = [v12 mf_subdataWithRange:{v13, v15}];
+      *available = [v12 mf_subdataWithRange:{v13, v15}];
     }
   }
 
@@ -737,9 +737,9 @@ id __50__MFLibraryIMAPStore_copyRemoteIDForTemporaryUid___block_invoke_2(uint64_
   return v17;
 }
 
-- (id)replayAction:(id)a3
+- (id)replayAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   if (self)
   {
     taskManager = self->_taskManager;
@@ -750,7 +750,7 @@ id __50__MFLibraryIMAPStore_copyRemoteIDForTemporaryUid___block_invoke_2(uint64_
     taskManager = 0;
   }
 
-  v6 = [(MFIMAPMailboxTaskManager *)taskManager replayAction:v4];
+  v6 = [(MFIMAPMailboxTaskManager *)taskManager replayAction:actionCopy];
 
   return v6;
 }
@@ -767,12 +767,12 @@ id __50__MFLibraryIMAPStore_copyRemoteIDForTemporaryUid___block_invoke_2(uint64_
 
 - (uint64_t)close
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[16];
+    self = self[16];
   }
 
-  return [a1 close];
+  return [self close];
 }
 
 - (void)storeSearchResultMatchingQuery:(os_log_t)log criterion:(void *)a4 limit:offset:useLocalIndex:.cold.1(void *a1, uint8_t *buf, os_log_t log, void *a4)

@@ -1,100 +1,100 @@
 @interface WFChooseFromListAction
-- (id)contentItemsFromSelectedItem:(id)a3;
-- (id)itemsFromDictionary:(id)a3;
-- (id)roundedImageFromWFImage:(id)a3 roundingStyle:(unint64_t)a4 desiredSize:(CGSize)a5 desiredScale:(double)a6;
-- (void)getOutputFromIntentResponse:(id)a3 completionHandler:(id)a4;
-- (void)presentAlertWithUserInterface:(id)a3 prompt:(id)a4 input:(id)a5;
-- (void)resolveSlot:(id)a3 withProcessedValue:(id)a4 parameter:(id)a5 input:(id)a6 completion:(id)a7;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (id)contentItemsFromSelectedItem:(id)item;
+- (id)itemsFromDictionary:(id)dictionary;
+- (id)roundedImageFromWFImage:(id)image roundingStyle:(unint64_t)style desiredSize:(CGSize)size desiredScale:(double)scale;
+- (void)getOutputFromIntentResponse:(id)response completionHandler:(id)handler;
+- (void)presentAlertWithUserInterface:(id)interface prompt:(id)prompt input:(id)input;
+- (void)resolveSlot:(id)slot withProcessedValue:(id)value parameter:(id)parameter input:(id)input completion:(id)completion;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFChooseFromListAction
 
-- (void)getOutputFromIntentResponse:(id)a3 completionHandler:(id)a4
+- (void)getOutputFromIntentResponse:(id)response completionHandler:(id)handler
 {
-  v23 = a3;
-  v7 = a4;
-  if (!v7)
+  responseCopy = response;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"WFChooseFromListAction.m" lineNumber:248 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFChooseFromListAction.m" lineNumber:248 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
   v8 = objc_opt_class();
-  v9 = WFEnforceClass(v23, v8);
+  v9 = WFEnforceClass(responseCopy, v8);
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 selectedItem];
-    v12 = [v11 identifier];
-    v13 = [v12 integerValue];
+    selectedItem = [v9 selectedItem];
+    identifier = [selectedItem identifier];
+    integerValue = [identifier integerValue];
 
-    v14 = [(WFChooseFromListAction *)self input];
-    v15 = [v14 numberOfItems];
+    input = [(WFChooseFromListAction *)self input];
+    numberOfItems = [input numberOfItems];
 
-    if (v13 >= v15)
+    if (integerValue >= numberOfItems)
     {
-      v7[2](v7, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
     else
     {
-      v16 = [(WFChooseFromListAction *)self input];
-      v17 = [v16 items];
-      v18 = [v17 objectAtIndex:v13];
+      input2 = [(WFChooseFromListAction *)self input];
+      items = [input2 items];
+      v18 = [items objectAtIndex:integerValue];
 
       v19 = MEMORY[0x277CFC2E0];
       v20 = [(WFChooseFromListAction *)self contentItemsFromSelectedItem:v18];
       v21 = [v19 collectionWithItems:v20];
-      (v7)[2](v7, v21);
+      (handlerCopy)[2](handlerCopy, v21);
     }
   }
 
   else
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (id)roundedImageFromWFImage:(id)a3 roundingStyle:(unint64_t)a4 desiredSize:(CGSize)a5 desiredScale:(double)a6
+- (id)roundedImageFromWFImage:(id)image roundingStyle:(unint64_t)style desiredSize:(CGSize)size desiredScale:(double)scale
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a3;
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
   WFContentItemListThumbnailCornerRadiusForRoundingStyle();
   v11 = v10;
-  v12 = [MEMORY[0x277D79DF8] contextWithSize:width scale:{height, a6}];
-  v13 = [v12 CGContext];
+  v12 = [MEMORY[0x277D79DF8] contextWithSize:width scale:{height, scale}];
+  cGContext = [v12 CGContext];
   v18.origin.x = 0.0;
   v18.origin.y = 0.0;
   v18.size.width = width;
   v18.size.height = height;
   v14 = CGPathCreateWithRoundedRect(v18, v11, v11, 0);
-  CGContextAddPath(v13, v14);
-  CGContextClip(v13);
-  [v9 drawInContext:v12 inRect:{0.0, 0.0, width, height}];
+  CGContextAddPath(cGContext, v14);
+  CGContextClip(cGContext);
+  [imageCopy drawInContext:v12 inRect:{0.0, 0.0, width, height}];
 
-  v15 = [v12 image];
+  image = [v12 image];
 
-  return v15;
+  return image;
 }
 
-- (void)resolveSlot:(id)a3 withProcessedValue:(id)a4 parameter:(id)a5 input:(id)a6 completion:(id)a7
+- (void)resolveSlot:(id)slot withProcessedValue:(id)value parameter:(id)parameter input:(id)input completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v12 wf_slotName];
-  v18 = [v17 isEqualToString:@"originalItems"];
+  slotCopy = slot;
+  valueCopy = value;
+  parameterCopy = parameter;
+  inputCopy = input;
+  completionCopy = completion;
+  wf_slotName = [slotCopy wf_slotName];
+  v18 = [wf_slotName isEqualToString:@"originalItems"];
 
   if (v18)
   {
     v19 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v20 = dispatch_queue_create("com.apple.shortcuts.choose-from-list", v19);
 
-    v21 = [v15 items];
+    items = [inputCopy items];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __84__WFChooseFromListAction_resolveSlot_withProcessedValue_parameter_input_completion___block_invoke;
@@ -102,14 +102,14 @@
     v24[4] = self;
     v25 = v20;
     v22 = v20;
-    [v21 if_mapAsynchronouslyOnQueue:v22 transform:v24 completionHandler:v16];
+    [items if_mapAsynchronouslyOnQueue:v22 transform:v24 completionHandler:completionCopy];
   }
 
   else
   {
     v23.receiver = self;
     v23.super_class = WFChooseFromListAction;
-    [(WFHandleIntentAction *)&v23 resolveSlot:v12 withProcessedValue:v13 parameter:v14 input:v15 completion:v16];
+    [(WFHandleIntentAction *)&v23 resolveSlot:slotCopy withProcessedValue:valueCopy parameter:parameterCopy input:inputCopy completion:completionCopy];
   }
 }
 
@@ -226,38 +226,38 @@ void __84__WFChooseFromListAction_resolveSlot_withProcessedValue_parameter_input
   (*(v2 + 16))(v2, v5, 0);
 }
 
-- (void)presentAlertWithUserInterface:(id)a3 prompt:(id)a4 input:(id)a5
+- (void)presentAlertWithUserInterface:(id)interface prompt:(id)prompt input:(id)input
 {
   v57 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  interfaceCopy = interface;
+  promptCopy = prompt;
+  inputCopy = input;
   v11 = [(WFChooseFromListAction *)self parameterValueForKey:@"WFChooseFromListActionSelectMultiple" ofClass:objc_opt_class()];
-  v12 = [v11 BOOLValue];
+  bOOLValue = [v11 BOOLValue];
 
   v13 = [(WFChooseFromListAction *)self parameterValueForKey:@"WFChooseFromListActionSelectAll" ofClass:objc_opt_class()];
-  v14 = [v13 BOOLValue];
+  bOOLValue2 = [v13 BOOLValue];
 
-  v15 = [v10 getListRepresentation];
-  v16 = [v15 items];
+  getListRepresentation = [inputCopy getListRepresentation];
+  items = [getListRepresentation items];
 
-  if ([v16 count] == 1)
+  if ([items count] == 1)
   {
-    v17 = [v16 firstObject];
+    firstObject = [items firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v19 = [v10 items];
-      v20 = [v19 firstObject];
+      items2 = [inputCopy items];
+      firstObject2 = [items2 firstObject];
 
-      if (v20)
+      if (firstObject2)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v21 = v20;
+          v21 = firstObject2;
         }
 
         else
@@ -273,19 +273,19 @@ void __84__WFChooseFromListAction_resolveSlot_withProcessedValue_parameter_input
 
       v22 = v21;
 
-      v23 = [v22 dictionary];
+      dictionary = [v22 dictionary];
 
-      v24 = [(WFChooseFromListAction *)self itemsFromDictionary:v23];
+      v24 = [(WFChooseFromListAction *)self itemsFromDictionary:dictionary];
 
-      v16 = v24;
+      items = v24;
     }
   }
 
-  v41 = v10;
-  v43 = v8;
-  if (v12 & v14)
+  v41 = inputCopy;
+  v43 = interfaceCopy;
+  if (bOOLValue & bOOLValue2)
   {
-    v25 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, objc_msgSend(v16, "count", v10)}];
+    v25 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, objc_msgSend(items, "count", inputCopy)}];
   }
 
   else
@@ -295,9 +295,9 @@ void __84__WFChooseFromListAction_resolveSlot_withProcessedValue_parameter_input
 
   v26 = v25;
   v27 = [MEMORY[0x277CFC218] alertWithPreferredStyle:{1, v41}];
-  if ([v9 length])
+  if ([promptCopy length])
   {
-    v28 = v9;
+    v28 = promptCopy;
   }
 
   else
@@ -312,11 +312,11 @@ void __84__WFChooseFromListAction_resolveSlot_withProcessedValue_parameter_input
   v51[3] = &unk_278C19C10;
   v29 = v26;
   v52 = v29;
-  v55 = v12;
+  v55 = bOOLValue;
   v30 = v27;
   v53 = v30;
-  v54 = self;
-  v31 = [v16 if_compactMap:v51];
+  selfCopy = self;
+  v31 = [items if_compactMap:v51];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
@@ -347,7 +347,7 @@ void __84__WFChooseFromListAction_resolveSlot_withProcessedValue_parameter_input
   v36 = [MEMORY[0x277CFC220] cancelButtonWithTarget:self action:sel_cancel];
   [v30 addButton:v36];
 
-  if (v12)
+  if (bOOLValue)
   {
     v37 = MEMORY[0x277CFC220];
     v38 = WFLocalizedString(@"Done");
@@ -356,7 +356,7 @@ void __84__WFChooseFromListAction_resolveSlot_withProcessedValue_parameter_input
     v44[2] = __69__WFChooseFromListAction_presentAlertWithUserInterface_prompt_input___block_invoke_4;
     v44[3] = &unk_278C21508;
     v45 = v31;
-    v46 = self;
+    selfCopy2 = self;
     v39 = [v37 buttonWithTitle:v38 style:0 preferred:1 handler:v44];
     [v30 addButton:v39];
   }
@@ -467,44 +467,44 @@ uint64_t __69__WFChooseFromListAction_presentAlertWithUserInterface_prompt_input
   return [v5 finishRunningWithError:0];
 }
 
-- (id)contentItemsFromSelectedItem:(id)a3
+- (id)contentItemsFromSelectedItem:(id)item
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 attributionSet];
-  v5 = [v4 attributionSetByFilteringNeighborsOfContentItem:v3];
-  [v3 setAttributionSet:v5];
+  itemCopy = item;
+  attributionSet = [itemCopy attributionSet];
+  v5 = [attributionSet attributionSetByFilteringNeighborsOfContentItem:itemCopy];
+  [itemCopy setAttributionSet:v5];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v3 items];
+    items = [itemCopy items];
   }
 
   else
   {
-    v10[0] = v3;
-    v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
+    v10[0] = itemCopy;
+    items = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
   }
 
-  v7 = v6;
+  v7 = items;
 
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-- (id)itemsFromDictionary:(id)a3
+- (id)itemsFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 allKeys];
+  dictionaryCopy = dictionary;
+  allKeys = [dictionaryCopy allKeys];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__WFChooseFromListAction_itemsFromDictionary___block_invoke;
   v8[3] = &unk_278C19BC0;
-  v9 = v3;
-  v5 = v3;
-  v6 = [v4 if_compactMap:v8];
+  v9 = dictionaryCopy;
+  v5 = dictionaryCopy;
+  v6 = [allKeys if_compactMap:v8];
 
   return v6;
 }
@@ -540,43 +540,43 @@ id __46__WFChooseFromListAction_itemsFromDictionary___block_invoke(uint64_t a1, 
   return v7;
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
-  v5 = [v4 items];
-  v6 = [v5 count];
+  inputCopy = input;
+  items = [inputCopy items];
+  v6 = [items count];
 
   if (!v6)
   {
-    [(WFChooseFromListAction *)self setOutput:v4];
+    [(WFChooseFromListAction *)self setOutput:inputCopy];
     [(WFHandleIntentAction *)self finishRunningWithError:0];
     goto LABEL_21;
   }
 
   v7 = [(WFChooseFromListAction *)self parameterValueForKey:@"WFChooseFromListActionSelectMultiple" ofClass:objc_opt_class()];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  v9 = [(WFChooseFromListAction *)self userInterface];
-  v10 = [v9 userInterfaceType];
-  v11 = [v10 isEqualToString:*MEMORY[0x277CFC708]];
+  userInterface = [(WFChooseFromListAction *)self userInterface];
+  userInterfaceType = [userInterface userInterfaceType];
+  v11 = [userInterfaceType isEqualToString:*MEMORY[0x277CFC708]];
 
   if (!v11)
   {
-    v12 = [(WFChooseFromListAction *)self parameterValueForKey:@"WFChooseFromListActionPrompt" ofClass:objc_opt_class()];
-    if (![v12 length] && (v8 & 1) == 0)
+    wfUnsupportedUserInterfaceError = [(WFChooseFromListAction *)self parameterValueForKey:@"WFChooseFromListActionPrompt" ofClass:objc_opt_class()];
+    if (![wfUnsupportedUserInterfaceError length] && (bOOLValue & 1) == 0)
     {
-      v15 = [(WFChooseFromListAction *)self localizedDefaultDisambiguationPrompt];
+      localizedDefaultDisambiguationPrompt = [(WFChooseFromListAction *)self localizedDefaultDisambiguationPrompt];
 
-      v12 = v15;
+      wfUnsupportedUserInterfaceError = localizedDefaultDisambiguationPrompt;
     }
 
-    v16 = [v4 items];
-    v17 = [v16 count];
+    items2 = [inputCopy items];
+    v17 = [items2 count];
 
     if (!v17)
     {
-      [(WFChooseFromListAction *)self setOutput:v4];
-      v13 = self;
+      [(WFChooseFromListAction *)self setOutput:inputCopy];
+      selfCopy2 = self;
       v14 = 0;
       goto LABEL_14;
     }
@@ -586,30 +586,30 @@ id __46__WFChooseFromListAction_itemsFromDictionary___block_invoke(uint64_t a1, 
     aBlock[2] = __53__WFChooseFromListAction_runAsynchronouslyWithInput___block_invoke;
     aBlock[3] = &unk_278C21F68;
     aBlock[4] = self;
-    v18 = v12;
+    v18 = wfUnsupportedUserInterfaceError;
     v41 = v18;
-    v19 = v4;
+    v19 = inputCopy;
     v42 = v19;
     v20 = _Block_copy(aBlock);
     v21 = [v19 collectionByFilteringItemsWithBlock:&__block_literal_global_6176 excludedItems:0];
     v22 = [(WFChooseFromListAction *)self parameterValueForKey:@"WFChooseFromListActionSelectAll" ofClass:objc_opt_class()];
-    v23 = [v22 BOOLValue];
+    bOOLValue2 = [v22 BOOLValue];
 
-    v24 = [(WFChooseFromListAction *)self userInterface];
+    userInterface2 = [(WFChooseFromListAction *)self userInterface];
     v33 = v21;
-    if ([v24 isRunningWithSiriUI])
+    if ([userInterface2 isRunningWithSiriUI])
     {
     }
 
     else
     {
-      v30 = v23;
+      v30 = bOOLValue2;
       v31 = v18;
-      v25 = [v21 items];
-      v32 = [v25 count];
-      v26 = [v19 items];
+      items3 = [v21 items];
+      v32 = [items3 count];
+      items4 = [v19 items];
       v27 = v20;
-      v28 = [v26 count];
+      v28 = [items4 count];
 
       v29 = v32 == v28;
       v20 = v27;
@@ -622,7 +622,7 @@ id __46__WFChooseFromListAction_itemsFromDictionary___block_invoke(uint64_t a1, 
         v34[4] = self;
         v35 = v31;
         v38 = v30;
-        v39 = v8;
+        v39 = bOOLValue;
         v36 = v19;
         v37 = v27;
         [(WFChooseFromListAction *)self requestUnlock:v34];
@@ -636,13 +636,13 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (v8)
+  if (bOOLValue)
   {
-    v12 = [MEMORY[0x277CCA9B8] wfUnsupportedUserInterfaceError];
-    v13 = self;
-    v14 = v12;
+    wfUnsupportedUserInterfaceError = [MEMORY[0x277CCA9B8] wfUnsupportedUserInterfaceError];
+    selfCopy2 = self;
+    v14 = wfUnsupportedUserInterfaceError;
 LABEL_14:
-    [(WFHandleIntentAction *)v13 finishRunningWithError:v14];
+    [(WFHandleIntentAction *)selfCopy2 finishRunningWithError:v14];
 LABEL_20:
 
     goto LABEL_21;
@@ -650,7 +650,7 @@ LABEL_20:
 
   v43.receiver = self;
   v43.super_class = WFChooseFromListAction;
-  [(WFHandleIntentAction *)&v43 runAsynchronouslyWithInput:v4];
+  [(WFHandleIntentAction *)&v43 runAsynchronouslyWithInput:inputCopy];
 LABEL_21:
 }
 

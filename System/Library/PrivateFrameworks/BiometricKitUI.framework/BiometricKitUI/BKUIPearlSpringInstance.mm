@@ -1,20 +1,20 @@
 @interface BKUIPearlSpringInstance
-- (BKUIPearlSpringInstance)initWithInitialRotation:(BKUIPearlSpringInstance *)self color:(SEL)a2;
+- (BKUIPearlSpringInstance)initWithInitialRotation:(BKUIPearlSpringInstance *)self color:(SEL)color;
 - (__n128)value;
 - (__n128)velocity;
-- (__n64)createAxisRotationMatrix:(float32x4_t)a1;
+- (__n64)createAxisRotationMatrix:(float32x4_t)matrix;
 - (double)color;
 - (float32x4_t)matrix;
-- (void)setParameters:(FLSpringParameters)a3;
-- (void)setSpringState:(unint64_t)a3;
+- (void)setParameters:(FLSpringParameters)parameters;
+- (void)setSpringState:(unint64_t)state;
 - (void)setTarget:(BKUIPearlSpringInstance *)self;
 - (void)setValue:(BKUIPearlSpringInstance *)self;
-- (void)step:(double)a3;
+- (void)step:(double)step;
 @end
 
 @implementation BKUIPearlSpringInstance
 
-- (BKUIPearlSpringInstance)initWithInitialRotation:(BKUIPearlSpringInstance *)self color:(SEL)a2
+- (BKUIPearlSpringInstance)initWithInitialRotation:(BKUIPearlSpringInstance *)self color:(SEL)color
 {
   v20 = v3;
   v21 = v2;
@@ -52,17 +52,17 @@
   return v4;
 }
 
-- (__n64)createAxisRotationMatrix:(float32x4_t)a1
+- (__n64)createAxisRotationMatrix:(float32x4_t)matrix
 {
-  v1 = __sincosf_stret((1.5708 * a1.f32[0]) * 0.5);
+  v1 = __sincosf_stret((1.5708 * matrix.f32[0]) * 0.5);
   v2 = vmulq_n_f32(xmmword_241B727D0, v1.__sinval);
   v2.i32[3] = LODWORD(v1.__cosval);
   v29 = v2;
-  v3 = __sincosf_stret(vmuls_lane_f32(1.5708, *a1.f32, 1) * 0.5);
+  v3 = __sincosf_stret(vmuls_lane_f32(1.5708, *matrix.f32, 1) * 0.5);
   v4 = vmulq_n_f32(xmmword_241B727E0, v3.__sinval);
   v4.i32[3] = LODWORD(v3.__cosval);
   v28 = v4;
-  v5 = __sincosf_stret(vmuls_lane_f32(1.5708, a1, 2) * 0.5);
+  v5 = __sincosf_stret(vmuls_lane_f32(1.5708, matrix, 2) * 0.5);
   v6 = vmulq_n_f32(xmmword_241B727F0, v5.__sinval);
   v7 = vnegq_f32(v28);
   v8 = vtrn2q_s32(v28, vtrn1q_s32(v28, v7));
@@ -99,11 +99,11 @@
   return result;
 }
 
-- (void)step:(double)a3
+- (void)step:(double)step
 {
   for (i = 8; i != 32; i += 8)
   {
-    [*(&self->super.isa + i) step:a3];
+    [*(&self->super.isa + i) step:step];
   }
 
   self->_alphaFactor = self->_alphaDecay * self->_alphaFactor;
@@ -111,28 +111,28 @@
   self->_scale = v6;
 }
 
-- (void)setParameters:(FLSpringParameters)a3
+- (void)setParameters:(FLSpringParameters)parameters
 {
-  var3 = a3.var3;
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var3 = parameters.var3;
+  var2 = parameters.var2;
+  var1 = parameters.var1;
+  var0 = parameters.var0;
   for (i = 8; i != 32; i += 8)
   {
     [*(&self->super.isa + i) setParameters:{var0, var1, var2, var3}];
   }
 }
 
-- (void)setSpringState:(unint64_t)a3
+- (void)setSpringState:(unint64_t)state
 {
-  if (!a3)
+  if (!state)
   {
     v3 = *"33s?";
     v4 = 204;
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
     self->_scaleDest = 0.3;
     v3 = 1.0;
@@ -142,7 +142,7 @@ LABEL_5:
     self->_alphaDecay = v3;
   }
 
-  self->_springState = a3;
+  self->_springState = state;
 }
 
 - (void)setTarget:(BKUIPearlSpringInstance *)self
@@ -223,18 +223,18 @@ LABEL_5:
 
 - (__n128)value
 {
-  [*(a1 + 8) value];
+  [*(self + 8) value];
   v10 = v2;
-  [*(a1 + 16) value];
+  [*(self + 16) value];
   v3.f64[0] = v10;
   v3.f64[1] = v4;
   *&v5 = vcvt_f32_f64(v3);
   v11 = v5;
-  [*(a1 + 24) value];
+  [*(self + 24) value];
   v7 = v6;
   v8 = v11;
   *(&v8 + 2) = v7;
-  *(a1 + 32) = v8;
+  *(self + 32) = v8;
   result.n128_u64[0] = v8;
   result.n128_u32[2] = DWORD2(v8);
   return result;
@@ -242,26 +242,26 @@ LABEL_5:
 
 - (float32x4_t)matrix
 {
-  v18 = *(a1 + 32);
-  [a1 value];
+  v18 = *(self + 32);
+  [self value];
   v3 = vceqq_f32(v18, v2);
   v3.i32[3] = v3.i32[2];
   if ((vminvq_u32(v3) & 0x80000000) != 0)
   {
-    v15 = *(a1 + 80);
-    v16 = *(a1 + 96);
-    result = *(a1 + 48);
-    v17 = *(a1 + 64);
+    v15 = *(self + 80);
+    v16 = *(self + 96);
+    result = *(self + 48);
+    v17 = *(self + 64);
   }
 
   else
   {
-    [a1 createAxisRotationMatrix:?];
+    [self createAxisRotationMatrix:?];
     v8 = 0;
-    v9 = *(a1 + 128);
-    v10 = *(a1 + 144);
-    v11 = *(a1 + 160);
-    v19[0] = *(a1 + 112);
+    v9 = *(self + 128);
+    v10 = *(self + 144);
+    v11 = *(self + 160);
+    v19[0] = *(self + 112);
     v19[1] = v9;
     v19[2] = v10;
     v19[3] = v11;
@@ -276,10 +276,10 @@ LABEL_5:
     v12 = v20[1];
     v13 = v20[2];
     v14 = v20[3];
-    *(a1 + 48) = v20[0];
-    *(a1 + 64) = v12;
-    *(a1 + 80) = v13;
-    *(a1 + 96) = v14;
+    *(self + 48) = v20[0];
+    *(self + 64) = v12;
+    *(self + 80) = v13;
+    *(self + 96) = v14;
   }
 
   return result;
@@ -287,23 +287,23 @@ LABEL_5:
 
 - (__n128)velocity
 {
-  [a1[1] velocity];
+  [self[1] velocity];
   v7 = v2;
-  [a1[2] velocity];
+  [self[2] velocity];
   v3.f64[0] = v7;
   v3.f64[1] = v4;
   *&v5 = vcvt_f32_f64(v3);
   v8 = v5;
-  [a1[3] velocity];
+  [self[3] velocity];
   return v8;
 }
 
 - (double)color
 {
-  [(float32x4_t *)a1 velocity];
+  [(float32x4_t *)self velocity];
   v3 = vmulq_f32(v2, v2);
-  a1[12].f32[0] = fmaxf(a1[12].f32[0], fminf(sqrtf(v3.f32[2] + vaddv_f32(*v3.f32)), 1.0));
-  if ([(float32x4_t *)a1 grayscale])
+  self[12].f32[0] = fmaxf(self[12].f32[0], fminf(sqrtf(v3.f32[2] + vaddv_f32(*v3.f32)), 1.0));
+  if ([(float32x4_t *)self grayscale])
   {
     v4 = -1;
   }
@@ -313,7 +313,7 @@ LABEL_5:
     v4 = 0;
   }
 
-  if ([(float32x4_t *)a1 grayscale:vbslq_s8(vdupq_n_s32(v4)])
+  if ([(float32x4_t *)self grayscale:vbslq_s8(vdupq_n_s32(v4)])
   {
     v5 = -1;
   }
@@ -323,9 +323,9 @@ LABEL_5:
     v5 = 0;
   }
 
-  v6 = vmlaq_n_f32(v8, vsubq_f32(vbslq_s8(vdupq_n_s32(v5), vdupq_n_s32(0x3F4CCCCDu), xmmword_241B72840), v8), a1[12].f32[0]);
-  v6.i32[3] = a1[12].i32[0];
-  *&result = vmulq_f32(a1[11], v6).u64[0];
+  v6 = vmlaq_n_f32(v8, vsubq_f32(vbslq_s8(vdupq_n_s32(v5), vdupq_n_s32(0x3F4CCCCDu), xmmword_241B72840), v8), self[12].f32[0]);
+  v6.i32[3] = self[12].i32[0];
+  *&result = vmulq_f32(self[11], v6).u64[0];
   return result;
 }
 

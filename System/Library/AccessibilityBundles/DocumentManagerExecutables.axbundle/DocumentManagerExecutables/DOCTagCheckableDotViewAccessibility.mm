@@ -13,13 +13,13 @@
     switch(v2)
     {
       case 1:
-        v3 = [MEMORY[0x29EDC7A00] systemGrayColor];
+        systemGrayColor = [MEMORY[0x29EDC7A00] systemGrayColor];
         break;
       case 2:
-        v3 = [MEMORY[0x29EDC7A00] systemGreenColor];
+        systemGrayColor = [MEMORY[0x29EDC7A00] systemGreenColor];
         break;
       case 3:
-        v3 = [MEMORY[0x29EDC7A00] systemPurpleColor];
+        systemGrayColor = [MEMORY[0x29EDC7A00] systemPurpleColor];
         break;
       default:
         goto LABEL_19;
@@ -30,7 +30,7 @@
   {
     if (v2 == 7)
     {
-      v3 = [MEMORY[0x29EDC7A00] systemOrangeColor];
+      systemGrayColor = [MEMORY[0x29EDC7A00] systemOrangeColor];
     }
 
     else
@@ -40,7 +40,7 @@
         goto LABEL_19;
       }
 
-      v3 = [MEMORY[0x29EDC7A00] systemRedColor];
+      systemGrayColor = [MEMORY[0x29EDC7A00] systemRedColor];
     }
   }
 
@@ -55,11 +55,11 @@
     {
       [MEMORY[0x29EDC7A00] systemYellowColor];
     }
-    v3 = ;
+    systemGrayColor = ;
   }
 
-  v4 = v3;
-  if (v3)
+  v4 = systemGrayColor;
+  if (systemGrayColor)
   {
     v5 = AXColorStringForColor();
 

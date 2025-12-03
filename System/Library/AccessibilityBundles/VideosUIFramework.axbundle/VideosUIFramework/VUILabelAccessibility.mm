@@ -1,17 +1,17 @@
 @interface VUILabelAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation VUILabelAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VUILabel" isKindOfClass:@"UILabel"];
-  [v3 validateClass:@"VUILabel" hasInstanceMethod:@"textLayout" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VUITextLayout" hasInstanceMethod:@"textTransform" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VUILabel" isKindOfClass:@"UILabel"];
+  [validationsCopy validateClass:@"VUILabel" hasInstanceMethod:@"textLayout" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VUITextLayout" hasInstanceMethod:@"textTransform" withFullSignature:{"q", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -30,18 +30,18 @@
 {
   v9.receiver = self;
   v9.super_class = VUILabelAccessibility;
-  v3 = [(VUILabelAccessibility *)&v9 accessibilityLabel];
+  accessibilityLabel = [(VUILabelAccessibility *)&v9 accessibilityLabel];
   v4 = [(VUILabelAccessibility *)self safeValueForKey:@"textLayout"];
   v5 = __UIAccessibilitySafeClass();
 
   if ([v5 safeIntegerForKey:@"textTransform"] == 2)
   {
-    v6 = [v3 localizedLowercaseString];
+    localizedLowercaseString = [accessibilityLabel localizedLowercaseString];
 
-    v3 = v6;
+    accessibilityLabel = localizedLowercaseString;
   }
 
-  v7 = [v3 stringByReplacingOccurrencesOfString:@"·" withString:&stru_2A23A0858];
+  v7 = [accessibilityLabel stringByReplacingOccurrencesOfString:@"·" withString:&stru_2A23A0858];
 
   return v7;
 }

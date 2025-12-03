@@ -3,109 +3,109 @@
 - (BOOL)containsInteractiveControls;
 - (NSData)lightingImageData;
 - (NSString)entryContentID;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
 - (unint64_t)entryContentType;
-- (void)setBaseContentTouchedDown:(BOOL)a3;
-- (void)setContainsInteractiveControls:(BOOL)a3;
-- (void)setEntryContentID:(id)a3;
-- (void)setEntryContentType:(unint64_t)a3;
-- (void)setLightingImageData:(id)a3;
+- (void)setBaseContentTouchedDown:(BOOL)down;
+- (void)setContainsInteractiveControls:(BOOL)controls;
+- (void)setEntryContentID:(id)d;
+- (void)setEntryContentType:(unint64_t)type;
+- (void)setLightingImageData:(id)data;
 @end
 
 @implementation CHUISMutableWidgetSceneClientSettings
 
 - (BOOL)containsInteractiveControls
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  [v2 flagForSetting:88888];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings flagForSetting:88888];
   IsYes = BSSettingFlagIsYes();
 
   return IsYes;
 }
 
-- (void)setContainsInteractiveControls:(BOOL)a3
+- (void)setContainsInteractiveControls:(BOOL)controls
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  [v3 setFlag:BSSettingFlagForBool() forSetting:88888];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:88888];
 }
 
 - (BOOL)baseContentTouchedDown
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  [v2 flagForSetting:88889];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings flagForSetting:88889];
   IsYes = BSSettingFlagIsYes();
 
   return IsYes;
 }
 
-- (void)setBaseContentTouchedDown:(BOOL)a3
+- (void)setBaseContentTouchedDown:(BOOL)down
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  [v3 setFlag:BSSettingFlagForBool() forSetting:88889];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:88889];
 }
 
 - (NSData)lightingImageData
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88890];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88890];
 
   return v3;
 }
 
-- (void)setLightingImageData:(id)a3
+- (void)setLightingImageData:(id)data
 {
-  v5 = a3;
-  v4 = [(FBSSettings *)self otherSettings];
-  [v4 setObject:v5 forSetting:88890];
+  dataCopy = data;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:dataCopy forSetting:88890];
 }
 
 - (unint64_t)entryContentType
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88891];
-  v4 = [v3 unsignedIntegerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88891];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (void)setEntryContentType:(unint64_t)a3
+- (void)setEntryContentType:(unint64_t)type
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forSetting:88891];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+  [otherSettings setObject:v4 forSetting:88891];
 }
 
 - (NSString)entryContentID
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88892];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88892];
 
   return v3;
 }
 
-- (void)setEntryContentID:(id)a3
+- (void)setEntryContentID:(id)d
 {
-  v5 = a3;
-  v4 = [(FBSSettings *)self otherSettings];
-  [v4 setObject:v5 forSetting:88892];
+  dCopy = d;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:dCopy forSetting:88892];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CHUISWidgetSceneClientSettings alloc];
 
   return [(FBSSettings *)v4 initWithSettings:self];
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
   v7.receiver = self;
   v7.super_class = CHUISMutableWidgetSceneClientSettings;
   v4 = [(FBSSettings *)&v7 keyDescriptionForSetting:?];
-  if (a3 - 88888 <= 4)
+  if (setting - 88888 <= 4)
   {
-    v5 = off_1E8575300[a3 - 88888];
+    v5 = off_1E8575300[setting - 88888];
 
     v4 = v5;
   }

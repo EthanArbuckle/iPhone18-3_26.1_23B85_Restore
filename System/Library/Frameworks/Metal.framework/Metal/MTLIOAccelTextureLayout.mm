@@ -1,14 +1,14 @@
 @interface MTLIOAccelTextureLayout
-- (MTLIOAccelTextureLayout)initWithDevice:(id)a3 descriptor:(id)a4;
+- (MTLIOAccelTextureLayout)initWithDevice:(id)device descriptor:(id)descriptor;
 @end
 
 @implementation MTLIOAccelTextureLayout
 
-- (MTLIOAccelTextureLayout)initWithDevice:(id)a3 descriptor:(id)a4
+- (MTLIOAccelTextureLayout)initWithDevice:(id)device descriptor:(id)descriptor
 {
   v5.receiver = self;
   v5.super_class = MTLIOAccelTextureLayout;
-  return [(MTLIOAccelTextureLayout *)&v5 init:a3];
+  return [(MTLIOAccelTextureLayout *)&v5 init:device];
 }
 
 @end

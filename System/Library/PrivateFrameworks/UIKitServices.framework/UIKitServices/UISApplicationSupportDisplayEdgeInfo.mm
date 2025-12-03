@@ -1,29 +1,29 @@
 @interface UISApplicationSupportDisplayEdgeInfo
-+ (id)defaultDisplayEdgeInfoForceInsets:(BOOL)a3;
++ (id)defaultDisplayEdgeInfoForceInsets:(BOOL)insets;
 - (NSString)description;
-- (UISApplicationSupportDisplayEdgeInfo)initWithXPCDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_copyFromOtherInfo:(id)a3;
-- (void)_performIvarUpdateIfAllowed:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
-- (void)setHomeAffordanceOverlayAllowance:(id)a3;
-- (void)setPeripheryInsets:(id)a3;
-- (void)setSafeAreaInsetsLandscapeLeft:(id)a3;
-- (void)setSafeAreaInsetsLandscapeRight:(id)a3;
-- (void)setSafeAreaInsetsPortrait:(id)a3;
-- (void)setSafeAreaInsetsPortraitUpsideDown:(id)a3;
-- (void)setSystemMinimumMargin:(id)a3;
+- (UISApplicationSupportDisplayEdgeInfo)initWithXPCDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_copyFromOtherInfo:(id)info;
+- (void)_performIvarUpdateIfAllowed:(id)allowed;
+- (void)encodeWithXPCDictionary:(id)dictionary;
+- (void)setHomeAffordanceOverlayAllowance:(id)allowance;
+- (void)setPeripheryInsets:(id)insets;
+- (void)setSafeAreaInsetsLandscapeLeft:(id)left;
+- (void)setSafeAreaInsetsLandscapeRight:(id)right;
+- (void)setSafeAreaInsetsPortrait:(id)portrait;
+- (void)setSafeAreaInsetsPortraitUpsideDown:(id)down;
+- (void)setSystemMinimumMargin:(id)margin;
 @end
 
 @implementation UISApplicationSupportDisplayEdgeInfo
 
-+ (id)defaultDisplayEdgeInfoForceInsets:(BOOL)a3
++ (id)defaultDisplayEdgeInfoForceInsets:(BOOL)insets
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__UISApplicationSupportDisplayEdgeInfo_defaultDisplayEdgeInfoForceInsets___block_invoke;
   block[3] = &__block_descriptor_33_e5_v8__0l;
-  v6 = a3;
+  insetsCopy = insets;
   if (qword_1ED51BFC0 != -1)
   {
     dispatch_once(&qword_1ED51BFC0, block);
@@ -258,159 +258,159 @@ LABEL_68:
   *(_MergedGlobals_14 + 8) |= 1u;
 }
 
-- (void)_performIvarUpdateIfAllowed:(id)a3
+- (void)_performIvarUpdateIfAllowed:(id)allowed
 {
   if (self->_infoFlags.asInt)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UISApplicationSupportDisplayEdgeInfo.m" lineNumber:253 description:@"Invalid attempt to mutate immutable UISApplicationSupportDisplayEdgeInfo instance"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISApplicationSupportDisplayEdgeInfo.m" lineNumber:253 description:@"Invalid attempt to mutate immutable UISApplicationSupportDisplayEdgeInfo instance"];
   }
 
   else
   {
-    v4 = *(a3 + 2);
+    v4 = *(allowed + 2);
 
-    v4(a3);
+    v4(allowed);
   }
 }
 
-- (void)setPeripheryInsets:(id)a3
+- (void)setPeripheryInsets:(id)insets
 {
-  v4 = a3;
+  insetsCopy = insets;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59__UISApplicationSupportDisplayEdgeInfo_setPeripheryInsets___block_invoke;
   v6[3] = &unk_1E7458FE0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = insetsCopy;
+  v5 = insetsCopy;
   [(UISApplicationSupportDisplayEdgeInfo *)self _performIvarUpdateIfAllowed:v6];
 }
 
-- (void)setSystemMinimumMargin:(id)a3
+- (void)setSystemMinimumMargin:(id)margin
 {
-  v4 = a3;
+  marginCopy = margin;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __63__UISApplicationSupportDisplayEdgeInfo_setSystemMinimumMargin___block_invoke;
   v6[3] = &unk_1E7458FE0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = marginCopy;
+  v5 = marginCopy;
   [(UISApplicationSupportDisplayEdgeInfo *)self _performIvarUpdateIfAllowed:v6];
 }
 
-- (void)setHomeAffordanceOverlayAllowance:(id)a3
+- (void)setHomeAffordanceOverlayAllowance:(id)allowance
 {
-  v4 = a3;
+  allowanceCopy = allowance;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __74__UISApplicationSupportDisplayEdgeInfo_setHomeAffordanceOverlayAllowance___block_invoke;
   v6[3] = &unk_1E7458FE0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = allowanceCopy;
+  v5 = allowanceCopy;
   [(UISApplicationSupportDisplayEdgeInfo *)self _performIvarUpdateIfAllowed:v6];
 }
 
-- (void)setSafeAreaInsetsPortrait:(id)a3
+- (void)setSafeAreaInsetsPortrait:(id)portrait
 {
-  v4 = a3;
+  portraitCopy = portrait;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __66__UISApplicationSupportDisplayEdgeInfo_setSafeAreaInsetsPortrait___block_invoke;
   v6[3] = &unk_1E7458FE0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = portraitCopy;
+  v5 = portraitCopy;
   [(UISApplicationSupportDisplayEdgeInfo *)self _performIvarUpdateIfAllowed:v6];
 }
 
-- (void)setSafeAreaInsetsLandscapeLeft:(id)a3
+- (void)setSafeAreaInsetsLandscapeLeft:(id)left
 {
-  v5 = a3;
+  leftCopy = left;
   if (self->_infoFlags.asInt)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UISApplicationSupportDisplayEdgeInfo.m" lineNumber:286 description:@"Invalid attempt to mutate immutable UISApplicationSupportDisplayEdgeInfo instance"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISApplicationSupportDisplayEdgeInfo.m" lineNumber:286 description:@"Invalid attempt to mutate immutable UISApplicationSupportDisplayEdgeInfo instance"];
   }
 
   safeAreaInsetsLandscapeLeft = self->_safeAreaInsetsLandscapeLeft;
-  self->_safeAreaInsetsLandscapeLeft = v5;
+  self->_safeAreaInsetsLandscapeLeft = leftCopy;
 }
 
-- (void)setSafeAreaInsetsPortraitUpsideDown:(id)a3
+- (void)setSafeAreaInsetsPortraitUpsideDown:(id)down
 {
-  v5 = a3;
+  downCopy = down;
   if (self->_infoFlags.asInt)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UISApplicationSupportDisplayEdgeInfo.m" lineNumber:291 description:@"Invalid attempt to mutate immutable UISApplicationSupportDisplayEdgeInfo instance"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISApplicationSupportDisplayEdgeInfo.m" lineNumber:291 description:@"Invalid attempt to mutate immutable UISApplicationSupportDisplayEdgeInfo instance"];
   }
 
   safeAreaInsetsPortraitUpsideDown = self->_safeAreaInsetsPortraitUpsideDown;
-  self->_safeAreaInsetsPortraitUpsideDown = v5;
+  self->_safeAreaInsetsPortraitUpsideDown = downCopy;
 }
 
-- (void)setSafeAreaInsetsLandscapeRight:(id)a3
+- (void)setSafeAreaInsetsLandscapeRight:(id)right
 {
-  v5 = a3;
+  rightCopy = right;
   if (self->_infoFlags.asInt)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UISApplicationSupportDisplayEdgeInfo.m" lineNumber:296 description:@"Invalid attempt to mutate immutable UISApplicationSupportDisplayEdgeInfo instance"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISApplicationSupportDisplayEdgeInfo.m" lineNumber:296 description:@"Invalid attempt to mutate immutable UISApplicationSupportDisplayEdgeInfo instance"];
   }
 
   safeAreaInsetsLandscapeRight = self->_safeAreaInsetsLandscapeRight;
-  self->_safeAreaInsetsLandscapeRight = v5;
+  self->_safeAreaInsetsLandscapeRight = rightCopy;
 }
 
-- (void)_copyFromOtherInfo:(id)a3
+- (void)_copyFromOtherInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 peripheryInsets];
+  infoCopy = info;
+  peripheryInsets = [infoCopy peripheryInsets];
   peripheryInsets = self->_peripheryInsets;
-  self->_peripheryInsets = v5;
+  self->_peripheryInsets = peripheryInsets;
 
-  v7 = [v4 systemMinimumMargin];
+  systemMinimumMargin = [infoCopy systemMinimumMargin];
   systemMinimumMargin = self->_systemMinimumMargin;
-  self->_systemMinimumMargin = v7;
+  self->_systemMinimumMargin = systemMinimumMargin;
 
-  v9 = [v4 safeAreaInsetsPortrait];
+  safeAreaInsetsPortrait = [infoCopy safeAreaInsetsPortrait];
   safeAreaInsetsPortrait = self->_safeAreaInsetsPortrait;
-  self->_safeAreaInsetsPortrait = v9;
+  self->_safeAreaInsetsPortrait = safeAreaInsetsPortrait;
 
-  v11 = [v4 homeAffordanceOverlayAllowance];
+  homeAffordanceOverlayAllowance = [infoCopy homeAffordanceOverlayAllowance];
   homeAffordanceOverlayAllowance = self->_homeAffordanceOverlayAllowance;
-  self->_homeAffordanceOverlayAllowance = v11;
+  self->_homeAffordanceOverlayAllowance = homeAffordanceOverlayAllowance;
 
-  v13 = [v4 safeAreaInsetsLandscapeLeft];
+  safeAreaInsetsLandscapeLeft = [infoCopy safeAreaInsetsLandscapeLeft];
   safeAreaInsetsLandscapeLeft = self->_safeAreaInsetsLandscapeLeft;
-  self->_safeAreaInsetsLandscapeLeft = v13;
+  self->_safeAreaInsetsLandscapeLeft = safeAreaInsetsLandscapeLeft;
 
-  v15 = [v4 safeAreaInsetsPortraitUpsideDown];
+  safeAreaInsetsPortraitUpsideDown = [infoCopy safeAreaInsetsPortraitUpsideDown];
   safeAreaInsetsPortraitUpsideDown = self->_safeAreaInsetsPortraitUpsideDown;
-  self->_safeAreaInsetsPortraitUpsideDown = v15;
+  self->_safeAreaInsetsPortraitUpsideDown = safeAreaInsetsPortraitUpsideDown;
 
-  v17 = [v4 safeAreaInsetsLandscapeRight];
+  safeAreaInsetsLandscapeRight = [infoCopy safeAreaInsetsLandscapeRight];
   safeAreaInsetsLandscapeRight = self->_safeAreaInsetsLandscapeRight;
-  self->_safeAreaInsetsLandscapeRight = v17;
+  self->_safeAreaInsetsLandscapeRight = safeAreaInsetsLandscapeRight;
 
-  v19 = v4[1];
+  v19 = infoCopy[1];
   self->_infoFlags.asInt = v19;
   LOBYTE(self->_infoFlags.asInt) = v19 & 0xFE;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 _copyFromOtherInfo:self];
   return v4;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  xdict = a3;
+  xdict = dictionary;
   xpc_dictionary_set_uint64(xdict, "UISApplicationSupportDisplayEdgeInfoFlags", self->_infoFlags.asInt);
   [(NSNumber *)self->_systemMinimumMargin doubleValue];
   xpc_dictionary_set_double(xdict, "UISApplicationSupportDisplaySystemMinimumMargin", v4);
@@ -444,23 +444,23 @@ LABEL_68:
   MEMORY[0x1EEE66BB8]();
 }
 
-- (UISApplicationSupportDisplayEdgeInfo)initWithXPCDictionary:(id)a3
+- (UISApplicationSupportDisplayEdgeInfo)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = UISApplicationSupportDisplayEdgeInfo;
   v5 = [(UISApplicationSupportDisplayEdgeInfo *)&v21 init];
   if (v5)
   {
-    v5->_infoFlags.asInt = xpc_dictionary_get_uint64(v4, "UISApplicationSupportDisplayEdgeInfoFlags");
-    if (xpc_dictionary_get_double(v4, "UISApplicationSupportDisplaySystemMinimumMargin") != 0.0)
+    v5->_infoFlags.asInt = xpc_dictionary_get_uint64(dictionaryCopy, "UISApplicationSupportDisplayEdgeInfoFlags");
+    if (xpc_dictionary_get_double(dictionaryCopy, "UISApplicationSupportDisplaySystemMinimumMargin") != 0.0)
     {
       v6 = [MEMORY[0x1E696AD98] numberWithDouble:?];
       systemMinimumMargin = v5->_systemMinimumMargin;
       v5->_systemMinimumMargin = v6;
     }
 
-    if (xpc_dictionary_get_double(v4, "UISApplicationSupportDisplayHomeAffordanceOverlayAllowance") != 0.0)
+    if (xpc_dictionary_get_double(dictionaryCopy, "UISApplicationSupportDisplayHomeAffordanceOverlayAllowance") != 0.0)
     {
       v8 = [MEMORY[0x1E696AD98] numberWithDouble:?];
       homeAffordanceOverlayAllowance = v5->_homeAffordanceOverlayAllowance;
@@ -501,9 +501,9 @@ LABEL_68:
   v8 = [v3 appendObject:self->_safeAreaInsetsLandscapeLeft withName:@"safeAreaInsetsLandscapeLeft" skipIfNil:1];
   v9 = [v3 appendObject:self->_safeAreaInsetsPortraitUpsideDown withName:@"safeAreaInsetsPortraitUpsideDown" skipIfNil:1];
   v10 = [v3 appendObject:self->_safeAreaInsetsLandscapeRight withName:@"safeAreaInsetsLandscapeRight" skipIfNil:1];
-  v11 = [v3 build];
+  build = [v3 build];
 
-  return v11;
+  return build;
 }
 
 @end

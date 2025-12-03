@@ -1,14 +1,14 @@
 @interface AUDelayVisualizationView
-- (void)setTintColor:(id)a3;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation AUDelayVisualizationView
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_237145288(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_237145288(color);
 }
 
 @end

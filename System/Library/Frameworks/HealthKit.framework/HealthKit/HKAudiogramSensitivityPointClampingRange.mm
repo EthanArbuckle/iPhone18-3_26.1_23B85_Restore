@@ -1,40 +1,40 @@
 @interface HKAudiogramSensitivityPointClampingRange
-+ (BOOL)_validateLowerBound:(id)a3 upperBound:(id)a4 error:(id *)a5;
-+ (id)clampingRangeWithLowerBound:(id)a3 upperBound:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToClampedRange:(id)a3;
-- (HKAudiogramSensitivityPointClampingRange)initWithCoder:(id)a3;
-- (id)_initWithLowerBound:(id)a3 upperBound:(id)a4;
-- (void)encodeWithCoder:(id)a3;
++ (BOOL)_validateLowerBound:(id)bound upperBound:(id)upperBound error:(id *)error;
++ (id)clampingRangeWithLowerBound:(id)bound upperBound:(id)upperBound error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToClampedRange:(id)range;
+- (HKAudiogramSensitivityPointClampingRange)initWithCoder:(id)coder;
+- (id)_initWithLowerBound:(id)bound upperBound:(id)upperBound;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKAudiogramSensitivityPointClampingRange
 
-- (id)_initWithLowerBound:(id)a3 upperBound:(id)a4
+- (id)_initWithLowerBound:(id)bound upperBound:(id)upperBound
 {
-  v7 = a3;
-  v8 = a4;
+  boundCopy = bound;
+  upperBoundCopy = upperBound;
   v12.receiver = self;
   v12.super_class = HKAudiogramSensitivityPointClampingRange;
   v9 = [(HKAudiogramSensitivityPointClampingRange *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_lowerBound, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_lowerBound, bound);
+    objc_storeStrong(p_isa + 2, upperBound);
   }
 
   return p_isa;
 }
 
-+ (id)clampingRangeWithLowerBound:(id)a3 upperBound:(id)a4 error:(id *)a5
++ (id)clampingRangeWithLowerBound:(id)bound upperBound:(id)upperBound error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([a1 _validateLowerBound:v8 upperBound:v9 error:a5])
+  boundCopy = bound;
+  upperBoundCopy = upperBound;
+  if ([self _validateLowerBound:boundCopy upperBound:upperBoundCopy error:error])
   {
-    v10 = _HKDecibleQuantity(v8);
-    v11 = _HKDecibleQuantity(v9);
+    v10 = _HKDecibleQuantity(boundCopy);
+    v11 = _HKDecibleQuantity(upperBoundCopy);
     v12 = [[HKAudiogramSensitivityPointClampingRange alloc] _initWithLowerBound:v10 upperBound:v11];
   }
 
@@ -46,13 +46,13 @@
   return v12;
 }
 
-+ (BOOL)_validateLowerBound:(id)a3 upperBound:(id)a4 error:(id *)a5
++ (BOOL)_validateLowerBound:(id)bound upperBound:(id)upperBound error:(id *)error
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!(v7 | v8))
+  boundCopy = bound;
+  upperBoundCopy = upperBound;
+  v9 = upperBoundCopy;
+  if (!(boundCopy | upperBoundCopy))
   {
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Clamped range must have some bound."];
     v11 = MEMORY[0x1E696ABC0];
@@ -70,11 +70,11 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    if (a5)
+    if (error)
     {
 LABEL_4:
       v15 = v14;
-      *a5 = v14;
+      *error = v14;
       goto LABEL_11;
     }
 
@@ -84,11 +84,11 @@ LABEL_10:
   }
 
   v16 = 1;
-  if (v7)
+  if (boundCopy)
   {
-    if (v8)
+    if (upperBoundCopy)
     {
-      [v7 doubleValue];
+      [boundCopy doubleValue];
       v18 = v17;
       [v9 doubleValue];
       if (v18 > v19)
@@ -106,7 +106,7 @@ LABEL_10:
           goto LABEL_11;
         }
 
-        if (a5)
+        if (error)
         {
           goto LABEL_4;
         }
@@ -122,16 +122,16 @@ LABEL_12:
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v6 = 1;
     goto LABEL_7;
@@ -154,24 +154,24 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)isEqualToClampedRange:(id)a3
+- (BOOL)isEqualToClampedRange:(id)range
 {
-  v5 = a3;
-  v6 = [(HKAudiogramSensitivityPointClampingRange *)self lowerBound];
-  v7 = [v5 lowerBound];
-  if (v6 != v7)
+  rangeCopy = range;
+  lowerBound = [(HKAudiogramSensitivityPointClampingRange *)self lowerBound];
+  lowerBound2 = [rangeCopy lowerBound];
+  if (lowerBound != lowerBound2)
   {
-    v8 = [v5 lowerBound];
-    if (!v8)
+    lowerBound3 = [rangeCopy lowerBound];
+    if (!lowerBound3)
     {
       v18 = 0;
       goto LABEL_14;
     }
 
-    v3 = v8;
-    v9 = [(HKAudiogramSensitivityPointClampingRange *)self lowerBound];
-    v10 = [v5 lowerBound];
-    if (![v9 isEqual:v10])
+    v3 = lowerBound3;
+    lowerBound4 = [(HKAudiogramSensitivityPointClampingRange *)self lowerBound];
+    lowerBound5 = [rangeCopy lowerBound];
+    if (![lowerBound4 isEqual:lowerBound5])
     {
       v18 = 0;
 LABEL_13:
@@ -179,14 +179,14 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v20 = v10;
-    v22 = v9;
+    v20 = lowerBound5;
+    v22 = lowerBound4;
   }
 
   v11 = [(HKAudiogramSensitivityPointClampingRange *)self upperBound:v20];
-  v12 = [v5 upperBound];
-  v13 = v12;
-  if (v11 == v12)
+  upperBound = [rangeCopy upperBound];
+  v13 = upperBound;
+  if (v11 == upperBound)
   {
 
     v18 = 1;
@@ -194,13 +194,13 @@ LABEL_13:
 
   else
   {
-    v14 = [v5 upperBound];
-    if (v14)
+    upperBound2 = [rangeCopy upperBound];
+    if (upperBound2)
     {
-      v15 = v14;
-      v16 = [(HKAudiogramSensitivityPointClampingRange *)self upperBound];
-      v17 = [v5 upperBound];
-      v18 = [v16 isEqual:v17];
+      v15 = upperBound2;
+      upperBound3 = [(HKAudiogramSensitivityPointClampingRange *)self upperBound];
+      upperBound4 = [rangeCopy upperBound];
+      v18 = [upperBound3 isEqual:upperBound4];
     }
 
     else
@@ -210,9 +210,9 @@ LABEL_13:
     }
   }
 
-  v10 = v21;
-  v9 = v23;
-  if (v6 != v7)
+  lowerBound5 = v21;
+  lowerBound4 = v23;
+  if (lowerBound != lowerBound2)
   {
     goto LABEL_13;
   }
@@ -222,31 +222,31 @@ LABEL_14:
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(HKAudiogramSensitivityPointClampingRange *)self lowerBound];
+  coderCopy = coder;
+  lowerBound = [(HKAudiogramSensitivityPointClampingRange *)self lowerBound];
 
-  if (v4)
+  if (lowerBound)
   {
-    v5 = [(HKAudiogramSensitivityPointClampingRange *)self lowerBound];
-    [v8 encodeObject:v5 forKey:@"LowerBoundKey"];
+    lowerBound2 = [(HKAudiogramSensitivityPointClampingRange *)self lowerBound];
+    [coderCopy encodeObject:lowerBound2 forKey:@"LowerBoundKey"];
   }
 
-  v6 = [(HKAudiogramSensitivityPointClampingRange *)self upperBound];
+  upperBound = [(HKAudiogramSensitivityPointClampingRange *)self upperBound];
 
-  if (v6)
+  if (upperBound)
   {
-    v7 = [(HKAudiogramSensitivityPointClampingRange *)self upperBound];
-    [v8 encodeObject:v7 forKey:@"UpperBoundKey"];
+    upperBound2 = [(HKAudiogramSensitivityPointClampingRange *)self upperBound];
+    [coderCopy encodeObject:upperBound2 forKey:@"UpperBoundKey"];
   }
 }
 
-- (HKAudiogramSensitivityPointClampingRange)initWithCoder:(id)a3
+- (HKAudiogramSensitivityPointClampingRange)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LowerBoundKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UpperBoundKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LowerBoundKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UpperBoundKey"];
 
   v7 = [(HKAudiogramSensitivityPointClampingRange *)self _initWithLowerBound:v5 upperBound:v6];
   return v7;

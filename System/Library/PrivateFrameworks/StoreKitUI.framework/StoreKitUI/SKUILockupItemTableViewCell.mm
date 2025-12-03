@@ -1,13 +1,13 @@
 @interface SKUILockupItemTableViewCell
-- (SKUILockupItemTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)configureForItem:(id)a3 clientContext:(id)a4 rowIndex:(int64_t)a5;
+- (SKUILockupItemTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)configureForItem:(id)item clientContext:(id)context rowIndex:(int64_t)index;
 @end
 
 @implementation SKUILockupItemTableViewCell
 
-- (SKUILockupItemTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SKUILockupItemTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUILockupItemTableViewCell initWithStyle:reuseIdentifier:];
@@ -15,7 +15,7 @@
 
   v11.receiver = self;
   v11.super_class = SKUILockupItemTableViewCell;
-  v7 = [(SKUITableViewCell *)&v11 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(SKUITableViewCell *)&v11 initWithStyle:style reuseIdentifier:identifierCopy];
   if (v7)
   {
     v8 = [[SKUILockupItemCellLayout alloc] initWithTableViewCell:v7];
@@ -26,33 +26,33 @@
   return v7;
 }
 
-- (void)configureForItem:(id)a3 clientContext:(id)a4 rowIndex:(int64_t)a5
+- (void)configureForItem:(id)item clientContext:(id)context rowIndex:(int64_t)index
 {
   layout = self->_layout;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 categoryName];
-  [(SKUILockupItemCellLayout *)layout setCategoryString:v11];
+  contextCopy = context;
+  itemCopy = item;
+  categoryName = [itemCopy categoryName];
+  [(SKUILockupItemCellLayout *)layout setCategoryString:categoryName];
 
   v12 = self->_layout;
-  v13 = SKUILockupItemCountString(v10, v9);
+  v13 = SKUILockupItemCountString(itemCopy, contextCopy);
   [(SKUILockupItemCellLayout *)v12 setItemCountString:v13];
 
   v14 = self->_layout;
-  v15 = [v10 primaryItemOffer];
-  [(SKUIItemCellLayout *)v14 setItemOffer:v15];
+  primaryItemOffer = [itemCopy primaryItemOffer];
+  [(SKUIItemCellLayout *)v14 setItemOffer:primaryItemOffer];
 
-  -[SKUILockupItemCellLayout setNumberOfUserRatings:](self->_layout, "setNumberOfUserRatings:", [v10 numberOfUserRatings]);
+  -[SKUILockupItemCellLayout setNumberOfUserRatings:](self->_layout, "setNumberOfUserRatings:", [itemCopy numberOfUserRatings]);
   v16 = self->_layout;
-  v17 = [v10 title];
-  [(SKUILockupItemCellLayout *)v16 setTitle:v17];
+  title = [itemCopy title];
+  [(SKUILockupItemCellLayout *)v16 setTitle:title];
 
   v18 = self->_layout;
-  [v10 userRating];
+  [itemCopy userRating];
   [(SKUILockupItemCellLayout *)v18 setUserRating:?];
   v19.receiver = self;
   v19.super_class = SKUILockupItemTableViewCell;
-  [(SKUIItemTableViewCell *)&v19 configureForItem:v10 clientContext:v9 rowIndex:a5];
+  [(SKUIItemTableViewCell *)&v19 configureForItem:itemCopy clientContext:contextCopy rowIndex:index];
 }
 
 - (void)initWithStyle:reuseIdentifier:.cold.1()

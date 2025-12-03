@@ -1,28 +1,28 @@
 @interface OABDrawing
-+ (id)readBackgroundPropertiesFromDrawing:(id)a3 state:(id)a4;
-+ (id)readDrawablesFromDrawing:(id)a3 state:(id)a4;
-+ (unsigned)addShapeIdForObject:(id)a3;
-+ (void)applyRulesFromSolverContainer:(id)a3 state:(id)a4;
++ (id)readBackgroundPropertiesFromDrawing:(id)drawing state:(id)state;
++ (id)readDrawablesFromDrawing:(id)drawing state:(id)state;
++ (unsigned)addShapeIdForObject:(id)object;
++ (void)applyRulesFromSolverContainer:(id)container state:(id)state;
 @end
 
 @implementation OABDrawing
 
-+ (id)readDrawablesFromDrawing:(id)a3 state:(id)a4
++ (id)readDrawablesFromDrawing:(id)drawing state:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 eshObject];
-  if ((*(*v8 + 16))(v8) == 61442 && [v6 childCount] >= 2)
+  drawingCopy = drawing;
+  stateCopy = state;
+  eshObject = [drawingCopy eshObject];
+  if ((*(*eshObject + 16))(eshObject) == 61442 && [drawingCopy childCount] >= 2)
   {
-    v10 = [v6 childAt:1];
-    v11 = [v10 eshObject];
-    if (*(*v11 + 16))(v11) == 61443 && (objc_opt_class(), (objc_opt_isKindOfClass()))
+    v10 = [drawingCopy childAt:1];
+    eshObject2 = [v10 eshObject];
+    if (*(*eshObject2 + 16))(eshObject2) == 61443 && (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v9 = [OABDrawable readDrawablesFromContainer:v10 state:v7];
-      v12 = [v6 firstChildOfType:61445];
+      v9 = [OABDrawable readDrawablesFromContainer:v10 state:stateCopy];
+      v12 = [drawingCopy firstChildOfType:61445];
       if (v12)
       {
-        [a1 applyRulesFromSolverContainer:v12 state:v7];
+        [self applyRulesFromSolverContainer:v12 state:stateCopy];
       }
     }
 
@@ -40,20 +40,20 @@
   return v9;
 }
 
-+ (id)readBackgroundPropertiesFromDrawing:(id)a3 state:(id)a4
++ (id)readBackgroundPropertiesFromDrawing:(id)drawing state:(id)state
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 childCount] < 3)
+  drawingCopy = drawing;
+  stateCopy = state;
+  if ([drawingCopy childCount] < 3)
   {
     v9 = 0;
   }
 
   else
   {
-    v7 = [v5 childAt:2];
-    v8 = [(OABFillPropertiesManager *)v7 eshObject];
-    if (v8)
+    v7 = [drawingCopy childAt:2];
+    eshObject = [(OABFillPropertiesManager *)v7 eshObject];
+    if (eshObject)
     {
 
       if (!v9)
@@ -62,7 +62,7 @@
       }
 
       v7 = [[OABFillPropertiesManager alloc] initWithFill:&v9[12].mEffects shapeType:1 masterShape:0];
-      v10 = [OABFill readFillFromFillPropertiesManager:v7 state:v6];
+      v10 = [OABFill readFillFromFillPropertiesManager:v7 state:stateCopy];
       v9 = objc_alloc_init(OADBackgroundProperties);
       [(OADBackgroundProperties *)v9 setFill:v10];
     }
@@ -78,32 +78,32 @@ LABEL_8:
   return v9;
 }
 
-+ (void)applyRulesFromSolverContainer:(id)a3 state:(id)a4
++ (void)applyRulesFromSolverContainer:(id)container state:(id)state
 {
-  v14 = a3;
-  v5 = a4;
-  if (v14)
+  containerCopy = container;
+  stateCopy = state;
+  if (containerCopy)
   {
-    v6 = [v14 childCount];
-    if (v6)
+    childCount = [containerCopy childCount];
+    if (childCount)
     {
-      for (i = 0; i != v6; ++i)
+      for (i = 0; i != childCount; ++i)
       {
-        v8 = [v14 childAt:i];
-        v9 = [v8 eshObject];
-        if ((*(*v9 + 16))(v9) == 61458)
+        v8 = [containerCopy childAt:i];
+        eshObject = [v8 eshObject];
+        if ((*(*eshObject + 16))(eshObject) == 61458)
         {
-          v10 = [v5 drawableForShapeId:v9[10]];
+          v10 = [stateCopy drawableForShapeId:eshObject[10]];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v11 = [v10 connectorProperties];
-            v12 = [v11 from];
-            [v12 setDrawableId:v9[8]];
-            [v12 setLocationIndex:v9[11]];
-            v13 = [v11 to];
-            [v13 setDrawableId:v9[9]];
-            [v13 setLocationIndex:v9[12]];
+            connectorProperties = [v10 connectorProperties];
+            from = [connectorProperties from];
+            [from setDrawableId:eshObject[8]];
+            [from setLocationIndex:eshObject[11]];
+            v13 = [connectorProperties to];
+            [v13 setDrawableId:eshObject[9]];
+            [v13 setLocationIndex:eshObject[12]];
           }
         }
       }
@@ -111,27 +111,27 @@ LABEL_8:
   }
 }
 
-+ (unsigned)addShapeIdForObject:(id)a3
++ (unsigned)addShapeIdForObject:(id)object
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  objectCopy = object;
+  v4 = objectCopy;
+  if (objectCopy)
   {
-    v5 = v3;
+    v5 = objectCopy;
     do
     {
-      v6 = [v5 eshObject];
-      if ((*(*v6 + 16))(v6) == 61442)
+      eshObject = [v5 eshObject];
+      if ((*(*eshObject + 16))(eshObject) == 61442)
       {
         break;
       }
 
-      v7 = [v5 parent];
+      parent = [v5 parent];
 
-      v5 = v7;
+      v5 = parent;
     }
 
-    while (v7);
+    while (parent);
   }
 
   else
@@ -140,8 +140,8 @@ LABEL_8:
   }
 
   v8 = [v5 childAt:0];
-  v9 = [v8 eshObject];
-  if (!v9)
+  eshObject2 = [v8 eshObject];
+  if (!eshObject2)
   {
 
     goto LABEL_11;

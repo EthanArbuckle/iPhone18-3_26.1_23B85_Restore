@@ -1,17 +1,17 @@
 @interface PSSGMessageRequestDPTailspin
-+ (id)messageWithSessionName:(id)a3 reason:(id)a4;
++ (id)messageWithSessionName:(id)name reason:(id)reason;
 @end
 
 @implementation PSSGMessageRequestDPTailspin
 
-+ (id)messageWithSessionName:(id)a3 reason:(id)a4
++ (id)messageWithSessionName:(id)name reason:(id)reason
 {
-  v5 = a4;
-  v6 = a3;
+  reasonCopy = reason;
+  nameCopy = name;
   v7 = [PSSGMessageRequestDPTailspin alloc];
-  v8 = [MEMORY[0x277CBEB98] setWithObject:v5];
+  v8 = [MEMORY[0x277CBEB98] setWithObject:reasonCopy];
 
-  v9 = [(PSSGMessageBase *)v7 initWithType:51 string1:v6 stringSet:v8];
+  v9 = [(PSSGMessageBase *)v7 initWithType:51 string1:nameCopy stringSet:v8];
 
   return v9;
 }

@@ -1,20 +1,20 @@
 @interface ASDTIOPAudioCMPowerStateProperty
-+ (id)ioServiceDependenciesForConfig:(id)a3;
-- (ASDTIOPAudioCMPowerStateProperty)initWithConfig:(id)a3;
-- (BOOL)storePropertyValue:(id)a3;
++ (id)ioServiceDependenciesForConfig:(id)config;
+- (ASDTIOPAudioCMPowerStateProperty)initWithConfig:(id)config;
+- (BOOL)storePropertyValue:(id)value;
 - (id)retrievePropertyValue;
-- (int)checkPropertyValue:(id)a3;
+- (int)checkPropertyValue:(id)value;
 - (void)dealloc;
 @end
 
 @implementation ASDTIOPAudioCMPowerStateProperty
 
-+ (id)ioServiceDependenciesForConfig:(id)a3
++ (id)ioServiceDependenciesForConfig:(id)config
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 asdtServiceID];
-  v5 = [(ASDTIOServiceManager *)ASDTIOPAudioCMServiceManager dependencyForID:v4 andConfiguration:v3];
+  configCopy = config;
+  asdtServiceID = [configCopy asdtServiceID];
+  v5 = [(ASDTIOServiceManager *)ASDTIOPAudioCMServiceManager dependencyForID:asdtServiceID andConfiguration:configCopy];
 
   if (v5)
   {
@@ -32,12 +32,12 @@
   return v6;
 }
 
-- (ASDTIOPAudioCMPowerStateProperty)initWithConfig:(id)a3
+- (ASDTIOPAudioCMPowerStateProperty)initWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v16.receiver = self;
   v16.super_class = ASDTIOPAudioCMPowerStateProperty;
-  v5 = [(ASDTCustomProperty *)&v16 initWithConfig:v4 propertyDataType:1918990199 qualifierDataType:0];
+  v5 = [(ASDTCustomProperty *)&v16 initWithConfig:configCopy propertyDataType:1918990199 qualifierDataType:0];
   v6 = v5;
   if (!v5)
   {
@@ -46,11 +46,11 @@
 
   [(ASDTCustomProperty *)v5 setPropertyValueSize:4];
   [(ASDTCustomProperty *)v6 setCacheMode:0];
-  v7 = [v4 asdtServiceID];
-  v8 = [(ASDTIOServiceManager *)ASDTIOPAudioCMServiceManager matchedIOServiceForID:v7];
+  asdtServiceID = [configCopy asdtServiceID];
+  v8 = [(ASDTIOServiceManager *)ASDTIOPAudioCMServiceManager matchedIOServiceForID:asdtServiceID];
   [(ASDTIOPAudioCMPowerStateProperty *)v6 setClientManager:v8];
 
-  v9 = [(ASDTIOPAudioCMPowerStateProperty *)v6 clientManager];
+  clientManager = [(ASDTIOPAudioCMPowerStateProperty *)v6 clientManager];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -65,10 +65,10 @@
     goto LABEL_10;
   }
 
-  v11 = [(ASDTIOPAudioCMPowerStateProperty *)v6 clientManager];
-  v12 = [v11 open];
+  clientManager2 = [(ASDTIOPAudioCMPowerStateProperty *)v6 clientManager];
+  open = [clientManager2 open];
 
-  if ((v12 & 1) == 0)
+  if ((open & 1) == 0)
   {
     v14 = ASDTIOPLogType();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -82,9 +82,9 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  -[ASDTIOPAudioCMPowerStateProperty setPowerStateEnabled:](v6, "setPowerStateEnabled:", [v4 asdtIOPAudioCMPowerStatePropertyEnabled]);
-  -[ASDTIOPAudioCMPowerStateProperty setPowerStateDisabled:](v6, "setPowerStateDisabled:", [v4 asdtIOPAudioCMPowerStatePropertyDisabled]);
-  -[ASDTIOPAudioCMPowerStateProperty setPowerStateDirection:](v6, "setPowerStateDirection:", [v4 asdtIOPAudioCMPowerStatePropertyDirection]);
+  -[ASDTIOPAudioCMPowerStateProperty setPowerStateEnabled:](v6, "setPowerStateEnabled:", [configCopy asdtIOPAudioCMPowerStatePropertyEnabled]);
+  -[ASDTIOPAudioCMPowerStateProperty setPowerStateDisabled:](v6, "setPowerStateDisabled:", [configCopy asdtIOPAudioCMPowerStatePropertyDisabled]);
+  -[ASDTIOPAudioCMPowerStateProperty setPowerStateDirection:](v6, "setPowerStateDirection:", [configCopy asdtIOPAudioCMPowerStatePropertyDirection]);
 
 LABEL_5:
   v13 = v6;
@@ -95,23 +95,23 @@ LABEL_11:
 
 - (void)dealloc
 {
-  v3 = [(ASDTIOPAudioCMPowerStateProperty *)self clientManager];
-  [v3 close];
+  clientManager = [(ASDTIOPAudioCMPowerStateProperty *)self clientManager];
+  [clientManager close];
 
   v4.receiver = self;
   v4.super_class = ASDTIOPAudioCMPowerStateProperty;
   [(ASDTIOPAudioCMPowerStateProperty *)&v4 dealloc];
 }
 
-- (int)checkPropertyValue:(id)a3
+- (int)checkPropertyValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v10.receiver = self;
   v10.super_class = ASDTIOPAudioCMPowerStateProperty;
-  v5 = [(ASDTCustomProperty *)&v10 checkPropertyValue:v4];
+  v5 = [(ASDTCustomProperty *)&v10 checkPropertyValue:valueCopy];
   if (!v5)
   {
-    v6 = v4;
+    v6 = valueCopy;
     v7 = [v6 length];
     if (v7 == [(ASDTCustomProperty *)self propertyValueSize])
     {
@@ -136,8 +136,8 @@ LABEL_11:
 - (id)retrievePropertyValue
 {
   v8 = 0;
-  v3 = [(ASDTIOPAudioCMPowerStateProperty *)self clientManager];
-  v4 = [v3 getCurrentPowerState:&v8];
+  clientManager = [(ASDTIOPAudioCMPowerStateProperty *)self clientManager];
+  v4 = [clientManager getCurrentPowerState:&v8];
 
   v8 = (v4 & 1) != 0 && (v5 = v8, v5 == [(ASDTIOPAudioCMPowerStateProperty *)self powerStateEnabled]);
   v6 = [MEMORY[0x277CBEA90] dataWithBytes:&v8 length:4];
@@ -145,30 +145,30 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)storePropertyValue:(id)a3
+- (BOOL)storePropertyValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v11 = 0;
-  [v4 getBytes:&v11 length:4];
+  [valueCopy getBytes:&v11 length:4];
   if (v11)
   {
-    v5 = [(ASDTIOPAudioCMPowerStateProperty *)self powerStateEnabled];
+    powerStateEnabled = [(ASDTIOPAudioCMPowerStateProperty *)self powerStateEnabled];
   }
 
   else
   {
-    v5 = [(ASDTIOPAudioCMPowerStateProperty *)self powerStateDisabled];
+    powerStateEnabled = [(ASDTIOPAudioCMPowerStateProperty *)self powerStateDisabled];
   }
 
-  v6 = v5;
-  v7 = [(ASDTIOPAudioCMPowerStateProperty *)self clientManager];
-  LODWORD(v6) = [v7 makePowerRequestForState:v6 andDirection:{-[ASDTIOPAudioCMPowerStateProperty powerStateDirection](self, "powerStateDirection")}];
+  v6 = powerStateEnabled;
+  clientManager = [(ASDTIOPAudioCMPowerStateProperty *)self clientManager];
+  LODWORD(v6) = [clientManager makePowerRequestForState:v6 andDirection:{-[ASDTIOPAudioCMPowerStateProperty powerStateDirection](self, "powerStateDirection")}];
 
   if (v6)
   {
     v10.receiver = self;
     v10.super_class = ASDTIOPAudioCMPowerStateProperty;
-    v8 = [(ASDTCustomProperty *)&v10 storePropertyValue:v4];
+    v8 = [(ASDTCustomProperty *)&v10 storePropertyValue:valueCopy];
   }
 
   else

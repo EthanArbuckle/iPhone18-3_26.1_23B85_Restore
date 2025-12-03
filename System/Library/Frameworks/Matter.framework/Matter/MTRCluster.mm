@@ -1,21 +1,21 @@
 @interface MTRCluster
-- (MTRCluster)initWithEndpointID:(id)a3 queue:(id)a4;
+- (MTRCluster)initWithEndpointID:(id)d queue:(id)queue;
 @end
 
 @implementation MTRCluster
 
-- (MTRCluster)initWithEndpointID:(id)a3 queue:(id)a4
+- (MTRCluster)initWithEndpointID:(id)d queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = MTRCluster;
   v9 = [(MTRCluster *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_endpointID, a3);
-    objc_storeStrong(&v10->_callbackQueue, a4);
+    objc_storeStrong(&v9->_endpointID, d);
+    objc_storeStrong(&v10->_callbackQueue, queue);
   }
 
   return v10;

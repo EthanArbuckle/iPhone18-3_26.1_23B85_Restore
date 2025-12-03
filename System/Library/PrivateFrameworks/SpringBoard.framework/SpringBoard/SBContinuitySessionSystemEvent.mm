@@ -1,27 +1,27 @@
 @interface SBContinuitySessionSystemEvent
-+ (id)eventWithType:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithType:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
 - (SBContinuitySessionSystemEvent)init;
-- (SBContinuitySessionSystemEvent)initWithType:(int64_t)a3;
+- (SBContinuitySessionSystemEvent)initWithType:(int64_t)type;
 @end
 
 @implementation SBContinuitySessionSystemEvent
 
-+ (id)eventWithType:(int64_t)a3
++ (id)eventWithType:(int64_t)type
 {
-  v3 = [[a1 alloc] initWithType:a3];
+  v3 = [[self alloc] initWithType:type];
 
   return v3;
 }
 
-- (SBContinuitySessionSystemEvent)initWithType:(int64_t)a3
+- (SBContinuitySessionSystemEvent)initWithType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = SBContinuitySessionSystemEvent;
   result = [(SBContinuitySessionSystemEvent *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
@@ -40,7 +40,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"SBContinuitySessionSystemEvent.m";
     v17 = 1024;
@@ -56,11 +56,11 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_type == v4[1];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_type == equalCopy[1];
 
   return v5;
 }

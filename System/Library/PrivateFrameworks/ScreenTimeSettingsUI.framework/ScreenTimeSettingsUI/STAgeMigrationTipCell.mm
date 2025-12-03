@@ -1,36 +1,36 @@
 @interface STAgeMigrationTipCell
-- (STAgeMigrationTipCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (STAgeMigrationTipCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 @end
 
 @implementation STAgeMigrationTipCell
 
-- (STAgeMigrationTipCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (STAgeMigrationTipCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v22.receiver = self;
   v22.super_class = STAgeMigrationTipCell;
-  v7 = a5;
-  v8 = [(STTableCell *)&v22 initWithStyle:a3 reuseIdentifier:a4 specifier:v7];
-  v9 = [v7 objectForKeyedSubscript:{*MEMORY[0x277D3FE10], v22.receiver, v22.super_class}];
-  v10 = [v7 objectForKeyedSubscript:*MEMORY[0x277D3FF00]];
-  v11 = [v7 userInfo];
+  specifierCopy = specifier;
+  v8 = [(STTableCell *)&v22 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
+  v9 = [specifierCopy objectForKeyedSubscript:{*MEMORY[0x277D3FE10], v22.receiver, v22.super_class}];
+  v10 = [specifierCopy objectForKeyedSubscript:*MEMORY[0x277D3FF00]];
+  userInfo = [specifierCopy userInfo];
 
-  v12 = [v11 regionU18];
+  regionU18 = [userInfo regionU18];
   v13 = +[STUILog ageMigrationTip];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    [STAgeMigrationTipCell initWithStyle:v12 reuseIdentifier:v13 specifier:?];
+    [STAgeMigrationTipCell initWithStyle:regionU18 reuseIdentifier:v13 specifier:?];
   }
 
   v14 = MEMORY[0x277D4BDF0];
-  v15 = [v11 givenName];
-  v16 = [v14 createAgeMigrationTipWithAgeOfMajority:v12 userFirstName:v15 actionBlock:v9 dismissBlock:v10];
+  givenName = [userInfo givenName];
+  v16 = [v14 createAgeMigrationTipWithAgeOfMajority:regionU18 userFirstName:givenName actionBlock:v9 dismissBlock:v10];
 
-  v17 = [v16 view];
-  [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v18 = [(STAgeMigrationTipCell *)v8 contentView];
-  [v18 addSubview:v17];
+  view = [v16 view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  contentView = [(STAgeMigrationTipCell *)v8 contentView];
+  [contentView addSubview:view];
   v19 = MEMORY[0x277CCAAD0];
-  v20 = [MEMORY[0x277CCAAD0] st_constraintsForView:v17 equalToView:v18];
+  v20 = [MEMORY[0x277CCAAD0] st_constraintsForView:view equalToView:contentView];
   [v19 activateConstraints:v20];
 
   return v8;

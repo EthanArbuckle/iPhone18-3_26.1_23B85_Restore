@@ -1,16 +1,16 @@
 @interface PIFaceObservationCache
-+ (id)faceRequestWithRequest:(id)a3;
++ (id)faceRequestWithRequest:(id)request;
 - (PIFaceObservationCache)init;
-- (id)submitSynchronous:(id)a3 error:(id *)a4;
-- (void)submit:(id)a3 response:(id)a4;
+- (id)submitSynchronous:(id)synchronous error:(id *)error;
+- (void)submit:(id)submit response:(id)response;
 @end
 
 @implementation PIFaceObservationCache
 
-- (id)submitSynchronous:(id)a3 error:(id *)a4
+- (id)submitSynchronous:(id)synchronous error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
+  synchronousCopy = synchronous;
+  v7 = synchronousCopy;
   v8 = self->_result;
   if (!v8)
   {
@@ -20,8 +20,8 @@
     block[2] = __50__PIFaceObservationCache_submitSynchronous_error___block_invoke;
     block[3] = &unk_1E82A9F50;
     block[4] = self;
-    v13 = v6;
-    v14 = a4;
+    v13 = synchronousCopy;
+    errorCopy = error;
     dispatch_sync(queue, block);
 
     v8 = self->_result;
@@ -48,11 +48,11 @@ intptr_t __50__PIFaceObservationCache_submitSynchronous_error___block_invoke(uin
   return result;
 }
 
-- (void)submit:(id)a3 response:(id)a4
+- (void)submit:(id)submit response:(id)response
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  submitCopy = submit;
+  responseCopy = response;
+  v8 = responseCopy;
   if (self->_result)
   {
     v9 = [objc_alloc(MEMORY[0x1E69B3C78]) initWithResult:self->_result];
@@ -67,8 +67,8 @@ intptr_t __50__PIFaceObservationCache_submitSynchronous_error___block_invoke(uin
     block[2] = __42__PIFaceObservationCache_submit_response___block_invoke;
     block[3] = &unk_1E82ABF90;
     block[4] = self;
-    v13 = v7;
-    v12 = v6;
+    v13 = responseCopy;
+    v12 = submitCopy;
     dispatch_async(queue, block);
   }
 }
@@ -130,12 +130,12 @@ void __42__PIFaceObservationCache_submit_response___block_invoke_2(uint64_t a1, 
   return v2;
 }
 
-+ (id)faceRequestWithRequest:(id)a3
++ (id)faceRequestWithRequest:(id)request
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E69B3A50];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithRequest:v4];
+  requestCopy = request;
+  v5 = [[v3 alloc] initWithRequest:requestCopy];
 
   v6 = +[PIPipelineFilters sourceFilterNoOrientation];
   v7 = +[PIPipelineFilters applyOrientationFilter];

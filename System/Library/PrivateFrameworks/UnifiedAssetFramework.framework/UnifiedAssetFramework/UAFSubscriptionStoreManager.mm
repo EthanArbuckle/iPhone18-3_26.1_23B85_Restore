@@ -1,80 +1,80 @@
 @interface UAFSubscriptionStoreManager
 + (id)defaultManager;
-+ (id)flattenSubscriptions:(id)a3;
++ (id)flattenSubscriptions:(id)subscriptions;
 + (id)getSerialQueue;
 + (id)writeManager;
 + (void)sendNotificationDBReset;
-- (BOOL)_checkDbVersion:(BOOL *)a3 storedVersion:(int *)a4;
-- (BOOL)_isUsageLimitExceeded:(id)a3;
+- (BOOL)_checkDbVersion:(BOOL *)version storedVersion:(int *)storedVersion;
+- (BOOL)_isUsageLimitExceeded:(id)exceeded;
 - (BOOL)_moveDatabase;
-- (BOOL)_openDatabase:(id)a3;
+- (BOOL)_openDatabase:(id)database;
 - (BOOL)_removeAllSubscriptions;
 - (BOOL)_removeAllSystemAssetSetUsages;
-- (BOOL)_subscribeSubscription:(id)a3 subscriptionName:(id)a4 assetSetSubscription:(id)a5 expires:(id)a6 user:(id)a7;
-- (BOOL)_unsubscribeSubscription:(id)a3 subscription:(id)a4 user:(id)a5;
-- (BOOL)clearSystemAssetSetUsages:(id)a3;
+- (BOOL)_subscribeSubscription:(id)subscription subscriptionName:(id)name assetSetSubscription:(id)setSubscription expires:(id)expires user:(id)user;
+- (BOOL)_unsubscribeSubscription:(id)subscription subscription:(id)a4 user:(id)user;
+- (BOOL)clearSystemAssetSetUsages:(id)usages;
 - (BOOL)performDbUpgrade;
 - (BOOL)removeAllSubscriptions;
 - (BOOL)removeAllSystemAssetSetUsages;
-- (BOOL)subscribe:(id)a3 subscriptions:(id)a4 user:(id)a5 node:(id)a6;
-- (BOOL)unsubscribe:(id)a3 subscriptions:(id)a4 user:(id)a5 node:(id)a6;
-- (UAFSubscriptionStoreManager)initWithDbDirPath:(id)a3 dbName:(id)a4 readOnly:(BOOL)a5 allowCreate:(BOOL)a6;
-- (id)_dataFromSystemAssetSetUsages:(id)a3;
-- (id)_dataFromUAFAssetSubscription:(id)a3;
-- (id)_getAllSubscriptions:(int *)a3;
-- (id)_getSubscription:(id)a3 subscription:(id)a4 user:(id)a5;
-- (id)_getSubscription:(sqlite3_stmt *)a3;
-- (id)_getSubscriptions:(id)a3 user:(id)a4;
-- (id)_getSubscriptions:(sqlite3_stmt *)a3 subscriptionsFor:(id)a4;
-- (id)_openDatabaseFile:(id)a3 existed:(BOOL *)a4;
-- (id)_subscriptionTime:(id)a3;
-- (id)_systemAssetSetUsagesFromData:(id)a3;
-- (id)_uafAssetSetSubscriptionFromData:(id)a3;
-- (id)getAllSubscriptions:(id *)a3;
-- (id)getAllSystemAssetSetUsages:(id *)a3;
-- (id)getAllSystemConfiguration:(id *)a3;
-- (id)getSubscribers:(id)a3 error:(id *)a4;
-- (id)getSubscription:(id)a3 subscriber:(id)a4 user:(id)a5 error:(id *)a6;
-- (id)getSubscriptions:(id)a3 user:(id)a4 error:(id *)a5;
-- (id)getSystemAssetSetUsages:(id)a3;
-- (id)getSystemConfigurationForKey:(id)a3;
-- (id)getUserLastSeenTime:(id)a3 error:(id *)a4;
-- (id)getUserNodeName:(id)a3 error:(id *)a4;
-- (id)getUsers:(id *)a3;
-- (id)getUsersOlderThanDate:(id)a3 error:(id *)a4;
-- (id)readData:(sqlite3_stmt *)a3 col:(int)a4;
-- (id)readDate:(sqlite3_stmt *)a3 col:(int)a4;
-- (id)readString:(sqlite3_stmt *)a3 col:(int)a4;
+- (BOOL)subscribe:(id)subscribe subscriptions:(id)subscriptions user:(id)user node:(id)node;
+- (BOOL)unsubscribe:(id)unsubscribe subscriptions:(id)subscriptions user:(id)user node:(id)node;
+- (UAFSubscriptionStoreManager)initWithDbDirPath:(id)path dbName:(id)name readOnly:(BOOL)only allowCreate:(BOOL)create;
+- (id)_dataFromSystemAssetSetUsages:(id)usages;
+- (id)_dataFromUAFAssetSubscription:(id)subscription;
+- (id)_getAllSubscriptions:(int *)subscriptions;
+- (id)_getSubscription:(id)subscription subscription:(id)a4 user:(id)user;
+- (id)_getSubscription:(sqlite3_stmt *)subscription;
+- (id)_getSubscriptions:(id)subscriptions user:(id)user;
+- (id)_getSubscriptions:(sqlite3_stmt *)subscriptions subscriptionsFor:(id)for;
+- (id)_openDatabaseFile:(id)file existed:(BOOL *)existed;
+- (id)_subscriptionTime:(id)time;
+- (id)_systemAssetSetUsagesFromData:(id)data;
+- (id)_uafAssetSetSubscriptionFromData:(id)data;
+- (id)getAllSubscriptions:(id *)subscriptions;
+- (id)getAllSystemAssetSetUsages:(id *)usages;
+- (id)getAllSystemConfiguration:(id *)configuration;
+- (id)getSubscribers:(id)subscribers error:(id *)error;
+- (id)getSubscription:(id)subscription subscriber:(id)subscriber user:(id)user error:(id *)error;
+- (id)getSubscriptions:(id)subscriptions user:(id)user error:(id *)error;
+- (id)getSystemAssetSetUsages:(id)usages;
+- (id)getSystemConfigurationForKey:(id)key;
+- (id)getUserLastSeenTime:(id)time error:(id *)error;
+- (id)getUserNodeName:(id)name error:(id *)error;
+- (id)getUsers:(id *)users;
+- (id)getUsersOlderThanDate:(id)date error:(id *)error;
+- (id)readData:(sqlite3_stmt *)data col:(int)col;
+- (id)readDate:(sqlite3_stmt *)date col:(int)col;
+- (id)readString:(sqlite3_stmt *)string col:(int)col;
 - (id)removeAllUsers;
-- (id)removeUser:(id)a3;
-- (id)setUserLastSeenTime:(id)a3 node:(id)a4 time:(id)a5;
-- (id)updateSystemAssetSetUsages:(id *)a3 configurationManager:(id)a4;
+- (id)removeUser:(id)user;
+- (id)setUserLastSeenTime:(id)time node:(id)node time:(id)a5;
+- (id)updateSystemAssetSetUsages:(id *)usages configurationManager:(id)manager;
 - (int)_beginDatabaseTransaction;
-- (int)_dropTable:(id)a3;
+- (int)_dropTable:(id)table;
 - (int)_endDatabaseTransaction;
-- (int)_getSubscribers:(id)a3 subscribers:(id *)a4;
-- (int)_getUser:(id)a3 lastSeen:(id *)a4 nodeName:(id *)a5;
-- (int)_performDbUpgrade:(int)a3;
+- (int)_getSubscribers:(id)subscribers subscribers:(id *)a4;
+- (int)_getUser:(id)user lastSeen:(id *)seen nodeName:(id *)name;
+- (int)_performDbUpgrade:(int)upgrade;
 - (int)_prepareStatements;
-- (int)_removeUser:(id)a3;
+- (int)_removeUser:(id)user;
 - (int)_rollbackDatabaseTransaction;
-- (int)_setDbVersion:(int)a3;
-- (int)_setSystemAssetSetUsages:(id)a3;
-- (int)_setSystemAssetSetUsages:(id)a3 usages:(id)a4;
-- (int)_setUserLastSeenTime:(id)a3 node:(id)a4 time:(id)a5;
-- (int)_updateSystemAssetSetUsages:(id *)a3 assetSetUsages:(id *)a4 configurationManager:(id)a5;
-- (int)bindData:(sqlite3_stmt *)a3 col:(int)a4 data:(id)a5;
-- (int)bindDate:(sqlite3_stmt *)a3 col:(int)a4 date:(id)a5;
-- (int)bindString:(sqlite3_stmt *)a3 col:(int)a4 string:(id)a5;
-- (int)doDatabaseOperation:(id)a3 useTransaction:(BOOL)a4 logDescription:(id)a5 error:(id *)a6;
-- (int)executeSQL:(const char *)a3;
+- (int)_setDbVersion:(int)version;
+- (int)_setSystemAssetSetUsages:(id)usages;
+- (int)_setSystemAssetSetUsages:(id)usages usages:(id)a4;
+- (int)_setUserLastSeenTime:(id)time node:(id)node time:(id)a5;
+- (int)_updateSystemAssetSetUsages:(id *)usages assetSetUsages:(id *)setUsages configurationManager:(id)manager;
+- (int)bindData:(sqlite3_stmt *)data col:(int)col data:(id)a5;
+- (int)bindDate:(sqlite3_stmt *)date col:(int)col date:(id)a5;
+- (int)bindString:(sqlite3_stmt *)string col:(int)col string:(id)a5;
+- (int)doDatabaseOperation:(id)operation useTransaction:(BOOL)transaction logDescription:(id)description error:(id *)error;
+- (int)executeSQL:(const char *)l;
 - (void)_acquireAssertion;
 - (void)_closeDatabase;
 - (void)_finalizeStatements;
 - (void)_releaseAssertion;
 - (void)dealloc;
 - (void)expireSubscriptions;
-- (void)setSystemConfigurationForKey:(id)a3 withValue:(id)a4;
+- (void)setSystemConfigurationForKey:(id)key withValue:(id)value;
 @end
 
 @implementation UAFSubscriptionStoreManager
@@ -84,8 +84,8 @@
   v115 = *MEMORY[0x1E69E9840];
   if (!self->_readOnly)
   {
-    v5 = [(UAFSubscriptionStoreManager *)self _beginDatabaseTransaction];
-    if (v5)
+    _beginDatabaseTransaction = [(UAFSubscriptionStoreManager *)self _beginDatabaseTransaction];
+    if (_beginDatabaseTransaction)
     {
       goto LABEL_163;
     }
@@ -130,7 +130,7 @@ LABEL_10:
         }
       }
 
-      v5 = v14;
+      _beginDatabaseTransaction = v14;
       v20 = UAFGetLogCategory(&UAFLogContextStorage);
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
@@ -140,7 +140,7 @@ LABEL_10:
         v108 = 2114;
         v109 = v13;
         v110 = 1024;
-        v111 = v5;
+        v111 = _beginDatabaseTransaction;
         v112 = 2082;
         v113 = v34;
         _os_log_error_impl(&dword_1BCF2C000, v20, OS_LOG_TYPE_ERROR, "%s SQL error while executing statement: '%{public}@': (%d) '%{public}s", buf, 0x26u);
@@ -154,8 +154,8 @@ LABEL_10:
         _os_log_impl(&dword_1BCF2C000, v21, OS_LOG_TYPE_DEFAULT, "%s Rolling back exclusive transaction of tables creation", buf, 0xCu);
       }
 
-      v22 = [(UAFSubscriptionStoreManager *)self _rollbackDatabaseTransaction];
-      if (!v22 || v22 == 101)
+      _rollbackDatabaseTransaction = [(UAFSubscriptionStoreManager *)self _rollbackDatabaseTransaction];
+      if (!_rollbackDatabaseTransaction || _rollbackDatabaseTransaction == 101)
       {
         goto LABEL_163;
       }
@@ -175,8 +175,8 @@ LABEL_10:
     }
 
 LABEL_17:
-    v15 = [(UAFSubscriptionStoreManager *)self _endDatabaseTransaction];
-    if (v15 && v15 != 101)
+    _endDatabaseTransaction = [(UAFSubscriptionStoreManager *)self _endDatabaseTransaction];
+    if (_endDatabaseTransaction && _endDatabaseTransaction != 101)
     {
       v16 = UAFGetLogCategory(&UAFLogContextStorage);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -198,7 +198,7 @@ LABEL_17:
   v4 = sqlite3_prepare_v2(self->_store, "INSERT OR REPLACE INTO DbVersion (k0) VALUES (?)", 48, &self->_setDbVersion, 0);
   if (v4)
   {
-    v5 = v4;
+    _beginDatabaseTransaction = v4;
     v6 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -208,7 +208,7 @@ LABEL_17:
       v108 = 2080;
       v109 = "INSERT OR REPLACE INTO DbVersion (k0) VALUES (?)";
       v110 = 1024;
-      v111 = v5;
+      v111 = _beginDatabaseTransaction;
       v112 = 2080;
       v113 = v7;
       v8 = "%s SQL error while preparing statement: %s, SQL error: (%d) %s";
@@ -233,7 +233,7 @@ LABEL_161:
   v18 = sqlite3_prepare_v2(self->_store, "DELETE FROM DbVersion", 21, &self->_deleteDbVersion, 0);
   if (v18)
   {
-    v5 = v18;
+    _beginDatabaseTransaction = v18;
     v6 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -243,7 +243,7 @@ LABEL_161:
       v108 = 2080;
       v109 = "DELETE FROM DbVersion";
       v110 = 1024;
-      v111 = v5;
+      v111 = _beginDatabaseTransaction;
       v112 = 2080;
       v113 = v19;
       v8 = "%s SQL error while preparing statement: %s, SQL error: (%d) %s";
@@ -265,7 +265,7 @@ LABEL_162:
   v26 = sqlite3_prepare_v2(self->_store, "SELECT * FROM DbVersion ORDER BY k0 DESC LIMIT 1", 48, &self->_readDbVersion, 0);
   if (v26)
   {
-    v5 = v26;
+    _beginDatabaseTransaction = v26;
     v6 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -275,7 +275,7 @@ LABEL_162:
       v108 = 2080;
       v109 = "SELECT * FROM DbVersion ORDER BY k0 DESC LIMIT 1";
       v110 = 1024;
-      v111 = v5;
+      v111 = _beginDatabaseTransaction;
       v112 = 2080;
       v113 = v27;
       v8 = "%s SQL error while preparing statement: %s, SQL error: (%d) %s";
@@ -295,7 +295,7 @@ LABEL_162:
   v29 = sqlite3_prepare_v2(self->_store, "INSERT OR REPLACE INTO Subscriptions (k0, k1, k2, k3, k4, k5) VALUES (?, ?, ?, ?, ?, ?)", 87, &self->_writeSubscription, 0);
   if (v29)
   {
-    v5 = v29;
+    _beginDatabaseTransaction = v29;
     v6 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -305,7 +305,7 @@ LABEL_162:
       v108 = 2080;
       v109 = "INSERT OR REPLACE INTO Subscriptions (k0, k1, k2, k3, k4, k5) VALUES (?, ?, ?, ?, ?, ?)";
       v110 = 1024;
-      v111 = v5;
+      v111 = _beginDatabaseTransaction;
       v112 = 2080;
       v113 = v30;
       v8 = "%s SQL error while preparing statement: %s, SQL error: (%d) %s";
@@ -325,7 +325,7 @@ LABEL_162:
   v32 = sqlite3_prepare_v2(self->_store, "SELECT k2 FROM Subscriptions WHERE k0 = ? AND k4 = ?", 52, &self->_readSubscriptionsForSubscriber, 0);
   if (v32)
   {
-    v5 = v32;
+    _beginDatabaseTransaction = v32;
     v6 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -335,7 +335,7 @@ LABEL_162:
       v108 = 2080;
       v109 = "SELECT k2 FROM Subscriptions WHERE k0 = ? AND k4 = ?";
       v110 = 1024;
-      v111 = v5;
+      v111 = _beginDatabaseTransaction;
       v112 = 2080;
       v113 = v33;
       v8 = "%s SQL error while preparing statement: %s, SQL error: (%d) %s";
@@ -355,7 +355,7 @@ LABEL_162:
   v36 = sqlite3_prepare_v2(self->_store, "SELECT k2 FROM Subscriptions WHERE k4 = ?", 41, &self->_readSubscriptionsForUser, 0);
   if (v36)
   {
-    v5 = v36;
+    _beginDatabaseTransaction = v36;
     v6 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -365,7 +365,7 @@ LABEL_162:
       v108 = 2080;
       v109 = "SELECT k2 FROM Subscriptions WHERE k4 = ?";
       v110 = 1024;
-      v111 = v5;
+      v111 = _beginDatabaseTransaction;
       v112 = 2080;
       v113 = v37;
       v8 = "%s SQL error while preparing statement: %s, SQL error: (%d) %s";
@@ -385,7 +385,7 @@ LABEL_162:
   v39 = sqlite3_prepare_v2(self->_store, "SELECT k2, k5 FROM Subscriptions WHERE k0 = ? AND k1 = ? AND k4 = ?", 67, &self->_readSubscription, 0);
   if (v39)
   {
-    v5 = v39;
+    _beginDatabaseTransaction = v39;
     v6 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -395,7 +395,7 @@ LABEL_162:
       v108 = 2080;
       v109 = "SELECT k2, k5 FROM Subscriptions WHERE k0 = ? AND k1 = ? AND k4 = ?";
       v110 = 1024;
-      v111 = v5;
+      v111 = _beginDatabaseTransaction;
       v112 = 2080;
       v113 = v40;
       v8 = "%s SQL error while preparing statement: %s, SQL error: (%d) %s";
@@ -415,7 +415,7 @@ LABEL_162:
   v42 = sqlite3_prepare_v2(self->_store, "SELECT k2 FROM Subscriptions", 28, &self->_readAllSubscriptions, 0);
   if (v42)
   {
-    v5 = v42;
+    _beginDatabaseTransaction = v42;
     v6 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -425,7 +425,7 @@ LABEL_162:
       v108 = 2080;
       v109 = "SELECT k2 FROM Subscriptions";
       v110 = 1024;
-      v111 = v5;
+      v111 = _beginDatabaseTransaction;
       v112 = 2080;
       v113 = v43;
       v8 = "%s SQL error while preparing statement: %s, SQL error: (%d) %s";
@@ -445,7 +445,7 @@ LABEL_162:
   v45 = sqlite3_prepare_v2(self->_store, "SELECT k2, k0, k4 FROM Subscriptions", 36, &self->_readAllSubscriptionsAndSubscribers, 0);
   if (v45)
   {
-    v5 = v45;
+    _beginDatabaseTransaction = v45;
     v6 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -455,7 +455,7 @@ LABEL_162:
       v108 = 2080;
       v109 = "SELECT k2, k0, k4 FROM Subscriptions";
       v110 = 1024;
-      v111 = v5;
+      v111 = _beginDatabaseTransaction;
       v112 = 2080;
       v113 = v46;
       v8 = "%s SQL error while preparing statement: %s, SQL error: (%d) %s";
@@ -475,7 +475,7 @@ LABEL_162:
   v48 = sqlite3_prepare_v2(self->_store, "SELECT DISTINCT k0 FROM Subscriptions WHERE k4 = ?", 50, &self->_readAllSubscribers, 0);
   if (v48)
   {
-    v5 = v48;
+    _beginDatabaseTransaction = v48;
     v6 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -485,7 +485,7 @@ LABEL_162:
       v108 = 2080;
       v109 = "SELECT DISTINCT k0 FROM Subscriptions WHERE k4 = ?";
       v110 = 1024;
-      v111 = v5;
+      v111 = _beginDatabaseTransaction;
       v112 = 2080;
       v113 = v49;
       v8 = "%s SQL error while preparing statement: %s, SQL error: (%d) %s";
@@ -505,7 +505,7 @@ LABEL_162:
   v51 = sqlite3_prepare_v2(self->_store, "SELECT DISTINCT k4 FROM Subscriptions", 37, &self->_readAllUsers, 0);
   if (v51)
   {
-    v5 = v51;
+    _beginDatabaseTransaction = v51;
     v6 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -515,7 +515,7 @@ LABEL_162:
       v108 = 2080;
       v109 = "SELECT DISTINCT k4 FROM Subscriptions";
       v110 = 1024;
-      v111 = v5;
+      v111 = _beginDatabaseTransaction;
       v112 = 2080;
       v113 = v52;
       v8 = "%s SQL error while preparing statement: %s, SQL error: (%d) %s";
@@ -535,7 +535,7 @@ LABEL_162:
   v54 = sqlite3_prepare_v2(self->_store, "DELETE FROM Subscriptions WHERE k0 = ? AND k1 = ? AND k4 = ?", 60, &self->_removeSubscription, 0);
   if (v54)
   {
-    v5 = v54;
+    _beginDatabaseTransaction = v54;
     v6 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -545,7 +545,7 @@ LABEL_162:
       v108 = 2080;
       v109 = "DELETE FROM Subscriptions WHERE k0 = ? AND k1 = ? AND k4 = ?";
       v110 = 1024;
-      v111 = v5;
+      v111 = _beginDatabaseTransaction;
       v112 = 2080;
       v113 = v55;
       v8 = "%s SQL error while preparing statement: %s, SQL error: (%d) %s";
@@ -565,7 +565,7 @@ LABEL_162:
   v57 = sqlite3_prepare_v2(self->_store, "DELETE FROM Subscriptions", 25, &self->_removeAllSubscriptions, 0);
   if (v57)
   {
-    v5 = v57;
+    _beginDatabaseTransaction = v57;
     v6 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -575,7 +575,7 @@ LABEL_162:
       v108 = 2080;
       v109 = "DELETE FROM Subscriptions";
       v110 = 1024;
-      v111 = v5;
+      v111 = _beginDatabaseTransaction;
       v112 = 2080;
       v113 = v58;
       v8 = "%s SQL error while preparing statement: %s, SQL error: (%d) %s";
@@ -595,7 +595,7 @@ LABEL_162:
   v60 = sqlite3_prepare_v2(self->_store, "SELECT k0, k2, k4 FROM Subscriptions WHERE k3 <> 0.0 AND datetime(k3, 'unixepoch') < datetime('now')", 100, &self->_fetchExpiredSubscriptions, 0);
   if (v60)
   {
-    v5 = v60;
+    _beginDatabaseTransaction = v60;
     v6 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -605,7 +605,7 @@ LABEL_162:
       v108 = 2080;
       v109 = "SELECT k0, k2, k4 FROM Subscriptions WHERE k3 <> 0.0 AND datetime(k3, 'unixepoch') < datetime('now')";
       v110 = 1024;
-      v111 = v5;
+      v111 = _beginDatabaseTransaction;
       v112 = 2080;
       v113 = v61;
       v8 = "%s SQL error while preparing statement: %s, SQL error: (%d) %s";
@@ -625,7 +625,7 @@ LABEL_162:
   v63 = sqlite3_prepare_v2(self->_store, "INSERT OR REPLACE INTO SystemAssetSetUsages (k0, k1) VALUES (?, ?)", 66, &self->_setSystemAssetSetUsages, 0);
   if (v63)
   {
-    v5 = v63;
+    _beginDatabaseTransaction = v63;
     v6 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -635,7 +635,7 @@ LABEL_162:
       v108 = 2080;
       v109 = "INSERT OR REPLACE INTO SystemAssetSetUsages (k0, k1) VALUES (?, ?)";
       v110 = 1024;
-      v111 = v5;
+      v111 = _beginDatabaseTransaction;
       v112 = 2080;
       v113 = v64;
       v8 = "%s SQL error while preparing statement: %s, SQL error: (%d) %s";
@@ -655,7 +655,7 @@ LABEL_162:
   v66 = sqlite3_prepare_v2(self->_store, "SELECT k1 FROM SystemAssetSetUsages WHERE k0 = ?", 48, &self->_fetchSystemAssetSetUsages, 0);
   if (v66)
   {
-    v5 = v66;
+    _beginDatabaseTransaction = v66;
     v6 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -665,7 +665,7 @@ LABEL_162:
       v108 = 2080;
       v109 = "SELECT k1 FROM SystemAssetSetUsages WHERE k0 = ?";
       v110 = 1024;
-      v111 = v5;
+      v111 = _beginDatabaseTransaction;
       v112 = 2080;
       v113 = v67;
       v8 = "%s SQL error while preparing statement: %s, SQL error: (%d) %s";
@@ -685,7 +685,7 @@ LABEL_162:
   v69 = sqlite3_prepare_v2(self->_store, "SELECT k0, k1 FROM SystemAssetSetUsages", 39, &self->_fetchAllSystemAssetSetUsages, 0);
   if (v69)
   {
-    v5 = v69;
+    _beginDatabaseTransaction = v69;
     v6 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -695,7 +695,7 @@ LABEL_162:
       v108 = 2080;
       v109 = "SELECT k0, k1 FROM SystemAssetSetUsages";
       v110 = 1024;
-      v111 = v5;
+      v111 = _beginDatabaseTransaction;
       v112 = 2080;
       v113 = v70;
       v8 = "%s SQL error while preparing statement: %s, SQL error: (%d) %s";
@@ -715,7 +715,7 @@ LABEL_162:
   v72 = sqlite3_prepare_v2(self->_store, "DELETE FROM SystemAssetSetUsages WHERE k0 = ?", 45, &self->_clearSystemAssetSetUsages, 0);
   if (v72)
   {
-    v5 = v72;
+    _beginDatabaseTransaction = v72;
     v6 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -725,7 +725,7 @@ LABEL_162:
       v108 = 2080;
       v109 = "DELETE FROM SystemAssetSetUsages WHERE k0 = ?";
       v110 = 1024;
-      v111 = v5;
+      v111 = _beginDatabaseTransaction;
       v112 = 2080;
       v113 = v73;
       v8 = "%s SQL error while preparing statement: %s, SQL error: (%d) %s";
@@ -745,7 +745,7 @@ LABEL_162:
   v75 = sqlite3_prepare_v2(self->_store, "DELETE FROM SystemAssetSetUsages", 32, &self->_removeAllSystemAssetSetUsages, 0);
   if (v75)
   {
-    v5 = v75;
+    _beginDatabaseTransaction = v75;
     v6 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -755,7 +755,7 @@ LABEL_162:
       v108 = 2080;
       v109 = "DELETE FROM SystemAssetSetUsages";
       v110 = 1024;
-      v111 = v5;
+      v111 = _beginDatabaseTransaction;
       v112 = 2080;
       v113 = v76;
       v8 = "%s SQL error while preparing statement: %s, SQL error: (%d) %s";
@@ -775,7 +775,7 @@ LABEL_162:
   v78 = sqlite3_prepare_v2(self->_store, "SELECT k1 FROM SystemConfiguration WHERE k0 = ?", 47, &self->_readConfigurationKey, 0);
   if (v78)
   {
-    v5 = v78;
+    _beginDatabaseTransaction = v78;
     v6 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -785,7 +785,7 @@ LABEL_162:
       v108 = 2080;
       v109 = "SELECT k1 FROM SystemConfiguration WHERE k0 = ?";
       v110 = 1024;
-      v111 = v5;
+      v111 = _beginDatabaseTransaction;
       v112 = 2080;
       v113 = v79;
       v8 = "%s SQL error while preparing statement: %s, SQL error: (%d) %s";
@@ -805,7 +805,7 @@ LABEL_162:
   v81 = sqlite3_prepare_v2(self->_store, "INSERT OR REPLACE INTO SystemConfiguration (k0, k1) VALUES (?, ?)", 65, &self->_writeConfigurationKey, 0);
   if (v81)
   {
-    v5 = v81;
+    _beginDatabaseTransaction = v81;
     v6 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -815,7 +815,7 @@ LABEL_162:
       v108 = 2080;
       v109 = "INSERT OR REPLACE INTO SystemConfiguration (k0, k1) VALUES (?, ?)";
       v110 = 1024;
-      v111 = v5;
+      v111 = _beginDatabaseTransaction;
       v112 = 2080;
       v113 = v82;
       v8 = "%s SQL error while preparing statement: %s, SQL error: (%d) %s";
@@ -835,7 +835,7 @@ LABEL_162:
   v84 = sqlite3_prepare_v2(self->_store, "SELECT k0, k1 FROM SystemConfiguration", 38, &self->_fetchAllConfiguration, 0);
   if (v84)
   {
-    v5 = v84;
+    _beginDatabaseTransaction = v84;
     v6 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -845,7 +845,7 @@ LABEL_162:
       v108 = 2080;
       v109 = "SELECT k0, k1 FROM SystemConfiguration";
       v110 = 1024;
-      v111 = v5;
+      v111 = _beginDatabaseTransaction;
       v112 = 2080;
       v113 = v85;
       v8 = "%s SQL error while preparing statement: %s, SQL error: (%d) %s";
@@ -865,7 +865,7 @@ LABEL_162:
   v87 = sqlite3_prepare_v2(self->_store, "SELECT k1, k2 FROM UserInformation WHERE k0 = ?", 47, &self->_readUser, 0);
   if (v87)
   {
-    v5 = v87;
+    _beginDatabaseTransaction = v87;
     v6 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -875,7 +875,7 @@ LABEL_162:
       v108 = 2080;
       v109 = "SELECT k1, k2 FROM UserInformation WHERE k0 = ?";
       v110 = 1024;
-      v111 = v5;
+      v111 = _beginDatabaseTransaction;
       v112 = 2080;
       v113 = v88;
       v8 = "%s SQL error while preparing statement: %s, SQL error: (%d) %s";
@@ -895,7 +895,7 @@ LABEL_162:
   v90 = sqlite3_prepare_v2(self->_store, "INSERT OR REPLACE INTO UserInformation (k0, k1, k2) VALUES (?, ?, ?)", 68, &self->_writeUserLastSeen, 0);
   if (v90)
   {
-    v5 = v90;
+    _beginDatabaseTransaction = v90;
     v6 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -905,7 +905,7 @@ LABEL_162:
       v108 = 2080;
       v109 = "INSERT OR REPLACE INTO UserInformation (k0, k1, k2) VALUES (?, ?, ?)";
       v110 = 1024;
-      v111 = v5;
+      v111 = _beginDatabaseTransaction;
       v112 = 2080;
       v113 = v91;
       v8 = "%s SQL error while preparing statement: %s, SQL error: (%d) %s";
@@ -925,7 +925,7 @@ LABEL_162:
   v93 = sqlite3_prepare_v2(self->_store, "SELECT k0, k1, k2 FROM UserInformation WHERE k1 <= ?", 52, &self->_readUsersOlderThan, 0);
   if (v93)
   {
-    v5 = v93;
+    _beginDatabaseTransaction = v93;
     v6 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -935,7 +935,7 @@ LABEL_162:
       v108 = 2080;
       v109 = "SELECT k0, k1, k2 FROM UserInformation WHERE k1 <= ?";
       v110 = 1024;
-      v111 = v5;
+      v111 = _beginDatabaseTransaction;
       v112 = 2080;
       v113 = v94;
       v8 = "%s SQL error while preparing statement: %s, SQL error: (%d) %s";
@@ -955,7 +955,7 @@ LABEL_162:
   v96 = sqlite3_prepare_v2(self->_store, "DELETE FROM UserInformation WHERE k0 = ?", 40, &self->_removeUser, 0);
   if (v96)
   {
-    v5 = v96;
+    _beginDatabaseTransaction = v96;
     v6 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -965,7 +965,7 @@ LABEL_162:
       v108 = 2080;
       v109 = "DELETE FROM UserInformation WHERE k0 = ?";
       v110 = 1024;
-      v111 = v5;
+      v111 = _beginDatabaseTransaction;
       v112 = 2080;
       v113 = v97;
       v8 = "%s SQL error while preparing statement: %s, SQL error: (%d) %s";
@@ -982,8 +982,8 @@ LABEL_162:
     self->_removeAllUsers = 0;
   }
 
-  v5 = sqlite3_prepare_v2(self->_store, "DELETE FROM UserInformation", 27, &self->_removeAllUsers, 0);
-  if (v5)
+  _beginDatabaseTransaction = sqlite3_prepare_v2(self->_store, "DELETE FROM UserInformation", 27, &self->_removeAllUsers, 0);
+  if (_beginDatabaseTransaction)
   {
     v6 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -994,7 +994,7 @@ LABEL_162:
       v108 = 2080;
       v109 = "DELETE FROM UserInformation";
       v110 = 1024;
-      v111 = v5;
+      v111 = _beginDatabaseTransaction;
       v112 = 2080;
       v113 = v99;
       v8 = "%s SQL error while preparing statement: %s, SQL error: (%d) %s";
@@ -1006,7 +1006,7 @@ LABEL_162:
 
 LABEL_163:
   v100 = *MEMORY[0x1E69E9840];
-  return v5;
+  return _beginDatabaseTransaction;
 }
 
 - (void)_closeDatabase
@@ -1193,18 +1193,18 @@ uint64_t __43__UAFSubscriptionStoreManager_writeManager__block_invoke_2()
   return result;
 }
 
-+ (id)flattenSubscriptions:(id)a3
++ (id)flattenSubscriptions:(id)subscriptions
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = a3;
-  v5 = [v3 array];
+  subscriptionsCopy = subscriptions;
+  array = [v3 array];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __52__UAFSubscriptionStoreManager_flattenSubscriptions___block_invoke;
   v8[3] = &unk_1E7FFE050;
-  v6 = v5;
+  v6 = array;
   v9 = v6;
-  [v4 enumerateKeysAndObjectsUsingBlock:v8];
+  [subscriptionsCopy enumerateKeysAndObjectsUsingBlock:v8];
 
   return v6;
 }
@@ -1219,11 +1219,11 @@ void __52__UAFSubscriptionStoreManager_flattenSubscriptions___block_invoke(uint6
   [a3 enumerateKeysAndObjectsUsingBlock:v4];
 }
 
-- (UAFSubscriptionStoreManager)initWithDbDirPath:(id)a3 dbName:(id)a4 readOnly:(BOOL)a5 allowCreate:(BOOL)a6
+- (UAFSubscriptionStoreManager)initWithDbDirPath:(id)path dbName:(id)name readOnly:(BOOL)only allowCreate:(BOOL)create
 {
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  pathCopy = path;
+  nameCopy = name;
   v23.receiver = self;
   v23.super_class = UAFSubscriptionStoreManager;
   v12 = [(UAFSubscriptionStoreManager *)&v23 init];
@@ -1235,9 +1235,9 @@ void __52__UAFSubscriptionStoreManager_flattenSubscriptions___block_invoke(uint6
 
   v12->_store = 0;
   v12->_updateCount = 0;
-  if (v11)
+  if (nameCopy)
   {
-    v14 = v11;
+    v14 = nameCopy;
   }
 
   else
@@ -1245,19 +1245,19 @@ void __52__UAFSubscriptionStoreManager_flattenSubscriptions___block_invoke(uint6
     v14 = @"/UAFAssetSubscriptions.db";
   }
 
-  v15 = [v10 stringByAppendingString:v14];
+  v15 = [pathCopy stringByAppendingString:v14];
   databaseName = v13->_databaseName;
   v13->_databaseName = v15;
 
-  v17 = [v10 stringByAppendingPathComponent:@"UAFOldVersionDbName.db"];
+  v17 = [pathCopy stringByAppendingPathComponent:@"UAFOldVersionDbName.db"];
   oldDatabaseName = v13->_oldDatabaseName;
   v13->_oldDatabaseName = v17;
 
   if (v13->_databaseName)
   {
     v13->_dbUpToDate = 0;
-    v13->_readOnly = a5;
-    v13->_allowCreate = a6;
+    v13->_readOnly = only;
+    v13->_allowCreate = create;
 LABEL_7:
     v19 = v13;
     goto LABEL_11;
@@ -1269,7 +1269,7 @@ LABEL_7:
     *buf = 136315650;
     v25 = "[UAFSubscriptionStoreManager initWithDbDirPath:dbName:readOnly:allowCreate:]";
     v26 = 2112;
-    v27 = v10;
+    v27 = pathCopy;
     v28 = 2112;
     v29 = v14;
     _os_log_error_impl(&dword_1BCF2C000, v20, OS_LOG_TYPE_ERROR, "%s Could not construct database path from %@ and %@", buf, 0x20u);
@@ -1297,13 +1297,13 @@ LABEL_11:
   [(UAFSubscriptionStoreManager *)&v4 dealloc];
 }
 
-- (int)_dropTable:(id)a3
+- (int)_dropTable:(id)table
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DROP TABLE IF EXISTS %@", a3];
-  if ([v4 UTF8String])
+  table = [MEMORY[0x1E696AEC0] stringWithFormat:@"DROP TABLE IF EXISTS %@", table];
+  if ([table UTF8String])
   {
-    v5 = -[UAFSubscriptionStoreManager executeSQL:](self, "executeSQL:", [v4 UTF8String]);
+    v5 = -[UAFSubscriptionStoreManager executeSQL:](self, "executeSQL:", [table UTF8String]);
     if (v5)
     {
       v6 = UAFGetLogCategory(&UAFLogContextStorage);
@@ -1313,7 +1313,7 @@ LABEL_11:
         *buf = 136315906;
         v11 = "[UAFSubscriptionStoreManager _dropTable:]";
         v12 = 2114;
-        v13 = v4;
+        v13 = table;
         v14 = 1024;
         v15 = v5;
         v16 = 2082;
@@ -1332,21 +1332,21 @@ LABEL_11:
   return v5;
 }
 
-- (id)_openDatabaseFile:(id)a3 existed:(BOOL *)a4
+- (id)_openDatabaseFile:(id)file existed:(BOOL *)existed
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  *a4 = [v7 fileExistsAtPath:v6];
-  v8 = [v6 stringByDeletingLastPathComponent];
-  v9 = v8;
+  fileCopy = file;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  *existed = [defaultManager fileExistsAtPath:fileCopy];
+  stringByDeletingLastPathComponent = [fileCopy stringByDeletingLastPathComponent];
+  v9 = stringByDeletingLastPathComponent;
   if (self->_readOnly)
   {
     goto LABEL_2;
   }
 
   v10 = 2;
-  if (*a4 || !v8)
+  if (*existed || !stringByDeletingLastPathComponent)
   {
     goto LABEL_12;
   }
@@ -1357,7 +1357,7 @@ LABEL_11:
   }
 
   v26 = 0;
-  v11 = [v7 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:&v26];
+  v11 = [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v26];
   v12 = v26;
   if ((v11 & 1) == 0)
   {
@@ -1397,7 +1397,7 @@ LABEL_12:
     v14 = v10;
   }
 
-  v15 = sqlite3_open_v2([v6 UTF8String], &self->_store, v14, 0);
+  v15 = sqlite3_open_v2([fileCopy UTF8String], &self->_store, v14, 0);
   store = self->_store;
   if (!v15)
   {
@@ -1464,8 +1464,8 @@ LABEL_27:
     }
   }
 
-  v4 = [MEMORY[0x1E69C75C8] currentProcess];
-  if ([v4 isManaged])
+  currentProcess = [MEMORY[0x1E69C75C8] currentProcess];
+  if ([currentProcess isManaged])
   {
     v5 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -1476,11 +1476,11 @@ LABEL_27:
     }
 
     v6 = objc_alloc(MEMORY[0x1E69C7540]);
-    v7 = [MEMORY[0x1E69C7648] currentProcess];
+    currentProcess2 = [MEMORY[0x1E69C7648] currentProcess];
     v8 = [MEMORY[0x1E69C7568] attributeWithDomain:@"com.apple.common" name:@"FinishTaskUninterruptable"];
     v21[0] = v8;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
-    v10 = [v6 initWithExplanation:@"UAF database access" target:v7 attributes:v9];
+    v10 = [v6 initWithExplanation:@"UAF database access" target:currentProcess2 attributes:v9];
     rbassertion = self->_rbassertion;
     self->_rbassertion = v10;
 
@@ -1542,14 +1542,14 @@ LABEL_27:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_openDatabase:(id)a3
+- (BOOL)_openDatabase:(id)database
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  databaseCopy = database;
+  if (!databaseCopy)
   {
-    v4 = self->_databaseName;
-    if (!v4)
+    databaseCopy = self->_databaseName;
+    if (!databaseCopy)
     {
       v5 = UAFGetLogCategory(&UAFLogContextStorage);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1563,7 +1563,7 @@ LABEL_27:
     }
   }
 
-  v5 = v4;
+  v5 = databaseCopy;
   if (objc_opt_class() && [MEMORY[0x1E69C5D00] isClassCLocked])
   {
     v6 = UAFGetLogCategory(&UAFLogContextStorage);
@@ -1603,9 +1603,9 @@ LABEL_26:
 
   v38 = 0;
   v37 = 0;
-  v11 = [(UAFSubscriptionStoreManager *)self _prepareStatements];
-  v12 = v11;
-  if (self->_allowCreate && !self->_readOnly && v11 <= 0x1A && ((1 << v11) & 0x4000C00) != 0)
+  _prepareStatements = [(UAFSubscriptionStoreManager *)self _prepareStatements];
+  _prepareStatements2 = _prepareStatements;
+  if (self->_allowCreate && !self->_readOnly && _prepareStatements <= 0x1A && ((1 << _prepareStatements) & 0x4000C00) != 0)
   {
     v17 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -1613,19 +1613,19 @@ LABEL_26:
       *buf = 136315394;
       v41 = "[UAFSubscriptionStoreManager _openDatabase:]";
       v42 = 1024;
-      *v43 = v12;
+      *v43 = _prepareStatements2;
       _os_log_error_impl(&dword_1BCF2C000, v17, OS_LOG_TYPE_ERROR, "%s Detected database corruption.  Deleting database and recreating: %d", buf, 0x12u);
     }
 
     sqlite3_close(self->_store);
     self->_store = 0;
     v18 = [v5 stringByAppendingString:@".corrupt"];
-    v19 = [MEMORY[0x1E696AC08] defaultManager];
-    [v19 removeItemAtPath:v18 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager removeItemAtPath:v18 error:0];
 
-    v20 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v36 = 0;
-    v21 = [v20 moveItemAtPath:v5 toPath:v18 error:&v36];
+    v21 = [defaultManager2 moveItemAtPath:v5 toPath:v18 error:&v36];
     v8 = v36;
 
     if ((v21 & 1) == 0)
@@ -1686,7 +1686,7 @@ LABEL_55:
     }
 
     v30 = [(UAFSubscriptionStoreManager *)self _setDbVersion:2];
-    v12 = v30;
+    _prepareStatements2 = v30;
     if (v30 && v30 != 101)
     {
       v34 = UAFGetLogCategory(&UAFLogContextStorage);
@@ -1715,7 +1715,7 @@ LABEL_66:
       *&v43[8] = 1024;
       *v44 = v39;
       *&v44[4] = 1024;
-      *&v44[6] = v12;
+      *&v44[6] = _prepareStatements2;
       _os_log_impl(&dword_1BCF2C000, v33, OS_LOG_TYPE_DEFAULT, "%s Opened database (%@), database existed:%d, result: %d", buf, 0x22u);
     }
 
@@ -1724,11 +1724,11 @@ LABEL_66:
     goto LABEL_13;
   }
 
-  if ((v39 & 1) != 0 || v11 != 101 && v11)
+  if ((v39 & 1) != 0 || _prepareStatements != 101 && _prepareStatements)
   {
     if (self->_dbUpToDate || [(UAFSubscriptionStoreManager *)self _checkDbVersion:&v38 storedVersion:&v37])
     {
-      if (!v12)
+      if (!_prepareStatements2)
       {
         goto LABEL_66;
       }
@@ -1790,7 +1790,7 @@ LABEL_66:
       if (!v31 || (v32 = v31, v31 == 101))
       {
         [(UAFSubscriptionStoreManager *)self _finalizeStatements];
-        v12 = [(UAFSubscriptionStoreManager *)self _prepareStatements];
+        _prepareStatements2 = [(UAFSubscriptionStoreManager *)self _prepareStatements];
         goto LABEL_66;
       }
 
@@ -1917,10 +1917,10 @@ LABEL_27:
   return v3;
 }
 
-- (BOOL)_isUsageLimitExceeded:(id)a3
+- (BOOL)_isUsageLimitExceeded:(id)exceeded
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  exceededCopy = exceeded;
   v5 = +[UAFConfigurationManager defaultManager];
   v13 = 0;
   v6 = [(UAFSubscriptionStoreManager *)self _getAllSubscriptions:&v13];
@@ -1942,7 +1942,7 @@ LABEL_27:
   else
   {
     v9 = [UAFSubscriptionStoreManager flattenSubscriptions:v6];
-    v7 = [v9 arrayByAddingObjectsFromArray:v4];
+    v7 = [v9 arrayByAddingObjectsFromArray:exceededCopy];
 
     v10 = [v5 applySubscriptions:v7];
     v8 = [v5 isUsageLimitExceeded:v10];
@@ -1952,12 +1952,12 @@ LABEL_27:
   return v8;
 }
 
-- (BOOL)_checkDbVersion:(BOOL *)a3 storedVersion:(int *)a4
+- (BOOL)_checkDbVersion:(BOOL *)version storedVersion:(int *)storedVersion
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (version)
   {
-    *a3 = 0;
+    *version = 0;
   }
 
   readDbVersion = self->_readDbVersion;
@@ -2034,39 +2034,39 @@ LABEL_24:
 
 LABEL_17:
   self->_dbUpToDate = 0;
-  if (a3)
+  if (version)
   {
-    *a3 = 1;
+    *version = 1;
   }
 
-  if (!a4)
+  if (!storedVersion)
   {
     goto LABEL_21;
   }
 
   result = 0;
-  *a4 = v10;
+  *storedVersion = v10;
 LABEL_22:
   v17 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (BOOL)subscribe:(id)a3 subscriptions:(id)a4 user:(id)a5 node:(id)a6
+- (BOOL)subscribe:(id)subscribe subscriptions:(id)subscriptions user:(id)user node:(id)node
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  subscribeCopy = subscribe;
+  subscriptionsCopy = subscriptions;
+  userCopy = user;
+  nodeCopy = node;
   v24 = MEMORY[0x1E69E9820];
-  v25 = v11;
-  v26 = v10;
-  v27 = v12;
-  v28 = v13;
+  v25 = subscriptionsCopy;
+  v26 = subscribeCopy;
+  v27 = userCopy;
+  v28 = nodeCopy;
   v14 = MEMORY[0x1E696AEC0];
-  v15 = v13;
-  v16 = v12;
-  v17 = v10;
-  v18 = v11;
+  v15 = nodeCopy;
+  v16 = userCopy;
+  v17 = subscribeCopy;
+  v18 = subscriptionsCopy;
   v19 = [v14 stringWithFormat:@"subscribe for Subscriber: %@", v17, v24, 3221225472, __65__UAFSubscriptionStoreManager_subscribe_subscriptions_user_node___block_invoke, &unk_1E7FFE078, self];
   v20 = [(UAFSubscriptionStoreManager *)self doDatabaseOperation:&v24 useTransaction:1 logDescription:v19 error:0];
 
@@ -2184,29 +2184,29 @@ LABEL_24:
   return v4;
 }
 
-- (BOOL)_subscribeSubscription:(id)a3 subscriptionName:(id)a4 assetSetSubscription:(id)a5 expires:(id)a6 user:(id)a7
+- (BOOL)_subscribeSubscription:(id)subscription subscriptionName:(id)name assetSetSubscription:(id)setSubscription expires:(id)expires user:(id)user
 {
   v68 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(UAFSubscriptionStoreManager *)self bindString:self->_writeSubscription col:1 string:v12];
+  subscriptionCopy = subscription;
+  nameCopy = name;
+  setSubscriptionCopy = setSubscription;
+  expiresCopy = expires;
+  userCopy = user;
+  v17 = [(UAFSubscriptionStoreManager *)self bindString:self->_writeSubscription col:1 string:subscriptionCopy];
   if (v17)
   {
     v18 = v17;
-    v19 = UAFGetLogCategory(&UAFLogContextStorage);
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    expiration = UAFGetLogCategory(&UAFLogContextStorage);
+    if (os_log_type_enabled(expiration, OS_LOG_TYPE_ERROR))
     {
       v20 = sqlite3_errmsg(self->_store);
       v21 = sqlite3_extended_errcode(self->_store);
       *buf = 136316418;
       v57 = "[UAFSubscriptionStoreManager _subscribeSubscription:subscriptionName:assetSetSubscription:expires:user:]";
       v58 = 2114;
-      v59 = v12;
+      v59 = subscriptionCopy;
       v60 = 2112;
-      v61 = v13;
+      v61 = nameCopy;
       v62 = 1024;
       *v63 = v18;
       *&v63[4] = 2080;
@@ -2215,7 +2215,7 @@ LABEL_24:
       LODWORD(v65) = v21;
       v22 = "%s Binding subscriber name to the write subscription sql query failed for Subscriber: %{public}@, SubscriptionName: '%@' SQLite error: %d (%s, Extended: %d)";
 LABEL_7:
-      v26 = v19;
+      v26 = expiration;
       v27 = 54;
 LABEL_8:
       _os_log_error_impl(&dword_1BCF2C000, v26, OS_LOG_TYPE_ERROR, v22, buf, v27);
@@ -2225,21 +2225,21 @@ LABEL_8:
     goto LABEL_18;
   }
 
-  v23 = [(UAFSubscriptionStoreManager *)self bindString:self->_writeSubscription col:2 string:v13];
+  v23 = [(UAFSubscriptionStoreManager *)self bindString:self->_writeSubscription col:2 string:nameCopy];
   if (v23)
   {
     v18 = v23;
-    v19 = UAFGetLogCategory(&UAFLogContextStorage);
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    expiration = UAFGetLogCategory(&UAFLogContextStorage);
+    if (os_log_type_enabled(expiration, OS_LOG_TYPE_ERROR))
     {
       v24 = sqlite3_errmsg(self->_store);
       v25 = sqlite3_extended_errcode(self->_store);
       *buf = 136316418;
       v57 = "[UAFSubscriptionStoreManager _subscribeSubscription:subscriptionName:assetSetSubscription:expires:user:]";
       v58 = 2114;
-      v59 = v12;
+      v59 = subscriptionCopy;
       v60 = 2112;
-      v61 = v13;
+      v61 = nameCopy;
       v62 = 1024;
       *v63 = v18;
       *&v63[4] = 2080;
@@ -2255,10 +2255,10 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v19 = [(UAFSubscriptionStoreManager *)self _dataFromUAFAssetSubscription:v14];
-  if (v19)
+  expiration = [(UAFSubscriptionStoreManager *)self _dataFromUAFAssetSubscription:setSubscriptionCopy];
+  if (expiration)
   {
-    v28 = [(UAFSubscriptionStoreManager *)self bindData:self->_writeSubscription col:3 data:v19];
+    v28 = [(UAFSubscriptionStoreManager *)self bindData:self->_writeSubscription col:3 data:expiration];
     if (v28)
     {
       v18 = v28;
@@ -2270,9 +2270,9 @@ LABEL_18:
         *buf = 136316418;
         v57 = "[UAFSubscriptionStoreManager _subscribeSubscription:subscriptionName:assetSetSubscription:expires:user:]";
         v58 = 2114;
-        v59 = v12;
+        v59 = subscriptionCopy;
         v60 = 2112;
-        v61 = v13;
+        v61 = nameCopy;
         v62 = 1024;
         *v63 = v18;
         *&v63[4] = 2080;
@@ -2290,13 +2290,13 @@ LABEL_36:
     }
   }
 
-  v19 = v15;
-  if (!v19)
+  expiration = expiresCopy;
+  if (!expiration)
   {
-    v19 = [v14 expiration];
+    expiration = [setSubscriptionCopy expiration];
   }
 
-  v33 = [(UAFSubscriptionStoreManager *)self bindDate:self->_writeSubscription col:4 date:v19];
+  v33 = [(UAFSubscriptionStoreManager *)self bindDate:self->_writeSubscription col:4 date:expiration];
   if (v33)
   {
     v18 = v33;
@@ -2308,9 +2308,9 @@ LABEL_36:
       *buf = 136316418;
       v57 = "[UAFSubscriptionStoreManager _subscribeSubscription:subscriptionName:assetSetSubscription:expires:user:]";
       v58 = 2114;
-      v59 = v12;
+      v59 = subscriptionCopy;
       v60 = 2112;
-      v61 = v13;
+      v61 = nameCopy;
       v62 = 1024;
       *v63 = v18;
       *&v63[4] = 2080;
@@ -2326,12 +2326,12 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v38 = [(UAFSubscriptionStoreManager *)self bindString:self->_writeSubscription col:5 string:v16];
+  v38 = [(UAFSubscriptionStoreManager *)self bindString:self->_writeSubscription col:5 string:userCopy];
   if (v38)
   {
     v18 = v38;
-    v19 = UAFGetLogCategory(&UAFLogContextStorage);
-    if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    expiration = UAFGetLogCategory(&UAFLogContextStorage);
+    if (!os_log_type_enabled(expiration, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_18;
     }
@@ -2341,11 +2341,11 @@ LABEL_17:
     *buf = 136316674;
     v57 = "[UAFSubscriptionStoreManager _subscribeSubscription:subscriptionName:assetSetSubscription:expires:user:]";
     v58 = 2114;
-    v59 = v12;
+    v59 = subscriptionCopy;
     v60 = 2112;
-    v61 = v13;
+    v61 = nameCopy;
     v62 = 2112;
-    *v63 = v16;
+    *v63 = userCopy;
     *&v63[8] = 1024;
     *&v63[10] = v18;
     v64 = 2080;
@@ -2353,13 +2353,13 @@ LABEL_17:
     v66 = 1024;
     v67 = v40;
     v22 = "%s Binding user to the write subscription sql query failed for Subscriber: %{public}@, SubscriptionName: '%@', user: '%@' SQLite error: %d (%s, Extended: %d)";
-    v26 = v19;
+    v26 = expiration;
     v27 = 64;
     goto LABEL_8;
   }
 
-  v19 = [MEMORY[0x1E695DF00] now];
-  v41 = [(UAFSubscriptionStoreManager *)self bindDate:self->_writeSubscription col:6 date:v19];
+  expiration = [MEMORY[0x1E695DF00] now];
+  v41 = [(UAFSubscriptionStoreManager *)self bindDate:self->_writeSubscription col:6 date:expiration];
   if (v41)
   {
     v18 = v41;
@@ -2371,11 +2371,11 @@ LABEL_17:
       *buf = 136316674;
       v57 = "[UAFSubscriptionStoreManager _subscribeSubscription:subscriptionName:assetSetSubscription:expires:user:]";
       v58 = 2114;
-      v59 = v12;
+      v59 = subscriptionCopy;
       v60 = 2112;
-      v61 = v13;
+      v61 = nameCopy;
       v62 = 2112;
-      *v63 = v16;
+      *v63 = userCopy;
       *&v63[8] = 1024;
       *&v63[10] = v18;
       v64 = 2080;
@@ -2405,9 +2405,9 @@ LABEL_37:
       *buf = 136316418;
       v57 = "[UAFSubscriptionStoreManager _subscribeSubscription:subscriptionName:assetSetSubscription:expires:user:]";
       v58 = 2114;
-      v59 = v12;
+      v59 = subscriptionCopy;
       v60 = 2112;
-      v61 = v13;
+      v61 = nameCopy;
       v62 = 1024;
       *v63 = v18;
       *&v63[4] = 2080;
@@ -2420,8 +2420,8 @@ LABEL_37:
     v55 = UAFLogContextStorage;
     v50 = kUAFABCDatabaseFailure;
     v51 = [MEMORY[0x1E696AD98] numberWithInt:sqlite3_extended_errcode(self->_store)];
-    v52 = [v51 stringValue];
-    UAFFaultCapture(v55, v50, @"subscription", v52);
+    stringValue = [v51 stringValue];
+    UAFFaultCapture(v55, v50, @"subscription", stringValue);
   }
 
   else
@@ -2448,9 +2448,9 @@ LABEL_19:
   return v35;
 }
 
-- (id)_getSubscription:(sqlite3_stmt *)a3
+- (id)_getSubscription:(sqlite3_stmt *)subscription
 {
-  v4 = [(UAFSubscriptionStoreManager *)self readData:a3 col:0];
+  v4 = [(UAFSubscriptionStoreManager *)self readData:subscription col:0];
   if (v4)
   {
     v5 = [(UAFSubscriptionStoreManager *)self _uafAssetSetSubscriptionFromData:v4];
@@ -2464,18 +2464,18 @@ LABEL_19:
   return v5;
 }
 
-- (id)_getSubscriptions:(sqlite3_stmt *)a3 subscriptionsFor:(id)a4
+- (id)_getSubscriptions:(sqlite3_stmt *)subscriptions subscriptionsFor:(id)for
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  forCopy = for;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (sqlite3_step(a3) == 100)
+  if (sqlite3_step(subscriptions) == 100)
   {
     *&v8 = 136315650;
     v14 = v8;
     do
     {
-      v9 = [(UAFSubscriptionStoreManager *)self _getSubscription:a3, v14];
+      v9 = [(UAFSubscriptionStoreManager *)self _getSubscription:subscriptions, v14];
       if (v9)
       {
         [v7 addObject:v9];
@@ -2490,7 +2490,7 @@ LABEL_19:
           *buf = v14;
           v16 = "[UAFSubscriptionStoreManager _getSubscriptions:subscriptionsFor:]";
           v17 = 2114;
-          v18 = v6;
+          v18 = forCopy;
           v19 = 2080;
           v20 = v11;
           _os_log_error_impl(&dword_1BCF2C000, v10, OS_LOG_TYPE_ERROR, "%s Failed to read subscription for %{public}@: %s", buf, 0x20u);
@@ -2498,21 +2498,21 @@ LABEL_19:
       }
     }
 
-    while (sqlite3_step(a3) == 100);
+    while (sqlite3_step(subscriptions) == 100);
   }
 
-  sqlite3_reset(a3);
-  sqlite3_clear_bindings(a3);
+  sqlite3_reset(subscriptions);
+  sqlite3_clear_bindings(subscriptions);
 
   v12 = *MEMORY[0x1E69E9840];
 
   return v7;
 }
 
-- (id)getSubscriptions:(id)a3 user:(id)a4 error:(id *)a5
+- (id)getSubscriptions:(id)subscriptions user:(id)user error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  subscriptionsCopy = subscriptions;
+  userCopy = user;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -2525,11 +2525,11 @@ LABEL_19:
   v14[3] = &unk_1E7FFE0A0;
   v17 = &v18;
   v14[4] = self;
-  v10 = v8;
+  v10 = subscriptionsCopy;
   v15 = v10;
-  v11 = v9;
+  v11 = userCopy;
   v16 = v11;
-  [(UAFSubscriptionStoreManager *)self doDatabaseOperation:v14 useTransaction:0 logDescription:@"get subscriptions" error:a5];
+  [(UAFSubscriptionStoreManager *)self doDatabaseOperation:v14 useTransaction:0 logDescription:@"get subscriptions" error:error];
   v12 = v19[5];
 
   _Block_object_dispose(&v18, 8);
@@ -2547,17 +2547,17 @@ uint64_t __59__UAFSubscriptionStoreManager_getSubscriptions_user_error___block_i
   return 0;
 }
 
-- (id)_getSubscriptions:(id)a3 user:(id)a4
+- (id)_getSubscriptions:(id)subscriptions user:(id)user
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  subscriptionsCopy = subscriptions;
+  userCopy = user;
+  v8 = userCopy;
   readAllSubscriptions = self->_readAllSubscriptions;
-  if (v6 && v7)
+  if (subscriptionsCopy && userCopy)
   {
     p_readSubscriptionsForSubscriber = &self->_readSubscriptionsForSubscriber;
-    v11 = [(UAFSubscriptionStoreManager *)self bindString:self->_readSubscriptionsForSubscriber col:1 string:v6];
+    v11 = [(UAFSubscriptionStoreManager *)self bindString:self->_readSubscriptionsForSubscriber col:1 string:subscriptionsCopy];
     if (v11)
     {
       v12 = v11;
@@ -2569,7 +2569,7 @@ uint64_t __59__UAFSubscriptionStoreManager_getSubscriptions_user_error___block_i
         v31 = 136316418;
         v32 = "[UAFSubscriptionStoreManager _getSubscriptions:user:]";
         v33 = 2114;
-        v34 = v6;
+        v34 = subscriptionsCopy;
         v35 = 2112;
         *v36 = v8;
         *&v36[8] = 1024;
@@ -2600,7 +2600,7 @@ LABEL_19:
         v31 = 136316418;
         v32 = "[UAFSubscriptionStoreManager _getSubscriptions:user:]";
         v33 = 2114;
-        v34 = v6;
+        v34 = subscriptionsCopy;
         v35 = 2112;
         *v36 = v8;
         *&v36[8] = 1024;
@@ -2623,10 +2623,10 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (!v6 && v7)
+  if (!subscriptionsCopy && userCopy)
   {
     p_readSubscriptionsForSubscriber = &self->_readSubscriptionsForUser;
-    v17 = [(UAFSubscriptionStoreManager *)self bindString:self->_readSubscriptionsForUser col:1 string:v7];
+    v17 = [(UAFSubscriptionStoreManager *)self bindString:self->_readSubscriptionsForUser col:1 string:userCopy];
     if (v17)
     {
       v18 = v17;
@@ -2661,7 +2661,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (v6 && !v7)
+  if (subscriptionsCopy && !userCopy)
   {
     v23 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
@@ -2669,7 +2669,7 @@ LABEL_23:
       v31 = 136315394;
       v32 = "[UAFSubscriptionStoreManager _getSubscriptions:user:]";
       v33 = 2114;
-      v34 = v6;
+      v34 = subscriptionsCopy;
       _os_log_fault_impl(&dword_1BCF2C000, v23, OS_LOG_TYPE_FAULT, "%s API MISUSE: Unsupported call subcriber = '%{public}@' and user is nil", &v31, 0x16u);
     }
 
@@ -2677,7 +2677,7 @@ LABEL_23:
   }
 
 LABEL_24:
-  v28 = [(UAFSubscriptionStoreManager *)self _getSubscriptions:readAllSubscriptions subscriptionsFor:v6];
+  v28 = [(UAFSubscriptionStoreManager *)self _getSubscriptions:readAllSubscriptions subscriptionsFor:subscriptionsCopy];
 LABEL_25:
 
   v29 = *MEMORY[0x1E69E9840];
@@ -2685,11 +2685,11 @@ LABEL_25:
   return v28;
 }
 
-- (id)getSubscription:(id)a3 subscriber:(id)a4 user:(id)a5 error:(id *)a6
+- (id)getSubscription:(id)subscription subscriber:(id)subscriber user:(id)user error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  subscriptionCopy = subscription;
+  subscriberCopy = subscriber;
+  userCopy = user;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -2702,13 +2702,13 @@ LABEL_25:
   v18[3] = &unk_1E7FFE0C8;
   v22 = &v23;
   v18[4] = self;
-  v13 = v11;
+  v13 = subscriberCopy;
   v19 = v13;
-  v14 = v10;
+  v14 = subscriptionCopy;
   v20 = v14;
-  v15 = v12;
+  v15 = userCopy;
   v21 = v15;
-  [(UAFSubscriptionStoreManager *)self doDatabaseOperation:v18 useTransaction:0 logDescription:@"get subscription" error:a6];
+  [(UAFSubscriptionStoreManager *)self doDatabaseOperation:v18 useTransaction:0 logDescription:@"get subscription" error:error];
   v16 = v24[5];
 
   _Block_object_dispose(&v23, 8);
@@ -2726,14 +2726,14 @@ uint64_t __69__UAFSubscriptionStoreManager_getSubscription_subscriber_user_error
   return 0;
 }
 
-- (id)_getSubscription:(id)a3 subscription:(id)a4 user:(id)a5
+- (id)_getSubscription:(id)subscription subscription:(id)a4 user:(id)user
 {
   v47 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  subscriptionCopy = subscription;
   v9 = a4;
-  v10 = a5;
+  userCopy = user;
   readSubscription = self->_readSubscription;
-  v12 = [(UAFSubscriptionStoreManager *)self bindString:readSubscription col:1 string:v8];
+  v12 = [(UAFSubscriptionStoreManager *)self bindString:readSubscription col:1 string:subscriptionCopy];
   if (v12)
   {
     v13 = v12;
@@ -2745,11 +2745,11 @@ uint64_t __69__UAFSubscriptionStoreManager_getSubscription_subscriber_user_error
       v33 = 136316674;
       v34 = "[UAFSubscriptionStoreManager _getSubscription:subscription:user:]";
       v35 = 2112;
-      v36 = v8;
+      v36 = subscriptionCopy;
       v37 = 2114;
       v38 = v9;
       v39 = 2114;
-      v40 = v10;
+      v40 = userCopy;
       v41 = 1024;
       v42 = v13;
       v43 = 2080;
@@ -2777,9 +2777,9 @@ LABEL_10:
       v33 = 136316674;
       v34 = "[UAFSubscriptionStoreManager _getSubscription:subscription:user:]";
       v35 = 2112;
-      v36 = v10;
+      v36 = userCopy;
       v37 = 2114;
-      v38 = v8;
+      v38 = subscriptionCopy;
       v39 = 2114;
       v40 = v9;
       v41 = 1024;
@@ -2798,7 +2798,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v22 = [(UAFSubscriptionStoreManager *)self bindString:readSubscription col:3 string:v10];
+  v22 = [(UAFSubscriptionStoreManager *)self bindString:readSubscription col:3 string:userCopy];
   if (v22)
   {
     v23 = v22;
@@ -2810,9 +2810,9 @@ LABEL_11:
       v33 = 136316674;
       v34 = "[UAFSubscriptionStoreManager _getSubscription:subscription:user:]";
       v35 = 2112;
-      v36 = v10;
+      v36 = userCopy;
       v37 = 2114;
-      v38 = v8;
+      v38 = subscriptionCopy;
       v39 = 2114;
       v40 = v9;
       v41 = 1024;
@@ -2845,9 +2845,9 @@ LABEL_11:
       v33 = 136316674;
       v34 = "[UAFSubscriptionStoreManager _getSubscription:subscription:user:]";
       v35 = 2112;
-      v36 = v10;
+      v36 = userCopy;
       v37 = 2114;
-      v38 = v8;
+      v38 = subscriptionCopy;
       v39 = 2114;
       v40 = v9;
       v41 = 1024;
@@ -2871,7 +2871,7 @@ LABEL_12:
   return v26;
 }
 
-- (id)getAllSubscriptions:(id *)a3
+- (id)getAllSubscriptions:(id *)subscriptions
 {
   v6 = 0;
   v7 = &v6;
@@ -2885,7 +2885,7 @@ LABEL_12:
   v5[3] = &unk_1E7FFE0F0;
   v5[4] = self;
   v5[5] = &v6;
-  [(UAFSubscriptionStoreManager *)self doDatabaseOperation:v5 useTransaction:0 logDescription:@"get all subscriptions" error:a3];
+  [(UAFSubscriptionStoreManager *)self doDatabaseOperation:v5 useTransaction:0 logDescription:@"get all subscriptions" error:subscriptions];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
 
@@ -2903,14 +2903,14 @@ uint64_t __51__UAFSubscriptionStoreManager_getAllSubscriptions___block_invoke(ui
   return v6;
 }
 
-- (id)_getAllSubscriptions:(int *)a3
+- (id)_getAllSubscriptions:(int *)subscriptions
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   readAllSubscriptionsAndSubscribers = self->_readAllSubscriptionsAndSubscribers;
   if (sqlite3_step(readAllSubscriptionsAndSubscribers) == 100)
   {
-    v28 = a3;
+    subscriptionsCopy = subscriptions;
     while (1)
     {
       v7 = [(UAFSubscriptionStoreManager *)self _getSubscription:readAllSubscriptionsAndSubscribers];
@@ -2957,25 +2957,25 @@ LABEL_20:
       }
 
       v12 = v11;
-      v13 = [v5 objectForKeyedSubscript:v11];
+      v13 = [dictionary objectForKeyedSubscript:v11];
 
       if (!v13)
       {
-        v14 = [MEMORY[0x1E695DF90] dictionary];
-        [v5 setObject:v14 forKeyedSubscript:v12];
+        dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+        [dictionary setObject:dictionary2 forKeyedSubscript:v12];
       }
 
-      v15 = [v5 objectForKeyedSubscript:v12];
+      v15 = [dictionary objectForKeyedSubscript:v12];
       v16 = [v15 objectForKeyedSubscript:v10];
 
       if (!v16)
       {
-        v17 = [MEMORY[0x1E695DF70] array];
-        v18 = [v5 objectForKeyedSubscript:v12];
-        [v18 setObject:v17 forKeyedSubscript:v10];
+        array = [MEMORY[0x1E695DF70] array];
+        v18 = [dictionary objectForKeyedSubscript:v12];
+        [v18 setObject:array forKeyedSubscript:v10];
       }
 
-      v19 = [v5 objectForKeyedSubscript:v12];
+      v19 = [dictionary objectForKeyedSubscript:v12];
       v20 = [v19 objectForKeyedSubscript:v10];
       [v20 addObject:v8];
 
@@ -3001,7 +3001,7 @@ LABEL_21:
 
     v21 = 3;
 LABEL_22:
-    a3 = v28;
+    subscriptions = subscriptionsCopy;
   }
 
   else
@@ -3011,13 +3011,13 @@ LABEL_22:
 
   sqlite3_reset(readAllSubscriptionsAndSubscribers);
   sqlite3_clear_bindings(readAllSubscriptionsAndSubscribers);
-  *a3 = v21;
+  *subscriptions = v21;
   v25 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return dictionary;
 }
 
-- (id)getUsers:(id *)a3
+- (id)getUsers:(id *)users
 {
   v8 = 0;
   v9 = &v8;
@@ -3031,7 +3031,7 @@ LABEL_22:
   v7[3] = &unk_1E7FFE0F0;
   v7[4] = self;
   v7[5] = &v8;
-  [(UAFSubscriptionStoreManager *)self doDatabaseOperation:v7 useTransaction:0 logDescription:@"get users" error:a3];
+  [(UAFSubscriptionStoreManager *)self doDatabaseOperation:v7 useTransaction:0 logDescription:@"get users" error:users];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
 
@@ -3078,9 +3078,9 @@ LABEL_9:
   return v6;
 }
 
-- (id)getSubscribers:(id)a3 error:(id *)a4
+- (id)getSubscribers:(id)subscribers error:(id *)error
 {
-  v6 = a3;
+  subscribersCopy = subscribers;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -3092,10 +3092,10 @@ LABEL_9:
   v10[2] = __52__UAFSubscriptionStoreManager_getSubscribers_error___block_invoke;
   v10[3] = &unk_1E7FFE118;
   v10[4] = self;
-  v7 = v6;
+  v7 = subscribersCopy;
   v11 = v7;
   v12 = &v13;
-  [(UAFSubscriptionStoreManager *)self doDatabaseOperation:v10 useTransaction:0 logDescription:@"get subscribers" error:a4];
+  [(UAFSubscriptionStoreManager *)self doDatabaseOperation:v10 useTransaction:0 logDescription:@"get subscribers" error:error];
   v8 = v14[5];
 
   _Block_object_dispose(&v13, 8);
@@ -3114,12 +3114,12 @@ uint64_t __52__UAFSubscriptionStoreManager_getSubscribers_error___block_invoke(v
   return 0;
 }
 
-- (int)_getSubscribers:(id)a3 subscribers:(id *)a4
+- (int)_getSubscribers:(id)subscribers subscribers:(id *)a4
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  subscribersCopy = subscribers;
   v7 = objc_opt_new();
-  v8 = [(UAFSubscriptionStoreManager *)self bindString:self->_readAllSubscribers col:1 string:v6];
+  v8 = [(UAFSubscriptionStoreManager *)self bindString:self->_readAllSubscribers col:1 string:subscribersCopy];
   if (!v8 && sqlite3_step(self->_readAllSubscribers) == 100)
   {
     *&v9 = 136315394;
@@ -3162,12 +3162,12 @@ uint64_t __52__UAFSubscriptionStoreManager_getSubscribers_error___block_invoke(v
   return v8;
 }
 
-- (BOOL)unsubscribe:(id)a3 subscriptions:(id)a4 user:(id)a5 node:(id)a6
+- (BOOL)unsubscribe:(id)unsubscribe subscriptions:(id)subscriptions user:(id)user node:(id)node
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  unsubscribeCopy = unsubscribe;
+  subscriptionsCopy = subscriptions;
+  userCopy = user;
+  nodeCopy = node;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
@@ -3176,15 +3176,15 @@ uint64_t __52__UAFSubscriptionStoreManager_getSubscribers_error___block_invoke(v
   v24[1] = 3221225472;
   v24[2] = __67__UAFSubscriptionStoreManager_unsubscribe_subscriptions_user_node___block_invoke;
   v24[3] = &unk_1E7FFE140;
-  v14 = v11;
+  v14 = subscriptionsCopy;
   v30 = &v31;
   v25 = v14;
-  v26 = self;
-  v15 = v10;
+  selfCopy = self;
+  v15 = unsubscribeCopy;
   v27 = v15;
-  v16 = v12;
+  v16 = userCopy;
   v28 = v16;
-  v17 = v13;
+  v17 = nodeCopy;
   v29 = v17;
   v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unsubscribe for Subscriber: %@", v15];
   v19 = [(UAFSubscriptionStoreManager *)self doDatabaseOperation:v24 useTransaction:1 logDescription:v18 error:0];
@@ -3296,13 +3296,13 @@ LABEL_3:
   return v19;
 }
 
-- (BOOL)_unsubscribeSubscription:(id)a3 subscription:(id)a4 user:(id)a5
+- (BOOL)_unsubscribeSubscription:(id)subscription subscription:(id)a4 user:(id)user
 {
   v49 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  subscriptionCopy = subscription;
   v9 = a4;
-  v10 = a5;
-  v11 = [(UAFSubscriptionStoreManager *)self bindString:self->_removeSubscription col:1 string:v8];
+  userCopy = user;
+  v11 = [(UAFSubscriptionStoreManager *)self bindString:self->_removeSubscription col:1 string:subscriptionCopy];
   if (v11)
   {
     v12 = v11;
@@ -3314,9 +3314,9 @@ LABEL_3:
       v35 = 136316674;
       v36 = "[UAFSubscriptionStoreManager _unsubscribeSubscription:subscription:user:]";
       v37 = 2112;
-      v38 = v10;
+      v38 = userCopy;
       v39 = 2114;
-      v40 = v8;
+      v40 = subscriptionCopy;
       v41 = 2114;
       v42 = v9;
       v43 = 1024;
@@ -3346,9 +3346,9 @@ LABEL_10:
       v35 = 136316674;
       v36 = "[UAFSubscriptionStoreManager _unsubscribeSubscription:subscription:user:]";
       v37 = 2112;
-      v38 = v10;
+      v38 = userCopy;
       v39 = 2114;
-      v40 = v8;
+      v40 = subscriptionCopy;
       v41 = 2114;
       v42 = v9;
       v43 = 1024;
@@ -3366,7 +3366,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v20 = [(UAFSubscriptionStoreManager *)self bindString:self->_removeSubscription col:3 string:v10];
+  v20 = [(UAFSubscriptionStoreManager *)self bindString:self->_removeSubscription col:3 string:userCopy];
   if (v20)
   {
     v12 = v20;
@@ -3378,9 +3378,9 @@ LABEL_11:
       v35 = 136316674;
       v36 = "[UAFSubscriptionStoreManager _unsubscribeSubscription:subscription:user:]";
       v37 = 2112;
-      v38 = v10;
+      v38 = userCopy;
       v39 = 2114;
-      v40 = v8;
+      v40 = subscriptionCopy;
       v41 = 2114;
       v42 = v9;
       v43 = 1024;
@@ -3408,9 +3408,9 @@ LABEL_11:
       v35 = 136316674;
       v36 = "[UAFSubscriptionStoreManager _unsubscribeSubscription:subscription:user:]";
       v37 = 2112;
-      v38 = v10;
+      v38 = userCopy;
       v39 = 2114;
-      v40 = v8;
+      v40 = subscriptionCopy;
       v41 = 2114;
       v42 = v9;
       v43 = 1024;
@@ -3425,8 +3425,8 @@ LABEL_11:
     v29 = UAFLogContextStorage;
     v30 = kUAFABCDatabaseFailure;
     v31 = [MEMORY[0x1E696AD98] numberWithInt:sqlite3_extended_errcode(self->_store)];
-    v32 = [v31 stringValue];
-    UAFFaultCapture(v29, v30, @"subscription", v32);
+    stringValue = [v31 stringValue];
+    UAFFaultCapture(v29, v30, @"subscription", stringValue);
   }
 
   else
@@ -3521,16 +3521,16 @@ uint64_t __53__UAFSubscriptionStoreManager_removeAllSubscriptions__block_invoke(
   }
 }
 
-- (int)_setSystemAssetSetUsages:(id)a3
+- (int)_setSystemAssetSetUsages:(id)usages
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  usagesCopy = usages;
   [(UAFSubscriptionStoreManager *)self _removeAllSystemAssetSetUsages];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v5;
+  v6 = usagesCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -3582,11 +3582,11 @@ LABEL_18:
   return v3;
 }
 
-- (int)doDatabaseOperation:(id)a3 useTransaction:(BOOL)a4 logDescription:(id)a5 error:(id *)a6
+- (int)doDatabaseOperation:(id)operation useTransaction:(BOOL)transaction logDescription:(id)description error:(id *)error
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
+  operationCopy = operation;
+  descriptionCopy = description;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
@@ -3596,17 +3596,17 @@ LABEL_18:
   v25 = 3221225472;
   v26 = __87__UAFSubscriptionStoreManager_doDatabaseOperation_useTransaction_logDescription_error___block_invoke;
   v27 = &unk_1E7FFE190;
-  v28 = self;
+  selfCopy = self;
   v31 = &v33;
-  v32 = a4;
-  v13 = v10;
+  transactionCopy = transaction;
+  v13 = operationCopy;
   v30 = v13;
-  v14 = v11;
+  v14 = descriptionCopy;
   v29 = v14;
   dispatch_sync(v12, &v24);
 
   v15 = v34;
-  if (a6)
+  if (error)
   {
     v16 = *(v34 + 6);
     if (v16 && v16 != 101)
@@ -3614,17 +3614,17 @@ LABEL_18:
       v17 = v16;
       v18 = MEMORY[0x1E696ABC0];
       v37 = *MEMORY[0x1E696A588];
-      v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{sqlite3_errstr(v16), v24, v25, v26, v27, v28}];
+      v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{sqlite3_errstr(v16), v24, v25, v26, v27, selfCopy}];
       v38[0] = v19;
       v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:&v37 count:1];
-      *a6 = [v18 errorWithDomain:@"com.apple.UnifiedAssetFramework.Storage" code:v17 userInfo:v20];
+      *error = [v18 errorWithDomain:@"com.apple.UnifiedAssetFramework.Storage" code:v17 userInfo:v20];
 
       v15 = v34;
     }
 
     else
     {
-      *a6 = 0;
+      *error = 0;
     }
   }
 
@@ -3732,18 +3732,18 @@ LABEL_15:
   return result;
 }
 
-- (id)_subscriptionTime:(id)a3
+- (id)_subscriptionTime:(id)time
 {
-  v3 = a3;
+  timeCopy = time;
   v4 = objc_opt_new();
-  v5 = [MEMORY[0x1E695DF58] currentLocale];
-  [v4 setLocale:v5];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  [v4 setLocale:currentLocale];
 
   [v4 setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"];
-  v6 = [MEMORY[0x1E695DFE8] localTimeZone];
-  [v4 setTimeZone:v6];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  [v4 setTimeZone:localTimeZone];
 
-  v7 = [v4 stringFromDate:v3];
+  v7 = [v4 stringFromDate:timeCopy];
 
   return v7;
 }
@@ -3826,10 +3826,10 @@ uint64_t __50__UAFSubscriptionStoreManager_expireSubscriptions__block_invoke(uin
   return 0;
 }
 
-- (int)_updateSystemAssetSetUsages:(id *)a3 assetSetUsages:(id *)a4 configurationManager:(id)a5
+- (int)_updateSystemAssetSetUsages:(id *)usages assetSetUsages:(id *)setUsages configurationManager:(id)manager
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  managerCopy = manager;
   v23 = 0;
   v9 = [(UAFSubscriptionStoreManager *)self _getAllSubscriptions:&v23];
   if (v23)
@@ -3860,7 +3860,7 @@ uint64_t __50__UAFSubscriptionStoreManager_expireSubscriptions__block_invoke(uin
       _os_log_debug_impl(&dword_1BCF2C000, v13, OS_LOG_TYPE_DEBUG, "%s All subscriptions now %{public}@", buf, 0x16u);
     }
 
-    v14 = v8;
+    v14 = managerCopy;
     if (!v14)
     {
       v14 = +[UAFConfigurationManager defaultManager];
@@ -3893,17 +3893,17 @@ uint64_t __50__UAFSubscriptionStoreManager_expireSubscriptions__block_invoke(uin
 
     else
     {
-      if (a4)
+      if (setUsages)
       {
         v18 = v15;
-        *a4 = v15;
+        *setUsages = v15;
       }
 
-      if (a3)
+      if (usages)
       {
         v19 = v12;
         v11 = 0;
-        *a3 = v12;
+        *usages = v12;
       }
 
       else
@@ -3917,9 +3917,9 @@ uint64_t __50__UAFSubscriptionStoreManager_expireSubscriptions__block_invoke(uin
   return v11;
 }
 
-- (id)updateSystemAssetSetUsages:(id *)a3 configurationManager:(id)a4
+- (id)updateSystemAssetSetUsages:(id *)usages configurationManager:(id)manager
 {
-  v6 = a4;
+  managerCopy = manager;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -3932,9 +3932,9 @@ uint64_t __50__UAFSubscriptionStoreManager_expireSubscriptions__block_invoke(uin
   v17 = __Block_byref_object_copy__6;
   v18 = __Block_byref_object_dispose__6;
   v19 = 0;
-  if (!v6)
+  if (!managerCopy)
   {
-    v6 = +[UAFConfigurationManager defaultManager];
+    managerCopy = +[UAFConfigurationManager defaultManager];
   }
 
   v10[0] = MEMORY[0x1E69E9820];
@@ -3944,12 +3944,12 @@ uint64_t __50__UAFSubscriptionStoreManager_expireSubscriptions__block_invoke(uin
   v10[4] = self;
   v12 = &v20;
   v13 = &v14;
-  v7 = v6;
+  v7 = managerCopy;
   v11 = v7;
   [(UAFSubscriptionStoreManager *)self doDatabaseOperation:v10 useTransaction:1 logDescription:@"updating system asset set usages" error:0];
-  if (a3)
+  if (usages)
   {
-    *a3 = v21[5];
+    *usages = v21[5];
   }
 
   v8 = v15[5];
@@ -3973,12 +3973,12 @@ uint64_t __79__UAFSubscriptionStoreManager_updateSystemAssetSetUsages_configurat
   return v4;
 }
 
-- (int)_setSystemAssetSetUsages:(id)a3 usages:(id)a4
+- (int)_setSystemAssetSetUsages:(id)usages usages:(id)a4
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  usagesCopy = usages;
   v7 = a4;
-  v8 = [(UAFSubscriptionStoreManager *)self bindString:self->_setSystemAssetSetUsages col:1 string:v6];
+  v8 = [(UAFSubscriptionStoreManager *)self bindString:self->_setSystemAssetSetUsages col:1 string:usagesCopy];
   if (!v8)
   {
     v10 = [(UAFSubscriptionStoreManager *)self _dataFromSystemAssetSetUsages:v7];
@@ -3990,7 +3990,7 @@ uint64_t __79__UAFSubscriptionStoreManager_updateSystemAssetSetUsages_configurat
         v23 = 136315394;
         v24 = "[UAFSubscriptionStoreManager _setSystemAssetSetUsages:usages:]";
         v25 = 2114;
-        v26 = v6;
+        v26 = usagesCopy;
         _os_log_error_impl(&dword_1BCF2C000, v14, OS_LOG_TYPE_ERROR, "%s Getting system asset set usages data from the usages failed for AssetSetName: '%{public}@'", &v23, 0x16u);
       }
 
@@ -4010,7 +4010,7 @@ uint64_t __79__UAFSubscriptionStoreManager_updateSystemAssetSetUsages_configurat
         v23 = 136316162;
         v24 = "[UAFSubscriptionStoreManager _setSystemAssetSetUsages:usages:]";
         v25 = 2114;
-        v26 = v6;
+        v26 = usagesCopy;
         v27 = 1024;
         v28 = v9;
         v29 = 2080;
@@ -4040,7 +4040,7 @@ LABEL_8:
         v23 = 136316162;
         v24 = "[UAFSubscriptionStoreManager _setSystemAssetSetUsages:usages:]";
         v25 = 2114;
-        v26 = v6;
+        v26 = usagesCopy;
         v27 = 1024;
         v28 = v9;
         v29 = 2080;
@@ -4066,7 +4066,7 @@ LABEL_12:
     v23 = 136316162;
     v24 = "[UAFSubscriptionStoreManager _setSystemAssetSetUsages:usages:]";
     v25 = 2114;
-    v26 = v6;
+    v26 = usagesCopy;
     v27 = 1024;
     v28 = v9;
     v29 = 2080;
@@ -4085,9 +4085,9 @@ LABEL_13:
   return v9;
 }
 
-- (id)getSystemAssetSetUsages:(id)a3
+- (id)getSystemAssetSetUsages:(id)usages
 {
-  v4 = a3;
+  usagesCopy = usages;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -4099,7 +4099,7 @@ LABEL_13:
   v8[2] = __55__UAFSubscriptionStoreManager_getSystemAssetSetUsages___block_invoke;
   v8[3] = &unk_1E7FFE118;
   v8[4] = self;
-  v5 = v4;
+  v5 = usagesCopy;
   v9 = v5;
   v10 = &v11;
   [(UAFSubscriptionStoreManager *)self doDatabaseOperation:v8 useTransaction:0 logDescription:@"get system asset set usages" error:0];
@@ -4210,7 +4210,7 @@ LABEL_4:
   return v3;
 }
 
-- (id)getAllSystemAssetSetUsages:(id *)a3
+- (id)getAllSystemAssetSetUsages:(id *)usages
 {
   v8 = 0;
   v9 = &v8;
@@ -4224,7 +4224,7 @@ LABEL_4:
   v7[3] = &unk_1E7FFE0F0;
   v7[4] = self;
   v7[5] = &v8;
-  [(UAFSubscriptionStoreManager *)self doDatabaseOperation:v7 useTransaction:0 logDescription:@"get system asset set usages" error:a3];
+  [(UAFSubscriptionStoreManager *)self doDatabaseOperation:v7 useTransaction:0 logDescription:@"get system asset set usages" error:usages];
   if ([v9[5] count])
   {
     v5 = v9[5];
@@ -4320,16 +4320,16 @@ uint64_t __58__UAFSubscriptionStoreManager_getAllSystemAssetSetUsages___block_in
   return 0;
 }
 
-- (BOOL)clearSystemAssetSetUsages:(id)a3
+- (BOOL)clearSystemAssetSetUsages:(id)usages
 {
-  v4 = a3;
+  usagesCopy = usages;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __57__UAFSubscriptionStoreManager_clearSystemAssetSetUsages___block_invoke;
   v10[3] = &unk_1E7FFE1E0;
   v10[4] = self;
-  v11 = v4;
-  v5 = v4;
+  v11 = usagesCopy;
+  v5 = usagesCopy;
   v6 = [(UAFSubscriptionStoreManager *)self doDatabaseOperation:v10 useTransaction:1 logDescription:@"clearing system asset set usages" error:0];
   if (v6)
   {
@@ -4477,13 +4477,13 @@ uint64_t __60__UAFSubscriptionStoreManager_removeAllSystemAssetSetUsages__block_
   }
 }
 
-- (int)_setDbVersion:(int)a3
+- (int)_setDbVersion:(int)version
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [(UAFSubscriptionStoreManager *)self _beginDatabaseTransaction];
-  if (v5)
+  _beginDatabaseTransaction = [(UAFSubscriptionStoreManager *)self _beginDatabaseTransaction];
+  if (_beginDatabaseTransaction)
   {
-    v6 = v5;
+    v6 = _beginDatabaseTransaction;
     v7 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -4528,7 +4528,7 @@ LABEL_24:
     goto LABEL_14;
   }
 
-  v10 = sqlite3_bind_int(self->_setDbVersion, 1, a3);
+  v10 = sqlite3_bind_int(self->_setDbVersion, 1, version);
   if (v10)
   {
     v6 = v10;
@@ -4586,17 +4586,17 @@ LABEL_22:
 - (BOOL)_moveDatabase
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   oldDatabaseName = self->_oldDatabaseName;
   v15 = 0;
-  [v3 removeItemAtPath:oldDatabaseName error:&v15];
+  [defaultManager removeItemAtPath:oldDatabaseName error:&v15];
   v5 = v15;
 
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
   databaseName = self->_databaseName;
   v8 = self->_oldDatabaseName;
   v14 = v5;
-  v9 = [v6 moveItemAtPath:databaseName toPath:v8 error:&v14];
+  v9 = [defaultManager2 moveItemAtPath:databaseName toPath:v8 error:&v14];
   v10 = v14;
 
   if ((v9 & 1) == 0)
@@ -4616,9 +4616,9 @@ LABEL_22:
   return v9;
 }
 
-- (int)_performDbUpgrade:(int)a3
+- (int)_performDbUpgrade:(int)upgrade
 {
-  LODWORD(v3) = a3;
+  LODWORD(v3) = upgrade;
   v29 = *MEMORY[0x1E69E9840];
   v5 = UAFGetLogCategory(&UAFLogContextStorage);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -4841,11 +4841,11 @@ uint64_t __47__UAFSubscriptionStoreManager_performDbUpgrade__block_invoke(uint64
   return result;
 }
 
-- (id)_dataFromUAFAssetSubscription:(id)a3
+- (id)_dataFromUAFAssetSubscription:(id)subscription
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0;
-  v3 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v8];
+  v3 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:subscription requiringSecureCoding:1 error:&v8];
   v4 = v8;
   if (v4)
   {
@@ -4865,15 +4865,15 @@ uint64_t __47__UAFSubscriptionStoreManager_performDbUpgrade__block_invoke(uint64
   return v3;
 }
 
-- (id)_uafAssetSetSubscriptionFromData:(id)a3
+- (id)_uafAssetSetSubscriptionFromData:(id)data
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (data)
   {
     v3 = MEMORY[0x1E696ACD0];
-    v4 = a3;
+    dataCopy = data;
     v10 = 0;
-    v5 = [v3 unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:&v10];
+    v5 = [v3 unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v10];
 
     v6 = v10;
     if (v6)
@@ -4900,11 +4900,11 @@ uint64_t __47__UAFSubscriptionStoreManager_performDbUpgrade__block_invoke(uint64
   return v5;
 }
 
-- (id)_dataFromSystemAssetSetUsages:(id)a3
+- (id)_dataFromSystemAssetSetUsages:(id)usages
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0;
-  v3 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v8];
+  v3 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:usages requiringSecureCoding:1 error:&v8];
   v4 = v8;
   if (v4)
   {
@@ -4924,19 +4924,19 @@ uint64_t __47__UAFSubscriptionStoreManager_performDbUpgrade__block_invoke(uint64
   return v3;
 }
 
-- (id)_systemAssetSetUsagesFromData:(id)a3
+- (id)_systemAssetSetUsagesFromData:(id)data
 {
   v18[3] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696ACD0];
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  dataCopy = data;
   v18[0] = objc_opt_class();
   v18[1] = objc_opt_class();
   v18[2] = objc_opt_class();
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:3];
   v7 = [v4 setWithArray:v6];
   v13 = 0;
-  v8 = [v3 unarchivedObjectOfClasses:v7 fromData:v5 error:&v13];
+  v8 = [v3 unarchivedObjectOfClasses:v7 fromData:dataCopy error:&v13];
 
   v9 = v13;
   if (v9)
@@ -4957,9 +4957,9 @@ uint64_t __47__UAFSubscriptionStoreManager_performDbUpgrade__block_invoke(uint64
   return v8;
 }
 
-- (id)getSystemConfigurationForKey:(id)a3
+- (id)getSystemConfigurationForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -4967,7 +4967,7 @@ uint64_t __47__UAFSubscriptionStoreManager_performDbUpgrade__block_invoke(uint64
   v16 = __Block_byref_object_dispose__6;
   v17 = 0;
   v9 = MEMORY[0x1E69E9820];
-  v5 = v4;
+  v5 = keyCopy;
   v10 = v5;
   v11 = &v12;
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"get system configuration for key: %@", v5, v9, 3221225472, __60__UAFSubscriptionStoreManager_getSystemConfigurationForKey___block_invoke, &unk_1E7FFE118, self];
@@ -5054,14 +5054,14 @@ LABEL_10:
   return v5;
 }
 
-- (void)setSystemConfigurationForKey:(id)a3 withValue:(id)a4
+- (void)setSystemConfigurationForKey:(id)key withValue:(id)value
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UAFSubscriptionStoreManager *)self getSystemConfigurationForKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  v8 = [(UAFSubscriptionStoreManager *)self getSystemConfigurationForKey:keyCopy];
   v9 = v8;
-  if (v8 && [v8 isEqualToString:v7])
+  if (v8 && [v8 isEqualToString:valueCopy])
   {
     v10 = UAFGetLogCategory(&UAFLogContextStorage);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -5069,7 +5069,7 @@ LABEL_10:
       *buf = 136315394;
       v17 = "[UAFSubscriptionStoreManager setSystemConfigurationForKey:withValue:]";
       v18 = 2114;
-      v19 = v6;
+      v19 = keyCopy;
       _os_log_impl(&dword_1BCF2C000, v10, OS_LOG_TYPE_DEFAULT, "%s Skipping update of %{public}@ as value is unchanged", buf, 0x16u);
     }
   }
@@ -5077,8 +5077,8 @@ LABEL_10:
   else
   {
     v13 = MEMORY[0x1E69E9820];
-    v14 = v6;
-    v15 = v7;
+    v14 = keyCopy;
+    v15 = valueCopy;
     v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"set system configuration for key: %@", v14, v13, 3221225472, __70__UAFSubscriptionStoreManager_setSystemConfigurationForKey_withValue___block_invoke, &unk_1E7FFE208, self];
     [(UAFSubscriptionStoreManager *)self doDatabaseOperation:&v13 useTransaction:0 logDescription:v11 error:0];
   }
@@ -5178,15 +5178,15 @@ LABEL_6:
   return v3;
 }
 
-- (id)getAllSystemConfiguration:(id *)a3
+- (id)getAllSystemConfiguration:(id *)configuration
 {
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __57__UAFSubscriptionStoreManager_getAllSystemConfiguration___block_invoke;
   v13[3] = &unk_1E7FFE1E0;
   v13[4] = self;
-  v6 = v5;
+  v6 = dictionary;
   v14 = v6;
   v12 = 0;
   [(UAFSubscriptionStoreManager *)self doDatabaseOperation:v13 useTransaction:1 logDescription:@"getting all system configuration keys & values" error:&v12];
@@ -5194,11 +5194,11 @@ LABEL_6:
   v8 = v7;
   if (v7)
   {
-    if (a3)
+    if (configuration)
     {
       v9 = v7;
       v10 = 0;
-      *a3 = v8;
+      *configuration = v8;
     }
 
     else
@@ -5276,9 +5276,9 @@ uint64_t __57__UAFSubscriptionStoreManager_getAllSystemConfiguration___block_inv
   return 0;
 }
 
-- (id)getUserLastSeenTime:(id)a3 error:(id *)a4
+- (id)getUserLastSeenTime:(id)time error:(id *)error
 {
-  v6 = a3;
+  timeCopy = time;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -5290,10 +5290,10 @@ uint64_t __57__UAFSubscriptionStoreManager_getAllSystemConfiguration___block_inv
   v10[2] = __57__UAFSubscriptionStoreManager_getUserLastSeenTime_error___block_invoke;
   v10[3] = &unk_1E7FFE118;
   v10[4] = self;
-  v7 = v6;
+  v7 = timeCopy;
   v11 = v7;
   v12 = &v13;
-  [(UAFSubscriptionStoreManager *)self doDatabaseOperation:v10 useTransaction:1 logDescription:@"getting user last seen" error:a4];
+  [(UAFSubscriptionStoreManager *)self doDatabaseOperation:v10 useTransaction:1 logDescription:@"getting user last seen" error:error];
   v8 = v14[5];
 
   _Block_object_dispose(&v13, 8);
@@ -5311,9 +5311,9 @@ uint64_t __57__UAFSubscriptionStoreManager_getUserLastSeenTime_error___block_inv
   return v4;
 }
 
-- (id)getUserNodeName:(id)a3 error:(id *)a4
+- (id)getUserNodeName:(id)name error:(id *)error
 {
-  v6 = a3;
+  nameCopy = name;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -5325,10 +5325,10 @@ uint64_t __57__UAFSubscriptionStoreManager_getUserLastSeenTime_error___block_inv
   v10[2] = __53__UAFSubscriptionStoreManager_getUserNodeName_error___block_invoke;
   v10[3] = &unk_1E7FFE118;
   v10[4] = self;
-  v7 = v6;
+  v7 = nameCopy;
   v11 = v7;
   v12 = &v13;
-  [(UAFSubscriptionStoreManager *)self doDatabaseOperation:v10 useTransaction:1 logDescription:@"getting user node name" error:a4];
+  [(UAFSubscriptionStoreManager *)self doDatabaseOperation:v10 useTransaction:1 logDescription:@"getting user node name" error:error];
   v8 = v14[5];
 
   _Block_object_dispose(&v13, 8);
@@ -5346,12 +5346,12 @@ uint64_t __53__UAFSubscriptionStoreManager_getUserNodeName_error___block_invoke(
   return v4;
 }
 
-- (int)_getUser:(id)a3 lastSeen:(id *)a4 nodeName:(id *)a5
+- (int)_getUser:(id)user lastSeen:(id *)seen nodeName:(id *)name
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  userCopy = user;
   readUser = self->_readUser;
-  v10 = [(UAFSubscriptionStoreManager *)self bindString:readUser col:1 string:v8];
+  v10 = [(UAFSubscriptionStoreManager *)self bindString:readUser col:1 string:userCopy];
   if (v10)
   {
     v11 = v10;
@@ -5363,7 +5363,7 @@ uint64_t __53__UAFSubscriptionStoreManager_getUserNodeName_error___block_invoke(
       v31 = 136316162;
       v32 = "[UAFSubscriptionStoreManager _getUser:lastSeen:nodeName:]";
       v33 = 2112;
-      *v34 = v8;
+      *v34 = userCopy;
       *&v34[8] = 1024;
       *&v34[10] = v11;
       v35 = 2080;
@@ -5388,7 +5388,7 @@ uint64_t __53__UAFSubscriptionStoreManager_getUserNodeName_error___block_invoke(
 
       v17 = [(UAFSubscriptionStoreManager *)self readDate:self->_readUser col:0];
 
-      if (a4 && !v17)
+      if (seen && !v17)
       {
         v21 = UAFGetLogCategory(&UAFLogContextStorage);
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -5410,15 +5410,15 @@ uint64_t __53__UAFSubscriptionStoreManager_getUserNodeName_error___block_invoke(
         goto LABEL_23;
       }
 
-      if (a4)
+      if (seen)
       {
         v18 = v17;
-        *a4 = v17;
+        *seen = v17;
       }
 
       v19 = [(UAFSubscriptionStoreManager *)self readString:self->_readUser col:1];
 
-      if (a5 && !v19)
+      if (name && !v19)
       {
         v21 = UAFGetLogCategory(&UAFLogContextStorage);
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -5446,10 +5446,10 @@ LABEL_23:
 
       v15 = v19;
       v12 = v17;
-      if (a5)
+      if (name)
       {
         v20 = v19;
-        *a5 = v19;
+        *name = v19;
         v15 = v19;
         v12 = v17;
       }
@@ -5470,7 +5470,7 @@ LABEL_24:
       v31 = 136316162;
       v32 = "[UAFSubscriptionStoreManager _getUser:lastSeen:nodeName:]";
       v33 = 2112;
-      *v34 = v8;
+      *v34 = userCopy;
       *&v34[8] = 1024;
       *&v34[10] = v11;
       v35 = 2080;
@@ -5490,10 +5490,10 @@ LABEL_27:
   return v11;
 }
 
-- (id)setUserLastSeenTime:(id)a3 node:(id)a4 time:(id)a5
+- (id)setUserLastSeenTime:(id)time node:(id)node time:(id)a5
 {
-  v8 = a3;
-  v9 = a4;
+  timeCopy = time;
+  nodeCopy = node;
   v10 = a5;
   v18 = 0;
   v19[0] = MEMORY[0x1E69E9820];
@@ -5501,12 +5501,12 @@ LABEL_27:
   v19[2] = __61__UAFSubscriptionStoreManager_setUserLastSeenTime_node_time___block_invoke;
   v19[3] = &unk_1E7FFE230;
   v19[4] = self;
-  v20 = v8;
-  v21 = v9;
+  v20 = timeCopy;
+  v21 = nodeCopy;
   v22 = v10;
   v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v12 = nodeCopy;
+  v13 = timeCopy;
   [(UAFSubscriptionStoreManager *)self doDatabaseOperation:v19 useTransaction:0 logDescription:@"set last seen time" error:&v18];
   v14 = v18;
   v15 = v22;
@@ -5515,13 +5515,13 @@ LABEL_27:
   return v14;
 }
 
-- (int)_setUserLastSeenTime:(id)a3 node:(id)a4 time:(id)a5
+- (int)_setUserLastSeenTime:(id)time node:(id)node time:(id)a5
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  timeCopy = time;
+  nodeCopy = node;
   v10 = a5;
-  v11 = [(UAFSubscriptionStoreManager *)self bindString:self->_writeUserLastSeen col:1 string:v8];
+  v11 = [(UAFSubscriptionStoreManager *)self bindString:self->_writeUserLastSeen col:1 string:timeCopy];
   if (v11)
   {
     v12 = v11;
@@ -5533,7 +5533,7 @@ LABEL_27:
       v28 = 136316162;
       v29 = "[UAFSubscriptionStoreManager _setUserLastSeenTime:node:time:]";
       v30 = 2112;
-      v31 = v8;
+      v31 = timeCopy;
       v32 = 1024;
       v33 = v12;
       v34 = 2080;
@@ -5561,7 +5561,7 @@ LABEL_10:
       v28 = 136316162;
       v29 = "[UAFSubscriptionStoreManager _setUserLastSeenTime:node:time:]";
       v30 = 2112;
-      v31 = v8;
+      v31 = timeCopy;
       v32 = 1024;
       v33 = v12;
       v34 = 2080;
@@ -5577,7 +5577,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v20 = [(UAFSubscriptionStoreManager *)self bindString:self->_writeUserLastSeen col:3 string:v9];
+  v20 = [(UAFSubscriptionStoreManager *)self bindString:self->_writeUserLastSeen col:3 string:nodeCopy];
   if (v20)
   {
     v12 = v20;
@@ -5589,7 +5589,7 @@ LABEL_14:
       v28 = 136316162;
       v29 = "[UAFSubscriptionStoreManager _setUserLastSeenTime:node:time:]";
       v30 = 2112;
-      v31 = v8;
+      v31 = timeCopy;
       v32 = 1024;
       v33 = v12;
       v34 = 2080;
@@ -5618,7 +5618,7 @@ LABEL_14:
     v28 = 136316162;
     v29 = "[UAFSubscriptionStoreManager _setUserLastSeenTime:node:time:]";
     v30 = 2112;
-    v31 = v8;
+    v31 = timeCopy;
     v32 = 1024;
     v33 = v12;
     v34 = 2080;
@@ -5637,9 +5637,9 @@ LABEL_15:
   return v12;
 }
 
-- (id)getUsersOlderThanDate:(id)a3 error:(id *)a4
+- (id)getUsersOlderThanDate:(id)date error:(id *)error
 {
-  v6 = a3;
+  dateCopy = date;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -5651,10 +5651,10 @@ LABEL_15:
   v10[2] = __59__UAFSubscriptionStoreManager_getUsersOlderThanDate_error___block_invoke;
   v10[3] = &unk_1E7FFE118;
   v10[4] = self;
-  v7 = v6;
+  v7 = dateCopy;
   v11 = v7;
   v12 = &v13;
-  [(UAFSubscriptionStoreManager *)self doDatabaseOperation:v10 useTransaction:1 logDescription:@"getting users older than" error:a4];
+  [(UAFSubscriptionStoreManager *)self doDatabaseOperation:v10 useTransaction:1 logDescription:@"getting users older than" error:error];
   v8 = v14[5];
 
   _Block_object_dispose(&v13, 8);
@@ -5787,17 +5787,17 @@ uint64_t __59__UAFSubscriptionStoreManager_getUsersOlderThanDate_error___block_i
   return v3;
 }
 
-- (id)removeUser:(id)a3
+- (id)removeUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   v10 = 0;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __42__UAFSubscriptionStoreManager_removeUser___block_invoke;
   v11[3] = &unk_1E7FFE1E0;
   v11[4] = self;
-  v12 = v4;
-  v5 = v4;
+  v12 = userCopy;
+  v5 = userCopy;
   [(UAFSubscriptionStoreManager *)self doDatabaseOperation:v11 useTransaction:0 logDescription:@"remove user" error:&v10];
   v6 = v10;
   v7 = v12;
@@ -5806,11 +5806,11 @@ uint64_t __59__UAFSubscriptionStoreManager_getUsersOlderThanDate_error___block_i
   return v6;
 }
 
-- (int)_removeUser:(id)a3
+- (int)_removeUser:(id)user
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UAFSubscriptionStoreManager *)self bindString:self->_removeUser col:1 string:v4];
+  userCopy = user;
+  v5 = [(UAFSubscriptionStoreManager *)self bindString:self->_removeUser col:1 string:userCopy];
   if (v5)
   {
     v6 = v5;
@@ -5827,7 +5827,7 @@ LABEL_3:
     v16 = 136316162;
     v17 = "[UAFSubscriptionStoreManager _removeUser:]";
     v18 = 2112;
-    v19 = v4;
+    v19 = userCopy;
     v20 = 1024;
     v21 = v6;
     v22 = 2080;
@@ -5855,7 +5855,7 @@ LABEL_10:
     v16 = 136316162;
     v17 = "[UAFSubscriptionStoreManager _removeUser:]";
     v18 = 2112;
-    v19 = v4;
+    v19 = userCopy;
     v20 = 1024;
     v21 = v6;
     v22 = 2080;
@@ -5916,13 +5916,13 @@ uint64_t __45__UAFSubscriptionStoreManager_removeAllUsers__block_invoke(uint64_t
   return v3;
 }
 
-- (int)executeSQL:(const char *)a3
+- (int)executeSQL:(const char *)l
 {
   v18 = *MEMORY[0x1E69E9840];
   if (self->_store)
   {
     errmsg = 0;
-    v5 = sqlite3_vmprintf(a3, &v19);
+    v5 = sqlite3_vmprintf(l, &v19);
     v6 = sqlite3_exec(self->_store, v5, 0, 0, &errmsg);
     if (v6)
     {
@@ -5942,7 +5942,7 @@ uint64_t __45__UAFSubscriptionStoreManager_removeAllUsers__block_invoke(uint64_t
         *buf = 136315650;
         v13 = "[UAFSubscriptionStoreManager executeSQL:]";
         v14 = 2080;
-        v15 = a3;
+        lCopy = l;
         v16 = 2080;
         v17 = errmsg;
         _os_log_error_impl(&dword_1BCF2C000, v8, OS_LOG_TYPE_ERROR, "%s execute(%s) Error: %s", buf, 0x20u);
@@ -5963,33 +5963,33 @@ uint64_t __45__UAFSubscriptionStoreManager_removeAllUsers__block_invoke(uint64_t
   return v6;
 }
 
-- (int)bindString:(sqlite3_stmt *)a3 col:(int)a4 string:(id)a5
+- (int)bindString:(sqlite3_stmt *)string col:(int)col string:(id)a5
 {
-  v7 = [a5 UTF8String];
+  uTF8String = [a5 UTF8String];
 
-  return sqlite3_bind_text(a3, a4, v7, -1, 0xFFFFFFFFFFFFFFFFLL);
+  return sqlite3_bind_text(string, col, uTF8String, -1, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (int)bindData:(sqlite3_stmt *)a3 col:(int)a4 data:(id)a5
+- (int)bindData:(sqlite3_stmt *)data col:(int)col data:(id)a5
 {
   v7 = a5;
-  v8 = [v7 bytes];
+  bytes = [v7 bytes];
   v9 = [v7 length];
 
-  return sqlite3_bind_blob(a3, a4, v8, v9, 0xFFFFFFFFFFFFFFFFLL);
+  return sqlite3_bind_blob(data, col, bytes, v9, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (int)bindDate:(sqlite3_stmt *)a3 col:(int)a4 date:(id)a5
+- (int)bindDate:(sqlite3_stmt *)date col:(int)col date:(id)a5
 {
   [a5 timeIntervalSince1970];
 
-  return sqlite3_bind_double(a3, a4, v7);
+  return sqlite3_bind_double(date, col, v7);
 }
 
-- (id)readData:(sqlite3_stmt *)a3 col:(int)a4
+- (id)readData:(sqlite3_stmt *)data col:(int)col
 {
-  v6 = sqlite3_column_bytes(a3, a4);
-  v7 = sqlite3_column_blob(a3, a4);
+  v6 = sqlite3_column_bytes(data, col);
+  v7 = sqlite3_column_blob(data, col);
   if (v6 < 1)
   {
     v8 = 0;
@@ -6003,9 +6003,9 @@ uint64_t __45__UAFSubscriptionStoreManager_removeAllUsers__block_invoke(uint64_t
   return v8;
 }
 
-- (id)readString:(sqlite3_stmt *)a3 col:(int)a4
+- (id)readString:(sqlite3_stmt *)string col:(int)col
 {
-  v4 = sqlite3_column_text(a3, a4);
+  v4 = sqlite3_column_text(string, col);
   if (v4)
   {
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v4];
@@ -6014,9 +6014,9 @@ uint64_t __45__UAFSubscriptionStoreManager_removeAllUsers__block_invoke(uint64_t
   return v4;
 }
 
-- (id)readDate:(sqlite3_stmt *)a3 col:(int)a4
+- (id)readDate:(sqlite3_stmt *)date col:(int)col
 {
-  v4 = sqlite3_column_double(a3, a4);
+  v4 = sqlite3_column_double(date, col);
   v5 = MEMORY[0x1E695DF00];
 
   return [v5 dateWithTimeIntervalSince1970:v4];

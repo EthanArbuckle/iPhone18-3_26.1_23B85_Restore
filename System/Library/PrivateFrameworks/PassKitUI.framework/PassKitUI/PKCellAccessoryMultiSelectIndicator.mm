@@ -1,6 +1,6 @@
 @interface PKCellAccessoryMultiSelectIndicator
 - (PKCellAccessoryMultiSelectIndicator)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PKCellAccessoryMultiSelectIndicator
@@ -17,11 +17,11 @@
   return [(PKCellAccessoryMultiSelectIndicator *)&v7 initWithCustomView:v5 placement:0];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = PKCellAccessoryMultiSelectIndicator;
-  v4 = [(UICellAccessory *)&v6 copyWithZone:a3];
+  v4 = [(UICellAccessory *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 11, self->_content);
   return v4;
 }

@@ -15,8 +15,8 @@
 
   v5 = [bb_toneLibraryAlertTypeForSectionID____sectionIDToAlertType objectForKey:v4];
 
-  v6 = [v5 integerValue];
-  return v6;
+  integerValue = [v5 integerValue];
+  return integerValue;
 }
 
 @end

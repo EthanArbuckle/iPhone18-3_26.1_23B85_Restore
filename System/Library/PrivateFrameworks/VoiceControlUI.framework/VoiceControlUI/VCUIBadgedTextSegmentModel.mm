@@ -6,10 +6,10 @@
 - (NSAttributedString)text;
 - (_NSRange)nsRange;
 - (int64_t)labelNumber;
-- (void)setIsWhiteSpace:(BOOL)a3;
-- (void)setLabel:(id)a3;
-- (void)setLabelNumber:(int64_t)a3;
-- (void)setText:(id)a3;
+- (void)setIsWhiteSpace:(BOOL)space;
+- (void)setLabel:(id)label;
+- (void)setLabelNumber:(int64_t)number;
+- (void)setText:(id)text;
 @end
 
 @implementation VCUIBadgedTextSegmentModel
@@ -21,13 +21,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v5 = OBJC_IVAR___VCUIBadgedTextSegmentModel_text;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = text;
+  textCopy = text;
 }
 
 - (NSAttributedString)label
@@ -37,13 +37,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
   v5 = OBJC_IVAR___VCUIBadgedTextSegmentModel_label;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = label;
+  labelCopy = label;
 }
 
 - (int64_t)labelNumber
@@ -53,11 +53,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setLabelNumber:(int64_t)a3
+- (void)setLabelNumber:(int64_t)number
 {
   v5 = OBJC_IVAR___VCUIBadgedTextSegmentModel_labelNumber;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = number;
 }
 
 - (BOOL)isWhiteSpace
@@ -67,19 +67,19 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsWhiteSpace:(BOOL)a3
+- (void)setIsWhiteSpace:(BOOL)space
 {
   v5 = OBJC_IVAR___VCUIBadgedTextSegmentModel_isWhiteSpace;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = space;
 }
 
 - (_NSRange)nsRange
 {
   swift_beginAccess();
-  v3 = self;
-  v4 = [(VCUIBadgedTextSegmentModel *)v3 text];
-  v5 = [(NSAttributedString *)v4 string];
+  selfCopy = self;
+  text = [(VCUIBadgedTextSegmentModel *)selfCopy text];
+  string = [(NSAttributedString *)text string];
 
   sub_272434930();
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_280896200);
@@ -97,17 +97,17 @@
 
 - (NSAttributedString)representedText
 {
-  v2 = self;
-  v3 = [(VCUIBadgedTextSegmentModel *)v2 text];
-  v4 = [(VCUIBadgedTextSegmentModel *)v2 nsRange];
-  v6 = [(NSAttributedString *)v3 attributedSubstringFromRange:v4, v5];
+  selfCopy = self;
+  text = [(VCUIBadgedTextSegmentModel *)selfCopy text];
+  nsRange = [(VCUIBadgedTextSegmentModel *)selfCopy nsRange];
+  v6 = [(NSAttributedString *)text attributedSubstringFromRange:nsRange, v5];
 
   return v6;
 }
 
 - (NSAttributedString)displayedText
 {
-  v2 = self;
+  selfCopy = self;
   v3 = VCUIBadgedTextSegmentModel.displayedText.getter();
 
   return v3;

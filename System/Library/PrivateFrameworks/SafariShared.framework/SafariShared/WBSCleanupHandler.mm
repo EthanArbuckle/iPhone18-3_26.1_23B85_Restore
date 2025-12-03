@@ -1,20 +1,20 @@
 @interface WBSCleanupHandler
-- (WBSCleanupHandler)initWithBlock:(id)a3;
+- (WBSCleanupHandler)initWithBlock:(id)block;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation WBSCleanupHandler
 
-- (WBSCleanupHandler)initWithBlock:(id)a3
+- (WBSCleanupHandler)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10.receiver = self;
   v10.super_class = WBSCleanupHandler;
   v5 = [(WBSCleanupHandler *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [blockCopy copy];
     block = v5->_block;
     v5->_block = v6;
 

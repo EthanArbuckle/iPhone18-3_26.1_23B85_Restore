@@ -1,6 +1,6 @@
 @interface GPUProcessExtension
 - (_TtC12GPUExtension19GPUProcessExtension)init;
-- (void)lockdownSandbox:(id)a3;
+- (void)lockdownSandbox:(id)sandbox;
 @end
 
 @implementation GPUProcessExtension
@@ -14,11 +14,11 @@
   return v2;
 }
 
-- (void)lockdownSandbox:(id)a3
+- (void)lockdownSandbox:(id)sandbox
 {
   v4 = sub_10000DC68();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_10000D99C(v4, v6);
 
   _swift_bridgeObjectRelease(v6);

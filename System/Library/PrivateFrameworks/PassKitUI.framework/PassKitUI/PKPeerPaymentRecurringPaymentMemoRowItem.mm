@@ -1,18 +1,18 @@
 @interface PKPeerPaymentRecurringPaymentMemoRowItem
 - (BOOL)hasIcon;
-- (BOOL)isEqual:(id)a3;
-- (PKPeerPaymentRecurringPaymentMemoRowItem)initWithIdentifier:(id)a3 isEditable:(BOOL)a4 titleColor:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (PKPeerPaymentRecurringPaymentMemoRowItem)initWithIdentifier:(id)identifier isEditable:(BOOL)editable titleColor:(id)color;
 - (unint64_t)hash;
-- (void)setMemo:(id)a3;
+- (void)setMemo:(id)memo;
 @end
 
 @implementation PKPeerPaymentRecurringPaymentMemoRowItem
 
-- (PKPeerPaymentRecurringPaymentMemoRowItem)initWithIdentifier:(id)a3 isEditable:(BOOL)a4 titleColor:(id)a5
+- (PKPeerPaymentRecurringPaymentMemoRowItem)initWithIdentifier:(id)identifier isEditable:(BOOL)editable titleColor:(id)color
 {
   v9.receiver = self;
   v9.super_class = PKPeerPaymentRecurringPaymentMemoRowItem;
-  v5 = [(PKPeerPaymentRecurringPaymentDetailRowItem *)&v9 initWithIdentifier:a3 isEditable:a4 titleColor:a5];
+  v5 = [(PKPeerPaymentRecurringPaymentDetailRowItem *)&v9 initWithIdentifier:identifier isEditable:editable titleColor:color];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69B8FE0]);
@@ -23,13 +23,13 @@
   return v5;
 }
 
-- (void)setMemo:(id)a3
+- (void)setMemo:(id)memo
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  memoCopy = memo;
+  v7 = memoCopy;
+  if (memoCopy)
   {
-    v5 = v4;
+    v5 = memoCopy;
   }
 
   else
@@ -43,8 +43,8 @@
 
 - (BOOL)hasIcon
 {
-  v3 = [(PKPeerPaymentRecurringPaymentMemo *)self->_memo emoji];
-  if ([v3 length])
+  emoji = [(PKPeerPaymentRecurringPaymentMemo *)self->_memo emoji];
+  if ([emoji length])
   {
     v4 = 1;
   }
@@ -59,9 +59,9 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_memo];
-  [v3 safelyAddObject:self->_suggestedText];
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_memo];
+  [array safelyAddObject:self->_suggestedText];
   v6.receiver = self;
   v6.super_class = PKPeerPaymentRecurringPaymentMemoRowItem;
   [(PKPeerPaymentRecurringPaymentDetailRowItem *)&v6 hash];
@@ -70,16 +70,16 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v14.receiver = self;

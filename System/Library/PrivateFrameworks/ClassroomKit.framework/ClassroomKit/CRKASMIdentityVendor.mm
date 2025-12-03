@@ -1,6 +1,6 @@
 @interface CRKASMIdentityVendor
-- (BOOL)isEqual:(id)a3;
-- (CRKASMIdentityVendor)initWithUserIdentifier:(id)a3 commonNamePrefix:(id)a4 credentialStore:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (CRKASMIdentityVendor)initWithUserIdentifier:(id)identifier commonNamePrefix:(id)prefix credentialStore:(id)store;
 - (CRKIdentity)identity;
 - (id)description;
 - (id)existingIdentity;
@@ -11,25 +11,25 @@
 
 @implementation CRKASMIdentityVendor
 
-- (CRKASMIdentityVendor)initWithUserIdentifier:(id)a3 commonNamePrefix:(id)a4 credentialStore:(id)a5
+- (CRKASMIdentityVendor)initWithUserIdentifier:(id)identifier commonNamePrefix:(id)prefix credentialStore:(id)store
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  prefixCopy = prefix;
+  storeCopy = store;
   v17.receiver = self;
   v17.super_class = CRKASMIdentityVendor;
   v11 = [(CRKASMIdentityVendor *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     userIdentifier = v11->_userIdentifier;
     v11->_userIdentifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [prefixCopy copy];
     commonNamePrefix = v11->_commonNamePrefix;
     v11->_commonNamePrefix = v14;
 
-    objc_storeStrong(&v11->_credentialStore, a5);
+    objc_storeStrong(&v11->_credentialStore, store);
   }
 
   return v11;
@@ -37,19 +37,19 @@
 
 - (CRKIdentity)identity
 {
-  v3 = [(CRKASMIdentityVendor *)self existingIdentity];
-  v4 = v3;
-  if (v3)
+  existingIdentity = [(CRKASMIdentityVendor *)self existingIdentity];
+  v4 = existingIdentity;
+  if (existingIdentity)
   {
-    v5 = v3;
+    makeIdentityAndAddToKeychain = existingIdentity;
   }
 
   else
   {
-    v5 = [(CRKASMIdentityVendor *)self makeIdentityAndAddToKeychain];
+    makeIdentityAndAddToKeychain = [(CRKASMIdentityVendor *)self makeIdentityAndAddToKeychain];
   }
 
-  v6 = v5;
+  v6 = makeIdentityAndAddToKeychain;
 
   return v6;
 }
@@ -58,34 +58,34 @@
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = [CRKASMIdentityPicker alloc];
-  v4 = [(CRKASMIdentityVendor *)self credentialStore];
-  v5 = [(CRKASMIdentityVendor *)self userIdentifier];
-  v6 = [(CRKASMIdentityPicker *)v3 initWithCredentialStore:v4 userIdentifier:v5];
+  credentialStore = [(CRKASMIdentityVendor *)self credentialStore];
+  userIdentifier = [(CRKASMIdentityVendor *)self userIdentifier];
+  v6 = [(CRKASMIdentityPicker *)v3 initWithCredentialStore:credentialStore userIdentifier:userIdentifier];
 
-  v7 = [(CRKASMIdentityPicker *)v6 identity];
-  if (v7)
+  identity = [(CRKASMIdentityPicker *)v6 identity];
+  if (identity)
   {
     v8 = _CRKLogASM_8();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(CRKASMIdentityVendor *)self userIdentifier];
+      userIdentifier2 = [(CRKASMIdentityVendor *)self userIdentifier];
       v11 = 138412290;
-      v12 = v9;
+      v12 = userIdentifier2;
       _os_log_impl(&dword_243550000, v8, OS_LOG_TYPE_DEFAULT, "Found existing ASM identity for user identifier %@", &v11, 0xCu);
     }
   }
 
-  return v7;
+  return identity;
 }
 
 - (id)makeIdentityAndAddToKeychain
 {
-  v3 = [(CRKASMIdentityVendor *)self makeIdentity];
-  if (v3)
+  makeIdentity = [(CRKASMIdentityVendor *)self makeIdentity];
+  if (makeIdentity)
   {
-    v4 = [(CRKASMIdentityVendor *)self credentialStore];
-    v5 = [(CRKASMIdentityVendor *)self userIdentifier];
-    v6 = [v4 addIdentity:v3 forUserIdentifier:v5];
+    credentialStore = [(CRKASMIdentityVendor *)self credentialStore];
+    userIdentifier = [(CRKASMIdentityVendor *)self userIdentifier];
+    v6 = [credentialStore addIdentity:makeIdentity forUserIdentifier:userIdentifier];
 
     if (!v6)
     {
@@ -96,10 +96,10 @@
       }
     }
 
-    v8 = v3;
+    v8 = makeIdentity;
   }
 
-  return v3;
+  return makeIdentity;
 }
 
 - (id)makeIdentity
@@ -108,38 +108,38 @@
   v3 = _CRKLogASM_8();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CRKASMIdentityVendor *)self userIdentifier];
+    userIdentifier = [(CRKASMIdentityVendor *)self userIdentifier];
     v10 = 138412290;
-    v11 = v4;
+    v11 = userIdentifier;
     _os_log_impl(&dword_243550000, v3, OS_LOG_TYPE_DEFAULT, "Creating new identity for ASM user identifier %@", &v10, 0xCu);
   }
 
-  v5 = [(CRKASMIdentityVendor *)self credentialStore];
-  v6 = [(CRKASMIdentityVendor *)self commonNamePrefix];
-  v7 = [(CRKASMIdentityVendor *)self userIdentifier];
-  v8 = [v5 makeIdentityWithCommonNamePrefix:v6 userIdentifier:v7];
+  credentialStore = [(CRKASMIdentityVendor *)self credentialStore];
+  commonNamePrefix = [(CRKASMIdentityVendor *)self commonNamePrefix];
+  userIdentifier2 = [(CRKASMIdentityVendor *)self userIdentifier];
+  v8 = [credentialStore makeIdentityWithCommonNamePrefix:commonNamePrefix userIdentifier:userIdentifier2];
 
   return v8;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(CRKASMIdentityVendor *)self userIdentifier];
-  v4 = [v3 hash];
-  v5 = [(CRKASMIdentityVendor *)self commonNamePrefix];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(CRKASMIdentityVendor *)self credentialStore];
-  v8 = [v7 hash];
+  userIdentifier = [(CRKASMIdentityVendor *)self userIdentifier];
+  v4 = [userIdentifier hash];
+  commonNamePrefix = [(CRKASMIdentityVendor *)self commonNamePrefix];
+  v6 = [commonNamePrefix hash] ^ v4;
+  credentialStore = [(CRKASMIdentityVendor *)self credentialStore];
+  v8 = [credentialStore hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [CFSTR(""userIdentifier commonNamePrefix];
-  v6 = [v5 mutableCopy];
+  equalCopy = equal;
+  commonNamePrefix = [CFSTR(""userIdentifier commonNamePrefix];
+  v6 = [commonNamePrefix mutableCopy];
 
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
@@ -149,10 +149,10 @@
   v29 = v7;
   [v7 enumerateObjectsUsingBlock:v28];
 
-  v8 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = equalCopy;
   v10 = v7;
-  if (v8 == v9)
+  if (selfCopy == v9)
   {
     v21 = 1;
   }
@@ -181,7 +181,7 @@
 
           v16 = *(*(&v24 + 1) + 8 * i);
           v17 = v9;
-          v18 = [(CRKASMIdentityVendor *)v8 valueForKey:v16];
+          v18 = [(CRKASMIdentityVendor *)selfCopy valueForKey:v16];
           v19 = [(CRKASMIdentityVendor *)v17 valueForKey:v16];
 
           if (v18 | v19)
@@ -228,10 +228,10 @@ LABEL_16:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CRKASMIdentityVendor *)self userIdentifier];
-  v6 = [(CRKASMIdentityVendor *)self commonNamePrefix];
-  v7 = [(CRKASMIdentityVendor *)self credentialStore];
-  v8 = [v3 stringWithFormat:@"<%@: %p { userIdentifier = %@, commonNamePrefix = %@, credentialStore = %@ }>", v4, self, v5, v6, v7];
+  userIdentifier = [(CRKASMIdentityVendor *)self userIdentifier];
+  commonNamePrefix = [(CRKASMIdentityVendor *)self commonNamePrefix];
+  credentialStore = [(CRKASMIdentityVendor *)self credentialStore];
+  v8 = [v3 stringWithFormat:@"<%@: %p { userIdentifier = %@, commonNamePrefix = %@, credentialStore = %@ }>", v4, self, userIdentifier, commonNamePrefix, credentialStore];
 
   return v8;
 }

@@ -1,13 +1,13 @@
 @interface NEIKEv2FragmentMap
-- (BOOL)hasFragmentForNumber:(uint64_t)a1;
+- (BOOL)hasFragmentForNumber:(uint64_t)number;
 @end
 
 @implementation NEIKEv2FragmentMap
 
-- (BOOL)hasFragmentForNumber:(uint64_t)a1
+- (BOOL)hasFragmentForNumber:(uint64_t)number
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!number)
   {
     goto LABEL_10;
   }
@@ -32,7 +32,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (*(a1 + 10) < a2)
+  if (*(number + 10) < a2)
   {
     v7 = ne_log_obj();
     if (!os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -46,9 +46,9 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v2 = [*(a1 + 24) objectAtIndexedSubscript:a2 - 1];
-  v3 = [MEMORY[0x1E695DFB0] null];
-  v4 = v2 != v3;
+  v2 = [*(number + 24) objectAtIndexedSubscript:a2 - 1];
+  null = [MEMORY[0x1E695DFB0] null];
+  v4 = v2 != null;
 
 LABEL_5:
   v5 = *MEMORY[0x1E69E9840];

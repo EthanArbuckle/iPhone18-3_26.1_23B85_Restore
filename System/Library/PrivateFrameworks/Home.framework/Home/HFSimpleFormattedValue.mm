@@ -1,26 +1,26 @@
 @interface HFSimpleFormattedValue
-- (HFSimpleFormattedValue)initWithFormattedValue:(id)a3;
-- (id)observeFormattedValueChangesWithBlock:(id)a3;
+- (HFSimpleFormattedValue)initWithFormattedValue:(id)value;
+- (id)observeFormattedValueChangesWithBlock:(id)block;
 @end
 
 @implementation HFSimpleFormattedValue
 
-- (HFSimpleFormattedValue)initWithFormattedValue:(id)a3
+- (HFSimpleFormattedValue)initWithFormattedValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v9.receiver = self;
   v9.super_class = HFSimpleFormattedValue;
   v6 = [(HFSimpleFormattedValue *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_currentFormattedValue, a3);
+    objc_storeStrong(&v6->_currentFormattedValue, value);
   }
 
   return v7;
 }
 
-- (id)observeFormattedValueChangesWithBlock:(id)a3
+- (id)observeFormattedValueChangesWithBlock:(id)block
 {
   v3 = objc_opt_new();
 

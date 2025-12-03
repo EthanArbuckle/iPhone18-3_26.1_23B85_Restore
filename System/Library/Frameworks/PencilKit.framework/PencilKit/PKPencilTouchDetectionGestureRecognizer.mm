@@ -1,15 +1,15 @@
 @interface PKPencilTouchDetectionGestureRecognizer
-- (PKPencilTouchDetectionGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)updateTimestampsforTouches:(id)a3 withEvent:(id)a4;
+- (PKPencilTouchDetectionGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)updateTimestampsforTouches:(id)touches withEvent:(id)event;
 @end
 
 @implementation PKPencilTouchDetectionGestureRecognizer
 
-- (PKPencilTouchDetectionGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (PKPencilTouchDetectionGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = PKPencilTouchDetectionGestureRecognizer;
-  v4 = [(PKPencilTouchDetectionGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(PKPencilTouchDetectionGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -21,16 +21,16 @@
   return v5;
 }
 
-- (void)updateTimestampsforTouches:(id)a3 withEvent:(id)a4
+- (void)updateTimestampsforTouches:(id)touches withEvent:(id)event
 {
-  v5 = [a4 PK_isEventFromCrayon];
-  v6 = [(PKPencilTouchDetectionGestureRecognizer *)self delegate];
+  pK_isEventFromCrayon = [event PK_isEventFromCrayon];
+  delegate = [(PKPencilTouchDetectionGestureRecognizer *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(PKPencilTouchDetectionGestureRecognizer *)self delegate];
-    [v8 updateTimestampForType:v5];
+    delegate2 = [(PKPencilTouchDetectionGestureRecognizer *)self delegate];
+    [delegate2 updateTimestampForType:pK_isEventFromCrayon];
   }
 }
 

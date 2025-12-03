@@ -1,29 +1,29 @@
 @interface UIInputWindowControllerHosting
-- (BOOL)host:(id)a3 isForPurpose:(unint64_t)a4;
+- (BOOL)host:(id)host isForPurpose:(unint64_t)purpose;
 - (BOOL)useLayoutHostingItem;
 - (CGRect)visibleFrame;
 - (NSArray)allHostingItems;
 - (UIEdgeInsets)_inputViewPadding;
 - (UIInputWindowController)owner;
-- (UIInputWindowControllerHosting)initWithHost:(id)a3;
-- (id)expectedPlacementForHost:(id)a3;
-- (id)itemForPurpose:(unint64_t)a3;
-- (id)placementForHost:(id)a3;
+- (UIInputWindowControllerHosting)initWithHost:(id)host;
+- (id)expectedPlacementForHost:(id)host;
+- (id)itemForPurpose:(unint64_t)purpose;
+- (id)placementForHost:(id)host;
 - (id)scrollTrackingView;
-- (id)subPlacementFromPlacement:(id)a3 forHost:(id)a4;
-- (void)disableViewSizingConstraints:(unint64_t)a3 forNewView:(id)a4;
-- (void)extendKeyboardBackdropHeight:(double)a3 withDuration:(double)a4;
+- (id)subPlacementFromPlacement:(id)placement forHost:(id)host;
+- (void)disableViewSizingConstraints:(unint64_t)constraints forNewView:(id)view;
+- (void)extendKeyboardBackdropHeight:(double)height withDuration:(double)duration;
 - (void)layoutIfNeeded;
-- (void)performForInputAccessoryBackdropViews:(id)a3;
-- (void)reloadForPlacementForInputViewSet:(id)a3;
+- (void)performForInputAccessoryBackdropViews:(id)views;
+- (void)reloadForPlacementForInputViewSet:(id)set;
 - (void)removeAllAnimations;
 - (void)removeCombinedBackdropViewIfNeeded;
 - (void)removeMatchMoveAnimationIfNeeded;
-- (void)setExtraHostsRequired:(int)a3;
-- (void)setInputSetView:(id)a3 forType:(unint64_t)a4;
+- (void)setExtraHostsRequired:(int)required;
+- (void)setInputSetView:(id)view forType:(unint64_t)type;
 - (void)setNeedsLayout;
 - (void)updateBackdropViewForSplitKeyboard;
-- (void)updateCombinedBackdropViewAnimated:(BOOL)a3 forKeyboardUp:(BOOL)a4;
+- (void)updateCombinedBackdropViewAnimated:(BOOL)animated forKeyboardUp:(BOOL)up;
 - (void)updateViewConstraints;
 @end
 
@@ -31,10 +31,10 @@
 
 - (BOOL)useLayoutHostingItem
 {
-  v2 = [(UIInputWindowControllerHosting *)self owner];
-  v3 = [v2 isTrackingElementController];
+  owner = [(UIInputWindowControllerHosting *)self owner];
+  isTrackingElementController = [owner isTrackingElementController];
 
-  return v3;
+  return isTrackingElementController;
 }
 
 - (UIInputWindowController)owner
@@ -53,11 +53,11 @@
 
 - (void)updateBackdropViewForSplitKeyboard
 {
-  v3 = [(UIInputWindowControllerHosting *)self owner];
-  v4 = [v3 inputViewSet];
-  v5 = [v4 isSplit];
+  owner = [(UIInputWindowControllerHosting *)self owner];
+  inputViewSet = [owner inputViewSet];
+  isSplit = [inputViewSet isSplit];
 
-  if (v5)
+  if (isSplit)
   {
 
     [(UIInputWindowControllerHosting *)self _updateBackdropViews];
@@ -67,32 +67,32 @@
 - (UIEdgeInsets)_inputViewPadding
 {
   v3 = +[UIKeyboardInputModeController sharedInputModeController];
-  v4 = [v3 currentInputMode];
+  currentInputMode = [v3 currentInputMode];
 
   v5 = +[UIInputViewAnimationStyle animationStyleDefault];
-  v6 = [(UIInputWindowControllerHosting *)self owner];
-  v7 = [v6 inputViewSet];
-  v8 = [(UIInputWindowControllerHosting *)self owner];
-  v9 = [v8 _window];
-  v10 = [v9 windowScene];
-  v11 = [v5 endPlacementForInputViewSet:v7 windowScene:v10];
+  owner = [(UIInputWindowControllerHosting *)self owner];
+  inputViewSet = [owner inputViewSet];
+  owner2 = [(UIInputWindowControllerHosting *)self owner];
+  _window = [owner2 _window];
+  windowScene = [_window windowScene];
+  v11 = [v5 endPlacementForInputViewSet:inputViewSet windowScene:windowScene];
 
   if (!+[UIKeyboard usesInputSystemUI](UIKeyboard, "usesInputSystemUI") || (v12 = 0.0, v13 = 0.0, v14 = 0.0, v15 = 0.0, +[UIKeyboard usesLocalKeyboard]))
   {
-    v16 = [(UIInputWindowControllerHosting *)self owner];
-    v17 = [v16 inputViewSet];
-    v18 = [v17 isCustomInputView];
+    owner3 = [(UIInputWindowControllerHosting *)self owner];
+    inputViewSet2 = [owner3 inputViewSet];
+    isCustomInputView = [inputViewSet2 isCustomInputView];
 
-    if (+[UIKeyboard usesInputSystemUI]&& v18)
+    if (+[UIKeyboard usesInputSystemUI]&& isCustomInputView)
     {
-      v19 = [(UIInputWindowControllerHosting *)self owner];
-      v20 = [v19 inputViewSet];
-      [v20 inputViewBounds];
-      LOBYTE(v18) = v21 == 0.0;
+      owner4 = [(UIInputWindowControllerHosting *)self owner];
+      inputViewSet3 = [owner4 inputViewSet];
+      [inputViewSet3 inputViewBounds];
+      LOBYTE(isCustomInputView) = v21 == 0.0;
     }
 
     v12 = 0.0;
-    if (![v11 showsKeyboard] || (v18 & 1) != 0)
+    if (![v11 showsKeyboard] || (isCustomInputView & 1) != 0)
     {
       v13 = 0.0;
       v14 = 0.0;
@@ -102,33 +102,33 @@
     else
     {
       v22 = +[UIKeyboardImpl activeInstance];
-      v23 = [v22 isMinimized];
+      isMinimized = [v22 isMinimized];
 
       v13 = 0.0;
       v14 = 0.0;
       v15 = 0.0;
-      if ((v23 & 1) == 0)
+      if ((isMinimized & 1) == 0)
       {
-        v24 = [(UIInputWindowControllerHosting *)self owner];
-        v25 = [v24 keyboardOrientation];
+        owner5 = [(UIInputWindowControllerHosting *)self owner];
+        keyboardOrientation = [owner5 keyboardOrientation];
 
         if (+[UIKeyboard usesInputSystemUI])
         {
           v26 = +[_UIKeyboardArbiterClient automaticSharedArbiterClient];
-          v27 = [v26 currentUIState];
+          currentUIState = [v26 currentUIState];
 
-          if (v27)
+          if (currentUIState)
           {
-            v25 = [v27 orientation];
+            keyboardOrientation = [currentUIState orientation];
           }
         }
 
-        [UIKeyboardImpl deviceSpecificPaddingForInterfaceOrientation:v25 inputMode:v4];
+        [UIKeyboardImpl deviceSpecificPaddingForInterfaceOrientation:keyboardOrientation inputMode:currentInputMode];
         v29 = v28;
         v31 = v30;
         v33 = v32;
         v35 = v34;
-        [UIKeyboardImpl deviceSpecificStaticHitBufferForInterfaceOrientation:v25 inputMode:v4];
+        [UIKeyboardImpl deviceSpecificStaticHitBufferForInterfaceOrientation:keyboardOrientation inputMode:currentInputMode];
         v15 = vabdd_f64(v29, v36);
         v14 = vabdd_f64(v31, v37);
         v13 = vabdd_f64(v33, v38);
@@ -152,9 +152,9 @@
 {
   v16 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_owner);
-  v4 = [WeakRetained isChangingInputViews];
+  isChangingInputViews = [WeakRetained isChangingInputViews];
 
-  if (v4)
+  if (isChangingInputViews)
   {
     v5 = 1;
   }
@@ -165,8 +165,8 @@
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v6 = [(UIInputWindowControllerHosting *)self allHostingItems];
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    allHostingItems = [(UIInputWindowControllerHosting *)self allHostingItems];
+    v7 = [allHostingItems countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -178,14 +178,14 @@
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allHostingItems);
           }
 
           [*(*(&v11 + 1) + 8 * v10++) updateViewConstraints];
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v8 = [allHostingItems countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v8);
@@ -197,39 +197,39 @@
   self->_requiresConstraintUpdate = v5;
 }
 
-- (UIInputWindowControllerHosting)initWithHost:(id)a3
+- (UIInputWindowControllerHosting)initWithHost:(id)host
 {
-  v4 = a3;
+  hostCopy = host;
   v12.receiver = self;
   v12.super_class = UIInputWindowControllerHosting;
   v5 = [(UIInputWindowControllerHosting *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_owner, v4);
-    v7 = [MEMORY[0x1E695DF70] array];
+    objc_storeWeak(&v5->_owner, hostCopy);
+    array = [MEMORY[0x1E695DF70] array];
     hostingItems = v6->_hostingItems;
-    v6->_hostingItems = v7;
+    v6->_hostingItems = array;
 
     [(UIInputWindowControllerHosting *)v6 reloadForPlacementForInputViewSet:0];
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v6 selector:sel_updateBackdropViewForSplitKeyboard name:0x1EFB455F0 object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel_updateBackdropViewForSplitKeyboard name:0x1EFB455F0 object:0];
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v6 selector:sel_updateBackdropViewForSplitKeyboard name:0x1EFB45610 object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v6 selector:sel_updateBackdropViewForSplitKeyboard name:0x1EFB45610 object:0];
   }
 
   return v6;
 }
 
-- (void)setExtraHostsRequired:(int)a3
+- (void)setExtraHostsRequired:(int)required
 {
-  self->_extraHostsRequired = a3;
-  v4 = a3 + 1;
+  self->_extraHostsRequired = required;
+  v4 = required + 1;
   while ([(NSMutableArray *)self->_hostingItems count]> v4)
   {
-    v5 = [(NSMutableArray *)self->_hostingItems lastObject];
-    [v5 clearVisibilityConstraints];
+    lastObject = [(NSMutableArray *)self->_hostingItems lastObject];
+    [lastObject clearVisibilityConstraints];
     [(NSMutableArray *)self->_hostingItems removeLastObject];
   }
 
@@ -238,9 +238,9 @@
     if ([(UIInputWindowControllerHosting *)self useLayoutHostingItem])
     {
       v6 = [UIInputLayoutHostingItem alloc];
-      v7 = [(UIInputWindowControllerHosting *)self owner];
-      v8 = [v7 inputViewSet];
-      v9 = [(UIInputLayoutHostingItem *)v6 initWithInputViewSet:v8 container:self];
+      owner = [(UIInputWindowControllerHosting *)self owner];
+      inputViewSet = [owner inputViewSet];
+      v9 = [(UIInputLayoutHostingItem *)v6 initWithInputViewSet:inputViewSet container:self];
     }
 
     else
@@ -252,54 +252,54 @@
   }
 }
 
-- (void)reloadForPlacementForInputViewSet:(id)a3
+- (void)reloadForPlacementForInputViewSet:(id)set
 {
   v58 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [UIApp keyWindow];
-  v6 = [v5 firstResponder];
+  setCopy = set;
+  keyWindow = [UIApp keyWindow];
+  firstResponder = [keyWindow firstResponder];
 
-  v7 = [(UIInputWindowControllerHosting *)self owner];
-  v8 = [v7 inputViewSet];
-  v9 = [v8 inputAccessoryView];
+  owner = [(UIInputWindowControllerHosting *)self owner];
+  inputViewSet = [owner inputViewSet];
+  inputAccessoryView = [inputViewSet inputAccessoryView];
 
-  v10 = [v6 inputAccessoryView];
-  v11 = v10;
-  v50 = v6;
-  if (v10 == v9)
+  inputAccessoryView2 = [firstResponder inputAccessoryView];
+  v11 = inputAccessoryView2;
+  v50 = firstResponder;
+  if (inputAccessoryView2 == inputAccessoryView)
   {
   }
 
   else
   {
-    v12 = [v6 inputAccessoryViewController];
-    v13 = [v12 view];
+    inputAccessoryViewController = [firstResponder inputAccessoryViewController];
+    view = [inputAccessoryViewController view];
 
-    if (v13 != v9)
+    if (view != inputAccessoryView)
     {
       v14 = 0;
       goto LABEL_6;
     }
   }
 
-  v14 = v6;
+  v14 = firstResponder;
 LABEL_6:
-  v49 = v9;
+  v49 = inputAccessoryView;
   WeakRetained = objc_loadWeakRetained(&self->_owner);
-  v16 = [WeakRetained placement];
+  placement = [WeakRetained placement];
 
-  v51 = v4;
-  v52 = v16;
-  v17 = [v16 subPlacementsForInputViewSet:v4];
+  v51 = setCopy;
+  v52 = placement;
+  v17 = [placement subPlacementsForInputViewSet:setCopy];
   v47 = [(NSMutableArray *)self->_hostingItems copy];
-  v45 = [(UIInputWindowControllerHosting *)self extraHostsRequired];
+  extraHostsRequired = [(UIInputWindowControllerHosting *)self extraHostsRequired];
   v46 = [v17 count];
   v48 = v17;
   -[UIInputWindowControllerHosting setExtraHostsRequired:](self, "setExtraHostsRequired:", [v17 count]);
-  v18 = [UIApp keyWindow];
-  v19 = [v18 firstResponder];
+  keyWindow2 = [UIApp keyWindow];
+  firstResponder2 = [keyWindow2 firstResponder];
 
-  if (v19 != v14)
+  if (firstResponder2 != v14)
   {
     [v14 becomeFirstResponder];
   }
@@ -308,8 +308,8 @@ LABEL_6:
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v20 = [(UIInputWindowControllerHosting *)self allHostingItems];
-  v21 = [v20 countByEnumeratingWithState:&v53 objects:v57 count:16];
+  allHostingItems = [(UIInputWindowControllerHosting *)self allHostingItems];
+  v21 = [allHostingItems countByEnumeratingWithState:&v53 objects:v57 count:16];
   if (v21)
   {
     v22 = v21;
@@ -320,69 +320,69 @@ LABEL_6:
       {
         if (*v54 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(allHostingItems);
         }
 
         v25 = *(*(&v53 + 1) + 8 * i);
         [v25 updateInputAssistantHostViewVisibility];
-        v26 = [v25 placement];
+        placement2 = [v25 placement];
         v27 = objc_loadWeakRetained(&self->_owner);
-        v28 = [v27 shouldNotifyRemoteKeyboards];
+        shouldNotifyRemoteKeyboards = [v27 shouldNotifyRemoteKeyboards];
 
-        if ((v28 & 1) == 0)
+        if ((shouldNotifyRemoteKeyboards & 1) == 0)
         {
           [v25 setPlacement];
         }
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v53 objects:v57 count:16];
+      v22 = [allHostingItems countByEnumeratingWithState:&v53 objects:v57 count:16];
     }
 
     while (v22);
   }
 
   v29 = v52;
-  v30 = [v52 computeComparisonMask];
-  if (self->_currentState != v30)
+  computeComparisonMask = [v52 computeComparisonMask];
+  if (self->_currentState != computeComparisonMask)
   {
-    self->_currentState = v30;
+    self->_currentState = computeComparisonMask;
     if (v51)
     {
-      v31 = v51;
+      inputViewSet2 = v51;
     }
 
     else
     {
       v32 = objc_loadWeakRetained(&self->_owner);
-      v31 = [v32 inputViewSet];
+      inputViewSet2 = [v32 inputViewSet];
     }
 
-    v33 = [v31 inputViewController];
-    v34 = [v33 parentViewController];
+    inputViewController = [inputViewSet2 inputViewController];
+    parentViewController = [inputViewController parentViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v36 = [v31 inputViewController];
-      v37 = [v36 parentViewController];
-      [v37 invalidateInputView];
+      inputViewController2 = [inputViewSet2 inputViewController];
+      parentViewController2 = [inputViewController2 parentViewController];
+      [parentViewController2 invalidateInputView];
     }
 
-    v38 = [v31 assistantViewController];
-    v39 = [v38 parentViewController];
+    assistantViewController = [inputViewSet2 assistantViewController];
+    parentViewController3 = [assistantViewController parentViewController];
     objc_opt_class();
     v40 = objc_opt_isKindOfClass();
 
     if (v40)
     {
-      v41 = [v31 assistantViewController];
-      v42 = [v41 parentViewController];
-      [v42 invalidateInputAssistantView];
+      assistantViewController2 = [inputViewSet2 assistantViewController];
+      parentViewController4 = [assistantViewController2 parentViewController];
+      [parentViewController4 invalidateInputAssistantView];
     }
 
     v43 = objc_loadWeakRetained(&self->_owner);
-    [v43 changeToInputViewSet:v31];
+    [v43 changeToInputViewSet:inputViewSet2];
 
     v29 = v52;
     if (([v52 isFloating] & 1) != 0 || objc_msgSend(v52, "isHiddenForFloatingTransition"))
@@ -392,17 +392,17 @@ LABEL_6:
     }
   }
 
-  if (v46 < v45)
+  if (v46 < extraHostsRequired)
   {
     [(UIInputWindowControllerHosting *)self removeAllAnimations];
   }
 }
 
-- (id)itemForPurpose:(unint64_t)a3
+- (id)itemForPurpose:(unint64_t)purpose
 {
   WeakRetained = objc_loadWeakRetained(&self->_owner);
-  v6 = [WeakRetained placement];
-  v7 = [v6 indexForPurpose:a3];
+  placement = [WeakRetained placement];
+  v7 = [placement indexForPurpose:purpose];
 
   if (v7 >= [(NSMutableArray *)self->_hostingItems count])
   {
@@ -417,38 +417,38 @@ LABEL_6:
   return v8;
 }
 
-- (void)setInputSetView:(id)a3 forType:(unint64_t)a4
+- (void)setInputSetView:(id)view forType:(unint64_t)type
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(UIInputWindowControllerHosting *)self itemForPurpose:a4];
+  viewCopy = view;
+  v7 = [(UIInputWindowControllerHosting *)self itemForPurpose:type];
   v8 = v7;
-  if (a4 > 101)
+  if (type > 101)
   {
-    if (a4 == 102)
+    if (type == 102)
     {
-      [v7 setInputAssistantView:v6];
+      [v7 setInputAssistantView:viewCopy];
       goto LABEL_14;
     }
 
-    if (a4 == 103)
+    if (type == 103)
     {
-      [v7 setInputSwitcherView:v6];
+      [v7 setInputSwitcherView:viewCopy];
       goto LABEL_14;
     }
   }
 
   else
   {
-    if (a4 == 100)
+    if (type == 100)
     {
-      [v7 setInputView:v6];
+      [v7 setInputView:viewCopy];
       goto LABEL_14;
     }
 
-    if (a4 == 101)
+    if (type == 101)
     {
-      [v7 setInputAccessoryView:v6];
+      [v7 setInputAccessoryView:viewCopy];
       goto LABEL_14;
     }
   }
@@ -462,24 +462,24 @@ LABEL_6:
   if (os_log_type_enabled(_MergedGlobals_1190, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v6;
+    v11 = viewCopy;
     _os_log_impl(&dword_188A29000, v9, OS_LOG_TYPE_DEFAULT, "Attempting to set view of unsupported type: %@", &v10, 0xCu);
   }
 
 LABEL_14:
 }
 
-- (void)updateCombinedBackdropViewAnimated:(BOOL)a3 forKeyboardUp:(BOOL)a4
+- (void)updateCombinedBackdropViewAnimated:(BOOL)animated forKeyboardUp:(BOOL)up
 {
-  v4 = a4;
-  v5 = a3;
+  upCopy = up;
+  animatedCopy = animated;
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(UIInputWindowControllerHosting *)self allHostingItems];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allHostingItems = [(UIInputWindowControllerHosting *)self allHostingItems];
+  v7 = [allHostingItems countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -491,14 +491,14 @@ LABEL_14:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allHostingItems);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) updateCombinedBackdropViewAnimated:v5 forKeyboardUp:v4];
+        [*(*(&v11 + 1) + 8 * v10++) updateCombinedBackdropViewAnimated:animatedCopy forKeyboardUp:upCopy];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [allHostingItems countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
@@ -512,8 +512,8 @@ LABEL_14:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(UIInputWindowControllerHosting *)self allHostingItems];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allHostingItems = [(UIInputWindowControllerHosting *)self allHostingItems];
+  v4 = [allHostingItems countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -524,18 +524,18 @@ LABEL_14:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allHostingItems);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 _inputCombinedBackdropView];
-        if (v9)
+        _inputCombinedBackdropView = [v8 _inputCombinedBackdropView];
+        if (_inputCombinedBackdropView)
         {
-          v10 = v9;
-          v11 = [v8 inputViewSet];
-          v12 = [v11 isInputViewPlaceholder];
+          v10 = _inputCombinedBackdropView;
+          inputViewSet = [v8 inputViewSet];
+          isInputViewPlaceholder = [inputViewSet isInputViewPlaceholder];
 
-          if (v12)
+          if (isInputViewPlaceholder)
           {
             [(UIInputWindowControllerHosting *)self removeAllAnimations];
             [v8 setCombinedBackdropView:0];
@@ -543,23 +543,23 @@ LABEL_14:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [allHostingItems countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)disableViewSizingConstraints:(unint64_t)a3 forNewView:(id)a4
+- (void)disableViewSizingConstraints:(unint64_t)constraints forNewView:(id)view
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  viewCopy = view;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(UIInputWindowControllerHosting *)self allHostingItems];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allHostingItems = [(UIInputWindowControllerHosting *)self allHostingItems];
+  v8 = [allHostingItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -571,14 +571,14 @@ LABEL_14:
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allHostingItems);
         }
 
-        [*(*(&v12 + 1) + 8 * v11++) disableViewSizingConstraints:a3 forNewView:v6];
+        [*(*(&v12 + 1) + 8 * v11++) disableViewSizingConstraints:constraints forNewView:viewCopy];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [allHostingItems countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
@@ -587,9 +587,9 @@ LABEL_14:
 
 - (void)removeAllAnimations
 {
-  v3 = [(UIInputWindowControllerHosting *)self owner];
-  v2 = [v3 view];
-  [v2 _removeAllAnimations:1];
+  owner = [(UIInputWindowControllerHosting *)self owner];
+  view = [owner view];
+  [view _removeAllAnimations:1];
 }
 
 - (void)setNeedsLayout
@@ -599,8 +599,8 @@ LABEL_14:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(UIInputWindowControllerHosting *)self allHostingItems];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allHostingItems = [(UIInputWindowControllerHosting *)self allHostingItems];
+  v3 = [allHostingItems countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -612,33 +612,33 @@ LABEL_14:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allHostingItems);
         }
 
-        v7 = [*(*(&v8 + 1) + 8 * v6) hostView];
-        [v7 setNeedsLayout];
+        hostView = [*(*(&v8 + 1) + 8 * v6) hostView];
+        [hostView setNeedsLayout];
 
         ++v6;
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [allHostingItems countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)performForInputAccessoryBackdropViews:(id)a3
+- (void)performForInputAccessoryBackdropViews:(id)views
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewsCopy = views;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(UIInputWindowControllerHosting *)self allHostingItems];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allHostingItems = [(UIInputWindowControllerHosting *)self allHostingItems];
+  v6 = [allHostingItems countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -650,17 +650,17 @@ LABEL_14:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allHostingItems);
         }
 
-        v10 = [*(*(&v11 + 1) + 8 * v9) _inputAccessoryBackdropView];
-        v4[2](v4, v10);
+        _inputAccessoryBackdropView = [*(*(&v11 + 1) + 8 * v9) _inputAccessoryBackdropView];
+        viewsCopy[2](viewsCopy, _inputAccessoryBackdropView);
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [allHostingItems countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -674,8 +674,8 @@ LABEL_14:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(UIInputWindowControllerHosting *)self allHostingItems];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allHostingItems = [(UIInputWindowControllerHosting *)self allHostingItems];
+  v3 = [allHostingItems countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -687,32 +687,32 @@ LABEL_14:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allHostingItems);
         }
 
-        v7 = [*(*(&v8 + 1) + 8 * v6) hostView];
-        [v7 layoutIfNeeded];
+        hostView = [*(*(&v8 + 1) + 8 * v6) hostView];
+        [hostView layoutIfNeeded];
 
         ++v6;
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [allHostingItems countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)extendKeyboardBackdropHeight:(double)a3 withDuration:(double)a4
+- (void)extendKeyboardBackdropHeight:(double)height withDuration:(double)duration
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(UIInputWindowControllerHosting *)self allHostingItems];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allHostingItems = [(UIInputWindowControllerHosting *)self allHostingItems];
+  v7 = [allHostingItems countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -724,14 +724,14 @@ LABEL_14:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allHostingItems);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) extendKeyboardBackdropHeight:a3 withDuration:a4];
+        [*(*(&v11 + 1) + 8 * v10++) extendKeyboardBackdropHeight:height withDuration:duration];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [allHostingItems countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
@@ -758,69 +758,69 @@ LABEL_14:
   return result;
 }
 
-- (id)subPlacementFromPlacement:(id)a3 forHost:(id)a4
+- (id)subPlacementFromPlacement:(id)placement forHost:(id)host
 {
-  v6 = a3;
-  v7 = [(UIInputWindowControllerHosting *)self indexOfHost:a4];
+  placementCopy = placement;
+  v7 = [(UIInputWindowControllerHosting *)self indexOfHost:host];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL && (v8 = v7) != 0)
   {
-    v10 = [v6 subPlacements];
-    v9 = [v10 objectAtIndexedSubscript:v8 - 1];
+    subPlacements = [placementCopy subPlacements];
+    v9 = [subPlacements objectAtIndexedSubscript:v8 - 1];
   }
 
   else
   {
-    v9 = v6;
+    v9 = placementCopy;
   }
 
   return v9;
 }
 
-- (id)placementForHost:(id)a3
+- (id)placementForHost:(id)host
 {
-  v4 = a3;
+  hostCopy = host;
   WeakRetained = objc_loadWeakRetained(&self->_owner);
-  v6 = [WeakRetained placement];
-  v7 = [(UIInputWindowControllerHosting *)self subPlacementFromPlacement:v6 forHost:v4];
+  placement = [WeakRetained placement];
+  v7 = [(UIInputWindowControllerHosting *)self subPlacementFromPlacement:placement forHost:hostCopy];
 
   return v7;
 }
 
-- (id)expectedPlacementForHost:(id)a3
+- (id)expectedPlacementForHost:(id)host
 {
-  v4 = a3;
+  hostCopy = host;
   WeakRetained = objc_loadWeakRetained(&self->_owner);
-  v6 = [WeakRetained expectedPlacement];
-  v7 = [(UIInputWindowControllerHosting *)self subPlacementFromPlacement:v6 forHost:v4];
+  expectedPlacement = [WeakRetained expectedPlacement];
+  v7 = [(UIInputWindowControllerHosting *)self subPlacementFromPlacement:expectedPlacement forHost:hostCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = v7;
+    expiringPlacement = v7;
   }
 
   else
   {
     v10 = objc_loadWeakRetained(&self->_owner);
-    v11 = [v10 placement];
-    v12 = [(UIInputWindowControllerHosting *)self subPlacementFromPlacement:v11 forHost:v4];
-    v9 = [v12 expiringPlacement];
+    placement = [v10 placement];
+    v12 = [(UIInputWindowControllerHosting *)self subPlacementFromPlacement:placement forHost:hostCopy];
+    expiringPlacement = [v12 expiringPlacement];
   }
 
-  return v9;
+  return expiringPlacement;
 }
 
-- (BOOL)host:(id)a3 isForPurpose:(unint64_t)a4
+- (BOOL)host:(id)host isForPurpose:(unint64_t)purpose
 {
-  v6 = [(NSMutableArray *)self->_hostingItems indexOfObject:a3];
+  v6 = [(NSMutableArray *)self->_hostingItems indexOfObject:host];
   v7 = v6;
-  if (a4 == 200)
+  if (purpose == 200)
   {
     return v6 == 0;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_owner);
-  v10 = [WeakRetained placement];
-  v8 = [v10 indexForPurpose:a4] == v7;
+  placement = [WeakRetained placement];
+  v8 = [placement indexForPurpose:purpose] == v7;
 
   return v8;
 }
@@ -828,9 +828,9 @@ LABEL_14:
 - (id)scrollTrackingView
 {
   v2 = [(UIInputWindowControllerHosting *)self itemForPurpose:3];
-  v3 = [v2 scrollTrackingView];
+  scrollTrackingView = [v2 scrollTrackingView];
 
-  return v3;
+  return scrollTrackingView;
 }
 
 - (void)removeMatchMoveAnimationIfNeeded

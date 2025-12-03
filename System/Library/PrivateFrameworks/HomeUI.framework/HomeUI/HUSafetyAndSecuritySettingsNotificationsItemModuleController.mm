@@ -1,30 +1,30 @@
 @interface HUSafetyAndSecuritySettingsNotificationsItemModuleController
-- (unint64_t)didSelectItem:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4;
+- (unint64_t)didSelectItem:(id)item;
+- (void)setupCell:(id)cell forItem:(id)item;
 @end
 
 @implementation HUSafetyAndSecuritySettingsNotificationsItemModuleController
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
+  cellCopy = cell;
   v8.receiver = self;
   v8.super_class = HUSafetyAndSecuritySettingsNotificationsItemModuleController;
-  [(HUItemModuleController *)&v8 setupCell:v6 forItem:a4];
-  v7 = v6;
+  [(HUItemModuleController *)&v8 setupCell:cellCopy forItem:item];
+  v7 = cellCopy;
   [v7 setAccessoryView:0];
   [v7 setAccessoryType:1];
   [v7 setHideIcon:1];
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v5 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = module;
   }
 
   else
@@ -35,7 +35,7 @@
   v7 = v6;
 
   objc_opt_class();
-  v8 = v4;
+  v8 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -49,11 +49,11 @@
   v10 = v9;
 
   objc_opt_class();
-  v11 = [v10 sourceItem];
+  sourceItem = [v10 sourceItem];
 
   if (objc_opt_isKindOfClass())
   {
-    v12 = v11;
+    v12 = sourceItem;
   }
 
   else
@@ -66,15 +66,15 @@
   if (v13)
   {
     v14 = [HUStatusAndNotificationsViewController alloc];
-    v15 = [v7 home];
-    v16 = [(HUStatusAndNotificationsViewController *)v14 initWithServiceItem:v13 inHome:v15 displayingDetails:0];
+    home = [v7 home];
+    v16 = [(HUStatusAndNotificationsViewController *)v14 initWithServiceItem:v13 inHome:home displayingDetails:0];
 
     v17 = [HUViewControllerPresentationRequest requestWithViewController:v16];
     v18 = 1;
     [v17 setAnimated:1];
     [v17 setPreferredPresentationType:1];
-    v19 = [(HUItemModuleController *)self host];
-    v20 = [v19 moduleController:self presentViewControllerForRequest:v17];
+    host = [(HUItemModuleController *)self host];
+    v20 = [host moduleController:self presentViewControllerForRequest:v17];
   }
 
   else

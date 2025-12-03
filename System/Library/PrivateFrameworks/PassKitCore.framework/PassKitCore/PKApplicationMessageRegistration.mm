@@ -1,91 +1,91 @@
 @interface PKApplicationMessageRegistration
-+ (id)_createLocalWithIdentifier:(void *)a3 createdDate:(void *)a4 priority:(char)a5 badge:;
-+ (id)createWithKey:(id)a3 createdDate:(id)a4 priority:(unint64_t)a5 badge:(BOOL)a6;
-- (BOOL)isEqual:(id)a3;
-- (PKApplicationMessageRegistration)initWithCoder:(id)a3;
-- (id)_initWithKey:(void *)a3 createdDate:(void *)a4 priority:(char)a5 badge:;
++ (id)_createLocalWithIdentifier:(void *)identifier createdDate:(void *)date priority:(char)priority badge:;
++ (id)createWithKey:(id)key createdDate:(id)date priority:(unint64_t)priority badge:(BOOL)badge;
+- (BOOL)isEqual:(id)equal;
+- (PKApplicationMessageRegistration)initWithCoder:(id)coder;
+- (id)_initWithKey:(void *)key createdDate:(void *)date priority:(char)priority badge:;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKApplicationMessageRegistration
 
-+ (id)_createLocalWithIdentifier:(void *)a3 createdDate:(void *)a4 priority:(char)a5 badge:
++ (id)_createLocalWithIdentifier:(void *)identifier createdDate:(void *)date priority:(char)priority badge:
 {
-  v8 = a3;
+  identifierCopy = identifier;
   v9 = a2;
   objc_opt_self();
   v10 = [[PKApplicationMessageKey alloc] _initWithSource:v9 identifier:?];
 
-  v11 = [[PKApplicationMessageRegistration alloc] _initWithKey:v10 createdDate:v8 priority:a4 badge:a5];
+  v11 = [[PKApplicationMessageRegistration alloc] _initWithKey:v10 createdDate:identifierCopy priority:date badge:priority];
   return v11;
 }
 
-- (id)_initWithKey:(void *)a3 createdDate:(void *)a4 priority:(char)a5 badge:
+- (id)_initWithKey:(void *)key createdDate:(void *)date priority:(char)priority badge:
 {
   v10 = a2;
-  v11 = a3;
-  v12 = v11;
-  v13 = 0;
-  if (a1 && v10 && v11)
+  keyCopy = key;
+  v12 = keyCopy;
+  selfCopy = 0;
+  if (self && v10 && keyCopy)
   {
-    v17.receiver = a1;
+    v17.receiver = self;
     v17.super_class = PKApplicationMessageRegistration;
     v14 = objc_msgSendSuper2(&v17, sel_init);
     v15 = v14;
     if (v14)
     {
       objc_storeStrong(v14 + 2, a2);
-      objc_storeStrong(v15 + 3, a3);
-      v15[4] = a4;
-      *(v15 + 8) = a5;
+      objc_storeStrong(v15 + 3, key);
+      v15[4] = date;
+      *(v15 + 8) = priority;
     }
 
-    a1 = v15;
-    v13 = a1;
+    self = v15;
+    selfCopy = self;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-+ (id)createWithKey:(id)a3 createdDate:(id)a4 priority:(unint64_t)a5 badge:(BOOL)a6
++ (id)createWithKey:(id)key createdDate:(id)date priority:(unint64_t)priority badge:(BOOL)badge
 {
-  v9 = a4;
-  v10 = a3;
-  v11 = [[PKApplicationMessageRegistration alloc] _initWithKey:v10 createdDate:v9 priority:a5 badge:a6];
+  dateCopy = date;
+  keyCopy = key;
+  v11 = [[PKApplicationMessageRegistration alloc] _initWithKey:keyCopy createdDate:dateCopy priority:priority badge:badge];
 
   return v11;
 }
 
-- (PKApplicationMessageRegistration)initWithCoder:(id)a3
+- (PKApplicationMessageRegistration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = PKApplicationMessageRegistration;
   v5 = [(PKApplicationMessageRegistration *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"key"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"key"];
     key = v5->_key;
     v5->_key = v6;
 
     if (!v5->_key)
     {
       v12 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PKApplicationMessageRegistration" code:0 userInfo:0];
-      [v4 failWithError:v12];
+      [coderCopy failWithError:v12];
 
       v11 = 0;
       goto LABEL_6;
     }
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"createdDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"createdDate"];
     createdDate = v5->_createdDate;
     v5->_createdDate = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"priority"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"priority"];
     v5->_priority = [v10 unsignedLongLongValue];
 
-    v5->_badge = [v4 decodeBoolForKey:@"badge"];
+    v5->_badge = [coderCopy decodeBoolForKey:@"badge"];
   }
 
   v11 = v5;
@@ -94,25 +94,25 @@ LABEL_6:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   key = self->_key;
-  v6 = a3;
-  [v6 encodeObject:key forKey:@"key"];
-  [v6 encodeObject:self->_createdDate forKey:@"createdDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:key forKey:@"key"];
+  [coderCopy encodeObject:self->_createdDate forKey:@"createdDate"];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_priority];
-  [v6 encodeObject:v5 forKey:@"priority"];
+  [coderCopy encodeObject:v5 forKey:@"priority"];
 
-  [v6 encodeBool:self->_badge forKey:@"badge"];
+  [coderCopy encodeBool:self->_badge forKey:@"badge"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (!self)
     {
 LABEL_15:

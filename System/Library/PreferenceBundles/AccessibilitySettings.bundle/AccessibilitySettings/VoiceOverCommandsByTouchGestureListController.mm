@@ -1,18 +1,18 @@
 @interface VoiceOverCommandsByTouchGestureListController
-- (id)_boundCommandNameForGesture:(id)a3;
+- (id)_boundCommandNameForGesture:(id)gesture;
 - (id)makeSpecifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation VoiceOverCommandsByTouchGestureListController
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   [(VoiceOverCommandsByTouchGestureListController *)self deactivateAndPersistSearchText];
-  v8 = [(VoiceOverCommandsByTouchGestureListController *)self specifierForIndexPath:v7];
-  v9 = [v8 voCommandResolver];
+  v8 = [(VoiceOverCommandsByTouchGestureListController *)self specifierForIndexPath:pathCopy];
+  voCommandResolver = [v8 voCommandResolver];
   objc_initWeak(&location, self);
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
@@ -20,7 +20,7 @@
   v16[3] = &unk_257010;
   v10 = v8;
   v17 = v10;
-  v11 = v9;
+  v11 = voCommandResolver;
   v18 = v11;
   objc_copyWeak(&v19, &location);
   v14[0] = _NSConcreteStackBlock;
@@ -92,13 +92,13 @@ void __83__VoiceOverCommandsByTouchGestureListController_tableView_didSelectRowA
 - (id)makeSpecifiers
 {
   v3 = OBJC_IVAR___PSViewController__specifier;
-  v4 = [*&self->AXUISettingsSearchableBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] voCommandContext];
-  v42 = [v4 commandManager];
+  voCommandContext = [*&self->AXUISettingsSearchableBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] voCommandContext];
+  commandManager = [voCommandContext commandManager];
 
   v32 = objc_opt_new();
   v41 = v3;
-  v47 = self;
-  v5 = [*&self->AXUISettingsSearchableBaseListController_opaque[v3] voCommandResolver];
+  selfCopy = self;
+  voCommandResolver = [*&self->AXUISettingsSearchableBaseListController_opaque[v3] voCommandResolver];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
@@ -113,7 +113,7 @@ void __83__VoiceOverCommandsByTouchGestureListController_tableView_didSelectRowA
     v40 = PSEnabledKey;
     v38 = AXLongTitleValueTableViewCellButtonBoolKey;
     v39 = PSCellClassKey;
-    v7 = v42;
+    v7 = commandManager;
     do
     {
       v8 = 0;
@@ -132,8 +132,8 @@ void __83__VoiceOverCommandsByTouchGestureListController_tableView_didSelectRowA
         v50 = 0u;
         v51 = 0u;
         v37 = v9;
-        v46 = [v9 gestures];
-        v11 = [v46 countByEnumeratingWithState:&v48 objects:v56 count:16];
+        gestures = [v9 gestures];
+        v11 = [gestures countByEnumeratingWithState:&v48 objects:v56 count:16];
         if (v11)
         {
           v12 = v11;
@@ -148,24 +148,24 @@ void __83__VoiceOverCommandsByTouchGestureListController_tableView_didSelectRowA
             {
               if (*v49 != v13)
               {
-                objc_enumerationMutation(v46);
+                objc_enumerationMutation(gestures);
               }
 
               v15 = *(*(&v48 + 1) + 8 * v14);
-              v16 = [v7 availabilityForGesture:v15 withResolver:v5];
+              v16 = [v7 availabilityForGesture:v15 withResolver:voCommandResolver];
               if (v16 != &dword_0 + 2)
               {
                 v17 = v16;
                 v18 = v6;
-                [*&v47->AXUISettingsSearchableBaseListController_opaque[v41] voCommandContext];
-                v20 = v19 = v5;
-                v21 = [v20 resolver];
-                v6 = [PSSpecifier voGestureItem:v15 commandManager:v7 resolver:v21];
+                [*&selfCopy->AXUISettingsSearchableBaseListController_opaque[v41] voCommandContext];
+                v20 = v19 = voCommandResolver;
+                resolver = [v20 resolver];
+                v6 = [PSSpecifier voGestureItem:v15 commandManager:v7 resolver:resolver];
 
-                v5 = v19;
+                voCommandResolver = v19;
                 v22 = [v7 commandForTouchGesture:v15 withResolver:v19];
-                v23 = [v6 voCommandContext];
-                [v23 setCommand:v22];
+                voCommandContext2 = [v6 voCommandContext];
+                [voCommandContext2 setCommand:v22];
 
                 if (v17)
                 {
@@ -174,7 +174,7 @@ void __83__VoiceOverCommandsByTouchGestureListController_tableView_didSelectRowA
 
                 else
                 {
-                  v24 = [(VoiceOverCommandsByTouchGestureListController *)v47 _isCategoryEnabled:v37];
+                  v24 = [(VoiceOverCommandsByTouchGestureListController *)selfCopy _isCategoryEnabled:v37];
                 }
 
                 v12 = v45;
@@ -183,11 +183,11 @@ void __83__VoiceOverCommandsByTouchGestureListController_tableView_didSelectRowA
 
                 [v6 setProperty:objc_opt_class() forKey:v39];
                 [v6 setProperty:&__kCFBooleanTrue forKey:v38];
-                objc_storeWeak(&v6[OBJC_IVAR___PSSpecifier_target], v47);
+                objc_storeWeak(&v6[OBJC_IVAR___PSSpecifier_target], selfCopy);
                 v10 = v44;
                 *&v6[OBJC_IVAR___PSSpecifier_getter] = "_boundCommandNameForGesture:";
                 [v44 addObject:v6];
-                v7 = v42;
+                v7 = commandManager;
                 v13 = v43;
               }
 
@@ -195,7 +195,7 @@ void __83__VoiceOverCommandsByTouchGestureListController_tableView_didSelectRowA
             }
 
             while (v12 != v14);
-            v12 = [v46 countByEnumeratingWithState:&v48 objects:v56 count:16];
+            v12 = [gestures countByEnumeratingWithState:&v48 objects:v56 count:16];
           }
 
           while (v12);
@@ -203,11 +203,11 @@ void __83__VoiceOverCommandsByTouchGestureListController_tableView_didSelectRowA
 
         if ([v10 count])
         {
-          v26 = [v37 localizedCategoryName];
-          v27 = [PSSpecifier groupSpecifierWithName:v26];
+          localizedCategoryName = [v37 localizedCategoryName];
+          v27 = [PSSpecifier groupSpecifierWithName:localizedCategoryName];
 
           [v32 addObject:v27];
-          v28 = [(VoiceOverCommandsByTouchGestureListController *)v47 _headerSpecifiersForCategory:v37];
+          v28 = [(VoiceOverCommandsByTouchGestureListController *)selfCopy _headerSpecifiersForCategory:v37];
           [v32 addObjectsFromArray:v28];
 
           [v32 addObjectsFromArray:v10];
@@ -227,33 +227,33 @@ void __83__VoiceOverCommandsByTouchGestureListController_tableView_didSelectRowA
   else
   {
     v35 = 0;
-    v7 = v42;
+    v7 = commandManager;
   }
 
   v29 = v32;
   return v32;
 }
 
-- (id)_boundCommandNameForGesture:(id)a3
+- (id)_boundCommandNameForGesture:(id)gesture
 {
-  v3 = a3;
-  v4 = [v3 voCommandContext];
-  v5 = [v4 gesture];
+  gestureCopy = gesture;
+  voCommandContext = [gestureCopy voCommandContext];
+  gesture = [voCommandContext gesture];
   v6 = +[VOSGesture OneFingerSingleTap];
 
-  if (v5 == v6)
+  if (gesture == v6)
   {
-    v9 = VOSLocString();
+    localizedName = VOSLocString();
   }
 
   else
   {
-    v7 = [v3 voCommandContext];
-    v8 = [v7 command];
-    v9 = [v8 localizedName];
+    voCommandContext2 = [gestureCopy voCommandContext];
+    command = [voCommandContext2 command];
+    localizedName = [command localizedName];
   }
 
-  return v9;
+  return localizedName;
 }
 
 void __83__VoiceOverCommandsByTouchGestureListController_tableView_didSelectRowAtIndexPath___block_invoke_2_cold_1(void *a1, uint64_t a2, os_log_t log)

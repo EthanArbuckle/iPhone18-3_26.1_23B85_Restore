@@ -1,7 +1,7 @@
 @interface NDODeviceServicesComposition
 + (id)makeAirPodsDataCollectionHandler;
-+ (void)isAccCheckInDisabledWithCompletionHandler:(id)a3;
-+ (void)loadWithRequest:(id)a3 completion:(id)a4;
++ (void)isAccCheckInDisabledWithCompletionHandler:(id)handler;
++ (void)loadWithRequest:(id)request completion:(id)completion;
 - (_TtC8ndoagent28NDODeviceServicesComposition)init;
 @end
 
@@ -14,14 +14,14 @@
   return v2;
 }
 
-+ (void)loadWithRequest:(id)a3 completion:(id)a4
++ (void)loadWithRequest:(id)request completion:(id)completion
 {
   v5 = type metadata accessor for URLRequest();
   v6 = *(v5 - 8);
   v7 = *(v6 + 64);
   __chkstk_darwin(v5);
   v9 = v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   static URLRequest._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
@@ -39,16 +39,16 @@
   sub_100001E74(v14);
 }
 
-+ (void)isAccCheckInDisabledWithCompletionHandler:(id)a3
++ (void)isAccCheckInDisabledWithCompletionHandler:(id)handler
 {
   v5 = sub_10001A078(&qword_1000A7920, &qword_10007AE70);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
-  *(v10 + 24) = a1;
+  *(v10 + 24) = self;
   v11 = type metadata accessor for TaskPriority();
   (*(*(v11 - 8) + 56))(v8, 1, 1, v11);
   v12 = swift_allocObject();

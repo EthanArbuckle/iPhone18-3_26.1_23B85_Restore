@@ -1,26 +1,26 @@
 @interface PVEffectTimedPropertiesDelegateWrapper
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PVEffectTimedPropertiesDelegate)timedPropertiesDelegate;
-- (PVEffectTimedPropertiesDelegateWrapper)initWithTimedPropertiesDelegate:(id)a3 supportedTimedPropertyGroups:(id)a4 userContext:(id)a5;
+- (PVEffectTimedPropertiesDelegateWrapper)initWithTimedPropertiesDelegate:(id)delegate supportedTimedPropertyGroups:(id)groups userContext:(id)context;
 - (unint64_t)hash;
 @end
 
 @implementation PVEffectTimedPropertiesDelegateWrapper
 
-- (PVEffectTimedPropertiesDelegateWrapper)initWithTimedPropertiesDelegate:(id)a3 supportedTimedPropertyGroups:(id)a4 userContext:(id)a5
+- (PVEffectTimedPropertiesDelegateWrapper)initWithTimedPropertiesDelegate:(id)delegate supportedTimedPropertyGroups:(id)groups userContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  groupsCopy = groups;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = PVEffectTimedPropertiesDelegateWrapper;
   v11 = [(PVEffectTimedPropertiesDelegateWrapper *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    [(PVEffectTimedPropertiesDelegateWrapper *)v11 setTimedPropertiesDelegate:v8];
-    [(PVEffectTimedPropertiesDelegateWrapper *)v12 setSupportedTimedPropertyGroups:v9];
-    [(PVEffectTimedPropertiesDelegateWrapper *)v12 setUserContext:v10];
+    [(PVEffectTimedPropertiesDelegateWrapper *)v11 setTimedPropertiesDelegate:delegateCopy];
+    [(PVEffectTimedPropertiesDelegateWrapper *)v12 setSupportedTimedPropertyGroups:groupsCopy];
+    [(PVEffectTimedPropertiesDelegateWrapper *)v12 setUserContext:contextCopy];
     v13 = objc_opt_respondsToSelector();
     [(PVEffectTimedPropertiesDelegateWrapper *)v12 setWantsStartStopNotifications:v13 & objc_opt_respondsToSelector() & 1];
   }
@@ -30,27 +30,27 @@
 
 - (unint64_t)hash
 {
-  v2 = [(PVEffectTimedPropertiesDelegateWrapper *)self timedPropertiesDelegate];
-  v3 = [v2 hash];
+  timedPropertiesDelegate = [(PVEffectTimedPropertiesDelegateWrapper *)self timedPropertiesDelegate];
+  v3 = [timedPropertiesDelegate hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(PVEffectTimedPropertiesDelegateWrapper *)self timedPropertiesDelegate];
-    v6 = [v4 timedPropertiesDelegate];
-    v7 = [v5 isEqual:v6];
+    timedPropertiesDelegate = [(PVEffectTimedPropertiesDelegateWrapper *)self timedPropertiesDelegate];
+    timedPropertiesDelegate2 = [equalCopy timedPropertiesDelegate];
+    v7 = [timedPropertiesDelegate isEqual:timedPropertiesDelegate2];
   }
 
   else
   {
-    v5 = [(PVEffectTimedPropertiesDelegateWrapper *)self timedPropertiesDelegate];
-    v7 = [v5 isEqual:v4];
+    timedPropertiesDelegate = [(PVEffectTimedPropertiesDelegateWrapper *)self timedPropertiesDelegate];
+    v7 = [timedPropertiesDelegate isEqual:equalCopy];
   }
 
   return v7;

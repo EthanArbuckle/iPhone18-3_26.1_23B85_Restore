@@ -1,17 +1,17 @@
 @interface NMAPIItemListResponseParser
-- (id)resultsWithDictionary:(id)a3 error:(id *)a4;
+- (id)resultsWithDictionary:(id)dictionary error:(id *)error;
 @end
 
 @implementation NMAPIItemListResponseParser
 
-- (id)resultsWithDictionary:(id)a3 error:(id *)a4
+- (id)resultsWithDictionary:(id)dictionary error:(id *)error
 {
   v5 = MEMORY[0x277CBEB18];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v7 = objc_alloc_init(v5);
-  v8 = [v6 objectForKey:@"data"];
+  v8 = [dictionaryCopy objectForKey:@"data"];
 
-  v9 = NMAPIArrayWithObject(v8, @"data", a4);
+  v9 = NMAPIArrayWithObject(v8, @"data", error);
 
   if (v9)
   {

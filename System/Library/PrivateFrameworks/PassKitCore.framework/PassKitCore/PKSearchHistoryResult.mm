@@ -1,19 +1,19 @@
 @interface PKSearchHistoryResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PKSearchHistoryResult)initWithCoder:(id)a3;
+- (PKSearchHistoryResult)initWithCoder:(id)coder;
 - (unint64_t)hash;
 @end
 
 @implementation PKSearchHistoryResult
 
-- (PKSearchHistoryResult)initWithCoder:(id)a3
+- (PKSearchHistoryResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKSearchHistoryResult *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"searchHistory"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"searchHistory"];
     searchHistory = v5->_searchHistory;
     v5->_searchHistory = v6;
   }
@@ -34,14 +34,14 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     searchHistory = self->_searchHistory;
-    v6 = v4[1];
+    v6 = equalCopy[1];
     if (searchHistory && v6)
     {
       v7 = [(NSString *)searchHistory isEqual:?];

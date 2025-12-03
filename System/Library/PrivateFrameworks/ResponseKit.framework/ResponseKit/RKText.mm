@@ -1,18 +1,18 @@
 @interface RKText
-+ (id)annotationNameFromType:(unint64_t)a3;
++ (id)annotationNameFromType:(unint64_t)type;
 + (id)defaultDataProvider;
-+ (id)polarityNameFromType:(unint64_t)a3;
-+ (unint64_t)annotationTypeFromName:(id)a3;
-+ (unint64_t)polarityTypeFromName:(id)a3;
++ (id)polarityNameFromType:(unint64_t)type;
++ (unint64_t)annotationTypeFromName:(id)name;
++ (unint64_t)polarityTypeFromName:(id)name;
 + (void)initialize;
 - (BOOL)cleanupData;
-- (RKText)initWithString:(id)a3 andLanguageIdentifier:(id)a4 trainingWeight:(double)a5 trainVerbatim:(BOOL)a6;
+- (RKText)initWithString:(id)string andLanguageIdentifier:(id)identifier trainingWeight:(double)weight trainVerbatim:(BOOL)verbatim;
 - (id)lsmText;
-- (id)subTextWithRange:(_NSRange)a3;
+- (id)subTextWithRange:(_NSRange)range;
 - (id)subTextsByPolarity;
 - (id)taggedText;
 - (unint64_t)annotatedPolarity;
-- (void)enumerateAnnotationsInRange:(_NSRange)a3 usingBlock:(id)a4;
+- (void)enumerateAnnotationsInRange:(_NSRange)range usingBlock:(id)block;
 @end
 
 @implementation RKText
@@ -116,10 +116,10 @@ uint64_t __29__RKText_defaultDataProvider__block_invoke()
   v22 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)annotationNameFromType:(unint64_t)a3
++ (id)annotationNameFromType:(unint64_t)type
 {
   v3 = sAnnotationNames;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   v5 = [v3 allKeysForObject:v4];
 
   v6 = [v5 objectAtIndexedSubscript:0];
@@ -127,18 +127,18 @@ uint64_t __29__RKText_defaultDataProvider__block_invoke()
   return v6;
 }
 
-+ (unint64_t)annotationTypeFromName:(id)a3
++ (unint64_t)annotationTypeFromName:(id)name
 {
-  v3 = [sAnnotationNames objectForKeyedSubscript:a3];
-  v4 = [v3 unsignedIntegerValue];
+  v3 = [sAnnotationNames objectForKeyedSubscript:name];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-+ (id)polarityNameFromType:(unint64_t)a3
++ (id)polarityNameFromType:(unint64_t)type
 {
   v3 = sPolarityNames;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   v5 = [v3 allKeysForObject:v4];
 
   v6 = [v5 objectAtIndexedSubscript:0];
@@ -146,52 +146,52 @@ uint64_t __29__RKText_defaultDataProvider__block_invoke()
   return v6;
 }
 
-+ (unint64_t)polarityTypeFromName:(id)a3
++ (unint64_t)polarityTypeFromName:(id)name
 {
-  v3 = [sPolarityNames objectForKeyedSubscript:a3];
-  v4 = [v3 unsignedIntegerValue];
+  v3 = [sPolarityNames objectForKeyedSubscript:name];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (RKText)initWithString:(id)a3 andLanguageIdentifier:(id)a4 trainingWeight:(double)a5 trainVerbatim:(BOOL)a6
+- (RKText)initWithString:(id)string andLanguageIdentifier:(id)identifier trainingWeight:(double)weight trainVerbatim:(BOOL)verbatim
 {
-  v11 = a3;
-  v12 = a4;
+  stringCopy = string;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = RKText;
   v13 = [(RKText *)&v20 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_string, a3);
-    v15 = [RKUtilities canonicalLanguageAndScriptCodeIdentifierForIdentifier:v12];
+    objc_storeStrong(&v13->_string, string);
+    v15 = [RKUtilities canonicalLanguageAndScriptCodeIdentifierForIdentifier:identifierCopy];
     languageID = v14->_languageID;
     v14->_languageID = v15;
 
-    v17 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     annotations = v14->_annotations;
-    v14->_annotations = v17;
+    v14->_annotations = array;
 
-    v14->_trainingWeight = a5;
-    v14->_trainVerbatim = a6;
+    v14->_trainingWeight = weight;
+    v14->_trainVerbatim = verbatim;
   }
 
   return v14;
 }
 
-- (void)enumerateAnnotationsInRange:(_NSRange)a3 usingBlock:(id)a4
+- (void)enumerateAnnotationsInRange:(_NSRange)range usingBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  blockCopy = block;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = [(RKText *)self annotations];
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  annotations = [(RKText *)self annotations];
+  v9 = [annotations countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = v9;
@@ -202,7 +202,7 @@ LABEL_3:
     {
       if (*v20 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(annotations);
       }
 
       v13 = *(*(&v19 + 1) + 8 * v12);
@@ -212,9 +212,9 @@ LABEL_3:
       if (NSIntersectionRange(v25, v26).length)
       {
         v18 = 0;
-        v14 = [v13 type];
-        v15 = [v13 range];
-        v7[2](v7, v14, v15, v16, &v18);
+        type = [v13 type];
+        range = [v13 range];
+        blockCopy[2](blockCopy, type, range, v16, &v18);
         if (v18)
         {
           break;
@@ -223,7 +223,7 @@ LABEL_3:
 
       if (v10 == ++v12)
       {
-        v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v10 = [annotations countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v10)
         {
           goto LABEL_3;
@@ -243,23 +243,23 @@ LABEL_3:
   v46 = &v45;
   v47 = 0x2020000000;
   v48 = 1;
-  v3 = [(RKText *)self annotations];
+  annotations = [(RKText *)self annotations];
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
   v44[2] = __21__RKText_cleanupData__block_invoke;
   v44[3] = &unk_279B10468;
   v44[4] = self;
-  [v3 enumerateObjectsUsingBlock:v44];
+  [annotations enumerateObjectsUsingBlock:v44];
 
   v4 = MEMORY[0x277CBEAF8];
-  v5 = [(RKText *)self languageID];
-  v6 = [v4 localeWithLocaleIdentifier:v5];
+  languageID = [(RKText *)self languageID];
+  v6 = [v4 localeWithLocaleIdentifier:languageID];
 
-  v7 = [(RKText *)self string];
-  v8 = [(RKText *)self string];
-  v49.length = [v8 length];
+  string = [(RKText *)self string];
+  string2 = [(RKText *)self string];
+  v49.length = [string2 length];
   v49.location = 0;
-  v9 = CFStringTokenizerCreate(*MEMORY[0x277CBECE8], v7, v49, 4uLL, v6);
+  v9 = CFStringTokenizerCreate(*MEMORY[0x277CBECE8], string, v49, 4uLL, v6);
 
   if (*(v46 + 24) == 1)
   {
@@ -271,7 +271,7 @@ LABEL_3:
       }
 
       CurrentTokenRange = CFStringTokenizerGetCurrentTokenRange(v9);
-      v11 = [(RKText *)self annotations];
+      annotations2 = [(RKText *)self annotations];
       v42[0] = MEMORY[0x277D85DD0];
       v42[1] = 3221225472;
       v42[2] = __21__RKText_cleanupData__block_invoke_2;
@@ -279,7 +279,7 @@ LABEL_3:
       v43 = CurrentTokenRange;
       v42[4] = self;
       v42[5] = &v45;
-      [v11 enumerateObjectsUsingBlock:v42];
+      [annotations2 enumerateObjectsUsingBlock:v42];
     }
 
     while ((v46[3] & 1) != 0);
@@ -295,13 +295,13 @@ LABEL_3:
     [RKText cleanupData];
   }
 
-  v12 = [(RKText *)self languageID];
+  languageID2 = [(RKText *)self languageID];
 
-  if (v12)
+  if (languageID2)
   {
     v13 = cleanupData_sDateTimeRegEx;
-    v14 = [(RKText *)self languageID];
-    v15 = [v13 objectForKeyedSubscript:v14];
+    languageID3 = [(RKText *)self languageID];
+    v15 = [v13 objectForKeyedSubscript:languageID3];
 
     if (!v15)
     {
@@ -312,59 +312,59 @@ LABEL_3:
 
       v16 = objc_alloc_init(MEMORY[0x277CCA968]);
       v17 = MEMORY[0x277CBEAF8];
-      v18 = [(RKText *)self languageID];
-      v19 = [v17 localeWithLocaleIdentifier:v18];
+      languageID4 = [(RKText *)self languageID];
+      v19 = [v17 localeWithLocaleIdentifier:languageID4];
       [v16 setLocale:v19];
 
-      v20 = [v16 standaloneWeekdaySymbols];
+      standaloneWeekdaySymbols = [v16 standaloneWeekdaySymbols];
       v21 = MEMORY[0x277CCACA8];
-      v22 = [v20 componentsJoinedByString:@"|"];
+      v22 = [standaloneWeekdaySymbols componentsJoinedByString:@"|"];
       v23 = [v21 stringWithFormat:@"\\b(%@)\\b", v22];
 
       v24 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:v23 options:1 error:0];
       v25 = cleanupData_sDateTimeRegEx;
-      v26 = [(RKText *)self languageID];
-      [v25 setObject:v24 forKeyedSubscript:v26];
+      languageID5 = [(RKText *)self languageID];
+      [v25 setObject:v24 forKeyedSubscript:languageID5];
     }
 
     v27 = cleanupData_sDateTimeRegEx;
-    v28 = [(RKText *)self languageID];
-    v29 = [v27 objectForKeyedSubscript:v28];
-    v30 = [(RKText *)self string];
-    v31 = [(RKText *)self string];
-    v32 = [v31 length];
+    languageID6 = [(RKText *)self languageID];
+    v29 = [v27 objectForKeyedSubscript:languageID6];
+    string3 = [(RKText *)self string];
+    string4 = [(RKText *)self string];
+    v32 = [string4 length];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __21__RKText_cleanupData__block_invoke_4;
     v41[3] = &unk_279B104B8;
     v41[4] = self;
-    [v29 enumerateMatchesInString:v30 options:0 range:0 usingBlock:{v32, v41}];
+    [v29 enumerateMatchesInString:string3 options:0 range:0 usingBlock:{v32, v41}];
   }
 
-  v33 = [(RKText *)self annotations];
+  annotations3 = [(RKText *)self annotations];
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __21__RKText_cleanupData__block_invoke_5;
   v40[3] = &unk_279B10468;
   v40[4] = self;
-  [v33 enumerateObjectsWithOptions:2 usingBlock:v40];
+  [annotations3 enumerateObjectsWithOptions:2 usingBlock:v40];
 
-  v34 = [(RKText *)self annotations];
+  annotations4 = [(RKText *)self annotations];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __21__RKText_cleanupData__block_invoke_7;
   v39[3] = &unk_279B10468;
   v39[4] = self;
-  [v34 enumerateObjectsWithOptions:2 usingBlock:v39];
+  [annotations4 enumerateObjectsWithOptions:2 usingBlock:v39];
 
-  v35 = [(RKText *)self annotations];
+  annotations5 = [(RKText *)self annotations];
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __21__RKText_cleanupData__block_invoke_9;
   v38[3] = &unk_279B10530;
   v38[4] = self;
   v38[5] = &v45;
-  [v35 enumerateObjectsUsingBlock:v38];
+  [annotations5 enumerateObjectsUsingBlock:v38];
 
   v36 = *(v46 + 24);
   _Block_object_dispose(&v45, 8);
@@ -573,24 +573,24 @@ void __21__RKText_cleanupData__block_invoke_9(uint64_t a1, void *a2, unint64_t a
   }
 }
 
-- (id)subTextWithRange:(_NSRange)a3
+- (id)subTextWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v26 = *MEMORY[0x277D85DE8];
   v6 = [RKText alloc];
-  v7 = [(RKText *)self string];
-  v8 = [v7 substringWithRange:{location, length}];
-  v9 = [(RKText *)self languageID];
+  string = [(RKText *)self string];
+  v8 = [string substringWithRange:{location, length}];
+  languageID = [(RKText *)self languageID];
   [(RKText *)self trainingWeight];
-  v11 = [(RKText *)v6 initWithString:v8 andLanguageIdentifier:v9 trainingWeight:[(RKText *)self trainVerbatim] trainVerbatim:v10];
+  v11 = [(RKText *)v6 initWithString:v8 andLanguageIdentifier:languageID trainingWeight:[(RKText *)self trainVerbatim] trainVerbatim:v10];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v12 = [(RKText *)self annotations];
-  v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  annotations = [(RKText *)self annotations];
+  v13 = [annotations countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v13)
   {
     v14 = v13;
@@ -601,7 +601,7 @@ void __21__RKText_cleanupData__block_invoke_9(uint64_t a1, void *a2, unint64_t a
       {
         if (*v22 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(annotations);
         }
 
         v17 = *(*(&v21 + 1) + 8 * i);
@@ -615,7 +615,7 @@ void __21__RKText_cleanupData__block_invoke_9(uint64_t a1, void *a2, unint64_t a
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v14 = [annotations countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v14);
@@ -629,11 +629,11 @@ void __21__RKText_cleanupData__block_invoke_9(uint64_t a1, void *a2, unint64_t a
 - (id)subTextsByPolarity
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [(RKText *)self annotations];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  annotations = [(RKText *)self annotations];
   v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"type >= %lu", 10];
-  v7 = [v5 filteredArrayUsingPredicate:v6];
+  v7 = [annotations filteredArrayUsingPredicate:v6];
 
   v36 = 0u;
   v37 = 0u;
@@ -655,9 +655,9 @@ void __21__RKText_cleanupData__block_invoke_9(uint64_t a1, void *a2, unint64_t a
         }
 
         v13 = MEMORY[0x277CCAE60];
-        v14 = [*(*(&v34 + 1) + 8 * i) range];
-        v16 = [v13 valueWithRange:{v14, v15}];
-        [v4 addObject:v16];
+        range = [*(*(&v34 + 1) + 8 * i) range];
+        v16 = [v13 valueWithRange:{range, v15}];
+        [array2 addObject:v16];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v34 objects:v39 count:16];
@@ -670,7 +670,7 @@ void __21__RKText_cleanupData__block_invoke_9(uint64_t a1, void *a2, unint64_t a
   v32[1] = 3221225472;
   v32[2] = __28__RKText_subTextsByPolarity__block_invoke;
   v32[3] = &unk_279B0FE10;
-  v17 = v4;
+  v17 = array2;
   v33 = v17;
   [v17 enumerateObjectsWithOptions:2 usingBlock:v32];
   [v17 sortUsingComparator:&__block_literal_global_173];
@@ -693,9 +693,9 @@ void __21__RKText_cleanupData__block_invoke_9(uint64_t a1, void *a2, unint64_t a
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v28 + 1) + 8 * j) rangeValue];
-        v25 = [(RKText *)self subTextWithRange:v23, v24];
-        [v3 addObject:v25];
+        rangeValue = [*(*(&v28 + 1) + 8 * j) rangeValue];
+        v25 = [(RKText *)self subTextWithRange:rangeValue, v24];
+        [array addObject:v25];
       }
 
       v20 = [v18 countByEnumeratingWithState:&v28 objects:v38 count:16];
@@ -706,7 +706,7 @@ void __21__RKText_cleanupData__block_invoke_9(uint64_t a1, void *a2, unint64_t a
 
   v26 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 void __28__RKText_subTextsByPolarity__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -773,9 +773,9 @@ uint64_t __28__RKText_subTextsByPolarity__block_invoke_2(uint64_t a1, void *a2, 
 
 - (unint64_t)annotatedPolarity
 {
-  v2 = [(RKText *)self annotations];
+  annotations = [(RKText *)self annotations];
   v3 = [MEMORY[0x277CCAC30] predicateWithFormat:@"type >= %lu", 10];
-  v4 = [v2 filteredArrayUsingPredicate:v3];
+  v4 = [annotations filteredArrayUsingPredicate:v3];
 
   v5 = [v4 valueForKeyPath:@"@distinctUnionOfObjects.type"];
   if ([v5 count])
@@ -802,17 +802,17 @@ uint64_t __28__RKText_subTextsByPolarity__block_invoke_2(uint64_t a1, void *a2, 
 - (id)taggedText
 {
   v55 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = [MEMORY[0x277CBEB18] array];
-  v47 = self;
-  v5 = [(RKText *)self annotations];
+  string = [MEMORY[0x277CCAB68] string];
+  array = [MEMORY[0x277CBEB18] array];
+  selfCopy = self;
+  annotations = [(RKText *)self annotations];
   v52[0] = MEMORY[0x277D85DD0];
   v52[1] = 3221225472;
   v52[2] = __20__RKText_taggedText__block_invoke;
   v52[3] = &unk_279B10468;
-  v6 = v4;
+  v6 = array;
   v53 = v6;
-  [v5 enumerateObjectsUsingBlock:v52];
+  [annotations enumerateObjectsUsingBlock:v52];
 
   [v6 sortUsingComparator:&__block_literal_global_204];
   v50 = 0u;
@@ -824,12 +824,12 @@ uint64_t __28__RKText_subTextsByPolarity__block_invoke_2(uint64_t a1, void *a2, 
   if (v7)
   {
     v8 = v7;
-    v9 = 0;
+    unsignedIntegerValue = 0;
     v10 = *v49;
     do
     {
       v11 = 0;
-      v12 = v9;
+      v12 = unsignedIntegerValue;
       do
       {
         if (*v49 != v10)
@@ -839,14 +839,14 @@ uint64_t __28__RKText_subTextsByPolarity__block_invoke_2(uint64_t a1, void *a2, 
 
         v13 = *(*(&v48 + 1) + 8 * v11);
         v14 = [v13 objectForKeyedSubscript:@"location"];
-        v9 = [v14 unsignedIntegerValue];
+        unsignedIntegerValue = [v14 unsignedIntegerValue];
 
-        v15 = [(RKText *)v47 string];
-        v16 = [v15 substringWithRange:{v12, v9 - v12}];
+        string2 = [(RKText *)selfCopy string];
+        v16 = [string2 substringWithRange:{v12, unsignedIntegerValue - v12}];
 
-        v17 = [v16 stringByEscapingXMLEntities];
+        stringByEscapingXMLEntities = [v16 stringByEscapingXMLEntities];
 
-        [v3 appendString:v17];
+        [string appendString:stringByEscapingXMLEntities];
         v18 = [v13 objectForKeyedSubscript:@"type"];
         v19 = [v18 isEqualToString:@"open"];
 
@@ -856,11 +856,11 @@ uint64_t __28__RKText_subTextsByPolarity__block_invoke_2(uint64_t a1, void *a2, 
           v23 = MEMORY[0x277CCACA8];
           v24 = [v13 objectForKeyedSubscript:@"name"];
           v25 = [v23 stringWithFormat:v20, v24];
-          [v3 appendString:v25];
+          [string appendString:v25];
         }
 
         ++v11;
-        v12 = v9;
+        v12 = unsignedIntegerValue;
       }
 
       while (v8 != v11);
@@ -872,27 +872,27 @@ uint64_t __28__RKText_subTextsByPolarity__block_invoke_2(uint64_t a1, void *a2, 
 
   else
   {
-    v9 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  v26 = [(RKText *)v47 string];
-  v27 = [v26 substringFromIndex:v9];
+  string3 = [(RKText *)selfCopy string];
+  v27 = [string3 substringFromIndex:unsignedIntegerValue];
 
-  v28 = [v27 stringByEscapingXMLEntities];
+  stringByEscapingXMLEntities2 = [v27 stringByEscapingXMLEntities];
 
-  [v3 appendString:v28];
-  v29 = [MEMORY[0x277CCA900] newlineCharacterSet];
-  v30 = [v3 componentsSeparatedByCharactersInSet:v29];
-  v31 = [v30 componentsJoinedByString:@"<br/>"];
-  v32 = [v31 mutableCopy];
+  [string appendString:stringByEscapingXMLEntities2];
+  newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+  v30 = [string componentsSeparatedByCharactersInSet:newlineCharacterSet];
+  languageID2 = [v30 componentsJoinedByString:@"<br/>"];
+  v32 = [languageID2 mutableCopy];
 
   v33 = MEMORY[0x277CCACA8];
-  v34 = [(RKText *)v47 languageID];
-  if (v34)
+  languageID = [(RKText *)selfCopy languageID];
+  if (languageID)
   {
     v35 = MEMORY[0x277CCACA8];
-    v31 = [(RKText *)v47 languageID];
-    v36 = [v35 stringWithFormat:@" lang=%@", v31];
+    languageID2 = [(RKText *)selfCopy languageID];
+    v36 = [v35 stringWithFormat:@" lang=%@", languageID2];
   }
 
   else
@@ -900,7 +900,7 @@ uint64_t __28__RKText_subTextsByPolarity__block_invoke_2(uint64_t a1, void *a2, 
     v36 = &stru_2874A9C90;
   }
 
-  [(RKText *)v47 trainingWeight];
+  [(RKText *)selfCopy trainingWeight];
   v38 = v37;
   if (v37 == 1.0)
   {
@@ -910,7 +910,7 @@ uint64_t __28__RKText_subTextsByPolarity__block_invoke_2(uint64_t a1, void *a2, 
   else
   {
     v39 = MEMORY[0x277CCACA8];
-    [(RKText *)v47 trainingWeight];
+    [(RKText *)selfCopy trainingWeight];
     v41 = [v39 stringWithFormat:@" weight=%d", v40];
   }
 
@@ -921,7 +921,7 @@ uint64_t __28__RKText_subTextsByPolarity__block_invoke_2(uint64_t a1, void *a2, 
   {
   }
 
-  if (v34)
+  if (languageID)
   {
   }
 
@@ -1122,17 +1122,17 @@ LABEL_5:
 - (id)lsmText
 {
   v46 = *MEMORY[0x277D85DE8];
-  v3 = [(RKText *)self processedText];
+  processedText = [(RKText *)self processedText];
 
-  if (!v3)
+  if (!processedText)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v42 = 0u;
     v43 = 0u;
     v41 = 0u;
     v40 = 0u;
-    v5 = [(RKText *)self annotations];
-    v6 = [v5 countByEnumeratingWithState:&v40 objects:v45 count:16];
+    annotations = [(RKText *)self annotations];
+    v6 = [annotations countByEnumeratingWithState:&v40 objects:v45 count:16];
     if (v6)
     {
       v7 = *v41;
@@ -1142,25 +1142,25 @@ LABEL_5:
         {
           if (*v41 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(annotations);
           }
 
           v9 = *(*(&v40 + 1) + 8 * i);
-          v10 = [v9 type];
-          if (v10 <= 9 && ((1 << v10) & 0x3EE) != 0)
+          type = [v9 type];
+          if (type <= 9 && ((1 << type) & 0x3EE) != 0)
           {
-            [v4 addObject:v9];
+            [array addObject:v9];
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v40 objects:v45 count:16];
+        v6 = [annotations countByEnumeratingWithState:&v40 objects:v45 count:16];
       }
 
       while (v6);
     }
 
-    [v4 sortUsingComparator:&__block_literal_global_228];
-    v12 = [MEMORY[0x277CBEB18] array];
+    [array sortUsingComparator:&__block_literal_global_228];
+    array2 = [MEMORY[0x277CBEB18] array];
     v38[0] = 0;
     v38[1] = v38;
     v38[2] = 0x3032000000;
@@ -1176,23 +1176,23 @@ LABEL_5:
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:3];
     v17 = [v13 initWithTagSchemes:v16 options:16];
 
-    v18 = [(RKText *)self string];
-    [v17 setString:v18];
+    string = [(RKText *)self string];
+    [v17 setString:string];
 
-    v19 = [v17 string];
-    v20 = [v19 length];
+    string2 = [v17 string];
+    v20 = [string2 length];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __17__RKText_lsmText__block_invoke_231;
     v32[3] = &unk_279B105C0;
     v21 = v17;
     v33 = v21;
-    v22 = v4;
+    v22 = array;
     v34 = v22;
     v37 = v38;
-    v23 = v12;
+    v23 = array2;
     v35 = v23;
-    v36 = self;
+    selfCopy = self;
     [v21 enumerateTagsInRange:0 scheme:v20 options:v14 usingBlock:{16, v32}];
 
     v24 = [MEMORY[0x277CCAC30] predicateWithFormat:@"SELF != ''"];
@@ -1205,10 +1205,10 @@ LABEL_5:
     _Block_object_dispose(v38, 8);
   }
 
-  v29 = [(RKText *)self processedText];
+  processedText2 = [(RKText *)self processedText];
   v30 = *MEMORY[0x277D85DE8];
 
-  return v29;
+  return processedText2;
 }
 
 uint64_t __17__RKText_lsmText__block_invoke(uint64_t a1, void *a2, void *a3)

@@ -1,34 +1,34 @@
 @interface BMMomentsEventDataEventBundleResource
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMMomentsEventDataEventBundleResource)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMMomentsEventDataEventBundleResource)initWithType:(int)a3 photoAssetMediaType:(int)a4 photoFaceCount:(id)a5 photoCurationScore:(id)a6 photoOverallAestheticScore:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (BMMomentsEventDataEventBundleResource)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMMomentsEventDataEventBundleResource)initWithType:(int)type photoAssetMediaType:(int)mediaType photoFaceCount:(id)count photoCurationScore:(id)score photoOverallAestheticScore:(id)aestheticScore;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMomentsEventDataEventBundleResource
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMMomentsEventDataEventBundleResource *)self type];
-    if (v6 != [v5 type])
+    v5 = equalCopy;
+    type = [(BMMomentsEventDataEventBundleResource *)self type];
+    if (type != [v5 type])
     {
       goto LABEL_20;
     }
 
-    v7 = [(BMMomentsEventDataEventBundleResource *)self photoAssetMediaType];
-    if (v7 != [v5 photoAssetMediaType])
+    photoAssetMediaType = [(BMMomentsEventDataEventBundleResource *)self photoAssetMediaType];
+    if (photoAssetMediaType != [v5 photoAssetMediaType])
     {
       goto LABEL_20;
     }
@@ -45,8 +45,8 @@
         goto LABEL_20;
       }
 
-      v8 = [(BMMomentsEventDataEventBundleResource *)self photoFaceCount];
-      if (v8 != [v5 photoFaceCount])
+      photoFaceCount = [(BMMomentsEventDataEventBundleResource *)self photoFaceCount];
+      if (photoFaceCount != [v5 photoFaceCount])
       {
         goto LABEL_20;
       }
@@ -147,45 +147,45 @@ LABEL_22:
 
   v20 = v3;
   v22[0] = @"type";
-  v12 = v3;
+  null = v3;
   if (!v3)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[0] = v12;
+  v23[0] = null;
   v22[1] = @"photoAssetMediaType";
-  v13 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[1] = v13;
+  v23[1] = null2;
   v22[2] = @"photoFaceCount";
-  v14 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[2] = v14;
+  v23[2] = null3;
   v22[3] = @"photoCurationScore";
-  v15 = v8;
+  null4 = v8;
   if (!v8)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v15;
+  v23[3] = null4;
   v22[4] = @"photoOverallAestheticScore";
-  v16 = v11;
+  null5 = v11;
   if (!v11)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v16;
+  v23[4] = null5;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:{5, v20}];
   if (v11)
   {
@@ -240,16 +240,16 @@ LABEL_26:
   return v17;
 }
 
-- (BMMomentsEventDataEventBundleResource)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMMomentsEventDataEventBundleResource)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v52[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"type"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"type"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v42 = 0;
 LABEL_9:
-    v9 = [v6 objectForKeyedSubscript:@"photoAssetMediaType"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"photoAssetMediaType"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -263,23 +263,23 @@ LABEL_9:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v17 = 0;
             goto LABEL_44;
           }
 
           v32 = objc_alloc(MEMORY[0x1E696ABC0]);
-          v33 = a4;
+          errorCopy = error;
           v34 = *MEMORY[0x1E698F240];
           v49 = *MEMORY[0x1E696A578];
           v41 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"photoAssetMediaType"];
           v50 = v41;
           v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
           v35 = [v32 initWithDomain:v34 code:2 userInfo:v11];
-          a4 = 0;
+          error = 0;
           v17 = 0;
-          *v33 = v35;
+          *errorCopy = v35;
           goto LABEL_43;
         }
 
@@ -294,22 +294,22 @@ LABEL_9:
       v40 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"photoFaceCount"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"photoFaceCount"];
     v39 = v7;
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v41 = 0;
           v17 = 0;
-          a4 = v40;
+          error = v40;
           goto LABEL_43;
         }
 
-        v12 = self;
+        selfCopy3 = self;
         v18 = objc_alloc(MEMORY[0x1E696ABC0]);
         v19 = *MEMORY[0x1E698F240];
         v47 = *MEMORY[0x1E696A578];
@@ -318,21 +318,21 @@ LABEL_9:
         v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
         v41 = 0;
         v17 = 0;
-        *a4 = [v18 initWithDomain:v19 code:2 userInfo:v13];
+        *error = [v18 initWithDomain:v19 code:2 userInfo:v13];
         goto LABEL_52;
       }
 
-      v12 = self;
+      selfCopy3 = self;
       v41 = v11;
     }
 
     else
     {
-      v12 = self;
+      selfCopy3 = self;
       v41 = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"photoCurationScore"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"photoCurationScore"];
     if (!v13 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v14 = 0;
@@ -344,18 +344,18 @@ LABEL_9:
     {
       v14 = v13;
 LABEL_23:
-      v15 = [v6 objectForKeyedSubscript:@"photoOverallAestheticScore"];
+      v15 = [dictionaryCopy objectForKeyedSubscript:@"photoOverallAestheticScore"];
       if (!v15 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v16 = 0;
 LABEL_26:
-        a4 = v40;
-        v17 = -[BMMomentsEventDataEventBundleResource initWithType:photoAssetMediaType:photoFaceCount:photoCurationScore:photoOverallAestheticScore:](v12, "initWithType:photoAssetMediaType:photoFaceCount:photoCurationScore:photoOverallAestheticScore:", [v42 intValue], objc_msgSend(v40, "intValue"), v41, v14, v16);
-        v12 = v17;
+        error = v40;
+        v17 = -[BMMomentsEventDataEventBundleResource initWithType:photoAssetMediaType:photoFaceCount:photoCurationScore:photoOverallAestheticScore:](selfCopy3, "initWithType:photoAssetMediaType:photoFaceCount:photoCurationScore:photoOverallAestheticScore:", [v42 intValue], objc_msgSend(v40, "intValue"), v41, v14, v16);
+        selfCopy3 = v17;
 LABEL_41:
 
 LABEL_42:
-        self = v12;
+        self = selfCopy3;
         v7 = v39;
 LABEL_43:
 
@@ -369,7 +369,7 @@ LABEL_43:
         goto LABEL_26;
       }
 
-      if (a4)
+      if (error)
       {
         v38 = objc_alloc(MEMORY[0x1E696ABC0]);
         v36 = *MEMORY[0x1E698F240];
@@ -377,20 +377,20 @@ LABEL_43:
         v23 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"photoOverallAestheticScore"];
         v44 = v23;
         v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
-        *a4 = [v38 initWithDomain:v36 code:2 userInfo:v24];
+        *error = [v38 initWithDomain:v36 code:2 userInfo:v24];
       }
 
       v16 = 0;
       v17 = 0;
 LABEL_40:
-      a4 = v40;
+      error = v40;
       goto LABEL_41;
     }
 
-    if (a4)
+    if (error)
     {
       v20 = objc_alloc(MEMORY[0x1E696ABC0]);
-      v37 = a4;
+      errorCopy2 = error;
       v21 = *MEMORY[0x1E698F240];
       v45 = *MEMORY[0x1E696A578];
       v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"photoCurationScore"];
@@ -399,14 +399,14 @@ LABEL_40:
       v22 = [v20 initWithDomain:v21 code:2 userInfo:v15];
       v14 = 0;
       v17 = 0;
-      *v37 = v22;
+      *errorCopy2 = v22;
       goto LABEL_40;
     }
 
     v14 = 0;
     v17 = 0;
 LABEL_52:
-    a4 = v40;
+    error = v40;
     goto LABEL_42;
   }
 
@@ -426,7 +426,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!error)
   {
     v42 = 0;
     v17 = 0;
@@ -434,17 +434,17 @@ LABEL_8:
   }
 
   v27 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v28 = a4;
+  errorCopy3 = error;
   v29 = *MEMORY[0x1E698F240];
   v51 = *MEMORY[0x1E696A578];
   v30 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"type"];
   v52[0] = v30;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v52 forKeys:&v51 count:1];
   v31 = v29;
-  a4 = v30;
+  error = v30;
   v42 = 0;
   v17 = 0;
-  *v28 = [v27 initWithDomain:v31 code:2 userInfo:v9];
+  *errorCopy3 = [v27 initWithDomain:v31 code:2 userInfo:v9];
 LABEL_44:
 
 LABEL_45:
@@ -456,14 +456,14 @@ LABEL_45:
 {
   v3 = objc_opt_new();
   [(BMMomentsEventDataEventBundleResource *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   type = self->_type;
   PBDataWriterWriteUint32Field();
   photoAssetMediaType = self->_photoAssetMediaType;
@@ -487,9 +487,9 @@ LABEL_45:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v47.receiver = self;
   v47.super_class = BMMomentsEventDataEventBundleResource;
   v5 = [(BMEventBase *)&v47 init];
@@ -498,12 +498,12 @@ LABEL_45:
     goto LABEL_80;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -514,18 +514,18 @@ LABEL_45:
       while (1)
       {
         LOBYTE(v48) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v48 & 0x7F) << v7;
@@ -543,9 +543,9 @@ LABEL_45:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -561,18 +561,18 @@ LABEL_16:
           while (1)
           {
             LOBYTE(v48) = 0;
-            v36 = [v4 position] + 1;
-            if (v36 >= [v4 position] && (v37 = objc_msgSend(v4, "position") + 1, v37 <= objc_msgSend(v4, "length")))
+            v36 = [fromCopy position] + 1;
+            if (v36 >= [fromCopy position] && (v37 = objc_msgSend(fromCopy, "position") + 1, v37 <= objc_msgSend(fromCopy, "length")))
             {
-              v38 = [v4 data];
-              [v38 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v20 |= (v48 & 0x7F) << v34;
@@ -589,7 +589,7 @@ LABEL_16:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v20 > 0x10)
+          if (([fromCopy hasError] & 1) != 0 || v20 > 0x10)
           {
 LABEL_65:
             LODWORD(v20) = 0;
@@ -617,18 +617,18 @@ LABEL_57:
           while (1)
           {
             LOBYTE(v48) = 0;
-            v21 = [v4 position] + 1;
-            if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+            v21 = [fromCopy position] + 1;
+            if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
             {
-              v23 = [v4 data];
-              [v23 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v20 |= (v48 & 0x7F) << v18;
@@ -645,7 +645,7 @@ LABEL_57:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v20 > 3)
+          if (([fromCopy hasError] & 1) != 0 || v20 > 3)
           {
 LABEL_69:
             LODWORD(v20) = 0;
@@ -666,18 +666,18 @@ LABEL_69:
         while (1)
         {
           LOBYTE(v48) = 0;
-          v28 = [v4 position] + 1;
-          if (v28 >= [v4 position] && (v29 = objc_msgSend(v4, "position") + 1, v29 <= objc_msgSend(v4, "length")))
+          v28 = [fromCopy position] + 1;
+          if (v28 >= [fromCopy position] && (v29 = objc_msgSend(fromCopy, "position") + 1, v29 <= objc_msgSend(fromCopy, "length")))
           {
-            v30 = [v4 data];
-            [v30 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+            data4 = [fromCopy data];
+            [data4 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v27 |= (v48 & 0x7F) << v25;
@@ -695,7 +695,7 @@ LABEL_69:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v31 = 0;
         }
@@ -715,18 +715,18 @@ LABEL_62:
         {
           v5->_hasPhotoCurationScore = 1;
           v48 = 0;
-          v32 = [v4 position] + 8;
-          if (v32 >= [v4 position] && (v33 = objc_msgSend(v4, "position") + 8, v33 <= objc_msgSend(v4, "length")))
+          v32 = [fromCopy position] + 8;
+          if (v32 >= [fromCopy position] && (v33 = objc_msgSend(fromCopy, "position") + 8, v33 <= objc_msgSend(fromCopy, "length")))
           {
-            v40 = [v4 data];
-            [v40 getBytes:&v48 range:{objc_msgSend(v4, "position"), 8}];
+            data5 = [fromCopy data];
+            [data5 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v41 = v48;
@@ -742,18 +742,18 @@ LABEL_62:
 
           v5->_hasPhotoOverallAestheticScore = 1;
           v48 = 0;
-          v16 = [v4 position] + 8;
-          if (v16 >= [v4 position] && (v17 = objc_msgSend(v4, "position") + 8, v17 <= objc_msgSend(v4, "length")))
+          v16 = [fromCopy position] + 8;
+          if (v16 >= [fromCopy position] && (v17 = objc_msgSend(fromCopy, "position") + 8, v17 <= objc_msgSend(fromCopy, "length")))
           {
-            v43 = [v4 data];
-            [v43 getBytes:&v48 range:{objc_msgSend(v4, "position"), 8}];
+            data6 = [fromCopy data];
+            [data6 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v41 = v48;
@@ -764,13 +764,13 @@ LABEL_62:
       }
 
 LABEL_77:
-      v44 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v44 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_79:
     v45 = 0;
@@ -802,36 +802,36 @@ LABEL_80:
   return v11;
 }
 
-- (BMMomentsEventDataEventBundleResource)initWithType:(int)a3 photoAssetMediaType:(int)a4 photoFaceCount:(id)a5 photoCurationScore:(id)a6 photoOverallAestheticScore:(id)a7
+- (BMMomentsEventDataEventBundleResource)initWithType:(int)type photoAssetMediaType:(int)mediaType photoFaceCount:(id)count photoCurationScore:(id)score photoOverallAestheticScore:(id)aestheticScore
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  countCopy = count;
+  scoreCopy = score;
+  aestheticScoreCopy = aestheticScore;
   v20.receiver = self;
   v20.super_class = BMMomentsEventDataEventBundleResource;
   v15 = [(BMEventBase *)&v20 init];
   if (v15)
   {
     v15->_dataVersion = [objc_opt_class() latestDataVersion];
-    v15->_type = a3;
-    v15->_photoAssetMediaType = a4;
-    if (v12)
+    v15->_type = type;
+    v15->_photoAssetMediaType = mediaType;
+    if (countCopy)
     {
       v15->_hasPhotoFaceCount = 1;
-      v16 = [v12 intValue];
+      intValue = [countCopy intValue];
     }
 
     else
     {
       v15->_hasPhotoFaceCount = 0;
-      v16 = -1;
+      intValue = -1;
     }
 
-    v15->_photoFaceCount = v16;
-    if (v13)
+    v15->_photoFaceCount = intValue;
+    if (scoreCopy)
     {
       v15->_hasPhotoCurationScore = 1;
-      [v13 doubleValue];
+      [scoreCopy doubleValue];
     }
 
     else
@@ -841,10 +841,10 @@ LABEL_80:
     }
 
     v15->_photoCurationScore = v17;
-    if (v14)
+    if (aestheticScoreCopy)
     {
       v15->_hasPhotoOverallAestheticScore = 1;
-      [v14 doubleValue];
+      [aestheticScoreCopy doubleValue];
     }
 
     else
@@ -898,9 +898,9 @@ LABEL_80:
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -908,8 +908,8 @@ LABEL_80:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMMomentsEventDataEventBundleResource alloc] initByReadFrom:v7];
     v4 = v8;

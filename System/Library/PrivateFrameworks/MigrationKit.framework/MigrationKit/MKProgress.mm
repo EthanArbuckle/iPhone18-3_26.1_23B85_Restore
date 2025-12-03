@@ -1,11 +1,11 @@
 @interface MKProgress
-- (float)progress:(unint64_t *)a3;
-- (void)addCompletedOerationCount:(unint64_t)a3;
+- (float)progress:(unint64_t *)progress;
+- (void)addCompletedOerationCount:(unint64_t)count;
 @end
 
 @implementation MKProgress
 
-- (void)addCompletedOerationCount:(unint64_t)a3
+- (void)addCompletedOerationCount:(unint64_t)count
 {
   completedOperationCount = self->_completedOperationCount;
   if (!completedOperationCount)
@@ -15,15 +15,15 @@
     completedOperationCount = self->_completedOperationCount;
   }
 
-  self->_completedOperationCount = completedOperationCount + a3;
+  self->_completedOperationCount = completedOperationCount + count;
 }
 
-- (float)progress:(unint64_t *)a3
+- (float)progress:(unint64_t *)progress
 {
   totalOperationCount = self->_totalOperationCount;
   completedOperationCount = self->_completedOperationCount;
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-  if (a3)
+  if (progress)
   {
     v8 = 60 * vcvtad_u64_f64((totalOperationCount - completedOperationCount) / (self->_completedOperationCount / (v7 - self->_startTime)) / 60.0);
     if (v8 <= 0x3C)
@@ -31,7 +31,7 @@
       v8 = 60;
     }
 
-    *a3 = v8;
+    *progress = v8;
   }
 
   return fmin(completedOperationCount / totalOperationCount, 1.0);

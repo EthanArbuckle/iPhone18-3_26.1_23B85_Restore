@@ -1,18 +1,18 @@
 @interface UISmartActionPollOption
-- (UISmartActionPollOption)initWithOption:(id)a3;
+- (UISmartActionPollOption)initWithOption:(id)option;
 @end
 
 @implementation UISmartActionPollOption
 
-- (UISmartActionPollOption)initWithOption:(id)a3
+- (UISmartActionPollOption)initWithOption:(id)option
 {
-  v4 = a3;
+  optionCopy = option;
   v9.receiver = self;
   v9.super_class = UISmartActionPollOption;
   v5 = [(UISmartActionPollOption *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [optionCopy copy];
     option = v5->_option;
     v5->_option = v6;
   }

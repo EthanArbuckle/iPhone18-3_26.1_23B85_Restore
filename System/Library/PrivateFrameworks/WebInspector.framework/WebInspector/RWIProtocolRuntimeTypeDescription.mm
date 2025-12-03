@@ -4,9 +4,9 @@
 - (NSArray)structures;
 - (NSString)leastCommonAncestor;
 - (RWIProtocolRuntimeTypeSet)typeSet;
-- (void)setLeastCommonAncestor:(id)a3;
-- (void)setStructures:(id)a3;
-- (void)setTypeSet:(id)a3;
+- (void)setLeastCommonAncestor:(id)ancestor;
+- (void)setStructures:(id)structures;
+- (void)setTypeSet:(id)set;
 @end
 
 @implementation RWIProtocolRuntimeTypeDescription
@@ -18,11 +18,11 @@
   return [(RWIProtocolJSONObject *)&v3 BOOLForKey:@"isValid"];
 }
 
-- (void)setLeastCommonAncestor:(id)a3
+- (void)setLeastCommonAncestor:(id)ancestor
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolRuntimeTypeDescription;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"leastCommonAncestor"];
+  [(RWIProtocolJSONObject *)&v3 setString:ancestor forKey:@"leastCommonAncestor"];
 }
 
 - (NSString)leastCommonAncestor
@@ -34,11 +34,11 @@
   return v2;
 }
 
-- (void)setTypeSet:(id)a3
+- (void)setTypeSet:(id)set
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolRuntimeTypeDescription;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"typeSet"];
+  [(RWIProtocolJSONObject *)&v3 setObject:set forKey:@"typeSet"];
 }
 
 - (RWIProtocolRuntimeTypeSet)typeSet
@@ -96,14 +96,14 @@
   return v7;
 }
 
-- (void)setStructures:(id)a3
+- (void)setStructures:(id)structures
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a3;
+  obj = structures;
   v3 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {

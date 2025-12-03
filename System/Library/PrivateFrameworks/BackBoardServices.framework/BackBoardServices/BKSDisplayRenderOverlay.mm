@@ -1,19 +1,19 @@
 @interface BKSDisplayRenderOverlay
-- (BKSDisplayRenderOverlay)initWithDescriptor:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BKSDisplayRenderOverlay)initWithDescriptor:(id)descriptor;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)dismissWithAnimation:(id)a3;
+- (void)dismissWithAnimation:(id)animation;
 @end
 
 @implementation BKSDisplayRenderOverlay
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BKSDisplayRenderOverlay *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BKSDisplayRenderOverlay *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -26,22 +26,22 @@
 
 - (id)succinctDescription
 {
-  v2 = [(BKSDisplayRenderOverlay *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BKSDisplayRenderOverlay *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (void)dismissWithAnimation:(id)a3
+- (void)dismissWithAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48__BKSDisplayRenderOverlay_dismissWithAnimation___block_invoke;
   v6[3] = &unk_1E6F47C78;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = animationCopy;
+  v5 = animationCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -52,16 +52,16 @@ void __48__BKSDisplayRenderOverlay_dismissWithAnimation___block_invoke(uint64_t 
   BSRunLoopPerformAfterCACommit();
 }
 
-- (BKSDisplayRenderOverlay)initWithDescriptor:(id)a3
+- (BKSDisplayRenderOverlay)initWithDescriptor:(id)descriptor
 {
-  v5 = a3;
+  descriptorCopy = descriptor;
   v9.receiver = self;
   v9.super_class = BKSDisplayRenderOverlay;
   v6 = [(BKSDisplayRenderOverlay *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_descriptor, a3);
+    objc_storeStrong(&v6->_descriptor, descriptor);
   }
 
   return v7;

@@ -1,26 +1,26 @@
 @interface DNDSMeDeviceStore
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)_initWithStatus:(id)a3 name:(id)a4;
-- (id)_initWithStore:(id)a3;
-- (id)dictionaryRepresentationWithContext:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithStatus:(id)status name:(id)name;
+- (id)_initWithStore:(id)store;
+- (id)dictionaryRepresentationWithContext:(id)context;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation DNDSMeDeviceStore
 
-- (id)_initWithStore:(id)a3
+- (id)_initWithStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v14.receiver = self;
   v14.super_class = DNDSMeDeviceStore;
   v5 = [(DNDSMeDeviceStore *)&v14 init];
   if (v5)
   {
-    v6 = [v4 meDeviceStatus];
-    v7 = [v6 copy];
+    meDeviceStatus = [storeCopy meDeviceStatus];
+    v7 = [meDeviceStatus copy];
     v8 = v7;
     if (v7)
     {
@@ -34,8 +34,8 @@
 
     objc_storeStrong(&v5->_meDeviceStatus, v9);
 
-    v10 = [v4 meDeviceName];
-    v11 = [v10 copy];
+    meDeviceName = [storeCopy meDeviceName];
+    v11 = [meDeviceName copy];
     meDeviceName = v5->_meDeviceName;
     v5->_meDeviceName = v11;
   }
@@ -43,18 +43,18 @@
   return v5;
 }
 
-- (id)_initWithStatus:(id)a3 name:(id)a4
+- (id)_initWithStatus:(id)status name:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  statusCopy = status;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = DNDSMeDeviceStore;
   v9 = [(DNDSMeDeviceStore *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_meDeviceStatus, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_meDeviceStatus, status);
+    objc_storeStrong(p_isa + 2, name);
   }
 
   return p_isa;
@@ -62,18 +62,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(DNDSMeDeviceStore *)self meDeviceStatus];
-  v4 = [v3 hash];
-  v5 = [(DNDSMeDeviceStore *)self meDeviceName];
-  v6 = [v5 hash];
+  meDeviceStatus = [(DNDSMeDeviceStore *)self meDeviceStatus];
+  v4 = [meDeviceStatus hash];
+  meDeviceName = [(DNDSMeDeviceStore *)self meDeviceName];
+  v6 = [meDeviceName hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -83,13 +83,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(DNDSMeDeviceStore *)self meDeviceStatus];
-      v8 = [(DNDSMeDeviceStore *)v6 meDeviceStatus];
-      if (v7 != v8)
+      v6 = equalCopy;
+      meDeviceStatus = [(DNDSMeDeviceStore *)self meDeviceStatus];
+      meDeviceStatus2 = [(DNDSMeDeviceStore *)v6 meDeviceStatus];
+      if (meDeviceStatus != meDeviceStatus2)
       {
-        v9 = [(DNDSMeDeviceStore *)self meDeviceStatus];
-        if (!v9)
+        meDeviceStatus3 = [(DNDSMeDeviceStore *)self meDeviceStatus];
+        if (!meDeviceStatus3)
         {
           v13 = 0;
 LABEL_24:
@@ -97,9 +97,9 @@ LABEL_24:
           goto LABEL_25;
         }
 
-        v3 = v9;
-        v10 = [(DNDSMeDeviceStore *)v6 meDeviceStatus];
-        if (!v10)
+        v3 = meDeviceStatus3;
+        meDeviceStatus4 = [(DNDSMeDeviceStore *)v6 meDeviceStatus];
+        if (!meDeviceStatus4)
         {
           v13 = 0;
 LABEL_23:
@@ -107,9 +107,9 @@ LABEL_23:
           goto LABEL_24;
         }
 
-        v11 = [(DNDSMeDeviceStore *)self meDeviceStatus];
-        v12 = [(DNDSMeDeviceStore *)v6 meDeviceStatus];
-        if (![v11 isEqual:v12])
+        meDeviceStatus5 = [(DNDSMeDeviceStore *)self meDeviceStatus];
+        meDeviceStatus6 = [(DNDSMeDeviceStore *)v6 meDeviceStatus];
+        if (![meDeviceStatus5 isEqual:meDeviceStatus6])
         {
           v13 = 0;
 LABEL_22:
@@ -117,15 +117,15 @@ LABEL_22:
           goto LABEL_23;
         }
 
-        v24 = v12;
-        v25 = v11;
-        v26 = v10;
+        v24 = meDeviceStatus6;
+        v25 = meDeviceStatus5;
+        v26 = meDeviceStatus4;
       }
 
-      v14 = [(DNDSMeDeviceStore *)self meDeviceName];
-      v15 = [(DNDSMeDeviceStore *)v6 meDeviceName];
-      v16 = v15;
-      if (v14 == v15)
+      meDeviceName = [(DNDSMeDeviceStore *)self meDeviceName];
+      meDeviceName2 = [(DNDSMeDeviceStore *)v6 meDeviceName];
+      v16 = meDeviceName2;
+      if (meDeviceName == meDeviceName2)
       {
 
         v13 = 1;
@@ -133,17 +133,17 @@ LABEL_22:
 
       else
       {
-        v17 = [(DNDSMeDeviceStore *)self meDeviceName];
-        if (v17)
+        meDeviceName3 = [(DNDSMeDeviceStore *)self meDeviceName];
+        if (meDeviceName3)
         {
-          v18 = v17;
-          v19 = [(DNDSMeDeviceStore *)v6 meDeviceName];
-          if (v19)
+          v18 = meDeviceName3;
+          meDeviceName4 = [(DNDSMeDeviceStore *)v6 meDeviceName];
+          if (meDeviceName4)
           {
-            v22 = [(DNDSMeDeviceStore *)self meDeviceName];
+            meDeviceName5 = [(DNDSMeDeviceStore *)self meDeviceName];
             [(DNDSMeDeviceStore *)v6 meDeviceName];
             v20 = v23 = v3;
-            v13 = [v22 isEqual:v20];
+            v13 = [meDeviceName5 isEqual:v20];
 
             v3 = v23;
           }
@@ -161,10 +161,10 @@ LABEL_22:
         }
       }
 
-      v11 = v25;
-      v10 = v26;
-      v12 = v24;
-      if (v7 == v8)
+      meDeviceStatus5 = v25;
+      meDeviceStatus4 = v26;
+      meDeviceStatus6 = v24;
+      if (meDeviceStatus == meDeviceStatus2)
       {
         goto LABEL_24;
       }
@@ -184,43 +184,43 @@ LABEL_25:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(DNDSMeDeviceStore *)self meDeviceStatus];
-  [v5 unsignedIntegerValue];
+  meDeviceStatus = [(DNDSMeDeviceStore *)self meDeviceStatus];
+  [meDeviceStatus unsignedIntegerValue];
   v6 = DNDMeDeviceStatusToString();
-  v7 = [(DNDSMeDeviceStore *)self meDeviceName];
-  v8 = [v3 stringWithFormat:@"<%@: %p meDeviceStatus: %@; meDeviceName: %@>", v4, self, v6, v7];;
+  meDeviceName = [(DNDSMeDeviceStore *)self meDeviceName];
+  v8 = [v3 stringWithFormat:@"<%@: %p meDeviceStatus: %@; meDeviceName: %@>", v4, self, v6, meDeviceName];;
 
   return v8;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [DNDSMutableMeDeviceStore alloc];
 
   return [(DNDSMeDeviceStore *)v4 _initWithStore:self];
 }
 
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context
 {
-  v5 = a3;
-  v6 = [v5 bs_safeObjectForKey:@"meDeviceStatus" ofType:objc_opt_class()];
-  v7 = [v5 bs_safeStringForKey:@"meDeviceName"];
+  representationCopy = representation;
+  v6 = [representationCopy bs_safeObjectForKey:@"meDeviceStatus" ofType:objc_opt_class()];
+  v7 = [representationCopy bs_safeStringForKey:@"meDeviceName"];
 
-  v8 = [[a1 alloc] _initWithStatus:v6 name:v7];
+  v8 = [[self alloc] _initWithStatus:v6 name:v7];
   return v8;
 }
 
-- (id)dictionaryRepresentationWithContext:(id)a3
+- (id)dictionaryRepresentationWithContext:(id)context
 {
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  [v4 setObject:self->_meDeviceStatus forKey:@"meDeviceStatus"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:self->_meDeviceStatus forKey:@"meDeviceStatus"];
   meDeviceName = self->_meDeviceName;
   if (meDeviceName)
   {
-    [v4 setObject:meDeviceName forKey:@"meDeviceName"];
+    [dictionary setObject:meDeviceName forKey:@"meDeviceName"];
   }
 
-  return v4;
+  return dictionary;
 }
 
 @end

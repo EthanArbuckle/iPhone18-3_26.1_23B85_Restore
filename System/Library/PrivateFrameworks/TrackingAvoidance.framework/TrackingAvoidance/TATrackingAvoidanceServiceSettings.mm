@@ -1,46 +1,46 @@
 @interface TATrackingAvoidanceServiceSettings
-- (TATrackingAvoidanceServiceSettings)initWithEnableTAFilterGeneral:(BOOL)a3 enableTAFilterVisits:(BOOL)a4 enableTAFilterSingleVisit:(BOOL)a5 enableTAFilterLeavingLOI:(BOOL)a6 classificationTimeInterval:(double)a7 dailyAccessoryAlertLimit:(unint64_t)a8;
-- (TATrackingAvoidanceServiceSettings)initWithEnableTAFilterGeneralOrDefault:(id)a3 enableTAFilterVisitsOrDefault:(id)a4 enableTAFilterSingleVisitOrDefault:(id)a5 enableTAFilterLeavingLOIOrDefault:(id)a6 classificationTimeIntervalOrDefault:(id)a7 dailyAccessoryAlertLimitOrDefault:(id)a8;
+- (TATrackingAvoidanceServiceSettings)initWithEnableTAFilterGeneral:(BOOL)general enableTAFilterVisits:(BOOL)visits enableTAFilterSingleVisit:(BOOL)visit enableTAFilterLeavingLOI:(BOOL)i classificationTimeInterval:(double)interval dailyAccessoryAlertLimit:(unint64_t)limit;
+- (TATrackingAvoidanceServiceSettings)initWithEnableTAFilterGeneralOrDefault:(id)default enableTAFilterVisitsOrDefault:(id)orDefault enableTAFilterSingleVisitOrDefault:(id)visitOrDefault enableTAFilterLeavingLOIOrDefault:(id)iOrDefault classificationTimeIntervalOrDefault:(id)intervalOrDefault dailyAccessoryAlertLimitOrDefault:(id)limitOrDefault;
 @end
 
 @implementation TATrackingAvoidanceServiceSettings
 
-- (TATrackingAvoidanceServiceSettings)initWithEnableTAFilterGeneral:(BOOL)a3 enableTAFilterVisits:(BOOL)a4 enableTAFilterSingleVisit:(BOOL)a5 enableTAFilterLeavingLOI:(BOOL)a6 classificationTimeInterval:(double)a7 dailyAccessoryAlertLimit:(unint64_t)a8
+- (TATrackingAvoidanceServiceSettings)initWithEnableTAFilterGeneral:(BOOL)general enableTAFilterVisits:(BOOL)visits enableTAFilterSingleVisit:(BOOL)visit enableTAFilterLeavingLOI:(BOOL)i classificationTimeInterval:(double)interval dailyAccessoryAlertLimit:(unint64_t)limit
 {
   v16.receiver = self;
   v16.super_class = TATrackingAvoidanceServiceSettings;
   result = [(TATrackingAvoidanceServiceSettings *)&v16 init];
   if (result)
   {
-    result->_enableTAFilterGeneral = a3;
-    result->_enableTAFilterVisits = a4;
-    result->_enableTAFilterSingleVisit = a5;
-    result->_enableTAFilterLeavingLOI = a6;
-    result->_dailyAccessoryAlertLimit = a8;
-    v15 = 120.0;
-    if (a7 > 0.0)
+    result->_enableTAFilterGeneral = general;
+    result->_enableTAFilterVisits = visits;
+    result->_enableTAFilterSingleVisit = visit;
+    result->_enableTAFilterLeavingLOI = i;
+    result->_dailyAccessoryAlertLimit = limit;
+    intervalCopy = 120.0;
+    if (interval > 0.0)
     {
-      v15 = a7;
+      intervalCopy = interval;
     }
 
-    result->_classificationTimeInterval = v15;
+    result->_classificationTimeInterval = intervalCopy;
   }
 
   return result;
 }
 
-- (TATrackingAvoidanceServiceSettings)initWithEnableTAFilterGeneralOrDefault:(id)a3 enableTAFilterVisitsOrDefault:(id)a4 enableTAFilterSingleVisitOrDefault:(id)a5 enableTAFilterLeavingLOIOrDefault:(id)a6 classificationTimeIntervalOrDefault:(id)a7 dailyAccessoryAlertLimitOrDefault:(id)a8
+- (TATrackingAvoidanceServiceSettings)initWithEnableTAFilterGeneralOrDefault:(id)default enableTAFilterVisitsOrDefault:(id)orDefault enableTAFilterSingleVisitOrDefault:(id)visitOrDefault enableTAFilterLeavingLOIOrDefault:(id)iOrDefault classificationTimeIntervalOrDefault:(id)intervalOrDefault dailyAccessoryAlertLimitOrDefault:(id)limitOrDefault
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (v13)
+  defaultCopy = default;
+  orDefaultCopy = orDefault;
+  visitOrDefaultCopy = visitOrDefault;
+  iOrDefaultCopy = iOrDefault;
+  intervalOrDefaultCopy = intervalOrDefault;
+  limitOrDefaultCopy = limitOrDefault;
+  if (defaultCopy)
   {
-    v19 = [v13 BOOLValue];
-    if (v14)
+    bOOLValue = [defaultCopy BOOLValue];
+    if (orDefaultCopy)
     {
       goto LABEL_3;
     }
@@ -48,12 +48,12 @@
 
   else
   {
-    v19 = 1;
-    if (v14)
+    bOOLValue = 1;
+    if (orDefaultCopy)
     {
 LABEL_3:
-      v20 = [v14 BOOLValue];
-      if (v15)
+      bOOLValue2 = [orDefaultCopy BOOLValue];
+      if (visitOrDefaultCopy)
       {
         goto LABEL_4;
       }
@@ -62,12 +62,12 @@ LABEL_3:
     }
   }
 
-  v20 = 1;
-  if (v15)
+  bOOLValue2 = 1;
+  if (visitOrDefaultCopy)
   {
 LABEL_4:
-    v21 = [v15 BOOLValue];
-    if (v16)
+    bOOLValue3 = [visitOrDefaultCopy BOOLValue];
+    if (iOrDefaultCopy)
     {
       goto LABEL_5;
     }
@@ -76,47 +76,47 @@ LABEL_4:
   }
 
 LABEL_10:
-  v21 = 1;
-  if (v16)
+  bOOLValue3 = 1;
+  if (iOrDefaultCopy)
   {
 LABEL_5:
-    v22 = [v16 BOOLValue];
-    if (v17)
+    bOOLValue4 = [iOrDefaultCopy BOOLValue];
+    if (intervalOrDefaultCopy)
     {
       goto LABEL_6;
     }
 
 LABEL_12:
     v24 = 120.0;
-    if (v18)
+    if (limitOrDefaultCopy)
     {
       goto LABEL_7;
     }
 
 LABEL_13:
-    v25 = 3;
+    unsignedLongValue = 3;
     goto LABEL_14;
   }
 
 LABEL_11:
-  v22 = 1;
-  if (!v17)
+  bOOLValue4 = 1;
+  if (!intervalOrDefaultCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_6:
-  [v17 doubleValue];
+  [intervalOrDefaultCopy doubleValue];
   v24 = v23;
-  if (!v18)
+  if (!limitOrDefaultCopy)
   {
     goto LABEL_13;
   }
 
 LABEL_7:
-  v25 = [v18 unsignedLongValue];
+  unsignedLongValue = [limitOrDefaultCopy unsignedLongValue];
 LABEL_14:
-  v26 = [(TATrackingAvoidanceServiceSettings *)self initWithEnableTAFilterGeneral:v19 enableTAFilterVisits:v20 enableTAFilterSingleVisit:v21 enableTAFilterLeavingLOI:v22 classificationTimeInterval:v25 dailyAccessoryAlertLimit:v24];
+  v26 = [(TATrackingAvoidanceServiceSettings *)self initWithEnableTAFilterGeneral:bOOLValue enableTAFilterVisits:bOOLValue2 enableTAFilterSingleVisit:bOOLValue3 enableTAFilterLeavingLOI:bOOLValue4 classificationTimeInterval:unsignedLongValue dailyAccessoryAlertLimit:v24];
 
   return v26;
 }

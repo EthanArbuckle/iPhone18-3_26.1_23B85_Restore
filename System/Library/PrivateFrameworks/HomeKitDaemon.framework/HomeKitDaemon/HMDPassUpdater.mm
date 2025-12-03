@@ -1,16 +1,16 @@
 @interface HMDPassUpdater
 + (HMDPassUpdater)shared;
 - (HMDPassUpdater)init;
-- (void)hasAtLeastOneWalletKeyWithCompletionHandler:(id)a3;
-- (void)passWithExpressConfigurationWithSerialNumber:(NSString *)a3 completionHandler:(id)a4;
-- (void)passWithPassTypeIdentifier:(NSString *)a3 withSerialNumber:(NSString *)a4 completionHandler:(id)a5;
-- (void)removeOrphanedHomeKeyMiscInfoIncludingHomeUUID:(NSUUID *)a3 withFlow:(HMFFlow *)a4 completionHandler:(id)a5;
-- (void)removeOrphanedPassesWithFlow:(HMFFlow *)a3 completionHandler:(id)a4;
-- (void)setExpressSettingsForPassSerialNumber:(NSString *)a3 enableNFCExpress:(BOOL)a4 enableUWB:(BOOL)a5 authData:(NSData *)a6 flow:(HMFFlow *)a7 completionHandler:(id)a8;
-- (void)uniqueIDOfPassWithPassTypeIdentifier:(NSString *)a3 withSerialNumber:(NSString *)a4 withFlow:(HMFFlow *)a5 completionHandler:(id)a6;
-- (void)updatePassForHomeUUID:(NSUUID *)a3 isOnboarding:(BOOL)a4 ignoreCache:(BOOL)a5 flow:(HMFFlow *)a6 completionHandler:(id)a7;
-- (void)updatePassForHomeUUID:(NSUUID *)a3 isOnboarding:(BOOL)a4 optionsRawValue:(int64_t)a5 ignoreCache:(BOOL)a6 flow:(HMFFlow *)a7 completionHandler:(id)a8;
-- (void)updatePassOnKeychainUpdateForHomeUUID:(NSUUID *)a3 flow:(HMFFlow *)a4 completionHandler:(id)a5;
+- (void)hasAtLeastOneWalletKeyWithCompletionHandler:(id)handler;
+- (void)passWithExpressConfigurationWithSerialNumber:(NSString *)number completionHandler:(id)handler;
+- (void)passWithPassTypeIdentifier:(NSString *)identifier withSerialNumber:(NSString *)number completionHandler:(id)handler;
+- (void)removeOrphanedHomeKeyMiscInfoIncludingHomeUUID:(NSUUID *)d withFlow:(HMFFlow *)flow completionHandler:(id)handler;
+- (void)removeOrphanedPassesWithFlow:(HMFFlow *)flow completionHandler:(id)handler;
+- (void)setExpressSettingsForPassSerialNumber:(NSString *)number enableNFCExpress:(BOOL)express enableUWB:(BOOL)b authData:(NSData *)data flow:(HMFFlow *)flow completionHandler:(id)handler;
+- (void)uniqueIDOfPassWithPassTypeIdentifier:(NSString *)identifier withSerialNumber:(NSString *)number withFlow:(HMFFlow *)flow completionHandler:(id)handler;
+- (void)updatePassForHomeUUID:(NSUUID *)d isOnboarding:(BOOL)onboarding ignoreCache:(BOOL)cache flow:(HMFFlow *)flow completionHandler:(id)handler;
+- (void)updatePassForHomeUUID:(NSUUID *)d isOnboarding:(BOOL)onboarding optionsRawValue:(int64_t)value ignoreCache:(BOOL)cache flow:(HMFFlow *)flow completionHandler:(id)handler;
+- (void)updatePassOnKeychainUpdateForHomeUUID:(NSUUID *)d flow:(HMFFlow *)flow completionHandler:(id)handler;
 @end
 
 @implementation HMDPassUpdater
@@ -25,13 +25,13 @@
   return v2;
 }
 
-- (void)hasAtLeastOneWalletKeyWithCompletionHandler:(id)a3
+- (void)hasAtLeastOneWalletKeyWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -51,16 +51,16 @@
   sub_229859F70(0, 0, v8, &unk_22A585EE8, v13);
 }
 
-- (void)updatePassOnKeychainUpdateForHomeUUID:(NSUUID *)a3 flow:(HMFFlow *)a4 completionHandler:(id)a5
+- (void)updatePassOnKeychainUpdateForHomeUUID:(NSUUID *)d flow:(HMFFlow *)flow completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = d;
+  v14[3] = flow;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_22A4DD9DC();
@@ -75,24 +75,24 @@
   v17[3] = 0;
   v17[4] = &unk_22A585EC0;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
+  dCopy = d;
+  flowCopy = flow;
 
   sub_229859F70(0, 0, v12, &unk_22A585EC8, v17);
 }
 
-- (void)updatePassForHomeUUID:(NSUUID *)a3 isOnboarding:(BOOL)a4 ignoreCache:(BOOL)a5 flow:(HMFFlow *)a6 completionHandler:(id)a7
+- (void)updatePassForHomeUUID:(NSUUID *)d isOnboarding:(BOOL)onboarding ignoreCache:(BOOL)cache flow:(HMFFlow *)flow completionHandler:(id)handler
 {
   v13 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
   v14 = *(*(v13 - 8) + 64);
   MEMORY[0x28223BE20](v13 - 8);
   v16 = &v24 - v15;
-  v17 = _Block_copy(a7);
+  v17 = _Block_copy(handler);
   v18 = swift_allocObject();
-  *(v18 + 16) = a3;
-  *(v18 + 24) = a4;
-  *(v18 + 25) = a5;
-  *(v18 + 32) = a6;
+  *(v18 + 16) = d;
+  *(v18 + 24) = onboarding;
+  *(v18 + 25) = cache;
+  *(v18 + 32) = flow;
   *(v18 + 40) = v17;
   *(v18 + 48) = self;
   v19 = sub_22A4DD9DC();
@@ -107,25 +107,25 @@
   v21[3] = 0;
   v21[4] = &unk_22A585EA0;
   v21[5] = v20;
-  v22 = a3;
-  v23 = a6;
+  dCopy = d;
+  flowCopy = flow;
 
   sub_229859F70(0, 0, v16, &unk_22A585EA8, v21);
 }
 
-- (void)updatePassForHomeUUID:(NSUUID *)a3 isOnboarding:(BOOL)a4 optionsRawValue:(int64_t)a5 ignoreCache:(BOOL)a6 flow:(HMFFlow *)a7 completionHandler:(id)a8
+- (void)updatePassForHomeUUID:(NSUUID *)d isOnboarding:(BOOL)onboarding optionsRawValue:(int64_t)value ignoreCache:(BOOL)cache flow:(HMFFlow *)flow completionHandler:(id)handler
 {
   v15 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
   v16 = *(*(v15 - 8) + 64);
   MEMORY[0x28223BE20](v15 - 8);
   v18 = &v26 - v17;
-  v19 = _Block_copy(a8);
+  v19 = _Block_copy(handler);
   v20 = swift_allocObject();
-  *(v20 + 16) = a3;
-  *(v20 + 24) = a4;
-  *(v20 + 32) = a5;
-  *(v20 + 40) = a6;
-  *(v20 + 48) = a7;
+  *(v20 + 16) = d;
+  *(v20 + 24) = onboarding;
+  *(v20 + 32) = value;
+  *(v20 + 40) = cache;
+  *(v20 + 48) = flow;
   *(v20 + 56) = v19;
   *(v20 + 64) = self;
   v21 = sub_22A4DD9DC();
@@ -140,21 +140,21 @@
   v23[3] = 0;
   v23[4] = &unk_22A585E80;
   v23[5] = v22;
-  v24 = a3;
-  v25 = a7;
+  dCopy = d;
+  flowCopy = flow;
 
   sub_229859F70(0, 0, v18, &unk_22A585E88, v23);
 }
 
-- (void)removeOrphanedPassesWithFlow:(HMFFlow *)a3 completionHandler:(id)a4
+- (void)removeOrphanedPassesWithFlow:(HMFFlow *)flow completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = flow;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_22A4DD9DC();
@@ -169,24 +169,24 @@
   v15[3] = 0;
   v15[4] = &unk_22A585E58;
   v15[5] = v14;
-  v16 = a3;
+  flowCopy = flow;
 
   sub_229859F70(0, 0, v10, &unk_22A585E60, v15);
 }
 
-- (void)setExpressSettingsForPassSerialNumber:(NSString *)a3 enableNFCExpress:(BOOL)a4 enableUWB:(BOOL)a5 authData:(NSData *)a6 flow:(HMFFlow *)a7 completionHandler:(id)a8
+- (void)setExpressSettingsForPassSerialNumber:(NSString *)number enableNFCExpress:(BOOL)express enableUWB:(BOOL)b authData:(NSData *)data flow:(HMFFlow *)flow completionHandler:(id)handler
 {
   v15 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
   v16 = *(*(v15 - 8) + 64);
   MEMORY[0x28223BE20](v15 - 8);
   v18 = &v27 - v17;
-  v19 = _Block_copy(a8);
+  v19 = _Block_copy(handler);
   v20 = swift_allocObject();
-  *(v20 + 16) = a3;
-  *(v20 + 24) = a4;
-  *(v20 + 25) = a5;
-  *(v20 + 32) = a6;
-  *(v20 + 40) = a7;
+  *(v20 + 16) = number;
+  *(v20 + 24) = express;
+  *(v20 + 25) = b;
+  *(v20 + 32) = data;
+  *(v20 + 40) = flow;
   *(v20 + 48) = v19;
   *(v20 + 56) = self;
   v21 = sub_22A4DD9DC();
@@ -201,23 +201,23 @@
   v23[3] = 0;
   v23[4] = &unk_22A585E30;
   v23[5] = v22;
-  v24 = a3;
-  v25 = a6;
-  v26 = a7;
+  numberCopy = number;
+  dataCopy = data;
+  flowCopy = flow;
 
   sub_229859F70(0, 0, v18, &unk_22A585E38, v23);
 }
 
-- (void)removeOrphanedHomeKeyMiscInfoIncludingHomeUUID:(NSUUID *)a3 withFlow:(HMFFlow *)a4 completionHandler:(id)a5
+- (void)removeOrphanedHomeKeyMiscInfoIncludingHomeUUID:(NSUUID *)d withFlow:(HMFFlow *)flow completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = d;
+  v14[3] = flow;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_22A4DD9DC();
@@ -232,22 +232,22 @@
   v17[3] = 0;
   v17[4] = &unk_22A585E08;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
+  dCopy = d;
+  flowCopy = flow;
 
   sub_229859F70(0, 0, v12, &unk_22A585E10, v17);
 }
 
-- (void)passWithPassTypeIdentifier:(NSString *)a3 withSerialNumber:(NSString *)a4 completionHandler:(id)a5
+- (void)passWithPassTypeIdentifier:(NSString *)identifier withSerialNumber:(NSString *)number completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = identifier;
+  v14[3] = number;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_22A4DD9DC();
@@ -262,23 +262,23 @@
   v17[3] = 0;
   v17[4] = &unk_22A585DE0;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
+  identifierCopy = identifier;
+  numberCopy = number;
 
   sub_229859F70(0, 0, v12, &unk_22A585DE8, v17);
 }
 
-- (void)uniqueIDOfPassWithPassTypeIdentifier:(NSString *)a3 withSerialNumber:(NSString *)a4 withFlow:(HMFFlow *)a5 completionHandler:(id)a6
+- (void)uniqueIDOfPassWithPassTypeIdentifier:(NSString *)identifier withSerialNumber:(NSString *)number withFlow:(HMFFlow *)flow completionHandler:(id)handler
 {
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
   v12 = *(*(v11 - 8) + 64);
   MEMORY[0x28223BE20](v11 - 8);
   v14 = &v23 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(handler);
   v16 = swift_allocObject();
-  v16[2] = a3;
-  v16[3] = a4;
-  v16[4] = a5;
+  v16[2] = identifier;
+  v16[3] = number;
+  v16[4] = flow;
   v16[5] = v15;
   v16[6] = self;
   v17 = sub_22A4DD9DC();
@@ -293,22 +293,22 @@
   v19[3] = 0;
   v19[4] = &unk_22A585DC0;
   v19[5] = v18;
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
+  identifierCopy = identifier;
+  numberCopy = number;
+  flowCopy = flow;
 
   sub_229859F70(0, 0, v14, &unk_22A585DC8, v19);
 }
 
-- (void)passWithExpressConfigurationWithSerialNumber:(NSString *)a3 completionHandler:(id)a4
+- (void)passWithExpressConfigurationWithSerialNumber:(NSString *)number completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = number;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_22A4DD9DC();
@@ -323,7 +323,7 @@
   v15[3] = 0;
   v15[4] = &unk_22A57B590;
   v15[5] = v14;
-  v16 = a3;
+  numberCopy = number;
 
   sub_229859F70(0, 0, v10, &unk_22A581CC0, v15);
 }

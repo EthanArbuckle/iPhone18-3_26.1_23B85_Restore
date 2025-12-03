@@ -1,28 +1,28 @@
 @interface FirmwareBundle
 + (id)defaultBundlePath;
-- (FirmwareBundle)initWithBundle:(id)a3;
-- (FirmwareBundle)initWithBundleName:(id)a3;
-- (FirmwareBundle)initWithBundlePath:(id)a3;
-- (FirmwareBundle)initWithData:(id)a3 hashData:(id)a4 signatureData:(id)a5 certData:(id)a6;
-- (FirmwareBundle)initWithURL:(id)a3 hashData:(id)a4 signatureData:(id)a5 certData:(id)a6;
-- (id)getFirmwareDataInRange:(_NSRange)a3 error:(id *)a4;
-- (id)parseMSP430TXTFile:(id)a3 withDefaultByteValue:(unsigned __int8)a4;
-- (id)parseResourceFileIntoData:(id)a3;
-- (id)parseSRECFile:(id)a3 withDefaultByteValue:(unsigned __int8)a4;
+- (FirmwareBundle)initWithBundle:(id)bundle;
+- (FirmwareBundle)initWithBundleName:(id)name;
+- (FirmwareBundle)initWithBundlePath:(id)path;
+- (FirmwareBundle)initWithData:(id)data hashData:(id)hashData signatureData:(id)signatureData certData:(id)certData;
+- (FirmwareBundle)initWithURL:(id)l hashData:(id)data signatureData:(id)signatureData certData:(id)certData;
+- (id)getFirmwareDataInRange:(_NSRange)range error:(id *)error;
+- (id)parseMSP430TXTFile:(id)file withDefaultByteValue:(unsigned __int8)value;
+- (id)parseResourceFileIntoData:(id)data;
+- (id)parseSRECFile:(id)file withDefaultByteValue:(unsigned __int8)value;
 - (void)calculateHash;
 - (void)dealloc;
 - (void)loadFirmwareImage;
-- (void)parseFileName:(id)a3 intoPath:(id *)a4 andExtension:(id *)a5;
-- (void)parseSRECLine:(id)a3 intoImage:(id)a4;
+- (void)parseFileName:(id)name intoPath:(id *)path andExtension:(id *)extension;
+- (void)parseSRECLine:(id)line intoImage:(id)image;
 @end
 
 @implementation FirmwareBundle
 
 + (id)defaultBundlePath
 {
-  v2 = [+[NSBundle mainBundle](NSBundle resourcePath];
+  resourcePath = [+[NSBundle mainBundle](NSBundle resourcePath];
 
-  return [(NSString *)v2 stringByAppendingFormat:@"/FirmwareBundles/"];
+  return [(NSString *)resourcePath stringByAppendingFormat:@"/FirmwareBundles/"];
 }
 
 - (void)calculateHash
@@ -55,30 +55,30 @@
   }
 }
 
-- (FirmwareBundle)initWithData:(id)a3 hashData:(id)a4 signatureData:(id)a5 certData:(id)a6
+- (FirmwareBundle)initWithData:(id)data hashData:(id)hashData signatureData:(id)signatureData certData:(id)certData
 {
-  v6 = self;
-  if (a3)
+  selfCopy = self;
+  if (data)
   {
     v23.receiver = self;
     v23.super_class = FirmwareBundle;
-    v6 = [(FirmwareBundle *)&v23 init];
-    if (v6)
+    selfCopy = [(FirmwareBundle *)&v23 init];
+    if (selfCopy)
     {
-      v6->_firmwareImage = a3;
-      v6->_firmwareImageSize = [a3 length];
-      v6->_hash = a4;
-      v6->_signature = a5;
-      v6->_certificate = a6;
-      *&v6->_productIDCode = 0;
-      v6->_bundleDescription = 0;
-      v6->_buildManifest = 0;
-      if (!v6->_hash)
+      selfCopy->_firmwareImage = data;
+      selfCopy->_firmwareImageSize = [data length];
+      selfCopy->_hash = hashData;
+      selfCopy->_signature = signatureData;
+      selfCopy->_certificate = certData;
+      *&selfCopy->_productIDCode = 0;
+      selfCopy->_bundleDescription = 0;
+      selfCopy->_buildManifest = 0;
+      if (!selfCopy->_hash)
       {
-        [(FirmwareBundle *)v6 calculateHash];
+        [(FirmwareBundle *)selfCopy calculateHash];
       }
 
-      firmwareImage = v6->_firmwareImage;
+      firmwareImage = selfCopy->_firmwareImage;
       v12 = "valid";
       if (firmwareImage)
       {
@@ -91,7 +91,7 @@
       }
 
       v14 = [(NSData *)firmwareImage length];
-      hash = v6->_hash;
+      hash = selfCopy->_hash;
       if (hash)
       {
         v16 = "valid";
@@ -103,7 +103,7 @@
       }
 
       v17 = [(NSData *)hash length];
-      signature = v6->_signature;
+      signature = selfCopy->_signature;
       if (signature)
       {
         v19 = "valid";
@@ -115,13 +115,13 @@
       }
 
       v20 = [(NSData *)signature length];
-      certificate = v6->_certificate;
+      certificate = selfCopy->_certificate;
       if (!certificate)
       {
         v12 = "nil";
       }
 
-      NSLog(@"%s: I=%s[%lu] H=%s[%lu] S=%s[%lu] C=%s[%lu] productID=%d\n", "[FirmwareBundle initWithData:hashData:signatureData:certData:]", v13, v14, v16, v17, v19, v20, v12, [(NSData *)certificate length], v6->_productIDCode);
+      NSLog(@"%s: I=%s[%lu] H=%s[%lu] S=%s[%lu] C=%s[%lu] productID=%d\n", "[FirmwareBundle initWithData:hashData:signatureData:certData:]", v13, v14, v16, v17, v19, v20, v12, [(NSData *)certificate length], selfCopy->_productIDCode);
     }
 
     else
@@ -135,28 +135,28 @@
     NSLog(@"%s: null payload\n", "[FirmwareBundle initWithData:hashData:signatureData:certData:]");
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (FirmwareBundle)initWithURL:(id)a3 hashData:(id)a4 signatureData:(id)a5 certData:(id)a6
+- (FirmwareBundle)initWithURL:(id)l hashData:(id)data signatureData:(id)signatureData certData:(id)certData
 {
   v25 = 0;
-  if ([a3 checkResourceIsReachableAndReturnError:&v25])
+  if ([l checkResourceIsReachableAndReturnError:&v25])
   {
     v24.receiver = self;
     v24.super_class = FirmwareBundle;
     v11 = [(FirmwareBundle *)&v24 init];
     if (v11)
     {
-      v11->_firmwareLocalURL = a3;
-      v11->_hash = a4;
-      v11->_signature = a5;
-      v11->_certificate = a6;
+      v11->_firmwareLocalURL = l;
+      v11->_hash = data;
+      v11->_signature = signatureData;
+      v11->_certificate = certData;
       *&v11->_productIDCode = 0;
       v11->_bundleDescription = 0;
       v11->_buildManifest = 0;
       v23 = 0;
-      [a3 getResourceValue:&v23 forKey:NSURLFileSizeKey error:&v25];
+      [l getResourceValue:&v23 forKey:NSURLFileSizeKey error:&v25];
       v11->_firmwareImageSize = [v23 unsignedIntValue];
       if (!v11->_hash)
       {
@@ -209,7 +209,7 @@
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      sub_10000F1AC(a3);
+      sub_10000F1AC(l);
     }
 
     return 0;
@@ -218,14 +218,14 @@
   return v11;
 }
 
-- (FirmwareBundle)initWithBundlePath:(id)a3
+- (FirmwareBundle)initWithBundlePath:(id)path
 {
-  v4 = [NSBundle bundleWithPath:a3];
+  v4 = [NSBundle bundleWithPath:path];
 
   return [(FirmwareBundle *)self initWithBundle:v4];
 }
 
-- (FirmwareBundle)initWithBundleName:(id)a3
+- (FirmwareBundle)initWithBundleName:(id)name
 {
   v4 = [+[FirmwareBundle defaultBundlePath](FirmwareBundle "defaultBundlePath")];
 
@@ -240,14 +240,14 @@
   }
 }
 
-- (id)getFirmwareDataInRange:(_NSRange)a3 error:(id *)a4
+- (id)getFirmwareDataInRange:(_NSRange)range error:(id *)error
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   firmwareFilehandle = self->_firmwareFilehandle;
   if (!firmwareFilehandle)
   {
-    firmwareFilehandle = [NSFileHandle fileHandleForReadingFromURL:self->_firmwareLocalURL error:a4];
+    firmwareFilehandle = [NSFileHandle fileHandleForReadingFromURL:self->_firmwareLocalURL error:error];
     self->_firmwareFilehandle = firmwareFilehandle;
     if (!firmwareFilehandle)
     {
@@ -255,35 +255,35 @@
     }
   }
 
-  if (![(NSFileHandle *)firmwareFilehandle uarpSeekToOffset:location error:a4])
+  if (![(NSFileHandle *)firmwareFilehandle uarpSeekToOffset:location error:error])
   {
     return 0;
   }
 
   v9 = self->_firmwareFilehandle;
 
-  return [(NSFileHandle *)v9 uarpReadDataUpToLength:length error:a4];
+  return [(NSFileHandle *)v9 uarpReadDataUpToLength:length error:error];
 }
 
-- (void)parseFileName:(id)a3 intoPath:(id *)a4 andExtension:(id *)a5
+- (void)parseFileName:(id)name intoPath:(id *)path andExtension:(id *)extension
 {
-  v8 = [a3 pathExtension];
-  *a5 = v8;
-  if ([v8 caseInsensitiveCompare:@"txt"] && objc_msgSend(*a5, "caseInsensitiveCompare:", @"s19") && objc_msgSend(*a5, "caseInsensitiveCompare:", @"bin") && objc_msgSend(*a5, "caseInsensitiveCompare:", @"plist"))
+  pathExtension = [name pathExtension];
+  *extension = pathExtension;
+  if ([pathExtension caseInsensitiveCompare:@"txt"] && objc_msgSend(*extension, "caseInsensitiveCompare:", @"s19") && objc_msgSend(*extension, "caseInsensitiveCompare:", @"bin") && objc_msgSend(*extension, "caseInsensitiveCompare:", @"plist"))
   {
-    *a4 = a3;
-    *a5 = @"txt";
+    *path = name;
+    *extension = @"txt";
   }
 
   else
   {
-    *a4 = [a3 stringByDeletingPathExtension];
+    *path = [name stringByDeletingPathExtension];
   }
 }
 
-- (id)parseResourceFileIntoData:(id)a3
+- (id)parseResourceFileIntoData:(id)data
 {
-  v3 = [NSString stringWithContentsOfFile:a3 encoding:1 error:0];
+  v3 = [NSString stringWithContentsOfFile:data encoding:1 error:0];
   v4 = [NSMutableData dataWithCapacity:[(NSString *)v3 length]/ 5];
   v5 = [NSScanner scannerWithString:v3];
   v8 = 0;
@@ -302,13 +302,13 @@
   return v4;
 }
 
-- (id)parseMSP430TXTFile:(id)a3 withDefaultByteValue:(unsigned __int8)a4
+- (id)parseMSP430TXTFile:(id)file withDefaultByteValue:(unsigned __int8)value
 {
-  v4 = a4;
+  valueCopy = value;
   v7 = [NSMutableData dataWithLength:self->_firmwareImageSize];
-  memset([(NSMutableData *)v7 mutableBytes], v4, [(NSMutableData *)v7 length]);
+  memset([(NSMutableData *)v7 mutableBytes], valueCopy, [(NSMutableData *)v7 length]);
   v14 = 0;
-  v8 = [NSScanner scannerWithString:[NSString stringWithContentsOfFile:a3 encoding:1 error:0]];
+  v8 = [NSScanner scannerWithString:[NSString stringWithContentsOfFile:file encoding:1 error:0]];
   if (![(NSScanner *)v8 isAtEnd])
   {
     do
@@ -351,15 +351,15 @@
   return v7;
 }
 
-- (void)parseSRECLine:(id)a3 intoImage:(id)a4
+- (void)parseSRECLine:(id)line intoImage:(id)image
 {
   v16 = 0;
-  v7 = [a3 cStringUsingEncoding:1];
+  v7 = [line cStringUsingEncoding:1];
   v8 = *(v7 + 1);
   sscanf(v7 + 2, "%02x", &v16);
   v9 = v16;
   v10 = v16;
-  if ([a3 length] - 4 == (2 * v9))
+  if ([line length] - 4 == (2 * v9))
   {
     if (v10)
     {
@@ -393,7 +393,7 @@
 
           else
           {
-            [a4 replaceBytesInRange:(_byteswap_ushort(v17) - self->_firmwareImageBaseAddress) withBytes:{v10 - 3, v18}];
+            [image replaceBytesInRange:(_byteswap_ushort(v17) - self->_firmwareImageBaseAddress) withBytes:{v10 - 3, v18}];
           }
         }
 
@@ -412,16 +412,16 @@
 
   else
   {
-    NSLog(@"parseSRECLine: Invalid byte_count %d in SREC text_line (%lu)", v10, [a3 length] - 4);
+    NSLog(@"parseSRECLine: Invalid byte_count %d in SREC text_line (%lu)", v10, [line length] - 4);
   }
 }
 
-- (id)parseSRECFile:(id)a3 withDefaultByteValue:(unsigned __int8)a4
+- (id)parseSRECFile:(id)file withDefaultByteValue:(unsigned __int8)value
 {
-  v4 = a4;
+  valueCopy = value;
   v7 = [NSMutableData dataWithLength:self->_firmwareImageSize];
-  memset([(NSMutableData *)v7 mutableBytes], v4, [(NSMutableData *)v7 length]);
-  v8 = [NSScanner scannerWithString:[NSString stringWithContentsOfFile:a3 encoding:1 error:0]];
+  memset([(NSMutableData *)v7 mutableBytes], valueCopy, [(NSMutableData *)v7 length]);
+  v8 = [NSScanner scannerWithString:[NSString stringWithContentsOfFile:file encoding:1 error:0]];
   if (![(NSScanner *)v8 isAtEnd])
   {
     do
@@ -448,7 +448,7 @@
   [(FirmwareBundle *)&v3 dealloc];
 }
 
-- (FirmwareBundle)initWithBundle:(id)a3
+- (FirmwareBundle)initWithBundle:(id)bundle
 {
   v35 = 0;
   v36 = 0;
@@ -460,19 +460,19 @@
     goto LABEL_37;
   }
 
-  v5 = [a3 objectForInfoDictionaryKey:@"FirmwareImageBaseAddress"];
-  v6 = [a3 objectForInfoDictionaryKey:@"FirmwareImageSize"];
-  v7 = [a3 objectForInfoDictionaryKey:@"FirmwareImageFile"];
+  v5 = [bundle objectForInfoDictionaryKey:@"FirmwareImageBaseAddress"];
+  v6 = [bundle objectForInfoDictionaryKey:@"FirmwareImageSize"];
+  v7 = [bundle objectForInfoDictionaryKey:@"FirmwareImageFile"];
   if (!v7)
   {
     goto LABEL_37;
   }
 
   v8 = v7;
-  v9 = [a3 objectForInfoDictionaryKey:@"HashFile"];
-  v10 = [a3 objectForInfoDictionaryKey:@"CertificateFile"];
-  v11 = [a3 objectForInfoDictionaryKey:@"SignatureFile"];
-  v12 = [a3 objectForInfoDictionaryKey:@"CFBundleIdentifier"];
+  v9 = [bundle objectForInfoDictionaryKey:@"HashFile"];
+  v10 = [bundle objectForInfoDictionaryKey:@"CertificateFile"];
+  v11 = [bundle objectForInfoDictionaryKey:@"SignatureFile"];
+  v12 = [bundle objectForInfoDictionaryKey:@"CFBundleIdentifier"];
   if (!v12)
   {
     goto LABEL_37;
@@ -498,7 +498,7 @@
     NSLog(@"%s: imageFileSize unspecified by asset. using file size=%d\n", "[FirmwareBundle initWithBundle:]", v14);
   }
 
-  v15 = [a3 objectForInfoDictionaryKey:@"DefaultFillByte"];
+  v15 = [bundle objectForInfoDictionaryKey:@"DefaultFillByte"];
   if (v15)
   {
     v33 = 0;
@@ -598,7 +598,7 @@ LABEL_29:
   }
 
   v4->_productIDCode = v24;
-  v4->_bundleDescription = [objc_msgSend(a3 "bundlePath")];
+  v4->_bundleDescription = [objc_msgSend(bundle "bundlePath")];
 LABEL_37:
   if ([(FirmwareBundle *)v4 firmwareImage])
   {
@@ -610,7 +610,7 @@ LABEL_37:
     v25 = "nil";
   }
 
-  v26 = [(FirmwareBundle *)v4 firmwareImageSize];
+  firmwareImageSize = [(FirmwareBundle *)v4 firmwareImageSize];
   if ([(FirmwareBundle *)v4 hash])
   {
     v27 = "valid";
@@ -643,7 +643,7 @@ LABEL_37:
     v31 = "nil";
   }
 
-  NSLog(@"%s: I=%s[%lu] H=%s[%lu] S=%s[%lu] C=%s[%lu] productID=%d baseAddress=%d\n", "[FirmwareBundle initWithBundle:]", v25, v26, v27, v28, v29, v30, v31, [(NSData *)[(FirmwareBundle *)v4 certificate] length], [(FirmwareBundle *)v4 productIDCode], [(FirmwareBundle *)v4 firmwareImageBaseAddress]);
+  NSLog(@"%s: I=%s[%lu] H=%s[%lu] S=%s[%lu] C=%s[%lu] productID=%d baseAddress=%d\n", "[FirmwareBundle initWithBundle:]", v25, firmwareImageSize, v27, v28, v29, v30, v31, [(NSData *)[(FirmwareBundle *)v4 certificate] length], [(FirmwareBundle *)v4 productIDCode], [(FirmwareBundle *)v4 firmwareImageBaseAddress]);
   return v4;
 }
 

@@ -1,57 +1,57 @@
 @interface SBFLockScreenDateView
-+ ($01BB1521EC52D44A8E7628F5261DCEC8)metricsForFont:(id)a3;
++ ($01BB1521EC52D44A8E7628F5261DCEC8)metricsForFont:(id)font;
 + ($01BB1521EC52D44A8E7628F5261DCEC8)timeFontMetrics;
 + (double)defaultHeight;
 + (id)timeFont;
 - ($01BB1521EC52D44A8E7628F5261DCEC8)customTimeMetrics;
-- (CGRect)_subtitleViewFrameForView:(id)a3 alignmentPercent:(double)a4;
-- (CGRect)_timeLabelFrameForAlignmentPercent:(double)a3;
+- (CGRect)_subtitleViewFrameForView:(id)view alignmentPercent:(double)percent;
+- (CGRect)_timeLabelFrameForAlignmentPercent:(double)percent;
 - (CGRect)chargingVisualInformationTimeFrame;
 - (CGRect)chargingVisualInformationTimeSubtitleFrame;
-- (CGRect)presentationExtentForAlignmentPercent:(double)a3;
+- (CGRect)presentationExtentForAlignmentPercent:(double)percent;
 - (CGRect)restingFrame;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SBFLockScreenDateView)initWithFrame:(CGRect)a3;
-- (UIEdgeInsets)_cachedGlyphInsetsTimeFontForString:(id)a3;
-- (UIEdgeInsets)_timeLabelInsetsForTimeString:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SBFLockScreenDateView)initWithFrame:(CGRect)frame;
+- (UIEdgeInsets)_cachedGlyphInsetsTimeFontForString:(id)string;
+- (UIEdgeInsets)_timeLabelInsetsForTimeString:(id)string;
 - (UIView)timeView;
 - (double)subtitleBaselineOffsetFromOrigin;
 - (double)timeBaselineOffsetFromOrigin;
 - (id)_effectiveTextColor;
 - (void)_cacheCustomTimeMetrics;
 - (void)_layoutSubtitle;
-- (void)_setDate:(id)a3 inTimeZone:(id)a4;
-- (void)_setSubtitleAlpha:(double)a3;
+- (void)_setDate:(id)date inTimeZone:(id)zone;
+- (void)_setSubtitleAlpha:(double)alpha;
 - (void)_updateActiveSubtitleView;
 - (void)_updateAdaptiveTime;
 - (void)_updateForNewFont;
 - (void)_updateLabelAlpha;
 - (void)_updateLabels;
-- (void)_updatePreferredContentSizeCategoryForEnvironment:(id)a3 previousTraitCollection:(id)a4;
+- (void)_updatePreferredContentSizeCategoryForEnvironment:(id)environment previousTraitCollection:(id)collection;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setAlignmentPercent:(double)a3;
-- (void)setCustomSubtitleView:(id)a3;
-- (void)setCustomTimeFont:(id)a3;
-- (void)setCustomTimeNumberingSystem:(id)a3;
-- (void)setDateToTimeStretch:(double)a3;
-- (void)setInlineComplicationView:(id)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setMaximumAdaptiveTimeTextHeight:(double)a3;
-- (void)setMaximumSubtitleWidth:(double)a3;
-- (void)setPosterHasComplications:(BOOL)a3;
-- (void)setRestrictsVibrancy:(BOOL)a3;
-- (void)setSubtitleHidden:(BOOL)a3;
-- (void)setSubtitleLegibilityStrength:(double)a3;
-- (void)setSubtitleOnTop:(BOOL)a3;
-- (void)setTextColor:(id)a3;
-- (void)setTimeAlpha:(double)a3 subtitleAlpha:(double)a4;
-- (void)setTimeGlassInterfaceStyle:(int64_t)a3;
-- (void)setTimeLegibilityStrength:(double)a3;
-- (void)setTimeSupportsStretch:(BOOL)a3;
-- (void)setUseCompactDateFormat:(BOOL)a3;
-- (void)setUseLandscapeTimeFontSize:(BOOL)a3;
-- (void)setVibrancyConfiguration:(id)a3;
+- (void)setAlignmentPercent:(double)percent;
+- (void)setCustomSubtitleView:(id)view;
+- (void)setCustomTimeFont:(id)font;
+- (void)setCustomTimeNumberingSystem:(id)system;
+- (void)setDateToTimeStretch:(double)stretch;
+- (void)setInlineComplicationView:(id)view;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setMaximumAdaptiveTimeTextHeight:(double)height;
+- (void)setMaximumSubtitleWidth:(double)width;
+- (void)setPosterHasComplications:(BOOL)complications;
+- (void)setRestrictsVibrancy:(BOOL)vibrancy;
+- (void)setSubtitleHidden:(BOOL)hidden;
+- (void)setSubtitleLegibilityStrength:(double)strength;
+- (void)setSubtitleOnTop:(BOOL)top;
+- (void)setTextColor:(id)color;
+- (void)setTimeAlpha:(double)alpha subtitleAlpha:(double)subtitleAlpha;
+- (void)setTimeGlassInterfaceStyle:(int64_t)style;
+- (void)setTimeLegibilityStrength:(double)strength;
+- (void)setTimeSupportsStretch:(BOOL)stretch;
+- (void)setUseCompactDateFormat:(BOOL)format;
+- (void)setUseLandscapeTimeFontSize:(BOOL)size;
+- (void)setVibrancyConfiguration:(id)configuration;
 - (void)updateFormat;
 @end
 
@@ -60,8 +60,8 @@
 - (void)_updateLabels
 {
   v3 = MEMORY[0x1E698E670];
-  v4 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-  v7 = [v3 formatterForDateAsTimeNoAMPMWithLocale:v4];
+  autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+  v7 = [v3 formatterForDateAsTimeNoAMPMWithLocale:autoupdatingCurrentLocale];
 
   [v7 setTimeZone:self->_timeZone];
   v5 = [v7 stringFromDate:self->_date];
@@ -86,8 +86,8 @@
 
 - (void)updateFormat
 {
-  v2 = [MEMORY[0x1E698E670] sharedInstance];
-  [v2 resetFormattersIfNecessary];
+  mEMORY[0x1E698E670] = [MEMORY[0x1E698E670] sharedInstance];
+  [mEMORY[0x1E698E670] resetFormattersIfNecessary];
 }
 
 - (void)layoutSubviews
@@ -100,8 +100,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CSProminentDisplayViewController *)self->_prominentDisplayViewController view];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  view = [(CSProminentDisplayViewController *)self->_prominentDisplayViewController view];
+  [view setFrame:{v4, v6, v8, v10}];
 
   timeLabel = self->_timeLabel;
   [(SBFLockScreenDateView *)self _timeLabelFrameForAlignmentPercent:self->_alignmentPercent];
@@ -173,8 +173,8 @@
 
   else
   {
-    v2 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v2 userInterfaceIdiom] != 1)
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice userInterfaceIdiom] != 1)
     {
       v6 = 115.0;
 LABEL_12:
@@ -192,8 +192,8 @@ LABEL_12:
 
   else
   {
-    v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v3 _referenceBounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -210,12 +210,12 @@ LABEL_12:
   return v6;
 }
 
-- (SBFLockScreenDateView)initWithFrame:(CGRect)a3
+- (SBFLockScreenDateView)initWithFrame:(CGRect)frame
 {
   v39[2] = *MEMORY[0x1E69E9840];
   v33.receiver = self;
   v33.super_class = SBFLockScreenDateView;
-  v3 = [(SBFLockScreenDateView *)&v33 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBFLockScreenDateView *)&v33 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -230,18 +230,18 @@ LABEL_12:
     timeZone = v4->_timeZone;
     v4->_timeZone = 0;
 
-    v8 = [objc_opt_class() timeFont];
-    [(SBFLockScreenDateView *)v4 setCustomTimeFont:v8];
+    timeFont = [objc_opt_class() timeFont];
+    [(SBFLockScreenDateView *)v4 setCustomTimeFont:timeFont];
 
     objc_initWeak(&location, v4);
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    v10 = [MEMORY[0x1E696ADC8] mainQueue];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
     v27 = MEMORY[0x1E69E9820];
     v28 = 3221225472;
     v29 = __39__SBFLockScreenDateView_initWithFrame___block_invoke;
     v30 = &unk_1E807F470;
     objc_copyWeak(&v31, &location);
-    v11 = [v9 addObserverForName:*MEMORY[0x1E69DD898] object:0 queue:v10 usingBlock:&v27];
+    v11 = [defaultCenter addObserverForName:*MEMORY[0x1E69DD898] object:0 queue:mainQueue usingBlock:&v27];
 
     v12 = objc_opt_self();
     v39[0] = v12;
@@ -276,8 +276,8 @@ LABEL_12:
     v4->_timeLabel = v20;
 
     v22 = v4->_timeLabel;
-    v23 = [MEMORY[0x1E69DC888] clearColor];
-    [(SBUILegibilityLabel *)v22 setBackgroundColor:v23];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(SBUILegibilityLabel *)v22 setBackgroundColor:clearColor];
 
     v24 = [[SBFLockScreenDateSubtitleDateView alloc] initWithDate:0];
     dateSubtitleView = v4->_dateSubtitleView;
@@ -314,10 +314,10 @@ void __39__SBFLockScreenDateView_initWithFrame___block_invoke(uint64_t a1)
   [(SBFLockScreenDateView *)&v3 dealloc];
 }
 
-- (void)setSubtitleHidden:(BOOL)a3
+- (void)setSubtitleHidden:(BOOL)hidden
 {
   v3 = 1.0;
-  if (a3)
+  if (hidden)
   {
     v3 = 0.0;
   }
@@ -325,20 +325,20 @@ void __39__SBFLockScreenDateView_initWithFrame___block_invoke(uint64_t a1)
   [(SBFLockScreenDateView *)self _setSubtitleAlpha:v3];
 }
 
-- (void)setUseLandscapeTimeFontSize:(BOOL)a3
+- (void)setUseLandscapeTimeFontSize:(BOOL)size
 {
-  if (self->_useLandscapeTimeFontSize != a3)
+  if (self->_useLandscapeTimeFontSize != size)
   {
-    self->_useLandscapeTimeFontSize = a3;
+    self->_useLandscapeTimeFontSize = size;
     [(CSProminentDisplayViewController *)self->_prominentDisplayViewController setUsesLandscapeTimeFontVariant:?];
   }
 }
 
-- (void)setUseCompactDateFormat:(BOOL)a3
+- (void)setUseCompactDateFormat:(BOOL)format
 {
-  if (self->_useCompactDateFormat != a3)
+  if (self->_useCompactDateFormat != format)
   {
-    self->_useCompactDateFormat = a3;
+    self->_useCompactDateFormat = format;
     [(SBFLockScreenDateView *)self _updateUsesCompactDateFormat];
     [(SBFLockScreenDateSubtitleDateView *)self->_dateSubtitleView sizeToFit];
 
@@ -346,107 +346,107 @@ void __39__SBFLockScreenDateView_initWithFrame___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_setDate:(id)a3 inTimeZone:(id)a4
+- (void)_setDate:(id)date inTimeZone:(id)zone
 {
-  v6 = a3;
-  objc_storeStrong(&self->_timeZone, a4);
-  v7 = a4;
+  dateCopy = date;
+  objc_storeStrong(&self->_timeZone, zone);
+  zoneCopy = zone;
   date = self->_date;
-  self->_date = v6;
+  self->_date = dateCopy;
 
   [(SBFLockScreenDateView *)self _updateLabels];
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_overrideTextColor != v5)
+  colorCopy = color;
+  if (self->_overrideTextColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_overrideTextColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_overrideTextColor, color);
     [(SBUILegibilityLabel *)self->_timeLabel setTextColor:self->_overrideTextColor];
     [(CSProminentDisplayViewController *)self->_prominentDisplayViewController setTextColor:self->_overrideTextColor];
     [(SBFLockScreenDateView *)self _updateLabelAlpha];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setRestrictsVibrancy:(BOOL)a3
+- (void)setRestrictsVibrancy:(BOOL)vibrancy
 {
-  if (self->_restrictsVibrancy != a3)
+  if (self->_restrictsVibrancy != vibrancy)
   {
-    self->_restrictsVibrancy = a3;
-    if (a3)
+    self->_restrictsVibrancy = vibrancy;
+    if (vibrancy)
     {
-      v5 = 1;
+      effectType = 1;
     }
 
     else
     {
-      v5 = [(BSUIVibrancyConfiguration *)self->_vibrancyConfiguration effectType];
+      effectType = [(BSUIVibrancyConfiguration *)self->_vibrancyConfiguration effectType];
     }
 
     prominentDisplayViewController = self->_prominentDisplayViewController;
 
-    [(CSProminentDisplayViewController *)prominentDisplayViewController setEffectType:v5];
+    [(CSProminentDisplayViewController *)prominentDisplayViewController setEffectType:effectType];
   }
 }
 
-- (void)setVibrancyConfiguration:(id)a3
+- (void)setVibrancyConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (self->_vibrancyConfiguration != v5)
+  configurationCopy = configuration;
+  if (self->_vibrancyConfiguration != configurationCopy)
   {
-    v16 = v5;
-    objc_storeStrong(&self->_vibrancyConfiguration, a3);
-    v6 = [(BSUIVibrancyConfiguration *)v16 color];
+    v16 = configurationCopy;
+    objc_storeStrong(&self->_vibrancyConfiguration, configuration);
+    color = [(BSUIVibrancyConfiguration *)v16 color];
     overrideTextColor = self->_overrideTextColor;
-    self->_overrideTextColor = v6;
+    self->_overrideTextColor = color;
 
     [(SBUILegibilityLabel *)self->_timeLabel setTextColor:self->_overrideTextColor];
     [(CSProminentDisplayViewController *)self->_prominentDisplayViewController setTextColor:self->_overrideTextColor];
     prominentDisplayViewController = self->_prominentDisplayViewController;
     if (self->_restrictsVibrancy)
     {
-      v9 = 1;
+      effectType = 1;
     }
 
     else
     {
-      v9 = [(BSUIVibrancyConfiguration *)v16 effectType];
+      effectType = [(BSUIVibrancyConfiguration *)v16 effectType];
     }
 
-    [(CSProminentDisplayViewController *)prominentDisplayViewController setEffectType:v9];
+    [(CSProminentDisplayViewController *)prominentDisplayViewController setEffectType:effectType];
     [(CSProminentDisplayViewController *)self->_prominentDisplayViewController setBackgroundType:[(BSUIVibrancyConfiguration *)v16 backgroundType]];
     v10 = self->_prominentDisplayViewController;
-    v11 = [(BSUIVibrancyConfiguration *)v16 groupName];
-    [(CSProminentDisplayViewController *)v10 setGroupName:v11];
+    groupName = [(BSUIVibrancyConfiguration *)v16 groupName];
+    [(CSProminentDisplayViewController *)v10 setGroupName:groupName];
 
-    v12 = [(BSUIVibrancyConfiguration *)v16 alternativeVibrancyEffectLUT];
+    alternativeVibrancyEffectLUT = [(BSUIVibrancyConfiguration *)v16 alternativeVibrancyEffectLUT];
     v13 = self->_prominentDisplayViewController;
-    v14 = [v12 lutIdentifier];
-    v15 = [v12 bundleURL];
-    [(CSProminentDisplayViewController *)v13 setAlternativeVibrancyEffectLUTIdentifier:v14 alternativeVibrancyEffectLUTBundleURL:v15];
+    lutIdentifier = [alternativeVibrancyEffectLUT lutIdentifier];
+    bundleURL = [alternativeVibrancyEffectLUT bundleURL];
+    [(CSProminentDisplayViewController *)v13 setAlternativeVibrancyEffectLUTIdentifier:lutIdentifier alternativeVibrancyEffectLUTBundleURL:bundleURL];
 
     [(SBFLockScreenDateView *)self _updateLabelAlpha];
-    v5 = v16;
+    configurationCopy = v16;
   }
 }
 
-- (void)setTimeLegibilityStrength:(double)a3
+- (void)setTimeLegibilityStrength:(double)strength
 {
-  if (self->_timeLegibilityStrength != a3)
+  if (self->_timeLegibilityStrength != strength)
   {
-    self->_timeLegibilityStrength = a3;
+    self->_timeLegibilityStrength = strength;
     [(SBUILegibilityLabel *)self->_timeLabel setStrength:?];
   }
 }
 
-- (void)setSubtitleLegibilityStrength:(double)a3
+- (void)setSubtitleLegibilityStrength:(double)strength
 {
-  if (self->_subtitleLegibilityStrength != a3)
+  if (self->_subtitleLegibilityStrength != strength)
   {
-    self->_subtitleLegibilityStrength = a3;
+    self->_subtitleLegibilityStrength = strength;
     [(SBFLockScreenDateSubtitleDateView *)self->_dateSubtitleView setStrength:?];
     customSubtitleView = self->_customSubtitleView;
     subtitleLegibilityStrength = self->_subtitleLegibilityStrength;
@@ -455,50 +455,50 @@ void __39__SBFLockScreenDateView_initWithFrame___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v7 = a3;
+  settingsCopy = settings;
   if (![(_UILegibilitySettings *)self->_legibilitySettings sb_isEqualToLegibilitySettings:?])
   {
-    objc_storeStrong(&self->_legibilitySettings, a3);
+    objc_storeStrong(&self->_legibilitySettings, settings);
     [(SBUILegibilityLabel *)self->_timeLabel setLegibilitySettings:self->_legibilitySettings];
     [(SBFLockScreenDateSubtitleDateView *)self->_dateSubtitleView setLegibilitySettings:self->_legibilitySettings];
     [(SBFLockScreenDateSubtitleView *)self->_customSubtitleView setLegibilitySettings:self->_legibilitySettings];
     prominentDisplayViewController = self->_prominentDisplayViewController;
-    v6 = [(SBFLockScreenDateView *)self _effectiveTextColor];
-    [(CSProminentDisplayViewController *)prominentDisplayViewController setTextColor:v6];
+    _effectiveTextColor = [(SBFLockScreenDateView *)self _effectiveTextColor];
+    [(CSProminentDisplayViewController *)prominentDisplayViewController setTextColor:_effectiveTextColor];
 
     [(SBFLockScreenDateView *)self _updateLabels];
   }
 }
 
-- (void)setAlignmentPercent:(double)a3
+- (void)setAlignmentPercent:(double)percent
 {
-  if (self->_alignmentPercent != a3)
+  if (self->_alignmentPercent != percent)
   {
-    self->_alignmentPercent = a3;
+    self->_alignmentPercent = percent;
     [(SBFLockScreenDateView *)self setNeedsLayout];
   }
 }
 
-- (void)setDateToTimeStretch:(double)a3
+- (void)setDateToTimeStretch:(double)stretch
 {
-  if (self->_dateToTimeStretch != a3)
+  if (self->_dateToTimeStretch != stretch)
   {
-    self->_dateToTimeStretch = a3;
+    self->_dateToTimeStretch = stretch;
     [(SBFLockScreenDateView *)self setNeedsLayout];
   }
 }
 
-- (void)setMaximumSubtitleWidth:(double)a3
+- (void)setMaximumSubtitleWidth:(double)width
 {
-  if (self->_maximumSubtitleWidth != a3)
+  if (self->_maximumSubtitleWidth != width)
   {
     [(SBFLockScreenDateView *)self bounds];
     Width = CGRectGetWidth(v7);
-    if (Width >= a3)
+    if (Width >= width)
     {
-      Width = a3;
+      Width = width;
     }
 
     self->_maximumSubtitleWidth = Width;
@@ -507,16 +507,16 @@ void __39__SBFLockScreenDateView_initWithFrame___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setMaximumAdaptiveTimeTextHeight:(double)a3
+- (void)setMaximumAdaptiveTimeTextHeight:(double)height
 {
-  if (self->_maximumAdaptiveTimeTextHeight != a3)
+  if (self->_maximumAdaptiveTimeTextHeight != height)
   {
-    self->_maximumAdaptiveTimeTextHeight = a3;
+    self->_maximumAdaptiveTimeTextHeight = height;
     [(SBFLockScreenDateView *)self _updateAdaptiveTime];
   }
 }
 
-- (void)setTimeAlpha:(double)a3 subtitleAlpha:(double)a4
+- (void)setTimeAlpha:(double)alpha subtitleAlpha:(double)subtitleAlpha
 {
   if (BSFloatEqualToFloat())
   {
@@ -529,38 +529,38 @@ void __39__SBFLockScreenDateView_initWithFrame___block_invoke(uint64_t a1)
     goto LABEL_5;
   }
 
-  self->_timeAlpha = a3;
+  self->_timeAlpha = alpha;
   p_subtitleAlpha = &self->_subtitleAlpha;
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
 LABEL_5:
-    *p_subtitleAlpha = a4;
+    *p_subtitleAlpha = subtitleAlpha;
   }
 
   [(SBFLockScreenDateView *)self _updateLabelAlpha];
 }
 
-- (void)setInlineComplicationView:(id)a3
+- (void)setInlineComplicationView:(id)view
 {
-  v5 = a3;
-  if (self->_inlineComplicationView != v5)
+  viewCopy = view;
+  if (self->_inlineComplicationView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_inlineComplicationView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_inlineComplicationView, view);
     [(SBFLockScreenDateView *)self _updateActiveSubtitleView];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)setCustomSubtitleView:(id)a3
+- (void)setCustomSubtitleView:(id)view
 {
-  v5 = a3;
-  if (self->_customSubtitleView != v5)
+  viewCopy = view;
+  if (self->_customSubtitleView != viewCopy)
   {
-    v6 = v5;
+    v6 = viewCopy;
     if ((_os_feature_enabled_impl() & 1) == 0)
     {
-      objc_storeStrong(&self->_customSubtitleView, a3);
+      objc_storeStrong(&self->_customSubtitleView, view);
       [(SBFLockScreenDateSubtitleView *)v6 setLegibilitySettings:self->_legibilitySettings];
       [(SBFLockScreenDateSubtitleView *)v6 setStrength:self->_subtitleLegibilityStrength];
       [(SBFLockScreenDateView *)self _updateActiveSubtitleView];
@@ -604,7 +604,7 @@ LABEL_5:
     v12[2] = __50__SBFLockScreenDateView__updateActiveSubtitleView__block_invoke_2;
     v12[3] = &unk_1E807F4B8;
     v13 = v5;
-    v14 = self;
+    selfCopy = self;
     v15 = v18;
     v16 = v7;
     [v8 animateWithSettings:v11 actions:v17 completion:v12];
@@ -648,21 +648,21 @@ void __50__SBFLockScreenDateView__updateActiveSubtitleView__block_invoke_2(uint6
   [v3 animateWithSettings:v7 actions:v8 completion:&__block_literal_global_7];
 }
 
-- (CGRect)presentationExtentForAlignmentPercent:(double)a3
+- (CGRect)presentationExtentForAlignmentPercent:(double)percent
 {
   [(SBFLockScreenDateView *)self _timeLabelFrameForAlignmentPercent:?];
   x = v5;
   y = v7;
   width = v9;
   height = v11;
-  v13 = [(SBFLockScreenDateSubtitleView *)self->_customSubtitleView superview];
-  if (v13)
+  superview = [(SBFLockScreenDateSubtitleView *)self->_customSubtitleView superview];
+  if (superview)
   {
     subtitleAlpha = self->_subtitleAlpha;
 
     if (subtitleAlpha > 0.0)
     {
-      [(SBFLockScreenDateView *)self _subtitleViewFrameForView:self->_customSubtitleView alignmentPercent:a3];
+      [(SBFLockScreenDateView *)self _subtitleViewFrameForView:self->_customSubtitleView alignmentPercent:percent];
       v34.origin.x = v15;
       v34.origin.y = v16;
       v34.size.width = v17;
@@ -679,14 +679,14 @@ void __50__SBFLockScreenDateView__updateActiveSubtitleView__block_invoke_2(uint6
     }
   }
 
-  v19 = [(SBFLockScreenDateSubtitleDateView *)self->_dateSubtitleView superview];
-  if (v19)
+  superview2 = [(SBFLockScreenDateSubtitleDateView *)self->_dateSubtitleView superview];
+  if (superview2)
   {
     v20 = self->_subtitleAlpha;
 
     if (v20 > 0.0)
     {
-      [(SBFLockScreenDateView *)self _subtitleViewFrameForView:self->_dateSubtitleView alignmentPercent:a3];
+      [(SBFLockScreenDateView *)self _subtitleViewFrameForView:self->_dateSubtitleView alignmentPercent:percent];
       v35.origin.x = v21;
       v35.origin.y = v22;
       v35.size.width = v23;
@@ -709,9 +709,9 @@ void __50__SBFLockScreenDateView__updateActiveSubtitleView__block_invoke_2(uint6
   return result;
 }
 
-- (void)setCustomTimeFont:(id)a3
+- (void)setCustomTimeFont:(id)font
 {
-  v4 = [a3 copy];
+  v4 = [font copy];
   v5 = v4;
   if (!v4)
   {
@@ -728,40 +728,40 @@ void __50__SBFLockScreenDateView__updateActiveSubtitleView__block_invoke_2(uint6
   [(SBFLockScreenDateView *)self _updateForNewFont];
 }
 
-- (void)setTimeSupportsStretch:(BOOL)a3
+- (void)setTimeSupportsStretch:(BOOL)stretch
 {
-  if (self->_timeSupportsStretch != a3)
+  if (self->_timeSupportsStretch != stretch)
   {
-    self->_timeSupportsStretch = a3;
+    self->_timeSupportsStretch = stretch;
     [(SBFLockScreenDateView *)self _updateForNewFont];
 
     [(SBFLockScreenDateView *)self setNeedsLayout];
   }
 }
 
-- (void)setPosterHasComplications:(BOOL)a3
+- (void)setPosterHasComplications:(BOOL)complications
 {
-  if (self->_posterHasComplications != a3)
+  if (self->_posterHasComplications != complications)
   {
-    self->_posterHasComplications = a3;
+    self->_posterHasComplications = complications;
     [(SBFLockScreenDateView *)self _updateForNewFont];
 
     [(SBFLockScreenDateView *)self setNeedsLayout];
   }
 }
 
-- (void)setSubtitleOnTop:(BOOL)a3
+- (void)setSubtitleOnTop:(BOOL)top
 {
-  if (self->_subtitleOnTop != a3)
+  if (self->_subtitleOnTop != top)
   {
-    self->_subtitleOnTop = a3;
+    self->_subtitleOnTop = top;
     [(SBFLockScreenDateView *)self setNeedsLayout];
   }
 }
 
-- (void)setCustomTimeNumberingSystem:(id)a3
+- (void)setCustomTimeNumberingSystem:(id)system
 {
-  v4 = [a3 copy];
+  v4 = [system copy];
   customTimeNumberingSystem = self->_customTimeNumberingSystem;
   self->_customTimeNumberingSystem = v4;
 
@@ -797,9 +797,9 @@ void __50__SBFLockScreenDateView__updateActiveSubtitleView__block_invoke_2(uint6
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(SBFLockScreenDateView *)self _timeLabelFrameForAlignmentPercent:self->_alignmentPercent, a3.height];
+  [(SBFLockScreenDateView *)self _timeLabelFrameForAlignmentPercent:self->_alignmentPercent, fits.height];
   v5 = v4;
   rect = v4;
   v7 = v6;
@@ -864,8 +864,8 @@ void __50__SBFLockScreenDateView__updateActiveSubtitleView__block_invoke_2(uint6
 
 - (UIView)timeView
 {
-  v2 = [(SBFLockScreenDateView *)self prominentDisplayViewController];
-  v3 = [v2 view];
+  prominentDisplayViewController = [(SBFLockScreenDateView *)self prominentDisplayViewController];
+  view = [prominentDisplayViewController view];
   v12 = 0;
   v13 = &v12;
   v14 = 0x2050000000;
@@ -884,7 +884,7 @@ void __50__SBFLockScreenDateView__updateActiveSubtitleView__block_invoke_2(uint6
 
   v5 = v4;
   _Block_object_dispose(&v12, 8);
-  v6 = v3;
+  v6 = view;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -905,9 +905,9 @@ void __50__SBFLockScreenDateView__updateActiveSubtitleView__block_invoke_2(uint6
 
   v8 = v7;
 
-  v9 = [v8 timeView];
+  timeView = [v8 timeView];
 
-  return v9;
+  return timeView;
 }
 
 - (CGRect)chargingVisualInformationTimeFrame
@@ -949,11 +949,11 @@ void __50__SBFLockScreenDateView__updateActiveSubtitleView__block_invoke_2(uint6
   return result;
 }
 
-- (void)_setSubtitleAlpha:(double)a3
+- (void)_setSubtitleAlpha:(double)alpha
 {
-  if (self->_subtitleAlpha != a3)
+  if (self->_subtitleAlpha != alpha)
   {
-    self->_subtitleAlpha = a3;
+    self->_subtitleAlpha = alpha;
     [(SBFLockScreenDateView *)self _updateLabelAlpha];
   }
 }
@@ -985,29 +985,29 @@ void __50__SBFLockScreenDateView__updateActiveSubtitleView__block_invoke_2(uint6
   overrideTextColor = self->_overrideTextColor;
   if (overrideTextColor)
   {
-    v3 = overrideTextColor;
+    primaryColor = overrideTextColor;
   }
 
   else
   {
-    v3 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+    primaryColor = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
   }
 
-  return v3;
+  return primaryColor;
 }
 
-- (CGRect)_timeLabelFrameForAlignmentPercent:(double)a3
+- (CGRect)_timeLabelFrameForAlignmentPercent:(double)percent
 {
   [(SBUILegibilityLabel *)self->_timeLabel frame];
   v6 = v5;
   v8 = v7;
-  v9 = [(SBUILegibilityLabel *)self->_timeLabel string];
-  [(SBFLockScreenDateView *)self _timeLabelInsetsForTimeString:v9];
+  string = [(SBUILegibilityLabel *)self->_timeLabel string];
+  [(SBFLockScreenDateView *)self _timeLabelInsetsForTimeString:string];
   v11 = v10;
   v13 = v12;
 
   [(SBFLockScreenDateView *)self bounds];
-  v15 = (a3 + 1.0) * (v14 - v11 - v13 - v6) * 0.5;
+  v15 = (percent + 1.0) * (v14 - v11 - v13 - v6) * 0.5;
   v16 = 0.0;
   if (self->_subtitleOnTop)
   {
@@ -1037,20 +1037,20 @@ void __50__SBFLockScreenDateView__updateActiveSubtitleView__block_invoke_2(uint6
   return result;
 }
 
-- (UIEdgeInsets)_timeLabelInsetsForTimeString:(id)a3
+- (UIEdgeInsets)_timeLabelInsetsForTimeString:(id)string
 {
-  v4 = a3;
-  if ([v4 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v5 = [v4 substringWithRange:{0, 1}];
-    v6 = [v4 substringWithRange:{objc_msgSend(v4, "length") - 1, 1}];
+    v5 = [stringCopy substringWithRange:{0, 1}];
+    v6 = [stringCopy substringWithRange:{objc_msgSend(stringCopy, "length") - 1, 1}];
     [(SBFLockScreenDateView *)self _cachedGlyphInsetsTimeFontForString:v5];
     v8 = v7;
     [(SBFLockScreenDateView *)self _cachedGlyphInsetsTimeFontForString:v6];
     v10 = v9;
     if ([v6 isEqualToString:@"1"])
     {
-      v11 = [MEMORY[0x1E69DCEB0] mainScreen];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
       UIRoundToScreenScale();
       v10 = v12;
     }
@@ -1081,17 +1081,17 @@ void __50__SBFLockScreenDateView__updateActiveSubtitleView__block_invoke_2(uint6
   return result;
 }
 
-- (UIEdgeInsets)_cachedGlyphInsetsTimeFontForString:(id)a3
+- (UIEdgeInsets)_cachedGlyphInsetsTimeFontForString:(id)string
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stringCopy = string;
   if (_cachedGlyphInsetsTimeFontForString__onceToken != -1)
   {
     [SBFLockScreenDateView _cachedGlyphInsetsTimeFontForString:];
   }
 
-  v5 = [_cachedGlyphInsetsTimeFontForString__leadingInsetForNumber objectForKeyedSubscript:v4];
-  v6 = [_cachedGlyphInsetsTimeFontForString__trailingInsetForNumber objectForKeyedSubscript:v4];
+  v5 = [_cachedGlyphInsetsTimeFontForString__leadingInsetForNumber objectForKeyedSubscript:stringCopy];
+  v6 = [_cachedGlyphInsetsTimeFontForString__trailingInsetForNumber objectForKeyedSubscript:stringCopy];
   v7 = v6;
   if (v5)
   {
@@ -1111,11 +1111,11 @@ void __50__SBFLockScreenDateView__updateActiveSubtitleView__block_invoke_2(uint6
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:&v31 count:1];
     v11 = *MEMORY[0x1E695F060];
     v12 = *(MEMORY[0x1E695F060] + 8);
-    [v4 boundingRectWithSize:8 options:v10 attributes:0 context:{*MEMORY[0x1E695F060], v12}];
+    [stringCopy boundingRectWithSize:8 options:v10 attributes:0 context:{*MEMORY[0x1E695F060], v12}];
     UIRectIntegralWithScale();
     v14 = v13;
     v16 = v15;
-    [v4 boundingRectWithSize:0 options:v10 attributes:0 context:{v11, v12}];
+    [stringCopy boundingRectWithSize:0 options:v10 attributes:0 context:{v11, v12}];
     UIRectIntegralWithScale();
     v18 = v17;
     v20 = v14 - v19;
@@ -1123,8 +1123,8 @@ void __50__SBFLockScreenDateView__updateActiveSubtitleView__block_invoke_2(uint6
 
     v22 = [MEMORY[0x1E696AD98] numberWithDouble:v18 - v16 - v20];
 
-    [_cachedGlyphInsetsTimeFontForString__leadingInsetForNumber setObject:v21 forKeyedSubscript:v4];
-    [_cachedGlyphInsetsTimeFontForString__trailingInsetForNumber setObject:v22 forKeyedSubscript:v4];
+    [_cachedGlyphInsetsTimeFontForString__leadingInsetForNumber setObject:v21 forKeyedSubscript:stringCopy];
+    [_cachedGlyphInsetsTimeFontForString__trailingInsetForNumber setObject:v22 forKeyedSubscript:stringCopy];
 
     v7 = v22;
     v5 = v21;
@@ -1157,9 +1157,9 @@ uint64_t __61__SBFLockScreenDateView__cachedGlyphInsetsTimeFontForString___block
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (CGRect)_subtitleViewFrameForView:(id)a3 alignmentPercent:(double)a4
+- (CGRect)_subtitleViewFrameForView:(id)view alignmentPercent:(double)percent
 {
-  [a3 frame];
+  [view frame];
   v7 = v6;
   v9 = v8;
   [(SBFLockScreenDateView *)self maximumSubtitleWidth];
@@ -1168,19 +1168,19 @@ uint64_t __61__SBFLockScreenDateView__cachedGlyphInsetsTimeFontForString___block
     v7 = v10;
   }
 
-  v11 = [MEMORY[0x1E69DC938] currentDevice];
-  v12 = [v11 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v12 & 0xFFFFFFFFFFFFFFFBLL) == 1 || ([*MEMORY[0x1E69DDA98] activeInterfaceOrientation] - 3) > 0xFFFFFFFFFFFFFFFDLL)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 || ([*MEMORY[0x1E69DDA98] activeInterfaceOrientation] - 3) > 0xFFFFFFFFFFFFFFFDLL)
   {
     [(SBFLockScreenDateView *)self bounds];
-    v14 = (v15 - v7) * 0.5 + a4 * ((v15 - v7) * 0.5);
+    v14 = (v15 - v7) * 0.5 + percent * ((v15 - v7) * 0.5);
   }
 
   else
   {
     [(SBFLockScreenDateView *)self bounds];
-    v14 = (a4 + 1.0) * (v13 - v7) * 0.5;
+    v14 = (percent + 1.0) * (v13 - v7) * 0.5;
   }
 
   +[SBFDashBoardViewMetrics timeToSubtitleLabelBaselineDifferenceY];
@@ -1251,8 +1251,8 @@ uint64_t __61__SBFLockScreenDateView__cachedGlyphInsetsTimeFontForString___block
 
     else
     {
-      v118 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v118 userInterfaceIdiom] != 1)
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice userInterfaceIdiom] != 1)
       {
         v146 = 0x100000000;
         goto LABEL_13;
@@ -1262,19 +1262,19 @@ uint64_t __61__SBFLockScreenDateView__cachedGlyphInsetsTimeFontForString___block
     HIDWORD(v146) = v4 ^ 1;
     if (SBFEffectiveHomeButtonType() == 2)
     {
-      v5 = __sb__runningInSpringBoard();
-      if (v5)
+      currentDevice28 = __sb__runningInSpringBoard();
+      if (currentDevice28)
       {
         __sb__mainScreenReferenceBounds();
       }
 
       else
       {
-        v119 = [MEMORY[0x1E69DCEB0] mainScreen];
-        [v119 _referenceBounds];
+        mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
-      LODWORD(v146) = v5 ^ 1;
+      LODWORD(v146) = currentDevice28 ^ 1;
       BSSizeRoundForScale();
       if (v19 == *(MEMORY[0x1E69D4380] + 288) && v18 == *(MEMORY[0x1E69D4380] + 296))
       {
@@ -1331,8 +1331,8 @@ LABEL_13:
 
     else
     {
-      v117 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v117 userInterfaceIdiom] != 1)
+      currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice2 userInterfaceIdiom] != 1)
       {
         v145 = 0x100000000;
         goto LABEL_22;
@@ -1342,19 +1342,19 @@ LABEL_13:
     HIDWORD(v145) = v6 ^ 1;
     if (SBFEffectiveHomeButtonType() == 2)
     {
-      v5 = __sb__runningInSpringBoard();
-      if (v5)
+      currentDevice28 = __sb__runningInSpringBoard();
+      if (currentDevice28)
       {
         __sb__mainScreenReferenceBounds();
       }
 
       else
       {
-        v109 = [MEMORY[0x1E69DCEB0] mainScreen];
-        [v109 _referenceBounds];
+        mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+        [mainScreen2 _referenceBounds];
       }
 
-      LODWORD(v145) = v5 ^ 1;
+      LODWORD(v145) = currentDevice28 ^ 1;
       BSSizeRoundForScale();
       if (v21 >= *(MEMORY[0x1E69D4380] + 440))
       {
@@ -1410,8 +1410,8 @@ LABEL_22:
 
     else
     {
-      v116 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v116 userInterfaceIdiom] != 1)
+      currentDevice3 = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice3 userInterfaceIdiom] != 1)
       {
         v144 = 0x100000000;
         goto LABEL_31;
@@ -1421,19 +1421,19 @@ LABEL_22:
     HIDWORD(v144) = v7 ^ 1;
     if (SBFEffectiveHomeButtonType() == 2)
     {
-      v5 = __sb__runningInSpringBoard();
-      if (v5)
+      currentDevice28 = __sb__runningInSpringBoard();
+      if (currentDevice28)
       {
         __sb__mainScreenReferenceBounds();
       }
 
       else
       {
-        v108 = [MEMORY[0x1E69DCEB0] mainScreen];
-        [v108 _referenceBounds];
+        mainScreen3 = [MEMORY[0x1E69DCEB0] mainScreen];
+        [mainScreen3 _referenceBounds];
       }
 
-      LODWORD(v144) = v5 ^ 1;
+      LODWORD(v144) = currentDevice28 ^ 1;
       BSSizeRoundForScale();
       if (v22 >= *(MEMORY[0x1E69D4380] + 376))
       {
@@ -1488,8 +1488,8 @@ LABEL_31:
 
     else
     {
-      v115 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v115 userInterfaceIdiom] != 1)
+      currentDevice4 = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice4 userInterfaceIdiom] != 1)
       {
         v143 = 0x100000000;
         goto LABEL_40;
@@ -1497,19 +1497,19 @@ LABEL_31:
     }
 
     HIDWORD(v143) = v8 ^ 1;
-    v5 = __sb__runningInSpringBoard();
-    if (v5)
+    currentDevice28 = __sb__runningInSpringBoard();
+    if (currentDevice28)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v112 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v112 _referenceBounds];
+      mainScreen4 = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen4 _referenceBounds];
     }
 
-    LODWORD(v143) = v5 ^ 1;
+    LODWORD(v143) = currentDevice28 ^ 1;
     BSSizeRoundForScale();
     if (v9 >= *(MEMORY[0x1E69D4380] + 280))
     {
@@ -1557,8 +1557,8 @@ LABEL_40:
 
     else
     {
-      v114 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v114 userInterfaceIdiom] != 1)
+      currentDevice5 = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice5 userInterfaceIdiom] != 1)
       {
         v142 = 0x100000000;
         goto LABEL_50;
@@ -1566,19 +1566,19 @@ LABEL_40:
     }
 
     HIDWORD(v142) = v10 ^ 1;
-    v5 = __sb__runningInSpringBoard();
-    if (v5)
+    currentDevice28 = __sb__runningInSpringBoard();
+    if (currentDevice28)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v110 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v110 _referenceBounds];
+      mainScreen5 = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen5 _referenceBounds];
     }
 
-    LODWORD(v142) = v5 ^ 1;
+    LODWORD(v142) = currentDevice28 ^ 1;
     BSSizeRoundForScale();
     if (v16 >= *(MEMORY[0x1E69D4380] + 264))
     {
@@ -1625,8 +1625,8 @@ LABEL_50:
 
     else
     {
-      v113 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v113 userInterfaceIdiom] != 1)
+      currentDevice6 = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice6 userInterfaceIdiom] != 1)
       {
         v141 = 0x100000000;
         goto LABEL_191;
@@ -1634,19 +1634,19 @@ LABEL_50:
     }
 
     HIDWORD(v141) = v17 ^ 1;
-    v5 = __sb__runningInSpringBoard();
-    if (v5)
+    currentDevice28 = __sb__runningInSpringBoard();
+    if (currentDevice28)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v107 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v107 _referenceBounds];
+      mainScreen6 = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen6 _referenceBounds];
     }
 
-    LODWORD(v141) = v5 ^ 1;
+    LODWORD(v141) = currentDevice28 ^ 1;
     BSSizeRoundForScale();
     if (v29 >= *(MEMORY[0x1E69D4380] + 248))
     {
@@ -1680,8 +1680,8 @@ LABEL_50:
     }
 
 LABEL_191:
-    v5 = __sb__runningInSpringBoard();
-    if (v5)
+    currentDevice28 = __sb__runningInSpringBoard();
+    if (currentDevice28)
     {
       if (SBFEffectiveDeviceClass() != 2)
       {
@@ -1691,11 +1691,11 @@ LABEL_191:
 
     else
     {
-      v111 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v111 userInterfaceIdiom] != 1)
+      currentDevice7 = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice7 userInterfaceIdiom] != 1)
       {
 LABEL_193:
-        v140 = v5 ^ 1;
+        v140 = currentDevice28 ^ 1;
         if (!_SBF_Private_IsD94Like())
         {
 LABEL_197:
@@ -1714,8 +1714,8 @@ LABEL_197:
 
         else
         {
-          v105 = [MEMORY[0x1E69DC938] currentDevice];
-          if ([v105 userInterfaceIdiom])
+          currentDevice8 = [MEMORY[0x1E69DC938] currentDevice];
+          if ([currentDevice8 userInterfaceIdiom])
           {
             v139 = 0x100000000;
             goto LABEL_207;
@@ -1725,19 +1725,19 @@ LABEL_197:
         HIDWORD(v139) = v30 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v5 = __sb__runningInSpringBoard();
-          if (v5)
+          currentDevice28 = __sb__runningInSpringBoard();
+          if (currentDevice28)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v98 = [MEMORY[0x1E69DCEB0] mainScreen];
-            [v98 _referenceBounds];
+            mainScreen7 = [MEMORY[0x1E69DCEB0] mainScreen];
+            [mainScreen7 _referenceBounds];
           }
 
-          LODWORD(v139) = v5 ^ 1;
+          LODWORD(v139) = currentDevice28 ^ 1;
           BSSizeRoundForScale();
           if (v33 >= *(MEMORY[0x1E69D4380] + 200))
           {
@@ -1775,8 +1775,8 @@ LABEL_197:
         }
 
 LABEL_207:
-        v5 = __sb__runningInSpringBoard();
-        if (v5)
+        currentDevice28 = __sb__runningInSpringBoard();
+        if (currentDevice28)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -1787,30 +1787,30 @@ LABEL_207:
 
         else
         {
-          v106 = [MEMORY[0x1E69DC938] currentDevice];
-          if ([v106 userInterfaceIdiom])
+          currentDevice9 = [MEMORY[0x1E69DC938] currentDevice];
+          if ([currentDevice9 userInterfaceIdiom])
           {
             v138 = 0x100000000;
             goto LABEL_217;
           }
         }
 
-        HIDWORD(v138) = v5 ^ 1;
+        HIDWORD(v138) = currentDevice28 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v5 = __sb__runningInSpringBoard();
-          if (v5)
+          currentDevice28 = __sb__runningInSpringBoard();
+          if (currentDevice28)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v101 = [MEMORY[0x1E69DCEB0] mainScreen];
-            [v101 _referenceBounds];
+            mainScreen8 = [MEMORY[0x1E69DCEB0] mainScreen];
+            [mainScreen8 _referenceBounds];
           }
 
-          LODWORD(v138) = v5 ^ 1;
+          LODWORD(v138) = currentDevice28 ^ 1;
           BSSizeRoundForScale();
           if (v31 >= *(MEMORY[0x1E69D4380] + 200))
           {
@@ -1871,8 +1871,8 @@ LABEL_225:
 
         else
         {
-          v102 = [MEMORY[0x1E69DC938] currentDevice];
-          if ([v102 userInterfaceIdiom])
+          currentDevice10 = [MEMORY[0x1E69DC938] currentDevice];
+          if ([currentDevice10 userInterfaceIdiom])
           {
             v137 = 0x100000000;
             goto LABEL_235;
@@ -1882,19 +1882,19 @@ LABEL_225:
         HIDWORD(v137) = v32 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v5 = __sb__runningInSpringBoard();
-          if (v5)
+          currentDevice28 = __sb__runningInSpringBoard();
+          if (currentDevice28)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v93 = [MEMORY[0x1E69DCEB0] mainScreen];
-            [v93 _referenceBounds];
+            mainScreen9 = [MEMORY[0x1E69DCEB0] mainScreen];
+            [mainScreen9 _referenceBounds];
           }
 
-          LODWORD(v137) = v5 ^ 1;
+          LODWORD(v137) = currentDevice28 ^ 1;
           BSSizeRoundForScale();
           if (v37 >= *(MEMORY[0x1E69D4380] + 136))
           {
@@ -1930,8 +1930,8 @@ LABEL_225:
         }
 
 LABEL_235:
-        v5 = __sb__runningInSpringBoard();
-        if (v5)
+        currentDevice28 = __sb__runningInSpringBoard();
+        if (currentDevice28)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -1942,30 +1942,30 @@ LABEL_235:
 
         else
         {
-          v104 = [MEMORY[0x1E69DC938] currentDevice];
-          if ([v104 userInterfaceIdiom])
+          currentDevice11 = [MEMORY[0x1E69DC938] currentDevice];
+          if ([currentDevice11 userInterfaceIdiom])
           {
             v136 = 0x100000000;
             goto LABEL_245;
           }
         }
 
-        HIDWORD(v136) = v5 ^ 1;
+        HIDWORD(v136) = currentDevice28 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v5 = __sb__runningInSpringBoard();
-          if (v5)
+          currentDevice28 = __sb__runningInSpringBoard();
+          if (currentDevice28)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v97 = [MEMORY[0x1E69DCEB0] mainScreen];
-            [v97 _referenceBounds];
+            mainScreen10 = [MEMORY[0x1E69DCEB0] mainScreen];
+            [mainScreen10 _referenceBounds];
           }
 
-          LODWORD(v136) = v5 ^ 1;
+          LODWORD(v136) = currentDevice28 ^ 1;
           BSSizeRoundForScale();
           if (v34 >= *(MEMORY[0x1E69D4380] + 136))
           {
@@ -2018,8 +2018,8 @@ LABEL_249:
 
         else
         {
-          v103 = [MEMORY[0x1E69DC938] currentDevice];
-          if ([v103 userInterfaceIdiom])
+          currentDevice12 = [MEMORY[0x1E69DC938] currentDevice];
+          if ([currentDevice12 userInterfaceIdiom])
           {
             v135 = 0x100000000;
             goto LABEL_259;
@@ -2029,19 +2029,19 @@ LABEL_249:
         HIDWORD(v135) = v35 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v5 = __sb__runningInSpringBoard();
-          if (v5)
+          currentDevice28 = __sb__runningInSpringBoard();
+          if (currentDevice28)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v94 = [MEMORY[0x1E69DCEB0] mainScreen];
-            [v94 _referenceBounds];
+            mainScreen11 = [MEMORY[0x1E69DCEB0] mainScreen];
+            [mainScreen11 _referenceBounds];
           }
 
-          LODWORD(v135) = v5 ^ 1;
+          LODWORD(v135) = currentDevice28 ^ 1;
           BSSizeRoundForScale();
           if (v36 >= *(MEMORY[0x1E69D4380] + 136))
           {
@@ -2075,8 +2075,8 @@ LABEL_249:
         }
 
 LABEL_259:
-        v5 = __sb__runningInSpringBoard();
-        if (v5)
+        currentDevice28 = __sb__runningInSpringBoard();
+        if (currentDevice28)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -2088,8 +2088,8 @@ LABEL_259:
 
         else
         {
-          v100 = [MEMORY[0x1E69DC938] currentDevice];
-          if ([v100 userInterfaceIdiom])
+          currentDevice13 = [MEMORY[0x1E69DC938] currentDevice];
+          if ([currentDevice13 userInterfaceIdiom])
           {
             HIDWORD(v133) = 0;
             v134 = 1;
@@ -2097,22 +2097,22 @@ LABEL_259:
           }
         }
 
-        v134 = v5 ^ 1;
+        v134 = currentDevice28 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v5 = __sb__runningInSpringBoard();
-          if (v5)
+          currentDevice28 = __sb__runningInSpringBoard();
+          if (currentDevice28)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v92 = [MEMORY[0x1E69DCEB0] mainScreen];
-            [v92 _referenceBounds];
+            mainScreen12 = [MEMORY[0x1E69DCEB0] mainScreen];
+            [mainScreen12 _referenceBounds];
           }
 
-          HIDWORD(v133) = v5 ^ 1;
+          HIDWORD(v133) = currentDevice28 ^ 1;
           BSSizeRoundForScale();
           if (v38 >= *(MEMORY[0x1E69D4380] + 136))
           {
@@ -2164,8 +2164,8 @@ LABEL_279:
 
         else
         {
-          v99 = [MEMORY[0x1E69DC938] currentDevice];
-          if ([v99 userInterfaceIdiom])
+          currentDevice14 = [MEMORY[0x1E69DC938] currentDevice];
+          if ([currentDevice14 userInterfaceIdiom])
           {
             HIDWORD(v132) = 0;
             LODWORD(v133) = 1;
@@ -2184,13 +2184,13 @@ LABEL_279:
 
           else
           {
-            v89 = [MEMORY[0x1E69DCEB0] mainScreen];
-            [v89 _referenceBounds];
+            mainScreen13 = [MEMORY[0x1E69DCEB0] mainScreen];
+            [mainScreen13 _referenceBounds];
           }
 
-          v5 = v40 ^ 1u;
+          currentDevice28 = v40 ^ 1u;
           BSSizeRoundForScale();
-          HIDWORD(v132) = v5;
+          HIDWORD(v132) = currentDevice28;
           if (v41 >= *(MEMORY[0x1E69D4380] + 120) && (_SBF_Private_IsN84OrSimilarDevice() & 1) != 0)
           {
             LODWORD(v132) = 0;
@@ -2221,8 +2221,8 @@ LABEL_279:
         }
 
 LABEL_289:
-        v5 = __sb__runningInSpringBoard();
-        if (v5)
+        currentDevice28 = __sb__runningInSpringBoard();
+        if (currentDevice28)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -2234,8 +2234,8 @@ LABEL_289:
 
         else
         {
-          v96 = [MEMORY[0x1E69DC938] currentDevice];
-          if ([v96 userInterfaceIdiom])
+          currentDevice15 = [MEMORY[0x1E69DC938] currentDevice];
+          if ([currentDevice15 userInterfaceIdiom])
           {
             HIDWORD(v131) = 0;
             LODWORD(v132) = 1;
@@ -2243,22 +2243,22 @@ LABEL_289:
           }
         }
 
-        LODWORD(v132) = v5 ^ 1;
+        LODWORD(v132) = currentDevice28 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v5 = __sb__runningInSpringBoard();
-          if (v5)
+          currentDevice28 = __sb__runningInSpringBoard();
+          if (currentDevice28)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v88 = [MEMORY[0x1E69DCEB0] mainScreen];
-            [v88 _referenceBounds];
+            mainScreen14 = [MEMORY[0x1E69DCEB0] mainScreen];
+            [mainScreen14 _referenceBounds];
           }
 
-          HIDWORD(v131) = v5 ^ 1;
+          HIDWORD(v131) = currentDevice28 ^ 1;
           BSSizeRoundForScale();
           if (v42 >= *(MEMORY[0x1E69D4380] + 120))
           {
@@ -2314,8 +2314,8 @@ LABEL_312:
 
         else
         {
-          v91 = [MEMORY[0x1E69DC938] currentDevice];
-          if ([v91 userInterfaceIdiom])
+          currentDevice16 = [MEMORY[0x1E69DC938] currentDevice];
+          if ([currentDevice16 userInterfaceIdiom])
           {
             HIDWORD(v130) = 0;
             LODWORD(v131) = 1;
@@ -2326,19 +2326,19 @@ LABEL_312:
         LODWORD(v131) = v43 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v5 = __sb__runningInSpringBoard();
-          if (v5)
+          currentDevice28 = __sb__runningInSpringBoard();
+          if (currentDevice28)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v82 = [MEMORY[0x1E69DCEB0] mainScreen];
-            [v82 _referenceBounds];
+            mainScreen15 = [MEMORY[0x1E69DCEB0] mainScreen];
+            [mainScreen15 _referenceBounds];
           }
 
-          HIDWORD(v130) = v5 ^ 1;
+          HIDWORD(v130) = currentDevice28 ^ 1;
           BSSizeRoundForScale();
           if (v46 >= *(MEMORY[0x1E69D4380] + 184))
           {
@@ -2368,8 +2368,8 @@ LABEL_312:
         }
 
 LABEL_319:
-        v5 = __sb__runningInSpringBoard();
-        if (v5)
+        currentDevice28 = __sb__runningInSpringBoard();
+        if (currentDevice28)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -2381,8 +2381,8 @@ LABEL_319:
 
         else
         {
-          v95 = [MEMORY[0x1E69DC938] currentDevice];
-          if ([v95 userInterfaceIdiom])
+          currentDevice17 = [MEMORY[0x1E69DC938] currentDevice];
+          if ([currentDevice17 userInterfaceIdiom])
           {
             v120 = 0;
             LODWORD(v130) = 1;
@@ -2390,22 +2390,22 @@ LABEL_319:
           }
         }
 
-        LODWORD(v130) = v5 ^ 1;
+        LODWORD(v130) = currentDevice28 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v5 = __sb__runningInSpringBoard();
-          if (v5)
+          currentDevice28 = __sb__runningInSpringBoard();
+          if (currentDevice28)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v85 = [MEMORY[0x1E69DCEB0] mainScreen];
-            [v85 _referenceBounds];
+            mainScreen16 = [MEMORY[0x1E69DCEB0] mainScreen];
+            [mainScreen16 _referenceBounds];
           }
 
-          v120 = v5 ^ 1;
+          v120 = currentDevice28 ^ 1;
           BSSizeRoundForScale();
           if (v44 >= *(MEMORY[0x1E69D4380] + 184))
           {
@@ -2457,8 +2457,8 @@ LABEL_337:
 
         else
         {
-          v87 = [MEMORY[0x1E69DC938] currentDevice];
-          if ([v87 userInterfaceIdiom])
+          currentDevice18 = [MEMORY[0x1E69DC938] currentDevice];
+          if ([currentDevice18 userInterfaceIdiom])
           {
             v129 = 0x100000000;
             goto LABEL_347;
@@ -2476,13 +2476,13 @@ LABEL_337:
 
           else
           {
-            v78 = [MEMORY[0x1E69DCEB0] mainScreen];
-            [v78 _referenceBounds];
+            mainScreen17 = [MEMORY[0x1E69DCEB0] mainScreen];
+            [mainScreen17 _referenceBounds];
           }
 
-          v5 = v47 ^ 1u;
+          currentDevice28 = v47 ^ 1u;
           BSSizeRoundForScale();
-          LODWORD(v129) = v5;
+          LODWORD(v129) = currentDevice28;
           if (v50 >= *(MEMORY[0x1E69D4380] + 104))
           {
             v127 = 0;
@@ -2508,8 +2508,8 @@ LABEL_337:
         }
 
 LABEL_347:
-        v5 = __sb__runningInSpringBoard();
-        if (v5)
+        currentDevice28 = __sb__runningInSpringBoard();
+        if (currentDevice28)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -2520,30 +2520,30 @@ LABEL_347:
 
         else
         {
-          v90 = [MEMORY[0x1E69DC938] currentDevice];
-          if ([v90 userInterfaceIdiom])
+          currentDevice19 = [MEMORY[0x1E69DC938] currentDevice];
+          if ([currentDevice19 userInterfaceIdiom])
           {
             v128 = 0x100000000;
             goto LABEL_357;
           }
         }
 
-        HIDWORD(v128) = v5 ^ 1;
+        HIDWORD(v128) = currentDevice28 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v5 = __sb__runningInSpringBoard();
-          if (v5)
+          currentDevice28 = __sb__runningInSpringBoard();
+          if (currentDevice28)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v81 = [MEMORY[0x1E69DCEB0] mainScreen];
-            [v81 _referenceBounds];
+            mainScreen18 = [MEMORY[0x1E69DCEB0] mainScreen];
+            [mainScreen18 _referenceBounds];
           }
 
-          LODWORD(v128) = v5 ^ 1;
+          LODWORD(v128) = currentDevice28 ^ 1;
           BSSizeRoundForScale();
           if (v48 >= *(MEMORY[0x1E69D4380] + 104))
           {
@@ -2593,8 +2593,8 @@ LABEL_365:
 
         else
         {
-          v83 = [MEMORY[0x1E69DC938] currentDevice];
-          if ([v83 userInterfaceIdiom])
+          currentDevice20 = [MEMORY[0x1E69DC938] currentDevice];
+          if ([currentDevice20 userInterfaceIdiom])
           {
             v127 = 0x100000000;
             goto LABEL_375;
@@ -2604,19 +2604,19 @@ LABEL_365:
         HIDWORD(v127) = v49 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v5 = __sb__runningInSpringBoard();
-          if (v5)
+          currentDevice28 = __sb__runningInSpringBoard();
+          if (currentDevice28)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v74 = [MEMORY[0x1E69DCEB0] mainScreen];
-            [v74 _referenceBounds];
+            mainScreen19 = [MEMORY[0x1E69DCEB0] mainScreen];
+            [mainScreen19 _referenceBounds];
           }
 
-          LODWORD(v127) = v5 ^ 1;
+          LODWORD(v127) = currentDevice28 ^ 1;
           BSSizeRoundForScale();
           if (v54 >= *(MEMORY[0x1E69D4380] + 216))
           {
@@ -2641,8 +2641,8 @@ LABEL_365:
         }
 
 LABEL_375:
-        v5 = __sb__runningInSpringBoard();
-        if (v5)
+        currentDevice28 = __sb__runningInSpringBoard();
+        if (currentDevice28)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -2653,30 +2653,30 @@ LABEL_375:
 
         else
         {
-          v86 = [MEMORY[0x1E69DC938] currentDevice];
-          if ([v86 userInterfaceIdiom])
+          currentDevice21 = [MEMORY[0x1E69DC938] currentDevice];
+          if ([currentDevice21 userInterfaceIdiom])
           {
             v126 = 0x100000000;
             goto LABEL_385;
           }
         }
 
-        HIDWORD(v126) = v5 ^ 1;
+        HIDWORD(v126) = currentDevice28 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v5 = __sb__runningInSpringBoard();
-          if (v5)
+          currentDevice28 = __sb__runningInSpringBoard();
+          if (currentDevice28)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v77 = [MEMORY[0x1E69DCEB0] mainScreen];
-            [v77 _referenceBounds];
+            mainScreen20 = [MEMORY[0x1E69DCEB0] mainScreen];
+            [mainScreen20 _referenceBounds];
           }
 
-          LODWORD(v126) = v5 ^ 1;
+          LODWORD(v126) = currentDevice28 ^ 1;
           BSSizeRoundForScale();
           if (v51 >= *(MEMORY[0x1E69D4380] + 216))
           {
@@ -2718,8 +2718,8 @@ LABEL_389:
 
         else
         {
-          v84 = [MEMORY[0x1E69DC938] currentDevice];
-          if ([v84 userInterfaceIdiom])
+          currentDevice22 = [MEMORY[0x1E69DC938] currentDevice];
+          if ([currentDevice22 userInterfaceIdiom])
           {
             v125 = 0x100000000;
             goto LABEL_399;
@@ -2729,19 +2729,19 @@ LABEL_389:
         HIDWORD(v125) = v52 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v5 = __sb__runningInSpringBoard();
-          if (v5)
+          currentDevice28 = __sb__runningInSpringBoard();
+          if (currentDevice28)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v75 = [MEMORY[0x1E69DCEB0] mainScreen];
-            [v75 _referenceBounds];
+            mainScreen21 = [MEMORY[0x1E69DCEB0] mainScreen];
+            [mainScreen21 _referenceBounds];
           }
 
-          LODWORD(v125) = v5 ^ 1;
+          LODWORD(v125) = currentDevice28 ^ 1;
           BSSizeRoundForScale();
           if (v53 >= *(MEMORY[0x1E69D4380] + 120))
           {
@@ -2764,8 +2764,8 @@ LABEL_389:
         }
 
 LABEL_399:
-        v5 = __sb__runningInSpringBoard();
-        if (v5)
+        currentDevice28 = __sb__runningInSpringBoard();
+        if (currentDevice28)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -2776,30 +2776,30 @@ LABEL_399:
 
         else
         {
-          v80 = [MEMORY[0x1E69DC938] currentDevice];
-          if ([v80 userInterfaceIdiom])
+          currentDevice23 = [MEMORY[0x1E69DC938] currentDevice];
+          if ([currentDevice23 userInterfaceIdiom])
           {
             v124 = 0x100000000;
             goto LABEL_409;
           }
         }
 
-        HIDWORD(v124) = v5 ^ 1;
+        HIDWORD(v124) = currentDevice28 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v5 = __sb__runningInSpringBoard();
-          if (v5)
+          currentDevice28 = __sb__runningInSpringBoard();
+          if (currentDevice28)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v73 = [MEMORY[0x1E69DCEB0] mainScreen];
-            [v73 _referenceBounds];
+            mainScreen22 = [MEMORY[0x1E69DCEB0] mainScreen];
+            [mainScreen22 _referenceBounds];
           }
 
-          LODWORD(v124) = v5 ^ 1;
+          LODWORD(v124) = currentDevice28 ^ 1;
           BSSizeRoundForScale();
           if (v55 >= *(MEMORY[0x1E69D4380] + 120))
           {
@@ -2839,8 +2839,8 @@ LABEL_419:
 
         else
         {
-          v79 = [MEMORY[0x1E69DC938] currentDevice];
-          if ([v79 userInterfaceIdiom])
+          currentDevice24 = [MEMORY[0x1E69DC938] currentDevice];
+          if ([currentDevice24 userInterfaceIdiom])
           {
             v123 = 0x100000000;
             goto LABEL_429;
@@ -2850,19 +2850,19 @@ LABEL_419:
         HIDWORD(v123) = v56 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v5 = __sb__runningInSpringBoard();
-          if (v5)
+          currentDevice28 = __sb__runningInSpringBoard();
+          if (currentDevice28)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v72 = [MEMORY[0x1E69DCEB0] mainScreen];
-            [v72 _referenceBounds];
+            mainScreen23 = [MEMORY[0x1E69DCEB0] mainScreen];
+            [mainScreen23 _referenceBounds];
           }
 
-          LODWORD(v123) = v5 ^ 1;
+          LODWORD(v123) = currentDevice28 ^ 1;
           BSSizeRoundForScale();
           if (v57 >= *(MEMORY[0x1E69D4380] + 104))
           {
@@ -2883,8 +2883,8 @@ LABEL_419:
         }
 
 LABEL_429:
-        v5 = __sb__runningInSpringBoard();
-        if (v5)
+        currentDevice28 = __sb__runningInSpringBoard();
+        if (currentDevice28)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -2895,30 +2895,30 @@ LABEL_429:
 
         else
         {
-          v76 = [MEMORY[0x1E69DC938] currentDevice];
-          if ([v76 userInterfaceIdiom])
+          currentDevice25 = [MEMORY[0x1E69DC938] currentDevice];
+          if ([currentDevice25 userInterfaceIdiom])
           {
             v122 = 0x100000000;
             goto LABEL_439;
           }
         }
 
-        HIDWORD(v122) = v5 ^ 1;
+        HIDWORD(v122) = currentDevice28 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v5 = __sb__runningInSpringBoard();
-          if (v5)
+          currentDevice28 = __sb__runningInSpringBoard();
+          if (currentDevice28)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v71 = [MEMORY[0x1E69DCEB0] mainScreen];
-            [v71 _referenceBounds];
+            mainScreen24 = [MEMORY[0x1E69DCEB0] mainScreen];
+            [mainScreen24 _referenceBounds];
           }
 
-          LODWORD(v122) = v5 ^ 1;
+          LODWORD(v122) = currentDevice28 ^ 1;
           BSSizeRoundForScale();
           if (v58 >= *(MEMORY[0x1E69D4380] + 104))
           {
@@ -2962,8 +2962,8 @@ LABEL_446:
 
         else
         {
-          v70 = [MEMORY[0x1E69DC938] currentDevice];
-          if ([v70 userInterfaceIdiom])
+          currentDevice26 = [MEMORY[0x1E69DC938] currentDevice];
+          if ([currentDevice26 userInterfaceIdiom])
           {
             v121 = 0x100000000;
             goto LABEL_463;
@@ -2973,19 +2973,19 @@ LABEL_446:
         HIDWORD(v121) = v59 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v5 = __sb__runningInSpringBoard();
-          if (v5)
+          currentDevice28 = __sb__runningInSpringBoard();
+          if (currentDevice28)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v67 = [MEMORY[0x1E69DCEB0] mainScreen];
-            [v67 _referenceBounds];
+            mainScreen25 = [MEMORY[0x1E69DCEB0] mainScreen];
+            [mainScreen25 _referenceBounds];
           }
 
-          LODWORD(v121) = v5 ^ 1;
+          LODWORD(v121) = currentDevice28 ^ 1;
           BSSizeRoundForScale();
           if (v63 >= *(MEMORY[0x1E69D4380] + 88))
           {
@@ -3017,8 +3017,8 @@ LABEL_463:
 
         else
         {
-          v69 = [MEMORY[0x1E69DC938] currentDevice];
-          if ([v69 userInterfaceIdiom])
+          currentDevice27 = [MEMORY[0x1E69DC938] currentDevice];
+          if ([currentDevice27 userInterfaceIdiom])
           {
             v12 = 0;
             v11 = 1;
@@ -3029,19 +3029,19 @@ LABEL_463:
         v11 = v60 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v5 = __sb__runningInSpringBoard();
-          if (v5)
+          currentDevice28 = __sb__runningInSpringBoard();
+          if (currentDevice28)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v66 = [MEMORY[0x1E69DCEB0] mainScreen];
-            [v66 _referenceBounds];
+            mainScreen26 = [MEMORY[0x1E69DCEB0] mainScreen];
+            [mainScreen26 _referenceBounds];
           }
 
-          v12 = v5 ^ 1;
+          v12 = currentDevice28 ^ 1;
           BSSizeRoundForScale();
           if (v64 >= *(MEMORY[0x1E69D4380] + 72))
           {
@@ -3058,16 +3058,16 @@ LABEL_463:
         }
 
 LABEL_473:
-        v5 = __sb__runningInSpringBoard();
-        if (v5)
+        currentDevice28 = __sb__runningInSpringBoard();
+        if (currentDevice28)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
             v13 = 0;
             v14 = 0;
 LABEL_483:
-            v62 = __sb__runningInSpringBoard();
-            if (v62)
+            mainScreen27 = __sb__runningInSpringBoard();
+            if (mainScreen27)
             {
               if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
               {
@@ -3079,15 +3079,15 @@ LABEL_486:
 
             else
             {
-              v5 = [MEMORY[0x1E69DC938] currentDevice];
-              if ([v5 userInterfaceIdiom])
+              currentDevice28 = [MEMORY[0x1E69DC938] currentDevice];
+              if ([currentDevice28 userInterfaceIdiom])
               {
                 v15 = 1;
                 goto LABEL_499;
               }
             }
 
-            v15 = v62 ^ 1;
+            v15 = mainScreen27 ^ 1;
             v65 = __sb__runningInSpringBoard();
             if (v65)
             {
@@ -3096,8 +3096,8 @@ LABEL_486:
 
             else
             {
-              v62 = [MEMORY[0x1E69DCEB0] mainScreen];
-              [v62 _referenceBounds];
+              mainScreen27 = [MEMORY[0x1E69DCEB0] mainScreen];
+              [mainScreen27 _referenceBounds];
             }
 
             BSSizeRoundForScale();
@@ -3396,8 +3396,8 @@ LABEL_71:
 
         else
         {
-          v68 = [MEMORY[0x1E69DC938] currentDevice];
-          if ([v68 userInterfaceIdiom])
+          currentDevice29 = [MEMORY[0x1E69DC938] currentDevice];
+          if ([currentDevice29 userInterfaceIdiom])
           {
             v14 = 0;
             v13 = 1;
@@ -3405,20 +3405,20 @@ LABEL_71:
           }
         }
 
-        v13 = v5 ^ 1;
-        v5 = __sb__runningInSpringBoard();
-        if (v5)
+        v13 = currentDevice28 ^ 1;
+        currentDevice28 = __sb__runningInSpringBoard();
+        if (currentDevice28)
         {
           __sb__mainScreenReferenceBounds();
         }
 
         else
         {
-          v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-          [v2 _referenceBounds];
+          mainScreen28 = [MEMORY[0x1E69DCEB0] mainScreen];
+          [mainScreen28 _referenceBounds];
         }
 
-        v14 = v5 ^ 1;
+        v14 = currentDevice28 ^ 1;
         BSSizeRoundForScale();
         if (v61 >= *(MEMORY[0x1E69D4380] + 56))
         {
@@ -3454,7 +3454,7 @@ LABEL_71:
     v13 = 0;
     v14 = 0;
     v15 = 0;
-    v140 = v5 ^ 1;
+    v140 = currentDevice28 ^ 1;
     goto LABEL_499;
   }
 
@@ -3488,8 +3488,8 @@ void __33__SBFLockScreenDateView_timeFont__block_invoke_2()
   v4 = *&qword_1ED69D270;
   if (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(timeFontMetrics_timeFontMetrics, SBFFontMetricsZero), vceqq_f64(*&qword_1ED69D270, unk_1BEAD5BD8)))))
   {
-    v7 = [a1 timeFont];
-    [a1 metricsForFont:v7];
+    timeFont = [self timeFont];
+    [self metricsForFont:timeFont];
     *&timeFontMetrics_timeFontMetrics = v8;
     *(&timeFontMetrics_timeFontMetrics + 1) = v9;
     qword_1ED69D270 = v10;
@@ -3531,16 +3531,16 @@ double __40__SBFLockScreenDateView_timeFontMetrics__block_invoke_2()
   return result;
 }
 
-+ ($01BB1521EC52D44A8E7628F5261DCEC8)metricsForFont:(id)a3
++ ($01BB1521EC52D44A8E7628F5261DCEC8)metricsForFont:(id)font
 {
-  v3 = a3;
-  [v3 ascender];
+  fontCopy = font;
+  [fontCopy ascender];
   v5 = v4;
-  [v3 descender];
+  [fontCopy descender];
   v7 = v6;
-  [v3 _bodyLeading];
+  [fontCopy _bodyLeading];
   v9 = v8;
-  [v3 capHeight];
+  [fontCopy capHeight];
   v11 = v10;
 
   v12 = v5;
@@ -3578,20 +3578,20 @@ double __40__SBFLockScreenDateView_timeFontMetrics__block_invoke_2()
   return result;
 }
 
-- (void)_updatePreferredContentSizeCategoryForEnvironment:(id)a3 previousTraitCollection:(id)a4
+- (void)_updatePreferredContentSizeCategoryForEnvironment:(id)environment previousTraitCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [(SBFLockScreenDateView *)self traitCollection];
-  v7 = v6;
-  if (v5)
+  collectionCopy = collection;
+  traitCollection = [(SBFLockScreenDateView *)self traitCollection];
+  v7 = traitCollection;
+  if (collectionCopy)
   {
-    v8 = [v6 preferredContentSizeCategory];
-    v9 = [v5 preferredContentSizeCategory];
-    v10 = [v8 isEqualToString:v9];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [collectionCopy preferredContentSizeCategory];
+    v10 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
-    v11 = [v7 legibilityWeight];
-    v12 = [v5 legibilityWeight];
-    if (!v10 || v11 != v12)
+    legibilityWeight = [v7 legibilityWeight];
+    legibilityWeight2 = [collectionCopy legibilityWeight];
+    if (!v10 || legibilityWeight != legibilityWeight2)
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -3682,11 +3682,11 @@ LABEL_9:
   [(SBFLockScreenDateView *)self _updateLabels];
 }
 
-- (void)setTimeGlassInterfaceStyle:(int64_t)a3
+- (void)setTimeGlassInterfaceStyle:(int64_t)style
 {
-  if (self->_timeGlassInterfaceStyle != a3)
+  if (self->_timeGlassInterfaceStyle != style)
   {
-    self->_timeGlassInterfaceStyle = a3;
+    self->_timeGlassInterfaceStyle = style;
     [(CSProminentDisplayViewController *)self->_prominentDisplayViewController setTimeGlassInterfaceStyle:?];
   }
 }

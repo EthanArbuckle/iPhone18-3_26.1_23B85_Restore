@@ -1,40 +1,40 @@
 @interface _DPBiasedCoin
-+ (_DPBiasedCoin)coinWithBias:(double)a3;
-+ (double)sanitizedProbability:(double)a3;
-- (_DPBiasedCoin)initWithBias:(double)a3;
++ (_DPBiasedCoin)coinWithBias:(double)bias;
++ (double)sanitizedProbability:(double)probability;
+- (_DPBiasedCoin)initWithBias:(double)bias;
 - (id)description;
 - (unsigned)generateByte;
 @end
 
 @implementation _DPBiasedCoin
 
-- (_DPBiasedCoin)initWithBias:(double)a3
+- (_DPBiasedCoin)initWithBias:(double)bias
 {
   v6.receiver = self;
   v6.super_class = _DPBiasedCoin;
   result = [(_DPBiasedCoin *)&v6 init];
   if (result)
   {
-    v5 = 1.0;
-    if (a3 <= 1.0)
+    biasCopy = 1.0;
+    if (bias <= 1.0)
     {
-      v5 = a3;
+      biasCopy = bias;
     }
 
-    if (a3 < 0.0)
+    if (bias < 0.0)
     {
-      v5 = 0.0;
+      biasCopy = 0.0;
     }
 
-    result->_bias = v5;
+    result->_bias = biasCopy;
   }
 
   return result;
 }
 
-+ (_DPBiasedCoin)coinWithBias:(double)a3
++ (_DPBiasedCoin)coinWithBias:(double)bias
 {
-  v3 = [[a1 alloc] initWithBias:a3];
+  v3 = [[self alloc] initWithBias:bias];
 
   return v3;
 }
@@ -69,19 +69,19 @@
   return v6;
 }
 
-+ (double)sanitizedProbability:(double)a3
++ (double)sanitizedProbability:(double)probability
 {
-  v3 = 1.0;
-  if (a3 <= 1.0)
+  probabilityCopy = 1.0;
+  if (probability <= 1.0)
   {
-    v3 = a3;
+    probabilityCopy = probability;
   }
 
-  v4 = a3 < 0.0;
+  v4 = probability < 0.0;
   result = 0.0;
   if (!v4)
   {
-    return v3;
+    return probabilityCopy;
   }
 
   return result;

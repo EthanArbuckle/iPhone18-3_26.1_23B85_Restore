@@ -1,43 +1,43 @@
 @interface BRCSharingCopyShareOperation
-- (BRCSharingCopyShareOperation)initWithItem:(id)a3 sessionContext:(id)a4;
+- (BRCSharingCopyShareOperation)initWithItem:(id)item sessionContext:(id)context;
 - (id)createActivity;
-- (void)fetchRootURLIfNecessaryAndFinishWithShare:(id)a3;
+- (void)fetchRootURLIfNecessaryAndFinishWithShare:(id)share;
 - (void)main;
 @end
 
 @implementation BRCSharingCopyShareOperation
 
-- (BRCSharingCopyShareOperation)initWithItem:(id)a3 sessionContext:(id)a4
+- (BRCSharingCopyShareOperation)initWithItem:(id)item sessionContext:(id)context
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 serverZone];
-  v9 = [v8 metadataSyncContext];
+  itemCopy = item;
+  contextCopy = context;
+  serverZone = [itemCopy serverZone];
+  metadataSyncContext = [serverZone metadataSyncContext];
 
-  if (!v9)
+  if (!metadataSyncContext)
   {
-    [BRCSharingCopyShareOperation initWithItem:v6 sessionContext:?];
+    [BRCSharingCopyShareOperation initWithItem:itemCopy sessionContext:?];
   }
 
-  v10 = [v6 itemID];
-  v11 = [v10 debugItemIDString];
-  v12 = [@"sharing/copy-share" stringByAppendingPathComponent:v11];
+  itemID = [itemCopy itemID];
+  debugItemIDString = [itemID debugItemIDString];
+  v12 = [@"sharing/copy-share" stringByAppendingPathComponent:debugItemIDString];
 
   v34.receiver = self;
   v34.super_class = BRCSharingCopyShareOperation;
-  v13 = [(_BRCOperation *)&v34 initWithName:v12 syncContext:v9 sessionContext:v7];
+  v13 = [(_BRCOperation *)&v34 initWithName:v12 syncContext:metadataSyncContext sessionContext:contextCopy];
 
   if (v13)
   {
     [(_BRCOperation *)v13 setNonDiscretionary:1];
-    v14 = [v6 clientZone];
+    clientZone = [itemCopy clientZone];
     clientZone = v13->_clientZone;
-    v13->_clientZone = v14;
+    v13->_clientZone = clientZone;
 
-    if (([v6 sharingOptions] & 0x48) != 0)
+    if (([itemCopy sharingOptions] & 0x48) != 0)
     {
-      if (([v6 sharingOptions] & 4) != 0)
+      if (([itemCopy sharingOptions] & 4) != 0)
       {
         goto LABEL_13;
       }
@@ -48,28 +48,28 @@ LABEL_9:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v36 = v6;
+        v36 = itemCopy;
         v37 = 2112;
         v38 = v18;
         _os_log_impl(&dword_223E7A000, v19, OS_LOG_TYPE_DEFAULT, "[WARNING] Fetching the root share object for shared to me child item %@%@", buf, 0x16u);
       }
 
-      v20 = [MEMORY[0x277CBC5D0] brc_fetchShareIDWithSharedItem:v6];
+      v20 = [MEMORY[0x277CBC5D0] brc_fetchShareIDWithSharedItem:itemCopy];
       shareID = v13->_shareID;
       v13->_shareID = v20;
 
-      v22 = [(CKRecordID *)v13->_shareID brc_shareItemID];
+      brc_shareItemID = [(CKRecordID *)v13->_shareID brc_shareItemID];
       rootItemIDToLookup = v13->_rootItemIDToLookup;
-      v13->_rootItemIDToLookup = v22;
+      v13->_rootItemIDToLookup = brc_shareItemID;
       goto LABEL_23;
     }
 
-    v16 = [v6 clientZone];
-    if ([v16 isSharedZone])
+    clientZone2 = [itemCopy clientZone];
+    if ([clientZone2 isSharedZone])
     {
-      v17 = [v6 sharingOptions];
+      sharingOptions = [itemCopy sharingOptions];
 
-      if ((v17 & 4) == 0)
+      if ((sharingOptions & 4) == 0)
       {
         goto LABEL_9;
       }
@@ -80,41 +80,41 @@ LABEL_9:
     }
 
 LABEL_13:
-    if (([v6 isDirectory] & 1) != 0 || objc_msgSend(v6, "isDocument"))
+    if (([itemCopy isDirectory] & 1) != 0 || objc_msgSend(itemCopy, "isDocument"))
     {
       v24 = objc_alloc(MEMORY[0x277CBC5D0]);
-      v25 = [v6 asShareableItem];
-      v26 = [v24 initShareIDWithShareableItem:v25];
+      asShareableItem = [itemCopy asShareableItem];
+      v26 = [v24 initShareIDWithShareableItem:asShareableItem];
       v27 = v13->_shareID;
       v13->_shareID = v26;
 
-      if (([v6 sharingOptions] & 4) != 0)
+      if (([itemCopy sharingOptions] & 4) != 0)
       {
         goto LABEL_24;
       }
 
-      rootItemIDToLookup = [v6 st];
-      v28 = [rootItemIDToLookup iWorkShareable];
+      rootItemIDToLookup = [itemCopy st];
+      iWorkShareable = [rootItemIDToLookup iWorkShareable];
 
-      if (!v28)
+      if (!iWorkShareable)
       {
         goto LABEL_24;
       }
 
-      v29 = [v6 isDocument];
-      if (v29)
+      isDocument = [itemCopy isDocument];
+      if (isDocument)
       {
-        rootItemIDToLookup = [v6 asDocument];
-        v30 = [rootItemIDToLookup documentRecordID];
+        rootItemIDToLookup = [itemCopy asDocument];
+        documentRecordID = [rootItemIDToLookup documentRecordID];
       }
 
       else
       {
-        v30 = 0;
+        documentRecordID = 0;
       }
 
-      objc_storeStrong(&v13->_recordIDNeedingFetch, v30);
-      if (!v29)
+      objc_storeStrong(&v13->_recordIDNeedingFetch, documentRecordID);
+      if (!isDocument)
       {
         goto LABEL_24;
       }
@@ -129,8 +129,8 @@ LABEL_13:
 LABEL_23:
 
 LABEL_24:
-    v31 = [MEMORY[0x277CBC4F8] br_sharingMisc];
-    [(_BRCOperation *)v13 setGroup:v31];
+    br_sharingMisc = [MEMORY[0x277CBC4F8] br_sharingMisc];
+    [(_BRCOperation *)v13 setGroup:br_sharingMisc];
   }
 
   v32 = *MEMORY[0x277D85DE8];
@@ -144,39 +144,39 @@ LABEL_24:
   return v2;
 }
 
-- (void)fetchRootURLIfNecessaryAndFinishWithShare:(id)a3
+- (void)fetchRootURLIfNecessaryAndFinishWithShare:(id)share
 {
-  v4 = a3;
-  if (!v4)
+  shareCopy = share;
+  if (!shareCopy)
   {
-    v5 = [MEMORY[0x277CCA9B8] brc_errorDocumentIsNotShared];
-    v8 = self;
+    brc_errorDocumentIsNotShared = [MEMORY[0x277CCA9B8] brc_errorDocumentIsNotShared];
+    selfCopy2 = self;
     v9 = 0;
-    v10 = v5;
+    v10 = brc_errorDocumentIsNotShared;
 LABEL_6:
-    [(_BRCOperation *)v8 completedWithResult:v9 error:v10];
+    [(_BRCOperation *)selfCopy2 completedWithResult:v9 error:v10];
     goto LABEL_7;
   }
 
-  v5 = objc_opt_new();
-  [v5 setObject:v4 forKeyedSubscript:@"share"];
+  brc_errorDocumentIsNotShared = objc_opt_new();
+  [brc_errorDocumentIsNotShared setObject:shareCopy forKeyedSubscript:@"share"];
   if (!self->_rootItemIDToLookup)
   {
-    v8 = self;
-    v9 = v5;
+    selfCopy2 = self;
+    v9 = brc_errorDocumentIsNotShared;
     v10 = 0;
     goto LABEL_6;
   }
 
   v6 = [(BRCClientZone *)self->_clientZone db];
-  v7 = [v6 serialQueue];
+  serialQueue = [v6 serialQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __74__BRCSharingCopyShareOperation_fetchRootURLIfNecessaryAndFinishWithShare___block_invoke;
   v11[3] = &unk_2784FF478;
   v11[4] = self;
-  v12 = v5;
-  dispatch_async(v7, v11);
+  v12 = brc_errorDocumentIsNotShared;
+  dispatch_async(serialQueue, v11);
 
 LABEL_7:
 }
@@ -365,7 +365,7 @@ void __74__BRCSharingCopyShareOperation_fetchRootURLIfNecessaryAndFinishWithShar
 
   else
   {
-    v11 = [MEMORY[0x277CCA9B8] brc_errorDocumentIsNotShared];
+    brc_errorDocumentIsNotShared = [MEMORY[0x277CCA9B8] brc_errorDocumentIsNotShared];
     [(_BRCOperation *)self completedWithResult:0 error:?];
     v10 = *MEMORY[0x277D85DE8];
   }

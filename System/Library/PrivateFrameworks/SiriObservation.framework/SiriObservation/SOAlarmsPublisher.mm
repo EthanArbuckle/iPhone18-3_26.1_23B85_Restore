@@ -1,19 +1,19 @@
 @interface SOAlarmsPublisher
 - (SOAlarmsPublisher)init;
-- (void)_createNewSnapshotWithCompletion:(id)a3;
-- (void)_notifySubscribersOfEvent:(int64_t)a3;
+- (void)_createNewSnapshotWithCompletion:(id)completion;
+- (void)_notifySubscribersOfEvent:(int64_t)event;
 - (void)_startObserving;
-- (void)addSubscriber:(id)a3;
+- (void)addSubscriber:(id)subscriber;
 - (void)dealloc;
-- (void)getCurrentSnapshotWithCompletion:(id)a3;
-- (void)removeSubscriber:(id)a3;
+- (void)getCurrentSnapshotWithCompletion:(id)completion;
+- (void)removeSubscriber:(id)subscriber;
 @end
 
 @implementation SOAlarmsPublisher
 
-- (void)_createNewSnapshotWithCompletion:(id)a3
+- (void)_createNewSnapshotWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_group_enter(self->_group);
   v5 = [(MTAlarmManager *)self->_alarmManager alarmsIncludingSleepAlarm:1];
   if (v5)
@@ -23,7 +23,7 @@
     v11[2] = __54__SOAlarmsPublisher__createNewSnapshotWithCompletion___block_invoke;
     v11[3] = &unk_279C3D610;
     v11[4] = self;
-    v6 = v4;
+    v6 = completionCopy;
     v12 = v6;
     v7 = [v5 addSuccessBlock:v11];
     v9[0] = MEMORY[0x277D85DD0];
@@ -169,8 +169,8 @@ void __54__SOAlarmsPublisher__createNewSnapshotWithCompletion___block_invoke_2(u
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SOAlarmsPublisher;
@@ -181,38 +181,38 @@ void __54__SOAlarmsPublisher__createNewSnapshotWithCompletion___block_invoke_2(u
 {
   if (self->_alarmManager)
   {
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v3 = getMTAlarmManagerAlarmsAdded_127();
-    [v10 addObserver:self selector:sel_alarmsAdded_ name:v3 object:self->_alarmManager];
+    [defaultCenter addObserver:self selector:sel_alarmsAdded_ name:v3 object:self->_alarmManager];
 
     v4 = getMTAlarmManagerAlarmsUpdated_128();
-    [v10 addObserver:self selector:sel_alarmsUpdated_ name:v4 object:self->_alarmManager];
+    [defaultCenter addObserver:self selector:sel_alarmsUpdated_ name:v4 object:self->_alarmManager];
 
     v5 = getMTAlarmManagerAlarmsRemoved_129();
-    [v10 addObserver:self selector:sel_alarmsRemoved_ name:v5 object:self->_alarmManager];
+    [defaultCenter addObserver:self selector:sel_alarmsRemoved_ name:v5 object:self->_alarmManager];
 
     v6 = getMTAlarmManagerAlarmFired_130();
-    [v10 addObserver:self selector:sel_alarmFired_ name:v6 object:self->_alarmManager];
+    [defaultCenter addObserver:self selector:sel_alarmFired_ name:v6 object:self->_alarmManager];
 
     v7 = getMTAlarmManagerFiringAlarmChanged_131();
-    [v10 addObserver:self selector:sel_firingAlarmChanged_ name:v7 object:self->_alarmManager];
+    [defaultCenter addObserver:self selector:sel_firingAlarmChanged_ name:v7 object:self->_alarmManager];
 
     v8 = getMTAlarmManagerFiringAlarmDismissed_132();
-    [v10 addObserver:self selector:sel_firingAlarmDismissed_ name:v8 object:self->_alarmManager];
+    [defaultCenter addObserver:self selector:sel_firingAlarmDismissed_ name:v8 object:self->_alarmManager];
 
     v9 = getMTAlarmManagerStateReset_133();
-    [v10 addObserver:self selector:sel_stateReset_ name:v9 object:self->_alarmManager];
+    [defaultCenter addObserver:self selector:sel_stateReset_ name:v9 object:self->_alarmManager];
   }
 }
 
-- (void)_notifySubscribersOfEvent:(int64_t)a3
+- (void)_notifySubscribersOfEvent:(int64_t)event
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __47__SOAlarmsPublisher__notifySubscribersOfEvent___block_invoke;
   v3[3] = &unk_279C3D008;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = event;
   [(SOAlarmsPublisher *)self _createNewSnapshotWithCompletion:v3];
 }
 
@@ -261,11 +261,11 @@ void __47__SOAlarmsPublisher__notifySubscribersOfEvent___block_invoke(uint64_t a
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeSubscriber:(id)a3
+- (void)removeSubscriber:(id)subscriber
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  subscriberCopy = subscriber;
+  v5 = subscriberCopy;
+  if (subscriberCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -273,23 +273,23 @@ void __47__SOAlarmsPublisher__notifySubscribersOfEvent___block_invoke(uint64_t a
     v7[2] = __38__SOAlarmsPublisher_removeSubscriber___block_invoke;
     v7[3] = &unk_279C3D598;
     v7[4] = self;
-    v8 = v4;
+    v8 = subscriberCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)addSubscriber:(id)a3
+- (void)addSubscriber:(id)subscriber
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  subscriberCopy = subscriber;
+  v5 = subscriberCopy;
+  if (subscriberCopy)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __35__SOAlarmsPublisher_addSubscriber___block_invoke;
     v6[3] = &unk_279C3CFE0;
     v6[4] = self;
-    v7 = v4;
+    v7 = subscriberCopy;
     [(SOAlarmsPublisher *)self getCurrentSnapshotWithCompletion:v6];
   }
 }
@@ -310,11 +310,11 @@ void __35__SOAlarmsPublisher_addSubscriber___block_invoke(uint64_t a1, void *a2,
   }
 }
 
-- (void)getCurrentSnapshotWithCompletion:(id)a3
+- (void)getCurrentSnapshotWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     group = self->_group;
@@ -323,7 +323,7 @@ void __35__SOAlarmsPublisher_addSubscriber___block_invoke(uint64_t a1, void *a2,
     v8[2] = __54__SOAlarmsPublisher_getCurrentSnapshotWithCompletion___block_invoke;
     v8[3] = &unk_279C3D548;
     v8[4] = self;
-    v9 = v4;
+    v9 = completionCopy;
     dispatch_group_notify(group, queue, v8);
   }
 }

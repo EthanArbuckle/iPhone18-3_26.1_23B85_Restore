@@ -14,10 +14,10 @@
 - (NSURL)actionURL;
 - (NSURL)nameActionURL;
 - (NTNewsTodayResultsSourceFetchHelperSectionDescriptor)init;
-- (NTNewsTodayResultsSourceFetchHelperSectionDescriptor)initWithSectionDescriptor:(id)a3 parentSectionQueueDescriptor:(id)a4;
-- (id)assembleResultsWithCatchUpOperation:(id)a3;
-- (id)incrementalLimitTransformationWithFeedPersonalizer:(id)a3 limit:(unint64_t)a4 priorFeedItems:(id)a5;
-- (id)incrementalSortTransformationWithFeedPersonalizer:(id)a3;
+- (NTNewsTodayResultsSourceFetchHelperSectionDescriptor)initWithSectionDescriptor:(id)descriptor parentSectionQueueDescriptor:(id)queueDescriptor;
+- (id)assembleResultsWithCatchUpOperation:(id)operation;
+- (id)incrementalLimitTransformationWithFeedPersonalizer:(id)personalizer limit:(unint64_t)limit priorFeedItems:(id)items;
+- (id)incrementalSortTransformationWithFeedPersonalizer:(id)personalizer;
 - (int)promotionCriterion;
 - (int)readArticlesFilterMethod;
 - (int)seenArticlesFilterMethod;
@@ -29,7 +29,7 @@
 - (unint64_t)paywalledArticlesMaxCount;
 - (unint64_t)supplementalInterSectionFilterOptions;
 - (unint64_t)supplementalIntraSectionFilterOptions;
-- (void)configureCatchUpOperationWithFetchRequest:(id)a3;
+- (void)configureCatchUpOperationWithFetchRequest:(id)request;
 @end
 
 @implementation NTNewsTodayResultsSourceFetchHelperSectionDescriptor
@@ -60,20 +60,20 @@
   objc_exception_throw(v6);
 }
 
-- (NTNewsTodayResultsSourceFetchHelperSectionDescriptor)initWithSectionDescriptor:(id)a3 parentSectionQueueDescriptor:(id)a4
+- (NTNewsTodayResultsSourceFetchHelperSectionDescriptor)initWithSectionDescriptor:(id)descriptor parentSectionQueueDescriptor:(id)queueDescriptor
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  descriptorCopy = descriptor;
+  queueDescriptorCopy = queueDescriptor;
+  if (!descriptorCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultsSourceFetchHelperSectionDescriptor initWithSectionDescriptor:parentSectionQueueDescriptor:];
-    if (v7)
+    if (queueDescriptorCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (queueDescriptorCopy)
   {
     goto LABEL_6;
   }
@@ -89,11 +89,11 @@ LABEL_6:
   v8 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [descriptorCopy copy];
     sectionDescriptor = v8->_sectionDescriptor;
     v8->_sectionDescriptor = v9;
 
-    v11 = [v7 copy];
+    v11 = [queueDescriptorCopy copy];
     parentSectionQueueDescriptor = v8->_parentSectionQueueDescriptor;
     v8->_parentSectionQueueDescriptor = v11;
   }
@@ -101,239 +101,239 @@ LABEL_6:
   return v8;
 }
 
-- (void)configureCatchUpOperationWithFetchRequest:(id)a3
+- (void)configureCatchUpOperationWithFetchRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
-  [v5 configureCatchUpOperationWithFetchRequest:v4];
+  requestCopy = request;
+  sectionDescriptor = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
+  [sectionDescriptor configureCatchUpOperationWithFetchRequest:requestCopy];
 }
 
-- (id)assembleResultsWithCatchUpOperation:(id)a3
+- (id)assembleResultsWithCatchUpOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
-  v6 = [v5 assembleResultsWithCatchUpOperation:v4];
+  operationCopy = operation;
+  sectionDescriptor = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
+  v6 = [sectionDescriptor assembleResultsWithCatchUpOperation:operationCopy];
 
   return v6;
 }
 
-- (id)incrementalSortTransformationWithFeedPersonalizer:(id)a3
+- (id)incrementalSortTransformationWithFeedPersonalizer:(id)personalizer
 {
-  v4 = a3;
-  v5 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
-  v6 = [v5 incrementalSortTransformationWithFeedPersonalizer:v4];
+  personalizerCopy = personalizer;
+  sectionDescriptor = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
+  v6 = [sectionDescriptor incrementalSortTransformationWithFeedPersonalizer:personalizerCopy];
 
   return v6;
 }
 
-- (id)incrementalLimitTransformationWithFeedPersonalizer:(id)a3 limit:(unint64_t)a4 priorFeedItems:(id)a5
+- (id)incrementalLimitTransformationWithFeedPersonalizer:(id)personalizer limit:(unint64_t)limit priorFeedItems:(id)items
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
-  v11 = [v10 incrementalLimitTransformationWithFeedPersonalizer:v9 limit:a4 priorFeedItems:v8];
+  itemsCopy = items;
+  personalizerCopy = personalizer;
+  sectionDescriptor = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
+  v11 = [sectionDescriptor incrementalLimitTransformationWithFeedPersonalizer:personalizerCopy limit:limit priorFeedItems:itemsCopy];
 
   return v11;
 }
 
 - (NSString)identifier
 {
-  v2 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
-  v3 = [v2 identifier];
+  sectionDescriptor = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
+  identifier = [sectionDescriptor identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (NSString)subidentifier
 {
-  v2 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
-  v3 = [v2 subidentifier];
+  sectionDescriptor = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
+  subidentifier = [sectionDescriptor subidentifier];
 
-  return v3;
+  return subidentifier;
 }
 
 - (NSString)personalizationFeatureID
 {
-  v2 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
-  v3 = [v2 personalizationFeatureID];
+  sectionDescriptor = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
+  personalizationFeatureID = [sectionDescriptor personalizationFeatureID];
 
-  return v3;
+  return personalizationFeatureID;
 }
 
 - (NSString)name
 {
-  v2 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
-  v3 = [v2 name];
+  sectionDescriptor = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
+  name = [sectionDescriptor name];
 
-  return v3;
+  return name;
 }
 
 - (NSString)compactName
 {
-  v2 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
-  v3 = [v2 compactName];
+  sectionDescriptor = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
+  compactName = [sectionDescriptor compactName];
 
-  return v3;
+  return compactName;
 }
 
 - (NSString)referralBarName
 {
-  v2 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
-  v3 = [v2 referralBarName];
+  sectionDescriptor = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
+  referralBarName = [sectionDescriptor referralBarName];
 
-  return v3;
+  return referralBarName;
 }
 
 - (NSString)nameColorLight
 {
-  v2 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
-  v3 = [v2 nameColorLight];
+  sectionDescriptor = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
+  nameColorLight = [sectionDescriptor nameColorLight];
 
-  return v3;
+  return nameColorLight;
 }
 
 - (NSString)nameColorDark
 {
-  v2 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
-  v3 = [v2 nameColorDark];
+  sectionDescriptor = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
+  nameColorDark = [sectionDescriptor nameColorDark];
 
-  return v3;
+  return nameColorDark;
 }
 
 - (unint64_t)cachedResultCutoffTime
 {
-  v2 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
-  v3 = [v2 cachedResultCutoffTime];
+  sectionDescriptor = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
+  cachedResultCutoffTime = [sectionDescriptor cachedResultCutoffTime];
 
-  return v3;
+  return cachedResultCutoffTime;
 }
 
 - (unint64_t)fallbackOrder
 {
-  v2 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
-  v3 = [v2 fallbackOrder];
+  sectionDescriptor = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
+  fallbackOrder = [sectionDescriptor fallbackOrder];
 
-  return v3;
+  return fallbackOrder;
 }
 
 - (unint64_t)minimumStoriesAllocation
 {
-  v2 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
-  v3 = [v2 minimumStoriesAllocation];
+  sectionDescriptor = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
+  minimumStoriesAllocation = [sectionDescriptor minimumStoriesAllocation];
 
-  return v3;
+  return minimumStoriesAllocation;
 }
 
 - (unint64_t)maximumStoriesAllocation
 {
-  v2 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
-  v3 = [v2 maximumStoriesAllocation];
+  sectionDescriptor = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
+  maximumStoriesAllocation = [sectionDescriptor maximumStoriesAllocation];
 
-  return v3;
+  return maximumStoriesAllocation;
 }
 
 - (int)readArticlesFilterMethod
 {
-  v2 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
-  v3 = [v2 readArticlesFilterMethod];
+  sectionDescriptor = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
+  readArticlesFilterMethod = [sectionDescriptor readArticlesFilterMethod];
 
-  return v3;
+  return readArticlesFilterMethod;
 }
 
 - (int)seenArticlesFilterMethod
 {
-  v2 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
-  v3 = [v2 seenArticlesFilterMethod];
+  sectionDescriptor = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
+  seenArticlesFilterMethod = [sectionDescriptor seenArticlesFilterMethod];
 
-  return v3;
+  return seenArticlesFilterMethod;
 }
 
 - (int64_t)seenArticlesMinimumTimeSinceFirstSeenToFilter
 {
-  v2 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
-  v3 = [v2 seenArticlesMinimumTimeSinceFirstSeenToFilter];
+  sectionDescriptor = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
+  seenArticlesMinimumTimeSinceFirstSeenToFilter = [sectionDescriptor seenArticlesMinimumTimeSinceFirstSeenToFilter];
 
-  return v3;
+  return seenArticlesMinimumTimeSinceFirstSeenToFilter;
 }
 
 - (unint64_t)supplementalInterSectionFilterOptions
 {
-  v2 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
-  v3 = [v2 supplementalInterSectionFilterOptions];
+  sectionDescriptor = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
+  supplementalInterSectionFilterOptions = [sectionDescriptor supplementalInterSectionFilterOptions];
 
-  return v3;
+  return supplementalInterSectionFilterOptions;
 }
 
 - (unint64_t)supplementalIntraSectionFilterOptions
 {
-  v2 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
-  v3 = [v2 supplementalIntraSectionFilterOptions];
+  sectionDescriptor = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
+  supplementalIntraSectionFilterOptions = [sectionDescriptor supplementalIntraSectionFilterOptions];
 
-  return v3;
+  return supplementalIntraSectionFilterOptions;
 }
 
 - (NSString)actionTitle
 {
-  v2 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
-  v3 = [v2 actionTitle];
+  sectionDescriptor = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
+  actionTitle = [sectionDescriptor actionTitle];
 
-  return v3;
+  return actionTitle;
 }
 
 - (NSURL)actionURL
 {
-  v2 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
-  v3 = [v2 actionURL];
+  sectionDescriptor = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
+  actionURL = [sectionDescriptor actionURL];
 
-  return v3;
+  return actionURL;
 }
 
 - (int)promotionCriterion
 {
-  v2 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
-  v3 = [v2 promotionCriterion];
+  sectionDescriptor = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
+  promotionCriterion = [sectionDescriptor promotionCriterion];
 
-  return v3;
+  return promotionCriterion;
 }
 
 - (NSString)backingTagID
 {
-  v2 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
-  v3 = [v2 backingTagID];
+  sectionDescriptor = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
+  backingTagID = [sectionDescriptor backingTagID];
 
-  return v3;
+  return backingTagID;
 }
 
 - (NSURL)nameActionURL
 {
-  v2 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
-  v3 = [v2 nameActionURL];
+  sectionDescriptor = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
+  nameActionURL = [sectionDescriptor nameActionURL];
 
-  return v3;
+  return nameActionURL;
 }
 
 - (NSString)backgroundColorLight
 {
-  v2 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
-  v3 = [v2 backgroundColorLight];
+  sectionDescriptor = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
+  backgroundColorLight = [sectionDescriptor backgroundColorLight];
 
-  return v3;
+  return backgroundColorLight;
 }
 
 - (NSString)backgroundColorDark
 {
-  v2 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
-  v3 = [v2 backgroundColorDark];
+  sectionDescriptor = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
+  backgroundColorDark = [sectionDescriptor backgroundColorDark];
 
-  return v3;
+  return backgroundColorDark;
 }
 
 - (unint64_t)paywalledArticlesMaxCount
 {
-  v2 = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
-  v3 = [v2 paywalledArticlesMaxCount];
+  sectionDescriptor = [(NTNewsTodayResultsSourceFetchHelperSectionDescriptor *)self sectionDescriptor];
+  paywalledArticlesMaxCount = [sectionDescriptor paywalledArticlesMaxCount];
 
-  return v3;
+  return paywalledArticlesMaxCount;
 }
 
 - (void)initWithSectionDescriptor:parentSectionQueueDescriptor:.cold.1()

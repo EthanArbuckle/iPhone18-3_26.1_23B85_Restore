@@ -3,7 +3,7 @@
 - (ATDeviceSettings)init;
 - (BOOL)fairPlayEnabled;
 - (BOOL)grappaEnabled;
-- (BOOL)isSyncPendingForDataClass:(id)a3;
+- (BOOL)isSyncPendingForDataClass:(id)class;
 - (BOOL)restoreBatchingEnabled;
 - (BOOL)useNewDownloadService;
 - (BOOL)watchProxyDownloadsDisabled;
@@ -13,61 +13,61 @@
 - (NSString)serviceType;
 - (double)lastAuthenticationDialogResponseTime;
 - (double)pairingSyncCompletionTime;
-- (id)_endpointInfoForLibrary:(id)a3;
+- (id)_endpointInfoForLibrary:(id)library;
 - (id)getCurrentInstallDisposition;
 - (id)getPreExistingStoreIdentifiers;
-- (id)hostInfoForLibrary:(id)a3;
-- (id)lastSyncTimeForLibrary:(id)a3 dataClass:(id)a4;
-- (id)syncStateForLibrary:(id)a3 dataClass:(id)a4;
+- (id)hostInfoForLibrary:(id)library;
+- (id)lastSyncTimeForLibrary:(id)library dataClass:(id)class;
+- (id)syncStateForLibrary:(id)library dataClass:(id)class;
 - (unint64_t)restoreBatchSize;
-- (unint64_t)versionForDataclass:(id)a3;
-- (void)_setEndpointInfo:(id)a3 forLibrary:(id)a4;
-- (void)removeEndpointInfoForLibrary:(id)a3;
-- (void)removePendingSyncSettingForDataClass:(id)a3;
-- (void)setActiveRestoreType:(int)a3;
-- (void)setCurrentInstallDisposition:(id)a3;
-- (void)setEndpointInfo:(id)a3;
-- (void)setHasCompletedDataMigration:(BOOL)a3;
-- (void)setHostInfo:(id)a3 forLibrary:(id)a4;
-- (void)setLastAuthenticationDialogResponseTime:(double)a3;
-- (void)setPairingSyncCompletionTime:(double)a3;
-- (void)setPreExistingStoreIdentifiers:(id)a3;
-- (void)setSyncPending:(BOOL)a3 forDataClass:(id)a4;
-- (void)setSyncState:(id)a3 forLibrary:(id)a4 dataClass:(id)a5;
-- (void)setVersion:(unint64_t)a3 forDataclass:(id)a4;
-- (void)updateLastSyncTimeForLibrary:(id)a3 dataClass:(id)a4;
+- (unint64_t)versionForDataclass:(id)dataclass;
+- (void)_setEndpointInfo:(id)info forLibrary:(id)library;
+- (void)removeEndpointInfoForLibrary:(id)library;
+- (void)removePendingSyncSettingForDataClass:(id)class;
+- (void)setActiveRestoreType:(int)type;
+- (void)setCurrentInstallDisposition:(id)disposition;
+- (void)setEndpointInfo:(id)info;
+- (void)setHasCompletedDataMigration:(BOOL)migration;
+- (void)setHostInfo:(id)info forLibrary:(id)library;
+- (void)setLastAuthenticationDialogResponseTime:(double)time;
+- (void)setPairingSyncCompletionTime:(double)time;
+- (void)setPreExistingStoreIdentifiers:(id)identifiers;
+- (void)setSyncPending:(BOOL)pending forDataClass:(id)class;
+- (void)setSyncState:(id)state forLibrary:(id)library dataClass:(id)class;
+- (void)setVersion:(unint64_t)version forDataclass:(id)dataclass;
+- (void)updateLastSyncTimeForLibrary:(id)library dataClass:(id)class;
 @end
 
 @implementation ATDeviceSettings
 
-- (void)_setEndpointInfo:(id)a3 forLibrary:(id)a4
+- (void)_setEndpointInfo:(id)info forLibrary:(id)library
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(ATDeviceSettings *)self endpointInfo];
-  v8 = [v7 mutableCopy];
+  infoCopy = info;
+  libraryCopy = library;
+  endpointInfo = [(ATDeviceSettings *)self endpointInfo];
+  v8 = [endpointInfo mutableCopy];
 
   if (!v8)
   {
     v8 = objc_opt_new();
   }
 
-  [v8 setValue:v9 forKey:v6];
+  [v8 setValue:infoCopy forKey:libraryCopy];
   [(ATDeviceSettings *)self setEndpointInfo:v8];
 }
 
-- (id)_endpointInfoForLibrary:(id)a3
+- (id)_endpointInfoForLibrary:(id)library
 {
-  v4 = a3;
-  v5 = [(ATDeviceSettings *)self endpointInfo];
-  v6 = [v5 objectForKey:v4];
+  libraryCopy = library;
+  endpointInfo = [(ATDeviceSettings *)self endpointInfo];
+  v6 = [endpointInfo objectForKey:libraryCopy];
 
   return v6;
 }
 
-- (unint64_t)versionForDataclass:(id)a3
+- (unint64_t)versionForDataclass:(id)dataclass
 {
-  v4 = a3;
+  dataclassCopy = dataclass;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -77,10 +77,10 @@
   block[1] = 3221225472;
   block[2] = __40__ATDeviceSettings_versionForDataclass___block_invoke;
   block[3] = &unk_2784E5988;
-  v10 = v4;
+  v10 = dataclassCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dataclassCopy;
   dispatch_sync(queue, block);
   v7 = v13[3];
 
@@ -101,18 +101,18 @@ void __40__ATDeviceSettings_versionForDataclass___block_invoke(void *a1)
   }
 }
 
-- (void)setVersion:(unint64_t)a3 forDataclass:(id)a4
+- (void)setVersion:(unint64_t)version forDataclass:(id)dataclass
 {
-  v6 = a4;
+  dataclassCopy = dataclass;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__ATDeviceSettings_setVersion_forDataclass___block_invoke;
   block[3] = &unk_2784E5520;
-  v10 = v6;
-  v11 = a3;
+  v10 = dataclassCopy;
+  versionCopy = version;
   block[4] = self;
-  v8 = v6;
+  v8 = dataclassCopy;
   dispatch_sync(queue, block);
 }
 
@@ -132,27 +132,27 @@ void __44__ATDeviceSettings_setVersion_forDataclass___block_invoke(void *a1)
   [*(a1[4] + 8) setObject:v4 forKey:@"DataclassVersion"];
 }
 
-- (void)setPairingSyncCompletionTime:(double)a3
+- (void)setPairingSyncCompletionTime:(double)time
 {
   userDefaults = self->_userDefaults;
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:time];
   [(NSUserDefaults *)userDefaults setObject:v4 forKey:@"PairingSyncCompletionTime"];
 }
 
-- (void)updateLastSyncTimeForLibrary:(id)a3 dataClass:(id)a4
+- (void)updateLastSyncTimeForLibrary:(id)library dataClass:(id)class
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  classCopy = class;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__ATDeviceSettings_updateLastSyncTimeForLibrary_dataClass___block_invoke;
   block[3] = &unk_2784E59B0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = libraryCopy;
+  v13 = classCopy;
+  v9 = classCopy;
+  v10 = libraryCopy;
   dispatch_sync(queue, block);
 }
 
@@ -181,10 +181,10 @@ void __59__ATDeviceSettings_updateLastSyncTimeForLibrary_dataClass___block_invok
   [*(a1 + 32) _setEndpointInfo:v6 forLibrary:*(a1 + 40)];
 }
 
-- (id)lastSyncTimeForLibrary:(id)a3 dataClass:(id)a4
+- (id)lastSyncTimeForLibrary:(id)library dataClass:(id)class
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  classCopy = class;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -197,11 +197,11 @@ void __59__ATDeviceSettings_updateLastSyncTimeForLibrary_dataClass___block_invok
   v13[2] = __53__ATDeviceSettings_lastSyncTimeForLibrary_dataClass___block_invoke;
   v13[3] = &unk_2784E5030;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = libraryCopy;
+  v15 = classCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = classCopy;
+  v10 = libraryCopy;
   dispatch_sync(queue, v13);
   v11 = v18[5];
 
@@ -232,20 +232,20 @@ void __53__ATDeviceSettings_lastSyncTimeForLibrary_dataClass___block_invoke(uint
   }
 }
 
-- (void)setHostInfo:(id)a3 forLibrary:(id)a4
+- (void)setHostInfo:(id)info forLibrary:(id)library
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  libraryCopy = library;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__ATDeviceSettings_setHostInfo_forLibrary___block_invoke;
   block[3] = &unk_2784E59B0;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = libraryCopy;
+  v13 = infoCopy;
+  v9 = infoCopy;
+  v10 = libraryCopy;
   dispatch_sync(queue, block);
 }
 
@@ -275,9 +275,9 @@ void __43__ATDeviceSettings_setHostInfo_forLibrary___block_invoke(uint64_t a1)
   [*(a1 + 32) _setEndpointInfo:v6 forLibrary:*(a1 + 40)];
 }
 
-- (id)hostInfoForLibrary:(id)a3
+- (id)hostInfoForLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -290,9 +290,9 @@ void __43__ATDeviceSettings_setHostInfo_forLibrary___block_invoke(uint64_t a1)
   block[2] = __39__ATDeviceSettings_hostInfoForLibrary___block_invoke;
   block[3] = &unk_2784E5988;
   block[4] = self;
-  v10 = v4;
+  v10 = libraryCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = libraryCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -328,23 +328,23 @@ void __39__ATDeviceSettings_hostInfoForLibrary___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setSyncState:(id)a3 forLibrary:(id)a4 dataClass:(id)a5
+- (void)setSyncState:(id)state forLibrary:(id)library dataClass:(id)class
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stateCopy = state;
+  libraryCopy = library;
+  classCopy = class;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __54__ATDeviceSettings_setSyncState_forLibrary_dataClass___block_invoke;
   v15[3] = &unk_2784E5100;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v19 = self;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = stateCopy;
+  v17 = libraryCopy;
+  v18 = classCopy;
+  selfCopy = self;
+  v12 = classCopy;
+  v13 = libraryCopy;
+  v14 = stateCopy;
   dispatch_sync(queue, v15);
 }
 
@@ -397,10 +397,10 @@ void __54__ATDeviceSettings_setSyncState_forLibrary_dataClass___block_invoke(uin
   [*(a1 + 56) _setEndpointInfo:v7 forLibrary:*(a1 + 40)];
 }
 
-- (id)syncStateForLibrary:(id)a3 dataClass:(id)a4
+- (id)syncStateForLibrary:(id)library dataClass:(id)class
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  classCopy = class;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -413,11 +413,11 @@ void __54__ATDeviceSettings_setSyncState_forLibrary_dataClass___block_invoke(uin
   v13[2] = __50__ATDeviceSettings_syncStateForLibrary_dataClass___block_invoke;
   v13[3] = &unk_2784E5030;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = libraryCopy;
+  v15 = classCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = classCopy;
+  v10 = libraryCopy;
   dispatch_sync(queue, v13);
   v11 = v18[5];
 
@@ -486,14 +486,14 @@ LABEL_8:
   return v8;
 }
 
-- (void)setPreExistingStoreIdentifiers:(id)a3
+- (void)setPreExistingStoreIdentifiers:(id)identifiers
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
     v10 = 0;
-    v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v10];
+    v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:identifiersCopy requiringSecureCoding:1 error:&v10];
     v6 = v10;
     v7 = v6;
     if (v5)
@@ -560,43 +560,43 @@ LABEL_8:
   return v3;
 }
 
-- (void)setCurrentInstallDisposition:(id)a3
+- (void)setCurrentInstallDisposition:(id)disposition
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dispositionCopy = disposition;
   v5 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = dispositionCopy;
     _os_log_impl(&dword_223819000, v5, OS_LOG_TYPE_DEFAULT, "setting current installConfig info to %{public}@", &v6, 0xCu);
   }
 
-  [(NSUserDefaults *)self->_userDefaults setObject:v4 forKey:@"ATDeviceSettingCurrentInstallDisposition"];
+  [(NSUserDefaults *)self->_userDefaults setObject:dispositionCopy forKey:@"ATDeviceSettingCurrentInstallDisposition"];
 }
 
-- (void)setActiveRestoreType:(int)a3
+- (void)setActiveRestoreType:(int)type
 {
-  CFPreferencesSetAppValue(@"RestoreType", [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&a3], @"com.apple.atc");
+  CFPreferencesSetAppValue(@"RestoreType", [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&type], @"com.apple.atc");
   v3 = *MEMORY[0x277CBF020];
   v4 = *MEMORY[0x277CBF010];
 
   CFPreferencesSynchronize(@"com.apple.atc", v3, v4);
 }
 
-- (void)setHasCompletedDataMigration:(BOOL)a3
+- (void)setHasCompletedDataMigration:(BOOL)migration
 {
-  v3 = a3;
+  migrationCopy = migration;
   v7 = *MEMORY[0x277D85DE8];
   v4 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
+    v6[1] = migrationCopy;
     _os_log_impl(&dword_223819000, v4, OS_LOG_TYPE_DEFAULT, "setting setHasCompletedDataMigration to %d", v6, 8u);
   }
 
-  CFPreferencesSetAppValue(@"DataMigrated", [MEMORY[0x277CCABB0] numberWithBool:v3], @"com.apple.atc");
+  CFPreferencesSetAppValue(@"DataMigrated", [MEMORY[0x277CCABB0] numberWithBool:migrationCopy], @"com.apple.atc");
   CFPreferencesSynchronize(@"com.apple.atc", *MEMORY[0x277CBF020], *MEMORY[0x277CBF010]);
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"ATHasCompletedMigrationNotificationName", 0, 0, 1u);
@@ -686,10 +686,10 @@ LABEL_8:
   return [(NSUserDefaults *)userDefaults BOOLForKey:@"FairPlayEnabled"];
 }
 
-- (void)setLastAuthenticationDialogResponseTime:(double)a3
+- (void)setLastAuthenticationDialogResponseTime:(double)time
 {
   userDefaults = self->_userDefaults;
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:time];
   [(NSUserDefaults *)userDefaults setObject:v4 forKey:@"ATDeviceSettingLastAuthenticationDialogResponseTime"];
 }
 
@@ -711,9 +711,9 @@ LABEL_8:
   return v4;
 }
 
-- (BOOL)isSyncPendingForDataClass:(id)a3
+- (BOOL)isSyncPendingForDataClass:(id)class
 {
-  v4 = a3;
+  classCopy = class;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -723,10 +723,10 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = __46__ATDeviceSettings_isSyncPendingForDataClass___block_invoke;
   block[3] = &unk_2784E5988;
-  v9 = v4;
+  v9 = classCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = classCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -747,17 +747,17 @@ uint64_t __46__ATDeviceSettings_isSyncPendingForDataClass___block_invoke(void *a
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)removePendingSyncSettingForDataClass:(id)a3
+- (void)removePendingSyncSettingForDataClass:(id)class
 {
-  v4 = a3;
+  classCopy = class;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__ATDeviceSettings_removePendingSyncSettingForDataClass___block_invoke;
   v7[3] = &unk_2784E5960;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = classCopy;
+  selfCopy = self;
+  v6 = classCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -805,18 +805,18 @@ void __57__ATDeviceSettings_removePendingSyncSettingForDataClass___block_invoke(
   }
 }
 
-- (void)setSyncPending:(BOOL)a3 forDataClass:(id)a4
+- (void)setSyncPending:(BOOL)pending forDataClass:(id)class
 {
-  v6 = a4;
+  classCopy = class;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__ATDeviceSettings_setSyncPending_forDataClass___block_invoke;
   block[3] = &unk_2784E5480;
-  v11 = a3;
+  pendingCopy = pending;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = classCopy;
+  v8 = classCopy;
   dispatch_sync(queue, block);
 }
 
@@ -852,17 +852,17 @@ void __48__ATDeviceSettings_setSyncPending_forDataClass___block_invoke(uint64_t 
   [*(*(a1 + 32) + 8) setObject:v4 forKey:@"DataClassesNeedingSync"];
 }
 
-- (void)removeEndpointInfoForLibrary:(id)a3
+- (void)removeEndpointInfoForLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__ATDeviceSettings_removeEndpointInfoForLibrary___block_invoke;
   v7[3] = &unk_2784E5960;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = libraryCopy;
+  selfCopy = self;
+  v6 = libraryCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -886,12 +886,12 @@ void __49__ATDeviceSettings_removeEndpointInfoForLibrary___block_invoke(uint64_t
   }
 }
 
-- (void)setEndpointInfo:(id)a3
+- (void)setEndpointInfo:(id)info
 {
   userDefaults = self->_userDefaults;
-  if (a3)
+  if (info)
   {
-    [(NSUserDefaults *)userDefaults setObject:a3 forKey:@"EndpointInfo"];
+    [(NSUserDefaults *)userDefaults setObject:info forKey:@"EndpointInfo"];
   }
 
   else
@@ -1002,22 +1002,22 @@ void __37__ATDeviceSettings_libraryIdentifier__block_invoke(uint64_t a1)
   v2 = [(ATDeviceSettings *)&v13 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCA8D8] mainBundle];
-    v4 = [v3 bundleIdentifier];
-    v5 = [v4 isEqual:@"com.apple.atc"];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v5 = [bundleIdentifier isEqual:@"com.apple.atc"];
 
     if (v5)
     {
-      v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
     }
 
     else
     {
-      v6 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.atc"];
+      standardUserDefaults = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.atc"];
     }
 
     userDefaults = v2->_userDefaults;
-    v2->_userDefaults = v6;
+    v2->_userDefaults = standardUserDefaults;
 
     v8 = objc_opt_class();
     Name = class_getName(v8);

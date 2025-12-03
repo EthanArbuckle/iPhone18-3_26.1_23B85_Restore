@@ -1,6 +1,6 @@
 @interface ADModelBuilder
-+ (id)modelBuilderForModelPath:(id)a3 destinationPath:(id)a4 buildConfigPath:(id)a5 forANE:(BOOL)a6;
-- (ADModelBuilder)initWithSourcePath:(id)a3 destinationPath:(id)a4 buildConfigPath:(id)a5 forANE:(BOOL)a6;
++ (id)modelBuilderForModelPath:(id)path destinationPath:(id)destinationPath buildConfigPath:(id)configPath forANE:(BOOL)e;
+- (ADModelBuilder)initWithSourcePath:(id)path destinationPath:(id)destinationPath buildConfigPath:(id)configPath forANE:(BOOL)e;
 - (BOOL)createE5MLBundle;
 - (BOOL)makeRunnable;
 - (BOOL)requiresCompilation;
@@ -27,8 +27,8 @@
 
 - (BOOL)requiresCompilation
 {
-  v3 = [(NSString *)self->_srcModelPath pathExtension];
-  v4 = [v3 isEqualToString:@"bundle"];
+  pathExtension = [(NSString *)self->_srcModelPath pathExtension];
+  v4 = [pathExtension isEqualToString:@"bundle"];
 
   if (v4)
   {
@@ -36,29 +36,29 @@
   }
 
   v6 = [(NSDictionary *)self->_buildConfig objectForKeyedSubscript:@"bundleAsEspressoV2"];
-  v5 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)makeRunnable
 {
   if ([(ADModelBuilder *)self requiresCompilation])
   {
-    v3 = [(ADModelBuilder *)self supportsCompilation];
-    if (v3)
+    supportsCompilation = [(ADModelBuilder *)self supportsCompilation];
+    if (supportsCompilation)
     {
 
-      LOBYTE(v3) = [(ADModelBuilder *)self createE5MLBundle];
+      LOBYTE(supportsCompilation) = [(ADModelBuilder *)self createE5MLBundle];
     }
   }
 
   else
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(supportsCompilation) = 1;
   }
 
-  return v3;
+  return supportsCompilation;
 }
 
 - (BOOL)supportsCompilation
@@ -67,9 +67,9 @@
   if (buildConfig)
   {
     v4 = [(NSDictionary *)buildConfig objectForKeyedSubscript:@"bundleAsEspressoV2"];
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
 
-    if (v5)
+    if (bOOLValue)
     {
       if (!self->_forANE || (LODWORD(buildConfig) = [MEMORY[0x277CEE958] hasANE], buildConfig))
       {
@@ -86,12 +86,12 @@
   return buildConfig;
 }
 
-- (ADModelBuilder)initWithSourcePath:(id)a3 destinationPath:(id)a4 buildConfigPath:(id)a5 forANE:(BOOL)a6
+- (ADModelBuilder)initWithSourcePath:(id)path destinationPath:(id)destinationPath buildConfigPath:(id)configPath forANE:(BOOL)e
 {
   v53[1] = *MEMORY[0x277D85DE8];
-  v37 = a3;
-  v38 = a4;
-  v39 = a5;
+  pathCopy = path;
+  destinationPathCopy = destinationPath;
+  configPathCopy = configPath;
   v41.receiver = self;
   v41.super_class = ADModelBuilder;
   v11 = [(ADModelBuilder *)&v41 init];
@@ -99,20 +99,20 @@
   v40 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_srcModelPath, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
-    v40->_forANE = a6;
+    objc_storeStrong(&v11->_srcModelPath, path);
+    objc_storeStrong(p_isa + 2, destinationPath);
+    objc_storeStrong(p_isa + 3, configPath);
+    v40->_forANE = e;
     if (p_isa[3])
     {
       goto LABEL_6;
     }
 
-    v13 = [p_isa[1] stringByDeletingLastPathComponent];
-    v14 = [v13 stringByAppendingPathComponent:@"build_config.plist"];
+    stringByDeletingLastPathComponent = [p_isa[1] stringByDeletingLastPathComponent];
+    v14 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:@"build_config.plist"];
 
-    v15 = [MEMORY[0x277CCAA00] defaultManager];
-    v16 = [v15 fileExistsAtPath:v14];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v16 = [defaultManager fileExistsAtPath:v14];
 
     if (v16)
     {
@@ -128,13 +128,13 @@ LABEL_6:
     }
 
     v33 = MEMORY[0x277CCACA8];
-    v35 = [p_isa[1] stringByDeletingLastPathComponent];
-    v36 = [MEMORY[0x277CCAA00] defaultManager];
-    v19 = [MEMORY[0x277CBEBC0] fileURLWithPath:v35];
+    stringByDeletingLastPathComponent2 = [p_isa[1] stringByDeletingLastPathComponent];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    v19 = [MEMORY[0x277CBEBC0] fileURLWithPath:stringByDeletingLastPathComponent2];
     v20 = *MEMORY[0x277CBE868];
     v53[0] = *MEMORY[0x277CBE868];
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:1];
-    v34 = [v36 enumeratorAtURL:v19 includingPropertiesForKeys:v21 options:4 errorHandler:0];
+    v34 = [defaultManager2 enumeratorAtURL:v19 includingPropertiesForKeys:v21 options:4 errorHandler:0];
 
     v48 = 0;
     v49 = &v48;
@@ -291,24 +291,24 @@ LABEL_14:
     goto LABEL_123;
   }
 
-  v140 = [(ADModelBuilder *)self runnableModelPath];
-  v14 = [MEMORY[0x277CCAD78] UUID];
-  v141 = [v14 UUIDString];
+  runnableModelPath = [(ADModelBuilder *)self runnableModelPath];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v135 = [(NSString *)self->_destinationPath stringByAppendingPathComponent:v141];
+  v135 = [(NSString *)self->_destinationPath stringByAppendingPathComponent:uUIDString];
   v133 = [v135 stringByAppendingPathComponent:@"model.bundle"];
   v134 = [v135 stringByAppendingPathComponent:@"custom_options_net.plist"];
-  v15 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v16 = self->_destinationPath;
   v150 = 0;
-  v139 = v15;
-  LODWORD(v14) = [v15 createDirectoryAtPath:v16 withIntermediateDirectories:1 attributes:0 error:&v150];
+  v139 = defaultManager;
+  LODWORD(uUID) = [defaultManager createDirectoryAtPath:v16 withIntermediateDirectories:1 attributes:0 error:&v150];
   v17 = v150;
-  if (v14)
+  if (uUID)
   {
-    v18 = [v140 stringByDeletingLastPathComponent];
+    stringByDeletingLastPathComponent = [runnableModelPath stringByDeletingLastPathComponent];
     v149 = v17;
-    v19 = [v139 createDirectoryAtPath:v18 withIntermediateDirectories:0 attributes:0 error:&v149];
+    v19 = [v139 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:0 attributes:0 error:&v149];
     v20 = v149;
 
     v132 = v20;
@@ -379,13 +379,13 @@ LABEL_40:
 
         _os_log_impl(&dword_240463000, v30, v31, "waiting for model folder to appear (timeout: %.0f seconds)", buf, 0xCu);
 LABEL_46:
-        v32 = v140;
-        v33 = [MEMORY[0x277CCAA00] defaultManager];
-        v34 = [MEMORY[0x277CBEAA8] date];
-        while (([v33 fileExistsAtPath:v32] & 1) == 0)
+        v32 = runnableModelPath;
+        defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+        date = [MEMORY[0x277CBEAA8] date];
+        while (([defaultManager2 fileExistsAtPath:v32] & 1) == 0)
         {
-          v35 = [MEMORY[0x277CBEAA8] date];
-          [v35 timeIntervalSinceDate:v34];
+          date2 = [MEMORY[0x277CBEAA8] date];
+          [date2 timeIntervalSinceDate:date];
           v37 = v36;
 
           if (v37 >= 60.0)
@@ -437,8 +437,8 @@ LABEL_46:
       v145 = &unk_278CA5FE0;
       v25 = v139;
       v146 = v25;
-      v147 = self;
-      v121 = v140;
+      selfCopy = self;
+      v121 = runnableModelPath;
       v148 = v121;
       [v25 createDirectoryAtPath:v135 withIntermediateDirectories:1 attributes:0 error:0];
       v26 = MEMORY[0x277CCACA8];
@@ -477,46 +477,46 @@ LABEL_70:
         v128 = self->_buildConfig;
         v137 = v136;
         v126 = v134;
-        v130 = [MEMORY[0x277CBEB38] dictionary];
-        [v130 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"KernelRewind"];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
+        [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"KernelRewind"];
         v49 = [(NSDictionary *)v128 objectForKeyedSubscript:@"spatialSplitMode"];
         v50 = [v49 length] == 0;
 
         if (!v50)
         {
           v51 = [(NSDictionary *)v128 objectForKeyedSubscript:@"spatialSplitMode"];
-          [v130 setObject:v51 forKeyedSubscript:@"SpatialSplitMode"];
+          [dictionary setObject:v51 forKeyedSubscript:@"SpatialSplitMode"];
         }
 
-        [v130 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"ScanWeightsForCompression"];
+        [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"ScanWeightsForCompression"];
         v52 = [(NSDictionary *)v128 objectForKeyedSubscript:@"useReductionPerformance"];
-        v53 = [v52 BOOLValue];
+        bOOLValue = [v52 BOOLValue];
 
-        if (v53)
+        if (bOOLValue)
         {
-          [v130 setObject:@"ReductionPerf" forKeyedSubscript:@"Optimize"];
+          [dictionary setObject:@"ReductionPerf" forKeyedSubscript:@"Optimize"];
         }
 
         if (v29)
         {
-          [v130 setObject:&unk_285252070 forKeyedSubscript:@"NeFrequency"];
-          [v130 setObject:&unk_285252088 forKeyedSubscript:@"PstateDCSLevel"];
-          [v130 setObject:&unk_2852520A0 forKeyedSubscript:@"PstateSOCLevel"];
-          [v130 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"EnableContextSwitchEvents"];
+          [dictionary setObject:&unk_285252070 forKeyedSubscript:@"NeFrequency"];
+          [dictionary setObject:&unk_285252088 forKeyedSubscript:@"PstateDCSLevel"];
+          [dictionary setObject:&unk_2852520A0 forKeyedSubscript:@"PstateSOCLevel"];
+          [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"EnableContextSwitchEvents"];
         }
 
-        v54 = [v137 lowercaseString];
-        *v161 = v54;
-        v164[0] = v130;
+        lowercaseString = [v137 lowercaseString];
+        *v161 = lowercaseString;
+        v164[0] = dictionary;
         v55 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v164 forKeys:v161 count:1];
         [v55 writeToFile:v126 atomically:1];
 
-        v56 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         v167 = 0u;
         v168 = 0u;
         v165 = 0u;
         v166 = 0u;
-        v57 = v130;
+        v57 = dictionary;
         v58 = [v57 countByEnumeratingWithState:&v165 objects:buf count:16];
         if (v58)
         {
@@ -534,7 +534,7 @@ LABEL_70:
               v62 = MEMORY[0x277CCACA8];
               v63 = [v57 objectForKeyedSubscript:v61];
               v64 = [v62 stringWithFormat:@"%@=%@", v61, v63];
-              [v56 addObject:v64];
+              [array addObject:v64];
             }
 
             v58 = [v57 countByEnumeratingWithState:&v165 objects:buf count:16];
@@ -543,7 +543,7 @@ LABEL_70:
           while (v58);
         }
 
-        v65 = [v56 componentsJoinedByString:{@", "}];
+        v65 = [array componentsJoinedByString:{@", "}];
 
         v66 = self->_forANE;
         v67 = self->_srcModelPath;
@@ -557,8 +557,8 @@ LABEL_70:
 
         if (v66)
         {
-          v71 = [(NSString *)v67 pathExtension];
-          v72 = [v71 isEqualToString:@"net"];
+          pathExtension = [(NSString *)v67 pathExtension];
+          v72 = [pathExtension isEqualToString:@"net"];
 
           if (v72)
           {
@@ -613,26 +613,26 @@ LABEL_70:
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
           {
-            v74 = [v69 executableURL];
-            v75 = [v74 path];
-            v76 = [v69 arguments];
+            executableURL = [v69 executableURL];
+            path = [executableURL path];
+            arguments = [v69 arguments];
             *v161 = 138412546;
-            *&v161[4] = v75;
+            *&v161[4] = path;
             v162 = 2112;
-            v163 = v76;
+            v163 = arguments;
             _os_log_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "running %@ with arguments: %@", v161, 0x16u);
           }
         }
 
         else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
         {
-          v110 = [v69 executableURL];
-          v111 = [v110 path];
-          v112 = [v69 arguments];
+          executableURL2 = [v69 executableURL];
+          path2 = [executableURL2 path];
+          arguments2 = [v69 arguments];
           *v161 = 138412546;
-          *&v161[4] = v111;
+          *&v161[4] = path2;
           v162 = 2112;
-          v163 = v112;
+          v163 = arguments2;
           _os_log_debug_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "running %@ with arguments: %@", v161, 0x16u);
         }
 
@@ -657,13 +657,13 @@ LABEL_70:
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
-            v107 = [v69 executableURL];
-            v108 = [v107 path];
-            v109 = [v69 arguments];
+            executableURL3 = [v69 executableURL];
+            path3 = [executableURL3 path];
+            arguments3 = [v69 arguments];
             *v161 = 138543618;
-            *&v161[4] = v108;
+            *&v161[4] = path3;
             v162 = 2114;
-            v163 = v109;
+            v163 = arguments3;
             _os_log_error_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "failed to run %{public}@ with arguments: %{public}@", v161, 0x16u);
           }
 
@@ -676,16 +676,16 @@ LABEL_70:
         v122 = [v124 enumeratorAtPath:v131];
         while (1)
         {
-          v79 = [v122 nextObject];
-          v80 = v79;
-          if (!v79)
+          nextObject = [v122 nextObject];
+          v80 = nextObject;
+          if (!nextObject)
           {
             v21 = [v78 moveItemAtPath:v131 toPath:v121 error:0];
             goto LABEL_143;
           }
 
-          v81 = [v79 pathExtension];
-          v82 = [v81 isEqualToString:@"hwx"];
+          pathExtension2 = [nextObject pathExtension];
+          v82 = [pathExtension2 isEqualToString:@"hwx"];
 
           if (v82)
           {
@@ -702,19 +702,19 @@ LABEL_70:
             v87 = [MEMORY[0x277CBEA60] arrayWithObjects:&v165 count:2];
             [v85 setArguments:v87];
 
-            v123 = [MEMORY[0x277CCAC10] pipe];
+            pipe = [MEMORY[0x277CCAC10] pipe];
             [v85 setStandardOutput:?];
             if (![v85 launchAndReturnError:0] || (objc_msgSend(v85, "waitUntilExit"), objc_msgSend(v85, "terminationStatus")))
             {
               if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
               {
-                v118 = [v85 executableURL];
-                v119 = [v118 path];
-                v120 = [v85 arguments];
+                executableURL4 = [v85 executableURL];
+                path4 = [executableURL4 path];
+                arguments4 = [v85 arguments];
                 *buf = 138543618;
-                *&buf[4] = v119;
+                *&buf[4] = path4;
                 *&buf[12] = 2114;
-                *&buf[14] = v120;
+                *&buf[14] = arguments4;
                 _os_log_error_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "failed to run %{public}@ with arguments: %{public}@", buf, 0x16u);
               }
 
@@ -722,8 +722,8 @@ LABEL_70:
             }
 
             v88 = objc_alloc(MEMORY[0x277CCACA8]);
-            v89 = [v123 fileHandleForReading];
-            v90 = [v89 readDataToEndOfFileAndReturnError:0];
+            fileHandleForReading = [pipe fileHandleForReading];
+            v90 = [fileHandleForReading readDataToEndOfFileAndReturnError:0];
             v91 = [v88 initWithData:v90 encoding:4];
 
             v92 = [v91 rangeOfString:@"\\n\\s*--fspatial-split=" options:1024];
@@ -744,23 +744,23 @@ LABEL_70:
             v96 = [v95 stringByReplacingOccurrencesOfString:@"-" withString:&stru_28524BA50];
 
             v97 = [(NSDictionary *)v125 objectForKeyedSubscript:@"spatialSplitMode"];
-            v98 = [v97 lowercaseString];
+            lowercaseString2 = [v97 lowercaseString];
 
-            if (([v98 isEqualToString:v96] & 1) == 0)
+            if (([lowercaseString2 isEqualToString:v96] & 1) == 0)
             {
-              if (v98)
+              if (lowercaseString2)
               {
                 goto LABEL_137;
               }
 
               if (([v96 isEqualToString:@"disabled"] & 1) == 0)
               {
-                v98 = 0;
+                lowercaseString2 = 0;
 LABEL_137:
                 if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138543618;
-                  *&buf[4] = v98;
+                  *&buf[4] = lowercaseString2;
                   *&buf[12] = 2114;
                   *&buf[14] = v96;
                   _os_log_error_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "mismatch in ANE compilation flag SpatialSplitMode between {%{public}@} and {%{public}@}", buf, 0x16u);
@@ -789,23 +789,23 @@ LABEL_105:
             v101 = &stru_28524BA50;
             if (v99 != 0x7FFFFFFFFFFFFFFFLL)
             {
-              v102 = [v91 substringFromIndex:v99 + v100];
-              v103 = [v102 substringToIndex:{objc_msgSend(v102, "rangeOfString:", @"\n"}];
+              v100 = [v91 substringFromIndex:v99 + v100];
+              v103 = [v100 substringToIndex:{objc_msgSend(v100, "rangeOfString:", @"\n"}];
 
               v101 = v103;
             }
 
             v104 = [(NSDictionary *)v125 objectForKeyedSubscript:@"useReductionPerformance"];
-            v105 = [v104 BOOLValue];
+            bOOLValue2 = [v104 BOOLValue];
             v106 = [(__CFString *)v101 isEqualToString:@"reduction-perf"];
 
-            if (v105 != v106)
+            if (bOOLValue2 != v106)
             {
               v113 = [(NSDictionary *)v125 objectForKeyedSubscript:@"useReductionPerformance"];
-              v114 = [v113 BOOLValue];
+              bOOLValue3 = [v113 BOOLValue];
 
               v115 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
-              if (v114)
+              if (bOOLValue3)
               {
                 if (v115)
                 {
@@ -870,9 +870,9 @@ LABEL_68:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v132 = v17;
-    v47 = [v17 localizedDescription];
+    localizedDescription = [v17 localizedDescription];
     *buf = 138412290;
-    *&buf[4] = v47;
+    *&buf[4] = localizedDescription;
     _os_log_error_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "failed to create folder structure needed for compilation. Error: %@", buf, 0xCu);
 
 LABEL_65:
@@ -927,13 +927,13 @@ void __34__ADModelBuilder_createE5MLBundle__block_invoke(uint64_t a1)
   rmdir([v9 fileSystemRepresentation]);
 }
 
-+ (id)modelBuilderForModelPath:(id)a3 destinationPath:(id)a4 buildConfigPath:(id)a5 forANE:(BOOL)a6
++ (id)modelBuilderForModelPath:(id)path destinationPath:(id)destinationPath buildConfigPath:(id)configPath forANE:(BOOL)e
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [[ADModelBuilder alloc] initWithSourcePath:v9 destinationPath:v10 buildConfigPath:v11 forANE:v6];
+  eCopy = e;
+  pathCopy = path;
+  destinationPathCopy = destinationPath;
+  configPathCopy = configPath;
+  v12 = [[ADModelBuilder alloc] initWithSourcePath:pathCopy destinationPath:destinationPathCopy buildConfigPath:configPathCopy forANE:eCopy];
 
   return v12;
 }

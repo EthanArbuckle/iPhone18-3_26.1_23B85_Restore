@@ -1,44 +1,44 @@
 @interface AFUISiriViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)compactView:(id)a3 bottomContentInsetDidChange:(double)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)compactView:(id)view bottomContentInsetDidChange:(double)change;
 @end
 
 @implementation AFUISiriViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AFUISiriViewController" hasInstanceMethod:@"compactView:bottomContentInsetDidChange:" withFullSignature:{"v", "@", "d", 0}];
-  [v3 validateClass:@"AFUISiriViewController" isKindOfClass:@"UIViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AFUISiriViewController" hasInstanceMethod:@"compactView:bottomContentInsetDidChange:" withFullSignature:{"v", "@", "d", 0}];
+  [validationsCopy validateClass:@"AFUISiriViewController" isKindOfClass:@"UIViewController"];
 }
 
-- (void)compactView:(id)a3 bottomContentInsetDidChange:(double)a4
+- (void)compactView:(id)view bottomContentInsetDidChange:(double)change
 {
-  v6 = a3;
+  viewCopy = view;
   v7 = objc_opt_new();
-  v8 = [v7 isClarityBoardEnabled];
+  isClarityBoardEnabled = [v7 isClarityBoardEnabled];
 
   v9 = 0.0;
-  if (v8)
+  if (isClarityBoardEnabled)
   {
     v17 = 0;
     objc_opt_class();
     v10 = __UIAccessibilityCastAsClass();
-    v11 = [v10 view];
-    [v11 frame];
+    view = [v10 view];
+    [view frame];
     v13 = v12;
 
     if (v13 > 0.0)
     {
-      v14 = [MEMORY[0x29EDC7C40] mainScreen];
-      [v14 bounds];
+      mainScreen = [MEMORY[0x29EDC7C40] mainScreen];
+      [mainScreen bounds];
       v9 = v15 - v13;
     }
   }
 
   v16.receiver = self;
   v16.super_class = AFUISiriViewControllerAccessibility;
-  [(AFUISiriViewControllerAccessibility *)&v16 compactView:v6 bottomContentInsetDidChange:v9 + a4];
+  [(AFUISiriViewControllerAccessibility *)&v16 compactView:viewCopy bottomContentInsetDidChange:v9 + change];
 }
 
 @end

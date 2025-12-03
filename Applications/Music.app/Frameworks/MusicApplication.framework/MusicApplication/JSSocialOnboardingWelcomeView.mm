@@ -1,24 +1,24 @@
 @interface JSSocialOnboardingWelcomeView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)accessibilityLabel;
 - (void)layoutSubviews;
-- (void)setAccessibilityLabel:(id)a3;
-- (void)setIsAccessibilityElement:(BOOL)a3;
+- (void)setAccessibilityLabel:(id)label;
+- (void)setIsAccessibilityElement:(BOOL)element;
 @end
 
 @implementation JSSocialOnboardingWelcomeView
 
-- (void)setIsAccessibilityElement:(BOOL)a3
+- (void)setIsAccessibilityElement:(BOOL)element
 {
-  v3 = a3;
+  elementCopy = element;
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  [(JSSocialOnboardingWelcomeView *)&v4 setIsAccessibilityElement:v3];
+  [(JSSocialOnboardingWelcomeView *)&v4 setIsAccessibilityElement:elementCopy];
 }
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   JSSocialOnboardingWelcomeView.accessibilityLabel.getter();
   v4 = v3;
 
@@ -35,37 +35,37 @@
   return v5;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (label)
   {
     sub_AB92A0();
-    v6 = self;
-    a3 = sub_AB9260();
+    selfCopy = self;
+    label = sub_AB9260();
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v8.receiver = self;
   v8.super_class = ObjectType;
-  [(JSSocialOnboardingWelcomeView *)&v8 setAccessibilityLabel:a3];
+  [(JSSocialOnboardingWelcomeView *)&v8 setAccessibilityLabel:label];
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   JSSocialOnboardingWelcomeView.layoutSubviews()();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = JSSocialOnboardingWelcomeView.sizeThatFits(_:)(width, height);
   v8 = v7;
 

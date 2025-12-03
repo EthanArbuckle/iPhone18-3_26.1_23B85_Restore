@@ -1,21 +1,21 @@
 @interface _UITextInteractableAttachmentItem
-- (BOOL)isEqual:(id)a3;
-- (id)_itemRepresentationWithRange:(_NSRange)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)_itemRepresentationWithRange:(_NSRange)range;
 @end
 
 @implementation _UITextInteractableAttachmentItem
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = _UITextInteractableAttachmentItem;
-  if ([(_UITextInteractableItem *)&v12 isEqual:v4])
+  if ([(_UITextInteractableItem *)&v12 isEqual:equalCopy])
   {
-    v5 = [v4 attachment];
-    v6 = [(_UITextInteractableAttachmentItem *)self attachment];
-    v7 = v5;
-    v8 = v6;
+    attachment = [equalCopy attachment];
+    attachment2 = [(_UITextInteractableAttachmentItem *)self attachment];
+    v7 = attachment;
+    v8 = attachment2;
     v9 = v8;
     if (v7 == v8)
     {
@@ -40,12 +40,12 @@
   return v10;
 }
 
-- (id)_itemRepresentationWithRange:(_NSRange)a3
+- (id)_itemRepresentationWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(_UITextInteractableAttachmentItem *)self attachment];
-  v6 = [UITextItem _itemWithTextAttachment:v5 range:location, length];
+  length = range.length;
+  location = range.location;
+  attachment = [(_UITextInteractableAttachmentItem *)self attachment];
+  v6 = [UITextItem _itemWithTextAttachment:attachment range:location, length];
 
   return v6;
 }

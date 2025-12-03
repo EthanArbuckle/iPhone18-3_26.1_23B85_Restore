@@ -1,12 +1,12 @@
 @interface MCPlugParallel
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3;
++ (id)keyPathsForValuesAffectingValueForKey:(id)key;
 - (BOOL)hasAbsoluteAspectRatio;
 - (BOOL)hasValidWidth;
 - (CGPoint)position;
 - (CGSize)size;
-- (CGSize)sizeForParentAspectRatio:(double)a3;
+- (CGSize)sizeForParentAspectRatio:(double)ratio;
 - (MCPlugParallel)init;
-- (MCPlugParallel)initWithImprint:(id)a3 andMontage:(id)a4;
+- (MCPlugParallel)initWithImprint:(id)imprint andMontage:(id)montage;
 - (double)aspectRatio;
 - (double)aspectRatioForParentAspectRatio:(double)result;
 - (double)height;
@@ -19,34 +19,34 @@
 - (id)description;
 - (id)imprint;
 - (unsigned)countOfLayouts;
-- (void)_copySelfToSnapshot:(id)a3;
+- (void)_copySelfToSnapshot:(id)snapshot;
 - (void)demolish;
-- (void)setClipsContainer:(BOOL)a3;
-- (void)setHeight:(double)a3 andAbsoluteAspectRatio:(double)a4;
-- (void)setIsTriggered:(BOOL)a3;
-- (void)setPosition:(CGPoint)a3;
-- (void)setPositionZ:(double)a3;
-- (void)setResetsTimeOnTrigger:(BOOL)a3;
-- (void)setRotation:(double)a3;
-- (void)setRotationX:(double)a3;
-- (void)setRotationY:(double)a3;
-- (void)setScale:(double)a3;
-- (void)setSize:(CGSize)a3;
-- (void)setWidth:(double)a3 andAbsoluteAspectRatio:(double)a4;
+- (void)setClipsContainer:(BOOL)container;
+- (void)setHeight:(double)height andAbsoluteAspectRatio:(double)ratio;
+- (void)setIsTriggered:(BOOL)triggered;
+- (void)setPosition:(CGPoint)position;
+- (void)setPositionZ:(double)z;
+- (void)setResetsTimeOnTrigger:(BOOL)trigger;
+- (void)setRotation:(double)rotation;
+- (void)setRotationX:(double)x;
+- (void)setRotationY:(double)y;
+- (void)setScale:(double)scale;
+- (void)setSize:(CGSize)size;
+- (void)setWidth:(double)width andAbsoluteAspectRatio:(double)ratio;
 @end
 
 @implementation MCPlugParallel
 
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3
++ (id)keyPathsForValuesAffectingValueForKey:(id)key
 {
-  if ([a3 isEqualToString:@"positionRotationAndSize"])
+  if ([key isEqualToString:@"positionRotationAndSize"])
   {
     return [NSSet setWithObjects:@"position", @"zPosition", @"scale", @"size", @"rotationAngle", @"xRotationAngle", @"yRotationAngle", @"currentLayout", 0];
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___MCPlugParallel;
-  return objc_msgSendSuper2(&v6, "keyPathsForValuesAffectingValueForKey:", a3);
+  return objc_msgSendSuper2(&v6, "keyPathsForValuesAffectingValueForKey:", key);
 }
 
 - (MCPlugParallel)init
@@ -62,15 +62,15 @@
   return result;
 }
 
-- (MCPlugParallel)initWithImprint:(id)a3 andMontage:(id)a4
+- (MCPlugParallel)initWithImprint:(id)imprint andMontage:(id)montage
 {
   v46.receiver = self;
   v46.super_class = MCPlugParallel;
-  v5 = [(MCPlug *)&v46 initWithImprint:a3 andMontage:a4];
+  v5 = [(MCPlug *)&v46 initWithImprint:imprint andMontage:montage];
   if (v5)
   {
-    v5->mIDInSupercontainer = [a3 objectForKey:@"idInSupercontainer"];
-    v6 = [a3 objectForKey:@"timeIn"];
+    v5->mIDInSupercontainer = [imprint objectForKey:@"idInSupercontainer"];
+    v6 = [imprint objectForKey:@"timeIn"];
     if (v6)
     {
       [v6 doubleValue];
@@ -82,21 +82,21 @@
     }
 
     v5->mTimeIn = v7;
-    v8 = [a3 objectForKey:@"zIndex"];
+    v8 = [imprint objectForKey:@"zIndex"];
     if (v8)
     {
       LOWORD(v8) = [v8 unsignedIntegerValue];
     }
 
     v5->mZIndex = v8;
-    v9 = [a3 objectForKey:@"audioPriority"];
+    v9 = [imprint objectForKey:@"audioPriority"];
     if (v9)
     {
       LOWORD(v9) = [v9 unsignedIntegerValue];
     }
 
     v5->mAudioPriority = v9;
-    v10 = [a3 objectForKey:@"opacity"];
+    v10 = [imprint objectForKey:@"opacity"];
     if (v10)
     {
       [v10 floatValue];
@@ -109,7 +109,7 @@
     }
 
     v5->mOpacity = v12;
-    v13 = [a3 objectForKey:@"geometries"];
+    v13 = [imprint objectForKey:@"geometries"];
     if (v13)
     {
       v14 = v13;
@@ -188,7 +188,7 @@ LABEL_44:
         v45[1] = 3221225472;
         v45[2] = sub_12EBC8;
         v45[3] = &unk_1ABA38;
-        v45[4] = a3;
+        v45[4] = imprint;
         v45[5] = v5;
         [v14 enumerateObjectsUsingBlock:v45];
         return v5;
@@ -296,12 +296,12 @@ LABEL_40:
 {
   v40.receiver = self;
   v40.super_class = MCPlugParallel;
-  v3 = [(MCPlug *)&v40 imprint];
-  v4 = v3;
+  imprint = [(MCPlug *)&v40 imprint];
+  v4 = imprint;
   mIDInSupercontainer = self->mIDInSupercontainer;
   if (mIDInSupercontainer)
   {
-    [v3 setObject:mIDInSupercontainer forKey:@"idInSupercontainer"];
+    [imprint setObject:mIDInSupercontainer forKey:@"idInSupercontainer"];
   }
 
   mTimeIn = self->mTimeIn;
@@ -560,12 +560,12 @@ LABEL_48:
   return result;
 }
 
-- (void)setPosition:(CGPoint)a3
+- (void)setPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   mGeometry = self->mGeometry;
-  if (!mGeometry && a3.x == 0.0 && a3.y == 0.0)
+  if (!mGeometry && position.x == 0.0 && position.y == 0.0)
   {
     return;
   }
@@ -797,9 +797,9 @@ LABEL_36:
   return result;
 }
 
-- (void)setSize:(CGSize)a3
+- (void)setSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   mGeometry = self->mGeometry;
   if (mGeometry)
   {
@@ -808,15 +808,15 @@ LABEL_36:
 
   else
   {
-    _ZF = a3.width == 2.0;
+    _ZF = size.width == 2.0;
   }
 
-  if (_ZF && a3.height == 2.0)
+  if (_ZF && size.height == 2.0)
   {
     return;
   }
 
-  height = a3.height;
+  height = size.height;
   mFlags = self->super.mFlags;
   v10 = mFlags >> 28;
   if ((mFlags & 0x40) != 0)
@@ -1282,7 +1282,7 @@ LABEL_40:
   return result;
 }
 
-- (CGSize)sizeForParentAspectRatio:(double)a3
+- (CGSize)sizeForParentAspectRatio:(double)ratio
 {
   mGeometry = self->mGeometry;
   if (mGeometry)
@@ -1328,13 +1328,13 @@ LABEL_40:
     {
       if (v18 < 0.0)
       {
-        v18 = -v17 / v18 * a3;
+        v18 = -v17 / v18 * ratio;
       }
     }
 
     else
     {
-      v17 = -(v18 * v17) / a3;
+      v17 = -(v18 * v17) / ratio;
     }
   }
 
@@ -1350,7 +1350,7 @@ LABEL_40:
   return result;
 }
 
-- (void)setWidth:(double)a3 andAbsoluteAspectRatio:(double)a4
+- (void)setWidth:(double)width andAbsoluteAspectRatio:(double)ratio
 {
   mFlags = self->super.mFlags;
   mGeometry = self->mGeometry;
@@ -1517,11 +1517,11 @@ LABEL_33:
     v35 = &mGeometry[48 * (self->super.mFlags >> 28) + 16];
   }
 
-  *v35 = a3;
-  v35[1] = -a4;
+  *v35 = width;
+  v35[1] = -ratio;
 }
 
-- (void)setHeight:(double)a3 andAbsoluteAspectRatio:(double)a4
+- (void)setHeight:(double)height andAbsoluteAspectRatio:(double)ratio
 {
   mFlags = self->super.mFlags;
   mGeometry = self->mGeometry;
@@ -1688,8 +1688,8 @@ LABEL_33:
     v35 = &mGeometry[48 * (self->super.mFlags >> 28) + 16];
   }
 
-  *v35 = -a4;
-  v35[1] = a3;
+  *v35 = -ratio;
+  v35[1] = height;
 }
 
 - (double)scale
@@ -1724,10 +1724,10 @@ LABEL_33:
   return *v8;
 }
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
   mGeometry = self->mGeometry;
-  if (a3 == 1.0 && mGeometry == 0)
+  if (scale == 1.0 && mGeometry == 0)
   {
     return;
   }
@@ -1893,7 +1893,7 @@ LABEL_37:
     v33 = &mGeometry[48 * (self->super.mFlags >> 28) + 40];
   }
 
-  *v33 = a3;
+  *v33 = scale;
 }
 
 - (double)rotation
@@ -1928,10 +1928,10 @@ LABEL_37:
   return *v8;
 }
 
-- (void)setRotation:(double)a3
+- (void)setRotation:(double)rotation
 {
   mGeometry = self->mGeometry;
-  if (a3 == 0.0 && mGeometry == 0)
+  if (rotation == 0.0 && mGeometry == 0)
   {
     return;
   }
@@ -2097,7 +2097,7 @@ LABEL_37:
     v33 = &mGeometry[48 * (self->super.mFlags >> 28) + 32];
   }
 
-  *v33 = a3;
+  *v33 = rotation;
 }
 
 - (double)positionZ
@@ -2111,10 +2111,10 @@ LABEL_37:
   return result;
 }
 
-- (void)setPositionZ:(double)a3
+- (void)setPositionZ:(double)z
 {
   mGeometry = self->mGeometry;
-  if (a3 != 0.0 || mGeometry != 0)
+  if (z != 0.0 || mGeometry != 0)
   {
     mFlags = self->super.mFlags;
     v8 = mFlags >> 28;
@@ -2124,7 +2124,7 @@ LABEL_37:
       if ((mFlags & 0x40) != 0 && v8 <= v9)
       {
 LABEL_33:
-        mGeometry[9 * v8 + 6] = a3;
+        mGeometry[9 * v8 + 6] = z;
         return;
       }
 
@@ -2263,10 +2263,10 @@ LABEL_17:
   return result;
 }
 
-- (void)setRotationX:(double)a3
+- (void)setRotationX:(double)x
 {
   mGeometry = self->mGeometry;
-  if (a3 != 0.0 || mGeometry != 0)
+  if (x != 0.0 || mGeometry != 0)
   {
     mFlags = self->super.mFlags;
     v8 = mFlags >> 28;
@@ -2276,7 +2276,7 @@ LABEL_17:
       if ((mFlags & 0x40) != 0 && v8 <= v9)
       {
 LABEL_33:
-        mGeometry[9 * v8 + 7] = a3;
+        mGeometry[9 * v8 + 7] = x;
         return;
       }
 
@@ -2415,10 +2415,10 @@ LABEL_17:
   return result;
 }
 
-- (void)setRotationY:(double)a3
+- (void)setRotationY:(double)y
 {
   mGeometry = self->mGeometry;
-  if (a3 != 0.0 || mGeometry != 0)
+  if (y != 0.0 || mGeometry != 0)
   {
     mFlags = self->super.mFlags;
     v8 = mFlags >> 28;
@@ -2428,7 +2428,7 @@ LABEL_17:
       if ((mFlags & 0x40) != 0 && v8 <= v9)
       {
 LABEL_33:
-        mGeometry[9 * v8 + 8] = a3;
+        mGeometry[9 * v8 + 8] = y;
         return;
       }
 
@@ -2556,9 +2556,9 @@ LABEL_17:
   }
 }
 
-- (void)setIsTriggered:(BOOL)a3
+- (void)setIsTriggered:(BOOL)triggered
 {
-  if (a3)
+  if (triggered)
   {
     v3 = 16;
   }
@@ -2571,9 +2571,9 @@ LABEL_17:
   self->super.mFlags = self->super.mFlags & 0xFFFFFFEF | v3;
 }
 
-- (void)setResetsTimeOnTrigger:(BOOL)a3
+- (void)setResetsTimeOnTrigger:(BOOL)trigger
 {
-  if (a3)
+  if (trigger)
   {
     v3 = 32;
   }
@@ -2586,9 +2586,9 @@ LABEL_17:
   self->super.mFlags = self->super.mFlags & 0xFFFFFFDF | v3;
 }
 
-- (void)setClipsContainer:(BOOL)a3
+- (void)setClipsContainer:(BOOL)container
 {
-  if (a3)
+  if (container)
   {
     v3 = 128;
   }
@@ -2614,15 +2614,15 @@ LABEL_17:
   }
 }
 
-- (void)_copySelfToSnapshot:(id)a3
+- (void)_copySelfToSnapshot:(id)snapshot
 {
   v8.receiver = self;
   v8.super_class = MCPlugParallel;
   [(MCPlug *)&v8 _copySelfToSnapshot:?];
-  *(a3 + 15) = *&self->mTimeIn;
-  *(a3 + 48) = self->mZIndex;
-  *(a3 + 49) = self->mAudioPriority;
-  *(a3 + 16) = *&self->mOpacity;
+  *(snapshot + 15) = *&self->mTimeIn;
+  *(snapshot + 48) = self->mZIndex;
+  *(snapshot + 49) = self->mAudioPriority;
+  *(snapshot + 16) = *&self->mOpacity;
   if (self->mGeometry)
   {
     v5 = 72;
@@ -2633,7 +2633,7 @@ LABEL_17:
 
     v6 = v5 + v5 * (HIBYTE(self->super.mFlags) & 0xF);
     v7 = malloc_type_malloc(v6, 0xE2E202F9uLL);
-    *(a3 + 11) = v7;
+    *(snapshot + 11) = v7;
     memcpy(v7, self->mGeometry, v6);
   }
 }

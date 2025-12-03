@@ -1,14 +1,14 @@
 @interface TSCH3DContext
 - (id).cxx_construct;
-- (void)setCurrentFramebufferAttributes:(const FramebufferAttributes *)a3;
+- (void)setCurrentFramebufferAttributes:(const FramebufferAttributes *)attributes;
 @end
 
 @implementation TSCH3DContext
 
-- (void)setCurrentFramebufferAttributes:(const FramebufferAttributes *)a3
+- (void)setCurrentFramebufferAttributes:(const FramebufferAttributes *)attributes
 {
-  v3 = *&a3->type;
-  *(&self->_currentFramebufferAttributes.samples + 7) = *(&a3->samples + 7);
+  v3 = *&attributes->type;
+  *(&self->_currentFramebufferAttributes.samples + 7) = *(&attributes->samples + 7);
   *&self->_currentFramebufferAttributes.type = v3;
 }
 

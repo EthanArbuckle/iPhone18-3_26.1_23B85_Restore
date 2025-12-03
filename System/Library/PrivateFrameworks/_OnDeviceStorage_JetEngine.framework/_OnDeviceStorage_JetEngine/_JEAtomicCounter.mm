@@ -1,21 +1,21 @@
 @interface _JEAtomicCounter
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_JEAtomicCounter)init;
-- (_JEAtomicCounter)initWithInitialValue:(int64_t)a3;
+- (_JEAtomicCounter)initWithInitialValue:(int64_t)value;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation _JEAtomicCounter
 
-- (_JEAtomicCounter)initWithInitialValue:(int64_t)a3
+- (_JEAtomicCounter)initWithInitialValue:(int64_t)value
 {
   v5.receiver = self;
   v5.super_class = _JEAtomicCounter;
   result = [(_JEAtomicCounter *)&v5 init];
   if (result)
   {
-    result->_value = a3;
+    result->_value = value;
   }
 
   return result;
@@ -28,10 +28,10 @@
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     if (self)
     {
@@ -43,7 +43,7 @@
       v5 = 0;
     }
 
-    v6 = atomic_load(v4 + 1);
+    v6 = atomic_load(equalCopy + 1);
     v7 = v5 == v6;
   }
 

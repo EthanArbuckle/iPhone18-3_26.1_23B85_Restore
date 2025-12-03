@@ -1,13 +1,13 @@
 @interface BRRTCPairingMetric
-- (BRRTCPairingMetric)initWithPairingBeginsType:(unint64_t)a3;
+- (BRRTCPairingMetric)initWithPairingBeginsType:(unint64_t)type;
 - (id)dictionaryRepresentation;
-- (void)addPairingTimeEventToMetricDict:(id)a3 withValue:(id)a4;
-- (void)addPairingTimePerformanceEventToMetricDict:(id)a3 withTime:(id)a4;
+- (void)addPairingTimeEventToMetricDict:(id)dict withValue:(id)value;
+- (void)addPairingTimePerformanceEventToMetricDict:(id)dict withTime:(id)time;
 @end
 
 @implementation BRRTCPairingMetric
 
-- (BRRTCPairingMetric)initWithPairingBeginsType:(unint64_t)a3
+- (BRRTCPairingMetric)initWithPairingBeginsType:(unint64_t)type
 {
   v8.receiver = self;
   v8.super_class = BRRTCPairingMetric;
@@ -15,7 +15,7 @@
   v5 = v4;
   if (v4)
   {
-    [(BRRTCPairingMetric *)v4 setPairingBeginsType:a3];
+    [(BRRTCPairingMetric *)v4 setPairingBeginsType:type];
     v6 = objc_opt_new();
     [(BRRTCPairingMetric *)v5 setMetricDict:v6];
   }
@@ -23,37 +23,37 @@
   return v5;
 }
 
-- (void)addPairingTimeEventToMetricDict:(id)a3 withValue:(id)a4
+- (void)addPairingTimeEventToMetricDict:(id)dict withValue:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BRRTCPairingMetric *)self metricDict];
-  [v8 setObject:v6 forKey:v7];
+  valueCopy = value;
+  dictCopy = dict;
+  metricDict = [(BRRTCPairingMetric *)self metricDict];
+  [metricDict setObject:valueCopy forKey:dictCopy];
 }
 
-- (void)addPairingTimePerformanceEventToMetricDict:(id)a3 withTime:(id)a4
+- (void)addPairingTimePerformanceEventToMetricDict:(id)dict withTime:(id)time
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BRRTCPairingMetric *)self metricDict];
-  [v8 setObject:v6 forKey:v7];
+  timeCopy = time;
+  dictCopy = dict;
+  metricDict = [(BRRTCPairingMetric *)self metricDict];
+  [metricDict setObject:timeCopy forKey:dictCopy];
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [(BRRTCPairingMetric *)self metricDict];
+  metricDict = [(BRRTCPairingMetric *)self metricDict];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[BRRTCPairingMetric pairingBeginsType](self, "pairingBeginsType")}];
-  [v3 setObject:v4 forKey:@"PairingBeginsType"];
+  [metricDict setObject:v4 forKey:@"PairingBeginsType"];
 
-  v5 = [(BRRTCPairingMetric *)self subreasonCode];
+  subreasonCode = [(BRRTCPairingMetric *)self subreasonCode];
 
-  if (v5)
+  if (subreasonCode)
   {
-    v6 = [(BRRTCPairingMetric *)self subreasonCode];
-    [v3 setObject:v6 forKey:@"NRSubreason"];
+    subreasonCode2 = [(BRRTCPairingMetric *)self subreasonCode];
+    [metricDict setObject:subreasonCode2 forKey:@"NRSubreason"];
   }
 
-  return v3;
+  return metricDict;
 }
 
 @end

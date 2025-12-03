@@ -1,17 +1,17 @@
 @interface _PBUIDimmingView
 + (Class)layerClass;
-- (_PBUIDimmingView)initWithFrame:(CGRect)a3;
-- (void)setDim:(double)a3 animated:(BOOL)a4;
-- (void)setUseDimStyle:(unint64_t)a3;
+- (_PBUIDimmingView)initWithFrame:(CGRect)frame;
+- (void)setDim:(double)dim animated:(BOOL)animated;
+- (void)setUseDimStyle:(unint64_t)style;
 @end
 
 @implementation _PBUIDimmingView
 
-- (_PBUIDimmingView)initWithFrame:(CGRect)a3
+- (_PBUIDimmingView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _PBUIDimmingView;
-  v3 = [(_PBUIDimmingView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_PBUIDimmingView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     if (soft_PUIFeatureEnabled(11))
@@ -21,8 +21,8 @@
 
     else
     {
-      v4 = [MEMORY[0x277D75348] blackColor];
-      [(_PBUIDimmingView *)v3 setBackgroundColor:v4];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [(_PBUIDimmingView *)v3 setBackgroundColor:blackColor];
     }
   }
 
@@ -37,20 +37,20 @@
   return v2;
 }
 
-- (void)setDim:(double)a3 animated:(BOOL)a4
+- (void)setDim:(double)dim animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(_PBUIDimmingView *)self layer];
+  animatedCopy = animated;
+  layer = [(_PBUIDimmingView *)self layer];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __36___PBUIDimmingView_setDim_animated___block_invoke;
   v13 = &unk_278362880;
-  v7 = v6;
+  v7 = layer;
   v14 = v7;
-  v15 = a3;
+  dimCopy = dim;
   v8 = MEMORY[0x223D62EE0](&v10);
   v9 = v8;
-  if (v4)
+  if (animatedCopy)
   {
     [MEMORY[0x277D75D18] _animateUsingSpringWithDuration:4 delay:v8 options:0 mass:0.3388 stiffness:0.0 damping:1.0 initialVelocity:343.985 animations:37.0937 completion:{0.0, v10, v11, v12, v13}];
   }
@@ -61,21 +61,21 @@
   }
 }
 
-- (void)setUseDimStyle:(unint64_t)a3
+- (void)setUseDimStyle:(unint64_t)style
 {
-  if (self->_currentDimStyle != a3 && soft_PUIFeatureEnabled(11))
+  if (self->_currentDimStyle != style && soft_PUIFeatureEnabled(11))
   {
-    self->_currentDimStyle = a3;
-    if (a3 > 1)
+    self->_currentDimStyle = style;
+    if (style > 1)
     {
-      v23 = [(_PBUIDimmingView *)self layer];
-      [v23 setFilters:MEMORY[0x277CBEBF8]];
+      layer = [(_PBUIDimmingView *)self layer];
+      [layer setFilters:MEMORY[0x277CBEBF8]];
     }
 
     else
     {
       v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      if (!a3)
+      if (!style)
       {
         dimmingColorMatrixFilter = self->_dimmingColorMatrixFilter;
         if (!dimmingColorMatrixFilter)
@@ -112,7 +112,7 @@
         luminanceCurveMapFilter = self->_luminanceCurveMapFilter;
       }
 
-      if (a3)
+      if (style)
       {
         v14 = &unk_282FD59C0;
       }
@@ -137,9 +137,9 @@
       }
 
       [v5 addObject:saturationFilter];
-      v18 = [(_PBUIDimmingView *)self layer];
+      layer2 = [(_PBUIDimmingView *)self layer];
       v19 = objc_opt_class();
-      v20 = v18;
+      v20 = layer2;
       if (v19)
       {
         if (objc_opt_isKindOfClass())

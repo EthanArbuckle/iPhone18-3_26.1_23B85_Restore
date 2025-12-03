@@ -1,18 +1,18 @@
 @interface ASVDampingDeceleration
-- (ASVDampingDeceleration)initWithVelocity:(float)a3 minEndDelta:(float)a4 decelerationRate:(float)a5;
+- (ASVDampingDeceleration)initWithVelocity:(float)velocity minEndDelta:(float)delta decelerationRate:(float)rate;
 - (float)decelerationDelta;
 @end
 
 @implementation ASVDampingDeceleration
 
-- (ASVDampingDeceleration)initWithVelocity:(float)a3 minEndDelta:(float)a4 decelerationRate:(float)a5
+- (ASVDampingDeceleration)initWithVelocity:(float)velocity minEndDelta:(float)delta decelerationRate:(float)rate
 {
   v7.receiver = self;
   v7.super_class = ASVDampingDeceleration;
   result = [ASVDeceleration initWithVelocity:sel_initWithVelocity_minEndDelta_ minEndDelta:?];
   if (result)
   {
-    result->_decelerationRate = a5;
+    result->_decelerationRate = rate;
   }
 
   return result;

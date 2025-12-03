@@ -1,9 +1,9 @@
 @interface AXAuditElementAttribute
-+ (void)registerTransportableObjectWithManager:(id)a3;
++ (void)registerTransportableObjectWithManager:(id)manager;
 - (AXAuditElementAttribute)init;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -22,9 +22,9 @@
   return result;
 }
 
-+ (void)registerTransportableObjectWithManager:(id)a3
++ (void)registerTransportableObjectWithManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v13 = [[AXAuditObjectTransportInfoPropertyBased alloc] initWithClass:objc_opt_class() transportKey:@"AXAuditElementAttribute_v1"];
   v4 = objc_alloc_init(AXAuditObjectTransportPropertyEntry);
   [(AXAuditObjectTransportInfoPropertyBased *)v13 addPropertyEntry:v4];
@@ -71,7 +71,7 @@
   [(AXAuditObjectTransportPropertyEntry *)v12 setTransportKey:@"IsInternal_v1"];
   [(AXAuditObjectTransportPropertyEntry *)v12 setLocalValueToTransportValue:&__block_literal_global_69_0];
   [(AXAuditObjectTransportPropertyEntry *)v12 setPopulateLocalObjectWithTransportValue:&__block_literal_global_71_0];
-  [v3 registerTransportInfoPropertyBased:v13];
+  [managerCopy registerTransportInfoPropertyBased:v13];
 }
 
 void __66__AXAuditElementAttribute_registerTransportableObjectWithManager___block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -221,20 +221,20 @@ void __66__AXAuditElementAttribute_registerTransportableObjectWithManager___bloc
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(AXAuditElementAttribute *)self attributeName];
-  [v4 setAttributeName:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  attributeName = [(AXAuditElementAttribute *)self attributeName];
+  [v4 setAttributeName:attributeName];
 
-  v6 = [(AXAuditElementAttribute *)self humanReadableName];
-  [v4 setHumanReadableName:v6];
+  humanReadableName = [(AXAuditElementAttribute *)self humanReadableName];
+  [v4 setHumanReadableName:humanReadableName];
 
   [v4 setSettable:{-[AXAuditElementAttribute isSettable](self, "isSettable")}];
   [v4 setPerformsAction:{-[AXAuditElementAttribute performsAction](self, "performsAction")}];
   [v4 setValueType:{-[AXAuditElementAttribute valueType](self, "valueType")}];
-  v7 = [(AXAuditElementAttribute *)self developerAPISelector];
-  [v4 setDeveloperAPISelector:v7];
+  developerAPISelector = [(AXAuditElementAttribute *)self developerAPISelector];
+  [v4 setDeveloperAPISelector:developerAPISelector];
 
   [v4 setDisplayAsTree:{-[AXAuditElementAttribute displayAsTree](self, "displayAsTree")}];
   [v4 setIsInternal:{-[AXAuditElementAttribute isInternal](self, "isInternal")}];
@@ -243,24 +243,24 @@ void __66__AXAuditElementAttribute_registerTransportableObjectWithManager___bloc
 
 - (unint64_t)hash
 {
-  v3 = [(AXAuditElementAttribute *)self attributeName];
-  v4 = [v3 hash];
-  v5 = [(AXAuditElementAttribute *)self humanReadableName];
-  v6 = [v5 hash] ^ v4;
+  attributeName = [(AXAuditElementAttribute *)self attributeName];
+  v4 = [attributeName hash];
+  humanReadableName = [(AXAuditElementAttribute *)self humanReadableName];
+  v6 = [humanReadableName hash] ^ v4;
   v7 = v6 ^ [(AXAuditElementAttribute *)self isSettable];
-  v8 = [(AXAuditElementAttribute *)self performsAction];
-  v9 = v7 ^ v8 ^ [(AXAuditElementAttribute *)self valueType];
-  v10 = [(AXAuditElementAttribute *)self developerAPISelector];
-  v11 = [v10 hash];
+  performsAction = [(AXAuditElementAttribute *)self performsAction];
+  v9 = v7 ^ performsAction ^ [(AXAuditElementAttribute *)self valueType];
+  developerAPISelector = [(AXAuditElementAttribute *)self developerAPISelector];
+  v11 = [developerAPISelector hash];
   v12 = v11 ^ [(AXAuditElementAttribute *)self isInternal];
 
   return v9 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -270,31 +270,31 @@ void __66__AXAuditElementAttribute_registerTransportableObjectWithManager___bloc
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(AXAuditElementAttribute *)v5 valueType];
-      if (v6 == [(AXAuditElementAttribute *)self valueType]&& (v7 = [(AXAuditElementAttribute *)v5 isSettable], v7 == [(AXAuditElementAttribute *)self isSettable]) && (v8 = [(AXAuditElementAttribute *)v5 performsAction], v8 == [(AXAuditElementAttribute *)self performsAction]) && (v9 = [(AXAuditElementAttribute *)v5 isInternal], v9 == [(AXAuditElementAttribute *)self isInternal]))
+      v5 = equalCopy;
+      valueType = [(AXAuditElementAttribute *)v5 valueType];
+      if (valueType == [(AXAuditElementAttribute *)self valueType]&& (v7 = [(AXAuditElementAttribute *)v5 isSettable], v7 == [(AXAuditElementAttribute *)self isSettable]) && (v8 = [(AXAuditElementAttribute *)v5 performsAction], v8 == [(AXAuditElementAttribute *)self performsAction]) && (v9 = [(AXAuditElementAttribute *)v5 isInternal], v9 == [(AXAuditElementAttribute *)self isInternal]))
       {
-        v12 = [(AXAuditElementAttribute *)self attributeName];
-        v13 = [(AXAuditElementAttribute *)v5 attributeName];
-        if (v12 | v13 && ![v12 isEqual:v13])
+        attributeName = [(AXAuditElementAttribute *)self attributeName];
+        attributeName2 = [(AXAuditElementAttribute *)v5 attributeName];
+        if (attributeName | attributeName2 && ![attributeName isEqual:attributeName2])
         {
           v10 = 0;
         }
 
         else
         {
-          v14 = [(AXAuditElementAttribute *)self humanReadableName];
-          v15 = [(AXAuditElementAttribute *)v5 humanReadableName];
-          if (v14 | v15 && ![v14 isEqual:v15])
+          humanReadableName = [(AXAuditElementAttribute *)self humanReadableName];
+          humanReadableName2 = [(AXAuditElementAttribute *)v5 humanReadableName];
+          if (humanReadableName | humanReadableName2 && ![humanReadableName isEqual:humanReadableName2])
           {
             v10 = 0;
           }
 
           else
           {
-            v16 = [(AXAuditElementAttribute *)self developerAPISelector];
-            v17 = [(AXAuditElementAttribute *)v5 developerAPISelector];
-            v10 = !(v16 | v17) || [v16 isEqual:v17];
+            developerAPISelector = [(AXAuditElementAttribute *)self developerAPISelector];
+            developerAPISelector2 = [(AXAuditElementAttribute *)v5 developerAPISelector];
+            v10 = !(developerAPISelector | developerAPISelector2) || [developerAPISelector isEqual:developerAPISelector2];
           }
         }
       }
@@ -319,7 +319,7 @@ void __66__AXAuditElementAttribute_registerTransportableObjectWithManager___bloc
   v10.receiver = self;
   v10.super_class = AXAuditElementAttribute;
   v3 = [(AXAuditElementAttribute *)&v10 description];
-  v4 = [(AXAuditElementAttribute *)self attributeName];
+  attributeName = [(AXAuditElementAttribute *)self attributeName];
   if ([(AXAuditElementAttribute *)self isSettable])
   {
     v5 = @"settable";
@@ -330,14 +330,14 @@ void __66__AXAuditElementAttribute_registerTransportableObjectWithManager___bloc
     v5 = &stru_284FBB130;
   }
 
-  v6 = [(AXAuditElementAttribute *)self isInternal];
+  isInternal = [(AXAuditElementAttribute *)self isInternal];
   v7 = @"internal";
-  if (!v6)
+  if (!isInternal)
   {
     v7 = &stru_284FBB130;
   }
 
-  v8 = [v3 stringByAppendingFormat:@"name:%@ %@ %@", v4, v5, v7];
+  v8 = [v3 stringByAppendingFormat:@"name:%@ %@ %@", attributeName, v5, v7];
 
   return v8;
 }

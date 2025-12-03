@@ -1,98 +1,98 @@
 @interface CKRecord
-+ (id)createRecordWithName:(id)a3 recordType:(id)a4 recordZone:(id)a5;
++ (id)createRecordWithName:(id)name recordType:(id)type recordZone:(id)zone;
 - (id)createMediaServiceObjectFromRecord;
-- (id)recordFieldForKey:(id)a3;
+- (id)recordFieldForKey:(id)key;
 - (void)_attemptToLoadPublicInfoAgain;
-- (void)populateCKRecordInfo:(id)a3 userInfo:(id)a4 recordType:(id)a5;
-- (void)setRecordFieldForKey:(id)a3 value:(id)a4;
+- (void)populateCKRecordInfo:(id)info userInfo:(id)userInfo recordType:(id)type;
+- (void)setRecordFieldForKey:(id)key value:(id)value;
 @end
 
 @implementation CKRecord
 
-+ (id)createRecordWithName:(id)a3 recordType:(id)a4 recordZone:(id)a5
++ (id)createRecordWithName:(id)name recordType:(id)type recordZone:(id)zone
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[CKRecordID alloc] initWithRecordName:v9 zoneID:v7];
+  zoneCopy = zone;
+  typeCopy = type;
+  nameCopy = name;
+  v10 = [[CKRecordID alloc] initWithRecordName:nameCopy zoneID:zoneCopy];
 
-  v11 = [[CKRecord alloc] initWithRecordType:v8 recordID:v10];
+  v11 = [[CKRecord alloc] initWithRecordType:typeCopy recordID:v10];
 
   return v11;
 }
 
-- (id)recordFieldForKey:(id)a3
+- (id)recordFieldForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CKRecord *)self encryptedValues];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  encryptedValues = [(CKRecord *)self encryptedValues];
+  v6 = [encryptedValues objectForKeyedSubscript:keyCopy];
 
   return v6;
 }
 
-- (void)setRecordFieldForKey:(id)a3 value:(id)a4
+- (void)setRecordFieldForKey:(id)key value:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CKRecord *)self encryptedValues];
-  [v8 setObject:v6 forKeyedSubscript:v7];
+  valueCopy = value;
+  keyCopy = key;
+  encryptedValues = [(CKRecord *)self encryptedValues];
+  [encryptedValues setObject:valueCopy forKeyedSubscript:keyCopy];
 }
 
-- (void)populateCKRecordInfo:(id)a3 userInfo:(id)a4 recordType:(id)a5
+- (void)populateCKRecordInfo:(id)info userInfo:(id)userInfo recordType:(id)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  userInfoCopy = userInfo;
+  typeCopy = type;
   v11 = sub_100030FE4();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v38 = 138478339;
-    v39 = v10;
+    v39 = typeCopy;
     v40 = 2113;
-    v41 = v8;
+    v41 = infoCopy;
     v42 = 2113;
-    v43 = v9;
+    v43 = userInfoCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Creating record RecordType: %{private}@ and ServiceInfo: %{private}@ \n and UserInfo %{private}@", &v38, 0x20u);
   }
 
-  if ([v10 isEqualToString:MSServiceAccountRecordType])
+  if ([typeCopy isEqualToString:MSServiceAccountRecordType])
   {
     v12 = MSHomeParticipantHomeIdentifier;
-    v13 = [v9 objectForKey:kCKDatabaseAccessUserInfoHomeIDKey];
+    v13 = [userInfoCopy objectForKey:kCKDatabaseAccessUserInfoHomeIDKey];
     [(CKRecord *)self setRecordFieldForKey:v12 value:v13];
 
     v14 = MSHomeParticipantHomeUserIdentifier;
-    v15 = [v9 objectForKey:kCKDatabaseAccessUserInfoHomeUserIDKey];
+    v15 = [userInfoCopy objectForKey:kCKDatabaseAccessUserInfoHomeUserIDKey];
     [(CKRecord *)self setRecordFieldForKey:v14 value:v15];
 
     v16 = MediaServiceIdentifier;
-    v17 = [v8 serviceID];
-    v18 = [v17 UUIDString];
-    [(CKRecord *)self setRecordFieldForKey:v16 value:v18];
+    serviceID = [infoCopy serviceID];
+    uUIDString = [serviceID UUIDString];
+    [(CKRecord *)self setRecordFieldForKey:v16 value:uUIDString];
 
     v19 = MediaServiceAccountName;
-    v20 = [v8 accountName];
-    [(CKRecord *)self setRecordFieldForKey:v19 value:v20];
+    accountName = [infoCopy accountName];
+    [(CKRecord *)self setRecordFieldForKey:v19 value:accountName];
 
     v21 = MediaServiceConfigurationURL;
-    v22 = [v8 configURL];
-    v23 = [v22 absoluteString];
-    [(CKRecord *)self setRecordFieldForKey:v21 value:v23];
+    configURL = [infoCopy configURL];
+    absoluteString = [configURL absoluteString];
+    [(CKRecord *)self setRecordFieldForKey:v21 value:absoluteString];
 
     v24 = MediaServiceUpdateListeningHistory;
-    v25 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v8 updateListeningHistoryEnabled]);
+    v25 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [infoCopy updateListeningHistoryEnabled]);
     [(CKRecord *)self setRecordFieldForKey:v24 value:v25];
 
     v26 = MediaServiceAuthFatalError;
-    v27 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v8 authFatalError]);
+    v27 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [infoCopy authFatalError]);
     [(CKRecord *)self setRecordFieldForKey:v26 value:v27];
 
-    v28 = [v8 authConfiguration];
+    authConfiguration = [infoCopy authConfiguration];
 
-    if (v28)
+    if (authConfiguration)
     {
-      v29 = [v8 authConfiguration];
-      v30 = [NSKeyedArchiver archivedDataWithRootObject:v29 requiringSecureCoding:1 error:0];
+      authConfiguration2 = [infoCopy authConfiguration];
+      v30 = [NSKeyedArchiver archivedDataWithRootObject:authConfiguration2 requiringSecureCoding:1 error:0];
 
       if (v30)
       {
@@ -100,32 +100,32 @@
       }
     }
 
-    v31 = [v8 authCredential];
+    authCredential = [infoCopy authCredential];
 
-    if (v31)
+    if (authCredential)
     {
-      v32 = [v8 authCredential];
-      v33 = [NSKeyedArchiver archivedDataWithRootObject:v32 requiringSecureCoding:1 error:0];
+      authCredential2 = [infoCopy authCredential];
+      serviceID2 = [NSKeyedArchiver archivedDataWithRootObject:authCredential2 requiringSecureCoding:1 error:0];
 
-      if (v33)
+      if (serviceID2)
       {
-        [(CKRecord *)self setRecordFieldForKey:MediaServiceAuthCredential value:v33];
+        [(CKRecord *)self setRecordFieldForKey:MediaServiceAuthCredential value:serviceID2];
       }
 
       goto LABEL_13;
     }
   }
 
-  else if ([v10 isEqualToString:MSDefaultServiceRecordType])
+  else if ([typeCopy isEqualToString:MSDefaultServiceRecordType])
   {
     v34 = MSHomeParticipantHomeUserIdentifier;
-    v35 = [v9 objectForKey:kCKDatabaseAccessUserInfoHomeUserIDKey];
+    v35 = [userInfoCopy objectForKey:kCKDatabaseAccessUserInfoHomeUserIDKey];
     [(CKRecord *)self setRecordFieldForKey:v34 value:v35];
 
     v36 = MediaServiceIdentifier;
-    v33 = [v8 serviceID];
-    v37 = [v33 UUIDString];
-    [(CKRecord *)self setRecordFieldForKey:v36 value:v37];
+    serviceID2 = [infoCopy serviceID];
+    uUIDString2 = [serviceID2 UUIDString];
+    [(CKRecord *)self setRecordFieldForKey:v36 value:uUIDString2];
 
 LABEL_13:
   }
@@ -171,13 +171,13 @@ LABEL_23:
     }
   }
 
-  v13 = [(CKRecord *)self recordType];
-  v14 = [v13 isEqualToString:MSServiceAccountRecordType];
+  recordType = [(CKRecord *)self recordType];
+  v14 = [recordType isEqualToString:MSServiceAccountRecordType];
 
   if (!v14)
   {
-    v42 = [(CKRecord *)self recordType];
-    v43 = [v42 isEqualToString:MSDefaultServiceRecordType];
+    recordType2 = [(CKRecord *)self recordType];
+    v43 = [recordType2 isEqualToString:MSDefaultServiceRecordType];
 
     if (v43)
     {
@@ -216,9 +216,9 @@ LABEL_23:
     v24 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v22 error:0];
     [v16 setAuthConfiguration:v24];
 
-    v25 = [v16 authConfiguration];
+    authConfiguration = [v16 authConfiguration];
 
-    if (!v25)
+    if (!authConfiguration)
     {
       v26 = [CMSAuthenticationConfiguration authConfigurationFromMSAuthData:v22];
       [v16 setAuthConfiguration:v26];
@@ -230,9 +230,9 @@ LABEL_23:
     v27 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v23 error:0];
     [v16 setAuthCredential:v27];
 
-    v28 = [v16 authCredential];
+    authCredential = [v16 authCredential];
 
-    if (!v28)
+    if (!authCredential)
     {
       v29 = [CMSAuthenticationCredential authCredentialFromMSAuthData:v23];
       [v16 setAuthCredential:v29];
@@ -241,11 +241,11 @@ LABEL_23:
 
   v30 = [MSDTransactionTask createTransactionWithIdentifier:@"com.apple.mediasetupd.imageCaching"];
   v31 = [MSDArtworkManager alloc];
-  v32 = [v5 serviceIconPath];
-  v33 = [(MSDArtworkManager *)v31 initWithServiceID:v15 remoteImageURL:v32];
+  serviceIconPath = [v5 serviceIconPath];
+  v33 = [(MSDArtworkManager *)v31 initWithServiceID:v15 remoteImageURL:serviceIconPath];
 
-  v34 = [(MSDArtworkManager *)v33 getLocalCachedImageURL];
-  [v16 setIconImageURL:v34];
+  getLocalCachedImageURL = [(MSDArtworkManager *)v33 getLocalCachedImageURL];
+  [v16 setIconImageURL:getLocalCachedImageURL];
 
   [v30 releaseTransaction];
 LABEL_24:

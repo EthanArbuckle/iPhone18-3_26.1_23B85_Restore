@@ -1,46 +1,46 @@
 @interface CompletionGroup
-- (CompletionGroup)initWithTitle:(id)a3 groupIdentifier:(id)a4 completions:(id)a5 query:(id)a6 maximumNumberOfCompletions:(unint64_t)a7;
+- (CompletionGroup)initWithTitle:(id)title groupIdentifier:(id)identifier completions:(id)completions query:(id)query maximumNumberOfCompletions:(unint64_t)ofCompletions;
 - (NSString)defaultHeaderTitle;
 - (id)headerView;
-- (void)configureHeaderView:(id)a3 forCompletionList:(id)a4;
-- (void)setCompletions:(id)a3;
-- (void)setQuery:(id)a3;
+- (void)configureHeaderView:(id)view forCompletionList:(id)list;
+- (void)setCompletions:(id)completions;
+- (void)setQuery:(id)query;
 @end
 
 @implementation CompletionGroup
 
-- (CompletionGroup)initWithTitle:(id)a3 groupIdentifier:(id)a4 completions:(id)a5 query:(id)a6 maximumNumberOfCompletions:(unint64_t)a7
+- (CompletionGroup)initWithTitle:(id)title groupIdentifier:(id)identifier completions:(id)completions query:(id)query maximumNumberOfCompletions:(unint64_t)ofCompletions
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  titleCopy = title;
+  identifierCopy = identifier;
+  completionsCopy = completions;
+  queryCopy = query;
   v29.receiver = self;
   v29.super_class = CompletionGroup;
   v16 = [(SFResultSection *)&v29 init];
   if (v16)
   {
-    v17 = [v13 copy];
+    v17 = [identifierCopy copy];
     groupIdentifier = v16->_groupIdentifier;
     v16->_groupIdentifier = v17;
 
-    [(SFResultSection *)v16 setTitle:v12];
-    [(SFResultSection *)v16 setMaxInitiallyVisibleResults:a7];
-    [(CompletionGroup *)v16 setCompletions:v14];
-    v19 = [(NSArray *)v16->_completions firstObject];
-    if (objc_opt_respondsToSelector() & 1) != 0 && [v19 needsSectionHeader] && (objc_opt_respondsToSelector())
+    [(SFResultSection *)v16 setTitle:titleCopy];
+    [(SFResultSection *)v16 setMaxInitiallyVisibleResults:ofCompletions];
+    [(CompletionGroup *)v16 setCompletions:completionsCopy];
+    firstObject = [(NSArray *)v16->_completions firstObject];
+    if (objc_opt_respondsToSelector() & 1) != 0 && [firstObject needsSectionHeader] && (objc_opt_respondsToSelector())
     {
-      v20 = [v19 completionTableHeaderViewReuseIdentifier];
-      v21 = [v20 copy];
+      completionTableHeaderViewReuseIdentifier = [firstObject completionTableHeaderViewReuseIdentifier];
+      v21 = [completionTableHeaderViewReuseIdentifier copy];
       headerViewReuseIdentifier = v16->_headerViewReuseIdentifier;
       v16->_headerViewReuseIdentifier = v21;
     }
 
-    v23 = [v14 firstObject];
-    v24 = [v23 sfSearchResultValue];
-    v25 = [v24 sectionBundleIdentifier];
+    firstObject2 = [completionsCopy firstObject];
+    sfSearchResultValue = [firstObject2 sfSearchResultValue];
+    sectionBundleIdentifier = [sfSearchResultValue sectionBundleIdentifier];
 
-    if (!v25)
+    if (!sectionBundleIdentifier)
     {
       v26 = WBS_LOG_CHANNEL_PREFIXParsec();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -49,8 +49,8 @@
       }
     }
 
-    [(SFResultSection *)v16 setBundleIdentifier:v25];
-    [(CompletionGroup *)v16 setQuery:v15];
+    [(SFResultSection *)v16 setBundleIdentifier:sectionBundleIdentifier];
+    [(CompletionGroup *)v16 setQuery:queryCopy];
     v27 = v16;
   }
 
@@ -59,54 +59,54 @@
 
 - (id)headerView
 {
-  v2 = [(NSArray *)self->_completions firstObject];
+  firstObject = [(NSArray *)self->_completions firstObject];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 completionTableHeaderView];
+    completionTableHeaderView = [firstObject completionTableHeaderView];
   }
 
   else
   {
-    v3 = 0;
+    completionTableHeaderView = 0;
   }
 
-  return v3;
+  return completionTableHeaderView;
 }
 
-- (void)configureHeaderView:(id)a3 forCompletionList:(id)a4
+- (void)configureHeaderView:(id)view forCompletionList:(id)list
 {
-  v6 = a3;
-  v5 = [(NSArray *)self->_completions firstObject];
+  viewCopy = view;
+  firstObject = [(NSArray *)self->_completions firstObject];
   if (objc_opt_respondsToSelector())
   {
-    [v5 configureCompletionTableHeaderView:v6 forCompletionListGroup:self];
+    [firstObject configureCompletionTableHeaderView:viewCopy forCompletionListGroup:self];
   }
 }
 
 - (NSString)defaultHeaderTitle
 {
-  v3 = [(NSArray *)self->_completions firstObject];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ![v3 usesDefaultHeaderView])
+  firstObject = [(NSArray *)self->_completions firstObject];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ![firstObject usesDefaultHeaderView])
   {
-    v4 = 0;
+    title = 0;
   }
 
   else
   {
-    v4 = [(SFResultSection *)self title];
+    title = [(SFResultSection *)self title];
   }
 
-  return v4;
+  return title;
 }
 
-- (void)setCompletions:(id)a3
+- (void)setCompletions:(id)completions
 {
-  v4 = a3;
-  if (self->_completions != v4)
+  completionsCopy = completions;
+  if (self->_completions != completionsCopy)
   {
-    v9 = v4;
-    v5 = [(SFResultSection *)self maxInitiallyVisibleResults];
-    if (v5 && v5 < [(NSArray *)v9 count])
+    v9 = completionsCopy;
+    maxInitiallyVisibleResults = [(SFResultSection *)self maxInitiallyVisibleResults];
+    if (maxInitiallyVisibleResults && maxInitiallyVisibleResults < [(NSArray *)v9 count])
     {
       v6 = [(NSArray *)v9 subarrayWithRange:0, [(SFResultSection *)self maxInitiallyVisibleResults]];
     }
@@ -122,23 +122,23 @@
     v8 = [(NSArray *)self->_completions safari_mapObjectsUsingBlock:&__block_literal_global_17];
     [(SFResultSection *)self setResults:v8];
 
-    v4 = v9;
+    completionsCopy = v9;
   }
 }
 
-- (void)setQuery:(id)a3
+- (void)setQuery:(id)query
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  queryCopy = query;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_query, a3);
+    objc_storeStrong(&self->_query, query);
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(CompletionGroup *)self completions];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    completions = [(CompletionGroup *)self completions];
+    v7 = [completions countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -150,20 +150,20 @@
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(completions);
           }
 
           v11 = *(*(&v12 + 1) + 8 * v10);
           if (objc_opt_respondsToSelector())
           {
-            [v11 setQuery:v5];
+            [v11 setQuery:queryCopy];
           }
 
           ++v10;
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [completions countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);

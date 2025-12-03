@@ -1,32 +1,32 @@
 @interface LNUpdatableEntitySystemProtocolMetadata
-- (BOOL)isEqual:(id)a3;
-- (LNUpdatableEntitySystemProtocolMetadata)initWithActionIdentifier:(id)a3;
-- (LNUpdatableEntitySystemProtocolMetadata)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNUpdatableEntitySystemProtocolMetadata)initWithActionIdentifier:(id)identifier;
+- (LNUpdatableEntitySystemProtocolMetadata)initWithCoder:(id)coder;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNUpdatableEntitySystemProtocolMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [(LNUpdatableEntitySystemProtocolMetadata *)self actionIdentifier];
-      v8 = [(LNUpdatableEntitySystemProtocolMetadata *)v6 actionIdentifier];
-      v9 = v7;
-      v10 = v8;
+      actionIdentifier = [(LNUpdatableEntitySystemProtocolMetadata *)self actionIdentifier];
+      actionIdentifier2 = [(LNUpdatableEntitySystemProtocolMetadata *)v6 actionIdentifier];
+      v9 = actionIdentifier;
+      v10 = actionIdentifier2;
       v11 = v10;
       if (v9 == v10)
       {
@@ -54,8 +54,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(LNUpdatableEntitySystemProtocolMetadata *)self actionIdentifier];
-  v3 = [v2 hash];
+  actionIdentifier = [(LNUpdatableEntitySystemProtocolMetadata *)self actionIdentifier];
+  v3 = [actionIdentifier hash];
 
   return v3;
 }
@@ -65,38 +65,38 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNUpdatableEntitySystemProtocolMetadata *)self actionIdentifier];
-  v7 = [v3 stringWithFormat:@"<%@: %p, entity: %@>", v5, self, v6];
+  actionIdentifier = [(LNUpdatableEntitySystemProtocolMetadata *)self actionIdentifier];
+  v7 = [v3 stringWithFormat:@"<%@: %p, entity: %@>", v5, self, actionIdentifier];
 
   return v7;
 }
 
-- (LNUpdatableEntitySystemProtocolMetadata)initWithCoder:(id)a3
+- (LNUpdatableEntitySystemProtocolMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionIdentifier"];
 
   v6 = [(LNUpdatableEntitySystemProtocolMetadata *)self initWithActionIdentifier:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNUpdatableEntitySystemProtocolMetadata *)self actionIdentifier];
-  [v4 encodeObject:v5 forKey:@"actionIdentifier"];
+  coderCopy = coder;
+  actionIdentifier = [(LNUpdatableEntitySystemProtocolMetadata *)self actionIdentifier];
+  [coderCopy encodeObject:actionIdentifier forKey:@"actionIdentifier"];
 }
 
-- (LNUpdatableEntitySystemProtocolMetadata)initWithActionIdentifier:(id)a3
+- (LNUpdatableEntitySystemProtocolMetadata)initWithActionIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = LNUpdatableEntitySystemProtocolMetadata;
   v6 = [(LNUpdatableEntitySystemProtocolMetadata *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_actionIdentifier, a3);
+    objc_storeStrong(&v6->_actionIdentifier, identifier);
     v8 = v7;
   }
 

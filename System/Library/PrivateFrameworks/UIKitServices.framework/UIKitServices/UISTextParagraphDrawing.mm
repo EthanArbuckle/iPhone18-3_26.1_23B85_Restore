@@ -1,29 +1,29 @@
 @interface UISTextParagraphDrawing
 - (CGRect)alignmentRect;
 - (CGSize)drawingSize;
-- (UISTextParagraphDrawing)initWithString:(id)a3 attributes:(__CFDictionary *)a4 size:(CGSize)a5 numberOfLines:(unsigned __int8)a6 scale:(double)a7;
+- (UISTextParagraphDrawing)initWithString:(id)string attributes:(__CFDictionary *)attributes size:(CGSize)size numberOfLines:(unsigned __int8)lines scale:(double)scale;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3 atPoint:(CGPoint)a4;
+- (void)drawInContext:(CGContext *)context atPoint:(CGPoint)point;
 @end
 
 @implementation UISTextParagraphDrawing
 
-- (UISTextParagraphDrawing)initWithString:(id)a3 attributes:(__CFDictionary *)a4 size:(CGSize)a5 numberOfLines:(unsigned __int8)a6 scale:(double)a7
+- (UISTextParagraphDrawing)initWithString:(id)string attributes:(__CFDictionary *)attributes size:(CGSize)size numberOfLines:(unsigned __int8)lines scale:(double)scale
 {
-  v8 = a6;
-  height = a5.height;
-  width = a5.width;
+  linesCopy = lines;
+  height = size.height;
+  width = size.width;
   v36 = *MEMORY[0x1E69E9840];
-  v13 = a3;
+  stringCopy = string;
   v35.receiver = self;
   v35.super_class = UISTextParagraphDrawing;
   v14 = [(UISTextParagraphDrawing *)&v35 init];
   v15 = v14;
   if (v14)
   {
-    v14->_scale = a7;
+    v14->_scale = scale;
     Default = CFAllocatorGetDefault();
-    v17 = CFAttributedStringCreate(Default, v13, a4);
+    v17 = CFAttributedStringCreate(Default, stringCopy, attributes);
     v15->_textString = v17;
     v18 = CTFramesetterCreateWithAttributedString(v17);
     if (height <= 0.0)
@@ -48,13 +48,13 @@
     v15->_frame = Frame;
     Lines = CTFrameGetLines(Frame);
     Count = CFArrayGetCount(Lines);
-    v27 = v8;
-    if (Count < v8)
+    v27 = linesCopy;
+    if (Count < linesCopy)
     {
       v27 = Count;
     }
 
-    if (!v8)
+    if (!linesCopy)
     {
       v27 = Count;
     }
@@ -103,10 +103,10 @@
   return result;
 }
 
-- (void)drawInContext:(CGContext *)a3 atPoint:(CGPoint)a4
+- (void)drawInContext:(CGContext *)context atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v36 = *MEMORY[0x1E69E9840];
   Lines = CTFrameGetLines(self->_frame);
   Count = CFArrayGetCount(Lines);
@@ -130,11 +130,11 @@
     transform.d = -1.0;
     transform.tx = x;
     transform.ty = v12;
-    CGContextConcatCTM(a3, &transform);
+    CGContextConcatCTM(context, &transform);
     v13 = CGContextSetFontRenderingStyle();
     if (self->_frameSize.height == 10000.0 && self->_lineCount == Count)
     {
-      CTFrameDraw(self->_frame, a3);
+      CTFrameDraw(self->_frame, context);
     }
 
     else
@@ -158,8 +158,8 @@
         do
         {
           ValueAtIndex = CFArrayGetValueAtIndex(v16, v18);
-          CGContextSetTextPosition(a3, *(p_y - 1), *p_y);
-          CTLineDraw(ValueAtIndex, a3);
+          CGContextSetTextPosition(context, *(p_y - 1), *p_y);
+          CTLineDraw(ValueAtIndex, context);
           ++v18;
           v21 = self->_lineCount - 1;
           p_y += 2;
@@ -196,8 +196,8 @@
       }
 
       PenOffsetForFlush = CTLineGetPenOffsetForFlush(TruncatedLineWithTokenHandler, v32, self->_frameSize.width);
-      CGContextSetTextPosition(a3, PenOffsetForFlush, v15[self->_lineCount - 1].y);
-      CTLineDraw(TruncatedLineWithTokenHandler, a3);
+      CGContextSetTextPosition(context, PenOffsetForFlush, v15[self->_lineCount - 1].y);
+      CTLineDraw(TruncatedLineWithTokenHandler, context);
       if (v28)
       {
         CFRelease(v28);

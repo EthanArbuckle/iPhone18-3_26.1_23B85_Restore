@@ -1,10 +1,10 @@
 @interface AXRemoteElement
-+ (BOOL)registerRemoteElement:(id)a3 remotePort:(unsigned int)a4;
-+ (id)remoteElementForBlock:(id)a3;
-+ (id)remoteElementsForBlock:(id)a3;
-+ (id)remoteElementsForContextId:(unsigned int)a3;
++ (BOOL)registerRemoteElement:(id)element remotePort:(unsigned int)port;
++ (id)remoteElementForBlock:(id)block;
++ (id)remoteElementsForBlock:(id)block;
++ (id)remoteElementsForContextId:(unsigned int)id;
 + (void)initialize;
-- (AXRemoteElement)initWithUUID:(id)a3 andRemotePid:(int)a4 andContextId:(unsigned int)a5;
+- (AXRemoteElement)initWithUUID:(id)d andRemotePid:(int)pid andContextId:(unsigned int)id;
 - (AXRemoteElementChildrenDelegate)remoteChildrenDelegate;
 - (BOOL)_accessibilityHasVisibleFrame;
 - (BOOL)_accessibilitySetNativeFocus;
@@ -14,7 +14,7 @@
 - (id)_accessibilitySortedElementsWithin;
 - (id)_accessibilityTextOperations;
 - (id)_accessibilityTextViewTextOperationResponder;
-- (id)_remoteElementWithAttribute:(int64_t)a3 limitToRemoteSubviews:(BOOL)a4;
+- (id)_remoteElementWithAttribute:(int64_t)attribute limitToRemoteSubviews:(BOOL)subviews;
 - (id)accessibilityContainer;
 - (id)accessibilityElements;
 - (id)description;
@@ -22,13 +22,13 @@
 - (unint64_t)uuidHash;
 - (unsigned)_accessibilityContextId;
 - (unsigned)contextId;
-- (void)_accessibilityIncreaseSelection:(id)a3;
-- (void)_accessibilitySetFocusOnElement:(BOOL)a3;
-- (void)_getRemoteValuesOffMainThread:(id)a3;
+- (void)_accessibilityIncreaseSelection:(id)selection;
+- (void)_accessibilitySetFocusOnElement:(BOOL)element;
+- (void)_getRemoteValuesOffMainThread:(id)thread;
 - (void)dealloc;
-- (void)getLeafElementsFromRemoteSide:(id)a3;
-- (void)setAccessibilityContainer:(id)a3;
-- (void)setMachPort:(unsigned int)a3;
+- (void)getLeafElementsFromRemoteSide:(id)side;
+- (void)setAccessibilityContainer:(id)container;
+- (void)setMachPort:(unsigned int)port;
 - (void)unregister;
 @end
 
@@ -53,18 +53,18 @@ uint64_t __29__AXRemoteElement_initialize__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (AXRemoteElement)initWithUUID:(id)a3 andRemotePid:(int)a4 andContextId:(unsigned int)a5
+- (AXRemoteElement)initWithUUID:(id)d andRemotePid:(int)pid andContextId:(unsigned int)id
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  v8 = a3;
+  v5 = *&id;
+  v6 = *&pid;
+  dCopy = d;
   v15.receiver = self;
   v15.super_class = AXRemoteElement;
   v9 = [(AXRemoteElement *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    [(AXRemoteElement *)v9 setUuid:v8];
+    [(AXRemoteElement *)v9 setUuid:dCopy];
     [(AXRemoteElement *)v10 setRemotePid:v6];
     [(AXRemoteElement *)v10 setContextId:v5];
     v11 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -82,30 +82,30 @@ uint64_t __29__AXRemoteElement_initialize__block_invoke()
 
 - (unsigned)contextId
 {
-  v3 = [(AXRemoteElement *)self contextRetrieval];
+  contextRetrieval = [(AXRemoteElement *)self contextRetrieval];
 
-  if (!v3)
+  if (!contextRetrieval)
   {
     return self->_contextId;
   }
 
-  v4 = [(AXRemoteElement *)self contextRetrieval];
-  v5 = v4[2]();
+  contextRetrieval2 = [(AXRemoteElement *)self contextRetrieval];
+  v5 = contextRetrieval2[2]();
 
   return v5;
 }
 
 - (int)remotePid
 {
-  v3 = [(AXRemoteElement *)self pidRetrieval];
+  pidRetrieval = [(AXRemoteElement *)self pidRetrieval];
 
-  if (!v3)
+  if (!pidRetrieval)
   {
     return self->_remotePid;
   }
 
-  v4 = [(AXRemoteElement *)self pidRetrieval];
-  v5 = v4[2]();
+  pidRetrieval2 = [(AXRemoteElement *)self pidRetrieval];
+  v5 = pidRetrieval2[2]();
 
   return v5;
 }
@@ -133,34 +133,34 @@ uint64_t __29__AXRemoteElement_initialize__block_invoke()
 
 - (id)_accessibilityTextOperations
 {
-  v2 = [(AXRemoteElement *)self accessibilityContainer];
-  v3 = [v2 _accessibilityTextOperations];
+  accessibilityContainer = [(AXRemoteElement *)self accessibilityContainer];
+  _accessibilityTextOperations = [accessibilityContainer _accessibilityTextOperations];
 
-  return v3;
+  return _accessibilityTextOperations;
 }
 
 - (id)_accessibilityTextViewTextOperationResponder
 {
   if ([(AXRemoteElement *)self onClientSide])
   {
-    v3 = [(AXRemoteElement *)self accessibilityContainer];
+    accessibilityContainer = [(AXRemoteElement *)self accessibilityContainer];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = AXRemoteElement;
-    v3 = [(AXRemoteElement *)&v5 _accessibilityTextViewTextOperationResponder];
+    accessibilityContainer = [(AXRemoteElement *)&v5 _accessibilityTextViewTextOperationResponder];
   }
 
-  return v3;
+  return accessibilityContainer;
 }
 
 - (id)_accessibilityHandwritingElement
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(AXRemoteElement *)self accessibilityElements];
-  v4 = [v3 count];
+  accessibilityElements = [(AXRemoteElement *)self accessibilityElements];
+  v4 = [accessibilityElements count];
 
   if (v4)
   {
@@ -183,8 +183,8 @@ uint64_t __29__AXRemoteElement_initialize__block_invoke()
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) _accessibilityResponderElement];
-          if ([v10 _accessibilitySupportsHandwriting])
+          _accessibilityResponderElement = [*(*(&v14 + 1) + 8 * i) _accessibilityResponderElement];
+          if ([_accessibilityResponderElement _accessibilitySupportsHandwriting])
           {
 
             goto LABEL_16;
@@ -204,41 +204,41 @@ uint64_t __29__AXRemoteElement_initialize__block_invoke()
 
   else
   {
-    v11 = [(AXRemoteElement *)self accessibilityContainer];
-    v12 = v11;
-    if (v11 != self)
+    accessibilityContainer = [(AXRemoteElement *)self accessibilityContainer];
+    v12 = accessibilityContainer;
+    if (accessibilityContainer != self)
     {
-      v10 = [(AXRemoteElement *)v11 _accessibilityHandwritingElement];
+      _accessibilityResponderElement = [(AXRemoteElement *)accessibilityContainer _accessibilityHandwritingElement];
 
       goto LABEL_16;
     }
   }
 
-  v10 = 0;
+  _accessibilityResponderElement = 0;
 LABEL_16:
 
-  return v10;
+  return _accessibilityResponderElement;
 }
 
-- (void)setAccessibilityContainer:(id)a3
+- (void)setAccessibilityContainer:(id)container
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 == self)
+  containerCopy = container;
+  if (containerCopy == self)
   {
     v5 = AXLogRemoteElement();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
       v7 = 138412546;
-      v8 = v4;
+      v8 = containerCopy;
       v9 = 2112;
-      v10 = v6;
+      v10 = callStackSymbols;
       _os_log_impl(&dword_1BF78E000, v5, OS_LOG_TYPE_DEFAULT, "Attempt made to set accessibilityContainer to self (%@), stack = %@", &v7, 0x16u);
     }
   }
 
-  objc_storeWeak(&self->_accessibilityContainer, v4);
+  objc_storeWeak(&self->_accessibilityContainer, containerCopy);
 }
 
 - (void)dealloc
@@ -283,15 +283,15 @@ LABEL_16:
 
 - (unint64_t)uuidHash
 {
-  v2 = [(AXRemoteElement *)self uuid];
-  v3 = [v2 hash];
+  uuid = [(AXRemoteElement *)self uuid];
+  v3 = [uuid hash];
 
   return v3;
 }
 
-- (void)_getRemoteValuesOffMainThread:(id)a3
+- (void)_getRemoteValuesOffMainThread:(id)thread
 {
-  v3 = a3;
+  threadCopy = thread;
   if (_getRemoteValuesOffMainThread__onceToken != -1)
   {
     [AXRemoteElement _getRemoteValuesOffMainThread:];
@@ -315,7 +315,7 @@ LABEL_16:
   v11[1] = 3221225472;
   v11[2] = __49__AXRemoteElement__getRemoteValuesOffMainThread___block_invoke_2;
   v11[3] = &unk_1E80D40A8;
-  v8 = v3;
+  v8 = threadCopy;
   v12 = v8;
   v13 = &v16;
   v14 = v5;
@@ -367,16 +367,16 @@ void __49__AXRemoteElement__getRemoteValuesOffMainThread___block_invoke_2(uint64
   }
 }
 
-- (void)getLeafElementsFromRemoteSide:(id)a3
+- (void)getLeafElementsFromRemoteSide:(id)side
 {
-  v4 = a3;
+  sideCopy = side;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__AXRemoteElement_getLeafElementsFromRemoteSide___block_invoke;
   v6[3] = &unk_1E80D40D0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = sideCopy;
+  v5 = sideCopy;
   [(AXRemoteElement *)self _getRemoteValuesOffMainThread:v6];
 }
 
@@ -392,7 +392,7 @@ void __49__AXRemoteElement_getLeafElementsFromRemoteSide___block_invoke(uint64_t
   }
 }
 
-- (id)_remoteElementWithAttribute:(int64_t)a3 limitToRemoteSubviews:(BOOL)a4
+- (id)_remoteElementWithAttribute:(int64_t)attribute limitToRemoteSubviews:(BOOL)subviews
 {
   v44 = *MEMORY[0x1E69E9840];
   AppElementWithPid = _AXUIElementCreateAppElementWithPid([(AXRemoteElement *)self remotePid]);
@@ -407,7 +407,7 @@ void __49__AXRemoteElement_getLeafElementsFromRemoteSide___block_invoke(uint64_t
     v37[2] = __69__AXRemoteElement__remoteElementWithAttribute_limitToRemoteSubviews___block_invoke;
     v37[3] = &unk_1E80D40F8;
     v37[6] = AppElementWithPid;
-    v37[7] = a3;
+    v37[7] = attribute;
     v37[4] = self;
     v37[5] = &v38;
     [(AXRemoteElement *)self _getRemoteValuesOffMainThread:v37];
@@ -418,10 +418,10 @@ void __49__AXRemoteElement_getLeafElementsFromRemoteSide___block_invoke(uint64_t
 
     if (!v39[3] || (TypeID = AXUIElementGetTypeID(), TypeID != CFGetTypeID(v39[3])))
     {
-      v20 = 0;
+      selfCopy = 0;
 LABEL_20:
       v21 = v39[3];
-      if (v20 != v21 && v21)
+      if (selfCopy != v21 && v21)
       {
         CFRelease(v21);
         v39[3] = 0;
@@ -434,9 +434,9 @@ LABEL_20:
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     v43 = 0;
-    if (!a4)
+    if (!subviews)
     {
-      v20 = v39[3];
+      selfCopy = v39[3];
       _Block_object_dispose(buf, 8);
       goto LABEL_29;
     }
@@ -521,9 +521,9 @@ LABEL_15:
 
           v13[3] = 0;
           v15 = pid;
-          v16 = [(AXRemoteElement *)self remotePid];
+          remotePid = [(AXRemoteElement *)self remotePid];
           _Block_object_dispose(&v27, 8);
-          if (v15 == v16)
+          if (v15 == remotePid)
           {
             goto LABEL_15;
           }
@@ -547,22 +547,22 @@ LABEL_34:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v24 = [*(*&buf[8] + 24) unsignedIntValue];
-      if (v24 == [(AXRemoteElement *)self contextId])
+      unsignedIntValue = [*(*&buf[8] + 24) unsignedIntValue];
+      if (unsignedIntValue == [(AXRemoteElement *)self contextId])
       {
-        v20 = v9;
+        selfCopy = v9;
       }
 
       else
       {
-        v20 = 0;
+        selfCopy = 0;
       }
 
       goto LABEL_40;
     }
 
 LABEL_39:
-    v20 = 0;
+    selfCopy = 0;
 LABEL_40:
     _Block_object_dispose(&v33, 8);
     v25 = *(*&buf[8] + 24);
@@ -582,7 +582,7 @@ LABEL_40:
     *buf = 138412546;
     *&buf[4] = self;
     *&buf[12] = 2048;
-    *&buf[14] = a3;
+    *&buf[14] = attribute;
     _os_log_impl(&dword_1BF78E000, v22, OS_LOG_TYPE_INFO, "%@: attempted to get remote element for attribute %ld but there was no mach port", buf, 0x16u);
   }
 
@@ -591,11 +591,11 @@ LABEL_40:
     CFRelease(AppElementWithPid);
   }
 
-  v20 = self;
+  selfCopy = self;
 LABEL_29:
   _Block_object_dispose(&v38, 8);
 
-  return v20;
+  return selfCopy;
 }
 
 uint64_t __69__AXRemoteElement__remoteElementWithAttribute_limitToRemoteSubviews___block_invoke(uint64_t a1)
@@ -627,22 +627,22 @@ uint64_t __69__AXRemoteElement__remoteElementWithAttribute_limitToRemoteSubviews
 {
   if ([(AXRemoteElement *)self onClientSide])
   {
-    v3 = [(AXRemoteElement *)self _remoteElementWithAttribute:2076 limitToRemoteSubviews:0];
+    _accessibilityActiveKeyboard = [(AXRemoteElement *)self _remoteElementWithAttribute:2076 limitToRemoteSubviews:0];
   }
 
   else
   {
-    v4 = [(AXRemoteElement *)self remoteChildrenDelegate];
-    v3 = [v4 _accessibilityActiveKeyboard];
+    remoteChildrenDelegate = [(AXRemoteElement *)self remoteChildrenDelegate];
+    _accessibilityActiveKeyboard = [remoteChildrenDelegate _accessibilityActiveKeyboard];
   }
 
-  return v3;
+  return _accessibilityActiveKeyboard;
 }
 
 - (id)_accessibilitySortedElementsWithin
 {
-  v3 = [(AXRemoteElement *)self remoteChildrenDelegate];
-  v4 = [v3 accessibilityRemoteSubstituteChildren:self];
+  remoteChildrenDelegate = [(AXRemoteElement *)self remoteChildrenDelegate];
+  v4 = [remoteChildrenDelegate accessibilityRemoteSubstituteChildren:self];
 
   return v4;
 }
@@ -650,8 +650,8 @@ uint64_t __69__AXRemoteElement__remoteElementWithAttribute_limitToRemoteSubviews
 - (id)accessibilityElements
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(AXRemoteElement *)self remoteChildrenDelegate];
-  v4 = [v3 accessibilityRemoteSubstituteChildren:self];
+  remoteChildrenDelegate = [(AXRemoteElement *)self remoteChildrenDelegate];
+  v4 = [remoteChildrenDelegate accessibilityRemoteSubstituteChildren:self];
 
   v14 = 0u;
   v15 = 0u;
@@ -700,24 +700,24 @@ void __40__AXRemoteElement_accessibilityElements__block_invoke(uint64_t a1, void
   [*(*(a1 + 32) + 32) addObject:v4];
 }
 
-+ (id)remoteElementForBlock:(id)a3
++ (id)remoteElementForBlock:(id)block
 {
-  v3 = [a1 remoteElementsForBlock:a3];
-  v4 = [v3 firstObject];
+  v3 = [self remoteElementsForBlock:block];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-+ (id)remoteElementsForBlock:(id)a3
++ (id)remoteElementsForBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   [CacheLock lock];
   v4 = Cache;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __42__AXRemoteElement_remoteElementsForBlock___block_invoke;
   v9[3] = &unk_1E80D41B8;
-  v5 = v3;
+  v5 = blockCopy;
   v10 = v5;
   v6 = [v4 indexesOfObjectsPassingTest:v9];
   if ([v6 count])
@@ -735,43 +735,43 @@ void __40__AXRemoteElement_accessibilityElements__block_invoke(uint64_t a1, void
   return v7;
 }
 
-+ (id)remoteElementsForContextId:(unsigned int)a3
++ (id)remoteElementsForContextId:(unsigned int)id
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __46__AXRemoteElement_remoteElementsForContextId___block_invoke;
   v5[3] = &__block_descriptor_36_e25_B16__0__AXRemoteElement_8l;
-  v6 = a3;
-  v3 = [a1 remoteElementsForBlock:v5];
+  idCopy = id;
+  v3 = [self remoteElementsForBlock:v5];
 
   return v3;
 }
 
-+ (BOOL)registerRemoteElement:(id)a3 remotePort:(unsigned int)a4
++ (BOOL)registerRemoteElement:(id)element remotePort:(unsigned int)port
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  elementCopy = element;
   v6 = AXLogRemoteElement();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v36 = v5;
+    v36 = elementCopy;
     _os_log_impl(&dword_1BF78E000, v6, OS_LOG_TYPE_INFO, "+[AXRemoteElement registerRemoteElement]: %@", buf, 0xCu);
   }
 
-  v7 = [v5 objectForKey:@"ax-pid"];
-  v8 = [v7 intValue];
+  v7 = [elementCopy objectForKey:@"ax-pid"];
+  intValue = [v7 intValue];
 
-  v9 = [v5 objectForKey:@"ax-context"];
-  v10 = [v9 unsignedIntValue];
+  v9 = [elementCopy objectForKey:@"ax-context"];
+  unsignedIntValue = [v9 unsignedIntValue];
 
-  v11 = [v5 objectForKey:@"ax-contextretrieval"];
-  v12 = [v5 objectForKey:@"ax-pidretrieval"];
-  v13 = [v5 objectForKey:@"ax-uuid"];
-  v14 = [v5 objectForKey:@"ax-register"];
-  v15 = [v14 BOOLValue];
+  v11 = [elementCopy objectForKey:@"ax-contextretrieval"];
+  v12 = [elementCopy objectForKey:@"ax-pidretrieval"];
+  v13 = [elementCopy objectForKey:@"ax-uuid"];
+  v14 = [elementCopy objectForKey:@"ax-register"];
+  bOOLValue = [v14 BOOLValue];
 
-  if (v15)
+  if (bOOLValue)
   {
     [CacheLock lock];
     v16 = Cache;
@@ -799,16 +799,16 @@ void __40__AXRemoteElement_accessibilityElements__block_invoke(uint64_t a1, void
 
     else
     {
-      v25 = [[AXRemoteElement alloc] initWithUUID:v18 andRemotePid:v8 andContextId:v10];
+      v25 = [[AXRemoteElement alloc] initWithUUID:v18 andRemotePid:intValue andContextId:unsignedIntValue];
       [(AXRemoteElement *)v25 setContextRetrieval:v11];
       [(AXRemoteElement *)v25 setPidRetrieval:v12];
-      [(AXRemoteElement *)v25 setMachPort:a4];
+      [(AXRemoteElement *)v25 setMachPort:port];
       v33 = @"element";
       v34 = v25;
       v21 = 1;
       v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
-      v27 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v27 postNotificationName:@"ax_remote_element_registered" object:0 userInfo:v26];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"ax_remote_element_registered" object:0 userInfo:v26];
     }
   }
 
@@ -856,12 +856,12 @@ uint64_t __52__AXRemoteElement_registerRemoteElement_remotePort___block_invoke_4
   return v4;
 }
 
-- (void)setMachPort:(unsigned int)a3
+- (void)setMachPort:(unsigned int)port
 {
   v5 = MEMORY[0x1E69E9A60];
-  if (a3)
+  if (port)
   {
-    v6 = mach_port_mod_refs(*MEMORY[0x1E69E9A60], a3, 0, 1) == 0;
+    v6 = mach_port_mod_refs(*MEMORY[0x1E69E9A60], port, 0, 1) == 0;
   }
 
   else
@@ -878,7 +878,7 @@ uint64_t __52__AXRemoteElement_registerRemoteElement_remotePort___block_invoke_4
 
   if (v6)
   {
-    self->_machPort = a3;
+    self->_machPort = port;
   }
 }
 
@@ -894,8 +894,8 @@ uint64_t __52__AXRemoteElement_registerRemoteElement_remotePort___block_invoke_4
 - (CGRect)accessibilityFrame
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [(AXRemoteElement *)self accessibilityElements];
-  if ([v3 count])
+  accessibilityElements = [(AXRemoteElement *)self accessibilityElements];
+  if ([accessibilityElements count])
   {
     v4 = *MEMORY[0x1E695F058];
     v5 = *(MEMORY[0x1E695F058] + 8);
@@ -905,8 +905,8 @@ uint64_t __52__AXRemoteElement_registerRemoteElement_remotePort___block_invoke_4
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v8 = v3;
-    v9 = [v8 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    accessibilityContainer = accessibilityElements;
+    v9 = [accessibilityContainer countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v9)
     {
       v10 = v9;
@@ -921,7 +921,7 @@ uint64_t __52__AXRemoteElement_registerRemoteElement_remotePort___block_invoke_4
         {
           if (*v32 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(accessibilityContainer);
           }
 
           v17 = *(*(&v31 + 1) + 8 * i);
@@ -950,7 +950,7 @@ uint64_t __52__AXRemoteElement_registerRemoteElement_remotePort___block_invoke_4
           v12 = v22;
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v10 = [accessibilityContainer countByEnumeratingWithState:&v31 objects:v35 count:16];
       }
 
       while (v10);
@@ -967,8 +967,8 @@ uint64_t __52__AXRemoteElement_registerRemoteElement_remotePort___block_invoke_4
 
   else
   {
-    v8 = [(AXRemoteElement *)self accessibilityContainer];
-    [v8 accessibilityFrame];
+    accessibilityContainer = [(AXRemoteElement *)self accessibilityContainer];
+    [accessibilityContainer accessibilityFrame];
     v15 = v23;
     v14 = v24;
     v13 = v25;
@@ -989,15 +989,15 @@ uint64_t __52__AXRemoteElement_registerRemoteElement_remotePort___block_invoke_4
 - (BOOL)_accessibilityHasVisibleFrame
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(AXRemoteElement *)self accessibilityElements];
-  if ([v3 count])
+  accessibilityElements = [(AXRemoteElement *)self accessibilityElements];
+  if ([accessibilityElements count])
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = v3;
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    accessibilityContainer = accessibilityElements;
+    v5 = [accessibilityContainer countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1008,17 +1008,17 @@ uint64_t __52__AXRemoteElement_registerRemoteElement_remotePort___block_invoke_4
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(accessibilityContainer);
           }
 
           if ([*(*(&v11 + 1) + 8 * i) _accessibilityHasVisibleFrame])
           {
-            v9 = 1;
+            _accessibilityHasVisibleFrame = 1;
             goto LABEL_13;
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [accessibilityContainer countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v6)
         {
           continue;
@@ -1029,50 +1029,50 @@ uint64_t __52__AXRemoteElement_registerRemoteElement_remotePort___block_invoke_4
     }
   }
 
-  v4 = [(AXRemoteElement *)self accessibilityContainer];
-  v9 = [v4 _accessibilityHasVisibleFrame];
+  accessibilityContainer = [(AXRemoteElement *)self accessibilityContainer];
+  _accessibilityHasVisibleFrame = [accessibilityContainer _accessibilityHasVisibleFrame];
 LABEL_13:
 
-  return v9;
+  return _accessibilityHasVisibleFrame;
 }
 
-- (void)_accessibilityIncreaseSelection:(id)a3
+- (void)_accessibilityIncreaseSelection:(id)selection
 {
-  v4 = a3;
-  v5 = [(AXRemoteElement *)self accessibilityContainer];
-  [v5 _accessibilityIncreaseSelection:v4];
+  selectionCopy = selection;
+  accessibilityContainer = [(AXRemoteElement *)self accessibilityContainer];
+  [accessibilityContainer _accessibilityIncreaseSelection:selectionCopy];
 }
 
 - (id)description
 {
   v14 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
-  v4 = [(AXRemoteElement *)self remotePid];
-  v5 = [(AXRemoteElement *)self machPort];
-  v6 = [(AXRemoteElement *)self contextId];
-  v7 = [(AXRemoteElement *)self uuidHash];
-  v8 = [(AXRemoteElement *)self uuid];
-  v9 = [(AXRemoteElement *)self accessibilityContainer];
-  v10 = [(AXRemoteElement *)self accessibilityContainer];
-  v11 = [v10 valueForKey:@"_accessibilityWindow"];
-  v12 = [v14 stringWithFormat:@"%@:%p - pid: %d, mach port: %d context: %u, uuid hash: %lld uuid: %@\n\tParent: %@[%@]", v3, self, v4, v5, v6, v7, v8, v9, v11];
+  remotePid = [(AXRemoteElement *)self remotePid];
+  machPort = [(AXRemoteElement *)self machPort];
+  contextId = [(AXRemoteElement *)self contextId];
+  uuidHash = [(AXRemoteElement *)self uuidHash];
+  uuid = [(AXRemoteElement *)self uuid];
+  accessibilityContainer = [(AXRemoteElement *)self accessibilityContainer];
+  accessibilityContainer2 = [(AXRemoteElement *)self accessibilityContainer];
+  v11 = [accessibilityContainer2 valueForKey:@"_accessibilityWindow"];
+  v12 = [v14 stringWithFormat:@"%@:%p - pid: %d, mach port: %d context: %u, uuid hash: %lld uuid: %@\n\tParent: %@[%@]", v3, self, remotePid, machPort, contextId, uuidHash, uuid, accessibilityContainer, v11];
 
   return v12;
 }
 
-- (void)_accessibilitySetFocusOnElement:(BOOL)a3
+- (void)_accessibilitySetFocusOnElement:(BOOL)element
 {
-  v3 = a3;
-  v4 = [(AXRemoteElement *)self accessibilityContainer];
-  [v4 _accessibilitySetFocusOnElement:v3];
+  elementCopy = element;
+  accessibilityContainer = [(AXRemoteElement *)self accessibilityContainer];
+  [accessibilityContainer _accessibilitySetFocusOnElement:elementCopy];
 }
 
 - (BOOL)_accessibilitySetNativeFocus
 {
-  v2 = [(AXRemoteElement *)self accessibilityContainer];
-  v3 = [v2 _accessibilitySetNativeFocus];
+  accessibilityContainer = [(AXRemoteElement *)self accessibilityContainer];
+  _accessibilitySetNativeFocus = [accessibilityContainer _accessibilitySetNativeFocus];
 
-  return v3;
+  return _accessibilitySetNativeFocus;
 }
 
 - (AXRemoteElementChildrenDelegate)remoteChildrenDelegate

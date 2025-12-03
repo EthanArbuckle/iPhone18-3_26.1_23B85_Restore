@@ -1,32 +1,32 @@
 @interface PKDashboardTitleHeaderView
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplate:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKDashboardTitleHeaderView)initWithFrame:(CGRect)a3;
-- (void)_buttonPressed:(id)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplate:(BOOL)template;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKDashboardTitleHeaderView)initWithFrame:(CGRect)frame;
+- (void)_buttonPressed:(id)pressed;
 - (void)_resetButtonInsets;
 - (void)createSubviews;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 - (void)resetFonts;
 - (void)resetTitleColor;
-- (void)setAction:(id)a3;
-- (void)setActionImage:(id)a3;
-- (void)setActionStyle:(unint64_t)a3;
-- (void)setActionTitle:(id)a3;
-- (void)setMenu:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitleStyle:(unint64_t)a3;
-- (void)setTopPadding:(double)a3;
+- (void)setAction:(id)action;
+- (void)setActionImage:(id)image;
+- (void)setActionStyle:(unint64_t)style;
+- (void)setActionTitle:(id)title;
+- (void)setMenu:(id)menu;
+- (void)setTitle:(id)title;
+- (void)setTitleStyle:(unint64_t)style;
+- (void)setTopPadding:(double)padding;
 @end
 
 @implementation PKDashboardTitleHeaderView
 
-- (PKDashboardTitleHeaderView)initWithFrame:(CGRect)a3
+- (PKDashboardTitleHeaderView)initWithFrame:(CGRect)frame
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = PKDashboardTitleHeaderView;
-  v3 = [(PKDashboardCollectionViewCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDashboardCollectionViewCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v3->_isCompactUI = PKUIGetMinScreenWidthType() == 0;
@@ -69,13 +69,13 @@ void __44__PKDashboardTitleHeaderView_initWithFrame___block_invoke(uint64_t a1, 
 
 - (void)createSubviews
 {
-  v3 = [(PKDashboardTitleHeaderView *)self contentView];
+  contentView = [(PKDashboardTitleHeaderView *)self contentView];
   v4 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   titleLabel = self->_titleLabel;
   self->_titleLabel = v4;
 
   [(UILabel *)self->_titleLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
-  [v3 addSubview:self->_titleLabel];
+  [contentView addSubview:self->_titleLabel];
   objc_initWeak(&location, self);
   v6 = MEMORY[0x1E69DC628];
   v17 = MEMORY[0x1E69E9820];
@@ -84,13 +84,13 @@ void __44__PKDashboardTitleHeaderView_initWithFrame___block_invoke(uint64_t a1, 
   v20 = &unk_1E8010A60;
   objc_copyWeak(&v21, &location);
   v7 = [v6 actionWithHandler:&v17];
-  v8 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-  v9 = [v8 background];
-  [v9 setCornerRadius:0.0];
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  background = [plainButtonConfiguration background];
+  [background setCornerRadius:0.0];
 
-  v10 = [(PKDashboardTitleHeaderView *)self traitCollection];
-  v11 = [v10 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v11);
+  traitCollection = [(PKDashboardTitleHeaderView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -102,16 +102,16 @@ void __44__PKDashboardTitleHeaderView_initWithFrame___block_invoke(uint64_t a1, 
     v13 = 8;
   }
 
-  [v8 setImagePlacement:v13];
-  v14 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v8 primaryAction:v7];
+  [plainButtonConfiguration setImagePlacement:v13];
+  v14 = [MEMORY[0x1E69DC738] buttonWithConfiguration:plainButtonConfiguration primaryAction:v7];
   actionButton = self->_actionButton;
   self->_actionButton = v14;
 
-  v16 = [(UIButton *)self->_actionButton titleLabel];
-  [v16 setLineBreakMode:4];
+  titleLabel = [(UIButton *)self->_actionButton titleLabel];
+  [titleLabel setLineBreakMode:4];
 
   [(UIButton *)self->_actionButton setAccessibilityIdentifier:*MEMORY[0x1E69B93D0]];
-  [v3 addSubview:self->_actionButton];
+  [contentView addSubview:self->_actionButton];
   [(PKDashboardTitleHeaderView *)self _resetButtonInsets];
   [(PKDashboardTitleHeaderView *)self resetFonts];
   [(PKDashboardTitleHeaderView *)self setAccessibilityIdentifier:*MEMORY[0x1E69B9840]];
@@ -132,7 +132,7 @@ void __44__PKDashboardTitleHeaderView_createSubviews__block_invoke(uint64_t a1, 
 - (void)resetFonts
 {
   v3 = PKUIGetMinScreenWidthType();
-  v16 = [MEMORY[0x1E69DCC28] extraProminentInsetGroupedHeaderConfiguration];
+  extraProminentInsetGroupedHeaderConfiguration = [MEMORY[0x1E69DCC28] extraProminentInsetGroupedHeaderConfiguration];
   actionButton = self->_actionButton;
   v5 = MEMORY[0x1E69DDD80];
   if (v3)
@@ -168,11 +168,11 @@ void __44__PKDashboardTitleHeaderView_createSubviews__block_invoke(uint64_t a1, 
     if (!titleStyle)
     {
       v12 = self->_titleLabel;
-      v13 = [v16 textProperties];
-      v14 = [v13 font];
-      [(UILabel *)v12 setFont:v14];
+      textProperties = [extraProminentInsetGroupedHeaderConfiguration textProperties];
+      font = [textProperties font];
+      [(UILabel *)v12 setFont:font];
 
-      [v16 directionalLayoutMargins];
+      [extraProminentInsetGroupedHeaderConfiguration directionalLayoutMargins];
       [(PKDashboardTitleHeaderView *)self setDirectionalLayoutMargins:?];
       goto LABEL_14;
     }
@@ -205,29 +205,29 @@ LABEL_14:
       return;
     }
 
-    v4 = [MEMORY[0x1E69DD050] _defaultTextColorForTableViewStyle:1 isSectionHeader:1];
+    labelColor = [MEMORY[0x1E69DD050] _defaultTextColorForTableViewStyle:1 isSectionHeader:1];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
   }
 
-  v5 = v4;
-  [(PKDashboardTitleHeaderView *)self setTitleColor:v4];
+  v5 = labelColor;
+  [(PKDashboardTitleHeaderView *)self setTitleColor:labelColor];
 }
 
 - (void)_resetButtonInsets
 {
-  v14 = [(UIButton *)self->_actionButton configuration];
-  [v14 contentInsets];
+  configuration = [(UIButton *)self->_actionButton configuration];
+  [configuration contentInsets];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PKDashboardTitleHeaderView *)self traitCollection];
-  v12 = [v11 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v12);
+  traitCollection = [(PKDashboardTitleHeaderView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (self->_actionStyle - 1 <= 1)
   {
@@ -246,8 +246,8 @@ LABEL_14:
     v4 = 3.0;
   }
 
-  [v14 setContentInsets:{v4, v6, v8, v10}];
-  [(UIButton *)self->_actionButton setConfiguration:v14];
+  [configuration setContentInsets:{v4, v6, v8, v10}];
+  [(UIButton *)self->_actionButton setConfiguration:configuration];
 }
 
 - (void)layoutSubviews
@@ -259,19 +259,19 @@ LABEL_14:
   [(PKDashboardTitleHeaderView *)self _layoutWithBounds:0 isTemplate:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKDashboardTitleHeaderView *)self _layoutWithBounds:1 isTemplate:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKDashboardTitleHeaderView *)self _layoutWithBounds:1 isTemplate:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplate:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplate:(BOOL)template
 {
-  width = a3.size.width;
-  x = a3.origin.x;
-  [(PKDashboardCollectionViewCell *)self horizontalInset:a3.origin.x];
+  width = bounds.size.width;
+  x = bounds.origin.x;
+  [(PKDashboardCollectionViewCell *)self horizontalInset:bounds.origin.x];
   v88 = width;
   v85 = v7;
   v8 = width + v7 * -2.0;
@@ -372,10 +372,10 @@ LABEL_14:
 
   topPadding = self->_topPadding;
   v21 = [(PKDashboardTitleHeaderView *)self traitCollection:4.0];
-  v22 = [v21 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v22);
+  preferredContentSizeCategory = [v21 preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-  v86 = [(PKDashboardTitleHeaderView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(PKDashboardTitleHeaderView *)self _shouldReverseLayoutDirection];
   if ([(NSString *)self->_actionTitle length])
   {
     v24 = 1;
@@ -391,8 +391,8 @@ LABEL_14:
   titleLabel = self->_titleLabel;
   if (titleLabel)
   {
-    v28 = [(UILabel *)titleLabel superview];
-    v29 = v28 != 0;
+    superview = [(UILabel *)titleLabel superview];
+    v29 = superview != 0;
   }
 
   else
@@ -461,11 +461,11 @@ LABEL_50:
   v40 = 1;
 LABEL_53:
   v46 = v11 + topPadding;
-  if (!a4)
+  if (!template)
   {
     v82 = v88 - v85;
     v47 = v88 - v85 - v30 - v18;
-    if (!v86)
+    if (!_shouldReverseLayoutDirection)
     {
       v47 = v85 + v18;
     }
@@ -480,7 +480,7 @@ LABEL_53:
         actionButton = self->_actionButton;
         v49 = v46 + v31;
         v50 = v82 - v33 - v18;
-        if (!v86)
+        if (!_shouldReverseLayoutDirection)
         {
           v50 = v85 + v18;
         }
@@ -504,20 +504,20 @@ LABEL_53:
         {
           [(UILabel *)self->_titleLabel frame];
           MinY = CGRectGetMinY(v90);
-          v55 = [(UILabel *)self->_titleLabel font];
-          [v55 ascender];
+          font = [(UILabel *)self->_titleLabel font];
+          [font ascender];
           v57 = MinY + v56;
-          v58 = [(UIButton *)self->_actionButton titleLabel];
-          v59 = [v58 font];
+          titleLabel = [(UIButton *)self->_actionButton titleLabel];
+          font2 = [titleLabel font];
 
-          [v59 ascender];
+          [font2 ascender];
           v61 = v60;
-          v62 = [(UIButton *)self->_actionButton configuration];
-          [v62 contentInsets];
+          configuration = [(UIButton *)self->_actionButton configuration];
+          [configuration contentInsets];
           v64 = v61 + v63;
 
           v65 = v85 + v83;
-          if (!v86)
+          if (!_shouldReverseLayoutDirection)
           {
             v65 = v82 - v33 - v83;
           }
@@ -532,28 +532,28 @@ LABEL_53:
         v71 = v70;
         [(UILabel *)self->_titleLabel frame];
         v73 = v72;
-        v74 = [(UILabel *)self->_titleLabel font];
+        font3 = [(UILabel *)self->_titleLabel font];
         if (actionStyle == 2)
         {
-          [v74 lineHeight];
+          [font3 lineHeight];
           v76 = v71 + (v73 - v75) * 0.5;
-          v77 = [(UILabel *)self->_titleLabel font];
-          [v77 lineHeight];
+          font4 = [(UILabel *)self->_titleLabel font];
+          [font4 lineHeight];
         }
 
         else
         {
-          [v74 ascender];
+          [font3 ascender];
           v76 = v71 + v73 - v79;
-          v77 = [(UILabel *)self->_titleLabel font];
-          [v77 ascender];
+          font4 = [(UILabel *)self->_titleLabel font];
+          [font4 ascender];
         }
 
         v80 = v76 + v78 * 0.5 - v32 * 0.5;
 
         actionButton = self->_actionButton;
         v81 = v85 + v83;
-        if (!v86)
+        if (!_shouldReverseLayoutDirection)
         {
           v81 = v82 - v33 - v83;
         }
@@ -589,11 +589,11 @@ LABEL_69:
   return result;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   v6 = self->_title;
-  v7 = v5;
+  v7 = titleCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -612,7 +612,7 @@ LABEL_69:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_title, a3);
+    objc_storeStrong(&self->_title, title);
     [(UILabel *)self->_titleLabel setText:v9];
     [(UILabel *)self->_titleLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
     [(PKDashboardTitleHeaderView *)self setNeedsLayout];
@@ -621,11 +621,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setActionTitle:(id)a3
+- (void)setActionTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   actionTitle = self->_actionTitle;
-  v10 = v5;
+  v10 = titleCopy;
   v7 = actionTitle;
   if (v7 == v10)
   {
@@ -644,7 +644,7 @@ LABEL_9:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_actionTitle, a3);
+    objc_storeStrong(&self->_actionTitle, title);
     actionImage = self->_actionImage;
     self->_actionImage = 0;
 
@@ -656,12 +656,12 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setActionImage:(id)a3
+- (void)setActionImage:(id)image
 {
-  v6 = a3;
+  imageCopy = image;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_actionImage, a3);
+    objc_storeStrong(&self->_actionImage, image);
     actionTitle = self->_actionTitle;
     self->_actionTitle = 0;
 
@@ -671,13 +671,13 @@ LABEL_9:
   }
 }
 
-- (void)setTitleStyle:(unint64_t)a3
+- (void)setTitleStyle:(unint64_t)style
 {
-  if (self->_titleStyle != a3)
+  if (self->_titleStyle != style)
   {
     v8 = v3;
-    self->_titleStyle = a3;
-    if (a3 == 3)
+    self->_titleStyle = style;
+    if (style == 3)
     {
       +[PKDashboardTitleHeaderView defaultTableHorizontalInset];
       [(PKDashboardCollectionViewCell *)self setHorizontalInset:?];
@@ -690,29 +690,29 @@ LABEL_9:
   }
 }
 
-- (void)setTopPadding:(double)a3
+- (void)setTopPadding:(double)padding
 {
-  if (self->_topPadding != a3)
+  if (self->_topPadding != padding)
   {
-    self->_topPadding = a3;
+    self->_topPadding = padding;
     [(PKDashboardTitleHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setActionStyle:(unint64_t)a3
+- (void)setActionStyle:(unint64_t)style
 {
-  if (self->_actionStyle != a3)
+  if (self->_actionStyle != style)
   {
-    self->_actionStyle = a3;
+    self->_actionStyle = style;
     [(PKDashboardTitleHeaderView *)self _resetButtonInsets];
 
     [(PKDashboardTitleHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(action);
   action = self->_action;
   self->_action = v4;
 
@@ -721,7 +721,7 @@ LABEL_9:
   [(UIButton *)actionButton setShowsMenuAsPrimaryAction:0];
 }
 
-- (void)_buttonPressed:(id)a3
+- (void)_buttonPressed:(id)pressed
 {
   action = self->_action;
   if (action)
@@ -730,12 +730,12 @@ LABEL_9:
   }
 }
 
-- (void)setMenu:(id)a3
+- (void)setMenu:(id)menu
 {
-  v5 = a3;
+  menuCopy = menu;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_menu, a3);
+    objc_storeStrong(&self->_menu, menu);
     [(UIButton *)self->_actionButton setMenu:self->_menu];
     [(UIButton *)self->_actionButton setShowsMenuAsPrimaryAction:1];
   }

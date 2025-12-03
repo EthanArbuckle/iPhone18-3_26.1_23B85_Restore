@@ -1,23 +1,23 @@
 @interface PurchaseIntentActionOperation
-- (PurchaseIntentActionOperation)initWithRequest:(id)a3;
+- (PurchaseIntentActionOperation)initWithRequest:(id)request;
 - (void)run;
 @end
 
 @implementation PurchaseIntentActionOperation
 
-- (PurchaseIntentActionOperation)initWithRequest:(id)a3
+- (PurchaseIntentActionOperation)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = PurchaseIntentActionOperation;
   v5 = [(PurchaseIntentActionOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 appBundleId];
+    appBundleId = [requestCopy appBundleId];
     appBundleId = v5->_appBundleId;
-    v5->_appBundleId = v6;
+    v5->_appBundleId = appBundleId;
 
-    v5->_action = [v4 action];
+    v5->_action = [requestCopy action];
   }
 
   return v5;
@@ -57,19 +57,19 @@ LABEL_17:
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    v11 = [v8 OSLogObject];
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v8 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v10 &= 2u;
     }
@@ -96,9 +96,9 @@ LABEL_15:
         goto LABEL_17;
       }
 
-      v11 = [NSString stringWithCString:v15 encoding:4, &v19, v17];
+      oSLogObject = [NSString stringWithCString:v15 encoding:4, &v19, v17];
       free(v15);
-      v16 = v11;
+      v16 = oSLogObject;
       SSFileLog();
     }
 

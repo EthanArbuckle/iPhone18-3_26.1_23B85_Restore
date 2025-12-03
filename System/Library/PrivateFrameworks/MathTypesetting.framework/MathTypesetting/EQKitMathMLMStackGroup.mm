@@ -1,16 +1,16 @@
 @interface EQKitMathMLMStackGroup
 - (BOOL)isBaseFontNameUsed;
-- (EQKitMathMLMStackGroup)initWithChildren:(id)a3;
+- (EQKitMathMLMStackGroup)initWithChildren:(id)children;
 - (const)mathMLAttributes;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (void)dealloc;
 @end
 
 @implementation EQKitMathMLMStackGroup
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
-  v5 = [a4 parseChildrenAsArrayFromXMLNode:a3];
+  v5 = [parser parseChildrenAsArrayFromXMLNode:node];
 
   return [(EQKitMathMLMStackGroup *)self initWithChildren:v5];
 }
@@ -24,7 +24,7 @@
   return [EQKitMathMLMStackGroup mathMLAttributes]::sAttributesSet;
 }
 
-- (EQKitMathMLMStackGroup)initWithChildren:(id)a3
+- (EQKitMathMLMStackGroup)initWithChildren:(id)children
 {
   v24 = *MEMORY[0x277D85DE8];
   v22.receiver = self;
@@ -32,14 +32,14 @@
   v4 = [(EQKitMathMLMStackGroup *)&v22 init];
   if (v4)
   {
-    v5 = [a3 count];
+    v5 = [children count];
     if (v5)
     {
       v6 = v5;
       v7 = 0;
       for (i = 0; i != v6; ++i)
       {
-        v9 = [a3 objectAtIndex:i];
+        v9 = [children objectAtIndex:i];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
@@ -54,8 +54,8 @@
               {
                 if (!v7)
                 {
-                  v7 = [a3 mutableCopy];
-                  a3 = v7;
+                  v7 = [children mutableCopy];
+                  children = v7;
                 }
 
                 v10 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{v9, 0}];
@@ -73,7 +73,7 @@
       v7 = 0;
     }
 
-    v4->mChildren = a3;
+    v4->mChildren = children;
 
     v20 = 0u;
     v21 = 0u;

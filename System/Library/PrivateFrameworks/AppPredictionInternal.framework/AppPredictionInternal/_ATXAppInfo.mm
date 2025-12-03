@@ -1,28 +1,28 @@
 @interface _ATXAppInfo
-- (_ATXAppInfo)initWithBundleId:(id)a3 isExtension:(BOOL)a4 isEnterpriseApp:(BOOL)a5 installDate:(id)a6 lastLaunch:(id)a7 lastSpotlightLaunch:(id)a8 averageSecondsBetweenLaunches:(id)a9 medianSecondsBetweenLaunches:(id)a10 genreId:(id)a11 subGenreIds:(id)a12 app2VecCluster:(id)a13;
+- (_ATXAppInfo)initWithBundleId:(id)id isExtension:(BOOL)extension isEnterpriseApp:(BOOL)app installDate:(id)date lastLaunch:(id)launch lastSpotlightLaunch:(id)spotlightLaunch averageSecondsBetweenLaunches:(id)launches medianSecondsBetweenLaunches:(id)self0 genreId:(id)self1 subGenreIds:(id)self2 app2VecCluster:(id)self3;
 @end
 
 @implementation _ATXAppInfo
 
-- (_ATXAppInfo)initWithBundleId:(id)a3 isExtension:(BOOL)a4 isEnterpriseApp:(BOOL)a5 installDate:(id)a6 lastLaunch:(id)a7 lastSpotlightLaunch:(id)a8 averageSecondsBetweenLaunches:(id)a9 medianSecondsBetweenLaunches:(id)a10 genreId:(id)a11 subGenreIds:(id)a12 app2VecCluster:(id)a13
+- (_ATXAppInfo)initWithBundleId:(id)id isExtension:(BOOL)extension isEnterpriseApp:(BOOL)app installDate:(id)date lastLaunch:(id)launch lastSpotlightLaunch:(id)spotlightLaunch averageSecondsBetweenLaunches:(id)launches medianSecondsBetweenLaunches:(id)self0 genreId:(id)self1 subGenreIds:(id)self2 app2VecCluster:(id)self3
 {
-  v17 = a3;
-  v50 = a6;
-  v49 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = self;
-  v21 = a10;
-  v22 = a11;
-  v23 = a12;
-  v24 = a13;
-  v25 = v17;
-  if (!v17)
+  idCopy = id;
+  dateCopy = date;
+  launchCopy = launch;
+  spotlightLaunchCopy = spotlightLaunch;
+  launchesCopy = launches;
+  selfCopy = self;
+  betweenLaunchesCopy = betweenLaunches;
+  genreIdCopy = genreId;
+  idsCopy = ids;
+  clusterCopy = cluster;
+  v25 = idCopy;
+  if (!idCopy)
   {
-    [_ATXAppInfo initWithBundleId:a2 isExtension:v20 isEnterpriseApp:? installDate:? lastLaunch:? lastSpotlightLaunch:? averageSecondsBetweenLaunches:? medianSecondsBetweenLaunches:? genreId:? subGenreIds:? app2VecCluster:?];
+    [_ATXAppInfo initWithBundleId:a2 isExtension:selfCopy isEnterpriseApp:? installDate:? lastLaunch:? lastSpotlightLaunch:? averageSecondsBetweenLaunches:? medianSecondsBetweenLaunches:? genreId:? subGenreIds:? app2VecCluster:?];
   }
 
-  v51.receiver = v20;
+  v51.receiver = selfCopy;
   v51.super_class = _ATXAppInfo;
   v26 = [(_ATXAppInfo *)&v51 init];
   if (v26)
@@ -31,42 +31,42 @@
     bundleId = v26->_bundleId;
     v26->_bundleId = v27;
 
-    v26->_isExtension = a4;
-    v26->_isEnterpriseApp = a5;
-    v29 = [v50 copy];
+    v26->_isExtension = extension;
+    v26->_isEnterpriseApp = app;
+    v29 = [dateCopy copy];
     installDate = v26->_installDate;
     v26->_installDate = v29;
 
-    v31 = [v49 copy];
+    v31 = [launchCopy copy];
     lastLaunch = v26->_lastLaunch;
     v26->_lastLaunch = v31;
 
-    v33 = [v18 copy];
+    v33 = [spotlightLaunchCopy copy];
     lastSpotlightLaunch = v26->_lastSpotlightLaunch;
     v26->_lastSpotlightLaunch = v33;
 
-    v35 = [v19 copy];
+    v35 = [launchesCopy copy];
     averageSecondsBetweenLaunches = v26->_averageSecondsBetweenLaunches;
     v26->_averageSecondsBetweenLaunches = v35;
 
-    v37 = [v21 copy];
+    v37 = [betweenLaunchesCopy copy];
     medianSecondsBetweenLaunches = v26->_medianSecondsBetweenLaunches;
     v26->_medianSecondsBetweenLaunches = v37;
 
-    v39 = [v22 copy];
+    v39 = [genreIdCopy copy];
     genreId = v26->_genreId;
     v26->_genreId = v39;
 
-    v41 = [v23 count];
+    v41 = [idsCopy count];
     if (v41)
     {
-      v41 = [v23 copy];
+      v41 = [idsCopy copy];
     }
 
     subGenreIds = v26->_subGenreIds;
     v26->_subGenreIds = v41;
 
-    v43 = [v24 copy];
+    v43 = [clusterCopy copy];
     app2VecCluster = v26->_app2VecCluster;
     v26->_app2VecCluster = v43;
   }

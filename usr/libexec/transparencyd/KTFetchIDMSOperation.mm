@@ -1,26 +1,26 @@
 @interface KTFetchIDMSOperation
-- (KTFetchIDMSOperation)initWithDependencies:(id)a3 specificUser:(id)a4 intendedState:(id)a5 errorState:(id)a6;
+- (KTFetchIDMSOperation)initWithDependencies:(id)dependencies specificUser:(id)user intendedState:(id)state errorState:(id)errorState;
 - (void)groupStart;
 @end
 
 @implementation KTFetchIDMSOperation
 
-- (KTFetchIDMSOperation)initWithDependencies:(id)a3 specificUser:(id)a4 intendedState:(id)a5 errorState:(id)a6
+- (KTFetchIDMSOperation)initWithDependencies:(id)dependencies specificUser:(id)user intendedState:(id)state errorState:(id)errorState
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dependenciesCopy = dependencies;
+  userCopy = user;
+  stateCopy = state;
+  errorStateCopy = errorState;
   v19.receiver = self;
   v19.super_class = KTFetchIDMSOperation;
   v15 = [(KTGroupOperation *)&v19 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_deps, a3);
-    objc_storeStrong(&v16->_specificUser, a4);
-    objc_storeStrong(&v16->_intendedState, a5);
-    objc_storeStrong(&v16->_nextState, a6);
+    objc_storeStrong(&v15->_deps, dependencies);
+    objc_storeStrong(&v16->_specificUser, user);
+    objc_storeStrong(&v16->_intendedState, state);
+    objc_storeStrong(&v16->_nextState, errorState);
     v17 = v16;
   }
 
@@ -29,33 +29,33 @@
 
 - (void)groupStart
 {
-  v3 = [(KTFetchIDMSOperation *)self specificUser];
+  specificUser = [(KTFetchIDMSOperation *)self specificUser];
 
-  if (v3)
+  if (specificUser)
   {
     v4 = objc_alloc_init(NSOperation);
     [(KTFetchIDMSOperation *)self setFinishedOp:v4];
 
     v5 = objc_alloc_init(KTResultOperation);
     v6 = [(KTResultOperation *)v5 timeout:30000000000];
-    v7 = [(KTFetchIDMSOperation *)self finishedOp];
-    [(KTResultOperation *)v5 addDependency:v7];
+    finishedOp = [(KTFetchIDMSOperation *)self finishedOp];
+    [(KTResultOperation *)v5 addDependency:finishedOp];
 
     [(KTGroupOperation *)self dependOnBeforeGroupFinished:v5];
-    v8 = [(KTGroupOperation *)self operationQueue];
-    [v8 addOperation:v5];
+    operationQueue = [(KTGroupOperation *)self operationQueue];
+    [operationQueue addOperation:v5];
 
     objc_initWeak(&location, self);
-    v9 = [(KTFetchIDMSOperation *)self deps];
-    v10 = [v9 idmsOperations];
-    v11 = [(KTFetchIDMSOperation *)self specificUser];
-    v12 = [v11 altDSID];
+    deps = [(KTFetchIDMSOperation *)self deps];
+    idmsOperations = [deps idmsOperations];
+    specificUser2 = [(KTFetchIDMSOperation *)self specificUser];
+    altDSID = [specificUser2 altDSID];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_1001CA42C;
     v14[3] = &unk_100327458;
     objc_copyWeak(&v15, &location);
-    [v10 refreshDeviceList:v12 complete:v14];
+    [idmsOperations refreshDeviceList:altDSID complete:v14];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);

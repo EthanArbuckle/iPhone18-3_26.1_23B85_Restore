@@ -1,31 +1,31 @@
 @interface TailspinDiagnosticExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation TailspinDiagnosticExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   if (!tailspin_config_create_with_current_state() || (v4 = tailspin_enabled_get(), tailspin_config_free(), !v4))
   {
     v8 = &__NSArray0__struct;
     goto LABEL_21;
   }
 
-  v5 = [v3 objectForKeyedSubscript:UnsafePointer];
+  v5 = [parametersCopy objectForKeyedSubscript:UnsafePointer];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  v9 = [v3 objectForKeyedSubscript:UnsafePointer];
+  v9 = [parametersCopy objectForKeyedSubscript:UnsafePointer];
   v10 = v9;
   if (!v9)
   {
@@ -38,7 +38,7 @@
 
     v11 = [@"/var/mobile/Library/Logs/CrashReporter" stringByAppendingPathComponent:v16];
 
-    if (v7)
+    if (bOOLValue)
     {
       goto LABEL_9;
     }
@@ -54,7 +54,7 @@ LABEL_12:
 
     else
     {
-      v19 = v3;
+      v19 = parametersCopy;
       NSLog(@"Saving tailspin file with options = %@", v19);
       if (tailspin_dump_output_with_options_sync())
       {
@@ -79,7 +79,7 @@ LABEL_12:
   }
 
   v11 = v9;
-  if (!v7)
+  if (!bOOLValue)
   {
     goto LABEL_12;
   }

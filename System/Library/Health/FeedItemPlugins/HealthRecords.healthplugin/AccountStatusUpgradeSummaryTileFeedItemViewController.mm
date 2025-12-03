@@ -1,19 +1,19 @@
 @interface AccountStatusUpgradeSummaryTileFeedItemViewController
 - (NSString)title;
-- (_TtC13HealthRecords53AccountStatusUpgradeSummaryTileFeedItemViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC13HealthRecords53AccountStatusUpgradeSummaryTileFeedItemViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation AccountStatusUpgradeSummaryTileFeedItemViewController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = type metadata accessor for AccountStatusUpgradeSummaryTileFeedItemViewController(0);
   v4 = v6.receiver;
-  [(AccountStatusUpgradeSummaryTileFeedItemViewController *)&v6 viewDidAppear:v3];
+  [(AccountStatusUpgradeSummaryTileFeedItemViewController *)&v6 viewDidAppear:appearCopy];
   sub_29D5B1E5C();
   v5 = sub_29D5B1E4C();
   sub_29D5A4C10();
@@ -43,13 +43,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_29D5A7ED0();
 }
 
-- (_TtC13HealthRecords53AccountStatusUpgradeSummaryTileFeedItemViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC13HealthRecords53AccountStatusUpgradeSummaryTileFeedItemViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_29D5B3E5C();
     v7 = v6;
@@ -61,8 +61,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_29D5AA048(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_29D5AA048(v5, v7, bundle);
 }
 
 @end

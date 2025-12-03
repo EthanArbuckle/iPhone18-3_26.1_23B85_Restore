@@ -1,41 +1,41 @@
 @interface MSPurchasesViewController
-- (MSPurchasesViewController)initWithSection:(id)a3;
-- (id)_newSegmentedControlWithPageSectionGroup:(id)a3;
-- (id)_newViewControllerForPageSection:(id)a3;
+- (MSPurchasesViewController)initWithSection:(id)section;
+- (id)_newSegmentedControlWithPageSectionGroup:(id)group;
+- (id)_newViewControllerForPageSection:(id)section;
 - (id)copyArchivableContext;
 - (void)_reloadSegmentedControlPlacement;
-- (void)_reloadViewControllersWithSection:(id)a3;
-- (void)_segmentedControlAction:(id)a3;
-- (void)_setActiveViewControllerIndex:(int64_t)a3;
+- (void)_reloadViewControllersWithSection:(id)section;
+- (void)_segmentedControlAction:(id)action;
+- (void)_setActiveViewControllerIndex:(int64_t)index;
 - (void)_showActiveViewController;
 - (void)dealloc;
 - (void)invalidateForMemoryPurge;
 - (void)loadView;
-- (void)restoreArchivableContext:(id)a3;
-- (void)tabBarControllerDidReselectTabBarItem:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)restoreArchivableContext:(id)context;
+- (void)tabBarControllerDidReselectTabBarItem:(id)item;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation MSPurchasesViewController
 
-- (MSPurchasesViewController)initWithSection:(id)a3
+- (MSPurchasesViewController)initWithSection:(id)section
 {
   v9.receiver = self;
   v9.super_class = MSPurchasesViewController;
   v4 = [(SUViewController *)&v9 initWithSection:?];
   if (v4)
   {
-    v5 = [a3 pageSectionGroup];
-    if ([objc_msgSend(v5 "sections")])
+    pageSectionGroup = [section pageSectionGroup];
+    if ([objc_msgSend(pageSectionGroup "sections")])
     {
-      v4->_activeViewControllerIndex = [v5 defaultSectionIndex];
-      v6 = [(MSPurchasesViewController *)v4 _newSegmentedControlWithPageSectionGroup:v5];
+      v4->_activeViewControllerIndex = [pageSectionGroup defaultSectionIndex];
+      v6 = [(MSPurchasesViewController *)v4 _newSegmentedControlWithPageSectionGroup:pageSectionGroup];
       v4->_segmentedControl = v6;
       [(SUSegmentedControl *)v6 addTarget:v4 action:sel__segmentedControlAction_ forControlEvents:4096];
     }
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v4 selector:sel__tabConfigurationChangedNotification_ name:*MEMORY[0x277D7FF60] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__tabConfigurationChangedNotification_ name:*MEMORY[0x277D7FF60] object:0];
   }
 
   return v4;
@@ -44,8 +44,8 @@
 - (void)dealloc
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D7FF60] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D7FF60] object:0];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -84,9 +84,9 @@
 {
   v5.receiver = self;
   v5.super_class = MSPurchasesViewController;
-  v3 = [(SUViewController *)&v5 copyArchivableContext];
-  [v3 setValue:objc_msgSend(MEMORY[0x277CCABB0] forMetadataKey:{"numberWithInteger:", self->_activeViewControllerIndex), @"index"}];
-  return v3;
+  copyArchivableContext = [(SUViewController *)&v5 copyArchivableContext];
+  [copyArchivableContext setValue:objc_msgSend(MEMORY[0x277CCABB0] forMetadataKey:{"numberWithInteger:", self->_activeViewControllerIndex), @"index"}];
+  return copyArchivableContext;
 }
 
 - (void)invalidateForMemoryPurge
@@ -105,7 +105,7 @@
   [(SUViewController *)&v7 loadView];
   v6.receiver = self;
   v6.super_class = MSPurchasesViewController;
-  v3 = [(MSPurchasesViewController *)&v6 view];
+  view = [(MSPurchasesViewController *)&v6 view];
   containerView = self->_containerView;
   if (!containerView)
   {
@@ -115,9 +115,9 @@
     containerView = self->_containerView;
   }
 
-  [v3 bounds];
+  [view bounds];
   [(UIView *)containerView setFrame:?];
-  [v3 addSubview:self->_containerView];
+  [view addSubview:self->_containerView];
   if (![(NSArray *)self->_viewControllers count])
   {
     [(MSPurchasesViewController *)self _reloadViewControllersWithSection:[(MSPurchasesViewController *)self section]];
@@ -127,9 +127,9 @@
   [(MSPurchasesViewController *)self _showActiveViewController];
 }
 
-- (void)restoreArchivableContext:(id)a3
+- (void)restoreArchivableContext:(id)context
 {
-  v5 = [objc_msgSend(a3 valueForMetadataKey:{@"index", "integerValue"}];
+  v5 = [objc_msgSend(context valueForMetadataKey:{@"index", "integerValue"}];
   v6 = [(NSArray *)self->_viewControllers count];
   if (v5 >= v6 - 1)
   {
@@ -140,10 +140,10 @@
   [(SUSegmentedControl *)self->_segmentedControl setSelectedItemIndex:v5];
   v7.receiver = self;
   v7.super_class = MSPurchasesViewController;
-  [(SUViewController *)&v7 restoreArchivableContext:a3];
+  [(SUViewController *)&v7 restoreArchivableContext:context];
 }
 
-- (void)tabBarControllerDidReselectTabBarItem:(id)a3
+- (void)tabBarControllerDidReselectTabBarItem:(id)item
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
@@ -165,7 +165,7 @@
           objc_enumerationMutation(viewControllers);
         }
 
-        [*(*(&v9 + 1) + 8 * i) tabBarControllerDidReselectTabBarItem:a3];
+        [*(*(&v9 + 1) + 8 * i) tabBarControllerDidReselectTabBarItem:item];
       }
 
       v6 = [(NSArray *)viewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
@@ -175,33 +175,33 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(MSPurchasesViewController *)self _reloadSegmentedControlPlacement];
   v5.receiver = self;
   v5.super_class = MSPurchasesViewController;
-  [(SUViewController *)&v5 viewWillAppear:v3];
+  [(SUViewController *)&v5 viewWillAppear:appearCopy];
 }
 
-- (void)_segmentedControlAction:(id)a3
+- (void)_segmentedControlAction:(id)action
 {
-  v4 = [(SUSegmentedControl *)self->_segmentedControl selectedItemIndex];
+  selectedItemIndex = [(SUSegmentedControl *)self->_segmentedControl selectedItemIndex];
 
-  [(MSPurchasesViewController *)self _setActiveViewControllerIndex:v4];
+  [(MSPurchasesViewController *)self _setActiveViewControllerIndex:selectedItemIndex];
 }
 
-- (id)_newSegmentedControlWithPageSectionGroup:(id)a3
+- (id)_newSegmentedControlWithPageSectionGroup:(id)group
 {
   v18 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277D7FE80]);
-  v6 = [a3 sections];
+  sections = [group sections];
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v8 = [sections countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -213,14 +213,14 @@
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(sections);
         }
 
         [v7 addObject:{objc_msgSend(*(*(&v13 + 1) + 8 * v11++), "segmentedControlItem")}];
       }
 
       while (v9 != v11);
-      v9 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [sections countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
@@ -233,32 +233,32 @@
   return v5;
 }
 
-- (id)_newViewControllerForPageSection:(id)a3
+- (id)_newViewControllerForPageSection:(id)section
 {
-  v5 = [(SUViewController *)self viewControllerFactory];
-  if ([a3 structuredPageType] == 9)
+  viewControllerFactory = [(SUViewController *)self viewControllerFactory];
+  if ([section structuredPageType] == 9)
   {
-    v6 = [v5 newDownloadsViewController];
+    newDownloadsViewController = [viewControllerFactory newDownloadsViewController];
   }
 
   else
   {
-    v6 = [v5 newStorePageViewControllerWithSection:0];
-    [v6 setURLRequestProperties:{objc_msgSend(a3, "URLRequestProperties")}];
+    newDownloadsViewController = [viewControllerFactory newStorePageViewControllerWithSection:0];
+    [newDownloadsViewController setURLRequestProperties:{objc_msgSend(section, "URLRequestProperties")}];
   }
 
-  [v6 setClientInterface:{-[SUViewController clientInterface](self, "clientInterface")}];
-  return v6;
+  [newDownloadsViewController setClientInterface:{-[SUViewController clientInterface](self, "clientInterface")}];
+  return newDownloadsViewController;
 }
 
 - (void)_reloadSegmentedControlPlacement
 {
   if (self->_segmentedControl && [(MSPurchasesViewController *)self isViewLoaded])
   {
-    v3 = [(MSPurchasesViewController *)self view];
+    view = [(MSPurchasesViewController *)self view];
     if ([objc_msgSend(MEMORY[0x277D75418] "currentDevice")] == 1 || !-[MSPurchasesViewController isInMoreList](self, "isInMoreList"))
     {
-      if ([(SUSegmentedControl *)self->_segmentedControl superview]== v3)
+      if ([(SUSegmentedControl *)self->_segmentedControl superview]== view)
       {
         [(SUSegmentedControl *)self->_segmentedControl removeFromSuperview];
       }
@@ -272,16 +272,16 @@
       [(SUNavigationItem *)[(SUViewController *)self navigationItem] setTitleView:0];
       [(SUSegmentedControl *)self->_segmentedControl setAutoresizingMask:2];
       [(SUSegmentedControl *)self->_segmentedControl setSegmentedControlStyle:7];
-      [v3 addSubview:self->_segmentedControl];
+      [view addSubview:self->_segmentedControl];
     }
 
     [(SUSegmentedControl *)self->_segmentedControl sizeToFitUserInterfaceIdiom];
-    [v3 bounds];
+    [view bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    if ([(SUSegmentedControl *)self->_segmentedControl superview]== v3)
+    if ([(SUSegmentedControl *)self->_segmentedControl superview]== view)
     {
       [(SUSegmentedControl *)self->_segmentedControl frame];
       v14 = v13;
@@ -316,11 +316,11 @@
   }
 }
 
-- (void)_reloadViewControllersWithSection:(id)a3
+- (void)_reloadViewControllersWithSection:(id)section
 {
   v30 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [objc_msgSend(a3 "pageSectionGroup")];
+  v6 = [objc_msgSend(section "pageSectionGroup")];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -403,9 +403,9 @@
   self->_viewControllers = [v5 copy];
 }
 
-- (void)_setActiveViewControllerIndex:(int64_t)a3
+- (void)_setActiveViewControllerIndex:(int64_t)index
 {
-  if (self->_activeViewControllerIndex != a3)
+  if (self->_activeViewControllerIndex != index)
   {
     if ([(MSPurchasesViewController *)self isViewLoaded])
     {
@@ -415,14 +415,14 @@
       [v5 viewWillDisappear:0];
       [objc_msgSend(v5 "view")];
       [v5 viewDidDisappear:0];
-      self->_activeViewControllerIndex = a3;
+      self->_activeViewControllerIndex = index;
 
       [(MSPurchasesViewController *)self _showActiveViewController];
     }
 
     else
     {
-      self->_activeViewControllerIndex = a3;
+      self->_activeViewControllerIndex = index;
     }
   }
 }
@@ -432,10 +432,10 @@
   v3 = [(NSArray *)self->_viewControllers objectAtIndex:self->_activeViewControllerIndex];
   [(MSPurchasesViewController *)self addChildViewController:v3];
   [v3 viewWillAppear:0];
-  v4 = [v3 view];
+  view = [v3 view];
   [(UIView *)self->_containerView bounds];
-  [v4 setFrame:?];
-  [(UIView *)self->_containerView addSubview:v4];
+  [view setFrame:?];
+  [(UIView *)self->_containerView addSubview:view];
 
   [v3 viewDidAppear:1];
 }

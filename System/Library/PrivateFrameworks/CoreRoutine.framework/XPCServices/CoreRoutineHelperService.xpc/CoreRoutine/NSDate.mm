@@ -1,25 +1,25 @@
 @interface NSDate
-+ (BOOL)isDateWithinLast24Hours:(id)a3;
-+ (NSDate)dateWithHour:(int64_t)a3 minute:(int64_t)a4 second:(int64_t)a5;
-+ (NSDate)dateWithResolution:(unint64_t)a3;
-+ (NSDate)dateWithResolution:(unint64_t)a3 calendar:(id)a4;
-+ (id)dateBisectingDate1:(id)a3 date2:(id)a4;
++ (BOOL)isDateWithinLast24Hours:(id)hours;
++ (NSDate)dateWithHour:(int64_t)hour minute:(int64_t)minute second:(int64_t)second;
++ (NSDate)dateWithResolution:(unint64_t)resolution;
++ (NSDate)dateWithResolution:(unint64_t)resolution calendar:(id)calendar;
++ (id)dateBisectingDate1:(id)date1 date2:(id)date2;
 + (id)dateFormatter;
 + (id)dateFormatterForLogging;
 + (id)endOfDay;
-+ (id)getEarliestDate:(id)a3;
-+ (id)roundingUpDate:(id)a3 bucketDurationMinute:(int)a4;
++ (id)getEarliestDate:(id)date;
++ (id)roundingUpDate:(id)date bucketDurationMinute:(int)minute;
 + (id)startOfDay;
-+ (id)stringFromTimestamp:(double)a3;
-- (BOOL)betweenDate:(id)a3 andDate:(id)a4;
-- (id)dateByAddingUnit:(unint64_t)a3 value:(int64_t)a4;
-- (id)dateByRoundingWithTimeQuantization:(int64_t)a3;
-- (id)dateReducedToResolution:(unint64_t)a3;
-- (id)dateReducedToResolution:(unint64_t)a3 calendar:(id)a4;
++ (id)stringFromTimestamp:(double)timestamp;
+- (BOOL)betweenDate:(id)date andDate:(id)andDate;
+- (id)dateByAddingUnit:(unint64_t)unit value:(int64_t)value;
+- (id)dateByRoundingWithTimeQuantization:(int64_t)quantization;
+- (id)dateReducedToResolution:(unint64_t)resolution;
+- (id)dateReducedToResolution:(unint64_t)resolution calendar:(id)calendar;
 - (id)endOfDay;
 - (id)getFormattedDateString;
 - (id)startOfDay;
-- (id)startOfDayAfterAddingUnit:(unint64_t)a3 value:(int64_t)a4;
+- (id)startOfDayAfterAddingUnit:(unint64_t)unit value:(int64_t)value;
 - (id)stringFromDate;
 - (id)weekdayStringFromDate;
 - (unint64_t)hour;
@@ -29,17 +29,17 @@
 
 @implementation NSDate
 
-- (BOOL)betweenDate:(id)a3 andDate:(id)a4
+- (BOOL)betweenDate:(id)date andDate:(id)andDate
 {
   result = 0;
-  if (a3 && a4)
+  if (date && andDate)
   {
-    v7 = a4;
-    [a3 timeIntervalSinceReferenceDate];
+    andDateCopy = andDate;
+    [date timeIntervalSinceReferenceDate];
     v9 = v8;
     [(NSDate *)self timeIntervalSinceReferenceDate];
     v11 = v10;
-    [v7 timeIntervalSinceReferenceDate];
+    [andDateCopy timeIntervalSinceReferenceDate];
     v13 = v12;
 
     if (v9 <= v13)
@@ -62,10 +62,10 @@
 
 + (id)startOfDay
 {
-  v2 = [a1 date];
-  v3 = [v2 startOfDay];
+  date = [self date];
+  startOfDay = [date startOfDay];
 
-  return v3;
+  return startOfDay;
 }
 
 - (id)startOfDay
@@ -81,10 +81,10 @@
 
 + (id)endOfDay
 {
-  v2 = [a1 date];
-  v3 = [v2 endOfDay];
+  date = [self date];
+  endOfDay = [date endOfDay];
 
-  return v3;
+  return endOfDay;
 }
 
 - (id)endOfDay
@@ -168,12 +168,12 @@
   return v5;
 }
 
-+ (id)stringFromTimestamp:(double)a3
++ (id)stringFromTimestamp:(double)timestamp
 {
-  v3 = [NSDate dateWithTimeIntervalSinceReferenceDate:a3];
-  v4 = [v3 stringFromDate];
+  v3 = [NSDate dateWithTimeIntervalSinceReferenceDate:timestamp];
+  stringFromDate = [v3 stringFromDate];
 
-  return v4;
+  return stringFromDate;
 }
 
 + (id)dateFormatter
@@ -200,42 +200,42 @@
   return v3;
 }
 
-+ (NSDate)dateWithResolution:(unint64_t)a3
++ (NSDate)dateWithResolution:(unint64_t)resolution
 {
   v4 = +[NSDate date];
   v5 = +[NSCalendar currentCalendar];
-  v6 = [v4 dateReducedToResolution:a3 calendar:v5];
+  v6 = [v4 dateReducedToResolution:resolution calendar:v5];
 
   return v6;
 }
 
-+ (NSDate)dateWithResolution:(unint64_t)a3 calendar:(id)a4
++ (NSDate)dateWithResolution:(unint64_t)resolution calendar:(id)calendar
 {
-  v5 = a4;
+  calendarCopy = calendar;
   v6 = +[NSDate date];
-  v7 = [v6 dateReducedToResolution:a3 calendar:v5];
+  v7 = [v6 dateReducedToResolution:resolution calendar:calendarCopy];
 
   return v7;
 }
 
-- (id)dateReducedToResolution:(unint64_t)a3
+- (id)dateReducedToResolution:(unint64_t)resolution
 {
   v5 = +[NSCalendar currentCalendar];
-  v6 = [(NSDate *)self dateReducedToResolution:a3 calendar:v5];
+  v6 = [(NSDate *)self dateReducedToResolution:resolution calendar:v5];
 
   return v6;
 }
 
-- (id)dateReducedToResolution:(unint64_t)a3 calendar:(id)a4
+- (id)dateReducedToResolution:(unint64_t)resolution calendar:(id)calendar
 {
-  v6 = a4;
-  if (a3 >= 7)
+  calendarCopy = calendar;
+  if (resolution >= 7)
   {
     v8 = sub_1000011A0(&qword_1000B2958);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v12 = 134218498;
-      v13 = a3;
+      resolutionCopy = resolution;
       v14 = 2080;
       v15 = "[NSDate(RTExtensions) dateReducedToResolution:calendar:]";
       v16 = 1024;
@@ -248,81 +248,81 @@
 
   else
   {
-    v7 = qword_100092458[a3];
+    v7 = qword_100092458[resolution];
   }
 
-  v9 = [v6 components:v7 fromDate:self];
-  v10 = [v6 dateFromComponents:v9];
+  v9 = [calendarCopy components:v7 fromDate:self];
+  v10 = [calendarCopy dateFromComponents:v9];
 
   return v10;
 }
 
-- (id)dateByAddingUnit:(unint64_t)a3 value:(int64_t)a4
+- (id)dateByAddingUnit:(unint64_t)unit value:(int64_t)value
 {
   v7 = +[NSCalendar currentCalendar];
-  v8 = [v7 dateByAddingUnit:a3 value:a4 toDate:self options:0];
+  v8 = [v7 dateByAddingUnit:unit value:value toDate:self options:0];
 
   return v8;
 }
 
-- (id)startOfDayAfterAddingUnit:(unint64_t)a3 value:(int64_t)a4
+- (id)startOfDayAfterAddingUnit:(unint64_t)unit value:(int64_t)value
 {
   v7 = +[NSCalendar currentCalendar];
-  v8 = [(NSDate *)self dateByAddingUnit:a3 value:a4];
+  v8 = [(NSDate *)self dateByAddingUnit:unit value:value];
   v9 = [v7 startOfDayForDate:v8];
 
   return v9;
 }
 
-- (id)dateByRoundingWithTimeQuantization:(int64_t)a3
+- (id)dateByRoundingWithTimeQuantization:(int64_t)quantization
 {
-  v3 = self;
+  selfCopy = self;
   if (self)
   {
     v5 = +[NSCalendar currentCalendar];
-    v6 = [v5 components:96 fromDate:v3];
+    v6 = [v5 components:96 fromDate:selfCopy];
 
-    v3 = [v3 dateByAddingTimeInterval:{(objc_msgSend(v6, "minute") % a3) * -60.0}];
+    selfCopy = [selfCopy dateByAddingTimeInterval:{(objc_msgSend(v6, "minute") % quantization) * -60.0}];
   }
 
-  return v3;
+  return selfCopy;
 }
 
-+ (NSDate)dateWithHour:(int64_t)a3 minute:(int64_t)a4 second:(int64_t)a5
++ (NSDate)dateWithHour:(int64_t)hour minute:(int64_t)minute second:(int64_t)second
 {
   v8 = +[NSCalendar currentCalendar];
   v9 = +[NSDate date];
   v10 = [v8 components:28 fromDate:v9];
 
-  [v10 setHour:a3];
-  [v10 setMinute:a4];
-  [v10 setSecond:a5];
+  [v10 setHour:hour];
+  [v10 setMinute:minute];
+  [v10 setSecond:second];
   v11 = [v8 dateFromComponents:v10];
 
   return v11;
 }
 
-+ (id)dateBisectingDate1:(id)a3 date2:(id)a4
++ (id)dateBisectingDate1:(id)date1 date2:(id)date2
 {
-  v5 = a4;
-  [a3 timeIntervalSinceReferenceDate];
+  date2Copy = date2;
+  [date1 timeIntervalSinceReferenceDate];
   v7 = v6;
-  [v5 timeIntervalSinceReferenceDate];
+  [date2Copy timeIntervalSinceReferenceDate];
   v9 = v8;
 
   return [NSDate dateWithTimeIntervalSinceReferenceDate:(v7 + v9) * 0.5];
 }
 
-+ (id)roundingUpDate:(id)a3 bucketDurationMinute:(int)a4
++ (id)roundingUpDate:(id)date bucketDurationMinute:(int)minute
 {
-  v5 = a3;
-  if (a4 <= 0)
+  dateCopy = date;
+  if (minute <= 0)
   {
     v6 = sub_1000011A0(&qword_1000B2958);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v15[0] = 67109634;
-      v15[1] = a4;
+      v15[1] = minute;
       v16 = 2080;
       v17 = "+[NSDate(RTExtensions) roundingUpDate:bucketDurationMinute:]";
       v18 = 1024;
@@ -332,27 +332,27 @@
   }
 
   v7 = +[NSCalendar currentCalendar];
-  v8 = [v7 components:2097404 fromDate:v5];
+  v8 = [v7 components:2097404 fromDate:dateCopy];
 
   v9 = +[NSCalendar currentCalendar];
-  v10 = [v9 components:2097276 fromDate:v5];
+  v10 = [v9 components:2097276 fromDate:dateCopy];
 
-  v11 = ceil(([v8 second] / 60.0 + objc_msgSend(v8, "minute")) / a4);
-  [v10 setMinute:(a4 * v11)];
+  v11 = ceil(([v8 second] / 60.0 + objc_msgSend(v8, "minute")) / minute);
+  [v10 setMinute:(minute * v11)];
   v12 = +[NSCalendar currentCalendar];
   v13 = [v12 dateFromComponents:v10];
 
   return v13;
 }
 
-+ (BOOL)isDateWithinLast24Hours:(id)a3
++ (BOOL)isDateWithinLast24Hours:(id)hours
 {
-  v3 = a3;
-  if (v3)
+  hoursCopy = hours;
+  if (hoursCopy)
   {
     v4 = +[NSDate date];
     v5 = [v4 dateByAddingTimeInterval:-86400.0];
-    v6 = [v3 compare:v5] == 1 && objc_msgSend(v3, "compare:", v4) != 1;
+    v6 = [hoursCopy compare:v5] == 1 && objc_msgSend(hoursCopy, "compare:", v4) != 1;
   }
 
   else
@@ -363,11 +363,11 @@
   return v6;
 }
 
-+ (id)getEarliestDate:(id)a3
++ (id)getEarliestDate:(id)date
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  dateCopy = date;
+  v4 = dateCopy;
+  if (dateCopy && [dateCopy count])
   {
     v5 = +[NSDate distantFuture];
     v14 = 0u;

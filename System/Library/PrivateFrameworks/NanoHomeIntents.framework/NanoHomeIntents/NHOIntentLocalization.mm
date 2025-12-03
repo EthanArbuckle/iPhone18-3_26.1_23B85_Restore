@@ -1,13 +1,13 @@
 @interface NHOIntentLocalization
-+ (id)homeSpecificElectricityRatesWidgetNameWithHomeName:(id)a3;
-+ (id)homeSpecificElectricityUsageWidgetNameWithHomeName:(id)a3;
-+ (id)homeSpecificEnergyWidgetNameWithHomeName:(id)a3;
++ (id)homeSpecificElectricityRatesWidgetNameWithHomeName:(id)name;
++ (id)homeSpecificElectricityUsageWidgetNameWithHomeName:(id)name;
++ (id)homeSpecificEnergyWidgetNameWithHomeName:(id)name;
 - (NHOIntentLocalization)init;
 @end
 
 @implementation NHOIntentLocalization
 
-+ (id)homeSpecificEnergyWidgetNameWithHomeName:(id)a3
++ (id)homeSpecificEnergyWidgetNameWithHomeName:(id)name
 {
   v3 = sub_25B161B34();
   v5 = v4;
@@ -26,7 +26,7 @@
   return v7;
 }
 
-+ (id)homeSpecificElectricityUsageWidgetNameWithHomeName:(id)a3
++ (id)homeSpecificElectricityUsageWidgetNameWithHomeName:(id)name
 {
   v3 = sub_25B161B34();
   v5 = v4;
@@ -45,7 +45,7 @@
   return v7;
 }
 
-+ (id)homeSpecificElectricityRatesWidgetNameWithHomeName:(id)a3
++ (id)homeSpecificElectricityRatesWidgetNameWithHomeName:(id)name
 {
   v3 = sub_25B161B34();
   v5 = v4;

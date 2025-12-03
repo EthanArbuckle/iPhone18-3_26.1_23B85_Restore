@@ -1,19 +1,19 @@
 @interface RPReportingAgent
 - (CGSize)videoCaptureSize;
-- (RPReportingAgent)initWithServiceName:(id)a3;
+- (RPReportingAgent)initWithServiceName:(id)name;
 - (id)collectSummaryEventMetrics;
 - (id)thermalDescription;
-- (void)addToThermalResultsWithLevel:(int64_t)a3;
+- (void)addToThermalResultsWithLevel:(int64_t)level;
 - (void)resetReportingMetrics;
 - (void)resetThermalResults;
-- (void)thermalPressureDidChangeWithLevel:(int64_t)a3;
+- (void)thermalPressureDidChangeWithLevel:(int64_t)level;
 @end
 
 @implementation RPReportingAgent
 
-- (RPReportingAgent)initWithServiceName:(id)a3
+- (RPReportingAgent)initWithServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = RPReportingAgent;
   v5 = [(RPReportingAgent *)&v11 init];
@@ -30,7 +30,7 @@
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
     }
 
-    [(RPReportingAgent *)v5 setServiceName:v4];
+    [(RPReportingAgent *)v5 setServiceName:nameCopy];
     v6 = objc_alloc_init(RPThermalPressure);
     thermalPressureMonitor = v5->_thermalPressureMonitor;
     v5->_thermalPressureMonitor = v6;
@@ -102,8 +102,8 @@
   v12 = [NSNumber numberWithInteger:[(RPReportingAgent *)self endReason]];
   v33[15] = v12;
   v32[16] = @"TPL";
-  v13 = [(RPReportingAgent *)self thermalDescription];
-  v33[16] = v13;
+  thermalDescription = [(RPReportingAgent *)self thermalDescription];
+  v33[16] = thermalDescription;
   v32[17] = @"CHDR";
   v14 = [NSNumber numberWithBool:[(RPReportingAgent *)self isHDR]];
   v33[17] = v14;
@@ -216,7 +216,7 @@
   [(RPThermalPressure *)thermalPressureMonitor startMonitoring];
 }
 
-- (void)thermalPressureDidChangeWithLevel:(int64_t)a3
+- (void)thermalPressureDidChangeWithLevel:(int64_t)level
 {
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -225,14 +225,14 @@
     v7 = 1024;
     v8 = 185;
     v9 = 2048;
-    v10 = a3;
+    levelCopy = level;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d level=%ld", &v5, 0x1Cu);
   }
 
-  [(RPReportingAgent *)self addToThermalResultsWithLevel:a3];
+  [(RPReportingAgent *)self addToThermalResultsWithLevel:level];
 }
 
-- (void)addToThermalResultsWithLevel:(int64_t)a3
+- (void)addToThermalResultsWithLevel:(int64_t)level
 {
   v5 = +[NSDate date];
   [v5 timeIntervalSinceDate:self->_thermalLevelIntervalStartTime];
@@ -240,14 +240,14 @@
   v7 = llroundf(*&v6);
 
   thermalResults = self->_thermalResults;
-  v9 = [NSNumber numberWithInteger:a3];
+  v9 = [NSNumber numberWithInteger:level];
   v10 = [(NSMutableDictionary *)thermalResults objectForKeyedSubscript:v9];
   [v10 doubleValue];
   v12 = v11 + v7;
 
   v13 = [NSNumber numberWithDouble:v12];
   v14 = self->_thermalResults;
-  v15 = [NSNumber numberWithInteger:a3];
+  v15 = [NSNumber numberWithInteger:level];
   [(NSMutableDictionary *)v14 setObject:v13 forKeyedSubscript:v15];
 
   v16 = +[NSDate date];

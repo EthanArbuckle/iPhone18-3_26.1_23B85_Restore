@@ -1,32 +1,32 @@
 @interface CSDCompositeActivitySessionContainerProvider
 - (BOOL)hasActiveActivitySessionContainer;
-- (CSDCompositeActivitySessionContainerProvider)initWithConversationManagerDataSourceObservers:(id)a3 conversationManagerDataSource:(id)a4 activityAuthorizer:(id)a5;
-- (void)activeActivitySessionContainersWithCompletionHandler:(id)a3;
-- (void)handleActivitySessionCreationRequestWithActivity:(TUConversationActivity *)a3 options:(unint64_t)a4 containerID:(NSUUID *)a5 completionHandler:(id)a6;
+- (CSDCompositeActivitySessionContainerProvider)initWithConversationManagerDataSourceObservers:(id)observers conversationManagerDataSource:(id)source activityAuthorizer:(id)authorizer;
+- (void)activeActivitySessionContainersWithCompletionHandler:(id)handler;
+- (void)handleActivitySessionCreationRequestWithActivity:(TUConversationActivity *)activity options:(unint64_t)options containerID:(NSUUID *)d completionHandler:(id)handler;
 - (void)sendLatestContainersToObservers;
 @end
 
 @implementation CSDCompositeActivitySessionContainerProvider
 
-- (CSDCompositeActivitySessionContainerProvider)initWithConversationManagerDataSourceObservers:(id)a3 conversationManagerDataSource:(id)a4 activityAuthorizer:(id)a5
+- (CSDCompositeActivitySessionContainerProvider)initWithConversationManagerDataSourceObservers:(id)observers conversationManagerDataSource:(id)source activityAuthorizer:(id)authorizer
 {
-  v5 = a3;
+  observersCopy = observers;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  return sub_10032E98C(v5);
+  return sub_10032E98C(observersCopy);
 }
 
-- (void)handleActivitySessionCreationRequestWithActivity:(TUConversationActivity *)a3 options:(unint64_t)a4 containerID:(NSUUID *)a5 completionHandler:(id)a6
+- (void)handleActivitySessionCreationRequestWithActivity:(TUConversationActivity *)activity options:(unint64_t)options containerID:(NSUUID *)d completionHandler:(id)handler
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
-  v11[3] = a4;
-  v11[4] = a5;
+  v11[2] = activity;
+  v11[3] = options;
+  v11[4] = d;
   v11[5] = v10;
   v11[6] = self;
-  v12 = a3;
-  v13 = a5;
+  activityCopy = activity;
+  dCopy = d;
 
   sub_10044D610(&unk_100580BF0, v11);
 }
@@ -37,9 +37,9 @@
   sub_100333F74();
 }
 
-- (void)activeActivitySessionContainersWithCompletionHandler:(id)a3
+- (void)activeActivitySessionContainersWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(v5 + 24) = self;

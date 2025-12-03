@@ -1,13 +1,13 @@
 @interface RPNWDiscoverySession
 - (RPNWDiscoverySession)init;
 - (id)description;
-- (void)addMappingForDevice:(id)a3 endpointID:(id)a4;
+- (void)addMappingForDevice:(id)device endpointID:(id)d;
 - (void)dealloc;
 - (void)removeAllDevices;
-- (void)removeDevice:(id)a3;
+- (void)removeDevice:(id)device;
 - (void)stopDiscovery;
 - (void)updateClientBrowseResult;
-- (void)updateMappingForDevice:(id)a3;
+- (void)updateMappingForDevice:(id)device;
 @end
 
 @implementation RPNWDiscoverySession
@@ -16,8 +16,8 @@
 {
   browseResponse = self->_browseResponse;
   browseClient = self->_browseClient;
-  v5 = [(RPNWAgentClient *)self->_browseAgentClient browseToken];
-  [RPNWEndpoint updateClientBrowseResult:browseClient browseResponse:browseResponse token:v5 agentUUID:self->_agentUUID agentClientID:self->_agentClientID agentClientPID:self->_pid applicationService:self->_applicationService discoverySessionID:self->_discoverySessionID predicate:self->_predicate];
+  browseToken = [(RPNWAgentClient *)self->_browseAgentClient browseToken];
+  [RPNWEndpoint updateClientBrowseResult:browseClient browseResponse:browseResponse token:browseToken agentUUID:self->_agentUUID agentClientID:self->_agentClientID agentClientPID:self->_pid applicationService:self->_applicationService discoverySessionID:self->_discoverySessionID predicate:self->_predicate];
 }
 
 - (RPNWDiscoverySession)init
@@ -54,27 +54,27 @@
   return v3;
 }
 
-- (void)addMappingForDevice:(id)a3 endpointID:(id)a4
+- (void)addMappingForDevice:(id)device endpointID:(id)d
 {
-  if ([RPNWEndpoint addEndpointMapping:a3 endpointID:a4 applicationService:self->_applicationService discoverySessionID:self->_discoverySessionID shouldAutomapListener:1])
+  if ([RPNWEndpoint addEndpointMapping:device endpointID:d applicationService:self->_applicationService discoverySessionID:self->_discoverySessionID shouldAutomapListener:1])
   {
 
     [(RPNWDiscoverySession *)self updateClientBrowseResult];
   }
 }
 
-- (void)updateMappingForDevice:(id)a3
+- (void)updateMappingForDevice:(id)device
 {
-  if ([RPNWEndpoint updateEndpointMapping:a3 discoverySessionID:self->_discoverySessionID])
+  if ([RPNWEndpoint updateEndpointMapping:device discoverySessionID:self->_discoverySessionID])
   {
 
     [(RPNWDiscoverySession *)self updateClientBrowseResult];
   }
 }
 
-- (void)removeDevice:(id)a3
+- (void)removeDevice:(id)device
 {
-  if ([RPNWEndpoint removeEndpointMapping:a3 discoverySessionID:self->_discoverySessionID immediate:1])
+  if ([RPNWEndpoint removeEndpointMapping:device discoverySessionID:self->_discoverySessionID immediate:1])
   {
 
     [(RPNWDiscoverySession *)self updateClientBrowseResult];
@@ -111,8 +111,8 @@
   }
 
   v4 = +[_TtC8rapportd27RPApplicationServiceMonitor shared];
-  v5 = [(NSUUID *)self->_discoverySessionID UUIDString];
-  [v4 deregisterForNotificationsWithIdentifier:v5];
+  uUIDString = [(NSUUID *)self->_discoverySessionID UUIDString];
+  [v4 deregisterForNotificationsWithIdentifier:uUIDString];
 
   [(RPNWDiscoverySession *)self removeAllDevices];
 }

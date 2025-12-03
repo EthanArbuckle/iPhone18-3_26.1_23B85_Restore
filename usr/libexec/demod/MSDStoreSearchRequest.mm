@@ -1,6 +1,6 @@
 @interface MSDStoreSearchRequest
 - (id)getQueryItems;
-- (id)parseResponseForError:(id)a3 andPayload:(id)a4;
+- (id)parseResponseForError:(id)error andPayload:(id)payload;
 @end
 
 @implementation MSDStoreSearchRequest
@@ -10,54 +10,54 @@
   if ([(MSDDemoUnitServerRequest *)self isValid])
   {
     v3 = +[MSDLanguageAndRegionManager sharedInstance];
-    v4 = [v3 getCurrentDeviceLocaleCode];
+    getCurrentDeviceLocaleCode = [v3 getCurrentDeviceLocaleCode];
 
     v5 = [NSMutableArray arrayWithCapacity:0];
-    v6 = [(MSDStoreSearchRequest *)self text];
-    v7 = [NSURLQueryItem queryItemWithName:@"text" value:v6];
+    text = [(MSDStoreSearchRequest *)self text];
+    v7 = [NSURLQueryItem queryItemWithName:@"text" value:text];
 
     [v5 addObject:v7];
-    v8 = [(MSDStoreSearchRequest *)self longitude];
-    if (v8)
+    longitude = [(MSDStoreSearchRequest *)self longitude];
+    if (longitude)
     {
-      v9 = v8;
-      v10 = [(MSDStoreSearchRequest *)self latitude];
+      v9 = longitude;
+      latitude = [(MSDStoreSearchRequest *)self latitude];
 
-      if (v10)
+      if (latitude)
       {
-        v11 = [(MSDStoreSearchRequest *)self longitude];
-        v12 = [v11 stringValue];
-        v13 = [NSURLQueryItem queryItemWithName:@"longitude" value:v12];
+        longitude2 = [(MSDStoreSearchRequest *)self longitude];
+        stringValue = [longitude2 stringValue];
+        v13 = [NSURLQueryItem queryItemWithName:@"longitude" value:stringValue];
 
         [v5 addObject:v13];
-        v14 = [(MSDStoreSearchRequest *)self latitude];
-        v15 = [v14 stringValue];
-        v7 = [NSURLQueryItem queryItemWithName:@"latitude" value:v15];
+        latitude2 = [(MSDStoreSearchRequest *)self latitude];
+        stringValue2 = [latitude2 stringValue];
+        v7 = [NSURLQueryItem queryItemWithName:@"latitude" value:stringValue2];
 
         [v5 addObject:v7];
       }
     }
 
-    v16 = [NSURLQueryItem queryItemWithName:@"locale_code" value:v4];
+    v16 = [NSURLQueryItem queryItemWithName:@"locale_code" value:getCurrentDeviceLocaleCode];
 
     [v5 addObject:v16];
     v17 = +[MSDLanguageAndRegionManager sharedInstance];
-    v18 = [v17 getCurrentDeviceLanguage];
-    v19 = [NSURLQueryItem queryItemWithName:@"language" value:v18];
+    getCurrentDeviceLanguage = [v17 getCurrentDeviceLanguage];
+    v19 = [NSURLQueryItem queryItemWithName:@"language" value:getCurrentDeviceLanguage];
 
     [v5 addObject:v19];
     v20 = +[MSDLanguageAndRegionManager sharedInstance];
-    v21 = [v20 getCurrentDeviceRegion];
-    v22 = [NSURLQueryItem queryItemWithName:@"country" value:v21];
+    getCurrentDeviceRegion = [v20 getCurrentDeviceRegion];
+    v22 = [NSURLQueryItem queryItemWithName:@"country" value:getCurrentDeviceRegion];
 
     [v5 addObject:v22];
-    v23 = [(MSDStoreSearchRequest *)self maxStoreResults];
+    maxStoreResults = [(MSDStoreSearchRequest *)self maxStoreResults];
 
-    if (v23)
+    if (maxStoreResults)
     {
-      v24 = [(MSDStoreSearchRequest *)self maxStoreResults];
-      v25 = [v24 stringValue];
-      v26 = [NSURLQueryItem queryItemWithName:@"max_store_results" value:v25];
+      maxStoreResults2 = [(MSDStoreSearchRequest *)self maxStoreResults];
+      stringValue3 = [maxStoreResults2 stringValue];
+      v26 = [NSURLQueryItem queryItemWithName:@"max_store_results" value:stringValue3];
 
       v22 = v26;
     }
@@ -79,16 +79,16 @@
   return v5;
 }
 
-- (id)parseResponseForError:(id)a3 andPayload:(id)a4
+- (id)parseResponseForError:(id)error andPayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  payloadCopy = payload;
   v24.receiver = self;
   v24.super_class = MSDStoreSearchRequest;
-  v8 = [(MSDServerRequest *)&v24 parseResponseForError:v6 andPayload:v7];
-  v9 = [v8 error];
+  v8 = [(MSDServerRequest *)&v24 parseResponseForError:errorCopy andPayload:payloadCopy];
+  error = [v8 error];
 
-  if (v9)
+  if (error)
   {
     v13 = 0;
     v10 = 0;
@@ -96,8 +96,8 @@
 
   else
   {
-    v23 = v6;
-    v10 = [(MSDCommandServerRequest *)self getDataDictFromPayload:v7 error:&v23];
+    v23 = errorCopy;
+    v10 = [(MSDCommandServerRequest *)self getDataDictFromPayload:payloadCopy error:&v23];
     v11 = v23;
 
     if (v10)
@@ -114,11 +114,11 @@
           v15 = v22;
 
           [v8 setData:v14];
-          v16 = [v8 data];
+          data = [v8 data];
 
-          if (v16 && !v15)
+          if (data && !v15)
           {
-            v6 = 0;
+            errorCopy = 0;
             goto LABEL_8;
           }
 
@@ -158,19 +158,19 @@
       v13 = 0;
     }
 
-    v6 = v11;
+    errorCopy = v11;
   }
 
-  v19 = [v8 error];
+  error2 = [v8 error];
 
-  if (!v19)
+  if (!error2)
   {
-    v21 = v6;
+    v21 = errorCopy;
     sub_1000C1424(&v21, 3727744512, @"Unexpected server response.");
     v20 = v21;
 
     [v8 setError:v20];
-    v6 = v20;
+    errorCopy = v20;
   }
 
 LABEL_8:

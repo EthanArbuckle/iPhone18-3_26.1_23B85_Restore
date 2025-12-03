@@ -1,18 +1,18 @@
 @interface AutoFetchHistoryEntry
-- (AutoFetchHistoryEntry)initWithMailboxPath:(id)a3;
+- (AutoFetchHistoryEntry)initWithMailboxPath:(id)path;
 @end
 
 @implementation AutoFetchHistoryEntry
 
-- (AutoFetchHistoryEntry)initWithMailboxPath:(id)a3
+- (AutoFetchHistoryEntry)initWithMailboxPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = AutoFetchHistoryEntry;
   v5 = [(AutoFetchHistoryEntry *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     mailboxPath = v5->_mailboxPath;
     v5->_mailboxPath = v6;
   }

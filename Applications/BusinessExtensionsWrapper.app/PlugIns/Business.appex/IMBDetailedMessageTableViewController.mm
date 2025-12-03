@@ -1,9 +1,9 @@
 @interface IMBDetailedMessageTableViewController
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -15,32 +15,32 @@
   v4.receiver = self;
   v4.super_class = type metadata accessor for IMBDetailedMessageTableViewController();
   v2 = v4.receiver;
-  v3 = [(IMBDetailedMessageViewController *)&v4 viewDidLoad];
-  (*((swift_isaMask & *v2) + 0x128))(v3);
+  viewDidLoad = [(IMBDetailedMessageViewController *)&v4 viewDidLoad];
+  (*((swift_isaMask & *v2) + 0x128))(viewDidLoad);
   sub_10008254C();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100082ED0();
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   result = sub_1000AC63C();
   __break(1u);
   return result;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   result = sub_1000AC63C();
   __break(1u);
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v4 = sub_1000AB97C();
   v5 = *(*(v4 - 8) + 64);
@@ -51,7 +51,7 @@
   return result;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   v4 = sub_1000AB97C();
   v5 = *(v4 - 8);
@@ -63,7 +63,7 @@
   return UITableViewAutomaticDimension;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
   v4 = [objc_allocWithZone(UIView) init];
 

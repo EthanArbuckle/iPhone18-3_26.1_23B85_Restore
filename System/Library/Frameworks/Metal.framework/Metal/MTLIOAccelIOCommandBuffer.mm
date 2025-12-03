@@ -1,18 +1,18 @@
 @interface MTLIOAccelIOCommandBuffer
-- (MTLIOAccelIOCommandBuffer)initWithQueue:(id)a3;
-- (void)setLabel:(id)a3;
+- (MTLIOAccelIOCommandBuffer)initWithQueue:(id)queue;
+- (void)setLabel:(id)label;
 @end
 
 @implementation MTLIOAccelIOCommandBuffer
 
-- (MTLIOAccelIOCommandBuffer)initWithQueue:(id)a3
+- (MTLIOAccelIOCommandBuffer)initWithQueue:(id)queue
 {
   v4.receiver = self;
   v4.super_class = MTLIOAccelIOCommandBuffer;
-  return [(_MTLIOCommandBuffer *)&v4 initWithQueue:a3];
+  return [(_MTLIOCommandBuffer *)&v4 initWithQueue:queue];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
   v6.receiver = self;
   v6.super_class = MTLIOAccelIOCommandBuffer;
@@ -21,7 +21,7 @@
   {
     [(_MTLIOCommandBuffer *)self globalTraceObjectID];
     labelTraceID = self->super._labelTraceID;
-    [a3 cStringUsingEncoding:1];
+    [label cStringUsingEncoding:1];
     self->super._labelTraceID = IOAccelDeviceTraceObjectLabel();
   }
 }

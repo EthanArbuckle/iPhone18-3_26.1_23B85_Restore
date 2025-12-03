@@ -1,6 +1,6 @@
 @interface AVTStickerPoseAdjustment
 - (id)description;
-- (id)poseByApplyingToPose:(id)a3 forAvatar:(id)a4;
+- (id)poseByApplyingToPose:(id)pose forAvatar:(id)avatar;
 @end
 
 @implementation AVTStickerPoseAdjustment
@@ -15,26 +15,26 @@
   return v6;
 }
 
-- (id)poseByApplyingToPose:(id)a3 forAvatar:(id)a4
+- (id)poseByApplyingToPose:(id)pose forAvatar:(id)avatar
 {
-  v6 = a3;
-  v7 = a4;
+  poseCopy = pose;
+  avatarCopy = avatar;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 presetForCategory:self->_presetCategory];
-    v9 = [v8 identifier];
-    v10 = [v9 isEqualToString:self->_presetIdentifier];
+    v8 = [avatarCopy presetForCategory:self->_presetCategory];
+    identifier = [v8 identifier];
+    v10 = [identifier isEqualToString:self->_presetIdentifier];
 
     if (v10)
     {
-      v11 = [v6 poseByMergingPose:self->_pose];
+      v11 = [poseCopy poseByMergingPose:self->_pose];
 
       goto LABEL_6;
     }
   }
 
-  v11 = v6;
+  v11 = poseCopy;
 LABEL_6:
 
   return v11;

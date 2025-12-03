@@ -1,14 +1,14 @@
 @interface MediaAutoLaunchModel
-- (void)twoWaySyncSettingDidUpdate:(id)a3;
+- (void)twoWaySyncSettingDidUpdate:(id)update;
 @end
 
 @implementation MediaAutoLaunchModel
 
-- (void)twoWaySyncSettingDidUpdate:(id)a3
+- (void)twoWaySyncSettingDidUpdate:(id)update
 {
   type metadata accessor for MediaAutoLaunchModel();
   sub_D018();
-  v4 = self;
+  selfCopy = self;
   sub_26194();
   sub_261A4();
 }

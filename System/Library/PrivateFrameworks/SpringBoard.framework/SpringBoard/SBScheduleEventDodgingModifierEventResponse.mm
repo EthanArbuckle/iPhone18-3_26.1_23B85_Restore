@@ -1,19 +1,19 @@
 @interface SBScheduleEventDodgingModifierEventResponse
-- (SBScheduleEventDodgingModifierEventResponse)initWithName:(id)a3;
+- (SBScheduleEventDodgingModifierEventResponse)initWithName:(id)name;
 - (id)description;
 @end
 
 @implementation SBScheduleEventDodgingModifierEventResponse
 
-- (SBScheduleEventDodgingModifierEventResponse)initWithName:(id)a3
+- (SBScheduleEventDodgingModifierEventResponse)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = SBScheduleEventDodgingModifierEventResponse;
   v5 = [(SBChainableModifierEventResponse *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     name = v5->_name;
     v5->_name = v6;
   }

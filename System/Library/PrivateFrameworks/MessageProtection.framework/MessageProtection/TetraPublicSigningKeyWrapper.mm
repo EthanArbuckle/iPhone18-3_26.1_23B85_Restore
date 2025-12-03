@@ -1,8 +1,8 @@
 @interface TetraPublicSigningKeyWrapper
-- (BOOL)verifyTetraMessageSignature:(id)a3 formatter:(id)a4;
-- (BOOL)verifyTetraRegistrationSignature:(id)a3 formatter:(id)a4;
-- (TetraPublicSigningKeyWrapper)initWithCompactRepresentation:(id)a3;
-- (TetraPublicSigningKeyWrapper)initWithSigningPublicKey:(id)a3;
+- (BOOL)verifyTetraMessageSignature:(id)signature formatter:(id)formatter;
+- (BOOL)verifyTetraRegistrationSignature:(id)signature formatter:(id)formatter;
+- (TetraPublicSigningKeyWrapper)initWithCompactRepresentation:(id)representation;
+- (TetraPublicSigningKeyWrapper)initWithSigningPublicKey:(id)key;
 - (id)compactRepresentation;
 - (id)lookupIdentifier;
 @end
@@ -11,8 +11,8 @@
 
 - (id)lookupIdentifier
 {
-  v2 = [(PublicKey *)self->_signingKey dataRepresentation];
-  v3 = [v2 base64EncodedStringWithOptions:0];
+  dataRepresentation = [(PublicKey *)self->_signingKey dataRepresentation];
+  v3 = [dataRepresentation base64EncodedStringWithOptions:0];
 
   return v3;
 }
@@ -20,14 +20,14 @@
 - (id)compactRepresentation
 {
   v2 = [(PublicKey *)self->_signingKey key];
-  v3 = [v2 dataRepresentation];
+  dataRepresentation = [v2 dataRepresentation];
 
-  return v3;
+  return dataRepresentation;
 }
 
-- (TetraPublicSigningKeyWrapper)initWithCompactRepresentation:(id)a3
+- (TetraPublicSigningKeyWrapper)initWithCompactRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v12.receiver = self;
   v12.super_class = TetraPublicSigningKeyWrapper;
   v5 = [(TetraPublicSigningKeyWrapper *)&v12 init];
@@ -37,7 +37,7 @@
   }
 
   v11 = 0;
-  v6 = [[SigningPublicKey alloc] initWithData:v4 error:&v11];
+  v6 = [[SigningPublicKey alloc] initWithData:representationCopy error:&v11];
   v7 = v11;
   signingKey = v5->_signingKey;
   v5->_signingKey = v6;
@@ -52,37 +52,37 @@ LABEL_3:
   return v9;
 }
 
-- (TetraPublicSigningKeyWrapper)initWithSigningPublicKey:(id)a3
+- (TetraPublicSigningKeyWrapper)initWithSigningPublicKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v9.receiver = self;
   v9.super_class = TetraPublicSigningKeyWrapper;
   v6 = [(TetraPublicSigningKeyWrapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_signingKey, a3);
+    objc_storeStrong(&v6->_signingKey, key);
   }
 
   return v7;
 }
 
-- (BOOL)verifyTetraRegistrationSignature:(id)a3 formatter:(id)a4
+- (BOOL)verifyTetraRegistrationSignature:(id)signature formatter:(id)formatter
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TetraPublicSigningKeyWrapper *)self signingKey];
-  v9 = [v8 verifySignature:v7 formatter:v6];
+  formatterCopy = formatter;
+  signatureCopy = signature;
+  signingKey = [(TetraPublicSigningKeyWrapper *)self signingKey];
+  v9 = [signingKey verifySignature:signatureCopy formatter:formatterCopy];
 
   return v9;
 }
 
-- (BOOL)verifyTetraMessageSignature:(id)a3 formatter:(id)a4
+- (BOOL)verifyTetraMessageSignature:(id)signature formatter:(id)formatter
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TetraPublicSigningKeyWrapper *)self signingKey];
-  v9 = [v8 verifySignature:v7 formatter:v6];
+  formatterCopy = formatter;
+  signatureCopy = signature;
+  signingKey = [(TetraPublicSigningKeyWrapper *)self signingKey];
+  v9 = [signingKey verifySignature:signatureCopy formatter:formatterCopy];
 
   return v9;
 }

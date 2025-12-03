@@ -1,10 +1,10 @@
 @interface CARActiveNavigationIdentifiersObserver
 - (CARActiveNavigationIdentifiersObserver)init;
 - (void)_setupConnection;
-- (void)activeNavigationIdentifiersChangedTo:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)activeNavigationIdentifiersChangedTo:(id)to;
+- (void)addObserver:(id)observer;
 - (void)invalidate;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation CARActiveNavigationIdentifiersObserver
@@ -59,18 +59,18 @@ void __46__CARActiveNavigationIdentifiersObserver_init__block_invoke(uint64_t a1
   _Block_object_dispose(&v5, 8);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CARActiveNavigationIdentifiersObserver *)self observers];
-  [v5 registerObserver:v4];
+  observerCopy = observer;
+  observers = [(CARActiveNavigationIdentifiersObserver *)self observers];
+  [observers registerObserver:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CARActiveNavigationIdentifiersObserver *)self observers];
-  [v5 unregisterObserver:v4];
+  observerCopy = observer;
+  observers = [(CARActiveNavigationIdentifiersObserver *)self observers];
+  [observers unregisterObserver:observerCopy];
 }
 
 - (void)_setupConnection
@@ -98,9 +98,9 @@ void __46__CARActiveNavigationIdentifiersObserver_init__block_invoke(uint64_t a1
   [v3 setInvalidationHandler:v8];
   [v3 resume];
   [(CARActiveNavigationIdentifiersObserver *)self setConnection:v3];
-  v6 = [(CARActiveNavigationIdentifiersObserver *)self connection];
-  v7 = [v6 remoteObjectProxy];
-  [v7 beginObserving];
+  connection = [(CARActiveNavigationIdentifiersObserver *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy beginObserving];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&v11);
@@ -119,20 +119,20 @@ void __58__CARActiveNavigationIdentifiersObserver__setupConnection__block_invoke
   [WeakRetained _connectionInvalidated];
 }
 
-- (void)activeNavigationIdentifiersChangedTo:(id)a3
+- (void)activeNavigationIdentifiersChangedTo:(id)to
 {
-  v4 = [a3 copy];
+  v4 = [to copy];
   activeNavigationIdentifiers = self->_activeNavigationIdentifiers;
   self->_activeNavigationIdentifiers = v4;
 
-  v6 = [(CARActiveNavigationIdentifiersObserver *)self observers];
-  [v6 activeNavigationIdentifiersObserver:self updatedActiveNavigationIdentifiers:self->_activeNavigationIdentifiers];
+  observers = [(CARActiveNavigationIdentifiersObserver *)self observers];
+  [observers activeNavigationIdentifiersObserver:self updatedActiveNavigationIdentifiers:self->_activeNavigationIdentifiers];
 }
 
 - (void)invalidate
 {
-  v2 = [(CARActiveNavigationIdentifiersObserver *)self connection];
-  [v2 invalidate];
+  connection = [(CARActiveNavigationIdentifiersObserver *)self connection];
+  [connection invalidate];
 }
 
 @end

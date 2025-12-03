@@ -1,35 +1,35 @@
 @interface FSModuleVolume
-+ (id)volumeWithName:(id)a3 resource:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (FSModuleVolume)initWithVolume:(id)a3 resource:(id)a4;
-- (id)getAndRemoveItemForFH:(id)a3;
-- (id)getItemForFH:(id)a3;
++ (id)volumeWithName:(id)name resource:(id)resource;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (FSModuleVolume)initWithVolume:(id)volume resource:(id)resource;
+- (id)getAndRemoveItemForFH:(id)h;
+- (id)getItemForFH:(id)h;
 - (id)stopUsingVolume;
 - (int64_t)getMaxFileSizeInBits;
 - (int64_t)getMaxXattrSizeInBits;
-- (unsigned)newConnectionID:(id)a3;
-- (void)fetchAndSetTypeForItem:(id)a3 replyHandler:(id)a4;
-- (void)insertIntoFHCache:(id)a3;
-- (void)removeConnectionByID:(unsigned __int8)a3;
-- (void)removeFromFHCache:(id)a3;
-- (void)updateRootItem:(id)a3 replyHandler:(id)a4;
+- (unsigned)newConnectionID:(id)d;
+- (void)fetchAndSetTypeForItem:(id)item replyHandler:(id)handler;
+- (void)insertIntoFHCache:(id)cache;
+- (void)removeConnectionByID:(unsigned __int8)d;
+- (void)removeFromFHCache:(id)cache;
+- (void)updateRootItem:(id)item replyHandler:(id)handler;
 @end
 
 @implementation FSModuleVolume
 
-- (FSModuleVolume)initWithVolume:(id)a3 resource:(id)a4
+- (FSModuleVolume)initWithVolume:(id)volume resource:(id)resource
 {
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  volumeCopy = volume;
+  resourceCopy = resource;
   v33.receiver = self;
   v33.super_class = FSModuleVolume;
   v9 = [(FSModuleVolume *)&v33 init];
   if (v9)
   {
-    v10 = [MEMORY[0x277CCAE98] anonymousListener];
+    anonymousListener = [MEMORY[0x277CCAE98] anonymousListener];
     listener = v9->_listener;
-    v9->_listener = v10;
+    v9->_listener = anonymousListener;
 
     [(NSXPCListener *)v9->_listener setDelegate:v9];
     [(NSXPCListener *)v9->_listener resume];
@@ -42,8 +42,8 @@
       _os_log_impl(&dword_24A929000, v12, OS_LOG_TYPE_DEFAULT, "Built listener %@", buf, 0xCu);
     }
 
-    objc_storeStrong(&v9->_volume, a3);
-    objc_storeStrong(&v9->_resource, a4);
+    objc_storeStrong(&v9->_volume, volume);
+    objc_storeStrong(&v9->_resource, resource);
     v14 = objc_opt_new();
     connections = v9->_connections;
     v9->_connections = v14;
@@ -57,17 +57,17 @@
 
     v9->connectionCount = 0;
     *&v9->validConnections = 256;
-    v9->_supportsKOIOOps = [v7 conformsToProtocol:&unk_285E05FA8];
-    v9->_supportsReadWriteOps = [v7 conformsToProtocol:&unk_285E06008];
-    v9->_supportsCloneOps = [v7 conformsToProtocol:&unk_285E06068];
-    v9->_supportsItemDeactivation = [v7 conformsToProtocol:&unk_285E060C8];
-    v19 = [v7 conformsToProtocol:&unk_285E06128];
+    v9->_supportsKOIOOps = [volumeCopy conformsToProtocol:&unk_285E05FA8];
+    v9->_supportsReadWriteOps = [volumeCopy conformsToProtocol:&unk_285E06008];
+    v9->_supportsCloneOps = [volumeCopy conformsToProtocol:&unk_285E06068];
+    v9->_supportsItemDeactivation = [volumeCopy conformsToProtocol:&unk_285E060C8];
+    v19 = [volumeCopy conformsToProtocol:&unk_285E06128];
     v20 = 0;
     if (v19)
     {
       if (objc_opt_respondsToSelector())
       {
-        v20 = [v7 xattrOperationsInhibited] ^ 1;
+        v20 = [volumeCopy xattrOperationsInhibited] ^ 1;
       }
 
       else
@@ -77,11 +77,11 @@
     }
 
     v9->_supportsXattrOps = v20;
-    if ([v7 conformsToProtocol:&unk_285E06188])
+    if ([volumeCopy conformsToProtocol:&unk_285E06188])
     {
       if (objc_opt_respondsToSelector())
       {
-        v21 = [v7 isOpenCloseInhibited] ^ 1;
+        v21 = [volumeCopy isOpenCloseInhibited] ^ 1;
       }
 
       else
@@ -96,11 +96,11 @@
     }
 
     v9->_supportsOpenCloseOps = v21;
-    if ([v7 conformsToProtocol:&unk_285E061E8])
+    if ([volumeCopy conformsToProtocol:&unk_285E061E8])
     {
       if (objc_opt_respondsToSelector())
       {
-        v22 = [v7 isAccessCheckInhibited] ^ 1;
+        v22 = [volumeCopy isAccessCheckInhibited] ^ 1;
       }
 
       else
@@ -115,11 +115,11 @@
     }
 
     v9->_supportsAccessOps = v22;
-    if ([v7 conformsToProtocol:&unk_285E06248])
+    if ([volumeCopy conformsToProtocol:&unk_285E06248])
     {
       if (objc_opt_respondsToSelector())
       {
-        v23 = [v7 isVolumeRenameInhibited] ^ 1;
+        v23 = [volumeCopy isVolumeRenameInhibited] ^ 1;
       }
 
       else
@@ -134,11 +134,11 @@
     }
 
     v9->_supportsVolumeRenameOps = v23;
-    if ([v7 conformsToProtocol:&unk_285E062A8])
+    if ([volumeCopy conformsToProtocol:&unk_285E062A8])
     {
       if (objc_opt_respondsToSelector())
       {
-        v24 = [v7 isPreallocateInhibited] ^ 1;
+        v24 = [volumeCopy isPreallocateInhibited] ^ 1;
       }
 
       else
@@ -166,7 +166,7 @@
     v9->_supportsLimitedXattrOps = v25 & 1;
     if (objc_opt_respondsToSelector())
     {
-      v26 = [v7 enableOpenUnlinkEmulation] ^ 1;
+      v26 = [volumeCopy enableOpenUnlinkEmulation] ^ 1;
     }
 
     else
@@ -175,15 +175,15 @@
     }
 
     v9->_supportsOpenUnlink = v26;
-    v27 = [v8 kind] != 3 && objc_msgSend(v8, "kind") != 2;
+    v27 = [resourceCopy kind] != 3 && objc_msgSend(resourceCopy, "kind") != 2;
     v9->_reportAsLocal = v27;
     v28 = dispatch_queue_create("FSModuleVolumeFileHandleQueue", 0);
     fileHandleQueue = v9->_fileHandleQueue;
     v9->_fileHandleQueue = v28;
 
-    if (v8)
+    if (resourceCopy)
     {
-      v30 = [v8 kind] == 1;
+      v30 = [resourceCopy kind] == 1;
     }
 
     else
@@ -198,30 +198,30 @@
   return v9;
 }
 
-+ (id)volumeWithName:(id)a3 resource:(id)a4
++ (id)volumeWithName:(id)name resource:(id)resource
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithVolume:v7 resource:v6];
+  resourceCopy = resource;
+  nameCopy = name;
+  v8 = [[self alloc] initWithVolume:nameCopy resource:resourceCopy];
 
   return v8;
 }
 
-- (void)updateRootItem:(id)a3 replyHandler:(id)a4
+- (void)updateRootItem:(id)item replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FSModuleVolume *)self resource];
-  if (v8)
+  itemCopy = item;
+  handlerCopy = handler;
+  resource = [(FSModuleVolume *)self resource];
+  if (resource)
   {
-    v9 = v8;
-    v10 = [(FSModuleVolume *)self resource];
-    v11 = [v10 kind];
+    v9 = resource;
+    resource2 = [(FSModuleVolume *)self resource];
+    kind = [resource2 kind];
 
-    if (v11 == 1)
+    if (kind == 1)
     {
-      v12 = [(FSModuleVolume *)self resource];
-      v13 = [(FSResource *)FSBlockDeviceResource dynamicCast:v12];
+      resource3 = [(FSModuleVolume *)self resource];
+      v13 = [(FSResource *)FSBlockDeviceResource dynamicCast:resource3];
 
       v14 = [v13 startUsingResource:@"activateVolume"];
       if (v14)
@@ -233,16 +233,16 @@
   }
 
   rootFSItem = self->_rootFSItem;
-  self->_rootFSItem = v6;
-  v16 = v6;
+  self->_rootFSItem = itemCopy;
+  v16 = itemCopy;
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __55__FSModuleVolume_Project__updateRootItem_replyHandler___block_invoke;
   v18[3] = &unk_278FED6E0;
   v18[4] = self;
-  v19 = v7;
-  v17 = v7;
+  v19 = handlerCopy;
+  v17 = handlerCopy;
   [(FSModuleVolume *)self fetchAndSetTypeForItem:v16 replyHandler:v18];
 }
 
@@ -257,11 +257,11 @@ uint64_t __55__FSModuleVolume_Project__updateRootItem_replyHandler___block_invok
 
 - (id)stopUsingVolume
 {
-  v3 = [(FSModuleVolume *)self resource];
-  if (v3 && (v4 = v3, -[FSModuleVolume resource](self, "resource"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 kind], v5, v4, v6 == 1))
+  resource = [(FSModuleVolume *)self resource];
+  if (resource && (v4 = resource, -[FSModuleVolume resource](self, "resource"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 kind], v5, v4, v6 == 1))
   {
-    v7 = [(FSModuleVolume *)self resource];
-    v8 = [(FSResource *)FSBlockDeviceResource dynamicCast:v7];
+    resource2 = [(FSModuleVolume *)self resource];
+    v8 = [(FSResource *)FSBlockDeviceResource dynamicCast:resource2];
 
     v9 = [v8 stopUsingResource:@"activateVolume"];
   }
@@ -274,17 +274,17 @@ uint64_t __55__FSModuleVolume_Project__updateRootItem_replyHandler___block_invok
   return v9;
 }
 
-- (unsigned)newConnectionID:(id)a3
+- (unsigned)newConnectionID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  connectionCount = v5->connectionCount;
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  connectionCount = selfCopy->connectionCount;
   if (connectionCount <= 7)
   {
     v8 = 0;
-    v5->connectionCount = connectionCount + 1;
-    validConnections = v5->validConnections;
+    selfCopy->connectionCount = connectionCount + 1;
+    validConnections = selfCopy->validConnections;
     do
     {
       v7 = 1 << v8;
@@ -293,10 +293,10 @@ uint64_t __55__FSModuleVolume_Project__updateRootItem_replyHandler___block_invok
     }
 
     while (!v10);
-    v5->validConnections = validConnections | v7;
-    connections = v5->_connections;
+    selfCopy->validConnections = validConnections | v7;
+    connections = selfCopy->_connections;
     v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v7];
-    [(NSMutableDictionary *)connections setObject:v4 forKey:v12];
+    [(NSMutableDictionary *)connections setObject:dCopy forKey:v12];
   }
 
   else
@@ -304,30 +304,30 @@ uint64_t __55__FSModuleVolume_Project__updateRootItem_replyHandler___block_invok
     LOBYTE(v7) = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (void)removeConnectionByID:(unsigned __int8)a3
+- (void)removeConnectionByID:(unsigned __int8)d
 {
-  v3 = a3;
+  dCopy = d;
   obj = self;
   objc_sync_enter(obj);
-  obj->validConnections &= ~v3;
+  obj->validConnections &= ~dCopy;
   connections = obj->_connections;
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:dCopy];
   [(NSMutableDictionary *)connections removeObjectForKey:v5];
 
   --obj->connectionCount;
   objc_sync_exit(obj);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = fskit_std_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -336,14 +336,14 @@ uint64_t __55__FSModuleVolume_Project__updateRootItem_replyHandler___block_invok
     _os_log_impl(&dword_24A929000, v8, OS_LOG_TYPE_DEFAULT, "%s:start", buf, 0xCu);
   }
 
-  v9 = [(FSModuleVolume *)self newConnectionID:v7];
+  v9 = [(FSModuleVolume *)self newConnectionID:connectionCopy];
   if (v9)
   {
     v10 = +[FSKitConstants FSVolumeXPCProtocol];
-    [v7 setExportedInterface:v10];
+    [connectionCopy setExportedInterface:v10];
 
-    v11 = [FSVolumeConnector volumeConnectorModuleVolume:self connection:v7];
-    [v7 setExportedObject:v11];
+    v11 = [FSVolumeConnector volumeConnectorModuleVolume:self connection:connectionCopy];
+    [connectionCopy setExportedObject:v11];
     objc_initWeak(&location, self);
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
@@ -352,9 +352,9 @@ uint64_t __55__FSModuleVolume_Project__updateRootItem_replyHandler___block_invok
     objc_copyWeak(&v25, &location);
     v26 = v9;
     v12 = _Block_copy(aBlock);
-    [v7 setInvalidationHandler:v12];
-    [v7 setInterruptionHandler:v12];
-    [v7 resume];
+    [connectionCopy setInvalidationHandler:v12];
+    [connectionCopy setInterruptionHandler:v12];
+    [connectionCopy resume];
     v13 = fskit_std_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -375,7 +375,7 @@ uint64_t __55__FSModuleVolume_Project__updateRootItem_replyHandler___block_invok
       [(FSModuleVolume(Project) *)v14 listener:v15 shouldAcceptNewConnection:v16, v17, v18, v19, v20, v21];
     }
 
-    [v7 invalidate];
+    [connectionCopy invalidate];
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -393,9 +393,9 @@ void __62__FSModuleVolume_Project__listener_shouldAcceptNewConnection___block_in
   }
 }
 
-- (id)getItemForFH:(id)a3
+- (id)getItemForFH:(id)h
 {
-  v4 = a3;
+  hCopy = h;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -407,10 +407,10 @@ void __62__FSModuleVolume_Project__listener_shouldAcceptNewConnection___block_in
   block[1] = 3221225472;
   block[2] = __40__FSModuleVolume_Project__getItemForFH___block_invoke;
   block[3] = &unk_278FED730;
-  v10 = v4;
+  v10 = hCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = hCopy;
   dispatch_sync(fileHandleQueue, block);
   v7 = v13[5];
 
@@ -429,17 +429,17 @@ uint64_t __40__FSModuleVolume_Project__getItemForFH___block_invoke(void *a1)
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)insertIntoFHCache:(id)a3
+- (void)insertIntoFHCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   fileHandleQueue = self->_fileHandleQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__FSModuleVolume_Project__insertIntoFHCache___block_invoke;
   v7[3] = &unk_278FED758;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = cacheCopy;
+  v6 = cacheCopy;
   dispatch_sync(fileHandleQueue, v7);
 }
 
@@ -451,17 +451,17 @@ void __45__FSModuleVolume_Project__insertIntoFHCache___block_invoke(uint64_t a1)
   [v2 setObject:v1 forKeyedSubscript:v3];
 }
 
-- (void)removeFromFHCache:(id)a3
+- (void)removeFromFHCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   fileHandleQueue = self->_fileHandleQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__FSModuleVolume_Project__removeFromFHCache___block_invoke;
   v7[3] = &unk_278FED758;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = cacheCopy;
+  v6 = cacheCopy;
   dispatch_sync(fileHandleQueue, v7);
 }
 
@@ -472,11 +472,11 @@ void __45__FSModuleVolume_Project__removeFromFHCache___block_invoke(uint64_t a1)
   [v1 removeObjectForKey:v2];
 }
 
-- (id)getAndRemoveItemForFH:(id)a3
+- (id)getAndRemoveItemForFH:(id)h
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  hCopy = h;
+  v5 = hCopy;
+  if (hCopy)
   {
     v13 = 0;
     v14 = &v13;
@@ -491,7 +491,7 @@ void __45__FSModuleVolume_Project__removeFromFHCache___block_invoke(uint64_t a1)
     block[3] = &unk_278FED730;
     v12 = &v13;
     block[4] = self;
-    v11 = v4;
+    v11 = hCopy;
     dispatch_sync(fileHandleQueue, block);
     v7 = v14[5];
 
@@ -581,20 +581,20 @@ uint64_t __49__FSModuleVolume_Project__getAndRemoveItemForFH___block_invoke(void
   }
 }
 
-- (void)fetchAndSetTypeForItem:(id)a3 replyHandler:(id)a4
+- (void)fetchAndSetTypeForItem:(id)item replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  handlerCopy = handler;
   volume = self->_volume;
   v9 = [[FSItemGetAttributesRequest alloc] initWithWantedLIAttributes:1];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __63__FSModuleVolume_Project__fetchAndSetTypeForItem_replyHandler___block_invoke;
   v12[3] = &unk_278FED780;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = itemCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = itemCopy;
   [(FSVolumeOperations *)volume getAttributes:v9 ofItem:v11 replyHandler:v12];
 }
 

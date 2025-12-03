@@ -1,12 +1,12 @@
 @interface CRLAnalyticsLogger
-+ (id)loggerWithDomain:(id)a3;
-+ (void)sendEventInDomain:(id)a3 lazily:(BOOL)a4 eventPayload:(id)a5;
-- (CRLAnalyticsLogger)initWithDomain:(id)a3;
++ (id)loggerWithDomain:(id)domain;
++ (void)sendEventInDomain:(id)domain lazily:(BOOL)lazily eventPayload:(id)payload;
+- (CRLAnalyticsLogger)initWithDomain:(id)domain;
 - (NSString)domain;
-- (id)p_eventPayloadFromPayload:(id)a3;
+- (id)p_eventPayloadFromPayload:(id)payload;
 - (void)p_loadCoreAnalyticsIfNeeded;
-- (void)postNotificationForEventPayload:(id)a3;
-- (void)sendEventLazily:(BOOL)a3 eventPayload:(id)a4;
+- (void)postNotificationForEventPayload:(id)payload;
+- (void)sendEventLazily:(BOOL)lazily eventPayload:(id)payload;
 @end
 
 @implementation CRLAnalyticsLogger
@@ -23,8 +23,8 @@
 {
   if ([(CRLAnalyticsLogger *)self recalculateDomain])
   {
-    v3 = [(CRLAnalyticsLogger *)self baseDomain];
-    v4 = [[NSString alloc] initWithFormat:@"com.apple.freeform.%@", v3];
+    baseDomain = [(CRLAnalyticsLogger *)self baseDomain];
+    v4 = [[NSString alloc] initWithFormat:@"com.apple.freeform.%@", baseDomain];
     [(CRLAnalyticsLogger *)self setCachedFullDomain:v4];
 
     [(CRLAnalyticsLogger *)self setRecalculateDomain:0];
@@ -33,50 +33,50 @@
   return [(CRLAnalyticsLogger *)self cachedFullDomain];
 }
 
-+ (id)loggerWithDomain:(id)a3
++ (id)loggerWithDomain:(id)domain
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithDomain:v3];
+  domainCopy = domain;
+  v4 = [objc_alloc(objc_opt_class()) initWithDomain:domainCopy];
 
   return v4;
 }
 
-- (CRLAnalyticsLogger)initWithDomain:(id)a3
+- (CRLAnalyticsLogger)initWithDomain:(id)domain
 {
-  v5 = a3;
+  domainCopy = domain;
   v9.receiver = self;
   v9.super_class = CRLAnalyticsLogger;
   v6 = [(CRLAnalyticsLogger *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseDomain, a3);
+    objc_storeStrong(&v6->_baseDomain, domain);
     v7->_recalculateDomain = 1;
   }
 
   return v7;
 }
 
-- (id)p_eventPayloadFromPayload:(id)a3
+- (id)p_eventPayloadFromPayload:(id)payload
 {
-  v32 = a3;
+  payloadCopy = payload;
   v3 = +[NSBundle mainBundle];
-  v4 = [v3 infoDictionary];
-  v5 = [v4 objectForKey:@"CFBundleName"];
+  infoDictionary = [v3 infoDictionary];
+  v5 = [infoDictionary objectForKey:@"CFBundleName"];
 
-  v6 = [v5 lowercaseString];
+  lowercaseString = [v5 lowercaseString];
 
   v46[0] = @"bundleID";
   v7 = +[NSBundle mainBundle];
-  v8 = [v7 bundleIdentifier];
-  v47[0] = v8;
-  v47[1] = v6;
-  v30 = v6;
+  bundleIdentifier = [v7 bundleIdentifier];
+  v47[0] = bundleIdentifier;
+  v47[1] = lowercaseString;
+  v30 = lowercaseString;
   v46[1] = @"appName";
   v46[2] = @"appVersion";
   v9 = +[NSBundle mainBundle];
-  v10 = [v9 infoDictionary];
-  v11 = [v10 objectForKey:@"CFBundleShortVersionString"];
+  infoDictionary2 = [v9 infoDictionary];
+  v11 = [infoDictionary2 objectForKey:@"CFBundleShortVersionString"];
   v47[2] = v11;
   v46[3] = @"appBuild";
   v12 = +[NSBundle mainBundle];
@@ -105,7 +105,7 @@
           objc_enumerationMutation(obj);
         }
 
-        v19 = [v32 objectForKeyedSubscript:*(*(&v33 + 1) + 8 * v18)];
+        v19 = [payloadCopy objectForKeyedSubscript:*(*(&v33 + 1) + 8 * v18)];
 
         if (v19)
         {
@@ -161,57 +161,57 @@
     while (v16);
   }
 
-  v27 = [NSMutableDictionary dictionaryWithDictionary:v32];
+  v27 = [NSMutableDictionary dictionaryWithDictionary:payloadCopy];
   [v27 addEntriesFromDictionary:v29];
 
   return v27;
 }
 
-- (void)sendEventLazily:(BOOL)a3 eventPayload:(id)a4
+- (void)sendEventLazily:(BOOL)lazily eventPayload:(id)payload
 {
-  v4 = a3;
-  v6 = a4;
+  lazilyCopy = lazily;
+  payloadCopy = payload;
   if ([(CRLAnalyticsLogger *)self canLogAnalytics])
   {
-    [(CRLAnalyticsLogger *)self postNotificationForEventPayload:v6];
+    [(CRLAnalyticsLogger *)self postNotificationForEventPayload:payloadCopy];
     [(CRLAnalyticsLogger *)self p_loadCoreAnalyticsIfNeeded];
     [(CRLAnalyticsLogger *)self setRecalculateDomain:1];
-    v7 = [(CRLAnalyticsLogger *)self domain];
-    v8 = [(CRLAnalyticsLogger *)self p_eventPayloadFromPayload:v6];
+    domain = [(CRLAnalyticsLogger *)self domain];
+    v8 = [(CRLAnalyticsLogger *)self p_eventPayloadFromPayload:payloadCopy];
     v9 = v8;
-    if (v4 && off_101A35258)
+    if (lazilyCopy && off_101A35258)
     {
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_1004EC748;
       v10[3] = &unk_101869DB0;
       v10[4] = v8;
-      off_101A35258(v7, v10);
+      off_101A35258(domain, v10);
     }
 
     else if (off_101A35250)
     {
-      off_101A35250(v7, v8);
+      off_101A35250(domain, v8);
     }
   }
 }
 
-- (void)postNotificationForEventPayload:(id)a3
+- (void)postNotificationForEventPayload:(id)payload
 {
-  v6 = [a3 mutableCopy];
-  v4 = [(CRLAnalyticsLogger *)self baseDomain];
-  [v6 setObject:v4 forKeyedSubscript:@"CRLAnalyticsLoggerEventLoggedNotificationEventDomainKey"];
+  v6 = [payload mutableCopy];
+  baseDomain = [(CRLAnalyticsLogger *)self baseDomain];
+  [v6 setObject:baseDomain forKeyedSubscript:@"CRLAnalyticsLoggerEventLoggedNotificationEventDomainKey"];
 
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 postNotificationName:@"CRLAnalyticsLoggerEventLoggedNotification" object:self userInfo:v6];
 }
 
-+ (void)sendEventInDomain:(id)a3 lazily:(BOOL)a4 eventPayload:(id)a5
++ (void)sendEventInDomain:(id)domain lazily:(BOOL)lazily eventPayload:(id)payload
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [a1 loggerWithDomain:a3];
-  [v9 sendEventLazily:v5 eventPayload:v8];
+  lazilyCopy = lazily;
+  payloadCopy = payload;
+  v9 = [self loggerWithDomain:domain];
+  [v9 sendEventLazily:lazilyCopy eventPayload:payloadCopy];
 }
 
 @end

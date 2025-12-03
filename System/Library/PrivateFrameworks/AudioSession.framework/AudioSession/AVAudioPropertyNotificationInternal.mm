@@ -1,41 +1,41 @@
 @interface AVAudioPropertyNotificationInternal
-- (AVAudioPropertyNotificationInternal)initWithPropertyName:(id)a3 sourceSessionID:(id)a4 nodeSessionID:(id)a5 propertyData:(id)a6;
-- (BOOL)isEqual:(id)a3;
+- (AVAudioPropertyNotificationInternal)initWithPropertyName:(id)name sourceSessionID:(id)d nodeSessionID:(id)iD propertyData:(id)data;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation AVAudioPropertyNotificationInternal
 
-- (AVAudioPropertyNotificationInternal)initWithPropertyName:(id)a3 sourceSessionID:(id)a4 nodeSessionID:(id)a5 propertyData:(id)a6
+- (AVAudioPropertyNotificationInternal)initWithPropertyName:(id)name sourceSessionID:(id)d nodeSessionID:(id)iD propertyData:(id)data
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  nameCopy = name;
+  dCopy = d;
+  iDCopy = iD;
+  dataCopy = data;
   v18.receiver = self;
   v18.super_class = AVAudioPropertyNotificationInternal;
   v15 = [(AVAudioPropertyNotificationInternal *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_propertyName, a3);
-    objc_storeStrong(&v16->_sourceSessionID, a4);
-    objc_storeStrong(&v16->_nodeSessionID, a5);
-    objc_storeStrong(&v16->_propertyData, a6);
+    objc_storeStrong(&v15->_propertyName, name);
+    objc_storeStrong(&v16->_sourceSessionID, d);
+    objc_storeStrong(&v16->_nodeSessionID, iD);
+    objc_storeStrong(&v16->_propertyData, data);
   }
 
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     propertyName = self->_propertyName;
-    v7 = [v5 propertyName];
-    LOBYTE(propertyName) = [(NSString *)propertyName isEqualToString:v7];
+    propertyName = [v5 propertyName];
+    LOBYTE(propertyName) = [(NSString *)propertyName isEqualToString:propertyName];
 
     v11 = 0;
     if (propertyName)

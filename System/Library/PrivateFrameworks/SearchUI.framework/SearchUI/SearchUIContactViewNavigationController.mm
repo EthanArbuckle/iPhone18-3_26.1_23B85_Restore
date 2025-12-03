@@ -1,13 +1,13 @@
 @interface SearchUIContactViewNavigationController
 - (BOOL)_canShowWhileLocked;
-- (SearchUIContactViewNavigationController)initWithContact:(id)a3;
+- (SearchUIContactViewNavigationController)initWithContact:(id)contact;
 @end
 
 @implementation SearchUIContactViewNavigationController
 
-- (SearchUIContactViewNavigationController)initWithContact:(id)a3
+- (SearchUIContactViewNavigationController)initWithContact:(id)contact
 {
-  v4 = [MEMORY[0x1E695D148] viewControllerForNewContact:a3];
+  v4 = [MEMORY[0x1E695D148] viewControllerForNewContact:contact];
   v7.receiver = self;
   v7.super_class = SearchUIContactViewNavigationController;
   v5 = [(SearchUIContactViewNavigationController *)&v7 initWithRootViewController:v4];
@@ -21,11 +21,11 @@
 
 - (BOOL)_canShowWhileLocked
 {
-  v2 = [(SearchUIContactViewNavigationController *)self viewControllers];
-  v3 = [v2 firstObject];
-  v4 = [v3 _canShowWhileLocked];
+  viewControllers = [(SearchUIContactViewNavigationController *)self viewControllers];
+  firstObject = [viewControllers firstObject];
+  _canShowWhileLocked = [firstObject _canShowWhileLocked];
 
-  return v4;
+  return _canShowWhileLocked;
 }
 
 @end

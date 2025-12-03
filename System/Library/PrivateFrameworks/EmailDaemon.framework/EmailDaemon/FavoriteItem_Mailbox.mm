@@ -1,8 +1,8 @@
 @interface FavoriteItem_Mailbox
 - (BOOL)acceptsMessageTransfers;
-- (BOOL)isEqual:(id)a3;
-- (FavoriteItem_Mailbox)initWithDictionary:(id)a3;
-- (FavoriteItem_Mailbox)initWithMailbox:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FavoriteItem_Mailbox)initWithDictionary:(id)dictionary;
+- (FavoriteItem_Mailbox)initWithMailbox:(id)mailbox;
 - (id)criterion;
 - (id)dictionaryRepresentation;
 - (id)displayName;
@@ -14,34 +14,34 @@
 - (id)syncKey;
 - (id)syncValue;
 - (void)_postNotification;
-- (void)wasAddedToCollection:(id)a3;
+- (void)wasAddedToCollection:(id)collection;
 - (void)wasChangedExternally;
-- (void)wasRemovedFromCollecion:(id)a3;
+- (void)wasRemovedFromCollecion:(id)collecion;
 @end
 
 @implementation FavoriteItem_Mailbox
 
-- (FavoriteItem_Mailbox)initWithMailbox:(id)a3
+- (FavoriteItem_Mailbox)initWithMailbox:(id)mailbox
 {
-  v5 = a3;
+  mailboxCopy = mailbox;
   v16.receiver = self;
   v16.super_class = FavoriteItem_Mailbox;
   v6 = [(FavoriteItem *)&v16 initWithType:2];
   if (v6)
   {
-    v7 = [v5 representedAccount];
+    representedAccount = [mailboxCopy representedAccount];
     account = v6->_account;
-    v6->_account = v7;
+    v6->_account = representedAccount;
 
-    objc_storeStrong(&v6->_mailbox, a3);
+    objc_storeStrong(&v6->_mailbox, mailbox);
     v6->_mailboxType = [(MFMailboxUid *)v6->_mailbox mailboxType];
-    v9 = [v5 accountRelativePath];
-    v10 = [v9 copy];
+    accountRelativePath = [mailboxCopy accountRelativePath];
+    v10 = [accountRelativePath copy];
     accountRelativePath = v6->_accountRelativePath;
     v6->_accountRelativePath = v10;
 
-    v12 = [(MFMailboxUid *)v6->_mailbox displayName];
-    v13 = [v12 copy];
+    displayName = [(MFMailboxUid *)v6->_mailbox displayName];
+    v13 = [displayName copy];
     displayName = v6->_displayName;
     v6->_displayName = v13;
   }
@@ -49,21 +49,21 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v7 = sub_100015F24(self->_account);
-    v8 = [v6 account];
-    v9 = sub_100015F24(v8);
+    account = [v6 account];
+    v9 = sub_100015F24(account);
 
     if ([v7 isEqualToString:v9])
     {
@@ -84,15 +84,15 @@
   return v10;
 }
 
-- (FavoriteItem_Mailbox)initWithDictionary:(id)a3
+- (FavoriteItem_Mailbox)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = FavoriteItem_Mailbox;
-  v5 = [(FavoriteItem *)&v19 initWithDictionary:v4];
+  v5 = [(FavoriteItem *)&v19 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"primaryEmail"];
+    v6 = [dictionaryCopy objectForKey:@"primaryEmail"];
     if (!v6 || ([MailAccount accountContainingEmailAddress:v6 includingInactive:1], v7 = objc_claimAutoreleasedReturnValue(), account = v5->_account, v5->_account = v7, account, !v5->_account))
     {
 
@@ -100,22 +100,22 @@
       goto LABEL_9;
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"mailboxPath"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"mailboxPath"];
     accountRelativePath = v5->_accountRelativePath;
     v5->_accountRelativePath = v9;
 
-    v11 = [v4 objectForKeyedSubscript:@"name"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"name"];
     displayName = v5->_displayName;
     v5->_displayName = v11;
 
-    v13 = [v4 objectForKeyedSubscript:@"mailboxType"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"mailboxType"];
     v5->_mailboxType = [v13 integerValue];
 
-    v14 = [v4 objectForKeyedSubscript:@"syncKey"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"syncKey"];
     syncKey = v5->super._syncKey;
     v5->super._syncKey = v14;
 
-    v16 = [v4 objectForKey:@"originalPushState"];
+    v16 = [dictionaryCopy objectForKey:@"originalPushState"];
 
     if (v16)
     {
@@ -133,14 +133,14 @@ LABEL_9:
 {
   v17.receiver = self;
   v17.super_class = FavoriteItem_Mailbox;
-  v3 = [(FavoriteItem *)&v17 dictionaryRepresentation];
-  v4 = [(MailAccount *)self->_account firstEmailAddress];
-  if (v4)
+  dictionaryRepresentation = [(FavoriteItem *)&v17 dictionaryRepresentation];
+  firstEmailAddress = [(MailAccount *)self->_account firstEmailAddress];
+  if (firstEmailAddress)
   {
-    [v3 setObject:v4 forKey:@"primaryEmail"];
-    [v3 setObject:self->_accountRelativePath forKey:@"mailboxPath"];
-    v5 = [(FavoriteItem_Mailbox *)self displayName];
-    [v3 setObject:v5 forKey:@"name"];
+    [dictionaryRepresentation setObject:firstEmailAddress forKey:@"primaryEmail"];
+    [dictionaryRepresentation setObject:self->_accountRelativePath forKey:@"mailboxPath"];
+    displayName = [(FavoriteItem_Mailbox *)self displayName];
+    [dictionaryRepresentation setObject:displayName forKey:@"name"];
 
     mailbox = self->_mailbox;
     if (mailbox)
@@ -154,16 +154,16 @@ LABEL_9:
     }
 
     v9 = [NSNumber numberWithInteger:mailboxType];
-    [v3 setObject:v9 forKey:@"mailboxType"];
+    [dictionaryRepresentation setObject:v9 forKey:@"mailboxType"];
 
-    v10 = [(FavoriteItem_Mailbox *)self syncKey];
-    [v3 setObject:v10 forKey:@"syncKey"];
+    syncKey = [(FavoriteItem_Mailbox *)self syncKey];
+    [dictionaryRepresentation setObject:syncKey forKey:@"syncKey"];
 
     if ([(FavoriteItem_Mailbox *)self originalPushState])
     {
       [(FavoriteItem_Mailbox *)self originalPushState];
       v11 = NSStringFromBOOL();
-      [v3 setObject:v11 forKey:@"originalPushState"];
+      [dictionaryRepresentation setObject:v11 forKey:@"originalPushState"];
     }
   }
 
@@ -173,24 +173,24 @@ LABEL_9:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
     {
       accountRelativePath = self->_accountRelativePath;
-      v14 = [(FavoriteItem_Mailbox *)self displayName];
+      displayName2 = [(FavoriteItem_Mailbox *)self displayName];
       v15 = self->_mailbox;
-      v16 = [(FavoriteItem_Mailbox *)self syncKey];
+      syncKey2 = [(FavoriteItem_Mailbox *)self syncKey];
       *buf = 138413058;
       v19 = accountRelativePath;
       v20 = 2112;
-      v21 = v14;
+      v21 = displayName2;
       v22 = 2112;
       v23 = v15;
       v24 = 2112;
-      v25 = v16;
+      v25 = syncKey2;
       _os_log_fault_impl(&_mh_execute_header, v8, OS_LOG_TYPE_FAULT, "(NOT A CRASH) FavoriteItem_Mailbox dictionaryRepresentation primary==nil accountRelativePath:%@ displayName:%@ mailbox:%@ sync:%@", buf, 0x2Au);
     }
 
-    [v3 removeAllObjects];
+    [dictionaryRepresentation removeAllObjects];
   }
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
 - (id)itemID
@@ -208,8 +208,8 @@ LABEL_9:
       collectionID = &stru_10015BEC8;
     }
 
-    v5 = [(FavoriteItem_Mailbox *)self itemUUID];
-    v6 = [NSString stringWithFormat:@"%@-%@", collectionID, v5];
+    itemUUID = [(FavoriteItem_Mailbox *)self itemUUID];
+    v6 = [NSString stringWithFormat:@"%@-%@", collectionID, itemUUID];
     v7 = self->super._itemID;
     self->super._itemID = v6;
 
@@ -224,10 +224,10 @@ LABEL_9:
   itemUUID = self->super._itemUUID;
   if (!itemUUID)
   {
-    v4 = [(FavoriteItem_Mailbox *)self representingMailbox];
-    v5 = [v4 uniqueId];
+    representingMailbox = [(FavoriteItem_Mailbox *)self representingMailbox];
+    uniqueId = [representingMailbox uniqueId];
     v6 = self->super._itemUUID;
-    self->super._itemUUID = v5;
+    self->super._itemUUID = uniqueId;
 
     itemUUID = self->super._itemUUID;
   }
@@ -237,50 +237,50 @@ LABEL_9:
 
 - (id)parentItemID
 {
-  v2 = [(FavoriteItem_Mailbox *)self account];
-  v3 = [v2 uniqueID];
+  account = [(FavoriteItem_Mailbox *)self account];
+  uniqueID = [account uniqueID];
 
-  return v3;
+  return uniqueID;
 }
 
 - (id)displayName
 {
   if (self->_mailbox)
   {
-    v2 = [(MFMailboxUid *)self->_mailbox displayName];
+    displayName = [(MFMailboxUid *)self->_mailbox displayName];
   }
 
   else
   {
-    v2 = self->_displayName;
+    displayName = self->_displayName;
   }
 
-  return v2;
+  return displayName;
 }
 
 - (id)displayNameUsingSpecialNames
 {
-  v3 = [(MFMailboxUid *)self->_mailbox displayNameUsingSpecialNames];
-  v4 = v3;
-  if (v3)
+  displayNameUsingSpecialNames = [(MFMailboxUid *)self->_mailbox displayNameUsingSpecialNames];
+  v4 = displayNameUsingSpecialNames;
+  if (displayNameUsingSpecialNames)
   {
-    v5 = v3;
+    displayName = displayNameUsingSpecialNames;
   }
 
   else
   {
-    v5 = [(FavoriteItem_Mailbox *)self displayName];
+    displayName = [(FavoriteItem_Mailbox *)self displayName];
   }
 
-  v6 = v5;
+  v6 = displayName;
 
   return v6;
 }
 
 - (id)criterion
 {
-  v2 = [(FavoriteItem_Mailbox *)self representingMailbox];
-  v3 = [MFMessageCriterion criterionForMailbox:v2];
+  representingMailbox = [(FavoriteItem_Mailbox *)self representingMailbox];
+  v3 = [MFMessageCriterion criterionForMailbox:representingMailbox];
 
   return v3;
 }
@@ -316,15 +316,15 @@ LABEL_9:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         mailboxType = self->_mailboxType;
-        v11 = [(MailAccount *)self->_account ef_publicDescription];
+        ef_publicDescription = [(MailAccount *)self->_account ef_publicDescription];
         v13 = 138413058;
-        v14 = self;
+        selfCopy = self;
         v15 = 2048;
         v16 = mailboxType;
         v17 = 2048;
         v18 = v4;
         v19 = 2112;
-        v20 = v11;
+        v20 = ef_publicDescription;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#Favorites %@ Could not find representingMailbox mailboxType:%ld accountIsEnabled:%ld account:%@", &v13, 0x2Au);
       }
 
@@ -337,8 +337,8 @@ LABEL_9:
 
 - (BOOL)acceptsMessageTransfers
 {
-  v2 = [(FavoriteItem_Mailbox *)self representingMailbox];
-  v3 = +[MFMailboxUid typeIsValidTransferDestination:](MFMailboxUid, "typeIsValidTransferDestination:", [v2 mailboxType]);
+  representingMailbox = [(FavoriteItem_Mailbox *)self representingMailbox];
+  v3 = +[MFMailboxUid typeIsValidTransferDestination:](MFMailboxUid, "typeIsValidTransferDestination:", [representingMailbox mailboxType]);
 
   return v3;
 }
@@ -360,15 +360,15 @@ LABEL_9:
 
 - (id)syncValue
 {
-  v3 = [(FavoriteItem_Mailbox *)self dictionaryRepresentation];
-  v4 = [NSMutableDictionary dictionaryWithDictionary:v3];
+  dictionaryRepresentation = [(FavoriteItem_Mailbox *)self dictionaryRepresentation];
+  v4 = [NSMutableDictionary dictionaryWithDictionary:dictionaryRepresentation];
 
-  v5 = [(MailAccount *)self->_account username];
-  v6 = [(MailAccount *)self->_account hostname];
-  v7 = [NSString stringWithFormat:@"%@@%@", v5, v6];
+  username = [(MailAccount *)self->_account username];
+  hostname = [(MailAccount *)self->_account hostname];
+  v7 = [NSString stringWithFormat:@"%@@%@", username, hostname];
 
-  v8 = [v7 lowercaseString];
-  [v4 setObject:v8 forKey:@"usernameHostInfo"];
+  lowercaseString = [v7 lowercaseString];
+  [v4 setObject:lowercaseString forKey:@"usernameHostInfo"];
 
   [v4 removeObjectForKey:@"selected"];
   [v4 removeObjectForKey:@"originalPushState"];
@@ -376,20 +376,20 @@ LABEL_9:
   return v4;
 }
 
-- (void)wasAddedToCollection:(id)a3
+- (void)wasAddedToCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v16.receiver = self;
   v16.super_class = FavoriteItem_Mailbox;
-  [(FavoriteItem *)&v16 wasAddedToCollection:v4];
-  if ([v4 isMailboxesCollection])
+  [(FavoriteItem *)&v16 wasAddedToCollection:collectionCopy];
+  if ([collectionCopy isMailboxesCollection])
   {
-    v5 = [(FavoriteItem_Mailbox *)self representingMailbox];
-    if (v5)
+    representingMailbox = [(FavoriteItem_Mailbox *)self representingMailbox];
+    if (representingMailbox)
     {
-      v6 = [(FavoriteItem_Mailbox *)self account];
-      v7 = [v6 pushedMailboxUids];
-      v8 = [v7 containsObject:v5];
+      account = [(FavoriteItem_Mailbox *)self account];
+      pushedMailboxUids = [account pushedMailboxUids];
+      v8 = [pushedMailboxUids containsObject:representingMailbox];
 
       [(FavoriteItem_Mailbox *)self setOriginalPushState:v8];
       if ((v8 & 1) == 0)
@@ -399,8 +399,8 @@ LABEL_9:
         v11 = 3221225472;
         v12 = sub_100016D40;
         v13 = &unk_1001563D8;
-        v14 = self;
-        v15 = v5;
+        selfCopy = self;
+        v15 = representingMailbox;
         dispatch_async(v9, &v10);
       }
     }
@@ -409,20 +409,20 @@ LABEL_9:
   }
 }
 
-- (void)wasRemovedFromCollecion:(id)a3
+- (void)wasRemovedFromCollecion:(id)collecion
 {
-  v4 = a3;
+  collecionCopy = collecion;
   v16.receiver = self;
   v16.super_class = FavoriteItem_Mailbox;
-  [(FavoriteItem *)&v16 wasRemovedFromCollecion:v4];
-  if ([v4 isMailboxesCollection])
+  [(FavoriteItem *)&v16 wasRemovedFromCollecion:collecionCopy];
+  if ([collecionCopy isMailboxesCollection])
   {
-    v5 = [(FavoriteItem_Mailbox *)self representingMailbox];
-    if (v5)
+    representingMailbox = [(FavoriteItem_Mailbox *)self representingMailbox];
+    if (representingMailbox)
     {
-      v6 = [(FavoriteItem_Mailbox *)self account];
-      v7 = [v6 pushedMailboxUids];
-      v8 = [v7 containsObject:v5];
+      account = [(FavoriteItem_Mailbox *)self account];
+      pushedMailboxUids = [account pushedMailboxUids];
+      v8 = [pushedMailboxUids containsObject:representingMailbox];
 
       if (v8)
       {
@@ -433,8 +433,8 @@ LABEL_9:
           v11 = 3221225472;
           v12 = sub_100016F58;
           v13 = &unk_1001563D8;
-          v14 = self;
-          v15 = v5;
+          selfCopy = self;
+          v15 = representingMailbox;
           dispatch_async(v9, &v10);
         }
       }
@@ -446,9 +446,9 @@ LABEL_9:
 
 - (void)wasChangedExternally
 {
-  v3 = [(MFMailboxUid *)self->_mailbox accountRelativePath];
+  accountRelativePath = [(MFMailboxUid *)self->_mailbox accountRelativePath];
   accountRelativePath = self->_accountRelativePath;
-  self->_accountRelativePath = v3;
+  self->_accountRelativePath = accountRelativePath;
 
   [(FavoriteItem_Mailbox *)self _postNotification];
 }

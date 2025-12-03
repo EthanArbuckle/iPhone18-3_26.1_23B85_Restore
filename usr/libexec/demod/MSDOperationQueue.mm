@@ -1,7 +1,7 @@
 @interface MSDOperationQueue
 - (MSDOperationQueue)init;
-- (void)addOperation:(id)a3;
-- (void)setSuspended:(BOOL)a3;
+- (void)addOperation:(id)operation;
+- (void)setSuspended:(BOOL)suspended;
 @end
 
 @implementation MSDOperationQueue
@@ -20,39 +20,39 @@
   return v2;
 }
 
-- (void)addOperation:(id)a3
+- (void)addOperation:(id)operation
 {
-  v5 = a3;
+  operationCopy = operation;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    sub_1000E6A78(a2, self, v5);
+    sub_1000E6A78(a2, self, operationCopy);
   }
 
-  v6 = [(MSDOperationQueue *)self checkpointBarrier];
-  [v5 addCheckpointBarrier:v6];
+  checkpointBarrier = [(MSDOperationQueue *)self checkpointBarrier];
+  [operationCopy addCheckpointBarrier:checkpointBarrier];
 
   v7.receiver = self;
   v7.super_class = MSDOperationQueue;
-  [(MSDOperationQueue *)&v7 addOperation:v5];
+  [(MSDOperationQueue *)&v7 addOperation:operationCopy];
 }
 
-- (void)setSuspended:(BOOL)a3
+- (void)setSuspended:(BOOL)suspended
 {
-  v3 = a3;
+  suspendedCopy = suspended;
   v7.receiver = self;
   v7.super_class = MSDOperationQueue;
   [(MSDOperationQueue *)&v7 setSuspended:?];
-  v5 = [(MSDOperationQueue *)self checkpointBarrier];
-  v6 = v5;
-  if (v3)
+  checkpointBarrier = [(MSDOperationQueue *)self checkpointBarrier];
+  v6 = checkpointBarrier;
+  if (suspendedCopy)
   {
-    [v5 activate];
+    [checkpointBarrier activate];
   }
 
   else
   {
-    [v5 deactivate];
+    [checkpointBarrier deactivate];
   }
 }
 

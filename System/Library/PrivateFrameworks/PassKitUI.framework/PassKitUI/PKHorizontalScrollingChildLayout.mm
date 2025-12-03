@@ -2,13 +2,13 @@
 - (CGSize)collectionViewContentSize;
 - (PKHorizontalScrollingChildLayout)init;
 - (PKHorizontalScrollingChildLayoutDataSource)dataSource;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (void)_adjustItems:(id)a3 withLateralMove:(double)a4;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
+- (void)_adjustItems:(id)items withLateralMove:(double)move;
 - (void)prepareLayout;
-- (void)setAlphaTransition:(double)a3;
-- (void)setVisible:(BOOL)a3;
+- (void)setAlphaTransition:(double)transition;
+- (void)setVisible:(BOOL)visible;
 @end
 
 @implementation PKHorizontalScrollingChildLayout
@@ -36,24 +36,24 @@
   return v2;
 }
 
-- (void)setVisible:(BOOL)a3
+- (void)setVisible:(BOOL)visible
 {
-  if (self->_visible != a3)
+  if (self->_visible != visible)
   {
-    self->_visible = a3;
+    self->_visible = visible;
     [(PKHorizontalScrollingChildLayout *)self invalidateLayout];
   }
 }
 
-- (void)setAlphaTransition:(double)a3
+- (void)setAlphaTransition:(double)transition
 {
-  if (self->_alphaTransition != a3)
+  if (self->_alphaTransition != transition)
   {
     lastDrawnAlpha = self->_lastDrawnAlpha;
-    self->_alphaTransition = a3;
-    if (a3 == 1.0 || a3 == 0.0 || vabdd_f64(a3, lastDrawnAlpha) > 0.03 || !self->_isLowEndDevice)
+    self->_alphaTransition = transition;
+    if (transition == 1.0 || transition == 0.0 || vabdd_f64(transition, lastDrawnAlpha) > 0.03 || !self->_isLowEndDevice)
     {
-      self->_lastDrawnAlpha = a3;
+      self->_lastDrawnAlpha = transition;
       [(PKHorizontalScrollingChildLayout *)self invalidateLayout];
     }
   }
@@ -70,21 +70,21 @@
 
 - (void)prepareLayout
 {
-  v3 = [(PKHorizontalScrollingChildLayout *)self collectionView];
-  v4 = [v3 delegate];
-  v5 = v4;
-  if (v3 && v4)
+  collectionView = [(PKHorizontalScrollingChildLayout *)self collectionView];
+  delegate = [collectionView delegate];
+  v5 = delegate;
+  if (collectionView && delegate)
   {
     [(NSMutableDictionary *)self->_headersPerIndexPath removeAllObjects];
     [(NSMutableDictionary *)self->_footersPerIndexPath removeAllObjects];
     [(NSMutableDictionary *)self->_attributesPerIndexPath removeAllObjects];
-    [v3 frame];
+    [collectionView frame];
     v7 = v6;
     p_currentSize = &self->_currentSize;
     self->_currentSize.width = v6;
     self->_currentSize.height = 0.0;
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if ([v3 numberOfSections] >= 1)
+    if ([collectionView numberOfSections] >= 1)
     {
       v10 = 0;
       v11 = *(MEMORY[0x1E695F060] + 8);
@@ -95,7 +95,7 @@
       v66 = v11;
       do
       {
-        [v5 collectionView:v3 layout:self insetForSectionAtIndex:v10];
+        [v5 collectionView:collectionView layout:self insetForSectionAtIndex:v10];
         v13 = v12;
         v15 = v14;
         v67 = v16;
@@ -106,7 +106,7 @@
 
         v21 = v13 + p_currentSize->height;
         p_currentSize->height = v21;
-        [v5 collectionView:v3 layout:self referenceSizeForHeaderInSection:v10];
+        [v5 collectionView:collectionView layout:self referenceSizeForHeaderInSection:v10];
         v24 = v23;
         if (v23 == v68 && v22 == v11)
         {
@@ -136,8 +136,8 @@
           v32 = v15 + v24;
         }
 
-        v33 = v3;
-        v34 = [v3 numberOfItemsInSection:v10];
+        v33 = collectionView;
+        v34 = [collectionView numberOfItemsInSection:v10];
         if (v34)
         {
           v35 = v34;
@@ -207,7 +207,7 @@
 
         v46 = v7 - v15 - v18;
         v5 = v69;
-        v3 = v33;
+        collectionView = v33;
         [v69 collectionView:v33 layout:self referenceSizeForFooterInSection:v10];
         v49 = v47;
         v50 = v48;
@@ -293,7 +293,7 @@
         v11 = v66;
       }
 
-      while (v10 < [v3 numberOfSections]);
+      while (v10 < [collectionView numberOfSections]);
     }
 
     p_currentSize->height = p_currentSize->height + 16.0;
@@ -303,15 +303,15 @@
   }
 }
 
-- (void)_adjustItems:(id)a3 withLateralMove:(double)a4
+- (void)_adjustItems:(id)items withLateralMove:(double)move
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  itemsCopy = items;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [itemsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -322,38 +322,38 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
         [v10 frame];
-        [v10 setFrame:v11 + a4];
+        [v10 setFrame:v11 + move];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [itemsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
-  v4 = [(NSMutableDictionary *)self->_attributesPerIndexPath objectForKey:a3];
+  v4 = [(NSMutableDictionary *)self->_attributesPerIndexPath objectForKey:path];
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v6 = [v4 indexPath];
-  [WeakRetained alphaForIndexPath:v6 visible:self->_visible transition:self->_alphaTransition];
+  indexPath = [v4 indexPath];
+  [WeakRetained alphaForIndexPath:indexPath visible:self->_visible transition:self->_alphaTransition];
   [v4 setAlpha:?];
 
   return v4;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v49 = *MEMORY[0x1E69E9840];
   v33 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v42 = 0u;
@@ -384,8 +384,8 @@
         if (CGRectIntersectsRect(v51, v54))
         {
           WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-          v15 = [v13 indexPath];
-          [WeakRetained alphaForIndexPath:v15 visible:self->_visible transition:self->_alphaTransition];
+          indexPath = [v13 indexPath];
+          [WeakRetained alphaForIndexPath:indexPath visible:self->_visible transition:self->_alphaTransition];
           [v13 setAlpha:?];
 
           [v33 addObject:v13];
@@ -426,8 +426,8 @@
         if (CGRectIntersectsRect(v52, v55))
         {
           v22 = objc_loadWeakRetained(&self->_dataSource);
-          v23 = [v21 indexPath];
-          [v22 alphaForIndexPath:v23 visible:self->_visible transition:self->_alphaTransition];
+          indexPath2 = [v21 indexPath];
+          [v22 alphaForIndexPath:indexPath2 visible:self->_visible transition:self->_alphaTransition];
           [v21 setAlpha:?];
 
           [v33 addObject:v21];
@@ -468,8 +468,8 @@
         if (CGRectIntersectsRect(v53, v56))
         {
           v30 = objc_loadWeakRetained(&self->_dataSource);
-          v31 = [v29 indexPath];
-          [v30 alphaForIndexPath:v31 visible:self->_visible transition:self->_alphaTransition];
+          indexPath3 = [v29 indexPath];
+          [v30 alphaForIndexPath:indexPath3 visible:self->_visible transition:self->_alphaTransition];
           [v29 setAlpha:?];
 
           [v33 addObject:v29];
@@ -485,18 +485,18 @@
   return v33;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (*MEMORY[0x1E69DDC08] == v6)
+  kindCopy = kind;
+  pathCopy = path;
+  if (*MEMORY[0x1E69DDC08] == kindCopy)
   {
     v9 = &OBJC_IVAR___PKHorizontalScrollingChildLayout__headersPerIndexPath;
   }
 
   else
   {
-    if (*MEMORY[0x1E69DDC00] != v6)
+    if (*MEMORY[0x1E69DDC00] != kindCopy)
     {
       v8 = 0;
       goto LABEL_7;
@@ -505,10 +505,10 @@
     v9 = &OBJC_IVAR___PKHorizontalScrollingChildLayout__footersPerIndexPath;
   }
 
-  v8 = [*(&self->super.super.isa + *v9) objectForKey:v7];
+  v8 = [*(&self->super.super.isa + *v9) objectForKey:pathCopy];
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v11 = [v8 indexPath];
-  [WeakRetained alphaForIndexPath:v11 visible:self->_visible transition:self->_alphaTransition];
+  indexPath = [v8 indexPath];
+  [WeakRetained alphaForIndexPath:indexPath visible:self->_visible transition:self->_alphaTransition];
   [v8 setAlpha:?];
 
 LABEL_7:

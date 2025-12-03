@@ -1,18 +1,18 @@
 @interface THGlossaryIndex
-+ (id)alphabeticalIndexForEntries:(id)a3;
-+ (id)alphabeticalIndexForGlossary:(id)a3 withPrefix:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)entryAtIndex:(unint64_t)a3;
-- (id)entryForRowAtIndexPath:(id)a3;
-- (id)indexPathForEntry:(id)a3;
-- (id)p_sectionAtIndex:(unint64_t)a3;
-- (id)p_sectionForSectionTitle:(id)a3;
-- (id)titleForHeaderInSection:(int64_t)a3;
-- (int64_t)indexForEntry:(id)a3;
-- (int64_t)numberOfRowsInSection:(int64_t)a3;
-- (int64_t)sectionForSectionIndexTitle:(id)a3 atIndex:(int64_t)a4;
++ (id)alphabeticalIndexForEntries:(id)entries;
++ (id)alphabeticalIndexForGlossary:(id)glossary withPrefix:(id)prefix;
+- (BOOL)isEqual:(id)equal;
+- (id)entryAtIndex:(unint64_t)index;
+- (id)entryForRowAtIndexPath:(id)path;
+- (id)indexPathForEntry:(id)entry;
+- (id)p_sectionAtIndex:(unint64_t)index;
+- (id)p_sectionForSectionTitle:(id)title;
+- (id)titleForHeaderInSection:(int64_t)section;
+- (int64_t)indexForEntry:(id)entry;
+- (int64_t)numberOfRowsInSection:(int64_t)section;
+- (int64_t)sectionForSectionIndexTitle:(id)title atIndex:(int64_t)index;
 - (void)dealloc;
-- (void)p_buildAlphabeticalIndexForGlossaryEntries:(id)a3;
+- (void)p_buildAlphabeticalIndexForGlossaryEntries:(id)entries;
 - (void)p_releaseData;
 @end
 
@@ -29,7 +29,7 @@
   self->mSectionIndexTitles = 0;
 }
 
-- (id)p_sectionForSectionTitle:(id)a3
+- (id)p_sectionForSectionTitle:(id)title
 {
   v11 = 0u;
   v12 = 0u;
@@ -72,16 +72,16 @@ LABEL_3:
   }
 }
 
-- (void)p_buildAlphabeticalIndexForGlossaryEntries:(id)a3
+- (void)p_buildAlphabeticalIndexForGlossaryEntries:(id)entries
 {
-  v5 = [a3 count];
+  v5 = [entries count];
   self->mSections = objc_alloc_init(NSMutableArray);
   self->mSectionTitleToSectionMap = objc_alloc_init(NSMutableDictionary);
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v49 objects:v56 count:16];
+  v6 = [entries countByEnumeratingWithState:&v49 objects:v56 count:16];
   if (v6)
   {
     v7 = v6;
@@ -92,7 +92,7 @@ LABEL_3:
       {
         if (*v50 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(entries);
         }
 
         v10 = *(*(&v49 + 1) + 8 * i);
@@ -111,7 +111,7 @@ LABEL_3:
         }
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v49 objects:v56 count:16];
+      v7 = [entries countByEnumeratingWithState:&v49 objects:v56 count:16];
     }
 
     while (v7);
@@ -237,27 +237,27 @@ LABEL_3:
   }
 }
 
-+ (id)alphabeticalIndexForEntries:(id)a3
++ (id)alphabeticalIndexForEntries:(id)entries
 {
   v4 = objc_alloc_init(THGlossaryIndex);
-  [(THGlossaryIndex *)v4 p_buildAlphabeticalIndexForGlossaryEntries:a3];
+  [(THGlossaryIndex *)v4 p_buildAlphabeticalIndexForGlossaryEntries:entries];
   return v4;
 }
 
-+ (id)alphabeticalIndexForGlossary:(id)a3 withPrefix:(id)a4
++ (id)alphabeticalIndexForGlossary:(id)glossary withPrefix:(id)prefix
 {
   v6 = objc_alloc_init(THGlossaryIndex);
-  v7 = [a3 entryCount];
-  v8 = [[NSMutableArray alloc] initWithCapacity:v7];
-  if ([a4 length])
+  entryCount = [glossary entryCount];
+  v8 = [[NSMutableArray alloc] initWithCapacity:entryCount];
+  if ([prefix length])
   {
-    v9 = [a4 normalizedStringForSearch];
-    if (v7 >= 1)
+    normalizedStringForSearch = [prefix normalizedStringForSearch];
+    if (entryCount >= 1)
     {
-      v10 = v9;
-      for (i = 0; i != v7; ++i)
+      v10 = normalizedStringForSearch;
+      for (i = 0; i != entryCount; ++i)
       {
-        v12 = [a3 entryAtIndex:i];
+        v12 = [glossary entryAtIndex:i];
         if ([v12 containsPrefix:v10])
         {
           [v8 addObject:v12];
@@ -266,11 +266,11 @@ LABEL_3:
     }
   }
 
-  else if (v7 >= 1)
+  else if (entryCount >= 1)
   {
-    for (j = 0; j != v7; ++j)
+    for (j = 0; j != entryCount; ++j)
     {
-      v14 = [a3 entryAtIndex:j];
+      v14 = [glossary entryAtIndex:j];
       if ([objc_msgSend(v14 "term")])
       {
         [v8 addObject:v14];
@@ -295,50 +295,50 @@ LABEL_3:
   [(THGlossaryIndex *)&v3 dealloc];
 }
 
-- (id)p_sectionAtIndex:(unint64_t)a3
+- (id)p_sectionAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->mSections count]<= a3)
+  if ([(NSMutableArray *)self->mSections count]<= index)
   {
     return 0;
   }
 
   mSections = self->mSections;
 
-  return [(NSMutableArray *)mSections objectAtIndex:a3];
+  return [(NSMutableArray *)mSections objectAtIndex:index];
 }
 
-- (id)entryForRowAtIndexPath:(id)a3
+- (id)entryForRowAtIndexPath:(id)path
 {
-  if (!a3)
+  if (!path)
   {
     return 0;
   }
 
-  v4 = -[THGlossaryIndex p_sectionAtIndex:](self, "p_sectionAtIndex:", [a3 section]);
+  v4 = -[THGlossaryIndex p_sectionAtIndex:](self, "p_sectionAtIndex:", [path section]);
   if (!v4)
   {
     return 0;
   }
 
   v5 = v4;
-  v6 = [a3 row];
-  if (v6 >= [v5 entryCount] || (objc_msgSend(a3, "row") & 0x8000000000000000) != 0)
+  v6 = [path row];
+  if (v6 >= [v5 entryCount] || (objc_msgSend(path, "row") & 0x8000000000000000) != 0)
   {
     return 0;
   }
 
-  v7 = [a3 row];
+  v7 = [path row];
 
   return [v5 entryAtIndex:v7];
 }
 
-- (id)indexPathForEntry:(id)a3
+- (id)indexPathForEntry:(id)entry
 {
-  v4 = [(NSMutableDictionary *)self->mSectionTitleToSectionMap objectForKey:sub_BE208(a3)];
-  if (v4 && (v5 = v4, v6 = [v4 indexForEntry:a3], v6 != 0x7FFFFFFFFFFFFFFFLL))
+  v4 = [(NSMutableDictionary *)self->mSectionTitleToSectionMap objectForKey:sub_BE208(entry)];
+  if (v4 && (v5 = v4, v6 = [v4 indexForEntry:entry], v6 != 0x7FFFFFFFFFFFFFFFLL))
   {
     v9 = v6;
-    v8 = [v5 sectionIndex];
+    sectionIndex = [v5 sectionIndex];
     v7 = v9;
   }
 
@@ -346,48 +346,48 @@ LABEL_3:
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     v7 = 0;
-    v8 = 0;
+    sectionIndex = 0;
   }
 
-  return [NSIndexPath indexPathForRow:v7 inSection:v8];
+  return [NSIndexPath indexPathForRow:v7 inSection:sectionIndex];
 }
 
-- (int64_t)numberOfRowsInSection:(int64_t)a3
+- (int64_t)numberOfRowsInSection:(int64_t)section
 {
-  v3 = [(THGlossaryIndex *)self p_sectionAtIndex:a3];
+  v3 = [(THGlossaryIndex *)self p_sectionAtIndex:section];
 
   return [v3 entryCount];
 }
 
-- (int64_t)sectionForSectionIndexTitle:(id)a3 atIndex:(int64_t)a4
+- (int64_t)sectionForSectionIndexTitle:(id)title atIndex:(int64_t)index
 {
-  v4 = [(NSMutableDictionary *)self->mSectionTitleToSectionMap objectForKey:a3, a4];
+  index = [(NSMutableDictionary *)self->mSectionTitleToSectionMap objectForKey:title, index];
 
-  return [v4 sectionIndex];
+  return [index sectionIndex];
 }
 
-- (id)titleForHeaderInSection:(int64_t)a3
+- (id)titleForHeaderInSection:(int64_t)section
 {
-  v3 = [(THGlossaryIndex *)self p_sectionAtIndex:a3];
+  v3 = [(THGlossaryIndex *)self p_sectionAtIndex:section];
 
   return [v3 sectionTitle];
 }
 
-- (id)entryAtIndex:(unint64_t)a3
+- (id)entryAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->mSortedEntries count]<= a3)
+  if ([(NSMutableArray *)self->mSortedEntries count]<= index)
   {
     return 0;
   }
 
   mSortedEntries = self->mSortedEntries;
 
-  return [(NSMutableArray *)mSortedEntries objectAtIndex:a3];
+  return [(NSMutableArray *)mSortedEntries objectAtIndex:index];
 }
 
-- (int64_t)indexForEntry:(id)a3
+- (int64_t)indexForEntry:(id)entry
 {
-  if (!a3)
+  if (!entry)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -404,7 +404,7 @@ LABEL_3:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   v4 = TSUDynamicCast();

@@ -1,16 +1,16 @@
 @interface PHPhoneRemoteHostViewController
 + (Class)remoteViewControllerClass;
-+ (void)requestViewControllerWithCompletionHandler:(id)a3;
++ (void)requestViewControllerWithCompletionHandler:(id)handler;
 - (PHPhoneRemoteHostViewControllerDelegate)delegate;
-- (void)setUpRemoteViewController:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setUpRemoteViewController:(id)controller;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation PHPhoneRemoteHostViewController
 
-+ (void)requestViewControllerWithCompletionHandler:(id)a3
++ (void)requestViewControllerWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[PHPhoneRemoteHostViewController remoteViewControllerClass];
   if (v4)
   {
@@ -19,7 +19,7 @@
     v8[1] = 3221225472;
     v8[2] = sub_1000A2DF0;
     v8[3] = &unk_100358570;
-    v9 = v3;
+    v9 = handlerCopy;
     v10 = v5;
     v6 = [(objc_class *)v5 requestViewControllerWithConnectionHandler:v8];
   }
@@ -33,7 +33,7 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[WARN] No PHPhoneRemoteViewController subclasses are supported, so unable to show remote view controller", buf, 2u);
     }
 
-    (*(v3 + 2))(v3, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -52,39 +52,39 @@
   return v2;
 }
 
-- (void)setUpRemoteViewController:(id)a3
+- (void)setUpRemoteViewController:(id)controller
 {
-  v19 = a3;
-  [(PHPhoneRemoteHostViewController *)self addChildViewController:v19];
-  v4 = [(PHPhoneRemoteHostViewController *)self view];
-  [v4 bounds];
+  controllerCopy = controller;
+  [(PHPhoneRemoteHostViewController *)self addChildViewController:controllerCopy];
+  view = [(PHPhoneRemoteHostViewController *)self view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [v19 view];
-  [v13 setFrame:{v6, v8, v10, v12}];
+  view2 = [controllerCopy view];
+  [view2 setFrame:{v6, v8, v10, v12}];
 
-  v14 = [(PHPhoneRemoteHostViewController *)self view];
-  v15 = [v14 autoresizingMask];
-  v16 = [v19 view];
-  [v16 setAutoresizingMask:v15];
+  view3 = [(PHPhoneRemoteHostViewController *)self view];
+  autoresizingMask = [view3 autoresizingMask];
+  view4 = [controllerCopy view];
+  [view4 setAutoresizingMask:autoresizingMask];
 
-  v17 = [(PHPhoneRemoteHostViewController *)self view];
-  v18 = [v19 view];
-  [v17 addSubview:v18];
+  view5 = [(PHPhoneRemoteHostViewController *)self view];
+  view6 = [controllerCopy view];
+  [view5 addSubview:view6];
 
-  [v19 didMoveToParentViewController:self];
-  [(PHPhoneRemoteHostViewController *)self setRemoteViewController:v19];
+  [controllerCopy didMoveToParentViewController:self];
+  [(PHPhoneRemoteHostViewController *)self setRemoteViewController:controllerCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PHPhoneRemoteHostViewController;
-  [(PHPhoneRemoteHostViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(PHPhoneRemoteHostViewController *)self delegate];
-  [v4 phoneRemoteHostViewControllerDidDismiss];
+  [(PHPhoneRemoteHostViewController *)&v5 viewDidDisappear:disappear];
+  delegate = [(PHPhoneRemoteHostViewController *)self delegate];
+  [delegate phoneRemoteHostViewControllerDidDismiss];
 }
 
 - (PHPhoneRemoteHostViewControllerDelegate)delegate

@@ -1,11 +1,11 @@
 @interface VoicemailListViewController
-- (_TtC10CallsAppUI27VoicemailListViewController)initWithCoder:(id)a3;
-- (void)clearAllButtonTappedWithSender:(id)a3;
+- (_TtC10CallsAppUI27VoicemailListViewController)initWithCoder:(id)coder;
+- (void)clearAllButtonTappedWithSender:(id)sender;
 @end
 
 @implementation VoicemailListViewController
 
-- (_TtC10CallsAppUI27VoicemailListViewController)initWithCoder:(id)a3
+- (_TtC10CallsAppUI27VoicemailListViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC10CallsAppUI27VoicemailListViewController____lazy_storage___greetingButtonItem) = 0;
   result = sub_1CFCA01D8();
@@ -13,7 +13,7 @@
   return result;
 }
 
-- (void)clearAllButtonTappedWithSender:(id)a3
+- (void)clearAllButtonTappedWithSender:(id)sender
 {
   v5 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC10CallsAppUI27VoicemailListViewController_section) + OBJC_IVAR____TtC10CallsAppUI27VoicemailsSectionController_displayMode;
   swift_beginAccess();
@@ -22,8 +22,8 @@
     v6 = *v5;
     v7 = swift_allocObject();
     swift_unknownObjectWeakInit();
-    v8 = a3;
-    v9 = self;
+    senderCopy = sender;
+    selfCopy = self;
 
     sub_1CFC99CB4(v6, sub_1CFC9A824, v7);
   }

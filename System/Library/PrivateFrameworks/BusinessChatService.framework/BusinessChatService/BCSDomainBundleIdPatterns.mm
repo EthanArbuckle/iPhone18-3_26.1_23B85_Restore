@@ -1,33 +1,33 @@
 @interface BCSDomainBundleIdPatterns
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addBundleIdPatterns:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addBundleIdPatterns:(id)patterns;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BCSDomainBundleIdPatterns
 
-- (void)addBundleIdPatterns:(id)a3
+- (void)addBundleIdPatterns:(id)patterns
 {
-  v4 = a3;
+  patternsCopy = patterns;
   bundleIdPatterns = self->_bundleIdPatterns;
-  v8 = v4;
+  v8 = patternsCopy;
   if (!bundleIdPatterns)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_bundleIdPatterns;
     self->_bundleIdPatterns = v6;
 
-    v4 = v8;
+    patternsCopy = v8;
     bundleIdPatterns = self->_bundleIdPatterns;
   }
 
-  [(NSMutableArray *)bundleIdPatterns addObject:v4];
+  [(NSMutableArray *)bundleIdPatterns addObject:patternsCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = BCSDomainBundleIdPatterns;
   v4 = [(BCSDomainBundleIdPatterns *)&v8 description];
-  v5 = [(BCSDomainBundleIdPatterns *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BCSDomainBundleIdPatterns *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,12 +45,12 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   domain = self->_domain;
   if (domain)
   {
-    [v3 setObject:domain forKey:@"domain"];
+    [dictionary setObject:domain forKey:@"domain"];
   }
 
   if ([(NSMutableArray *)self->_bundleIdPatterns count])
@@ -75,8 +75,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -93,16 +93,16 @@
   return v4;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     while (1)
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -111,18 +111,18 @@
       while (1)
       {
         LOBYTE(v18[0]) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:v18 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:v18 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v18[0] & 0x7F) << v6;
@@ -139,11 +139,11 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       if ((v13 >> 3) == 2)
@@ -167,10 +167,10 @@ LABEL_23:
       }
 
 LABEL_25:
-      v16 = [a3 position];
-      if (v16 >= [a3 length])
+      position2 = [from position];
+      if (position2 >= [from length])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
     }
 
@@ -178,7 +178,7 @@ LABEL_25:
     [(BCSDomainBundleIdPatterns *)self addBundleIdPatterns:domain];
     v18[0] = 0;
     v18[1] = 0;
-    if (!PBReaderPlaceMark() || !BCSBundleIdPatternsReadFrom(domain, a3))
+    if (!PBReaderPlaceMark() || !BCSBundleIdPatternsReadFrom(domain, from))
     {
 
       return 0;
@@ -188,13 +188,13 @@ LABEL_25:
     goto LABEL_23;
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_domain)
   {
     PBDataWriterWriteStringField();
@@ -235,35 +235,35 @@ LABEL_25:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_domain)
   {
-    [v8 setDomain:?];
+    [toCopy setDomain:?];
   }
 
   if ([(BCSDomainBundleIdPatterns *)self bundleIdPatternsCount])
   {
-    [v8 clearBundleIdPatterns];
-    v4 = [(BCSDomainBundleIdPatterns *)self bundleIdPatternsCount];
-    if (v4)
+    [toCopy clearBundleIdPatterns];
+    bundleIdPatternsCount = [(BCSDomainBundleIdPatterns *)self bundleIdPatternsCount];
+    if (bundleIdPatternsCount)
     {
-      v5 = v4;
+      v5 = bundleIdPatternsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(BCSDomainBundleIdPatterns *)self bundleIdPatternsAtIndex:i];
-        [v8 addBundleIdPatterns:v7];
+        [toCopy addBundleIdPatterns:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_domain copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_domain copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -287,7 +287,7 @@ LABEL_25:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addBundleIdPatterns:v13];
 
         ++v12;
@@ -304,13 +304,13 @@ LABEL_25:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((domain = self->_domain, !(domain | v4[2])) || -[NSString isEqual:](domain, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((domain = self->_domain, !(domain | equalCopy[2])) || -[NSString isEqual:](domain, "isEqual:")))
   {
     bundleIdPatterns = self->_bundleIdPatterns;
-    if (bundleIdPatterns | v4[1])
+    if (bundleIdPatterns | equalCopy[1])
     {
       v7 = [(NSMutableArray *)bundleIdPatterns isEqual:?];
     }
@@ -329,11 +329,11 @@ LABEL_25:
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(BCSDomainBundleIdPatterns *)self setDomain:?];
   }
@@ -342,7 +342,7 @@ LABEL_25:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

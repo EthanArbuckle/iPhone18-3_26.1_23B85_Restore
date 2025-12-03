@@ -1,16 +1,16 @@
 @interface AFContextManager
 + (id)defaultContextManager;
 - (AFContextManager)init;
-- (BOOL)addContextProvider:(id)a3;
+- (BOOL)addContextProvider:(id)provider;
 - (id)_collateContexts;
 - (id)_serverName;
-- (void)_collateContextsIntoArray:(id)a3;
+- (void)_collateContextsIntoArray:(id)array;
 - (void)_shutdownServer;
 - (void)_startListening;
 - (void)_stopListening;
 - (void)dealloc;
-- (void)removeContextProvider:(id)a3;
-- (void)startCenter:(id)a3;
+- (void)removeContextProvider:(id)provider;
+- (void)startCenter:(id)center;
 @end
 
 @implementation AFContextManager
@@ -20,8 +20,8 @@
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__shutdownServer object:0];
   if (!self->_center)
   {
-    v5 = [(AFContextManager *)self _serverName];
-    v3 = [MEMORY[0x1E698B688] pidRestrictedCenterNamed:v5];
+    _serverName = [(AFContextManager *)self _serverName];
+    v3 = [MEMORY[0x1E698B688] pidRestrictedCenterNamed:_serverName];
     center = self->_center;
     self->_center = v3;
 
@@ -33,9 +33,9 @@
 
 - (id)_serverName
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = AFContextProviderNameForBundleId(v3);
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = AFContextProviderNameForBundleId(bundleIdentifier);
 
   return v4;
 }
@@ -80,9 +80,9 @@ void __41__AFContextManager_defaultContextManager__block_invoke()
   [(AFContextManager *)&v3 dealloc];
 }
 
-- (void)removeContextProvider:(id)a3
+- (void)removeContextProvider:(id)provider
 {
-  v8 = a3;
+  providerCopy = provider;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     __assert_rtn("[AFContextManager removeContextProvider:]", "AFContextManager.m", 222, "[NSThread isMainThread]");
@@ -96,7 +96,7 @@ void __41__AFContextManager_defaultContextManager__block_invoke()
     while (1)
     {
       v7 = CFArrayGetValueAtIndex(self->_contextProviders, v6);
-      if (v7 == v8)
+      if (v7 == providerCopy)
       {
         break;
       }
@@ -117,9 +117,9 @@ LABEL_8:
   }
 }
 
-- (BOOL)addContextProvider:(id)a3
+- (BOOL)addContextProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     __assert_rtn("[AFContextManager addContextProvider:]", "AFContextManager.m", 197, "[NSThread isMainThread]");
@@ -130,7 +130,7 @@ LABEL_8:
   if (Count < 1)
   {
 LABEL_7:
-    CFArrayAppendValue(self->_contextProviders, v4);
+    CFArrayAppendValue(self->_contextProviders, providerCopy);
     [(AFContextManager *)self _startListening];
     v12 = 1;
   }
@@ -143,7 +143,7 @@ LABEL_7:
     {
       v9 = CFArrayGetValueAtIndex(self->_contextProviders, v8);
 
-      if (v9 == v4)
+      if (v9 == providerCopy)
       {
         break;
       }
@@ -151,7 +151,7 @@ LABEL_7:
       if (v7 == ++v8)
       {
         v10 = CFArrayGetValueAtIndex(self->_contextProviders, v6);
-        v11 = [v10 allowContextProvider:v4];
+        v11 = [v10 allowContextProvider:providerCopy];
 
         if (v11)
         {
@@ -186,41 +186,41 @@ LABEL_7:
 
 - (id)_collateContexts
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [(AFContextManager *)self performSelectorOnMainThread:sel__collateContextsIntoArray_ withObject:v3 waitUntilDone:1];
-  v4 = [MEMORY[0x1E695DF20] dictionaryWithObject:v3 forKey:@"Contexts"];
+  array = [MEMORY[0x1E695DF70] array];
+  [(AFContextManager *)self performSelectorOnMainThread:sel__collateContextsIntoArray_ withObject:array waitUntilDone:1];
+  v4 = [MEMORY[0x1E695DF20] dictionaryWithObject:array forKey:@"Contexts"];
 
   return v4;
 }
 
-- (void)startCenter:(id)a3
+- (void)startCenter:(id)center
 {
-  v11 = a3;
+  centerCopy = center;
   v4 = objc_autoreleasePoolPush();
-  [v11 runServerOnCurrentThreadProtectedByEntitlement:@"com.apple.assistant.contextprovider"];
-  v5 = [MEMORY[0x1E695DFD0] currentRunLoop];
+  [centerCopy runServerOnCurrentThreadProtectedByEntitlement:@"com.apple.assistant.contextprovider"];
+  currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
   v6 = objc_alloc(MEMORY[0x1E695DFF0]);
-  v7 = [MEMORY[0x1E695DF00] distantFuture];
-  v8 = [v6 initWithFireDate:v7 interval:self target:sel_nothing selector:0 userInfo:0 repeats:15.0];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  v8 = [v6 initWithFireDate:distantFuture interval:self target:sel_nothing selector:0 userInfo:0 repeats:15.0];
 
-  [v5 addTimer:v8 forMode:*MEMORY[0x1E695D918]];
+  [currentRunLoop addTimer:v8 forMode:*MEMORY[0x1E695D918]];
   do
   {
     v9 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceNow:15.0];
-    [v5 runUntilDate:v9];
-    v10 = [v11 doesServerExist];
+    [currentRunLoop runUntilDate:v9];
+    doesServerExist = [centerCopy doesServerExist];
   }
 
-  while ((v10 & 1) != 0);
+  while ((doesServerExist & 1) != 0);
   [v8 invalidate];
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)_collateContextsIntoArray:(id)a3
+- (void)_collateContextsIntoArray:(id)array
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  arrayCopy = array;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     __assert_rtn("[AFContextManager _collateContextsIntoArray:]", "AFContextManager.m", 77, "[NSThread isMainThread]");
@@ -241,22 +241,22 @@ LABEL_7:
     do
     {
       v8 = CFArrayGetValueAtIndex(self->_contextProviders, v7 - 2);
-      v9 = [v8 getCurrentContext];
-      v10 = [v9 firstObject];
-      if (v10)
+      getCurrentContext = [v8 getCurrentContext];
+      firstObject = [getCurrentContext firstObject];
+      if (firstObject)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [MEMORY[0x1E69C76D8] dictionaryArrayWithAceObjectArray:v9];
+          v11 = [MEMORY[0x1E69C76D8] dictionaryArrayWithAceObjectArray:getCurrentContext];
 
-          v9 = v11;
+          getCurrentContext = v11;
         }
       }
 
-      if (v9)
+      if (getCurrentContext)
       {
-        [v4 addObject:v9];
+        [arrayCopy addObject:getCurrentContext];
       }
 
       --v7;

@@ -1,15 +1,15 @@
 @interface SUAlertPresentationManager
 + (SUAlertPresentationManager)sharedInstance;
-- (BOOL)_presentAlert:(id)a3 animated:(BOOL)a4;
-- (BOOL)isPresentingAlertsOfClass:(Class)a3;
+- (BOOL)_presentAlert:(id)alert animated:(BOOL)animated;
+- (BOOL)isPresentingAlertsOfClass:(Class)class;
 - (SUAlertPresentationManager)init;
 - (id)_presentedAlerts;
-- (id)_presentedAlertsOfClass:(Class)a3;
-- (void)_dismissAlert:(id)a3 animated:(BOOL)a4;
-- (void)_dismissAlertsOfClass:(Class)a3 animated:(BOOL)a4;
-- (void)_dismissAllAlertsExcludingClasses:(id)a3 animated:(BOOL)a4;
-- (void)_noteAlertDeactivated:(id)a3;
-- (void)_updateAlert:(id)a3 animated:(BOOL)a4;
+- (id)_presentedAlertsOfClass:(Class)class;
+- (void)_dismissAlert:(id)alert animated:(BOOL)animated;
+- (void)_dismissAlertsOfClass:(Class)class animated:(BOOL)animated;
+- (void)_dismissAllAlertsExcludingClasses:(id)classes animated:(BOOL)animated;
+- (void)_noteAlertDeactivated:(id)deactivated;
+- (void)_updateAlert:(id)alert animated:(BOOL)animated;
 @end
 
 @implementation SUAlertPresentationManager
@@ -40,9 +40,9 @@ uint64_t __44__SUAlertPresentationManager_sharedInstance__block_invoke()
   v2 = [(SUAlertPresentationManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     alerts = v2->_alerts;
-    v2->_alerts = v3;
+    v2->_alerts = array;
   }
 
   return v2;
@@ -50,25 +50,25 @@ uint64_t __44__SUAlertPresentationManager_sharedInstance__block_invoke()
 
 - (id)_presentedAlerts
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [MEMORY[0x277CBEB98] setWithArray:v2->_alerts];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [MEMORY[0x277CBEB98] setWithArray:selfCopy->_alerts];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)_presentedAlertsOfClass:(Class)a3
+- (id)_presentedAlertsOfClass:(Class)class
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = self;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v4 = [MEMORY[0x277CBEB58] set];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = v3->_alerts;
+  v5 = selfCopy->_alerts;
   v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -95,62 +95,62 @@ uint64_t __44__SUAlertPresentationManager_sharedInstance__block_invoke()
     while (v6);
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
   v10 = *MEMORY[0x277D85DE8];
 
   return v4;
 }
 
-- (BOOL)_presentAlert:(id)a3 animated:(BOOL)a4
+- (BOOL)_presentAlert:(id)alert animated:(BOOL)animated
 {
-  v5 = a3;
+  alertCopy = alert;
   v6 = SULogAlerts();
-  SULogInfoForSubsystem(v6, @"[Alerts] Presenting alert: %@", v7, v8, v9, v10, v11, v12, v5);
+  SULogInfoForSubsystem(v6, @"[Alerts] Presenting alert: %@", v7, v8, v9, v10, v11, v12, alertCopy);
 
-  v13 = self;
-  objc_sync_enter(v13);
-  v14 = [v5 present];
-  if (v14)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  present = [alertCopy present];
+  if (present)
   {
-    if (([(NSMutableArray *)v13->_alerts containsObject:v5]& 1) == 0)
+    if (([(NSMutableArray *)selfCopy->_alerts containsObject:alertCopy]& 1) == 0)
     {
-      [(NSMutableArray *)v13->_alerts addObject:v5];
+      [(NSMutableArray *)selfCopy->_alerts addObject:alertCopy];
     }
   }
 
   else
   {
     v15 = SULogAlerts();
-    SULogInfoForSubsystem(v15, @"[Alerts] Failed presenting alert: %@", v16, v17, v18, v19, v20, v21, v5);
+    SULogInfoForSubsystem(v15, @"[Alerts] Failed presenting alert: %@", v16, v17, v18, v19, v20, v21, alertCopy);
   }
 
-  objc_sync_exit(v13);
+  objc_sync_exit(selfCopy);
 
-  return v14;
+  return present;
 }
 
-- (void)_dismissAlert:(id)a3 animated:(BOOL)a4
+- (void)_dismissAlert:(id)alert animated:(BOOL)animated
 {
-  v11 = a3;
+  alertCopy = alert;
   v4 = SULogAlerts();
-  SULogInfoForSubsystem(v4, @"[Alerts] Dismissing alert: %@", v5, v6, v7, v8, v9, v10, v11);
+  SULogInfoForSubsystem(v4, @"[Alerts] Dismissing alert: %@", v5, v6, v7, v8, v9, v10, alertCopy);
 
-  [v11 dismiss];
+  [alertCopy dismiss];
 }
 
-- (void)_dismissAlertsOfClass:(Class)a3 animated:(BOOL)a4
+- (void)_dismissAlertsOfClass:(Class)class animated:(BOOL)animated
 {
   v25 = *MEMORY[0x277D85DE8];
   v6 = SULogAlerts();
-  SULogInfoForSubsystem(v6, @"[Alerts] Dismissing alerts of class: %@", v7, v8, v9, v10, v11, v12, a3);
+  SULogInfoForSubsystem(v6, @"[Alerts] Dismissing alerts of class: %@", v7, v8, v9, v10, v11, v12, class);
 
-  v13 = self;
-  objc_sync_enter(v13);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v14 = v13->_alerts;
+  v14 = selfCopy->_alerts;
   v15 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v15)
   {
@@ -181,25 +181,25 @@ uint64_t __44__SUAlertPresentationManager_sharedInstance__block_invoke()
     while (v15);
   }
 
-  objc_sync_exit(v13);
+  objc_sync_exit(selfCopy);
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_dismissAllAlertsExcludingClasses:(id)a3 animated:(BOOL)a4
+- (void)_dismissAllAlertsExcludingClasses:(id)classes animated:(BOOL)animated
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  classesCopy = classes;
   v6 = SULogAlerts();
-  SULogInfoForSubsystem(v6, @"[Alerts] Dismissing all alerts excluding classes: %@", v7, v8, v9, v10, v11, v12, v5);
+  SULogInfoForSubsystem(v6, @"[Alerts] Dismissing all alerts excluding classes: %@", v7, v8, v9, v10, v11, v12, classesCopy);
 
-  v13 = self;
-  objc_sync_enter(v13);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v13;
-  v14 = v13->_alerts;
+  obj = selfCopy;
+  v14 = selfCopy->_alerts;
   v15 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v15)
   {
@@ -219,7 +219,7 @@ uint64_t __44__SUAlertPresentationManager_sharedInstance__block_invoke()
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v19 = v5;
+        v19 = classesCopy;
         v20 = [v19 countByEnumeratingWithState:&v26 objects:v34 count:16];
         if (v20)
         {
@@ -271,30 +271,30 @@ LABEL_16:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateAlert:(id)a3 animated:(BOOL)a4
+- (void)_updateAlert:(id)alert animated:(BOOL)animated
 {
-  v11 = a3;
+  alertCopy = alert;
   v4 = SULogAlerts();
-  SULogInfoForSubsystem(v4, @"[Alerts] Updating alert: %@", v5, v6, v7, v8, v9, v10, v11);
+  SULogInfoForSubsystem(v4, @"[Alerts] Updating alert: %@", v5, v6, v7, v8, v9, v10, alertCopy);
 
-  [v11 update];
+  [alertCopy update];
 }
 
-- (BOOL)isPresentingAlertsOfClass:(Class)a3
+- (BOOL)isPresentingAlertsOfClass:(Class)class
 {
-  v3 = [(SUAlertPresentationManager *)self presentedAlertsOfClass:a3];
+  v3 = [(SUAlertPresentationManager *)self presentedAlertsOfClass:class];
   v4 = [v3 count] != 0;
 
   return v4;
 }
 
-- (void)_noteAlertDeactivated:(id)a3
+- (void)_noteAlertDeactivated:(id)deactivated
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableArray *)v4->_alerts removeObject:v5];
-  objc_sync_exit(v4);
+  deactivatedCopy = deactivated;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableArray *)selfCopy->_alerts removeObject:deactivatedCopy];
+  objc_sync_exit(selfCopy);
 }
 
 @end

@@ -1,71 +1,71 @@
 @interface MechanismScheduler
-- (int64_t)scheduleMechanismUIWithState:(id)a3;
-- (int64_t)scheduleMechanismUIWithState:(id)a3 nonUIMechanism:(id)a4;
+- (int64_t)scheduleMechanismUIWithState:(id)state;
+- (int64_t)scheduleMechanismUIWithState:(id)state nonUIMechanism:(id)mechanism;
 @end
 
 @implementation MechanismScheduler
 
-- (int64_t)scheduleMechanismUIWithState:(id)a3
+- (int64_t)scheduleMechanismUIWithState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 nonUiMechanism];
-  v6 = [v5 findMechanismWithEventIdentifier:12];
+  stateCopy = state;
+  nonUiMechanism = [stateCopy nonUiMechanism];
+  v6 = [nonUiMechanism findMechanismWithEventIdentifier:12];
   if (v6)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v5 mechanismPruningMechanismsWithEventIdentifier:12];
+      v7 = [nonUiMechanism mechanismPruningMechanismsWithEventIdentifier:12];
 
-      v5 = v7;
+      nonUiMechanism = v7;
     }
   }
 
-  v8 = [v5 findMechanismWithEventIdentifier:13];
+  v8 = [nonUiMechanism findMechanismWithEventIdentifier:13];
   if (v8)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v5 mechanismPruningMechanismsWithEventIdentifier:13];
+      v9 = [nonUiMechanism mechanismPruningMechanismsWithEventIdentifier:13];
 
-      v5 = v9;
+      nonUiMechanism = v9;
     }
   }
 
-  v10 = [(MechanismScheduler *)self scheduleMechanismUIWithState:v4 nonUIMechanism:v5];
+  v10 = [(MechanismScheduler *)self scheduleMechanismUIWithState:stateCopy nonUIMechanism:nonUiMechanism];
   if (v6)
   {
-    v11 = [v4 nonUiMechanism];
+    nonUiMechanism2 = [stateCopy nonUiMechanism];
 
-    if (v11 != v6)
+    if (nonUiMechanism2 != v6)
     {
-      v12 = [v4 continueMechanisms];
-      [v12 addObject:v6];
+      continueMechanisms = [stateCopy continueMechanisms];
+      [continueMechanisms addObject:v6];
     }
   }
 
   return v10;
 }
 
-- (int64_t)scheduleMechanismUIWithState:(id)a3 nonUIMechanism:(id)a4
+- (int64_t)scheduleMechanismUIWithState:(id)state nonUIMechanism:(id)mechanism
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 eventProcessing];
-  v8 = [v6 remoteViewControllerForEventProcessing:v7];
+  stateCopy = state;
+  mechanismCopy = mechanism;
+  eventProcessing = [stateCopy eventProcessing];
+  v8 = [mechanismCopy remoteViewControllerForEventProcessing:eventProcessing];
 
-  v9 = [v5 eventProcessing];
-  v10 = [v6 backgroundMechanismForEventProcessing:v9];
-  [v5 setBackgroundMechanism:v10];
+  eventProcessing2 = [stateCopy eventProcessing];
+  v10 = [mechanismCopy backgroundMechanismForEventProcessing:eventProcessing2];
+  [stateCopy setBackgroundMechanism:v10];
 
-  v11 = [v6 additionalControllerInternalInfoForPolicy:{objc_msgSend(v5, "policy")}];
-  [v5 setAdditionalControllerInternalInfo:v11];
+  v11 = [mechanismCopy additionalControllerInternalInfoForPolicy:{objc_msgSend(stateCopy, "policy")}];
+  [stateCopy setAdditionalControllerInternalInfo:v11];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v6;
+    v12 = mechanismCopy;
     v13 = [v12 findMechanismWithEventIdentifier:3];
     v14 = [v12 findMechanismWithEventIdentifier:1];
     v15 = [v12 findMechanismWithEventIdentifier:2];
@@ -76,19 +76,19 @@
     {
       if (v13)
       {
-        if ([v5 passphraseShouldBeFirstMechanism])
+        if ([stateCopy passphraseShouldBeFirstMechanism])
         {
-          v18 = [v5 eventProcessing];
-          v68 = [v13 remoteViewControllerForEventProcessing:v18];
+          eventProcessing3 = [stateCopy eventProcessing];
+          v68 = [v13 remoteViewControllerForEventProcessing:eventProcessing3];
 
-          v19 = [v5 eventProcessing];
-          [v13 backgroundMechanismForEventProcessing:v19];
+          eventProcessing4 = [stateCopy eventProcessing];
+          [v13 backgroundMechanismForEventProcessing:eventProcessing4];
           v20 = v14;
           v21 = v13;
           v22 = v15;
           v23 = v17;
           v25 = v24 = v16;
-          [v5 setBackgroundMechanism:v25];
+          [stateCopy setBackgroundMechanism:v25];
 
           v16 = v24;
           v17 = v23;
@@ -96,17 +96,17 @@
           v13 = v21;
           v14 = v20;
 
-          v26 = [v13 additionalControllerInternalInfoForPolicy:{objc_msgSend(v5, "policy")}];
-          [v5 setAdditionalControllerInternalInfo:v26];
+          v26 = [v13 additionalControllerInternalInfoForPolicy:{objc_msgSend(stateCopy, "policy")}];
+          [stateCopy setAdditionalControllerInternalInfo:v26];
 
-          v27 = [v12 submechanisms];
+          submechanisms = [v12 submechanisms];
           v72[0] = MEMORY[0x277D85DD0];
           v72[1] = 3221225472;
           v72[2] = __66__MechanismScheduler_scheduleMechanismUIWithState_nonUIMechanism___block_invoke;
           v72[3] = &unk_278A628F8;
           v73 = v13;
-          v74 = v5;
-          [v27 enumerateObjectsUsingBlock:v72];
+          v74 = stateCopy;
+          [submechanisms enumerateObjectsUsingBlock:v72];
 
           v8 = v68;
 LABEL_41:
@@ -116,32 +116,32 @@ LABEL_41:
 
         if (v14)
         {
-          v41 = [v5 eventProcessing];
-          v69 = [v14 remoteViewControllerForEventProcessing:v41];
+          eventProcessing5 = [stateCopy eventProcessing];
+          v69 = [v14 remoteViewControllerForEventProcessing:eventProcessing5];
 
-          v42 = v5;
+          v42 = stateCopy;
           v43 = v14;
         }
 
         else if (v16)
         {
-          v54 = [v5 eventProcessing];
-          v69 = [v16 remoteViewControllerForEventProcessing:v54];
+          eventProcessing6 = [stateCopy eventProcessing];
+          v69 = [v16 remoteViewControllerForEventProcessing:eventProcessing6];
 
-          v42 = v5;
+          v42 = stateCopy;
           v43 = v16;
         }
 
         else
         {
-          v63 = [v5 eventProcessing];
+          eventProcessing7 = [stateCopy eventProcessing];
           if (!v71)
           {
-            v69 = [v15 remoteViewControllerForEventProcessing:v63];
+            v69 = [v15 remoteViewControllerForEventProcessing:eventProcessing7];
 
-            v65 = [v5 eventProcessing];
-            v66 = [v15 backgroundMechanismForEventProcessing:v65];
-            [v5 setBackgroundMechanism:v66];
+            eventProcessing8 = [stateCopy eventProcessing];
+            v66 = [v15 backgroundMechanismForEventProcessing:eventProcessing8];
+            [stateCopy setBackgroundMechanism:v66];
 
             v16 = 0;
             v14 = 0;
@@ -149,17 +149,17 @@ LABEL_41:
             goto LABEL_38;
           }
 
-          v69 = [v71 remoteViewControllerForEventProcessing:v63];
+          v69 = [v71 remoteViewControllerForEventProcessing:eventProcessing7];
 
-          v42 = v5;
+          v42 = stateCopy;
           v43 = v71;
         }
 
         [v42 setBackgroundMechanism:v43];
-        [v5 setFallbackMechanism:v15];
+        [stateCopy setFallbackMechanism:v15];
 LABEL_38:
-        v60 = [v5 continueMechanisms];
-        v61 = v60;
+        continueMechanisms = [stateCopy continueMechanisms];
+        v61 = continueMechanisms;
         v62 = v13;
         goto LABEL_39;
       }
@@ -167,30 +167,30 @@ LABEL_38:
       v67 = v16;
       if (v14)
       {
-        v32 = [v5 passcodeShouldBeFirstMechanism];
-        v33 = [v5 eventProcessing];
-        if (v32)
+        passcodeShouldBeFirstMechanism = [stateCopy passcodeShouldBeFirstMechanism];
+        eventProcessing9 = [stateCopy eventProcessing];
+        if (passcodeShouldBeFirstMechanism)
         {
-          v34 = [v15 remoteViewControllerForEventProcessing:v33];
+          v34 = [v15 remoteViewControllerForEventProcessing:eventProcessing9];
 
-          v35 = [v5 eventProcessing];
-          v36 = [v15 backgroundMechanismForEventProcessing:v35];
-          [v5 setBackgroundMechanism:v36];
+          eventProcessing10 = [stateCopy eventProcessing];
+          v36 = [v15 backgroundMechanismForEventProcessing:eventProcessing10];
+          [stateCopy setBackgroundMechanism:v36];
 
-          v37 = [v5 continueMechanisms];
-          v38 = v37;
+          continueMechanisms2 = [stateCopy continueMechanisms];
+          v38 = continueMechanisms2;
           v39 = v14;
 LABEL_12:
-          [v37 addObject:v39];
+          [continueMechanisms2 addObject:v39];
 
           v8 = v34;
           v16 = v67;
           goto LABEL_41;
         }
 
-        v69 = [v14 remoteViewControllerForEventProcessing:v33];
+        v69 = [v14 remoteViewControllerForEventProcessing:eventProcessing9];
 
-        v51 = v5;
+        v51 = stateCopy;
         v52 = v14;
       }
 
@@ -198,28 +198,28 @@ LABEL_12:
       {
         if (v16)
         {
-          v44 = [v5 passcodeShouldBeFirstMechanism];
-          v45 = [v5 eventProcessing];
-          if (v44)
+          passcodeShouldBeFirstMechanism2 = [stateCopy passcodeShouldBeFirstMechanism];
+          eventProcessing11 = [stateCopy eventProcessing];
+          if (passcodeShouldBeFirstMechanism2)
           {
-            v46 = [v15 remoteViewControllerForEventProcessing:v45];
+            v46 = [v15 remoteViewControllerForEventProcessing:eventProcessing11];
 
-            v47 = [v5 eventProcessing];
-            v48 = [v15 backgroundMechanismForEventProcessing:v47];
-            [v5 setBackgroundMechanism:v48];
+            eventProcessing12 = [stateCopy eventProcessing];
+            v48 = [v15 backgroundMechanismForEventProcessing:eventProcessing12];
+            [stateCopy setBackgroundMechanism:v48];
 
-            v49 = [v5 continueMechanisms];
+            continueMechanisms3 = [stateCopy continueMechanisms];
             v16 = v67;
-            [v49 addObject:v67];
+            [continueMechanisms3 addObject:v67];
 
             v8 = v46;
             goto LABEL_41;
           }
 
           v16 = v67;
-          v69 = [v67 remoteViewControllerForEventProcessing:v45];
+          v69 = [v67 remoteViewControllerForEventProcessing:eventProcessing11];
 
-          [v5 setBackgroundMechanism:v67];
+          [stateCopy setBackgroundMechanism:v67];
           if (!v15)
           {
 LABEL_40:
@@ -227,11 +227,11 @@ LABEL_40:
             goto LABEL_41;
           }
 
-          v60 = [v5 continueMechanisms];
-          v61 = v60;
+          continueMechanisms = [stateCopy continueMechanisms];
+          v61 = continueMechanisms;
           v62 = v15;
 LABEL_39:
-          [v60 addObject:v62];
+          [continueMechanisms addObject:v62];
 
           goto LABEL_40;
         }
@@ -241,33 +241,33 @@ LABEL_39:
           goto LABEL_41;
         }
 
-        v55 = [v5 passcodeShouldBeFirstMechanism];
-        v56 = [v5 eventProcessing];
-        if (v55)
+        passcodeShouldBeFirstMechanism3 = [stateCopy passcodeShouldBeFirstMechanism];
+        eventProcessing13 = [stateCopy eventProcessing];
+        if (passcodeShouldBeFirstMechanism3)
         {
-          v34 = [v15 remoteViewControllerForEventProcessing:v56];
+          v34 = [v15 remoteViewControllerForEventProcessing:eventProcessing13];
 
-          v57 = [v5 eventProcessing];
-          v58 = [v15 backgroundMechanismForEventProcessing:v57];
-          [v5 setBackgroundMechanism:v58];
+          eventProcessing14 = [stateCopy eventProcessing];
+          v58 = [v15 backgroundMechanismForEventProcessing:eventProcessing14];
+          [stateCopy setBackgroundMechanism:v58];
 
-          v37 = [v5 continueMechanisms];
-          v38 = v37;
+          continueMechanisms2 = [stateCopy continueMechanisms];
+          v38 = continueMechanisms2;
           v39 = v71;
           goto LABEL_12;
         }
 
-        v69 = [v71 remoteViewControllerForEventProcessing:v56];
+        v69 = [v71 remoteViewControllerForEventProcessing:eventProcessing13];
 
-        v51 = v5;
+        v51 = stateCopy;
         v52 = v71;
       }
 
       [v51 setBackgroundMechanism:v52];
       if (v15)
       {
-        v53 = [v5 continueMechanisms];
-        [v53 addObject:v15];
+        continueMechanisms4 = [stateCopy continueMechanisms];
+        [continueMechanisms4 addObject:v15];
       }
 
       v16 = v67;
@@ -276,11 +276,11 @@ LABEL_39:
 
     if (v14)
     {
-      v28 = [v5 eventProcessing];
-      v29 = [v14 remoteViewControllerForEventProcessing:v28];
+      eventProcessing15 = [stateCopy eventProcessing];
+      v29 = [v14 remoteViewControllerForEventProcessing:eventProcessing15];
 
       v8 = v29;
-      v30 = v5;
+      v30 = stateCopy;
       v31 = v14;
     }
 
@@ -288,37 +288,37 @@ LABEL_39:
     {
       if (v17)
       {
-        [v5 setBackgroundMechanism:v17];
-        v40 = [v5 uiMechanism];
-        [v17 setParent:v40];
+        [stateCopy setBackgroundMechanism:v17];
+        uiMechanism = [stateCopy uiMechanism];
+        [v17 setParent:uiMechanism];
 
         v8 = 0;
         goto LABEL_15;
       }
 
-      v50 = [v5 eventProcessing];
+      eventProcessing16 = [stateCopy eventProcessing];
       if (v71)
       {
-        v70 = [v71 remoteViewControllerForEventProcessing:v50];
+        v70 = [v71 remoteViewControllerForEventProcessing:eventProcessing16];
 
         v8 = v70;
-        v30 = v5;
+        v30 = stateCopy;
         v31 = v71;
       }
 
       else
       {
-        v59 = [v16 remoteViewControllerForEventProcessing:v50];
+        v59 = [v16 remoteViewControllerForEventProcessing:eventProcessing16];
 
         v8 = v59;
-        v30 = v5;
+        v30 = stateCopy;
         v31 = v16;
       }
     }
 
     [v30 setBackgroundMechanism:v31];
 LABEL_15:
-    [v5 setFallbackMechanism:v15];
+    [stateCopy setFallbackMechanism:v15];
     goto LABEL_41;
   }
 

@@ -1,12 +1,12 @@
 @interface VUIAppDocumentRefreshEvent
-- (VUIAppDocumentRefreshEvent)initWithDescriptor:(id)a3;
-- (VUIAppDocumentRefreshEvent)initWithRefreshEventDescriptor:(id)a3;
+- (VUIAppDocumentRefreshEvent)initWithDescriptor:(id)descriptor;
+- (VUIAppDocumentRefreshEvent)initWithRefreshEventDescriptor:(id)descriptor;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation VUIAppDocumentRefreshEvent
 
-- (VUIAppDocumentRefreshEvent)initWithDescriptor:(id)a3
+- (VUIAppDocumentRefreshEvent)initWithDescriptor:(id)descriptor
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D940];
@@ -16,27 +16,27 @@
   return 0;
 }
 
-- (VUIAppDocumentRefreshEvent)initWithRefreshEventDescriptor:(id)a3
+- (VUIAppDocumentRefreshEvent)initWithRefreshEventDescriptor:(id)descriptor
 {
   v4.receiver = self;
   v4.super_class = VUIAppDocumentRefreshEvent;
-  return [(VUIAppDocumentUpdateEvent *)&v4 initWithDescriptor:a3];
+  return [(VUIAppDocumentUpdateEvent *)&v4 initWithDescriptor:descriptor];
 }
 
 - (id)dictionaryRepresentation
 {
   v11.receiver = self;
   v11.super_class = VUIAppDocumentRefreshEvent;
-  v3 = [(VUIAppDocumentUpdateEvent *)&v11 dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(VUIAppDocumentUpdateEvent *)&v11 dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
-  v5 = [(VUIAppDocumentRefreshEvent *)self _refreshEventDescriptor];
-  v6 = [v5 delayInSeconds];
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v6];
+  _refreshEventDescriptor = [(VUIAppDocumentRefreshEvent *)self _refreshEventDescriptor];
+  delayInSeconds = [_refreshEventDescriptor delayInSeconds];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:delayInSeconds];
   [v4 vui_setObjectIfNotNil:v7 forKey:@"delay"];
 
-  v8 = [v5 name];
-  [v4 vui_setObjectIfNotNil:v8 forKey:@"name"];
+  name = [_refreshEventDescriptor name];
+  [v4 vui_setObjectIfNotNil:name forKey:@"name"];
   v9 = [v4 copy];
 
   return v9;

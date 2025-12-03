@@ -1,69 +1,69 @@
 @interface EKRecurrenceGenerator
-+ (BOOL)_isLunarBirthdayRecurrenceRule:(id)a3 lunarCalendarString:(id)a4;
-+ (id)_copyDatesForLunarBirthdayFromDate:(id)a3 toDate:(id)a4 inTimeZone:(id)a5 lunarCalendarString:(id)a6;
-+ (id)_daysOfWeekFromICSRule:(id)a3;
-+ (id)datesByExpandingRule:(id)a3 fromDate:(id)a4 toDate:(id)a5 inTimezone:(id)a6 isAllDay:(BOOL)a7 lunarCalendarString:(id)a8;
-+ (int)_convertEKRecurrenceFrequencyToCalRecurrenceFrequency:(int64_t)a3;
-+ (unint64_t)_weekStartFromICSRule:(id)a3;
-- (BOOL)isOccurrenceDate:(id)a3 validForEvent:(id)a4;
-- (BOOL)occurrenceDate:(id)a3 matchesRecurrenceRule:(id)a4 forEvent:(id)a5 includeDetachedEventsInSeries:(BOOL)a6;
-- (id)_copyOccurrenceDatesWithEKEvent:(id)a3 recurrenceRule:(id)a4 startDate:(id)a5 endDate:(id)a6 timeZone:(id)a7 exceptionDates:(id)a8 limit:(int64_t)a9 adjustDatesForAllDayEvents:(BOOL)a10;
-- (id)adjustedExceptionDatesFromDates:(id)a3 fromGMTToTimeZone:(id)a4;
-- (id)copyOccurrenceDatesWithEKEvent:(id)a3 startDate:(id)a4 endDate:(id)a5 timeZone:(id)a6 exceptionDates:(id)a7 limit:(int64_t)a8 adjustDatesForAllDayEvents:(BOOL)a9;
-- (id)nextOccurrenceDateWithEKRecurrences:(id)a3 forCalendarItem:(id)a4 exceptionDates:(id)a5 initialDate:(id)a6 afterDate:(id)a7 inclusive:(BOOL)a8;
-- (void)_prepareForEKRecurrence:(id)a3 forCalendarItem:(id)a4;
-- (void)_setupForEKEvent:(id)a3 adjustDatesForAllDayEvents:(BOOL)a4;
++ (BOOL)_isLunarBirthdayRecurrenceRule:(id)rule lunarCalendarString:(id)string;
++ (id)_copyDatesForLunarBirthdayFromDate:(id)date toDate:(id)toDate inTimeZone:(id)zone lunarCalendarString:(id)string;
++ (id)_daysOfWeekFromICSRule:(id)rule;
++ (id)datesByExpandingRule:(id)rule fromDate:(id)date toDate:(id)toDate inTimezone:(id)timezone isAllDay:(BOOL)day lunarCalendarString:(id)string;
++ (int)_convertEKRecurrenceFrequencyToCalRecurrenceFrequency:(int64_t)frequency;
++ (unint64_t)_weekStartFromICSRule:(id)rule;
+- (BOOL)isOccurrenceDate:(id)date validForEvent:(id)event;
+- (BOOL)occurrenceDate:(id)date matchesRecurrenceRule:(id)rule forEvent:(id)event includeDetachedEventsInSeries:(BOOL)series;
+- (id)_copyOccurrenceDatesWithEKEvent:(id)event recurrenceRule:(id)rule startDate:(id)date endDate:(id)endDate timeZone:(id)zone exceptionDates:(id)dates limit:(int64_t)limit adjustDatesForAllDayEvents:(BOOL)self0;
+- (id)adjustedExceptionDatesFromDates:(id)dates fromGMTToTimeZone:(id)zone;
+- (id)copyOccurrenceDatesWithEKEvent:(id)event startDate:(id)date endDate:(id)endDate timeZone:(id)zone exceptionDates:(id)dates limit:(int64_t)limit adjustDatesForAllDayEvents:(BOOL)events;
+- (id)nextOccurrenceDateWithEKRecurrences:(id)recurrences forCalendarItem:(id)item exceptionDates:(id)dates initialDate:(id)date afterDate:(id)afterDate inclusive:(BOOL)inclusive;
+- (void)_prepareForEKRecurrence:(id)recurrence forCalendarItem:(id)item;
+- (void)_setupForEKEvent:(id)event adjustDatesForAllDayEvents:(BOOL)events;
 @end
 
 @implementation EKRecurrenceGenerator
 
-- (void)_setupForEKEvent:(id)a3 adjustDatesForAllDayEvents:(BOOL)a4
+- (void)_setupForEKEvent:(id)event adjustDatesForAllDayEvents:(BOOL)events
 {
-  v4 = a4;
-  v17 = a3;
-  v6 = [v17 initialStartDate];
-  [(CalRecurrenceGenerator *)self setEventStartDate:v6];
+  eventsCopy = events;
+  eventCopy = event;
+  initialStartDate = [eventCopy initialStartDate];
+  [(CalRecurrenceGenerator *)self setEventStartDate:initialStartDate];
 
-  v7 = [v17 initialEndDate];
-  [(CalRecurrenceGenerator *)self setEventEndDate:v7];
+  initialEndDate = [eventCopy initialEndDate];
+  [(CalRecurrenceGenerator *)self setEventEndDate:initialEndDate];
 
-  v8 = [v17 timeZone];
-  [(CalRecurrenceGenerator *)self setEventTimeZone:v8];
+  timeZone = [eventCopy timeZone];
+  [(CalRecurrenceGenerator *)self setEventTimeZone:timeZone];
 
-  -[CalRecurrenceGenerator setAllDay:](self, "setAllDay:", [v17 isAllDay]);
-  if (v4 && [v17 isFloating])
+  -[CalRecurrenceGenerator setAllDay:](self, "setAllDay:", [eventCopy isAllDay]);
+  if (eventsCopy && [eventCopy isFloating])
   {
-    v9 = [(CalRecurrenceGenerator *)self eventStartDate];
-    v10 = [v17 eventStore];
-    v11 = [v10 timeZone];
-    v12 = [v9 dateInTimeZone:0 fromTimeZone:v11];
+    eventStartDate = [(CalRecurrenceGenerator *)self eventStartDate];
+    eventStore = [eventCopy eventStore];
+    timeZone2 = [eventStore timeZone];
+    v12 = [eventStartDate dateInTimeZone:0 fromTimeZone:timeZone2];
     [(CalRecurrenceGenerator *)self setEventStartDate:v12];
 
-    v13 = [(CalRecurrenceGenerator *)self eventEndDate];
-    v14 = [v17 eventStore];
-    v15 = [v14 timeZone];
-    v16 = [v13 dateInTimeZone:0 fromTimeZone:v15];
+    eventEndDate = [(CalRecurrenceGenerator *)self eventEndDate];
+    eventStore2 = [eventCopy eventStore];
+    timeZone3 = [eventStore2 timeZone];
+    v16 = [eventEndDate dateInTimeZone:0 fromTimeZone:timeZone3];
     [(CalRecurrenceGenerator *)self setEventEndDate:v16];
   }
 }
 
-- (id)copyOccurrenceDatesWithEKEvent:(id)a3 startDate:(id)a4 endDate:(id)a5 timeZone:(id)a6 exceptionDates:(id)a7 limit:(int64_t)a8 adjustDatesForAllDayEvents:(BOOL)a9
+- (id)copyOccurrenceDatesWithEKEvent:(id)event startDate:(id)date endDate:(id)endDate timeZone:(id)zone exceptionDates:(id)dates limit:(int64_t)limit adjustDatesForAllDayEvents:(BOOL)events
 {
   v47 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v35 = a4;
-  v34 = a5;
-  v36 = a6;
-  v33 = a7;
-  [(EKRecurrenceGenerator *)self _setupForEKEvent:v15 adjustDatesForAllDayEvents:a9];
+  eventCopy = event;
+  dateCopy = date;
+  endDateCopy = endDate;
+  zoneCopy = zone;
+  datesCopy = dates;
+  [(EKRecurrenceGenerator *)self _setupForEKEvent:eventCopy adjustDatesForAllDayEvents:events];
   v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v17 = v15;
-  v18 = [v15 recurrenceRules];
-  v19 = [v18 countByEnumeratingWithState:&v41 objects:v46 count:16];
+  v17 = eventCopy;
+  recurrenceRules = [eventCopy recurrenceRules];
+  v19 = [recurrenceRules countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v19)
   {
     v20 = v19;
@@ -74,24 +74,24 @@
       {
         if (*v42 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(recurrenceRules);
         }
 
         [(EKRecurrenceGenerator *)self _prepareForEKRecurrence:*(*(&v41 + 1) + 8 * i) forCalendarItem:v17];
         v23 = objc_autoreleasePoolPush();
-        v24 = [(CalRecurrenceGenerator *)self copyOccurrenceDatesBetweenStartDate:v35 endDate:v34 timeZone:v36 limit:a8];
+        v24 = [(CalRecurrenceGenerator *)self copyOccurrenceDatesBetweenStartDate:dateCopy endDate:endDateCopy timeZone:zoneCopy limit:limit];
         [v16 addObjectsFromArray:v24];
 
         objc_autoreleasePoolPop(v23);
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v41 objects:v46 count:16];
+      v20 = [recurrenceRules countByEnumeratingWithState:&v41 objects:v46 count:16];
     }
 
     while (v20);
   }
 
-  v25 = [(EKRecurrenceGenerator *)self adjustedExceptionDatesFromDates:v33 fromGMTToTimeZone:v36];
+  v25 = [(EKRecurrenceGenerator *)self adjustedExceptionDatesFromDates:datesCopy fromGMTToTimeZone:zoneCopy];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -125,28 +125,28 @@
   return v30;
 }
 
-- (id)_copyOccurrenceDatesWithEKEvent:(id)a3 recurrenceRule:(id)a4 startDate:(id)a5 endDate:(id)a6 timeZone:(id)a7 exceptionDates:(id)a8 limit:(int64_t)a9 adjustDatesForAllDayEvents:(BOOL)a10
+- (id)_copyOccurrenceDatesWithEKEvent:(id)event recurrenceRule:(id)rule startDate:(id)date endDate:(id)endDate timeZone:(id)zone exceptionDates:(id)dates limit:(int64_t)limit adjustDatesForAllDayEvents:(BOOL)self0
 {
   v43 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  [(EKRecurrenceGenerator *)self _setupForEKEvent:v16 adjustDatesForAllDayEvents:a10];
+  eventCopy = event;
+  ruleCopy = rule;
+  dateCopy = date;
+  endDateCopy = endDate;
+  zoneCopy = zone;
+  datesCopy = dates;
+  [(EKRecurrenceGenerator *)self _setupForEKEvent:eventCopy adjustDatesForAllDayEvents:events];
   v22 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0];
-  v37 = v17;
-  v23 = v17;
-  v24 = v18;
-  [(EKRecurrenceGenerator *)self _prepareForEKRecurrence:v23 forCalendarItem:v16];
+  v37 = ruleCopy;
+  v23 = ruleCopy;
+  v24 = dateCopy;
+  [(EKRecurrenceGenerator *)self _prepareForEKRecurrence:v23 forCalendarItem:eventCopy];
   context = objc_autoreleasePoolPush();
-  v36 = v19;
-  v25 = v19;
-  v26 = v21;
-  v27 = [(CalRecurrenceGenerator *)self copyOccurrenceDatesBetweenStartDate:v18 endDate:v25 timeZone:v20 limit:a9];
+  v36 = endDateCopy;
+  v25 = endDateCopy;
+  v26 = datesCopy;
+  v27 = [(CalRecurrenceGenerator *)self copyOccurrenceDatesBetweenStartDate:dateCopy endDate:v25 timeZone:zoneCopy limit:limit];
   [v22 addObjectsFromArray:v27];
-  v28 = [(EKRecurrenceGenerator *)self adjustedExceptionDatesFromDates:v21 fromGMTToTimeZone:v20];
+  v28 = [(EKRecurrenceGenerator *)self adjustedExceptionDatesFromDates:datesCopy fromGMTToTimeZone:zoneCopy];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
@@ -181,21 +181,21 @@
   return v22;
 }
 
-- (id)adjustedExceptionDatesFromDates:(id)a3 fromGMTToTimeZone:(id)a4
+- (id)adjustedExceptionDatesFromDates:(id)dates fromGMTToTimeZone:(id)zone
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CalRecurrenceGenerator *)self requiresEndDateConversionFromGMTToEventTimeZone];
-  if (v7 && v8)
+  datesCopy = dates;
+  zoneCopy = zone;
+  requiresEndDateConversionFromGMTToEventTimeZone = [(CalRecurrenceGenerator *)self requiresEndDateConversionFromGMTToEventTimeZone];
+  if (zoneCopy && requiresEndDateConversionFromGMTToEventTimeZone)
   {
     v9 = [MEMORY[0x1E695DFA8] set];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v19 = v6;
-    obj = v6;
+    v19 = datesCopy;
+    obj = datesCopy;
     v10 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v10)
     {
@@ -213,7 +213,7 @@
           v14 = *(*(&v21 + 1) + 8 * i);
           v15 = [MEMORY[0x1E695DFE8] timeZoneForSecondsFromGMT:{0, v19}];
           [v14 timeIntervalSinceReferenceDate];
-          [(CalRecurrenceGenerator *)self convertAbsoluteTime:v15 fromTimeZone:v7 toTimeZone:?];
+          [(CalRecurrenceGenerator *)self convertAbsoluteTime:v15 fromTimeZone:zoneCopy toTimeZone:?];
           v16 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:?];
           [v9 addObject:v16];
         }
@@ -224,12 +224,12 @@
       while (v11);
     }
 
-    v6 = v19;
+    datesCopy = v19;
   }
 
   else
   {
-    v9 = v6;
+    v9 = datesCopy;
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -237,17 +237,17 @@
   return v9;
 }
 
-- (BOOL)isOccurrenceDate:(id)a3 validForEvent:(id)a4
+- (BOOL)isOccurrenceDate:(id)date validForEvent:(id)event
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  eventCopy = event;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [v7 recurrenceRules];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  recurrenceRules = [eventCopy recurrenceRules];
+  v9 = [recurrenceRules countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -258,17 +258,17 @@
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(recurrenceRules);
         }
 
-        if ([(EKRecurrenceGenerator *)self occurrenceDate:v6 matchesRecurrenceRule:*(*(&v16 + 1) + 8 * i) forEvent:v7 includeDetachedEventsInSeries:0])
+        if ([(EKRecurrenceGenerator *)self occurrenceDate:dateCopy matchesRecurrenceRule:*(*(&v16 + 1) + 8 * i) forEvent:eventCopy includeDetachedEventsInSeries:0])
         {
           v13 = 1;
           goto LABEL_11;
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [recurrenceRules countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v10)
       {
         continue;
@@ -285,49 +285,49 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)occurrenceDate:(id)a3 matchesRecurrenceRule:(id)a4 forEvent:(id)a5 includeDetachedEventsInSeries:(BOOL)a6
+- (BOOL)occurrenceDate:(id)date matchesRecurrenceRule:(id)rule forEvent:(id)event includeDetachedEventsInSeries:(BOOL)series
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  [(EKRecurrenceGenerator *)self _setupForEKEvent:v12 adjustDatesForAllDayEvents:1];
-  v13 = [v10 date];
-  v14 = [v13 dateByAddingTimeInterval:1.0];
-  [(EKRecurrenceGenerator *)self _prepareForEKRecurrence:v11 forCalendarItem:v12];
+  dateCopy = date;
+  ruleCopy = rule;
+  eventCopy = event;
+  [(EKRecurrenceGenerator *)self _setupForEKEvent:eventCopy adjustDatesForAllDayEvents:1];
+  date = [dateCopy date];
+  v14 = [date dateByAddingTimeInterval:1.0];
+  [(EKRecurrenceGenerator *)self _prepareForEKRecurrence:ruleCopy forCalendarItem:eventCopy];
   v15 = objc_autoreleasePoolPush();
-  v16 = [v10 timeZone];
-  v17 = [(CalRecurrenceGenerator *)self copyOccurrenceDatesBetweenStartDate:v13 endDate:v14 timeZone:v16 limit:1];
+  timeZone = [dateCopy timeZone];
+  v17 = [(CalRecurrenceGenerator *)self copyOccurrenceDatesBetweenStartDate:date endDate:v14 timeZone:timeZone limit:1];
 
   if ([v17 count])
   {
     v33 = v15;
-    v18 = a6;
+    seriesCopy = series;
     v19 = [v17 objectAtIndex:0];
-    v20 = [v10 date];
-    v21 = [v19 isEqual:v20];
+    date2 = [dateCopy date];
+    v21 = [v19 isEqual:date2];
 
     if (v21)
     {
-      v22 = [v12 exceptionDatesAdjustedForFloatingEvents];
-      v23 = [v22 count];
+      exceptionDatesAdjustedForFloatingEvents = [eventCopy exceptionDatesAdjustedForFloatingEvents];
+      v23 = [exceptionDatesAdjustedForFloatingEvents count];
 
       if (v23)
       {
-        v24 = [v12 exceptionDatesAdjustedForFloatingEvents];
-        LOBYTE(v23) = [v24 containsObject:v19];
+        exceptionDatesAdjustedForFloatingEvents2 = [eventCopy exceptionDatesAdjustedForFloatingEvents];
+        LOBYTE(v23) = [exceptionDatesAdjustedForFloatingEvents2 containsObject:v19];
       }
 
       v25 = 1;
-      if ((v23 & 1) == 0 && !v18)
+      if ((v23 & 1) == 0 && !seriesCopy)
       {
         v26 = v23;
-        v27 = [v12 detachedItems];
-        v28 = [v27 count];
+        detachedItems = [eventCopy detachedItems];
+        v28 = [detachedItems count];
 
         if (v28)
         {
-          v29 = [v12 detachedItems];
-          v30 = [v29 valueForKey:@"startDate"];
+          detachedItems2 = [eventCopy detachedItems];
+          v30 = [detachedItems2 valueForKey:@"startDate"];
           v32 = [v30 containsObject:v19];
 
           v25 = v32 ^ 1;
@@ -356,35 +356,35 @@ LABEL_11:
   return v21;
 }
 
-- (id)nextOccurrenceDateWithEKRecurrences:(id)a3 forCalendarItem:(id)a4 exceptionDates:(id)a5 initialDate:(id)a6 afterDate:(id)a7 inclusive:(BOOL)a8
+- (id)nextOccurrenceDateWithEKRecurrences:(id)recurrences forCalendarItem:(id)item exceptionDates:(id)dates initialDate:(id)date afterDate:(id)afterDate inclusive:(BOOL)inclusive
 {
   v66 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v53 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v15 date];
-  [(CalRecurrenceGenerator *)self setEventStartDate:v17];
+  recurrencesCopy = recurrences;
+  itemCopy = item;
+  datesCopy = dates;
+  dateCopy = date;
+  afterDateCopy = afterDate;
+  date = [dateCopy date];
+  [(CalRecurrenceGenerator *)self setEventStartDate:date];
 
-  v18 = [v15 date];
-  [(CalRecurrenceGenerator *)self setEventEndDate:v18];
+  date2 = [dateCopy date];
+  [(CalRecurrenceGenerator *)self setEventEndDate:date2];
 
-  v19 = [v15 timeZone];
-  [(CalRecurrenceGenerator *)self setEventTimeZone:v19];
+  timeZone = [dateCopy timeZone];
+  [(CalRecurrenceGenerator *)self setEventTimeZone:timeZone];
 
   [(CalRecurrenceGenerator *)self setAllDay:0];
   v20 = MEMORY[0x1E69930C8];
   v21 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:1577840000.0];
-  v47 = v15;
-  v22 = [v15 timeZone];
-  v48 = [v20 calendarDateWithDate:v21 timeZone:v22];
+  v47 = dateCopy;
+  timeZone2 = [dateCopy timeZone];
+  v48 = [v20 calendarDateWithDate:v21 timeZone:timeZone2];
 
   v62 = 0u;
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  obj = v13;
+  obj = recurrencesCopy;
   v51 = [obj countByEnumeratingWithState:&v60 objects:v65 count:16];
   if (v51)
   {
@@ -398,41 +398,41 @@ LABEL_3:
         objc_enumerationMutation(obj);
       }
 
-      [(EKRecurrenceGenerator *)self _prepareForEKRecurrence:*(*(&v60 + 1) + 8 * v23) forCalendarItem:v53];
+      [(EKRecurrenceGenerator *)self _prepareForEKRecurrence:*(*(&v60 + 1) + 8 * v23) forCalendarItem:itemCopy];
       v24 = objc_autoreleasePoolPush();
-      if (a8)
+      if (inclusive)
       {
-        v25 = [v16 copy];
+        v25 = [afterDateCopy copy];
       }
 
       else
       {
-        v25 = [v16 calendarDateByAddingSeconds:1];
+        v25 = [afterDateCopy calendarDateByAddingSeconds:1];
       }
 
       v26 = v25;
-      v27 = [(CalRecurrenceGenerator *)self endDate];
+      endDate = [(CalRecurrenceGenerator *)self endDate];
 
-      if (v27)
+      if (endDate)
       {
         v28 = MEMORY[0x1E69930C8];
-        v29 = [(CalRecurrenceGenerator *)self endDate];
-        v30 = [v16 timeZone];
-        v31 = [v28 calendarDateWithDate:v29 timeZone:v30];
+        endDate2 = [(CalRecurrenceGenerator *)self endDate];
+        timeZone3 = [afterDateCopy timeZone];
+        v31 = [v28 calendarDateWithDate:endDate2 timeZone:timeZone3];
 
-        v32 = [v31 date];
-        v33 = [v32 dateByAddingTimeInterval:1.0];
+        date3 = [v31 date];
+        date4 = [date3 dateByAddingTimeInterval:1.0];
       }
 
       else
       {
-        v33 = [v48 date];
+        date4 = [v48 date];
       }
 
-      v34 = [v14 count];
-      v35 = [v26 date];
-      v36 = [v16 timeZone];
-      v37 = [(CalRecurrenceGenerator *)self copyOccurrenceDatesBetweenStartDate:v35 endDate:v33 timeZone:v36 limit:v34 + 1];
+      v34 = [datesCopy count];
+      date5 = [v26 date];
+      timeZone4 = [afterDateCopy timeZone];
+      v37 = [(CalRecurrenceGenerator *)self copyOccurrenceDatesBetweenStartDate:date5 endDate:date4 timeZone:timeZone4 limit:v34 + 1];
 
       v58 = 0u;
       v59 = 0u;
@@ -444,8 +444,8 @@ LABEL_3:
       {
         v54 = v26;
         v55 = v24;
-        v40 = self;
-        v41 = v16;
+        selfCopy = self;
+        v41 = afterDateCopy;
         v42 = *v57;
         while (2)
         {
@@ -457,7 +457,7 @@ LABEL_3:
             }
 
             v44 = *(*(&v56 + 1) + 8 * i);
-            if (([v14 containsObject:v44] & 1) == 0)
+            if (([datesCopy containsObject:v44] & 1) == 0)
             {
               v39 = v44;
               goto LABEL_22;
@@ -474,8 +474,8 @@ LABEL_3:
         }
 
 LABEL_22:
-        v16 = v41;
-        self = v40;
+        afterDateCopy = v41;
+        self = selfCopy;
         v26 = v54;
         v24 = v55;
       }
@@ -510,146 +510,146 @@ LABEL_26:
   return v39;
 }
 
-- (void)_prepareForEKRecurrence:(id)a3 forCalendarItem:(id)a4
+- (void)_prepareForEKRecurrence:(id)recurrence forCalendarItem:(id)item
 {
-  v22 = a3;
-  v6 = a4;
-  -[CalRecurrenceGenerator setInterval:](self, "setInterval:", [v22 interval]);
-  -[CalRecurrenceGenerator setFrequency:](self, "setFrequency:", [objc_opt_class() _convertEKRecurrenceFrequencyToCalRecurrenceFrequency:{objc_msgSend(v22, "frequency")}]);
-  -[CalRecurrenceGenerator setWeekStart:](self, "setWeekStart:", [v22 firstDayOfTheWeek]);
+  recurrenceCopy = recurrence;
+  itemCopy = item;
+  -[CalRecurrenceGenerator setInterval:](self, "setInterval:", [recurrenceCopy interval]);
+  -[CalRecurrenceGenerator setFrequency:](self, "setFrequency:", [objc_opt_class() _convertEKRecurrenceFrequencyToCalRecurrenceFrequency:{objc_msgSend(recurrenceCopy, "frequency")}]);
+  -[CalRecurrenceGenerator setWeekStart:](self, "setWeekStart:", [recurrenceCopy firstDayOfTheWeek]);
   if (![(CalRecurrenceGenerator *)self weekStart])
   {
     [(CalRecurrenceGenerator *)self setWeekStart:2];
   }
 
-  v7 = [v6 constraints];
-  -[CalRecurrenceGenerator setShouldPinMonthDays:](self, "setShouldPinMonthDays:", [v7 recurrencesShouldPinToMonthDays]);
+  constraints = [itemCopy constraints];
+  -[CalRecurrenceGenerator setShouldPinMonthDays:](self, "setShouldPinMonthDays:", [constraints recurrencesShouldPinToMonthDays]);
 
-  v8 = [v22 daysOfTheWeek];
-  [(CalRecurrenceGenerator *)self setDaysOfTheWeek:v8];
+  daysOfTheWeek = [recurrenceCopy daysOfTheWeek];
+  [(CalRecurrenceGenerator *)self setDaysOfTheWeek:daysOfTheWeek];
 
-  v9 = [v22 daysOfTheMonth];
-  [(CalRecurrenceGenerator *)self setDaysOfTheMonth:v9];
+  daysOfTheMonth = [recurrenceCopy daysOfTheMonth];
+  [(CalRecurrenceGenerator *)self setDaysOfTheMonth:daysOfTheMonth];
 
-  v10 = [v22 daysOfTheYear];
-  [(CalRecurrenceGenerator *)self setDaysOfTheYear:v10];
+  daysOfTheYear = [recurrenceCopy daysOfTheYear];
+  [(CalRecurrenceGenerator *)self setDaysOfTheYear:daysOfTheYear];
 
-  v11 = [v22 weeksOfTheYear];
-  [(CalRecurrenceGenerator *)self setWeeksOfTheYear:v11];
+  weeksOfTheYear = [recurrenceCopy weeksOfTheYear];
+  [(CalRecurrenceGenerator *)self setWeeksOfTheYear:weeksOfTheYear];
 
-  v12 = [v22 monthsOfTheYear];
-  [(CalRecurrenceGenerator *)self setMonthsOfTheYear:v12];
+  monthsOfTheYear = [recurrenceCopy monthsOfTheYear];
+  [(CalRecurrenceGenerator *)self setMonthsOfTheYear:monthsOfTheYear];
 
-  v13 = [v22 setPositions];
-  [(CalRecurrenceGenerator *)self setSetPositions:v13];
+  setPositions = [recurrenceCopy setPositions];
+  [(CalRecurrenceGenerator *)self setSetPositions:setPositions];
 
   [(CalRecurrenceGenerator *)self setEndDate:0];
-  v14 = [v22 recurrenceEnd];
-  v15 = [v14 occurrenceCount];
+  recurrenceEnd = [recurrenceCopy recurrenceEnd];
+  occurrenceCount = [recurrenceEnd occurrenceCount];
 
-  v16 = [v22 recurrenceEnd];
-  v17 = v16;
-  if (v15)
+  recurrenceEnd2 = [recurrenceCopy recurrenceEnd];
+  endDate2 = recurrenceEnd2;
+  if (occurrenceCount)
   {
-    v18 = -[CalRecurrenceGenerator computeRecurrenceEndDate:](self, "computeRecurrenceEndDate:", [v16 occurrenceCount]);
-    [(CalRecurrenceGenerator *)self setEndDate:v18];
+    eventStore = -[CalRecurrenceGenerator computeRecurrenceEndDate:](self, "computeRecurrenceEndDate:", [recurrenceEnd2 occurrenceCount]);
+    [(CalRecurrenceGenerator *)self setEndDate:eventStore];
   }
 
   else
   {
-    v19 = [v16 endDate];
-    [(CalRecurrenceGenerator *)self setEndDate:v19];
+    endDate = [recurrenceEnd2 endDate];
+    [(CalRecurrenceGenerator *)self setEndDate:endDate];
 
     if (![(CalRecurrenceGenerator *)self allDay])
     {
       goto LABEL_8;
     }
 
-    v17 = [(CalRecurrenceGenerator *)self endDate];
-    v18 = [v6 eventStore];
-    v20 = [v18 timeZone];
-    v21 = [v17 dateInTimeZone:0 fromTimeZone:v20];
+    endDate2 = [(CalRecurrenceGenerator *)self endDate];
+    eventStore = [itemCopy eventStore];
+    timeZone = [eventStore timeZone];
+    v21 = [endDate2 dateInTimeZone:0 fromTimeZone:timeZone];
     [(CalRecurrenceGenerator *)self setEndDate:v21];
   }
 
 LABEL_8:
 }
 
-+ (int)_convertEKRecurrenceFrequencyToCalRecurrenceFrequency:(int64_t)a3
++ (int)_convertEKRecurrenceFrequencyToCalRecurrenceFrequency:(int64_t)frequency
 {
-  if ((a3 - 1) >= 3)
+  if ((frequency - 1) >= 3)
   {
     return 1;
   }
 
   else
   {
-    return a3 + 1;
+    return frequency + 1;
   }
 }
 
-+ (id)datesByExpandingRule:(id)a3 fromDate:(id)a4 toDate:(id)a5 inTimezone:(id)a6 isAllDay:(BOOL)a7 lunarCalendarString:(id)a8
++ (id)datesByExpandingRule:(id)rule fromDate:(id)date toDate:(id)toDate inTimezone:(id)timezone isAllDay:(BOOL)day lunarCalendarString:(id)string
 {
-  v9 = a7;
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a8;
-  v18 = [a5 dateByAddingTimeInterval:1.0];
-  if ([a1 _isLunarBirthdayRecurrenceRule:v14 lunarCalendarString:v17])
+  dayCopy = day;
+  ruleCopy = rule;
+  dateCopy = date;
+  timezoneCopy = timezone;
+  stringCopy = string;
+  v18 = [toDate dateByAddingTimeInterval:1.0];
+  if ([self _isLunarBirthdayRecurrenceRule:ruleCopy lunarCalendarString:stringCopy])
   {
-    v19 = [a1 _copyDatesForLunarBirthdayFromDate:v15 toDate:v18 inTimeZone:v16 lunarCalendarString:v17];
+    v19 = [self _copyDatesForLunarBirthdayFromDate:dateCopy toDate:v18 inTimeZone:timezoneCopy lunarCalendarString:stringCopy];
     goto LABEL_21;
   }
 
-  v20 = [MEMORY[0x1E69E3CD8] recurrenceRuleFromICSString:v14];
+  v20 = [MEMORY[0x1E69E3CD8] recurrenceRuleFromICSString:ruleCopy];
   if (v20)
   {
     v21 = objc_opt_new();
     [v20 freq];
     [v21 setFrequency:CalRecurrenceFrequencyFromICSFrequency()];
-    v22 = [v20 interval];
-    v45 = v9;
-    v23 = [v22 intValue];
+    interval = [v20 interval];
+    v45 = dayCopy;
+    intValue = [interval intValue];
 
-    if (v23 <= 1)
+    if (intValue <= 1)
     {
       v24 = 1;
     }
 
     else
     {
-      v24 = v23;
+      v24 = intValue;
     }
 
     v25 = v45;
     [v21 setInterval:v24];
-    [v21 setWeekStart:{objc_msgSend(a1, "_weekStartFromICSRule:", v20)}];
-    v26 = [a1 _daysOfWeekFromICSRule:v20];
+    [v21 setWeekStart:{objc_msgSend(self, "_weekStartFromICSRule:", v20)}];
+    v26 = [self _daysOfWeekFromICSRule:v20];
     [v21 setDaysOfTheWeek:v26];
 
-    v27 = [v20 bysetpos];
-    [v21 setSetPositions:v27];
+    bysetpos = [v20 bysetpos];
+    [v21 setSetPositions:bysetpos];
 
-    v28 = [v20 bymonth];
-    [v21 setMonthsOfTheYear:v28];
+    bymonth = [v20 bymonth];
+    [v21 setMonthsOfTheYear:bymonth];
 
-    v29 = [v20 bymonthday];
-    [v21 setDaysOfTheMonth:v29];
+    bymonthday = [v20 bymonthday];
+    [v21 setDaysOfTheMonth:bymonthday];
 
-    v30 = [v20 byweekno];
-    [v21 setWeeksOfTheYear:v30];
+    byweekno = [v20 byweekno];
+    [v21 setWeeksOfTheYear:byweekno];
 
-    [v21 setEventStartDate:v15];
+    [v21 setEventStartDate:dateCopy];
     if (v45)
     {
-      v31 = [v15 ek_ios_dateForEndOfDayInTimeZone:v16];
+      v31 = [dateCopy ek_ios_dateForEndOfDayInTimeZone:timezoneCopy];
       [v21 setEventEndDate:v31];
     }
 
     else
     {
-      [v21 setEventEndDate:v15];
+      [v21 setEventEndDate:dateCopy];
     }
 
     v32 = [v20 count];
@@ -657,34 +657,34 @@ LABEL_8:
     if (v32)
     {
       v33 = [v20 count];
-      v34 = [v21 computeRecurrenceEndDate:{objc_msgSend(v33, "unsignedIntegerValue")}];
-      [v21 setEndDate:v34];
+      components = [v21 computeRecurrenceEndDate:{objc_msgSend(v33, "unsignedIntegerValue")}];
+      [v21 setEndDate:components];
     }
 
     else
     {
-      v35 = [v20 until];
+      until = [v20 until];
 
-      if (!v35)
+      if (!until)
       {
 LABEL_19:
-        [v21 setEventTimeZone:v16];
+        [v21 setEventTimeZone:timezoneCopy];
         [v21 setAllDay:v25];
-        v19 = [v21 copyOccurrenceDatesBetweenStartDate:v15 endDate:v18 timeZone:v16 limit:0];
+        v19 = [v21 copyOccurrenceDatesBetweenStartDate:dateCopy endDate:v18 timeZone:timezoneCopy limit:0];
 
         goto LABEL_20;
       }
 
       v36 = objc_alloc(MEMORY[0x1E69E3C90]);
-      v37 = [v20 until];
-      v33 = [v36 initWithValue:v37];
+      until2 = [v20 until];
+      v33 = [v36 initWithValue:until2];
 
-      v34 = [v33 components];
-      v38 = [MEMORY[0x1E695DEE8] currentCalendar];
-      [v38 setTimeZone:v16];
-      v44 = v38;
-      v43 = [v38 dateFromComponents:v34];
-      v39 = [v20 until];
+      components = [v33 components];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+      [currentCalendar setTimeZone:timezoneCopy];
+      v44 = currentCalendar;
+      v43 = [currentCalendar dateFromComponents:components];
+      until3 = [v20 until];
       objc_opt_class();
       LODWORD(v42) = objc_opt_isKindOfClass();
 
@@ -695,7 +695,7 @@ LABEL_19:
 
       else
       {
-        v42 = [v43 dateForEndOfDayInTimeZone:v16];
+        v42 = [v43 dateForEndOfDayInTimeZone:timezoneCopy];
 
         v40 = v42;
       }
@@ -715,24 +715,24 @@ LABEL_21:
   return v19;
 }
 
-+ (unint64_t)_weekStartFromICSRule:(id)a3
++ (unint64_t)_weekStartFromICSRule:(id)rule
 {
-  v3 = a3;
-  v4 = [v3 wkst];
+  ruleCopy = rule;
+  wkst = [ruleCopy wkst];
 
-  if (v4)
+  if (wkst)
   {
-    v5 = [v3 wkst];
-    v6 = [v5 intValue];
+    wkst2 = [ruleCopy wkst];
+    intValue = [wkst2 intValue];
 
-    if (v6 - 1 >= 7)
+    if (intValue - 1 >= 7)
     {
       v7 = 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = intValue;
     }
   }
 
@@ -744,24 +744,24 @@ LABEL_21:
   return v7;
 }
 
-+ (id)_daysOfWeekFromICSRule:(id)a3
++ (id)_daysOfWeekFromICSRule:(id)rule
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 byday];
+  ruleCopy = rule;
+  byday = [ruleCopy byday];
 
-  if (v4)
+  if (byday)
   {
     v5 = MEMORY[0x1E695DF70];
-    v6 = [v3 byday];
-    v7 = [v5 arrayWithCapacity:{objc_msgSend(v6, "count")}];
+    byday2 = [ruleCopy byday];
+    v7 = [v5 arrayWithCapacity:{objc_msgSend(byday2, "count")}];
 
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v8 = [v3 byday];
-    v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    byday3 = [ruleCopy byday];
+    v9 = [byday3 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v9)
     {
       v10 = v9;
@@ -772,19 +772,19 @@ LABEL_21:
         {
           if (*v22 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(byday3);
           }
 
           v13 = *(*(&v21 + 1) + 8 * i);
           v14 = objc_alloc(MEMORY[0x1E6993030]);
-          v15 = [v13 weekday];
-          v16 = [v13 number];
-          v17 = [v14 initWithDayOfTheWeek:v15 weekNumber:{objc_msgSend(v16, "integerValue")}];
+          weekday = [v13 weekday];
+          number = [v13 number];
+          v17 = [v14 initWithDayOfTheWeek:weekday weekNumber:{objc_msgSend(number, "integerValue")}];
 
           [v7 addObject:v17];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v10 = [byday3 countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v10);
@@ -803,39 +803,39 @@ LABEL_21:
   return v18;
 }
 
-+ (id)_copyDatesForLunarBirthdayFromDate:(id)a3 toDate:(id)a4 inTimeZone:(id)a5 lunarCalendarString:(id)a6
++ (id)_copyDatesForLunarBirthdayFromDate:(id)date toDate:(id)toDate inTimeZone:(id)zone lunarCalendarString:(id)string
 {
   v9 = MEMORY[0x1E695DEE8];
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v9 CalCalendarWithUnsanitizedCalendarIdentifier:a6];
+  zoneCopy = zone;
+  toDateCopy = toDate;
+  dateCopy = date;
+  v13 = [v9 CalCalendarWithUnsanitizedCalendarIdentifier:string];
   v14 = [MEMORY[0x1E695DFE8] timeZoneWithAbbreviation:@"GMT"];
   [v13 setTimeZone:v14];
-  v15 = [MEMORY[0x1E69930C8] calendarDateWithDate:v12 timeZone:v10];
-  v16 = [MEMORY[0x1E69930C8] calendarDateWithDate:v11 timeZone:v10];
+  v15 = [MEMORY[0x1E69930C8] calendarDateWithDate:dateCopy timeZone:zoneCopy];
+  v16 = [MEMORY[0x1E69930C8] calendarDateWithDate:toDateCopy timeZone:zoneCopy];
 
   v17 = objc_alloc(MEMORY[0x1E6992F70]);
-  v18 = [v15 date];
-  v19 = [v16 date];
-  v20 = [v17 initWithStartDate:v18 endDate:v19];
+  date = [v15 date];
+  date2 = [v16 date];
+  v20 = [v17 initWithStartDate:date endDate:date2];
 
-  v21 = [v13 components:24 fromDate:v12];
+  v21 = [v13 components:24 fromDate:dateCopy];
 
-  [v13 setTimeZone:v10];
+  [v13 setTimeZone:zoneCopy];
   v22 = [v13 CalOccurrencesForBirthday:v21 inDateRange:v20];
 
   return v22;
 }
 
-+ (BOOL)_isLunarBirthdayRecurrenceRule:(id)a3 lunarCalendarString:(id)a4
++ (BOOL)_isLunarBirthdayRecurrenceRule:(id)rule lunarCalendarString:(id)string
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6 && ([v6 isEqualToString:*MEMORY[0x1E695D850]] & 1) == 0)
+  ruleCopy = rule;
+  stringCopy = string;
+  v7 = stringCopy;
+  if (stringCopy && ([stringCopy isEqualToString:*MEMORY[0x1E695D850]] & 1) == 0)
   {
-    if ([v5 isEqualToString:@"FREQ=YEARLY"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"FREQ=YEARLY;INTERVAL=1"))
+    if ([ruleCopy isEqualToString:@"FREQ=YEARLY"] & 1) != 0 || (objc_msgSend(ruleCopy, "isEqualToString:", @"FREQ=YEARLY;INTERVAL=1"))
     {
       v8 = 1;
       goto LABEL_7;
@@ -844,7 +844,7 @@ LABEL_21:
     v10 = EKLogHandle;
     if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
     {
-      [(EKRecurrenceGenerator(Deprecated) *)v5 _isLunarBirthdayRecurrenceRule:v7 lunarCalendarString:v10];
+      [(EKRecurrenceGenerator(Deprecated) *)ruleCopy _isLunarBirthdayRecurrenceRule:v7 lunarCalendarString:v10];
     }
   }
 

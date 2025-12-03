@@ -7,7 +7,7 @@
 - (id)plk_sha256Hash
 {
   v6 = *MEMORY[0x277D85DE8];
-  CC_SHA256([a1 bytes], objc_msgSend(a1, "length"), md);
+  CC_SHA256([self bytes], objc_msgSend(self, "length"), md);
   v1 = [MEMORY[0x277CCAB68] stringWithCapacity:64];
   for (i = 0; i != 32; ++i)
   {

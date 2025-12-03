@@ -1,49 +1,49 @@
 @interface _TUIWPText
-- (id)layoutForInlineDrawable:(id)a3;
-- (void)positionAttachmentLayoutsWithOffset:(CGPoint)a3 truncatedCharIndex:(unint64_t)a4;
-- (void)scaleTextPercentDidChange:(unint64_t)a3;
-- (void)updateWithAttachmentLayouts:(id)a3;
+- (id)layoutForInlineDrawable:(id)drawable;
+- (void)positionAttachmentLayoutsWithOffset:(CGPoint)offset truncatedCharIndex:(unint64_t)index;
+- (void)scaleTextPercentDidChange:(unint64_t)change;
+- (void)updateWithAttachmentLayouts:(id)layouts;
 @end
 
 @implementation _TUIWPText
 
-- (void)scaleTextPercentDidChange:(unint64_t)a3
+- (void)scaleTextPercentDidChange:(unint64_t)change
 {
   if (self->_useShrinkToFit)
   {
     [(NSMapTable *)self->_attachmentLayouts removeAllObjects];
     [(NSMutableArray *)self->_inlineLayouts removeAllObjects];
-    if (a3 <= 1)
+    if (change <= 1)
     {
-      v6 = 1;
+      changeCopy = 1;
     }
 
     else
     {
-      v6 = a3;
+      changeCopy = change;
     }
 
-    if (v6 >= 0x64)
+    if (changeCopy >= 0x64)
     {
-      v6 = 100;
+      changeCopy = 100;
     }
 
     layout = self->_layout;
 
-    [(TUIWPLayout *)layout _wpText:self scaleFactorDidChange:v6 / 100.0];
+    [(TUIWPLayout *)layout _wpText:self scaleFactorDidChange:changeCopy / 100.0];
   }
 }
 
-- (void)positionAttachmentLayoutsWithOffset:(CGPoint)a3 truncatedCharIndex:(unint64_t)a4
+- (void)positionAttachmentLayoutsWithOffset:(CGPoint)offset truncatedCharIndex:(unint64_t)index
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [(NSMapTable *)self->_attachmentLayouts objectEnumerator];
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  objectEnumerator = [(NSMapTable *)self->_attachmentLayouts objectEnumerator];
+  v8 = [objectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
@@ -54,31 +54,31 @@
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 layout];
-        v14 = [v12 geometry];
-        [v14 frame];
+        layout = [v12 layout];
+        geometry = [v12 geometry];
+        [geometry frame];
         v16 = v15;
         v18 = v17;
 
-        [v13 setComputedOrigin:{x + v16, y + v18}];
-        [v13 setHidden:{objc_msgSend(v12, "charIndex") >= a4}];
+        [layout setComputedOrigin:{x + v16, y + v18}];
+        [layout setHidden:{objc_msgSend(v12, "charIndex") >= index}];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [objectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)updateWithAttachmentLayouts:(id)a3
+- (void)updateWithAttachmentLayouts:(id)layouts
 {
-  v4 = a3;
-  if ([v4 count])
+  layoutsCopy = layouts;
+  if ([layoutsCopy count])
   {
     v5 = [NSMapTable mapTableWithKeyOptions:512 valueOptions:0];
     layouts = self->_layouts;
@@ -96,7 +96,7 @@
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v11 = v4;
+    v11 = layoutsCopy;
     v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v12)
     {
@@ -137,20 +137,20 @@
   }
 }
 
-- (id)layoutForInlineDrawable:(id)a3
+- (id)layoutForInlineDrawable:(id)drawable
 {
-  v4 = a3;
-  v5 = [v4 box];
+  drawableCopy = drawable;
+  v5 = [drawableCopy box];
   v6 = [(NSMapTable *)self->_attachmentLayouts objectForKey:v5];
   if (!v6)
   {
-    v7 = [v4 owningAttachment];
-    v8 = [v7 findCharIndex];
+    owningAttachment = [drawableCopy owningAttachment];
+    findCharIndex = [owningAttachment findCharIndex];
 
     v9 = [(NSMapTable *)self->_layouts objectForKey:v5];
     v10 = [_TUIWPAttachmentLayout alloc];
-    [v4 baselineOffset];
-    v6 = [(_TUIWPAttachmentLayout *)v10 initWithLayout:v9 baselineOffset:self->_computingIntrinsic intrinsic:v8 charIndex:?];
+    [drawableCopy baselineOffset];
+    v6 = [(_TUIWPAttachmentLayout *)v10 initWithLayout:v9 baselineOffset:self->_computingIntrinsic intrinsic:findCharIndex charIndex:?];
     attachmentLayouts = self->_attachmentLayouts;
     v12 = [v9 box];
     [(NSMapTable *)attachmentLayouts setObject:v6 forKey:v12];

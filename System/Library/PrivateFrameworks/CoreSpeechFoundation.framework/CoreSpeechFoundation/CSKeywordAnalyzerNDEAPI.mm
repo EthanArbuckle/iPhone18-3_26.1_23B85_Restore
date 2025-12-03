@@ -1,8 +1,8 @@
 @interface CSKeywordAnalyzerNDEAPI
-- (CSKeywordAnalyzerNDEAPI)initWithBlob:(id)a3;
+- (CSKeywordAnalyzerNDEAPI)initWithBlob:(id)blob;
 - (CSKeywordAnalyzerNDEAPIScoreDelegate)delegate;
-- (id)checkForTriggerWithBytes:(const signed __int16 *)a3 withNumberOfSamples:(int64_t)a4;
-- (id)processAudioChunk:(id)a3;
+- (id)checkForTriggerWithBytes:(const signed __int16 *)bytes withNumberOfSamples:(int64_t)samples;
+- (id)processAudioChunk:(id)chunk;
 - (void)dealloc;
 @end
 
@@ -30,29 +30,29 @@
   return WeakRetained;
 }
 
-- (id)processAudioChunk:(id)a3
+- (id)processAudioChunk:(id)chunk
 {
-  v4 = a3;
-  v5 = [v4 numSamples];
+  chunkCopy = chunk;
+  numSamples = [chunkCopy numSamples];
   if (+[CSConfig inputRecordingIsFloat])
   {
-    v6 = [v4 dataForChannel:self->_activeChannel];
+    v6 = [chunkCopy dataForChannel:self->_activeChannel];
 
     v7 = [CSFLPCMTypeConverter convertToShortLPCMBufFromFloatLPCMBuf:v6];
-    v4 = v6;
+    chunkCopy = v6;
   }
 
   else
   {
-    v7 = [v4 dataForChannel:self->_activeChannel];
+    v7 = [chunkCopy dataForChannel:self->_activeChannel];
   }
 
-  v8 = -[CSKeywordAnalyzerNDEAPI checkForTriggerWithBytes:withNumberOfSamples:](self, "checkForTriggerWithBytes:withNumberOfSamples:", [v7 bytes], v5);
+  v8 = -[CSKeywordAnalyzerNDEAPI checkForTriggerWithBytes:withNumberOfSamples:](self, "checkForTriggerWithBytes:withNumberOfSamples:", [v7 bytes], numSamples);
 
   return v8;
 }
 
-- (id)checkForTriggerWithBytes:(const signed __int16 *)a3 withNumberOfSamples:(int64_t)a4
+- (id)checkForTriggerWithBytes:(const signed __int16 *)bytes withNumberOfSamples:(int64_t)samples
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc(MEMORY[0x1E695DF88]);
@@ -69,28 +69,28 @@
   return 0;
 }
 
-- (CSKeywordAnalyzerNDEAPI)initWithBlob:(id)a3
+- (CSKeywordAnalyzerNDEAPI)initWithBlob:(id)blob
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blobCopy = blob;
   v20.receiver = self;
   v20.super_class = CSKeywordAnalyzerNDEAPI;
   v5 = [(CSKeywordAnalyzerNDEAPI *)&v20 init];
   if (v5)
   {
     v6 = CSLogContextFacilityCoreSpeech;
-    if (v4)
+    if (blobCopy)
     {
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = v4;
+        v7 = blobCopy;
         v8 = v6;
-        v9 = [v4 bytes];
-        v10 = [v4 length];
+        bytes = [blobCopy bytes];
+        v10 = [blobCopy length];
         *buf = 136315650;
         v22 = "[CSKeywordAnalyzerNDEAPI initWithBlob:]";
         v23 = 2048;
-        v24 = v9;
+        v24 = bytes;
         v25 = 1024;
         v26 = v10;
         _os_log_impl(&dword_1DDA4B000, v8, OS_LOG_TYPE_DEFAULT, "%s Initializaing NDEAPI with blob : %p(%dbytes)", buf, 0x1Cu);
@@ -101,7 +101,7 @@
       currentBlob = v5->_currentBlob;
       v5->_currentBlob = v12;
 
-      memcpy(-[NSMutableData bytes](v5->_currentBlob, "bytes"), [v4 bytes], objc_msgSend(v4, "length"));
+      memcpy(-[NSMutableData bytes](v5->_currentBlob, "bytes"), [blobCopy bytes], objc_msgSend(blobCopy, "length"));
       nde_enable_multiinstance();
       v14 = +[CSNDEObjectFactory sharedInstance];
       v5->_ndeObject = [v14 createNDEObject:v5->_currentBlob];

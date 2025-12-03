@@ -1,28 +1,28 @@
 @interface LocalPlayerAuthenticationPresenter
-- (void)authenticationShowGreenBuddyUIForLocalPlayer:(id)a3 withCompletionHandler:(id)a4;
-- (void)authenticationShowSignInUIForLocalPlayer:(id)a3 origin:(unint64_t)a4 dismiss:(id)a5;
+- (void)authenticationShowGreenBuddyUIForLocalPlayer:(id)player withCompletionHandler:(id)handler;
+- (void)authenticationShowSignInUIForLocalPlayer:(id)player origin:(unint64_t)origin dismiss:(id)dismiss;
 @end
 
 @implementation LocalPlayerAuthenticationPresenter
 
-- (void)authenticationShowGreenBuddyUIForLocalPlayer:(id)a3 withCompletionHandler:(id)a4
+- (void)authenticationShowGreenBuddyUIForLocalPlayer:(id)player withCompletionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   if (v6)
   {
     *(swift_allocObject() + 16) = v6;
     v6 = sub_24E212180;
   }
 
-  v7 = a3;
-  v8 = self;
-  sub_24E211718(v7);
+  playerCopy = player;
+  selfCopy = self;
+  sub_24E211718(playerCopy);
   sub_24DE73FA0(v6);
 }
 
-- (void)authenticationShowSignInUIForLocalPlayer:(id)a3 origin:(unint64_t)a4 dismiss:(id)a5
+- (void)authenticationShowSignInUIForLocalPlayer:(id)player origin:(unint64_t)origin dismiss:(id)dismiss
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(dismiss);
   if (v8)
   {
     v9 = swift_allocObject();
@@ -35,9 +35,9 @@
     v9 = 0;
   }
 
-  v10 = a3;
-  v11 = self;
-  sub_24E211900(v10, a4, v8, v9);
+  playerCopy = player;
+  selfCopy = self;
+  sub_24E211900(playerCopy, origin, v8, v9);
   sub_24DE73FA0(v8);
 }
 

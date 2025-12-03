@@ -1,34 +1,34 @@
 @interface MapsSuggestionsBlockFilter
-+ (id)filterWithBlock:(id)a3;
-- (BOOL)shouldKeepEntry:(id)a3;
-- (MapsSuggestionsBlockFilter)initWithBlock:(id)a3;
-- (MapsSuggestionsBlockFilter)initWithBlock:(id)a3 name:(id)a4;
++ (id)filterWithBlock:(id)block;
+- (BOOL)shouldKeepEntry:(id)entry;
+- (MapsSuggestionsBlockFilter)initWithBlock:(id)block;
+- (MapsSuggestionsBlockFilter)initWithBlock:(id)block name:(id)name;
 @end
 
 @implementation MapsSuggestionsBlockFilter
 
-+ (id)filterWithBlock:(id)a3
++ (id)filterWithBlock:(id)block
 {
-  v3 = a3;
-  v4 = [[MapsSuggestionsBlockFilter alloc] initWithBlock:v3];
+  blockCopy = block;
+  v4 = [[MapsSuggestionsBlockFilter alloc] initWithBlock:blockCopy];
 
   return v4;
 }
 
-- (MapsSuggestionsBlockFilter)initWithBlock:(id)a3 name:(id)a4
+- (MapsSuggestionsBlockFilter)initWithBlock:(id)block name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = MapsSuggestionsBlockFilter;
   v8 = [(MapsSuggestionsBlockFilter *)&v14 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 
-    v11 = [v6 copy];
+    v11 = [blockCopy copy];
     block = v8->_block;
     v8->_block = v11;
   }
@@ -36,16 +36,16 @@
   return v8;
 }
 
-- (MapsSuggestionsBlockFilter)initWithBlock:(id)a3
+- (MapsSuggestionsBlockFilter)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [objc_opt_class() description];
-  v6 = [(MapsSuggestionsBlockFilter *)self initWithBlock:v4 name:v5];
+  v6 = [(MapsSuggestionsBlockFilter *)self initWithBlock:blockCopy name:v5];
 
   return v6;
 }
 
-- (BOOL)shouldKeepEntry:(id)a3
+- (BOOL)shouldKeepEntry:(id)entry
 {
   v15 = *MEMORY[0x1E69E9840];
   block = self->_block;

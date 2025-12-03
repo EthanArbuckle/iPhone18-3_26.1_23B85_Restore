@@ -2,17 +2,17 @@
 - (DOCPickerContext)pickerContext;
 - (NSArray)tags;
 - (UIButton)tagButton;
-- (_TtC26DocumentManagerExecutables21DOCPickerFilenameView)initWithFrame:(CGRect)a3;
+- (_TtC26DocumentManagerExecutables21DOCPickerFilenameView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setPickerContext:(id)a3;
-- (void)setTagButton:(id)a3;
-- (void)setTags:(id)a3;
-- (void)tagEditor:(id)a3 userDidDeselectTag:(id)a4;
-- (void)tagEditor:(id)a3 userDidSelectTag:(id)a4;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidChange:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
-- (void)textFieldDidEndEditingOnExit:(id)a3;
+- (void)setPickerContext:(id)context;
+- (void)setTagButton:(id)button;
+- (void)setTags:(id)tags;
+- (void)tagEditor:(id)editor userDidDeselectTag:(id)tag;
+- (void)tagEditor:(id)editor userDidSelectTag:(id)tag;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidChange:(id)change;
+- (void)textFieldDidEndEditing:(id)editing;
+- (void)textFieldDidEndEditingOnExit:(id)exit;
 @end
 
 @implementation DOCPickerFilenameView
@@ -24,14 +24,14 @@
   return *(self + v3);
 }
 
-- (void)setPickerContext:(id)a3
+- (void)setPickerContext:(id)context
 {
   v5 = OBJC_IVAR____TtC26DocumentManagerExecutables21DOCPickerFilenameView_pickerContext;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(self + v5) = context;
+  contextCopy = context;
+  selfCopy = self;
 
   DOCPickerFilenameView.updateStackView()();
 }
@@ -46,60 +46,60 @@
   return v2.super.isa;
 }
 
-- (void)setTags:(id)a3
+- (void)setTags:(id)tags
 {
   type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for DOCTag);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = OBJC_IVAR____TtC26DocumentManagerExecutables21DOCPickerFilenameView_tags;
   swift_beginAccess();
   *(self + v5) = v4;
-  v6 = self;
+  selfCopy = self;
 
   v7 = DOCPickerFilenameView.tagButton.getter();
   [v7 setNeedsUpdateConfiguration];
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
+  editingCopy = editing;
+  selfCopy = self;
   specialized DOCPickerFilenameView.textFieldDidBeginEditing(_:)();
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
+  editingCopy = editing;
+  selfCopy = self;
   specialized DOCPickerFilenameView.textFieldDidEndEditing(_:)();
 }
 
-- (void)textFieldDidEndEditingOnExit:(id)a3
+- (void)textFieldDidEndEditingOnExit:(id)exit
 {
-  v4 = a3;
-  v5 = self;
-  DOCPickerFilenameView.textFieldDidEndEditingOnExit(_:)(v4);
+  exitCopy = exit;
+  selfCopy = self;
+  DOCPickerFilenameView.textFieldDidEndEditingOnExit(_:)(exitCopy);
 }
 
-- (void)textFieldDidChange:(id)a3
+- (void)textFieldDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  DOCPickerFilenameView.textFieldDidChange(_:)(v4);
+  changeCopy = change;
+  selfCopy = self;
+  DOCPickerFilenameView.textFieldDidChange(_:)(changeCopy);
 }
 
 - (UIButton)tagButton
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCPickerFilenameView.tagButton.getter();
 
   return v3;
 }
 
-- (void)setTagButton:(id)a3
+- (void)setTagButton:(id)button
 {
   v4 = *(self + OBJC_IVAR____TtC26DocumentManagerExecutables21DOCPickerFilenameView____lazy_storage___tagButton);
-  *(self + OBJC_IVAR____TtC26DocumentManagerExecutables21DOCPickerFilenameView____lazy_storage___tagButton) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC26DocumentManagerExecutables21DOCPickerFilenameView____lazy_storage___tagButton) = button;
+  buttonCopy = button;
 }
 
 - (void)layoutSubviews
@@ -110,32 +110,32 @@
   [(DOCPickerFilenameView *)&v5 layoutSubviews];
   DOCPickerFilenameView.collapseTagButtonTitleIfNeeded()();
   v3 = DOCPickerFilenameView.stackView.getter();
-  v4 = [objc_opt_self() clearColor];
+  clearColor = [objc_opt_self() clearColor];
   [v3 setBackgroundColor_];
 }
 
-- (_TtC26DocumentManagerExecutables21DOCPickerFilenameView)initWithFrame:(CGRect)a3
+- (_TtC26DocumentManagerExecutables21DOCPickerFilenameView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)tagEditor:(id)a3 userDidSelectTag:(id)a4
+- (void)tagEditor:(id)editor userDidSelectTag:(id)tag
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
-  specialized DOCPickerFilenameView.tagEditor(_:userDidSelect:)(v6);
+  tagCopy = tag;
+  selfCopy = self;
+  specialized DOCPickerFilenameView.tagEditor(_:userDidSelect:)(tagCopy);
   swift_unknownObjectRelease();
 }
 
-- (void)tagEditor:(id)a3 userDidDeselectTag:(id)a4
+- (void)tagEditor:(id)editor userDidDeselectTag:(id)tag
 {
   v6 = OBJC_IVAR____TtC26DocumentManagerExecutables21DOCPickerFilenameView_tags;
   swift_beginAccess();
-  v7 = a4;
-  v8 = self;
+  tagCopy = tag;
+  selfCopy = self;
   v9 = specialized MutableCollection._halfStablePartition(isSuffixElement:)((self + v6));
   v10 = *(self + v6);
   if (v10 >> 62)

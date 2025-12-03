@@ -1,20 +1,20 @@
 @interface HDCloudSyncCodableAttachment
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFileSize:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFileSize:(BOOL)size;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCloudSyncCodableAttachment
 
-- (void)setHasFileSize:(BOOL)a3
+- (void)setHasFileSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 2;
   }
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = HDCloudSyncCodableAttachment;
   v4 = [(HDCloudSyncCodableAttachment *)&v8 description];
-  v5 = [(HDCloudSyncCodableAttachment *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCloudSyncCodableAttachment *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   fileName = self->_fileName;
   if (fileName)
   {
-    [v3 setObject:fileName forKey:@"fileName"];
+    [dictionary setObject:fileName forKey:@"fileName"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -112,154 +112,154 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_fileName)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     fileSize = self->_fileSize;
     PBDataWriterWriteInt64Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_mimeType)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_fileHash)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     creationDate = self->_creationDate;
     PBDataWriterWriteDoubleField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_metadata)
   {
     PBDataWriterWriteDataField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_assetData)
   {
     PBDataWriterWriteDataField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_encryptionKey)
   {
     PBDataWriterWriteDataField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_systemBuildVersion)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_productType)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_deviceName)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_fileName)
   {
-    [v4 setFileName:?];
-    v4 = v5;
+    [toCopy setFileName:?];
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 2) = self->_fileSize;
-    *(v4 + 96) |= 2u;
+    *(toCopy + 2) = self->_fileSize;
+    *(toCopy + 96) |= 2u;
   }
 
   if (self->_mimeType)
   {
     [v5 setMimeType:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_fileHash)
   {
     [v5 setFileHash:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_creationDate;
-    *(v4 + 96) |= 1u;
+    *(toCopy + 1) = *&self->_creationDate;
+    *(toCopy + 96) |= 1u;
   }
 
   if (self->_metadata)
   {
     [v5 setMetadata:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_assetData)
   {
     [v5 setAssetData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_encryptionKey)
   {
     [v5 setEncryptionKey:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_systemBuildVersion)
   {
     [v5 setSystemBuildVersion:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_productType)
   {
     [v5 setProductType:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_deviceName)
   {
     [v5 setDeviceName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_fileName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_fileName copyWithZone:zone];
   v7 = *(v5 + 56);
   *(v5 + 56) = v6;
 
@@ -269,11 +269,11 @@
     *(v5 + 96) |= 2u;
   }
 
-  v8 = [(NSString *)self->_mimeType copyWithZone:a3];
+  v8 = [(NSString *)self->_mimeType copyWithZone:zone];
   v9 = *(v5 + 72);
   *(v5 + 72) = v8;
 
-  v10 = [(NSString *)self->_fileHash copyWithZone:a3];
+  v10 = [(NSString *)self->_fileHash copyWithZone:zone];
   v11 = *(v5 + 48);
   *(v5 + 48) = v10;
 
@@ -283,43 +283,43 @@
     *(v5 + 96) |= 1u;
   }
 
-  v12 = [(NSData *)self->_metadata copyWithZone:a3];
+  v12 = [(NSData *)self->_metadata copyWithZone:zone];
   v13 = *(v5 + 64);
   *(v5 + 64) = v12;
 
-  v14 = [(NSData *)self->_assetData copyWithZone:a3];
+  v14 = [(NSData *)self->_assetData copyWithZone:zone];
   v15 = *(v5 + 24);
   *(v5 + 24) = v14;
 
-  v16 = [(NSData *)self->_encryptionKey copyWithZone:a3];
+  v16 = [(NSData *)self->_encryptionKey copyWithZone:zone];
   v17 = *(v5 + 40);
   *(v5 + 40) = v16;
 
-  v18 = [(NSString *)self->_systemBuildVersion copyWithZone:a3];
+  v18 = [(NSString *)self->_systemBuildVersion copyWithZone:zone];
   v19 = *(v5 + 88);
   *(v5 + 88) = v18;
 
-  v20 = [(NSString *)self->_productType copyWithZone:a3];
+  v20 = [(NSString *)self->_productType copyWithZone:zone];
   v21 = *(v5 + 80);
   *(v5 + 80) = v20;
 
-  v22 = [(NSString *)self->_deviceName copyWithZone:a3];
+  v22 = [(NSString *)self->_deviceName copyWithZone:zone];
   v23 = *(v5 + 32);
   *(v5 + 32) = v22;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_30;
   }
 
   fileName = self->_fileName;
-  if (fileName | *(v4 + 7))
+  if (fileName | *(equalCopy + 7))
   {
     if (![(NSString *)fileName isEqual:?])
     {
@@ -327,16 +327,16 @@
     }
   }
 
-  v6 = *(v4 + 96);
+  v6 = *(equalCopy + 96);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 96) & 2) == 0 || self->_fileSize != *(v4 + 2))
+    if ((*(equalCopy + 96) & 2) == 0 || self->_fileSize != *(equalCopy + 2))
     {
       goto LABEL_30;
     }
   }
 
-  else if ((*(v4 + 96) & 2) != 0)
+  else if ((*(equalCopy + 96) & 2) != 0)
   {
 LABEL_30:
     v16 = 0;
@@ -344,13 +344,13 @@ LABEL_30:
   }
 
   mimeType = self->_mimeType;
-  if (mimeType | *(v4 + 9) && ![(NSString *)mimeType isEqual:?])
+  if (mimeType | *(equalCopy + 9) && ![(NSString *)mimeType isEqual:?])
   {
     goto LABEL_30;
   }
 
   fileHash = self->_fileHash;
-  if (fileHash | *(v4 + 6))
+  if (fileHash | *(equalCopy + 6))
   {
     if (![(NSString *)fileHash isEqual:?])
     {
@@ -358,28 +358,28 @@ LABEL_30:
     }
   }
 
-  v9 = *(v4 + 96);
+  v9 = *(equalCopy + 96);
   if (*&self->_has)
   {
-    if ((*(v4 + 96) & 1) == 0 || self->_creationDate != *(v4 + 1))
+    if ((*(equalCopy + 96) & 1) == 0 || self->_creationDate != *(equalCopy + 1))
     {
       goto LABEL_30;
     }
   }
 
-  else if (*(v4 + 96))
+  else if (*(equalCopy + 96))
   {
     goto LABEL_30;
   }
 
   metadata = self->_metadata;
-  if (metadata | *(v4 + 8) && ![(NSData *)metadata isEqual:?])
+  if (metadata | *(equalCopy + 8) && ![(NSData *)metadata isEqual:?])
   {
     goto LABEL_30;
   }
 
   assetData = self->_assetData;
-  if (assetData | *(v4 + 3))
+  if (assetData | *(equalCopy + 3))
   {
     if (![(NSData *)assetData isEqual:?])
     {
@@ -388,7 +388,7 @@ LABEL_30:
   }
 
   encryptionKey = self->_encryptionKey;
-  if (encryptionKey | *(v4 + 5))
+  if (encryptionKey | *(equalCopy + 5))
   {
     if (![(NSData *)encryptionKey isEqual:?])
     {
@@ -397,7 +397,7 @@ LABEL_30:
   }
 
   systemBuildVersion = self->_systemBuildVersion;
-  if (systemBuildVersion | *(v4 + 11))
+  if (systemBuildVersion | *(equalCopy + 11))
   {
     if (![(NSString *)systemBuildVersion isEqual:?])
     {
@@ -406,7 +406,7 @@ LABEL_30:
   }
 
   productType = self->_productType;
-  if (productType | *(v4 + 10))
+  if (productType | *(equalCopy + 10))
   {
     if (![(NSString *)productType isEqual:?])
     {
@@ -415,7 +415,7 @@ LABEL_30:
   }
 
   deviceName = self->_deviceName;
-  if (deviceName | *(v4 + 4))
+  if (deviceName | *(equalCopy + 4))
   {
     v16 = [(NSString *)deviceName isEqual:?];
   }
@@ -487,74 +487,74 @@ LABEL_31:
   return v15 ^ v18 ^ [(NSString *)self->_deviceName hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 7))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 7))
   {
     [(HDCloudSyncCodableAttachment *)self setFileName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((*(v4 + 96) & 2) != 0)
+  if ((*(fromCopy + 96) & 2) != 0)
   {
-    self->_fileSize = *(v4 + 2);
+    self->_fileSize = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(HDCloudSyncCodableAttachment *)self setMimeType:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(HDCloudSyncCodableAttachment *)self setFileHash:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 96))
+  if (*(fromCopy + 96))
   {
-    self->_creationDate = *(v4 + 1);
+    self->_creationDate = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(HDCloudSyncCodableAttachment *)self setMetadata:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(HDCloudSyncCodableAttachment *)self setAssetData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(HDCloudSyncCodableAttachment *)self setEncryptionKey:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(HDCloudSyncCodableAttachment *)self setSystemBuildVersion:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(HDCloudSyncCodableAttachment *)self setProductType:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(HDCloudSyncCodableAttachment *)self setDeviceName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

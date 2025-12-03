@@ -1,10 +1,10 @@
 @interface MeasureOverlayViewController
 - (BOOL)supportsHealthFactors;
-- (_TtC8HealthUI28MeasureOverlayViewController)initWithDisplayDate:(id)a3 applicationItems:(id)a4 factorDisplayTypes:(id)a5 mode:(int64_t)a6;
-- (id)contextSectionContainersForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5;
-- (id)controllerTitleWithApplicationItems:(id)a3;
+- (_TtC8HealthUI28MeasureOverlayViewController)initWithDisplayDate:(id)date applicationItems:(id)items factorDisplayTypes:(id)types mode:(int64_t)mode;
+- (id)contextSectionContainersForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller;
+- (id)controllerTitleWithApplicationItems:(id)items;
 - (id)createChartOverlayViewController;
-- (id)primaryDisplayTypeWithApplicationItems:(id)a3;
+- (id)primaryDisplayTypeWithApplicationItems:(id)items;
 - (void)viewDidLoad;
 @end
 
@@ -25,7 +25,7 @@
   [(HKOverlayRoomViewController *)&v3 viewDidLoad];
 }
 
-- (id)controllerTitleWithApplicationItems:(id)a3
+- (id)controllerTitleWithApplicationItems:(id)items
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -36,7 +36,7 @@
   }
 
   __swift_project_boxed_opaque_existential_0((&self->super.super.super.super.super.isa + OBJC_IVAR____TtC8HealthUI28MeasureOverlayViewController_measure), *(&self->super.super.super._view + OBJC_IVAR____TtC8HealthUI28MeasureOverlayViewController_measure));
-  v4 = self;
+  selfCopy = self;
   sub_1C3D1EAE4();
 
   v5 = sub_1C3D200C4();
@@ -44,7 +44,7 @@
   return v5;
 }
 
-- (id)primaryDisplayTypeWithApplicationItems:(id)a3
+- (id)primaryDisplayTypeWithApplicationItems:(id)items
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -69,13 +69,13 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1C3C8DC40();
 
   return v4;
 }
 
-- (id)contextSectionContainersForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5
+- (id)contextSectionContainersForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -104,7 +104,7 @@
   return 0;
 }
 
-- (_TtC8HealthUI28MeasureOverlayViewController)initWithDisplayDate:(id)a3 applicationItems:(id)a4 factorDisplayTypes:(id)a5 mode:(int64_t)a6
+- (_TtC8HealthUI28MeasureOverlayViewController)initWithDisplayDate:(id)date applicationItems:(id)items factorDisplayTypes:(id)types mode:(int64_t)mode
 {
   sub_1C3C4515C(0, &qword_1EC085770, MEMORY[0x1E6969530]);
   MEMORY[0x1EEE9AC00](v7 - 8);
@@ -117,7 +117,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (date)
   {
     sub_1C3D1E1A4();
     v10 = sub_1C3D1E1E4();

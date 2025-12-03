@@ -1,21 +1,21 @@
 @interface HMDHomeAssistantOperation
-+ (id)homeAssistantOperationWithActionSet:(id)a3 queue:(id)a4;
-+ (id)homeAssistantOperationWithReadRequests:(id)a3 queue:(id)a4;
-+ (id)homeAssistantOperationWithWriteRequests:(id)a3 queue:(id)a4;
-- (id)initWithAccessories:(void *)a3 queue:;
++ (id)homeAssistantOperationWithActionSet:(id)set queue:(id)queue;
++ (id)homeAssistantOperationWithReadRequests:(id)requests queue:(id)queue;
++ (id)homeAssistantOperationWithWriteRequests:(id)requests queue:(id)queue;
+- (id)initWithAccessories:(void *)accessories queue:;
 - (uint64_t)_testForReachability;
 - (void)_callCompletion;
 - (void)dealloc;
-- (void)handleAccessoryIsReachable:(id)a3;
-- (void)startWithCompletion:(id)a3;
-- (void)timerDidFire:(id)a3;
+- (void)handleAccessoryIsReachable:(id)reachable;
+- (void)startWithCompletion:(id)completion;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDHomeAssistantOperation
 
-- (void)startWithCompletion:(id)a3
+- (void)startWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self)
   {
     workQueue = self->_workQueue;
@@ -31,8 +31,8 @@
   v7[2] = __49__HMDHomeAssistantOperation_startWithCompletion___block_invoke;
   v7[3] = &unk_27868A7A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(workQueue, v7);
 }
 
@@ -122,28 +122,28 @@ void __49__HMDHomeAssistantOperation_startWithCompletion___block_invoke(uint64_t
 
 - (uint64_t)_testForReachability
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = *(a1 + 40);
+    v2 = *(self + 40);
     v3 = [v2 count];
-    v1 = v3 == [*(v1 + 32) count];
+    selfCopy = v3 == [*(selfCopy + 32) count];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (void)_callCompletion
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!self)
   {
 LABEL_6:
     v5 = *MEMORY[0x277D85DE8];
     return;
   }
 
-  if (*(a1 + 8))
+  if (*(self + 8))
   {
     v2 = objc_autoreleasePoolPush();
     v3 = HMFGetOSLogHandle();
@@ -153,7 +153,7 @@ LABEL_6:
       v8 = 138543618;
       v9 = v4;
       v10 = 2112;
-      v11 = a1;
+      selfCopy = self;
       _os_log_impl(&dword_229538000, v3, OS_LOG_TYPE_INFO, "%{public}@[%@] Completion handler has already been called", &v8, 0x16u);
     }
 
@@ -161,18 +161,18 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  [*(a1 + 24) suspend];
-  *(a1 + 8) = 1;
-  v6 = *(*(a1 + 48) + 16);
+  [*(self + 24) suspend];
+  *(self + 8) = 1;
+  v6 = *(*(self + 48) + 16);
   v7 = *MEMORY[0x277D85DE8];
 
   v6();
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fireCopy = fire;
   if (self)
   {
     dispatch_assert_queue_V2(self->_workQueue);
@@ -185,7 +185,7 @@ LABEL_6:
     accessoryConnectivityWaitTimer = 0;
   }
 
-  if (accessoryConnectivityWaitTimer == v4)
+  if (accessoryConnectivityWaitTimer == fireCopy)
   {
     v6 = objc_autoreleasePoolPush();
     v7 = HMFGetOSLogHandle();
@@ -195,7 +195,7 @@ LABEL_6:
       v10 = 138543618;
       v11 = v8;
       v12 = 2112;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@[%@] Accessory connectivity wait timer has fired", &v10, 0x16u);
     }
 
@@ -206,9 +206,9 @@ LABEL_6:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAccessoryIsReachable:(id)a3
+- (void)handleAccessoryIsReachable:(id)reachable
 {
-  v4 = a3;
+  reachableCopy = reachable;
   if (self)
   {
     workQueue = self->_workQueue;
@@ -223,9 +223,9 @@ LABEL_6:
   v7[1] = 3221225472;
   v7[2] = __56__HMDHomeAssistantOperation_handleAccessoryIsReachable___block_invoke;
   v7[3] = &unk_27868A750;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = reachableCopy;
+  selfCopy = self;
+  v6 = reachableCopy;
   dispatch_async(workQueue, v7);
 }
 
@@ -268,26 +268,26 @@ void __56__HMDHomeAssistantOperation_handleAccessoryIsReachable___block_invoke(u
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = HMDHomeAssistantOperation;
   [(HMDHomeAssistantOperation *)&v4 dealloc];
 }
 
-+ (id)homeAssistantOperationWithActionSet:(id)a3 queue:(id)a4
++ (id)homeAssistantOperationWithActionSet:(id)set queue:(id)queue
 {
   v58 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v38 = a4;
+  setCopy = set;
+  queueCopy = queue;
   v6 = [MEMORY[0x277CBEB58] set];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v39 = v5;
-  obj = [v5 actions];
+  v39 = setCopy;
+  obj = [setCopy actions];
   v7 = [obj countByEnumeratingWithState:&v46 objects:v57 count:16];
   if (v7)
   {
@@ -303,12 +303,12 @@ void __56__HMDHomeAssistantOperation_handleAccessoryIsReachable___block_invoke(u
         }
 
         v11 = *(*(&v46 + 1) + 8 * i);
-        v12 = [v11 type];
-        if (v12 <= 2)
+        type = [v11 type];
+        if (type <= 2)
         {
-          if (v12)
+          if (type)
           {
-            if (v12 != 1)
+            if (type != 1)
             {
               continue;
             }
@@ -330,7 +330,7 @@ void __56__HMDHomeAssistantOperation_handleAccessoryIsReachable___block_invoke(u
             if (!v17)
             {
               v18 = objc_autoreleasePoolPush();
-              v19 = a1;
+              selfCopy5 = self;
               v20 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
               {
@@ -344,8 +344,8 @@ void __56__HMDHomeAssistantOperation_handleAccessoryIsReachable___block_invoke(u
             v45 = 0u;
             v42 = 0u;
             v43 = 0u;
-            v22 = [v17 mediaProfiles];
-            v23 = [v22 countByEnumeratingWithState:&v42 objects:v50 count:16];
+            mediaProfiles = [v17 mediaProfiles];
+            v23 = [mediaProfiles countByEnumeratingWithState:&v42 objects:v50 count:16];
             if (v23)
             {
               v24 = v23;
@@ -356,14 +356,14 @@ void __56__HMDHomeAssistantOperation_handleAccessoryIsReachable___block_invoke(u
                 {
                   if (*v43 != v25)
                   {
-                    objc_enumerationMutation(v22);
+                    objc_enumerationMutation(mediaProfiles);
                   }
 
-                  v27 = [*(*(&v42 + 1) + 8 * j) accessory];
-                  [v6 addObject:v27];
+                  accessory = [*(*(&v42 + 1) + 8 * j) accessory];
+                  [v6 addObject:accessory];
                 }
 
-                v24 = [v22 countByEnumeratingWithState:&v42 objects:v50 count:16];
+                v24 = [mediaProfiles countByEnumeratingWithState:&v42 objects:v50 count:16];
               }
 
               while (v24);
@@ -388,12 +388,12 @@ void __56__HMDHomeAssistantOperation_handleAccessoryIsReachable___block_invoke(u
 
           if (v17)
           {
-            v29 = [v17 characteristic];
+            characteristic = [v17 characteristic];
 LABEL_47:
-            v32 = v29;
-            v22 = [v29 accessory];
+            v32 = characteristic;
+            mediaProfiles = [characteristic accessory];
 
-            if (!v22)
+            if (!mediaProfiles)
             {
               goto LABEL_49;
             }
@@ -402,7 +402,7 @@ LABEL_47:
           }
 
           v18 = objc_autoreleasePoolPush();
-          v19 = a1;
+          selfCopy5 = self;
           v20 = HMFGetOSLogHandle();
           if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
           {
@@ -423,7 +423,7 @@ LABEL_57:
           goto LABEL_58;
         }
 
-        switch(v12)
+        switch(type)
         {
           case 3:
             v15 = v11;
@@ -442,12 +442,12 @@ LABEL_57:
 
             if (v17)
             {
-              v29 = [v17 lightProfile];
+              characteristic = [v17 lightProfile];
               goto LABEL_47;
             }
 
             v18 = objc_autoreleasePoolPush();
-            v19 = a1;
+            selfCopy5 = self;
             v20 = HMFGetOSLogHandle();
             if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
             {
@@ -476,7 +476,7 @@ LABEL_57:
             }
 
             v18 = objc_autoreleasePoolPush();
-            v19 = a1;
+            selfCopy5 = self;
             v20 = HMFGetOSLogHandle();
             if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
             {
@@ -486,9 +486,9 @@ LABEL_57:
             goto LABEL_57;
           case 5:
             v13 = +[HMDCoreData featuresDataSource];
-            v14 = [v13 isRVCEnabled];
+            isRVCEnabled = [v13 isRVCEnabled];
 
-            if (v14)
+            if (isRVCEnabled)
             {
               v15 = v11;
               objc_opt_class();
@@ -507,7 +507,7 @@ LABEL_57:
               if (!v17)
               {
                 v18 = objc_autoreleasePoolPush();
-                v19 = a1;
+                selfCopy5 = self;
                 v20 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
                 {
@@ -524,8 +524,8 @@ LABEL_59:
               }
 
 LABEL_40:
-              v22 = [v17 accessory];
-              if (!v22)
+              mediaProfiles = [v17 accessory];
+              if (!mediaProfiles)
               {
 LABEL_49:
 
@@ -533,7 +533,7 @@ LABEL_49:
               }
 
 LABEL_48:
-              [v6 addObject:v22];
+              [v6 addObject:mediaProfiles];
               goto LABEL_49;
             }
 
@@ -547,46 +547,46 @@ LABEL_48:
     while (v8);
   }
 
-  v35 = [[HMDHomeAssistantOperation alloc] initWithAccessories:v6 queue:v38];
+  v35 = [[HMDHomeAssistantOperation alloc] initWithAccessories:v6 queue:queueCopy];
   v36 = *MEMORY[0x277D85DE8];
 
   return v35;
 }
 
-- (id)initWithAccessories:(void *)a3 queue:
+- (id)initWithAccessories:(void *)accessories queue:
 {
   v59 = *MEMORY[0x277D85DE8];
   v6 = a2;
-  v7 = a3;
-  if (!a1)
+  accessoriesCopy = accessories;
+  if (!self)
   {
     goto LABEL_23;
   }
 
-  v49.receiver = a1;
+  v49.receiver = self;
   v49.super_class = HMDHomeAssistantOperation;
   v8 = objc_msgSendSuper2(&v49, sel_init);
-  a1 = v8;
+  self = v8;
   if (!v8)
   {
     goto LABEL_23;
   }
 
-  v40 = v7;
-  objc_storeStrong(v8 + 2, a3);
+  v40 = accessoriesCopy;
+  objc_storeStrong(v8 + 2, accessories);
   v9 = objc_alloc(MEMORY[0x277D0F920]);
   v10 = [v9 initWithTimeInterval:0 options:*&accessoryConnectivityWaitPeriod];
-  v11 = a1[3];
-  a1[3] = v10;
+  v11 = self[3];
+  self[3] = v10;
 
-  [a1[3] setDelegate:a1];
-  [a1[3] setDelegateQueue:a1[2]];
-  objc_storeStrong(a1 + 4, a2);
+  [self[3] setDelegate:self];
+  [self[3] setDelegateQueue:self[2]];
+  objc_storeStrong(self + 4, a2);
   v12 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v6, "count")}];
-  v13 = a1[5];
-  a1[5] = v12;
+  v13 = self[5];
+  self[5] = v12;
 
-  *(a1 + 8) = 0;
+  *(self + 8) = 0;
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
@@ -604,7 +604,7 @@ LABEL_48:
   v18 = v17;
   v19 = *v46;
   v44 = v16;
-  v42 = a1;
+  selfCopy = self;
   do
   {
     for (i = 0; i != v18; ++i)
@@ -615,8 +615,8 @@ LABEL_48:
       }
 
       v21 = *(*(&v45 + 1) + 8 * i);
-      v22 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v22 addObserver:a1 selector:sel_handleAccessoryIsReachable_ name:@"HMDAccessoryIsReachableNotification" object:v21];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:self selector:sel_handleAccessoryIsReachable_ name:@"HMDAccessoryIsReachableNotification" object:v21];
 
       v23 = v21;
       objc_opt_class();
@@ -646,23 +646,23 @@ LABEL_48:
           v28 = HMFGetLogIdentifier();
           [v23 uuid];
           v29 = v43 = v26;
-          v30 = [v29 UUIDString];
+          uUIDString = [v29 UUIDString];
           *buf = 138543618;
           v51 = v28;
           v52 = 2112;
-          v53 = v30;
+          selfCopy2 = uUIDString;
           _os_log_impl(&dword_229538000, v27, OS_LOG_TYPE_INFO, "%{public}@Assuming reachability for primary BTLE accessory %@", buf, 0x16u);
 
           v15 = &OBJC_IVAR___HMDApplicationVendorIDStoreValue__spiClient;
           v26 = v43;
 
-          a1 = v42;
+          self = selfCopy;
         }
 
         objc_autoreleasePoolPop(v26);
         v16 = v44;
 LABEL_12:
-        [*(a1 + v15[941]) addObject:v23];
+        [*(self + v15[941]) addObject:v23];
       }
     }
 
@@ -677,14 +677,14 @@ LABEL_20:
   if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
   {
     v33 = HMFGetLogIdentifier();
-    v34 = [a1[4] count];
+    v34 = [self[4] count];
     v35 = v15;
     v36 = v34;
-    v37 = [*(a1 + v35[941]) count];
+    v37 = [*(self + v35[941]) count];
     *buf = 138544130;
     v51 = v33;
     v52 = 2112;
-    v53 = a1;
+    selfCopy2 = self;
     v54 = 2048;
     v55 = v36;
     v56 = 2048;
@@ -693,25 +693,25 @@ LABEL_20:
   }
 
   objc_autoreleasePoolPop(v31);
-  v7 = v40;
+  accessoriesCopy = v40;
   v6 = v41;
 LABEL_23:
 
   v38 = *MEMORY[0x277D85DE8];
-  return a1;
+  return self;
 }
 
-+ (id)homeAssistantOperationWithReadRequests:(id)a3 queue:(id)a4
++ (id)homeAssistantOperationWithReadRequests:(id)requests queue:(id)queue
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v5, "count")}];
+  requestsCopy = requests;
+  queueCopy = queue;
+  v7 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(requestsCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v5;
+  v8 = requestsCopy;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
@@ -726,12 +726,12 @@ LABEL_23:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v18 + 1) + 8 * i) characteristic];
-        v14 = [v13 accessory];
+        characteristic = [*(*(&v18 + 1) + 8 * i) characteristic];
+        accessory = [characteristic accessory];
 
-        if (v14)
+        if (accessory)
         {
-          [v7 addObject:v14];
+          [v7 addObject:accessory];
         }
       }
 
@@ -741,23 +741,23 @@ LABEL_23:
     while (v10);
   }
 
-  v15 = [[HMDHomeAssistantOperation alloc] initWithAccessories:v7 queue:v6];
+  v15 = [[HMDHomeAssistantOperation alloc] initWithAccessories:v7 queue:queueCopy];
   v16 = *MEMORY[0x277D85DE8];
 
   return v15;
 }
 
-+ (id)homeAssistantOperationWithWriteRequests:(id)a3 queue:(id)a4
++ (id)homeAssistantOperationWithWriteRequests:(id)requests queue:(id)queue
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v5, "count")}];
+  requestsCopy = requests;
+  queueCopy = queue;
+  v7 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(requestsCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v5;
+  v8 = requestsCopy;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
@@ -772,12 +772,12 @@ LABEL_23:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v18 + 1) + 8 * i) characteristic];
-        v14 = [v13 accessory];
+        characteristic = [*(*(&v18 + 1) + 8 * i) characteristic];
+        accessory = [characteristic accessory];
 
-        if (v14)
+        if (accessory)
         {
-          [v7 addObject:v14];
+          [v7 addObject:accessory];
         }
       }
 
@@ -787,7 +787,7 @@ LABEL_23:
     while (v10);
   }
 
-  v15 = [[HMDHomeAssistantOperation alloc] initWithAccessories:v7 queue:v6];
+  v15 = [[HMDHomeAssistantOperation alloc] initWithAccessories:v7 queue:queueCopy];
   v16 = *MEMORY[0x277D85DE8];
 
   return v15;

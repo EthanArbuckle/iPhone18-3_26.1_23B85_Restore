@@ -1,20 +1,20 @@
 @interface SHCacheValues
-- (SHCacheValues)initWithValues:(id)a3;
+- (SHCacheValues)initWithValues:(id)values;
 - (int64_t)lookupMaxAge;
 @end
 
 @implementation SHCacheValues
 
-- (SHCacheValues)initWithValues:(id)a3
+- (SHCacheValues)initWithValues:(id)values
 {
-  v5 = a3;
+  valuesCopy = values;
   v9.receiver = self;
   v9.super_class = SHCacheValues;
   v6 = [(SHCacheValues *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cacheValues, a3);
+    objc_storeStrong(&v6->_cacheValues, values);
   }
 
   return v7;
@@ -22,12 +22,12 @@
 
 - (int64_t)lookupMaxAge
 {
-  v2 = [(SHCacheValues *)self cacheValues];
-  v3 = [v2 objectForKeyedSubscript:@"lookupMaxAgeInDays"];
-  v4 = [v3 integerValue];
-  if (v4)
+  cacheValues = [(SHCacheValues *)self cacheValues];
+  v3 = [cacheValues objectForKeyedSubscript:@"lookupMaxAgeInDays"];
+  integerValue = [v3 integerValue];
+  if (integerValue)
   {
-    v5 = v4;
+    v5 = integerValue;
   }
 
   else

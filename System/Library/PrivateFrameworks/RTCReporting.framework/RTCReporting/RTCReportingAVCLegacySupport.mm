@@ -1,7 +1,7 @@
 @interface RTCReportingAVCLegacySupport
 - (RTCReportingAVCLegacySupport)init;
 - (void)dealloc;
-- (void)invokeAWDAdaptorForPayload:(id)a3 category:(unsigned __int16)a4 type:(unsigned __int16)a5;
+- (void)invokeAWDAdaptorForPayload:(id)payload category:(unsigned __int16)category type:(unsigned __int16)type;
 @end
 
 @implementation RTCReportingAVCLegacySupport
@@ -44,21 +44,21 @@
   [(RTCReportingAVCLegacySupport *)&v3 dealloc];
 }
 
-- (void)invokeAWDAdaptorForPayload:(id)a3 category:(unsigned __int16)a4 type:(unsigned __int16)a5
+- (void)invokeAWDAdaptorForPayload:(id)payload category:(unsigned __int16)category type:(unsigned __int16)type
 {
   v9 = NSSelectorFromString(&cfstr_Sendmessagewit.isa);
   awdAdaptor = self->_awdAdaptor;
   if (objc_opt_respondsToSelector())
   {
-    v11 = a3;
+    payloadCopy = payload;
     dispatchQ = self->_dispatchQ;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __73__RTCReportingAVCLegacySupport_invokeAWDAdaptorForPayload_category_type___block_invoke;
     v13[3] = &unk_2784F1368;
-    v14 = a4;
-    v15 = a5;
-    v13[4] = a3;
+    categoryCopy = category;
+    typeCopy = type;
+    v13[4] = payload;
     v13[5] = self;
     v13[6] = v9;
     dispatch_async(dispatchQ, v13);

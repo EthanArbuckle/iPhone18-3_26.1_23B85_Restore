@@ -10,14 +10,14 @@
   v18[1] = *MEMORY[0x277D85DE8];
   v6 = a3;
   v7 = a4;
-  v8 = [a1 debug_fullApplicationIcon];
-  if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  debug_fullApplicationIcon = [self debug_fullApplicationIcon];
+  if (debug_fullApplicationIcon && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v9 = objc_alloc(MEMORY[0x277D1B1A8]);
     v10 = objc_alloc(MEMORY[0x277D1B160]);
-    v11 = [v8 CGImage];
-    [v8 scale];
-    v12 = [v10 initWithCGImage:v11 scale:?];
+    cGImage = [debug_fullApplicationIcon CGImage];
+    [debug_fullApplicationIcon scale];
+    v12 = [v10 initWithCGImage:cGImage scale:?];
     v18[0] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
     v14 = [v9 initWithImages:v13];
@@ -29,8 +29,8 @@
   else
   {
     v16 = objc_opt_class();
-    v17 = [a1 bundleID];
-    [v16 getApplicationIconForBundleIdentifier:v17 imageDescriptor:v6 resultHandler:v7];
+    bundleID = [self bundleID];
+    [v16 getApplicationIconForBundleIdentifier:bundleID imageDescriptor:v6 resultHandler:v7];
   }
 }
 
@@ -42,21 +42,21 @@
   v10 = [v7 length];
   if (v10)
   {
-    v11 = [objc_alloc(MEMORY[0x277D1B1A8]) initWithBundleIdentifier:v7];
+    genericApplicationIcon = [objc_alloc(MEMORY[0x277D1B1A8]) initWithBundleIdentifier:v7];
   }
 
   else
   {
-    v11 = [MEMORY[0x277D1B1A8] genericApplicationIcon];
+    genericApplicationIcon = [MEMORY[0x277D1B1A8] genericApplicationIcon];
   }
 
-  v12 = v11;
-  v13 = [v11 imageForImageDescriptor:v8];
+  v12 = genericApplicationIcon;
+  v13 = [genericApplicationIcon imageForImageDescriptor:v8];
   sendResult(v13, v9);
-  v14 = [v13 placeholder];
+  placeholder = [v13 placeholder];
   if (v10)
   {
-    v15 = v14;
+    v15 = placeholder;
   }
 
   else

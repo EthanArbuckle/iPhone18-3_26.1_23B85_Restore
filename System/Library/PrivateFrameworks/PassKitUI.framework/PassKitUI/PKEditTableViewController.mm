@@ -1,56 +1,56 @@
 @interface PKEditTableViewController
-+ (id)_generatePlaceholderImageForStyle:(int64_t)a3;
-+ (void)loadPlaceholdersWithCompletion:(id)a3;
++ (id)_generatePlaceholderImageForStyle:(int64_t)style;
++ (void)loadPlaceholdersWithCompletion:(id)completion;
 - (NSDictionary)placeholders;
-- (PKEditTableViewController)initWithStyle:(int64_t)a3 placeholders:(id)a4 isForWatch:(BOOL)a5;
+- (PKEditTableViewController)initWithStyle:(int64_t)style placeholders:(id)placeholders isForWatch:(BOOL)watch;
 - (PKEditTableViewControllerCachingDelegate)cachingDelegate;
-- (id)_createImageForPass:(id)a3 imageSize:(CGSize)a4 cacheKey:(id)a5 fullPass:(BOOL)a6 stacked:(BOOL)a7;
-- (id)_createPassStackWithPassImage:(id)a3 withHeight:(double)a4;
-- (id)mostRecentPassInGroup:(id)a3;
-- (id)tableView:(id)a3 cellWithIdentifier:(id)a4;
-- (void)_imageOfSize:(CGSize)a3 forPass:(id)a4 fullPass:(BOOL)a5 stacked:(BOOL)a6 synchronously:(BOOL)a7 preemptive:(BOOL)a8 placeholder:(id)a9 completion:(id)a10;
-- (void)_placeholderImageForStyle:(int64_t)a3 completion:(id)a4;
-- (void)_setShouldProcessLowPriorityRequests:(BOOL)a3;
-- (void)_updateShouldProcessHighPriorityRequestsWithFastScrolling:(BOOL)a3;
-- (void)beginPassDeletionTestWithTestName:(id)a3;
-- (void)beginPassSelectionTestWithTestName:(id)a3;
-- (void)beginScrollingTestWithTestName:(id)a3;
-- (void)clearImageCacheForPass:(id)a3;
-- (void)currentCacheRequestCompletedWithImage:(id)a3 duration:(double)a4;
-- (void)failedTestWithReason:(id)a3;
+- (id)_createImageForPass:(id)pass imageSize:(CGSize)size cacheKey:(id)key fullPass:(BOOL)fullPass stacked:(BOOL)stacked;
+- (id)_createPassStackWithPassImage:(id)image withHeight:(double)height;
+- (id)mostRecentPassInGroup:(id)group;
+- (id)tableView:(id)view cellWithIdentifier:(id)identifier;
+- (void)_imageOfSize:(CGSize)size forPass:(id)pass fullPass:(BOOL)fullPass stacked:(BOOL)stacked synchronously:(BOOL)synchronously preemptive:(BOOL)preemptive placeholder:(id)placeholder completion:(id)self0;
+- (void)_placeholderImageForStyle:(int64_t)style completion:(id)completion;
+- (void)_setShouldProcessLowPriorityRequests:(BOOL)requests;
+- (void)_updateShouldProcessHighPriorityRequestsWithFastScrolling:(BOOL)scrolling;
+- (void)beginPassDeletionTestWithTestName:(id)name;
+- (void)beginPassSelectionTestWithTestName:(id)name;
+- (void)beginScrollingTestWithTestName:(id)name;
+- (void)clearImageCacheForPass:(id)pass;
+- (void)currentCacheRequestCompletedWithImage:(id)image duration:(double)duration;
+- (void)failedTestWithReason:(id)reason;
 - (void)findApps;
-- (void)loadContentAndImageSetFromExistingPassForPass:(id)a3;
-- (void)moveHighPriorityToLowPriorityWithCacheKey:(id)a3;
+- (void)loadContentAndImageSetFromExistingPassForPass:(id)pass;
+- (void)moveHighPriorityToLowPriorityWithCacheKey:(id)key;
 - (void)passedTest;
-- (void)processCacheRequest:(id)a3;
-- (void)removeRequestsWithCacheKey:(id)a3;
-- (void)resumeRequestIfNoScrollingAfterTimeInterval:(double)a3;
+- (void)processCacheRequest:(id)request;
+- (void)removeRequestsWithCacheKey:(id)key;
+- (void)resumeRequestIfNoScrollingAfterTimeInterval:(double)interval;
 - (void)scanCode;
 - (void)scrollToFirstRowOrFailTest;
 - (void)scrollToLastRowOrFailTest;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
 - (void)selectFirstRowOrFailTest;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setPlaceholders:(id)a3;
-- (void)showNoPassesView:(BOOL)a3;
-- (void)startedTestWithName:(id)a3;
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 prefetchRowsAtIndexPaths:(id)a4;
-- (void)triageCacheRequest:(id)a3;
-- (void)updateAverageSnapshotDuration:(double)a3;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setPlaceholders:(id)placeholders;
+- (void)showNoPassesView:(BOOL)view;
+- (void)startedTestWithName:(id)name;
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view prefetchRowsAtIndexPaths:(id)paths;
+- (void)triageCacheRequest:(id)request;
+- (void)updateAverageSnapshotDuration:(double)duration;
 - (void)viewDidLoad;
 @end
 
 @implementation PKEditTableViewController
 
-- (PKEditTableViewController)initWithStyle:(int64_t)a3 placeholders:(id)a4 isForWatch:(BOOL)a5
+- (PKEditTableViewController)initWithStyle:(int64_t)style placeholders:(id)placeholders isForWatch:(BOOL)watch
 {
-  v8 = a4;
+  placeholdersCopy = placeholders;
   v29.receiver = self;
   v29.super_class = PKEditTableViewController;
-  v9 = [(PKEditTableViewController *)&v29 initWithStyle:a3];
+  v9 = [(PKEditTableViewController *)&v29 initWithStyle:style];
   v10 = v9;
   if (v9)
   {
@@ -60,9 +60,9 @@
     v10->_imageCache = v11;
 
     [(NSCache *)v10->_imageCache setCountLimit:v10->_imagesToKeep];
-    if (v8)
+    if (placeholdersCopy)
     {
-      v13 = [v8 mutableCopy];
+      v13 = [placeholdersCopy mutableCopy];
     }
 
     else
@@ -73,8 +73,8 @@
     v14 = v13;
     objc_storeStrong(&v10->_placeholdersPerPassStyle, v13);
 
-    v15 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v15);
+    preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     if (IsAccessibilityCategory)
     {
@@ -100,7 +100,7 @@
     lastSnapshotDurations = v10->_lastSnapshotDurations;
     v10->_lastSnapshotDurations = v24;
 
-    v10->_isForWatch = a5;
+    v10->_isForWatch = watch;
     +[PKEditPassesTableViewCell imageSizeNeeded];
     v10->_imageSizeNeeded.width = v26;
     v10->_imageSizeNeeded.height = v27;
@@ -118,15 +118,15 @@
   v10.receiver = self;
   v10.super_class = PKEditTableViewController;
   [(PKEditTableViewController *)&v10 viewDidLoad];
-  v3 = [(PKEditTableViewController *)self view];
-  [v3 bounds];
+  view = [(PKEditTableViewController *)self view];
+  [view bounds];
   v5 = v4;
   +[PKEditPassesTableViewCell height];
   self->_visibleRows = vcvtpd_u64_f64(v5 / v6);
 
-  v7 = [(PKEditTableViewController *)self tableView];
+  tableView = [(PKEditTableViewController *)self tableView];
   tableView = self->_tableView;
-  self->_tableView = v7;
+  self->_tableView = tableView;
 
   [(UITableView *)self->_tableView setPrefetchDataSource:self];
   v9 = self->_tableView;
@@ -139,10 +139,10 @@
   [(PKEditTableViewController *)self setEditing:1];
 }
 
-+ (void)loadPlaceholdersWithCompletion:(id)a3
++ (void)loadPlaceholdersWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (_MergedGlobals_3_4 != -1)
     {
@@ -155,9 +155,9 @@
     block[1] = 3221225472;
     block[2] = __60__PKEditTableViewController_loadPlaceholdersWithCompletion___block_invoke_2;
     block[3] = &unk_1E801B4E8;
-    v11 = a1;
+    selfCopy = self;
     v9 = v5;
-    v10 = v4;
+    v10 = completionCopy;
     v7 = v5;
     dispatch_async(v6, block);
   }
@@ -186,7 +186,7 @@ void __60__PKEditTableViewController_loadPlaceholdersWithCompletion___block_invo
   (*(v6 + 16))(v6, v7);
 }
 
-+ (id)_generatePlaceholderImageForStyle:(int64_t)a3
++ (id)_generatePlaceholderImageForStyle:(int64_t)style
 {
   +[PKEditPassesTableViewCell imageSizeNeeded];
   v4 = v3;
@@ -223,7 +223,7 @@ void __60__PKEditTableViewController_loadPlaceholdersWithCompletion___block_invo
   v62 = v25;
   v63 = v26;
   v61 = fmin(v26, v6);
-  v27 = [MEMORY[0x1E69DCA80] preferredFormat];
+  preferredFormat = [MEMORY[0x1E69DCA80] preferredFormat];
   v28 = objc_autoreleasePoolPush();
   v29 = log(v22);
   v30 = exp(v29 * 0.15 + 0.0);
@@ -236,7 +236,7 @@ void __60__PKEditTableViewController_loadPlaceholdersWithCompletion___block_invo
   v39 = objc_alloc(MEMORY[0x1E69DCA78]);
   v40 = *MEMORY[0x1E695EFF8];
   v41 = *(MEMORY[0x1E695EFF8] + 8);
-  v42 = [v39 initWithBounds:v27 format:{*MEMORY[0x1E695EFF8], v41, v35, v37}];
+  v42 = [v39 initWithBounds:preferredFormat format:{*MEMORY[0x1E695EFF8], v41, v35, v37}];
   v68[0] = MEMORY[0x1E69E9820];
   v68[1] = 3221225472;
   v68[2] = __PKEditPassesResizedPlaceholderImage_block_invoke;
@@ -250,7 +250,7 @@ void __60__PKEditTableViewController_loadPlaceholdersWithCompletion___block_invo
 
   objc_autoreleasePoolPop(v28);
   v45 = objc_autoreleasePoolPush();
-  v46 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithBounds:v27 format:{v40, v41, v62, v61}];
+  v46 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithBounds:preferredFormat format:{v40, v41, v62, v61}];
   v64[0] = MEMORY[0x1E69E9820];
   v64[1] = 3221225472;
   v64[2] = __PKEditPassesResizedPlaceholderImage_block_invoke_2;
@@ -286,22 +286,22 @@ void __60__PKEditTableViewController_loadPlaceholdersWithCompletion___block_invo
   return v59;
 }
 
-- (void)_placeholderImageForStyle:(int64_t)a3 completion:(id)a4
+- (void)_placeholderImageForStyle:(int64_t)style completion:(id)completion
 {
-  v11 = a4;
+  completionCopy = completion;
   placeholdersPerPassStyle = self->_placeholdersPerPassStyle;
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:style];
   v8 = [(NSMutableDictionary *)placeholdersPerPassStyle objectForKey:v7];
 
   if (!v8)
   {
-    v8 = [objc_opt_class() _generatePlaceholderImageForStyle:a3];
+    v8 = [objc_opt_class() _generatePlaceholderImageForStyle:style];
     v9 = self->_placeholdersPerPassStyle;
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:style];
     [(NSMutableDictionary *)v9 setObject:v8 forKey:v10];
   }
 
-  v11[2](v11, v8);
+  completionCopy[2](completionCopy, v8);
 }
 
 - (NSDictionary)placeholders
@@ -311,44 +311,44 @@ void __60__PKEditTableViewController_loadPlaceholdersWithCompletion___block_invo
   return v2;
 }
 
-- (void)setPlaceholders:(id)a3
+- (void)setPlaceholders:(id)placeholders
 {
-  v4 = [a3 mutableCopy];
+  v4 = [placeholders mutableCopy];
   placeholdersPerPassStyle = self->_placeholdersPerPassStyle;
   self->_placeholdersPerPassStyle = v4;
 }
 
-- (void)loadContentAndImageSetFromExistingPassForPass:(id)a3
+- (void)loadContentAndImageSetFromExistingPassForPass:(id)pass
 {
-  v9 = a3;
-  if (([v9 isContentLoaded] & 1) == 0)
+  passCopy = pass;
+  if (([passCopy isContentLoaded] & 1) == 0)
   {
-    v4 = [(PKEditTableViewController *)self existingGroupsController];
-    v5 = [v9 uniqueID];
-    v6 = [v4 passWithUniqueID:v5];
+    existingGroupsController = [(PKEditTableViewController *)self existingGroupsController];
+    uniqueID = [passCopy uniqueID];
+    v6 = [existingGroupsController passWithUniqueID:uniqueID];
 
     if ([v6 isContentLoaded])
     {
-      v7 = [v6 content];
-      [v9 setContent:v7];
+      content = [v6 content];
+      [passCopy setContent:content];
 
-      if (([v9 isImageSetLoaded:0] & 1) == 0)
+      if (([passCopy isImageSetLoaded:0] & 1) == 0)
       {
         if ([v6 isImageSetLoaded:0])
         {
           v8 = [v6 imageSetLoadedIfNeeded:0];
-          [v9 setImageSet:v8 forImageSetType:0];
+          [passCopy setImageSet:v8 forImageSetType:0];
         }
       }
     }
   }
 }
 
-- (void)showNoPassesView:(BOOL)a3
+- (void)showNoPassesView:(BOOL)view
 {
-  self->_shouldShowNoPassesView = a3;
+  self->_shouldShowNoPassesView = view;
   noPassesView = self->_noPassesView;
-  if (a3)
+  if (view)
   {
     if (noPassesView)
     {
@@ -370,11 +370,11 @@ void __60__PKEditTableViewController_loadPlaceholdersWithCompletion___block_invo
       self->_noPassesView = v11;
 
       [(PKEditTableNoPassesView *)self->_noPassesView setDelegate:self];
-      v13 = [(PKEditTableViewController *)self view];
-      [v13 addSubview:self->_noPassesView];
+      view = [(PKEditTableViewController *)self view];
+      [view addSubview:self->_noPassesView];
 
-      v14 = [(PKEditTableViewController *)self view];
-      [v14 bounds];
+      view2 = [(PKEditTableViewController *)self view];
+      [view2 bounds];
       v16 = v15;
       v18 = v17;
 
@@ -404,16 +404,16 @@ void __60__PKEditTableViewController_loadPlaceholdersWithCompletion___block_invo
   }
 }
 
-- (id)mostRecentPassInGroup:(id)a3
+- (id)mostRecentPassInGroup:(id)group
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 passes];
+  groupCopy = group;
+  passes = [groupCopy passes];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [passes countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -425,15 +425,15 @@ void __60__PKEditTableViewController_loadPlaceholdersWithCompletion___block_invo
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(passes);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
         if (v7)
         {
-          v11 = [*(*(&v16 + 1) + 8 * i) ingestedDate];
-          v12 = [v7 ingestedDate];
-          v13 = [v11 compare:v12];
+          ingestedDate = [*(*(&v16 + 1) + 8 * i) ingestedDate];
+          ingestedDate2 = [v7 ingestedDate];
+          v13 = [ingestedDate compare:ingestedDate2];
 
           if (v13 != -1)
           {
@@ -446,7 +446,7 @@ void __60__PKEditTableViewController_loadPlaceholdersWithCompletion___block_invo
         v7 = v14;
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [passes countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -460,20 +460,20 @@ void __60__PKEditTableViewController_loadPlaceholdersWithCompletion___block_invo
   return v7;
 }
 
-- (void)_imageOfSize:(CGSize)a3 forPass:(id)a4 fullPass:(BOOL)a5 stacked:(BOOL)a6 synchronously:(BOOL)a7 preemptive:(BOOL)a8 placeholder:(id)a9 completion:(id)a10
+- (void)_imageOfSize:(CGSize)size forPass:(id)pass fullPass:(BOOL)fullPass stacked:(BOOL)stacked synchronously:(BOOL)synchronously preemptive:(BOOL)preemptive placeholder:(id)placeholder completion:(id)self0
 {
-  v29 = a8;
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  height = a3.height;
-  width = a3.width;
+  preemptiveCopy = preemptive;
+  synchronouslyCopy = synchronously;
+  stackedCopy = stacked;
+  fullPassCopy = fullPass;
+  height = size.height;
+  width = size.width;
   v53[1] = *MEMORY[0x1E69E9840];
-  v17 = a4;
-  v18 = a9;
-  v19 = a10;
-  v20 = [v17 uniqueID];
-  if (v12)
+  passCopy = pass;
+  placeholderCopy = placeholder;
+  completionCopy = completion;
+  uniqueID = [passCopy uniqueID];
+  if (stackedCopy)
   {
     v21 = @"stack_";
   }
@@ -483,18 +483,18 @@ void __60__PKEditTableViewController_loadPlaceholdersWithCompletion___block_invo
     v21 = @"single_";
   }
 
-  v22 = [(__CFString *)v21 stringByAppendingString:v20];
-  if (!v11)
+  v22 = [(__CFString *)v21 stringByAppendingString:uniqueID];
+  if (!synchronouslyCopy)
   {
     v23 = [(NSCache *)self->_imageCache objectForKey:v22];
     v24 = v23;
-    if (v19 && v23)
+    if (completionCopy && v23)
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __115__PKEditTableViewController__imageOfSize_forPass_fullPass_stacked_synchronously_preemptive_placeholder_completion___block_invoke_2;
       block[3] = &unk_1E8010E20;
-      v34 = v19;
+      v34 = completionCopy;
       v33 = v24;
       dispatch_async(MEMORY[0x1E69E96A0], block);
 
@@ -510,24 +510,24 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      if (v18)
+      if (placeholderCopy)
       {
-        v26 = [v17 style];
+        style = [passCopy style];
         v30[0] = MEMORY[0x1E69E9820];
         v30[1] = 3221225472;
         v30[2] = __115__PKEditTableViewController__imageOfSize_forPass_fullPass_stacked_synchronously_preemptive_placeholder_completion___block_invoke_3;
         v30[3] = &unk_1E801EE00;
-        v31 = v18;
-        [(PKEditTableViewController *)self _placeholderImageForStyle:v26 completion:v30];
+        v31 = placeholderCopy;
+        [(PKEditTableViewController *)self _placeholderImageForStyle:style completion:v30];
       }
 
       v25 = objc_alloc_init(PKEditPendingCacheRequest);
-      [(PKEditPendingCacheRequest *)v25 setStacked:v12];
+      [(PKEditPendingCacheRequest *)v25 setStacked:stackedCopy];
       [(PKEditPendingCacheRequest *)v25 setCacheKey:v22];
-      [(PKEditPendingCacheRequest *)v25 setPass:v17];
-      if (v19)
+      [(PKEditPendingCacheRequest *)v25 setPass:passCopy];
+      if (completionCopy)
       {
-        v28 = [v19 copy];
+        v28 = [completionCopy copy];
         v53[0] = v28;
         v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:1];
         [(PKEditPendingCacheRequest *)v25 setCompletionHandlers:v27];
@@ -539,8 +539,8 @@ LABEL_19:
       }
 
       [(PKEditPendingCacheRequest *)v25 setImageSize:width, height];
-      [(PKEditPendingCacheRequest *)v25 setFullPass:v13];
-      [(PKEditPendingCacheRequest *)v25 setPriority:!v29];
+      [(PKEditPendingCacheRequest *)v25 setFullPass:fullPassCopy];
+      [(PKEditPendingCacheRequest *)v25 setPriority:!preemptiveCopy];
       [(PKEditTableViewController *)self processCacheRequest:v25];
     }
 
@@ -558,17 +558,17 @@ LABEL_19:
   v37 = __115__PKEditTableViewController__imageOfSize_forPass_fullPass_stacked_synchronously_preemptive_placeholder_completion___block_invoke;
   v38 = &unk_1E801EDD8;
   v42 = &v47;
-  v39 = self;
-  v40 = v17;
+  selfCopy = self;
+  v40 = passCopy;
   v43 = width;
   v44 = height;
   v41 = v22;
-  v45 = v13;
-  v46 = v12;
+  v45 = fullPassCopy;
+  v46 = stackedCopy;
   PKTimeToPerformBlock();
-  if (v19)
+  if (completionCopy)
   {
-    (*(v19 + 2))(v19, v48[5]);
+    (*(completionCopy + 2))(completionCopy, v48[5]);
   }
 
   _Block_object_dispose(&v47, 8);
@@ -597,9 +597,9 @@ void __115__PKEditTableViewController__imageOfSize_forPass_fullPass_stacked_sync
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (void)processCacheRequest:(id)a3
+- (void)processCacheRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_initWeak(&location, self);
   queueCaching = self->_queueCaching;
   v7[0] = MEMORY[0x1E69E9820];
@@ -607,9 +607,9 @@ void __115__PKEditTableViewController__imageOfSize_forPass_fullPass_stacked_sync
   v7[2] = __49__PKEditTableViewController_processCacheRequest___block_invoke;
   v7[3] = &unk_1E8011828;
   objc_copyWeak(&v10, &location);
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = requestCopy;
+  selfCopy = self;
+  v6 = requestCopy;
   dispatch_async(queueCaching, v7);
 
   objc_destroyWeak(&v10);
@@ -788,9 +788,9 @@ void __49__PKEditTableViewController_processCacheRequest___block_invoke_5(uint64
   [v2 loadImageSetAsync:0 preheat:1 withCompletion:v5];
 }
 
-- (void)currentCacheRequestCompletedWithImage:(id)a3 duration:(double)a4
+- (void)currentCacheRequestCompletedWithImage:(id)image duration:(double)duration
 {
-  v6 = a3;
+  imageCopy = image;
   objc_initWeak(&location, self);
   queueCaching = self->_queueCaching;
   v9[0] = MEMORY[0x1E69E9820];
@@ -798,9 +798,9 @@ void __49__PKEditTableViewController_processCacheRequest___block_invoke_5(uint64
   v9[2] = __76__PKEditTableViewController_currentCacheRequestCompletedWithImage_duration___block_invoke;
   v9[3] = &unk_1E8011408;
   objc_copyWeak(v11, &location);
-  v10 = v6;
-  v11[1] = *&a4;
-  v8 = v6;
+  v10 = imageCopy;
+  v11[1] = *&duration;
+  v8 = imageCopy;
   dispatch_async(queueCaching, v9);
 
   objc_destroyWeak(v11);
@@ -877,28 +877,28 @@ void __76__PKEditTableViewController_currentCacheRequestCompletedWithImage_durat
   }
 }
 
-- (void)triageCacheRequest:(id)a3
+- (void)triageCacheRequest:(id)request
 {
-  v4 = a3;
-  if (v4)
+  requestCopy = request;
+  if (requestCopy)
   {
-    v19 = v4;
-    v5 = [(NSMutableArray *)self->_lowPriorityRequests indexOfObject:v4];
+    v19 = requestCopy;
+    v5 = [(NSMutableArray *)self->_lowPriorityRequests indexOfObject:requestCopy];
     if (v5 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v6 = [(NSMutableArray *)self->_highPriorityRequests indexOfObject:v19];
-      v7 = [v19 priority];
+      priority = [v19 priority];
       if (v6 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        if (v7 == 1)
+        if (priority == 1)
         {
           highPriorityRequests = self->_highPriorityRequests;
         }
 
         else
         {
-          v4 = v19;
-          if (v7)
+          requestCopy = v19;
+          if (priority)
           {
             goto LABEL_15;
           }
@@ -910,17 +910,17 @@ void __76__PKEditTableViewController_currentCacheRequestCompletedWithImage_durat
         goto LABEL_14;
       }
 
-      v4 = v19;
-      if (v7 != 1)
+      requestCopy = v19;
+      if (priority != 1)
       {
         goto LABEL_15;
       }
 
       v11 = [(NSMutableArray *)self->_highPriorityRequests objectAtIndex:v6];
       [(NSMutableArray *)self->_highPriorityRequests removeObjectAtIndex:v6];
-      v16 = [v19 completionHandlers];
-      v17 = [v11 completionHandlers];
-      v18 = [v16 arrayByAddingObjectsFromArray:v17];
+      completionHandlers = [v19 completionHandlers];
+      completionHandlers2 = [v11 completionHandlers];
+      v18 = [completionHandlers arrayByAddingObjectsFromArray:completionHandlers2];
       [v19 setCompletionHandlers:v18];
 
       v15 = self->_highPriorityRequests;
@@ -929,18 +929,18 @@ void __76__PKEditTableViewController_currentCacheRequestCompletedWithImage_durat
     else
     {
       v9 = v5;
-      v10 = [v19 priority];
-      v4 = v19;
-      if (v10 != 1)
+      priority2 = [v19 priority];
+      requestCopy = v19;
+      if (priority2 != 1)
       {
         goto LABEL_15;
       }
 
       v11 = [(NSMutableArray *)self->_lowPriorityRequests objectAtIndex:v9];
       [(NSMutableArray *)self->_lowPriorityRequests removeObjectAtIndex:v9];
-      v12 = [v19 completionHandlers];
-      v13 = [v11 completionHandlers];
-      v14 = [v12 arrayByAddingObjectsFromArray:v13];
+      completionHandlers3 = [v19 completionHandlers];
+      completionHandlers4 = [v11 completionHandlers];
+      v14 = [completionHandlers3 arrayByAddingObjectsFromArray:completionHandlers4];
       [v19 setCompletionHandlers:v14];
 
       v15 = self->_highPriorityRequests;
@@ -949,15 +949,15 @@ void __76__PKEditTableViewController_currentCacheRequestCompletedWithImage_durat
     [(NSMutableArray *)v15 addObject:v19];
 
 LABEL_14:
-    v4 = v19;
+    requestCopy = v19;
   }
 
 LABEL_15:
 }
 
-- (void)moveHighPriorityToLowPriorityWithCacheKey:(id)a3
+- (void)moveHighPriorityToLowPriorityWithCacheKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   objc_initWeak(&location, self);
   queueCaching = self->_queueCaching;
   block[0] = MEMORY[0x1E69E9820];
@@ -965,8 +965,8 @@ LABEL_15:
   block[2] = __71__PKEditTableViewController_moveHighPriorityToLowPriorityWithCacheKey___block_invoke;
   block[3] = &unk_1E80110E0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = keyCopy;
+  v6 = keyCopy;
   dispatch_async(queueCaching, block);
 
   objc_destroyWeak(&v9);
@@ -995,9 +995,9 @@ void __71__PKEditTableViewController_moveHighPriorityToLowPriorityWithCacheKey__
   }
 }
 
-- (void)removeRequestsWithCacheKey:(id)a3
+- (void)removeRequestsWithCacheKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   objc_initWeak(&location, self);
   queueCaching = self->_queueCaching;
   block[0] = MEMORY[0x1E69E9820];
@@ -1005,8 +1005,8 @@ void __71__PKEditTableViewController_moveHighPriorityToLowPriorityWithCacheKey__
   block[2] = __56__PKEditTableViewController_removeRequestsWithCacheKey___block_invoke;
   block[3] = &unk_1E80110E0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = keyCopy;
+  v6 = keyCopy;
   dispatch_async(queueCaching, block);
 
   objc_destroyWeak(&v9);
@@ -1028,7 +1028,7 @@ void __56__PKEditTableViewController_removeRequestsWithCacheKey___block_invoke(u
   }
 }
 
-- (void)updateAverageSnapshotDuration:(double)a3
+- (void)updateAverageSnapshotDuration:(double)duration
 {
   v19 = *MEMORY[0x1E69E9840];
   if ([(NSMutableArray *)self->_lastSnapshotDurations count]>= 0xA)
@@ -1037,7 +1037,7 @@ void __56__PKEditTableViewController_removeRequestsWithCacheKey___block_invoke(u
   }
 
   lastSnapshotDurations = self->_lastSnapshotDurations;
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:duration];
   [(NSMutableArray *)lastSnapshotDurations addObject:v6];
 
   v16 = 0u;
@@ -1078,39 +1078,39 @@ void __56__PKEditTableViewController_removeRequestsWithCacheKey___block_invoke(u
   self->_snapshotDurationAverage = v11 / [(NSMutableArray *)self->_lastSnapshotDurations count];
 }
 
-- (id)_createImageForPass:(id)a3 imageSize:(CGSize)a4 cacheKey:(id)a5 fullPass:(BOOL)a6 stacked:(BOOL)a7
+- (id)_createImageForPass:(id)pass imageSize:(CGSize)size cacheKey:(id)key fullPass:(BOOL)fullPass stacked:(BOOL)stacked
 {
-  v7 = a7;
-  v8 = a6;
-  height = a4.height;
-  width = a4.width;
-  v13 = a3;
-  v14 = a5;
-  v15 = v14;
-  v16 = 0;
-  if (v13)
+  stackedCopy = stacked;
+  fullPassCopy = fullPass;
+  height = size.height;
+  width = size.width;
+  passCopy = pass;
+  keyCopy = key;
+  v15 = keyCopy;
+  height = 0;
+  if (passCopy)
   {
-    if (v14)
+    if (keyCopy)
     {
-      v16 = [(NSCache *)self->_imageCache objectForKey:v14];
-      if (!v16)
+      height = [(NSCache *)self->_imageCache objectForKey:keyCopy];
+      if (!height)
       {
         v17 = [PKPassView alloc];
-        if (v8)
+        if (fullPassCopy)
         {
-          v18 = [(PKPassView *)v17 initWithPass:v13 content:4 suppressedContent:375];
+          v18 = [(PKPassView *)v17 initWithPass:passCopy content:4 suppressedContent:375];
           [(PKPassView *)v18 setUserInteractionEnabled:0];
-          v16 = [(PKPassView *)v18 snapshotOfFrontFaceWithRequestedSize:width, height];
+          height = [(PKPassView *)v18 snapshotOfFrontFaceWithRequestedSize:width, height];
         }
 
         else
         {
-          v18 = [(PKPassView *)v17 initWithPass:v13 content:4 suppressedContent:4087];
-          v16 = [(PKPassView *)v18 snapshotOfFrontFaceWithRequestedSize:width, 3.40282347e38];
-          [v16 size];
+          v18 = [(PKPassView *)v17 initWithPass:passCopy content:4 suppressedContent:4087];
+          height = [(PKPassView *)v18 snapshotOfFrontFaceWithRequestedSize:width, 3.40282347e38];
+          [height size];
           if (v19 > height)
           {
-            v20 = v16;
+            v20 = height;
             [v20 alignmentRectInsets];
             v22 = v21;
             v24 = v23;
@@ -1124,59 +1124,59 @@ void __56__PKEditTableViewController_removeRequestsWithCacheKey___block_invoke(u
             v35 = v32 * v33;
             v36 = fmin(v32 * v33, height * v33);
             v37 = fmax(v26 - (v35 - v36), 0.0);
-            v38 = [v20 CGImage];
+            cGImage = [v20 CGImage];
             v48.origin.x = *MEMORY[0x1E695EFF8];
             v48.origin.y = *(MEMORY[0x1E695EFF8] + 8);
             v48.size.width = v34;
             v48.size.height = v36;
-            v39 = CGImageCreateWithImageInRect(v38, v48);
+            v39 = CGImageCreateWithImageInRect(cGImage, v48);
             v40 = MEMORY[0x1E69DCAB8];
             [v20 scale];
             v42 = v41;
-            v43 = [v20 imageOrientation];
+            imageOrientation = [v20 imageOrientation];
 
-            v44 = [v40 imageWithCGImage:v39 scale:v43 orientation:v42];
+            v44 = [v40 imageWithCGImage:v39 scale:imageOrientation orientation:v42];
             CGImageRelease(v39);
-            v16 = [v44 imageWithAlignmentRectInsets:{fmin(v22, v36), v24, v37, v28}];
+            height = [v44 imageWithAlignmentRectInsets:{fmin(v22, v36), v24, v37, v28}];
           }
         }
 
-        if (v7)
+        if (stackedCopy)
         {
-          v45 = [(PKEditTableViewController *)self _createPassStackWithPassImage:v16 withHeight:height];
+          v45 = [(PKEditTableViewController *)self _createPassStackWithPassImage:height withHeight:height];
 
-          v16 = v45;
+          height = v45;
         }
 
-        [(NSCache *)self->_imageCache setObject:v16 forKey:v15];
+        [(NSCache *)self->_imageCache setObject:height forKey:v15];
       }
     }
   }
 
-  return v16;
+  return height;
 }
 
-- (id)_createPassStackWithPassImage:(id)a3 withHeight:(double)a4
+- (id)_createPassStackWithPassImage:(id)image withHeight:(double)height
 {
-  v5 = a3;
-  [v5 alignmentRectInsets];
+  imageCopy = image;
+  [imageCopy alignmentRectInsets];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  [v5 size];
+  [imageCopy size];
   v15 = v14;
   v17 = v16;
-  v18 = fmin(v16, a4);
+  v18 = fmin(v16, height);
   v19 = fmin(v7, v18);
   v20 = fmax(v11 - (v16 - v18) + -4.0, 0.0);
   v21 = PKUIScreenScale();
   v26.width = v15;
   v26.height = v17;
   UIGraphicsBeginImageContextWithOptions(v26, 0, v21);
-  [v5 drawAtPoint:{0.0, 0.0}];
-  [v5 drawAtPoint:{0.0, 2.0}];
-  [v5 drawAtPoint:{0.0, 4.0}];
+  [imageCopy drawAtPoint:{0.0, 0.0}];
+  [imageCopy drawAtPoint:{0.0, 2.0}];
+  [imageCopy drawAtPoint:{0.0, 4.0}];
 
   v22 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -1185,21 +1185,21 @@ void __56__PKEditTableViewController_removeRequestsWithCacheKey___block_invoke(u
   return v23;
 }
 
-- (void)clearImageCacheForPass:(id)a3
+- (void)clearImageCacheForPass:(id)pass
 {
-  if (a3)
+  if (pass)
   {
-    v6 = [a3 uniqueID];
-    v4 = [v6 stringByAppendingString:@"single_"];
+    uniqueID = [pass uniqueID];
+    v4 = [uniqueID stringByAppendingString:@"single_"];
     [(NSCache *)self->_imageCache removeObjectForKey:v4];
     [(PKEditTableViewController *)self removeRequestsWithCacheKey:v4];
-    v5 = [v6 stringByAppendingString:@"stack_"];
+    v5 = [uniqueID stringByAppendingString:@"stack_"];
     [(NSCache *)self->_imageCache removeObjectForKey:v5];
     [(PKEditTableViewController *)self removeRequestsWithCacheKey:v5];
   }
 }
 
-- (void)_setShouldProcessLowPriorityRequests:(BOOL)a3
+- (void)_setShouldProcessLowPriorityRequests:(BOOL)requests
 {
   objc_initWeak(&location, self);
   queueCaching = self->_queueCaching;
@@ -1208,7 +1208,7 @@ void __56__PKEditTableViewController_removeRequestsWithCacheKey___block_invoke(u
   block[2] = __66__PKEditTableViewController__setShouldProcessLowPriorityRequests___block_invoke;
   block[3] = &unk_1E80111A8;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
+  requestsCopy = requests;
   dispatch_async(queueCaching, block);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -1267,7 +1267,7 @@ void __66__PKEditTableViewController__setShouldProcessLowPriorityRequests___bloc
   }
 }
 
-- (void)_updateShouldProcessHighPriorityRequestsWithFastScrolling:(BOOL)a3
+- (void)_updateShouldProcessHighPriorityRequestsWithFastScrolling:(BOOL)scrolling
 {
   objc_initWeak(&location, self);
   queueCaching = self->_queueCaching;
@@ -1276,7 +1276,7 @@ void __66__PKEditTableViewController__setShouldProcessLowPriorityRequests___bloc
   block[2] = __87__PKEditTableViewController__updateShouldProcessHighPriorityRequestsWithFastScrolling___block_invoke;
   block[3] = &unk_1E80111A8;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
+  scrollingCopy = scrolling;
   dispatch_async(queueCaching, block);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -1321,16 +1321,16 @@ void __87__PKEditTableViewController__updateShouldProcessHighPriorityRequestsWit
 LABEL_9:
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   v13.receiver = self;
   v13.super_class = PKEditTableViewController;
   [PKEditTableViewController setEditing:sel_setEditing_animated_ animated:?];
-  v7 = [(PKEditTableViewController *)self navigationItem];
-  v8 = [v7 leftBarButtonItem];
-  if (v5)
+  navigationItem = [(PKEditTableViewController *)self navigationItem];
+  leftBarButtonItem = [navigationItem leftBarButtonItem];
+  if (editingCopy)
   {
     v9 = @"PASS_EDITING_CANCEL";
   }
@@ -1340,7 +1340,7 @@ LABEL_9:
     v9 = @"PASS_EDITING_EDIT";
   }
 
-  if (v5)
+  if (editingCopy)
   {
     v10 = @"PASS_EDITING_TITLE_EDITING";
   }
@@ -1351,31 +1351,31 @@ LABEL_9:
   }
 
   v11 = PKLocalizedString(&v9->isa);
-  [v8 setTitle:v11];
+  [leftBarButtonItem setTitle:v11];
 
   v12 = PKLocalizedString(&v10->isa);
   [(PKEditTableViewController *)self setTitle:v12];
 
-  [(UITableView *)self->_tableView setEditing:v5 animated:v4];
+  [(UITableView *)self->_tableView setEditing:editingCopy animated:animatedCopy];
 }
 
-- (id)tableView:(id)a3 cellWithIdentifier:(id)a4
+- (id)tableView:(id)view cellWithIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [view dequeueReusableCellWithIdentifier:identifierCopy];
   if (!v7)
   {
-    if ([v6 isEqualToString:@"cellActionEditIdentifier"])
+    if ([identifierCopy isEqualToString:@"cellActionEditIdentifier"])
     {
-      v7 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:v6];
-      v8 = [(PKEditPassesTableViewCell *)v7 textLabel];
-      v9 = [MEMORY[0x1E69DC888] systemBlueColor];
-      [v8 setTextColor:v9];
+      v7 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:identifierCopy];
+      textLabel = [(PKEditPassesTableViewCell *)v7 textLabel];
+      systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+      [textLabel setTextColor:systemBlueColor];
     }
 
     else
     {
-      v7 = [[PKEditPassesTableViewCell alloc] initWithReuseIdentifier:v6 showImage:!self->_isAccessibilityCategory];
+      v7 = [[PKEditPassesTableViewCell alloc] initWithReuseIdentifier:identifierCopy showImage:!self->_isAccessibilityCategory];
       [(PKEditPassesTableViewCell *)v7 setAccessoryType:1];
       [(PKEditPassesTableViewCell *)v7 setEditingAccessoryType:1];
     }
@@ -1384,35 +1384,35 @@ LABEL_9:
   return v7;
 }
 
-- (void)tableView:(id)a3 prefetchRowsAtIndexPaths:(id)a4
+- (void)tableView:(id)view prefetchRowsAtIndexPaths:(id)paths
 {
-  v6 = a4;
+  pathsCopy = paths;
   WeakRetained = objc_loadWeakRetained(&self->_cachingDelegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [WeakRetained prefetchItemsAtIndexPaths:v6];
+    [WeakRetained prefetchItemsAtIndexPaths:pathsCopy];
   }
 }
 
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v22 = a3;
-  v7 = a5;
+  viewCopy = view;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_cachingDelegate);
   if (!WeakRetained || (objc_opt_respondsToSelector() & 1) == 0)
   {
     goto LABEL_14;
   }
 
-  v9 = [(PKEditTableViewController *)self _imagesToKeepOutsideVisibleCells];
-  v10 = [v7 row];
-  v11 = [v7 section];
+  _imagesToKeepOutsideVisibleCells = [(PKEditTableViewController *)self _imagesToKeepOutsideVisibleCells];
+  v10 = [pathCopy row];
+  section = [pathCopy section];
   if (!self->_scrollingUp)
   {
-    if ([v7 row] >= v9)
+    if ([pathCopy row] >= _imagesToKeepOutsideVisibleCells)
     {
       v13 = MEMORY[0x1E696AC88];
-      v14 = v10 - v9;
+      v14 = v10 - _imagesToKeepOutsideVisibleCells;
       goto LABEL_10;
     }
 
@@ -1422,39 +1422,39 @@ LABEL_9:
     }
   }
 
-  v12 = v10 + v9;
-  if (v12 < [(PKEditTableViewController *)self tableView:v22 numberOfRowsInSection:v11])
+  v12 = v10 + _imagesToKeepOutsideVisibleCells;
+  if (v12 < [(PKEditTableViewController *)self tableView:viewCopy numberOfRowsInSection:section])
   {
     v13 = MEMORY[0x1E696AC88];
     v14 = v12;
 LABEL_10:
-    v15 = [v13 indexPathForRow:v14 inSection:v11];
+    v15 = [v13 indexPathForRow:v14 inSection:section];
     v16 = [WeakRetained passAtIndexPath:v15];
     [(PKEditTableViewController *)self clearImageCacheForPass:v16];
   }
 
 LABEL_11:
-  v17 = [WeakRetained passAtIndexPath:v7];
+  v17 = [WeakRetained passAtIndexPath:pathCopy];
   v18 = v17;
   if (v17)
   {
-    v19 = [v17 uniqueID];
-    v20 = [@"stack_" stringByAppendingString:v19];
+    uniqueID = [v17 uniqueID];
+    v20 = [@"stack_" stringByAppendingString:uniqueID];
     [(PKEditTableViewController *)self moveHighPriorityToLowPriorityWithCacheKey:v20];
 
-    v21 = [@"single_" stringByAppendingString:v19];
+    v21 = [@"single_" stringByAppendingString:uniqueID];
     [(PKEditTableViewController *)self moveHighPriorityToLowPriorityWithCacheKey:v21];
   }
 
 LABEL_14:
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
+  draggingCopy = dragging;
   [(PKEditTableViewController *)self _setShouldProcessLowPriorityRequests:0];
-  v5 = [v4 panGestureRecognizer];
-  [v5 translationInView:v4];
+  panGestureRecognizer = [draggingCopy panGestureRecognizer];
+  [panGestureRecognizer translationInView:draggingCopy];
   v7 = v6;
 
   self->_dragging = 1;
@@ -1466,10 +1466,10 @@ LABEL_14:
   self->_scrollingUp = v7 > 0.0;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v13 = v4;
+  scrollCopy = scroll;
+  v13 = scrollCopy;
   if (self->_lastYOffsetTime == 0.0)
   {
     self->_lastYOffsetTime = mach_absolute_time();
@@ -1480,7 +1480,7 @@ LABEL_14:
 
   else
   {
-    [v4 contentOffset];
+    [scrollCopy contentOffset];
     v8 = v7;
     v9 = mach_absolute_time();
     PKSecondsFromMachTimeInterval();
@@ -1503,15 +1503,15 @@ LABEL_14:
   }
 }
 
-- (void)resumeRequestIfNoScrollingAfterTimeInterval:(double)a3
+- (void)resumeRequestIfNoScrollingAfterTimeInterval:(double)interval
 {
-  v5 = dispatch_time(0, (a3 * 1000000000.0));
+  v5 = dispatch_time(0, (interval * 1000000000.0));
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __73__PKEditTableViewController_resumeRequestIfNoScrollingAfterTimeInterval___block_invoke;
   v6[3] = &unk_1E80119C8;
   v6[4] = self;
-  *&v6[5] = a3;
+  *&v6[5] = interval;
   dispatch_after(v5, MEMORY[0x1E69E96A0], v6);
 }
 
@@ -1532,25 +1532,25 @@ uint64_t __73__PKEditTableViewController_resumeRequestIfNoScrollingAfterTimeInte
 - (void)findApps
 {
   MEMORY[0x1BFB41980](*MEMORY[0x1E69B9EC0], 0);
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
   v2 = [MEMORY[0x1E695DFF8] URLWithString:*MEMORY[0x1E69BBB68]];
-  [v3 openURL:v2 options:MEMORY[0x1E695E0F8] completionHandler:0];
+  [mEMORY[0x1E69DC668] openURL:v2 options:MEMORY[0x1E695E0F8] completionHandler:0];
 }
 
 - (void)scanCode
 {
   MEMORY[0x1BFB41980](*MEMORY[0x1E69B9EB8], 0);
-  v3 = [MEMORY[0x1E6963608] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
   v2 = [MEMORY[0x1E695DFF8] URLWithString:*MEMORY[0x1E69BBC30]];
-  [v3 openSensitiveURL:v2 withOptions:0];
+  [defaultWorkspace openSensitiveURL:v2 withOptions:0];
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   if (self->_performanceTest == 2)
   {
-    v6 = v4;
+    v6 = animationCopy;
     if (self->_scrollingUp)
     {
       testIteration = self->_testIteration;
@@ -1571,27 +1571,27 @@ uint64_t __73__PKEditTableViewController_resumeRequestIfNoScrollingAfterTimeInte
       [(PKEditTableViewController *)self scrollToFirstRowOrFailTest];
     }
 
-    v4 = v6;
+    animationCopy = v6;
   }
 }
 
-- (void)startedTestWithName:(id)a3
+- (void)startedTestWithName:(id)name
 {
-  objc_storeStrong(&self->_performanceTestName, a3);
-  v4 = a3;
-  v5 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v5 startedTest:v4];
+  objc_storeStrong(&self->_performanceTestName, name);
+  nameCopy = name;
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] startedTest:nameCopy];
 }
 
 - (void)passedTest
 {
-  v3 = [(PKEditTableViewController *)self navigationController];
+  navigationController = [(PKEditTableViewController *)self navigationController];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __39__PKEditTableViewController_passedTest__block_invoke;
   v4[3] = &unk_1E8010970;
   v4[4] = self;
-  [v3 dismissViewControllerAnimated:1 completion:v4];
+  [navigationController dismissViewControllerAnimated:1 completion:v4];
 }
 
 void __39__PKEditTableViewController_passedTest__block_invoke(uint64_t a1)
@@ -1600,18 +1600,18 @@ void __39__PKEditTableViewController_passedTest__block_invoke(uint64_t a1)
   [v2 finishedTest:*(*(a1 + 32) + 1256)];
 }
 
-- (void)failedTestWithReason:(id)a3
+- (void)failedTestWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(PKEditTableViewController *)self navigationController];
+  reasonCopy = reason;
+  navigationController = [(PKEditTableViewController *)self navigationController];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__PKEditTableViewController_failedTestWithReason___block_invoke;
   v7[3] = &unk_1E8010A10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 dismissViewControllerAnimated:1 completion:v7];
+  v8 = reasonCopy;
+  v6 = reasonCopy;
+  [navigationController dismissViewControllerAnimated:1 completion:v7];
 }
 
 void __50__PKEditTableViewController_failedTestWithReason___block_invoke(uint64_t a1)
@@ -1670,26 +1670,26 @@ void __50__PKEditTableViewController_failedTestWithReason___block_invoke(uint64_
   }
 }
 
-- (void)beginScrollingTestWithTestName:(id)a3
+- (void)beginScrollingTestWithTestName:(id)name
 {
   self->_performanceTest = 2;
-  [(PKEditTableViewController *)self startedTestWithName:a3];
+  [(PKEditTableViewController *)self startedTestWithName:name];
 
   [(PKEditTableViewController *)self scrollToLastRowOrFailTest];
 }
 
-- (void)beginPassSelectionTestWithTestName:(id)a3
+- (void)beginPassSelectionTestWithTestName:(id)name
 {
   self->_performanceTest = 1;
-  [(PKEditTableViewController *)self startedTestWithName:a3];
+  [(PKEditTableViewController *)self startedTestWithName:name];
 
   [(PKEditTableViewController *)self selectFirstRowOrFailTest];
 }
 
-- (void)beginPassDeletionTestWithTestName:(id)a3
+- (void)beginPassDeletionTestWithTestName:(id)name
 {
   self->_performanceTest = 3;
-  [(PKEditTableViewController *)self startedTestWithName:a3];
+  [(PKEditTableViewController *)self startedTestWithName:name];
 
   [(PKEditTableViewController *)self selectFirstRowOrFailTest];
 }

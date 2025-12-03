@@ -1,13 +1,13 @@
 @interface PUActivityItemSourceConfiguration
-+ (BOOL)_dontAllowRAWForActivityType:(id)a3;
-+ (BOOL)isAssetBundleSupportedByActivityType:(id)a3;
-+ (BOOL)isIndividualItemPreparationSupportedByActivityType:(id)a3;
-+ (BOOL)isLivePhotoBundleSupportedByActivityType:(id)a3;
-+ (BOOL)isMomentShareLinkSupportedByActivityType:(id)a3;
-+ (BOOL)shouldExcludeAlternateVariantForActivityType:(id)a3;
-+ (BOOL)shouldProvideAlternateVariantForActivityType:(id)a3 forAsset:(id)a4 inPreferredExportFormat:(int64_t)a5 withAvailableSharingVariants:(id)a6;
-+ (BOOL)shouldProvideCompatibleFormatForActivityType:(id)a3 forAsset:(id)a4 inPreferredExportFormat:(int64_t)a5 withAvailableSharingVariants:(id)a6;
-+ (BOOL)supportsAssetLocalIdentifierForActivityType:(id)a3;
++ (BOOL)_dontAllowRAWForActivityType:(id)type;
++ (BOOL)isAssetBundleSupportedByActivityType:(id)type;
++ (BOOL)isIndividualItemPreparationSupportedByActivityType:(id)type;
++ (BOOL)isLivePhotoBundleSupportedByActivityType:(id)type;
++ (BOOL)isMomentShareLinkSupportedByActivityType:(id)type;
++ (BOOL)shouldExcludeAlternateVariantForActivityType:(id)type;
++ (BOOL)shouldProvideAlternateVariantForActivityType:(id)type forAsset:(id)asset inPreferredExportFormat:(int64_t)format withAvailableSharingVariants:(id)variants;
++ (BOOL)shouldProvideCompatibleFormatForActivityType:(id)type forAsset:(id)asset inPreferredExportFormat:(int64_t)format withAvailableSharingVariants:(id)variants;
++ (BOOL)supportsAssetLocalIdentifierForActivityType:(id)type;
 + (id)_activitiesThatDontAllowRAW;
 + (id)_activitiesThatDontRequireAssetExport;
 + (id)_activitiesThatDontSupportMomentShareLinks;
@@ -19,21 +19,21 @@
 + (id)_photosActionSheetActivities;
 + (id)_photosInternalActivities;
 + (id)_systemActivitiesThatDontSupportMomentShareLinks;
-+ (id)descriptionForAssetExportKind:(int64_t)a3;
-+ (id)descriptionForOutputType:(int64_t)a3;
-+ (unint64_t)maxFileSizeLimitForActivityType:(id)a3 asset:(id)a4;
++ (id)descriptionForAssetExportKind:(int64_t)kind;
++ (id)descriptionForOutputType:(int64_t)type;
++ (unint64_t)maxFileSizeLimitForActivityType:(id)type asset:(id)asset;
 - ($9D9B13A340AA60ED2DD68408BD7D962F)sharingPreferences;
-- (BOOL)_requiresAssetExportForAsset:(id)a3 forActivityType:(id)a4;
-- (BOOL)_requiresAssetsLibraryURLForAsset:(id)a3 forActivityType:(id)a4;
-- (BOOL)_shouldFlattenSlomoVideoForActivityType:(id)a3;
-- (BOOL)_wantsAssetBundleForActivityType:(id)a3;
-- (BOOL)_wantsLivePhotoBundleForActivityType:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToConfiguration:(id)a3;
-- (PUActivityItemSourceConfiguration)initWithAsset:(id)a3 availableSharingVariants:(id)a4 activityType:(id)a5 preferences:(id)a6;
+- (BOOL)_requiresAssetExportForAsset:(id)asset forActivityType:(id)type;
+- (BOOL)_requiresAssetsLibraryURLForAsset:(id)asset forActivityType:(id)type;
+- (BOOL)_shouldFlattenSlomoVideoForActivityType:(id)type;
+- (BOOL)_wantsAssetBundleForActivityType:(id)type;
+- (BOOL)_wantsLivePhotoBundleForActivityType:(id)type;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToConfiguration:(id)configuration;
+- (PUActivityItemSourceConfiguration)initWithAsset:(id)asset availableSharingVariants:(id)variants activityType:(id)type preferences:(id)preferences;
 - (id)_customAccessibilityLabel;
-- (id)_videoExportFileTypeForActivityType:(id)a3;
-- (id)_videoExportPresetForActivityType:(id)a3;
+- (id)_videoExportFileTypeForActivityType:(id)type;
+- (id)_videoExportPresetForActivityType:(id)type;
 - (void)_configure;
 @end
 
@@ -53,30 +53,30 @@
   return result;
 }
 
-- (BOOL)isEqualToConfiguration:(id)a3
+- (BOOL)isEqualToConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(PUActivityItemSourceConfiguration *)self asset];
-  v6 = [v4 asset];
-  v7 = [v5 isEqual:v6];
+  configurationCopy = configuration;
+  asset = [(PUActivityItemSourceConfiguration *)self asset];
+  asset2 = [configurationCopy asset];
+  v7 = [asset isEqual:asset2];
 
   if (!v7)
   {
     goto LABEL_4;
   }
 
-  v8 = [(PUActivityItemSourceConfiguration *)self activityType];
-  v9 = [v4 activityType];
-  v10 = [v8 isEqualToString:v9];
+  activityType = [(PUActivityItemSourceConfiguration *)self activityType];
+  activityType2 = [configurationCopy activityType];
+  v10 = [activityType isEqualToString:activityType2];
 
   if (!v10)
   {
     goto LABEL_4;
   }
 
-  v11 = [(PUActivityItemSourceConfiguration *)self sharingPreferences];
+  sharingPreferences = [(PUActivityItemSourceConfiguration *)self sharingPreferences];
   v13 = v12;
-  v15 = [v4 sharingPreferences] ^ v11;
+  v15 = [configurationCopy sharingPreferences] ^ sharingPreferences;
   if ((v15 & 0x101010101) != 0)
   {
     goto LABEL_4;
@@ -85,21 +85,21 @@
   v16 = 0;
   if ((v15 & 0x10000000000) == 0 && v13 == v14)
   {
-    v18 = [(PUActivityItemSourceConfiguration *)self maxFileSizeLimit];
-    if (v18 != [v4 maxFileSizeLimit] || (v19 = -[PUActivityItemSourceConfiguration outputType](self, "outputType"), v19 != objc_msgSend(v4, "outputType")) || (v20 = -[PUActivityItemSourceConfiguration requiresAssetExport](self, "requiresAssetExport"), v20 != objc_msgSend(v4, "requiresAssetExport")) || (v21 = -[PUActivityItemSourceConfiguration assetExportKind](self, "assetExportKind"), v21 != objc_msgSend(v4, "assetExportKind")))
+    maxFileSizeLimit = [(PUActivityItemSourceConfiguration *)self maxFileSizeLimit];
+    if (maxFileSizeLimit != [configurationCopy maxFileSizeLimit] || (v19 = -[PUActivityItemSourceConfiguration outputType](self, "outputType"), v19 != objc_msgSend(configurationCopy, "outputType")) || (v20 = -[PUActivityItemSourceConfiguration requiresAssetExport](self, "requiresAssetExport"), v20 != objc_msgSend(configurationCopy, "requiresAssetExport")) || (v21 = -[PUActivityItemSourceConfiguration assetExportKind](self, "assetExportKind"), v21 != objc_msgSend(configurationCopy, "assetExportKind")))
     {
 LABEL_4:
       v16 = 0;
       goto LABEL_5;
     }
 
-    v22 = [(PUActivityItemSourceConfiguration *)self assetExportRequestOptions];
+    assetExportRequestOptions = [(PUActivityItemSourceConfiguration *)self assetExportRequestOptions];
 
-    if (v22)
+    if (assetExportRequestOptions)
     {
-      v23 = [(PUActivityItemSourceConfiguration *)self assetExportRequestOptions];
-      v24 = [v4 assetExportRequestOptions];
-      v16 = [v23 isEqual:v24];
+      assetExportRequestOptions2 = [(PUActivityItemSourceConfiguration *)self assetExportRequestOptions];
+      assetExportRequestOptions3 = [configurationCopy assetExportRequestOptions];
+      v16 = [assetExportRequestOptions2 isEqual:assetExportRequestOptions3];
     }
 
     else
@@ -113,16 +113,16 @@ LABEL_5:
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v6 = 1;
     goto LABEL_7;
@@ -145,10 +145,10 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)_wantsAssetBundleForActivityType:(id)a3
+- (BOOL)_wantsAssetBundleForActivityType:(id)type
 {
-  v4 = a3;
-  v5 = [objc_opt_class() isAssetBundleSupportedByActivityType:v4];
+  typeCopy = type;
+  v5 = [objc_opt_class() isAssetBundleSupportedByActivityType:typeCopy];
 
   if (v5)
   {
@@ -163,11 +163,11 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)_wantsLivePhotoBundleForActivityType:(id)a3
+- (BOOL)_wantsLivePhotoBundleForActivityType:(id)type
 {
-  v4 = a3;
-  v5 = [(PUActivityItemSourceConfiguration *)self sharingPreferences];
-  v6 = [(PHAsset *)self->_asset playbackStyle];
+  typeCopy = type;
+  sharingPreferences = [(PUActivityItemSourceConfiguration *)self sharingPreferences];
+  playbackStyle = [(PHAsset *)self->_asset playbackStyle];
   v7 = [(PHAsset *)self->_asset isMediaSubtype:8];
   if (([(PUActivityItemSourceConfiguration *)self sharingPreferences]& 0x10000000000) != 0)
   {
@@ -176,12 +176,12 @@ LABEL_7:
 
   else
   {
-    v8 = [objc_opt_class() _shouldExportAsUnmodifiedOriginalForActivityType:v4];
+    v8 = [objc_opt_class() _shouldExportAsUnmodifiedOriginalForActivityType:typeCopy];
   }
 
-  v9 = v6 == 3;
+  v9 = playbackStyle == 3;
   v10 = v7 ^ 1;
-  if (v6 == 3)
+  if (playbackStyle == 3)
   {
     v10 = 1;
   }
@@ -191,14 +191,14 @@ LABEL_7:
     v9 = v8;
   }
 
-  if (v5 & 1 | !v9)
+  if (sharingPreferences & 1 | !v9)
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = [objc_opt_class() isLivePhotoBundleSupportedByActivityType:v4];
+    v11 = [objc_opt_class() isLivePhotoBundleSupportedByActivityType:typeCopy];
   }
 
   return v11;
@@ -206,16 +206,16 @@ LABEL_7:
 
 - (id)_customAccessibilityLabel
 {
-  v2 = [(PHAsset *)self->_asset descriptionProperties];
-  v3 = [v2 accessibilityDescription];
+  descriptionProperties = [(PHAsset *)self->_asset descriptionProperties];
+  accessibilityDescription = [descriptionProperties accessibilityDescription];
 
-  return v3;
+  return accessibilityDescription;
 }
 
-- (id)_videoExportFileTypeForActivityType:(id)a3
+- (id)_videoExportFileTypeForActivityType:(id)type
 {
-  v4 = a3;
-  if (-[PUActivityItemSourceConfiguration _shouldFlattenSlomoVideoForActivityType:](self, "_shouldFlattenSlomoVideoForActivityType:", v4) && [v4 isEqualToString:*MEMORY[0x1E69C3CF8]])
+  typeCopy = type;
+  if (-[PUActivityItemSourceConfiguration _shouldFlattenSlomoVideoForActivityType:](self, "_shouldFlattenSlomoVideoForActivityType:", typeCopy) && [typeCopy isEqualToString:*MEMORY[0x1E69C3CF8]])
   {
     v5 = *MEMORY[0x1E69874B8];
   }
@@ -228,12 +228,12 @@ LABEL_7:
   return v5;
 }
 
-- (id)_videoExportPresetForActivityType:(id)a3
+- (id)_videoExportPresetForActivityType:(id)type
 {
-  v4 = a3;
-  if ([(PUActivityItemSourceConfiguration *)self _shouldFlattenSlomoVideoForActivityType:v4])
+  typeCopy = type;
+  if ([(PUActivityItemSourceConfiguration *)self _shouldFlattenSlomoVideoForActivityType:typeCopy])
   {
-    if ([v4 isEqualToString:*MEMORY[0x1E69C3CF8]])
+    if ([typeCopy isEqualToString:*MEMORY[0x1E69C3CF8]])
     {
       v5 = MEMORY[0x1E6987348];
 LABEL_6:
@@ -241,7 +241,7 @@ LABEL_6:
       goto LABEL_8;
     }
 
-    if ([v4 isEqualToString:*MEMORY[0x1E69CDAB0]])
+    if ([typeCopy isEqualToString:*MEMORY[0x1E69CDAB0]])
     {
       v5 = MEMORY[0x1E6987328];
       goto LABEL_6;
@@ -254,23 +254,23 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)_shouldFlattenSlomoVideoForActivityType:(id)a3
+- (BOOL)_shouldFlattenSlomoVideoForActivityType:(id)type
 {
   asset = self->_asset;
-  v5 = a3;
-  v6 = [(PUActivityItemSourceConfiguration *)self _requiresAssetsLibraryURLForAsset:asset forActivityType:v5];
-  v7 = [v5 isEqualToString:*MEMORY[0x1E69CDA90]];
-  v8 = [(PUActivityItemSourceConfiguration *)self _wantsAssetBundleForActivityType:v5];
+  typeCopy = type;
+  v6 = [(PUActivityItemSourceConfiguration *)self _requiresAssetsLibraryURLForAsset:asset forActivityType:typeCopy];
+  v7 = [typeCopy isEqualToString:*MEMORY[0x1E69CDA90]];
+  v8 = [(PUActivityItemSourceConfiguration *)self _wantsAssetBundleForActivityType:typeCopy];
 
   v9 = 0;
   if ([(PHAsset *)self->_asset isHighFrameRateVideo]&& (v7 & 1) == 0 && !v6 && !v8)
   {
     [(PHAsset *)self->_asset fetchPropertySetsIfNeeded];
-    v10 = [(PHAsset *)self->_asset adjustmentProperties];
+    adjustmentProperties = [(PHAsset *)self->_asset adjustmentProperties];
     v11 = MEMORY[0x1E69C0910];
-    v12 = [v10 formatIdentifier];
-    v13 = [v10 formatVersion];
-    LOBYTE(v11) = [v11 isRecognizedSlowMotionFormatWithIdentifier:v12 version:v13];
+    formatIdentifier = [adjustmentProperties formatIdentifier];
+    formatVersion = [adjustmentProperties formatVersion];
+    LOBYTE(v11) = [v11 isRecognizedSlowMotionFormatWithIdentifier:formatIdentifier version:formatVersion];
 
     if (v11)
     {
@@ -279,35 +279,35 @@ LABEL_8:
 
     else
     {
-      v14 = [(PUActivityItemSourceConfiguration *)self _customAccessibilityLabel];
-      v9 = v14 != 0;
+      _customAccessibilityLabel = [(PUActivityItemSourceConfiguration *)self _customAccessibilityLabel];
+      v9 = _customAccessibilityLabel != 0;
     }
   }
 
   return v9;
 }
 
-- (BOOL)_requiresAssetExportForAsset:(id)a3 forActivityType:(id)a4
+- (BOOL)_requiresAssetExportForAsset:(id)asset forActivityType:(id)type
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() _activitiesThatDontRequireAssetExport];
-  v9 = [v8 containsObject:v6];
+  typeCopy = type;
+  assetCopy = asset;
+  _activitiesThatDontRequireAssetExport = [objc_opt_class() _activitiesThatDontRequireAssetExport];
+  v9 = [_activitiesThatDontRequireAssetExport containsObject:typeCopy];
 
-  LOBYTE(self) = [(PUActivityItemSourceConfiguration *)self _requiresAssetsLibraryURLForAsset:v7 forActivityType:v6];
+  LOBYTE(self) = [(PUActivityItemSourceConfiguration *)self _requiresAssetsLibraryURLForAsset:assetCopy forActivityType:typeCopy];
   return self | v9 ^ 1;
 }
 
-- (BOOL)_requiresAssetsLibraryURLForAsset:(id)a3 forActivityType:(id)a4
+- (BOOL)_requiresAssetsLibraryURLForAsset:(id)asset forActivityType:(id)type
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E69C3A18] sharedInstance];
-  v8 = [v7 sendAssetURLsToMessages];
+  assetCopy = asset;
+  typeCopy = type;
+  mEMORY[0x1E69C3A18] = [MEMORY[0x1E69C3A18] sharedInstance];
+  sendAssetURLsToMessages = [mEMORY[0x1E69C3A18] sendAssetURLsToMessages];
 
-  if (v8 && [v5 isVideo] && (objc_msgSend(v5, "canPlayAutoloop") & 1) == 0 && (objc_msgSend(v5, "isStreamedVideo") & 1) == 0 && objc_msgSend(v5, "isHighFrameRateVideo") && (objc_msgSend(MEMORY[0x1E6978630], "isOriginalKnownUnsupportedFormatForAsset:failureInfo:", v5, 0) & 1) == 0)
+  if (sendAssetURLsToMessages && [assetCopy isVideo] && (objc_msgSend(assetCopy, "canPlayAutoloop") & 1) == 0 && (objc_msgSend(assetCopy, "isStreamedVideo") & 1) == 0 && objc_msgSend(assetCopy, "isHighFrameRateVideo") && (objc_msgSend(MEMORY[0x1E6978630], "isOriginalKnownUnsupportedFormatForAsset:failureInfo:", assetCopy, 0) & 1) == 0)
   {
-    v9 = [v6 isEqualToString:*MEMORY[0x1E69CDAB0]];
+    v9 = [typeCopy isEqualToString:*MEMORY[0x1E69CDAB0]];
   }
 
   else
@@ -321,11 +321,11 @@ LABEL_8:
 - (void)_configure
 {
   v50 = *MEMORY[0x1E69E9840];
-  v3 = [(PUActivityItemSourceConfiguration *)self asset];
-  v4 = [(PUActivityItemSourceConfiguration *)self activityType];
-  self->_requiresAssetExport = [(PUActivityItemSourceConfiguration *)self _requiresAssetExportForAsset:v3 forActivityType:v4];
-  v5 = [(PUActivityItemSourceConfiguration *)self _requiresAssetsLibraryURLForAsset:v3 forActivityType:v4];
-  v6 = [v4 isEqualToString:*MEMORY[0x1E69CDA90]];
+  asset = [(PUActivityItemSourceConfiguration *)self asset];
+  activityType = [(PUActivityItemSourceConfiguration *)self activityType];
+  self->_requiresAssetExport = [(PUActivityItemSourceConfiguration *)self _requiresAssetExportForAsset:asset forActivityType:activityType];
+  v5 = [(PUActivityItemSourceConfiguration *)self _requiresAssetsLibraryURLForAsset:asset forActivityType:activityType];
+  v6 = [activityType isEqualToString:*MEMORY[0x1E69CDA90]];
   requiresAssetExport = self->_requiresAssetExport;
   v8 = 3;
   if (self->_requiresAssetExport)
@@ -350,14 +350,14 @@ LABEL_8:
     v10 = objc_opt_class();
     [(PUActivityItemSourceConfiguration *)self sharingPreferences];
     v12 = v11;
-    v13 = [(PUActivityItemSourceConfiguration *)self sharingVariants];
-    v14 = [v10 shouldProvideAlternateVariantForActivityType:v4 forAsset:v3 inPreferredExportFormat:v12 withAvailableSharingVariants:v13];
+    sharingVariants = [(PUActivityItemSourceConfiguration *)self sharingVariants];
+    v14 = [v10 shouldProvideAlternateVariantForActivityType:activityType forAsset:asset inPreferredExportFormat:v12 withAvailableSharingVariants:sharingVariants];
 
     v15 = objc_opt_class();
     [(PUActivityItemSourceConfiguration *)self sharingPreferences];
     v17 = v16;
-    v18 = [(PUActivityItemSourceConfiguration *)self sharingVariants];
-    v19 = [v15 shouldProvideCompatibleFormatForActivityType:v4 forAsset:v3 inPreferredExportFormat:v17 withAvailableSharingVariants:v18];
+    sharingVariants2 = [(PUActivityItemSourceConfiguration *)self sharingVariants];
+    v19 = [v15 shouldProvideCompatibleFormatForActivityType:activityType forAsset:asset inPreferredExportFormat:v17 withAvailableSharingVariants:sharingVariants2];
 
     if (([(PUActivityItemSourceConfiguration *)self sharingPreferences]& 0x10000000000) != 0)
     {
@@ -371,7 +371,7 @@ LABEL_8:
     }
 
     v21 = v14 ? 3 : v20;
-    if ([objc_opt_class() _shouldExportAsUnmodifiedOriginalForActivityType:v4])
+    if ([objc_opt_class() _shouldExportAsUnmodifiedOriginalForActivityType:activityType])
     {
 LABEL_15:
       v22 = 1;
@@ -384,18 +384,18 @@ LABEL_15:
     }
 
     [v9 setVariant:v21];
-    v23 = [(PUActivityItemSourceConfiguration *)self _wantsLivePhotoBundleForActivityType:v4];
-    v47 = [(PUActivityItemSourceConfiguration *)self _wantsAssetBundleForActivityType:v4];
+    v23 = [(PUActivityItemSourceConfiguration *)self _wantsLivePhotoBundleForActivityType:activityType];
+    v47 = [(PUActivityItemSourceConfiguration *)self _wantsAssetBundleForActivityType:activityType];
     [v9 setIncludeAllAssetResources:?];
-    [v9 setFlattenSlomoVideos:{-[PUActivityItemSourceConfiguration _shouldFlattenSlomoVideoForActivityType:](self, "_shouldFlattenSlomoVideoForActivityType:", v4)}];
-    v24 = [(PUActivityItemSourceConfiguration *)self _videoExportPresetForActivityType:v4];
+    [v9 setFlattenSlomoVideos:{-[PUActivityItemSourceConfiguration _shouldFlattenSlomoVideoForActivityType:](self, "_shouldFlattenSlomoVideoForActivityType:", activityType)}];
+    v24 = [(PUActivityItemSourceConfiguration *)self _videoExportPresetForActivityType:activityType];
     [v9 setVideoExportPreset:v24];
-    v45 = [(PUActivityItemSourceConfiguration *)self _videoExportFileTypeForActivityType:v4];
+    v45 = [(PUActivityItemSourceConfiguration *)self _videoExportFileTypeForActivityType:activityType];
     [v9 setVideoExportFileType:?];
-    self->_maxFileSizeLimit = [objc_opt_class() maxFileSizeLimitForActivityType:v4 asset:v3];
+    self->_maxFileSizeLimit = [objc_opt_class() maxFileSizeLimitForActivityType:activityType asset:asset];
     if ((v22 & 1) == 0)
     {
-      [v9 setDontAllowRAW:{objc_msgSend(objc_opt_class(), "_dontAllowRAWForActivityType:", v4)}];
+      [v9 setDontAllowRAW:{objc_msgSend(objc_opt_class(), "_dontAllowRAWForActivityType:", activityType)}];
     }
 
     v46 = v23;
@@ -405,12 +405,12 @@ LABEL_15:
     [v9 setShouldStripAccessibilityDescription:{(v22 ^ 1) & (-[PUActivityItemSourceConfiguration sharingPreferences](self, "sharingPreferences") >> 24)}];
     [v9 setShouldExportUnmodifiedOriginalResources:v22];
     v25 = MEMORY[0x1E69C08F0];
-    v26 = [(PHAsset *)self->_asset uniformTypeIdentifier];
-    v27 = [v25 typeWithIdentifier:v26];
+    uniformTypeIdentifier = [(PHAsset *)self->_asset uniformTypeIdentifier];
+    v27 = [v25 typeWithIdentifier:uniformTypeIdentifier];
 
     if ([v27 conformsToType:*MEMORY[0x1E6982F28]])
     {
-      v28 = [v4 isEqualToString:*MEMORY[0x1E69C3CF8]];
+      v28 = [activityType isEqualToString:*MEMORY[0x1E69C3CF8]];
     }
 
     else
@@ -419,25 +419,25 @@ LABEL_15:
     }
 
     [v9 setAllowMetadataConversionsForPNG:v28];
-    v29 = [MEMORY[0x1E69C3A18] sharedInstance];
-    v30 = [v29 locationBakingComparisonStrategy];
-    if (v30 == 1)
+    mEMORY[0x1E69C3A18] = [MEMORY[0x1E69C3A18] sharedInstance];
+    locationBakingComparisonStrategy = [mEMORY[0x1E69C3A18] locationBakingComparisonStrategy];
+    if (locationBakingComparisonStrategy == 1)
     {
       v31 = 1;
     }
 
     else
     {
-      v31 = 2 * (v30 == 2);
+      v31 = 2 * (locationBakingComparisonStrategy == 2);
     }
 
     [v9 setLocationComparisonStrategy:v31];
-    if ([v29 disableMetadataCorrections])
+    if ([mEMORY[0x1E69C3A18] disableMetadataCorrections])
     {
       v32 = PLShareSheetGetLog();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
-        [v3 uuid];
+        [asset uuid];
         v44 = v24;
         v34 = v33 = v14;
         *buf = 138543362;
@@ -448,26 +448,26 @@ LABEL_15:
         v24 = v44;
       }
 
-      [v9 setDisableMetadataCorrections:{objc_msgSend(v29, "disableMetadataCorrections")}];
+      [v9 setDisableMetadataCorrections:{objc_msgSend(mEMORY[0x1E69C3A18], "disableMetadataCorrections")}];
     }
 
-    [v9 setForceDateTimeMetadataBaking:{objc_msgSend(v29, "forceDateTimeMetadataBaking")}];
-    [v9 setForceLocationMetadataBaking:{objc_msgSend(v29, "forceLocationMetadataBaking")}];
-    [v9 setForceCaptionMetadataBaking:{objc_msgSend(v29, "forceCaptionMetadataBaking")}];
-    [v9 setForceAccessibilityDescriptionMetadataBaking:{objc_msgSend(v29, "forceAccessibilityDescriptionMetadataBaking")}];
+    [v9 setForceDateTimeMetadataBaking:{objc_msgSend(mEMORY[0x1E69C3A18], "forceDateTimeMetadataBaking")}];
+    [v9 setForceLocationMetadataBaking:{objc_msgSend(mEMORY[0x1E69C3A18], "forceLocationMetadataBaking")}];
+    [v9 setForceCaptionMetadataBaking:{objc_msgSend(mEMORY[0x1E69C3A18], "forceCaptionMetadataBaking")}];
+    [v9 setForceAccessibilityDescriptionMetadataBaking:{objc_msgSend(mEMORY[0x1E69C3A18], "forceAccessibilityDescriptionMetadataBaking")}];
     if ([v9 shouldExportUnmodifiedOriginalResources])
     {
-      v35 = [v29 shouldUpdateFileCreationDatesForUnmodifiedOriginalExports];
+      shouldUpdateFileCreationDatesForUnmodifiedOriginalExports = [mEMORY[0x1E69C3A18] shouldUpdateFileCreationDatesForUnmodifiedOriginalExports];
     }
 
     else
     {
-      v35 = [v29 shouldUpdateFileCreationDatesForRegularExports];
+      shouldUpdateFileCreationDatesForUnmodifiedOriginalExports = [mEMORY[0x1E69C3A18] shouldUpdateFileCreationDatesForRegularExports];
     }
 
-    [v9 setDisableUpdatingFileCreationDatesOnExportedFileURLs:v35 ^ 1u];
-    v36 = [(PHAsset *)self->_asset canPlayLoopingVideo];
-    v37 = ([(PHAsset *)self->_asset isMediaSubtype:8]^ 1) & v36;
+    [v9 setDisableUpdatingFileCreationDatesOnExportedFileURLs:shouldUpdateFileCreationDatesForUnmodifiedOriginalExports ^ 1u];
+    canPlayLoopingVideo = [(PHAsset *)self->_asset canPlayLoopingVideo];
+    v37 = ([(PHAsset *)self->_asset isMediaSubtype:8]^ 1) & canPlayLoopingVideo;
     if (v22)
     {
       v38 = v37;
@@ -475,7 +475,7 @@ LABEL_15:
 
     else
     {
-      v38 = v36;
+      v38 = canPlayLoopingVideo;
     }
 
     v39 = ([(PHAsset *)self->_asset playbackStyle]== 4) | v38;
@@ -508,25 +508,25 @@ LABEL_15:
   }
 }
 
-- (PUActivityItemSourceConfiguration)initWithAsset:(id)a3 availableSharingVariants:(id)a4 activityType:(id)a5 preferences:(id)a6
+- (PUActivityItemSourceConfiguration)initWithAsset:(id)asset availableSharingVariants:(id)variants activityType:(id)type preferences:(id)preferences
 {
-  var6 = a6.var6;
-  v7 = *&a6.var0;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  var6 = preferences.var6;
+  v7 = *&preferences.var0;
+  assetCopy = asset;
+  variantsCopy = variants;
+  typeCopy = type;
   v22.receiver = self;
   v22.super_class = PUActivityItemSourceConfiguration;
   v15 = [(PUActivityItemSourceConfiguration *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_asset, a3);
-    v17 = [v13 copy];
+    objc_storeStrong(&v15->_asset, asset);
+    v17 = [variantsCopy copy];
     sharingVariants = v16->_sharingVariants;
     v16->_sharingVariants = v17;
 
-    v19 = [v14 copy];
+    v19 = [typeCopy copy];
     activityType = v16->_activityType;
     v16->_activityType = v19;
 
@@ -538,85 +538,85 @@ LABEL_15:
   return v16;
 }
 
-+ (id)descriptionForAssetExportKind:(int64_t)a3
++ (id)descriptionForAssetExportKind:(int64_t)kind
 {
-  if (a3 > 5)
+  if (kind > 5)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_1E7B770D8[a3];
+    return off_1E7B770D8[kind];
   }
 }
 
-+ (id)descriptionForOutputType:(int64_t)a3
++ (id)descriptionForOutputType:(int64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_1E7B770B8[a3];
+    return off_1E7B770B8[type];
   }
 }
 
-+ (BOOL)isIndividualItemPreparationSupportedByActivityType:(id)a3
++ (BOOL)isIndividualItemPreparationSupportedByActivityType:(id)type
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _activitiesThatOnlySupportMomentShareLinks];
-  v5 = [v4 containsObject:v3];
+  typeCopy = type;
+  _activitiesThatOnlySupportMomentShareLinks = [objc_opt_class() _activitiesThatOnlySupportMomentShareLinks];
+  v5 = [_activitiesThatOnlySupportMomentShareLinks containsObject:typeCopy];
 
   return v5 ^ 1;
 }
 
-+ (BOOL)isMomentShareLinkSupportedByActivityType:(id)a3
++ (BOOL)isMomentShareLinkSupportedByActivityType:(id)type
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _activitiesThatDontSupportMomentShareLinks];
-  v5 = [v4 containsObject:v3];
+  typeCopy = type;
+  _activitiesThatDontSupportMomentShareLinks = [objc_opt_class() _activitiesThatDontSupportMomentShareLinks];
+  v5 = [_activitiesThatDontSupportMomentShareLinks containsObject:typeCopy];
 
   return v5 ^ 1;
 }
 
-+ (unint64_t)maxFileSizeLimitForActivityType:(id)a3 asset:(id)a4
++ (unint64_t)maxFileSizeLimitForActivityType:(id)type asset:(id)asset
 {
-  v5 = a4;
-  if ([a3 isEqualToString:*MEMORY[0x1E69C3CF8]] && objc_msgSend(v5, "playbackStyle") == 2)
+  assetCopy = asset;
+  if ([type isEqualToString:*MEMORY[0x1E69C3CF8]] && objc_msgSend(assetCopy, "playbackStyle") == 2)
   {
-    v6 = [MEMORY[0x1E69BE6A8] maxGIFSizeForPublishing];
+    maxGIFSizeForPublishing = [MEMORY[0x1E69BE6A8] maxGIFSizeForPublishing];
   }
 
   else
   {
-    v6 = 0;
+    maxGIFSizeForPublishing = 0;
   }
 
-  return v6;
+  return maxGIFSizeForPublishing;
 }
 
-+ (BOOL)shouldExcludeAlternateVariantForActivityType:(id)a3
++ (BOOL)shouldExcludeAlternateVariantForActivityType:(id)type
 {
-  v3 = a3;
-  if (v3)
+  typeCopy = type;
+  if (typeCopy)
   {
     if (shouldExcludeAlternateVariantForActivityType__onceToken != -1)
     {
       dispatch_once(&shouldExcludeAlternateVariantForActivityType__onceToken, &__block_literal_global_62);
     }
 
-    if ([shouldExcludeAlternateVariantForActivityType___alternateVariantExcludedActivities containsObject:v3])
+    if ([shouldExcludeAlternateVariantForActivityType___alternateVariantExcludedActivities containsObject:typeCopy])
     {
       v4 = 1;
     }
 
     else
     {
-      v5 = [objc_opt_class() _photosInternalActivities];
-      v4 = [v5 containsObject:v3];
+      _photosInternalActivities = [objc_opt_class() _photosInternalActivities];
+      v4 = [_photosInternalActivities containsObject:typeCopy];
     }
   }
 
@@ -639,23 +639,23 @@ void __82__PUActivityItemSourceConfiguration_shouldExcludeAlternateVariantForAct
   shouldExcludeAlternateVariantForActivityType___alternateVariantExcludedActivities = v1;
 }
 
-+ (BOOL)shouldProvideAlternateVariantForActivityType:(id)a3 forAsset:(id)a4 inPreferredExportFormat:(int64_t)a5 withAvailableSharingVariants:(id)a6
++ (BOOL)shouldProvideAlternateVariantForActivityType:(id)type forAsset:(id)asset inPreferredExportFormat:(int64_t)format withAvailableSharingVariants:(id)variants
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  typeCopy = type;
+  assetCopy = asset;
+  variantsCopy = variants;
   LOBYTE(v12) = 0;
-  if (v9 && v10)
+  if (typeCopy && assetCopy)
   {
     if (shouldProvideAlternateVariantForActivityType_forAsset_inPreferredExportFormat_withAvailableSharingVariants__onceToken != -1)
     {
       dispatch_once(&shouldProvideAlternateVariantForActivityType_forAsset_inPreferredExportFormat_withAvailableSharingVariants__onceToken, &__block_literal_global_58);
     }
 
-    if ([v10 canPlayLoopingVideo])
+    if ([assetCopy canPlayLoopingVideo])
     {
-      v13 = [shouldProvideAlternateVariantForActivityType_forAsset_inPreferredExportFormat_withAvailableSharingVariants___alternateVariantRequiredActivities containsObject:v9];
-      if (a5)
+      v13 = [shouldProvideAlternateVariantForActivityType_forAsset_inPreferredExportFormat_withAvailableSharingVariants___alternateVariantRequiredActivities containsObject:typeCopy];
+      if (format)
       {
         v12 = 0;
       }
@@ -665,9 +665,9 @@ void __82__PUActivityItemSourceConfiguration_shouldExcludeAlternateVariantForAct
         v12 = v13;
       }
 
-      if (v11 && v12)
+      if (variantsCopy && v12)
       {
-        v14 = [v11 objectForKeyedSubscript:&unk_1F2B7DCA0];
+        v14 = [variantsCopy objectForKeyedSubscript:&unk_1F2B7DCA0];
         LOBYTE(v12) = v14 != 0;
       }
     }
@@ -692,34 +692,34 @@ void __144__PUActivityItemSourceConfiguration_shouldProvideAlternateVariantForAc
   shouldProvideAlternateVariantForActivityType_forAsset_inPreferredExportFormat_withAvailableSharingVariants___alternateVariantRequiredActivities = v1;
 }
 
-+ (BOOL)shouldProvideCompatibleFormatForActivityType:(id)a3 forAsset:(id)a4 inPreferredExportFormat:(int64_t)a5 withAvailableSharingVariants:(id)a6
++ (BOOL)shouldProvideCompatibleFormatForActivityType:(id)type forAsset:(id)asset inPreferredExportFormat:(int64_t)format withAvailableSharingVariants:(id)variants
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  typeCopy = type;
+  assetCopy = asset;
+  variantsCopy = variants;
   IsCompatibilityConversionDisabled = PXPreferencesIsCompatibilityConversionDisabled();
   LOBYTE(v13) = 0;
-  if (v11)
+  if (variantsCopy)
   {
     if ((IsCompatibilityConversionDisabled & 1) == 0)
     {
-      v13 = [v11 objectForKeyedSubscript:&unk_1F2B7DC88];
+      v13 = [variantsCopy objectForKeyedSubscript:&unk_1F2B7DC88];
 
       if (v13)
       {
-        if (a5)
+        if (format)
         {
-          LOBYTE(v13) = a5 == 2;
+          LOBYTE(v13) = format == 2;
         }
 
         else
         {
-          v14 = [objc_opt_class() _activitiesThatSupportHEIFHEVC];
+          _activitiesThatSupportHEIFHEVC = [objc_opt_class() _activitiesThatSupportHEIFHEVC];
           v17 = 0;
-          if (([v14 containsObject:v9] & 1) == 0)
+          if (([_activitiesThatSupportHEIFHEVC containsObject:typeCopy] & 1) == 0)
           {
-            v15 = [objc_opt_class() _photosInternalActivities];
-            v16 = [v15 containsObject:v9];
+            _photosInternalActivities = [objc_opt_class() _photosInternalActivities];
+            v16 = [_photosInternalActivities containsObject:typeCopy];
 
             if (!v16)
             {
@@ -727,9 +727,9 @@ void __144__PUActivityItemSourceConfiguration_shouldProvideAlternateVariantForAc
             }
           }
 
-          v18 = [objc_opt_class() _activitiesThatSupportSpatial];
-          v19 = [v18 containsObject:v9];
-          LODWORD(v13) = v17 & (v17 & [v10 isSpatialMedia] & v19 ^ 1);
+          _activitiesThatSupportSpatial = [objc_opt_class() _activitiesThatSupportSpatial];
+          v19 = [_activitiesThatSupportSpatial containsObject:typeCopy];
+          LODWORD(v13) = v17 & (v17 & [assetCopy isSpatialMedia] & v19 ^ 1);
         }
       }
     }
@@ -744,7 +744,7 @@ void __144__PUActivityItemSourceConfiguration_shouldProvideAlternateVariantForAc
   block[1] = 3221225472;
   block[2] = __66__PUActivityItemSourceConfiguration__activitiesThatSupportSpatial__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_activitiesThatSupportSpatial_onceToken != -1)
   {
     dispatch_once(&_activitiesThatSupportSpatial_onceToken, block);
@@ -829,7 +829,7 @@ void __79__PUActivityItemSourceConfiguration__activitiesThatOnlySupportMomentSha
   block[1] = 3221225472;
   block[2] = __79__PUActivityItemSourceConfiguration__activitiesThatDontSupportMomentShareLinks__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_activitiesThatDontSupportMomentShareLinks_onceToken != -1)
   {
     dispatch_once(&_activitiesThatDontSupportMomentShareLinks_onceToken, block);
@@ -1034,7 +1034,7 @@ void __62__PUActivityItemSourceConfiguration__photosInternalActivities__block_in
   block[1] = 3221225472;
   block[2] = __74__PUActivityItemSourceConfiguration__activitiesThatDontRequireAssetExport__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_activitiesThatDontRequireAssetExport_onceToken != -1)
   {
     dispatch_once(&_activitiesThatDontRequireAssetExport_onceToken, block);
@@ -1164,75 +1164,75 @@ uint64_t __64__PUActivityItemSourceConfiguration__activitiesThatDontAllowRAW__bl
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-+ (BOOL)_dontAllowRAWForActivityType:(id)a3
++ (BOOL)_dontAllowRAWForActivityType:(id)type
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _activitiesThatDontAllowRAW];
-  v5 = [v4 containsObject:v3];
+  typeCopy = type;
+  _activitiesThatDontAllowRAW = [objc_opt_class() _activitiesThatDontAllowRAW];
+  v5 = [_activitiesThatDontAllowRAW containsObject:typeCopy];
 
   return v5;
 }
 
-+ (BOOL)supportsAssetLocalIdentifierForActivityType:(id)a3
++ (BOOL)supportsAssetLocalIdentifierForActivityType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E69C3E58]])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:*MEMORY[0x1E69C3E58]])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:*MEMORY[0x1E69C3D48]];
+    v4 = [typeCopy isEqualToString:*MEMORY[0x1E69C3D48]];
   }
 
   return v4;
 }
 
-+ (BOOL)isAssetBundleSupportedByActivityType:(id)a3
++ (BOOL)isAssetBundleSupportedByActivityType:(id)type
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_opt_class() _activitiesThatSupportAssetBundles];
-  v5 = [MEMORY[0x1E69C3A18] sharedInstance];
-  v6 = [v5 savePhotosBundlesToFilesWithoutExtractingMedia];
+  typeCopy = type;
+  _activitiesThatSupportAssetBundles = [objc_opt_class() _activitiesThatSupportAssetBundles];
+  mEMORY[0x1E69C3A18] = [MEMORY[0x1E69C3A18] sharedInstance];
+  savePhotosBundlesToFilesWithoutExtractingMedia = [mEMORY[0x1E69C3A18] savePhotosBundlesToFilesWithoutExtractingMedia];
 
-  if (v6)
+  if (savePhotosBundlesToFilesWithoutExtractingMedia)
   {
     v7 = *MEMORY[0x1E69C3DA0];
     v12[0] = *MEMORY[0x1E69CDB00];
     v12[1] = v7;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
-    v9 = [v4 arrayByAddingObjectsFromArray:v8];
+    v9 = [_activitiesThatSupportAssetBundles arrayByAddingObjectsFromArray:v8];
 
-    v4 = v9;
+    _activitiesThatSupportAssetBundles = v9;
   }
 
-  v10 = [v4 containsObject:v3];
+  v10 = [_activitiesThatSupportAssetBundles containsObject:typeCopy];
 
   return v10;
 }
 
-+ (BOOL)isLivePhotoBundleSupportedByActivityType:(id)a3
++ (BOOL)isLivePhotoBundleSupportedByActivityType:(id)type
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_opt_class() _activitiesThatSupportLivePhotoBundles];
-  v5 = [MEMORY[0x1E69C3A18] sharedInstance];
-  v6 = [v5 savePhotosBundlesToFilesWithoutExtractingMedia];
+  typeCopy = type;
+  _activitiesThatSupportLivePhotoBundles = [objc_opt_class() _activitiesThatSupportLivePhotoBundles];
+  mEMORY[0x1E69C3A18] = [MEMORY[0x1E69C3A18] sharedInstance];
+  savePhotosBundlesToFilesWithoutExtractingMedia = [mEMORY[0x1E69C3A18] savePhotosBundlesToFilesWithoutExtractingMedia];
 
-  if (v6)
+  if (savePhotosBundlesToFilesWithoutExtractingMedia)
   {
     v7 = *MEMORY[0x1E69C3DA0];
     v12[0] = *MEMORY[0x1E69CDB00];
     v12[1] = v7;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
-    v9 = [v4 arrayByAddingObjectsFromArray:v8];
+    v9 = [_activitiesThatSupportLivePhotoBundles arrayByAddingObjectsFromArray:v8];
 
-    v4 = v9;
+    _activitiesThatSupportLivePhotoBundles = v9;
   }
 
-  v10 = [v4 containsObject:v3];
+  v10 = [_activitiesThatSupportLivePhotoBundles containsObject:typeCopy];
 
   return v10;
 }

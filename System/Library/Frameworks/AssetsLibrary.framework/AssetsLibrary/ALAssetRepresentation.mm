@@ -1,9 +1,9 @@
 @interface ALAssetRepresentation
 - (ALAssetOrientation)orientation;
-- (ALAssetRepresentation)initWithManagedAsset:(id)a3 sidecar:(id)a4 extension:(id)a5 library:(id)a6;
+- (ALAssetRepresentation)initWithManagedAsset:(id)asset sidecar:(id)sidecar extension:(id)extension library:(id)library;
 - (BOOL)isValid;
-- (CGImage)CGImageWithOptions:(id)a3 format:(unsigned __int16)a4;
-- (CGImage)_largeDisplayableImageForFormatID:(unsigned __int16)a3;
+- (CGImage)CGImageWithOptions:(id)options format:(unsigned __int16)format;
+- (CGImage)_largeDisplayableImageForFormatID:(unsigned __int16)d;
 - (CGImage)zoomableDisplayImage;
 - (CGSize)dimensions;
 - (NSDictionary)metadata;
@@ -27,13 +27,13 @@
   v9 = __Block_byref_object_copy__7;
   v10 = __Block_byref_object_dispose__8;
   v11 = 0;
-  v2 = [(ALAssetRepresentation *)self internal];
+  internal = [(ALAssetRepresentation *)self internal];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __33__ALAssetRepresentation_filename__block_invoke;
   v5[3] = &unk_278A07658;
   v5[4] = &v6;
-  [(ALAssetRepresentationPrivate *)v2 _performBlockAndWait:v5];
+  [(ALAssetRepresentationPrivate *)internal _performBlockAndWait:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -71,13 +71,13 @@ LABEL_7:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(ALAssetRepresentation *)self internal];
+  internal = [(ALAssetRepresentation *)self internal];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __36__ALAssetRepresentation_orientation__block_invoke;
   v5[3] = &unk_278A07658;
   v5[4] = &v6;
-  [(ALAssetRepresentationPrivate *)v2 _performBlockAndWait:v5];
+  [(ALAssetRepresentationPrivate *)internal _performBlockAndWait:v5];
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -93,17 +93,17 @@ uint64_t __36__ALAssetRepresentation_orientation__block_invoke(uint64_t a1, uint
 
 - (NSDictionary)metadata
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(ALAssetRepresentation *)self isValid])
   {
     if ([(ALAssetRepresentationPrivate *)[(ALAssetRepresentation *)self internal] _isImage])
     {
       [(ALAssetRepresentation *)self setIgnoreRead:1];
-      v4 = [(ALAssetRepresentation *)self _imageData];
+      _imageData = [(ALAssetRepresentation *)self _imageData];
       [(ALAssetRepresentation *)self setIgnoreRead:0];
-      if (v4)
+      if (_imageData)
       {
-        v5 = CGImageSourceCreateWithData(v4, 0);
+        v5 = CGImageSourceCreateWithData(_imageData, 0);
         if (v5)
         {
           v6 = v5;
@@ -111,7 +111,7 @@ uint64_t __36__ALAssetRepresentation_orientation__block_invoke(uint64_t a1, uint
           if (v7)
           {
             v8 = v7;
-            [(NSDictionary *)v3 addEntriesFromDictionary:v7];
+            [(NSDictionary *)dictionary addEntriesFromDictionary:v7];
             CFRelease(v8);
           }
 
@@ -121,7 +121,7 @@ uint64_t __36__ALAssetRepresentation_orientation__block_invoke(uint64_t a1, uint
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (NSURL)url
@@ -134,13 +134,13 @@ uint64_t __36__ALAssetRepresentation_orientation__block_invoke(uint64_t a1, uint
   v12 = 0;
   if ([(ALAssetRepresentation *)self isValid])
   {
-    v3 = [(ALAssetRepresentation *)self internal];
+    internal = [(ALAssetRepresentation *)self internal];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __28__ALAssetRepresentation_url__block_invoke;
     v6[3] = &unk_278A07658;
     v6[4] = &v7;
-    [(ALAssetRepresentationPrivate *)v3 _performBlockAndWait:v6];
+    [(ALAssetRepresentationPrivate *)internal _performBlockAndWait:v6];
   }
 
   v4 = v8[5];
@@ -155,7 +155,7 @@ id __28__ALAssetRepresentation_url__block_invoke(uint64_t a1, void *a2, uint64_t
   return result;
 }
 
-- (CGImage)_largeDisplayableImageForFormatID:(unsigned __int16)a3
+- (CGImage)_largeDisplayableImageForFormatID:(unsigned __int16)d
 {
   v10 = 0;
   v11 = &v10;
@@ -163,18 +163,18 @@ id __28__ALAssetRepresentation_url__block_invoke(uint64_t a1, void *a2, uint64_t
   v13 = __Block_byref_object_copy__7;
   v14 = __Block_byref_object_dispose__8;
   v15 = 0;
-  v4 = [(ALAssetRepresentation *)self internal];
+  internal = [(ALAssetRepresentation *)self internal];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __59__ALAssetRepresentation__largeDisplayableImageForFormatID___block_invoke;
   v8[3] = &unk_278A07680;
-  v9 = a3;
+  dCopy = d;
   v8[4] = &v10;
-  [(ALAssetRepresentationPrivate *)v4 _performBlockAndWait:v8];
-  v5 = [v11[5] CGImage];
+  [(ALAssetRepresentationPrivate *)internal _performBlockAndWait:v8];
+  cGImage = [v11[5] CGImage];
   v6 = v11[5];
   _Block_object_dispose(&v10, 8);
-  return v5;
+  return cGImage;
 }
 
 uint64_t __59__ALAssetRepresentation__largeDisplayableImageForFormatID___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -194,7 +194,7 @@ uint64_t __59__ALAssetRepresentation__largeDisplayableImageForFormatID___block_i
   return [(ALAssetRepresentation *)self _largeDisplayableImageForFormatID:v3];
 }
 
-- (CGImage)CGImageWithOptions:(id)a3 format:(unsigned __int16)a4
+- (CGImage)CGImageWithOptions:(id)options format:(unsigned __int16)format
 {
   if (![(ALAssetRepresentation *)self isValid])
   {
@@ -208,9 +208,9 @@ uint64_t __59__ALAssetRepresentation__largeDisplayableImageForFormatID___block_i
       [(ALAssetRepresentation *)self filename];
       PLGetSourceTypeHintFromFilename();
       v5 = PLCreateImageFromDataWithFormat();
-      v6 = [v5 CGImage];
+      cGImage = [v5 CGImage];
       v7 = v5;
-      return v6;
+      return cGImage;
     }
 
     return 0;
@@ -227,17 +227,17 @@ uint64_t __59__ALAssetRepresentation__largeDisplayableImageForFormatID___block_i
   v16 = __Block_byref_object_copy__7;
   v17 = __Block_byref_object_dispose__8;
   v18 = 0;
-  v9 = [(ALAssetRepresentation *)self internal];
+  internal = [(ALAssetRepresentation *)self internal];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __51__ALAssetRepresentation_CGImageWithOptions_format___block_invoke;
   v12[3] = &unk_278A07658;
   v12[4] = &v13;
-  [(ALAssetRepresentationPrivate *)v9 _performBlockAndWait:v12];
-  v10 = [v14[5] CGImage];
+  [(ALAssetRepresentationPrivate *)internal _performBlockAndWait:v12];
+  cGImage2 = [v14[5] CGImage];
   v11 = v14[5];
   _Block_object_dispose(&v13, 8);
-  return v10;
+  return cGImage2;
 }
 
 uint64_t __51__ALAssetRepresentation_CGImageWithOptions_format___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -298,25 +298,25 @@ void __35__ALAssetRepresentation__imageData__block_invoke(int a1, void *a2, size
     return 0;
   }
 
-  v10 = [(ALAssetRepresentation *)self _fileDescriptor];
-  if (v10 < 0)
+  _fileDescriptor = [(ALAssetRepresentation *)self _fileDescriptor];
+  if (_fileDescriptor < 0)
   {
     return 0;
   }
 
-  return pread(v10, buffer, length, offset);
+  return pread(_fileDescriptor, buffer, length, offset);
 }
 
 - (uint64_t)size
 {
-  v2 = [(ALAssetRepresentation *)self _fileDescriptor];
-  if (v2 < 0)
+  _fileDescriptor = [(ALAssetRepresentation *)self _fileDescriptor];
+  if (_fileDescriptor < 0)
   {
     return 0;
   }
 
   memset(&v4, 0, sizeof(v4));
-  if (fstat(v2, &v4))
+  if (fstat(_fileDescriptor, &v4))
   {
     return 0;
   }
@@ -348,7 +348,7 @@ void __35__ALAssetRepresentation__imageData__block_invoke(int a1, void *a2, size
     v25 = 0x3010000000;
     v26 = "";
     v27 = v32;
-    v5 = [(ALAssetRepresentation *)self internal];
+    internal = [(ALAssetRepresentation *)self internal];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __35__ALAssetRepresentation_dimensions__block_invoke;
@@ -356,7 +356,7 @@ void __35__ALAssetRepresentation__imageData__block_invoke(int a1, void *a2, size
     v22[4] = v33;
     v22[5] = &v28;
     v22[6] = &v23;
-    [(ALAssetRepresentationPrivate *)v5 _performBlockAndWait:v22];
+    [(ALAssetRepresentationPrivate *)internal _performBlockAndWait:v22];
     if ([(ALAssetRepresentationPrivate *)[(ALAssetRepresentation *)self internal] sidecar])
     {
       v7 = v29[2].f64[0];
@@ -495,9 +495,9 @@ double __35__ALAssetRepresentation_dimensions__block_invoke(void *a1, uint64_t a
 
 - (BOOL)isValid
 {
-  v2 = [(ALAssetRepresentation *)self internal];
+  internal = [(ALAssetRepresentation *)self internal];
 
-  return [(ALAssetRepresentationPrivate *)v2 isValid];
+  return [(ALAssetRepresentationPrivate *)internal isValid];
 }
 
 - (void)dealloc
@@ -508,14 +508,14 @@ double __35__ALAssetRepresentation_dimensions__block_invoke(void *a1, uint64_t a
   [(ALAssetRepresentation *)&v3 dealloc];
 }
 
-- (ALAssetRepresentation)initWithManagedAsset:(id)a3 sidecar:(id)a4 extension:(id)a5 library:(id)a6
+- (ALAssetRepresentation)initWithManagedAsset:(id)asset sidecar:(id)sidecar extension:(id)extension library:(id)library
 {
   v13.receiver = self;
   v13.super_class = ALAssetRepresentation;
   v10 = [(ALAssetRepresentation *)&v13 init];
   if (v10)
   {
-    v11 = [[ALAssetRepresentationPrivate alloc] initWithManagedAsset:a3 sidecar:a4 extension:a5 library:a6];
+    v11 = [[ALAssetRepresentationPrivate alloc] initWithManagedAsset:asset sidecar:sidecar extension:extension library:library];
     [(ALAssetRepresentation *)v10 setInternal:v11];
   }
 

@@ -1,6 +1,6 @@
 @interface MOEventPatternDetectorPredicateFilterWorkouts
 - (MOEventPatternDetectorPredicateFilterWorkouts)init;
-- (id)filterEvents:(id)a3;
+- (id)filterEvents:(id)events;
 @end
 
 @implementation MOEventPatternDetectorPredicateFilterWorkouts
@@ -19,12 +19,12 @@
   return v3;
 }
 
-- (id)filterEvents:(id)a3
+- (id)filterEvents:(id)events
 {
-  v3 = a3;
+  eventsCopy = events;
   v4 = objc_opt_new();
   v5 = [NSPredicate predicateWithFormat:@"%K = %lu AND %K = %lu AND %K != %@", @"category", 2, @"provider", 1, @"workoutType", @"HKWorkoutActivityTypeCooldown"];
-  v6 = [v3 filteredArrayUsingPredicate:v5];
+  v6 = [eventsCopy filteredArrayUsingPredicate:v5];
 
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityPatternDetection);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))

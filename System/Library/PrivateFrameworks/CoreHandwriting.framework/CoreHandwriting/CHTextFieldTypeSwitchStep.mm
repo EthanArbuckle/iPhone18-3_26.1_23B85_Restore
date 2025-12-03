@@ -1,44 +1,44 @@
 @interface CHTextFieldTypeSwitchStep
-- (id)initProcessorDefault:(id)a3 processorDigits:(id)a4 processorPhone:(id)a5 processorUsername:(id)a6 processorEmail:(id)a7 processorURL:(id)a8 processorASCII:(id)a9 processorEquation:(id)a10;
-- (id)process:(id)a3 options:(id)a4;
+- (id)initProcessorDefault:(id)default processorDigits:(id)digits processorPhone:(id)phone processorUsername:(id)username processorEmail:(id)email processorURL:(id)l processorASCII:(id)i processorEquation:(id)self0;
+- (id)process:(id)process options:(id)options;
 @end
 
 @implementation CHTextFieldTypeSwitchStep
 
-- (id)initProcessorDefault:(id)a3 processorDigits:(id)a4 processorPhone:(id)a5 processorUsername:(id)a6 processorEmail:(id)a7 processorURL:(id)a8 processorASCII:(id)a9 processorEquation:(id)a10
+- (id)initProcessorDefault:(id)default processorDigits:(id)digits processorPhone:(id)phone processorUsername:(id)username processorEmail:(id)email processorURL:(id)l processorASCII:(id)i processorEquation:(id)self0
 {
-  v17 = a3;
-  v27 = a4;
-  v26 = a5;
-  v25 = a6;
-  v24 = a7;
-  v23 = a8;
-  v22 = a9;
-  v18 = a10;
+  defaultCopy = default;
+  digitsCopy = digits;
+  phoneCopy = phone;
+  usernameCopy = username;
+  emailCopy = email;
+  lCopy = l;
+  iCopy = i;
+  equationCopy = equation;
   v28.receiver = self;
   v28.super_class = CHTextFieldTypeSwitchStep;
   v19 = [(CHTextFieldTypeSwitchStep *)&v28 init];
   p_isa = &v19->super.super.super.isa;
   if (v19)
   {
-    objc_storeStrong(&v19->_defaultProcessor, a3);
-    objc_storeStrong(p_isa + 1, a4);
-    objc_storeStrong(p_isa + 2, a5);
-    objc_storeStrong(p_isa + 3, a6);
-    objc_storeStrong(p_isa + 4, a7);
-    objc_storeStrong(p_isa + 5, a8);
-    objc_storeStrong(p_isa + 6, a9);
-    objc_storeStrong(p_isa + 7, a10);
+    objc_storeStrong(&v19->_defaultProcessor, default);
+    objc_storeStrong(p_isa + 1, digits);
+    objc_storeStrong(p_isa + 2, phone);
+    objc_storeStrong(p_isa + 3, username);
+    objc_storeStrong(p_isa + 4, email);
+    objc_storeStrong(p_isa + 5, l);
+    objc_storeStrong(p_isa + 6, i);
+    objc_storeStrong(p_isa + 7, equation);
   }
 
   return p_isa;
 }
 
-- (id)process:(id)a3 options:(id)a4
+- (id)process:(id)process options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  v14 = objc_msgSend_contentType(v7, v9, v10, v11, v12, v13);
+  processCopy = process;
+  optionsCopy = options;
+  v14 = objc_msgSend_contentType(processCopy, v9, v10, v11, v12, v13);
   if (v14 > 3)
   {
     if (v14 > 5)
@@ -130,7 +130,7 @@
     if (!v14)
     {
       v21 = objc_msgSend_defaultProcessor(self, v15, v16, v17, v18, v19);
-      v4 = sub_1839933BC(self, v7, v21, v8);
+      v4 = sub_1839933BC(self, processCopy, v21, optionsCopy);
 
       goto LABEL_26;
     }
@@ -151,7 +151,7 @@
     }
   }
 
-  v4 = sub_1839933BC(self, v7, asciiProcessor, v8);
+  v4 = sub_1839933BC(self, processCopy, asciiProcessor, optionsCopy);
 LABEL_26:
 
   return v4;

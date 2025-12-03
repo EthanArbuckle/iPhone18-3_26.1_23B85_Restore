@@ -9,7 +9,7 @@
   v4 = a3;
   v30 = 0u;
   v31 = 0u;
-  [a1 auditToken];
+  [self auditToken];
   if ([v4 isFileURL])
   {
     v29 = 0;

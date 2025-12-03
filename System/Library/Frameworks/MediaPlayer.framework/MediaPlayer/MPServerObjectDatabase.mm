@@ -1,41 +1,41 @@
 @interface MPServerObjectDatabase
 + (MPServerObjectDatabase)sharedServerObjectDatabase;
 + (void)_clearOldDatabasePaths;
-+ (void)setXPCHostApplicationIdentifier:(id)a3;
++ (void)setXPCHostApplicationIdentifier:(id)identifier;
 - (BOOL)_createDatabaseSchema;
-- (BOOL)importAssetsFromRequest:(id)a3 error:(id *)a4;
-- (id)_assetsMatchingIdentifierSet:(id)a3 query:(id)a4;
-- (id)_hlsAssetMatchingIdentifierSet:(id)a3 query:(id)a4;
-- (id)_initWithDatabaseCreationBlock:(id)a3;
-- (id)_modelObjectMatchingIdentifierSet:(id)a3 propertySet:(id)a4 options:(unint64_t)a5 error:(id *)a6;
-- (id)_relatedIdentifierSetsForParentIdentifierSet:(id)a3 parentVersionHash:(id)a4 childKey:(id)a5;
-- (id)assetsMatchingIdentifierSet:(id)a3;
-- (id)assetsWithMiniSINFsMatchingIdentifierSet:(id)a3;
-- (id)hlsAssetMatchingIdentifierSet:(id)a3;
-- (id)importObjectsFromRequest:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (id)modelObjectForResult:(id)a3 inContext:(id)a4 error:(id *)a5;
-- (id)modelObjectMatchingIdentifierSet:(id)a3 propertySet:(id)a4;
-- (id)modelObjectMatchingIdentifierSet:(id)a3 propertySet:(id)a4 error:(id *)a5;
-- (id)objectBuildingContextForResults:(id)a3 propertySet:(id)a4;
-- (id)payloadDataForIdentifierSet:(id)a3 outError:(id *)a4;
-- (id)payloadForRelatedEntityWithIdentifierSet:(id)a3;
-- (id)relatedIdentifierSetsForParentIdentifierSet:(id)a3 childKey:(id)a4;
-- (id)relatedIdentifierSetsForParentIdentifierSet:(id)a3 parentVersionHash:(id)a4 childKey:(id)a5;
-- (id)updateTokensForResults:(id *)a1;
-- (uint64_t)_payloadData:(uint64_t)a1 forIdentifierSet:(void *)a2 options:(void *)a3 outError:(void *)a4;
-- (uint64_t)updateTokensForResults:(uint64_t)a1;
+- (BOOL)importAssetsFromRequest:(id)request error:(id *)error;
+- (id)_assetsMatchingIdentifierSet:(id)set query:(id)query;
+- (id)_hlsAssetMatchingIdentifierSet:(id)set query:(id)query;
+- (id)_initWithDatabaseCreationBlock:(id)block;
+- (id)_modelObjectMatchingIdentifierSet:(id)set propertySet:(id)propertySet options:(unint64_t)options error:(id *)error;
+- (id)_relatedIdentifierSetsForParentIdentifierSet:(id)set parentVersionHash:(id)hash childKey:(id)key;
+- (id)assetsMatchingIdentifierSet:(id)set;
+- (id)assetsWithMiniSINFsMatchingIdentifierSet:(id)set;
+- (id)hlsAssetMatchingIdentifierSet:(id)set;
+- (id)importObjectsFromRequest:(id)request options:(unint64_t)options error:(id *)error;
+- (id)modelObjectForResult:(id)result inContext:(id)context error:(id *)error;
+- (id)modelObjectMatchingIdentifierSet:(id)set propertySet:(id)propertySet;
+- (id)modelObjectMatchingIdentifierSet:(id)set propertySet:(id)propertySet error:(id *)error;
+- (id)objectBuildingContextForResults:(id)results propertySet:(id)set;
+- (id)payloadDataForIdentifierSet:(id)set outError:(id *)error;
+- (id)payloadForRelatedEntityWithIdentifierSet:(id)set;
+- (id)relatedIdentifierSetsForParentIdentifierSet:(id)set childKey:(id)key;
+- (id)relatedIdentifierSetsForParentIdentifierSet:(id)set parentVersionHash:(id)hash childKey:(id)key;
+- (id)updateTokensForResults:(id *)results;
+- (uint64_t)_payloadData:(uint64_t)data forIdentifierSet:(void *)set options:(void *)options outError:(void *)error;
+- (uint64_t)updateTokensForResults:(uint64_t)results;
 - (void)dealloc;
-- (void)enumerateAssetsMissingSINFsForHashedPersonID:(id)a3 usingBlock:(id)a4;
-- (void)enumerateRelatedTokensForResult:(id)a3 childKey:(id)a4 block:(id)a5;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
-- (void)updateIdentifiersForResults:(id)a3 options:(unint64_t)a4;
-- (void)updateIdentifiersForResults:(void *)result options:(void *)a2;
+- (void)enumerateAssetsMissingSINFsForHashedPersonID:(id)d usingBlock:(id)block;
+- (void)enumerateRelatedTokensForResult:(id)result childKey:(id)key block:(id)block;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
+- (void)updateIdentifiersForResults:(id)results options:(unint64_t)options;
+- (void)updateIdentifiersForResults:(void *)result options:(void *)options;
 - (void)updateIdentifiersForResults:options:;
 - (void)updateTokensForResults:;
-- (void)updateTokensForResults:(id)a3;
-- (void)updateTokensForResults:(uint64_t)a1;
-- (void)updateTokensForResults:(void *)a1;
+- (void)updateTokensForResults:(id)results;
+- (void)updateTokensForResults:(uint64_t)results;
+- (void)updateTokensForResults:(void *)results;
 @end
 
 @implementation MPServerObjectDatabase
@@ -46,7 +46,7 @@
   block[1] = 3221225472;
   block[2] = __52__MPServerObjectDatabase_sharedServerObjectDatabase__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[MPServerObjectDatabase sharedServerObjectDatabase]::onceToken != -1)
   {
     dispatch_once(&+[MPServerObjectDatabase sharedServerObjectDatabase]::onceToken, block);
@@ -138,43 +138,43 @@ id __52__MPServerObjectDatabase_sharedServerObjectDatabase__block_invoke_3(uint6
 
 + (void)_clearOldDatabasePaths
 {
-  v20 = [MEMORY[0x1E696AC08] defaultManager];
-  v2 = [v20 URLsForDirectory:13 inDomains:1];
-  v3 = [v2 lastObject];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v2 = [defaultManager URLsForDirectory:13 inDomains:1];
+  lastObject = [v2 lastObject];
 
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [MEMORY[0x1E696AAE8] mainBundle];
-  v6 = [v5 bundleIdentifier];
-  v7 = [v4 stringWithFormat:@"com.apple.MediaPlayer/ServerObjectDatabases/%@-ServerObjectDatabase.sqlpkg", v6];
-  v8 = [v3 URLByAppendingPathComponent:v7 isDirectory:1];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v7 = [v4 stringWithFormat:@"com.apple.MediaPlayer/ServerObjectDatabases/%@-ServerObjectDatabase.sqlpkg", bundleIdentifier];
+  v8 = [lastObject URLByAppendingPathComponent:v7 isDirectory:1];
 
-  [v20 removeItemAtURL:v8 error:0];
-  v9 = [v20 URLsForDirectory:9 inDomains:1];
-  v10 = [v9 lastObject];
+  [defaultManager removeItemAtURL:v8 error:0];
+  v9 = [defaultManager URLsForDirectory:9 inDomains:1];
+  lastObject2 = [v9 lastObject];
 
-  v11 = [v10 URLByAppendingPathComponent:@"ServerObjectDatabase.sqlpkg" isDirectory:1];
+  v11 = [lastObject2 URLByAppendingPathComponent:@"ServerObjectDatabase.sqlpkg" isDirectory:1];
 
-  [v20 removeItemAtURL:v11 error:0];
-  v12 = [v11 URLByDeletingPathExtension];
+  [defaultManager removeItemAtURL:v11 error:0];
+  uRLByDeletingPathExtension = [v11 URLByDeletingPathExtension];
 
-  [v20 removeItemAtURL:v12 error:0];
+  [defaultManager removeItemAtURL:uRLByDeletingPathExtension error:0];
   if (_XPCHostApplicationIdentifier)
   {
-    v13 = [v20 URLsForDirectory:14 inDomains:1];
-    v14 = [v13 lastObject];
+    v13 = [defaultManager URLsForDirectory:14 inDomains:1];
+    lastObject3 = [v13 lastObject];
 
     v15 = MEMORY[0x1E696AEC0];
-    v16 = [MEMORY[0x1E696AAE8] mainBundle];
-    v17 = [v16 bundleIdentifier];
-    v18 = [v15 stringWithFormat:@"com.apple.MediaPlayer/ServerObjectDatabases/%@-ServerObjectDatabase.sqlpkg", v17];
-    v19 = [v14 URLByAppendingPathComponent:v18 isDirectory:1];
+    mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier2 = [mainBundle2 bundleIdentifier];
+    v18 = [v15 stringWithFormat:@"com.apple.MediaPlayer/ServerObjectDatabases/%@-ServerObjectDatabase.sqlpkg", bundleIdentifier2];
+    v19 = [lastObject3 URLByAppendingPathComponent:v18 isDirectory:1];
 
-    [v20 removeItemAtURL:v19 error:0];
+    [defaultManager removeItemAtURL:v19 error:0];
   }
 
   else
   {
-    v19 = v12;
+    v19 = uRLByDeletingPathExtension;
   }
 }
 
@@ -200,7 +200,7 @@ id __52__MPServerObjectDatabase_sharedServerObjectDatabase__block_invoke_3(uint6
         _os_log_impl(&dword_1A238D000, v7, OS_LOG_TYPE_ERROR, "[SOD] _createDatabaseSchema | failed to create objects table [] error=%{public}@", buf, 0xCu);
       }
 
-      v6 = 0;
+      commit = 0;
       goto LABEL_18;
     }
 
@@ -228,7 +228,7 @@ id __52__MPServerObjectDatabase_sharedServerObjectDatabase__block_invoke_3(uint6
       v10 = v13;
       if (!v10)
       {
-        v6 = [v3 commit];
+        commit = [v3 commit];
         v9 = 0;
         goto LABEL_17;
       }
@@ -243,7 +243,7 @@ id __52__MPServerObjectDatabase_sharedServerObjectDatabase__block_invoke_3(uint6
       }
     }
 
-    v6 = 0;
+    commit = 0;
 LABEL_17:
 
 LABEL_18:
@@ -258,24 +258,24 @@ LABEL_18:
     _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_ERROR, "[SOD] _createDatabaseSchema | failed to create transaction [] error=%{public}@", buf, 0xCu);
   }
 
-  v6 = 0;
+  commit = 0;
 LABEL_19:
 
-  return v6;
+  return commit;
 }
 
-- (id)modelObjectForResult:(id)a3 inContext:(id)a4 error:(id *)a5
+- (id)modelObjectForResult:(id)result inContext:(id)context error:(id *)error
 {
   v105[2] = *MEMORY[0x1E69E9840];
-  v81 = a3;
-  v9 = a4;
+  resultCopy = result;
+  contextCopy = context;
   v10 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    *&buf[4] = v81;
+    *&buf[4] = resultCopy;
     *&buf[12] = 2048;
-    *&buf[14] = v9;
+    *&buf[14] = contextCopy;
     _os_log_impl(&dword_1A238D000, v10, OS_LOG_TYPE_DEBUG, "[SOD] modelObjectForResult:inContext: | begin [] result=%@ context=%p", buf, 0x16u);
   }
 
@@ -297,15 +297,15 @@ LABEL_19:
   aBlock[3] = &__block_descriptor_40_e5_v8__0l;
   aBlock[4] = v12;
   v16 = _Block_copy(aBlock);
-  v17 = [v81 tokenForDatabase:self];
+  v17 = [resultCopy tokenForDatabase:self];
   v19 = v18;
   v20 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413570;
-    *&buf[4] = v81;
+    *&buf[4] = resultCopy;
     *&buf[12] = 2048;
-    *&buf[14] = v9;
+    *&buf[14] = contextCopy;
     *&buf[22] = 2048;
     v103 = v17;
     LOWORD(v104) = 1024;
@@ -348,16 +348,16 @@ LABEL_19:
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
       {
         *v92 = 138412546;
-        v93 = v81;
+        v93 = resultCopy;
         v94 = 2048;
-        v95 = v9;
+        v95 = contextCopy;
         _os_log_impl(&dword_1A238D000, v33, OS_LOG_TYPE_DEBUG, "[SOD] modelObjectForResult:inContext: | skipping [no payload] result=%@ context=%p", v92, 0x16u);
       }
 
-      if (a5)
+      if (error)
       {
         [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPObjectDatabaseError" code:2 debugDescription:{@"Missing payload for rowid: %lld", v17}];
-        *a5 = v34 = 0;
+        *error = v34 = 0;
       }
 
       else
@@ -376,13 +376,13 @@ LABEL_19:
       _os_signpost_emit_with_name_impl(&dword_1A238D000, v23, OS_SIGNPOST_INTERVAL_BEGIN, v12, "modelObject:build", &unk_1A2797D62, v92, 2u);
     }
 
-    v24 = [v81 inputIdentifiers];
-    v25 = [v24 personalizedStore];
-    v79 = [v25 personID];
+    inputIdentifiers = [resultCopy inputIdentifiers];
+    personalizedStore = [inputIdentifiers personalizedStore];
+    personID = [personalizedStore personID];
 
-    if (v9)
+    if (contextCopy)
     {
-      v26 = v9[5];
+      v26 = contextCopy[5];
     }
 
     else
@@ -395,23 +395,23 @@ LABEL_19:
     if (v27 == 1)
     {
       v77 = [MPServerObjectDatabaseMediaKitImportRequest _entityTypeForObject:*(*&buf[8] + 40)];
-      v78 = [v77 genericObjectRelationshipKey];
-      v38 = [v80 relationships];
-      v39 = [v38 objectForKeyedSubscript:v78];
+      genericObjectRelationshipKey = [v77 genericObjectRelationshipKey];
+      relationships = [v80 relationships];
+      v39 = [relationships objectForKeyedSubscript:genericObjectRelationshipKey];
       v40 = v39 == 0;
 
       if (v40)
       {
-        if (a5)
+        if (error)
         {
           v58 = MEMORY[0x1E696ABC0];
           v100[0] = @"MissingPropertySetMappingEntityType";
-          v59 = [v77 serverEntityType];
-          v60 = v59;
+          serverEntityType = [v77 serverEntityType];
+          v60 = serverEntityType;
           v61 = @"<null>";
-          if (v59)
+          if (serverEntityType)
           {
-            v62 = v59;
+            v62 = serverEntityType;
           }
 
           else
@@ -421,14 +421,14 @@ LABEL_19:
 
           v100[1] = @"MissingPropertySetMappingRelationshipKey";
           v101[0] = v62;
-          if (v78)
+          if (genericObjectRelationshipKey)
           {
-            v61 = v78;
+            v61 = genericObjectRelationshipKey;
           }
 
           v101[1] = v61;
           v63 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v101 forKeys:v100 count:2];
-          *a5 = [v58 msv_errorWithDomain:@"MPObjectDatabaseError" code:1 userInfo:v63 debugDescription:@"Matching object is not supported"];
+          *error = [v58 msv_errorWithDomain:@"MPObjectDatabaseError" code:1 userInfo:v63 debugDescription:@"Matching object is not supported"];
         }
 
         v64 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
@@ -436,13 +436,13 @@ LABEL_19:
         if (os_log_type_enabled(v64, OS_LOG_TYPE_DEBUG))
         {
           *v92 = 138413058;
-          v93 = v81;
+          v93 = resultCopy;
           v94 = 2048;
-          v95 = v9;
+          v95 = contextCopy;
           v96 = 2112;
           v97 = v77;
           v98 = 2112;
-          v99 = v78;
+          v99 = genericObjectRelationshipKey;
           _os_log_impl(&dword_1A238D000, v64, OS_LOG_TYPE_DEBUG, "[SOD] modelObjectForResult:inContext: | skipping [unsupported type] result=%@ context=%p entityType=%@ key=%@", v92, 0x2Au);
         }
 
@@ -452,12 +452,12 @@ LABEL_19:
       else
       {
         v76 = objc_alloc_init(MPMediaKitEntityTranslatorContext);
-        [(MPMediaKitEntityTranslatorContext *)v76 setPersonID:v79];
+        [(MPMediaKitEntityTranslatorContext *)v76 setPersonID:personID];
         [(MPMediaKitEntityTranslatorContext *)v76 setRelationshipPayloadProvider:self];
         v75 = [(MPBaseEntityTranslator *)MPMediaKitEntityTranslator translatorForMPModelClass:objc_opt_class()];
-        v90 = v78;
-        v41 = [v80 relationships];
-        v42 = [v41 objectForKeyedSubscript:v78];
+        v90 = genericObjectRelationshipKey;
+        relationships2 = [v80 relationships];
+        v42 = [relationships2 objectForKeyedSubscript:genericObjectRelationshipKey];
         v91 = v42;
         v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v91 forKeys:&v90 count:1];
         v44 = [MPPropertySet propertySetWithRelationships:v43];
@@ -466,19 +466,19 @@ LABEL_19:
         if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
         {
           *v92 = 138413058;
-          v93 = v81;
+          v93 = resultCopy;
           v94 = 2048;
-          v95 = v9;
+          v95 = contextCopy;
           v96 = 2112;
           v97 = v77;
           v98 = 2112;
-          v99 = v78;
+          v99 = genericObjectRelationshipKey;
           _os_log_impl(&dword_1A238D000, v45, OS_LOG_TYPE_DEBUG, "[SOD] modelObjectForResult:inContext: | building [mediakit] result=%@ context=%p entityType=%@ key=%@", v92, 0x2Au);
         }
 
         v46 = [v75 objectForPropertySet:v44 payload:*(*&buf[8] + 40) context:v76];
-        v47 = [v46 identifiers];
-        [(_MPServerObjectDatabaseProgressiveContext *)v9 _createdObjectForIdentifiers:v47];
+        identifiers = [v46 identifiers];
+        [(_MPServerObjectDatabaseProgressiveContext *)contextCopy _createdObjectForIdentifiers:identifiers];
       }
     }
 
@@ -491,9 +491,9 @@ LABEL_19:
         {
           v49 = v84[3];
           *v92 = 138412802;
-          v93 = v81;
+          v93 = resultCopy;
           v94 = 2048;
-          v95 = v9;
+          v95 = contextCopy;
           v96 = 1024;
           LODWORD(v97) = v49;
           _os_log_impl(&dword_1A238D000, v48, OS_LOG_TYPE_DEBUG, "[SOD] modelObjectForResult:inContext: | skipping [unknown source] result=%@ context=%p source=%d", v92, 0x1Cu);
@@ -511,23 +511,23 @@ LABEL_19:
       }
 
       v77 = [MPServerObjectDatabaseStorePlatformImportRequest _entityTypeForObject:*(*&buf[8] + 40)];
-      v78 = [v77 genericObjectRelationshipKey];
-      v28 = [v80 relationships];
-      v29 = [v28 objectForKeyedSubscript:v78];
+      genericObjectRelationshipKey = [v77 genericObjectRelationshipKey];
+      relationships3 = [v80 relationships];
+      v29 = [relationships3 objectForKeyedSubscript:genericObjectRelationshipKey];
       v30 = v29 == 0;
 
       if (v30)
       {
-        if (a5)
+        if (error)
         {
           v51 = MEMORY[0x1E696ABC0];
           v88[0] = @"MissingPropertySetMappingEntityType";
-          v52 = [v77 serverEntityType];
-          v53 = v52;
+          serverEntityType2 = [v77 serverEntityType];
+          v53 = serverEntityType2;
           v54 = @"<null>";
-          if (v52)
+          if (serverEntityType2)
           {
-            v55 = v52;
+            v55 = serverEntityType2;
           }
 
           else
@@ -537,27 +537,27 @@ LABEL_19:
 
           v88[1] = @"MissingPropertySetMappingRelationshipKey";
           v89[0] = v55;
-          if (v78)
+          if (genericObjectRelationshipKey)
           {
-            v54 = v78;
+            v54 = genericObjectRelationshipKey;
           }
 
           v89[1] = v54;
           v56 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v89 forKeys:v88 count:2];
-          *a5 = [v51 msv_errorWithDomain:@"MPObjectDatabaseError" code:1 userInfo:v56 debugDescription:@"Matching object is not supported"];
+          *error = [v51 msv_errorWithDomain:@"MPObjectDatabaseError" code:1 userInfo:v56 debugDescription:@"Matching object is not supported"];
         }
 
         v57 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
         if (os_log_type_enabled(v57, OS_LOG_TYPE_DEBUG))
         {
           *v92 = 138413058;
-          v93 = v81;
+          v93 = resultCopy;
           v94 = 2048;
-          v95 = v9;
+          v95 = contextCopy;
           v96 = 2112;
           v97 = v77;
           v98 = 2112;
-          v99 = v78;
+          v99 = genericObjectRelationshipKey;
           _os_log_impl(&dword_1A238D000, v57, OS_LOG_TYPE_DEBUG, "[SOD] modelObjectForResult:inContext: | skipping [unsupported type] result=%@ context=%p entityType=%@ key=%@", v92, 0x2Au);
         }
 
@@ -570,9 +570,9 @@ LABEL_19:
       v76 = [(MPStoreItemMetadata *)v31 initWithStorePlatformDictionary:*(*&buf[8] + 40)];
       v74 = [(MPStoreModelObjectBuilder *)[MPStoreModelGenericObjectBuilder alloc] initWithRequestedPropertySet:v80];
       [(MPStoreModelGenericObjectBuilder *)v74 setPreventStoreItemMetadataCaching:1];
-      if ([v79 longLongValue])
+      if ([personID longLongValue])
       {
-        v32 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v79, "longLongValue")}];
+        v32 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(personID, "longLongValue")}];
       }
 
       else
@@ -585,19 +585,19 @@ LABEL_19:
       if (os_log_type_enabled(v66, OS_LOG_TYPE_DEBUG))
       {
         *v92 = 138413058;
-        v93 = v81;
+        v93 = resultCopy;
         v94 = 2048;
-        v95 = v9;
+        v95 = contextCopy;
         v96 = 2112;
         v97 = v77;
         v98 = 2112;
-        v99 = v78;
+        v99 = genericObjectRelationshipKey;
         _os_log_impl(&dword_1A238D000, v66, OS_LOG_TYPE_DEBUG, "[SOD] modelObjectForResult:inContext: | building [store platform] result=%@ context=%p entityType=%@ key=%@", v92, 0x2Au);
       }
 
       v46 = [(MPStoreModelObjectBuilder *)v74 modelObjectWithStoreItemMetadata:v76 userIdentity:v65];
-      v67 = [v46 identifiers];
-      [(_MPServerObjectDatabaseProgressiveContext *)v9 _createdObjectForIdentifiers:v67];
+      identifiers2 = [v46 identifiers];
+      [(_MPServerObjectDatabaseProgressiveContext *)contextCopy _createdObjectForIdentifiers:identifiers2];
     }
 
     v68 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
@@ -622,9 +622,9 @@ LABEL_19:
       if (os_log_type_enabled(v71, OS_LOG_TYPE_DEBUG))
       {
         *v92 = 138412802;
-        v93 = v81;
+        v93 = resultCopy;
         v94 = 2048;
-        v95 = v9;
+        v95 = contextCopy;
         v96 = 2112;
         v97 = v34;
         _os_log_impl(&dword_1A238D000, v71, OS_LOG_TYPE_DEBUG, "[SOD] modelObjectForResult:inContext: | done [] result=%@ context=%p object=%@", v92, 0x20u);
@@ -638,9 +638,9 @@ LABEL_19:
     {
       v72 = v84[3];
       *v92 = 138412802;
-      v93 = v81;
+      v93 = resultCopy;
       v94 = 2048;
-      v95 = v9;
+      v95 = contextCopy;
       v96 = 1024;
       LODWORD(v97) = v72;
       _os_log_impl(&dword_1A238D000, v46, OS_LOG_TYPE_DEBUG, "[SOD] modelObjectForResult:inContext: | skipping [no source object] result=%@ context=%p source=%d", v92, 0x1Cu);
@@ -661,9 +661,9 @@ LABEL_78:
   if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    *&buf[4] = v81;
+    *&buf[4] = resultCopy;
     *&buf[12] = 2048;
-    *&buf[14] = v9;
+    *&buf[14] = contextCopy;
     _os_log_impl(&dword_1A238D000, v35, OS_LOG_TYPE_DEBUG, "[SOD] modelObjectForResult:inContext: | skipping [no token] result=%@ context=%p", buf, 0x16u);
   }
 
@@ -740,20 +740,20 @@ void __63__MPServerObjectDatabase_modelObjectForResult_inContext_error___block_i
   v5[2](v5);
 }
 
-- (id)objectBuildingContextForResults:(id)a3 propertySet:(id)a4
+- (id)objectBuildingContextForResults:(id)results propertySet:(id)set
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  setCopy = set;
   v5 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(v13.receiver) = 138412290;
-    *(&v13.receiver + 4) = v4;
+    *(&v13.receiver + 4) = setCopy;
     _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_DEBUG, "[SOD] objectBuildingContextForResults:propertySet: | begin [] propertySet=%@", &v13, 0xCu);
   }
 
   v6 = [_MPServerObjectDatabaseProgressiveContext alloc];
-  v7 = v4;
+  v7 = setCopy;
   if (v6)
   {
     v13.receiver = v6;
@@ -781,21 +781,21 @@ void __63__MPServerObjectDatabase_modelObjectForResult_inContext_error___block_i
   return v6;
 }
 
-- (void)enumerateRelatedTokensForResult:(id)a3 childKey:(id)a4 block:(id)a5
+- (void)enumerateRelatedTokensForResult:(id)result childKey:(id)key block:(id)block
 {
   v49 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resultCopy = result;
+  keyCopy = key;
+  blockCopy = block;
   v11 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    *&buf[4] = v8;
+    *&buf[4] = resultCopy;
     _os_log_impl(&dword_1A238D000, v11, OS_LOG_TYPE_DEBUG, "[SOD] enumerateRelatedTokensForResult:childKey: | begin [] result=%@", buf, 0xCu);
   }
 
-  v12 = v9;
+  v12 = keyCopy;
   v13 = @"MPModelChildPlaylistEntries";
   v14 = v12;
   v15 = @"MPModelChildPlaylistEntries";
@@ -827,13 +827,13 @@ void __63__MPServerObjectDatabase_modelObjectForResult_inContext_error___block_i
   aBlock[3] = &__block_descriptor_40_e5_v8__0l;
   aBlock[4] = v17;
   v20 = _Block_copy(aBlock);
-  v21 = [v8 tokenForDatabase:self];
+  v21 = [resultCopy tokenForDatabase:self];
   v23 = v22;
   v24 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413314;
-    *&buf[4] = v8;
+    *&buf[4] = resultCopy;
     *&buf[12] = 2048;
     *&buf[14] = v21;
     *&buf[22] = 1024;
@@ -861,10 +861,10 @@ void __63__MPServerObjectDatabase_modelObjectForResult_inContext_error___block_i
     block[4] = self;
     v38 = v23;
     v32 = v14;
-    v26 = v8;
+    v26 = resultCopy;
     v33 = v26;
     v39 = v30;
-    v34 = v10;
+    v34 = blockCopy;
     v35 = buf;
     dispatch_sync(accessQueue, block);
     v27 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
@@ -887,7 +887,7 @@ void __63__MPServerObjectDatabase_modelObjectForResult_inContext_error___block_i
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      *&buf[4] = v8;
+      *&buf[4] = resultCopy;
       _os_log_impl(&dword_1A238D000, v29, OS_LOG_TYPE_DEBUG, "[SOD] enumerateRelatedTokensForResult:childKey: | skipping result [no token] result=%@", buf, 0xCu);
     }
   }
@@ -1084,12 +1084,12 @@ LABEL_13:
   v34[2](v34);
 }
 
-- (void)updateIdentifiersForResults:(id)a3 options:(unint64_t)a4
+- (void)updateIdentifiersForResults:(id)results options:(unint64_t)options
 {
-  v4 = a4;
+  optionsCopy = options;
   v53 = a2;
   v91 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  resultsCopy = results;
   v78 = 0;
   v79 = 0;
   v80 = 0;
@@ -1102,7 +1102,7 @@ LABEL_13:
   v76 = 0;
   v77 = 0;
   __p = 0;
-  v58 = v4 & 1;
+  v58 = optionsCopy & 1;
   v6 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -1133,7 +1133,7 @@ LABEL_13:
   v65 = 0u;
   v66 = 0u;
   v64 = 0u;
-  v10 = v5;
+  v10 = resultsCopy;
   v11 = [v10 countByEnumeratingWithState:&v64 objects:v90 count:16];
   if (v11)
   {
@@ -1602,15 +1602,15 @@ void __62__MPServerObjectDatabase_updateIdentifiersForResults_options___block_in
   v40[2](v40);
 }
 
-- (void)updateIdentifiersForResults:(void *)result options:(void *)a2
+- (void)updateIdentifiersForResults:(void *)result options:(void *)options
 {
   *result = 0;
   result[1] = 0;
   result[2] = 0;
-  v2 = a2[1];
-  if (v2 != *a2)
+  v2 = options[1];
+  if (v2 != *options)
   {
-    v3 = 0xAAAAAAAAAAAAAAABLL * ((v2 - *a2) >> 3);
+    v3 = 0xAAAAAAAAAAAAAAABLL * ((v2 - *options) >> 3);
     if (v3 < 0xAAAAAAAAAAAAAABLL)
     {
       std::__allocate_at_least[abi:ne200100]<std::allocator<-[MPServerObjectDatabase updateIdentifiersForResults:options:]::Node>>(v3);
@@ -1624,12 +1624,12 @@ void __62__MPServerObjectDatabase_updateIdentifiersForResults_options___block_in
 
 - (void)updateIdentifiersForResults:options:
 {
-  v1 = *a1;
-  v2 = **a1;
+  v1 = *self;
+  v2 = **self;
   if (v2)
   {
     v4 = v1[1];
-    v5 = **a1;
+    v5 = **self;
     if (v4 != v2)
     {
       do
@@ -1639,7 +1639,7 @@ void __62__MPServerObjectDatabase_updateIdentifiersForResults_options___block_in
       }
 
       while (v4 != v2);
-      v5 = **a1;
+      v5 = **self;
     }
 
     v1[1] = v2;
@@ -1663,10 +1663,10 @@ void __62__MPServerObjectDatabase_updateIdentifiersForResults_options___block_in
   [v3 setContainerUniqueID:v8];
 }
 
-- (void)updateTokensForResults:(id)a3
+- (void)updateTokensForResults:(id)results
 {
   v112 = *MEMORY[0x1E69E9840];
-  v71 = a3;
+  resultsCopy = results;
   v3 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
@@ -1699,7 +1699,7 @@ void __62__MPServerObjectDatabase_updateIdentifiersForResults_options___block_in
   v98 = 0u;
   v95 = 0u;
   v96 = 0u;
-  obj = v71;
+  obj = resultsCopy;
   v7 = [obj countByEnumeratingWithState:&v95 objects:v108 count:16];
   if (v7)
   {
@@ -1739,10 +1739,10 @@ void __62__MPServerObjectDatabase_updateIdentifiersForResults_options___block_in
 
         if (!v10)
         {
-          v15 = [v9 inputIdentifiers];
+          inputIdentifiers = [v9 inputIdentifiers];
           v16 = +[MPIdentifierSet emptyIdentifierSet];
-          v81 = v15;
-          v17 = v15 == v16;
+          v81 = inputIdentifiers;
+          v17 = inputIdentifiers == v16;
 
           if (v17)
           {
@@ -1757,17 +1757,17 @@ void __62__MPServerObjectDatabase_updateIdentifiersForResults_options___block_in
 
           else
           {
-            v18 = [v15 personalizedStore];
-            v77 = [v18 personID];
+            personalizedStore = [inputIdentifiers personalizedStore];
+            personID = [personalizedStore personID];
 
-            if ([v77 length])
+            if ([personID length])
             {
-              v19 = [v15 prioritizedStoreStringIdentifiersForPersonID:v77];
+              v19 = [inputIdentifiers prioritizedStoreStringIdentifiersForPersonID:personID];
               if ([v19 count])
               {
-                v94 = [v77 hash];
+                v94 = [personID hash];
                 v20 = std::unordered_map<unsigned long,[MPServerObjectDatabase updateTokensForResults:]::PersonNode>::operator[](v100, &v94);
-                objc_storeStrong(v20 + 4, v77);
+                objc_storeStrong(v20 + 4, personID);
                 v21 = [v19 count];
                 v22 = std::unordered_map<unsigned long,[MPServerObjectDatabase updateTokensForResults:]::PersonNode>::operator[](v100, &v94);
                 v22[3] += v21;
@@ -1775,10 +1775,10 @@ void __62__MPServerObjectDatabase_updateIdentifiersForResults_options___block_in
                 v91 = 0;
                 v92 = 0;
                 v90 = 0;
-                v23 = [v15 modelKind];
-                v24 = [v23 identityKind];
+                modelKind = [inputIdentifiers modelKind];
+                identityKind = [modelKind identityKind];
                 v25 = v73;
-                v26 = v24;
+                v26 = identityKind;
                 v27 = v25;
                 v28 = v27;
                 if (v26 == v27)
@@ -1791,8 +1791,8 @@ void __62__MPServerObjectDatabase_updateIdentifiersForResults_options___block_in
 
                   if ((v29 & 1) == 0)
                   {
-                    v30 = [v15 containerUniqueID];
-                    v93 = v30 != 0;
+                    containerUniqueID = [inputIdentifiers containerUniqueID];
+                    v93 = containerUniqueID != 0;
 
                     goto LABEL_31;
                   }
@@ -2026,7 +2026,7 @@ LABEL_31:
                   *buf = 138412546;
                   *&buf[4] = v9;
                   *&buf[12] = 2112;
-                  *&buf[14] = v15;
+                  *&buf[14] = inputIdentifiers;
                   _os_log_impl(&dword_1A238D000, v32, OS_LOG_TYPE_DEBUG, "[SOD] updateTokensForResults: | skipping result [no store identifiers] result=%@ identifiers=%@", buf, 0x16u);
                 }
               }
@@ -2040,12 +2040,12 @@ LABEL_31:
                 *buf = 138412546;
                 *&buf[4] = v9;
                 *&buf[12] = 2112;
-                *&buf[14] = v15;
+                *&buf[14] = inputIdentifiers;
                 _os_log_impl(&dword_1A238D000, v19, OS_LOG_TYPE_DEBUG, "[SOD] updateTokensForResults: | skipping result [not personalized] result=%@ identifiers=%@", buf, 0x16u);
               }
             }
 
-            v31 = v77;
+            v31 = personID;
           }
 
           v14 = v81;
@@ -2116,10 +2116,10 @@ void __49__MPServerObjectDatabase_updateTokensForResults___block_invoke(uint64_t
   }
 }
 
-- (void)updateTokensForResults:(void *)a1
+- (void)updateTokensForResults:(void *)results
 {
   v2 = *a2;
-  v3 = a1[1];
+  v3 = results[1];
   if (!*&v3)
   {
     goto LABEL_18;
@@ -2141,7 +2141,7 @@ void __49__MPServerObjectDatabase_updateTokensForResults___block_invoke(uint64_t
     v5 = (*&v3 - 1) & v2;
   }
 
-  v6 = *(*a1 + 8 * v5);
+  v6 = *(*results + 8 * v5);
   if (!v6 || (v7 = *v6) == 0)
   {
 LABEL_18:
@@ -2190,23 +2190,23 @@ LABEL_17:
   return v7 + 3;
 }
 
-- (void)updateTokensForResults:(uint64_t)a1
+- (void)updateTokensForResults:(uint64_t)results
 {
-  *a1 = *a2;
-  *(a1 + 16) = 0;
-  *(a1 + 24) = 0;
-  *(a1 + 8) = 0;
-  std::vector<NSString * {__strong}>::__init_with_size[abi:ne200100]<NSString * {__strong}*,NSString * {__strong}*>(a1 + 8, *(a2 + 8), *(a2 + 16), (*(a2 + 16) - *(a2 + 8)) >> 3);
-  *(a1 + 32) = *(a2 + 32);
+  *results = *a2;
+  *(results + 16) = 0;
+  *(results + 24) = 0;
+  *(results + 8) = 0;
+  std::vector<NSString * {__strong}>::__init_with_size[abi:ne200100]<NSString * {__strong}*,NSString * {__strong}*>(results + 8, *(a2 + 8), *(a2 + 16), (*(a2 + 16) - *(a2 + 8)) >> 3);
+  *(results + 32) = *(a2 + 32);
 }
 
-- (uint64_t)updateTokensForResults:(uint64_t)a1
+- (uint64_t)updateTokensForResults:(uint64_t)results
 {
-  v2 = *a1;
-  *a1 = 0;
+  v2 = *results;
+  *results = 0;
   if (v2)
   {
-    if (*(a1 + 16) == 1)
+    if (*(results + 16) == 1)
     {
 
       v4 = v2 + 3;
@@ -2216,15 +2216,15 @@ LABEL_17:
     operator delete(v2);
   }
 
-  return a1;
+  return results;
 }
 
-- (id)updateTokensForResults:(id *)a1
+- (id)updateTokensForResults:(id *)results
 {
-  v3 = a1 + 1;
+  v3 = results + 1;
   std::vector<objc_object  {objcproto33MPObjectDatabaseProgressiveResult}* {__strong}>::__destroy_vector::operator()[abi:ne200100](&v3);
 
-  return a1;
+  return results;
 }
 
 void __49__MPServerObjectDatabase_updateTokensForResults___block_invoke_187(void *a1, __n128 a2)
@@ -2401,12 +2401,12 @@ void __49__MPServerObjectDatabase_updateTokensForResults___block_invoke_187(void
 
 - (void)updateTokensForResults:
 {
-  v1 = *a1;
-  v2 = **a1;
+  v1 = *self;
+  v2 = **self;
   if (v2)
   {
     v4 = v1[1];
-    v5 = **a1;
+    v5 = **self;
     if (v4 != v2)
     {
       do
@@ -2418,7 +2418,7 @@ void __49__MPServerObjectDatabase_updateTokensForResults___block_invoke_187(void
       }
 
       while (v4 != v2);
-      v5 = **a1;
+      v5 = **self;
     }
 
     v1[1] = v2;
@@ -2427,12 +2427,12 @@ void __49__MPServerObjectDatabase_updateTokensForResults___block_invoke_187(void
   }
 }
 
-- (id)_modelObjectMatchingIdentifierSet:(id)a3 propertySet:(id)a4 options:(unint64_t)a5 error:(id *)a6
+- (id)_modelObjectMatchingIdentifierSet:(id)set propertySet:(id)propertySet options:(unint64_t)options error:(id *)error
 {
   v75 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v63 = a4;
-  v10 = v9;
+  setCopy = set;
+  propertySetCopy = propertySet;
+  v10 = setCopy;
   if (self)
   {
     v65 = 0;
@@ -2487,11 +2487,11 @@ void __49__MPServerObjectDatabase_updateTokensForResults___block_invoke_187(void
   v24 = v23;
   if (!v22 || v23)
   {
-    if (a6)
+    if (error)
     {
       v28 = v23;
       v29 = 0;
-      *a6 = v24;
+      *error = v24;
     }
 
     else
@@ -2502,38 +2502,38 @@ void __49__MPServerObjectDatabase_updateTokensForResults___block_invoke_187(void
     goto LABEL_52;
   }
 
-  v25 = [v10 personalizedStore];
-  v26 = [v25 personID];
-  if ([v26 length])
+  personalizedStore = [v10 personalizedStore];
+  personID = [personalizedStore personID];
+  if ([personID length])
   {
-    v27 = [v10 personalizedStore];
-    v61 = [v27 personID];
+    personalizedStore2 = [v10 personalizedStore];
+    personID2 = [personalizedStore2 personID];
   }
 
   else
   {
-    v61 = *MEMORY[0x1E69E4388];
+    personID2 = *MEMORY[0x1E69E4388];
   }
 
   context = objc_autoreleasePoolPush();
   if (v11 == 1)
   {
     v59 = [MPServerObjectDatabaseMediaKitImportRequest _entityTypeForObject:v22];
-    v62 = [v59 genericObjectRelationshipKey];
-    v36 = [v63 relationships];
-    v37 = [v36 objectForKeyedSubscript:v62];
+    genericObjectRelationshipKey = [v59 genericObjectRelationshipKey];
+    relationships = [propertySetCopy relationships];
+    v37 = [relationships objectForKeyedSubscript:genericObjectRelationshipKey];
     v38 = v37 == 0;
 
     if (!v38)
     {
       v33 = objc_alloc_init(MPMediaKitEntityTranslatorContext);
-      [(MPMediaKitEntityTranslatorContext *)v33 setPersonID:v61];
+      [(MPMediaKitEntityTranslatorContext *)v33 setPersonID:personID2];
       [(MPMediaKitEntityTranslatorContext *)v33 setRelationshipPayloadProvider:self];
       v34 = [(MPBaseEntityTranslator *)MPMediaKitEntityTranslator translatorForMPModelClass:objc_opt_class()];
       v39 = [MPPropertySet alloc];
-      v69 = v62;
-      v40 = [v63 relationships];
-      v41 = [v40 objectForKeyedSubscript:v62];
+      v69 = genericObjectRelationshipKey;
+      relationships2 = [propertySetCopy relationships];
+      v41 = [relationships2 objectForKeyedSubscript:genericObjectRelationshipKey];
       v70 = v41;
       v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v70 forKeys:&v69 count:1];
       v35 = [(MPPropertySet *)v39 initWithProperties:MEMORY[0x1E695E0F0] relationships:v42];
@@ -2547,12 +2547,12 @@ LABEL_46:
 
     v49 = MEMORY[0x1E696ABC0];
     v71[0] = @"MissingPropertySetMappingEntityType";
-    v50 = [v59 serverEntityType];
-    v33 = v50;
+    serverEntityType = [v59 serverEntityType];
+    v33 = serverEntityType;
     v51 = @"<null>";
-    if (v50)
+    if (serverEntityType)
     {
-      v52 = v50;
+      v52 = serverEntityType;
     }
 
     else
@@ -2561,9 +2561,9 @@ LABEL_46:
     }
 
     v71[1] = @"MissingPropertySetMappingRelationshipKey";
-    if (v62)
+    if (genericObjectRelationshipKey)
     {
-      v51 = v62;
+      v51 = genericObjectRelationshipKey;
     }
 
     v72[0] = v52;
@@ -2581,9 +2581,9 @@ LABEL_47:
   if (v11 == 2)
   {
     v59 = [MPServerObjectDatabaseStorePlatformImportRequest _entityTypeForObject:v22];
-    v62 = [v59 genericObjectRelationshipKey];
-    v30 = [v63 relationships];
-    v31 = [v30 objectForKeyedSubscript:v62];
+    genericObjectRelationshipKey = [v59 genericObjectRelationshipKey];
+    relationships3 = [propertySetCopy relationships];
+    v31 = [relationships3 objectForKeyedSubscript:genericObjectRelationshipKey];
     v32 = v31 == 0;
 
     if (!v32)
@@ -2598,11 +2598,11 @@ LABEL_48:
         goto LABEL_49;
       }
 
-      v34 = [(MPStoreModelObjectBuilder *)[MPStoreModelGenericObjectBuilder alloc] initWithRequestedPropertySet:v63];
+      v34 = [(MPStoreModelObjectBuilder *)[MPStoreModelGenericObjectBuilder alloc] initWithRequestedPropertySet:propertySetCopy];
       [(MPStoreModelGenericObjectBuilder *)v34 setPreventStoreItemMetadataCaching:1];
-      if ([v61 longLongValue])
+      if ([personID2 longLongValue])
       {
-        v35 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v61, "longLongValue")}];
+        v35 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(personID2, "longLongValue")}];
       }
 
       else
@@ -2615,8 +2615,8 @@ LABEL_48:
 
       if (!v35)
       {
-        v54 = [v29 identifiers];
-        v55 = [v54 copyWithSource:@"ServerObjectDatabase-UnknownPersonID" block:&__block_literal_global_181_35149];
+        identifiers = [v29 identifiers];
+        v55 = [identifiers copyWithSource:@"ServerObjectDatabase-UnknownPersonID" block:&__block_literal_global_181_35149];
         v58 = [v29 copyWithIdentifiers:v55];
 
         v29 = v58;
@@ -2627,12 +2627,12 @@ LABEL_48:
 
     v44 = MEMORY[0x1E696ABC0];
     v67[0] = @"MissingPropertySetMappingEntityType";
-    v45 = [v59 serverEntityType];
-    v33 = v45;
+    serverEntityType2 = [v59 serverEntityType];
+    v33 = serverEntityType2;
     v46 = @"<null>";
-    if (v45)
+    if (serverEntityType2)
     {
-      v47 = v45;
+      v47 = serverEntityType2;
     }
 
     else
@@ -2642,9 +2642,9 @@ LABEL_48:
 
     v67[1] = @"MissingPropertySetMappingRelationshipKey";
     v68[0] = v47;
-    if (v62)
+    if (genericObjectRelationshipKey)
     {
-      v46 = v62;
+      v46 = genericObjectRelationshipKey;
     }
 
     v68[1] = v46;
@@ -2657,10 +2657,10 @@ LABEL_48:
   v43 = 0;
 LABEL_49:
   objc_autoreleasePoolPop(context);
-  if (a6)
+  if (error)
   {
     v56 = v43;
-    *a6 = v43;
+    *error = v43;
   }
 
 LABEL_52:
@@ -2668,21 +2668,21 @@ LABEL_52:
   return v29;
 }
 
-- (uint64_t)_payloadData:(uint64_t)a1 forIdentifierSet:(void *)a2 options:(void *)a3 outError:(void *)a4
+- (uint64_t)_payloadData:(uint64_t)data forIdentifierSet:(void *)set options:(void *)options outError:(void *)error
 {
-  v7 = a3;
-  if (a1)
+  optionsCopy = options;
+  if (data)
   {
-    if (!a2)
+    if (!set)
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v19 handleFailureInMethod:sel__payloadData_forIdentifierSet_options_outError_ object:a1 file:@"MPServerObjectDatabase.mm" lineNumber:733 description:{@"Invalid parameter not satisfying: %@", @"payloadData"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__payloadData_forIdentifierSet_options_outError_ object:data file:@"MPServerObjectDatabase.mm" lineNumber:733 description:{@"Invalid parameter not satisfying: %@", @"payloadData"}];
     }
 
-    v8 = [v7 personalizedStore];
-    v9 = [v8 personID];
+    personalizedStore = [optionsCopy personalizedStore];
+    personID = [personalizedStore personID];
 
-    if (![v9 length])
+    if (![personID length])
     {
       v10 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -2692,10 +2692,10 @@ LABEL_52:
       }
 
       v11 = *MEMORY[0x1E69E4388];
-      v9 = v11;
+      personID = v11;
     }
 
-    v12 = [v7 prioritizedStoreStringIdentifiersForPersonID:v9];
+    v12 = [optionsCopy prioritizedStoreStringIdentifiersForPersonID:personID];
     if ([v12 count])
     {
       *buf = 0;
@@ -2714,15 +2714,15 @@ LABEL_52:
       v30 = __Block_byref_object_copy__34964;
       v31 = __Block_byref_object_dispose__34965;
       v32 = 0;
-      v13 = *(a1 + 40);
+      v13 = *(data + 40);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __73__MPServerObjectDatabase__payloadData_forIdentifierSet_options_outError___block_invoke;
       block[3] = &unk_1E767C2E8;
       v26 = 0;
-      block[4] = a1;
+      block[4] = data;
       v21 = v12;
-      v22 = v9;
+      v22 = personID;
       v23 = &v33;
       v24 = buf;
       v25 = &v27;
@@ -2730,19 +2730,19 @@ LABEL_52:
       v14 = *(v38 + 5);
       if (!v14)
       {
-        if (a4)
+        if (error)
         {
           v15 = v28[5];
           if (v15)
           {
             v16 = v15;
-            *a4 = v15;
+            *error = v15;
             v14 = *(v38 + 5);
           }
         }
       }
 
-      *a2 = v14;
+      *set = v14;
       v17 = v34[3];
 
       _Block_object_dispose(&v27, 8);
@@ -2750,10 +2750,10 @@ LABEL_52:
       _Block_object_dispose(buf, 8);
     }
 
-    else if (a4)
+    else if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:@"MPErrorDomain" code:0 userInfo:0];
-      *a4 = v17 = 0;
+      *error = v17 = 0;
     }
 
     else
@@ -2853,19 +2853,19 @@ LABEL_18:
   [v3 invalidate];
 }
 
-- (id)payloadDataForIdentifierSet:(id)a3 outError:(id *)a4
+- (id)payloadDataForIdentifierSet:(id)set outError:(id *)error
 {
   v6 = 0;
-  [MPServerObjectDatabase _payloadData:&v6 forIdentifierSet:a3 options:a4 outError:?];
+  [MPServerObjectDatabase _payloadData:&v6 forIdentifierSet:set options:error outError:?];
   v4 = v6;
 
   return v4;
 }
 
-- (id)_hlsAssetMatchingIdentifierSet:(id)a3 query:(id)a4
+- (id)_hlsAssetMatchingIdentifierSet:(id)set query:(id)query
 {
-  v6 = a3;
-  v7 = a4;
+  setCopy = set;
+  queryCopy = query;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -2878,11 +2878,11 @@ LABEL_18:
   v13[2] = __63__MPServerObjectDatabase__hlsAssetMatchingIdentifierSet_query___block_invoke;
   v13[3] = &unk_1E7681900;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = setCopy;
+  v15 = queryCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = queryCopy;
+  v10 = setCopy;
   dispatch_sync(accessQueue, v13);
   v11 = v18[5];
 
@@ -3720,10 +3720,10 @@ LABEL_176:
   *(v166 + 40) = v10;
 }
 
-- (id)_assetsMatchingIdentifierSet:(id)a3 query:(id)a4
+- (id)_assetsMatchingIdentifierSet:(id)set query:(id)query
 {
-  v6 = a3;
-  v7 = a4;
+  setCopy = set;
+  queryCopy = query;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -3736,10 +3736,10 @@ LABEL_176:
   v15 = __61__MPServerObjectDatabase__assetsMatchingIdentifierSet_query___block_invoke;
   v16 = &unk_1E7681900;
   v20 = &v21;
-  v17 = self;
-  v9 = v6;
+  selfCopy = self;
+  v9 = setCopy;
   v18 = v9;
-  v10 = v7;
+  v10 = queryCopy;
   v19 = v10;
   dispatch_sync(accessQueue, &v13);
   v11 = [v22[5] copy];
@@ -4601,9 +4601,9 @@ LABEL_178:
   [(MPServerObjectDatabase *)&v3 dealloc];
 }
 
-- (id)_initWithDatabaseCreationBlock:(id)a3
+- (id)_initWithDatabaseCreationBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   v18.receiver = self;
   v18.super_class = MPServerObjectDatabase;
   v6 = [(MPServerObjectDatabase *)&v18 init];
@@ -4614,9 +4614,9 @@ LABEL_178:
     v9 = *(v6 + 5);
     *(v6 + 5) = v8;
 
-    v10 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v11 = *(v6 + 7);
-    *(v6 + 7) = v10;
+    *(v6 + 7) = weakObjectsHashTable;
 
     *(v6 + 8) = 0;
     v12 = *(v6 + 5);
@@ -4625,7 +4625,7 @@ LABEL_178:
     block[2] = __57__MPServerObjectDatabase__initWithDatabaseCreationBlock___block_invoke;
     block[3] = &unk_1E7681358;
     v15 = v6;
-    v16 = v5;
+    v16 = blockCopy;
     v17 = a2;
     dispatch_async(v12, block);
   }
@@ -4731,19 +4731,19 @@ void __57__MPServerObjectDatabase__initWithDatabaseCreationBlock___block_invoke(
   }
 }
 
-- (id)payloadForRelatedEntityWithIdentifierSet:(id)a3
+- (id)payloadForRelatedEntityWithIdentifierSet:(id)set
 {
-  v4 = a3;
-  v5 = [v4 personalizedStore];
-  v6 = [v5 personID];
-  v7 = [v4 preferredStoreStringIdentifierForPersonID:v6];
+  setCopy = set;
+  personalizedStore = [setCopy personalizedStore];
+  personID = [personalizedStore personID];
+  v7 = [setCopy preferredStoreStringIdentifierForPersonID:personID];
 
   if (v7)
   {
-    v8 = [v4 personalizedStore];
-    v9 = [v8 personID];
+    personalizedStore2 = [setCopy personalizedStore];
+    personID2 = [personalizedStore2 personID];
 
-    if (![v9 length])
+    if (![personID2 length])
     {
       v10 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -4753,7 +4753,7 @@ void __57__MPServerObjectDatabase__initWithDatabaseCreationBlock___block_invoke(
       }
 
       v11 = *MEMORY[0x1E69E4388];
-      v9 = v11;
+      personID2 = v11;
     }
 
     *buf = 0;
@@ -4769,9 +4769,9 @@ void __57__MPServerObjectDatabase__initWithDatabaseCreationBlock___block_invoke(
     v16[3] = &unk_1E7681900;
     v16[4] = self;
     v17 = v7;
-    v18 = v9;
+    v18 = personID2;
     v19 = buf;
-    v13 = v9;
+    v13 = personID2;
     dispatch_sync(accessQueue, v16);
     v14 = *(v21 + 5);
 
@@ -4828,27 +4828,27 @@ void __67__MPServerObjectDatabase_payloadForRelatedEntityWithIdentifierSet___blo
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_recursive_lock_lock_with_options();
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_recursive_lock_lock_with_options();
-  [(NSHashTable *)self->_observers addObject:v4];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (BOOL)importAssetsFromRequest:(id)a3 error:(id *)a4
+- (BOOL)importAssetsFromRequest:(id)request error:(id *)error
 {
-  v6 = a3;
+  requestCopy = request;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -4856,7 +4856,7 @@ void __67__MPServerObjectDatabase_payloadForRelatedEntityWithIdentifierSet___blo
   v25 = __Block_byref_object_dispose__34965;
   v26 = 0;
   v7 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
-  v8 = os_signpost_id_make_with_pointer(v7, v6);
+  v8 = os_signpost_id_make_with_pointer(v7, requestCopy);
 
   v9 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
   v10 = v9;
@@ -4872,13 +4872,13 @@ void __67__MPServerObjectDatabase_payloadForRelatedEntityWithIdentifierSet___blo
   block[2] = __56__MPServerObjectDatabase_importAssetsFromRequest_error___block_invoke;
   block[3] = &unk_1E7681330;
   block[4] = self;
-  v12 = v6;
+  v12 = requestCopy;
   v18 = v12;
   v19 = &v21;
   dispatch_sync(accessQueue, block);
-  if (a4)
+  if (error)
   {
-    *a4 = v22[5];
+    *error = v22[5];
   }
 
   v13 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
@@ -4904,20 +4904,20 @@ void __56__MPServerObjectDatabase_importAssetsFromRequest_error___block_invoke(v
   objc_storeStrong((*(a1[6] + 8) + 40), obj);
 }
 
-- (void)enumerateAssetsMissingSINFsForHashedPersonID:(id)a3 usingBlock:(id)a4
+- (void)enumerateAssetsMissingSINFsForHashedPersonID:(id)d usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  blockCopy = block;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __82__MPServerObjectDatabase_enumerateAssetsMissingSINFsForHashedPersonID_usingBlock___block_invoke;
   block[3] = &unk_1E7681568;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = dCopy;
   dispatch_sync(accessQueue, block);
 }
 
@@ -4964,9 +4964,9 @@ void __82__MPServerObjectDatabase_enumerateAssetsMissingSINFsForHashedPersonID_u
   }
 }
 
-- (id)hlsAssetMatchingIdentifierSet:(id)a3
+- (id)hlsAssetMatchingIdentifierSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
   v6 = os_signpost_id_generate(v5);
 
@@ -4978,7 +4978,7 @@ void __82__MPServerObjectDatabase_enumerateAssetsMissingSINFsForHashedPersonID_u
     _os_signpost_emit_with_name_impl(&dword_1A238D000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "SODHLSAssetMatchingIdentifierSet", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v9 = [(MPServerObjectDatabase *)self _hlsAssetMatchingIdentifierSet:v4 query:@"SELECT identifier, hashed_person_id, playlist_url, key_certificate_url, key_server_url, key_server_adam_id, key_server_protocol_type, is_itunes_store_stream FROM hls_assets WHERE identifier = @identifier AND hashed_person_id = @hashedPersonID AND url_expiration_date > @now"];
+  v9 = [(MPServerObjectDatabase *)self _hlsAssetMatchingIdentifierSet:setCopy query:@"SELECT identifier, hashed_person_id, playlist_url, key_certificate_url, key_server_url, key_server_adam_id, key_server_protocol_type, is_itunes_store_stream FROM hls_assets WHERE identifier = @identifier AND hashed_person_id = @hashedPersonID AND url_expiration_date > @now"];
   v10 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
   v11 = v10;
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
@@ -4990,9 +4990,9 @@ void __82__MPServerObjectDatabase_enumerateAssetsMissingSINFsForHashedPersonID_u
   return v9;
 }
 
-- (id)assetsWithMiniSINFsMatchingIdentifierSet:(id)a3
+- (id)assetsWithMiniSINFsMatchingIdentifierSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
   v6 = os_signpost_id_generate(v5);
 
@@ -5004,7 +5004,7 @@ void __82__MPServerObjectDatabase_enumerateAssetsMissingSINFsForHashedPersonID_u
     _os_signpost_emit_with_name_impl(&dword_1A238D000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "SODAssetsWithMiniSINFsMatchingIdentifierSet", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v9 = [(MPServerObjectDatabase *)self _assetsMatchingIdentifierSet:v4 query:@"SELECT identifier, hashed_person_id, flavor, url, mini_sinf, sinfs FROM assets WHERE identifier = @identifier AND hashed_person_id = @hashedPersonID AND LENGTH(mini_sinf) > 1 AND url_expiration_date > @now"];
+  v9 = [(MPServerObjectDatabase *)self _assetsMatchingIdentifierSet:setCopy query:@"SELECT identifier, hashed_person_id, flavor, url, mini_sinf, sinfs FROM assets WHERE identifier = @identifier AND hashed_person_id = @hashedPersonID AND LENGTH(mini_sinf) > 1 AND url_expiration_date > @now"];
   v10 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
   v11 = v10;
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
@@ -5016,9 +5016,9 @@ void __82__MPServerObjectDatabase_enumerateAssetsMissingSINFsForHashedPersonID_u
   return v9;
 }
 
-- (id)assetsMatchingIdentifierSet:(id)a3
+- (id)assetsMatchingIdentifierSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
   v6 = os_signpost_id_generate(v5);
 
@@ -5030,7 +5030,7 @@ void __82__MPServerObjectDatabase_enumerateAssetsMissingSINFsForHashedPersonID_u
     _os_signpost_emit_with_name_impl(&dword_1A238D000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "SODAssetsMatchingIdentifierSet", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v9 = [(MPServerObjectDatabase *)self _assetsMatchingIdentifierSet:v4 query:@"SELECT identifier, hashed_person_id, flavor, url, mini_sinf, sinfs FROM assets WHERE identifier = @identifier AND hashed_person_id = @hashedPersonID AND url_expiration_date > @now"];
+  v9 = [(MPServerObjectDatabase *)self _assetsMatchingIdentifierSet:setCopy query:@"SELECT identifier, hashed_person_id, flavor, url, mini_sinf, sinfs FROM assets WHERE identifier = @identifier AND hashed_person_id = @hashedPersonID AND url_expiration_date > @now"];
   v10 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
   v11 = v10;
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
@@ -5042,22 +5042,22 @@ void __82__MPServerObjectDatabase_enumerateAssetsMissingSINFsForHashedPersonID_u
   return v9;
 }
 
-- (id)relatedIdentifierSetsForParentIdentifierSet:(id)a3 parentVersionHash:(id)a4 childKey:(id)a5
+- (id)relatedIdentifierSetsForParentIdentifierSet:(id)set parentVersionHash:(id)hash childKey:(id)key
 {
-  v5 = [(MPServerObjectDatabase *)self _relatedIdentifierSetsForParentIdentifierSet:a3 parentVersionHash:a4 childKey:a5];
+  v5 = [(MPServerObjectDatabase *)self _relatedIdentifierSetsForParentIdentifierSet:set parentVersionHash:hash childKey:key];
 
   return v5;
 }
 
-- (id)_relatedIdentifierSetsForParentIdentifierSet:(id)a3 parentVersionHash:(id)a4 childKey:(id)a5
+- (id)_relatedIdentifierSetsForParentIdentifierSet:(id)set parentVersionHash:(id)hash childKey:(id)key
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 personalizedStore];
-  v12 = [v11 personID];
+  setCopy = set;
+  hashCopy = hash;
+  keyCopy = key;
+  personalizedStore = [setCopy personalizedStore];
+  personID = [personalizedStore personID];
 
-  if (![v12 length])
+  if (![personID length])
   {
     v13 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -5067,10 +5067,10 @@ void __82__MPServerObjectDatabase_enumerateAssetsMissingSINFsForHashedPersonID_u
     }
 
     v14 = *MEMORY[0x1E69E4388];
-    v12 = v14;
+    personID = v14;
   }
 
-  v15 = [v8 prioritizedStoreStringIdentifiersForPersonID:v12];
+  v15 = [setCopy prioritizedStoreStringIdentifiersForPersonID:personID];
   if ([v15 count])
   {
     *buf = 0;
@@ -5079,18 +5079,18 @@ void __82__MPServerObjectDatabase_enumerateAssetsMissingSINFsForHashedPersonID_u
     v32 = __Block_byref_object_copy__34964;
     v33 = __Block_byref_object_dispose__34965;
     v34 = 0;
-    v16 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     accessQueue = self->_accessQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __98__MPServerObjectDatabase__relatedIdentifierSetsForParentIdentifierSet_parentVersionHash_childKey___block_invoke;
     block[3] = &unk_1E767C2C0;
-    v22 = v12;
+    v22 = personID;
     v23 = v15;
-    v24 = v9;
-    v25 = self;
-    v26 = v10;
-    v18 = v16;
+    v24 = hashCopy;
+    selfCopy = self;
+    v26 = keyCopy;
+    v18 = array;
     v27 = v18;
     v28 = buf;
     dispatch_sync(accessQueue, block);
@@ -5294,18 +5294,18 @@ LABEL_45:
   objc_autoreleasePoolPop(context);
 }
 
-- (id)relatedIdentifierSetsForParentIdentifierSet:(id)a3 childKey:(id)a4
+- (id)relatedIdentifierSetsForParentIdentifierSet:(id)set childKey:(id)key
 {
-  v4 = [(MPServerObjectDatabase *)self _relatedIdentifierSetsForParentIdentifierSet:a3 parentVersionHash:0 childKey:a4];
+  v4 = [(MPServerObjectDatabase *)self _relatedIdentifierSetsForParentIdentifierSet:set parentVersionHash:0 childKey:key];
 
   return v4;
 }
 
-- (id)modelObjectMatchingIdentifierSet:(id)a3 propertySet:(id)a4
+- (id)modelObjectMatchingIdentifierSet:(id)set propertySet:(id)propertySet
 {
   v24 = *MEMORY[0x1E69E9840];
   v21 = 0;
-  v6 = [(MPServerObjectDatabase *)self modelObjectMatchingIdentifierSet:a3 propertySet:a4 error:&v21];
+  v6 = [(MPServerObjectDatabase *)self modelObjectMatchingIdentifierSet:set propertySet:propertySet error:&v21];
   v7 = v21;
   if (!v7)
   {
@@ -5316,15 +5316,15 @@ LABEL_45:
   v8 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    v9 = [v7 msv_description];
+    msv_description = [v7 msv_description];
     *buf = 138543362;
-    v23 = v9;
+    v23 = msv_description;
     _os_log_impl(&dword_1A238D000, v8, OS_LOG_TYPE_ERROR, "SOD: modelObjectMatchingIdentifierSet: returning nil [non-nil error] error=%{public}@", buf, 0xCu);
   }
 
-  v10 = [v7 domain];
-  v11 = v10;
-  if (v10 == @"MPObjectDatabaseError")
+  domain = [v7 domain];
+  v11 = domain;
+  if (domain == @"MPObjectDatabaseError")
   {
 
 LABEL_9:
@@ -5332,20 +5332,20 @@ LABEL_9:
 
     if (v14)
     {
-      v15 = [v7 userInfo];
-      v16 = [v15 objectForKeyedSubscript:@"MissingPropertySetMappingEntityType"];
+      userInfo = [v7 userInfo];
+      v16 = [userInfo objectForKeyedSubscript:@"MissingPropertySetMappingEntityType"];
 
-      v17 = [v7 userInfo];
-      v18 = [v17 objectForKeyedSubscript:@"MissingPropertySetMappingRelationshipKey"];
+      userInfo2 = [v7 userInfo];
+      v18 = [userInfo2 objectForKeyedSubscript:@"MissingPropertySetMappingRelationshipKey"];
 
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v19 handleFailureInMethod:a2 object:self file:@"MPServerObjectDatabase.mm" lineNumber:255 description:{@"PropertySet does not contain mapping for identifierSet [] matchingEntityType='%@' relationshipKey=%@", v16, v18}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPServerObjectDatabase.mm" lineNumber:255 description:{@"PropertySet does not contain mapping for identifierSet [] matchingEntityType='%@' relationshipKey=%@", v16, v18}];
     }
 
     goto LABEL_11;
   }
 
-  v12 = [(__CFString *)v10 isEqual:@"MPObjectDatabaseError"];
+  v12 = [(__CFString *)domain isEqual:@"MPObjectDatabaseError"];
 
   if (v12)
   {
@@ -5359,19 +5359,19 @@ LABEL_12:
   return v13;
 }
 
-- (id)modelObjectMatchingIdentifierSet:(id)a3 propertySet:(id)a4 error:(id *)a5
+- (id)modelObjectMatchingIdentifierSet:(id)set propertySet:(id)propertySet error:(id *)error
 {
-  v5 = [(MPServerObjectDatabase *)self _modelObjectMatchingIdentifierSet:a3 propertySet:a4 options:0 error:a5];
+  v5 = [(MPServerObjectDatabase *)self _modelObjectMatchingIdentifierSet:set propertySet:propertySet options:0 error:error];
 
   return v5;
 }
 
-- (id)importObjectsFromRequest:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)importObjectsFromRequest:(id)request options:(unint64_t)options error:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  requestCopy = request;
   v9 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
-  v10 = os_signpost_id_make_with_pointer(v9, v8);
+  v10 = os_signpost_id_make_with_pointer(v9, requestCopy);
 
   v11 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
   v12 = v11;
@@ -5401,16 +5401,16 @@ LABEL_12:
   block[1] = 3221225472;
   block[2] = __65__MPServerObjectDatabase_importObjectsFromRequest_options_error___block_invoke;
   block[3] = &unk_1E767C298;
-  v31 = a4;
+  optionsCopy = options;
   block[4] = self;
   v29 = &v32;
-  v16 = v8;
+  v16 = requestCopy;
   v28 = v16;
   p_buf = &buf;
   dispatch_sync(accessQueue, block);
-  if (a5)
+  if (error)
   {
-    *a5 = *(*(&buf + 1) + 40);
+    *error = *(*(&buf + 1) + 40);
   }
 
   v17 = self->_accessQueue;
@@ -5537,26 +5537,26 @@ id __52__MPServerObjectDatabase_sharedServerObjectDatabase__block_invoke_2()
   return v0;
 }
 
-+ (void)setXPCHostApplicationIdentifier:(id)a3
++ (void)setXPCHostApplicationIdentifier:(id)identifier
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543362;
-    v11 = v5;
+    v11 = identifierCopy;
     _os_log_impl(&dword_1A238D000, v6, OS_LOG_TYPE_DEFAULT, "SOD: setXPCHostApplicationIdentifier: %{public}@", &v10, 0xCu);
   }
 
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (_XPCHostApplicationIdentifier && ([v5 isEqualToString:?] & 1) == 0)
+  if (_XPCHostApplicationIdentifier && ([identifierCopy isEqualToString:?] & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"MPServerObjectDatabase.mm" lineNumber:118 description:@"XPCHostApplicationIdentifier is inconsistent"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPServerObjectDatabase.mm" lineNumber:118 description:@"XPCHostApplicationIdentifier is inconsistent"];
   }
 
-  v7 = [v5 copy];
+  v7 = [identifierCopy copy];
   v8 = _XPCHostApplicationIdentifier;
   _XPCHostApplicationIdentifier = v7;
 }

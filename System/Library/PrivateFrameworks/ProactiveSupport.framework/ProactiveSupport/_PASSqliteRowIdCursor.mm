@@ -13,9 +13,9 @@
   }
 
   v4 = objc_autoreleasePoolPush();
-  v5 = [(_PASSqliteRowIdCursor *)self currentIndexedRowId];
+  currentIndexedRowId = [(_PASSqliteRowIdCursor *)self currentIndexedRowId];
   objc_autoreleasePoolPop(v4);
-  return v5;
+  return currentIndexedRowId;
 }
 
 @end

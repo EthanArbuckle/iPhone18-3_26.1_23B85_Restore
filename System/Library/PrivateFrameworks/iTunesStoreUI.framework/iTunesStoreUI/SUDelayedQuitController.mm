@@ -1,14 +1,14 @@
 @interface SUDelayedQuitController
 + (BOOL)isDelayingTerminate;
-+ (BOOL)viewControllerIsLongLived:(id)a3;
-+ (id)checkedInViewControllerOfClass:(Class)a3;
++ (BOOL)viewControllerIsLongLived:(id)lived;
++ (id)checkedInViewControllerOfClass:(Class)class;
 + (void)beginDelayingTerminate;
-+ (void)checkInLongLivedViewController:(id)a3;
-+ (void)checkOutLongLivedViewController:(id)a3;
++ (void)checkInLongLivedViewController:(id)controller;
++ (void)checkOutLongLivedViewController:(id)controller;
 + (void)endDelayingTerminate;
-- (id)_checkedInViewControllerOfClass:(Class)a3;
-- (void)_checkInLongLivedViewController:(id)a3;
-- (void)_checkOutLongLivedViewController:(id)a3;
+- (id)_checkedInViewControllerOfClass:(Class)class;
+- (void)_checkInLongLivedViewController:(id)controller;
+- (void)_checkOutLongLivedViewController:(id)controller;
 - (void)_endDelayingTerminate;
 - (void)dealloc;
 @end
@@ -23,32 +23,32 @@
   [(SUDelayedQuitController *)&v3 dealloc];
 }
 
-+ (void)checkInLongLivedViewController:(id)a3
++ (void)checkInLongLivedViewController:(id)controller
 {
   v4 = +[SUDelayedQuitController sharedInstance];
 
-  [(SUDelayedQuitController *)v4 _checkInLongLivedViewController:a3];
+  [(SUDelayedQuitController *)v4 _checkInLongLivedViewController:controller];
 }
 
-+ (void)checkOutLongLivedViewController:(id)a3
++ (void)checkOutLongLivedViewController:(id)controller
 {
   v4 = +[SUDelayedQuitController sharedInstance];
 
-  [(SUDelayedQuitController *)v4 _checkOutLongLivedViewController:a3];
+  [(SUDelayedQuitController *)v4 _checkOutLongLivedViewController:controller];
 }
 
-+ (BOOL)viewControllerIsLongLived:(id)a3
++ (BOOL)viewControllerIsLongLived:(id)lived
 {
   v4 = +[SUDelayedQuitController sharedInstance];
 
-  return [(SUDelayedQuitController *)v4 _viewControllerIsLongLived:a3];
+  return [(SUDelayedQuitController *)v4 _viewControllerIsLongLived:lived];
 }
 
-+ (id)checkedInViewControllerOfClass:(Class)a3
++ (id)checkedInViewControllerOfClass:(Class)class
 {
   v4 = +[SUDelayedQuitController sharedInstance];
 
-  return [(SUDelayedQuitController *)v4 _checkedInViewControllerOfClass:a3];
+  return [(SUDelayedQuitController *)v4 _checkedInViewControllerOfClass:class];
 }
 
 + (BOOL)isDelayingTerminate
@@ -60,19 +60,19 @@
 
 + (void)beginDelayingTerminate
 {
-  v2 = [+[SUDelayedQuitController sharedInstance](SUDelayedQuitController mainThreadProxy];
+  mainThreadProxy = [+[SUDelayedQuitController sharedInstance](SUDelayedQuitController mainThreadProxy];
 
-  [v2 _beginDelayingTerminate];
+  [mainThreadProxy _beginDelayingTerminate];
 }
 
 + (void)endDelayingTerminate
 {
-  v2 = [+[SUDelayedQuitController sharedInstance](SUDelayedQuitController mainThreadProxy];
+  mainThreadProxy = [+[SUDelayedQuitController sharedInstance](SUDelayedQuitController mainThreadProxy];
 
-  [v2 _endDelayingTerminate];
+  [mainThreadProxy _endDelayingTerminate];
 }
 
-- (void)_checkInLongLivedViewController:(id)a3
+- (void)_checkInLongLivedViewController:(id)controller
 {
   longLivedViewControllers = self->_longLivedViewControllers;
   if (!longLivedViewControllers)
@@ -81,28 +81,28 @@
     self->_longLivedViewControllers = longLivedViewControllers;
   }
 
-  if (([(NSMutableArray *)longLivedViewControllers containsObject:a3]& 1) == 0)
+  if (([(NSMutableArray *)longLivedViewControllers containsObject:controller]& 1) == 0)
   {
-    [(NSMutableArray *)self->_longLivedViewControllers addObject:a3];
+    [(NSMutableArray *)self->_longLivedViewControllers addObject:controller];
 
     [(SUDelayedQuitController *)self _beginDelayingTerminate];
   }
 }
 
-- (void)_checkOutLongLivedViewController:(id)a3
+- (void)_checkOutLongLivedViewController:(id)controller
 {
   longLivedViewControllers = self->_longLivedViewControllers;
   if (longLivedViewControllers && [(NSMutableArray *)longLivedViewControllers containsObject:?])
   {
-    v6 = a3;
-    [(NSMutableArray *)self->_longLivedViewControllers removeObject:a3];
-    v7 = [(SUDelayedQuitController *)self mainThreadProxy];
+    controllerCopy = controller;
+    [(NSMutableArray *)self->_longLivedViewControllers removeObject:controller];
+    mainThreadProxy = [(SUDelayedQuitController *)self mainThreadProxy];
 
-    [v7 _endDelayingTerminate];
+    [mainThreadProxy _endDelayingTerminate];
   }
 }
 
-- (id)_checkedInViewControllerOfClass:(Class)a3
+- (id)_checkedInViewControllerOfClass:(Class)class
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
@@ -154,11 +154,11 @@ LABEL_3:
   if (!v3)
   {
     self->_delayTerminateCount = v4;
-    v6 = [MEMORY[0x1E69DC668] sharedApplication];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
     if (!self->_delayTerminateCount)
     {
-      v7 = v6;
-      if ([v6 isSuspended])
+      v7 = mEMORY[0x1E69DC668];
+      if ([mEMORY[0x1E69DC668] isSuspended])
       {
         if (([v7 isSuspendedEventsOnly] & 1) == 0)
         {

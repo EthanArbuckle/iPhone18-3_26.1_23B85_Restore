@@ -1,53 +1,53 @@
 @interface NTKWhistlerSubdialsFaceView
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4;
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device;
 - (BOOL)_isAnalog;
 - (BOOL)showGossamerUI;
-- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (CGRect)_timeViewFrameRelativeToFaceView;
 - (NSCache)backgroundSwatchesCache;
 - (NSCache)styleSwatchesCache;
 - (NTKFace)swatchesFace;
 - (NTKFaceViewController)swatchesFaceViewController;
-- (NTKWhistlerSubdialsFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_complicationAlphaForEditMode:(int64_t)a3;
+- (NTKWhistlerSubdialsFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_complicationAlphaForEditMode:(int64_t)mode;
 - (double)_horizontalPaddingForStatusBar;
-- (double)_keylineCornerRadiusForComplicationSlot:(id)a3;
-- (double)_minimumBreathingScaleForComplicationSlot:(id)a3;
-- (double)_timeViewAlphaForEditMode:(int64_t)a3;
+- (double)_keylineCornerRadiusForComplicationSlot:(id)slot;
+- (double)_minimumBreathingScaleForComplicationSlot:(id)slot;
+- (double)_timeViewAlphaForEditMode:(int64_t)mode;
 - (double)_verticalPaddingForStatusBar;
-- (id)_filterProviderForSlot:(id)a3;
-- (id)_keylineViewForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5;
-- (id)_renderDialSwatchImageForStyle:(unint64_t)a3 colorOption:(id)a4;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
+- (id)_filterProviderForSlot:(id)slot;
+- (id)_keylineViewForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot;
+- (id)_renderDialSwatchImageForStyle:(unint64_t)style colorOption:(id)option;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
 - (id)createFaceColorPalette;
 - (id)dialView;
-- (int64_t)_keylineStyleForComplicationSlot:(id)a3;
-- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyColorsFromPalette:(id)a3;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromNumeralOption:(unint64_t)a4 toNumeralOption:(unint64_t)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
-- (void)_applyTransitionFraction:(double)a3 fromPalette:(id)a4 toPalette:(id)a5;
+- (int64_t)_keylineStyleForComplicationSlot:(id)slot;
+- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyColorsFromPalette:(id)palette;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromNumeralOption:(unint64_t)option toNumeralOption:(unint64_t)numeralOption;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromPalette:(id)palette toPalette:(id)toPalette;
 - (void)_cleanupAfterEditing;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_loadLayoutRules;
 - (void)_loadSnapshotContentViews;
 - (void)_prepareForEditing;
 - (void)_removeDialView;
-- (void)_setNumerals:(unint64_t)a3;
+- (void)_setNumerals:(unint64_t)numerals;
 - (void)_setupDialView;
 - (void)_unloadSnapshotContentViews;
 - (void)layoutSubviews;
 - (void)loadComplicationPlaceholderViews;
-- (void)rectangularViewDidBecomeInteractive:(id)a3;
-- (void)rectangularViewDidEndInteractive:(id)a3;
-- (void)updateMonochromeColorForRichComplicationView:(id)a3;
-- (void)updateWithColorPalette:(id)a3;
+- (void)rectangularViewDidBecomeInteractive:(id)interactive;
+- (void)rectangularViewDidEndInteractive:(id)interactive;
+- (void)updateMonochromeColorForRichComplicationView:(id)view;
+- (void)updateWithColorPalette:(id)palette;
 @end
 
 @implementation NTKWhistlerSubdialsFaceView
@@ -57,8 +57,8 @@
   v3 = [(NTKWhistlerSubdialsFaceView *)self isMemberOfClass:objc_opt_class()];
   if (v3)
   {
-    v4 = [(NTKFaceView *)self device];
-    v5 = NTKShowGossamerUI(v4);
+    device = [(NTKFaceView *)self device];
+    v5 = NTKShowGossamerUI(device);
 
     LOBYTE(v3) = v5;
   }
@@ -66,25 +66,25 @@
   return v3;
 }
 
-- (NTKWhistlerSubdialsFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKWhistlerSubdialsFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [[NTKMonochromeModel alloc] initWithDevice:v9];
+  identifierCopy = identifier;
+  deviceCopy = device;
+  v10 = [[NTKMonochromeModel alloc] initWithDevice:deviceCopy];
   topFilterProvider = self->_topFilterProvider;
   self->_topFilterProvider = v10;
 
-  v12 = [[NTKMonochromeModel alloc] initWithDevice:v9];
+  v12 = [[NTKMonochromeModel alloc] initWithDevice:deviceCopy];
   centerFilterProvider = self->_centerFilterProvider;
   self->_centerFilterProvider = v12;
 
-  v14 = [[NTKMonochromeModel alloc] initWithDevice:v9];
+  v14 = [[NTKMonochromeModel alloc] initWithDevice:deviceCopy];
   bottomFilterProvider = self->_bottomFilterProvider;
   self->_bottomFilterProvider = v14;
 
   v21.receiver = self;
   v21.super_class = NTKWhistlerSubdialsFaceView;
-  v16 = [(NTKFaceView *)&v21 initWithFaceStyle:a3 forDevice:v9 clientIdentifier:v8];
+  v16 = [(NTKFaceView *)&v21 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifierCopy];
 
   if (v16)
   {
@@ -92,8 +92,8 @@
     timeViewContainerView = v16->_timeViewContainerView;
     v16->_timeViewContainerView = v17;
 
-    v19 = [(NTKFaceView *)v16 contentView];
-    [v19 addSubview:v16->_timeViewContainerView];
+    contentView = [(NTKFaceView *)v16 contentView];
+    [contentView addSubview:v16->_timeViewContainerView];
 
     v16->_numberSystem = -1;
   }
@@ -108,8 +108,8 @@
   v11[2] = __53__NTKWhistlerSubdialsFaceView_createFaceColorPalette__block_invoke;
   v11[3] = &unk_278786F88;
   v11[4] = self;
-  v3 = [(NTKFaceView *)self device];
-  v4 = __53__NTKWhistlerSubdialsFaceView_createFaceColorPalette__block_invoke(v11, v3);
+  device = [(NTKFaceView *)self device];
+  v4 = __53__NTKWhistlerSubdialsFaceView_createFaceColorPalette__block_invoke(v11, device);
   v6 = v5;
   v8 = v7;
 
@@ -182,18 +182,18 @@ CGFloat __53__NTKWhistlerSubdialsFaceView_createFaceColorPalette__block_invoke_3
   return v5;
 }
 
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot
 {
-  v7 = a3;
-  v8 = a5;
-  if (a4 == 11)
+  complicationCopy = complication;
+  slotCopy = slot;
+  if (family == 11)
   {
     v9 = off_27877B7F8;
   }
 
   else
   {
-    if (a4 != 10)
+    if (family != 10)
     {
       v10 = 0;
       goto LABEL_7;
@@ -202,32 +202,32 @@ CGFloat __53__NTKWhistlerSubdialsFaceView_createFaceColorPalette__block_invoke_3
     v9 = off_27877B6A0;
   }
 
-  v10 = -[__objc2_class viewWithLegacyComplicationType:](*v9, "viewWithLegacyComplicationType:", [v7 complicationType]);
+  v10 = -[__objc2_class viewWithLegacyComplicationType:](*v9, "viewWithLegacyComplicationType:", [complicationCopy complicationType]);
 LABEL_7:
 
   return v10;
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v7 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 setDelegate:self];
+    [viewCopy setDelegate:self];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v7;
+    v5 = viewCopy;
     [v5 transitThemeFromTheme:1 toTheme:1 fraction:1.0];
     if ([(NTKWhistlerSubdialsFaceView *)self showGossamerUI])
     {
       if ([v5 conformsToProtocol:&unk_28A7FF4C0])
       {
-        v6 = [MEMORY[0x277D75348] clearColor];
-        [v5 setPlatterColor:v6];
+        clearColor = [MEMORY[0x277D75348] clearColor];
+        [v5 setPlatterColor:clearColor];
       }
 
       if ([v5 conformsToProtocol:&unk_28A81D338])
@@ -245,12 +245,12 @@ LABEL_7:
   }
 }
 
-- (id)_filterProviderForSlot:(id)a3
+- (id)_filterProviderForSlot:(id)slot
 {
-  v4 = a3;
+  slotCopy = slot;
   if ([(NTKWhistlerSubdialsFaceView *)self showGossamerUI])
   {
-    if ([v4 isEqualToString:@"top"])
+    if ([slotCopy isEqualToString:@"top"])
     {
       v5 = &OBJC_IVAR___NTKWhistlerSubdialsFaceView__topFilterProvider;
 LABEL_8:
@@ -258,13 +258,13 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    if ([v4 isEqualToString:@"center"])
+    if ([slotCopy isEqualToString:@"center"])
     {
       v5 = &OBJC_IVAR___NTKWhistlerSubdialsFaceView__centerFilterProvider;
       goto LABEL_8;
     }
 
-    if ([v4 isEqualToString:@"bottom"])
+    if ([slotCopy isEqualToString:@"bottom"])
     {
       v5 = &OBJC_IVAR___NTKWhistlerSubdialsFaceView__bottomFilterProvider;
       goto LABEL_8;
@@ -272,32 +272,32 @@ LABEL_8:
   }
 
 LABEL_9:
-  v6 = self;
+  selfCopy = self;
 
   return self;
 }
 
-- (void)updateMonochromeColorForRichComplicationView:(id)a3
+- (void)updateMonochromeColorForRichComplicationView:(id)view
 {
-  v7 = a3;
-  v4 = [(NTKFaceView *)self faceColorPalette];
-  if ([v4 isWhiteColor])
+  viewCopy = view;
+  faceColorPalette = [(NTKFaceView *)self faceColorPalette];
+  if ([faceColorPalette isWhiteColor])
   {
 
 LABEL_4:
-    [v7 transitionToMonochromeWithFraction:0.0];
+    [viewCopy transitionToMonochromeWithFraction:0.0];
     goto LABEL_6;
   }
 
-  v5 = [(NTKFaceView *)self faceColorPalette];
-  v6 = [v5 isBlackColor];
+  faceColorPalette2 = [(NTKFaceView *)self faceColorPalette];
+  isBlackColor = [faceColorPalette2 isBlackColor];
 
-  if (v6)
+  if (isBlackColor)
   {
     goto LABEL_4;
   }
 
-  [v7 updateMonochromeColor];
+  [viewCopy updateMonochromeColor];
 LABEL_6:
 }
 
@@ -308,15 +308,15 @@ LABEL_6:
   [(NTKFaceView *)&v8 _loadSnapshotContentViews];
   if (!self->_composedView && [(NTKWhistlerSubdialsFaceView *)self showGossamerUI])
   {
-    v3 = [(NTKFaceView *)self rootContainerView];
-    [v3 removeFromSuperview];
+    rootContainerView = [(NTKFaceView *)self rootContainerView];
+    [rootContainerView removeFromSuperview];
     v4 = [NTKGradientComposedView alloc];
-    v5 = [(NTKFaceView *)self device];
-    v6 = [(NTKGradientComposedView *)v4 initWithDevice:v5];
+    device = [(NTKFaceView *)self device];
+    v6 = [(NTKGradientComposedView *)v4 initWithDevice:device];
     composedView = self->_composedView;
     self->_composedView = v6;
 
-    [(NTKGradientComposedView *)self->_composedView setRootContainerView:v3];
+    [(NTKGradientComposedView *)self->_composedView setRootContainerView:rootContainerView];
     [(NTKWhistlerSubdialsFaceView *)self addSubview:self->_composedView];
   }
 
@@ -335,10 +335,10 @@ LABEL_6:
     v4 = self->_composedView;
     self->_composedView = 0;
 
-    v5 = [(NTKFaceView *)self rootContainerView];
-    [v5 removeFromSuperview];
-    v6 = [(NTKFaceView *)self timeView];
-    [(NTKWhistlerSubdialsFaceView *)self insertSubview:v5 aboveSubview:v6];
+    rootContainerView = [(NTKFaceView *)self rootContainerView];
+    [rootContainerView removeFromSuperview];
+    timeView = [(NTKFaceView *)self timeView];
+    [(NTKWhistlerSubdialsFaceView *)self insertSubview:rootContainerView aboveSubview:timeView];
   }
 
   [(NTKWhistlerSubdialsFaceView *)self _removeDialView];
@@ -346,39 +346,39 @@ LABEL_6:
 
 - (void)_setupDialView
 {
-  v3 = [(NTKWhistlerSubdialsFaceView *)self dialView];
-  [(NTKFaceView *)self setTimeView:v3];
+  dialView = [(NTKWhistlerSubdialsFaceView *)self dialView];
+  [(NTKFaceView *)self setTimeView:dialView];
 
   timeViewContainerView = self->_timeViewContainerView;
-  v5 = [(NTKFaceView *)self timeView];
-  [(UIView *)timeViewContainerView addSubview:v5];
+  timeView = [(NTKFaceView *)self timeView];
+  [(UIView *)timeViewContainerView addSubview:timeView];
 
   v6 = self->_timeViewContainerView;
-  v7 = [(NTKFaceView *)self timeView];
-  [v7 bounds];
+  timeView2 = [(NTKFaceView *)self timeView];
+  [timeView2 bounds];
   [(UIView *)v6 setBounds:?];
 }
 
 - (id)dialView
 {
-  v3 = [(NTKFaceView *)self device];
-  ___LayoutConstants_block_invoke_67(v3, v11);
+  device = [(NTKFaceView *)self device];
+  ___LayoutConstants_block_invoke_67(device, v11);
   v4 = v11[0];
 
   v5 = [NTKWhistlerSubdialsTimeView alloc];
-  v6 = [(NTKFaceView *)self device];
-  v7 = [(NTKWhistlerSubdialsTimeView *)v5 initWithFrame:0 style:v6 andDevice:0.0, 0.0, v4, v4];
+  device2 = [(NTKFaceView *)self device];
+  v7 = [(NTKWhistlerSubdialsTimeView *)v5 initWithFrame:0 style:device2 andDevice:0.0, 0.0, v4, v4];
 
-  v8 = [(NTKWhistlerSubdialsFaceView *)self showGossamerUI];
-  v9 = [(NTKFaceView *)self faceColorPalette];
-  if (v8)
+  showGossamerUI = [(NTKWhistlerSubdialsFaceView *)self showGossamerUI];
+  faceColorPalette = [(NTKFaceView *)self faceColorPalette];
+  if (showGossamerUI)
   {
-    [(NTKDualTimeView *)v7 applyGossamerColorPalette:v9];
+    [(NTKDualTimeView *)v7 applyGossamerColorPalette:faceColorPalette];
   }
 
   else
   {
-    [(NTKDualTimeView *)v7 setColorPalette:v9];
+    [(NTKDualTimeView *)v7 setColorPalette:faceColorPalette];
   }
 
   [(NTKWhistlerSubdialsTimeView *)v7 setForcedNumberSystemForDigitalTimeLabel:self->_numberSystem];
@@ -388,8 +388,8 @@ LABEL_6:
 
 - (void)_removeDialView
 {
-  v3 = [(NTKFaceView *)self timeView];
-  [v3 removeFromSuperview];
+  timeView = [(NTKFaceView *)self timeView];
+  [timeView removeFromSuperview];
 
   [(NTKFaceView *)self setTimeView:0];
 }
@@ -402,12 +402,12 @@ LABEL_6:
   return v3;
 }
 
-- (void)updateWithColorPalette:(id)a3
+- (void)updateWithColorPalette:(id)palette
 {
-  v4 = a3;
-  [(NTKWhistlerSubdialsFaceView *)self _applyTransitionFraction:v4 fromPalette:v4 toPalette:0.0];
-  v5 = [(NTKFaceView *)self timeView];
-  [v5 setColorPalette:v4];
+  paletteCopy = palette;
+  [(NTKWhistlerSubdialsFaceView *)self _applyTransitionFraction:paletteCopy fromPalette:paletteCopy toPalette:0.0];
+  timeView = [(NTKFaceView *)self timeView];
+  [timeView setColorPalette:paletteCopy];
 }
 
 - (void)_loadLayoutRules
@@ -515,14 +515,14 @@ void __47__NTKWhistlerSubdialsFaceView__loadLayoutRules__block_invoke(uint64_t a
   [v37 setDefaultLayoutRule:v36 forState:a2];
 }
 
-- (int64_t)_keylineStyleForComplicationSlot:(id)a3
+- (int64_t)_keylineStyleForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"bottom"])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:@"bottom"])
   {
     v7.receiver = self;
     v7.super_class = NTKWhistlerSubdialsFaceView;
-    v5 = [(NTKFaceView *)&v7 _keylineStyleForComplicationSlot:v4];
+    v5 = [(NTKFaceView *)&v7 _keylineStyleForComplicationSlot:slotCopy];
   }
 
   else
@@ -546,8 +546,8 @@ void __47__NTKWhistlerSubdialsFaceView__loadLayoutRules__block_invoke(uint64_t a
   v3 = [(NTKFaceView *)self device:0];
   ___LayoutConstants_block_invoke_67(v3, &v13);
 
-  v4 = [(NTKFaceView *)self timeView];
-  [v4 bounds];
+  timeView = [(NTKFaceView *)self timeView];
+  [timeView bounds];
   v6 = v5;
   v8 = v7;
 
@@ -555,14 +555,14 @@ void __47__NTKWhistlerSubdialsFaceView__loadLayoutRules__block_invoke(uint64_t a
   [(UIView *)self->_timeViewContainerView setCenter:CGRectGetMaxX(v20) - *&v15 - v6 * 0.5, v8 * 0.5 + *(&v14 + 1)];
   v9 = MEMORY[0x2318D8E70]([(UIView *)self->_timeViewContainerView bounds]);
   v11 = v10;
-  v12 = [(NTKFaceView *)self timeView];
-  [v12 setCenter:{v9, v11}];
+  timeView2 = [(NTKFaceView *)self timeView];
+  [timeView2 setCenter:{v9, v11}];
 }
 
 - (double)_horizontalPaddingForStatusBar
 {
-  v2 = [(NTKFaceView *)self device];
-  ___LayoutConstants_block_invoke_67(v2, v5);
+  device = [(NTKFaceView *)self device];
+  ___LayoutConstants_block_invoke_67(device, v5);
   v3 = v6;
 
   return v3;
@@ -576,21 +576,21 @@ void __47__NTKWhistlerSubdialsFaceView__loadLayoutRules__block_invoke(uint64_t a
   v4 = v3;
   if (self->_backgroundStyle == 1)
   {
-    v5 = [(NTKFaceView *)self device];
-    ___LayoutConstants_block_invoke_67(v5, v7);
+    device = [(NTKFaceView *)self device];
+    ___LayoutConstants_block_invoke_67(device, v7);
     v4 = v4 + v8;
   }
 
   return v4;
 }
 
-- (double)_keylineCornerRadiusForComplicationSlot:(id)a3
+- (double)_keylineCornerRadiusForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"bottom"])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:@"bottom"])
   {
-    v5 = [(NTKFaceView *)self device];
-    [NTKModuleView cornerRadiusForComplicationFamily:1 forDevice:v5];
+    device = [(NTKFaceView *)self device];
+    [NTKModuleView cornerRadiusForComplicationFamily:1 forDevice:device];
     v7 = v6;
   }
 
@@ -598,16 +598,16 @@ void __47__NTKWhistlerSubdialsFaceView__loadLayoutRules__block_invoke(uint64_t a
   {
     v10.receiver = self;
     v10.super_class = NTKWhistlerSubdialsFaceView;
-    [(NTKFaceView *)&v10 _keylineCornerRadiusForComplicationSlot:v4];
+    [(NTKFaceView *)&v10 _keylineCornerRadiusForComplicationSlot:slotCopy];
     v7 = v8;
   }
 
   return v7;
 }
 
-- (double)_minimumBreathingScaleForComplicationSlot:(id)a3
+- (double)_minimumBreathingScaleForComplicationSlot:(id)slot
 {
-  v3 = [a3 isEqualToString:@"bottom"];
+  v3 = [slot isEqualToString:@"bottom"];
   v4 = &NTKLargeElementMinimumBreathingScale;
   if (!v3)
   {
@@ -619,8 +619,8 @@ void __47__NTKWhistlerSubdialsFaceView__loadLayoutRules__block_invoke(uint64_t a
 
 - (void)_prepareForEditing
 {
-  v3 = [(NTKFaceView *)self timeView];
-  [v3 setEditing:1];
+  timeView = [(NTKFaceView *)self timeView];
+  [timeView setEditing:1];
 
   [(NTKFaceView *)self enumerateComplicationDisplayWrappersWithBlock:&__block_literal_global_161];
 }
@@ -633,8 +633,8 @@ void __49__NTKWhistlerSubdialsFaceView__prepareForEditing__block_invoke(uint64_t
 
 - (void)_cleanupAfterEditing
 {
-  v3 = [(NTKFaceView *)self timeView];
-  [v3 setEditing:0];
+  timeView = [(NTKFaceView *)self timeView];
+  [timeView setEditing:0];
 
   [(NTKFaceView *)self enumerateComplicationDisplayWrappersWithBlock:&__block_literal_global_50];
 }
@@ -645,69 +645,69 @@ void __51__NTKWhistlerSubdialsFaceView__cleanupAfterEditing__block_invoke(uint64
   [v3 setAllowsGroupOpacity:0];
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v14 = a3;
+  optionCopy = option;
   if (![(NTKWhistlerSubdialsFaceView *)self showGossamerUI])
   {
-    if (a4 == 19)
+    if (mode == 19)
     {
-      -[NTKWhistlerSubdialsFaceView _setNumerals:](self, "_setNumerals:", [v14 numeralOption]);
+      -[NTKWhistlerSubdialsFaceView _setNumerals:](self, "_setNumerals:", [optionCopy numeralOption]);
       goto LABEL_18;
     }
 
-    if (a4 != 15)
+    if (mode != 15)
     {
-      if (a4 != 10)
+      if (mode != 10)
       {
         goto LABEL_18;
       }
 
-      v8 = [(NTKFaceView *)self faceColorPalette];
-      [(NTKWhistlerSubdialsFaceView *)self updateWithColorPalette:v8];
+      faceColorPalette = [(NTKFaceView *)self faceColorPalette];
+      [(NTKWhistlerSubdialsFaceView *)self updateWithColorPalette:faceColorPalette];
       goto LABEL_17;
     }
 
 LABEL_13:
-    v13 = [(NTKFaceView *)self timeView];
-    [v13 setStyle:{objc_msgSend(v14, "style")}];
+    timeView = [(NTKFaceView *)self timeView];
+    [timeView setStyle:{objc_msgSend(optionCopy, "style")}];
 
     goto LABEL_18;
   }
 
-  if (a4 == 15)
+  if (mode == 15)
   {
     goto LABEL_13;
   }
 
-  v7 = [(NTKFaceView *)self faceColorPalette];
-  v8 = v7;
+  faceColorPalette2 = [(NTKFaceView *)self faceColorPalette];
+  faceColorPalette = faceColorPalette2;
   if (self->_complicationPlaceholderViews)
   {
-    [v7 setIsSwatchPreview:1];
+    [faceColorPalette2 setIsSwatchPreview:1];
   }
 
-  switch(a4)
+  switch(mode)
   {
     case 10:
-      [(NTKWhistlerSubdialsFaceView *)self _applyColorsFromPalette:v8];
+      [(NTKWhistlerSubdialsFaceView *)self _applyColorsFromPalette:faceColorPalette];
       break;
     case 19:
-      -[NTKWhistlerSubdialsFaceView _setNumerals:](self, "_setNumerals:", [v14 numeralOption]);
+      -[NTKWhistlerSubdialsFaceView _setNumerals:](self, "_setNumerals:", [optionCopy numeralOption]);
       break;
     case 17:
-      v9 = [v14 backgroundStyle];
-      [v8 setBackgroundStyle:v9];
-      [(NTKWhistlerSubdialsFaceView *)self setBackgroundStyle:v9];
-      [(NTKWhistlerSubdialsFaceView *)self _applyColorsFromPalette:v8];
-      v10 = [(NTKFaceView *)self delegate];
-      [v10 faceViewWantsComplicationKeylineFramesReloaded];
+      backgroundStyle = [optionCopy backgroundStyle];
+      [faceColorPalette setBackgroundStyle:backgroundStyle];
+      [(NTKWhistlerSubdialsFaceView *)self setBackgroundStyle:backgroundStyle];
+      [(NTKWhistlerSubdialsFaceView *)self _applyColorsFromPalette:faceColorPalette];
+      delegate = [(NTKFaceView *)self delegate];
+      [delegate faceViewWantsComplicationKeylineFramesReloaded];
 
-      v11 = [(NTKFaceView *)self delegate];
-      [v11 faceViewDidChangeWantsStatusBarIconShadow];
+      delegate2 = [(NTKFaceView *)self delegate];
+      [delegate2 faceViewDidChangeWantsStatusBarIconShadow];
 
-      v12 = [(NTKFaceView *)self delegate];
-      [v12 faceViewDidChangePaddingForStatusBar];
+      delegate3 = [(NTKFaceView *)self delegate];
+      [delegate3 faceViewDidChangePaddingForStatusBar];
 
       break;
   }
@@ -717,46 +717,46 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v26 = a4;
-  v11 = a5;
+  optionCopy = option;
+  toOptionCopy = toOption;
   if ([(NTKWhistlerSubdialsFaceView *)self showGossamerUI])
   {
-    if (a6 != 15)
+    if (mode != 15)
     {
-      v12 = [(NTKFaceView *)self interpolatedColorPalette];
-      v13 = [v12 fromPalette];
-      v14 = [v12 toPalette];
+      interpolatedColorPalette = [(NTKFaceView *)self interpolatedColorPalette];
+      fromPalette = [interpolatedColorPalette fromPalette];
+      toPalette = [interpolatedColorPalette toPalette];
       if (self->_complicationPlaceholderViews)
       {
-        [v13 setIsSwatchPreview:1];
-        [v14 setIsSwatchPreview:1];
+        [fromPalette setIsSwatchPreview:1];
+        [toPalette setIsSwatchPreview:1];
       }
 
-      switch(a6)
+      switch(mode)
       {
         case 10:
-          v25 = [(NTKWhistlerSubdialsFaceView *)self backgroundStyle];
-          [v13 setBackgroundStyle:v25];
-          [v14 setBackgroundStyle:v25];
-          [(NTKWhistlerSubdialsFaceView *)self _applyColorsFromPalette:v12];
+          backgroundStyle = [(NTKWhistlerSubdialsFaceView *)self backgroundStyle];
+          [fromPalette setBackgroundStyle:backgroundStyle];
+          [toPalette setBackgroundStyle:backgroundStyle];
+          [(NTKWhistlerSubdialsFaceView *)self _applyColorsFromPalette:interpolatedColorPalette];
           break;
         case 19:
-          -[NTKWhistlerSubdialsFaceView _applyTransitionFraction:fromNumeralOption:toNumeralOption:](self, "_applyTransitionFraction:fromNumeralOption:toNumeralOption:", [v26 numeralOption], objc_msgSend(v11, "numeralOption"), a3);
+          -[NTKWhistlerSubdialsFaceView _applyTransitionFraction:fromNumeralOption:toNumeralOption:](self, "_applyTransitionFraction:fromNumeralOption:toNumeralOption:", [optionCopy numeralOption], objc_msgSend(toOptionCopy, "numeralOption"), fraction);
           break;
         case 17:
-          v15 = [v26 backgroundStyle];
-          v16 = [v11 backgroundStyle];
-          v17 = [(NTKFaceView *)self faceColorPalette];
-          v18 = [v17 pigmentEditOption];
+          backgroundStyle2 = [optionCopy backgroundStyle];
+          backgroundStyle3 = [toOptionCopy backgroundStyle];
+          faceColorPalette = [(NTKFaceView *)self faceColorPalette];
+          pigmentEditOption = [faceColorPalette pigmentEditOption];
 
-          [v13 setPigmentEditOption:v18];
-          [v13 setBackgroundStyle:v15];
-          [v14 setPigmentEditOption:v18];
-          [v14 setBackgroundStyle:v16];
-          [v12 setTransitionFraction:a3];
-          [(NTKWhistlerSubdialsFaceView *)self _applyColorsFromPalette:v12];
+          [fromPalette setPigmentEditOption:pigmentEditOption];
+          [fromPalette setBackgroundStyle:backgroundStyle2];
+          [toPalette setPigmentEditOption:pigmentEditOption];
+          [toPalette setBackgroundStyle:backgroundStyle3];
+          [interpolatedColorPalette setTransitionFraction:fraction];
+          [(NTKWhistlerSubdialsFaceView *)self _applyColorsFromPalette:interpolatedColorPalette];
 
           break;
       }
@@ -765,60 +765,60 @@ LABEL_18:
     }
 
 LABEL_13:
-    v24 = [(NTKFaceView *)self timeView];
-    [v24 applyTransitionFraction:objc_msgSend(v26 fromStyle:"style") toStyle:{objc_msgSend(v11, "style"), a3}];
+    timeView = [(NTKFaceView *)self timeView];
+    [timeView applyTransitionFraction:objc_msgSend(optionCopy fromStyle:"style") toStyle:{objc_msgSend(toOptionCopy, "style"), fraction}];
 
     goto LABEL_18;
   }
 
-  switch(a6)
+  switch(mode)
   {
     case 19:
-      -[NTKWhistlerSubdialsFaceView _applyTransitionFraction:fromNumeralOption:toNumeralOption:](self, "_applyTransitionFraction:fromNumeralOption:toNumeralOption:", [v26 numeralOption], objc_msgSend(v11, "numeralOption"), a3);
+      -[NTKWhistlerSubdialsFaceView _applyTransitionFraction:fromNumeralOption:toNumeralOption:](self, "_applyTransitionFraction:fromNumeralOption:toNumeralOption:", [optionCopy numeralOption], objc_msgSend(toOptionCopy, "numeralOption"), fraction);
       break;
     case 15:
       goto LABEL_13;
     case 10:
-      v19 = [(NTKFaceView *)self interpolatedColorPalette];
-      v20 = [v19 fromPalette];
+      interpolatedColorPalette2 = [(NTKFaceView *)self interpolatedColorPalette];
+      fromPalette2 = [interpolatedColorPalette2 fromPalette];
 
-      v21 = [(NTKFaceView *)self interpolatedColorPalette];
-      v22 = [v21 toPalette];
+      interpolatedColorPalette3 = [(NTKFaceView *)self interpolatedColorPalette];
+      toPalette2 = [interpolatedColorPalette3 toPalette];
 
-      v23 = [(NTKFaceView *)self timeView];
-      [v23 applyTransitionFraction:v20 fromColorPalette:v22 toColorPalette:a3];
+      timeView2 = [(NTKFaceView *)self timeView];
+      [timeView2 applyTransitionFraction:fromPalette2 fromColorPalette:toPalette2 toColorPalette:fraction];
 
-      [(NTKWhistlerSubdialsFaceView *)self _applyTransitionFraction:v20 fromPalette:v22 toPalette:a3];
+      [(NTKWhistlerSubdialsFaceView *)self _applyTransitionFraction:fromPalette2 fromPalette:toPalette2 toPalette:fraction];
       break;
   }
 
 LABEL_18:
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromNumeralOption:(unint64_t)a4 toNumeralOption:(unint64_t)a5
+- (void)_applyTransitionFraction:(double)fraction fromNumeralOption:(unint64_t)option toNumeralOption:(unint64_t)numeralOption
 {
   if ([(NTKFaceView *)self isAnalog])
   {
-    v9 = self;
-    v10 = a5;
+    selfCopy2 = self;
+    optionCopy = numeralOption;
 LABEL_5:
 
-    [(NTKWhistlerSubdialsFaceView *)v9 _setNumerals:v10];
+    [(NTKWhistlerSubdialsFaceView *)selfCopy2 _setNumerals:optionCopy];
     return;
   }
 
-  if (a4 == a5)
+  if (option == numeralOption)
   {
-    v9 = self;
-    v10 = a4;
+    selfCopy2 = self;
+    optionCopy = option;
     goto LABEL_5;
   }
 
   CLKMapFractionIntoRange();
-  if (a3 >= 0.5)
+  if (fraction >= 0.5)
   {
     v12 = v11;
-    a4 = a5;
+    option = numeralOption;
   }
 
   else
@@ -829,67 +829,67 @@ LABEL_5:
   CLKMapFractionIntoRange();
   memset(&v17, 0, sizeof(v17));
   CGAffineTransformMakeScale(&v17, v13, v13);
-  [(NTKWhistlerSubdialsFaceView *)self _setNumerals:a4];
-  v14 = [(NTKFaceView *)self timeView];
-  v15 = [v14 digitalTimeLabel];
+  [(NTKWhistlerSubdialsFaceView *)self _setNumerals:option];
+  timeView = [(NTKFaceView *)self timeView];
+  digitalTimeLabel = [timeView digitalTimeLabel];
 
-  [v15 setAlpha:v12];
+  [digitalTimeLabel setAlpha:v12];
   v16 = v17;
-  [v15 setTransform:&v16];
+  [digitalTimeLabel setTransform:&v16];
 }
 
-- (void)_applyColorsFromPalette:(id)a3
+- (void)_applyColorsFromPalette:(id)palette
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 scaleFactor];
-  [v5 doubleValue];
+  paletteCopy = palette;
+  scaleFactor = [paletteCopy scaleFactor];
+  [scaleFactor doubleValue];
   self->_scaleFactor = v6;
 
   memset(&v40, 0, sizeof(v40));
   CGAffineTransformMakeScale(&v40, self->_scaleFactor, self->_scaleFactor);
-  v7 = [(NTKFaceView *)self rootContainerView];
+  rootContainerView = [(NTKFaceView *)self rootContainerView];
   v39 = v40;
-  [v7 setTransform:&v39];
+  [rootContainerView setTransform:&v39];
 
-  [(NTKGradientComposedView *)self->_composedView applyGossamerColorPalette:v4];
-  v8 = [(NTKFaceView *)self timeView];
-  [v8 applyGossamerColorPalette:v4];
+  [(NTKGradientComposedView *)self->_composedView applyGossamerColorPalette:paletteCopy];
+  timeView = [(NTKFaceView *)self timeView];
+  [timeView applyGossamerColorPalette:paletteCopy];
 
-  v9 = [v4 foregroundColor];
+  foregroundColor = [paletteCopy foregroundColor];
   topFilterProvider = self->_topFilterProvider;
-  v11 = [v4 topAccentColor];
-  [(NTKMonochromeModel *)topFilterProvider setAccentColor:v11];
+  topAccentColor = [paletteCopy topAccentColor];
+  [(NTKMonochromeModel *)topFilterProvider setAccentColor:topAccentColor];
 
-  [(NTKMonochromeModel *)self->_topFilterProvider setNonAccentColor:v9];
+  [(NTKMonochromeModel *)self->_topFilterProvider setNonAccentColor:foregroundColor];
   v12 = self->_topFilterProvider;
-  v13 = [v4 topApproximateBackgroundColor];
-  [(NTKMonochromeModel *)v12 setBackgroundColor:v13];
+  topApproximateBackgroundColor = [paletteCopy topApproximateBackgroundColor];
+  [(NTKMonochromeModel *)v12 setBackgroundColor:topApproximateBackgroundColor];
 
   centerFilterProvider = self->_centerFilterProvider;
-  v15 = [v4 centerAccentColor];
-  [(NTKMonochromeModel *)centerFilterProvider setAccentColor:v15];
+  centerAccentColor = [paletteCopy centerAccentColor];
+  [(NTKMonochromeModel *)centerFilterProvider setAccentColor:centerAccentColor];
 
-  [(NTKMonochromeModel *)self->_centerFilterProvider setNonAccentColor:v9];
+  [(NTKMonochromeModel *)self->_centerFilterProvider setNonAccentColor:foregroundColor];
   v16 = self->_centerFilterProvider;
-  v17 = [v4 centerApproximateBackgroundColor];
-  [(NTKMonochromeModel *)v16 setBackgroundColor:v17];
+  centerApproximateBackgroundColor = [paletteCopy centerApproximateBackgroundColor];
+  [(NTKMonochromeModel *)v16 setBackgroundColor:centerApproximateBackgroundColor];
 
   bottomFilterProvider = self->_bottomFilterProvider;
-  v19 = [v4 bottomAccentColor];
-  [(NTKMonochromeModel *)bottomFilterProvider setAccentColor:v19];
+  bottomAccentColor = [paletteCopy bottomAccentColor];
+  [(NTKMonochromeModel *)bottomFilterProvider setAccentColor:bottomAccentColor];
 
-  [(NTKMonochromeModel *)self->_bottomFilterProvider setNonAccentColor:v9];
+  [(NTKMonochromeModel *)self->_bottomFilterProvider setNonAccentColor:foregroundColor];
   v20 = self->_bottomFilterProvider;
-  v21 = [v4 bottomApproximateBackgroundColor];
-  [(NTKMonochromeModel *)v20 setBackgroundColor:v21];
+  bottomApproximateBackgroundColor = [paletteCopy bottomApproximateBackgroundColor];
+  [(NTKMonochromeModel *)v20 setBackgroundColor:bottomApproximateBackgroundColor];
 
-  v22 = [v4 monochromeFraction];
-  [v22 doubleValue];
+  monochromeFraction = [paletteCopy monochromeFraction];
+  [monochromeFraction doubleValue];
   self->_monochromeFraction = v23;
 
-  v24 = [v4 tintedFraction];
-  [v24 doubleValue];
+  tintedFraction = [paletteCopy tintedFraction];
+  [tintedFraction doubleValue];
   self->_tintedFraction = v25;
 
   monochromeFraction = self->_monochromeFraction;
@@ -903,7 +903,7 @@ LABEL_5:
   [(NTKFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v38];
   if (self->_complicationPlaceholderViews)
   {
-    v28 = [v4 swatchComplicationPlaceholderColor];
+    swatchComplicationPlaceholderColor = [paletteCopy swatchComplicationPlaceholderColor];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
@@ -924,7 +924,7 @@ LABEL_5:
             objc_enumerationMutation(v29);
           }
 
-          [*(*(&v34 + 1) + 8 * v33++) setBackgroundColor:{v28, v34}];
+          [*(*(&v34 + 1) + 8 * v33++) setBackgroundColor:{swatchComplicationPlaceholderColor, v34}];
         }
 
         while (v31 != v33);
@@ -985,16 +985,16 @@ void __55__NTKWhistlerSubdialsFaceView__applyColorsFromPalette___block_invoke(ui
     [v4 frame];
     v21 = [v20 initWithFrame:?];
     v22 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{MinX, v17, v16, v16 / v14}];
-    v23 = [v19 layer];
-    [v23 setCornerRadius:v7];
+    layer = [v19 layer];
+    [layer setCornerRadius:v7];
 
-    v24 = [v21 layer];
-    [v24 setCornerRadius:v7];
+    layer2 = [v21 layer];
+    [layer2 setCornerRadius:v7];
 
-    v25 = [v22 layer];
-    v26 = [(NTKFaceView *)self device];
-    ___LayoutConstants_block_invoke_67(v26, v43);
-    [v25 setCornerRadius:v44];
+    layer3 = [v22 layer];
+    device = [(NTKFaceView *)self device];
+    ___LayoutConstants_block_invoke_67(device, v43);
+    [layer3 setCornerRadius:v44];
 
     v46[0] = v19;
     v46[1] = v21;
@@ -1024,8 +1024,8 @@ void __55__NTKWhistlerSubdialsFaceView__applyColorsFromPalette___block_invoke(ui
           }
 
           v34 = *(*(&v39 + 1) + 8 * v33);
-          v35 = [(NTKFaceView *)self complicationContainerView];
-          [v35 addSubview:v34];
+          complicationContainerView = [(NTKFaceView *)self complicationContainerView];
+          [complicationContainerView addSubview:v34];
 
           ++v33;
         }
@@ -1039,66 +1039,66 @@ void __55__NTKWhistlerSubdialsFaceView__applyColorsFromPalette___block_invoke(ui
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromPalette:(id)a4 toPalette:(id)a5
+- (void)_applyTransitionFraction:(double)fraction fromPalette:(id)palette toPalette:(id)toPalette
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 primaryColor];
-  v11 = [v9 primaryColor];
-  if ([v8 isBlackColor])
+  paletteCopy = palette;
+  toPaletteCopy = toPalette;
+  primaryColor = [paletteCopy primaryColor];
+  primaryColor2 = [toPaletteCopy primaryColor];
+  if ([paletteCopy isBlackColor])
   {
-    v12 = 1;
+    isWhiteColor = 1;
   }
 
   else
   {
-    v12 = [v8 isWhiteColor];
+    isWhiteColor = [paletteCopy isWhiteColor];
   }
 
-  if ([v9 isBlackColor])
+  if ([toPaletteCopy isBlackColor])
   {
-    v13 = 1;
-  }
-
-  else
-  {
-    v13 = [v9 isWhiteColor];
-  }
-
-  v14 = 1.0 - a3;
-  v15 = 0.0;
-  if ((v12 & v13) == 0)
-  {
-    v15 = a3;
-  }
-
-  if (v12 | v13 ^ 1)
-  {
-    v16 = v15;
+    isWhiteColor2 = 1;
   }
 
   else
   {
-    v16 = 1.0 - a3;
+    isWhiteColor2 = [toPaletteCopy isWhiteColor];
   }
 
-  if ((v12 | v13))
+  v14 = 1.0 - fraction;
+  fractionCopy = 0.0;
+  if ((isWhiteColor & isWhiteColor2) == 0)
   {
-    if (v12)
+    fractionCopy = fraction;
+  }
+
+  if (isWhiteColor | isWhiteColor2 ^ 1)
+  {
+    v16 = fractionCopy;
+  }
+
+  else
+  {
+    v16 = 1.0 - fraction;
+  }
+
+  if ((isWhiteColor | isWhiteColor2))
+  {
+    if (isWhiteColor)
     {
-      [(NTKFaceView *)self setInterpolatedComplicationColor:v11, v14];
-      v17 = self;
-      v18 = v11;
+      [(NTKFaceView *)self setInterpolatedComplicationColor:primaryColor2, v14];
+      selfCopy2 = self;
+      v18 = primaryColor2;
 LABEL_18:
-      [(NTKFaceView *)v17 setComplicationColor:v18];
+      [(NTKFaceView *)selfCopy2 setComplicationColor:v18];
       goto LABEL_19;
     }
 
-    if (v13)
+    if (isWhiteColor2)
     {
-      [(NTKFaceView *)self setInterpolatedComplicationColor:v10, v14];
-      v17 = self;
-      v18 = v10;
+      [(NTKFaceView *)self setInterpolatedComplicationColor:primaryColor, v14];
+      selfCopy2 = self;
+      v18 = primaryColor;
       goto LABEL_18;
     }
   }
@@ -1116,8 +1116,8 @@ LABEL_19:
   v20[2] = __78__NTKWhistlerSubdialsFaceView__applyTransitionFraction_fromPalette_toPalette___block_invoke;
   v20[3] = &unk_278786FF0;
   v20[4] = self;
-  v21 = v12 ^ v13;
-  v22 = v12 & v13 & 1;
+  v21 = isWhiteColor ^ isWhiteColor2;
+  v22 = isWhiteColor & isWhiteColor2 & 1;
   *&v20[5] = v16;
   [(NTKFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v20];
 }
@@ -1148,44 +1148,44 @@ void __78__NTKWhistlerSubdialsFaceView__applyTransitionFraction_fromPalette_toPa
   }
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
   v5 = 1.0;
-  if (a3 == 15)
+  if (mode == 15)
   {
-    v6 = [(NTKFaceView *)self device];
-    ___LayoutConstants_block_invoke_67(v6, v19);
+    device = [(NTKFaceView *)self device];
+    ___LayoutConstants_block_invoke_67(device, v19);
     v5 = v20;
   }
 
   memset(&v18, 0, sizeof(v18));
   CGAffineTransformMakeScale(&v18, v5, v5);
-  v7 = [(NTKFaceView *)self timeView];
+  timeView = [(NTKFaceView *)self timeView];
   v17 = v18;
-  [v7 setTransform:&v17];
+  [timeView setTransform:&v17];
 
-  v8 = [(NTKFaceView *)self timeView];
-  [(NTKWhistlerSubdialsFaceView *)self _timeViewAlphaForEditMode:a3];
-  [v8 setAlpha:?];
+  timeView2 = [(NTKFaceView *)self timeView];
+  [(NTKWhistlerSubdialsFaceView *)self _timeViewAlphaForEditMode:mode];
+  [timeView2 setAlpha:?];
 
-  v9 = [(NTKFaceView *)self complicationContainerView];
-  [(NTKWhistlerSubdialsFaceView *)self _complicationAlphaForEditMode:a3];
-  [v9 setAlpha:?];
+  complicationContainerView = [(NTKFaceView *)self complicationContainerView];
+  [(NTKWhistlerSubdialsFaceView *)self _complicationAlphaForEditMode:mode];
+  [complicationContainerView setAlpha:?];
 
   if ([(NTKWhistlerSubdialsFaceView *)self showGossamerUI])
   {
-    v10 = [(NTKFaceView *)self delegate];
-    [v10 faceViewWantsCustomKeylineFramesReloadedForEditMode:15];
+    delegate = [(NTKFaceView *)self delegate];
+    [delegate faceViewWantsCustomKeylineFramesReloadedForEditMode:15];
 
     editingComplicationsPalette = self->_editingComplicationsPalette;
-    if (a3 == 1)
+    if (mode == 1)
     {
       if (!editingComplicationsPalette)
       {
-        v12 = [(NTKFaceView *)self faceColorPalette];
-        v13 = [v12 copy];
+        faceColorPalette = [(NTKFaceView *)self faceColorPalette];
+        v13 = [faceColorPalette copy];
         [v13 setIsEditingComplications:1];
-        v14 = [[NTKInterpolatedColorPalette alloc] initWithFromPalette:v12 toPalette:v13];
+        v14 = [[NTKInterpolatedColorPalette alloc] initWithFromPalette:faceColorPalette toPalette:v13];
         v15 = self->_editingComplicationsPalette;
         self->_editingComplicationsPalette = v14;
 
@@ -1200,50 +1200,50 @@ void __78__NTKWhistlerSubdialsFaceView__applyTransitionFraction_fromPalette_toPa
     {
       self->_editingComplicationsPalette = 0;
 
-      v16 = [(NTKFaceView *)self faceColorPalette];
-      [(NTKWhistlerSubdialsFaceView *)self _applyColorsFromPalette:v16];
+      faceColorPalette2 = [(NTKFaceView *)self faceColorPalette];
+      [(NTKWhistlerSubdialsFaceView *)self _applyColorsFromPalette:faceColorPalette2];
     }
   }
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
-  v8 = [(NTKFaceView *)self device];
-  ___LayoutConstants_block_invoke_67(v8, v22);
+  device = [(NTKFaceView *)self device];
+  ___LayoutConstants_block_invoke_67(device, v22);
 
   CLKInterpolateBetweenFloatsClipped();
   memset(&v21, 0, sizeof(v21));
   CGAffineTransformMakeScale(&v21, v9, v9);
-  v10 = [(NTKFaceView *)self timeView];
+  timeView = [(NTKFaceView *)self timeView];
   v20 = v21;
-  [v10 setTransform:&v20];
+  [timeView setTransform:&v20];
 
-  v11 = [(NTKFaceView *)self timeView];
-  [(NTKWhistlerSubdialsFaceView *)self _timeViewAlphaForEditMode:a4];
-  [(NTKWhistlerSubdialsFaceView *)self _timeViewAlphaForEditMode:a5];
+  timeView2 = [(NTKFaceView *)self timeView];
+  [(NTKWhistlerSubdialsFaceView *)self _timeViewAlphaForEditMode:mode];
+  [(NTKWhistlerSubdialsFaceView *)self _timeViewAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
-  [v11 setAlpha:?];
+  [timeView2 setAlpha:?];
 
-  v12 = [(NTKFaceView *)self complicationContainerView];
-  [(NTKWhistlerSubdialsFaceView *)self _complicationAlphaForEditMode:a4];
-  [(NTKWhistlerSubdialsFaceView *)self _complicationAlphaForEditMode:a5];
+  complicationContainerView = [(NTKFaceView *)self complicationContainerView];
+  [(NTKWhistlerSubdialsFaceView *)self _complicationAlphaForEditMode:mode];
+  [(NTKWhistlerSubdialsFaceView *)self _complicationAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
-  [v12 setAlpha:?];
+  [complicationContainerView setAlpha:?];
 
   if ([(NTKWhistlerSubdialsFaceView *)self showGossamerUI])
   {
-    v13 = [(NTKFaceView *)self delegate];
-    [v13 faceViewWantsCustomKeylineFramesReloadedForEditMode:15];
+    delegate = [(NTKFaceView *)self delegate];
+    [delegate faceViewWantsCustomKeylineFramesReloadedForEditMode:15];
 
     editingComplicationsPalette = self->_editingComplicationsPalette;
-    if (a4 == 1 || a5 == 1)
+    if (mode == 1 || editMode == 1)
     {
       if (!editingComplicationsPalette)
       {
-        v16 = [(NTKFaceView *)self faceColorPalette];
-        v17 = [v16 copy];
+        faceColorPalette = [(NTKFaceView *)self faceColorPalette];
+        v17 = [faceColorPalette copy];
         [v17 setIsEditingComplications:1];
-        v18 = [[NTKInterpolatedColorPalette alloc] initWithFromPalette:v16 toPalette:v17];
+        v18 = [[NTKInterpolatedColorPalette alloc] initWithFromPalette:faceColorPalette toPalette:v17];
         v19 = self->_editingComplicationsPalette;
         self->_editingComplicationsPalette = v18;
       }
@@ -1257,16 +1257,16 @@ void __78__NTKWhistlerSubdialsFaceView__applyTransitionFraction_fromPalette_toPa
     {
       self->_editingComplicationsPalette = 0;
 
-      v15 = [(NTKFaceView *)self faceColorPalette];
-      [(NTKWhistlerSubdialsFaceView *)self _applyColorsFromPalette:v15];
+      faceColorPalette2 = [(NTKFaceView *)self faceColorPalette];
+      [(NTKWhistlerSubdialsFaceView *)self _applyColorsFromPalette:faceColorPalette2];
     }
   }
 }
 
-- (double)_timeViewAlphaForEditMode:(int64_t)a3
+- (double)_timeViewAlphaForEditMode:(int64_t)mode
 {
   result = 0.2;
-  if (a3 != 1)
+  if (mode != 1)
   {
     return 1.0;
   }
@@ -1274,9 +1274,9 @@ void __78__NTKWhistlerSubdialsFaceView__applyTransitionFraction_fromPalette_toPa
   return result;
 }
 
-- (double)_complicationAlphaForEditMode:(int64_t)a3
+- (double)_complicationAlphaForEditMode:(int64_t)mode
 {
-  v3 = a3 == 19 || a3 == 15;
+  v3 = mode == 19 || mode == 15;
   result = 0.2;
   if (!v3)
   {
@@ -1286,15 +1286,15 @@ void __78__NTKWhistlerSubdialsFaceView__applyTransitionFraction_fromPalette_toPa
   return result;
 }
 
-- (id)_keylineViewForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_keylineViewForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  if (a3 == 15 || a3 == 19)
+  slotCopy = slot;
+  if (mode == 15 || mode == 19)
   {
-    [(NTKFaceView *)self _faceEditingScaleForEditMode:a3 slot:v6];
+    [(NTKFaceView *)self _faceEditingScaleForEditMode:mode slot:slotCopy];
     v8 = v7;
-    v9 = [(NTKFaceView *)self device];
-    ___LayoutConstants_block_invoke_67(v9, v14);
+    device = [(NTKFaceView *)self device];
+    ___LayoutConstants_block_invoke_67(device, v14);
     v10 = v14[0];
 
     if ([(NTKWhistlerSubdialsFaceView *)self showGossamerUI])
@@ -1309,7 +1309,7 @@ void __78__NTKWhistlerSubdialsFaceView__applyTransitionFraction_fromPalette_toPa
   {
     v15.receiver = self;
     v15.super_class = NTKWhistlerSubdialsFaceView;
-    v11 = [(NTKFaceView *)&v15 _keylineViewForCustomEditMode:a3 slot:v6];
+    v11 = [(NTKFaceView *)&v15 _keylineViewForCustomEditMode:mode slot:slotCopy];
   }
 
   v12 = v11;
@@ -1317,24 +1317,24 @@ void __78__NTKWhistlerSubdialsFaceView__applyTransitionFraction_fromPalette_toPa
   return v12;
 }
 
-- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
+  slotCopy = slot;
   v7 = 148;
-  if (a3 != 15 && a3 != 19)
+  if (mode != 15 && mode != 19)
   {
     v9.receiver = self;
     v9.super_class = NTKWhistlerSubdialsFaceView;
-    v7 = [(NTKFaceView *)&v9 _keylineLabelAlignmentForCustomEditMode:a3 slot:v6];
+    v7 = [(NTKFaceView *)&v9 _keylineLabelAlignmentForCustomEditMode:mode slot:slotCopy];
   }
 
   return v7;
 }
 
-- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  if (a3 == 19 || a3 == 15)
+  slotCopy = slot;
+  if (mode == 19 || mode == 15)
   {
     [(NTKWhistlerSubdialsFaceView *)self _timeViewFrameRelativeToFaceView];
   }
@@ -1343,7 +1343,7 @@ void __78__NTKWhistlerSubdialsFaceView__applyTransitionFraction_fromPalette_toPa
   {
     v19.receiver = self;
     v19.super_class = NTKWhistlerSubdialsFaceView;
-    [(NTKFaceView *)&v19 _relativeKeylineFrameForCustomEditMode:a3 slot:v6];
+    [(NTKFaceView *)&v19 _relativeKeylineFrameForCustomEditMode:mode slot:slotCopy];
   }
 
   v11 = v7;
@@ -1378,8 +1378,8 @@ void __78__NTKWhistlerSubdialsFaceView__applyTransitionFraction_fromPalette_toPa
   v4 = [(NTKFaceView *)self device:0];
   ___LayoutConstants_block_invoke_67(v4, &v26);
 
-  v5 = [(NTKFaceView *)self device];
-  [v5 screenBounds];
+  device = [(NTKFaceView *)self device];
+  [device screenBounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -1396,8 +1396,8 @@ void __78__NTKWhistlerSubdialsFaceView__applyTransitionFraction_fromPalette_toPa
   v33.size.height = v13;
   MidY = CGRectGetMidY(v33);
   v16 = *&v26;
-  v17 = [(NTKFaceView *)self device];
-  [v17 screenBounds];
+  device2 = [(NTKFaceView *)self device];
+  [device2 screenBounds];
   v19 = v18 - *&v28 - v16 * 0.5;
   v20 = v16 * 0.5 + *(&v27 + 1);
 
@@ -1413,16 +1413,16 @@ void __78__NTKWhistlerSubdialsFaceView__applyTransitionFraction_fromPalette_toPa
   return result;
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = NTKLargeElementScaleForBreathingFraction(a3);
+  v7 = NTKLargeElementScaleForBreathingFraction(fraction);
   memset(&v18, 0, sizeof(v18));
   CGAffineTransformMakeScale(&v18, v7, v7);
   if (![(NTKWhistlerSubdialsFaceView *)self showGossamerUI])
   {
-    if (a4 != 19 && a4 != 15)
+    if (mode != 19 && mode != 15)
     {
-      if (a4 != 10)
+      if (mode != 10)
       {
         return;
       }
@@ -1434,7 +1434,7 @@ void __78__NTKWhistlerSubdialsFaceView__applyTransitionFraction_fromPalette_toPa
       *&v17.tx = *(MEMORY[0x277CBF2C0] + 32);
       [(UIView *)timeViewContainerView setTransform:&v17];
       v17 = v18;
-      v10 = self;
+      selfCopy = self;
       goto LABEL_17;
     }
 
@@ -1442,18 +1442,18 @@ void __78__NTKWhistlerSubdialsFaceView__applyTransitionFraction_fromPalette_toPa
     *&v17.a = *MEMORY[0x277CBF2C0];
     *&v17.c = v11;
     *&v17.tx = *(MEMORY[0x277CBF2C0] + 32);
-    v12 = self;
+    selfCopy2 = self;
     goto LABEL_15;
   }
 
-  if (a4 > 16)
+  if (mode > 16)
   {
-    if (a4 == 19)
+    if (mode == 19)
     {
       goto LABEL_14;
     }
 
-    if (a4 != 17)
+    if (mode != 17)
     {
       return;
     }
@@ -1462,7 +1462,7 @@ LABEL_13:
     composedView = self->_composedView;
     v17 = v18;
     [(NTKGradientComposedView *)composedView setTransform:&v17];
-    v10 = self->_timeViewContainerView;
+    selfCopy = self->_timeViewContainerView;
     v14 = *(MEMORY[0x277CBF2C0] + 16);
     *&v17.a = *MEMORY[0x277CBF2C0];
     *&v17.c = v14;
@@ -1470,26 +1470,26 @@ LABEL_13:
 LABEL_16:
     *&v17.tx = v15;
 LABEL_17:
-    [(NTKWhistlerSubdialsFaceView *)v10 setTransform:&v17, *&v17.a, *&v17.c, *&v17.tx];
+    [(NTKWhistlerSubdialsFaceView *)selfCopy setTransform:&v17, *&v17.a, *&v17.c, *&v17.tx];
     return;
   }
 
-  if (a4 == 10)
+  if (mode == 10)
   {
     goto LABEL_13;
   }
 
-  if (a4 == 15)
+  if (mode == 15)
   {
 LABEL_14:
-    v12 = self->_composedView;
+    selfCopy2 = self->_composedView;
     v16 = *(MEMORY[0x277CBF2C0] + 16);
     *&v17.a = *MEMORY[0x277CBF2C0];
     *&v17.c = v16;
     *&v17.tx = *(MEMORY[0x277CBF2C0] + 32);
 LABEL_15:
-    [v12 setTransform:{&v17, *&v17.a, *&v17.c, *&v17.tx}];
-    v10 = self->_timeViewContainerView;
+    [selfCopy2 setTransform:{&v17, *&v17.a, *&v17.c, *&v17.tx}];
+    selfCopy = self->_timeViewContainerView;
     *&v17.a = *&v18.a;
     *&v17.c = *&v18.c;
     v15 = *&v18.tx;
@@ -1497,16 +1497,16 @@ LABEL_15:
   }
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = NTKScaleForRubberBandingFraction(a3);
+  v7 = NTKScaleForRubberBandingFraction(fraction);
   memset(&v16, 0, sizeof(v16));
   CGAffineTransformMakeScale(&v16, v7, v7);
   if ([(NTKWhistlerSubdialsFaceView *)self showGossamerUI])
   {
-    if (a4 > 16)
+    if (mode > 16)
     {
-      if (a4 == 19)
+      if (mode == 19)
       {
 LABEL_13:
         composedView = self->_composedView;
@@ -1523,15 +1523,15 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      if (a4 != 17)
+      if (mode != 17)
       {
         return;
       }
     }
 
-    else if (a4 != 10)
+    else if (mode != 10)
     {
-      if (a4 != 15)
+      if (mode != 15)
       {
         return;
       }
@@ -1553,45 +1553,45 @@ LABEL_15:
     return;
   }
 
-  if (a4 == 19 || a4 == 15)
+  if (mode == 19 || mode == 15)
   {
     goto LABEL_14;
   }
 
-  if (a4 == 10)
+  if (mode == 10)
   {
-    v8 = [(NTKFaceView *)self contentView];
+    contentView = [(NTKFaceView *)self contentView];
     v15 = v16;
-    [v8 setTransform:&v15];
+    [contentView setTransform:&v15];
   }
 }
 
-- (void)_setNumerals:(unint64_t)a3
+- (void)_setNumerals:(unint64_t)numerals
 {
-  v4 = CLKLocaleNumberSystemFromNumeralOption(a3);
+  v4 = CLKLocaleNumberSystemFromNumeralOption(numerals);
   if (self->_numberSystem != v4)
   {
     v5 = v4;
     self->_numberSystem = v4;
-    v6 = [(NTKFaceView *)self device];
-    v7 = NTKShowIndicScriptNumerals(v6);
+    device = [(NTKFaceView *)self device];
+    v7 = NTKShowIndicScriptNumerals(device);
 
     if (v7)
     {
-      v8 = [(NTKFaceView *)self timeView];
-      [v8 setForcedNumberSystemForDigitalTimeLabel:v5];
+      timeView = [(NTKFaceView *)self timeView];
+      [timeView setForcedNumberSystemForDigitalTimeLabel:v5];
 
       [(NTKWhistlerSubdialsFaceView *)self setNeedsLayout];
     }
   }
 }
 
-- (void)rectangularViewDidBecomeInteractive:(id)a3
+- (void)rectangularViewDidBecomeInteractive:(id)interactive
 {
-  v4 = a3;
-  v5 = [(NTKFaceView *)self timeView];
-  v6 = [v5 layer];
-  [v6 setAllowsGroupOpacity:1];
+  interactiveCopy = interactive;
+  timeView = [(NTKFaceView *)self timeView];
+  layer = [timeView layer];
+  [layer setAllowsGroupOpacity:1];
 
   v7 = MEMORY[0x277D75D18];
   v9[0] = MEMORY[0x277D85DD0];
@@ -1599,8 +1599,8 @@ LABEL_15:
   v9[2] = __67__NTKWhistlerSubdialsFaceView_rectangularViewDidBecomeInteractive___block_invoke;
   v9[3] = &unk_27877E438;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = interactiveCopy;
+  v8 = interactiveCopy;
   [v7 animateWithDuration:4 delay:v9 options:&__block_literal_global_63 animations:0.3 completion:0.0];
 }
 
@@ -1630,7 +1630,7 @@ void __67__NTKWhistlerSubdialsFaceView_rectangularViewDidBecomeInteractive___blo
   }
 }
 
-- (void)rectangularViewDidEndInteractive:(id)a3
+- (void)rectangularViewDidEndInteractive:(id)interactive
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
@@ -1697,8 +1697,8 @@ void __64__NTKWhistlerSubdialsFaceView_rectangularViewDidEndInteractive___block_
   swatchesFace = self->_swatchesFace;
   if (!swatchesFace)
   {
-    v4 = [(NTKFaceView *)self device];
-    v5 = [NTKFace defaultFaceOfStyle:34 forDevice:v4];
+    device = [(NTKFaceView *)self device];
+    v5 = [NTKFace defaultFaceOfStyle:34 forDevice:device];
     v6 = self->_swatchesFace;
     self->_swatchesFace = v5;
 
@@ -1728,21 +1728,21 @@ void __43__NTKWhistlerSubdialsFaceView_swatchesFace__block_invoke(uint64_t a1, v
   swatchesFaceViewController = self->_swatchesFaceViewController;
   if (!swatchesFaceViewController)
   {
-    v4 = [(NTKWhistlerSubdialsFaceView *)self swatchesFace];
-    v5 = [[NTKFaceViewController alloc] initWithFace:v4 configuration:&__block_literal_global_73];
+    swatchesFace = [(NTKWhistlerSubdialsFaceView *)self swatchesFace];
+    v5 = [[NTKFaceViewController alloc] initWithFace:swatchesFace configuration:&__block_literal_global_73];
     v6 = self->_swatchesFaceViewController;
     self->_swatchesFaceViewController = v5;
 
     [(NTKFaceViewController *)self->_swatchesFaceViewController freeze];
-    v7 = [(NTKFaceViewController *)self->_swatchesFaceViewController view];
-    [v7 setNeedsLayout];
+    view = [(NTKFaceViewController *)self->_swatchesFaceViewController view];
+    [view setNeedsLayout];
 
-    v8 = [(NTKFaceViewController *)self->_swatchesFaceViewController view];
-    [v8 layoutIfNeeded];
+    view2 = [(NTKFaceViewController *)self->_swatchesFaceViewController view];
+    [view2 layoutIfNeeded];
 
-    v9 = [(NTKFaceViewController *)self->_swatchesFaceViewController faceView];
-    [v9 loadComplicationPlaceholderViews];
-    [v9 populateFaceViewEditOptionsFromFace:v4 forced:1];
+    faceView = [(NTKFaceViewController *)self->_swatchesFaceViewController faceView];
+    [faceView loadComplicationPlaceholderViews];
+    [faceView populateFaceViewEditOptionsFromFace:swatchesFace forced:1];
 
     swatchesFaceViewController = self->_swatchesFaceViewController;
   }
@@ -1761,15 +1761,15 @@ void __57__NTKWhistlerSubdialsFaceView_swatchesFaceViewController__block_invoke(
   [v2 setShouldUseSampleTemplate:1];
 }
 
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device
 {
   v4 = &unk_28418B7B8;
-  if (a3 != 15)
+  if (options != 15)
   {
     v4 = 0;
   }
 
-  if (a3 == 17)
+  if (options == 17)
   {
     return &unk_28418B7A0;
   }
@@ -1780,35 +1780,35 @@ void __57__NTKWhistlerSubdialsFaceView_swatchesFaceViewController__block_invoke(
   }
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v8 = a3;
-  v9 = a5;
+  optionCopy = option;
+  optionsCopy = options;
   if ([(NTKWhistlerSubdialsFaceView *)self showGossamerUI])
   {
-    if (a4 == 15)
+    if (mode == 15)
     {
 LABEL_5:
-      if (a4 == 17)
+      if (mode == 17)
       {
-        v10 = v8;
-        v11 = [v9 objectForKeyedSubscript:&unk_284185A58];
+        timeView = optionCopy;
+        v11 = [optionsCopy objectForKeyedSubscript:&unk_284185A58];
       }
 
       else
       {
-        v10 = [v9 objectForKeyedSubscript:&unk_284185A70];
-        v11 = v8;
+        timeView = [optionsCopy objectForKeyedSubscript:&unk_284185A70];
+        v11 = optionCopy;
       }
 
-      v22 = v11;
-      v63 = [v9 objectForKeyedSubscript:&unk_284185A40];
-      v24 = [v63 pigmentEditOption];
+      _digitalLabelFont = v11;
+      v63 = [optionsCopy objectForKeyedSubscript:&unk_284185A40];
+      pigmentEditOption = [v63 pigmentEditOption];
       v25 = MEMORY[0x277CCACA8];
-      v26 = [v24 identifier];
-      v27 = [v25 stringWithFormat:@"%@-%@-%@", v10, v22, v26];
+      identifier = [pigmentEditOption identifier];
+      v27 = [v25 stringWithFormat:@"%@-%@-%@", timeView, _digitalLabelFont, identifier];
 
-      if (a4 == 17)
+      if (mode == 17)
       {
         [(NTKWhistlerSubdialsFaceView *)self backgroundSwatchesCache];
       }
@@ -1822,19 +1822,19 @@ LABEL_5:
 
       if (!v20)
       {
-        v61 = [(NTKWhistlerSubdialsFaceView *)self swatchesFaceViewController];
-        v29 = [v61 faceView];
-        v60 = [(NTKWhistlerSubdialsFaceView *)self swatchesFace];
-        [v60 selectOption:v24 forCustomEditMode:10 slot:0];
-        [v60 selectOption:v22 forCustomEditMode:15 slot:0];
-        [v60 selectOption:v10 forCustomEditMode:17 slot:0];
-        [v29 bounds];
+        swatchesFaceViewController = [(NTKWhistlerSubdialsFaceView *)self swatchesFaceViewController];
+        faceView = [swatchesFaceViewController faceView];
+        swatchesFace = [(NTKWhistlerSubdialsFaceView *)self swatchesFace];
+        [swatchesFace selectOption:pigmentEditOption forCustomEditMode:10 slot:0];
+        [swatchesFace selectOption:_digitalLabelFont forCustomEditMode:15 slot:0];
+        [swatchesFace selectOption:timeView forCustomEditMode:17 slot:0];
+        [faceView bounds];
         v31 = v30;
         v33 = v32;
         v35 = v34;
         v37 = v36;
-        v59 = v29;
-        [v29 _timeViewFrameRelativeToFaceView];
+        v59 = faceView;
+        [faceView _timeViewFrameRelativeToFaceView];
         v39 = v38;
         v41 = v40;
         v43 = v42;
@@ -1842,26 +1842,26 @@ LABEL_5:
         v66.width = v35;
         v66.height = v37;
         UIGraphicsBeginImageContextWithOptions(v66, 0, 0.0);
-        v46 = [v29 layer];
-        [v46 renderInContext:UIGraphicsGetCurrentContext()];
+        layer = [faceView layer];
+        [layer renderInContext:UIGraphicsGetCurrentContext()];
 
         v57 = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
-        v47 = [(NTKWhistlerSubdialsFaceView *)self backgroundSwatchesCache];
+        backgroundSwatchesCache = [(NTKWhistlerSubdialsFaceView *)self backgroundSwatchesCache];
         v58 = v27;
-        [v47 setObject:v57 forKey:v27];
+        [backgroundSwatchesCache setObject:v57 forKey:v27];
 
         v67.width = v43;
         v67.height = v45;
         UIGraphicsBeginImageContextWithOptions(v67, 0, 0.0);
         CurrentContext = UIGraphicsGetCurrentContext();
         [MEMORY[0x277D75208] bezierPathWithRoundedRect:0.0 cornerRadius:{0.0, v43, v45, v43 * 0.5}];
-        v49 = v62 = v10;
-        v50 = v22;
-        v51 = [v49 CGPath];
+        v49 = v62 = timeView;
+        v50 = _digitalLabelFont;
+        cGPath = [v49 CGPath];
 
-        v52 = v51;
-        v22 = v50;
+        v52 = cGPath;
+        _digitalLabelFont = v50;
         CGContextAddPath(CurrentContext, v52);
         CGContextClip(CurrentContext);
         v68.origin.x = v31;
@@ -1872,10 +1872,10 @@ LABEL_5:
         [v57 drawInRect:{v69.origin.x, v69.origin.y, v69.size.width, v69.size.height}];
         v53 = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
-        v54 = [(NTKWhistlerSubdialsFaceView *)self styleSwatchesCache];
-        [v54 setObject:v53 forKey:v58];
+        styleSwatchesCache = [(NTKWhistlerSubdialsFaceView *)self styleSwatchesCache];
+        [styleSwatchesCache setObject:v53 forKey:v58];
 
-        if (a4 == 17)
+        if (mode == 17)
         {
           v55 = v57;
         }
@@ -1887,16 +1887,16 @@ LABEL_5:
 
         v20 = v55;
 
-        v10 = v62;
+        timeView = v62;
         v27 = v58;
       }
 
       goto LABEL_24;
     }
 
-    if (a4 != 19)
+    if (mode != 19)
     {
-      if (a4 == 17)
+      if (mode == 17)
       {
         goto LABEL_5;
       }
@@ -1904,46 +1904,46 @@ LABEL_5:
 LABEL_13:
       v64.receiver = self;
       v64.super_class = NTKWhistlerSubdialsFaceView;
-      v20 = [(NTKFaceView *)&v64 _swatchImageForEditOption:v8 mode:a4 withSelectedOptions:v9];
+      v20 = [(NTKFaceView *)&v64 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:optionsCopy];
       goto LABEL_25;
     }
 
 LABEL_12:
-    v21 = v8;
-    v10 = [(NTKFaceView *)self timeView];
-    v22 = [v10 _digitalLabelFont];
-    v23 = [(NTKFaceView *)self device];
-    v20 = [v21 swatchImageWithFont:v22 device:v23 baseline:0.0];
+    v21 = optionCopy;
+    timeView = [(NTKFaceView *)self timeView];
+    _digitalLabelFont = [timeView _digitalLabelFont];
+    device = [(NTKFaceView *)self device];
+    v20 = [v21 swatchImageWithFont:_digitalLabelFont device:device baseline:0.0];
 
 LABEL_24:
     goto LABEL_25;
   }
 
-  if (a4 == 19)
+  if (mode == 19)
   {
     goto LABEL_12;
   }
 
-  if (a4 != 15)
+  if (mode != 15)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NTKWhistlerSubdialsFaceView *)self styleSwatchesCache];
-  v13 = [v8 style];
-  v14 = [v9 objectForKeyedSubscript:&unk_284185A40];
-  v15 = [v14 pigmentEditOption];
+  styleSwatchesCache2 = [(NTKWhistlerSubdialsFaceView *)self styleSwatchesCache];
+  style = [optionCopy style];
+  v14 = [optionsCopy objectForKeyedSubscript:&unk_284185A40];
+  pigmentEditOption2 = [v14 pigmentEditOption];
 
   v16 = MEMORY[0x277CCACA8];
-  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v13];
-  v18 = [v15 identifier];
-  v19 = [v16 stringWithFormat:@"%@-%@", v17, v18];
+  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:style];
+  identifier2 = [pigmentEditOption2 identifier];
+  v19 = [v16 stringWithFormat:@"%@-%@", v17, identifier2];
 
-  v20 = [v12 objectForKey:v19];
+  v20 = [styleSwatchesCache2 objectForKey:v19];
   if (!v20)
   {
-    v20 = [(NTKWhistlerSubdialsFaceView *)self _renderDialSwatchImageForStyle:v13 colorOption:v15];
-    [v12 setObject:v20 forKey:v19];
+    v20 = [(NTKWhistlerSubdialsFaceView *)self _renderDialSwatchImageForStyle:style colorOption:pigmentEditOption2];
+    [styleSwatchesCache2 setObject:v20 forKey:v19];
   }
 
 LABEL_25:
@@ -1951,31 +1951,31 @@ LABEL_25:
   return v20;
 }
 
-- (id)_renderDialSwatchImageForStyle:(unint64_t)a3 colorOption:(id)a4
+- (id)_renderDialSwatchImageForStyle:(unint64_t)style colorOption:(id)option
 {
-  v6 = a4;
-  v7 = [(NTKFaceView *)self timeView];
+  optionCopy = option;
+  timeView = [(NTKFaceView *)self timeView];
 
-  if (!v7)
+  if (!timeView)
   {
     [(NTKWhistlerSubdialsFaceView *)self _loadSnapshotContentViews];
   }
 
-  [(NTKFaceView *)self setOption:v6 forCustomEditMode:10 slot:0];
-  v8 = [(NTKFaceView *)self timeView];
-  v9 = [v8 style];
-  [v8 setStyle:a3];
-  [v8 bounds];
+  [(NTKFaceView *)self setOption:optionCopy forCustomEditMode:10 slot:0];
+  timeView2 = [(NTKFaceView *)self timeView];
+  style = [timeView2 style];
+  [timeView2 setStyle:style];
+  [timeView2 bounds];
   v14 = [objc_alloc(MEMORY[0x277D75560]) initWithBounds:{v10, v11, v12, v13}];
   [(NTKWhistlerSubdialsFaceView *)self layoutIfNeeded];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __74__NTKWhistlerSubdialsFaceView__renderDialSwatchImageForStyle_colorOption___block_invoke;
   v18[3] = &unk_2787820A8;
-  v19 = v8;
-  v15 = v8;
+  v19 = timeView2;
+  v15 = timeView2;
   v16 = [v14 imageWithActions:v18];
-  [v15 setStyle:v9];
+  [v15 setStyle:style];
 
   return v16;
 }

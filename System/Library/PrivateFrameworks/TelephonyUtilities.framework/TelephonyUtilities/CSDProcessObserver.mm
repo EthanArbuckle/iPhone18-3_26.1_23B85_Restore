@@ -1,20 +1,20 @@
 @interface CSDProcessObserver
-- (id)processIdentifiersForBundleIdentifier:(id)a3;
+- (id)processIdentifiersForBundleIdentifier:(id)identifier;
 - (id)processStateChanged;
 - (id)processStateChangedWithBundleID;
-- (id)processStatesForCallSource:(id)a3;
+- (id)processStatesForCallSource:(id)source;
 - (int)currentProcessIdentifier;
-- (void)fetchCurrentProcessStatesForBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)processStatesForBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)setProcessStateChanged:(id)a3;
-- (void)setProcessStateChangedWithBundleID:(id)a3;
+- (void)fetchCurrentProcessStatesForBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)processStatesForBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)setProcessStateChanged:(id)changed;
+- (void)setProcessStateChangedWithBundleID:(id)d;
 @end
 
 @implementation CSDProcessObserver
 
 - (int)currentProcessIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = j__getpid();
 
   return v3;
@@ -42,9 +42,9 @@
   return v4;
 }
 
-- (void)setProcessStateChanged:(id)a3
+- (void)setProcessStateChanged:(id)changed
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(changed);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -57,7 +57,7 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_1002F4798(v4, v5);
 }
 
@@ -83,9 +83,9 @@
   return v4;
 }
 
-- (void)setProcessStateChangedWithBundleID:(id)a3
+- (void)setProcessStateChangedWithBundleID:(id)d
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(d);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -98,14 +98,14 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_1002F4A24(v4, v5);
 }
 
-- (id)processIdentifiersForBundleIdentifier:(id)a3
+- (id)processIdentifiersForBundleIdentifier:(id)identifier
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v4 = self;
+  selfCopy = self;
   sub_1002F4A30();
 
   v5.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -113,29 +113,29 @@
   return v5.super.isa;
 }
 
-- (void)processStatesForBundleIdentifier:(id)a3 completion:(id)a4
+- (void)processStatesForBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   *(swift_allocObject() + 16) = v5;
-  v6 = self;
+  selfCopy = self;
   sub_1002F4EA0();
 }
 
-- (void)fetchCurrentProcessStatesForBundleIdentifier:(id)a3 completion:(id)a4
+- (void)fetchCurrentProcessStatesForBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   *(swift_allocObject() + 16) = v5;
-  v6 = self;
+  selfCopy = self;
   sub_1002F4EA0();
 }
 
-- (id)processStatesForCallSource:(id)a3
+- (id)processStatesForCallSource:(id)source
 {
-  v4 = a3;
-  v5 = self;
-  sub_1002F532C(v4);
+  sourceCopy = source;
+  selfCopy = self;
+  sub_1002F532C(sourceCopy);
 
   v6.super.isa = Dictionary._bridgeToObjectiveC()().super.isa;
 

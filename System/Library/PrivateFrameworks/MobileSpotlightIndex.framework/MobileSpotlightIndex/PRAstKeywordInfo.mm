@@ -1,35 +1,35 @@
 @interface PRAstKeywordInfo
-+ (id)infoWithFieldType:(int64_t)a3;
-+ (id)infoWithFieldType:(int64_t)a3 direction:(int64_t)a4;
-- (PRAstKeywordInfo)initWithFieldType:(int64_t)a3 direction:(int64_t)a4;
++ (id)infoWithFieldType:(int64_t)type;
++ (id)infoWithFieldType:(int64_t)type direction:(int64_t)direction;
+- (PRAstKeywordInfo)initWithFieldType:(int64_t)type direction:(int64_t)direction;
 @end
 
 @implementation PRAstKeywordInfo
 
-- (PRAstKeywordInfo)initWithFieldType:(int64_t)a3 direction:(int64_t)a4
+- (PRAstKeywordInfo)initWithFieldType:(int64_t)type direction:(int64_t)direction
 {
   v7.receiver = self;
   v7.super_class = PRAstKeywordInfo;
   result = [(PRAstKeywordInfo *)&v7 init];
   if (result)
   {
-    result->_fieldType = a3;
-    result->_direction = a4;
+    result->_fieldType = type;
+    result->_direction = direction;
   }
 
   return result;
 }
 
-+ (id)infoWithFieldType:(int64_t)a3
++ (id)infoWithFieldType:(int64_t)type
 {
-  v3 = [[a1 alloc] initWithFieldType:a3];
+  v3 = [[self alloc] initWithFieldType:type];
 
   return v3;
 }
 
-+ (id)infoWithFieldType:(int64_t)a3 direction:(int64_t)a4
++ (id)infoWithFieldType:(int64_t)type direction:(int64_t)direction
 {
-  v4 = [[a1 alloc] initWithFieldType:a3 direction:a4];
+  v4 = [[self alloc] initWithFieldType:type direction:direction];
 
   return v4;
 }

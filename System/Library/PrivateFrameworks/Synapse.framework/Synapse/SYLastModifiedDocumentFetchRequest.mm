@@ -1,38 +1,38 @@
 @interface SYLastModifiedDocumentFetchRequest
-+ (id)_buildResultWithMatches:(id)a3;
-+ (id)_createSearchQueryWithString:(id)a3;
-+ (void)fetchLastModifiedDocument:(id)a3 completion:(id)a4;
++ (id)_buildResultWithMatches:(id)matches;
++ (id)_createSearchQueryWithString:(id)string;
++ (void)fetchLastModifiedDocument:(id)document completion:(id)completion;
 @end
 
 @implementation SYLastModifiedDocumentFetchRequest
 
-+ (void)fetchLastModifiedDocument:(id)a3 completion:(id)a4
++ (void)fetchLastModifiedDocument:(id)document completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  documentCopy = document;
+  completionCopy = completion;
   v8 = os_log_create("com.apple.synapse", "DocumentWorkflows");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v30 = v6;
+    v30 = documentCopy;
     _os_log_impl(&dword_225901000, v8, OS_LOG_TYPE_DEFAULT, "Fetching last modified document attributes for document with index key: %@", buf, 0xCu);
   }
 
-  v9 = [a1 _buildQueryStringWithDocumentRelatedUniqueIdentifier:v6];
+  v9 = [self _buildQueryStringWithDocumentRelatedUniqueIdentifier:documentCopy];
   v10 = os_log_create("com.apple.synapse", "DocumentWorkflows");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     [SYDocumentFetchRequest _fetchDocumentsWithReason:v9 queryString:v10 completion:?];
   }
 
-  v11 = [a1 _createSearchQueryWithString:v9];
-  v12 = [MEMORY[0x277CBEB18] array];
+  v11 = [self _createSearchQueryWithString:v9];
+  array = [MEMORY[0x277CBEB18] array];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __75__SYLastModifiedDocumentFetchRequest_fetchLastModifiedDocument_completion___block_invoke;
   v27[3] = &unk_27856B640;
-  v13 = v12;
+  v13 = array;
   v28 = v13;
   [v11 setFoundItemsHandler:v27];
   objc_initWeak(buf, v11);
@@ -43,10 +43,10 @@
   objc_copyWeak(v26, buf);
   v14 = v13;
   v23 = v14;
-  v15 = v6;
+  v15 = documentCopy;
   v24 = v15;
-  v26[1] = a1;
-  v16 = v7;
+  v26[1] = self;
+  v16 = completionCopy;
   v25 = v16;
   [v11 setCompletionHandler:&v19];
   if (fetchLastModifiedDocument_completion__onceToken != -1)
@@ -121,11 +121,11 @@ void __75__SYLastModifiedDocumentFetchRequest_fetchLastModifiedDocument_completi
   }
 }
 
-+ (id)_createSearchQueryWithString:(id)a3
++ (id)_createSearchQueryWithString:(id)string
 {
   v10[4] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CC34A0];
-  v4 = a3;
+  stringCopy = string;
   v5 = objc_alloc_init(v3);
   v10[0] = @"SYDocumentRelatedUniqueIdentifierKey";
   v10[1] = @"kMDItemContentURL";
@@ -135,23 +135,23 @@ void __75__SYLastModifiedDocumentFetchRequest_fetchLastModifiedDocument_completi
   [v5 setFetchAttributes:v6];
 
   [v5 setReason:@"Document Workflows: Get last modified document"];
-  v7 = [objc_alloc(MEMORY[0x277CC3498]) initWithQueryString:v4 context:v5];
+  v7 = [objc_alloc(MEMORY[0x277CC3498]) initWithQueryString:stringCopy context:v5];
 
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-+ (id)_buildResultWithMatches:(id)a3
++ (id)_buildResultWithMatches:(id)matches
 {
   v44 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v28 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  matchesCopy = matches;
+  v28 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(matchesCopy, "count")}];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v3;
+  obj = matchesCopy;
   v4 = [obj countByEnumeratingWithState:&v29 objects:v43 count:16];
   if (v4)
   {
@@ -170,17 +170,17 @@ void __75__SYLastModifiedDocumentFetchRequest_fetchLastModifiedDocument_completi
 
         v9 = *(*(&v29 + 1) + 8 * i);
         v10 = [SYDocumentFetchRequest _contentURLForItem:v9, v26];
-        v11 = [v9 attributeSet];
-        v12 = [v11 contentCreationDate];
+        attributeSet = [v9 attributeSet];
+        contentCreationDate = [attributeSet contentCreationDate];
 
-        v13 = [v9 attributeSet];
-        v14 = [v13 contentModificationDate];
+        attributeSet2 = [v9 attributeSet];
+        contentModificationDate = [attributeSet2 contentModificationDate];
 
         v15 = v10;
         if ([v15 isFileURL])
         {
-          v16 = [v15 pathExtension];
-          v17 = [v16 hasPrefix:@"sb-"];
+          pathExtension = [v15 pathExtension];
+          v17 = [pathExtension hasPrefix:@"sb-"];
         }
 
         else
@@ -190,7 +190,7 @@ void __75__SYLastModifiedDocumentFetchRequest_fetchLastModifiedDocument_completi
 
         if (v15)
         {
-          v18 = v14 == 0;
+          v18 = contentModificationDate == 0;
         }
 
         else
@@ -198,7 +198,7 @@ void __75__SYLastModifiedDocumentFetchRequest_fetchLastModifiedDocument_completi
           v18 = 1;
         }
 
-        if (v18 || ![v12 compare:v14])
+        if (v18 || ![contentCreationDate compare:contentModificationDate])
         {
           v19 = 0;
         }
@@ -211,13 +211,13 @@ void __75__SYLastModifiedDocumentFetchRequest_fetchLastModifiedDocument_completi
         v20 = os_log_create("com.apple.synapse", "DocumentWorkflows");
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
-          v21 = [v15 path];
+          path = [v15 path];
           *buf = v26;
-          v34 = v21;
+          v34 = path;
           v35 = 2113;
-          v36 = v12;
+          v36 = contentCreationDate;
           v37 = 2113;
-          v38 = v14;
+          v38 = contentModificationDate;
           v39 = 1024;
           v40 = v17;
           v41 = 1024;
@@ -227,7 +227,7 @@ void __75__SYLastModifiedDocumentFetchRequest_fetchLastModifiedDocument_completi
 
         if (v19)
         {
-          v22 = [[SYLastModifiedDocumentAttributes alloc] initWithFileURL:v15 modifiedDate:v14];
+          v22 = [[SYLastModifiedDocumentAttributes alloc] initWithFileURL:v15 modifiedDate:contentModificationDate];
           [v28 addObject:v22];
         }
       }

@@ -8,7 +8,7 @@
 {
   v35 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 init];
+  v5 = [self init];
   v6 = v4[2];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -18,14 +18,14 @@
       v10 = __CPLGenericOSLogDomain();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        v11 = [v4 archiverContext];
+        archiverContext = [v4 archiverContext];
         v12 = objc_opt_class();
         v13 = v4[2];
         v14 = v12;
         v15 = objc_opt_class();
         v16 = v4[2];
         *buf = 138413058;
-        v28 = v11;
+        v28 = archiverContext;
         v29 = 2112;
         v30 = v12;
         v31 = 2112;

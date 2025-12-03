@@ -1,12 +1,12 @@
 @interface ADJasperPearlInFieldCalibrationInterSessionData
 - (ADJasperPearlInFieldCalibrationInterSessionData)init;
-- (ADJasperPearlInFieldCalibrationInterSessionData)initWithDictionaryRepresentation:(id)a3;
-- (ADJasperPearlInFieldCalibrationInterSessionData)initWithPCECalibData:(id)a3;
-- (BOOL)insertEntryToDiagnosticPipelineLog:(id)a3;
+- (ADJasperPearlInFieldCalibrationInterSessionData)initWithDictionaryRepresentation:(id)representation;
+- (ADJasperPearlInFieldCalibrationInterSessionData)initWithPCECalibData:(id)data;
+- (BOOL)insertEntryToDiagnosticPipelineLog:(id)log;
 - (id).cxx_construct;
-- (id)buildISFInputDictWithEFL:(float)a3 principalPointtX:(id)a4 principalPointtY:(id)a5 rotationMat:(double)a6[3][3];
+- (id)buildISFInputDictWithEFL:(float)l principalPointtX:(id)x principalPointtY:(id)y rotationMat:(double)mat[3][3];
 - (id)persistenceData;
-- (int64_t)processJpcResult:(id)a3;
+- (int64_t)processJpcResult:(id)result;
 - (void)initDiagnosticPipelineLog;
 - (void)initIsf;
 - (void)resetIFAObjects;
@@ -22,9 +22,9 @@
   return self;
 }
 
-- (BOOL)insertEntryToDiagnosticPipelineLog:(id)a3
+- (BOOL)insertEntryToDiagnosticPipelineLog:(id)log
 {
-  v4 = a3;
+  logCopy = log;
   begin = self->_diagnosticPipelineLog.__begin_;
   end = self->_diagnosticPipelineLog.__end_;
   if (end != begin)
@@ -32,97 +32,97 @@
     p_diagnosticPipelineLog = &self->_diagnosticPipelineLog;
     v84 = self->_diagnosticPipelineLog.__begin_;
     v85 = self->_diagnosticPipelineLog.__end_;
-    v86 = self;
+    selfCopy = self;
     rep = std::chrono::system_clock::now().__d_.__rep_;
-    v101 = [v4 telemetryData];
-    [v101 pearlTemperature];
+    telemetryData = [logCopy telemetryData];
+    [telemetryData pearlTemperature];
     v80 = v7;
-    v100 = [v4 telemetryData];
-    [v100 motionBetweenFramesRotationX];
+    telemetryData2 = [logCopy telemetryData];
+    [telemetryData2 motionBetweenFramesRotationX];
     v79 = v8;
-    v99 = [v4 telemetryData];
-    [v99 motionBetweenFramesRotationY];
+    telemetryData3 = [logCopy telemetryData];
+    [telemetryData3 motionBetweenFramesRotationY];
     v77 = v9;
-    v98 = [v4 telemetryData];
-    [v98 motionBetweenFramesRotationZ];
+    telemetryData4 = [logCopy telemetryData];
+    [telemetryData4 motionBetweenFramesRotationZ];
     v76 = v10;
-    v97 = [v4 telemetryData];
-    [v97 motionBetweenFramesTranslationX];
+    telemetryData5 = [logCopy telemetryData];
+    [telemetryData5 motionBetweenFramesTranslationX];
     v74 = v11;
-    v96 = [v4 telemetryData];
-    [v96 motionBetweenFramesTranslationY];
+    telemetryData6 = [logCopy telemetryData];
+    [telemetryData6 motionBetweenFramesTranslationY];
     v73 = v12;
-    v95 = [v4 telemetryData];
-    [v95 motionBetweenFramesTranslationZ];
+    telemetryData7 = [logCopy telemetryData];
+    [telemetryData7 motionBetweenFramesTranslationZ];
     v71 = v13;
-    v94 = [v4 telemetryData];
-    [v94 pearlToLastJasperBankRotationX];
+    telemetryData8 = [logCopy telemetryData];
+    [telemetryData8 pearlToLastJasperBankRotationX];
     v70 = v14;
-    v93 = [v4 telemetryData];
-    [v93 pearlToLastJasperBankRotationY];
+    telemetryData9 = [logCopy telemetryData];
+    [telemetryData9 pearlToLastJasperBankRotationY];
     v68 = v15;
-    v92 = [v4 telemetryData];
-    [v92 pearlToLastJasperBankRotationZ];
+    telemetryData10 = [logCopy telemetryData];
+    [telemetryData10 pearlToLastJasperBankRotationZ];
     v67 = v16;
-    v91 = [v4 telemetryData];
-    [v91 pearlToLastJasperBankTranslationX];
+    telemetryData11 = [logCopy telemetryData];
+    [telemetryData11 pearlToLastJasperBankTranslationX];
     v65 = v17;
-    v90 = [v4 telemetryData];
-    [v90 pearlToLastJasperBankTranslationY];
+    telemetryData12 = [logCopy telemetryData];
+    [telemetryData12 pearlToLastJasperBankTranslationY];
     v64 = v18;
-    v89 = [v4 telemetryData];
-    [v89 pearlToLastJasperBankTranslationZ];
+    telemetryData13 = [logCopy telemetryData];
+    [telemetryData13 pearlToLastJasperBankTranslationZ];
     v62 = v19;
-    v88 = [v4 telemetryData];
-    v61 = [v88 jpcErrorCode];
-    v87 = [v4 telemetryData];
-    v59 = [v87 numPearlOnlyCorrespondencesPreIFA];
-    v82 = [v4 telemetryData];
-    v58 = [v82 numPearlJasperCorrespondencesPreIFA];
-    v78 = [v4 telemetryData];
-    v56 = [v78 numPearlJasperCorrespondencesPostPJWorkDistOverlapFilter];
-    v75 = [v4 telemetryData];
-    v55 = [v75 numPearlJasperCorrespondencesPostPJDepthDiffFilter];
-    v72 = [v4 telemetryData];
-    v53 = [v72 numPearlJasperCorrespondencesPostLocalDepthVarFilter];
-    v69 = [v4 telemetryData];
-    v52 = [v69 numPearlOnlyCorrespondencesPostSpatialCoverageFilter];
-    v66 = [v4 telemetryData];
-    [v66 irCamFOVCoveragePercent];
+    telemetryData14 = [logCopy telemetryData];
+    jpcErrorCode = [telemetryData14 jpcErrorCode];
+    telemetryData15 = [logCopy telemetryData];
+    numPearlOnlyCorrespondencesPreIFA = [telemetryData15 numPearlOnlyCorrespondencesPreIFA];
+    telemetryData16 = [logCopy telemetryData];
+    numPearlJasperCorrespondencesPreIFA = [telemetryData16 numPearlJasperCorrespondencesPreIFA];
+    telemetryData17 = [logCopy telemetryData];
+    numPearlJasperCorrespondencesPostPJWorkDistOverlapFilter = [telemetryData17 numPearlJasperCorrespondencesPostPJWorkDistOverlapFilter];
+    telemetryData18 = [logCopy telemetryData];
+    numPearlJasperCorrespondencesPostPJDepthDiffFilter = [telemetryData18 numPearlJasperCorrespondencesPostPJDepthDiffFilter];
+    telemetryData19 = [logCopy telemetryData];
+    numPearlJasperCorrespondencesPostLocalDepthVarFilter = [telemetryData19 numPearlJasperCorrespondencesPostLocalDepthVarFilter];
+    telemetryData20 = [logCopy telemetryData];
+    numPearlOnlyCorrespondencesPostSpatialCoverageFilter = [telemetryData20 numPearlOnlyCorrespondencesPostSpatialCoverageFilter];
+    telemetryData21 = [logCopy telemetryData];
+    [telemetryData21 irCamFOVCoveragePercent];
     v21 = v20;
-    v63 = [v4 telemetryData];
-    [v63 gmcjScaleChangePercentFromT0];
+    telemetryData22 = [logCopy telemetryData];
+    [telemetryData22 gmcjScaleChangePercentFromT0];
     v23 = v22;
-    v60 = [v4 telemetryData];
-    [v60 gmcjPPXChangeMicronFromT0];
+    telemetryData23 = [logCopy telemetryData];
+    [telemetryData23 gmcjPPXChangeMicronFromT0];
     v25 = v24;
-    v57 = [v4 telemetryData];
-    [v57 gmcjPPYChangeMicronFromT0];
+    telemetryData24 = [logCopy telemetryData];
+    [telemetryData24 gmcjPPYChangeMicronFromT0];
     v27 = v26;
-    v54 = [v4 telemetryData];
-    [v54 gmcjProjRotXChangeFromT0];
+    telemetryData25 = [logCopy telemetryData];
+    [telemetryData25 gmcjProjRotXChangeFromT0];
     v51 = v28;
-    v29 = [v4 telemetryData];
-    [v29 gmcjProjRotYChangeFromT0];
+    telemetryData26 = [logCopy telemetryData];
+    [telemetryData26 gmcjProjRotYChangeFromT0];
     v50 = v30;
-    v31 = [v4 telemetryData];
-    [v31 gmcjProjRotZChangeFromT0];
+    telemetryData27 = [logCopy telemetryData];
+    [telemetryData27 gmcjProjRotZChangeFromT0];
     v33 = v32;
-    v34 = [v4 telemetryData];
-    [v34 jasperMisalignmentBefore];
+    telemetryData28 = [logCopy telemetryData];
+    [telemetryData28 jasperMisalignmentBefore];
     v36 = v35;
-    v37 = [v4 telemetryData];
-    [v37 jasperMisalignmentAfter];
+    telemetryData29 = [logCopy telemetryData];
+    [telemetryData29 jasperMisalignmentAfter];
     v39 = v38;
-    v40 = [v4 telemetryData];
-    [v40 reprojectionErrorBefore];
+    telemetryData30 = [logCopy telemetryData];
+    [telemetryData30 reprojectionErrorBefore];
     v42 = v41;
-    v43 = [v4 telemetryData];
-    [v43 reprojectionErrorAfter];
+    telemetryData31 = [logCopy telemetryData];
+    [telemetryData31 reprojectionErrorAfter];
     v44 = v21;
     *&v21 = v45;
 
-    v46 = p_diagnosticPipelineLog->__begin_ + 110 * v86->_diagnosticPipelineLogIndex;
+    v46 = p_diagnosticPipelineLog->__begin_ + 110 * selfCopy->_diagnosticPipelineLogIndex;
     *v46 = rep / 1000000;
     *(v46 + 4) = v80;
     *(v46 + 5) = v79;
@@ -137,13 +137,13 @@
     *(v46 + 41) = v65;
     *(v46 + 45) = v64;
     *(v46 + 49) = v62;
-    *(v46 + 53) = v61;
-    *(v46 + 57) = v59;
-    *(v46 + 59) = v58;
-    *(v46 + 61) = v56;
-    *(v46 + 63) = v55;
-    *(v46 + 65) = v53;
-    *(v46 + 67) = v52;
+    *(v46 + 53) = jpcErrorCode;
+    *(v46 + 57) = numPearlOnlyCorrespondencesPreIFA;
+    *(v46 + 59) = numPearlJasperCorrespondencesPreIFA;
+    *(v46 + 61) = numPearlJasperCorrespondencesPostPJWorkDistOverlapFilter;
+    *(v46 + 63) = numPearlJasperCorrespondencesPostPJDepthDiffFilter;
+    *(v46 + 65) = numPearlJasperCorrespondencesPostLocalDepthVarFilter;
+    *(v46 + 67) = numPearlOnlyCorrespondencesPostSpatialCoverageFilter;
     *(v46 + 69) = v44;
     *&v23 = v23;
     *(v46 + 70) = LODWORD(v23);
@@ -160,9 +160,9 @@
     *(v46 + 98) = LODWORD(v39);
     *&v42 = v42;
     *(v46 + 102) = LODWORD(v42);
-    diagnosticPipelineLogIndex = v86->_diagnosticPipelineLogIndex;
+    diagnosticPipelineLogIndex = selfCopy->_diagnosticPipelineLogIndex;
     *(v46 + 106) = LODWORD(v21);
-    v86->_diagnosticPipelineLogIndex = (diagnosticPipelineLogIndex + 1) % (0x6FB586FB586FB587 * ((p_diagnosticPipelineLog->__end_ - p_diagnosticPipelineLog->__begin_) >> 1));
+    selfCopy->_diagnosticPipelineLogIndex = (diagnosticPipelineLogIndex + 1) % (0x6FB586FB586FB587 * ((p_diagnosticPipelineLog->__end_ - p_diagnosticPipelineLog->__begin_) >> 1));
     begin = v84;
     end = v85;
   }
@@ -172,9 +172,9 @@
   return v48;
 }
 
-- (int64_t)processJpcResult:(id)a3
+- (int64_t)processJpcResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   if (ADDebugUtilsADVerboseLogsEnabled == 1)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -201,43 +201,43 @@
 
   _os_log_impl(&dword_2402F6000, v5, v6, "JasperPearlInFieldCalibration: ADJasperPearlInFieldCalibrationInterSessionData: processJpcResult.", buf, 2u);
 LABEL_7:
-  v7 = [v4 pceCalib];
-  if (v7)
+  pceCalib = [resultCopy pceCalib];
+  if (pceCalib)
   {
-    v8 = [v4 efl];
+    v8 = [resultCopy efl];
     if (!v8)
     {
-      v10 = 0;
+      principalPointY = 0;
 LABEL_24:
 
       goto LABEL_25;
     }
 
-    v9 = [v4 principalPointX];
-    if (!v9)
+    principalPointX = [resultCopy principalPointX];
+    if (!principalPointX)
     {
       goto LABEL_22;
     }
 
-    v10 = [v4 principalPointY];
+    principalPointY = [resultCopy principalPointY];
 
-    if (v10)
+    if (principalPointY)
     {
-      v11 = [v4 pceCalib];
-      v12 = [v11 bytes];
+      pceCalib2 = [resultCopy pceCalib];
+      bytes = [pceCalib2 bytes];
 
-      v13 = v12[548].f64[0];
-      v14 = [v4 principalPointX];
-      v15 = [v4 principalPointY];
+      v13 = bytes[548].f64[0];
+      principalPointX2 = [resultCopy principalPointX];
+      principalPointY2 = [resultCopy principalPointY];
       *&v16 = v13;
-      v8 = [(ADJasperPearlInFieldCalibrationInterSessionData *)self buildISFInputDictWithEFL:v14 principalPointtX:v15 principalPointtY:&v12[817] rotationMat:v16];
+      v8 = [(ADJasperPearlInFieldCalibrationInterSessionData *)self buildISFInputDictWithEFL:principalPointX2 principalPointtX:principalPointY2 principalPointtY:&bytes[817] rotationMat:v16];
 
       v45 = 0;
       v17 = [(ADInFieldCalibrationInterSessionData *)self insertEntryAndCalculate:v8 withWeight:&v45 toResult:1.0];
-      v7 = v45;
+      pceCalib = v45;
       if (v17)
       {
-        v10 = -22950;
+        principalPointY = -22950;
 LABEL_23:
 
         goto LABEL_24;
@@ -263,75 +263,75 @@ LABEL_20:
         goto LABEL_20;
       }
 
-      v20 = [v7 objectForKeyedSubscript:@"jpc_ppX"];
-      [v4 setPrincipalPointX:v20];
+      v20 = [pceCalib objectForKeyedSubscript:@"jpc_ppX"];
+      [resultCopy setPrincipalPointX:v20];
 
-      v21 = [v7 objectForKeyedSubscript:@"jpc_ppY"];
-      [v4 setPrincipalPointY:v21];
+      v21 = [pceCalib objectForKeyedSubscript:@"jpc_ppY"];
+      [resultCopy setPrincipalPointY:v21];
 
-      v22 = [v7 objectForKeyedSubscript:@"jpc_rotX"];
+      v22 = [pceCalib objectForKeyedSubscript:@"jpc_rotX"];
       [v22 floatValue];
       v44 = v23;
-      v24 = [v7 objectForKeyedSubscript:@"jpc_rotY"];
+      v24 = [pceCalib objectForKeyedSubscript:@"jpc_rotY"];
       [v24 floatValue];
       v43 = v25;
-      v26 = [v7 objectForKeyedSubscript:@"jpc_rotZ"];
+      v26 = [pceCalib objectForKeyedSubscript:@"jpc_rotZ"];
       [v26 floatValue];
 
       [ADUtils calcRotationMatrix:COERCE_DOUBLE(__PAIR64__(v43, v44))];
-      v12[817].f64[0] = v27;
-      v12[817].f64[1] = v28;
-      v12[818] = vcvtq_f64_f32(__PAIR64__(v29, v30));
-      v12[819].f64[0] = v31;
-      v12[819].f64[1] = v32;
-      v12[820].f64[0] = v33;
-      v12[820].f64[1] = v34;
-      v12[821].f64[0] = v35;
-      v36 = [v4 principalPointX];
-      [v36 doubleValue];
-      v12[551].f64[1] = v37 * v12[550].f64[1];
+      bytes[817].f64[0] = v27;
+      bytes[817].f64[1] = v28;
+      bytes[818] = vcvtq_f64_f32(__PAIR64__(v29, v30));
+      bytes[819].f64[0] = v31;
+      bytes[819].f64[1] = v32;
+      bytes[820].f64[0] = v33;
+      bytes[820].f64[1] = v34;
+      bytes[821].f64[0] = v35;
+      principalPointX3 = [resultCopy principalPointX];
+      [principalPointX3 doubleValue];
+      bytes[551].f64[1] = v37 * bytes[550].f64[1];
 
-      v38 = [v4 principalPointY];
-      [v38 doubleValue];
-      v12[552].f64[0] = v39 * v12[550].f64[1];
+      principalPointY3 = [resultCopy principalPointY];
+      [principalPointY3 doubleValue];
+      bytes[552].f64[0] = v39 * bytes[550].f64[1];
 
-      v40 = [v7 objectForKeyedSubscript:@"jpc_efl_temp_coeff"];
+      v40 = [pceCalib objectForKeyedSubscript:@"jpc_efl_temp_coeff"];
       [v40 floatValue];
-      v12[548].f64[0] = v41;
+      bytes[548].f64[0] = v41;
 
 LABEL_22:
-      v10 = 0;
+      principalPointY = 0;
       goto LABEL_23;
     }
   }
 
   else
   {
-    v10 = 0;
+    principalPointY = 0;
   }
 
 LABEL_25:
 
-  return v10;
+  return principalPointY;
 }
 
-- (id)buildISFInputDictWithEFL:(float)a3 principalPointtX:(id)a4 principalPointtY:(id)a5 rotationMat:(double)a6[3][3]
+- (id)buildISFInputDictWithEFL:(float)l principalPointtX:(id)x principalPointtY:(id)y rotationMat:(double)mat[3][3]
 {
   v51 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
+  xCopy = x;
+  yCopy = y;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v11.f64[0] = (*a6)[0];
-  v12.f64[0] = (*a6)[1];
-  v11.f64[1] = (*a6)[3];
-  v12.f64[1] = (*a6)[4];
-  v13 = (*a6)[6];
-  v14.f64[0] = (*a6)[2];
-  v14.f64[1] = (*a6)[5];
-  v15 = (*a6)[7];
-  v16 = (*a6)[8];
+  v11.f64[0] = (*mat)[0];
+  v12.f64[0] = (*mat)[1];
+  v11.f64[1] = (*mat)[3];
+  v12.f64[1] = (*mat)[4];
+  v13 = (*mat)[6];
+  v14.f64[0] = (*mat)[2];
+  v14.f64[1] = (*mat)[5];
+  v15 = (*mat)[7];
+  v16 = (*mat)[8];
   *(&v34 + 2) = v13;
   *&v34 = vcvt_f32_f64(v11);
   *(&v35 + 2) = v15;
@@ -345,11 +345,11 @@ LABEL_25:
   v20 = *(&v32 + 4);
   if (v18)
   {
-    [v9 doubleValue];
+    [xCopy doubleValue];
     v22 = v21;
-    [v10 doubleValue];
+    [yCopy doubleValue];
     *buf = 134219264;
-    v40 = a3;
+    lCopy = l;
     v41 = 2048;
     v42 = v22;
     v43 = 2048;
@@ -364,13 +364,13 @@ LABEL_25:
   }
 
   v37[0] = @"jpc_efl_temp_coeff";
-  *&v19 = a3;
+  *&v19 = l;
   v24 = [MEMORY[0x277CCABB0] numberWithFloat:{v19, v32}];
   v38[0] = v24;
-  v38[1] = v9;
+  v38[1] = xCopy;
   v37[1] = @"jpc_ppX";
   v37[2] = @"jpc_ppY";
-  v38[2] = v10;
+  v38[2] = yCopy;
   v37[3] = @"jpc_rotX";
   v25 = [MEMORY[0x277CCABB0] numberWithFloat:v33];
   v38[3] = v25;
@@ -468,21 +468,21 @@ LABEL_15:
   self->super._isf = v5;
 }
 
-- (ADJasperPearlInFieldCalibrationInterSessionData)initWithPCECalibData:(id)a3
+- (ADJasperPearlInFieldCalibrationInterSessionData)initWithPCECalibData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [(ADJasperPearlInFieldCalibrationInterSessionData *)self init];
   p_isa = &v5->super.super.isa;
   if (v5)
   {
     [(ADInFieldCalibrationInterSessionData *)v5 setVersion:1];
     [p_isa initIsf];
-    v7 = [v4 bytes];
-    v8 = v7[1096];
-    v9 = [MEMORY[0x277CCABB0] numberWithDouble:v7[1103] / v7[1101]];
-    v10 = [MEMORY[0x277CCABB0] numberWithDouble:v7[1104] / v7[1101]];
+    bytes = [dataCopy bytes];
+    v8 = bytes[1096];
+    v9 = [MEMORY[0x277CCABB0] numberWithDouble:bytes[1103] / bytes[1101]];
+    v10 = [MEMORY[0x277CCABB0] numberWithDouble:bytes[1104] / bytes[1101]];
     *&v11 = v8;
-    v12 = [p_isa buildISFInputDictWithEFL:v9 principalPointtX:v10 principalPointtY:v7 + 1634 rotationMat:v11];
+    v12 = [p_isa buildISFInputDictWithEFL:v9 principalPointtX:v10 principalPointtY:bytes + 1634 rotationMat:v11];
 
     if ([p_isa[2] fillWithEntry:v12])
     {
@@ -551,8 +551,8 @@ LABEL_13:
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[ADInFieldCalibrationInterSessionData version](self, "version")}];
   [v3 setObject:v4 forKeyedSubscript:@"interSessionDataVersion"];
 
-  v5 = [(ADInterSessionFilter *)self->super._isf persistenceData];
-  [v3 setObject:v5 forKeyedSubscript:@"isfHistoryKey"];
+  persistenceData = [(ADInterSessionFilter *)self->super._isf persistenceData];
+  [v3 setObject:persistenceData forKeyedSubscript:@"isfHistoryKey"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[ADJasperPearlInFieldCalibrationInterSessionData firstTimeEventFired](self, "firstTimeEventFired")}];
   [v3 setObject:v6 forKeyedSubscript:@"jpc_telemetry_first_time_event_fired"];
@@ -569,56 +569,56 @@ LABEL_13:
   return v3;
 }
 
-- (ADJasperPearlInFieldCalibrationInterSessionData)initWithDictionaryRepresentation:(id)a3
+- (ADJasperPearlInFieldCalibrationInterSessionData)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = [(ADJasperPearlInFieldCalibrationInterSessionData *)self init];
   v6 = v5;
   if (v5)
   {
-    v7 = [v4 objectForKey:@"interSessionDataVersion"];
+    v7 = [representationCopy objectForKey:@"interSessionDataVersion"];
     -[ADInFieldCalibrationInterSessionData setVersion:](v5, "setVersion:", [v7 unsignedIntValue]);
 
     if ([(ADInFieldCalibrationInterSessionData *)v5 version]== 1)
     {
-      v8 = [v4 objectForKey:@"jpc_last_pearl_temp"];
+      v8 = [representationCopy objectForKey:@"jpc_last_pearl_temp"];
 
       if (v8)
       {
-        v9 = [v4 objectForKeyedSubscript:@"jpc_last_pearl_temp"];
+        v9 = [representationCopy objectForKeyedSubscript:@"jpc_last_pearl_temp"];
         [v9 floatValue];
         [(ADJasperPearlInFieldCalibrationInterSessionData *)v5 setLastPearlTemp:?];
       }
 
-      v10 = [v4 objectForKey:@"agg_points"];
+      v10 = [representationCopy objectForKey:@"agg_points"];
 
       if (v10)
       {
-        v11 = [v4 objectForKeyedSubscript:@"agg_points"];
+        v11 = [representationCopy objectForKeyedSubscript:@"agg_points"];
         [(ADJasperPearlInFieldCalibrationInterSessionData *)v5 setAggPointsWrapperObj:v11];
       }
 
-      v12 = [v4 objectForKey:@"jpc_last_rotation"];
+      v12 = [representationCopy objectForKey:@"jpc_last_rotation"];
 
       if (v12)
       {
-        v13 = [v4 objectForKeyedSubscript:@"jpc_last_rotation"];
+        v13 = [representationCopy objectForKeyedSubscript:@"jpc_last_rotation"];
         [(ADJasperPearlInFieldCalibrationInterSessionData *)v5 setRotArray:v13];
       }
 
-      v14 = [v4 objectForKey:@"jpc_last_translation"];
+      v14 = [representationCopy objectForKey:@"jpc_last_translation"];
 
       if (v14)
       {
-        v15 = [v4 objectForKeyedSubscript:@"jpc_last_translation"];
+        v15 = [representationCopy objectForKeyedSubscript:@"jpc_last_translation"];
         [(ADJasperPearlInFieldCalibrationInterSessionData *)v5 setTransArray:v15];
       }
 
-      v16 = [v4 objectForKey:@"jpc_telemetry_first_time_event_fired"];
+      v16 = [representationCopy objectForKey:@"jpc_telemetry_first_time_event_fired"];
 
       if (v16)
       {
-        v17 = [v4 objectForKeyedSubscript:@"jpc_telemetry_first_time_event_fired"];
+        v17 = [representationCopy objectForKeyedSubscript:@"jpc_telemetry_first_time_event_fired"];
         -[ADJasperPearlInFieldCalibrationInterSessionData setFirstTimeEventFired:](v5, "setFirstTimeEventFired:", [v17 BOOLValue]);
       }
 
@@ -627,11 +627,11 @@ LABEL_13:
         [(ADJasperPearlInFieldCalibrationInterSessionData *)v5 setFirstTimeEventFired:1];
       }
 
-      v18 = [v4 objectForKey:@"jpc_last_algo_radar_trigger"];
+      v18 = [representationCopy objectForKey:@"jpc_last_algo_radar_trigger"];
 
       if (v18)
       {
-        v19 = [v4 objectForKeyedSubscript:@"jpc_last_algo_radar_trigger"];
+        v19 = [representationCopy objectForKeyedSubscript:@"jpc_last_algo_radar_trigger"];
         [v19 doubleValue];
         [(ADJasperPearlInFieldCalibrationInterSessionData *)v5 setLastAlgoRadarTriggerTimestamp:?];
       }
@@ -641,7 +641,7 @@ LABEL_13:
         [(ADJasperPearlInFieldCalibrationInterSessionData *)v5 setLastAlgoRadarTriggerTimestamp:0.0];
       }
 
-      v20 = [v4 objectForKey:@"isfHistoryKey"];
+      v20 = [representationCopy objectForKey:@"isfHistoryKey"];
       if (!v20 || ([(ADJasperPearlInFieldCalibrationInterSessionData *)v5 initIsf], [(ADInterSessionFilter *)v5->super._isf fillWithDictionaryRepresentation:v20]))
       {
         v5 = 0;
@@ -651,7 +651,7 @@ LABEL_33:
       }
 
       [(ADJasperPearlInFieldCalibrationInterSessionData *)v5 initDiagnosticPipelineLog];
-      v21 = [v4 objectForKey:@"diagnosticPipelineLog"];
+      v21 = [representationCopy objectForKey:@"diagnosticPipelineLog"];
       v22 = v21;
       if (v21)
       {

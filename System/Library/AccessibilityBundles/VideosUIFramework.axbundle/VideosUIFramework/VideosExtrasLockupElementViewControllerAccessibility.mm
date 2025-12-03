@@ -1,18 +1,18 @@
 @interface VideosExtrasLockupElementViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityButtonifyArtworkView;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation VideosExtrasLockupElementViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VideosExtrasLockupElementViewController" hasInstanceVariable:@"_artworkContainerView" withType:"VideosExtrasConstrainedArtworkContainerView"];
-  [v3 validateClass:@"VideosExtrasConstrainedArtworkContainerView" hasInstanceMethod:@"artworkView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VideosExtrasLockupElementViewController" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"VideosExtrasLockupElementViewController" isKindOfClass:@"UIViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VideosExtrasLockupElementViewController" hasInstanceVariable:@"_artworkContainerView" withType:"VideosExtrasConstrainedArtworkContainerView"];
+  [validationsCopy validateClass:@"VideosExtrasConstrainedArtworkContainerView" hasInstanceMethod:@"artworkView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VideosExtrasLockupElementViewController" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"VideosExtrasLockupElementViewController" isKindOfClass:@"UIViewController"];
 }
 
 - (void)_accessibilityButtonifyArtworkView
@@ -23,13 +23,13 @@
   v4 = [(VideosExtrasLockupElementViewControllerAccessibility *)self safeValueForKey:@"_titleLabel"];
   v5 = __UIAccessibilityCastAsClass();
 
-  v6 = [v5 accessibilityLabel];
+  accessibilityLabel = [v5 accessibilityLabel];
 
-  if (v6)
+  if (accessibilityLabel)
   {
     v7 = MEMORY[0x29EDBA0F8];
     v8 = accessibilityLocalizedString(@"play.extra.format");
-    v9 = [v7 stringWithFormat:v8, v6];
+    v9 = [v7 stringWithFormat:v8, accessibilityLabel];
   }
 
   else

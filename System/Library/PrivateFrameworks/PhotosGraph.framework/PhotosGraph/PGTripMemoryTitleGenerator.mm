@@ -1,13 +1,13 @@
 @interface PGTripMemoryTitleGenerator
-- (PGTripMemoryTitleGenerator)initWithHighlightGroupNodeAsCollection:(id)a3 type:(unint64_t)a4 titleGenerationContext:(id)a5;
-- (PGTripMemoryTitleGenerator)initWithHighlightNode:(id)a3 titleGenerationContext:(id)a4;
-- (PGTripMemoryTitleGenerator)initWithMomentNodes:(id)a3 locationNodes:(id)a4 areaNodes:(id)a5 type:(unint64_t)a6 titleGenerationContext:(id)a7;
+- (PGTripMemoryTitleGenerator)initWithHighlightGroupNodeAsCollection:(id)collection type:(unint64_t)type titleGenerationContext:(id)context;
+- (PGTripMemoryTitleGenerator)initWithHighlightNode:(id)node titleGenerationContext:(id)context;
+- (PGTripMemoryTitleGenerator)initWithMomentNodes:(id)nodes locationNodes:(id)locationNodes areaNodes:(id)areaNodes type:(unint64_t)type titleGenerationContext:(id)context;
 - (id)_locationTitle;
 - (id)_timeTitleForTripAndWeekend;
 - (id)_timeTitleForWeekend;
 - (id)_typeString;
-- (id)initForTestingWithHighlightGroupNodeAsCollection:(id)a3 type:(unint64_t)a4 titleGenerationContext:(id)a5;
-- (void)_generateTitleAndSubtitleWithResult:(id)a3;
+- (id)initForTestingWithHighlightGroupNodeAsCollection:(id)collection type:(unint64_t)type titleGenerationContext:(id)context;
+- (void)_generateTitleAndSubtitleWithResult:(id)result;
 @end
 
 @implementation PGTripMemoryTitleGenerator
@@ -23,18 +23,18 @@
 - (id)_timeTitleForTripAndWeekend
 {
   v3 = objc_alloc_init(PGTimeTitleOptions);
-  v4 = [(PGTitleGenerator *)self momentNodes];
-  [(PGTimeTitleOptions *)v3 setMomentNodes:v4];
+  momentNodes = [(PGTitleGenerator *)self momentNodes];
+  [(PGTimeTitleOptions *)v3 setMomentNodes:momentNodes];
 
-  v5 = [(PGTitleGenerator *)self usedLocationNodes];
-  [(PGTimeTitleOptions *)v3 setLocationNodes:v5];
+  usedLocationNodes = [(PGTitleGenerator *)self usedLocationNodes];
+  [(PGTimeTitleOptions *)v3 setLocationNodes:usedLocationNodes];
 
-  v6 = [(PGTitleGenerator *)self locale];
-  [(PGTimeTitleOptions *)v3 setLocale:v6];
+  locale = [(PGTitleGenerator *)self locale];
+  [(PGTimeTitleOptions *)v3 setLocale:locale];
 
   v7 = [PGTimeTitleUtility timeTitleWithOptions:v3];
-  v8 = [(PGTripMemoryTitleGenerator *)self _typeString];
-  if (!v8)
+  _typeString = [(PGTripMemoryTitleGenerator *)self _typeString];
+  if (!_typeString)
   {
     v13 = v7;
 LABEL_6:
@@ -44,7 +44,7 @@ LABEL_6:
 
   if (![v7 length])
   {
-    v13 = v8;
+    v13 = _typeString;
     goto LABEL_6;
   }
 
@@ -61,41 +61,41 @@ LABEL_7:
 
 - (id)_timeTitleForWeekend
 {
-  v3 = [(PGTitleGenerator *)self dateMatching];
-  v4 = [v3 type];
+  dateMatching = [(PGTitleGenerator *)self dateMatching];
+  type = [dateMatching type];
 
-  if (v4 != 9)
+  if (type != 9)
   {
     goto LABEL_3;
   }
 
-  v5 = [(PGTitleGenerator *)self dateMatching];
-  v6 = [v5 title];
-  v7 = [v6 stringValue];
+  dateMatching2 = [(PGTitleGenerator *)self dateMatching];
+  title = [dateMatching2 title];
+  stringValue = [title stringValue];
 
-  if (!v7)
+  if (!stringValue)
   {
 LABEL_3:
-    v7 = [(PGTripMemoryTitleGenerator *)self _timeTitleForTripAndWeekend];
+    stringValue = [(PGTripMemoryTitleGenerator *)self _timeTitleForTripAndWeekend];
   }
 
-  return v7;
+  return stringValue;
 }
 
 - (id)_locationTitle
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(PGTitleGenerator *)self momentNodes];
-  v4 = [v3 count];
+  momentNodes = [(PGTitleGenerator *)self momentNodes];
+  v4 = [momentNodes count];
 
   if (v4)
   {
-    v5 = [(PGTitleGenerator *)self titleGenerationContext];
-    v6 = [v5 locationHelper];
+    titleGenerationContext = [(PGTitleGenerator *)self titleGenerationContext];
+    locationHelper = [titleGenerationContext locationHelper];
 
     highlightGroupNodeAsCollection = self->_highlightGroupNodeAsCollection;
     v16 = 0;
-    v8 = [PGTripTitleGenerator titleForTripNodeAsCollection:highlightGroupNodeAsCollection locationHelper:v6 error:&v16];
+    v8 = [PGTripTitleGenerator titleForTripNodeAsCollection:highlightGroupNodeAsCollection locationHelper:locationHelper error:&v16];
     v9 = v16;
     if (v8)
     {
@@ -105,14 +105,14 @@ LABEL_3:
     else
     {
       v11 = +[PGLogging sharedLogging];
-      v12 = [v11 loggingConnection];
+      loggingConnection = [v11 loggingConnection];
 
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
-        v15 = [v9 localizedDescription];
+        localizedDescription = [v9 localizedDescription];
         *buf = 138412290;
-        v18 = v15;
-        _os_log_error_impl(&dword_22F0FC000, v12, OS_LOG_TYPE_ERROR, "[PGTripMemoryTitleGenerator] %@", buf, 0xCu);
+        v18 = localizedDescription;
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PGTripMemoryTitleGenerator] %@", buf, 0xCu);
       }
     }
   }
@@ -127,20 +127,20 @@ LABEL_3:
   return v8;
 }
 
-- (void)_generateTitleAndSubtitleWithResult:(id)a3
+- (void)_generateTitleAndSubtitleWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   type = self->_type;
-  v11 = v4;
+  v11 = resultCopy;
   if (type == 1)
   {
-    v6 = [(PGTripMemoryTitleGenerator *)self _locationTitle];
-    v7 = [(PGTripMemoryTitleGenerator *)self _timeTitleForWeekend];
+    _locationTitle = [(PGTripMemoryTitleGenerator *)self _locationTitle];
+    _timeTitleForWeekend = [(PGTripMemoryTitleGenerator *)self _timeTitleForWeekend];
 LABEL_5:
-    v8 = v7;
-    if (v6)
+    v8 = _timeTitleForWeekend;
+    if (_locationTitle)
     {
-      v9 = [PGTitle titleWithString:v6 category:4];
+      v9 = [PGTitle titleWithString:_locationTitle category:4];
       if (v8)
       {
 LABEL_7:
@@ -152,7 +152,7 @@ LABEL_7:
     else
     {
       v9 = 0;
-      if (v7)
+      if (_timeTitleForWeekend)
       {
         goto LABEL_7;
       }
@@ -170,16 +170,16 @@ LABEL_12:
 
   if (!type)
   {
-    v6 = [(PGTripMemoryTitleGenerator *)self _locationTitle];
-    v7 = [(PGTripMemoryTitleGenerator *)self _timeTitleForTrip];
+    _locationTitle = [(PGTripMemoryTitleGenerator *)self _locationTitle];
+    _timeTitleForWeekend = [(PGTripMemoryTitleGenerator *)self _timeTitleForTrip];
     goto LABEL_5;
   }
 
   v9 = 0;
-  v6 = 0;
+  _locationTitle = 0;
   v8 = 0;
   v10 = 0;
-  if (v4)
+  if (resultCopy)
   {
 LABEL_13:
     v11[2](v11, v9, v10);
@@ -188,81 +188,81 @@ LABEL_13:
 LABEL_14:
 }
 
-- (id)initForTestingWithHighlightGroupNodeAsCollection:(id)a3 type:(unint64_t)a4 titleGenerationContext:(id)a5
+- (id)initForTestingWithHighlightGroupNodeAsCollection:(id)collection type:(unint64_t)type titleGenerationContext:(id)context
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [v9 momentNodes];
-  v12 = [v11 set];
-  v13 = [(PGTripMemoryTitleGenerator *)self initWithMomentNodes:v12 locationNodes:0 type:a4 titleGenerationContext:v10];
+  collectionCopy = collection;
+  contextCopy = context;
+  momentNodes = [collectionCopy momentNodes];
+  v12 = [momentNodes set];
+  v13 = [(PGTripMemoryTitleGenerator *)self initWithMomentNodes:v12 locationNodes:0 type:type titleGenerationContext:contextCopy];
 
   if (v13)
   {
-    objc_storeStrong(&v13->_highlightGroupNodeAsCollection, a3);
-    v14 = [v9 featuredLocationOrAreaNodes];
-    v15 = [v14 set];
+    objc_storeStrong(&v13->_highlightGroupNodeAsCollection, collection);
+    featuredLocationOrAreaNodes = [collectionCopy featuredLocationOrAreaNodes];
+    v15 = [featuredLocationOrAreaNodes set];
     [(PGTitleGenerator *)v13 setUsedLocationNodes:v15];
   }
 
   return v13;
 }
 
-- (PGTripMemoryTitleGenerator)initWithHighlightGroupNodeAsCollection:(id)a3 type:(unint64_t)a4 titleGenerationContext:(id)a5
+- (PGTripMemoryTitleGenerator)initWithHighlightGroupNodeAsCollection:(id)collection type:(unint64_t)type titleGenerationContext:(id)context
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [v9 momentNodes];
-  v12 = [v11 set];
-  v13 = [(PGTripMemoryTitleGenerator *)self initWithMomentNodes:v12 locationNodes:0 type:a4 titleGenerationContext:v10];
+  collectionCopy = collection;
+  contextCopy = context;
+  momentNodes = [collectionCopy momentNodes];
+  v12 = [momentNodes set];
+  v13 = [(PGTripMemoryTitleGenerator *)self initWithMomentNodes:v12 locationNodes:0 type:type titleGenerationContext:contextCopy];
 
   if (v13)
   {
-    objc_storeStrong(&v13->_highlightGroupNodeAsCollection, a3);
-    v14 = [v9 featuredLocationOrAreaNodes];
-    v15 = [v14 set];
+    objc_storeStrong(&v13->_highlightGroupNodeAsCollection, collection);
+    featuredLocationOrAreaNodes = [collectionCopy featuredLocationOrAreaNodes];
+    v15 = [featuredLocationOrAreaNodes set];
     [(PGTitleGenerator *)v13 setUsedLocationNodes:v15];
   }
 
   return v13;
 }
 
-- (PGTripMemoryTitleGenerator)initWithHighlightNode:(id)a3 titleGenerationContext:(id)a4
+- (PGTripMemoryTitleGenerator)initWithHighlightNode:(id)node titleGenerationContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 collection];
-  v9 = [v8 momentNodes];
+  nodeCopy = node;
+  contextCopy = context;
+  collection = [nodeCopy collection];
+  momentNodes = [collection momentNodes];
 
-  if ([v9 count] && objc_msgSend(v6, "isTrip"))
+  if ([momentNodes count] && objc_msgSend(nodeCopy, "isTrip"))
   {
-    v10 = [v6 isShortTrip];
-    v11 = [v9 temporarySet];
-    self = [(PGTripMemoryTitleGenerator *)self initWithMomentNodes:v11 locationNodes:0 type:v10 titleGenerationContext:v7];
+    isShortTrip = [nodeCopy isShortTrip];
+    temporarySet = [momentNodes temporarySet];
+    self = [(PGTripMemoryTitleGenerator *)self initWithMomentNodes:temporarySet locationNodes:0 type:isShortTrip titleGenerationContext:contextCopy];
 
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (PGTripMemoryTitleGenerator)initWithMomentNodes:(id)a3 locationNodes:(id)a4 areaNodes:(id)a5 type:(unint64_t)a6 titleGenerationContext:(id)a7
+- (PGTripMemoryTitleGenerator)initWithMomentNodes:(id)nodes locationNodes:(id)locationNodes areaNodes:(id)areaNodes type:(unint64_t)type titleGenerationContext:(id)context
 {
-  v13 = a4;
-  v14 = a5;
+  locationNodesCopy = locationNodes;
+  areaNodesCopy = areaNodes;
   v18.receiver = self;
   v18.super_class = PGTripMemoryTitleGenerator;
-  v15 = [(PGTitleGenerator *)&v18 initWithMomentNodes:a3 referenceDateInterval:0 keyAsset:0 curatedAssetCollection:0 assetCollection:0 type:0 titleGenerationContext:a7];
+  v15 = [(PGTitleGenerator *)&v18 initWithMomentNodes:nodes referenceDateInterval:0 keyAsset:0 curatedAssetCollection:0 assetCollection:0 type:0 titleGenerationContext:context];
   v16 = v15;
   if (v15)
   {
-    v15->_type = a6;
-    objc_storeStrong(&v15->_locationNodes, a4);
-    objc_storeStrong(&v16->_areaNodes, a5);
+    v15->_type = type;
+    objc_storeStrong(&v15->_locationNodes, locationNodes);
+    objc_storeStrong(&v16->_areaNodes, areaNodes);
   }
 
   return v16;

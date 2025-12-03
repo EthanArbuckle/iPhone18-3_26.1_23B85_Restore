@@ -1,15 +1,15 @@
 @interface CLSCalendarEventsCacheMonth
-- (BOOL)isEqual:(id)a3;
-- (CLSCalendarEventsCacheMonth)initWithMonth:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (CLSCalendarEventsCacheMonth)initWithMonth:(int64_t)month;
 - (id)debugDescription;
 @end
 
 @implementation CLSCalendarEventsCacheMonth
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -19,8 +19,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(CLSCalendarEventsCacheMonth *)v4 month];
-      v6 = v5 == [(CLSCalendarEventsCacheMonth *)self month];
+      month = [(CLSCalendarEventsCacheMonth *)equalCopy month];
+      v6 = month == [(CLSCalendarEventsCacheMonth *)self month];
     }
 
     else
@@ -44,7 +44,7 @@
   return v8;
 }
 
-- (CLSCalendarEventsCacheMonth)initWithMonth:(int64_t)a3
+- (CLSCalendarEventsCacheMonth)initWithMonth:(int64_t)month
 {
   v8.receiver = self;
   v8.super_class = CLSCalendarEventsCacheMonth;
@@ -55,7 +55,7 @@
     days = v4->_days;
     v4->_days = v5;
 
-    v4->_month = a3;
+    v4->_month = month;
   }
 
   return v4;

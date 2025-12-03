@@ -14,18 +14,18 @@
 {
   v26 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 startItemPlayParameters];
+  startItemPlayParameters = [self startItemPlayParameters];
 
-  if (v5 && ([a1 startItemPlayParameters], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "itemKind"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", *MEMORY[0x1E6970408]), v7, v6, (v8 & 1) == 0))
+  if (startItemPlayParameters && ([self startItemPlayParameters], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "itemKind"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", *MEMORY[0x1E6970408]), v7, v6, (v8 & 1) == 0))
   {
-    v10 = [a1 startItemPlayParameters];
-    v11 = [v10 persistentID];
+    startItemPlayParameters2 = [self startItemPlayParameters];
+    persistentID = [startItemPlayParameters2 persistentID];
 
-    v12 = [a1 startItemPlayParameters];
-    v13 = [v12 catalogID];
+    startItemPlayParameters3 = [self startItemPlayParameters];
+    catalogID = [startItemPlayParameters3 catalogID];
 
-    v14 = [a1 startItemPlayParameters];
-    v15 = [v14 libraryID];
+    startItemPlayParameters4 = [self startItemPlayParameters];
+    libraryID = [startItemPlayParameters4 libraryID];
 
     if ([v4 persistentID])
     {
@@ -74,16 +74,16 @@
       v22 = &stru_1F454A698;
     }
 
-    v23 = [v4 cloudUniversalLibraryID];
-    if (v15 == v23 || ([v15 isEqual:v23] & 1) != 0)
+    cloudUniversalLibraryID = [v4 cloudUniversalLibraryID];
+    if (libraryID == cloudUniversalLibraryID || ([libraryID isEqual:cloudUniversalLibraryID] & 1) != 0)
     {
       v9 = 1;
     }
 
     else
     {
-      v24 = [v4 storeItemID];
-      if (v13 == v24)
+      storeItemID = [v4 storeItemID];
+      if (catalogID == storeItemID)
       {
         v9 = 1;
       }
@@ -91,9 +91,9 @@
       else
       {
         v9 = 1;
-        if (([v13 isEqual:v24] & 1) == 0 && v11 != v22)
+        if (([catalogID isEqual:storeItemID] & 1) == 0 && persistentID != v22)
         {
-          v9 = [(__CFString *)v11 isEqual:v22];
+          v9 = [(__CFString *)persistentID isEqual:v22];
         }
       }
     }
@@ -142,81 +142,81 @@ LABEL_7:
 
   v7 = objc_alloc_init(MPCModelStorePlaybackItemsRequest);
   v8 = objc_alloc(MEMORY[0x1E6970570]);
-  v9 = [MEMORY[0x1E69705E8] deviceMediaLibrary];
-  v10 = [v8 initWithLibrary:v9];
+  deviceMediaLibrary = [MEMORY[0x1E69705E8] deviceMediaLibrary];
+  v10 = [v8 initWithLibrary:deviceMediaLibrary];
 
   v11 = objc_alloc(MEMORY[0x1E69708B0]);
   v112[0] = *MEMORY[0x1E6970158];
-  v12 = [MEMORY[0x1E69708B0] emptyPropertySet];
-  v113[0] = v12;
+  emptyPropertySet = [MEMORY[0x1E69708B0] emptyPropertySet];
+  v113[0] = emptyPropertySet;
   v112[1] = *MEMORY[0x1E69700D8];
-  v13 = [MEMORY[0x1E69708B0] emptyPropertySet];
-  v113[1] = v13;
+  emptyPropertySet2 = [MEMORY[0x1E69708B0] emptyPropertySet];
+  v113[1] = emptyPropertySet2;
   v112[2] = *MEMORY[0x1E6970118];
-  v14 = [MEMORY[0x1E69708B0] emptyPropertySet];
-  v113[2] = v14;
+  emptyPropertySet3 = [MEMORY[0x1E69708B0] emptyPropertySet];
+  v113[2] = emptyPropertySet3;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v113 forKeys:v112 count:3];
   v104 = [v11 initWithProperties:MEMORY[0x1E695E0F0] relationships:v15];
 
-  v16 = [a1 playParametersQueue];
+  playParametersQueue = [self playParametersQueue];
   v103 = v4;
-  if ([v16 count] != 1)
+  if ([playParametersQueue count] != 1)
   {
 
 LABEL_12:
-    v26 = [a1 containerPlayParameters];
+    containerPlayParameters = [self containerPlayParameters];
 
-    if (!v26)
+    if (!containerPlayParameters)
     {
-      v19 = 0;
+      firstObject = 0;
       goto LABEL_33;
     }
 
     v27 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback");
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [a1 containerPlayParameters];
-      v29 = [a1 containerPlayParameters];
-      v30 = [v29 identifiers];
+      containerPlayParameters2 = [self containerPlayParameters];
+      containerPlayParameters3 = [self containerPlayParameters];
+      identifiers = [containerPlayParameters3 identifiers];
       *buf = 138543618;
-      v115 = v28;
+      v115 = containerPlayParameters2;
       v116 = 2114;
-      v117 = v30;
+      v117 = identifiers;
       _os_log_impl(&dword_1C5C61000, v27, OS_LOG_TYPE_DEFAULT, "MusicKit: Attempting to create container item for container play params: %{public}@ with identifiers: %{public}@", buf, 0x16u);
     }
 
-    v31 = [a1 containerPlayParameters];
-    v32 = [v31 identifiers];
-    v33 = [v10 identifiersMatchingIdentifierSet:v32 propertySet:v104 options:0 error:0];
+    containerPlayParameters4 = [self containerPlayParameters];
+    identifiers2 = [containerPlayParameters4 identifiers];
+    v33 = [v10 identifiersMatchingIdentifierSet:identifiers2 propertySet:v104 options:0 error:0];
 
     if (!v33)
     {
       v34 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback");
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
-        v35 = [a1 containerPlayParameters];
-        v36 = [v35 identifiers];
+        containerPlayParameters5 = [self containerPlayParameters];
+        identifiers3 = [containerPlayParameters5 identifiers];
         *buf = 138543362;
-        v115 = v36;
+        v115 = identifiers3;
         _os_log_impl(&dword_1C5C61000, v34, OS_LOG_TYPE_DEFAULT, "MusicKit: Could not find identifiers in library object database for identifiers: %{public}@", buf, 0xCu);
       }
 
-      v37 = [a1 containerPlayParameters];
-      v38 = [v37 identifiers];
+      containerPlayParameters6 = [self containerPlayParameters];
+      identifiers4 = [containerPlayParameters6 identifiers];
 
-      v39 = [MEMORY[0x1E69E4680] activeAccount];
+      activeAccount = [MEMORY[0x1E69E4680] activeAccount];
       v40 = *MEMORY[0x1E69E4388];
       if ([MEMORY[0x1E69B1418] hasBoolEntitlement:@"com.apple.accounts.appleaccount.fullaccess"])
       {
         v41 = v4;
         v42 = v10;
-        v43 = [MEMORY[0x1E69E4688] defaultIdentityStore];
-        v44 = [v43 DSIDForUserIdentity:v39 outError:0];
-        v45 = [v44 stringValue];
+        defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
+        v44 = [defaultIdentityStore DSIDForUserIdentity:activeAccount outError:0];
+        stringValue = [v44 stringValue];
 
-        if ([v45 length])
+        if ([stringValue length])
         {
-          v46 = v45;
+          v46 = stringValue;
 
           v40 = v46;
         }
@@ -232,7 +232,7 @@ LABEL_12:
       v108[3] = &unk_1E82389D8;
       v109 = v40;
       v47 = v40;
-      v33 = [v38 copyWithSource:@"MusicPlayerPlayParams+PersonAddition" block:v108];
+      v33 = [identifiers4 copyWithSource:@"MusicPlayerPlayParams+PersonAddition" block:v108];
     }
 
     v48 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback");
@@ -243,9 +243,9 @@ LABEL_12:
       _os_log_impl(&dword_1C5C61000, v48, OS_LOG_TYPE_DEFAULT, "MusicKit: Creating container with container identifiers: %{public}@", buf, 0xCu);
     }
 
-    v49 = [a1 containerPlayParameters];
-    v50 = [v49 itemKind];
-    v51 = [v50 isEqualToString:*MEMORY[0x1E69703F8]];
+    containerPlayParameters7 = [self containerPlayParameters];
+    itemKind = [containerPlayParameters7 itemKind];
+    v51 = [itemKind isEqualToString:*MEMORY[0x1E69703F8]];
 
     if (v51)
     {
@@ -254,24 +254,24 @@ LABEL_12:
 
     else
     {
-      v53 = [a1 containerPlayParameters];
-      v54 = [v53 itemKind];
-      v55 = [v54 isEqualToString:*MEMORY[0x1E6970400]];
+      containerPlayParameters8 = [self containerPlayParameters];
+      itemKind2 = [containerPlayParameters8 itemKind];
+      v55 = [itemKind2 isEqualToString:*MEMORY[0x1E6970400]];
 
       if (!v55)
       {
-        v19 = 0;
+        firstObject = 0;
         goto LABEL_32;
       }
 
       v52 = 0x1E6970718;
     }
 
-    v19 = [objc_alloc(*v52) initWithIdentifiers:v33];
+    firstObject = [objc_alloc(*v52) initWithIdentifiers:v33];
 LABEL_32:
 
 LABEL_33:
-    v20 = [(MPCModelPlaybackContext *)v4 msv_compactMap:&__block_literal_global_137];
+    itemKind3 = [(MPCModelPlaybackContext *)v4 msv_compactMap:&__block_literal_global_137];
     v105[0] = MEMORY[0x1E69E9820];
     v105[1] = 3221225472;
     v105[2] = __129__MPMusicPlayerPlayParametersQueueDescriptor_MPCModelPlaybackAdditions___classicalMusicAppPlaybackContextForPlayParametersQueue___block_invoke_2_138;
@@ -279,19 +279,19 @@ LABEL_33:
     v21 = v10;
     v106 = v10;
     v107 = v104;
-    v56 = [v20 msv_compactMap:v105];
+    v56 = [itemKind3 msv_compactMap:v105];
     v57 = [v56 msv_compactMap:&__block_literal_global_141];
-    if (v19)
+    if (firstObject)
     {
       v58 = objc_alloc_init(MEMORY[0x1E6970818]);
-      [(MPCModelPlaybackContext *)v58 appendSection:v19];
+      [(MPCModelPlaybackContext *)v58 appendSection:firstObject];
       [(MPCModelPlaybackContext *)v58 appendItems:v57];
       [(MPCModelStorePlaybackItemsRequest *)v7 setSectionedModelObjects:v58];
       v59 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback");
       if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v115 = v19;
+        v115 = firstObject;
         v116 = 2114;
         v117 = v57;
         v60 = "MusicKit: Created SPIR with container: %{public}@ and items %{public}@";
@@ -319,40 +319,40 @@ LABEL_38:
     }
 
     v22 = 0;
-    v24 = v106;
+    identifiers7 = v106;
     goto LABEL_40;
   }
 
-  v17 = [a1 containerPlayParameters];
+  containerPlayParameters9 = [self containerPlayParameters];
 
-  if (v17)
+  if (containerPlayParameters9)
   {
     goto LABEL_12;
   }
 
-  v18 = [a1 playParametersQueue];
-  v19 = [v18 firstObject];
+  playParametersQueue2 = [self playParametersQueue];
+  firstObject = [playParametersQueue2 firstObject];
 
-  v20 = [(MPCModelPlaybackContext *)v19 itemKind];
+  itemKind3 = [(MPCModelPlaybackContext *)firstObject itemKind];
   v21 = v10;
-  if (![v20 isEqualToString:*MEMORY[0x1E6970408]])
+  if (![itemKind3 isEqualToString:*MEMORY[0x1E6970408]])
   {
-    if ([(MPCModelPlaybackContext *)v19 isLibraryContent])
+    if ([(MPCModelPlaybackContext *)firstObject isLibraryContent])
     {
-      [(MPCModelPlaybackContext *)v19 catalogID];
+      [(MPCModelPlaybackContext *)firstObject catalogID];
     }
 
     else
     {
-      [(MPCModelPlaybackContext *)v19 itemID];
+      [(MPCModelPlaybackContext *)firstObject itemID];
     }
     v82 = ;
-    v24 = v82;
+    identifiers7 = v82;
     if (v82)
     {
       v111 = v82;
-      v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v111 count:1];
-      [(MPCModelStorePlaybackItemsRequest *)v7 setStoreIDs:v25];
+      identifiers6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v111 count:1];
+      [(MPCModelStorePlaybackItemsRequest *)v7 setStoreIDs:identifiers6];
 LABEL_87:
       v22 = 0;
       goto LABEL_88;
@@ -364,26 +364,26 @@ LABEL_87:
       *buf = 138543618;
       v115 = v103;
       v116 = 2114;
-      v117 = v19;
+      v117 = firstObject;
       _os_log_impl(&dword_1C5C61000, v83, OS_LOG_TYPE_FAULT, "MusicKit: Unable to set store ids for classical music app for queue: %{public}@ with first item play parameters: %{public}@", buf, 0x16u);
     }
 
-    v84 = [(MPCModelPlaybackContext *)v19 identifiers];
-    v25 = [v21 identifiersMatchingIdentifierSet:v84 propertySet:v104 options:0 error:0];
+    identifiers5 = [(MPCModelPlaybackContext *)firstObject identifiers];
+    identifiers6 = [v21 identifiersMatchingIdentifierSet:identifiers5 propertySet:v104 options:0 error:0];
 
-    if (!v25)
+    if (!identifiers6)
     {
-      v25 = [(MPCModelPlaybackContext *)v19 identifiers];
+      identifiers6 = [(MPCModelPlaybackContext *)firstObject identifiers];
     }
 
-    v85 = [v25 universalStore];
-    v86 = [v85 subscriptionAdamID];
+    universalStore = [identifiers6 universalStore];
+    subscriptionAdamID = [universalStore subscriptionAdamID];
 
-    v87 = [v25 universalStore];
-    v88 = v87;
-    if (v86)
+    universalStore2 = [identifiers6 universalStore];
+    universalStore4 = universalStore2;
+    if (subscriptionAdamID)
     {
-      quot = [v87 subscriptionAdamID];
+      quot = [universalStore2 subscriptionAdamID];
       if (quot)
       {
         v90 = quot;
@@ -415,11 +415,11 @@ LABEL_80:
           v94 = (v91 - 2);
         }
 
-        v100 = CFStringCreateWithBytes(0, v94, v118 - v94, 0x8000100u, 0);
+        globalPlaylistID2 = CFStringCreateWithBytes(0, v94, v118 - v94, 0x8000100u, 0);
 LABEL_83:
-        v24 = v100;
+        identifiers7 = globalPlaylistID2;
 
-        if (!v24)
+        if (!identifiers7)
         {
           goto LABEL_87;
         }
@@ -430,34 +430,34 @@ LABEL_83:
 
     else
     {
-      v95 = [v87 adamID];
+      adamID = [universalStore2 adamID];
 
-      v96 = [v25 universalStore];
-      v88 = v96;
-      if (!v95)
+      universalStore3 = [identifiers6 universalStore];
+      universalStore4 = universalStore3;
+      if (!adamID)
       {
-        v102 = [v96 globalPlaylistID];
-        v24 = [v102 length];
+        globalPlaylistID = [universalStore3 globalPlaylistID];
+        identifiers7 = [globalPlaylistID length];
 
-        if (!v24)
+        if (!identifiers7)
         {
           goto LABEL_87;
         }
 
-        v88 = [v25 universalStore];
-        v100 = [v88 globalPlaylistID];
+        universalStore4 = [identifiers6 universalStore];
+        globalPlaylistID2 = [universalStore4 globalPlaylistID];
         goto LABEL_83;
       }
 
-      v97 = [v96 adamID];
-      if (v97)
+      adamID2 = [universalStore3 adamID];
+      if (adamID2)
       {
-        v90 = v97;
+        v90 = adamID2;
         v91 = v118 + 1;
         do
         {
-          v98 = lldiv(v97, 10);
-          v97 = v98.quot;
+          v98 = lldiv(adamID2, 10);
+          adamID2 = v98.quot;
           if (v98.rem >= 0)
           {
             LOBYTE(v99) = v98.rem;
@@ -478,9 +478,9 @@ LABEL_83:
       }
     }
 
-    v24 = @"0";
+    identifiers7 = @"0";
 LABEL_86:
-    v110 = v24;
+    v110 = identifiers7;
     v101 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v110 count:1];
     [(MPCModelStorePlaybackItemsRequest *)v7 setStoreIDs:v101];
 
@@ -489,22 +489,22 @@ LABEL_86:
 
   v22 = objc_alloc_init(MPCModelRadioPlaybackContext);
   v23 = objc_alloc(MEMORY[0x1E6970750]);
-  v24 = [(MPCModelPlaybackContext *)v19 identifiers];
-  v25 = [v23 initWithIdentifiers:v24 block:&__block_literal_global_121_24471];
-  [(MPCModelRadioPlaybackContext *)v22 setRadioStation:v25];
+  identifiers7 = [(MPCModelPlaybackContext *)firstObject identifiers];
+  identifiers6 = [v23 initWithIdentifiers:identifiers7 block:&__block_literal_global_121_24471];
+  [(MPCModelRadioPlaybackContext *)v22 setRadioStation:identifiers6];
 LABEL_88:
 
 LABEL_40:
-  v63 = [(MPCModelStorePlaybackItemsRequest *)v7 sectionedModelObjects];
-  if (v63)
+  sectionedModelObjects = [(MPCModelStorePlaybackItemsRequest *)v7 sectionedModelObjects];
+  if (sectionedModelObjects)
   {
   }
 
   else
   {
-    v64 = [(MPCModelStorePlaybackItemsRequest *)v7 storeIDs];
+    storeIDs = [(MPCModelStorePlaybackItemsRequest *)v7 storeIDs];
 
-    if (!v64)
+    if (!storeIDs)
     {
       v65 = v22;
       goto LABEL_46;
@@ -513,58 +513,58 @@ LABEL_40:
 
   v65 = objc_alloc_init(MPCModelPlaybackContext);
   [(MPCModelPlaybackContext *)v65 setRequest:v7];
-  v66 = [a1 startItemPlayParameters];
+  startItemPlayParameters = [self startItemPlayParameters];
 
-  if (v66)
+  if (startItemPlayParameters)
   {
-    v67 = [a1 startItemPlayParameters];
-    v68 = [v67 identifiers];
-    [(MPCModelPlaybackContext *)v65 setStartItemIdentifiers:v68];
+    startItemPlayParameters2 = [self startItemPlayParameters];
+    identifiers8 = [startItemPlayParameters2 identifiers];
+    [(MPCModelPlaybackContext *)v65 setStartItemIdentifiers:identifiers8];
   }
 
-  v69 = [a1 startTimes];
-  [(MPCModelPlaybackContext *)v65 setStartTimeModifications:v69];
+  startTimes = [self startTimes];
+  [(MPCModelPlaybackContext *)v65 setStartTimeModifications:startTimes];
 
-  v70 = [a1 endTimes];
-  [(MPCModelPlaybackContext *)v65 setEndTimeModifications:v70];
+  endTimes = [self endTimes];
+  [(MPCModelPlaybackContext *)v65 setEndTimeModifications:endTimes];
 
-  -[MPCModelPlaybackContext setShuffleType:](v65, "setShuffleType:", [a1 shuffleType]);
-  -[MPCModelPlaybackContext setRepeatType:](v65, "setRepeatType:", [a1 repeatType]);
+  -[MPCModelPlaybackContext setShuffleType:](v65, "setShuffleType:", [self shuffleType]);
+  -[MPCModelPlaybackContext setRepeatType:](v65, "setRepeatType:", [self repeatType]);
   [(MPCModelPlaybackContext *)v65 setAllowsJumpToIt:1];
 
 LABEL_46:
   if ([(MPCModelPlaybackContext *)v65 conformsToProtocol:&unk_1F45B4200])
   {
     v71 = v65;
-    v72 = [(MPCModelPlaybackContext *)v71 playbackRequestEnvironment];
-    v73 = [v72 mutableCopy];
+    playbackRequestEnvironment = [(MPCModelPlaybackContext *)v71 playbackRequestEnvironment];
+    v73 = [playbackRequestEnvironment mutableCopy];
 
     v74 = [objc_alloc(MEMORY[0x1E69E43B0]) initWithSystemApplicationType:0];
-    v75 = [v74 clientIdentifier];
-    [v73 setClientIdentifier:v75];
+    clientIdentifier = [v74 clientIdentifier];
+    [v73 setClientIdentifier:clientIdentifier];
 
-    v76 = [v74 clientVersion];
-    [v73 setClientVersion:v76];
+    clientVersion = [v74 clientVersion];
+    [v73 setClientVersion:clientVersion];
 
-    [a1 _addRequestingBundleIdentifierToPlaybackRequestEnvironment:v73];
+    [self _addRequestingBundleIdentifierToPlaybackRequestEnvironment:v73];
     [(MPCModelPlaybackContext *)v71 setPlaybackRequestEnvironment:v73];
   }
 
-  if ([a1 isPrivate])
+  if ([self isPrivate])
   {
     [(MPCModelPlaybackContext *)v65 setPrivateListeningOverride:MEMORY[0x1E695E118]];
   }
 
-  v77 = [a1 playActivityFeatureName];
-  [(MPCModelPlaybackContext *)v65 setPlayActivityFeatureName:v77];
+  playActivityFeatureName = [self playActivityFeatureName];
+  [(MPCModelPlaybackContext *)v65 setPlayActivityFeatureName:playActivityFeatureName];
 
-  v78 = [a1 playActivityRecommendationData];
-  [(MPCModelPlaybackContext *)v65 setPlayActivityRecommendationData:v78];
+  playActivityRecommendationData = [self playActivityRecommendationData];
+  [(MPCModelPlaybackContext *)v65 setPlayActivityRecommendationData:playActivityRecommendationData];
 
-  v79 = [a1 playActivityQueueGroupingID];
-  [(MPCModelPlaybackContext *)v65 setPlayActivityQueueGroupingID:v79];
+  playActivityQueueGroupingID = [self playActivityQueueGroupingID];
+  [(MPCModelPlaybackContext *)v65 setPlayActivityQueueGroupingID:playActivityQueueGroupingID];
 
-  [(MPCModelPlaybackContext *)v65 setQueueDescriptor:a1];
+  [(MPCModelPlaybackContext *)v65 setQueueDescriptor:self];
   v80 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback_Oversize");
   if (os_log_type_enabled(v80, OS_LOG_TYPE_DEFAULT))
   {
@@ -580,64 +580,64 @@ LABEL_46:
 {
   v111 = *MEMORY[0x1E69E9840];
   v3 = a3;
-  v4 = [v3 identifiers];
-  v5 = [v3 itemKind];
+  identifiers = [v3 identifiers];
+  itemKind = [v3 itemKind];
   v6 = *MEMORY[0x1E69703F8];
-  if (([v5 isEqualToString:*MEMORY[0x1E69703F8]] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E6970400])) && !objc_msgSend(v3, "isLibraryContent") || (objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E6970408]))
+  if (([itemKind isEqualToString:*MEMORY[0x1E69703F8]] & 1) != 0 || objc_msgSend(itemKind, "isEqualToString:", *MEMORY[0x1E6970400])) && !objc_msgSend(v3, "isLibraryContent") || (objc_msgSend(itemKind, "isEqualToString:", *MEMORY[0x1E6970408]))
   {
-    v7 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
     goto LABEL_38;
   }
 
-  v7 = [MEMORY[0x1E695DF70] array];
-  v105 = v5;
-  if ([v5 isEqual:*MEMORY[0x1E6970400]])
+  array = [MEMORY[0x1E695DF70] array];
+  v105 = itemKind;
+  if ([itemKind isEqual:*MEMORY[0x1E6970400]])
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v9 = [v4 universalStore];
-    v10 = [v9 globalPlaylistID];
-    v11 = [v10 length];
+    universalStore = [identifiers universalStore];
+    globalPlaylistID = [universalStore globalPlaylistID];
+    v11 = [globalPlaylistID length];
 
     if (v11)
     {
       v12 = MEMORY[0x1E6970610];
-      v13 = [v4 universalStore];
-      v14 = [v13 globalPlaylistID];
-      v15 = [v12 predicateWithValue:v14 forProperty:*MEMORY[0x1E696FBB8]];
+      universalStore2 = [identifiers universalStore];
+      globalPlaylistID2 = [universalStore2 globalPlaylistID];
+      v15 = [v12 predicateWithValue:globalPlaylistID2 forProperty:*MEMORY[0x1E696FBB8]];
       [v8 addObject:v15];
     }
 
-    v16 = [v4 universalStore];
-    v17 = [v16 universalCloudLibraryID];
-    v18 = [v17 length];
+    universalStore3 = [identifiers universalStore];
+    universalCloudLibraryID = [universalStore3 universalCloudLibraryID];
+    v18 = [universalCloudLibraryID length];
 
     if (v18)
     {
       v19 = MEMORY[0x1E6970610];
-      v20 = [v4 universalStore];
-      v21 = [v20 universalCloudLibraryID];
-      v22 = [v19 predicateWithValue:v21 forProperty:*MEMORY[0x1E696FBC0]];
+      universalStore4 = [identifiers universalStore];
+      universalCloudLibraryID2 = [universalStore4 universalCloudLibraryID];
+      v22 = [v19 predicateWithValue:universalCloudLibraryID2 forProperty:*MEMORY[0x1E696FBC0]];
       [v8 addObject:v22];
     }
 
-    v23 = [v4 library];
-    v24 = [v23 persistentID];
+    library = [identifiers library];
+    persistentID = [library persistentID];
 
-    if (v24)
+    if (persistentID)
     {
       v25 = MEMORY[0x1E6970610];
       v26 = MEMORY[0x1E696AD98];
-      v27 = [v4 library];
-      v28 = [v26 numberWithLongLong:{objc_msgSend(v27, "persistentID")}];
+      library2 = [identifiers library];
+      v28 = [v26 numberWithLongLong:{objc_msgSend(library2, "persistentID")}];
       v29 = [v25 predicateWithValue:v28 forProperty:*MEMORY[0x1E696FBD0]];
       [v8 addObject:v29];
     }
 
-    v30 = [MEMORY[0x1E69705A0] predicateMatchingPredicates:{v8, v4}];
+    v30 = [MEMORY[0x1E69705A0] predicateMatchingPredicates:{v8, identifiers}];
     v31 = objc_alloc(MEMORY[0x1E6970618]);
     v32 = [MEMORY[0x1E695DFD8] setWithObject:v30];
-    v33 = [MEMORY[0x1E69705E8] deviceMediaLibrary];
-    v34 = [v31 initWithFilterPredicates:v32 library:v33];
+    deviceMediaLibrary = [MEMORY[0x1E69705E8] deviceMediaLibrary];
+    v34 = [v31 initWithFilterPredicates:v32 library:deviceMediaLibrary];
 
     [v34 setShouldIncludeNonLibraryEntities:1];
     v35 = v34;
@@ -646,12 +646,12 @@ LABEL_22:
     [v35 setGroupingType:v36];
 LABEL_23:
 
-    v67 = [v34 collections];
+    collections = [v34 collections];
     v106 = 0u;
     v107 = 0u;
     v108 = 0u;
     v109 = 0u;
-    v68 = [v67 countByEnumeratingWithState:&v106 objects:v110 count:16];
+    v68 = [collections countByEnumeratingWithState:&v106 objects:v110 count:16];
     if (v68)
     {
       v69 = v68;
@@ -662,14 +662,14 @@ LABEL_23:
         {
           if (*v107 != v70)
           {
-            objc_enumerationMutation(v67);
+            objc_enumerationMutation(collections);
           }
 
           v72 = *(*(&v106 + 1) + 8 * i);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v7 addObject:v72];
+            [array addObject:v72];
           }
 
           else
@@ -677,125 +677,125 @@ LABEL_23:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v73 = [v72 items];
-              if ([v73 count])
+              items = [v72 items];
+              if ([items count])
               {
-                [v7 addObjectsFromArray:v73];
+                [array addObjectsFromArray:items];
               }
             }
           }
         }
 
-        v69 = [v67 countByEnumeratingWithState:&v106 objects:v110 count:16];
+        v69 = [collections countByEnumeratingWithState:&v106 objects:v110 count:16];
       }
 
       while (v69);
     }
 
-    v4 = v104;
+    identifiers = v104;
     goto LABEL_37;
   }
 
-  v37 = [v5 isEqual:v6];
+  v37 = [itemKind isEqual:v6];
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v38 = [v4 universalStore];
-  v39 = [v38 subscriptionAdamID];
+  universalStore5 = [identifiers universalStore];
+  subscriptionAdamID = [universalStore5 subscriptionAdamID];
 
   if (v37)
   {
-    if (v39)
+    if (subscriptionAdamID)
     {
       v40 = MEMORY[0x1E6970610];
       v41 = MEMORY[0x1E696AD98];
-      v42 = [v4 universalStore];
-      v43 = [v41 numberWithLongLong:{objc_msgSend(v42, "subscriptionAdamID")}];
+      universalStore6 = [identifiers universalStore];
+      v43 = [v41 numberWithLongLong:{objc_msgSend(universalStore6, "subscriptionAdamID")}];
       v44 = [v40 predicateWithValue:v43 forProperty:*MEMORY[0x1E696FB60]];
       [v8 addObject:v44];
 
       v45 = MEMORY[0x1E6970610];
       v46 = MEMORY[0x1E696AD98];
-      v47 = [v4 universalStore];
-      v48 = [v46 numberWithLongLong:{objc_msgSend(v47, "subscriptionAdamID")}];
+      universalStore7 = [identifiers universalStore];
+      v48 = [v46 numberWithLongLong:{objc_msgSend(universalStore7, "subscriptionAdamID")}];
       v49 = [v45 predicateWithValue:v48 forProperty:*MEMORY[0x1E696FB80]];
       [v8 addObject:v49];
     }
 
-    v50 = [v4 universalStore];
-    v51 = [v50 universalCloudLibraryID];
-    v52 = [v51 length];
+    universalStore8 = [identifiers universalStore];
+    universalCloudLibraryID3 = [universalStore8 universalCloudLibraryID];
+    v52 = [universalCloudLibraryID3 length];
 
     if (v52)
     {
       v53 = MEMORY[0x1E6970610];
-      v54 = [v4 universalStore];
-      v55 = [v54 universalCloudLibraryID];
-      v56 = [v53 predicateWithValue:v55 forProperty:*MEMORY[0x1E696FB40]];
+      universalStore9 = [identifiers universalStore];
+      universalCloudLibraryID4 = [universalStore9 universalCloudLibraryID];
+      v56 = [v53 predicateWithValue:universalCloudLibraryID4 forProperty:*MEMORY[0x1E696FB40]];
       [v8 addObject:v56];
     }
 
-    v57 = [v4 library];
-    v58 = [v57 persistentID];
+    library3 = [identifiers library];
+    persistentID2 = [library3 persistentID];
 
-    if (v58)
+    if (persistentID2)
     {
       v59 = MEMORY[0x1E6970610];
       v60 = MEMORY[0x1E696AD98];
-      v61 = [v4 library];
-      v62 = [v60 numberWithLongLong:{objc_msgSend(v61, "persistentID")}];
+      library4 = [identifiers library];
+      v62 = [v60 numberWithLongLong:{objc_msgSend(library4, "persistentID")}];
       v63 = [v59 predicateWithValue:v62 forProperty:*MEMORY[0x1E696F910]];
       [v8 addObject:v63];
     }
 
-    v30 = [MEMORY[0x1E69705A0] predicateMatchingPredicates:{v8, v4}];
+    v30 = [MEMORY[0x1E69705A0] predicateMatchingPredicates:{v8, identifiers}];
     v64 = objc_alloc(MEMORY[0x1E6970618]);
     v65 = [MEMORY[0x1E695DFD8] setWithObject:v30];
-    v66 = [MEMORY[0x1E69705E8] deviceMediaLibrary];
-    v34 = [v64 initWithFilterPredicates:v65 library:v66];
+    deviceMediaLibrary2 = [MEMORY[0x1E69705E8] deviceMediaLibrary];
+    v34 = [v64 initWithFilterPredicates:v65 library:deviceMediaLibrary2];
 
     v35 = v34;
     v36 = 1;
     goto LABEL_22;
   }
 
-  if (v39)
+  if (subscriptionAdamID)
   {
     v75 = MEMORY[0x1E6970610];
     v76 = MEMORY[0x1E696AD98];
-    v77 = [v4 universalStore];
-    v78 = [v76 numberWithLongLong:{objc_msgSend(v77, "subscriptionAdamID")}];
+    universalStore10 = [identifiers universalStore];
+    v78 = [v76 numberWithLongLong:{objc_msgSend(universalStore10, "subscriptionAdamID")}];
     v79 = [v75 predicateWithValue:v78 forProperty:*MEMORY[0x1E696FB60]];
     [v8 addObject:v79];
 
     v80 = MEMORY[0x1E6970610];
     v81 = MEMORY[0x1E696AD98];
-    v82 = [v4 universalStore];
-    v83 = [v81 numberWithLongLong:{objc_msgSend(v82, "subscriptionAdamID")}];
+    universalStore11 = [identifiers universalStore];
+    v83 = [v81 numberWithLongLong:{objc_msgSend(universalStore11, "subscriptionAdamID")}];
     v84 = [v80 predicateWithValue:v83 forProperty:*MEMORY[0x1E696FB80]];
     [v8 addObject:v84];
   }
 
-  v85 = [v4 universalStore];
-  v86 = [v85 universalCloudLibraryID];
-  v87 = [v86 length];
+  universalStore12 = [identifiers universalStore];
+  universalCloudLibraryID5 = [universalStore12 universalCloudLibraryID];
+  v87 = [universalCloudLibraryID5 length];
 
   if (v87)
   {
     v88 = MEMORY[0x1E6970610];
-    v89 = [v4 universalStore];
-    v90 = [v89 universalCloudLibraryID];
-    v91 = [v88 predicateWithValue:v90 forProperty:*MEMORY[0x1E696FB40]];
+    universalStore13 = [identifiers universalStore];
+    universalCloudLibraryID6 = [universalStore13 universalCloudLibraryID];
+    v91 = [v88 predicateWithValue:universalCloudLibraryID6 forProperty:*MEMORY[0x1E696FB40]];
     [v8 addObject:v91];
   }
 
-  v92 = [v4 library];
-  v93 = [v92 persistentID];
+  library5 = [identifiers library];
+  persistentID3 = [library5 persistentID];
 
-  if (v93)
+  if (persistentID3)
   {
     v94 = MEMORY[0x1E6970610];
     v95 = MEMORY[0x1E696AD98];
-    v96 = [v4 library];
-    v97 = [v95 numberWithLongLong:{objc_msgSend(v96, "persistentID")}];
+    library6 = [identifiers library];
+    v97 = [v95 numberWithLongLong:{objc_msgSend(library6, "persistentID")}];
     v98 = [v94 predicateWithValue:v97 forProperty:*MEMORY[0x1E696FA98]];
     [v8 addObject:v98];
   }
@@ -803,25 +803,25 @@ LABEL_23:
   v30 = [MEMORY[0x1E69705A0] predicateMatchingPredicates:v8];
   v99 = objc_alloc(MEMORY[0x1E6970618]);
   v100 = [MEMORY[0x1E695DFD8] setWithObject:v30];
-  v101 = [MEMORY[0x1E69705E8] deviceMediaLibrary];
-  v34 = [v99 initWithFilterPredicates:v100 library:v101];
+  deviceMediaLibrary3 = [MEMORY[0x1E69705E8] deviceMediaLibrary];
+  v34 = [v99 initWithFilterPredicates:v100 library:deviceMediaLibrary3];
 
-  v102 = [v34 items];
-  v103 = [v102 firstObject];
+  items2 = [v34 items];
+  firstObject = [items2 firstObject];
 
-  if (!v103)
+  if (!firstObject)
   {
-    v104 = v4;
+    v104 = identifiers;
     goto LABEL_23;
   }
 
-  [v7 addObject:v103];
+  [array addObject:firstObject];
 
 LABEL_37:
-  v5 = v105;
+  itemKind = v105;
 LABEL_38:
 
-  return v7;
+  return array;
 }
 
 - (void)_configureiTunesLibraryRequest:()MPCModelPlaybackAdditions forLibraryItems:
@@ -830,8 +830,8 @@ LABEL_38:
   v5 = a3;
   v6 = a4;
   v7 = [MEMORY[0x1E6970770] kindWithVariants:7];
-  v29 = [MEMORY[0x1E695DF70] array];
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -852,52 +852,52 @@ LABEL_38:
         }
 
         v14 = *(*(&v30 + 1) + 8 * i);
-        v15 = [v14 type];
-        if (v15 == 1)
+        type = [v14 type];
+        if (type == 1)
         {
           v28 = v14;
           [v5 setItemKind:v7];
-          v17 = [v28 identifiers];
+          identifiers = [v28 identifiers];
 
-          [v29 addObject:v17];
+          [array addObject:identifiers];
         }
 
         else
         {
-          if (v15 == 4)
+          if (type == 4)
           {
             v22 = MEMORY[0x1E6970730];
             v23 = v14;
-            v24 = [v22 identityKind];
-            [v5 setSectionKind:v24];
+            identityKind = [v22 identityKind];
+            [v5 setSectionKind:identityKind];
 
-            v25 = [v23 identifiers];
-            [v8 addObject:v25];
+            identifiers2 = [v23 identifiers];
+            [array2 addObject:identifiers2];
 
             v26 = MEMORY[0x1E6970720];
             v34 = v7;
             v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v34 count:1];
 
-            v17 = [v26 kindWithKinds:v27];
+            identifiers = [v26 kindWithKinds:v27];
 
             v20 = v5;
-            v21 = v17;
+            v21 = identifiers;
           }
 
           else
           {
-            if (v15 != 2)
+            if (type != 2)
             {
               continue;
             }
 
             v16 = MEMORY[0x1E6970638];
-            v17 = v14;
-            v18 = [v16 identityKind];
-            [v5 setSectionKind:v18];
+            identifiers = v14;
+            identityKind2 = [v16 identityKind];
+            [v5 setSectionKind:identityKind2];
 
-            v19 = [v17 identifiers];
-            [v8 addObject:v19];
+            v17Identifiers = [identifiers identifiers];
+            [array2 addObject:v17Identifiers];
 
             v20 = v5;
             v21 = v7;
@@ -913,8 +913,8 @@ LABEL_38:
     while (v11);
   }
 
-  [v5 setAllowedItemIdentifiers:v29];
-  [v5 setAllowedSectionIdentifiers:v8];
+  [v5 setAllowedItemIdentifiers:array];
+  [v5 setAllowedSectionIdentifiers:array2];
 }
 
 - (MPCModelPlaybackContext)_playbackContextForStorePlayParameters:()MPCModelPlaybackAdditions libraryItems:radioPlaybackContext:containsStartItem:
@@ -940,45 +940,45 @@ LABEL_38:
   {
     if ([v11 count])
     {
-      v15 = [a1 playParametersQueue];
-      v16 = [v15 count];
+      playParametersQueue = [self playParametersQueue];
+      v16 = [playParametersQueue count];
 
       if (v16 == 1)
       {
-        v17 = [a1 playParametersQueue];
-        v18 = [v17 firstObject];
+        playParametersQueue2 = [self playParametersQueue];
+        firstObject = [playParametersQueue2 firstObject];
 
-        v19 = [v18 itemKind];
-        if (([v19 isEqualToString:*MEMORY[0x1E69703F8]] & 1) != 0 || objc_msgSend(v19, "isEqualToString:", *MEMORY[0x1E6970400]))
+        itemKind = [firstObject itemKind];
+        if (([itemKind isEqualToString:*MEMORY[0x1E69703F8]] & 1) != 0 || objc_msgSend(itemKind, "isEqualToString:", *MEMORY[0x1E6970400]))
         {
-          [a1 setContainerPlayParameters:v18];
+          [self setContainerPlayParameters:firstObject];
         }
       }
 
       v20 = objc_alloc_init(MEMORY[0x1E69706C8]);
-      v21 = [a1 containerPlayParameters];
+      containerPlayParameters = [self containerPlayParameters];
 
-      if (v21)
+      if (containerPlayParameters)
       {
         v93 = a6;
         v91 = v11;
         v92 = v10;
-        v22 = [a1 containerPlayParameters];
-        v23 = [v22 identifiers];
-        v24 = [v23 modelKind];
-        [v20 setSectionKind:v24];
+        containerPlayParameters2 = [self containerPlayParameters];
+        identifiers = [containerPlayParameters2 identifiers];
+        modelKind = [identifiers modelKind];
+        [v20 setSectionKind:modelKind];
 
-        v25 = [a1 containerPlayParameters];
-        v26 = [v25 identifiers];
-        v100 = v26;
+        containerPlayParameters3 = [self containerPlayParameters];
+        identifiers2 = [containerPlayParameters3 identifiers];
+        v100 = identifiers2;
         v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v100 count:1];
         [v20 setAllowedSectionIdentifiers:v27];
 
         v28 = [MEMORY[0x1E6970770] kindWithVariants:7];
-        v29 = [v20 sectionKind];
-        v30 = [v29 identityKind];
-        v31 = [MEMORY[0x1E6970730] identityKind];
-        v32 = [v30 isEqual:v31];
+        sectionKind = [v20 sectionKind];
+        identityKind = [sectionKind identityKind];
+        identityKind2 = [MEMORY[0x1E6970730] identityKind];
+        v32 = [identityKind isEqual:identityKind2];
 
         v33 = v28;
         if (v32)
@@ -989,10 +989,10 @@ LABEL_38:
           v33 = [v34 kindWithKinds:v35];
         }
 
-        v36 = [v20 sectionKind];
-        v37 = [v36 identityKind];
-        v38 = [MEMORY[0x1E6970638] identityKind];
-        v39 = [v37 isEqual:v38];
+        sectionKind2 = [v20 sectionKind];
+        identityKind3 = [sectionKind2 identityKind];
+        identityKind4 = [MEMORY[0x1E6970638] identityKind];
+        v39 = [identityKind3 isEqual:identityKind4];
 
         if (v39)
         {
@@ -1016,11 +1016,11 @@ LABEL_38:
         }
 
         [v20 setItemKind:v33];
-        v48 = [a1 containerPlayParameters];
-        v49 = [v48 isLibraryContent];
+        containerPlayParameters4 = [self containerPlayParameters];
+        isLibraryContent = [containerPlayParameters4 isLibraryContent];
 
         v11 = v91;
-        if ((v49 & 1) == 0)
+        if ((isLibraryContent & 1) == 0)
         {
           [v20 setFilteringOptions:4];
         }
@@ -1036,8 +1036,8 @@ LABEL_38:
       }
 
       v61 = MEMORY[0x1E696AEC0];
-      v62 = [a1 playActivityFeatureName];
-      v63 = [v61 stringWithFormat:@"PlayParametersQueueDescriptor-%@", v62];
+      playActivityFeatureName = [self playActivityFeatureName];
+      v63 = [v61 stringWithFormat:@"PlayParametersQueueDescriptor-%@", playActivityFeatureName];
       [v20 setLabel:v63];
 
       v64 = v20;
@@ -1055,35 +1055,35 @@ LABEL_38:
     else
     {
       v50 = objc_alloc_init(MPCModelStorePlaybackItemsRequest);
-      v51 = [a1 containerPlayParameters];
+      containerPlayParameters5 = [self containerPlayParameters];
 
-      if (v51)
+      if (containerPlayParameters5)
       {
         v52 = objc_alloc_init(MEMORY[0x1E6970818]);
-        v53 = [a1 containerPlayParameters];
-        v54 = [v53 itemKind];
-        v55 = [v54 isEqualToString:*MEMORY[0x1E69703F8]];
+        containerPlayParameters6 = [self containerPlayParameters];
+        itemKind2 = [containerPlayParameters6 itemKind];
+        v55 = [itemKind2 isEqualToString:*MEMORY[0x1E69703F8]];
 
         v94 = a6;
         if (v55)
         {
           v56 = objc_alloc(MEMORY[0x1E6970630]);
-          v57 = [a1 containerPlayParameters];
-          v58 = [v57 identifiers];
+          containerPlayParameters7 = [self containerPlayParameters];
+          identifiers3 = [containerPlayParameters7 identifiers];
           v59 = &__block_literal_global_47_24495;
         }
 
         else
         {
-          v67 = [a1 containerPlayParameters];
-          v68 = [v67 itemKind];
-          v69 = [v68 isEqualToString:*MEMORY[0x1E6970400]];
+          containerPlayParameters8 = [self containerPlayParameters];
+          itemKind3 = [containerPlayParameters8 itemKind];
+          v69 = [itemKind3 isEqualToString:*MEMORY[0x1E6970400]];
 
           if (v69)
           {
             v56 = objc_alloc(MEMORY[0x1E6970718]);
-            v57 = [a1 containerPlayParameters];
-            v58 = [v57 identifiers];
+            containerPlayParameters7 = [self containerPlayParameters];
+            identifiers3 = [containerPlayParameters7 identifiers];
             v59 = &__block_literal_global_51;
           }
 
@@ -1092,20 +1092,20 @@ LABEL_38:
             v70 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback");
             if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
             {
-              v71 = [a1 containerPlayParameters];
+              containerPlayParameters9 = [self containerPlayParameters];
               *buf = 138543362;
-              v102 = v71;
+              v102 = containerPlayParameters9;
               _os_log_impl(&dword_1C5C61000, v70, OS_LOG_TYPE_DEFAULT, "MusicKit: Unable to determine valid container play parameters itemKind for play parameters: %{public}@. Defaulting to album.", buf, 0xCu);
             }
 
             v56 = objc_alloc(MEMORY[0x1E6970630]);
-            v57 = [a1 containerPlayParameters];
-            v58 = [v57 identifiers];
+            containerPlayParameters7 = [self containerPlayParameters];
+            identifiers3 = [containerPlayParameters7 identifiers];
             v59 = &__block_literal_global_54;
           }
         }
 
-        v72 = [v56 initWithIdentifiers:v58 block:v59];
+        v72 = [v56 initWithIdentifiers:identifiers3 block:v59];
 
         [v52 appendSection:v72];
         v73 = [v10 msv_compactMap:&__block_literal_global_58];
@@ -1135,32 +1135,32 @@ LABEL_38:
     [(MPCModelPlaybackContext *)v14 setRequest:v50];
     if (a6)
     {
-      v74 = [a1 startItemPlayParameters];
-      v75 = [v74 identifiers];
-      [(MPCModelPlaybackContext *)v14 setStartItemIdentifiers:v75];
+      startItemPlayParameters = [self startItemPlayParameters];
+      identifiers4 = [startItemPlayParameters identifiers];
+      [(MPCModelPlaybackContext *)v14 setStartItemIdentifiers:identifiers4];
     }
 
-    v76 = [a1 startTimes];
-    [(MPCModelPlaybackContext *)v14 setStartTimeModifications:v76];
+    startTimes = [self startTimes];
+    [(MPCModelPlaybackContext *)v14 setStartTimeModifications:startTimes];
 
-    v77 = [a1 endTimes];
-    [(MPCModelPlaybackContext *)v14 setEndTimeModifications:v77];
+    endTimes = [self endTimes];
+    [(MPCModelPlaybackContext *)v14 setEndTimeModifications:endTimes];
 
-    -[MPCModelPlaybackContext setShuffleType:](v14, "setShuffleType:", [a1 shuffleType]);
-    -[MPCModelPlaybackContext setRepeatType:](v14, "setRepeatType:", [a1 repeatType]);
+    -[MPCModelPlaybackContext setShuffleType:](v14, "setShuffleType:", [self shuffleType]);
+    -[MPCModelPlaybackContext setRepeatType:](v14, "setRepeatType:", [self repeatType]);
     [(MPCModelPlaybackContext *)v14 setAllowsJumpToIt:1];
   }
 
-  v78 = [a1 playActivityFeatureName];
-  [(MPCModelPlaybackContext *)v14 setPlayActivityFeatureName:v78];
+  playActivityFeatureName2 = [self playActivityFeatureName];
+  [(MPCModelPlaybackContext *)v14 setPlayActivityFeatureName:playActivityFeatureName2];
 
-  v79 = [a1 playActivityRecommendationData];
-  [(MPCModelPlaybackContext *)v14 setPlayActivityRecommendationData:v79];
+  playActivityRecommendationData = [self playActivityRecommendationData];
+  [(MPCModelPlaybackContext *)v14 setPlayActivityRecommendationData:playActivityRecommendationData];
 
-  v80 = [a1 playActivityQueueGroupingID];
-  [(MPCModelPlaybackContext *)v14 setPlayActivityQueueGroupingID:v80];
+  playActivityQueueGroupingID = [self playActivityQueueGroupingID];
+  [(MPCModelPlaybackContext *)v14 setPlayActivityQueueGroupingID:playActivityQueueGroupingID];
 
-  if ([a1 isPrivate])
+  if ([self isPrivate])
   {
     [(MPCModelPlaybackContext *)v14 setPrivateListeningOverride:MEMORY[0x1E695E118]];
   }
@@ -1168,21 +1168,21 @@ LABEL_38:
   if ([(MPCModelPlaybackContext *)v14 conformsToProtocol:&unk_1F45B4200])
   {
     v81 = v14;
-    v82 = [(MPCModelPlaybackContext *)v81 playbackRequestEnvironment];
-    v83 = [v82 mutableCopy];
+    playbackRequestEnvironment = [(MPCModelPlaybackContext *)v81 playbackRequestEnvironment];
+    v83 = [playbackRequestEnvironment mutableCopy];
 
     v84 = [objc_alloc(MEMORY[0x1E69E43B0]) initWithSystemApplicationType:0];
-    v85 = [v84 clientIdentifier];
-    [v83 setClientIdentifier:v85];
+    clientIdentifier = [v84 clientIdentifier];
+    [v83 setClientIdentifier:clientIdentifier];
 
-    v86 = [v84 clientVersion];
-    [v83 setClientVersion:v86];
+    clientVersion = [v84 clientVersion];
+    [v83 setClientVersion:clientVersion];
 
-    [a1 _addRequestingBundleIdentifierToPlaybackRequestEnvironment:v83];
+    [self _addRequestingBundleIdentifierToPlaybackRequestEnvironment:v83];
     [(MPCModelPlaybackContext *)v81 setPlaybackRequestEnvironment:v83];
   }
 
-  [(MPCModelPlaybackContext *)v14 setQueueDescriptor:a1];
+  [(MPCModelPlaybackContext *)v14 setQueueDescriptor:self];
   v87 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback_Oversize");
   if (os_log_type_enabled(v87, OS_LOG_TYPE_DEFAULT))
   {
@@ -1208,7 +1208,7 @@ LABEL_38:
   aBlock[3] = &unk_1E8237930;
   v19 = v16;
   v70 = v19;
-  v71 = a1;
+  selfCopy = self;
   v20 = v17;
   v72 = v20;
   v21 = v15;
@@ -1224,7 +1224,7 @@ LABEL_38:
   v65 = v22;
   v54 = v18;
   v66 = v54;
-  v67 = a1;
+  selfCopy2 = self;
   v23 = v19;
   v68 = v23;
   v44 = _Block_copy(v63);
@@ -1242,7 +1242,7 @@ LABEL_38:
     {
       v49 = *v60;
       v43 = *MEMORY[0x1E6970408];
-      v47 = a1;
+      selfCopy3 = self;
       do
       {
         for (i = 0; i != v50; ++i)
@@ -1253,43 +1253,43 @@ LABEL_38:
           }
 
           v25 = *(*(&v59 + 1) + 8 * i);
-          v26 = [v25 identifiers];
-          v27 = [v25 itemKind];
+          identifiers = [v25 identifiers];
+          itemKind = [v25 itemKind];
           v28 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback");
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v76 = v27;
+            v76 = itemKind;
             v77 = 2114;
-            v78 = v26;
+            v78 = identifiers;
             _os_log_impl(&dword_1C5C61000, v28, OS_LOG_TYPE_DEFAULT, "MusicKit: Handling play parameters for type: %{public}@ and identifiers: %{public}@", buf, 0x16u);
           }
 
-          v29 = [a1 _libraryItemsForPlayParameters:v25];
+          v29 = [self _libraryItemsForPlayParameters:v25];
           if ([v29 count])
           {
-            v52 = v27;
+            v52 = itemKind;
             v30 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback");
             if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              v76 = v26;
+              v76 = identifiers;
               _os_log_impl(&dword_1C5C61000, v30, OS_LOG_TYPE_DEFAULT, "MusicKit: Static entities created for item with identifiers: %{public}@", buf, 0xCu);
             }
 
             if (v23 || [v48 count])
             {
-              v31 = [a1 _playbackContextForStorePlayParameters:v48 libraryItems:v51 radioPlaybackContext:v23 containsStartItem:{objc_msgSend(*a8, "BOOLValue")}];
+              v31 = [self _playbackContextForStorePlayParameters:v48 libraryItems:v51 radioPlaybackContext:v23 containsStartItem:{objc_msgSend(*a8, "BOOLValue")}];
               [v54 addObject:v31];
 
               *a8 = MEMORY[0x1E695E110];
-              a1 = v47;
+              self = selfCopy3;
               [v48 removeAllObjects];
             }
 
             [v51 addObjectsFromArray:v29];
-            v32 = [a1 startItemPlayParameters];
-            v33 = [v32 isEqual:v25];
+            startItemPlayParameters = [self startItemPlayParameters];
+            v33 = [startItemPlayParameters isEqual:v25];
 
             v23 = 0;
             if (v33)
@@ -1297,17 +1297,17 @@ LABEL_38:
               *a8 = MEMORY[0x1E695E118];
             }
 
-            v27 = v52;
+            itemKind = v52;
           }
 
-          else if ([v27 isEqualToString:v43])
+          else if ([itemKind isEqualToString:v43])
           {
-            v45[2](v45, v54, a8, v26, v25);
+            v45[2](v45, v54, a8, identifiers, v25);
           }
 
           else
           {
-            v44[2](v44, v54, a8, v26, v25, v23);
+            v44[2](v44, v54, a8, identifiers, v25, v23);
           }
         }
 
@@ -1341,16 +1341,16 @@ LABEL_38:
           }
 
           v39 = *(*(&v55 + 1) + 8 * j);
-          v40 = [v39 identifiers];
-          v41 = [v39 itemKind];
-          if ([v41 isEqualToString:v37])
+          identifiers2 = [v39 identifiers];
+          itemKind2 = [v39 itemKind];
+          if ([itemKind2 isEqualToString:v37])
           {
-            v45[2](v45, v54, a8, v40, v39);
+            v45[2](v45, v54, a8, identifiers2, v39);
           }
 
           else
           {
-            v44[2](v44, v54, a8, v40, v39, v23);
+            v44[2](v44, v54, a8, identifiers2, v39, v23);
           }
         }
 
@@ -1366,10 +1366,10 @@ LABEL_38:
 {
   v26 = *MEMORY[0x1E69E9840];
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [a1 playParametersQueue];
-  v5 = [MEMORY[0x1E695DF70] array];
-  if ([v4 count] < 2)
+  array = [MEMORY[0x1E695DF70] array];
+  playParametersQueue = [self playParametersQueue];
+  array2 = [MEMORY[0x1E695DF70] array];
+  if ([playParametersQueue count] < 2)
   {
     v6 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback_Oversize");
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1378,7 +1378,7 @@ LABEL_38:
     }
 
     *buf = 138543362;
-    v25 = v4;
+    v25 = playParametersQueue;
   }
 
   else
@@ -1390,7 +1390,7 @@ LABEL_38:
     }
 
     *buf = 138543362;
-    v25 = v4;
+    v25 = playParametersQueue;
   }
 
   _os_log_impl(&dword_1C5C61000, v6, OS_LOG_TYPE_DEFAULT, "MusicKit: MPMusicPlayerPlayParametersQueueDescriptor playParametersQueue: %{public}@", buf, 0xCu);
@@ -1400,7 +1400,7 @@ LABEL_7:
   block[1] = 3221225472;
   block[2] = __89__MPMusicPlayerPlayParametersQueueDescriptor_MPCModelPlaybackAdditions__playbackContexts__block_invoke;
   block[3] = &unk_1E8239298;
-  block[4] = a1;
+  block[4] = self;
   if (playbackContexts_sOnceToken != -1)
   {
     dispatch_once(&playbackContexts_sOnceToken, block);
@@ -1408,8 +1408,8 @@ LABEL_7:
 
   if (playbackContexts_isClassicMusicApp == 1)
   {
-    v7 = [a1 playParametersQueue];
-    v8 = [a1 _classicalMusicAppPlaybackContextForPlayParametersQueue:v7];
+    playParametersQueue2 = [self playParametersQueue];
+    v8 = [self _classicalMusicAppPlaybackContextForPlayParametersQueue:playParametersQueue2];
 
     if (v8)
     {
@@ -1422,25 +1422,25 @@ LABEL_7:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v25 = v4;
+      v25 = playParametersQueue;
       _os_log_impl(&dword_1C5C61000, v10, OS_LOG_TYPE_DEFAULT, "MusicKit: Unable to produce playback context for play parameters queue %{public}@. Defaulting to public SDK playback (non-filtered).", buf, 0xCu);
     }
   }
 
-  if ([v4 count] == 1 && (objc_msgSend(a1, "startItemPlayParameters"), v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
+  if ([playParametersQueue count] == 1 && (objc_msgSend(self, "startItemPlayParameters"), v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
   {
-    v12 = [v4 firstObject];
-    v13 = [v12 itemKind];
+    firstObject = [playParametersQueue firstObject];
+    itemKind = [firstObject itemKind];
 
     v14 = MEMORY[0x1E696AD98];
-    if ([v13 isEqualToString:*MEMORY[0x1E69703F8]])
+    if ([itemKind isEqualToString:*MEMORY[0x1E69703F8]])
     {
       v15 = 1;
     }
 
     else
     {
-      v15 = [v13 isEqualToString:*MEMORY[0x1E6970400]];
+      v15 = [itemKind isEqualToString:*MEMORY[0x1E6970400]];
     }
 
     v16 = [v14 numberWithInt:v15];
@@ -1452,24 +1452,24 @@ LABEL_7:
   }
 
   v21 = v16;
-  [a1 _updatePlaybackContextsForPlaybackParametersQueue:v4 libraryItems:v3 radioPlaybackContext:0 storePlayParameters:v2 contexts:v5 containsStartItem:&v21];
+  [self _updatePlaybackContextsForPlaybackParametersQueue:playParametersQueue libraryItems:array radioPlaybackContext:0 storePlayParameters:v2 contexts:array2 containsStartItem:&v21];
   v8 = v21;
 
-  if ([v2 count] || objc_msgSend(v3, "count"))
+  if ([v2 count] || objc_msgSend(array, "count"))
   {
-    v17 = [a1 _playbackContextForStorePlayParameters:v2 libraryItems:v3 radioPlaybackContext:0 containsStartItem:{objc_msgSend(v8, "BOOLValue")}];
-    [v5 addObject:v17];
+    v17 = [self _playbackContextForStorePlayParameters:v2 libraryItems:array radioPlaybackContext:0 containsStartItem:{objc_msgSend(v8, "BOOLValue")}];
+    [array2 addObject:v17];
   }
 
   v18 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback_Oversize");
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v25 = v5;
+    v25 = array2;
     _os_log_impl(&dword_1C5C61000, v18, OS_LOG_TYPE_DEFAULT, "MusicKit: Returning playback contexts for MPMusicPlayerPlayParamertersQueueDescriptor: Contexts = %{public}@", buf, 0xCu);
   }
 
-  v9 = v5;
+  v9 = array2;
 LABEL_28:
   v19 = v9;
 

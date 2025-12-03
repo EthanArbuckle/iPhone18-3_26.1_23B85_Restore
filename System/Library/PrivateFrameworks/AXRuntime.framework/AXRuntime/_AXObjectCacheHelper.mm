@@ -1,5 +1,5 @@
 @interface _AXObjectCacheHelper
-+ (void)helperWithElement:(uint64_t)a3 uid:;
++ (void)helperWithElement:(uint64_t)element uid:;
 - (void)dealloc;
 @end
 
@@ -23,14 +23,14 @@
   [(_AXObjectCacheHelper *)&v4 dealloc];
 }
 
-+ (void)helperWithElement:(uint64_t)a3 uid:
++ (void)helperWithElement:(uint64_t)element uid:
 {
   objc_opt_self();
   v5 = objc_opt_new();
   if (v5)
   {
     v5[1] = a2;
-    v5[2] = a3;
+    v5[2] = element;
   }
 
   return v5;

@@ -1,24 +1,24 @@
 @interface GCDeviceCursor
 - (CGRect)frame;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation GCDeviceCursor
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_frame = &self->_frame;
-  if (!CGRectEqualToRect(a3, self->_frame))
+  if (!CGRectEqualToRect(frame, self->_frame))
   {
     p_frame->origin.x = x;
     p_frame->origin.y = y;
     p_frame->size.width = width;
     p_frame->size.height = height;
-    v9 = [(GCControllerDirectionPad *)self xAxis];
+    xAxis = [(GCControllerDirectionPad *)self xAxis];
     v18.origin.x = x;
     v18.origin.y = y;
     v18.size.width = width;
@@ -31,9 +31,9 @@
     MaxX = CGRectGetMaxX(v19);
     *&v12 = MaxX;
     *&MaxX = MinX;
-    [v9 setMinValue:MaxX andMaxValue:v12];
+    [xAxis setMinValue:MaxX andMaxValue:v12];
 
-    v16 = [(GCControllerDirectionPad *)self yAxis];
+    yAxis = [(GCControllerDirectionPad *)self yAxis];
     v20.origin.x = x;
     v20.origin.y = y;
     v20.size.width = width;
@@ -46,7 +46,7 @@
     MaxY = CGRectGetMaxY(v21);
     *&v15 = MaxY;
     *&MaxY = MinY;
-    [v16 setMinValue:MaxY andMaxValue:v15];
+    [yAxis setMinValue:MaxY andMaxValue:v15];
   }
 }
 

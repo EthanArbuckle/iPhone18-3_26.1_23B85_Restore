@@ -1,16 +1,16 @@
 @interface BCSAppDelegate
-- (BOOL)application:(id)a3 continueUserActivity:(id)a4 restorationHandler:(id)a5;
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (void)application:(id)a3 didFailToContinueUserActivityWithType:(id)a4 error:(id)a5;
-- (void)applicationDidBecomeActive:(id)a3;
-- (void)applicationDidEnterBackground:(id)a3;
-- (void)applicationWillEnterForeground:(id)a3;
-- (void)applicationWillResignActive:(id)a3;
+- (BOOL)application:(id)application continueUserActivity:(id)activity restorationHandler:(id)handler;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (void)application:(id)application didFailToContinueUserActivityWithType:(id)type error:(id)error;
+- (void)applicationDidBecomeActive:(id)active;
+- (void)applicationDidEnterBackground:(id)background;
+- (void)applicationWillEnterForeground:(id)foreground;
+- (void)applicationWillResignActive:(id)active;
 @end
 
 @implementation BCSAppDelegate
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
   v5 = [BCSSecureWindow alloc];
   v6 = +[UIScreen mainScreen];
@@ -27,12 +27,12 @@
   return 1;
 }
 
-- (void)applicationWillResignActive:(id)a3
+- (void)applicationWillResignActive:(id)active
 {
-  v3 = [(BCSAppDelegate *)self window];
-  v4 = [v3 rootViewController];
+  window = [(BCSAppDelegate *)self window];
+  rootViewController = [window rootViewController];
 
-  [v4 suspendCapturing];
+  [rootViewController suspendCapturing];
   v5 = sub_100001D1C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -41,12 +41,12 @@
   }
 }
 
-- (void)applicationDidBecomeActive:(id)a3
+- (void)applicationDidBecomeActive:(id)active
 {
-  v3 = [(BCSAppDelegate *)self window];
-  v4 = [v3 rootViewController];
+  window = [(BCSAppDelegate *)self window];
+  rootViewController = [window rootViewController];
 
-  [v4 resumeCapturing];
+  [rootViewController resumeCapturing];
   v5 = sub_100001D1C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -55,12 +55,12 @@
   }
 }
 
-- (void)applicationDidEnterBackground:(id)a3
+- (void)applicationDidEnterBackground:(id)background
 {
-  v3 = [(BCSAppDelegate *)self window];
-  v4 = [v3 rootViewController];
+  window = [(BCSAppDelegate *)self window];
+  rootViewController = [window rootViewController];
 
-  [v4 applicationDidEnterBackground];
+  [rootViewController applicationDidEnterBackground];
   v5 = sub_100001D1C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -69,12 +69,12 @@
   }
 }
 
-- (void)applicationWillEnterForeground:(id)a3
+- (void)applicationWillEnterForeground:(id)foreground
 {
-  v3 = [(BCSAppDelegate *)self window];
-  v4 = [v3 rootViewController];
+  window = [(BCSAppDelegate *)self window];
+  rootViewController = [window rootViewController];
 
-  [v4 applicationWillEnterForeground];
+  [rootViewController applicationWillEnterForeground];
   v5 = sub_100001D1C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -83,36 +83,36 @@
   }
 }
 
-- (BOOL)application:(id)a3 continueUserActivity:(id)a4 restorationHandler:(id)a5
+- (BOOL)application:(id)application continueUserActivity:(id)activity restorationHandler:(id)handler
 {
-  v6 = a4;
-  [(BCSRootViewController *)self->_rootViewController continueUserActivity:v6];
+  activityCopy = activity;
+  [(BCSRootViewController *)self->_rootViewController continueUserActivity:activityCopy];
   v7 = sub_100001D1C();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v9 = 138543362;
-    v10 = v6;
+    v10 = activityCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "continueUserActivity: %{public}@", &v9, 0xCu);
   }
 
   return 1;
 }
 
-- (void)application:(id)a3 didFailToContinueUserActivityWithType:(id)a4 error:(id)a5
+- (void)application:(id)application didFailToContinueUserActivityWithType:(id)type error:(id)error
 {
-  v6 = a4;
-  v7 = a5;
+  typeCopy = type;
+  errorCopy = error;
   v8 = sub_100001D1C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = 138543362;
-    v10 = v6;
+    v10 = typeCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "didFailToContinueUserActivityWithType: %{public}@", &v9, 0xCu);
   }
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
-    sub_100004558(v7);
+    sub_100004558(errorCopy);
   }
 }
 

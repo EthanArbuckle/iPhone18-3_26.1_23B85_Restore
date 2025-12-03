@@ -21,8 +21,8 @@
   else
   {
     v6 = MEMORY[0x277D755D0];
-    v7 = [MEMORY[0x277D75348] systemBlueColor];
-    v3 = [v6 configurationWithHierarchicalColor:v7];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    v3 = [v6 configurationWithHierarchicalColor:systemBlueColor];
 
     v4 = DSUILocStringForKey(@"SHARING_ACTIVITY");
     v8 = DSUILocStringForKey(@"SHARING_WELCOME_DETAIL");
@@ -41,8 +41,8 @@
   v15.super_class = DSSharingWelcomeController;
   [(DSOBWelcomeController *)&v15 viewDidLoad];
   v3 = DSUILocStringForKey(@"CONTINUE");
-  v4 = [(DSSharingWelcomeController *)self delegate];
-  v5 = [DSUIUtilities setUpBoldButtonForController:self title:v3 target:v4 selector:sel_pushNextPane];
+  delegate = [(DSSharingWelcomeController *)self delegate];
+  v5 = [DSUIUtilities setUpBoldButtonForController:self title:v3 target:delegate selector:sel_pushNextPane];
 
   if ([MEMORY[0x277D054D8] shouldShowBioRatchetFlow])
   {
@@ -67,54 +67,54 @@
 
 - (void)_presentDTOCell
 {
-  v3 = [(DSSharingWelcomeController *)self cell];
+  cell = [(DSSharingWelcomeController *)self cell];
 
-  if (!v3)
+  if (!cell)
   {
     v4 = [DSPlatterTableView cellWithPresentingViewController:self];
     [(DSSharingWelcomeController *)self setCell:v4];
 
-    v5 = [(DSSharingWelcomeController *)self scrollView];
-    [v5 addSubview:self->_cell];
+    scrollView = [(DSSharingWelcomeController *)self scrollView];
+    [scrollView addSubview:self->_cell];
   }
 
-  v6 = [(DSSharingWelcomeController *)self cell];
+  cell2 = [(DSSharingWelcomeController *)self cell];
 
-  if (v6)
+  if (cell2)
   {
-    v7 = [(DSSharingWelcomeController *)self contentView];
-    v8 = [v7 topAnchor];
-    v9 = [(DSSharingWelcomeController *)self cell];
-    v10 = [v9 bottomAnchor];
-    v11 = [v8 constraintEqualToAnchor:v10 constant:16.0];
+    contentView = [(DSSharingWelcomeController *)self contentView];
+    topAnchor = [contentView topAnchor];
+    cell3 = [(DSSharingWelcomeController *)self cell];
+    bottomAnchor = [cell3 bottomAnchor];
+    v11 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:16.0];
     [v11 setActive:1];
 
-    v12 = [(DSSharingWelcomeController *)self cell];
-    v13 = [v12 topAnchor];
-    v14 = [(DSSharingWelcomeController *)self headerView];
-    v15 = [v14 bottomAnchor];
-    v16 = [v13 constraintEqualToAnchor:v15 constant:16.0];
+    cell4 = [(DSSharingWelcomeController *)self cell];
+    topAnchor2 = [cell4 topAnchor];
+    headerView = [(DSSharingWelcomeController *)self headerView];
+    bottomAnchor2 = [headerView bottomAnchor];
+    v16 = [topAnchor2 constraintEqualToAnchor:bottomAnchor2 constant:16.0];
     [v16 setActive:1];
 
-    v17 = [(DSSharingWelcomeController *)self cell];
-    v18 = [v17 leadingAnchor];
-    v19 = [(DSSharingWelcomeController *)self headerView];
-    v20 = [v19 leadingAnchor];
-    v21 = [v18 constraintEqualToAnchor:v20];
+    cell5 = [(DSSharingWelcomeController *)self cell];
+    leadingAnchor = [cell5 leadingAnchor];
+    headerView2 = [(DSSharingWelcomeController *)self headerView];
+    leadingAnchor2 = [headerView2 leadingAnchor];
+    v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v21 setActive:1];
 
-    v22 = [(DSSharingWelcomeController *)self cell];
-    v23 = [v22 widthAnchor];
-    v24 = [(DSSharingWelcomeController *)self headerView];
-    v25 = [v24 widthAnchor];
-    v26 = [v23 constraintEqualToAnchor:v25];
+    cell6 = [(DSSharingWelcomeController *)self cell];
+    widthAnchor = [cell6 widthAnchor];
+    headerView3 = [(DSSharingWelcomeController *)self headerView];
+    widthAnchor2 = [headerView3 widthAnchor];
+    v26 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     [v26 setActive:1];
 
-    v30 = [(DSSharingWelcomeController *)self cell];
-    v27 = [v30 heightAnchor];
-    v28 = [(DSSharingWelcomeController *)self cell];
-    [v28 preferredHeight];
-    v29 = [v27 constraintEqualToConstant:?];
+    cell7 = [(DSSharingWelcomeController *)self cell];
+    heightAnchor = [cell7 heightAnchor];
+    cell8 = [(DSSharingWelcomeController *)self cell];
+    [cell8 preferredHeight];
+    v29 = [heightAnchor constraintEqualToConstant:?];
     [v29 setActive:1];
   }
 }

@@ -1,34 +1,34 @@
 @interface AISShieldController
 - (AISShieldController)init;
 - (AISShieldControllerDelegate)delegate;
-- (void)presentShieldFlowWithContext:(id)a3;
+- (void)presentShieldFlowWithContext:(id)context;
 - (void)presentShieldOptions;
-- (void)setPresenter:(id)a3;
-- (void)setRemoteHandler:(id)a3;
-- (void)setRemoteListener:(id)a3;
+- (void)setPresenter:(id)presenter;
+- (void)setRemoteHandler:(id)handler;
+- (void)setRemoteListener:(id)listener;
 @end
 
 @implementation AISShieldController
 
-- (void)setRemoteListener:(id)a3
+- (void)setRemoteListener:(id)listener
 {
   v4 = *(self + OBJC_IVAR___AISShieldController_remoteListener);
-  *(self + OBJC_IVAR___AISShieldController_remoteListener) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___AISShieldController_remoteListener) = listener;
+  listenerCopy = listener;
 }
 
-- (void)setRemoteHandler:(id)a3
+- (void)setRemoteHandler:(id)handler
 {
   v4 = *(self + OBJC_IVAR___AISShieldController_remoteHandler);
-  *(self + OBJC_IVAR___AISShieldController_remoteHandler) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___AISShieldController_remoteHandler) = handler;
+  handlerCopy = handler;
 }
 
-- (void)setPresenter:(id)a3
+- (void)setPresenter:(id)presenter
 {
   v4 = *(self + OBJC_IVAR___AISShieldController_presenter);
-  *(self + OBJC_IVAR___AISShieldController_presenter) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___AISShieldController_presenter) = presenter;
+  presenterCopy = presenter;
 }
 
 - (AISShieldControllerDelegate)delegate
@@ -41,16 +41,16 @@
 - (void)presentShieldOptions
 {
   v3 = objc_allocWithZone(AISShieldFlowContext);
-  v5 = self;
+  selfCopy = self;
   v4 = [v3 init];
-  [(AISShieldController *)v5 presentShieldFlowWithContext:v4];
+  [(AISShieldController *)selfCopy presentShieldFlowWithContext:v4];
 }
 
-- (void)presentShieldFlowWithContext:(id)a3
+- (void)presentShieldFlowWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  AISShieldController.presentShieldFlow(with:)(v4);
+  contextCopy = context;
+  selfCopy = self;
+  AISShieldController.presentShieldFlow(with:)(contextCopy);
 }
 
 - (AISShieldController)init

@@ -11,12 +11,12 @@
   v10 = a6;
   v11 = a3;
   [v11 setModalPresentationStyle:a4];
-  [a1 presentViewController:v11 animated:a5 completion:v10];
+  [self presentViewController:v11 animated:a5 completion:v10];
 }
 
 - (uint64_t)isPresentingAlert
 {
-  v1 = [a1 presentationController];
+  presentationController = [self presentationController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -25,8 +25,8 @@
 
 - (BOOL)isPresentingRoute
 {
-  v1 = [a1 presentingViewController];
-  v2 = v1 != 0;
+  presentingViewController = [self presentingViewController];
+  v2 = presentingViewController != 0;
 
   return v2;
 }

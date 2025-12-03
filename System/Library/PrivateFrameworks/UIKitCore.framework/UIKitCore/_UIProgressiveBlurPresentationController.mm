@@ -1,8 +1,8 @@
 @interface _UIProgressiveBlurPresentationController
-- (_UIProgressiveBlurPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
+- (_UIProgressiveBlurPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
 - (id)_preferredAnimationControllerForDismissal;
 - (id)_preferredAnimationControllerForPresentation;
-- (void)_animateWithCoordinator:(id)a3 isPresenting:(BOOL)a4;
+- (void)_animateWithCoordinator:(id)coordinator isPresenting:(BOOL)presenting;
 - (void)_configureSubviews;
 - (void)dismissalTransitionWillBegin;
 - (void)presentationTransitionWillBegin;
@@ -10,11 +10,11 @@
 
 @implementation _UIProgressiveBlurPresentationController
 
-- (_UIProgressiveBlurPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (_UIProgressiveBlurPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
   v8.receiver = self;
   v8.super_class = _UIProgressiveBlurPresentationController;
-  v4 = [(UIPresentationController *)&v8 initWithPresentedViewController:a3 presentingViewController:a4];
+  v4 = [(UIPresentationController *)&v8 initWithPresentedViewController:controller presentingViewController:viewController];
   if (v4)
   {
     v5 = _UISolariumEnabled();
@@ -33,49 +33,49 @@
 - (void)presentationTransitionWillBegin
 {
   [(_UIProgressiveBlurPresentationController *)self _configureSubviews];
-  v4 = [(UIPresentationController *)self presentedViewController];
-  v3 = [v4 transitionCoordinator];
-  [(_UIProgressiveBlurPresentationController *)self _animateWithCoordinator:v3 isPresenting:1];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  transitionCoordinator = [presentedViewController transitionCoordinator];
+  [(_UIProgressiveBlurPresentationController *)self _animateWithCoordinator:transitionCoordinator isPresenting:1];
 }
 
 - (void)dismissalTransitionWillBegin
 {
   [(_UIProgressiveBlurPresentationController *)self _configureSubviews];
-  v4 = [(UIPresentationController *)self presentedViewController];
-  v3 = [v4 transitionCoordinator];
-  [(_UIProgressiveBlurPresentationController *)self _animateWithCoordinator:v3 isPresenting:0];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  transitionCoordinator = [presentedViewController transitionCoordinator];
+  [(_UIProgressiveBlurPresentationController *)self _animateWithCoordinator:transitionCoordinator isPresenting:0];
 }
 
 - (void)_configureSubviews
 {
   if (!self->_visualEffectView)
   {
-    v3 = [(UIPresentationController *)self containerView];
+    containerView = [(UIPresentationController *)self containerView];
 
-    if (v3)
+    if (containerView)
     {
       v4 = [UIVisualEffectView alloc];
-      v5 = [(UIPresentationController *)self containerView];
-      [v5 bounds];
+      containerView2 = [(UIPresentationController *)self containerView];
+      [containerView2 bounds];
       v6 = [(UIVisualEffectView *)v4 initWithFrame:?];
       visualEffectView = self->_visualEffectView;
       self->_visualEffectView = v6;
 
       [(UIVisualEffectView *)self->_visualEffectView setEffect:0];
-      v8 = [(UIPresentationController *)self containerView];
-      [v8 addSubview:self->_visualEffectView];
+      containerView3 = [(UIPresentationController *)self containerView];
+      [containerView3 addSubview:self->_visualEffectView];
     }
   }
 }
 
-- (void)_animateWithCoordinator:(id)a3 isPresenting:(BOOL)a4
+- (void)_animateWithCoordinator:(id)coordinator isPresenting:(BOOL)presenting
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(_UIProgressiveBlurPresentationController *)self visualEffectView];
+  presentingCopy = presenting;
+  coordinatorCopy = coordinator;
+  visualEffectView = [(_UIProgressiveBlurPresentationController *)self visualEffectView];
   v8 = [UIBlurEffect effectWithStyle:self->_blurStyle];
-  v9 = !v4;
-  if (v4)
+  v9 = !presentingCopy;
+  if (presentingCopy)
   {
     v10 = v8;
   }
@@ -85,7 +85,7 @@
     v10 = 0;
   }
 
-  if (v4)
+  if (presentingCopy)
   {
     v11 = 0;
   }
@@ -106,14 +106,14 @@
   }
 
   v13 = [UIColor colorWithWhite:0.5 alpha:?];
-  [v7 setBackgroundColor:v13];
+  [visualEffectView setBackgroundColor:v13];
 
-  [v7 setEffect:v11];
+  [visualEffectView setEffect:v11];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __81___UIProgressiveBlurPresentationController__animateWithCoordinator_isPresenting___block_invoke;
   aBlock[3] = &unk_1E70F36D0;
-  v14 = v7;
+  v14 = visualEffectView;
   v26 = v14;
   v15 = v10;
   v27 = v15;
@@ -125,10 +125,10 @@
   v23[3] = &unk_1E70F3770;
   v17 = v16;
   v24 = v17;
-  if (([v6 animateAlongsideTransition:v23 completion:0] & 1) == 0)
+  if (([coordinatorCopy animateAlongsideTransition:v23 completion:0] & 1) == 0)
   {
     v18 = +[_UIProgressiveBlurPresentationAnimator alphaAnimationFactory];
-    [v6 transitionDuration];
+    [coordinatorCopy transitionDuration];
     v20 = v19;
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;

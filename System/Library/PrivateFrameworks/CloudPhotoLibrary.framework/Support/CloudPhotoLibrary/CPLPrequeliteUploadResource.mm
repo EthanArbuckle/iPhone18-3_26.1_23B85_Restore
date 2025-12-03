@@ -1,78 +1,78 @@
 @interface CPLPrequeliteUploadResource
-- (CPLPrequeliteUploadResource)initWithResource:(id)a3;
-- (id)initFromPQLResultSet:(id)a3 error:(id *)a4;
+- (CPLPrequeliteUploadResource)initWithResource:(id)resource;
+- (id)initFromPQLResultSet:(id)set error:(id *)error;
 - (id)resource;
 @end
 
 @implementation CPLPrequeliteUploadResource
 
-- (id)initFromPQLResultSet:(id)a3 error:(id *)a4
+- (id)initFromPQLResultSet:(id)set error:(id *)error
 {
-  v5 = a3;
+  setCopy = set;
   v16.receiver = self;
   v16.super_class = CPLPrequeliteUploadResource;
   v6 = [(CPLPrequeliteUploadResource *)&v16 init];
   if (v6)
   {
-    v6->_position = [v5 integerAtIndex:0];
-    v6->_pendingCount = [v5 integerAtIndex:1];
-    v7 = [v5 stringAtIndex:2];
+    v6->_position = [setCopy integerAtIndex:0];
+    v6->_pendingCount = [setCopy integerAtIndex:1];
+    v7 = [setCopy stringAtIndex:2];
     itemIdentifier = v6->_itemIdentifier;
     v6->_itemIdentifier = v7;
 
-    v6->_resourceType = [v5 intAtIndex:3];
-    v9 = [v5 stringAtIndex:4];
+    v6->_resourceType = [setCopy intAtIndex:3];
+    v9 = [setCopy stringAtIndex:4];
     fingerPrint = v6->_fingerPrint;
     v6->_fingerPrint = v9;
 
-    v11 = [v5 stringAtIndex:5];
+    v11 = [setCopy stringAtIndex:5];
     fileUTI = v6->_fileUTI;
     v6->_fileUTI = v11;
 
-    v13 = [v5 stringAtIndex:6];
+    v13 = [setCopy stringAtIndex:6];
     originalPath = v6->_originalPath;
     v6->_originalPath = v13;
 
-    v6->_available = [v5 intAtIndex:7] != 0;
-    v6->_retryCount = [v5 intAtIndex:8];
-    v6->_status = [v5 intAtIndex:9];
+    v6->_available = [setCopy intAtIndex:7] != 0;
+    v6->_retryCount = [setCopy intAtIndex:8];
+    v6->_status = [setCopy intAtIndex:9];
   }
 
   return v6;
 }
 
-- (CPLPrequeliteUploadResource)initWithResource:(id)a3
+- (CPLPrequeliteUploadResource)initWithResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   v21.receiver = self;
   v21.super_class = CPLPrequeliteUploadResource;
   v5 = [(CPLPrequeliteUploadResource *)&v21 init];
   if (v5)
   {
-    v6 = [v4 itemScopedIdentifier];
-    v7 = [v6 identifier];
+    itemScopedIdentifier = [resourceCopy itemScopedIdentifier];
+    identifier = [itemScopedIdentifier identifier];
     itemIdentifier = v5->_itemIdentifier;
-    v5->_itemIdentifier = v7;
+    v5->_itemIdentifier = identifier;
 
-    v5->_resourceType = [v4 resourceType];
-    v9 = [v4 identity];
-    v10 = [v9 fingerPrint];
+    v5->_resourceType = [resourceCopy resourceType];
+    identity = [resourceCopy identity];
+    fingerPrint = [identity fingerPrint];
     fingerPrint = v5->_fingerPrint;
-    v5->_fingerPrint = v10;
+    v5->_fingerPrint = fingerPrint;
 
-    v12 = [v4 identity];
-    v13 = [v12 fileUTI];
+    identity2 = [resourceCopy identity];
+    fileUTI = [identity2 fileUTI];
     fileUTI = v5->_fileUTI;
-    v5->_fileUTI = v13;
+    v5->_fileUTI = fileUTI;
 
-    v15 = [v4 identity];
-    v16 = [v15 fileURL];
-    v17 = [v16 path];
+    identity3 = [resourceCopy identity];
+    fileURL = [identity3 fileURL];
+    path = [fileURL path];
     originalPath = v5->_originalPath;
-    v5->_originalPath = v17;
+    v5->_originalPath = path;
 
-    v19 = [v4 identity];
-    v5->_available = [v19 isAvailable];
+    identity4 = [resourceCopy identity];
+    v5->_available = [identity4 isAvailable];
   }
 
   return v5;

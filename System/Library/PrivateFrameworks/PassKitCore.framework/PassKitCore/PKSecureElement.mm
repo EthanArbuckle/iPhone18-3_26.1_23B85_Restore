@@ -1,87 +1,87 @@
 @interface PKSecureElement
-+ (BOOL)hardwareSupportsExpressForAutomaticSelectionTechnologyType:(int64_t)a3 outError:(id *)a4;
-+ (BOOL)hardwareSupportsExpressMode:(id)a3;
++ (BOOL)hardwareSupportsExpressForAutomaticSelectionTechnologyType:(int64_t)type outError:(id *)error;
++ (BOOL)hardwareSupportsExpressMode:(id)mode;
 + (BOOL)isInFailForward;
-+ (BOOL)supportsExpressForAutomaticSelectionTechnologyType:(int64_t)a3 byHardware:(BOOL *)a4 outError:(id *)a5;
-+ (BOOL)supportsExpressMode:(id)a3 byHardware:(BOOL *)a4;
++ (BOOL)supportsExpressForAutomaticSelectionTechnologyType:(int64_t)type byHardware:(BOOL *)hardware outError:(id *)error;
++ (BOOL)supportsExpressMode:(id)mode byHardware:(BOOL *)hardware;
 + (id)primarySecureElementIdentifier;
 + (id)secureElementIdentifiers;
 + (id)sharedSecureElement;
-+ (id)signChallenge:(id)a3 signatureEntanglementMode:(unint64_t)a4 session:(id)a5 signatureInfo:(id *)a6 error:(id *)a7;
-+ (void)accessSecureElementManagerSessionWithSessionExchangeToken:(id)a3 callbackQueue:(id)a4 handler:(id)a5;
-+ (void)accessSecureElementManagerSessionWithSessionExchangeToken:(id)a3 handler:(id)a4;
++ (id)signChallenge:(id)challenge signatureEntanglementMode:(unint64_t)mode session:(id)session signatureInfo:(id *)info error:(id *)error;
++ (void)accessSecureElementManagerSessionWithSessionExchangeToken:(id)token callbackQueue:(id)queue handler:(id)handler;
++ (void)accessSecureElementManagerSessionWithSessionExchangeToken:(id)token handler:(id)handler;
 - (BOOL)hasRegistrationInformation;
 - (BOOL)isDeletingAllApplets;
 - (BOOL)isInRestrictedMode;
 - (BOOL)isProductionSigned;
-- (BOOL)queueConnectionToServerForAppletIdentifiers:(id)a3;
-- (BOOL)queueConnectionToServerWithPushTopic:(id)a3;
-- (BOOL)setRegistrationInformation:(id)a3 primaryRegionTopic:(id)a4;
-- (BOOL)supportsExpressModeForExpressPassType:(int64_t)a3;
+- (BOOL)queueConnectionToServerForAppletIdentifiers:(id)identifiers;
+- (BOOL)queueConnectionToServerWithPushTopic:(id)topic;
+- (BOOL)setRegistrationInformation:(id)information primaryRegionTopic:(id)topic;
+- (BOOL)supportsExpressModeForExpressPassType:(int64_t)type;
 - (NSArray)secureElementIdentifiers;
 - (NSString)primaryRegionTopic;
 - (NSString)primarySecureElementIdentifier;
 - (PKSecureElement)init;
-- (id)_allAppletsWithSession:(id)a3;
-- (id)_appletsForAIDs:(id)a3 withSession:(id)a4;
+- (id)_allAppletsWithSession:(id)session;
+- (id)_appletsForAIDs:(id)ds withSession:(id)session;
 - (id)secureElementSessionPostlude;
 - (id)secureElementSessionPrelude;
 - (unint64_t)ownershipStateForCurrentUser;
-- (void)SEPPairingInfoWithCompletion:(id)a3;
-- (void)_credentialsForAIDs:(id)a3 session:(id)a4 completion:(id)a5;
-- (void)_executeSecureElementAsyncSessionHandlersWithSession:(id)a3 completion:(id)a4;
-- (void)_executeSecureElementSessionHandlersWithPriority:(BOOL)a3 session:(id)a4;
+- (void)SEPPairingInfoWithCompletion:(id)completion;
+- (void)_credentialsForAIDs:(id)ds session:(id)session completion:(id)completion;
+- (void)_executeSecureElementAsyncSessionHandlersWithSession:(id)session completion:(id)completion;
+- (void)_executeSecureElementSessionHandlersWithPriority:(BOOL)priority session:(id)session;
 - (void)_registerPairingChangeHandler;
-- (void)_setIsInRestrictedMode:(BOOL)a3;
-- (void)_startSecureElementManagerSessionWithType:(int64_t)a3 handler:(id)a4;
+- (void)_setIsInRestrictedMode:(BOOL)mode;
+- (void)_startSecureElementManagerSessionWithType:(int64_t)type handler:(id)handler;
 - (void)_updateHardwareManagerListener;
-- (void)accessAsyncSecureElementManagerSessionWithHandler:(id)a3;
-- (void)accessPrioritySecureElementManagerSessionWithHandler:(id)a3;
-- (void)accessSecureElementManagerSessionWithHandler:(id)a3;
-- (void)allAppletsAndCredentialsWithCompletion:(id)a3;
-- (void)allAppletsWithCompletion:(id)a3;
-- (void)appletCredentialsForAIDs:(id)a3 completion:(id)a4;
-- (void)appletWithIdentifier:(id)a3 completion:(id)a4;
-- (void)areAnyAppletsSuspendedWithCompletionHandler:(id)a3;
-- (void)checkFidoKeyPresenceForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 fidoKeyHash:(id)a5 completion:(id)a6;
-- (void)checkMultipleFidoKeyPresenceForFIDOProfiles:(id)a3 completion:(id)a4;
-- (void)connectToServerWithPushTopic:(id)a3 performSECleanup:(BOOL)a4 completion:(id)a5;
-- (void)consistencyCheckDeviceCredentialsWithCompletion:(id)a3;
+- (void)accessAsyncSecureElementManagerSessionWithHandler:(id)handler;
+- (void)accessPrioritySecureElementManagerSessionWithHandler:(id)handler;
+- (void)accessSecureElementManagerSessionWithHandler:(id)handler;
+- (void)allAppletsAndCredentialsWithCompletion:(id)completion;
+- (void)allAppletsWithCompletion:(id)completion;
+- (void)appletCredentialsForAIDs:(id)ds completion:(id)completion;
+- (void)appletWithIdentifier:(id)identifier completion:(id)completion;
+- (void)areAnyAppletsSuspendedWithCompletionHandler:(id)handler;
+- (void)checkFidoKeyPresenceForRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoKeyHash:(id)keyHash completion:(id)completion;
+- (void)checkMultipleFidoKeyPresenceForFIDOProfiles:(id)profiles completion:(id)completion;
+- (void)connectToServerWithPushTopic:(id)topic performSECleanup:(BOOL)cleanup completion:(id)completion;
+- (void)consistencyCheckDeviceCredentialsWithCompletion:(id)completion;
 - (void)contactlessPaymentPassesAvailableDidChange;
-- (void)createAliroHomeKeyWithReaderIdentifier:(id)a3 readerPublicKey:(id)a4 homeIdentifier:(id)a5 withCompletion:(id)a6;
-- (void)createAliroHydraKeyWithServerParameters:(id)a3 withCompletion:(id)a4;
-- (void)createFidoKeyForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 challenge:(id)a5 externalizedAuth:(id)a6 completion:(id)a7;
+- (void)createAliroHomeKeyWithReaderIdentifier:(id)identifier readerPublicKey:(id)key homeIdentifier:(id)homeIdentifier withCompletion:(id)completion;
+- (void)createAliroHydraKeyWithServerParameters:(id)parameters withCompletion:(id)completion;
+- (void)createFidoKeyForRelyingParty:(id)party relyingPartyAccountHash:(id)hash challenge:(id)challenge externalizedAuth:(id)auth completion:(id)completion;
 - (void)dealloc;
-- (void)deleteFidoKeyForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 fidoKeyHash:(id)a5 completion:(id)a6;
-- (void)findFidoKeyForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 challenge:(id)a5 completion:(id)a6;
-- (void)generateSEEncryptionCertificateForSubCredentialId:(id)a3 completion:(id)a4;
-- (void)generateTransactionKeyWithParameters:(id)a3 withCompletion:(id)a4;
-- (void)generateTransactionKeyWithReaderIdentifier:(id)a3 readerPublicKey:(id)a4 withCompletion:(id)a5;
-- (void)hasLongTermPrivacyKeyForCredentialGroupIdentifier:(id)a3 completion:(id)a4;
-- (void)initializeSecureElementIfNecessaryWithHandler:(id)a3;
-- (void)initializeSecureElementQueuingServerConnection:(BOOL)a3 withCompletion:(id)a4;
-- (void)longTermPrivacyKeyForCredentialGroupIdentifier:(id)a3 reuseExisting:(BOOL)a4 completion:(id)a5;
-- (void)longTermPrivacyKeysForCredentialGroupIdentifier:(id)a3 privacyKeyIdentifier:(id)a4 completion:(id)a5;
-- (void)markAllAppletsForDeletionWithExternalAuthorization:(id)a3 completion:(id)a4;
-- (void)markAllAppletsForDeletionWithExternalAuthorization:(id)a3 obliterate:(BOOL)a4 completion:(id)a5;
-- (void)markAppletWithIdentifierForDeletion:(id)a3 completion:(id)a4;
-- (void)markAppletsWithIdentifiersForDeletion:(id)a3 completion:(id)a4;
-- (void)pairingStateWithCompletion:(id)a3;
-- (void)peerPaymentEnrollmentDataWithAlternateDSID:(id)a3 completion:(id)a4;
-- (void)registerObserver:(id)a3;
-- (void)remoteAdminCleanupProgress:(double)a3;
-- (void)secureElement:(id)a3 didChangeRestrictedMode:(BOOL)a4;
-- (void)setSecureElementSessionPostlude:(id)a3;
-- (void)setSecureElementSessionPrelude:(id)a3;
-- (void)signChallenge:(id)a3 forPaymentApplication:(id)a4 withCompletion:(id)a5;
-- (void)signChallenge:(id)a3 signatureEntanglementMode:(unint64_t)a4 completion:(id)a5;
-- (void)signWithFidoKeyForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 fidoKeyHash:(id)a5 challenge:(id)a6 publicKeyIdentifier:(id)a7 externalizedAuth:(id)a8 completion:(id)a9;
-- (void)signatureForAuthToken:(id)a3 completion:(id)a4;
-- (void)signedPlatformDataWithCompletion:(id)a3;
-- (void)stateInformationWithCompletion:(id)a3;
-- (void)unregisterObserver:(id)a3;
-- (void)updateAliroCredentialDocumentStatusWithSubcredentialIdentifier:(id)a3 documentType:(unint64_t)a4 isDocumentPresent:(BOOL)a5 signedDate:(id)a6 withCompletion:(id)a7;
-- (void)verifySignedChallenge:(id)a3 forRelyingParty:(id)a4 relyingPartyAccountHash:(id)a5 fidoKeyHash:(id)a6 completion:(id)a7;
+- (void)deleteFidoKeyForRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoKeyHash:(id)keyHash completion:(id)completion;
+- (void)findFidoKeyForRelyingParty:(id)party relyingPartyAccountHash:(id)hash challenge:(id)challenge completion:(id)completion;
+- (void)generateSEEncryptionCertificateForSubCredentialId:(id)id completion:(id)completion;
+- (void)generateTransactionKeyWithParameters:(id)parameters withCompletion:(id)completion;
+- (void)generateTransactionKeyWithReaderIdentifier:(id)identifier readerPublicKey:(id)key withCompletion:(id)completion;
+- (void)hasLongTermPrivacyKeyForCredentialGroupIdentifier:(id)identifier completion:(id)completion;
+- (void)initializeSecureElementIfNecessaryWithHandler:(id)handler;
+- (void)initializeSecureElementQueuingServerConnection:(BOOL)connection withCompletion:(id)completion;
+- (void)longTermPrivacyKeyForCredentialGroupIdentifier:(id)identifier reuseExisting:(BOOL)existing completion:(id)completion;
+- (void)longTermPrivacyKeysForCredentialGroupIdentifier:(id)identifier privacyKeyIdentifier:(id)keyIdentifier completion:(id)completion;
+- (void)markAllAppletsForDeletionWithExternalAuthorization:(id)authorization completion:(id)completion;
+- (void)markAllAppletsForDeletionWithExternalAuthorization:(id)authorization obliterate:(BOOL)obliterate completion:(id)completion;
+- (void)markAppletWithIdentifierForDeletion:(id)deletion completion:(id)completion;
+- (void)markAppletsWithIdentifiersForDeletion:(id)deletion completion:(id)completion;
+- (void)pairingStateWithCompletion:(id)completion;
+- (void)peerPaymentEnrollmentDataWithAlternateDSID:(id)d completion:(id)completion;
+- (void)registerObserver:(id)observer;
+- (void)remoteAdminCleanupProgress:(double)progress;
+- (void)secureElement:(id)element didChangeRestrictedMode:(BOOL)mode;
+- (void)setSecureElementSessionPostlude:(id)postlude;
+- (void)setSecureElementSessionPrelude:(id)prelude;
+- (void)signChallenge:(id)challenge forPaymentApplication:(id)application withCompletion:(id)completion;
+- (void)signChallenge:(id)challenge signatureEntanglementMode:(unint64_t)mode completion:(id)completion;
+- (void)signWithFidoKeyForRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoKeyHash:(id)keyHash challenge:(id)challenge publicKeyIdentifier:(id)identifier externalizedAuth:(id)auth completion:(id)completion;
+- (void)signatureForAuthToken:(id)token completion:(id)completion;
+- (void)signedPlatformDataWithCompletion:(id)completion;
+- (void)stateInformationWithCompletion:(id)completion;
+- (void)unregisterObserver:(id)observer;
+- (void)updateAliroCredentialDocumentStatusWithSubcredentialIdentifier:(id)identifier documentType:(unint64_t)type isDocumentPresent:(BOOL)present signedDate:(id)date withCompletion:(id)completion;
+- (void)verifySignedChallenge:(id)challenge forRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoKeyHash:(id)keyHash completion:(id)completion;
 @end
 
 @implementation PKSecureElement
@@ -98,8 +98,8 @@
 
 - (NSString)primarySecureElementIdentifier
 {
-  v2 = [PKGetClassNFSecureElement() embeddedSecureElementSerialNumber];
-  if (![v2 length] || (NFSecureElementSerialNumberToString(), (v3 = objc_claimAutoreleasedReturnValue()) == 0))
+  embeddedSecureElementSerialNumber = [PKGetClassNFSecureElement() embeddedSecureElementSerialNumber];
+  if (![embeddedSecureElementSerialNumber length] || (NFSecureElementSerialNumberToString(), (v3 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     if (PKSecureElementIsAvailable())
     {
@@ -120,11 +120,11 @@
 - (NSArray)secureElementIdentifiers
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(PKSecureElement *)self primarySecureElementIdentifier];
-  v3 = v2;
-  if (v2)
+  primarySecureElementIdentifier = [(PKSecureElement *)self primarySecureElementIdentifier];
+  v3 = primarySecureElementIdentifier;
+  if (primarySecureElementIdentifier)
   {
-    v6[0] = v2;
+    v6[0] = primarySecureElementIdentifier;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
   }
 
@@ -258,9 +258,9 @@ LABEL_31:
     v2->_isInRestrictedModeTimestamp = nan(0);
     if (PKSecureElementIsAvailable())
     {
-      v4 = [PKGetClassNFSecureElement() embeddedSecureElement];
+      embeddedSecureElement = [PKGetClassNFSecureElement() embeddedSecureElement];
       secureElement = v3->_secureElement;
-      v3->_secureElement = v4;
+      v3->_secureElement = embeddedSecureElement;
 
       if (!v3->_secureElement)
       {
@@ -301,9 +301,9 @@ LABEL_31:
     replyQueue = v3->_replyQueue;
     v3->_replyQueue = v20;
 
-    v22 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+    pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
     observers = v3->_observers;
-    v3->_observers = v22;
+    v3->_observers = pk_weakObjectsHashTableUsingPointerPersonality;
 
     v3->_observersLock._os_unfair_lock_opaque = 0;
   }
@@ -447,48 +447,48 @@ LABEL_31:
   return WeakRetained;
 }
 
-+ (void)accessSecureElementManagerSessionWithSessionExchangeToken:(id)a3 handler:(id)a4
++ (void)accessSecureElementManagerSessionWithSessionExchangeToken:(id)token handler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
-  [objc_opt_class() accessSecureElementManagerSessionWithSessionExchangeToken:v6 callbackQueue:0 handler:v5];
+  handlerCopy = handler;
+  tokenCopy = token;
+  [objc_opt_class() accessSecureElementManagerSessionWithSessionExchangeToken:tokenCopy callbackQueue:0 handler:handlerCopy];
 }
 
-+ (void)accessSecureElementManagerSessionWithSessionExchangeToken:(id)a3 callbackQueue:(id)a4 handler:(id)a5
++ (void)accessSecureElementManagerSessionWithSessionExchangeToken:(id)token callbackQueue:(id)queue handler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  tokenCopy = token;
+  queueCopy = queue;
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  if (handlerCopy)
   {
-    if (v7)
+    if (tokenCopy)
     {
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __99__PKSecureElement_accessSecureElementManagerSessionWithSessionExchangeToken_callbackQueue_handler___block_invoke;
       aBlock[3] = &unk_1E79D03B0;
-      v22 = v9;
+      v22 = handlerCopy;
       v11 = _Block_copy(aBlock);
       if (PKSecureElementIsAvailable())
       {
-        v12 = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
+        pKGetClassNFHardwareManager() = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
       }
 
       else
       {
-        v12 = 0;
+        pKGetClassNFHardwareManager() = 0;
       }
 
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __99__PKSecureElement_accessSecureElementManagerSessionWithSessionExchangeToken_callbackQueue_handler___block_invoke_242;
       v18[3] = &unk_1E79D03D8;
-      v19 = v8;
+      v19 = queueCopy;
       v20 = v11;
       v13 = v11;
-      v14 = [v12 startSecureElementManagerSession:v18];
+      v14 = [pKGetClassNFHardwareManager() startSecureElementManagerSession:v18];
       PKGetClassNFSession();
       if (objc_opt_isKindOfClass())
       {
@@ -497,7 +497,7 @@ LABEL_31:
           goto LABEL_16;
         }
 
-        v15 = [v14 activateWithToken:v7];
+        v15 = [v14 activateWithToken:tokenCopy];
         if (!v15)
         {
           goto LABEL_16;
@@ -529,7 +529,7 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    (*(v9 + 2))(v9, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
 LABEL_17:
@@ -599,17 +599,17 @@ void __99__PKSecureElement_accessSecureElementManagerSessionWithSessionExchangeT
   }
 }
 
-- (void)accessSecureElementManagerSessionWithHandler:(id)a3
+- (void)accessSecureElementManagerSessionWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   sessionQueue = self->_sessionQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__PKSecureElement_accessSecureElementManagerSessionWithHandler___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(sessionQueue, v7);
 }
 
@@ -620,17 +620,17 @@ void __64__PKSecureElement_accessSecureElementManagerSessionWithHandler___block_
   [v1 _startSecureElementManagerSessionWithType:0 handler:v2];
 }
 
-- (void)accessPrioritySecureElementManagerSessionWithHandler:(id)a3
+- (void)accessPrioritySecureElementManagerSessionWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   sessionQueue = self->_sessionQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __72__PKSecureElement_accessPrioritySecureElementManagerSessionWithHandler___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(sessionQueue, v7);
 }
 
@@ -641,17 +641,17 @@ void __72__PKSecureElement_accessPrioritySecureElementManagerSessionWithHandler_
   [v1 _startSecureElementManagerSessionWithType:1 handler:v2];
 }
 
-- (void)accessAsyncSecureElementManagerSessionWithHandler:(id)a3
+- (void)accessAsyncSecureElementManagerSessionWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   sessionQueue = self->_sessionQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__PKSecureElement_accessAsyncSecureElementManagerSessionWithHandler___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(sessionQueue, v7);
 }
 
@@ -662,23 +662,23 @@ void __69__PKSecureElement_accessAsyncSecureElementManagerSessionWithHandler___b
   [v1 _startSecureElementManagerSessionWithType:2 handler:v2];
 }
 
-- (void)_startSecureElementManagerSessionWithType:(int64_t)a3 handler:(id)a4
+- (void)_startSecureElementManagerSessionWithType:(int64_t)type handler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (handlerCopy)
   {
-    if (a3 > 2)
+    if (type > 2)
     {
       v8 = 0;
     }
 
     else
     {
-      v8 = &self->_startingSession + a3;
-      v9 = (&self->_sessionAccessHandlers)[a3];
-      v10 = _Block_copy(v6);
+      v8 = &self->_startingSession + type;
+      v9 = (&self->_sessionAccessHandlers)[type];
+      v10 = _Block_copy(handlerCopy);
       [(NSMutableArray *)v9 addObject:v10];
     }
 
@@ -688,9 +688,9 @@ void __69__PKSecureElement_accessAsyncSecureElementManagerSessionWithHandler___b
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218240;
-        v31 = self;
+        selfCopy2 = self;
         v32 = 2048;
-        v33 = a3;
+        typeCopy = type;
         _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "PKSecureElement (%p): session of type %ld is already starting - coalescing.", buf, 0x16u);
       }
     }
@@ -703,11 +703,11 @@ void __69__PKSecureElement_accessAsyncSecureElementManagerSessionWithHandler___b
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218496;
-        v31 = self;
+        selfCopy2 = self;
         v32 = 2048;
-        v33 = sessionCounter;
+        typeCopy = sessionCounter;
         v34 = 2048;
-        v35 = a3;
+        typeCopy2 = type;
         _os_log_impl(&dword_1AD337000, v13, OS_LOG_TYPE_DEFAULT, "PKSecureElement (%p:%lu): starting session with type %ld.", buf, 0x20u);
       }
 
@@ -733,7 +733,7 @@ void __69__PKSecureElement_accessAsyncSecureElementManagerSessionWithHandler___b
       v23[2] = __69__PKSecureElement__startSecureElementManagerSessionWithType_handler___block_invoke_247;
       v23[3] = &unk_1E79D0450;
       v24 = v16;
-      v25 = a3;
+      typeCopy3 = type;
       v26 = sessionCounter;
       v23[4] = self;
       v17 = v16;
@@ -742,7 +742,7 @@ void __69__PKSecureElement_accessAsyncSecureElementManagerSessionWithHandler___b
       if (PKSecureElementIsAvailable() && ([PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI], (v19 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v20 = v19;
-        if (a3 == 1)
+        if (type == 1)
         {
           v21 = [v19 startSecureElementManagerSessionWithPriority:v18];
         }
@@ -963,12 +963,12 @@ LABEL_13:
   }
 }
 
-- (void)_executeSecureElementSessionHandlersWithPriority:(BOOL)a3 session:(id)a4
+- (void)_executeSecureElementSessionHandlersWithPriority:(BOOL)priority session:(id)session
 {
-  v4 = a3;
+  priorityCopy = priority;
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v4)
+  sessionCopy = session;
+  if (priorityCopy)
   {
     v7 = 104;
   }
@@ -979,15 +979,15 @@ LABEL_13:
   }
 
   v8 = [*(&self->super.isa + v7) copy];
-  v9 = self;
+  selfCopy = self;
   [*(&self->super.isa + v7) removeAllObjects];
   v10 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218496;
-    v24 = self;
+    selfCopy2 = self;
     v25 = 2048;
-    v26 = v6;
+    v26 = sessionCopy;
     v27 = 2048;
     v28 = [v8 count];
     _os_log_impl(&dword_1AD337000, v10, OS_LOG_TYPE_DEFAULT, "PKSecureElement (%p:session/%p): starting to execute %lu session handlers.", buf, 0x20u);
@@ -1017,15 +1017,15 @@ LABEL_13:
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218496;
-          v24 = v9;
+          selfCopy2 = selfCopy;
           v25 = 2048;
-          v26 = v6;
+          v26 = sessionCopy;
           v27 = 2048;
           v28 = v14;
           _os_log_impl(&dword_1AD337000, v10, OS_LOG_TYPE_DEFAULT, "PKSecureElement (%p:session/%p): executing session handler %lu.", buf, 0x20u);
         }
 
-        (*(v17 + 16))(v17, v6);
+        (*(v17 + 16))(v17, sessionCopy);
         ++v14;
       }
 
@@ -1036,20 +1036,20 @@ LABEL_13:
   }
 }
 
-- (void)_executeSecureElementAsyncSessionHandlersWithSession:(id)a3 completion:(id)a4
+- (void)_executeSecureElementAsyncSessionHandlersWithSession:(id)session completion:(id)completion
 {
   v39 = *MEMORY[0x1E69E9840];
-  v21 = a3;
-  v19 = a4;
+  sessionCopy = session;
+  completionCopy = completion;
   v6 = [(NSMutableArray *)self->_asyncSessionAccessHandlers copy];
   [(NSMutableArray *)self->_asyncSessionAccessHandlers removeAllObjects];
   v7 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218496;
-    v34 = self;
+    selfCopy = self;
     v35 = 2048;
-    v36 = v21;
+    v36 = sessionCopy;
     v37 = 2048;
     v38 = [v6 count];
     _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "PKSecureElement (%p:session/%p): starting to execute %lu async session handlers.", buf, 0x20u);
@@ -1083,7 +1083,7 @@ LABEL_13:
         v24[2] = __83__PKSecureElement__executeSecureElementAsyncSessionHandlersWithSession_completion___block_invoke;
         v24[3] = &unk_1E79D0478;
         v24[4] = self;
-        v15 = v21;
+        v15 = sessionCopy;
         v26 = v14;
         v27 = v11;
         v25 = v15;
@@ -1100,14 +1100,14 @@ LABEL_13:
     while (v10);
   }
 
-  v16 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __83__PKSecureElement__executeSecureElementAsyncSessionHandlersWithSession_completion___block_invoke_2;
   v22[3] = &unk_1E79D04A0;
-  v23 = v19;
-  v17 = v19;
-  v18 = [(PKAsyncUnaryOperationComposer *)v8 evaluateWithInput:v16 completion:v22];
+  v23 = completionCopy;
+  v17 = completionCopy;
+  v18 = [(PKAsyncUnaryOperationComposer *)v8 evaluateWithInput:null completion:v22];
 }
 
 void __83__PKSecureElement__executeSecureElementAsyncSessionHandlersWithSession_completion___block_invoke(void *a1, uint64_t a2, void *a3, void *a4)
@@ -1222,24 +1222,24 @@ void __49__PKSecureElement__updateHardwareManagerListener__block_invoke(uint64_t
   }
 }
 
-- (void)secureElement:(id)a3 didChangeRestrictedMode:(BOOL)a4
+- (void)secureElement:(id)element didChangeRestrictedMode:(BOOL)mode
 {
-  v4 = a4;
+  modeCopy = mode;
   replyQueue = self->_replyQueue;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __57__PKSecureElement_secureElement_didChangeRestrictedMode___block_invoke;
   v6[3] = &unk_1E79C4EC8;
   v6[4] = self;
-  v7 = a4;
+  modeCopy2 = mode;
   dispatch_async(replyQueue, v6);
-  if (v4)
+  if (modeCopy)
   {
     AnalyticsSendEvent();
   }
 }
 
-- (void)remoteAdminCleanupProgress:(double)a3
+- (void)remoteAdminCleanupProgress:(double)progress
 {
   replyQueue = self->_replyQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1247,7 +1247,7 @@ void __49__PKSecureElement__updateHardwareManagerListener__block_invoke(uint64_t
   v4[2] = __46__PKSecureElement_remoteAdminCleanupProgress___block_invoke;
   v4[3] = &unk_1E79CAED8;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = progress;
   dispatch_async(replyQueue, v4);
 }
 
@@ -1358,9 +1358,9 @@ void __46__PKSecureElement_remoteAdminCleanupProgress___block_invoke(uint64_t a1
   }
 }
 
-- (void)initializeSecureElementQueuingServerConnection:(BOOL)a3 withCompletion:(id)a4
+- (void)initializeSecureElementQueuingServerConnection:(BOOL)connection withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if (PKSecureElementIsAvailable())
   {
     v7 = self->_replyQueue;
@@ -1368,16 +1368,16 @@ void __46__PKSecureElement_remoteAdminCleanupProgress___block_invoke(uint64_t a1
     v9[1] = 3221225472;
     v9[2] = __81__PKSecureElement_initializeSecureElementQueuingServerConnection_withCompletion___block_invoke;
     v9[3] = &unk_1E79D04C8;
-    v12 = a3;
+    connectionCopy = connection;
     v10 = v7;
-    v11 = v6;
+    v11 = completionCopy;
     v8 = v7;
     [(PKSecureElement *)self accessSecureElementManagerSessionWithHandler:v9];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 }
 
@@ -1465,16 +1465,16 @@ LABEL_16:
   }
 }
 
-- (void)initializeSecureElementIfNecessaryWithHandler:(id)a3
+- (void)initializeSecureElementIfNecessaryWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65__PKSecureElement_initializeSecureElementIfNecessaryWithHandler___block_invoke;
   v6[3] = &unk_1E79CA990;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(PKSecureElement *)self pairingStateWithCompletion:v6];
 }
 
@@ -1571,9 +1571,9 @@ uint64_t __65__PKSecureElement_initializeSecureElementIfNecessaryWithHandler___b
   return result;
 }
 
-- (void)SEPPairingInfoWithCompletion:(id)a3
+- (void)SEPPairingInfoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (PKSecureElementIsAvailable())
   {
     v5 = self->_replyQueue;
@@ -1582,7 +1582,7 @@ uint64_t __65__PKSecureElement_initializeSecureElementIfNecessaryWithHandler___b
     v9[2] = __48__PKSecureElement_SEPPairingInfoWithCompletion___block_invoke;
     v9[3] = &unk_1E79D04F0;
     v10 = v5;
-    v11 = v4;
+    v11 = completionCopy;
     v6 = v5;
     [(PKSecureElement *)self accessPrioritySecureElementManagerSessionWithHandler:v9];
   }
@@ -1596,9 +1596,9 @@ uint64_t __65__PKSecureElement_initializeSecureElementIfNecessaryWithHandler___b
       _os_log_error_impl(&dword_1AD337000, v7, OS_LOG_TYPE_ERROR, "Secure element not available", v8, 2u);
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      (*(v4 + 2))(v4, 0, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0, 0);
     }
   }
 }
@@ -1654,10 +1654,10 @@ void __48__PKSecureElement_SEPPairingInfoWithCompletion___block_invoke(uint64_t 
   }
 }
 
-- (void)pairingStateWithCompletion:(id)a3
+- (void)pairingStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (PKSecureElementIsAvailable())
     {
@@ -1667,14 +1667,14 @@ void __48__PKSecureElement_SEPPairingInfoWithCompletion___block_invoke(uint64_t 
       v7[2] = __46__PKSecureElement_pairingStateWithCompletion___block_invoke;
       v7[3] = &unk_1E79D04F0;
       v8 = v5;
-      v9 = v4;
+      v9 = completionCopy;
       v6 = v5;
       [(PKSecureElement *)self accessSecureElementManagerSessionWithHandler:v7];
     }
 
     else
     {
-      (*(v4 + 2))(v4, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -1719,21 +1719,21 @@ void __46__PKSecureElement_pairingStateWithCompletion___block_invoke(uint64_t a1
 
 - (BOOL)hasRegistrationInformation
 {
-  v2 = [PKGetClassNFRemoteAdminManager() sharedRemoteAdminManager];
-  v3 = [v2 registrationInfo];
-  v4 = [v3 allKeys];
-  v5 = [v4 count] != 0;
+  pKGetClassNFRemoteAdminManager() = [PKGetClassNFRemoteAdminManager() sharedRemoteAdminManager];
+  registrationInfo = [pKGetClassNFRemoteAdminManager() registrationInfo];
+  allKeys = [registrationInfo allKeys];
+  v5 = [allKeys count] != 0;
 
   return v5;
 }
 
-- (BOOL)setRegistrationInformation:(id)a3 primaryRegionTopic:(id)a4
+- (BOOL)setRegistrationInformation:(id)information primaryRegionTopic:(id)topic
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [PKGetClassNFRemoteAdminManager() sharedRemoteAdminManager];
-  v8 = [v7 setRegistrationInfo:v5 primaryRegionTopic:v6];
+  informationCopy = information;
+  topicCopy = topic;
+  pKGetClassNFRemoteAdminManager() = [PKGetClassNFRemoteAdminManager() sharedRemoteAdminManager];
+  v8 = [pKGetClassNFRemoteAdminManager() setRegistrationInfo:informationCopy primaryRegionTopic:topicCopy];
 
   if ((v8 & 1) == 0)
   {
@@ -1741,7 +1741,7 @@ void __46__PKSecureElement_pairingStateWithCompletion___block_invoke(uint64_t a1
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v5;
+      v12 = informationCopy;
       _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "Failed to set Secure Element Registration Info: %@", &v11, 0xCu);
     }
   }
@@ -1749,22 +1749,22 @@ void __46__PKSecureElement_pairingStateWithCompletion___block_invoke(uint64_t a1
   return v8;
 }
 
-- (id)_allAppletsWithSession:(id)a3
+- (id)_allAppletsWithSession:(id)session
 {
-  if (a3)
+  if (session)
   {
     v3 = MEMORY[0x1E695DF70];
-    v4 = a3;
-    v5 = [v3 array];
-    v6 = [v4 allApplets];
+    sessionCopy = session;
+    array = [v3 array];
+    allApplets = [sessionCopy allApplets];
 
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __42__PKSecureElement__allAppletsWithSession___block_invoke;
     v10[3] = &unk_1E79D0518;
-    v7 = v5;
+    v7 = array;
     v11 = v7;
-    [v6 enumerateObjectsUsingBlock:v10];
+    [allApplets enumerateObjectsUsingBlock:v10];
   }
 
   else
@@ -1787,19 +1787,19 @@ void __42__PKSecureElement__allAppletsWithSession___block_invoke(uint64_t a1, vo
   }
 }
 
-- (id)_appletsForAIDs:(id)a3 withSession:(id)a4
+- (id)_appletsForAIDs:(id)ds withSession:(id)session
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dsCopy = ds;
+  sessionCopy = session;
+  if (sessionCopy)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = v5;
+    v8 = dsCopy;
     v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
@@ -1814,7 +1814,7 @@ void __42__PKSecureElement__allAppletsWithSession___block_invoke(uint64_t a1, vo
             objc_enumerationMutation(v8);
           }
 
-          v13 = [v6 appletWithIdentifier:{*(*(&v17 + 1) + 8 * i), v17}];
+          v13 = [sessionCopy appletWithIdentifier:{*(*(&v17 + 1) + 8 * i), v17}];
           if (v13)
           {
             v14 = [PKSecureElementApplet secureElementAppletWithInternalApplet:v13];
@@ -1839,10 +1839,10 @@ void __42__PKSecureElement__allAppletsWithSession___block_invoke(uint64_t a1, vo
   return v15;
 }
 
-- (void)allAppletsWithCompletion:(id)a3
+- (void)allAppletsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (PKSecureElementIsAvailable())
     {
@@ -1855,7 +1855,7 @@ void __42__PKSecureElement__allAppletsWithSession___block_invoke(uint64_t a1, vo
       objc_copyWeak(&v10, &location);
       v6 = v5;
       v8 = v6;
-      v9 = v4;
+      v9 = completionCopy;
       [(PKSecureElement *)self accessSecureElementManagerSessionWithHandler:v7];
 
       objc_destroyWeak(&v10);
@@ -1864,7 +1864,7 @@ void __42__PKSecureElement__allAppletsWithSession___block_invoke(uint64_t a1, vo
 
     else
     {
-      (*(v4 + 2))(v4, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -1887,12 +1887,12 @@ void __44__PKSecureElement_allAppletsWithCompletion___block_invoke(uint64_t a1, 
   dispatch_async(v6, v9);
 }
 
-- (void)allAppletsAndCredentialsWithCompletion:(id)a3
+- (void)allAppletsAndCredentialsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = v4;
+    v5 = completionCopy;
     if (PKSecureElementIsAvailable())
     {
       v6[0] = MEMORY[0x1E69E9820];
@@ -1993,14 +1993,14 @@ uint64_t __58__PKSecureElement_allAppletsAndCredentialsWithCompletion___block_in
   return v5(v3, v2, v4);
 }
 
-- (void)appletCredentialsForAIDs:(id)a3 completion:(id)a4
+- (void)appletCredentialsForAIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dsCopy = ds;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = v7;
-    v9 = [v6 count];
+    v8 = completionCopy;
+    v9 = [dsCopy count];
     if (PKSecureElementIsAvailable() && v9)
     {
       v10[0] = MEMORY[0x1E69E9820];
@@ -2010,7 +2010,7 @@ uint64_t __58__PKSecureElement_allAppletsAndCredentialsWithCompletion___block_in
       v10[4] = self;
       v13 = v9;
       v12 = v8;
-      v11 = v6;
+      v11 = dsCopy;
       [(PKSecureElement *)self accessAsyncSecureElementManagerSessionWithHandler:v10];
     }
 
@@ -2105,25 +2105,25 @@ uint64_t __55__PKSecureElement_appletCredentialsForAIDs_completion___block_invok
   return v4(v2, v3, 0);
 }
 
-- (void)_credentialsForAIDs:(id)a3 session:(id)a4 completion:(id)a5
+- (void)_credentialsForAIDs:(id)ds session:(id)session completion:(id)completion
 {
   v39 = *MEMORY[0x1E69E9840];
-  v26 = a3;
-  v8 = a4;
-  v9 = a5;
+  dsCopy = ds;
+  sessionCopy = session;
+  completionCopy = completion;
   v10 = dispatch_group_create();
   v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v12 = &unk_1ADB86000;
-  v13 = v8;
-  if (v8)
+  v13 = sessionCopy;
+  if (sessionCopy)
   {
-    v24 = v9;
+    v24 = completionCopy;
     v14 = objc_alloc_init(PKDAManager);
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v23 = self;
+    selfCopy = self;
     obj = [(PKSecureElement *)self secureElementIdentifiers];
     v15 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (v15)
@@ -2145,10 +2145,10 @@ uint64_t __55__PKSecureElement_appletCredentialsForAIDs_completion___block_invok
           v30[1] = 3221225472;
           v30[2] = __58__PKSecureElement__credentialsForAIDs_session_completion___block_invoke;
           v30[3] = &unk_1E79C4390;
-          v31 = v26;
+          v31 = dsCopy;
           v32 = v11;
           v33 = v10;
-          [(PKDAManager *)v14 listCredentialsWithSession:v8 seid:v19 completion:v30];
+          [(PKDAManager *)v14 listCredentialsWithSession:sessionCopy seid:v19 completion:v30];
         }
 
         v16 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
@@ -2157,8 +2157,8 @@ uint64_t __55__PKSecureElement_appletCredentialsForAIDs_completion___block_invok
       while (v16);
     }
 
-    self = v23;
-    v9 = v24;
+    self = selfCopy;
+    completionCopy = v24;
     v12 = &unk_1ADB86000;
   }
 
@@ -2168,9 +2168,9 @@ uint64_t __55__PKSecureElement_appletCredentialsForAIDs_completion___block_invok
   block[2] = __58__PKSecureElement__credentialsForAIDs_session_completion___block_invoke_2;
   block[3] = &unk_1E79C44A0;
   v28 = v11;
-  v29 = v9;
+  v29 = completionCopy;
   v21 = v11;
-  v22 = v9;
+  v22 = completionCopy;
   dispatch_group_notify(v10, sessionQueue, block);
 }
 
@@ -2252,12 +2252,12 @@ uint64_t __58__PKSecureElement__credentialsForAIDs_session_completion___block_in
   return v4(v2, v3);
 }
 
-- (void)consistencyCheckDeviceCredentialsWithCompletion:(id)a3
+- (void)consistencyCheckDeviceCredentialsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = v4;
+    v5 = completionCopy;
     if (PKSecureElementIsAvailable())
     {
       v6[0] = MEMORY[0x1E69E9820];
@@ -2481,11 +2481,11 @@ uint64_t __67__PKSecureElement_consistencyCheckDeviceCredentialsWithCompletion__
   return v4(v2, v3);
 }
 
-- (void)appletWithIdentifier:(id)a3 completion:(id)a4
+- (void)appletWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (PKMockOsloSecureElementAuth())
     {
@@ -2497,13 +2497,13 @@ uint64_t __67__PKSecureElement_consistencyCheckDeviceCredentialsWithCompletion__
       }
 
       v9 = [PKSecureElementApplet alloc];
-      v10 = [MEMORY[0x1E696AFB0] UUID];
-      v11 = [v10 UUIDString];
-      v12 = [MEMORY[0x1E696AFB0] UUID];
-      v13 = [v12 UUIDString];
-      v14 = [(PKSecureElementApplet *)v9 initWithIdentifier:v11 packageIdentifier:v13 lifecycleState:15 locked:0 containsSubKeys:0];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
+      uUID2 = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString2 = [uUID2 UUIDString];
+      v14 = [(PKSecureElementApplet *)v9 initWithIdentifier:uUIDString packageIdentifier:uUIDString2 lifecycleState:15 locked:0 containsSubKeys:0];
 
-      v7[2](v7, v14);
+      completionCopy[2](completionCopy, v14);
     }
 
     else if (PKSecureElementIsAvailable())
@@ -2513,16 +2513,16 @@ uint64_t __67__PKSecureElement_consistencyCheckDeviceCredentialsWithCompletion__
       v17[1] = 3221225472;
       v17[2] = __51__PKSecureElement_appletWithIdentifier_completion___block_invoke;
       v17[3] = &unk_1E79D07D8;
-      v18 = v6;
+      v18 = identifierCopy;
       v19 = v15;
-      v20 = v7;
+      v20 = completionCopy;
       v16 = v15;
       [(PKSecureElement *)self accessSecureElementManagerSessionWithHandler:v17];
     }
 
     else
     {
-      v7[2](v7, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }
@@ -2570,18 +2570,18 @@ void __51__PKSecureElement_appletWithIdentifier_completion___block_invoke(uint64
   dispatch_async(v7, v10);
 }
 
-- (void)areAnyAppletsSuspendedWithCompletionHandler:(id)a3
+- (void)areAnyAppletsSuspendedWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __63__PKSecureElement_areAnyAppletsSuspendedWithCompletionHandler___block_invoke;
     v6[3] = &unk_1E79D04F0;
     v6[4] = self;
-    v7 = v4;
+    v7 = handlerCopy;
     [(PKSecureElement *)self accessSecureElementManagerSessionWithHandler:v6];
   }
 }
@@ -2669,16 +2669,16 @@ LABEL_15:
   v14();
 }
 
-- (void)markAllAppletsForDeletionWithExternalAuthorization:(id)a3 completion:(id)a4
+- (void)markAllAppletsForDeletionWithExternalAuthorization:(id)authorization completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __81__PKSecureElement_markAllAppletsForDeletionWithExternalAuthorization_completion___block_invoke;
   v8[3] = &unk_1E79C5268;
-  v9 = v6;
-  v7 = v6;
-  [(PKSecureElement *)self markAllAppletsForDeletionWithExternalAuthorization:a3 obliterate:1 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(PKSecureElement *)self markAllAppletsForDeletionWithExternalAuthorization:authorization obliterate:1 completion:v8];
 }
 
 uint64_t __81__PKSecureElement_markAllAppletsForDeletionWithExternalAuthorization_completion___block_invoke(uint64_t a1)
@@ -2692,36 +2692,36 @@ uint64_t __81__PKSecureElement_markAllAppletsForDeletionWithExternalAuthorizatio
   return result;
 }
 
-- (void)markAllAppletsForDeletionWithExternalAuthorization:(id)a3 obliterate:(BOOL)a4 completion:(id)a5
+- (void)markAllAppletsForDeletionWithExternalAuthorization:(id)authorization obliterate:(BOOL)obliterate completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   if (PKSecureElementIsAvailable())
   {
     if ([(PKSecureElement *)self isDeletingAllApplets])
     {
-      if (v7)
+      if (completionCopy)
       {
-        v7[2](v7, 1);
+        completionCopy[2](completionCopy, 1);
       }
     }
 
     else
     {
-      v8 = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
+      pKGetClassNFHardwareManager() = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __92__PKSecureElement_markAllAppletsForDeletionWithExternalAuthorization_obliterate_completion___block_invoke;
       v10[3] = &unk_1E79D06E8;
-      v12 = a4;
+      obliterateCopy = obliterate;
       v10[4] = self;
-      v11 = v7;
-      v9 = [v8 startSecureElementManagerSession:v10];
+      v11 = completionCopy;
+      v9 = [pKGetClassNFHardwareManager() startSecureElementManagerSession:v10];
     }
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
@@ -3124,30 +3124,30 @@ void __92__PKSecureElement_markAllAppletsForDeletionWithExternalAuthorization_ob
   }
 }
 
-- (void)markAppletWithIdentifierForDeletion:(id)a3 completion:(id)a4
+- (void)markAppletWithIdentifierForDeletion:(id)deletion completion:(id)completion
 {
   v11 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  deletionCopy = deletion;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v10 count:1];
+  completionCopy = completion;
+  deletionCopy2 = deletion;
+  v9 = [v6 arrayWithObjects:&deletionCopy count:1];
 
-  [(PKSecureElement *)self markAppletsWithIdentifiersForDeletion:v9 completion:v7, v10, v11];
+  [(PKSecureElement *)self markAppletsWithIdentifiersForDeletion:v9 completion:completionCopy, deletionCopy, v11];
 }
 
-- (void)markAppletsWithIdentifiersForDeletion:(id)a3 completion:(id)a4
+- (void)markAppletsWithIdentifiersForDeletion:(id)deletion completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  deletionCopy = deletion;
+  completionCopy = completion;
   v8 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v19 = self;
+    selfCopy = self;
     v20 = 2112;
-    v21 = v6;
+    v21 = deletionCopy;
     _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "PKSecureElement (%p): deleting applets %@.", buf, 0x16u);
   }
 
@@ -3156,13 +3156,13 @@ void __92__PKSecureElement_markAllAppletsForDeletionWithExternalAuthorization_ob
   v13[1] = 3221225472;
   v13[2] = __68__PKSecureElement_markAppletsWithIdentifiersForDeletion_completion___block_invoke;
   v13[3] = &unk_1E79D0760;
-  v14 = v6;
-  v15 = self;
+  v14 = deletionCopy;
+  selfCopy2 = self;
   v16 = v9;
-  v17 = v7;
+  v17 = completionCopy;
   v10 = v9;
-  v11 = v7;
-  v12 = v6;
+  v11 = completionCopy;
+  v12 = deletionCopy;
   [(PKSecureElement *)self accessSecureElementManagerSessionWithHandler:v13];
 }
 
@@ -3288,32 +3288,32 @@ void __68__PKSecureElement_markAppletsWithIdentifiersForDeletion_completion___bl
   }
 }
 
-- (void)signChallenge:(id)a3 forPaymentApplication:(id)a4 withCompletion:(id)a5
+- (void)signChallenge:(id)challenge forPaymentApplication:(id)application withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  challengeCopy = challenge;
+  applicationCopy = application;
+  completionCopy = completion;
+  if (completionCopy)
   {
     IsAvailable = PKSecureElementIsAvailable();
-    if (v8 && IsAvailable && ([v9 applicationIdentifier], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "length"), v12, v13))
+    if (challengeCopy && IsAvailable && ([applicationCopy applicationIdentifier], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "length"), v12, v13))
     {
       v14 = self->_replyQueue;
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __70__PKSecureElement_signChallenge_forPaymentApplication_withCompletion___block_invoke;
       v16[3] = &unk_1E79D0760;
-      v17 = v8;
-      v18 = v9;
+      v17 = challengeCopy;
+      v18 = applicationCopy;
       v19 = v14;
-      v20 = v10;
+      v20 = completionCopy;
       v15 = v14;
       [(PKSecureElement *)self accessSecureElementManagerSessionWithHandler:v16];
     }
 
     else
     {
-      (*(v10 + 2))(v10, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 }
@@ -3382,14 +3382,14 @@ void __70__PKSecureElement_signChallenge_forPaymentApplication_withCompletion___
   dispatch_async(v19, block);
 }
 
-- (void)signChallenge:(id)a3 signatureEntanglementMode:(unint64_t)a4 completion:(id)a5
+- (void)signChallenge:(id)challenge signatureEntanglementMode:(unint64_t)mode completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  challengeCopy = challenge;
+  completionCopy = completion;
+  if (completionCopy)
   {
     IsAvailable = PKSecureElementIsAvailable();
-    if (v8 && IsAvailable)
+    if (challengeCopy && IsAvailable)
     {
       v11 = self->_replyQueue;
       v12 = PKLogFacilityTypeGetObject(7uLL);
@@ -3404,17 +3404,17 @@ void __70__PKSecureElement_signChallenge_forPaymentApplication_withCompletion___
       v14[2] = __70__PKSecureElement_signChallenge_signatureEntanglementMode_completion___block_invoke;
       v14[3] = &unk_1E79D0800;
       v14[4] = self;
-      v18 = a4;
-      v15 = v8;
+      modeCopy = mode;
+      v15 = challengeCopy;
       v16 = v11;
-      v17 = v9;
+      v17 = completionCopy;
       v13 = v11;
       [(PKSecureElement *)self accessSecureElementManagerSessionWithHandler:v14];
     }
 
     else
     {
-      (*(v9 + 2))(v9, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 }
@@ -3450,13 +3450,13 @@ void __70__PKSecureElement_signChallenge_signatureEntanglementMode_completion___
   dispatch_async(v10, block);
 }
 
-+ (id)signChallenge:(id)a3 signatureEntanglementMode:(unint64_t)a4 session:(id)a5 signatureInfo:(id *)a6 error:(id *)a7
++ (id)signChallenge:(id)challenge signatureEntanglementMode:(unint64_t)mode session:(id)session signatureInfo:(id *)info error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = v12;
-  if (!v12)
+  challengeCopy = challenge;
+  sessionCopy = session;
+  v13 = sessionCopy;
+  if (!sessionCopy)
   {
     v27 = 0;
     goto LABEL_17;
@@ -3464,27 +3464,27 @@ void __70__PKSecureElement_signChallenge_signatureEntanglementMode_completion___
 
   v35 = 0;
   v36 = 0;
-  v14 = [v12 signChallenge:v11 useOSVersion:a4 == 1 signatureInfo:&v36 error:&v35];
+  v14 = [sessionCopy signChallenge:challengeCopy useOSVersion:mode == 1 signatureInfo:&v36 error:&v35];
   v15 = v36;
   v16 = v35;
   if (v15 && v14)
   {
     v34 = v14;
-    v17 = [(PKSecureElementSignatureInfo *)v15 certificateVersion];
+    certificateVersion = [(PKSecureElementSignatureInfo *)v15 certificateVersion];
     v18 = [PKSecureElementCertificateSet alloc];
-    v19 = [(PKSecureElementSignatureInfo *)v15 rsaCert];
-    v20 = [(PKSecureElementSignatureInfo *)v15 eccCert];
-    v21 = [(PKSecureElementCertificateSet *)v18 initWithRSACertificate:v19 ECDSACertificate:v20];
+    rsaCert = [(PKSecureElementSignatureInfo *)v15 rsaCert];
+    eccCert = [(PKSecureElementSignatureInfo *)v15 eccCert];
+    v21 = [(PKSecureElementCertificateSet *)v18 initWithRSACertificate:rsaCert ECDSACertificate:eccCert];
 
     v22 = [PKSecureElementSignatureInfo alloc];
-    v23 = [(PKSecureElementSignatureInfo *)v15 jsblCounter];
-    v24 = [(PKSecureElementSignatureInfo *)v15 platformId];
-    v25 = [(PKSecureElementSignatureInfo *)v22 initWithSecureElementCertificateSet:v21 sequenceCounter:v23 platformIdentifier:v24 certificateVersion:v17];
+    jsblCounter = [(PKSecureElementSignatureInfo *)v15 jsblCounter];
+    platformId = [(PKSecureElementSignatureInfo *)v15 platformId];
+    v25 = [(PKSecureElementSignatureInfo *)v22 initWithSecureElementCertificateSet:v21 sequenceCounter:jsblCounter platformIdentifier:platformId certificateVersion:certificateVersion];
 
-    if (a6)
+    if (info)
     {
       v26 = v25;
-      *a6 = v25;
+      *info = v25;
     }
 
     v14 = v34;
@@ -3502,7 +3502,7 @@ void __70__PKSecureElement_signChallenge_signatureEntanglementMode_completion___
     _os_log_impl(&dword_1AD337000, v28, OS_LOG_TYPE_DEFAULT, "Failed to sign challange. Error: %@", buf, 0xCu);
   }
 
-  if (!a7)
+  if (!error)
   {
     goto LABEL_14;
   }
@@ -3514,7 +3514,7 @@ void __70__PKSecureElement_signChallenge_signatureEntanglementMode_completion___
     v38 = @"Sign challenge failed";
     v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
     v32 = [v30 errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:v31];
-    *a7 = v32;
+    *error = v32;
 
 LABEL_14:
     v27 = 0;
@@ -3523,7 +3523,7 @@ LABEL_14:
 
   v29 = v16;
   v27 = 0;
-  *a7 = v16;
+  *error = v16;
 LABEL_15:
   v25 = v15;
 LABEL_16:
@@ -3533,23 +3533,23 @@ LABEL_17:
   return v27;
 }
 
-- (void)signatureForAuthToken:(id)a3 completion:(id)a4
+- (void)signatureForAuthToken:(id)token completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a3 dataUsingEncoding:4];
-  v8 = [v7 SHA256Hash];
+  completionCopy = completion;
+  v7 = [token dataUsingEncoding:4];
+  sHA256Hash = [v7 SHA256Hash];
 
   v9 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 hexEncoding];
+    hexEncoding = [sHA256Hash hexEncoding];
     *buf = 138412290;
-    v17 = v10;
+    v17 = hexEncoding;
     _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "Auth token data to be signed: %@", buf, 0xCu);
   }
 
-  if (v6)
+  if (completionCopy)
   {
     v11 = self->_replyQueue;
     if (PKSecureElementIsAvailable())
@@ -3558,15 +3558,15 @@ LABEL_17:
       v12[1] = 3221225472;
       v12[2] = __52__PKSecureElement_signatureForAuthToken_completion___block_invoke;
       v12[3] = &unk_1E79D07D8;
-      v13 = v8;
+      v13 = sHA256Hash;
       v14 = v11;
-      v15 = v6;
+      v15 = completionCopy;
       [(PKSecureElement *)self accessSecureElementManagerSessionWithHandler:v12];
     }
 
     else
     {
-      (*(v6 + 2))(v6, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -3616,27 +3616,27 @@ void __52__PKSecureElement_signatureForAuthToken_completion___block_invoke(uint6
   dispatch_async(v8, block);
 }
 
-- (void)stateInformationWithCompletion:(id)a3
+- (void)stateInformationWithCompletion:(id)completion
 {
-  v3 = a3;
-  if (v3)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (PKSecureElementIsAvailable())
     {
-      v4 = [PKGetClassNFRemoteAdminManager() sharedRemoteAdminManager];
+      pKGetClassNFRemoteAdminManager() = [PKGetClassNFRemoteAdminManager() sharedRemoteAdminManager];
       v6[0] = MEMORY[0x1E69E9820];
       v6[1] = 3221225472;
       v6[2] = __50__PKSecureElement_stateInformationWithCompletion___block_invoke;
       v6[3] = &unk_1E79D0738;
-      v7 = v4;
-      v8 = v3;
-      v5 = v4;
+      v7 = pKGetClassNFRemoteAdminManager();
+      v8 = completionCopy;
+      v5 = pKGetClassNFRemoteAdminManager();
       [v5 getSELDInfoForBroker:v6];
     }
 
     else
     {
-      (*(v3 + 2))(v3, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -3660,10 +3660,10 @@ void __50__PKSecureElement_stateInformationWithCompletion___block_invoke(uint64_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)signedPlatformDataWithCompletion:(id)a3
+- (void)signedPlatformDataWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (PKSecureElementIsAvailable())
     {
@@ -3676,7 +3676,7 @@ void __50__PKSecureElement_stateInformationWithCompletion___block_invoke(uint64_
       objc_copyWeak(&v10, &location);
       v6 = v5;
       v8 = v6;
-      v9 = v4;
+      v9 = completionCopy;
       [(PKSecureElement *)self accessSecureElementManagerSessionWithHandler:v7];
 
       objc_destroyWeak(&v10);
@@ -3685,7 +3685,7 @@ void __50__PKSecureElement_stateInformationWithCompletion___block_invoke(uint64_
 
     else
     {
-      (*(v4 + 2))(v4, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 }
@@ -3849,22 +3849,22 @@ LABEL_27:
   dispatch_async(v19, block);
 }
 
-- (void)generateTransactionKeyWithReaderIdentifier:(id)a3 readerPublicKey:(id)a4 withCompletion:(id)a5
+- (void)generateTransactionKeyWithReaderIdentifier:(id)identifier readerPublicKey:(id)key withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  keyCopy = key;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __93__PKSecureElement_generateTransactionKeyWithReaderIdentifier_readerPublicKey_withCompletion___block_invoke;
   v14[3] = &unk_1E79D0760;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v9;
-  v12 = v8;
-  v13 = v10;
+  v15 = identifierCopy;
+  v16 = keyCopy;
+  v17 = completionCopy;
+  v11 = keyCopy;
+  v12 = identifierCopy;
+  v13 = completionCopy;
   [(PKSecureElement *)self accessSecureElementManagerSessionWithHandler:v14];
 }
 
@@ -3928,25 +3928,25 @@ void __93__PKSecureElement_generateTransactionKeyWithReaderIdentifier_readerPubl
   dispatch_async(v11, block);
 }
 
-- (void)createAliroHomeKeyWithReaderIdentifier:(id)a3 readerPublicKey:(id)a4 homeIdentifier:(id)a5 withCompletion:(id)a6
+- (void)createAliroHomeKeyWithReaderIdentifier:(id)identifier readerPublicKey:(id)key homeIdentifier:(id)homeIdentifier withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  keyCopy = key;
+  homeIdentifierCopy = homeIdentifier;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __104__PKSecureElement_createAliroHomeKeyWithReaderIdentifier_readerPublicKey_homeIdentifier_withCompletion___block_invoke;
   v18[3] = &unk_1E79D0788;
-  v21 = v12;
-  v22 = v13;
+  v21 = homeIdentifierCopy;
+  v22 = completionCopy;
   v18[4] = self;
-  v19 = v10;
-  v20 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  v17 = v13;
+  v19 = identifierCopy;
+  v20 = keyCopy;
+  v14 = homeIdentifierCopy;
+  v15 = keyCopy;
+  v16 = identifierCopy;
+  v17 = completionCopy;
   [(PKSecureElement *)self accessSecureElementManagerSessionWithHandler:v18];
 }
 
@@ -4008,20 +4008,20 @@ void __104__PKSecureElement_createAliroHomeKeyWithReaderIdentifier_readerPublicK
   dispatch_async(v11, block);
 }
 
-- (void)generateTransactionKeyWithParameters:(id)a3 withCompletion:(id)a4
+- (void)generateTransactionKeyWithParameters:(id)parameters withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  completionCopy = completion;
   sessionQueue = self->_sessionQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__PKSecureElement_generateTransactionKeyWithParameters_withCompletion___block_invoke;
   block[3] = &unk_1E79C4D60;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = parametersCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = parametersCopy;
   dispatch_async(sessionQueue, block);
 }
 
@@ -4066,19 +4066,19 @@ void __71__PKSecureElement_generateTransactionKeyWithParameters_withCompletion__
   dispatch_async(v11, block);
 }
 
-- (void)createAliroHydraKeyWithServerParameters:(id)a3 withCompletion:(id)a4
+- (void)createAliroHydraKeyWithServerParameters:(id)parameters withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __74__PKSecureElement_createAliroHydraKeyWithServerParameters_withCompletion___block_invoke;
   v10[3] = &unk_1E79D07D8;
-  v11 = v6;
-  v12 = v7;
+  v11 = parametersCopy;
+  v12 = completionCopy;
   v10[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = parametersCopy;
+  v9 = completionCopy;
   [(PKSecureElement *)self accessSecureElementManagerSessionWithHandler:v10];
 }
 
@@ -4147,23 +4147,23 @@ void __74__PKSecureElement_createAliroHydraKeyWithServerParameters_withCompletio
   }
 }
 
-- (void)updateAliroCredentialDocumentStatusWithSubcredentialIdentifier:(id)a3 documentType:(unint64_t)a4 isDocumentPresent:(BOOL)a5 signedDate:(id)a6 withCompletion:(id)a7
+- (void)updateAliroCredentialDocumentStatusWithSubcredentialIdentifier:(id)identifier documentType:(unint64_t)type isDocumentPresent:(BOOL)present signedDate:(id)date withCompletion:(id)completion
 {
-  v11 = a3;
-  v12 = a6;
-  v13 = a7;
+  identifierCopy = identifier;
+  dateCopy = date;
+  completionCopy = completion;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __139__PKSecureElement_updateAliroCredentialDocumentStatusWithSubcredentialIdentifier_documentType_isDocumentPresent_signedDate_withCompletion___block_invoke;
   v17[3] = &unk_1E79D0800;
-  v21 = v13;
-  v22 = a4;
-  v18 = v12;
-  v19 = self;
-  v20 = v11;
-  v14 = v11;
-  v15 = v12;
-  v16 = v13;
+  v21 = completionCopy;
+  typeCopy = type;
+  v18 = dateCopy;
+  selfCopy = self;
+  v20 = identifierCopy;
+  v14 = identifierCopy;
+  v15 = dateCopy;
+  v16 = completionCopy;
   [(PKSecureElement *)self accessSecureElementManagerSessionWithHandler:v17];
 }
 
@@ -4239,33 +4239,33 @@ LABEL_17:
   }
 }
 
-- (BOOL)queueConnectionToServerWithPushTopic:(id)a3
+- (BOOL)queueConnectionToServerWithPushTopic:(id)topic
 {
-  v3 = a3;
-  v4 = [PKGetClassNFRemoteAdminManager() sharedRemoteAdminManager];
-  v5 = [v4 queueServerConnection:v3];
+  topicCopy = topic;
+  pKGetClassNFRemoteAdminManager() = [PKGetClassNFRemoteAdminManager() sharedRemoteAdminManager];
+  v5 = [pKGetClassNFRemoteAdminManager() queueServerConnection:topicCopy];
 
   return v5;
 }
 
-- (BOOL)queueConnectionToServerForAppletIdentifiers:(id)a3
+- (BOOL)queueConnectionToServerForAppletIdentifiers:(id)identifiers
 {
-  v3 = a3;
-  v4 = [PKGetClassNFRemoteAdminManager() sharedRemoteAdminManager];
-  v5 = [v4 queueServerConnectionForApplets:v3];
+  identifiersCopy = identifiers;
+  pKGetClassNFRemoteAdminManager() = [PKGetClassNFRemoteAdminManager() sharedRemoteAdminManager];
+  v5 = [pKGetClassNFRemoteAdminManager() queueServerConnectionForApplets:identifiersCopy];
 
   return v5;
 }
 
-- (void)connectToServerWithPushTopic:(id)a3 performSECleanup:(BOOL)a4 completion:(id)a5
+- (void)connectToServerWithPushTopic:(id)topic performSECleanup:(BOOL)cleanup completion:(id)completion
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = a3;
-  v9 = [PKGetClassNFRemoteAdminManager() sharedRemoteAdminManager];
+  cleanupCopy = cleanup;
+  completionCopy = completion;
+  topicCopy = topic;
+  pKGetClassNFRemoteAdminManager() = [PKGetClassNFRemoteAdminManager() sharedRemoteAdminManager];
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v11 = v10;
-  if (v5)
+  if (cleanupCopy)
   {
     [v10 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"PerformSECleanup"];
   }
@@ -4275,9 +4275,9 @@ LABEL_17:
   v14[1] = 3221225472;
   v14[2] = __76__PKSecureElement_connectToServerWithPushTopic_performSECleanup_completion___block_invoke;
   v14[3] = &unk_1E79C4450;
-  v15 = v7;
-  v13 = v7;
-  [v9 connectToServer:v8 initialClientRequestInfo:v12 callback:v14];
+  v15 = completionCopy;
+  v13 = completionCopy;
+  [pKGetClassNFRemoteAdminManager() connectToServer:topicCopy initialClientRequestInfo:v12 callback:v14];
 }
 
 void __76__PKSecureElement_connectToServerWithPushTopic_performSECleanup_completion___block_invoke(uint64_t a1, void *a2)
@@ -4302,11 +4302,11 @@ void __76__PKSecureElement_connectToServerWithPushTopic_performSECleanup_complet
   }
 }
 
-- (void)peerPaymentEnrollmentDataWithAlternateDSID:(id)a3 completion:(id)a4
+- (void)peerPaymentEnrollmentDataWithAlternateDSID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (PKSecureElementIsAvailable())
     {
@@ -4315,17 +4315,17 @@ void __76__PKSecureElement_connectToServerWithPushTopic_performSECleanup_complet
       v10[1] = 3221225472;
       v10[2] = __73__PKSecureElement_peerPaymentEnrollmentDataWithAlternateDSID_completion___block_invoke;
       v10[3] = &unk_1E79D0760;
-      v11 = v6;
-      v12 = self;
+      v11 = dCopy;
+      selfCopy = self;
       v13 = v8;
-      v14 = v7;
+      v14 = completionCopy;
       v9 = v8;
       [(PKSecureElement *)self accessSecureElementManagerSessionWithHandler:v10];
     }
 
     else
     {
-      (*(v7 + 2))(v7, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 }
@@ -4589,13 +4589,13 @@ uint64_t __73__PKSecureElement_peerPaymentEnrollmentDataWithAlternateDSID_comple
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observersLock);
-  if (v5 && ![(NSHashTable *)self->_observers containsObject:v5])
+  if (observerCopy && ![(NSHashTable *)self->_observers containsObject:observerCopy])
   {
-    [(NSHashTable *)self->_observers addObject:v5];
+    [(NSHashTable *)self->_observers addObject:observerCopy];
     if (objc_opt_respondsToSelector())
     {
       [(PKSecureElement *)self _registerPairingChangeHandler];
@@ -4603,8 +4603,8 @@ uint64_t __73__PKSecureElement_peerPaymentEnrollmentDataWithAlternateDSID_comple
 
     if ([(NSHashTable *)self->_observers count]== 1)
     {
-      v4 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v4 addObserver:self selector:sel_contactlessPaymentPassesAvailableDidChange name:@"PDContactlessPaymentPassesAvailableDidChangeNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel_contactlessPaymentPassesAvailableDidChange name:@"PDContactlessPaymentPassesAvailableDidChangeNotification" object:0];
     }
 
     [(PKSecureElement *)self _updateHardwareManagerListener];
@@ -4613,35 +4613,35 @@ uint64_t __73__PKSecureElement_peerPaymentEnrollmentDataWithAlternateDSID_comple
   os_unfair_lock_unlock(&self->_observersLock);
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observersLock);
-  if (v4 && [(NSHashTable *)self->_observers containsObject:v4])
+  if (observerCopy && [(NSHashTable *)self->_observers containsObject:observerCopy])
   {
-    [(NSHashTable *)self->_observers removeObject:v4];
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
     [(PKSecureElement *)self _updateHardwareManagerListener];
   }
 
   os_unfair_lock_unlock(&self->_observersLock);
 }
 
-- (BOOL)supportsExpressModeForExpressPassType:(int64_t)a3
+- (BOOL)supportsExpressModeForExpressPassType:(int64_t)type
 {
-  v5 = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
-  v6 = v5;
-  if (!v5 || ![v5 isExpressModeSupported])
+  pKGetClassNFHardwareManager() = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
+  v6 = pKGetClassNFHardwareManager();
+  if (!pKGetClassNFHardwareManager() || ![pKGetClassNFHardwareManager() isExpressModeSupported])
   {
     goto LABEL_6;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     LOBYTE(v7) = 1;
     goto LABEL_7;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v7 = ([(PKSecureElement *)self supportedTechnologies]>> 2) & 1;
   }
@@ -4657,15 +4657,15 @@ LABEL_7:
   return v7;
 }
 
-+ (BOOL)supportsExpressForAutomaticSelectionTechnologyType:(int64_t)a3 byHardware:(BOOL *)a4 outError:(id *)a5
++ (BOOL)supportsExpressForAutomaticSelectionTechnologyType:(int64_t)type byHardware:(BOOL *)hardware outError:(id *)error
 {
-  result = [a1 hardwareSupportsExpressForAutomaticSelectionTechnologyType:a3 outError:a5];
-  if (a4)
+  result = [self hardwareSupportsExpressForAutomaticSelectionTechnologyType:type outError:error];
+  if (hardware)
   {
-    *a4 = result;
+    *hardware = result;
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
     return 1;
   }
@@ -4673,12 +4673,12 @@ LABEL_7:
   return result;
 }
 
-+ (BOOL)hardwareSupportsExpressForAutomaticSelectionTechnologyType:(int64_t)a3 outError:(id *)a4
++ (BOOL)hardwareSupportsExpressForAutomaticSelectionTechnologyType:(int64_t)type outError:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
-  v8 = v7;
-  if (!v7)
+  pKGetClassNFHardwareManager() = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
+  v8 = pKGetClassNFHardwareManager();
+  if (!pKGetClassNFHardwareManager())
   {
     v10 = 0;
     v9 = 0;
@@ -4687,9 +4687,9 @@ LABEL_7:
 
   v9 = 0;
   v10 = 0;
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    switch(a3)
+    switch(type)
     {
       case 1:
         v22 = 0;
@@ -4714,7 +4714,7 @@ LABEL_7:
     }
   }
 
-  else if ((a3 - 4) < 2)
+  else if ((type - 4) < 2)
   {
     v19 = 0;
     v11 = &v19;
@@ -4722,7 +4722,7 @@ LABEL_7:
     v13 = 32;
   }
 
-  else if (a3 == 6)
+  else if (type == 6)
   {
     v18 = 0;
     v11 = &v18;
@@ -4732,7 +4732,7 @@ LABEL_7:
 
   else
   {
-    if (a3 != 7)
+    if (type != 7)
     {
       goto LABEL_21;
     }
@@ -4743,7 +4743,7 @@ LABEL_7:
     v13 = 1024;
   }
 
-  v10 = [v7 areFeaturesSupported:v13 outError:{v12, v17, v18, v19, v20, v21, v22}];
+  v10 = [pKGetClassNFHardwareManager() areFeaturesSupported:v13 outError:{v12, v17, v18, v19, v20, v21, v22}];
   v9 = *v11;
   if (v9)
   {
@@ -4751,18 +4751,18 @@ LABEL_7:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218498;
-      v24 = a1;
+      selfCopy = self;
       v25 = 2048;
-      v26 = a3;
+      typeCopy = type;
       v27 = 2112;
       v28 = v9;
       _os_log_impl(&dword_1AD337000, v14, OS_LOG_TYPE_DEFAULT, "PKSecureElement (%p): failed to check if feature %lu was supported, error: %@", buf, 0x20u);
     }
 
-    if (a4)
+    if (error)
     {
       v15 = v9;
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -4771,13 +4771,13 @@ LABEL_21:
   return v10;
 }
 
-+ (BOOL)supportsExpressMode:(id)a3 byHardware:(BOOL *)a4
++ (BOOL)supportsExpressMode:(id)mode byHardware:(BOOL *)hardware
 {
-  v6 = a3;
-  v7 = [a1 hardwareSupportsExpressMode:v6];
-  if (a4)
+  modeCopy = mode;
+  v7 = [self hardwareSupportsExpressMode:modeCopy];
+  if (hardware)
   {
-    *a4 = v7;
+    *hardware = v7;
   }
 
   if (v7)
@@ -4785,31 +4785,31 @@ LABEL_21:
     v8 = 1;
   }
 
-  else if (v6 && @"type_a.generic")
+  else if (modeCopy && @"type_a.generic")
   {
-    v8 = [(__CFString *)v6 isEqual:@"type_a.generic"];
+    v8 = [(__CFString *)modeCopy isEqual:@"type_a.generic"];
   }
 
   else
   {
-    v8 = @"type_a.generic" == v6;
+    v8 = @"type_a.generic" == modeCopy;
   }
 
   return v8;
 }
 
-+ (BOOL)hardwareSupportsExpressMode:(id)a3
++ (BOOL)hardwareSupportsExpressMode:(id)mode
 {
-  v3 = a3;
-  v4 = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
-  if (!v4)
+  modeCopy = mode;
+  pKGetClassNFHardwareManager() = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
+  if (!pKGetClassNFHardwareManager())
   {
     goto LABEL_15;
   }
 
-  if (!v3 || !@"transit.felica.suica")
+  if (!modeCopy || !@"transit.felica.suica")
   {
-    if (@"transit.felica.suica" == v3)
+    if (@"transit.felica.suica" == modeCopy)
     {
       goto LABEL_5;
     }
@@ -4817,12 +4817,12 @@ LABEL_21:
     goto LABEL_7;
   }
 
-  if (([(__CFString *)v3 isEqual:@"transit.felica.suica"]& 1) == 0)
+  if (([(__CFString *)modeCopy isEqual:@"transit.felica.suica"]& 1) == 0)
   {
 LABEL_7:
-    if (v3 && @"type_a.generic")
+    if (modeCopy && @"type_a.generic")
     {
-      if (([(__CFString *)v3 isEqual:@"type_a.generic"]& 1) != 0)
+      if (([(__CFString *)modeCopy isEqual:@"type_a.generic"]& 1) != 0)
       {
 LABEL_10:
         v5 = 8;
@@ -4830,12 +4830,12 @@ LABEL_10:
       }
     }
 
-    else if (@"type_a.generic" == v3)
+    else if (@"type_a.generic" == modeCopy)
     {
       goto LABEL_10;
     }
 
-    if ([(__CFString *)v3 hasPrefix:@"access.hid."])
+    if ([(__CFString *)modeCopy hasPrefix:@"access.hid."])
     {
       v5 = 2;
       goto LABEL_14;
@@ -4849,7 +4849,7 @@ LABEL_15:
 LABEL_5:
   v5 = 4;
 LABEL_14:
-  v6 = [v4 areFeaturesSupported:v5 outError:0];
+  v6 = [pKGetClassNFHardwareManager() areFeaturesSupported:v5 outError:0];
 LABEL_16:
 
   return v6;
@@ -4868,19 +4868,19 @@ LABEL_16:
   return v4;
 }
 
-- (void)createFidoKeyForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 challenge:(id)a5 externalizedAuth:(id)a6 completion:(id)a7
+- (void)createFidoKeyForRelyingParty:(id)party relyingPartyAccountHash:(id)hash challenge:(id)challenge externalizedAuth:(id)auth completion:(id)completion
 {
   v37 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  partyCopy = party;
+  hashCopy = hash;
+  challengeCopy = challenge;
+  authCopy = auth;
+  completionCopy = completion;
   v17 = PKLogFacilityTypeGetObject(0x17uLL);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v36 = v12;
+    v36 = partyCopy;
     _os_log_impl(&dword_1AD337000, v17, OS_LOG_TYPE_DEFAULT, "PKSecureElement creating FIDO key for relyingParty: %@", buf, 0xCu);
   }
 
@@ -4896,18 +4896,18 @@ LABEL_16:
     }
   }
 
-  if (v12 && v13 && v14)
+  if (partyCopy && hashCopy && challengeCopy)
   {
-    v33 = v15;
-    v21 = [MEMORY[0x1E69C86D0] shared];
+    v33 = authCopy;
+    mEMORY[0x1E69C86D0] = [MEMORY[0x1E69C86D0] shared];
     v34 = 0;
-    v22 = [v21 createFidoKeyForRelyingParty:v12 relyingPartyAccountHash:v13 challenge:v14 usingSession:0 withSessionSEID:0 error:&v34];
+    v22 = [mEMORY[0x1E69C86D0] createFidoKeyForRelyingParty:partyCopy relyingPartyAccountHash:hashCopy challenge:challengeCopy usingSession:0 withSessionSEID:0 error:&v34];
     v23 = v34;
 
     v24 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
     if (v23)
     {
-      v15 = v33;
+      authCopy = v33;
       if (v24)
       {
         *buf = 138412290;
@@ -4915,17 +4915,17 @@ LABEL_16:
         _os_log_impl(&dword_1AD337000, v17, OS_LOG_TYPE_DEFAULT, "PKSecureElement unable to create FIDO key with error: %@", buf, 0xCu);
       }
 
-      (*(v16 + 2))(v16, 0, 0, 0, v23);
+      (*(completionCopy + 2))(completionCopy, 0, 0, 0, v23);
     }
 
     else
     {
       if (v24)
       {
-        v32 = [v22 fidoKeyHash];
-        v25 = [v32 hexEncoding];
+        fidoKeyHash = [v22 fidoKeyHash];
+        hexEncoding = [fidoKeyHash hexEncoding];
         *buf = 138412290;
-        v36 = v25;
+        v36 = hexEncoding;
         _os_log_impl(&dword_1AD337000, v17, OS_LOG_TYPE_DEFAULT, "PKSecureElement generated FIDO key for with keyHash: %@", buf, 0xCu);
       }
 
@@ -4941,12 +4941,12 @@ LABEL_16:
         }
       }
 
-      v29 = [v22 fidoPublicKey];
-      v30 = [v22 fidoAttestation];
-      v31 = [v22 fidoKeyHash];
-      (*(v16 + 2))(v16, v29, v30, v31, 0);
+      fidoPublicKey = [v22 fidoPublicKey];
+      fidoAttestation = [v22 fidoAttestation];
+      fidoKeyHash2 = [v22 fidoKeyHash];
+      (*(completionCopy + 2))(completionCopy, fidoPublicKey, fidoAttestation, fidoKeyHash2, 0);
 
-      v15 = v33;
+      authCopy = v33;
     }
   }
 
@@ -4959,17 +4959,17 @@ LABEL_16:
     }
 
     v23 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:0];
-    (*(v16 + 2))(v16, 0, 0, 0, v23);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, v23);
   }
 }
 
-- (void)checkFidoKeyPresenceForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 fidoKeyHash:(id)a5 completion:(id)a6
+- (void)checkFidoKeyPresenceForRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoKeyHash:(id)keyHash completion:(id)completion
 {
   v34 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  partyCopy = party;
+  hashCopy = hash;
+  keyHashCopy = keyHash;
+  completionCopy = completion;
   v14 = PKLogFacilityTypeGetObject(0x24uLL);
   v15 = os_signpost_id_make_with_pointer(v14, self);
   if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
@@ -4986,22 +4986,22 @@ LABEL_16:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v33 = v10;
+    v33 = partyCopy;
     _os_log_impl(&dword_1AD337000, v17, OS_LOG_TYPE_DEFAULT, "PKSecureElement checking FIDO key for relyingParty: %@", buf, 0xCu);
   }
 
-  if (v10 && v11)
+  if (partyCopy && hashCopy)
   {
-    v30 = v11;
-    v18 = v11;
-    v19 = v12;
-    v20 = [MEMORY[0x1E69C86C8] withRelyingParty:v10 relyingPartyAccountHash:v18 fidoKeyHash:v12];
-    v21 = [MEMORY[0x1E69C86D0] shared];
+    v30 = hashCopy;
+    v18 = hashCopy;
+    v19 = keyHashCopy;
+    v20 = [MEMORY[0x1E69C86C8] withRelyingParty:partyCopy relyingPartyAccountHash:v18 fidoKeyHash:keyHashCopy];
+    mEMORY[0x1E69C86D0] = [MEMORY[0x1E69C86D0] shared];
     v31 = 0;
     v29 = v20;
-    v22 = [v21 checkFidoKeyPresence:v20 usingSession:0 withSessionSEID:0 error:&v31];
+    v22 = [mEMORY[0x1E69C86D0] checkFidoKeyPresence:v20 usingSession:0 withSessionSEID:0 error:&v31];
     v23 = v31;
-    v24 = [v22 BOOLValue];
+    bOOLValue = [v22 BOOLValue];
 
     if (v23)
     {
@@ -5012,15 +5012,15 @@ LABEL_16:
         _os_log_impl(&dword_1AD337000, v17, OS_LOG_TYPE_DEFAULT, "PKSecureElement failed to check FIDO key with error %@", buf, 0xCu);
       }
 
-      v24 = 0;
+      bOOLValue = 0;
     }
 
-    v12 = v19;
-    v11 = v30;
+    keyHashCopy = v19;
+    hashCopy = v30;
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v25 = @"No";
-      if (v24)
+      if (bOOLValue)
       {
         v25 = @"Yes";
       }
@@ -5042,7 +5042,7 @@ LABEL_16:
       }
     }
 
-    v13[2](v13, v24);
+    completionCopy[2](completionCopy, bOOLValue);
   }
 
   else
@@ -5053,25 +5053,25 @@ LABEL_16:
       _os_log_impl(&dword_1AD337000, v17, OS_LOG_TYPE_DEFAULT, "PKSecureElement checking FIDO key missing required parameters", buf, 2u);
     }
 
-    v13[2](v13, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)checkMultipleFidoKeyPresenceForFIDOProfiles:(id)a3 completion:(id)a4
+- (void)checkMultipleFidoKeyPresenceForFIDOProfiles:(id)profiles completion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  profilesCopy = profiles;
+  completionCopy = completion;
   v8 = PKLogFacilityTypeGetObject(0x17uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 description];
+    v9 = [profilesCopy description];
     *buf = 138412290;
     v27 = v9;
     _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "PKSecureElement checking FIDO keys: %@", buf, 0xCu);
   }
 
-  if (v6 && [v6 count])
+  if (profilesCopy && [profilesCopy count])
   {
     v10 = PKLogFacilityTypeGetObject(0x24uLL);
     v11 = os_signpost_id_make_with_pointer(v10, self);
@@ -5092,10 +5092,10 @@ LABEL_16:
     v24[3] = &unk_1E79D0878;
     v14 = v13;
     v25 = v14;
-    [v6 enumerateObjectsUsingBlock:v24];
-    v15 = [MEMORY[0x1E69C86D0] shared];
+    [profilesCopy enumerateObjectsUsingBlock:v24];
+    mEMORY[0x1E69C86D0] = [MEMORY[0x1E69C86D0] shared];
     v23 = 0;
-    v16 = [v15 checkMultipleFidoKeyPresence:v14 usingSession:0 withSessionSEID:0 error:&v23];
+    v16 = [mEMORY[0x1E69C86D0] checkMultipleFidoKeyPresence:v14 usingSession:0 withSessionSEID:0 error:&v23];
     v17 = v23;
 
     v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -5105,7 +5105,7 @@ LABEL_16:
     v20[3] = &unk_1E79D08A0;
     v19 = v18;
     v21 = v19;
-    v22 = v6;
+    v22 = profilesCopy;
     [v16 enumerateObjectsUsingBlock:v20];
     if (v17)
     {
@@ -5117,7 +5117,7 @@ LABEL_16:
       }
     }
 
-    v7[2](v7, v19);
+    completionCopy[2](completionCopy, v19);
   }
 
   else
@@ -5128,7 +5128,7 @@ LABEL_16:
       _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "PKSecureElement checking FIDO key missing required parameters", buf, 2u);
     }
 
-    v7[2](v7, MEMORY[0x1E695E0F8]);
+    completionCopy[2](completionCopy, MEMORY[0x1E695E0F8]);
   }
 }
 
@@ -5155,18 +5155,18 @@ void __74__PKSecureElement_checkMultipleFidoKeyPresenceForFIDOProfiles_completio
   [v4 setObject:v6 forKey:v7];
 }
 
-- (void)findFidoKeyForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 challenge:(id)a5 completion:(id)a6
+- (void)findFidoKeyForRelyingParty:(id)party relyingPartyAccountHash:(id)hash challenge:(id)challenge completion:(id)completion
 {
   v37 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  partyCopy = party;
+  hashCopy = hash;
+  challengeCopy = challenge;
+  completionCopy = completion;
   v14 = PKLogFacilityTypeGetObject(0x17uLL);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v34 = v10;
+    v34 = partyCopy;
     _os_log_impl(&dword_1AD337000, v14, OS_LOG_TYPE_DEFAULT, "PKSecureElement finding FIDO key for relyingParty: %@", buf, 0xCu);
   }
 
@@ -5182,13 +5182,13 @@ void __74__PKSecureElement_checkMultipleFidoKeyPresenceForFIDOProfiles_completio
     }
   }
 
-  if (v10 && v11 && v12)
+  if (partyCopy && hashCopy && challengeCopy)
   {
-    v18 = [MEMORY[0x1E69C86C8] withRelyingParty:v10 relyingPartyAccountHash:v11 fidoKeyHash:0];
-    v19 = [MEMORY[0x1E69C86D0] shared];
+    v18 = [MEMORY[0x1E69C86C8] withRelyingParty:partyCopy relyingPartyAccountHash:hashCopy fidoKeyHash:0];
+    mEMORY[0x1E69C86D0] = [MEMORY[0x1E69C86D0] shared];
     v31 = v18;
     v32 = 0;
-    v20 = [v19 findAndAttest:v18 challenge:v12 usingSession:0 withSessionSEID:0 error:&v32];
+    v20 = [mEMORY[0x1E69C86D0] findAndAttest:v18 challenge:challengeCopy usingSession:0 withSessionSEID:0 error:&v32];
     v21 = v32;
 
     v22 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
@@ -5197,25 +5197,25 @@ void __74__PKSecureElement_checkMultipleFidoKeyPresenceForFIDOProfiles_completio
       if (v22)
       {
         *buf = 138412546;
-        v34 = v10;
+        v34 = partyCopy;
         v35 = 2112;
         v36 = v21;
         _os_log_impl(&dword_1AD337000, v14, OS_LOG_TYPE_DEFAULT, "PKSecureElement unable to find FIDO key for: %@ with error: %@", buf, 0x16u);
       }
 
-      (*(v13 + 2))(v13, 0, 0, 0, v21);
+      (*(completionCopy + 2))(completionCopy, 0, 0, 0, v21);
     }
 
     else
     {
       if (v22)
       {
-        v30 = [v20 fidoKeyHash];
-        v23 = [v30 hexEncoding];
+        fidoKeyHash = [v20 fidoKeyHash];
+        hexEncoding = [fidoKeyHash hexEncoding];
         *buf = 138412546;
-        v34 = v10;
+        v34 = partyCopy;
         v35 = 2112;
-        v36 = v23;
+        v36 = hexEncoding;
         _os_log_impl(&dword_1AD337000, v14, OS_LOG_TYPE_DEFAULT, "PKSecureElement found FIDO key for: %@ with keyHash: %@", buf, 0x16u);
       }
 
@@ -5231,10 +5231,10 @@ void __74__PKSecureElement_checkMultipleFidoKeyPresenceForFIDOProfiles_completio
         }
       }
 
-      v27 = [v20 fidoPublicKey];
-      v28 = [v20 fidoAttestation];
-      v29 = [v20 fidoKeyHash];
-      (*(v13 + 2))(v13, v27, v28, v29, 0);
+      fidoPublicKey = [v20 fidoPublicKey];
+      fidoAttestation = [v20 fidoAttestation];
+      fidoKeyHash2 = [v20 fidoKeyHash];
+      (*(completionCopy + 2))(completionCopy, fidoPublicKey, fidoAttestation, fidoKeyHash2, 0);
     }
   }
 
@@ -5247,20 +5247,20 @@ void __74__PKSecureElement_checkMultipleFidoKeyPresenceForFIDOProfiles_completio
     }
 
     v21 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:0];
-    (*(v13 + 2))(v13, 0, 0, 0, v21);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, v21);
   }
 }
 
-- (void)signWithFidoKeyForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 fidoKeyHash:(id)a5 challenge:(id)a6 publicKeyIdentifier:(id)a7 externalizedAuth:(id)a8 completion:(id)a9
+- (void)signWithFidoKeyForRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoKeyHash:(id)keyHash challenge:(id)challenge publicKeyIdentifier:(id)identifier externalizedAuth:(id)auth completion:(id)completion
 {
   v44 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v40 = a7;
-  v19 = a8;
-  v20 = a9;
+  partyCopy = party;
+  hashCopy = hash;
+  keyHashCopy = keyHash;
+  challengeCopy = challenge;
+  identifierCopy = identifier;
+  authCopy = auth;
+  completionCopy = completion;
   v21 = PKLogFacilityTypeGetObject(0x24uLL);
   v22 = os_signpost_id_make_with_pointer(v21, self);
   if (v22 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
@@ -5277,22 +5277,22 @@ void __74__PKSecureElement_checkMultipleFidoKeyPresenceForFIDOProfiles_completio
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v43 = v15;
+    v43 = partyCopy;
     _os_log_impl(&dword_1AD337000, v24, OS_LOG_TYPE_DEFAULT, "PKSecureElement signing FIDO key for relyingParty: %@", buf, 0xCu);
   }
 
-  v39 = v17;
-  if (v15 && v16 && v18 && v19)
+  v39 = keyHashCopy;
+  if (partyCopy && hashCopy && challengeCopy && authCopy)
   {
-    v38 = v16;
-    v25 = [MEMORY[0x1E69C86C8] withRelyingParty:v15 relyingPartyAccountHash:v16 fidoKeyHash:v17];
-    v26 = [MEMORY[0x1E69C86D0] shared];
-    v27 = [MEMORY[0x1E695DEF0] dataWithHexEncodedString:v40];
-    v28 = v18;
+    v38 = hashCopy;
+    v25 = [MEMORY[0x1E69C86C8] withRelyingParty:partyCopy relyingPartyAccountHash:hashCopy fidoKeyHash:keyHashCopy];
+    mEMORY[0x1E69C86D0] = [MEMORY[0x1E69C86D0] shared];
+    v27 = [MEMORY[0x1E695DEF0] dataWithHexEncodedString:identifierCopy];
+    v28 = challengeCopy;
     v29 = v27;
     v41 = 0;
     v37 = v28;
-    v36 = [v26 signWithFidoKeyFor:v25 challenge:&v41 forNFCKeyWithIdentifier:? usingSession:? withSessionSEID:? externalizedAuth:? error:?];
+    v36 = [mEMORY[0x1E69C86D0] signWithFidoKeyFor:v25 challenge:&v41 forNFCKeyWithIdentifier:? usingSession:? withSessionSEID:? externalizedAuth:? error:?];
     v30 = v41;
 
     if (v30)
@@ -5304,9 +5304,9 @@ void __74__PKSecureElement_checkMultipleFidoKeyPresenceForFIDOProfiles_completio
         _os_log_impl(&dword_1AD337000, v24, OS_LOG_TYPE_DEFAULT, "PKSecureElement unable to sign FIDO challenge with error: %@", buf, 0xCu);
       }
 
-      v20[2](v20, 0, v30);
-      v18 = v37;
-      v16 = v38;
+      completionCopy[2](completionCopy, 0, v30);
+      challengeCopy = v37;
+      hashCopy = v38;
       v31 = v36;
     }
 
@@ -5325,11 +5325,11 @@ void __74__PKSecureElement_checkMultipleFidoKeyPresenceForFIDOProfiles_completio
       }
 
       v31 = v36;
-      v35 = [v36 fidoAssertion];
-      (v20)[2](v20, v35, 0);
+      fidoAssertion = [v36 fidoAssertion];
+      (completionCopy)[2](completionCopy, fidoAssertion, 0);
 
-      v18 = v37;
-      v16 = v38;
+      challengeCopy = v37;
+      hashCopy = v38;
     }
   }
 
@@ -5342,18 +5342,18 @@ void __74__PKSecureElement_checkMultipleFidoKeyPresenceForFIDOProfiles_completio
     }
 
     v25 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:0];
-    v20[2](v20, 0, v25);
+    completionCopy[2](completionCopy, 0, v25);
   }
 }
 
-- (void)verifySignedChallenge:(id)a3 forRelyingParty:(id)a4 relyingPartyAccountHash:(id)a5 fidoKeyHash:(id)a6 completion:(id)a7
+- (void)verifySignedChallenge:(id)challenge forRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoKeyHash:(id)keyHash completion:(id)completion
 {
   v34 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  challengeCopy = challenge;
+  partyCopy = party;
+  hashCopy = hash;
+  keyHashCopy = keyHash;
+  completionCopy = completion;
   v17 = PKLogFacilityTypeGetObject(0x24uLL);
   v18 = os_signpost_id_make_with_pointer(v17, self);
   if (v18 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
@@ -5370,17 +5370,17 @@ void __74__PKSecureElement_checkMultipleFidoKeyPresenceForFIDOProfiles_completio
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v33 = v13;
+    v33 = partyCopy;
     _os_log_impl(&dword_1AD337000, v20, OS_LOG_TYPE_DEFAULT, "PKSecureElement verifying signed challenge for relyingParty: %@", buf, 0xCu);
   }
 
-  if (v12 && v13 && v14)
+  if (challengeCopy && partyCopy && hashCopy)
   {
-    v30 = v15;
-    v21 = [MEMORY[0x1E69C86C8] withRelyingParty:v13 relyingPartyAccountHash:v14 fidoKeyHash:v15];
-    v22 = [MEMORY[0x1E69C86D0] shared];
+    v30 = keyHashCopy;
+    v21 = [MEMORY[0x1E69C86C8] withRelyingParty:partyCopy relyingPartyAccountHash:hashCopy fidoKeyHash:keyHashCopy];
+    mEMORY[0x1E69C86D0] = [MEMORY[0x1E69C86D0] shared];
     v31 = 0;
-    v29 = [v22 verifyWithFidoKeyFor:v21 signedChallenge:v12 usingSession:0 withSessionSEID:0 error:&v31];
+    v29 = [mEMORY[0x1E69C86D0] verifyWithFidoKeyFor:v21 signedChallenge:challengeCopy usingSession:0 withSessionSEID:0 error:&v31];
     v23 = v31;
 
     if (v23)
@@ -5392,7 +5392,7 @@ void __74__PKSecureElement_checkMultipleFidoKeyPresenceForFIDOProfiles_completio
         _os_log_impl(&dword_1AD337000, v20, OS_LOG_TYPE_DEFAULT, "PKSecureElement unable to verify signed challenge with error: %@", buf, 0xCu);
       }
 
-      v24 = 0;
+      bOOLValue = 0;
       v25 = v29;
     }
 
@@ -5411,12 +5411,12 @@ void __74__PKSecureElement_checkMultipleFidoKeyPresenceForFIDOProfiles_completio
       }
 
       v25 = v29;
-      v24 = [v29 BOOLValue];
+      bOOLValue = [v29 BOOLValue];
     }
 
-    v16[2](v16, v24);
+    completionCopy[2](completionCopy, bOOLValue);
 
-    v15 = v30;
+    keyHashCopy = v30;
   }
 
   else
@@ -5427,31 +5427,31 @@ void __74__PKSecureElement_checkMultipleFidoKeyPresenceForFIDOProfiles_completio
       _os_log_impl(&dword_1AD337000, v20, OS_LOG_TYPE_DEFAULT, "PKSecureElement verifying signed challenge missing required parameters", buf, 2u);
     }
 
-    v16[2](v16, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)deleteFidoKeyForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 fidoKeyHash:(id)a5 completion:(id)a6
+- (void)deleteFidoKeyForRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoKeyHash:(id)keyHash completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  partyCopy = party;
+  hashCopy = hash;
+  keyHashCopy = keyHash;
+  completionCopy = completion;
   v13 = PKLogFacilityTypeGetObject(0x17uLL);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v9;
+    v20 = partyCopy;
     _os_log_impl(&dword_1AD337000, v13, OS_LOG_TYPE_DEFAULT, "PKSecureElement: deleting FIDO key for relyingParty: %@", buf, 0xCu);
   }
 
-  if (v9 && v10 && v11)
+  if (partyCopy && hashCopy && keyHashCopy)
   {
-    v14 = [MEMORY[0x1E69C86C8] withRelyingParty:v9 relyingPartyAccountHash:v10 fidoKeyHash:v11];
-    v15 = [MEMORY[0x1E69C86D0] shared];
+    v14 = [MEMORY[0x1E69C86C8] withRelyingParty:partyCopy relyingPartyAccountHash:hashCopy fidoKeyHash:keyHashCopy];
+    mEMORY[0x1E69C86D0] = [MEMORY[0x1E69C86D0] shared];
     v18 = 0;
-    v16 = [v15 deleteFidoKeyFor:v14 usingSession:0 withSessionSEID:0 error:&v18];
+    v16 = [mEMORY[0x1E69C86D0] deleteFidoKeyFor:v14 usingSession:0 withSessionSEID:0 error:&v18];
     v17 = v18;
 
     if (!v16 || v17)
@@ -5463,12 +5463,12 @@ void __74__PKSecureElement_checkMultipleFidoKeyPresenceForFIDOProfiles_completio
         _os_log_error_impl(&dword_1AD337000, v13, OS_LOG_TYPE_ERROR, "PKSecureElement: unable to delete FIDO challenge with error: %@", buf, 0xCu);
       }
 
-      v12[2](v12, 0, v17);
+      completionCopy[2](completionCopy, 0, v17);
     }
 
     else
     {
-      v12[2](v12, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
   }
 
@@ -5481,23 +5481,23 @@ void __74__PKSecureElement_checkMultipleFidoKeyPresenceForFIDOProfiles_completio
     }
 
     v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:0];
-    v12[2](v12, 0, v14);
+    completionCopy[2](completionCopy, 0, v14);
   }
 }
 
-- (void)generateSEEncryptionCertificateForSubCredentialId:(id)a3 completion:(id)a4
+- (void)generateSEEncryptionCertificateForSubCredentialId:(id)id completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  idCopy = id;
   v8 = objc_alloc_init(PKDAManager);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __80__PKSecureElement_generateSEEncryptionCertificateForSubCredentialId_completion___block_invoke;
   v10[3] = &unk_1E79C4C20;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [(PKDAManager *)v8 generateSEEncryptionCertificateForSubCredentialId:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(PKDAManager *)v8 generateSEEncryptionCertificateForSubCredentialId:idCopy completion:v10];
 }
 
 void __80__PKSecureElement_generateSEEncryptionCertificateForSubCredentialId_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -5518,26 +5518,26 @@ void __80__PKSecureElement_generateSEEncryptionCertificateForSubCredentialId_com
   dispatch_async(v7, block);
 }
 
-- (void)longTermPrivacyKeyForCredentialGroupIdentifier:(id)a3 reuseExisting:(BOOL)a4 completion:(id)a5
+- (void)longTermPrivacyKeyForCredentialGroupIdentifier:(id)identifier reuseExisting:(BOOL)existing completion:(id)completion
 {
-  v6 = a4;
+  existingCopy = existing;
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v9 = PKLogFacilityTypeGetObject(0x17uLL);
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (identifierCopy)
   {
     if (v10)
     {
       v11 = @"N";
-      if (v6)
+      if (existingCopy)
       {
         v11 = @"Y";
       }
 
       *buf = 138412546;
-      v26 = v7;
+      v26 = identifierCopy;
       v27 = 2112;
       v28 = v11;
       _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "PKSecureElement LTPK: Generating key for groupIdentifier: '%@' reuse: '%@'", buf, 0x16u);
@@ -5545,23 +5545,23 @@ void __80__PKSecureElement_generateSEEncryptionCertificateForSubCredentialId_com
 
     v12 = objc_alloc_init(PKDAManager);
     v13 = v12;
-    if (v6)
+    if (existingCopy)
     {
       v24 = 0;
-      v14 = [(PKDAManager *)v12 privacyKeysForGroupIdentifier:v7 privacyKeyIdentifier:0 outError:&v24];
+      v14 = [(PKDAManager *)v12 privacyKeysForGroupIdentifier:identifierCopy privacyKeyIdentifier:0 outError:&v24];
       v15 = v24;
-      v16 = [v14 firstObject];
+      firstObject = [v14 firstObject];
 
-      if (v16)
+      if (firstObject)
       {
         if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
           goto LABEL_22;
         }
 
-        v17 = [v16 publicKey];
+        publicKey = [firstObject publicKey];
         *buf = 138412290;
-        v26 = v17;
+        v26 = publicKey;
         v18 = "PKSecureElement LTPK: Found key %@";
         goto LABEL_21;
       }
@@ -5569,18 +5569,18 @@ void __80__PKSecureElement_generateSEEncryptionCertificateForSubCredentialId_com
 
     else
     {
-      v19 = [(PKDAManager *)v12 privacyKeysForGroupIdentifier:v7 privacyKeyIdentifier:0 outError:0];
+      v19 = [(PKDAManager *)v12 privacyKeysForGroupIdentifier:identifierCopy privacyKeyIdentifier:0 outError:0];
       if ([v19 count] >= 0xA)
       {
-        v20 = [v19 lastObject];
+        lastObject = [v19 lastObject];
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v26 = v20;
+          v26 = lastObject;
           _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "PKSecureElement LTPK: At max keys for groupIdentifier, deleting oldest key: %@", buf, 0xCu);
         }
 
-        [v13 deletePrivacyKey:v20 outError:0];
+        [v13 deletePrivacyKey:lastObject outError:0];
       }
 
       v15 = 0;
@@ -5588,10 +5588,10 @@ void __80__PKSecureElement_generateSEEncryptionCertificateForSubCredentialId_com
 
     v21 = v15;
     v23 = v15;
-    v16 = [v13 createPrivacyKeyForGroupIdentifier:v7 outError:&v23];
+    firstObject = [v13 createPrivacyKeyForGroupIdentifier:identifierCopy outError:&v23];
     v15 = v23;
 
-    if (!v16)
+    if (!firstObject)
     {
       goto LABEL_23;
     }
@@ -5602,10 +5602,10 @@ LABEL_22:
 
       if (!v15)
       {
-        if (v8)
+        if (completionCopy)
         {
-          v22 = [v16 publicKey];
-          v8[2](v8, v22, 0);
+          publicKey2 = [firstObject publicKey];
+          completionCopy[2](completionCopy, publicKey2, 0);
         }
 
         v15 = 0;
@@ -5620,9 +5620,9 @@ LABEL_23:
         _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "PKSecureElement unable to get long term privacy key with error: %@", buf, 0xCu);
       }
 
-      if (v8)
+      if (completionCopy)
       {
-        (v8)[2](v8, 0, v15);
+        (completionCopy)[2](completionCopy, 0, v15);
       }
 
 LABEL_30:
@@ -5630,9 +5630,9 @@ LABEL_30:
       goto LABEL_31;
     }
 
-    v17 = [v16 publicKey];
+    publicKey = [firstObject publicKey];
     *buf = 138412290;
-    v26 = v17;
+    v26 = publicKey;
     v18 = "PKSecureElement LTPK: Generated key %@";
 LABEL_21:
     _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, v18, buf, 0xCu);
@@ -5647,32 +5647,32 @@ LABEL_21:
   }
 
   v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:0];
-  (v8)[2](v8, 0, v13);
+  (completionCopy)[2](completionCopy, 0, v13);
 LABEL_31:
 }
 
-- (void)hasLongTermPrivacyKeyForCredentialGroupIdentifier:(id)a3 completion:(id)a4
+- (void)hasLongTermPrivacyKeyForCredentialGroupIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a4;
-  v5 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(PKDAManager);
-  v7 = [(PKDAManager *)v6 hasLongTermPrivacyKeyForGroupIdentifier:v5];
+  v7 = [(PKDAManager *)v6 hasLongTermPrivacyKeyForGroupIdentifier:identifierCopy];
 
-  if (v8)
+  if (completionCopy)
   {
-    v8[2](v8, v7);
+    completionCopy[2](completionCopy, v7);
   }
 }
 
-- (void)longTermPrivacyKeysForCredentialGroupIdentifier:(id)a3 privacyKeyIdentifier:(id)a4 completion:(id)a5
+- (void)longTermPrivacyKeysForCredentialGroupIdentifier:(id)identifier privacyKeyIdentifier:(id)keyIdentifier completion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  keyIdentifierCopy = keyIdentifier;
+  identifierCopy = identifier;
   v10 = objc_alloc_init(PKDAManager);
   v14 = 0;
-  v11 = [(PKDAManager *)v10 privacyKeysForGroupIdentifier:v9 privacyKeyIdentifier:v8 outError:&v14];
+  v11 = [(PKDAManager *)v10 privacyKeysForGroupIdentifier:identifierCopy privacyKeyIdentifier:keyIdentifierCopy outError:&v14];
 
   v12 = v14;
   if (v12)
@@ -5685,15 +5685,15 @@ LABEL_31:
       _os_log_impl(&dword_1AD337000, v13, OS_LOG_TYPE_DEFAULT, "PKSecureElement unable to get long term privacy keys with error: %@", buf, 0xCu);
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 0, v12);
+      completionCopy[2](completionCopy, 0, v12);
     }
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (v7)[2](v7, v11, 0);
+    (completionCopy)[2](completionCopy, v11, 0);
   }
 }
 
@@ -5727,17 +5727,17 @@ void __46__PKSecureElement_secureElementSessionPrelude__block_invoke(uint64_t a1
   *(v3 + 40) = v2;
 }
 
-- (void)setSecureElementSessionPrelude:(id)a3
+- (void)setSecureElementSessionPrelude:(id)prelude
 {
-  v4 = a3;
+  preludeCopy = prelude;
   sessionQueue = self->_sessionQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__PKSecureElement_setSecureElementSessionPrelude___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = preludeCopy;
+  v6 = preludeCopy;
   dispatch_sync(sessionQueue, v7);
 }
 
@@ -5779,17 +5779,17 @@ void __47__PKSecureElement_secureElementSessionPostlude__block_invoke(uint64_t a
   *(v3 + 40) = v2;
 }
 
-- (void)setSecureElementSessionPostlude:(id)a3
+- (void)setSecureElementSessionPostlude:(id)postlude
 {
-  v4 = a3;
+  postludeCopy = postlude;
   sessionQueue = self->_sessionQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__PKSecureElement_setSecureElementSessionPostlude___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = postludeCopy;
+  v6 = postludeCopy;
   dispatch_sync(sessionQueue, v7);
 }
 
@@ -5868,28 +5868,28 @@ void __37__PKSecureElement_isInRestrictedMode__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_setIsInRestrictedMode:(BOOL)a3
+- (void)_setIsInRestrictedMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v30 = *MEMORY[0x1E69E9840];
   Current = CFAbsoluteTimeGetCurrent();
   os_unfair_lock_lock(&self->_lock);
   isInRestrictedMode = self->_isInRestrictedMode;
-  self->_isInRestrictedMode = v3;
+  self->_isInRestrictedMode = modeCopy;
   self->_isInRestrictedModeTimestamp = Current;
   os_unfair_lock_unlock(&self->_lock);
-  if (isInRestrictedMode != v3)
+  if (isInRestrictedMode != modeCopy)
   {
     os_unfair_lock_lock(&self->_observersLock);
-    v7 = [(NSHashTable *)self->_observers allObjects];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
     os_unfair_lock_unlock(&self->_observersLock);
-    if (v3)
+    if (modeCopy)
     {
       v26 = 0uLL;
       v27 = 0uLL;
       v24 = 0uLL;
       v25 = 0uLL;
-      v8 = v7;
+      v8 = allObjects;
       v9 = [v8 countByEnumeratingWithState:&v24 objects:v29 count:16];
       if (v9)
       {
@@ -5924,7 +5924,7 @@ void __37__PKSecureElement_isInRestrictedMode__block_invoke(uint64_t a1)
       v23 = 0uLL;
       v20 = 0uLL;
       v21 = 0uLL;
-      v14 = v7;
+      v14 = allObjects;
       v15 = [v14 countByEnumeratingWithState:&v20 objects:v28 count:16];
       if (v15)
       {
@@ -5965,10 +5965,10 @@ void __37__PKSecureElement_isInRestrictedMode__block_invoke(uint64_t a1)
 
 - (NSString)primaryRegionTopic
 {
-  v2 = [PKGetClassNFRemoteAdminManager() sharedRemoteAdminManager];
-  v3 = [v2 primaryRegionTopic];
+  pKGetClassNFRemoteAdminManager() = [PKGetClassNFRemoteAdminManager() sharedRemoteAdminManager];
+  primaryRegionTopic = [pKGetClassNFRemoteAdminManager() primaryRegionTopic];
 
-  return v3;
+  return primaryRegionTopic;
 }
 
 + (id)primarySecureElementIdentifier

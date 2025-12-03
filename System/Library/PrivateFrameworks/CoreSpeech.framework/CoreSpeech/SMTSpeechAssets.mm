@@ -1,17 +1,17 @@
 @interface SMTSpeechAssets
 + (void)initialize;
-- (id)fetchAssetPathForAssetConfig:(id)a3 outError:(id *)a4;
-- (id)fetchAssetPathForInstalledLanguage:(id)a3 outError:(id *)a4;
+- (id)fetchAssetPathForAssetConfig:(id)config outError:(id *)error;
+- (id)fetchAssetPathForInstalledLanguage:(id)language outError:(id *)error;
 @end
 
 @implementation SMTSpeechAssets
 
-- (id)fetchAssetPathForAssetConfig:(id)a3 outError:(id *)a4
+- (id)fetchAssetPathForAssetConfig:(id)config outError:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 language];
+  configCopy = config;
+  language = [configCopy language];
   v7 = +[SFEntitledAssetManager sharedInstance];
-  v8 = [v7 installedAssetWithConfig:v5];
+  v8 = [v7 installedAssetWithConfig:configCopy];
 
   if (v8 && [v8 length])
   {
@@ -20,12 +20,12 @@
 
   else
   {
-    if (a4)
+    if (error)
     {
-      v10 = [NSString stringWithFormat:@"No asset found for language=%@", v6, NSLocalizedDescriptionKey];
-      v14 = v10;
+      nSLocalizedDescriptionKey = [NSString stringWithFormat:@"No asset found for language=%@", language, NSLocalizedDescriptionKey];
+      v14 = nSLocalizedDescriptionKey;
       v11 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
-      *a4 = [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:102 userInfo:v11];
+      *error = [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:102 userInfo:v11];
     }
 
     v9 = &stru_100039238;
@@ -34,19 +34,19 @@
   return v9;
 }
 
-- (id)fetchAssetPathForInstalledLanguage:(id)a3 outError:(id *)a4
+- (id)fetchAssetPathForInstalledLanguage:(id)language outError:(id *)error
 {
-  v6 = a3;
-  v7 = [[SFEntitledAssetConfig alloc] initWithLanguage:v6 assetType:3];
+  languageCopy = language;
+  v7 = [[SFEntitledAssetConfig alloc] initWithLanguage:languageCopy assetType:3];
 
-  v8 = [(SMTSpeechAssets *)self fetchAssetPathForAssetConfig:v7 outError:a4];
+  v8 = [(SMTSpeechAssets *)self fetchAssetPathForAssetConfig:v7 outError:error];
 
   return v8;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_10003FF08 = os_log_create("com.apple.speech.speechmodeltraining", "SMTSpeechAssets");
 

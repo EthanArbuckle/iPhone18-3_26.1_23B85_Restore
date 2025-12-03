@@ -1,6 +1,6 @@
 @interface PKPassGroupsMoreMenuFactory
 - (PKPassGroupsMoreMenuDelegate)delegate;
-- (PKPassGroupsMoreMenuFactory)initWithAutoFillCardManager:(id)a3;
+- (PKPassGroupsMoreMenuFactory)initWithAutoFillCardManager:(id)manager;
 - (id)_autoFillMenuElement;
 - (id)_defaultMenuItems;
 - (id)_expiredPassesMenuElement;
@@ -15,8 +15,8 @@
 
 - (id)moreMenu
 {
-  v2 = [(PKPassGroupsMoreMenuFactory *)self _defaultMenuItems];
-  v3 = [MEMORY[0x1E69DCC60] menuWithChildren:v2];
+  _defaultMenuItems = [(PKPassGroupsMoreMenuFactory *)self _defaultMenuItems];
+  v3 = [MEMORY[0x1E69DCC60] menuWithChildren:_defaultMenuItems];
 
   return v3;
 }
@@ -26,13 +26,13 @@
   v18[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [(PKPassGroupsMoreMenuFactory *)self _showOrdersAction];
-  [v4 safelyAddObject:v5];
+  _showOrdersAction = [(PKPassGroupsMoreMenuFactory *)self _showOrdersAction];
+  [v4 safelyAddObject:_showOrdersAction];
 
   if ([PKMerchantTokenFeatureAvailability isMerchantTokenFeatureAvailableWithPaymentPassesProvisioned:[(PKPassGroupsMoreMenuFactory *)self arePaymentPassesProvisioned]])
   {
-    v6 = [(PKPassGroupsMoreMenuFactory *)self _showSubscriptionsAndPaymentsAction];
-    [v4 addObject:v6];
+    _showSubscriptionsAndPaymentsAction = [(PKPassGroupsMoreMenuFactory *)self _showSubscriptionsAndPaymentsAction];
+    [v4 addObject:_showSubscriptionsAndPaymentsAction];
   }
 
   if ([v4 count])
@@ -42,13 +42,13 @@
   }
 
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v9 = [(PKPassGroupsMoreMenuFactory *)self _autoFillMenuElement];
-  [v8 addObject:v9];
+  _autoFillMenuElement = [(PKPassGroupsMoreMenuFactory *)self _autoFillMenuElement];
+  [v8 addObject:_autoFillMenuElement];
 
   if (_UISolariumFeatureFlagEnabled())
   {
-    v10 = [(PKPassGroupsMoreMenuFactory *)self _expiredPassesMenuElement];
-    [v8 addObject:v10];
+    _expiredPassesMenuElement = [(PKPassGroupsMoreMenuFactory *)self _expiredPassesMenuElement];
+    [v8 addObject:_expiredPassesMenuElement];
   }
 
   if ([v8 count])
@@ -60,16 +60,16 @@
   if (PKNotificationSettingsEnabled())
   {
     v12 = MEMORY[0x1E69DCC60];
-    v13 = [(PKPassGroupsMoreMenuFactory *)self _showNotificationsAction];
-    v18[0] = v13;
+    _showNotificationsAction = [(PKPassGroupsMoreMenuFactory *)self _showNotificationsAction];
+    v18[0] = _showNotificationsAction;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
     v15 = [v12 menuWithTitle:&stru_1F3BD7330 image:0 identifier:0 options:1 children:v14];
 
     [v3 addObject:v15];
   }
 
-  v16 = [(PKPassGroupsMoreMenuFactory *)self _howToUseWalletMenuElement];
-  [v3 addObject:v16];
+  _howToUseWalletMenuElement = [(PKPassGroupsMoreMenuFactory *)self _howToUseWalletMenuElement];
+  [v3 addObject:_howToUseWalletMenuElement];
 
   return v3;
 }
@@ -114,16 +114,16 @@
   return v5;
 }
 
-- (PKPassGroupsMoreMenuFactory)initWithAutoFillCardManager:(id)a3
+- (PKPassGroupsMoreMenuFactory)initWithAutoFillCardManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = PKPassGroupsMoreMenuFactory;
   v6 = [(PKPassGroupsMoreMenuFactory *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_autoFillCardManager, a3);
+    objc_storeStrong(&v6->_autoFillCardManager, manager);
   }
 
   return v7;
@@ -146,8 +146,8 @@ void __48__PKPassGroupsMoreMenuFactory__showOrdersAction__block_invoke(uint64_t 
 {
   objc_initWeak(&location, self);
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
-  v4 = [v3 currencyCode];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  currencyCode = [currentLocale currencyCode];
   v5 = PKSFSymbolPrefixForCurrencyCode();
   v6 = [v2 stringWithFormat:@"%@.arrow.trianglehead.counterclockwise.rotate.90", v5];
 

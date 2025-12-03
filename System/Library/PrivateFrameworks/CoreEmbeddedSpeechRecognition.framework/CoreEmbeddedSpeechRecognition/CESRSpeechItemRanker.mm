@@ -1,13 +1,13 @@
 @interface CESRSpeechItemRanker
-+ (id)rankersForInstance:(id)a3 speechProfileSite:(id)a4 categoryGroup:(id)a5 sets:(id)a6;
-+ (void)refreshRankedItemCachesForInstance:(id)a3 speechProfileSite:(id)a4;
-- (BOOL)enumerateAllItemsOfSet:(id)a3 error:(id *)a4 usingBlock:(id)a5;
-- (BOOL)enumerateAllRepresentativeItemsOfSet:(id)a3 error:(id *)a4 usingBlock:(id)a5;
-- (BOOL)enumerateRankedItemsWithError:(id *)a3 usingBlock:(id)a4;
-- (BOOL)enumerateRankedRepresentativeItemsWithError:(id *)a3 usingBlock:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)rankersForInstance:(id)instance speechProfileSite:(id)site categoryGroup:(id)group sets:(id)sets;
++ (void)refreshRankedItemCachesForInstance:(id)instance speechProfileSite:(id)site;
+- (BOOL)enumerateAllItemsOfSet:(id)set error:(id *)error usingBlock:(id)block;
+- (BOOL)enumerateAllRepresentativeItemsOfSet:(id)set error:(id *)error usingBlock:(id)block;
+- (BOOL)enumerateRankedItemsWithError:(id *)error usingBlock:(id)block;
+- (BOOL)enumerateRankedRepresentativeItemsWithError:(id *)error usingBlock:(id)block;
+- (BOOL)isEqual:(id)equal;
 - (CESRSpeechItemRanker)init;
-- (CESRSpeechItemRanker)initWithInstance:(id)a3 speechProfileSite:(id)a4 categoryGroup:(id)a5;
+- (CESRSpeechItemRanker)initWithInstance:(id)instance speechProfileSite:(id)site categoryGroup:(id)group;
 - (id)description;
 - (unsigned)calculateItemLimit;
 @end
@@ -228,10 +228,10 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)enumerateRankedItemsWithError:(id *)a3 usingBlock:(id)a4
+- (BOOL)enumerateRankedItemsWithError:(id *)error usingBlock:(id)block
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  blockCopy = block;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -256,8 +256,8 @@ LABEL_10:
         v16[1] = 3221225472;
         v16[2] = __65__CESRSpeechItemRanker_enumerateRankedItemsWithError_usingBlock___block_invoke;
         v16[3] = &unk_27857FAC8;
-        v17 = v6;
-        LODWORD(v11) = [(CESRSpeechItemRanker *)self enumerateAllItemsOfSet:v11 error:a3 usingBlock:v16];
+        v17 = blockCopy;
+        LODWORD(v11) = [(CESRSpeechItemRanker *)self enumerateAllItemsOfSet:v11 error:error usingBlock:v16];
 
         if (!v11)
         {
@@ -283,10 +283,10 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)enumerateRankedRepresentativeItemsWithError:(id *)a3 usingBlock:(id)a4
+- (BOOL)enumerateRankedRepresentativeItemsWithError:(id *)error usingBlock:(id)block
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  blockCopy = block;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -311,8 +311,8 @@ LABEL_11:
         v16[1] = 3221225472;
         v16[2] = __79__CESRSpeechItemRanker_enumerateRankedRepresentativeItemsWithError_usingBlock___block_invoke;
         v16[3] = &unk_27857FAC8;
-        v17 = v6;
-        LODWORD(v11) = [(CESRSpeechItemRanker *)self enumerateAllRepresentativeItemsOfSet:v11 error:a3 usingBlock:v16];
+        v17 = blockCopy;
+        LODWORD(v11) = [(CESRSpeechItemRanker *)self enumerateAllRepresentativeItemsOfSet:v11 error:error usingBlock:v16];
 
         if (!v11)
         {
@@ -338,11 +338,11 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)enumerateAllRepresentativeItemsOfSet:(id)a3 error:(id *)a4 usingBlock:(id)a5
+- (BOOL)enumerateAllRepresentativeItemsOfSet:(id)set error:(id *)error usingBlock:(id)block
 {
   v55 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  setCopy = set;
+  blockCopy = block;
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
@@ -353,18 +353,18 @@ LABEL_11:
   v38 = &v37;
   v39 = 0x2020000000;
   v40 = 1;
-  v10 = [(CESRSpeechProfileInstance *)self->_instance changeRegistry];
-  v11 = [v8 descriptorWithKey:*MEMORY[0x277CF9498]];
-  v12 = [v11 value];
+  changeRegistry = [(CESRSpeechProfileInstance *)self->_instance changeRegistry];
+  v11 = [setCopy descriptorWithKey:*MEMORY[0x277CF9498]];
+  value = [v11 value];
 
-  v13 = [v8 changePublisherWithUseCase:@"SpeechProfile"];
+  v13 = [setCopy changePublisherWithUseCase:@"SpeechProfile"];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __78__CESRSpeechItemRanker_enumerateAllRepresentativeItemsOfSet_error_usingBlock___block_invoke;
   v32[3] = &unk_27857FA78;
-  v14 = v10;
+  v14 = changeRegistry;
   v33 = v14;
-  v15 = v8;
+  v15 = setCopy;
   v34 = v15;
   v35 = &v41;
   v36 = &v37;
@@ -373,9 +373,9 @@ LABEL_11:
   v27[2] = __78__CESRSpeechItemRanker_enumerateAllRepresentativeItemsOfSet_error_usingBlock___block_invoke_22;
   v27[3] = &unk_27857FAA0;
   v27[4] = self;
-  v16 = v9;
+  v16 = blockCopy;
   v29 = v16;
-  v17 = v12;
+  v17 = value;
   v28 = v17;
   v30 = &v41;
   v31 = &v37;
@@ -407,13 +407,13 @@ LABEL_11:
     }
 
     v21 = 0;
-    if (a4)
+    if (error)
     {
       v22 = v19[5];
       if (v22)
       {
         v21 = 0;
-        *a4 = v22;
+        *error = v22;
       }
     }
   }
@@ -513,11 +513,11 @@ uint64_t __78__CESRSpeechItemRanker_enumerateAllRepresentativeItemsOfSet_error_u
   return v17;
 }
 
-- (BOOL)enumerateAllItemsOfSet:(id)a3 error:(id *)a4 usingBlock:(id)a5
+- (BOOL)enumerateAllItemsOfSet:(id)set error:(id *)error usingBlock:(id)block
 {
   v55 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  setCopy = set;
+  blockCopy = block;
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
@@ -528,18 +528,18 @@ uint64_t __78__CESRSpeechItemRanker_enumerateAllRepresentativeItemsOfSet_error_u
   v38 = &v37;
   v39 = 0x2020000000;
   v40 = 1;
-  v10 = [(CESRSpeechProfileInstance *)self->_instance changeRegistry];
-  v11 = [v8 descriptorWithKey:*MEMORY[0x277CF9498]];
-  v12 = [v11 value];
+  changeRegistry = [(CESRSpeechProfileInstance *)self->_instance changeRegistry];
+  v11 = [setCopy descriptorWithKey:*MEMORY[0x277CF9498]];
+  value = [v11 value];
 
-  v13 = [v8 changePublisherWithUseCase:@"SpeechProfile"];
+  v13 = [setCopy changePublisherWithUseCase:@"SpeechProfile"];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __64__CESRSpeechItemRanker_enumerateAllItemsOfSet_error_usingBlock___block_invoke;
   v32[3] = &unk_27857FA78;
-  v14 = v10;
+  v14 = changeRegistry;
   v33 = v14;
-  v15 = v8;
+  v15 = setCopy;
   v34 = v15;
   v35 = &v41;
   v36 = &v37;
@@ -548,9 +548,9 @@ uint64_t __78__CESRSpeechItemRanker_enumerateAllRepresentativeItemsOfSet_error_u
   v27[2] = __64__CESRSpeechItemRanker_enumerateAllItemsOfSet_error_usingBlock___block_invoke_20;
   v27[3] = &unk_27857FAA0;
   v27[4] = self;
-  v16 = v9;
+  v16 = blockCopy;
   v29 = v16;
-  v17 = v12;
+  v17 = value;
   v28 = v17;
   v30 = &v41;
   v31 = &v37;
@@ -582,13 +582,13 @@ uint64_t __78__CESRSpeechItemRanker_enumerateAllRepresentativeItemsOfSet_error_u
     }
 
     v21 = 0;
-    if (a4)
+    if (error)
     {
       v22 = v19[5];
       if (v22)
       {
         v21 = 0;
-        *a4 = v22;
+        *error = v22;
       }
     }
   }
@@ -727,19 +727,19 @@ LABEL_15:
 - (unsigned)calculateItemLimit
 {
   v29 = *MEMORY[0x277D85DE8];
-  v2 = [(CESRSpeechProfileCategoryGroup *)self->_categoryGroup speechCategories];
+  speechCategories = [(CESRSpeechProfileCategoryGroup *)self->_categoryGroup speechCategories];
   v3 = +[CESRSpeechProfileBuilder categoryToLimitHintMap];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = v2;
+  v4 = speechCategories;
   v5 = [v4 countByEnumeratingWithState:&v18 objects:v28 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = *v19;
-    v8 = -1;
+    unsignedIntValue = -1;
     do
     {
       for (i = 0; i != v6; ++i)
@@ -751,9 +751,9 @@ LABEL_15:
 
         v10 = [v3 objectForKey:{*(*(&v18 + 1) + 8 * i), v18}];
         v11 = v10;
-        if (v10 && [v10 unsignedIntValue] < v8)
+        if (v10 && [v10 unsignedIntValue] < unsignedIntValue)
         {
-          v8 = [v11 unsignedIntValue];
+          unsignedIntValue = [v11 unsignedIntValue];
         }
       }
 
@@ -765,26 +765,26 @@ LABEL_15:
 
   else
   {
-    v8 = -1;
+    unsignedIntValue = -1;
   }
 
   v12 = *MEMORY[0x277CEF0E8];
   if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_INFO))
   {
     v13 = v12;
-    v14 = [v4 allObjects];
-    v15 = [v14 componentsJoinedByString:{@", "}];
+    allObjects = [v4 allObjects];
+    v15 = [allObjects componentsJoinedByString:{@", "}];
     *buf = 136315650;
     v23 = "[CESRSpeechItemRanker calculateItemLimit]";
     v24 = 1024;
-    v25 = v8;
+    v25 = unsignedIntValue;
     v26 = 2112;
     v27 = v15;
     _os_log_impl(&dword_225EEB000, v13, OS_LOG_TYPE_INFO, "%s Resolved Limit: %u from categories: %@", buf, 0x1Cu);
   }
 
   v16 = *MEMORY[0x277D85DE8];
-  return v8;
+  return unsignedIntValue;
 }
 
 - (id)description
@@ -792,35 +792,35 @@ LABEL_15:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(CESRSpeechItemRanker *)self instance];
-  v7 = [(CESRSpeechItemRanker *)self sets];
-  v8 = [v3 stringWithFormat:@"%@ (%@) - sets: %@", v5, v6, v7];
+  instance = [(CESRSpeechItemRanker *)self instance];
+  sets = [(CESRSpeechItemRanker *)self sets];
+  v8 = [v3 stringWithFormat:@"%@ (%@) - sets: %@", v5, instance, sets];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v7 = a3;
-  v8 = v7;
-  if (v7 == self)
+  equalCopy = equal;
+  v8 = equalCopy;
+  if (equalCopy == self)
   {
     v11 = 1;
     goto LABEL_23;
   }
 
-  if (!v7 || ![(CESRSpeechItemRanker *)v7 isMemberOfClass:objc_opt_class()])
+  if (!equalCopy || ![(CESRSpeechItemRanker *)equalCopy isMemberOfClass:objc_opt_class()])
   {
     v11 = 0;
     goto LABEL_23;
   }
 
-  v9 = [(CESRSpeechItemRanker *)self instance];
-  if (v9 || ([(CESRSpeechItemRanker *)v8 instance], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
+  instance = [(CESRSpeechItemRanker *)self instance];
+  if (instance || ([(CESRSpeechItemRanker *)v8 instance], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v3 = [(CESRSpeechItemRanker *)self instance];
-    v4 = [(CESRSpeechItemRanker *)v8 instance];
-    if (![v3 isEqual:v4])
+    instance2 = [(CESRSpeechItemRanker *)self instance];
+    instance3 = [(CESRSpeechItemRanker *)v8 instance];
+    if (![instance2 isEqual:instance3])
     {
       v11 = 0;
 LABEL_19:
@@ -837,14 +837,14 @@ LABEL_19:
     v10 = 0;
   }
 
-  v12 = [(CESRSpeechItemRanker *)self sets];
-  if (v12 || ([(CESRSpeechItemRanker *)v8 sets], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  sets = [(CESRSpeechItemRanker *)self sets];
+  if (sets || ([(CESRSpeechItemRanker *)v8 sets], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v13 = [(CESRSpeechItemRanker *)self sets];
-    v14 = [(CESRSpeechItemRanker *)v8 sets];
-    v11 = [v13 isEqual:v14];
+    sets2 = [(CESRSpeechItemRanker *)self sets];
+    sets3 = [(CESRSpeechItemRanker *)v8 sets];
+    v11 = [sets2 isEqual:sets3];
 
-    if (v12)
+    if (sets)
     {
       goto LABEL_18;
     }
@@ -862,7 +862,7 @@ LABEL_18:
   }
 
 LABEL_20:
-  if (!v9)
+  if (!instance)
   {
   }
 
@@ -870,20 +870,20 @@ LABEL_23:
   return v11;
 }
 
-- (CESRSpeechItemRanker)initWithInstance:(id)a3 speechProfileSite:(id)a4 categoryGroup:(id)a5
+- (CESRSpeechItemRanker)initWithInstance:(id)instance speechProfileSite:(id)site categoryGroup:(id)group
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  instanceCopy = instance;
+  siteCopy = site;
+  groupCopy = group;
   v17.receiver = self;
   v17.super_class = CESRSpeechItemRanker;
   v12 = [(CESRSpeechItemRanker *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_instance, a3);
-    objc_storeStrong(&v13->_speechProfileSite, a4);
-    objc_storeStrong(&v13->_categoryGroup, a5);
+    objc_storeStrong(&v12->_instance, instance);
+    objc_storeStrong(&v13->_speechProfileSite, site);
+    objc_storeStrong(&v13->_categoryGroup, group);
     v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
     sets = v13->_sets;
     v13->_sets = v14;
@@ -900,17 +900,17 @@ LABEL_23:
   objc_exception_throw(v2);
 }
 
-+ (void)refreshRankedItemCachesForInstance:(id)a3 speechProfileSite:(id)a4
++ (void)refreshRankedItemCachesForInstance:(id)instance speechProfileSite:(id)site
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [[CESRSpeechItemRanker_Media alloc] initWithInstance:v5 speechProfileSite:v6 categoryGroup:0];
+  instanceCopy = instance;
+  siteCopy = site;
+  v7 = [[CESRSpeechItemRanker_Media alloc] initWithInstance:instanceCopy speechProfileSite:siteCopy categoryGroup:0];
 
   v11 = 0;
-  LOBYTE(v6) = [(CESRSpeechItemRanker *)v7 refreshRankedItemCache:&v11];
+  LOBYTE(siteCopy) = [(CESRSpeechItemRanker *)v7 refreshRankedItemCache:&v11];
   v8 = v11;
-  if ((v6 & 1) == 0)
+  if ((siteCopy & 1) == 0)
   {
     v9 = *MEMORY[0x277CEF0E8];
     if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_ERROR))
@@ -918,7 +918,7 @@ LABEL_23:
       *buf = 136315650;
       v13 = "+[CESRSpeechItemRanker refreshRankedItemCachesForInstance:speechProfileSite:]";
       v14 = 2112;
-      v15 = v5;
+      v15 = instanceCopy;
       v16 = 2112;
       v17 = v8;
       _os_log_error_impl(&dword_225EEB000, v9, OS_LOG_TYPE_ERROR, "%s (%@) Ranked item cache refresh failed: %@", buf, 0x20u);
@@ -928,23 +928,23 @@ LABEL_23:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)rankersForInstance:(id)a3 speechProfileSite:(id)a4 categoryGroup:(id)a5 sets:(id)a6
++ (id)rankersForInstance:(id)instance speechProfileSite:(id)site categoryGroup:(id)group sets:(id)sets
 {
   v56[4] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [[CESRSpeechItemRanker_Contact alloc] initWithInstance:v9 speechProfileSite:v10 categoryGroup:v11];
+  instanceCopy = instance;
+  siteCopy = site;
+  groupCopy = group;
+  setsCopy = sets;
+  v13 = [[CESRSpeechItemRanker_Contact alloc] initWithInstance:instanceCopy speechProfileSite:siteCopy categoryGroup:groupCopy];
   v56[0] = v13;
-  v14 = [[CESRSpeechItemRanker_AppIntentsIndexedEntity alloc] initWithInstance:v9 speechProfileSite:v10 categoryGroup:v11];
+  v14 = [[CESRSpeechItemRanker_AppIntentsIndexedEntity alloc] initWithInstance:instanceCopy speechProfileSite:siteCopy categoryGroup:groupCopy];
   v56[1] = v14;
-  v15 = [[CESRSpeechItemRanker_Media alloc] initWithInstance:v9 speechProfileSite:v10 categoryGroup:v11];
+  v15 = [[CESRSpeechItemRanker_Media alloc] initWithInstance:instanceCopy speechProfileSite:siteCopy categoryGroup:groupCopy];
   v56[2] = v15;
-  v39 = v10;
-  v40 = v9;
-  v38 = v11;
-  v16 = [[CESRSpeechItemRanker alloc] initWithInstance:v9 speechProfileSite:v10 categoryGroup:v11];
+  v39 = siteCopy;
+  v40 = instanceCopy;
+  v38 = groupCopy;
+  v16 = [[CESRSpeechItemRanker alloc] initWithInstance:instanceCopy speechProfileSite:siteCopy categoryGroup:groupCopy];
   v56[3] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v56 count:4];
 
@@ -952,7 +952,7 @@ LABEL_23:
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v18 = v12;
+  v18 = setsCopy;
   v19 = [v18 countByEnumeratingWithState:&v49 objects:v55 count:16];
   if (v19)
   {

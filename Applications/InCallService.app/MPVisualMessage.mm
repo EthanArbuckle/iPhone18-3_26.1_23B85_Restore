@@ -5,7 +5,7 @@
 - (BOOL)isTranscribing;
 - (BOOL)isTranscriptionAvailable;
 - (BOOL)isTranscriptionRated;
-- (BOOL)shouldMarkAsReadForPlaybackCurrentTime:(double)a3;
+- (BOOL)shouldMarkAsReadForPlaybackCurrentTime:(double)time;
 - (BOOL)transcriptionAttempted;
 - (MPMessageID)identifier;
 - (MPTranscriptMessage)transcript;
@@ -17,8 +17,8 @@
 - (TUHandle)senderHandle;
 - (VMVoicemail)vmMessage;
 - (double)duration;
-- (id)contactUsingContactStore:(id)a3 withKeysToFetch:(id)a4;
-- (id)displayNameUsingContactStore:(id)a3;
+- (id)contactUsingContactStore:(id)store withKeysToFetch:(id)fetch;
+- (id)displayNameUsingContactStore:(id)store;
 - (int64_t)folder;
 @end
 
@@ -33,7 +33,7 @@
 
 - (MPMessageID)identifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10021C680();
 
   return v3;
@@ -41,7 +41,7 @@
 
 - (NSString)provider
 {
-  v2 = self;
+  selfCopy = self;
   sub_10021C738();
 
   v3 = String._bridgeToObjectiveC()();
@@ -68,7 +68,7 @@
 
 - (TUHandle)senderHandle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10021C970();
 
   return v3;
@@ -76,7 +76,7 @@
 
 - (int64_t)folder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10021CB84();
 
   return v3;
@@ -84,7 +84,7 @@
 
 - (BOOL)isRead
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10021CC60();
 
   return v3 & 1;
@@ -96,7 +96,7 @@
   v4 = *(v3 - 8);
   __chkstk_darwin(v3, v5);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = self;
+  selfCopy = self;
   sub_10021CD84();
 
   v9.super.isa = Date._bridgeToObjectiveC()().super.isa;
@@ -107,7 +107,7 @@
 
 - (BOOL)isTranscriptionAvailable
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10021CE20();
 
   return v3 & 1;
@@ -115,7 +115,7 @@
 
 - (double)duration
 {
-  v2 = self;
+  selfCopy = self;
   sub_10021CE88();
   v4 = v3;
 
@@ -124,7 +124,7 @@
 
 - (BOOL)isTranscriptionRated
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10021CED4();
 
   return v3 & 1;
@@ -132,7 +132,7 @@
 
 - (BOOL)isTranscribing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10021CF34();
 
   return v3;
@@ -140,7 +140,7 @@
 
 - (BOOL)transcriptionAttempted
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10021CF9C();
 
   return v3;
@@ -148,7 +148,7 @@
 
 - (MPTranscriptMessage)transcript
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10021D014();
 
   return v3;
@@ -156,7 +156,7 @@
 
 - (BOOL)isDeleted
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10021CC00();
 
   return v3 & 1;
@@ -167,7 +167,7 @@
   v3 = sub_10014EA98(&qword_1003AAF20);
   __chkstk_darwin(v3 - 8, v4);
   v6 = &v13 - v5;
-  v7 = self;
+  selfCopy = self;
   sub_10021D1CC(v6);
 
   v8 = type metadata accessor for URL();
@@ -202,36 +202,36 @@
 
 - (BOOL)isDataAvailable
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10021D3A4();
 
   return v3 & 1;
 }
 
-- (BOOL)shouldMarkAsReadForPlaybackCurrentTime:(double)a3
+- (BOOL)shouldMarkAsReadForPlaybackCurrentTime:(double)time
 {
-  v4 = self;
-  v5 = sub_10021D458(a3);
+  selfCopy = self;
+  v5 = sub_10021D458(time);
 
   return v5 & 1;
 }
 
-- (id)contactUsingContactStore:(id)a3 withKeysToFetch:(id)a4
+- (id)contactUsingContactStore:(id)store withKeysToFetch:(id)fetch
 {
   sub_10014EA98(&qword_1003AAF80);
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
-  v9 = sub_10021D4CC(v7, v6);
+  storeCopy = store;
+  selfCopy = self;
+  v9 = sub_10021D4CC(storeCopy, v6);
 
   return v9;
 }
 
-- (id)displayNameUsingContactStore:(id)a3
+- (id)displayNameUsingContactStore:(id)store
 {
-  v4 = a3;
-  v5 = self;
-  sub_10021D5EC(v4);
+  storeCopy = store;
+  selfCopy = self;
+  sub_10021D5EC(storeCopy);
   v7 = v6;
 
   if (v7)

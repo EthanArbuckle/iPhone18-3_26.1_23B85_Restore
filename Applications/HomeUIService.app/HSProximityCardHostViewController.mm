@@ -2,27 +2,27 @@
 - (BOOL)_didPRXActuallyDismiss;
 - (BOOL)isLaunchedToSetupASpecificAccessory;
 - (HSProximityCardHostViewController)init;
-- (id)_allHomesDescription:(id)a3;
-- (id)viewControllerForCoordinator:(id)a3 step:(int64_t)a4;
-- (unint64_t)coordinatorGetNumberOfProxCards:(id)a3;
+- (id)_allHomesDescription:(id)description;
+- (id)viewControllerForCoordinator:(id)coordinator step:(int64_t)step;
+- (unint64_t)coordinatorGetNumberOfProxCards:(id)cards;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_cleanup;
-- (void)_initiateSetupFlow:(id)a3;
-- (void)_presentProxCardFlowWithInitialViewController:(id)a3;
-- (void)_refreshHomeGraphWithCompletion:(id)a3;
-- (void)_updatePairingStatusIfNecessary:(id)a3 phase:(unint64_t)a4;
+- (void)_initiateSetupFlow:(id)flow;
+- (void)_presentProxCardFlowWithInitialViewController:(id)controller;
+- (void)_refreshHomeGraphWithCompletion:(id)completion;
+- (void)_updatePairingStatusIfNecessary:(id)necessary phase:(unint64_t)phase;
 - (void)_willAppearInRemoteViewController;
-- (void)configuratorDidFinish:(id)a3;
-- (void)configuratorDidUpdateViewController:(id)a3;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)coordinator:(id)a3 updatedConfiguration:(id)a4;
-- (void)coordinatorRequestedDismissal:(id)a3;
+- (void)configuratorDidFinish:(id)finish;
+- (void)configuratorDidUpdateViewController:(id)controller;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)coordinator:(id)coordinator updatedConfiguration:(id)configuration;
+- (void)coordinatorRequestedDismissal:(id)dismissal;
 - (void)didInvalidateForRemoteAlert;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)onSetupAccessoryDescription:(id)a3 matterDeviceSetupRequest:(id)a4;
-- (void)pairingController:(id)a3 didTransitionToPhase:(unint64_t)a4 statusTitle:(id)a5 statusDescription:(id)a6;
-- (void)pairingPopupDidCancel:(id)a3;
-- (void)pairingPopupDidFinish:(id)a3;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)onSetupAccessoryDescription:(id)description matterDeviceSetupRequest:(id)request;
+- (void)pairingController:(id)controller didTransitionToPhase:(unint64_t)phase statusTitle:(id)title statusDescription:(id)description;
+- (void)pairingPopupDidCancel:(id)cancel;
+- (void)pairingPopupDidFinish:(id)finish;
 - (void)proxCardFlowDidDismiss;
 - (void)proxCardFlowWillPresent;
 - (void)viewDidLoad;
@@ -32,10 +32,10 @@
 
 - (BOOL)isLaunchedToSetupASpecificAccessory
 {
-  v2 = [(HSProximityCardHostViewController *)self setupAccessoryDescription];
-  v3 = [v2 hf_isKeyedToASpecificAccessory];
+  setupAccessoryDescription = [(HSProximityCardHostViewController *)self setupAccessoryDescription];
+  hf_isKeyedToASpecificAccessory = [setupAccessoryDescription hf_isKeyedToASpecificAccessory];
 
-  return v3;
+  return hf_isKeyedToASpecificAccessory;
 }
 
 - (HSProximityCardHostViewController)init
@@ -61,39 +61,39 @@
   return v2;
 }
 
-- (void)_refreshHomeGraphWithCompletion:(id)a3
+- (void)_refreshHomeGraphWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[NSDate distantFuture];
   v6 = +[NSDate now];
   v7 = +[HFHomeKitDispatcher sharedDispatcher];
-  v8 = [v7 homeManager];
+  homeManager = [v7 homeManager];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100050430;
   v12[3] = &unk_1000C7998;
   v13 = v6;
-  v14 = self;
-  v15 = v4;
-  v9 = v4;
+  selfCopy = self;
+  v15 = completionCopy;
+  v9 = completionCopy;
   v10 = v6;
-  v11 = [v8 _refreshBeforeDate:v5 completionHandler:v12];
+  v11 = [homeManager _refreshBeforeDate:v5 completionHandler:v12];
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  contextCopy = context;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
-    (*(v7 + 2))(v7);
+    (*(completionCopy + 2))(completionCopy);
   }
 
-  v9 = [(HSProximityCardHostViewController *)self _remoteViewControllerProxy];
-  [v9 setAllowsAlertStacking:1];
-  v10 = [v6 userInfo];
-  [(HSProximityCardHostViewController *)self setLaunchReason:[HUHomeUIServiceLaunchUserInfo launchReasonFromUserInfo:v10]];
+  _remoteViewControllerProxy = [(HSProximityCardHostViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setAllowsAlertStacking:1];
+  userInfo = [contextCopy userInfo];
+  [(HSProximityCardHostViewController *)self setLaunchReason:[HUHomeUIServiceLaunchUserInfo launchReasonFromUserInfo:userInfo]];
   v11 = +[HSAccessoryPairingEventLogger sharedLogger];
   [v11 logHUISLaunchWithReason:-[HSProximityCardHostViewController launchReason](self accessoryDescription:{"launchReason"), 0}];
 
@@ -103,13 +103,13 @@
     *buf = 136315394;
     v22 = "[HSProximityCardHostViewController configureWithContext:completion:]";
     v23 = 2112;
-    v24 = v10;
+    v24 = userInfo;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%s userInfo %@", buf, 0x16u);
   }
 
   if (![(HSProximityCardHostViewController *)self launchReason])
   {
-    v13 = [[HMSetupAccessoryDescription alloc] initWithDictionaryRepresentation:v10];
+    v13 = [[HMSetupAccessoryDescription alloc] initWithDictionaryRepresentation:userInfo];
     if (!v13)
     {
       v16 = HFLogForCategory();
@@ -122,7 +122,7 @@
       objc_exception_throw(v17);
     }
 
-    v15 = [[MTSDeviceSetupRequest alloc] initWithDictionaryRepresentation:v10];
+    v15 = [[MTSDeviceSetupRequest alloc] initWithDictionaryRepresentation:userInfo];
     [(HSProximityCardHostViewController *)self onSetupAccessoryDescription:v13 matterDeviceSetupRequest:v15];
 
     goto LABEL_16;
@@ -130,7 +130,7 @@
 
   if ([(HSProximityCardHostViewController *)self launchReason]== 1 || [(HSProximityCardHostViewController *)self launchReason]== 2 || [(HSProximityCardHostViewController *)self launchReason]== 3 || [(HSProximityCardHostViewController *)self launchReason]== 7 || [(HSProximityCardHostViewController *)self launchReason]== 4 || [(HSProximityCardHostViewController *)self launchReason]== 5 || [(HSProximityCardHostViewController *)self launchReason]== 6)
   {
-    v13 = [v10 objectForKeyedSubscript:HUHomeUIServiceLaunchHomeUUIDString];
+    v13 = [userInfo objectForKeyedSubscript:HUHomeUIServiceLaunchHomeUUIDString];
     v14 = [v13 copy];
     [(HSProximityCardHostViewController *)self setResumeSetupHomeUUIDString:v14];
 
@@ -140,7 +140,7 @@
     v18[2] = sub_100050BA4;
     v18[3] = &unk_1000C7A30;
     objc_copyWeak(&v20, buf);
-    v19 = v10;
+    v19 = userInfo;
     [(HSProximityCardHostViewController *)self _refreshHomeGraphWithCompletion:v18];
 
     objc_destroyWeak(&v20);
@@ -151,8 +151,8 @@ LABEL_16:
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(HSProximityCardHostViewController *)self traitCollection];
-  if ([v2 userInterfaceIdiom] == 1)
+  traitCollection = [(HSProximityCardHostViewController *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 1)
   {
     v3 = 30;
   }
@@ -172,8 +172,8 @@ LABEL_16:
   [(HSProximityCardHostViewController *)&v8 viewDidLoad];
   v3 = +[UIColor hf_keyColor];
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 keyWindow];
-  [v5 setTintColor:v3];
+  keyWindow = [v4 keyWindow];
+  [keyWindow setTintColor:v3];
 
   v6 = +[NSMutableArray array];
   [(HSProximityCardHostViewController *)self setConfigurators:v6];
@@ -197,9 +197,9 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", &v5, 0xCu);
   }
 
-  v4 = [(HSProximityCardHostViewController *)self _remoteViewControllerProxy];
-  [v4 setStatusBarHidden:1 withDuration:0.0];
-  [v4 setIdleTimerDisabled:1 forReason:@"HMSetup"];
+  _remoteViewControllerProxy = [(HSProximityCardHostViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setStatusBarHidden:1 withDuration:0.0];
+  [_remoteViewControllerProxy setIdleTimerDisabled:1 forReason:@"HMSetup"];
 }
 
 - (void)proxCardFlowDidDismiss
@@ -220,12 +220,12 @@ LABEL_16:
 
 - (BOOL)_didPRXActuallyDismiss
 {
-  v2 = [(HSProximityCardHostViewController *)self proxNavigationController];
-  v3 = [v2 presentedViewController];
+  proxNavigationController = [(HSProximityCardHostViewController *)self proxNavigationController];
+  presentedViewController = [proxNavigationController presentedViewController];
 
-  if (v3)
+  if (presentedViewController)
   {
-    v4 = [v3 modalPresentationStyle] != 0;
+    v4 = [presentedViewController modalPresentationStyle] != 0;
   }
 
   else
@@ -236,20 +236,20 @@ LABEL_16:
   return v4;
 }
 
-- (void)coordinator:(id)a3 updatedConfiguration:(id)a4
+- (void)coordinator:(id)coordinator updatedConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HSProximityCardHostViewController *)self coordinator];
-  v9 = [v8 activeTuple];
-  v10 = [v9 currentStep];
+  coordinatorCopy = coordinator;
+  configurationCopy = configuration;
+  coordinator = [(HSProximityCardHostViewController *)self coordinator];
+  activeTuple = [coordinator activeTuple];
+  currentStep = [activeTuple currentStep];
 
   v11 = HFLogForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    v14 = [HSSetupContentProvider stringForHSProxCardSetupUIStep:v10];
+    v14 = [HSSetupContentProvider stringForHSProxCardSetupUIStep:currentStep];
     *buf = 138413058;
     v28 = v13;
     v29 = 1024;
@@ -261,21 +261,21 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@ %d %s: %@", buf, 0x26u);
   }
 
-  v15 = [(HSProximityCardHostViewController *)self coordinator];
-  v16 = v15 == v6;
+  coordinator2 = [(HSProximityCardHostViewController *)self coordinator];
+  v16 = coordinator2 == coordinatorCopy;
 
   if (!v16)
   {
     NSLog(@"Not the same coordinator");
   }
 
-  if (v10 == 8)
+  if (currentStep == 8)
   {
-    v17 = [(HSProximityCardHostViewController *)self coordinator];
-    v18 = [v17 activeTuple];
-    v19 = [(HSProximityCardHostViewController *)self coordinator];
-    v20 = [v19 topAccessoryTuple];
-    v21 = v18 == v20;
+    coordinator3 = [(HSProximityCardHostViewController *)self coordinator];
+    activeTuple2 = [coordinator3 activeTuple];
+    coordinator4 = [(HSProximityCardHostViewController *)self coordinator];
+    topAccessoryTuple = [coordinator4 topAccessoryTuple];
+    v21 = activeTuple2 == topAccessoryTuple;
 
     if (!v21)
     {
@@ -283,21 +283,21 @@ LABEL_16:
     }
 
     objc_initWeak(buf, self);
-    v22 = [(HSProximityCardHostViewController *)self coordinator];
-    v23 = [v22 nextViewController];
+    coordinator5 = [(HSProximityCardHostViewController *)self coordinator];
+    nextViewController = [coordinator5 nextViewController];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_100051A2C;
     v25[3] = &unk_1000C7A08;
     objc_copyWeak(&v26, buf);
-    v24 = [v23 addSuccessBlock:v25];
+    v24 = [nextViewController addSuccessBlock:v25];
 
     objc_destroyWeak(&v26);
     objc_destroyWeak(buf);
   }
 }
 
-- (void)coordinatorRequestedDismissal:(id)a3
+- (void)coordinatorRequestedDismissal:(id)dismissal
 {
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -310,41 +310,41 @@ LABEL_16:
   [(HSProximityCardHostViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (id)viewControllerForCoordinator:(id)a3 step:(int64_t)a4
+- (id)viewControllerForCoordinator:(id)coordinator step:(int64_t)step
 {
-  if (a4 == 54)
+  if (step == 54)
   {
     v5 = [HSSetupNetworkRouterConfigurator alloc];
-    v6 = [(HSProximityCardHostViewController *)self coordinator];
-    v7 = [(HSSetupNetworkRouterConfigurator *)v5 initWithCoordinator:v6];
+    coordinator = [(HSProximityCardHostViewController *)self coordinator];
+    v7 = [(HSSetupNetworkRouterConfigurator *)v5 initWithCoordinator:coordinator];
 
     [(HSSetupNetworkRouterConfigurator *)v7 setConfiguratorDelegate:self];
-    v8 = [(HSProximityCardHostViewController *)self configurators];
-    [v8 addObject:v7];
+    configurators = [(HSProximityCardHostViewController *)self configurators];
+    [configurators addObject:v7];
 
-    v9 = [(HSSetupNetworkRouterConfigurator *)v7 currentViewController];
+    currentViewController = [(HSSetupNetworkRouterConfigurator *)v7 currentViewController];
   }
 
   else
   {
-    v9 = 0;
+    currentViewController = 0;
   }
 
-  return v9;
+  return currentViewController;
 }
 
-- (unint64_t)coordinatorGetNumberOfProxCards:(id)a3
+- (unint64_t)coordinatorGetNumberOfProxCards:(id)cards
 {
-  v3 = [(HSProximityCardHostViewController *)self proxNavigationController];
-  v4 = [v3 viewControllers];
-  v5 = [v4 count];
+  proxNavigationController = [(HSProximityCardHostViewController *)self proxNavigationController];
+  viewControllers = [proxNavigationController viewControllers];
+  v5 = [viewControllers count];
 
   return v5;
 }
 
-- (void)configuratorDidUpdateViewController:(id)a3
+- (void)configuratorDidUpdateViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -353,15 +353,15 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v6 = [(HSProximityCardHostViewController *)self proxNavigationController];
+  proxNavigationController = [(HSProximityCardHostViewController *)self proxNavigationController];
 
-  if (!v6)
+  if (!proxNavigationController)
   {
     NSLog(@"We must have a navigationController at this point");
   }
 
-  v7 = [(HSProximityCardHostViewController *)self configurators];
-  v8 = [v7 containsObject:v4];
+  configurators = [(HSProximityCardHostViewController *)self configurators];
+  v8 = [configurators containsObject:controllerCopy];
 
   if ((v8 & 1) == 0)
   {
@@ -374,17 +374,17 @@ LABEL_16:
   v10[2] = sub_100051EC0;
   v10[3] = &unk_1000C7A58;
   objc_copyWeak(&v12, buf);
-  v11 = v4;
-  v9 = v4;
+  v11 = controllerCopy;
+  v9 = controllerCopy;
   dispatch_async(&_dispatch_main_q, v10);
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(buf);
 }
 
-- (void)configuratorDidFinish:(id)a3
+- (void)configuratorDidFinish:(id)finish
 {
-  v4 = a3;
+  finishCopy = finish;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -393,16 +393,16 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v6 = [(HSProximityCardHostViewController *)self proxNavigationController];
-  v7 = v6 == 0;
+  proxNavigationController = [(HSProximityCardHostViewController *)self proxNavigationController];
+  v7 = proxNavigationController == 0;
 
   if (v7)
   {
     NSLog(@"We must have a navigationController at this point");
   }
 
-  v8 = [(HSProximityCardHostViewController *)self configurators];
-  v9 = [v8 containsObject:v4];
+  configurators = [(HSProximityCardHostViewController *)self configurators];
+  v9 = [configurators containsObject:finishCopy];
 
   if ((v9 & 1) == 0)
   {
@@ -410,24 +410,24 @@ LABEL_16:
   }
 
   objc_initWeak(buf, self);
-  v10 = [(HSProximityCardHostViewController *)self coordinator];
-  v11 = [v10 nextViewController];
+  coordinator = [(HSProximityCardHostViewController *)self coordinator];
+  nextViewController = [coordinator nextViewController];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100052128;
   v13[3] = &unk_1000C7A08;
   objc_copyWeak(&v14, buf);
-  v12 = [v11 addSuccessBlock:v13];
+  v12 = [nextViewController addSuccessBlock:v13];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(buf);
 }
 
-- (id)_allHomesDescription:(id)a3
+- (id)_allHomesDescription:(id)description
 {
-  if (a3)
+  if (description)
   {
-    v4 = [a3 na_map:&stru_1000C7A78];
+    v4 = [description na_map:&stru_1000C7A78];
   }
 
   else
@@ -438,16 +438,16 @@ LABEL_16:
   return v4;
 }
 
-- (void)onSetupAccessoryDescription:(id)a3 matterDeviceSetupRequest:(id)a4
+- (void)onSetupAccessoryDescription:(id)description matterDeviceSetupRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HSProximityCardHostViewController *)self resumeSetupHomeUUIDString];
+  descriptionCopy = description;
+  requestCopy = request;
+  resumeSetupHomeUUIDString = [(HSProximityCardHostViewController *)self resumeSetupHomeUUIDString];
 
-  if (v8)
+  if (resumeSetupHomeUUIDString)
   {
-    v9 = HFLogForCategory();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    homeUUID = HFLogForCategory();
+    if (os_log_type_enabled(homeUUID, OS_LOG_TYPE_ERROR))
     {
       sub_10007ADDC(self);
     }
@@ -455,47 +455,47 @@ LABEL_16:
 
   else
   {
-    v10 = [(HSProximityCardHostViewController *)self setupAccessoryDescription];
+    setupAccessoryDescription = [(HSProximityCardHostViewController *)self setupAccessoryDescription];
 
-    v11 = v10 == 0;
+    v11 = setupAccessoryDescription == 0;
     v12 = HFLogForCategory();
-    v9 = v12;
+    homeUUID = v12;
     if (v11)
     {
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v25 = v6;
+        v25 = descriptionCopy;
         v26 = 2112;
-        v27 = v7;
-        _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "HomeUIService launched with accessoryDescription: %@ matterDeviceSetupRequest: %@", buf, 0x16u);
+        v27 = requestCopy;
+        _os_log_impl(&_mh_execute_header, homeUUID, OS_LOG_TYPE_DEFAULT, "HomeUIService launched with accessoryDescription: %@ matterDeviceSetupRequest: %@", buf, 0x16u);
       }
 
-      v9 = [v6 homeUUID];
-      v13 = [[HSEntitlementContext alloc] initWithSetupAccessoryDescription:v6];
+      homeUUID = [descriptionCopy homeUUID];
+      v13 = [[HSEntitlementContext alloc] initWithSetupAccessoryDescription:descriptionCopy];
       entitlementContext = self->_entitlementContext;
       self->_entitlementContext = v13;
 
       v15 = HFLogForCategory();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [(HSProximityCardHostViewController *)self entitlementContext];
+        entitlementContext = [(HSProximityCardHostViewController *)self entitlementContext];
         *buf = 138412290;
-        v25 = v16;
+        v25 = entitlementContext;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Entitlement Context: %@", buf, 0xCu);
       }
 
-      [(HSProximityCardHostViewController *)self setSetupAccessoryDescription:v6];
-      [(HSProximityCardHostViewController *)self setMatterDeviceSetupRequest:v7];
+      [(HSProximityCardHostViewController *)self setSetupAccessoryDescription:descriptionCopy];
+      [(HSProximityCardHostViewController *)self setMatterDeviceSetupRequest:requestCopy];
       v17 = +[HSAccessoryPairingEventLogger sharedLogger];
-      v18 = [(HSProximityCardHostViewController *)self launchReason];
-      v19 = [(HSProximityCardHostViewController *)self setupAccessoryDescription];
-      [v17 logHUISLaunchWithReason:v18 accessoryDescription:v19];
+      launchReason = [(HSProximityCardHostViewController *)self launchReason];
+      setupAccessoryDescription2 = [(HSProximityCardHostViewController *)self setupAccessoryDescription];
+      [v17 logHUISLaunchWithReason:launchReason accessoryDescription:setupAccessoryDescription2];
 
       v20 = +[HSAccessoryPairingEventLogger sharedLogger];
       [v20 logLaunchedToSetupASpecificAccessory:{-[HSProximityCardHostViewController isLaunchedToSetupASpecificAccessory](self, "isLaunchedToSetupASpecificAccessory")}];
 
-      if (!v7 || v9)
+      if (!requestCopy || homeUUID)
       {
         objc_initWeak(buf, self);
         v21[0] = _NSConcreteStackBlock;
@@ -503,8 +503,8 @@ LABEL_16:
         v21[2] = sub_100052690;
         v21[3] = &unk_1000C7A30;
         objc_copyWeak(&v23, buf);
-        v9 = v9;
-        v22 = v9;
+        homeUUID = homeUUID;
+        v22 = homeUUID;
         [(HSProximityCardHostViewController *)self _refreshHomeGraphWithCompletion:v21];
 
         objc_destroyWeak(&v23);
@@ -524,18 +524,18 @@ LABEL_16:
   }
 }
 
-- (void)_initiateSetupFlow:(id)a3
+- (void)_initiateSetupFlow:(id)flow
 {
-  v4 = a3;
-  v5 = [(HSProximityCardHostViewController *)self setupAccessoryDescription];
-  v6 = [(HSProximityCardHostViewController *)self matterDeviceSetupRequest];
+  flowCopy = flow;
+  setupAccessoryDescription = [(HSProximityCardHostViewController *)self setupAccessoryDescription];
+  matterDeviceSetupRequest = [(HSProximityCardHostViewController *)self matterDeviceSetupRequest];
   if ([(HSProximityCardHostViewController *)self isLaunchedToSetupASpecificAccessory])
   {
     v7 = [HFDiscoveredAccessory alloc];
-    v8 = [v5 accessoryUUID];
-    v9 = [v5 accessoryName];
-    v10 = [v5 category];
-    v11 = [v7 initWithAccessoryUUID:v8 accessoryName:v9 accessoryCategory:v10];
+    accessoryUUID = [setupAccessoryDescription accessoryUUID];
+    accessoryName = [setupAccessoryDescription accessoryName];
+    category = [setupAccessoryDescription category];
+    v11 = [v7 initWithAccessoryUUID:accessoryUUID accessoryName:accessoryName accessoryCategory:category];
   }
 
   else
@@ -548,53 +548,53 @@ LABEL_16:
   {
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    v15 = [v4 uuid];
+    uuid = [flowCopy uuid];
     *buf = 138413826;
     v28 = v14;
     v29 = 2112;
-    v30 = v4;
+    v30 = flowCopy;
     v31 = 2112;
-    v32 = v15;
+    v32 = uuid;
     v33 = 2112;
-    v34 = v5;
+    v34 = setupAccessoryDescription;
     v35 = 2112;
-    v36 = v6;
+    v36 = matterDeviceSetupRequest;
     v37 = 1024;
-    v38 = [(HSProximityCardHostViewController *)self isLaunchedToSetupASpecificAccessory];
+    isLaunchedToSetupASpecificAccessory = [(HSProximityCardHostViewController *)self isLaunchedToSetupASpecificAccessory];
     v39 = 2112;
     v40 = v11;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Launching %@ with home %@ home.uuid %@ accessoryDescription %@ matterDeviceSetupRequest %@ isLaunchedToSetupASpecificAccessory %d discoveredAccessory %@", buf, 0x44u);
   }
 
   v16 = [HSProxCardCoordinator alloc];
-  v17 = [(HSProximityCardHostViewController *)self isLaunchedToSetupASpecificAccessory];
-  v18 = [(HSProximityCardHostViewController *)self entitlementContext];
-  v19 = [(HSProxCardCoordinator *)v16 initWithHome:v4 accessoryDescription:v5 matterDeviceSetupRequest:v6 setupSpecificAccessory:v17 entitlementContext:v18 discoveredAccessory:v11 delegate:self];
+  isLaunchedToSetupASpecificAccessory2 = [(HSProximityCardHostViewController *)self isLaunchedToSetupASpecificAccessory];
+  entitlementContext = [(HSProximityCardHostViewController *)self entitlementContext];
+  v19 = [(HSProxCardCoordinator *)v16 initWithHome:flowCopy accessoryDescription:setupAccessoryDescription matterDeviceSetupRequest:matterDeviceSetupRequest setupSpecificAccessory:isLaunchedToSetupASpecificAccessory2 entitlementContext:entitlementContext discoveredAccessory:v11 delegate:self];
   [(HSProximityCardHostViewController *)self setCoordinator:v19];
 
   objc_initWeak(buf, self);
-  v20 = [(HSProximityCardHostViewController *)self coordinator];
-  v21 = [v20 nextViewController];
+  coordinator = [(HSProximityCardHostViewController *)self coordinator];
+  nextViewController = [coordinator nextViewController];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_100052B98;
   v24[3] = &unk_1000C7AA0;
   objc_copyWeak(&v26, buf);
-  v22 = v5;
+  v22 = setupAccessoryDescription;
   v25 = v22;
-  v23 = [v21 addSuccessBlock:v24];
+  v23 = [nextViewController addSuccessBlock:v24];
 
   objc_destroyWeak(&v26);
   objc_destroyWeak(buf);
 }
 
-- (void)_presentProxCardFlowWithInitialViewController:(id)a3
+- (void)_presentProxCardFlowWithInitialViewController:(id)controller
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  controllerCopy = controller;
+  v5 = controllerCopy;
+  if (controllerCopy)
   {
-    if ([v4 conformsToProtocol:&OBJC_PROTOCOL___PRXCardContentProviding])
+    if ([controllerCopy conformsToProtocol:&OBJC_PROTOCOL___PRXCardContentProviding])
     {
       v6 = v5;
     }
@@ -636,33 +636,33 @@ LABEL_16:
   }
 }
 
-- (void)pairingController:(id)a3 didTransitionToPhase:(unint64_t)a4 statusTitle:(id)a5 statusDescription:(id)a6
+- (void)pairingController:(id)controller didTransitionToPhase:(unint64_t)phase statusTitle:(id)title statusDescription:(id)description
 {
-  v9 = a3;
-  [(HSProximityCardHostViewController *)self _updatePairingStatusIfNecessary:a6 phase:a4];
-  v10 = [v9 context];
+  controllerCopy = controller;
+  [(HSProximityCardHostViewController *)self _updatePairingStatusIfNecessary:description phase:phase];
+  context = [controllerCopy context];
 
-  v11 = [v10 setupAccessoryDescription];
+  setupAccessoryDescription = [context setupAccessoryDescription];
 
-  if (a4 <= 6)
+  if (phase <= 6)
   {
-    if (a4 != 2)
+    if (phase != 2)
     {
-      if (a4 != 6)
+      if (phase != 6)
       {
         goto LABEL_18;
       }
 
-      v12 = [v11 category];
-      v13 = [v12 categoryType];
-      v14 = [v13 isEqualToString:HMAccessoryCategoryTypeWiFiRouter];
+      category = [setupAccessoryDescription category];
+      categoryType = [category categoryType];
+      v14 = [categoryType isEqualToString:HMAccessoryCategoryTypeWiFiRouter];
 
       if (!v14)
       {
         goto LABEL_18;
       }
 
-      v15 = [[HSPCSetupNetworkRouterAppPunchoutViewController alloc] initWithPopupDelegate:self setupAccessoryDescription:v11];
+      v15 = [[HSPCSetupNetworkRouterAppPunchoutViewController alloc] initWithPopupDelegate:self setupAccessoryDescription:setupAccessoryDescription];
       if (!v15)
       {
         goto LABEL_18;
@@ -671,19 +671,19 @@ LABEL_16:
       goto LABEL_16;
     }
 
-    v17 = [(HSProximityCardHostViewController *)self coordinator];
-    v18 = [(HSProximityCardHostViewController *)self setupAccessoryDescription];
-    v19 = [v18 setupAccessoryPayload];
-    v20 = [v17 shouldShowCustomCommissioningProxCardWithPayload:v19];
+    coordinator = [(HSProximityCardHostViewController *)self coordinator];
+    setupAccessoryDescription2 = [(HSProximityCardHostViewController *)self setupAccessoryDescription];
+    setupAccessoryPayload = [setupAccessoryDescription2 setupAccessoryPayload];
+    v20 = [coordinator shouldShowCustomCommissioningProxCardWithPayload:setupAccessoryPayload];
 
     if (!v20)
     {
       goto LABEL_18;
     }
 
-    v15 = [[HSPCThirdPartyAppPunchoutViewController alloc] initWithSetupAccessoryDescription:v11];
-    v21 = [(HSProximityCardHostViewController *)self coordinator];
-    [v21 setDidShowCustomCommissioningFlowAlertIfNecessary:1];
+    v15 = [[HSPCThirdPartyAppPunchoutViewController alloc] initWithSetupAccessoryDescription:setupAccessoryDescription];
+    coordinator2 = [(HSProximityCardHostViewController *)self coordinator];
+    [coordinator2 setDidShowCustomCommissioningFlowAlertIfNecessary:1];
 LABEL_15:
 
     if (!v15)
@@ -699,7 +699,7 @@ LABEL_16:
     block[3] = &unk_1000C7A58;
     objc_copyWeak(&v28, &location);
     v27 = v15;
-    v16 = v15;
+    coordinator3 = v15;
     dispatch_async(&_dispatch_main_q, block);
 
     objc_destroyWeak(&v28);
@@ -707,11 +707,11 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (a4 == 7)
+  if (phase == 7)
   {
-    v22 = [v11 category];
-    v23 = [v22 categoryType];
-    v24 = [v23 isEqualToString:HMAccessoryCategoryTypeWiFiRouter];
+    category2 = [setupAccessoryDescription category];
+    categoryType2 = [category2 categoryType];
+    v24 = [categoryType2 isEqualToString:HMAccessoryCategoryTypeWiFiRouter];
 
     if (!v24)
     {
@@ -719,56 +719,56 @@ LABEL_16:
     }
 
     v25 = [HSPCRouterReplaceViewController alloc];
-    v21 = [(HSProximityCardHostViewController *)self coordinator];
-    v15 = [(HSPCRouterReplaceViewController *)v25 initWithCoordinator:v21];
+    coordinator2 = [(HSProximityCardHostViewController *)self coordinator];
+    v15 = [(HSPCRouterReplaceViewController *)v25 initWithCoordinator:coordinator2];
     goto LABEL_15;
   }
 
-  if (a4 == 10 && [(HSProximityCardHostViewController *)self isLaunchedToSetupASpecificAccessory])
+  if (phase == 10 && [(HSProximityCardHostViewController *)self isLaunchedToSetupASpecificAccessory])
   {
-    v16 = [(HSProximityCardHostViewController *)self coordinator];
-    [(HSPCSetupNetworkRouterAppPunchoutViewController *)v16 dismissProxCardFlowAfterExecuting:0];
+    coordinator3 = [(HSProximityCardHostViewController *)self coordinator];
+    [(HSPCSetupNetworkRouterAppPunchoutViewController *)coordinator3 dismissProxCardFlowAfterExecuting:0];
 LABEL_17:
   }
 
 LABEL_18:
 }
 
-- (void)_updatePairingStatusIfNecessary:(id)a3 phase:(unint64_t)a4
+- (void)_updatePairingStatusIfNecessary:(id)necessary phase:(unint64_t)phase
 {
-  v6 = a3;
+  necessaryCopy = necessary;
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 136315394;
     v18 = "[HSProximityCardHostViewController _updatePairingStatusIfNecessary:phase:]";
     v19 = 2112;
-    v20 = v6;
+    v20 = necessaryCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s %@", &v17, 0x16u);
   }
 
-  if ([v6 length])
+  if ([necessaryCopy length])
   {
-    v8 = [(HSProximityCardHostViewController *)self coordinator];
-    v9 = [v8 activeTuple];
-    v10 = [v9 currentStep];
+    coordinator = [(HSProximityCardHostViewController *)self coordinator];
+    activeTuple = [coordinator activeTuple];
+    currentStep = [activeTuple currentStep];
 
-    if (v10 == 8)
+    if (currentStep == 8)
     {
-      v11 = [v8 activeTuple];
-      v12 = [v8 topAccessoryTuple];
+      activeTuple2 = [coordinator activeTuple];
+      topAccessoryTuple = [coordinator topAccessoryTuple];
 
-      if (v11 != v12)
+      if (activeTuple2 != topAccessoryTuple)
       {
         NSLog(@"Not configuring top accessory");
       }
 
       objc_opt_class();
-      v13 = [(HSProximityCardHostViewController *)self proxNavigationController];
-      v14 = [v13 topViewController];
+      proxNavigationController = [(HSProximityCardHostViewController *)self proxNavigationController];
+      topViewController = [proxNavigationController topViewController];
       if (objc_opt_isKindOfClass())
       {
-        v15 = v14;
+        v15 = topViewController;
       }
 
       else
@@ -778,89 +778,89 @@ LABEL_18:
 
       v16 = v15;
 
-      [v16 updatePairingStatus:v6 phase:a4];
+      [v16 updatePairingStatus:necessaryCopy phase:phase];
     }
   }
 }
 
-- (void)pairingPopupDidFinish:(id)a3
+- (void)pairingPopupDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = [v4 setupAccessoryDescription];
+  finishCopy = finish;
+  setupAccessoryDescription = [finishCopy setupAccessoryDescription];
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412802;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
-    v14 = v4;
+    v14 = finishCopy;
     v15 = 2048;
-    v16 = [v4 popupType];
+    popupType = [finishCopy popupType];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[%@ pairingPopupDidFinish:%@ pairingPopup.popupType %lu]", &v11, 0x20u);
   }
 
-  v7 = [v5 category];
-  v8 = [v7 categoryType];
-  v9 = [v8 isEqualToString:HMAccessoryCategoryTypeWiFiRouter];
+  category = [setupAccessoryDescription category];
+  categoryType = [category categoryType];
+  v9 = [categoryType isEqualToString:HMAccessoryCategoryTypeWiFiRouter];
 
   if ((v9 & 1) == 0)
   {
     NSLog(@"Only Routers are handled");
   }
 
-  if ([v4 popupType] == 2)
+  if ([finishCopy popupType] == 2)
   {
-    v10 = [(HSProximityCardHostViewController *)self coordinator];
-    [v10 dismissProxCardFlowAfterExecuting:0];
+    coordinator = [(HSProximityCardHostViewController *)self coordinator];
+    [coordinator dismissProxCardFlowAfterExecuting:0];
   }
 
   else
   {
-    v10 = HFLogForCategory();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    coordinator = HFLogForCategory();
+    if (os_log_type_enabled(coordinator, OS_LOG_TYPE_ERROR))
     {
-      sub_10007B028(self, v4);
+      sub_10007B028(self, finishCopy);
     }
   }
 }
 
-- (void)pairingPopupDidCancel:(id)a3
+- (void)pairingPopupDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = [v4 setupAccessoryDescription];
+  cancelCopy = cancel;
+  setupAccessoryDescription = [cancelCopy setupAccessoryDescription];
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412802;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
-    v14 = v4;
+    v14 = cancelCopy;
     v15 = 2048;
-    v16 = [v4 popupType];
+    popupType = [cancelCopy popupType];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[%@ pairingPopupDidFinish:%@ pairingPopup.popupType %lu]", &v11, 0x20u);
   }
 
-  v7 = [v5 category];
-  v8 = [v7 categoryType];
-  v9 = [v8 isEqualToString:HMAccessoryCategoryTypeWiFiRouter];
+  category = [setupAccessoryDescription category];
+  categoryType = [category categoryType];
+  v9 = [categoryType isEqualToString:HMAccessoryCategoryTypeWiFiRouter];
 
   if ((v9 & 1) == 0)
   {
     NSLog(@"Only Routers are handled");
   }
 
-  if ([v4 popupType] == 2)
+  if ([cancelCopy popupType] == 2)
   {
-    v10 = [(HSProximityCardHostViewController *)self coordinator];
-    [v10 dismissProxCardFlowAfterExecuting:0];
+    coordinator = [(HSProximityCardHostViewController *)self coordinator];
+    [coordinator dismissProxCardFlowAfterExecuting:0];
   }
 
   else
   {
-    v10 = HFLogForCategory();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    coordinator = HFLogForCategory();
+    if (os_log_type_enabled(coordinator, OS_LOG_TYPE_ERROR))
     {
-      sub_10007B028(self, v4);
+      sub_10007B028(self, cancelCopy);
     }
   }
 }
@@ -889,15 +889,15 @@ LABEL_18:
   [(HSProximityCardHostViewController *)self _cleanup];
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 67109120;
-    HIDWORD(buf) = v4;
+    HIDWORD(buf) = animatedCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "dismissViewControllerAnimated: %d requesting invalidation from host", &buf, 8u);
   }
 
@@ -907,11 +907,11 @@ LABEL_18:
   v12[2] = sub_100053AD8;
   v12[3] = &unk_1000C7AC8;
   objc_copyWeak(&v14, &buf);
-  v8 = v6;
+  v8 = completionCopy;
   v13 = v8;
   v9 = objc_retainBlock(v12);
   v10 = v9;
-  if (v4)
+  if (animatedCopy)
   {
     v11.receiver = self;
     v11.super_class = HSProximityCardHostViewController;
@@ -949,36 +949,36 @@ LABEL_18:
     v24[3] = &unk_1000C5970;
     v24[4] = self;
     v3 = objc_retainBlock(v24);
-    v4 = [(HSProximityCardHostViewController *)self resumeSetupHomeUUIDString];
+    resumeSetupHomeUUIDString = [(HSProximityCardHostViewController *)self resumeSetupHomeUUIDString];
 
-    if (v4)
+    if (resumeSetupHomeUUIDString)
     {
       (*(v3 + 16))(v3);
     }
 
     else
     {
-      v5 = [(HSProximityCardHostViewController *)self coordinator];
-      v6 = [v5 pairingFuture];
-      v7 = [v6 pairingController];
+      coordinator = [(HSProximityCardHostViewController *)self coordinator];
+      pairingFuture = [coordinator pairingFuture];
+      pairingController = [pairingFuture pairingController];
 
-      v8 = [v7 completedInfo];
-      v9 = [(HSProximityCardHostViewController *)self coordinator];
-      v10 = [v9 topAccessoryTuple];
-      v11 = [v10 configuration];
-      v12 = [v11 pairingError];
+      completedInfo = [pairingController completedInfo];
+      coordinator2 = [(HSProximityCardHostViewController *)self coordinator];
+      topAccessoryTuple = [coordinator2 topAccessoryTuple];
+      configuration = [topAccessoryTuple configuration];
+      pairingError = [configuration pairingError];
 
-      v13 = [(HSProximityCardHostViewController *)self setupAccessoryDescription];
-      if ([v13 isSetupInitiatedByOtherMatterEcosystem])
+      setupAccessoryDescription = [(HSProximityCardHostViewController *)self setupAccessoryDescription];
+      if ([setupAccessoryDescription isSetupInitiatedByOtherMatterEcosystem])
       {
       }
 
       else
       {
-        v14 = [v7 pairedAccessories];
-        v15 = [v14 count];
+        pairedAccessories = [pairingController pairedAccessories];
+        v15 = [pairedAccessories count];
 
-        if (!v15 && !v12 && !v8)
+        if (!v15 && !pairingError && !completedInfo)
         {
           v16 = HFLogForCategory();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -988,22 +988,22 @@ LABEL_18:
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%s: determined this is an early cancellation by the user, setting error HMFErrorCodeOperationCancelled", buf, 0xCu);
           }
 
-          v12 = [NSError hmfErrorWithCode:12];
+          pairingError = [NSError hmfErrorWithCode:12];
         }
       }
 
       v17 = HFLogForCategory();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [(HSProximityCardHostViewController *)self setupAccessoryDescription];
+        setupAccessoryDescription2 = [(HSProximityCardHostViewController *)self setupAccessoryDescription];
         *buf = 136315906;
         v26 = "[HSProximityCardHostViewController _cleanup]";
         v27 = 2112;
-        v28 = v8;
+        v28 = completedInfo;
         v29 = 2112;
-        v30 = v12;
+        v30 = pairingError;
         v31 = 2112;
-        v32 = v18;
+        v32 = setupAccessoryDescription2;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%s: Finishing accessory setup with info %@, error %@ for setupAccessoryDescription %@", buf, 0x2Au);
       }
 
@@ -1016,14 +1016,14 @@ LABEL_18:
       v19 = objc_retainBlock(v22);
       v20 = objc_alloc_init(HMAccessorySetupManager);
       v21 = v20;
-      if (v12)
+      if (pairingError)
       {
-        [v20 failAccessorySetupWithError:v12 completionHandler:v19];
+        [v20 failAccessorySetupWithError:pairingError completionHandler:v19];
       }
 
-      else if (v8)
+      else if (completedInfo)
       {
-        [v20 finishAccessorySetupWithSetupCompletedInfo:v8 completionHandler:v19];
+        [v20 finishAccessorySetupWithSetupCompletedInfo:completedInfo completionHandler:v19];
       }
 
       else

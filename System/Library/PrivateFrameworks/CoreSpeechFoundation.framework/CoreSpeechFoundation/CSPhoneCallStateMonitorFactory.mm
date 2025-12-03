@@ -13,9 +13,9 @@
     v3 = off_1E86597A8;
   }
 
-  v4 = [(__objc2_class *)*v3 sharedInstance];
+  sharedInstance = [(__objc2_class *)*v3 sharedInstance];
 
-  return v4;
+  return sharedInstance;
 }
 
 @end

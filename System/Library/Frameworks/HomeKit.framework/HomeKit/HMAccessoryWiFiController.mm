@@ -1,17 +1,17 @@
 @interface HMAccessoryWiFiController
-- (HMAccessoryWiFiController)initWithAccessory:(id)a3;
-- (HMAccessoryWiFiController)initWithContext:(id)a3 messageTargetUUID:(id)a4;
-- (void)_associateToNetworkWithSSID:(id)a3 password:(id)a4 completion:(id)a5;
-- (void)_queryCurrentWiFiNetworkWithCompletion:(id)a3;
-- (void)_scanAvailableNetworksWithCompletion:(id)a3;
+- (HMAccessoryWiFiController)initWithAccessory:(id)accessory;
+- (HMAccessoryWiFiController)initWithContext:(id)context messageTargetUUID:(id)d;
+- (void)_associateToNetworkWithSSID:(id)d password:(id)password completion:(id)completion;
+- (void)_queryCurrentWiFiNetworkWithCompletion:(id)completion;
+- (void)_scanAvailableNetworksWithCompletion:(id)completion;
 @end
 
 @implementation HMAccessoryWiFiController
 
-- (void)_queryCurrentWiFiNetworkWithCompletion:(id)a3
+- (void)_queryCurrentWiFiNetworkWithCompletion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = self->_context;
   if (v5)
   {
@@ -23,8 +23,8 @@
     v16 = 3221225472;
     v17 = __68__HMAccessoryWiFiController__queryCurrentWiFiNetworkWithCompletion___block_invoke;
     v18 = &unk_1E754DE00;
-    v19 = self;
-    v20 = v4;
+    selfCopy = self;
+    v20 = completionCopy;
     [v8 setResponseHandler:&v15];
     v9 = [(_HMContext *)v5 messageDispatcher:v15];
     [v9 sendMessage:v8];
@@ -33,7 +33,7 @@
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -93,12 +93,12 @@ void __68__HMAccessoryWiFiController__queryCurrentWiFiNetworkWithCompletion___bl
   }
 }
 
-- (void)_associateToNetworkWithSSID:(id)a3 password:(id)a4 completion:(id)a5
+- (void)_associateToNetworkWithSSID:(id)d password:(id)password completion:(id)completion
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  passwordCopy = password;
+  completionCopy = completion;
   v11 = self->_context;
   if (v11)
   {
@@ -106,8 +106,8 @@ void __68__HMAccessoryWiFiController__queryCurrentWiFiNetworkWithCompletion___bl
     v13 = [objc_alloc(MEMORY[0x1E69A2A00]) initWithTarget:self->_messageTargetUUID];
     v28[0] = @"ssid";
     v28[1] = @"password";
-    v29[0] = v8;
-    v29[1] = v9;
+    v29[0] = dCopy;
+    v29[1] = passwordCopy;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:2];
     v15 = [v12 messageWithName:@"HM.wiFiPicker.JoinNetworkMessage" destination:v13 payload:v14];
 
@@ -115,8 +115,8 @@ void __68__HMAccessoryWiFiController__queryCurrentWiFiNetworkWithCompletion___bl
     v23 = 3221225472;
     v24 = __77__HMAccessoryWiFiController__associateToNetworkWithSSID_password_completion___block_invoke;
     v25 = &unk_1E754DE00;
-    v26 = self;
-    v27 = v10;
+    selfCopy = self;
+    v27 = completionCopy;
     [v15 setResponseHandler:&v22];
     v16 = [(_HMContext *)v11 messageDispatcher:v22];
     [v16 sendMessage:v15];
@@ -125,7 +125,7 @@ void __68__HMAccessoryWiFiController__queryCurrentWiFiNetworkWithCompletion___bl
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy2 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -185,10 +185,10 @@ void __77__HMAccessoryWiFiController__associateToNetworkWithSSID_password_comple
   }
 }
 
-- (void)_scanAvailableNetworksWithCompletion:(id)a3
+- (void)_scanAvailableNetworksWithCompletion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = self->_context;
   if (v5)
   {
@@ -200,8 +200,8 @@ void __77__HMAccessoryWiFiController__associateToNetworkWithSSID_password_comple
     v16 = 3221225472;
     v17 = __66__HMAccessoryWiFiController__scanAvailableNetworksWithCompletion___block_invoke;
     v18 = &unk_1E754DE00;
-    v19 = self;
-    v20 = v4;
+    selfCopy = self;
+    v20 = completionCopy;
     [v8 setResponseHandler:&v15];
     v9 = [(_HMContext *)v5 messageDispatcher:v15];
     [v9 sendMessage:v8];
@@ -210,7 +210,7 @@ void __77__HMAccessoryWiFiController__associateToNetworkWithSSID_password_comple
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -349,30 +349,30 @@ void __66__HMAccessoryWiFiController__scanAvailableNetworksWithCompletion___bloc
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (HMAccessoryWiFiController)initWithContext:(id)a3 messageTargetUUID:(id)a4
+- (HMAccessoryWiFiController)initWithContext:(id)context messageTargetUUID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = HMAccessoryWiFiController;
   v9 = [(HMAccessoryWiFiController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
-    objc_storeStrong(&v10->_messageTargetUUID, a4);
+    objc_storeStrong(&v9->_context, context);
+    objc_storeStrong(&v10->_messageTargetUUID, d);
   }
 
   return v10;
 }
 
-- (HMAccessoryWiFiController)initWithAccessory:(id)a3
+- (HMAccessoryWiFiController)initWithAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [v4 context];
-  v6 = [v4 messageTargetUUID];
+  accessoryCopy = accessory;
+  context = [accessoryCopy context];
+  messageTargetUUID = [accessoryCopy messageTargetUUID];
 
-  v7 = [(HMAccessoryWiFiController *)self initWithContext:v5 messageTargetUUID:v6];
+  v7 = [(HMAccessoryWiFiController *)self initWithContext:context messageTargetUUID:messageTargetUUID];
   return v7;
 }
 

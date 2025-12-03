@@ -1,132 +1,132 @@
 @interface _PSKNNZKWATXDelegateWrapper
-- (_PSKNNZKWATXDelegateWrapper)initWithKNNModel:(id)a3 fallbackInteractionConfig:(id)a4;
-- (_PSKNNZKWATXDelegateWrapper)initWithKNNModel:(id)a3 modelType:(int64_t)a4 modelConfiguration:(id)a5 maxSuggestions:(unint64_t)a6 transformers:(id)a7 isEnabled:(BOOL)a8 defaultConfidenceCategory:(int64_t)a9;
-- (_PSKNNZKWATXDelegateWrapper)initWithKNNModel:(id)a3 primaryInteractionsConfig:(id)a4;
-- (id)getSuggestionsWithPredictionContext:(id)a3;
-- (void)suggestionsForInteractionSuggestionRequest:(id)a3 clientModelId:(id)a4 reply:(id)a5;
-- (void)updateWithFallbackInteractionsConfig:(id)a3;
-- (void)updateWithPrimaryInteractionsConfig:(id)a3;
+- (_PSKNNZKWATXDelegateWrapper)initWithKNNModel:(id)model fallbackInteractionConfig:(id)config;
+- (_PSKNNZKWATXDelegateWrapper)initWithKNNModel:(id)model modelType:(int64_t)type modelConfiguration:(id)configuration maxSuggestions:(unint64_t)suggestions transformers:(id)transformers isEnabled:(BOOL)enabled defaultConfidenceCategory:(int64_t)category;
+- (_PSKNNZKWATXDelegateWrapper)initWithKNNModel:(id)model primaryInteractionsConfig:(id)config;
+- (id)getSuggestionsWithPredictionContext:(id)context;
+- (void)suggestionsForInteractionSuggestionRequest:(id)request clientModelId:(id)id reply:(id)reply;
+- (void)updateWithFallbackInteractionsConfig:(id)config;
+- (void)updateWithPrimaryInteractionsConfig:(id)config;
 @end
 
 @implementation _PSKNNZKWATXDelegateWrapper
 
-- (_PSKNNZKWATXDelegateWrapper)initWithKNNModel:(id)a3 modelType:(int64_t)a4 modelConfiguration:(id)a5 maxSuggestions:(unint64_t)a6 transformers:(id)a7 isEnabled:(BOOL)a8 defaultConfidenceCategory:(int64_t)a9
+- (_PSKNNZKWATXDelegateWrapper)initWithKNNModel:(id)model modelType:(int64_t)type modelConfiguration:(id)configuration maxSuggestions:(unint64_t)suggestions transformers:(id)transformers isEnabled:(BOOL)enabled defaultConfidenceCategory:(int64_t)category
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a7;
+  modelCopy = model;
+  configurationCopy = configuration;
+  transformersCopy = transformers;
   v22.receiver = self;
   v22.super_class = _PSKNNZKWATXDelegateWrapper;
   v19 = [(_PSKNNZKWATXDelegateWrapper *)&v22 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_knnModel, a3);
-    v20->_modelType = a4;
-    objc_storeStrong(&v20->_modelConfiguration, a5);
-    v20->_maxSuggestions = a6;
-    objc_storeStrong(&v20->_transformers, a7);
-    v20->_isEnabled = a8;
-    v20->_defaultConfidenceCategory = a9;
+    objc_storeStrong(&v19->_knnModel, model);
+    v20->_modelType = type;
+    objc_storeStrong(&v20->_modelConfiguration, configuration);
+    v20->_maxSuggestions = suggestions;
+    objc_storeStrong(&v20->_transformers, transformers);
+    v20->_isEnabled = enabled;
+    v20->_defaultConfidenceCategory = category;
   }
 
   return v20;
 }
 
-- (_PSKNNZKWATXDelegateWrapper)initWithKNNModel:(id)a3 primaryInteractionsConfig:(id)a4
+- (_PSKNNZKWATXDelegateWrapper)initWithKNNModel:(id)model primaryInteractionsConfig:(id)config
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  configCopy = config;
+  modelCopy = model;
   v8 = [_PSKNNModelConfiguration alloc];
-  v9 = [v6 mechanisms];
-  v10 = [v6 interactionCountMaxDepths];
-  v11 = [v6 interactionHistoryRelativeStartDates];
-  v12 = [v6 bundleIds];
-  v13 = [v6 modelType];
-  v14 = [(_PSKNNZKWATXDelegateWrapper *)self _getInteractionFilterForPrimaryInteractionsModel];
-  v15 = [(_PSKNNModelConfiguration *)v8 initWithInteractionMechanisms:v9 interactionCountMaxDepths:v10 interactionHistoryRelativeStartDates:v11 bundleIds:v12 modelType:v13 clusterPruneThreshold:5 modelName:@"PastFaceTimeCallsorMessages" shouldExcludeInteractionBlock:v14];
+  mechanisms = [configCopy mechanisms];
+  interactionCountMaxDepths = [configCopy interactionCountMaxDepths];
+  interactionHistoryRelativeStartDates = [configCopy interactionHistoryRelativeStartDates];
+  bundleIds = [configCopy bundleIds];
+  modelType = [configCopy modelType];
+  _getInteractionFilterForPrimaryInteractionsModel = [(_PSKNNZKWATXDelegateWrapper *)self _getInteractionFilterForPrimaryInteractionsModel];
+  v15 = [(_PSKNNModelConfiguration *)v8 initWithInteractionMechanisms:mechanisms interactionCountMaxDepths:interactionCountMaxDepths interactionHistoryRelativeStartDates:interactionHistoryRelativeStartDates bundleIds:bundleIds modelType:modelType clusterPruneThreshold:5 modelName:@"PastFaceTimeCallsorMessages" shouldExcludeInteractionBlock:_getInteractionFilterForPrimaryInteractionsModel];
 
   v16 = objc_opt_new();
-  v17 = [v6 maxSuggestions];
+  maxSuggestions = [configCopy maxSuggestions];
   v18 = [v16 mapRecipientsToContactsWithUnmapped:0];
   v25[0] = v18;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
-  v20 = [v6 isEnabled];
-  v21 = [v6 defaultConfidenceCategory];
+  isEnabled = [configCopy isEnabled];
+  defaultConfidenceCategory = [configCopy defaultConfidenceCategory];
 
-  v22 = [(_PSKNNZKWATXDelegateWrapper *)self initWithKNNModel:v7 modelType:32 modelConfiguration:v15 maxSuggestions:v17 transformers:v19 isEnabled:v20 defaultConfidenceCategory:v21];
+  v22 = [(_PSKNNZKWATXDelegateWrapper *)self initWithKNNModel:modelCopy modelType:32 modelConfiguration:v15 maxSuggestions:maxSuggestions transformers:v19 isEnabled:isEnabled defaultConfidenceCategory:defaultConfidenceCategory];
   v23 = *MEMORY[0x1E69E9840];
   return v22;
 }
 
-- (_PSKNNZKWATXDelegateWrapper)initWithKNNModel:(id)a3 fallbackInteractionConfig:(id)a4
+- (_PSKNNZKWATXDelegateWrapper)initWithKNNModel:(id)model fallbackInteractionConfig:(id)config
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  configCopy = config;
+  modelCopy = model;
   v8 = [_PSKNNModelConfiguration alloc];
-  v9 = [v6 mechanisms];
-  v10 = [v6 interactionCountMaxDepths];
-  v11 = [v6 interactionHistoryRelativeStartDates];
-  v12 = [v6 bundleIds];
-  v13 = -[_PSKNNModelConfiguration initWithInteractionMechanisms:interactionCountMaxDepths:interactionHistoryRelativeStartDates:bundleIds:modelType:clusterPruneThreshold:modelName:](v8, "initWithInteractionMechanisms:interactionCountMaxDepths:interactionHistoryRelativeStartDates:bundleIds:modelType:clusterPruneThreshold:modelName:", v9, v10, v11, v12, [v6 modelType], 5, @"PastPhoneCalls");
+  mechanisms = [configCopy mechanisms];
+  interactionCountMaxDepths = [configCopy interactionCountMaxDepths];
+  interactionHistoryRelativeStartDates = [configCopy interactionHistoryRelativeStartDates];
+  bundleIds = [configCopy bundleIds];
+  v13 = -[_PSKNNModelConfiguration initWithInteractionMechanisms:interactionCountMaxDepths:interactionHistoryRelativeStartDates:bundleIds:modelType:clusterPruneThreshold:modelName:](v8, "initWithInteractionMechanisms:interactionCountMaxDepths:interactionHistoryRelativeStartDates:bundleIds:modelType:clusterPruneThreshold:modelName:", mechanisms, interactionCountMaxDepths, interactionHistoryRelativeStartDates, bundleIds, [configCopy modelType], 5, @"PastPhoneCalls");
 
   v14 = objc_opt_new();
-  v15 = [v6 maxSuggestions];
+  maxSuggestions = [configCopy maxSuggestions];
   v16 = [v14 mapRecipientsToContactsWithUnmapped:0];
   v23[0] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
-  v18 = [v6 isEnabled];
-  v19 = [v6 defaultConfidenceCategory];
+  isEnabled = [configCopy isEnabled];
+  defaultConfidenceCategory = [configCopy defaultConfidenceCategory];
 
-  v20 = [(_PSKNNZKWATXDelegateWrapper *)self initWithKNNModel:v7 modelType:33 modelConfiguration:v13 maxSuggestions:v15 transformers:v17 isEnabled:v18 defaultConfidenceCategory:v19];
+  v20 = [(_PSKNNZKWATXDelegateWrapper *)self initWithKNNModel:modelCopy modelType:33 modelConfiguration:v13 maxSuggestions:maxSuggestions transformers:v17 isEnabled:isEnabled defaultConfidenceCategory:defaultConfidenceCategory];
   v21 = *MEMORY[0x1E69E9840];
   return v20;
 }
 
-- (void)updateWithPrimaryInteractionsConfig:(id)a3
+- (void)updateWithPrimaryInteractionsConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v5 = [_PSKNNModelConfiguration alloc];
-  v6 = [v4 mechanisms];
-  v7 = [v4 interactionCountMaxDepths];
-  v8 = [v4 interactionHistoryRelativeStartDates];
-  v9 = [v4 bundleIds];
-  v10 = [v4 modelType];
-  v11 = [(_PSKNNZKWATXDelegateWrapper *)self _getInteractionFilterForPrimaryInteractionsModel];
-  v12 = [(_PSKNNModelConfiguration *)v5 initWithInteractionMechanisms:v6 interactionCountMaxDepths:v7 interactionHistoryRelativeStartDates:v8 bundleIds:v9 modelType:v10 clusterPruneThreshold:5 modelName:@"PastFaceTimeCallsorMessages" shouldExcludeInteractionBlock:v11];
+  mechanisms = [configCopy mechanisms];
+  interactionCountMaxDepths = [configCopy interactionCountMaxDepths];
+  interactionHistoryRelativeStartDates = [configCopy interactionHistoryRelativeStartDates];
+  bundleIds = [configCopy bundleIds];
+  modelType = [configCopy modelType];
+  _getInteractionFilterForPrimaryInteractionsModel = [(_PSKNNZKWATXDelegateWrapper *)self _getInteractionFilterForPrimaryInteractionsModel];
+  v12 = [(_PSKNNModelConfiguration *)v5 initWithInteractionMechanisms:mechanisms interactionCountMaxDepths:interactionCountMaxDepths interactionHistoryRelativeStartDates:interactionHistoryRelativeStartDates bundleIds:bundleIds modelType:modelType clusterPruneThreshold:5 modelName:@"PastFaceTimeCallsorMessages" shouldExcludeInteractionBlock:_getInteractionFilterForPrimaryInteractionsModel];
   modelConfiguration = self->_modelConfiguration;
   self->_modelConfiguration = v12;
 
-  self->_isEnabled = [v4 isEnabled];
-  v14 = [v4 defaultConfidenceCategory];
+  self->_isEnabled = [configCopy isEnabled];
+  defaultConfidenceCategory = [configCopy defaultConfidenceCategory];
 
-  self->_defaultConfidenceCategory = v14;
+  self->_defaultConfidenceCategory = defaultConfidenceCategory;
 }
 
-- (void)updateWithFallbackInteractionsConfig:(id)a3
+- (void)updateWithFallbackInteractionsConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v5 = [_PSKNNModelConfiguration alloc];
-  v6 = [v4 mechanisms];
-  v7 = [v4 interactionCountMaxDepths];
-  v8 = [v4 interactionHistoryRelativeStartDates];
-  v9 = [v4 bundleIds];
-  v10 = -[_PSKNNModelConfiguration initWithInteractionMechanisms:interactionCountMaxDepths:interactionHistoryRelativeStartDates:bundleIds:modelType:clusterPruneThreshold:modelName:](v5, "initWithInteractionMechanisms:interactionCountMaxDepths:interactionHistoryRelativeStartDates:bundleIds:modelType:clusterPruneThreshold:modelName:", v6, v7, v8, v9, [v4 modelType], 5, @"PastPhoneCalls");
+  mechanisms = [configCopy mechanisms];
+  interactionCountMaxDepths = [configCopy interactionCountMaxDepths];
+  interactionHistoryRelativeStartDates = [configCopy interactionHistoryRelativeStartDates];
+  bundleIds = [configCopy bundleIds];
+  v10 = -[_PSKNNModelConfiguration initWithInteractionMechanisms:interactionCountMaxDepths:interactionHistoryRelativeStartDates:bundleIds:modelType:clusterPruneThreshold:modelName:](v5, "initWithInteractionMechanisms:interactionCountMaxDepths:interactionHistoryRelativeStartDates:bundleIds:modelType:clusterPruneThreshold:modelName:", mechanisms, interactionCountMaxDepths, interactionHistoryRelativeStartDates, bundleIds, [configCopy modelType], 5, @"PastPhoneCalls");
   modelConfiguration = self->_modelConfiguration;
   self->_modelConfiguration = v10;
 
-  self->_isEnabled = [v4 isEnabled];
-  v12 = [v4 defaultConfidenceCategory];
+  self->_isEnabled = [configCopy isEnabled];
+  defaultConfidenceCategory = [configCopy defaultConfidenceCategory];
 
-  self->_defaultConfidenceCategory = v12;
+  self->_defaultConfidenceCategory = defaultConfidenceCategory;
 }
 
-- (id)getSuggestionsWithPredictionContext:(id)a3
+- (id)getSuggestionsWithPredictionContext:(id)context
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   modelType = self->_modelType;
   if (!self->_isEnabled)
   {
@@ -167,7 +167,7 @@
       _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v13, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_PSFallbackInteractionModelTotalTime", " enableTelemetry=YES ", &v18, 2u);
     }
 
-    v7 = [(_PSKNNModel *)self->_knnModel rankedZkwSuggestionsWithPredictionContext:v4 modelConfiguration:self->_modelConfiguration maxSuggestions:self->_maxSuggestions];
+    v7 = [(_PSKNNModel *)self->_knnModel rankedZkwSuggestionsWithPredictionContext:contextCopy modelConfiguration:self->_modelConfiguration maxSuggestions:self->_maxSuggestions];
     v14 = +[_PSLogging suggestionSignpost];
     if (os_signpost_enabled(v14))
     {
@@ -196,7 +196,7 @@
       _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v6, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_PSFaceTimeInteractionModelTotalTime", " enableTelemetry=YES ", &v18, 2u);
     }
 
-    v7 = [(_PSKNNModel *)self->_knnModel rankedZkwSuggestionsWithPredictionContext:v4 modelConfiguration:self->_modelConfiguration maxSuggestions:self->_maxSuggestions];
+    v7 = [(_PSKNNModel *)self->_knnModel rankedZkwSuggestionsWithPredictionContext:contextCopy modelConfiguration:self->_modelConfiguration maxSuggestions:self->_maxSuggestions];
     v8 = +[_PSLogging suggestionSignpost];
     if (os_signpost_enabled(v8))
     {
@@ -236,33 +236,33 @@ LABEL_27:
   return v15;
 }
 
-- (void)suggestionsForInteractionSuggestionRequest:(id)a3 clientModelId:(id)a4 reply:(id)a5
+- (void)suggestionsForInteractionSuggestionRequest:(id)request clientModelId:(id)id reply:(id)reply
 {
   v78 = *MEMORY[0x1E69E9840];
-  v55 = a3;
-  v53 = a4;
-  v51 = a5;
+  requestCopy = request;
+  idCopy = id;
+  replyCopy = reply;
   v7 = +[_PSLogging generalChannel];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [_PSKNNZKWATXDelegateWrapper suggestionsForInteractionSuggestionRequest:v55 clientModelId:v7 reply:?];
+    [_PSKNNZKWATXDelegateWrapper suggestionsForInteractionSuggestionRequest:requestCopy clientModelId:v7 reply:?];
   }
 
-  v54 = [v55 psPredictionContext];
+  psPredictionContext = [requestCopy psPredictionContext];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v8 = +[_PSLogging generalChannel];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [_PSKNNZKWATXDelegateWrapper suggestionsForInteractionSuggestionRequest:v54 clientModelId:v8 reply:?];
+      [_PSKNNZKWATXDelegateWrapper suggestionsForInteractionSuggestionRequest:psPredictionContext clientModelId:v8 reply:?];
     }
   }
 
   v52 = [getATXProactiveSuggestionClientModelClass_1() clientModelIdFromClientModelType:self->_modelType];
-  if ([v53 isEqualToString:v52])
+  if ([idCopy isEqualToString:v52])
   {
-    v9 = [(_PSKNNZKWATXDelegateWrapper *)self getSuggestionsWithPredictionContext:v54];
+    v9 = [(_PSKNNZKWATXDelegateWrapper *)self getSuggestionsWithPredictionContext:psPredictionContext];
     v58 = objc_opt_new();
     v66 = 0u;
     v67 = 0u;
@@ -332,8 +332,8 @@ LABEL_27:
           v21 = [v18 alloc];
           v22 = [v11 description];
           v23 = objc_opt_new();
-          v24 = [v23 UUIDString];
-          v25 = [v21 initWithExecutableObject:v11 executableDescription:v22 executableIdentifier:v24 suggestionExecutableType:6];
+          uUIDString = [v23 UUIDString];
+          v25 = [v21 initWithExecutableObject:v11 executableDescription:v22 executableIdentifier:uUIDString suggestionExecutableType:6];
 
           v73 = 0;
           v74 = &v73;
@@ -357,14 +357,14 @@ LABEL_27:
           v28 = v26;
           _Block_object_dispose(&v73, 8);
           v29 = [v26 alloc];
-          v30 = [v11 groupName];
-          v31 = v30;
-          if (!v30)
+          groupName = [v11 groupName];
+          v31 = groupName;
+          if (!groupName)
           {
-            v62 = [v11 recipients];
-            v61 = [v62 firstObject];
-            v60 = [v61 handle];
-            v31 = v60;
+            recipients = [v11 recipients];
+            firstObject = [recipients firstObject];
+            handle = [firstObject handle];
+            v31 = handle;
           }
 
           v73 = 0;
@@ -391,7 +391,7 @@ LABEL_27:
           v35 = [v32 layoutConfigurationsForLayoutOptions:2];
           v36 = [v29 initWithTitle:v31 subtitle:0 preferredLayoutConfigs:v35 allowedOnLockscreen:1 allowedOnHomeScreen:1 allowedOnSpotlight:1];
 
-          if (!v30)
+          if (!groupName)
           {
           }
 
@@ -470,14 +470,14 @@ LABEL_27:
 
     v48 = v46;
     _Block_object_dispose(&v73, 8);
-    v49 = [[v46 alloc] initWithSuggestions:v58 feedbackMetadata:0 originalRequest:v55 responseCode:2 error:0];
-    v51[2](v51, v49);
+    v49 = [[v46 alloc] initWithSuggestions:v58 feedbackMetadata:0 originalRequest:requestCopy responseCode:2 error:0];
+    replyCopy[2](replyCopy, v49);
   }
 
   else
   {
-    obj = [_PSZkwUtils clientModelMismatchErrorResponseForRequest:v55 requestedClientModelId:v53 actualClientModelId:v52];
-    v51[2](v51, obj);
+    obj = [_PSZkwUtils clientModelMismatchErrorResponseForRequest:requestCopy requestedClientModelId:idCopy actualClientModelId:v52];
+    replyCopy[2](replyCopy, obj);
   }
 
   v50 = *MEMORY[0x1E69E9840];

@@ -1,19 +1,19 @@
 @interface URTAlertPresenter
 - (URTAlertPresenter)init;
 - (URTUserNotificationPresentation)userNotificationPresentation;
-- (void)_addDefaultDestinationAlertFromUserNotificationContents:(id)a3 flags:(unint64_t)a4;
-- (void)_addFromUserNotificationContents:(id)a3 toServiceDestination:(int64_t)a4;
-- (void)_handleUserNotificationResponse:(unint64_t)a3;
-- (void)_invokeCallbackForResponseFlags:(unint64_t)a3;
+- (void)_addDefaultDestinationAlertFromUserNotificationContents:(id)contents flags:(unint64_t)flags;
+- (void)_addFromUserNotificationContents:(id)contents toServiceDestination:(int64_t)destination;
+- (void)_handleUserNotificationResponse:(unint64_t)response;
+- (void)_invokeCallbackForResponseFlags:(unint64_t)flags;
 - (void)_presentationQueue_dismiss;
 - (void)_presentationQueue_invalidate;
-- (void)_presentationQueue_invokeAction:(id)a3 forPresentation:(id)a4;
-- (void)_presentationQueue_removePresentation:(id)a3 forDestination:(int64_t)a4;
-- (void)addAlert:(id)a3 forDestination:(int64_t)a4 preferringStyle:(int64_t)a5;
+- (void)_presentationQueue_invokeAction:(id)action forPresentation:(id)presentation;
+- (void)_presentationQueue_removePresentation:(id)presentation forDestination:(int64_t)destination;
+- (void)addAlert:(id)alert forDestination:(int64_t)destination preferringStyle:(int64_t)style;
 - (void)dismiss;
-- (void)handleCancelActionForAlertPresentation:(id)a3;
-- (void)handleDefaultActionForAlertPresentation:(id)a3;
-- (void)handleOtherActionForAlertPresentation:(id)a3;
+- (void)handleCancelActionForAlertPresentation:(id)presentation;
+- (void)handleDefaultActionForAlertPresentation:(id)presentation;
+- (void)handleOtherActionForAlertPresentation:(id)presentation;
 - (void)invalidate;
 - (void)present;
 @end
@@ -46,29 +46,29 @@
 
 - (void)invalidate
 {
-  v3 = [(URTAlertPresenter *)self presentationsQueue];
+  presentationsQueue = [(URTAlertPresenter *)self presentationsQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__URTAlertPresenter_invalidate__block_invoke;
   block[3] = &unk_279E0BEC0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(presentationsQueue, block);
 }
 
-- (void)addAlert:(id)a3 forDestination:(int64_t)a4 preferringStyle:(int64_t)a5
+- (void)addAlert:(id)alert forDestination:(int64_t)destination preferringStyle:(int64_t)style
 {
-  v8 = a3;
-  v9 = [(URTAlertPresenter *)self presentationsQueue];
+  alertCopy = alert;
+  presentationsQueue = [(URTAlertPresenter *)self presentationsQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __61__URTAlertPresenter_addAlert_forDestination_preferringStyle___block_invoke;
   v11[3] = &unk_279E0BEE8;
-  v14 = a4;
-  v15 = a5;
-  v12 = v8;
-  v13 = self;
-  v10 = v8;
-  dispatch_sync(v9, v11);
+  destinationCopy = destination;
+  styleCopy = style;
+  v12 = alertCopy;
+  selfCopy = self;
+  v10 = alertCopy;
+  dispatch_sync(presentationsQueue, v11);
 }
 
 void __61__URTAlertPresenter_addAlert_forDestination_preferringStyle___block_invoke(uint64_t a1)
@@ -86,19 +86,19 @@ void __61__URTAlertPresenter_addAlert_forDestination_preferringStyle___block_inv
   [v3 setObject:v5 forKey:v4];
 }
 
-- (void)_addDefaultDestinationAlertFromUserNotificationContents:(id)a3 flags:(unint64_t)a4
+- (void)_addDefaultDestinationAlertFromUserNotificationContents:(id)contents flags:(unint64_t)flags
 {
-  v6 = a3;
-  v7 = [(URTAlertPresenter *)self presentationsQueue];
+  contentsCopy = contents;
+  presentationsQueue = [(URTAlertPresenter *)self presentationsQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __83__URTAlertPresenter__addDefaultDestinationAlertFromUserNotificationContents_flags___block_invoke;
   block[3] = &unk_279E0BF10;
-  v11 = self;
-  v12 = a4;
-  v10 = v6;
-  v8 = v6;
-  dispatch_sync(v7, block);
+  selfCopy = self;
+  flagsCopy = flags;
+  v10 = contentsCopy;
+  v8 = contentsCopy;
+  dispatch_sync(presentationsQueue, block);
 }
 
 void __83__URTAlertPresenter__addDefaultDestinationAlertFromUserNotificationContents_flags___block_invoke(uint64_t a1)
@@ -109,21 +109,21 @@ void __83__URTAlertPresenter__addDefaultDestinationAlertFromUserNotificationCont
   [v2 setObject:v3 forKey:&unk_288088BB8];
 }
 
-- (void)_addFromUserNotificationContents:(id)a3 toServiceDestination:(int64_t)a4
+- (void)_addFromUserNotificationContents:(id)contents toServiceDestination:(int64_t)destination
 {
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CBF188]];
+  contentsCopy = contents;
+  v7 = [contentsCopy objectForKeyedSubscript:*MEMORY[0x277CBF188]];
   v8 = URTVerifyString(v7);
 
-  v9 = [v6 objectForKeyedSubscript:*MEMORY[0x277CBF198]];
+  v9 = [contentsCopy objectForKeyedSubscript:*MEMORY[0x277CBF198]];
   v10 = URTVerifyString(v9);
 
   if (v8 | v10)
   {
-    v24 = a4;
+    destinationCopy = destination;
     objc_initWeak(&location, self);
     v11 = [URTAlert alertWithTitle:v8 message:v10];
-    v12 = [v6 objectForKeyedSubscript:*MEMORY[0x277CBF1E8]];
+    v12 = [contentsCopy objectForKeyedSubscript:*MEMORY[0x277CBF1E8]];
     v13 = URTVerifyString(v12);
 
     if (v13)
@@ -139,7 +139,7 @@ void __83__URTAlertPresenter__addDefaultDestinationAlertFromUserNotificationCont
       objc_destroyWeak(&v30);
     }
 
-    v15 = [v6 objectForKeyedSubscript:*MEMORY[0x277CBF218]];
+    v15 = [contentsCopy objectForKeyedSubscript:*MEMORY[0x277CBF218]];
     v16 = URTVerifyString(v15);
 
     if (v16)
@@ -155,7 +155,7 @@ void __83__URTAlertPresenter__addDefaultDestinationAlertFromUserNotificationCont
       objc_destroyWeak(&v28);
     }
 
-    v18 = [v6 objectForKeyedSubscript:*MEMORY[0x277CBF1C0]];
+    v18 = [contentsCopy objectForKeyedSubscript:*MEMORY[0x277CBF1C0]];
     v19 = URTVerifyString(v18);
 
     if (v19)
@@ -171,12 +171,12 @@ void __83__URTAlertPresenter__addDefaultDestinationAlertFromUserNotificationCont
       objc_destroyWeak(&v26);
     }
 
-    v21 = [v6 objectForKeyedSubscript:@"SBUserNotificationAllowedApplications"];
+    v21 = [contentsCopy objectForKeyedSubscript:@"SBUserNotificationAllowedApplications"];
     v22 = objc_opt_class();
     v23 = URTVerifyClass(v21, v22);
 
     [v11 setAllowedApplicationBundleIDs:v23];
-    [(URTAlertPresenter *)self addAlert:v11 forDestination:v24];
+    [(URTAlertPresenter *)self addAlert:v11 forDestination:destinationCopy];
 
     objc_destroyWeak(&location);
   }
@@ -202,13 +202,13 @@ void __75__URTAlertPresenter__addFromUserNotificationContents_toServiceDestinati
 
 - (void)present
 {
-  v3 = [(URTAlertPresenter *)self presentationsQueue];
+  presentationsQueue = [(URTAlertPresenter *)self presentationsQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __28__URTAlertPresenter_present__block_invoke;
   block[3] = &unk_279E0BEC0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(presentationsQueue, block);
 }
 
 void __28__URTAlertPresenter_present__block_invoke(uint64_t a1)
@@ -251,36 +251,36 @@ void __28__URTAlertPresenter_present__block_invoke(uint64_t a1)
 
 - (void)dismiss
 {
-  v3 = [(URTAlertPresenter *)self presentationsQueue];
+  presentationsQueue = [(URTAlertPresenter *)self presentationsQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __28__URTAlertPresenter_dismiss__block_invoke;
   block[3] = &unk_279E0BEC0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(presentationsQueue, block);
 }
 
-- (void)handleCancelActionForAlertPresentation:(id)a3
+- (void)handleCancelActionForAlertPresentation:(id)presentation
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  presentationCopy = presentation;
   v5 = URTLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = presentationCopy;
     _os_log_impl(&dword_270835000, v5, OS_LOG_TYPE_DEFAULT, "cancel button pressed for presentation %@", buf, 0xCu);
   }
 
-  v6 = [(URTAlertPresenter *)self presentationsQueue];
+  presentationsQueue = [(URTAlertPresenter *)self presentationsQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __60__URTAlertPresenter_handleCancelActionForAlertPresentation___block_invoke;
   v9[3] = &unk_279E0BE00;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v9);
+  v10 = presentationCopy;
+  v7 = presentationCopy;
+  dispatch_sync(presentationsQueue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -293,27 +293,27 @@ void __60__URTAlertPresenter_handleCancelActionForAlertPresentation___block_invo
   [v2 _presentationQueue_invokeAction:v3 forPresentation:*(a1 + 40)];
 }
 
-- (void)handleDefaultActionForAlertPresentation:(id)a3
+- (void)handleDefaultActionForAlertPresentation:(id)presentation
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  presentationCopy = presentation;
   v5 = URTLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = presentationCopy;
     _os_log_impl(&dword_270835000, v5, OS_LOG_TYPE_DEFAULT, "default button pressed for presentation %@", buf, 0xCu);
   }
 
-  v6 = [(URTAlertPresenter *)self presentationsQueue];
+  presentationsQueue = [(URTAlertPresenter *)self presentationsQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __61__URTAlertPresenter_handleDefaultActionForAlertPresentation___block_invoke;
   v9[3] = &unk_279E0BE00;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v9);
+  v10 = presentationCopy;
+  v7 = presentationCopy;
+  dispatch_sync(presentationsQueue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -326,27 +326,27 @@ void __61__URTAlertPresenter_handleDefaultActionForAlertPresentation___block_inv
   [v2 _presentationQueue_invokeAction:v3 forPresentation:*(a1 + 40)];
 }
 
-- (void)handleOtherActionForAlertPresentation:(id)a3
+- (void)handleOtherActionForAlertPresentation:(id)presentation
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  presentationCopy = presentation;
   v5 = URTLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = presentationCopy;
     _os_log_impl(&dword_270835000, v5, OS_LOG_TYPE_DEFAULT, "other button pressed for presentation %@", buf, 0xCu);
   }
 
-  v6 = [(URTAlertPresenter *)self presentationsQueue];
+  presentationsQueue = [(URTAlertPresenter *)self presentationsQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__URTAlertPresenter_handleOtherActionForAlertPresentation___block_invoke;
   v9[3] = &unk_279E0BE00;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v9);
+  v10 = presentationCopy;
+  v7 = presentationCopy;
+  dispatch_sync(presentationsQueue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -366,10 +366,10 @@ void __59__URTAlertPresenter_handleOtherActionForAlertPresentation___block_invok
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(URTAlertPresenter *)self presentationsForDestinations];
-  v4 = [v3 allValues];
+  presentationsForDestinations = [(URTAlertPresenter *)self presentationsForDestinations];
+  allValues = [presentationsForDestinations allValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -381,21 +381,21 @@ void __59__URTAlertPresenter_handleOtherActionForAlertPresentation___block_invok
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v11 + 1) + 8 * v8++) invalidate];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [(URTAlertPresenter *)self presentationsForDestinations];
-  [v9 removeAllObjects];
+  presentationsForDestinations2 = [(URTAlertPresenter *)self presentationsForDestinations];
+  [presentationsForDestinations2 removeAllObjects];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -407,10 +407,10 @@ void __59__URTAlertPresenter_handleOtherActionForAlertPresentation___block_invok
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(URTAlertPresenter *)self presentationsForDestinations];
-  v4 = [v3 allValues];
+  presentationsForDestinations = [(URTAlertPresenter *)self presentationsForDestinations];
+  allValues = [presentationsForDestinations allValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -422,14 +422,14 @@ void __59__URTAlertPresenter_handleOtherActionForAlertPresentation___block_invok
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v10 + 1) + 8 * v8++) dismiss];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -439,34 +439,34 @@ void __59__URTAlertPresenter_handleOtherActionForAlertPresentation___block_invok
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_presentationQueue_removePresentation:(id)a3 forDestination:(int64_t)a4
+- (void)_presentationQueue_removePresentation:(id)presentation forDestination:(int64_t)destination
 {
-  [a3 invalidate];
-  v7 = [(URTAlertPresenter *)self presentationsForDestinations];
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  [v7 removeObjectForKey:v6];
+  [presentation invalidate];
+  presentationsForDestinations = [(URTAlertPresenter *)self presentationsForDestinations];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:destination];
+  [presentationsForDestinations removeObjectForKey:v6];
 }
 
-- (void)_presentationQueue_invokeAction:(id)a3 forPresentation:(id)a4
+- (void)_presentationQueue_invokeAction:(id)action forPresentation:(id)presentation
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [v9 handler];
+  actionCopy = action;
+  presentationCopy = presentation;
+  handler = [actionCopy handler];
 
-  if (v7)
+  if (handler)
   {
-    v8 = [v9 handler];
-    (v8)[2](v8, v9);
+    handler2 = [actionCopy handler];
+    (handler2)[2](handler2, actionCopy);
   }
 
-  -[URTAlertPresenter _presentationQueue_removePresentation:forDestination:](self, "_presentationQueue_removePresentation:forDestination:", v6, [v6 destination]);
+  -[URTAlertPresenter _presentationQueue_removePresentation:forDestination:](self, "_presentationQueue_removePresentation:forDestination:", presentationCopy, [presentationCopy destination]);
 
   [(URTAlertPresenter *)self _presentationQueue_dismiss];
 }
 
-- (void)_invokeCallbackForResponseFlags:(unint64_t)a3
+- (void)_invokeCallbackForResponseFlags:(unint64_t)flags
 {
-  v5 = [(URTAlertPresenter *)self compatibilityCallback];
+  compatibilityCallback = [(URTAlertPresenter *)self compatibilityCallback];
   Main = CFRunLoopGetMain();
   v7 = *MEMORY[0x277CBF058];
   block[0] = MEMORY[0x277D85DD0];
@@ -474,8 +474,8 @@ void __59__URTAlertPresenter_handleOtherActionForAlertPresentation___block_invok
   block[2] = __53__URTAlertPresenter__invokeCallbackForResponseFlags___block_invoke;
   block[3] = &unk_279E0BF68;
   block[4] = self;
-  block[5] = v5;
-  block[6] = a3;
+  block[5] = compatibilityCallback;
+  block[6] = flags;
   CFRunLoopPerformBlock(Main, v7, block);
   v8 = CFRunLoopGetMain();
   CFRunLoopWakeUp(v8);
@@ -492,21 +492,21 @@ void *__53__URTAlertPresenter__invokeCallbackForResponseFlags___block_invoke(voi
   return result;
 }
 
-- (void)_handleUserNotificationResponse:(unint64_t)a3
+- (void)_handleUserNotificationResponse:(unint64_t)response
 {
-  v5 = [(URTAlertPresenter *)self compatibilityCallback];
-  if (v5)
+  compatibilityCallback = [(URTAlertPresenter *)self compatibilityCallback];
+  if (compatibilityCallback)
   {
-    v5(self, a3);
+    compatibilityCallback(self, response);
   }
 
-  v6 = [(URTAlertPresenter *)self presentationsQueue];
+  presentationsQueue = [(URTAlertPresenter *)self presentationsQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__URTAlertPresenter__handleUserNotificationResponse___block_invoke;
   block[3] = &unk_279E0BEC0;
   block[4] = self;
-  dispatch_sync(v6, block);
+  dispatch_sync(presentationsQueue, block);
 }
 
 uint64_t __53__URTAlertPresenter__handleUserNotificationResponse___block_invoke(uint64_t a1)

@@ -1,5 +1,5 @@
 @interface SocketRemoteXpcProxy
-- (SocketRemoteXpcProxy)initWithSocket:(int)a3 device:(id)a4 queue:(id)a5 server:(BOOL)a6;
+- (SocketRemoteXpcProxy)initWithSocket:(int)socket device:(id)device queue:(id)queue server:(BOOL)server;
 - (int)takeOwnershipOfClientSocket;
 - (void)activate;
 - (void)cancel;
@@ -7,10 +7,10 @@
 
 @implementation SocketRemoteXpcProxy
 
-- (SocketRemoteXpcProxy)initWithSocket:(int)a3 device:(id)a4 queue:(id)a5 server:(BOOL)a6
+- (SocketRemoteXpcProxy)initWithSocket:(int)socket device:(id)device queue:(id)queue server:(BOOL)server
 {
-  v8 = a4;
-  v9 = a5;
+  deviceCopy = device;
+  queueCopy = queue;
   v31 = -1;
   v30 = -1;
   v29.receiver = self;
@@ -42,10 +42,10 @@ LABEL_15:
   {
     xpc_remote_connection_get_version_flags();
     v17 = xpc_remote_connection_create_with_connected_fd();
-    if (v8 && remote_device_xpc_remote_connection_tls_enabled(v8))
+    if (deviceCopy && remote_device_xpc_remote_connection_tls_enabled(deviceCopy))
     {
-      v18 = remote_device_copy_xpc_remote_connection_tls_identity(v8);
-      v28 = v8;
+      v18 = remote_device_copy_xpc_remote_connection_tls_identity(deviceCopy);
+      v28 = deviceCopy;
       xpc_remote_connection_set_tls();
     }
 
@@ -60,7 +60,7 @@ LABEL_15:
     v23 = v30;
     v10->_clientSock = v31;
     v10->_serverSock = v23;
-    objc_storeStrong(&v10->_queue, a5);
+    objc_storeStrong(&v10->_queue, queue);
     peer = v10->_peer;
     v10->_peer = v17;
     v25 = v17;
@@ -178,17 +178,17 @@ uint64_t __32__SocketRemoteXpcProxy_activate__block_invoke_5(uint64_t a1, int a2
 
 - (void)cancel
 {
-  v3 = [(SocketRemoteXpcProxy *)self peer];
+  peer = [(SocketRemoteXpcProxy *)self peer];
   xpc_remote_connection_cancel();
 
   close_drop_optional_np();
   close_drop_optional_np();
-  v4 = [(SocketRemoteXpcProxy *)self onCancel];
+  onCancel = [(SocketRemoteXpcProxy *)self onCancel];
 
-  if (v4)
+  if (onCancel)
   {
-    v5 = [(SocketRemoteXpcProxy *)self onCancel];
-    v5[2]();
+    onCancel2 = [(SocketRemoteXpcProxy *)self onCancel];
+    onCancel2[2]();
   }
 
   [(SocketRemoteXpcProxy *)self setOnCancel:0];

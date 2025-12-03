@@ -1,16 +1,16 @@
 @interface BPSConfigurableAnimationView
-- (BPSConfigurableAnimationView)initWithCoder:(id)a3;
-- (BPSConfigurableAnimationView)initWithFrame:(CGRect)a3;
+- (BPSConfigurableAnimationView)initWithCoder:(id)coder;
+- (BPSConfigurableAnimationView)initWithFrame:(CGRect)frame;
 - (id)view;
 - (void)pauseAnimation;
-- (void)resetToInitialStateAnimated:(BOOL)a3;
+- (void)resetToInitialStateAnimated:(BOOL)animated;
 - (void)resumeAnimation;
-- (void)updateToState:(id)a3 animated:(BOOL)a4;
+- (void)updateToState:(id)state animated:(BOOL)animated;
 @end
 
 @implementation BPSConfigurableAnimationView
 
-- (BPSConfigurableAnimationView)initWithCoder:(id)a3
+- (BPSConfigurableAnimationView)initWithCoder:(id)coder
 {
   sub_241EA9E38();
   sub_241EA9E28();
@@ -39,14 +39,14 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)updateToState:(id)a3 animated:(BOOL)a4
+- (void)updateToState:(id)state animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   sub_241EA9E38();
   sub_241EA9E28();
   sub_241EA9E18();
@@ -63,7 +63,7 @@
     v10 = v6;
     v11 = *(&self->super.super._responderFlags + OBJC_IVAR___BPSConfigurableAnimationView_hostingView);
     ObjectType = swift_getObjectType();
-    if (v4)
+    if (animatedCopy)
     {
       v13 = 1.0;
     }
@@ -74,7 +74,7 @@
     }
 
     v14 = *(v11 + 8);
-    v15 = self;
+    selfCopy = self;
     v16 = v9;
     v14(v10, v8, ObjectType, v11, v13);
   }
@@ -84,9 +84,9 @@
   }
 }
 
-- (void)resetToInitialStateAnimated:(BOOL)a3
+- (void)resetToInitialStateAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   sub_241EA9E38();
   sub_241EA9E28();
   sub_241EA9E18();
@@ -98,9 +98,9 @@
   v5 = *(&self->super._layerRetained + OBJC_IVAR___BPSConfigurableAnimationView_configuration);
   v6 = *(&self->super._subviewCache + OBJC_IVAR___BPSConfigurableAnimationView_configuration);
   v7 = *((*MEMORY[0x277D85000] & self->super.super.super.isa) + 0xD8);
-  v8 = self;
+  selfCopy = self;
 
-  v7(v5, v6, v3);
+  v7(v5, v6, animatedCopy);
 }
 
 - (void)pauseAnimation
@@ -115,7 +115,7 @@
 
   v3 = OBJC_IVAR___BPSConfigurableAnimationView_autoStartTimer;
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___BPSConfigurableAnimationView_autoStartTimer);
-  v5 = self;
+  selfCopy = self;
   [v4 invalidate];
   v6 = *(&self->super.super.super.isa + v3);
   *(&self->super.super.super.isa + v3) = 0;
@@ -131,11 +131,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_241EA8A8C();
 }
 
-- (BPSConfigurableAnimationView)initWithFrame:(CGRect)a3
+- (BPSConfigurableAnimationView)initWithFrame:(CGRect)frame
 {
   sub_241EA9E38();
   sub_241EA9E28();

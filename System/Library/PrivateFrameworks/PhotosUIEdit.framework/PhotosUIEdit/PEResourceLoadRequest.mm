@@ -1,9 +1,9 @@
 @interface PEResourceLoadRequest
 - (CGSize)targetSize;
 - (PEResourceLoaderDelegate)delegate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_assertWorkVersionResolved;
-- (void)_resolveVersionIfNeededWithWorkVersion:(int64_t)a3;
+- (void)_resolveVersionIfNeededWithWorkVersion:(int64_t)version;
 @end
 
 @implementation PEResourceLoadRequest
@@ -28,27 +28,27 @@
 {
   if (![(PEResourceLoadRequest *)self _isWorkVersionResolved])
   {
-    v4 = [MEMORY[0x277CCA890] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PEResourceLoader.m" lineNumber:106 description:@"Can't fetch media without knowing the version to request"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PEResourceLoader.m" lineNumber:106 description:@"Can't fetch media without knowing the version to request"];
   }
 }
 
-- (void)_resolveVersionIfNeededWithWorkVersion:(int64_t)a3
+- (void)_resolveVersionIfNeededWithWorkVersion:(int64_t)version
 {
   if (![(PEResourceLoadRequest *)self _isWorkVersionResolved])
   {
 
-    [(PEResourceLoadRequest *)self _setResolvedVersion:a3];
+    [(PEResourceLoadRequest *)self _setResolvedVersion:version];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setRequireLocalResources:{-[PEResourceLoadRequest requireLocalResources](self, "requireLocalResources")}];
   [v4 setRequireAdjustments:{-[PEResourceLoadRequest requireAdjustments](self, "requireAdjustments")}];
-  v5 = [(PEResourceLoadRequest *)self delegate];
-  [v4 setDelegate:v5];
+  delegate = [(PEResourceLoadRequest *)self delegate];
+  [v4 setDelegate:delegate];
 
   [v4 setVersion:{-[PEResourceLoadRequest version](self, "version")}];
   [(PEResourceLoadRequest *)self targetSize];

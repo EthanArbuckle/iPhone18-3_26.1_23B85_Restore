@@ -17,7 +17,7 @@
   v12 = [MEMORY[0x277D10860] crystalMigrateWalkingSteadinessMoveOnboardingTileDismissalDateToKeyValueStorageWithUserDefaults:v10];
   v17[1] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
-  v14 = [a1 initWithProfile:v8 identifier:@"HealthMobilityDaemon" currentMigrationVersion:18002 migrationSteps:v13 delegate:v7 loggingCategory:*MEMORY[0x277CCC2F8]];
+  v14 = [self initWithProfile:v8 identifier:@"HealthMobilityDaemon" currentMigrationVersion:18002 migrationSteps:v13 delegate:v7 loggingCategory:*MEMORY[0x277CCC2F8]];
 
   v15 = *MEMORY[0x277D85DE8];
   return v14;

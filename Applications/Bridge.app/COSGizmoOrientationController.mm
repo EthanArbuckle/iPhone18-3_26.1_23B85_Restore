@@ -5,7 +5,7 @@
 - (id)specifiers;
 - (void)dealloc;
 - (void)handleDidUnpair;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation COSGizmoOrientationController
@@ -70,9 +70,9 @@
   if (!v4)
   {
     v5 = [(COSGizmoOrientationController *)self loadSpecifiersFromPlistName:@"GizmoOrientation" target:self];
-    v6 = [(COSGizmoOrientationController *)self domainAccessor];
-    v7 = [v6 synchronize];
-    v8 = [v6 BOOLForKey:@"wornOnRightArm"];
+    domainAccessor = [(COSGizmoOrientationController *)self domainAccessor];
+    synchronize = [domainAccessor synchronize];
+    v8 = [domainAccessor BOOLForKey:@"wornOnRightArm"];
     v9 = [v5 specifierForID:@"WRIST_CHOICE_ID"];
     if (v8)
     {
@@ -87,7 +87,7 @@
     v11 = [v5 specifierForID:v10];
     v12 = PSRadioGroupCheckedSpecifierKey;
     [v9 setProperty:v11 forKey:PSRadioGroupCheckedSpecifierKey];
-    v13 = [v6 BOOLForKey:@"invertUI"];
+    v13 = [domainAccessor BOOLForKey:@"invertUI"];
     v14 = [v5 specifierForID:@"ORIENTATION_CHOICE_ID"];
     if (v13)
     {
@@ -117,51 +117,51 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(COSGizmoOrientationController *)self indexForIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(COSGizmoOrientationController *)self indexForIndexPath:pathCopy];
   v9 = [*&self->BPSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
-  v10 = [(COSGizmoOrientationController *)self domainAccessor];
-  v11 = [v9 identifier];
-  v12 = [v11 isEqualToString:@"LEFT_HAND_ID"];
+  domainAccessor = [(COSGizmoOrientationController *)self domainAccessor];
+  identifier = [v9 identifier];
+  v12 = [identifier isEqualToString:@"LEFT_HAND_ID"];
 
   if (v12)
   {
     v13 = @"wornOnRightArm";
-    [v10 setBool:0 forKey:@"wornOnRightArm"];
+    [domainAccessor setBool:0 forKey:@"wornOnRightArm"];
     v14 = 1;
 LABEL_5:
     [PBBridgeCAReporter recordUserInitiatedDeviceWristChange:v14];
     goto LABEL_6;
   }
 
-  v15 = [v9 identifier];
-  v16 = [v15 isEqualToString:@"RIGHT_HAND_ID"];
+  identifier2 = [v9 identifier];
+  v16 = [identifier2 isEqualToString:@"RIGHT_HAND_ID"];
 
   if (v16)
   {
     v13 = @"wornOnRightArm";
-    [v10 setBool:1 forKey:@"wornOnRightArm"];
+    [domainAccessor setBool:1 forKey:@"wornOnRightArm"];
     v14 = 2;
     goto LABEL_5;
   }
 
-  v23 = [v9 identifier];
-  v24 = [v23 isEqualToString:@"LISA_ON_LEFT_ID"];
+  identifier3 = [v9 identifier];
+  v24 = [identifier3 isEqualToString:@"LISA_ON_LEFT_ID"];
 
   if (v24)
   {
     v13 = @"invertUI";
-    [v10 setBool:1 forKey:@"invertUI"];
+    [domainAccessor setBool:1 forKey:@"invertUI"];
     v25 = 2;
   }
 
   else
   {
-    v26 = [v9 identifier];
-    v27 = [v26 isEqualToString:@"LISA_ON_RIGHT_ID"];
+    identifier4 = [v9 identifier];
+    v27 = [identifier4 isEqualToString:@"LISA_ON_RIGHT_ID"];
 
     if (!v27)
     {
@@ -169,13 +169,13 @@ LABEL_5:
     }
 
     v13 = @"invertUI";
-    [v10 setBool:0 forKey:@"invertUI"];
+    [domainAccessor setBool:0 forKey:@"invertUI"];
     v25 = 1;
   }
 
   [PBBridgeCAReporter recordUserInitiatedDeviceOrientationChange:v25];
 LABEL_6:
-  v17 = [v10 synchronize];
+  synchronize = [domainAccessor synchronize];
   syncManager = self->_syncManager;
   v29 = v13;
   v19 = [NSArray arrayWithObjects:&v29 count:1];
@@ -185,18 +185,18 @@ LABEL_6:
 LABEL_7:
   [(COSGizmoOrientationController *)self reloadSpecifiers];
   WeakRetained = objc_loadWeakRetained(&self->BPSListController_opaque[OBJC_IVAR___PSViewController__parentController]);
-  v22 = [(COSGizmoOrientationController *)self specifier];
-  [WeakRetained reloadSpecifier:v22];
+  specifier = [(COSGizmoOrientationController *)self specifier];
+  [WeakRetained reloadSpecifier:specifier];
 
   v28.receiver = self;
   v28.super_class = COSGizmoOrientationController;
-  [(COSGizmoOrientationController *)&v28 tableView:v7 didSelectRowAtIndexPath:v6];
+  [(COSGizmoOrientationController *)&v28 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
 + (id)wristChoice
 {
   v2 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.nano"];
-  v3 = [v2 synchronize];
+  synchronize = [v2 synchronize];
   v4 = [v2 BOOLForKey:@"wornOnRightArm"];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = v5;

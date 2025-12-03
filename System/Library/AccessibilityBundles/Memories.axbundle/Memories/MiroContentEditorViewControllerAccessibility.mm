@@ -1,25 +1,25 @@
 @interface MiroContentEditorViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)clipCollection:(id)a3 didSnapToIndexPath:(id)a4;
+- (void)clipCollection:(id)collection didSnapToIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation MiroContentEditorViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MiroContentEditorViewController" hasInstanceMethod:@"topToolbar" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MiroContentEditorViewController" hasInstanceMethod:@"timelineViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MiroContentEditorViewController" hasInstanceMethod:@"editorViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MiroContentEditorViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"MiroContentEditorViewController" hasInstanceMethod:@"bottomToolbar" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MiroEditorClipCollectionViewController" isKindOfClass:@"UICollectionViewController"];
-  [v3 validateClass:@"MiroTimelineClipCollectionViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"MiroContentEditorViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MiroContentEditorViewController" hasInstanceMethod:@"clipCollection: didSnapToIndexPath:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"MiroTimelineClipCollectionViewController" hasInstanceMethod:@"snapToIndexPath: animated:" withFullSignature:{"v", "@", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MiroContentEditorViewController" hasInstanceMethod:@"topToolbar" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MiroContentEditorViewController" hasInstanceMethod:@"timelineViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MiroContentEditorViewController" hasInstanceMethod:@"editorViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MiroContentEditorViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"MiroContentEditorViewController" hasInstanceMethod:@"bottomToolbar" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MiroEditorClipCollectionViewController" isKindOfClass:@"UICollectionViewController"];
+  [validationsCopy validateClass:@"MiroTimelineClipCollectionViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"MiroContentEditorViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MiroContentEditorViewController" hasInstanceMethod:@"clipCollection: didSnapToIndexPath:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"MiroTimelineClipCollectionViewController" hasInstanceMethod:@"snapToIndexPath: animated:" withFullSignature:{"v", "@", "B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -51,18 +51,18 @@
   [(MiroContentEditorViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)clipCollection:(id)a3 didSnapToIndexPath:(id)a4
+- (void)clipCollection:(id)collection didSnapToIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v10.receiver = self;
   v10.super_class = MiroContentEditorViewControllerAccessibility;
-  v7 = a3;
-  [(MiroContentEditorViewControllerAccessibility *)&v10 clipCollection:v7 didSnapToIndexPath:v6];
+  collectionCopy = collection;
+  [(MiroContentEditorViewControllerAccessibility *)&v10 clipCollection:collectionCopy didSnapToIndexPath:pathCopy];
   v8 = [(MiroContentEditorViewControllerAccessibility *)self safeValueForKey:@"editorViewController"];
 
-  if (v8 == v7)
+  if (v8 == collectionCopy)
   {
-    v9 = v6;
+    v9 = pathCopy;
     AXPerformSafeBlock();
   }
 }

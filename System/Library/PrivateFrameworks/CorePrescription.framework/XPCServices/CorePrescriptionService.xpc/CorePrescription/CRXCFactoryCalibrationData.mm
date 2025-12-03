@@ -1,8 +1,8 @@
 @interface CRXCFactoryCalibrationData
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CRXCFactoryCalibrationData)init;
 - (NSData)acc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRXCFactoryCalibrationData
@@ -18,11 +18,11 @@
   return v4.super.isa;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_100081658();
     swift_unknownObjectRelease();
@@ -31,7 +31,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = CRXCFactoryCalibrationData.isEqual(_:)(v8);
@@ -40,11 +40,11 @@
   return v6 & 1;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  CRXCFactoryCalibrationData.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  CRXCFactoryCalibrationData.encode(with:)(coderCopy);
 }
 
 - (CRXCFactoryCalibrationData)init

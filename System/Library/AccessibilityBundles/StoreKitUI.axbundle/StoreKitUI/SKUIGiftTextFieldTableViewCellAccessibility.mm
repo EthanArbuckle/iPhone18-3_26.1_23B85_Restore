@@ -9,15 +9,15 @@
 - (id)accessibilityValue
 {
   v2 = [(SKUIGiftTextFieldTableViewCellAccessibility *)self safeValueForKey:@"textField"];
-  v3 = [v2 accessibilityValue];
+  accessibilityValue = [v2 accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v3 = [(SKUIGiftTextFieldTableViewCellAccessibility *)self safeValueForKey:@"textField"];
-  v4 = [v3 accessibilityTraits];
+  accessibilityTraits = [v3 accessibilityTraits];
 
   v5 = [(SKUIGiftTextFieldTableViewCellAccessibility *)self safeValueForKey:@"isEnabled"];
   LODWORD(v3) = [v5 BOOLValue];
@@ -28,7 +28,7 @@
     v6 = 0;
   }
 
-  return v6 | v4;
+  return v6 | accessibilityTraits;
 }
 
 - (CGPoint)accessibilityActivationPoint

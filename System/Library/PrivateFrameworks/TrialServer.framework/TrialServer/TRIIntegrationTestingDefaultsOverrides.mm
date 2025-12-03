@@ -6,8 +6,8 @@
 
 + (BOOL)shouldUseIntegrationTestLogger
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"com.apple.triald.use-integration-test-logger"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"com.apple.triald.use-integration-test-logger"];
 
   return v3;
 }

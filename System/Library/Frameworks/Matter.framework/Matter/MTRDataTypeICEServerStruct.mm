@@ -1,6 +1,6 @@
 @interface MTRDataTypeICEServerStruct
 - (MTRDataTypeICEServerStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -13,9 +13,9 @@
   v2 = [(MTRDataTypeICEServerStruct *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     urls = v2->_urls;
-    v2->_urls = v3;
+    v2->_urls = array;
 
     username = v2->_username;
     v2->_username = 0;
@@ -30,20 +30,20 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDataTypeICEServerStruct);
-  v5 = [(MTRDataTypeICEServerStruct *)self urls];
-  [(MTRDataTypeICEServerStruct *)v4 setUrls:v5];
+  urls = [(MTRDataTypeICEServerStruct *)self urls];
+  [(MTRDataTypeICEServerStruct *)v4 setUrls:urls];
 
-  v6 = [(MTRDataTypeICEServerStruct *)self username];
-  [(MTRDataTypeICEServerStruct *)v4 setUsername:v6];
+  username = [(MTRDataTypeICEServerStruct *)self username];
+  [(MTRDataTypeICEServerStruct *)v4 setUsername:username];
 
-  v7 = [(MTRDataTypeICEServerStruct *)self credential];
-  [(MTRDataTypeICEServerStruct *)v4 setCredential:v7];
+  credential = [(MTRDataTypeICEServerStruct *)self credential];
+  [(MTRDataTypeICEServerStruct *)v4 setCredential:credential];
 
-  v8 = [(MTRDataTypeICEServerStruct *)self caid];
-  [(MTRDataTypeICEServerStruct *)v4 setCaid:v8];
+  caid = [(MTRDataTypeICEServerStruct *)self caid];
+  [(MTRDataTypeICEServerStruct *)v4 setCaid:caid];
 
   return v4;
 }

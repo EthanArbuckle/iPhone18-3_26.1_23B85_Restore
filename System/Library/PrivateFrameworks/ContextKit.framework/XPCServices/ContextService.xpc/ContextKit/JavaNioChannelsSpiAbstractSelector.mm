@@ -1,10 +1,10 @@
 @interface JavaNioChannelsSpiAbstractSelector
 - (BOOL)isOpen;
 - (void)begin;
-- (void)cancelWithJavaNioChannelsSelectionKey:(id)a3;
+- (void)cancelWithJavaNioChannelsSelectionKey:(id)key;
 - (void)close;
 - (void)dealloc;
-- (void)deregisterWithJavaNioChannelsSpiAbstractSelectionKey:(id)a3;
+- (void)deregisterWithJavaNioChannelsSpiAbstractSelectionKey:(id)key;
 - (void)end;
 @end
 
@@ -36,9 +36,9 @@
   return [(JavaUtilConcurrentAtomicAtomicBoolean *)isOpen get];
 }
 
-- (void)deregisterWithJavaNioChannelsSpiAbstractSelectionKey:(id)a3
+- (void)deregisterWithJavaNioChannelsSpiAbstractSelectionKey:(id)key
 {
-  if (!a3 || (v4 = [a3 channel], objc_opt_class(), !v4))
+  if (!key || (v4 = [key channel], objc_opt_class(), !v4))
   {
     JreThrowNullPointerException();
   }
@@ -48,8 +48,8 @@
     JreThrowClassCastException();
   }
 
-  [v4 deregisterWithJavaNioChannelsSelectionKey:a3];
-  *(a3 + 16) = 0;
+  [v4 deregisterWithJavaNioChannelsSelectionKey:key];
+  *(key + 16) = 0;
 }
 
 - (void)begin
@@ -78,7 +78,7 @@
   [(JavaLangThread *)v3 popInterruptAction$WithJavaLangRunnable:wakeupRunnable];
 }
 
-- (void)cancelWithJavaNioChannelsSelectionKey:(id)a3
+- (void)cancelWithJavaNioChannelsSelectionKey:(id)key
 {
   cancelledKeysSet = self->cancelledKeysSet_;
   objc_sync_enter(cancelledKeysSet);
@@ -88,7 +88,7 @@
     JreThrowNullPointerException();
   }
 
-  [(JavaUtilSet *)v6 addWithId:a3];
+  [(JavaUtilSet *)v6 addWithId:key];
 
   objc_sync_exit(cancelledKeysSet);
 }

@@ -1,6 +1,6 @@
 @interface PGGraphMeaningNodeCollection
-+ (id)meaningNodesWithMeaning:(unint64_t)a3 inGraph:(id)a4;
-+ (id)meaningNodesWithMeaningLabels:(id)a3 inGraph:(id)a4;
++ (id)meaningNodesWithMeaning:(unint64_t)meaning inGraph:(id)graph;
++ (id)meaningNodesWithMeaningLabels:(id)labels inGraph:(id)graph;
 - (PGGraphMeaningEdgeCollection)reliableMeaningEdges;
 - (PGGraphMeaningNodeCollection)childMeaningNodes;
 - (PGGraphMeaningNodeCollection)parentMeaningNodes;
@@ -40,8 +40,8 @@
   v10 = v8;
   [(MAElementCollection *)self enumerateIdentifiersAsCollectionsWithBlock:v16];
   v11 = [PGGraphMeaningNodeCollection alloc];
-  v12 = [(MAElementCollection *)self graph];
-  v13 = [(MAElementCollection *)v11 initWithGraph:v12 elementIdentifiers:v9];
+  graph = [(MAElementCollection *)self graph];
+  v13 = [(MAElementCollection *)v11 initWithGraph:graph elementIdentifiers:v9];
 
   v14 = *MEMORY[0x277D85DE8];
 
@@ -119,14 +119,14 @@ LABEL_13:
 - (id)localizedNames
 {
   v3 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{-[MAElementCollection count](self, "count")}];
-  v4 = [(MANodeCollection *)self labels];
+  labels = [(MANodeCollection *)self labels];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__PGGraphMeaningNodeCollection_localizedNames__block_invoke;
   v7[3] = &unk_278887698;
   v5 = v3;
   v8 = v5;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [labels enumerateObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -170,32 +170,32 @@ void __46__PGGraphMeaningNodeCollection_localizedNames__block_invoke(uint64_t a1
   return v4;
 }
 
-+ (id)meaningNodesWithMeaningLabels:(id)a3 inGraph:(id)a4
++ (id)meaningNodesWithMeaningLabels:(id)labels inGraph:(id)graph
 {
   v5 = MEMORY[0x277D22C78];
-  v6 = a4;
-  v7 = a3;
+  graphCopy = graph;
+  labelsCopy = labels;
   v8 = [v5 alloc];
-  v9 = [MEMORY[0x277CBEB98] setWithArray:v7];
+  v9 = [MEMORY[0x277CBEB98] setWithArray:labelsCopy];
 
   v10 = [v8 initWithLabels:v9 domain:700 properties:MEMORY[0x277CBEC10]];
-  v11 = [(MANodeCollection *)PGGraphMeaningNodeCollection nodesMatchingFilter:v10 inGraph:v6];
+  v11 = [(MANodeCollection *)PGGraphMeaningNodeCollection nodesMatchingFilter:v10 inGraph:graphCopy];
 
   return v11;
 }
 
-+ (id)meaningNodesWithMeaning:(unint64_t)a3 inGraph:(id)a4
++ (id)meaningNodesWithMeaning:(unint64_t)meaning inGraph:(id)graph
 {
-  v6 = a4;
-  v7 = [PGGraphMeaningNode filterWithMeaning:a3];
+  graphCopy = graph;
+  v7 = [PGGraphMeaningNode filterWithMeaning:meaning];
   if (v7)
   {
-    v8 = [a1 nodesMatchingFilter:v7 inGraph:v6];
+    v8 = [self nodesMatchingFilter:v7 inGraph:graphCopy];
   }
 
   else
   {
-    v8 = [(MAElementCollection *)[PGGraphMeaningNodeCollection alloc] initWithGraph:v6];
+    v8 = [(MAElementCollection *)[PGGraphMeaningNodeCollection alloc] initWithGraph:graphCopy];
   }
 
   v9 = v8;

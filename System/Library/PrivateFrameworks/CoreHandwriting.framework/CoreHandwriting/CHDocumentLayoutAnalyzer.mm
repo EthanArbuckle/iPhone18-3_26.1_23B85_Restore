@@ -1,6 +1,6 @@
 @interface CHDocumentLayoutAnalyzer
 - (CHDocumentLayoutAnalyzer)init;
-- (id)analyzeDrawing:(id)a3 strokeIdentifiers:(id)a4 contextStrokeIdentifiers:(id)a5 options:(id)a6 shouldCancel:(id)a7;
+- (id)analyzeDrawing:(id)drawing strokeIdentifiers:(id)identifiers contextStrokeIdentifiers:(id)strokeIdentifiers options:(id)options shouldCancel:(id)cancel;
 @end
 
 @implementation CHDocumentLayoutAnalyzer
@@ -31,24 +31,24 @@
   return v2;
 }
 
-- (id)analyzeDrawing:(id)a3 strokeIdentifiers:(id)a4 contextStrokeIdentifiers:(id)a5 options:(id)a6 shouldCancel:(id)a7
+- (id)analyzeDrawing:(id)drawing strokeIdentifiers:(id)identifiers contextStrokeIdentifiers:(id)strokeIdentifiers options:(id)options shouldCancel:(id)cancel
 {
   v198 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v183 = a4;
-  v180 = a5;
-  v179 = a6;
-  v185 = a7;
-  v186 = v12;
-  if (objc_msgSend_strokeCount(v12, v13, v14, v15, v16, v17) <= self->_maxNumInputStrokes)
+  drawingCopy = drawing;
+  identifiersCopy = identifiers;
+  strokeIdentifiersCopy = strokeIdentifiers;
+  optionsCopy = options;
+  cancelCopy = cancel;
+  v186 = drawingCopy;
+  if (objc_msgSend_strokeCount(drawingCopy, v13, v14, v15, v16, v17) <= self->_maxNumInputStrokes)
   {
-    v98 = sub_183948EA8(self, v12, v185);
+    v98 = sub_183948EA8(self, drawingCopy, cancelCopy);
   }
 
   else
   {
-    v181 = self;
-    if (objc_msgSend_strokeCount(v12, v18, v19, v20, v21, v22) > self->_maxNumInputStrokes)
+    selfCopy = self;
+    if (objc_msgSend_strokeCount(drawingCopy, v18, v19, v20, v21, v22) > self->_maxNumInputStrokes)
     {
       if (qword_1EA84DC48 != -1)
       {
@@ -59,12 +59,12 @@
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
         LODWORD(buf) = 134217984;
-        *(&buf + 4) = objc_msgSend_strokeCount(v12, v29, v30, v31, v32, v33);
+        *(&buf + 4) = objc_msgSend_strokeCount(drawingCopy, v29, v30, v31, v32, v33);
         _os_log_impl(&dword_18366B000, v28, OS_LOG_TYPE_ERROR, "Drawing with too many strokes (%lu) sent into document layout analyzer. This might indicate a problem in clutter filter.", &buf, 0xCu);
       }
     }
 
-    if (objc_msgSend_strokeCount(v12, v23, v24, v25, v26, v27) > self->_maxNumInputStrokes)
+    if (objc_msgSend_strokeCount(drawingCopy, v23, v24, v25, v26, v27) > self->_maxNumInputStrokes)
     {
       if (qword_1EA84DC48 != -1)
       {
@@ -74,14 +74,14 @@
       v39 = qword_1EA84DC50[0];
       if (os_log_type_enabled(v39, OS_LOG_TYPE_FAULT))
       {
-        v45 = objc_msgSend_strokeCount(v12, v40, v41, v42, v43, v44);
+        v45 = objc_msgSend_strokeCount(drawingCopy, v40, v41, v42, v43, v44);
         LODWORD(buf) = 134217984;
         *(&buf + 4) = v45;
         _os_log_impl(&dword_18366B000, v39, OS_LOG_TYPE_FAULT, "Drawing with too many strokes (%lu) sent into document layout analyzer. This might indicate a problem in clutter filter.", &buf, 0xCu);
       }
     }
 
-    v46 = objc_msgSend_strokeCount(v12, v34, v35, v36, v37, v38);
+    v46 = objc_msgSend_strokeCount(drawingCopy, v34, v35, v36, v37, v38);
     buf = 0uLL;
     v197 = 0;
     __p = &buf;
@@ -96,7 +96,7 @@
       sub_18368964C();
     }
 
-    v52 = objc_msgSend_strokeCount(v12, v47, v48, v49, v50, v51);
+    v52 = objc_msgSend_strokeCount(drawingCopy, v47, v48, v49, v50, v51);
     __p = 0;
     v194 = 0;
     v195 = 0;
@@ -112,9 +112,9 @@
       sub_18368964C();
     }
 
-    for (i = 0; i < objc_msgSend_strokeCount(v186, v53, v54, v55, v56, v57); i += v181->_contentNumStrokes)
+    for (i = 0; i < objc_msgSend_strokeCount(v186, v53, v54, v55, v56, v57); i += selfCopy->_contentNumStrokes)
     {
-      if (v185 && (v185[2]() & 1) != 0)
+      if (cancelCopy && (cancelCopy[2]() & 1) != 0)
       {
         goto LABEL_35;
       }
@@ -134,7 +134,7 @@
       v74 = objc_msgSend_indexSetWithIndexesInRange_(MEMORY[0x1E696AC90], v71, i, v70, v72, v73);
       v182 = objc_msgSend_drawingWithStrokesFromIndexSet_(v186, v75, v74, v76, v77, v78);
 
-      v184 = sub_183948EA8(v181, v182, v185);
+      v184 = sub_183948EA8(selfCopy, v182, cancelCopy);
       if (v184)
       {
         v191 = 0;
@@ -157,20 +157,20 @@
 
       v92 = v70 + i == objc_msgSend_strokeCount(v186, v79, v80, v81, v82, v83);
 
-      self = v181;
+      self = selfCopy;
       if (v92)
       {
         break;
       }
     }
 
-    if (!v185)
+    if (!cancelCopy)
     {
       goto LABEL_38;
     }
 
 LABEL_35:
-    if (v185[2]())
+    if (cancelCopy[2]())
     {
       v98 = 0;
       v99 = __p;
@@ -259,10 +259,10 @@ LABEL_48:
     }
   }
 
-  if (v98 && objc_msgSend_count(v180, v93, v94, v95, v96, v97) && (!v185 || (v185[2]() & 1) == 0))
+  if (v98 && objc_msgSend_count(strokeIdentifiersCopy, v93, v94, v95, v96, v97) && (!cancelCopy || (cancelCopy[2]() & 1) == 0))
   {
-    v121 = objc_msgSend_count(v183, v116, v117, v118, v119, v120);
-    v127 = objc_msgSend_count(v180, v122, v123, v124, v125, v126);
+    v121 = objc_msgSend_count(identifiersCopy, v116, v117, v118, v119, v120);
+    v127 = objc_msgSend_count(strokeIdentifiersCopy, v122, v123, v124, v125, v126);
     buf = 0uLL;
     v197 = 0;
     __p = &buf;
@@ -288,10 +288,10 @@ LABEL_48:
     p_p = &v191;
     v187 = &v188;
     v188 = 0;
-    while (v133 < objc_msgSend_count(v183, v128, v129, v130, v131, v132))
+    while (v133 < objc_msgSend_count(identifiersCopy, v128, v129, v130, v131, v132))
     {
-      v140 = objc_msgSend_objectAtIndexedSubscript_(v183, v135, v133, v137, v138, v139);
-      v145 = objc_msgSend_containsObject_(v180, v141, v140, v142, v143, v144);
+      v140 = objc_msgSend_objectAtIndexedSubscript_(identifiersCopy, v135, v133, v137, v138, v139);
+      v145 = objc_msgSend_containsObject_(strokeIdentifiersCopy, v141, v140, v142, v143, v144);
 
       v146 = v191;
       if (v145)

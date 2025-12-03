@@ -25,9 +25,9 @@
   v6 = _EXAuditTokenForCurrentProcess();
   objc_opt_class();
   v7 = _EXAuditTokenGetEntitlementValue(v6, @"com.apple.private.amfi.can-check-trust-cache");
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  if (!v8)
+  if (!bOOLValue)
   {
     v11 = _EXDefaultLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -51,8 +51,8 @@
   {
     v13 = MEMORY[0x1E696ABC0];
     input[0] = *MEMORY[0x1E696A578];
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to create SecStaticCodeRef [%ld]", v12];
-    *&buf = v14;
+    path = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to create SecStaticCodeRef [%ld]", v12];
+    *&buf = path;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&buf forKeys:input count:1];
     v16 = [v13 errorWithDomain:@"com.apple.extensionKit.errorDomain" code:12 userInfo:v15];
 LABEL_4:
@@ -79,8 +79,8 @@ LABEL_18:
     v63 = MEMORY[0x1E696ABC0];
     input[0] = *MEMORY[0x1E696A578];
     v64 = MEMORY[0x1E696AEC0];
-    v14 = [v11 path];
-    v15 = [v64 stringWithFormat:@"Unable to read detached signature from %@", v14];
+    path = [v11 path];
+    v15 = [v64 stringWithFormat:@"Unable to read detached signature from %@", path];
     input[1] = *MEMORY[0x1E696AA08];
     *&buf = v15;
     *(&buf + 1) = v29;
@@ -102,8 +102,8 @@ LABEL_18:
     v33 = a4;
     input[0] = *MEMORY[0x1E696A578];
     [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to set detached signature [%ld]", v30];
-    v14 = LABEL_16:;
-    *&buf = v14;
+    path = LABEL_16:;
+    *&buf = path;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&buf forKeys:input count:1];
     a4 = v33;
     v5 = v32;
@@ -272,9 +272,9 @@ LABEL_21:
     v39 = a4;
     v40 = MEMORY[0x1E696AEC0];
     v41 = v37;
-    v42 = [(__CFURL *)v10 path];
-    v43 = [v11 path];
-    v44 = [v40 stringWithFormat:@"Unable to push signature to kernel [%ld]: plist: %@ signature: %@", v41, v42, v43];
+    path2 = [(__CFURL *)v10 path];
+    path3 = [v11 path];
+    v44 = [v40 stringWithFormat:@"Unable to push signature to kernel [%ld]: plist: %@ signature: %@", v41, path2, path3];
     v104 = v44;
     v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v104 forKeys:&v103 count:1];
     v46 = [v38 errorWithDomain:@"com.apple.extensionKit.errorDomain" code:12 userInfo:v45];
@@ -299,8 +299,8 @@ LABEL_8:
     v24 = MEMORY[0x1E696ABC0];
     v101 = *MEMORY[0x1E696A578];
     v25 = MEMORY[0x1E696AEC0];
-    v26 = [v5 path];
-    v27 = [v25 stringWithFormat:@"Unable to read plist at %@", v26];
+    path4 = [v5 path];
+    v27 = [v25 stringWithFormat:@"Unable to read plist at %@", path4];
     v102 = v27;
     v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v102 forKeys:&v101 count:1];
     v19 = [v24 errorWithDomain:@"com.apple.extensionKit.errorDomain" code:12 userInfo:v28];
@@ -331,8 +331,8 @@ LABEL_30:
       v53 = MEMORY[0x1E696ABC0];
       v97 = *MEMORY[0x1E696A578];
       v54 = MEMORY[0x1E696AEC0];
-      v55 = [v5 path];
-      v56 = [v54 stringWithFormat:@"Extension cache at path [%@] not a dictionary: %@", v55, v22];
+      path5 = [v5 path];
+      v56 = [v54 stringWithFormat:@"Extension cache at path [%@] not a dictionary: %@", path5, v22];
       v98 = v56;
       v57 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v98 forKeys:&v97 count:1];
       v58 = [v53 errorWithDomain:@"com.apple.extensionKit.errorDomain" code:12 userInfo:v57];
@@ -349,8 +349,8 @@ LABEL_30:
     v47 = MEMORY[0x1E696ABC0];
     v99 = *MEMORY[0x1E696A578];
     v48 = MEMORY[0x1E696AEC0];
-    v49 = [v5 path];
-    v50 = [v48 stringWithFormat:@"Unable to deserialize %@", v49];
+    path6 = [v5 path];
+    v50 = [v48 stringWithFormat:@"Unable to deserialize %@", path6];
     v100 = v50;
     v51 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v100 forKeys:&v99 count:1];
     v52 = [v47 errorWithDomain:@"com.apple.extensionKit.errorDomain" code:12 userInfo:v51];
@@ -380,7 +380,7 @@ LABEL_34:
 
 - (id)_EX_objectForKey:()ExtensionKitAdditions ofClass:
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (objc_opt_isKindOfClass())
   {
     v2 = v1;
@@ -416,7 +416,7 @@ LABEL_3:
         objc_enumerationMutation(v4);
       }
 
-      v9 = [a1 objectForKey:{*(*(&v12 + 1) + 8 * v8), v12}];
+      v9 = [self objectForKey:{*(*(&v12 + 1) + 8 * v8), v12}];
       if (objc_opt_isKindOfClass())
       {
         break;
@@ -449,7 +449,7 @@ LABEL_9:
 - (id)_EX_dictionaryForKey:()ExtensionKitAdditions
 {
   v4 = a3;
-  v5 = [a1 _EX_objectForKey:v4 ofClass:objc_opt_class()];
+  v5 = [self _EX_objectForKey:v4 ofClass:objc_opt_class()];
 
   return v5;
 }
@@ -457,7 +457,7 @@ LABEL_9:
 - (id)_EX_dictionaryForKeys:()ExtensionKitAdditions
 {
   v4 = a3;
-  v5 = [a1 _EX_objectForKeys:v4 ofClass:objc_opt_class()];
+  v5 = [self _EX_objectForKeys:v4 ofClass:objc_opt_class()];
 
   return v5;
 }
@@ -465,7 +465,7 @@ LABEL_9:
 - (id)_EX_arrayForKey:()ExtensionKitAdditions
 {
   v4 = a3;
-  v5 = [a1 _EX_objectForKey:v4 ofClass:objc_opt_class()];
+  v5 = [self _EX_objectForKey:v4 ofClass:objc_opt_class()];
 
   return v5;
 }
@@ -473,7 +473,7 @@ LABEL_9:
 - (id)_EX_arrayForKeys:()ExtensionKitAdditions
 {
   v4 = a3;
-  v5 = [a1 _EX_objectForKeys:v4 ofClass:objc_opt_class()];
+  v5 = [self _EX_objectForKeys:v4 ofClass:objc_opt_class()];
 
   return v5;
 }
@@ -481,7 +481,7 @@ LABEL_9:
 - (id)_EX_stringForKey:()ExtensionKitAdditions
 {
   v4 = a3;
-  v5 = [a1 _EX_objectForKey:v4 ofClass:objc_opt_class()];
+  v5 = [self _EX_objectForKey:v4 ofClass:objc_opt_class()];
 
   return v5;
 }
@@ -489,7 +489,7 @@ LABEL_9:
 - (id)_EX_stringForKeys:()ExtensionKitAdditions
 {
   v4 = a3;
-  v5 = [a1 _EX_objectForKeys:v4 ofClass:objc_opt_class()];
+  v5 = [self _EX_objectForKeys:v4 ofClass:objc_opt_class()];
 
   return v5;
 }
@@ -497,25 +497,25 @@ LABEL_9:
 - (uint64_t)_EX_integerForKey:()ExtensionKitAdditions
 {
   v4 = a3;
-  v5 = [a1 _EX_objectForKey:v4 ofClass:objc_opt_class()];
+  v5 = [self _EX_objectForKey:v4 ofClass:objc_opt_class()];
 
-  v6 = [v5 integerValue];
-  return v6;
+  integerValue = [v5 integerValue];
+  return integerValue;
 }
 
 - (uint64_t)_EX_BOOLForKey:()ExtensionKitAdditions
 {
   v4 = a3;
-  v5 = [a1 _EX_objectForKey:v4 ofClass:objc_opt_class()];
+  v5 = [self _EX_objectForKey:v4 ofClass:objc_opt_class()];
 
-  v6 = [v5 BOOLValue];
-  return v6;
+  bOOLValue = [v5 BOOLValue];
+  return bOOLValue;
 }
 
 - (uint64_t)_EX_BOOLForKey:()ExtensionKitAdditions defaultValue:
 {
   v6 = a3;
-  v7 = [a1 _EX_objectForKey:v6 ofClass:objc_opt_class()];
+  v7 = [self _EX_objectForKey:v6 ofClass:objc_opt_class()];
 
   if (v7)
   {
@@ -528,7 +528,7 @@ LABEL_9:
 - (id)_EX_dictionaryByRemovingObjectForKey:()ExtensionKitAdditions
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 removeObjectForKey:v4];
 
   objc_opt_class();
@@ -551,7 +551,7 @@ LABEL_9:
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 mutableCopy];
+  v8 = [self mutableCopy];
   [v8 setObject:v7 forKey:v6];
 
   objc_opt_class();
@@ -573,7 +573,7 @@ LABEL_9:
 - (id)_EX_dictionaryBySettingValuesForKeysWithDictionary:()ExtensionKitAdditions
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 setValuesForKeysWithDictionary:v4];
 
   objc_opt_class();

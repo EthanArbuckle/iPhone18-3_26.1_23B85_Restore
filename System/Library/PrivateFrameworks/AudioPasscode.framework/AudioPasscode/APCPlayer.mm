@@ -1,20 +1,20 @@
 @interface APCPlayer
 + (id)carrierAssetIdentifiers;
-+ (id)fileNameForCarrierAsset:(unint64_t)a3;
-+ (id)urlForCarrierAsset:(unint64_t)a3;
-+ (unint64_t)assetIDFromIdentifier:(id)a3;
++ (id)fileNameForCarrierAsset:(unint64_t)asset;
++ (id)urlForCarrierAsset:(unint64_t)asset;
++ (unint64_t)assetIDFromIdentifier:(id)identifier;
 - (APCPlayer)init;
-- (APCPlayer)initWithCodecConfiguration:(id)a3;
-- (APCPlayer)initWithListenerCapabilityData:(id)a3 payloadLength:(unint64_t)a4;
+- (APCPlayer)initWithCodecConfiguration:(id)configuration;
+- (APCPlayer)initWithListenerCapabilityData:(id)data payloadLength:(unint64_t)length;
 - (APCPlayerEmbedInfo)embeddingInfo;
-- (BOOL)startSendAtTime:(unint64_t)a3 withBeginning:(id)a4;
-- (float)preparePayload:(id)a3 usingCarrierAsset:(unint64_t)a4 error:(id *)a5;
-- (float)preparePayload:(id)a3 usingCarrierAtURL:(id)a4 error:(id *)a5;
-- (id)createCompatibleConfigForCapabilites:(id)a3;
-- (void)setCallbackTimingMSec:(unint64_t)a3;
-- (void)setDispatchQueue:(id)a3;
-- (void)stopSendAfterMinimumLoops:(unint64_t)a3 withCompletion:(id)a4;
-- (void)stopSendWithFadeOut:(float)a3 completion:(id)a4;
+- (BOOL)startSendAtTime:(unint64_t)time withBeginning:(id)beginning;
+- (float)preparePayload:(id)payload usingCarrierAsset:(unint64_t)asset error:(id *)error;
+- (float)preparePayload:(id)payload usingCarrierAtURL:(id)l error:(id *)error;
+- (id)createCompatibleConfigForCapabilites:(id)capabilites;
+- (void)setCallbackTimingMSec:(unint64_t)sec;
+- (void)setDispatchQueue:(id)queue;
+- (void)stopSendAfterMinimumLoops:(unint64_t)loops withCompletion:(id)completion;
+- (void)stopSendWithFadeOut:(float)out completion:(id)completion;
 @end
 
 @implementation APCPlayer
@@ -27,15 +27,15 @@
   return v4;
 }
 
-- (id)createCompatibleConfigForCapabilites:(id)a3
+- (id)createCompatibleConfigForCapabilites:(id)capabilites
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  capabilitesCopy = capabilites;
+  v4 = [capabilitesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = *v13;
@@ -45,18 +45,18 @@
       {
         if (*v13 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(capabilitesCopy);
         }
 
         v7 = [APCCodecFactory createBestConfigForCapability:*(*(&v12 + 1) + 8 * i)];
         if (v7)
         {
-          v8 = v3;
+          v8 = capabilitesCopy;
           goto LABEL_13;
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [capabilitesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v4)
       {
         continue;
@@ -81,10 +81,10 @@ LABEL_13:
   return v7;
 }
 
-- (APCPlayer)initWithListenerCapabilityData:(id)a3 payloadLength:(unint64_t)a4
+- (APCPlayer)initWithListenerCapabilityData:(id)data payloadLength:(unint64_t)length
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dataCopy = data;
   v32.receiver = self;
   v32.super_class = APCPlayer;
   v7 = [(APCPlayer *)&v32 init];
@@ -95,7 +95,7 @@ LABEL_13:
   }
 
   v7->_isPlaying = 0;
-  if (!v6 || ![v6 length])
+  if (!dataCopy || ![dataCopy length])
   {
 LABEL_20:
     v19 = 0;
@@ -109,7 +109,7 @@ LABEL_20:
   v13 = objc_opt_class();
   v14 = objc_opt_class();
   v15 = [v9 setWithObjects:{v10, v11, v12, v13, v14, objc_opt_class(), 0}];
-  v16 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:v15 fromData:v6 error:0];
+  v16 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:v15 fromData:dataCopy error:0];
   if (!v16 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
@@ -140,7 +140,7 @@ LABEL_19:
         v23 = v8->_codecConfig;
         if (v23)
         {
-          [(AUPasscodeCodecConfiguration *)v23 setPayloadLengthBytes:a4];
+          [(AUPasscodeCodecConfiguration *)v23 setPayloadLengthBytes:length];
           v24 = APCLogObject();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
           {
@@ -175,10 +175,10 @@ LABEL_21:
   return v19;
 }
 
-- (APCPlayer)initWithCodecConfiguration:(id)a3
+- (APCPlayer)initWithCodecConfiguration:(id)configuration
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  configurationCopy = configuration;
   v17.receiver = self;
   v17.super_class = APCPlayer;
   v6 = [(APCPlayer *)&v17 init];
@@ -186,7 +186,7 @@ LABEL_21:
   if (v6)
   {
     v6->_isPlaying = 0;
-    objc_storeStrong(&v6->_codecConfig, a3);
+    objc_storeStrong(&v6->_codecConfig, configuration);
     if (!v7->_codecConfig)
     {
       v14 = 0;
@@ -216,29 +216,29 @@ LABEL_8:
   return v14;
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
-  v6 = a3;
-  objc_storeStrong(&self->_dispatchQueue, a3);
+  queueCopy = queue;
+  objc_storeStrong(&self->_dispatchQueue, queue);
   playerEngine = self->_playerEngine;
   if (playerEngine)
   {
-    [(APCPlayerEngine *)playerEngine setDispatchQueue:v6];
+    [(APCPlayerEngine *)playerEngine setDispatchQueue:queueCopy];
   }
 }
 
-- (void)setCallbackTimingMSec:(unint64_t)a3
+- (void)setCallbackTimingMSec:(unint64_t)sec
 {
   if (!self->_isPlaying)
   {
-    self->_callbackTimingMSec = a3;
+    self->_callbackTimingMSec = sec;
   }
 }
 
-+ (id)urlForCarrierAsset:(unint64_t)a3
++ (id)urlForCarrierAsset:(unint64_t)asset
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [APCPlayer fileNameForCarrierAsset:a3];
+  v3 = [APCPlayer fileNameForCarrierAsset:asset];
   if (v3)
   {
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -247,9 +247,9 @@ LABEL_8:
     v6 = APCLogObject();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [v5 absoluteString];
+      absoluteString = [v5 absoluteString];
       v10 = 136315138;
-      v11 = [v7 UTF8String];
+      uTF8String = [absoluteString UTF8String];
       _os_log_impl(&dword_24158E000, v6, OS_LOG_TYPE_INFO, "Carrier Resource path: %s", &v10, 0xCu);
     }
   }
@@ -264,16 +264,16 @@ LABEL_8:
   return v5;
 }
 
-+ (id)fileNameForCarrierAsset:(unint64_t)a3
++ (id)fileNameForCarrierAsset:(unint64_t)asset
 {
-  if (a3 - 1 > 3)
+  if (asset - 1 > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_278CE1E88[a3 - 1];
+    return off_278CE1E88[asset - 1];
   }
 }
 
@@ -299,31 +299,31 @@ LABEL_8:
   return v6;
 }
 
-+ (unint64_t)assetIDFromIdentifier:(id)a3
++ (unint64_t)assetIDFromIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[APCPlayer carrierAssetIdentifiers];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:identifierCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 unsignedIntegerValue];
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
   }
 
   else
   {
-    v7 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
-- (float)preparePayload:(id)a3 usingCarrierAsset:(unint64_t)a4 error:(id *)a5
+- (float)preparePayload:(id)payload usingCarrierAsset:(unint64_t)asset error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = v8;
-  if (!v8 || (v10 = [v8 length], v10 != -[AUPasscodeCodecConfiguration payloadLengthBytes](self->_codecConfig, "payloadLengthBytes")))
+  payloadCopy = payload;
+  v9 = payloadCopy;
+  if (!payloadCopy || (v10 = [payloadCopy length], v10 != -[AUPasscodeCodecConfiguration payloadLengthBytes](self->_codecConfig, "payloadLengthBytes")))
   {
     v17 = APCLogObject();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -338,19 +338,19 @@ LABEL_8:
         v18 = 0;
       }
 
-      v19 = [(AUPasscodeCodecConfiguration *)self->_codecConfig payloadLengthBytes];
+      payloadLengthBytes = [(AUPasscodeCodecConfiguration *)self->_codecConfig payloadLengthBytes];
       v22 = 134218240;
       v23 = v18;
       v24 = 2048;
-      v25 = v19;
+      v25 = payloadLengthBytes;
       _os_log_impl(&dword_24158E000, v17, OS_LOG_TYPE_ERROR, "Payload passed to prepare contains %lu bytes, was told we'd send %ld bytes. These must match!", &v22, 0x16u);
     }
 
     goto LABEL_13;
   }
 
-  v11 = [APCPlayer urlForCarrierAsset:a4];
-  v12 = [APCPlayerEngine playerWithAssetURL:v11 codecConfig:self->_codecConfig payload:v9 error:a5];
+  v11 = [APCPlayer urlForCarrierAsset:asset];
+  v12 = [APCPlayerEngine playerWithAssetURL:v11 codecConfig:self->_codecConfig payload:v9 error:error];
   playerEngine = self->_playerEngine;
   self->_playerEngine = v12;
 
@@ -375,19 +375,19 @@ LABEL_14:
   return v16;
 }
 
-- (float)preparePayload:(id)a3 usingCarrierAtURL:(id)a4 error:(id *)a5
+- (float)preparePayload:(id)payload usingCarrierAtURL:(id)l error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (!v8 || (v10 = [v8 length], v10 != -[AUPasscodeCodecConfiguration payloadLengthBytes](self->_codecConfig, "payloadLengthBytes")))
+  payloadCopy = payload;
+  lCopy = l;
+  if (!payloadCopy || (v10 = [payloadCopy length], v10 != -[AUPasscodeCodecConfiguration payloadLengthBytes](self->_codecConfig, "payloadLengthBytes")))
   {
     v16 = APCLogObject();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      if (v8)
+      if (payloadCopy)
       {
-        v17 = [v8 length];
+        v17 = [payloadCopy length];
       }
 
       else
@@ -395,18 +395,18 @@ LABEL_14:
         v17 = 0;
       }
 
-      v18 = [(AUPasscodeCodecConfiguration *)self->_codecConfig payloadLengthBytes];
+      payloadLengthBytes = [(AUPasscodeCodecConfiguration *)self->_codecConfig payloadLengthBytes];
       v21 = 134218240;
       v22 = v17;
       v23 = 2048;
-      v24 = v18;
+      v24 = payloadLengthBytes;
       _os_log_impl(&dword_24158E000, v16, OS_LOG_TYPE_ERROR, "Payload passed to prepare contains %lu bytes, was told we'd send %ld bytes. These must match!", &v21, 0x16u);
     }
 
     goto LABEL_11;
   }
 
-  v11 = [APCPlayerEngine playerWithAssetURL:v9 codecConfig:self->_codecConfig payload:v8 error:a5];
+  v11 = [APCPlayerEngine playerWithAssetURL:lCopy codecConfig:self->_codecConfig payload:payloadCopy error:error];
   playerEngine = self->_playerEngine;
   self->_playerEngine = v11;
 
@@ -426,13 +426,13 @@ LABEL_12:
   return v15;
 }
 
-- (BOOL)startSendAtTime:(unint64_t)a3 withBeginning:(id)a4
+- (BOOL)startSendAtTime:(unint64_t)time withBeginning:(id)beginning
 {
-  v6 = a4;
+  beginningCopy = beginning;
   playerEngine = self->_playerEngine;
   if (playerEngine)
   {
-    v8 = [(APCPlayerEngine *)playerEngine startEngineAtTime:a3 withBeginning:v6 callbackTime:self->_callbackTimingMSec];
+    v8 = [(APCPlayerEngine *)playerEngine startEngineAtTime:time withBeginning:beginningCopy callbackTime:self->_callbackTimingMSec];
     self->_isPlaying = 1;
   }
 
@@ -444,32 +444,32 @@ LABEL_12:
   return v8;
 }
 
-- (void)stopSendAfterMinimumLoops:(unint64_t)a3 withCompletion:(id)a4
+- (void)stopSendAfterMinimumLoops:(unint64_t)loops withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   playerEngine = self->_playerEngine;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __54__APCPlayer_stopSendAfterMinimumLoops_withCompletion___block_invoke;
   v9[3] = &unk_278CE1E68;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [(APCPlayerEngine *)playerEngine stopEngineAfterMinimumLoops:a3 withCompletion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(APCPlayerEngine *)playerEngine stopEngineAfterMinimumLoops:loops withCompletion:v9];
 }
 
-- (void)stopSendWithFadeOut:(float)a3 completion:(id)a4
+- (void)stopSendWithFadeOut:(float)out completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   playerEngine = self->_playerEngine;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __44__APCPlayer_stopSendWithFadeOut_completion___block_invoke;
   v10[3] = &unk_278CE1E68;
   v10[4] = self;
-  v11 = v6;
-  v8 = v6;
-  *&v9 = a3;
+  v11 = completionCopy;
+  v8 = completionCopy;
+  *&v9 = out;
   [(APCPlayerEngine *)playerEngine stopEngineWithFadeOut:v10 completion:v9];
 }
 

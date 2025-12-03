@@ -1,19 +1,19 @@
 @interface PKTransitCommutePlanPackage
-- (PKTransitCommutePlanPackage)initWithCoder:(id)a3;
-- (PKTransitCommutePlanPackage)initWithDictionary:(id)a3 backFieldBuckets:(id)a4 bundle:(id)a5 privateBundle:(id)a6 passType:(unint64_t)a7;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKTransitCommutePlanPackage)initWithCoder:(id)coder;
+- (PKTransitCommutePlanPackage)initWithDictionary:(id)dictionary backFieldBuckets:(id)buckets bundle:(id)bundle privateBundle:(id)privateBundle passType:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKTransitCommutePlanPackage
 
-- (PKTransitCommutePlanPackage)initWithDictionary:(id)a3 backFieldBuckets:(id)a4 bundle:(id)a5 privateBundle:(id)a6 passType:(unint64_t)a7
+- (PKTransitCommutePlanPackage)initWithDictionary:(id)dictionary backFieldBuckets:(id)buckets bundle:(id)bundle privateBundle:(id)privateBundle passType:(unint64_t)type
 {
   v64 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  dictionaryCopy = dictionary;
+  bucketsCopy = buckets;
+  bundleCopy = bundle;
+  privateBundleCopy = privateBundle;
   v61.receiver = self;
   v61.super_class = PKTransitCommutePlanPackage;
   v16 = [(PKTransitCommutePlanPackage *)&v61 init];
@@ -23,7 +23,7 @@
   }
 
   v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v40 = [v12 objectForKey:@"paymentCard"];
+  v40 = [dictionaryCopy objectForKey:@"paymentCard"];
   v18 = [v40 objectForKey:@"commutePlans"];
   v19 = objc_alloc_init(MEMORY[0x1E695DF90]);
   commutePlanLookupDictionary = v16->_commutePlanLookupDictionary;
@@ -36,9 +36,9 @@
     v55[1] = 3221225472;
     v55[2] = __97__PKTransitCommutePlanPackage_initWithDictionary_backFieldBuckets_bundle_privateBundle_passType___block_invoke;
     v55[3] = &unk_1E79E1090;
-    v56 = v14;
-    v57 = v15;
-    v60 = a7;
+    v56 = bundleCopy;
+    v57 = privateBundleCopy;
+    typeCopy = type;
     v21 = v16;
     v58 = v21;
     v59 = v17;
@@ -49,17 +49,17 @@
     goto LABEL_30;
   }
 
-  v37 = v15;
+  v37 = privateBundleCopy;
   v42 = v17;
   p_isa = &v16->super.isa;
-  v39 = v12;
+  v39 = dictionaryCopy;
   v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v38 = v13;
-  obj = v13;
+  v38 = bucketsCopy;
+  obj = bucketsCopy;
   v45 = [obj countByEnumeratingWithState:&v51 objects:v63 count:16];
   v22 = 0;
   if (!v45)
@@ -159,9 +159,9 @@ LABEL_23:
   while (v45);
 LABEL_29:
 
-  v13 = v38;
-  v12 = v39;
-  v15 = v37;
+  bucketsCopy = v38;
+  dictionaryCopy = v39;
+  privateBundleCopy = v37;
   v17 = v42;
   v16 = p_isa;
   v18 = 0;
@@ -300,40 +300,40 @@ void __97__PKTransitCommutePlanPackage_initWithDictionary_backFieldBuckets_bundl
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   transitCommutePlans = self->_transitCommutePlans;
-  v5 = a3;
-  [v5 encodeObject:transitCommutePlans forKey:@"PKTransitCommutePlanPackagePlansKey"];
-  [v5 encodeObject:self->_commutePlanLookupDictionary forKey:@"PKTransitCommutePlanPackageLookupKey"];
-  [v5 encodeInteger:self->_transitCommutePlanType forKey:@"PKTransitCommutePlanPackageTypeKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:transitCommutePlans forKey:@"PKTransitCommutePlanPackagePlansKey"];
+  [coderCopy encodeObject:self->_commutePlanLookupDictionary forKey:@"PKTransitCommutePlanPackageLookupKey"];
+  [coderCopy encodeInteger:self->_transitCommutePlanType forKey:@"PKTransitCommutePlanPackageTypeKey"];
 }
 
-- (PKTransitCommutePlanPackage)initWithCoder:(id)a3
+- (PKTransitCommutePlanPackage)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"PKTransitCommutePlanPackagePlansKey"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"PKTransitCommutePlanPackagePlansKey"];
   [(PKTransitCommutePlanPackage *)self setTransitCommutePlans:v8];
 
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = objc_opt_class();
   v12 = [v9 setWithObjects:{v10, v11, objc_opt_class(), 0}];
-  v13 = [v5 decodeObjectOfClasses:v12 forKey:@"PKTransitCommutePlanPackageLookupKey"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"PKTransitCommutePlanPackageLookupKey"];
   [(PKTransitCommutePlanPackage *)self setCommutePlanLookupDictionary:v13];
 
-  v14 = [v5 decodeIntegerForKey:@"PKTransitCommutePlanPackageTypeKey"];
+  v14 = [coderCopy decodeIntegerForKey:@"PKTransitCommutePlanPackageTypeKey"];
   [(PKTransitCommutePlanPackage *)self setTransitCommutePlanType:v14];
 
   return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [v4 setTransitCommutePlans:self->_transitCommutePlans];
   [v4 setCommutePlanLookupDictionary:self->_commutePlanLookupDictionary];
   [v4 setTransitCommutePlanType:self->_transitCommutePlanType];

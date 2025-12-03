@@ -1,8 +1,8 @@
 @interface DBSceneWorkspaceAssertionManager
 - (DBSceneWorkspaceAssertionManager)init;
-- (void)_updateRunningInCarPlayAssertionIfNecessaryForScene:(id)a3;
+- (void)_updateRunningInCarPlayAssertionIfNecessaryForScene:(id)scene;
 - (void)invalidate;
-- (void)scene:(id)a3 didUpdateSettings:(id)a4;
+- (void)scene:(id)scene didUpdateSettings:(id)settings;
 @end
 
 @implementation DBSceneWorkspaceAssertionManager
@@ -24,46 +24,46 @@
 
 - (void)invalidate
 {
-  v2 = [(DBSceneWorkspaceAssertionManager *)self assertions];
-  [v2 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_3];
+  assertions = [(DBSceneWorkspaceAssertionManager *)self assertions];
+  [assertions enumerateKeysAndObjectsUsingBlock:&__block_literal_global_3];
 }
 
-- (void)scene:(id)a3 didUpdateSettings:(id)a4
+- (void)scene:(id)scene didUpdateSettings:(id)settings
 {
-  v8 = a3;
-  v6 = [a4 settingsDiff];
-  v7 = [v6 containsProperty:sel_isForeground];
+  sceneCopy = scene;
+  settingsDiff = [settings settingsDiff];
+  v7 = [settingsDiff containsProperty:sel_isForeground];
 
   if (v7)
   {
-    [(DBSceneWorkspaceAssertionManager *)self _updateRunningInCarPlayAssertionIfNecessaryForScene:v8];
+    [(DBSceneWorkspaceAssertionManager *)self _updateRunningInCarPlayAssertionIfNecessaryForScene:sceneCopy];
   }
 }
 
-- (void)_updateRunningInCarPlayAssertionIfNecessaryForScene:(id)a3
+- (void)_updateRunningInCarPlayAssertionIfNecessaryForScene:(id)scene
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v4 settings];
-  v7 = [v6 isForeground];
+  sceneCopy = scene;
+  identifier = [sceneCopy identifier];
+  settings = [sceneCopy settings];
+  isForeground = [settings isForeground];
 
-  if (v5)
+  if (identifier)
   {
-    v8 = [(DBSceneWorkspaceAssertionManager *)self assertions];
-    v9 = [v8 objectForKey:v5];
+    assertions = [(DBSceneWorkspaceAssertionManager *)self assertions];
+    v9 = [assertions objectForKey:identifier];
 
     v10 = DBLogForCategory(8uLL);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v32 = v5;
+      v32 = identifier;
       _os_log_impl(&dword_248146000, v10, OS_LOG_TYPE_DEFAULT, "[CarPlayUI Assertion] Evaluating assertion for %@{public}.", buf, 0xCu);
     }
 
     v11 = DBLogForCategory(8uLL);
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-    if (v7)
+    if (isForeground)
     {
       if (v12)
       {
@@ -75,11 +75,11 @@
       {
         if ([v9 isValid])
         {
-          v13 = DBLogForCategory(8uLL);
-          if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+          assertions5 = DBLogForCategory(8uLL);
+          if (os_log_type_enabled(assertions5, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 0;
-            _os_log_impl(&dword_248146000, v13, OS_LOG_TYPE_DEFAULT, "[CarPlayUI Assertion] Assertion already exists.", buf, 2u);
+            _os_log_impl(&dword_248146000, assertions5, OS_LOG_TYPE_DEFAULT, "[CarPlayUI Assertion] Assertion already exists.", buf, 2u);
           }
 
 LABEL_31:
@@ -88,8 +88,8 @@ LABEL_31:
         }
 
         [v9 invalidate];
-        v16 = [(DBSceneWorkspaceAssertionManager *)self assertions];
-        [v16 removeObjectForKey:v5];
+        assertions2 = [(DBSceneWorkspaceAssertionManager *)self assertions];
+        [assertions2 removeObjectForKey:identifier];
       }
 
       v17 = DBLogForCategory(8uLL);
@@ -99,23 +99,23 @@ LABEL_31:
         _os_log_impl(&dword_248146000, v17, OS_LOG_TYPE_DEFAULT, "[CarPlayUI Assertion] Assertion does not exist, creating.", buf, 2u);
       }
 
-      v18 = [v4 clientHandle];
-      v14 = [v18 processHandle];
+      clientHandle = [sceneCopy clientHandle];
+      processHandle = [clientHandle processHandle];
 
-      if (!v14)
+      if (!processHandle)
       {
-        v13 = DBLogForCategory(8uLL);
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+        assertions5 = DBLogForCategory(8uLL);
+        if (os_log_type_enabled(assertions5, OS_LOG_TYPE_ERROR))
         {
-          [DBSceneWorkspaceAssertionManager _updateRunningInCarPlayAssertionIfNecessaryForScene:v13];
+          [DBSceneWorkspaceAssertionManager _updateRunningInCarPlayAssertionIfNecessaryForScene:assertions5];
         }
 
         goto LABEL_31;
       }
 
       v19 = MEMORY[0x277D47008];
-      v20 = [v14 identity];
-      v21 = [v19 targetWithProcessIdentity:v20];
+      identity = [processHandle identity];
+      v21 = [v19 targetWithProcessIdentity:identity];
 
       v22 = [MEMORY[0x277D46E38] attributeWithDomain:@"com.apple.carplay" name:@"RenderUI"];
       v30 = v22;
@@ -133,20 +133,20 @@ LABEL_31:
           [(DBSceneWorkspaceAssertionManager *)v25 _updateRunningInCarPlayAssertionIfNecessaryForScene:v26];
         }
 
-        v27 = [(DBSceneWorkspaceAssertionManager *)self assertions];
-        [v27 removeObjectForKey:v5];
+        assertions3 = [(DBSceneWorkspaceAssertionManager *)self assertions];
+        [assertions3 removeObjectForKey:identifier];
       }
 
       else
       {
-        v28 = [(DBSceneWorkspaceAssertionManager *)self assertions];
-        [v28 setObject:v24 forKey:v5];
+        assertions4 = [(DBSceneWorkspaceAssertionManager *)self assertions];
+        [assertions4 setObject:v24 forKey:identifier];
 
-        v27 = DBLogForCategory(8uLL);
-        if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+        assertions3 = DBLogForCategory(8uLL);
+        if (os_log_type_enabled(assertions3, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&dword_248146000, v27, OS_LOG_TYPE_DEFAULT, "[CarPlayUI Assertion] Successfully acquired assertion.", buf, 2u);
+          _os_log_impl(&dword_248146000, assertions3, OS_LOG_TYPE_DEFAULT, "[CarPlayUI Assertion] Successfully acquired assertion.", buf, 2u);
         }
       }
     }
@@ -159,26 +159,26 @@ LABEL_31:
         _os_log_impl(&dword_248146000, v11, OS_LOG_TYPE_DEFAULT, "[CarPlayUI Assertion] App is not foreground, no assertion needed.", buf, 2u);
       }
 
-      v14 = DBLogForCategory(8uLL);
-      v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
+      processHandle = DBLogForCategory(8uLL);
+      v15 = os_log_type_enabled(processHandle, OS_LOG_TYPE_DEFAULT);
       if (v9)
       {
         if (v15)
         {
           *buf = 0;
-          _os_log_impl(&dword_248146000, v14, OS_LOG_TYPE_DEFAULT, "[CarPlayUI Assertion] Invalidating assertion.", buf, 2u);
+          _os_log_impl(&dword_248146000, processHandle, OS_LOG_TYPE_DEFAULT, "[CarPlayUI Assertion] Invalidating assertion.", buf, 2u);
         }
 
         [v9 invalidate];
-        v13 = [(DBSceneWorkspaceAssertionManager *)self assertions];
-        [v13 removeObjectForKey:v5];
+        assertions5 = [(DBSceneWorkspaceAssertionManager *)self assertions];
+        [assertions5 removeObjectForKey:identifier];
         goto LABEL_31;
       }
 
       if (v15)
       {
         *buf = 0;
-        _os_log_impl(&dword_248146000, v14, OS_LOG_TYPE_DEFAULT, "[CarPlayUI Assertion] No assertion to remove.", buf, 2u);
+        _os_log_impl(&dword_248146000, processHandle, OS_LOG_TYPE_DEFAULT, "[CarPlayUI Assertion] No assertion to remove.", buf, 2u);
       }
     }
 

@@ -1,10 +1,10 @@
 @interface TSPUnknownContent
-+ (BOOL)unknownContent:(id)a3 hasSameUnknownFieldsAsUnknownContent:(id)a4 messagePrototype:(const Message *)a5;
-- (BOOL)hasSameUnknownFieldsAsUnknownContent:(id)a3 messagePrototype:(const Message *)a4;
++ (BOOL)unknownContent:(id)content hasSameUnknownFieldsAsUnknownContent:(id)unknownContent messagePrototype:(const Message *)prototype;
+- (BOOL)hasSameUnknownFieldsAsUnknownContent:(id)content messagePrototype:(const Message *)prototype;
 - (TSPUnknownContent)init;
-- (TSPUnknownContent)initWithMessages:(id)a3 messagesAreDiffs:(BOOL)a4 preserveFields:(id)a5 preserveUntilModifiedFields:(id)a6;
+- (TSPUnknownContent)initWithMessages:(id)messages messagesAreDiffs:(BOOL)diffs preserveFields:(id)fields preserveUntilModifiedFields:(id)modifiedFields;
 - (id)newUnknownContentSnapshot;
-- (void)loadFromUnarchiver:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
 - (void)willModifyObject;
 @end
 
@@ -26,29 +26,29 @@
   objc_exception_throw(v13);
 }
 
-- (TSPUnknownContent)initWithMessages:(id)a3 messagesAreDiffs:(BOOL)a4 preserveFields:(id)a5 preserveUntilModifiedFields:(id)a6
+- (TSPUnknownContent)initWithMessages:(id)messages messagesAreDiffs:(BOOL)diffs preserveFields:(id)fields preserveUntilModifiedFields:(id)modifiedFields
 {
-  v8 = a4;
+  diffsCopy = diffs;
   v58 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v50 = a5;
-  v51 = a6;
+  messagesCopy = messages;
+  fieldsCopy = fields;
+  modifiedFieldsCopy = modifiedFields;
   v56.receiver = self;
   v56.super_class = TSPUnknownContent;
   v13 = [(TSPUnknownContent *)&v56 init];
   if (v13)
   {
-    v14 = objc_msgSend_copy(v10, v11, v12);
+    v14 = objc_msgSend_copy(messagesCopy, v11, v12);
     preserveUntilModifiedMessages = v13->_preserveUntilModifiedMessages;
     v13->_preserveUntilModifiedMessages = v14;
 
-    if (v8)
+    if (diffsCopy)
     {
       v54 = 0u;
       v55 = 0u;
       v52 = 0u;
       v53 = 0u;
-      v18 = v10;
+      v18 = messagesCopy;
       v20 = 0;
       v23 = objc_msgSend_countByEnumeratingWithState_objects_count_(v18, v19, &v52, v57, 16);
       if (v23)
@@ -122,11 +122,11 @@
       v13->_preserveMessages = v20;
     }
 
-    v36 = objc_msgSend_copy(v50, v16, v17);
+    v36 = objc_msgSend_copy(fieldsCopy, v16, v17);
     preserveFields = v13->_preserveFields;
     v13->_preserveFields = v36;
 
-    v40 = objc_msgSend_copy(v51, v38, v39);
+    v40 = objc_msgSend_copy(modifiedFieldsCopy, v38, v39);
     preserveUntilModifiedFields = v13->_preserveUntilModifiedFields;
     v13->_preserveUntilModifiedFields = v40;
   }
@@ -179,17 +179,17 @@
   return objc_msgSend_initWithMessages_preserveFields_preserveUntilModifiedFields_shouldIncludePreserveUntilModifiedFieldsInKnownFieldRuleEnumeration_(v4, v5, preserveUntilModifiedMessages, preserveFields, preserveUntilModifiedFields, v9);
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
   v71 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   v5 = 16;
   if (!self->_preserveUntilModifiedMessages)
   {
     v5 = 8;
   }
 
-  v49 = self;
+  selfCopy = self;
   v6 = *(&self->super.isa + v5);
   v64 = 0u;
   v65 = 0u;
@@ -263,7 +263,7 @@ LABEL_17:
               v63[2] = sub_276AC9048;
               v63[3] = &unk_27A6E4220;
               v63[4] = v13;
-              objc_msgSend_readRepeatedUnknownLazyReferenceMessage_ownershipMode_completion_(v4, v8, &v59, 0, v63);
+              objc_msgSend_readRepeatedUnknownLazyReferenceMessage_ownershipMode_completion_(unarchiverCopy, v8, &v59, 0, v63);
               sub_276A07EA8(&v59);
               goto LABEL_19;
             }
@@ -287,7 +287,7 @@ LABEL_19:
             v31 = *(*(v14 + 104) + v29);
             LODWORD(v61) = v61 | 1;
             v62 = v31;
-            v34 = objc_msgSend_readDataReferenceMessage_(v4, v32, &v59);
+            v34 = objc_msgSend_readDataReferenceMessage_(unarchiverCopy, v32, &v59);
             if (v34)
             {
               objc_msgSend_addObject_(v28, v33, v34);
@@ -312,7 +312,7 @@ LABEL_19:
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v36 = v49->_preserveFields;
+  v36 = selfCopy->_preserveFields;
   v39 = objc_msgSend_countByEnumeratingWithState_objects_count_(v36, v37, &v55, v69, 16);
   if (v39)
   {
@@ -326,7 +326,7 @@ LABEL_19:
           objc_enumerationMutation(v36);
         }
 
-        objc_msgSend_loadFromUnarchiver_(*(*(&v55 + 1) + 8 * j), v38, v4);
+        objc_msgSend_loadFromUnarchiver_(*(*(&v55 + 1) + 8 * j), v38, unarchiverCopy);
       }
 
       v39 = objc_msgSend_countByEnumeratingWithState_objects_count_(v36, v38, &v55, v69, 16);
@@ -339,7 +339,7 @@ LABEL_19:
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v42 = v49->_preserveUntilModifiedFields;
+  v42 = selfCopy->_preserveUntilModifiedFields;
   v45 = objc_msgSend_countByEnumeratingWithState_objects_count_(v42, v43, &v51, v68, 16);
   if (v45)
   {
@@ -353,7 +353,7 @@ LABEL_19:
           objc_enumerationMutation(v42);
         }
 
-        objc_msgSend_loadFromUnarchiver_(*(*(&v51 + 1) + 8 * k), v44, v4);
+        objc_msgSend_loadFromUnarchiver_(*(*(&v51 + 1) + 8 * k), v44, unarchiverCopy);
       }
 
       v45 = objc_msgSend_countByEnumeratingWithState_objects_count_(v42, v44, &v51, v68, 16);
@@ -374,11 +374,11 @@ LABEL_19:
   self->_preserveUntilModifiedFields = 0;
 }
 
-- (BOOL)hasSameUnknownFieldsAsUnknownContent:(id)a3 messagePrototype:(const Message *)a4
+- (BOOL)hasSameUnknownFieldsAsUnknownContent:(id)content messagePrototype:(const Message *)prototype
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (v8 == self)
+  contentCopy = content;
+  if (contentCopy == self)
   {
     v24 = 1;
   }
@@ -386,7 +386,7 @@ LABEL_19:
   else
   {
     v9 = objc_msgSend_newUnknownContentSnapshot(self, v6, v7);
-    v14 = objc_msgSend_newUnknownContentSnapshot(v8, v10, v11);
+    v14 = objc_msgSend_newUnknownContentSnapshot(contentCopy, v10, v11);
     if (v9 == v14)
     {
       v24 = 1;
@@ -403,9 +403,9 @@ LABEL_19:
 
       else
       {
-        v19 = (*(a4->var0 + 3))(a4);
+        v19 = (*(prototype->var0 + 3))(prototype);
         objc_msgSend_saveToMessage_(v15, v20, v19);
-        v21 = (*(a4->var0 + 3))(a4);
+        v21 = (*(prototype->var0 + 3))(prototype);
         objc_msgSend_saveToMessage_(v18, v22, v21);
         google::protobuf::util::MessageDifferencer::MessageDifferencer(v27);
         v24 = google::protobuf::util::MessageDifferencer::Equals(v19, v21, v23);
@@ -420,22 +420,22 @@ LABEL_19:
   return v24;
 }
 
-+ (BOOL)unknownContent:(id)a3 hasSameUnknownFieldsAsUnknownContent:(id)a4 messagePrototype:(const Message *)a5
++ (BOOL)unknownContent:(id)content hasSameUnknownFieldsAsUnknownContent:(id)unknownContent messagePrototype:(const Message *)prototype
 {
-  v7 = a3;
-  v9 = a4;
-  if (v7 == v9)
+  contentCopy = content;
+  unknownContentCopy = unknownContent;
+  if (contentCopy == unknownContentCopy)
   {
     hasSameUnknownFieldsAsUnknownContent_messagePrototype = 1;
   }
 
   else
   {
-    v10 = v7;
-    v11 = v9;
-    if (!v7)
+    v10 = contentCopy;
+    v11 = unknownContentCopy;
+    if (!contentCopy)
     {
-      if (!v9)
+      if (!unknownContentCopy)
       {
         TSUSetCrashReporterInfo();
         v14 = MEMORY[0x277D81150];
@@ -448,10 +448,10 @@ LABEL_19:
       }
 
       v11 = 0;
-      v10 = v9;
+      v10 = unknownContentCopy;
     }
 
-    hasSameUnknownFieldsAsUnknownContent_messagePrototype = objc_msgSend_hasSameUnknownFieldsAsUnknownContent_messagePrototype_(v10, v8, v11, a5);
+    hasSameUnknownFieldsAsUnknownContent_messagePrototype = objc_msgSend_hasSameUnknownFieldsAsUnknownContent_messagePrototype_(v10, v8, v11, prototype);
   }
 
   return hasSameUnknownFieldsAsUnknownContent_messagePrototype;

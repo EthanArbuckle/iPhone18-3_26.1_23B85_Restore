@@ -1,17 +1,17 @@
 @interface HUAccessoryDebugModuleController
-- (HUAccessoryDebugModuleController)initWithModule:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4;
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
+- (HUAccessoryDebugModuleController)initWithModule:(id)module;
+- (void)setupCell:(id)cell forItem:(id)item;
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation HUAccessoryDebugModuleController
 
-- (HUAccessoryDebugModuleController)initWithModule:(id)a3
+- (HUAccessoryDebugModuleController)initWithModule:(id)module
 {
-  v4 = a3;
+  moduleCopy = module;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = moduleCopy;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -30,9 +30,9 @@
       goto LABEL_8;
     }
 
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v9 handleFailureInFunction:v10 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v5, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v10 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v5, objc_opt_class()}];
   }
 
   v8 = 0;
@@ -43,28 +43,28 @@ LABEL_8:
   v11 = [(HUItemModuleController *)&v15 initWithModule:v6];
   if (v11)
   {
-    v12 = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
     cellToItemMap = v11->_cellToItemMap;
-    v11->_cellToItemMap = v12;
+    v11->_cellToItemMap = weakToWeakObjectsMapTable;
   }
 
   return v11;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HUAccessoryDebugModuleController *)self cellToItemMap];
-  [v8 setObject:v6 forKey:v7];
+  itemCopy = item;
+  cellCopy = cell;
+  cellToItemMap = [(HUAccessoryDebugModuleController *)self cellToItemMap];
+  [cellToItemMap setObject:itemCopy forKey:cellCopy];
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   objc_opt_class();
-  v14 = v7;
+  v14 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v9 = v14;
@@ -78,234 +78,234 @@ LABEL_8:
   v10 = v9;
 
   [v10 setDelegate:self];
-  v11 = [v8 latestResults];
+  latestResults = [itemCopy latestResults];
 
-  v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277D14068]];
+  v12 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14068]];
   v13 = [v12 integerValue] == 2;
 
   [v10 setOn:v13 animated:1];
 }
 
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v4 = a4;
-  v7 = a3;
-  v8 = [(HUAccessoryDebugModuleController *)self cellToItemMap];
-  v32 = [v8 objectForKey:v7];
+  onCopy = on;
+  cellCopy = cell;
+  cellToItemMap = [(HUAccessoryDebugModuleController *)self cellToItemMap];
+  v32 = [cellToItemMap objectForKey:cellCopy];
 
-  v9 = [(HUItemModuleController *)self module];
-  v10 = [v9 fakeUnreachableItem];
+  module = [(HUItemModuleController *)self module];
+  fakeUnreachableItem = [module fakeUnreachableItem];
 
-  v11 = [(HUItemModuleController *)self module];
-  if (v32 == v10)
+  module2 = [(HUItemModuleController *)self module];
+  if (v32 == fakeUnreachableItem)
   {
-    [v11 setFakeUnreachableError:v4];
+    [module2 setFakeUnreachableError:onCopy];
   }
 
   else
   {
-    v12 = [v11 fakeWiFiSymptomItem];
+    fakeWiFiSymptomItem = [module2 fakeWiFiSymptomItem];
 
-    v11 = [(HUItemModuleController *)self module];
-    if (v32 == v12)
+    module2 = [(HUItemModuleController *)self module];
+    if (v32 == fakeWiFiSymptomItem)
     {
-      [v11 setFakeWiFiSymptom:v4];
+      [module2 setFakeWiFiSymptom:onCopy];
     }
 
     else
     {
-      v13 = [v11 fakeWiFiPerformanceSymptomItem];
+      fakeWiFiPerformanceSymptomItem = [module2 fakeWiFiPerformanceSymptomItem];
 
-      v11 = [(HUItemModuleController *)self module];
-      if (v32 == v13)
+      module2 = [(HUItemModuleController *)self module];
+      if (v32 == fakeWiFiPerformanceSymptomItem)
       {
-        [v11 setFakeWiFiPerformanceSymptom:v4];
+        [module2 setFakeWiFiPerformanceSymptom:onCopy];
       }
 
       else
       {
-        v14 = [v11 fakeHardwareFixSymptomItem];
+        fakeHardwareFixSymptomItem = [module2 fakeHardwareFixSymptomItem];
 
-        v11 = [(HUItemModuleController *)self module];
-        if (v32 == v14)
+        module2 = [(HUItemModuleController *)self module];
+        if (v32 == fakeHardwareFixSymptomItem)
         {
-          [v11 setFakeHardwareFixSymptom:v4];
+          [module2 setFakeHardwareFixSymptom:onCopy];
         }
 
         else
         {
-          v15 = [v11 fakeGeneralFixSymptomItem];
+          fakeGeneralFixSymptomItem = [module2 fakeGeneralFixSymptomItem];
 
-          v11 = [(HUItemModuleController *)self module];
-          if (v32 == v15)
+          module2 = [(HUItemModuleController *)self module];
+          if (v32 == fakeGeneralFixSymptomItem)
           {
-            [v11 setFakeGeneralFixSymptom:v4];
+            [module2 setFakeGeneralFixSymptom:onCopy];
           }
 
           else
           {
-            v16 = [v11 fakeHomeKitSymptomItem];
+            fakeHomeKitSymptomItem = [module2 fakeHomeKitSymptomItem];
 
-            v11 = [(HUItemModuleController *)self module];
-            if (v32 == v16)
+            module2 = [(HUItemModuleController *)self module];
+            if (v32 == fakeHomeKitSymptomItem)
             {
-              [v11 setFakeHomeKitSymptom:v4];
+              [module2 setFakeHomeKitSymptom:onCopy];
             }
 
             else
             {
-              v17 = [v11 fakeInternetFixSymptomItem];
+              fakeInternetFixSymptomItem = [module2 fakeInternetFixSymptomItem];
 
-              v11 = [(HUItemModuleController *)self module];
-              if (v32 == v17)
+              module2 = [(HUItemModuleController *)self module];
+              if (v32 == fakeInternetFixSymptomItem)
               {
-                [v11 setFakeInternetFixSymptom:v4];
+                [module2 setFakeInternetFixSymptom:onCopy];
               }
 
               else
               {
-                v18 = [v11 fakeICloudSymptomItem];
+                fakeICloudSymptomItem = [module2 fakeICloudSymptomItem];
 
-                v11 = [(HUItemModuleController *)self module];
-                if (v32 == v18)
+                module2 = [(HUItemModuleController *)self module];
+                if (v32 == fakeICloudSymptomItem)
                 {
-                  [v11 setFakeICloudSymptom:v4];
+                  [module2 setFakeICloudSymptom:onCopy];
                 }
 
                 else
                 {
-                  v19 = [v11 fakeITunesSymptomItem];
+                  fakeITunesSymptomItem = [module2 fakeITunesSymptomItem];
 
-                  v11 = [(HUItemModuleController *)self module];
-                  if (v32 == v19)
+                  module2 = [(HUItemModuleController *)self module];
+                  if (v32 == fakeITunesSymptomItem)
                   {
-                    [v11 setFakeITunesSymptom:v4];
+                    [module2 setFakeITunesSymptom:onCopy];
                   }
 
                   else
                   {
-                    v20 = [v11 fakeCDPSymptomItem];
+                    fakeCDPSymptomItem = [module2 fakeCDPSymptomItem];
 
-                    v11 = [(HUItemModuleController *)self module];
-                    if (v32 == v20)
+                    module2 = [(HUItemModuleController *)self module];
+                    if (v32 == fakeCDPSymptomItem)
                     {
-                      [v11 setFakeCDPSymptom:v4];
+                      [module2 setFakeCDPSymptom:onCopy];
                     }
 
                     else
                     {
-                      v21 = [v11 fakeStereoPairVersionMismatchSymptomItem];
+                      fakeStereoPairVersionMismatchSymptomItem = [module2 fakeStereoPairVersionMismatchSymptomItem];
 
-                      v11 = [(HUItemModuleController *)self module];
-                      if (v32 == v21)
+                      module2 = [(HUItemModuleController *)self module];
+                      if (v32 == fakeStereoPairVersionMismatchSymptomItem)
                       {
-                        [v11 setFakeStereoPairVersionMismatchSymptom:v4];
+                        [module2 setFakeStereoPairVersionMismatchSymptom:onCopy];
                       }
 
                       else
                       {
-                        v22 = [v11 fakeStereoPairGeneralSymptomItem];
+                        fakeStereoPairGeneralSymptomItem = [module2 fakeStereoPairGeneralSymptomItem];
 
-                        v11 = [(HUItemModuleController *)self module];
-                        if (v32 == v22)
+                        module2 = [(HUItemModuleController *)self module];
+                        if (v32 == fakeStereoPairGeneralSymptomItem)
                         {
-                          [v11 setFakeStereoPairGeneralSymptom:v4];
+                          [module2 setFakeStereoPairGeneralSymptom:onCopy];
                         }
 
                         else
                         {
-                          v23 = [v11 fakeStereoPairNotFoundSymptomItem];
+                          fakeStereoPairNotFoundSymptomItem = [module2 fakeStereoPairNotFoundSymptomItem];
 
-                          v11 = [(HUItemModuleController *)self module];
-                          if (v32 == v23)
+                          module2 = [(HUItemModuleController *)self module];
+                          if (v32 == fakeStereoPairNotFoundSymptomItem)
                           {
-                            [v11 setFakeStereoPairNotFoundSymptom:v4];
+                            [module2 setFakeStereoPairNotFoundSymptom:onCopy];
                           }
 
                           else
                           {
-                            v24 = [v11 fakeWifiNetworkMismatchSymptomItem];
+                            fakeWifiNetworkMismatchSymptomItem = [module2 fakeWifiNetworkMismatchSymptomItem];
 
-                            v11 = [(HUItemModuleController *)self module];
-                            if (v32 == v24)
+                            module2 = [(HUItemModuleController *)self module];
+                            if (v32 == fakeWifiNetworkMismatchSymptomItem)
                             {
-                              [v11 setFakeWiFiNetworkMismatchSymptom:v4];
+                              [module2 setFakeWiFiNetworkMismatchSymptom:onCopy];
                             }
 
                             else
                             {
-                              v25 = [v11 fakeVPNProfileExpiredSymptomItem];
+                              fakeVPNProfileExpiredSymptomItem = [module2 fakeVPNProfileExpiredSymptomItem];
 
-                              v11 = [(HUItemModuleController *)self module];
-                              if (v32 == v25)
+                              module2 = [(HUItemModuleController *)self module];
+                              if (v32 == fakeVPNProfileExpiredSymptomItem)
                               {
-                                [v11 setFakeVPNProfileExpiredSymptom:v4];
+                                [module2 setFakeVPNProfileExpiredSymptom:onCopy];
                               }
 
                               else
                               {
-                                v26 = [v11 fake8021xNetworkSymptomItem];
+                                fake8021xNetworkSymptomItem = [module2 fake8021xNetworkSymptomItem];
 
-                                v11 = [(HUItemModuleController *)self module];
-                                if (v32 == v26)
+                                module2 = [(HUItemModuleController *)self module];
+                                if (v32 == fake8021xNetworkSymptomItem)
                                 {
-                                  [v11 setFake8021xNetworkSymptom:v4];
+                                  [module2 setFake8021xNetworkSymptom:onCopy];
                                 }
 
                                 else
                                 {
-                                  v27 = [v11 fakeNetworkProfileFixSymptomItem];
+                                  fakeNetworkProfileFixSymptomItem = [module2 fakeNetworkProfileFixSymptomItem];
 
-                                  v11 = [(HUItemModuleController *)self module];
-                                  if (v32 == v27)
+                                  module2 = [(HUItemModuleController *)self module];
+                                  if (v32 == fakeNetworkProfileFixSymptomItem)
                                   {
-                                    [v11 setFakeNetworkProfileFixSymptom:v4];
+                                    [module2 setFakeNetworkProfileFixSymptom:onCopy];
                                   }
 
                                   else
                                   {
-                                    v28 = [v11 fakeNetworkProfileInstallSymptomItem];
+                                    fakeNetworkProfileInstallSymptomItem = [module2 fakeNetworkProfileInstallSymptomItem];
 
-                                    v11 = [(HUItemModuleController *)self module];
-                                    if (v32 == v28)
+                                    module2 = [(HUItemModuleController *)self module];
+                                    if (v32 == fakeNetworkProfileInstallSymptomItem)
                                     {
-                                      [v11 setFakeNetworkProfileInstallSymptom:v4];
+                                      [module2 setFakeNetworkProfileInstallSymptom:onCopy];
                                     }
 
                                     else
                                     {
-                                      v29 = [v11 fakeNetworkNotShareableSymptomItem];
+                                      fakeNetworkNotShareableSymptomItem = [module2 fakeNetworkNotShareableSymptomItem];
 
-                                      v11 = [(HUItemModuleController *)self module];
-                                      if (v32 == v29)
+                                      module2 = [(HUItemModuleController *)self module];
+                                      if (v32 == fakeNetworkNotShareableSymptomItem)
                                       {
-                                        [v11 setFakeNetworkNotShareableSymptom:v4];
+                                        [module2 setFakeNetworkNotShareableSymptom:onCopy];
                                       }
 
                                       else
                                       {
-                                        v30 = [v11 fakeNetworkStrengthErrorItem];
+                                        fakeNetworkStrengthErrorItem = [module2 fakeNetworkStrengthErrorItem];
 
-                                        v11 = [(HUItemModuleController *)self module];
-                                        if (v32 == v30)
+                                        module2 = [(HUItemModuleController *)self module];
+                                        if (v32 == fakeNetworkStrengthErrorItem)
                                         {
-                                          [v11 setFakeNetworkStrengthError:v4];
+                                          [module2 setFakeNetworkStrengthError:onCopy];
                                         }
 
                                         else
                                         {
-                                          v31 = [v11 fakeCaptiveLeaseRenewalSymptomItem];
+                                          fakeCaptiveLeaseRenewalSymptomItem = [module2 fakeCaptiveLeaseRenewalSymptomItem];
 
-                                          if (v32 == v31)
+                                          if (v32 == fakeCaptiveLeaseRenewalSymptomItem)
                                           {
-                                            v11 = [(HUItemModuleController *)self module];
-                                            [v11 setFakeCaptiveLeaseRenewalSymptom:v4];
+                                            module2 = [(HUItemModuleController *)self module];
+                                            [module2 setFakeCaptiveLeaseRenewalSymptom:onCopy];
                                           }
 
                                           else
                                           {
-                                            v11 = [MEMORY[0x277CCA890] currentHandler];
-                                            [v11 handleFailureInMethod:a2 object:self file:@"HUAccessoryDebugModuleController.m" lineNumber:136 description:{@"Missing item check for: %@", v32}];
+                                            module2 = [MEMORY[0x277CCA890] currentHandler];
+                                            [module2 handleFailureInMethod:a2 object:self file:@"HUAccessoryDebugModuleController.m" lineNumber:136 description:{@"Missing item check for: %@", v32}];
                                           }
                                         }
                                       }

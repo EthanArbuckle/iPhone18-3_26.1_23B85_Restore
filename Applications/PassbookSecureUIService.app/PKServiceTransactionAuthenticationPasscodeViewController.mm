@@ -1,12 +1,12 @@
 @interface PKServiceTransactionAuthenticationPasscodeViewController
 - (BOOL)_isHostProcessEntitled;
 - (void)_hostApplicationDidEnterBackground;
-- (void)passcodeViewController:(id)a3 didGenerateEncryptedPasscode:(id)a4;
-- (void)passcodeViewController:(id)a3 requestSessionExchangeToken:(id)a4;
-- (void)passcodeViewControllerDidCancel:(id)a3;
-- (void)passcodeViewControllerDidEndSessionExchange:(id)a3;
-- (void)resetWithTransactionAuthenticationFailure:(int64_t)a3 completion:(id)a4;
-- (void)setPassUniqueIdentifier:(id)a3 transactionIdentifier:(id)a4 archivedAnalyticsSessionToken:(id)a5 completionHandler:(id)a6;
+- (void)passcodeViewController:(id)controller didGenerateEncryptedPasscode:(id)passcode;
+- (void)passcodeViewController:(id)controller requestSessionExchangeToken:(id)token;
+- (void)passcodeViewControllerDidCancel:(id)cancel;
+- (void)passcodeViewControllerDidEndSessionExchange:(id)exchange;
+- (void)resetWithTransactionAuthenticationFailure:(int64_t)failure completion:(id)completion;
+- (void)setPassUniqueIdentifier:(id)identifier transactionIdentifier:(id)transactionIdentifier archivedAnalyticsSessionToken:(id)token completionHandler:(id)handler;
 @end
 
 @implementation PKServiceTransactionAuthenticationPasscodeViewController
@@ -16,20 +16,20 @@
   v4.receiver = self;
   v4.super_class = PKServiceTransactionAuthenticationPasscodeViewController;
   [(PKServiceTransactionAuthenticationPasscodeViewController *)&v4 _hostApplicationDidEnterBackground];
-  v3 = [(PKServiceTransactionAuthenticationPasscodeViewController *)self _remoteViewControllerProxy];
-  [v3 passcodeViewControllerDidCancel];
+  _remoteViewControllerProxy = [(PKServiceTransactionAuthenticationPasscodeViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy passcodeViewControllerDidCancel];
 }
 
-- (void)setPassUniqueIdentifier:(id)a3 transactionIdentifier:(id)a4 archivedAnalyticsSessionToken:(id)a5 completionHandler:(id)a6
+- (void)setPassUniqueIdentifier:(id)identifier transactionIdentifier:(id)transactionIdentifier archivedAnalyticsSessionToken:(id)token completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  transactionIdentifierCopy = transactionIdentifier;
+  tokenCopy = token;
+  handlerCopy = handler;
   if ([(PKServiceTransactionAuthenticationPasscodeViewController *)self _isHostProcessEntitled])
   {
-    objc_storeStrong(&self->_archivedAnalyticsSessionToken, a5);
-    v14 = [[PKTransactionAuthenticationCollectPasscodeViewController alloc] initWithPassUniqueIdentifier:v10 transactionIdentifier:v11 delegate:self];
+    objc_storeStrong(&self->_archivedAnalyticsSessionToken, token);
+    v14 = [[PKTransactionAuthenticationCollectPasscodeViewController alloc] initWithPassUniqueIdentifier:identifierCopy transactionIdentifier:transactionIdentifierCopy delegate:self];
     collectPasscodeViewController = self->_collectPasscodeViewController;
     self->_collectPasscodeViewController = v14;
 
@@ -40,7 +40,7 @@
     v18[2] = sub_100004460;
     v18[3] = &unk_10000C618;
     objc_copyWeak(&v20, location);
-    v19 = v13;
+    v19 = handlerCopy;
     [(PKTransactionAuthenticationCollectPasscodeViewController *)v16 preflightWithCompletion:v18];
 
     objc_destroyWeak(&v20);
@@ -56,17 +56,17 @@
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Host process is not entitled to request PIN view service.", location, 2u);
     }
 
-    if (v13)
+    if (handlerCopy)
     {
-      (*(v13 + 2))(v13, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 }
 
-- (void)resetWithTransactionAuthenticationFailure:(int64_t)a3 completion:(id)a4
+- (void)resetWithTransactionAuthenticationFailure:(int64_t)failure completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
+  completionCopy = completion;
+  v7 = completionCopy;
   collectPasscodeViewController = self->_collectPasscodeViewController;
   if (collectPasscodeViewController)
   {
@@ -74,13 +74,13 @@
     v9[1] = 3221225472;
     v9[2] = sub_100004704;
     v9[3] = &unk_10000C640;
-    v10 = v6;
-    [(PKTransactionAuthenticationCollectPasscodeViewController *)collectPasscodeViewController resetWithTransactionAuthenticationFailure:a3 completion:v9];
+    v10 = completionCopy;
+    [(PKTransactionAuthenticationCollectPasscodeViewController *)collectPasscodeViewController resetWithTransactionAuthenticationFailure:failure completion:v9];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -95,36 +95,36 @@
 
   v3 = v2;
   v4 = SecTaskCopyValueForEntitlement(v2, PKTransactionAuthenticationSecureUIServiceAccess, 0);
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
   CFRelease(v3);
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)passcodeViewController:(id)a3 requestSessionExchangeToken:(id)a4
+- (void)passcodeViewController:(id)controller requestSessionExchangeToken:(id)token
 {
-  v5 = a4;
-  v6 = [(PKServiceTransactionAuthenticationPasscodeViewController *)self _remoteViewControllerProxy];
-  [v6 passcodeViewControllerRequestSessionExchangeTokenWithHandler:v5];
+  tokenCopy = token;
+  _remoteViewControllerProxy = [(PKServiceTransactionAuthenticationPasscodeViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy passcodeViewControllerRequestSessionExchangeTokenWithHandler:tokenCopy];
 }
 
-- (void)passcodeViewControllerDidEndSessionExchange:(id)a3
+- (void)passcodeViewControllerDidEndSessionExchange:(id)exchange
 {
-  v3 = [(PKServiceTransactionAuthenticationPasscodeViewController *)self _remoteViewControllerProxy];
-  [v3 passcodeViewControllerDidEndSessionExchange];
+  _remoteViewControllerProxy = [(PKServiceTransactionAuthenticationPasscodeViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy passcodeViewControllerDidEndSessionExchange];
 }
 
-- (void)passcodeViewControllerDidCancel:(id)a3
+- (void)passcodeViewControllerDidCancel:(id)cancel
 {
-  v3 = [(PKServiceTransactionAuthenticationPasscodeViewController *)self _remoteViewControllerProxy];
-  [v3 passcodeViewControllerDidCancel];
+  _remoteViewControllerProxy = [(PKServiceTransactionAuthenticationPasscodeViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy passcodeViewControllerDidCancel];
 }
 
-- (void)passcodeViewController:(id)a3 didGenerateEncryptedPasscode:(id)a4
+- (void)passcodeViewController:(id)controller didGenerateEncryptedPasscode:(id)passcode
 {
-  v5 = a4;
-  v6 = [(PKServiceTransactionAuthenticationPasscodeViewController *)self _remoteViewControllerProxy];
-  [v6 passcodeViewControllerDidGenerateEncryptedPasscode:v5];
+  passcodeCopy = passcode;
+  _remoteViewControllerProxy = [(PKServiceTransactionAuthenticationPasscodeViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy passcodeViewControllerDidGenerateEncryptedPasscode:passcodeCopy];
 }
 
 @end

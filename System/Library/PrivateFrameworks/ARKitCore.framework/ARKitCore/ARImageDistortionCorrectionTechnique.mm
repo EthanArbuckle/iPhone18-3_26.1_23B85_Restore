@@ -1,22 +1,22 @@
 @interface ARImageDistortionCorrectionTechnique
-- (ARImageDistortionCorrectionTechnique)initWithImageSize:(CGSize)a3;
-- (CGPoint)lensDistortionPointForPoint:(CGPoint)a3 lookupTable:(id)a4 distortionOpticalCenter:(CGPoint)a5 imageSize:(CGSize)a6;
+- (ARImageDistortionCorrectionTechnique)initWithImageSize:(CGSize)size;
+- (CGPoint)lensDistortionPointForPoint:(CGPoint)point lookupTable:(id)table distortionOpticalCenter:(CGPoint)center imageSize:(CGSize)size;
 - (CGSize)imageSize;
 - (id).cxx_construct;
-- (id)processData:(id)a3;
+- (id)processData:(id)data;
 - (void)buildUVMapFromHardcodedCalibrationParameters;
-- (void)buildUVMapWithCameraCalibrationData:(id)a3;
-- (void)buildUVMapWithDistortedPixelProviderBlock:(id)a3;
+- (void)buildUVMapWithCameraCalibrationData:(id)data;
+- (void)buildUVMapWithDistortedPixelProviderBlock:(id)block;
 - (void)dealloc;
-- (void)undistortImage:(__CVBuffer *)a3 toTargetImage:(__CVBuffer *)a4 imageRotationAngle:(int64_t)a5;
+- (void)undistortImage:(__CVBuffer *)image toTargetImage:(__CVBuffer *)targetImage imageRotationAngle:(int64_t)angle;
 @end
 
 @implementation ARImageDistortionCorrectionTechnique
 
-- (ARImageDistortionCorrectionTechnique)initWithImageSize:(CGSize)a3
+- (ARImageDistortionCorrectionTechnique)initWithImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v17.receiver = self;
   v17.super_class = ARImageDistortionCorrectionTechnique;
   v5 = [(ARTechnique *)&v17 init];
@@ -98,24 +98,24 @@
   [(ARImageDistortionCorrectionTechnique *)&v3 dealloc];
 }
 
-- (id)processData:(id)a3
+- (id)processData:(id)data
 {
   v186 = *MEMORY[0x1E69E9840];
   v178.receiver = self;
   v178.super_class = ARImageDistortionCorrectionTechnique;
-  v168 = a3;
+  dataCopy = data;
   v4 = [(ARTechnique *)&v178 processData:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v168 latestResizedUltraWideImageData];
-    if (!v5)
+    latestResizedUltraWideImageData = [dataCopy latestResizedUltraWideImageData];
+    if (!latestResizedUltraWideImageData)
     {
-      v10 = [v168 originalImageData];
-      v11 = [v10 cameraType];
-      v12 = [v11 isEqualToString:*MEMORY[0x1E6986948]];
+      originalImageData = [dataCopy originalImageData];
+      cameraType = [originalImageData cameraType];
+      v12 = [cameraType isEqualToString:*MEMORY[0x1E6986948]];
 
-      if ((v12 & 1) == 0 || (v5 = v168) == 0)
+      if ((v12 & 1) == 0 || (latestResizedUltraWideImageData = dataCopy) == 0)
       {
         v13 = 0;
 LABEL_119:
@@ -124,9 +124,9 @@ LABEL_119:
       }
     }
 
-    v6 = [v5 downScalingResults];
-    v160 = v5;
-    v7 = [v6 count] == 0;
+    downScalingResults = [latestResizedUltraWideImageData downScalingResults];
+    v160 = latestResizedUltraWideImageData;
+    v7 = [downScalingResults count] == 0;
 
     if (v7)
     {
@@ -135,16 +135,16 @@ LABEL_118:
       goto LABEL_119;
     }
 
-    v8 = [v160 rotationOfResultTensor];
-    v9 = v8;
-    if (v8 > 89)
+    rotationOfResultTensor = [v160 rotationOfResultTensor];
+    v9 = rotationOfResultTensor;
+    if (rotationOfResultTensor > 89)
     {
-      if (v8 == 90)
+      if (rotationOfResultTensor == 90)
       {
         v9 = -90;
       }
 
-      else if (v8 == 180)
+      else if (rotationOfResultTensor == 180)
       {
         goto LABEL_13;
       }
@@ -152,9 +152,9 @@ LABEL_118:
 
     else
     {
-      if (v8 != -90)
+      if (rotationOfResultTensor != -90)
       {
-        if (v8)
+        if (rotationOfResultTensor)
         {
           goto LABEL_16;
         }
@@ -169,8 +169,8 @@ LABEL_17:
         v175 = 0u;
         v176 = 0u;
         v177 = 0u;
-        v18 = [v160 downScalingResults];
-        v19 = [v18 countByEnumeratingWithState:&v174 objects:v183 count:16];
+        downScalingResults2 = [v160 downScalingResults];
+        v19 = [downScalingResults2 countByEnumeratingWithState:&v174 objects:v183 count:16];
         if (!v19)
         {
 LABEL_117:
@@ -186,7 +186,7 @@ LABEL_117:
           {
             if (*v175 != v21)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(downScalingResults2);
             }
 
             v23 = *(*(&v174 + 1) + 8 * i);
@@ -199,7 +199,7 @@ LABEL_117:
             }
           }
 
-          v19 = [v18 countByEnumeratingWithState:&v174 objects:v183 count:16];
+          v19 = [downScalingResults2 countByEnumeratingWithState:&v174 objects:v183 count:16];
         }
 
         while (v19);
@@ -212,16 +212,16 @@ LABEL_117:
         v28 = MEMORY[0x1E6986948];
         if (!self->_computeUndistortionCoefficientsForEveryFrame && !self->_undistortionMappingsForRotations)
         {
-          v172 = [v160 originalImageData];
+          originalImageData2 = [v160 originalImageData];
           [v160 timestamp];
-          v29 = [v172 cameraType];
-          [v29 isEqualToString:*v28];
-          v30 = [v172 calibrationData];
-          [v30 isEqual:0];
+          cameraType2 = [originalImageData2 cameraType];
+          [cameraType2 isEqualToString:*v28];
+          calibrationData = [originalImageData2 calibrationData];
+          [calibrationData isEqual:0];
           kdebug_trace();
 
-          v31 = [v172 calibrationData];
-          v32 = v31 == 0;
+          calibrationData2 = [originalImageData2 calibrationData];
+          v32 = calibrationData2 == 0;
 
           if (v32)
           {
@@ -230,8 +230,8 @@ LABEL_117:
 
           else
           {
-            v33 = [v172 calibrationData];
-            [(ARImageDistortionCorrectionTechnique *)self buildUVMapWithCameraCalibrationData:v33];
+            calibrationData3 = [originalImageData2 calibrationData];
+            [(ARImageDistortionCorrectionTechnique *)self buildUVMapWithCameraCalibrationData:calibrationData3];
           }
 
           kdebug_trace();
@@ -240,9 +240,9 @@ LABEL_117:
         PixelFormatType = CVPixelBufferGetPixelFormatType([v20 pixelBuffer]);
         v35 = ARCreateCVPixelBufferFromPool(&self->_undistortedImageBufferPool, PixelFormatType, self, @"undistorted image", v17, width);
         [v160 timestamp];
-        v36 = [v160 originalImageData];
-        v37 = [v36 cameraType];
-        [v37 isEqualToString:*v28];
+        originalImageData3 = [v160 originalImageData];
+        cameraType3 = [originalImageData3 cameraType];
+        [cameraType3 isEqualToString:*v28];
         [v20 imageResolution];
         [v20 imageResolution];
         kdebug_trace();
@@ -253,13 +253,13 @@ LABEL_117:
           goto LABEL_116;
         }
 
-        v38 = [v160 originalImageData];
-        v39 = [v38 calibrationData];
+        originalImageData4 = [v160 originalImageData];
+        calibrationData4 = [originalImageData4 calibrationData];
         kdebug_trace();
         p_undistorter = &self->_undistorter;
-        if (v39)
+        if (calibrationData4)
         {
-          [v39 lensDistortionCenter];
+          [calibrationData4 lensDistortionCenter];
           v42 = v41;
           v44 = v43;
           v46 = *MEMORY[0x1E695EFF8];
@@ -284,16 +284,16 @@ LABEL_117:
           }
 
           m_unrotatedImageWidth = p_undistorter->var0.__val_.m_unrotatedImageWidth;
-          [v39 intrinsicMatrixReferenceDimensions];
+          [calibrationData4 intrinsicMatrixReferenceDimensions];
           v94 = v93;
           m_unrotatedImageHeight = p_undistorter->var0.__val_.m_unrotatedImageHeight;
-          [v39 intrinsicMatrixReferenceDimensions];
+          [calibrationData4 intrinsicMatrixReferenceDimensions];
           v97 = v96;
           kdebug_trace();
-          v98 = [v39 lensDistortionLookupTable];
-          v99 = v98;
-          v100 = [v98 bytes];
-          v101 = [v98 length];
+          lensDistortionLookupTable = [calibrationData4 lensDistortionLookupTable];
+          v99 = lensDistortionLookupTable;
+          bytes = [lensDistortionLookupTable bytes];
+          v101 = [lensDistortionLookupTable length];
           v102 = p_undistorter->var0.__val_.m_unrotatedImageWidth;
           if (p_undistorter->var0.__val_.m_unrotatedImageWidth)
           {
@@ -310,7 +310,7 @@ LABEL_117:
             v112 = v111;
             v113.f32[0] = v102;
             v113.f32[1] = v111;
-            v114 = v100 + 4 * (v101 >> 2);
+            v114 = bytes + 4 * (v101 >> 2);
             v115 = ((v101 >> 2) - 1);
             v116 = 4 * v111;
             v117 = vmaxnm_f32(v109, vsub_f32(v113, v109));
@@ -352,7 +352,7 @@ LABEL_91:
               else
               {
                 v134 = (v133 * v115) / v130;
-                v135 = ((v134 - v134) * *(v100 + 4 * v134 + 4)) + ((1.0 - (v134 - v134)) * *(v100 + 4 * v134));
+                v135 = ((v134 - v134) * *(bytes + 4 * v134 + 4)) + ((1.0 - (v134 - v134)) * *(bytes + 4 * v134));
               }
 
               v136 = vadd_f32(v109, vmla_n_f32(v132, v132, v135));
@@ -411,11 +411,11 @@ LABEL_92:
 LABEL_93:
           kdebug_trace();
 
-          v138 = [v20 pixelBuffer];
-          CVPixelBufferLockBaseAddress(v138, 1uLL);
+          pixelBuffer = [v20 pixelBuffer];
+          CVPixelBufferLockBaseAddress(pixelBuffer, 1uLL);
           *buf = 0u;
           v182 = 0u;
-          ARWrapCVPixelBufferVImage(v138, buf);
+          ARWrapCVPixelBufferVImage(pixelBuffer, buf);
           CVPixelBufferLockBaseAddress(v35, 0);
           memset(v180, 0, sizeof(v180));
           ARWrapCVPixelBufferVImage(v35, v180);
@@ -504,7 +504,7 @@ LABEL_112:
 
 LABEL_114:
           CVPixelBufferUnlockBaseAddress(v35, 0);
-          CVPixelBufferUnlockBaseAddress(v138, 1uLL);
+          CVPixelBufferUnlockBaseAddress(pixelBuffer, 1uLL);
           v152 = v179 == 0;
 
           if (!v152)
@@ -521,7 +521,7 @@ LABEL_116:
           CVPixelBufferGetHeight(v35);
           kdebug_trace();
           CVPixelBufferRelease(v35);
-          v18 = v20;
+          downScalingResults2 = v20;
           goto LABEL_117;
         }
 
@@ -544,7 +544,7 @@ LABEL_116:
           goto LABEL_93;
         }
 
-        v154 = v38;
+        v154 = originalImageData4;
         v58 = 0;
         v59 = v57;
         v60 = p_undistorter->var0.__val_.m_unrotatedImageHeight;
@@ -566,8 +566,8 @@ LABEL_67:
           v58 = v91;
           if (v91 == v57)
           {
-            v39 = 0;
-            v38 = v154;
+            calibrationData4 = 0;
+            originalImageData4 = v154;
             goto LABEL_93;
           }
         }
@@ -686,21 +686,21 @@ LABEL_16:
 
 LABEL_120:
 
-  return v168;
+  return dataCopy;
 }
 
-- (void)buildUVMapWithDistortedPixelProviderBlock:(id)a3
+- (void)buildUVMapWithDistortedPixelProviderBlock:(id)block
 {
   v35[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   p_imageSize = &self->_imageSize;
   width = self->_imageSize.width;
   height = self->_imageSize.height;
-  v8 = [[ARUndistortionMapping alloc] initWithImageSize:width, height];
-  v9 = [[ARUndistortionMapping alloc] initWithImageSize:height, width];
+  height = [[ARUndistortionMapping alloc] initWithImageSize:width, height];
+  width = [[ARUndistortionMapping alloc] initWithImageSize:height, width];
   v10 = [[ARUndistortionMapping alloc] initWithImageSize:self->_imageSize.width, self->_imageSize.height];
-  v32 = self;
-  v11 = [[ARUndistortionMapping alloc] initWithImageSize:height, width];
+  selfCopy = self;
+  width2 = [[ARUndistortionMapping alloc] initWithImageSize:height, width];
   v12 = p_imageSize->width;
   if (p_imageSize->width > 0.0)
   {
@@ -717,25 +717,25 @@ LABEL_120:
         do
         {
           v19 = objc_autoreleasePoolPush();
-          v20 = v4[2](v4, v16, v17);
+          v20 = blockCopy[2](blockCopy, v16, v17);
           v21 = p_imageSize->width;
           v22 = p_imageSize->height;
           v23 = (v16 + v17 * p_imageSize->width);
           v24 = v20;
-          v8->_mappingU.__begin_[v23] = v24;
+          height->_mappingU.__begin_[v23] = v24;
           v25 = (height + v16 * height + -1.0 - v17);
           v27 = v26;
-          v8->_mappingV.__begin_[v23] = v27;
+          height->_mappingV.__begin_[v23] = v27;
           *&v26 = v22 - v26;
-          v9->_mappingU.__begin_[v25] = *&v26;
-          v9->_mappingV.__begin_[v25] = v24;
+          width->_mappingU.__begin_[v25] = *&v26;
+          width->_mappingV.__begin_[v25] = v24;
           v28 = (v21 + (v22 + -1.0 - v17) * v21 + -1.0 - v16);
           *&v20 = v21 - v20;
           v10->_mappingU.__begin_[v28] = *&v20;
           v10->_mappingV.__begin_[v28] = *&v26;
           v29 = (v17 + (v14 - v16) * height);
-          v11->_mappingU.__begin_[v29] = v27;
-          v11->_mappingV.__begin_[v29] = *&v20;
+          width2->_mappingU.__begin_[v29] = v27;
+          width2->_mappingV.__begin_[v29] = *&v20;
           objc_autoreleasePoolPop(v19);
           v17 = v18;
           v15 = p_imageSize->height;
@@ -754,22 +754,22 @@ LABEL_120:
 
   v34[0] = &unk_1F4256E38;
   v34[1] = &unk_1F4256E50;
-  v35[0] = v8;
-  v35[1] = v9;
+  v35[0] = height;
+  v35[1] = width;
   v34[2] = &unk_1F4256E68;
   v34[3] = &unk_1F4256E80;
   v35[2] = v10;
-  v35[3] = v11;
-  v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:{4, v12, v32}];
+  v35[3] = width2;
+  v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:{4, v12, selfCopy}];
   v31 = *(v33 + 64);
   *(v33 + 64) = v30;
 }
 
-- (void)buildUVMapWithCameraCalibrationData:(id)a3
+- (void)buildUVMapWithCameraCalibrationData:(id)data
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 lensDistortionCenter];
+  dataCopy = data;
+  [dataCopy lensDistortionCenter];
   v6 = v5;
   v8 = v7;
   v9 = *MEMORY[0x1E695EFF8];
@@ -785,7 +785,7 @@ LABEL_120:
       *buf = 138543618;
       v33 = v27;
       v34 = 2048;
-      v35 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1C241C000, v11, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: lensDistortionCenter is set to CGPointZero, skipping creating UV map for distortion correction", buf, 0x16u);
     }
   }
@@ -799,19 +799,19 @@ LABEL_120:
       *buf = 138543618;
       v33 = v15;
       v34 = 2048;
-      v35 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1C241C000, v11, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Building distortion correction UV map from calibration data", buf, 0x16u);
     }
 
     width = self->_imageSize.width;
-    [v4 intrinsicMatrixReferenceDimensions];
+    [dataCopy intrinsicMatrixReferenceDimensions];
     v18 = v17;
     height = self->_imageSize.height;
-    [v4 intrinsicMatrixReferenceDimensions];
+    [dataCopy intrinsicMatrixReferenceDimensions];
     v21 = v20;
-    [v4 lensDistortionCenter];
+    [dataCopy lensDistortionCenter];
     v23 = v22;
-    [v4 lensDistortionCenter];
+    [dataCopy lensDistortionCenter];
     v25 = height / v21 * v24;
     kdebug_trace();
     v28[0] = MEMORY[0x1E69E9820];
@@ -819,7 +819,7 @@ LABEL_120:
     v28[2] = __76__ARImageDistortionCorrectionTechnique_buildUVMapWithCameraCalibrationData___block_invoke;
     v28[3] = &unk_1E817C420;
     v28[4] = self;
-    v29 = v4;
+    v29 = dataCopy;
     v30 = width / v18 * v23;
     v31 = v25;
     [(ARImageDistortionCorrectionTechnique *)self buildUVMapWithDistortedPixelProviderBlock:v28];
@@ -847,7 +847,7 @@ double __76__ARImageDistortionCorrectionTechnique_buildUVMapWithCameraCalibratio
     *buf = 138543618;
     v27 = v5;
     v28 = 2048;
-    v29 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v3, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Building distortion correction UV map from hardcoded parameters", buf, 0x16u);
   }
 
@@ -911,18 +911,18 @@ double __84__ARImageDistortionCorrectionTechnique_buildUVMapFromHardcodedCalibra
   return result;
 }
 
-- (void)undistortImage:(__CVBuffer *)a3 toTargetImage:(__CVBuffer *)a4 imageRotationAngle:(int64_t)a5
+- (void)undistortImage:(__CVBuffer *)image toTargetImage:(__CVBuffer *)targetImage imageRotationAngle:(int64_t)angle
 {
   v24 = *MEMORY[0x1E69E9840];
-  CVPixelBufferLockBaseAddress(a3, 0);
+  CVPixelBufferLockBaseAddress(image, 0);
   v21 = 0u;
   v22 = 0u;
-  ARWrapCVPixelBufferVImage(a3, &v21);
-  CVPixelBufferLockBaseAddress(a4, 0);
+  ARWrapCVPixelBufferVImage(image, &v21);
+  CVPixelBufferLockBaseAddress(targetImage, 0);
   memset(v20, 0, sizeof(v20));
-  ARWrapCVPixelBufferVImage(a4, v20);
+  ARWrapCVPixelBufferVImage(targetImage, v20);
   undistortionMappingsForRotations = self->_undistortionMappingsForRotations;
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:angle];
   v11 = [(NSDictionary *)undistortionMappingsForRotations objectForKeyedSubscript:v10];
 
   *buf = v21;
@@ -971,21 +971,21 @@ double __84__ARImageDistortionCorrectionTechnique_buildUVMapFromHardcodedCalibra
   }
 
   kdebug_trace();
-  CVPixelBufferUnlockBaseAddress(a3, 0);
-  CVPixelBufferUnlockBaseAddress(a4, 0);
+  CVPixelBufferUnlockBaseAddress(image, 0);
+  CVPixelBufferUnlockBaseAddress(targetImage, 0);
 }
 
-- (CGPoint)lensDistortionPointForPoint:(CGPoint)a3 lookupTable:(id)a4 distortionOpticalCenter:(CGPoint)a5 imageSize:(CGSize)a6
+- (CGPoint)lensDistortionPointForPoint:(CGPoint)point lookupTable:(id)table distortionOpticalCenter:(CGPoint)center imageSize:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
-  x = a5.x;
-  y = a5.y;
-  v6 = a3.y;
-  v7 = a3.x;
-  v8 = a4;
-  v9 = [v8 bytes];
-  v10 = [v8 length];
+  height = size.height;
+  width = size.width;
+  x = center.x;
+  y = center.y;
+  v6 = point.y;
+  v7 = point.x;
+  tableCopy = table;
+  bytes = [tableCopy bytes];
+  v10 = [tableCopy length];
   v11.f64[0] = width;
   v11.f64[1] = height;
   v12.f64[0] = x;
@@ -1000,13 +1000,13 @@ double __84__ARImageDistortionCorrectionTechnique_buildUVMapFromHardcodedCalibra
   v19 = v10 >> 2;
   if (v18 >= v17)
   {
-    v21 = *(v9 + 4 * v19 - 4);
+    v21 = *(bytes + 4 * v19 - 4);
   }
 
   else
   {
     v20 = (v18 * (v19 - 1)) / v17;
-    v21 = ((v20 - v20) * *(v9 + 4 * v20 + 4)) + ((1.0 - (v20 - v20)) * *(v9 + 4 * v20));
+    v21 = ((v20 - v20) * *(bytes + 4 * v20 + 4)) + ((1.0 - (v20 - v20)) * *(bytes + 4 * v20));
   }
 
   v22 = x + (v15 + (v21 * v15));

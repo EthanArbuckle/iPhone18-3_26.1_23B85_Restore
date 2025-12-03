@@ -1,34 +1,34 @@
 @interface SECSFAAction
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAction:(id)a3;
+- (int)StringAsAction:(id)action;
 - (int)action;
 - (unint64_t)hash;
 - (void)clearOneofValuesForAction;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setAbc:(id)a3;
-- (void)setDrop:(id)a3;
-- (void)setTtr:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setAbc:(id)abc;
+- (void)setDrop:(id)drop;
+- (void)setTtr:(id)ttr;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SECSFAAction
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 48))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 48))
   {
-    self->_action = *(v4 + 4);
+    self->_action = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
-  v12 = v4;
-  if (*(v4 + 4))
+  v12 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(SECSFAAction *)self setRadarnumber:?];
     v5 = v12;
@@ -118,24 +118,24 @@ LABEL_17:
   return v6 ^ [(SECSFAActionDropEvent *)self->_drop hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_action != *(v4 + 4))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_action != *(equalCopy + 4))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_15:
     v10 = 0;
@@ -143,13 +143,13 @@ LABEL_15:
   }
 
   radarnumber = self->_radarnumber;
-  if (radarnumber | *(v4 + 4) && ![(NSString *)radarnumber isEqual:?])
+  if (radarnumber | *(equalCopy + 4) && ![(NSString *)radarnumber isEqual:?])
   {
     goto LABEL_15;
   }
 
   ttr = self->_ttr;
-  if (ttr | *(v4 + 5))
+  if (ttr | *(equalCopy + 5))
   {
     if (![(SECSFAActionTapToRadar *)ttr isEqual:?])
     {
@@ -158,7 +158,7 @@ LABEL_15:
   }
 
   abc = self->_abc;
-  if (abc | *(v4 + 1))
+  if (abc | *(equalCopy + 1))
   {
     if (![(SECSFAActionAutomaticBugCapture *)abc isEqual:?])
     {
@@ -167,7 +167,7 @@ LABEL_15:
   }
 
   drop = self->_drop;
-  if (drop | *(v4 + 3))
+  if (drop | *(equalCopy + 3))
   {
     v10 = [(SECSFAActionDropEvent *)drop isEqual:?];
   }
@@ -182,9 +182,9 @@ LABEL_16:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -192,118 +192,118 @@ LABEL_16:
     *(v5 + 48) |= 1u;
   }
 
-  v7 = [(NSString *)self->_radarnumber copyWithZone:a3];
+  v7 = [(NSString *)self->_radarnumber copyWithZone:zone];
   v8 = v6[4];
   v6[4] = v7;
 
-  v9 = [(SECSFAActionTapToRadar *)self->_ttr copyWithZone:a3];
+  v9 = [(SECSFAActionTapToRadar *)self->_ttr copyWithZone:zone];
   v10 = v6[5];
   v6[5] = v9;
 
-  v11 = [(SECSFAActionAutomaticBugCapture *)self->_abc copyWithZone:a3];
+  v11 = [(SECSFAActionAutomaticBugCapture *)self->_abc copyWithZone:zone];
   v12 = v6[1];
   v6[1] = v11;
 
-  v13 = [(SECSFAActionDropEvent *)self->_drop copyWithZone:a3];
+  v13 = [(SECSFAActionDropEvent *)self->_drop copyWithZone:zone];
   v14 = v6[3];
   v6[3] = v13;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_action;
-    *(v4 + 48) |= 1u;
+    toCopy[4] = self->_action;
+    *(toCopy + 48) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_radarnumber)
   {
-    [v4 setRadarnumber:?];
-    v4 = v5;
+    [toCopy setRadarnumber:?];
+    toCopy = v5;
   }
 
   if (self->_ttr)
   {
     [v5 setTtr:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_abc)
   {
     [v5 setAbc:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_drop)
   {
     [v5 setDrop:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_radarnumber)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_ttr)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_abc)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_drop)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   radarnumber = self->_radarnumber;
   if (radarnumber)
   {
-    [v3 setObject:radarnumber forKey:@"radarnumber"];
+    [dictionary setObject:radarnumber forKey:@"radarnumber"];
   }
 
   ttr = self->_ttr;
   if (ttr)
   {
-    v7 = [(SECSFAActionTapToRadar *)ttr dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"ttr"];
+    dictionaryRepresentation = [(SECSFAActionTapToRadar *)ttr dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"ttr"];
   }
 
   abc = self->_abc;
   if (abc)
   {
-    v9 = [(SECSFAActionAutomaticBugCapture *)abc dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"abc"];
+    dictionaryRepresentation2 = [(SECSFAActionAutomaticBugCapture *)abc dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"abc"];
   }
 
   drop = self->_drop;
   if (drop)
   {
-    v11 = [(SECSFAActionDropEvent *)drop dictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"drop"];
+    dictionaryRepresentation3 = [(SECSFAActionDropEvent *)drop dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"drop"];
   }
 
   if (*&self->_has)
@@ -331,8 +331,8 @@ LABEL_16:
   v8.receiver = self;
   v8.super_class = SECSFAAction;
   v4 = [(SECSFAAction *)&v8 description];
-  v5 = [(SECSFAAction *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SECSFAAction *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -351,25 +351,25 @@ LABEL_16:
   self->_drop = 0;
 }
 
-- (int)StringAsAction:(id)a3
+- (int)StringAsAction:(id)action
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PBUNSET"])
+  actionCopy = action;
+  if ([actionCopy isEqualToString:@"PBUNSET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ttr"])
+  else if ([actionCopy isEqualToString:@"ttr"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"abc"])
+  else if ([actionCopy isEqualToString:@"abc"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"drop"])
+  else if ([actionCopy isEqualToString:@"drop"])
   {
     v4 = 3;
   }
@@ -395,34 +395,34 @@ LABEL_16:
   }
 }
 
-- (void)setDrop:(id)a3
+- (void)setDrop:(id)drop
 {
-  v4 = a3;
+  dropCopy = drop;
   [(SECSFAAction *)self clearOneofValuesForAction];
   *&self->_has |= 1u;
   self->_action = 3;
   drop = self->_drop;
-  self->_drop = v4;
+  self->_drop = dropCopy;
 }
 
-- (void)setAbc:(id)a3
+- (void)setAbc:(id)abc
 {
-  v4 = a3;
+  abcCopy = abc;
   [(SECSFAAction *)self clearOneofValuesForAction];
   *&self->_has |= 1u;
   self->_action = 2;
   abc = self->_abc;
-  self->_abc = v4;
+  self->_abc = abcCopy;
 }
 
-- (void)setTtr:(id)a3
+- (void)setTtr:(id)ttr
 {
-  v4 = a3;
+  ttrCopy = ttr;
   [(SECSFAAction *)self clearOneofValuesForAction];
   *&self->_has |= 1u;
   self->_action = 1;
   ttr = self->_ttr;
-  self->_ttr = v4;
+  self->_ttr = ttrCopy;
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface BMKnowledgeContextMapping
-+ (id)contextKeypathForQuery:(id)a3;
-+ (id)liveEventsForQuery:(id)a3 context:(id)a4;
++ (id)contextKeypathForQuery:(id)query;
++ (id)liveEventsForQuery:(id)query context:(id)context;
 @end
 
 @implementation BMKnowledgeContextMapping
 
-+ (id)contextKeypathForQuery:(id)a3
++ (id)contextKeypathForQuery:(id)query
 {
-  v3 = a3;
-  v4 = [v3 eventStreams];
-  v5 = [v4 count];
+  queryCopy = query;
+  eventStreams = [queryCopy eventStreams];
+  v5 = [eventStreams count];
 
   if (v5 != 1)
   {
@@ -17,28 +17,28 @@
     goto LABEL_9;
   }
 
-  v6 = [v3 eventStreams];
-  v7 = [v6 objectAtIndexedSubscript:0];
+  eventStreams2 = [queryCopy eventStreams];
+  v7 = [eventStreams2 objectAtIndexedSubscript:0];
 
-  v8 = [get_DKSystemEventStreamsClass() appInFocusStream];
-  if ([v8 isEqual:v7])
+  appInFocusStream = [get_DKSystemEventStreamsClass() appInFocusStream];
+  if ([appInFocusStream isEqual:v7])
   {
 
 LABEL_6:
-    v12 = [get_CDContextQueriesClass() keyPathForAppUsageDataDictionaries];
+    keyPathForAppUsageDataDictionaries = [get_CDContextQueriesClass() keyPathForAppUsageDataDictionaries];
     goto LABEL_7;
   }
 
-  v10 = [get_DKSystemEventStreamsClass() appUsageStream];
-  v11 = [v10 isEqual:v7];
+  appUsageStream = [get_DKSystemEventStreamsClass() appUsageStream];
+  v11 = [appUsageStream isEqual:v7];
 
   if (v11)
   {
     goto LABEL_6;
   }
 
-  v14 = [get_DKSystemEventStreamsClass() appWebUsageStream];
-  v15 = [v14 isEqual:v7];
+  appWebUsageStream = [get_DKSystemEventStreamsClass() appWebUsageStream];
+  v15 = [appWebUsageStream isEqual:v7];
 
   if (!v15)
   {
@@ -46,9 +46,9 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  v12 = [get_CDContextQueriesClass() keyPathForAppWebUsageDataDictionaries];
+  keyPathForAppUsageDataDictionaries = [get_CDContextQueriesClass() keyPathForAppWebUsageDataDictionaries];
 LABEL_7:
-  v9 = v12;
+  v9 = keyPathForAppUsageDataDictionaries;
 LABEL_8:
 
 LABEL_9:
@@ -56,28 +56,28 @@ LABEL_9:
   return v9;
 }
 
-+ (id)liveEventsForQuery:(id)a3 context:(id)a4
++ (id)liveEventsForQuery:(id)query context:(id)context
 {
   v87 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v49 = a4;
-  v50 = v6;
-  v51 = [a1 contextKeypathForQuery:v6];
-  if (!v51 || ([v6 eventStreams], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v8 != 1))
+  queryCopy = query;
+  contextCopy = context;
+  v50 = queryCopy;
+  v51 = [self contextKeypathForQuery:queryCopy];
+  if (!v51 || ([queryCopy eventStreams], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v8 != 1))
   {
     v52 = MEMORY[0x1E695E0F0];
     goto LABEL_59;
   }
 
-  v9 = [v6 eventStreams];
-  v56 = [v9 objectAtIndexedSubscript:0];
+  eventStreams = [queryCopy eventStreams];
+  v56 = [eventStreams objectAtIndexedSubscript:0];
 
-  v10 = [get_CDContextQueriesClass() keyPathForAppUsageDataDictionaries];
-  v11 = [v51 isEqual:v10];
+  keyPathForAppUsageDataDictionaries = [get_CDContextQueriesClass() keyPathForAppUsageDataDictionaries];
+  v11 = [v51 isEqual:keyPathForAppUsageDataDictionaries];
 
   if (v11)
   {
-    v12 = [v49 objectForKeyedSubscript:v51];
+    v12 = [contextCopy objectForKeyedSubscript:v51];
     v52 = [MEMORY[0x1E695E0F0] mutableCopy];
     v71 = 0u;
     v72 = 0u;
@@ -98,16 +98,16 @@ LABEL_9:
           }
 
           v16 = *(*(&v71 + 1) + 8 * i);
-          v17 = [get_CDContextQueriesClass() appUsageBundleID];
-          v18 = [v16 objectForKeyedSubscript:v17];
+          appUsageBundleID = [get_CDContextQueriesClass() appUsageBundleID];
+          v18 = [v16 objectForKeyedSubscript:appUsageBundleID];
 
-          v19 = [get_CDContextQueriesClass() appUsageStartDate];
-          v20 = [v16 objectForKeyedSubscript:v19];
+          appUsageStartDate = [get_CDContextQueriesClass() appUsageStartDate];
+          v20 = [v16 objectForKeyedSubscript:appUsageStartDate];
 
           if (v18 && v20)
           {
-            v21 = [MEMORY[0x1E695DF00] date];
-            v22 = [get_DKEventClass() eventWithStream:v56 startDate:v20 endDate:v21 identifierStringValue:v18 metadata:0];
+            date = [MEMORY[0x1E695DF00] date];
+            v22 = [get_DKEventClass() eventWithStream:v56 startDate:v20 endDate:date identifierStringValue:v18 metadata:0];
             if (v22)
             {
               [v52 addObject:v22];
@@ -136,12 +136,12 @@ LABEL_9:
               v23 = @"bundleId";
             }
 
-            v21 = v23;
+            date = v23;
             v22 = __biome_log_for_category();
             if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
             {
               LODWORD(buf) = 138412290;
-              *(&buf + 4) = v21;
+              *(&buf + 4) = date;
               _os_log_error_impl(&dword_1848EE000, v22, OS_LOG_TYPE_ERROR, "Missing %@ information to construct an event from context data", &buf, 0xCu);
             }
           }
@@ -156,8 +156,8 @@ LABEL_9:
 
   else
   {
-    v25 = [get_CDContextQueriesClass() keyPathForAppWebUsageDataDictionaries];
-    v26 = [v51 isEqual:v25];
+    keyPathForAppWebUsageDataDictionaries = [get_CDContextQueriesClass() keyPathForAppWebUsageDataDictionaries];
+    v26 = [v51 isEqual:keyPathForAppWebUsageDataDictionaries];
 
     if (!v26)
     {
@@ -165,7 +165,7 @@ LABEL_9:
       goto LABEL_58;
     }
 
-    v27 = [v49 objectForKeyedSubscript:v51];
+    v27 = [contextCopy objectForKeyedSubscript:v51];
     v52 = [MEMORY[0x1E695E0F0] mutableCopy];
     v67 = 0u;
     v68 = 0u;
@@ -190,16 +190,16 @@ LABEL_9:
 
           v58 = v28;
           v30 = *(*(&v67 + 1) + 8 * v28);
-          v64 = [get_CDContextQueriesClass() appWebUsageWebDomain];
-          v63 = [get_CDContextQueriesClass() appWebUsageStartDate];
-          v62 = [get_CDContextQueriesClass() appWebUsageBundleID];
-          v61 = [get_CDContextQueriesClass() appWebUsageType];
-          v60 = [get_CDContextQueriesClass() appWebUsageWepageURL];
-          v31 = [v30 objectForKeyedSubscript:v64];
-          v32 = [v30 objectForKeyedSubscript:v63];
-          v59 = [v30 objectForKeyedSubscript:v62];
-          v33 = [v30 objectForKeyedSubscript:v61];
-          v34 = [v30 objectForKeyedSubscript:v60];
+          appWebUsageWebDomain = [get_CDContextQueriesClass() appWebUsageWebDomain];
+          appWebUsageStartDate = [get_CDContextQueriesClass() appWebUsageStartDate];
+          appWebUsageBundleID = [get_CDContextQueriesClass() appWebUsageBundleID];
+          appWebUsageType = [get_CDContextQueriesClass() appWebUsageType];
+          appWebUsageWepageURL = [get_CDContextQueriesClass() appWebUsageWepageURL];
+          v31 = [v30 objectForKeyedSubscript:appWebUsageWebDomain];
+          v32 = [v30 objectForKeyedSubscript:appWebUsageStartDate];
+          v59 = [v30 objectForKeyedSubscript:appWebUsageBundleID];
+          v33 = [v30 objectForKeyedSubscript:appWebUsageType];
+          v34 = [v30 objectForKeyedSubscript:appWebUsageWepageURL];
           v35 = v34;
           if (v34 && v31 && v33 && v32)
           {
@@ -222,19 +222,19 @@ LABEL_9:
             v37 = v36;
             _Block_object_dispose(v75, 8);
             v38 = [v36 withBundle:v59];
-            v39 = [get_DKDigitalHealthMetadataKeyClass() webpageURL];
-            v55 = [get_DKDigitalHealthMetadataKeyClass() webDomain];
-            v40 = [get_DKDigitalHealthMetadataKeyClass() usageType];
-            v79[0] = v39;
-            v79[1] = v55;
+            webpageURL = [get_DKDigitalHealthMetadataKeyClass() webpageURL];
+            webDomain = [get_DKDigitalHealthMetadataKeyClass() webDomain];
+            usageType = [get_DKDigitalHealthMetadataKeyClass() usageType];
+            v79[0] = webpageURL;
+            v79[1] = webDomain;
             v80[0] = v35;
             v80[1] = v31;
-            v79[2] = v40;
+            v79[2] = usageType;
             v80[2] = v33;
             v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v80 forKeys:v79 count:3];
             DKEventClass = get_DKEventClass();
-            v43 = [MEMORY[0x1E695DF00] date];
-            v44 = [DKEventClass eventWithStream:v56 startDate:v32 endDate:v43 value:v38 metadata:v41];
+            date2 = [MEMORY[0x1E695DF00] date];
+            v44 = [DKEventClass eventWithStream:v56 startDate:v32 endDate:date2 value:v38 metadata:v41];
 
             if (v44)
             {
@@ -275,12 +275,12 @@ LABEL_9:
             }
 
             v38 = v45;
-            v39 = __biome_log_for_category();
-            if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
+            webpageURL = __biome_log_for_category();
+            if (os_log_type_enabled(webpageURL, OS_LOG_TYPE_ERROR))
             {
               LODWORD(buf) = 138412290;
               *(&buf + 4) = v38;
-              _os_log_error_impl(&dword_1848EE000, v39, OS_LOG_TYPE_ERROR, "Missing %@ information to construct an event from context data", &buf, 0xCu);
+              _os_log_error_impl(&dword_1848EE000, webpageURL, OS_LOG_TYPE_ERROR, "Missing %@ information to construct an event from context data", &buf, 0xCu);
             }
           }
 

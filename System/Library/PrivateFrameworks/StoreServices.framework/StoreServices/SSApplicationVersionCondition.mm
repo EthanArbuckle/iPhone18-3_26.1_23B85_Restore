@@ -1,6 +1,6 @@
 @interface SSApplicationVersionCondition
-- (BOOL)evaluateWithContext:(id)a3;
-- (SSApplicationVersionCondition)initWithDictionary:(id)a3;
+- (BOOL)evaluateWithContext:(id)context;
+- (SSApplicationVersionCondition)initWithDictionary:(id)dictionary;
 - (void)dealloc;
 @end
 
@@ -13,28 +13,28 @@
   [(SSProtocolCondition *)&v3 dealloc];
 }
 
-- (SSApplicationVersionCondition)initWithDictionary:(id)a3
+- (SSApplicationVersionCondition)initWithDictionary:(id)dictionary
 {
   v9.receiver = self;
   v9.super_class = SSApplicationVersionCondition;
   v4 = [(SSProtocolCondition *)&v9 initWithDictionary:?];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"bundle-id"];
+    v5 = [dictionary objectForKey:@"bundle-id"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v4->_bundleIdentifier = v5;
     }
 
-    v6 = [a3 objectForKey:@"bundle-version"];
+    v6 = [dictionary objectForKey:@"bundle-version"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v4->_bundleVersion = v6;
     }
 
-    v7 = [a3 objectForKey:@"external-version"];
+    v7 = [dictionary objectForKey:@"external-version"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
   return v4;
 }
 
-- (BOOL)evaluateWithContext:(id)a3
+- (BOOL)evaluateWithContext:(id)context
 {
   if (self->_bundleIdentifier)
   {

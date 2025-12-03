@@ -6,12 +6,12 @@
 - (CGRect)zoomWindowFrame;
 - (double)dockSize;
 - (double)zoomFactor;
-- (void)setDockSize:(double)a3;
-- (void)setZoomFactor:(double)a3;
-- (void)setZoomInStandby:(BOOL)a3;
-- (void)setZoomPanOffset:(CGPoint)a3;
-- (void)setZoomSlugNormalizedPosition:(CGPoint)a3;
-- (void)setZoomWindowFrame:(CGRect)a3;
+- (void)setDockSize:(double)size;
+- (void)setZoomFactor:(double)factor;
+- (void)setZoomInStandby:(BOOL)standby;
+- (void)setZoomPanOffset:(CGPoint)offset;
+- (void)setZoomSlugNormalizedPosition:(CGPoint)position;
+- (void)setZoomWindowFrame:(CGRect)frame;
 @end
 
 @implementation ZWCoalescedSettings
@@ -37,10 +37,10 @@ void __37__ZWCoalescedSettings_sharedInstance__block_invoke(id a1)
 
 - (CGRect)zoomWindowFrame
 {
-  v3 = [(ZWCoalescedSettings *)self zoomLensFrameUpdateTimer];
-  v4 = [v3 isPending];
+  zoomLensFrameUpdateTimer = [(ZWCoalescedSettings *)self zoomLensFrameUpdateTimer];
+  isPending = [zoomLensFrameUpdateTimer isPending];
 
-  if (v4)
+  if (isPending)
   {
     x = self->_cachedZoomLensFrame.origin.x;
     y = self->_cachedZoomLensFrame.origin.y;
@@ -69,23 +69,23 @@ void __37__ZWCoalescedSettings_sharedInstance__block_invoke(id a1)
   return result;
 }
 
-- (void)setZoomWindowFrame:(CGRect)a3
+- (void)setZoomWindowFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  self->_cachedZoomLensFrame = a3;
-  v8 = [(ZWCoalescedSettings *)self zoomLensFrameUpdateTimer];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  self->_cachedZoomLensFrame = frame;
+  zoomLensFrameUpdateTimer = [(ZWCoalescedSettings *)self zoomLensFrameUpdateTimer];
 
-  if (!v8)
+  if (!zoomLensFrameUpdateTimer)
   {
     v9 = [[AXDispatchTimer alloc] initWithTargetSerialQueue:&_dispatch_main_q];
     [(ZWCoalescedSettings *)self setZoomLensFrameUpdateTimer:v9];
     [v9 setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
   }
 
-  v10 = [(ZWCoalescedSettings *)self zoomLensFrameUpdateTimer];
+  zoomLensFrameUpdateTimer2 = [(ZWCoalescedSettings *)self zoomLensFrameUpdateTimer];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __42__ZWCoalescedSettings_setZoomWindowFrame___block_invoke;
@@ -94,7 +94,7 @@ void __37__ZWCoalescedSettings_sharedInstance__block_invoke(id a1)
   *&v11[5] = y;
   *&v11[6] = width;
   *&v11[7] = height;
-  [v10 afterDelay:v11 processBlock:1.0];
+  [zoomLensFrameUpdateTimer2 afterDelay:v11 processBlock:1.0];
 }
 
 void __42__ZWCoalescedSettings_setZoomWindowFrame___block_invoke(double *a1)
@@ -109,10 +109,10 @@ void __42__ZWCoalescedSettings_setZoomWindowFrame___block_invoke(double *a1)
 
 - (double)zoomFactor
 {
-  v3 = [(ZWCoalescedSettings *)self zoomFactorUpdateTimer];
-  v4 = [v3 isPending];
+  zoomFactorUpdateTimer = [(ZWCoalescedSettings *)self zoomFactorUpdateTimer];
+  isPending = [zoomFactorUpdateTimer isPending];
 
-  if (v4)
+  if (isPending)
   {
     return self->_cachedZoomFactor;
   }
@@ -124,25 +124,25 @@ void __42__ZWCoalescedSettings_setZoomWindowFrame___block_invoke(double *a1)
   return v8;
 }
 
-- (void)setZoomFactor:(double)a3
+- (void)setZoomFactor:(double)factor
 {
-  self->_cachedZoomFactor = a3;
-  v5 = [(ZWCoalescedSettings *)self zoomFactorUpdateTimer];
+  self->_cachedZoomFactor = factor;
+  zoomFactorUpdateTimer = [(ZWCoalescedSettings *)self zoomFactorUpdateTimer];
 
-  if (!v5)
+  if (!zoomFactorUpdateTimer)
   {
     v6 = [[AXDispatchTimer alloc] initWithTargetSerialQueue:&_dispatch_main_q];
     [(ZWCoalescedSettings *)self setZoomFactorUpdateTimer:v6];
     [v6 setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
   }
 
-  v7 = [(ZWCoalescedSettings *)self zoomFactorUpdateTimer];
+  zoomFactorUpdateTimer2 = [(ZWCoalescedSettings *)self zoomFactorUpdateTimer];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __37__ZWCoalescedSettings_setZoomFactor___block_invoke;
   v8[3] = &__block_descriptor_40_e5_v8__0l;
-  *&v8[4] = a3;
-  [v7 afterDelay:v8 processBlock:1.0];
+  *&v8[4] = factor;
+  [zoomFactorUpdateTimer2 afterDelay:v8 processBlock:1.0];
 }
 
 void __37__ZWCoalescedSettings_setZoomFactor___block_invoke(uint64_t a1)
@@ -154,10 +154,10 @@ void __37__ZWCoalescedSettings_setZoomFactor___block_invoke(uint64_t a1)
 
 - (double)dockSize
 {
-  v3 = [(ZWCoalescedSettings *)self dockSizeUpdateTimer];
-  v4 = [v3 isPending];
+  dockSizeUpdateTimer = [(ZWCoalescedSettings *)self dockSizeUpdateTimer];
+  isPending = [dockSizeUpdateTimer isPending];
 
-  if (v4)
+  if (isPending)
   {
     return self->_cachedDockSize;
   }
@@ -169,25 +169,25 @@ void __37__ZWCoalescedSettings_setZoomFactor___block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)setDockSize:(double)a3
+- (void)setDockSize:(double)size
 {
-  self->_cachedDockSize = a3;
-  v5 = [(ZWCoalescedSettings *)self dockSizeUpdateTimer];
+  self->_cachedDockSize = size;
+  dockSizeUpdateTimer = [(ZWCoalescedSettings *)self dockSizeUpdateTimer];
 
-  if (!v5)
+  if (!dockSizeUpdateTimer)
   {
     v6 = [[AXDispatchTimer alloc] initWithTargetSerialQueue:&_dispatch_main_q];
     [(ZWCoalescedSettings *)self setDockSizeUpdateTimer:v6];
     [v6 setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
   }
 
-  v7 = [(ZWCoalescedSettings *)self dockSizeUpdateTimer];
+  dockSizeUpdateTimer2 = [(ZWCoalescedSettings *)self dockSizeUpdateTimer];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __35__ZWCoalescedSettings_setDockSize___block_invoke;
   v8[3] = &__block_descriptor_40_e5_v8__0l;
-  *&v8[4] = a3;
-  [v7 afterDelay:v8 processBlock:1.0];
+  *&v8[4] = size;
+  [dockSizeUpdateTimer2 afterDelay:v8 processBlock:1.0];
 }
 
 void __35__ZWCoalescedSettings_setDockSize___block_invoke(uint64_t a1)
@@ -197,27 +197,27 @@ void __35__ZWCoalescedSettings_setDockSize___block_invoke(uint64_t a1)
   [v2 setDockSize:v1];
 }
 
-- (void)setZoomInStandby:(BOOL)a3
+- (void)setZoomInStandby:(BOOL)standby
 {
-  v3 = a3;
+  standbyCopy = standby;
   v4 = +[AXSettings sharedInstance];
-  [v4 setZoomInStandby:v3];
+  [v4 setZoomInStandby:standbyCopy];
 }
 
 - (BOOL)zoomInStandby
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 zoomInStandby];
+  zoomInStandby = [v2 zoomInStandby];
 
-  return v3;
+  return zoomInStandby;
 }
 
 - (CGPoint)zoomPanOffset
 {
-  v3 = [(ZWCoalescedSettings *)self zoomPanOffsetUpdateTimer];
-  v4 = [v3 isPending];
+  zoomPanOffsetUpdateTimer = [(ZWCoalescedSettings *)self zoomPanOffsetUpdateTimer];
+  isPending = [zoomPanOffsetUpdateTimer isPending];
 
-  if (v4)
+  if (isPending)
   {
     x = self->_cachedZoomPanOffset.x;
     y = self->_cachedZoomPanOffset.y;
@@ -238,28 +238,28 @@ void __35__ZWCoalescedSettings_setDockSize___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setZoomPanOffset:(CGPoint)a3
+- (void)setZoomPanOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
-  self->_cachedZoomPanOffset = a3;
-  v6 = [(ZWCoalescedSettings *)self zoomPanOffsetUpdateTimer];
+  y = offset.y;
+  x = offset.x;
+  self->_cachedZoomPanOffset = offset;
+  zoomPanOffsetUpdateTimer = [(ZWCoalescedSettings *)self zoomPanOffsetUpdateTimer];
 
-  if (!v6)
+  if (!zoomPanOffsetUpdateTimer)
   {
     v7 = [[AXDispatchTimer alloc] initWithTargetSerialQueue:&_dispatch_main_q];
     [(ZWCoalescedSettings *)self setZoomPanOffsetUpdateTimer:v7];
     [v7 setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
   }
 
-  v8 = [(ZWCoalescedSettings *)self zoomPanOffsetUpdateTimer];
+  zoomPanOffsetUpdateTimer2 = [(ZWCoalescedSettings *)self zoomPanOffsetUpdateTimer];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __40__ZWCoalescedSettings_setZoomPanOffset___block_invoke;
   v9[3] = &__block_descriptor_48_e5_v8__0l;
   *&v9[4] = x;
   *&v9[5] = y;
-  [v8 afterDelay:v9 processBlock:1.0];
+  [zoomPanOffsetUpdateTimer2 afterDelay:v9 processBlock:1.0];
 }
 
 void __40__ZWCoalescedSettings_setZoomPanOffset___block_invoke(uint64_t a1)
@@ -272,10 +272,10 @@ void __40__ZWCoalescedSettings_setZoomPanOffset___block_invoke(uint64_t a1)
 
 - (CGPoint)zoomSlugNormalizedPosition
 {
-  v3 = [(ZWCoalescedSettings *)self zoomSlugPositionUpdateTimer];
-  v4 = [v3 isPending];
+  zoomSlugPositionUpdateTimer = [(ZWCoalescedSettings *)self zoomSlugPositionUpdateTimer];
+  isPending = [zoomSlugPositionUpdateTimer isPending];
 
-  if (v4)
+  if (isPending)
   {
     x = self->_cachedZoomSlugPosition.x;
     y = self->_cachedZoomSlugPosition.y;
@@ -296,28 +296,28 @@ void __40__ZWCoalescedSettings_setZoomPanOffset___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setZoomSlugNormalizedPosition:(CGPoint)a3
+- (void)setZoomSlugNormalizedPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
-  self->_cachedZoomSlugPosition = a3;
-  v6 = [(ZWCoalescedSettings *)self zoomSlugPositionUpdateTimer];
+  y = position.y;
+  x = position.x;
+  self->_cachedZoomSlugPosition = position;
+  zoomSlugPositionUpdateTimer = [(ZWCoalescedSettings *)self zoomSlugPositionUpdateTimer];
 
-  if (!v6)
+  if (!zoomSlugPositionUpdateTimer)
   {
     v7 = [[AXDispatchTimer alloc] initWithTargetSerialQueue:&_dispatch_main_q];
     [(ZWCoalescedSettings *)self setZoomSlugPositionUpdateTimer:v7];
     [v7 setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
   }
 
-  v8 = [(ZWCoalescedSettings *)self zoomSlugPositionUpdateTimer];
+  zoomSlugPositionUpdateTimer2 = [(ZWCoalescedSettings *)self zoomSlugPositionUpdateTimer];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __53__ZWCoalescedSettings_setZoomSlugNormalizedPosition___block_invoke;
   v9[3] = &__block_descriptor_48_e5_v8__0l;
   *&v9[4] = x;
   *&v9[5] = y;
-  [v8 afterDelay:v9 processBlock:1.0];
+  [zoomSlugPositionUpdateTimer2 afterDelay:v9 processBlock:1.0];
 }
 
 void __53__ZWCoalescedSettings_setZoomSlugNormalizedPosition___block_invoke(uint64_t a1)

@@ -1,6 +1,6 @@
 @interface SESDatabaseTransaction
-- (id)stageEndPointEntityUpdates:(id)a3 fromEndPoint:(id)a4;
-- (id)stageEndPointEntityWithIdentifier:(id)a3 endPointCAEntity:(id)a4 airInstanceEntity:(id)a5 clientName:(id)a6 handle:(id)a7 error:(id *)a8;
+- (id)stageEndPointEntityUpdates:(id)updates fromEndPoint:(id)point;
+- (id)stageEndPointEntityWithIdentifier:(id)identifier endPointCAEntity:(id)entity airInstanceEntity:(id)instanceEntity clientName:(id)name handle:(id)handle error:(id *)error;
 - (void)dealloc;
 @end
 
@@ -27,25 +27,25 @@
   [(SESDatabaseTransaction *)&v5 dealloc];
 }
 
-- (id)stageEndPointEntityWithIdentifier:(id)a3 endPointCAEntity:(id)a4 airInstanceEntity:(id)a5 clientName:(id)a6 handle:(id)a7 error:(id *)a8
+- (id)stageEndPointEntityWithIdentifier:(id)identifier endPointCAEntity:(id)entity airInstanceEntity:(id)instanceEntity clientName:(id)name handle:(id)handle error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  if (v16 && v15 && v14 && v17)
+  identifierCopy = identifier;
+  entityCopy = entity;
+  instanceEntityCopy = instanceEntity;
+  nameCopy = name;
+  handleCopy = handle;
+  if (instanceEntityCopy && entityCopy && identifierCopy && nameCopy)
   {
     v29 = 0;
-    v19 = sub_10003CA94(SESEndpointDatabase, v14, v17, v18, &v29);
+    v19 = sub_10003CA94(SESEndpointDatabase, identifierCopy, nameCopy, handleCopy, &v29);
     v20 = v29;
     v21 = v20;
     if (v19)
     {
-      if (a8)
+      if (error)
       {
         v22 = SESDefaultLogObject();
-        *a8 = SESCreateAndLogError();
+        *error = SESCreateAndLogError();
       }
     }
 
@@ -56,11 +56,11 @@
         v27 = sub_1003AD0FC(self);
         v28 = [NSEntityDescription insertNewObjectForEntityForName:@"SEEndPointEntity" inManagedObjectContext:v27];
 
-        [v28 setIdentifier:v14];
-        [v28 setClientName:v17];
-        [v28 setAuthority:v15];
-        [v28 setInstance:v16];
-        if ([v28 validateForInsert:a8])
+        [v28 setIdentifier:identifierCopy];
+        [v28 setClientName:nameCopy];
+        [v28 setAuthority:entityCopy];
+        [v28 setInstance:instanceEntityCopy];
+        if ([v28 validateForInsert:error])
         {
           v23 = v28;
         }
@@ -73,11 +73,11 @@
         goto LABEL_9;
       }
 
-      if (a8)
+      if (error)
       {
         v26 = v20;
         v23 = 0;
-        *a8 = v21;
+        *error = v21;
         goto LABEL_9;
       }
     }
@@ -88,10 +88,10 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  if (a8)
+  if (error)
   {
     v24 = SESDefaultLogObject();
-    *a8 = SESCreateAndLogError();
+    *error = SESCreateAndLogError();
   }
 
   v23 = 0;
@@ -100,12 +100,12 @@ LABEL_13:
   return v23;
 }
 
-- (id)stageEndPointEntityUpdates:(id)a3 fromEndPoint:(id)a4
+- (id)stageEndPointEntityUpdates:(id)updates fromEndPoint:(id)point
 {
-  v5 = a3;
-  v6 = a4;
+  updatesCopy = updates;
+  pointCopy = point;
   v13 = 0;
-  v7 = [v6 encodeWithError:&v13];
+  v7 = [pointCopy encodeWithError:&v13];
   v8 = v13;
   if (v8)
   {
@@ -125,7 +125,7 @@ LABEL_13:
 
   else
   {
-    [v5 setEndPointData:v7];
+    [updatesCopy setEndPointData:v7];
     v11 = 0;
   }
 

@@ -1,90 +1,90 @@
 @interface PKSelectionView
 - (BOOL)_exactlyOneExternalElementSelected;
-- (BOOL)canConvertToShapeWithAction:(SEL)a3 withSender:(id)a4 handled:(BOOL *)a5;
-- (BOOL)containsPoint:(CGPoint)a3 forInputType:(int64_t)a4;
-- (BOOL)lassoContainsPoint:(CGPoint)a3;
+- (BOOL)canConvertToShapeWithAction:(SEL)action withSender:(id)sender handled:(BOOL *)handled;
+- (BOOL)containsPoint:(CGPoint)point forInputType:(int64_t)type;
+- (BOOL)lassoContainsPoint:(CGPoint)point;
 - (BOOL)supportsSnapToShape;
 - (CGAffineTransform)selectionDrawingStrokeTransform;
 - (CGAffineTransform)selectionDrawingTransform;
 - (CGAffineTransform)userTransform;
 - (CGPoint)offsetInTouchView;
 - (CGRect)editMenuTargetRect;
-- (PKSelectionView)initWithFrame:(CGRect)a3 strokeSelection:(id)a4 selectionController:(id)a5 selectionType:(int64_t)a6;
+- (PKSelectionView)initWithFrame:(CGRect)frame strokeSelection:(id)selection selectionController:(id)controller selectionType:(int64_t)type;
 - (id)_accessibilityUserTestingChildren;
 - (id)_currentAttachment;
 - (id)_selectionViewGestures;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)keyCommands;
 - (id)shapeMenuActions;
 - (id)shapeSupportCache;
-- (id)targetForAction:(SEL)a3 withSender:(id)a4;
+- (id)targetForAction:(SEL)action withSender:(id)sender;
 - (void)_commitDragToAttachment;
 - (void)_dragWillBegin;
-- (void)_findTranscriptionWithCompletion:(id)a3;
-- (void)_handleDoubleTapInputAtPoint:(CGPoint)a3;
+- (void)_findTranscriptionWithCompletion:(id)completion;
+- (void)_handleDoubleTapInputAtPoint:(CGPoint)point;
 - (void)_resetDragState;
 - (void)animateViewToOriginalPosition;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
-- (void)convertToShapes:(id)a3;
-- (void)copy:(id)a3;
-- (void)copyTranscription:(id)a3;
-- (void)createSticker:(id)a3;
-- (void)cut:(id)a3;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
+- (void)convertToShapes:(id)shapes;
+- (void)copy:(id)copy;
+- (void)copyTranscription:(id)transcription;
+- (void)createSticker:(id)sticker;
+- (void)cut:(id)cut;
 - (void)dealloc;
-- (void)delete:(id)a3;
+- (void)delete:(id)delete;
 - (void)didBeginDraggingSelection;
 - (void)didDoubleTap;
-- (void)didEndGestureWithTranslation:(CGPoint)a3;
-- (void)dragEnded:(CGPoint)a3;
-- (void)dragInteraction:(id)a3 session:(id)a4 willEndWithOperation:(unint64_t)a5;
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4;
-- (void)dragSelection:(id)a3;
-- (void)duplicate:(id)a3;
+- (void)didEndGestureWithTranslation:(CGPoint)translation;
+- (void)dragEnded:(CGPoint)ended;
+- (void)dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation;
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin;
+- (void)dragSelection:(id)selection;
+- (void)duplicate:(id)duplicate;
 - (void)generateStrokeImageForPasteAndDND;
 - (void)hideStrokeImageView;
-- (void)insertSpace:(id)a3;
-- (void)makeViewAliveAtLocation:(CGPoint)a3;
-- (void)paste:(id)a3;
-- (void)performDidEndGestureWithTranslation:(CGPoint)a3;
-- (void)refine:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setSelectionDrawingStrokeTransform:(CGAffineTransform *)a3;
-- (void)setSelectionDrawingTransform:(CGAffineTransform *)a3;
-- (void)setUserTransform:(CGAffineTransform *)a3;
-- (void)straighten:(id)a3;
+- (void)insertSpace:(id)space;
+- (void)makeViewAliveAtLocation:(CGPoint)location;
+- (void)paste:(id)paste;
+- (void)performDidEndGestureWithTranslation:(CGPoint)translation;
+- (void)refine:(id)refine;
+- (void)setFrame:(CGRect)frame;
+- (void)setSelectionDrawingStrokeTransform:(CGAffineTransform *)transform;
+- (void)setSelectionDrawingTransform:(CGAffineTransform *)transform;
+- (void)setUserTransform:(CGAffineTransform *)transform;
+- (void)straighten:(id)straighten;
 - (void)toggleEditMenu;
 - (void)transformBegan;
 - (void)transformCancelled;
-- (void)transformChanged:(CGAffineTransform *)a3;
+- (void)transformChanged:(CGAffineTransform *)changed;
 - (void)transformEnded;
-- (void)translate:(id)a3;
-- (void)updateLocationForDrop:(CGPoint)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)translate:(id)translate;
+- (void)updateLocationForDrop:(CGPoint)drop;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation PKSelectionView
 
-- (PKSelectionView)initWithFrame:(CGRect)a3 strokeSelection:(id)a4 selectionController:(id)a5 selectionType:(int64_t)a6
+- (PKSelectionView)initWithFrame:(CGRect)frame strokeSelection:(id)selection selectionController:(id)controller selectionType:(int64_t)type
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a4;
-  v14 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  selectionCopy = selection;
+  controllerCopy = controller;
   v44.receiver = self;
   v44.super_class = PKSelectionView;
-  v15 = [(PKAdornmentView *)&v44 initWithFrame:v13 strokeSelection:v14 selectionController:a6 selectionType:x, y, width, height];
-  v16 = v15;
-  v17 = v15;
-  if (v15)
+  height = [(PKAdornmentView *)&v44 initWithFrame:selectionCopy strokeSelection:controllerCopy selectionController:type selectionType:x, y, width, height];
+  v16 = height;
+  v17 = height;
+  if (height)
   {
-    [(PKSelectionView *)v15 setAccessibilityIdentifier:@"com.apple.pencilkit.selectionView"];
+    [(PKSelectionView *)height setAccessibilityIdentifier:@"com.apple.pencilkit.selectionView"];
     v18 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v17 action:sel_toggleEditMenu];
     editMenuGR = v17->_editMenuGR;
     v17->_editMenuGR = v18;
@@ -95,9 +95,9 @@
     v17->_doubleTapGR = v20;
 
     [(UITapGestureRecognizer *)v17->_doubleTapGR setNumberOfTapsRequired:2];
-    if (a6)
+    if (type)
     {
-      v22 = a6 == 6;
+      v22 = type == 6;
     }
 
     else
@@ -107,10 +107,10 @@
 
     v23 = !v22;
     [(UITapGestureRecognizer *)v17->_doubleTapGR setEnabled:v23];
-    v24 = [MEMORY[0x1E69DC938] currentDevice];
-    v25 = [v24 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v25)
+    if (userInterfaceIdiom)
     {
       v26 = [objc_alloc(MEMORY[0x1E69DC988]) initWithDelegate:v17];
       dragInteraction = v17->_dragInteraction;
@@ -134,19 +134,19 @@
       }
     }
 
-    v17->_selectionType = a6;
-    v31 = [(PKAdornmentView *)v17 selectionController];
-    v32 = [v13 drawing];
-    [(PKSelectionController *)v31 _selectionDrawingTransformForDrawing:v32, v43];
+    v17->_selectionType = type;
+    selectionController = [(PKAdornmentView *)v17 selectionController];
+    drawing = [selectionCopy drawing];
+    [(PKSelectionController *)selectionController _selectionDrawingTransformForDrawing:drawing, v43];
     v34 = v43[1];
     v33 = v43[2];
     *&v16->_selectionDrawingTransform.a = v43[0];
     *&v16->_selectionDrawingTransform.c = v34;
     *&v16->_selectionDrawingTransform.tx = v33;
 
-    v35 = [(PKAdornmentView *)v17 selectionController];
-    v36 = [v13 drawing];
-    v16->_originalStrokeFrame.origin.x = [(PKSelectionController *)v35 calculateFrameForSelectionView:v13 inDrawing:v36];
+    selectionController2 = [(PKAdornmentView *)v17 selectionController];
+    drawing2 = [selectionCopy drawing];
+    v16->_originalStrokeFrame.origin.x = [(PKSelectionController *)selectionController2 calculateFrameForSelectionView:selectionCopy inDrawing:drawing2];
     v16->_originalStrokeFrame.origin.y = v37;
     v16->_originalStrokeFrame.size.width = v38;
     v16->_originalStrokeFrame.size.height = v39;
@@ -185,34 +185,34 @@
   [(PKSelectionView *)&v3 dealloc];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   v8.receiver = self;
   v8.super_class = PKSelectionView;
-  [(PKSelectionView *)&v8 willMoveToWindow:v4];
-  v5 = [(PKAdornmentView *)self selectionRenderer];
-  [v5 _setupSelectionAdornment];
+  [(PKSelectionView *)&v8 willMoveToWindow:windowCopy];
+  selectionRenderer = [(PKAdornmentView *)self selectionRenderer];
+  [selectionRenderer _setupSelectionAdornment];
 
-  if (v4)
+  if (windowCopy)
   {
     [(PKSelectionView *)self becomeFirstResponder];
   }
 
   else
   {
-    v6 = [(PKAdornmentView *)self selectionController];
-    v7 = [(PKSelectionController *)v6 selectionInteraction];
-    [v7 _willRemoveSelectionView:self];
+    selectionController = [(PKAdornmentView *)self selectionController];
+    selectionInteraction = [(PKSelectionController *)selectionController selectionInteraction];
+    [selectionInteraction _willRemoveSelectionView:self];
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(PKSelectionView *)self frame];
   v17.origin.x = v8;
   v17.origin.y = v9;
@@ -228,22 +228,22 @@
   [(PKSelectionView *)&v15 setFrame:x, y, width, height];
   if (!v12)
   {
-    v13 = [(PKAdornmentView *)self selectionController];
-    v14 = [(PKSelectionController *)v13 selectionInteraction];
-    [v14 _didEndDraggingSelection:self];
+    selectionController = [(PKAdornmentView *)self selectionController];
+    selectionInteraction = [(PKSelectionController *)selectionController selectionInteraction];
+    [selectionInteraction _didEndDraggingSelection:self];
   }
 }
 
 - (void)generateStrokeImageForPasteAndDND
 {
-  v3 = [(PKAdornmentView *)self selectionController];
-  v4 = [(PKAdornmentView *)self strokeSelection];
+  selectionController = [(PKAdornmentView *)self selectionController];
+  strokeSelection = [(PKAdornmentView *)self strokeSelection];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __52__PKSelectionView_generateStrokeImageForPasteAndDND__block_invoke;
   v5[3] = &unk_1E82D6638;
   v5[4] = self;
-  [(PKSelectionController *)v3 generateImageForStrokeSelection:v4 scaleStrategy:1 highlighted:0 withCompletion:v5];
+  [(PKSelectionController *)selectionController generateImageForStrokeSelection:strokeSelection scaleStrategy:1 highlighted:0 withCompletion:v5];
 }
 
 void __52__PKSelectionView_generateStrokeImageForPasteAndDND__block_invoke(uint64_t a1, void *a2)
@@ -253,10 +253,10 @@ void __52__PKSelectionView_generateStrokeImageForPasteAndDND__block_invoke(uint6
   [v3 setStrokeImage:v4];
 }
 
-- (BOOL)containsPoint:(CGPoint)a3 forInputType:(int64_t)a4
+- (BOOL)containsPoint:(CGPoint)point forInputType:(int64_t)type
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v61 = *MEMORY[0x1E69E9840];
   if ([(PKSelectionView *)self selectionType]== 6)
   {
@@ -273,11 +273,11 @@ void __52__PKSelectionView_generateStrokeImageForPasteAndDND__block_invoke(uint6
 
   if ([(PKSelectionView *)self selectionType]&& [(PKSelectionView *)self selectionType]!= 6)
   {
-    v10 = [(PKAdornmentView *)self selectionController];
-    v11 = v10;
-    if (v10)
+    selectionController = [(PKAdornmentView *)self selectionController];
+    v11 = selectionController;
+    if (selectionController)
     {
-      WeakRetained = objc_loadWeakRetained((v10 + 120));
+      WeakRetained = objc_loadWeakRetained((selectionController + 120));
     }
 
     else
@@ -292,11 +292,11 @@ void __52__PKSelectionView_generateStrokeImageForPasteAndDND__block_invoke(uint6
     v58 = 0u;
     v59 = 0u;
     v57 = 0u;
-    v15 = [(PKAdornmentView *)self selectionController];
-    v16 = v15;
-    if (v15)
+    selectionController2 = [(PKAdornmentView *)self selectionController];
+    v16 = selectionController2;
+    if (selectionController2)
     {
-      v17 = objc_loadWeakRetained((v15 + 120));
+      v17 = objc_loadWeakRetained((selectionController2 + 120));
     }
 
     else
@@ -304,11 +304,11 @@ void __52__PKSelectionView_generateStrokeImageForPasteAndDND__block_invoke(uint6
       v17 = 0;
     }
 
-    v18 = [(PKAdornmentView *)self strokeSelection];
-    v19 = [v18 drawing];
+    strokeSelection = [(PKAdornmentView *)self strokeSelection];
+    drawing = [strokeSelection drawing];
     if (v17)
     {
-      [v17 transformFromViewToStrokeSpaceInDrawing:v19];
+      [v17 transformFromViewToStrokeSpaceInDrawing:drawing];
     }
 
     else
@@ -325,15 +325,15 @@ void __52__PKSelectionView_generateStrokeImageForPasteAndDND__block_invoke(uint6
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v20 = [(PKAdornmentView *)self strokeSelection];
-    v21 = [v20 strokes];
+    strokeSelection2 = [(PKAdornmentView *)self strokeSelection];
+    strokes = [strokeSelection2 strokes];
 
-    v22 = [v21 countByEnumeratingWithState:&v53 objects:v60 count:16];
+    v22 = [strokes countByEnumeratingWithState:&v53 objects:v60 count:16];
     if (v22)
     {
       v23 = vaddq_f64(v49, vmlaq_n_f64(vmulq_n_f64(v48, v51), v50, v52));
       v24 = *v54;
-      if (a4)
+      if (type)
       {
         v25 = 10.0;
       }
@@ -350,7 +350,7 @@ void __52__PKSelectionView_generateStrokeImageForPasteAndDND__block_invoke(uint6
         {
           if (*v54 != v24)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(strokes);
           }
 
           if ([*(*(&v53 + 1) + 8 * i) intersectsPoint:*&v26 boundsOutset:v25 minimumStrokeThreshold:v25])
@@ -360,7 +360,7 @@ void __52__PKSelectionView_generateStrokeImageForPasteAndDND__block_invoke(uint6
           }
         }
 
-        v22 = [v21 countByEnumeratingWithState:&v53 objects:v60 count:16];
+        v22 = [strokes countByEnumeratingWithState:&v53 objects:v60 count:16];
         if (v22)
         {
           continue;
@@ -376,11 +376,11 @@ void __52__PKSelectionView_generateStrokeImageForPasteAndDND__block_invoke(uint6
     return 1;
   }
 
-  v28 = [(PKAdornmentView *)self selectionController];
-  v29 = v28;
-  if (v28)
+  selectionController3 = [(PKAdornmentView *)self selectionController];
+  v29 = selectionController3;
+  if (selectionController3)
   {
-    v30 = objc_loadWeakRetained((v28 + 120));
+    v30 = objc_loadWeakRetained((selectionController3 + 120));
   }
 
   else
@@ -392,11 +392,11 @@ void __52__PKSelectionView_generateStrokeImageForPasteAndDND__block_invoke(uint6
   v32 = v31;
   v34 = v33;
 
-  v35 = [(PKAdornmentView *)self selectionController];
-  v36 = v35;
-  if (v35)
+  selectionController4 = [(PKAdornmentView *)self selectionController];
+  v36 = selectionController4;
+  if (selectionController4)
   {
-    v37 = objc_loadWeakRetained((v35 + 120));
+    v37 = objc_loadWeakRetained((selectionController4 + 120));
   }
 
   else
@@ -404,11 +404,11 @@ void __52__PKSelectionView_generateStrokeImageForPasteAndDND__block_invoke(uint6
     v37 = 0;
   }
 
-  v38 = [(PKAdornmentView *)self strokeSelection];
-  v39 = [v38 drawing];
+  strokeSelection3 = [(PKAdornmentView *)self strokeSelection];
+  drawing2 = [strokeSelection3 drawing];
   if (v37)
   {
-    [v37 transformFromViewToStrokeSpaceInDrawing:v39];
+    [v37 transformFromViewToStrokeSpaceInDrawing:drawing2];
     v41 = v57.f64[1];
     v40 = v57.f64[0];
     v43 = v58.f64[1];
@@ -427,29 +427,29 @@ void __52__PKSelectionView_generateStrokeImageForPasteAndDND__block_invoke(uint6
     v40 = 0.0;
   }
 
-  v46 = [(PKAdornmentView *)self selectionController];
-  v47 = [(PKSelectionView *)self _currentAttachment];
-  v8 = [(PKSelectionController *)v46 _selectedExternalElementsContainsPoint:v47 inAttachment:v45 + v34 * v42 + v40 * v32, v44 + v34 * v43 + v41 * v32];
+  selectionController5 = [(PKAdornmentView *)self selectionController];
+  _currentAttachment = [(PKSelectionView *)self _currentAttachment];
+  v8 = [(PKSelectionController *)selectionController5 _selectedExternalElementsContainsPoint:_currentAttachment inAttachment:v45 + v34 * v42 + v40 * v32, v44 + v34 * v43 + v41 * v32];
 
   return v8;
 }
 
-- (BOOL)lassoContainsPoint:(CGPoint)a3
+- (BOOL)lassoContainsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v32 = *MEMORY[0x1E69E9840];
-  v6 = [(PKAdornmentView *)self strokeSelection];
-  [v6 bounds];
+  strokeSelection = [(PKAdornmentView *)self strokeSelection];
+  [strokeSelection bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [(PKAdornmentView *)self selectionController];
-  v16 = [(PKAdornmentView *)self strokeSelection];
-  v17 = [v16 drawing];
-  [(PKSelectionController *)v15 _selectionDrawingTransformForDrawing:v17, &v29];
+  selectionController = [(PKAdornmentView *)self selectionController];
+  strokeSelection2 = [(PKAdornmentView *)self strokeSelection];
+  drawing = [strokeSelection2 drawing];
+  [(PKSelectionController *)selectionController _selectionDrawingTransformForDrawing:drawing, &v29];
   v30 = v29;
   DKD_CGAffineTransformDecompose(&v30, &v31);
   a = v31.a;
@@ -479,8 +479,8 @@ void __52__PKSelectionView_generateStrokeImageForPasteAndDND__block_invoke(uint6
 
   else
   {
-    v19 = [(PKAdornmentView *)self selectionRenderer];
-    v20 = v19 == 0;
+    selectionRenderer = [(PKAdornmentView *)self selectionRenderer];
+    v20 = selectionRenderer == 0;
 
     if (v20)
     {
@@ -489,13 +489,13 @@ void __52__PKSelectionView_generateStrokeImageForPasteAndDND__block_invoke(uint6
 
     else
     {
-      v21 = [(PKAdornmentView *)self selectionRenderer];
-      v22 = [v21 lassoPath];
-      v23 = v22;
-      v24 = [v22 CGPath];
+      selectionRenderer2 = [(PKAdornmentView *)self selectionRenderer];
+      lassoPath = [selectionRenderer2 lassoPath];
+      v23 = lassoPath;
+      cGPath = [lassoPath CGPath];
       v33.x = x;
       v33.y = y;
-      v25 = CGPathContainsPoint(v24, 0, v33, 0);
+      v25 = CGPathContainsPoint(cGPath, 0, v33, 0);
     }
   }
 
@@ -541,11 +541,11 @@ id __30__PKSelectionView_keyCommands__block_invoke(uint64_t a1, uint64_t a2, uin
 
 - (void)toggleEditMenu
 {
-  v3 = [(PKAdornmentView *)self selectionController];
-  v22 = v3;
-  if (v3)
+  selectionController = [(PKAdornmentView *)self selectionController];
+  v22 = selectionController;
+  if (selectionController)
   {
-    WeakRetained = objc_loadWeakRetained((v3 + 120));
+    WeakRetained = objc_loadWeakRetained((selectionController + 120));
   }
 
   else
@@ -553,15 +553,15 @@ id __30__PKSelectionView_keyCommands__block_invoke(uint64_t a1, uint64_t a2, uin
     WeakRetained = 0;
   }
 
-  v5 = [WeakRetained editMenuVisible];
+  editMenuVisible = [WeakRetained editMenuVisible];
 
-  v6 = [(PKAdornmentView *)self selectionController];
-  if (v5)
+  selectionController2 = [(PKAdornmentView *)self selectionController];
+  if (editMenuVisible)
   {
-    v23 = v6;
-    if (v6)
+    v23 = selectionController2;
+    if (selectionController2)
     {
-      v7 = objc_loadWeakRetained((v6 + 120));
+      v7 = objc_loadWeakRetained((selectionController2 + 120));
     }
 
     else
@@ -569,15 +569,15 @@ id __30__PKSelectionView_keyCommands__block_invoke(uint64_t a1, uint64_t a2, uin
       v7 = 0;
     }
 
-    v8 = [v7 editMenuInteraction];
-    [v8 dismissMenu];
+    editMenuInteraction = [v7 editMenuInteraction];
+    [editMenuInteraction dismissMenu];
   }
 
   else
   {
-    if (v6)
+    if (selectionController2)
     {
-      v9 = *(v6 + 112);
+      v9 = *(selectionController2 + 112);
 
       if (v9)
       {
@@ -590,16 +590,16 @@ id __30__PKSelectionView_keyCommands__block_invoke(uint64_t a1, uint64_t a2, uin
       [(PKSelectionView *)self becomeFirstResponder];
     }
 
-    v24 = [(PKAdornmentView *)self selectionRenderer];
-    [v24 editMenuLocation];
+    selectionRenderer = [(PKAdornmentView *)self selectionRenderer];
+    [selectionRenderer editMenuLocation];
     v11 = v10;
     v13 = v12;
 
-    v14 = [(PKAdornmentView *)self selectionController];
-    v25 = v14;
-    if (v14)
+    selectionController3 = [(PKAdornmentView *)self selectionController];
+    v25 = selectionController3;
+    if (selectionController3)
     {
-      v15 = objc_loadWeakRetained((v14 + 120));
+      v15 = objc_loadWeakRetained((selectionController3 + 120));
     }
 
     else
@@ -612,27 +612,27 @@ id __30__PKSelectionView_keyCommands__block_invoke(uint64_t a1, uint64_t a2, uin
     v19 = v18;
 
     v23 = [MEMORY[0x1E69DC9D8] configurationWithIdentifier:@"PKEditMenuConfigurationIdentifier" sourcePoint:{v17, v19}];
-    v20 = [(PKAdornmentView *)self selectionController];
-    v7 = v20;
-    if (v20)
+    selectionController4 = [(PKAdornmentView *)self selectionController];
+    v7 = selectionController4;
+    if (selectionController4)
     {
-      v8 = objc_loadWeakRetained((v20 + 120));
+      editMenuInteraction = objc_loadWeakRetained((selectionController4 + 120));
     }
 
     else
     {
-      v8 = 0;
+      editMenuInteraction = 0;
     }
 
-    v21 = [v8 editMenuInteraction];
-    [v21 presentEditMenuWithConfiguration:v23];
+    v8EditMenuInteraction = [editMenuInteraction editMenuInteraction];
+    [v8EditMenuInteraction presentEditMenuWithConfiguration:v23];
   }
 }
 
 - (CGRect)editMenuTargetRect
 {
-  v3 = [(PKAdornmentView *)self selectionRenderer];
-  [v3 editMenuLocation];
+  selectionRenderer = [(PKAdornmentView *)self selectionRenderer];
+  [selectionRenderer editMenuLocation];
   v5 = v4;
   v7 = v6;
 
@@ -657,135 +657,135 @@ id __30__PKSelectionView_keyCommands__block_invoke(uint64_t a1, uint64_t a2, uin
   return result;
 }
 
-- (void)cut:(id)a3
+- (void)cut:(id)cut
 {
-  v5 = a3;
-  v4 = [(PKAdornmentView *)self selectionController];
-  [(PKSelectionController *)v4 cut:v5];
+  cutCopy = cut;
+  selectionController = [(PKAdornmentView *)self selectionController];
+  [(PKSelectionController *)selectionController cut:cutCopy];
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v5 = a3;
-  v4 = [(PKAdornmentView *)self selectionController];
-  [(PKSelectionController *)v4 copy:v5];
+  copyCopy = copy;
+  selectionController = [(PKAdornmentView *)self selectionController];
+  [(PKSelectionController *)selectionController copy:copyCopy];
 }
 
-- (void)delete:(id)a3
+- (void)delete:(id)delete
 {
-  v5 = a3;
-  v4 = [(PKAdornmentView *)self selectionController];
-  [(PKSelectionController *)v4 delete:v5];
+  deleteCopy = delete;
+  selectionController = [(PKAdornmentView *)self selectionController];
+  [(PKSelectionController *)selectionController delete:deleteCopy];
 }
 
-- (void)paste:(id)a3
+- (void)paste:(id)paste
 {
-  v5 = a3;
-  v4 = [(PKAdornmentView *)self selectionController];
-  [(PKSelectionController *)v4 paste:v5];
+  pasteCopy = paste;
+  selectionController = [(PKAdornmentView *)self selectionController];
+  [(PKSelectionController *)selectionController paste:pasteCopy];
 }
 
-- (void)duplicate:(id)a3
+- (void)duplicate:(id)duplicate
 {
-  v5 = a3;
-  v4 = [(PKAdornmentView *)self selectionController];
-  [PKSelectionController duplicate:v4];
+  duplicateCopy = duplicate;
+  selectionController = [(PKAdornmentView *)self selectionController];
+  [PKSelectionController duplicate:selectionController];
 }
 
-- (void)copyTranscription:(id)a3
+- (void)copyTranscription:(id)transcription
 {
-  v5 = a3;
-  v4 = [(PKAdornmentView *)self selectionController];
-  [PKSelectionController copyTranscription:v4];
+  transcriptionCopy = transcription;
+  selectionController = [(PKAdornmentView *)self selectionController];
+  [PKSelectionController copyTranscription:selectionController];
 }
 
-- (void)createSticker:(id)a3
+- (void)createSticker:(id)sticker
 {
-  v5 = a3;
-  v4 = [(PKAdornmentView *)self selectionController];
-  [(PKSelectionController *)v4 createSticker:v5];
+  stickerCopy = sticker;
+  selectionController = [(PKAdornmentView *)self selectionController];
+  [(PKSelectionController *)selectionController createSticker:stickerCopy];
 }
 
-- (void)translate:(id)a3
+- (void)translate:(id)translate
 {
-  v5 = a3;
-  v4 = [(PKAdornmentView *)self selectionController];
-  [PKSelectionController translate:v4];
+  translateCopy = translate;
+  selectionController = [(PKAdornmentView *)self selectionController];
+  [PKSelectionController translate:selectionController];
 }
 
-- (void)straighten:(id)a3
+- (void)straighten:(id)straighten
 {
-  v5 = a3;
-  v4 = [(PKAdornmentView *)self selectionController];
-  [(PKSelectionController *)v4 straighten:v5];
+  straightenCopy = straighten;
+  selectionController = [(PKAdornmentView *)self selectionController];
+  [(PKSelectionController *)selectionController straighten:straightenCopy];
 }
 
-- (void)refine:(id)a3
+- (void)refine:(id)refine
 {
-  v5 = a3;
-  v4 = [(PKAdornmentView *)self selectionController];
-  [(PKSelectionController *)v4 refine:v5];
+  refineCopy = refine;
+  selectionController = [(PKAdornmentView *)self selectionController];
+  [(PKSelectionController *)selectionController refine:refineCopy];
 }
 
-- (void)insertSpace:(id)a3
+- (void)insertSpace:(id)space
 {
-  v5 = a3;
-  v4 = [(PKAdornmentView *)self selectionController];
-  [(PKSelectionController *)v4 insertSpace:v5];
+  spaceCopy = space;
+  selectionController = [(PKAdornmentView *)self selectionController];
+  [(PKSelectionController *)selectionController insertSpace:spaceCopy];
 }
 
-- (id)targetForAction:(SEL)a3 withSender:(id)a4
+- (id)targetForAction:(SEL)action withSender:(id)sender
 {
-  if ([(PKSelectionView *)self canPerformAction:a3 withSender:a4])
+  if ([(PKSelectionView *)self canPerformAction:action withSender:sender])
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   if ([(PKSelectionView *)self selectionType]== 6 || self->_isDragging)
   {
     v8 = 0;
   }
 
-  else if (v7 && [v7 type] == 11)
+  else if (eventCopy && [eventCopy type] == 11)
   {
     v22.receiver = self;
     v22.super_class = PKSelectionView;
-    v8 = [(PKSelectionView *)&v22 hitTest:v7 withEvent:x, y];
+    v8 = [(PKSelectionView *)&v22 hitTest:eventCopy withEvent:x, y];
   }
 
   else
   {
     v21.receiver = self;
     v21.super_class = PKSelectionView;
-    v10 = [(PKSelectionView *)&v21 hitTest:v7 withEvent:x, y];
-    v11 = [v7 touchesForView:v10];
-    v12 = [v11 anyObject];
+    v10 = [(PKSelectionView *)&v21 hitTest:eventCopy withEvent:x, y];
+    v11 = [eventCopy touchesForView:v10];
+    anyObject = [v11 anyObject];
 
-    v13 = [v12 type] == 2;
-    v14 = [(PKAdornmentView *)self selectionController];
-    v15 = [(PKSelectionController *)v14 selectionInteraction];
-    v16 = [v15 knobsContainPoint:v13 forInputType:{x, y}];
+    v13 = [anyObject type] == 2;
+    selectionController = [(PKAdornmentView *)self selectionController];
+    selectionInteraction = [(PKSelectionController *)selectionController selectionInteraction];
+    v16 = [selectionInteraction knobsContainPoint:v13 forInputType:{x, y}];
 
     if (v16)
     {
-      v17 = [(PKAdornmentView *)self selectionController];
-      v18 = v17;
-      if (v17)
+      selectionController2 = [(PKAdornmentView *)self selectionController];
+      v18 = selectionController2;
+      if (selectionController2)
       {
-        v19 = *(v17 + 160);
+        v19 = *(selectionController2 + 160);
       }
 
       else
@@ -800,32 +800,32 @@ id __30__PKSelectionView_keyCommands__block_invoke(uint64_t a1, uint64_t a2, uin
     {
       if ([(PKSelectionView *)self containsPoint:v13 forInputType:x, y])
       {
-        v20 = self;
+        selfCopy = self;
       }
 
       else
       {
-        v20 = v10;
+        selfCopy = v10;
       }
 
-      v8 = v20;
+      v8 = selfCopy;
     }
   }
 
   return v8;
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(PKAdornmentView *)self selectionController];
-  v7 = [(PKSelectionController *)v6 selectionInteraction];
-  v8 = [v7 _dragShouldBeginForSession:v5];
+  sessionCopy = session;
+  selectionController = [(PKAdornmentView *)self selectionController];
+  selectionInteraction = [(PKSelectionController *)selectionController selectionInteraction];
+  v8 = [selectionInteraction _dragShouldBeginForSession:sessionCopy];
 
   if (v8)
   {
-    [v5 locationInView:self];
+    [sessionCopy locationInView:self];
     self->_offsetInTouchView.x = v9;
     self->_offsetInTouchView.y = v10;
     [(PKSelectionView *)self frame];
@@ -833,21 +833,21 @@ id __30__PKSelectionView_keyCommands__block_invoke(uint64_t a1, uint64_t a2, uin
     self->_originalStrokeFrame.origin.y = v12;
     self->_originalStrokeFrame.size.width = v13;
     self->_originalStrokeFrame.size.height = v14;
-    v15 = [(PKAdornmentView *)self selectionController];
-    v16 = [(PKAdornmentView *)self strokeSelection];
-    v17 = [v16 externalElements];
-    v18 = [(PKSelectionView *)self _currentAttachment];
-    v19 = [(PKSelectionController *)v15 _itemProviderForExternalElements:v17 inAttachment:v18];
-    v20 = [(PKAdornmentView *)self strokeSelection];
-    [v20 setExternalElementsItemProvider:v19];
+    selectionController2 = [(PKAdornmentView *)self selectionController];
+    strokeSelection = [(PKAdornmentView *)self strokeSelection];
+    externalElements = [strokeSelection externalElements];
+    _currentAttachment = [(PKSelectionView *)self _currentAttachment];
+    v19 = [(PKSelectionController *)selectionController2 _itemProviderForExternalElements:externalElements inAttachment:_currentAttachment];
+    strokeSelection2 = [(PKAdornmentView *)self strokeSelection];
+    [strokeSelection2 setExternalElementsItemProvider:v19];
 
     v21 = objc_alloc(MEMORY[0x1E696ACA0]);
-    v22 = [(PKAdornmentView *)self strokeSelection];
-    v23 = [v21 initWithObject:v22];
+    strokeSelection3 = [(PKAdornmentView *)self strokeSelection];
+    v23 = [v21 initWithObject:strokeSelection3];
 
     v24 = [objc_alloc(MEMORY[0x1E69DC990]) initWithItemProvider:v23];
-    v25 = [(PKAdornmentView *)self strokeSelection];
-    [v5 setLocalContext:v25];
+    strokeSelection4 = [(PKAdornmentView *)self strokeSelection];
+    [sessionCopy setLocalContext:strokeSelection4];
 
     v28[0] = v24;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
@@ -861,7 +861,7 @@ id __30__PKSelectionView_keyCommands__block_invoke(uint64_t a1, uint64_t a2, uin
   return v26;
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
   v6 = objc_alloc(MEMORY[0x1E69DC9A8]);
   [(PKSelectionView *)self bounds];
@@ -876,14 +876,14 @@ id __30__PKSelectionView_keyCommands__block_invoke(uint64_t a1, uint64_t a2, uin
   v24.size.height = height;
   v12 = [v6 initWithContainer:self center:{MidX, CGRectGetMidY(v24)}];
   v13 = objc_alloc_init(MEMORY[0x1E69DC9A0]);
-  v14 = [MEMORY[0x1E69DC888] clearColor];
-  [v13 setBackgroundColor:v14];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v13 setBackgroundColor:clearColor];
 
   v15 = objc_alloc(MEMORY[0x1E69DCAE0]);
-  v16 = [(PKAdornmentView *)self strokeSelection];
-  v17 = [v16 strokeImage];
-  v18 = [v17 combinedImage];
-  v19 = [v15 initWithImage:v18];
+  strokeSelection = [(PKAdornmentView *)self strokeSelection];
+  strokeImage = [strokeSelection strokeImage];
+  combinedImage = [strokeImage combinedImage];
+  v19 = [v15 initWithImage:combinedImage];
 
   [v19 _setContinuousCornerRadius:13.0];
   v20 = [objc_alloc(MEMORY[0x1E69DD068]) initWithView:v19 parameters:v13 target:v12];
@@ -893,11 +893,11 @@ id __30__PKSelectionView_keyCommands__block_invoke(uint64_t a1, uint64_t a2, uin
 
 - (void)transformBegan
 {
-  v3 = [(PKAdornmentView *)self selectionController];
-  v4 = [(PKAdornmentView *)self strokeSelection];
-  v5 = [(PKAdornmentView *)self strokeSelection];
-  v6 = [v5 drawing];
-  self->_originalStrokeFrame.origin.x = [(PKSelectionController *)v3 calculateFrameForSelectionView:v4 inDrawing:v6];
+  selectionController = [(PKAdornmentView *)self selectionController];
+  strokeSelection = [(PKAdornmentView *)self strokeSelection];
+  strokeSelection2 = [(PKAdornmentView *)self strokeSelection];
+  drawing = [strokeSelection2 drawing];
+  self->_originalStrokeFrame.origin.x = [(PKSelectionController *)selectionController calculateFrameForSelectionView:strokeSelection inDrawing:drawing];
   self->_originalStrokeFrame.origin.y = v7;
   self->_originalStrokeFrame.size.width = v8;
   self->_originalStrokeFrame.size.height = v9;
@@ -911,23 +911,23 @@ id __30__PKSelectionView_keyCommands__block_invoke(uint64_t a1, uint64_t a2, uin
   *&self->_resizeTransform.a = v12;
   self->_currentScrollOffset = *v10;
   [(PKSelectionView *)self _dragWillBegin];
-  v13 = [(PKAdornmentView *)self selectionController];
-  [(PKSelectionController *)v13 didBeginDraggingSelection];
+  selectionController2 = [(PKAdornmentView *)self selectionController];
+  [(PKSelectionController *)selectionController2 didBeginDraggingSelection];
 
   [(PKSelectionView *)self didBeginDraggingSelection];
 }
 
-- (void)transformChanged:(CGAffineTransform *)a3
+- (void)transformChanged:(CGAffineTransform *)changed
 {
-  v5 = *&a3->c;
-  v4 = *&a3->tx;
-  *&self->_resizeTransform.a = *&a3->a;
+  v5 = *&changed->c;
+  v4 = *&changed->tx;
+  *&self->_resizeTransform.a = *&changed->a;
   *&self->_resizeTransform.c = v5;
   *&self->_resizeTransform.tx = v4;
-  v6 = *&a3->c;
-  *&v15.a = *&a3->a;
+  v6 = *&changed->c;
+  *&v15.a = *&changed->a;
   *&v15.c = v6;
-  *&v15.tx = *&a3->tx;
+  *&v15.tx = *&changed->tx;
   p_originalStrokeFrame = &self->_originalStrokeFrame;
   *&v4 = self->_originalStrokeFrame.origin.x;
   *&v6 = self->_originalStrokeFrame.origin.y;
@@ -951,25 +951,25 @@ id __30__PKSelectionView_keyCommands__block_invoke(uint64_t a1, uint64_t a2, uin
   v7 = +[PKSelectionStatisticsManager sharedStatisticsManager];
   [v7 logSelectionAction:1];
 
-  v3 = [(PKAdornmentView *)self selectionController];
-  if (v3)
+  selectionController = [(PKAdornmentView *)self selectionController];
+  if (selectionController)
   {
     v5 = *&self->_resizeTransform.c;
     v4 = *&self->_resizeTransform.tx;
-    *(v3 + 168) = *&self->_resizeTransform.a;
-    *(v3 + 184) = v5;
-    *(v3 + 200) = v4;
+    *(selectionController + 168) = *&self->_resizeTransform.a;
+    *(selectionController + 184) = v5;
+    *(selectionController + 200) = v4;
   }
 
   [(PKSelectionView *)self _cleanupDragState];
-  v8 = [(PKAdornmentView *)self selectionController];
-  [(PKSelectionController *)v8 didEndDraggingSelection];
+  selectionController2 = [(PKAdornmentView *)self selectionController];
+  [(PKSelectionController *)selectionController2 didEndDraggingSelection];
 }
 
-- (void)dragEnded:(CGPoint)a3
+- (void)dragEnded:(CGPoint)ended
 {
-  y = a3.y;
-  x = a3.x;
+  y = ended.y;
+  x = ended.x;
   v6 = +[PKStatisticsManager sharedStatisticsManager];
   [(PKStatisticsManager *)v6 recordDragSelection];
 
@@ -977,15 +977,15 @@ id __30__PKSelectionView_keyCommands__block_invoke(uint64_t a1, uint64_t a2, uin
   [v7 logSelectionAction:1];
 
   [(PKSelectionView *)self didEndGestureWithTranslation:x, y];
-  v8 = [(PKAdornmentView *)self selectionController];
-  [(PKSelectionController *)v8 didEndDraggingSelection];
+  selectionController = [(PKAdornmentView *)self selectionController];
+  [(PKSelectionController *)selectionController didEndDraggingSelection];
 }
 
 - (void)transformCancelled
 {
   [(PKSelectionView *)self _resetDragState];
-  v3 = [(PKAdornmentView *)self selectionController];
-  [(PKSelectionController *)v3 didEndDraggingSelection];
+  selectionController = [(PKAdornmentView *)self selectionController];
+  [(PKSelectionController *)selectionController didEndDraggingSelection];
 }
 
 - (void)hideStrokeImageView
@@ -993,38 +993,38 @@ id __30__PKSelectionView_keyCommands__block_invoke(uint64_t a1, uint64_t a2, uin
   v11.receiver = self;
   v11.super_class = PKSelectionView;
   [(PKAdornmentView *)&v11 hideStrokeImageView];
-  v3 = [(PKAdornmentView *)self selectionController];
-  v4 = [(PKAdornmentView *)self strokeSelection];
-  [(PKSelectionController *)v3 setImageOnSelectionViewForStrokeSelection:v4 withCompletion:0];
+  selectionController = [(PKAdornmentView *)self selectionController];
+  strokeSelection = [(PKAdornmentView *)self strokeSelection];
+  [(PKSelectionController *)selectionController setImageOnSelectionViewForStrokeSelection:strokeSelection withCompletion:0];
 
   v5 = *(MEMORY[0x1E695EFD0] + 16);
   v10[0] = *MEMORY[0x1E695EFD0];
   v10[1] = v5;
   v10[2] = *(MEMORY[0x1E695EFD0] + 32);
   [(PKSelectionView *)self setTransform:v10];
-  v6 = [(PKAdornmentView *)self selectionController];
-  v7 = [(PKAdornmentView *)self strokeSelection];
-  v8 = [(PKAdornmentView *)self strokeSelection];
-  v9 = [v8 drawing];
-  [(PKSelectionView *)self setFrame:[(PKSelectionController *)v6 calculateFrameForSelectionView:v7 inDrawing:v9]];
+  selectionController2 = [(PKAdornmentView *)self selectionController];
+  strokeSelection2 = [(PKAdornmentView *)self strokeSelection];
+  strokeSelection3 = [(PKAdornmentView *)self strokeSelection];
+  drawing = [strokeSelection3 drawing];
+  [(PKSelectionView *)self setFrame:[(PKSelectionController *)selectionController2 calculateFrameForSelectionView:strokeSelection2 inDrawing:drawing]];
 }
 
-- (void)dragSelection:(id)a3
+- (void)dragSelection:(id)selection
 {
-  v4 = a3;
-  v5 = [(PKAdornmentView *)self selectionController];
-  if (!v5 || (v6 = v5[112], v5, (v6 & 1) == 0))
+  selectionCopy = selection;
+  selectionController = [(PKAdornmentView *)self selectionController];
+  if (!selectionController || (v6 = selectionController[112], selectionController, (v6 & 1) == 0))
   {
-    v7 = [(PKAdornmentView *)self selectionController];
-    v8 = [(PKSelectionController *)v7 topView];
+    selectionController2 = [(PKAdornmentView *)self selectionController];
+    topView = [(PKSelectionController *)selectionController2 topView];
 
-    [v4 locationInView:v8];
+    [selectionCopy locationInView:topView];
     v10 = v9;
     v12 = v11;
     x = self->_initialDragPosition.x;
     y = self->_initialDragPosition.y;
-    v15 = [(PKSelectionView *)self _currentAttachment];
-    if ([v4 state] == 1)
+    _currentAttachment = [(PKSelectionView *)self _currentAttachment];
+    if ([selectionCopy state] == 1)
     {
       self->_initialDragPosition.x = v10;
       self->_initialDragPosition.y = v12;
@@ -1035,7 +1035,7 @@ id __30__PKSelectionView_keyCommands__block_invoke(uint64_t a1, uint64_t a2, uin
     {
       v16 = v10 - x;
       v17 = v12 - y;
-      if ([v4 state] == 2)
+      if ([selectionCopy state] == 2)
       {
         v18 = self->_originalStrokeFrame.origin.x;
         v19 = self->_originalStrokeFrame.origin.y;
@@ -1055,16 +1055,16 @@ id __30__PKSelectionView_keyCommands__block_invoke(uint64_t a1, uint64_t a2, uin
         v50.size.width = v21;
         v50.size.height = height;
         [(PKSelectionView *)self setCenter:MidX, CGRectGetMidY(v50)];
-        v26 = [(PKAdornmentView *)self selectionController];
-        v27 = [(PKSelectionController *)v26 autoscrollForPointIfNecessary:v10, v12];
+        selectionController3 = [(PKAdornmentView *)self selectionController];
+        v27 = [(PKSelectionController *)selectionController3 autoscrollForPointIfNecessary:v10, v12];
         v29 = v28;
 
         v30 = v29 + self->_currentScrollOffset.y;
         self->_currentScrollOffset.x = v27 + self->_currentScrollOffset.x;
         self->_currentScrollOffset.y = v30;
-        if (v15)
+        if (_currentAttachment)
         {
-          [v15 drawingTransform];
+          [_currentAttachment drawingTransform];
         }
 
         else
@@ -1079,35 +1079,35 @@ id __30__PKSelectionView_keyCommands__block_invoke(uint64_t a1, uint64_t a2, uin
         d = v48.d;
         tx = v48.tx;
         ty = v48.ty;
-        v42 = [(PKAdornmentView *)self selectionController];
-        v43 = [(PKAdornmentView *)self strokeSelection];
-        v44 = [v43 externalElements];
+        selectionController4 = [(PKAdornmentView *)self selectionController];
+        strokeSelection = [(PKAdornmentView *)self strokeSelection];
+        externalElements = [strokeSelection externalElements];
         v45 = *(MEMORY[0x1E695EFD0] + 16);
         *&v47.a = *MEMORY[0x1E695EFD0];
         *&v47.c = v45;
         *&v47.tx = *(MEMORY[0x1E695EFD0] + 32);
         CGAffineTransformTranslate(&v48, &v47, tx + (v46 - v30) * c + a * v16, ty + (v46 - v30) * d + b * v16);
-        [(PKSelectionController *)v42 _didDragExternalElements:v44 withTransform:&v48 inAttachment:v15];
+        [(PKSelectionController *)selectionController4 _didDragExternalElements:externalElements withTransform:&v48 inAttachment:_currentAttachment];
       }
 
-      else if ([v4 state] == 3)
+      else if ([selectionCopy state] == 3)
       {
         [(PKSelectionView *)self dragEnded:v16, v12 - y];
         if (v16 == *MEMORY[0x1E695EFF8] && v17 == *(MEMORY[0x1E695EFF8] + 8))
         {
-          v32 = [(PKAdornmentView *)self selectionController];
-          v33 = v32;
-          v34 = v32 ? objc_loadWeakRetained((v32 + 120)) : 0;
-          v35 = [v34 editMenuVisible];
+          selectionController5 = [(PKAdornmentView *)self selectionController];
+          v33 = selectionController5;
+          v34 = selectionController5 ? objc_loadWeakRetained((selectionController5 + 120)) : 0;
+          editMenuVisible = [v34 editMenuVisible];
 
-          if ((v35 & 1) == 0)
+          if ((editMenuVisible & 1) == 0)
           {
             [(PKSelectionView *)self toggleEditMenu];
           }
         }
       }
 
-      else if ([v4 state] == 4 || objc_msgSend(v4, "state") == 5)
+      else if ([selectionCopy state] == 4 || objc_msgSend(selectionCopy, "state") == 5)
       {
         [(PKSelectionView *)self transformCancelled];
       }
@@ -1115,7 +1115,7 @@ id __30__PKSelectionView_keyCommands__block_invoke(uint64_t a1, uint64_t a2, uin
   }
 }
 
-- (void)performDidEndGestureWithTranslation:(CGPoint)a3
+- (void)performDidEndGestureWithTranslation:(CGPoint)translation
 {
   v77[5] = *MEMORY[0x1E69E9840];
   y = self->_originalStrokeFrame.origin.y;
@@ -1214,9 +1214,9 @@ id __30__PKSelectionView_keyCommands__block_invoke(uint64_t a1, uint64_t a2, uin
         }
 
         v44 = *(*(&v66 + 1) + 8 * i);
-        v45 = [(PKAdornmentView *)self selectionController];
+        selectionController = [(PKAdornmentView *)self selectionController];
         [v44 CGPointValue];
-        LOBYTE(v44) = [(PKSelectionController *)v45 _isValidDropPointForStrokes:v46 didInsertNewAttachment:v47];
+        LOBYTE(v44) = [(PKSelectionController *)selectionController _isValidDropPointForStrokes:v46 didInsertNewAttachment:v47];
 
         if (v44)
         {
@@ -1238,8 +1238,8 @@ id __30__PKSelectionView_keyCommands__block_invoke(uint64_t a1, uint64_t a2, uin
   v48 = 0;
 LABEL_11:
 
-  v49 = [(PKSelectionView *)self _currentAttachment];
-  if (v48 && (-[PKAdornmentView selectionController](self, "selectionController"), v50 = objc_claimAutoreleasedReturnValue(), -[PKAdornmentView strokeSelection](self, "strokeSelection"), v51 = objc_claimAutoreleasedReturnValue(), [v51 externalElements], v52 = objc_claimAutoreleasedReturnValue(), v53 = tx + (a3.y + y) * c + a * (a3.x + x), v54 = -[PKSelectionController _externalElements:locationOutOfBounds:inAttachment:](v50, v52, v49, v53, ty + (a3.y + y) * d + b * (a3.x + x)), v52, v51, v50, (v54 & 1) == 0))
+  _currentAttachment = [(PKSelectionView *)self _currentAttachment];
+  if (v48 && (-[PKAdornmentView selectionController](self, "selectionController"), v50 = objc_claimAutoreleasedReturnValue(), -[PKAdornmentView strokeSelection](self, "strokeSelection"), v51 = objc_claimAutoreleasedReturnValue(), [v51 externalElements], v52 = objc_claimAutoreleasedReturnValue(), v53 = tx + (translation.y + y) * c + a * (translation.x + x), v54 = -[PKSelectionController _externalElements:locationOutOfBounds:inAttachment:](v50, v52, _currentAttachment, v53, ty + (translation.y + y) * d + b * (translation.x + x)), v52, v51, v50, (v54 & 1) == 0))
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -1247,7 +1247,7 @@ LABEL_11:
     block[3] = &unk_1E82D6610;
     block[4] = self;
     *&block[5] = v53;
-    *&block[6] = ty + (a3.y + y) * d + b * (a3.x + x);
+    *&block[6] = ty + (translation.y + y) * d + b * (translation.x + x);
     v55 = dispatch_block_create(0, block);
     finishDragToAttachmentBlock = self->_finishDragToAttachmentBlock;
     self->_finishDragToAttachmentBlock = v55;
@@ -1309,13 +1309,13 @@ uint64_t __55__PKSelectionView_performDidEndGestureWithTranslation___block_invok
   return result;
 }
 
-- (void)didEndGestureWithTranslation:(CGPoint)a3
+- (void)didEndGestureWithTranslation:(CGPoint)translation
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(PKAdornmentView *)self selectionRenderer];
+  y = translation.y;
+  x = translation.x;
+  selectionRenderer = [(PKAdornmentView *)self selectionRenderer];
 
-  if (v6)
+  if (selectionRenderer)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -1369,47 +1369,47 @@ void __48__PKSelectionView_didEndGestureWithTranslation___block_invoke(uint64_t 
   v12 = *v3;
   v13 = v5;
   v14 = v3[2];
-  v6 = [(PKAdornmentView *)self selectionController];
-  if (v6)
+  selectionController = [(PKAdornmentView *)self selectionController];
+  if (selectionController)
   {
     v7 = v13;
-    *(v6 + 168) = v12;
-    *(v6 + 184) = v7;
-    *(v6 + 200) = v14;
+    *(selectionController + 168) = v12;
+    *(selectionController + 184) = v7;
+    *(selectionController + 200) = v14;
   }
 
-  v8 = [(PKAdornmentView *)self selectionController];
-  v9 = [(PKAdornmentView *)self strokeSelection];
-  v10 = [v9 externalElements];
-  v11 = [(PKSelectionView *)self _currentAttachment];
-  [(PKSelectionController *)v8 _resetExternalElements:v10 inAttachment:v11];
+  selectionController2 = [(PKAdornmentView *)self selectionController];
+  strokeSelection = [(PKAdornmentView *)self strokeSelection];
+  externalElements = [strokeSelection externalElements];
+  _currentAttachment = [(PKSelectionView *)self _currentAttachment];
+  [(PKSelectionController *)selectionController2 _resetExternalElements:externalElements inAttachment:_currentAttachment];
 
   [(PKSelectionView *)self _cleanupDragState];
 }
 
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin
 {
-  [(PKSelectionView *)self setAlpha:a3, a4, 0.3];
+  [(PKSelectionView *)self setAlpha:interaction, begin, 0.3];
   v5 = +[PKStatisticsManager sharedStatisticsManager];
   [(PKStatisticsManager *)v5 recordDragAndDropSelection];
 
   [(PKSelectionView *)self _resetDragState];
-  v6 = [(PKAdornmentView *)self selectionController];
-  v7 = [(PKAdornmentView *)self strokeSelection];
-  v8 = [v7 externalElements];
-  v9 = [(PKSelectionView *)self _currentAttachment];
-  [(PKSelectionController *)v6 _dragInteractionWillBeginForExternalElements:v8 inAttachment:v9];
+  selectionController = [(PKAdornmentView *)self selectionController];
+  strokeSelection = [(PKAdornmentView *)self strokeSelection];
+  externalElements = [strokeSelection externalElements];
+  _currentAttachment = [(PKSelectionView *)self _currentAttachment];
+  [(PKSelectionController *)selectionController _dragInteractionWillBeginForExternalElements:externalElements inAttachment:_currentAttachment];
 
   [(PKSelectionView *)self _dragWillBegin];
 }
 
 - (void)_dragWillBegin
 {
-  v3 = [(PKAdornmentView *)self selectionController];
-  v4 = v3;
-  if (v3)
+  selectionController = [(PKAdornmentView *)self selectionController];
+  v4 = selectionController;
+  if (selectionController)
   {
-    WeakRetained = objc_loadWeakRetained((v3 + 120));
+    WeakRetained = objc_loadWeakRetained((selectionController + 120));
   }
 
   else
@@ -1417,24 +1417,24 @@ void __48__PKSelectionView_didEndGestureWithTranslation___block_invoke(uint64_t 
     WeakRetained = 0;
   }
 
-  v6 = [WeakRetained editMenuVisible];
+  editMenuVisible = [WeakRetained editMenuVisible];
 
-  if (v6)
+  if (editMenuVisible)
   {
     [(PKSelectionView *)self toggleEditMenu];
   }
 
   [(PKAdornmentView *)self _liftStrokesOutOfTiledView];
-  v7 = [(PKAdornmentView *)self selectionRenderer];
-  [v7 _didBeginDraggingSelection];
+  selectionRenderer = [(PKAdornmentView *)self selectionRenderer];
+  [selectionRenderer _didBeginDraggingSelection];
 
   self->_isDragging = 1;
 }
 
-- (void)makeViewAliveAtLocation:(CGPoint)a3
+- (void)makeViewAliveAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   [(PKSelectionView *)self frame];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -1468,12 +1468,12 @@ uint64_t __43__PKSelectionView_makeViewAliveAtLocation___block_invoke(uint64_t a
   [MEMORY[0x1E69DD250] _animateUsingDefaultTimingWithOptions:4 animations:v2 completion:0];
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 willEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation
 {
-  v8 = a3;
-  v9 = a4;
+  interactionCopy = interaction;
+  sessionCopy = session;
   self->_isDragging = 0;
-  if ((a5 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+  if ((operation & 0xFFFFFFFFFFFFFFFDLL) != 0)
   {
     v14[4] = self;
     v15[0] = MEMORY[0x1E69E9820];
@@ -1503,11 +1503,11 @@ uint64_t __43__PKSelectionView_makeViewAliveAtLocation___block_invoke(uint64_t a
     [MEMORY[0x1E69DD250] _animateUsingDefaultTimingWithOptions:4 animations:v17 completion:v16];
   }
 
-  v10 = [(PKAdornmentView *)self selectionController];
-  v11 = [(PKAdornmentView *)self strokeSelection];
-  v12 = [v11 externalElements];
-  v13 = [(PKSelectionView *)self _currentAttachment];
-  [(PKSelectionController *)v10 _dragInteractionWillEndForExternalElements:v12 withOperation:a5 inAttachment:v13];
+  selectionController = [(PKAdornmentView *)self selectionController];
+  strokeSelection = [(PKAdornmentView *)self strokeSelection];
+  externalElements = [strokeSelection externalElements];
+  _currentAttachment = [(PKSelectionView *)self _currentAttachment];
+  [(PKSelectionController *)selectionController _dragInteractionWillEndForExternalElements:externalElements withOperation:operation inAttachment:_currentAttachment];
 }
 
 void __64__PKSelectionView_dragInteraction_session_willEndWithOperation___block_invoke(uint64_t a1)
@@ -1525,10 +1525,10 @@ void __64__PKSelectionView_dragInteraction_session_willEndWithOperation___block_
   [v2 _didEndDraggingSelection];
 }
 
-- (void)updateLocationForDrop:(CGPoint)a3
+- (void)updateLocationForDrop:(CGPoint)drop
 {
-  y = a3.y;
-  x = a3.x;
+  y = drop.y;
+  x = drop.x;
   [(PKSelectionView *)self frame];
   v6 = x - self->_offsetInTouchView.x;
   v7 = y - self->_offsetInTouchView.y;
@@ -1538,11 +1538,11 @@ void __64__PKSelectionView_dragInteraction_session_willEndWithOperation___block_
 
 - (void)didBeginDraggingSelection
 {
-  v2 = [(PKAdornmentView *)self selectionController];
-  v3 = v2;
-  if (v2)
+  selectionController = [(PKAdornmentView *)self selectionController];
+  v3 = selectionController;
+  if (selectionController)
   {
-    WeakRetained = objc_loadWeakRetained((v2 + 120));
+    WeakRetained = objc_loadWeakRetained((selectionController + 120));
   }
 
   else
@@ -1550,37 +1550,37 @@ void __64__PKSelectionView_dragInteraction_session_willEndWithOperation___block_
     WeakRetained = 0;
   }
 
-  v9 = [WeakRetained scrollView];
+  scrollView = [WeakRetained scrollView];
 
-  v5 = [v9 panGestureRecognizer];
-  v6 = [v5 state];
+  panGestureRecognizer = [scrollView panGestureRecognizer];
+  state = [panGestureRecognizer state];
 
-  if (v6 != 2)
+  if (state != 2)
   {
-    v7 = [v9 panGestureRecognizer];
-    [v7 setEnabled:0];
+    panGestureRecognizer2 = [scrollView panGestureRecognizer];
+    [panGestureRecognizer2 setEnabled:0];
 
-    v8 = [v9 panGestureRecognizer];
-    [v8 setEnabled:1];
+    panGestureRecognizer3 = [scrollView panGestureRecognizer];
+    [panGestureRecognizer3 setEnabled:1];
   }
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = a3;
-  v6 = [(PKAdornmentView *)self strokeSelection];
-  v7 = [v6 externalElements];
+  interactionCopy = interaction;
+  strokeSelection = [(PKAdornmentView *)self strokeSelection];
+  externalElements = [strokeSelection externalElements];
 
-  if (v7)
+  if (externalElements)
   {
     if ([(PKSelectionView *)self _exactlyOneExternalElementSelected])
     {
-      v8 = [(PKAdornmentView *)self selectionController];
-      v9 = [(PKAdornmentView *)self strokeSelection];
-      v10 = [v9 externalElements];
-      v11 = [v10 firstObject];
-      v12 = [(PKSelectionView *)self _currentAttachment];
-      v13 = [(PKSelectionController *)v8 _contextMenuInteraction:v5 configurationForExternalElement:v11 inAttachment:v12];
+      selectionController = [(PKAdornmentView *)self selectionController];
+      strokeSelection2 = [(PKAdornmentView *)self strokeSelection];
+      externalElements2 = [strokeSelection2 externalElements];
+      firstObject = [externalElements2 firstObject];
+      _currentAttachment = [(PKSelectionView *)self _currentAttachment];
+      v13 = [(PKSelectionController *)selectionController _contextMenuInteraction:interactionCopy configurationForExternalElement:firstObject inAttachment:_currentAttachment];
     }
 
     else
@@ -1708,18 +1708,18 @@ id __73__PKSelectionView_contextMenuInteraction_configurationForMenuAtLocation__
   return v3;
 }
 
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
   if ([(PKSelectionView *)self _exactlyOneExternalElementSelected])
   {
-    v8 = [(PKAdornmentView *)self selectionController];
-    v9 = [(PKAdornmentView *)self strokeSelection];
-    v10 = [v9 externalElements];
-    v11 = [v10 firstObject];
-    v12 = [(PKSelectionView *)self _currentAttachment];
-    v13 = [(PKSelectionController *)v8 _contextMenuInteraction:v6 previewForHighlightingMenuWithConfiguration:v7 forExternalElement:v11 inAttachment:v12];
+    selectionController = [(PKAdornmentView *)self selectionController];
+    strokeSelection = [(PKAdornmentView *)self strokeSelection];
+    externalElements = [strokeSelection externalElements];
+    firstObject = [externalElements firstObject];
+    _currentAttachment = [(PKSelectionView *)self _currentAttachment];
+    v13 = [(PKSelectionController *)selectionController _contextMenuInteraction:interactionCopy previewForHighlightingMenuWithConfiguration:configurationCopy forExternalElement:firstObject inAttachment:_currentAttachment];
   }
 
   else
@@ -1735,68 +1735,68 @@ id __73__PKSelectionView_contextMenuInteraction_configurationForMenuAtLocation__
     v27.origin.y = y;
     v27.size.width = width;
     v27.size.height = height;
-    v8 = [v14 initWithContainer:self center:{MidX, CGRectGetMidY(v27)}];
-    v9 = objc_alloc_init(MEMORY[0x1E69DCE28]);
+    selectionController = [v14 initWithContainer:self center:{MidX, CGRectGetMidY(v27)}];
+    strokeSelection = objc_alloc_init(MEMORY[0x1E69DCE28]);
     v20 = objc_alloc(MEMORY[0x1E69DCAE0]);
-    v21 = [(PKAdornmentView *)self strokeSelection];
-    v22 = [v21 strokeImage];
-    v23 = [v22 combinedImage];
-    v10 = [v20 initWithImage:v23];
+    strokeSelection2 = [(PKAdornmentView *)self strokeSelection];
+    strokeImage = [strokeSelection2 strokeImage];
+    combinedImage = [strokeImage combinedImage];
+    externalElements = [v20 initWithImage:combinedImage];
 
-    [v10 _setContinuousCornerRadius:13.0];
-    v13 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:v10 parameters:v9 target:v8];
+    [externalElements _setContinuousCornerRadius:13.0];
+    v13 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:externalElements parameters:strokeSelection target:selectionController];
   }
 
   return v13;
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  animatorCopy = animator;
   if ([(PKSelectionView *)self _exactlyOneExternalElementSelected])
   {
-    v10 = [(PKAdornmentView *)self selectionController];
-    v11 = [(PKAdornmentView *)self strokeSelection];
-    v12 = [v11 externalElements];
-    v13 = [v12 firstObject];
-    v14 = [(PKSelectionView *)self _currentAttachment];
-    [(PKSelectionController *)v10 _contextMenuInteraction:v15 willDisplayMenuForConfiguration:v8 animator:v9 forExternalElement:v13 inAttachment:v14];
+    selectionController = [(PKAdornmentView *)self selectionController];
+    strokeSelection = [(PKAdornmentView *)self strokeSelection];
+    externalElements = [strokeSelection externalElements];
+    firstObject = [externalElements firstObject];
+    _currentAttachment = [(PKSelectionView *)self _currentAttachment];
+    [(PKSelectionController *)selectionController _contextMenuInteraction:interactionCopy willDisplayMenuForConfiguration:configurationCopy animator:animatorCopy forExternalElement:firstObject inAttachment:_currentAttachment];
   }
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  animatorCopy = animator;
   self->_displayingContextMenu = 0;
   if ([(PKSelectionView *)self _exactlyOneExternalElementSelected])
   {
-    v10 = [(PKAdornmentView *)self selectionController];
-    v11 = [(PKAdornmentView *)self strokeSelection];
-    v12 = [v11 externalElements];
-    v13 = [v12 firstObject];
-    v14 = [(PKSelectionView *)self _currentAttachment];
-    [(PKSelectionController *)v10 _contextMenuInteraction:v15 willEndForConfiguration:v8 animator:v9 forExternalElement:v13 inAttachment:v14];
+    selectionController = [(PKAdornmentView *)self selectionController];
+    strokeSelection = [(PKAdornmentView *)self strokeSelection];
+    externalElements = [strokeSelection externalElements];
+    firstObject = [externalElements firstObject];
+    _currentAttachment = [(PKSelectionView *)self _currentAttachment];
+    [(PKSelectionController *)selectionController _contextMenuInteraction:interactionCopy willEndForConfiguration:configurationCopy animator:animatorCopy forExternalElement:firstObject inAttachment:_currentAttachment];
   }
 }
 
 - (BOOL)_exactlyOneExternalElementSelected
 {
-  v3 = [(PKAdornmentView *)self strokeSelection];
-  v4 = [v3 strokes];
-  if ([v4 count])
+  strokeSelection = [(PKAdornmentView *)self strokeSelection];
+  strokes = [strokeSelection strokes];
+  if ([strokes count])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(PKAdornmentView *)self strokeSelection];
-    v7 = [v6 externalElements];
-    v5 = [v7 count] == 1;
+    strokeSelection2 = [(PKAdornmentView *)self strokeSelection];
+    externalElements = [strokeSelection2 externalElements];
+    v5 = [externalElements count] == 1;
   }
 
   return v5;
@@ -1805,11 +1805,11 @@ id __73__PKSelectionView_contextMenuInteraction_configurationForMenuAtLocation__
 - (void)didDoubleTap
 {
   doubleTapGR = self->_doubleTapGR;
-  v4 = [(PKAdornmentView *)self selectionController];
-  v5 = v4;
-  if (v4)
+  selectionController = [(PKAdornmentView *)self selectionController];
+  v5 = selectionController;
+  if (selectionController)
   {
-    WeakRetained = objc_loadWeakRetained((v4 + 120));
+    WeakRetained = objc_loadWeakRetained((selectionController + 120));
   }
 
   else
@@ -1824,23 +1824,23 @@ id __73__PKSelectionView_contextMenuInteraction_configurationForMenuAtLocation__
   [(PKSelectionView *)self _handleDoubleTapInputAtPoint:v8, v10];
 }
 
-- (void)_handleDoubleTapInputAtPoint:(CGPoint)a3
+- (void)_handleDoubleTapInputAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(UITapGestureRecognizer *)self->_doubleTapGR touches];
-  v7 = [v6 firstObject];
-  v8 = [v7 type];
+  y = point.y;
+  x = point.x;
+  touches = [(UITapGestureRecognizer *)self->_doubleTapGR touches];
+  firstObject = [touches firstObject];
+  type = [firstObject type];
 
-  v9 = v8 == 2;
-  v10 = [(PKAdornmentView *)self selectionController];
-  v11 = [(PKSelectionController *)v10 _drawingForSelectionRect:y, 5.0, 5.0];
+  v9 = type == 2;
+  selectionController = [(PKAdornmentView *)self selectionController];
+  v11 = [(PKSelectionController *)selectionController _drawingForSelectionRect:y, 5.0, 5.0];
 
-  v12 = [(PKAdornmentView *)self selectionController];
-  v13 = v12;
-  if (v12)
+  selectionController2 = [(PKAdornmentView *)self selectionController];
+  v13 = selectionController2;
+  if (selectionController2)
   {
-    WeakRetained = objc_loadWeakRetained((v12 + 120));
+    WeakRetained = objc_loadWeakRetained((selectionController2 + 120));
   }
 
   else
@@ -1855,10 +1855,10 @@ id __73__PKSelectionView_contextMenuInteraction_configurationForMenuAtLocation__
   selectionType = self->_selectionType;
   if (selectionType != 5)
   {
-    v20 = [(PKAdornmentView *)self selectionController];
-    v21 = [(PKAdornmentView *)self strokeSelection];
-    v22 = [v21 strokes];
-    v23 = [v22 array];
+    selectionController3 = [(PKAdornmentView *)self selectionController];
+    strokeSelection = [(PKAdornmentView *)self strokeSelection];
+    strokes = [strokeSelection strokes];
+    array = [strokes array];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __48__PKSelectionView__handleDoubleTapInputAtPoint___block_invoke;
@@ -1866,7 +1866,7 @@ id __73__PKSelectionView_contextMenuInteraction_configurationForMenuAtLocation__
     v26 = selectionType + 1;
     v24[4] = self;
     v25 = v11;
-    [(PKSelectionController *)v20 fetchStrokesToSelectAtPoint:v25 inDrawing:v26 withSelectionType:v9 inputType:v23 existingSelection:v24 completion:v16, v18];
+    [(PKSelectionController *)selectionController3 fetchStrokesToSelectAtPoint:v25 inDrawing:v26 withSelectionType:v9 inputType:array existingSelection:v24 completion:v16, v18];
   }
 }
 
@@ -1883,11 +1883,11 @@ void __48__PKSelectionView__handleDoubleTapInputAtPoint___block_invoke(uint64_t 
 
 - (id)_currentAttachment
 {
-  v3 = [(PKAdornmentView *)self selectionController];
-  v4 = v3;
-  if (v3)
+  selectionController = [(PKAdornmentView *)self selectionController];
+  v4 = selectionController;
+  if (selectionController)
   {
-    WeakRetained = objc_loadWeakRetained((v3 + 120));
+    WeakRetained = objc_loadWeakRetained((selectionController + 120));
   }
 
   else
@@ -1895,26 +1895,26 @@ void __48__PKSelectionView__handleDoubleTapInputAtPoint___block_invoke(uint64_t 
     WeakRetained = 0;
   }
 
-  v6 = [(PKAdornmentView *)self strokeSelection];
-  v7 = [v6 drawing];
-  v8 = [v7 uuid];
-  v9 = [WeakRetained attachmentForUUID:v8];
+  strokeSelection = [(PKAdornmentView *)self strokeSelection];
+  drawing = [strokeSelection drawing];
+  uuid = [drawing uuid];
+  v9 = [WeakRetained attachmentForUUID:uuid];
 
   return v9;
 }
 
-- (void)_findTranscriptionWithCompletion:(id)a3
+- (void)_findTranscriptionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKAdornmentView *)self selectionController];
+  completionCopy = completion;
+  selectionController = [(PKAdornmentView *)self selectionController];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__PKSelectionView__findTranscriptionWithCompletion___block_invoke;
   v7[3] = &unk_1E82D65E8;
   v7[4] = self;
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
-  [(PKSelectionController *)v5 findTranscriptionWithCompletion:v7];
+  [(PKSelectionController *)selectionController findTranscriptionWithCompletion:v7];
 }
 
 void __52__PKSelectionView__findTranscriptionWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -1930,29 +1930,29 @@ void __52__PKSelectionView__findTranscriptionWithCompletion___block_invoke(uint6
 
 - (id)_accessibilityUserTestingChildren
 {
-  v3 = [(PKAdornmentView *)self selectionRenderer];
+  selectionRenderer = [(PKAdornmentView *)self selectionRenderer];
 
-  if (v3)
+  if (selectionRenderer)
   {
     v4 = MEMORY[0x1E695DF70];
     v11.receiver = self;
     v11.super_class = PKSelectionView;
-    v5 = [(PKSelectionView *)&v11 _accessibilityUserTestingChildren];
-    v6 = [v4 arrayWithArray:v5];
+    _accessibilityUserTestingChildren = [(PKSelectionView *)&v11 _accessibilityUserTestingChildren];
+    _accessibilityUserTestingChildren3 = [v4 arrayWithArray:_accessibilityUserTestingChildren];
 
-    v7 = [(PKAdornmentView *)self selectionRenderer];
-    v8 = [v7 _accessibilityUserTestingChildren];
-    [v6 addObjectsFromArray:v8];
+    selectionRenderer2 = [(PKAdornmentView *)self selectionRenderer];
+    _accessibilityUserTestingChildren2 = [selectionRenderer2 _accessibilityUserTestingChildren];
+    [_accessibilityUserTestingChildren3 addObjectsFromArray:_accessibilityUserTestingChildren2];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = PKSelectionView;
-    v6 = [(PKSelectionView *)&v10 _accessibilityUserTestingChildren];
+    _accessibilityUserTestingChildren3 = [(PKSelectionView *)&v10 _accessibilityUserTestingChildren];
   }
 
-  return v6;
+  return _accessibilityUserTestingChildren3;
 }
 
 - (CGPoint)offsetInTouchView
@@ -1973,11 +1973,11 @@ void __52__PKSelectionView__findTranscriptionWithCompletion___block_invoke(uint6
   return self;
 }
 
-- (void)setSelectionDrawingTransform:(CGAffineTransform *)a3
+- (void)setSelectionDrawingTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_selectionDrawingTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_selectionDrawingTransform.a = *&transform->a;
   *&self->_selectionDrawingTransform.c = v4;
   *&self->_selectionDrawingTransform.tx = v3;
 }
@@ -1991,11 +1991,11 @@ void __52__PKSelectionView__findTranscriptionWithCompletion___block_invoke(uint6
   return self;
 }
 
-- (void)setSelectionDrawingStrokeTransform:(CGAffineTransform *)a3
+- (void)setSelectionDrawingStrokeTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_selectionDrawingStrokeTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_selectionDrawingStrokeTransform.a = *&transform->a;
   *&self->_selectionDrawingStrokeTransform.c = v4;
   *&self->_selectionDrawingStrokeTransform.tx = v3;
 }
@@ -2009,40 +2009,40 @@ void __52__PKSelectionView__findTranscriptionWithCompletion___block_invoke(uint6
   return self;
 }
 
-- (void)setUserTransform:(CGAffineTransform *)a3
+- (void)setUserTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_userTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_userTransform.a = *&transform->a;
   *&self->_userTransform.c = v4;
   *&self->_userTransform.tx = v3;
 }
 
 - (BOOL)supportsSnapToShape
 {
-  v2 = [(PKSelectionView *)self shapeSupportCache];
-  v3 = v2;
-  if (v2)
+  shapeSupportCache = [(PKSelectionView *)self shapeSupportCache];
+  v3 = shapeSupportCache;
+  if (shapeSupportCache)
   {
-    v2 = v2[1];
+    shapeSupportCache = shapeSupportCache[1];
   }
 
-  v4 = [v2 count] != 0;
+  v4 = [shapeSupportCache count] != 0;
 
   return v4;
 }
 
 - (id)shapeMenuActions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(PKSelectionView *)self shapeSupportCache];
-  v5 = v4;
-  if (v4)
+  array = [MEMORY[0x1E695DF70] array];
+  shapeSupportCache = [(PKSelectionView *)self shapeSupportCache];
+  v5 = shapeSupportCache;
+  if (shapeSupportCache)
   {
-    v4 = v4[1];
+    shapeSupportCache = shapeSupportCache[1];
   }
 
-  if ([v4 count])
+  if ([shapeSupportCache count])
   {
     if (v5)
     {
@@ -2064,20 +2064,20 @@ void __52__PKSelectionView__findTranscriptionWithCompletion___block_invoke(uint6
     v12[4] = self;
     v10 = [v8 actionWithTitle:v7 image:v9 identifier:0 handler:v12];
 
-    [v3 addObject:v10];
+    [array addObject:v10];
   }
 
-  return v3;
+  return array;
 }
 
 - (id)shapeSupportCache
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = [(PKAdornmentView *)self selectionController];
-  v4 = v3;
-  if (v3)
+  selectionController = [(PKAdornmentView *)self selectionController];
+  v4 = selectionController;
+  if (selectionController)
   {
-    WeakRetained = objc_loadWeakRetained((v3 + 120));
+    WeakRetained = objc_loadWeakRetained((selectionController + 120));
   }
 
   else
@@ -2091,10 +2091,10 @@ void __52__PKSelectionView__findTranscriptionWithCompletion___block_invoke(uint6
     goto LABEL_37;
   }
 
-  v6 = [(PKAdornmentView *)self strokeSelection];
-  v7 = [v6 strokes];
+  strokeSelection = [(PKAdornmentView *)self strokeSelection];
+  strokes = [strokeSelection strokes];
 
-  if ([v7 count] && objc_msgSend(v7, "count") <= 8)
+  if ([strokes count] && objc_msgSend(strokes, "count") <= 8)
   {
     v8 = objc_getAssociatedObject(self, shapeSupportCache_kAssociatedObjectKey);
     if (v8)
@@ -2106,7 +2106,7 @@ void __52__PKSelectionView__findTranscriptionWithCompletion___block_invoke(uint6
     [WeakRetained inputScale];
     v10 = v9;
     value = objc_alloc_init(PKSelectionViewShapeSupportCache);
-    v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+    v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(strokes, "count")}];
     v12 = objc_alloc_init(PKShapeDrawingController);
     v13 = v12;
     if (v12)
@@ -2118,8 +2118,8 @@ void __52__PKSelectionView__findTranscriptionWithCompletion___block_invoke(uint6
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v29 = v7;
-    v14 = v7;
+    v29 = strokes;
+    v14 = strokes;
     v15 = [v14 countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (!v15)
     {
@@ -2135,19 +2135,19 @@ LABEL_24:
           objc_storeStrong(&value->_shapes, v23);
         }
 
-        v24 = [v14 array];
+        array = [v14 array];
         if (value)
         {
-          objc_storeStrong(&value->_originalStrokes, v24);
+          objc_storeStrong(&value->_originalStrokes, array);
         }
 
         if ([v11 count] == 1)
         {
-          v25 = [v11 firstObject];
-          v26 = [v25 type];
+          firstObject = [v11 firstObject];
+          type = [firstObject type];
           if (value)
           {
-            value->_shapeType = v26;
+            value->_shapeType = type;
           }
         }
 
@@ -2159,7 +2159,7 @@ LABEL_24:
 
       objc_setAssociatedObject(object, shapeSupportCache_kAssociatedObjectKey, value, 0x301);
 
-      v7 = v29;
+      strokes = v29;
       goto LABEL_36;
     }
 
@@ -2180,15 +2180,15 @@ LABEL_13:
         goto LABEL_22;
       }
 
-      v20 = [v19 _strokeData];
-      if (![v20 hasValidPointTimestampData])
+      _strokeData = [v19 _strokeData];
+      if (![_strokeData hasValidPointTimestampData])
       {
         goto LABEL_21;
       }
 
-      v21 = [v19 _strokeMask];
+      _strokeMask = [v19 _strokeMask];
 
-      if (!v21)
+      if (!_strokeMask)
       {
         break;
       }
@@ -2208,10 +2208,10 @@ LABEL_22:
 
     v32 = 0;
     memset(v31, 0, sizeof(v31));
-    v20 = [(PKShapeDrawingController *)v13 shapeFromStroke:v19 inputScale:v31 averageInputPoint:0 allowedShapeTypes:v10];
-    if (v20)
+    _strokeData = [(PKShapeDrawingController *)v13 shapeFromStroke:v19 inputScale:v31 averageInputPoint:0 allowedShapeTypes:v10];
+    if (_strokeData)
     {
-      [v11 addObject:v20];
+      [v11 addObject:_strokeData];
     }
 
 LABEL_21:
@@ -2227,21 +2227,21 @@ LABEL_37:
   return v8;
 }
 
-- (BOOL)canConvertToShapeWithAction:(SEL)a3 withSender:(id)a4 handled:(BOOL *)a5
+- (BOOL)canConvertToShapeWithAction:(SEL)action withSender:(id)sender handled:(BOOL *)handled
 {
-  v8 = a4;
-  if (sel_convertToShapes_ == a3)
+  senderCopy = sender;
+  if (sel_convertToShapes_ == action)
   {
-    v11 = [(PKSelectionView *)self shapeSupportCache];
-    v12 = v11;
-    if (v11)
+    shapeSupportCache = [(PKSelectionView *)self shapeSupportCache];
+    v12 = shapeSupportCache;
+    if (shapeSupportCache)
     {
-      v11 = v11[1];
+      shapeSupportCache = shapeSupportCache[1];
     }
 
-    v9 = [v11 count] != 0;
+    v9 = [shapeSupportCache count] != 0;
 
-    if (a5)
+    if (handled)
     {
       goto LABEL_3;
     }
@@ -2250,24 +2250,24 @@ LABEL_37:
   else
   {
     v9 = 0;
-    if (a5)
+    if (handled)
     {
 LABEL_3:
-      *a5 = sel_convertToShapes_ == a3;
+      *handled = sel_convertToShapes_ == action;
     }
   }
 
   return v9;
 }
 
-- (void)convertToShapes:(id)a3
+- (void)convertToShapes:(id)shapes
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = [(PKSelectionView *)self shapeSupportCache];
-  v5 = v4;
-  if (v4)
+  shapeSupportCache = [(PKSelectionView *)self shapeSupportCache];
+  v5 = shapeSupportCache;
+  if (shapeSupportCache)
   {
-    v6 = *(v4 + 16);
+    v6 = *(shapeSupportCache + 16);
     v7 = v5[1];
   }
 
@@ -2278,11 +2278,11 @@ LABEL_3:
   }
 
   v8 = v7;
-  v9 = [(PKAdornmentView *)self selectionController];
-  v10 = v9;
-  if (v9)
+  selectionController = [(PKAdornmentView *)self selectionController];
+  v10 = selectionController;
+  if (selectionController)
   {
-    WeakRetained = objc_loadWeakRetained((v9 + 120));
+    WeakRetained = objc_loadWeakRetained((selectionController + 120));
   }
 
   else
@@ -2290,16 +2290,16 @@ LABEL_3:
     WeakRetained = 0;
   }
 
-  v12 = [(PKAdornmentView *)self strokeSelection];
-  v13 = [v12 drawing];
+  strokeSelection = [(PKAdornmentView *)self strokeSelection];
+  drawing = [strokeSelection drawing];
 
   if ([v6 count])
   {
     v14 = [v6 count];
-    if (v14 == [v8 count] && v13 && WeakRetained)
+    if (v14 == [v8 count] && drawing && WeakRetained)
     {
       v34 = v5;
-      v31 = v13;
+      v31 = drawing;
       v32 = WeakRetained;
       if (v5)
       {
@@ -2342,8 +2342,8 @@ LABEL_3:
             v25 = +[PKStatisticsManager sharedStatisticsManager];
             -[PKStatisticsManager recordCreateShapeWithType:fromMenu:multiple:](v25, [v24 type], 1, objc_msgSend(v19, "count") > 1);
 
-            v26 = [v24 strokes];
-            [v18 addObjectsFromArray:v26];
+            strokes = [v24 strokes];
+            [v18 addObjectsFromArray:strokes];
           }
 
           v21 = [v19 countByEnumeratingWithState:&v41 objects:v45 count:16];
@@ -2352,12 +2352,12 @@ LABEL_3:
         while (v21);
       }
 
-      v27 = [(PKAdornmentView *)self selectionController];
+      selectionController2 = [(PKAdornmentView *)self selectionController];
       v35[0] = MEMORY[0x1E69E9820];
       v35[1] = 3221225472;
       v35[2] = __49__PKSelectionView_ShapeSupport__convertToShapes___block_invoke;
       v35[3] = &unk_1E82DA380;
-      v13 = v31;
+      drawing = v31;
       v36 = v31;
       v37 = v6;
       v38 = v18;
@@ -2366,7 +2366,7 @@ LABEL_3:
       v40 = v32;
       v28 = v30;
       v29 = v18;
-      [(PKSelectionController *)v27 clearSelectionIfNecessaryWithCompletion:v35];
+      [(PKSelectionController *)selectionController2 clearSelectionIfNecessaryWithCompletion:v35];
 
       v5 = v34;
       v8 = v33;

@@ -1,6 +1,6 @@
 @interface TransitSchedulesDepartureCollectionViewCell
 - (TransitSchedulesDepartureCollectionViewCell)init;
-- (TransitSchedulesDepartureCollectionViewCell)initWithFrame:(CGRect)a3;
+- (TransitSchedulesDepartureCollectionViewCell)initWithFrame:(CGRect)frame;
 - (id)_selectedStatusLabelFontProvider;
 - (id)_selectedTimeLabelFontProvider;
 - (id)attributedTimeString;
@@ -12,9 +12,9 @@
 - (id)statusStringTextColor;
 - (id)timeTextColor;
 - (void)configureViews;
-- (void)setDeparture:(id)a3 withReferenceDate:(id)a4 timeZone:(id)a5 timeDisplayStyle:(unint64_t)a6;
-- (void)setReferenceDate:(id)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setDeparture:(id)departure withReferenceDate:(id)date timeZone:(id)zone timeDisplayStyle:(unint64_t)style;
+- (void)setReferenceDate:(id)date;
+- (void)setSelected:(BOOL)selected;
 - (void)updateCellStyling;
 - (void)updateLiveStatusLabelFont;
 - (void)updateShadow;
@@ -26,18 +26,18 @@
 
 - (id)liveStatusColor
 {
-  v3 = [(TransitSchedulesDepartureCollectionViewCell *)self departure];
-  v4 = [v3 isPastDeparture];
+  departure = [(TransitSchedulesDepartureCollectionViewCell *)self departure];
+  isPastDeparture = [departure isPastDeparture];
 
-  if (v4)
+  if (isPastDeparture)
   {
     +[UIColor secondaryLabelColor];
   }
 
   else
   {
-    v6 = [(TransitSchedulesDepartureCollectionViewCell *)self departure];
-    [(TransitSchedulesDepartureBaseViewCell *)self effectiveLiveStatusForDeparture:v6];
+    departure2 = [(TransitSchedulesDepartureCollectionViewCell *)self departure];
+    [(TransitSchedulesDepartureBaseViewCell *)self effectiveLiveStatusForDeparture:departure2];
 
     MKTransitLiveDepartureColorForViewWithLiveStatus();
   }
@@ -50,40 +50,40 @@
 {
   if ([(TransitSchedulesDepartureCollectionViewCell *)self isSelected])
   {
-    v3 = [(TransitSchedulesDepartureCollectionViewCell *)self liveStatusColor];
+    liveStatusColor = [(TransitSchedulesDepartureCollectionViewCell *)self liveStatusColor];
   }
 
   else
   {
     v4 = +[UIColor labelColor];
-    v3 = [v4 colorWithAlphaComponent:0.400000006];
+    liveStatusColor = [v4 colorWithAlphaComponent:0.400000006];
   }
 
-  return v3;
+  return liveStatusColor;
 }
 
 - (id)realTimeStatusIndicatorColor
 {
   if ([(TransitSchedulesDepartureCollectionViewCell *)self isSelected])
   {
-    v3 = [(TransitSchedulesDepartureCollectionViewCell *)self liveStatusColor];
+    liveStatusColor = [(TransitSchedulesDepartureCollectionViewCell *)self liveStatusColor];
   }
 
   else
   {
     v4 = +[UIColor labelColor];
-    v3 = [v4 colorWithAlphaComponent:0.800000012];
+    liveStatusColor = [v4 colorWithAlphaComponent:0.800000012];
   }
 
-  return v3;
+  return liveStatusColor;
 }
 
 - (id)timeTextColor
 {
-  v2 = [(TransitSchedulesDepartureCollectionViewCell *)self isSelected];
+  isSelected = [(TransitSchedulesDepartureCollectionViewCell *)self isSelected];
   v3 = +[UIColor labelColor];
   v4 = v3;
-  if ((v2 & 1) == 0)
+  if ((isSelected & 1) == 0)
   {
     v5 = [v3 colorWithAlphaComponent:0.699999988];
 
@@ -95,14 +95,14 @@
 
 - (void)updateShadow
 {
-  v3 = [(TransitSchedulesDepartureCollectionViewCell *)self selectedBackgroundView];
-  v9 = [v3 layer];
+  selectedBackgroundView = [(TransitSchedulesDepartureCollectionViewCell *)self selectedBackgroundView];
+  layer = [selectedBackgroundView layer];
 
   if ([(TransitSchedulesDepartureCollectionViewCell *)self isSelected])
   {
     v4 = +[UIColor blackColor];
     v5 = [v4 colorWithAlphaComponent:0.140000001];
-    [v9 setShadowColor:{objc_msgSend(v5, "CGColor")}];
+    [layer setShadowColor:{objc_msgSend(v5, "CGColor")}];
 
     v6 = 1.0;
     v7 = 1.0;
@@ -111,22 +111,22 @@
   else
   {
     v4 = +[UIColor clearColor];
-    [v9 setShadowColor:{objc_msgSend(v4, "CGColor")}];
+    [layer setShadowColor:{objc_msgSend(v4, "CGColor")}];
     v7 = 0.0;
     v6 = 0.0;
   }
 
-  [v9 setShadowOffset:{0.0, v6}];
-  [v9 setShadowRadius:v6];
+  [layer setShadowOffset:{0.0, v6}];
+  [layer setShadowRadius:v6];
   *&v8 = v7;
-  [v9 setShadowOpacity:v8];
+  [layer setShadowOpacity:v8];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v4.receiver = self;
   v4.super_class = TransitSchedulesDepartureCollectionViewCell;
-  [(TransitSchedulesDepartureCollectionViewCell *)&v4 setSelected:a3];
+  [(TransitSchedulesDepartureCollectionViewCell *)&v4 setSelected:selected];
   [(TransitSchedulesDepartureCollectionViewCell *)self updateCellStyling];
 }
 
@@ -134,8 +134,8 @@
 {
   if (([(TransitSchedulesDepartureCollectionViewCell *)self isSelected]& 1) != 0)
   {
-    v3 = [(TransitSchedulesDepartureCollectionViewCell *)self _selectedStatusLabelFontProvider];
-    v5 = objc_retainBlock(v3);
+    _selectedStatusLabelFontProvider = [(TransitSchedulesDepartureCollectionViewCell *)self _selectedStatusLabelFontProvider];
+    v5 = objc_retainBlock(_selectedStatusLabelFontProvider);
   }
 
   else
@@ -143,16 +143,16 @@
     v5 = objc_retainBlock(&stru_10165D908);
   }
 
-  v4 = [(TransitSchedulesDepartureCollectionViewCell *)self liveStatusLabel];
-  [DynamicTypeWizard autorefreshLabel:v4 withFontProvider:v5];
+  liveStatusLabel = [(TransitSchedulesDepartureCollectionViewCell *)self liveStatusLabel];
+  [DynamicTypeWizard autorefreshLabel:liveStatusLabel withFontProvider:v5];
 }
 
 - (void)updateTimeLabelFont
 {
   if (([(TransitSchedulesDepartureCollectionViewCell *)self isSelected]& 1) != 0)
   {
-    v3 = [(TransitSchedulesDepartureCollectionViewCell *)self _selectedTimeLabelFontProvider];
-    v5 = objc_retainBlock(v3);
+    _selectedTimeLabelFontProvider = [(TransitSchedulesDepartureCollectionViewCell *)self _selectedTimeLabelFontProvider];
+    v5 = objc_retainBlock(_selectedTimeLabelFontProvider);
   }
 
   else
@@ -160,19 +160,19 @@
     v5 = objc_retainBlock(&stru_10165D8E8);
   }
 
-  v4 = [(TransitSchedulesDepartureCollectionViewCell *)self timeLabel];
-  [DynamicTypeWizard autorefreshLabel:v4 withFontProvider:v5];
+  timeLabel = [(TransitSchedulesDepartureCollectionViewCell *)self timeLabel];
+  [DynamicTypeWizard autorefreshLabel:timeLabel withFontProvider:v5];
 }
 
 - (void)updateCellStyling
 {
-  v3 = [(TransitSchedulesDepartureCollectionViewCell *)self attributedTimeString];
-  v4 = [(TransitSchedulesDepartureCollectionViewCell *)self timeLabel];
-  [v4 setAttributedText:v3];
+  attributedTimeString = [(TransitSchedulesDepartureCollectionViewCell *)self attributedTimeString];
+  timeLabel = [(TransitSchedulesDepartureCollectionViewCell *)self timeLabel];
+  [timeLabel setAttributedText:attributedTimeString];
 
-  v5 = [(TransitSchedulesDepartureCollectionViewCell *)self statusString];
-  v6 = [(TransitSchedulesDepartureCollectionViewCell *)self liveStatusLabel];
-  [v6 setAttributedText:v5];
+  statusString = [(TransitSchedulesDepartureCollectionViewCell *)self statusString];
+  liveStatusLabel = [(TransitSchedulesDepartureCollectionViewCell *)self liveStatusLabel];
+  [liveStatusLabel setAttributedText:statusString];
 
   [(TransitSchedulesDepartureCollectionViewCell *)self updateTimeLabelFont];
   [(TransitSchedulesDepartureCollectionViewCell *)self updateLiveStatusLabelFont];
@@ -198,11 +198,11 @@
 
 - (id)statusString
 {
-  v3 = [(TransitSchedulesDepartureCollectionViewCell *)self statusStringAttributes];
-  v4 = [(TransitSchedulesDepartureCollectionViewCell *)self departure];
-  v5 = [v4 isCanceled];
+  statusStringAttributes = [(TransitSchedulesDepartureCollectionViewCell *)self statusStringAttributes];
+  departure = [(TransitSchedulesDepartureCollectionViewCell *)self departure];
+  isCanceled = [departure isCanceled];
 
-  if (v5)
+  if (isCanceled)
   {
     v6 = [NSAttributedString alloc];
     v7 = +[NSBundle mainBundle];
@@ -210,17 +210,17 @@
     v9 = @"Schedules Departure cell status - Canceled";
 LABEL_5:
     v14 = [v7 localizedStringForKey:v9 value:@"localized string not found" table:0];
-    v15 = [v6 initWithString:v14 attributes:v3];
+    v15 = [v6 initWithString:v14 attributes:statusStringAttributes];
 
     goto LABEL_13;
   }
 
-  v10 = [(TransitSchedulesDepartureCollectionViewCell *)self departure];
-  v11 = [v10 liveStatus] == 0;
+  departure2 = [(TransitSchedulesDepartureCollectionViewCell *)self departure];
+  v11 = [departure2 liveStatus] == 0;
 
-  v12 = [(TransitSchedulesDepartureCollectionViewCell *)self departure];
-  v13 = [(TransitSchedulesDepartureBaseViewCell *)self referenceDate];
-  LODWORD(v11) = [v12 isPastDepartureRelativeToDate:v13 usingGracePeriod:v11];
+  departure3 = [(TransitSchedulesDepartureCollectionViewCell *)self departure];
+  referenceDate = [(TransitSchedulesDepartureBaseViewCell *)self referenceDate];
+  LODWORD(v11) = [departure3 isPastDepartureRelativeToDate:referenceDate usingGracePeriod:v11];
 
   if (v11)
   {
@@ -231,45 +231,45 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v16 = [(TransitSchedulesDepartureCollectionViewCell *)self departure];
-  v17 = [v16 liveStatusString];
+  departure4 = [(TransitSchedulesDepartureCollectionViewCell *)self departure];
+  liveStatusString = [departure4 liveStatusString];
 
-  if (v17)
+  if (liveStatusString)
   {
     v18 = [MKServerFormattedStringParameters alloc];
     MKFormattedStringOptionsMakeDefault();
     v19 = [v18 initWithOptions:&v33 variableOverrides:0];
-    v20 = [[MKServerFormattedString alloc] initWithGeoServerString:v17 parameters:v19];
+    v20 = [[MKServerFormattedString alloc] initWithGeoServerString:liveStatusString parameters:v19];
     v21 = [v20 multiPartAttributedStringWithAttributes:&__NSDictionary0__struct];
-    v22 = [v21 attributedString];
+    attributedString = [v21 attributedString];
 
     if ([(TransitSchedulesDepartureCollectionViewCell *)self isSelected])
     {
-      v15 = v22;
+      v15 = attributedString;
     }
 
     else
     {
       v29 = [NSAttributedString alloc];
-      v30 = [v22 string];
-      v31 = [(TransitSchedulesDepartureCollectionViewCell *)self statusStringAttributes];
-      v15 = [v29 initWithString:v30 attributes:v31];
+      string = [attributedString string];
+      statusStringAttributes2 = [(TransitSchedulesDepartureCollectionViewCell *)self statusStringAttributes];
+      v15 = [v29 initWithString:string attributes:statusStringAttributes2];
     }
   }
 
   else
   {
-    v23 = [(TransitSchedulesDepartureCollectionViewCell *)self departure];
-    v19 = [(TransitSchedulesDepartureBaseViewCell *)self emphasizedLowFrequencyDepartureDateForDeparture:v23];
+    departure5 = [(TransitSchedulesDepartureCollectionViewCell *)self departure];
+    v19 = [(TransitSchedulesDepartureBaseViewCell *)self emphasizedLowFrequencyDepartureDateForDeparture:departure5];
 
-    v24 = [(TransitSchedulesDepartureCollectionViewCell *)self dateFormatter];
-    v25 = [v24 stringFromDate:v19];
+    dateFormatter = [(TransitSchedulesDepartureCollectionViewCell *)self dateFormatter];
+    v25 = [dateFormatter stringFromDate:v19];
 
-    v26 = [(TransitSchedulesDepartureCollectionViewCell *)self departure];
-    v27 = [(TransitSchedulesDepartureBaseViewCell *)self effectiveLiveStatusForDeparture:v26];
+    departure6 = [(TransitSchedulesDepartureCollectionViewCell *)self departure];
+    v27 = [(TransitSchedulesDepartureBaseViewCell *)self effectiveLiveStatusForDeparture:departure6];
 
     v28 = [NSString _navigation_formattedDescriptionForLiveStatus:v27 updatedDepartureTimeString:v25];
-    v15 = [[NSAttributedString alloc] initWithString:v28 attributes:v3];
+    v15 = [[NSAttributedString alloc] initWithString:v28 attributes:statusStringAttributes];
   }
 
 LABEL_13:
@@ -280,8 +280,8 @@ LABEL_13:
 - (id)statusStringAttributes
 {
   v5 = NSForegroundColorAttributeName;
-  v2 = [(TransitSchedulesDepartureCollectionViewCell *)self statusStringTextColor];
-  v6 = v2;
+  statusStringTextColor = [(TransitSchedulesDepartureCollectionViewCell *)self statusStringTextColor];
+  v6 = statusStringTextColor;
   v3 = [NSDictionary dictionaryWithObjects:&v6 forKeys:&v5 count:1];
 
   return v3;
@@ -289,75 +289,75 @@ LABEL_13:
 
 - (void)updateStrings
 {
-  v3 = [(TransitSchedulesDepartureCollectionViewCell *)self attributedTimeString];
-  v4 = [(TransitSchedulesDepartureCollectionViewCell *)self timeLabel];
-  [v4 setAttributedText:v3];
+  attributedTimeString = [(TransitSchedulesDepartureCollectionViewCell *)self attributedTimeString];
+  timeLabel = [(TransitSchedulesDepartureCollectionViewCell *)self timeLabel];
+  [timeLabel setAttributedText:attributedTimeString];
 
-  v5 = [(TransitSchedulesDepartureCollectionViewCell *)self statusString];
-  v6 = [(TransitSchedulesDepartureCollectionViewCell *)self liveStatusLabel];
-  [v6 setAttributedText:v5];
+  statusString = [(TransitSchedulesDepartureCollectionViewCell *)self statusString];
+  liveStatusLabel = [(TransitSchedulesDepartureCollectionViewCell *)self liveStatusLabel];
+  [liveStatusLabel setAttributedText:statusString];
 
   v7 = +[NSBundle mainBundle];
   v13 = [v7 localizedStringForKey:@"[Transit Schedule] Departure cell accessibility label" value:@"localized string not found" table:0];
 
-  v8 = [(TransitSchedulesDepartureCollectionViewCell *)self timeLabel];
-  v9 = [v8 accessibilityLabel];
-  v10 = [(TransitSchedulesDepartureCollectionViewCell *)self liveStatusLabel];
-  v11 = [v10 accessibilityLabel];
-  v12 = [NSString stringWithFormat:v13, v9, v11];
+  timeLabel2 = [(TransitSchedulesDepartureCollectionViewCell *)self timeLabel];
+  accessibilityLabel = [timeLabel2 accessibilityLabel];
+  liveStatusLabel2 = [(TransitSchedulesDepartureCollectionViewCell *)self liveStatusLabel];
+  accessibilityLabel2 = [liveStatusLabel2 accessibilityLabel];
+  v12 = [NSString stringWithFormat:v13, accessibilityLabel, accessibilityLabel2];
   [(TransitSchedulesDepartureCollectionViewCell *)self setAccessibilityLabel:v12];
 }
 
 - (id)attributedTimeString
 {
-  v3 = [(TransitSchedulesDepartureCollectionViewCell *)self departure];
-  v4 = [(TransitSchedulesDepartureBaseViewCell *)self timeStringForDeparture:v3];
+  departure = [(TransitSchedulesDepartureCollectionViewCell *)self departure];
+  v4 = [(TransitSchedulesDepartureBaseViewCell *)self timeStringForDeparture:departure];
   v10 = NSForegroundColorAttributeName;
-  v5 = [(TransitSchedulesDepartureCollectionViewCell *)self timeTextColor];
-  v11 = v5;
+  timeTextColor = [(TransitSchedulesDepartureCollectionViewCell *)self timeTextColor];
+  v11 = timeTextColor;
   v6 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
 
-  v7 = [(TransitSchedulesDepartureCollectionViewCell *)self realTimeStatusIndicatorColor];
-  v8 = [NSAttributedString _mapkit_attributedLiveTransitStringFromDepartureString:v4 departure:v3 textAttributes:v6 darkMode:[(TransitSchedulesDepartureCollectionViewCell *)self _mapkit_isDarkModeEnabled] symbolOverrideColor:v7];
+  realTimeStatusIndicatorColor = [(TransitSchedulesDepartureCollectionViewCell *)self realTimeStatusIndicatorColor];
+  v8 = [NSAttributedString _mapkit_attributedLiveTransitStringFromDepartureString:v4 departure:departure textAttributes:v6 darkMode:[(TransitSchedulesDepartureCollectionViewCell *)self _mapkit_isDarkModeEnabled] symbolOverrideColor:realTimeStatusIndicatorColor];
 
   return v8;
 }
 
-- (void)setReferenceDate:(id)a3
+- (void)setReferenceDate:(id)date
 {
   v4.receiver = self;
   v4.super_class = TransitSchedulesDepartureCollectionViewCell;
-  [(TransitSchedulesDepartureBaseViewCell *)&v4 setReferenceDate:a3];
+  [(TransitSchedulesDepartureBaseViewCell *)&v4 setReferenceDate:date];
   [(TransitSchedulesDepartureCollectionViewCell *)self updateStrings];
 }
 
-- (void)setDeparture:(id)a3 withReferenceDate:(id)a4 timeZone:(id)a5 timeDisplayStyle:(unint64_t)a6
+- (void)setDeparture:(id)departure withReferenceDate:(id)date timeZone:(id)zone timeDisplayStyle:(unint64_t)style
 {
-  v16 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (![(GEOTransitDeparture *)self->_departure isEqual:v16])
+  departureCopy = departure;
+  dateCopy = date;
+  zoneCopy = zone;
+  if (![(GEOTransitDeparture *)self->_departure isEqual:departureCopy])
   {
     goto LABEL_7;
   }
 
-  v13 = [(TransitSchedulesDepartureBaseViewCell *)self timeZone];
-  if (![v13 isEqual:v12] || -[TransitSchedulesDepartureBaseViewCell timeDisplayStyle](self, "timeDisplayStyle") != a6)
+  timeZone = [(TransitSchedulesDepartureBaseViewCell *)self timeZone];
+  if (![timeZone isEqual:zoneCopy] || -[TransitSchedulesDepartureBaseViewCell timeDisplayStyle](self, "timeDisplayStyle") != style)
   {
 
     goto LABEL_7;
   }
 
-  v14 = [(TransitSchedulesDepartureBaseViewCell *)self referenceDate];
-  v15 = [v14 isEqualToDate:v11];
+  referenceDate = [(TransitSchedulesDepartureBaseViewCell *)self referenceDate];
+  v15 = [referenceDate isEqualToDate:dateCopy];
 
   if ((v15 & 1) == 0)
   {
 LABEL_7:
-    objc_storeStrong(&self->_departure, a3);
-    [(TransitSchedulesDepartureBaseViewCell *)self setTimeDisplayStyle:a6];
-    [(TransitSchedulesDepartureCollectionViewCell *)self setReferenceDate:v11];
-    [(TransitSchedulesDepartureBaseViewCell *)self setTimeZone:v12];
+    objc_storeStrong(&self->_departure, departure);
+    [(TransitSchedulesDepartureBaseViewCell *)self setTimeDisplayStyle:style];
+    [(TransitSchedulesDepartureCollectionViewCell *)self setReferenceDate:dateCopy];
+    [(TransitSchedulesDepartureBaseViewCell *)self setTimeZone:zoneCopy];
     [(TransitSchedulesDepartureCollectionViewCell *)self updateStrings];
   }
 }
@@ -387,57 +387,57 @@ LABEL_7:
   [v40 setBackgroundColor:v3];
 
   [(TransitSchedulesDepartureCollectionViewCell *)self setSelectedBackgroundView:v40];
-  v4 = [v40 layer];
-  [v4 setCornerRadius:10.0];
+  layer = [v40 layer];
+  [layer setCornerRadius:10.0];
 
-  v5 = [(TransitSchedulesDepartureCollectionViewCell *)self contentView];
+  contentView = [(TransitSchedulesDepartureCollectionViewCell *)self contentView];
   v6 = objc_alloc_init(UILabel);
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v6 setTextAlignment:1];
   [v6 setAccessibilityIdentifier:@"TransitSchedulesDepartureCollectionViewCellTimeLabel"];
-  [v5 addSubview:v6];
+  [contentView addSubview:v6];
   [(TransitSchedulesDepartureCollectionViewCell *)self setTimeLabel:v6];
   v7 = objc_alloc_init(UILabel);
   [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v7 setTextAlignment:1];
   [v7 setAccessibilityIdentifier:@"TransitSchedulesDepartureCollectionViewCellStatusLabel"];
-  [v5 addSubview:v7];
+  [contentView addSubview:v7];
   [(TransitSchedulesDepartureCollectionViewCell *)self setLiveStatusLabel:v7];
   [(TransitSchedulesDepartureCollectionViewCell *)self updateCellStyling];
-  v39 = [v6 firstBaselineAnchor];
-  v38 = [v5 topAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38];
-  v36 = [(TransitSchedulesDepartureCollectionViewCell *)self _selectedTimeLabelFontProvider];
-  v35 = [DynamicTypeWizard autoscaledConstraint:v37 constant:v36 withFontProvider:25.0];
+  firstBaselineAnchor = [v6 firstBaselineAnchor];
+  topAnchor = [contentView topAnchor];
+  v37 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor];
+  _selectedTimeLabelFontProvider = [(TransitSchedulesDepartureCollectionViewCell *)self _selectedTimeLabelFontProvider];
+  v35 = [DynamicTypeWizard autoscaledConstraint:v37 constant:_selectedTimeLabelFontProvider withFontProvider:25.0];
   v42[0] = v35;
-  v34 = [v6 leadingAnchor];
-  v33 = [v5 leadingAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33 constant:15.0];
+  leadingAnchor = [v6 leadingAnchor];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:15.0];
   v42[1] = v32;
-  v31 = [v6 trailingAnchor];
-  v28 = v5;
-  v30 = [v5 trailingAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30 constant:-15.0];
+  trailingAnchor = [v6 trailingAnchor];
+  v28 = contentView;
+  trailingAnchor2 = [contentView trailingAnchor];
+  v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-15.0];
   v42[2] = v29;
-  v27 = [v7 firstBaselineAnchor];
-  v26 = [v6 lastBaselineAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
-  v24 = [(TransitSchedulesDepartureCollectionViewCell *)self _selectedTimeLabelFontProvider];
-  v23 = [DynamicTypeWizard autoscaledConstraint:v25 constant:v24 withFontProvider:18.0];
+  firstBaselineAnchor2 = [v7 firstBaselineAnchor];
+  lastBaselineAnchor = [v6 lastBaselineAnchor];
+  v25 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor];
+  _selectedTimeLabelFontProvider2 = [(TransitSchedulesDepartureCollectionViewCell *)self _selectedTimeLabelFontProvider];
+  v23 = [DynamicTypeWizard autoscaledConstraint:v25 constant:_selectedTimeLabelFontProvider2 withFontProvider:18.0];
   v42[3] = v23;
-  v22 = [v7 lastBaselineAnchor];
-  v21 = [v5 bottomAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
-  v19 = [(TransitSchedulesDepartureCollectionViewCell *)self _selectedStatusLabelFontProvider];
-  v18 = [DynamicTypeWizard autoscaledConstraint:v20 constant:v19 withFontProvider:-11.0];
+  lastBaselineAnchor2 = [v7 lastBaselineAnchor];
+  bottomAnchor = [contentView bottomAnchor];
+  v20 = [lastBaselineAnchor2 constraintEqualToAnchor:bottomAnchor];
+  _selectedStatusLabelFontProvider = [(TransitSchedulesDepartureCollectionViewCell *)self _selectedStatusLabelFontProvider];
+  v18 = [DynamicTypeWizard autoscaledConstraint:v20 constant:_selectedStatusLabelFontProvider withFontProvider:-11.0];
   v42[4] = v18;
-  v8 = [v7 leadingAnchor];
-  v9 = [v5 leadingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9 constant:15.0];
+  leadingAnchor3 = [v7 leadingAnchor];
+  leadingAnchor4 = [contentView leadingAnchor];
+  v10 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:15.0];
   v42[5] = v10;
-  v11 = [v7 trailingAnchor];
-  v12 = [v5 trailingAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12 constant:-15.0];
+  trailingAnchor3 = [v7 trailingAnchor];
+  trailingAnchor4 = [contentView trailingAnchor];
+  v13 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-15.0];
   v42[6] = v13;
   v14 = [NSArray arrayWithObjects:v42 count:7];
   [NSLayoutConstraint activateConstraints:v14];
@@ -447,15 +447,15 @@ LABEL_7:
   LODWORD(v16) = 1148846080;
   [v7 setContentCompressionResistancePriority:0 forAxis:v16];
   [(TransitSchedulesDepartureCollectionViewCell *)self setIsAccessibilityElement:1];
-  v17 = [(TransitSchedulesDepartureCollectionViewCell *)self accessibilityTraits];
-  [(TransitSchedulesDepartureCollectionViewCell *)self setAccessibilityTraits:UIAccessibilityTraitButton | v17];
+  accessibilityTraits = [(TransitSchedulesDepartureCollectionViewCell *)self accessibilityTraits];
+  [(TransitSchedulesDepartureCollectionViewCell *)self setAccessibilityTraits:UIAccessibilityTraitButton | accessibilityTraits];
 }
 
-- (TransitSchedulesDepartureCollectionViewCell)initWithFrame:(CGRect)a3
+- (TransitSchedulesDepartureCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TransitSchedulesDepartureCollectionViewCell;
-  v3 = [(TransitSchedulesDepartureCollectionViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TransitSchedulesDepartureCollectionViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

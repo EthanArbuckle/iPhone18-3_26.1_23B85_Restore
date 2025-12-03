@@ -1,15 +1,15 @@
 @interface SystemAssistantPromptEntryViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation SystemAssistantPromptEntryViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"Siri.SystemAssistantPromptEntryView" hasSwiftField:@"closeButton" withSwiftType:"UIButton"];
-  [v3 validateClass:@"Siri.SystemAssistantPromptEntryView" hasInstanceMethod:@"setIsInTamale:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"Siri.SystemAssistantPromptEntryView" hasSwiftField:@"closeButton" withSwiftType:"UIButton"];
+  [validationsCopy validateClass:@"Siri.SystemAssistantPromptEntryView" hasInstanceMethod:@"setIsInTamale:" withFullSignature:{"v", "B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

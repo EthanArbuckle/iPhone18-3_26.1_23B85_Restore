@@ -1,21 +1,21 @@
 @interface APPBAdLayoutDetails
-- (BOOL)isEqual:(id)a3;
-- (id)adFormatTypeAsString:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)adFormatTypeAsString:(int)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)typeAsString:(int)a3;
-- (int)StringAsAdFormatType:(id)a3;
-- (int)StringAsType:(id)a3;
+- (id)typeAsString:(int)string;
+- (int)StringAsAdFormatType:(id)type;
+- (int)StringAsType:(id)type;
 - (int)adFormatType;
 - (int)type;
 - (unint64_t)hash;
-- (void)addElements:(id)a3;
-- (void)addLocalizedHeadlines:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addElements:(id)elements;
+- (void)addLocalizedHeadlines:(id)headlines;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBAdLayoutDetails
@@ -33,9 +33,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -48,65 +48,65 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)typeAsString:(int)a3
+- (id)typeAsString:(int)string
 {
-  if ((a3 - 40000) >= 9)
+  if ((string - 40000) >= 9)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_10047CCB8 + (a3 - 40000));
+    v4 = *(&off_10047CCB8 + (string - 40000));
   }
 
   return v4;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Banner"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Banner"])
   {
     v4 = 40000;
   }
 
-  else if ([v3 isEqualToString:@"Video"])
+  else if ([typeCopy isEqualToString:@"Video"])
   {
     v4 = 40001;
   }
 
-  else if ([v3 isEqualToString:@"DRTBrand"])
+  else if ([typeCopy isEqualToString:@"DRTBrand"])
   {
     v4 = 40002;
   }
 
-  else if ([v3 isEqualToString:@"DRTNews"])
+  else if ([typeCopy isEqualToString:@"DRTNews"])
   {
     v4 = 40003;
   }
 
-  else if ([v3 isEqualToString:@"DRTVerizon"])
+  else if ([typeCopy isEqualToString:@"DRTVerizon"])
   {
     v4 = 40004;
   }
 
-  else if ([v3 isEqualToString:@"Native"])
+  else if ([typeCopy isEqualToString:@"Native"])
   {
     v4 = 40005;
   }
 
-  else if ([v3 isEqualToString:@"Carousel"])
+  else if ([typeCopy isEqualToString:@"Carousel"])
   {
     v4 = 40006;
   }
 
-  else if ([v3 isEqualToString:@"AMP"])
+  else if ([typeCopy isEqualToString:@"AMP"])
   {
     v4 = 40007;
   }
 
-  else if ([v3 isEqualToString:@"Sponsorship"])
+  else if ([typeCopy isEqualToString:@"Sponsorship"])
   {
     v4 = 40008;
   }
@@ -119,22 +119,22 @@
   return v4;
 }
 
-- (void)addElements:(id)a3
+- (void)addElements:(id)elements
 {
-  v4 = a3;
+  elementsCopy = elements;
   elements = self->_elements;
-  v8 = v4;
+  v8 = elementsCopy;
   if (!elements)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_elements;
     self->_elements = v6;
 
-    v4 = v8;
+    elementsCopy = v8;
     elements = self->_elements;
   }
 
-  [(NSMutableArray *)elements addObject:v4];
+  [(NSMutableArray *)elements addObject:elementsCopy];
 }
 
 - (int)adFormatType
@@ -150,35 +150,35 @@
   }
 }
 
-- (id)adFormatTypeAsString:(int)a3
+- (id)adFormatTypeAsString:(int)string
 {
-  if ((a3 - 22200) >= 3)
+  if ((string - 22200) >= 3)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_10047CD00 + (a3 - 22200));
+    v4 = *(&off_10047CD00 + (string - 22200));
   }
 
   return v4;
 }
 
-- (int)StringAsAdFormatType:(id)a3
+- (int)StringAsAdFormatType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Large"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Large"])
   {
     v4 = 22200;
   }
 
-  else if ([v3 isEqualToString:@"Medium"])
+  else if ([typeCopy isEqualToString:@"Medium"])
   {
     v4 = 22201;
   }
 
-  else if ([v3 isEqualToString:@"Small"])
+  else if ([typeCopy isEqualToString:@"Small"])
   {
     v4 = 22202;
   }
@@ -191,22 +191,22 @@
   return v4;
 }
 
-- (void)addLocalizedHeadlines:(id)a3
+- (void)addLocalizedHeadlines:(id)headlines
 {
-  v4 = a3;
+  headlinesCopy = headlines;
   localizedHeadlines = self->_localizedHeadlines;
-  v8 = v4;
+  v8 = headlinesCopy;
   if (!localizedHeadlines)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_localizedHeadlines;
     self->_localizedHeadlines = v6;
 
-    v4 = v8;
+    headlinesCopy = v8;
     localizedHeadlines = self->_localizedHeadlines;
   }
 
-  [(NSMutableArray *)localizedHeadlines addObject:v4];
+  [(NSMutableArray *)localizedHeadlines addObject:headlinesCopy];
 }
 
 - (id)description
@@ -214,8 +214,8 @@
   v7.receiver = self;
   v7.super_class = APPBAdLayoutDetails;
   v3 = [(APPBAdLayoutDetails *)&v7 description];
-  v4 = [(APPBAdLayoutDetails *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBAdLayoutDetails *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -291,8 +291,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v39 + 1) + 8 * i) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation = [*(*(&v39 + 1) + 8 * i) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v39 objects:v44 count:16];
@@ -307,8 +307,8 @@
   style = self->_style;
   if (style)
   {
-    v19 = [(APPBStyle *)style dictionaryRepresentation];
-    [v3 setObject:v19 forKey:@"style"];
+    dictionaryRepresentation2 = [(APPBStyle *)style dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"style"];
   }
 
   if (*&self->_has)
@@ -336,8 +336,8 @@
   ctaButton = self->_ctaButton;
   if (ctaButton)
   {
-    v24 = [(APPBButton *)ctaButton dictionaryRepresentation];
-    [v3 setObject:v24 forKey:@"ctaButton"];
+    dictionaryRepresentation3 = [(APPBButton *)ctaButton dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation3 forKey:@"ctaButton"];
   }
 
   actionURL = self->_actionURL;
@@ -374,8 +374,8 @@
             objc_enumerationMutation(v28);
           }
 
-          v33 = [*(*(&v35 + 1) + 8 * j) dictionaryRepresentation];
-          [v27 addObject:v33];
+          dictionaryRepresentation4 = [*(*(&v35 + 1) + 8 * j) dictionaryRepresentation];
+          [v27 addObject:dictionaryRepresentation4];
         }
 
         v30 = [(NSMutableArray *)v28 countByEnumeratingWithState:&v35 objects:v43 count:16];
@@ -390,9 +390,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
@@ -516,19 +516,19 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[28] = self->_type;
-    *(v4 + 116) |= 2u;
+    toCopy[28] = self->_type;
+    *(toCopy + 116) |= 2u;
   }
 
-  v13 = v4;
+  v13 = toCopy;
   if (self->_headline)
   {
-    [v4 setHeadline:?];
+    [toCopy setHeadline:?];
   }
 
   if (self->_accessHeadline)
@@ -554,10 +554,10 @@
   if ([(APPBAdLayoutDetails *)self elementsCount])
   {
     [v13 clearElements];
-    v5 = [(APPBAdLayoutDetails *)self elementsCount];
-    if (v5)
+    elementsCount = [(APPBAdLayoutDetails *)self elementsCount];
+    if (elementsCount)
     {
-      v6 = v5;
+      v6 = elementsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(APPBAdLayoutDetails *)self elementsAtIndex:i];
@@ -600,10 +600,10 @@
   if ([(APPBAdLayoutDetails *)self localizedHeadlinesCount])
   {
     [v13 clearLocalizedHeadlines];
-    v9 = [(APPBAdLayoutDetails *)self localizedHeadlinesCount];
-    if (v9)
+    localizedHeadlinesCount = [(APPBAdLayoutDetails *)self localizedHeadlinesCount];
+    if (localizedHeadlinesCount)
     {
-      v10 = v9;
+      v10 = localizedHeadlinesCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(APPBAdLayoutDetails *)self localizedHeadlinesAtIndex:j];
@@ -613,9 +613,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -623,23 +623,23 @@
     *(v5 + 116) |= 2u;
   }
 
-  v7 = [(NSString *)self->_headline copyWithZone:a3];
+  v7 = [(NSString *)self->_headline copyWithZone:zone];
   v8 = v6[8];
   v6[8] = v7;
 
-  v9 = [(NSString *)self->_accessHeadline copyWithZone:a3];
+  v9 = [(NSString *)self->_accessHeadline copyWithZone:zone];
   v10 = v6[2];
   v6[2] = v9;
 
-  v11 = [(NSString *)self->_adCopy copyWithZone:a3];
+  v11 = [(NSString *)self->_adCopy copyWithZone:zone];
   v12 = v6[4];
   v6[4] = v11;
 
-  v13 = [(NSString *)self->_accessAdCopy copyWithZone:a3];
+  v13 = [(NSString *)self->_accessAdCopy copyWithZone:zone];
   v14 = v6[1];
   v6[1] = v13;
 
-  v15 = [(NSString *)self->_sponsoredBy copyWithZone:a3];
+  v15 = [(NSString *)self->_sponsoredBy copyWithZone:zone];
   v16 = v6[10];
   v6[10] = v15;
 
@@ -663,7 +663,7 @@
           objc_enumerationMutation(v17);
         }
 
-        v22 = [*(*(&v44 + 1) + 8 * v21) copyWithZone:a3];
+        v22 = [*(*(&v44 + 1) + 8 * v21) copyWithZone:zone];
         [v6 addElements:v22];
 
         v21 = v21 + 1;
@@ -676,7 +676,7 @@
     while (v19);
   }
 
-  v23 = [(APPBStyle *)self->_style copyWithZone:a3];
+  v23 = [(APPBStyle *)self->_style copyWithZone:zone];
   v24 = v6[13];
   v6[13] = v23;
 
@@ -686,19 +686,19 @@
     *(v6 + 116) |= 1u;
   }
 
-  v25 = [(NSString *)self->_sponsoredByAssetURL copyWithZone:a3];
+  v25 = [(NSString *)self->_sponsoredByAssetURL copyWithZone:zone];
   v26 = v6[11];
   v6[11] = v25;
 
-  v27 = [(APPBButton *)self->_ctaButton copyWithZone:a3];
+  v27 = [(APPBButton *)self->_ctaButton copyWithZone:zone];
   v28 = v6[6];
   v6[6] = v27;
 
-  v29 = [(NSString *)self->_actionURL copyWithZone:a3];
+  v29 = [(NSString *)self->_actionURL copyWithZone:zone];
   v30 = v6[3];
   v6[3] = v29;
 
-  v31 = [(NSString *)self->_sponsoredByAssetURLForDarkMode copyWithZone:a3];
+  v31 = [(NSString *)self->_sponsoredByAssetURLForDarkMode copyWithZone:zone];
   v32 = v6[12];
   v6[12] = v31;
 
@@ -722,7 +722,7 @@
           objc_enumerationMutation(v33);
         }
 
-        v38 = [*(*(&v40 + 1) + 8 * v37) copyWithZone:{a3, v40}];
+        v38 = [*(*(&v40 + 1) + 8 * v37) copyWithZone:{zone, v40}];
         [v6 addLocalizedHeadlines:v38];
 
         v37 = v37 + 1;
@@ -738,23 +738,23 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 116) & 2) == 0 || self->_type != *(v4 + 28))
+    if ((*(equalCopy + 116) & 2) == 0 || self->_type != *(equalCopy + 28))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 116) & 2) != 0)
+  else if ((*(equalCopy + 116) & 2) != 0)
   {
 LABEL_36:
     v17 = 0;
@@ -762,13 +762,13 @@ LABEL_36:
   }
 
   headline = self->_headline;
-  if (headline | *(v4 + 8) && ![(NSString *)headline isEqual:?])
+  if (headline | *(equalCopy + 8) && ![(NSString *)headline isEqual:?])
   {
     goto LABEL_36;
   }
 
   accessHeadline = self->_accessHeadline;
-  if (accessHeadline | *(v4 + 2))
+  if (accessHeadline | *(equalCopy + 2))
   {
     if (![(NSString *)accessHeadline isEqual:?])
     {
@@ -777,7 +777,7 @@ LABEL_36:
   }
 
   adCopy = self->_adCopy;
-  if (adCopy | *(v4 + 4))
+  if (adCopy | *(equalCopy + 4))
   {
     if (![(NSString *)adCopy isEqual:?])
     {
@@ -786,7 +786,7 @@ LABEL_36:
   }
 
   accessAdCopy = self->_accessAdCopy;
-  if (accessAdCopy | *(v4 + 1))
+  if (accessAdCopy | *(equalCopy + 1))
   {
     if (![(NSString *)accessAdCopy isEqual:?])
     {
@@ -795,7 +795,7 @@ LABEL_36:
   }
 
   sponsoredBy = self->_sponsoredBy;
-  if (sponsoredBy | *(v4 + 10))
+  if (sponsoredBy | *(equalCopy + 10))
   {
     if (![(NSString *)sponsoredBy isEqual:?])
     {
@@ -804,7 +804,7 @@ LABEL_36:
   }
 
   elements = self->_elements;
-  if (elements | *(v4 + 7))
+  if (elements | *(equalCopy + 7))
   {
     if (![(NSMutableArray *)elements isEqual:?])
     {
@@ -813,7 +813,7 @@ LABEL_36:
   }
 
   style = self->_style;
-  if (style | *(v4 + 13))
+  if (style | *(equalCopy + 13))
   {
     if (![(APPBStyle *)style isEqual:?])
     {
@@ -823,25 +823,25 @@ LABEL_36:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 116) & 1) == 0 || self->_adFormatType != *(v4 + 10))
+    if ((*(equalCopy + 116) & 1) == 0 || self->_adFormatType != *(equalCopy + 10))
     {
       goto LABEL_36;
     }
   }
 
-  else if (*(v4 + 116))
+  else if (*(equalCopy + 116))
   {
     goto LABEL_36;
   }
 
   sponsoredByAssetURL = self->_sponsoredByAssetURL;
-  if (sponsoredByAssetURL | *(v4 + 11) && ![(NSString *)sponsoredByAssetURL isEqual:?])
+  if (sponsoredByAssetURL | *(equalCopy + 11) && ![(NSString *)sponsoredByAssetURL isEqual:?])
   {
     goto LABEL_36;
   }
 
   ctaButton = self->_ctaButton;
-  if (ctaButton | *(v4 + 6))
+  if (ctaButton | *(equalCopy + 6))
   {
     if (![(APPBButton *)ctaButton isEqual:?])
     {
@@ -850,7 +850,7 @@ LABEL_36:
   }
 
   actionURL = self->_actionURL;
-  if (actionURL | *(v4 + 3))
+  if (actionURL | *(equalCopy + 3))
   {
     if (![(NSString *)actionURL isEqual:?])
     {
@@ -859,7 +859,7 @@ LABEL_36:
   }
 
   sponsoredByAssetURLForDarkMode = self->_sponsoredByAssetURLForDarkMode;
-  if (sponsoredByAssetURLForDarkMode | *(v4 + 12))
+  if (sponsoredByAssetURLForDarkMode | *(equalCopy + 12))
   {
     if (![(NSString *)sponsoredByAssetURLForDarkMode isEqual:?])
     {
@@ -868,7 +868,7 @@ LABEL_36:
   }
 
   localizedHeadlines = self->_localizedHeadlines;
-  if (localizedHeadlines | *(v4 + 9))
+  if (localizedHeadlines | *(equalCopy + 9))
   {
     v17 = [(NSMutableArray *)localizedHeadlines isEqual:?];
   }
@@ -920,17 +920,17 @@ LABEL_37:
   return v14 ^ v16 ^ [(NSMutableArray *)self->_localizedHeadlines hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((v4[29] & 2) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[29] & 2) != 0)
   {
-    self->_type = v4[28];
+    self->_type = fromCopy[28];
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(APPBAdLayoutDetails *)self setHeadline:?];
   }

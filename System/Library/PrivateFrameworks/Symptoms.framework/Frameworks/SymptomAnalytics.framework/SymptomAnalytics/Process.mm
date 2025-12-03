@@ -7,18 +7,18 @@
 
 - (NSString)name
 {
-  v3 = [(Process *)self extensionName];
+  extensionName = [(Process *)self extensionName];
 
-  if (v3)
+  if (extensionName)
   {
-    v4 = [(Process *)self extensionName];
+    extensionName2 = [(Process *)self extensionName];
   }
 
   else
   {
-    v5 = [(Process *)self bundleName];
+    bundleName = [(Process *)self bundleName];
 
-    if (v5)
+    if (bundleName)
     {
       [(Process *)self bundleName];
     }
@@ -27,10 +27,10 @@
     {
       [(Process *)self procName];
     }
-    v4 = ;
+    extensionName2 = ;
   }
 
-  return v4;
+  return extensionName2;
 }
 
 + (id)fetchRequest

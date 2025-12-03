@@ -4,32 +4,32 @@
 - (HFTriggerItem)triggerItem;
 - (HMTrigger)trigger;
 - (HRERecommendationItem)recommendationItem;
-- (HUAvailableTriggerItem)initWithHome:(id)a3 containingItem:(id)a4 relatedToServiceLikeItems:(id)a5;
+- (HUAvailableTriggerItem)initWithHome:(id)home containingItem:(id)item relatedToServiceLikeItems:(id)items;
 - (NSString)identifier;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)buildersForActivating:(BOOL)a3 inHome:(id)a4 withContext:(id)a5 serviceLikeItems:(id)a6;
-- (id)removalTriggerBuildersForTriggers:(id)a3 home:(id)a4 context:(id)a5 relatedItems:(id)a6;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)buildersForActivating:(BOOL)activating inHome:(id)home withContext:(id)context serviceLikeItems:(id)items;
+- (id)removalTriggerBuildersForTriggers:(id)triggers home:(id)home context:(id)context relatedItems:(id)items;
 - (void)_updateNaturalLanguageOptions;
-- (void)setActive:(BOOL)a3;
-- (void)setSourceItem:(id)a3;
+- (void)setActive:(BOOL)active;
+- (void)setSourceItem:(id)item;
 @end
 
 @implementation HUAvailableTriggerItem
 
-- (HUAvailableTriggerItem)initWithHome:(id)a3 containingItem:(id)a4 relatedToServiceLikeItems:(id)a5
+- (HUAvailableTriggerItem)initWithHome:(id)home containingItem:(id)item relatedToServiceLikeItems:(id)items
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  homeCopy = home;
+  itemCopy = item;
+  itemsCopy = items;
   v16.receiver = self;
   v16.super_class = HUAvailableTriggerItem;
   v12 = [(HUAvailableTriggerItem *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    [(HUAvailableTriggerItem *)v12 setSourceItem:v10];
-    objc_storeStrong(&v13->_home, a3);
-    objc_storeStrong(&v13->_relatedServiceLikeItems, a5);
+    [(HUAvailableTriggerItem *)v12 setSourceItem:itemCopy];
+    objc_storeStrong(&v13->_home, home);
+    objc_storeStrong(&v13->_relatedServiceLikeItems, items);
     activeValue = v13->_activeValue;
     v13->_activeValue = 0;
   }
@@ -37,38 +37,38 @@
   return v13;
 }
 
-- (void)setSourceItem:(id)a3
+- (void)setSourceItem:(id)item
 {
-  v4 = a3;
-  if (!v4)
+  itemCopy = item;
+  if (!itemCopy)
   {
     NSLog(&cfstr_Huavailabletri.isa);
   }
 
   sourceItem = self->_sourceItem;
-  self->_sourceItem = v4;
+  self->_sourceItem = itemCopy;
 }
 
 - (HFServiceLikeItem)preferredRelatedItem
 {
-  v2 = [(HUAvailableTriggerItem *)self relatedServiceLikeItems];
-  v3 = [v2 firstObject];
+  relatedServiceLikeItems = [(HUAvailableTriggerItem *)self relatedServiceLikeItems];
+  firstObject = [relatedServiceLikeItems firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (id)buildersForActivating:(BOOL)a3 inHome:(id)a4 withContext:(id)a5 serviceLikeItems:(id)a6
+- (id)buildersForActivating:(BOOL)activating inHome:(id)home withContext:(id)context serviceLikeItems:(id)items
 {
-  v8 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  activatingCopy = activating;
+  homeCopy = home;
+  contextCopy = context;
+  itemsCopy = items;
   objc_opt_class();
-  v13 = [(HUAvailableTriggerItem *)self recommendationItem];
-  v14 = [v13 recommendation];
+  recommendationItem = [(HUAvailableTriggerItem *)self recommendationItem];
+  recommendation = [recommendationItem recommendation];
   if (objc_opt_isKindOfClass())
   {
-    v15 = v14;
+    v15 = recommendation;
   }
 
   else
@@ -80,57 +80,57 @@
 
   if (v16)
   {
-    v17 = [MEMORY[0x277CBEB18] array];
-    v18 = [MEMORY[0x277CBEB18] array];
-    if (v8)
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
+    if (activatingCopy)
     {
-      v19 = [v16 selectedTriggerBuilder];
-      v20 = [v19 triggerBuilderWithContext:v11];
+      selectedTriggerBuilder = [v16 selectedTriggerBuilder];
+      v20 = [selectedTriggerBuilder triggerBuilderWithContext:contextCopy];
 
       [v20 setEnabled:1];
-      [v17 na_safeAddObject:v20];
-      v21 = [v10 triggers];
+      [array na_safeAddObject:v20];
+      triggers = [homeCopy triggers];
       v34[0] = MEMORY[0x277D85DD0];
       v34[1] = 3221225472;
       v34[2] = __84__HUAvailableTriggerItem_buildersForActivating_inHome_withContext_serviceLikeItems___block_invoke;
       v34[3] = &unk_277DC3A28;
-      v35 = v10;
-      v36 = v11;
+      v35 = homeCopy;
+      v36 = contextCopy;
       v37 = v16;
-      v22 = [v21 na_filter:v34];
+      v22 = [triggers na_filter:v34];
 
-      [v18 addObjectsFromArray:v22];
+      [array2 addObjectsFromArray:v22];
     }
 
     else
     {
-      v23 = [v10 triggers];
+      triggers2 = [homeCopy triggers];
       v27 = MEMORY[0x277D85DD0];
       v28 = 3221225472;
       v29 = __84__HUAvailableTriggerItem_buildersForActivating_inHome_withContext_serviceLikeItems___block_invoke_2;
       v30 = &unk_277DC3A28;
-      v31 = v10;
-      v32 = v11;
+      v31 = homeCopy;
+      v32 = contextCopy;
       v33 = v16;
-      v24 = [v23 na_filter:&v27];
+      v24 = [triggers2 na_filter:&v27];
 
-      [v18 addObjectsFromArray:{v24, v27, v28, v29, v30}];
+      [array2 addObjectsFromArray:{v24, v27, v28, v29, v30}];
       v20 = v31;
     }
 
-    if ([v18 count])
+    if ([array2 count])
     {
-      v25 = [(HUAvailableTriggerItem *)self removalTriggerBuildersForTriggers:v18 home:v10 context:v11 relatedItems:v12];
-      [v17 addObjectsFromArray:v25];
+      v25 = [(HUAvailableTriggerItem *)self removalTriggerBuildersForTriggers:array2 home:homeCopy context:contextCopy relatedItems:itemsCopy];
+      [array addObjectsFromArray:v25];
     }
   }
 
   else
   {
-    v17 = MEMORY[0x277CBEBF8];
+    array = MEMORY[0x277CBEBF8];
   }
 
-  return v17;
+  return array;
 }
 
 uint64_t __84__HUAvailableTriggerItem_buildersForActivating_inHome_withContext_serviceLikeItems___block_invoke(uint64_t a1, void *a2)
@@ -176,22 +176,22 @@ uint64_t __84__HUAvailableTriggerItem_buildersForActivating_inHome_withContext_s
   return v5;
 }
 
-- (id)removalTriggerBuildersForTriggers:(id)a3 home:(id)a4 context:(id)a5 relatedItems:(id)a6
+- (id)removalTriggerBuildersForTriggers:(id)triggers home:(id)home context:(id)context relatedItems:(id)items
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  homeCopy = home;
+  contextCopy = context;
+  itemsCopy = items;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __86__HUAvailableTriggerItem_removalTriggerBuildersForTriggers_home_context_relatedItems___block_invoke;
   v17[3] = &unk_277DC3A78;
-  v18 = v9;
-  v19 = v10;
-  v20 = v11;
-  v12 = v11;
-  v13 = v10;
-  v14 = v9;
-  v15 = [a3 na_map:v17];
+  v18 = homeCopy;
+  v19 = contextCopy;
+  v20 = itemsCopy;
+  v12 = itemsCopy;
+  v13 = contextCopy;
+  v14 = homeCopy;
+  v15 = [triggers na_map:v17];
 
   return v15;
 }
@@ -213,46 +213,46 @@ id __86__HUAvailableTriggerItem_removalTriggerBuildersForTriggers_home_context_r
 
 - (BOOL)isActive
 {
-  v3 = [(HUAvailableTriggerItem *)self activeValue];
+  activeValue = [(HUAvailableTriggerItem *)self activeValue];
 
-  if (v3)
+  if (activeValue)
   {
-    v4 = [(HUAvailableTriggerItem *)self activeValue];
-    v5 = [v4 BOOLValue];
+    activeValue2 = [(HUAvailableTriggerItem *)self activeValue];
+    bOOLValue = [activeValue2 BOOLValue];
   }
 
   else
   {
-    v6 = [(HUAvailableTriggerItem *)self latestResults];
-    v4 = [v6 objectForKeyedSubscript:*MEMORY[0x277D14068]];
+    latestResults = [(HUAvailableTriggerItem *)self latestResults];
+    activeValue2 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14068]];
 
-    if (v4)
+    if (activeValue2)
     {
-      v5 = [v4 integerValue] == 2;
+      bOOLValue = [activeValue2 integerValue] == 2;
     }
 
     else
     {
-      v5 = 0;
+      bOOLValue = 0;
     }
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:active];
   [(HUAvailableTriggerItem *)self setActiveValue:v4];
 }
 
 - (HFTriggerItem)triggerItem
 {
   objc_opt_class();
-  v3 = [(HUAvailableTriggerItem *)self sourceItem];
+  sourceItem = [(HUAvailableTriggerItem *)self sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = sourceItem;
   }
 
   else
@@ -268,10 +268,10 @@ id __86__HUAvailableTriggerItem_removalTriggerBuildersForTriggers_home_context_r
 - (HRERecommendationItem)recommendationItem
 {
   objc_opt_class();
-  v3 = [(HUAvailableTriggerItem *)self sourceItem];
+  sourceItem = [(HUAvailableTriggerItem *)self sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = sourceItem;
   }
 
   else
@@ -286,30 +286,30 @@ id __86__HUAvailableTriggerItem_removalTriggerBuildersForTriggers_home_context_r
 
 - (NSString)identifier
 {
-  v2 = [(HUAvailableTriggerItem *)self sourceItem];
-  v3 = [v2 identifier];
+  sourceItem = [(HUAvailableTriggerItem *)self sourceItem];
+  identifier = [sourceItem identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (HMTrigger)trigger
 {
-  v2 = [(HUAvailableTriggerItem *)self sourceItem];
-  v3 = [v2 trigger];
+  sourceItem = [(HUAvailableTriggerItem *)self sourceItem];
+  trigger = [sourceItem trigger];
 
-  return v3;
+  return trigger;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  optionsCopy = options;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   objc_opt_class();
-  v6 = [(HUAvailableTriggerItem *)self recommendationItem];
-  v7 = [v6 recommendation];
+  recommendationItem = [(HUAvailableTriggerItem *)self recommendationItem];
+  recommendation = [recommendationItem recommendation];
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = recommendation;
   }
 
   else
@@ -319,9 +319,9 @@ id __86__HUAvailableTriggerItem_removalTriggerBuildersForTriggers_home_context_r
 
   v9 = v8;
 
-  v10 = [(HUAvailableTriggerItem *)self sourceItem];
+  sourceItem = [(HUAvailableTriggerItem *)self sourceItem];
 
-  if (!v10)
+  if (!sourceItem)
   {
     v19 = MEMORY[0x277D2C900];
     v18 = [MEMORY[0x277D14780] outcomeWithResults:MEMORY[0x277CBEC10]];
@@ -329,49 +329,49 @@ id __86__HUAvailableTriggerItem_removalTriggerBuildersForTriggers_home_context_r
     goto LABEL_12;
   }
 
-  v11 = [v4 objectForKeyedSubscript:@"shallow"];
+  v11 = [optionsCopy objectForKeyedSubscript:@"shallow"];
   if (([v11 BOOLValue] & 1) == 0)
   {
 
     goto LABEL_10;
   }
 
-  v12 = [(HUAvailableTriggerItem *)self sourceItem];
-  v13 = [v12 latestResults];
-  v14 = [v13 count];
+  sourceItem2 = [(HUAvailableTriggerItem *)self sourceItem];
+  latestResults = [sourceItem2 latestResults];
+  v14 = [latestResults count];
 
   if (!v14)
   {
 LABEL_10:
-    v16 = [v4 mutableCopy];
-    [v16 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D14248]];
-    v17 = [(HUAvailableTriggerItem *)self sourceItem];
-    v21 = [v17 updateWithOptions:v16];
+    sourceItem4 = [optionsCopy mutableCopy];
+    [sourceItem4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D14248]];
+    sourceItem3 = [(HUAvailableTriggerItem *)self sourceItem];
+    v21 = [sourceItem3 updateWithOptions:sourceItem4];
     v18 = [v21 flatMap:&__block_literal_global_262];
 
     goto LABEL_11;
   }
 
   v15 = MEMORY[0x277D2C900];
-  v16 = [(HUAvailableTriggerItem *)self sourceItem];
-  v17 = [v16 latestResults];
-  v18 = [v15 futureWithResult:v17];
+  sourceItem4 = [(HUAvailableTriggerItem *)self sourceItem];
+  sourceItem3 = [sourceItem4 latestResults];
+  v18 = [v15 futureWithResult:sourceItem3];
 LABEL_11:
 
   [(HUAvailableTriggerItem *)self _updateNaturalLanguageOptions];
-  v22 = [(HUAvailableTriggerItem *)self triggerNaturalLanguageOptions];
-  v23 = [v22 copy];
+  triggerNaturalLanguageOptions = [(HUAvailableTriggerItem *)self triggerNaturalLanguageOptions];
+  v23 = [triggerNaturalLanguageOptions copy];
 
   v24 = MEMORY[0x277D14C68];
-  v25 = [(HUAvailableTriggerItem *)self triggerNaturalLanguageOptions];
-  v26 = [v24 detailOptionsWithOptions:v25];
+  triggerNaturalLanguageOptions2 = [(HUAvailableTriggerItem *)self triggerNaturalLanguageOptions];
+  v26 = [v24 detailOptionsWithOptions:triggerNaturalLanguageOptions2];
 
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __54__HUAvailableTriggerItem__subclass_updateWithOptions___block_invoke_2;
   v30[3] = &unk_277DC3AE8;
-  v31 = v5;
-  v32 = self;
+  v31 = dictionary;
+  selfCopy = self;
   v33 = v9;
   v34 = v23;
   v35 = v26;
@@ -764,36 +764,36 @@ id __54__HUAvailableTriggerItem__subclass_updateWithOptions___block_invoke_7(uin
 - (void)_updateNaturalLanguageOptions
 {
   v3 = [MEMORY[0x277CBEB98] set];
-  v4 = [(HUAvailableTriggerItem *)self triggerItem];
+  triggerItem = [(HUAvailableTriggerItem *)self triggerItem];
 
-  if (v4)
+  if (triggerItem)
   {
-    v5 = [(HUAvailableTriggerItem *)self trigger];
-    v6 = [v5 hf_anonymousActions];
+    trigger = [(HUAvailableTriggerItem *)self trigger];
+    hf_anonymousActions = [trigger hf_anonymousActions];
   }
 
   else
   {
-    v7 = [(HUAvailableTriggerItem *)self recommendationItem];
+    recommendationItem = [(HUAvailableTriggerItem *)self recommendationItem];
 
-    if (!v7)
+    if (!recommendationItem)
     {
       goto LABEL_6;
     }
 
-    v8 = [(HUAvailableTriggerItem *)self recommendationItem];
-    v5 = [v8 recommendation];
+    recommendationItem2 = [(HUAvailableTriggerItem *)self recommendationItem];
+    trigger = [recommendationItem2 recommendation];
 
-    v9 = [v5 triggerBuilders];
-    v10 = [v9 allObjects];
+    triggerBuilders = [trigger triggerBuilders];
+    allObjects = [triggerBuilders allObjects];
 
-    v11 = [v10 na_flatMap:&__block_literal_global_45_3];
-    v6 = [MEMORY[0x277CBEB98] setWithArray:v11];
+    v11 = [allObjects na_flatMap:&__block_literal_global_45_3];
+    hf_anonymousActions = [MEMORY[0x277CBEB98] setWithArray:v11];
 
-    v3 = v10;
+    v3 = allObjects;
   }
 
-  v3 = v6;
+  v3 = hf_anonymousActions;
 LABEL_6:
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
@@ -812,35 +812,35 @@ LABEL_6:
   }
 
   v14 = v13;
-  v15 = [(HUAvailableTriggerItem *)self triggerNaturalLanguageOptions];
+  triggerNaturalLanguageOptions = [(HUAvailableTriggerItem *)self triggerNaturalLanguageOptions];
 
-  if (v15)
+  if (triggerNaturalLanguageOptions)
   {
-    v16 = [v14 allObjects];
-    v17 = [(HUAvailableTriggerItem *)self triggerNaturalLanguageOptions];
-    [v17 setActions:v16];
+    allObjects2 = [v14 allObjects];
+    triggerNaturalLanguageOptions2 = [(HUAvailableTriggerItem *)self triggerNaturalLanguageOptions];
+    [triggerNaturalLanguageOptions2 setActions:allObjects2];
   }
 
   else
   {
     v18 = objc_alloc(MEMORY[0x277D14C70]);
-    v16 = [(HUAvailableTriggerItem *)self home];
-    v17 = [v14 allObjects];
-    v19 = [v18 initWithHome:v16 nameType:2 actions:v17];
+    allObjects2 = [(HUAvailableTriggerItem *)self home];
+    triggerNaturalLanguageOptions2 = [v14 allObjects];
+    v19 = [v18 initWithHome:allObjects2 nameType:2 actions:triggerNaturalLanguageOptions2];
     [(HUAvailableTriggerItem *)self setTriggerNaturalLanguageOptions:v19];
   }
 
   v20 = MEMORY[0x277CBEB98];
-  v21 = [(HUAvailableTriggerItem *)self relatedServiceLikeItems];
-  v22 = [v20 setWithArray:v21];
+  relatedServiceLikeItems = [(HUAvailableTriggerItem *)self relatedServiceLikeItems];
+  v22 = [v20 setWithArray:relatedServiceLikeItems];
   v23 = [v22 na_flatMap:&__block_literal_global_57_2];
 
-  v24 = [(HUAvailableTriggerItem *)self triggerNaturalLanguageOptions];
-  [v24 setObjectsInContext:v23];
+  triggerNaturalLanguageOptions3 = [(HUAvailableTriggerItem *)self triggerNaturalLanguageOptions];
+  [triggerNaturalLanguageOptions3 setObjectsInContext:v23];
 
-  v25 = [(HUAvailableTriggerItem *)self triggerNaturalLanguageOptions];
-  v26 = [v25 actionNaturalLanguageOptions];
-  [v26 setObjectsInContext:v23];
+  triggerNaturalLanguageOptions4 = [(HUAvailableTriggerItem *)self triggerNaturalLanguageOptions];
+  actionNaturalLanguageOptions = [triggerNaturalLanguageOptions4 actionNaturalLanguageOptions];
+  [actionNaturalLanguageOptions setObjectsInContext:v23];
 }
 
 id __55__HUAvailableTriggerItem__updateNaturalLanguageOptions__block_invoke(uint64_t a1, void *a2)

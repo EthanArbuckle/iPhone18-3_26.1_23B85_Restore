@@ -1,5 +1,5 @@
 @interface HAP2AccessoryServerTransportBaseOperationOpen
-- (HAP2AccessoryServerTransportBaseOperationOpen)initWithTransport:(id)a3 completion:(id)a4;
+- (HAP2AccessoryServerTransportBaseOperationOpen)initWithTransport:(id)transport completion:(id)completion;
 - (void)main;
 @end
 
@@ -11,9 +11,9 @@
   if (self && (v3 = self->super._transport) != 0)
   {
     val = v3;
-    v4 = self;
-    v5 = [(HAP2AccessoryServerTransportBase *)val operationQueue];
-    [v5 assertCurrentQueue];
+    selfCopy = self;
+    operationQueue = [(HAP2AccessoryServerTransportBase *)val operationQueue];
+    [operationQueue assertCurrentQueue];
 
     v33 = 0;
     v34 = &v33;
@@ -25,7 +25,7 @@
     v30 = &v29;
     v31 = 0x2020000000;
     v32 = 0;
-    v6 = [(HAP2AccessoryServerTransportBase *)val propertyLock];
+    propertyLock = [(HAP2AccessoryServerTransportBase *)val propertyLock];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __55__HAP2AccessoryServerTransportBase__openWithOperation___block_invoke;
@@ -33,7 +33,7 @@
     v28[4] = val;
     v28[5] = &v33;
     v28[6] = &v29;
-    [v6 performWritingBlock:v28];
+    [propertyLock performWritingBlock:v28];
 
     if (v34[5])
     {
@@ -50,7 +50,7 @@
         _os_log_error_impl(&dword_22AADC000, v7, OS_LOG_TYPE_ERROR, "%@ (Base) Not opening while a close is enqueued", &buf, 0xCu);
       }
 
-      [(HAP2AsynchronousOperation *)v4 cancelWithError:v34[5]];
+      [(HAP2AsynchronousOperation *)selfCopy cancelWithError:v34[5]];
     }
 
     else if (v30[3] == 2)
@@ -68,7 +68,7 @@
         _os_log_debug_impl(&dword_22AADC000, v9, OS_LOG_TYPE_DEBUG, "%@ (Base) Already open", &buf, 0xCu);
       }
 
-      [(HAP2AsynchronousOperation *)v4 finish];
+      [(HAP2AsynchronousOperation *)selfCopy finish];
     }
 
     else
@@ -97,10 +97,10 @@
       if (v15)
       {
         v16 = objc_alloc(MEMORY[0x277D0F770]);
-        v17 = [MEMORY[0x277CCAD78] UUID];
+        uUID = [MEMORY[0x277CCAD78] UUID];
         v46[0] = v15;
         v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:1];
-        v19 = [v16 initWithIdentifier:v17 name:v14 parent:0 assertions:v18];
+        v19 = [v16 initWithIdentifier:uUID name:v14 parent:0 assertions:v18];
         v20 = v27;
         v27 = v19;
       }
@@ -121,8 +121,8 @@
         }
 
         v22 = objc_alloc(MEMORY[0x277D0F770]);
-        v17 = [MEMORY[0x277CCAD78] UUID];
-        v23 = [v22 initWithIdentifier:v17 name:v14 parent:0 options:0];
+        uUID = [MEMORY[0x277CCAD78] UUID];
+        v23 = [v22 initWithIdentifier:uUID name:v14 parent:0 options:0];
         v18 = v27;
         v27 = v23;
       }
@@ -132,7 +132,7 @@
       *(&buf + 1) = 3221225472;
       v40 = __55__HAP2AccessoryServerTransportBase__openWithOperation___block_invoke_23;
       v41 = &unk_2786D3D78;
-      v42 = v4;
+      v42 = selfCopy;
       v43 = val;
       v44 = v27;
       objc_copyWeak(&v45, &location);
@@ -157,34 +157,34 @@
   }
 }
 
-- (HAP2AccessoryServerTransportBaseOperationOpen)initWithTransport:(id)a3 completion:(id)a4
+- (HAP2AccessoryServerTransportBaseOperationOpen)initWithTransport:(id)transport completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  transportCopy = transport;
+  completionCopy = completion;
   v8 = MEMORY[0x277CCACA8];
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
   v11 = [v8 stringWithFormat:@"%@.open", v10];
   v23.receiver = self;
   v23.super_class = HAP2AccessoryServerTransportBaseOperationOpen;
-  v12 = [(HAP2AccessoryServerTransportBaseOperation *)&v23 initWithName:v11 transport:v6];
+  v12 = [(HAP2AccessoryServerTransportBaseOperation *)&v23 initWithName:v11 transport:transportCopy];
 
   if (v12)
   {
-    v13 = MEMORY[0x231885210](v7);
+    v13 = MEMORY[0x231885210](completionCopy);
     clientCompletion = v12->_clientCompletion;
     v12->_clientCompletion = v13;
 
-    v15 = [v6 delegateQueue];
+    delegateQueue = [transportCopy delegateQueue];
     objc_initWeak(&location, v12);
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __78__HAP2AccessoryServerTransportBaseOperationOpen_initWithTransport_completion___block_invoke;
     v18[3] = &unk_2786D6BE0;
     objc_copyWeak(&v21, &location);
-    v16 = v15;
+    v16 = delegateQueue;
     v19 = v16;
-    v20 = v7;
+    v20 = completionCopy;
     [(HAP2AccessoryServerTransportBaseOperationOpen *)v12 setCompletionBlock:v18];
 
     objc_destroyWeak(&v21);

@@ -1,26 +1,26 @@
 @interface VoiceOverAudioController
-- (BOOL)_channelCanBeToggled:(id)a3;
+- (BOOL)_channelCanBeToggled:(id)toggled;
 - (id)_currentRouteForOutput;
 - (id)_interestingOutputDevices;
-- (id)_selectedAudioDuckingMode:(id)a3;
-- (id)audioDuckingEnabled:(id)a3;
-- (id)routeToHDMI:(id)a3;
-- (id)routeToSpeakerForPhoneCalls:(id)a3;
-- (id)siriSounds:(id)a3;
-- (id)speakOnCalls:(id)a3;
+- (id)_selectedAudioDuckingMode:(id)mode;
+- (id)audioDuckingEnabled:(id)enabled;
+- (id)routeToHDMI:(id)i;
+- (id)routeToSpeakerForPhoneCalls:(id)calls;
+- (id)siriSounds:(id)sounds;
+- (id)speakOnCalls:(id)calls;
 - (id)specifiers;
 - (void)_handleOutputDeviceList;
-- (void)audioRouteDidChange:(id)a3;
+- (void)audioRouteDidChange:(id)change;
 - (void)dealloc;
-- (void)setAudioDuckingEnabled:(id)a3 specifier:(id)a4;
-- (void)setPlaySiriSounds:(id)a3 specifier:(id)a4;
-- (void)setRouteToHDMI:(id)a3 specifier:(id)a4;
-- (void)setRouteToSpeakerForPhoneCalls:(id)a3 specifier:(id)a4;
-- (void)setSpeakOnCalls:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)setAudioDuckingEnabled:(id)enabled specifier:(id)specifier;
+- (void)setPlaySiriSounds:(id)sounds specifier:(id)specifier;
+- (void)setRouteToHDMI:(id)i specifier:(id)specifier;
+- (void)setRouteToSpeakerForPhoneCalls:(id)calls specifier:(id)specifier;
+- (void)setSpeakOnCalls:(id)calls specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation VoiceOverAudioController
@@ -206,7 +206,7 @@ void __39__VoiceOverAudioController_viewDidLoad__block_invoke_4(uint64_t a1)
   return v3;
 }
 
-- (id)siriSounds:(id)a3
+- (id)siriSounds:(id)sounds
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverUseSiriSounds]);
@@ -214,14 +214,14 @@ void __39__VoiceOverAudioController_viewDidLoad__block_invoke_4(uint64_t a1)
   return v4;
 }
 
-- (void)setPlaySiriSounds:(id)a3 specifier:(id)a4
+- (void)setPlaySiriSounds:(id)sounds specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [sounds BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverUseSiriSounds:v4];
+  [v5 setVoiceOverUseSiriSounds:bOOLValue];
 }
 
-- (id)_selectedAudioDuckingMode:(id)a3
+- (id)_selectedAudioDuckingMode:(id)mode
 {
   v3 = +[AXSettings sharedInstance];
   v4 = AXSettingsNameForAudioDuckingMode([v3 voiceOverMediaDuckingMode]);
@@ -229,7 +229,7 @@ void __39__VoiceOverAudioController_viewDidLoad__block_invoke_4(uint64_t a1)
   return v4;
 }
 
-- (id)speakOnCalls:(id)a3
+- (id)speakOnCalls:(id)calls
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverSpeaksOverTelephoneCalls]);
@@ -237,18 +237,18 @@ void __39__VoiceOverAudioController_viewDidLoad__block_invoke_4(uint64_t a1)
   return v4;
 }
 
-- (void)setSpeakOnCalls:(id)a3 specifier:(id)a4
+- (void)setSpeakOnCalls:(id)calls specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [calls BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverSpeaksOverTelephoneCalls:v4];
+  [v5 setVoiceOverSpeaksOverTelephoneCalls:bOOLValue];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = VoiceOverAudioController;
-  [(VoiceOverAudioController *)&v4 viewWillAppear:a3];
+  [(VoiceOverAudioController *)&v4 viewWillAppear:appear];
   [(VoiceOverAudioController *)self _handleOutputDeviceList];
 }
 
@@ -262,20 +262,20 @@ void __39__VoiceOverAudioController_viewDidLoad__block_invoke_4(uint64_t a1)
   [(VoiceOverAudioController *)&v4 dealloc];
 }
 
-- (void)audioRouteDidChange:(id)a3
+- (void)audioRouteDidChange:(id)change
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:AVAudioSessionRouteChangeReasonKey];
-  v6 = [v5 intValue];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:AVAudioSessionRouteChangeReasonKey];
+  intValue = [v5 intValue];
 
-  if (v6 == 3)
+  if (intValue == 3)
   {
     v7 = AXLogAudioRouting();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v9 = v3;
+      v9 = changeCopy;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_INFO, "not processng audio route change for category change: %@", buf, 0xCu);
     }
   }
@@ -288,15 +288,15 @@ void __39__VoiceOverAudioController_viewDidLoad__block_invoke_4(uint64_t a1)
 
 - (void)_handleOutputDeviceList
 {
-  v2 = self;
+  selfCopy = self;
   [(VoiceOverAudioController *)self beginUpdates];
-  v3 = [(VoiceOverAudioController *)v2 _interestingOutputDevices];
-  if ([v3 count])
+  _interestingOutputDevices = [(VoiceOverAudioController *)selfCopy _interestingOutputDevices];
+  if ([_interestingOutputDevices count])
   {
     v4 = settingsLocString(@"SPEECH_CHANNELS", @"VoiceOverSettings");
-    v5 = [v3 firstObject];
-    [v5 portName];
-    v6 = v55 = v2;
+    firstObject = [_interestingOutputDevices firstObject];
+    [firstObject portName];
+    v6 = v55 = selfCopy;
     v7 = [NSString stringWithFormat:v4, v6];
 
     v8 = [v55 specifierForID:@"DEVICES"];
@@ -311,12 +311,12 @@ void __39__VoiceOverAudioController_viewDidLoad__block_invoke_4(uint64_t a1)
     }
 
     v10 = +[AXAudioHardwareManager sharedManager];
-    v11 = [v55 _currentRouteForOutput];
-    v51 = [v10 savedChannelsForOutput:v11 forSource:1];
+    _currentRouteForOutput = [v55 _currentRouteForOutput];
+    v51 = [v10 savedChannelsForOutput:_currentRouteForOutput forSource:1];
 
     v12 = +[AXAudioHardwareManager sharedManager];
-    v13 = [v55 _currentRouteForOutput];
-    v50 = [v12 savedChannelsForOutput:v13 forSource:2];
+    _currentRouteForOutput2 = [v55 _currentRouteForOutput];
+    v50 = [v12 savedChannelsForOutput:_currentRouteForOutput2 forSource:2];
 
     [v55[18] removeAllObjects];
     v14 = +[NSMutableArray array];
@@ -324,8 +324,8 @@ void __39__VoiceOverAudioController_viewDidLoad__block_invoke_4(uint64_t a1)
     v66 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v44 = v3;
-    obj = v3;
+    v44 = _interestingOutputDevices;
+    obj = _interestingOutputDevices;
     v47 = [obj countByEnumeratingWithState:&v65 objects:v70 count:16];
     if (v47)
     {
@@ -382,18 +382,18 @@ void __39__VoiceOverAudioController_viewDidLoad__block_invoke_4(uint64_t a1)
                 }
 
                 [v18 channelLabel];
-                v21 = [v18 channelName];
+                channelName = [v18 channelName];
                 v59 = AXAudioHDMIChannelLabelDescription();
                 if ([v59 length])
                 {
-                  v22 = v21;
-                  v23 = [v58 portType];
-                  v24 = [v23 isEqualToString:AVAudioSessionPortHDMI];
+                  v22 = channelName;
+                  portType = [v58 portType];
+                  v24 = [portType isEqualToString:AVAudioSessionPortHDMI];
 
                   v25 = AXValidationManager_ptr;
                   if (v24)
                   {
-                    v21 = [v22 stringByAppendingFormat:@" (%@)", v59];
+                    channelName = [v22 stringByAppendingFormat:@" (%@)", v59];
 
                     v20 = v55;
                   }
@@ -401,7 +401,7 @@ void __39__VoiceOverAudioController_viewDidLoad__block_invoke_4(uint64_t a1)
                   else
                   {
                     v20 = v55;
-                    v21 = v22;
+                    channelName = v22;
                   }
                 }
 
@@ -410,8 +410,8 @@ void __39__VoiceOverAudioController_viewDidLoad__block_invoke_4(uint64_t a1)
                   v25 = AXValidationManager_ptr;
                 }
 
-                v57 = v21;
-                v26 = [PSSpecifier preferenceSpecifierNamed:v21 target:v20 set:0 get:0 detail:0 cell:3 edit:0];
+                v57 = channelName;
+                v26 = [PSSpecifier preferenceSpecifierNamed:channelName target:v20 set:0 get:0 detail:0 cell:3 edit:0];
                 v27 = [v25[463] numberWithBool:v19];
                 [v26 setProperty:v27 forKey:@"IsSelected"];
 
@@ -470,25 +470,25 @@ void __39__VoiceOverAudioController_viewDidLoad__block_invoke_4(uint64_t a1)
       v32 = [v14 count];
 
       v33 = v7;
-      v3 = v44;
-      v2 = v55;
+      _interestingOutputDevices = v44;
+      selfCopy = v55;
       if (!v32)
       {
 LABEL_38:
-        outputDeviceSpecifiers = v2->_outputDeviceSpecifiers;
-        v41 = [(VoiceOverAudioController *)v2 specifierForID:@"DEVICES"];
-        [(VoiceOverAudioController *)v2 insertContiguousSpecifiers:outputDeviceSpecifiers afterSpecifier:v41 animated:1];
+        outputDeviceSpecifiers = selfCopy->_outputDeviceSpecifiers;
+        v41 = [(VoiceOverAudioController *)selfCopy specifierForID:@"DEVICES"];
+        [(VoiceOverAudioController *)selfCopy insertContiguousSpecifiers:outputDeviceSpecifiers afterSpecifier:v41 animated:1];
 
         goto LABEL_39;
       }
 
       v34 = settingsLocString(@"SOUND_CHANNELS", @"VoiceOverSettings");
-      v35 = [obj firstObject];
-      v36 = [v35 portName];
-      v37 = [NSString stringWithFormat:v34, v36];
+      firstObject2 = [obj firstObject];
+      portName = [firstObject2 portName];
+      v37 = [NSString stringWithFormat:v34, portName];
       v31 = [PSSpecifier groupSpecifierWithName:v37];
 
-      v2 = v55;
+      selfCopy = v55;
       [v31 setProperty:@"SOUND_GROUP" forKey:PSIDKey];
       [v55[18] addObject:v31];
       [v55[18] addObjectsFromArray:v14];
@@ -497,54 +497,54 @@ LABEL_38:
     else
     {
       v33 = v7;
-      v3 = v44;
-      v2 = v55;
+      _interestingOutputDevices = v44;
+      selfCopy = v55;
     }
 
     goto LABEL_38;
   }
 
-  v38 = [(VoiceOverAudioController *)v2 specifierForID:@"DEVICES"];
+  v38 = [(VoiceOverAudioController *)selfCopy specifierForID:@"DEVICES"];
   [v38 setName:0];
 
-  v39 = [(VoiceOverAudioController *)v2 specifierForID:@"DEVICES"];
-  [(VoiceOverAudioController *)v2 reloadSpecifier:v39 animated:1];
+  v39 = [(VoiceOverAudioController *)selfCopy specifierForID:@"DEVICES"];
+  [(VoiceOverAudioController *)selfCopy reloadSpecifier:v39 animated:1];
 
-  if ([(NSMutableArray *)v2->_outputDeviceSpecifiers count])
+  if ([(NSMutableArray *)selfCopy->_outputDeviceSpecifiers count])
   {
-    [(VoiceOverAudioController *)v2 removeContiguousSpecifiers:v2->_outputDeviceSpecifiers animated:1];
+    [(VoiceOverAudioController *)selfCopy removeContiguousSpecifiers:selfCopy->_outputDeviceSpecifiers animated:1];
   }
 
 LABEL_39:
-  [(VoiceOverAudioController *)v2 endUpdates];
-  v42 = [(VoiceOverAudioController *)v2 devicesUpdatedBlock];
+  [(VoiceOverAudioController *)selfCopy endUpdates];
+  devicesUpdatedBlock = [(VoiceOverAudioController *)selfCopy devicesUpdatedBlock];
 
-  if (v42)
+  if (devicesUpdatedBlock)
   {
-    v43 = [(VoiceOverAudioController *)v2 devicesUpdatedBlock];
-    v43[2]();
+    devicesUpdatedBlock2 = [(VoiceOverAudioController *)selfCopy devicesUpdatedBlock];
+    devicesUpdatedBlock2[2]();
   }
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v10 = a4;
-  v7 = [(VoiceOverAudioController *)self specifierForIndexPath:a5];
+  cellCopy = cell;
+  v7 = [(VoiceOverAudioController *)self specifierForIndexPath:path];
   v8 = [v7 propertyForKey:@"IsSelected"];
 
   if (v8)
   {
     v9 = [v7 propertyForKey:@"IsSelected"];
-    [v10 setChecked:{objc_msgSend(v9, "BOOLValue")}];
+    [cellCopy setChecked:{objc_msgSend(v9, "BOOLValue")}];
   }
 }
 
-- (BOOL)_channelCanBeToggled:(id)a3
+- (BOOL)_channelCanBeToggled:(id)toggled
 {
-  v4 = a3;
-  v5 = [(VoiceOverAudioController *)self cellForSpecifier:v4];
-  v25 = [v5 isChecked];
-  if ((v25 & 1) != 0 || ([v4 propertyForKey:@"Type"], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", @"Speech"), v6, (v7 & 1) == 0))
+  toggledCopy = toggled;
+  v5 = [(VoiceOverAudioController *)self cellForSpecifier:toggledCopy];
+  isChecked = [v5 isChecked];
+  if ((isChecked & 1) != 0 || ([toggledCopy propertyForKey:@"Type"], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", @"Speech"), v6, (v7 & 1) == 0))
   {
     v24 = v5;
     v29 = 0u;
@@ -569,16 +569,16 @@ LABEL_39:
 
           v14 = *(*(&v27 + 1) + 8 * i);
           v15 = [v14 propertyForKey:@"Type"];
-          v16 = [v4 propertyForKey:@"Type"];
+          v16 = [toggledCopy propertyForKey:@"Type"];
           v17 = [v15 isEqualToString:v16];
 
-          if (v14 != v4 && v17 != 0)
+          if (v14 != toggledCopy && v17 != 0)
           {
             v19 = [v14 propertyForKey:@"IsSelected"];
-            v20 = [v19 BOOLValue];
+            bOOLValue = [v19 BOOLValue];
 
-            v11 += v20;
-            if (v25 & v20)
+            v11 += bOOLValue;
+            if (isChecked & bOOLValue)
             {
               v8 = 1;
               goto LABEL_20;
@@ -604,9 +604,9 @@ LABEL_39:
     v8 = 0;
 LABEL_20:
 
-    if ((v25 & 1) == 0)
+    if ((isChecked & 1) == 0)
     {
-      v21 = [v4 propertyForKey:@"Type"];
+      v21 = [toggledCopy propertyForKey:@"Type"];
       v22 = [v21 isEqualToString:@"Sound"];
 
       if (v22)
@@ -626,19 +626,19 @@ LABEL_20:
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v43.receiver = self;
   v43.super_class = VoiceOverAudioController;
-  [(VoiceOverAudioController *)&v43 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(VoiceOverAudioController *)self specifierForIndexPath:v6];
+  [(VoiceOverAudioController *)&v43 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(VoiceOverAudioController *)self specifierForIndexPath:pathCopy];
   v8 = [(VoiceOverAudioController *)self cellForSpecifier:v7];
   v9 = [v7 propertyForKey:@"Port"];
 
   if (v9 && [(VoiceOverAudioController *)self _channelCanBeToggled:v7])
   {
-    v36 = v6;
+    v36 = pathCopy;
     v34 = v8;
     [v8 setChecked:{objc_msgSend(v8, "isChecked") ^ 1}];
     v10 = [v7 propertyForKey:@"IsSelected"];
@@ -652,8 +652,8 @@ LABEL_20:
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v12 = [(VoiceOverAudioController *)self specifiers];
-    v13 = [v12 countByEnumeratingWithState:&v39 objects:v44 count:16];
+    specifiers = [(VoiceOverAudioController *)self specifiers];
+    v13 = [specifiers countByEnumeratingWithState:&v39 objects:v44 count:16];
     if (v13)
     {
       v14 = v13;
@@ -664,7 +664,7 @@ LABEL_20:
         {
           if (*v40 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(specifiers);
           }
 
           v17 = *(*(&v39 + 1) + 8 * i);
@@ -673,9 +673,9 @@ LABEL_20:
           {
             v19 = v18;
             v20 = [v17 propertyForKey:@"IsSelected"];
-            v21 = [v20 BOOLValue];
+            bOOLValue = [v20 BOOLValue];
 
-            if (v21)
+            if (bOOLValue)
             {
               v22 = [v17 propertyForKey:@"Type"];
               v23 = [v22 isEqualToString:@"Speech"];
@@ -690,7 +690,7 @@ LABEL_20:
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v39 objects:v44 count:16];
+        v14 = [specifiers countByEnumeratingWithState:&v39 objects:v44 count:16];
       }
 
       while (v14);
@@ -698,65 +698,65 @@ LABEL_20:
 
     v28 = +[AXAudioHardwareManager sharedManager];
     v29 = +[AVAudioSession sharedInstance];
-    v30 = [v29 currentRoute];
-    [v28 setSavedChannels:v38 forOutput:v30 forSource:1];
+    currentRoute = [v29 currentRoute];
+    [v28 setSavedChannels:v38 forOutput:currentRoute forSource:1];
 
     v31 = +[AXAudioHardwareManager sharedManager];
     v32 = +[AVAudioSession sharedInstance];
-    v33 = [v32 currentRoute];
-    [v31 setSavedChannels:v37 forOutput:v33 forSource:2];
+    currentRoute2 = [v32 currentRoute];
+    [v31 setSavedChannels:v37 forOutput:currentRoute2 forSource:2];
 
     v7 = v35;
-    v6 = v36;
+    pathCopy = v36;
     v8 = v34;
   }
 }
 
 - (id)_currentRouteForOutput
 {
-  v3 = [(VoiceOverAudioController *)self testingRoute];
+  testingRoute = [(VoiceOverAudioController *)self testingRoute];
 
-  if (v3)
+  if (testingRoute)
   {
-    v4 = [(VoiceOverAudioController *)self testingRoute];
+    testingRoute2 = [(VoiceOverAudioController *)self testingRoute];
   }
 
   else
   {
     v5 = +[AVAudioSession sharedInstance];
-    v4 = [v5 currentRoute];
+    testingRoute2 = [v5 currentRoute];
   }
 
-  return v4;
+  return testingRoute2;
 }
 
 - (id)_interestingOutputDevices
 {
-  v3 = [(VoiceOverAudioController *)self testingPorts];
+  testingPorts = [(VoiceOverAudioController *)self testingPorts];
 
-  if (v3)
+  if (testingPorts)
   {
-    v33 = [(VoiceOverAudioController *)self testingPorts];
+    testingPorts2 = [(VoiceOverAudioController *)self testingPorts];
   }
 
   else
   {
     +[AXAudioHardwareManager enableMultiroute];
     v30 = +[AVAudioSession sharedInstance];
-    v4 = [v30 currentRoute];
+    currentRoute = [v30 currentRoute];
     if (_interestingOutputDevices_onceToken != -1)
     {
       [VoiceOverAudioController _interestingOutputDevices];
     }
 
-    v33 = +[NSMutableArray array];
-    v29 = v4;
-    v5 = [v4 outputs];
+    testingPorts2 = +[NSMutableArray array];
+    v29 = currentRoute;
+    outputs = [currentRoute outputs];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v34 objects:v40 count:16];
+    v6 = [outputs countByEnumeratingWithState:&v34 objects:v40 count:16];
     if (v6)
     {
       v7 = v6;
@@ -772,28 +772,28 @@ LABEL_20:
         {
           if (*v35 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(outputs);
           }
 
           v12 = *(*(&v34 + 1) + 8 * v11);
-          v13 = [v9[509] sharedInstance];
-          v14 = [v13 ignoreLogging];
+          sharedInstance = [v9[509] sharedInstance];
+          ignoreLogging = [sharedInstance ignoreLogging];
 
-          if ((v14 & 1) == 0)
+          if ((ignoreLogging & 1) == 0)
           {
-            v15 = [v9[509] identifier];
+            identifier = [v9[509] identifier];
             v16 = AXLoggerForFacility();
 
             v17 = AXOSLogLevelFromAXLogLevel();
             if (os_log_type_enabled(v16, v17))
             {
-              v18 = v5;
+              v18 = outputs;
               v19 = AXColorizeFormatLog();
               v20 = v10;
               v21 = v10[130];
-              v22 = [v12 portType];
+              portType = [v12 portType];
               v27 = v12;
-              v28 = [v21 containsObject:v22];
+              v28 = [v21 containsObject:portType];
               v23 = _AXStringForArgs();
 
               if (os_log_type_enabled(v16, v17))
@@ -803,7 +803,7 @@ LABEL_20:
                 _os_log_impl(&dword_0, v16, v17, "%{public}@", buf, 0xCu);
               }
 
-              v5 = v18;
+              outputs = v18;
               v9 = &_s7SwiftUI5ColorV4blueACvgZ_ptr;
               v10 = v20;
               v8 = v31;
@@ -812,19 +812,19 @@ LABEL_20:
           }
 
           v24 = v10[130];
-          v25 = [v12 portType];
-          LODWORD(v24) = [v24 containsObject:v25];
+          portType2 = [v12 portType];
+          LODWORD(v24) = [v24 containsObject:portType2];
 
           if (v24)
           {
-            [v33 addObject:v12];
+            [testingPorts2 addObject:v12];
           }
 
           v11 = v11 + 1;
         }
 
         while (v7 != v11);
-        v7 = [v5 countByEnumeratingWithState:&v34 objects:v40 count:16];
+        v7 = [outputs countByEnumeratingWithState:&v34 objects:v40 count:16];
       }
 
       while (v7);
@@ -833,7 +833,7 @@ LABEL_20:
     +[AXAudioHardwareManager disableMultiroute];
   }
 
-  return v33;
+  return testingPorts2;
 }
 
 void __53__VoiceOverAudioController__interestingOutputDevices__block_invoke(id a1)
@@ -845,28 +845,28 @@ void __53__VoiceOverAudioController__interestingOutputDevices__block_invoke(id a
   _objc_release_x1(v1, v2);
 }
 
-- (void)setAudioDuckingEnabled:(id)a3 specifier:(id)a4
+- (void)setAudioDuckingEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverAudioDuckingEnabled:v4];
+  [v5 setVoiceOverAudioDuckingEnabled:bOOLValue];
 }
 
-- (void)setRouteToSpeakerForPhoneCalls:(id)a3 specifier:(id)a4
+- (void)setRouteToSpeakerForPhoneCalls:(id)calls specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [calls BOOLValue];
 
-  __AXSVoiceOverTouchSetShouldRouteToSpeakerWithProximity(v4);
+  __AXSVoiceOverTouchSetShouldRouteToSpeakerWithProximity(bOOLValue);
 }
 
-- (id)routeToSpeakerForPhoneCalls:(id)a3
+- (id)routeToSpeakerForPhoneCalls:(id)calls
 {
   ShouldRouteToSpeakerWithProximity = _AXSVoiceOverTouchShouldRouteToSpeakerWithProximity();
 
   return [NSNumber numberWithUnsignedChar:ShouldRouteToSpeakerWithProximity];
 }
 
-- (id)audioDuckingEnabled:(id)a3
+- (id)audioDuckingEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverAudioDuckingEnabled]);
@@ -874,14 +874,14 @@ void __53__VoiceOverAudioController__interestingOutputDevices__block_invoke(id a
   return v4;
 }
 
-- (void)setRouteToHDMI:(id)a3 specifier:(id)a4
+- (void)setRouteToHDMI:(id)i specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [i BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverAudioFollowsHDMIAudio:v4];
+  [v5 setVoiceOverAudioFollowsHDMIAudio:bOOLValue];
 }
 
-- (id)routeToHDMI:(id)a3
+- (id)routeToHDMI:(id)i
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverAudioFollowsHDMIAudio]);

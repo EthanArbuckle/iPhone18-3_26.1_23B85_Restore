@@ -1,8 +1,8 @@
 @interface EDStylesCollection
 - (EDStylesCollection)init;
-- (unint64_t)addObject:(id)a3;
+- (unint64_t)addObject:(id)object;
 - (void)removeAllObjects;
-- (void)removeObjectAtIndex:(unint64_t)a3;
+- (void)removeObjectAtIndex:(unint64_t)index;
 @end
 
 @implementation EDStylesCollection
@@ -20,25 +20,25 @@
   return result;
 }
 
-- (unint64_t)addObject:(id)a3
+- (unint64_t)addObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v7.receiver = self;
   v7.super_class = EDStylesCollection;
-  v5 = [(EDCollection *)&v7 addObject:v4];
+  v5 = [(EDCollection *)&v7 addObject:objectCopy];
   if (v5 != -1)
   {
-    [v4 setIndex:v5];
+    [objectCopy setIndex:v5];
   }
 
   return v5;
 }
 
-- (void)removeObjectAtIndex:(unint64_t)a3
+- (void)removeObjectAtIndex:(unint64_t)index
 {
   v3.receiver = self;
   v3.super_class = EDStylesCollection;
-  [(EDCollection *)&v3 removeObjectAtIndex:a3];
+  [(EDCollection *)&v3 removeObjectAtIndex:index];
 }
 
 - (void)removeAllObjects

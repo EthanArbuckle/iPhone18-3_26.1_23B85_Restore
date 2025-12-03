@@ -1,32 +1,32 @@
 @interface CSFDERecordFDEClientMetadataFDEKeyRegistryFDEEntry
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addPublicKeys:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPublicKeys:(id)keys;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSFDERecordFDEClientMetadataFDEKeyRegistryFDEEntry
 
-- (void)addPublicKeys:(id)a3
+- (void)addPublicKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   publicKeys = self->_publicKeys;
-  v8 = v4;
+  v8 = keysCopy;
   if (!publicKeys)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_publicKeys;
     self->_publicKeys = v6;
 
-    v4 = v8;
+    keysCopy = v8;
     publicKeys = self->_publicKeys;
   }
 
-  objc_msgSend_addObject_(publicKeys, v4, v4);
+  objc_msgSend_addObject_(publicKeys, keysCopy, keysCopy);
 }
 
 - (id)description
@@ -60,10 +60,10 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_pcsService)
   {
     PBDataWriterWriteStringField();
@@ -104,18 +104,18 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v16 = a3;
+  toCopy = to;
   pcsService = self->_pcsService;
   if (pcsService)
   {
-    objc_msgSend_setPcsService_(v16, v4, pcsService);
+    objc_msgSend_setPcsService_(toCopy, v4, pcsService);
   }
 
   if (objc_msgSend_publicKeysCount(self, v4, pcsService))
   {
-    objc_msgSend_clearPublicKeys(v16, v6, v7);
+    objc_msgSend_clearPublicKeys(toCopy, v6, v7);
     v10 = objc_msgSend_publicKeysCount(self, v8, v9);
     if (v10)
     {
@@ -123,19 +123,19 @@
       for (i = 0; i != v12; ++i)
       {
         v14 = objc_msgSend_publicKeysAtIndex_(self, v11, i);
-        objc_msgSend_addPublicKeys_(v16, v15, v14);
+        objc_msgSend_addPublicKeys_(toCopy, v15, v14);
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_pcsService, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_pcsService, v11, zone);
   v13 = v10[1];
   v10[1] = v12;
 
@@ -159,7 +159,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v21 = objc_msgSend_copyWithZone_(*(*(&v25 + 1) + 8 * v20), v17, a3, v25);
+        v21 = objc_msgSend_copyWithZone_(*(*(&v25 + 1) + 8 * v20), v17, zone, v25);
         objc_msgSend_addPublicKeys_(v10, v22, v21);
 
         ++v20;
@@ -176,14 +176,14 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5) && ((pcsService = self->_pcsService, v9 = v4[1], !(pcsService | v9)) || objc_msgSend_isEqual_(pcsService, v7, v9)))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5) && ((pcsService = self->_pcsService, v9 = equalCopy[1], !(pcsService | v9)) || objc_msgSend_isEqual_(pcsService, v7, v9)))
   {
     publicKeys = self->_publicKeys;
-    v11 = v4[2];
+    v11 = equalCopy[2];
     if (publicKeys | v11)
     {
       isEqual = objc_msgSend_isEqual_(publicKeys, v7, v11);
@@ -203,11 +203,11 @@
   return isEqual;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = *(v5 + 1);
+  fromCopy = from;
+  v6 = *(fromCopy + 1);
   if (v6)
   {
     objc_msgSend_setPcsService_(self, v4, v6);
@@ -217,7 +217,7 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = *(v5 + 2);
+  v7 = *(fromCopy + 2);
   v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v15, v19, 16);
   if (v9)
   {

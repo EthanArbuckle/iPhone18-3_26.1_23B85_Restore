@@ -1,7 +1,7 @@
 @interface RCShareTableViewController
-- (void)_setupTitleCellTextWithDefaultFileName:(id)a3;
+- (void)_setupTitleCellTextWithDefaultFileName:(id)name;
 - (void)loadView;
-- (void)setSharedFileName:(id)a3;
+- (void)setSharedFileName:(id)name;
 @end
 
 @implementation RCShareTableViewController
@@ -12,8 +12,8 @@
   v14.super_class = RCShareTableViewController;
   [(RCShareTableViewController *)&v14 loadView];
   v3 = +[UIColor secondarySystemBackgroundColor];
-  v4 = [(RCShareTableViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(RCShareTableViewController *)self view];
+  [view setBackgroundColor:v3];
 
   v5 = RCLocalizedFrameworkString();
   [(RCShareTableViewController *)self setTitle:v5];
@@ -26,33 +26,33 @@
   [(UITableViewCell *)self->_voiceMemoTitleCell setBackgroundColor:v8];
 
   v9 = [UITextField alloc];
-  v10 = [(UITableViewCell *)self->_voiceMemoTitleCell contentView];
-  [v10 bounds];
+  contentView = [(UITableViewCell *)self->_voiceMemoTitleCell contentView];
+  [contentView bounds];
   v16 = CGRectInset(v15, 15.0, 0.0);
   v11 = [v9 initWithFrame:{v16.origin.x, v16.origin.y, v16.size.width, v16.size.height}];
   voiceMemoTitleText = self->_voiceMemoTitleText;
   self->_voiceMemoTitleText = v11;
 
   [(UITextField *)self->_voiceMemoTitleText setAutoresizingMask:18];
-  v13 = [(UITableViewCell *)self->_voiceMemoTitleCell contentView];
-  [v13 addSubview:self->_voiceMemoTitleText];
+  contentView2 = [(UITableViewCell *)self->_voiceMemoTitleCell contentView];
+  [contentView2 addSubview:self->_voiceMemoTitleText];
 }
 
-- (void)setSharedFileName:(id)a3
+- (void)setSharedFileName:(id)name
 {
-  objc_storeStrong(&self->_sharedFileName, a3);
-  v5 = a3;
-  [(RCShareTableViewController *)self _setupTitleCellTextWithDefaultFileName:v5];
+  objc_storeStrong(&self->_sharedFileName, name);
+  nameCopy = name;
+  [(RCShareTableViewController *)self _setupTitleCellTextWithDefaultFileName:nameCopy];
 }
 
-- (void)_setupTitleCellTextWithDefaultFileName:(id)a3
+- (void)_setupTitleCellTextWithDefaultFileName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   voiceMemoTitleText = self->_voiceMemoTitleText;
   if (voiceMemoTitleText && !self->_didSetupTitleCellText)
   {
-    v6 = v4;
-    [(UITextField *)voiceMemoTitleText setText:v4];
+    v6 = nameCopy;
+    [(UITextField *)voiceMemoTitleText setText:nameCopy];
     [(UITextField *)self->_voiceMemoTitleText setPlaceholder:v6];
     self->_didSetupTitleCellText = 1;
   }

@@ -1,20 +1,20 @@
 @interface AFObjectUpdatedSiriResponse
-- (AFObjectUpdatedSiriResponse)initWithCoder:(id)a3;
-- (id)_initWithRequest:(id)a3 objectIdentifier:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (AFObjectUpdatedSiriResponse)initWithCoder:(id)coder;
+- (id)_initWithRequest:(id)request objectIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFObjectUpdatedSiriResponse
 
-- (AFObjectUpdatedSiriResponse)initWithCoder:(id)a3
+- (AFObjectUpdatedSiriResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = AFObjectUpdatedSiriResponse;
-  v5 = [(AFSiriResponse *)&v10 initWithCoder:v4];
+  v5 = [(AFSiriResponse *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ObjectUpdatedResponseObjectIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ObjectUpdatedResponseObjectIdentifier"];
     v7 = [v6 copy];
     objectIdentifier = v5->_objectIdentifier;
     v5->_objectIdentifier = v7;
@@ -23,24 +23,24 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = AFObjectUpdatedSiriResponse;
-  v4 = a3;
-  [(AFSiriResponse *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_objectIdentifier forKey:{@"ObjectUpdatedResponseObjectIdentifier", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(AFSiriResponse *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_objectIdentifier forKey:{@"ObjectUpdatedResponseObjectIdentifier", v5.receiver, v5.super_class}];
 }
 
-- (id)_initWithRequest:(id)a3 objectIdentifier:(id)a4
+- (id)_initWithRequest:(id)request objectIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = AFObjectUpdatedSiriResponse;
-  v7 = [(AFSiriResponse *)&v11 _initWithRequest:a3];
+  v7 = [(AFSiriResponse *)&v11 _initWithRequest:request];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     v9 = v7[2];
     v7[2] = v8;
   }

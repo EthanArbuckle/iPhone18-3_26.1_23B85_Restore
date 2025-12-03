@@ -4,7 +4,7 @@
 - (BOOL)allowsRestrictedCharacteristicsAccessViaSkipDeveloperModeRestrictionProfile;
 - (BOOL)isRestrictedCharacteristicsAccessAllowed;
 - (MTSAuthorization)init;
-- (MTSAuthorization)initWithServerProxy:(id)a3;
+- (MTSAuthorization)initWithServerProxy:(id)proxy;
 @end
 
 @implementation MTSAuthorization
@@ -15,17 +15,17 @@
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 0;
-  v2 = [(MTSAuthorization *)self serverProxy];
+  serverProxy = [(MTSAuthorization *)self serverProxy];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __95__MTSAuthorization_allowsRestrictedCharacteristicsAccessViaSkipDeveloperModeRestrictionProfile__block_invoke;
   v4[3] = &unk_278AA1858;
   v4[4] = &v5;
-  [v2 checkRestrictedCharacteristicsAccessAllowedWithCompletionHandler:v4];
+  [serverProxy checkRestrictedCharacteristicsAccessAllowedWithCompletionHandler:v4];
 
-  LOBYTE(v2) = *(v6 + 24);
+  LOBYTE(serverProxy) = *(v6 + 24);
   _Block_object_dispose(&v5, 8);
-  return v2;
+  return serverProxy;
 }
 
 - (BOOL)allowsRestrictedCharacteristicsAccessViaDeveloperModeProfile
@@ -37,8 +37,8 @@
     Int64 = CFPrefs_GetInt64();
     if (Int64)
     {
-      v4 = [(MTSAuthorization *)self serverProxy];
-      [v4 showRestrictedCharacteristicsAccessWarningAlert];
+      serverProxy = [(MTSAuthorization *)self serverProxy];
+      [serverProxy showRestrictedCharacteristicsAccessWarningAlert];
 
       LOBYTE(Int64) = 1;
     }
@@ -58,14 +58,14 @@
   return [(MTSAuthorization *)self allowsRestrictedCharacteristicsAccessViaSkipDeveloperModeRestrictionProfile];
 }
 
-- (MTSAuthorization)initWithServerProxy:(id)a3
+- (MTSAuthorization)initWithServerProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   v8.receiver = self;
   v8.super_class = MTSAuthorization;
   v5 = [(MTSAuthorization *)&v8 init];
   serverProxy = v5->_serverProxy;
-  v5->_serverProxy = v4;
+  v5->_serverProxy = proxyCopy;
 
   return v5;
 }
@@ -88,7 +88,7 @@
   {
     v4 = v3;
     v5 = objc_autoreleasePoolPush();
-    v6 = a1;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {

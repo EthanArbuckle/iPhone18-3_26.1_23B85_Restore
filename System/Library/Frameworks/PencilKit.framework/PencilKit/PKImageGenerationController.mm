@@ -5,8 +5,8 @@
 - (BOOL)shouldShowImageGenerationUI;
 - (PKImageGenerationController)init;
 - (PKImageGenerationControllerDelegate)delegate;
-- (void)_handleGenerationModelAvailabilityDidChangeNotification:(id)a3;
-- (void)_handleManagedConfigurationEffectiveSettingsDidChangeNotification:(id)a3;
+- (void)_handleGenerationModelAvailabilityDidChangeNotification:(id)notification;
+- (void)_handleManagedConfigurationEffectiveSettingsDidChangeNotification:(id)notification;
 - (void)_notifyStateDidChangeIfNecessary;
 @end
 
@@ -21,18 +21,18 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(PKImageGenerationController *)v2 isGenerationToolEnabled];
+    isGenerationToolEnabled = [(PKImageGenerationController *)v2 isGenerationToolEnabled];
     v5 = os_log_create("com.apple.pencilkit", "ToolPicker");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v12 = v4;
+      v12 = isGenerationToolEnabled;
       _os_log_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_DEFAULT, "isGenerationToolEnabled: %{BOOL}d", buf, 8u);
     }
 
-    if (v4)
+    if (isGenerationToolEnabled)
     {
-      v6 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v7 = os_log_create("com.apple.pencilkit", "ToolPicker");
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
@@ -40,7 +40,7 @@
         _os_log_impl(&dword_1C7CCA000, v7, OS_LOG_TYPE_DEFAULT, "Observe generation model availability change notification", buf, 2u);
       }
 
-      [v6 addObserver:v3 selector:sel__handleGenerationModelAvailabilityDidChangeNotification_ name:@"PKGenerationModelAvailabilityStatusDidChangeNotification" object:0];
+      [defaultCenter addObserver:v3 selector:sel__handleGenerationModelAvailabilityDidChangeNotification_ name:@"PKGenerationModelAvailabilityStatusDidChangeNotification" object:0];
       v8 = os_log_create("com.apple.pencilkit", "ToolPicker");
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
@@ -48,7 +48,7 @@
         _os_log_impl(&dword_1C7CCA000, v8, OS_LOG_TYPE_DEFAULT, "Observe managed configuration effective settings change notification", buf, 2u);
       }
 
-      [v6 addObserver:v3 selector:sel__handleManagedConfigurationEffectiveSettingsDidChangeNotification_ name:*MEMORY[0x1E69ADD68] object:0];
+      [defaultCenter addObserver:v3 selector:sel__handleManagedConfigurationEffectiveSettingsDidChangeNotification_ name:*MEMORY[0x1E69ADD68] object:0];
     }
 
     v3->_cachedShouldShowImageGenerationUI = [(PKImageGenerationController *)v3 shouldShowImageGenerationUI];
@@ -69,9 +69,9 @@
 
     else
     {
-      v3 = [MEMORY[0x1E696AAE8] mainBundle];
-      v4 = [v3 bundleIdentifier];
-      v5 = [v4 isEqualToString:@"com.apple.mobilenotes"];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      v5 = [bundleIdentifier isEqualToString:@"com.apple.mobilenotes"];
 
       if (v5 && !PKIsQuickNoteOnPhone())
       {
@@ -91,52 +91,52 @@
 
 - (BOOL)shouldShowImageGenerationUI
 {
-  v3 = [(PKImageGenerationController *)self isGenerationToolEnabled];
-  if (v3)
+  isGenerationToolEnabled = [(PKImageGenerationController *)self isGenerationToolEnabled];
+  if (isGenerationToolEnabled)
   {
-    v3 = [(PKImageGenerationController *)self isImageGenerationAllowed];
-    if (v3)
+    isGenerationToolEnabled = [(PKImageGenerationController *)self isImageGenerationAllowed];
+    if (isGenerationToolEnabled)
     {
       if ([(PKImageGenerationController *)self isGenerationModelAvailable])
       {
-        LOBYTE(v3) = 1;
+        LOBYTE(isGenerationToolEnabled) = 1;
       }
 
       else
       {
         v4 = +[PKGenerationModelAvailabilityController sharedInstance];
-        v5 = [v4 shouldShowEnrollmentUI];
+        shouldShowEnrollmentUI = [v4 shouldShowEnrollmentUI];
 
-        LOBYTE(v3) = v5;
+        LOBYTE(isGenerationToolEnabled) = shouldShowEnrollmentUI;
       }
     }
   }
 
-  return v3;
+  return isGenerationToolEnabled;
 }
 
 - (BOOL)isImageGenerationAllowed
 {
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v3 = [v2 isImageWandAllowed];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  isImageWandAllowed = [mEMORY[0x1E69ADFB8] isImageWandAllowed];
 
-  return v3;
+  return isImageWandAllowed;
 }
 
 - (BOOL)isGenerationModelAvailable
 {
   v2 = +[PKGenerationModelAvailabilityController sharedInstance];
-  v3 = [v2 isGenerationModelAvailable];
+  isGenerationModelAvailable = [v2 isGenerationModelAvailable];
 
-  return v3;
+  return isGenerationModelAvailable;
 }
 
 - (void)_notifyStateDidChangeIfNecessary
 {
-  v3 = [(PKImageGenerationController *)self shouldShowImageGenerationUI];
-  if (self->_cachedShouldShowImageGenerationUI != v3)
+  shouldShowImageGenerationUI = [(PKImageGenerationController *)self shouldShowImageGenerationUI];
+  if (self->_cachedShouldShowImageGenerationUI != shouldShowImageGenerationUI)
   {
-    self->_cachedShouldShowImageGenerationUI = v3;
+    self->_cachedShouldShowImageGenerationUI = shouldShowImageGenerationUI;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v5 = objc_opt_respondsToSelector();
 
@@ -155,7 +155,7 @@
   }
 }
 
-- (void)_handleGenerationModelAvailabilityDidChangeNotification:(id)a3
+- (void)_handleGenerationModelAvailabilityDidChangeNotification:(id)notification
 {
   v6 = *MEMORY[0x1E69E9840];
   v4 = os_log_create("com.apple.pencilkit", "ToolPicker");
@@ -169,7 +169,7 @@
   [(PKImageGenerationController *)self _notifyStateDidChangeIfNecessary];
 }
 
-- (void)_handleManagedConfigurationEffectiveSettingsDidChangeNotification:(id)a3
+- (void)_handleManagedConfigurationEffectiveSettingsDidChangeNotification:(id)notification
 {
   v6 = *MEMORY[0x1E69E9840];
   v4 = os_log_create("com.apple.pencilkit", "ToolPicker");

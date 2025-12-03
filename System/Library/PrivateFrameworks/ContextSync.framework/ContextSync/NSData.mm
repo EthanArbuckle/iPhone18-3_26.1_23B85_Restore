@@ -6,17 +6,17 @@
 
 - (id)bmdsl_deserialize
 {
-  v1 = a1;
+  selfCopy = self;
   v17 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v2 = MEMORY[0x277CCAAC8];
-    v3 = [MEMORY[0x277CF0DE0] allowed];
+    allowed = [MEMORY[0x277CF0DE0] allowed];
     v15 = 0;
-    v1 = [v2 unarchivedObjectOfClasses:v3 fromData:v1 error:&v15];
+    selfCopy = [v2 unarchivedObjectOfClasses:allowed fromData:selfCopy error:&v15];
     v4 = v15;
 
-    if (!v1)
+    if (!selfCopy)
     {
       v5 = __biome_log_for_category();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -29,7 +29,7 @@
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v1;
+  return selfCopy;
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface ASDDSPGraphBox
 - (ASDDSPGraphBox)init;
-- (ASDDSPGraphBox)initWithBox:(void *)a3 fromGraph:(shared_ptr<DSPGraph::Graph>)a4;
-- (BOOL)getParameter:(float *)a3 forID:(unsigned int)a4 scope:(unsigned int)a5 element:(unsigned int)a6;
-- (BOOL)getParameterInfo:(AudioUnitParameterInfo *)a3 forID:(unsigned int)a4 inScope:(unsigned int)a5;
-- (BOOL)getParameterList:(unsigned int *)a3 numParameterIDs:(int64_t *)a4 inScope:(unsigned int)a5;
-- (BOOL)hasParameter:(unsigned int)a3 scope:(unsigned int)a4 element:(unsigned int)a5;
-- (BOOL)setParameter:(float)a3 forID:(unsigned int)a4 scope:(unsigned int)a5 element:(unsigned int)a6 bufferOffset:(int64_t)a7;
-- (BOOL)startInjectingPort:(int64_t)a3 toFile:(id)a4 shouldLoop:(BOOL)a5;
-- (BOOL)startRecordingPort:(int64_t)a3 toFile:(id)a4;
-- (BOOL)startRecordingPort:(int64_t)a3 toFile:(id)a4 withAudioCapturerOptions:(unint64_t)a5;
-- (BOOL)stopInjectingPort:(int64_t)a3;
-- (BOOL)stopRecordingPort:(int64_t)a3;
+- (ASDDSPGraphBox)initWithBox:(void *)box fromGraph:(shared_ptr<DSPGraph::Graph>)graph;
+- (BOOL)getParameter:(float *)parameter forID:(unsigned int)d scope:(unsigned int)scope element:(unsigned int)element;
+- (BOOL)getParameterInfo:(AudioUnitParameterInfo *)info forID:(unsigned int)d inScope:(unsigned int)scope;
+- (BOOL)getParameterList:(unsigned int *)list numParameterIDs:(int64_t *)ds inScope:(unsigned int)scope;
+- (BOOL)hasParameter:(unsigned int)parameter scope:(unsigned int)scope element:(unsigned int)element;
+- (BOOL)setParameter:(float)parameter forID:(unsigned int)d scope:(unsigned int)scope element:(unsigned int)element bufferOffset:(int64_t)offset;
+- (BOOL)startInjectingPort:(int64_t)port toFile:(id)file shouldLoop:(BOOL)loop;
+- (BOOL)startRecordingPort:(int64_t)port toFile:(id)file;
+- (BOOL)startRecordingPort:(int64_t)port toFile:(id)file withAudioCapturerOptions:(unint64_t)options;
+- (BOOL)stopInjectingPort:(int64_t)port;
+- (BOOL)stopRecordingPort:(int64_t)port;
 - (NSString)name;
 - (id).cxx_construct;
 @end
@@ -26,27 +26,27 @@
   return 0;
 }
 
-- (ASDDSPGraphBox)initWithBox:(void *)a3 fromGraph:(shared_ptr<DSPGraph::Graph>)a4
+- (ASDDSPGraphBox)initWithBox:(void *)box fromGraph:(shared_ptr<DSPGraph::Graph>)graph
 {
-  ptr = a4.__ptr_;
+  ptr = graph.__ptr_;
   v14.receiver = self;
   v14.super_class = ASDDSPGraphBox;
-  v7 = [(ASDDSPGraphBox *)&v14 init:a3];
+  v7 = [(ASDDSPGraphBox *)&v14 init:box];
   if (v7)
   {
-    if (!a3)
+    if (!box)
     {
-      v12 = [MEMORY[0x277CCA890] currentHandler];
-      [v12 handleFailureInMethod:a2 object:v7 file:@"ASDDSPGraphBox.mm" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"box"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v7 file:@"ASDDSPGraphBox.mm" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"box"}];
     }
 
     if (!*ptr)
     {
-      v13 = [MEMORY[0x277CCA890] currentHandler];
-      [v13 handleFailureInMethod:a2 object:v7 file:@"ASDDSPGraphBox.mm" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"graph"}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:v7 file:@"ASDDSPGraphBox.mm" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"graph"}];
     }
 
-    v7->_box = a3;
+    v7->_box = box;
     v9 = *ptr;
     v8 = *(ptr + 1);
     if (v8)
@@ -66,21 +66,21 @@
   return v7;
 }
 
-- (BOOL)startRecordingPort:(int64_t)a3 toFile:(id)a4
+- (BOOL)startRecordingPort:(int64_t)port toFile:(id)file
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  fileCopy = file;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __44__ASDDSPGraphBox_startRecordingPort_toFile___block_invoke;
   v10[3] = &unk_278CE3B48;
   v10[4] = self;
-  v11 = v6;
-  v12 = a3;
+  v11 = fileCopy;
+  portCopy = port;
   v13 = &unk_2853444C8;
   v14 = 0;
   v15 = &v13;
-  v7 = v6;
+  v7 = fileCopy;
   LOBYTE(self) = ASDDSP::exceptionBarrier<BOOL({block_pointer} {__strong})(void)>(v10);
   std::__function::__value_func<BOOL ()(void)>::~__value_func[abi:ne200100](&v13);
 
@@ -88,30 +88,30 @@
   return self;
 }
 
-- (BOOL)startRecordingPort:(int64_t)a3 toFile:(id)a4 withAudioCapturerOptions:(unint64_t)a5
+- (BOOL)startRecordingPort:(int64_t)port toFile:(id)file withAudioCapturerOptions:(unint64_t)options
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  fileCopy = file;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __69__ASDDSPGraphBox_startRecordingPort_toFile_withAudioCapturerOptions___block_invoke;
   v12[3] = &unk_278CE3EF0;
   v12[4] = self;
-  v13 = v8;
-  v14 = a3;
-  v15 = a5;
+  v13 = fileCopy;
+  portCopy = port;
+  optionsCopy = options;
   v16 = &unk_2853444C8;
   v17 = 0;
   v18 = &v16;
-  v9 = v8;
-  LOBYTE(a3) = ASDDSP::exceptionBarrier<BOOL({block_pointer} {__strong})(void)>(v12);
+  v9 = fileCopy;
+  LOBYTE(port) = ASDDSP::exceptionBarrier<BOOL({block_pointer} {__strong})(void)>(v12);
   std::__function::__value_func<BOOL ()(void)>::~__value_func[abi:ne200100](&v16);
 
   v10 = *MEMORY[0x277D85DE8];
-  return a3;
+  return port;
 }
 
-- (BOOL)stopRecordingPort:(int64_t)a3
+- (BOOL)stopRecordingPort:(int64_t)port
 {
   v10 = *MEMORY[0x277D85DE8];
   v6[0] = MEMORY[0x277D85DD0];
@@ -119,7 +119,7 @@
   v6[2] = __36__ASDDSPGraphBox_stopRecordingPort___block_invoke;
   v6[3] = &unk_278CE3F18;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = port;
   v7 = &unk_2853444C8;
   v8 = 0;
   v9 = &v7;
@@ -129,30 +129,30 @@
   return v3;
 }
 
-- (BOOL)startInjectingPort:(int64_t)a3 toFile:(id)a4 shouldLoop:(BOOL)a5
+- (BOOL)startInjectingPort:(int64_t)port toFile:(id)file shouldLoop:(BOOL)loop
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  fileCopy = file;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __55__ASDDSPGraphBox_startInjectingPort_toFile_shouldLoop___block_invoke;
   v12[3] = &unk_278CE3F40;
   v12[4] = self;
-  v13 = v8;
-  v14 = a3;
-  v15 = a5;
+  v13 = fileCopy;
+  portCopy = port;
+  loopCopy = loop;
   v16 = &unk_2853444C8;
   v17 = 0;
   v18 = &v16;
-  v9 = v8;
-  LOBYTE(a3) = ASDDSP::exceptionBarrier<BOOL({block_pointer} {__strong})(void)>(v12);
+  v9 = fileCopy;
+  LOBYTE(port) = ASDDSP::exceptionBarrier<BOOL({block_pointer} {__strong})(void)>(v12);
   std::__function::__value_func<BOOL ()(void)>::~__value_func[abi:ne200100](&v16);
 
   v10 = *MEMORY[0x277D85DE8];
-  return a3;
+  return port;
 }
 
-- (BOOL)stopInjectingPort:(int64_t)a3
+- (BOOL)stopInjectingPort:(int64_t)port
 {
   v10 = *MEMORY[0x277D85DE8];
   v6[0] = MEMORY[0x277D85DD0];
@@ -160,7 +160,7 @@
   v6[2] = __36__ASDDSPGraphBox_stopInjectingPort___block_invoke;
   v6[3] = &unk_278CE3F18;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = port;
   v7 = &unk_2853444C8;
   v8 = 0;
   v9 = &v7;
@@ -182,17 +182,17 @@
   return [MEMORY[0x277CCACA8] stringWithUTF8String:v3];
 }
 
-- (BOOL)getParameterList:(unsigned int *)a3 numParameterIDs:(int64_t *)a4 inScope:(unsigned int)a5
+- (BOOL)getParameterList:(unsigned int *)list numParameterIDs:(int64_t *)ds inScope:(unsigned int)scope
 {
   v13 = *MEMORY[0x277D85DE8];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __59__ASDDSPGraphBox_getParameterList_numParameterIDs_inScope___block_invoke;
   v8[3] = &unk_278CE3B70;
-  v9 = a5;
+  scopeCopy = scope;
   v8[4] = self;
-  v8[5] = a4;
-  v8[6] = a3;
+  v8[5] = ds;
+  v8[6] = list;
   v10 = &unk_2853444C8;
   v11 = 0;
   v12 = &v10;
@@ -226,7 +226,7 @@ uint64_t __59__ASDDSPGraphBox_getParameterList_numParameterIDs_inScope___block_i
   return 1;
 }
 
-- (BOOL)getParameterInfo:(AudioUnitParameterInfo *)a3 forID:(unsigned int)a4 inScope:(unsigned int)a5
+- (BOOL)getParameterInfo:(AudioUnitParameterInfo *)info forID:(unsigned int)d inScope:(unsigned int)scope
 {
   v14 = *MEMORY[0x277D85DE8];
   (*(*self->_box + 104))(v11);
@@ -234,22 +234,22 @@ uint64_t __59__ASDDSPGraphBox_getParameterList_numParameterIDs_inScope___block_i
   if (v13)
   {
     v7 = v11[5];
-    *&a3->clumpID = v11[4];
-    *&a3->unit = v7;
-    *&a3->flags = v12;
+    *&info->clumpID = v11[4];
+    *&info->unit = v7;
+    *&info->flags = v12;
     v8 = v11[1];
-    *a3->name = v11[0];
-    *&a3->name[16] = v8;
+    *info->name = v11[0];
+    *&info->name[16] = v8;
     v9 = v11[3];
-    *&a3->name[32] = v11[2];
-    *&a3->name[48] = v9;
+    *&info->name[32] = v11[2];
+    *&info->name[48] = v9;
   }
 
   v10 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (BOOL)getParameter:(float *)a3 forID:(unsigned int)a4 scope:(unsigned int)a5 element:(unsigned int)a6
+- (BOOL)getParameter:(float *)parameter forID:(unsigned int)d scope:(unsigned int)scope element:(unsigned int)element
 {
   v16 = *MEMORY[0x277D85DE8];
   v9[0] = MEMORY[0x277D85DD0];
@@ -257,10 +257,10 @@ uint64_t __59__ASDDSPGraphBox_getParameterList_numParameterIDs_inScope___block_i
   v9[2] = __51__ASDDSPGraphBox_getParameter_forID_scope_element___block_invoke;
   v9[3] = &unk_278CE3B70;
   v9[4] = self;
-  v9[5] = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  v9[5] = parameter;
+  dCopy = d;
+  scopeCopy = scope;
+  elementCopy = element;
   v13 = &unk_2853444C8;
   v14 = 0;
   v15 = &v13;
@@ -270,7 +270,7 @@ uint64_t __59__ASDDSPGraphBox_getParameterList_numParameterIDs_inScope___block_i
   return v6;
 }
 
-- (BOOL)hasParameter:(unsigned int)a3 scope:(unsigned int)a4 element:(unsigned int)a5
+- (BOOL)hasParameter:(unsigned int)parameter scope:(unsigned int)scope element:(unsigned int)element
 {
   v14 = *MEMORY[0x277D85DE8];
   v8[0] = MEMORY[0x277D85DD0];
@@ -278,8 +278,8 @@ uint64_t __59__ASDDSPGraphBox_getParameterList_numParameterIDs_inScope___block_i
   v8[2] = __45__ASDDSPGraphBox_hasParameter_scope_element___block_invoke;
   v8[3] = &unk_278CE3F18;
   v8[4] = self;
-  v9 = a4;
-  v10 = a3;
+  scopeCopy = scope;
+  parameterCopy = parameter;
   v11 = &unk_2853444C8;
   v12 = 0;
   v13 = &v11;
@@ -317,19 +317,19 @@ BOOL __45__ASDDSPGraphBox_hasParameter_scope_element___block_invoke(uint64_t a1)
   return v4 != v3;
 }
 
-- (BOOL)setParameter:(float)a3 forID:(unsigned int)a4 scope:(unsigned int)a5 element:(unsigned int)a6 bufferOffset:(int64_t)a7
+- (BOOL)setParameter:(float)parameter forID:(unsigned int)d scope:(unsigned int)scope element:(unsigned int)element bufferOffset:(int64_t)offset
 {
   v18 = *MEMORY[0x277D85DE8];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__ASDDSPGraphBox_setParameter_forID_scope_element_bufferOffset___block_invoke;
   v10[3] = &unk_278CE3F68;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a3;
+  dCopy = d;
+  scopeCopy = scope;
+  elementCopy = element;
+  parameterCopy = parameter;
   v10[4] = self;
-  v10[5] = a7;
+  v10[5] = offset;
   v15 = &unk_2853444C8;
   v16 = 0;
   v17 = &v15;

@@ -5,7 +5,7 @@
 - (void)_handlePrefsChanged;
 - (void)_notifyClientsOfChange;
 - (void)dealloc;
-- (void)setCustomAbbreviation:(id)a3 forCityIdentifier:(id)a4;
+- (void)setCustomAbbreviation:(id)abbreviation forCityIdentifier:(id)identifier;
 @end
 
 @implementation NTKCustomWorldCityAbbreviationsStore
@@ -62,9 +62,9 @@ void __54__NTKCustomWorldCityAbbreviationsStore_sharedInstance__block_invoke()
     v4 = CFGetTypeID(v2);
     if (v4 == CFDictionaryGetTypeID())
     {
-      v5 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v3];
+      dictionary = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v3];
       CFRelease(v3);
-      if (v5)
+      if (dictionary)
       {
         goto LABEL_7;
       }
@@ -76,20 +76,20 @@ void __54__NTKCustomWorldCityAbbreviationsStore_sharedInstance__block_invoke()
     }
   }
 
-  v5 = [MEMORY[0x277CBEAC0] dictionary];
+  dictionary = [MEMORY[0x277CBEAC0] dictionary];
 LABEL_7:
 
-  return v5;
+  return dictionary;
 }
 
-- (void)setCustomAbbreviation:(id)a3 forCityIdentifier:(id)a4
+- (void)setCustomAbbreviation:(id)abbreviation forCityIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NTKCustomWorldCityAbbreviationsStore *)self _getCustomAbbreviationsFromPrefs];
-  value = [v8 mutableCopy];
+  identifierCopy = identifier;
+  abbreviationCopy = abbreviation;
+  _getCustomAbbreviationsFromPrefs = [(NTKCustomWorldCityAbbreviationsStore *)self _getCustomAbbreviationsFromPrefs];
+  value = [_getCustomAbbreviationsFromPrefs mutableCopy];
 
-  [value setObject:v7 forKey:v6];
+  [value setObject:abbreviationCopy forKey:identifierCopy];
   CFPreferencesSetAppValue(@"customWorldCities", value, @"com.apple.NanoTimeKit");
   CFPreferencesAppSynchronize(@"com.apple.NanoTimeKit");
   npsManager = self->_npsManager;
@@ -117,8 +117,8 @@ LABEL_7:
 
 - (void)_notifyClientsOfChange
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"NTKCustomWorldCityAbbreviationsChangedNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"NTKCustomWorldCityAbbreviationsChangedNotification" object:self];
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface CoreDAVDiscoveryAccountInfo
-- (BOOL)handleAuthenticateAgainstProtectionSpace:(id)a3;
+- (BOOL)handleAuthenticateAgainstProtectionSpace:(id)space;
 - (BOOL)handleShouldUseCredentialStorage;
-- (BOOL)handleTrustChallenge:(id)a3 completionHandler:(id)a4;
+- (BOOL)handleTrustChallenge:(id)challenge completionHandler:(id)handler;
 - (BOOL)renewCredential;
-- (BOOL)shouldHandleHTTPCookiesForURL:(id)a3;
-- (BOOL)shouldRetryUnauthorizedTask:(id)a3;
-- (BOOL)shouldSendClientInfoHeaderForURL:(id)a3;
+- (BOOL)shouldHandleHTTPCookiesForURL:(id)l;
+- (BOOL)shouldRetryUnauthorizedTask:(id)task;
+- (BOOL)shouldSendClientInfoHeaderForURL:(id)l;
 - (BOOL)shouldTryRenewingCredential;
 - (BOOL)shouldUseOpportunisticSockets;
-- (CoreDAVDiscoveryAccountInfo)initWithAccountInfoProvider:(id)a3;
+- (CoreDAVDiscoveryAccountInfo)initWithAccountInfoProvider:(id)provider;
 - (NSString)description;
 - (__CFURLStorageSession)copyStorageSession;
 - (id)additionalHeaderValues;
@@ -19,42 +19,42 @@
 - (id)oauthInfoProvider;
 - (id)url;
 - (void)clientTokenRequestedByServer;
-- (void)promptUserForNewCoreDAVPasswordWithCompletionBlock:(id)a3;
+- (void)promptUserForNewCoreDAVPasswordWithCompletionBlock:(id)block;
 @end
 
 @implementation CoreDAVDiscoveryAccountInfo
 
-- (CoreDAVDiscoveryAccountInfo)initWithAccountInfoProvider:(id)a3
+- (CoreDAVDiscoveryAccountInfo)initWithAccountInfoProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = CoreDAVDiscoveryAccountInfo;
   v5 = [(CoreDAVDiscoveryAccountInfo *)&v14 init];
   if (v5)
   {
-    v6 = [v4 scheme];
-    [(CoreDAVDiscoveryAccountInfo *)v5 setScheme:v6];
+    scheme = [providerCopy scheme];
+    [(CoreDAVDiscoveryAccountInfo *)v5 setScheme:scheme];
 
-    v7 = [v4 host];
-    [(CoreDAVDiscoveryAccountInfo *)v5 setHost:v7];
+    host = [providerCopy host];
+    [(CoreDAVDiscoveryAccountInfo *)v5 setHost:host];
 
-    -[CoreDAVDiscoveryAccountInfo setPort:](v5, "setPort:", [v4 port]);
-    v8 = [v4 serverRoot];
-    [(CoreDAVDiscoveryAccountInfo *)v5 setServerRoot:v8];
+    -[CoreDAVDiscoveryAccountInfo setPort:](v5, "setPort:", [providerCopy port]);
+    serverRoot = [providerCopy serverRoot];
+    [(CoreDAVDiscoveryAccountInfo *)v5 setServerRoot:serverRoot];
 
-    v9 = [v4 user];
-    [(CoreDAVDiscoveryAccountInfo *)v5 setUser:v9];
+    user = [providerCopy user];
+    [(CoreDAVDiscoveryAccountInfo *)v5 setUser:user];
 
-    v10 = [v4 password];
-    [(CoreDAVDiscoveryAccountInfo *)v5 setPassword:v10];
+    password = [providerCopy password];
+    [(CoreDAVDiscoveryAccountInfo *)v5 setPassword:password];
 
-    v11 = [v4 userAgentHeader];
-    [(CoreDAVDiscoveryAccountInfo *)v5 setUserAgentHeader:v11];
+    userAgentHeader = [providerCopy userAgentHeader];
+    [(CoreDAVDiscoveryAccountInfo *)v5 setUserAgentHeader:userAgentHeader];
 
-    v12 = [v4 accountID];
-    [(CoreDAVDiscoveryAccountInfo *)v5 setAccountID:v12];
+    accountID = [providerCopy accountID];
+    [(CoreDAVDiscoveryAccountInfo *)v5 setAccountID:accountID];
 
-    [(CoreDAVDiscoveryAccountInfo *)v5 setBackingAccountInfoProvider:v4];
+    [(CoreDAVDiscoveryAccountInfo *)v5 setBackingAccountInfoProvider:providerCopy];
   }
 
   return v5;
@@ -68,33 +68,33 @@
   v4 = [(CoreDAVDiscoveryAccountInfo *)&v15 description];
   [v3 appendFormat:@"[%@]", v4];
 
-  v5 = [(CoreDAVDiscoveryAccountInfo *)self scheme];
-  [v3 appendFormat:@"\n  Scheme: [%@]", v5];
+  scheme = [(CoreDAVDiscoveryAccountInfo *)self scheme];
+  [v3 appendFormat:@"\n  Scheme: [%@]", scheme];
 
-  v6 = [(CoreDAVDiscoveryAccountInfo *)self host];
-  [v3 appendFormat:@"\n  Host: [%@]", v6];
+  host = [(CoreDAVDiscoveryAccountInfo *)self host];
+  [v3 appendFormat:@"\n  Host: [%@]", host];
 
   [v3 appendFormat:@"\n  Port: [%ld]", -[CoreDAVDiscoveryAccountInfo port](self, "port")];
-  v7 = [(CoreDAVDiscoveryAccountInfo *)self serverRoot];
-  [v3 appendFormat:@"\n  Server root: [%@]", v7];
+  serverRoot = [(CoreDAVDiscoveryAccountInfo *)self serverRoot];
+  [v3 appendFormat:@"\n  Server root: [%@]", serverRoot];
 
-  v8 = [(CoreDAVDiscoveryAccountInfo *)self user];
-  [v3 appendFormat:@"\n  User: [%@]", v8];
+  user = [(CoreDAVDiscoveryAccountInfo *)self user];
+  [v3 appendFormat:@"\n  User: [%@]", user];
 
-  v9 = [(CoreDAVDiscoveryAccountInfo *)self accountID];
-  [v3 appendFormat:@"\n  Account ID: [%@]", v9];
+  accountID = [(CoreDAVDiscoveryAccountInfo *)self accountID];
+  [v3 appendFormat:@"\n  Account ID: [%@]", accountID];
 
-  v10 = [(CoreDAVDiscoveryAccountInfo *)self principalURL];
-  [v3 appendFormat:@"\n  Principal URL: [%@]", v10];
+  principalURL = [(CoreDAVDiscoveryAccountInfo *)self principalURL];
+  [v3 appendFormat:@"\n  Principal URL: [%@]", principalURL];
 
-  v11 = [(CoreDAVDiscoveryAccountInfo *)self serverHeaders];
-  [v3 appendFormat:@"\n  Server headers: [%@]", v11];
+  serverHeaders = [(CoreDAVDiscoveryAccountInfo *)self serverHeaders];
+  [v3 appendFormat:@"\n  Server headers: [%@]", serverHeaders];
 
-  v12 = [(CoreDAVDiscoveryAccountInfo *)self serverComplianceClasses];
-  [v3 appendFormat:@"\n  Server compliance classes: [%@]", v12];
+  serverComplianceClasses = [(CoreDAVDiscoveryAccountInfo *)self serverComplianceClasses];
+  [v3 appendFormat:@"\n  Server compliance classes: [%@]", serverComplianceClasses];
 
-  v13 = [(CoreDAVDiscoveryAccountInfo *)self userAgentHeader];
-  [v3 appendFormat:@"\n  User agent header: [%@]", v13];
+  userAgentHeader = [(CoreDAVDiscoveryAccountInfo *)self userAgentHeader];
+  [v3 appendFormat:@"\n  User agent header: [%@]", userAgentHeader];
 
   return v3;
 }
@@ -112,24 +112,24 @@
   }
 
   v4 = MEMORY[0x277CBEBC0];
-  v5 = [(CoreDAVDiscoveryAccountInfo *)self scheme];
-  v6 = [(CoreDAVDiscoveryAccountInfo *)self user];
-  v7 = [(CoreDAVDiscoveryAccountInfo *)self host];
-  v8 = [(CoreDAVDiscoveryAccountInfo *)self serverRoot];
-  v9 = [v4 CDVURLWithScheme:v5 user:v6 password:0 host:v7 port:v3 path:v8];
+  scheme = [(CoreDAVDiscoveryAccountInfo *)self scheme];
+  user = [(CoreDAVDiscoveryAccountInfo *)self user];
+  host = [(CoreDAVDiscoveryAccountInfo *)self host];
+  serverRoot = [(CoreDAVDiscoveryAccountInfo *)self serverRoot];
+  v9 = [v4 CDVURLWithScheme:scheme user:user password:0 host:host port:v3 path:serverRoot];
 
   return v9;
 }
 
-- (void)promptUserForNewCoreDAVPasswordWithCompletionBlock:(id)a3
+- (void)promptUserForNewCoreDAVPasswordWithCompletionBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   [(CoreDAVDiscoveryAccountInfo *)self setShouldFailAllTasks:1];
-  v4 = v5;
-  if (v5)
+  v4 = blockCopy;
+  if (blockCopy)
   {
-    (*(v5 + 2))(v5, 2);
-    v4 = v5;
+    (*(blockCopy + 2))(blockCopy, 2);
+    v4 = blockCopy;
   }
 }
 
@@ -138,15 +138,15 @@
   backingAccountInfoProvider = self->_backingAccountInfoProvider;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(CoreDAVAccountInfoProvider *)self->_backingAccountInfoProvider additionalHeaderValues];
+    additionalHeaderValues = [(CoreDAVAccountInfoProvider *)self->_backingAccountInfoProvider additionalHeaderValues];
   }
 
   else
   {
-    v4 = 0;
+    additionalHeaderValues = 0;
   }
 
-  return v4;
+  return additionalHeaderValues;
 }
 
 - (void)clientTokenRequestedByServer
@@ -165,15 +165,15 @@
   backingAccountInfoProvider = self->_backingAccountInfoProvider;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(CoreDAVAccountInfoProvider *)self->_backingAccountInfoProvider clientToken];
+    clientToken = [(CoreDAVAccountInfoProvider *)self->_backingAccountInfoProvider clientToken];
   }
 
   else
   {
-    v4 = 0;
+    clientToken = 0;
   }
 
-  return v4;
+  return clientToken;
 }
 
 - (id)clientCertificateInfoProvider
@@ -181,15 +181,15 @@
   backingAccountInfoProvider = self->_backingAccountInfoProvider;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(CoreDAVAccountInfoProvider *)self->_backingAccountInfoProvider clientCertificateInfoProvider];
+    clientCertificateInfoProvider = [(CoreDAVAccountInfoProvider *)self->_backingAccountInfoProvider clientCertificateInfoProvider];
   }
 
   else
   {
-    v4 = 0;
+    clientCertificateInfoProvider = 0;
   }
 
-  return v4;
+  return clientCertificateInfoProvider;
 }
 
 - (id)oauthInfoProvider
@@ -197,25 +197,25 @@
   backingAccountInfoProvider = self->_backingAccountInfoProvider;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(CoreDAVAccountInfoProvider *)self->_backingAccountInfoProvider oauthInfoProvider];
+    oauthInfoProvider = [(CoreDAVAccountInfoProvider *)self->_backingAccountInfoProvider oauthInfoProvider];
   }
 
   else
   {
-    v4 = 0;
+    oauthInfoProvider = 0;
   }
 
-  return v4;
+  return oauthInfoProvider;
 }
 
-- (BOOL)handleTrustChallenge:(id)a3 completionHandler:(id)a4
+- (BOOL)handleTrustChallenge:(id)challenge completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   backingAccountInfoProvider = self->_backingAccountInfoProvider;
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(CoreDAVAccountInfoProvider *)self->_backingAccountInfoProvider handleTrustChallenge:v6 completionHandler:v7];
+    v9 = [(CoreDAVAccountInfoProvider *)self->_backingAccountInfoProvider handleTrustChallenge:challengeCopy completionHandler:handlerCopy];
   }
 
   else
@@ -229,20 +229,20 @@
       _os_log_impl(&dword_2452FB000, v12, OS_LOG_TYPE_INFO, "BackingAccountInfoProvider doesn't know how to handle a trust challenge, so we're just going to have to cancel.", v14, 2u);
     }
 
-    v7[2](v7, 2, 0);
+    handlerCopy[2](handlerCopy, 2, 0);
     v9 = 0;
   }
 
   return v9;
 }
 
-- (BOOL)shouldRetryUnauthorizedTask:(id)a3
+- (BOOL)shouldRetryUnauthorizedTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   backingAccountInfoProvider = self->_backingAccountInfoProvider;
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(CoreDAVAccountInfoProvider *)self->_backingAccountInfoProvider shouldRetryUnauthorizedTask:v4];
+    v6 = [(CoreDAVAccountInfoProvider *)self->_backingAccountInfoProvider shouldRetryUnauthorizedTask:taskCopy];
   }
 
   else
@@ -279,15 +279,15 @@
   return [(CoreDAVAccountInfoProvider *)v4 renewCredential];
 }
 
-- (BOOL)handleAuthenticateAgainstProtectionSpace:(id)a3
+- (BOOL)handleAuthenticateAgainstProtectionSpace:(id)space
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 authenticationMethod];
+  spaceCopy = space;
+  authenticationMethod = [spaceCopy authenticationMethod];
   backingAccountInfoProvider = self->_backingAccountInfoProvider;
   if (objc_opt_respondsToSelector())
   {
-    self = [(CoreDAVAccountInfoProvider *)self->_backingAccountInfoProvider handleAuthenticateAgainstProtectionSpace:v4];
+    self = [(CoreDAVAccountInfoProvider *)self->_backingAccountInfoProvider handleAuthenticateAgainstProtectionSpace:spaceCopy];
     v7 = +[CoreDAVLogging sharedLogging];
     v8 = [v7 logHandleForAccountInfoProvider:0];
     v9 = v8;
@@ -298,7 +298,7 @@
 
     v10 = [MEMORY[0x277CCABB0] numberWithBool:self];
     v16 = 138543618;
-    v17 = v5;
+    v17 = authenticationMethod;
     v18 = 2114;
     v19 = v10;
     v11 = "_backingAccountInfoProvider: Can authenticate against protection space %{public}@? %{public}@";
@@ -309,16 +309,16 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (![v5 isEqualToString:*MEMORY[0x277CBAAF8]])
+  if (![authenticationMethod isEqualToString:*MEMORY[0x277CBAAF8]])
   {
-    if ([v5 isEqualToString:*MEMORY[0x277CBAB00]] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", *MEMORY[0x277CBAAE0]))
+    if ([authenticationMethod isEqualToString:*MEMORY[0x277CBAB00]] & 1) != 0 || (objc_msgSend(authenticationMethod, "isEqualToString:", *MEMORY[0x277CBAAE0]))
     {
       self = 1;
     }
 
     else
     {
-      self = [v5 isEqualToString:*MEMORY[0x277CBAAE8]];
+      self = [authenticationMethod isEqualToString:*MEMORY[0x277CBAAE8]];
     }
 
     v7 = +[CoreDAVLogging sharedLogging];
@@ -331,7 +331,7 @@ LABEL_15:
 
     v10 = [MEMORY[0x277CCABB0] numberWithBool:self];
     v16 = 138543618;
-    v17 = v5;
+    v17 = authenticationMethod;
     v18 = 2114;
     v19 = v10;
     v11 = "CoreDAVDiscoveryAccountInfo: Can authenticate against protection space %{public}@? %{public}@";
@@ -359,13 +359,13 @@ LABEL_16:
   return [(CoreDAVAccountInfoProvider *)v4 handleShouldUseCredentialStorage];
 }
 
-- (BOOL)shouldHandleHTTPCookiesForURL:(id)a3
+- (BOOL)shouldHandleHTTPCookiesForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   backingAccountInfoProvider = self->_backingAccountInfoProvider;
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(CoreDAVAccountInfoProvider *)self->_backingAccountInfoProvider shouldHandleHTTPCookiesForURL:v4];
+    v6 = [(CoreDAVAccountInfoProvider *)self->_backingAccountInfoProvider shouldHandleHTTPCookiesForURL:lCopy];
   }
 
   else
@@ -376,13 +376,13 @@ LABEL_16:
   return v6;
 }
 
-- (BOOL)shouldSendClientInfoHeaderForURL:(id)a3
+- (BOOL)shouldSendClientInfoHeaderForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   backingAccountInfoProvider = self->_backingAccountInfoProvider;
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(CoreDAVAccountInfoProvider *)self->_backingAccountInfoProvider shouldSendClientInfoHeaderForURL:v4];
+    v6 = [(CoreDAVAccountInfoProvider *)self->_backingAccountInfoProvider shouldSendClientInfoHeaderForURL:lCopy];
   }
 
   else
@@ -424,15 +424,15 @@ LABEL_16:
   backingAccountInfoProvider = self->_backingAccountInfoProvider;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(CoreDAVAccountInfoProvider *)self->_backingAccountInfoProvider getAppleIDSession];
+    getAppleIDSession = [(CoreDAVAccountInfoProvider *)self->_backingAccountInfoProvider getAppleIDSession];
   }
 
   else
   {
-    v4 = 0;
+    getAppleIDSession = 0;
   }
 
-  return v4;
+  return getAppleIDSession;
 }
 
 - (id)customConnectionProperties
@@ -440,15 +440,15 @@ LABEL_16:
   backingAccountInfoProvider = self->_backingAccountInfoProvider;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(CoreDAVAccountInfoProvider *)self->_backingAccountInfoProvider customConnectionProperties];
+    customConnectionProperties = [(CoreDAVAccountInfoProvider *)self->_backingAccountInfoProvider customConnectionProperties];
   }
 
   else
   {
-    v4 = 0;
+    customConnectionProperties = 0;
   }
 
-  return v4;
+  return customConnectionProperties;
 }
 
 @end

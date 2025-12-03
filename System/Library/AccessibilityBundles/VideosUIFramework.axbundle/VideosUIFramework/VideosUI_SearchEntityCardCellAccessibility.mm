@@ -1,15 +1,15 @@
 @interface VideosUI_SearchEntityCardCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation VideosUI_SearchEntityCardCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VideosUI.SearchEntityCardCell" hasProperty:@"accessibilityTitleLabel" withType:"@"];
-  [v3 validateClass:@"VideosUI.SearchEntityCardCell" hasProperty:@"accessibilitySubitleLabel" withType:"@"];
-  [v3 validateClass:@"VideosUI.SearchEntityCardCell" hasProperty:@"accessibilityCaptionLabel" withType:"@"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VideosUI.SearchEntityCardCell" hasProperty:@"accessibilityTitleLabel" withType:"@"];
+  [validationsCopy validateClass:@"VideosUI.SearchEntityCardCell" hasProperty:@"accessibilitySubitleLabel" withType:"@"];
+  [validationsCopy validateClass:@"VideosUI.SearchEntityCardCell" hasProperty:@"accessibilityCaptionLabel" withType:"@"];
 }
 
 @end

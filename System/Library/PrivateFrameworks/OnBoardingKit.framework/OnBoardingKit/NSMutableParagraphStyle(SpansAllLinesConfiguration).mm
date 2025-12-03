@@ -9,9 +9,9 @@
 {
   v4 = a3;
   v5 = +[OBLanguageConfigurationProvider defaultConfiguration];
-  v6 = [v5 spansAllLines];
+  spansAllLines = [v5 spansAllLines];
 
-  v7 = [a1 spansAllLinesForConfiguration:v6 withText:v4];
+  v7 = [self spansAllLinesForConfiguration:spansAllLines withText:v4];
   return v7;
 }
 

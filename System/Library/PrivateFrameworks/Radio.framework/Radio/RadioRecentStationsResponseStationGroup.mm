@@ -2,7 +2,7 @@
 - (BOOL)isActive;
 - (NSArray)stationDictionaries;
 - (NSString)localizedTitle;
-- (RadioRecentStationsResponseStationGroup)initWithResponseDictionary:(id)a3;
+- (RadioRecentStationsResponseStationGroup)initWithResponseDictionary:(id)dictionary;
 @end
 
 @implementation RadioRecentStationsResponseStationGroup
@@ -64,24 +64,24 @@
   v2 = [(NSDictionary *)self->_responseDictionary objectForKey:@"is-active"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
-- (RadioRecentStationsResponseStationGroup)initWithResponseDictionary:(id)a3
+- (RadioRecentStationsResponseStationGroup)initWithResponseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(RadioRecentStationsResponseStationGroup *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     responseDictionary = v5->_responseDictionary;
     v5->_responseDictionary = v6;
   }

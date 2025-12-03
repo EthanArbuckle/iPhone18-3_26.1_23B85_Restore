@@ -1,45 +1,45 @@
 @interface MFMailboxURLRoute
-- (BOOL)_isCombinedMailboxURL:(id)a3;
-- (BOOL)canRouteRequest:(id)a3;
+- (BOOL)_isCombinedMailboxURL:(id)l;
+- (BOOL)canRouteRequest:(id)request;
 - (DaemonInterfaceProviding)scene;
-- (MFMailboxURLRoute)initWithScene:(id)a3;
+- (MFMailboxURLRoute)initWithScene:(id)scene;
 - (id)_combinedMailboxes;
-- (id)_mailboxFromEmailAddress:(id)a3 mailboxPath:(id)a4;
-- (id)routeRequest:(id)a3;
-- (void)_routeToAccountMailbox:(id)a3 promise:(id)a4;
-- (void)_routeToCombinedMailbox:(id)a3 promise:(id)a4;
+- (id)_mailboxFromEmailAddress:(id)address mailboxPath:(id)path;
+- (id)routeRequest:(id)request;
+- (void)_routeToAccountMailbox:(id)mailbox promise:(id)promise;
+- (void)_routeToCombinedMailbox:(id)mailbox promise:(id)promise;
 @end
 
 @implementation MFMailboxURLRoute
 
-- (MFMailboxURLRoute)initWithScene:(id)a3
+- (MFMailboxURLRoute)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v8.receiver = self;
   v8.super_class = MFMailboxURLRoute;
   v5 = [(MFMailboxURLRoute *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scene, v4);
+    objc_storeWeak(&v5->_scene, sceneCopy);
     v6->_priority = 0;
   }
 
   return v6;
 }
 
-- (BOOL)canRouteRequest:(id)a3
+- (BOOL)canRouteRequest:(id)request
 {
-  v3 = [a3 URL];
+  v3 = [request URL];
   v4 = [v3 ef_hasScheme:EMAppleMailboxURLScheme];
 
   return v4;
 }
 
-- (id)routeRequest:(id)a3
+- (id)routeRequest:(id)request
 {
-  v23 = a3;
-  v25 = [v23 URL];
+  requestCopy = request;
+  v25 = [requestCopy URL];
   v26 = +[EFPromise promise];
   [NSURLComponents componentsWithURL:v25 resolvingAgainstBaseURL:0];
   v33 = 0u;
@@ -64,31 +64,31 @@
       }
 
       v6 = *(*(&v31 + 1) + 8 * i);
-      v7 = [v6 name];
-      if ([v7 isEqualToString:@"origin"])
+      name = [v6 name];
+      if ([name isEqualToString:@"origin"])
       {
-        v8 = [v6 value];
-        v9 = [v8 isEqualToString:@"mailCleanupDashboard"];
+        value = [v6 value];
+        v9 = [value isEqualToString:@"mailCleanupDashboard"];
 
         if (!v9)
         {
           continue;
         }
 
-        v10 = [(MFMailboxURLRoute *)self scene];
-        v11 = [v10 mailboxPickerController];
-        v7 = [v11 messageListViewController];
+        scene = [(MFMailboxURLRoute *)self scene];
+        mailboxPickerController = [scene mailboxPickerController];
+        name = [mailboxPickerController messageListViewController];
 
-        v12 = [v7 mailboxes];
-        v13 = [v12 firstObject];
-        v14 = [v13 account];
-        v15 = [v14 identityEmailAddress];
-        v16 = [v15 stringValue];
+        mailboxes = [name mailboxes];
+        firstObject = [mailboxes firstObject];
+        account = [firstObject account];
+        identityEmailAddress = [account identityEmailAddress];
+        stringValue = [identityEmailAddress stringValue];
 
         v17 = +[MFURLRoutingRequest log];
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [EFPrivacy ec_partiallyRedactedStringForAddress:v16];
+          v18 = [EFPrivacy ec_partiallyRedactedStringForAddress:stringValue];
           *buf = 138543362;
           v36 = v18;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Mail Cleanup Dashboard origin detected - Origin account: %{public}@", buf, 0xCu);
@@ -104,61 +104,61 @@ LABEL_14:
 
   if ([(MFMailboxURLRoute *)self _isCombinedMailboxURL:v24])
   {
-    [(MFMailboxURLRoute *)self _routeToCombinedMailbox:v23 promise:v26];
+    [(MFMailboxURLRoute *)self _routeToCombinedMailbox:requestCopy promise:v26];
   }
 
   else
   {
-    [(MFMailboxURLRoute *)self _routeToAccountMailbox:v23 promise:v26];
+    [(MFMailboxURLRoute *)self _routeToAccountMailbox:requestCopy promise:v26];
   }
 
-  v19 = [v26 future];
+  future = [v26 future];
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_1001D86FC;
   v29[3] = &unk_10064D028;
-  v20 = v23;
+  v20 = requestCopy;
   v30 = v20;
-  [v19 addFailureBlock:v29];
+  [future addFailureBlock:v29];
 
-  v21 = [v26 future];
+  future2 = [v26 future];
 
-  return v21;
+  return future2;
 }
 
-- (id)_mailboxFromEmailAddress:(id)a3 mailboxPath:(id)a4
+- (id)_mailboxFromEmailAddress:(id)address mailboxPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MFMailboxURLRoute *)self scene];
-  v9 = [v8 daemonInterface];
-  v10 = [v9 accountRepository];
+  addressCopy = address;
+  pathCopy = path;
+  scene = [(MFMailboxURLRoute *)self scene];
+  daemonInterface = [scene daemonInterface];
+  accountRepository = [daemonInterface accountRepository];
 
-  v11 = [v10 receivingAccounts];
+  receivingAccounts = [accountRepository receivingAccounts];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_1001D8A34;
   v22[3] = &unk_100654460;
-  v12 = v6;
+  v12 = addressCopy;
   v23 = v12;
-  v13 = [v11 ef_firstObjectPassingTest:v22];
-  if ([v7 hasPrefix:@"/"])
+  v13 = [receivingAccounts ef_firstObjectPassingTest:v22];
+  if ([pathCopy hasPrefix:@"/"])
   {
-    v14 = [v7 substringFromIndex:1];
+    v14 = [pathCopy substringFromIndex:1];
 
-    v7 = v14;
+    pathCopy = v14;
   }
 
-  v15 = [v13 objectID];
-  v16 = [v15 representedObjectID];
+  objectID = [v13 objectID];
+  representedObjectID = [objectID representedObjectID];
 
-  if (v13 && v16)
+  if (v13 && representedObjectID)
   {
-    v17 = [MailAccount accountWithUniqueId:v16];
+    v17 = [MailAccount accountWithUniqueId:representedObjectID];
     v18 = v17;
     if (v17)
     {
-      v19 = [v17 mailboxUidForRelativePath:v7 create:0];
+      v19 = [v17 mailboxUidForRelativePath:pathCopy create:0];
       if (v19)
       {
         goto LABEL_15;
@@ -196,26 +196,26 @@ LABEL_15:
   return v19;
 }
 
-- (BOOL)_isCombinedMailboxURL:(id)a3
+- (BOOL)_isCombinedMailboxURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 host];
-  v6 = [v4 user];
+  lCopy = l;
+  host = [lCopy host];
+  user = [lCopy user];
   v7 = 0;
-  if (!v6 && v5)
+  if (!user && host)
   {
-    v8 = [(MFMailboxURLRoute *)self _combinedMailboxes];
-    v7 = [v8 containsObject:v5];
+    _combinedMailboxes = [(MFMailboxURLRoute *)self _combinedMailboxes];
+    v7 = [_combinedMailboxes containsObject:host];
   }
 
   return v7;
 }
 
-- (void)_routeToCombinedMailbox:(id)a3 promise:(id)a4
+- (void)_routeToCombinedMailbox:(id)mailbox promise:(id)promise
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 URL];
+  mailboxCopy = mailbox;
+  promiseCopy = promise;
+  v8 = [mailboxCopy URL];
   v9 = [NSURLComponents componentsWithURL:v8 resolvingAgainstBaseURL:0];
 
   [v9 host];
@@ -225,28 +225,28 @@ LABEL_15:
   v13[3] = &unk_10064C6B0;
   v10 = v13[4] = self;
   v14 = v10;
-  v11 = v7;
+  v11 = promiseCopy;
   v15 = v11;
   v12 = +[EFScheduler mainThreadScheduler];
   [v12 performBlock:v13];
 }
 
-- (void)_routeToAccountMailbox:(id)a3 promise:(id)a4
+- (void)_routeToAccountMailbox:(id)mailbox promise:(id)promise
 {
-  v6 = a3;
-  v26 = a4;
-  v7 = [v6 URL];
+  mailboxCopy = mailbox;
+  promiseCopy = promise;
+  v7 = [mailboxCopy URL];
   v8 = [NSURLComponents componentsWithURL:v7 resolvingAgainstBaseURL:0];
 
-  v9 = [v8 user];
-  v10 = [v8 host];
-  v11 = [NSString stringWithFormat:@"%@@%@", v9, v10];
+  user = [v8 user];
+  host = [v8 host];
+  v11 = [NSString stringWithFormat:@"%@@%@", user, host];
 
   v12 = [[ECEmailAddress alloc] initWithString:v11];
   if (v12)
   {
-    v13 = [v8 path];
-    v14 = [(MFMailboxURLRoute *)self _mailboxFromEmailAddress:v12 mailboxPath:v13];
+    path = [v8 path];
+    v14 = [(MFMailboxURLRoute *)self _mailboxFromEmailAddress:v12 mailboxPath:path];
 
     if (v14)
     {
@@ -258,7 +258,7 @@ LABEL_15:
       v15 = v14;
       v28 = v15;
       v29 = v8;
-      v30 = v26;
+      v30 = promiseCopy;
       v16 = +[EFScheduler mainThreadScheduler];
       [v16 performBlock:v27];
 
@@ -273,8 +273,8 @@ LABEL_15:
       v22 = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
       v23 = [NSError errorWithDomain:NSURLErrorDomain code:-1000 userInfo:v22];
 
-      v24 = [NSError mf_routingErrorWithUnderlyingError:v23 request:v6 allowFallbackRouting:0];
-      [v26 finishWithError:v24];
+      v24 = [NSError mf_routingErrorWithUnderlyingError:v23 request:mailboxCopy allowFallbackRouting:0];
+      [promiseCopy finishWithError:v24];
 
       v25 = +[MFURLRoutingRequest log];
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -292,8 +292,8 @@ LABEL_15:
     v18 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
     v14 = [NSError errorWithDomain:NSURLErrorDomain code:-1000 userInfo:v18];
 
-    v19 = [NSError mf_routingErrorWithUnderlyingError:v14 request:v6 allowFallbackRouting:0];
-    [v26 finishWithError:v19];
+    v19 = [NSError mf_routingErrorWithUnderlyingError:v14 request:mailboxCopy allowFallbackRouting:0];
+    [promiseCopy finishWithError:v19];
 
     v20 = +[MFURLRoutingRequest log];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))

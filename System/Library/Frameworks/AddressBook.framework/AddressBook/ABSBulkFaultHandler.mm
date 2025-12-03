@@ -1,40 +1,40 @@
 @interface ABSBulkFaultHandler
-- (ABSBulkFaultHandler)initWithStorage:(id)a3 contactStoreFuture:(id)a4 schedulerProvider:(id)a5;
+- (ABSBulkFaultHandler)initWithStorage:(id)storage contactStoreFuture:(id)future schedulerProvider:(id)provider;
 - (BOOL)withinInterestWindow;
-- (id)batchOfPeopleInStorageMissingKeysIncluding:(id)a3;
+- (id)batchOfPeopleInStorageMissingKeysIncluding:(id)including;
 - (id)store;
-- (void)completePeople:(id)a3 withKeysToFetch:(id)a4;
-- (void)completePerson:(id)a3 withKeysToFetch:(id)a4;
+- (void)completePeople:(id)people withKeysToFetch:(id)fetch;
+- (void)completePerson:(id)person withKeysToFetch:(id)fetch;
 - (void)increaseInterest;
-- (void)refetchContacts:(id)a3 keysToFetch:(id)a4 handler:(id)a5;
+- (void)refetchContacts:(id)contacts keysToFetch:(id)fetch handler:(id)handler;
 - (void)resetInterest;
 @end
 
 @implementation ABSBulkFaultHandler
 
-- (ABSBulkFaultHandler)initWithStorage:(id)a3 contactStoreFuture:(id)a4 schedulerProvider:(id)a5
+- (ABSBulkFaultHandler)initWithStorage:(id)storage contactStoreFuture:(id)future schedulerProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storageCopy = storage;
+  futureCopy = future;
+  providerCopy = provider;
   v22.receiver = self;
   v22.super_class = ABSBulkFaultHandler;
   v12 = [(ABSBulkFaultHandler *)&v22 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_storage, a3);
-    v14 = [v11 inlineScheduler];
+    objc_storeStrong(&v12->_storage, storage);
+    inlineScheduler = [providerCopy inlineScheduler];
     inlineScheduler = v13->_inlineScheduler;
-    v13->_inlineScheduler = v14;
+    v13->_inlineScheduler = inlineScheduler;
 
-    objc_storeStrong(&v13->_contactStoreFuture, a4);
+    objc_storeStrong(&v13->_contactStoreFuture, future);
     v16 = [MEMORY[0x277CBEB58] set];
     keyDescriptorOfInterests = v13->_keyDescriptorOfInterests;
     v13->_keyDescriptorOfInterests = v16;
 
-    v18 = [MEMORY[0x277CBEAA8] distantPast];
-    [v18 timeIntervalSinceReferenceDate];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
+    [distantPast timeIntervalSinceReferenceDate];
     v13->_lastRequestTimeStamp = v19;
 
     v20 = v13;
@@ -45,47 +45,47 @@
 
 - (id)store
 {
-  v2 = [(ABSBulkFaultHandler *)self contactStoreFuture];
-  v3 = [v2 result:0];
+  contactStoreFuture = [(ABSBulkFaultHandler *)self contactStoreFuture];
+  v3 = [contactStoreFuture result:0];
 
   return v3;
 }
 
-- (void)completePerson:(id)a3 withKeysToFetch:(id)a4
+- (void)completePerson:(id)person withKeysToFetch:(id)fetch
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  personCopy = person;
+  fetchCopy = fetch;
   if (![(ABSBulkFaultHandler *)self withinInterestWindow])
   {
     [(ABSBulkFaultHandler *)self resetInterest];
   }
 
-  v8 = [(ABSBulkFaultHandler *)self keyDescriptorOfInterests];
-  [v8 addObjectsFromArray:v7];
+  keyDescriptorOfInterests = [(ABSBulkFaultHandler *)self keyDescriptorOfInterests];
+  [keyDescriptorOfInterests addObjectsFromArray:fetchCopy];
 
-  v9 = [(ABSBulkFaultHandler *)self interest];
-  if (v9 >= [objc_opt_class() interestThreshold])
+  interest = [(ABSBulkFaultHandler *)self interest];
+  if (interest >= [objc_opt_class() interestThreshold])
   {
-    v10 = [(ABSBulkFaultHandler *)self batchOfPeopleInStorageMissingKeysIncluding:v6];
-    v11 = [(ABSBulkFaultHandler *)self keyDescriptorOfInterests];
-    v12 = [v11 allObjects];
-    [(ABSBulkFaultHandler *)self completePeople:v10 withKeysToFetch:v12];
+    v10 = [(ABSBulkFaultHandler *)self batchOfPeopleInStorageMissingKeysIncluding:personCopy];
+    keyDescriptorOfInterests2 = [(ABSBulkFaultHandler *)self keyDescriptorOfInterests];
+    allObjects = [keyDescriptorOfInterests2 allObjects];
+    [(ABSBulkFaultHandler *)self completePeople:v10 withKeysToFetch:allObjects];
   }
 
   else
   {
     [(ABSBulkFaultHandler *)self increaseInterest];
-    v13[0] = v6;
+    v13[0] = personCopy;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
-    [(ABSBulkFaultHandler *)self completePeople:v10 withKeysToFetch:v7];
+    [(ABSBulkFaultHandler *)self completePeople:v10 withKeysToFetch:fetchCopy];
   }
 }
 
 - (BOOL)withinInterestWindow
 {
-  v3 = [(ABSBulkFaultHandler *)self inlineScheduler];
-  [v3 timestamp];
+  inlineScheduler = [(ABSBulkFaultHandler *)self inlineScheduler];
+  [inlineScheduler timestamp];
   v5 = v4;
 
   [(ABSBulkFaultHandler *)self lastRequestTimeStamp];
@@ -103,33 +103,33 @@
   }
 
   [(ABSBulkFaultHandler *)self setInterest:0];
-  v4 = [(ABSBulkFaultHandler *)self keyDescriptorOfInterests];
-  [v4 removeAllObjects];
+  keyDescriptorOfInterests = [(ABSBulkFaultHandler *)self keyDescriptorOfInterests];
+  [keyDescriptorOfInterests removeAllObjects];
 }
 
 - (void)increaseInterest
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 134217984;
-  v4 = [a1 interest];
+  interest = [self interest];
   _os_log_debug_impl(&dword_236A49000, a2, OS_LOG_TYPE_DEBUG, "Increasing interest: %ld", &v3, 0xCu);
 }
 
-- (id)batchOfPeopleInStorageMissingKeysIncluding:(id)a3
+- (id)batchOfPeopleInStorageMissingKeysIncluding:(id)including
 {
   v47 = *MEMORY[0x277D85DE8];
-  v32 = a3;
-  v33 = self;
-  v4 = [(ABSBulkFaultHandler *)self keyDescriptorOfInterests];
-  v5 = [v4 allObjects];
+  includingCopy = including;
+  selfCopy = self;
+  keyDescriptorOfInterests = [(ABSBulkFaultHandler *)self keyDescriptorOfInterests];
+  allObjects = [keyDescriptorOfInterests allObjects];
 
   v6 = objc_alloc_init(MEMORY[0x277CBDB40]);
-  v35 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v7 = v5;
+  v7 = allObjects;
   v8 = [v7 countByEnumeratingWithState:&v40 objects:v46 count:16];
   if (v8)
   {
@@ -145,16 +145,16 @@
         }
 
         v12 = *(*(&v40 + 1) + 8 * i);
-        v13 = [v12 _cn_requiredKeys];
-        [v6 unionKeyVector:v13];
+        _cn_requiredKeys = [v12 _cn_requiredKeys];
+        [v6 unionKeyVector:_cn_requiredKeys];
 
-        v14 = [v12 _cn_optionalKeys];
-        v15 = [MEMORY[0x277CBDA88] keyVector];
-        v16 = [v14 isEqualToKeyVector:v15];
+        _cn_optionalKeys = [v12 _cn_optionalKeys];
+        keyVector = [MEMORY[0x277CBDA88] keyVector];
+        v16 = [_cn_optionalKeys isEqualToKeyVector:keyVector];
 
         if ((v16 & 1) == 0)
         {
-          [v35 addObject:v12];
+          [array addObject:v12];
         }
       }
 
@@ -168,16 +168,16 @@
   v45 = v17;
   v34 = [MEMORY[0x277CBEA60] arrayWithObjects:&v45 count:1];
 
-  v18 = [(ABSBulkFaultHandler *)v33 storage];
-  v19 = [v18 records];
-  v20 = [v19 allValues];
+  storage = [(ABSBulkFaultHandler *)selfCopy storage];
+  records = [storage records];
+  allValues = [records allValues];
 
-  v21 = [MEMORY[0x277CBEB18] arrayWithObject:v32];
+  v21 = [MEMORY[0x277CBEB18] arrayWithObject:includingCopy];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v22 = v20;
+  v22 = allValues;
   v23 = [v22 countByEnumeratingWithState:&v36 objects:v44 count:16];
   if (v23)
   {
@@ -193,9 +193,9 @@
         }
 
         v27 = *(*(&v36 + 1) + 8 * j);
-        v28 = [v27 cnImpl];
-        v29 = v28;
-        if (v27 != v32 && (![v28 areKeysAvailable:v34] || (objc_msgSend(v29, "areKeysAvailable:", v35) & 1) == 0))
+        cnImpl = [v27 cnImpl];
+        v29 = cnImpl;
+        if (v27 != includingCopy && (![cnImpl areKeysAvailable:v34] || (objc_msgSend(v29, "areKeysAvailable:", array) & 1) == 0))
         {
           [v21 addObject:v27];
           v30 = [v21 count];
@@ -222,27 +222,27 @@ LABEL_23:
   return v21;
 }
 
-- (void)completePeople:(id)a3 withKeysToFetch:(id)a4
+- (void)completePeople:(id)people withKeysToFetch:(id)fetch
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count] >= 2)
+  peopleCopy = people;
+  fetchCopy = fetch;
+  if ([peopleCopy count] >= 2)
   {
     v8 = +[ABSLog log];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v23 = [v6 count];
+      v23 = [peopleCopy count];
       _os_log_impl(&dword_236A49000, v8, OS_LOG_TYPE_INFO, "Fetching in bulk %ld contacts!", buf, 0xCu);
     }
   }
 
-  v9 = [v6 _cn_map:&__block_literal_global_3];
-  v10 = [v6 _cn_indexBy:&__block_literal_global_9];
+  v9 = [peopleCopy _cn_map:&__block_literal_global_3];
+  v10 = [peopleCopy _cn_indexBy:&__block_literal_global_9];
   v11 = [v10 mutableCopy];
-  v12 = [(ABSBulkFaultHandler *)self store];
-  v13 = [v12 authorizedKeysForContactKeys:v7];
+  store = [(ABSBulkFaultHandler *)self store];
+  v13 = [store authorizedKeysForContactKeys:fetchCopy];
 
   if ([v13 count])
   {
@@ -255,8 +255,8 @@ LABEL_23:
     v21 = v14;
     [(ABSBulkFaultHandler *)self refetchContacts:v9 keysToFetch:v13 handler:&v16];
     [v14 _cn_each:{&__block_literal_global_13, v16, v17, v18, v19}];
-    v15 = [(ABSBulkFaultHandler *)self inlineScheduler];
-    [v15 timestamp];
+    inlineScheduler = [(ABSBulkFaultHandler *)self inlineScheduler];
+    [inlineScheduler timestamp];
     [(ABSBulkFaultHandler *)self setLastRequestTimeStamp:?];
   }
 }
@@ -318,44 +318,44 @@ void __54__ABSBulkFaultHandler_completePeople_withKeysToFetch___block_invoke_15(
   [v4 setCNValue:v5 onContact:*(a1 + 40)];
 }
 
-- (void)refetchContacts:(id)a3 keysToFetch:(id)a4 handler:(id)a5
+- (void)refetchContacts:(id)contacts keysToFetch:(id)fetch handler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CBDA70];
-  v10 = a4;
-  v11 = a3;
-  v12 = [[v9 alloc] initWithKeysToFetch:v10];
+  fetchCopy = fetch;
+  contactsCopy = contacts;
+  v12 = [[v9 alloc] initWithKeysToFetch:fetchCopy];
 
-  if ([v11 count] == 1)
+  if ([contactsCopy count] == 1)
   {
-    v13 = [v11 firstObject];
+    firstObject = [contactsCopy firstObject];
 
     v14 = MEMORY[0x277CBDA58];
-    v15 = [v13 iOSLegacyIdentifier];
-    v16 = [v13 identifier];
-    v17 = [v14 predicateForFaultFulfillmentForLegacyIdentifier:v15 identifier:v16];
+    iOSLegacyIdentifier = [firstObject iOSLegacyIdentifier];
+    identifier = [firstObject identifier];
+    v17 = [v14 predicateForFaultFulfillmentForLegacyIdentifier:iOSLegacyIdentifier identifier:identifier];
   }
 
   else
   {
     v18 = MEMORY[0x277CBDA58];
-    v13 = [v11 _cn_map:&__block_literal_global_21_0];
+    firstObject = [contactsCopy _cn_map:&__block_literal_global_21_0];
 
-    v17 = [v18 predicateForContactsWithIdentifiers:v13];
+    v17 = [v18 predicateForContactsWithIdentifiers:firstObject];
   }
 
   [v12 setPredicate:v17];
   [v12 setUnifyResults:0];
   [v12 setMutableObjects:0];
-  v19 = [(ABSBulkFaultHandler *)self store];
+  store = [(ABSBulkFaultHandler *)self store];
   v29 = 0;
   v24 = MEMORY[0x277D85DD0];
   v25 = 3221225472;
   v26 = __59__ABSBulkFaultHandler_refetchContacts_keysToFetch_handler___block_invoke_2;
   v27 = &unk_278A048E8;
-  v20 = v8;
+  v20 = handlerCopy;
   v28 = v20;
-  v21 = [v19 enumerateContactsWithFetchRequest:v12 error:&v29 usingBlock:&v24];
+  v21 = [store enumerateContactsWithFetchRequest:v12 error:&v29 usingBlock:&v24];
   v22 = v29;
 
   if ((v21 & 1) == 0)

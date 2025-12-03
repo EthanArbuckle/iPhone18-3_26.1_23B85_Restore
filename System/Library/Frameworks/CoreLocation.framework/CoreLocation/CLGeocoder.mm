@@ -1,20 +1,20 @@
 @interface CLGeocoder
-+ (void)hydrateGeoMapItemLocallyFromHandle:(id)a3 completionHandler:(id)a4;
++ (void)hydrateGeoMapItemLocallyFromHandle:(id)handle completionHandler:(id)handler;
 - (CLGeocoder)init;
 - (void)_notifyCancel;
-- (void)_notifyError:(id)a3;
+- (void)_notifyError:(id)error;
 - (void)_notifyNoResult;
-- (void)_notifyPartialResult:(id)a3;
-- (void)_notifyResult:(id)a3 error:(id)a4;
-- (void)_ticket:(id)a3 didReturnError:(id)a4 partialResultForLocation:(id)a5;
-- (void)_ticket:(id)a3 didReturnGeoMapItems:(id)a4;
+- (void)_notifyPartialResult:(id)result;
+- (void)_notifyResult:(id)result error:(id)error;
+- (void)_ticket:(id)_ticket didReturnError:(id)error partialResultForLocation:(id)location;
+- (void)_ticket:(id)_ticket didReturnGeoMapItems:(id)items;
 - (void)cancelGeocode;
 - (void)dealloc;
-- (void)geocodeAddressDictionary:(id)a3 preferredLocale:(id)a4 completionHandler:(id)a5;
+- (void)geocodeAddressDictionary:(id)dictionary preferredLocale:(id)locale completionHandler:(id)handler;
 - (void)geocodeAddressString:(NSString *)addressString inRegion:(CLRegion *)region preferredLocale:(NSLocale *)locale completionHandler:(CLGeocodeCompletionHandler)completionHandler;
-- (void)geocodeAddressString:(id)a3 inRegionCenteredAt:(CLLocationCoordinate2D)a4 inRegionRadius:(double)a5 preferredLocale:(id)a6 completionHandler:(id)a7;
+- (void)geocodeAddressString:(id)string inRegionCenteredAt:(CLLocationCoordinate2D)at inRegionRadius:(double)radius preferredLocale:(id)locale completionHandler:(id)handler;
 - (void)geocodePostalAddress:(CNPostalAddress *)postalAddress preferredLocale:(NSLocale *)locale completionHandler:(CLGeocodeCompletionHandler)completionHandler;
-- (void)reverseGeocodeLocation:(id)a3 preferredLocale:(id)a4 heading:(double)a5 localResultsOnly:(BOOL)a6 completionHandler:(id)a7;
+- (void)reverseGeocodeLocation:(id)location preferredLocale:(id)locale heading:(double)heading localResultsOnly:(BOOL)only completionHandler:(id)handler;
 @end
 
 @implementation CLGeocoder
@@ -101,7 +101,7 @@
   [(CLGeocoder *)&v3 dealloc];
 }
 
-- (void)reverseGeocodeLocation:(id)a3 preferredLocale:(id)a4 heading:(double)a5 localResultsOnly:(BOOL)a6 completionHandler:(id)a7
+- (void)reverseGeocodeLocation:(id)location preferredLocale:(id)locale heading:(double)heading localResultsOnly:(BOOL)only completionHandler:(id)handler
 {
   queue = self->_internal->_queue;
   v8[0] = MEMORY[0x1E69E9820];
@@ -109,15 +109,15 @@
   v8[2] = sub_19B996888;
   v8[3] = &unk_1E753E1F8;
   v8[4] = self;
-  v8[5] = a3;
-  v8[6] = a4;
-  v8[7] = a7;
-  *&v8[8] = a5;
-  v9 = a6;
+  v8[5] = location;
+  v8[6] = locale;
+  v8[7] = handler;
+  *&v8[8] = heading;
+  onlyCopy = only;
   dispatch_async(queue, v8);
 }
 
-- (void)geocodeAddressDictionary:(id)a3 preferredLocale:(id)a4 completionHandler:(id)a5
+- (void)geocodeAddressDictionary:(id)dictionary preferredLocale:(id)locale completionHandler:(id)handler
 {
   queue = self->_internal->_queue;
   v6[0] = MEMORY[0x1E69E9820];
@@ -125,15 +125,15 @@
   v6[2] = sub_19B996DAC;
   v6[3] = &unk_1E753E248;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = a4;
-  v6[7] = a5;
+  v6[5] = dictionary;
+  v6[6] = locale;
+  v6[7] = handler;
   dispatch_async(queue, v6);
 }
 
-- (void)geocodeAddressString:(id)a3 inRegionCenteredAt:(CLLocationCoordinate2D)a4 inRegionRadius:(double)a5 preferredLocale:(id)a6 completionHandler:(id)a7
+- (void)geocodeAddressString:(id)string inRegionCenteredAt:(CLLocationCoordinate2D)at inRegionRadius:(double)radius preferredLocale:(id)locale completionHandler:(id)handler
 {
-  -[CLCircularRegion initWithCenter:radius:identifier:]([CLCircularRegion alloc], "initWithCenter:radius:identifier:", [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.CoreLocation.geocodeAddressStringRegion-%@", objc_msgSend(objc_msgSend(MEMORY[0x1E696AFB0], "UUID"), "UUIDString")], a4.latitude, a4.longitude, a5);
+  -[CLCircularRegion initWithCenter:radius:identifier:]([CLCircularRegion alloc], "initWithCenter:radius:identifier:", [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.CoreLocation.geocodeAddressStringRegion-%@", objc_msgSend(objc_msgSend(MEMORY[0x1E696AFB0], "UUID"), "UUIDString")], at.latitude, at.longitude, radius);
 
   MEMORY[0x1EEE66B58](self, sel_geocodeAddressString_inRegion_preferredLocale_completionHandler_);
 }
@@ -153,16 +153,16 @@
   dispatch_async(queue, block);
 }
 
-+ (void)hydrateGeoMapItemLocallyFromHandle:(id)a3 completionHandler:(id)a4
++ (void)hydrateGeoMapItemLocallyFromHandle:(id)handle completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = sub_19B997568;
     v4[3] = &unk_1E753D688;
-    v4[4] = a3;
-    v4[5] = a4;
+    v4[4] = handle;
+    v4[5] = handler;
     dispatch_async(MEMORY[0x1E69E96A0], v4);
   }
 }
@@ -178,7 +178,7 @@
   dispatch_async(queue, block);
 }
 
-- (void)_ticket:(id)a3 didReturnGeoMapItems:(id)a4
+- (void)_ticket:(id)_ticket didReturnGeoMapItems:(id)items
 {
   queue = self->_internal->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -186,12 +186,12 @@
   block[2] = sub_19B99784C;
   block[3] = &unk_1E753D098;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = _ticket;
+  block[6] = items;
   dispatch_async(queue, block);
 }
 
-- (void)_ticket:(id)a3 didReturnError:(id)a4 partialResultForLocation:(id)a5
+- (void)_ticket:(id)_ticket didReturnError:(id)error partialResultForLocation:(id)location
 {
   queue = self->_internal->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -199,31 +199,31 @@
   block[2] = sub_19B997A2C;
   block[3] = &unk_1E753D098;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = _ticket;
+  block[6] = error;
   dispatch_async(queue, block);
 }
 
-- (void)_notifyResult:(id)a3 error:(id)a4
+- (void)_notifyResult:(id)result error:(id)error
 {
   internal = self->_internal;
   geocodeCompletionHandler = internal->_geocodeCompletionHandler;
   internal->_geocodeCompletionHandler = 0;
   if (geocodeCompletionHandler)
   {
-    v8 = [(CLGeocoderInternal *)self->_internal responseSilo];
+    responseSilo = [(CLGeocoderInternal *)self->_internal responseSilo];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = sub_19B997D24;
     v9[3] = &unk_1E753CD30;
-    v9[5] = a4;
+    v9[5] = error;
     v9[6] = geocodeCompletionHandler;
-    v9[4] = a3;
-    [(CLSilo *)v8 async:v9];
+    v9[4] = result;
+    [(CLSilo *)responseSilo async:v9];
   }
 }
 
-- (void)_notifyPartialResult:(id)a3
+- (void)_notifyPartialResult:(id)result
 {
   [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomain" code:9 userInfo:0];
 
@@ -244,7 +244,7 @@
   MEMORY[0x1EEE66B58](self, sel__notifyResult_error_);
 }
 
-- (void)_notifyError:(id)a3
+- (void)_notifyError:(id)error
 {
   [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomain" code:2 userInfo:0];
 

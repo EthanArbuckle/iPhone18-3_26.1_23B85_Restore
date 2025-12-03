@@ -1,21 +1,21 @@
 @interface TSPDataMetadataMap
-- (TSPDataMetadataMap)initWithContext:(id)a3;
-- (id)dataMetadataForDataIdentifier:(int64_t)a3;
-- (void)loadFromMessage:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)saveToMessage:(void *)a3 archiver:(id)a4;
-- (void)setDataMetadata:(id)a3 forDataIdentifier:(int64_t)a4;
+- (TSPDataMetadataMap)initWithContext:(id)context;
+- (id)dataMetadataForDataIdentifier:(int64_t)identifier;
+- (void)loadFromMessage:(const void *)message unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)saveToMessage:(void *)message archiver:(id)archiver;
+- (void)setDataMetadata:(id)metadata forDataIdentifier:(int64_t)identifier;
 @end
 
 @implementation TSPDataMetadataMap
 
-- (TSPDataMetadataMap)initWithContext:(id)a3
+- (TSPDataMetadataMap)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = TSPDataMetadataMap;
-  v5 = [(TSPObject *)&v9 initWithContext:v4];
+  v5 = [(TSPObject *)&v9 initWithContext:contextCopy];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -26,36 +26,36 @@
   return v5;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v7 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors(&unk_2812FBBF0, 0);
-  v5 = objc_msgSend_messageWithDescriptor_(v7, v4, off_2812FBC48[30]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812FBC48[30]);
 
-  objc_msgSend_loadFromMessage_unarchiver_(self, v6, v5, v7);
+  objc_msgSend_loadFromMessage_unarchiver_(self, v6, v5, unarchiverCopy);
 }
 
-- (void)setDataMetadata:(id)a3 forDataIdentifier:(int64_t)a4
+- (void)setDataMetadata:(id)metadata forDataIdentifier:(int64_t)identifier
 {
-  v10 = a3;
+  metadataCopy = metadata;
   identifierToDataMetadata = self->_identifierToDataMetadata;
-  v8 = objc_msgSend_numberWithLongLong_(MEMORY[0x277CCABB0], v7, a4);
-  objc_msgSend_setObject_forKeyedSubscript_(identifierToDataMetadata, v9, v10, v8);
+  v8 = objc_msgSend_numberWithLongLong_(MEMORY[0x277CCABB0], v7, identifier);
+  objc_msgSend_setObject_forKeyedSubscript_(identifierToDataMetadata, v9, metadataCopy, v8);
 }
 
-- (id)dataMetadataForDataIdentifier:(int64_t)a3
+- (id)dataMetadataForDataIdentifier:(int64_t)identifier
 {
   identifierToDataMetadata = self->_identifierToDataMetadata;
-  v4 = objc_msgSend_numberWithLongLong_(MEMORY[0x277CCABB0], a2, a3);
+  v4 = objc_msgSend_numberWithLongLong_(MEMORY[0x277CCABB0], a2, identifier);
   v6 = objc_msgSend_objectForKeyedSubscript_(identifierToDataMetadata, v5, v4);
 
   return v6;
 }
 
-- (void)loadFromMessage:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromMessage:(const void *)message unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  v7 = *(a3 + 6);
+  unarchiverCopy = unarchiver;
+  v7 = *(message + 6);
   v8 = objc_alloc(MEMORY[0x277CBEB38]);
   v10 = objc_msgSend_initWithCapacity_(v8, v9, v7 + 1);
   identifierToDataMetadata = self->_identifierToDataMetadata;
@@ -67,7 +67,7 @@
     v13 = 8;
     do
     {
-      v14 = *(*(a3 + 4) + v13);
+      v14 = *(*(message + 4) + v13);
       v16 = *(v14 + 24);
       v15 = *(v14 + 32);
       v20[0] = v12;
@@ -76,7 +76,7 @@
       v20[3] = &unk_27A6E7218;
       v20[4] = self;
       v20[5] = v15;
-      v17 = v6;
+      v17 = unarchiverCopy;
       v19 = objc_opt_class();
       if (v16)
       {
@@ -96,26 +96,26 @@
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors(&unk_2812FBBF0, 0);
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_276AEBEB4, off_2812FBC48[30]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_276AEBEB4, off_2812FBC48[30]);
 
-  objc_msgSend_saveToMessage_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveToMessage_archiver_(self, v6, v5, archiverCopy);
 }
 
-- (void)saveToMessage:(void *)a3 archiver:(id)a4
+- (void)saveToMessage:(void *)message archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   identifierToDataMetadata = self->_identifierToDataMetadata;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_276AEBD40;
   v10[3] = &unk_27A6E7240;
-  v11 = v6;
-  v12 = a3;
-  v8 = v6;
+  v11 = archiverCopy;
+  messageCopy = message;
+  v8 = archiverCopy;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(identifierToDataMetadata, v9, v10);
 }
 

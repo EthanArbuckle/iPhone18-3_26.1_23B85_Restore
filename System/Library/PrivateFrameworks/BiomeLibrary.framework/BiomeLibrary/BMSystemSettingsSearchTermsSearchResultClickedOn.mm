@@ -1,38 +1,38 @@
 @interface BMSystemSettingsSearchTermsSearchResultClickedOn
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSystemSettingsSearchTermsSearchResultClickedOn)initWithBundleIDwithAnchor:(id)a3 searchResultTitle:(id)a4 index:(id)a5;
-- (BMSystemSettingsSearchTermsSearchResultClickedOn)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMSystemSettingsSearchTermsSearchResultClickedOn)initWithBundleIDwithAnchor:(id)anchor searchResultTitle:(id)title index:(id)index;
+- (BMSystemSettingsSearchTermsSearchResultClickedOn)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSystemSettingsSearchTermsSearchResultClickedOn
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSystemSettingsSearchTermsSearchResultClickedOn *)self bundleIDwithAnchor];
-    v7 = [v5 bundleIDwithAnchor];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    bundleIDwithAnchor = [(BMSystemSettingsSearchTermsSearchResultClickedOn *)self bundleIDwithAnchor];
+    bundleIDwithAnchor2 = [v5 bundleIDwithAnchor];
+    v8 = bundleIDwithAnchor2;
+    if (bundleIDwithAnchor == bundleIDwithAnchor2)
     {
     }
 
     else
     {
-      v9 = [(BMSystemSettingsSearchTermsSearchResultClickedOn *)self bundleIDwithAnchor];
-      v10 = [v5 bundleIDwithAnchor];
-      v11 = [v9 isEqual:v10];
+      bundleIDwithAnchor3 = [(BMSystemSettingsSearchTermsSearchResultClickedOn *)self bundleIDwithAnchor];
+      bundleIDwithAnchor4 = [v5 bundleIDwithAnchor];
+      v11 = [bundleIDwithAnchor3 isEqual:bundleIDwithAnchor4];
 
       if (!v11)
       {
@@ -40,18 +40,18 @@
       }
     }
 
-    v13 = [(BMSystemSettingsSearchTermsSearchResultClickedOn *)self searchResultTitle];
-    v14 = [v5 searchResultTitle];
-    v15 = v14;
-    if (v13 == v14)
+    searchResultTitle = [(BMSystemSettingsSearchTermsSearchResultClickedOn *)self searchResultTitle];
+    searchResultTitle2 = [v5 searchResultTitle];
+    v15 = searchResultTitle2;
+    if (searchResultTitle == searchResultTitle2)
     {
     }
 
     else
     {
-      v16 = [(BMSystemSettingsSearchTermsSearchResultClickedOn *)self searchResultTitle];
-      v17 = [v5 searchResultTitle];
-      v18 = [v16 isEqual:v17];
+      searchResultTitle3 = [(BMSystemSettingsSearchTermsSearchResultClickedOn *)self searchResultTitle];
+      searchResultTitle4 = [v5 searchResultTitle];
+      v18 = [searchResultTitle3 isEqual:searchResultTitle4];
 
       if (!v18)
       {
@@ -67,8 +67,8 @@
 
     if (-[BMSystemSettingsSearchTermsSearchResultClickedOn hasIndex](self, "hasIndex") && [v5 hasIndex])
     {
-      v19 = [(BMSystemSettingsSearchTermsSearchResultClickedOn *)self index];
-      v12 = v19 == [v5 index];
+      index = [(BMSystemSettingsSearchTermsSearchResultClickedOn *)self index];
+      v12 = index == [v5 index];
 LABEL_17:
 
       goto LABEL_18;
@@ -88,8 +88,8 @@ LABEL_18:
 - (id)jsonDictionary
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSystemSettingsSearchTermsSearchResultClickedOn *)self bundleIDwithAnchor];
-  v4 = [(BMSystemSettingsSearchTermsSearchResultClickedOn *)self searchResultTitle];
+  bundleIDwithAnchor = [(BMSystemSettingsSearchTermsSearchResultClickedOn *)self bundleIDwithAnchor];
+  searchResultTitle = [(BMSystemSettingsSearchTermsSearchResultClickedOn *)self searchResultTitle];
   if ([(BMSystemSettingsSearchTermsSearchResultClickedOn *)self hasIndex])
   {
     v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSystemSettingsSearchTermsSearchResultClickedOn index](self, "index")}];
@@ -101,40 +101,40 @@ LABEL_18:
   }
 
   v12[0] = @"bundleIDwithAnchor";
-  v6 = v3;
-  if (!v3)
+  null = bundleIDwithAnchor;
+  if (!bundleIDwithAnchor)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v6;
+  v13[0] = null;
   v12[1] = @"searchResultTitle";
-  v7 = v4;
-  if (!v4)
+  null2 = searchResultTitle;
+  if (!searchResultTitle)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v7;
+  v13[1] = null2;
   v12[2] = @"index";
-  v8 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
   if (v5)
   {
-    if (v4)
+    if (searchResultTitle)
     {
       goto LABEL_12;
     }
 
 LABEL_17:
 
-    if (v3)
+    if (bundleIDwithAnchor)
     {
       goto LABEL_13;
     }
@@ -142,13 +142,13 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (!v4)
+  if (!searchResultTitle)
   {
     goto LABEL_17;
   }
 
 LABEL_12:
-  if (v3)
+  if (bundleIDwithAnchor)
   {
     goto LABEL_13;
   }
@@ -161,25 +161,25 @@ LABEL_13:
   return v9;
 }
 
-- (BMSystemSettingsSearchTermsSearchResultClickedOn)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSystemSettingsSearchTermsSearchResultClickedOn)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"bundleIDwithAnchor"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"bundleIDwithAnchor"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"searchResultTitle"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"searchResultTitle"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v10 = 0;
-          v13 = 0;
+          selfCopy = 0;
           goto LABEL_12;
         }
 
@@ -191,8 +191,8 @@ LABEL_4:
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
         v19 = [v23 initWithDomain:v18 code:2 userInfo:v11];
         v10 = 0;
-        v13 = 0;
-        *a4 = v19;
+        selfCopy = 0;
+        *error = v19;
         goto LABEL_11;
       }
 
@@ -204,13 +204,13 @@ LABEL_4:
       v10 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"index"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"index"];
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v24 = objc_alloc(MEMORY[0x1E696ABC0]);
           v22 = *MEMORY[0x1E698F240];
@@ -218,11 +218,11 @@ LABEL_4:
           v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"index"];
           v26 = v20;
           v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-          *a4 = [v24 initWithDomain:v22 code:2 userInfo:v21];
+          *error = [v24 initWithDomain:v22 code:2 userInfo:v21];
         }
 
         v12 = 0;
-        v13 = 0;
+        selfCopy = 0;
         goto LABEL_11;
       }
 
@@ -235,7 +235,7 @@ LABEL_4:
     }
 
     self = [(BMSystemSettingsSearchTermsSearchResultClickedOn *)self initWithBundleIDwithAnchor:v8 searchResultTitle:v10 index:v12];
-    v13 = self;
+    selfCopy = self;
 LABEL_11:
 
     goto LABEL_12;
@@ -248,10 +248,10 @@ LABEL_11:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
@@ -262,51 +262,51 @@ LABEL_11:
   v30[0] = v10;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
   v8 = 0;
-  v13 = 0;
-  *a4 = [v16 initWithDomain:v17 code:2 userInfo:v9];
+  selfCopy = 0;
+  *error = [v16 initWithDomain:v17 code:2 userInfo:v9];
 LABEL_12:
 
 LABEL_13:
   v14 = *MEMORY[0x1E69E9840];
-  return v13;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMSystemSettingsSearchTermsSearchResultClickedOn *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_bundleIDwithAnchor)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_searchResultTitle)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_hasIndex)
   {
     index = self->_index;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v29.receiver = self;
   v29.super_class = BMSystemSettingsSearchTermsSearchResultClickedOn;
   v5 = [(BMEventBase *)&v29 init];
@@ -315,12 +315,12 @@ LABEL_13:
     goto LABEL_42;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -331,18 +331,18 @@ LABEL_13:
       while (1)
       {
         v30 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v30 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v30 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v30 & 0x7F) << v7;
@@ -360,9 +360,9 @@ LABEL_13:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -377,18 +377,18 @@ LABEL_16:
         while (1)
         {
           v30 = 0;
-          v22 = [v4 position] + 1;
-          if (v22 >= [v4 position] && (v23 = objc_msgSend(v4, "position") + 1, v23 <= objc_msgSend(v4, "length")))
+          v22 = [fromCopy position] + 1;
+          if (v22 >= [fromCopy position] && (v23 = objc_msgSend(fromCopy, "position") + 1, v23 <= objc_msgSend(fromCopy, "length")))
           {
-            v24 = [v4 data];
-            [v24 getBytes:&v30 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v30 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v21 |= (v30 & 0x7F) << v19;
@@ -406,7 +406,7 @@ LABEL_16:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v25 = 0;
         }
@@ -449,13 +449,13 @@ LABEL_38:
       }
 
 LABEL_39:
-      v26 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v26 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_41:
     v27 = 0;
@@ -473,40 +473,40 @@ LABEL_42:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMSystemSettingsSearchTermsSearchResultClickedOn *)self bundleIDwithAnchor];
-  v5 = [(BMSystemSettingsSearchTermsSearchResultClickedOn *)self searchResultTitle];
+  bundleIDwithAnchor = [(BMSystemSettingsSearchTermsSearchResultClickedOn *)self bundleIDwithAnchor];
+  searchResultTitle = [(BMSystemSettingsSearchTermsSearchResultClickedOn *)self searchResultTitle];
   v6 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSystemSettingsSearchTermsSearchResultClickedOn index](self, "index")}];
-  v7 = [v3 initWithFormat:@"BMSystemSettingsSearchTermsSearchResultClickedOn with bundleIDwithAnchor: %@, searchResultTitle: %@, index: %@", v4, v5, v6];
+  v7 = [v3 initWithFormat:@"BMSystemSettingsSearchTermsSearchResultClickedOn with bundleIDwithAnchor: %@, searchResultTitle: %@, index: %@", bundleIDwithAnchor, searchResultTitle, v6];
 
   return v7;
 }
 
-- (BMSystemSettingsSearchTermsSearchResultClickedOn)initWithBundleIDwithAnchor:(id)a3 searchResultTitle:(id)a4 index:(id)a5
+- (BMSystemSettingsSearchTermsSearchResultClickedOn)initWithBundleIDwithAnchor:(id)anchor searchResultTitle:(id)title index:(id)index
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  anchorCopy = anchor;
+  titleCopy = title;
+  indexCopy = index;
   v15.receiver = self;
   v15.super_class = BMSystemSettingsSearchTermsSearchResultClickedOn;
   v12 = [(BMEventBase *)&v15 init];
   if (v12)
   {
     v12->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v12->_bundleIDwithAnchor, a3);
-    objc_storeStrong(&v12->_searchResultTitle, a4);
-    if (v11)
+    objc_storeStrong(&v12->_bundleIDwithAnchor, anchor);
+    objc_storeStrong(&v12->_searchResultTitle, title);
+    if (indexCopy)
     {
       v12->_hasIndex = 1;
-      v13 = [v11 intValue];
+      intValue = [indexCopy intValue];
     }
 
     else
     {
       v12->_hasIndex = 0;
-      v13 = -1;
+      intValue = -1;
     }
 
-    v12->_index = v13;
+    v12->_index = intValue;
   }
 
   return v12;
@@ -543,9 +543,9 @@ LABEL_42:
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -553,8 +553,8 @@ LABEL_42:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSystemSettingsSearchTermsSearchResultClickedOn alloc] initByReadFrom:v7];
     v4 = v8;

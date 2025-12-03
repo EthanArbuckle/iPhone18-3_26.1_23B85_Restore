@@ -5,10 +5,10 @@
 - (CGRect)rect;
 - (NSString)loggableDescription;
 - (SSEnvironmentElement)init;
-- (SSEnvironmentElement)initWithBSXPCCoder:(id)a3;
-- (SSEnvironmentElement)initWithDisplayLayoutElement:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (SSEnvironmentElement)initWithBSXPCCoder:(id)coder;
+- (SSEnvironmentElement)initWithDisplayLayoutElement:(id)element;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation SSEnvironmentElement
@@ -18,105 +18,105 @@
   v7.receiver = self;
   v7.super_class = SSEnvironmentElement;
   v2 = [(SSEnvironmentElement *)&v7 init];
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
   bundleIdentifier = v2->_bundleIdentifier;
-  v2->_bundleIdentifier = v4;
+  v2->_bundleIdentifier = bundleIdentifier;
 
   return v2;
 }
 
-- (SSEnvironmentElement)initWithDisplayLayoutElement:(id)a3
+- (SSEnvironmentElement)initWithDisplayLayoutElement:(id)element
 {
   v17.receiver = self;
   v17.super_class = SSEnvironmentElement;
-  v3 = a3;
+  elementCopy = element;
   v4 = [(SSEnvironmentElement *)&v17 init];
-  [v3 frame];
+  [elementCopy frame];
   v4->_rect.origin.x = v5;
   v4->_rect.origin.y = v6;
   v4->_rect.size.width = v7;
   v4->_rect.size.height = v8;
-  v9 = [v3 bundleIdentifier];
+  bundleIdentifier = [elementCopy bundleIdentifier];
   bundleIdentifier = v4->_bundleIdentifier;
-  v4->_bundleIdentifier = v9;
+  v4->_bundleIdentifier = bundleIdentifier;
 
-  v11 = [v3 identifier];
+  identifier = [elementCopy identifier];
   elementIdentifier = v4->_elementIdentifier;
-  v4->_elementIdentifier = v11;
+  v4->_elementIdentifier = identifier;
 
-  v13 = [MEMORY[0x1E696AFB0] UUID];
-  v14 = [v13 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
   identifier = v4->_identifier;
-  v4->_identifier = v14;
+  v4->_identifier = uUIDString;
 
-  LOBYTE(v13) = [v3 hasKeyboardFocus];
-  v4->_hasKeyboardFocus = v13;
+  LOBYTE(uUID) = [elementCopy hasKeyboardFocus];
+  v4->_hasKeyboardFocus = uUID;
   return v4;
 }
 
 - (NSString)loggableDescription
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(SSEnvironmentElement *)self identifier];
-  v6 = [v5 shorterLoggableString];
-  v7 = [v4 stringWithFormat:@"identifier: %@ ", v6];
-  [v3 appendString:v7];
+  identifier = [(SSEnvironmentElement *)self identifier];
+  shorterLoggableString = [identifier shorterLoggableString];
+  v7 = [v4 stringWithFormat:@"identifier: %@ ", shorterLoggableString];
+  [string appendString:v7];
 
   v8 = MEMORY[0x1E696AEC0];
   [(SSEnvironmentElement *)self rect];
   v9 = NSStringFromCGRect(v13);
   v10 = [v8 stringWithFormat:@"rect: %@", v9];
-  [v3 appendString:v10];
+  [string appendString:v10];
 
-  return v3;
+  return string;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   [(SSEnvironmentElement *)self rect];
-  [v7 encodeCGRect:@"SSEnvironmentElementRect" forKey:?];
-  v4 = [(SSEnvironmentElement *)self bundleIdentifier];
-  [v7 encodeObject:v4 forKey:@"SSEnvironmentElementBundleIdentifier"];
+  [coderCopy encodeCGRect:@"SSEnvironmentElementRect" forKey:?];
+  bundleIdentifier = [(SSEnvironmentElement *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"SSEnvironmentElementBundleIdentifier"];
 
-  v5 = [(SSEnvironmentElement *)self elementIdentifier];
-  [v7 encodeObject:v5 forKey:@"SSEnvironmentElementIdentifier"];
+  elementIdentifier = [(SSEnvironmentElement *)self elementIdentifier];
+  [coderCopy encodeObject:elementIdentifier forKey:@"SSEnvironmentElementIdentifier"];
 
-  v6 = [(SSEnvironmentElement *)self identifier];
-  [v7 encodeObject:v6 forKey:@"SSEnvironmentElementUUID"];
+  identifier = [(SSEnvironmentElement *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"SSEnvironmentElementUUID"];
 
-  [v7 encodeBool:-[SSEnvironmentElement hasKeyboardFocus](self forKey:{"hasKeyboardFocus"), @"SSEnvironmentElementHasKeyboardFocusKey"}];
+  [coderCopy encodeBool:-[SSEnvironmentElement hasKeyboardFocus](self forKey:{"hasKeyboardFocus"), @"SSEnvironmentElementHasKeyboardFocusKey"}];
 }
 
-- (SSEnvironmentElement)initWithBSXPCCoder:(id)a3
+- (SSEnvironmentElement)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SSEnvironmentElement *)self init];
-  [v4 decodeCGRectForKey:@"SSEnvironmentElementRect"];
+  [coderCopy decodeCGRectForKey:@"SSEnvironmentElementRect"];
   v5->_rect.origin.x = v6;
   v5->_rect.origin.y = v7;
   v5->_rect.size.width = v8;
   v5->_rect.size.height = v9;
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SSEnvironmentElementBundleIdentifier"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SSEnvironmentElementBundleIdentifier"];
   bundleIdentifier = v5->_bundleIdentifier;
   v5->_bundleIdentifier = v10;
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SSEnvironmentElementIdentifier"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SSEnvironmentElementIdentifier"];
   elementIdentifier = v5->_elementIdentifier;
   v5->_elementIdentifier = v12;
 
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SSEnvironmentElementUUID"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SSEnvironmentElementUUID"];
   identifier = v5->_identifier;
   v5->_identifier = v14;
 
-  v16 = [v4 decodeBoolForKey:@"SSEnvironmentElementHasKeyboardFocusKey"];
+  v16 = [coderCopy decodeBoolForKey:@"SSEnvironmentElementHasKeyboardFocusKey"];
   v5->_hasKeyboardFocus = v16;
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [(SSEnvironmentElement *)self rect];
@@ -124,17 +124,17 @@
   v4[2] = v6;
   v4[3] = v7;
   v4[4] = v8;
-  v9 = [(SSEnvironmentElement *)self bundleIdentifier];
+  bundleIdentifier = [(SSEnvironmentElement *)self bundleIdentifier];
   v10 = v4[5];
-  v4[5] = v9;
+  v4[5] = bundleIdentifier;
 
-  v11 = [(SSEnvironmentElement *)self elementIdentifier];
+  elementIdentifier = [(SSEnvironmentElement *)self elementIdentifier];
   v12 = v4[6];
-  v4[6] = v11;
+  v4[6] = elementIdentifier;
 
-  v13 = [(SSEnvironmentElement *)self identifier];
+  identifier = [(SSEnvironmentElement *)self identifier];
   v14 = v4[7];
-  v4[7] = v13;
+  v4[7] = identifier;
 
   *(v4 + 64) = [(SSEnvironmentElement *)self hasKeyboardFocus];
   return v4;
@@ -174,18 +174,18 @@ uint64_t __52__SSEnvironmentElement__metadataIdentifierBlocklist__block_invoke()
 
 - (BOOL)supportsMetadataCapture
 {
-  v3 = [objc_opt_class() _metadataIdentifierBlocklist];
-  v4 = [(SSEnvironmentElement *)self bundleIdentifier];
-  if ([v3 containsObject:v4])
+  _metadataIdentifierBlocklist = [objc_opt_class() _metadataIdentifierBlocklist];
+  bundleIdentifier = [(SSEnvironmentElement *)self bundleIdentifier];
+  if ([_metadataIdentifierBlocklist containsObject:bundleIdentifier])
   {
     LOBYTE(v5) = 0;
   }
 
   else
   {
-    v6 = [objc_opt_class() _metadataIdentifierBlocklist];
-    v7 = [(SSEnvironmentElement *)self elementIdentifier];
-    v5 = [v6 containsObject:v7] ^ 1;
+    _metadataIdentifierBlocklist2 = [objc_opt_class() _metadataIdentifierBlocklist];
+    elementIdentifier = [(SSEnvironmentElement *)self elementIdentifier];
+    v5 = [_metadataIdentifierBlocklist2 containsObject:elementIdentifier] ^ 1;
   }
 
   return v5;

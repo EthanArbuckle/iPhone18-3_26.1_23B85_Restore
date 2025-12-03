@@ -150,7 +150,7 @@
     return self->inputImage;
   }
 
-  v20 = [(CILLFilter *)self _polyKernel];
+  _polyKernel = [(CILLFilter *)self _polyKernel];
   if (!self->inputImage)
   {
     sub_4A590();
@@ -166,7 +166,7 @@
     sub_4A538();
   }
 
-  v21 = v20;
+  v21 = _polyKernel;
   [v19 extent];
   v23 = v22;
   v25 = v24;
@@ -200,12 +200,12 @@
   [(NSNumber *)self->inputSmartShadows doubleValue];
   if (fabs(v40) >= 1.0e-10)
   {
-    v41 = [(CILLFilter *)self _shadowKernel];
+    _shadowKernel = [(CILLFilter *)self _shadowKernel];
     [(CIImage *)self->inputImage extent];
     v47[0] = inputImage;
     v47[1] = v19;
     v47[2] = self->inputSmartShadows;
-    return [v41 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v47, 3), v42, v43, v44, v45}];
+    return [_shadowKernel applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v47, 3), v42, v43, v44, v45}];
   }
 
   return inputImage;

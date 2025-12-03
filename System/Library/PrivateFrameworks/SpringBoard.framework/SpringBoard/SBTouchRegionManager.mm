@@ -1,30 +1,30 @@
 @interface SBTouchRegionManager
 + (id)sharedInstance;
-- (BOOL)_queue_shouldConsiderElementFullScreenModal:(id)a3;
-- (CGAffineTransform)_queue_hitTestRegionTransformWithDisplayLayout:(SEL)a3;
+- (BOOL)_queue_shouldConsiderElementFullScreenModal:(id)modal;
+- (CGAffineTransform)_queue_hitTestRegionTransformWithDisplayLayout:(SEL)layout;
 - (CGAffineTransform)rootWindowTransform;
 - (FBSDisplayLayoutMonitor)displayLayoutMonitor;
 - (SBTouchRegionManager)init;
 - (double)edgeTouchRegionBuffer;
 - (double)touchRegionBuffer;
-- (id)_initWithBKSInterface:(id)a3 displayLayoutMonitor:(id)a4;
-- (id)_queue_calculateBorderHitTestRegionsWithDisplayLayout:(id)a3;
-- (id)_queue_calculateHitTestRegionsFromTiledSceneRects:(id)a3;
-- (id)_queue_calculateTouchRectsFromTiledSceneRects:(id)a3;
-- (id)_queue_floatingHitTestRegionForLayout:(id)a3 elementRect:(CGRect)a4;
-- (id)_queue_fullscreenHitTestRegionForLayout:(id)a3;
-- (id)_queue_transformHitTestRegions:(id)a3 withDisplayLayout:(id)a4;
-- (id)_queue_transformRegionsIfNeeded:(id)a3 layout:(id)a4;
-- (void)_queue_displayLayoutDidUpdate:(id)a3 chamoisEnabled:(BOOL)a4;
-- (void)_queue_handleChamoisOrFlexibleWindowingUILayout:(id)a3;
-- (void)_queue_handleMedusaUILayout:(id)a3;
+- (id)_initWithBKSInterface:(id)interface displayLayoutMonitor:(id)monitor;
+- (id)_queue_calculateBorderHitTestRegionsWithDisplayLayout:(id)layout;
+- (id)_queue_calculateHitTestRegionsFromTiledSceneRects:(id)rects;
+- (id)_queue_calculateTouchRectsFromTiledSceneRects:(id)rects;
+- (id)_queue_floatingHitTestRegionForLayout:(id)layout elementRect:(CGRect)rect;
+- (id)_queue_fullscreenHitTestRegionForLayout:(id)layout;
+- (id)_queue_transformHitTestRegions:(id)regions withDisplayLayout:(id)layout;
+- (id)_queue_transformRegionsIfNeeded:(id)needed layout:(id)layout;
+- (void)_queue_displayLayoutDidUpdate:(id)update chamoisEnabled:(BOOL)enabled;
+- (void)_queue_handleChamoisOrFlexibleWindowingUILayout:(id)layout;
+- (void)_queue_handleMedusaUILayout:(id)layout;
 - (void)dealloc;
-- (void)layoutMonitor:(id)a3 didUpdateDisplayLayout:(id)a4 withContext:(id)a5;
-- (void)setDisplayLayoutMonitor:(id)a3;
-- (void)setEdgeTouchRegionBuffer:(double)a3;
-- (void)setRootWindowTransform:(CGAffineTransform *)a3;
-- (void)setTouchRegionBuffer:(double)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)layoutMonitor:(id)monitor didUpdateDisplayLayout:(id)layout withContext:(id)context;
+- (void)setDisplayLayoutMonitor:(id)monitor;
+- (void)setEdgeTouchRegionBuffer:(double)buffer;
+- (void)setRootWindowTransform:(CGAffineTransform *)transform;
+- (void)setTouchRegionBuffer:(double)buffer;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation SBTouchRegionManager
@@ -60,19 +60,19 @@ uint64_t __38__SBTouchRegionManager_sharedInstance__block_invoke()
   return v5;
 }
 
-- (id)_initWithBKSInterface:(id)a3 displayLayoutMonitor:(id)a4
+- (id)_initWithBKSInterface:(id)interface displayLayoutMonitor:(id)monitor
 {
-  v7 = a3;
-  v8 = a4;
+  interfaceCopy = interface;
+  monitorCopy = monitor;
   v24.receiver = self;
   v24.super_class = SBTouchRegionManager;
   v9 = [(SBTouchRegionManager *)&v24 init];
   if (v9)
   {
     v10 = +[SBMedusaDomain rootSettings];
-    v11 = [v10 medusa1oSettings];
+    medusa1oSettings = [v10 medusa1oSettings];
     medusaSettings = v9->_medusaSettings;
-    v9->_medusaSettings = v11;
+    v9->_medusaSettings = medusa1oSettings;
 
     [(PTSettings *)v9->_medusaSettings addKeyObserver:v9];
     v13 = +[SBScreenSharingOverlayUIDomain rootSettings];
@@ -84,12 +84,12 @@ uint64_t __38__SBTouchRegionManager_sharedInstance__block_invoke()
     queue = v9->_queue;
     v9->_queue = Serial;
 
-    objc_storeStrong(&v9->_queue_bksInterface, a3);
+    objc_storeStrong(&v9->_queue_bksInterface, interface);
     [(SBMedusa1oSettings *)v9->_medusaSettings gapSwipeBuffer];
     v9->_queue_touchRegionBuffer = v17;
     [(SBScreenSharingOverlayUISettings *)v9->_screenSharingSettings edgeSwipeBuffer];
     v9->_queue_edgeTouchRegionBuffer = v18;
-    objc_storeStrong(&v9->_queue_displayLayoutMonitor, a4);
+    objc_storeStrong(&v9->_queue_displayLayoutMonitor, monitor);
     [(FBSDisplayLayoutMonitor *)v9->_queue_displayLayoutMonitor addObserver:v9];
     v19 = MEMORY[0x277CBF2C0];
     v20 = *MEMORY[0x277CBF2C0];
@@ -161,7 +161,7 @@ double __41__SBTouchRegionManager_touchRegionBuffer__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setTouchRegionBuffer:(double)a3
+- (void)setTouchRegionBuffer:(double)buffer
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -169,7 +169,7 @@ double __41__SBTouchRegionManager_touchRegionBuffer__block_invoke(uint64_t a1)
   v4[2] = __45__SBTouchRegionManager_setTouchRegionBuffer___block_invoke;
   v4[3] = &unk_2783A8BC8;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = buffer;
   dispatch_async(queue, v4);
 }
 
@@ -206,7 +206,7 @@ double __45__SBTouchRegionManager_edgeTouchRegionBuffer__block_invoke(uint64_t a
   return result;
 }
 
-- (void)setEdgeTouchRegionBuffer:(double)a3
+- (void)setEdgeTouchRegionBuffer:(double)buffer
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -214,7 +214,7 @@ double __45__SBTouchRegionManager_edgeTouchRegionBuffer__block_invoke(uint64_t a
   v4[2] = __49__SBTouchRegionManager_setEdgeTouchRegionBuffer___block_invoke;
   v4[3] = &unk_2783A8BC8;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = buffer;
   dispatch_async(queue, v4);
 }
 
@@ -225,17 +225,17 @@ double __49__SBTouchRegionManager_setEdgeTouchRegionBuffer___block_invoke(uint64
   return result;
 }
 
-- (void)setDisplayLayoutMonitor:(id)a3
+- (void)setDisplayLayoutMonitor:(id)monitor
 {
-  v4 = a3;
+  monitorCopy = monitor;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__SBTouchRegionManager_setDisplayLayoutMonitor___block_invoke;
   v7[3] = &unk_2783A92D8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = monitorCopy;
+  selfCopy = self;
+  v6 = monitorCopy;
   dispatch_async(queue, v7);
 }
 
@@ -255,21 +255,21 @@ void *__48__SBTouchRegionManager_setDisplayLayoutMonitor___block_invoke(uint64_t
   return result;
 }
 
-- (void)setRootWindowTransform:(CGAffineTransform *)a3
+- (void)setRootWindowTransform:(CGAffineTransform *)transform
 {
-  v5 = *&a3->c;
-  *&t1.a = *&a3->a;
+  v5 = *&transform->c;
+  *&t1.a = *&transform->a;
   *&t1.c = v5;
-  *&t1.tx = *&a3->tx;
+  *&t1.tx = *&transform->tx;
   v6 = *&self->_rootWindowTransform.c;
   *&t2.a = *&self->_rootWindowTransform.a;
   *&t2.c = v6;
   *&t2.tx = *&self->_rootWindowTransform.tx;
   if (!CGAffineTransformEqualToTransform(&t1, &t2))
   {
-    v7 = *&a3->a;
-    v8 = *&a3->tx;
-    *&self->_rootWindowTransform.c = *&a3->c;
+    v7 = *&transform->a;
+    v8 = *&transform->tx;
+    *&self->_rootWindowTransform.c = *&transform->c;
     *&self->_rootWindowTransform.tx = v8;
     *&self->_rootWindowTransform.a = v7;
     queue = self->_queue;
@@ -278,10 +278,10 @@ void *__48__SBTouchRegionManager_setDisplayLayoutMonitor___block_invoke(uint64_t
     block[2] = __47__SBTouchRegionManager_setRootWindowTransform___block_invoke;
     block[3] = &unk_2783AF078;
     block[4] = self;
-    v10 = *&a3->c;
-    v12 = *&a3->a;
+    v10 = *&transform->c;
+    v12 = *&transform->a;
     v13 = v10;
-    v14 = *&a3->tx;
+    v14 = *&transform->tx;
     dispatch_async(queue, block);
   }
 }
@@ -355,17 +355,17 @@ void __47__SBTouchRegionManager_setRootWindowTransform___block_invoke_2(void *a1
   return v3;
 }
 
-- (id)_queue_calculateTouchRectsFromTiledSceneRects:(id)a3
+- (id)_queue_calculateTouchRectsFromTiledSceneRects:(id)rects
 {
   v67 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  rectsCopy = rects;
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
   queue_touchRegionBuffer = self->_queue_touchRegionBuffer;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obj = v4;
+  obj = rectsCopy;
   v35 = [obj countByEnumeratingWithState:&v60 objects:v66 count:16];
   if (v35)
   {
@@ -564,19 +564,19 @@ void __70__SBTouchRegionManager__queue_calculateTouchRectsFromTiledSceneRects___
   }
 }
 
-- (id)_queue_calculateHitTestRegionsFromTiledSceneRects:(id)a3
+- (id)_queue_calculateHitTestRegionsFromTiledSceneRects:(id)rects
 {
   v63 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  rectsCopy = rects;
   queue_touchRegionBuffer = self->_queue_touchRegionBuffer;
   v46 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v39 = self;
-  v45 = [(SBTouchRegionManager *)self _queue_calculateTouchRectsFromTiledSceneRects:v4];
+  selfCopy = self;
+  v45 = [(SBTouchRegionManager *)self _queue_calculateTouchRectsFromTiledSceneRects:rectsCopy];
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  obj = v4;
+  obj = rectsCopy;
   v5 = [obj countByEnumeratingWithState:&v57 objects:v62 count:16];
   if (v5)
   {
@@ -697,7 +697,7 @@ LABEL_12:
               }
             }
 
-            [(SBTouchRegionManager *)a2 _queue_calculateHitTestRegionsFromTiledSceneRects:v39, x, y, width, height, v9, v52, v12, v14];
+            [(SBTouchRegionManager *)a2 _queue_calculateHitTestRegionsFromTiledSceneRects:selfCopy, x, y, width, height, v9, v52, v12, v14];
 LABEL_13:
             ++v23;
           }
@@ -770,13 +770,13 @@ LABEL_44:
   return v46;
 }
 
-- (id)_queue_floatingHitTestRegionForLayout:(id)a3 elementRect:(CGRect)a4
+- (id)_queue_floatingHitTestRegionForLayout:(id)layout elementRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  layoutCopy = layout;
   v21.origin.x = x;
   v21.origin.y = y;
   v21.size.width = width;
@@ -789,7 +789,7 @@ LABEL_44:
   else
   {
     queue_touchRegionBuffer = self->_queue_touchRegionBuffer;
-    [v9 interfaceOrientation];
+    [layoutCopy interfaceOrientation];
     if (BSInterfaceOrientationIsLandscape())
     {
       v22.origin.x = x;
@@ -835,12 +835,12 @@ LABEL_44:
   return v10;
 }
 
-- (id)_queue_transformRegionsIfNeeded:(id)a3 layout:(id)a4
+- (id)_queue_transformRegionsIfNeeded:(id)needed layout:(id)layout
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 displayConfiguration];
-  if (![v9 isMainDisplay])
+  neededCopy = needed;
+  layoutCopy = layout;
+  displayConfiguration = [layoutCopy displayConfiguration];
+  if (![displayConfiguration isMainDisplay])
   {
 
     goto LABEL_9;
@@ -855,39 +855,39 @@ LABEL_44:
   if (IsIdentity)
   {
 LABEL_9:
-    v12 = v7;
+    v12 = neededCopy;
     goto LABEL_10;
   }
 
   v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v13 = [(SBTouchRegionManager *)self _queue_transformHitTestRegions:v7 withDisplayLayout:v8];
+  v13 = [(SBTouchRegionManager *)self _queue_transformHitTestRegions:neededCopy withDisplayLayout:layoutCopy];
   v14 = [v13 count];
-  if (v14 != [v7 count])
+  if (v14 != [neededCopy count])
   {
-    [(SBTouchRegionManager *)v7 _queue_transformRegionsIfNeeded:v13 layout:a2, self];
+    [(SBTouchRegionManager *)neededCopy _queue_transformRegionsIfNeeded:v13 layout:a2, self];
   }
 
-  v15 = [v13 allObjects];
-  [v12 addObjectsFromArray:v15];
+  allObjects = [v13 allObjects];
+  [v12 addObjectsFromArray:allObjects];
 
-  v16 = [(SBTouchRegionManager *)self _queue_calculateBorderHitTestRegionsWithDisplayLayout:v8];
+  v16 = [(SBTouchRegionManager *)self _queue_calculateBorderHitTestRegionsWithDisplayLayout:layoutCopy];
   if ([v16 count] != 4)
   {
     [(SBTouchRegionManager *)v16 _queue_transformRegionsIfNeeded:a2 layout:self];
   }
 
-  v17 = [v16 allObjects];
-  [v12 addObjectsFromArray:v17];
+  allObjects2 = [v16 allObjects];
+  [v12 addObjectsFromArray:allObjects2];
 
 LABEL_10:
 
   return v12;
 }
 
-- (id)_queue_fullscreenHitTestRegionForLayout:(id)a3
+- (id)_queue_fullscreenHitTestRegionForLayout:(id)layout
 {
-  v3 = [a3 displayConfiguration];
-  [v3 bounds];
+  displayConfiguration = [layout displayConfiguration];
+  [displayConfiguration bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -899,29 +899,29 @@ LABEL_10:
   return v12;
 }
 
-- (void)_queue_displayLayoutDidUpdate:(id)a3 chamoisEnabled:(BOOL)a4
+- (void)_queue_displayLayoutDidUpdate:(id)update chamoisEnabled:(BOOL)enabled
 {
-  if (a4)
+  if (enabled)
   {
-    [(SBTouchRegionManager *)self _queue_handleChamoisOrFlexibleWindowingUILayout:a3];
+    [(SBTouchRegionManager *)self _queue_handleChamoisOrFlexibleWindowingUILayout:update];
   }
 
   else
   {
-    [(SBTouchRegionManager *)self _queue_handleMedusaUILayout:a3];
+    [(SBTouchRegionManager *)self _queue_handleMedusaUILayout:update];
   }
 }
 
-- (BOOL)_queue_shouldConsiderElementFullScreenModal:(id)a3
+- (BOOL)_queue_shouldConsiderElementFullScreenModal:(id)modal
 {
-  v3 = a3;
-  v4 = [v3 layoutRole];
-  if ((v4 - 3) >= 2)
+  modalCopy = modal;
+  layoutRole = [modalCopy layoutRole];
+  if ((layoutRole - 3) >= 2)
   {
-    if (v4 == 1)
+    if (layoutRole == 1)
     {
-      v8 = [v3 identifier];
-      v7 = [v8 isEqual:*MEMORY[0x277D66F10]];
+      identifier = [modalCopy identifier];
+      v7 = [identifier isEqual:*MEMORY[0x277D66F10]];
     }
 
     else
@@ -932,8 +932,8 @@ LABEL_10:
 
   else
   {
-    v5 = [v3 identifier];
-    v6 = [v5 isEqual:*MEMORY[0x277D66F18]];
+    identifier2 = [modalCopy identifier];
+    v6 = [identifier2 isEqual:*MEMORY[0x277D66F18]];
 
     v7 = v6 ^ 1;
   }
@@ -941,14 +941,14 @@ LABEL_10:
   return v7;
 }
 
-- (void)_queue_handleMedusaUILayout:(id)a3
+- (void)_queue_handleMedusaUILayout:(id)layout
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 displayConfiguration];
-  v6 = [v5 isMainDisplay];
+  layoutCopy = layout;
+  displayConfiguration = [layoutCopy displayConfiguration];
+  isMainDisplay = [displayConfiguration isMainDisplay];
 
-  if (v6)
+  if (isMainDisplay)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -960,8 +960,8 @@ LABEL_10:
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v13 = [v4 elements];
-    v14 = [v13 countByEnumeratingWithState:&v44 objects:v48 count:16];
+    elements = [layoutCopy elements];
+    v14 = [elements countByEnumeratingWithState:&v44 objects:v48 count:16];
     v15 = v12;
     v16 = v11;
     v17 = v10;
@@ -984,7 +984,7 @@ LABEL_10:
         {
           if (*v45 != v20)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(elements);
           }
 
           v22 = *(*(&v44 + 1) + 8 * i);
@@ -992,23 +992,23 @@ LABEL_10:
           {
             [v7 removeAllObjects];
 
-            v35 = [(SBTouchRegionManager *)self _queue_fullscreenHitTestRegionForLayout:v4];
+            v35 = [(SBTouchRegionManager *)self _queue_fullscreenHitTestRegionForLayout:layoutCopy];
             [v7 addObject:v35];
             goto LABEL_25;
           }
 
-          v23 = [v22 layoutRole];
-          if ((v23 - 7) < 2)
+          layoutRole = [v22 layoutRole];
+          if ((layoutRole - 7) < 2)
           {
             [v22 referenceFrame];
-            v28 = [(SBTouchRegionManager *)self _queue_floatingHitTestRegionForLayout:v4 elementRect:?];
+            v28 = [(SBTouchRegionManager *)self _queue_floatingHitTestRegionForLayout:layoutCopy elementRect:?];
             if (v28)
             {
               [v7 addObject:v28];
             }
           }
 
-          else if (v23 == 2)
+          else if (layoutRole == 2)
           {
             [v22 referenceFrame];
             v18 = v29;
@@ -1017,7 +1017,7 @@ LABEL_10:
             v15 = v32;
           }
 
-          else if (v23 == 1)
+          else if (layoutRole == 1)
           {
             [v22 referenceFrame];
             v9 = v24;
@@ -1027,7 +1027,7 @@ LABEL_10:
           }
         }
 
-        v19 = [v13 countByEnumeratingWithState:&v44 objects:v48 count:16];
+        v19 = [elements countByEnumeratingWithState:&v44 objects:v48 count:16];
         if (v19)
         {
           continue;
@@ -1077,32 +1077,32 @@ LABEL_10:
     }
 
     v35 = [(SBTouchRegionManager *)self _queue_calculateHitTestRegionsFromTiledSceneRects:v8, *&v40, *&v41, *&v42, *&v43];
-    v36 = [v35 allObjects];
-    [v7 addObjectsFromArray:v36];
+    allObjects = [v35 allObjects];
+    [v7 addObjectsFromArray:allObjects];
 
 LABEL_25:
-    v37 = [v4 displayConfiguration];
-    v38 = [v37 hardwareIdentifier];
+    displayConfiguration2 = [layoutCopy displayConfiguration];
+    hardwareIdentifier = [displayConfiguration2 hardwareIdentifier];
 
-    v39 = [(SBTouchRegionManager *)self _queue_transformRegionsIfNeeded:v7 layout:v4];
-    [(SBBackBoardServicesInterface *)self->_queue_bksInterface setHitTestRegions:v39 forDisplay:v38];
+    v39 = [(SBTouchRegionManager *)self _queue_transformRegionsIfNeeded:v7 layout:layoutCopy];
+    [(SBBackBoardServicesInterface *)self->_queue_bksInterface setHitTestRegions:v39 forDisplay:hardwareIdentifier];
   }
 }
 
-- (void)_queue_handleChamoisOrFlexibleWindowingUILayout:(id)a3
+- (void)_queue_handleChamoisOrFlexibleWindowingUILayout:(id)layout
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 displayConfiguration];
-  v6 = [v5 hardwareIdentifier];
+  layoutCopy = layout;
+  displayConfiguration = [layoutCopy displayConfiguration];
+  hardwareIdentifier = [displayConfiguration hardwareIdentifier];
 
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v8 = [v4 elements];
-  v9 = [v8 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  elements = [layoutCopy elements];
+  v9 = [elements countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1117,7 +1117,7 @@ LABEL_25:
       {
         if (*v32 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(elements);
         }
 
         v17 = *(*(&v31 + 1) + 8 * i);
@@ -1144,7 +1144,7 @@ LABEL_25:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      v10 = [elements countByEnumeratingWithState:&v31 objects:v36 count:16];
       if (v10)
       {
         continue;
@@ -1178,7 +1178,7 @@ LABEL_15:
         }
 
         [*(*(&v27 + 1) + 8 * j) referenceFrame];
-        v24 = [(SBTouchRegionManager *)self _queue_floatingHitTestRegionForLayout:v4 elementRect:?];
+        v24 = [(SBTouchRegionManager *)self _queue_floatingHitTestRegionForLayout:layoutCopy elementRect:?];
         if (v24)
         {
           [v18 addObject:v24];
@@ -1191,10 +1191,10 @@ LABEL_15:
     while (v21);
   }
 
-  v25 = [(SBTouchRegionManager *)self _queue_fullscreenHitTestRegionForLayout:v4];
+  v25 = [(SBTouchRegionManager *)self _queue_fullscreenHitTestRegionForLayout:layoutCopy];
   [v18 addObject:v25];
-  v26 = [(SBTouchRegionManager *)self _queue_transformRegionsIfNeeded:v18 layout:v4];
-  [(SBBackBoardServicesInterface *)self->_queue_bksInterface setHitTestRegions:v26 forDisplay:v6];
+  v26 = [(SBTouchRegionManager *)self _queue_transformRegionsIfNeeded:v18 layout:layoutCopy];
+  [(SBBackBoardServicesInterface *)self->_queue_bksInterface setHitTestRegions:v26 forDisplay:hardwareIdentifier];
 }
 
 uint64_t __72__SBTouchRegionManager__queue_handleChamoisOrFlexibleWindowingUILayout___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1214,23 +1214,23 @@ uint64_t __72__SBTouchRegionManager__queue_handleChamoisOrFlexibleWindowingUILay
   }
 }
 
-- (CGAffineTransform)_queue_hitTestRegionTransformWithDisplayLayout:(SEL)a3
+- (CGAffineTransform)_queue_hitTestRegionTransformWithDisplayLayout:(SEL)layout
 {
   v6 = a4;
-  v7 = [v6 displayConfiguration];
-  [v7 bounds];
+  displayConfiguration = [v6 displayConfiguration];
+  [displayConfiguration bounds];
   v9 = v8;
   v11 = v10;
 
   v12 = v11 * self->_queue_rootWindowTransform.c + self->_queue_rootWindowTransform.a * v9;
   v13 = v11 * self->_queue_rootWindowTransform.d + self->_queue_rootWindowTransform.b * v9;
-  v14 = [v6 displayConfiguration];
-  [v14 pointScale];
+  displayConfiguration2 = [v6 displayConfiguration];
+  [displayConfiguration2 pointScale];
   v16 = v15;
 
-  v17 = [v6 displayConfiguration];
+  displayConfiguration3 = [v6 displayConfiguration];
 
-  [v17 nativeOrientation];
+  [displayConfiguration3 nativeOrientation];
   v19 = v18;
 
   v20 = 6.28318531 - v19;
@@ -1256,13 +1256,13 @@ uint64_t __72__SBTouchRegionManager__queue_handleChamoisOrFlexibleWindowingUILay
   return result;
 }
 
-- (id)_queue_transformHitTestRegions:(id)a3 withDisplayLayout:(id)a4
+- (id)_queue_transformHitTestRegions:(id)regions withDisplayLayout:(id)layout
 {
   v16 = 0u;
   v17 = 0u;
   v15 = 0u;
-  v6 = a3;
-  [(SBTouchRegionManager *)self _queue_hitTestRegionTransformWithDisplayLayout:a4];
+  regionsCopy = regions;
+  [(SBTouchRegionManager *)self _queue_hitTestRegionTransformWithDisplayLayout:layout];
   v7 = [MEMORY[0x277CBEB58] set];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -1273,7 +1273,7 @@ uint64_t __72__SBTouchRegionManager__queue_handleChamoisOrFlexibleWindowingUILay
   v14 = v17;
   v8 = v7;
   v11 = v8;
-  [v6 enumerateObjectsUsingBlock:v10];
+  [regionsCopy enumerateObjectsUsingBlock:v10];
 
   return v8;
 }
@@ -1300,18 +1300,18 @@ void __73__SBTouchRegionManager__queue_transformHitTestRegions_withDisplayLayout
   [*(a1 + 32) addObject:v7];
 }
 
-- (id)_queue_calculateBorderHitTestRegionsWithDisplayLayout:(id)a3
+- (id)_queue_calculateBorderHitTestRegionsWithDisplayLayout:(id)layout
 {
   queue_edgeTouchRegionBuffer = self->_queue_edgeTouchRegionBuffer;
-  v5 = a3;
-  v6 = [v5 displayConfiguration];
-  [v6 bounds];
+  layoutCopy = layout;
+  displayConfiguration = [layoutCopy displayConfiguration];
+  [displayConfiguration bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  [(SBTouchRegionManager *)self _queue_hitTestRegionTransformWithDisplayLayout:v5];
+  [(SBTouchRegionManager *)self _queue_hitTestRegionTransformWithDisplayLayout:layoutCopy];
   v53.origin.x = v8;
   v48 = v12;
   v49 = v10;
@@ -1410,16 +1410,16 @@ void __73__SBTouchRegionManager__queue_transformHitTestRegions_withDisplayLayout
   return v16;
 }
 
-- (void)layoutMonitor:(id)a3 didUpdateDisplayLayout:(id)a4 withContext:(id)a5
+- (void)layoutMonitor:(id)monitor didUpdateDisplayLayout:(id)layout withContext:(id)context
 {
-  v6 = a4;
+  layoutCopy = layout;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __73__SBTouchRegionManager_layoutMonitor_didUpdateDisplayLayout_withContext___block_invoke;
   v8[3] = &unk_2783A92D8;
-  v9 = v6;
-  v10 = self;
-  v7 = v6;
+  v9 = layoutCopy;
+  selfCopy = self;
+  v7 = layoutCopy;
   dispatch_async(MEMORY[0x277D85CD0], v8);
 }
 
@@ -1448,17 +1448,17 @@ void __73__SBTouchRegionManager_layoutMonitor_didUpdateDisplayLayout_withContext
   dispatch_async(v11, block);
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v7 = a3;
-  v6 = a4;
-  if (self->_medusaSettings == v7 && [v6 isEqual:@"gapSwipeBuffer"])
+  settingsCopy = settings;
+  keyCopy = key;
+  if (self->_medusaSettings == settingsCopy && [keyCopy isEqual:@"gapSwipeBuffer"])
   {
     [(SBMedusa1oSettings *)self->_medusaSettings gapSwipeBuffer];
     [(SBTouchRegionManager *)self setTouchRegionBuffer:?];
   }
 
-  else if (self->_screenSharingSettings == v7 && [v6 isEqual:@"edgeSwipeBuffer"])
+  else if (self->_screenSharingSettings == settingsCopy && [keyCopy isEqual:@"edgeSwipeBuffer"])
   {
     [(SBScreenSharingOverlayUISettings *)self->_screenSharingSettings edgeSwipeBuffer];
     [(SBTouchRegionManager *)self setEdgeTouchRegionBuffer:?];

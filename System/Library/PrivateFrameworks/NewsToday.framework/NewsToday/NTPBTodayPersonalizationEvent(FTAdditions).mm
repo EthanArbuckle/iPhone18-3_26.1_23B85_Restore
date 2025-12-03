@@ -34,8 +34,8 @@ LABEL_6:
     +[NTPBTodayPersonalizationEvent(FTAdditions) ft_eventWithDate:action:headline:section:headlineIndexInSection:precedingHeadlinesCount:precedingSectionsCount:];
   }
 
-  v17 = [v15 personalizationMetadata];
-  if (!v17 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  personalizationMetadata = [v15 personalizationMetadata];
+  if (!personalizationMetadata && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     +[NTPBTodayPersonalizationEvent(FTAdditions) ft_eventWithDate:action:headline:section:headlineIndexInSection:precedingHeadlinesCount:precedingSectionsCount:];
   }
@@ -44,26 +44,26 @@ LABEL_6:
   [v14 timeIntervalSince1970];
   [v18 setCreatedAt:?];
   [v18 setAction:a4];
-  v19 = [v17 articleID];
-  [v18 setArticleId:v19];
+  articleID = [personalizationMetadata articleID];
+  [v18 setArticleId:articleID];
 
-  v20 = [v17 scoredTopicIDs];
+  scoredTopicIDs = [personalizationMetadata scoredTopicIDs];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __157__NTPBTodayPersonalizationEvent_FTAdditions__ft_eventWithDate_action_headline_section_headlineIndexInSection_precedingHeadlinesCount_precedingSectionsCount___block_invoke;
   v25[3] = &unk_279983758;
   v21 = v18;
   v26 = v21;
-  [v20 enumerateKeysAndObjectsUsingBlock:v25];
+  [scoredTopicIDs enumerateKeysAndObjectsUsingBlock:v25];
 
-  v22 = [v17 publisherID];
-  [v21 setHeadlinePublisher:v22];
+  publisherID = [personalizationMetadata publisherID];
+  [v21 setHeadlinePublisher:publisherID];
 
   [v21 setOrderInGroup:a7];
   [v21 setOverallOrder:a8];
   [v21 setSectionOrder:a9];
-  v23 = [v16 personalizationFeatureID];
-  [v21 setPersonalizationSectionFeatureId:v23];
+  personalizationFeatureID = [v16 personalizationFeatureID];
+  [v21 setPersonalizationSectionFeatureId:personalizationFeatureID];
 
   return v21;
 }

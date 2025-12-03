@@ -1,11 +1,11 @@
 @interface AccountChangedListener
 - (_TtC11homeeventsd22AccountChangedListener)init;
-- (void)accountChangedWithNotification:(id)a3;
+- (void)accountChangedWithNotification:(id)notification;
 @end
 
 @implementation AccountChangedListener
 
-- (void)accountChangedWithNotification:(id)a3
+- (void)accountChangedWithNotification:(id)notification
 {
   v3 = sub_10000CED0(&qword_1000AAD30, &qword_100085540);
   v4 = *(*(v3 - 8) + 64);

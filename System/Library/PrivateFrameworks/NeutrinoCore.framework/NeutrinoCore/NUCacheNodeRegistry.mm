@@ -1,16 +1,16 @@
 @interface NUCacheNodeRegistry
-- (Class)classForCacheNodeType:(id)a3;
+- (Class)classForCacheNodeType:(id)type;
 - (NUCacheNodeRegistry)init;
-- (void)registerClass:(Class)a3 forCacheNodeType:(id)a4;
+- (void)registerClass:(Class)class forCacheNodeType:(id)type;
 @end
 
 @implementation NUCacheNodeRegistry
 
-- (Class)classForCacheNodeType:(id)a3
+- (Class)classForCacheNodeType:(id)type
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  typeCopy = type;
+  if (!typeCopy)
   {
     v9 = NUAssertLogger_165();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -31,8 +31,8 @@
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v16;
         *&buf[12] = 2114;
@@ -43,8 +43,8 @@
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -62,10 +62,10 @@
   block[1] = 3221225472;
   block[2] = __45__NUCacheNodeRegistry_classForCacheNodeType___block_invoke;
   block[3] = &unk_1E810B500;
-  v26 = v4;
+  v26 = typeCopy;
   v27 = buf;
   block[4] = self;
-  v6 = v4;
+  v6 = typeCopy;
   dispatch_sync(queue, block);
   v7 = *(*&buf[8] + 24);
 
@@ -81,11 +81,11 @@ uint64_t __45__NUCacheNodeRegistry_classForCacheNodeType___block_invoke(void *a1
   return result;
 }
 
-- (void)registerClass:(Class)a3 forCacheNodeType:(id)a4
+- (void)registerClass:(Class)class forCacheNodeType:(id)type
 {
   v65 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (!a3)
+  typeCopy = type;
+  if (!class)
   {
     v10 = NUAssertLogger_165();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -106,8 +106,8 @@ uint64_t __45__NUCacheNodeRegistry_classForCacheNodeType___block_invoke(void *a1
         v31 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v32 = MEMORY[0x1E696AF00];
         v33 = v31;
-        v34 = [v32 callStackSymbols];
-        v35 = [v34 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v32 callStackSymbols];
+        v35 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v62 = v31;
         v63 = 2114;
@@ -118,8 +118,8 @@ uint64_t __45__NUCacheNodeRegistry_classForCacheNodeType___block_invoke(void *a1
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v62 = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -128,8 +128,8 @@ uint64_t __45__NUCacheNodeRegistry_classForCacheNodeType___block_invoke(void *a1
     _NUAssertFailHandler("[NUCacheNodeRegistry registerClass:forCacheNodeType:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUCacheNodeRegistry.m", 33, @"Invalid parameter not satisfying: %s", v36, v37, v38, v39, "cacheNodeClass != nil");
   }
 
-  v7 = v6;
-  if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) == 0)
+  v7 = typeCopy;
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
     v17 = NUAssertLogger_165();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -150,8 +150,8 @@ uint64_t __45__NUCacheNodeRegistry_classForCacheNodeType___block_invoke(void *a1
         v40 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v41 = MEMORY[0x1E696AF00];
         v42 = v40;
-        v43 = [v41 callStackSymbols];
-        v44 = [v43 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v41 callStackSymbols];
+        v44 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v62 = v40;
         v63 = 2114;
@@ -162,8 +162,8 @@ uint64_t __45__NUCacheNodeRegistry_classForCacheNodeType___block_invoke(void *a1
 
     else if (v21)
     {
-      v22 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v23 = [v22 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v23 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v62 = v23;
       _os_log_error_impl(&dword_1C0184000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -193,8 +193,8 @@ uint64_t __45__NUCacheNodeRegistry_classForCacheNodeType___block_invoke(void *a1
         v49 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v50 = MEMORY[0x1E696AF00];
         v51 = v49;
-        v52 = [v50 callStackSymbols];
-        v53 = [v52 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v50 callStackSymbols];
+        v53 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v62 = v49;
         v63 = 2114;
@@ -205,8 +205,8 @@ uint64_t __45__NUCacheNodeRegistry_classForCacheNodeType___block_invoke(void *a1
 
     else if (v28)
     {
-      v29 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v30 = [v29 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v30 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v62 = v30;
       _os_log_error_impl(&dword_1C0184000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -222,7 +222,7 @@ uint64_t __45__NUCacheNodeRegistry_classForCacheNodeType___block_invoke(void *a1
   block[3] = &unk_1E8109238;
   block[4] = self;
   v59 = v7;
-  v60 = a3;
+  classCopy = class;
   v9 = v7;
   dispatch_barrier_sync(queue, block);
 }

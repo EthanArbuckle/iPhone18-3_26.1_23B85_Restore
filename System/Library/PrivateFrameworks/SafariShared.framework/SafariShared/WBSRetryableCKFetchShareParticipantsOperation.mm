@@ -3,10 +3,10 @@
 - (id)_makeOperation;
 - (id)fetchShareParticipantsCompletionBlock;
 - (id)perShareParticipantCompletionBlock;
-- (void)_setUpOperation:(id)a3;
-- (void)setFetchShareParticipantsCompletionBlock:(id)a3;
-- (void)setPerShareParticipantCompletionBlock:(id)a3;
-- (void)setUserIdentityLookupInfos:(id)a3;
+- (void)_setUpOperation:(id)operation;
+- (void)setFetchShareParticipantsCompletionBlock:(id)block;
+- (void)setPerShareParticipantCompletionBlock:(id)block;
+- (void)setUserIdentityLookupInfos:(id)infos;
 @end
 
 @implementation WBSRetryableCKFetchShareParticipantsOperation
@@ -20,11 +20,11 @@
   return v3;
 }
 
-- (void)setUserIdentityLookupInfos:(id)a3
+- (void)setUserIdentityLookupInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   os_unfair_lock_lock(&self->super._internalLock);
-  v5 = [v4 copy];
+  v5 = [infosCopy copy];
 
   userIdentityLookupInfos = self->_userIdentityLookupInfos;
   self->_userIdentityLookupInfos = v5;
@@ -43,11 +43,11 @@
   return v3;
 }
 
-- (void)setPerShareParticipantCompletionBlock:(id)a3
+- (void)setPerShareParticipantCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   perShareParticipantCompletionBlock = self->_perShareParticipantCompletionBlock;
   self->_perShareParticipantCompletionBlock = v5;
@@ -66,11 +66,11 @@
   return v3;
 }
 
-- (void)setFetchShareParticipantsCompletionBlock:(id)a3
+- (void)setFetchShareParticipantsCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   fetchShareParticipantsCompletionBlock = self->_fetchShareParticipantsCompletionBlock;
   self->_fetchShareParticipantsCompletionBlock = v5;
@@ -87,15 +87,15 @@
   return v2;
 }
 
-- (void)_setUpOperation:(id)a3
+- (void)_setUpOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v10.receiver = self;
   v10.super_class = WBSRetryableCKFetchShareParticipantsOperation;
-  [(WBSRetryableCKOperation *)&v10 _setUpOperation:v4];
+  [(WBSRetryableCKOperation *)&v10 _setUpOperation:operationCopy];
   if ([(NSMutableSet *)self->super._explicitlySetProperties containsObject:@"userIdentityLookupInfos"])
   {
-    [v4 setUserIdentityLookupInfos:self->_userIdentityLookupInfos];
+    [operationCopy setUserIdentityLookupInfos:self->_userIdentityLookupInfos];
   }
 
   if (self->_perShareParticipantCompletionBlock)
@@ -106,7 +106,7 @@
     v7[2] = __65__WBSRetryableCKFetchShareParticipantsOperation__setUpOperation___block_invoke;
     v7[3] = &unk_1E7FCA040;
     objc_copyWeak(&v8, &location);
-    [v4 setPerShareParticipantCompletionBlock:v7];
+    [operationCopy setPerShareParticipantCompletionBlock:v7];
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
@@ -117,7 +117,7 @@
   v5[2] = __65__WBSRetryableCKFetchShareParticipantsOperation__setUpOperation___block_invoke_3;
   v5[3] = &unk_1E7FC9DC0;
   objc_copyWeak(&v6, &location);
-  [v4 setFetchShareParticipantsCompletionBlock:v5];
+  [operationCopy setFetchShareParticipantsCompletionBlock:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }

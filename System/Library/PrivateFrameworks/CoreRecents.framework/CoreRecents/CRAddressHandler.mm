@@ -1,50 +1,50 @@
 @interface CRAddressHandler
-+ (id)addressHandlerWithPrincipalClass:(Class)a3;
-- (CRAddressHandler)initWithAddressHandler:(id)a3;
-- (CRAddressHandler)initWithPrincipalClass:(Class)a3;
++ (id)addressHandlerWithPrincipalClass:(Class)class;
+- (CRAddressHandler)initWithAddressHandler:(id)handler;
+- (CRAddressHandler)initWithPrincipalClass:(Class)class;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation CRAddressHandler
 
-+ (id)addressHandlerWithPrincipalClass:(Class)a3
++ (id)addressHandlerWithPrincipalClass:(Class)class
 {
-  v3 = [[a1 alloc] initWithPrincipalClass:a3];
+  v3 = [[self alloc] initWithPrincipalClass:class];
 
   return v3;
 }
 
-- (CRAddressHandler)initWithPrincipalClass:(Class)a3
+- (CRAddressHandler)initWithPrincipalClass:(Class)class
 {
-  v3 = a3;
-  if (a3)
+  classCopy = class;
+  if (class)
   {
-    if ([(objc_class *)a3 conformsToProtocol:&OBJC_PROTOCOL___CRAddressHandler])
+    if ([(objc_class *)class conformsToProtocol:&OBJC_PROTOCOL___CRAddressHandler])
     {
-      v5 = objc_alloc_init(v3);
-      v3 = [(CRAddressHandler *)self initWithAddressHandler:v5];
+      v5 = objc_alloc_init(classCopy);
+      classCopy = [(CRAddressHandler *)self initWithAddressHandler:v5];
       self = v5;
     }
 
     else
     {
-      v3 = 0;
+      classCopy = 0;
     }
   }
 
-  return v3;
+  return classCopy;
 }
 
-- (CRAddressHandler)initWithAddressHandler:(id)a3
+- (CRAddressHandler)initWithAddressHandler:(id)handler
 {
   v6.receiver = self;
   v6.super_class = CRAddressHandler;
   v4 = [(CRAddressHandler *)&v6 init];
   if (v4)
   {
-    v4->_handler = a3;
-    v4->_identity = [CRAddressHandlerIdentity identityForAddressHandler:a3];
+    v4->_handler = handler;
+    v4->_identity = [CRAddressHandlerIdentity identityForAddressHandler:handler];
   }
 
   return v4;

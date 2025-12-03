@@ -1,50 +1,50 @@
 @interface ADSharedPeerStreamConnection
-+ (id)_errorWithCode:(int64_t)a3 underylingError:(id)a4;
-+ (id)sharedPeerStreamConnectionWithServiceIdentifier:(id)a3 listener:(BOOL)a4;
++ (id)_errorWithCode:(int64_t)code underylingError:(id)error;
++ (id)sharedPeerStreamConnectionWithServiceIdentifier:(id)identifier listener:(BOOL)listener;
 - (BOOL)deviceIsNearby;
 - (BOOL)hasNearbyPeer;
 - (id)_account;
 - (id)_destination;
 - (id)_failureMetricsContextDictionary;
-- (id)_initWithServiceIdentifier:(id)a3 listener:(BOOL)a4;
+- (id)_initWithServiceIdentifier:(id)identifier listener:(BOOL)listener;
 - (id)_pairedDevice;
 - (void)_close;
 - (void)_establishEagerStreamPair;
 - (void)_getSocketFromDevice;
-- (void)_getSocketFromDeviceForStreamIdentifier:(id)a3;
-- (void)_handleGetMetricsMessage:(id)a3 context:(id)a4;
-- (void)_handleReestablishMessage:(id)a3 context:(id)a4;
-- (void)_handleResponseProtobuf:(id)a3 forIdentifier:(id)a4;
-- (void)_handleWakeUpMessage:(id)a3 context:(id)a4;
+- (void)_getSocketFromDeviceForStreamIdentifier:(id)identifier;
+- (void)_handleGetMetricsMessage:(id)message context:(id)context;
+- (void)_handleReestablishMessage:(id)message context:(id)context;
+- (void)_handleResponseProtobuf:(id)protobuf forIdentifier:(id)identifier;
+- (void)_handleWakeUpMessage:(id)message context:(id)context;
 - (void)_initiateOptimisticEagerStreamFetchRetry;
-- (void)_invokeMetricsCompletionWithMetrics:(id)a3 forIdentifier:(id)a4;
-- (void)_invokeSocketCompletionWithCurrentSocketOrError:(id)a3;
+- (void)_invokeMetricsCompletionWithMetrics:(id)metrics forIdentifier:(id)identifier;
+- (void)_invokeSocketCompletionWithCurrentSocketOrError:(id)error;
 - (void)_preheat;
 - (void)_requestStreamEstablishment;
-- (void)_setPreferBTClassic:(BOOL)a3;
+- (void)_setPreferBTClassic:(BOOL)classic;
 - (void)_updatePairedDeviceInfo;
-- (void)addDelegate:(id)a3;
-- (void)closeForConnection:(id)a3;
-- (void)getMetricsContext:(id)a3;
-- (void)getRemoteMetrics:(id)a3;
-- (void)getSocketForConnection:(id)a3 completion:(id)a4;
+- (void)addDelegate:(id)delegate;
+- (void)closeForConnection:(id)connection;
+- (void)getMetricsContext:(id)context;
+- (void)getRemoteMetrics:(id)metrics;
+- (void)getSocketForConnection:(id)connection completion:(id)completion;
 - (void)preheat;
-- (void)removeDelegate:(id)a3;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7 context:(id)a8;
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 devicesChanged:(id)a4;
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4;
-- (void)setPreferBTClassic:(BOOL)a3;
+- (void)removeDelegate:(id)delegate;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error context:(id)context;
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context;
+- (void)service:(id)service devicesChanged:(id)changed;
+- (void)service:(id)service nearbyDevicesChanged:(id)changed;
+- (void)setPreferBTClassic:(BOOL)classic;
 @end
 
 @implementation ADSharedPeerStreamConnection
 
 - (BOOL)deviceIsNearby
 {
-  v2 = [(ADSharedPeerStreamConnection *)self _pairedDevice];
-  v3 = [v2 isNearby];
+  _pairedDevice = [(ADSharedPeerStreamConnection *)self _pairedDevice];
+  isNearby = [_pairedDevice isNearby];
 
-  return v3;
+  return isNearby;
 }
 
 - (void)preheat
@@ -60,26 +60,26 @@
 
 - (void)_preheat
 {
-  v3 = [(ADSharedPeerStreamConnection *)self _pairedDevice];
-  v4 = [v3 isNearby];
+  _pairedDevice = [(ADSharedPeerStreamConnection *)self _pairedDevice];
+  isNearby = [_pairedDevice isNearby];
 
-  if (v4)
+  if (isNearby)
   {
 
     [(ADSharedPeerStreamConnection *)self _establishEagerStreamPair];
   }
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   v6 = AFSiriLogContextIDS;
   if (os_log_type_enabled(AFSiriLogContextIDS, OS_LOG_TYPE_INFO))
   {
     v7 = 136315394;
     v8 = "[ADSharedPeerStreamConnection service:devicesChanged:]";
     v9 = 2112;
-    v10 = v5;
+    v10 = changedCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s %@", &v7, 0x16u);
   }
 
@@ -87,10 +87,10 @@
   [(ADSharedPeerStreamConnection *)self _preheat];
 }
 
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4
+- (void)service:(id)service nearbyDevicesChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  changedCopy = changed;
   v8 = AFSiriLogContextIDS;
   if (os_log_type_enabled(AFSiriLogContextIDS, OS_LOG_TYPE_INFO))
   {
@@ -98,11 +98,11 @@
     *buf = 136315394;
     v34 = "[ADSharedPeerStreamConnection service:nearbyDevicesChanged:]";
     v35 = 2048;
-    v36 = [v7 count];
+    v36 = [changedCopy count];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s %lu", buf, 0x16u);
   }
 
-  if ([v7 count])
+  if ([changedCopy count])
   {
     [(ADSharedPeerStreamConnection *)self _establishEagerStreamPair];
     if (!self->_nearbyDeviceIdentifiers)
@@ -117,7 +117,7 @@
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v13 = v7;
+    v13 = changedCopy;
     v14 = [v13 countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v14)
     {
@@ -133,16 +133,16 @@
             objc_enumerationMutation(v13);
           }
 
-          v19 = [*(*(&v28 + 1) + 8 * i) uniqueIDOverride];
-          if (v19)
+          uniqueIDOverride = [*(*(&v28 + 1) + 8 * i) uniqueIDOverride];
+          if (uniqueIDOverride)
           {
-            if (([(NSMutableSet *)self->_nearbyDeviceIdentifiers containsObject:v19]& 1) == 0)
+            if (([(NSMutableSet *)self->_nearbyDeviceIdentifiers containsObject:uniqueIDOverride]& 1) == 0)
             {
-              [(NSMutableSet *)self->_nearbyDeviceIdentifiers addObject:v19];
+              [(NSMutableSet *)self->_nearbyDeviceIdentifiers addObject:uniqueIDOverride];
               v16 = 1;
             }
 
-            [v12 addObject:v19];
+            [v12 addObject:uniqueIDOverride];
           }
         }
 
@@ -219,14 +219,14 @@
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error context:(id)context
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  if (!a6)
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  errorCopy = error;
+  contextCopy = context;
+  if (!success)
   {
     v19 = AFSiriLogContextIDS;
     if (os_log_type_enabled(AFSiriLogContextIDS, OS_LOG_TYPE_ERROR))
@@ -234,93 +234,93 @@
       *buf = 136315650;
       v31 = "[ADSharedPeerStreamConnection service:account:identifier:didSendWithSuccess:error:context:]";
       v32 = 2112;
-      v33 = v16;
+      v33 = identifierCopy;
       v34 = 2114;
-      v35 = v17;
+      v35 = errorCopy;
       _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%s Message send with identifier %@ failed %{public}@", buf, 0x20u);
     }
 
-    [(ADSharedPeerStreamConnection *)self _invokeMetricsCompletionWithMetrics:0 forIdentifier:v16];
+    [(ADSharedPeerStreamConnection *)self _invokeMetricsCompletionWithMetrics:0 forIdentifier:identifierCopy];
   }
 
   v20 = +[NSProcessInfo processInfo];
   [v20 systemUptime];
   self->_lastIDSMessageSentTimestamp = v21;
 
-  [v18 averageLocalRTT];
+  [contextCopy averageLocalRTT];
   v22 = [NSNumber numberWithDouble:?];
   v29[0] = v22;
   v28[1] = @"local_message_state";
-  v23 = [v18 localMessageState];
-  if (v23 > 3)
+  localMessageState = [contextCopy localMessageState];
+  if (localMessageState > 3)
   {
     v24 = 0;
   }
 
   else
   {
-    v24 = *(&off_10050FE30 + v23);
+    v24 = *(&off_10050FE30 + localMessageState);
   }
 
   v29[1] = v24;
   v28[2] = @"device_blacked_out";
-  v25 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v18 deviceBlackedOut]);
+  v25 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [contextCopy deviceBlackedOut]);
   v29[2] = v25;
   v26 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:3];
   lastIDSMetricsContext = self->_lastIDSMetricsContext;
   self->_lastIDSMetricsContext = v26;
 
-  self->_lastIDSMessageSuccess = a6;
+  self->_lastIDSMessageSuccess = success;
 }
 
-- (void)_handleResponseProtobuf:(id)a3 forIdentifier:(id)a4
+- (void)_handleResponseProtobuf:(id)protobuf forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  protobufCopy = protobuf;
+  identifierCopy = identifier;
   v8 = AFSiriLogContextIDS;
   if (os_log_type_enabled(AFSiriLogContextIDS, OS_LOG_TYPE_INFO))
   {
     v13 = 136315650;
     v14 = "[ADSharedPeerStreamConnection _handleResponseProtobuf:forIdentifier:]";
     v15 = 2112;
-    v16 = v6;
+    v16 = protobufCopy;
     v17 = 2112;
-    v18 = v7;
+    v18 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s %@ %@", &v13, 0x20u);
   }
 
   v9 = [_ADPBProxyGetMetricsResponse alloc];
-  v10 = [v6 data];
-  v11 = [(_ADPBProxyGetMetricsResponse *)v9 initWithData:v10];
+  data = [protobufCopy data];
+  v11 = [(_ADPBProxyGetMetricsResponse *)v9 initWithData:data];
 
-  v12 = [(_ADPBProxyGetMetricsResponse *)v11 _ad_metrics];
-  [(ADSharedPeerStreamConnection *)self _invokeMetricsCompletionWithMetrics:v12 forIdentifier:v7];
+  _ad_metrics = [(_ADPBProxyGetMetricsResponse *)v11 _ad_metrics];
+  [(ADSharedPeerStreamConnection *)self _invokeMetricsCompletionWithMetrics:_ad_metrics forIdentifier:identifierCopy];
 }
 
-- (void)_handleReestablishMessage:(id)a3 context:(id)a4
+- (void)_handleReestablishMessage:(id)message context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  contextCopy = context;
   v8 = AFSiriLogContextIDS;
   if (os_log_type_enabled(AFSiriLogContextIDS, OS_LOG_TYPE_INFO))
   {
     currentStreamIdentifier = self->_currentStreamIdentifier;
     v10 = v8;
-    v11 = [v6 lastKnownStreamId];
+    lastKnownStreamId = [messageCopy lastKnownStreamId];
     v14 = 136315650;
     v15 = "[ADSharedPeerStreamConnection _handleReestablishMessage:context:]";
     v16 = 2112;
     v17 = currentStreamIdentifier;
     v18 = 2112;
-    v19 = v11;
+    v19 = lastKnownStreamId;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s Current Stream Identifier %@ Remote Stream Identifier %@", &v14, 0x20u);
   }
 
   if (self->_sockfd != -1)
   {
     v12 = self->_currentStreamIdentifier;
-    v13 = [v6 lastKnownStreamId];
-    LODWORD(v12) = [(NSString *)v12 isEqualToString:v13];
+    lastKnownStreamId2 = [messageCopy lastKnownStreamId];
+    LODWORD(v12) = [(NSString *)v12 isEqualToString:lastKnownStreamId2];
 
     if (v12)
     {
@@ -330,9 +330,9 @@
   }
 }
 
-- (void)_handleGetMetricsMessage:(id)a3 context:(id)a4
+- (void)_handleGetMetricsMessage:(id)message context:(id)context
 {
-  v5 = a4;
+  contextCopy = context;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -360,8 +360,8 @@
           v13[1] = 3221225472;
           v13[2] = sub_100093B14;
           v13[3] = &unk_10050FDE8;
-          v14 = v5;
-          v15 = self;
+          v14 = contextCopy;
+          selfCopy = self;
           [v11 peerStreamConnection:WeakRetained requestMetrics:v13];
 
           goto LABEL_11;
@@ -381,15 +381,15 @@
 LABEL_11:
 }
 
-- (void)_handleWakeUpMessage:(id)a3 context:(id)a4
+- (void)_handleWakeUpMessage:(id)message context:(id)context
 {
-  v6 = a3;
-  v24 = a4;
+  messageCopy = message;
+  contextCopy = context;
   if (self->_peerSupportsNamedStreams)
   {
     if (self->_socketForConnectionHasBeenVended)
     {
-      v23 = v6;
+      v23 = messageCopy;
       v31 = 0u;
       v32 = 0u;
       v29 = 0u;
@@ -425,11 +425,11 @@ LABEL_11:
         while (v9);
       }
 
-      v6 = v23;
+      messageCopy = v23;
     }
 
-    v15 = [v6 streamId];
-    [(ADSharedPeerStreamConnection *)self _getSocketFromDeviceForStreamIdentifier:v15];
+    streamId = [messageCopy streamId];
+    [(ADSharedPeerStreamConnection *)self _getSocketFromDeviceForStreamIdentifier:streamId];
   }
 
   v27 = 0u;
@@ -470,30 +470,30 @@ LABEL_11:
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context
 {
-  v9 = a5;
-  v10 = a7;
-  v11 = [v9 type];
+  protobufCopy = protobuf;
+  contextCopy = context;
+  type = [protobufCopy type];
   v12 = AFSiriLogContextIDS;
   if (os_log_type_enabled(AFSiriLogContextIDS, OS_LOG_TYPE_INFO))
   {
     v19 = 136315394;
     v20 = "[ADSharedPeerStreamConnection service:account:incomingUnhandledProtobuf:fromID:context:]";
     v21 = 1024;
-    v22 = v11;
+    v22 = type;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s type = %d", &v19, 0x12u);
   }
 
-  v13 = [v10 incomingResponseIdentifier];
-  if (v13)
+  incomingResponseIdentifier = [contextCopy incomingResponseIdentifier];
+  if (incomingResponseIdentifier)
   {
-    [(ADSharedPeerStreamConnection *)self _handleResponseProtobuf:v9 forIdentifier:v13];
+    [(ADSharedPeerStreamConnection *)self _handleResponseProtobuf:protobufCopy forIdentifier:incomingResponseIdentifier];
   }
 
   else
   {
-    if (v11 > 2)
+    if (type > 2)
     {
       v14 = 0;
     }
@@ -504,10 +504,10 @@ LABEL_11:
     }
 
     v15 = [v14 alloc];
-    v16 = [v9 data];
-    v17 = [v15 initWithData:v16];
+    data = [protobufCopy data];
+    v17 = [v15 initWithData:data];
 
-    [v17 _ad_performWithPeerStreamConnection:self context:v10];
+    [v17 _ad_performWithPeerStreamConnection:self context:contextCopy];
     if (!v17)
     {
       v18 = AFSiriLogContextIDS;
@@ -516,7 +516,7 @@ LABEL_11:
         v19 = 136315394;
         v20 = "[ADSharedPeerStreamConnection service:account:incomingUnhandledProtobuf:fromID:context:]";
         v21 = 1024;
-        v22 = v11;
+        v22 = type;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "%s Don't know how to make request for %d", &v19, 0x12u);
       }
     }
@@ -525,19 +525,19 @@ LABEL_11:
 
 - (void)_updatePairedDeviceInfo
 {
-  v3 = [(ADSharedPeerStreamConnection *)self _pairedDevice];
-  v4 = [v3 modelIdentifier];
-  v5 = [v4 copy];
+  _pairedDevice = [(ADSharedPeerStreamConnection *)self _pairedDevice];
+  modelIdentifier = [_pairedDevice modelIdentifier];
+  v5 = [modelIdentifier copy];
   productType = self->_productType;
   self->_productType = v5;
 
-  v7 = [v3 productBuildVersion];
-  v8 = [v7 copy];
+  productBuildVersion = [_pairedDevice productBuildVersion];
+  v8 = [productBuildVersion copy];
   buildVersion = self->_buildVersion;
   self->_buildVersion = v8;
 
-  v10 = [v3 productName];
-  v11 = [v3 productVersion];
+  productName = [_pairedDevice productName];
+  productVersion = [_pairedDevice productVersion];
   v12 = AFSiriLogContextIDS;
   if (os_log_type_enabled(AFSiriLogContextIDS, OS_LOG_TYPE_INFO))
   {
@@ -550,39 +550,39 @@ LABEL_11:
     v20 = 2112;
     v21 = v14;
     v22 = 2112;
-    v23 = v10;
+    v23 = productName;
     v24 = 2112;
-    v25 = v11;
+    v25 = productVersion;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s %@ %@ %@ %@", &v16, 0x34u);
   }
 
   AFWatchOSVersion();
   self->_peerSupportsNamedStreams = AFWatchOSVersionIsGreaterThanOrEqual();
   self->_peerSupportsExtendedHeader = AFWatchOSVersionIsGreaterThanOrEqual();
-  v15 = [v3 uniqueIDOverride];
-  [ADPeerInfo updateSharedInfoWithIdentifier:v15 productType:self->_productType buildVersion:self->_buildVersion];
+  uniqueIDOverride = [_pairedDevice uniqueIDOverride];
+  [ADPeerInfo updateSharedInfoWithIdentifier:uniqueIDOverride productType:self->_productType buildVersion:self->_buildVersion];
 }
 
-- (void)getMetricsContext:(id)a3
+- (void)getMetricsContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000943B8;
   v7[3] = &unk_10051E038;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = contextCopy;
+  v6 = contextCopy;
   dispatch_async(queue, v7);
 }
 
 - (id)_failureMetricsContextDictionary
 {
-  v3 = [(ADSharedPeerStreamConnection *)self _pairedDevice];
-  v4 = [v3 isNearby];
-  v5 = [v3 isConnected];
-  v6 = [v3 isCloudConnected];
+  _pairedDevice = [(ADSharedPeerStreamConnection *)self _pairedDevice];
+  isNearby = [_pairedDevice isNearby];
+  isConnected = [_pairedDevice isConnected];
+  isCloudConnected = [_pairedDevice isCloudConnected];
   v7 = +[NSProcessInfo processInfo];
   [v7 systemUptime];
   v9 = v8;
@@ -590,16 +590,16 @@ LABEL_11:
   v10 = v9 - self->_lastNearbyDevicesChangedTimestamp;
   v26 = [NSMutableDictionary alloc];
   v28[0] = @"has_device";
-  v25 = [NSNumber numberWithBool:v3 != 0];
+  v25 = [NSNumber numberWithBool:_pairedDevice != 0];
   v29[0] = v25;
   v28[1] = @"nearby";
-  v11 = [NSNumber numberWithBool:v4];
+  v11 = [NSNumber numberWithBool:isNearby];
   v29[1] = v11;
   v28[2] = @"connected";
-  v12 = [NSNumber numberWithBool:v5];
+  v12 = [NSNumber numberWithBool:isConnected];
   v29[2] = v12;
   v28[3] = @"cloud_connected";
-  v13 = [NSNumber numberWithBool:v6];
+  v13 = [NSNumber numberWithBool:isCloudConnected];
   v29[3] = v13;
   v28[4] = @"last_nearby_status_change";
   v14 = [NSNumber numberWithDouble:v10];
@@ -636,14 +636,14 @@ LABEL_11:
   return v27;
 }
 
-- (void)_setPreferBTClassic:(BOOL)a3
+- (void)_setPreferBTClassic:(BOOL)classic
 {
-  v3 = a3;
+  classicCopy = classic;
   v5 = AFSiriLogContextIDS;
   if (os_log_type_enabled(AFSiriLogContextIDS, OS_LOG_TYPE_INFO))
   {
     v6 = @"NO";
-    if (v3)
+    if (classicCopy)
     {
       v6 = @"YES";
     }
@@ -655,7 +655,7 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
-  if (v3 && !self->_prefersBTClassic)
+  if (classicCopy && !self->_prefersBTClassic)
   {
     idsService = self->_idsService;
     v13 = IDSLinkPreferenceOptionPacketsPerSecondKey;
@@ -669,7 +669,7 @@ LABEL_11:
     return;
   }
 
-  if (self->_prefersBTClassic && !v3)
+  if (self->_prefersBTClassic && !classicCopy)
   {
     v10 = self->_idsService;
     v11 = IDSLinkPreferenceOptionPacketsPerSecondKey;
@@ -681,7 +681,7 @@ LABEL_11:
   }
 }
 
-- (void)setPreferBTClassic:(BOOL)a3
+- (void)setPreferBTClassic:(BOOL)classic
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -689,7 +689,7 @@ LABEL_11:
   v4[2] = sub_10009496C;
   v4[3] = &unk_10051CBD8;
   v4[4] = self;
-  v5 = a3;
+  classicCopy = classic;
   dispatch_async(queue, v4);
 }
 
@@ -717,7 +717,7 @@ LABEL_11:
   if (self->_listener && self->_peerSupportsNamedStreams)
   {
     v3 = +[ADPreferences sharedPreferences];
-    v4 = [v3 lastKnownProxyStreamId];
+    lastKnownProxyStreamId = [v3 lastKnownProxyStreamId];
 
     v5 = AFSiriLogContextIDS;
     if (os_log_type_enabled(AFSiriLogContextIDS, OS_LOG_TYPE_INFO))
@@ -725,20 +725,20 @@ LABEL_11:
       *buf = 136315394;
       v22 = "[ADSharedPeerStreamConnection _requestStreamEstablishment]";
       v23 = 2112;
-      v24 = v4;
+      v24 = lastKnownProxyStreamId;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
     }
 
-    if (v4)
+    if (lastKnownProxyStreamId)
     {
       v6 = objc_alloc_init(_ADPBProxyReestablishRequest);
-      [(_ADPBProxyReestablishRequest *)v6 setLastKnownStreamId:v4];
+      [(_ADPBProxyReestablishRequest *)v6 setLastKnownStreamId:lastKnownProxyStreamId];
       v7 = [IDSProtobuf alloc];
-      v8 = [(_ADPBProxyReestablishRequest *)v6 data];
-      v9 = [v7 initWithProtobufData:v8 type:objc_msgSend(objc_opt_class() isResponse:{"_ADPBProxyRequestType"), 0}];
+      data = [(_ADPBProxyReestablishRequest *)v6 data];
+      v9 = [v7 initWithProtobufData:data type:objc_msgSend(objc_opt_class() isResponse:{"_ADPBProxyRequestType"), 0}];
 
-      v10 = [(ADSharedPeerStreamConnection *)self _service];
-      v11 = [(ADSharedPeerStreamConnection *)self _destination];
+      _service = [(ADSharedPeerStreamConnection *)self _service];
+      _destination = [(ADSharedPeerStreamConnection *)self _destination];
       v19[0] = IDSSendMessageOptionTimeoutKey;
       v19[1] = IDSSendMessageOptionForceLocalDeliveryKey;
       v20[0] = &off_1005337E8;
@@ -746,7 +746,7 @@ LABEL_11:
       v12 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:2];
       v17 = 0;
       v18 = 0;
-      v13 = [v10 sendProtobuf:v9 toDestinations:v11 priority:300 options:v12 identifier:&v18 error:&v17];
+      v13 = [_service sendProtobuf:v9 toDestinations:_destination priority:300 options:v12 identifier:&v18 error:&v17];
       v14 = v18;
       v15 = v17;
 
@@ -766,25 +766,25 @@ LABEL_11:
   }
 }
 
-- (void)_invokeMetricsCompletionWithMetrics:(id)a3 forIdentifier:(id)a4
+- (void)_invokeMetricsCompletionWithMetrics:(id)metrics forIdentifier:(id)identifier
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_metricsResponses objectForKey:v6];
+  metricsCopy = metrics;
+  identifierCopy = identifier;
+  v7 = [(NSMutableDictionary *)self->_metricsResponses objectForKey:identifierCopy];
   v8 = v7;
   if (v7)
   {
-    (*(v7 + 16))(v7, v9);
+    (*(v7 + 16))(v7, metricsCopy);
   }
 
-  [(NSMutableDictionary *)self->_metricsResponses removeObjectForKey:v6];
+  [(NSMutableDictionary *)self->_metricsResponses removeObjectForKey:identifierCopy];
 }
 
-- (void)getRemoteMetrics:(id)a3
+- (void)getRemoteMetrics:(id)metrics
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  metricsCopy = metrics;
+  v5 = metricsCopy;
+  if (metricsCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -792,7 +792,7 @@ LABEL_11:
     v7[2] = sub_100094E70;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = metricsCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -823,23 +823,23 @@ LABEL_11:
   }
 }
 
-- (void)closeForConnection:(id)a3
+- (void)closeForConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10009547C;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = connectionCopy;
+  v6 = connectionCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_invokeSocketCompletionWithCurrentSocketOrError:(id)a3
+- (void)_invokeSocketCompletionWithCurrentSocketOrError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self->_socketCompletion)
   {
     v5 = AFSiriLogContextIDS;
@@ -850,7 +850,7 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s ", &v9, 0xCu);
     }
 
-    if (v4)
+    if (errorCopy)
     {
       v6 = 0;
     }
@@ -874,16 +874,16 @@ LABEL_11:
   }
 }
 
-- (void)_getSocketFromDeviceForStreamIdentifier:(id)a3
+- (void)_getSocketFromDeviceForStreamIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = AFSiriLogContextIDS;
   if (os_log_type_enabled(AFSiriLogContextIDS, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     *&buf[4] = "[ADSharedPeerStreamConnection _getSocketFromDeviceForStreamIdentifier:]";
     *&buf[12] = 2112;
-    *&buf[14] = v4;
+    *&buf[14] = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
@@ -892,16 +892,16 @@ LABEL_11:
   [v6 setObject:&off_1005337B8 forKey:IDSOpenSocketOptionTransportKey];
   [v6 setObject:&off_1005337D0 forKey:IDSOpenSocketOptionPriorityKey];
   [v6 setObject:&off_1005337B8 forKey:IDSOpenSocketOptionScopeKey];
-  if (v4)
+  if (identifierCopy)
   {
-    [v6 setObject:v4 forKey:IDSOpenSocketOptionStreamNameKey];
+    [v6 setObject:identifierCopy forKey:IDSOpenSocketOptionStreamNameKey];
   }
 
-  v7 = [(ADSharedPeerStreamConnection *)self _pairedDevice];
-  v8 = v7;
-  if (v7)
+  _pairedDevice = [(ADSharedPeerStreamConnection *)self _pairedDevice];
+  v8 = _pairedDevice;
+  if (_pairedDevice)
   {
-    if (v4 && self->_listener || ([v7 isNearby] & 1) != 0)
+    if (identifierCopy && self->_listener || ([_pairedDevice isNearby] & 1) != 0)
     {
       goto LABEL_17;
     }
@@ -954,8 +954,8 @@ LABEL_17:
     v21[1] = 3221225472;
     v21[2] = sub_100095B5C;
     v21[3] = &unk_10050FDC0;
-    v22 = v4;
-    v23 = self;
+    v22 = identifierCopy;
+    selfCopy = self;
     v24 = buf;
     v25 = v16;
     v18 = [v17 initSocketWithDevice:v8 options:v6 completionHandler:v21 queue:self->_queue];
@@ -983,20 +983,20 @@ LABEL_18:
   }
 }
 
-- (void)getSocketForConnection:(id)a3 completion:(id)a4
+- (void)getSocketForConnection:(id)connection completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10009604C;
   block[3] = &unk_10051E088;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = connectionCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = connectionCopy;
   dispatch_async(queue, block);
 }
 
@@ -1026,31 +1026,31 @@ LABEL_18:
   }
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000964BC;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100096560;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1071,10 +1071,10 @@ LABEL_18:
 
 - (id)_account
 {
-  v2 = [(IDSService *)self->_idsService accounts];
-  v3 = [v2 anyObject];
+  accounts = [(IDSService *)self->_idsService accounts];
+  anyObject = [accounts anyObject];
 
-  return v3;
+  return anyObject;
 }
 
 - (id)_pairedDevice
@@ -1083,10 +1083,10 @@ LABEL_18:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(ADSharedPeerStreamConnection *)self _service];
-  v3 = [v2 devices];
+  _service = [(ADSharedPeerStreamConnection *)self _service];
+  devices = [_service devices];
 
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [devices countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -1096,7 +1096,7 @@ LABEL_18:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(devices);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
@@ -1107,7 +1107,7 @@ LABEL_18:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [devices countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -1122,10 +1122,10 @@ LABEL_11:
   return v4;
 }
 
-- (id)_initWithServiceIdentifier:(id)a3 listener:(BOOL)a4
+- (id)_initWithServiceIdentifier:(id)identifier listener:(BOOL)listener
 {
-  v7 = a3;
-  if (!v7)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v22 = +[NSAssertionHandler currentHandler];
     [v22 handleFailureInMethod:a2 object:self file:@"ADPeerStreamConnection.m" lineNumber:134 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
@@ -1136,7 +1136,7 @@ LABEL_11:
   v8 = [(ADSharedPeerStreamConnection *)&v23 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [identifierCopy copy];
     v10 = *(v8 + 3);
     *(v8 + 3) = v9;
 
@@ -1159,7 +1159,7 @@ LABEL_11:
     *(v8 + 5) = v19;
 
     [*(v8 + 5) addDelegate:v8 queue:*(v8 + 4)];
-    *(v8 + 8) = a4;
+    *(v8 + 8) = listener;
     *(v8 + 22) = -1;
     [v8 _updatePairedDeviceInfo];
     [v8 _requestStreamEstablishment];
@@ -1169,10 +1169,10 @@ LABEL_11:
   return v8;
 }
 
-+ (id)sharedPeerStreamConnectionWithServiceIdentifier:(id)a3 listener:(BOOL)a4
++ (id)sharedPeerStreamConnectionWithServiceIdentifier:(id)identifier listener:(BOOL)listener
 {
-  v5 = a3;
-  if (v5)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     if (qword_10058FEA0 != -1)
     {
@@ -1191,8 +1191,8 @@ LABEL_11:
     block[2] = sub_100096ACC;
     block[3] = &unk_100511478;
     v11 = &v13;
-    v10 = v5;
-    v12 = a4;
+    v10 = identifierCopy;
+    listenerCopy = listener;
     dispatch_sync(v6, block);
     v7 = v14[5];
 
@@ -1207,20 +1207,20 @@ LABEL_11:
   return v7;
 }
 
-+ (id)_errorWithCode:(int64_t)a3 underylingError:(id)a4
++ (id)_errorWithCode:(int64_t)code underylingError:(id)error
 {
-  if (a4)
+  if (error)
   {
     v9 = NSUnderlyingErrorKey;
-    v10 = a4;
-    v5 = a4;
-    v6 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-    v7 = [NSError errorWithDomain:@"ADPeerStreamConnectionErrorDomain" code:a3 userInfo:v6];
+    errorCopy = error;
+    errorCopy2 = error;
+    v6 = [NSDictionary dictionaryWithObjects:&errorCopy forKeys:&v9 count:1];
+    v7 = [NSError errorWithDomain:@"ADPeerStreamConnectionErrorDomain" code:code userInfo:v6];
   }
 
   else
   {
-    v7 = [NSError errorWithDomain:@"ADPeerStreamConnectionErrorDomain" code:a3 userInfo:0];
+    v7 = [NSError errorWithDomain:@"ADPeerStreamConnectionErrorDomain" code:code userInfo:0];
   }
 
   return v7;

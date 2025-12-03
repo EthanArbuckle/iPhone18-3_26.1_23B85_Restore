@@ -1,53 +1,53 @@
 @interface UIImage
-+ (id)playlistPlaceholderForPlaylist:(id)a3;
-+ (id)playlistPlaceholderForPlaylistType:(int64_t)a3;
++ (id)playlistPlaceholderForPlaylist:(id)playlist;
++ (id)playlistPlaceholderForPlaylistType:(int64_t)type;
 @end
 
 @implementation UIImage
 
-+ (id)playlistPlaceholderForPlaylistType:(int64_t)a3
++ (id)playlistPlaceholderForPlaylistType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
-    v3 = [a1 smartPlaylistPlaceholder];
+    smartPlaylistPlaceholder = [self smartPlaylistPlaceholder];
   }
 
-  else if (a3 == 3)
+  else if (type == 3)
   {
-    v3 = [a1 playlistFolderPlaceholder];
+    smartPlaylistPlaceholder = [self playlistFolderPlaceholder];
   }
 
   else
   {
-    if (a3 == 2)
+    if (type == 2)
     {
-      [a1 geniusPlaylistPlaceholder];
+      [self geniusPlaylistPlaceholder];
     }
 
     else
     {
-      [a1 playlistPlaceholder];
+      [self playlistPlaceholder];
     }
-    v3 = ;
+    smartPlaylistPlaceholder = ;
   }
 
-  return v3;
+  return smartPlaylistPlaceholder;
 }
 
-+ (id)playlistPlaceholderForPlaylist:(id)a3
++ (id)playlistPlaceholderForPlaylist:(id)playlist
 {
-  v4 = a3;
-  if ([v4 hasLoadedValueForKey:MPModelPropertyPlaylistType])
+  playlistCopy = playlist;
+  if ([playlistCopy hasLoadedValueForKey:MPModelPropertyPlaylistType])
   {
-    v5 = [v4 type];
+    type = [playlistCopy type];
   }
 
   else
   {
-    v5 = 0;
+    type = 0;
   }
 
-  v6 = [a1 playlistPlaceholderForPlaylistType:v5];
+  v6 = [self playlistPlaceholderForPlaylistType:type];
 
   return v6;
 }

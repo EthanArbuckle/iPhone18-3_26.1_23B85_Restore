@@ -1,13 +1,13 @@
 @interface AssetExportSession
-- (_TtC11CloudAssets18AssetExportSession)initWithAsset:(id)a3 presetName:(id)a4;
+- (_TtC11CloudAssets18AssetExportSession)initWithAsset:(id)asset presetName:(id)name;
 @end
 
 @implementation AssetExportSession
 
-- (_TtC11CloudAssets18AssetExportSession)initWithAsset:(id)a3 presetName:(id)a4
+- (_TtC11CloudAssets18AssetExportSession)initWithAsset:(id)asset presetName:(id)name
 {
   sub_2437ABA9C();
-  v5 = a3;
+  assetCopy = asset;
   AssetExportSession.init(asset:presetName:)();
 }
 

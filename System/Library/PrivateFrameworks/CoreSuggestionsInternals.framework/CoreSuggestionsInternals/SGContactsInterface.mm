@@ -1,27 +1,27 @@
 @interface SGContactsInterface
-+ (BOOL)enumerateContactsMatchingEmailAddress:(id)a3 withKeysToFetch:(id)a4 usingContactStore:(id)a5 error:(id *)a6 usingBlock:(id)a7;
-+ (BOOL)enumerateContactsMatchingName:(id)a3 withKeysToFetch:(id)a4 usingContactStore:(id)a5 error:(id *)a6 usingBlock:(id)a7;
-+ (BOOL)enumerateContactsWithFetchRequest:(id)a3 usingContactStore:(id)a4 error:(id *)a5 usingBlock:(id)a6;
-+ (BOOL)handleExistsInContactStoreForHandle:(id)a3 withHandleType:(id)a4;
-+ (id)identifiersPredicateFromCacheForPredicate:(id)a3 isCached:(BOOL *)a4;
-+ (id)unifiedContactsMatchingPredicate:(id)a3 keysToFetch:(id)a4 usingContactStore:(id)a5 error:(id *)a6;
++ (BOOL)enumerateContactsMatchingEmailAddress:(id)address withKeysToFetch:(id)fetch usingContactStore:(id)store error:(id *)error usingBlock:(id)block;
++ (BOOL)enumerateContactsMatchingName:(id)name withKeysToFetch:(id)fetch usingContactStore:(id)store error:(id *)error usingBlock:(id)block;
++ (BOOL)enumerateContactsWithFetchRequest:(id)request usingContactStore:(id)store error:(id *)error usingBlock:(id)block;
++ (BOOL)handleExistsInContactStoreForHandle:(id)handle withHandleType:(id)type;
++ (id)identifiersPredicateFromCacheForPredicate:(id)predicate isCached:(BOOL *)cached;
++ (id)unifiedContactsMatchingPredicate:(id)predicate keysToFetch:(id)fetch usingContactStore:(id)store error:(id *)error;
 + (void)clearCache;
 + (void)initialize;
 @end
 
 @implementation SGContactsInterface
 
-+ (BOOL)handleExistsInContactStoreForHandle:(id)a3 withHandleType:(id)a4
++ (BOOL)handleExistsInContactStoreForHandle:(id)handle withHandleType:(id)type
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  typeCopy = type;
   v8 = *MEMORY[0x277CBD098];
-  if (![v7 isEqualToString:*MEMORY[0x277CBD098]])
+  if (![typeCopy isEqualToString:*MEMORY[0x277CBD098]])
   {
-    if ([v7 isEqualToString:*MEMORY[0x277CBCFC0]])
+    if ([typeCopy isEqualToString:*MEMORY[0x277CBCFC0]])
     {
-      v11 = [MEMORY[0x277CBDA58] predicateForContactsMatchingEmailAddress:v6];
+      v11 = [MEMORY[0x277CBDA58] predicateForContactsMatchingEmailAddress:handleCopy];
       goto LABEL_6;
     }
 
@@ -29,7 +29,7 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v7;
+      *(&buf + 4) = typeCopy;
       _os_log_debug_impl(&dword_231E60000, v13, OS_LOG_TYPE_DEBUG, "Unsupported handleType: %@", &buf, 0xCu);
     }
 
@@ -38,7 +38,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v9 = [objc_alloc(MEMORY[0x277CBDB70]) initWithStringValue:v6];
+  v9 = [objc_alloc(MEMORY[0x277CBDB70]) initWithStringValue:handleCopy];
   if (!v9)
   {
     v13 = sgLogHandle();
@@ -61,7 +61,7 @@ LABEL_6:
   v36 = __Block_byref_object_copy__11949;
   v37 = __Block_byref_object_dispose__11950;
   v38 = 0;
-  v12 = [_cache resultIfAvailable];
+  resultIfAvailable = [_cache resultIfAvailable];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __74__SGContactsInterface_handleExistsInContactStoreForHandle_withHandleType___block_invoke;
@@ -69,7 +69,7 @@ LABEL_6:
   p_buf = &buf;
   v13 = v11;
   v29 = v13;
-  [v12 runWithLockAcquired:v28];
+  [resultIfAvailable runWithLockAcquired:v28];
 
   if ([*(*(&buf + 1) + 40) count])
   {
@@ -94,7 +94,7 @@ LABEL_6:
     v22[3] = &unk_27894D4E8;
     v22[4] = &v24;
     v23 = 0;
-    [a1 enumerateContactsWithFetchRequest:v16 usingContactStore:v17 error:&v23 usingBlock:v22];
+    [self enumerateContactsWithFetchRequest:v16 usingContactStore:v17 error:&v23 usingBlock:v22];
     v18 = v23;
 
     if (v18)
@@ -139,56 +139,56 @@ uint64_t __74__SGContactsInterface_handleExistsInContactStoreForHandle_withHandl
 
 + (void)clearCache
 {
-  v2 = [_cache resultIfAvailable];
-  [v2 runWithLockAcquired:&__block_literal_global_36_11956];
+  resultIfAvailable = [_cache resultIfAvailable];
+  [resultIfAvailable runWithLockAcquired:&__block_literal_global_36_11956];
 }
 
-+ (BOOL)enumerateContactsMatchingEmailAddress:(id)a3 withKeysToFetch:(id)a4 usingContactStore:(id)a5 error:(id *)a6 usingBlock:(id)a7
++ (BOOL)enumerateContactsMatchingEmailAddress:(id)address withKeysToFetch:(id)fetch usingContactStore:(id)store error:(id *)error usingBlock:(id)block
 {
   v12 = MEMORY[0x277CBDA70];
-  v13 = a7;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[v12 alloc] initWithKeysToFetch:v15];
+  blockCopy = block;
+  storeCopy = store;
+  fetchCopy = fetch;
+  addressCopy = address;
+  v17 = [[v12 alloc] initWithKeysToFetch:fetchCopy];
 
-  v18 = [MEMORY[0x277CBDA58] predicateForContactsMatchingEmailAddress:v16];
+  v18 = [MEMORY[0x277CBDA58] predicateForContactsMatchingEmailAddress:addressCopy];
 
   [v17 setPredicate:v18];
-  LOBYTE(a6) = [a1 enumerateContactsWithFetchRequest:v17 usingContactStore:v14 error:a6 usingBlock:v13];
+  LOBYTE(error) = [self enumerateContactsWithFetchRequest:v17 usingContactStore:storeCopy error:error usingBlock:blockCopy];
 
-  return a6;
+  return error;
 }
 
-+ (BOOL)enumerateContactsMatchingName:(id)a3 withKeysToFetch:(id)a4 usingContactStore:(id)a5 error:(id *)a6 usingBlock:(id)a7
++ (BOOL)enumerateContactsMatchingName:(id)name withKeysToFetch:(id)fetch usingContactStore:(id)store error:(id *)error usingBlock:(id)block
 {
   v12 = MEMORY[0x277CBDA70];
-  v13 = a7;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[v12 alloc] initWithKeysToFetch:v15];
+  blockCopy = block;
+  storeCopy = store;
+  fetchCopy = fetch;
+  nameCopy = name;
+  v17 = [[v12 alloc] initWithKeysToFetch:fetchCopy];
 
-  v18 = [MEMORY[0x277CBDA58] predicateForContactsMatchingName:v16];
+  v18 = [MEMORY[0x277CBDA58] predicateForContactsMatchingName:nameCopy];
 
   [v17 setPredicate:v18];
-  LOBYTE(a6) = [a1 enumerateContactsWithFetchRequest:v17 usingContactStore:v14 error:a6 usingBlock:v13];
+  LOBYTE(error) = [self enumerateContactsWithFetchRequest:v17 usingContactStore:storeCopy error:error usingBlock:blockCopy];
 
-  return a6;
+  return error;
 }
 
-+ (BOOL)enumerateContactsWithFetchRequest:(id)a3 usingContactStore:(id)a4 error:(id *)a5 usingBlock:(id)a6
++ (BOOL)enumerateContactsWithFetchRequest:(id)request usingContactStore:(id)store error:(id *)error usingBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  requestCopy = request;
+  storeCopy = store;
+  blockCopy = block;
   v44[0] = 0;
-  v13 = [v10 predicate];
-  v14 = [a1 identifiersPredicateFromCacheForPredicate:v13 isCached:v44];
+  predicate = [requestCopy predicate];
+  v14 = [self identifiersPredicateFromCacheForPredicate:predicate isCached:v44];
 
   if (v14)
   {
-    [v10 setPredicate:v14];
+    [requestCopy setPredicate:v14];
   }
 
   else if (v44[0])
@@ -212,13 +212,13 @@ uint64_t __74__SGContactsInterface_handleExistsInContactStoreForHandle_withHandl
   v28[1] = 3221225472;
   v28[2] = __92__SGContactsInterface_enumerateContactsWithFetchRequest_usingContactStore_error_usingBlock___block_invoke;
   v28[3] = &unk_27894D4C0;
-  v29 = v11;
+  v29 = storeCopy;
   v17 = v16;
   v30 = v17;
-  v31 = v12;
+  v31 = blockCopy;
   v32 = &v40;
   v33 = &v34;
-  v15 = [v29 enumerateContactsWithFetchRequest:v10 error:a5 usingBlock:v28];
+  v15 = [v29 enumerateContactsWithFetchRequest:requestCopy error:error usingBlock:v28];
   v18 = v35[5];
   if (v18)
   {
@@ -227,17 +227,17 @@ uint64_t __74__SGContactsInterface_handleExistsInContactStoreForHandle_withHandl
 
   if ((v41[3] & 1) == 0)
   {
-    v19 = [v17 proxyArray];
-    if ([v19 count] > 2 || (objc_msgSend(v10, "predicate"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x277CBDA58], "predicateForContactsWithIdentifiers:", v19), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v20, "isEqual:", v21), v21, v20, (v22 & 1) == 0))
+    proxyArray = [v17 proxyArray];
+    if ([proxyArray count] > 2 || (objc_msgSend(requestCopy, "predicate"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x277CBDA58], "predicateForContactsWithIdentifiers:", proxyArray), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v20, "isEqual:", v21), v21, v20, (v22 & 1) == 0))
     {
-      v23 = [_cache result];
+      result = [_cache result];
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __92__SGContactsInterface_enumerateContactsWithFetchRequest_usingContactStore_error_usingBlock___block_invoke_34;
       v25[3] = &unk_278951950;
-      v26 = v10;
-      v27 = v19;
-      [v23 runWithLockAcquired:v25];
+      v26 = requestCopy;
+      v27 = proxyArray;
+      [result runWithLockAcquired:v25];
     }
   }
 
@@ -296,34 +296,34 @@ void __92__SGContactsInterface_enumerateContactsWithFetchRequest_usingContactSto
   [v5 setObject:v3 forKeyedSubscript:v4];
 }
 
-+ (id)identifiersPredicateFromCacheForPredicate:(id)a3 isCached:(BOOL *)a4
++ (id)identifiersPredicateFromCacheForPredicate:(id)predicate isCached:(BOOL *)cached
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  predicateCopy = predicate;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__11949;
   v24 = __Block_byref_object_dispose__11950;
   v25 = 0;
-  v6 = [_cache resultIfAvailable];
-  if (v6)
+  resultIfAvailable = [_cache resultIfAvailable];
+  if (resultIfAvailable)
   {
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __74__SGContactsInterface_identifiersPredicateFromCacheForPredicate_isCached___block_invoke;
     v17[3] = &unk_278951000;
     v19 = &v20;
-    v18 = v5;
-    [v6 runWithLockAcquired:v17];
+    v18 = predicateCopy;
+    [resultIfAvailable runWithLockAcquired:v17];
     v7 = v18;
   }
 
   else
   {
-    v8 = [MEMORY[0x277D41DA8] sharedInstance];
+    mEMORY[0x277D41DA8] = [MEMORY[0x277D41DA8] sharedInstance];
     v9 = objc_opt_new();
-    [v8 trackScalarForMessage:v9 count:0];
+    [mEMORY[0x277D41DA8] trackScalarForMessage:v9 count:0];
 
     v26 = @"ContactsInterfaceCacheHit";
     v10 = [MEMORY[0x277CCABB0] numberWithInt:v21[5] != 0];
@@ -335,13 +335,13 @@ void __92__SGContactsInterface_enumerateContactsWithFetchRequest_usingContactSto
 
   v11 = objc_opt_new();
   [v11 setCacheHit:v21[5] != 0];
-  v12 = [MEMORY[0x277D41DA8] sharedInstance];
-  [v12 trackScalarForMessage:v11];
+  mEMORY[0x277D41DA8]2 = [MEMORY[0x277D41DA8] sharedInstance];
+  [mEMORY[0x277D41DA8]2 trackScalarForMessage:v11];
 
   v13 = v21;
   if (v21[5])
   {
-    *a4 = 1;
+    *cached = 1;
     if ([v13[5] count])
     {
       v14 = [MEMORY[0x277CBDA58] predicateForContactsWithIdentifiers:v21[5]];
@@ -356,7 +356,7 @@ void __92__SGContactsInterface_enumerateContactsWithFetchRequest_usingContactSto
   else
   {
     v14 = 0;
-    *a4 = 0;
+    *cached = 0;
   }
 
   _Block_object_dispose(&v20, 8);
@@ -381,24 +381,24 @@ void __74__SGContactsInterface_identifiersPredicateFromCacheForPredicate_isCache
   *(v8 + 40) = v7;
 }
 
-+ (id)unifiedContactsMatchingPredicate:(id)a3 keysToFetch:(id)a4 usingContactStore:(id)a5 error:(id *)a6
++ (id)unifiedContactsMatchingPredicate:(id)predicate keysToFetch:(id)fetch usingContactStore:(id)store error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  storeCopy = store;
+  fetchCopy = fetch;
+  predicateCopy = predicate;
   v13 = objc_opt_new();
-  v14 = [objc_alloc(MEMORY[0x277CBDA70]) initWithKeysToFetch:v11];
+  v14 = [objc_alloc(MEMORY[0x277CBDA70]) initWithKeysToFetch:fetchCopy];
 
-  [v14 setPredicate:v12];
+  [v14 setPredicate:predicateCopy];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __92__SGContactsInterface_unifiedContactsMatchingPredicate_keysToFetch_usingContactStore_error___block_invoke;
   v18[3] = &unk_2789540B0;
   v15 = v13;
   v19 = v15;
-  [a1 enumerateContactsWithFetchRequest:v14 usingContactStore:v10 error:a6 usingBlock:v18];
+  [self enumerateContactsWithFetchRequest:v14 usingContactStore:storeCopy error:error usingBlock:v18];
 
-  if (*a6)
+  if (*error)
   {
     v16 = 0;
   }
@@ -413,7 +413,7 @@ void __74__SGContactsInterface_identifiersPredicateFromCacheForPredicate_isCache
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [objc_alloc(MEMORY[0x277D425E8]) initWithBlock:&__block_literal_global_11984];
     v3 = _cache;

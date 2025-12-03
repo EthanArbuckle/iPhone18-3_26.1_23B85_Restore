@@ -1,13 +1,13 @@
 @interface SymbolWithPlatterView
-- (_TtC19HealthMedicationsUI21SymbolWithPlatterView)initWithCoder:(id)a3;
-- (_TtC19HealthMedicationsUI21SymbolWithPlatterView)initWithFrame:(CGRect)a3;
+- (_TtC19HealthMedicationsUI21SymbolWithPlatterView)initWithCoder:(id)coder;
+- (_TtC19HealthMedicationsUI21SymbolWithPlatterView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SymbolWithPlatterView
 
-- (_TtC19HealthMedicationsUI21SymbolWithPlatterView)initWithCoder:(id)a3
+- (_TtC19HealthMedicationsUI21SymbolWithPlatterView)initWithCoder:(id)coder
 {
   result = sub_228393300();
   __break(1u);
@@ -20,19 +20,19 @@
   v4.super_class = type metadata accessor for SymbolWithPlatterView();
   v2 = v4.receiver;
   [(SymbolWithPlatterView *)&v4 layoutSubviews];
-  v3 = [v2 layer];
+  layer = [v2 layer];
   [v2 frame];
-  [v3 setCornerRadius_];
+  [layer setCornerRadius_];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_228350ED0(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_228350ED0(change);
 }
 
-- (_TtC19HealthMedicationsUI21SymbolWithPlatterView)initWithFrame:(CGRect)a3
+- (_TtC19HealthMedicationsUI21SymbolWithPlatterView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,41 +1,41 @@
 @interface HKHealthRecordsStore
-- (HKHealthRecordsStore)initWithHealthStore:(id)a3;
+- (HKHealthRecordsStore)initWithHealthStore:(id)store;
 - (NSString)description;
-- (id)_actionCompletionWithObjectOnClientQueue:(id)a3;
-- (void)_executeCheapCallOnPluginServerProxy:(id)a3;
-- (void)_reestablishProxyConnectionIfObserversArePresentWithPluginServerProxy:(id)a3;
-- (void)_withLock_notifyAccountsEventsListenerOfEvent:(unint64_t)a3;
-- (void)clientRemote_healthRecordsAccountsEventObserved:(unint64_t)a3;
-- (void)clientRemote_healthRecordsSupportedDidChangeTo:(BOOL)a3;
-- (void)deregisterAppSourceFromClinicalUnlimitedAuthorizationModeConfirmation:(id)a3 completion:(id)a4;
-- (void)fetchClinicalConnectedAccountsWithCompletion:(id)a3;
-- (void)fetchClinicalOptInDataCollectionFilePathsWithCompletion:(id)a3;
-- (void)fetchCurrentDeviceSupportsImproveHealthRecordsDataSubmissionOptionWithCompletion:(id)a3;
-- (void)fetchCurrentIngestionStatusWithCompletion:(id)a3;
-- (void)fetchExportedPropertiesForHealthRecord:(id)a3 completion:(id)a4;
-- (void)fetchFHIRJSONDocumentWithAccountIdentifier:(id)a3 completion:(id)a4;
-- (void)fetchIsImproveHealthRecordsDataSubmissionAllowedWithCompletion:(id)a3;
-- (void)fetchLogoForBrand:(id)a3 scale:(id)a4 completion:(id)a5;
-- (void)fetchRawSourceStringForHealthRecord:(id)a3 completion:(id)a4;
-- (void)fetchShouldPromptForImproveHealthRecordsDataSubmissionWithCompletion:(id)a3;
-- (void)fetchUserHasAgreedToHealthRecordsDataSubmissionWithCompletion:(id)a3;
-- (void)pingWithCompletion:(id)a3;
-- (void)registerAccountsEventListener:(id)a3;
-- (void)registerAppSourceForClinicalUnlimitedAuthorizationModeConfirmation:(id)a3 completion:(id)a4;
-- (void)resetClinicalContentAnalyticsAnchorsWithCompletion:(id)a3;
-- (void)resetClinicalOptInDataCollectionAnchorsWithCompletion:(id)a3;
-- (void)stringifyExtractionFailureReasonsForRecord:(id)a3 completion:(id)a4;
-- (void)triggerClinicalContentAnalyticsForReason:(int64_t)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)triggerClinicalOptInDataCollectionForReason:(int64_t)a3 completion:(id)a4;
-- (void)triggerHealthCloudUploadWithCompletion:(id)a3;
+- (id)_actionCompletionWithObjectOnClientQueue:(id)queue;
+- (void)_executeCheapCallOnPluginServerProxy:(id)proxy;
+- (void)_reestablishProxyConnectionIfObserversArePresentWithPluginServerProxy:(id)proxy;
+- (void)_withLock_notifyAccountsEventsListenerOfEvent:(unint64_t)event;
+- (void)clientRemote_healthRecordsAccountsEventObserved:(unint64_t)observed;
+- (void)clientRemote_healthRecordsSupportedDidChangeTo:(BOOL)to;
+- (void)deregisterAppSourceFromClinicalUnlimitedAuthorizationModeConfirmation:(id)confirmation completion:(id)completion;
+- (void)fetchClinicalConnectedAccountsWithCompletion:(id)completion;
+- (void)fetchClinicalOptInDataCollectionFilePathsWithCompletion:(id)completion;
+- (void)fetchCurrentDeviceSupportsImproveHealthRecordsDataSubmissionOptionWithCompletion:(id)completion;
+- (void)fetchCurrentIngestionStatusWithCompletion:(id)completion;
+- (void)fetchExportedPropertiesForHealthRecord:(id)record completion:(id)completion;
+- (void)fetchFHIRJSONDocumentWithAccountIdentifier:(id)identifier completion:(id)completion;
+- (void)fetchIsImproveHealthRecordsDataSubmissionAllowedWithCompletion:(id)completion;
+- (void)fetchLogoForBrand:(id)brand scale:(id)scale completion:(id)completion;
+- (void)fetchRawSourceStringForHealthRecord:(id)record completion:(id)completion;
+- (void)fetchShouldPromptForImproveHealthRecordsDataSubmissionWithCompletion:(id)completion;
+- (void)fetchUserHasAgreedToHealthRecordsDataSubmissionWithCompletion:(id)completion;
+- (void)pingWithCompletion:(id)completion;
+- (void)registerAccountsEventListener:(id)listener;
+- (void)registerAppSourceForClinicalUnlimitedAuthorizationModeConfirmation:(id)confirmation completion:(id)completion;
+- (void)resetClinicalContentAnalyticsAnchorsWithCompletion:(id)completion;
+- (void)resetClinicalOptInDataCollectionAnchorsWithCompletion:(id)completion;
+- (void)stringifyExtractionFailureReasonsForRecord:(id)record completion:(id)completion;
+- (void)triggerClinicalContentAnalyticsForReason:(int64_t)reason options:(unint64_t)options completion:(id)completion;
+- (void)triggerClinicalOptInDataCollectionForReason:(int64_t)reason completion:(id)completion;
+- (void)triggerHealthCloudUploadWithCompletion:(id)completion;
 @end
 
 @implementation HKHealthRecordsStore
 
-- (HKHealthRecordsStore)initWithHealthStore:(id)a3
+- (HKHealthRecordsStore)initWithHealthStore:(id)store
 {
-  v6 = a3;
-  if (!v6)
+  storeCopy = store;
+  if (!storeCopy)
   {
     [(HKHealthRecordsStore *)a2 initWithHealthStore:?];
   }
@@ -47,11 +47,11 @@
   if (v7)
   {
     v7->_ivarLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v7->_healthStore, a3);
+    objc_storeStrong(&v7->_healthStore, store);
     v9 = [HKTaskServerProxyProvider alloc];
-    v10 = [objc_opt_class() taskIdentifier];
-    v11 = [MEMORY[0x1E696AFB0] UUID];
-    v12 = [(HKTaskServerProxyProvider *)v9 initWithHealthStore:v6 taskIdentifier:v10 exportedObject:v8 taskUUID:v11];
+    taskIdentifier = [objc_opt_class() taskIdentifier];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v12 = [(HKTaskServerProxyProvider *)v9 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:v8 taskUUID:uUID];
     proxyProvider = v8->_proxyProvider;
     v8->_proxyProvider = v12;
 
@@ -119,9 +119,9 @@ void __44__HKHealthRecordsStore_initWithHealthStore___block_invoke_2(uint64_t a1
   return v6;
 }
 
-- (void)pingWithCompletion:(id)a3
+- (void)pingWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __43__HKHealthRecordsStore_pingWithCompletion___block_invoke;
@@ -136,9 +136,9 @@ void __44__HKHealthRecordsStore_initWithHealthStore___block_invoke_2(uint64_t a1
   [(HKHealthRecordsStore *)self _fetchHealthRecordsPluginServerProxyWithHandler:v8 errorHandler:v6];
 }
 
-- (void)fetchClinicalConnectedAccountsWithCompletion:(id)a3
+- (void)fetchClinicalConnectedAccountsWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __69__HKHealthRecordsStore_fetchClinicalConnectedAccountsWithCompletion___block_invoke;
@@ -153,17 +153,17 @@ void __44__HKHealthRecordsStore_initWithHealthStore___block_invoke_2(uint64_t a1
   [(HKHealthRecordsStore *)self _fetchHealthRecordsPluginServerProxyWithHandler:v8 errorHandler:v6];
 }
 
-- (void)fetchLogoForBrand:(id)a3 scale:(id)a4 completion:(id)a5
+- (void)fetchLogoForBrand:(id)brand scale:(id)scale completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a5];
+  brandCopy = brand;
+  scaleCopy = scale;
+  v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __59__HKHealthRecordsStore_fetchLogoForBrand_scale_completion___block_invoke;
   v16[3] = &unk_1E737D6B0;
-  v17 = v8;
-  v18 = v9;
+  v17 = brandCopy;
+  v18 = scaleCopy;
   v19 = v10;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -171,22 +171,22 @@ void __44__HKHealthRecordsStore_initWithHealthStore___block_invoke_2(uint64_t a1
   v14[3] = &unk_1E7376960;
   v15 = v19;
   v11 = v19;
-  v12 = v9;
-  v13 = v8;
+  v12 = scaleCopy;
+  v13 = brandCopy;
   [(HKHealthRecordsStore *)self _fetchHealthRecordsPluginServerProxyWithHandler:v16 errorHandler:v14];
 }
 
-- (void)registerAccountsEventListener:(id)a3
+- (void)registerAccountsEventListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   os_unfair_lock_lock(&self->_ivarLock);
-  [v4 healthRecordsStore:self observedAccountsEvent:self->_lastKnownIngestionStatus];
-  [(HKObserverSet *)self->_accountsEventObservers registerObserver:v4 queue:0];
+  [listenerCopy healthRecordsStore:self observedAccountsEvent:self->_lastKnownIngestionStatus];
+  [(HKObserverSet *)self->_accountsEventObservers registerObserver:listenerCopy queue:0];
 
   os_unfair_lock_unlock(&self->_ivarLock);
 }
 
-- (void)_withLock_notifyAccountsEventsListenerOfEvent:(unint64_t)a3
+- (void)_withLock_notifyAccountsEventsListenerOfEvent:(unint64_t)event
 {
   os_unfair_lock_assert_owner(&self->_ivarLock);
   accountsEventObservers = self->_accountsEventObservers;
@@ -195,19 +195,19 @@ void __44__HKHealthRecordsStore_initWithHealthStore___block_invoke_2(uint64_t a1
   v6[2] = __70__HKHealthRecordsStore__withLock_notifyAccountsEventsListenerOfEvent___block_invoke;
   v6[3] = &unk_1E737D6D8;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = event;
   [(HKObserverSet *)accountsEventObservers notifyObservers:v6];
 }
 
-- (void)fetchCurrentIngestionStatusWithCompletion:(id)a3
+- (void)fetchCurrentIngestionStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   proxyProvider = self->_proxyProvider;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __66__HKHealthRecordsStore_fetchCurrentIngestionStatusWithCompletion___block_invoke;
   v14[3] = &unk_1E7378978;
-  v6 = v4;
+  v6 = completionCopy;
   v15 = v6;
   v7 = [(HKProxyProvider *)proxyProvider clientQueueObjectHandlerWithCompletion:v14];
   v11 = v6;
@@ -268,34 +268,34 @@ void __66__HKHealthRecordsStore_fetchCurrentIngestionStatusWithCompletion___bloc
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)clientRemote_healthRecordsAccountsEventObserved:(unint64_t)a3
+- (void)clientRemote_healthRecordsAccountsEventObserved:(unint64_t)observed
 {
   _HKInitializeLogging();
   v5 = HKLogHealthRecords;
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEBUG))
   {
-    [(HKHealthRecordsStore *)self clientRemote_healthRecordsAccountsEventObserved:a3, v5];
+    [(HKHealthRecordsStore *)self clientRemote_healthRecordsAccountsEventObserved:observed, v5];
   }
 
   os_unfair_lock_lock(&self->_ivarLock);
-  if (a3 - 1 <= 1)
+  if (observed - 1 <= 1)
   {
-    self->_lastKnownIngestionStatus = a3;
+    self->_lastKnownIngestionStatus = observed;
   }
 
-  [(HKHealthRecordsStore *)self _withLock_notifyAccountsEventsListenerOfEvent:a3];
+  [(HKHealthRecordsStore *)self _withLock_notifyAccountsEventsListenerOfEvent:observed];
   os_unfair_lock_unlock(&self->_ivarLock);
 }
 
-- (void)fetchRawSourceStringForHealthRecord:(id)a3 completion:(id)a4
+- (void)fetchRawSourceStringForHealthRecord:(id)record completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a4];
+  recordCopy = record;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __71__HKHealthRecordsStore_fetchRawSourceStringForHealthRecord_completion___block_invoke;
   v12[3] = &unk_1E737D700;
-  v13 = v6;
+  v13 = recordCopy;
   v14 = v7;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -303,19 +303,19 @@ void __66__HKHealthRecordsStore_fetchCurrentIngestionStatusWithCompletion___bloc
   v10[3] = &unk_1E7376960;
   v11 = v14;
   v8 = v14;
-  v9 = v6;
+  v9 = recordCopy;
   [(HKHealthRecordsStore *)self _fetchHealthRecordsPluginServerProxyWithHandler:v12 errorHandler:v10];
 }
 
-- (void)fetchExportedPropertiesForHealthRecord:(id)a3 completion:(id)a4
+- (void)fetchExportedPropertiesForHealthRecord:(id)record completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a4];
+  recordCopy = record;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __74__HKHealthRecordsStore_fetchExportedPropertiesForHealthRecord_completion___block_invoke;
   v12[3] = &unk_1E737D700;
-  v13 = v6;
+  v13 = recordCopy;
   v14 = v7;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -323,19 +323,19 @@ void __66__HKHealthRecordsStore_fetchCurrentIngestionStatusWithCompletion___bloc
   v10[3] = &unk_1E7376960;
   v11 = v14;
   v8 = v14;
-  v9 = v6;
+  v9 = recordCopy;
   [(HKHealthRecordsStore *)self _fetchHealthRecordsPluginServerProxyWithHandler:v12 errorHandler:v10];
 }
 
-- (void)fetchFHIRJSONDocumentWithAccountIdentifier:(id)a3 completion:(id)a4
+- (void)fetchFHIRJSONDocumentWithAccountIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a4];
+  identifierCopy = identifier;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __78__HKHealthRecordsStore_fetchFHIRJSONDocumentWithAccountIdentifier_completion___block_invoke;
   v12[3] = &unk_1E737D700;
-  v13 = v6;
+  v13 = identifierCopy;
   v14 = v7;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -343,21 +343,21 @@ void __66__HKHealthRecordsStore_fetchCurrentIngestionStatusWithCompletion___bloc
   v10[3] = &unk_1E7376960;
   v11 = v14;
   v8 = v14;
-  v9 = v6;
+  v9 = identifierCopy;
   [(HKHealthRecordsStore *)self _fetchHealthRecordsPluginServerProxyWithHandler:v12 errorHandler:v10];
 }
 
-- (void)stringifyExtractionFailureReasonsForRecord:(id)a3 completion:(id)a4
+- (void)stringifyExtractionFailureReasonsForRecord:(id)record completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a4];
+  recordCopy = record;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   if (+[_HKBehavior isAppleInternalInstall])
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __78__HKHealthRecordsStore_stringifyExtractionFailureReasonsForRecord_completion___block_invoke;
     v10[3] = &unk_1E737D700;
-    v11 = v6;
+    v11 = recordCopy;
     v12 = v7;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -373,9 +373,9 @@ void __66__HKHealthRecordsStore_fetchCurrentIngestionStatusWithCompletion___bloc
   }
 }
 
-- (void)fetchUserHasAgreedToHealthRecordsDataSubmissionWithCompletion:(id)a3
+- (void)fetchUserHasAgreedToHealthRecordsDataSubmissionWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __86__HKHealthRecordsStore_fetchUserHasAgreedToHealthRecordsDataSubmissionWithCompletion___block_invoke;
@@ -390,9 +390,9 @@ void __66__HKHealthRecordsStore_fetchCurrentIngestionStatusWithCompletion___bloc
   [(HKHealthRecordsStore *)self _fetchHealthRecordsPluginServerProxyWithHandler:v8 errorHandler:v6];
 }
 
-- (void)fetchIsImproveHealthRecordsDataSubmissionAllowedWithCompletion:(id)a3
+- (void)fetchIsImproveHealthRecordsDataSubmissionAllowedWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __87__HKHealthRecordsStore_fetchIsImproveHealthRecordsDataSubmissionAllowedWithCompletion___block_invoke;
@@ -407,9 +407,9 @@ void __66__HKHealthRecordsStore_fetchCurrentIngestionStatusWithCompletion___bloc
   [(HKHealthRecordsStore *)self _fetchHealthRecordsPluginServerProxyWithHandler:v8 errorHandler:v6];
 }
 
-- (void)fetchShouldPromptForImproveHealthRecordsDataSubmissionWithCompletion:(id)a3
+- (void)fetchShouldPromptForImproveHealthRecordsDataSubmissionWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __93__HKHealthRecordsStore_fetchShouldPromptForImproveHealthRecordsDataSubmissionWithCompletion___block_invoke;
@@ -424,9 +424,9 @@ void __66__HKHealthRecordsStore_fetchCurrentIngestionStatusWithCompletion___bloc
   [(HKHealthRecordsStore *)self _fetchHealthRecordsPluginServerProxyWithHandler:v8 errorHandler:v6];
 }
 
-- (void)fetchCurrentDeviceSupportsImproveHealthRecordsDataSubmissionOptionWithCompletion:(id)a3
+- (void)fetchCurrentDeviceSupportsImproveHealthRecordsDataSubmissionOptionWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __105__HKHealthRecordsStore_fetchCurrentDeviceSupportsImproveHealthRecordsDataSubmissionOptionWithCompletion___block_invoke;
@@ -441,14 +441,14 @@ void __66__HKHealthRecordsStore_fetchCurrentIngestionStatusWithCompletion___bloc
   [(HKHealthRecordsStore *)self _fetchHealthRecordsPluginServerProxyWithHandler:v8 errorHandler:v6];
 }
 
-- (void)triggerClinicalOptInDataCollectionForReason:(int64_t)a3 completion:(id)a4
+- (void)triggerClinicalOptInDataCollectionForReason:(int64_t)reason completion:(id)completion
 {
-  v6 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  v6 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __79__HKHealthRecordsStore_triggerClinicalOptInDataCollectionForReason_completion___block_invoke;
   v10[3] = &unk_1E737D728;
-  v12 = a3;
+  reasonCopy = reason;
   v11 = v6;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -459,9 +459,9 @@ void __66__HKHealthRecordsStore_fetchCurrentIngestionStatusWithCompletion___bloc
   [(HKHealthRecordsStore *)self _fetchHealthRecordsPluginServerProxyWithHandler:v10 errorHandler:v8];
 }
 
-- (void)resetClinicalOptInDataCollectionAnchorsWithCompletion:(id)a3
+- (void)resetClinicalOptInDataCollectionAnchorsWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __78__HKHealthRecordsStore_resetClinicalOptInDataCollectionAnchorsWithCompletion___block_invoke;
@@ -476,9 +476,9 @@ void __66__HKHealthRecordsStore_fetchCurrentIngestionStatusWithCompletion___bloc
   [(HKHealthRecordsStore *)self _fetchHealthRecordsPluginServerProxyWithHandler:v8 errorHandler:v6];
 }
 
-- (void)fetchClinicalOptInDataCollectionFilePathsWithCompletion:(id)a3
+- (void)fetchClinicalOptInDataCollectionFilePathsWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __80__HKHealthRecordsStore_fetchClinicalOptInDataCollectionFilePathsWithCompletion___block_invoke;
@@ -493,15 +493,15 @@ void __66__HKHealthRecordsStore_fetchCurrentIngestionStatusWithCompletion___bloc
   [(HKHealthRecordsStore *)self _fetchHealthRecordsPluginServerProxyWithHandler:v8 errorHandler:v6];
 }
 
-- (void)triggerClinicalContentAnalyticsForReason:(int64_t)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)triggerClinicalContentAnalyticsForReason:(int64_t)reason options:(unint64_t)options completion:(id)completion
 {
-  v8 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a5];
+  v8 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __84__HKHealthRecordsStore_triggerClinicalContentAnalyticsForReason_options_completion___block_invoke;
   v12[3] = &unk_1E737D750;
-  v14 = a3;
-  v15 = a4;
+  reasonCopy = reason;
+  optionsCopy = options;
   v13 = v8;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -512,9 +512,9 @@ void __66__HKHealthRecordsStore_fetchCurrentIngestionStatusWithCompletion___bloc
   [(HKHealthRecordsStore *)self _fetchHealthRecordsPluginServerProxyWithHandler:v12 errorHandler:v10];
 }
 
-- (void)triggerHealthCloudUploadWithCompletion:(id)a3
+- (void)triggerHealthCloudUploadWithCompletion:(id)completion
 {
-  v4 = [(HKHealthRecordsStore *)self _actionCompletionWithObjectOnClientQueue:a3];
+  v4 = [(HKHealthRecordsStore *)self _actionCompletionWithObjectOnClientQueue:completion];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __63__HKHealthRecordsStore_triggerHealthCloudUploadWithCompletion___block_invoke;
@@ -529,9 +529,9 @@ void __66__HKHealthRecordsStore_fetchCurrentIngestionStatusWithCompletion___bloc
   [(HKHealthRecordsStore *)self _fetchHealthRecordsPluginServerProxyWithHandler:v8 errorHandler:v6];
 }
 
-- (void)resetClinicalContentAnalyticsAnchorsWithCompletion:(id)a3
+- (void)resetClinicalContentAnalyticsAnchorsWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __75__HKHealthRecordsStore_resetClinicalContentAnalyticsAnchorsWithCompletion___block_invoke;
@@ -546,7 +546,7 @@ void __66__HKHealthRecordsStore_fetchCurrentIngestionStatusWithCompletion___bloc
   [(HKHealthRecordsStore *)self _fetchHealthRecordsPluginServerProxyWithHandler:v8 errorHandler:v6];
 }
 
-- (void)clientRemote_healthRecordsSupportedDidChangeTo:(BOOL)a3
+- (void)clientRemote_healthRecordsSupportedDidChangeTo:(BOOL)to
 {
   _HKInitializeLogging();
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEBUG))
@@ -560,26 +560,26 @@ void __66__HKHealthRecordsStore_fetchCurrentIngestionStatusWithCompletion___bloc
   v6[2] = __71__HKHealthRecordsStore_clientRemote_healthRecordsSupportedDidChangeTo___block_invoke;
   v6[3] = &unk_1E737D778;
   v6[4] = self;
-  v7 = a3;
+  toCopy = to;
   [(HKObserverSet *)chrSupportedStateChangeObservers notifyObservers:v6];
 }
 
-- (void)registerAppSourceForClinicalUnlimitedAuthorizationModeConfirmation:(id)a3 completion:(id)a4
+- (void)registerAppSourceForClinicalUnlimitedAuthorizationModeConfirmation:(id)confirmation completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (([v7 _isApplication] & 1) == 0)
+  confirmationCopy = confirmation;
+  completionCopy = completion;
+  if (([confirmationCopy _isApplication] & 1) == 0)
   {
     [HKHealthRecordsStore registerAppSourceForClinicalUnlimitedAuthorizationModeConfirmation:a2 completion:self];
   }
 
-  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v8];
+  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __102__HKHealthRecordsStore_registerAppSourceForClinicalUnlimitedAuthorizationModeConfirmation_completion___block_invoke;
   v14[3] = &unk_1E737D700;
-  v15 = v7;
+  v15 = confirmationCopy;
   v16 = v9;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -587,26 +587,26 @@ void __66__HKHealthRecordsStore_fetchCurrentIngestionStatusWithCompletion___bloc
   v12[3] = &unk_1E7376960;
   v13 = v16;
   v10 = v16;
-  v11 = v7;
+  v11 = confirmationCopy;
   [(HKHealthRecordsStore *)self _fetchHealthRecordsPluginServerProxyWithHandler:v14 errorHandler:v12];
 }
 
-- (void)deregisterAppSourceFromClinicalUnlimitedAuthorizationModeConfirmation:(id)a3 completion:(id)a4
+- (void)deregisterAppSourceFromClinicalUnlimitedAuthorizationModeConfirmation:(id)confirmation completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (([v7 _isApplication] & 1) == 0)
+  confirmationCopy = confirmation;
+  completionCopy = completion;
+  if (([confirmationCopy _isApplication] & 1) == 0)
   {
     [HKHealthRecordsStore deregisterAppSourceFromClinicalUnlimitedAuthorizationModeConfirmation:a2 completion:self];
   }
 
-  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v8];
+  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __105__HKHealthRecordsStore_deregisterAppSourceFromClinicalUnlimitedAuthorizationModeConfirmation_completion___block_invoke;
   v14[3] = &unk_1E737D700;
-  v15 = v7;
+  v15 = confirmationCopy;
   v16 = v9;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -614,20 +614,20 @@ void __66__HKHealthRecordsStore_fetchCurrentIngestionStatusWithCompletion___bloc
   v12[3] = &unk_1E7376960;
   v13 = v16;
   v10 = v16;
-  v11 = v7;
+  v11 = confirmationCopy;
   [(HKHealthRecordsStore *)self _fetchHealthRecordsPluginServerProxyWithHandler:v14 errorHandler:v12];
 }
 
-- (id)_actionCompletionWithObjectOnClientQueue:(id)a3
+- (id)_actionCompletionWithObjectOnClientQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __65__HKHealthRecordsStore__actionCompletionWithObjectOnClientQueue___block_invoke;
   v8[3] = &unk_1E737D7C8;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = queueCopy;
+  v5 = queueCopy;
   v6 = [v8 copy];
 
   return v6;
@@ -664,16 +664,16 @@ uint64_t __65__HKHealthRecordsStore__actionCompletionWithObjectOnClientQueue___b
   return result;
 }
 
-- (void)_reestablishProxyConnectionIfObserversArePresentWithPluginServerProxy:(id)a3
+- (void)_reestablishProxyConnectionIfObserversArePresentWithPluginServerProxy:(id)proxy
 {
-  v7 = a3;
+  proxyCopy = proxy;
   os_unfair_lock_lock(&self->_ivarLock);
   v4 = [(HKObserverSet *)self->_chrSupportedStateChangeObservers count];
   v5 = [(HKObserverSet *)self->_accountsEventObservers count];
   os_unfair_lock_unlock(&self->_ivarLock);
   if (v4 + v5)
   {
-    [(HKHealthRecordsStore *)self _executeCheapCallOnPluginServerProxy:v7];
+    [(HKHealthRecordsStore *)self _executeCheapCallOnPluginServerProxy:proxyCopy];
     unitTesting_didCallReestablishProxyConnectionIfObserversArePresent = self->_unitTesting_didCallReestablishProxyConnectionIfObserversArePresent;
     if (unitTesting_didCallReestablishProxyConnectionIfObserversArePresent)
     {
@@ -682,9 +682,9 @@ uint64_t __65__HKHealthRecordsStore__actionCompletionWithObjectOnClientQueue___b
   }
 }
 
-- (void)_executeCheapCallOnPluginServerProxy:(id)a3
+- (void)_executeCheapCallOnPluginServerProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   _HKInitializeLogging();
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEBUG))
   {
@@ -696,7 +696,7 @@ uint64_t __65__HKHealthRecordsStore__actionCompletionWithObjectOnClientQueue___b
   v5[2] = __61__HKHealthRecordsStore__executeCheapCallOnPluginServerProxy___block_invoke;
   v5[3] = &unk_1E7376A00;
   v5[4] = self;
-  [v4 remote_pingWithCompletion:v5];
+  [proxyCopy remote_pingWithCompletion:v5];
 }
 
 void __61__HKHealthRecordsStore__executeCheapCallOnPluginServerProxy___block_invoke(uint64_t a1, char a2, void *a3)

@@ -1,24 +1,24 @@
 @interface ListPickerTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation ListPickerTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"Business.ListPickerTableViewCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Business.ListPickerTableViewCell" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Business.ListPickerTableViewCell" hasInstanceMethod:@"accessibilitySelected" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"Business.ListPickerTableViewCell" hasInstanceMethod:@"iconImageView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"Business.ListPickerTableViewCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Business.ListPickerTableViewCell" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Business.ListPickerTableViewCell" hasInstanceMethod:@"accessibilitySelected" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"Business.ListPickerTableViewCell" hasInstanceMethod:@"iconImageView" withFullSignature:{"@", 0}];
 }
 
 - (unint64_t)accessibilityTraits
 {
   v12.receiver = self;
   v12.super_class = ListPickerTableViewCellAccessibility;
-  v3 = [(ListPickerTableViewCellAccessibility *)&v12 accessibilityTraits];
+  accessibilityTraits = [(ListPickerTableViewCellAccessibility *)&v12 accessibilityTraits];
   v4 = [(ListPickerTableViewCellAccessibility *)self safeUIViewForKey:@"contentView"];
   [v4 alpha];
   v6 = v5;
@@ -26,15 +26,15 @@
   v7 = [(ListPickerTableViewCellAccessibility *)self safeValueForKey:@"iconImageView"];
   v8 = __UIAccessibilityCastAsClass();
 
-  v9 = [v8 image];
+  image = [v8 image];
 
   if ([(ListPickerTableViewCellAccessibility *)self safeBoolForKey:@"accessibilitySelected"])
   {
-    if (v9)
+    if (image)
     {
       v10 = *MEMORY[0x29EDC7FC0] | *MEMORY[0x29EDC7F70];
 LABEL_6:
-      v3 |= v10;
+      accessibilityTraits |= v10;
     }
   }
 
@@ -46,13 +46,13 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    if (v9)
+    if (image)
     {
-      v3 = v3 & ~*MEMORY[0x29EDC7FC0] | *MEMORY[0x29EDC7F70];
+      accessibilityTraits = accessibilityTraits & ~*MEMORY[0x29EDC7FC0] | *MEMORY[0x29EDC7F70];
     }
   }
 
-  return v3;
+  return accessibilityTraits;
 }
 
 @end

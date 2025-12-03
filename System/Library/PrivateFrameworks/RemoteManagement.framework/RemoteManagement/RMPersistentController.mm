@@ -3,27 +3,27 @@
 + (NSManagedObjectModel)managedObjectModel;
 + (NSURL)managedObjectModelURL;
 + (RMPersistentController)sharedController;
-+ (id)_createLoadedPersistentContainerWithURL:(id)a3;
-+ (id)currentPersistentHistoryTokenForContainer:(id)a3;
-+ (id)unarchiveObjectOfClass:(Class)a3 forKey:(id)a4 fromMetadataForPersistentStore:(id)a5;
-+ (id)unarchiveObjectOfClasses:(id)a3 forKey:(id)a4 fromMetadataForPersistentStore:(id)a5;
-+ (void)archiveObject:(id)a3 forKey:(id)a4 intoMetadataForPersistentStore:(id)a5;
-+ (void)metadataOnPersistentStore:(id)a3 updateHandler:(id)a4;
-- (RMPersistentController)initWithPersistentContainer:(id)a3;
++ (id)_createLoadedPersistentContainerWithURL:(id)l;
++ (id)currentPersistentHistoryTokenForContainer:(id)container;
++ (id)unarchiveObjectOfClass:(Class)class forKey:(id)key fromMetadataForPersistentStore:(id)store;
++ (id)unarchiveObjectOfClasses:(id)classes forKey:(id)key fromMetadataForPersistentStore:(id)store;
++ (void)archiveObject:(id)object forKey:(id)key intoMetadataForPersistentStore:(id)store;
++ (void)metadataOnPersistentStore:(id)store updateHandler:(id)handler;
+- (RMPersistentController)initWithPersistentContainer:(id)container;
 @end
 
 @implementation RMPersistentController
 
-- (RMPersistentController)initWithPersistentContainer:(id)a3
+- (RMPersistentController)initWithPersistentContainer:(id)container
 {
-  v5 = a3;
+  containerCopy = container;
   v9.receiver = self;
   v9.super_class = RMPersistentController;
   v6 = [(RMPersistentController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_persistentContainer, a3);
+    objc_storeStrong(&v6->_persistentContainer, container);
   }
 
   return v7;
@@ -49,22 +49,22 @@
   return byte_1000E69F0;
 }
 
-+ (id)_createLoadedPersistentContainerWithURL:(id)a3
++ (id)_createLoadedPersistentContainerWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = +[RMLog persistentController];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_1000592F4(v4, v5);
+    sub_1000592F4(lCopy, v5);
   }
 
-  v6 = [NSPersistentStoreDescription persistentStoreDescriptionWithURL:v4];
+  v6 = [NSPersistentStoreDescription persistentStoreDescriptionWithURL:lCopy];
   [v6 setType:NSSQLiteStoreType];
   [v6 setOption:&__kCFBooleanTrue forKey:NSPersistentHistoryTrackingKey];
   [v6 setShouldMigrateStoreAutomatically:1];
   [v6 setShouldInferMappingModelAutomatically:1];
   v7 = [NSPersistentContainer alloc];
-  v8 = NSStringFromClass(a1);
+  v8 = NSStringFromClass(self);
   v9 = +[RMPersistentController managedObjectModel];
   v10 = [v7 initWithName:v8 managedObjectModel:v9];
 
@@ -95,7 +95,7 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v23 = v4;
+      v23 = lCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Created loaded persistent container at %{public}@", buf, 0xCu);
     }
 
@@ -131,51 +131,51 @@
   return v3;
 }
 
-+ (void)metadataOnPersistentStore:(id)a3 updateHandler:(id)a4
++ (void)metadataOnPersistentStore:(id)store updateHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  [v5 persistentStoreCoordinator];
+  storeCopy = store;
+  handlerCopy = handler;
+  [storeCopy persistentStoreCoordinator];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100058BE4;
   v11 = v10[3] = &unk_1000D2608;
-  v12 = v5;
-  v13 = v6;
-  v7 = v6;
-  v8 = v5;
+  v12 = storeCopy;
+  v13 = handlerCopy;
+  v7 = handlerCopy;
+  v8 = storeCopy;
   v9 = v11;
   [v9 performBlockAndWait:v10];
 }
 
-+ (void)archiveObject:(id)a3 forKey:(id)a4 intoMetadataForPersistentStore:(id)a5
++ (void)archiveObject:(id)object forKey:(id)key intoMetadataForPersistentStore:(id)store
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100058D34;
   v10[3] = &unk_1000D2630;
-  v11 = a3;
-  v12 = a4;
-  v8 = v12;
-  v9 = v11;
-  [a1 metadataOnPersistentStore:a5 updateHandler:v10];
+  objectCopy = object;
+  keyCopy = key;
+  v8 = keyCopy;
+  v9 = objectCopy;
+  [self metadataOnPersistentStore:store updateHandler:v10];
 }
 
-+ (id)unarchiveObjectOfClass:(Class)a3 forKey:(id)a4 fromMetadataForPersistentStore:(id)a5
++ (id)unarchiveObjectOfClass:(Class)class forKey:(id)key fromMetadataForPersistentStore:(id)store
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [NSSet setWithObject:a3];
-  v11 = [a1 unarchiveObjectOfClasses:v10 forKey:v9 fromMetadataForPersistentStore:v8];
+  storeCopy = store;
+  keyCopy = key;
+  v10 = [NSSet setWithObject:class];
+  v11 = [self unarchiveObjectOfClasses:v10 forKey:keyCopy fromMetadataForPersistentStore:storeCopy];
 
   return v11;
 }
 
-+ (id)unarchiveObjectOfClasses:(id)a3 forKey:(id)a4 fromMetadataForPersistentStore:(id)a5
++ (id)unarchiveObjectOfClasses:(id)classes forKey:(id)key fromMetadataForPersistentStore:(id)store
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  classesCopy = classes;
+  keyCopy = key;
+  storeCopy = store;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -186,12 +186,12 @@
   v15[1] = 3221225472;
   v15[2] = sub_1000590A4;
   v15[3] = &unk_1000D2658;
-  v11 = v9;
+  v11 = keyCopy;
   v16 = v11;
   v18 = &v19;
-  v12 = v8;
+  v12 = classesCopy;
   v17 = v12;
-  [a1 metadataOnPersistentStore:v10 updateHandler:v15];
+  [self metadataOnPersistentStore:storeCopy updateHandler:v15];
   v13 = v20[5];
 
   _Block_object_dispose(&v19, 8);
@@ -199,11 +199,11 @@
   return v13;
 }
 
-+ (id)currentPersistentHistoryTokenForContainer:(id)a3
++ (id)currentPersistentHistoryTokenForContainer:(id)container
 {
-  v3 = [a3 persistentStoreCoordinator];
-  v4 = [v3 persistentStores];
-  v5 = [v3 currentPersistentHistoryTokenFromStores:v4];
+  persistentStoreCoordinator = [container persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
+  v5 = [persistentStoreCoordinator currentPersistentHistoryTokenFromStores:persistentStores];
 
   return v5;
 }

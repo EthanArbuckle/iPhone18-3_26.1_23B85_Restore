@@ -7,45 +7,45 @@
 - (NSDictionary)context
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(RAPWebBundlePlaceSummaryContext *)self identifier];
+  identifier = [(RAPWebBundlePlaceSummaryContext *)self identifier];
 
-  if (v4)
+  if (identifier)
   {
-    v5 = [(RAPWebBundlePlaceSummaryContext *)self identifier];
-    [v3 setObject:v5 forKeyedSubscript:@"id"];
+    identifier2 = [(RAPWebBundlePlaceSummaryContext *)self identifier];
+    [v3 setObject:identifier2 forKeyedSubscript:@"id"];
   }
 
-  v6 = [(RAPWebBundlePlaceSummaryContext *)self title];
+  title = [(RAPWebBundlePlaceSummaryContext *)self title];
 
-  if (v6)
+  if (title)
   {
-    v7 = [(RAPWebBundlePlaceSummaryContext *)self title];
-    [v3 setObject:v7 forKeyedSubscript:@"title"];
+    title2 = [(RAPWebBundlePlaceSummaryContext *)self title];
+    [v3 setObject:title2 forKeyedSubscript:@"title"];
   }
 
-  v8 = [(RAPWebBundlePlaceSummaryContext *)self subtitle];
+  subtitle = [(RAPWebBundlePlaceSummaryContext *)self subtitle];
 
-  if (v8)
+  if (subtitle)
   {
-    v9 = [(RAPWebBundlePlaceSummaryContext *)self subtitle];
-    [v3 setObject:v9 forKeyedSubscript:@"subtitle"];
+    subtitle2 = [(RAPWebBundlePlaceSummaryContext *)self subtitle];
+    [v3 setObject:subtitle2 forKeyedSubscript:@"subtitle"];
   }
 
-  v10 = [(RAPWebBundlePlaceSummaryContext *)self address];
+  address = [(RAPWebBundlePlaceSummaryContext *)self address];
 
-  if (v10)
+  if (address)
   {
-    v11 = [(RAPWebBundlePlaceSummaryContext *)self address];
-    [v3 setObject:v11 forKeyedSubscript:@"formattedAddress"];
+    address2 = [(RAPWebBundlePlaceSummaryContext *)self address];
+    [v3 setObject:address2 forKeyedSubscript:@"formattedAddress"];
   }
 
-  v12 = [(RAPWebBundlePlaceSummaryContext *)self imageContext];
+  imageContext = [(RAPWebBundlePlaceSummaryContext *)self imageContext];
 
-  if (v12)
+  if (imageContext)
   {
-    v13 = [(RAPWebBundlePlaceSummaryContext *)self imageContext];
-    v14 = [v13 context];
-    [v3 addEntriesFromDictionary:v14];
+    imageContext2 = [(RAPWebBundlePlaceSummaryContext *)self imageContext];
+    context = [imageContext2 context];
+    [v3 addEntriesFromDictionary:context];
   }
 
   v15 = [v3 copy];

@@ -2,7 +2,7 @@
 - (BOOL)isPreordered;
 - (REBuyBookServiceDelegate)serviceDelegate;
 - (_TtC5Books29AudiobookNowPlayingInteractor)init;
-- (void)buyBookWithCompletion:(id)a3;
+- (void)buyBookWithCompletion:(id)completion;
 @end
 
 @implementation AudiobookNowPlayingInteractor
@@ -23,18 +23,18 @@
 
 - (BOOL)isPreordered
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1002D6298();
 
   return v3;
 }
 
-- (void)buyBookWithCompletion:(id)a3
+- (void)buyBookWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   _Block_copy(v4);
-  v5 = self;
-  sub_1002D78C0(v5, v4);
+  selfCopy = self;
+  sub_1002D78C0(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }

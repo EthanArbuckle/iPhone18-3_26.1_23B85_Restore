@@ -1,8 +1,8 @@
 @interface SFCommunalDeviceRepairManager
 - (_TtC7Sharing29SFCommunalDeviceRepairManager)init;
 - (id)updateIDSCacheHandler;
-- (void)handleBLEDeviceFound:(id)a3;
-- (void)setUpdateIDSCacheHandler:(id)a3;
+- (void)handleBLEDeviceFound:(id)found;
+- (void)setUpdateIDSCacheHandler:(id)handler;
 @end
 
 @implementation SFCommunalDeviceRepairManager
@@ -29,9 +29,9 @@
   return v3;
 }
 
-- (void)setUpdateIDSCacheHandler:(id)a3
+- (void)setUpdateIDSCacheHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -50,15 +50,15 @@
   v9 = *(self + OBJC_IVAR____TtC7Sharing29SFCommunalDeviceRepairManager_updateIDSCacheHandler + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_1A967C46C(v8);
 }
 
-- (void)handleBLEDeviceFound:(id)a3
+- (void)handleBLEDeviceFound:(id)found
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A9921EB8(v4);
+  foundCopy = found;
+  selfCopy = self;
+  sub_1A9921EB8(foundCopy);
 }
 
 - (_TtC7Sharing29SFCommunalDeviceRepairManager)init

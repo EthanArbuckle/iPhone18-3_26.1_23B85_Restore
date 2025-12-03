@@ -1,33 +1,33 @@
 @interface TSCEFunction_MAX
-+ (id)extremum:(id)a3 functionSpec:(id)a4 arg:(id)a5 index:(int)a6 isMax:(BOOL)a7 isA:(BOOL)a8;
++ (id)extremum:(id)extremum functionSpec:(id)spec arg:(id)arg index:(int)index isMax:(BOOL)max isA:(BOOL)a;
 @end
 
 @implementation TSCEFunction_MAX
 
-+ (id)extremum:(id)a3 functionSpec:(id)a4 arg:(id)a5 index:(int)a6 isMax:(BOOL)a7 isA:(BOOL)a8
++ (id)extremum:(id)extremum functionSpec:(id)spec arg:(id)arg index:(int)index isMax:(BOOL)max isA:(BOOL)a
 {
-  v8 = a8;
-  v176 = a7;
-  v9 = *&a6;
-  v12 = a3;
+  aCopy = a;
+  maxCopy = max;
+  v9 = *&index;
+  extremumCopy = extremum;
   v200[0] = 0;
-  v172 = a5;
-  v174 = v12;
-  v178 = a4;
-  v14 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v172, v13, v12, a4, v9, 1, v200);
+  argCopy = arg;
+  v174 = extremumCopy;
+  specCopy = spec;
+  v14 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(argCopy, v13, extremumCopy, spec, v9, 1, v200);
   v15 = v200[0];
   if (v15)
   {
     v20 = v15;
-    v21 = objc_msgSend_raiseErrorOrConvert_(v12, v16, v15, v18, v19);
+    v21 = objc_msgSend_raiseErrorOrConvert_(extremumCopy, v16, v15, v18, v19);
     goto LABEL_89;
   }
 
   v173 = objc_msgSend_zero(TSCENumberValue, v16, v17, v18, v19);
   v177 = objc_msgSend_count(v14, v22, v23, v24, v25);
-  v26 = v12;
+  v26 = extremumCopy;
   v193[0] = v26;
-  v193[1] = a4;
+  v193[1] = spec;
   v194 = 0;
   v195 = v9;
   *v196 = 0;
@@ -58,7 +58,7 @@ LABEL_77:
     v43 = objc_msgSend_nativeType(v38, v39, v40, v41, v42);
     if (v43 == 1 || v43 == 16)
     {
-      v49 = objc_msgSend_extremum_functionSpec_arg_index_isMax_isA_(a1, v44, v26, v178, v38, v9, v176, v8);
+      v49 = objc_msgSend_extremum_functionSpec_arg_index_isMax_isA_(self, v44, v26, specCopy, v38, v9, maxCopy, aCopy);
 
       v38 = v49;
     }
@@ -82,7 +82,7 @@ LABEL_77:
         if (objc_msgSend_isReferenceValue(v38, v50, v51, v52, v53))
         {
           v190 = 0;
-          v55 = objc_msgSend_asReference_functionSpec_argumentIndex_outError_(v38, v44, v26, v178, v9, &v190);
+          v55 = objc_msgSend_asReference_functionSpec_argumentIndex_outError_(v38, v44, v26, specCopy, v9, &v190);
           v56 = v190;
           if (v56)
           {
@@ -178,7 +178,7 @@ LABEL_29:
       goto LABEL_55;
     }
 
-    v98 = v8;
+    v98 = aCopy;
     v99 = objc_msgSend_deepType_(v38, v95, v26, v96, v97);
     v101 = v99;
     if (v99 > 8u)
@@ -198,14 +198,14 @@ LABEL_72:
       }
 
 LABEL_41:
-      if (!v8 || v99 != 2)
+      if (!aCopy || v99 != 2)
       {
         if (v99 == 3)
         {
           if (v169)
           {
 LABEL_78:
-            v55 = objc_msgSend_functionName(v178, v91, v100, v93, v94);
+            v55 = objc_msgSend_functionName(specCopy, v91, v100, v93, v94);
             v158 = objc_msgSend_mixedTypeManipulationErrorForFunctionName_(TSCEError, v146, v55, v147, v148);
             v21 = objc_msgSend_raiseErrorOrConvert_(v26, v149, v158, v150, v151);
             v20 = 0;
@@ -220,15 +220,15 @@ LABEL_78:
           else
           {
             v181 = 0;
-            v127 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v38, v91, v26, v178, v9, &v181);
+            v127 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v38, v91, v26, specCopy, v9, &v181);
             v116 = v181;
             v171 = v127;
           }
 
-          if (v176)
+          if (maxCopy)
           {
             v180 = v116;
-            v128 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v38, v91, v26, v178, v9, &v180);
+            v128 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v38, v91, v26, specCopy, v9, &v180);
             v20 = v180;
 
             v170 = v128;
@@ -238,14 +238,14 @@ LABEL_78:
           else
           {
             v179 = v116;
-            v132 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v38, v91, v26, v178, v9, &v179);
+            v132 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v38, v91, v26, specCopy, v9, &v179);
             v20 = v179;
 
             v170 = v132;
             objc_msgSend_earlierDate_(v171, v133, v132, v134, v135);
           }
           v136 = ;
-          v8 = v98;
+          aCopy = v98;
 
           if (v20)
           {
@@ -271,7 +271,7 @@ LABEL_87:
           objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v117, v122, v168, v121, 3711, 0, "Unexpected value type in array needs handling: %d", v101);
 
           objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v123, v124, v125, v126);
-          v8 = v98;
+          aCopy = v98;
         }
 
         goto LABEL_55;
@@ -297,7 +297,7 @@ LABEL_43:
     }
 
     v182 = 0;
-    v55 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v38, v91, v26, v178, v9, &v182);
+    v55 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v38, v91, v26, specCopy, v9, &v182);
     v20 = v182;
     if (v20)
     {
@@ -312,7 +312,7 @@ LABEL_43:
       {
         if ((objc_msgSend_dimensionsMatchModuloCurrency_(v55, v106, v173, v107, v108) & 1) == 0)
         {
-          v158 = objc_msgSend_functionName(v178, v109, v110, v111, v112);
+          v158 = objc_msgSend_functionName(specCopy, v109, v110, v111, v112);
           v162 = objc_msgSend_mixedTypeManipulationErrorForFunctionName_(TSCEError, v152, v158, v153, v154);
           v166 = objc_msgSend_raiseErrorOrConvert_(v26, v155, v162, v156, v157);
 LABEL_83:
@@ -327,7 +327,7 @@ LABEL_85:
 
         if ((objc_msgSend_areCurrenciesMatched_(v55, v109, v173, v111, v112) & 1) == 0)
         {
-          v158 = objc_msgSend_functionName(v178, v106, v113, v107, v108);
+          v158 = objc_msgSend_functionName(specCopy, v106, v113, v107, v108);
           v162 = objc_msgSend_mismatchedCurrenciesErrorForFunctionName_(TSCEError, v159, v158, v160, v161);
           v166 = objc_msgSend_raiseErrorOrConvert_(v26, v163, v162, v164, v165);
           goto LABEL_83;
@@ -342,7 +342,7 @@ LABEL_85:
       v173 = v114;
     }
 
-    if (v176)
+    if (maxCopy)
     {
       objc_msgSend_max_(v173, v106, v55, v107, v108);
     }

@@ -1,28 +1,28 @@
 @interface NPLSettingsPeopleViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityAddPersonSelected;
 - (id)_accessibilityCenterOfDialView;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilityUpdateCenterPersonViewAXInfo;
 - (void)_accessibilityUpdateDeleteButtonLabel;
-- (void)peripheryPersonViewTapped:(id)a3;
+- (void)peripheryPersonViewTapped:(id)tapped;
 - (void)viewDidLoad;
 @end
 
 @implementation NPLSettingsPeopleViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NPLSettingsPeopleViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"NPLSettingsPeopleViewController" hasInstanceVariable:@"_deleteButton" withType:"NPLDeleteButton"];
-  [v3 validateClass:@"NPLSettingsPeopleViewController" isKindOfClass:@"NPLPeopleViewController"];
-  [v3 validateClass:@"NPLPeopleViewController" hasInstanceMethod:@"_centerPersonView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NPLPeopleViewController" hasInstanceMethod:@"selectedPerson" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NPLPeopleViewController" hasInstanceMethod:@"_selectedSlotIndex" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"NPLPeopleViewController" hasInstanceMethod:@"peripheryPersonViewTapped:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"NPLPeopleViewController" hasInstanceMethod:@"_selectSlotAtIndex: includeSelectionIndicator: animated:" withFullSignature:{"v", "Q", "B", "B", 0}];
-  [v3 validateClass:@"NPLPersonView" hasInstanceMethod:@"position" withFullSignature:{"Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NPLSettingsPeopleViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"NPLSettingsPeopleViewController" hasInstanceVariable:@"_deleteButton" withType:"NPLDeleteButton"];
+  [validationsCopy validateClass:@"NPLSettingsPeopleViewController" isKindOfClass:@"NPLPeopleViewController"];
+  [validationsCopy validateClass:@"NPLPeopleViewController" hasInstanceMethod:@"_centerPersonView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NPLPeopleViewController" hasInstanceMethod:@"selectedPerson" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NPLPeopleViewController" hasInstanceMethod:@"_selectedSlotIndex" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"NPLPeopleViewController" hasInstanceMethod:@"peripheryPersonViewTapped:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"NPLPeopleViewController" hasInstanceMethod:@"_selectSlotAtIndex: includeSelectionIndicator: animated:" withFullSignature:{"v", "Q", "B", "B", 0}];
+  [validationsCopy validateClass:@"NPLPersonView" hasInstanceMethod:@"position" withFullSignature:{"Q", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -59,28 +59,28 @@
   [(NPLSettingsPeopleViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)peripheryPersonViewTapped:(id)a3
+- (void)peripheryPersonViewTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [v4 safeUnsignedIntegerForKey:@"position"];
+  tappedCopy = tapped;
+  v5 = [tappedCopy safeUnsignedIntegerForKey:@"position"];
   v6 = [(NPLSettingsPeopleViewControllerAccessibility *)self safeUnsignedIntegerForKey:@"_selectedSlotIndex"];
   v9.receiver = self;
   v9.super_class = NPLSettingsPeopleViewControllerAccessibility;
-  [(NPLSettingsPeopleViewControllerAccessibility *)&v9 peripheryPersonViewTapped:v4];
+  [(NPLSettingsPeopleViewControllerAccessibility *)&v9 peripheryPersonViewTapped:tappedCopy];
 
   if (v5 != v6)
   {
     if (UIAccessibilityIsVoiceOverRunning() && [(NPLSettingsPeopleViewControllerAccessibility *)self _accessibilityAddPersonSelected])
     {
-      v7 = [(NPLSettingsPeopleViewControllerAccessibility *)self _accessibilityCenterOfDialView];
-      [v7 accessibilityActivate];
+      _accessibilityCenterOfDialView = [(NPLSettingsPeopleViewControllerAccessibility *)self _accessibilityCenterOfDialView];
+      [_accessibilityCenterOfDialView accessibilityActivate];
     }
 
     else
     {
       v8 = UIAccessibilityLayoutChangedNotification;
-      v7 = [(NPLSettingsPeopleViewControllerAccessibility *)self _accessibilityCenterOfDialView];
-      UIAccessibilityPostNotification(v8, v7);
+      _accessibilityCenterOfDialView = [(NPLSettingsPeopleViewControllerAccessibility *)self _accessibilityCenterOfDialView];
+      UIAccessibilityPostNotification(v8, _accessibilityCenterOfDialView);
     }
   }
 }
@@ -89,8 +89,8 @@
 {
   v3 = accessibilityLocalizedString(@"delete.person.button");
   v4 = [(NPLSettingsPeopleViewControllerAccessibility *)self safeValueForKey:@"_centerPersonView"];
-  v5 = [v4 accessibilityLabel];
-  v7 = [NSString stringWithFormat:v3, v5];
+  accessibilityLabel = [v4 accessibilityLabel];
+  v7 = [NSString stringWithFormat:v3, accessibilityLabel];
 
   v6 = [(NPLSettingsPeopleViewControllerAccessibility *)self safeValueForKey:@"_deleteButton"];
   [v6 setAccessibilityLabel:v7];

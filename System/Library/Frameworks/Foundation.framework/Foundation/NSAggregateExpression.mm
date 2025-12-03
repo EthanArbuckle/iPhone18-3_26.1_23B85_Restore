@@ -1,15 +1,15 @@
 @interface NSAggregateExpression
-- (BOOL)isEqual:(id)a3;
-- (NSAggregateExpression)initWithCoder:(id)a3;
-- (NSAggregateExpression)initWithCollection:(id)a3;
-- (id)_expressionWithSubstitutionVariables:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)expressionValueWithObject:(id)a3 context:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (NSAggregateExpression)initWithCoder:(id)coder;
+- (NSAggregateExpression)initWithCollection:(id)collection;
+- (id)_expressionWithSubstitutionVariables:(id)variables;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)expressionValueWithObject:(id)object context:(id)context;
 - (id)predicateFormat;
-- (void)acceptVisitor:(id)a3 flags:(unint64_t)a4;
+- (void)acceptVisitor:(id)visitor flags:(unint64_t)flags;
 - (void)allowEvaluation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSAggregateExpression
@@ -59,7 +59,7 @@
   [(NSExpression *)&v8 allowEvaluation];
 }
 
-- (NSAggregateExpression)initWithCollection:(id)a3
+- (NSAggregateExpression)initWithCollection:(id)collection
 {
   v9 = *MEMORY[0x1E69E9840];
   if ((_NSIsNSArray() & 1) == 0 && (_NSIsNSSet() & 1) == 0 && (_NSIsNSOrderedSet() & 1) == 0)
@@ -71,28 +71,28 @@
   v8.receiver = self;
   v8.super_class = NSAggregateExpression;
   v5 = [(NSExpression *)&v8 initWithExpressionType:14];
-  v5->_collection = a3;
+  v5->_collection = collection;
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
   v5.receiver = self;
   v5.super_class = NSAggregateExpression;
-  [(NSExpression *)&v5 encodeWithCoder:a3];
-  [a3 encodeObject:self->_collection forKey:@"NSCollection"];
+  [(NSExpression *)&v5 encodeWithCoder:coder];
+  [coder encodeObject:self->_collection forKey:@"NSCollection"];
 }
 
-- (NSAggregateExpression)initWithCoder:(id)a3
+- (NSAggregateExpression)initWithCoder:(id)coder
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     v11 = MEMORY[0x1E695DF30];
@@ -103,17 +103,17 @@
 
   v14.receiver = self;
   v14.super_class = NSAggregateExpression;
-  v5 = [(NSExpression *)&v14 initWithCoder:a3];
+  v5 = [(NSExpression *)&v14 initWithCoder:coder];
   if (!v5)
   {
     return v5;
   }
 
-  v6 = [a3 allowedClasses];
-  v7 = [v6 count];
+  allowedClasses = [coder allowedClasses];
+  v7 = [allowedClasses count];
   if (v7)
   {
-    v8 = [v6 mutableCopy];
+    v8 = [allowedClasses mutableCopy];
     [v8 unionSet:{+[_NSPredicateUtilities _extendedExpressionClassesForSecureCoding](_NSPredicateUtilities, "_extendedExpressionClassesForSecureCoding")}];
   }
 
@@ -122,7 +122,7 @@
     v8 = +[_NSPredicateUtilities _extendedExpressionClassesForSecureCoding];
   }
 
-  v9 = [a3 decodeObjectOfClasses:v8 forKey:@"NSCollection"];
+  v9 = [coder decodeObjectOfClasses:v8 forKey:@"NSCollection"];
   v5->_collection = v9;
   if (v9 && (_NSIsNSSet() & 1) == 0 && (_NSIsNSArray() & 1) == 0 && (_NSIsNSOrderedSet() & 1) == 0 && (_NSIsNSDictionary() & 1) == 0)
   {
@@ -145,12 +145,12 @@ LABEL_15:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = [self->_collection isNSArray];
+  isNSArray = [self->_collection isNSArray];
   v5 = 0x1E695DF70;
-  if (!v4)
+  if (!isNSArray)
   {
     v5 = 0x1E695DFA8;
   }
@@ -206,7 +206,7 @@ LABEL_15:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -214,12 +214,12 @@ LABEL_15:
   }
 
   collection = self->_collection;
-  v6 = *(a3 + 3);
+  v6 = *(equal + 3);
 
   return [collection isEqual:v6];
 }
 
-- (id)expressionValueWithObject:(id)a3 context:(id)a4
+- (id)expressionValueWithObject:(id)object context:(id)context
 {
   v20 = *MEMORY[0x1E69E9840];
   if (![(NSExpression *)self _allowsEvaluation])
@@ -228,7 +228,7 @@ LABEL_15:
   }
 
   v7 = [[_NSPerformanceMeter alloc] initWithTarget:self, 0];
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
@@ -248,13 +248,13 @@ LABEL_15:
           objc_enumerationMutation(collection);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) expressionValueWithObject:a3 context:a4];
-        if (!v13)
+        null = [*(*(&v16 + 1) + 8 * v12) expressionValueWithObject:object context:context];
+        if (!null)
         {
-          v13 = [MEMORY[0x1E695DFB0] null];
+          null = [MEMORY[0x1E695DFB0] null];
         }
 
-        [v8 addObject:v13];
+        [array addObject:null];
         ++v12;
       }
 
@@ -270,17 +270,17 @@ LABEL_15:
     [(_NSPerformanceMeter *)v7 invalidate];
   }
 
-  return v8;
+  return array;
 }
 
-- (void)acceptVisitor:(id)a3 flags:(unint64_t)a4
+- (void)acceptVisitor:(id)visitor flags:(unint64_t)flags
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (flags)
   {
-    if ((a4 & 4) != 0)
+    if ((flags & 4) != 0)
     {
-      [a3 visitPredicateExpression:self];
+      [visitor visitPredicateExpression:self];
     }
 
     v15 = 0u;
@@ -302,7 +302,7 @@ LABEL_15:
             objc_enumerationMutation(collection);
           }
 
-          [*(*(&v13 + 1) + 8 * i) acceptVisitor:a3 flags:a4];
+          [*(*(&v13 + 1) + 8 * i) acceptVisitor:visitor flags:flags];
         }
 
         v9 = [collection countByEnumeratingWithState:&v13 objects:v12 count:16];
@@ -311,17 +311,17 @@ LABEL_15:
       while (v9);
     }
 
-    if ((a4 & 4) == 0)
+    if ((flags & 4) == 0)
     {
-      [a3 visitPredicateExpression:self];
+      [visitor visitPredicateExpression:self];
     }
   }
 }
 
-- (id)_expressionWithSubstitutionVariables:(id)a3
+- (id)_expressionWithSubstitutionVariables:(id)variables
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!variables)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Cannot substitute a nil substitution dictionary." userInfo:0]);
   }
@@ -346,7 +346,7 @@ LABEL_15:
           objc_enumerationMutation(collection);
         }
 
-        [v5 addObject:{objc_msgSend(*(*(&v13 + 1) + 8 * i), "_expressionWithSubstitutionVariables:", a3)}];
+        [v5 addObject:{objc_msgSend(*(*(&v13 + 1) + 8 * i), "_expressionWithSubstitutionVariables:", variables)}];
       }
 
       v8 = [collection countByEnumeratingWithState:&v13 objects:v12 count:16];

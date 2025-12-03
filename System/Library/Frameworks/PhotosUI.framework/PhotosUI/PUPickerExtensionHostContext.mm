@@ -1,6 +1,6 @@
 @interface PUPickerExtensionHostContext
 - (_PUPickerExtensionContextHostInterface)delegate;
-- (void)_pickerDidFinishPicking:(id)a3 action:(int64_t)a4 error:(id)a5;
+- (void)_pickerDidFinishPicking:(id)picking action:(int64_t)action error:(id)error;
 @end
 
 @implementation PUPickerExtensionHostContext
@@ -12,12 +12,12 @@
   return WeakRetained;
 }
 
-- (void)_pickerDidFinishPicking:(id)a3 action:(int64_t)a4 error:(id)a5
+- (void)_pickerDidFinishPicking:(id)picking action:(int64_t)action error:(id)error
 {
-  v6 = a3;
-  v9 = a5;
-  v7 = v9;
-  v8 = v6;
+  pickingCopy = picking;
+  errorCopy = error;
+  v7 = errorCopy;
+  v8 = pickingCopy;
   pl_dispatch_on_main_queue();
 }
 

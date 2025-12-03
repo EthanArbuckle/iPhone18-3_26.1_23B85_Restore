@@ -1,24 +1,24 @@
 @interface ICAsyncBlockOperation
-- (ICAsyncBlockOperation)initWithStartHandler:(id)a3;
+- (ICAsyncBlockOperation)initWithStartHandler:(id)handler;
 - (id)cancellationHandler;
 - (void)cancel;
-- (void)finishWithError:(id)a3;
-- (void)setCancellationHandler:(id)a3;
+- (void)finishWithError:(id)error;
+- (void)setCancellationHandler:(id)handler;
 @end
 
 @implementation ICAsyncBlockOperation
 
-- (void)setCancellationHandler:(id)a3
+- (void)setCancellationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__ICAsyncBlockOperation_setCancellationHandler___block_invoke;
   v7[3] = &unk_1E7BF9EC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_barrier_async(accessQueue, v7);
 }
 
@@ -61,11 +61,11 @@ uint64_t __44__ICAsyncBlockOperation_cancellationHandler__block_invoke(uint64_t 
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v4.receiver = self;
   v4.super_class = ICAsyncBlockOperation;
-  [(ICAsyncOperation *)&v4 finishWithError:a3];
+  [(ICAsyncOperation *)&v4 finishWithError:error];
   [(ICAsyncBlockOperation *)self setCancellationHandler:0];
 }
 
@@ -74,17 +74,17 @@ uint64_t __44__ICAsyncBlockOperation_cancellationHandler__block_invoke(uint64_t 
   v5.receiver = self;
   v5.super_class = ICAsyncBlockOperation;
   [(ICAsyncBlockOperation *)&v5 cancel];
-  v3 = [(ICAsyncBlockOperation *)self cancellationHandler];
-  v4 = v3;
-  if (v3)
+  cancellationHandler = [(ICAsyncBlockOperation *)self cancellationHandler];
+  v4 = cancellationHandler;
+  if (cancellationHandler)
   {
-    (*(v3 + 16))(v3);
+    (*(cancellationHandler + 16))(cancellationHandler);
   }
 }
 
-- (ICAsyncBlockOperation)initWithStartHandler:(id)a3
+- (ICAsyncBlockOperation)initWithStartHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v11.receiver = self;
   v11.super_class = ICAsyncBlockOperation;
   v5 = [(ICAsyncOperation *)&v11 init];
@@ -94,7 +94,7 @@ uint64_t __44__ICAsyncBlockOperation_cancellationHandler__block_invoke(uint64_t 
     accessQueue = v5->_accessQueue;
     v5->_accessQueue = v6;
 
-    v8 = MEMORY[0x1B8C781E0](v4);
+    v8 = MEMORY[0x1B8C781E0](handlerCopy);
     startHandler = v5->_startHandler;
     v5->_startHandler = v8;
   }

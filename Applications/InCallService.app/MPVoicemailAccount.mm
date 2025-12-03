@@ -1,6 +1,6 @@
 @interface MPVoicemailAccount
-- (BOOL)isEqual:(id)a3;
-- (MPVoicemailAccount)initWithUuid:(id)a3 callVoicemailSupported:(BOOL)a4 subscribed:(BOOL)a5 greetingChangeSupported:(BOOL)a6 provisioned:(BOOL)a7 hasHandle:(BOOL)a8 accountDescription:(id)a9;
+- (BOOL)isEqual:(id)equal;
+- (MPVoicemailAccount)initWithUuid:(id)uuid callVoicemailSupported:(BOOL)supported subscribed:(BOOL)subscribed greetingChangeSupported:(BOOL)changeSupported provisioned:(BOOL)provisioned hasHandle:(BOOL)handle accountDescription:(id)description;
 - (NSString)accountDescription;
 - (NSString)description;
 - (NSUUID)UUID;
@@ -37,13 +37,13 @@
   return v3;
 }
 
-- (MPVoicemailAccount)initWithUuid:(id)a3 callVoicemailSupported:(BOOL)a4 subscribed:(BOOL)a5 greetingChangeSupported:(BOOL)a6 provisioned:(BOOL)a7 hasHandle:(BOOL)a8 accountDescription:(id)a9
+- (MPVoicemailAccount)initWithUuid:(id)uuid callVoicemailSupported:(BOOL)supported subscribed:(BOOL)subscribed greetingChangeSupported:(BOOL)changeSupported provisioned:(BOOL)provisioned hasHandle:(BOOL)handle accountDescription:(id)description
 {
   v14 = type metadata accessor for UUID();
   __chkstk_darwin(v14 - 8, v15);
   v17 = &v22 - ((v16 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a9)
+  if (description)
   {
     v18 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v20 = v19;
@@ -55,12 +55,12 @@
     v20 = 0;
   }
 
-  return sub_10015E7A8(v17, a4, a5, a6, a7, a8, v18, v20);
+  return sub_10015E7A8(v17, supported, subscribed, changeSupported, provisioned, handle, v18, v20);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_10015F9A4();
 
   v3 = String._bridgeToObjectiveC()();
@@ -68,11 +68,11 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -81,7 +81,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_10015FCB0(v8);

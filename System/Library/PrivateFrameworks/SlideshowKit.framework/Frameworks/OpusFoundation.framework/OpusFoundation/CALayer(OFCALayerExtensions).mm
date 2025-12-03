@@ -13,14 +13,14 @@
 
 - (uint64_t)alignOnPixels
 {
-  [a1 bounds];
+  [self bounds];
   v20 = CGRectIntegral(v19);
   x = v20.origin.x;
   y = v20.origin.y;
   width = v20.size.width;
   height = v20.size.height;
-  [a1 setBounds:?];
-  [a1 position];
+  [self setBounds:?];
+  [self position];
   v7 = v6;
   *&v8 = v8;
   v9 = floorf(*&v8);
@@ -57,7 +57,7 @@
     v16 = -(v15 & 1);
   }
 
-  return [a1 setPosition:{v12, (v14 + (v16 * 0.5))}];
+  return [self setPosition:{v12, (v14 + (v16 * 0.5))}];
 }
 
 - (void)sublayerNamed:()OFCALayerExtensions
@@ -67,8 +67,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [a1 sublayers];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  sublayers = [self sublayers];
+  v5 = [sublayers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (!v5)
   {
     return 0;
@@ -82,7 +82,7 @@ LABEL_3:
   {
     if (*v12 != v7)
     {
-      objc_enumerationMutation(v4);
+      objc_enumerationMutation(sublayers);
     }
 
     v9 = *(*(&v11 + 1) + 8 * v8);
@@ -93,7 +93,7 @@ LABEL_3:
 
     if (v6 == ++v8)
     {
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [sublayers countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         goto LABEL_3;
@@ -111,8 +111,8 @@ LABEL_3:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [a1 sublayers];
-  result = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  sublayers = [self sublayers];
+  result = [sublayers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (result)
   {
     v6 = result;
@@ -123,7 +123,7 @@ LABEL_3:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sublayers);
         }
 
         v9 = *(*(&v10 + 1) + 8 * i);
@@ -133,7 +133,7 @@ LABEL_3:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [sublayers countByEnumeratingWithState:&v10 objects:v14 count:16];
       result = 0;
       if (v6)
       {
@@ -153,7 +153,7 @@ LABEL_3:
   v2 = MEMORY[0x277CD9FF0];
   v3 = [MEMORY[0x277CCABB0] numberWithBool:1];
   [v2 setValue:v3 forKey:*MEMORY[0x277CDA918]];
-  [a1 removeFromSuperlayer];
+  [self removeFromSuperlayer];
   v4 = MEMORY[0x277CD9FF0];
 
   return [v4 commit];
@@ -161,27 +161,27 @@ LABEL_3:
 
 - (uint64_t)animateResizeTo:()OFCALayerExtensions
 {
-  [a1 frame];
+  [self frame];
   v7 = a2 / v6;
-  [a1 frame];
+  [self frame];
   CATransform3DMakeScale(&v10, v7, a3 / v8, 1.0);
-  return [a1 animateTransformTo:&v10];
+  return [self animateTransformTo:&v10];
 }
 
 - (uint64_t)animateMoveTo:()OFCALayerExtensions
 {
   v6 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"position"];
-  [v6 setFromValue:{objc_msgSend(a1, "valueForKey:", @"position"}];
+  [v6 setFromValue:{objc_msgSend(self, "valueForKey:", @"position"}];
   [v6 setToValue:{objc_msgSend(MEMORY[0x277CCAE60], "valueWithCGPoint:", a2, a3)}];
-  [a1 setPosition:{a2, a3}];
+  [self setPosition:{a2, a3}];
 
-  return [a1 addAnimation:v6 forKey:@"position"];
+  return [self addAnimation:v6 forKey:@"position"];
 }
 
 - (uint64_t)animateTransformTo:()OFCALayerExtensions
 {
   v5 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform"];
-  [v5 setFromValue:{objc_msgSend(a1, "valueForKey:", @"transform"}];
+  [v5 setFromValue:{objc_msgSend(self, "valueForKey:", @"transform"}];
   v6 = a3[5];
   v19 = a3[4];
   v20 = v6;
@@ -207,20 +207,20 @@ LABEL_3:
   v13 = a3[3];
   v17 = a3[2];
   v18 = v13;
-  [a1 setTransform:&v15];
-  return [a1 addAnimation:v5 forKey:@"transform"];
+  [self setTransform:&v15];
+  return [self addAnimation:v5 forKey:@"transform"];
 }
 
 - (uint64_t)animateOpacityTo:()OFCALayerExtensions
 {
   v4 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
-  [v4 setFromValue:{objc_msgSend(a1, "valueForKey:", @"opacity"}];
+  [v4 setFromValue:{objc_msgSend(self, "valueForKey:", @"opacity"}];
   *&v5 = a2;
   [v4 setToValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithFloat:", v5)}];
   *&v6 = a2;
-  [a1 setOpacity:v6];
+  [self setOpacity:v6];
 
-  return [a1 addAnimation:v4 forKey:@"opacity"];
+  return [self addAnimation:v4 forKey:@"opacity"];
 }
 
 @end

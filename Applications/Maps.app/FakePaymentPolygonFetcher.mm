@@ -1,16 +1,16 @@
 @interface FakePaymentPolygonFetcher
-- (BOOL)paymentPolygonsAtLocation:(id)a3 completion:(id)a4;
-- (FakePaymentPolygonFetcher)initWithTestCallback:(id)a3;
+- (BOOL)paymentPolygonsAtLocation:(id)location completion:(id)completion;
+- (FakePaymentPolygonFetcher)initWithTestCallback:(id)callback;
 @end
 
 @implementation FakePaymentPolygonFetcher
 
-- (BOOL)paymentPolygonsAtLocation:(id)a3 completion:(id)a4
+- (BOOL)paymentPolygonsAtLocation:(id)location completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7)
+  locationCopy = location;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (!completionCopy)
   {
     v12 = sub_10003D020();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -44,7 +44,7 @@
     goto LABEL_12;
   }
 
-  if (!v6)
+  if (!locationCopy)
   {
     v14 = sub_10003D020();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -88,7 +88,7 @@ LABEL_13:
   v16[2] = sub_100A6ECE0;
   v16[3] = &unk_101661090;
   v16[4] = self;
-  v17 = v7;
+  v17 = completionCopy;
   dispatch_async(queue, v16);
   v10 = 1;
   v11 = v17;
@@ -97,9 +97,9 @@ LABEL_14:
   return v10;
 }
 
-- (FakePaymentPolygonFetcher)initWithTestCallback:(id)a3
+- (FakePaymentPolygonFetcher)initWithTestCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v12.receiver = self;
   v12.super_class = FakePaymentPolygonFetcher;
   v5 = [(FakePaymentPolygonFetcher *)&v12 init];
@@ -110,7 +110,7 @@ LABEL_14:
     queue = v5->_queue;
     v5->_queue = v7;
 
-    v9 = objc_retainBlock(v4);
+    v9 = objc_retainBlock(callbackCopy);
     testCallback = v5->_testCallback;
     v5->_testCallback = v9;
   }

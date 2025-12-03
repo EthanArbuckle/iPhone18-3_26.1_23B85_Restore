@@ -1,26 +1,26 @@
 @interface _INPBCallRecordValue
-- (BOOL)isEqual:(id)a3;
-- (_INPBCallRecordValue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBCallRecordValue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsCallCapability:(id)a3;
-- (int)StringAsCallType:(id)a3;
-- (int)StringAsPreferredCallProvider:(id)a3;
+- (int)StringAsCallCapability:(id)capability;
+- (int)StringAsCallType:(id)type;
+- (int)StringAsPreferredCallProvider:(id)provider;
 - (unint64_t)hash;
-- (void)addParticipants:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCallCapability:(int)a3;
-- (void)setCallType:(int)a3;
-- (void)setHasCallType:(BOOL)a3;
-- (void)setHasIsCallerIdBlocked:(BOOL)a3;
-- (void)setHasPreferredCallProvider:(BOOL)a3;
-- (void)setHasUnseen:(BOOL)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setParticipants:(id)a3;
-- (void)setPreferredCallProvider:(int)a3;
-- (void)setProviderBundleId:(id)a3;
-- (void)setProviderId:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addParticipants:(id)participants;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCallCapability:(int)capability;
+- (void)setCallType:(int)type;
+- (void)setHasCallType:(BOOL)type;
+- (void)setHasIsCallerIdBlocked:(BOOL)blocked;
+- (void)setHasPreferredCallProvider:(BOOL)provider;
+- (void)setHasUnseen:(BOOL)unseen;
+- (void)setIdentifier:(id)identifier;
+- (void)setParticipants:(id)participants;
+- (void)setPreferredCallProvider:(int)provider;
+- (void)setProviderBundleId:(id)id;
+- (void)setProviderId:(id)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBCallRecordValue
@@ -28,77 +28,77 @@
 - (id)dictionaryRepresentation
 {
   v41 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBCallRecordValue *)self hasCallCapability])
   {
-    v4 = [(_INPBCallRecordValue *)self callCapability];
-    if (v4 == 1)
+    callCapability = [(_INPBCallRecordValue *)self callCapability];
+    if (callCapability == 1)
     {
       v5 = @"AUDIO_CALL";
     }
 
-    else if (v4 == 2)
+    else if (callCapability == 2)
     {
       v5 = @"VIDEO_CALL";
     }
 
     else
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", callCapability];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"callCapability"];
+    [dictionary setObject:v5 forKeyedSubscript:@"callCapability"];
   }
 
-  v6 = [(_INPBCallRecordValue *)self callMetrics];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"callMetrics"];
+  callMetrics = [(_INPBCallRecordValue *)self callMetrics];
+  dictionaryRepresentation = [callMetrics dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"callMetrics"];
 
   if ([(_INPBCallRecordValue *)self hasCallType])
   {
-    v8 = [(_INPBCallRecordValue *)self callType];
-    v9 = v8 - 2;
-    if (v8 - 2) < 9 && ((0x1EFu >> v9))
+    callType = [(_INPBCallRecordValue *)self callType];
+    v9 = callType - 2;
+    if (callType - 2) < 9 && ((0x1EFu >> v9))
     {
       v10 = off_1E7284150[v9];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v8];
+      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", callType];
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"callType"];
+    [dictionary setObject:v10 forKeyedSubscript:@"callType"];
   }
 
-  v11 = [(_INPBCallRecordValue *)self caller];
-  v12 = [v11 dictionaryRepresentation];
-  [v3 setObject:v12 forKeyedSubscript:@"caller"];
+  caller = [(_INPBCallRecordValue *)self caller];
+  dictionaryRepresentation2 = [caller dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"caller"];
 
-  v13 = [(_INPBCallRecordValue *)self dateCreated];
-  v14 = [v13 dictionaryRepresentation];
-  [v3 setObject:v14 forKeyedSubscript:@"dateCreated"];
+  dateCreated = [(_INPBCallRecordValue *)self dateCreated];
+  dictionaryRepresentation3 = [dateCreated dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"dateCreated"];
 
   if (self->_identifier)
   {
-    v15 = [(_INPBCallRecordValue *)self identifier];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"identifier"];
+    identifier = [(_INPBCallRecordValue *)self identifier];
+    v16 = [identifier copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"identifier"];
   }
 
   if ([(_INPBCallRecordValue *)self hasIsCallerIdBlocked])
   {
     v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBCallRecordValue isCallerIdBlocked](self, "isCallerIdBlocked")}];
-    [v3 setObject:v17 forKeyedSubscript:@"isCallerIdBlocked"];
+    [dictionary setObject:v17 forKeyedSubscript:@"isCallerIdBlocked"];
   }
 
-  v18 = [(_INPBCallRecordValue *)self numberOfCalls];
-  v19 = [v18 dictionaryRepresentation];
-  [v3 setObject:v19 forKeyedSubscript:@"numberOfCalls"];
+  numberOfCalls = [(_INPBCallRecordValue *)self numberOfCalls];
+  dictionaryRepresentation4 = [numberOfCalls dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"numberOfCalls"];
 
   if ([(NSArray *)self->_participants count])
   {
-    v20 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
@@ -118,8 +118,8 @@
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
-          [v20 addObject:v26];
+          dictionaryRepresentation5 = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation5];
         }
 
         v23 = [(NSArray *)v21 countByEnumeratingWithState:&v36 objects:v40 count:16];
@@ -128,48 +128,48 @@
       while (v23);
     }
 
-    [v3 setObject:v20 forKeyedSubscript:@"participants"];
+    [dictionary setObject:array forKeyedSubscript:@"participants"];
   }
 
   if ([(_INPBCallRecordValue *)self hasPreferredCallProvider])
   {
-    v27 = [(_INPBCallRecordValue *)self preferredCallProvider];
-    if ((v27 - 2) >= 3)
+    preferredCallProvider = [(_INPBCallRecordValue *)self preferredCallProvider];
+    if ((preferredCallProvider - 2) >= 3)
     {
-      v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v27];
+      v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", preferredCallProvider];
     }
 
     else
     {
-      v28 = off_1E7284198[(v27 - 2)];
+      v28 = off_1E7284198[(preferredCallProvider - 2)];
     }
 
-    [v3 setObject:v28 forKeyedSubscript:@"preferredCallProvider"];
+    [dictionary setObject:v28 forKeyedSubscript:@"preferredCallProvider"];
   }
 
   if (self->_providerBundleId)
   {
-    v29 = [(_INPBCallRecordValue *)self providerBundleId];
-    v30 = [v29 copy];
-    [v3 setObject:v30 forKeyedSubscript:@"providerBundleId"];
+    providerBundleId = [(_INPBCallRecordValue *)self providerBundleId];
+    v30 = [providerBundleId copy];
+    [dictionary setObject:v30 forKeyedSubscript:@"providerBundleId"];
   }
 
   if (self->_providerId)
   {
-    v31 = [(_INPBCallRecordValue *)self providerId];
-    v32 = [v31 copy];
-    [v3 setObject:v32 forKeyedSubscript:@"providerId"];
+    providerId = [(_INPBCallRecordValue *)self providerId];
+    v32 = [providerId copy];
+    [dictionary setObject:v32 forKeyedSubscript:@"providerId"];
   }
 
   if ([(_INPBCallRecordValue *)self hasUnseen])
   {
     v33 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBCallRecordValue unseen](self, "unseen")}];
-    [v3 setObject:v33 forKeyedSubscript:@"unseen"];
+    [dictionary setObject:v33 forKeyedSubscript:@"unseen"];
   }
 
   v34 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -235,46 +235,46 @@
   return v15 ^ v16 ^ v14 ^ v13 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_58;
   }
 
-  v5 = [(_INPBCallRecordValue *)self hasCallCapability];
-  if (v5 != [v4 hasCallCapability])
+  hasCallCapability = [(_INPBCallRecordValue *)self hasCallCapability];
+  if (hasCallCapability != [equalCopy hasCallCapability])
   {
     goto LABEL_58;
   }
 
   if ([(_INPBCallRecordValue *)self hasCallCapability])
   {
-    if ([v4 hasCallCapability])
+    if ([equalCopy hasCallCapability])
     {
       callCapability = self->_callCapability;
-      if (callCapability != [v4 callCapability])
+      if (callCapability != [equalCopy callCapability])
       {
         goto LABEL_58;
       }
     }
   }
 
-  v7 = [(_INPBCallRecordValue *)self callMetrics];
-  v8 = [v4 callMetrics];
-  if ((v7 != 0) == (v8 == 0))
+  callMetrics = [(_INPBCallRecordValue *)self callMetrics];
+  callMetrics2 = [equalCopy callMetrics];
+  if ((callMetrics != 0) == (callMetrics2 == 0))
   {
     goto LABEL_57;
   }
 
-  v9 = [(_INPBCallRecordValue *)self callMetrics];
-  if (v9)
+  callMetrics3 = [(_INPBCallRecordValue *)self callMetrics];
+  if (callMetrics3)
   {
-    v10 = v9;
-    v11 = [(_INPBCallRecordValue *)self callMetrics];
-    v12 = [v4 callMetrics];
-    v13 = [v11 isEqual:v12];
+    v10 = callMetrics3;
+    callMetrics4 = [(_INPBCallRecordValue *)self callMetrics];
+    callMetrics5 = [equalCopy callMetrics];
+    v13 = [callMetrics4 isEqual:callMetrics5];
 
     if (!v13)
     {
@@ -286,38 +286,38 @@
   {
   }
 
-  v14 = [(_INPBCallRecordValue *)self hasCallType];
-  if (v14 != [v4 hasCallType])
+  hasCallType = [(_INPBCallRecordValue *)self hasCallType];
+  if (hasCallType != [equalCopy hasCallType])
   {
     goto LABEL_58;
   }
 
   if ([(_INPBCallRecordValue *)self hasCallType])
   {
-    if ([v4 hasCallType])
+    if ([equalCopy hasCallType])
     {
       callType = self->_callType;
-      if (callType != [v4 callType])
+      if (callType != [equalCopy callType])
       {
         goto LABEL_58;
       }
     }
   }
 
-  v7 = [(_INPBCallRecordValue *)self caller];
-  v8 = [v4 caller];
-  if ((v7 != 0) == (v8 == 0))
+  callMetrics = [(_INPBCallRecordValue *)self caller];
+  callMetrics2 = [equalCopy caller];
+  if ((callMetrics != 0) == (callMetrics2 == 0))
   {
     goto LABEL_57;
   }
 
-  v16 = [(_INPBCallRecordValue *)self caller];
-  if (v16)
+  caller = [(_INPBCallRecordValue *)self caller];
+  if (caller)
   {
-    v17 = v16;
-    v18 = [(_INPBCallRecordValue *)self caller];
-    v19 = [v4 caller];
-    v20 = [v18 isEqual:v19];
+    v17 = caller;
+    caller2 = [(_INPBCallRecordValue *)self caller];
+    caller3 = [equalCopy caller];
+    v20 = [caller2 isEqual:caller3];
 
     if (!v20)
     {
@@ -329,20 +329,20 @@
   {
   }
 
-  v7 = [(_INPBCallRecordValue *)self dateCreated];
-  v8 = [v4 dateCreated];
-  if ((v7 != 0) == (v8 == 0))
+  callMetrics = [(_INPBCallRecordValue *)self dateCreated];
+  callMetrics2 = [equalCopy dateCreated];
+  if ((callMetrics != 0) == (callMetrics2 == 0))
   {
     goto LABEL_57;
   }
 
-  v21 = [(_INPBCallRecordValue *)self dateCreated];
-  if (v21)
+  dateCreated = [(_INPBCallRecordValue *)self dateCreated];
+  if (dateCreated)
   {
-    v22 = v21;
-    v23 = [(_INPBCallRecordValue *)self dateCreated];
-    v24 = [v4 dateCreated];
-    v25 = [v23 isEqual:v24];
+    v22 = dateCreated;
+    dateCreated2 = [(_INPBCallRecordValue *)self dateCreated];
+    dateCreated3 = [equalCopy dateCreated];
+    v25 = [dateCreated2 isEqual:dateCreated3];
 
     if (!v25)
     {
@@ -354,20 +354,20 @@
   {
   }
 
-  v7 = [(_INPBCallRecordValue *)self identifier];
-  v8 = [v4 identifier];
-  if ((v7 != 0) == (v8 == 0))
+  callMetrics = [(_INPBCallRecordValue *)self identifier];
+  callMetrics2 = [equalCopy identifier];
+  if ((callMetrics != 0) == (callMetrics2 == 0))
   {
     goto LABEL_57;
   }
 
-  v26 = [(_INPBCallRecordValue *)self identifier];
-  if (v26)
+  identifier = [(_INPBCallRecordValue *)self identifier];
+  if (identifier)
   {
-    v27 = v26;
-    v28 = [(_INPBCallRecordValue *)self identifier];
-    v29 = [v4 identifier];
-    v30 = [v28 isEqual:v29];
+    v27 = identifier;
+    identifier2 = [(_INPBCallRecordValue *)self identifier];
+    identifier3 = [equalCopy identifier];
+    v30 = [identifier2 isEqual:identifier3];
 
     if (!v30)
     {
@@ -379,38 +379,38 @@
   {
   }
 
-  v31 = [(_INPBCallRecordValue *)self hasIsCallerIdBlocked];
-  if (v31 != [v4 hasIsCallerIdBlocked])
+  hasIsCallerIdBlocked = [(_INPBCallRecordValue *)self hasIsCallerIdBlocked];
+  if (hasIsCallerIdBlocked != [equalCopy hasIsCallerIdBlocked])
   {
     goto LABEL_58;
   }
 
   if ([(_INPBCallRecordValue *)self hasIsCallerIdBlocked])
   {
-    if ([v4 hasIsCallerIdBlocked])
+    if ([equalCopy hasIsCallerIdBlocked])
     {
       isCallerIdBlocked = self->_isCallerIdBlocked;
-      if (isCallerIdBlocked != [v4 isCallerIdBlocked])
+      if (isCallerIdBlocked != [equalCopy isCallerIdBlocked])
       {
         goto LABEL_58;
       }
     }
   }
 
-  v7 = [(_INPBCallRecordValue *)self numberOfCalls];
-  v8 = [v4 numberOfCalls];
-  if ((v7 != 0) == (v8 == 0))
+  callMetrics = [(_INPBCallRecordValue *)self numberOfCalls];
+  callMetrics2 = [equalCopy numberOfCalls];
+  if ((callMetrics != 0) == (callMetrics2 == 0))
   {
     goto LABEL_57;
   }
 
-  v33 = [(_INPBCallRecordValue *)self numberOfCalls];
-  if (v33)
+  numberOfCalls = [(_INPBCallRecordValue *)self numberOfCalls];
+  if (numberOfCalls)
   {
-    v34 = v33;
-    v35 = [(_INPBCallRecordValue *)self numberOfCalls];
-    v36 = [v4 numberOfCalls];
-    v37 = [v35 isEqual:v36];
+    v34 = numberOfCalls;
+    numberOfCalls2 = [(_INPBCallRecordValue *)self numberOfCalls];
+    numberOfCalls3 = [equalCopy numberOfCalls];
+    v37 = [numberOfCalls2 isEqual:numberOfCalls3];
 
     if (!v37)
     {
@@ -422,20 +422,20 @@
   {
   }
 
-  v7 = [(_INPBCallRecordValue *)self participants];
-  v8 = [v4 participants];
-  if ((v7 != 0) == (v8 == 0))
+  callMetrics = [(_INPBCallRecordValue *)self participants];
+  callMetrics2 = [equalCopy participants];
+  if ((callMetrics != 0) == (callMetrics2 == 0))
   {
     goto LABEL_57;
   }
 
-  v38 = [(_INPBCallRecordValue *)self participants];
-  if (v38)
+  participants = [(_INPBCallRecordValue *)self participants];
+  if (participants)
   {
-    v39 = v38;
-    v40 = [(_INPBCallRecordValue *)self participants];
-    v41 = [v4 participants];
-    v42 = [v40 isEqual:v41];
+    v39 = participants;
+    participants2 = [(_INPBCallRecordValue *)self participants];
+    participants3 = [equalCopy participants];
+    v42 = [participants2 isEqual:participants3];
 
     if (!v42)
     {
@@ -447,38 +447,38 @@
   {
   }
 
-  v43 = [(_INPBCallRecordValue *)self hasPreferredCallProvider];
-  if (v43 != [v4 hasPreferredCallProvider])
+  hasPreferredCallProvider = [(_INPBCallRecordValue *)self hasPreferredCallProvider];
+  if (hasPreferredCallProvider != [equalCopy hasPreferredCallProvider])
   {
     goto LABEL_58;
   }
 
   if ([(_INPBCallRecordValue *)self hasPreferredCallProvider])
   {
-    if ([v4 hasPreferredCallProvider])
+    if ([equalCopy hasPreferredCallProvider])
     {
       preferredCallProvider = self->_preferredCallProvider;
-      if (preferredCallProvider != [v4 preferredCallProvider])
+      if (preferredCallProvider != [equalCopy preferredCallProvider])
       {
         goto LABEL_58;
       }
     }
   }
 
-  v7 = [(_INPBCallRecordValue *)self providerBundleId];
-  v8 = [v4 providerBundleId];
-  if ((v7 != 0) == (v8 == 0))
+  callMetrics = [(_INPBCallRecordValue *)self providerBundleId];
+  callMetrics2 = [equalCopy providerBundleId];
+  if ((callMetrics != 0) == (callMetrics2 == 0))
   {
     goto LABEL_57;
   }
 
-  v45 = [(_INPBCallRecordValue *)self providerBundleId];
-  if (v45)
+  providerBundleId = [(_INPBCallRecordValue *)self providerBundleId];
+  if (providerBundleId)
   {
-    v46 = v45;
-    v47 = [(_INPBCallRecordValue *)self providerBundleId];
-    v48 = [v4 providerBundleId];
-    v49 = [v47 isEqual:v48];
+    v46 = providerBundleId;
+    providerBundleId2 = [(_INPBCallRecordValue *)self providerBundleId];
+    providerBundleId3 = [equalCopy providerBundleId];
+    v49 = [providerBundleId2 isEqual:providerBundleId3];
 
     if (!v49)
     {
@@ -490,22 +490,22 @@
   {
   }
 
-  v7 = [(_INPBCallRecordValue *)self providerId];
-  v8 = [v4 providerId];
-  if ((v7 != 0) == (v8 == 0))
+  callMetrics = [(_INPBCallRecordValue *)self providerId];
+  callMetrics2 = [equalCopy providerId];
+  if ((callMetrics != 0) == (callMetrics2 == 0))
   {
 LABEL_57:
 
     goto LABEL_58;
   }
 
-  v50 = [(_INPBCallRecordValue *)self providerId];
-  if (v50)
+  providerId = [(_INPBCallRecordValue *)self providerId];
+  if (providerId)
   {
-    v51 = v50;
-    v52 = [(_INPBCallRecordValue *)self providerId];
-    v53 = [v4 providerId];
-    v54 = [v52 isEqual:v53];
+    v51 = providerId;
+    providerId2 = [(_INPBCallRecordValue *)self providerId];
+    providerId3 = [equalCopy providerId];
+    v54 = [providerId2 isEqual:providerId3];
 
     if (!v54)
     {
@@ -517,10 +517,10 @@ LABEL_57:
   {
   }
 
-  v57 = [(_INPBCallRecordValue *)self hasUnseen];
-  if (v57 == [v4 hasUnseen])
+  hasUnseen = [(_INPBCallRecordValue *)self hasUnseen];
+  if (hasUnseen == [equalCopy hasUnseen])
   {
-    if (!-[_INPBCallRecordValue hasUnseen](self, "hasUnseen") || ![v4 hasUnseen] || (unseen = self->_unseen, unseen == objc_msgSend(v4, "unseen")))
+    if (!-[_INPBCallRecordValue hasUnseen](self, "hasUnseen") || ![equalCopy hasUnseen] || (unseen = self->_unseen, unseen == objc_msgSend(equalCopy, "unseen")))
     {
       v55 = 1;
       goto LABEL_59;
@@ -534,7 +534,7 @@ LABEL_59:
   return v55;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBCallRecordValue allocWithZone:](_INPBCallRecordValue init];
   if ([(_INPBCallRecordValue *)self hasCallCapability])
@@ -542,7 +542,7 @@ LABEL_59:
     [(_INPBCallRecordValue *)v5 setCallCapability:[(_INPBCallRecordValue *)self callCapability]];
   }
 
-  v6 = [(_INPBCallMetrics *)self->_callMetrics copyWithZone:a3];
+  v6 = [(_INPBCallMetrics *)self->_callMetrics copyWithZone:zone];
   [(_INPBCallRecordValue *)v5 setCallMetrics:v6];
 
   if ([(_INPBCallRecordValue *)self hasCallType])
@@ -550,13 +550,13 @@ LABEL_59:
     [(_INPBCallRecordValue *)v5 setCallType:[(_INPBCallRecordValue *)self callType]];
   }
 
-  v7 = [(_INPBContactValue *)self->_caller copyWithZone:a3];
+  v7 = [(_INPBContactValue *)self->_caller copyWithZone:zone];
   [(_INPBCallRecordValue *)v5 setCaller:v7];
 
-  v8 = [(_INPBDateTime *)self->_dateCreated copyWithZone:a3];
+  v8 = [(_INPBDateTime *)self->_dateCreated copyWithZone:zone];
   [(_INPBCallRecordValue *)v5 setDateCreated:v8];
 
-  v9 = [(NSString *)self->_identifier copyWithZone:a3];
+  v9 = [(NSString *)self->_identifier copyWithZone:zone];
   [(_INPBCallRecordValue *)v5 setIdentifier:v9];
 
   if ([(_INPBCallRecordValue *)self hasIsCallerIdBlocked])
@@ -564,10 +564,10 @@ LABEL_59:
     [(_INPBCallRecordValue *)v5 setIsCallerIdBlocked:[(_INPBCallRecordValue *)self isCallerIdBlocked]];
   }
 
-  v10 = [(_INPBInteger *)self->_numberOfCalls copyWithZone:a3];
+  v10 = [(_INPBInteger *)self->_numberOfCalls copyWithZone:zone];
   [(_INPBCallRecordValue *)v5 setNumberOfCalls:v10];
 
-  v11 = [(NSArray *)self->_participants copyWithZone:a3];
+  v11 = [(NSArray *)self->_participants copyWithZone:zone];
   [(_INPBCallRecordValue *)v5 setParticipants:v11];
 
   if ([(_INPBCallRecordValue *)self hasPreferredCallProvider])
@@ -575,10 +575,10 @@ LABEL_59:
     [(_INPBCallRecordValue *)v5 setPreferredCallProvider:[(_INPBCallRecordValue *)self preferredCallProvider]];
   }
 
-  v12 = [(NSString *)self->_providerBundleId copyWithZone:a3];
+  v12 = [(NSString *)self->_providerBundleId copyWithZone:zone];
   [(_INPBCallRecordValue *)v5 setProviderBundleId:v12];
 
-  v13 = [(NSString *)self->_providerId copyWithZone:a3];
+  v13 = [(NSString *)self->_providerId copyWithZone:zone];
   [(_INPBCallRecordValue *)v5 setProviderId:v13];
 
   if ([(_INPBCallRecordValue *)self hasUnseen])
@@ -589,45 +589,45 @@ LABEL_59:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBCallRecordValue *)self data];
+  coderCopy = coder;
+  data = [(_INPBCallRecordValue *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBCallRecordValue)initWithCoder:(id)a3
+- (_INPBCallRecordValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBCallRecordValue *)self initWithData:v6];
+    self = [(_INPBCallRecordValue *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ([(_INPBCallRecordValue *)self hasCallCapability])
   {
     callCapability = self->_callCapability;
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(_INPBCallRecordValue *)self callMetrics];
+  callMetrics = [(_INPBCallRecordValue *)self callMetrics];
 
-  if (v6)
+  if (callMetrics)
   {
-    v7 = [(_INPBCallRecordValue *)self callMetrics];
+    callMetrics2 = [(_INPBCallRecordValue *)self callMetrics];
     PBDataWriterWriteSubmessage();
   }
 
@@ -637,25 +637,25 @@ LABEL_59:
     PBDataWriterWriteInt32Field();
   }
 
-  v9 = [(_INPBCallRecordValue *)self caller];
+  caller = [(_INPBCallRecordValue *)self caller];
 
-  if (v9)
+  if (caller)
   {
-    v10 = [(_INPBCallRecordValue *)self caller];
+    caller2 = [(_INPBCallRecordValue *)self caller];
     PBDataWriterWriteSubmessage();
   }
 
-  v11 = [(_INPBCallRecordValue *)self dateCreated];
+  dateCreated = [(_INPBCallRecordValue *)self dateCreated];
 
-  if (v11)
+  if (dateCreated)
   {
-    v12 = [(_INPBCallRecordValue *)self dateCreated];
+    dateCreated2 = [(_INPBCallRecordValue *)self dateCreated];
     PBDataWriterWriteSubmessage();
   }
 
-  v13 = [(_INPBCallRecordValue *)self identifier];
+  identifier = [(_INPBCallRecordValue *)self identifier];
 
-  if (v13)
+  if (identifier)
   {
     identifier = self->_identifier;
     PBDataWriterWriteStringField();
@@ -667,11 +667,11 @@ LABEL_59:
     PBDataWriterWriteBOOLField();
   }
 
-  v16 = [(_INPBCallRecordValue *)self numberOfCalls];
+  numberOfCalls = [(_INPBCallRecordValue *)self numberOfCalls];
 
-  if (v16)
+  if (numberOfCalls)
   {
-    v17 = [(_INPBCallRecordValue *)self numberOfCalls];
+    numberOfCalls2 = [(_INPBCallRecordValue *)self numberOfCalls];
     PBDataWriterWriteSubmessage();
   }
 
@@ -713,17 +713,17 @@ LABEL_59:
     PBDataWriterWriteInt32Field();
   }
 
-  v25 = [(_INPBCallRecordValue *)self providerBundleId];
+  providerBundleId = [(_INPBCallRecordValue *)self providerBundleId];
 
-  if (v25)
+  if (providerBundleId)
   {
     providerBundleId = self->_providerBundleId;
     PBDataWriterWriteStringField();
   }
 
-  v27 = [(_INPBCallRecordValue *)self providerId];
+  providerId = [(_INPBCallRecordValue *)self providerId];
 
-  if (v27)
+  if (providerId)
   {
     providerId = self->_providerId;
     PBDataWriterWriteStringField();
@@ -738,9 +738,9 @@ LABEL_59:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setHasUnseen:(BOOL)a3
+- (void)setHasUnseen:(BOOL)unseen
 {
-  if (a3)
+  if (unseen)
   {
     v3 = 16;
   }
@@ -753,38 +753,38 @@ LABEL_59:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setProviderId:(id)a3
+- (void)setProviderId:(id)id
 {
-  v4 = [a3 copy];
+  v4 = [id copy];
   providerId = self->_providerId;
   self->_providerId = v4;
 
   MEMORY[0x1EEE66BB8](v4, providerId);
 }
 
-- (void)setProviderBundleId:(id)a3
+- (void)setProviderBundleId:(id)id
 {
-  v4 = [a3 copy];
+  v4 = [id copy];
   providerBundleId = self->_providerBundleId;
   self->_providerBundleId = v4;
 
   MEMORY[0x1EEE66BB8](v4, providerBundleId);
 }
 
-- (int)StringAsPreferredCallProvider:(id)a3
+- (int)StringAsPreferredCallProvider:(id)provider
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"TELEPHONY_PROVIDER"])
+  providerCopy = provider;
+  if ([providerCopy isEqualToString:@"TELEPHONY_PROVIDER"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"FACETIME_PROVIDER"])
+  else if ([providerCopy isEqualToString:@"FACETIME_PROVIDER"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"THIRD_PARTY_PROVIDER"])
+  else if ([providerCopy isEqualToString:@"THIRD_PARTY_PROVIDER"])
   {
     v4 = 4;
   }
@@ -797,9 +797,9 @@ LABEL_59:
   return v4;
 }
 
-- (void)setHasPreferredCallProvider:(BOOL)a3
+- (void)setHasPreferredCallProvider:(BOOL)provider
 {
-  if (a3)
+  if (provider)
   {
     v3 = 8;
   }
@@ -812,10 +812,10 @@ LABEL_59:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setPreferredCallProvider:(int)a3
+- (void)setPreferredCallProvider:(int)provider
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (provider == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xF7;
   }
@@ -823,40 +823,40 @@ LABEL_59:
   else
   {
     *&self->_has = has | 8;
-    self->_preferredCallProvider = a3;
+    self->_preferredCallProvider = provider;
   }
 }
 
-- (void)addParticipants:(id)a3
+- (void)addParticipants:(id)participants
 {
-  v4 = a3;
+  participantsCopy = participants;
   participants = self->_participants;
-  v8 = v4;
+  v8 = participantsCopy;
   if (!participants)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_participants;
-    self->_participants = v6;
+    self->_participants = array;
 
-    v4 = v8;
+    participantsCopy = v8;
     participants = self->_participants;
   }
 
-  [(NSArray *)participants addObject:v4];
+  [(NSArray *)participants addObject:participantsCopy];
 }
 
-- (void)setParticipants:(id)a3
+- (void)setParticipants:(id)participants
 {
-  v4 = [a3 mutableCopy];
+  v4 = [participants mutableCopy];
   participants = self->_participants;
   self->_participants = v4;
 
   MEMORY[0x1EEE66BB8](v4, participants);
 }
 
-- (void)setHasIsCallerIdBlocked:(BOOL)a3
+- (void)setHasIsCallerIdBlocked:(BOOL)blocked
 {
-  if (a3)
+  if (blocked)
   {
     v3 = 4;
   }
@@ -869,54 +869,54 @@ LABEL_59:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   identifier = self->_identifier;
   self->_identifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, identifier);
 }
 
-- (int)StringAsCallType:(id)a3
+- (int)StringAsCallType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"OUTGOING"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"OUTGOING"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MISSED"])
+  else if ([typeCopy isEqualToString:@"MISSED"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"RECEIVED"])
+  else if ([typeCopy isEqualToString:@"RECEIVED"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"LATEST"])
+  else if ([typeCopy isEqualToString:@"LATEST"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"VOICEMAIL"])
+  else if ([typeCopy isEqualToString:@"VOICEMAIL"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"RINGING"])
+  else if ([typeCopy isEqualToString:@"RINGING"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"IN_PROGRESS"])
+  else if ([typeCopy isEqualToString:@"IN_PROGRESS"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"ON_HOLD"])
+  else if ([typeCopy isEqualToString:@"ON_HOLD"])
   {
     v4 = 10;
   }
@@ -929,9 +929,9 @@ LABEL_59:
   return v4;
 }
 
-- (void)setHasCallType:(BOOL)a3
+- (void)setHasCallType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -944,10 +944,10 @@ LABEL_59:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setCallType:(int)a3
+- (void)setCallType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFD;
   }
@@ -955,17 +955,17 @@ LABEL_59:
   else
   {
     *&self->_has = has | 2;
-    self->_callType = a3;
+    self->_callType = type;
   }
 }
 
-- (int)StringAsCallCapability:(id)a3
+- (int)StringAsCallCapability:(id)capability
 {
-  v3 = a3;
+  capabilityCopy = capability;
   v4 = 1;
-  if (([v3 isEqualToString:@"AUDIO_CALL"] & 1) == 0)
+  if (([capabilityCopy isEqualToString:@"AUDIO_CALL"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"VIDEO_CALL"])
+    if ([capabilityCopy isEqualToString:@"VIDEO_CALL"])
     {
       v4 = 2;
     }
@@ -979,10 +979,10 @@ LABEL_59:
   return v4;
 }
 
-- (void)setCallCapability:(int)a3
+- (void)setCallCapability:(int)capability
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (capability == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -990,7 +990,7 @@ LABEL_59:
   else
   {
     *&self->_has = has | 1;
-    self->_callCapability = a3;
+    self->_callCapability = capability;
   }
 }
 

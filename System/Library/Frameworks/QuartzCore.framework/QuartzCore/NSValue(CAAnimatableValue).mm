@@ -14,7 +14,7 @@
   memset(v11, 0, sizeof(v11));
   memset(v10, 0, sizeof(v10));
   v9 = 8;
-  getValues(a1, v11[0].f64, &v9);
+  getValues(self, v11[0].f64, &v9);
   getValues(a3, v10[0].f64, &v9);
   if (v9 == 3)
   {
@@ -43,10 +43,10 @@
 - (id)CA_roundToIntegerFromValue:()CAAnimatableValue
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = [(NSValue *)a1 objCType];
-  if (v5 && !strcmp(v5, "{CATransform3D=dddddddddddddddd}"))
+  objCType = [(NSValue *)self objCType];
+  if (objCType && !strcmp(objCType, "{CATransform3D=dddddddddddddddd}"))
   {
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = &off_1EF241E10;
     return [(NSValue *)&v9 CA_roundToIntegerFromValue:a3];
   }
@@ -56,7 +56,7 @@
     memset(&v12, 0, 64);
     memset(v11, 0, sizeof(v11));
     v10 = 8;
-    getValues(a1, v12.f64, &v10);
+    getValues(self, v12.f64, &v10);
     getValues(a3, v11, &v10);
     v6 = v10;
     if (v10)
@@ -69,12 +69,12 @@
       }
 
       while (v6 != v7);
-      return makeValue(&v12, v6, a1);
+      return makeValue(&v12, v6, self);
     }
 
     else
     {
-      [(NSValue *)a1 objCType];
+      [(NSValue *)self objCType];
       return 0;
     }
   }
@@ -85,9 +85,9 @@
   v58 = *MEMORY[0x1E69E9840];
   memset(v57, 0, sizeof(v57));
   memset(v56, 0, sizeof(v56));
-  v11 = [(NSValue *)a1 objCType];
-  v12 = v11;
-  if (v11 && !strcmp(v11, "{CATransform3D=dddddddddddddddd}"))
+  objCType = [(NSValue *)self objCType];
+  v12 = objCType;
+  if (objCType && !strcmp(objCType, "{CATransform3D=dddddddddddddddd}"))
   {
     v38 = 0u;
     v39 = 0u;
@@ -97,9 +97,9 @@
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    if (a1)
+    if (self)
     {
-      [(NSValue *)a1 CATransform3DValue];
+      [(NSValue *)self CATransform3DValue];
     }
 
     else
@@ -172,7 +172,7 @@
       v34 = 0u;
       v35 = 0u;
       *&v24.f64[0] = 8;
-      getValues(a1, v40.f64, &v24);
+      getValues(self, v40.f64, &v24);
       getValues(a4, v32.f64, &v24);
       if (a3)
       {
@@ -190,7 +190,7 @@ LABEL_13:
           v49 = 0u;
           v16 = *&v24.f64[0];
           CA::Render::ValueInterpolator::mix_n<double>(a6, *&v24.f64[0], v48.f64, v14, v40.f64, v32.f64, v15);
-          return makeValue(&v48, v16, a1);
+          return makeValue(&v48, v16, self);
         }
       }
 
@@ -207,9 +207,9 @@ LABEL_13:
       goto LABEL_13;
     }
 
-    if (a1)
+    if (self)
     {
-      [(NSValue *)a1 CAColorMatrixValue];
+      [(NSValue *)self CAColorMatrixValue];
     }
 
     else
@@ -270,11 +270,11 @@ LABEL_13:
 - (uint64_t)CA_interpolateValue:()CAAnimatableValue byFraction:
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = [(NSValue *)a1 objCType];
-  v7 = v6;
-  if (v6)
+  objCType = [(NSValue *)self objCType];
+  v7 = objCType;
+  if (objCType)
   {
-    if (!strcmp(v6, "{CATransform3D=dddddddddddddddd}"))
+    if (!strcmp(objCType, "{CATransform3D=dddddddddddddddd}"))
     {
       v32 = 0u;
       v33 = 0u;
@@ -284,9 +284,9 @@ LABEL_13:
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      if (a1)
+      if (self)
       {
-        [(NSValue *)a1 CATransform3DValue];
+        [(NSValue *)self CATransform3DValue];
       }
 
       else
@@ -351,9 +351,9 @@ LABEL_13:
       v27 = 0u;
       v28 = 0u;
       v26 = 0u;
-      if (a1)
+      if (self)
       {
-        [(NSValue *)a1 CA_CGAffineTransformValue];
+        [(NSValue *)self CA_CGAffineTransformValue];
       }
 
       else
@@ -387,9 +387,9 @@ LABEL_13:
 
   if (!strcmp(v7, "{CAColorMatrix=ffffffffffffffffffff}"))
   {
-    if (a1)
+    if (self)
     {
-      [(NSValue *)a1 CAColorMatrixValue];
+      [(NSValue *)self CAColorMatrixValue];
     }
 
     else
@@ -457,7 +457,7 @@ LABEL_13:
     v28 = 0u;
     v29 = 0u;
     v18[0] = 8;
-    getValues(a1, v34.f64, v18);
+    getValues(self, v34.f64, v18);
     getValues(a4, v26.f64, v18);
     v10 = v18[0];
     if (v18[0])
@@ -476,12 +476,12 @@ LABEL_13:
       }
 
       while (v10 != v11);
-      return makeValue(&v42, v10, a1);
+      return makeValue(&v42, v10, self);
     }
 
     else
     {
-      [(NSValue *)a1 objCType];
+      [(NSValue *)self objCType];
       return 0;
     }
   }
@@ -490,16 +490,16 @@ LABEL_13:
 - (uint64_t)CA_addValue:()CAAnimatableValue multipliedBy:
 {
   v53 = *MEMORY[0x1E69E9840];
-  v7 = [(NSValue *)a1 objCType];
-  v8 = v7;
-  if (!v7)
+  objCType = [(NSValue *)self objCType];
+  v8 = objCType;
+  if (!objCType)
   {
 LABEL_4:
     if (!strcmp(v8, "{CAColorMatrix=ffffffffffffffffffff}"))
     {
-      if (a1)
+      if (self)
       {
-        [(NSValue *)a1 CAColorMatrixValue];
+        [(NSValue *)self CAColorMatrixValue];
       }
 
       else
@@ -567,7 +567,7 @@ LABEL_4:
       v32 = 0u;
       v33 = 0u;
       v29 = 8;
-      getValues(a1, v38[0].f64, &v29);
+      getValues(self, v38[0].f64, &v29);
       getValues(a3, v30.f64, &v29);
       v11 = v29;
       if (v29)
@@ -580,22 +580,22 @@ LABEL_4:
         }
 
         while (v11 != v12);
-        return makeValue(&v45, v11, a1);
+        return makeValue(&v45, v11, self);
       }
 
       else
       {
-        [(NSValue *)a1 objCType];
+        [(NSValue *)self objCType];
         return 0;
       }
     }
   }
 
-  if (!strcmp(v7, "{CATransform3D=dddddddddddddddd}"))
+  if (!strcmp(objCType, "{CATransform3D=dddddddddddddddd}"))
   {
-    if (a1)
+    if (self)
     {
-      [(NSValue *)a1 CATransform3DValue];
+      [(NSValue *)self CATransform3DValue];
     }
 
     else
@@ -668,9 +668,9 @@ LABEL_4:
       goto LABEL_4;
     }
 
-    if (a1)
+    if (self)
     {
-      [(NSValue *)a1 CA_CGAffineTransformValue];
+      [(NSValue *)self CA_CGAffineTransformValue];
     }
 
     else

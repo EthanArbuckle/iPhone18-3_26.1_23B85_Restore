@@ -1,43 +1,43 @@
 @interface SZExtractor
 + (id)knownSZExtractorImplementations;
-+ (int)servicePIDWithError:(id *)a3;
++ (int)servicePIDWithError:(id *)error;
 + (unint64_t)availableExtractionMemory;
 - (BOOL)_isValidObject;
-- (BOOL)_setUpWithPath:(id)a3 options:(id)a4 error:(id *)a5;
-- (BOOL)_synchronouslyPrepareForExtractionAtOffset:(unint64_t *)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_setUpWithPath:(id)path options:(id)options error:(id *)error;
+- (BOOL)_synchronouslyPrepareForExtractionAtOffset:(unint64_t *)offset;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)needsPreparation;
 - (NSError)error;
 - (NSString)description;
 - (NSXPCConnection)unzipServiceConnection;
 - (SZExtractor)init;
-- (SZExtractor)initWithCoder:(id)a3;
-- (SZExtractor)initWithOptions:(id)a3;
-- (SZExtractor)initWithOptions:(id)a3 error:(id *)a4;
-- (SZExtractor)initWithPath:(id)a3 md5Hashes:(id)a4 hashedChunkSize:(unint64_t)a5 resumptionOffset:(unint64_t *)a6;
-- (SZExtractor)initWithPath:(id)a3 options:(id)a4;
-- (SZExtractor)initWithPath:(id)a3 options:(id)a4 error:(id *)a5;
-- (SZExtractor)initWithPath:(id)a3 options:(id)a4 resumptionOffset:(unint64_t *)a5;
+- (SZExtractor)initWithCoder:(id)coder;
+- (SZExtractor)initWithOptions:(id)options;
+- (SZExtractor)initWithOptions:(id)options error:(id *)error;
+- (SZExtractor)initWithPath:(id)path md5Hashes:(id)hashes hashedChunkSize:(unint64_t)size resumptionOffset:(unint64_t *)offset;
+- (SZExtractor)initWithPath:(id)path options:(id)options;
+- (SZExtractor)initWithPath:(id)path options:(id)options error:(id *)error;
+- (SZExtractor)initWithPath:(id)path options:(id)options resumptionOffset:(unint64_t *)offset;
 - (SZExtractorDelegate)delegate;
 - (SZExtractorDelegate)extractorDelegate;
-- (id)_serviceConnectionWithError:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initForRemoteExtractionWithPath:(id)a3 options:(id)a4 resumptionOffset:(unint64_t *)a5;
+- (id)_serviceConnectionWithError:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initForRemoteExtractionWithPath:(id)path options:(id)options resumptionOffset:(unint64_t *)offset;
 - (unint64_t)hash;
 - (unint64_t)lastResumptionOffset;
 - (void)_invalidateObject;
-- (void)_prepareForRemoteExtractionSynchronously:(BOOL)a3 withCompletionBlock:(id)a4;
-- (void)_runWithLock:(id)a3;
-- (void)_suspendStreamWithCompletionBlockSynchronously:(BOOL)a3 completion:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)finishStreamWithCompletionBlock:(id)a3;
-- (void)prepareForExtractionToPath:(id)a3 completionBlock:(id)a4;
-- (void)setError:(id)a3;
-- (void)setExtractorDelegate:(id)a3;
-- (void)setLastResumptionOffset:(unint64_t)a3;
-- (void)setUnzipServiceConnection:(id)a3;
-- (void)supplyBytes:(id)a3 withCompletionBlock:(id)a4;
-- (void)terminateStreamWithError:(id)a3 completionBlock:(id)a4;
+- (void)_prepareForRemoteExtractionSynchronously:(BOOL)synchronously withCompletionBlock:(id)block;
+- (void)_runWithLock:(id)lock;
+- (void)_suspendStreamWithCompletionBlockSynchronously:(BOOL)synchronously completion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
+- (void)finishStreamWithCompletionBlock:(id)block;
+- (void)prepareForExtractionToPath:(id)path completionBlock:(id)block;
+- (void)setError:(id)error;
+- (void)setExtractorDelegate:(id)delegate;
+- (void)setLastResumptionOffset:(unint64_t)offset;
+- (void)setUnzipServiceConnection:(id)connection;
+- (void)supplyBytes:(id)bytes withCompletionBlock:(id)block;
+- (void)terminateStreamWithError:(id)error completionBlock:(id)block;
 @end
 
 @implementation SZExtractor
@@ -112,15 +112,15 @@ void __68__SZExtractor_KnownImplementations__knownSZExtractorImplementations__bl
 
 - (NSString)description
 {
-  v3 = [(SZExtractor *)self extractionPath];
-  v4 = v3;
-  if (v3)
+  extractionPath = [(SZExtractor *)self extractionPath];
+  v4 = extractionPath;
+  if (extractionPath)
   {
-    v5 = [v3 lastPathComponent];
-    v6 = [v4 stringByDeletingLastPathComponent];
-    v7 = [v6 lastPathComponent];
+    lastPathComponent = [extractionPath lastPathComponent];
+    stringByDeletingLastPathComponent = [v4 stringByDeletingLastPathComponent];
+    lastPathComponent2 = [stringByDeletingLastPathComponent lastPathComponent];
 
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"pathEnding:%@/%@", v7, v5];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"pathEnding:%@/%@", lastPathComponent2, lastPathComponent];
   }
 
   else
@@ -131,11 +131,11 @@ void __68__SZExtractor_KnownImplementations__knownSZExtractorImplementations__bl
   v9 = MEMORY[0x277CCACA8];
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  v12 = [(SZExtractor *)self needsPreparation];
-  v13 = [(SZExtractor *)self unzipServiceConnection];
-  v14 = [(SZExtractor *)self error];
+  needsPreparation = [(SZExtractor *)self needsPreparation];
+  unzipServiceConnection = [(SZExtractor *)self unzipServiceConnection];
+  error = [(SZExtractor *)self error];
   v15 = 89;
-  if (v13)
+  if (unzipServiceConnection)
   {
     v16 = 89;
   }
@@ -145,33 +145,33 @@ void __68__SZExtractor_KnownImplementations__knownSZExtractorImplementations__bl
     v16 = 78;
   }
 
-  if (v12)
+  if (needsPreparation)
   {
     v15 = 78;
   }
 
-  v17 = [v9 stringWithFormat:@"<%@<%p> prepared:%c valid:%c %@ error:%@>", v11, self, v15, v16, v8, v14];
+  v17 = [v9 stringWithFormat:@"<%@<%p> prepared:%c valid:%c %@ error:%@>", v11, self, v15, v16, v8, error];
 
   return v17;
 }
 
-- (void)terminateStreamWithError:(id)a3 completionBlock:(id)a4
+- (void)terminateStreamWithError:(id)error completionBlock:(id)block
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  blockCopy = block;
   v8 = SZGetLoggingHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v28 = self;
+    selfCopy4 = self;
     v29 = 2112;
-    v30 = v6;
+    selfCopy3 = errorCopy;
     _os_log_impl(&dword_26BC65000, v8, OS_LOG_TYPE_DEFAULT, "%@: terminating stream with error %@", buf, 0x16u);
   }
 
-  v9 = [(SZExtractor *)self error];
-  if (!v9)
+  error = [(SZExtractor *)self error];
+  if (!error)
   {
     if ([(SZExtractor *)self needsPreparation])
     {
@@ -179,9 +179,9 @@ void __68__SZExtractor_KnownImplementations__knownSZExtractorImplementations__bl
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315650;
-        v28 = "[SZExtractor terminateStreamWithError:completionBlock:]";
+        selfCopy4 = "[SZExtractor terminateStreamWithError:completionBlock:]";
         v29 = 2112;
-        v30 = self;
+        selfCopy3 = self;
         v31 = 2112;
         v32 = 0;
         _os_log_error_impl(&dword_26BC65000, v11, OS_LOG_TYPE_ERROR, "%s called before [SZExtractor prepareForExtraction:] on %@ : %@", buf, 0x20u);
@@ -195,22 +195,22 @@ void __68__SZExtractor_KnownImplementations__knownSZExtractorImplementations__bl
       if ([(SZExtractor *)self _isValidObject])
       {
         [(SZExtractor *)self setHasHadPostSetupMethodsCalled:1];
-        [(SZExtractor *)self setError:v6];
+        [(SZExtractor *)self setError:errorCopy];
         v25[0] = MEMORY[0x277D85DD0];
         v25[1] = 3221225472;
         v25[2] = __56__SZExtractor_terminateStreamWithError_completionBlock___block_invoke;
         v25[3] = &unk_279D25FF8;
         v25[4] = self;
-        v26 = v7;
+        v26 = blockCopy;
         v14 = MEMORY[0x26D692A50](v25);
-        v15 = [(SZExtractor *)self unzipServiceConnection];
+        unzipServiceConnection = [(SZExtractor *)self unzipServiceConnection];
         v23[0] = MEMORY[0x277D85DD0];
         v23[1] = 3221225472;
         v23[2] = __56__SZExtractor_terminateStreamWithError_completionBlock___block_invoke_2;
         v23[3] = &unk_279D26228;
         v24 = v14;
         v16 = v14;
-        v17 = [v15 remoteObjectProxyWithErrorHandler:v23];
+        v17 = [unzipServiceConnection remoteObjectProxyWithErrorHandler:v23];
         [v17 terminateStreamWithReply:v16];
 
         goto LABEL_17;
@@ -220,9 +220,9 @@ void __68__SZExtractor_KnownImplementations__knownSZExtractorImplementations__bl
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315650;
-        v28 = "[SZExtractor terminateStreamWithError:completionBlock:]";
+        selfCopy4 = "[SZExtractor terminateStreamWithError:completionBlock:]";
         v29 = 2112;
-        v30 = self;
+        selfCopy3 = self;
         v31 = 2112;
         v32 = 0;
         _os_log_error_impl(&dword_26BC65000, v18, OS_LOG_TYPE_ERROR, "%s called on an invalidated object: %@ : %@", buf, 0x20u);
@@ -231,7 +231,7 @@ void __68__SZExtractor_KnownImplementations__knownSZExtractorImplementations__bl
       _CreateError("[SZExtractor terminateStreamWithError:completionBlock:]", 1077, @"SZExtractorErrorDomain", 3, 0, v19, @"%s called on an invalidated object: %@", v20, "[SZExtractor terminateStreamWithError:completionBlock:]");
     }
     v21 = ;
-    (*(v7 + 2))(v7, v21);
+    (*(blockCopy + 2))(blockCopy, v21);
 
     goto LABEL_17;
   }
@@ -240,13 +240,13 @@ void __68__SZExtractor_KnownImplementations__knownSZExtractorImplementations__bl
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v28 = self;
+    selfCopy4 = self;
     v29 = 2112;
-    v30 = v9;
+    selfCopy3 = error;
     _os_log_error_impl(&dword_26BC65000, v10, OS_LOG_TYPE_ERROR, "%@: terminate called on extractor that had already returned error %@", buf, 0x16u);
   }
 
-  (*(v7 + 2))(v7, v9);
+  (*(blockCopy + 2))(blockCopy, error);
 LABEL_17:
 
   v22 = *MEMORY[0x277D85DE8];
@@ -273,20 +273,20 @@ void __56__SZExtractor_terminateStreamWithError_completionBlock___block_invoke(u
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finishStreamWithCompletionBlock:(id)a3
+- (void)finishStreamWithCompletionBlock:(id)block
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v5 = SZGetLoggingHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v25 = self;
+    selfCopy4 = self;
     _os_log_impl(&dword_26BC65000, v5, OS_LOG_TYPE_DEFAULT, "%@: finishing stream", buf, 0xCu);
   }
 
-  v6 = [(SZExtractor *)self error];
-  if (!v6)
+  error = [(SZExtractor *)self error];
+  if (!error)
   {
     if ([(SZExtractor *)self needsPreparation])
     {
@@ -294,9 +294,9 @@ void __56__SZExtractor_terminateStreamWithError_completionBlock___block_invoke(u
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315650;
-        v25 = "[SZExtractor finishStreamWithCompletionBlock:]";
+        selfCopy4 = "[SZExtractor finishStreamWithCompletionBlock:]";
         v26 = 2112;
-        v27 = self;
+        selfCopy3 = self;
         v28 = 2112;
         v29 = 0;
         _os_log_error_impl(&dword_26BC65000, v8, OS_LOG_TYPE_ERROR, "%s called before [SZExtractor prepareForExtraction:] on %@ : %@", buf, 0x20u);
@@ -315,16 +315,16 @@ void __56__SZExtractor_terminateStreamWithError_completionBlock___block_invoke(u
         v22[2] = __47__SZExtractor_finishStreamWithCompletionBlock___block_invoke;
         v22[3] = &unk_279D25FF8;
         v22[4] = self;
-        v23 = v4;
+        v23 = blockCopy;
         v11 = MEMORY[0x26D692A50](v22);
-        v12 = [(SZExtractor *)self unzipServiceConnection];
+        unzipServiceConnection = [(SZExtractor *)self unzipServiceConnection];
         v20[0] = MEMORY[0x277D85DD0];
         v20[1] = 3221225472;
         v20[2] = __47__SZExtractor_finishStreamWithCompletionBlock___block_invoke_2;
         v20[3] = &unk_279D26228;
         v21 = v11;
         v13 = v11;
-        v14 = [v12 remoteObjectProxyWithErrorHandler:v20];
+        v14 = [unzipServiceConnection remoteObjectProxyWithErrorHandler:v20];
         [v14 finishStreamWithReply:v13];
 
         goto LABEL_17;
@@ -334,9 +334,9 @@ void __56__SZExtractor_terminateStreamWithError_completionBlock___block_invoke(u
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315650;
-        v25 = "[SZExtractor finishStreamWithCompletionBlock:]";
+        selfCopy4 = "[SZExtractor finishStreamWithCompletionBlock:]";
         v26 = 2112;
-        v27 = self;
+        selfCopy3 = self;
         v28 = 2112;
         v29 = 0;
         _os_log_error_impl(&dword_26BC65000, v15, OS_LOG_TYPE_ERROR, "%s called on an invalidated object: %@ : %@", buf, 0x20u);
@@ -345,7 +345,7 @@ void __56__SZExtractor_terminateStreamWithError_completionBlock___block_invoke(u
       _CreateError("[SZExtractor finishStreamWithCompletionBlock:]", 1038, @"SZExtractorErrorDomain", 3, 0, v16, @"%s called on an invalidated object: %@", v17, "[SZExtractor finishStreamWithCompletionBlock:]");
     }
     v18 = ;
-    (*(v4 + 2))(v4, v18);
+    (*(blockCopy + 2))(blockCopy, v18);
 
     goto LABEL_17;
   }
@@ -354,13 +354,13 @@ void __56__SZExtractor_terminateStreamWithError_completionBlock___block_invoke(u
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v25 = self;
+    selfCopy4 = self;
     v26 = 2112;
-    v27 = v6;
+    selfCopy3 = error;
     _os_log_error_impl(&dword_26BC65000, v7, OS_LOG_TYPE_ERROR, "%@: finish called on extractor that had already returned error %@", buf, 0x16u);
   }
 
-  (*(v4 + 2))(v4, v6);
+  (*(blockCopy + 2))(blockCopy, error);
 LABEL_17:
 
   v19 = *MEMORY[0x277D85DE8];
@@ -392,21 +392,21 @@ void __47__SZExtractor_finishStreamWithCompletionBlock___block_invoke(uint64_t a
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_suspendStreamWithCompletionBlockSynchronously:(BOOL)a3 completion:(id)a4
+- (void)_suspendStreamWithCompletionBlockSynchronously:(BOOL)synchronously completion:(id)completion
 {
-  v4 = a3;
+  synchronouslyCopy = synchronously;
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = SZGetLoggingHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v29 = self;
+    selfCopy4 = self;
     _os_log_impl(&dword_26BC65000, v7, OS_LOG_TYPE_DEFAULT, "%@: suspending stream", buf, 0xCu);
   }
 
-  v8 = [(SZExtractor *)self error];
-  if (!v8)
+  error = [(SZExtractor *)self error];
+  if (!error)
   {
     if ([(SZExtractor *)self needsPreparation])
     {
@@ -414,9 +414,9 @@ void __47__SZExtractor_finishStreamWithCompletionBlock___block_invoke(uint64_t a
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315650;
-        v29 = "[SZExtractor _suspendStreamWithCompletionBlockSynchronously:completion:]";
+        selfCopy4 = "[SZExtractor _suspendStreamWithCompletionBlockSynchronously:completion:]";
         v30 = 2112;
-        v31 = self;
+        selfCopy3 = self;
         v32 = 2112;
         v33 = 0;
         _os_log_error_impl(&dword_26BC65000, v10, OS_LOG_TYPE_ERROR, "%s called before [SZExtractor prepareForExtraction:] on %@ : %@", buf, 0x20u);
@@ -435,7 +435,7 @@ void __47__SZExtractor_finishStreamWithCompletionBlock___block_invoke(uint64_t a
         v26[2] = __73__SZExtractor__suspendStreamWithCompletionBlockSynchronously_completion___block_invoke;
         v26[3] = &unk_279D26200;
         v26[4] = self;
-        v27 = v6;
+        v27 = completionCopy;
         v13 = MEMORY[0x26D692A50](v26);
         v24[0] = MEMORY[0x277D85DD0];
         v24[1] = 3221225472;
@@ -444,16 +444,16 @@ void __47__SZExtractor_finishStreamWithCompletionBlock___block_invoke(uint64_t a
         v25 = v13;
         v14 = v13;
         v15 = MEMORY[0x26D692A50](v24);
-        v16 = [(SZExtractor *)self unzipServiceConnection];
-        v17 = v16;
-        if (v4)
+        unzipServiceConnection = [(SZExtractor *)self unzipServiceConnection];
+        v17 = unzipServiceConnection;
+        if (synchronouslyCopy)
         {
-          [v16 synchronousRemoteObjectProxyWithErrorHandler:v15];
+          [unzipServiceConnection synchronousRemoteObjectProxyWithErrorHandler:v15];
         }
 
         else
         {
-          [v16 remoteObjectProxyWithErrorHandler:v15];
+          [unzipServiceConnection remoteObjectProxyWithErrorHandler:v15];
         }
         v22 = ;
 
@@ -465,9 +465,9 @@ void __47__SZExtractor_finishStreamWithCompletionBlock___block_invoke(uint64_t a
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315650;
-        v29 = "[SZExtractor _suspendStreamWithCompletionBlockSynchronously:completion:]";
+        selfCopy4 = "[SZExtractor _suspendStreamWithCompletionBlockSynchronously:completion:]";
         v30 = 2112;
-        v31 = self;
+        selfCopy3 = self;
         v32 = 2112;
         v33 = 0;
         _os_log_error_impl(&dword_26BC65000, v18, OS_LOG_TYPE_ERROR, "%s called on an invalidated object: %@ : %@", buf, 0x20u);
@@ -476,7 +476,7 @@ void __47__SZExtractor_finishStreamWithCompletionBlock___block_invoke(uint64_t a
       _CreateError("[SZExtractor _suspendStreamWithCompletionBlockSynchronously:completion:]", 985, @"SZExtractorErrorDomain", 3, 0, v19, @"%s called on an invalidated object: %@", v20, "[SZExtractor _suspendStreamWithCompletionBlockSynchronously:completion:]");
     }
     v21 = ;
-    (*(v6 + 2))(v6, 0, v21);
+    (*(completionCopy + 2))(completionCopy, 0, v21);
 
     goto LABEL_20;
   }
@@ -485,13 +485,13 @@ void __47__SZExtractor_finishStreamWithCompletionBlock___block_invoke(uint64_t a
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v29 = self;
+    selfCopy4 = self;
     v30 = 2112;
-    v31 = v8;
+    selfCopy3 = error;
     _os_log_error_impl(&dword_26BC65000, v9, OS_LOG_TYPE_ERROR, "%@: suspend called on extractor that had already returned error %@", buf, 0x16u);
   }
 
-  (*(v6 + 2))(v6, 0, v8);
+  (*(completionCopy + 2))(completionCopy, 0, error);
 LABEL_20:
 
   v23 = *MEMORY[0x277D85DE8];
@@ -525,12 +525,12 @@ void __73__SZExtractor__suspendStreamWithCompletionBlockSynchronously_completion
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)supplyBytes:(id)a3 withCompletionBlock:(id)a4
+- (void)supplyBytes:(id)bytes withCompletionBlock:(id)block
 {
   v56 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 length];
+  bytesCopy = bytes;
+  blockCopy = block;
+  v8 = [bytesCopy length];
   v9 = SZGetTraceHandle();
   if (os_signpost_enabled(v9))
   {
@@ -546,11 +546,11 @@ void __73__SZExtractor__suspendStreamWithCompletionBlockSynchronously_completion
   v49[2] = __47__SZExtractor_supplyBytes_withCompletionBlock___block_invoke;
   v49[3] = &unk_279D26098;
   v51 = v8;
-  v10 = v7;
+  v10 = blockCopy;
   v50 = v10;
   v11 = MEMORY[0x26D692A50](v49);
-  v12 = [(SZExtractor *)self error];
-  if (v12)
+  error = [(SZExtractor *)self error];
+  if (error)
   {
     v13 = SZGetLoggingHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -558,11 +558,11 @@ void __73__SZExtractor__suspendStreamWithCompletionBlockSynchronously_completion
       *buf = 138412546;
       *&buf[4] = self;
       *&buf[12] = 2112;
-      *&buf[14] = v12;
+      *&buf[14] = error;
       _os_log_error_impl(&dword_26BC65000, v13, OS_LOG_TYPE_ERROR, "%@: supply called on extractor that had already returned error %@", buf, 0x16u);
     }
 
-    (v11)[2](v11, v12, 1);
+    (v11)[2](v11, error, 1);
   }
 
   else if ([(SZExtractor *)self needsPreparation])
@@ -586,7 +586,7 @@ void __73__SZExtractor__suspendStreamWithCompletionBlockSynchronously_completion
   else if ([(SZExtractor *)self _isValidObject])
   {
     [(SZExtractor *)self setHasHadPostSetupMethodsCalled:1];
-    v18 = [v6 copy];
+    v18 = [bytesCopy copy];
     v47[0] = MEMORY[0x277D85DD0];
     v47[1] = 3221225472;
     v47[2] = __47__SZExtractor_supplyBytes_withCompletionBlock___block_invoke_163;
@@ -614,14 +614,14 @@ void __73__SZExtractor__suspendStreamWithCompletionBlockSynchronously_completion
     v21 = v20;
     v42 = v21;
     v22 = MEMORY[0x26D692A50](v41);
-    v23 = [(SZExtractor *)self serialQueue];
+    serialQueue = [(SZExtractor *)self serialQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __47__SZExtractor_supplyBytes_withCompletionBlock___block_invoke_2;
     block[3] = &unk_279D261D8;
     v34 = v18;
     v35 = v21;
-    v36 = self;
+    selfCopy = self;
     v37 = v22;
     v38 = v19;
     v39 = buf;
@@ -630,7 +630,7 @@ void __73__SZExtractor__suspendStreamWithCompletionBlockSynchronously_completion
     v25 = v22;
     v26 = v21;
     v27 = v18;
-    dispatch_async(v23, block);
+    dispatch_async(serialQueue, block);
 
     _Block_object_dispose(v45, 8);
     _Block_object_dispose(buf, 8);
@@ -1240,16 +1240,16 @@ void __47__SZExtractor_supplyBytes_withCompletionBlock___block_invoke_204(uint64
 
 - (BOOL)needsPreparation
 {
-  v2 = [(SZExtractor *)self serialQueue];
-  v3 = v2 == 0;
+  serialQueue = [(SZExtractor *)self serialQueue];
+  v3 = serialQueue == 0;
 
   return v3;
 }
 
 - (BOOL)_isValidObject
 {
-  v2 = [(SZExtractor *)self unzipServiceConnection];
-  v3 = v2 != 0;
+  unzipServiceConnection = [(SZExtractor *)self unzipServiceConnection];
+  v3 = unzipServiceConnection != 0;
 
   return v3;
 }
@@ -1263,12 +1263,12 @@ void __47__SZExtractor_supplyBytes_withCompletionBlock___block_invoke_204(uint64
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138412290;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&dword_26BC65000, v3, OS_LOG_TYPE_DEFAULT, "%@: invalidating", &v6, 0xCu);
     }
 
-    v4 = [(SZExtractor *)self unzipServiceConnection];
-    [v4 invalidate];
+    unzipServiceConnection = [(SZExtractor *)self unzipServiceConnection];
+    [unzipServiceConnection invalidate];
 
     [(SZExtractor *)self setUnzipServiceConnection:0];
   }
@@ -1276,45 +1276,45 @@ void __47__SZExtractor_supplyBytes_withCompletionBlock___block_invoke_204(uint64
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)prepareForExtractionToPath:(id)a3 completionBlock:(id)a4
+- (void)prepareForExtractionToPath:(id)path completionBlock:(id)block
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  blockCopy = block;
   v8 = SZGetLoggingHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v6;
+    v13 = pathCopy;
     _os_log_impl(&dword_26BC65000, v8, OS_LOG_TYPE_DEFAULT, "%@: preparing for extraction to path %@", &v10, 0x16u);
   }
 
-  [(SZExtractor *)self setExtractionPath:v6];
-  [(SZExtractor *)self prepareForExtraction:v7];
+  [(SZExtractor *)self setExtractionPath:pathCopy];
+  [(SZExtractor *)self prepareForExtraction:blockCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_prepareForRemoteExtractionSynchronously:(BOOL)a3 withCompletionBlock:(id)a4
+- (void)_prepareForRemoteExtractionSynchronously:(BOOL)synchronously withCompletionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v8 = dispatch_queue_create("com.apple.StreamingZip.SZExtractorBufferSubmissionQueue", v7);
   serialQueue = self->_serialQueue;
   self->_serialQueue = v8;
 
-  v10 = [(SZExtractor *)self serialQueue];
+  serialQueue = [(SZExtractor *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__SZExtractor__prepareForRemoteExtractionSynchronously_withCompletionBlock___block_invoke;
   block[3] = &unk_279D26070;
   block[4] = self;
-  v13 = v6;
-  v14 = a3;
-  v11 = v6;
-  dispatch_sync(v10, block);
+  v13 = blockCopy;
+  synchronouslyCopy = synchronously;
+  v11 = blockCopy;
+  dispatch_sync(serialQueue, block);
 }
 
 void __76__SZExtractor__prepareForRemoteExtractionSynchronously_withCompletionBlock___block_invoke(uint64_t a1)
@@ -1638,7 +1638,7 @@ void __76__SZExtractor__prepareForRemoteExtractionSynchronously_withCompletionBl
   *(a1[5] + 16) = a1[6];
 }
 
-- (id)_serviceConnectionWithError:(id *)a3
+- (id)_serviceConnectionWithError:(id *)error
 {
   v14 = *MEMORY[0x277D85DE8];
   if ([(SZExtractor *)self privileged])
@@ -1679,10 +1679,10 @@ void __76__SZExtractor__prepareForRemoteExtractionSynchronously_withCompletionBl
     }
 
     v7 = _CreateError("[SZExtractor _serviceConnectionWithError:]", 571, @"SZExtractorErrorDomain", 1, 0, v9, @"Failed to create NSXPCConnection", v10, *v13);
-    if (a3)
+    if (error)
     {
       v7 = v7;
-      *a3 = v7;
+      *error = v7;
     }
   }
 
@@ -1691,7 +1691,7 @@ void __76__SZExtractor__prepareForRemoteExtractionSynchronously_withCompletionBl
   return v5;
 }
 
-- (BOOL)_synchronouslyPrepareForExtractionAtOffset:(unint64_t *)a3
+- (BOOL)_synchronouslyPrepareForExtractionAtOffset:(unint64_t *)offset
 {
   v6 = 0;
   v7 = &v6;
@@ -1703,7 +1703,7 @@ void __76__SZExtractor__prepareForRemoteExtractionSynchronously_withCompletionBl
   v5[3] = &unk_279D25F80;
   v5[4] = self;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = offset;
   [(SZExtractor *)self _prepareForExtractionSynchronously:1 withCompletionBlock:v5];
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
@@ -1738,11 +1738,11 @@ void __58__SZExtractor__synchronouslyPrepareForExtractionAtOffset___block_invoke
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_runWithLock:(id)a3
+- (void)_runWithLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_ivarLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_ivarLock);
 }
@@ -1756,12 +1756,12 @@ void __58__SZExtractor__synchronouslyPrepareForExtractionAtOffset___block_invoke
   return v3;
 }
 
-- (void)setUnzipServiceConnection:(id)a3
+- (void)setUnzipServiceConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_ivarLock);
   unzipServiceConnection = self->_unzipServiceConnection;
-  self->_unzipServiceConnection = v4;
+  self->_unzipServiceConnection = connectionCopy;
 
   os_unfair_lock_unlock(&self->_ivarLock);
 }
@@ -1775,12 +1775,12 @@ void __58__SZExtractor__synchronouslyPrepareForExtractionAtOffset___block_invoke
   return v3;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_ivarLock);
   error = self->_error;
-  self->_error = v4;
+  self->_error = errorCopy;
 
   os_unfair_lock_unlock(&self->_ivarLock);
 }
@@ -1793,10 +1793,10 @@ void __58__SZExtractor__synchronouslyPrepareForExtractionAtOffset___block_invoke
   return lastResumptionOffset;
 }
 
-- (void)setLastResumptionOffset:(unint64_t)a3
+- (void)setLastResumptionOffset:(unint64_t)offset
 {
   os_unfair_lock_lock(&self->_ivarLock);
-  self->_lastResumptionOffset = a3;
+  self->_lastResumptionOffset = offset;
 
   os_unfair_lock_unlock(&self->_ivarLock);
 }
@@ -1804,11 +1804,11 @@ void __58__SZExtractor__synchronouslyPrepareForExtractionAtOffset___block_invoke
 - (SZExtractorDelegate)extractorDelegate
 {
   os_unfair_lock_lock(&self->_ivarLock);
-  v3 = [(SZExtractor *)self internalExtractorDelegate];
-  v4 = v3;
-  if (v3)
+  internalExtractorDelegate = [(SZExtractor *)self internalExtractorDelegate];
+  v4 = internalExtractorDelegate;
+  if (internalExtractorDelegate)
   {
-    WeakRetained = objc_loadWeakRetained((v3 + 8));
+    WeakRetained = objc_loadWeakRetained((internalExtractorDelegate + 8));
   }
 
   else
@@ -1821,9 +1821,9 @@ void __58__SZExtractor__synchronouslyPrepareForExtractionAtOffset___block_invoke
   return WeakRetained;
 }
 
-- (void)setExtractorDelegate:(id)a3
+- (void)setExtractorDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -1833,10 +1833,10 @@ void __58__SZExtractor__synchronouslyPrepareForExtractionAtOffset___block_invoke
   v14 = 3221225472;
   v15 = __36__SZExtractor_setExtractorDelegate___block_invoke;
   v16 = &unk_279D25F58;
-  v17 = self;
+  selfCopy = self;
   v6 = v5;
   v18 = v6;
-  v7 = v4;
+  v7 = delegateCopy;
   v19 = v7;
   v20 = &v21;
   [(SZExtractor *)self _runWithLock:&v13];
@@ -1861,7 +1861,7 @@ void __58__SZExtractor__synchronouslyPrepareForExtractionAtOffset___block_invoke
       v12 = v11;
     }
 
-    [(SZExtractor *)self setActiveExtractorDelegateMethods:v12, v13, v14, v15, v16, v17, v18];
+    [(SZExtractor *)self setActiveExtractorDelegateMethods:v12, v13, v14, v15, v16, selfCopy, v18];
   }
 
   _Block_object_dispose(&v21, 8);
@@ -1939,11 +1939,11 @@ LABEL_12:
 - (SZExtractorDelegate)delegate
 {
   os_unfair_lock_lock(&self->_ivarLock);
-  v3 = [(SZExtractor *)self internalExtractorDelegate];
-  v4 = v3;
-  if (v3)
+  internalExtractorDelegate = [(SZExtractor *)self internalExtractorDelegate];
+  v4 = internalExtractorDelegate;
+  if (internalExtractorDelegate)
   {
-    WeakRetained = objc_loadWeakRetained((v3 + 8));
+    WeakRetained = objc_loadWeakRetained((internalExtractorDelegate + 8));
   }
 
   else
@@ -1956,24 +1956,24 @@ LABEL_12:
   return WeakRetained;
 }
 
-- (SZExtractor)initWithPath:(id)a3 md5Hashes:(id)a4 hashedChunkSize:(unint64_t)a5 resumptionOffset:(unint64_t *)a6
+- (SZExtractor)initWithPath:(id)path md5Hashes:(id)hashes hashedChunkSize:(unint64_t)size resumptionOffset:(unint64_t *)offset
 {
   v10 = MEMORY[0x277CBEAC0];
   v11 = MEMORY[0x277CCABB0];
-  v12 = a4;
-  v13 = a3;
-  v14 = [v11 numberWithUnsignedLongLong:a5];
-  v15 = [v10 dictionaryWithObjectsAndKeys:{@"SZExtractorHashTypeMD5", @"SZExtractorOptionsHashType", v12, @"SZExtractorOptionsHashesArray", v14, @"SZExtractorOptionsHashedChunkSize", 0}];
+  hashesCopy = hashes;
+  pathCopy = path;
+  v14 = [v11 numberWithUnsignedLongLong:size];
+  v15 = [v10 dictionaryWithObjectsAndKeys:{@"SZExtractorHashTypeMD5", @"SZExtractorOptionsHashType", hashesCopy, @"SZExtractorOptionsHashesArray", v14, @"SZExtractorOptionsHashedChunkSize", 0}];
 
-  v16 = [(SZExtractor *)self initWithPath:v13 options:v15 resumptionOffset:a6];
+  v16 = [(SZExtractor *)self initWithPath:pathCopy options:v15 resumptionOffset:offset];
   return v16;
 }
 
-- (SZExtractor)initWithPath:(id)a3 options:(id)a4 resumptionOffset:(unint64_t *)a5
+- (SZExtractor)initWithPath:(id)path options:(id)options resumptionOffset:(unint64_t *)offset
 {
-  v6 = [(SZExtractor *)self initWithPath:a3 options:a4];
+  v6 = [(SZExtractor *)self initWithPath:path options:options];
   v7 = v6;
-  if (v6 && ![(SZExtractor *)v6 _synchronouslyPrepareForExtractionAtOffset:a5])
+  if (v6 && ![(SZExtractor *)v6 _synchronouslyPrepareForExtractionAtOffset:offset])
   {
     v8 = 0;
   }
@@ -1986,9 +1986,9 @@ LABEL_12:
   return v8;
 }
 
-- (SZExtractor)initWithOptions:(id)a3 error:(id *)a4
+- (SZExtractor)initWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   v10.receiver = self;
   v10.super_class = SZExtractor;
   v7 = [(SZExtractor *)&v10 init];
@@ -1996,7 +1996,7 @@ LABEL_12:
   if (v7)
   {
     v7->_ivarLock._os_unfair_lock_opaque = 0;
-    if (![(SZExtractor *)v7 _setUpWithPath:0 options:v6 error:a4])
+    if (![(SZExtractor *)v7 _setUpWithPath:0 options:optionsCopy error:error])
     {
 
       v8 = 0;
@@ -2006,11 +2006,11 @@ LABEL_12:
   return v8;
 }
 
-- (SZExtractor)initWithOptions:(id)a3
+- (SZExtractor)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v8 = 0;
-  v5 = [(SZExtractor *)self initWithOptions:v4 error:&v8];
+  v5 = [(SZExtractor *)self initWithOptions:optionsCopy error:&v8];
   v6 = v8;
   if (!v5)
   {
@@ -2020,10 +2020,10 @@ LABEL_12:
   return v5;
 }
 
-- (SZExtractor)initWithPath:(id)a3 options:(id)a4 error:(id *)a5
+- (SZExtractor)initWithPath:(id)path options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  optionsCopy = options;
   v13.receiver = self;
   v13.super_class = SZExtractor;
   v10 = [(SZExtractor *)&v13 init];
@@ -2031,7 +2031,7 @@ LABEL_12:
   if (v10)
   {
     v10->_ivarLock._os_unfair_lock_opaque = 0;
-    if (![(SZExtractor *)v10 _setUpWithPath:v8 options:v9 error:a5])
+    if (![(SZExtractor *)v10 _setUpWithPath:pathCopy options:optionsCopy error:error])
     {
 
       v11 = 0;
@@ -2041,12 +2041,12 @@ LABEL_12:
   return v11;
 }
 
-- (SZExtractor)initWithPath:(id)a3 options:(id)a4
+- (SZExtractor)initWithPath:(id)path options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  optionsCopy = options;
   v11 = 0;
-  v8 = [(SZExtractor *)self initWithPath:v6 options:v7 error:&v11];
+  v8 = [(SZExtractor *)self initWithPath:pathCopy options:optionsCopy error:&v11];
   v9 = v11;
   if (!v8)
   {
@@ -2056,12 +2056,12 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)_setUpWithPath:(id)a3 options:(id)a4 error:(id *)a5
+- (BOOL)_setUpWithPath:(id)path options:(id)options error:(id *)error
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 objectForKeyedSubscript:@"SZExtractorOptionsHashesArray"];
+  pathCopy = path;
+  optionsCopy = options;
+  v10 = [optionsCopy objectForKeyedSubscript:@"SZExtractorOptionsHashesArray"];
   if (!v10)
   {
     goto LABEL_6;
@@ -2086,8 +2086,8 @@ LABEL_12:
 
   if ([v10 count] >= 2)
   {
-    v11 = [v9 objectForKeyedSubscript:@"SZExtractorOptionsHashedChunkSize"];
-    if (!v11 || (v12 = v11, [v9 objectForKeyedSubscript:@"SZExtractorOptionsHashedChunkSize"], v13 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v13, v12, (isKindOfClass & 1) == 0))
+    v11 = [optionsCopy objectForKeyedSubscript:@"SZExtractorOptionsHashedChunkSize"];
+    if (!v11 || (v12 = v11, [optionsCopy objectForKeyedSubscript:@"SZExtractorOptionsHashedChunkSize"], v13 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v13, v12, (isKindOfClass & 1) == 0))
     {
       v28 = MEMORY[0x277CCA9B8];
       v38 = *MEMORY[0x277CCA450];
@@ -2096,11 +2096,11 @@ LABEL_12:
       v20 = [v28 errorWithDomain:@"SZExtractorErrorDomain" code:7 userInfo:v25];
 LABEL_11:
 
-      if (a5)
+      if (error)
       {
         v29 = v20;
         v21 = 0;
-        *a5 = v20;
+        *error = v20;
       }
 
       else
@@ -2113,11 +2113,11 @@ LABEL_11:
   }
 
 LABEL_6:
-  v15 = [v8 copy];
+  v15 = [pathCopy copy];
   extractionPath = self->_extractionPath;
   self->_extractionPath = v15;
 
-  v17 = [v9 copy];
+  v17 = [optionsCopy copy];
   options = self->_options;
   self->_options = v17;
 
@@ -2125,11 +2125,11 @@ LABEL_6:
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v33 = self;
+    selfCopy = self;
     v34 = 2112;
-    v35 = v8;
+    v35 = pathCopy;
     v36 = 2112;
-    v37 = v9;
+    v37 = optionsCopy;
     _os_log_impl(&dword_26BC65000, v19, OS_LOG_TYPE_DEFAULT, "%@: initialized with path: %@ options: %@", buf, 0x20u);
   }
 
@@ -2141,12 +2141,12 @@ LABEL_14:
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(SZExtractor *)self extractionPath];
-  v6 = [(SZExtractor *)self options];
-  v7 = [v4 initWithPath:v5 options:v6];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  extractionPath = [(SZExtractor *)self extractionPath];
+  options = [(SZExtractor *)self options];
+  v7 = [v4 initWithPath:extractionPath options:options];
 
   if (self->_privileged)
   {
@@ -2158,43 +2158,43 @@ LABEL_14:
 
 - (unint64_t)hash
 {
-  v3 = [(SZExtractor *)self extractionPath];
-  v4 = [(SZExtractor *)self options];
-  v5 = [v4 hash];
+  extractionPath = [(SZExtractor *)self extractionPath];
+  options = [(SZExtractor *)self options];
+  v5 = [options hash];
 
-  if (v3)
+  if (extractionPath)
   {
-    v5 ^= [v3 hash];
+    v5 ^= [extractionPath hash];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 options];
-    v7 = [(SZExtractor *)self options];
-    v8 = [v6 isEqual:v7];
+    v5 = equalCopy;
+    options = [v5 options];
+    options2 = [(SZExtractor *)self options];
+    v8 = [options isEqual:options2];
 
     if (v8)
     {
-      v9 = [v5 extractionPath];
-      v10 = [(SZExtractor *)self extractionPath];
-      v11 = v10;
-      if ((v9 != 0) != (v10 != 0) || v9 && v10 && ![v9 isEqual:v10])
+      extractionPath = [v5 extractionPath];
+      extractionPath2 = [(SZExtractor *)self extractionPath];
+      v11 = extractionPath2;
+      if ((extractionPath != 0) != (extractionPath2 != 0) || extractionPath && extractionPath2 && ![extractionPath isEqual:extractionPath2])
       {
         LOBYTE(v12) = 0;
       }
 
       else
       {
-        v13 = [v5 privileged];
-        v12 = v13 ^ [(SZExtractor *)self privileged]^ 1;
+        privileged = [v5 privileged];
+        v12 = privileged ^ [(SZExtractor *)self privileged]^ 1;
       }
     }
 
@@ -2212,17 +2212,17 @@ LABEL_14:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   if (![(SZExtractor *)self needsPreparation]&& [(SZExtractor *)self _isValidObject])
   {
     v5 = SZGetLoggingHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_26BC65000, v5, OS_LOG_TYPE_DEFAULT, "%@: suspending stream in preparation for serializing ourselves", buf, 0xCu);
     }
 
@@ -2234,19 +2234,19 @@ LABEL_14:
     [(SZExtractor *)self _suspendStreamWithCompletionBlockSynchronously:1 completion:v9];
   }
 
-  [v4 encodeObject:self->_options forKey:@"options"];
+  [coderCopy encodeObject:self->_options forKey:@"options"];
   extractionPath = self->_extractionPath;
   if (extractionPath)
   {
-    [v4 encodeObject:extractionPath forKey:@"extractionPath"];
+    [coderCopy encodeObject:extractionPath forKey:@"extractionPath"];
   }
 
-  [v4 encodeBool:self->_privileged forKey:@"privileged"];
+  [coderCopy encodeBool:self->_privileged forKey:@"privileged"];
   v7 = SZGetLoggingHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_26BC65000, v7, OS_LOG_TYPE_DEFAULT, "%@: serialized", buf, 0xCu);
   }
 
@@ -2274,10 +2274,10 @@ void __31__SZExtractor_encodeWithCoder___block_invoke(uint64_t a1, uint64_t a2, 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (SZExtractor)initWithCoder:(id)a3
+- (SZExtractor)initWithCoder:(id)coder
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = SZExtractor;
   v5 = [(SZExtractor *)&v17 init];
@@ -2285,23 +2285,23 @@ void __31__SZExtractor_encodeWithCoder___block_invoke(uint64_t a1, uint64_t a2, 
   if (v5)
   {
     v5->_ivarLock._os_unfair_lock_opaque = 0;
-    v7 = [v4 decodePropertyListForKey:@"options"];
+    v7 = [coderCopy decodePropertyListForKey:@"options"];
     options = v6->_options;
     v6->_options = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extractionPath"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extractionPath"];
     extractionPath = v6->_extractionPath;
     v6->_extractionPath = v9;
 
-    v6->_privileged = [v4 decodeBoolForKey:@"privileged"];
+    v6->_privileged = [coderCopy decodeBoolForKey:@"privileged"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v4 connection];
-      v12 = [v11 valueForEntitlement:@"com.apple.private.SZExtractor.privileged"];
-      v13 = [v12 BOOLValue];
+      connection = [coderCopy connection];
+      v12 = [connection valueForEntitlement:@"com.apple.private.SZExtractor.privileged"];
+      bOOLValue = [v12 BOOLValue];
 
-      if ((v13 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
         v6->_privileged = 0;
       }
@@ -2347,11 +2347,11 @@ void __68__SZExtractor_PrivateInterfaces__setActiveExtractorDelegateMethods___bl
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)initForRemoteExtractionWithPath:(id)a3 options:(id)a4 resumptionOffset:(unint64_t *)a5
+- (id)initForRemoteExtractionWithPath:(id)path options:(id)options resumptionOffset:(unint64_t *)offset
 {
-  v6 = [(SZExtractor *)self initWithPath:a3 options:a4];
+  v6 = [(SZExtractor *)self initWithPath:path options:options];
   v7 = v6;
-  if (v6 && ![(SZExtractor *)v6 _synchronouslyPrepareForExtractionAtOffset:a5])
+  if (v6 && ![(SZExtractor *)v6 _synchronouslyPrepareForExtractionAtOffset:offset])
   {
     v8 = 0;
   }
@@ -2372,7 +2372,7 @@ void __68__SZExtractor_PrivateInterfaces__setActiveExtractorDelegateMethods___bl
   return v2;
 }
 
-+ (int)servicePIDWithError:(id *)a3
++ (int)servicePIDWithError:(id *)error
 {
   v20 = 0;
   v21 = &v20;
@@ -2399,7 +2399,7 @@ void __68__SZExtractor_PrivateInterfaces__setActiveExtractorDelegateMethods___bl
   if (!v8)
   {
     v10 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -2421,12 +2421,12 @@ void __68__SZExtractor_PrivateInterfaces__setActiveExtractorDelegateMethods___bl
     [v9 getPidForTestingWithReply:v13];
   }
 
-  if (a3)
+  if (error)
   {
 LABEL_7:
     if (*(v17 + 6) == -1)
     {
-      *a3 = v21[5];
+      *error = v21[5];
     }
   }
 

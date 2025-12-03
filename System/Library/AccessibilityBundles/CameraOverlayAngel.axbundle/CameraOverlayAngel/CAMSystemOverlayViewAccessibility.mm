@@ -1,35 +1,35 @@
 @interface CAMSystemOverlayViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)accessibilityFrame;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
-- (void)_axAdjustValue:(BOOL)a3;
+- (void)_axAdjustValue:(BOOL)value;
 - (void)_updateValueLabelText;
 @end
 
 @implementation CAMSystemOverlayViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"selectedIndex" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"indexCount" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"setSelectedIndex:" withFullSignature:{"v", "Q", 0}];
-  [v3 validateClass:@"CAMSystemOverlayView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMSystemOverlayView" hasInstanceMethod:@"_valueLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMSystemOverlayView" hasInstanceMethod:@"sliderIfLoaded" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMSystemOverlayView" hasInstanceMethod:@"_menuVisibility" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMSystemOverlayVisibility" hasInstanceMethod:@"_activeReasons" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMSystemOverlayVisibility" hasInstanceMethod:@"_delayedHidingTimer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMSystemOverlayView" hasInstanceMethod:@"menu" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMSystemOverlayView" hasInstanceMethod:@"_updateValueLabelText" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"selectedIndex" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"CAMSystemOverlaySlider" hasInstanceMethod:@"_currentSlider" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMSystemOverlaySlider" hasInstanceMethod:@"_discreteSlider" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMSystemOverlaySlider" hasInstanceMethod:@"_continuousSlider" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"_setSelectedIndex:shouldDelegate:wantsFeedbackEmitted:shouldScroll:scrollDuration:scrollCurve:scrollCompletion:" withFullSignature:{"v", "Q", "B", "B", "B", "d", "@", "@?", 0}];
-  [v3 validateClass:@"CAMSystemOverlaySlider"];
-  [v3 validateClass:@"CAMSystemOverlaySlider" hasInstanceMethod:@"_handleContinuousSliderValueChanged:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"selectedIndex" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"indexCount" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"setSelectedIndex:" withFullSignature:{"v", "Q", 0}];
+  [validationsCopy validateClass:@"CAMSystemOverlayView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMSystemOverlayView" hasInstanceMethod:@"_valueLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMSystemOverlayView" hasInstanceMethod:@"sliderIfLoaded" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMSystemOverlayView" hasInstanceMethod:@"_menuVisibility" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMSystemOverlayVisibility" hasInstanceMethod:@"_activeReasons" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMSystemOverlayVisibility" hasInstanceMethod:@"_delayedHidingTimer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMSystemOverlayView" hasInstanceMethod:@"menu" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMSystemOverlayView" hasInstanceMethod:@"_updateValueLabelText" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"selectedIndex" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"CAMSystemOverlaySlider" hasInstanceMethod:@"_currentSlider" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMSystemOverlaySlider" hasInstanceMethod:@"_discreteSlider" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMSystemOverlaySlider" hasInstanceMethod:@"_continuousSlider" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"_setSelectedIndex:shouldDelegate:wantsFeedbackEmitted:shouldScroll:scrollDuration:scrollCurve:scrollCompletion:" withFullSignature:{"v", "Q", "B", "B", "B", "d", "@", "@?", 0}];
+  [validationsCopy validateClass:@"CAMSystemOverlaySlider"];
+  [validationsCopy validateClass:@"CAMSystemOverlaySlider" hasInstanceMethod:@"_handleContinuousSliderValueChanged:" withFullSignature:{"v", "@", 0}];
 }
 
 - (unint64_t)accessibilityTraits
@@ -45,9 +45,9 @@
   v3 = [(CAMSystemOverlayViewAccessibility *)self safeValueForKey:@"_valueLabel"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 text];
+  text = [v4 text];
 
-  return v5;
+  return text;
 }
 
 - (CGRect)accessibilityFrame
@@ -82,9 +82,9 @@
   return result;
 }
 
-- (void)_axAdjustValue:(BOOL)a3
+- (void)_axAdjustValue:(BOOL)value
 {
-  v3 = a3;
+  valueCopy = value;
   v5 = [(CAMSystemOverlayViewAccessibility *)self safeValueForKey:@"menuVisibility"];
   v21 = [v5 safeSetForKey:@"_activeReasons"];
 
@@ -99,7 +99,7 @@
     if (v17)
     {
       v18 = [v17 safeIntForKey:@"selectedIndex"];
-      if (v3)
+      if (valueCopy)
       {
         v19 = v18 + 1;
       }
@@ -140,7 +140,7 @@
         v15 = v11 + 1;
       }
 
-      if (v3)
+      if (valueCopy)
       {
         v16 = v15;
       }
@@ -157,7 +157,7 @@
     {
       v20 = [v8 safeValueForKey:@"continuousSlider"];
       v10 = v20;
-      if (v3)
+      if (valueCopy)
       {
         [v20 accessibilityIncrement];
       }
@@ -179,7 +179,7 @@
   v3 = [(CAMSystemOverlayViewAccessibility *)self safeValueForKey:@"_valueLabel"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 text];
+  text = [v4 text];
   UIAccessibilitySpeak();
 }
 

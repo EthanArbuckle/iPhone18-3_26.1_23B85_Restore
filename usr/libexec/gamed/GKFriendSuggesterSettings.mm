@@ -1,22 +1,22 @@
 @interface GKFriendSuggesterSettings
 + (id)allBagKeys;
-- (GKFriendSuggesterSettings)initWithBagValues:(id)a3;
+- (GKFriendSuggesterSettings)initWithBagValues:(id)values;
 - (id)description;
 @end
 
 @implementation GKFriendSuggesterSettings
 
-- (GKFriendSuggesterSettings)initWithBagValues:(id)a3
+- (GKFriendSuggesterSettings)initWithBagValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v7.receiver = self;
   v7.super_class = GKFriendSuggesterSettings;
   v5 = [(GKFriendSuggesterSettings *)&v7 init];
   if (v5)
   {
-    v5->_mininumIDsForServiceRequest = [v4 unsignedIntegerValueFromKey:@"gk-friend-rerank-minimum" defaultValue:2];
-    v5->_mininumIDsForContactAssociationIDsOnly = [v4 unsignedIntegerValueFromKey:@"gk-friend-rerank-caidonly-minimum" defaultValue:30];
-    v5->_suggestionsLimit = [v4 unsignedIntegerValueFromKey:@"gk-friend-rerank-caidonly-minimum" defaultValue:30];
+    v5->_mininumIDsForServiceRequest = [valuesCopy unsignedIntegerValueFromKey:@"gk-friend-rerank-minimum" defaultValue:2];
+    v5->_mininumIDsForContactAssociationIDsOnly = [valuesCopy unsignedIntegerValueFromKey:@"gk-friend-rerank-caidonly-minimum" defaultValue:30];
+    v5->_suggestionsLimit = [valuesCopy unsignedIntegerValueFromKey:@"gk-friend-rerank-caidonly-minimum" defaultValue:30];
   }
 
   return v5;

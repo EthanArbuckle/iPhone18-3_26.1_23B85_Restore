@@ -1,22 +1,22 @@
 @interface PKPaymentEligibilitySupplementaryData
-- (PKPaymentEligibilitySupplementaryData)initWithDictionary:(id)a3 accountFeatureIdentifier:(unint64_t)a4;
+- (PKPaymentEligibilitySupplementaryData)initWithDictionary:(id)dictionary accountFeatureIdentifier:(unint64_t)identifier;
 @end
 
 @implementation PKPaymentEligibilitySupplementaryData
 
-- (PKPaymentEligibilitySupplementaryData)initWithDictionary:(id)a3 accountFeatureIdentifier:(unint64_t)a4
+- (PKPaymentEligibilitySupplementaryData)initWithDictionary:(id)dictionary accountFeatureIdentifier:(unint64_t)identifier
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = PKPaymentEligibilitySupplementaryData;
   v7 = [(PKPaymentEligibilitySupplementaryData *)&v17 init];
   if (v7)
   {
-    v8 = [v6 PKStringForKey:@"accountIdentifier"];
-    v9 = [v6 PKCurrencyAmountForKey:@"accountBalance"];
-    v10 = [v6 PKArrayForKey:@"cloudStoreZoneNames"];
+    v8 = [dictionaryCopy PKStringForKey:@"accountIdentifier"];
+    v9 = [dictionaryCopy PKCurrencyAmountForKey:@"accountBalance"];
+    v10 = [dictionaryCopy PKArrayForKey:@"cloudStoreZoneNames"];
     v11 = v10;
-    if (a4 == 4 && v8 && v9 && v10)
+    if (identifier == 4 && v8 && v9 && v10)
     {
       v12 = [PKAccount alloc];
       v13 = PKLightweightAppleBalanceAccountDict(v8, v9, v11);

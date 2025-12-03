@@ -21,14 +21,14 @@
   v23.size.width = v16;
   v23.size.height = v18;
   Width = CGRectGetWidth(v23);
-  v20 = [(_SFAutoFillInputViewButton *)self titleLabel];
-  [v20 setPreferredMaxLayoutWidth:Width];
+  titleLabel = [(_SFAutoFillInputViewButton *)self titleLabel];
+  [titleLabel setPreferredMaxLayoutWidth:Width];
 
   v22.receiver = self;
   v22.super_class = _SFAutoFillInputViewButton;
   [(_SFAutoFillInputViewButton *)&v22 layoutSubviews];
-  v21 = [(_SFAutoFillInputViewButton *)self titleLabel];
-  [v21 setFrame:{v12, v14, v16, v18}];
+  titleLabel2 = [(_SFAutoFillInputViewButton *)self titleLabel];
+  [titleLabel2 setFrame:{v12, v14, v16, v18}];
 }
 
 @end

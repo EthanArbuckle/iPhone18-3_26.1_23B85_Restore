@@ -11,9 +11,9 @@
 - (void)_gkRecursivelyApplyBlock:()GKAdditionsAdditional depth:
 {
   v6 = a3;
-  v6[2](v6, a1, a4);
+  v6[2](v6, self, a4);
   v7 = a4 + 1;
-  v8 = [a1 subviews];
+  subviews = [self subviews];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__UIView_GKAdditionsAdditional___gkRecursivelyApplyBlock_depth___block_invoke;
@@ -21,22 +21,22 @@
   v11 = v6;
   v12 = v7;
   v9 = v6;
-  [v8 enumerateObjectsUsingBlock:v10];
+  [subviews enumerateObjectsUsingBlock:v10];
 }
 
 - (id)_gkRecursiveDescriptionForKey:()GKAdditionsAdditional depth:
 {
   v6 = a3;
-  v7 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __69__UIView_GKAdditionsAdditional___gkRecursiveDescriptionForKey_depth___block_invoke;
   v13[3] = &unk_279669BA0;
   v14 = v6;
-  v8 = v7;
+  v8 = string;
   v15 = v8;
   v9 = v6;
-  [a1 _gkRecursivelyApplyBlock:v13 depth:a4];
+  [self _gkRecursivelyApplyBlock:v13 depth:a4];
   v10 = v15;
   v11 = v8;
 
@@ -47,18 +47,18 @@
 {
   v8 = a3;
   v9 = a4;
-  v10 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __78__UIView_GKAdditionsAdditional___gkRecursiveDescriptionForValue_forKey_depth___block_invoke;
   v17[3] = &unk_279669BC8;
   v18 = v9;
   v19 = v8;
-  v11 = v10;
+  v11 = string;
   v20 = v11;
   v12 = v8;
   v13 = v9;
-  [a1 _gkRecursivelyApplyBlock:v17 depth:a5];
+  [self _gkRecursivelyApplyBlock:v17 depth:a5];
   v14 = v20;
   v15 = v11;
 
@@ -68,21 +68,21 @@
 - (id)_gkAncestryDescription
 {
   v2 = [MEMORY[0x277CBEB18] arrayWithCapacity:32];
-  v3 = a1;
-  if (v3)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v4 = v3;
+    v4 = selfCopy;
     do
     {
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@ %p>", objc_opt_class(), v4];
       [v2 addObject:v5];
 
-      v6 = [v4 superview];
+      superview = [v4 superview];
 
-      v4 = v6;
+      v4 = superview;
     }
 
-    while (v6);
+    while (superview);
   }
 
   v7 = [v2 componentsJoinedByString:@" -> "];
@@ -95,10 +95,10 @@
   v70 = *MEMORY[0x277D85DE8];
   context = objc_autoreleasePoolPush();
   v2 = [MEMORY[0x277CBEB18] arrayWithCapacity:32];
-  v3 = a1;
-  if (v3)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v4 = v3;
+    v4 = selfCopy;
     v59 = *(MEMORY[0x277CBF348] + 8);
     v60 = *MEMORY[0x277CBF348];
     do
@@ -114,11 +114,11 @@
       v18 = v17;
       v20 = v19;
       memset(&v68, 0, sizeof(v68));
-      v21 = [v4 layer];
-      v22 = v21;
-      if (v21)
+      layer = [v4 layer];
+      v22 = layer;
+      if (layer)
       {
-        [v21 transform];
+        [layer transform];
       }
 
       else
@@ -127,11 +127,11 @@
       }
 
       memset(&v67, 0, sizeof(v67));
-      v23 = [v4 layer];
-      v24 = v23;
-      if (v23)
+      layer2 = [v4 layer];
+      v24 = layer2;
+      if (layer2)
       {
-        [v23 sublayerTransform];
+        [layer2 sublayerTransform];
       }
 
       else
@@ -160,14 +160,14 @@
         v28 = v30;
       }
 
-      v31 = [v4 layer];
-      [v31 zPosition];
+      layer3 = [v4 layer];
+      [layer3 zPosition];
       v33 = v32;
 
       if (v33 != 0.0)
       {
-        v34 = [v4 layer];
-        [v34 zPosition];
+        layer4 = [v4 layer];
+        [layer4 zPosition];
         v36 = [v28 stringByAppendingFormat:@" zPos:%g", v35];
 
         v28 = v36;
@@ -193,24 +193,24 @@
         v28 = v40;
       }
 
-      v41 = [v4 layer];
-      v42 = [v41 animationKeys];
+      layer5 = [v4 layer];
+      animationKeys = [layer5 animationKeys];
 
-      if ([v42 count])
+      if ([animationKeys count])
       {
-        v43 = [v42 componentsJoinedByString:{@", "}];
+        v43 = [animationKeys componentsJoinedByString:{@", "}];
         v44 = [v28 stringByAppendingFormat:@" animations:%@", v43];
 
         v28 = v44;
       }
 
       [v2 addObject:v28];
-      v45 = [v4 superview];
+      superview = [v4 superview];
 
-      v4 = v45;
+      v4 = superview;
     }
 
-    while (v45);
+    while (superview);
   }
 
   v64 = 0u;
@@ -218,8 +218,8 @@
   v62 = 0u;
   v63 = 0u;
   v61 = v2;
-  v46 = [v2 reverseObjectEnumerator];
-  v47 = [v46 countByEnumeratingWithState:&v62 objects:v69 count:16];
+  reverseObjectEnumerator = [v2 reverseObjectEnumerator];
+  v47 = [reverseObjectEnumerator countByEnumeratingWithState:&v62 objects:v69 count:16];
   if (v47)
   {
     v48 = v47;
@@ -234,7 +234,7 @@
       {
         if (*v63 != v50)
         {
-          objc_enumerationMutation(v46);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v54 = *(*(&v62 + 1) + 8 * v52);
@@ -251,7 +251,7 @@
       }
 
       while (v48 != v52);
-      v48 = [v46 countByEnumeratingWithState:&v62 objects:v69 count:16];
+      v48 = [reverseObjectEnumerator countByEnumeratingWithState:&v62 objects:v69 count:16];
     }
 
     while (v48);

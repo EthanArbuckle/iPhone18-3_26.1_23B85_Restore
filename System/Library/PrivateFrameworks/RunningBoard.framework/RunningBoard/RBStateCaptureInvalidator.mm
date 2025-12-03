@@ -30,8 +30,8 @@
     v3 = result;
     if (!a2)
     {
-      v4 = [MEMORY[0x277CCA890] currentHandler];
-      [v4 handleFailureInMethod:sel_initWithHandle_ object:v3 file:@"RBStateCaptureManager.m" lineNumber:69 description:@"Handle cannot be 0."];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel_initWithHandle_ object:v3 file:@"RBStateCaptureManager.m" lineNumber:69 description:@"Handle cannot be 0."];
     }
 
     v5.receiver = v3;

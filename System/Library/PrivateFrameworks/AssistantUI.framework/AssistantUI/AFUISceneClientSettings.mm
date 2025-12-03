@@ -1,5 +1,5 @@
 @interface AFUISceneClientSettings
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unsigned)clientWindowContextID;
 @end
 
@@ -7,14 +7,14 @@
 
 - (unsigned)clientWindowContextID
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2000];
-  v4 = [v3 intValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2000];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [AFUIMutableSceneClientSettings alloc];
 

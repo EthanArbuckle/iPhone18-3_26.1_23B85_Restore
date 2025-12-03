@@ -1,20 +1,20 @@
 @interface SubCalDATask
 - (DATaskManager)taskManager;
-- (void)cancelTaskWithReason:(int)a3 underlyingError:(id)a4;
-- (void)finishWithError:(id)a3;
+- (void)cancelTaskWithReason:(int)reason underlyingError:(id)error;
+- (void)finishWithError:(id)error;
 @end
 
 @implementation SubCalDATask
 
-- (void)cancelTaskWithReason:(int)a3 underlyingError:(id)a4
+- (void)cancelTaskWithReason:(int)reason underlyingError:(id)error
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  errorCopy = error;
+  v6 = errorCopy;
+  if (errorCopy)
   {
     v10 = *MEMORY[0x277CCA7E8];
-    v11[0] = v5;
+    v11[0] = errorCopy;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   }
 
@@ -29,18 +29,18 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   if (!self->_finished)
   {
-    v5 = a3;
+    errorCopy = error;
     [(SubCalDATask *)self willFinish];
-    [(SubCalDATask *)self performDelegateCallbackWithError:v5];
+    [(SubCalDATask *)self performDelegateCallbackWithError:errorCopy];
 
     self->_finished = 1;
     [(SubCalDATask *)self didFinish];
-    v6 = [(SubCalDATask *)self taskManager];
-    [v6 taskDidFinish:self];
+    taskManager = [(SubCalDATask *)self taskManager];
+    [taskManager taskDidFinish:self];
   }
 }
 

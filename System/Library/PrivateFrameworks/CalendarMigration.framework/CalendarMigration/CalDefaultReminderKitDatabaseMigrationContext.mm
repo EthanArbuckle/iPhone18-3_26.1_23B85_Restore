@@ -1,12 +1,12 @@
 @interface CalDefaultReminderKitDatabaseMigrationContext
-+ (unint64_t)remMigrationStageFromCalMigrationStage:(unint64_t)a3;
-- (BOOL)ensureAccountsExist:(id)a3 error:(id *)a4;
++ (unint64_t)remMigrationStageFromCalMigrationStage:(unint64_t)stage;
+- (BOOL)ensureAccountsExist:(id)exist error:(id *)error;
 - (BOOL)shouldDeleteMigratedData;
 - (BOOL)shouldPerformMigration;
 - (CalDefaultReminderKitDatabaseMigrationContext)init;
 - (REMStore)reminderStore;
-- (void)migrationDidFinishWithResult:(unint64_t)a3;
-- (void)recordMigrationFailure:(id)a3;
+- (void)migrationDidFinishWithResult:(unint64_t)result;
+- (void)recordMigrationFailure:(id)failure;
 - (void)willBeginMigration;
 @end
 
@@ -47,82 +47,82 @@
 
 - (void)willBeginMigration
 {
-  v2 = [(CalDefaultReminderKitDatabaseMigrationContext *)self remDatabaseMigrationContext];
-  [v2 reportMigrationWillBegin];
+  remDatabaseMigrationContext = [(CalDefaultReminderKitDatabaseMigrationContext *)self remDatabaseMigrationContext];
+  [remDatabaseMigrationContext reportMigrationWillBegin];
 }
 
-- (void)recordMigrationFailure:(id)a3
+- (void)recordMigrationFailure:(id)failure
 {
-  v4 = a3;
-  v5 = [objc_opt_class() remMigrationStageFromCalMigrationStage:{objc_msgSend(v4, "stage")}];
-  v9 = [(CalDefaultReminderKitDatabaseMigrationContext *)self remDatabaseMigrationContext];
-  v6 = [v4 failureDescription];
-  v7 = [v4 underlyingError];
-  v8 = [v4 relatedPath];
+  failureCopy = failure;
+  v5 = [objc_opt_class() remMigrationStageFromCalMigrationStage:{objc_msgSend(failureCopy, "stage")}];
+  remDatabaseMigrationContext = [(CalDefaultReminderKitDatabaseMigrationContext *)self remDatabaseMigrationContext];
+  failureDescription = [failureCopy failureDescription];
+  underlyingError = [failureCopy underlyingError];
+  relatedPath = [failureCopy relatedPath];
 
-  [v9 reportMigrationErrorWithIdentifier:v6 atStage:v5 error:v7 objectLocator:v8];
+  [remDatabaseMigrationContext reportMigrationErrorWithIdentifier:failureDescription atStage:v5 error:underlyingError objectLocator:relatedPath];
 }
 
-+ (unint64_t)remMigrationStageFromCalMigrationStage:(unint64_t)a3
++ (unint64_t)remMigrationStageFromCalMigrationStage:(unint64_t)stage
 {
-  if (a3 > 7)
+  if (stage > 7)
   {
     return 1;
   }
 
   else
   {
-    return qword_2428FD048[a3];
+    return qword_2428FD048[stage];
   }
 }
 
-- (BOOL)ensureAccountsExist:(id)a3 error:(id *)a4
+- (BOOL)ensureAccountsExist:(id)exist error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CalDefaultReminderKitDatabaseMigrationContext *)self remDatabaseMigrationContext];
-  LOBYTE(a4) = [v7 ensureAccountsExist:v6 error:a4];
+  existCopy = exist;
+  remDatabaseMigrationContext = [(CalDefaultReminderKitDatabaseMigrationContext *)self remDatabaseMigrationContext];
+  LOBYTE(error) = [remDatabaseMigrationContext ensureAccountsExist:existCopy error:error];
 
-  return a4;
+  return error;
 }
 
 - (REMStore)reminderStore
 {
-  v2 = [(CalDefaultReminderKitDatabaseMigrationContext *)self remDatabaseMigrationContext];
-  v3 = [v2 remStore];
+  remDatabaseMigrationContext = [(CalDefaultReminderKitDatabaseMigrationContext *)self remDatabaseMigrationContext];
+  remStore = [remDatabaseMigrationContext remStore];
 
-  return v3;
+  return remStore;
 }
 
 - (BOOL)shouldPerformMigration
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = [(CalDefaultReminderKitDatabaseMigrationContext *)self remDatabaseMigrationContext];
-  v3 = [v2 isDatabaseMigrated];
+  remDatabaseMigrationContext = [(CalDefaultReminderKitDatabaseMigrationContext *)self remDatabaseMigrationContext];
+  isDatabaseMigrated = [remDatabaseMigrationContext isDatabaseMigrated];
 
   v4 = +[CalMigrationLog reminders];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+    v5 = [MEMORY[0x277CCABB0] numberWithBool:isDatabaseMigrated];
     v8 = 138543362;
     v9 = v5;
     _os_log_impl(&dword_2428EA000, v4, OS_LOG_TYPE_INFO, "ReminderKit says isDatabaseMigrated = %{public}@", &v8, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
-  return v3 ^ 1;
+  return isDatabaseMigrated ^ 1;
 }
 
 - (BOOL)shouldDeleteMigratedData
 {
-  v2 = [(CalDefaultReminderKitDatabaseMigrationContext *)self remDatabaseMigrationContext];
-  v3 = [v2 shouldDeleteMigratedData];
+  remDatabaseMigrationContext = [(CalDefaultReminderKitDatabaseMigrationContext *)self remDatabaseMigrationContext];
+  shouldDeleteMigratedData = [remDatabaseMigrationContext shouldDeleteMigratedData];
 
-  return v3;
+  return shouldDeleteMigratedData;
 }
 
-- (void)migrationDidFinishWithResult:(unint64_t)a3
+- (void)migrationDidFinishWithResult:(unint64_t)result
 {
-  if (!a3)
+  if (!result)
   {
     [(CalDefaultReminderKitDatabaseMigrationContext *)self willBeginMigration];
 

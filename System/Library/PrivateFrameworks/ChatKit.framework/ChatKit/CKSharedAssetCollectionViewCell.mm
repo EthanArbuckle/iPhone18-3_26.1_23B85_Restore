@@ -1,31 +1,31 @@
 @interface CKSharedAssetCollectionViewCell
-- (CKSharedAssetCollectionViewCell)initWithFrame:(CGRect)a3;
+- (CKSharedAssetCollectionViewCell)initWithFrame:(CGRect)frame;
 - (UILabel)previewTitleLabel;
 - (UIView)previewTitleContainerView;
 - (UIView)previewView;
-- (id)formattedTitleFromPreviewTitle:(id)a3;
+- (id)formattedTitleFromPreviewTitle:(id)title;
 - (void)layoutSubviews;
 @end
 
 @implementation CKSharedAssetCollectionViewCell
 
-- (CKSharedAssetCollectionViewCell)initWithFrame:(CGRect)a3
+- (CKSharedAssetCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = CKSharedAssetCollectionViewCell;
-  v3 = [(CKSharedAssetCollectionViewCell *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKSharedAssetCollectionViewCell *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(CKSharedAssetCollectionViewCell *)v3 cornerRadius];
     v6 = v5;
-    v7 = [(CKSharedAssetCollectionViewCell *)v4 layer];
-    [v7 setCornerRadius:v6];
+    layer = [(CKSharedAssetCollectionViewCell *)v4 layer];
+    [layer setCornerRadius:v6];
 
     [(CKSharedAssetCollectionViewCell *)v4 setClipsToBounds:1];
-    v8 = [MEMORY[0x1E69DC888] clearColor];
-    v9 = [(CKSharedAssetCollectionViewCell *)v4 contentView];
-    [v9 setBackgroundColor:v8];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    contentView = [(CKSharedAssetCollectionViewCell *)v4 contentView];
+    [contentView setBackgroundColor:clearColor];
   }
 
   return v4;
@@ -42,12 +42,12 @@
 
     v6 = self->_previewView;
     v7 = +[CKUIBehavior sharedBehaviors];
-    v8 = [v7 theme];
-    v9 = [v8 sharedContentsCellBackgroundColor];
-    [(UIView *)v6 setBackgroundColor:v9];
+    theme = [v7 theme];
+    sharedContentsCellBackgroundColor = [theme sharedContentsCellBackgroundColor];
+    [(UIView *)v6 setBackgroundColor:sharedContentsCellBackgroundColor];
 
-    v10 = [(CKSharedAssetCollectionViewCell *)self contentView];
-    [v10 addSubview:self->_previewView];
+    contentView = [(CKSharedAssetCollectionViewCell *)self contentView];
+    [contentView addSubview:self->_previewView];
 
     previewView = self->_previewView;
   }
@@ -71,17 +71,17 @@
     [(UILabel *)self->_previewTitleLabel setTextAlignment:1];
     v8 = self->_previewTitleLabel;
     v9 = +[CKUIBehavior sharedBehaviors];
-    v10 = [v9 theme];
-    v11 = [v10 sharedContentsCellTextColor];
-    [(UILabel *)v8 setTextColor:v11];
+    theme = [v9 theme];
+    sharedContentsCellTextColor = [theme sharedContentsCellTextColor];
+    [(UILabel *)v8 setTextColor:sharedContentsCellTextColor];
 
     [(UILabel *)self->_previewTitleLabel setNumberOfLines:2];
     v12 = self->_previewTitleLabel;
-    v13 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v12 setBackgroundColor:v13];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v12 setBackgroundColor:clearColor];
 
-    v14 = [(CKSharedAssetCollectionViewCell *)self previewTitleContainerView];
-    [v14 addSubview:self->_previewTitleLabel];
+    previewTitleContainerView = [(CKSharedAssetCollectionViewCell *)self previewTitleContainerView];
+    [previewTitleContainerView addSubview:self->_previewTitleLabel];
 
     previewTitleLabel = self->_previewTitleLabel;
   }
@@ -100,12 +100,12 @@
 
     v6 = self->_previewTitleContainerView;
     v7 = +[CKUIBehavior sharedBehaviors];
-    v8 = [v7 theme];
-    v9 = [v8 sharedContentsCellBackgroundColor];
-    [(UIView *)v6 setBackgroundColor:v9];
+    theme = [v7 theme];
+    sharedContentsCellBackgroundColor = [theme sharedContentsCellBackgroundColor];
+    [(UIView *)v6 setBackgroundColor:sharedContentsCellBackgroundColor];
 
-    v10 = [(CKSharedAssetCollectionViewCell *)self contentView];
-    [v10 addSubview:self->_previewTitleContainerView];
+    contentView = [(CKSharedAssetCollectionViewCell *)self contentView];
+    [contentView addSubview:self->_previewTitleContainerView];
 
     previewTitleContainerView = self->_previewTitleContainerView;
   }
@@ -113,12 +113,12 @@
   return previewTitleContainerView;
 }
 
-- (id)formattedTitleFromPreviewTitle:(id)a3
+- (id)formattedTitleFromPreviewTitle:(id)title
 {
-  v3 = a3;
-  if (v3)
+  titleCopy = title;
+  if (titleCopy)
   {
-    v4 = v3;
+    v4 = titleCopy;
   }
 
   else
@@ -142,14 +142,14 @@
   v37.receiver = self;
   v37.super_class = CKSharedAssetCollectionViewCell;
   [(CKSharedAssetCollectionViewCell *)&v37 layoutSubviews];
-  v3 = [(CKSharedAssetCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(CKSharedAssetCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CKSharedAssetCollectionViewCell *)self previewView];
+  previewView = [(CKSharedAssetCollectionViewCell *)self previewView];
   v38.origin.x = v5;
   v38.origin.y = v7;
   v38.size.width = v9;
@@ -160,8 +160,8 @@
   v39.size.width = v9;
   v39.size.height = v11;
   v14 = CGRectGetWidth(v39);
-  [v12 setFrame:{v5, v7, Width, v14}];
-  v15 = [(CKSharedAssetCollectionViewCell *)self previewTitleContainerView];
+  [previewView setFrame:{v5, v7, Width, v14}];
+  previewTitleContainerView = [(CKSharedAssetCollectionViewCell *)self previewTitleContainerView];
   v40.origin.x = v5;
   v40.origin.y = v7;
   v40.size.width = v9;
@@ -181,15 +181,15 @@
   v43.origin.y = v7;
   v43.size.width = Width;
   v43.size.height = v14;
-  [v15 setFrame:{0.0, CGRectGetMaxY(v43) + 1.0, v16, v18}];
-  v19 = [(CKSharedAssetCollectionViewCell *)self previewTitleContainerView];
-  [v19 bounds];
+  [previewTitleContainerView setFrame:{0.0, CGRectGetMaxY(v43) + 1.0, v16, v18}];
+  previewTitleContainerView2 = [(CKSharedAssetCollectionViewCell *)self previewTitleContainerView];
+  [previewTitleContainerView2 bounds];
   v21 = v20;
   v23 = v22;
   v25 = v24;
   v27 = v26;
 
-  v28 = [(CKSharedAssetCollectionViewCell *)self previewTitleLabel];
+  previewTitleLabel = [(CKSharedAssetCollectionViewCell *)self previewTitleLabel];
   v44.origin.x = v21;
   v44.origin.y = v23;
   v44.size.width = v25;
@@ -200,8 +200,8 @@
   v45.size.width = v25;
   v45.size.height = v27;
   v30 = CGRectGetHeight(v45);
-  v31 = [(CKSharedAssetCollectionViewCell *)self previewTitleLabel];
-  [v31 sizeThatFits:{v29, v30}];
+  previewTitleLabel2 = [(CKSharedAssetCollectionViewCell *)self previewTitleLabel];
+  [previewTitleLabel2 sizeThatFits:{v29, v30}];
   v33 = v32;
   v35 = v34;
 
@@ -214,7 +214,7 @@
   v47.origin.y = v23;
   v47.size.width = v25;
   v47.size.height = v27;
-  [v28 setFrame:{v36, CGRectGetHeight(v47) * 0.5 - v35 * 0.5, v33, v35 + 2.0}];
+  [previewTitleLabel setFrame:{v36, CGRectGetHeight(v47) * 0.5 - v35 * 0.5, v33, v35 + 2.0}];
 }
 
 @end

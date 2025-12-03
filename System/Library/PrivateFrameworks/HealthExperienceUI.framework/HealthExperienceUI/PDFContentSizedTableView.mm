@@ -1,9 +1,9 @@
 @interface PDFContentSizedTableView
 - (CGSize)contentSize;
 - (CGSize)intrinsicContentSize;
-- (_TtC18HealthExperienceUIP33_41892A8E3AE85A20C0CA0B347A3001CA24PDFContentSizedTableView)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUIP33_41892A8E3AE85A20C0CA0B347A3001CA24PDFContentSizedTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
-- (void)setContentSize:(CGSize)a3;
+- (_TtC18HealthExperienceUIP33_41892A8E3AE85A20C0CA0B347A3001CA24PDFContentSizedTableView)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUIP33_41892A8E3AE85A20C0CA0B347A3001CA24PDFContentSizedTableView)initWithFrame:(CGRect)frame style:(int64_t)style;
+- (void)setContentSize:(CGSize)size;
 @end
 
 @implementation PDFContentSizedTableView
@@ -18,10 +18,10 @@
   return result;
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6.receiver = self;
   v6.super_class = type metadata accessor for PDFContentSizedTableView();
   v5 = v6.receiver;
@@ -31,10 +31,10 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
-  [(PDFContentSizedTableView *)v2 layoutIfNeeded];
+  selfCopy = self;
+  [(PDFContentSizedTableView *)selfCopy layoutIfNeeded];
   v3 = *MEMORY[0x1E69DE788];
-  [(PDFContentSizedTableView *)v2 contentSize];
+  [(PDFContentSizedTableView *)selfCopy contentSize];
   v5 = v4;
 
   v6 = v3;
@@ -44,23 +44,23 @@
   return result;
 }
 
-- (_TtC18HealthExperienceUIP33_41892A8E3AE85A20C0CA0B347A3001CA24PDFContentSizedTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (_TtC18HealthExperienceUIP33_41892A8E3AE85A20C0CA0B347A3001CA24PDFContentSizedTableView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = type metadata accessor for PDFContentSizedTableView();
-  return [(PDFContentSizedTableView *)&v10 initWithFrame:a4 style:x, y, width, height];
+  return [(PDFContentSizedTableView *)&v10 initWithFrame:style style:x, y, width, height];
 }
 
-- (_TtC18HealthExperienceUIP33_41892A8E3AE85A20C0CA0B347A3001CA24PDFContentSizedTableView)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUIP33_41892A8E3AE85A20C0CA0B347A3001CA24PDFContentSizedTableView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for PDFContentSizedTableView();
-  v4 = a3;
-  v5 = [(PDFContentSizedTableView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(PDFContentSizedTableView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -1,9 +1,9 @@
 @interface EKDayOccurrenceResizeHandleView
 - (CGRect)_circleRect;
-- (EKDayOccurrenceResizeHandleView)initWithFrame:(CGRect)a3 occurrenceView:(id)a4;
+- (EKDayOccurrenceResizeHandleView)initWithFrame:(CGRect)frame occurrenceView:(id)view;
 - (EKDayOccurrenceView)occurrenceView;
-- (void)drawRect:(CGRect)a3;
-- (void)willMoveToSuperview:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation EKDayOccurrenceResizeHandleView
@@ -22,38 +22,38 @@
   return result;
 }
 
-- (EKDayOccurrenceResizeHandleView)initWithFrame:(CGRect)a3 occurrenceView:(id)a4
+- (EKDayOccurrenceResizeHandleView)initWithFrame:(CGRect)frame occurrenceView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   v14.receiver = self;
   v14.super_class = EKDayOccurrenceResizeHandleView;
-  v10 = [(EKDayOccurrenceResizeHandleView *)&v14 initWithFrame:x, y, width, height];
-  if (v10)
+  height = [(EKDayOccurrenceResizeHandleView *)&v14 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v11 = [v9 currentImageState];
-    v12 = [v11 displayColor];
-    [(EKDayOccurrenceResizeHandleView *)v10 setBaseColor:v12];
+    currentImageState = [viewCopy currentImageState];
+    displayColor = [currentImageState displayColor];
+    [(EKDayOccurrenceResizeHandleView *)height setBaseColor:displayColor];
 
-    objc_storeWeak(&v10->_occurrenceView, v9);
-    [(EKDayOccurrenceResizeHandleView *)v10 setOpaque:0];
+    objc_storeWeak(&height->_occurrenceView, viewCopy);
+    [(EKDayOccurrenceResizeHandleView *)height setOpaque:0];
   }
 
-  return v10;
+  return height;
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  if (!a3)
+  if (!superview)
   {
     objc_storeWeak(&self->_occurrenceView, 0);
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   [(EKDayOccurrenceResizeHandleView *)self _circleRect];
@@ -82,8 +82,8 @@
   v14 = v27.origin.y;
   v15 = v27.size.width;
   v16 = v27.size.height;
-  v17 = [MEMORY[0x1E69DC888] whiteColor];
-  [v17 setFill];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [whiteColor setFill];
 
   v18 = v13;
   v19 = v14;

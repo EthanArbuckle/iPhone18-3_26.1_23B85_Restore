@@ -1,22 +1,22 @@
 @interface _AMSNotificationObservable
 - (BOOL)cancel;
 - (BOOL)sendCompletion;
-- (_AMSNotificationObservable)initWithNotification:(id)a3 object:(id)a4;
+- (_AMSNotificationObservable)initWithNotification:(id)notification object:(id)object;
 @end
 
 @implementation _AMSNotificationObservable
 
-- (_AMSNotificationObservable)initWithNotification:(id)a3 object:(id)a4
+- (_AMSNotificationObservable)initWithNotification:(id)notification object:(id)object
 {
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  objectCopy = object;
   v11.receiver = self;
   v11.super_class = _AMSNotificationObservable;
   v8 = [(AMSObservable *)&v11 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v8 selector:sel__receivedNotification_ name:v6 object:v7];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel__receivedNotification_ name:notificationCopy object:objectCopy];
   }
 
   return v8;
@@ -26,28 +26,28 @@
 {
   v6.receiver = self;
   v6.super_class = _AMSNotificationObservable;
-  v3 = [(AMSObservable *)&v6 cancel];
-  if (v3)
+  cancel = [(AMSObservable *)&v6 cancel];
+  if (cancel)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 removeObserver:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self];
   }
 
-  return v3;
+  return cancel;
 }
 
 - (BOOL)sendCompletion
 {
   v6.receiver = self;
   v6.super_class = _AMSNotificationObservable;
-  v3 = [(AMSObservable *)&v6 sendCompletion];
-  if (v3)
+  sendCompletion = [(AMSObservable *)&v6 sendCompletion];
+  if (sendCompletion)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 removeObserver:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self];
   }
 
-  return v3;
+  return sendCompletion;
 }
 
 @end

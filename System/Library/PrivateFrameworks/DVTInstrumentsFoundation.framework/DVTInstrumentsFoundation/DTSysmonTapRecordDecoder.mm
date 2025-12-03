@@ -1,54 +1,54 @@
 @interface DTSysmonTapRecordDecoder
-- (unint64_t)enumerateRecordsFromSample:(id)a3 block:(id)a4;
+- (unint64_t)enumerateRecordsFromSample:(id)sample block:(id)block;
 @end
 
 @implementation DTSysmonTapRecordDecoder
 
-- (unint64_t)enumerateRecordsFromSample:(id)a3 block:(id)a4
+- (unint64_t)enumerateRecordsFromSample:(id)sample block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  sampleCopy = sample;
+  blockCopy = block;
   v8 = objc_opt_new();
-  v9 = [v6 objectForKeyedSubscript:@"Type"];
+  v9 = [sampleCopy objectForKeyedSubscript:@"Type"];
   [v8 setRecordType:{objc_msgSend(v9, "unsignedIntValue")}];
 
-  v10 = [v6 objectForKeyedSubscript:@"StartMachAbsTime"];
+  v10 = [sampleCopy objectForKeyedSubscript:@"StartMachAbsTime"];
 
   if (v10)
   {
-    v11 = [v6 objectForKeyedSubscript:@"StartMachAbsTime"];
-    v12 = [v11 unsignedLongLongValue];
+    v11 = [sampleCopy objectForKeyedSubscript:@"StartMachAbsTime"];
+    unsignedLongLongValue = [v11 unsignedLongLongValue];
 
-    [v8 setStartTimestamp:v12];
-    self->_mostRecentEpoch = v12;
+    [v8 setStartTimestamp:unsignedLongLongValue];
+    self->_mostRecentEpoch = unsignedLongLongValue;
   }
 
-  v13 = [v6 objectForKeyedSubscript:@"EndMachAbsTime"];
+  v13 = [sampleCopy objectForKeyedSubscript:@"EndMachAbsTime"];
 
   if (v13)
   {
-    v14 = [v6 objectForKeyedSubscript:@"EndMachAbsTime"];
-    v15 = [v14 unsignedLongLongValue];
+    v14 = [sampleCopy objectForKeyedSubscript:@"EndMachAbsTime"];
+    unsignedLongLongValue2 = [v14 unsignedLongLongValue];
 
-    [v8 setEndTimestamp:v15];
-    self->_mostRecentEpoch = v15;
+    [v8 setEndTimestamp:unsignedLongLongValue2];
+    self->_mostRecentEpoch = unsignedLongLongValue2;
   }
 
-  v16 = [v6 objectForKeyedSubscript:@"ProcessesAttributes"];
+  v16 = [sampleCopy objectForKeyedSubscript:@"ProcessesAttributes"];
   v17 = v16;
   if (v16 && ([v16 isEqual:self->_processAttributes] & 1) == 0)
   {
     objc_storeStrong(&self->_processAttributes, v17);
   }
 
-  v18 = [v6 objectForKeyedSubscript:@"SystemAttributes"];
+  v18 = [sampleCopy objectForKeyedSubscript:@"SystemAttributes"];
 
   if (v18 && ([v18 isEqual:self->_systemAttributes] & 1) == 0)
   {
     objc_storeStrong(&self->_systemAttributes, v18);
   }
 
-  v19 = [v6 objectForKeyedSubscript:@"CoalitionAttributes"];
+  v19 = [sampleCopy objectForKeyedSubscript:@"CoalitionAttributes"];
 
   if (v19 && ([v19 isEqual:self->_coalitionAttributes] & 1) == 0)
   {
@@ -58,12 +58,12 @@
   [v8 setProcessAttributes:self->_processAttributes];
   [v8 setSystemAttributes:self->_systemAttributes];
   [v8 setCoalitionAttributes:self->_coalitionAttributes];
-  v20 = [v6 objectForKeyedSubscript:@"Processes"];
+  v20 = [sampleCopy objectForKeyedSubscript:@"Processes"];
 
   if (v20)
   {
     v21 = objc_opt_new();
-    v22 = [v6 objectForKeyedSubscript:@"Processes"];
+    v22 = [sampleCopy objectForKeyedSubscript:@"Processes"];
     v65[0] = MEMORY[0x277D85DD0];
     v65[1] = 3221225472;
     v65[2] = sub_247FCFFB0;
@@ -75,23 +75,23 @@
     [v8 setChangedProcesses:v23];
   }
 
-  v24 = [v6 objectForKeyedSubscript:@"System"];
+  v24 = [sampleCopy objectForKeyedSubscript:@"System"];
 
   if (v24)
   {
     v25 = objc_opt_new();
-    v26 = [v6 objectForKeyedSubscript:@"System"];
+    v26 = [sampleCopy objectForKeyedSubscript:@"System"];
     [v25 setAttributes:v26];
 
     [v8 setSystem:v25];
   }
 
-  v27 = [v6 objectForKeyedSubscript:@"Coalitions"];
+  v27 = [sampleCopy objectForKeyedSubscript:@"Coalitions"];
 
   if (v27)
   {
     v28 = objc_opt_new();
-    v29 = [v6 objectForKeyedSubscript:@"Coalitions"];
+    v29 = [sampleCopy objectForKeyedSubscript:@"Coalitions"];
     v63[0] = MEMORY[0x277D85DD0];
     v63[1] = 3221225472;
     v63[2] = sub_247FD0054;
@@ -103,36 +103,36 @@
     [v8 setCoalitions:v30];
   }
 
-  v31 = [v6 objectForKeyedSubscript:@"DeadProcesses"];
+  v31 = [sampleCopy objectForKeyedSubscript:@"DeadProcesses"];
 
   if (v31)
   {
-    v32 = [v6 objectForKeyedSubscript:@"DeadProcesses"];
+    v32 = [sampleCopy objectForKeyedSubscript:@"DeadProcesses"];
     [v8 setDeadProcesses:v32];
   }
 
-  v33 = [v6 objectForKeyedSubscript:@"DeadCoalitions"];
+  v33 = [sampleCopy objectForKeyedSubscript:@"DeadCoalitions"];
 
   if (v33)
   {
-    v34 = [v6 objectForKeyedSubscript:@"DeadCoalitions"];
+    v34 = [sampleCopy objectForKeyedSubscript:@"DeadCoalitions"];
     [v8 setDeadCoalitions:v34];
   }
 
   if (([v8 recordType] & 0x20) != 0)
   {
     v35 = objc_opt_new();
-    v36 = [v6 objectForKeyedSubscript:@"CPUCount"];
+    v36 = [sampleCopy objectForKeyedSubscript:@"CPUCount"];
     v60 = v35;
     [v35 setCpuCount:{objc_msgSend(v36, "unsignedIntValue")}];
 
-    v37 = [v6 objectForKeyedSubscript:@"EnabledCPUs"];
+    v37 = [sampleCopy objectForKeyedSubscript:@"EnabledCPUs"];
     [v35 setEnabledCPUs:{objc_msgSend(v37, "unsignedIntValue")}];
 
-    v38 = [v6 objectForKeyedSubscript:@"SystemCPUUsage"];
+    v38 = [sampleCopy objectForKeyedSubscript:@"SystemCPUUsage"];
     v39 = [DTSysmonCPUUsageEntry alloc];
     [v38 objectForKeyedSubscript:@"CPU_TotalLoad"];
-    v40 = v59 = v7;
+    v40 = v59 = blockCopy;
     [v40 doubleValue];
     v42 = v41;
     v43 = [v38 objectForKeyedSubscript:@"CPU_UserLoad"];
@@ -142,16 +142,16 @@
     [v46 doubleValue];
     v48 = v47;
     [v38 objectForKeyedSubscript:@"CPU_NiceLoad"];
-    v49 = self;
+    selfCopy = self;
     v51 = v50 = v19;
     [v51 doubleValue];
     v53 = [(DTSysmonCPUUsageEntry *)v39 initWithTotal:v42 user:v45 system:v48 nice:v52];
     [v60 setAverageCPUUsage:v53];
 
     v19 = v50;
-    self = v49;
+    self = selfCopy;
 
-    v54 = [v6 objectForKeyedSubscript:@"PerCPUUsage"];
+    v54 = [sampleCopy objectForKeyedSubscript:@"PerCPUUsage"];
     v55 = objc_opt_new();
     v61[0] = MEMORY[0x277D85DD0];
     v61[1] = 3221225472;
@@ -163,10 +163,10 @@
     [v60 setPerCPUUsage:v56];
     [v8 setCpuUsage:v60];
 
-    v7 = v59;
+    blockCopy = v59;
   }
 
-  v7[2](v7, v8);
+  blockCopy[2](blockCopy, v8);
   mostRecentEpoch = self->_mostRecentEpoch;
 
   return mostRecentEpoch;

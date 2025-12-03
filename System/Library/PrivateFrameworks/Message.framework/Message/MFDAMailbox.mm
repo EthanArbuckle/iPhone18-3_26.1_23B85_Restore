@@ -1,28 +1,28 @@
 @interface MFDAMailbox
-- (MFDAMailbox)initWithName:(id)a3 attributes:(unint64_t)a4 account:(id)a5 folderID:(id)a6;
+- (MFDAMailbox)initWithName:(id)name attributes:(unint64_t)attributes account:(id)account folderID:(id)d;
 - (NSString)folderID;
-- (id)URLWithAccount:(id)a3;
+- (id)URLWithAccount:(id)account;
 - (id)_folderID;
 - (id)_privacySafeDescription;
 - (id)dictionaryRepresentation;
 - (id)displayName;
 - (void)didChangeUserInfo;
-- (void)setFolderID:(id)a3;
+- (void)setFolderID:(id)d;
 @end
 
 @implementation MFDAMailbox
 
-- (MFDAMailbox)initWithName:(id)a3 attributes:(unint64_t)a4 account:(id)a5 folderID:(id)a6
+- (MFDAMailbox)initWithName:(id)name attributes:(unint64_t)attributes account:(id)account folderID:(id)d
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  nameCopy = name;
+  accountCopy = account;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = MFDAMailbox;
-  v13 = [(MFMailboxUid *)&v17 initWithName:v10 attributes:a4 forAccount:v11 extraAttributes:0];
+  v13 = [(MFMailboxUid *)&v17 initWithName:nameCopy attributes:attributes forAccount:accountCopy extraAttributes:0];
   if (v13)
   {
-    v14 = [v12 copy];
+    v14 = [dCopy copy];
     folderID = v13->_folderID;
     v13->_folderID = v14;
   }
@@ -35,38 +35,38 @@
   v4.receiver = self;
   v4.super_class = MFDAMailbox;
   [(MFMailboxUid *)&v4 didChangeUserInfo];
-  v3 = [(MFDAMailbox *)self _folderID];
-  if (v3)
+  _folderID = [(MFDAMailbox *)self _folderID];
+  if (_folderID)
   {
-    [(MFMailboxUid *)self setUserInfoObject:v3 forKey:@"DAMailboxUid"];
+    [(MFMailboxUid *)self setUserInfoObject:_folderID forKey:@"DAMailboxUid"];
   }
 }
 
-- (void)setFolderID:(id)a3
+- (void)setFolderID:(id)d
 {
-  v6 = a3;
+  dCopy = d;
   [(MFDAMailbox *)self mf_lock];
-  v4 = [v6 copy];
+  v4 = [dCopy copy];
   folderID = self->_folderID;
   self->_folderID = v4;
 
   [(MFDAMailbox *)self mf_unlock];
-  if (v6)
+  if (dCopy)
   {
-    [(MFMailboxUid *)self setUserInfoObject:v6 forKey:@"DAMailboxUid"];
+    [(MFMailboxUid *)self setUserInfoObject:dCopy forKey:@"DAMailboxUid"];
     [(MFMailboxUid *)self flushCriteria];
   }
 }
 
 - (NSString)folderID
 {
-  v3 = [(MFMailboxUid *)self userInfoObjectForKey:@"DAMailboxUid"];
-  if (!v3)
+  _folderID = [(MFMailboxUid *)self userInfoObjectForKey:@"DAMailboxUid"];
+  if (!_folderID)
   {
-    v3 = [(MFDAMailbox *)self _folderID];
+    _folderID = [(MFDAMailbox *)self _folderID];
   }
 
-  return v3;
+  return _folderID;
 }
 
 - (id)_folderID
@@ -78,16 +78,16 @@
   return v3;
 }
 
-- (id)URLWithAccount:(id)a3
+- (id)URLWithAccount:(id)account
 {
-  v4 = a3;
-  v5 = [v4 uniqueID];
-  v6 = [(MFDAMailbox *)self folderID];
-  v7 = [v5 stringByAppendingPathComponent:v6];
+  accountCopy = account;
+  uniqueID = [accountCopy uniqueID];
+  folderID = [(MFDAMailbox *)self folderID];
+  v7 = [uniqueID stringByAppendingPathComponent:folderID];
 
   if (v7)
   {
-    v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v4, @"Account", v7, @"RelativePath", 0}];
+    v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{accountCopy, @"Account", v7, @"RelativePath", 0}];
     v9 = [MailAccount URLForInfo:v8];
   }
 
@@ -104,40 +104,40 @@
   v14 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = MFDAMailbox;
-  v3 = [(MFMailboxUid *)&v9 displayName];
-  if ([v3 isEqualToString:@"70FB9178-576E-4CAA-A08E-F68D57BFD01E"])
+  displayName = [(MFMailboxUid *)&v9 displayName];
+  if ([displayName isEqualToString:@"70FB9178-576E-4CAA-A08E-F68D57BFD01E"])
   {
     v4 = MFLogGeneral();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(MFMailboxUid *)self ef_publicDescription];
+      ef_publicDescription = [(MFMailboxUid *)self ef_publicDescription];
       *buf = 136315394;
       v11 = "[MFDAMailbox displayName]";
       v12 = 2114;
-      v13 = v5;
+      v13 = ef_publicDescription;
       _os_log_impl(&dword_1B0389000, v4, OS_LOG_TYPE_DEFAULT, "%s [10463402] fixing bogus EAS inbox name for %{public}@", buf, 0x16u);
     }
 
     v6 = MFLookupLocalizedString(@"INBOX_SPECIAL_MAILBOX_NAME", @"Inbox", @"Message");
 
-    v3 = v6;
+    displayName = v6;
   }
 
   v7 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return displayName;
 }
 
 - (id)dictionaryRepresentation
 {
   v7.receiver = self;
   v7.super_class = MFDAMailbox;
-  v3 = [(MFMailboxUid *)&v7 mutableDictionaryRepresentation];
-  v4 = v3;
+  mutableDictionaryRepresentation = [(MFMailboxUid *)&v7 mutableDictionaryRepresentation];
+  v4 = mutableDictionaryRepresentation;
   folderID = self->_folderID;
   if (folderID)
   {
-    [v3 setObject:folderID forKeyedSubscript:@"DAFolderID"];
+    [mutableDictionaryRepresentation setObject:folderID forKeyedSubscript:@"DAFolderID"];
   }
 
   return v4;
@@ -147,9 +147,9 @@
 {
   v7.receiver = self;
   v7.super_class = MFDAMailbox;
-  v3 = [(MFMailboxUid *)&v7 _privacySafeDescription];
-  v4 = [(MFDAMailbox *)self folderID];
-  v5 = [v3 stringByAppendingFormat:@" folderID:%@", v4];
+  _privacySafeDescription = [(MFMailboxUid *)&v7 _privacySafeDescription];
+  folderID = [(MFDAMailbox *)self folderID];
+  v5 = [_privacySafeDescription stringByAppendingFormat:@" folderID:%@", folderID];
 
   return v5;
 }

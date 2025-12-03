@@ -1,23 +1,23 @@
 @interface HSItemDataRequest
-+ (id)requestWithDatabaseID:(unsigned int)a3 itemID:(unint64_t)a4 format:(id)a5;
-- (HSItemDataRequest)initWithDatabaseID:(unsigned int)a3 itemID:(unint64_t)a4 format:(id)a5;
++ (id)requestWithDatabaseID:(unsigned int)d itemID:(unint64_t)iD format:(id)format;
+- (HSItemDataRequest)initWithDatabaseID:(unsigned int)d itemID:(unint64_t)iD format:(id)format;
 @end
 
 @implementation HSItemDataRequest
 
-+ (id)requestWithDatabaseID:(unsigned int)a3 itemID:(unint64_t)a4 format:(id)a5
++ (id)requestWithDatabaseID:(unsigned int)d itemID:(unint64_t)iD format:(id)format
 {
-  v6 = *&a3;
-  v8 = a5;
-  v9 = [[a1 alloc] initWithDatabaseID:v6 itemID:a4 format:v8];
+  v6 = *&d;
+  formatCopy = format;
+  v9 = [[self alloc] initWithDatabaseID:v6 itemID:iD format:formatCopy];
 
   return v9;
 }
 
-- (HSItemDataRequest)initWithDatabaseID:(unsigned int)a3 itemID:(unint64_t)a4 format:(id)a5
+- (HSItemDataRequest)initWithDatabaseID:(unsigned int)d itemID:(unint64_t)iD format:(id)format
 {
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"databases/%u/items/%llu.%@", *&a3, a4, a5];
-  v7 = [(HSRequest *)self initWithAction:v6];
+  format = [MEMORY[0x277CCACA8] stringWithFormat:@"databases/%u/items/%llu.%@", *&d, iD, format];
+  v7 = [(HSRequest *)self initWithAction:format];
 
   return v7;
 }

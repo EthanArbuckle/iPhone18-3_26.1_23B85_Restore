@@ -1,10 +1,10 @@
 @interface UIView
-+ (UIEdgeInsets)mt_layoutMarginsForWidth:(double)a3;
-+ (double)mt_horizontalMarginsForWidth:(double)a3;
++ (UIEdgeInsets)mt_layoutMarginsForWidth:(double)width;
++ (double)mt_horizontalMarginsForWidth:(double)width;
 - (BOOL)mt_areMarginsGenerous;
 - (UIEdgeInsets)mt_layoutMargins;
-- (UIEdgeInsets)mt_layoutMarginsForWidth:(double)a3;
-- (id)mt_recursivelyFindFirstViewMeetingCriteria:(id)a3;
+- (UIEdgeInsets)mt_layoutMarginsForWidth:(double)width;
+- (id)mt_recursivelyFindFirstViewMeetingCriteria:(id)criteria;
 @end
 
 @implementation UIView
@@ -21,12 +21,12 @@
   return result;
 }
 
-- (UIEdgeInsets)mt_layoutMarginsForWidth:(double)a3
+- (UIEdgeInsets)mt_layoutMarginsForWidth:(double)width
 {
   [(UIView *)self layoutMargins];
   v5 = v4;
   v7 = v6;
-  [objc_opt_class() mt_horizontalMarginsForWidth:a3];
+  [objc_opt_class() mt_horizontalMarginsForWidth:width];
   v9 = v8;
   v10 = v5;
   v11 = v7;
@@ -46,9 +46,9 @@
   return [v3 mt_areMarginsGenerousForWidth:v4];
 }
 
-+ (double)mt_horizontalMarginsForWidth:(double)a3
++ (double)mt_horizontalMarginsForWidth:(double)width
 {
-  v3 = [a1 mt_areMarginsGenerousForWidth:a3];
+  v3 = [self mt_areMarginsGenerousForWidth:width];
   result = 16.0;
   if (v3)
   {
@@ -58,9 +58,9 @@
   return result;
 }
 
-+ (UIEdgeInsets)mt_layoutMarginsForWidth:(double)a3
++ (UIEdgeInsets)mt_layoutMarginsForWidth:(double)width
 {
-  v3 = [a1 mt_areMarginsGenerousForWidth:a3];
+  v3 = [self mt_areMarginsGenerousForWidth:width];
   v4 = 20.0;
   if (!v3)
   {
@@ -77,12 +77,12 @@
   return result;
 }
 
-- (id)mt_recursivelyFindFirstViewMeetingCriteria:(id)a3
+- (id)mt_recursivelyFindFirstViewMeetingCriteria:(id)criteria
 {
-  v4 = a3;
-  if (v4[2](v4, self))
+  criteriaCopy = criteria;
+  if (criteriaCopy[2](criteriaCopy, self))
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
@@ -91,8 +91,8 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [(UIView *)self subviews];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    subviews = [(UIView *)self subviews];
+    v7 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -103,19 +103,19 @@
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subviews);
           }
 
-          v11 = [*(*(&v13 + 1) + 8 * i) mt_recursivelyFindFirstViewMeetingCriteria:v4];
+          v11 = [*(*(&v13 + 1) + 8 * i) mt_recursivelyFindFirstViewMeetingCriteria:criteriaCopy];
           if (v11)
           {
-            v5 = v11;
+            selfCopy = v11;
 
             goto LABEL_13;
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v8)
         {
           continue;
@@ -125,12 +125,12 @@
       }
     }
 
-    v5 = 0;
+    selfCopy = 0;
   }
 
 LABEL_13:
 
-  return v5;
+  return selfCopy;
 }
 
 @end

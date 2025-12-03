@@ -2,42 +2,42 @@
 - (HROnboardingElectrocardiogramSetupCompleteViewControllerDelegate)electrocardiogramDelegate;
 - (double)_classificationTextDistance;
 - (id)_bodyFont;
-- (id)_classificationAttributedTextForElectrocardiogram:(id)a3 activeAlgorithmVersion:(int64_t)a4;
-- (id)initForOnboarding:(BOOL)a3 isSampleInteractive:(BOOL)a4 electrocardiogramDelegate:(id)a5;
-- (void)_electrocardiogramCardViewTapped:(id)a3;
+- (id)_classificationAttributedTextForElectrocardiogram:(id)electrocardiogram activeAlgorithmVersion:(int64_t)version;
+- (id)initForOnboarding:(BOOL)onboarding isSampleInteractive:(BOOL)interactive electrocardiogramDelegate:(id)delegate;
+- (void)_electrocardiogramCardViewTapped:(id)tapped;
 - (void)_recomputeState;
 - (void)_resetUI;
 - (void)_setUpConstraints;
 - (void)_setUpElectrocardiogramQuery;
 - (void)_setUpUI;
-- (void)_setupBodyLabelForSetupCompleteState:(int64_t)a3;
+- (void)_setupBodyLabelForSetupCompleteState:(int64_t)state;
 - (void)_stopElectrocardiogramQuery;
 - (void)_updateUI;
-- (void)_updateUIForElectrocardiogram:(id)a3;
-- (void)stackedButtonView:(id)a3 didTapButtonAtIndex:(int64_t)a4;
+- (void)_updateUIForElectrocardiogram:(id)electrocardiogram;
+- (void)stackedButtonView:(id)view didTapButtonAtIndex:(int64_t)index;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation HROnboardingElectrocardiogramSetupCompleteViewController
 
-- (id)initForOnboarding:(BOOL)a3 isSampleInteractive:(BOOL)a4 electrocardiogramDelegate:(id)a5
+- (id)initForOnboarding:(BOOL)onboarding isSampleInteractive:(BOOL)interactive electrocardiogramDelegate:(id)delegate
 {
-  v6 = a3;
-  v8 = a5;
+  onboardingCopy = onboarding;
+  delegateCopy = delegate;
   v9 = *MEMORY[0x277CCDEA8];
   v14.receiver = self;
   v14.super_class = HROnboardingElectrocardiogramSetupCompleteViewController;
-  v10 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)&v14 initForOnboarding:v6 upgradingFromAlgorithmVersion:v9];
+  v10 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)&v14 initForOnboarding:onboardingCopy upgradingFromAlgorithmVersion:v9];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 navigationItem];
-    [v12 setHidesBackButton:1];
+    navigationItem = [v10 navigationItem];
+    [navigationItem setHidesBackButton:1];
 
-    objc_storeWeak(v11 + 141, v8);
+    objc_storeWeak(v11 + 141, delegateCopy);
     *(v11 + 1088) = 1;
-    *(v11 + 1089) = a4;
+    *(v11 + 1089) = interactive;
   }
 
   return v11;
@@ -79,30 +79,30 @@
 
 - (void)_resetUI
 {
-  v3 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self titleLabel];
-  [v3 removeFromSuperview];
+  titleLabel = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self titleLabel];
+  [titleLabel removeFromSuperview];
 
-  v4 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self activityIndicatorView];
-  [v4 removeFromSuperview];
+  activityIndicatorView = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self activityIndicatorView];
+  [activityIndicatorView removeFromSuperview];
 
-  v5 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self activityIndicatorView];
-  [v5 stopAnimating];
+  activityIndicatorView2 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self activityIndicatorView];
+  [activityIndicatorView2 stopAnimating];
 
-  v6 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self classificationLabel];
-  [v6 removeFromSuperview];
+  classificationLabel = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self classificationLabel];
+  [classificationLabel removeFromSuperview];
 
-  v7 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogramCardView];
-  v8 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogramCardTapGestureRecognizer];
-  [v7 removeGestureRecognizer:v8];
+  electrocardiogramCardView = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogramCardView];
+  electrocardiogramCardTapGestureRecognizer = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogramCardTapGestureRecognizer];
+  [electrocardiogramCardView removeGestureRecognizer:electrocardiogramCardTapGestureRecognizer];
 
-  v9 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogramCardView];
-  [v9 removeFromSuperview];
+  electrocardiogramCardView2 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogramCardView];
+  [electrocardiogramCardView2 removeFromSuperview];
 
-  v10 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self bodyLabel];
-  [v10 removeFromSuperview];
+  bodyLabel = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self bodyLabel];
+  [bodyLabel removeFromSuperview];
 
-  v11 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self stackedButtonView];
-  [v11 removeFromSuperview];
+  stackedButtonView = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self stackedButtonView];
+  [stackedButtonView removeFromSuperview];
 
   [(HROnboardingElectrocardiogramSetupCompleteViewController *)self removeFooterView];
 }
@@ -110,228 +110,228 @@
 - (void)_setUpConstraints
 {
   v103[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self titleLabel];
-  v4 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentView];
+  titleLabel = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self titleLabel];
+  contentView = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentView];
   HKHealthUIBuddyDirectionalEdgeInsets();
-  [v3 hrui_alignHorizontalConstraintsWithView:v4 insets:?];
+  [titleLabel hrui_alignHorizontalConstraintsWithView:contentView insets:?];
 
   HKHealthUIBuddyDirectionalEdgeInsets();
   v6 = v5;
-  v7 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self titleLabel];
-  v8 = [v7 topAnchor];
-  v9 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentView];
-  v10 = [v9 topAnchor];
+  titleLabel2 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self titleLabel];
+  topAnchor = [titleLabel2 topAnchor];
+  contentView2 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
   [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentTop];
-  v11 = [v8 constraintEqualToAnchor:v10 constant:?];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
   [v11 setActive:1];
 
-  v12 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self titleLabel];
+  titleLabel3 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self titleLabel];
   LODWORD(v13) = 1148846080;
-  [v12 setContentHuggingPriority:0 forAxis:v13];
+  [titleLabel3 setContentHuggingPriority:0 forAxis:v13];
 
   if ([(HROnboardingElectrocardiogramSetupCompleteViewController *)self state]== 1)
   {
-    v14 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self activityIndicatorView];
-    v15 = [v14 leadingAnchor];
-    v16 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self titleLabel];
-    v17 = [v16 trailingAnchor];
-    v18 = [v15 constraintEqualToAnchor:v17 constant:12.0];
+    activityIndicatorView = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self activityIndicatorView];
+    leadingAnchor = [activityIndicatorView leadingAnchor];
+    titleLabel4 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self titleLabel];
+    trailingAnchor = [titleLabel4 trailingAnchor];
+    v18 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:12.0];
     [v18 setActive:1];
 
-    v19 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self activityIndicatorView];
-    v20 = [v19 trailingAnchor];
-    v21 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentView];
-    v22 = [v21 trailingAnchor];
-    v23 = [v20 constraintEqualToAnchor:v22 constant:-v6];
+    activityIndicatorView2 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self activityIndicatorView];
+    trailingAnchor2 = [activityIndicatorView2 trailingAnchor];
+    contentView3 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentView];
+    trailingAnchor3 = [contentView3 trailingAnchor];
+    v23 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-v6];
     [v23 setActive:1];
 
-    v24 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self activityIndicatorView];
-    v25 = [v24 bottomAnchor];
-    v26 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self titleLabel];
-    v27 = [v26 lastBaselineAnchor];
-    [v25 constraintEqualToAnchor:v27 constant:2.0];
+    activityIndicatorView3 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self activityIndicatorView];
+    bottomAnchor = [activityIndicatorView3 bottomAnchor];
+    titleLabel5 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self titleLabel];
+    lastBaselineAnchor = [titleLabel5 lastBaselineAnchor];
+    [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor constant:2.0];
   }
 
   else
   {
-    v24 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self titleLabel];
-    v25 = [v24 trailingAnchor];
-    v26 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentView];
-    v27 = [v26 trailingAnchor];
-    [v25 constraintLessThanOrEqualToAnchor:v27 constant:-v6];
+    activityIndicatorView3 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self titleLabel];
+    bottomAnchor = [activityIndicatorView3 trailingAnchor];
+    titleLabel5 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentView];
+    lastBaselineAnchor = [titleLabel5 trailingAnchor];
+    [bottomAnchor constraintLessThanOrEqualToAnchor:lastBaselineAnchor constant:-v6];
   }
   v28 = ;
   [v28 setActive:1];
 
   if ([(HROnboardingElectrocardiogramSetupCompleteViewController *)self state]== 2)
   {
-    v29 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self classificationLabel];
+    classificationLabel = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self classificationLabel];
 
-    if (v29)
+    if (classificationLabel)
     {
-      v30 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self classificationLabel];
-      v31 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentView];
+      classificationLabel2 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self classificationLabel];
+      contentView4 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentView];
       HKHealthUIBuddyDirectionalEdgeInsets();
-      [v30 hrui_alignHorizontalConstraintsWithView:v31 insets:?];
+      [classificationLabel2 hrui_alignHorizontalConstraintsWithView:contentView4 insets:?];
 
-      v32 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self classificationLabel];
-      v33 = [v32 topAnchor];
-      v34 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self titleLabel];
-      v35 = [v34 bottomAnchor];
-      v36 = [v33 constraintEqualToAnchor:v35 constant:15.0];
+      classificationLabel3 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self classificationLabel];
+      topAnchor3 = [classificationLabel3 topAnchor];
+      titleLabel6 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self titleLabel];
+      bottomAnchor2 = [titleLabel6 bottomAnchor];
+      v36 = [topAnchor3 constraintEqualToAnchor:bottomAnchor2 constant:15.0];
       [v36 setActive:1];
 
-      v37 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogramCardView];
-      v38 = [v37 topAnchor];
+      electrocardiogramCardView = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogramCardView];
+      topAnchor4 = [electrocardiogramCardView topAnchor];
       [(HROnboardingElectrocardiogramSetupCompleteViewController *)self classificationLabel];
     }
 
     else
     {
-      v37 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogramCardView];
-      v38 = [v37 topAnchor];
+      electrocardiogramCardView = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogramCardView];
+      topAnchor4 = [electrocardiogramCardView topAnchor];
       [(HROnboardingElectrocardiogramSetupCompleteViewController *)self titleLabel];
     }
     v44 = ;
-    v45 = [v44 bottomAnchor];
-    v46 = [v38 constraintEqualToAnchor:v45 constant:37.0];
+    bottomAnchor3 = [v44 bottomAnchor];
+    v46 = [topAnchor4 constraintEqualToAnchor:bottomAnchor3 constant:37.0];
     [v46 setActive:1];
 
-    v47 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogramCardView];
-    v48 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentView];
+    electrocardiogramCardView2 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogramCardView];
+    contentView5 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentView];
     HKHealthUIBuddyDirectionalEdgeInsets();
-    [v47 hrui_alignHorizontalConstraintsWithView:v48 insets:?];
+    [electrocardiogramCardView2 hrui_alignHorizontalConstraintsWithView:contentView5 insets:?];
 
-    v39 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self bodyLabel];
-    v40 = [v39 topAnchor];
-    v41 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogramCardView];
-    v42 = [v41 bottomAnchor];
+    bodyLabel = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self bodyLabel];
+    topAnchor5 = [bodyLabel topAnchor];
+    electrocardiogramCardView3 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogramCardView];
+    bottomAnchor4 = [electrocardiogramCardView3 bottomAnchor];
     v43 = 12.0;
   }
 
   else
   {
-    v39 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self bodyLabel];
-    v40 = [v39 topAnchor];
-    v41 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self titleLabel];
-    v42 = [v41 bottomAnchor];
+    bodyLabel = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self bodyLabel];
+    topAnchor5 = [bodyLabel topAnchor];
+    electrocardiogramCardView3 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self titleLabel];
+    bottomAnchor4 = [electrocardiogramCardView3 bottomAnchor];
     v43 = 15.0;
   }
 
-  v49 = [v40 constraintEqualToAnchor:v42 constant:v43];
+  v49 = [topAnchor5 constraintEqualToAnchor:bottomAnchor4 constant:v43];
   [v49 setActive:1];
 
-  v50 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self bodyLabel];
-  v51 = [v50 bottomAnchor];
+  bodyLabel2 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self bodyLabel];
+  bottomAnchor5 = [bodyLabel2 bottomAnchor];
 
-  v52 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self bodyLabel];
-  v53 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentView];
+  bodyLabel3 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self bodyLabel];
+  contentView6 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentView];
   HKHealthUIBuddyDirectionalEdgeInsets();
-  [v52 hrui_alignHorizontalConstraintsWithView:v53 insets:?];
+  [bodyLabel3 hrui_alignHorizontalConstraintsWithView:contentView6 insets:?];
 
-  v54 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentView];
-  v55 = [v54 bottomAnchor];
-  v56 = [v55 constraintEqualToAnchor:v51];
+  contentView7 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentView];
+  bottomAnchor6 = [contentView7 bottomAnchor];
+  v56 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor5];
   [(HROnboardingElectrocardiogramSetupCompleteViewController *)self setContentViewBottomConstraint:v56];
 
-  v57 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentViewBottomConstraint];
-  [v57 setActive:1];
+  contentViewBottomConstraint = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentViewBottomConstraint];
+  [contentViewBottomConstraint setActive:1];
 
-  v58 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self stackedButtonView];
+  stackedButtonView = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self stackedButtonView];
   HKHealthUIBuddyDirectionalEdgeInsets();
-  [(HROnboardingElectrocardiogramSetupCompleteViewController *)self setFooterView:v58 insets:?];
+  [(HROnboardingElectrocardiogramSetupCompleteViewController *)self setFooterView:stackedButtonView insets:?];
 
-  v59 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self stackedButtonView];
-  v60 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self view];
-  [v59 alignBlurViewHorizontalConstraintsWithView:v60];
+  stackedButtonView2 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self stackedButtonView];
+  view = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self view];
+  [stackedButtonView2 alignBlurViewHorizontalConstraintsWithView:view];
 
-  v61 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self view];
-  [v61 layoutIfNeeded];
+  view2 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self view];
+  [view2 layoutIfNeeded];
 
-  v62 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self view];
-  v63 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self stackedButtonView];
-  v64 = [v63 buttons];
-  v65 = [v64 firstObject];
-  [v65 frame];
+  view3 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self view];
+  stackedButtonView3 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self stackedButtonView];
+  buttons = [stackedButtonView3 buttons];
+  firstObject = [buttons firstObject];
+  [firstObject frame];
   v67 = v66;
   v69 = v68;
   v71 = v70;
   v73 = v72;
-  v74 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self stackedButtonView];
-  [v62 convertRect:v74 fromView:{v67, v69, v71, v73}];
+  stackedButtonView4 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self stackedButtonView];
+  [view3 convertRect:stackedButtonView4 fromView:{v67, v69, v71, v73}];
   v76 = v75;
 
-  v77 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentView];
-  [v77 frame];
+  contentView8 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentView];
+  [contentView8 frame];
   v79 = v78;
-  v80 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self view];
-  [v80 safeAreaInsets];
+  view4 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self view];
+  [view4 safeAreaInsets];
   v82 = v76 - v81;
 
   if (v79 <= v82)
   {
     v98 = MEMORY[0x277CCAAD0];
-    v99 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentViewBottomConstraint];
-    v102 = v99;
+    contentViewBottomConstraint2 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentViewBottomConstraint];
+    v102 = contentViewBottomConstraint2;
     v100 = [MEMORY[0x277CBEA60] arrayWithObjects:&v102 count:1];
     [v98 deactivateConstraints:v100];
 
     [(HROnboardingElectrocardiogramSetupCompleteViewController *)self setContentViewBottomConstraint:0];
-    v93 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentView];
-    v94 = [v93 bottomAnchor];
-    v95 = [v94 constraintEqualToAnchor:v51];
-    [(HROnboardingElectrocardiogramSetupCompleteViewController *)self setContentViewBottomConstraint:v95];
+    contentView9 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentView];
+    bottomAnchor7 = [contentView9 bottomAnchor];
+    stackedButtonView8 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor5];
+    [(HROnboardingElectrocardiogramSetupCompleteViewController *)self setContentViewBottomConstraint:stackedButtonView8];
   }
 
   else
   {
     [(HROnboardingElectrocardiogramSetupCompleteViewController *)self removeFooterView];
-    v83 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentView];
-    v84 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self stackedButtonView];
-    [v83 addSubview:v84];
+    contentView10 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentView];
+    stackedButtonView5 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self stackedButtonView];
+    [contentView10 addSubview:stackedButtonView5];
 
-    v85 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self stackedButtonView];
-    v86 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self titleLabel];
-    [v85 hk_alignHorizontalConstraintsWithView:v86 margin:0.0];
+    stackedButtonView6 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self stackedButtonView];
+    titleLabel7 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self titleLabel];
+    [stackedButtonView6 hk_alignHorizontalConstraintsWithView:titleLabel7 margin:0.0];
 
-    v87 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self stackedButtonView];
-    v88 = [v87 topAnchor];
-    v89 = [v88 constraintEqualToAnchor:v51 constant:*MEMORY[0x277D127A0]];
+    stackedButtonView7 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self stackedButtonView];
+    topAnchor6 = [stackedButtonView7 topAnchor];
+    v89 = [topAnchor6 constraintEqualToAnchor:bottomAnchor5 constant:*MEMORY[0x277D127A0]];
     [v89 setActive:1];
 
     v90 = MEMORY[0x277CCAAD0];
-    v91 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentViewBottomConstraint];
-    v103[0] = v91;
+    contentViewBottomConstraint3 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentViewBottomConstraint];
+    v103[0] = contentViewBottomConstraint3;
     v92 = [MEMORY[0x277CBEA60] arrayWithObjects:v103 count:1];
     [v90 deactivateConstraints:v92];
 
     [(HROnboardingElectrocardiogramSetupCompleteViewController *)self setContentViewBottomConstraint:0];
-    v93 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentView];
-    v94 = [v93 bottomAnchor];
-    v95 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self stackedButtonView];
-    v96 = [v95 bottomAnchor];
-    v97 = [v94 constraintEqualToAnchor:v96];
+    contentView9 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentView];
+    bottomAnchor7 = [contentView9 bottomAnchor];
+    stackedButtonView8 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self stackedButtonView];
+    bottomAnchor8 = [stackedButtonView8 bottomAnchor];
+    v97 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
     [(HROnboardingElectrocardiogramSetupCompleteViewController *)self setContentViewBottomConstraint:v97];
   }
 
-  v101 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentViewBottomConstraint];
-  [v101 setActive:1];
+  contentViewBottomConstraint4 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self contentViewBottomConstraint];
+  [contentViewBottomConstraint4 setActive:1];
 }
 
-- (void)_updateUIForElectrocardiogram:(id)a3
+- (void)_updateUIForElectrocardiogram:(id)electrocardiogram
 {
-  v4 = a3;
-  v5 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogramQuery];
+  electrocardiogramCopy = electrocardiogram;
+  electrocardiogramQuery = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogramQuery];
 
-  if (v5)
+  if (electrocardiogramQuery)
   {
     [(HROnboardingElectrocardiogramSetupCompleteViewController *)self _stopElectrocardiogramQuery];
   }
 
-  [(HROnboardingElectrocardiogramSetupCompleteViewController *)self setElectrocardiogram:v4];
+  [(HROnboardingElectrocardiogramSetupCompleteViewController *)self setElectrocardiogram:electrocardiogramCopy];
   [(HROnboardingElectrocardiogramSetupCompleteViewController *)self _recomputeState];
-  v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v7 = [v6 integerForKey:@"HROnboardingCinnamonSetupDelayInSec"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v7 = [standardUserDefaults integerForKey:@"HROnboardingCinnamonSetupDelayInSec"];
 
   if ([MEMORY[0x277CCDD30] isAppleInternalInstall] && v7 >= 1)
   {
@@ -365,47 +365,47 @@ uint64_t __90__HROnboardingElectrocardiogramSetupCompleteViewController__updateU
 
 - (void)_updateUI
 {
-  v2 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogramCardView];
-  [v2 updateUI];
+  electrocardiogramCardView = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogramCardView];
+  [electrocardiogramCardView updateUI];
 }
 
-- (void)_electrocardiogramCardViewTapped:(id)a3
+- (void)_electrocardiogramCardViewTapped:(id)tapped
 {
   [(HROnboardingElectrocardiogramSetupCompleteViewController *)self _stopElectrocardiogramQuery];
-  v4 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogramDelegate];
+  electrocardiogramDelegate = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogramDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v7 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogramDelegate];
-    v6 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogram];
-    [v7 didTapOnElectrocardiogram:v6];
+    electrocardiogramDelegate2 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogramDelegate];
+    electrocardiogram = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogram];
+    [electrocardiogramDelegate2 didTapOnElectrocardiogram:electrocardiogram];
   }
 }
 
-- (void)stackedButtonView:(id)a3 didTapButtonAtIndex:(int64_t)a4
+- (void)stackedButtonView:(id)view didTapButtonAtIndex:(int64_t)index
 {
-  if (!a4)
+  if (!index)
   {
     [(HROnboardingElectrocardiogramSetupCompleteViewController *)self _stopElectrocardiogramQuery];
-    v6 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self delegate];
-    [v6 stepForward];
+    delegate = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self delegate];
+    [delegate stepForward];
   }
 }
 
 - (void)_recomputeState
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self delegate];
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"HROnboardingElectrocardiogramDidCompleteRecordingKey"];
-  v6 = [v5 BOOLValue];
+  delegate = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self delegate];
+  userInfo = [delegate userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"HROnboardingElectrocardiogramDidCompleteRecordingKey"];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
-    v7 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogram];
+    electrocardiogram = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogram];
 
-    if (v7)
+    if (electrocardiogram)
     {
       v8 = 2;
     }
@@ -432,67 +432,67 @@ uint64_t __90__HROnboardingElectrocardiogramSetupCompleteViewController__updateU
     v13 = 138412546;
     v14 = v11;
     v15 = 2048;
-    v16 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self state];
+    state = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self state];
     _os_log_impl(&dword_2521E7000, v10, OS_LOG_TYPE_DEFAULT, "[%@]: Cinnamon Setup Complete state: %ld", &v13, 0x16u);
   }
 }
 
-- (id)_classificationAttributedTextForElectrocardiogram:(id)a3 activeAlgorithmVersion:(int64_t)a4
+- (id)_classificationAttributedTextForElectrocardiogram:(id)electrocardiogram activeAlgorithmVersion:(int64_t)version
 {
   v23[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277D74248];
-  v7 = a3;
-  v8 = [v6 defaultParagraphStyle];
-  v9 = [v8 mutableCopy];
+  electrocardiogramCopy = electrocardiogram;
+  defaultParagraphStyle = [v6 defaultParagraphStyle];
+  v9 = [defaultParagraphStyle mutableCopy];
 
   [(HROnboardingElectrocardiogramSetupCompleteViewController *)self _classificationTextDistance];
   v11 = v10;
-  v12 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self _bodyFont];
-  [v12 ascender];
+  _bodyFont = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self _bodyFont];
+  [_bodyFont ascender];
   v14 = v11 - v13;
-  v15 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self _bodyFont];
-  [v15 descender];
+  _bodyFont2 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self _bodyFont];
+  [_bodyFont2 descender];
   [v9 setParagraphSpacing:v14 - v16];
 
   v22 = *MEMORY[0x277D74118];
   v23[0] = v9;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
   v18 = objc_alloc(MEMORY[0x277CCA898]);
-  v19 = [v7 hrui_classificationShortBodyTextWithActiveAlgorithmVersion:a4 isSharedData:0];
+  v19 = [electrocardiogramCopy hrui_classificationShortBodyTextWithActiveAlgorithmVersion:version isSharedData:0];
 
   v20 = [v18 initWithString:v19 attributes:v17];
 
   return v20;
 }
 
-- (void)_setupBodyLabelForSetupCompleteState:(int64_t)a3
+- (void)_setupBodyLabelForSetupCompleteState:(int64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     v11 = HRUIECGLocalizedString(@"ECG_ONBOARDING_6_BODY");
-    v12 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self bodyLabel];
-    [v12 setText:v11];
+    bodyLabel = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self bodyLabel];
+    [bodyLabel setText:v11];
 
-    v13 = [MEMORY[0x277D75348] secondaryLabelColor];
-    v14 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self bodyLabel];
-    [v14 setTextColor:v13];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    bodyLabel2 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self bodyLabel];
+    [bodyLabel2 setTextColor:secondaryLabelColor];
 
-    v15 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self bodyLabel];
-    [v15 setTextAlignment:4];
+    bodyLabel3 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self bodyLabel];
+    [bodyLabel3 setTextAlignment:4];
 
-    v10 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self _subheadlineFont];
+    _subheadlineFont = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self _subheadlineFont];
   }
 
   else
   {
-    if (a3 == 1)
+    if (state == 1)
     {
       v4 = @"ECG_ONBOARDING_6_BODY_WAITING_FOR_SAMPLE";
     }
 
     else
     {
-      if (a3)
+      if (state)
       {
         return;
       }
@@ -501,30 +501,30 @@ uint64_t __90__HROnboardingElectrocardiogramSetupCompleteViewController__updateU
     }
 
     v5 = HRUIECGLocalizedString(v4);
-    v6 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self bodyLabel];
-    [v6 setText:v5];
+    bodyLabel4 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self bodyLabel];
+    [bodyLabel4 setText:v5];
 
-    v7 = [MEMORY[0x277D75348] secondaryLabelColor];
-    v8 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self bodyLabel];
-    [v8 setTextColor:v7];
+    secondaryLabelColor2 = [MEMORY[0x277D75348] secondaryLabelColor];
+    bodyLabel5 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self bodyLabel];
+    [bodyLabel5 setTextColor:secondaryLabelColor2];
 
-    v9 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self bodyLabel];
-    [v9 setTextAlignment:4];
+    bodyLabel6 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self bodyLabel];
+    [bodyLabel6 setTextAlignment:4];
 
-    v10 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self _bodyFont];
+    _subheadlineFont = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self _bodyFont];
   }
 
-  v17 = v10;
-  v16 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self bodyLabel];
-  [v16 setFont:v17];
+  v17 = _subheadlineFont;
+  bodyLabel7 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self bodyLabel];
+  [bodyLabel7 setFont:v17];
 }
 
 - (void)_setUpElectrocardiogramQuery
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self delegate];
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"HROnboardingElectrocardiogramStartDateKey"];
+  delegate = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self delegate];
+  userInfo = [delegate userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"HROnboardingElectrocardiogramStartDateKey"];
 
   v6 = [MEMORY[0x277CCD838] predicateForSamplesWithStartDate:v5 endDate:0 options:0];
   objc_initWeak(&location, self);
@@ -542,14 +542,14 @@ uint64_t __90__HROnboardingElectrocardiogramSetupCompleteViewController__updateU
   }
 
   v10 = objc_alloc(MEMORY[0x277CCCFF0]);
-  v11 = [MEMORY[0x277CCD3A8] electrocardiogramType];
+  electrocardiogramType = [MEMORY[0x277CCD3A8] electrocardiogramType];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __88__HROnboardingElectrocardiogramSetupCompleteViewController__setUpElectrocardiogramQuery__block_invoke;
   v19[3] = &unk_2796FB7C8;
   v19[4] = self;
   objc_copyWeak(&v20, &location);
-  v12 = [v10 initWithType:v11 predicate:v6 anchor:0 limit:0 resultsHandler:v19];
+  v12 = [v10 initWithType:electrocardiogramType predicate:v6 anchor:0 limit:0 resultsHandler:v19];
   [(HROnboardingElectrocardiogramSetupCompleteViewController *)self setElectrocardiogramQuery:v12];
 
   v17 = MEMORY[0x277D85DD0];
@@ -557,10 +557,10 @@ uint64_t __90__HROnboardingElectrocardiogramSetupCompleteViewController__updateU
   v13 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogramQuery:v17];
   [v13 setUpdateHandler:&v17];
 
-  v14 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self delegate];
-  v15 = [v14 healthStore];
-  v16 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogramQuery];
-  [v15 executeQuery:v16];
+  delegate2 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self delegate];
+  healthStore = [delegate2 healthStore];
+  electrocardiogramQuery = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogramQuery];
+  [healthStore executeQuery:electrocardiogramQuery];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&v20);
@@ -741,9 +741,9 @@ void __88__HROnboardingElectrocardiogramSetupCompleteViewController__setUpElectr
 - (void)_stopElectrocardiogramQuery
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogramQuery];
+  electrocardiogramQuery = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogramQuery];
 
-  if (v3)
+  if (electrocardiogramQuery)
   {
     _HKInitializeLogging();
     v4 = *MEMORY[0x277CCC2D8];
@@ -756,10 +756,10 @@ void __88__HROnboardingElectrocardiogramSetupCompleteViewController__setUpElectr
       _os_log_impl(&dword_2521E7000, v5, OS_LOG_TYPE_DEFAULT, "[%@]: Stopping query for new electrocardiograms", v10, 0xCu);
     }
 
-    v7 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self delegate];
-    v8 = [v7 healthStore];
-    v9 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogramQuery];
-    [v8 stopQuery:v9];
+    delegate = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self delegate];
+    healthStore = [delegate healthStore];
+    electrocardiogramQuery2 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self electrocardiogramQuery];
+    [healthStore stopQuery:electrocardiogramQuery2];
 
     [(HROnboardingElectrocardiogramSetupCompleteViewController *)self setElectrocardiogramQuery:0];
   }
@@ -768,8 +768,8 @@ void __88__HROnboardingElectrocardiogramSetupCompleteViewController__setUpElectr
 - (double)_classificationTextDistance
 {
   v2 = MEMORY[0x277D75520];
-  v3 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self _bodyFontTextStyle];
-  v4 = [v2 metricsForTextStyle:v3];
+  _bodyFontTextStyle = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self _bodyFontTextStyle];
+  v4 = [v2 metricsForTextStyle:_bodyFontTextStyle];
 
   [v4 scaledValueForValue:30.0];
   v6 = v5;
@@ -780,8 +780,8 @@ void __88__HROnboardingElectrocardiogramSetupCompleteViewController__setUpElectr
 - (id)_bodyFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self _bodyFontTextStyle];
-  v4 = [v2 hk_preferredFontForTextStyle:v3];
+  _bodyFontTextStyle = [(HROnboardingElectrocardiogramSetupCompleteViewController *)self _bodyFontTextStyle];
+  v4 = [v2 hk_preferredFontForTextStyle:_bodyFontTextStyle];
 
   return v4;
 }

@@ -106,9 +106,9 @@ void __43__CKUIThemeMac_conversationListSenderColor__block_invoke()
 
   if (!v4)
   {
-    v5 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
     v6 = conversationListSummaryColor_sBehavior_2332;
-    conversationListSummaryColor_sBehavior_2332 = v5;
+    conversationListSummaryColor_sBehavior_2332 = secondaryLabelColor;
 
     conversationListSummaryColor_sIsIncreaseContrastEnabled_conversationListSummaryColor_2331 = v2;
     v3 = conversationListSummaryColor_sBehavior_2332;
@@ -133,9 +133,9 @@ void __43__CKUIThemeMac_conversationListSenderColor__block_invoke()
 
   if (!v4)
   {
-    v5 = [MEMORY[0x1E69DC888] quaternaryLabelColor];
+    quaternaryLabelColor = [MEMORY[0x1E69DC888] quaternaryLabelColor];
     v6 = conversationListEditingPinsSummaryColor_sBehavior_2334;
-    conversationListEditingPinsSummaryColor_sBehavior_2334 = v5;
+    conversationListEditingPinsSummaryColor_sBehavior_2334 = quaternaryLabelColor;
 
     conversationListEditingPinsSummaryColor_sIsIncreaseContrastEnabled_conversationListEditingPinsSummaryColor_2333 = v2;
     v3 = conversationListEditingPinsSummaryColor_sBehavior_2334;
@@ -227,9 +227,9 @@ void __42__CKUIThemeMac_readSelectedIndicatorColor__block_invoke()
 
   if (!v4)
   {
-    v5 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
     v6 = conversationListDateColor_sBehavior_2350;
-    conversationListDateColor_sBehavior_2350 = v5;
+    conversationListDateColor_sBehavior_2350 = secondaryLabelColor;
 
     conversationListDateColor_sIsIncreaseContrastEnabled_conversationListDateColor_2349 = v2;
     v3 = conversationListDateColor_sBehavior_2350;

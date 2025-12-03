@@ -1,16 +1,16 @@
 @interface SMEmergencyCallManager
 - (BOOL)_isEmergencyCallOngoing;
 - (SMEmergencyCallManager)init;
-- (void)_addObserver:(id)a3;
+- (void)_addObserver:(id)observer;
 - (void)_notifyObserversForEmergencyCallEnded;
 - (void)_notifyObserversForEmergencyCallStarted;
-- (void)_onTUCallCenterCallStatusChangedNotification:(id)a3;
-- (void)_removeObserver:(id)a3;
+- (void)_onTUCallCenterCallStatusChangedNotification:(id)notification;
+- (void)_removeObserver:(id)observer;
 - (void)_setup;
-- (void)addObserver:(id)a3;
-- (void)fetchIsEmergencyCallOngoingWithHandler:(id)a3;
-- (void)onTUCallCenterCallStatusChangedNotification:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)fetchIsEmergencyCallOngoingWithHandler:(id)handler;
+- (void)onTUCallCenterCallStatusChangedNotification:(id)notification;
+- (void)removeObserver:(id)observer;
 - (void)setup;
 @end
 
@@ -29,16 +29,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(SMEmergencyCallManager *)v4 UTF8String];
+      uTF8String = [(SMEmergencyCallManager *)v4 UTF8String];
     }
 
     else
     {
       v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), v4];
-      v6 = [v7 UTF8String];
+      uTF8String = [v7 UTF8String];
     }
 
-    v8 = dispatch_queue_create(v6, v5);
+    v8 = dispatch_queue_create(uTF8String, v5);
 
     queue = v4->_queue;
     v4->_queue = v8;
@@ -55,40 +55,40 @@
 
 - (void)setup
 {
-  v3 = [(SMEmergencyCallManager *)self queue];
+  queue = [(SMEmergencyCallManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__SMEmergencyCallManager_setup__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_setup
 {
   v3 = MEMORY[0x277D6EDF8];
-  v4 = [(SMEmergencyCallManager *)self queue];
-  v5 = [v3 callCenterWithQueue:v4];
+  queue = [(SMEmergencyCallManager *)self queue];
+  v5 = [v3 callCenterWithQueue:queue];
   callCenter = self->_callCenter;
   self->_callCenter = v5;
 
   [(TUCallCenter *)self->_callCenter registerWithCompletionHandler:&__block_literal_global_100];
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:self selector:sel_onTUCallCenterCallStatusChangedNotification_ name:*MEMORY[0x277D6EFF0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_onTUCallCenterCallStatusChangedNotification_ name:*MEMORY[0x277D6EFF0] object:0];
 }
 
-- (void)fetchIsEmergencyCallOngoingWithHandler:(id)a3
+- (void)fetchIsEmergencyCallOngoingWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SMEmergencyCallManager *)self queue];
+  handlerCopy = handler;
+  queue = [(SMEmergencyCallManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__SMEmergencyCallManager_fetchIsEmergencyCallOngoingWithHandler___block_invoke;
   v7[3] = &unk_2788C4D38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
 uint64_t __65__SMEmergencyCallManager_fetchIsEmergencyCallOngoingWithHandler___block_invoke(uint64_t a1)
@@ -143,38 +143,38 @@ LABEL_11:
   return v3;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SMEmergencyCallManager *)self queue];
+  observerCopy = observer;
+  queue = [(SMEmergencyCallManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__SMEmergencyCallManager_addObserver___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SMEmergencyCallManager *)self queue];
+  observerCopy = observer;
+  queue = [(SMEmergencyCallManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__SMEmergencyCallManager_removeObserver___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_addObserver:(id)a3
+- (void)_addObserver:(id)observer
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -190,25 +190,25 @@ LABEL_11:
     }
   }
 
-  [(NSHashTable *)self->_observers addObject:v4];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
   if ([(SMEmergencyCallManager *)self _isEmergencyCallOngoing])
   {
     if (objc_opt_respondsToSelector())
     {
-      [v4 onEmergencyCallStarted];
+      [observerCopy onEmergencyCallStarted];
     }
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [v4 onEmergencyCallEnded];
+    [observerCopy onEmergencyCallEnded];
   }
 }
 
-- (void)_removeObserver:(id)a3
+- (void)_removeObserver:(id)observer
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -224,7 +224,7 @@ LABEL_11:
     }
   }
 
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 }
 
 - (void)_notifyObserversForEmergencyCallStarted
@@ -234,8 +234,8 @@ LABEL_11:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(SMEmergencyCallManager *)self observers];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  observers = [(SMEmergencyCallManager *)self observers];
+  v3 = [observers countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -247,7 +247,7 @@ LABEL_11:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(observers);
         }
 
         v7 = *(*(&v8 + 1) + 8 * v6);
@@ -260,7 +260,7 @@ LABEL_11:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [observers countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -274,8 +274,8 @@ LABEL_11:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(SMEmergencyCallManager *)self observers];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  observers = [(SMEmergencyCallManager *)self observers];
+  v3 = [observers countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -287,7 +287,7 @@ LABEL_11:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(observers);
         }
 
         v7 = *(*(&v8 + 1) + 8 * v6);
@@ -300,17 +300,17 @@ LABEL_11:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [observers countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)onTUCallCenterCallStatusChangedNotification:(id)a3
+- (void)onTUCallCenterCallStatusChangedNotification:(id)notification
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -322,35 +322,35 @@ LABEL_11:
     }
   }
 
-  v6 = [(SMEmergencyCallManager *)self queue];
+  queue = [(SMEmergencyCallManager *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __70__SMEmergencyCallManager_onTUCallCenterCallStatusChangedNotification___block_invoke;
   v8[3] = &unk_2788C4A70;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = notificationCopy;
+  v7 = notificationCopy;
+  dispatch_async(queue, v8);
 }
 
-- (void)_onTUCallCenterCallStatusChangedNotification:(id)a3
+- (void)_onTUCallCenterCallStatusChangedNotification:(id)notification
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v5 isEqualToString:*MEMORY[0x277D6EFF0]];
+  notificationCopy = notification;
+  name = [notificationCopy name];
+  v6 = [name isEqualToString:*MEMORY[0x277D6EFF0]];
 
   if (v6)
   {
-    v7 = [v4 object];
+    object = [notificationCopy object];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v9 = [v4 object];
-      v10 = v9;
-      if (!v9 || ![v9 isEmergency])
+      object2 = [notificationCopy object];
+      v10 = object2;
+      if (!object2 || ![object2 isEmergency])
       {
         goto LABEL_18;
       }
@@ -363,13 +363,13 @@ LABEL_11:
           *buf = 136446466;
           v21 = "[SMEmergencyCallManager _onTUCallCenterCallStatusChangedNotification:]";
           v22 = 1024;
-          v23 = [v10 status];
+          status = [v10 status];
           _os_log_debug_impl(&dword_2304B3000, v11, OS_LOG_TYPE_DEBUG, "%{public}s, emergency call with status, %d", buf, 0x12u);
         }
       }
 
-      v12 = [v10 status];
-      switch(v12)
+      status2 = [v10 status];
+      switch(status2)
       {
         case 1:
           goto LABEL_28;
@@ -385,8 +385,8 @@ LABEL_11:
             }
           }
 
-          v14 = [(SMEmergencyCallManager *)self queue];
-          v15 = v14;
+          queue = [(SMEmergencyCallManager *)self queue];
+          v15 = queue;
           v18[0] = MEMORY[0x277D85DD0];
           v18[1] = 3221225472;
           v18[2] = __71__SMEmergencyCallManager__onTUCallCenterCallStatusChangedNotification___block_invoke_10;
@@ -407,8 +407,8 @@ LABEL_28:
             }
           }
 
-          v14 = [(SMEmergencyCallManager *)self queue];
-          v15 = v14;
+          queue = [(SMEmergencyCallManager *)self queue];
+          v15 = queue;
           v19[0] = MEMORY[0x277D85DD0];
           v19[1] = 3221225472;
           v19[2] = __71__SMEmergencyCallManager__onTUCallCenterCallStatusChangedNotification___block_invoke;
@@ -416,7 +416,7 @@ LABEL_28:
           v19[4] = self;
           v16 = v19;
 LABEL_25:
-          dispatch_async(v14, v16);
+          dispatch_async(queue, v16);
 
           break;
       }

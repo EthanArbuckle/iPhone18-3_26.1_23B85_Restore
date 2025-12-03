@@ -1,16 +1,16 @@
 @interface EDSearchableIndexVerifier
 + (OS_os_log)log;
 + (OS_os_log)signpostLog;
-- (EDSearchableIndexVerifier)initWithDataSource:(id)a3;
+- (EDSearchableIndexVerifier)initWithDataSource:(id)source;
 - (EDSearchableIndexVerifierDataSource)dataSource;
-- (id)_missingTransactionIDsFromTransactionIDs:(id)a3;
-- (id)_verifyDataSamples:(id)a3;
-- (id)_verifyDataSamples:(id)a3 usingTester:(id)a4;
-- (id)_verifySamples:(id)a3;
-- (unint64_t)_findMissingTransactionIDs:(id)a3 dataSource:(id)a4;
+- (id)_missingTransactionIDsFromTransactionIDs:(id)ds;
+- (id)_verifyDataSamples:(id)samples;
+- (id)_verifyDataSamples:(id)samples usingTester:(id)tester;
+- (id)_verifySamples:(id)samples;
+- (unint64_t)_findMissingTransactionIDs:(id)ds dataSource:(id)source;
 - (unint64_t)signpostID;
-- (void)_addFailingSamples:(id)a3 toResultDictionary:(id)a4;
-- (void)verifyDataSamplesWithCompletionHandler:(id)a3 scheduler:(id)a4;
+- (void)_addFailingSamples:(id)samples toResultDictionary:(id)dictionary;
+- (void)verifyDataSamplesWithCompletionHandler:(id)handler scheduler:(id)scheduler;
 @end
 
 @implementation EDSearchableIndexVerifier
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __32__EDSearchableIndexVerifier_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_93 != -1)
   {
     dispatch_once(&log_onceToken_93, block);
@@ -46,7 +46,7 @@ void __32__EDSearchableIndexVerifier_log__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __40__EDSearchableIndexVerifier_signpostLog__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (signpostLog_onceToken_10 != -1)
   {
     dispatch_once(&signpostLog_onceToken_10, block);
@@ -67,22 +67,22 @@ void __40__EDSearchableIndexVerifier_signpostLog__block_invoke(uint64_t a1)
 
 - (unint64_t)signpostID
 {
-  v3 = [objc_opt_class() signpostLog];
-  v4 = os_signpost_id_make_with_pointer(v3, self);
+  signpostLog = [objc_opt_class() signpostLog];
+  v4 = os_signpost_id_make_with_pointer(signpostLog, self);
 
   return v4;
 }
 
-- (EDSearchableIndexVerifier)initWithDataSource:(id)a3
+- (EDSearchableIndexVerifier)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v10.receiver = self;
   v10.super_class = EDSearchableIndexVerifier;
   v5 = [(EDSearchableIndexVerifier *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_dataSource, v4);
+    objc_storeWeak(&v5->_dataSource, sourceCopy);
     v7 = _os_activity_create(&dword_1C61EF000, "verifying searchable index", MEMORY[0x1E69E9C08], OS_ACTIVITY_FLAG_DEFAULT);
     indexVerificationActivity = v6->_indexVerificationActivity;
     v6->_indexVerificationActivity = v7;
@@ -91,22 +91,22 @@ void __40__EDSearchableIndexVerifier_signpostLog__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (id)_verifyDataSamples:(id)a3 usingTester:(id)a4
+- (id)_verifyDataSamples:(id)samples usingTester:(id)tester
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v28 = a4;
-  v7 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+  samplesCopy = samples;
+  testerCopy = tester;
+  v7 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(samplesCopy, "count")}];
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __60__EDSearchableIndexVerifier__verifyDataSamples_usingTester___block_invoke;
   v40[3] = &unk_1E8257368;
-  v8 = v28;
+  v8 = testerCopy;
   v41 = v8;
   v9 = v7;
   v42 = v9;
-  [v6 enumerateKeysAndObjectsUsingBlock:v40];
-  v10 = [MEMORY[0x1E699B868] promise];
+  [samplesCopy enumerateKeysAndObjectsUsingBlock:v40];
+  promise = [MEMORY[0x1E699B868] promise];
   v11 = [v8 expressionFromDataSamples:v9];
   if ([v11 isValid])
   {
@@ -115,7 +115,7 @@ void __40__EDSearchableIndexVerifier_signpostLog__block_invoke(uint64_t a1)
     *&buf[16] = 0x2020000000;
     LOBYTE(v44) = 0;
     v12 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v9, "count")}];
-    v13 = [v9 allKeys];
+    allKeys = [v9 allKeys];
     v37[0] = MEMORY[0x1E69E9820];
     v37[1] = 3221225472;
     v37[2] = __60__EDSearchableIndexVerifier__verifyDataSamples_usingTester___block_invoke_2;
@@ -124,10 +124,10 @@ void __40__EDSearchableIndexVerifier_signpostLog__block_invoke(uint64_t a1)
     v38 = v14;
     v15 = v11;
     v39 = v15;
-    [v13 enumerateObjectsUsingBlock:v37];
+    [allKeys enumerateObjectsUsingBlock:v37];
 
-    v16 = [MEMORY[0x1E695E000] standardUserDefaults];
-    LOBYTE(v13) = [v16 BOOLForKey:@"EDSearchableIndexPostFakeCorruptSearchableIndexErrors"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    LOBYTE(allKeys) = [standardUserDefaults BOOLForKey:@"EDSearchableIndexPostFakeCorruptSearchableIndexErrors"];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -136,11 +136,11 @@ void __40__EDSearchableIndexVerifier_signpostLog__block_invoke(uint64_t a1)
     aBlock[4] = self;
     v30 = v8;
     v35 = buf;
-    v31 = v10;
+    v31 = promise;
     v17 = v14;
     v32 = v17;
     v33 = v9;
-    v36 = v13;
+    v36 = allKeys;
     v18 = v15;
     v34 = v18;
     v19 = _Block_copy(aBlock);
@@ -156,7 +156,7 @@ void __40__EDSearchableIndexVerifier_signpostLog__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       v22 = objc_opt_class();
-      v23 = [v6 count];
+      v23 = [samplesCopy count];
       v24 = [v9 count];
       *buf = 138544130;
       *&buf[4] = v22;
@@ -169,14 +169,14 @@ void __40__EDSearchableIndexVerifier_signpostLog__block_invoke(uint64_t a1)
       _os_log_impl(&dword_1C61EF000, v21, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> did not return a spotlight query. dataSamples.count=%lu transformedDataSamples.count=%lu", buf, 0x2Au);
     }
 
-    [v10 finishWithResult:MEMORY[0x1E695E0F8]];
+    [promise finishWithResult:MEMORY[0x1E695E0F8]];
   }
 
-  v25 = [v10 future];
+  future = [promise future];
 
   v26 = *MEMORY[0x1E69E9840];
 
-  return v25;
+  return future;
 }
 
 void __60__EDSearchableIndexVerifier__verifyDataSamples_usingTester___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -305,16 +305,16 @@ void __60__EDSearchableIndexVerifier__verifyDataSamples_usingTester___block_invo
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_addFailingSamples:(id)a3 toResultDictionary:(id)a4
+- (void)_addFailingSamples:(id)samples toResultDictionary:(id)dictionary
 {
-  v5 = a4;
+  dictionaryCopy = dictionary;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__EDSearchableIndexVerifier__addFailingSamples_toResultDictionary___block_invoke;
   v7[3] = &unk_1E8257408;
-  v8 = v5;
-  v6 = v5;
-  [a3 enumerateKeysAndObjectsUsingBlock:v7];
+  v8 = dictionaryCopy;
+  v6 = dictionaryCopy;
+  [samples enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 void __67__EDSearchableIndexVerifier__addFailingSamples_toResultDictionary___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -331,11 +331,11 @@ void __67__EDSearchableIndexVerifier__addFailingSamples_toResultDictionary___blo
   [v6 addObject:v5];
 }
 
-- (id)_verifySamples:(id)a3
+- (id)_verifySamples:(id)samples
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  samplesCopy = samples;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v22 = objc_alloc_init(EDSearchableIndexSubjectTester);
   v35[0] = v22;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:1];
@@ -358,7 +358,7 @@ void __67__EDSearchableIndexVerifier__addFailingSamples_toResultDictionary___blo
           objc_enumerationMutation(v7);
         }
 
-        v11 = [(EDSearchableIndexVerifier *)self _verifyDataSamples:v4 usingTester:*(*(&v29 + 1) + 8 * i)];
+        v11 = [(EDSearchableIndexVerifier *)self _verifyDataSamples:samplesCopy usingTester:*(*(&v29 + 1) + 8 * i)];
         [v6 addObject:v11];
       }
 
@@ -374,8 +374,8 @@ void __67__EDSearchableIndexVerifier__addFailingSamples_toResultDictionary___blo
   v13 = v28;
   if (v13)
   {
-    v14 = v5;
-    v5 = 0;
+    v14 = dictionary;
+    dictionary = 0;
   }
 
   else
@@ -399,7 +399,7 @@ void __67__EDSearchableIndexVerifier__addFailingSamples_toResultDictionary___blo
             objc_enumerationMutation(v14);
           }
 
-          [(EDSearchableIndexVerifier *)self _addFailingSamples:*(*(&v24 + 1) + 8 * j) toResultDictionary:v5, v20];
+          [(EDSearchableIndexVerifier *)self _addFailingSamples:*(*(&v24 + 1) + 8 * j) toResultDictionary:dictionary, v20];
         }
 
         v15 = [v14 countByEnumeratingWithState:&v24 objects:v33 count:16];
@@ -412,26 +412,26 @@ void __67__EDSearchableIndexVerifier__addFailingSamples_toResultDictionary___blo
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return dictionary;
 }
 
-- (void)verifyDataSamplesWithCompletionHandler:(id)a3 scheduler:(id)a4
+- (void)verifyDataSamplesWithCompletionHandler:(id)handler scheduler:(id)scheduler
 {
   v55 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  schedulerCopy = scheduler;
   if (EFProtectedDataAvailable())
   {
     state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
     state.opaque[1] = 0xAAAAAAAAAAAAAAAALL;
     os_activity_scope_enter(self->_indexVerificationActivity, &state);
-    v8 = [(EDSearchableIndexVerifier *)self dataSource];
+    dataSource = [(EDSearchableIndexVerifier *)self dataSource];
     v9 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    v10 = [(EDSearchableIndexVerifier *)self _findMissingTransactionIDs:v9 dataSource:v8];
+    v10 = [(EDSearchableIndexVerifier *)self _findMissingTransactionIDs:v9 dataSource:dataSource];
     if (v10 - 1 <= 1)
     {
       os_activity_scope_leave(&state);
-      if (!v6)
+      if (!handlerCopy)
       {
 LABEL_35:
 
@@ -442,11 +442,11 @@ LABEL_35:
       v44[1] = 3221225472;
       v44[2] = __78__EDSearchableIndexVerifier_verifyDataSamplesWithCompletionHandler_scheduler___block_invoke_2;
       v44[3] = &unk_1E8257430;
-      v46 = v6;
+      v46 = handlerCopy;
       v47 = v10;
       v9 = v9;
       v45 = v9;
-      [v7 performSyncBlock:v44];
+      [schedulerCopy performSyncBlock:v44];
 
       v11 = v46;
 LABEL_34:
@@ -454,16 +454,16 @@ LABEL_34:
       goto LABEL_35;
     }
 
-    v32 = [v8 searchableIndexForSearchableIndexVerifier:self];
+    v32 = [dataSource searchableIndexForSearchableIndexVerifier:self];
     [MEMORY[0x1E695E000] standardUserDefaults];
     *buf = 0;
     v41 = buf;
     v31 = v42 = 0x2020000000;
     v13 = [v31 valueForKey:@"kDefaultsKeyLastVerifiedMessageID"];
-    v14 = [v13 longLongValue];
+    longLongValue = [v13 longLongValue];
 
-    v43 = v14;
-    v15 = [v8 dataSamplesForSearchableIndexVerifier:self searchableIndex:v32 count:64 lastVerifiedMessageID:*(v41 + 3)];
+    v43 = longLongValue;
+    v15 = [dataSource dataSamplesForSearchableIndexVerifier:self searchableIndex:v32 count:64 lastVerifiedMessageID:*(v41 + 3)];
     v30 = [v15 count];
     if (![v15 count])
     {
@@ -476,7 +476,7 @@ LABEL_34:
 
       [v31 setInteger:0 forKey:@"kDefaultsKeyLastVerifiedMessageID"];
       os_activity_scope_leave(&state);
-      if (!v6)
+      if (!handlerCopy)
       {
         goto LABEL_33;
       }
@@ -485,9 +485,9 @@ LABEL_34:
       v38[1] = 3221225472;
       v38[2] = __78__EDSearchableIndexVerifier_verifyDataSamplesWithCompletionHandler_scheduler___block_invoke_31;
       v38[3] = &unk_1E8257458;
-      v39[0] = v6;
+      v39[0] = handlerCopy;
       v39[1] = v10;
-      [v7 performSyncBlock:v38];
+      [schedulerCopy performSyncBlock:v38];
       v27 = v39;
       goto LABEL_31;
     }
@@ -510,7 +510,7 @@ LABEL_34:
         [EDSearchableIndexVerifier verifyDataSamplesWithCompletionHandler:v19 scheduler:v18];
       }
 
-      v20 = [v8 dataSamplesForSearchableIndexVerifier:self searchableIndex:v32 count:512 lastVerifiedMessageID:*(v41 + 3)];
+      v20 = [dataSource dataSamplesForSearchableIndexVerifier:self searchableIndex:v32 count:512 lastVerifiedMessageID:*(v41 + 3)];
       v36[0] = MEMORY[0x1E69E9820];
       v36[1] = 3221225472;
       v36[2] = __78__EDSearchableIndexVerifier_verifyDataSamplesWithCompletionHandler_scheduler___block_invoke_33;
@@ -563,7 +563,7 @@ LABEL_29:
     [v31 setValue:v28 forKey:@"kDefaultsKeyLastVerifiedMessageID"];
 
     os_activity_scope_leave(&state);
-    if (!v6)
+    if (!handlerCopy)
     {
       v9 = v16;
       goto LABEL_33;
@@ -573,11 +573,11 @@ LABEL_29:
     v33[1] = 3221225472;
     v33[2] = __78__EDSearchableIndexVerifier_verifyDataSamplesWithCompletionHandler_scheduler___block_invoke_34;
     v33[3] = &unk_1E8257430;
-    v35[0] = v6;
+    v35[0] = handlerCopy;
     v35[1] = v25;
     v9 = v16;
     v34 = v9;
-    [v7 performSyncBlock:v33];
+    [schedulerCopy performSyncBlock:v33];
 
     v27 = v35;
 LABEL_31:
@@ -596,14 +596,14 @@ LABEL_33:
     _os_log_impl(&dword_1C61EF000, v12, OS_LOG_TYPE_DEFAULT, "Skipping verifyDataSamplesWithCompletionHandler. Protected data unavailable.", buf, 2u);
   }
 
-  if (v6)
+  if (handlerCopy)
   {
     v49[0] = MEMORY[0x1E69E9820];
     v49[1] = 3221225472;
     v49[2] = __78__EDSearchableIndexVerifier_verifyDataSamplesWithCompletionHandler_scheduler___block_invoke;
     v49[3] = &unk_1E8251B48;
-    v50 = v6;
-    [v7 performSyncBlock:v49];
+    v50 = handlerCopy;
+    [schedulerCopy performSyncBlock:v49];
   }
 
 LABEL_36:
@@ -656,10 +656,10 @@ void __78__EDSearchableIndexVerifier_verifyDataSamplesWithCompletionHandler_sche
   *(v4 + 24) = v5;
 }
 
-- (id)_verifyDataSamples:(id)a3
+- (id)_verifyDataSamples:(id)samples
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  samplesCopy = samples;
   v5 = +[EDSearchableIndexVerifier signpostLog];
   v6 = os_signpost_id_generate(v5);
 
@@ -673,7 +673,7 @@ void __78__EDSearchableIndexVerifier_verifyDataSamplesWithCompletionHandler_sche
     _os_signpost_emit_with_name_impl(&dword_1C61EF000, v8, OS_SIGNPOST_INTERVAL_BEGIN, spid, "EDSearchableIndexVerifier", "", buf, 2u);
   }
 
-  v10 = [(EDSearchableIndexVerifier *)self _verifySamples:v4];
+  v10 = [(EDSearchableIndexVerifier *)self _verifySamples:samplesCopy];
   v11 = objc_alloc_init(MEMORY[0x1E696AD60]);
   if (v10)
   {
@@ -684,7 +684,7 @@ void __78__EDSearchableIndexVerifier_verifyDataSamplesWithCompletionHandler_sche
       aBlock[1] = 3221225472;
       aBlock[2] = __48__EDSearchableIndexVerifier__verifyDataSamples___block_invoke;
       aBlock[3] = &unk_1E82506B0;
-      v31 = v4;
+      v31 = samplesCopy;
       v28 = v12;
       v32 = v28;
       v13 = v11;
@@ -700,8 +700,8 @@ void __78__EDSearchableIndexVerifier_verifyDataSamplesWithCompletionHandler_sche
 
       else
       {
-        v19 = [v10 allKeys];
-        v17 = [v16 stringWithFormat:@"Searchable Index verification found missing rowids: %@", v19, v28];
+        allKeys = [v10 allKeys];
+        v17 = [v16 stringWithFormat:@"Searchable Index verification found missing rowids: %@", allKeys, v28];
 
         v20 = +[EDSearchableIndexVerifier log];
         if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
@@ -721,12 +721,12 @@ void __78__EDSearchableIndexVerifier_verifyDataSamplesWithCompletionHandler_sche
   }
 
   v21 = [v10 count];
-  v22 = [v4 count];
+  v22 = [samplesCopy count];
   v23 = +[EDSearchableIndexVerifier signpostLog];
   v24 = v23;
   if (v9 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v23))
   {
-    v25 = [v4 count];
+    v25 = [samplesCopy count];
     *buf = 134349568;
     v35 = v25;
     v36 = 2050;
@@ -759,12 +759,12 @@ void __48__EDSearchableIndexVerifier__verifyDataSamples___block_invoke(id *a1, v
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (unint64_t)_findMissingTransactionIDs:(id)a3 dataSource:(id)a4
+- (unint64_t)_findMissingTransactionIDs:(id)ds dataSource:(id)source
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 knownTransactionIDsForSearchableIndexVerifier:self];
+  dsCopy = ds;
+  sourceCopy = source;
+  v8 = [sourceCopy knownTransactionIDsForSearchableIndexVerifier:self];
   if ([v8 count])
   {
     v9 = [(EDSearchableIndexVerifier *)self _missingTransactionIDsFromTransactionIDs:v8];
@@ -782,7 +782,7 @@ void __48__EDSearchableIndexVerifier__verifyDataSamples___block_invoke(id *a1, v
         _os_log_impl(&dword_1C61EF000, v12, OS_LOG_TYPE_DEFAULT, "Found %lu missing transaction(s)", buf, 0xCu);
       }
 
-      [v6 unionSet:v10];
+      [dsCopy unionSet:v10];
       v14 = 1;
     }
 
@@ -831,28 +831,28 @@ void __48__EDSearchableIndexVerifier__verifyDataSamples___block_invoke(id *a1, v
   return v14;
 }
 
-- (id)_missingTransactionIDsFromTransactionIDs:(id)a3
+- (id)_missingTransactionIDsFromTransactionIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   if (EFProtectedDataAvailable())
   {
-    v5 = [v4 mutableCopy];
-    v6 = [MEMORY[0x1E699B868] promise];
+    v5 = [dsCopy mutableCopy];
+    promise = [MEMORY[0x1E699B868] promise];
     aBlock = MEMORY[0x1E69E9820];
     v18 = 3221225472;
     v19 = __70__EDSearchableIndexVerifier__missingTransactionIDsFromTransactionIDs___block_invoke;
     v20 = &unk_1E82574D0;
-    v21 = self;
-    v7 = v6;
+    selfCopy = self;
+    v7 = promise;
     v22 = v7;
-    v8 = v5;
-    v23 = v8;
+    ef_temporarilyUnavailableError = v5;
+    v23 = ef_temporarilyUnavailableError;
     v9 = _Block_copy(&aBlock);
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@=*", @"com_apple_mail_transaction", aBlock, v18, v19, v20, v21];
-    v11 = [MEMORY[0x1E699AE80] expressionWithQueryString:v10];
+    selfCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@=*", @"com_apple_mail_transaction", aBlock, v18, v19, v20, selfCopy];
+    v11 = [MEMORY[0x1E699AE80] expressionWithQueryString:selfCopy];
     v12 = [MEMORY[0x1E699AE78] queryWithExpression:v11 builder:v9];
     [v12 start];
-    v13 = [v7 future];
+    future = [v7 future];
   }
 
   else
@@ -865,11 +865,11 @@ void __48__EDSearchableIndexVerifier__verifyDataSamples___block_invoke(id *a1, v
     }
 
     v15 = MEMORY[0x1E699B7C8];
-    v8 = [MEMORY[0x1E696ABC0] ef_temporarilyUnavailableError];
-    v13 = [v15 futureWithError:v8];
+    ef_temporarilyUnavailableError = [MEMORY[0x1E696ABC0] ef_temporarilyUnavailableError];
+    future = [v15 futureWithError:ef_temporarilyUnavailableError];
   }
 
-  return v13;
+  return future;
 }
 
 void __70__EDSearchableIndexVerifier__missingTransactionIDsFromTransactionIDs___block_invoke(id *a1, void *a2)

@@ -1,36 +1,36 @@
 @interface PVTimedObject
-+ (id)findTimedObjectInSortedArray:(id)a3 atTime:(id *)a4 returnFirstObjectForTimeBeforeFirst:(BOOL)a5 returnLastObjectForTimeAfterLast:(BOOL)a6;
-+ (id)timedObjectWithTime:(id *)a3;
-+ (id)timedObjectWithTime:(id *)a3 object:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)findTimedObjectInSortedArray:(id)array atTime:(id *)time returnFirstObjectForTimeBeforeFirst:(BOOL)first returnLastObjectForTimeAfterLast:(BOOL)last;
++ (id)timedObjectWithTime:(id *)time;
++ (id)timedObjectWithTime:(id *)time object:(id)object;
+- (BOOL)isEqual:(id)equal;
 - (PVTimedObject)init;
-- (PVTimedObject)initWithCoder:(id)a3;
-- (PVTimedObject)initWithObject:(id)a3;
-- (PVTimedObject)initWithTime:(id *)a3 object:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PVTimedObject)initWithCoder:(id)coder;
+- (PVTimedObject)initWithObject:(id)object;
+- (PVTimedObject)initWithTime:(id *)time object:(id)object;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTime:(id *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTime:(id *)time;
 @end
 
 @implementation PVTimedObject
 
-+ (id)timedObjectWithTime:(id *)a3
++ (id)timedObjectWithTime:(id *)time
 {
-  v4 = [a1 alloc];
-  v7 = *a3;
+  v4 = [self alloc];
+  v7 = *time;
   v5 = [v4 initWithTime:&v7];
 
   return v5;
 }
 
-+ (id)timedObjectWithTime:(id *)a3 object:(id)a4
++ (id)timedObjectWithTime:(id *)time object:(id)object
 {
-  v6 = a4;
-  v7 = [a1 alloc];
-  v10 = *a3;
-  v8 = [v7 initWithTime:&v10 object:v6];
+  objectCopy = object;
+  v7 = [self alloc];
+  v10 = *time;
+  v8 = [v7 initWithTime:&v10 object:objectCopy];
 
   return v8;
 }
@@ -42,41 +42,41 @@
   return [(PVTimedObject *)self initWithTime:&v3];
 }
 
-- (PVTimedObject)initWithObject:(id)a3
+- (PVTimedObject)initWithObject:(id)object
 {
   v4 = *MEMORY[0x277CC08F0];
   v5 = *(MEMORY[0x277CC08F0] + 16);
-  return [(PVTimedObject *)self initWithTime:&v4 object:a3];
+  return [(PVTimedObject *)self initWithTime:&v4 object:object];
 }
 
-- (PVTimedObject)initWithTime:(id *)a3 object:(id)a4
+- (PVTimedObject)initWithTime:(id *)time object:(id)object
 {
-  v6 = a4;
+  objectCopy = object;
   v12.receiver = self;
   v12.super_class = PVTimedObject;
   v7 = [(PVTimedObject *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v10 = *&a3->var0;
-    var3 = a3->var3;
+    v10 = *&time->var0;
+    var3 = time->var3;
     [(PVTimedObject *)v7 setTime:&v10];
-    [(PVTimedObject *)v8 setObject:v6];
+    [(PVTimedObject *)v8 setObject:objectCopy];
   }
 
   return v8;
 }
 
-- (PVTimedObject)initWithCoder:(id)a3
+- (PVTimedObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(objc_opt_class());
 
-  if (v5 && [v4 decodeIntForKey:@"PVTimedObject_CodingVersion"] == 1)
+  if (v5 && [coderCopy decodeIntForKey:@"PVTimedObject_CodingVersion"] == 1)
   {
-    if (v4)
+    if (coderCopy)
     {
-      [v4 decodeCMTimeForKey:@"PVTimedObject_Time"];
+      [coderCopy decodeCMTimeForKey:@"PVTimedObject_Time"];
     }
 
     else
@@ -88,61 +88,61 @@
     v12 = v14;
     v13 = v15;
     [(PVTimedObject *)v5 setTime:&v12];
-    v6 = [v4 allowedClasses];
+    allowedClasses = [coderCopy allowedClasses];
     v11 = 0;
-    v7 = [v4 decodeTopLevelObjectOfClasses:v6 forKey:@"PVTimedObject_Object" error:&v11];
+    v7 = [coderCopy decodeTopLevelObjectOfClasses:allowedClasses forKey:@"PVTimedObject_Object" error:&v11];
     v8 = v11;
     [(PVTimedObject *)v5 setObject:v7];
 
     if (v8)
     {
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PVTimedObject_Object"];
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PVTimedObject_Object"];
     }
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:1 forKey:@"PVTimedObject_CodingVersion"];
+  coderCopy = coder;
+  [coderCopy encodeInt:1 forKey:@"PVTimedObject_CodingVersion"];
   [(PVTimedObject *)self time];
-  [v4 encodeCMTime:v10 forKey:@"PVTimedObject_Time"];
-  v5 = [(PVTimedObject *)self object];
+  [coderCopy encodeCMTime:v10 forKey:@"PVTimedObject_Time"];
+  object = [(PVTimedObject *)self object];
 
-  if (v5)
+  if (object)
   {
-    v6 = [(PVTimedObject *)self object];
+    object2 = [(PVTimedObject *)self object];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    [v4 encodeObject:v8 forKey:@"PVTimedObject_ObjectClass"];
+    [coderCopy encodeObject:v8 forKey:@"PVTimedObject_ObjectClass"];
 
-    v9 = [(PVTimedObject *)self object];
-    [v4 encodeObject:v9 forKey:@"PVTimedObject_Object"];
+    object3 = [(PVTimedObject *)self object];
+    [coderCopy encodeObject:object3 forKey:@"PVTimedObject_Object"];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   [(PVTimedObject *)self time];
-  v4 = [(PVTimedObject *)self object];
-  v5 = [v4 copy];
+  object = [(PVTimedObject *)self object];
+  v5 = [object copy];
   v6 = [PVTimedObject timedObjectWithTime:v8 object:v5];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_6;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v7 = 1;
     goto LABEL_10;
@@ -161,9 +161,9 @@
 
     else
     {
-      v8 = [(PVTimedObject *)self object];
-      v9 = [(PVTimedObject *)v6 object];
-      v7 = [v8 isEqual:v9];
+      object = [(PVTimedObject *)self object];
+      object2 = [(PVTimedObject *)v6 object];
+      v7 = [object isEqual:object2];
     }
   }
 
@@ -180,8 +180,8 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v3 = [(PVTimedObject *)self object];
-  v4 = [v3 hash];
+  object = [(PVTimedObject *)self object];
+  v4 = [object hash];
 
   v6 = 0;
   v7 = 0;
@@ -199,28 +199,28 @@ LABEL_10:
   v12.receiver = self;
   v12.super_class = PVTimedObject;
   v6 = [(PVTimedObject *)&v12 description];
-  v7 = [(PVTimedObject *)self object];
-  v8 = [v7 description];
+  object = [(PVTimedObject *)self object];
+  v8 = [object description];
   v9 = [v8 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t\t"];
   v10 = [v5 stringWithFormat:@"%@\n\ttime:   %@\n\tobject: %@", v6, v4, v9];
 
   return v10;
 }
 
-+ (id)findTimedObjectInSortedArray:(id)a3 atTime:(id *)a4 returnFirstObjectForTimeBeforeFirst:(BOOL)a5 returnLastObjectForTimeAfterLast:(BOOL)a6
++ (id)findTimedObjectInSortedArray:(id)array atTime:(id *)time returnFirstObjectForTimeBeforeFirst:(BOOL)first returnLastObjectForTimeAfterLast:(BOOL)last
 {
-  v6 = a6;
-  v7 = a5;
-  v9 = a3;
-  v10 = v9;
-  if (!v9 || (v11 = [(__CFArray *)v9 count]) == 0)
+  lastCopy = last;
+  firstCopy = first;
+  arrayCopy = array;
+  v10 = arrayCopy;
+  if (!arrayCopy || (v11 = [(__CFArray *)arrayCopy count]) == 0)
   {
-    v18 = 0;
+    firstObject = 0;
     goto LABEL_18;
   }
 
   v12 = v11;
-  time1 = *a4;
+  time1 = *time;
   v13 = [PVTimedObject timedObjectWithTime:&time1];
   v24.location = 0;
   v24.length = v12;
@@ -242,19 +242,19 @@ LABEL_10:
         memset(&time1, 0, sizeof(time1));
       }
 
-      v21 = *a4;
+      v21 = *time;
       if (CMTimeCompare(&time1, &v21) >= 1)
       {
         if (!v15)
         {
-          if (v7)
+          if (firstCopy)
           {
-            v18 = [(__CFArray *)v10 firstObject];
+            firstObject = [(__CFArray *)v10 firstObject];
           }
 
           else
           {
-            v18 = 0;
+            firstObject = 0;
           }
 
           goto LABEL_16;
@@ -265,8 +265,8 @@ LABEL_10:
         v17 = v19;
       }
 
-      v18 = v17;
-      v17 = v18;
+      firstObject = v17;
+      v17 = firstObject;
 LABEL_16:
 
       goto LABEL_17;
@@ -275,25 +275,25 @@ LABEL_16:
     goto LABEL_10;
   }
 
-  if (!v6)
+  if (!lastCopy)
   {
 LABEL_10:
-    v18 = 0;
+    firstObject = 0;
     goto LABEL_17;
   }
 
-  v18 = [(__CFArray *)v10 lastObject];
+  firstObject = [(__CFArray *)v10 lastObject];
 LABEL_17:
 
 LABEL_18:
 
-  return v18;
+  return firstObject;
 }
 
-- (void)setTime:(id *)a3
+- (void)setTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_time.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_time.epoch = time->var3;
   *&self->_time.value = v3;
 }
 

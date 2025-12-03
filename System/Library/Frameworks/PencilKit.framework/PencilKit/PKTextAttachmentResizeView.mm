@@ -3,29 +3,29 @@
 - (CGRect)originalViewBounds;
 - (PKTextAttachmentResizeViewDelegate)delegate;
 - (UIEdgeInsets)originalContentInset;
-- (id)initAtTop:(BOOL)a3 delegate:(id)a4;
+- (id)initAtTop:(BOOL)top delegate:(id)delegate;
 - (void)didMoveToWindow;
-- (void)drawingScrollViewDidScroll:(id)a3;
-- (void)handleGesture:(id)a3;
+- (void)drawingScrollViewDidScroll:(id)scroll;
+- (void)handleGesture:(id)gesture;
 - (void)layoutInsideSuperview;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)show:(BOOL)a3 enabled:(BOOL)a4 animated:(BOOL)a5;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)show:(BOOL)show enabled:(BOOL)enabled animated:(BOOL)animated;
 @end
 
 @implementation PKTextAttachmentResizeView
 
-- (id)initAtTop:(BOOL)a3 delegate:(id)a4
+- (id)initAtTop:(BOOL)top delegate:(id)delegate
 {
   v5 = *MEMORY[0x1E695EFF8];
   v6 = *(MEMORY[0x1E695EFF8] + 8);
   v16.receiver = self;
   v16.super_class = PKTextAttachmentResizeView;
-  v7 = a4;
+  delegateCopy = delegate;
   v8 = [(PKTextAttachmentResizeView *)&v16 initWithFrame:v5, v6, 1024.0, 100.0];
   [(PKTextAttachmentResizeView *)v8 setUserInteractionEnabled:0, v16.receiver, v16.super_class];
-  objc_storeWeak(&v8->_delegate, v7);
+  objc_storeWeak(&v8->_delegate, delegateCopy);
 
   v9 = objc_alloc_init(PKDrawingAdjustmentKnob);
   knobView = v8->_knobView;
@@ -39,7 +39,7 @@
   separatorHighlightedView = v8->_separatorHighlightedView;
   v8->_separatorHighlightedView = v13;
 
-  v8->_top = a3;
+  v8->_top = top;
   v8->_enabled = 1;
   [(PKTextAttachmentResizeView *)v8 addSubview:v8->_separatorView];
   [(PKTextAttachmentResizeView *)v8 addSubview:v8->_separatorHighlightedView];
@@ -51,11 +51,11 @@
 
 - (void)didMoveToWindow
 {
-  v3 = [(PKTextAttachmentResizeView *)self tintColor];
-  [(UIView *)self->_separatorView setBackgroundColor:v3];
+  tintColor = [(PKTextAttachmentResizeView *)self tintColor];
+  [(UIView *)self->_separatorView setBackgroundColor:tintColor];
 
-  v4 = [(PKTextAttachmentResizeView *)self tintColor];
-  [(UIView *)self->_separatorHighlightedView setBackgroundColor:v4];
+  tintColor2 = [(PKTextAttachmentResizeView *)self tintColor];
+  [(UIView *)self->_separatorHighlightedView setBackgroundColor:tintColor2];
 }
 
 - (void)layoutSubviews
@@ -107,33 +107,33 @@
   [(UIView *)separatorHighlightedView setFrame:v9, v6 + 7.25, v10, 1.5];
 }
 
-- (void)show:(BOOL)a3 enabled:(BOOL)a4 animated:(BOOL)a5
+- (void)show:(BOOL)show enabled:(BOOL)enabled animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  if ([(PKTextAttachmentResizeView *)self shown]!= a3)
+  animatedCopy = animated;
+  enabledCopy = enabled;
+  showCopy = show;
+  if ([(PKTextAttachmentResizeView *)self shown]!= show)
   {
-    [(PKTextAttachmentResizeView *)self setEnabled:v6];
-    if (v5)
+    [(PKTextAttachmentResizeView *)self setEnabled:enabledCopy];
+    if (animatedCopy)
     {
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __52__PKTextAttachmentResizeView_show_enabled_animated___block_invoke;
       v11[3] = &unk_1E82D90B8;
       v11[4] = self;
-      v12 = v7;
+      v12 = showCopy;
       [MEMORY[0x1E69DD250] animateWithDuration:4 delay:v11 options:0 animations:0.2 completion:0.0];
     }
 
     else
     {
       v9 = 0.0;
-      if (v7)
+      if (showCopy)
       {
-        v10 = [(PKTextAttachmentResizeView *)self enabled];
+        enabled = [(PKTextAttachmentResizeView *)self enabled];
         v9 = 0.4;
-        if (v10)
+        if (enabled)
         {
           v9 = 1.0;
         }
@@ -162,13 +162,13 @@ uint64_t __52__PKTextAttachmentResizeView_show_enabled_animated___block_invoke(u
   return [v4 setAlpha:v2];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __45__PKTextAttachmentResizeView_setHighlighted___block_invoke;
@@ -190,13 +190,13 @@ uint64_t __45__PKTextAttachmentResizeView_setHighlighted___block_invoke(uint64_t
   return [*(v1 + 432) setAlpha:v2];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_enabled = a3;
+    self->_enabled = enabled;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __41__PKTextAttachmentResizeView_setEnabled___block_invoke;
@@ -227,13 +227,13 @@ uint64_t __41__PKTextAttachmentResizeView_setEnabled___block_invoke(uint64_t a1)
 
 - (void)layoutInsideSuperview
 {
-  v3 = [(PKTextAttachmentResizeView *)self superview];
-  [v3 bounds];
+  superview = [(PKTextAttachmentResizeView *)self superview];
+  [superview bounds];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(PKTextAttachmentResizeView *)self superview];
-  [v8 safeAreaInsets];
+  superview2 = [(PKTextAttachmentResizeView *)self superview];
+  [superview2 safeAreaInsets];
   v10 = v9;
   v12 = v11;
 
@@ -286,23 +286,23 @@ uint64_t __41__PKTextAttachmentResizeView_setEnabled___block_invoke(uint64_t a1)
   [(PKTextAttachmentResizeView *)self setFrame:v21 + 0.0, v17, v5 - (v21 + v19), Height];
 }
 
-- (void)handleGesture:(id)a3
+- (void)handleGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(PKTextAttachmentResizeView *)self delegate];
-  v6 = [v5 resizeViewTextView:self];
+  gestureCopy = gesture;
+  delegate = [(PKTextAttachmentResizeView *)self delegate];
+  v6 = [delegate resizeViewTextView:self];
 
-  v7 = [(PKTextAttachmentResizeView *)self delegate];
-  [v7 resizeViewDrawingBounds:self];
+  delegate2 = [(PKTextAttachmentResizeView *)self delegate];
+  [delegate2 resizeViewDrawingBounds:self];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  v16 = [v4 state];
-  if ((v16 - 2) < 2)
+  state = [gestureCopy state];
+  if ((state - 2) < 2)
   {
-    [v4 translationInView:self];
+    [gestureCopy translationInView:self];
     v18 = v17;
     v19 = [(PKTextAttachmentResizeView *)self top];
     v20 = fmin(v18, 20.0);
@@ -328,24 +328,24 @@ uint64_t __41__PKTextAttachmentResizeView_setEnabled___block_invoke(uint64_t a1)
     v76.size.height = v15;
     if (CGRectIsEmpty(v76) && ([(PKTextAttachmentResizeView *)self top]&& v22 >= 20.0 || ![(PKTextAttachmentResizeView *)self top]&& v22 <= -20.0))
     {
-      if ([v4 state] == 3)
+      if ([gestureCopy state] == 3)
       {
-        v23 = [(PKTextAttachmentResizeView *)self delegate];
-        [v23 resizeViewRemoveAttachment:self];
+        delegate3 = [(PKTextAttachmentResizeView *)self delegate];
+        [delegate3 resizeViewRemoveAttachment:self];
       }
 
       else
       {
         [(PKTextAttachmentResizeView *)self frame];
         [(PKTextAttachmentResizeView *)self setFrame:?];
-        v23 = [(PKTextAttachmentResizeView *)self delegate];
-        [v23 resizeViewLayoutAttachment:self];
+        delegate3 = [(PKTextAttachmentResizeView *)self delegate];
+        [delegate3 resizeViewLayoutAttachment:self];
       }
     }
 
     else
     {
-      v37 = [(PKTextAttachmentResizeView *)self delegate];
+      delegate4 = [(PKTextAttachmentResizeView *)self delegate];
       v38 = [(PKTextAttachmentResizeView *)self top];
       v39 = fabs(v22);
       v40 = 0.0;
@@ -364,32 +364,32 @@ uint64_t __41__PKTextAttachmentResizeView_setEnabled___block_invoke(uint64_t a1)
         v41 = v40;
       }
 
-      [v37 resizeView:self setDrawingHeight:-[PKTextAttachmentResizeView top](self originalHeight:"top") growFromTop:{v41, self->_originalViewBounds.size.height}];
+      [delegate4 resizeView:self setDrawingHeight:-[PKTextAttachmentResizeView top](self originalHeight:"top") growFromTop:{v41, self->_originalViewBounds.size.height}];
 
-      if ([v4 state] != 3)
+      if ([gestureCopy state] != 3)
       {
         goto LABEL_28;
       }
 
-      v23 = [(PKTextAttachmentResizeView *)self delegate];
-      [v23 resizeView:self finishedWithOriginalDrawingBounds:self->_originalDrawingBounds.origin.x originalViewBounds:{self->_originalDrawingBounds.origin.y, self->_originalDrawingBounds.size.width, self->_originalDrawingBounds.size.height, self->_originalViewBounds.origin.x, self->_originalViewBounds.origin.y, self->_originalViewBounds.size.width, self->_originalViewBounds.size.height}];
+      delegate3 = [(PKTextAttachmentResizeView *)self delegate];
+      [delegate3 resizeView:self finishedWithOriginalDrawingBounds:self->_originalDrawingBounds.origin.x originalViewBounds:{self->_originalDrawingBounds.origin.y, self->_originalDrawingBounds.size.width, self->_originalDrawingBounds.size.height, self->_originalViewBounds.origin.x, self->_originalViewBounds.origin.y, self->_originalViewBounds.size.width, self->_originalViewBounds.size.height}];
     }
 
 LABEL_28:
-    v42 = [(PKTextAttachmentResizeView *)self delegate];
-    [v42 resizeViewDidUpdate:self];
+    delegate5 = [(PKTextAttachmentResizeView *)self delegate];
+    [delegate5 resizeViewDidUpdate:self];
 
     goto LABEL_29;
   }
 
-  if (v16 == 1)
+  if (state == 1)
   {
     self->_originalDrawingBounds.origin.x = v9;
     self->_originalDrawingBounds.origin.y = v11;
     self->_originalDrawingBounds.size.width = v13;
     self->_originalDrawingBounds.size.height = v15;
-    v24 = [(PKTextAttachmentResizeView *)self superview];
-    [v24 bounds];
+    superview = [(PKTextAttachmentResizeView *)self superview];
+    [superview bounds];
     self->_originalViewBounds.origin.x = v25;
     self->_originalViewBounds.origin.y = v26;
     self->_originalViewBounds.size.width = v27;
@@ -408,7 +408,7 @@ LABEL_28:
       v30 = height;
     }
 
-    [v4 setTranslation:self inView:{0.0, v30}];
+    [gestureCopy setTranslation:self inView:{0.0, v30}];
     [v6 contentInset];
     self->_originalContentInset.top = v31;
     self->_originalContentInset.left = v32;
@@ -422,20 +422,20 @@ LABEL_28:
     v69[1] = 3221225472;
     v69[2] = __44__PKTextAttachmentResizeView_handleGesture___block_invoke;
     v69[3] = &unk_1E82D90E0;
-    v70 = v4;
+    v70 = gestureCopy;
     v75 = height;
     v71 = v6;
-    v72 = self;
+    selfCopy = self;
     v36 = [v35 scheduledTimerWithTimeInterval:1 repeats:v69 block:0.0166666667];
   }
 
 LABEL_29:
-  if ([v4 state] >= 3)
+  if ([gestureCopy state] >= 3)
   {
     if (-[PKTextAttachmentResizeView top](self, "top") && ([v6 contentOffset], v44 = v43, v45 = self->_originalContentInset.top, objc_msgSend(v6, "_contentScrollInset"), v44 < -(v45 + v46)))
     {
-      v47 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v47 addObserver:self selector:sel_drawingScrollViewDidScroll_ name:@"_UIScrollViewAnimationEndedNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel_drawingScrollViewDidScroll_ name:@"_UIScrollViewAnimationEndedNotification" object:0];
 
       top = self->_originalContentInset.top;
       v49 = -self->_originalContentInset.left;
@@ -451,8 +451,8 @@ LABEL_29:
         goto LABEL_40;
       }
 
-      v59 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v59 addObserver:self selector:sel_drawingScrollViewDidScroll_ name:@"_UIScrollViewAnimationEndedNotification" object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel_drawingScrollViewDidScroll_ name:@"_UIScrollViewAnimationEndedNotification" object:0];
 
       v49 = -self->_originalContentInset.left;
       [v6 contentSize];
@@ -572,13 +572,13 @@ LABEL_15:
 LABEL_17:
 }
 
-- (void)drawingScrollViewDidScroll:(id)a3
+- (void)drawingScrollViewDidScroll:(id)scroll
 {
-  v4 = [(PKTextAttachmentResizeView *)self delegate];
-  v6 = [v4 resizeViewTextView:self];
+  delegate = [(PKTextAttachmentResizeView *)self delegate];
+  v6 = [delegate resizeViewTextView:self];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self name:@"_UIScrollViewAnimationEndedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"_UIScrollViewAnimationEndedNotification" object:0];
 
   [v6 setContentInset:{self->_originalContentInset.top, self->_originalContentInset.left, self->_originalContentInset.bottom, self->_originalContentInset.right}];
 }

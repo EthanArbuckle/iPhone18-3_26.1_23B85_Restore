@@ -1,29 +1,29 @@
 @interface SBUIPasscodeLockViewLongNumericKeypad
-- (SBUIPasscodeLockViewLongNumericKeypad)initWithLightStyle:(BOOL)a3;
-- (SBUIPasscodeLockViewLongNumericKeypad)initWithLightStyle:(BOOL)a3 providesDimming:(BOOL)a4;
+- (SBUIPasscodeLockViewLongNumericKeypad)initWithLightStyle:(BOOL)style;
+- (SBUIPasscodeLockViewLongNumericKeypad)initWithLightStyle:(BOOL)style providesDimming:(BOOL)dimming;
 - (double)_entryFieldBottomYDistanceFromNumberPadTopButton;
 - (id)_newEntryField;
-- (void)_setHasInput:(BOOL)a3;
+- (void)_setHasInput:(BOOL)input;
 @end
 
 @implementation SBUIPasscodeLockViewLongNumericKeypad
 
-- (SBUIPasscodeLockViewLongNumericKeypad)initWithLightStyle:(BOOL)a3
+- (SBUIPasscodeLockViewLongNumericKeypad)initWithLightStyle:(BOOL)style
 {
-  v3 = a3;
-  v5 = [objc_opt_class() providesDimmingByDefault];
+  styleCopy = style;
+  providesDimmingByDefault = [objc_opt_class() providesDimmingByDefault];
 
-  return [(SBUIPasscodeLockViewLongNumericKeypad *)self initWithLightStyle:v3 providesDimming:v5];
+  return [(SBUIPasscodeLockViewLongNumericKeypad *)self initWithLightStyle:styleCopy providesDimming:providesDimmingByDefault];
 }
 
-- (SBUIPasscodeLockViewLongNumericKeypad)initWithLightStyle:(BOOL)a3 providesDimming:(BOOL)a4
+- (SBUIPasscodeLockViewLongNumericKeypad)initWithLightStyle:(BOOL)style providesDimming:(BOOL)dimming
 {
   v8.receiver = self;
   v8.super_class = SBUIPasscodeLockViewLongNumericKeypad;
-  v5 = [(SBUIPasscodeLockViewWithKeypad *)&v8 initWithLightStyle:a3 providesDimming:a4];
+  v5 = [(SBUIPasscodeLockViewWithKeypad *)&v8 initWithLightStyle:style providesDimming:dimming];
   if (v5)
   {
-    if (a3)
+    if (style)
     {
       [MEMORY[0x1E69DC888] clearColor];
     }
@@ -42,12 +42,12 @@
 - (id)_newEntryField
 {
   v3 = [SBUILongNumericPasscodeEntryField alloc];
-  v4 = [(SBUIPasscodeLockViewWithKeypad *)self _usesLightStyle];
+  _usesLightStyle = [(SBUIPasscodeLockViewWithKeypad *)self _usesLightStyle];
 
-  return [(SBUILongNumericPasscodeEntryField *)v3 initWithDefaultSizeAndLightStyle:v4];
+  return [(SBUILongNumericPasscodeEntryField *)v3 initWithDefaultSizeAndLightStyle:_usesLightStyle];
 }
 
-- (void)_setHasInput:(BOOL)a3
+- (void)_setHasInput:(BOOL)input
 {
   v7.receiver = self;
   v7.super_class = SBUIPasscodeLockViewLongNumericKeypad;
@@ -57,7 +57,7 @@
   v5[2] = __54__SBUIPasscodeLockViewLongNumericKeypad__setHasInput___block_invoke;
   v5[3] = &unk_1E789DA60;
   v5[4] = self;
-  v6 = a3;
+  inputCopy = input;
   [MEMORY[0x1E69DD250] animateWithDuration:v5 animations:0.25];
 }
 
@@ -70,9 +70,9 @@ void __54__SBUIPasscodeLockViewLongNumericKeypad__setHasInput___block_invoke(uin
 - (double)_entryFieldBottomYDistanceFromNumberPadTopButton
 {
   v2 = MEMORY[0x1E69D3FE8];
-  v3 = [(SBUIPasscodeLockViewBase *)self _isBoundsPortraitOriented];
+  _isBoundsPortraitOriented = [(SBUIPasscodeLockViewBase *)self _isBoundsPortraitOriented];
 
-  [v2 pinLongNumericEntryFieldBottomYDistanceFromNumberPadTopButton:v3];
+  [v2 pinLongNumericEntryFieldBottomYDistanceFromNumberPadTopButton:_isBoundsPortraitOriented];
   return result;
 }
 

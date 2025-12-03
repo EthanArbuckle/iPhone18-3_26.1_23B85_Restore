@@ -1,10 +1,10 @@
 @interface ASTUIGazeEnrollmentManager
 + (id)sharedManager;
 - (ASTUIGazeEnrollmentManager)init;
-- (CGPoint)calibratedGazePointForGazePoint:(CGPoint)a3;
+- (CGPoint)calibratedGazePointForGazePoint:(CGPoint)point;
 - (void)_setupCalibrationStrategy;
-- (void)captureCurrentEnrollmentPoint:(CGPoint)a3 gazePoint:(CGPoint)a4 positionName:(id)a5;
-- (void)setEnrollmentComplete:(BOOL)a3;
+- (void)captureCurrentEnrollmentPoint:(CGPoint)point gazePoint:(CGPoint)gazePoint positionName:(id)name;
+- (void)setEnrollmentComplete:(BOOL)complete;
 @end
 
 @implementation ASTUIGazeEnrollmentManager
@@ -38,13 +38,13 @@ uint64_t __43__ASTUIGazeEnrollmentManager_sharedManager__block_invoke()
   {
     [(ASTUIGazeEnrollmentManager *)v2 _setupCalibrationStrategy];
     objc_initWeak(&location, v3);
-    v4 = [MEMORY[0x277CE7E20] sharedInstance];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __34__ASTUIGazeEnrollmentManager_init__block_invoke;
     v6[3] = &unk_278CDC5D8;
     objc_copyWeak(&v7, &location);
-    [v4 registerUpdateBlock:v6 forRetrieveSelector:sel_assistiveTouchMouseOnDeviceEyeTrackingCalibrationStrategy withListener:v3];
+    [mEMORY[0x277CE7E20] registerUpdateBlock:v6 forRetrieveSelector:sel_assistiveTouchMouseOnDeviceEyeTrackingCalibrationStrategy withListener:v3];
 
     objc_destroyWeak(&v7);
     objc_destroyWeak(&location);
@@ -59,19 +59,19 @@ void __34__ASTUIGazeEnrollmentManager_init__block_invoke(uint64_t a1)
   [WeakRetained _setupCalibrationStrategy];
 }
 
-- (void)setEnrollmentComplete:(BOOL)a3
+- (void)setEnrollmentComplete:(BOOL)complete
 {
-  self->_enrollmentComplete = a3;
-  if (a3)
+  self->_enrollmentComplete = complete;
+  if (complete)
   {
     [(ASTUIGazeEnrollmentManager *)self _learnCalibration];
   }
 }
 
-- (CGPoint)calibratedGazePointForGazePoint:(CGPoint)a3
+- (CGPoint)calibratedGazePointForGazePoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([(ASTUIGazeEnrollmentManager *)self enrollmentComplete])
   {
     [(ASTUICalibrationStrategy *)self->_calibrationStrategy calibratedGazePointForGazePoint:x, y];
@@ -86,17 +86,17 @@ void __34__ASTUIGazeEnrollmentManager_init__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)captureCurrentEnrollmentPoint:(CGPoint)a3 gazePoint:(CGPoint)a4 positionName:(id)a5
+- (void)captureCurrentEnrollmentPoint:(CGPoint)point gazePoint:(CGPoint)gazePoint positionName:(id)name
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3.y;
-  v8 = a3.x;
-  v10 = a5;
+  y = gazePoint.y;
+  x = gazePoint.x;
+  v7 = point.y;
+  v8 = point.x;
+  nameCopy = name;
   v11 = objc_opt_new();
   [v11 setPredictedPoint:{x, y}];
   [v11 setGroundTruthPoint:{v8, v7}];
-  [v11 setPositionName:v10];
+  [v11 setPositionName:nameCopy];
 
   [(ASTUICalibrationStrategy *)self->_calibrationStrategy captureGazeEnrollmentPoint:v11];
 }
@@ -104,12 +104,12 @@ void __34__ASTUIGazeEnrollmentManager_init__block_invoke(uint64_t a1)
 - (void)_setupCalibrationStrategy
 {
   [(ASTUICalibrationStrategy *)self->_calibrationStrategy reset];
-  v3 = [MEMORY[0x277CE7E20] sharedInstance];
-  v4 = [v3 assistiveTouchMouseOnDeviceEyeTrackingCalibrationStrategy];
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  assistiveTouchMouseOnDeviceEyeTrackingCalibrationStrategy = [mEMORY[0x277CE7E20] assistiveTouchMouseOnDeviceEyeTrackingCalibrationStrategy];
 
-  if (v4)
+  if (assistiveTouchMouseOnDeviceEyeTrackingCalibrationStrategy)
   {
-    if (v4 != 1)
+    if (assistiveTouchMouseOnDeviceEyeTrackingCalibrationStrategy != 1)
     {
       return;
     }

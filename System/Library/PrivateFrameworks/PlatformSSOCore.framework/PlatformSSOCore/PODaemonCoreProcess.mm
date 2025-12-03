@@ -1,40 +1,40 @@
 @interface PODaemonCoreProcess
-- (BOOL)_removeStashedUserLoginStateListDataWithError:(id *)a3;
-- (BOOL)_savePendingSSOTokensData:(id)a3 forIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)_saveStashedDecryptionContextData:(id)a3 forIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)_saveStashedSSOTokensData:(id)a3 forIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)_saveUserLoginStateList:(id)a3 error:(id *)a4;
-- (BOOL)writeData:(id)a3 toPath:(id)a4 saveError:(id *)a5;
-- (id)_dataForUserLoginStateList:(id)a3 error:(id *)a4;
-- (id)_deviceConfigurationForIdentifier:(id)a3;
-- (id)_loginConfigurationForIdentifier:(id)a3;
-- (id)_parseUserLoginStateListData:(id)a3 error:(id *)a4;
-- (id)_pendingSSOTokensForIdentifier:(id)a3 error:(id *)a4;
-- (id)_stashedSSOTokensForIdentifier:(id)a3 error:(id *)a4;
-- (id)_stashedUserLoginStateListDataWithError:(id *)a3;
-- (id)_stashedUserLoginStateListWithError:(id *)a3;
-- (id)_userConfigurationForIdentifier:(id)a3 error:(id *)a4;
-- (id)_userLoginStateForIdentifier:(id)a3 error:(id *)a4;
-- (id)_userLoginStateListDataWithError:(id *)a3;
-- (id)_userLoginStateListWithError:(id *)a3;
-- (id)initForBaseSystem:(BOOL)a3;
+- (BOOL)_removeStashedUserLoginStateListDataWithError:(id *)error;
+- (BOOL)_savePendingSSOTokensData:(id)data forIdentifier:(id)identifier error:(id *)error;
+- (BOOL)_saveStashedDecryptionContextData:(id)data forIdentifier:(id)identifier error:(id *)error;
+- (BOOL)_saveStashedSSOTokensData:(id)data forIdentifier:(id)identifier error:(id *)error;
+- (BOOL)_saveUserLoginStateList:(id)list error:(id *)error;
+- (BOOL)writeData:(id)data toPath:(id)path saveError:(id *)error;
+- (id)_dataForUserLoginStateList:(id)list error:(id *)error;
+- (id)_deviceConfigurationForIdentifier:(id)identifier;
+- (id)_loginConfigurationForIdentifier:(id)identifier;
+- (id)_parseUserLoginStateListData:(id)data error:(id *)error;
+- (id)_pendingSSOTokensForIdentifier:(id)identifier error:(id *)error;
+- (id)_stashedSSOTokensForIdentifier:(id)identifier error:(id *)error;
+- (id)_stashedUserLoginStateListDataWithError:(id *)error;
+- (id)_stashedUserLoginStateListWithError:(id *)error;
+- (id)_userConfigurationForIdentifier:(id)identifier error:(id *)error;
+- (id)_userLoginStateForIdentifier:(id)identifier error:(id *)error;
+- (id)_userLoginStateListDataWithError:(id *)error;
+- (id)_userLoginStateListWithError:(id *)error;
+- (id)initForBaseSystem:(BOOL)system;
 - (void)connectionInvalidated;
-- (void)deviceConfigurationForIdentifier:(id)a3 completion:(id)a4;
+- (void)deviceConfigurationForIdentifier:(id)identifier completion:(id)completion;
 - (void)handleStartup;
-- (void)loginConfigurationForIdentifier:(id)a3 completion:(id)a4;
-- (void)retrievePendingSSOTokenForIdentifier:(id)a3 completion:(id)a4;
-- (void)retrieveStashedSSOTokenForIdentifier:(id)a3 completion:(id)a4;
-- (void)savePendingSSOTokens:(id)a3 identifier:(id)a4 completion:(id)a5;
-- (void)saveStashedDecryptionContext:(id)a3 identifier:(id)a4 completion:(id)a5;
-- (void)saveStashedSSOTokens:(id)a3 identifier:(id)a4 completion:(id)a5;
-- (void)updateLoginStateForIdentifier:(id)a3 state:(id)a4 loginDate:(id)a5 loginType:(id)a6 completion:(id)a7;
-- (void)userConfigurationForIdentifier:(id)a3 completion:(id)a4;
-- (void)userLoginStateForIdentifier:(id)a3 completion:(id)a4;
+- (void)loginConfigurationForIdentifier:(id)identifier completion:(id)completion;
+- (void)retrievePendingSSOTokenForIdentifier:(id)identifier completion:(id)completion;
+- (void)retrieveStashedSSOTokenForIdentifier:(id)identifier completion:(id)completion;
+- (void)savePendingSSOTokens:(id)tokens identifier:(id)identifier completion:(id)completion;
+- (void)saveStashedDecryptionContext:(id)context identifier:(id)identifier completion:(id)completion;
+- (void)saveStashedSSOTokens:(id)tokens identifier:(id)identifier completion:(id)completion;
+- (void)updateLoginStateForIdentifier:(id)identifier state:(id)state loginDate:(id)date loginType:(id)type completion:(id)completion;
+- (void)userConfigurationForIdentifier:(id)identifier completion:(id)completion;
+- (void)userLoginStateForIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation PODaemonCoreProcess
 
-- (id)initForBaseSystem:(BOOL)a3
+- (id)initForBaseSystem:(BOOL)system
 {
   v22.receiver = self;
   v22.super_class = PODaemonCoreProcess;
@@ -42,7 +42,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_baseSystem = a3;
+    v4->_baseSystem = system;
     v4->_prebootKey = 0;
     if (!_cachedContexts)
     {
@@ -126,7 +126,7 @@ id __56__PODaemonCoreProcess_initWithXPCConnection_baseSystem___block_invoke()
     v5 = 136315394;
     v6 = "[PODaemonCoreProcess connectionInvalidated]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E8B1000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v5, 0x16u);
   }
 
@@ -140,11 +140,11 @@ id __56__PODaemonCoreProcess_initWithXPCConnection_baseSystem___block_invoke()
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (BOOL)writeData:(id)a3 toPath:(id)a4 saveError:(id *)a5
+- (BOOL)writeData:(id)data toPath:(id)path saveError:(id *)error
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  pathCopy = path;
   v9 = PO_LOG_PODaemonCoreProcess();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -153,10 +153,10 @@ id __56__PODaemonCoreProcess_initWithXPCConnection_baseSystem___block_invoke()
 
   v10 = _writeLock;
   objc_sync_enter(v10);
-  if (v7)
+  if (dataCopy)
   {
     v34 = 0;
-    v11 = [v7 writeToURL:v8 options:0x10000000 error:&v34];
+    v11 = [dataCopy writeToURL:pathCopy options:0x10000000 error:&v34];
     v12 = v34;
     v13 = v12;
     if (v11)
@@ -164,10 +164,10 @@ id __56__PODaemonCoreProcess_initWithXPCConnection_baseSystem___block_invoke()
       v39 = *MEMORY[0x277CCA180];
       v40[0] = &unk_2870A9120;
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:&v39 count:1];
-      v15 = [MEMORY[0x277CCAA00] defaultManager];
-      v16 = [v8 path];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      path = [pathCopy path];
       v31 = v13;
-      v17 = [v15 setAttributes:v14 ofItemAtPath:v16 error:&v31];
+      v17 = [defaultManager setAttributes:v14 ofItemAtPath:path error:&v31];
       v18 = v31;
 
       if (v17)
@@ -175,8 +175,8 @@ id __56__PODaemonCoreProcess_initWithXPCConnection_baseSystem___block_invoke()
         v19 = PO_LOG_PODaemonCoreProcess();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
         {
-          v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "length")}];
-          [(PODaemonCoreProcess *)v20 writeData:buf toPath:v8 saveError:v19];
+          v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(dataCopy, "length")}];
+          [(PODaemonCoreProcess *)v20 writeData:buf toPath:pathCopy saveError:v19];
         }
       }
 
@@ -188,10 +188,10 @@ id __56__PODaemonCoreProcess_initWithXPCConnection_baseSystem___block_invoke()
         v29[3] = &unk_279A3DC48;
         v30 = v18;
         v25 = __50__PODaemonCoreProcess_writeData_toPath_saveError___block_invoke_23(v29);
-        if (a5)
+        if (error)
         {
           v25 = v25;
-          *a5 = v25;
+          *error = v25;
         }
 
         v19 = v30;
@@ -207,10 +207,10 @@ id __56__PODaemonCoreProcess_initWithXPCConnection_baseSystem___block_invoke()
       v18 = v12;
       v33 = v18;
       v23 = __50__PODaemonCoreProcess_writeData_toPath_saveError___block_invoke_17(v32);
-      if (a5)
+      if (error)
       {
         v23 = v23;
-        *a5 = v23;
+        *error = v23;
       }
 
       v17 = 0;
@@ -222,15 +222,15 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v21 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
   v37 = 0;
-  v22 = [v21 removeItemAtURL:v8 error:&v37];
+  v22 = [defaultManager2 removeItemAtURL:pathCopy error:&v37];
   v18 = v37;
 
   if ((v22 & 1) == 0)
   {
-    v24 = [v18 userInfo];
-    v14 = [v24 objectForKeyedSubscript:@"NSUnderlyingError"];
+    userInfo = [v18 userInfo];
+    v14 = [userInfo objectForKeyedSubscript:@"NSUnderlyingError"];
 
     if ([v14 code] == 2)
     {
@@ -246,10 +246,10 @@ LABEL_22:
       v18 = v18;
       v36 = v18;
       v26 = __50__PODaemonCoreProcess_writeData_toPath_saveError___block_invoke(v35);
-      if (a5)
+      if (error)
       {
         v26 = v26;
-        *a5 = v26;
+        *error = v26;
       }
 
       v17 = 0;
@@ -302,33 +302,33 @@ id __50__PODaemonCoreProcess_writeData_toPath_saveError___block_invoke_23(uint64
   return v1;
 }
 
-- (id)_deviceConfigurationForIdentifier:(id)a3
+- (id)_deviceConfigurationForIdentifier:(id)identifier
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = PO_LOG_PODaemonCoreProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v20 = "[PODaemonCoreProcess _deviceConfigurationForIdentifier:]";
     v21 = 2114;
-    v22 = v4;
+    v22 = identifierCopy;
     v23 = 2112;
-    v24 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E8B1000, v5, OS_LOG_TYPE_DEFAULT, "%s identifier = %{public}@ on %@", buf, 0x20u);
   }
 
-  v6 = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
-  v7 = v6;
-  if (v4)
+  _defaultConfigurationPath = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
+  v7 = _defaultConfigurationPath;
+  if (identifierCopy)
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.PlatformSSO.device.%@.txt", v4];
-    v9 = [v7 URLByAppendingPathComponent:v8];
+    identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.PlatformSSO.device.%@.txt", identifierCopy];
+    v9 = [v7 URLByAppendingPathComponent:identifierCopy];
   }
 
   else
   {
-    v9 = [v6 URLByAppendingPathComponent:@"com.apple.PlatformSSO.device.txt"];
+    v9 = [_defaultConfigurationPath URLByAppendingPathComponent:@"com.apple.PlatformSSO.device.txt"];
   }
 
   v10 = PO_LOG_PODaemonCoreProcess();
@@ -349,8 +349,8 @@ id __50__PODaemonCoreProcess_writeData_toPath_saveError___block_invoke_23(uint64
 
     else
     {
-      v15 = [MEMORY[0x277CBEA90] data];
-      v14 = [v13 initWithData:v15 encoding:4];
+      data = [MEMORY[0x277CBEA90] data];
+      v14 = [v13 initWithData:data encoding:4];
     }
 
     v16 = PO_LOG_PODaemonCoreProcess();
@@ -359,11 +359,11 @@ id __50__PODaemonCoreProcess_writeData_toPath_saveError___block_invoke_23(uint64
       *buf = 136315906;
       v20 = "[PODaemonCoreProcess _deviceConfigurationForIdentifier:]";
       v21 = 2114;
-      v22 = v4;
+      v22 = identifierCopy;
       v23 = 2114;
-      v24 = v14;
+      selfCopy = v14;
       v25 = 2112;
-      v26 = self;
+      selfCopy2 = self;
       _os_log_debug_impl(&dword_25E8B1000, v16, OS_LOG_TYPE_DEBUG, "%s identifier = %{public}@, data = %{public}@ on %@", buf, 0x2Au);
     }
   }
@@ -373,27 +373,27 @@ id __50__PODaemonCoreProcess_writeData_toPath_saveError___block_invoke_23(uint64
   return v11;
 }
 
-- (void)deviceConfigurationForIdentifier:(id)a3 completion:(id)a4
+- (void)deviceConfigurationForIdentifier:(id)identifier completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = PO_LOG_PODaemonCoreProcess();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v15 = "[PODaemonCoreProcess deviceConfigurationForIdentifier:completion:]";
     v16 = 2114;
-    v17 = v6;
+    v17 = identifierCopy;
     v18 = 2112;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E8B1000, v8, OS_LOG_TYPE_DEFAULT, "%s identifier = %{public}@ on %@", buf, 0x20u);
   }
 
-  v9 = [(PODaemonCoreProcess *)self _deviceConfigurationForIdentifier:v6];
+  v9 = [(PODaemonCoreProcess *)self _deviceConfigurationForIdentifier:identifierCopy];
   if (v9)
   {
-    v7[2](v7, v9, 0);
+    completionCopy[2](completionCopy, v9, 0);
   }
 
   else
@@ -402,9 +402,9 @@ id __50__PODaemonCoreProcess_writeData_toPath_saveError___block_invoke_23(uint64
     v12[1] = 3221225472;
     v12[2] = __67__PODaemonCoreProcess_deviceConfigurationForIdentifier_completion___block_invoke;
     v12[3] = &unk_279A3DC48;
-    v13 = v6;
+    v13 = identifierCopy;
     v10 = __67__PODaemonCoreProcess_deviceConfigurationForIdentifier_completion___block_invoke(v12);
-    (v7)[2](v7, 0, v10);
+    (completionCopy)[2](completionCopy, 0, v10);
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -434,33 +434,33 @@ id __67__PODaemonCoreProcess_deviceConfigurationForIdentifier_completion___block
   return v3;
 }
 
-- (id)_loginConfigurationForIdentifier:(id)a3
+- (id)_loginConfigurationForIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = PO_LOG_PODaemonCoreProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v20 = "[PODaemonCoreProcess _loginConfigurationForIdentifier:]";
     v21 = 2114;
-    v22 = v4;
+    v22 = identifierCopy;
     v23 = 2112;
-    v24 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E8B1000, v5, OS_LOG_TYPE_DEFAULT, "%s identifier = %{public}@ on %@", buf, 0x20u);
   }
 
-  v6 = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
-  v7 = v6;
-  if (v4)
+  _defaultConfigurationPath = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
+  v7 = _defaultConfigurationPath;
+  if (identifierCopy)
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.PlatformSSO.login.%@.txt", v4];
-    v9 = [v7 URLByAppendingPathComponent:v8];
+    identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.PlatformSSO.login.%@.txt", identifierCopy];
+    v9 = [v7 URLByAppendingPathComponent:identifierCopy];
   }
 
   else
   {
-    v9 = [v6 URLByAppendingPathComponent:@"com.apple.PlatformSSO.login.txt"];
+    v9 = [_defaultConfigurationPath URLByAppendingPathComponent:@"com.apple.PlatformSSO.login.txt"];
   }
 
   v10 = PO_LOG_PODaemonCoreProcess();
@@ -481,8 +481,8 @@ id __67__PODaemonCoreProcess_deviceConfigurationForIdentifier_completion___block
 
     else
     {
-      v15 = [MEMORY[0x277CBEA90] data];
-      v14 = [v13 initWithData:v15 encoding:4];
+      data = [MEMORY[0x277CBEA90] data];
+      v14 = [v13 initWithData:data encoding:4];
     }
 
     v16 = PO_LOG_PODaemonCoreProcess();
@@ -497,33 +497,33 @@ id __67__PODaemonCoreProcess_deviceConfigurationForIdentifier_completion___block
   return v11;
 }
 
-- (void)loginConfigurationForIdentifier:(id)a3 completion:(id)a4
+- (void)loginConfigurationForIdentifier:(id)identifier completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = PO_LOG_PODaemonCoreProcess();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 136315650;
     v13 = "[PODaemonCoreProcess loginConfigurationForIdentifier:completion:]";
     v14 = 2114;
-    v15 = v6;
+    v15 = identifierCopy;
     v16 = 2112;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E8B1000, v8, OS_LOG_TYPE_DEFAULT, "%s identifier = %{public}@ on %@", &v12, 0x20u);
   }
 
-  v9 = [(PODaemonCoreProcess *)self _loginConfigurationForIdentifier:v6];
+  v9 = [(PODaemonCoreProcess *)self _loginConfigurationForIdentifier:identifierCopy];
   if (v9)
   {
-    v7[2](v7, v9, 0);
+    completionCopy[2](completionCopy, v9, 0);
   }
 
   else
   {
     v10 = __66__PODaemonCoreProcess_loginConfigurationForIdentifier_completion___block_invoke();
-    (v7)[2](v7, 0, v10);
+    (completionCopy)[2](completionCopy, 0, v10);
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -541,13 +541,13 @@ id __66__PODaemonCoreProcess_loginConfigurationForIdentifier_completion___block_
   return v0;
 }
 
-- (id)_userConfigurationForIdentifier:(id)a3 error:(id *)a4
+- (id)_userConfigurationForIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.PlatformSSO.user.%@.txt", v6];
+  identifierCopy = identifier;
+  _defaultConfigurationPath = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
+  identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.PlatformSSO.user.%@.txt", identifierCopy];
 
-  v9 = [v7 URLByAppendingPathComponent:v8];
+  v9 = [_defaultConfigurationPath URLByAppendingPathComponent:identifierCopy];
 
   v10 = PO_LOG_PODaemonCoreProcess();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -574,10 +574,10 @@ id __66__PODaemonCoreProcess_loginConfigurationForIdentifier_completion___block_
   else
   {
     v15 = __61__PODaemonCoreProcess__userConfigurationForIdentifier_error___block_invoke();
-    if (a4)
+    if (error)
     {
       v15 = v15;
-      *a4 = v15;
+      *error = v15;
     }
 
     v14 = 0;
@@ -598,35 +598,35 @@ id __61__PODaemonCoreProcess__userConfigurationForIdentifier_error___block_invok
   return v0;
 }
 
-- (void)userConfigurationForIdentifier:(id)a3 completion:(id)a4
+- (void)userConfigurationForIdentifier:(id)identifier completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = PO_LOG_PODaemonCoreProcess();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v14 = "[PODaemonCoreProcess userConfigurationForIdentifier:completion:]";
     v15 = 2114;
-    v16 = v6;
+    v16 = identifierCopy;
     v17 = 2112;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E8B1000, v8, OS_LOG_TYPE_DEFAULT, "%s identifier = %{public}@ on %@", buf, 0x20u);
   }
 
   v12 = 0;
-  v9 = [(PODaemonCoreProcess *)self _userConfigurationForIdentifier:v6 error:&v12];
+  v9 = [(PODaemonCoreProcess *)self _userConfigurationForIdentifier:identifierCopy error:&v12];
   v10 = v12;
-  v7[2](v7, v9, v10);
+  completionCopy[2](completionCopy, v9, v10);
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_userLoginStateListDataWithError:(id *)a3
+- (id)_userLoginStateListDataWithError:(id *)error
 {
-  v4 = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
-  v5 = [v4 URLByAppendingPathComponent:@"com.apple.PlatformSSO.userstate.txt"];
+  _defaultConfigurationPath = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
+  v5 = [_defaultConfigurationPath URLByAppendingPathComponent:@"com.apple.PlatformSSO.userstate.txt"];
 
   v6 = PO_LOG_PODaemonCoreProcess();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -653,10 +653,10 @@ id __61__PODaemonCoreProcess__userConfigurationForIdentifier_error___block_invok
   else
   {
     v11 = __56__PODaemonCoreProcess__userLoginStateListDataWithError___block_invoke();
-    if (a3)
+    if (error)
     {
       v11 = v11;
-      *a3 = v11;
+      *error = v11;
     }
   }
 
@@ -675,11 +675,11 @@ id __56__PODaemonCoreProcess__userLoginStateListDataWithError___block_invoke()
   return v0;
 }
 
-- (id)_parseUserLoginStateListData:(id)a3 error:(id *)a4
+- (id)_parseUserLoginStateListData:(id)data error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
   v39 = 0;
-  v5 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:16 error:&v39];
+  v5 = [MEMORY[0x277CCAAA0] JSONObjectWithData:data options:16 error:&v39];
   v6 = v39;
   v7 = v6;
   if (v6)
@@ -690,10 +690,10 @@ id __56__PODaemonCoreProcess__userLoginStateListDataWithError___block_invoke()
     v37[3] = &unk_279A3DC48;
     v38 = v6;
     v8 = __58__PODaemonCoreProcess__parseUserLoginStateListData_error___block_invoke(v37);
-    if (a4)
+    if (error)
     {
       v8 = v8;
-      *a4 = v8;
+      *error = v8;
     }
 
     v9 = 0;
@@ -708,8 +708,8 @@ id __56__PODaemonCoreProcess__userLoginStateListDataWithError___block_invoke()
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v12 = [v5 allKeys];
-    v13 = [v12 countByEnumeratingWithState:&v33 objects:v40 count:16];
+    allKeys = [v5 allKeys];
+    v13 = [allKeys countByEnumeratingWithState:&v33 objects:v40 count:16];
     if (v13)
     {
       v14 = v13;
@@ -721,7 +721,7 @@ id __56__PODaemonCoreProcess__userLoginStateListDataWithError___block_invoke()
         {
           if (*v34 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(allKeys);
           }
 
           v17 = *(*(&v33 + 1) + 8 * i);
@@ -737,8 +737,8 @@ id __56__PODaemonCoreProcess__userLoginStateListDataWithError___block_invoke()
 
             if (v22)
             {
-              v23 = [(POUserLoginState *)v22 uniqueIdentifier];
-              [v11 setObject:v22 forKeyedSubscript:v23];
+              uniqueIdentifier = [(POUserLoginState *)v22 uniqueIdentifier];
+              [v11 setObject:v22 forKeyedSubscript:uniqueIdentifier];
             }
 
             else
@@ -750,12 +750,12 @@ id __56__PODaemonCoreProcess__userLoginStateListDataWithError___block_invoke()
               v31 = 0;
               v32 = v17;
               v24 = __58__PODaemonCoreProcess__parseUserLoginStateListData_error___block_invoke_55(v29);
-              v23 = v31;
+              uniqueIdentifier = v31;
             }
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v33 objects:v40 count:16];
+        v14 = [allKeys countByEnumeratingWithState:&v33 objects:v40 count:16];
       }
 
       while (v14);
@@ -795,7 +795,7 @@ id __58__PODaemonCoreProcess__parseUserLoginStateListData_error___block_invoke_5
   return v2;
 }
 
-- (id)_userLoginStateListWithError:(id *)a3
+- (id)_userLoginStateListWithError:(id *)error
 {
   v13 = 0;
   v5 = [(PODaemonCoreProcess *)self _userLoginStateListDataWithError:&v13];
@@ -809,10 +809,10 @@ id __58__PODaemonCoreProcess__parseUserLoginStateListData_error___block_invoke_5
     v11[3] = &unk_279A3DC48;
     v12 = v6;
     v8 = __52__PODaemonCoreProcess__userLoginStateListWithError___block_invoke(v11);
-    if (a3)
+    if (error)
     {
       v8 = v8;
-      *a3 = v8;
+      *error = v8;
     }
 
     v9 = 0;
@@ -820,7 +820,7 @@ id __58__PODaemonCoreProcess__parseUserLoginStateListData_error___block_invoke_5
 
   else
   {
-    v9 = [(PODaemonCoreProcess *)self _parseUserLoginStateListData:v5 error:a3];
+    v9 = [(PODaemonCoreProcess *)self _parseUserLoginStateListData:v5 error:error];
   }
 
   return v9;
@@ -838,10 +838,10 @@ id __52__PODaemonCoreProcess__userLoginStateListWithError___block_invoke(uint64_
   return v1;
 }
 
-- (id)_stashedUserLoginStateListDataWithError:(id *)a3
+- (id)_stashedUserLoginStateListDataWithError:(id *)error
 {
-  v4 = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
-  v5 = [v4 URLByAppendingPathComponent:@"com.apple.PlatformSSO.stashed.userstate.txt"];
+  _defaultConfigurationPath = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
+  v5 = [_defaultConfigurationPath URLByAppendingPathComponent:@"com.apple.PlatformSSO.stashed.userstate.txt"];
 
   v6 = PO_LOG_PODaemonCoreProcess();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -868,17 +868,17 @@ id __52__PODaemonCoreProcess__userLoginStateListWithError___block_invoke(uint64_
   else
   {
     v11 = __56__PODaemonCoreProcess__userLoginStateListDataWithError___block_invoke();
-    if (a3)
+    if (error)
     {
       v11 = v11;
-      *a3 = v11;
+      *error = v11;
     }
   }
 
   return v7;
 }
 
-- (id)_stashedUserLoginStateListWithError:(id *)a3
+- (id)_stashedUserLoginStateListWithError:(id *)error
 {
   v13 = 0;
   v5 = [(PODaemonCoreProcess *)self _stashedUserLoginStateListDataWithError:&v13];
@@ -892,10 +892,10 @@ id __52__PODaemonCoreProcess__userLoginStateListWithError___block_invoke(uint64_
     v11[3] = &unk_279A3DC48;
     v12 = v6;
     v8 = __59__PODaemonCoreProcess__stashedUserLoginStateListWithError___block_invoke(v11);
-    if (a3)
+    if (error)
     {
       v8 = v8;
-      *a3 = v8;
+      *error = v8;
     }
 
     v9 = 0;
@@ -903,7 +903,7 @@ id __52__PODaemonCoreProcess__userLoginStateListWithError___block_invoke(uint64_
 
   else
   {
-    v9 = [(PODaemonCoreProcess *)self _parseUserLoginStateListData:v5 error:a3];
+    v9 = [(PODaemonCoreProcess *)self _parseUserLoginStateListData:v5 error:error];
   }
 
   return v9;
@@ -921,10 +921,10 @@ id __59__PODaemonCoreProcess__stashedUserLoginStateListWithError___block_invoke(
   return v1;
 }
 
-- (BOOL)_removeStashedUserLoginStateListDataWithError:(id *)a3
+- (BOOL)_removeStashedUserLoginStateListDataWithError:(id *)error
 {
-  v4 = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
-  v5 = [v4 URLByAppendingPathComponent:@"com.apple.PlatformSSO.stashed.userstate.txt"];
+  _defaultConfigurationPath = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
+  v5 = [_defaultConfigurationPath URLByAppendingPathComponent:@"com.apple.PlatformSSO.stashed.userstate.txt"];
 
   v6 = PO_LOG_PODaemonCoreProcess();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -932,9 +932,9 @@ id __59__PODaemonCoreProcess__stashedUserLoginStateListWithError___block_invoke(
     [PODaemonCoreProcess _removeStashedUserLoginStateListDataWithError:];
   }
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v18 = 0;
-  v8 = [v7 removeItemAtURL:v5 error:&v18];
+  v8 = [defaultManager removeItemAtURL:v5 error:&v18];
   v9 = v18;
 
   if (v8)
@@ -944,12 +944,12 @@ id __59__PODaemonCoreProcess__stashedUserLoginStateListWithError___block_invoke(
 
   else
   {
-    v11 = [v9 userInfo];
-    v12 = [v11 objectForKeyedSubscript:@"NSUnderlyingError"];
+    userInfo = [v9 userInfo];
+    v12 = [userInfo objectForKeyedSubscript:@"NSUnderlyingError"];
 
-    v13 = [v12 code];
-    v10 = v13 == 2;
-    if (v13 != 2)
+    code = [v12 code];
+    v10 = code == 2;
+    if (code != 2)
     {
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
@@ -957,10 +957,10 @@ id __59__PODaemonCoreProcess__stashedUserLoginStateListWithError___block_invoke(
       v16[3] = &unk_279A3DC48;
       v17 = v9;
       v14 = __69__PODaemonCoreProcess__removeStashedUserLoginStateListDataWithError___block_invoke(v16);
-      if (a3)
+      if (error)
       {
         v14 = v14;
-        *a3 = v14;
+        *error = v14;
       }
     }
   }
@@ -980,17 +980,17 @@ id __69__PODaemonCoreProcess__removeStashedUserLoginStateListDataWithError___blo
   return v1;
 }
 
-- (id)_dataForUserLoginStateList:(id)a3 error:(id *)a4
+- (id)_dataForUserLoginStateList:(id)list error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  listCopy = list;
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v7 = [v5 allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  allKeys = [listCopy allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1001,16 +1001,16 @@ id __69__PODaemonCoreProcess__removeStashedUserLoginStateListDataWithError___blo
       {
         if (*v26 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v25 + 1) + 8 * i);
-        v13 = [v5 objectForKeyedSubscript:v12];
-        v14 = [v13 dictionaryRepresentation];
-        [v6 setObject:v14 forKeyedSubscript:v12];
+        v13 = [listCopy objectForKeyedSubscript:v12];
+        dictionaryRepresentation = [v13 dictionaryRepresentation];
+        [v6 setObject:dictionaryRepresentation forKeyedSubscript:v12];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v9);
@@ -1028,10 +1028,10 @@ id __69__PODaemonCoreProcess__removeStashedUserLoginStateListDataWithError___blo
     v22[3] = &unk_279A3DC48;
     v23 = v16;
     v18 = __56__PODaemonCoreProcess__dataForUserLoginStateList_error___block_invoke(v22);
-    if (a4)
+    if (error)
     {
       v18 = v18;
-      *a4 = v18;
+      *error = v18;
     }
 
     v19 = 0;
@@ -1059,17 +1059,17 @@ id __56__PODaemonCoreProcess__dataForUserLoginStateList_error___block_invoke(uin
   return v1;
 }
 
-- (BOOL)_saveUserLoginStateList:(id)a3 error:(id *)a4
+- (BOOL)_saveUserLoginStateList:(id)list error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  listCopy = list;
   v7 = PO_LOG_PODaemonCoreProcess();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v30 = "[PODaemonCoreProcess _saveUserLoginStateList:error:]";
     v31 = 2112;
-    v32 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E8B1000, v7, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
@@ -1082,11 +1082,11 @@ id __56__PODaemonCoreProcess__dataForUserLoginStateList_error___block_invoke(uin
     }
   }
 
-  v9 = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
-  v10 = [v9 URLByAppendingPathComponent:@"com.apple.PlatformSSO.userstate.txt"];
+  _defaultConfigurationPath = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
+  v10 = [_defaultConfigurationPath URLByAppendingPathComponent:@"com.apple.PlatformSSO.userstate.txt"];
 
   v28 = 0;
-  v11 = [(PODaemonCoreProcess *)self _dataForUserLoginStateList:v6 error:&v28];
+  v11 = [(PODaemonCoreProcess *)self _dataForUserLoginStateList:listCopy error:&v28];
   v12 = v28;
   if (v12)
   {
@@ -1097,10 +1097,10 @@ id __56__PODaemonCoreProcess__dataForUserLoginStateList_error___block_invoke(uin
     v13 = v12;
     v27 = v13;
     v14 = __53__PODaemonCoreProcess__saveUserLoginStateList_error___block_invoke(v26);
-    if (a4)
+    if (error)
     {
       v14 = v14;
-      *a4 = v14;
+      *error = v14;
     }
 
     v15 = 0;
@@ -1119,9 +1119,9 @@ id __56__PODaemonCoreProcess__dataForUserLoginStateList_error___block_invoke(uin
       v15 = 1;
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
-        v19 = [v10 path];
+        path = [v10 path];
         *buf = 138543362;
-        v30 = v19;
+        v30 = path;
         _os_log_impl(&dword_25E8B1000, v16, OS_LOG_TYPE_INFO, "user state list written to file: %{public}@", buf, 0xCu);
       }
     }
@@ -1135,10 +1135,10 @@ id __56__PODaemonCoreProcess__dataForUserLoginStateList_error___block_invoke(uin
       v13 = v18;
       v24 = v13;
       v20 = __53__PODaemonCoreProcess__saveUserLoginStateList_error___block_invoke_70(v23);
-      if (a4)
+      if (error)
       {
         v20 = v20;
-        *a4 = v20;
+        *error = v20;
       }
 
       v15 = 0;
@@ -1174,57 +1174,57 @@ id __53__PODaemonCoreProcess__saveUserLoginStateList_error___block_invoke_70(uin
   return v1;
 }
 
-- (id)_userLoginStateForIdentifier:(id)a3 error:(id *)a4
+- (id)_userLoginStateForIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PODaemonCoreProcess *)self _userLoginStateListWithError:a4];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  identifierCopy = identifier;
+  v7 = [(PODaemonCoreProcess *)self _userLoginStateListWithError:error];
+  v8 = [v7 objectForKeyedSubscript:identifierCopy];
 
   return v8;
 }
 
-- (void)userLoginStateForIdentifier:(id)a3 completion:(id)a4
+- (void)userLoginStateForIdentifier:(id)identifier completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = PO_LOG_PODaemonCoreProcess();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v14 = "[PODaemonCoreProcess userLoginStateForIdentifier:completion:]";
     v15 = 2114;
-    v16 = v6;
+    v16 = identifierCopy;
     v17 = 2112;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E8B1000, v8, OS_LOG_TYPE_DEFAULT, "%s identifier = %{public}@ on %@", buf, 0x20u);
   }
 
   v12 = 0;
-  v9 = [(PODaemonCoreProcess *)self _userLoginStateForIdentifier:v6 error:&v12];
+  v9 = [(PODaemonCoreProcess *)self _userLoginStateForIdentifier:identifierCopy error:&v12];
   v10 = v12;
-  v7[2](v7, v9, v10);
+  completionCopy[2](completionCopy, v9, v10);
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateLoginStateForIdentifier:(id)a3 state:(id)a4 loginDate:(id)a5 loginType:(id)a6 completion:(id)a7
+- (void)updateLoginStateForIdentifier:(id)identifier state:(id)state loginDate:(id)date loginType:(id)type completion:(id)completion
 {
   v39 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  stateCopy = state;
+  dateCopy = date;
+  typeCopy = type;
+  completionCopy = completion;
   v17 = PO_LOG_PODaemonCoreProcess();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v34 = "[PODaemonCoreProcess updateLoginStateForIdentifier:state:loginDate:loginType:completion:]";
     v35 = 2114;
-    v36 = v12;
+    v36 = identifierCopy;
     v37 = 2112;
-    v38 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E8B1000, v17, OS_LOG_TYPE_DEFAULT, "%s identifier = %{public}@ on %@", buf, 0x20u);
   }
 
@@ -1245,25 +1245,25 @@ id __53__PODaemonCoreProcess__saveUserLoginStateList_error___block_invoke_70(uin
 
   v23 = v22;
 
-  v24 = [v23 objectForKeyedSubscript:v12];
+  v24 = [v23 objectForKeyedSubscript:identifierCopy];
   if (!v24)
   {
-    v24 = [[POUserLoginState alloc] initWithUniqueIdentifier:v12];
+    v24 = [[POUserLoginState alloc] initWithUniqueIdentifier:identifierCopy];
   }
 
-  if (v13)
+  if (stateCopy)
   {
-    -[POUserLoginState setState:](v24, "setState:", [v13 unsignedIntValue]);
+    -[POUserLoginState setState:](v24, "setState:", [stateCopy unsignedIntValue]);
   }
 
-  if (v14)
+  if (dateCopy)
   {
-    [(POUserLoginState *)v24 setLastLogin:v14];
+    [(POUserLoginState *)v24 setLastLogin:dateCopy];
   }
 
-  if (v15)
+  if (typeCopy)
   {
-    -[POUserLoginState setLoginType:](v24, "setLoginType:", [v15 unsignedIntValue]);
+    -[POUserLoginState setLoginType:](v24, "setLoginType:", [typeCopy unsignedIntValue]);
   }
 
   v25 = PO_LOG_PODaemonCoreProcess();
@@ -1272,7 +1272,7 @@ id __53__PODaemonCoreProcess__saveUserLoginStateList_error___block_invoke_70(uin
     [PODaemonCoreProcess updateLoginStateForIdentifier:state:loginDate:loginType:completion:];
   }
 
-  [v23 setObject:v24 forKeyedSubscript:v12];
+  [v23 setObject:v24 forKeyedSubscript:identifierCopy];
   v31 = v19;
   v26 = [(PODaemonCoreProcess *)self _saveUserLoginStateList:v23 error:&v31];
   v27 = v31;
@@ -1289,58 +1289,58 @@ id __53__PODaemonCoreProcess__saveUserLoginStateList_error___block_invoke_70(uin
     v29 = v27;
   }
 
-  (v16)[2](v16, v28, v29);
+  (completionCopy)[2](completionCopy, v28, v29);
 
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)savePendingSSOTokens:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)savePendingSSOTokens:(id)tokens identifier:(id)identifier completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  tokensCopy = tokens;
   v11 = PO_LOG_PODaemonCoreProcess();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v17 = "[PODaemonCoreProcess savePendingSSOTokens:identifier:completion:]";
     v18 = 2114;
-    v19 = v8;
+    v19 = identifierCopy;
     v20 = 2112;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E8B1000, v11, OS_LOG_TYPE_DEFAULT, "%s identifier = %{public}@ on %@", buf, 0x20u);
   }
 
   v15 = 0;
-  v12 = [(PODaemonCoreProcess *)self _savePendingSSOTokensData:v10 forIdentifier:v8 error:&v15];
+  v12 = [(PODaemonCoreProcess *)self _savePendingSSOTokensData:tokensCopy forIdentifier:identifierCopy error:&v15];
 
   v13 = v15;
-  v9[2](v9, v12, v13);
+  completionCopy[2](completionCopy, v12, v13);
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_savePendingSSOTokensData:(id)a3 forIdentifier:(id)a4 error:(id *)a5
+- (BOOL)_savePendingSSOTokensData:(id)data forIdentifier:(id)identifier error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   v10 = PO_LOG_PODaemonCoreProcess();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v31 = "[PODaemonCoreProcess _savePendingSSOTokensData:forIdentifier:error:]";
     v32 = 2114;
-    v33 = v9;
+    v33 = identifierCopy;
     v34 = 2112;
-    v35 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E8B1000, v10, OS_LOG_TYPE_DEFAULT, "%s identifier = %{public}@ on %@", buf, 0x20u);
   }
 
   if (+[POCoreConfigurationUtil platformSSODevModeEnabled])
   {
-    v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v8 encoding:4];
+    v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:dataCopy encoding:4];
     v12 = PO_LOG_PODaemonCoreProcess();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
@@ -1350,15 +1350,15 @@ id __53__PODaemonCoreProcess__saveUserLoginStateList_error___block_invoke_70(uin
 
   if (![(PODaemonCoreProcess *)self baseSystem])
   {
-    v16 = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
-    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.PlatformSSO.pending.%@.txt", v9];
-    v18 = [v16 URLByAppendingPathComponent:v17];
+    _defaultConfigurationPath = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
+    identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.PlatformSSO.pending.%@.txt", identifierCopy];
+    v18 = [_defaultConfigurationPath URLByAppendingPathComponent:identifierCopy];
 
     v29 = 0;
-    LOBYTE(v16) = [(PODaemonCoreProcess *)self writeData:v8 toPath:v18 saveError:&v29];
+    LOBYTE(_defaultConfigurationPath) = [(PODaemonCoreProcess *)self writeData:dataCopy toPath:v18 saveError:&v29];
     v19 = v29;
     v20 = v19;
-    if ((v16 & 1) == 0)
+    if ((_defaultConfigurationPath & 1) == 0)
     {
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
@@ -1367,10 +1367,10 @@ id __53__PODaemonCoreProcess__saveUserLoginStateList_error___block_invoke_70(uin
       v20 = v19;
       v28 = v20;
       v23 = __69__PODaemonCoreProcess__savePendingSSOTokensData_forIdentifier_error___block_invoke(v27);
-      if (a5)
+      if (error)
       {
         v23 = v23;
-        *a5 = v23;
+        *error = v23;
       }
 
       v15 = 0;
@@ -1380,9 +1380,9 @@ id __53__PODaemonCoreProcess__saveUserLoginStateList_error___block_invoke_70(uin
     v21 = PO_LOG_PODaemonCoreProcess();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
-      v22 = [v18 path];
+      path = [v18 path];
       *buf = 138543362;
-      v31 = v22;
+      v31 = path;
       _os_log_impl(&dword_25E8B1000, v21, OS_LOG_TYPE_INFO, "pending tokens written to file: %{public}@", buf, 0xCu);
     }
 
@@ -1401,7 +1401,7 @@ LABEL_21:
 
   v14 = _cachedPendingTokens;
   objc_sync_enter(v14);
-  [_cachedPendingTokens setObject:v8 forKeyedSubscript:v9];
+  [_cachedPendingTokens setObject:dataCopy forKeyedSubscript:identifierCopy];
   objc_sync_exit(v14);
 
   if (!_cacheTransaction)
@@ -1431,35 +1431,35 @@ id __69__PODaemonCoreProcess__savePendingSSOTokensData_forIdentifier_error___blo
   return v1;
 }
 
-- (void)retrievePendingSSOTokenForIdentifier:(id)a3 completion:(id)a4
+- (void)retrievePendingSSOTokenForIdentifier:(id)identifier completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = PO_LOG_PODaemonCoreProcess();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v14 = "[PODaemonCoreProcess retrievePendingSSOTokenForIdentifier:completion:]";
     v15 = 2114;
-    v16 = v6;
+    v16 = identifierCopy;
     v17 = 2112;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E8B1000, v8, OS_LOG_TYPE_DEFAULT, "%s identifier = %{public}@ on %@", buf, 0x20u);
   }
 
   v12 = 0;
-  v9 = [(PODaemonCoreProcess *)self _pendingSSOTokensForIdentifier:v6 error:&v12];
+  v9 = [(PODaemonCoreProcess *)self _pendingSSOTokensForIdentifier:identifierCopy error:&v12];
   v10 = v12;
-  v7[2](v7, v9, v10);
+  completionCopy[2](completionCopy, v9, v10);
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_pendingSSOTokensForIdentifier:(id)a3 error:(id *)a4
+- (id)_pendingSSOTokensForIdentifier:(id)identifier error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   if ([(PODaemonCoreProcess *)self baseSystem])
   {
     v7 = PO_LOG_PODaemonCoreProcess();
@@ -1470,15 +1470,15 @@ id __69__PODaemonCoreProcess__savePendingSSOTokensData_forIdentifier_error___blo
 
     v8 = _cachedPendingTokens;
     objc_sync_enter(v8);
-    v9 = [_cachedPendingTokens objectForKeyedSubscript:v6];
+    v9 = [_cachedPendingTokens objectForKeyedSubscript:identifierCopy];
     objc_sync_exit(v8);
   }
 
   else
   {
-    v10 = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.PlatformSSO.pending.%@.txt", v6];
-    v8 = [v10 URLByAppendingPathComponent:v11];
+    _defaultConfigurationPath = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
+    identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.PlatformSSO.pending.%@.txt", identifierCopy];
+    v8 = [_defaultConfigurationPath URLByAppendingPathComponent:identifierCopy];
 
     v9 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v8];
     if (v9)
@@ -1499,7 +1499,7 @@ id __69__PODaemonCoreProcess__savePendingSSOTokensData_forIdentifier_error___blo
           v25 = 2114;
           v26 = v18;
           v27 = 2112;
-          v28 = self;
+          selfCopy = self;
           _os_log_debug_impl(&dword_25E8B1000, v13, OS_LOG_TYPE_DEBUG, "%s file = %{public}@, data = %{public}@, %{public}@ on %@", buf, 0x34u);
         }
       }
@@ -1510,10 +1510,10 @@ id __69__PODaemonCoreProcess__savePendingSSOTokensData_forIdentifier_error___blo
     else
     {
       v15 = __60__PODaemonCoreProcess__pendingSSOTokensForIdentifier_error___block_invoke();
-      if (a4)
+      if (error)
       {
         v15 = v15;
-        *a4 = v15;
+        *error = v15;
       }
     }
   }
@@ -1535,53 +1535,53 @@ id __60__PODaemonCoreProcess__pendingSSOTokensForIdentifier_error___block_invoke
   return v0;
 }
 
-- (void)saveStashedSSOTokens:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)saveStashedSSOTokens:(id)tokens identifier:(id)identifier completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  tokensCopy = tokens;
   v11 = PO_LOG_PODaemonCoreProcess();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v17 = "[PODaemonCoreProcess saveStashedSSOTokens:identifier:completion:]";
     v18 = 2114;
-    v19 = v8;
+    v19 = identifierCopy;
     v20 = 2112;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E8B1000, v11, OS_LOG_TYPE_DEFAULT, "%s identifier = %{public}@ on %@", buf, 0x20u);
   }
 
   v15 = 0;
-  v12 = [(PODaemonCoreProcess *)self _saveStashedSSOTokensData:v10 forIdentifier:v8 error:&v15];
+  v12 = [(PODaemonCoreProcess *)self _saveStashedSSOTokensData:tokensCopy forIdentifier:identifierCopy error:&v15];
 
   v13 = v15;
-  v9[2](v9, v12, v13);
+  completionCopy[2](completionCopy, v12, v13);
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_saveStashedSSOTokensData:(id)a3 forIdentifier:(id)a4 error:(id *)a5
+- (BOOL)_saveStashedSSOTokensData:(id)data forIdentifier:(id)identifier error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   v10 = PO_LOG_PODaemonCoreProcess();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v31 = "[PODaemonCoreProcess _saveStashedSSOTokensData:forIdentifier:error:]";
     v32 = 2114;
-    v33 = v9;
+    v33 = identifierCopy;
     v34 = 2112;
-    v35 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E8B1000, v10, OS_LOG_TYPE_DEFAULT, "%s identifier = %{public}@ on %@", buf, 0x20u);
   }
 
   if (+[POCoreConfigurationUtil platformSSODevModeEnabled])
   {
-    v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v8 encoding:4];
+    v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:dataCopy encoding:4];
     v12 = PO_LOG_PODaemonCoreProcess();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
@@ -1591,15 +1591,15 @@ id __60__PODaemonCoreProcess__pendingSSOTokensForIdentifier_error___block_invoke
 
   if (![(PODaemonCoreProcess *)self baseSystem])
   {
-    v16 = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
-    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.PlatformSSO.stashed.%@.txt", v9];
-    v18 = [v16 URLByAppendingPathComponent:v17];
+    _defaultConfigurationPath = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
+    identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.PlatformSSO.stashed.%@.txt", identifierCopy];
+    v18 = [_defaultConfigurationPath URLByAppendingPathComponent:identifierCopy];
 
     v29 = 0;
-    LOBYTE(v16) = [(PODaemonCoreProcess *)self writeData:v8 toPath:v18 saveError:&v29];
+    LOBYTE(_defaultConfigurationPath) = [(PODaemonCoreProcess *)self writeData:dataCopy toPath:v18 saveError:&v29];
     v19 = v29;
     v20 = v19;
-    if ((v16 & 1) == 0)
+    if ((_defaultConfigurationPath & 1) == 0)
     {
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
@@ -1608,10 +1608,10 @@ id __60__PODaemonCoreProcess__pendingSSOTokensForIdentifier_error___block_invoke
       v20 = v19;
       v28 = v20;
       v23 = __69__PODaemonCoreProcess__saveStashedSSOTokensData_forIdentifier_error___block_invoke(v27);
-      if (a5)
+      if (error)
       {
         v23 = v23;
-        *a5 = v23;
+        *error = v23;
       }
 
       v15 = 0;
@@ -1621,9 +1621,9 @@ id __60__PODaemonCoreProcess__pendingSSOTokensForIdentifier_error___block_invoke
     v21 = PO_LOG_PODaemonCoreProcess();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
-      v22 = [v18 path];
+      path = [v18 path];
       *buf = 138543362;
-      v31 = v22;
+      v31 = path;
       _os_log_impl(&dword_25E8B1000, v21, OS_LOG_TYPE_INFO, "stashed tokens written to file: %{public}@", buf, 0xCu);
     }
 
@@ -1642,7 +1642,7 @@ LABEL_21:
 
   v14 = _cachedStashedTokens;
   objc_sync_enter(v14);
-  [_cachedStashedTokens setObject:v8 forKeyedSubscript:v9];
+  [_cachedStashedTokens setObject:dataCopy forKeyedSubscript:identifierCopy];
   objc_sync_exit(v14);
 
   if (!_cacheTransaction)
@@ -1672,34 +1672,34 @@ id __69__PODaemonCoreProcess__saveStashedSSOTokensData_forIdentifier_error___blo
   return v1;
 }
 
-- (void)retrieveStashedSSOTokenForIdentifier:(id)a3 completion:(id)a4
+- (void)retrieveStashedSSOTokenForIdentifier:(id)identifier completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = PO_LOG_PODaemonCoreProcess();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v14 = "[PODaemonCoreProcess retrieveStashedSSOTokenForIdentifier:completion:]";
     v15 = 2114;
-    v16 = v6;
+    v16 = identifierCopy;
     v17 = 2112;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E8B1000, v8, OS_LOG_TYPE_DEFAULT, "%s identifier = %{public}@ on %@", buf, 0x20u);
   }
 
   v12 = 0;
-  v9 = [(PODaemonCoreProcess *)self _stashedSSOTokensForIdentifier:v6 error:&v12];
+  v9 = [(PODaemonCoreProcess *)self _stashedSSOTokensForIdentifier:identifierCopy error:&v12];
   v10 = v12;
-  v7[2](v7, v9, v10);
+  completionCopy[2](completionCopy, v9, v10);
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_stashedSSOTokensForIdentifier:(id)a3 error:(id *)a4
+- (id)_stashedSSOTokensForIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if ([(PODaemonCoreProcess *)self baseSystem])
   {
     v7 = PO_LOG_PODaemonCoreProcess();
@@ -1710,15 +1710,15 @@ id __69__PODaemonCoreProcess__saveStashedSSOTokensData_forIdentifier_error___blo
 
     v8 = _cachedStashedTokens;
     objc_sync_enter(v8);
-    v9 = [_cachedStashedTokens objectForKeyedSubscript:v6];
+    v9 = [_cachedStashedTokens objectForKeyedSubscript:identifierCopy];
     objc_sync_exit(v8);
   }
 
   else
   {
-    v10 = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.PlatformSSO.stashed.%@.txt", v6];
-    v8 = [v10 URLByAppendingPathComponent:v11];
+    _defaultConfigurationPath = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
+    identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.PlatformSSO.stashed.%@.txt", identifierCopy];
+    v8 = [_defaultConfigurationPath URLByAppendingPathComponent:identifierCopy];
 
     v9 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v8];
     if (v9)
@@ -1739,10 +1739,10 @@ id __69__PODaemonCoreProcess__saveStashedSSOTokensData_forIdentifier_error___blo
     else
     {
       v15 = __60__PODaemonCoreProcess__stashedSSOTokensForIdentifier_error___block_invoke();
-      if (a4)
+      if (error)
       {
         v15 = v15;
-        *a4 = v15;
+        *error = v15;
       }
     }
   }
@@ -1762,53 +1762,53 @@ id __60__PODaemonCoreProcess__stashedSSOTokensForIdentifier_error___block_invoke
   return v0;
 }
 
-- (void)saveStashedDecryptionContext:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)saveStashedDecryptionContext:(id)context identifier:(id)identifier completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  contextCopy = context;
   v11 = PO_LOG_PODaemonCoreProcess();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v17 = "[PODaemonCoreProcess saveStashedDecryptionContext:identifier:completion:]";
     v18 = 2114;
-    v19 = v8;
+    v19 = identifierCopy;
     v20 = 2112;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E8B1000, v11, OS_LOG_TYPE_DEFAULT, "%s identifier = %{public}@ on %@", buf, 0x20u);
   }
 
   v15 = 0;
-  v12 = [(PODaemonCoreProcess *)self _saveStashedDecryptionContextData:v10 forIdentifier:v8 error:&v15];
+  v12 = [(PODaemonCoreProcess *)self _saveStashedDecryptionContextData:contextCopy forIdentifier:identifierCopy error:&v15];
 
   v13 = v15;
-  v9[2](v9, v12, v13);
+  completionCopy[2](completionCopy, v12, v13);
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_saveStashedDecryptionContextData:(id)a3 forIdentifier:(id)a4 error:(id *)a5
+- (BOOL)_saveStashedDecryptionContextData:(id)data forIdentifier:(id)identifier error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   v10 = PO_LOG_PODaemonCoreProcess();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v28 = "[PODaemonCoreProcess _saveStashedDecryptionContextData:forIdentifier:error:]";
     v29 = 2114;
-    v30 = v9;
+    v30 = identifierCopy;
     v31 = 2112;
-    v32 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E8B1000, v10, OS_LOG_TYPE_DEFAULT, "%s identifier = %{public}@ on %@", buf, 0x20u);
   }
 
   if (+[POCoreConfigurationUtil platformSSODevModeEnabled])
   {
-    v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v8 encoding:4];
+    v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:dataCopy encoding:4];
     v12 = PO_LOG_PODaemonCoreProcess();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
@@ -1816,12 +1816,12 @@ id __60__PODaemonCoreProcess__stashedSSOTokensForIdentifier_error___block_invoke
     }
   }
 
-  v13 = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
-  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.PlatformSSO.context.%@.txt", v9];
-  v15 = [v13 URLByAppendingPathComponent:v14];
+  _defaultConfigurationPath = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
+  identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.PlatformSSO.context.%@.txt", identifierCopy];
+  v15 = [_defaultConfigurationPath URLByAppendingPathComponent:identifierCopy];
 
   v26 = 0;
-  v16 = [(PODaemonCoreProcess *)self writeData:v8 toPath:v15 saveError:&v26];
+  v16 = [(PODaemonCoreProcess *)self writeData:dataCopy toPath:v15 saveError:&v26];
   v17 = v26;
   v18 = v17;
   if (v16)
@@ -1829,9 +1829,9 @@ id __60__PODaemonCoreProcess__stashedSSOTokensForIdentifier_error___block_invoke
     v19 = PO_LOG_PODaemonCoreProcess();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
-      v20 = [v15 path];
+      path = [v15 path];
       *buf = 138543362;
-      v28 = v20;
+      v28 = path;
       _os_log_impl(&dword_25E8B1000, v19, OS_LOG_TYPE_INFO, "stashed context written to file: %{public}@", buf, 0xCu);
     }
   }
@@ -1844,10 +1844,10 @@ id __60__PODaemonCoreProcess__stashedSSOTokensForIdentifier_error___block_invoke
     v24[3] = &unk_279A3DC48;
     v25 = v17;
     v21 = __77__PODaemonCoreProcess__saveStashedDecryptionContextData_forIdentifier_error___block_invoke(v24);
-    if (a5)
+    if (error)
     {
       v21 = v21;
-      *a5 = v21;
+      *error = v21;
     }
 
     v19 = v25;

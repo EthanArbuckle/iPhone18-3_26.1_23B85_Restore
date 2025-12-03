@@ -1,26 +1,26 @@
 @interface CCUIContentModuleDetailPresentationController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (CCUIContentModuleDetailPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4 anchoringViewController:(id)a5;
-- (double)_preferredExpandedContentHeightForViewController:(id)a3;
-- (double)_preferredExpandedContentWidthForViewController:(id)a3;
-- (void)_handleBackgroundTap:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (CCUIContentModuleDetailPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController anchoringViewController:(id)anchoringViewController;
+- (double)_preferredExpandedContentHeightForViewController:(id)controller;
+- (double)_preferredExpandedContentWidthForViewController:(id)controller;
+- (void)_handleBackgroundTap:(id)tap;
 - (void)containerViewWillLayoutSubviews;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
 - (void)presentationTransitionWillBegin;
 @end
 
 @implementation CCUIContentModuleDetailPresentationController
 
-- (CCUIContentModuleDetailPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4 anchoringViewController:(id)a5
+- (CCUIContentModuleDetailPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController anchoringViewController:(id)anchoringViewController
 {
-  v9 = a5;
+  anchoringViewControllerCopy = anchoringViewController;
   v13.receiver = self;
   v13.super_class = CCUIContentModuleDetailPresentationController;
-  v10 = [(CCUIContentModuleDetailPresentationController *)&v13 initWithPresentedViewController:a3 presentingViewController:a4];
+  v10 = [(CCUIContentModuleDetailPresentationController *)&v13 initWithPresentedViewController:controller presentingViewController:viewController];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_anchoringViewController, a5);
+    objc_storeStrong(&v10->_anchoringViewController, anchoringViewController);
   }
 
   return v11;
@@ -31,15 +31,15 @@
   v41.receiver = self;
   v41.super_class = CCUIContentModuleDetailPresentationController;
   [(CCUIContentModuleDetailPresentationController *)&v41 containerViewWillLayoutSubviews];
-  v3 = [(UIViewController *)self->_anchoringViewController view];
-  v4 = [(CCUIContentModuleDetailPresentationController *)self containerView];
-  if (v3 && ([MEMORY[0x1E69DC938] currentDevice], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "userInterfaceIdiom"), v5, v6))
+  view = [(UIViewController *)self->_anchoringViewController view];
+  containerView = [(CCUIContentModuleDetailPresentationController *)self containerView];
+  if (view && ([MEMORY[0x1E69DC938] currentDevice], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "userInterfaceIdiom"), v5, v6))
   {
-    v7 = [(UIViewController *)self->_anchoringViewController bs_presentationContextDefiningViewController];
-    v8 = [v7 view];
+    bs_presentationContextDefiningViewController = [(UIViewController *)self->_anchoringViewController bs_presentationContextDefiningViewController];
+    view2 = [bs_presentationContextDefiningViewController view];
 
-    [v3 bounds];
-    [v3 convertRect:v8 toView:?];
+    [view bounds];
+    [view convertRect:view2 toView:?];
     x = v42.origin.x;
     y = v42.origin.y;
     width = v42.size.width;
@@ -54,18 +54,18 @@
 
   else
   {
-    [v4 center];
+    [containerView center];
   }
 
-  v13 = [(CCUIContentModuleDetailPresentationController *)self presentedViewController];
-  [(CCUIContentModuleDetailPresentationController *)self _preferredExpandedContentWidthForViewController:v13];
-  [(CCUIContentModuleDetailPresentationController *)self _preferredExpandedContentHeightForViewController:v13];
+  presentedViewController = [(CCUIContentModuleDetailPresentationController *)self presentedViewController];
+  [(CCUIContentModuleDetailPresentationController *)self _preferredExpandedContentWidthForViewController:presentedViewController];
+  [(CCUIContentModuleDetailPresentationController *)self _preferredExpandedContentHeightForViewController:presentedViewController];
   UIRectCenteredAboutPoint();
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  [v4 bounds];
+  [containerView bounds];
   v23 = v22;
   v25 = v24;
   v27 = v26;
@@ -90,9 +90,9 @@
     MinY = v39;
   }
 
-  v40 = [(CCUIContentModuleDetailPresentationController *)self presentedView];
-  [v40 setFrame:{v15, MinY, v19, v21}];
-  [v4 addSubview:v40];
+  presentedView = [(CCUIContentModuleDetailPresentationController *)self presentedView];
+  [presentedView setFrame:{v15, MinY, v19, v21}];
+  [containerView addSubview:presentedView];
 }
 
 - (void)presentationTransitionWillBegin
@@ -102,55 +102,55 @@
   [(CCUIContentModuleDetailPresentationController *)&v5 presentationTransitionWillBegin];
   v3 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleBackgroundTap_];
   [v3 setDelegate:self];
-  v4 = [(CCUIContentModuleDetailPresentationController *)self containerView];
-  [v4 addGestureRecognizer:v3];
+  containerView = [(CCUIContentModuleDetailPresentationController *)self containerView];
+  [containerView addGestureRecognizer:v3];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v9.receiver = self;
   v9.super_class = CCUIContentModuleDetailPresentationController;
-  [(CCUIContentModuleDetailPresentationController *)&v9 preferredContentSizeDidChangeForChildContentContainer:a3];
-  v4 = [(CCUIContentModuleDetailPresentationController *)self containerView];
-  [v4 setNeedsLayout];
+  [(CCUIContentModuleDetailPresentationController *)&v9 preferredContentSizeDidChangeForChildContentContainer:container];
+  containerView = [(CCUIContentModuleDetailPresentationController *)self containerView];
+  [containerView setNeedsLayout];
   v5 = MEMORY[0x1E69DD250];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __103__CCUIContentModuleDetailPresentationController_preferredContentSizeDidChangeForChildContentContainer___block_invoke;
   v7[3] = &unk_1E83EA478;
-  v8 = v4;
-  v6 = v4;
+  v8 = containerView;
+  v6 = containerView;
   [v5 animateWithDuration:v7 animations:0.3];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
-  v6 = [(CCUIContentModuleDetailPresentationController *)self presentedViewController];
-  v7 = [v6 view];
-  [v5 locationInView:v7];
+  touchCopy = touch;
+  presentedViewController = [(CCUIContentModuleDetailPresentationController *)self presentedViewController];
+  view = [presentedViewController view];
+  [touchCopy locationInView:view];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CCUIContentModuleDetailPresentationController *)self presentedViewController];
-  v13 = [v12 view];
-  LOBYTE(v6) = [v13 pointInside:0 withEvent:{v9, v11}];
+  presentedViewController2 = [(CCUIContentModuleDetailPresentationController *)self presentedViewController];
+  view2 = [presentedViewController2 view];
+  LOBYTE(presentedViewController) = [view2 pointInside:0 withEvent:{v9, v11}];
 
-  return v6 ^ 1;
+  return presentedViewController ^ 1;
 }
 
-- (void)_handleBackgroundTap:(id)a3
+- (void)_handleBackgroundTap:(id)tap
 {
-  v3 = [(CCUIContentModuleDetailPresentationController *)self presentedViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentedViewController = [(CCUIContentModuleDetailPresentationController *)self presentedViewController];
+  [presentedViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (double)_preferredExpandedContentWidthForViewController:(id)a3
+- (double)_preferredExpandedContentWidthForViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   if (objc_opt_respondsToSelector())
   {
-    [v3 preferredExpandedContentWidth];
+    [controllerCopy preferredExpandedContentWidth];
   }
 
   else
@@ -163,13 +163,13 @@
   return v5;
 }
 
-- (double)_preferredExpandedContentHeightForViewController:(id)a3
+- (double)_preferredExpandedContentHeightForViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v4 = 0.0;
   if (objc_opt_respondsToSelector())
   {
-    [v3 preferredExpandedContentHeight];
+    [controllerCopy preferredExpandedContentHeight];
     v4 = v5;
   }
 

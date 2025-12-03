@@ -1,27 +1,27 @@
 @interface APMRNowPlayingControllerDelegate
-- (APMRNowPlayingControllerDelegate)initWithMetadataSource:(OpaqueAPMetadataSource *)a3;
-- (void)controller:(id)a3 clientPropertiesDidChangeFrom:(id)a4 to:(id)a5;
-- (void)controller:(id)a3 contentItemsDidUpdateWithContentItemChanges:(id)a4;
-- (void)controller:(id)a3 didLoadArtworkForContentItems:(id)a4;
-- (void)controller:(id)a3 didLoadResponse:(id)a4;
-- (void)controller:(id)a3 playbackQueueDidChangeFrom:(id)a4 to:(id)a5;
-- (void)controller:(id)a3 playbackStateDidChangeFrom:(unsigned int)a4 to:(unsigned int)a5;
-- (void)controller:(id)a3 playerPathDidChange:(id)a4;
-- (void)controller:(id)a3 supportedCommandsDidChangeFrom:(id)a4 to:(id)a5;
+- (APMRNowPlayingControllerDelegate)initWithMetadataSource:(OpaqueAPMetadataSource *)source;
+- (void)controller:(id)controller clientPropertiesDidChangeFrom:(id)from to:(id)to;
+- (void)controller:(id)controller contentItemsDidUpdateWithContentItemChanges:(id)changes;
+- (void)controller:(id)controller didLoadArtworkForContentItems:(id)items;
+- (void)controller:(id)controller didLoadResponse:(id)response;
+- (void)controller:(id)controller playbackQueueDidChangeFrom:(id)from to:(id)to;
+- (void)controller:(id)controller playbackStateDidChangeFrom:(unsigned int)from to:(unsigned int)to;
+- (void)controller:(id)controller playerPathDidChange:(id)change;
+- (void)controller:(id)controller supportedCommandsDidChangeFrom:(id)from to:(id)to;
 - (void)dealloc;
 - (void)flushMetadata;
-- (void)notifyContentItemUpdates:(id)a3;
-- (void)notifyNewContentItems:(id)a3;
-- (void)notifyNewNowPlayingClient:(id)a3;
-- (void)notifyNewPlaybackState:(unsigned int)a3;
-- (void)notifyNewProxiableSupportedCommands:(id)a3;
+- (void)notifyContentItemUpdates:(id)updates;
+- (void)notifyNewContentItems:(id)items;
+- (void)notifyNewNowPlayingClient:(id)client;
+- (void)notifyNewPlaybackState:(unsigned int)state;
+- (void)notifyNewProxiableSupportedCommands:(id)commands;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation APMRNowPlayingControllerDelegate
 
-- (APMRNowPlayingControllerDelegate)initWithMetadataSource:(OpaqueAPMetadataSource *)a3
+- (APMRNowPlayingControllerDelegate)initWithMetadataSource:(OpaqueAPMetadataSource *)source
 {
   v14.receiver = self;
   v14.super_class = APMRNowPlayingControllerDelegate;
@@ -32,7 +32,7 @@
     goto LABEL_12;
   }
 
-  v4->_metadataSource = CFRetain(a3);
+  v4->_metadataSource = CFRetain(source);
   v20 = 0;
   v21 = &v20;
   v22 = 0x3052000000;
@@ -52,7 +52,7 @@
   }
 
   _Block_object_dispose(&v20, 8);
-  v6 = [[v5 alloc] initWithDestination:a3->var11];
+  v6 = [[v5 alloc] initWithDestination:source->var11];
   v7 = v6;
   if (!v6)
   {
@@ -85,10 +85,10 @@ LABEL_15:
   }
 
   _Block_object_dispose(&v20, 8);
-  v9 = [v8 defaultPlaybackQueueRequest];
-  [v9 setArtworkHeight:600.0];
-  [v9 setArtworkWidth:600.0];
-  [v7 setPlaybackQueueRequest:v9];
+  defaultPlaybackQueueRequest = [v8 defaultPlaybackQueueRequest];
+  [defaultPlaybackQueueRequest setArtworkHeight:600.0];
+  [defaultPlaybackQueueRequest setArtworkWidth:600.0];
+  [v7 setPlaybackQueueRequest:defaultPlaybackQueueRequest];
   v20 = 0;
   v21 = &v20;
   v22 = 0x3052000000;
@@ -231,7 +231,7 @@ void __58__APMRNowPlayingControllerDelegate_notifyNewContentItems___block_invoke
   v4 = *(a1 + 40);
 }
 
-- (void)notifyContentItemUpdates:(id)a3
+- (void)notifyContentItemUpdates:(id)updates
 {
   metadataSource = self->_metadataSource;
   if (gLogCategory_APMetadataSource <= 30 && (gLogCategory_APMetadataSource != -1 || _LogCategory_Initialize()))
@@ -239,7 +239,7 @@ void __58__APMRNowPlayingControllerDelegate_notifyNewContentItems___block_invoke
     LogPrintF();
   }
 
-  v6 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:a3 copyItems:1];
+  v6 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:updates copyItems:1];
   if (v6)
   {
     CFRetain(metadataSource);
@@ -249,7 +249,7 @@ void __58__APMRNowPlayingControllerDelegate_notifyNewContentItems___block_invoke
     block[1] = 3221225472;
     block[2] = __61__APMRNowPlayingControllerDelegate_notifyContentItemUpdates___block_invoke;
     block[3] = &unk_27849AC58;
-    block[4] = a3;
+    block[4] = updates;
     block[5] = self;
     block[6] = v6;
     block[7] = metadataSource;
@@ -262,7 +262,7 @@ void __58__APMRNowPlayingControllerDelegate_notifyNewContentItems___block_invoke
   }
 }
 
-- (void)notifyNewPlaybackState:(unsigned int)a3
+- (void)notifyNewPlaybackState:(unsigned int)state
 {
   metadataSource = self->_metadataSource;
   if (gLogCategory_APMetadataSource <= 30 && (gLogCategory_APMetadataSource != -1 || _LogCategory_Initialize()))
@@ -277,7 +277,7 @@ void __58__APMRNowPlayingControllerDelegate_notifyNewContentItems___block_invoke
   block[2] = __59__APMRNowPlayingControllerDelegate_notifyNewPlaybackState___block_invoke;
   block[3] = &__block_descriptor_44_e5_v8__0l;
   block[4] = metadataSource;
-  v7 = a3;
+  stateCopy = state;
   dispatch_async(var1, block);
 }
 
@@ -296,19 +296,19 @@ void __72__APMRNowPlayingControllerDelegate_notifyNewProxiableSupportedCommands_
   v2 = *(a1 + 32);
 }
 
-- (void)notifyNewNowPlayingClient:(id)a3
+- (void)notifyNewNowPlayingClient:(id)client
 {
-  if (a3)
+  if (client)
   {
     metadataSource = self->_metadataSource;
     if (gLogCategory_APMetadataSource <= 30 && (gLogCategory_APMetadataSource != -1 || _LogCategory_Initialize()))
     {
       v8 = metadataSource;
-      v9 = a3;
+      clientCopy = client;
       LogPrintF();
     }
 
-    v5 = [a3 copy];
+    v5 = [client copy];
     if (v5)
     {
       CFRetain(metadataSource);
@@ -320,7 +320,7 @@ void __72__APMRNowPlayingControllerDelegate_notifyNewProxiableSupportedCommands_
       block[3] = &unk_27849AC30;
       block[5] = v5;
       block[6] = metadataSource;
-      block[4] = a3;
+      block[4] = client;
       dispatch_async(var1, block);
     }
 
@@ -344,15 +344,15 @@ void __62__APMRNowPlayingControllerDelegate_notifyNewNowPlayingClient___block_in
   v2 = *(a1 + 40);
 }
 
-- (void)controller:(id)a3 didLoadResponse:(id)a4
+- (void)controller:(id)controller didLoadResponse:(id)response
 {
-  v6 = [a4 playbackState];
-  v7 = [a4 proxiableSupportedCommands];
-  v8 = [a4 clientProperties];
+  playbackState = [response playbackState];
+  proxiableSupportedCommands = [response proxiableSupportedCommands];
+  clientProperties = [response clientProperties];
   if (gLogCategory_APMetadataSource <= 50 && (gLogCategory_APMetadataSource != -1 || _LogCategory_Initialize()))
   {
     metadataSource = self->_metadataSource;
-    v10 = [v7 count];
+    v10 = [proxiableSupportedCommands count];
     if (gLogCategory_APMetadataSource > 40)
     {
       v11 = 0;
@@ -364,66 +364,66 @@ void __62__APMRNowPlayingControllerDelegate_notifyNewNowPlayingClient___block_in
     }
 
     v16 = v11;
-    v17 = [a4 playbackQueue];
+    playbackQueue = [response playbackQueue];
     v14 = v10;
-    v15 = v8;
+    v15 = clientProperties;
     v12 = metadataSource;
-    v13 = v6;
+    v13 = playbackState;
     LogPrintF();
   }
 
-  -[APMRNowPlayingControllerDelegate notifyNewContentItems:](self, "notifyNewContentItems:", [objc_msgSend(a4 playbackQueue]);
-  [(APMRNowPlayingControllerDelegate *)self notifyNewPlaybackState:v6];
-  [(APMRNowPlayingControllerDelegate *)self notifyNewProxiableSupportedCommands:v7];
+  -[APMRNowPlayingControllerDelegate notifyNewContentItems:](self, "notifyNewContentItems:", [objc_msgSend(response playbackQueue]);
+  [(APMRNowPlayingControllerDelegate *)self notifyNewPlaybackState:playbackState];
+  [(APMRNowPlayingControllerDelegate *)self notifyNewProxiableSupportedCommands:proxiableSupportedCommands];
 
-  [(APMRNowPlayingControllerDelegate *)self notifyNewNowPlayingClient:v8];
+  [(APMRNowPlayingControllerDelegate *)self notifyNewNowPlayingClient:clientProperties];
 }
 
-- (void)controller:(id)a3 playbackQueueDidChangeFrom:(id)a4 to:(id)a5
+- (void)controller:(id)controller playbackQueueDidChangeFrom:(id)from to:(id)to
 {
   if (gLogCategory_APMetadataSource <= 30 && (gLogCategory_APMetadataSource != -1 || _LogCategory_Initialize()))
   {
     metadataSource = self->_metadataSource;
-    v9 = a5;
+    toCopy = to;
     LogPrintF();
   }
 
-  v7 = [a5 contentItems];
+  contentItems = [to contentItems];
 
-  [(APMRNowPlayingControllerDelegate *)self notifyNewContentItems:v7];
+  [(APMRNowPlayingControllerDelegate *)self notifyNewContentItems:contentItems];
 }
 
-- (void)controller:(id)a3 contentItemsDidUpdateWithContentItemChanges:(id)a4
+- (void)controller:(id)controller contentItemsDidUpdateWithContentItemChanges:(id)changes
 {
   if (gLogCategory_APMetadataSource <= 30 && (gLogCategory_APMetadataSource != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
 
-  [(APMRNowPlayingControllerDelegate *)self notifyContentItemUpdates:a4];
+  [(APMRNowPlayingControllerDelegate *)self notifyContentItemUpdates:changes];
 }
 
-- (void)controller:(id)a3 didLoadArtworkForContentItems:(id)a4
+- (void)controller:(id)controller didLoadArtworkForContentItems:(id)items
 {
   if (gLogCategory_APMetadataSource <= 30 && (gLogCategory_APMetadataSource != -1 || _LogCategory_Initialize()))
   {
     metadataSource = self->_metadataSource;
-    v9 = a4;
+    itemsCopy = items;
     LogPrintF();
   }
 
-  v7 = [objc_msgSend(objc_msgSend(a3 response];
+  response = [objc_msgSend(objc_msgSend(controller response];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __77__APMRNowPlayingControllerDelegate_controller_didLoadArtworkForContentItems___block_invoke;
   v10[3] = &unk_27849ACA0;
-  v10[4] = a4;
-  -[APMRNowPlayingControllerDelegate notifyContentItemUpdates:](self, "notifyContentItemUpdates:", [v7 filteredArrayUsingPredicate:{objc_msgSend(MEMORY[0x277CCAC30], "predicateWithBlock:", v10)}]);
+  v10[4] = items;
+  -[APMRNowPlayingControllerDelegate notifyContentItemUpdates:](self, "notifyContentItemUpdates:", [response filteredArrayUsingPredicate:{objc_msgSend(MEMORY[0x277CCAC30], "predicateWithBlock:", v10)}]);
 }
 
-- (void)controller:(id)a3 playbackStateDidChangeFrom:(unsigned int)a4 to:(unsigned int)a5
+- (void)controller:(id)controller playbackStateDidChangeFrom:(unsigned int)from to:(unsigned int)to
 {
-  v5 = *&a5;
+  v5 = *&to;
   if (gLogCategory_APMetadataSource <= 30 && (gLogCategory_APMetadataSource != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -432,29 +432,29 @@ void __62__APMRNowPlayingControllerDelegate_notifyNewNowPlayingClient___block_in
   [(APMRNowPlayingControllerDelegate *)self notifyNewPlaybackState:v5];
 }
 
-- (void)controller:(id)a3 supportedCommandsDidChangeFrom:(id)a4 to:(id)a5
+- (void)controller:(id)controller supportedCommandsDidChangeFrom:(id)from to:(id)to
 {
   if (gLogCategory_APMetadataSource <= 30 && (gLogCategory_APMetadataSource != -1 || _LogCategory_Initialize()))
   {
     [APMRNowPlayingControllerDelegate controller:supportedCommandsDidChangeFrom:to:];
   }
 
-  v7 = [objc_msgSend(a3 "response")];
+  v7 = [objc_msgSend(controller "response")];
 
   [(APMRNowPlayingControllerDelegate *)self notifyNewProxiableSupportedCommands:v7];
 }
 
-- (void)controller:(id)a3 clientPropertiesDidChangeFrom:(id)a4 to:(id)a5
+- (void)controller:(id)controller clientPropertiesDidChangeFrom:(id)from to:(id)to
 {
   if (gLogCategory_APMetadataSource <= 30 && (gLogCategory_APMetadataSource != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
 
-  [(APMRNowPlayingControllerDelegate *)self notifyNewNowPlayingClient:a5];
+  [(APMRNowPlayingControllerDelegate *)self notifyNewNowPlayingClient:to];
 }
 
-- (void)controller:(id)a3 playerPathDidChange:(id)a4
+- (void)controller:(id)controller playerPathDidChange:(id)change
 {
   if (gLogCategory_APMetadataSource <= 50 && (gLogCategory_APMetadataSource != -1 || _LogCategory_Initialize()))
   {
@@ -464,28 +464,28 @@ void __62__APMRNowPlayingControllerDelegate_notifyNewNowPlayingClient___block_in
   [(APMRNowPlayingControllerDelegate *)self flushMetadata];
 }
 
-- (void)notifyNewContentItems:(id)a3
+- (void)notifyNewContentItems:(id)items
 {
   metadataSource = self->_metadataSource;
   if (gLogCategory_APMetadataSource <= 30 && (gLogCategory_APMetadataSource != -1 || _LogCategory_Initialize()))
   {
     v9 = metadataSource;
-    v10 = a3;
+    itemsCopy = items;
     OUTLINED_FUNCTION_4_1();
   }
 
-  v6 = [objc_msgSend(a3 firstObject];
-  if (v6)
+  firstObject = [objc_msgSend(items firstObject];
+  if (firstObject)
   {
     CFRetain(metadataSource);
-    v7 = v6;
+    v7 = firstObject;
     var1 = metadataSource->var1;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __58__APMRNowPlayingControllerDelegate_notifyNewContentItems___block_invoke;
     block[3] = &unk_27849AC30;
     block[4] = self;
-    block[5] = v6;
+    block[5] = firstObject;
     block[6] = metadataSource;
     dispatch_async(var1, block);
   }
@@ -543,30 +543,30 @@ LABEL_14:
   v7 = *(a1 + 48);
 }
 
-- (void)notifyNewProxiableSupportedCommands:(id)a3
+- (void)notifyNewProxiableSupportedCommands:(id)commands
 {
-  v3 = a3;
-  if (a3)
+  commandsCopy = commands;
+  if (commands)
   {
     metadataSource = self->_metadataSource;
     if (gLogCategory_APMetadataSource <= 30 && (gLogCategory_APMetadataSource != -1 || _LogCategory_Initialize()))
     {
       v7 = metadataSource;
-      v8 = [v3 count];
+      v8 = [commandsCopy count];
       OUTLINED_FUNCTION_4_1();
     }
 
-    v3 = [v3 copy];
-    if (v3)
+    commandsCopy = [commandsCopy copy];
+    if (commandsCopy)
     {
       CFRetain(metadataSource);
-      v5 = v3;
+      v5 = commandsCopy;
       var1 = metadataSource->var1;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __72__APMRNowPlayingControllerDelegate_notifyNewProxiableSupportedCommands___block_invoke;
       block[3] = &unk_27849AC08;
-      block[4] = v3;
+      block[4] = commandsCopy;
       block[5] = metadataSource;
       dispatch_async(var1, block);
     }

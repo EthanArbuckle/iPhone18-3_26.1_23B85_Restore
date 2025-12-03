@@ -9,38 +9,38 @@
 - (NSString)shortcutDescription;
 - (NSString)triggerPhrase;
 - (WFAppShortcutNamedQueryInfo)namedQueryInfo;
-- (WFExecutableAppShortcut)initWithAutoShortcut:(id)a3 phrase:(id)a4 alternatePhrases:(id)a5 entityInfo:(id)a6;
-- (WFExecutableAppShortcut)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (WFExecutableAppShortcut)initWithAutoShortcut:(id)shortcut phrase:(id)phrase alternatePhrases:(id)phrases entityInfo:(id)info;
+- (WFExecutableAppShortcut)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFExecutableAppShortcut
 
 - (BOOL)isDeprecatedStyle
 {
-  v3 = [(WFExecutableAppShortcut *)self underlyingAutoShortcut];
-  v4 = [v3 localizedShortTitle];
-  if ([v4 length])
+  underlyingAutoShortcut = [(WFExecutableAppShortcut *)self underlyingAutoShortcut];
+  localizedShortTitle = [underlyingAutoShortcut localizedShortTitle];
+  if ([localizedShortTitle length])
   {
-    v5 = [(WFExecutableAppShortcut *)self underlyingAutoShortcut];
-    v6 = [v5 systemImageName];
-    v7 = [v6 length];
+    underlyingAutoShortcut2 = [(WFExecutableAppShortcut *)self underlyingAutoShortcut];
+    systemImageName = [underlyingAutoShortcut2 systemImageName];
+    v7 = [systemImageName length];
 
     if (!v7)
     {
       return 1;
     }
 
-    v8 = [(WFExecutableAppShortcut *)self phrase];
-    v9 = [v8 parameterIdentifier];
+    phrase = [(WFExecutableAppShortcut *)self phrase];
+    parameterIdentifier = [phrase parameterIdentifier];
 
-    if (!v9)
+    if (!parameterIdentifier)
     {
       return 0;
     }
 
-    v3 = [(WFExecutableAppShortcut *)self entityInfo];
-    v10 = v3 == 0;
+    underlyingAutoShortcut = [(WFExecutableAppShortcut *)self entityInfo];
+    v10 = underlyingAutoShortcut == 0;
   }
 
   else
@@ -54,38 +54,38 @@
 
 - (NSString)id
 {
-  v2 = [(WFExecutableAppShortcut *)self phrase];
-  v3 = [v2 signature];
+  phrase = [(WFExecutableAppShortcut *)self phrase];
+  signature = [phrase signature];
 
-  return v3;
+  return signature;
 }
 
-- (WFExecutableAppShortcut)initWithCoder:(id)a3
+- (WFExecutableAppShortcut)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"underlyingAutoShortcut"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phrase"];
-  v7 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"alternatePhrases"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entityInfo"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"underlyingAutoShortcut"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phrase"];
+  v7 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"alternatePhrases"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entityInfo"];
 
   v9 = [(WFExecutableAppShortcut *)self initWithAutoShortcut:v5 phrase:v6 alternatePhrases:v7 entityInfo:v8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFExecutableAppShortcut *)self underlyingAutoShortcut];
-  [v4 encodeObject:v5 forKey:@"underlyingAutoShortcut"];
+  coderCopy = coder;
+  underlyingAutoShortcut = [(WFExecutableAppShortcut *)self underlyingAutoShortcut];
+  [coderCopy encodeObject:underlyingAutoShortcut forKey:@"underlyingAutoShortcut"];
 
-  v6 = [(WFExecutableAppShortcut *)self phrase];
-  [v4 encodeObject:v6 forKey:@"phrase"];
+  phrase = [(WFExecutableAppShortcut *)self phrase];
+  [coderCopy encodeObject:phrase forKey:@"phrase"];
 
-  v7 = [(WFExecutableAppShortcut *)self alternatePhrases];
-  [v4 encodeObject:v7 forKey:@"alternatePhrases"];
+  alternatePhrases = [(WFExecutableAppShortcut *)self alternatePhrases];
+  [coderCopy encodeObject:alternatePhrases forKey:@"alternatePhrases"];
 
-  v8 = [(WFExecutableAppShortcut *)self entityInfo];
-  [v4 encodeObject:v8 forKey:@"entityInfo"];
+  entityInfo = [(WFExecutableAppShortcut *)self entityInfo];
+  [coderCopy encodeObject:entityInfo forKey:@"entityInfo"];
 }
 
 - (NSString)base64ArchivedData
@@ -121,26 +121,26 @@
 
 - (WFAppShortcutNamedQueryInfo)namedQueryInfo
 {
-  v3 = [(WFExecutableAppShortcut *)self phrase];
-  v4 = [v3 optionsCollectionTitle];
-  if (!v4)
+  phrase = [(WFExecutableAppShortcut *)self phrase];
+  optionsCollectionTitle = [phrase optionsCollectionTitle];
+  if (!optionsCollectionTitle)
   {
     v12 = 0;
     goto LABEL_5;
   }
 
-  v5 = v4;
-  v6 = [(WFExecutableAppShortcut *)self phrase];
-  v7 = [v6 optionsCollectionSystemImageName];
+  v5 = optionsCollectionTitle;
+  phrase2 = [(WFExecutableAppShortcut *)self phrase];
+  optionsCollectionSystemImageName = [phrase2 optionsCollectionSystemImageName];
 
-  if (v7)
+  if (optionsCollectionSystemImageName)
   {
     v8 = [WFAppShortcutNamedQueryInfo alloc];
-    v3 = [(WFExecutableAppShortcut *)self phrase];
-    v9 = [v3 optionsCollectionTitle];
-    v10 = [(WFExecutableAppShortcut *)self phrase];
-    v11 = [v10 optionsCollectionSystemImageName];
-    v12 = [(WFAppShortcutNamedQueryInfo *)v8 initWithName:v9 symbolName:v11];
+    phrase = [(WFExecutableAppShortcut *)self phrase];
+    optionsCollectionTitle2 = [phrase optionsCollectionTitle];
+    phrase3 = [(WFExecutableAppShortcut *)self phrase];
+    optionsCollectionSystemImageName2 = [phrase3 optionsCollectionSystemImageName];
+    v12 = [(WFAppShortcutNamedQueryInfo *)v8 initWithName:optionsCollectionTitle2 symbolName:optionsCollectionSystemImageName2];
 
 LABEL_5:
     goto LABEL_7;
@@ -154,125 +154,125 @@ LABEL_7:
 
 - (NSString)shortcutDescription
 {
-  v3 = [(WFExecutableAppShortcut *)self underlyingAutoShortcut];
-  v4 = [v3 localizedAutoShortcutDescription];
-  if (v4)
+  underlyingAutoShortcut = [(WFExecutableAppShortcut *)self underlyingAutoShortcut];
+  localizedAutoShortcutDescription = [underlyingAutoShortcut localizedAutoShortcutDescription];
+  if (localizedAutoShortcutDescription)
   {
-    v5 = [(WFExecutableAppShortcut *)self underlyingAutoShortcut];
-    v6 = [v5 bundleIdentifier];
+    underlyingAutoShortcut2 = [(WFExecutableAppShortcut *)self underlyingAutoShortcut];
+    bundleIdentifier = [underlyingAutoShortcut2 bundleIdentifier];
   }
 
   else
   {
-    v6 = &stru_1F28FBBB8;
+    bundleIdentifier = &stru_1F28FBBB8;
   }
 
-  return v6;
+  return bundleIdentifier;
 }
 
 - (LNFullyQualifiedActionIdentifier)fullyQualifiedIdentifier
 {
   v3 = objc_alloc(MEMORY[0x1E69AC858]);
-  v4 = [(WFExecutableAppShortcut *)self underlyingAutoShortcut];
-  v5 = [v4 actionIdentifier];
-  v6 = [(WFExecutableAppShortcut *)self underlyingAutoShortcut];
-  v7 = [v6 bundleIdentifier];
-  v8 = [v3 initWithActionIdentifier:v5 bundleIdentifier:v7];
+  underlyingAutoShortcut = [(WFExecutableAppShortcut *)self underlyingAutoShortcut];
+  actionIdentifier = [underlyingAutoShortcut actionIdentifier];
+  underlyingAutoShortcut2 = [(WFExecutableAppShortcut *)self underlyingAutoShortcut];
+  bundleIdentifier = [underlyingAutoShortcut2 bundleIdentifier];
+  v8 = [v3 initWithActionIdentifier:actionIdentifier bundleIdentifier:bundleIdentifier];
 
   return v8;
 }
 
 - (NSString)shortTitle
 {
-  v3 = [(WFExecutableAppShortcut *)self entityInfo];
+  entityInfo = [(WFExecutableAppShortcut *)self entityInfo];
 
-  if (v3)
+  if (entityInfo)
   {
-    v4 = [(WFExecutableAppShortcut *)self entityInfo];
-    v5 = [v4 name];
+    entityInfo2 = [(WFExecutableAppShortcut *)self entityInfo];
+    name = [entityInfo2 name];
   }
 
   else
   {
-    v4 = [(WFExecutableAppShortcut *)self underlyingAutoShortcut];
-    v6 = [v4 localizedShortTitle];
-    v7 = v6;
-    if (v6)
+    entityInfo2 = [(WFExecutableAppShortcut *)self underlyingAutoShortcut];
+    localizedShortTitle = [entityInfo2 localizedShortTitle];
+    v7 = localizedShortTitle;
+    if (localizedShortTitle)
     {
-      v8 = v6;
+      triggerPhrase = localizedShortTitle;
     }
 
     else
     {
-      v8 = [(WFExecutableAppShortcut *)self triggerPhrase];
+      triggerPhrase = [(WFExecutableAppShortcut *)self triggerPhrase];
     }
 
-    v5 = v8;
+    name = triggerPhrase;
   }
 
-  return v5;
+  return name;
 }
 
 - (NSString)triggerPhrase
 {
-  v2 = [(WFExecutableAppShortcut *)self phrase];
-  v3 = [v2 localizedPhrase];
+  phrase = [(WFExecutableAppShortcut *)self phrase];
+  localizedPhrase = [phrase localizedPhrase];
 
-  return v3;
+  return localizedPhrase;
 }
 
 - (NSString)attributionBundleIdentifier
 {
-  v3 = [(WFExecutableAppShortcut *)self underlyingAutoShortcut];
-  v4 = [v3 attributionBundleIdentifier];
-  v5 = v4;
-  if (v4)
+  underlyingAutoShortcut = [(WFExecutableAppShortcut *)self underlyingAutoShortcut];
+  attributionBundleIdentifier = [underlyingAutoShortcut attributionBundleIdentifier];
+  v5 = attributionBundleIdentifier;
+  if (attributionBundleIdentifier)
   {
-    v6 = v4;
+    bundleIdentifier = attributionBundleIdentifier;
   }
 
   else
   {
-    v7 = [(WFExecutableAppShortcut *)self underlyingAutoShortcut];
-    v6 = [v7 bundleIdentifier];
+    underlyingAutoShortcut2 = [(WFExecutableAppShortcut *)self underlyingAutoShortcut];
+    bundleIdentifier = [underlyingAutoShortcut2 bundleIdentifier];
   }
 
-  return v6;
+  return bundleIdentifier;
 }
 
 - (NSString)bundleIdentifier
 {
-  v2 = [(WFExecutableAppShortcut *)self underlyingAutoShortcut];
-  v3 = [v2 bundleIdentifier];
+  underlyingAutoShortcut = [(WFExecutableAppShortcut *)self underlyingAutoShortcut];
+  bundleIdentifier = [underlyingAutoShortcut bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
-- (WFExecutableAppShortcut)initWithAutoShortcut:(id)a3 phrase:(id)a4 alternatePhrases:(id)a5 entityInfo:(id)a6
+- (WFExecutableAppShortcut)initWithAutoShortcut:(id)shortcut phrase:(id)phrase alternatePhrases:(id)phrases entityInfo:(id)info
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  shortcutCopy = shortcut;
+  phraseCopy = phrase;
+  phrasesCopy = phrases;
+  infoCopy = info;
   v21.receiver = self;
   v21.super_class = WFExecutableAppShortcut;
   v15 = [(WFExecutableAppShortcut *)&v21 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_underlyingAutoShortcut, a3);
-    objc_storeStrong(&v16->_phrase, a4);
-    objc_storeStrong(&v16->_alternatePhrases, a5);
-    objc_storeStrong(&v16->_entityInfo, a6);
-    v17 = [v11 shortcutTileColor];
-    if ((v17 - 1) >= 0xE)
+    objc_storeStrong(&v15->_underlyingAutoShortcut, shortcut);
+    objc_storeStrong(&v16->_phrase, phrase);
+    objc_storeStrong(&v16->_alternatePhrases, phrases);
+    objc_storeStrong(&v16->_entityInfo, info);
+    shortcutTileColor = [shortcutCopy shortcutTileColor];
+    if ((shortcutTileColor - 1) >= 0xE)
     {
       v18 = 0;
     }
 
     else
     {
-      v18 = v17;
+      v18 = shortcutTileColor;
     }
 
     v16->_chicletColor = v18;

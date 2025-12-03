@@ -29,21 +29,21 @@
 
 - (uint64_t)setIc_destructive:()IC
 {
-  v5 = [a1 attributes] & 0xFFFFFFFFFFFFFFFDLL;
+  v5 = [self attributes] & 0xFFFFFFFFFFFFFFFDLL;
   v6 = 2;
   if (!a3)
   {
     v6 = 0;
   }
 
-  return [a1 setAttributes:v5 | v6];
+  return [self setAttributes:v5 | v6];
 }
 
 - (uint64_t)setIc_disabled:()IC
 {
-  v4 = [a1 attributes] & 0xFFFFFFFFFFFFFFFELL | a3;
+  v4 = [self attributes] & 0xFFFFFFFFFFFFFFFELL | a3;
 
-  return [a1 setAttributes:v4];
+  return [self setAttributes:v4];
 }
 
 + (id)ic_actionWithTitle:()IC subtitle:imageName:attributes:handler:
@@ -68,8 +68,8 @@
   v5 = MEMORY[0x1E69DC628];
   v6 = a4;
   v7 = a3;
-  v8 = [v7 string];
-  v9 = [v5 actionWithTitle:v8 image:0 identifier:0 handler:v6];
+  string = [v7 string];
+  v9 = [v5 actionWithTitle:string image:0 identifier:0 handler:v6];
 
   [v9 setAttributedTitle:v7];
 
@@ -91,7 +91,7 @@
     v8 = @"pin";
   }
 
-  v9 = [a1 ic_actionWithTitle:v7 imageName:v8 handler:v6];
+  v9 = [self ic_actionWithTitle:v7 imageName:v8 handler:v6];
 
   return v9;
 }
@@ -121,7 +121,7 @@
 
     v13 = [v10 localizedStringWithFormat:v11, a4];
 
-    v9 = [a1 ic_actionWithTitle:v13 imageName:v12 handler:v8];
+    v9 = [self ic_actionWithTitle:v13 imageName:v12 handler:v8];
   }
 
   return v9;
@@ -131,7 +131,7 @@
 {
   v4 = a3;
   v5 = __ICLocalizedFrameworkString_impl(@"Duplicate Note", @"Duplicate Note", 0, 1);
-  v6 = [a1 ic_actionWithTitle:v5 imageName:@"doc.on.doc" handler:v4];
+  v6 = [self ic_actionWithTitle:v5 imageName:@"doc.on.doc" handler:v4];
 
   return v6;
 }
@@ -151,7 +151,7 @@
     v8 = @"lock";
   }
 
-  v9 = [a1 ic_actionWithTitle:v7 imageName:v8 handler:v6];
+  v9 = [self ic_actionWithTitle:v7 imageName:v8 handler:v6];
 
   return v9;
 }
@@ -160,10 +160,10 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [v7 shareViaICloudManageActionTitle];
-  v9 = [v7 shareViaICloudSystemImageName];
+  shareViaICloudManageActionTitle = [v7 shareViaICloudManageActionTitle];
+  shareViaICloudSystemImageName = [v7 shareViaICloudSystemImageName];
 
-  v10 = [a1 ic_actionWithTitle:v8 imageName:v9 handler:v6];
+  v10 = [self ic_actionWithTitle:shareViaICloudManageActionTitle imageName:shareViaICloudSystemImageName handler:v6];
 
   return v10;
 }
@@ -171,7 +171,7 @@
 + (id)ic_collaborateShareActionWithCloudSyncingObject:()IC withHandler:
 {
   v6 = a4;
-  v7 = [a3 shareViaICloudAddPeopleActionTitle];
+  shareViaICloudAddPeopleActionTitle = [a3 shareViaICloudAddPeopleActionTitle];
   if (_UISolariumEnabled())
   {
     v8 = @"square.and.arrow.up.fill";
@@ -182,7 +182,7 @@
     v8 = @"square.and.arrow.up";
   }
 
-  v9 = [a1 ic_actionWithTitle:v7 imageName:v8 handler:v6];
+  v9 = [self ic_actionWithTitle:shareViaICloudAddPeopleActionTitle imageName:v8 handler:v6];
 
   return v9;
 }
@@ -191,7 +191,7 @@
 {
   v5 = a4;
   v6 = __ICLocalizedFrameworkString_impl(@"Show Folder Activity", @"Show Folder Activity", 0, 1);
-  v7 = [a1 ic_actionWithTitle:v6 imageName:@"bubble.left.and.bubble.right" handler:v5];
+  v7 = [self ic_actionWithTitle:v6 imageName:@"bubble.left.and.bubble.right" handler:v5];
 
   return v7;
 }
@@ -210,7 +210,7 @@
     v6 = @"square.and.arrow.up";
   }
 
-  v7 = [a1 ic_actionWithTitle:v5 imageName:v6 handler:v4];
+  v7 = [self ic_actionWithTitle:v5 imageName:v6 handler:v4];
 
   return v7;
 }
@@ -229,7 +229,7 @@
     v6 = @"folder";
   }
 
-  v7 = [a1 ic_actionWithTitle:v5 imageName:v6 handler:v4];
+  v7 = [self ic_actionWithTitle:v5 imageName:v6 handler:v4];
 
   return v7;
 }
@@ -249,7 +249,7 @@
     v10 = __ICLocalizedFrameworkString_impl(@"Move %lu Notes", @"Move %lu Notes", 0, 1);
     v5 = [v8 localizedStringWithFormat:v10, a3];
 
-    v6 = [a1 ic_actionWithTitle:v5 imageName:@"folder" handler:v9];
+    v6 = [self ic_actionWithTitle:v5 imageName:@"folder" handler:v9];
   }
 
   return v6;
@@ -259,7 +259,7 @@
 {
   v4 = a3;
   v5 = __ICLocalizedFrameworkString_impl(@"Remove", @"Remove", 0, 1);
-  v6 = [a1 ic_actionWithTitle:v5 imageName:@"minus.circle" attributes:2 handler:v4];
+  v6 = [self ic_actionWithTitle:v5 imageName:@"minus.circle" attributes:2 handler:v4];
 
   return v6;
 }
@@ -278,7 +278,7 @@
     v6 = @"trash";
   }
 
-  v7 = [a1 ic_actionWithTitle:v5 imageName:v6 attributes:2 handler:v4];
+  v7 = [self ic_actionWithTitle:v5 imageName:v6 attributes:2 handler:v4];
 
   return v7;
 }
@@ -298,7 +298,7 @@
     v10 = __ICLocalizedFrameworkString_impl(@"Delete %lu Notes", @"Delete %lu Notes", 0, 1);
     v5 = [v8 localizedStringWithFormat:v10, a3];
 
-    v6 = [a1 ic_actionWithTitle:v5 imageName:@"trash" attributes:2 handler:v9];
+    v6 = [self ic_actionWithTitle:v5 imageName:@"trash" attributes:2 handler:v9];
   }
 
   return v6;
@@ -308,7 +308,7 @@
 {
   v4 = a3;
   v5 = __ICLocalizedFrameworkString_impl(@"Rename", @"Rename", 0, 1);
-  v6 = [a1 ic_actionWithTitle:v5 imageName:@"pencil" handler:v4];
+  v6 = [self ic_actionWithTitle:v5 imageName:@"pencil" handler:v4];
 
   return v6;
 }
@@ -317,7 +317,7 @@
 {
   v4 = a3;
   v5 = __ICLocalizedFrameworkString_impl(@"Edit Smart Folder", @"Edit Smart Folder", 0, 1);
-  v6 = [a1 ic_actionWithTitle:v5 imageName:@"pencil" handler:v4];
+  v6 = [self ic_actionWithTitle:v5 imageName:@"pencil" handler:v4];
 
   return v6;
 }
@@ -326,7 +326,7 @@
 {
   v4 = a3;
   v5 = __ICLocalizedFrameworkString_impl(@"Import Archive…", @"Import Archive…", 0, 1);
-  v6 = [a1 ic_actionWithTitle:v5 imageName:@"square.and.arrow.down.on.square" handler:v4];
+  v6 = [self ic_actionWithTitle:v5 imageName:@"square.and.arrow.down.on.square" handler:v4];
 
   return v6;
 }
@@ -335,7 +335,7 @@
 {
   v4 = a3;
   v5 = __ICLocalizedFrameworkString_impl(@"Export Archive…", @"Export Archive…", 0, 1);
-  v6 = [a1 ic_actionWithTitle:v5 imageName:@"square.and.arrow.up.on.square" handler:v4];
+  v6 = [self ic_actionWithTitle:v5 imageName:@"square.and.arrow.up.on.square" handler:v4];
 
   return v6;
 }
@@ -344,7 +344,7 @@
 {
   v4 = a3;
   v5 = __ICLocalizedFrameworkString_impl(@"Export Markdown…", @"Export Markdown…", 0, 1);
-  v6 = [a1 ic_actionWithTitle:v5 imageName:@"square.and.arrow.up.on.square" handler:v4];
+  v6 = [self ic_actionWithTitle:v5 imageName:@"square.and.arrow.up.on.square" handler:v4];
 
   return v6;
 }
@@ -353,7 +353,7 @@
 {
   v4 = a3;
   v5 = __ICLocalizedFrameworkString_impl(@"Reply", @"Reply", 0, 1);
-  v6 = [a1 ic_actionWithTitle:v5 imageName:@"arrowshape.turn.up.left" handler:v4];
+  v6 = [self ic_actionWithTitle:v5 imageName:@"arrowshape.turn.up.left" handler:v4];
 
   return v6;
 }

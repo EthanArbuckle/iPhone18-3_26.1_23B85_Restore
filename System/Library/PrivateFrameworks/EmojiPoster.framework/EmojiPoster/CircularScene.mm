@@ -1,18 +1,18 @@
 @interface CircularScene
 - (_TtC11EmojiPoster13CircularScene)init;
-- (void)didMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
 @end
 
 @implementation CircularScene
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_249FE8BB4();
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for CircularScene();
-  [(SKScene *)&v6 didMoveToView:v4];
+  [(SKScene *)&v6 didMoveToView:viewCopy];
 }
 
 - (_TtC11EmojiPoster13CircularScene)init

@@ -1,22 +1,22 @@
 @interface ASTVirtualTrackpadController
 - (ASTVirtualTrackpadController)init;
-- (id)assistiveTouchBubbleModeEnabled:(id)a3;
+- (id)assistiveTouchBubbleModeEnabled:(id)enabled;
 - (id)fadeDelay;
 - (id)fullScreenToggleEnabled;
 - (id)holdDuration;
 - (id)scrollToggleEnabled;
 - (id)specifiers;
-- (id)virtualTrackpadEnabled:(id)a3;
+- (id)virtualTrackpadEnabled:(id)enabled;
 - (id)virtualTrackpadScrollSpeed;
 - (id)virtualTrackpadSpeed;
-- (void)setAssistiveTouchBubbleModeEnabled:(id)a3 specifier:(id)a4;
-- (void)setFadeDelay:(id)a3;
-- (void)setFullScreenToggleEnabled:(id)a3;
-- (void)setHoldDuration:(id)a3;
-- (void)setScrollToggleEnabled:(id)a3;
-- (void)setVirtualTrackpadEnabled:(id)a3 specifier:(id)a4;
-- (void)setVirtualTrackpadScrollSpeed:(id)a3;
-- (void)setVirtualTrackpadSpeed:(id)a3;
+- (void)setAssistiveTouchBubbleModeEnabled:(id)enabled specifier:(id)specifier;
+- (void)setFadeDelay:(id)delay;
+- (void)setFullScreenToggleEnabled:(id)enabled;
+- (void)setHoldDuration:(id)duration;
+- (void)setScrollToggleEnabled:(id)enabled;
+- (void)setVirtualTrackpadEnabled:(id)enabled specifier:(id)specifier;
+- (void)setVirtualTrackpadScrollSpeed:(id)speed;
+- (void)setVirtualTrackpadSpeed:(id)speed;
 @end
 
 @implementation ASTVirtualTrackpadController
@@ -155,7 +155,7 @@ void __36__ASTVirtualTrackpadController_init__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)virtualTrackpadEnabled:(id)a3
+- (id)virtualTrackpadEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchVirtualTrackpadEnabled]);
@@ -163,11 +163,11 @@ void __36__ASTVirtualTrackpadController_init__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setVirtualTrackpadEnabled:(id)a3 specifier:(id)a4
+- (void)setVirtualTrackpadEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setAssistiveTouchVirtualTrackpadEnabled:v4];
+  [v5 setAssistiveTouchVirtualTrackpadEnabled:bOOLValue];
 }
 
 - (id)virtualTrackpadSpeed
@@ -180,11 +180,11 @@ void __36__ASTVirtualTrackpadController_init__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setVirtualTrackpadSpeed:(id)a3
+- (void)setVirtualTrackpadSpeed:(id)speed
 {
-  v3 = a3;
+  speedCopy = speed;
   v6 = +[AXSettings sharedInstance];
-  [v3 floatValue];
+  [speedCopy floatValue];
   v5 = v4;
 
   [v6 setAssistiveTouchVirtualTrackpadSpeed:v5];
@@ -198,13 +198,13 @@ void __36__ASTVirtualTrackpadController_init__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setScrollToggleEnabled:(id)a3
+- (void)setScrollToggleEnabled:(id)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = +[AXSettings sharedInstance];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v5 setAssistiveTouchVirtualTrackpadScrollToggleEnabled:v4];
+  [v5 setAssistiveTouchVirtualTrackpadScrollToggleEnabled:bOOLValue];
 }
 
 - (id)fullScreenToggleEnabled
@@ -215,13 +215,13 @@ void __36__ASTVirtualTrackpadController_init__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setFullScreenToggleEnabled:(id)a3
+- (void)setFullScreenToggleEnabled:(id)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = +[AXSettings sharedInstance];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v5 setAssistiveTouchVirtualTrackpadFullScreenToggleEnabled:v4];
+  [v5 setAssistiveTouchVirtualTrackpadFullScreenToggleEnabled:bOOLValue];
 }
 
 - (id)virtualTrackpadScrollSpeed
@@ -234,11 +234,11 @@ void __36__ASTVirtualTrackpadController_init__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setVirtualTrackpadScrollSpeed:(id)a3
+- (void)setVirtualTrackpadScrollSpeed:(id)speed
 {
-  v3 = a3;
+  speedCopy = speed;
   v6 = +[AXSettings sharedInstance];
-  [v3 floatValue];
+  [speedCopy floatValue];
   v5 = v4;
 
   [v6 setAssistiveTouchVirtualTrackpadScrollSpeed:v5];
@@ -254,11 +254,11 @@ void __36__ASTVirtualTrackpadController_init__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setHoldDuration:(id)a3
+- (void)setHoldDuration:(id)duration
 {
-  v3 = a3;
+  durationCopy = duration;
   v6 = +[AXSettings sharedInstance];
-  [v3 floatValue];
+  [durationCopy floatValue];
   v5 = v4;
 
   [v6 setAssistiveTouchVirtualTrackpadHoldDuration:v5];
@@ -274,17 +274,17 @@ void __36__ASTVirtualTrackpadController_init__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setFadeDelay:(id)a3
+- (void)setFadeDelay:(id)delay
 {
-  v3 = a3;
+  delayCopy = delay;
   v6 = +[AXSettings sharedInstance];
-  [v3 floatValue];
+  [delayCopy floatValue];
   v5 = v4;
 
   [v6 setAssistiveTouchVirtualTrackpadFadeDelay:v5];
 }
 
-- (id)assistiveTouchBubbleModeEnabled:(id)a3
+- (id)assistiveTouchBubbleModeEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchBubbleModeEnabled]);
@@ -292,11 +292,11 @@ void __36__ASTVirtualTrackpadController_init__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setAssistiveTouchBubbleModeEnabled:(id)a3 specifier:(id)a4
+- (void)setAssistiveTouchBubbleModeEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setAssistiveTouchBubbleModeEnabled:v4];
+  [v5 setAssistiveTouchBubbleModeEnabled:bOOLValue];
 }
 
 @end

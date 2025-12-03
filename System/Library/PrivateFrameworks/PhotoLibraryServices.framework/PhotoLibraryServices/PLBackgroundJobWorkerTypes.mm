@@ -1,34 +1,34 @@
 @interface PLBackgroundJobWorkerTypes
 + (id)allTypesMask;
-+ (id)backgroundJobWorkerTypesMaskGuestAssetSync:(BOOL)a3 personSync:(BOOL)a4 syndicationSync:(BOOL)a5 syndicationResourceSanitization:(BOOL)a6 syndicationResourceDownload:(BOOL)a7 syndicationAssetCleanup:(BOOL)a8 assetStack:(BOOL)a9 duplicateDetector:(BOOL)a10 deferredRenderDerivativesLowPriority:(BOOL)a11 deferredRenderDerivativesHighPriority:(BOOL)a12 resourceAvailability:(BOOL)a13 stableHash:(BOOL)a14 editRenderingImage:(BOOL)a15 editRenderingVideo:(BOOL)a16 highPrioritySearchIndexing:(BOOL)a17 lowPriorityBatterySearchIndexing:(BOOL)a18 lowPriorityChargerSearchIndexing:(BOOL)a19 sharedAssetContainerUpdate:(BOOL)a20 assetResourceUploadJob:(BOOL)a21 assetResourceUploadExtensionRunner:(BOOL)a22 featureAvailability:(BOOL)a23;
++ (id)backgroundJobWorkerTypesMaskGuestAssetSync:(BOOL)sync personSync:(BOOL)personSync syndicationSync:(BOOL)syndicationSync syndicationResourceSanitization:(BOOL)sanitization syndicationResourceDownload:(BOOL)download syndicationAssetCleanup:(BOOL)cleanup assetStack:(BOOL)stack duplicateDetector:(BOOL)self0 deferredRenderDerivativesLowPriority:(BOOL)self1 deferredRenderDerivativesHighPriority:(BOOL)self2 resourceAvailability:(BOOL)self3 stableHash:(BOOL)self4 editRenderingImage:(BOOL)self5 editRenderingVideo:(BOOL)self6 highPrioritySearchIndexing:(BOOL)self7 lowPriorityBatterySearchIndexing:(BOOL)self8 lowPriorityChargerSearchIndexing:(BOOL)self9 sharedAssetContainerUpdate:(BOOL)update assetResourceUploadJob:(BOOL)job assetResourceUploadExtensionRunner:(BOOL)runner featureAvailability:(BOOL)featureAvailability;
 + (id)maskForAssetResourceExtensionRunner;
 + (id)maskForAssetResourceUploadJob;
 + (id)maskForFeatureAvailability;
-+ (id)typesMaskForDeferredProcessingNeeded:(unsigned __int16)a3;
-+ (id)typesMaskForDeferredProcessingNeeded:(unsigned __int16)a3 videoDeferredProcessingNeeded:(unsigned __int16)a4;
-+ (id)typesMaskForVideoDeferredProcessingNeeded:(unsigned __int16)a3;
-+ (id)typesMaskFromWorkerCodes:(id)a3;
++ (id)typesMaskForDeferredProcessingNeeded:(unsigned __int16)needed;
++ (id)typesMaskForDeferredProcessingNeeded:(unsigned __int16)needed videoDeferredProcessingNeeded:(unsigned __int16)processingNeeded;
++ (id)typesMaskForVideoDeferredProcessingNeeded:(unsigned __int16)needed;
++ (id)typesMaskFromWorkerCodes:(id)codes;
 + (id)workerCodes;
-+ (id)workerTypesMaskForBackgroundJobType:(signed __int16)a3;
-+ (id)workerTypesMaskForBackgroundJobWorkerType:(unint64_t)a3;
-+ (id)workerTypesMaskForBackgroundJobWorkerTypes:(id)a3;
-- (BOOL)containsTypes:(id)a3;
++ (id)workerTypesMaskForBackgroundJobType:(signed __int16)type;
++ (id)workerTypesMaskForBackgroundJobWorkerType:(unint64_t)type;
++ (id)workerTypesMaskForBackgroundJobWorkerTypes:(id)types;
+- (BOOL)containsTypes:(id)types;
 - (BOOL)hasWork;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PLBackgroundJobWorkerTypes)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)typesMaskByUnioningWithTypes:(id)a3;
+- (id)typesMaskByUnioningWithTypes:(id)types;
 @end
 
 @implementation PLBackgroundJobWorkerTypes
 
-- (BOOL)containsTypes:(id)a3
+- (BOOL)containsTypes:(id)types
 {
   v3 = 0;
   for (i = 0; i != 22; ++i)
   {
-    if (*(a3 + i + 8) == 1 && !self->_includedTypes[i])
+    if (*(types + i + 8) == 1 && !self->_includedTypes[i])
     {
       break;
     }
@@ -61,9 +61,9 @@
   return v4 < 0x15;
 }
 
-- (id)typesMaskByUnioningWithTypes:(id)a3
+- (id)typesMaskByUnioningWithTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v5 = objc_alloc_init(PLBackgroundJobWorkerTypes);
   v6 = v5;
   for (i = 8; i != 30; ++i)
@@ -75,7 +75,7 @@
 
     else
     {
-      v8 = v4[i];
+      v8 = typesCopy[i];
     }
 
     *(&v5->super.isa + i) = v8 & 1;
@@ -109,10 +109,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -120,13 +120,13 @@
   else
   {
     objc_opt_class();
-    v7 = (objc_opt_isKindOfClass() & 1) != 0 && *self->_includedTypes == *v4->_includedTypes && *&self->_includedTypes[8] == *&v4->_includedTypes[8] && *&self->_includedTypes[14] == *&v4->_includedTypes[14];
+    v7 = (objc_opt_isKindOfClass() & 1) != 0 && *self->_includedTypes == *equalCopy->_includedTypes && *&self->_includedTypes[8] == *&equalCopy->_includedTypes[8] && *&self->_includedTypes[14] == *&equalCopy->_includedTypes[14];
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(PLBackgroundJobWorkerTypes);
   for (i = 8; i != 30; ++i)
@@ -152,16 +152,16 @@
   return result;
 }
 
-+ (id)workerTypesMaskForBackgroundJobWorkerTypes:(id)a3
++ (id)workerTypesMaskForBackgroundJobWorkerTypes:(id)types
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  typesCopy = types;
   v4 = objc_alloc_init(PLBackgroundJobWorkerTypes);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = typesCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -176,10 +176,10 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) unsignedIntegerValue];
-        if ((v10 - 1) <= 0x14)
+        unsignedIntegerValue = [*(*(&v12 + 1) + 8 * i) unsignedIntegerValue];
+        if ((unsignedIntegerValue - 1) <= 0x14)
         {
-          v4->_includedTypes[v10] = 1;
+          v4->_includedTypes[unsignedIntegerValue] = 1;
         }
       }
 
@@ -192,12 +192,12 @@
   return v4;
 }
 
-+ (id)workerTypesMaskForBackgroundJobWorkerType:(unint64_t)a3
++ (id)workerTypesMaskForBackgroundJobWorkerType:(unint64_t)type
 {
   v4 = objc_alloc_init(PLBackgroundJobWorkerTypes);
-  if (a3 - 1 <= 0x14)
+  if (type - 1 <= 0x14)
   {
-    v4->_includedTypes[a3] = 1;
+    v4->_includedTypes[type] = 1;
   }
 
   return v4;
@@ -217,15 +217,15 @@
   return v2;
 }
 
-+ (id)workerTypesMaskForBackgroundJobType:(signed __int16)a3
++ (id)workerTypesMaskForBackgroundJobType:(signed __int16)type
 {
-  if (a3 > 5)
+  if (type > 5)
   {
-    if (a3 <= 7)
+    if (type <= 7)
     {
-      if (a3 != 6)
+      if (type != 6)
       {
-        v4 = [a1 maskForAssetResourceExtensionRunner];
+        maskForAssetResourceExtensionRunner = [self maskForAssetResourceExtensionRunner];
         goto LABEL_21;
       }
 
@@ -233,7 +233,7 @@
       goto LABEL_20;
     }
 
-    switch(a3)
+    switch(type)
     {
       case 8:
         v3 = 12;
@@ -249,77 +249,77 @@
 
   else
   {
-    if (a3 > 3)
+    if (type > 3)
     {
       v3 = 7;
       goto LABEL_20;
     }
 
-    if ((a3 - 2) < 2)
+    if ((type - 2) < 2)
     {
-      v4 = [a1 workerTypesMaskForBackgroundJobWorkerTypes:&unk_1F0FC03A8];
+      maskForAssetResourceExtensionRunner = [self workerTypesMaskForBackgroundJobWorkerTypes:&unk_1F0FC03A8];
       goto LABEL_21;
     }
 
-    if (!a3)
+    if (!type)
     {
       v3 = 1;
       goto LABEL_20;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       v3 = 15;
 LABEL_20:
-      v4 = [a1 workerTypesMaskForBackgroundJobWorkerType:v3];
+      maskForAssetResourceExtensionRunner = [self workerTypesMaskForBackgroundJobWorkerType:v3];
       goto LABEL_21;
     }
   }
 
-  v4 = objc_alloc_init(a1);
+  maskForAssetResourceExtensionRunner = objc_alloc_init(self);
 LABEL_21:
 
-  return v4;
+  return maskForAssetResourceExtensionRunner;
 }
 
-+ (id)typesMaskForDeferredProcessingNeeded:(unsigned __int16)a3 videoDeferredProcessingNeeded:(unsigned __int16)a4
++ (id)typesMaskForDeferredProcessingNeeded:(unsigned __int16)needed videoDeferredProcessingNeeded:(unsigned __int16)processingNeeded
 {
-  v4 = a3;
-  v5 = [PLBackgroundJobWorkerTypes typesMaskForVideoDeferredProcessingNeeded:a4];
-  v6 = [PLBackgroundJobWorkerTypes typesMaskForDeferredProcessingNeeded:v4];
+  neededCopy = needed;
+  v5 = [PLBackgroundJobWorkerTypes typesMaskForVideoDeferredProcessingNeeded:processingNeeded];
+  v6 = [PLBackgroundJobWorkerTypes typesMaskForDeferredProcessingNeeded:neededCopy];
   v7 = [v5 typesMaskByUnioningWithTypes:v6];
 
   return v7;
 }
 
-+ (id)typesMaskForVideoDeferredProcessingNeeded:(unsigned __int16)a3
++ (id)typesMaskForVideoDeferredProcessingNeeded:(unsigned __int16)needed
 {
-  if (a3 == 1)
+  if (needed == 1)
   {
-    v3 = [a1 workerTypesMaskForBackgroundJobWorkerType:11];
+    v3 = [self workerTypesMaskForBackgroundJobWorkerType:11];
   }
 
   else
   {
-    v3 = objc_alloc_init(a1);
+    v3 = objc_alloc_init(self);
   }
 
   return v3;
 }
 
-+ (id)typesMaskForDeferredProcessingNeeded:(unsigned __int16)a3
++ (id)typesMaskForDeferredProcessingNeeded:(unsigned __int16)needed
 {
-  if (a3 > 4)
+  if (needed > 4)
   {
-    if (a3 >= 8)
+    if (needed >= 8)
     {
-      if (a3 == 8)
+      if (needed == 8)
       {
         v3 = 9;
         goto LABEL_15;
       }
 
-      if (a3 != 10)
+      if (needed != 10)
       {
         goto LABEL_12;
       }
@@ -330,9 +330,9 @@ LABEL_21:
     goto LABEL_12;
   }
 
-  if (a3 <= 1)
+  if (needed <= 1)
   {
-    if (a3 == 1)
+    if (needed == 1)
     {
 LABEL_11:
       v3 = 11;
@@ -340,24 +340,24 @@ LABEL_11:
     }
 
 LABEL_12:
-    v4 = objc_alloc_init(a1);
+    v4 = objc_alloc_init(self);
     goto LABEL_16;
   }
 
-  if (a3 == 2)
+  if (needed == 2)
   {
-    v4 = [a1 workerTypesMaskForBackgroundJobWorkerTypes:&unk_1F0FC0390];
+    v4 = [self workerTypesMaskForBackgroundJobWorkerTypes:&unk_1F0FC0390];
     goto LABEL_16;
   }
 
-  if (a3 == 3)
+  if (needed == 3)
   {
     goto LABEL_12;
   }
 
   v3 = 10;
 LABEL_15:
-  v4 = [a1 workerTypesMaskForBackgroundJobWorkerType:v3];
+  v4 = [self workerTypesMaskForBackgroundJobWorkerType:v3];
 LABEL_16:
 
   return v4;
@@ -387,86 +387,86 @@ LABEL_16:
   return v2;
 }
 
-+ (id)backgroundJobWorkerTypesMaskGuestAssetSync:(BOOL)a3 personSync:(BOOL)a4 syndicationSync:(BOOL)a5 syndicationResourceSanitization:(BOOL)a6 syndicationResourceDownload:(BOOL)a7 syndicationAssetCleanup:(BOOL)a8 assetStack:(BOOL)a9 duplicateDetector:(BOOL)a10 deferredRenderDerivativesLowPriority:(BOOL)a11 deferredRenderDerivativesHighPriority:(BOOL)a12 resourceAvailability:(BOOL)a13 stableHash:(BOOL)a14 editRenderingImage:(BOOL)a15 editRenderingVideo:(BOOL)a16 highPrioritySearchIndexing:(BOOL)a17 lowPriorityBatterySearchIndexing:(BOOL)a18 lowPriorityChargerSearchIndexing:(BOOL)a19 sharedAssetContainerUpdate:(BOOL)a20 assetResourceUploadJob:(BOOL)a21 assetResourceUploadExtensionRunner:(BOOL)a22 featureAvailability:(BOOL)a23
++ (id)backgroundJobWorkerTypesMaskGuestAssetSync:(BOOL)sync personSync:(BOOL)personSync syndicationSync:(BOOL)syndicationSync syndicationResourceSanitization:(BOOL)sanitization syndicationResourceDownload:(BOOL)download syndicationAssetCleanup:(BOOL)cleanup assetStack:(BOOL)stack duplicateDetector:(BOOL)self0 deferredRenderDerivativesLowPriority:(BOOL)self1 deferredRenderDerivativesHighPriority:(BOOL)self2 resourceAvailability:(BOOL)self3 stableHash:(BOOL)self4 editRenderingImage:(BOOL)self5 editRenderingVideo:(BOOL)self6 highPrioritySearchIndexing:(BOOL)self7 lowPriorityBatterySearchIndexing:(BOOL)self8 lowPriorityChargerSearchIndexing:(BOOL)self9 sharedAssetContainerUpdate:(BOOL)update assetResourceUploadJob:(BOOL)job assetResourceUploadExtensionRunner:(BOOL)runner featureAvailability:(BOOL)featureAvailability
 {
   v26 = objc_alloc_init(PLBackgroundJobWorkerTypes);
-  v26->_includedTypes[1] = a3;
-  v26->_includedTypes[2] = a4;
-  v26->_includedTypes[3] = a5;
-  v26->_includedTypes[4] = a6;
-  v26->_includedTypes[5] = a7;
-  v26->_includedTypes[6] = a8;
-  v26->_includedTypes[7] = a9;
-  v26->_includedTypes[8] = a10;
-  v26->_includedTypes[9] = a11;
-  v26->_includedTypes[10] = a12;
-  v26->_includedTypes[11] = a13;
-  v26->_includedTypes[12] = a14;
-  v26->_includedTypes[13] = a15;
-  v26->_includedTypes[14] = a16;
-  v26->_includedTypes[15] = a17;
-  v26->_includedTypes[16] = a18;
-  v26->_includedTypes[17] = a19;
-  v26->_includedTypes[18] = a20;
-  v26->_includedTypes[19] = a21;
-  v26->_includedTypes[20] = a22;
-  v26->_includedTypes[21] = a23;
+  v26->_includedTypes[1] = sync;
+  v26->_includedTypes[2] = personSync;
+  v26->_includedTypes[3] = syndicationSync;
+  v26->_includedTypes[4] = sanitization;
+  v26->_includedTypes[5] = download;
+  v26->_includedTypes[6] = cleanup;
+  v26->_includedTypes[7] = stack;
+  v26->_includedTypes[8] = detector;
+  v26->_includedTypes[9] = priority;
+  v26->_includedTypes[10] = highPriority;
+  v26->_includedTypes[11] = availability;
+  v26->_includedTypes[12] = hash;
+  v26->_includedTypes[13] = image;
+  v26->_includedTypes[14] = video;
+  v26->_includedTypes[15] = indexing;
+  v26->_includedTypes[16] = searchIndexing;
+  v26->_includedTypes[17] = chargerSearchIndexing;
+  v26->_includedTypes[18] = update;
+  v26->_includedTypes[19] = job;
+  v26->_includedTypes[20] = runner;
+  v26->_includedTypes[21] = featureAvailability;
 
   return v26;
 }
 
-+ (id)typesMaskFromWorkerCodes:(id)a3
++ (id)typesMaskFromWorkerCodes:(id)codes
 {
-  v5 = a3;
-  if (!v5)
+  codesCopy = codes;
+  if (!codesCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"PLBackgroundJobWorkerTypes+PhotosCtlSupport.m" lineNumber:102 description:{@"Invalid parameter not satisfying: %@", @"workerCodes"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundJobWorkerTypes+PhotosCtlSupport.m" lineNumber:102 description:{@"Invalid parameter not satisfying: %@", @"workerCodes"}];
   }
 
-  v6 = [a1 workerCodes];
-  v52 = [v6 objectAtIndexedSubscript:1];
-  v46 = [v5 containsObject:v52];
-  v51 = [v6 objectAtIndexedSubscript:2];
-  v45 = [v5 containsObject:v51];
-  v50 = [v6 objectAtIndexedSubscript:3];
-  v43 = [v5 containsObject:v50];
-  v49 = [v6 objectAtIndexedSubscript:4];
-  v41 = [v5 containsObject:v49];
-  v48 = [v6 objectAtIndexedSubscript:5];
-  v39 = [v5 containsObject:v48];
-  v47 = [v6 objectAtIndexedSubscript:6];
-  v38 = [v5 containsObject:v47];
-  v44 = [v6 objectAtIndexedSubscript:7];
-  v36 = [v5 containsObject:v44];
-  v42 = [v6 objectAtIndexedSubscript:8];
-  v34 = [v5 containsObject:v42];
-  v40 = [v6 objectAtIndexedSubscript:9];
-  v32 = [v5 containsObject:v40];
-  v37 = [v6 objectAtIndexedSubscript:10];
-  v30 = [v5 containsObject:v37];
-  v35 = [v6 objectAtIndexedSubscript:11];
-  v28 = [v5 containsObject:v35];
-  v33 = [v6 objectAtIndexedSubscript:12];
-  v26 = [v5 containsObject:v33];
-  v31 = [v6 objectAtIndexedSubscript:13];
-  v25 = [v5 containsObject:v31];
-  v29 = [v6 objectAtIndexedSubscript:14];
-  v23 = [v5 containsObject:v29];
-  v27 = [v6 objectAtIndexedSubscript:15];
-  v21 = [v5 containsObject:v27];
-  v24 = [v6 objectAtIndexedSubscript:16];
-  v20 = [v5 containsObject:v24];
-  v22 = [v6 objectAtIndexedSubscript:17];
-  v19 = [v5 containsObject:v22];
-  v7 = [v6 objectAtIndexedSubscript:18];
-  v8 = [v5 containsObject:v7];
-  v9 = [v6 objectAtIndexedSubscript:19];
-  v10 = [v5 containsObject:v9];
-  v11 = [v6 objectAtIndexedSubscript:20];
-  v12 = [v5 containsObject:v11];
-  v13 = [v6 objectAtIndexedSubscript:21];
-  BYTE6(v18) = [v5 containsObject:v13];
+  workerCodes = [self workerCodes];
+  v52 = [workerCodes objectAtIndexedSubscript:1];
+  v46 = [codesCopy containsObject:v52];
+  v51 = [workerCodes objectAtIndexedSubscript:2];
+  v45 = [codesCopy containsObject:v51];
+  v50 = [workerCodes objectAtIndexedSubscript:3];
+  v43 = [codesCopy containsObject:v50];
+  v49 = [workerCodes objectAtIndexedSubscript:4];
+  v41 = [codesCopy containsObject:v49];
+  v48 = [workerCodes objectAtIndexedSubscript:5];
+  v39 = [codesCopy containsObject:v48];
+  v47 = [workerCodes objectAtIndexedSubscript:6];
+  v38 = [codesCopy containsObject:v47];
+  v44 = [workerCodes objectAtIndexedSubscript:7];
+  v36 = [codesCopy containsObject:v44];
+  v42 = [workerCodes objectAtIndexedSubscript:8];
+  v34 = [codesCopy containsObject:v42];
+  v40 = [workerCodes objectAtIndexedSubscript:9];
+  v32 = [codesCopy containsObject:v40];
+  v37 = [workerCodes objectAtIndexedSubscript:10];
+  v30 = [codesCopy containsObject:v37];
+  v35 = [workerCodes objectAtIndexedSubscript:11];
+  v28 = [codesCopy containsObject:v35];
+  v33 = [workerCodes objectAtIndexedSubscript:12];
+  v26 = [codesCopy containsObject:v33];
+  v31 = [workerCodes objectAtIndexedSubscript:13];
+  v25 = [codesCopy containsObject:v31];
+  v29 = [workerCodes objectAtIndexedSubscript:14];
+  v23 = [codesCopy containsObject:v29];
+  v27 = [workerCodes objectAtIndexedSubscript:15];
+  v21 = [codesCopy containsObject:v27];
+  v24 = [workerCodes objectAtIndexedSubscript:16];
+  v20 = [codesCopy containsObject:v24];
+  v22 = [workerCodes objectAtIndexedSubscript:17];
+  v19 = [codesCopy containsObject:v22];
+  v7 = [workerCodes objectAtIndexedSubscript:18];
+  v8 = [codesCopy containsObject:v7];
+  v9 = [workerCodes objectAtIndexedSubscript:19];
+  v10 = [codesCopy containsObject:v9];
+  v11 = [workerCodes objectAtIndexedSubscript:20];
+  v12 = [codesCopy containsObject:v11];
+  v13 = [workerCodes objectAtIndexedSubscript:21];
+  BYTE6(v18) = [codesCopy containsObject:v13];
   BYTE5(v18) = v12;
   BYTE4(v18) = v10;
   BYTE3(v18) = v8;
@@ -481,7 +481,7 @@ LABEL_16:
   BYTE2(v17) = v32;
   BYTE1(v17) = v34;
   LOBYTE(v17) = v36;
-  v14 = [a1 backgroundJobWorkerTypesMaskGuestAssetSync:v46 personSync:v45 syndicationSync:v43 syndicationResourceSanitization:v41 syndicationResourceDownload:v39 syndicationAssetCleanup:v38 assetStack:v17 duplicateDetector:v18 deferredRenderDerivativesLowPriority:? deferredRenderDerivativesHighPriority:? resourceAvailability:? stableHash:? editRenderingImage:? editRenderingVideo:? highPrioritySearchIndexing:? lowPriorityBatterySearchIndexing:? lowPriorityChargerSearchIndexing:? sharedAssetContainerUpdate:? assetResourceUploadJob:? assetResourceUploadExtensionRunner:? featureAvailability:?];
+  v14 = [self backgroundJobWorkerTypesMaskGuestAssetSync:v46 personSync:v45 syndicationSync:v43 syndicationResourceSanitization:v41 syndicationResourceDownload:v39 syndicationAssetCleanup:v38 assetStack:v17 duplicateDetector:v18 deferredRenderDerivativesLowPriority:? deferredRenderDerivativesHighPriority:? resourceAvailability:? stableHash:? editRenderingImage:? editRenderingVideo:? highPrioritySearchIndexing:? lowPriorityBatterySearchIndexing:? lowPriorityChargerSearchIndexing:? sharedAssetContainerUpdate:? assetResourceUploadJob:? assetResourceUploadExtensionRunner:? featureAvailability:?];
 
   return v14;
 }
@@ -489,7 +489,7 @@ LABEL_16:
 + (id)workerCodes
 {
   v8 = a2;
-  v9 = a1;
+  selfCopy = self;
   v2 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   for (i = 0; ; ++i)
   {
@@ -560,18 +560,18 @@ LABEL_16:
         [v2 addObject:@"fa"];
         if ([v2 count] != 22)
         {
-          v7 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v7 handleFailureInMethod:v8 object:v9 file:@"PLBackgroundJobWorkerTypes+PhotosCtlSupport.m" lineNumber:97 description:@"Number of unique codes is not equal to number of worker types"];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:v8 object:selfCopy file:@"PLBackgroundJobWorkerTypes+PhotosCtlSupport.m" lineNumber:97 description:@"Number of unique codes is not equal to number of worker types"];
         }
 
-        v5 = [v2 array];
+        array = [v2 array];
 
-        return v5;
+        return array;
       default:
         break;
     }
 
-    [v2 addObject:{v4, v8, v9}];
+    [v2 addObject:{v4, v8, selfCopy}];
   }
 }
 

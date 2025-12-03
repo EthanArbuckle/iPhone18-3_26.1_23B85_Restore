@@ -1,12 +1,12 @@
 @interface WFWorkflowIcon
 + (unint64_t)randomPaletteColor;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (WFColor)backgroundColor;
 - (WFIcon)icon;
 - (WFWorkflowIcon)init;
-- (WFWorkflowIcon)initWithBackgroundColorValue:(int64_t)a3 glyphCharacter:(unsigned __int16)a4 customImageData:(id)a5 symbolOverride:(id)a6;
-- (WFWorkflowIcon)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (WFWorkflowIcon)initWithBackgroundColorValue:(int64_t)value glyphCharacter:(unsigned __int16)character customImageData:(id)data symbolOverride:(id)override;
+- (WFWorkflowIcon)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFWorkflowIcon
@@ -14,9 +14,9 @@
 - (WFIcon)icon
 {
   v3 = [WFIconGradientBackground alloc];
-  v4 = [(WFWorkflowIcon *)self backgroundColor];
-  v5 = [v4 paletteGradient];
-  v6 = [(WFIconGradientBackground *)v3 initWithGradient:v5];
+  backgroundColor = [(WFWorkflowIcon *)self backgroundColor];
+  paletteGradient = [backgroundColor paletteGradient];
+  v6 = [(WFIconGradientBackground *)v3 initWithGradient:paletteGradient];
 
   v7 = WFSystemImageNameForGlyphCharacter([(WFWorkflowIcon *)self glyphCharacter]);
   if (v7)
@@ -36,9 +36,9 @@
 
 - (WFColor)backgroundColor
 {
-  v2 = [(WFWorkflowIcon *)self backgroundColorValue];
+  backgroundColorValue = [(WFWorkflowIcon *)self backgroundColorValue];
 
-  return [WFColor colorWithRGBAValue:v2];
+  return [WFColor colorWithRGBAValue:backgroundColorValue];
 }
 
 + (unint64_t)randomPaletteColor
@@ -57,10 +57,10 @@
   return [(WFWorkflowIcon *)self initWithPaletteColor:v3 glyphCharacter:v4 customImageData:0];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -70,12 +70,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(WFWorkflowIcon *)self backgroundColorValue];
-      if (v6 == [(WFWorkflowIcon *)v5 backgroundColorValue])
+      v5 = equalCopy;
+      backgroundColorValue = [(WFWorkflowIcon *)self backgroundColorValue];
+      if (backgroundColorValue == [(WFWorkflowIcon *)v5 backgroundColorValue])
       {
-        v7 = [(WFWorkflowIcon *)self glyphCharacter];
-        v8 = v7 == [(WFWorkflowIcon *)v5 glyphCharacter];
+        glyphCharacter = [(WFWorkflowIcon *)self glyphCharacter];
+        v8 = glyphCharacter == [(WFWorkflowIcon *)v5 glyphCharacter];
       }
 
       else
@@ -93,56 +93,56 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithInteger:{-[WFWorkflowIcon backgroundColorValue](self, "backgroundColorValue")}];
-  [v5 encodeObject:v6 forKey:@"backgroundColorValue"];
+  [coderCopy encodeObject:v6 forKey:@"backgroundColorValue"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{-[WFWorkflowIcon glyphCharacter](self, "glyphCharacter")}];
-  [v5 encodeObject:v7 forKey:@"glyphCharacter"];
+  [coderCopy encodeObject:v7 forKey:@"glyphCharacter"];
 
-  v8 = [(WFWorkflowIcon *)self customImageData];
-  [v5 encodeObject:v8 forKey:@"customImageData"];
+  customImageData = [(WFWorkflowIcon *)self customImageData];
+  [coderCopy encodeObject:customImageData forKey:@"customImageData"];
 
-  v9 = [(WFWorkflowIcon *)self symbolOverride];
-  [v5 encodeObject:v9 forKey:@"symbolOverride"];
+  symbolOverride = [(WFWorkflowIcon *)self symbolOverride];
+  [coderCopy encodeObject:symbolOverride forKey:@"symbolOverride"];
 }
 
-- (WFWorkflowIcon)initWithCoder:(id)a3
+- (WFWorkflowIcon)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColorValue"];
-  v6 = [v5 integerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColorValue"];
+  integerValue = [v5 integerValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"glyphCharacter"];
-  v8 = [v7 unsignedLongValue];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"glyphCharacter"];
+  unsignedLongValue = [v7 unsignedLongValue];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"customImageData"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"symbolOverride"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"customImageData"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"symbolOverride"];
 
-  v11 = [(WFWorkflowIcon *)self initWithBackgroundColorValue:v6 glyphCharacter:v8 customImageData:v9 symbolOverride:v10];
+  v11 = [(WFWorkflowIcon *)self initWithBackgroundColorValue:integerValue glyphCharacter:unsignedLongValue customImageData:v9 symbolOverride:v10];
   return v11;
 }
 
-- (WFWorkflowIcon)initWithBackgroundColorValue:(int64_t)a3 glyphCharacter:(unsigned __int16)a4 customImageData:(id)a5 symbolOverride:(id)a6
+- (WFWorkflowIcon)initWithBackgroundColorValue:(int64_t)value glyphCharacter:(unsigned __int16)character customImageData:(id)data symbolOverride:(id)override
 {
-  v10 = a5;
-  v11 = a6;
+  dataCopy = data;
+  overrideCopy = override;
   v20.receiver = self;
   v20.super_class = WFWorkflowIcon;
   v12 = [(WFWorkflowIcon *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    v12->_backgroundColorValue = a3;
-    v12->_glyphCharacter = a4;
-    v14 = [v10 copy];
+    v12->_backgroundColorValue = value;
+    v12->_glyphCharacter = character;
+    v14 = [dataCopy copy];
     customImageData = v13->_customImageData;
     v13->_customImageData = v14;
 
-    v16 = [v11 copy];
+    v16 = [overrideCopy copy];
     symbolOverride = v13->_symbolOverride;
     v13->_symbolOverride = v16;
 

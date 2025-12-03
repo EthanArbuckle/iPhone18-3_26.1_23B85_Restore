@@ -1,7 +1,7 @@
 @interface MRDExternalDeviceCredentialDatabase
 - (BOOL)clearExpiredTokenRecords;
-- (BOOL)saveTokenRecord:(id)a3;
-- (MRDExternalDeviceCredentialDatabase)initWithPath:(id)a3;
+- (BOOL)saveTokenRecord:(id)record;
+- (MRDExternalDeviceCredentialDatabase)initWithPath:(id)path;
 - (NSArray)tokenRecords;
 - (id)_loadTokenRecords;
 - (void)_initializeDatabaseSchema;
@@ -12,15 +12,15 @@
 
 @implementation MRDExternalDeviceCredentialDatabase
 
-- (MRDExternalDeviceCredentialDatabase)initWithPath:(id)a3
+- (MRDExternalDeviceCredentialDatabase)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v10.receiver = self;
   v10.super_class = MRDExternalDeviceCredentialDatabase;
   v5 = [(MRDExternalDeviceCredentialDatabase *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     path = v5->_path;
     v5->_path = v6;
 
@@ -48,8 +48,8 @@
   tokenRecords = self->_tokenRecords;
   if (!tokenRecords)
   {
-    v4 = [(MRDExternalDeviceCredentialDatabase *)self _loadTokenRecords];
-    v5 = [v4 mutableCopy];
+    _loadTokenRecords = [(MRDExternalDeviceCredentialDatabase *)self _loadTokenRecords];
+    v5 = [_loadTokenRecords mutableCopy];
     v6 = self->_tokenRecords;
     self->_tokenRecords = v5;
 
@@ -61,10 +61,10 @@
   return v7;
 }
 
-- (BOOL)saveTokenRecord:(id)a3
+- (BOOL)saveTokenRecord:(id)record
 {
-  v4 = a3;
-  if (!v4)
+  recordCopy = record;
+  if (!recordCopy)
   {
     v9 = 0;
     goto LABEL_27;
@@ -75,8 +75,8 @@
   if (!v5)
   {
     v10 = ppStmt;
-    v11 = [v4 deviceID];
-    v6 = sub_1000AAFDC(v10, 1, v11);
+    deviceID = [recordCopy deviceID];
+    v6 = sub_1000AAFDC(v10, 1, deviceID);
 
     if (!v6)
     {
@@ -84,8 +84,8 @@
     }
 
     v12 = ppStmt;
-    v13 = [v4 token];
-    v6 = sub_1000AAFDC(v12, 2, v13);
+    token = [recordCopy token];
+    v6 = sub_1000AAFDC(v12, 2, token);
 
     if (!v6)
     {
@@ -93,8 +93,8 @@
     }
 
     v14 = ppStmt;
-    v15 = [v4 dateCreated];
-    [v15 timeIntervalSince1970];
+    dateCreated = [recordCopy dateCreated];
+    [dateCreated timeIntervalSince1970];
     v6 = sqlite3_bind_int64(v14, 3, v16);
 
     if (v6)
@@ -112,8 +112,8 @@
     else
     {
       v17 = ppStmt;
-      v18 = [v4 expirationDate];
-      [v18 timeIntervalSince1970];
+      expirationDate = [recordCopy expirationDate];
+      [expirationDate timeIntervalSince1970];
       v6 = sqlite3_bind_int64(v17, 4, v19);
 
       if (v6)
@@ -137,7 +137,7 @@
           tokenRecords = self->_tokenRecords;
           if (tokenRecords)
           {
-            [(NSMutableArray *)tokenRecords addObject:v4];
+            [(NSMutableArray *)tokenRecords addObject:recordCopy];
           }
 
           goto LABEL_20;
@@ -282,11 +282,11 @@ LABEL_12:
 - (void)_openDatabase
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [(NSString *)self->_path stringByDeletingLastPathComponent];
-  if (([v3 fileExistsAtPath:v4] & 1) == 0)
+  stringByDeletingLastPathComponent = [(NSString *)self->_path stringByDeletingLastPathComponent];
+  if (([v3 fileExistsAtPath:stringByDeletingLastPathComponent] & 1) == 0)
   {
     v10 = 0;
-    [v3 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:&v10];
+    [v3 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v10];
   }
 
   sqlite3_open_v2([(NSString *)self->_path fileSystemRepresentation], &self->_dbHandle, 6, 0);

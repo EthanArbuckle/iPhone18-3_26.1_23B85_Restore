@@ -1,5 +1,5 @@
 @interface CPLTransportUpdateScopeTask
-- (BOOL)checkScopeIsValidInTransaction:(id)a3;
+- (BOOL)checkScopeIsValidInTransaction:(id)transaction;
 - (void)cancel;
 - (void)launch;
 @end
@@ -11,13 +11,13 @@
   v6.receiver = self;
   v6.super_class = CPLTransportUpdateScopeTask;
   [(CPLEngineSyncTask *)&v6 cancel];
-  v3 = [(CPLEngineScopedTask *)self store];
+  store = [(CPLEngineScopedTask *)self store];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __37__CPLTransportUpdateScopeTask_cancel__block_invoke;
   v5[3] = &unk_1E86205E0;
   v5[4] = self;
-  v4 = [v3 performReadTransactionWithBlock:v5];
+  v4 = [store performReadTransactionWithBlock:v5];
 }
 
 uint64_t __37__CPLTransportUpdateScopeTask_cancel__block_invoke(uint64_t a1)
@@ -33,20 +33,20 @@ uint64_t __37__CPLTransportUpdateScopeTask_cancel__block_invoke(uint64_t a1)
   v14.receiver = self;
   v14.super_class = CPLTransportUpdateScopeTask;
   [(CPLEngineSyncTask *)&v14 launch];
-  v3 = [(CPLEngineScopedTask *)self store];
-  v4 = [v3 scopes];
-  v5 = [(CPLEngineScopedTask *)self scope];
+  store = [(CPLEngineScopedTask *)self store];
+  scopes = [store scopes];
+  scope = [(CPLEngineScopedTask *)self scope];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __37__CPLTransportUpdateScopeTask_launch__block_invoke;
   v10[3] = &unk_1E861F1D0;
   v10[4] = self;
-  v11 = v4;
-  v12 = v5;
-  v13 = v3;
-  v6 = v3;
-  v7 = v5;
-  v8 = v4;
+  v11 = scopes;
+  v12 = scope;
+  v13 = store;
+  v6 = store;
+  v7 = scope;
+  v8 = scopes;
   v9 = [v6 performReadTransactionWithBlock:v10];
 }
 
@@ -396,14 +396,14 @@ uint64_t __37__CPLTransportUpdateScopeTask_launch__block_invoke_3(uint64_t a1, u
   return result;
 }
 
-- (BOOL)checkScopeIsValidInTransaction:(id)a3
+- (BOOL)checkScopeIsValidInTransaction:(id)transaction
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CPLEngineSyncTask *)self session];
-  v6 = [v5 shouldDefer];
+  transactionCopy = transaction;
+  session = [(CPLEngineSyncTask *)self session];
+  shouldDefer = [session shouldDefer];
 
-  if (v6)
+  if (shouldDefer)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -418,15 +418,15 @@ uint64_t __37__CPLTransportUpdateScopeTask_launch__block_invoke_3(uint64_t a1, u
     }
 
     v9 = +[CPLErrors sessionHasBeenDeferredError];
-    [v4 setError:v9];
+    [transactionCopy setError:v9];
 
     v10 = 0;
   }
 
   else
   {
-    v11 = [v4 error];
-    v10 = v11 == 0;
+    error = [transactionCopy error];
+    v10 = error == 0;
   }
 
   v12 = *MEMORY[0x1E69E9840];

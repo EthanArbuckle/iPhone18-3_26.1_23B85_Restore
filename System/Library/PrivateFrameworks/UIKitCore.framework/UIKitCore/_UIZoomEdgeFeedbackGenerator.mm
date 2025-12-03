@@ -1,10 +1,10 @@
 @interface _UIZoomEdgeFeedbackGenerator
 - (_UIZoomEdgeFeedbackGenerator)init;
-- (_UIZoomEdgeFeedbackGenerator)initWithView:(id)a3;
+- (_UIZoomEdgeFeedbackGenerator)initWithView:(id)view;
 - (void)_updateMaximumValue;
-- (void)_zoomScaleUpdated:(double)a3 withVelocity:(double)a4 atLocation:(CGPoint)a5;
-- (void)setMaximumZoomScale:(double)a3;
-- (void)setMinimumZoomScale:(double)a3;
+- (void)_zoomScaleUpdated:(double)updated withVelocity:(double)velocity atLocation:(CGPoint)location;
+- (void)setMaximumZoomScale:(double)scale;
+- (void)setMinimumZoomScale:(double)scale;
 @end
 
 @implementation _UIZoomEdgeFeedbackGenerator
@@ -17,11 +17,11 @@
   return v4;
 }
 
-- (_UIZoomEdgeFeedbackGenerator)initWithView:(id)a3
+- (_UIZoomEdgeFeedbackGenerator)initWithView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = +[_UIEdgeFeedbackGeneratorConfiguration _zoomConfiguration];
-  v6 = [(_UIEdgeFeedbackGenerator *)self initWithConfiguration:v5 view:v4];
+  v6 = [(_UIEdgeFeedbackGenerator *)self initWithConfiguration:v5 view:viewCopy];
 
   return v6;
 }
@@ -33,33 +33,33 @@
   [(_UIEdgeFeedbackGenerator *)self setDistance:v3];
 }
 
-- (void)setMinimumZoomScale:(double)a3
+- (void)setMinimumZoomScale:(double)scale
 {
-  if (self->_minimumZoomScale != a3)
+  if (self->_minimumZoomScale != scale)
   {
-    self->_minimumZoomScale = a3;
+    self->_minimumZoomScale = scale;
     [(_UIZoomEdgeFeedbackGenerator *)self _updateMaximumValue];
   }
 }
 
-- (void)setMaximumZoomScale:(double)a3
+- (void)setMaximumZoomScale:(double)scale
 {
-  if (self->_maximumZoomScale != a3)
+  if (self->_maximumZoomScale != scale)
   {
-    self->_maximumZoomScale = a3;
+    self->_maximumZoomScale = scale;
     [(_UIZoomEdgeFeedbackGenerator *)self _updateMaximumValue];
   }
 }
 
-- (void)_zoomScaleUpdated:(double)a3 withVelocity:(double)a4 atLocation:(CGPoint)a5
+- (void)_zoomScaleUpdated:(double)updated withVelocity:(double)velocity atLocation:(CGPoint)location
 {
-  y = a5.y;
-  x = a5.x;
+  y = location.y;
+  x = location.x;
   if ([(UIFeedbackGenerator *)self _isEnabled]&& [(_UIEdgeFeedbackGenerator *)self _state])
   {
     minimumZoomScale = self->_minimumZoomScale;
-    v11 = log(a3 / minimumZoomScale);
-    if (minimumZoomScale <= a3)
+    v11 = log(updated / minimumZoomScale);
+    if (minimumZoomScale <= updated)
     {
       v12 = -log(self->_minimumTemporaryZoomScale / minimumZoomScale);
     }
@@ -70,7 +70,7 @@
     }
 
     [(_UIEdgeFeedbackGenerator *)self setExtentBeyondDistance:v12];
-    if (a4 == 0.0)
+    if (velocity == 0.0)
     {
 
       [(_UIEdgeFeedbackGenerator *)self positionUpdated:v11 atLocation:x, y];
@@ -79,7 +79,7 @@
     else
     {
 
-      [(_UIEdgeFeedbackGenerator *)self _positionUpdated:v11 withVelocity:a4 atLocation:x, y];
+      [(_UIEdgeFeedbackGenerator *)self _positionUpdated:v11 withVelocity:velocity atLocation:x, y];
     }
   }
 }

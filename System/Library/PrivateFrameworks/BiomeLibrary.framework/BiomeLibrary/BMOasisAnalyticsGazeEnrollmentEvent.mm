@@ -1,39 +1,39 @@
 @interface BMOasisAnalyticsGazeEnrollmentEvent
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMOasisAnalyticsGazeEnrollmentEvent)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMOasisAnalyticsGazeEnrollmentEvent)initWithMetadata:(id)a3 payload:(id)a4 fixationSamples:(id)a5 qualityTrace:(id)a6;
-- (BOOL)isEqual:(id)a3;
+- (BMOasisAnalyticsGazeEnrollmentEvent)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMOasisAnalyticsGazeEnrollmentEvent)initWithMetadata:(id)metadata payload:(id)payload fixationSamples:(id)samples qualityTrace:(id)trace;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_fixationSamplesJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMOasisAnalyticsGazeEnrollmentEvent
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMOasisAnalyticsGazeEnrollmentEvent *)self metadata];
-    v7 = [v5 metadata];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    metadata = [(BMOasisAnalyticsGazeEnrollmentEvent *)self metadata];
+    metadata2 = [v5 metadata];
+    v8 = metadata2;
+    if (metadata == metadata2)
     {
     }
 
     else
     {
-      v9 = [(BMOasisAnalyticsGazeEnrollmentEvent *)self metadata];
-      v10 = [v5 metadata];
-      v11 = [v9 isEqual:v10];
+      metadata3 = [(BMOasisAnalyticsGazeEnrollmentEvent *)self metadata];
+      metadata4 = [v5 metadata];
+      v11 = [metadata3 isEqual:metadata4];
 
       if (!v11)
       {
@@ -41,18 +41,18 @@
       }
     }
 
-    v13 = [(BMOasisAnalyticsGazeEnrollmentEvent *)self payload];
-    v14 = [v5 payload];
-    v15 = v14;
-    if (v13 == v14)
+    payload = [(BMOasisAnalyticsGazeEnrollmentEvent *)self payload];
+    payload2 = [v5 payload];
+    v15 = payload2;
+    if (payload == payload2)
     {
     }
 
     else
     {
-      v16 = [(BMOasisAnalyticsGazeEnrollmentEvent *)self payload];
-      v17 = [v5 payload];
-      v18 = [v16 isEqual:v17];
+      payload3 = [(BMOasisAnalyticsGazeEnrollmentEvent *)self payload];
+      payload4 = [v5 payload];
+      v18 = [payload3 isEqual:payload4];
 
       if (!v18)
       {
@@ -60,18 +60,18 @@
       }
     }
 
-    v19 = [(BMOasisAnalyticsGazeEnrollmentEvent *)self fixationSamples];
-    v20 = [v5 fixationSamples];
-    v21 = v20;
-    if (v19 == v20)
+    fixationSamples = [(BMOasisAnalyticsGazeEnrollmentEvent *)self fixationSamples];
+    fixationSamples2 = [v5 fixationSamples];
+    v21 = fixationSamples2;
+    if (fixationSamples == fixationSamples2)
     {
     }
 
     else
     {
-      v22 = [(BMOasisAnalyticsGazeEnrollmentEvent *)self fixationSamples];
-      v23 = [v5 fixationSamples];
-      v24 = [v22 isEqual:v23];
+      fixationSamples3 = [(BMOasisAnalyticsGazeEnrollmentEvent *)self fixationSamples];
+      fixationSamples4 = [v5 fixationSamples];
+      v24 = [fixationSamples3 isEqual:fixationSamples4];
 
       if (!v24)
       {
@@ -83,18 +83,18 @@ LABEL_19:
       }
     }
 
-    v25 = [(BMOasisAnalyticsGazeEnrollmentEvent *)self qualityTrace];
-    v26 = [v5 qualityTrace];
-    if (v25 == v26)
+    qualityTrace = [(BMOasisAnalyticsGazeEnrollmentEvent *)self qualityTrace];
+    qualityTrace2 = [v5 qualityTrace];
+    if (qualityTrace == qualityTrace2)
     {
       v12 = 1;
     }
 
     else
     {
-      v27 = [(BMOasisAnalyticsGazeEnrollmentEvent *)self qualityTrace];
-      v28 = [v5 qualityTrace];
-      v12 = [v27 isEqual:v28];
+      qualityTrace3 = [(BMOasisAnalyticsGazeEnrollmentEvent *)self qualityTrace];
+      qualityTrace4 = [v5 qualityTrace];
+      v12 = [qualityTrace3 isEqual:qualityTrace4];
     }
 
     goto LABEL_19;
@@ -109,52 +109,52 @@ LABEL_20:
 - (id)jsonDictionary
 {
   v18[4] = *MEMORY[0x1E69E9840];
-  v3 = [(BMOasisAnalyticsGazeEnrollmentEvent *)self metadata];
-  v4 = [v3 jsonDictionary];
+  metadata = [(BMOasisAnalyticsGazeEnrollmentEvent *)self metadata];
+  jsonDictionary = [metadata jsonDictionary];
 
-  v5 = [(BMOasisAnalyticsGazeEnrollmentEvent *)self payload];
-  v6 = [v5 jsonDictionary];
+  payload = [(BMOasisAnalyticsGazeEnrollmentEvent *)self payload];
+  jsonDictionary2 = [payload jsonDictionary];
 
-  v7 = [(BMOasisAnalyticsGazeEnrollmentEvent *)self _fixationSamplesJSONArray];
-  v8 = [(BMOasisAnalyticsGazeEnrollmentEvent *)self qualityTrace];
-  v9 = [v8 jsonDictionary];
+  _fixationSamplesJSONArray = [(BMOasisAnalyticsGazeEnrollmentEvent *)self _fixationSamplesJSONArray];
+  qualityTrace = [(BMOasisAnalyticsGazeEnrollmentEvent *)self qualityTrace];
+  jsonDictionary3 = [qualityTrace jsonDictionary];
 
   v17[0] = @"metadata";
-  v10 = v4;
-  if (!v4)
+  null = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[0] = v10;
+  v18[0] = null;
   v17[1] = @"payload";
-  v11 = v6;
-  if (!v6)
+  null2 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[1] = v11;
+  v18[1] = null2;
   v17[2] = @"fixationSamples";
-  v12 = v7;
-  if (!v7)
+  null3 = _fixationSamplesJSONArray;
+  if (!_fixationSamplesJSONArray)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[2] = v12;
+  v18[2] = null3;
   v17[3] = @"qualityTrace";
-  v13 = v9;
-  if (!v9)
+  null4 = jsonDictionary3;
+  if (!jsonDictionary3)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[3] = v13;
+  v18[3] = null4;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:4];
-  if (v9)
+  if (jsonDictionary3)
   {
-    if (v7)
+    if (_fixationSamplesJSONArray)
     {
       goto LABEL_11;
     }
@@ -163,17 +163,17 @@ LABEL_20:
   else
   {
 
-    if (v7)
+    if (_fixationSamplesJSONArray)
     {
 LABEL_11:
-      if (v6)
+      if (jsonDictionary2)
       {
         goto LABEL_12;
       }
 
 LABEL_18:
 
-      if (v4)
+      if (jsonDictionary)
       {
         goto LABEL_13;
       }
@@ -182,13 +182,13 @@ LABEL_18:
     }
   }
 
-  if (!v6)
+  if (!jsonDictionary2)
   {
     goto LABEL_18;
   }
 
 LABEL_12:
-  if (v4)
+  if (jsonDictionary)
   {
     goto LABEL_13;
   }
@@ -209,8 +209,8 @@ LABEL_13:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMOasisAnalyticsGazeEnrollmentEvent *)self fixationSamples];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  fixationSamples = [(BMOasisAnalyticsGazeEnrollmentEvent *)self fixationSamples];
+  v5 = [fixationSamples countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -221,14 +221,14 @@ LABEL_13:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(fixationSamples);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [fixationSamples countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -239,17 +239,17 @@ LABEL_13:
   return v3;
 }
 
-- (BMOasisAnalyticsGazeEnrollmentEvent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMOasisAnalyticsGazeEnrollmentEvent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v88[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"metadata"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"metadata"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v26 = objc_alloc(MEMORY[0x1E696ABC0]);
         v27 = *MEMORY[0x1E698F240];
@@ -264,12 +264,12 @@ LABEL_13:
         v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v88 forKeys:&v87 count:1];
         v32 = v27;
         v9 = v31;
-        v14 = 0;
-        *a4 = [v26 initWithDomain:v32 code:2 userInfo:v31];
+        selfCopy3 = 0;
+        *error = [v26 initWithDomain:v32 code:2 userInfo:v31];
         goto LABEL_59;
       }
 
-      v14 = 0;
+      selfCopy3 = 0;
       goto LABEL_60;
     }
 
@@ -279,13 +279,13 @@ LABEL_13:
     v13 = v75;
     if (v13)
     {
-      if (a4)
+      if (error)
       {
         v13 = v13;
-        *a4 = v13;
+        *error = v13;
       }
 
-      v14 = 0;
+      selfCopy3 = 0;
       goto LABEL_59;
     }
   }
@@ -295,14 +295,14 @@ LABEL_13:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"payload"];
-  v66 = a4;
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"payload"];
+  errorCopy = error;
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v33 = objc_alloc(MEMORY[0x1E696ABC0]);
         v34 = v9;
@@ -315,12 +315,12 @@ LABEL_13:
         v38 = v35;
         v9 = v34;
         v39 = v36;
-        v14 = 0;
-        *v66 = [v37 initWithDomain:v38 code:2 userInfo:v10];
+        selfCopy3 = 0;
+        *errorCopy = [v37 initWithDomain:v38 code:2 userInfo:v10];
         goto LABEL_58;
       }
 
-      v14 = 0;
+      selfCopy3 = 0;
       goto LABEL_59;
     }
 
@@ -330,10 +330,10 @@ LABEL_13:
     v25 = v74;
     if (v25)
     {
-      if (v66)
+      if (errorCopy)
       {
         v25 = v25;
-        *v66 = v25;
+        *errorCopy = v25;
       }
 
       goto LABEL_51;
@@ -345,9 +345,9 @@ LABEL_13:
     v65 = 0;
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"fixationSamples"];
-  v11 = [MEMORY[0x1E695DFB0] null];
-  v12 = [v10 isEqual:v11];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"fixationSamples"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v12 = [v10 isEqual:null];
 
   if (!v12)
   {
@@ -355,11 +355,11 @@ LABEL_13:
     {
       v61 = v8;
       v62 = v7;
-      v63 = self;
+      selfCopy2 = self;
       goto LABEL_17;
     }
 
-    if (v66)
+    if (errorCopy)
     {
       v49 = objc_alloc(MEMORY[0x1E696ABC0]);
       v50 = *MEMORY[0x1E698F240];
@@ -368,20 +368,20 @@ LABEL_13:
       v84 = v67;
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v84 forKeys:&v83 count:1];
       v51 = [v49 initWithDomain:v50 code:2 userInfo:v24];
-      v14 = 0;
-      *v66 = v51;
+      selfCopy3 = 0;
+      *errorCopy = v51;
       goto LABEL_50;
     }
 
 LABEL_51:
-    v14 = 0;
+    selfCopy3 = 0;
     v39 = v65;
     goto LABEL_58;
   }
 
   v61 = v8;
   v62 = v7;
-  v63 = self;
+  selfCopy2 = self;
 
   v10 = 0;
 LABEL_17:
@@ -400,7 +400,7 @@ LABEL_17:
 
   v16 = v15;
   v17 = *v71;
-  v60 = v6;
+  v60 = dictionaryCopy;
   while (2)
   {
     for (i = 0; i != v16; ++i)
@@ -414,8 +414,8 @@ LABEL_17:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v40 = v66;
-        if (v66)
+        v40 = errorCopy;
+        if (errorCopy)
         {
           v41 = objc_alloc(MEMORY[0x1E696ABC0]);
           v42 = *MEMORY[0x1E698F240];
@@ -429,21 +429,21 @@ LABEL_43:
           v46 = [v43 dictionaryWithObjects:v44 forKeys:v45 count:1];
           *v40 = [v41 initWithDomain:v42 code:2 userInfo:v46];
 
-          v14 = 0;
+          selfCopy3 = 0;
           v24 = v10;
-          v6 = v60;
+          dictionaryCopy = v60;
           v7 = v62;
-          self = v63;
+          self = selfCopy2;
           goto LABEL_47;
         }
 
 LABEL_52:
-        v14 = 0;
+        selfCopy3 = 0;
         v24 = v10;
-        v6 = v60;
+        dictionaryCopy = v60;
         v8 = v61;
         v7 = v62;
-        self = v63;
+        self = selfCopy2;
         v9 = v64;
         v39 = v65;
         goto LABEL_57;
@@ -452,8 +452,8 @@ LABEL_52:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v40 = v66;
-        if (v66)
+        v40 = errorCopy;
+        if (errorCopy)
         {
           v41 = objc_alloc(MEMORY[0x1E696ABC0]);
           v42 = *MEMORY[0x1E698F240];
@@ -478,16 +478,16 @@ LABEL_52:
       {
         v47 = v23;
         v7 = v62;
-        if (v66)
+        if (errorCopy)
         {
           v48 = v23;
-          *v66 = v47;
+          *errorCopy = v47;
         }
 
-        v14 = 0;
+        selfCopy3 = 0;
         v24 = v10;
-        v6 = v60;
-        self = v63;
+        dictionaryCopy = v60;
+        self = selfCopy2;
         goto LABEL_47;
       }
 
@@ -495,7 +495,7 @@ LABEL_52:
     }
 
     v16 = [v10 countByEnumeratingWithState:&v70 objects:v82 count:16];
-    v6 = v60;
+    dictionaryCopy = v60;
     v9 = v64;
     if (v16)
     {
@@ -507,12 +507,12 @@ LABEL_52:
 
 LABEL_27:
 
-  v24 = [v6 objectForKeyedSubscript:@"qualityTrace"];
+  v24 = [dictionaryCopy objectForKeyedSubscript:@"qualityTrace"];
   if (!v24)
   {
     v20 = 0;
     v7 = v62;
-    self = v63;
+    self = selfCopy2;
 LABEL_54:
     v8 = v61;
     v39 = v65;
@@ -521,7 +521,7 @@ LABEL_54:
 
   objc_opt_class();
   v7 = v62;
-  self = v63;
+  self = selfCopy2;
   if (objc_opt_isKindOfClass())
   {
     v20 = 0;
@@ -531,7 +531,7 @@ LABEL_54:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (v66)
+    if (errorCopy)
     {
       v59 = objc_alloc(MEMORY[0x1E696ABC0]);
       v56 = *MEMORY[0x1E698F240];
@@ -539,16 +539,16 @@ LABEL_54:
       v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"qualityTrace"];
       v77 = v20;
       v57 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v77 forKeys:&v76 count:1];
-      *v66 = [v59 initWithDomain:v56 code:2 userInfo:v57];
+      *errorCopy = [v59 initWithDomain:v56 code:2 userInfo:v57];
 
-      v14 = 0;
+      selfCopy3 = 0;
 LABEL_47:
       v8 = v61;
       v39 = v65;
       goto LABEL_56;
     }
 
-    v14 = 0;
+    selfCopy3 = 0;
     v8 = v61;
 LABEL_50:
     v39 = v65;
@@ -566,17 +566,17 @@ LABEL_50:
 
 LABEL_55:
     self = [(BMOasisAnalyticsGazeEnrollmentEvent *)self initWithMetadata:v8 payload:v39 fixationSamples:v67 qualityTrace:v20];
-    v14 = self;
+    selfCopy3 = self;
     goto LABEL_56;
   }
 
-  if (v66)
+  if (errorCopy)
   {
     v55 = v55;
-    *v66 = v55;
+    *errorCopy = v55;
   }
 
-  v14 = 0;
+  selfCopy3 = 0;
   v24 = v54;
 LABEL_56:
 
@@ -588,27 +588,27 @@ LABEL_59:
 
 LABEL_60:
   v52 = *MEMORY[0x1E69E9840];
-  return v14;
+  return selfCopy3;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMOasisAnalyticsGazeEnrollmentEvent *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_metadata)
   {
     v16 = 0;
     PBDataWriterPlaceMark();
-    [(BMOasisAnalyticsMetadata *)self->_metadata writeTo:v4];
+    [(BMOasisAnalyticsMetadata *)self->_metadata writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -616,7 +616,7 @@ LABEL_60:
   {
     v16 = 0;
     PBDataWriterPlaceMark();
-    [(BMGazeEnrollmentSample *)self->_payload writeTo:v4];
+    [(BMGazeEnrollmentSample *)self->_payload writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -643,7 +643,7 @@ LABEL_60:
         v10 = *(*(&v12 + 1) + 8 * v9);
         v16 = 0;
         PBDataWriterPlaceMark();
-        [v10 writeTo:{v4, v12}];
+        [v10 writeTo:{toCopy, v12}];
         PBDataWriterRecallMark();
         ++v9;
       }
@@ -659,16 +659,16 @@ LABEL_60:
   {
     v16 = 0;
     PBDataWriterPlaceMark();
-    [(BMOasisAnalyticsQualityTrace *)self->_qualityTrace writeTo:v4];
+    [(BMOasisAnalyticsQualityTrace *)self->_qualityTrace writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v28.receiver = self;
   v28.super_class = BMOasisAnalyticsGazeEnrollmentEvent;
   v5 = [(BMEventBase *)&v28 init];
@@ -678,12 +678,12 @@ LABEL_60:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_39;
       }
@@ -694,18 +694,18 @@ LABEL_60:
       while (1)
       {
         LOBYTE(v29) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:&v29 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v29 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v29 & 0x7F) << v8;
@@ -722,9 +722,9 @@ LABEL_60:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_39;
       }
@@ -746,7 +746,7 @@ LABEL_16:
             goto LABEL_41;
           }
 
-          v17 = [[BMOasisAnalyticsQualityTrace alloc] initByReadFrom:v4];
+          v17 = [[BMOasisAnalyticsQualityTrace alloc] initByReadFrom:fromCopy];
           if (!v17)
           {
             goto LABEL_41;
@@ -767,7 +767,7 @@ LABEL_29:
 
       v29 = 0;
       v30 = 0;
-      if (!PBReaderPlaceMark() || (v20 = [[BMOasisAnalyticsGazeSample alloc] initByReadFrom:v4]) == 0)
+      if (!PBReaderPlaceMark() || (v20 = [[BMOasisAnalyticsGazeSample alloc] initByReadFrom:fromCopy]) == 0)
       {
 LABEL_41:
 
@@ -779,8 +779,8 @@ LABEL_41:
       PBReaderRecallMark();
 
 LABEL_38:
-      v22 = [v4 position];
-      if (v22 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_39;
       }
@@ -795,7 +795,7 @@ LABEL_38:
         goto LABEL_41;
       }
 
-      v17 = [[BMOasisAnalyticsMetadata alloc] initByReadFrom:v4];
+      v17 = [[BMOasisAnalyticsMetadata alloc] initByReadFrom:fromCopy];
       if (!v17)
       {
         goto LABEL_41;
@@ -814,7 +814,7 @@ LABEL_38:
         goto LABEL_41;
       }
 
-      v17 = [[BMGazeEnrollmentSample alloc] initByReadFrom:v4];
+      v17 = [[BMGazeEnrollmentSample alloc] initByReadFrom:fromCopy];
       if (!v17)
       {
         goto LABEL_41;
@@ -837,8 +837,8 @@ LABEL_39:
   fixationSamples = v5->_fixationSamples;
   v5->_fixationSamples = v23;
 
-  v25 = [v4 hasError];
-  if (v25)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_42:
     v26 = 0;
@@ -856,31 +856,31 @@ LABEL_40:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMOasisAnalyticsGazeEnrollmentEvent *)self metadata];
-  v5 = [(BMOasisAnalyticsGazeEnrollmentEvent *)self payload];
-  v6 = [(BMOasisAnalyticsGazeEnrollmentEvent *)self fixationSamples];
-  v7 = [(BMOasisAnalyticsGazeEnrollmentEvent *)self qualityTrace];
-  v8 = [v3 initWithFormat:@"BMOasisAnalyticsGazeEnrollmentEvent with metadata: %@, payload: %@, fixationSamples: %@, qualityTrace: %@", v4, v5, v6, v7];
+  metadata = [(BMOasisAnalyticsGazeEnrollmentEvent *)self metadata];
+  payload = [(BMOasisAnalyticsGazeEnrollmentEvent *)self payload];
+  fixationSamples = [(BMOasisAnalyticsGazeEnrollmentEvent *)self fixationSamples];
+  qualityTrace = [(BMOasisAnalyticsGazeEnrollmentEvent *)self qualityTrace];
+  v8 = [v3 initWithFormat:@"BMOasisAnalyticsGazeEnrollmentEvent with metadata: %@, payload: %@, fixationSamples: %@, qualityTrace: %@", metadata, payload, fixationSamples, qualityTrace];
 
   return v8;
 }
 
-- (BMOasisAnalyticsGazeEnrollmentEvent)initWithMetadata:(id)a3 payload:(id)a4 fixationSamples:(id)a5 qualityTrace:(id)a6
+- (BMOasisAnalyticsGazeEnrollmentEvent)initWithMetadata:(id)metadata payload:(id)payload fixationSamples:(id)samples qualityTrace:(id)trace
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  metadataCopy = metadata;
+  payloadCopy = payload;
+  samplesCopy = samples;
+  traceCopy = trace;
   v17.receiver = self;
   v17.super_class = BMOasisAnalyticsGazeEnrollmentEvent;
   v15 = [(BMEventBase *)&v17 init];
   if (v15)
   {
     v15->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v15->_metadata, a3);
-    objc_storeStrong(&v15->_payload, a4);
-    objc_storeStrong(&v15->_fixationSamples, a5);
-    objc_storeStrong(&v15->_qualityTrace, a6);
+    objc_storeStrong(&v15->_metadata, metadata);
+    objc_storeStrong(&v15->_payload, payload);
+    objc_storeStrong(&v15->_fixationSamples, samples);
+    objc_storeStrong(&v15->_qualityTrace, trace);
   }
 
   return v15;
@@ -961,9 +961,9 @@ id __46__BMOasisAnalyticsGazeEnrollmentEvent_columns__block_invoke(uint64_t a1, 
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -971,8 +971,8 @@ id __46__BMOasisAnalyticsGazeEnrollmentEvent_columns__block_invoke(uint64_t a1, 
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMOasisAnalyticsGazeEnrollmentEvent alloc] initByReadFrom:v7];
     v4 = v8;

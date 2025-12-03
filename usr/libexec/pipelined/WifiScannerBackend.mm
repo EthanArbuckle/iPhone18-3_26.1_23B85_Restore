@@ -1,18 +1,18 @@
 @interface WifiScannerBackend
-+ (id)copySupportedChannelDicts:(__WiFiDeviceClient *)a3;
-- (BOOL)onQueueAllocManagerWithRunLoop:(__CFRunLoop *)a3;
++ (id)copySupportedChannelDicts:(__WiFiDeviceClient *)dicts;
+- (BOOL)onQueueAllocManagerWithRunLoop:(__CFRunLoop *)loop;
 - (BOOL)sensorPresent;
 - (WifiScannerBackend)init;
 - (id).cxx_construct;
-- (unique_ptr<ScanInformation,)initiateScanOnDevice:(__WiFiDeviceClient *)a3 withSettings:(id)a4 deviceNumber:(unint64_t)a5;
+- (unique_ptr<ScanInformation,)initiateScanOnDevice:(__WiFiDeviceClient *)device withSettings:(id)settings deviceNumber:(unint64_t)number;
 - (void)invalidate;
-- (void)onQueueDeleteCompletedScan:(void *)a3;
-- (void)onQueueHandleDeviceAttached:(__WiFiDeviceClient *)a3;
+- (void)onQueueDeleteCompletedScan:(void *)scan;
+- (void)onQueueHandleDeviceAttached:(__WiFiDeviceClient *)attached;
 - (void)onQueueHandlerServerRestart;
-- (void)onQueueInitiateScan:(id)a3 initiated:(id)a4;
+- (void)onQueueInitiateScan:(id)scan initiated:(id)initiated;
 - (void)onQueueRegisterCallbacks;
 - (void)onQueueTeardown;
-- (void)scanAsync:(id)a3 initiated:(id)a4;
+- (void)scanAsync:(id)async initiated:(id)initiated;
 - (void)startListeningCachedScans;
 - (void)stopListeningCachedScans;
 @end
@@ -113,9 +113,9 @@ LABEL_12:
       block[1] = 3321888768;
       block[2] = sub_1002EFF18;
       block[3] = &unk_100448158;
-      v12 = self;
+      selfCopy = self;
       v13 = &v14;
-      v4 = v12;
+      v4 = selfCopy;
       dispatch_sync(q, block);
 
       if ((v14 & 1) == 0)
@@ -252,9 +252,9 @@ LABEL_15:
         v7 = qword_10045B058;
         if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
         {
-          v8 = [WiFiDeviceClientGetInterfaceName() UTF8String];
+          uTF8String = [WiFiDeviceClientGetInterfaceName() UTF8String];
           LODWORD(buf.version) = 136315138;
-          *(&buf.version + 4) = v8;
+          *(&buf.version + 4) = uTF8String;
           _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Tearing down exiting device %s", &buf, 0xCu);
         }
 
@@ -371,9 +371,9 @@ LABEL_15:
         v8 = qword_10045B058;
         if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
         {
-          v9 = [WiFiDeviceClientGetInterfaceName() UTF8String];
+          uTF8String = [WiFiDeviceClientGetInterfaceName() UTF8String];
           *buf = 134217984;
-          v17 = v9;
+          v17 = uTF8String;
           _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Registering callbacks for device %p", buf, 0xCu);
         }
 
@@ -394,7 +394,7 @@ LABEL_15:
   WiFiManagerClientRegisterDeviceAttachmentCallback();
 }
 
-- (BOOL)onQueueAllocManagerWithRunLoop:(__CFRunLoop *)a3
+- (BOOL)onQueueAllocManagerWithRunLoop:(__CFRunLoop *)loop
 {
   [(WifiScannerBackend *)self onQueueTeardown];
   self->_wifiManager = WiFiManagerClientCreate();
@@ -453,7 +453,7 @@ LABEL_15:
     WiFiManagerClientScheduleWithRunLoop();
     v16 = self->_wifiManager;
     WiFiManagerClientSetType();
-    self->_wifiThreadRunLoop = a3;
+    self->_wifiThreadRunLoop = loop;
     LOBYTE(v17) = 1;
   }
 
@@ -508,7 +508,7 @@ LABEL_4:
   atomic_store(0, &self->_pendingScanCount.__a_.__a_value);
 }
 
-- (void)onQueueHandleDeviceAttached:(__WiFiDeviceClient *)a3
+- (void)onQueueHandleDeviceAttached:(__WiFiDeviceClient *)attached
 {
   if (qword_10045B050 == -1)
   {
@@ -533,11 +533,11 @@ LABEL_4:
   _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_ERROR, "device attachment unimplemented", v4, 2u);
 }
 
-+ (id)copySupportedChannelDicts:(__WiFiDeviceClient *)a3
++ (id)copySupportedChannelDicts:(__WiFiDeviceClient *)dicts
 {
   v4 = [NSNumber numberWithInteger:27];
 
-  return _WiFiDeviceClientCopyProperty(a3, v4);
+  return _WiFiDeviceClientCopyProperty(dicts, v4);
 }
 
 - (BOOL)sensorPresent
@@ -589,8 +589,8 @@ LABEL_3:
   block[1] = 3321888768;
   block[2] = sub_1002F1598;
   block[3] = &unk_1004481B0;
-  v5 = self;
-  v3 = v5;
+  selfCopy = self;
+  v3 = selfCopy;
   dispatch_async(q, block);
 }
 
@@ -601,34 +601,34 @@ LABEL_3:
   block[1] = 3321888768;
   block[2] = sub_1002F179C;
   block[3] = &unk_1004481E0;
-  v5 = self;
-  v3 = v5;
+  selfCopy = self;
+  v3 = selfCopy;
   dispatch_async(q, block);
 }
 
-- (void)scanAsync:(id)a3 initiated:(id)a4
+- (void)scanAsync:(id)async initiated:(id)initiated
 {
-  v6 = a3;
+  asyncCopy = async;
   q = self->_q;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3321888768;
   block[2] = sub_1002F19F0;
   block[3] = &unk_100448210;
-  v8 = self;
-  v9 = v6;
-  v10 = objc_retainBlock(a4);
-  v14 = v8;
+  selfCopy = self;
+  v9 = asyncCopy;
+  v10 = objc_retainBlock(initiated);
+  v14 = selfCopy;
   v15 = v9;
   v11 = v9;
-  v12 = v8;
+  v12 = selfCopy;
   v16 = objc_retainBlock(v10);
   dispatch_async(q, block);
 }
 
-- (void)onQueueInitiateScan:(id)a3 initiated:(id)a4
+- (void)onQueueInitiateScan:(id)scan initiated:(id)initiated
 {
-  v6 = a3;
-  v7 = a4;
+  scanCopy = scan;
+  initiatedCopy = initiated;
   v8 = _os_activity_create(&_mh_execute_header, "Wifi Scan", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   if (qword_10045B050 != -1)
   {
@@ -639,7 +639,7 @@ LABEL_3:
   if (os_log_type_enabled(qword_10045B058, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = scanCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Initiating a scan with settings: %{public}@", &buf, 0xCu);
   }
 
@@ -657,10 +657,10 @@ LABEL_3:
   block[1] = 3321888768;
   block[2] = sub_1002F1EE8;
   block[3] = &unk_100448240;
-  v13 = self;
+  selfCopy = self;
   v14 = v8;
-  v15 = v6;
-  v16 = v13;
+  v15 = scanCopy;
+  v16 = selfCopy;
   v23 = v16;
   v24 = v14;
   v25 = v15;
@@ -669,7 +669,7 @@ LABEL_3:
 
   sub_1002F5058((v16 + 11), (v16 + 11), buf, *(&buf + 1));
   atomic_store(v16[13], v16 + 14);
-  v7[2](v7, [(NSArray *)self->_wifiDevices count]);
+  initiatedCopy[2](initiatedCopy, [(NSArray *)self->_wifiDevices count]);
 
   v17 = buf;
   if (buf)
@@ -699,17 +699,17 @@ LABEL_3:
   }
 }
 
-- (unique_ptr<ScanInformation,)initiateScanOnDevice:(__WiFiDeviceClient *)a3 withSettings:(id)a4 deviceNumber:(unint64_t)a5
+- (unique_ptr<ScanInformation,)initiateScanOnDevice:(__WiFiDeviceClient *)device withSettings:(id)settings deviceNumber:(unint64_t)number
 {
-  v13 = a4;
-  v8 = self->_supportedChannelsPerDevice.__begin_[a5];
+  settingsCopy = settings;
+  v8 = self->_supportedChannelsPerDevice.__begin_[number];
   if (!v8)
   {
-    v9 = [WifiScannerBackend copySupportedChannelDicts:a3];
+    v9 = [WifiScannerBackend copySupportedChannelDicts:device];
     if (v9)
     {
       v10 = v9;
-      objc_storeStrong(&self->_supportedChannelsPerDevice.__begin_[a5], v9);
+      objc_storeStrong(&self->_supportedChannelsPerDevice.__begin_[number], v9);
       v8 = v10;
     }
 
@@ -724,7 +724,7 @@ LABEL_3:
       if (os_log_type_enabled(qword_10045B058, OS_LOG_TYPE_ERROR))
       {
         buf = 134217984;
-        buf_4 = a5;
+        buf_4 = number;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Failed to get supported channels dictionaries for device %zu", &buf, 0xCu);
       }
 
@@ -738,13 +738,13 @@ LABEL_3:
   v14[3] = &unk_100448278;
   v15 = v8;
   v12 = [(BaseWifiScannerBackend *)self log];
-  [WifiScannerCommonDarwin scanSettingsToDictionary:v13 usingSupportedChannels:v14 logTo:v12];
+  [WifiScannerCommonDarwin scanSettingsToDictionary:settingsCopy usingSupportedChannels:v14 logTo:v12];
   objc_claimAutoreleasedReturnValue();
 
   operator new();
 }
 
-- (void)onQueueDeleteCompletedScan:(void *)a3
+- (void)onQueueDeleteCompletedScan:(void *)scan
 {
   if (qword_10045B050 != -1)
   {
@@ -755,7 +755,7 @@ LABEL_3:
   if (os_log_type_enabled(qword_10045B058, OS_LOG_TYPE_INFO))
   {
     v13 = 134217984;
-    v14 = a3;
+    scanCopy3 = scan;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Removing pending scan %p", &v13, 0xCu);
   }
 
@@ -763,7 +763,7 @@ LABEL_3:
   next = self->_pendingScans.__end_.__next_;
   if (next != &self->_pendingScans)
   {
-    while (next->super._log != a3)
+    while (next->super._log != scan)
     {
       next = next->super._delegate;
       if (next == p_pendingScans)
@@ -785,7 +785,7 @@ LABEL_17:
     if (os_log_type_enabled(qword_10045B058, OS_LOG_TYPE_ERROR))
     {
       v13 = 134217984;
-      v14 = a3;
+      scanCopy3 = scan;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Completed scan %p but don't have it in the pending list", &v13, 0xCu);
     }
   }
@@ -801,7 +801,7 @@ LABEL_17:
     if (os_log_type_enabled(qword_10045B058, OS_LOG_TYPE_INFO))
     {
       v13 = 134217984;
-      v14 = a3;
+      scanCopy3 = scan;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Erasing pending scan %p from the list", &v13, 0xCu);
     }
 

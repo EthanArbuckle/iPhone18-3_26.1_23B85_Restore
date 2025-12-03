@@ -1,6 +1,6 @@
 @interface MTRJointFabricDatastoreClusterDatastoreEndpointBindingEntryStruct
 - (MTRJointFabricDatastoreClusterDatastoreEndpointBindingEntryStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -35,23 +35,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRJointFabricDatastoreClusterDatastoreEndpointBindingEntryStruct);
-  v5 = [(MTRJointFabricDatastoreClusterDatastoreEndpointBindingEntryStruct *)self nodeID];
-  [(MTRJointFabricDatastoreClusterDatastoreEndpointBindingEntryStruct *)v4 setNodeID:v5];
+  nodeID = [(MTRJointFabricDatastoreClusterDatastoreEndpointBindingEntryStruct *)self nodeID];
+  [(MTRJointFabricDatastoreClusterDatastoreEndpointBindingEntryStruct *)v4 setNodeID:nodeID];
 
-  v6 = [(MTRJointFabricDatastoreClusterDatastoreEndpointBindingEntryStruct *)self endpointID];
-  [(MTRJointFabricDatastoreClusterDatastoreEndpointBindingEntryStruct *)v4 setEndpointID:v6];
+  endpointID = [(MTRJointFabricDatastoreClusterDatastoreEndpointBindingEntryStruct *)self endpointID];
+  [(MTRJointFabricDatastoreClusterDatastoreEndpointBindingEntryStruct *)v4 setEndpointID:endpointID];
 
-  v7 = [(MTRJointFabricDatastoreClusterDatastoreEndpointBindingEntryStruct *)self listID];
-  [(MTRJointFabricDatastoreClusterDatastoreEndpointBindingEntryStruct *)v4 setListID:v7];
+  listID = [(MTRJointFabricDatastoreClusterDatastoreEndpointBindingEntryStruct *)self listID];
+  [(MTRJointFabricDatastoreClusterDatastoreEndpointBindingEntryStruct *)v4 setListID:listID];
 
-  v8 = [(MTRJointFabricDatastoreClusterDatastoreEndpointBindingEntryStruct *)self binding];
-  [(MTRJointFabricDatastoreClusterDatastoreEndpointBindingEntryStruct *)v4 setBinding:v8];
+  binding = [(MTRJointFabricDatastoreClusterDatastoreEndpointBindingEntryStruct *)self binding];
+  [(MTRJointFabricDatastoreClusterDatastoreEndpointBindingEntryStruct *)v4 setBinding:binding];
 
-  v9 = [(MTRJointFabricDatastoreClusterDatastoreEndpointBindingEntryStruct *)self statusEntry];
-  [(MTRJointFabricDatastoreClusterDatastoreEndpointBindingEntryStruct *)v4 setStatusEntry:v9];
+  statusEntry = [(MTRJointFabricDatastoreClusterDatastoreEndpointBindingEntryStruct *)self statusEntry];
+  [(MTRJointFabricDatastoreClusterDatastoreEndpointBindingEntryStruct *)v4 setStatusEntry:statusEntry];
 
   return v4;
 }

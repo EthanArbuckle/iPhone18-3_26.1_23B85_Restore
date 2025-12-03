@@ -1,6 +1,6 @@
 @interface SNFileListingResult
 - (NSArray)fileItems;
-- (SNFileListingResult)initWithFileItems:(id)a3;
+- (SNFileListingResult)initWithFileItems:(id)items;
 @end
 
 @implementation SNFileListingResult
@@ -14,7 +14,7 @@
   return v2;
 }
 
-- (SNFileListingResult)initWithFileItems:(id)a3
+- (SNFileListingResult)initWithFileItems:(id)items
 {
   sub_1C99CC1F4();
   v3 = sub_1C9A92798();

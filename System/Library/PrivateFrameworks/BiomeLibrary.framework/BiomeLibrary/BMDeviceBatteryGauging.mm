@@ -1,15 +1,15 @@
 @interface BMDeviceBatteryGauging
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMDeviceBatteryGauging)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMDeviceBatteryGauging)initWithUpdateType:(int)a3 qmaxState:(int)a4 daysSinceQMax:(id)a5 ocvState:(int)a6 daysSinceOCV:(id)a7 fullChargeState:(int)a8 daysSinceFullChargeAttempt:(id)a9;
-- (BOOL)isEqual:(id)a3;
+- (BMDeviceBatteryGauging)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMDeviceBatteryGauging)initWithUpdateType:(int)type qmaxState:(int)state daysSinceQMax:(id)max ocvState:(int)ocvState daysSinceOCV:(id)v fullChargeState:(int)chargeState daysSinceFullChargeAttempt:(id)attempt;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMDeviceBatteryGauging
@@ -38,21 +38,21 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMDeviceBatteryGauging *)self updateType];
-    if (v6 != [v5 updateType])
+    v5 = equalCopy;
+    updateType = [(BMDeviceBatteryGauging *)self updateType];
+    if (updateType != [v5 updateType])
     {
       goto LABEL_22;
     }
 
-    v7 = [(BMDeviceBatteryGauging *)self qmaxState];
-    if (v7 != [v5 qmaxState])
+    qmaxState = [(BMDeviceBatteryGauging *)self qmaxState];
+    if (qmaxState != [v5 qmaxState])
     {
       goto LABEL_22;
     }
@@ -69,15 +69,15 @@
         goto LABEL_22;
       }
 
-      v8 = [(BMDeviceBatteryGauging *)self daysSinceQMax];
-      if (v8 != [v5 daysSinceQMax])
+      daysSinceQMax = [(BMDeviceBatteryGauging *)self daysSinceQMax];
+      if (daysSinceQMax != [v5 daysSinceQMax])
       {
         goto LABEL_22;
       }
     }
 
-    v9 = [(BMDeviceBatteryGauging *)self ocvState];
-    if (v9 != [v5 ocvState])
+    ocvState = [(BMDeviceBatteryGauging *)self ocvState];
+    if (ocvState != [v5 ocvState])
     {
       goto LABEL_22;
     }
@@ -94,15 +94,15 @@
         goto LABEL_22;
       }
 
-      v10 = [(BMDeviceBatteryGauging *)self daysSinceOCV];
-      if (v10 != [v5 daysSinceOCV])
+      daysSinceOCV = [(BMDeviceBatteryGauging *)self daysSinceOCV];
+      if (daysSinceOCV != [v5 daysSinceOCV])
       {
         goto LABEL_22;
       }
     }
 
-    v11 = [(BMDeviceBatteryGauging *)self fullChargeState];
-    if (v11 != [v5 fullChargeState])
+    fullChargeState = [(BMDeviceBatteryGauging *)self fullChargeState];
+    if (fullChargeState != [v5 fullChargeState])
     {
       goto LABEL_22;
     }
@@ -115,8 +115,8 @@
 
     if (-[BMDeviceBatteryGauging hasDaysSinceFullChargeAttempt](self, "hasDaysSinceFullChargeAttempt") && [v5 hasDaysSinceFullChargeAttempt])
     {
-      v12 = [(BMDeviceBatteryGauging *)self daysSinceFullChargeAttempt];
-      v13 = v12 == [v5 daysSinceFullChargeAttempt];
+      daysSinceFullChargeAttempt = [(BMDeviceBatteryGauging *)self daysSinceFullChargeAttempt];
+      v13 = daysSinceFullChargeAttempt == [v5 daysSinceFullChargeAttempt];
     }
 
     else
@@ -174,65 +174,65 @@ LABEL_24:
   }
 
   v24[0] = @"updateType";
-  v9 = v3;
+  null = v3;
   if (!v3)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v9;
-  v25[0] = v9;
+  v20 = null;
+  v25[0] = null;
   v24[1] = @"qmaxState";
-  v10 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19 = v10;
-  v25[1] = v10;
+  v19 = null2;
+  v25[1] = null2;
   v24[2] = @"daysSinceQMax";
-  v11 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
   v22 = v3;
-  v25[2] = v11;
+  v25[2] = null3;
   v24[3] = @"ocvState";
-  v12 = v23;
+  null4 = v23;
   if (!v23)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v21 = v4;
-  v25[3] = v12;
+  v25[3] = null4;
   v24[4] = @"daysSinceOCV";
-  v13 = v6;
+  null5 = v6;
   if (!v6)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[4] = v13;
+  v25[4] = null5;
   v24[5] = @"fullChargeState";
-  v14 = v7;
+  null6 = v7;
   if (!v7)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[5] = v14;
+  v25[5] = null6;
   v24[6] = @"daysSinceFullChargeAttempt";
-  v15 = v8;
+  null7 = v8;
   if (!v8)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[6] = v15;
+  v25[6] = null7;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:7];
   if (v8)
   {
@@ -296,16 +296,16 @@ LABEL_33:
   return v16;
 }
 
-- (BMDeviceBatteryGauging)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMDeviceBatteryGauging)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v96[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v82 = [v5 objectForKeyedSubscript:@"updateType"];
+  dictionaryCopy = dictionary;
+  v82 = [dictionaryCopy objectForKeyedSubscript:@"updateType"];
   if (!v82 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = 0;
 LABEL_9:
-    v8 = [v5 objectForKeyedSubscript:@"qmaxState"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"qmaxState"];
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -319,7 +319,7 @@ LABEL_9:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v25 = 0;
             v9 = 0;
@@ -327,7 +327,7 @@ LABEL_9:
           }
 
           v52 = objc_alloc(MEMORY[0x1E696ABC0]);
-          v53 = a4;
+          errorCopy = error;
           v54 = *MEMORY[0x1E698F240];
           v93 = *MEMORY[0x1E696A578];
           v80 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"qmaxState"];
@@ -335,7 +335,7 @@ LABEL_9:
           v79 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v94 forKeys:&v93 count:1];
           v55 = [v52 initWithDomain:v54 code:2 userInfo:?];
           v25 = 0;
-          *v53 = v55;
+          *errorCopy = v55;
           v9 = 0;
           goto LABEL_55;
         }
@@ -351,14 +351,14 @@ LABEL_9:
       v9 = 0;
     }
 
-    v11 = [v5 objectForKeyedSubscript:@"daysSinceQMax"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"daysSinceQMax"];
     v79 = v11;
     if (v11 && (v12 = v11, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v80 = 0;
           v25 = 0;
@@ -366,7 +366,7 @@ LABEL_9:
         }
 
         v21 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v22 = a4;
+        errorCopy2 = error;
         v23 = *MEMORY[0x1E698F240];
         v91 = *MEMORY[0x1E696A578];
         v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"daysSinceQMax"];
@@ -375,7 +375,7 @@ LABEL_9:
         v24 = [v21 initWithDomain:v23 code:2 userInfo:?];
         v80 = 0;
         v25 = 0;
-        *v22 = v24;
+        *errorCopy2 = v24;
 LABEL_54:
 
 LABEL_55:
@@ -390,14 +390,14 @@ LABEL_55:
       v80 = 0;
     }
 
-    v13 = [v5 objectForKeyedSubscript:@"ocvState"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"ocvState"];
     v76 = v13;
     if (v13 && (v14 = v13, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v15 = a4;
+        errorCopy6 = error;
         v16 = v14;
       }
 
@@ -406,14 +406,14 @@ LABEL_55:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v16 = 0;
             v25 = 0;
             goto LABEL_54;
           }
 
-          v56 = a4;
+          errorCopy4 = error;
           v57 = objc_alloc(MEMORY[0x1E696ABC0]);
           v58 = *MEMORY[0x1E698F240];
           v89 = *MEMORY[0x1E696A578];
@@ -423,22 +423,22 @@ LABEL_55:
           v59 = [v57 initWithDomain:v58 code:2 userInfo:v30];
           v16 = 0;
           v25 = 0;
-          *v56 = v59;
+          *errorCopy4 = v59;
           goto LABEL_53;
         }
 
         v16 = [MEMORY[0x1E696AD98] numberWithInt:BMDeviceBatteryGaugingOCVStateFromString(v14)];
-        v15 = a4;
+        errorCopy6 = error;
       }
     }
 
     else
     {
-      v15 = a4;
+      errorCopy6 = error;
       v16 = 0;
     }
 
-    v17 = [v5 objectForKeyedSubscript:@"daysSinceOCV"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"daysSinceOCV"];
     if (v17)
     {
       objc_opt_class();
@@ -453,7 +453,7 @@ LABEL_55:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v15)
+          if (!errorCopy6)
           {
             v25 = 0;
             v30 = v17;
@@ -464,14 +464,14 @@ LABEL_55:
           v70 = objc_alloc(MEMORY[0x1E696ABC0]);
           v66 = *MEMORY[0x1E698F240];
           v87 = *MEMORY[0x1E696A578];
-          v74 = v15;
-          v26 = v5;
+          v74 = errorCopy6;
+          v26 = dictionaryCopy;
           v27 = v6;
           v28 = objc_alloc(MEMORY[0x1E696AEC0]);
           v65 = objc_opt_class();
           v29 = v28;
           v6 = v27;
-          v5 = v26;
+          dictionaryCopy = v26;
           v30 = v17;
           v77 = [v29 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v65, @"daysSinceOCV"];
           v88 = v77;
@@ -495,7 +495,7 @@ LABEL_53:
       v73 = 0;
     }
 
-    v18 = [v5 objectForKeyedSubscript:@"fullChargeState"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"fullChargeState"];
     v75 = v9;
     if (v18 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
@@ -512,7 +512,7 @@ LABEL_53:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v15)
+          if (!errorCopy6)
           {
             v77 = 0;
             v25 = 0;
@@ -521,7 +521,7 @@ LABEL_53:
             goto LABEL_52;
           }
 
-          v60 = v15;
+          v60 = errorCopy6;
           v78 = objc_alloc(MEMORY[0x1E696ABC0]);
           v61 = v8;
           v62 = *MEMORY[0x1E698F240];
@@ -552,13 +552,13 @@ LABEL_53:
       v77 = 0;
     }
 
-    v31 = [v5 objectForKeyedSubscript:@"daysSinceFullChargeAttempt"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"daysSinceFullChargeAttempt"];
     if (v31 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v15)
+        if (errorCopy6)
         {
           v72 = objc_alloc(MEMORY[0x1E696ABC0]);
           v68 = *MEMORY[0x1E698F240];
@@ -566,7 +566,7 @@ LABEL_53:
           v46 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"daysSinceFullChargeAttempt"];
           v84 = v46;
           v47 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v84 forKeys:&v83 count:1];
-          *v15 = [v72 initWithDomain:v68 code:2 userInfo:v47];
+          *errorCopy6 = [v72 initWithDomain:v68 code:2 userInfo:v47];
         }
 
         v35 = 0;
@@ -577,8 +577,8 @@ LABEL_53:
       v32 = v18;
       v67 = v31;
       v71 = v8;
-      v33 = v5;
-      v34 = self;
+      v33 = dictionaryCopy;
+      selfCopy2 = self;
       v35 = v31;
     }
 
@@ -587,24 +587,24 @@ LABEL_53:
       v67 = v31;
       v71 = v8;
       v32 = v18;
-      v33 = v5;
-      v34 = self;
+      v33 = dictionaryCopy;
+      selfCopy2 = self;
       v35 = 0;
     }
 
-    v36 = [v6 intValue];
+    intValue = [v6 intValue];
     v37 = v6;
-    v38 = [v75 intValue];
+    intValue2 = [v75 intValue];
     v39 = v16;
-    v40 = [v16 intValue];
-    v41 = [v77 intValue];
-    v42 = v38;
+    intValue3 = [v16 intValue];
+    intValue4 = [v77 intValue];
+    v42 = intValue2;
     v6 = v37;
-    v43 = v40;
+    v43 = intValue3;
     v16 = v39;
-    v25 = [(BMDeviceBatteryGauging *)v34 initWithUpdateType:v36 qmaxState:v42 daysSinceQMax:v80 ocvState:v43 daysSinceOCV:v17 fullChargeState:v41 daysSinceFullChargeAttempt:v35];
+    v25 = [(BMDeviceBatteryGauging *)selfCopy2 initWithUpdateType:intValue qmaxState:v42 daysSinceQMax:v80 ocvState:v43 daysSinceOCV:v17 fullChargeState:intValue4 daysSinceFullChargeAttempt:v35];
     self = v25;
-    v5 = v33;
+    dictionaryCopy = v33;
     v31 = v67;
     v8 = v71;
     v18 = v32;
@@ -631,7 +631,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!error)
   {
     v6 = 0;
     v25 = 0;
@@ -639,7 +639,7 @@ LABEL_8:
   }
 
   v48 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v49 = a4;
+  errorCopy7 = error;
   v50 = *MEMORY[0x1E698F240];
   v95 = *MEMORY[0x1E696A578];
   v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"updateType"];
@@ -648,7 +648,7 @@ LABEL_8:
   v51 = [v48 initWithDomain:v50 code:2 userInfo:v8];
   v6 = 0;
   v25 = 0;
-  *v49 = v51;
+  *errorCopy7 = v51;
 LABEL_56:
 
 LABEL_57:
@@ -660,14 +660,14 @@ LABEL_57:
 {
   v3 = objc_opt_new();
   [(BMDeviceBatteryGauging *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   updateType = self->_updateType;
   PBDataWriterWriteUint32Field();
   qmaxState = self->_qmaxState;
@@ -695,9 +695,9 @@ LABEL_57:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v63.receiver = self;
   v63.super_class = BMDeviceBatteryGauging;
   v5 = [(BMEventBase *)&v63 init];
@@ -706,12 +706,12 @@ LABEL_57:
     goto LABEL_124;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -722,18 +722,18 @@ LABEL_57:
       while (1)
       {
         v64 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v64 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v64 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v64 & 0x7F) << v7;
@@ -750,9 +750,9 @@ LABEL_57:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -769,18 +769,18 @@ LABEL_16:
             while (1)
             {
               v64 = 0;
-              v38 = [v4 position] + 1;
-              if (v38 >= [v4 position] && (v39 = objc_msgSend(v4, "position") + 1, v39 <= objc_msgSend(v4, "length")))
+              v38 = [fromCopy position] + 1;
+              if (v38 >= [fromCopy position] && (v39 = objc_msgSend(fromCopy, "position") + 1, v39 <= objc_msgSend(fromCopy, "length")))
               {
-                v40 = [v4 data];
-                [v40 getBytes:&v64 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v64 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v23 |= (v64 & 0x7F) << v36;
@@ -797,7 +797,7 @@ LABEL_16:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v23 > 3)
+            if (([fromCopy hasError] & 1) != 0 || v23 > 3)
             {
 LABEL_94:
               LODWORD(v23) = 0;
@@ -812,18 +812,18 @@ LABEL_94:
             while (1)
             {
               v64 = 0;
-              v56 = [v4 position] + 1;
-              if (v56 >= [v4 position] && (v57 = objc_msgSend(v4, "position") + 1, v57 <= objc_msgSend(v4, "length")))
+              v56 = [fromCopy position] + 1;
+              if (v56 >= [fromCopy position] && (v57 = objc_msgSend(fromCopy, "position") + 1, v57 <= objc_msgSend(fromCopy, "length")))
               {
-                v58 = [v4 data];
-                [v58 getBytes:&v64 range:{objc_msgSend(v4, "position"), 1}];
+                data3 = [fromCopy data];
+                [data3 getBytes:&v64 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v55 |= (v64 & 0x7F) << v53;
@@ -840,7 +840,7 @@ LABEL_94:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || (LODWORD(v23) = v55, v55 > 4))
+            if (([fromCopy hasError] & 1) != 0 || (LODWORD(v23) = v55, v55 > 4))
             {
 LABEL_118:
               LODWORD(v23) = 0;
@@ -856,18 +856,18 @@ LABEL_118:
             while (1)
             {
               v64 = 0;
-              v27 = [v4 position] + 1;
-              if (v27 >= [v4 position] && (v28 = objc_msgSend(v4, "position") + 1, v28 <= objc_msgSend(v4, "length")))
+              v27 = [fromCopy position] + 1;
+              if (v27 >= [fromCopy position] && (v28 = objc_msgSend(fromCopy, "position") + 1, v28 <= objc_msgSend(fromCopy, "length")))
               {
-                v29 = [v4 data];
-                [v29 getBytes:&v64 range:{objc_msgSend(v4, "position"), 1}];
+                data4 = [fromCopy data];
+                [data4 getBytes:&v64 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v26 |= (v64 & 0x7F) << v24;
@@ -885,7 +885,7 @@ LABEL_118:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               LODWORD(v23) = 0;
             }
@@ -914,18 +914,18 @@ LABEL_115:
           while (1)
           {
             v64 = 0;
-            v50 = [v4 position] + 1;
-            if (v50 >= [v4 position] && (v51 = objc_msgSend(v4, "position") + 1, v51 <= objc_msgSend(v4, "length")))
+            v50 = [fromCopy position] + 1;
+            if (v50 >= [fromCopy position] && (v51 = objc_msgSend(fromCopy, "position") + 1, v51 <= objc_msgSend(fromCopy, "length")))
             {
-              v52 = [v4 data];
-              [v52 getBytes:&v64 range:{objc_msgSend(v4, "position"), 1}];
+              data5 = [fromCopy data];
+              [data5 getBytes:&v64 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v49 |= (v64 & 0x7F) << v47;
@@ -943,7 +943,7 @@ LABEL_115:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             LODWORD(v23) = 0;
           }
@@ -976,18 +976,18 @@ LABEL_63:
           while (1)
           {
             v64 = 0;
-            v33 = [v4 position] + 1;
-            if (v33 >= [v4 position] && (v34 = objc_msgSend(v4, "position") + 1, v34 <= objc_msgSend(v4, "length")))
+            v33 = [fromCopy position] + 1;
+            if (v33 >= [fromCopy position] && (v34 = objc_msgSend(fromCopy, "position") + 1, v34 <= objc_msgSend(fromCopy, "length")))
             {
-              v35 = [v4 data];
-              [v35 getBytes:&v64 range:{objc_msgSend(v4, "position"), 1}];
+              data6 = [fromCopy data];
+              [data6 getBytes:&v64 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v32 |= (v64 & 0x7F) << v30;
@@ -1004,7 +1004,7 @@ LABEL_63:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || (LODWORD(v23) = v32, v32 > 3))
+          if (([fromCopy hasError] & 1) != 0 || (LODWORD(v23) = v32, v32 > 3))
           {
 LABEL_110:
             LODWORD(v23) = 0;
@@ -1022,18 +1022,18 @@ LABEL_110:
         while (1)
         {
           v64 = 0;
-          v44 = [v4 position] + 1;
-          if (v44 >= [v4 position] && (v45 = objc_msgSend(v4, "position") + 1, v45 <= objc_msgSend(v4, "length")))
+          v44 = [fromCopy position] + 1;
+          if (v44 >= [fromCopy position] && (v45 = objc_msgSend(fromCopy, "position") + 1, v45 <= objc_msgSend(fromCopy, "length")))
           {
-            v46 = [v4 data];
-            [v46 getBytes:&v64 range:{objc_msgSend(v4, "position"), 1}];
+            data7 = [fromCopy data];
+            [data7 getBytes:&v64 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v43 |= (v64 & 0x7F) << v41;
@@ -1050,7 +1050,7 @@ LABEL_110:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || (LODWORD(v23) = v43, v43 > 2))
+        if (([fromCopy hasError] & 1) != 0 || (LODWORD(v23) = v43, v43 > 2))
         {
 LABEL_98:
           LODWORD(v23) = 0;
@@ -1073,18 +1073,18 @@ LABEL_98:
         while (1)
         {
           v64 = 0;
-          v19 = [v4 position] + 1;
-          if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+          v19 = [fromCopy position] + 1;
+          if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
           {
-            v21 = [v4 data];
-            [v21 getBytes:&v64 range:{objc_msgSend(v4, "position"), 1}];
+            data8 = [fromCopy data];
+            [data8 getBytes:&v64 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v18 |= (v64 & 0x7F) << v16;
@@ -1102,7 +1102,7 @@ LABEL_98:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           LODWORD(v23) = 0;
         }
@@ -1118,13 +1118,13 @@ LABEL_107:
 
       *(&v5->super.super.isa + *v59) = v23;
 LABEL_121:
-      v60 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v60 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_123:
     v61 = 0;
@@ -1154,60 +1154,60 @@ LABEL_124:
   return v11;
 }
 
-- (BMDeviceBatteryGauging)initWithUpdateType:(int)a3 qmaxState:(int)a4 daysSinceQMax:(id)a5 ocvState:(int)a6 daysSinceOCV:(id)a7 fullChargeState:(int)a8 daysSinceFullChargeAttempt:(id)a9
+- (BMDeviceBatteryGauging)initWithUpdateType:(int)type qmaxState:(int)state daysSinceQMax:(id)max ocvState:(int)ocvState daysSinceOCV:(id)v fullChargeState:(int)chargeState daysSinceFullChargeAttempt:(id)attempt
 {
-  v15 = a5;
-  v16 = a7;
-  v17 = a9;
+  maxCopy = max;
+  vCopy = v;
+  attemptCopy = attempt;
   v23.receiver = self;
   v23.super_class = BMDeviceBatteryGauging;
   v18 = [(BMEventBase *)&v23 init];
   if (v18)
   {
     v18->_dataVersion = [objc_opt_class() latestDataVersion];
-    v18->_updateType = a3;
-    v18->_qmaxState = a4;
-    if (v15)
+    v18->_updateType = type;
+    v18->_qmaxState = state;
+    if (maxCopy)
     {
       v18->_hasDaysSinceQMax = 1;
-      v19 = [v15 intValue];
+      intValue = [maxCopy intValue];
     }
 
     else
     {
       v18->_hasDaysSinceQMax = 0;
-      v19 = -1;
+      intValue = -1;
     }
 
-    v18->_daysSinceQMax = v19;
-    v18->_ocvState = a6;
-    if (v16)
+    v18->_daysSinceQMax = intValue;
+    v18->_ocvState = ocvState;
+    if (vCopy)
     {
       v18->_hasDaysSinceOCV = 1;
-      v20 = [v16 intValue];
+      intValue2 = [vCopy intValue];
     }
 
     else
     {
       v18->_hasDaysSinceOCV = 0;
-      v20 = -1;
+      intValue2 = -1;
     }
 
-    v18->_daysSinceOCV = v20;
-    v18->_fullChargeState = a8;
-    if (v17)
+    v18->_daysSinceOCV = intValue2;
+    v18->_fullChargeState = chargeState;
+    if (attemptCopy)
     {
       v18->_hasDaysSinceFullChargeAttempt = 1;
-      v21 = [v17 intValue];
+      intValue3 = [attemptCopy intValue];
     }
 
     else
     {
       v18->_hasDaysSinceFullChargeAttempt = 0;
-      v21 = -1;
+      intValue3 = -1;
     }
 
-    v18->_daysSinceFullChargeAttempt = v21;
+    v18->_daysSinceFullChargeAttempt = intValue3;
   }
 
   return v18;
@@ -1236,9 +1236,9 @@ LABEL_124:
   return v9;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1246,8 +1246,8 @@ LABEL_124:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMDeviceBatteryGauging alloc] initByReadFrom:v7];
     v4 = v8;

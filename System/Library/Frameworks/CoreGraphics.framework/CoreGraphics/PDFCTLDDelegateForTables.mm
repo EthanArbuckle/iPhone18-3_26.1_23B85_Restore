@@ -1,13 +1,13 @@
 @interface PDFCTLDDelegateForTables
-- (int64_t)groupingConstraintForRegion1:(id)a3 region2:(id)a4;
+- (int64_t)groupingConstraintForRegion1:(id)region1 region2:(id)region2;
 @end
 
 @implementation PDFCTLDDelegateForTables
 
-- (int64_t)groupingConstraintForRegion1:(id)a3 region2:(id)a4
+- (int64_t)groupingConstraintForRegion1:(id)region1 region2:(id)region2
 {
-  v5 = a3;
-  v6 = a4;
+  region1Copy = region1;
+  region2Copy = region2;
   v7 = objc_opt_self();
   if (objc_opt_isKindOfClass())
   {

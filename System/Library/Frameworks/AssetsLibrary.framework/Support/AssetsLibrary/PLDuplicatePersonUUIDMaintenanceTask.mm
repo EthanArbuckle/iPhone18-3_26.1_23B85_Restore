@@ -1,12 +1,12 @@
 @interface PLDuplicatePersonUUIDMaintenanceTask
-- (BOOL)runTaskWithTransaction:(id)a3;
+- (BOOL)runTaskWithTransaction:(id)transaction;
 @end
 
 @implementation PLDuplicatePersonUUIDMaintenanceTask
 
-- (BOOL)runTaskWithTransaction:(id)a3
+- (BOOL)runTaskWithTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   [(PLMaintenanceTask *)self photoLibrary];
   v11 = 0;
   v12 = &v11;

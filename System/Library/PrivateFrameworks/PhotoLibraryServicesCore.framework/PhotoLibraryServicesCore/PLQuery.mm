@@ -1,14 +1,14 @@
 @interface PLQuery
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)logDescription;
 - (unint64_t)hash;
-- (void)addSingleQueries:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSingleQueries:(id)queries;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PLQuery
@@ -18,14 +18,14 @@
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PLQuery *)self conjunction];
+  conjunction = [(PLQuery *)self conjunction];
   v7 = @"kPLQueryConjunction_OR";
-  if (v6 == 1)
+  if (conjunction == 1)
   {
     v7 = @"kPLQueryConjunction_AND";
   }
 
-  if (v6 == 2)
+  if (conjunction == 2)
   {
     v7 = @"kPLQueryConjunction_NOT";
   }
@@ -35,29 +35,29 @@
 
   if ([(PLQuery *)self hasFirst])
   {
-    v9 = [(PLQuery *)self first];
-    v10 = [v9 logDescription];
-    [v3 appendFormat:@" first = %@;", v10];
+    first = [(PLQuery *)self first];
+    logDescription = [first logDescription];
+    [v3 appendFormat:@" first = %@;", logDescription];
   }
 
   if ([(PLQuery *)self hasSecond])
   {
-    v11 = [(PLQuery *)self second];
-    v12 = [v11 logDescription];
-    [v3 appendFormat:@" second = %@;", v12];
+    second = [(PLQuery *)self second];
+    logDescription2 = [second logDescription];
+    [v3 appendFormat:@" second = %@;", logDescription2];
   }
 
   if ([(PLQuery *)self singleQueriesCount])
   {
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v14 = [(PLQuery *)self singleQueries];
+    singleQueries = [(PLQuery *)self singleQueries];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __36__PLQuery_Utilities__logDescription__block_invoke;
     v18[3] = &unk_1E792FBA8;
     v19 = v13;
     v15 = v13;
-    [v14 enumerateObjectsUsingBlock:v18];
+    [singleQueries enumerateObjectsUsingBlock:v18];
 
     v16 = [v15 componentsJoinedByString:{@", "}];
     [v3 appendFormat:@" singles = (%@);", v16];
@@ -75,14 +75,14 @@ void __36__PLQuery_Utilities__logDescription__block_invoke(uint64_t a1, void *a2
   [v2 addObject:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4[10])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[10])
   {
-    self->_conjunction = v4[2];
+    self->_conjunction = fromCopy[2];
     *&self->_has |= 1u;
   }
 
@@ -162,23 +162,23 @@ void __36__PLQuery_Utilities__logDescription__block_invoke(uint64_t a1, void *a2
   return v4 ^ v5 ^ [(NSMutableArray *)self->_singleQueries hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_conjunction != *(v4 + 2))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_conjunction != *(equalCopy + 2))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_13:
     v8 = 0;
@@ -186,13 +186,13 @@ LABEL_13:
   }
 
   first = self->_first;
-  if (first | *(v4 + 2) && ![(PLQuery *)first isEqual:?])
+  if (first | *(equalCopy + 2) && ![(PLQuery *)first isEqual:?])
   {
     goto LABEL_13;
   }
 
   second = self->_second;
-  if (second | *(v4 + 3))
+  if (second | *(equalCopy + 3))
   {
     if (![(PLQuery *)second isEqual:?])
     {
@@ -201,7 +201,7 @@ LABEL_13:
   }
 
   singleQueries = self->_singleQueries;
-  if (singleQueries | *(v4 + 4))
+  if (singleQueries | *(equalCopy + 4))
   {
     v8 = [(NSMutableArray *)singleQueries isEqual:?];
   }
@@ -216,10 +216,10 @@ LABEL_14:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -227,11 +227,11 @@ LABEL_14:
     *(v5 + 40) |= 1u;
   }
 
-  v7 = [(PLQuery *)self->_first copyWithZone:a3];
+  v7 = [(PLQuery *)self->_first copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
-  v9 = [(PLQuery *)self->_second copyWithZone:a3];
+  v9 = [(PLQuery *)self->_second copyWithZone:zone];
   v10 = v6[3];
   v6[3] = v9;
 
@@ -255,7 +255,7 @@ LABEL_14:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v18 + 1) + 8 * v15) copyWithZone:{a3, v18}];
+        v16 = [*(*(&v18 + 1) + 8 * v15) copyWithZone:{zone, v18}];
         [v6 addSingleQueries:v16];
 
         ++v15;
@@ -271,19 +271,19 @@ LABEL_14:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[2] = self->_conjunction;
-    *(v4 + 40) |= 1u;
+    toCopy[2] = self->_conjunction;
+    *(toCopy + 40) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if (self->_first)
   {
-    [v4 setFirst:?];
+    [toCopy setFirst:?];
   }
 
   if (self->_second)
@@ -294,10 +294,10 @@ LABEL_14:
   if ([(PLQuery *)self singleQueriesCount])
   {
     [v9 clearSingleQueries];
-    v5 = [(PLQuery *)self singleQueriesCount];
-    if (v5)
+    singleQueriesCount = [(PLQuery *)self singleQueriesCount];
+    if (singleQueriesCount)
     {
-      v6 = v5;
+      v6 = singleQueriesCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(PLQuery *)self singleQueriesAtIndex:i];
@@ -307,10 +307,10 @@ LABEL_14:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
@@ -361,25 +361,25 @@ LABEL_14:
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:self->_conjunction];
-    [v3 setObject:v4 forKey:@"conjunction"];
+    [dictionary setObject:v4 forKey:@"conjunction"];
   }
 
   first = self->_first;
   if (first)
   {
-    v6 = [(PLQuery *)first dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"first"];
+    dictionaryRepresentation = [(PLQuery *)first dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"first"];
   }
 
   second = self->_second;
   if (second)
   {
-    v8 = [(PLQuery *)second dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"second"];
+    dictionaryRepresentation2 = [(PLQuery *)second dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"second"];
   }
 
   if ([(NSMutableArray *)self->_singleQueries count])
@@ -404,8 +404,8 @@ LABEL_14:
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v9 addObject:v15];
+          dictionaryRepresentation3 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v9 addObject:dictionaryRepresentation3];
         }
 
         v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -414,10 +414,10 @@ LABEL_14:
       while (v12);
     }
 
-    [v3 setObject:v9 forKey:@"singleQueries"];
+    [dictionary setObject:v9 forKey:@"singleQueries"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -426,28 +426,28 @@ LABEL_14:
   v8.receiver = self;
   v8.super_class = PLQuery;
   v4 = [(PLQuery *)&v8 description];
-  v5 = [(PLQuery *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PLQuery *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addSingleQueries:(id)a3
+- (void)addSingleQueries:(id)queries
 {
-  v4 = a3;
+  queriesCopy = queries;
   singleQueries = self->_singleQueries;
-  v8 = v4;
+  v8 = queriesCopy;
   if (!singleQueries)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_singleQueries;
     self->_singleQueries = v6;
 
-    v4 = v8;
+    queriesCopy = v8;
     singleQueries = self->_singleQueries;
   }
 
-  [(NSMutableArray *)singleQueries addObject:v4];
+  [(NSMutableArray *)singleQueries addObject:queriesCopy];
 }
 
 @end

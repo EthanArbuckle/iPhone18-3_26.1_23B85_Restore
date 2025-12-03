@@ -1,49 +1,49 @@
 @interface CSJarvisTriggerModeMonitor
 + (id)sharedInstance;
-+ (id)triggerModeStringDescription:(int64_t)a3;
++ (id)triggerModeStringDescription:(int64_t)description;
 - (CSJarvisTriggerModeMonitor)init;
 - (int64_t)_fetchTriggerMode;
 - (int64_t)getTriggerMode;
 - (void)_notifyJarvisTriggerModeDidChanged;
-- (void)_notifyObserver:(id)a3 withJarvisTriggerMode:(int64_t)a4;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_notifyObserver:(id)observer withJarvisTriggerMode:(int64_t)mode;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
-- (void)setTriggerMode:(int64_t)a3;
+- (void)setTriggerMode:(int64_t)mode;
 @end
 
 @implementation CSJarvisTriggerModeMonitor
 
-- (void)_notifyObserver:(id)a3 withJarvisTriggerMode:(int64_t)a4
+- (void)_notifyObserver:(id)observer withJarvisTriggerMode:(int64_t)mode
 {
-  v6 = a3;
-  [(CSEventMonitor *)self notifyObserver:v6];
+  observerCopy = observer;
+  [(CSEventMonitor *)self notifyObserver:observerCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v6 CSJarvisTriggerModeMonitor:self didReceiveTriggerModeChanged:a4];
+    [observerCopy CSJarvisTriggerModeMonitor:self didReceiveTriggerModeChanged:mode];
   }
 }
 
 - (void)_notifyJarvisTriggerModeDidChanged
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(CSJarvisTriggerModeMonitor *)self _fetchTriggerMode];
+  _fetchTriggerMode = [(CSJarvisTriggerModeMonitor *)self _fetchTriggerMode];
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v8 = "[CSJarvisTriggerModeMonitor _notifyJarvisTriggerModeDidChanged]";
     v9 = 1026;
-    v10 = v3;
+    v10 = _fetchTriggerMode;
     _os_log_impl(&dword_1DDA4B000, v4, OS_LOG_TYPE_DEFAULT, "%s Notifying jarvis trigger mode change to %{public}d", buf, 0x12u);
   }
 
-  self->_triggerMode = v3;
+  self->_triggerMode = _fetchTriggerMode;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __64__CSJarvisTriggerModeMonitor__notifyJarvisTriggerModeDidChanged__block_invoke;
   v6[3] = &unk_1E865CA68;
   v6[4] = self;
-  v6[5] = v3;
+  v6[5] = _fetchTriggerMode;
   [(CSEventMonitor *)self enumerateObserversInQueue:v6];
   v5 = *MEMORY[0x1E69E9840];
 }
@@ -52,7 +52,7 @@
 {
   v11 = *MEMORY[0x1E69E9840];
   v2 = +[CSFPreferences sharedPreferences];
-  v3 = [v2 getJarvisTriggerMode];
+  getJarvisTriggerMode = [v2 getJarvisTriggerMode];
 
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -60,12 +60,12 @@
     v7 = 136315394;
     v8 = "[CSJarvisTriggerModeMonitor _fetchTriggerMode]";
     v9 = 1026;
-    v10 = v3;
+    v10 = getJarvisTriggerMode;
     _os_log_impl(&dword_1DDA4B000, v4, OS_LOG_TYPE_DEFAULT, "%s Fetched Jarvis trigger mode : %{public}d", &v7, 0x12u);
   }
 
   v5 = *MEMORY[0x1E69E9840];
-  return v3;
+  return getJarvisTriggerMode;
 }
 
 - (int64_t)getTriggerMode
@@ -87,7 +87,7 @@
   return result;
 }
 
-- (void)setTriggerMode:(int64_t)a3
+- (void)setTriggerMode:(int64_t)mode
 {
   v11 = *MEMORY[0x1E69E9840];
   v4 = CSLogContextFacilityCoreSpeech;
@@ -96,12 +96,12 @@
     v7 = 136315394;
     v8 = "[CSJarvisTriggerModeMonitor setTriggerMode:]";
     v9 = 1026;
-    v10 = a3;
+    modeCopy = mode;
     _os_log_impl(&dword_1DDA4B000, v4, OS_LOG_TYPE_DEFAULT, "%s Setting Jarvis trigger mode : %{public}d", &v7, 0x12u);
   }
 
   v5 = +[CSFPreferences sharedPreferences];
-  [v5 setJarvisTriggerMode:a3];
+  [v5 setJarvisTriggerMode:mode];
 
   v6 = *MEMORY[0x1E69E9840];
 }
@@ -122,14 +122,14 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   v13 = *MEMORY[0x1E69E9840];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterAddObserver(DarwinNotifyCenter, self, _jarvisTriggerModeDidChange, @"kCSPreferencesJarvisTriggerModeDidChangeDarwinNotification", 0, CFNotificationSuspensionBehaviorDrop);
-  v5 = [(CSJarvisTriggerModeMonitor *)self _fetchTriggerMode];
-  v6 = v5;
-  self->_triggerMode = v5;
+  _fetchTriggerMode = [(CSJarvisTriggerModeMonitor *)self _fetchTriggerMode];
+  v6 = _fetchTriggerMode;
+  self->_triggerMode = _fetchTriggerMode;
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -156,16 +156,16 @@
   return result;
 }
 
-+ (id)triggerModeStringDescription:(int64_t)a3
++ (id)triggerModeStringDescription:(int64_t)description
 {
-  if ((a3 + 1) > 3)
+  if ((description + 1) > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E865C8F8[a3 + 1];
+    return off_1E865C8F8[description + 1];
   }
 }
 

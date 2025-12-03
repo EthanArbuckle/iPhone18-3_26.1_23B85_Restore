@@ -1,16 +1,16 @@
 @interface _PSContactEmbeddingUtilities
-+ (id)loadModelFromUrlResource:(id)a3;
++ (id)loadModelFromUrlResource:(id)resource;
 + (id)modelFeatures;
-+ (id)prepareFeatureInputFromFeatureDict:(id)a3;
++ (id)prepareFeatureInputFromFeatureDict:(id)dict;
 @end
 
 @implementation _PSContactEmbeddingUtilities
 
-+ (id)loadModelFromUrlResource:(id)a3
++ (id)loadModelFromUrlResource:(id)resource
 {
-  v3 = a3;
+  resourceCopy = resource;
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v5 = [v4 URLForResource:v3 withExtension:@"mlmodelc"];
+  v5 = [v4 URLForResource:resourceCopy withExtension:@"mlmodelc"];
 
   v15 = 0;
   v16 = &v15;
@@ -54,12 +54,12 @@
   return v11;
 }
 
-+ (id)prepareFeatureInputFromFeatureDict:(id)a3
++ (id)prepareFeatureInputFromFeatureDict:(id)dict
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 modelFeatures];
-  v6 = [v5 count];
+  dictCopy = dict;
+  modelFeatures = [self modelFeatures];
+  v6 = [modelFeatures count];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2050000000;
@@ -106,8 +106,8 @@ LABEL_7:
     v16 = 0;
     do
     {
-      v17 = [v5 objectAtIndexedSubscript:v16];
-      v18 = [v4 objectForKeyedSubscript:v17];
+      v17 = [modelFeatures objectAtIndexedSubscript:v16];
+      v18 = [dictCopy objectForKeyedSubscript:v17];
 
       if (!v18)
       {
@@ -135,7 +135,7 @@ LABEL_13:
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    modelFeaturesBackup = v4;
   }
 
   else
@@ -146,10 +146,10 @@ LABEL_13:
       +[(_PSContactEmbeddingUtilities *)v7];
     }
 
-    v6 = [a1 modelFeaturesBackup];
+    modelFeaturesBackup = [self modelFeaturesBackup];
   }
 
-  v8 = v6;
+  v8 = modelFeaturesBackup;
 
   return v8;
 }

@@ -1,21 +1,21 @@
 @interface EKCalendarAbstractSwitchEditItem
-- (BOOL)saveStateToCalendar:(id)a3;
+- (BOOL)saveStateToCalendar:(id)calendar;
 - (NSMutableArray)cells;
 - (id)cell;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
 - (unint64_t)numberOfSubitems;
-- (void)_switchStateChanged:(id)a3;
+- (void)_switchStateChanged:(id)changed;
 - (void)reset;
-- (void)setCalendar:(id)a3 store:(id)a4;
+- (void)setCalendar:(id)calendar store:(id)store;
 @end
 
 @implementation EKCalendarAbstractSwitchEditItem
 
-- (void)setCalendar:(id)a3 store:(id)a4
+- (void)setCalendar:(id)calendar store:(id)store
 {
   v5.receiver = self;
   v5.super_class = EKCalendarAbstractSwitchEditItem;
-  [(EKCalendarEditItem *)&v5 setCalendar:a3 store:a4];
+  [(EKCalendarEditItem *)&v5 setCalendar:calendar store:store];
   [(EKCalendarAbstractSwitchEditItem *)self setCells:0];
 }
 
@@ -28,16 +28,16 @@
   self->_cells = 0;
 }
 
-- (void)_switchStateChanged:(id)a3
+- (void)_switchStateChanged:(id)changed
 {
-  -[EKCalendarAbstractSwitchEditItem setSwitchState:](self, "setSwitchState:", [a3 isOn]);
-  v4 = [(EKCalendarEditItem *)self delegate];
+  -[EKCalendarAbstractSwitchEditItem setSwitchState:](self, "setSwitchState:", [changed isOn]);
+  delegate = [(EKCalendarEditItem *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(EKCalendarEditItem *)self delegate];
-    [v6 calendarItemStartedEditing:self];
+    delegate2 = [(EKCalendarEditItem *)self delegate];
+    [delegate2 calendarItemStartedEditing:self];
   }
 }
 
@@ -46,17 +46,17 @@
   [(EKCalendarAbstractSwitchEditItem *)self setSwitchState:[(EKCalendarAbstractSwitchEditItem *)self underlyingCalendarState]];
   v3 = [[EKUITableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(EKCalendarAbstractSwitchEditItem *)self cellAccessibilityIdentifierText];
-  v6 = [v4 stringWithFormat:@"calendar-switch-cell:%@", v5];
+  cellAccessibilityIdentifierText = [(EKCalendarAbstractSwitchEditItem *)self cellAccessibilityIdentifierText];
+  v6 = [v4 stringWithFormat:@"calendar-switch-cell:%@", cellAccessibilityIdentifierText];
   [(EKUITableViewCell *)v3 setAccessibilityIdentifier:v6];
 
   LODWORD(v6) = [(EKCalendarAbstractSwitchEditItem *)self cellWrapsLongText];
-  v7 = [(EKCalendarAbstractSwitchEditItem *)self cellText];
-  v8 = [(EKUITableViewCell *)v3 textLabel];
-  [v8 setText:v7];
+  cellText = [(EKCalendarAbstractSwitchEditItem *)self cellText];
+  textLabel = [(EKUITableViewCell *)v3 textLabel];
+  [textLabel setText:cellText];
 
-  v9 = [(EKUITableViewCell *)v3 textLabel];
-  [v9 setNumberOfLines:v6 ^ 1];
+  textLabel2 = [(EKUITableViewCell *)v3 textLabel];
+  [textLabel2 setNumberOfLines:v6 ^ 1];
 
   [(EKUITableViewCell *)v3 setSelectionStyle:0];
   if (![(EKCalendarAbstractSwitchEditItem *)self shouldHideSwitch])
@@ -65,8 +65,8 @@
     [v10 addTarget:self action:sel__switchStateChanged_ forControlEvents:4096];
     [v10 setOn:-[EKCalendarAbstractSwitchEditItem switchState](self animated:{"switchState"), 0}];
     v11 = MEMORY[0x1E696AEC0];
-    v12 = [(EKCalendarAbstractSwitchEditItem *)self cellAccessibilityIdentifierText];
-    v13 = [v11 stringWithFormat:@"calendar-switch:%@", v12];
+    cellAccessibilityIdentifierText2 = [(EKCalendarAbstractSwitchEditItem *)self cellAccessibilityIdentifierText];
+    v13 = [v11 stringWithFormat:@"calendar-switch:%@", cellAccessibilityIdentifierText2];
     [v10 setAccessibilityIdentifier:v13];
 
     [(EKUITableViewCell *)v3 setAccessoryView:v10];
@@ -85,8 +85,8 @@
     self->_cells = v4;
 
     v6 = self->_cells;
-    v7 = [(EKCalendarAbstractSwitchEditItem *)self cell];
-    [(NSMutableArray *)v6 addObject:v7];
+    cell = [(EKCalendarAbstractSwitchEditItem *)self cell];
+    [(NSMutableArray *)v6 addObject:cell];
 
     cells = self->_cells;
   }
@@ -94,29 +94,29 @@
   return cells;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
-  v4 = [(EKCalendarAbstractSwitchEditItem *)self cells];
-  v5 = [v4 objectAtIndex:a3];
+  cells = [(EKCalendarAbstractSwitchEditItem *)self cells];
+  v5 = [cells objectAtIndex:index];
 
   return v5;
 }
 
 - (unint64_t)numberOfSubitems
 {
-  v2 = [(EKCalendarAbstractSwitchEditItem *)self cells];
-  v3 = [v2 count];
+  cells = [(EKCalendarAbstractSwitchEditItem *)self cells];
+  v3 = [cells count];
 
   return v3;
 }
 
-- (BOOL)saveStateToCalendar:(id)a3
+- (BOOL)saveStateToCalendar:(id)calendar
 {
-  v4 = [(EKCalendarAbstractSwitchEditItem *)self switchState];
-  v5 = v4 ^ [(EKCalendarAbstractSwitchEditItem *)self underlyingCalendarState];
+  switchState = [(EKCalendarAbstractSwitchEditItem *)self switchState];
+  v5 = switchState ^ [(EKCalendarAbstractSwitchEditItem *)self underlyingCalendarState];
   if (v5)
   {
-    [(EKCalendarAbstractSwitchEditItem *)self setUnderlyingCalendarState:v4];
+    [(EKCalendarAbstractSwitchEditItem *)self setUnderlyingCalendarState:switchState];
   }
 
   return v5;

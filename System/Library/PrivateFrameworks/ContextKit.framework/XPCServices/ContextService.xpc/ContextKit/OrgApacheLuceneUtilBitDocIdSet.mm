@@ -1,6 +1,6 @@
 @interface OrgApacheLuceneUtilBitDocIdSet
 + (void)initialize;
-- (OrgApacheLuceneUtilBitDocIdSet)initWithOrgApacheLuceneUtilBitSet:(id)a3 withLong:(int64_t)a4;
+- (OrgApacheLuceneUtilBitDocIdSet)initWithOrgApacheLuceneUtilBitSet:(id)set withLong:(int64_t)long;
 - (id)description;
 - (id)iterator;
 - (int64_t)ramBytesUsed;
@@ -9,11 +9,11 @@
 
 @implementation OrgApacheLuceneUtilBitDocIdSet
 
-- (OrgApacheLuceneUtilBitDocIdSet)initWithOrgApacheLuceneUtilBitSet:(id)a3 withLong:(int64_t)a4
+- (OrgApacheLuceneUtilBitDocIdSet)initWithOrgApacheLuceneUtilBitSet:(id)set withLong:(int64_t)long
 {
   OrgApacheLuceneSearchDocIdSet_init(self, a2);
-  JreStrongAssign(&self->set_, a3);
-  self->cost_ = a4;
+  JreStrongAssign(&self->set_, set);
+  self->cost_ = long;
   return self;
 }
 
@@ -53,7 +53,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = OrgApacheLuceneUtilBitDocIdSet_class_();
     qword_100554078 = OrgApacheLuceneUtilRamUsageEstimator_shallowSizeOfInstanceWithIOSClass_(v2);

@@ -1,20 +1,20 @@
 @interface INUICKPEntryPoint
-- (void)requestCardSectionViewProviderForCard:(id)a3 delegate:(id)a4 reply:(id)a5;
-- (void)requestIdentifiedCardSectionViewProviderForCard:(id)a3 delegate:(id)a4 reply:(id)a5;
+- (void)requestCardSectionViewProviderForCard:(id)card delegate:(id)delegate reply:(id)reply;
+- (void)requestIdentifiedCardSectionViewProviderForCard:(id)card delegate:(id)delegate reply:(id)reply;
 @end
 
 @implementation INUICKPEntryPoint
 
-- (void)requestCardSectionViewProviderForCard:(id)a3 delegate:(id)a4 reply:(id)a5
+- (void)requestCardSectionViewProviderForCard:(id)card delegate:(id)delegate reply:(id)reply
 {
-  v8 = a5;
+  replyCopy = reply;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __74__INUICKPEntryPoint_requestCardSectionViewProviderForCard_delegate_reply___block_invoke;
   v10[3] = &unk_2797EB910;
-  v11 = v8;
-  v9 = v8;
-  [(INUICKPEntryPoint *)self requestIdentifiedCardSectionViewProviderForCard:a3 delegate:a4 reply:v10];
+  v11 = replyCopy;
+  v9 = replyCopy;
+  [(INUICKPEntryPoint *)self requestIdentifiedCardSectionViewProviderForCard:card delegate:delegate reply:v10];
 }
 
 uint64_t __74__INUICKPEntryPoint_requestCardSectionViewProviderForCard_delegate_reply___block_invoke(uint64_t a1)
@@ -28,16 +28,16 @@ uint64_t __74__INUICKPEntryPoint_requestCardSectionViewProviderForCard_delegate_
   return result;
 }
 
-- (void)requestIdentifiedCardSectionViewProviderForCard:(id)a3 delegate:(id)a4 reply:(id)a5
+- (void)requestIdentifiedCardSectionViewProviderForCard:(id)card delegate:(id)delegate reply:(id)reply
 {
-  v7 = a5;
+  replyCopy = reply;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __84__INUICKPEntryPoint_requestIdentifiedCardSectionViewProviderForCard_delegate_reply___block_invoke;
   v9[3] = &unk_2797EB938;
-  v10 = v7;
-  v8 = v7;
-  [INUICKPCardSectionViewProvider requestInstanceFromDefaultAllocatorWithCard:a3 delegate:a4 reply:v9];
+  v10 = replyCopy;
+  v8 = replyCopy;
+  [INUICKPCardSectionViewProvider requestInstanceFromDefaultAllocatorWithCard:card delegate:delegate reply:v9];
 }
 
 uint64_t __84__INUICKPEntryPoint_requestIdentifiedCardSectionViewProviderForCard_delegate_reply___block_invoke(uint64_t a1, uint64_t a2)

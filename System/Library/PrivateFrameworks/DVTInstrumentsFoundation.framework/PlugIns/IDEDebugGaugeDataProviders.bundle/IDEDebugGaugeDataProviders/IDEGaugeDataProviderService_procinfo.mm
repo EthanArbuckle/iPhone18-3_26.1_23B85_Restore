@@ -1,15 +1,15 @@
 @interface IDEGaugeDataProviderService_procinfo
-- (id)sampleAttributes:(id)a3 forPIDs:(id)a4;
+- (id)sampleAttributes:(id)attributes forPIDs:(id)ds;
 @end
 
 @implementation IDEGaugeDataProviderService_procinfo
 
-- (id)sampleAttributes:(id)a3 forPIDs:(id)a4
+- (id)sampleAttributes:(id)attributes forPIDs:(id)ds
 {
-  v5 = a4;
-  v6 = a3;
+  dsCopy = ds;
+  attributesCopy = attributes;
   v7 = +[IDEDataProvider_procinfo sharedDataProvider];
-  v8 = [v7 captureAttributes:v6 forPIDs:v5];
+  v8 = [v7 captureAttributes:attributesCopy forPIDs:dsCopy];
 
   return v8;
 }

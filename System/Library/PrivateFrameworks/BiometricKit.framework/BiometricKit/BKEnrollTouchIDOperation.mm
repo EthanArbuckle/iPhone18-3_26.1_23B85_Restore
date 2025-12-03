@@ -1,19 +1,19 @@
 @interface BKEnrollTouchIDOperation
-- (BKEnrollTouchIDOperation)initWithDevice:(id)a3;
-- (BOOL)startWithError:(id *)a3;
-- (id)createEnrollProgressInfo:(unsigned int)a3;
+- (BKEnrollTouchIDOperation)initWithDevice:(id)device;
+- (BOOL)startWithError:(id *)error;
+- (id)createEnrollProgressInfo:(unsigned int)info;
 - (void)dealloc;
-- (void)enrollResult:(id)a3 details:(id)a4 client:(unint64_t)a5;
-- (void)homeButtonPressed:(unint64_t)a3;
+- (void)enrollResult:(id)result details:(id)details client:(unint64_t)client;
+- (void)homeButtonPressed:(unint64_t)pressed;
 @end
 
 @implementation BKEnrollTouchIDOperation
 
-- (BKEnrollTouchIDOperation)initWithDevice:(id)a3
+- (BKEnrollTouchIDOperation)initWithDevice:(id)device
 {
   v6.receiver = self;
   v6.super_class = BKEnrollTouchIDOperation;
-  v3 = [(BKEnrollOperation *)&v6 initWithDevice:a3];
+  v3 = [(BKEnrollOperation *)&v6 initWithDevice:device];
   v4 = v3;
   if (v3)
   {
@@ -31,14 +31,14 @@
   [(BKOperation *)&v4 dealloc];
 }
 
-- (BOOL)startWithError:(id *)a3
+- (BOOL)startWithError:(id *)error
 {
   v4.receiver = self;
   v4.super_class = BKEnrollTouchIDOperation;
-  return [(BKOperation *)&v4 startWithError:a3];
+  return [(BKOperation *)&v4 startWithError:error];
 }
 
-- (id)createEnrollProgressInfo:(unsigned int)a3
+- (id)createEnrollProgressInfo:(unsigned int)info
 {
   v13 = *MEMORY[0x1E69E9840];
   memset(v12, 0, 512);
@@ -63,7 +63,7 @@
 
       else
       {
-        v7 = GenerateEnrollProgressInfo(v10, a3, 0);
+        v7 = GenerateEnrollProgressInfo(v10, info, 0);
         if (v7)
         {
           goto LABEL_5;
@@ -87,11 +87,11 @@ LABEL_5:
   return v7;
 }
 
-- (void)enrollResult:(id)a3 details:(id)a4 client:(unint64_t)a5
+- (void)enrollResult:(id)result details:(id)details client:(unint64_t)client
 {
   v5.receiver = self;
   v5.super_class = BKEnrollTouchIDOperation;
-  [(BKEnrollOperation *)&v5 enrollResult:a3 details:a4 client:a5];
+  [(BKEnrollOperation *)&v5 enrollResult:result details:details client:client];
 }
 
 void __49__BKEnrollTouchIDOperation_statusMessage_client___block_invoke(uint64_t a1)
@@ -106,7 +106,7 @@ void __49__BKEnrollTouchIDOperation_statusMessage_client___block_invoke_17(uint6
   [v2 fingerprintCaptureOperation:*(a1 + 32) encounteredCaptureError:*(a1 + 40)];
 }
 
-- (void)homeButtonPressed:(unint64_t)a3
+- (void)homeButtonPressed:(unint64_t)pressed
 {
   v21 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E69E9C10];
@@ -123,11 +123,11 @@ void __49__BKEnrollTouchIDOperation_statusMessage_client___block_invoke_17(uint6
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v18 = a3;
+    pressedCopy = pressed;
     _os_log_impl(&dword_1C82AD000, v6, OS_LOG_TYPE_DEFAULT, "BKEnrollTouchIDOperation::homeButtonPressed: clientID:%llu\n", buf, 0xCu);
   }
 
-  v7 = [(BKOperation *)self delegate];
+  delegate = [(BKOperation *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
@@ -145,22 +145,22 @@ void __49__BKEnrollTouchIDOperation_statusMessage_client___block_invoke_17(uint6
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v9;
-      v11 = [(BKOperation *)self delegate];
-      v12 = [(BKOperation *)self delegate];
+      delegate2 = [(BKOperation *)self delegate];
+      delegate3 = [(BKOperation *)self delegate];
       *buf = 134218242;
-      v18 = v11;
+      pressedCopy = delegate2;
       v19 = 2112;
-      v20 = v12;
+      v20 = delegate3;
       _os_log_impl(&dword_1C82AD000, v10, OS_LOG_TYPE_DEFAULT, "BKEnrollTouchIDOperation::homeButtonPressed: homeButtonPressedInEnrollOperation => delegate:%p(%@)\n", buf, 0x16u);
     }
 
-    v13 = [(BKOperation *)self dispatchQueue];
+    dispatchQueue = [(BKOperation *)self dispatchQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __46__BKEnrollTouchIDOperation_homeButtonPressed___block_invoke;
     block[3] = &unk_1E8303E78;
     block[4] = self;
-    dispatch_async(v13, block);
+    dispatch_async(dispatchQueue, block);
   }
 
   if (__osLogTrace)

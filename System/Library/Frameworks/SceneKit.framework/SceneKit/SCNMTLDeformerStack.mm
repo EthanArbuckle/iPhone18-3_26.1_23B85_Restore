@@ -1,36 +1,36 @@
 @interface SCNMTLDeformerStack
-- (Class)deformerClassForMeshlesshGeometry:(__C3DGeometry *)a3;
+- (Class)deformerClassForMeshlesshGeometry:(__C3DGeometry *)geometry;
 - (MTLBlitCommandEncoder)currentBlitEncoder;
 - (SCNMTLComputeCommandEncoder)currentComputeEncoder;
 - (__CFString)_baseEntityName;
 - (__n128)_currentFrustumInfo;
 - (__n128)currentTransforms;
-- (id)deindexedToFirstDeindexedTableBufferWithBlitEncoder:(id)a3 indexSizeOut:(unint64_t *)a4;
-- (id)deindexedToOriginalTableBufferWithBlitEncoder:(id)a3 indexSizeOut:(unint64_t *)a4;
-- (id)dependencyBufferForInput:(unint64_t)a3 dependencyMesh:(id)a4;
-- (id)dependencyBufferForInput:(unint64_t)a3 dependencyStack:(id)a4;
-- (id)newBufferForDataKind:(unsigned __int8)a3 meshSource:(__C3DMeshSource *)a4 dataType:(signed __int16)a5 forStageInputOutputDescriptor:(BOOL)a6 usePrivateStorageMode:(BOOL)a7 outStride:(unint64_t *)a8;
-- (id)newBufferForDataKind:(unsigned __int8)a3 positionSource:(__C3DMeshSource *)a4 normalSource:(__C3DMeshSource *)a5 positionDataType:(signed __int16)a6 normalDataType:(signed __int16)a7 forStageInputOutputDescriptor:(BOOL)a8 usePrivateStorageMode:(BOOL)a9 outStride:(unint64_t *)a10 outPositionOffset:(unint64_t *)a11 outNormalOffset:(unint64_t *)a12;
-- (id)originalToFirstDeindexedTableBufferWithBlitEncoder:(id)a3 indexSizeOut:(unint64_t *)a4;
+- (id)deindexedToFirstDeindexedTableBufferWithBlitEncoder:(id)encoder indexSizeOut:(unint64_t *)out;
+- (id)deindexedToOriginalTableBufferWithBlitEncoder:(id)encoder indexSizeOut:(unint64_t *)out;
+- (id)dependencyBufferForInput:(unint64_t)input dependencyMesh:(id)mesh;
+- (id)dependencyBufferForInput:(unint64_t)input dependencyStack:(id)stack;
+- (id)newBufferForDataKind:(unsigned __int8)kind meshSource:(__C3DMeshSource *)source dataType:(signed __int16)type forStageInputOutputDescriptor:(BOOL)descriptor usePrivateStorageMode:(BOOL)mode outStride:(unint64_t *)stride;
+- (id)newBufferForDataKind:(unsigned __int8)kind positionSource:(__C3DMeshSource *)source normalSource:(__C3DMeshSource *)normalSource positionDataType:(signed __int16)type normalDataType:(signed __int16)dataType forStageInputOutputDescriptor:(BOOL)descriptor usePrivateStorageMode:(BOOL)mode outStride:(unint64_t *)self0 outPositionOffset:(unint64_t *)self1 outNormalOffset:(unint64_t *)self2;
+- (id)originalToFirstDeindexedTableBufferWithBlitEncoder:(id)encoder indexSizeOut:(unint64_t *)out;
 - (uint64_t)bufferForCommonProfileArgumentNamed:(uint64_t)result;
-- (uint64_t)computeDeformedMeshForContext:(unsigned __int8)a3 programHashCodeRequirements:(const void *)a4 transforms:(const void *)a5 frustumInfo:(_BOOL8 *)a6 status:;
+- (uint64_t)computeDeformedMeshForContext:(unsigned __int8)context programHashCodeRequirements:(const void *)requirements transforms:(const void *)transforms frustumInfo:(_BOOL8 *)info status:;
 - (uint64_t)computeDeformedMeshReliesOnFrustum;
 - (uint64_t)computeDeformedMeshReliesOnTransforms;
 - (uint64_t)invalidate;
 - (uint64_t)setNextUpdateRequiresResetForIncrementalDeformers;
-- (uint64_t)updateDataForAuthoringEnvironment:(uint64_t)a3 transforms:(uint64_t)a4 context:;
+- (uint64_t)updateDataForAuthoringEnvironment:(uint64_t)environment transforms:(uint64_t)transforms context:;
 - (unint64_t)currentFrameHash;
 - (void)dealloc;
-- (void)drawAuthoringEnvironment:(uint64_t)a3 context:;
-- (void)encodeCommandsInNewCommandBufferUsingBlock:(id)a3;
-- (void)enumerateInternalDeformersUsingBlock:(id)a3;
-- (void)initWithDeformerStack:(uint64_t)a3 node:(char)a4 dataKind:(uint64_t)a5 resourceManager:;
-- (void)reconfigureIfNeededWithContext:(id)a3 programHashCodeRequirements:(id)a4;
-- (void)setStageInputOutputBuffersToEncoder:(SCNMTLComputeCommandEncoder *)a3;
-- (void)setupFinalMeshFromBaseMeshWithInfo:(id)a3;
-- (void)setupFinalMeshFromMeshlessBaseGeometryWithInfo:(id)a3;
-- (void)setupInitialBuffersWithBasePositionSourceProvider:(id)a3 baseNormalSourceProvider:(id)a4 baseTangentSourceProvider:(id)a5 info:(id)a6;
-- (void)updateDependencyBuffersInBufferArray:(id *)a3 forDeformer:(id)a4;
+- (void)drawAuthoringEnvironment:(uint64_t)environment context:;
+- (void)encodeCommandsInNewCommandBufferUsingBlock:(id)block;
+- (void)enumerateInternalDeformersUsingBlock:(id)block;
+- (void)initWithDeformerStack:(uint64_t)stack node:(char)node dataKind:(uint64_t)kind resourceManager:;
+- (void)reconfigureIfNeededWithContext:(id)context programHashCodeRequirements:(id)requirements;
+- (void)setStageInputOutputBuffersToEncoder:(SCNMTLComputeCommandEncoder *)encoder;
+- (void)setupFinalMeshFromBaseMeshWithInfo:(id)info;
+- (void)setupFinalMeshFromMeshlessBaseGeometryWithInfo:(id)info;
+- (void)setupInitialBuffersWithBasePositionSourceProvider:(id)provider baseNormalSourceProvider:(id)sourceProvider baseTangentSourceProvider:(id)tangentSourceProvider info:(id)info;
+- (void)updateDependencyBuffersInBufferArray:(id *)array forDeformer:(id)deformer;
 @end
 
 @implementation SCNMTLDeformerStack
@@ -55,9 +55,9 @@
   return result;
 }
 
-- (Class)deformerClassForMeshlesshGeometry:(__C3DGeometry *)a3
+- (Class)deformerClassForMeshlesshGeometry:(__C3DGeometry *)geometry
 {
-  v3 = CFGetTypeID(a3);
+  v3 = CFGetTypeID(geometry);
   if (v3 == C3DBezierCurveGeometryGetTypeID())
   {
 
@@ -76,34 +76,34 @@
   }
 }
 
-- (void)enumerateInternalDeformersUsingBlock:(id)a3
+- (void)enumerateInternalDeformersUsingBlock:(id)block
 {
   if (self->_morphDeformer)
   {
-    (*(a3 + 2))(a3);
+    (*(block + 2))(block);
   }
 
   if (self->_skinDeformer)
   {
-    (*(a3 + 2))(a3);
+    (*(block + 2))(block);
   }
 
   if (self->_meshlessDeformer)
   {
-    (*(a3 + 2))(a3);
+    (*(block + 2))(block);
   }
 
   if (self->_smoothNormalsDeformer)
   {
-    v5 = *(a3 + 2);
+    v5 = *(block + 2);
 
-    v5(a3);
+    v5(block);
   }
 }
 
-- (void)setupInitialBuffersWithBasePositionSourceProvider:(id)a3 baseNormalSourceProvider:(id)a4 baseTangentSourceProvider:(id)a5 info:(id)a6
+- (void)setupInitialBuffersWithBasePositionSourceProvider:(id)provider baseNormalSourceProvider:(id)sourceProvider baseTangentSourceProvider:(id)tangentSourceProvider info:(id)info
 {
-  v6 = *&a6.var0;
+  v6 = *&info.var0;
   initialPositionBuffer = self->_initialPositionBuffer;
   if (initialPositionBuffer)
   {
@@ -138,7 +138,7 @@
   if ((v6 & 0x100010001) != 0)
   {
     self->_initialBuffersStageInputDescriptor = objc_alloc_init(MEMORY[0x277CD6FF0]);
-    v15 = (*(a3 + 2))(a3, self->_deformDataKind);
+    v15 = (*(provider + 2))(provider, self->_deformDataKind);
     C3DMeshSourceGetCount(v15);
     if (v6)
     {
@@ -166,13 +166,13 @@
       }
 
       [(MTLBufferLayoutDescriptor *)v20 setStride:v21];
-      v22 = [(MTLAttributeDescriptor *)v16 format];
-      v23 = [(MTLAttributeDescriptor *)v16 offset];
-      v24 = [(MTLBufferLayoutDescriptor *)v17 stride];
+      format = [(MTLAttributeDescriptor *)v16 format];
+      offset = [(MTLAttributeDescriptor *)v16 offset];
+      stride = [(MTLBufferLayoutDescriptor *)v17 stride];
       self->_initialPositionStageInputOutputDescriptorInfo.isActive = 1;
-      self->_initialPositionStageInputOutputDescriptorInfo.bufferAttributeFormat = v22;
-      self->_initialPositionStageInputOutputDescriptorInfo.bufferAttributeOffset = v23;
-      self->_initialPositionStageInputOutputDescriptorInfo.bufferLayoutStride = v24;
+      self->_initialPositionStageInputOutputDescriptorInfo.bufferAttributeFormat = format;
+      self->_initialPositionStageInputOutputDescriptorInfo.bufferAttributeOffset = offset;
+      self->_initialPositionStageInputOutputDescriptorInfo.bufferLayoutStride = stride;
       if ((v6 & 0x10000) == 0)
       {
 LABEL_12:
@@ -198,7 +198,7 @@ LABEL_12:
     [(MTLBufferLayoutDescriptor *)v26 setStepFunction:5];
     if ((v6 & 0x1000000) != 0)
     {
-      v31 = (*(a4 + 2))(a4, self->_deformDataKind);
+      v31 = (*(sourceProvider + 2))(sourceProvider, self->_deformDataKind);
       if (!v31)
       {
         v32 = scn_default_log();
@@ -224,13 +224,13 @@ LABEL_12:
     }
 
     [(MTLBufferLayoutDescriptor *)v29 setStride:v30];
-    v40 = [(MTLAttributeDescriptor *)v25 format];
-    v41 = [(MTLAttributeDescriptor *)v25 offset];
-    v42 = [(MTLBufferLayoutDescriptor *)v26 stride];
+    format2 = [(MTLAttributeDescriptor *)v25 format];
+    offset2 = [(MTLAttributeDescriptor *)v25 offset];
+    stride2 = [(MTLBufferLayoutDescriptor *)v26 stride];
     self->_initialNormalStageInputOutputDescriptorInfo.isActive = 1;
-    self->_initialNormalStageInputOutputDescriptorInfo.bufferAttributeFormat = v40;
-    self->_initialNormalStageInputOutputDescriptorInfo.bufferAttributeOffset = v41;
-    self->_initialNormalStageInputOutputDescriptorInfo.bufferLayoutStride = v42;
+    self->_initialNormalStageInputOutputDescriptorInfo.bufferAttributeFormat = format2;
+    self->_initialNormalStageInputOutputDescriptorInfo.bufferAttributeOffset = offset2;
+    self->_initialNormalStageInputOutputDescriptorInfo.bufferLayoutStride = stride2;
     if ((v6 & 0x100000000) != 0)
     {
 LABEL_25:
@@ -242,7 +242,7 @@ LABEL_25:
       [(MTLBufferLayoutDescriptor *)v44 setStepFunction:5];
       if ((v6 & 0x10000000000) != 0)
       {
-        v49 = (*(a5 + 2))(a5, self->_deformDataKind);
+        v49 = (*(tangentSourceProvider + 2))(tangentSourceProvider, self->_deformDataKind);
         if (!v49)
         {
           v50 = scn_default_log();
@@ -268,18 +268,18 @@ LABEL_25:
       }
 
       [(MTLBufferLayoutDescriptor *)v47 setStride:v48];
-      v58 = [(MTLAttributeDescriptor *)v43 format];
-      v59 = [(MTLAttributeDescriptor *)v43 offset];
-      v60 = [(MTLBufferLayoutDescriptor *)v44 stride];
+      format3 = [(MTLAttributeDescriptor *)v43 format];
+      offset3 = [(MTLAttributeDescriptor *)v43 offset];
+      stride3 = [(MTLBufferLayoutDescriptor *)v44 stride];
       self->_initialTangentStageInputOutputDescriptorInfo.isActive = 1;
-      self->_initialTangentStageInputOutputDescriptorInfo.bufferAttributeFormat = v58;
-      self->_initialTangentStageInputOutputDescriptorInfo.bufferAttributeOffset = v59;
-      self->_initialTangentStageInputOutputDescriptorInfo.bufferLayoutStride = v60;
+      self->_initialTangentStageInputOutputDescriptorInfo.bufferAttributeFormat = format3;
+      self->_initialTangentStageInputOutputDescriptorInfo.bufferAttributeOffset = offset3;
+      self->_initialTangentStageInputOutputDescriptorInfo.bufferLayoutStride = stride3;
     }
   }
 }
 
-- (void)setupFinalMeshFromBaseMeshWithInfo:(id)a3
+- (void)setupFinalMeshFromBaseMeshWithInfo:(id)info
 {
   *&v57[5] = *MEMORY[0x277D85DE8];
   deformPositionBuffer = self->_deformPositionBuffer;
@@ -332,7 +332,7 @@ LABEL_25:
   }
 
   finalDataKind = self->_finalDataKind;
-  v13 = [MEMORY[0x277CD7090] vertexDescriptor];
+  vertexDescriptor = [MEMORY[0x277CD7090] vertexDescriptor];
   v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:C3DMeshGetSourcesCount(self->_baseMesh)];
   baseMesh = self->_baseMesh;
   v16 = self->_finalDataKind;
@@ -342,15 +342,15 @@ LABEL_25:
   v54[3] = &unk_2782FC510;
   v54[4] = self;
   v54[5] = v14;
-  v54[6] = v13;
+  v54[6] = vertexDescriptor;
   v55 = finalDataKind == 0;
   C3DMeshApplySources(baseMesh, v16, v54);
-  if (a3.var0)
+  if (info.var0)
   {
     Size = SCNMTLVertexFormatGetSize(30);
     SourceWithSemanticAtIndex = C3DMeshGetSourceWithSemanticAtIndex(self->_baseMesh, 0, 0, self->_deformDataKind);
     C3DMeshSourceGetCount(SourceWithSemanticAtIndex);
-    if ((*&a3.var0 & 0x100) != 0)
+    if ((*&info.var0 & 0x100) != 0)
     {
       v19 = [(SCNMTLDeformerStack *)self newBufferForDataKind:self->_deformDataKind meshSource:SourceWithSemanticAtIndex dataType:9 forStageInputOutputDescriptor:0 usePrivateStorageMode:0 outStride:0];
     }
@@ -377,27 +377,27 @@ LABEL_25:
     self->_finalNormalBuffer = v21;
     v23 = [v14 count];
     [v14 addObject:self->_finalNormalBuffer];
-    v24 = [objc_msgSend(v13 "attributes")];
+    v24 = [objc_msgSend(vertexDescriptor "attributes")];
     [v24 setFormat:30];
     [v24 setOffset:0];
     [v24 setBufferIndex:v23 + 18];
-    v25 = [objc_msgSend(v13 "layouts")];
+    v25 = [objc_msgSend(vertexDescriptor "layouts")];
     [v25 setStride:Size];
     [v25 setStepFunction:1];
-    v26 = [v24 offset];
-    v27 = [v25 stride];
+    offset = [v24 offset];
+    stride = [v25 stride];
     self->_deformNormalStageInputOutputDescriptorInfo.isActive = 1;
     self->_deformNormalStageInputOutputDescriptorInfo.bufferAttributeFormat = 30;
-    self->_deformNormalStageInputOutputDescriptorInfo.bufferAttributeOffset = v26;
-    self->_deformNormalStageInputOutputDescriptorInfo.bufferLayoutStride = v27;
+    self->_deformNormalStageInputOutputDescriptorInfo.bufferAttributeOffset = offset;
+    self->_deformNormalStageInputOutputDescriptorInfo.bufferLayoutStride = stride;
   }
 
-  if ((*&a3 & 0x10000) != 0)
+  if ((*&info & 0x10000) != 0)
   {
     v28 = SCNMTLVertexFormatGetSize(31);
     v29 = C3DMeshGetSourceWithSemanticAtIndex(self->_baseMesh, 0, 0, self->_deformDataKind);
     C3DMeshSourceGetCount(v29);
-    if ((*&a3 & 0x1000000) != 0)
+    if ((*&info & 0x1000000) != 0)
     {
       v30 = [(SCNMTLDeformerStack *)self newBufferForDataKind:self->_deformDataKind meshSource:v29 dataType:10 forStageInputOutputDescriptor:0 usePrivateStorageMode:0 outStride:0];
     }
@@ -424,19 +424,19 @@ LABEL_25:
     self->_finalTangentBuffer = v32;
     v34 = [v14 count];
     [v14 addObject:self->_finalTangentBuffer];
-    v35 = [objc_msgSend(v13 "attributes")];
+    v35 = [objc_msgSend(vertexDescriptor "attributes")];
     [v35 setFormat:31];
     [v35 setOffset:0];
     [v35 setBufferIndex:v34 + 18];
-    v36 = [objc_msgSend(v13 "layouts")];
+    v36 = [objc_msgSend(vertexDescriptor "layouts")];
     [v36 setStride:v28];
     [v36 setStepFunction:1];
-    v37 = [v35 offset];
-    v38 = [v36 stride];
+    offset2 = [v35 offset];
+    stride2 = [v36 stride];
     self->_deformTangentStageInputOutputDescriptorInfo.isActive = 1;
     self->_deformTangentStageInputOutputDescriptorInfo.bufferAttributeFormat = 31;
-    self->_deformTangentStageInputOutputDescriptorInfo.bufferAttributeOffset = v37;
-    self->_deformTangentStageInputOutputDescriptorInfo.bufferLayoutStride = v38;
+    self->_deformTangentStageInputOutputDescriptorInfo.bufferAttributeOffset = offset2;
+    self->_deformTangentStageInputOutputDescriptorInfo.bufferLayoutStride = stride2;
   }
 
   ElementsCount = C3DMeshGetElementsCount(self->_baseMesh);
@@ -483,7 +483,7 @@ LABEL_25:
 
   v49 = objc_alloc_init(SCNMTLMesh);
   self->_finalMesh = v49;
-  [(SCNMTLMesh *)v49 setVertexDescriptor:v13];
+  [(SCNMTLMesh *)v49 setVertexDescriptor:vertexDescriptor];
   [(SCNMTLMesh *)self->_finalMesh setBuffers:v14];
   [(SCNMTLMesh *)self->_finalMesh setElements:v40];
 }
@@ -567,7 +567,7 @@ void __58__SCNMTLDeformerStack_setupFinalMeshFromBaseMeshWithInfo___block_invoke
   }
 }
 
-- (void)setupFinalMeshFromMeshlessBaseGeometryWithInfo:(id)a3
+- (void)setupFinalMeshFromMeshlessBaseGeometryWithInfo:(id)info
 {
   deformPositionBuffer = self->_deformPositionBuffer;
   if (deformPositionBuffer)
@@ -629,24 +629,24 @@ void __58__SCNMTLDeformerStack_setupFinalMeshFromBaseMeshWithInfo___block_invoke
 
   self->_finalMesh = [(SCNMTLMeshlessDeformer *)self->_meshlessDeformer finalMesh];
   SCNMTLVertexFormatGetSize(30);
-  v20 = [(SCNMTLResourceManager *)self->_finalMesh commandQueue];
-  v21 = [objc_msgSend(v20 "attributes")];
-  v22 = [objc_msgSend(v20 "layouts")];
+  commandQueue = [(SCNMTLResourceManager *)self->_finalMesh commandQueue];
+  v21 = [objc_msgSend(commandQueue "attributes")];
+  v22 = [objc_msgSend(commandQueue "layouts")];
   PositionSourceForDeformerBasedDynamicMesh = C3DGeometryCreatePositionSourceForDeformerBasedDynamicMesh(self->_baseGeometry);
   C3DMeshSourceGetCount(PositionSourceForDeformerBasedDynamicMesh);
   [SCNMTLResourceManager newBufferWithLength:? options:?];
   self->_deformPositionBuffer = v24;
   CFRelease(PositionSourceForDeformerBasedDynamicMesh);
-  if (a3.var0 && (v25 = scn_default_log(), os_log_type_enabled(v25, OS_LOG_TYPE_FAULT)))
+  if (info.var0 && (v25 = scn_default_log(), os_log_type_enabled(v25, OS_LOG_TYPE_FAULT)))
   {
     [(SCNMTLDeformerStack *)v25 setupFinalMeshFromMeshlessBaseGeometryWithInfo:v26, v27, v28, v29, v30, v31, v32];
-    if ((*&a3 & 0x10000) == 0)
+    if ((*&info & 0x10000) == 0)
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*&a3 & 0x10000) == 0)
+  else if ((*&info & 0x10000) == 0)
   {
     goto LABEL_23;
   }
@@ -658,15 +658,15 @@ void __58__SCNMTLDeformerStack_setupFinalMeshFromBaseMeshWithInfo___block_invoke
   }
 
 LABEL_23:
-  v41 = [v21 offset];
-  v42 = [v22 stride];
+  offset = [v21 offset];
+  stride = [v22 stride];
   self->_deformPositionStageInputOutputDescriptorInfo.isActive = 1;
   self->_deformPositionStageInputOutputDescriptorInfo.bufferAttributeFormat = 30;
-  self->_deformPositionStageInputOutputDescriptorInfo.bufferAttributeOffset = v41;
-  self->_deformPositionStageInputOutputDescriptorInfo.bufferLayoutStride = v42;
+  self->_deformPositionStageInputOutputDescriptorInfo.bufferAttributeOffset = offset;
+  self->_deformPositionStageInputOutputDescriptorInfo.bufferLayoutStride = stride;
 }
 
-- (id)deindexedToOriginalTableBufferWithBlitEncoder:(id)a3 indexSizeOut:(unint64_t *)a4
+- (id)deindexedToOriginalTableBufferWithBlitEncoder:(id)encoder indexSizeOut:(unint64_t *)out
 {
   *&v29[5] = *MEMORY[0x277D85DE8];
   if (!self->_deindexedToOriginalTableBuffer)
@@ -684,7 +684,7 @@ LABEL_23:
     Count = C3DMeshSourceGetCount(SourceWithSemanticAtIndex);
     v11 = v27;
     v12 = v27 - 1;
-    v26 = a3;
+    encoderCopy = encoder;
     if ((v27 - 1) < 0)
     {
       v15 = 8;
@@ -707,7 +707,7 @@ LABEL_23:
     }
 
     self->_deindexedToOriginalTableBufferIndexSize = v15;
-    *a4 = v15;
+    *out = v15;
     v25 = self->_deindexedToOriginalTableBufferIndexSize * v11;
     v16 = malloc_type_malloc(v25, 0x7583B073uLL);
     v17 = v16;
@@ -745,7 +745,7 @@ LABEL_23:
     if (!v27)
     {
 LABEL_31:
-      self->_deindexedToOriginalTableBuffer = [(SCNMTLResourceManager *)self->_resourceManager newPrivateBufferWithBytes:v17 length:v25 blitEncoder:v26];
+      self->_deindexedToOriginalTableBuffer = [(SCNMTLResourceManager *)self->_resourceManager newPrivateBufferWithBytes:v17 length:v25 blitEncoder:encoderCopy];
       free(v17);
       return self->_deindexedToOriginalTableBuffer;
     }
@@ -788,16 +788,16 @@ LABEL_30:
     }
   }
 
-  *a4 = self->_deindexedToOriginalTableBufferIndexSize;
+  *out = self->_deindexedToOriginalTableBufferIndexSize;
   return self->_deindexedToOriginalTableBuffer;
 }
 
-- (id)deindexedToFirstDeindexedTableBufferWithBlitEncoder:(id)a3 indexSizeOut:(unint64_t *)a4
+- (id)deindexedToFirstDeindexedTableBufferWithBlitEncoder:(id)encoder indexSizeOut:(unint64_t *)out
 {
   *&v35[5] = *MEMORY[0x277D85DE8];
   if (self->_deindexedToFirstDeindexedTableBuffer)
   {
-    *a4 = self->_deindexedToFirstDeindexedTableBufferIndexSize;
+    *out = self->_deindexedToFirstDeindexedTableBufferIndexSize;
   }
 
   else
@@ -812,7 +812,7 @@ LABEL_30:
     }
 
     v9 = result;
-    v29 = a3;
+    encoderCopy = encoder;
     SourceWithSemanticAtIndex = C3DMeshGetSourceWithSemanticAtIndex(self->_baseMesh, 0, 0, 0);
     Count = C3DMeshSourceGetCount(SourceWithSemanticAtIndex);
     v12 = v31;
@@ -839,7 +839,7 @@ LABEL_30:
     }
 
     self->_deindexedToFirstDeindexedTableBufferIndexSize = v16;
-    *a4 = v16;
+    *out = v16;
     v28 = self->_deindexedToFirstDeindexedTableBufferIndexSize * v12;
     v17 = malloc_type_malloc(v28, 0xB0A4F3C8uLL);
     v18 = v17;
@@ -934,18 +934,18 @@ LABEL_30:
       }
     }
 
-    self->_deindexedToFirstDeindexedTableBuffer = [(SCNMTLResourceManager *)self->_resourceManager newPrivateBufferWithBytes:v18 length:v28 blitEncoder:v29];
+    self->_deindexedToFirstDeindexedTableBuffer = [(SCNMTLResourceManager *)self->_resourceManager newPrivateBufferWithBytes:v18 length:v28 blitEncoder:encoderCopy];
     free(v18);
   }
 
   return self->_deindexedToFirstDeindexedTableBuffer;
 }
 
-- (id)originalToFirstDeindexedTableBufferWithBlitEncoder:(id)a3 indexSizeOut:(unint64_t *)a4
+- (id)originalToFirstDeindexedTableBufferWithBlitEncoder:(id)encoder indexSizeOut:(unint64_t *)out
 {
   if (self->_originalToFirstDeindexedTableBuffer)
   {
-    *a4 = self->_originalToFirstDeindexedTableBufferIndexSize;
+    *out = self->_originalToFirstDeindexedTableBufferIndexSize;
   }
 
   else
@@ -974,7 +974,7 @@ LABEL_30:
     }
 
     self->_originalToFirstDeindexedTableBufferIndexSize = v13;
-    *a4 = v13;
+    *out = v13;
     v14 = Count;
     v15 = self->_originalToFirstDeindexedTableBufferIndexSize * Count;
     v16 = malloc_type_malloc(v15, 0xEED24FFuLL);
@@ -1042,23 +1042,23 @@ LABEL_30:
       while (v14);
     }
 
-    self->_originalToFirstDeindexedTableBuffer = [(SCNMTLResourceManager *)self->_resourceManager newPrivateBufferWithBytes:v16 length:v15 blitEncoder:a3];
+    self->_originalToFirstDeindexedTableBuffer = [(SCNMTLResourceManager *)self->_resourceManager newPrivateBufferWithBytes:v16 length:v15 blitEncoder:encoder];
     free(v17);
   }
 
   return self->_originalToFirstDeindexedTableBuffer;
 }
 
-- (id)newBufferForDataKind:(unsigned __int8)a3 meshSource:(__C3DMeshSource *)a4 dataType:(signed __int16)a5 forStageInputOutputDescriptor:(BOOL)a6 usePrivateStorageMode:(BOOL)a7 outStride:(unint64_t *)a8
+- (id)newBufferForDataKind:(unsigned __int8)kind meshSource:(__C3DMeshSource *)source dataType:(signed __int16)type forStageInputOutputDescriptor:(BOOL)descriptor usePrivateStorageMode:(BOOL)mode outStride:(unint64_t *)stride
 {
-  v10 = a6;
-  v11 = a5;
-  Count = C3DMeshSourceGetCount(a4);
-  v15 = C3DSizeOfBaseType(v11);
-  if (v10)
+  descriptorCopy = descriptor;
+  typeCopy = type;
+  Count = C3DMeshSourceGetCount(source);
+  v15 = C3DSizeOfBaseType(typeCopy);
+  if (descriptorCopy)
   {
-    v16 = [(SCNMTLOpenSubdivComputeEvaluator *)self->_resourceManager computeEvaluator];
-    if (SCNMTLDeviceRequiresOffsetAndStrideForStageInAsMultipleOf4Bytes(v16))
+    computeEvaluator = [(SCNMTLOpenSubdivComputeEvaluator *)self->_resourceManager computeEvaluator];
+    if (SCNMTLDeviceRequiresOffsetAndStrideForStageInAsMultipleOf4Bytes(computeEvaluator))
     {
       v15 = (v15 + 3) & 0xFFFFFFFFFFFFFFFCLL;
     }
@@ -1067,7 +1067,7 @@ LABEL_30:
   v17 = malloc_type_malloc(v15 * Count, 0x100004077774924uLL);
   v27 = 0u;
   v28 = 0u;
-  C3DMeshSourceGetContent(a4, &v27);
+  C3DMeshSourceGetContent(source, &v27);
   if (Count)
   {
     v21 = 0;
@@ -1075,7 +1075,7 @@ LABEL_30:
     do
     {
       *v23.i64 = C3DConvertFloatingTypeToFloat4(BYTE4(v28), (v27 + v21 * BYTE6(v28)), v18, v19, v20);
-      C3DConvertFloatingTypeFromFloat4(v11, v22, v23);
+      C3DConvertFloatingTypeFromFloat4(typeCopy, v22, v23);
       v22 += v15;
       ++v21;
     }
@@ -1083,7 +1083,7 @@ LABEL_30:
     while (Count != v21);
   }
 
-  if (a7)
+  if (mode)
   {
     v24 = [(SCNMTLResourceManager *)self->_resourceManager newPrivateBufferWithBytes:v17 length:v15 * Count blitEncoder:[(SCNMTLDeformerStack *)self currentBlitEncoder]];
   }
@@ -1095,20 +1095,20 @@ LABEL_30:
 
   v25 = v24;
   free(v17);
-  if (a8)
+  if (stride)
   {
-    *a8 = v15;
+    *stride = v15;
   }
 
   return v25;
 }
 
-- (id)newBufferForDataKind:(unsigned __int8)a3 positionSource:(__C3DMeshSource *)a4 normalSource:(__C3DMeshSource *)a5 positionDataType:(signed __int16)a6 normalDataType:(signed __int16)a7 forStageInputOutputDescriptor:(BOOL)a8 usePrivateStorageMode:(BOOL)a9 outStride:(unint64_t *)a10 outPositionOffset:(unint64_t *)a11 outNormalOffset:(unint64_t *)a12
+- (id)newBufferForDataKind:(unsigned __int8)kind positionSource:(__C3DMeshSource *)source normalSource:(__C3DMeshSource *)normalSource positionDataType:(signed __int16)type normalDataType:(signed __int16)dataType forStageInputOutputDescriptor:(BOOL)descriptor usePrivateStorageMode:(BOOL)mode outStride:(unint64_t *)self0 outPositionOffset:(unint64_t *)self1 outNormalOffset:(unint64_t *)self2
 {
-  v12 = a8;
-  v13 = a7;
-  v14 = a6;
-  if (a3 == 1 && a5 && (v18 = C3DMeshSourceGetCount(a4), v18 != C3DMeshSourceGetCount(a5)))
+  descriptorCopy = descriptor;
+  dataTypeCopy = dataType;
+  typeCopy = type;
+  if (kind == 1 && normalSource && (v18 = C3DMeshSourceGetCount(source), v18 != C3DMeshSourceGetCount(normalSource)))
   {
     v35 = scn_default_log();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -1121,32 +1121,32 @@ LABEL_30:
 
   else
   {
-    Count = C3DMeshSourceGetCount(a4);
-    v20 = C3DSizeOfBaseType(v14);
-    v21 = C3DSizeOfBaseType(v13);
+    Count = C3DMeshSourceGetCount(source);
+    v20 = C3DSizeOfBaseType(typeCopy);
+    v21 = C3DSizeOfBaseType(dataTypeCopy);
     v22 = v21 + v20;
-    if (v12)
+    if (descriptorCopy)
     {
       v23 = v21;
-      v24 = [(SCNMTLOpenSubdivComputeEvaluator *)self->_resourceManager computeEvaluator];
-      if (SCNMTLDeviceRequiresOffsetAndStrideForStageInAsMultipleOf4Bytes(v24))
+      computeEvaluator = [(SCNMTLOpenSubdivComputeEvaluator *)self->_resourceManager computeEvaluator];
+      if (SCNMTLDeviceRequiresOffsetAndStrideForStageInAsMultipleOf4Bytes(computeEvaluator))
       {
         v22 = (v23 + ((v20 + 3) & 0xFFFFFFFFFFFFFFFCLL) + 3) & 0xFFFFFFFFFFFFFFFCLL;
         v20 = (v20 + 3) & 0xFFFFFFFFFFFFFFFCLL;
       }
     }
 
-    v37 = self;
+    selfCopy = self;
     v25 = malloc_type_malloc(v22 * Count, 0x100004077774924uLL);
     v40 = 0u;
     v41 = 0u;
-    C3DMeshSourceGetContent(a4, &v40);
+    C3DMeshSourceGetContent(source, &v40);
     v28 = 0uLL;
     v38 = 0u;
     v39 = 0u;
-    if (a5)
+    if (normalSource)
     {
-      C3DMeshSourceGetContent(a5, &v38);
+      C3DMeshSourceGetContent(normalSource, &v38);
     }
 
     if (Count)
@@ -1156,11 +1156,11 @@ LABEL_30:
       do
       {
         *v31.i64 = C3DConvertFloatingTypeToFloat4(BYTE4(v41), (v40 + v29 * BYTE6(v41)), v28, v26, v27);
-        C3DConvertFloatingTypeFromFloat4(v14, v30, v31);
-        if (a5)
+        C3DConvertFloatingTypeFromFloat4(typeCopy, v30, v31);
+        if (normalSource)
         {
           *v32.i64 = C3DConvertFloatingTypeToFloat4(BYTE4(v39), (v38 + v29 * BYTE6(v39)), v28, v26, v27);
-          C3DConvertFloatingTypeFromFloat4(v13, v30 + v20, v32);
+          C3DConvertFloatingTypeFromFloat4(dataTypeCopy, v30 + v20, v32);
         }
 
         v30 += v22;
@@ -1170,9 +1170,9 @@ LABEL_30:
       while (Count != v29);
     }
 
-    if (a9)
+    if (mode)
     {
-      v33 = -[SCNMTLResourceManager newPrivateBufferWithBytes:length:blitEncoder:](v37[1], v25, v22 * Count, [v37 currentBlitEncoder]);
+      v33 = -[SCNMTLResourceManager newPrivateBufferWithBytes:length:blitEncoder:](selfCopy[1], v25, v22 * Count, [selfCopy currentBlitEncoder]);
     }
 
     else
@@ -1182,19 +1182,19 @@ LABEL_30:
 
     v34 = v33;
     free(v25);
-    if (a10)
+    if (stride)
     {
-      *a10 = v22;
+      *stride = v22;
     }
 
-    if (a11)
+    if (offset)
     {
-      *a11 = 0;
+      *offset = 0;
     }
 
-    if (a12)
+    if (normalOffset)
     {
-      *a12 = v20;
+      *normalOffset = v20;
     }
   }
 
@@ -1213,16 +1213,16 @@ LABEL_30:
   return result;
 }
 
-- (void)reconfigureIfNeededWithContext:(id)a3 programHashCodeRequirements:(id)a4
+- (void)reconfigureIfNeededWithContext:(id)context programHashCodeRequirements:(id)requirements
 {
-  v4 = *&a4.var0;
+  v4 = *&requirements.var0;
   v208 = *MEMORY[0x277D85DE8];
-  if (self->_isValid && (!a4.var0 || self->_finalTangentBuffer))
+  if (self->_isValid && (!requirements.var0 || self->_finalTangentBuffer))
   {
     return;
   }
 
-  self->_currentInitRenderContext = a3;
+  self->_currentInitRenderContext = context;
   BaseGeometry = C3DDeformerStackGetBaseGeometry(self->_c3dDeformerStack);
   v7 = BaseGeometry;
   v137 = self->_baseGeometry;
@@ -1298,7 +1298,7 @@ LABEL_30:
   v196 = 0u;
   v195 = 0u;
   v17 = [PostMorphingDeformers countByEnumeratingWithState:&v195 objects:v207 count:{16, v129}];
-  v148 = self;
+  selfCopy = self;
   if (v17)
   {
     v18 = v17;
@@ -1350,18 +1350,18 @@ LABEL_30:
 
   if (Mesh)
   {
-    v25 = v148;
+    v25 = selfCopy;
     v147 = (C3DMeshHasSourcesWithSemantic(Mesh, 1, 0, 0) | (v16 >> 1)) & (finalDataKind != 0);
-    v133 = (v148->_finalNormalBuffer == 0) ^ v147;
+    v133 = (selfCopy->_finalNormalBuffer == 0) ^ v147;
     HasSourcesWithSemantic = C3DMeshHasSourcesWithSemantic(Mesh, 4, 0, 0);
   }
 
   else
   {
     HasSourcesWithSemantic = 0;
-    v25 = v148;
+    v25 = selfCopy;
     v147 = (finalDataKind != 0) & (v16 >> 1);
-    v133 = (v148->_finalNormalBuffer == 0) ^ v147;
+    v133 = (selfCopy->_finalNormalBuffer == 0) ^ v147;
   }
 
   v144 = Mesh;
@@ -1390,9 +1390,9 @@ LABEL_30:
 
   if (v145)
   {
-    v31 = [(objc_class *)v145 supportedOutputs];
-    v29 |= v31;
-    v28 &= v31;
+    supportedOutputs = [(objc_class *)v145 supportedOutputs];
+    v29 |= supportedOutputs;
+    v28 &= supportedOutputs;
   }
 
   v190 = 0u;
@@ -1414,9 +1414,9 @@ LABEL_30:
           objc_enumerationMutation(PostMorphingDeformers);
         }
 
-        v37 = [*(*(&v187 + 1) + 8 * k) supportedOutputs];
-        v29 |= v37;
-        v28 &= v37;
+        supportedOutputs2 = [*(*(&v187 + 1) + 8 * k) supportedOutputs];
+        v29 |= supportedOutputs2;
+        v28 &= supportedOutputs2;
       }
 
       v34 = [PostMorphingDeformers countByEnumeratingWithState:&v187 objects:v205 count:16];
@@ -1445,9 +1445,9 @@ LABEL_30:
           objc_enumerationMutation(PostSkinningDeformers);
         }
 
-        v43 = [*(*(&v183 + 1) + 8 * m) supportedOutputs];
-        v29 |= v43;
-        v28 &= v43;
+        supportedOutputs3 = [*(*(&v183 + 1) + 8 * m) supportedOutputs];
+        v29 |= supportedOutputs3;
+        v28 &= supportedOutputs3;
       }
 
       v39 = [PostSkinningDeformers countByEnumeratingWithState:&v183 objects:v204 count:16];
@@ -1498,7 +1498,7 @@ LABEL_30:
     if ((v47 & 0x200) == 0)
     {
       v49 = v25 ^ 1;
-      v50 = v148;
+      v50 = selfCopy;
       if ((v49 & 1) == 0)
       {
         [SCNMTLDeformerStack reconfigureIfNeededWithContext:programHashCodeRequirements:];
@@ -1513,15 +1513,15 @@ LABEL_30:
     v48 = v25;
   }
 
-  v50 = v148;
+  v50 = selfCopy;
 LABEL_76:
   obj = PostSkinningDeformers;
   if (v41)
   {
-    v51 = [(objc_class *)v41 requiredOutputs];
-    v45 |= v51;
-    v52 = (v51 >> 9) & 1 | v48;
-    if ((v51 & 0x200) == 0 && ((v48 ^ 1) & 1) == 0)
+    requiredOutputs = [(objc_class *)v41 requiredOutputs];
+    v45 |= requiredOutputs;
+    v52 = (requiredOutputs >> 9) & 1 | v48;
+    if ((requiredOutputs & 0x200) == 0 && ((v48 ^ 1) & 1) == 0)
     {
       [SCNMTLDeformerStack reconfigureIfNeededWithContext:programHashCodeRequirements:];
     }
@@ -1550,14 +1550,14 @@ LABEL_76:
           objc_enumerationMutation(PostMorphingDeformers);
         }
 
-        v57 = [*(*(&v179 + 1) + 8 * n) requiredOutputs];
-        if ((v57 & 0x200) == 0 && ((v52 ^ 1) & 1) == 0)
+        requiredOutputs2 = [*(*(&v179 + 1) + 8 * n) requiredOutputs];
+        if ((requiredOutputs2 & 0x200) == 0 && ((v52 ^ 1) & 1) == 0)
         {
           [SCNMTLDeformerStack reconfigureIfNeededWithContext:programHashCodeRequirements:];
         }
 
-        v52 |= (v57 >> 9) & 1;
-        v45 |= v57;
+        v52 |= (requiredOutputs2 >> 9) & 1;
+        v45 |= requiredOutputs2;
       }
 
       v54 = [PostMorphingDeformers countByEnumeratingWithState:&v179 objects:v203 count:16];
@@ -1584,14 +1584,14 @@ LABEL_76:
           objc_enumerationMutation(obj);
         }
 
-        v62 = [*(*(&v175 + 1) + 8 * ii) requiredOutputs];
-        if ((v62 & 0x200) == 0 && ((v52 ^ 1) & 1) == 0)
+        requiredOutputs3 = [*(*(&v175 + 1) + 8 * ii) requiredOutputs];
+        if ((requiredOutputs3 & 0x200) == 0 && ((v52 ^ 1) & 1) == 0)
         {
           [SCNMTLDeformerStack reconfigureIfNeededWithContext:programHashCodeRequirements:];
         }
 
-        v52 |= (v62 >> 9) & 1;
-        v45 |= v62;
+        v52 |= (requiredOutputs3 >> 9) & 1;
+        v45 |= requiredOutputs3;
       }
 
       v59 = [obj countByEnumeratingWithState:&v175 objects:v202 count:16];
@@ -1605,8 +1605,8 @@ LABEL_76:
   v172 = 0u;
   v173 = 0u;
   v174 = 0u;
-  v63 = [(SCNMTLMesh *)v50->_finalMesh elements];
-  v64 = [v63 countByEnumeratingWithState:&v171 objects:v201 count:16];
+  elements = [(SCNMTLMesh *)v50->_finalMesh elements];
+  v64 = [elements countByEnumeratingWithState:&v171 objects:v201 count:16];
   if (v64)
   {
     v65 = v64;
@@ -1618,13 +1618,13 @@ LABEL_76:
       {
         if (*v172 != v67)
         {
-          objc_enumerationMutation(v63);
+          objc_enumerationMutation(elements);
         }
 
         v66 |= v52 ^ ([(SCNMTLMesh *)*(*(&v171 + 1) + 8 * jj) buffers]!= 0);
       }
 
-      v65 = [v63 countByEnumeratingWithState:&v171 objects:v201 count:16];
+      v65 = [elements countByEnumeratingWithState:&v171 objects:v201 count:16];
     }
 
     while (v65);
@@ -1651,11 +1651,11 @@ LABEL_76:
     }
   }
 
-  v71 = v148;
+  v71 = selfCopy;
   v72 = v137;
   v73 = v143 ^ v131;
-  initialBuffersStageInputDescriptor = v148->_initialBuffersStageInputDescriptor;
-  morphDeformer = v148->_morphDeformer;
+  initialBuffersStageInputDescriptor = selfCopy->_initialBuffersStageInputDescriptor;
+  morphDeformer = selfCopy->_morphDeformer;
   v76 = (v147 ^ v143) & ((v28 & 2) == 0);
   v77 = v29 & 2;
   v78 = (v77 << 7) ^ 0x100;
@@ -2049,33 +2049,33 @@ const void *__82__SCNMTLDeformerStack_reconfigureIfNeededWithContext_programHash
 - (unint64_t)currentFrameHash
 {
   currentUpdateRenderContext = self->_currentUpdateRenderContext;
-  v3 = [(SCNMTLRenderContext *)currentUpdateRenderContext engineContext];
-  SystemTime = C3DEngineContextGetSystemTime(v3);
-  v5 = [(SCNMTLOpenSubdivComputeEvaluator *)currentUpdateRenderContext computeEvaluator];
-  v6 = 0x9DDFEA08EB382D69 * (v5 ^ ((0x9DDFEA08EB382D69 * (v5 ^ currentUpdateRenderContext)) >> 47) ^ (0x9DDFEA08EB382D69 * (v5 ^ currentUpdateRenderContext)));
+  engineContext = [(SCNMTLRenderContext *)currentUpdateRenderContext engineContext];
+  SystemTime = C3DEngineContextGetSystemTime(engineContext);
+  computeEvaluator = [(SCNMTLOpenSubdivComputeEvaluator *)currentUpdateRenderContext computeEvaluator];
+  v6 = 0x9DDFEA08EB382D69 * (computeEvaluator ^ ((0x9DDFEA08EB382D69 * (computeEvaluator ^ currentUpdateRenderContext)) >> 47) ^ (0x9DDFEA08EB382D69 * (computeEvaluator ^ currentUpdateRenderContext)));
   v7 = 0xC6A4A7935BD1E995 * ((0xC6A4A7935BD1E995 * ((0xC6A4A7935BD1E995 * *&SystemTime) ^ ((0xC6A4A7935BD1E995 * *&SystemTime) >> 47))) ^ 0x35253C9ADE8F4CA8 ^ (0x9DDFEA08EB382D69 * (v6 ^ (v6 >> 47))));
   return (0xC6A4A7935BD1E995 * (v7 ^ (v7 >> 47))) ^ ((0xC6A4A7935BD1E995 * (v7 ^ (v7 >> 47))) >> 47);
 }
 
 - (__n128)currentTransforms
 {
-  v2 = *(a1 + 560);
-  *(a2 + 128) = *(a1 + 544);
+  v2 = *(self + 560);
+  *(a2 + 128) = *(self + 544);
   *(a2 + 144) = v2;
-  v3 = *(a1 + 592);
-  *(a2 + 160) = *(a1 + 576);
+  v3 = *(self + 592);
+  *(a2 + 160) = *(self + 576);
   *(a2 + 176) = v3;
-  v4 = *(a1 + 496);
-  *(a2 + 64) = *(a1 + 480);
+  v4 = *(self + 496);
+  *(a2 + 64) = *(self + 480);
   *(a2 + 80) = v4;
-  v5 = *(a1 + 528);
-  *(a2 + 96) = *(a1 + 512);
+  v5 = *(self + 528);
+  *(a2 + 96) = *(self + 512);
   *(a2 + 112) = v5;
-  v6 = *(a1 + 432);
-  *a2 = *(a1 + 416);
+  v6 = *(self + 432);
+  *a2 = *(self + 416);
   *(a2 + 16) = v6;
-  result = *(a1 + 448);
-  v8 = *(a1 + 464);
+  result = *(self + 448);
+  v8 = *(self + 464);
   *(a2 + 32) = result;
   *(a2 + 48) = v8;
   return result;
@@ -2083,15 +2083,15 @@ const void *__82__SCNMTLDeformerStack_reconfigureIfNeededWithContext_programHash
 
 - (__n128)_currentFrustumInfo
 {
-  v2 = *(a1 + 688);
-  *(a2 + 64) = *(a1 + 672);
+  v2 = *(self + 688);
+  *(a2 + 64) = *(self + 672);
   *(a2 + 80) = v2;
-  *(a2 + 96) = *(a1 + 704);
-  v3 = *(a1 + 624);
-  *a2 = *(a1 + 608);
+  *(a2 + 96) = *(self + 704);
+  v3 = *(self + 624);
+  *a2 = *(self + 608);
   *(a2 + 16) = v3;
-  result = *(a1 + 656);
-  *(a2 + 32) = *(a1 + 640);
+  result = *(self + 656);
+  *(a2 + 32) = *(self + 640);
   *(a2 + 48) = result;
   return result;
 }
@@ -2108,21 +2108,21 @@ const void *__82__SCNMTLDeformerStack_reconfigureIfNeededWithContext_programHash
   return result;
 }
 
-- (void)encodeCommandsInNewCommandBufferUsingBlock:(id)a3
+- (void)encodeCommandsInNewCommandBufferUsingBlock:(id)block
 {
   self->_currentUpdateComputeCommandEncoder = 0;
-  v4 = [(SCNMTLRenderContext *)self->_currentUpdateRenderContext resourceCommandBuffer];
-  v5 = *(a3 + 2);
+  resourceCommandBuffer = [(SCNMTLRenderContext *)self->_currentUpdateRenderContext resourceCommandBuffer];
+  v5 = *(block + 2);
 
-  v5(a3, v4);
+  v5(block, resourceCommandBuffer);
 }
 
-- (void)setStageInputOutputBuffersToEncoder:(SCNMTLComputeCommandEncoder *)a3
+- (void)setStageInputOutputBuffersToEncoder:(SCNMTLComputeCommandEncoder *)encoder
 {
   srcPositions = self->_currentUpdateBuffers.srcPositions;
-  if (a3->_buffers[10] == srcPositions)
+  if (encoder->_buffers[10] == srcPositions)
   {
-    if (!a3->_offsets[10])
+    if (!encoder->_offsets[10])
     {
       goto LABEL_5;
     }
@@ -2130,16 +2130,16 @@ const void *__82__SCNMTLDeformerStack_reconfigureIfNeededWithContext_programHash
 
   else
   {
-    a3->_buffers[10] = srcPositions;
+    encoder->_buffers[10] = srcPositions;
   }
 
-  a3->_offsets[10] = 0;
-  a3->_buffersToBind[0] |= 0x400uLL;
+  encoder->_offsets[10] = 0;
+  encoder->_buffersToBind[0] |= 0x400uLL;
 LABEL_5:
   srcNormals = self->_currentUpdateBuffers.srcNormals;
-  if (a3->_buffers[11] == srcNormals)
+  if (encoder->_buffers[11] == srcNormals)
   {
-    if (!a3->_offsets[11])
+    if (!encoder->_offsets[11])
     {
       goto LABEL_9;
     }
@@ -2147,16 +2147,16 @@ LABEL_5:
 
   else
   {
-    a3->_buffers[11] = srcNormals;
+    encoder->_buffers[11] = srcNormals;
   }
 
-  a3->_offsets[11] = 0;
-  a3->_buffersToBind[0] |= 0x800uLL;
+  encoder->_offsets[11] = 0;
+  encoder->_buffersToBind[0] |= 0x800uLL;
 LABEL_9:
   srcTangents = self->_currentUpdateBuffers.srcTangents;
-  if (a3->_buffers[12] == srcTangents)
+  if (encoder->_buffers[12] == srcTangents)
   {
-    if (!a3->_offsets[12])
+    if (!encoder->_offsets[12])
     {
       return;
     }
@@ -2164,11 +2164,11 @@ LABEL_9:
 
   else
   {
-    a3->_buffers[12] = srcTangents;
+    encoder->_buffers[12] = srcTangents;
   }
 
-  a3->_offsets[12] = 0;
-  a3->_buffersToBind[0] |= 0x1000uLL;
+  encoder->_offsets[12] = 0;
+  encoder->_buffersToBind[0] |= 0x1000uLL;
 }
 
 uint64_t __111__SCNMTLDeformerStack_computeDeformedMeshForContext_programHashCodeRequirements_transforms_frustumInfo_status___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -2212,23 +2212,23 @@ uint64_t __111__SCNMTLDeformerStack_computeDeformedMeshForContext_programHashCod
   return v1[207];
 }
 
-- (id)dependencyBufferForInput:(unint64_t)a3 dependencyStack:(id)a4
+- (id)dependencyBufferForInput:(unint64_t)input dependencyStack:(id)stack
 {
-  if (a3 <= 8)
+  if (input <= 8)
   {
-    if (((1 << a3) & 0x48) != 0)
+    if (((1 << input) & 0x48) != 0)
     {
-      return *(a4 + 11);
+      return *(stack + 11);
     }
 
-    if (((1 << a3) & 0x90) != 0)
+    if (((1 << input) & 0x90) != 0)
     {
-      return *(a4 + 12);
+      return *(stack + 12);
     }
 
-    if (((1 << a3) & 0x120) != 0)
+    if (((1 << input) & 0x120) != 0)
     {
-      return *(a4 + 13);
+      return *(stack + 13);
     }
   }
 
@@ -2241,7 +2241,7 @@ uint64_t __111__SCNMTLDeformerStack_computeDeformedMeshForContext_programHashCod
   return 0;
 }
 
-- (id)dependencyBufferForInput:(unint64_t)a3 dependencyMesh:(id)a4
+- (id)dependencyBufferForInput:(unint64_t)input dependencyMesh:(id)mesh
 {
   v4 = scn_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -2253,19 +2253,19 @@ uint64_t __111__SCNMTLDeformerStack_computeDeformedMeshForContext_programHashCod
   __assert_rtn("[SCNMTLDeformerStack dependencyBufferForInput:dependencyMesh:]", "SCNMTLDeformerStack.mm", 1985, "0");
 }
 
-- (void)updateDependencyBuffersInBufferArray:(id *)a3 forDeformer:(id)a4
+- (void)updateDependencyBuffersInBufferArray:(id *)array forDeformer:(id)deformer
 {
   v4 = MEMORY[0x277D85DD0];
-  *&a3->var8 = 0u;
-  *&a3->var10 = 0u;
-  *&a3->var6 = 0u;
+  *&array->var8 = 0u;
+  *&array->var10 = 0u;
+  *&array->var6 = 0u;
   v5[0] = v4;
   v5[1] = 3221225472;
   v5[2] = __72__SCNMTLDeformerStack_updateDependencyBuffersInBufferArray_forDeformer___block_invoke;
   v5[3] = &unk_2782FC5D0;
   v5[4] = self;
-  v5[5] = a3;
-  [a4 _enumerateDependencyNodesUsingBlock:v5];
+  v5[5] = array;
+  [deformer _enumerateDependencyNodesUsingBlock:v5];
 }
 
 void __72__SCNMTLDeformerStack_updateDependencyBuffersInBufferArray_forDeformer___block_invoke(uint64_t a1, uint64_t a2, void *a3, __int16 a4)
@@ -2520,25 +2520,25 @@ uint64_t __56__SCNMTLDeformerStack_drawAuthoringEnvironment_context___block_invo
   return result;
 }
 
-- (void)initWithDeformerStack:(uint64_t)a3 node:(char)a4 dataKind:(uint64_t)a5 resourceManager:
+- (void)initWithDeformerStack:(uint64_t)stack node:(char)node dataKind:(uint64_t)kind resourceManager:
 {
   v74 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v72.receiver = a1;
+  v72.receiver = self;
   v72.super_class = SCNMTLDeformerStack;
   v9 = objc_msgSendSuper2(&v72, sel_init);
   v10 = v9;
   if (v9)
   {
-    v9[1] = a5;
+    v9[1] = kind;
     v9[2] = a2;
-    v9[3] = a3;
-    *(v9 + 48) = a4;
-    *(v9 + 49) = a4;
+    v9[3] = stack;
+    *(v9 + 48) = node;
+    *(v9 + 49) = node;
     PostMorphingDeformers = C3DDeformerStackGetPostMorphingDeformers(a2);
     PostSkinningDeformers = C3DDeformerStackGetPostSkinningDeformers(v10[2]);
     v20 = OUTLINED_FUNCTION_9(PostSkinningDeformers, v13, v14, v15, v16, v17, v18, v19);
@@ -2559,13 +2559,13 @@ uint64_t __56__SCNMTLDeformerStack_drawAuthoringEnvironment_context___block_invo
           v31 = *(8 * v30);
           *(v10 + 49) = 0;
           *(v10 + 51) |= [v31 deformedMeshReliesOnTransforms];
-          v32 = [v31 deformedMeshReliesOnFrustum];
-          *(v10 + 52) |= v32;
+          deformedMeshReliesOnFrustum = [v31 deformedMeshReliesOnFrustum];
+          *(v10 + 52) |= deformedMeshReliesOnFrustum;
           ++v30;
         }
 
         while (v28 != v30);
-        v20 = OUTLINED_FUNCTION_9(v32, v33, v34, v35, v36, v37, v38, v39);
+        v20 = OUTLINED_FUNCTION_9(deformedMeshReliesOnFrustum, v33, v34, v35, v36, v37, v38, v39);
         v28 = v20;
       }
 
@@ -2589,11 +2589,11 @@ uint64_t __56__SCNMTLDeformerStack_drawAuthoringEnvironment_context___block_invo
           v44 = *(v55 + 8 * i);
           *(v10 + 49) = 0;
           *(v10 + 51) |= [v44 deformedMeshReliesOnTransforms];
-          v45 = [v44 deformedMeshReliesOnFrustum];
-          *(v10 + 52) |= v45;
+          deformedMeshReliesOnFrustum2 = [v44 deformedMeshReliesOnFrustum];
+          *(v10 + 52) |= deformedMeshReliesOnFrustum2;
         }
 
-        v41 = OUTLINED_FUNCTION_10(v45, v46, v47, v48, v49, v50, v51, v52, v54, v55, v56, v57, v58, v59, v60, v61, v62, v63, v64, v65, v66, v67, v68, v69, v71, v72.receiver, v72.super_class, v73);
+        v41 = OUTLINED_FUNCTION_10(deformedMeshReliesOnFrustum2, v46, v47, v48, v49, v50, v51, v52, v54, v55, v56, v57, v58, v59, v60, v61, v62, v63, v64, v65, v66, v67, v68, v69, v71, v72.receiver, v72.super_class, v73);
       }
 
       while (v41);
@@ -2625,9 +2625,9 @@ uint64_t __56__SCNMTLDeformerStack_drawAuthoringEnvironment_context___block_invo
 
 - (uint64_t)computeDeformedMeshReliesOnTransforms
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 51);
+    v1 = *(self + 51);
   }
 
   else
@@ -2640,9 +2640,9 @@ uint64_t __56__SCNMTLDeformerStack_drawAuthoringEnvironment_context___block_invo
 
 - (uint64_t)computeDeformedMeshReliesOnFrustum
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 52);
+    v1 = *(self + 52);
   }
 
   else
@@ -2653,67 +2653,67 @@ uint64_t __56__SCNMTLDeformerStack_drawAuthoringEnvironment_context___block_invo
   return v1 & 1;
 }
 
-- (uint64_t)computeDeformedMeshForContext:(unsigned __int8)a3 programHashCodeRequirements:(const void *)a4 transforms:(const void *)a5 frustumInfo:(_BOOL8 *)a6 status:
+- (uint64_t)computeDeformedMeshForContext:(unsigned __int8)context programHashCodeRequirements:(const void *)requirements transforms:(const void *)transforms frustumInfo:(_BOOL8 *)info status:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v12 = *(a1 + 16);
+  v12 = *(self + 16);
   v59[0] = MEMORY[0x277D85DD0];
   v59[1] = 3221225472;
   v59[2] = __111__SCNMTLDeformerStack_computeDeformedMeshForContext_programHashCodeRequirements_transforms_frustumInfo_status___block_invoke;
   v59[3] = &unk_2782FC580;
-  v59[4] = a1;
+  v59[4] = self;
   v59[5] = a2;
-  v60 = a3;
+  contextCopy = context;
   C3DDeformerStackEnumerateDependencyStacks(v12, v59);
-  memcpy((a1 + 416), a4, 0xC0uLL);
-  memcpy((a1 + 608), a5, 0x70uLL);
-  *(a1 + 720) = a2;
-  [a1 reconfigureIfNeededWithContext:a2 programHashCodeRequirements:a3];
+  memcpy((self + 416), requirements, 0xC0uLL);
+  memcpy((self + 608), transforms, 0x70uLL);
+  *(self + 720) = a2;
+  [self reconfigureIfNeededWithContext:a2 programHashCodeRequirements:context];
   OUTLINED_FUNCTION_2_4();
-  v13 = *(a1 + 56);
-  v14 = *(a1 + 64);
-  v15 = *(a1 + 88);
-  v16 = *(a1 + 96);
+  v13 = *(self + 56);
+  v14 = *(self + 64);
+  v15 = *(self + 88);
+  v16 = *(self + 96);
   if (!v13)
   {
-    v13 = *(a1 + 88);
+    v13 = *(self + 88);
   }
 
   if (!v14)
   {
-    v14 = *(a1 + 96);
+    v14 = *(self + 96);
   }
 
-  v17 = *(a1 + 72);
-  v18 = *(a1 + 104);
-  v19 = *(a1 + 112);
+  v17 = *(self + 72);
+  v18 = *(self + 104);
+  meshForDeformedTopology = *(self + 112);
   if (!v17)
   {
-    v17 = *(a1 + 104);
+    v17 = *(self + 104);
   }
 
-  *(a1 + 736) = v13;
-  *(a1 + 744) = v15;
-  *(a1 + 752) = v14;
-  *(a1 + 760) = v16;
-  *(a1 + 768) = v17;
-  *(a1 + 776) = v18;
+  *(self + 736) = v13;
+  *(self + 744) = v15;
+  *(self + 752) = v14;
+  *(self + 760) = v16;
+  *(self + 768) = v17;
+  *(self + 776) = v18;
   OUTLINED_FUNCTION_5();
-  v24 = *(a1 + 832);
+  v24 = *(self + 832);
   if (v24)
   {
-    *(a1 + 744) = v21;
-    *(a1 + 760) = v22;
-    *(a1 + 776) = v23;
+    *(self + 744) = v21;
+    *(self + 760) = v22;
+    *(self + 776) = v23;
     v25 = OUTLINED_FUNCTION_11(v24, v20) == 1;
-    v26 = *(a1 + 96);
-    *(a1 + 744) = *(a1 + 88);
-    *(a1 + 760) = v26;
-    *(a1 + 776) = *(a1 + 104);
+    v26 = *(self + 96);
+    *(self + 744) = *(self + 88);
+    *(self + 760) = v26;
+    *(self + 776) = *(self + 104);
   }
 
   else
@@ -2721,13 +2721,13 @@ uint64_t __56__SCNMTLDeformerStack_drawAuthoringEnvironment_context___block_invo
     v25 = 0;
   }
 
-  if (*(a1 + 864) && (PostMorphingDeformers = C3DDeformerStackGetPostMorphingDeformers(*(a1 + 16)), (v28 = [*(a1 + 864) count]) != 0))
+  if (*(self + 864) && (PostMorphingDeformers = C3DDeformerStackGetPostMorphingDeformers(*(self + 16)), (v28 = [*(self + 864) count]) != 0))
   {
     v29 = v28;
     v30 = 0;
     for (i = 0; i != v29; ++i)
     {
-      v32 = [*(a1 + 864) objectAtIndexedSubscript:i];
+      v32 = [*(self + 864) objectAtIndexedSubscript:i];
       if (v32)
       {
         [OUTLINED_FUNCTION_6() updateDependencyBuffersInBufferArray:? forDeformer:?];
@@ -2761,7 +2761,7 @@ uint64_t __56__SCNMTLDeformerStack_drawAuthoringEnvironment_context___block_invo
           v34 = 0;
         }
 
-        v19 = [v34 meshForDeformedTopology];
+        meshForDeformedTopology = [v34 meshForDeformedTopology];
       }
     }
   }
@@ -2771,7 +2771,7 @@ uint64_t __56__SCNMTLDeformerStack_drawAuthoringEnvironment_context___block_invo
     v30 = 0;
   }
 
-  v35 = *(a1 + 840);
+  v35 = *(self + 840);
   if (v35)
   {
     if (OUTLINED_FUNCTION_11(v35, v20) == 1)
@@ -2782,16 +2782,16 @@ uint64_t __56__SCNMTLDeformerStack_drawAuthoringEnvironment_context___block_invo
     OUTLINED_FUNCTION_0_5();
   }
 
-  if (*(a1 + 872))
+  if (*(self + 872))
   {
-    PostSkinningDeformers = C3DDeformerStackGetPostSkinningDeformers(*(a1 + 16));
-    v37 = [*(a1 + 872) count];
+    PostSkinningDeformers = C3DDeformerStackGetPostSkinningDeformers(*(self + 16));
+    v37 = [*(self + 872) count];
     if (v37)
     {
       v38 = v37;
       for (j = 0; j != v38; ++j)
       {
-        v40 = [*(a1 + 872) objectAtIndexedSubscript:j];
+        v40 = [*(self + 872) objectAtIndexedSubscript:j];
         if (v40)
         {
           [OUTLINED_FUNCTION_6() updateDependencyBuffersInBufferArray:? forDeformer:?];
@@ -2825,13 +2825,13 @@ uint64_t __56__SCNMTLDeformerStack_drawAuthoringEnvironment_context___block_invo
             v42 = 0;
           }
 
-          v19 = [v42 meshForDeformedTopology];
+          meshForDeformedTopology = [v42 meshForDeformedTopology];
         }
       }
     }
   }
 
-  v43 = *(a1 + 848);
+  v43 = *(self + 848);
   if (v43)
   {
     v44 = OUTLINED_FUNCTION_11(v43, v20);
@@ -2844,14 +2844,14 @@ uint64_t __56__SCNMTLDeformerStack_drawAuthoringEnvironment_context___block_invo
     OUTLINED_FUNCTION_0_5();
   }
 
-  if (*(a1 + 48) != *(a1 + 49))
+  if (*(self + 48) != *(self + 49))
   {
-    v45 = [a1 currentComputeEncoder];
-    v46 = v45;
-    v47 = *(a1 + 88);
-    if (v45->_buffers[0] == v47)
+    currentComputeEncoder = [self currentComputeEncoder];
+    v46 = currentComputeEncoder;
+    v47 = *(self + 88);
+    if (currentComputeEncoder->_buffers[0] == v47)
     {
-      if (!v45->_offsets[0])
+      if (!currentComputeEncoder->_offsets[0])
       {
         goto LABEL_55;
       }
@@ -2859,16 +2859,16 @@ uint64_t __56__SCNMTLDeformerStack_drawAuthoringEnvironment_context___block_invo
 
     else
     {
-      v45->_buffers[0] = v47;
+      currentComputeEncoder->_buffers[0] = v47;
     }
 
-    v45->_offsets[0] = 0;
-    v45->_buffersToBind[0] |= 1uLL;
+    currentComputeEncoder->_offsets[0] = 0;
+    currentComputeEncoder->_buffersToBind[0] |= 1uLL;
 LABEL_55:
-    v48 = *(a1 + 120);
-    if (v45->_buffers[1] == v48)
+    v48 = *(self + 120);
+    if (currentComputeEncoder->_buffers[1] == v48)
     {
-      if (!v45->_offsets[1])
+      if (!currentComputeEncoder->_offsets[1])
       {
         goto LABEL_59;
       }
@@ -2876,21 +2876,21 @@ LABEL_55:
 
     else
     {
-      v45->_buffers[1] = v48;
+      currentComputeEncoder->_buffers[1] = v48;
     }
 
-    v45->_offsets[1] = 0;
-    v45->_buffersToBind[0] |= 2uLL;
+    currentComputeEncoder->_offsets[1] = 0;
+    currentComputeEncoder->_buffersToBind[0] |= 2uLL;
 LABEL_59:
-    v49 = *(a1 + 96);
+    v49 = *(self + 96);
     if (!v49)
     {
       goto LABEL_68;
     }
 
-    if (v45->_buffers[2] == v49)
+    if (currentComputeEncoder->_buffers[2] == v49)
     {
-      if (!v45->_offsets[2])
+      if (!currentComputeEncoder->_offsets[2])
       {
         goto LABEL_64;
       }
@@ -2898,16 +2898,16 @@ LABEL_59:
 
     else
     {
-      v45->_buffers[2] = v49;
+      currentComputeEncoder->_buffers[2] = v49;
     }
 
-    v45->_offsets[2] = 0;
-    v45->_buffersToBind[0] |= 4uLL;
+    currentComputeEncoder->_offsets[2] = 0;
+    currentComputeEncoder->_buffersToBind[0] |= 4uLL;
 LABEL_64:
-    v50 = *(a1 + 128);
-    if (v45->_buffers[3] == v50)
+    v50 = *(self + 128);
+    if (currentComputeEncoder->_buffers[3] == v50)
     {
-      if (!v45->_offsets[3])
+      if (!currentComputeEncoder->_offsets[3])
       {
         goto LABEL_68;
       }
@@ -2915,21 +2915,21 @@ LABEL_64:
 
     else
     {
-      v45->_buffers[3] = v50;
+      currentComputeEncoder->_buffers[3] = v50;
     }
 
-    v45->_offsets[3] = 0;
-    v45->_buffersToBind[0] |= 8uLL;
+    currentComputeEncoder->_offsets[3] = 0;
+    currentComputeEncoder->_buffersToBind[0] |= 8uLL;
 LABEL_68:
-    v51 = *(a1 + 104);
+    v51 = *(self + 104);
     if (!v51)
     {
       goto LABEL_77;
     }
 
-    if (v45->_buffers[4] == v51)
+    if (currentComputeEncoder->_buffers[4] == v51)
     {
-      if (!v45->_offsets[4])
+      if (!currentComputeEncoder->_offsets[4])
       {
         goto LABEL_73;
       }
@@ -2937,16 +2937,16 @@ LABEL_68:
 
     else
     {
-      v45->_buffers[4] = v51;
+      currentComputeEncoder->_buffers[4] = v51;
     }
 
-    v45->_offsets[4] = 0;
-    v45->_buffersToBind[0] |= 0x10uLL;
+    currentComputeEncoder->_offsets[4] = 0;
+    currentComputeEncoder->_buffersToBind[0] |= 0x10uLL;
 LABEL_73:
-    v52 = *(a1 + 136);
-    if (v45->_buffers[5] == v52)
+    v52 = *(self + 136);
+    if (currentComputeEncoder->_buffers[5] == v52)
     {
-      if (!v45->_offsets[5])
+      if (!currentComputeEncoder->_offsets[5])
       {
         goto LABEL_77;
       }
@@ -2954,25 +2954,25 @@ LABEL_73:
 
     else
     {
-      v45->_buffers[5] = v52;
+      currentComputeEncoder->_buffers[5] = v52;
     }
 
-    v45->_offsets[5] = 0;
-    v45->_buffersToBind[0] |= 0x20uLL;
+    currentComputeEncoder->_offsets[5] = 0;
+    currentComputeEncoder->_buffersToBind[0] |= 0x20uLL;
 LABEL_77:
-    v53 = *(a1 + 352);
-    if (v45->_buffers[6] == v53)
+    v53 = *(self + 352);
+    if (currentComputeEncoder->_buffers[6] == v53)
     {
-      if (!v45->_offsets[6])
+      if (!currentComputeEncoder->_offsets[6])
       {
 LABEL_81:
-        SCNMTLComputeCommandEncoder::setBytes(v45, (a1 + 336), 4uLL, 7uLL);
-        v54 = [(SCNMTLOpenSubdivComputeEvaluator *)*(a1 + 344) computeEvaluator];
-        v55 = *(a1 + 336);
-        if (v46->_computePipelineState != v54)
+        SCNMTLComputeCommandEncoder::setBytes(currentComputeEncoder, (self + 336), 4uLL, 7uLL);
+        computeEvaluator = [(SCNMTLOpenSubdivComputeEvaluator *)*(self + 344) computeEvaluator];
+        v55 = *(self + 336);
+        if (v46->_computePipelineState != computeEvaluator)
         {
-          v46->_computePipelineState = v54;
-          [(MTLComputeCommandEncoder *)v46->_encoder setComputePipelineState:v54];
+          v46->_computePipelineState = computeEvaluator;
+          [(MTLComputeCommandEncoder *)v46->_encoder setComputePipelineState:computeEvaluator];
         }
 
         SCNMTLComputeCommandEncoder::dispatchOnGrid1D(v46, v55);
@@ -2982,47 +2982,47 @@ LABEL_81:
 
     else
     {
-      v45->_buffers[6] = v53;
+      currentComputeEncoder->_buffers[6] = v53;
     }
 
-    v45->_offsets[6] = 0;
-    v45->_buffersToBind[0] |= 0x40uLL;
+    currentComputeEncoder->_offsets[6] = 0;
+    currentComputeEncoder->_buffersToBind[0] |= 0x40uLL;
     goto LABEL_81;
   }
 
 LABEL_84:
-  v56 = *(a1 + 128);
-  *(a1 + 744) = *(a1 + 120);
-  *(a1 + 760) = v56;
-  *(a1 + 776) = *(a1 + 136);
+  v56 = *(self + 128);
+  *(self + 744) = *(self + 120);
+  *(self + 760) = v56;
+  *(self + 776) = *(self + 136);
   if (v25)
   {
-    OUTLINED_FUNCTION_11(*(a1 + 856), v20);
+    OUTLINED_FUNCTION_11(*(self + 856), v20);
   }
 
-  v57 = *(a1 + 728);
+  v57 = *(self + 728);
   if (v57)
   {
     bzero(v57, 0x678uLL);
   }
 
-  *a6 = v25;
-  bzero((a1 + 416), 0xC0uLL);
-  *(a1 + 688) = 0u;
-  *(a1 + 704) = 0u;
-  *(a1 + 656) = 0u;
-  *(a1 + 672) = 0u;
-  *(a1 + 624) = 0u;
-  *(a1 + 640) = 0u;
-  *(a1 + 608) = 0u;
-  *(a1 + 720) = 0;
-  *(a1 + 728) = 0;
+  *info = v25;
+  bzero((self + 416), 0xC0uLL);
+  *(self + 688) = 0u;
+  *(self + 704) = 0u;
+  *(self + 656) = 0u;
+  *(self + 672) = 0u;
+  *(self + 624) = 0u;
+  *(self + 640) = 0u;
+  *(self + 608) = 0u;
+  *(self + 720) = 0;
+  *(self + 728) = 0;
   if (v30)
   {
-    C3DNodeBoundingBoxDidUpdate(*(a1 + 24));
+    C3DNodeBoundingBoxDidUpdate(*(self + 24));
   }
 
-  return v19;
+  return meshForDeformedTopology;
 }
 
 - (uint64_t)bufferForCommonProfileArgumentNamed:(uint64_t)result
@@ -3051,7 +3051,7 @@ LABEL_84:
   return result;
 }
 
-- (uint64_t)updateDataForAuthoringEnvironment:(uint64_t)a3 transforms:(uint64_t)a4 context:
+- (uint64_t)updateDataForAuthoringEnvironment:(uint64_t)environment transforms:(uint64_t)transforms context:
 {
   if (result)
   {
@@ -3063,14 +3063,14 @@ LABEL_84:
     v10[30] = v6;
     v10[28] = v7;
     memcpy((v8 + 32), v9, 0xC0uLL);
-    v10[29] = a4;
+    v10[29] = transforms;
     return [v5 enumerateInternalDeformersUsingBlock:v10];
   }
 
   return result;
 }
 
-- (void)drawAuthoringEnvironment:(uint64_t)a3 context:
+- (void)drawAuthoringEnvironment:(uint64_t)environment context:
 {
   if (result)
   {
@@ -3078,7 +3078,7 @@ LABEL_84:
     v3[1] = 3221225472;
     v3[2] = __56__SCNMTLDeformerStack_drawAuthoringEnvironment_context___block_invoke;
     v3[3] = &unk_2782FC620;
-    v3[5] = a3;
+    v3[5] = environment;
     v3[6] = a2;
     v3[4] = result;
     return [result enumerateInternalDeformersUsingBlock:v3];

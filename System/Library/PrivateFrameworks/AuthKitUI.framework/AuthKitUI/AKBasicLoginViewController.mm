@@ -1,15 +1,15 @@
 @interface AKBasicLoginViewController
 - (AKAppleIDAuthenticationInAppContext)context;
 - (AKBasicLoginControllerDelegate)delegate;
-- (AKBasicLoginViewController)initWithContext:(id)a3;
+- (AKBasicLoginViewController)initWithContext:(id)context;
 - (BOOL)_shouldShowPassword;
 - (BOOL)isPresentedModally;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)_cancelBarButtonItem;
 - (id)_cancelTrayButton;
-- (id)_formatUsernameAsPhoneNumberIfNeeded:(id)a3;
+- (id)_formatUsernameAsPhoneNumberIfNeeded:(id)needed;
 - (id)_loginOptions;
 - (id)_passwordCell;
 - (id)_signInBarButtonItem;
@@ -18,263 +18,263 @@
 - (id)_title;
 - (id)_usernameCell;
 - (id)passwordCellTextField;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (id)usernameCellTextField;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_cancelPressed:(id)a3;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_cancelPressed:(id)pressed;
 - (void)_initializeView;
-- (void)_keyboardDidHide:(id)a3;
-- (void)_keyboardDidShow:(id)a3;
-- (void)_setContentInset:(double)a3;
+- (void)_keyboardDidHide:(id)hide;
+- (void)_keyboardDidShow:(id)show;
+- (void)_setContentInset:(double)inset;
 - (void)_setPasswordHiddenIfNeeded;
 - (void)_setupActionButtons;
-- (void)_signInPressed:(id)a3;
-- (void)cancelButtonTapped:(id)a3;
+- (void)_signInPressed:(id)pressed;
+- (void)cancelButtonTapped:(id)tapped;
 - (void)clearPasswordField;
-- (void)context:(id)a3 needsPasswordWithCompletion:(id)a4;
+- (void)context:(id)context needsPasswordWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)initializePasswordCellTextField:(id)a3;
-- (void)initializeUsernameCellTextField:(id)a3;
+- (void)initializePasswordCellTextField:(id)field;
+- (void)initializeUsernameCellTextField:(id)field;
 - (void)loadView;
 - (void)startAnimating;
 - (void)stopAnimating;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation AKBasicLoginViewController
 
-- (AKBasicLoginViewController)initWithContext:(id)a3
+- (AKBasicLoginViewController)initWithContext:(id)context
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = v10;
-  v7 = [location[0] title];
-  v6 = [location[0] reason];
-  v10 = 0;
+  objc_storeStrong(location, context);
+  v5 = selfCopy;
+  title = [location[0] title];
+  reason = [location[0] reason];
+  selfCopy = 0;
   v8.receiver = v5;
   v8.super_class = AKBasicLoginViewController;
-  v10 = [AKBasicLoginViewController initWithTitle:sel_initWithTitle_detailText_icon_ detailText:v7 icon:?];
-  objc_storeStrong(&v10, v10);
-  MEMORY[0x277D82BD8](v6);
-  MEMORY[0x277D82BD8](v7);
-  if (v10)
+  selfCopy = [AKBasicLoginViewController initWithTitle:sel_initWithTitle_detailText_icon_ detailText:title icon:?];
+  objc_storeStrong(&selfCopy, selfCopy);
+  MEMORY[0x277D82BD8](reason);
+  MEMORY[0x277D82BD8](title);
+  if (selfCopy)
   {
-    objc_storeWeak(&v10->_context, location[0]);
+    objc_storeWeak(&selfCopy->_context, location[0]);
     if ([location[0] shouldAllowAppleIDCreation])
     {
       [location[0] setIsUsernameEditable:1];
     }
   }
 
-  v4 = MEMORY[0x277D82BE0](v10);
+  v4 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v4;
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3[1] = a2;
   v3[0] = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3[0] removeObserver:v4 name:*MEMORY[0x277D76C60] object:?];
-  [v3[0] removeObserver:v4 name:*MEMORY[0x277D76BA0] object:0];
+  [v3[0] removeObserver:selfCopy name:*MEMORY[0x277D76C60] object:?];
+  [v3[0] removeObserver:selfCopy name:*MEMORY[0x277D76BA0] object:0];
   objc_storeStrong(v3, 0);
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = AKBasicLoginViewController;
   [(AKBasicLoginViewController *)&v2 dealloc];
 }
 
 - (void)loadView
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = AKBasicLoginViewController;
   [(OBBaseWelcomeController *)&v2 loadView];
-  [(AKBasicLoginViewController *)v4 _setupActionButtons];
-  [(AKBasicLoginViewController *)v4 _initializeView];
+  [(AKBasicLoginViewController *)selfCopy _setupActionButtons];
+  [(AKBasicLoginViewController *)selfCopy _initializeView];
 }
 
 - (void)viewDidLoad
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = AKBasicLoginViewController;
   [(OBBaseWelcomeController *)&v3 viewDidLoad];
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 addObserver:v5 selector:sel__keyboardDidShow_ name:*MEMORY[0x277D76C60] object:?];
-  [v2 addObserver:v5 selector:sel__keyboardDidHide_ name:*MEMORY[0x277D76BA0] object:0];
-  objc_storeStrong(&v2, 0);
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:selfCopy selector:sel__keyboardDidShow_ name:*MEMORY[0x277D76C60] object:?];
+  [defaultCenter addObserver:selfCopy selector:sel__keyboardDidHide_ name:*MEMORY[0x277D76BA0] object:0];
+  objc_storeStrong(&defaultCenter, 0);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  appearCopy = appear;
   v3.receiver = self;
   v3.super_class = AKBasicLoginViewController;
-  [(AKBasicLoginViewController *)&v3 viewWillAppear:a3];
+  [(AKBasicLoginViewController *)&v3 viewWillAppear:appear];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  appearCopy = appear;
   v10.receiver = self;
   v10.super_class = AKBasicLoginViewController;
-  [(OBBaseWelcomeController *)&v10 viewDidAppear:a3];
-  v7 = [(AKBasicLoginViewController *)v13 delegate];
-  [(AKBasicLoginControllerDelegate *)v7 basicLoginControllerDidPresent:v13];
-  *&v3 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-  [(UITableView *)v13->_tableView reloadData];
-  v8 = [(AKBasicLoginViewController *)v13 context];
-  v9 = [(AKAppleIDAuthenticationInAppContext *)v8 isUsernameEditable];
-  *&v4 = MEMORY[0x277D82BD8](v8).n128_u64[0];
-  if (v9)
+  [(OBBaseWelcomeController *)&v10 viewDidAppear:appear];
+  delegate = [(AKBasicLoginViewController *)selfCopy delegate];
+  [(AKBasicLoginControllerDelegate *)delegate basicLoginControllerDidPresent:selfCopy];
+  *&v3 = MEMORY[0x277D82BD8](delegate).n128_u64[0];
+  [(UITableView *)selfCopy->_tableView reloadData];
+  context = [(AKBasicLoginViewController *)selfCopy context];
+  isUsernameEditable = [(AKAppleIDAuthenticationInAppContext *)context isUsernameEditable];
+  *&v4 = MEMORY[0x277D82BD8](context).n128_u64[0];
+  if (isUsernameEditable)
   {
-    v6 = [(AKBasicLoginTableViewCell *)v13->_usernameCell cellTextField];
-    [(UITextField *)v6 becomeFirstResponder];
-    MEMORY[0x277D82BD8](v6);
+    cellTextField = [(AKBasicLoginTableViewCell *)selfCopy->_usernameCell cellTextField];
+    [(UITextField *)cellTextField becomeFirstResponder];
+    MEMORY[0x277D82BD8](cellTextField);
   }
 
   else
   {
-    v5 = [(AKBasicLoginTableViewCell *)v13->_passwordCell cellTextField];
-    [(UITextField *)v5 becomeFirstResponder];
-    MEMORY[0x277D82BD8](v5);
+    cellTextField2 = [(AKBasicLoginTableViewCell *)selfCopy->_passwordCell cellTextField];
+    [(UITextField *)cellTextField2 becomeFirstResponder];
+    MEMORY[0x277D82BD8](cellTextField2);
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  disappearCopy = disappear;
   v4.receiver = self;
   v4.super_class = AKBasicLoginViewController;
-  [(OBBaseWelcomeController *)&v4 viewWillDisappear:a3];
-  v3 = [(AKBasicLoginViewController *)v7 delegate];
-  [(AKBasicLoginControllerDelegate *)v3 basicLoginControllerWillDismiss:v7];
-  MEMORY[0x277D82BD8](v3);
+  [(OBBaseWelcomeController *)&v4 viewWillDisappear:disappear];
+  delegate = [(AKBasicLoginViewController *)selfCopy delegate];
+  [(AKBasicLoginControllerDelegate *)delegate basicLoginControllerWillDismiss:selfCopy];
+  MEMORY[0x277D82BD8](delegate);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  disappearCopy = disappear;
   v10.receiver = self;
   v10.super_class = AKBasicLoginViewController;
-  [(OBBaseWelcomeController *)&v10 viewDidDisappear:a3];
-  v7 = [(AKBasicLoginViewController *)v13 delegate];
-  [(AKBasicLoginControllerDelegate *)v7 basicLoginControllerDidDismiss:v13];
-  *&v3 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-  v8 = [(AKBasicLoginViewController *)v13 loginActions];
-  v9 = [(AKBasicLoginActions *)v8 ak_cancelAction];
-  MEMORY[0x277D82BD8](v9);
-  *&v4 = MEMORY[0x277D82BD8](v8).n128_u64[0];
-  if (v9)
+  [(OBBaseWelcomeController *)&v10 viewDidDisappear:disappear];
+  delegate = [(AKBasicLoginViewController *)selfCopy delegate];
+  [(AKBasicLoginControllerDelegate *)delegate basicLoginControllerDidDismiss:selfCopy];
+  *&v3 = MEMORY[0x277D82BD8](delegate).n128_u64[0];
+  loginActions = [(AKBasicLoginViewController *)selfCopy loginActions];
+  ak_cancelAction = [(AKBasicLoginActions *)loginActions ak_cancelAction];
+  MEMORY[0x277D82BD8](ak_cancelAction);
+  *&v4 = MEMORY[0x277D82BD8](loginActions).n128_u64[0];
+  if (ak_cancelAction)
   {
-    v6 = [(AKBasicLoginViewController *)v13 loginActions];
-    v5 = [(AKBasicLoginActions *)v6 ak_cancelAction];
-    v5[2]();
-    MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v6);
+    loginActions2 = [(AKBasicLoginViewController *)selfCopy loginActions];
+    ak_cancelAction2 = [(AKBasicLoginActions *)loginActions2 ak_cancelAction];
+    ak_cancelAction2[2]();
+    MEMORY[0x277D82BD8](ak_cancelAction2);
+    MEMORY[0x277D82BD8](loginActions2);
   }
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v24 = self;
+  selfCopy = self;
   v23 = a2;
-  v9 = [(AKBasicLoginViewController *)self view];
-  [v9 layoutIfNeeded];
-  v12 = [(AKBasicLoginViewController *)v24 tableView];
-  [(UITableView *)v12 contentSize];
+  view = [(AKBasicLoginViewController *)self view];
+  [view layoutIfNeeded];
+  tableView = [(AKBasicLoginViewController *)selfCopy tableView];
+  [(UITableView *)tableView contentSize];
   v21 = v2;
   v22 = v3;
   v10 = v3;
-  v11 = [(AKBasicLoginViewController *)v24 heightAnchor];
-  [(NSLayoutConstraint *)v11 setConstant:v10];
-  MEMORY[0x277D82BD8](v11);
-  v14 = [(AKBasicLoginViewController *)v24 contentView];
-  [v14 frame];
+  heightAnchor = [(AKBasicLoginViewController *)selfCopy heightAnchor];
+  [(NSLayoutConstraint *)heightAnchor setConstant:v10];
+  MEMORY[0x277D82BD8](heightAnchor);
+  contentView = [(AKBasicLoginViewController *)selfCopy contentView];
+  [contentView frame];
   v17 = v4;
   v18 = v5;
   *&v19 = v6;
   *(&v19 + 1) = v7;
   v20 = v19;
-  v13 = [(AKBasicLoginViewController *)v24 contentScrollView];
+  contentScrollView = [(AKBasicLoginViewController *)selfCopy contentScrollView];
   v16 = v19;
-  [v13 setContentSize:v19];
-  MEMORY[0x277D82BD8](v13);
-  *&v8 = MEMORY[0x277D82BD8](v14).n128_u64[0];
-  v15.receiver = v24;
+  [contentScrollView setContentSize:v19];
+  MEMORY[0x277D82BD8](contentScrollView);
+  *&v8 = MEMORY[0x277D82BD8](contentView).n128_u64[0];
+  v15.receiver = selfCopy;
   v15.super_class = AKBasicLoginViewController;
   [(OBBaseWelcomeController *)&v15 viewDidLayoutSubviews];
 }
 
 - (BOOL)isPresentedModally
 {
-  v8 = [(AKBasicLoginViewController *)self navigationController];
-  v2 = MEMORY[0x277D82BD8](v8).n128_u64[0];
-  if (v8)
+  navigationController = [(AKBasicLoginViewController *)self navigationController];
+  v2 = MEMORY[0x277D82BD8](navigationController).n128_u64[0];
+  if (navigationController)
   {
-    v6 = [(AKBasicLoginViewController *)self navigationController];
-    v5 = [v6 viewControllers];
-    v7 = [v5 firstObject];
-    MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v5);
-    v2 = MEMORY[0x277D82BD8](v6).n128_u64[0];
-    if (v7 != self)
+    navigationController2 = [(AKBasicLoginViewController *)self navigationController];
+    viewControllers = [navigationController2 viewControllers];
+    firstObject = [viewControllers firstObject];
+    MEMORY[0x277D82BD8](firstObject);
+    MEMORY[0x277D82BD8](viewControllers);
+    v2 = MEMORY[0x277D82BD8](navigationController2).n128_u64[0];
+    if (firstObject != self)
     {
       return 0;
     }
   }
 
-  v4 = [(AKBasicLoginViewController *)self presentingViewController];
-  MEMORY[0x277D82BD8](v4);
-  return v4 != 0;
+  presentingViewController = [(AKBasicLoginViewController *)self presentingViewController];
+  MEMORY[0x277D82BD8](presentingViewController);
+  return presentingViewController != 0;
 }
 
 - (void)startAnimating
 {
-  v2 = [(AKBasicLoginViewController *)self primaryButton];
-  [(OBTrayButton *)v2 showsBusyIndicator];
-  MEMORY[0x277D82BD8](v2);
+  primaryButton = [(AKBasicLoginViewController *)self primaryButton];
+  [(OBTrayButton *)primaryButton showsBusyIndicator];
+  MEMORY[0x277D82BD8](primaryButton);
 }
 
 - (void)stopAnimating
 {
-  v2 = [(AKBasicLoginViewController *)self primaryButton];
-  [(OBTrayButton *)v2 hidesBusyIndicator];
-  MEMORY[0x277D82BD8](v2);
+  primaryButton = [(AKBasicLoginViewController *)self primaryButton];
+  [(OBTrayButton *)primaryButton hidesBusyIndicator];
+  MEMORY[0x277D82BD8](primaryButton);
 }
 
 - (void)clearPasswordField
 {
-  v2 = [(AKBasicLoginViewController *)self passwordCellTextField];
-  [v2 setText:0];
-  MEMORY[0x277D82BD8](v2);
+  passwordCellTextField = [(AKBasicLoginViewController *)self passwordCellTextField];
+  [passwordCellTextField setText:0];
+  MEMORY[0x277D82BD8](passwordCellTextField);
 }
 
-- (void)_cancelPressed:(id)a3
+- (void)_cancelPressed:(id)pressed
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, pressed);
   v12 = _AKLogSystem();
   v11 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -286,66 +286,66 @@
   }
 
   objc_storeStrong(&v12, 0);
-  v6 = [(AKBasicLoginViewController *)v14 loginActions];
-  v7 = [(AKBasicLoginActions *)v6 ak_cancelAction];
-  MEMORY[0x277D82BD8](v7);
-  *&v3 = MEMORY[0x277D82BD8](v6).n128_u64[0];
-  if (v7)
+  loginActions = [(AKBasicLoginViewController *)selfCopy loginActions];
+  ak_cancelAction = [(AKBasicLoginActions *)loginActions ak_cancelAction];
+  MEMORY[0x277D82BD8](ak_cancelAction);
+  *&v3 = MEMORY[0x277D82BD8](loginActions).n128_u64[0];
+  if (ak_cancelAction)
   {
-    v5 = [(AKBasicLoginViewController *)v14 loginActions];
-    v4 = [(AKBasicLoginActions *)v5 ak_cancelAction];
-    v4[2]();
-    MEMORY[0x277D82BD8](v4);
-    MEMORY[0x277D82BD8](v5);
+    loginActions2 = [(AKBasicLoginViewController *)selfCopy loginActions];
+    ak_cancelAction2 = [(AKBasicLoginActions *)loginActions2 ak_cancelAction];
+    ak_cancelAction2[2]();
+    MEMORY[0x277D82BD8](ak_cancelAction2);
+    MEMORY[0x277D82BD8](loginActions2);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_signInPressed:(id)a3
+- (void)_signInPressed:(id)pressed
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v16 = [(AKBasicLoginViewController *)v22 usernameCellTextField];
-  v20 = [v16 text];
-  *&v3 = MEMORY[0x277D82BD8](v16).n128_u64[0];
-  v17 = [(AKBasicLoginViewController *)v22 passwordCellTextField];
-  v19 = [v17 text];
-  *&v4 = MEMORY[0x277D82BD8](v17).n128_u64[0];
-  v18 = [(AKBasicLoginViewController *)v22 passwordHandler];
-  *&v5 = MEMORY[0x277D82BD8](v18).n128_u64[0];
-  if (v18)
+  objc_storeStrong(location, pressed);
+  usernameCellTextField = [(AKBasicLoginViewController *)selfCopy usernameCellTextField];
+  text = [usernameCellTextField text];
+  *&v3 = MEMORY[0x277D82BD8](usernameCellTextField).n128_u64[0];
+  passwordCellTextField = [(AKBasicLoginViewController *)selfCopy passwordCellTextField];
+  text2 = [passwordCellTextField text];
+  *&v4 = MEMORY[0x277D82BD8](passwordCellTextField).n128_u64[0];
+  passwordHandler = [(AKBasicLoginViewController *)selfCopy passwordHandler];
+  *&v5 = MEMORY[0x277D82BD8](passwordHandler).n128_u64[0];
+  if (passwordHandler)
   {
-    v15 = [(AKBasicLoginViewController *)v22 passwordHandler];
-    v15[2](v15, v19);
-    *&v6 = MEMORY[0x277D82BD8](v15).n128_u64[0];
-    [(AKBasicLoginViewController *)v22 setPasswordHandler:0, v6];
+    passwordHandler2 = [(AKBasicLoginViewController *)selfCopy passwordHandler];
+    passwordHandler2[2](passwordHandler2, text2);
+    *&v6 = MEMORY[0x277D82BD8](passwordHandler2).n128_u64[0];
+    [(AKBasicLoginViewController *)selfCopy setPasswordHandler:0, v6];
   }
 
   else
   {
-    v13 = [(AKBasicLoginViewController *)v22 loginActions];
-    v14 = [(AKBasicLoginActions *)v13 authenticateAction];
-    MEMORY[0x277D82BD8](v14);
-    *&v7 = MEMORY[0x277D82BD8](v13).n128_u64[0];
-    if (v14)
+    loginActions = [(AKBasicLoginViewController *)selfCopy loginActions];
+    authenticateAction = [(AKBasicLoginActions *)loginActions authenticateAction];
+    MEMORY[0x277D82BD8](authenticateAction);
+    *&v7 = MEMORY[0x277D82BD8](loginActions).n128_u64[0];
+    if (authenticateAction)
     {
-      v8 = [(AKBasicLoginViewController *)v22 _formatUsernameAsPhoneNumberIfNeeded:v20, v7];
-      v9 = v20;
-      v20 = v8;
+      v8 = [(AKBasicLoginViewController *)selfCopy _formatUsernameAsPhoneNumberIfNeeded:text, v7];
+      v9 = text;
+      text = v8;
       *&v10 = MEMORY[0x277D82BD8](v9).n128_u64[0];
-      v12 = [(AKBasicLoginViewController *)v22 loginActions];
-      v11 = [(AKBasicLoginActions *)v12 authenticateAction];
-      v11[2](v11, v20, v19);
-      MEMORY[0x277D82BD8](v11);
-      MEMORY[0x277D82BD8](v12);
+      loginActions2 = [(AKBasicLoginViewController *)selfCopy loginActions];
+      authenticateAction2 = [(AKBasicLoginActions *)loginActions2 authenticateAction];
+      authenticateAction2[2](authenticateAction2, text, text2);
+      MEMORY[0x277D82BD8](authenticateAction2);
+      MEMORY[0x277D82BD8](loginActions2);
     }
   }
 
-  objc_storeStrong(&v19, 0);
-  objc_storeStrong(&v20, 0);
+  objc_storeStrong(&text2, 0);
+  objc_storeStrong(&text, 0);
   objc_storeStrong(location, 0);
 }
 
@@ -354,28 +354,28 @@
   location[2] = self;
   location[1] = a2;
   location[0] = [(AKBasicLoginViewController *)self context];
-  v8 = [location[0] title];
-  *&v2 = MEMORY[0x277D82BD8](v8).n128_u64[0];
-  if (v8)
+  title = [location[0] title];
+  *&v2 = MEMORY[0x277D82BD8](title).n128_u64[0];
+  if (title)
   {
-    v18 = [location[0] title];
+    title2 = [location[0] title];
   }
 
   else if ([location[0] isUsernameEditable] || objc_msgSend(location[0], "shouldAllowAppleIDCreation"))
   {
     v6 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.AuthKitUI"];
-    v18 = [v6 localizedStringForKey:@"APPLE_ID_SIGN_IN_HEADER_REBRAND" value:&stru_28358EF68 table:@"Localizable"];
+    title2 = [v6 localizedStringForKey:@"APPLE_ID_SIGN_IN_HEADER_REBRAND" value:&stru_28358EF68 table:@"Localizable"];
     MEMORY[0x277D82BD8](v6);
   }
 
   else
   {
-    v7 = [MEMORY[0x277CF0218] currentDevice];
+    currentDevice = [MEMORY[0x277CF0218] currentDevice];
     v15 = 0;
     v13 = 0;
     v11 = 0;
     v9 = 0;
-    if ([v7 isMultiUserMode])
+    if ([currentDevice isMultiUserMode])
     {
       v16 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.AuthKitUI"];
       v15 = 1;
@@ -393,7 +393,7 @@
       v3 = MEMORY[0x277D82BE0](v10);
     }
 
-    v18 = v3;
+    title2 = v3;
     if (v9)
     {
       MEMORY[0x277D82BD8](v10);
@@ -414,127 +414,127 @@
       MEMORY[0x277D82BD8](v16);
     }
 
-    MEMORY[0x277D82BD8](v7);
+    MEMORY[0x277D82BD8](currentDevice);
   }
 
   objc_storeStrong(location, 0);
-  v4 = v18;
+  v4 = title2;
 
   return v4;
 }
 
 - (BOOL)_shouldShowPassword
 {
-  v3 = [(AKBasicLoginViewController *)self context];
-  v4 = 1;
-  if (([(AKAppleIDAuthenticationInAppContext *)v3 _requiresPasswordInput]& 1) == 0)
+  context = [(AKBasicLoginViewController *)self context];
+  isPasswordFieldVisible = 1;
+  if (([(AKAppleIDAuthenticationInAppContext *)context _requiresPasswordInput]& 1) == 0)
   {
-    v4 = [(AKBasicLoginViewController *)self isPasswordFieldVisible];
+    isPasswordFieldVisible = [(AKBasicLoginViewController *)self isPasswordFieldVisible];
   }
 
-  MEMORY[0x277D82BD8](v3);
-  return v4;
+  MEMORY[0x277D82BD8](context);
+  return isPasswordFieldVisible;
 }
 
 - (id)_loginOptions
 {
   v58[4] = *MEMORY[0x277D85DE8];
-  v57 = self;
+  selfCopy = self;
   location[1] = a2;
   if (!self->_loginOptions)
   {
     v40 = objc_alloc_init(MEMORY[0x277D75D18]);
-    loginOptions = v57->_loginOptions;
-    v57->_loginOptions = v40;
+    loginOptions = selfCopy->_loginOptions;
+    selfCopy->_loginOptions = v40;
     MEMORY[0x277D82BD8](loginOptions);
     v39 = [AKBasicLoginOptionsViewController alloc];
-    v37 = [(AKBasicLoginViewController *)v57 context];
+    context = [(AKBasicLoginViewController *)selfCopy context];
     v38 = [(AKBasicLoginOptionsViewController *)v39 initWithContext:?];
-    [(AKBasicLoginViewController *)v57 setLoginOptionsViewController:v38];
+    [(AKBasicLoginViewController *)selfCopy setLoginOptionsViewController:v38];
     MEMORY[0x277D82BD8](v38);
-    v36 = [(AKBasicLoginViewController *)v57 loginOptionsViewController];
-    v35 = [(AKBasicLoginOptionsViewController *)v36 view];
-    [v35 setTranslatesAutoresizingMaskIntoConstraints:0];
-    MEMORY[0x277D82BD8](v35);
-    v34 = [(AKBasicLoginViewController *)v57 loginOptionsViewController];
-    [(AKBasicLoginViewController *)v57 addChildViewController:?];
-    MEMORY[0x277D82BD8](v34);
-    objc_initWeak(location, v57);
+    loginOptionsViewController = [(AKBasicLoginViewController *)selfCopy loginOptionsViewController];
+    view = [(AKBasicLoginOptionsViewController *)loginOptionsViewController view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
+    MEMORY[0x277D82BD8](view);
+    loginOptionsViewController2 = [(AKBasicLoginViewController *)selfCopy loginOptionsViewController];
+    [(AKBasicLoginViewController *)selfCopy addChildViewController:?];
+    MEMORY[0x277D82BD8](loginOptionsViewController2);
+    objc_initWeak(location, selfCopy);
     v50 = MEMORY[0x277D85DD0];
     v51 = -1073741824;
     v52 = 0;
     v53 = __43__AKBasicLoginViewController__loginOptions__block_invoke;
     v54 = &unk_2784A6770;
     objc_copyWeak(&v55, location);
-    v33 = [(AKBasicLoginViewController *)v57 loginOptionsViewController];
-    [(AKBasicLoginOptionsViewController *)v33 setCreateIDAction:&v50];
+    loginOptionsViewController3 = [(AKBasicLoginViewController *)selfCopy loginOptionsViewController];
+    [(AKBasicLoginOptionsViewController *)loginOptionsViewController3 setCreateIDAction:&v50];
     v49 = 0;
-    MEMORY[0x277D82BD8](v33);
+    MEMORY[0x277D82BD8](loginOptionsViewController3);
     v43 = MEMORY[0x277D85DD0];
     v44 = -1073741824;
     v45 = 0;
     v46 = __43__AKBasicLoginViewController__loginOptions__block_invoke_62;
     v47 = &unk_2784A6770;
     objc_copyWeak(&v48, location);
-    v32 = [(AKBasicLoginViewController *)v57 loginOptionsViewController];
-    [(AKBasicLoginOptionsViewController *)v32 setForgotAction:&v43];
+    loginOptionsViewController4 = [(AKBasicLoginViewController *)selfCopy loginOptionsViewController];
+    [(AKBasicLoginOptionsViewController *)loginOptionsViewController4 setForgotAction:&v43];
     v42 = 0;
-    *&v3 = MEMORY[0x277D82BD8](v32).n128_u64[0];
-    [(UIView *)v57->_loginOptions setTranslatesAutoresizingMaskIntoConstraints:0, v3];
-    v31 = v57->_loginOptions;
-    v30 = [(AKBasicLoginViewController *)v57 loginOptionsViewController];
-    v29 = [(AKBasicLoginOptionsViewController *)v30 view];
+    *&v3 = MEMORY[0x277D82BD8](loginOptionsViewController4).n128_u64[0];
+    [(UIView *)selfCopy->_loginOptions setTranslatesAutoresizingMaskIntoConstraints:0, v3];
+    v31 = selfCopy->_loginOptions;
+    loginOptionsViewController5 = [(AKBasicLoginViewController *)selfCopy loginOptionsViewController];
+    view2 = [(AKBasicLoginOptionsViewController *)loginOptionsViewController5 view];
     [(UIView *)v31 addSubview:?];
-    MEMORY[0x277D82BD8](v29);
-    *&v4 = MEMORY[0x277D82BD8](v30).n128_u64[0];
-    v28 = [(AKBasicLoginViewController *)v57 loginOptionsViewController];
-    [(AKBasicLoginOptionsViewController *)v28 didMoveToParentViewController:v57];
-    *&v5 = MEMORY[0x277D82BD8](v28).n128_u64[0];
-    v27 = [(AKBasicLoginViewController *)v57 loginOptionsViewController];
-    v26 = [(AKBasicLoginOptionsViewController *)v27 view];
-    v25 = [v26 topAnchor];
-    v24 = [(UIView *)v57->_loginOptions topAnchor];
-    v23 = [v25 constraintEqualToAnchor:?];
+    MEMORY[0x277D82BD8](view2);
+    *&v4 = MEMORY[0x277D82BD8](loginOptionsViewController5).n128_u64[0];
+    loginOptionsViewController6 = [(AKBasicLoginViewController *)selfCopy loginOptionsViewController];
+    [(AKBasicLoginOptionsViewController *)loginOptionsViewController6 didMoveToParentViewController:selfCopy];
+    *&v5 = MEMORY[0x277D82BD8](loginOptionsViewController6).n128_u64[0];
+    loginOptionsViewController7 = [(AKBasicLoginViewController *)selfCopy loginOptionsViewController];
+    view3 = [(AKBasicLoginOptionsViewController *)loginOptionsViewController7 view];
+    topAnchor = [view3 topAnchor];
+    topAnchor2 = [(UIView *)selfCopy->_loginOptions topAnchor];
+    v23 = [topAnchor constraintEqualToAnchor:?];
     v58[0] = v23;
-    v22 = [(AKBasicLoginViewController *)v57 loginOptionsViewController];
-    v21 = [(AKBasicLoginOptionsViewController *)v22 view];
-    v20 = [v21 bottomAnchor];
-    v19 = [(UIView *)v57->_loginOptions bottomAnchor];
-    v18 = [v20 constraintEqualToAnchor:?];
+    loginOptionsViewController8 = [(AKBasicLoginViewController *)selfCopy loginOptionsViewController];
+    view4 = [(AKBasicLoginOptionsViewController *)loginOptionsViewController8 view];
+    bottomAnchor = [view4 bottomAnchor];
+    bottomAnchor2 = [(UIView *)selfCopy->_loginOptions bottomAnchor];
+    v18 = [bottomAnchor constraintEqualToAnchor:?];
     v58[1] = v18;
-    v17 = [(AKBasicLoginViewController *)v57 loginOptionsViewController];
-    v16 = [(AKBasicLoginOptionsViewController *)v17 view];
-    v15 = [v16 leadingAnchor];
-    v14 = [(UIView *)v57->_loginOptions leadingAnchor];
-    v13 = [v15 constraintEqualToAnchor:20.0 constant:?];
+    loginOptionsViewController9 = [(AKBasicLoginViewController *)selfCopy loginOptionsViewController];
+    view5 = [(AKBasicLoginOptionsViewController *)loginOptionsViewController9 view];
+    leadingAnchor = [view5 leadingAnchor];
+    leadingAnchor2 = [(UIView *)selfCopy->_loginOptions leadingAnchor];
+    v13 = [leadingAnchor constraintEqualToAnchor:20.0 constant:?];
     v58[2] = v13;
-    v12 = [(AKBasicLoginViewController *)v57 loginOptionsViewController];
-    v11 = [(AKBasicLoginOptionsViewController *)v12 view];
-    v10 = [v11 trailingAnchor];
-    v9 = [(UIView *)v57->_loginOptions trailingAnchor];
-    v8 = [v10 constraintEqualToAnchor:-20.0 constant:?];
+    loginOptionsViewController10 = [(AKBasicLoginViewController *)selfCopy loginOptionsViewController];
+    view6 = [(AKBasicLoginOptionsViewController *)loginOptionsViewController10 view];
+    trailingAnchor = [view6 trailingAnchor];
+    trailingAnchor2 = [(UIView *)selfCopy->_loginOptions trailingAnchor];
+    v8 = [trailingAnchor constraintEqualToAnchor:-20.0 constant:?];
     v58[3] = v8;
     v41 = [MEMORY[0x277CBEA60] arrayWithObjects:v58 count:4];
     MEMORY[0x277D82BD8](v8);
-    MEMORY[0x277D82BD8](v9);
-    MEMORY[0x277D82BD8](v10);
-    MEMORY[0x277D82BD8](v11);
-    MEMORY[0x277D82BD8](v12);
+    MEMORY[0x277D82BD8](trailingAnchor2);
+    MEMORY[0x277D82BD8](trailingAnchor);
+    MEMORY[0x277D82BD8](view6);
+    MEMORY[0x277D82BD8](loginOptionsViewController10);
     MEMORY[0x277D82BD8](v13);
-    MEMORY[0x277D82BD8](v14);
-    MEMORY[0x277D82BD8](v15);
-    MEMORY[0x277D82BD8](v16);
-    MEMORY[0x277D82BD8](v17);
+    MEMORY[0x277D82BD8](leadingAnchor2);
+    MEMORY[0x277D82BD8](leadingAnchor);
+    MEMORY[0x277D82BD8](view5);
+    MEMORY[0x277D82BD8](loginOptionsViewController9);
     MEMORY[0x277D82BD8](v18);
-    MEMORY[0x277D82BD8](v19);
-    MEMORY[0x277D82BD8](v20);
-    MEMORY[0x277D82BD8](v21);
-    MEMORY[0x277D82BD8](v22);
+    MEMORY[0x277D82BD8](bottomAnchor2);
+    MEMORY[0x277D82BD8](bottomAnchor);
+    MEMORY[0x277D82BD8](view4);
+    MEMORY[0x277D82BD8](loginOptionsViewController8);
     MEMORY[0x277D82BD8](v23);
-    MEMORY[0x277D82BD8](v24);
-    MEMORY[0x277D82BD8](v25);
-    MEMORY[0x277D82BD8](v26);
-    [MEMORY[0x277CCAAD0] activateConstraints:{v41, MEMORY[0x277D82BD8](v27).n128_f64[0]}];
+    MEMORY[0x277D82BD8](topAnchor2);
+    MEMORY[0x277D82BD8](topAnchor);
+    MEMORY[0x277D82BD8](view3);
+    [MEMORY[0x277CCAAD0] activateConstraints:{v41, MEMORY[0x277D82BD8](loginOptionsViewController7).n128_f64[0]}];
     objc_storeStrong(&v41, 0);
     objc_destroyWeak(&v48);
     objc_destroyWeak(&v55);
@@ -542,7 +542,7 @@
   }
 
   *MEMORY[0x277D85DE8];
-  v6 = v57->_loginOptions;
+  v6 = selfCopy->_loginOptions;
 
   return v6;
 }
@@ -623,26 +623,26 @@ void __43__AKBasicLoginViewController__loginOptions__block_invoke_62(id *a1)
 
 - (void)_setupActionButtons
 {
-  v2 = [(OBBaseWelcomeController *)self navigationItem];
-  [v2 setHidesBackButton:1];
-  v4 = [(AKBasicLoginViewController *)self buttonTray];
-  v3 = [(AKBasicLoginViewController *)self _signInTrayButton];
-  [v4 addButton:?];
-  MEMORY[0x277D82BD8](v3);
-  v6 = [(AKBasicLoginViewController *)self buttonTray];
-  v5 = [(AKBasicLoginViewController *)self _cancelTrayButton];
-  [v6 addButton:?];
-  MEMORY[0x277D82BD8](v5);
-  MEMORY[0x277D82BD8](v6);
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
+  buttonTray = [(AKBasicLoginViewController *)self buttonTray];
+  _signInTrayButton = [(AKBasicLoginViewController *)self _signInTrayButton];
+  [buttonTray addButton:?];
+  MEMORY[0x277D82BD8](_signInTrayButton);
+  buttonTray2 = [(AKBasicLoginViewController *)self buttonTray];
+  _cancelTrayButton = [(AKBasicLoginViewController *)self _cancelTrayButton];
+  [buttonTray2 addButton:?];
+  MEMORY[0x277D82BD8](_cancelTrayButton);
+  MEMORY[0x277D82BD8](buttonTray2);
 }
 
 - (id)_cancelTrayButton
 {
   if (!self->_secondaryButton)
   {
-    v2 = [MEMORY[0x277D37650] linkButton];
+    linkButton = [MEMORY[0x277D37650] linkButton];
     secondaryButton = self->_secondaryButton;
-    self->_secondaryButton = v2;
+    self->_secondaryButton = linkButton;
     *&v4 = MEMORY[0x277D82BD8](secondaryButton).n128_u64[0];
     v7 = self->_secondaryButton;
     v9 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:{@"com.apple.AuthKitUI", v4}];
@@ -661,18 +661,18 @@ void __43__AKBasicLoginViewController__loginOptions__block_invoke_62(id *a1)
 {
   if (!self->_primaryButton)
   {
-    v2 = [MEMORY[0x277D37618] boldButton];
+    boldButton = [MEMORY[0x277D37618] boldButton];
     primaryButton = self->_primaryButton;
-    self->_primaryButton = v2;
+    self->_primaryButton = boldButton;
     [(OBTrayButton *)self->_primaryButton addTarget:self action:sel__signInPressed_ forControlEvents:64, MEMORY[0x277D82BD8](primaryButton).n128_f64[0]];
     v7 = self->_primaryButton;
     WeakRetained = objc_loadWeakRetained(&self->_context);
-    v9 = [WeakRetained defaultButtonString];
+    defaultButtonString = [WeakRetained defaultButtonString];
     v12 = 0;
     v10 = 0;
-    if (v9)
+    if (defaultButtonString)
     {
-      v6 = v9;
+      v6 = defaultButtonString;
     }
 
     else
@@ -695,7 +695,7 @@ void __43__AKBasicLoginViewController__loginOptions__block_invoke_62(id *a1)
       MEMORY[0x277D82BD8](v13);
     }
 
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](defaultButtonString);
     MEMORY[0x277D82BD8](WeakRetained);
   }
 
@@ -704,13 +704,13 @@ void __43__AKBasicLoginViewController__loginOptions__block_invoke_62(id *a1)
   return v4;
 }
 
-- (void)cancelButtonTapped:(id)a3
+- (void)cancelButtonTapped:(id)tapped
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AKBasicLoginViewController *)v4 dismissViewControllerAnimated:1 completion:0];
+  objc_storeStrong(location, tapped);
+  [(AKBasicLoginViewController *)selfCopy dismissViewControllerAnimated:1 completion:0];
   objc_storeStrong(location, 0);
 }
 
@@ -725,12 +725,12 @@ void __43__AKBasicLoginViewController__loginOptions__block_invoke_62(id *a1)
 {
   v4 = objc_alloc(MEMORY[0x277D751E0]);
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  v6 = [WeakRetained defaultButtonString];
+  defaultButtonString = [WeakRetained defaultButtonString];
   v9 = 0;
   v7 = 0;
-  if (v6)
+  if (defaultButtonString)
   {
-    v3 = v6;
+    v3 = defaultButtonString;
   }
 
   else
@@ -753,18 +753,18 @@ void __43__AKBasicLoginViewController__loginOptions__block_invoke_62(id *a1)
     MEMORY[0x277D82BD8](v10);
   }
 
-  MEMORY[0x277D82BD8](v6);
+  MEMORY[0x277D82BD8](defaultButtonString);
   MEMORY[0x277D82BD8](WeakRetained);
 
   return v12;
 }
 
-- (id)_formatUsernameAsPhoneNumberIfNeeded:(id)a3
+- (id)_formatUsernameAsPhoneNumberIfNeeded:(id)needed
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, needed);
   if ([location[0] containsString:@"@"])
   {
     v11 = MEMORY[0x277D82BE0](location[0]);
@@ -777,9 +777,9 @@ void __43__AKBasicLoginViewController__loginOptions__block_invoke_62(id *a1)
     v6 = [v8 normalizedFormatFor:v7];
     if (![v7 isEqualToString:location[0]])
     {
-      v5 = [(AKBasicLoginViewController *)v10 usernameCellTextField];
-      [v5 setText:v7];
-      MEMORY[0x277D82BD8](v5);
+      usernameCellTextField = [(AKBasicLoginViewController *)selfCopy usernameCellTextField];
+      [usernameCellTextField setText:v7];
+      MEMORY[0x277D82BD8](usernameCellTextField);
     }
 
     v11 = MEMORY[0x277D82BE0](v6);
@@ -794,40 +794,40 @@ void __43__AKBasicLoginViewController__loginOptions__block_invoke_62(id *a1)
   return v3;
 }
 
-- (void)context:(id)a3 needsPasswordWithCompletion:(id)a4
+- (void)context:(id)context needsPasswordWithCompletion:(id)completion
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
-  if ([(AKBasicLoginViewController *)v22 isPasswordFieldVisible])
+  objc_storeStrong(&v20, completion);
+  if ([(AKBasicLoginViewController *)selfCopy isPasswordFieldVisible])
   {
-    [(AKBasicLoginViewController *)v22 setPasswordHandler:v20];
+    [(AKBasicLoginViewController *)selfCopy setPasswordHandler:v20];
     v19 = 1;
   }
 
   else
   {
-    [(AKBasicLoginViewController *)v22 setPasswordHandler:v20];
+    [(AKBasicLoginViewController *)selfCopy setPasswordHandler:v20];
     v12 = MEMORY[0x277D85DD0];
     v13 = -1073741824;
     v14 = 0;
     v15 = __66__AKBasicLoginViewController_context_needsPasswordWithCompletion___block_invoke;
     v16 = &unk_2784A62B8;
-    v17 = MEMORY[0x277D82BE0](v22);
+    v17 = MEMORY[0x277D82BE0](selfCopy);
     v18 = MEMORY[0x223DB6C90](&v12);
-    [(AKBasicLoginViewController *)v22 setIsPasswordFieldVisible:1];
-    v4 = [(AKBasicLoginViewController *)v22 tableView];
+    [(AKBasicLoginViewController *)selfCopy setIsPasswordFieldVisible:1];
+    tableView = [(AKBasicLoginViewController *)selfCopy tableView];
     v6 = MEMORY[0x277D85DD0];
     v7 = -1073741824;
     v8 = 0;
     v9 = __66__AKBasicLoginViewController_context_needsPasswordWithCompletion___block_invoke_2;
     v10 = &unk_2784A5C90;
-    v11 = MEMORY[0x277D82BE0](v22);
-    [(UITableView *)v4 performBatchUpdates:&v6 completion:v18];
-    MEMORY[0x277D82BD8](v4);
+    v11 = MEMORY[0x277D82BE0](selfCopy);
+    [(UITableView *)tableView performBatchUpdates:&v6 completion:v18];
+    MEMORY[0x277D82BD8](tableView);
     objc_storeStrong(&v11, 0);
     objc_storeStrong(&v18, 0);
     objc_storeStrong(&v17, 0);
@@ -863,51 +863,51 @@ void __66__AKBasicLoginViewController_context_needsPasswordWithCompletion___bloc
 
 - (void)_setPasswordHiddenIfNeeded
 {
-  v25 = self;
+  selfCopy = self;
   v24[1] = a2;
   if ([(AKBasicLoginViewController *)self isPasswordFieldVisible])
   {
-    [(AKBasicLoginViewController *)v25 setIsPasswordFieldVisible:0];
-    v5 = [(AKBasicLoginViewController *)v25 passwordCellTextField];
-    [v5 setText:?];
-    [(AKBasicLoginViewController *)v25 setPasswordHandler:0, MEMORY[0x277D82BD8](v5).n128_f64[0]];
+    [(AKBasicLoginViewController *)selfCopy setIsPasswordFieldVisible:0];
+    passwordCellTextField = [(AKBasicLoginViewController *)selfCopy passwordCellTextField];
+    [passwordCellTextField setText:?];
+    [(AKBasicLoginViewController *)selfCopy setPasswordHandler:0, MEMORY[0x277D82BD8](passwordCellTextField).n128_f64[0]];
     v24[0] = [MEMORY[0x277CCAA70] indexPathForRow:1 inSection:0];
-    v7 = [v24[0] section];
-    v6 = [(AKBasicLoginViewController *)v25 tableView];
+    section = [v24[0] section];
+    tableView = [(AKBasicLoginViewController *)selfCopy tableView];
     v22 = 0;
     v8 = 0;
-    if (v7 < [(UITableView *)v6 numberOfSections])
+    if (section < [(UITableView *)tableView numberOfSections])
     {
       v4 = [v24[0] row];
-      v23 = [(AKBasicLoginViewController *)v25 tableView];
+      tableView2 = [(AKBasicLoginViewController *)selfCopy tableView];
       v22 = 1;
-      v8 = v4 < -[UITableView numberOfRowsInSection:](v23, "numberOfRowsInSection:", [v24[0] section]);
+      v8 = v4 < -[UITableView numberOfRowsInSection:](tableView2, "numberOfRowsInSection:", [v24[0] section]);
     }
 
     if (v22)
     {
-      MEMORY[0x277D82BD8](v23);
+      MEMORY[0x277D82BD8](tableView2);
     }
 
-    *&v2 = MEMORY[0x277D82BD8](v6).n128_u64[0];
+    *&v2 = MEMORY[0x277D82BD8](tableView).n128_u64[0];
     if (v8)
     {
-      v3 = [(AKBasicLoginViewController *)v25 tableView];
+      tableView3 = [(AKBasicLoginViewController *)selfCopy tableView];
       v15 = MEMORY[0x277D85DD0];
       v16 = -1073741824;
       v17 = 0;
       v18 = __56__AKBasicLoginViewController__setPasswordHiddenIfNeeded__block_invoke;
       v19 = &unk_2784A6420;
-      v20 = MEMORY[0x277D82BE0](v25);
+      v20 = MEMORY[0x277D82BE0](selfCopy);
       v21 = MEMORY[0x277D82BE0](v24[0]);
       v9 = MEMORY[0x277D85DD0];
       v10 = -1073741824;
       v11 = 0;
       v12 = __56__AKBasicLoginViewController__setPasswordHiddenIfNeeded__block_invoke_2;
       v13 = &unk_2784A62B8;
-      v14 = MEMORY[0x277D82BE0](v25);
-      [(UITableView *)v3 performBatchUpdates:&v15 completion:&v9];
-      MEMORY[0x277D82BD8](v3);
+      v14 = MEMORY[0x277D82BE0](selfCopy);
+      [(UITableView *)tableView3 performBatchUpdates:&v15 completion:&v9];
+      MEMORY[0x277D82BD8](tableView3);
       objc_storeStrong(&v14, 0);
       objc_storeStrong(&v21, 0);
       objc_storeStrong(&v20, 0);
@@ -939,12 +939,12 @@ double __56__AKBasicLoginViewController__setPasswordHiddenIfNeeded__block_invoke
   return result;
 }
 
-- (void)initializePasswordCellTextField:(id)a3
+- (void)initializePasswordCellTextField:(id)field
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, field);
   v4 = location[0];
   v6 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.AuthKitUI"];
   v5 = [v6 localizedStringForKey:@"PASSWORD_PLACEHOLDER" value:&stru_28358EF68 table:@"Localizable"];
@@ -954,16 +954,16 @@ double __56__AKBasicLoginViewController__setPasswordHiddenIfNeeded__block_invoke
   [location[0] setTextContentType:{*MEMORY[0x277D77018], v3}];
   [location[0] setSecureTextEntry:1];
   [location[0] setReturnKeyType:9];
-  [location[0] setDelegate:v8];
+  [location[0] setDelegate:selfCopy];
   objc_storeStrong(location, 0);
 }
 
-- (void)initializeUsernameCellTextField:(id)a3
+- (void)initializeUsernameCellTextField:(id)field
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, field);
   v12 = location[0];
   v14 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.AuthKitUI"];
   v13 = [v14 localizedStringForKey:@"EMAIL_OR_PHONE_PLACEHOLDER" value:&stru_28358EF68 table:@"Localizable"];
@@ -971,43 +971,43 @@ double __56__AKBasicLoginViewController__setPasswordHiddenIfNeeded__block_invoke
   MEMORY[0x277D82BD8](v13);
   *&v3 = MEMORY[0x277D82BD8](v14).n128_u64[0];
   [location[0] setTextContentType:{*MEMORY[0x277D77018], v3}];
-  WeakRetained = objc_loadWeakRetained(&v20->_context);
-  v15 = [WeakRetained username];
-  v17 = [v15 length] != 0;
-  v16 = [WeakRetained isUsernameEditable];
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_context);
+  username = [WeakRetained username];
+  v17 = [username length] != 0;
+  isUsernameEditable = [WeakRetained isUsernameEditable];
   if (v17)
   {
     v10 = location[0];
-    v11 = [WeakRetained username];
+    username2 = [WeakRetained username];
     [v10 setText:?];
-    *&v4 = MEMORY[0x277D82BD8](v11).n128_u64[0];
-    [(AKBasicLoginViewController *)v20 setIsPasswordFieldVisible:1, v4];
+    *&v4 = MEMORY[0x277D82BD8](username2).n128_u64[0];
+    [(AKBasicLoginViewController *)selfCopy setIsPasswordFieldVisible:1, v4];
   }
 
-  if (v16)
+  if (isUsernameEditable)
   {
     [location[0] setAutocapitalizationType:0];
     [location[0] setKeyboardType:7];
     [location[0] setReturnKeyType:11];
-    [location[0] setDelegate:v20];
+    [location[0] setDelegate:selfCopy];
   }
 
-  if (v17 && (v16 & 1) == 1)
+  if (v17 && (isUsernameEditable & 1) == 1)
   {
-    v9 = [(AKBasicLoginViewController *)v20 primaryButton];
-    [(OBTrayButton *)v9 setEnabled:1];
-    MEMORY[0x277D82BD8](v9);
+    primaryButton = [(AKBasicLoginViewController *)selfCopy primaryButton];
+    [(OBTrayButton *)primaryButton setEnabled:1];
+    MEMORY[0x277D82BD8](primaryButton);
   }
 
-  else if (v17 && (v16 & 1) == 0)
+  else if (v17 && (isUsernameEditable & 1) == 0)
   {
     v6 = location[0];
-    v7 = [WeakRetained username];
+    username3 = [WeakRetained username];
     [v6 setText:?];
-    *&v5 = MEMORY[0x277D82BD8](v7).n128_u64[0];
+    *&v5 = MEMORY[0x277D82BD8](username3).n128_u64[0];
     [location[0] setEnabled:{0, v5}];
     v8 = +[AKBasicLoginAppearance disabledTableCellBackgroundColor];
-    [(AKBasicLoginTableViewCell *)v20->_usernameCell setBackgroundColor:?];
+    [(AKBasicLoginTableViewCell *)selfCopy->_usernameCell setBackgroundColor:?];
     MEMORY[0x277D82BD8](v8);
   }
 
@@ -1018,172 +1018,172 @@ double __56__AKBasicLoginViewController__setPasswordHiddenIfNeeded__block_invoke
 - (void)_initializeView
 {
   v76[11] = *MEMORY[0x277D85DE8];
-  v75 = self;
+  selfCopy = self;
   v74[1] = a2;
-  v65 = [(AKBasicLoginViewController *)self headerView];
-  v64 = [(AKBasicLoginViewController *)v75 _title];
-  [v65 setTitle:?];
-  MEMORY[0x277D82BD8](v64);
-  v66 = [(AKBasicLoginViewController *)v75 contentScrollView];
-  [v66 _setHiddenPocketEdges:4];
-  v69 = [(AKBasicLoginViewController *)v75 headerView];
-  v68 = [(AKBasicLoginViewController *)v75 context];
-  v67 = [(AKAppleIDAuthenticationInAppContext *)v68 _interpolatedReasonWithBlame];
-  [v69 setDetailText:?];
-  MEMORY[0x277D82BD8](v67);
-  MEMORY[0x277D82BD8](v68);
-  v70 = [(AKBasicLoginViewController *)v75 context];
-  v71 = [(AKAppleIDAuthenticationInAppContext *)v70 displayImageData];
-  MEMORY[0x277D82BD8](v71);
-  *&v2 = MEMORY[0x277D82BD8](v70).n128_u64[0];
-  if (v71)
+  headerView = [(AKBasicLoginViewController *)self headerView];
+  _title = [(AKBasicLoginViewController *)selfCopy _title];
+  [headerView setTitle:?];
+  MEMORY[0x277D82BD8](_title);
+  contentScrollView = [(AKBasicLoginViewController *)selfCopy contentScrollView];
+  [contentScrollView _setHiddenPocketEdges:4];
+  headerView2 = [(AKBasicLoginViewController *)selfCopy headerView];
+  context = [(AKBasicLoginViewController *)selfCopy context];
+  _interpolatedReasonWithBlame = [(AKAppleIDAuthenticationInAppContext *)context _interpolatedReasonWithBlame];
+  [headerView2 setDetailText:?];
+  MEMORY[0x277D82BD8](_interpolatedReasonWithBlame);
+  MEMORY[0x277D82BD8](context);
+  context2 = [(AKBasicLoginViewController *)selfCopy context];
+  displayImageData = [(AKAppleIDAuthenticationInAppContext *)context2 displayImageData];
+  MEMORY[0x277D82BD8](displayImageData);
+  *&v2 = MEMORY[0x277D82BD8](context2).n128_u64[0];
+  if (displayImageData)
   {
     v57 = MEMORY[0x277D755B8];
-    v59 = [(AKBasicLoginViewController *)v75 context];
-    v58 = [(AKAppleIDAuthenticationInAppContext *)v59 displayImageData];
+    context3 = [(AKBasicLoginViewController *)selfCopy context];
+    displayImageData2 = [(AKAppleIDAuthenticationInAppContext *)context3 displayImageData];
     v74[0] = [v57 imageWithData:?];
-    MEMORY[0x277D82BD8](v58);
-    *&v3 = MEMORY[0x277D82BD8](v59).n128_u64[0];
-    v63 = [(AKBasicLoginViewController *)v75 headerView];
+    MEMORY[0x277D82BD8](displayImageData2);
+    *&v3 = MEMORY[0x277D82BD8](context3).n128_u64[0];
+    headerView3 = [(AKBasicLoginViewController *)selfCopy headerView];
     v60 = v74[0];
     v62 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v61 = [v62 localizedStringForKey:@"HEADER_ICON_ACCESSIBILITY_LABEL" value:&stru_28358EF68 table:@"Localizable"];
-    [v63 setIcon:v60 accessibilityLabel:?];
+    [headerView3 setIcon:v60 accessibilityLabel:?];
     MEMORY[0x277D82BD8](v61);
     MEMORY[0x277D82BD8](v62);
-    MEMORY[0x277D82BD8](v63);
+    MEMORY[0x277D82BD8](headerView3);
     objc_storeStrong(v74, 0);
   }
 
-  v73 = [(AKBasicLoginViewController *)v75 _tableView];
-  v6 = [(AKBasicLoginViewController *)v75 contentView];
-  [v6 addSubview:v73];
-  *&v4 = MEMORY[0x277D82BD8](v6).n128_u64[0];
-  v72 = [(AKBasicLoginViewController *)v75 _loginOptions];
-  v7 = [(AKBasicLoginViewController *)v75 contentView];
-  [v7 addSubview:v72];
-  *&v5 = MEMORY[0x277D82BD8](v7).n128_u64[0];
+  _tableView = [(AKBasicLoginViewController *)selfCopy _tableView];
+  contentView = [(AKBasicLoginViewController *)selfCopy contentView];
+  [contentView addSubview:_tableView];
+  *&v4 = MEMORY[0x277D82BD8](contentView).n128_u64[0];
+  _loginOptions = [(AKBasicLoginViewController *)selfCopy _loginOptions];
+  contentView2 = [(AKBasicLoginViewController *)selfCopy contentView];
+  [contentView2 addSubview:_loginOptions];
+  *&v5 = MEMORY[0x277D82BD8](contentView2).n128_u64[0];
   v8 = MEMORY[0x277CCAAD0];
-  v56 = [(AKBasicLoginViewController *)v75 headerView];
-  v55 = [v56 leadingAnchor];
-  v54 = [(AKBasicLoginViewController *)v75 view];
-  v53 = [v54 leadingAnchor];
-  v52 = [v55 constraintEqualToAnchor:20.0 constant:?];
+  headerView4 = [(AKBasicLoginViewController *)selfCopy headerView];
+  leadingAnchor = [headerView4 leadingAnchor];
+  view = [(AKBasicLoginViewController *)selfCopy view];
+  leadingAnchor2 = [view leadingAnchor];
+  v52 = [leadingAnchor constraintEqualToAnchor:20.0 constant:?];
   v76[0] = v52;
-  v51 = [(AKBasicLoginViewController *)v75 headerView];
-  v50 = [v51 trailingAnchor];
-  v49 = [(AKBasicLoginViewController *)v75 view];
-  v48 = [v49 trailingAnchor];
-  v47 = [v50 constraintEqualToAnchor:-20.0 constant:?];
+  headerView5 = [(AKBasicLoginViewController *)selfCopy headerView];
+  trailingAnchor = [headerView5 trailingAnchor];
+  view2 = [(AKBasicLoginViewController *)selfCopy view];
+  trailingAnchor2 = [view2 trailingAnchor];
+  v47 = [trailingAnchor constraintEqualToAnchor:-20.0 constant:?];
   v76[1] = v47;
-  v46 = [(AKBasicLoginViewController *)v75 contentView];
-  v45 = [v46 leadingAnchor];
-  v44 = [(AKBasicLoginViewController *)v75 view];
-  v43 = [v44 leadingAnchor];
-  v42 = [v45 constraintEqualToAnchor:?];
+  contentView3 = [(AKBasicLoginViewController *)selfCopy contentView];
+  leadingAnchor3 = [contentView3 leadingAnchor];
+  view3 = [(AKBasicLoginViewController *)selfCopy view];
+  leadingAnchor4 = [view3 leadingAnchor];
+  v42 = [leadingAnchor3 constraintEqualToAnchor:?];
   v76[2] = v42;
-  v41 = [(AKBasicLoginViewController *)v75 contentView];
-  v40 = [v41 trailingAnchor];
-  v39 = [(AKBasicLoginViewController *)v75 view];
-  v38 = [v39 trailingAnchor];
-  v37 = [v40 constraintEqualToAnchor:?];
+  contentView4 = [(AKBasicLoginViewController *)selfCopy contentView];
+  trailingAnchor3 = [contentView4 trailingAnchor];
+  view4 = [(AKBasicLoginViewController *)selfCopy view];
+  trailingAnchor4 = [view4 trailingAnchor];
+  v37 = [trailingAnchor3 constraintEqualToAnchor:?];
   v76[3] = v37;
-  v36 = [(AKBasicLoginViewController *)v75 contentView];
-  v35 = [v36 topAnchor];
-  v34 = [v73 topAnchor];
-  v33 = [v35 constraintEqualToAnchor:?];
+  contentView5 = [(AKBasicLoginViewController *)selfCopy contentView];
+  topAnchor = [contentView5 topAnchor];
+  topAnchor2 = [_tableView topAnchor];
+  v33 = [topAnchor constraintEqualToAnchor:?];
   v76[4] = v33;
-  v32 = [(AKBasicLoginViewController *)v75 contentView];
-  v31 = [v32 leadingAnchor];
-  v30 = [v73 leadingAnchor];
-  v29 = [v31 constraintEqualToAnchor:?];
+  contentView6 = [(AKBasicLoginViewController *)selfCopy contentView];
+  leadingAnchor5 = [contentView6 leadingAnchor];
+  leadingAnchor6 = [_tableView leadingAnchor];
+  v29 = [leadingAnchor5 constraintEqualToAnchor:?];
   v76[5] = v29;
-  v28 = [(AKBasicLoginViewController *)v75 contentView];
-  v27 = [v28 trailingAnchor];
-  v26 = [v73 trailingAnchor];
-  v25 = [v27 constraintEqualToAnchor:?];
+  contentView7 = [(AKBasicLoginViewController *)selfCopy contentView];
+  trailingAnchor5 = [contentView7 trailingAnchor];
+  trailingAnchor6 = [_tableView trailingAnchor];
+  v25 = [trailingAnchor5 constraintEqualToAnchor:?];
   v76[6] = v25;
-  v24 = [(AKBasicLoginViewController *)v75 contentView];
-  v23 = [v24 leadingAnchor];
-  v22 = [v72 leadingAnchor];
-  v21 = [v23 constraintEqualToAnchor:?];
+  contentView8 = [(AKBasicLoginViewController *)selfCopy contentView];
+  leadingAnchor7 = [contentView8 leadingAnchor];
+  leadingAnchor8 = [_loginOptions leadingAnchor];
+  v21 = [leadingAnchor7 constraintEqualToAnchor:?];
   v76[7] = v21;
-  v20 = [(AKBasicLoginViewController *)v75 contentView];
-  v19 = [v20 trailingAnchor];
-  v18 = [v72 trailingAnchor];
-  v17 = [v19 constraintEqualToAnchor:?];
+  contentView9 = [(AKBasicLoginViewController *)selfCopy contentView];
+  trailingAnchor7 = [contentView9 trailingAnchor];
+  trailingAnchor8 = [_loginOptions trailingAnchor];
+  v17 = [trailingAnchor7 constraintEqualToAnchor:?];
   v76[8] = v17;
-  v16 = [(AKBasicLoginViewController *)v75 contentView];
-  v15 = [v16 bottomAnchor];
-  v14 = [v72 bottomAnchor];
-  v13 = [v15 constraintEqualToAnchor:?];
+  contentView10 = [(AKBasicLoginViewController *)selfCopy contentView];
+  bottomAnchor = [contentView10 bottomAnchor];
+  bottomAnchor2 = [_loginOptions bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:?];
   v76[9] = v13;
-  v12 = [v72 topAnchor];
-  v11 = [v73 bottomAnchor];
-  v10 = [v12 constraintEqualToAnchor:?];
+  topAnchor3 = [_loginOptions topAnchor];
+  bottomAnchor3 = [_tableView bottomAnchor];
+  v10 = [topAnchor3 constraintEqualToAnchor:?];
   v76[10] = v10;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v76 count:11];
   [v8 activateConstraints:?];
   MEMORY[0x277D82BD8](v9);
   MEMORY[0x277D82BD8](v10);
-  MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v12);
+  MEMORY[0x277D82BD8](bottomAnchor3);
+  MEMORY[0x277D82BD8](topAnchor3);
   MEMORY[0x277D82BD8](v13);
-  MEMORY[0x277D82BD8](v14);
-  MEMORY[0x277D82BD8](v15);
-  MEMORY[0x277D82BD8](v16);
+  MEMORY[0x277D82BD8](bottomAnchor2);
+  MEMORY[0x277D82BD8](bottomAnchor);
+  MEMORY[0x277D82BD8](contentView10);
   MEMORY[0x277D82BD8](v17);
-  MEMORY[0x277D82BD8](v18);
-  MEMORY[0x277D82BD8](v19);
-  MEMORY[0x277D82BD8](v20);
+  MEMORY[0x277D82BD8](trailingAnchor8);
+  MEMORY[0x277D82BD8](trailingAnchor7);
+  MEMORY[0x277D82BD8](contentView9);
   MEMORY[0x277D82BD8](v21);
-  MEMORY[0x277D82BD8](v22);
-  MEMORY[0x277D82BD8](v23);
-  MEMORY[0x277D82BD8](v24);
+  MEMORY[0x277D82BD8](leadingAnchor8);
+  MEMORY[0x277D82BD8](leadingAnchor7);
+  MEMORY[0x277D82BD8](contentView8);
   MEMORY[0x277D82BD8](v25);
-  MEMORY[0x277D82BD8](v26);
-  MEMORY[0x277D82BD8](v27);
-  MEMORY[0x277D82BD8](v28);
+  MEMORY[0x277D82BD8](trailingAnchor6);
+  MEMORY[0x277D82BD8](trailingAnchor5);
+  MEMORY[0x277D82BD8](contentView7);
   MEMORY[0x277D82BD8](v29);
-  MEMORY[0x277D82BD8](v30);
-  MEMORY[0x277D82BD8](v31);
-  MEMORY[0x277D82BD8](v32);
+  MEMORY[0x277D82BD8](leadingAnchor6);
+  MEMORY[0x277D82BD8](leadingAnchor5);
+  MEMORY[0x277D82BD8](contentView6);
   MEMORY[0x277D82BD8](v33);
-  MEMORY[0x277D82BD8](v34);
-  MEMORY[0x277D82BD8](v35);
-  MEMORY[0x277D82BD8](v36);
+  MEMORY[0x277D82BD8](topAnchor2);
+  MEMORY[0x277D82BD8](topAnchor);
+  MEMORY[0x277D82BD8](contentView5);
   MEMORY[0x277D82BD8](v37);
-  MEMORY[0x277D82BD8](v38);
-  MEMORY[0x277D82BD8](v39);
-  MEMORY[0x277D82BD8](v40);
-  MEMORY[0x277D82BD8](v41);
+  MEMORY[0x277D82BD8](trailingAnchor4);
+  MEMORY[0x277D82BD8](view4);
+  MEMORY[0x277D82BD8](trailingAnchor3);
+  MEMORY[0x277D82BD8](contentView4);
   MEMORY[0x277D82BD8](v42);
-  MEMORY[0x277D82BD8](v43);
-  MEMORY[0x277D82BD8](v44);
-  MEMORY[0x277D82BD8](v45);
-  MEMORY[0x277D82BD8](v46);
+  MEMORY[0x277D82BD8](leadingAnchor4);
+  MEMORY[0x277D82BD8](view3);
+  MEMORY[0x277D82BD8](leadingAnchor3);
+  MEMORY[0x277D82BD8](contentView3);
   MEMORY[0x277D82BD8](v47);
-  MEMORY[0x277D82BD8](v48);
-  MEMORY[0x277D82BD8](v49);
-  MEMORY[0x277D82BD8](v50);
-  MEMORY[0x277D82BD8](v51);
+  MEMORY[0x277D82BD8](trailingAnchor2);
+  MEMORY[0x277D82BD8](view2);
+  MEMORY[0x277D82BD8](trailingAnchor);
+  MEMORY[0x277D82BD8](headerView5);
   MEMORY[0x277D82BD8](v52);
-  MEMORY[0x277D82BD8](v53);
-  MEMORY[0x277D82BD8](v54);
-  MEMORY[0x277D82BD8](v55);
-  MEMORY[0x277D82BD8](v56);
-  objc_storeStrong(&v72, 0);
-  objc_storeStrong(&v73, 0);
+  MEMORY[0x277D82BD8](leadingAnchor2);
+  MEMORY[0x277D82BD8](view);
+  MEMORY[0x277D82BD8](leadingAnchor);
+  MEMORY[0x277D82BD8](headerView4);
+  objc_storeStrong(&_loginOptions, 0);
+  objc_storeStrong(&_tableView, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(AKBasicLoginViewController *)v8 _shouldShowPassword])
+  objc_storeStrong(location, view);
+  if ([(AKBasicLoginViewController *)selfCopy _shouldShowPassword])
   {
     v4 = 2;
   }
@@ -1198,89 +1198,89 @@ double __56__AKBasicLoginViewController__setPasswordHiddenIfNeeded__block_invoke
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, path);
   if ([v7 row])
   {
     if ([v7 row] == 1)
     {
-      v10 = [(AKBasicLoginViewController *)v9 _passwordCell];
+      _passwordCell = [(AKBasicLoginViewController *)selfCopy _passwordCell];
     }
 
     else
     {
-      v10 = 0;
+      _passwordCell = 0;
     }
   }
 
   else
   {
-    v10 = [(AKBasicLoginViewController *)v9 _usernameCell];
+    _passwordCell = [(AKBasicLoginViewController *)selfCopy _usernameCell];
   }
 
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
-  v4 = v10;
+  v4 = _passwordCell;
 
   return v4;
 }
 
 - (id)passwordCellTextField
 {
-  v3 = [(AKBasicLoginViewController *)self passwordCell];
-  v4 = [(AKBasicLoginTableViewCell *)v3 cellTextField];
-  MEMORY[0x277D82BD8](v3);
+  passwordCell = [(AKBasicLoginViewController *)self passwordCell];
+  cellTextField = [(AKBasicLoginTableViewCell *)passwordCell cellTextField];
+  MEMORY[0x277D82BD8](passwordCell);
 
-  return v4;
+  return cellTextField;
 }
 
 - (id)usernameCellTextField
 {
-  v3 = [(AKBasicLoginViewController *)self usernameCell];
-  v4 = [(AKBasicLoginTableViewCell *)v3 cellTextField];
-  MEMORY[0x277D82BD8](v3);
+  usernameCell = [(AKBasicLoginViewController *)self usernameCell];
+  cellTextField = [(AKBasicLoginTableViewCell *)usernameCell cellTextField];
+  MEMORY[0x277D82BD8](usernameCell);
 
-  return v4;
+  return cellTextField;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AKBasicLoginViewController *)v5 _signInPressed:location[0]];
+  objc_storeStrong(location, return);
+  [(AKBasicLoginViewController *)selfCopy _signInPressed:location[0]];
   objc_storeStrong(location, 0);
   return 1;
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  v23 = a4;
-  v22 = self;
+  rangeCopy = range;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, field);
   v20 = 0;
-  objc_storeStrong(&v20, a5);
+  objc_storeStrong(&v20, string);
   v12 = location[0];
-  v14 = [(AKBasicLoginViewController *)v22 usernameCell];
-  v13 = [(AKBasicLoginTableViewCell *)v14 cellTextField];
+  usernameCell = [(AKBasicLoginViewController *)selfCopy usernameCell];
+  cellTextField = [(AKBasicLoginTableViewCell *)usernameCell cellTextField];
   v15 = [v12 isEqual:?];
-  MEMORY[0x277D82BD8](v13);
-  *&v5 = MEMORY[0x277D82BD8](v14).n128_u64[0];
+  MEMORY[0x277D82BD8](cellTextField);
+  *&v5 = MEMORY[0x277D82BD8](usernameCell).n128_u64[0];
   if (v15)
   {
-    v19 = [(AKBasicLoginViewController *)v22 context];
-    v10 = [v19 username];
-    *&v6 = MEMORY[0x277D82BD8](v10).n128_u64[0];
-    if (v10)
+    context = [(AKBasicLoginViewController *)selfCopy context];
+    username = [context username];
+    *&v6 = MEMORY[0x277D82BD8](username).n128_u64[0];
+    if (username)
     {
       v18 = _AKLogSystem();
       v17 = OS_LOG_TYPE_DEFAULT;
@@ -1293,11 +1293,11 @@ double __56__AKBasicLoginViewController__setPasswordHiddenIfNeeded__block_invoke
       }
 
       objc_storeStrong(&v18, 0);
-      [v19 setUsername:0];
+      [context setUsername:0];
     }
 
-    [(AKBasicLoginViewController *)v22 _setPasswordHiddenIfNeeded];
-    objc_storeStrong(&v19, 0);
+    [(AKBasicLoginViewController *)selfCopy _setPasswordHiddenIfNeeded];
+    objc_storeStrong(&context, 0);
   }
 
   objc_storeStrong(&v20, 0);
@@ -1312,9 +1312,9 @@ double __56__AKBasicLoginViewController__setPasswordHiddenIfNeeded__block_invoke
     v2 = [[AKBasicLoginTableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
     usernameCell = self->_usernameCell;
     self->_usernameCell = v2;
-    v6 = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
+    cellTextField = [(AKBasicLoginTableViewCell *)self->_usernameCell cellTextField];
     [(AKBasicLoginViewController *)self initializeUsernameCellTextField:?];
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](cellTextField);
   }
 
   v4 = self->_usernameCell;
@@ -1329,9 +1329,9 @@ double __56__AKBasicLoginViewController__setPasswordHiddenIfNeeded__block_invoke
     v2 = [[AKBasicLoginTableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
     passwordCell = self->_passwordCell;
     self->_passwordCell = v2;
-    v6 = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
+    cellTextField = [(AKBasicLoginTableViewCell *)self->_passwordCell cellTextField];
     [(AKBasicLoginViewController *)self initializePasswordCellTextField:?];
-    [(AKBasicLoginViewController *)self setIsPasswordFieldVisible:1, MEMORY[0x277D82BD8](v6).n128_f64[0]];
+    [(AKBasicLoginViewController *)self setIsPasswordFieldVisible:1, MEMORY[0x277D82BD8](cellTextField).n128_f64[0]];
   }
 
   v4 = self->_passwordCell;
@@ -1339,19 +1339,19 @@ double __56__AKBasicLoginViewController__setPasswordHiddenIfNeeded__block_invoke
   return v4;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v11 = [(AKBasicLoginViewController *)v15 traitCollection];
-  v10 = [v11 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v10);
-  MEMORY[0x277D82BD8](v10);
-  *&v4 = MEMORY[0x277D82BD8](v11).n128_u64[0];
+  objc_storeStrong(&v13, path);
+  traitCollection = [(AKBasicLoginViewController *)selfCopy traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
+  MEMORY[0x277D82BD8](preferredContentSizeCategory);
+  *&v4 = MEMORY[0x277D82BD8](traitCollection).n128_u64[0];
   if (IsAccessibilityCategory)
   {
     v16 = *MEMORY[0x277D76F30];
@@ -1359,16 +1359,16 @@ double __56__AKBasicLoginViewController__setPasswordHiddenIfNeeded__block_invoke
 
   else
   {
-    v8 = [MEMORY[0x277CF0228] sharedManager];
-    v5 = [v8 isAuthKitSolariumFeatureEnabled];
+    mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
+    isAuthKitSolariumFeatureEnabled = [mEMORY[0x277CF0228] isAuthKitSolariumFeatureEnabled];
     v6 = 52.0;
-    if ((v5 & 1) == 0)
+    if ((isAuthKitSolariumFeatureEnabled & 1) == 0)
     {
       v6 = 44.0;
     }
 
     v16 = v6;
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](mEMORY[0x277CF0228]);
   }
 
   objc_storeStrong(&v13, 0);
@@ -1386,9 +1386,9 @@ double __56__AKBasicLoginViewController__setPasswordHiddenIfNeeded__block_invoke
     v3 = [v8 initWithFrame:v2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     tableView = self->_tableView;
     self->_tableView = v3;
-    v9 = [MEMORY[0x277D75348] clearColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
     [(UITableView *)self->_tableView setBackgroundColor:?];
-    [(UITableView *)self->_tableView setTranslatesAutoresizingMaskIntoConstraints:0, MEMORY[0x277D82BD8](v9).n128_f64[0]];
+    [(UITableView *)self->_tableView setTranslatesAutoresizingMaskIntoConstraints:0, MEMORY[0x277D82BD8](clearColor).n128_f64[0]];
     [(UITableView *)self->_tableView setDelegate:self];
     [(UITableView *)self->_tableView setDataSource:self];
     [(UITableView *)self->_tableView setRowHeight:*MEMORY[0x277D76F30]];
@@ -1404,16 +1404,16 @@ double __56__AKBasicLoginViewController__setPasswordHiddenIfNeeded__block_invoke
     v14 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{*v12, v12[1], v12[2], 2.0}];
     [(UITableView *)v13 setTableFooterView:?];
     [(UITableView *)self->_tableView reloadData];
-    v17 = [(UITableView *)self->_tableView heightAnchor];
-    v16 = [(AKBasicLoginViewController *)self tableView];
-    [(UITableView *)v16 contentSize];
-    v15 = [v17 constraintEqualToConstant:v5];
+    heightAnchor = [(UITableView *)self->_tableView heightAnchor];
+    tableView = [(AKBasicLoginViewController *)self tableView];
+    [(UITableView *)tableView contentSize];
+    v15 = [heightAnchor constraintEqualToConstant:v5];
     [(AKBasicLoginViewController *)self setHeightAnchor:?];
     MEMORY[0x277D82BD8](v15);
-    MEMORY[0x277D82BD8](v16);
-    v18 = [(AKBasicLoginViewController *)self heightAnchor];
-    [(NSLayoutConstraint *)v18 setActive:1];
-    MEMORY[0x277D82BD8](v18);
+    MEMORY[0x277D82BD8](tableView);
+    heightAnchor2 = [(AKBasicLoginViewController *)self heightAnchor];
+    [(NSLayoutConstraint *)heightAnchor2 setActive:1];
+    MEMORY[0x277D82BD8](heightAnchor2);
   }
 
   v6 = self->_tableView;
@@ -1421,60 +1421,60 @@ double __56__AKBasicLoginViewController__setPasswordHiddenIfNeeded__block_invoke
   return v6;
 }
 
-- (void)_keyboardDidShow:(id)a3
+- (void)_keyboardDidShow:(id)show
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [location[0] userInfo];
-  v4 = [v6 objectForKey:*MEMORY[0x277D76BB8]];
+  objc_storeStrong(location, show);
+  userInfo = [location[0] userInfo];
+  v4 = [userInfo objectForKey:*MEMORY[0x277D76BB8]];
   [v4 CGRectValue];
   v5 = v3;
   MEMORY[0x277D82BD8](v4);
-  [(AKBasicLoginViewController *)v8 _setContentInset:v5];
-  objc_storeStrong(&v6, 0);
+  [(AKBasicLoginViewController *)selfCopy _setContentInset:v5];
+  objc_storeStrong(&userInfo, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_keyboardDidHide:(id)a3
+- (void)_keyboardDidHide:(id)hide
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AKBasicLoginViewController *)v4 _setContentInset:0.0];
+  objc_storeStrong(location, hide);
+  [(AKBasicLoginViewController *)selfCopy _setContentInset:0.0];
   objc_storeStrong(location, 0);
 }
 
-- (void)_setContentInset:(double)a3
+- (void)_setContentInset:(double)inset
 {
-  v17 = [(AKBasicLoginViewController *)self contentScrollView];
-  [v17 contentInset];
+  contentScrollView = [(AKBasicLoginViewController *)self contentScrollView];
+  [contentScrollView contentInset];
   v22 = v3;
   v23 = v4;
   v24 = v5;
-  MEMORY[0x277D82BD8](v17);
-  v18 = [(AKBasicLoginViewController *)self contentScrollView];
-  [v18 setContentInset:{v22, v23, a3, v24}];
-  MEMORY[0x277D82BD8](v18);
-  v19 = [(AKBasicLoginViewController *)self contentScrollView];
-  [v19 setScrollIndicatorInsets:{v22, v23, a3, v24}];
-  MEMORY[0x277D82BD8](v19);
-  if (a3 > 0.0)
+  MEMORY[0x277D82BD8](contentScrollView);
+  contentScrollView2 = [(AKBasicLoginViewController *)self contentScrollView];
+  [contentScrollView2 setContentInset:{v22, v23, inset, v24}];
+  MEMORY[0x277D82BD8](contentScrollView2);
+  contentScrollView3 = [(AKBasicLoginViewController *)self contentScrollView];
+  [contentScrollView3 setScrollIndicatorInsets:{v22, v23, inset, v24}];
+  MEMORY[0x277D82BD8](contentScrollView3);
+  if (inset > 0.0)
   {
-    v12 = [(AKBasicLoginViewController *)self contentScrollView];
-    [v12 contentOffset];
+    contentScrollView4 = [(AKBasicLoginViewController *)self contentScrollView];
+    [contentScrollView4 contentOffset];
     v20 = v6;
     v21 = v7;
-    v15 = [(AKBasicLoginViewController *)self contentScrollView];
-    [v15 contentSize];
+    contentScrollView5 = [(AKBasicLoginViewController *)self contentScrollView];
+    [contentScrollView5 contentSize];
     v14 = v8;
-    v13 = [(AKBasicLoginViewController *)self contentScrollView];
-    [v13 bounds];
-    v16 = v14 - (v9 - a3);
-    MEMORY[0x277D82BD8](v13);
-    MEMORY[0x277D82BD8](v15);
+    contentScrollView6 = [(AKBasicLoginViewController *)self contentScrollView];
+    [contentScrollView6 bounds];
+    v16 = v14 - (v9 - inset);
+    MEMORY[0x277D82BD8](contentScrollView6);
+    MEMORY[0x277D82BD8](contentScrollView5);
     if (0 >= v16)
     {
       v11 = 0;
@@ -1487,9 +1487,9 @@ double __56__AKBasicLoginViewController__setPasswordHiddenIfNeeded__block_invoke
 
     if (v21 < v11)
     {
-      v10 = [(AKBasicLoginViewController *)self contentScrollView];
-      [v10 setContentOffset:1 animated:{v20, v11}];
-      MEMORY[0x277D82BD8](v10);
+      contentScrollView7 = [(AKBasicLoginViewController *)self contentScrollView];
+      [contentScrollView7 setContentOffset:1 animated:{v20, v11}];
+      MEMORY[0x277D82BD8](contentScrollView7);
     }
   }
 }

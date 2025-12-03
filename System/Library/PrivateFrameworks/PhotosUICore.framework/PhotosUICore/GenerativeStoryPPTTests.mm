@@ -1,14 +1,14 @@
 @interface GenerativeStoryPPTTests
-- (void)testRepeatedMemoryCreation:(id)a3;
+- (void)testRepeatedMemoryCreation:(id)creation;
 @end
 
 @implementation GenerativeStoryPPTTests
 
-- (void)testRepeatedMemoryCreation:(id)a3
+- (void)testRepeatedMemoryCreation:(id)creation
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A3DDD498(v4);
+  creationCopy = creation;
+  selfCopy = self;
+  sub_1A3DDD498(creationCopy);
 }
 
 @end

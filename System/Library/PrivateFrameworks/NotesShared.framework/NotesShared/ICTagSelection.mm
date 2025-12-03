@@ -1,15 +1,15 @@
 @interface ICTagSelection
-+ (id)tagSelectionWithData:(id)a3 managedObjectContext:(id)a4;
++ (id)tagSelectionWithData:(id)data managedObjectContext:(id)context;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTagSelection:(id)a3;
-- (ICTagSelection)initWithCoder:(id)a3;
-- (ICTagSelection)initWithManagedObjectContext:(id)a3;
-- (ICTagSelection)initWithManagedObjectContext:(id)a3 includedObjectIDs:(id)a4;
-- (ICTagSelection)initWithManagedObjectContext:(id)a3 includedObjectIDs:(id)a4 excludedObjectIDs:(id)a5;
-- (ICTagSelection)initWithManagedObjectContext:(id)a3 includedObjectIDs:(id)a4 excludedObjectIDs:(id)a5 tagOperator:(unint64_t)a6;
-- (ICTagSelection)initWithManagedObjectContext:(id)a3 mode:(unint64_t)a4;
-- (ICTagSelection)initWithManagedObjectContext:(id)a3 mode:(unint64_t)a4 tagOperator:(unint64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTagSelection:(id)selection;
+- (ICTagSelection)initWithCoder:(id)coder;
+- (ICTagSelection)initWithManagedObjectContext:(id)context;
+- (ICTagSelection)initWithManagedObjectContext:(id)context includedObjectIDs:(id)ds;
+- (ICTagSelection)initWithManagedObjectContext:(id)context includedObjectIDs:(id)ds excludedObjectIDs:(id)iDs;
+- (ICTagSelection)initWithManagedObjectContext:(id)context includedObjectIDs:(id)ds excludedObjectIDs:(id)iDs tagOperator:(unint64_t)operator;
+- (ICTagSelection)initWithManagedObjectContext:(id)context mode:(unint64_t)mode;
+- (ICTagSelection)initWithManagedObjectContext:(id)context mode:(unint64_t)mode tagOperator:(unint64_t)operator;
 - (NSArray)displayTexts;
 - (NSArray)excludedDisplayTexts;
 - (NSArray)excludedHashtagPrefixedDisplayTexts;
@@ -29,49 +29,49 @@
 - (NSString)selectedTagCountString;
 - (NSString)smartFolderTitle;
 - (NSString)title;
-- (id)copyWithManagedObjectContext:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithManagedObjectContext:(id)context;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (id)displayTextsForObjectIDs:(id)a3;
+- (id)displayTextsForObjectIDs:(id)ds;
 - (id)emptySummary;
 - (id)emptySummaryTitle;
-- (id)hashtagsForObjectIDs:(id)a3;
+- (id)hashtagsForObjectIDs:(id)ds;
 - (id)rawFilterValue;
 - (id)shortEmptySummary;
-- (id)standardizedContentsForObjectIDs:(id)a3;
+- (id)standardizedContentsForObjectIDs:(id)ds;
 - (unint64_t)hash;
 - (unint64_t)selectedTagCount;
-- (void)addObjectID:(id)a3 toExcluded:(BOOL)a4;
-- (void)addUnresolvedTagIdentifier:(id)a3 toExcluded:(BOOL)a4;
+- (void)addObjectID:(id)d toExcluded:(BOOL)excluded;
+- (void)addUnresolvedTagIdentifier:(id)identifier toExcluded:(BOOL)excluded;
 - (void)clear;
-- (void)commonInitWithManagedObjectContext:(id)a3;
-- (void)convertUnresolvedDisplayTextsInAccount:(id)a3;
+- (void)commonInitWithManagedObjectContext:(id)context;
+- (void)convertUnresolvedDisplayTextsInAccount:(id)account;
 - (void)dataRepresentation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)managedObjectContextObjectIDsDidSave:(id)a3;
-- (void)removeObjectID:(id)a3 fromExcluded:(BOOL)a4;
-- (void)removeObjectIDs:(id)a3;
-- (void)removeUnresolvedTagIdentifier:(id)a3 fromExcluded:(BOOL)a4;
-- (void)removeUnresolvedTagIdentifiers:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)managedObjectContextObjectIDsDidSave:(id)save;
+- (void)removeObjectID:(id)d fromExcluded:(BOOL)excluded;
+- (void)removeObjectIDs:(id)ds;
+- (void)removeUnresolvedTagIdentifier:(id)identifier fromExcluded:(BOOL)excluded;
+- (void)removeUnresolvedTagIdentifiers:(id)identifiers;
 - (void)resolveManagedObjectsFromURLs;
-- (void)setExcludedObjectIDs:(id)a3;
-- (void)setIncludedObjectIDs:(id)a3;
-- (void)setMode:(unint64_t)a3;
+- (void)setExcludedObjectIDs:(id)ds;
+- (void)setIncludedObjectIDs:(id)ds;
+- (void)setMode:(unint64_t)mode;
 @end
 
 @implementation ICTagSelection
 
-- (ICTagSelection)initWithManagedObjectContext:(id)a3
+- (ICTagSelection)initWithManagedObjectContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = ICTagSelection;
   v5 = [(ICTagSelection *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ICTagSelection *)v5 commonInitWithManagedObjectContext:v4];
+    [(ICTagSelection *)v5 commonInitWithManagedObjectContext:contextCopy];
     v6->_mode = 0;
     v6->_tagOperator = 1;
   }
@@ -79,126 +79,126 @@
   return v6;
 }
 
-- (ICTagSelection)initWithManagedObjectContext:(id)a3 mode:(unint64_t)a4
+- (ICTagSelection)initWithManagedObjectContext:(id)context mode:(unint64_t)mode
 {
-  v6 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = ICTagSelection;
   v7 = [(ICTagSelection *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(ICTagSelection *)v7 commonInitWithManagedObjectContext:v6];
-    v8->_mode = a4;
+    [(ICTagSelection *)v7 commonInitWithManagedObjectContext:contextCopy];
+    v8->_mode = mode;
     v8->_tagOperator = 1;
   }
 
   return v8;
 }
 
-- (ICTagSelection)initWithManagedObjectContext:(id)a3 mode:(unint64_t)a4 tagOperator:(unint64_t)a5
+- (ICTagSelection)initWithManagedObjectContext:(id)context mode:(unint64_t)mode tagOperator:(unint64_t)operator
 {
-  v8 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = ICTagSelection;
   v9 = [(ICTagSelection *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    [(ICTagSelection *)v9 commonInitWithManagedObjectContext:v8];
-    v10->_mode = a4;
-    v10->_tagOperator = a5;
+    [(ICTagSelection *)v9 commonInitWithManagedObjectContext:contextCopy];
+    v10->_mode = mode;
+    v10->_tagOperator = operator;
   }
 
   return v10;
 }
 
-- (ICTagSelection)initWithManagedObjectContext:(id)a3 includedObjectIDs:(id)a4
+- (ICTagSelection)initWithManagedObjectContext:(id)context includedObjectIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  dsCopy = ds;
   v11.receiver = self;
   v11.super_class = ICTagSelection;
   v8 = [(ICTagSelection *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(ICTagSelection *)v8 commonInitWithManagedObjectContext:v6];
-    objc_storeStrong(&v9->_includedObjectIDs, a4);
+    [(ICTagSelection *)v8 commonInitWithManagedObjectContext:contextCopy];
+    objc_storeStrong(&v9->_includedObjectIDs, ds);
     v9->_tagOperator = 1;
   }
 
   return v9;
 }
 
-- (ICTagSelection)initWithManagedObjectContext:(id)a3 includedObjectIDs:(id)a4 excludedObjectIDs:(id)a5
+- (ICTagSelection)initWithManagedObjectContext:(id)context includedObjectIDs:(id)ds excludedObjectIDs:(id)iDs
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  dsCopy = ds;
+  iDsCopy = iDs;
   v14.receiver = self;
   v14.super_class = ICTagSelection;
   v11 = [(ICTagSelection *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(ICTagSelection *)v11 commonInitWithManagedObjectContext:v8];
-    objc_storeStrong(&v12->_includedObjectIDs, a4);
-    objc_storeStrong(&v12->_excludedObjectIDs, a5);
+    [(ICTagSelection *)v11 commonInitWithManagedObjectContext:contextCopy];
+    objc_storeStrong(&v12->_includedObjectIDs, ds);
+    objc_storeStrong(&v12->_excludedObjectIDs, iDs);
     v12->_tagOperator = 1;
   }
 
   return v12;
 }
 
-- (ICTagSelection)initWithManagedObjectContext:(id)a3 includedObjectIDs:(id)a4 excludedObjectIDs:(id)a5 tagOperator:(unint64_t)a6
+- (ICTagSelection)initWithManagedObjectContext:(id)context includedObjectIDs:(id)ds excludedObjectIDs:(id)iDs tagOperator:(unint64_t)operator
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  contextCopy = context;
+  dsCopy = ds;
+  iDsCopy = iDs;
   v16.receiver = self;
   v16.super_class = ICTagSelection;
   v13 = [(ICTagSelection *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    [(ICTagSelection *)v13 commonInitWithManagedObjectContext:v10];
-    objc_storeStrong(&v14->_includedObjectIDs, a4);
-    objc_storeStrong(&v14->_excludedObjectIDs, a5);
-    v14->_tagOperator = a6;
+    [(ICTagSelection *)v13 commonInitWithManagedObjectContext:contextCopy];
+    objc_storeStrong(&v14->_includedObjectIDs, ds);
+    objc_storeStrong(&v14->_excludedObjectIDs, iDs);
+    v14->_tagOperator = operator;
   }
 
   return v14;
 }
 
-- (id)copyWithManagedObjectContext:(id)a3
+- (id)copyWithManagedObjectContext:(id)context
 {
-  v4 = a3;
-  v5 = [[ICTagSelection alloc] initWithManagedObjectContext:v4 mode:[(ICTagSelection *)self mode] tagOperator:[(ICTagSelection *)self tagOperator]];
+  contextCopy = context;
+  v5 = [[ICTagSelection alloc] initWithManagedObjectContext:contextCopy mode:[(ICTagSelection *)self mode] tagOperator:[(ICTagSelection *)self tagOperator]];
 
-  v6 = [(ICTagSelection *)self includedObjectIDs];
-  [(ICTagSelection *)v5 setIncludedObjectIDs:v6];
+  includedObjectIDs = [(ICTagSelection *)self includedObjectIDs];
+  [(ICTagSelection *)v5 setIncludedObjectIDs:includedObjectIDs];
 
-  v7 = [(ICTagSelection *)self excludedObjectIDs];
-  [(ICTagSelection *)v5 setExcludedObjectIDs:v7];
+  excludedObjectIDs = [(ICTagSelection *)self excludedObjectIDs];
+  [(ICTagSelection *)v5 setExcludedObjectIDs:excludedObjectIDs];
 
   return v5;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICTagSelection;
   [(ICTagSelection *)&v4 dealloc];
 }
 
-- (void)commonInitWithManagedObjectContext:(id)a3
+- (void)commonInitWithManagedObjectContext:(id)context
 {
-  objc_storeStrong(&self->_managedObjectContext, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_managedObjectContext, context);
+  contextCopy = context;
   self->_allowsRecentlyDeleted = 0;
   self->_automaticallyRemoveDeletedTags = 1;
   v6 = [MEMORY[0x277CBEB98] set];
@@ -217,54 +217,54 @@
   unresolvedExcludedTagIdentifiers = self->_unresolvedExcludedTagIdentifiers;
   self->_unresolvedExcludedTagIdentifiers = v12;
 
-  v14 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v14 addObserver:self selector:sel_managedObjectContextObjectIDsDidSave_ name:*MEMORY[0x277CBE1B0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_managedObjectContextObjectIDsDidSave_ name:*MEMORY[0x277CBE1B0] object:0];
 }
 
 - (id)debugDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ICTagSelection *)self mode];
+  mode = [(ICTagSelection *)self mode];
   v5 = @"Custom";
-  if (v4 == 1)
+  if (mode == 1)
   {
     v5 = @"All Tagged";
   }
 
-  if (v4 == 2)
+  if (mode == 2)
   {
     v5 = @"All Untagged";
   }
 
   v6 = v5;
-  v7 = [(ICTagSelection *)self tagOperator];
+  tagOperator = [(ICTagSelection *)self tagOperator];
   v8 = @"unknown";
-  if (v7 == 1)
+  if (tagOperator == 1)
   {
     v8 = @"all";
   }
 
-  if (v7 == 2)
+  if (tagOperator == 2)
   {
     v8 = @"any";
   }
 
   v9 = v8;
-  v10 = [(ICTagSelection *)self includedObjectIDs];
-  v11 = [(ICTagSelection *)self excludedObjectIDs];
-  v12 = [(ICTagSelection *)self unresolvedIncludedTagIdentifiers];
-  v13 = [(ICTagSelection *)self unresolvedExcludedTagIdentifiers];
-  v14 = [v3 stringWithFormat:@"mode: %@\noperator:%@\nincluded:%@\nexcluded:%@\nunresolvedIncluded:%@\nunresolvedExcluded:%@", v6, v9, v10, v11, v12, v13];
+  includedObjectIDs = [(ICTagSelection *)self includedObjectIDs];
+  excludedObjectIDs = [(ICTagSelection *)self excludedObjectIDs];
+  unresolvedIncludedTagIdentifiers = [(ICTagSelection *)self unresolvedIncludedTagIdentifiers];
+  unresolvedExcludedTagIdentifiers = [(ICTagSelection *)self unresolvedExcludedTagIdentifiers];
+  v14 = [v3 stringWithFormat:@"mode: %@\noperator:%@\nincluded:%@\nexcluded:%@\nunresolvedIncluded:%@\nunresolvedExcluded:%@", v6, v9, includedObjectIDs, excludedObjectIDs, unresolvedIncludedTagIdentifiers, unresolvedExcludedTagIdentifiers];
 
   return v14;
 }
 
-- (void)setMode:(unint64_t)a3
+- (void)setMode:(unint64_t)mode
 {
-  self->_mode = a3;
-  if (a3 - 1 >= 2)
+  self->_mode = mode;
+  if (mode - 1 >= 2)
   {
-    if (!a3 && ![(ICTagSelection *)self tagOperator])
+    if (!mode && ![(ICTagSelection *)self tagOperator])
     {
 
       [(ICTagSelection *)self setTagOperator:1];
@@ -282,39 +282,39 @@
   }
 }
 
-- (void)setIncludedObjectIDs:(id)a3
+- (void)setIncludedObjectIDs:(id)ds
 {
-  v11 = a3;
-  v5 = [(ICTagSelection *)self includedObjectIDs];
-  v6 = [v11 isEqualToSet:v5];
+  dsCopy = ds;
+  includedObjectIDs = [(ICTagSelection *)self includedObjectIDs];
+  v6 = [dsCopy isEqualToSet:includedObjectIDs];
 
   if ((v6 & 1) == 0)
   {
-    objc_storeStrong(&self->_includedObjectIDs, a3);
-    v7 = [(ICTagSelection *)self excludedObjectIDs];
-    v8 = [v7 mutableCopy];
+    objc_storeStrong(&self->_includedObjectIDs, ds);
+    excludedObjectIDs = [(ICTagSelection *)self excludedObjectIDs];
+    v8 = [excludedObjectIDs mutableCopy];
 
-    [v8 minusSet:v11];
+    [v8 minusSet:dsCopy];
     v9 = [v8 copy];
     excludedObjectIDs = self->_excludedObjectIDs;
     self->_excludedObjectIDs = v9;
 
-    if ([v11 count] && -[ICTagSelection mode](self, "mode"))
+    if ([dsCopy count] && -[ICTagSelection mode](self, "mode"))
     {
       [(ICTagSelection *)self setMode:0];
     }
   }
 }
 
-- (void)removeObjectIDs:(id)a3
+- (void)removeObjectIDs:(id)ds
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [dsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -325,7 +325,7 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dsCopy);
         }
 
         v9 = *(*(&v10 + 1) + 8 * i);
@@ -333,94 +333,94 @@
         [(ICTagSelection *)self removeObjectID:v9 fromExcluded:1];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [dsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)addObjectID:(id)a3 toExcluded:(BOOL)a4
+- (void)addObjectID:(id)d toExcluded:(BOOL)excluded
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  excludedCopy = excluded;
+  dCopy = d;
+  if (excludedCopy)
   {
-    if (v6)
+    if (dCopy)
     {
-      v13 = v6;
-      v7 = [(ICTagSelection *)self excludedObjectIDs];
-      v8 = [v7 containsObject:v13];
+      v13 = dCopy;
+      excludedObjectIDs = [(ICTagSelection *)self excludedObjectIDs];
+      v8 = [excludedObjectIDs containsObject:v13];
 
-      v6 = v13;
+      dCopy = v13;
       if ((v8 & 1) == 0)
       {
-        v9 = [(ICTagSelection *)self excludedObjectIDs];
-        v10 = [v9 setByAddingObject:v13];
+        excludedObjectIDs2 = [(ICTagSelection *)self excludedObjectIDs];
+        v10 = [excludedObjectIDs2 setByAddingObject:v13];
         [(ICTagSelection *)self setExcludedObjectIDs:v10];
 LABEL_8:
 
-        v6 = v13;
+        dCopy = v13;
       }
     }
   }
 
-  else if (v6)
+  else if (dCopy)
   {
-    v13 = v6;
-    v11 = [(ICTagSelection *)self includedObjectIDs];
-    v12 = [v11 containsObject:v13];
+    v13 = dCopy;
+    includedObjectIDs = [(ICTagSelection *)self includedObjectIDs];
+    v12 = [includedObjectIDs containsObject:v13];
 
-    v6 = v13;
+    dCopy = v13;
     if ((v12 & 1) == 0)
     {
-      v9 = [(ICTagSelection *)self includedObjectIDs];
-      v10 = [v9 setByAddingObject:v13];
+      excludedObjectIDs2 = [(ICTagSelection *)self includedObjectIDs];
+      v10 = [excludedObjectIDs2 setByAddingObject:v13];
       [(ICTagSelection *)self setIncludedObjectIDs:v10];
       goto LABEL_8;
     }
   }
 }
 
-- (void)removeObjectID:(id)a3 fromExcluded:(BOOL)a4
+- (void)removeObjectID:(id)d fromExcluded:(BOOL)excluded
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  excludedCopy = excluded;
+  dCopy = d;
+  if (excludedCopy)
   {
-    if (v6)
+    if (dCopy)
     {
-      v15 = v6;
-      v7 = [(ICTagSelection *)self excludedObjectIDs];
-      v8 = [v7 containsObject:v15];
+      v15 = dCopy;
+      excludedObjectIDs = [(ICTagSelection *)self excludedObjectIDs];
+      v8 = [excludedObjectIDs containsObject:v15];
 
-      v6 = v15;
+      dCopy = v15;
       if (v8)
       {
-        v9 = [(ICTagSelection *)self excludedObjectIDs];
-        v10 = [v9 mutableCopy];
+        excludedObjectIDs2 = [(ICTagSelection *)self excludedObjectIDs];
+        v10 = [excludedObjectIDs2 mutableCopy];
 
         [v10 removeObject:v15];
         v11 = [v10 copy];
         [(ICTagSelection *)self setExcludedObjectIDs:v11];
 LABEL_8:
 
-        v6 = v15;
+        dCopy = v15;
       }
     }
   }
 
-  else if (v6)
+  else if (dCopy)
   {
-    v15 = v6;
-    v12 = [(ICTagSelection *)self includedObjectIDs];
-    v13 = [v12 containsObject:v15];
+    v15 = dCopy;
+    includedObjectIDs = [(ICTagSelection *)self includedObjectIDs];
+    v13 = [includedObjectIDs containsObject:v15];
 
-    v6 = v15;
+    dCopy = v15;
     if (v13)
     {
-      v14 = [(ICTagSelection *)self includedObjectIDs];
-      v10 = [v14 mutableCopy];
+      includedObjectIDs2 = [(ICTagSelection *)self includedObjectIDs];
+      v10 = [includedObjectIDs2 mutableCopy];
 
       [v10 removeObject:v15];
       v11 = [v10 copy];
@@ -430,22 +430,22 @@ LABEL_8:
   }
 }
 
-- (void)addUnresolvedTagIdentifier:(id)a3 toExcluded:(BOOL)a4
+- (void)addUnresolvedTagIdentifier:(id)identifier toExcluded:(BOOL)excluded
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  excludedCopy = excluded;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v13 = v6;
-    if (v4)
+    v13 = identifierCopy;
+    if (excludedCopy)
     {
-      v7 = [(ICTagSelection *)self unresolvedExcludedTagIdentifiers];
-      v8 = [v7 containsObject:v13];
+      unresolvedExcludedTagIdentifiers = [(ICTagSelection *)self unresolvedExcludedTagIdentifiers];
+      v8 = [unresolvedExcludedTagIdentifiers containsObject:v13];
 
       if ((v8 & 1) == 0)
       {
-        v9 = [(ICTagSelection *)self unresolvedExcludedTagIdentifiers];
-        v10 = [v9 setByAddingObject:v13];
+        unresolvedExcludedTagIdentifiers2 = [(ICTagSelection *)self unresolvedExcludedTagIdentifiers];
+        v10 = [unresolvedExcludedTagIdentifiers2 setByAddingObject:v13];
         [(ICTagSelection *)self setUnresolvedExcludedTagIdentifiers:v10];
 LABEL_7:
       }
@@ -453,43 +453,43 @@ LABEL_7:
 
     else
     {
-      v11 = [(ICTagSelection *)self unresolvedIncludedTagIdentifiers];
-      v12 = [v11 containsObject:v13];
+      unresolvedIncludedTagIdentifiers = [(ICTagSelection *)self unresolvedIncludedTagIdentifiers];
+      v12 = [unresolvedIncludedTagIdentifiers containsObject:v13];
 
       if ((v12 & 1) == 0)
       {
-        v9 = [(ICTagSelection *)self unresolvedIncludedTagIdentifiers];
-        v10 = [v9 setByAddingObject:v13];
+        unresolvedExcludedTagIdentifiers2 = [(ICTagSelection *)self unresolvedIncludedTagIdentifiers];
+        v10 = [unresolvedExcludedTagIdentifiers2 setByAddingObject:v13];
         [(ICTagSelection *)self setUnresolvedIncludedTagIdentifiers:v10];
         goto LABEL_7;
       }
     }
 
-    [(ICTagSelection *)self removeUnresolvedTagIdentifier:v13 fromExcluded:!v4];
-    v6 = v13;
+    [(ICTagSelection *)self removeUnresolvedTagIdentifier:v13 fromExcluded:!excludedCopy];
+    identifierCopy = v13;
   }
 }
 
-- (void)removeUnresolvedTagIdentifier:(id)a3 fromExcluded:(BOOL)a4
+- (void)removeUnresolvedTagIdentifier:(id)identifier fromExcluded:(BOOL)excluded
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  excludedCopy = excluded;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v15 = v6;
-    if (v4)
+    v15 = identifierCopy;
+    if (excludedCopy)
     {
-      v7 = [(ICTagSelection *)self unresolvedExcludedTagIdentifiers];
-      v8 = [v7 containsObject:v15];
+      unresolvedExcludedTagIdentifiers = [(ICTagSelection *)self unresolvedExcludedTagIdentifiers];
+      v8 = [unresolvedExcludedTagIdentifiers containsObject:v15];
 
-      v6 = v15;
+      identifierCopy = v15;
       if (!v8)
       {
         goto LABEL_8;
       }
 
-      v9 = [(ICTagSelection *)self unresolvedExcludedTagIdentifiers];
-      v10 = [v9 mutableCopy];
+      unresolvedExcludedTagIdentifiers2 = [(ICTagSelection *)self unresolvedExcludedTagIdentifiers];
+      v10 = [unresolvedExcludedTagIdentifiers2 mutableCopy];
 
       [v10 removeObject:v15];
       v11 = [v10 copy];
@@ -498,62 +498,62 @@ LABEL_7:
 
     else
     {
-      v12 = [(ICTagSelection *)self unresolvedIncludedTagIdentifiers];
-      v13 = [v12 containsObject:v15];
+      unresolvedIncludedTagIdentifiers = [(ICTagSelection *)self unresolvedIncludedTagIdentifiers];
+      v13 = [unresolvedIncludedTagIdentifiers containsObject:v15];
 
-      v6 = v15;
+      identifierCopy = v15;
       if (!v13)
       {
         goto LABEL_8;
       }
 
-      v14 = [(ICTagSelection *)self unresolvedIncludedTagIdentifiers];
-      v10 = [v14 mutableCopy];
+      unresolvedIncludedTagIdentifiers2 = [(ICTagSelection *)self unresolvedIncludedTagIdentifiers];
+      v10 = [unresolvedIncludedTagIdentifiers2 mutableCopy];
 
       [v10 removeObject:v15];
       v11 = [v10 copy];
       [(ICTagSelection *)self setUnresolvedIncludedTagIdentifiers:v11];
     }
 
-    v6 = v15;
+    identifierCopy = v15;
   }
 
 LABEL_8:
 }
 
-- (void)setExcludedObjectIDs:(id)a3
+- (void)setExcludedObjectIDs:(id)ds
 {
-  v11 = a3;
-  v5 = [(ICTagSelection *)self excludedObjectIDs];
-  v6 = [v11 isEqualToSet:v5];
+  dsCopy = ds;
+  excludedObjectIDs = [(ICTagSelection *)self excludedObjectIDs];
+  v6 = [dsCopy isEqualToSet:excludedObjectIDs];
 
   if ((v6 & 1) == 0)
   {
-    objc_storeStrong(&self->_excludedObjectIDs, a3);
-    v7 = [(ICTagSelection *)self includedObjectIDs];
-    v8 = [v7 mutableCopy];
+    objc_storeStrong(&self->_excludedObjectIDs, ds);
+    includedObjectIDs = [(ICTagSelection *)self includedObjectIDs];
+    v8 = [includedObjectIDs mutableCopy];
 
-    [v8 minusSet:v11];
+    [v8 minusSet:dsCopy];
     v9 = [v8 copy];
     includedObjectIDs = self->_includedObjectIDs;
     self->_includedObjectIDs = v9;
 
-    if ([v11 count] && -[ICTagSelection mode](self, "mode"))
+    if ([dsCopy count] && -[ICTagSelection mode](self, "mode"))
     {
       [(ICTagSelection *)self setMode:0];
     }
   }
 }
 
-- (void)removeUnresolvedTagIdentifiers:(id)a3
+- (void)removeUnresolvedTagIdentifiers:(id)identifiers
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [identifiersCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -564,7 +564,7 @@ LABEL_8:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(identifiersCopy);
         }
 
         v9 = *(*(&v10 + 1) + 8 * i);
@@ -572,7 +572,7 @@ LABEL_8:
         [(ICTagSelection *)self removeUnresolvedTagIdentifier:v9 fromExcluded:1];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [identifiersCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -581,91 +581,91 @@ LABEL_8:
 
 - (NSArray)tags
 {
-  v3 = [(ICTagSelection *)self objectIDs];
-  v4 = [(ICTagSelection *)self hashtagsForObjectIDs:v3];
+  objectIDs = [(ICTagSelection *)self objectIDs];
+  v4 = [(ICTagSelection *)self hashtagsForObjectIDs:objectIDs];
 
   return v4;
 }
 
 - (NSArray)includedTags
 {
-  v3 = [(ICTagSelection *)self includedObjectIDs];
-  v4 = [(ICTagSelection *)self hashtagsForObjectIDs:v3];
+  includedObjectIDs = [(ICTagSelection *)self includedObjectIDs];
+  v4 = [(ICTagSelection *)self hashtagsForObjectIDs:includedObjectIDs];
 
   return v4;
 }
 
 - (NSArray)excludedTags
 {
-  v3 = [(ICTagSelection *)self excludedObjectIDs];
-  v4 = [(ICTagSelection *)self hashtagsForObjectIDs:v3];
+  excludedObjectIDs = [(ICTagSelection *)self excludedObjectIDs];
+  v4 = [(ICTagSelection *)self hashtagsForObjectIDs:excludedObjectIDs];
 
   return v4;
 }
 
 - (NSSet)objectIDs
 {
-  v3 = [(ICTagSelection *)self includedObjectIDs];
-  v4 = [(ICTagSelection *)self excludedObjectIDs];
-  v5 = [v3 setByAddingObjectsFromSet:v4];
+  includedObjectIDs = [(ICTagSelection *)self includedObjectIDs];
+  excludedObjectIDs = [(ICTagSelection *)self excludedObjectIDs];
+  v5 = [includedObjectIDs setByAddingObjectsFromSet:excludedObjectIDs];
 
   return v5;
 }
 
 - (NSArray)includedTagIdentifiers
 {
-  v3 = [(ICTagSelection *)self includedObjectIDs];
-  v4 = [(ICTagSelection *)self standardizedContentsForObjectIDs:v3];
+  includedObjectIDs = [(ICTagSelection *)self includedObjectIDs];
+  v4 = [(ICTagSelection *)self standardizedContentsForObjectIDs:includedObjectIDs];
 
   return v4;
 }
 
 - (NSArray)excludedTagIdentifiers
 {
-  v3 = [(ICTagSelection *)self excludedObjectIDs];
-  v4 = [(ICTagSelection *)self standardizedContentsForObjectIDs:v3];
+  excludedObjectIDs = [(ICTagSelection *)self excludedObjectIDs];
+  v4 = [(ICTagSelection *)self standardizedContentsForObjectIDs:excludedObjectIDs];
 
   return v4;
 }
 
 - (NSArray)tagIdentifiers
 {
-  v3 = [(ICTagSelection *)self includedTagIdentifiers];
-  v4 = [(ICTagSelection *)self excludedTagIdentifiers];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  includedTagIdentifiers = [(ICTagSelection *)self includedTagIdentifiers];
+  excludedTagIdentifiers = [(ICTagSelection *)self excludedTagIdentifiers];
+  v5 = [includedTagIdentifiers arrayByAddingObjectsFromArray:excludedTagIdentifiers];
 
   return v5;
 }
 
 - (NSArray)includedDisplayTexts
 {
-  v3 = [(ICTagSelection *)self includedObjectIDs];
-  v4 = [(ICTagSelection *)self displayTextsForObjectIDs:v3];
+  includedObjectIDs = [(ICTagSelection *)self includedObjectIDs];
+  v4 = [(ICTagSelection *)self displayTextsForObjectIDs:includedObjectIDs];
 
   return v4;
 }
 
 - (NSArray)excludedDisplayTexts
 {
-  v3 = [(ICTagSelection *)self excludedObjectIDs];
-  v4 = [(ICTagSelection *)self displayTextsForObjectIDs:v3];
+  excludedObjectIDs = [(ICTagSelection *)self excludedObjectIDs];
+  v4 = [(ICTagSelection *)self displayTextsForObjectIDs:excludedObjectIDs];
 
   return v4;
 }
 
 - (NSArray)displayTexts
 {
-  v3 = [(ICTagSelection *)self includedDisplayTexts];
-  v4 = [(ICTagSelection *)self excludedDisplayTexts];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  includedDisplayTexts = [(ICTagSelection *)self includedDisplayTexts];
+  excludedDisplayTexts = [(ICTagSelection *)self excludedDisplayTexts];
+  v5 = [includedDisplayTexts arrayByAddingObjectsFromArray:excludedDisplayTexts];
 
   return v5;
 }
 
 - (NSArray)includedHashtagPrefixedDisplayTexts
 {
-  v3 = [(ICTagSelection *)self includedDisplayTexts];
-  v4 = [(ICTagSelection *)self hashtagPrefixedDisplayTexts:v3];
+  includedDisplayTexts = [(ICTagSelection *)self includedDisplayTexts];
+  v4 = [(ICTagSelection *)self hashtagPrefixedDisplayTexts:includedDisplayTexts];
 
   v5 = [v4 sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
 
@@ -674,8 +674,8 @@ LABEL_8:
 
 - (NSArray)excludedHashtagPrefixedDisplayTexts
 {
-  v3 = [(ICTagSelection *)self excludedDisplayTexts];
-  v4 = [(ICTagSelection *)self hashtagPrefixedDisplayTexts:v3];
+  excludedDisplayTexts = [(ICTagSelection *)self excludedDisplayTexts];
+  v4 = [(ICTagSelection *)self hashtagPrefixedDisplayTexts:excludedDisplayTexts];
 
   v5 = [v4 sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
 
@@ -684,17 +684,17 @@ LABEL_8:
 
 - (NSArray)hashtagPrefixedDisplayTexts
 {
-  v3 = [(ICTagSelection *)self displayTexts];
-  v4 = [(ICTagSelection *)self hashtagPrefixedDisplayTexts:v3];
+  displayTexts = [(ICTagSelection *)self displayTexts];
+  v4 = [(ICTagSelection *)self hashtagPrefixedDisplayTexts:displayTexts];
 
   return v4;
 }
 
 - (NSSet)unresolvedTagIdentifiers
 {
-  v3 = [(ICTagSelection *)self unresolvedIncludedTagIdentifiers];
-  v4 = [(ICTagSelection *)self unresolvedExcludedTagIdentifiers];
-  v5 = [v3 setByAddingObjectsFromSet:v4];
+  unresolvedIncludedTagIdentifiers = [(ICTagSelection *)self unresolvedIncludedTagIdentifiers];
+  unresolvedExcludedTagIdentifiers = [(ICTagSelection *)self unresolvedExcludedTagIdentifiers];
+  v5 = [unresolvedIncludedTagIdentifiers setByAddingObjectsFromSet:unresolvedExcludedTagIdentifiers];
 
   return v5;
 }
@@ -706,10 +706,10 @@ LABEL_8:
     return 1;
   }
 
-  v4 = [(ICTagSelection *)self includedObjectIDs];
-  v5 = [v4 count];
-  v6 = [(ICTagSelection *)self excludedObjectIDs];
-  v3 = [v6 count] + v5;
+  includedObjectIDs = [(ICTagSelection *)self includedObjectIDs];
+  v5 = [includedObjectIDs count];
+  excludedObjectIDs = [(ICTagSelection *)self excludedObjectIDs];
+  v3 = [excludedObjectIDs count] + v5;
 
   return v3;
 }
@@ -725,26 +725,26 @@ LABEL_8:
 
 - (NSString)title
 {
-  v3 = [(ICTagSelection *)self mode];
-  if (!v3)
+  mode = [(ICTagSelection *)self mode];
+  if (!mode)
   {
     if ([(ICTagSelection *)self selectedTagCount])
     {
       if ([(ICTagSelection *)self selectedTagCount]== 1)
       {
-        v6 = [(ICTagSelection *)self includedObjectIDs];
-        v7 = [v6 count];
+        includedObjectIDs = [(ICTagSelection *)self includedObjectIDs];
+        v7 = [includedObjectIDs count];
 
         if (v7 == 1)
         {
-          v8 = [(ICTagSelection *)self hashtagPrefixedDisplayTexts];
-          v9 = [v8 firstObject];
+          hashtagPrefixedDisplayTexts = [(ICTagSelection *)self hashtagPrefixedDisplayTexts];
+          firstObject = [hashtagPrefixedDisplayTexts firstObject];
 
           goto LABEL_15;
         }
       }
 
-      v4 = [(ICTagSelection *)self selectedTagCountString];
+      selectedTagCountString = [(ICTagSelection *)self selectedTagCountString];
       goto LABEL_14;
     }
 
@@ -752,48 +752,48 @@ LABEL_8:
     goto LABEL_13;
   }
 
-  if (v3 == 2)
+  if (mode == 2)
   {
     v5 = @"Untagged";
 LABEL_13:
-    v4 = __ICLocalizedFrameworkString_impl(v5, v5, 0, 1);
+    selectedTagCountString = __ICLocalizedFrameworkString_impl(v5, v5, 0, 1);
     goto LABEL_14;
   }
 
-  if (v3 != 1)
+  if (mode != 1)
   {
-    v9 = 0;
+    firstObject = 0;
     goto LABEL_15;
   }
 
-  v4 = +[ICHashtag localizedSectionTitle];
+  selectedTagCountString = +[ICHashtag localizedSectionTitle];
 LABEL_14:
-  v9 = v4;
+  firstObject = selectedTagCountString;
 LABEL_15:
 
-  return v9;
+  return firstObject;
 }
 
 - (NSString)actionTitle
 {
-  v2 = self;
+  selfCopy = self;
   if ([(ICTagSelection *)self isEmpty])
   {
-    v2 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
-  v3 = [v2 mode];
-  if (v3)
+  mode = [selfCopy mode];
+  if (mode)
   {
-    if (v3 == 2)
+    if (mode == 2)
     {
       v4 = @"Untagged";
     }
 
     else
     {
-      if (v3 != 1)
+      if (mode != 1)
       {
         goto LABEL_10;
       }
@@ -801,18 +801,18 @@ LABEL_15:
       v4 = @"All Tags";
     }
 
-    v2 = __ICLocalizedFrameworkString_impl(v4, v4, 0, 1);
+    selfCopy = __ICLocalizedFrameworkString_impl(v4, v4, 0, 1);
   }
 
   else
   {
-    v5 = [v2 hashtagPrefixedDisplayTexts];
-    v2 = [ICFolder defaultSmartFolderTitleWithComponents:v5];
+    hashtagPrefixedDisplayTexts = [selfCopy hashtagPrefixedDisplayTexts];
+    selfCopy = [ICFolder defaultSmartFolderTitleWithComponents:hashtagPrefixedDisplayTexts];
   }
 
 LABEL_10:
 
-  return v2;
+  return selfCopy;
 }
 
 - (NSString)smartFolderTitle
@@ -822,16 +822,16 @@ LABEL_10:
     goto LABEL_2;
   }
 
-  v4 = [(ICTagSelection *)self mode];
-  if (v4)
+  mode = [(ICTagSelection *)self mode];
+  if (mode)
   {
-    if (v4 == 2)
+    if (mode == 2)
     {
       v5 = @"Untagged";
       goto LABEL_8;
     }
 
-    if (v4 == 1)
+    if (mode == 1)
     {
       v5 = @"All Tags";
 LABEL_8:
@@ -849,8 +849,8 @@ LABEL_2:
     goto LABEL_2;
   }
 
-  v7 = [(ICTagSelection *)self excludedObjectIDs];
-  v8 = [v7 count];
+  excludedObjectIDs = [(ICTagSelection *)self excludedObjectIDs];
+  v8 = [excludedObjectIDs count];
 
   if (v8)
   {
@@ -858,8 +858,8 @@ LABEL_2:
     goto LABEL_2;
   }
 
-  v10 = [(ICTagSelection *)self includedDisplayTexts];
-  v3 = [ICFolder defaultSmartFolderTitleWithComponents:v10];
+  includedDisplayTexts = [(ICTagSelection *)self includedDisplayTexts];
+  v3 = [ICFolder defaultSmartFolderTitleWithComponents:includedDisplayTexts];
 
 LABEL_9:
 
@@ -873,8 +873,8 @@ LABEL_9:
     [(ICTagSelection *)self setMode:0];
   }
 
-  v3 = [(ICTagSelection *)self includedObjectIDs];
-  v4 = [v3 count];
+  includedObjectIDs = [(ICTagSelection *)self includedObjectIDs];
+  v4 = [includedObjectIDs count];
 
   if (v4)
   {
@@ -882,8 +882,8 @@ LABEL_9:
     [(ICTagSelection *)self setIncludedObjectIDs:v5];
   }
 
-  v6 = [(ICTagSelection *)self excludedObjectIDs];
-  v7 = [v6 count];
+  excludedObjectIDs = [(ICTagSelection *)self excludedObjectIDs];
+  v7 = [excludedObjectIDs count];
 
   if (v7)
   {
@@ -892,18 +892,18 @@ LABEL_9:
   }
 }
 
-- (void)convertUnresolvedDisplayTextsInAccount:(id)a3
+- (void)convertUnresolvedDisplayTextsInAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(ICTagSelection *)self managedObjectContext];
+  accountCopy = account;
+  managedObjectContext = [(ICTagSelection *)self managedObjectContext];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__ICTagSelection_convertUnresolvedDisplayTextsInAccount___block_invoke;
   v7[3] = &unk_278194AD8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBlockAndWait:v7];
+  v8 = accountCopy;
+  v6 = accountCopy;
+  [managedObjectContext performBlockAndWait:v7];
 }
 
 void __57__ICTagSelection_convertUnresolvedDisplayTextsInAccount___block_invoke(uint64_t a1)
@@ -955,33 +955,33 @@ void __57__ICTagSelection_convertUnresolvedDisplayTextsInAccount___block_invoke(
   [v14 ic_save];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ICTagSelection allocWithZone:a3];
-  v5 = [(ICTagSelection *)self managedObjectContext];
-  v6 = [(ICTagSelection *)v4 initWithManagedObjectContext:v5 mode:[(ICTagSelection *)self mode] tagOperator:[(ICTagSelection *)self tagOperator]];
+  v4 = [ICTagSelection allocWithZone:zone];
+  managedObjectContext = [(ICTagSelection *)self managedObjectContext];
+  v6 = [(ICTagSelection *)v4 initWithManagedObjectContext:managedObjectContext mode:[(ICTagSelection *)self mode] tagOperator:[(ICTagSelection *)self tagOperator]];
 
-  v7 = [(ICTagSelection *)self includedObjectIDs];
-  [(ICTagSelection *)v6 setIncludedObjectIDs:v7];
+  includedObjectIDs = [(ICTagSelection *)self includedObjectIDs];
+  [(ICTagSelection *)v6 setIncludedObjectIDs:includedObjectIDs];
 
-  v8 = [(ICTagSelection *)self excludedObjectIDs];
-  [(ICTagSelection *)v6 setExcludedObjectIDs:v8];
+  excludedObjectIDs = [(ICTagSelection *)self excludedObjectIDs];
+  [(ICTagSelection *)v6 setExcludedObjectIDs:excludedObjectIDs];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ICTagSelection *)self isEqualToTagSelection:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ICTagSelection *)self isEqualToTagSelection:v5];
   }
 
   return v6;
@@ -994,7 +994,7 @@ void __57__ICTagSelection_convertUnresolvedDisplayTextsInAccount___block_invoke(
   v33 = [v3 hash];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[ICTagSelection tagOperator](self, "tagOperator")}];
   v5 = [v4 hash];
-  v6 = [(ICTagSelection *)self includedObjectIDs];
+  includedObjectIDs = [(ICTagSelection *)self includedObjectIDs];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   v9 = [v8 hash];
@@ -1003,7 +1003,7 @@ void __57__ICTagSelection_convertUnresolvedDisplayTextsInAccount___block_invoke(
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v10 = v6;
+  v10 = includedObjectIDs;
   v11 = [v10 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v11)
   {
@@ -1027,7 +1027,7 @@ void __57__ICTagSelection_convertUnresolvedDisplayTextsInAccount___block_invoke(
     while (v12);
   }
 
-  v15 = [(ICTagSelection *)self excludedObjectIDs];
+  excludedObjectIDs = [(ICTagSelection *)self excludedObjectIDs];
   v16 = objc_opt_class();
   v17 = NSStringFromClass(v16);
   v18 = [v17 hash];
@@ -1036,7 +1036,7 @@ void __57__ICTagSelection_convertUnresolvedDisplayTextsInAccount___block_invoke(
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v19 = v15;
+  v19 = excludedObjectIDs;
   v20 = [v19 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v20)
   {
@@ -1066,10 +1066,10 @@ void __57__ICTagSelection_convertUnresolvedDisplayTextsInAccount___block_invoke(
 
 - (id)rawFilterValue
 {
-  v3 = [(ICTagSelection *)self mode];
-  if (v3)
+  mode = [(ICTagSelection *)self mode];
+  if (mode)
   {
-    if (v3 == 2)
+    if (mode == 2)
     {
       return @"No Tags";
     }
@@ -1098,32 +1098,32 @@ void __57__ICTagSelection_convertUnresolvedDisplayTextsInAccount___block_invoke(
     return 0;
   }
 
-  v4 = [(ICTagSelection *)self includedObjectIDs];
-  if ([v4 count])
+  includedObjectIDs = [(ICTagSelection *)self includedObjectIDs];
+  if ([includedObjectIDs count])
   {
     v3 = 0;
   }
 
   else
   {
-    v5 = [(ICTagSelection *)self excludedObjectIDs];
-    if ([v5 count])
+    excludedObjectIDs = [(ICTagSelection *)self excludedObjectIDs];
+    if ([excludedObjectIDs count])
     {
       v3 = 0;
     }
 
     else
     {
-      v6 = [(ICTagSelection *)self unresolvedIncludedTagIdentifiers];
-      if ([v6 count])
+      unresolvedIncludedTagIdentifiers = [(ICTagSelection *)self unresolvedIncludedTagIdentifiers];
+      if ([unresolvedIncludedTagIdentifiers count])
       {
         v3 = 0;
       }
 
       else
       {
-        v7 = [(ICTagSelection *)self unresolvedExcludedTagIdentifiers];
-        v3 = [v7 count] == 0;
+        unresolvedExcludedTagIdentifiers = [(ICTagSelection *)self unresolvedExcludedTagIdentifiers];
+        v3 = [unresolvedExcludedTagIdentifiers count] == 0;
       }
     }
   }
@@ -1176,17 +1176,17 @@ void __57__ICTagSelection_convertUnresolvedDisplayTextsInAccount___block_invoke(
   return v2;
 }
 
-+ (id)tagSelectionWithData:(id)a3 managedObjectContext:(id)a4
++ (id)tagSelectionWithData:(id)data managedObjectContext:(id)context
 {
-  v5 = a4;
-  v6 = v5;
+  contextCopy = context;
+  v6 = contextCopy;
   v7 = 0;
-  if (a3 && v5)
+  if (data && contextCopy)
   {
     v8 = MEMORY[0x277CCAAC8];
-    v9 = a3;
+    dataCopy = data;
     v14 = 0;
-    v10 = [v8 unarchivedObjectOfClass:objc_opt_class() fromData:v9 error:&v14];
+    v10 = [v8 unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v14];
 
     v11 = v14;
     if (v11)
@@ -1228,27 +1228,27 @@ void __57__ICTagSelection_convertUnresolvedDisplayTextsInAccount___block_invoke(
   return v2;
 }
 
-- (void)managedObjectContextObjectIDsDidSave:(id)a3
+- (void)managedObjectContextObjectIDsDidSave:(id)save
 {
-  v4 = a3;
+  saveCopy = save;
   if ([(ICTagSelection *)self automaticallyRemoveDeletedTags])
   {
-    v5 = [(ICTagSelection *)self objectIDs];
-    v6 = [v5 mutableCopy];
+    objectIDs = [(ICTagSelection *)self objectIDs];
+    v6 = [objectIDs mutableCopy];
 
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277CBE308]];
+    userInfo = [saveCopy userInfo];
+    v8 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CBE308]];
 
     [v6 intersectSet:v8];
-    v9 = [(ICTagSelection *)self managedObjectContext];
+    managedObjectContext = [(ICTagSelection *)self managedObjectContext];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __55__ICTagSelection_managedObjectContextObjectIDsDidSave___block_invoke;
     v11[3] = &unk_278194AD8;
     v12 = v6;
-    v13 = self;
+    selfCopy = self;
     v10 = v6;
-    [v9 performBlock:v11];
+    [managedObjectContext performBlock:v11];
   }
 }
 
@@ -1284,19 +1284,19 @@ uint64_t __55__ICTagSelection_managedObjectContextObjectIDsDidSave___block_invok
   return v6;
 }
 
-- (BOOL)isEqualToTagSelection:(id)a3
+- (BOOL)isEqualToTagSelection:(id)selection
 {
-  v4 = a3;
-  v5 = [(ICTagSelection *)self mode];
-  if (v5 == [v4 mode] && (v6 = -[ICTagSelection tagOperator](self, "tagOperator"), v6 == objc_msgSend(v4, "tagOperator")))
+  selectionCopy = selection;
+  mode = [(ICTagSelection *)self mode];
+  if (mode == [selectionCopy mode] && (v6 = -[ICTagSelection tagOperator](self, "tagOperator"), v6 == objc_msgSend(selectionCopy, "tagOperator")))
   {
-    v7 = [(ICTagSelection *)self includedObjectIDs];
-    v8 = [v4 includedObjectIDs];
-    if ([v7 isEqualToSet:v8])
+    includedObjectIDs = [(ICTagSelection *)self includedObjectIDs];
+    includedObjectIDs2 = [selectionCopy includedObjectIDs];
+    if ([includedObjectIDs isEqualToSet:includedObjectIDs2])
     {
-      v9 = [(ICTagSelection *)self excludedObjectIDs];
-      v10 = [v4 excludedObjectIDs];
-      v11 = [v9 isEqualToSet:v10];
+      excludedObjectIDs = [(ICTagSelection *)self excludedObjectIDs];
+      excludedObjectIDs2 = [selectionCopy excludedObjectIDs];
+      v11 = [excludedObjectIDs isEqualToSet:excludedObjectIDs2];
     }
 
     else
@@ -1313,25 +1313,25 @@ uint64_t __55__ICTagSelection_managedObjectContextObjectIDsDidSave___block_invok
   return v11;
 }
 
-- (id)standardizedContentsForObjectIDs:(id)a3
+- (id)standardizedContentsForObjectIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__20;
   v17 = __Block_byref_object_dispose__20;
   v18 = 0;
-  v5 = [(ICTagSelection *)self managedObjectContext];
+  managedObjectContext = [(ICTagSelection *)self managedObjectContext];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __51__ICTagSelection_standardizedContentsForObjectIDs___block_invoke;
   v9[3] = &unk_278195740;
   v12 = &v13;
-  v6 = v4;
+  v6 = dsCopy;
   v10 = v6;
-  v11 = self;
-  [v5 performBlockAndWait:v9];
+  selfCopy = self;
+  [managedObjectContext performBlockAndWait:v9];
 
   v7 = [v14[5] sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
 
@@ -1374,25 +1374,25 @@ id __51__ICTagSelection_standardizedContentsForObjectIDs___block_invoke_2(uint64
   return v7;
 }
 
-- (id)displayTextsForObjectIDs:(id)a3
+- (id)displayTextsForObjectIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__20;
   v17 = __Block_byref_object_dispose__20;
   v18 = 0;
-  v5 = [(ICTagSelection *)self managedObjectContext];
+  managedObjectContext = [(ICTagSelection *)self managedObjectContext];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __43__ICTagSelection_displayTextsForObjectIDs___block_invoke;
   v9[3] = &unk_278195740;
   v12 = &v13;
-  v6 = v4;
+  v6 = dsCopy;
   v10 = v6;
-  v11 = self;
-  [v5 performBlockAndWait:v9];
+  selfCopy = self;
+  [managedObjectContext performBlockAndWait:v9];
 
   v7 = [v14[5] sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
 
@@ -1435,29 +1435,29 @@ id __43__ICTagSelection_displayTextsForObjectIDs___block_invoke_2(uint64_t a1, v
   return v7;
 }
 
-- (id)hashtagsForObjectIDs:(id)a3
+- (id)hashtagsForObjectIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__20;
   v21 = __Block_byref_object_dispose__20;
   v22 = 0;
-  v5 = [(ICTagSelection *)self managedObjectContext];
+  managedObjectContext = [(ICTagSelection *)self managedObjectContext];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __39__ICTagSelection_hashtagsForObjectIDs___block_invoke;
   v13[3] = &unk_278195740;
   v16 = &v17;
-  v6 = v4;
+  v6 = dsCopy;
   v14 = v6;
-  v15 = self;
-  [v5 performBlockAndWait:v13];
+  selfCopy = self;
+  [managedObjectContext performBlockAndWait:v13];
 
   v7 = MEMORY[0x277CBEA60];
-  v8 = [v18[5] allObjects];
-  v9 = [v7 arrayWithArray:v8];
+  allObjects = [v18[5] allObjects];
+  v9 = [v7 arrayWithArray:allObjects];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -1549,24 +1549,24 @@ void __39__ICTagSelection_hashtagsForObjectIDs___block_invoke_4(uint64_t a1)
 - (void)resolveManagedObjectsFromURLs
 {
   v49 = *MEMORY[0x277D85DE8];
-  v3 = [(ICTagSelection *)self managedObjectContext];
+  managedObjectContext = [(ICTagSelection *)self managedObjectContext];
 
-  if (v3)
+  if (managedObjectContext)
   {
-    v4 = [(ICTagSelection *)self accountObjectIDURL];
+    accountObjectIDURL = [(ICTagSelection *)self accountObjectIDURL];
 
-    if (v4)
+    if (accountObjectIDURL)
     {
-      v5 = [(ICTagSelection *)self managedObjectContext];
-      v6 = [(ICTagSelection *)self accountObjectIDURL];
-      v7 = [v5 ic_objectIDFromURL:v6];
+      managedObjectContext2 = [(ICTagSelection *)self managedObjectContext];
+      accountObjectIDURL2 = [(ICTagSelection *)self accountObjectIDURL];
+      v7 = [managedObjectContext2 ic_objectIDFromURL:accountObjectIDURL2];
       [(ICFilterTypeSelection *)self setAccountObjectID:v7];
 
       [(ICTagSelection *)self setAccountObjectIDURL:0];
     }
 
-    v8 = [(ICTagSelection *)self includedObjectIDURLs];
-    v9 = [v8 count];
+    includedObjectIDURLs = [(ICTagSelection *)self includedObjectIDURLs];
+    v9 = [includedObjectIDURLs count];
 
     if (v9)
     {
@@ -1575,8 +1575,8 @@ void __39__ICTagSelection_hashtagsForObjectIDs___block_invoke_4(uint64_t a1)
       v44 = 0u;
       v45 = 0u;
       v46 = 0u;
-      v11 = [(ICTagSelection *)self includedObjectIDURLs];
-      v12 = [v11 countByEnumeratingWithState:&v43 objects:v48 count:16];
+      includedObjectIDURLs2 = [(ICTagSelection *)self includedObjectIDURLs];
+      v12 = [includedObjectIDURLs2 countByEnumeratingWithState:&v43 objects:v48 count:16];
       if (v12)
       {
         v13 = v12;
@@ -1588,19 +1588,19 @@ void __39__ICTagSelection_hashtagsForObjectIDs___block_invoke_4(uint64_t a1)
           {
             if (*v44 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(includedObjectIDURLs2);
             }
 
             v16 = *(*(&v43 + 1) + 8 * v15);
-            v17 = [(ICTagSelection *)self managedObjectContext];
-            v18 = [v17 ic_objectIDFromURL:v16];
+            managedObjectContext3 = [(ICTagSelection *)self managedObjectContext];
+            v18 = [managedObjectContext3 ic_objectIDFromURL:v16];
             [v10 ic_addNonNilObject:v18];
 
             ++v15;
           }
 
           while (v13 != v15);
-          v13 = [v11 countByEnumeratingWithState:&v43 objects:v48 count:16];
+          v13 = [includedObjectIDURLs2 countByEnumeratingWithState:&v43 objects:v48 count:16];
         }
 
         while (v13);
@@ -1612,8 +1612,8 @@ void __39__ICTagSelection_hashtagsForObjectIDs___block_invoke_4(uint64_t a1)
       [(ICTagSelection *)self setIncludedObjectIDURLs:0];
     }
 
-    v20 = [(ICTagSelection *)self excludedObjectIDURLs];
-    v21 = [v20 count];
+    excludedObjectIDURLs = [(ICTagSelection *)self excludedObjectIDURLs];
+    v21 = [excludedObjectIDURLs count];
 
     if (v21)
     {
@@ -1622,8 +1622,8 @@ void __39__ICTagSelection_hashtagsForObjectIDs___block_invoke_4(uint64_t a1)
       v40 = 0u;
       v41 = 0u;
       v42 = 0u;
-      v23 = [(ICTagSelection *)self excludedObjectIDURLs];
-      v24 = [v23 countByEnumeratingWithState:&v39 objects:v47 count:16];
+      excludedObjectIDURLs2 = [(ICTagSelection *)self excludedObjectIDURLs];
+      v24 = [excludedObjectIDURLs2 countByEnumeratingWithState:&v39 objects:v47 count:16];
       if (v24)
       {
         v25 = v24;
@@ -1635,19 +1635,19 @@ void __39__ICTagSelection_hashtagsForObjectIDs___block_invoke_4(uint64_t a1)
           {
             if (*v40 != v26)
             {
-              objc_enumerationMutation(v23);
+              objc_enumerationMutation(excludedObjectIDURLs2);
             }
 
             v28 = *(*(&v39 + 1) + 8 * v27);
-            v29 = [(ICTagSelection *)self managedObjectContext];
-            v30 = [v29 ic_objectIDFromURL:v28];
+            managedObjectContext4 = [(ICTagSelection *)self managedObjectContext];
+            v30 = [managedObjectContext4 ic_objectIDFromURL:v28];
             [v22 ic_addNonNilObject:v30];
 
             ++v27;
           }
 
           while (v25 != v27);
-          v25 = [v23 countByEnumeratingWithState:&v39 objects:v47 count:16];
+          v25 = [excludedObjectIDURLs2 countByEnumeratingWithState:&v39 objects:v47 count:16];
         }
 
         while (v25);
@@ -1659,18 +1659,18 @@ void __39__ICTagSelection_hashtagsForObjectIDs___block_invoke_4(uint64_t a1)
       [(ICTagSelection *)self setExcludedObjectIDURLs:0];
     }
 
-    v32 = [(ICTagSelection *)self hashtagObjectIDURLs];
-    v33 = [v32 count];
+    hashtagObjectIDURLs = [(ICTagSelection *)self hashtagObjectIDURLs];
+    v33 = [hashtagObjectIDURLs count];
 
     if (v33)
     {
-      v34 = [(ICTagSelection *)self hashtagObjectIDURLs];
+      hashtagObjectIDURLs2 = [(ICTagSelection *)self hashtagObjectIDURLs];
       v38[0] = MEMORY[0x277D85DD0];
       v38[1] = 3221225472;
       v38[2] = __47__ICTagSelection_resolveManagedObjectsFromURLs__block_invoke;
       v38[3] = &unk_2781969E8;
       v38[4] = self;
-      v35 = [v34 ic_compactMap:v38];
+      v35 = [hashtagObjectIDURLs2 ic_compactMap:v38];
 
       v36 = [(ICTagSelection *)self hashtagsForObjectIDs:v35];
       [(ICTagSelection *)self setTags:v36];
@@ -1699,52 +1699,52 @@ id __47__ICTagSelection_resolveManagedObjectsFromURLs__block_invoke(uint64_t a1,
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ICFilterTypeSelection *)self accountObjectID];
-  v6 = [v5 URIRepresentation];
+  coderCopy = coder;
+  accountObjectID = [(ICFilterTypeSelection *)self accountObjectID];
+  uRIRepresentation = [accountObjectID URIRepresentation];
   v7 = NSStringFromSelector(sel_accountObjectIDURL);
-  [v4 encodeObject:v6 forKey:v7];
+  [coderCopy encodeObject:uRIRepresentation forKey:v7];
 
   mode = self->_mode;
   v9 = NSStringFromSelector(sel_mode);
-  [v4 encodeInteger:mode forKey:v9];
+  [coderCopy encodeInteger:mode forKey:v9];
 
   tagOperator = self->_tagOperator;
   v11 = NSStringFromSelector(sel_tagOperator);
-  [v4 encodeInteger:tagOperator forKey:v11];
+  [coderCopy encodeInteger:tagOperator forKey:v11];
 
   allowsRecentlyDeleted = self->_allowsRecentlyDeleted;
   v13 = NSStringFromSelector(sel_allowsRecentlyDeleted);
-  [v4 encodeBool:allowsRecentlyDeleted forKey:v13];
+  [coderCopy encodeBool:allowsRecentlyDeleted forKey:v13];
 
   automaticallyRemoveDeletedTags = self->_automaticallyRemoveDeletedTags;
   v15 = NSStringFromSelector(sel_automaticallyRemoveDeletedTags);
-  [v4 encodeBool:automaticallyRemoveDeletedTags forKey:v15];
+  [coderCopy encodeBool:automaticallyRemoveDeletedTags forKey:v15];
 
   v27 = [(NSSet *)self->_includedObjectIDs ic_map:&__block_literal_global_128];
   v16 = NSStringFromSelector(sel_includedObjectIDURLs);
-  [v4 encodeObject:v27 forKey:v16];
+  [coderCopy encodeObject:v27 forKey:v16];
 
   v17 = [(NSSet *)self->_excludedObjectIDs ic_map:&__block_literal_global_132];
   v18 = NSStringFromSelector(sel_excludedObjectIDURLs);
-  [v4 encodeObject:v17 forKey:v18];
+  [coderCopy encodeObject:v17 forKey:v18];
 
   v19 = MEMORY[0x277CBEB98];
   v20 = [(NSArray *)self->_tags ic_map:&__block_literal_global_137];
   v21 = [v19 setWithArray:v20];
 
   v22 = NSStringFromSelector(sel_hashtagObjectIDURLs);
-  [v4 encodeObject:v21 forKey:v22];
+  [coderCopy encodeObject:v21 forKey:v22];
 
   unresolvedIncludedTagIdentifiers = self->_unresolvedIncludedTagIdentifiers;
   v24 = NSStringFromSelector(sel_unresolvedIncludedTagIdentifiers);
-  [v4 encodeObject:unresolvedIncludedTagIdentifiers forKey:v24];
+  [coderCopy encodeObject:unresolvedIncludedTagIdentifiers forKey:v24];
 
   unresolvedExcludedTagIdentifiers = self->_unresolvedExcludedTagIdentifiers;
   v26 = NSStringFromSelector(sel_unresolvedExcludedTagIdentifiers);
-  [v4 encodeObject:unresolvedExcludedTagIdentifiers forKey:v26];
+  [coderCopy encodeObject:unresolvedExcludedTagIdentifiers forKey:v26];
 }
 
 id __34__ICTagSelection_encodeWithCoder___block_invoke_3(uint64_t a1, void *a2)
@@ -1755,10 +1755,10 @@ id __34__ICTagSelection_encodeWithCoder___block_invoke_3(uint64_t a1, void *a2)
   return v3;
 }
 
-- (ICTagSelection)initWithCoder:(id)a3
+- (ICTagSelection)initWithCoder:(id)coder
 {
   v37[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ICTagSelection *)self initWithManagedObjectContext:0];
   if (v5)
   {
@@ -1776,44 +1776,44 @@ id __34__ICTagSelection_encodeWithCoder___block_invoke_3(uint64_t a1, void *a2)
 
     v12 = objc_opt_class();
     v13 = NSStringFromSelector(sel_accountObjectIDURL);
-    v14 = [v4 decodeObjectOfClass:v12 forKey:v13];
+    v14 = [coderCopy decodeObjectOfClass:v12 forKey:v13];
     accountObjectIDURL = v5->_accountObjectIDURL;
     v5->_accountObjectIDURL = v14;
 
     v16 = NSStringFromSelector(sel_mode);
-    v5->_mode = [v4 decodeIntegerForKey:v16];
+    v5->_mode = [coderCopy decodeIntegerForKey:v16];
 
     v17 = NSStringFromSelector(sel_tagOperator);
-    v5->_tagOperator = [v4 decodeIntegerForKey:v17];
+    v5->_tagOperator = [coderCopy decodeIntegerForKey:v17];
 
     v18 = NSStringFromSelector(sel_allowsRecentlyDeleted);
-    v5->_allowsRecentlyDeleted = [v4 decodeBoolForKey:v18];
+    v5->_allowsRecentlyDeleted = [coderCopy decodeBoolForKey:v18];
 
     v19 = NSStringFromSelector(sel_automaticallyRemoveDeletedTags);
-    v5->_automaticallyRemoveDeletedTags = [v4 decodeBoolForKey:v19];
+    v5->_automaticallyRemoveDeletedTags = [coderCopy decodeBoolForKey:v19];
 
     v20 = NSStringFromSelector(sel_includedObjectIDURLs);
-    v21 = [v4 decodeObjectOfClasses:v8 forKey:v20];
+    v21 = [coderCopy decodeObjectOfClasses:v8 forKey:v20];
     includedObjectIDURLs = v5->_includedObjectIDURLs;
     v5->_includedObjectIDURLs = v21;
 
     v23 = NSStringFromSelector(sel_excludedObjectIDURLs);
-    v24 = [v4 decodeObjectOfClasses:v8 forKey:v23];
+    v24 = [coderCopy decodeObjectOfClasses:v8 forKey:v23];
     excludedObjectIDURLs = v5->_excludedObjectIDURLs;
     v5->_excludedObjectIDURLs = v24;
 
     v26 = NSStringFromSelector(sel_hashtagObjectIDURLs);
-    v27 = [v4 decodeObjectOfClasses:v8 forKey:v26];
+    v27 = [coderCopy decodeObjectOfClasses:v8 forKey:v26];
     hashtagObjectIDURLs = v5->_hashtagObjectIDURLs;
     v5->_hashtagObjectIDURLs = v27;
 
     v29 = NSStringFromSelector(sel_unresolvedIncludedTagIdentifiers);
-    v30 = [v4 decodeObjectOfClasses:v11 forKey:v29];
+    v30 = [coderCopy decodeObjectOfClasses:v11 forKey:v29];
     unresolvedIncludedTagIdentifiers = v5->_unresolvedIncludedTagIdentifiers;
     v5->_unresolvedIncludedTagIdentifiers = v30;
 
     v32 = NSStringFromSelector(sel_unresolvedExcludedTagIdentifiers);
-    v33 = [v4 decodeObjectOfClasses:v11 forKey:v32];
+    v33 = [coderCopy decodeObjectOfClasses:v11 forKey:v32];
     unresolvedExcludedTagIdentifiers = v5->_unresolvedExcludedTagIdentifiers;
     v5->_unresolvedExcludedTagIdentifiers = v33;
   }
@@ -1833,7 +1833,7 @@ id __34__ICTagSelection_encodeWithCoder___block_invoke_3(uint64_t a1, void *a2)
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_214D51000, a2, OS_LOG_TYPE_ERROR, "Archiving tagSelection data failed with error %@", &v2, 0xCu);
 }
 

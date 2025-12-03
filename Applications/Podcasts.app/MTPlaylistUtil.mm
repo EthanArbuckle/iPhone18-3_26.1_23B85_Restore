@@ -1,23 +1,23 @@
 @interface MTPlaylistUtil
-+ (id)stringForEmptyMessage:(id)a3;
-+ (id)stringForUnplayedCount:(int64_t)a3;
-+ (id)textForUnplayed:(id)a3;
-+ (id)textForUnplayedShort:(id)a3;
++ (id)stringForEmptyMessage:(id)message;
++ (id)stringForUnplayedCount:(int64_t)count;
++ (id)textForUnplayed:(id)unplayed;
++ (id)textForUnplayedShort:(id)short;
 @end
 
 @implementation MTPlaylistUtil
 
-+ (id)stringForUnplayedCount:(int64_t)a3
++ (id)stringForUnplayedCount:(int64_t)count
 {
   v4 = +[NSBundle mainBundle];
   v5 = v4;
-  if (a3 == 1)
+  if (count == 1)
   {
     v6 = @"1 Unplayed";
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!count)
   {
     v6 = @"0 Unplayed";
 LABEL_5:
@@ -27,7 +27,7 @@ LABEL_5:
 
   v8 = [v4 localizedStringForKey:@"%@ Unplayed" value:&stru_1004F3018 table:0];
 
-  v9 = [NSNumber numberWithInteger:a3];
+  v9 = [NSNumber numberWithInteger:count];
   v10 = IMAccessibilityLocalizedNumber();
   v7 = [NSString stringWithValidatedFormat:v8 validFormatSpecifiers:@"%@" error:0, v10];
 
@@ -37,7 +37,7 @@ LABEL_7:
   return v7;
 }
 
-+ (id)stringForEmptyMessage:(id)a3
++ (id)stringForEmptyMessage:(id)message
 {
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"EMPTY_STATION_IOS" value:&stru_1004F3018 table:0];
@@ -45,11 +45,11 @@ LABEL_7:
   return v4;
 }
 
-+ (id)textForUnplayed:(id)a3
++ (id)textForUnplayed:(id)unplayed
 {
-  v4 = a3;
-  v5 = [v4 episodes];
-  v6 = [v5 count];
+  unplayedCopy = unplayed;
+  episodes = [unplayedCopy episodes];
+  v6 = [episodes count];
 
   if (v6 < 1)
   {
@@ -59,10 +59,10 @@ LABEL_7:
 
   else
   {
-    [v4 totalDuration];
+    [unplayedCopy totalDuration];
     if (v7 == 0.0)
     {
-      v8 = [a1 textForUnplayedShort:v4];
+      v8 = [self textForUnplayedShort:unplayedCopy];
       goto LABEL_10;
     }
 
@@ -93,10 +93,10 @@ LABEL_10:
   return v8;
 }
 
-+ (id)textForUnplayedShort:(id)a3
++ (id)textForUnplayedShort:(id)short
 {
-  v3 = [a3 episodes];
-  v4 = [v3 count];
+  episodes = [short episodes];
+  v4 = [episodes count];
 
   if (v4 < 1)
   {

@@ -1,15 +1,15 @@
 @interface SummaryPlatterButtonView
 - (void)handleButtonTapped;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SummaryPlatterButtonView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_20BCC2684(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_20BCC2684(change);
 }
 
 - (void)handleButtonTapped
@@ -17,7 +17,7 @@
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI24SummaryPlatterButtonView_onTapped);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = sub_20B584050(v2);
     v2(v4);
 

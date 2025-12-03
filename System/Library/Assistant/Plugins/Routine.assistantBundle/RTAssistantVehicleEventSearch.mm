@@ -2,7 +2,7 @@
 - (GEOLocationShifter)locationShifter;
 - (OS_dispatch_queue)queue;
 - (RTRoutineManager)routineManager;
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation RTAssistantVehicleEventSearch
@@ -52,9 +52,9 @@
   return locationShifter;
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = sub_23354337C(qword_27DE0EC30);
@@ -65,15 +65,15 @@
     }
   }
 
-  v6 = [(RTAssistantVehicleEventSearch *)self routineManager];
+  routineManager = [(RTAssistantVehicleEventSearch *)self routineManager];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_233542668;
   v8[3] = &unk_2789DF3D8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 fetchLastVehicleEventsWithHandler:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [routineManager fetchLastVehicleEventsWithHandler:v8];
 }
 
 @end

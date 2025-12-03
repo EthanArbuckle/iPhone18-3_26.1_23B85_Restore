@@ -1,11 +1,11 @@
 @interface OrgApacheLuceneUtilWeakIdentityMap
 + (void)initialize;
-- (BOOL)containsKeyWithId:(id)a3;
-- (OrgApacheLuceneUtilWeakIdentityMap)initWithJavaUtilMap:(id)a3 withBoolean:(BOOL)a4;
-- (id)getWithId:(id)a3;
+- (BOOL)containsKeyWithId:(id)id;
+- (OrgApacheLuceneUtilWeakIdentityMap)initWithJavaUtilMap:(id)map withBoolean:(BOOL)boolean;
+- (id)getWithId:(id)id;
 - (id)keyIterator;
-- (id)putWithId:(id)a3 withId:(id)a4;
-- (id)removeWithId:(id)a3;
+- (id)putWithId:(id)id withId:(id)withId;
+- (id)removeWithId:(id)id;
 - (id)valueIterator;
 - (int)size;
 - (void)clear;
@@ -15,12 +15,12 @@
 
 @implementation OrgApacheLuceneUtilWeakIdentityMap
 
-- (OrgApacheLuceneUtilWeakIdentityMap)initWithJavaUtilMap:(id)a3 withBoolean:(BOOL)a4
+- (OrgApacheLuceneUtilWeakIdentityMap)initWithJavaUtilMap:(id)map withBoolean:(BOOL)boolean
 {
   v7 = new_JavaLangRefReferenceQueue_init();
   JreStrongAssignAndConsume(&self->queue_, v7);
-  JreStrongAssign(&self->backingStore_, a3);
-  self->reapOnRead_ = a4;
+  JreStrongAssign(&self->backingStore_, map);
+  self->reapOnRead_ = boolean;
   return self;
 }
 
@@ -37,7 +37,7 @@
   [(OrgApacheLuceneUtilWeakIdentityMap *)self reap];
 }
 
-- (BOOL)containsKeyWithId:(id)a3
+- (BOOL)containsKeyWithId:(id)id
 {
   if (self->reapOnRead_)
   {
@@ -51,13 +51,13 @@
   }
 
   v6 = [OrgApacheLuceneUtilWeakIdentityMap_IdentityWeakReference alloc];
-  sub_100077668(v6, a3, 0);
+  sub_100077668(v6, id, 0);
   v7 = v6;
 
   return [(JavaUtilMap *)backingStore containsKeyWithId:v7];
 }
 
-- (id)getWithId:(id)a3
+- (id)getWithId:(id)id
 {
   if (self->reapOnRead_)
   {
@@ -71,13 +71,13 @@
   }
 
   v6 = [OrgApacheLuceneUtilWeakIdentityMap_IdentityWeakReference alloc];
-  sub_100077668(v6, a3, 0);
+  sub_100077668(v6, id, 0);
   v7 = v6;
 
   return [(JavaUtilMap *)backingStore getWithId:v7];
 }
 
-- (id)putWithId:(id)a3 withId:(id)a4
+- (id)putWithId:(id)id withId:(id)withId
 {
   [(OrgApacheLuceneUtilWeakIdentityMap *)self reap];
   backingStore = self->backingStore_;
@@ -88,13 +88,13 @@
 
   queue = self->queue_;
   v9 = [OrgApacheLuceneUtilWeakIdentityMap_IdentityWeakReference alloc];
-  sub_100077668(v9, a3, queue);
+  sub_100077668(v9, id, queue);
   v10 = v9;
 
-  return [(JavaUtilMap *)backingStore putWithId:v10 withId:a4];
+  return [(JavaUtilMap *)backingStore putWithId:v10 withId:withId];
 }
 
-- (id)removeWithId:(id)a3
+- (id)removeWithId:(id)id
 {
   [(OrgApacheLuceneUtilWeakIdentityMap *)self reap];
   backingStore = self->backingStore_;
@@ -104,7 +104,7 @@
   }
 
   v6 = [OrgApacheLuceneUtilWeakIdentityMap_IdentityWeakReference alloc];
-  sub_100077668(v6, a3, 0);
+  sub_100077668(v6, id, 0);
   v7 = v6;
 
   return [(JavaUtilMap *)backingStore removeWithId:v7];
@@ -142,9 +142,9 @@
     JreThrowNullPointerException();
   }
 
-  v5 = [v4 iterator];
+  iterator = [v4 iterator];
   v6 = [OrgApacheLuceneUtilWeakIdentityMap__1 alloc];
-  JreStrongAssign(&v6->val$iterator_, v5);
+  JreStrongAssign(&v6->val$iterator_, iterator);
   JreStrongAssign(&v6->next_, 0);
   v6->nextIsSet_ = 0;
 
@@ -178,13 +178,13 @@ LABEL_5:
 
   while (1)
   {
-    v4 = [(JavaLangRefReferenceQueue *)queue poll];
-    if (!v4)
+    poll = [(JavaLangRefReferenceQueue *)queue poll];
+    if (!poll)
     {
       break;
     }
 
-    v5 = v4;
+    v5 = poll;
     backingStore = self->backingStore_;
     if (backingStore)
     {
@@ -209,7 +209,7 @@ LABEL_5:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     JreStrongAssignAndConsume(&OrgApacheLuceneUtilWeakIdentityMap_NULL__, [NSObject alloc]);
     atomic_store(1u, OrgApacheLuceneUtilWeakIdentityMap__initialized);

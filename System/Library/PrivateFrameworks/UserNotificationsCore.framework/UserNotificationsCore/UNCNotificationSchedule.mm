@@ -1,6 +1,6 @@
 @interface UNCNotificationSchedule
-- (BOOL)isEqual:(id)a3;
-- (UNCNotificationSchedule)initWithDictionaryRepresentation:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (UNCNotificationSchedule)initWithDictionaryRepresentation:(id)representation;
 - (id)_dateFormatter;
 - (id)description;
 - (id)dictionaryRepresentation;
@@ -32,15 +32,15 @@ uint64_t __41__UNCNotificationSchedule__dateFormatter__block_invoke()
   return [v2 setDateFormat:@"yyyy-MM-dd HH:mm:ss'.'SSS Z"];
 }
 
-- (UNCNotificationSchedule)initWithDictionaryRepresentation:(id)a3
+- (UNCNotificationSchedule)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v8.receiver = self;
   v8.super_class = UNCNotificationSchedule;
   v5 = [(UNCNotificationSchedule *)&v8 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"PreviousTriggerDate"];
+    v6 = [representationCopy objectForKey:@"PreviousTriggerDate"];
     [(UNCNotificationSchedule *)v5 setPreviousTriggerDate:v6];
   }
 
@@ -49,33 +49,33 @@ uint64_t __41__UNCNotificationSchedule__dateFormatter__block_invoke()
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(UNCNotificationSchedule *)self previousTriggerDate];
-  [v3 unc_safeSetObject:v4 forKey:@"PreviousTriggerDate"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  previousTriggerDate = [(UNCNotificationSchedule *)self previousTriggerDate];
+  [dictionary unc_safeSetObject:previousTriggerDate forKey:@"PreviousTriggerDate"];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(UNCNotificationSchedule *)self _dateFormatter];
-  v5 = [(UNCNotificationSchedule *)self previousTriggerDate];
-  v6 = [v4 stringFromDate:v5];
+  _dateFormatter = [(UNCNotificationSchedule *)self _dateFormatter];
+  previousTriggerDate = [(UNCNotificationSchedule *)self previousTriggerDate];
+  v6 = [_dateFormatter stringFromDate:previousTriggerDate];
   v7 = [v3 appendObject:v6 withName:@"PreviousTriggerDate"];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (v5 = objc_opt_class(), v5 == objc_opt_class()))
+  equalCopy = equal;
+  if (equalCopy && (v5 = objc_opt_class(), v5 == objc_opt_class()))
   {
-    v7 = [(UNCNotificationSchedule *)self previousTriggerDate];
-    v8 = [v4 previousTriggerDate];
+    previousTriggerDate = [(UNCNotificationSchedule *)self previousTriggerDate];
+    previousTriggerDate2 = [equalCopy previousTriggerDate];
     v6 = UNEqualObjects();
   }
 
@@ -89,11 +89,11 @@ uint64_t __41__UNCNotificationSchedule__dateFormatter__block_invoke()
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(UNCNotificationSchedule *)self previousTriggerDate];
-  v5 = [v3 appendObject:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  previousTriggerDate = [(UNCNotificationSchedule *)self previousTriggerDate];
+  v5 = [builder appendObject:previousTriggerDate];
 
-  v6 = [v3 hash];
+  v6 = [builder hash];
   return v6;
 }
 

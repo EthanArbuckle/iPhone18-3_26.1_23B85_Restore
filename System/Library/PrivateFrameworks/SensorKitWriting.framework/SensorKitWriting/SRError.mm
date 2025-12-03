@@ -1,68 +1,68 @@
 @interface SRError
-+ (id)authorizationErrorWithStatus:(int64_t)a3;
-+ (id)errorWithCode:(int64_t)a3;
-+ (id)errorWithCode:(int64_t)a3 description:(id)a4 recoverySuggestion:(id)a5 underlyingError:(id)a6;
-+ (id)errorWithCode:(int64_t)a3 underlyingError:(id)a4;
-+ (id)invalidInfoPlistErrorWithMissingKey:(id)a3 code:(int64_t)a4;
++ (id)authorizationErrorWithStatus:(int64_t)status;
++ (id)errorWithCode:(int64_t)code;
++ (id)errorWithCode:(int64_t)code description:(id)description recoverySuggestion:(id)suggestion underlyingError:(id)error;
++ (id)errorWithCode:(int64_t)code underlyingError:(id)error;
++ (id)invalidInfoPlistErrorWithMissingKey:(id)key code:(int64_t)code;
 @end
 
 @implementation SRError
 
-+ (id)errorWithCode:(int64_t)a3
++ (id)errorWithCode:(int64_t)code
 {
-  v5 = descriptionFromErrorCode(a3);
-  v6 = recoverySuggestionFromErrorCode(a3);
+  v5 = descriptionFromErrorCode(code);
+  v6 = recoverySuggestionFromErrorCode(code);
 
-  return [a1 errorWithCode:a3 description:v5 recoverySuggestion:v6];
+  return [self errorWithCode:code description:v5 recoverySuggestion:v6];
 }
 
-+ (id)errorWithCode:(int64_t)a3 underlyingError:(id)a4
++ (id)errorWithCode:(int64_t)code underlyingError:(id)error
 {
-  v7 = descriptionFromErrorCode(a3);
-  v8 = recoverySuggestionFromErrorCode(a3);
+  v7 = descriptionFromErrorCode(code);
+  v8 = recoverySuggestionFromErrorCode(code);
 
-  return [a1 errorWithCode:a3 description:v7 recoverySuggestion:v8 underlyingError:a4];
+  return [self errorWithCode:code description:v7 recoverySuggestion:v8 underlyingError:error];
 }
 
-+ (id)errorWithCode:(int64_t)a3 description:(id)a4 recoverySuggestion:(id)a5 underlyingError:(id)a6
++ (id)errorWithCode:(int64_t)code description:(id)description recoverySuggestion:(id)suggestion underlyingError:(id)error
 {
   v10 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:3];
   v11 = v10;
-  if (a4)
+  if (description)
   {
-    [v10 setObject:a4 forKeyedSubscript:*MEMORY[0x277CCA450]];
+    [v10 setObject:description forKeyedSubscript:*MEMORY[0x277CCA450]];
   }
 
-  if (a5)
+  if (suggestion)
   {
-    [v11 setObject:a5 forKeyedSubscript:*MEMORY[0x277CCA498]];
+    [v11 setObject:suggestion forKeyedSubscript:*MEMORY[0x277CCA498]];
   }
 
-  if (a6)
+  if (error)
   {
-    [v11 setObject:a6 forKeyedSubscript:*MEMORY[0x277CCA7E8]];
+    [v11 setObject:error forKeyedSubscript:*MEMORY[0x277CCA7E8]];
   }
 
   v12 = MEMORY[0x277CCA9B8];
   v13 = SRErrorDomain;
 
-  return [v12 errorWithDomain:v13 code:a3 userInfo:v11];
+  return [v12 errorWithDomain:v13 code:code userInfo:v11];
 }
 
-+ (id)authorizationErrorWithStatus:(int64_t)a3
++ (id)authorizationErrorWithStatus:(int64_t)status
 {
   v5 = [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"SRErrorNoAuthorization", &stru_2877002B0, 0}];
   v6 = [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"SRErrorNoAuthorizationRecovery", &stru_2877002B0, 0}];
-  v7 = [a1 errorWithCode:a3];
+  v7 = [self errorWithCode:status];
 
-  return [a1 errorWithCode:1 description:v5 recoverySuggestion:v6 underlyingError:v7];
+  return [self errorWithCode:1 description:v5 recoverySuggestion:v6 underlyingError:v7];
 }
 
-+ (id)invalidInfoPlistErrorWithMissingKey:(id)a3 code:(int64_t)a4
++ (id)invalidInfoPlistErrorWithMissingKey:(id)key code:(int64_t)code
 {
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Your bundle's Info.plist must have an %@ key", a3];
+  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Your bundle's Info.plist must have an %@ key", key];
 
-  return [a1 errorWithCode:a4 description:v6 recoverySuggestion:0];
+  return [self errorWithCode:code description:v6 recoverySuggestion:0];
 }
 
 @end

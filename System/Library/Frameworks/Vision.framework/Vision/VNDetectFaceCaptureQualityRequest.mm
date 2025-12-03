@@ -1,8 +1,8 @@
 @interface VNDetectFaceCaptureQualityRequest
-+ (BOOL)revision:(unint64_t)a3 mayAcceptResultsProducedByRevision:(unint64_t)a4;
++ (BOOL)revision:(unint64_t)revision mayAcceptResultsProducedByRevision:(unint64_t)byRevision;
 + (const)dependentRequestCompatibility;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
 @end
 
 @implementation VNDetectFaceCaptureQualityRequest
@@ -37,34 +37,34 @@
   return &+[VNDetectFaceCaptureQualityRequest dependentRequestCompatibility]::ourDependentRequestCompatibilityTable;
 }
 
-+ (BOOL)revision:(unint64_t)a3 mayAcceptResultsProducedByRevision:(unint64_t)a4
++ (BOOL)revision:(unint64_t)revision mayAcceptResultsProducedByRevision:(unint64_t)byRevision
 {
-  if (a3 != a4)
+  if (revision != byRevision)
   {
     return 0;
   }
 
   v8 = v4;
   v9 = v5;
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___VNDetectFaceCaptureQualityRequest;
-  return objc_msgSendSuper2(&v7, sel_revision_mayAcceptResultsProducedByRevision_, a3, a3);
+  return objc_msgSendSuper2(&v7, sel_revision_mayAcceptResultsProducedByRevision_, revision, revision);
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
-  v8 = a4;
-  v9 = [(VNDetectFaceCaptureQualityRequest *)self applicableDetectorTypeForRevision:a3 error:a5];
+  contextCopy = context;
+  v9 = [(VNDetectFaceCaptureQualityRequest *)self applicableDetectorTypeForRevision:revision error:error];
   if (v9)
   {
     v16 = 0;
-    v10 = [(VNImageBasedRequest *)self getOptionalValidatedInputFaceObservations:&v16 clippedToRegionOfInterest:1 error:a5];
+    v10 = [(VNImageBasedRequest *)self getOptionalValidatedInputFaceObservations:&v16 clippedToRegionOfInterest:1 error:error];
     v11 = v16;
     v12 = v11;
-    if (v10 && (v11 || ([(VNRequest *)self detectFacesInContext:v8 error:a5], (v12 = objc_claimAutoreleasedReturnValue()) != 0)))
+    if (v10 && (v11 || ([(VNRequest *)self detectFacesInContext:contextCopy error:error], (v12 = objc_claimAutoreleasedReturnValue()) != 0)))
     {
       [(VNImageBasedRequest *)self regionOfInterest];
-      v13 = [(VNRequest *)self processFaceObservations:v12 revision:a3 regionOfInterest:v9 detectorType:0 detectorOptions:&__block_literal_global_26263 shouldAlignFaceBBox:&__block_literal_global_30_26264 shouldRunDetectorBlock:v8 context:a5 error:?];
+      v13 = [(VNRequest *)self processFaceObservations:v12 revision:revision regionOfInterest:v9 detectorType:0 detectorOptions:&__block_literal_global_26263 shouldAlignFaceBBox:&__block_literal_global_30_26264 shouldRunDetectorBlock:contextCopy context:error error:?];
       v14 = v13 != 0;
       if (v13)
       {
@@ -94,14 +94,14 @@ BOOL __77__VNDetectFaceCaptureQualityRequest_internalPerformRevision_inContext_e
   return v3;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 - 1 > 2)
+  if (revision - 1 > 2)
   {
-    if (a4)
+    if (error)
     {
       [VNError errorForUnsupportedRevision:"errorForUnsupportedRevision:ofRequest:" ofRequest:?];
-      *a4 = v4 = 0;
+      *error = v4 = 0;
     }
 
     else

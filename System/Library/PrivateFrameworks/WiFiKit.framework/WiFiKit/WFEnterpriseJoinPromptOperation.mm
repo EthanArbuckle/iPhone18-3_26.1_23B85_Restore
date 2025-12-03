@@ -1,10 +1,10 @@
 @interface WFEnterpriseJoinPromptOperation
-+ (id)enterpriseJoinPromptOperationWithDeviceCapability:(int64_t)a3;
++ (id)enterpriseJoinPromptOperationWithDeviceCapability:(int64_t)capability;
 @end
 
 @implementation WFEnterpriseJoinPromptOperation
 
-+ (id)enterpriseJoinPromptOperationWithDeviceCapability:(int64_t)a3
++ (id)enterpriseJoinPromptOperationWithDeviceCapability:(int64_t)capability
 {
   v26 = *MEMORY[0x277D85DE8];
   v4 = WFLogForCategory(3uLL);
@@ -14,7 +14,7 @@
     v22 = 136315394;
     v23 = "+[WFEnterpriseJoinPromptOperation enterpriseJoinPromptOperationWithDeviceCapability:]";
     v24 = 2048;
-    v25 = a3;
+    capabilityCopy = capability;
     _os_log_impl(&dword_273ECD000, v4, v5, "%s: creating enterprise prompt with capability %ld", &v22, 0x16u);
   }
 

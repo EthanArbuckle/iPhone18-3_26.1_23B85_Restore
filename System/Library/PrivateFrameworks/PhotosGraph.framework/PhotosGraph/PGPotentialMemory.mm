@@ -4,12 +4,12 @@
 - (NSDate)universalEndDate;
 - (NSDate)universalStartDate;
 - (PGGraphMomentNodeCollection)memoryMomentNodes;
-- (PGPotentialMemory)initWithCategory:(unint64_t)a3 subcategory:(unint64_t)a4;
-- (PGPotentialMemory)initWithCategory:(unint64_t)a3 subcategory:(unint64_t)a4 momentNode:(id)a5;
-- (PGPotentialMemory)initWithCategory:(unint64_t)a3 subcategory:(unint64_t)a4 momentNodes:(id)a5 sourceType:(int64_t)a6;
+- (PGPotentialMemory)initWithCategory:(unint64_t)category subcategory:(unint64_t)subcategory;
+- (PGPotentialMemory)initWithCategory:(unint64_t)category subcategory:(unint64_t)subcategory momentNode:(id)node;
+- (PGPotentialMemory)initWithCategory:(unint64_t)category subcategory:(unint64_t)subcategory momentNodes:(id)nodes sourceType:(int64_t)type;
 - (double)computeContentScore;
-- (id)buildAssetCollectionUsingMemoryController:(id)a3 withMinimumNumberOfAssets:(unint64_t)a4;
-- (id)memoryFeatureNodesInGraph:(id)a3;
+- (id)buildAssetCollectionUsingMemoryController:(id)controller withMinimumNumberOfAssets:(unint64_t)assets;
+- (id)memoryFeatureNodesInGraph:(id)graph;
 - (unint64_t)memoryCategory;
 - (void)_prepareForOverlapCheck;
 - (void)_resetOverlapCheck;
@@ -21,25 +21,25 @@
 {
   if ([(PGPotentialMemory *)self sourceType]== 1 && self->_momentNode)
   {
-    v3 = [(PGPotentialMemory *)self momentNode];
-    v4 = [v3 collection];
+    momentNode = [(PGPotentialMemory *)self momentNode];
+    collection = [momentNode collection];
   }
 
   else
   {
     v5 = [PGGraphMomentNodeCollection alloc];
     momentNodes = self->_momentNodes;
-    v3 = [(NSSet *)momentNodes anyObject];
-    v7 = [v3 graph];
-    v4 = [(MAElementCollection *)v5 initWithSet:momentNodes graph:v7];
+    momentNode = [(NSSet *)momentNodes anyObject];
+    graph = [momentNode graph];
+    collection = [(MAElementCollection *)v5 initWithSet:momentNodes graph:graph];
   }
 
-  return v4;
+  return collection;
 }
 
-- (id)memoryFeatureNodesInGraph:(id)a3
+- (id)memoryFeatureNodesInGraph:(id)graph
 {
-  v4 = a3;
+  graphCopy = graph;
   v5 = objc_alloc(MEMORY[0x277CBEAD8]);
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -66,14 +66,14 @@
   objc_exception_throw(v10);
 }
 
-- (id)buildAssetCollectionUsingMemoryController:(id)a3 withMinimumNumberOfAssets:(unint64_t)a4
+- (id)buildAssetCollectionUsingMemoryController:(id)controller withMinimumNumberOfAssets:(unint64_t)assets
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 photoLibrary];
-  if (!a4)
+  controllerCopy = controller;
+  photoLibrary = [controllerCopy photoLibrary];
+  if (!assets)
   {
-    v12 = [MEMORY[0x277CD97B8] transientAssetCollectionWithAssets:MEMORY[0x277CBEBF8] title:0 identifier:0 photoLibrary:v7];
+    v12 = [MEMORY[0x277CD97B8] transientAssetCollectionWithAssets:MEMORY[0x277CBEBF8] title:0 identifier:0 photoLibrary:photoLibrary];
     assetCollection = self->_assetCollection;
     self->_assetCollection = v12;
 
@@ -81,8 +81,8 @@
     goto LABEL_41;
   }
 
-  v8 = self->_momentNode;
-  if (!v8)
+  anyObject = self->_momentNode;
+  if (!anyObject)
   {
     momentNodes = self->_momentNodes;
     if (!momentNodes)
@@ -94,8 +94,8 @@
     v16 = self->_momentNodes;
     if (v15 == 1)
     {
-      v8 = [(NSSet *)v16 anyObject];
-      if (v8)
+      anyObject = [(NSSet *)v16 anyObject];
+      if (anyObject)
       {
         goto LABEL_3;
       }
@@ -105,23 +105,23 @@
 
     if (v16)
     {
-      v38 = a4;
-      v41 = v7;
+      assetsCopy = assets;
+      v41 = photoLibrary;
       v39 = objc_autoreleasePoolPush();
       v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v18 = [v6 curationManager];
-      v47 = [v18 defaultAssetFetchOptionsForMemoriesWithoutPrefetch];
+      curationManager = [controllerCopy curationManager];
+      defaultAssetFetchOptionsForMemoriesWithoutPrefetch = [curationManager defaultAssetFetchOptionsForMemoriesWithoutPrefetch];
 
       v55 = 0u;
       v56 = 0u;
       v53 = 0u;
       v54 = 0u;
-      v40 = self;
+      selfCopy = self;
       obj = self->_momentNodes;
       v46 = [(NSSet *)obj countByEnumeratingWithState:&v53 objects:v58 count:16];
       if (v46)
       {
-        v44 = v6;
+        v44 = controllerCopy;
         v45 = *v54;
         while (2)
         {
@@ -134,27 +134,27 @@
 
             v20 = *(*(&v53 + 1) + 8 * i);
             v21 = objc_autoreleasePoolPush();
-            v22 = [v20 uuid];
-            v23 = [v6 momentForMomentID:v22];
+            uuid = [v20 uuid];
+            v23 = [controllerCopy momentForMomentID:uuid];
             if (!v23)
             {
-              v35 = [v6 loggingConnection];
-              if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
+              loggingConnection = [controllerCopy loggingConnection];
+              if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
               {
                 *buf = 0;
-                _os_log_error_impl(&dword_22F0FC000, v35, OS_LOG_TYPE_ERROR, "Memory Creation: Nil asset collection for momentNode, graph is out-of-sync with the photo library.", buf, 2u);
+                _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Memory Creation: Nil asset collection for momentNode, graph is out-of-sync with the photo library.", buf, 2u);
               }
 
               objc_autoreleasePoolPop(v21);
-              self = v40;
-              v7 = v41;
+              self = selfCopy;
+              photoLibrary = v41;
               v31 = v39;
 
               goto LABEL_37;
             }
 
             v24 = v23;
-            v25 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:v23 options:v47];
+            v25 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:v23 options:defaultAssetFetchOptionsForMemoriesWithoutPrefetch];
             v49 = 0u;
             v50 = 0u;
             v51 = 0u;
@@ -173,8 +173,8 @@
                     objc_enumerationMutation(v25);
                   }
 
-                  v30 = [*(*(&v49 + 1) + 8 * j) localIdentifier];
-                  [v17 addObject:v30];
+                  localIdentifier = [*(*(&v49 + 1) + 8 * j) localIdentifier];
+                  [v17 addObject:localIdentifier];
                 }
 
                 v27 = [v25 countByEnumeratingWithState:&v49 objects:v57 count:16];
@@ -184,7 +184,7 @@
             }
 
             objc_autoreleasePoolPop(v21);
-            v6 = v44;
+            controllerCopy = v44;
           }
 
           v46 = [(NSSet *)obj countByEnumeratingWithState:&v53 objects:v58 count:16];
@@ -198,13 +198,13 @@
       }
 
       v31 = v39;
-      self = v40;
-      v7 = v41;
-      if ([v17 count] >= v38)
+      self = selfCopy;
+      photoLibrary = v41;
+      if ([v17 count] >= assetsCopy)
       {
-        v32 = [v6 assetCollectionWithAssetLocalIdentifiers:v17];
-        obja = v40->_assetCollection;
-        v40->_assetCollection = v32;
+        v32 = [controllerCopy assetCollectionWithAssetLocalIdentifiers:v17];
+        obja = selfCopy->_assetCollection;
+        selfCopy->_assetCollection = v32;
       }
 
 LABEL_37:
@@ -215,11 +215,11 @@ LABEL_37:
     else
     {
 LABEL_31:
-      v34 = [v6 loggingConnection];
-      if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
+      loggingConnection2 = [controllerCopy loggingConnection];
+      if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
-        _os_log_error_impl(&dword_22F0FC000, v34, OS_LOG_TYPE_ERROR, "Memory Creation: buildAssetCollection called with no momentNode set.", buf, 2u);
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_ERROR, "Memory Creation: buildAssetCollection called with no momentNode set.", buf, 2u);
       }
     }
 
@@ -230,12 +230,12 @@ LABEL_39:
   }
 
 LABEL_3:
-  v9 = v8;
-  v10 = [(PGGraphMomentNode *)v8 uuid];
-  if ([(PGGraphMomentNode *)v9 numberOfAssets]>= a4)
+  v9 = anyObject;
+  uuid2 = [(PGGraphMomentNode *)anyObject uuid];
+  if ([(PGGraphMomentNode *)v9 numberOfAssets]>= assets)
   {
-    v33 = [v6 momentForMomentID:v10];
-    if ([v33 estimatedAssetCount] >= a4)
+    v33 = [controllerCopy momentForMomentID:uuid2];
+    if ([v33 estimatedAssetCount] >= assets)
     {
       objc_storeStrong(&self->_assetCollection, v33);
     }
@@ -343,7 +343,7 @@ LABEL_17:
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v28 = self;
+    selfCopy = self;
     v15 = self->_momentNodes;
     v16 = [(NSSet *)v15 countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v16)
@@ -361,15 +361,15 @@ LABEL_17:
           }
 
           v21 = *(*(&v29 + 1) + 8 * i);
-          v22 = [v21 uuid];
-          if (v22)
+          uuid = [v21 uuid];
+          if (uuid)
           {
-            [(NSSet *)v13 addObject:v22];
-            v23 = [v21 numberOfAssets];
-            v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v23];
-            [(NSDictionary *)v14 setObject:v24 forKeyedSubscript:v22];
+            [(NSSet *)v13 addObject:uuid];
+            numberOfAssets = [v21 numberOfAssets];
+            v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:numberOfAssets];
+            [(NSDictionary *)v14 setObject:v24 forKeyedSubscript:uuid];
 
-            v18 += v23;
+            v18 += numberOfAssets;
           }
         }
 
@@ -387,28 +387,28 @@ LABEL_17:
     v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v18];
     [(NSDictionary *)v14 setObject:v25 forKeyedSubscript:@"totalNumberOfAssets"];
 
-    momentIDs = v28->_momentIDs;
-    v28->_momentIDs = v13;
-    v4 = v13;
+    momentIDs = selfCopy->_momentIDs;
+    selfCopy->_momentIDs = v13;
+    uuid2 = v13;
 
-    numberOfAssetsByMomentIDs = v28->_numberOfAssetsByMomentIDs;
-    v28->_numberOfAssetsByMomentIDs = v14;
+    numberOfAssetsByMomentIDs = selfCopy->_numberOfAssetsByMomentIDs;
+    selfCopy->_numberOfAssetsByMomentIDs = v14;
     goto LABEL_16;
   }
 
-  v4 = [(PGGraphMomentNode *)momentNode uuid];
-  if (v4)
+  uuid2 = [(PGGraphMomentNode *)momentNode uuid];
+  if (uuid2)
   {
-    v5 = [MEMORY[0x277CBEB98] setWithObject:v4];
+    v5 = [MEMORY[0x277CBEB98] setWithObject:uuid2];
     v6 = self->_momentIDs;
     self->_momentIDs = v5;
 
-    v7 = [(PGGraphMomentNode *)self->_momentNode numberOfAssets];
-    v34[0] = v4;
-    numberOfAssetsByMomentIDs = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7];
+    numberOfAssets2 = [(PGGraphMomentNode *)self->_momentNode numberOfAssets];
+    v34[0] = uuid2;
+    numberOfAssetsByMomentIDs = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:numberOfAssets2];
     v34[1] = @"totalNumberOfAssets";
     v35[0] = numberOfAssetsByMomentIDs;
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:numberOfAssets2];
     v35[1] = v9;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:2];
     v11 = self->_numberOfAssetsByMomentIDs;
@@ -428,9 +428,9 @@ LABEL_16:
   {
     if (self->_momentNode)
     {
-      v3 = [(PGGraphMomentNode *)self->_momentNode universalEndDate];
+      universalEndDate = [(PGGraphMomentNode *)self->_momentNode universalEndDate];
       v4 = *p_universalEndDate;
-      *p_universalEndDate = v3;
+      *p_universalEndDate = universalEndDate;
     }
 
     else
@@ -455,9 +455,9 @@ LABEL_16:
               objc_enumerationMutation(v5);
             }
 
-            v10 = [*(*(&v16 + 1) + 8 * v9) universalEndDate];
-            v11 = v10;
-            if (!*p_universalEndDate || ([v10 timeIntervalSinceDate:?], v12 > 0.0))
+            universalEndDate2 = [*(*(&v16 + 1) + 8 * v9) universalEndDate];
+            v11 = universalEndDate2;
+            if (!*p_universalEndDate || ([universalEndDate2 timeIntervalSinceDate:?], v12 > 0.0))
             {
               objc_storeStrong(p_universalEndDate, v11);
             }
@@ -488,9 +488,9 @@ LABEL_16:
   {
     if (self->_momentNode)
     {
-      v3 = [(PGGraphMomentNode *)self->_momentNode universalStartDate];
+      universalStartDate = [(PGGraphMomentNode *)self->_momentNode universalStartDate];
       v4 = *p_universalStartDate;
-      *p_universalStartDate = v3;
+      *p_universalStartDate = universalStartDate;
     }
 
     else
@@ -515,9 +515,9 @@ LABEL_16:
               objc_enumerationMutation(v5);
             }
 
-            v10 = [*(*(&v16 + 1) + 8 * v9) universalStartDate];
-            v11 = v10;
-            if (!*p_universalStartDate || ([v10 timeIntervalSinceDate:?], v12 < 0.0))
+            universalStartDate2 = [*(*(&v16 + 1) + 8 * v9) universalStartDate];
+            v11 = universalStartDate2;
+            if (!*p_universalStartDate || ([universalStartDate2 timeIntervalSinceDate:?], v12 < 0.0))
             {
               objc_storeStrong(p_universalStartDate, v11);
             }
@@ -548,9 +548,9 @@ LABEL_16:
   {
     if (self->_momentNode)
     {
-      v3 = [(PGGraphMomentNode *)self->_momentNode localEndDate];
+      localEndDate = [(PGGraphMomentNode *)self->_momentNode localEndDate];
       v4 = *p_localEndDate;
-      *p_localEndDate = v3;
+      *p_localEndDate = localEndDate;
     }
 
     else
@@ -574,10 +574,10 @@ LABEL_16:
               objc_enumerationMutation(v5);
             }
 
-            v10 = [*(*(&v14 + 1) + 8 * i) localEndDate];
-            if (!*p_localEndDate || [MEMORY[0x277D27690] compareDate:v10 toDate:*p_localEndDate toUnitGranularity:16] == 1)
+            localEndDate2 = [*(*(&v14 + 1) + 8 * i) localEndDate];
+            if (!*p_localEndDate || [MEMORY[0x277D27690] compareDate:localEndDate2 toDate:*p_localEndDate toUnitGranularity:16] == 1)
             {
-              objc_storeStrong(p_localEndDate, v10);
+              objc_storeStrong(p_localEndDate, localEndDate2);
             }
           }
 
@@ -603,9 +603,9 @@ LABEL_16:
   {
     if (self->_momentNode)
     {
-      v3 = [(PGGraphMomentNode *)self->_momentNode localStartDate];
+      localStartDate = [(PGGraphMomentNode *)self->_momentNode localStartDate];
       v4 = *p_localStartDate;
-      *p_localStartDate = v3;
+      *p_localStartDate = localStartDate;
     }
 
     else
@@ -629,10 +629,10 @@ LABEL_16:
               objc_enumerationMutation(v5);
             }
 
-            v10 = [*(*(&v14 + 1) + 8 * i) localStartDate];
-            if (!*p_localStartDate || [MEMORY[0x277D27690] compareDate:v10 toDate:*p_localStartDate toUnitGranularity:16] == -1)
+            localStartDate2 = [*(*(&v14 + 1) + 8 * i) localStartDate];
+            if (!*p_localStartDate || [MEMORY[0x277D27690] compareDate:localStartDate2 toDate:*p_localStartDate toUnitGranularity:16] == -1)
             {
-              objc_storeStrong(p_localStartDate, v10);
+              objc_storeStrong(p_localStartDate, localStartDate2);
             }
           }
 
@@ -650,19 +650,19 @@ LABEL_16:
   return v11;
 }
 
-- (PGPotentialMemory)initWithCategory:(unint64_t)a3 subcategory:(unint64_t)a4 momentNodes:(id)a5 sourceType:(int64_t)a6
+- (PGPotentialMemory)initWithCategory:(unint64_t)category subcategory:(unint64_t)subcategory momentNodes:(id)nodes sourceType:(int64_t)type
 {
-  v11 = a5;
+  nodesCopy = nodes;
   v15.receiver = self;
   v15.super_class = PGPotentialMemory;
   v12 = [(PGPotentialMemory *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    v12->_category = a3;
-    v12->_subcategory = a4;
-    v12->_sourceType = a6;
-    objc_storeStrong(&v12->_momentNodes, a5);
+    v12->_category = category;
+    v12->_subcategory = subcategory;
+    v12->_sourceType = type;
+    objc_storeStrong(&v12->_momentNodes, nodes);
     v13->_score = -1.0;
     v13->_contentScore = -1.0;
   }
@@ -670,19 +670,19 @@ LABEL_16:
   return v13;
 }
 
-- (PGPotentialMemory)initWithCategory:(unint64_t)a3 subcategory:(unint64_t)a4 momentNode:(id)a5
+- (PGPotentialMemory)initWithCategory:(unint64_t)category subcategory:(unint64_t)subcategory momentNode:(id)node
 {
-  v9 = a5;
+  nodeCopy = node;
   v13.receiver = self;
   v13.super_class = PGPotentialMemory;
   v10 = [(PGPotentialMemory *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_category = a3;
-    v10->_subcategory = a4;
+    v10->_category = category;
+    v10->_subcategory = subcategory;
     v10->_sourceType = 1;
-    objc_storeStrong(&v10->_momentNode, a5);
+    objc_storeStrong(&v10->_momentNode, node);
     v11->_score = -1.0;
     v11->_contentScore = -1.0;
   }
@@ -690,15 +690,15 @@ LABEL_16:
   return v11;
 }
 
-- (PGPotentialMemory)initWithCategory:(unint64_t)a3 subcategory:(unint64_t)a4
+- (PGPotentialMemory)initWithCategory:(unint64_t)category subcategory:(unint64_t)subcategory
 {
   v7.receiver = self;
   v7.super_class = PGPotentialMemory;
   result = [(PGPotentialMemory *)&v7 init];
   if (result)
   {
-    result->_category = a3;
-    result->_subcategory = a4;
+    result->_category = category;
+    result->_subcategory = subcategory;
     result->_score = -1.0;
     result->_contentScore = -1.0;
   }

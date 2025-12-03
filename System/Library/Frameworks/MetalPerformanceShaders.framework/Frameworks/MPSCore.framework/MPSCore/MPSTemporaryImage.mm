@@ -4,14 +4,14 @@
 + (MPSTemporaryImage)temporaryImageWithCommandBuffer:(id)commandBuffer textureDescriptor:(const MTLTextureDescriptor *)textureDescriptor featureChannels:(NSUInteger)featureChannels;
 + (id)defaultAllocator;
 + (void)prefetchStorageWithCommandBuffer:(id)commandBuffer imageDescriptorList:(NSArray *)descriptorList;
-- (MPSTemporaryImage)initWithParentImage:(id)a3 sliceRange:(_NSRange)a4 featureChannels:(unint64_t)a5;
+- (MPSTemporaryImage)initWithParentImage:(id)image sliceRange:(_NSRange)range featureChannels:(unint64_t)channels;
 - (id)debugDescription;
-- (unint64_t)setPurgeableState:(unint64_t)a3;
+- (unint64_t)setPurgeableState:(unint64_t)state;
 - (void)dealloc;
-- (void)readBytes:(void *)a3 dataLayout:(unint64_t)a4 bytesPerRow:(unint64_t)a5 bytesPerImage:(unint64_t)a6 region:(id *)a7 featureChannelInfo:(id)a8 imageIndex:(unint64_t)a9;
+- (void)readBytes:(void *)bytes dataLayout:(unint64_t)layout bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image region:(id *)region featureChannelInfo:(id)info imageIndex:(unint64_t)index;
 - (void)setReadCount:(NSUInteger)readCount;
-- (void)synchronizeOnCommandBuffer:(id)a3;
-- (void)writeBytes:(const void *)a3 dataLayout:(unint64_t)a4 bytesPerRow:(unint64_t)a5 bytesPerImage:(unint64_t)a6 region:(id *)a7 featureChannelInfo:(id)a8 imageIndex:(unint64_t)a9;
+- (void)synchronizeOnCommandBuffer:(id)buffer;
+- (void)writeBytes:(const void *)bytes dataLayout:(unint64_t)layout bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image region:(id *)region featureChannelInfo:(id)info imageIndex:(unint64_t)index;
 @end
 
 @implementation MPSTemporaryImage
@@ -39,7 +39,7 @@
 {
   if (!imageDescriptor)
   {
-    v42 = a1;
+    selfCopy5 = self;
     if (MTLReportFailureTypeEnabled())
     {
       goto LABEL_22;
@@ -50,7 +50,7 @@
 
   if (!imageDescriptor->_width)
   {
-    v42 = a1;
+    selfCopy5 = self;
     if (MTLReportFailureTypeEnabled())
     {
       goto LABEL_22;
@@ -61,7 +61,7 @@
 
   if (!imageDescriptor->_height)
   {
-    v42 = a1;
+    selfCopy5 = self;
     if (MTLReportFailureTypeEnabled())
     {
       goto LABEL_22;
@@ -72,7 +72,7 @@
 
   if (!imageDescriptor->_featureChannels)
   {
-    v42 = a1;
+    selfCopy5 = self;
     if (MTLReportFailureTypeEnabled())
     {
       goto LABEL_22;
@@ -83,7 +83,7 @@
 
   if (!imageDescriptor->_numberOfImages)
   {
-    v42 = a1;
+    selfCopy5 = self;
     if (MTLReportFailureTypeEnabled())
     {
 LABEL_22:
@@ -149,7 +149,7 @@ LABEL_23:
   if ((PixelInfo & 0x800000000000) != 0)
   {
 
-    return MEMORY[0x2821F9670](a1, sel_temporaryImageWithCommandBuffer_textureDescriptor_featureChannels_, commandBuffer, textureDescriptor, (PixelInfo >> 24) & 0xF);
+    return MEMORY[0x2821F9670](self, sel_temporaryImageWithCommandBuffer_textureDescriptor_featureChannels_, commandBuffer, textureDescriptor, (PixelInfo >> 24) & 0xF);
   }
 
   else
@@ -388,24 +388,24 @@ LABEL_30:
   }
 }
 
-- (MPSTemporaryImage)initWithParentImage:(id)a3 sliceRange:(_NSRange)a4 featureChannels:(unint64_t)a5
+- (MPSTemporaryImage)initWithParentImage:(id)image sliceRange:(_NSRange)range featureChannels:(unint64_t)channels
 {
   v42.receiver = self;
   v42.super_class = MPSTemporaryImage;
-  v10 = [(MPSImage *)&v42 initWithParentImage:a3 sliceRange:a4.location featureChannels:a4.length, a5];
-  if (v10)
+  channels = [(MPSImage *)&v42 initWithParentImage:image sliceRange:range.location featureChannels:range.length, channels];
+  if (channels)
   {
-    Count = objc_msgSend_readCount(a3, v6, v7, v8, v9);
-    objc_msgSend_setReadCount_(a3, v12, Count + 1, v13, v14);
-    v10->_readCount = 1;
-    v10->super._updatedAlready = 0;
-    type = v10->super._texture._type;
+    Count = objc_msgSend_readCount(image, v6, v7, v8, v9);
+    objc_msgSend_setReadCount_(image, v12, Count + 1, v13, v14);
+    channels->_readCount = 1;
+    channels->super._updatedAlready = 0;
+    type = channels->super._texture._type;
     if ((type & 1) == 0)
     {
       goto LABEL_9;
     }
 
-    p_texture = &v10->super._texture;
+    p_texture = &channels->super._texture;
     while (type == 3)
     {
       p_texture = p_texture->var0._subTex.parent;
@@ -445,25 +445,25 @@ LABEL_9:
       v31 = v35;
     }
 
-    objc_msgSend_addObject_(v31, v32, v10, v33, v34);
+    objc_msgSend_addObject_(v31, v32, channels, v33, v34);
   }
 
-  return v10;
+  return channels;
 }
 
-- (unint64_t)setPurgeableState:(unint64_t)a3
+- (unint64_t)setPurgeableState:(unint64_t)state
 {
-  if (a3 != 1)
+  if (state != 1)
   {
-    v6 = self;
+    selfCopy = self;
     v7 = MTLReportFailureTypeEnabled();
-    self = v6;
+    self = selfCopy;
     if (v7)
     {
       v8 = objc_opt_class();
       NSStringFromClass(v8);
       MTLReportFailure();
-      self = v6;
+      self = selfCopy;
     }
   }
 
@@ -484,27 +484,27 @@ LABEL_9:
   {
     if (!v3)
     {
-      v6 = self;
+      selfCopy = self;
       v7 = readCount;
       v8 = MTLReportFailureTypeEnabled();
       readCount = v7;
       v12 = v8;
-      self = v6;
+      self = selfCopy;
       if (v12)
       {
-        objc_msgSend_label(v6, v9, v7, v10, v11);
+        objc_msgSend_label(selfCopy, v9, v7, v10, v11);
         MTLReportFailure();
         readCount = v7;
-        self = v6;
+        self = selfCopy;
       }
     }
 
     self->_readCount = readCount;
     if (!readCount)
     {
-      v4 = self;
+      selfCopy2 = self;
       MPSAutoTexture::ReleaseTemporaryTexture(&self->super._texture);
-      parent = v4->super._parent;
+      parent = selfCopy2->super._parent;
       if (parent)
       {
 
@@ -518,15 +518,15 @@ LABEL_9:
 {
   if (self->_readCount)
   {
-    v2 = self;
+    selfCopy = self;
     v7 = MTLReportFailureTypeEnabled();
-    self = v2;
+    self = selfCopy;
     if (v7)
     {
-      v8 = v2;
-      v9 = objc_msgSend_label(v2, v3, v4, v5, v6);
+      v8 = selfCopy;
+      v9 = objc_msgSend_label(selfCopy, v3, v4, v5, v6);
       MTLReportFailure();
-      self = v2;
+      self = selfCopy;
     }
   }
 
@@ -544,7 +544,7 @@ LABEL_9:
   return objc_msgSend_stringWithFormat_(v3, v5, @"%@\n\treadCount: %lu\n", v6, v7, v4, self->_readCount);
 }
 
-- (void)synchronizeOnCommandBuffer:(id)a3
+- (void)synchronizeOnCommandBuffer:(id)buffer
 {
   if (MTLReportFailureTypeEnabled())
   {
@@ -555,7 +555,7 @@ LABEL_9:
   }
 }
 
-- (void)readBytes:(void *)a3 dataLayout:(unint64_t)a4 bytesPerRow:(unint64_t)a5 bytesPerImage:(unint64_t)a6 region:(id *)a7 featureChannelInfo:(id)a8 imageIndex:(unint64_t)a9
+- (void)readBytes:(void *)bytes dataLayout:(unint64_t)layout bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image region:(id *)region featureChannelInfo:(id)info imageIndex:(unint64_t)index
 {
   if (MTLReportFailureTypeEnabled())
   {
@@ -567,7 +567,7 @@ LABEL_9:
   }
 }
 
-- (void)writeBytes:(const void *)a3 dataLayout:(unint64_t)a4 bytesPerRow:(unint64_t)a5 bytesPerImage:(unint64_t)a6 region:(id *)a7 featureChannelInfo:(id)a8 imageIndex:(unint64_t)a9
+- (void)writeBytes:(const void *)bytes dataLayout:(unint64_t)layout bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image region:(id *)region featureChannelInfo:(id)info imageIndex:(unint64_t)index
 {
   if (MTLReportFailureTypeEnabled())
   {

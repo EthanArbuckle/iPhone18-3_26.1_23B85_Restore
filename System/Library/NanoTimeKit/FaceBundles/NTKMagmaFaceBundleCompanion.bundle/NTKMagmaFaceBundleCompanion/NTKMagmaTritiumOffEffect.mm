@@ -1,11 +1,11 @@
 @interface NTKMagmaTritiumOffEffect
-- (NTKMagmaTritiumOffEffect)initWithStart:(double)a3 duration:(double)a4 magnitude:(double)a5 radius:(double)a6 speed:(double)a7;
-- (void)applyForTime:(double)a3 quad:(id)a4;
+- (NTKMagmaTritiumOffEffect)initWithStart:(double)start duration:(double)duration magnitude:(double)magnitude radius:(double)radius speed:(double)speed;
+- (void)applyForTime:(double)time quad:(id)quad;
 @end
 
 @implementation NTKMagmaTritiumOffEffect
 
-- (NTKMagmaTritiumOffEffect)initWithStart:(double)a3 duration:(double)a4 magnitude:(double)a5 radius:(double)a6 speed:(double)a7
+- (NTKMagmaTritiumOffEffect)initWithStart:(double)start duration:(double)duration magnitude:(double)magnitude radius:(double)radius speed:(double)speed
 {
   v23.receiver = self;
   v23.super_class = NTKMagmaTritiumOffEffect;
@@ -13,8 +13,8 @@
   v13 = v12;
   if (v12)
   {
-    v12->_start = a3;
-    v12->_duration = a4;
+    v12->_start = start;
+    v12->_duration = duration;
     IsReduceMotionEnabled = UIAccessibilityIsReduceMotionEnabled();
     v15 = 1.0;
     if (IsReduceMotionEnabled)
@@ -22,9 +22,9 @@
       v15 = 0.5;
     }
 
-    v13->_magnitude = v15 * a5;
-    v13->_radius = a6;
-    v13->_speed = a7;
+    v13->_magnitude = v15 * magnitude;
+    v13->_radius = radius;
+    v13->_speed = speed;
     v16 = &v13->_randomParams[40];
     for (i = 1; i != 4; ++i)
     {
@@ -52,21 +52,21 @@
   return v13;
 }
 
-- (void)applyForTime:(double)a3 quad:(id)a4
+- (void)applyForTime:(double)time quad:(id)quad
 {
-  v6 = a4;
+  quadCopy = quad;
   start = self->_start;
   duration = self->_duration;
-  if (start + duration >= a3)
+  if (start + duration >= time)
   {
-    v9 = (a3 - start) / duration;
+    v9 = (time - start) / duration;
     v10 = 1.0 - ((v9 * 2.0) + -1.0) * ((v9 * 2.0) + -1.0);
     *&v10 = v10;
     v23 = v10;
     v11 = self->_speed * v9;
     v12 = &self->_randomParams[40];
     v13 = 1;
-    v26 = v6;
+    v26 = quadCopy;
     do
     {
       v14 = 0;
@@ -88,7 +88,7 @@
         magnitude = self->_magnitude;
         *&radius = radius;
         [v26 applyQuadraticDragWithOrigin:v19 drag:COERCE_DOUBLE(vmul_n_f32(vmul_n_f32(v20 radius:{*&v23), magnitude)), radius}];
-        v6 = v26;
+        quadCopy = v26;
         ++v14;
       }
 

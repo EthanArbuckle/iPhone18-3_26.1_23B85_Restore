@@ -1,30 +1,30 @@
 @interface APConfigurationRequester
-- (APConfigurationRequester)initWithStorefront:(id)a3;
+- (APConfigurationRequester)initWithStorefront:(id)storefront;
 - (BOOL)_mockConfigurationServerResponseIfNeeded;
 - (BOOL)_testingFlag;
 - (id)_configurationServerURL;
 - (id)_queryItems;
 - (id)_requestHost;
 - (int64_t)_configurationVersion;
-- (void)_httpResponse:(id)a3 session:(id)a4;
+- (void)_httpResponse:(id)response session:(id)session;
 - (void)_resetConfigurationForStorefrontChangeIfNeeded;
-- (void)_sendCoreAnalyticsWithUpdateStatus:(int64_t)a3 version:(int64_t)a4;
+- (void)_sendCoreAnalyticsWithUpdateStatus:(int64_t)status version:(int64_t)version;
 - (void)cancelRequest;
-- (void)requestConfigurationWithCompletionHandler:(id)a3;
+- (void)requestConfigurationWithCompletionHandler:(id)handler;
 @end
 
 @implementation APConfigurationRequester
 
-- (APConfigurationRequester)initWithStorefront:(id)a3
+- (APConfigurationRequester)initWithStorefront:(id)storefront
 {
-  v5 = a3;
+  storefrontCopy = storefront;
   v20.receiver = self;
   v20.super_class = APConfigurationRequester;
   v6 = [(APConfigurationRequester *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_storefront, a3);
+    objc_storeStrong(&v6->_storefront, storefront);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_attr_make_with_qos_class(v8, QOS_CLASS_BACKGROUND, 0);
     v10 = dispatch_queue_create("com.apple.ap.configurationsystem.response", v9);
@@ -34,7 +34,7 @@
     v7->_cancelled = 0;
     v12 = [APConfigurationStorefrontValidator alloc];
     v15 = objc_msgSend_configSystemDirectoryPath(APConfigurationMediator, v13, v14);
-    v17 = objc_msgSend_initWithStorefront_configurationPath_(v12, v16, v5, v15);
+    v17 = objc_msgSend_initWithStorefront_configurationPath_(v12, v16, storefrontCopy, v15);
     storefrontValidator = v7->_storefrontValidator;
     v7->_storefrontValidator = v17;
   }
@@ -76,11 +76,11 @@ LABEL_8:
   return v2;
 }
 
-- (void)requestConfigurationWithCompletionHandler:(id)a3
+- (void)requestConfigurationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_msgSend__resetConfigurationForStorefrontChangeIfNeeded(self, v5, v6);
-  v9 = objc_msgSend_copy(v4, v7, v8);
+  v9 = objc_msgSend_copy(handlerCopy, v7, v8);
 
   objc_msgSend_setCompletionHandler_(self, v10, v9);
   if ((objc_msgSend__mockConfigurationServerResponseIfNeeded(self, v11, v12) & 1) == 0)
@@ -106,19 +106,19 @@ LABEL_8:
   dispatch_async(v4, block);
 }
 
-- (void)_httpResponse:(id)a3 session:(id)a4
+- (void)_httpResponse:(id)response session:(id)session
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v8 = objc_msgSend_valid(v5, v6, v7);
+  responseCopy = response;
+  v8 = objc_msgSend_valid(responseCopy, v6, v7);
   v9 = APLogForCategory();
   v10 = v9;
   if (!v8)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v24 = objc_msgSend_responseStatusCode(v5, v22, v23);
-      v27 = objc_msgSend_responseError(v5, v25, v26);
+      v24 = objc_msgSend_responseStatusCode(responseCopy, v22, v23);
+      v27 = objc_msgSend_responseError(responseCopy, v25, v26);
       *v36 = 134218242;
       *&v36[4] = v24;
       *&v36[12] = 2114;
@@ -137,9 +137,9 @@ LABEL_8:
     _os_log_impl(&dword_1CA1CE000, v10, OS_LOG_TYPE_INFO, "Received response from server.", v36, 2u);
   }
 
-  if (objc_msgSend_responseStatusCode(v5, v11, v12) != 200)
+  if (objc_msgSend_responseStatusCode(responseCopy, v11, v12) != 200)
   {
-    if (objc_msgSend_responseStatusCode(v5, v13, v14) != 204)
+    if (objc_msgSend_responseStatusCode(responseCopy, v13, v14) != 204)
     {
 LABEL_16:
       v16 = 0;
@@ -164,7 +164,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v16 = objc_msgSend_responseBody(v5, v13, v14);
+  v16 = objc_msgSend_responseBody(responseCopy, v13, v14);
   if (!v16)
   {
     v17 = APLogForCategory();
@@ -271,14 +271,14 @@ LABEL_17:
   return v53;
 }
 
-- (void)_sendCoreAnalyticsWithUpdateStatus:(int64_t)a3 version:(int64_t)a4
+- (void)_sendCoreAnalyticsWithUpdateStatus:(int64_t)status version:(int64_t)version
 {
   v20[3] = *MEMORY[0x1E69E9840];
   v19[0] = @"ClientConfigVersion";
-  v6 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], a2, a4);
+  v6 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], a2, version);
   v20[0] = v6;
   v19[1] = @"StatusCode";
-  v8 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v7, a3);
+  v8 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v7, status);
   v20[1] = v8;
   v19[2] = @"TestingFlag";
   v9 = MEMORY[0x1E696AD98];

@@ -1,24 +1,24 @@
 @interface WBSPasswordEvaluator
-+ (BOOL)passwordLooksLikeDigitOnlyPasscode:(id)a3;
++ (BOOL)passwordLooksLikeDigitOnlyPasscode:(id)passcode;
 + (id)standardPasswordEvaluator;
-- (id)_initWithPasswordWordListCollection:(id)a3 passcodeWordListCollection:(id)a4;
-- (id)evaluatePassword:(id)a3;
+- (id)_initWithPasswordWordListCollection:(id)collection passcodeWordListCollection:(id)listCollection;
+- (id)evaluatePassword:(id)password;
 @end
 
 @implementation WBSPasswordEvaluator
 
-- (id)_initWithPasswordWordListCollection:(id)a3 passcodeWordListCollection:(id)a4
+- (id)_initWithPasswordWordListCollection:(id)collection passcodeWordListCollection:(id)listCollection
 {
-  v7 = a3;
-  v8 = a4;
+  collectionCopy = collection;
+  listCollectionCopy = listCollection;
   v15.receiver = self;
   v15.super_class = WBSPasswordEvaluator;
   v9 = [(WBSPasswordEvaluator *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_passwordWordListCollection, a3);
-    objc_storeStrong(&v10->_passcodeWordListCollection, a4);
+    objc_storeStrong(&v9->_passwordWordListCollection, collection);
+    objc_storeStrong(&v10->_passcodeWordListCollection, listCollection);
     v11 = objc_alloc_init(WBSPasswordPatternMatcher);
     patternMatcher = v10->_patternMatcher;
     v10->_patternMatcher = v11;
@@ -29,18 +29,18 @@
   return v10;
 }
 
-- (id)evaluatePassword:(id)a3
+- (id)evaluatePassword:(id)password
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 length] - 32) > 0xFFFFFFFFFFFFFFE0)
+  passwordCopy = password;
+  if (([passwordCopy length] - 32) > 0xFFFFFFFFFFFFFFE0)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = [objc_opt_class() passwordLooksLikeDigitOnlyPasscode:v4];
+    v8 = [objc_opt_class() passwordLooksLikeDigitOnlyPasscode:passwordCopy];
     patternMatcher = self->_patternMatcher;
     if (v8)
     {
-      v10 = [(WBSPasswordPatternMatcher *)patternMatcher patternMatchesForPasscode:v4 withWordListCollection:self->_passcodeWordListCollection];
+      v10 = [(WBSPasswordPatternMatcher *)patternMatcher patternMatchesForPasscode:passwordCopy withWordListCollection:self->_passcodeWordListCollection];
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
@@ -87,21 +87,21 @@
       if (!v13)
       {
 LABEL_15:
-        v13 = -[WBSPasswordPatternMatch initExhaustiveSearchPatternWithMatchedSubstring:range:]([WBSPasswordPatternMatch alloc], "initExhaustiveSearchPatternWithMatchedSubstring:range:", v4, 0, [v4 length]);
+        v13 = -[WBSPasswordPatternMatch initExhaustiveSearchPatternWithMatchedSubstring:range:]([WBSPasswordPatternMatch alloc], "initExhaustiveSearchPatternWithMatchedSubstring:range:", passwordCopy, 0, [passwordCopy length]);
       }
 
       v21 = [WBSPasswordEvaluation alloc];
       v29 = v13;
       v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v29 count:1];
       [(WBSPasswordPatternMatchSolver *)v13 guessesRequired];
-      v6 = [(WBSPasswordEvaluation *)v21 initWithEvaluationType:1 password:v4 patternMatches:v22 guessesRequired:?];
+      optimalEvaluation = [(WBSPasswordEvaluation *)v21 initWithEvaluationType:1 password:passwordCopy patternMatches:v22 guessesRequired:?];
     }
 
     else
     {
-      v10 = [(WBSPasswordPatternMatcher *)patternMatcher patternMatchesForPassword:v4 withWordListCollection:self->_passwordWordListCollection];
-      v13 = [[WBSPasswordPatternMatchSolver alloc] initWithPassword:v4 patternMatches:v10];
-      v6 = [(WBSPasswordPatternMatchSolver *)v13 optimalEvaluation];
+      v10 = [(WBSPasswordPatternMatcher *)patternMatcher patternMatchesForPassword:passwordCopy withWordListCollection:self->_passwordWordListCollection];
+      v13 = [[WBSPasswordPatternMatchSolver alloc] initWithPassword:passwordCopy patternMatches:v10];
+      optimalEvaluation = [(WBSPasswordPatternMatchSolver *)v13 optimalEvaluation];
     }
 
     objc_autoreleasePoolPop(v7);
@@ -110,23 +110,23 @@ LABEL_15:
   else
   {
     v5 = [WBSPasswordEvaluation alloc];
-    v6 = [(WBSPasswordEvaluation *)v5 initWithEvaluationType:2 password:v4 patternMatches:MEMORY[0x1E695E0F0] guessesRequired:0.0];
+    optimalEvaluation = [(WBSPasswordEvaluation *)v5 initWithEvaluationType:2 password:passwordCopy patternMatches:MEMORY[0x1E695E0F0] guessesRequired:0.0];
   }
 
   v23 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return optimalEvaluation;
 }
 
-+ (BOOL)passwordLooksLikeDigitOnlyPasscode:(id)a3
++ (BOOL)passwordLooksLikeDigitOnlyPasscode:(id)passcode
 {
-  v3 = a3;
-  v4 = [v3 length];
+  passcodeCopy = passcode;
+  v4 = [passcodeCopy length];
   if ((v4 & 0xFFFFFFFFFFFFFFFDLL) == 4)
   {
     v5 = v4;
-    v6 = [MEMORY[0x1E696AB08] safari_asciiDigitCharacterSet];
-    if ([v6 characterIsMember:{objc_msgSend(v3, "characterAtIndex:", 0)}])
+    safari_asciiDigitCharacterSet = [MEMORY[0x1E696AB08] safari_asciiDigitCharacterSet];
+    if ([safari_asciiDigitCharacterSet characterIsMember:{objc_msgSend(passcodeCopy, "characterAtIndex:", 0)}])
     {
       v7 = 1;
       do
@@ -137,7 +137,7 @@ LABEL_15:
           break;
         }
 
-        v9 = [v6 characterIsMember:{objc_msgSend(v3, "characterAtIndex:", v7)}];
+        v9 = [safari_asciiDigitCharacterSet characterIsMember:{objc_msgSend(passcodeCopy, "characterAtIndex:", v7)}];
         v7 = v8 + 1;
       }
 
@@ -161,7 +161,7 @@ LABEL_15:
 
 + (id)standardPasswordEvaluator
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[WBSPasswordWordListCollection commonPasswordWordListCollection];
   v4 = +[WBSPasswordWordListCollection commonPasscodeWordListCollection];
   v5 = [v2 _initWithPasswordWordListCollection:v3 passcodeWordListCollection:v4];

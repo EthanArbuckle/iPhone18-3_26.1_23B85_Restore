@@ -1,20 +1,20 @@
 @interface BLReviewNetworkPolicyOperation
-- (BLReviewNetworkPolicyOperation)initWithDownload:(id)a3;
+- (BLReviewNetworkPolicyOperation)initWithDownload:(id)download;
 - (void)run;
 @end
 
 @implementation BLReviewNetworkPolicyOperation
 
-- (BLReviewNetworkPolicyOperation)initWithDownload:(id)a3
+- (BLReviewNetworkPolicyOperation)initWithDownload:(id)download
 {
-  v5 = a3;
+  downloadCopy = download;
   v9.receiver = self;
   v9.super_class = BLReviewNetworkPolicyOperation;
   v6 = [(BLOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(v6 + 11, a3);
+    objc_storeStrong(v6 + 11, download);
   }
 
   return v7;
@@ -74,9 +74,9 @@ LABEL_5:
         v27 = BLServiceLog();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
         {
-          v28 = [self->_cellularResult logKey];
+          logKey = [self->_cellularResult logKey];
           *buf = 138543618;
-          v32 = v28;
+          v32 = logKey;
           v33 = 2112;
           v34 = v9;
           _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "[%{public}@]: Unable to evaluate cellular download:  %@", buf, 0x16u);
@@ -111,9 +111,9 @@ LABEL_5:
     v23 = BLServiceLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      v24 = [self->_cellularResult logKey];
+      logKey2 = [self->_cellularResult logKey];
       *buf = 138543618;
-      v32 = v24;
+      v32 = logKey2;
       v33 = 2112;
       v34 = v9;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "[%{public}@]: Unable to evaluate cellular download:  %@", buf, 0x16u);

@@ -1,25 +1,25 @@
 @interface VCPMADRemoteActivityClientHandler
-+ (id)clientHandlerWithXPCConnection:(id)a3;
++ (id)clientHandlerWithXPCConnection:(id)connection;
 + (void)notifyServicePID;
-- (VCPMADRemoteActivityClientHandler)initWithXPCConnection:(id)a3;
+- (VCPMADRemoteActivityClientHandler)initWithXPCConnection:(id)connection;
 - (void)cancelActivity;
 - (void)handleLostConnection;
-- (void)startActivityWithType:(unint64_t)a3 andReply:(id)a4;
-- (void)wakeWithReply:(id)a3;
+- (void)startActivityWithType:(unint64_t)type andReply:(id)reply;
+- (void)wakeWithReply:(id)reply;
 @end
 
 @implementation VCPMADRemoteActivityClientHandler
 
-- (VCPMADRemoteActivityClientHandler)initWithXPCConnection:(id)a3
+- (VCPMADRemoteActivityClientHandler)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v20.receiver = self;
   v20.super_class = VCPMADRemoteActivityClientHandler;
   v6 = [(VCPMADRemoteActivityClientHandler *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     objc_initWeak(&location, v7);
     [(NSXPCConnection *)v7->_connection setExportedObject:v7];
     connection = v7->_connection;
@@ -52,10 +52,10 @@
   return v7;
 }
 
-+ (id)clientHandlerWithXPCConnection:(id)a3
++ (id)clientHandlerWithXPCConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithXPCConnection:v3];
+  connectionCopy = connection;
+  v4 = [objc_alloc(objc_opt_class()) initWithXPCConnection:connectionCopy];
 
   return v4;
 }
@@ -117,16 +117,16 @@
   }
 }
 
-- (void)startActivityWithType:(unint64_t)a3 andReply:(id)a4
+- (void)startActivityWithType:(unint64_t)type andReply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   if (MediaAnalysisLogLevel() >= 5)
   {
     v7 = VCPLogToOSLogType[5];
     if (os_log_type_enabled(&_os_log_default, v7))
     {
       *buf = 67109120;
-      *&buf[4] = a3;
+      *&buf[4] = type;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v7, "[BG Service] Request to start activity (%d)", buf, 8u);
     }
   }
@@ -144,11 +144,11 @@
     }
 
     v103 = NSLocalizedDescriptionKey;
-    v10 = [NSString stringWithFormat:@"Activity already started dropping request (%d)", a3];;
-    v104 = v10;
+    type = [NSString stringWithFormat:@"Activity already started dropping request (%d)", type];;
+    v104 = type;
     v11 = [NSDictionary dictionaryWithObjects:&v104 forKeys:&v103 count:1];
     v12 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-50 userInfo:v11];
-    v6[2](v6, v12);
+    replyCopy[2](replyCopy, v12);
 
     goto LABEL_68;
   }
@@ -156,9 +156,9 @@
   xpc_transaction_exit_clean();
   [objc_opt_class() notifyServicePID];
   v13 = +[VCPPhotoLibraryManager sharedManager];
-  v10 = [v13 allPhotoLibraries];
+  type = [v13 allPhotoLibraries];
 
-  if ([v10 count])
+  if ([type count])
   {
     *buf = 0;
     v98 = buf;
@@ -171,7 +171,7 @@
     v74[1] = 3221225472;
     v74[2] = sub_10012264C;
     v74[3] = &unk_1002836C0;
-    v14 = v76 = a3;
+    v14 = v76 = type;
     v75 = v14;
     v15 = [VCPTimer timerWithIntervalSeconds:60 isOneShot:0 andBlock:v74];
     v68[0] = _NSConcreteStackBlock;
@@ -184,8 +184,8 @@
     v69 = v16;
     v43 = v15;
     v70 = v43;
-    v73 = a3;
-    v17 = v6;
+    typeCopy = type;
+    v17 = replyCopy;
     v71 = v17;
     v45 = objc_retainBlock(v68);
     v66[0] = 0;
@@ -199,16 +199,16 @@
     v62[2] = sub_100122A70;
     v62[3] = &unk_100286AA0;
     v62[4] = self;
-    v65 = a3;
+    typeCopy2 = type;
     v18 = v16;
     v63 = v18;
     v64 = v66;
     v44 = objc_retainBlock(v62);
-    if (a3 > 19)
+    if (type > 19)
     {
-      if (a3 <= 255)
+      if (type <= 255)
       {
-        switch(a3)
+        switch(type)
         {
           case 0x14uLL:
             v52[0] = _NSConcreteStackBlock;
@@ -236,24 +236,24 @@
             goto LABEL_69;
         }
 
-        v22 = [(__objc2_class *)*v26 taskWithPhotoLibraries:v10 cancelBlock:v25 progressHandler:0 completionHandler:v45];
+        v22 = [(__objc2_class *)*v26 taskWithPhotoLibraries:type cancelBlock:v25 progressHandler:0 completionHandler:v45];
       }
 
-      else if (a3 > 257)
+      else if (type > 257)
       {
-        if (a3 == 258)
+        if (type == 258)
         {
           v54[0] = _NSConcreteStackBlock;
           v54[1] = 3221225472;
           v54[2] = sub_100122CA8;
           v54[3] = &unk_1002837E8;
           v54[4] = self;
-          v22 = [MADPhotosTelemetryProcessingTask taskWithPhotoLibraries:v10 andProgressHandler:v54 andCompletionHandler:v45 andCancelBlock:&stru_100286C40];
+          v22 = [MADPhotosTelemetryProcessingTask taskWithPhotoLibraries:type andProgressHandler:v54 andCompletionHandler:v45 andCancelBlock:&stru_100286C40];
         }
 
         else
         {
-          if (a3 != 259)
+          if (type != 259)
           {
             goto LABEL_69;
           }
@@ -263,13 +263,13 @@
           v53[2] = sub_100122CCC;
           v53[3] = &unk_1002837E8;
           v53[4] = self;
-          v22 = [MADPhotosDatabaseMigrationProcessingTask taskWithPhotoLibraries:v10 progressHandler:v53 completionHandler:v45 cancelBlock:&stru_100286C60];
+          v22 = [MADPhotosDatabaseMigrationProcessingTask taskWithPhotoLibraries:type progressHandler:v53 completionHandler:v45 cancelBlock:&stru_100286C60];
         }
       }
 
       else
       {
-        if (a3 == 256)
+        if (type == 256)
         {
           v59[0] = _NSConcreteStackBlock;
           v59[1] = 3221225472;
@@ -291,13 +291,13 @@
         v55[2] = sub_100122C84;
         v55[3] = &unk_1002837E8;
         v55[4] = self;
-        v22 = [MADPhotosBackupProcessingTask taskWithPhotoLibraries:v10 andProgressHandler:v55 andCompletionHandler:v45 andCancelBlock:&stru_100286C20];
+        v22 = [MADPhotosBackupProcessingTask taskWithPhotoLibraries:type andProgressHandler:v55 andCompletionHandler:v45 andCancelBlock:&stru_100286C20];
       }
     }
 
-    else if (a3 <= 9)
+    else if (type <= 9)
     {
-      switch(a3)
+      switch(type)
       {
         case 1uLL:
           v60[0] = _NSConcreteStackBlock;
@@ -305,7 +305,7 @@
           v60[2] = sub_100122B8C;
           v60[3] = &unk_1002837E8;
           v60[4] = self;
-          v22 = [VCPLibraryProcessingTask taskWithPhotoLibraries:v10 andOptions:&__NSDictionary0__struct andProgressHandler:v60 andCompletionHandler:v45 andCancelBlock:&stru_100286B60];
+          v22 = [VCPLibraryProcessingTask taskWithPhotoLibraries:type andOptions:&__NSDictionary0__struct andProgressHandler:v60 andCompletionHandler:v45 andCancelBlock:&stru_100286B60];
           break;
         case 2uLL:
           if (VCPMADUnifiedBackgroundProcessing())
@@ -323,7 +323,7 @@
           v61[2] = sub_100122B58;
           v61[3] = &unk_1002837E8;
           v61[4] = self;
-          v22 = [VCPMADSceneLibraryProcessingTask taskWithPhotoLibraries:v10 cancelBlock:&stru_100286AE0 progressHandler:v61 andCompletionHandler:v45];
+          v22 = [VCPMADSceneLibraryProcessingTask taskWithPhotoLibraries:type cancelBlock:&stru_100286AE0 progressHandler:v61 andCompletionHandler:v45];
           break;
         case 3uLL:
           v23 = _os_feature_enabled_impl();
@@ -360,7 +360,7 @@ LABEL_54:
 
             if (+[MADManagedBackgroundActivitySchedule isMACDPersistEnabled])
             {
-              [MADManagedBackgroundActivitySchedule updateSessionLogWithTaskID:a3 startTime:v18 duration:0 exitStatus:-1.0];
+              [MADManagedBackgroundActivitySchedule updateSessionLogWithTaskID:type startTime:v18 duration:0 exitStatus:-1.0];
             }
 
             else
@@ -368,8 +368,8 @@ LABEL_54:
               v34 = +[PHPhotoLibrary vcp_defaultPhotoLibrary];
               v35 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v34];
 
-              [v35 storeSchedulingHistoryForActivityID:a3 andStartTime:v18];
-              [v35 purgeExcessiveSchedulingRecordsForActivityID:a3];
+              [v35 storeSchedulingHistoryForActivityID:type andStartTime:v18];
+              [v35 purgeExcessiveSchedulingRecordsForActivityID:type];
               [v35 commit];
             }
 
@@ -378,8 +378,8 @@ LABEL_54:
             block[2] = sub_100122E44;
             block[3] = &unk_100282BC8;
             block[4] = self;
-            v31 = v20;
-            v47 = v31;
+            type2 = v20;
+            v47 = type2;
             v36 = dispatch_block_create(DISPATCH_BLOCK_DETACHED, block);
             v36[2]();
 
@@ -389,7 +389,7 @@ LABEL_54:
               if (os_log_type_enabled(&_os_log_default, v38))
               {
                 *v81 = 67109120;
-                v82 = a3;
+                typeCopy5 = type;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, v38, "[BG Service] Failed to schedule task (%d)", v81, 8u);
               }
             }
@@ -403,14 +403,14 @@ LABEL_54:
               if (os_log_type_enabled(&_os_log_default, v30))
               {
                 *v81 = 67109120;
-                v82 = a3;
+                typeCopy5 = type;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, v30, "[BG Service] Failed to create activity (%d)", v81, 8u);
               }
             }
 
             v77 = NSLocalizedDescriptionKey;
-            v31 = [NSString stringWithFormat:@"Failed to create activity (%d)", a3];
-            v78 = v31;
+            type2 = [NSString stringWithFormat:@"Failed to create activity (%d)", type];
+            v78 = type2;
             v32 = [NSDictionary dictionaryWithObjects:&v78 forKeys:&v77 count:1];
             v33 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-50 userInfo:v32];
             v17[2](v17, v33);
@@ -429,9 +429,9 @@ LABEL_67:
 
     else
     {
-      if (a3 <= 15)
+      if (type <= 15)
       {
-        if (a3 == 10)
+        if (type == 10)
         {
           if (VCPMADUnifiedBackgroundProcessing())
           {
@@ -452,7 +452,7 @@ LABEL_67:
           goto LABEL_17;
         }
 
-        if (a3 == 12)
+        if (type == 12)
         {
           if (VCPMADUnifiedBackgroundProcessing())
           {
@@ -482,14 +482,14 @@ LABEL_69:
           if (os_log_type_enabled(&_os_log_default, v39))
           {
             *v81 = 67109120;
-            v82 = a3;
+            typeCopy5 = type;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v39, "[BG Service] Invalid activity type (%d) requested", v81, 8u);
           }
         }
 
         v79 = NSLocalizedDescriptionKey;
-        v31 = [NSString stringWithFormat:@"Invalid activity type (%d) requested", a3];
-        v80 = v31;
+        type2 = [NSString stringWithFormat:@"Invalid activity type (%d) requested", type];
+        v80 = type2;
         v40 = [NSDictionary dictionaryWithObjects:&v80 forKeys:&v79 count:1];
         v41 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-50 userInfo:v40];
         v17[2](v17, v41);
@@ -497,19 +497,19 @@ LABEL_69:
         goto LABEL_67;
       }
 
-      if (a3 == 16)
+      if (type == 16)
       {
         v49[0] = _NSConcreteStackBlock;
         v49[1] = 3221225472;
         v49[2] = sub_100122D98;
         v49[3] = &unk_1002837E8;
         v49[4] = self;
-        v22 = [VCPMADPECSingleRequestProcessingTask taskWithPhotoLibraries:v10 progressHandler:v49 completionHandler:v45 cancelBlock:&stru_100286CE0];
+        v22 = [VCPMADPECSingleRequestProcessingTask taskWithPhotoLibraries:type progressHandler:v49 completionHandler:v45 cancelBlock:&stru_100286CE0];
       }
 
       else
       {
-        if (a3 != 19)
+        if (type != 19)
         {
           goto LABEL_69;
         }
@@ -519,7 +519,7 @@ LABEL_69:
         v56[2] = sub_100122C60;
         v56[3] = &unk_1002837E8;
         v56[4] = self;
-        v22 = [VCPPhotosMaintenanceProcessingTask taskWithPhotoLibraries:v10 andProgressHandler:v56 andCompletionHandler:v45 andCancelBlock:&stru_100286C00];
+        v22 = [VCPPhotosMaintenanceProcessingTask taskWithPhotoLibraries:type andProgressHandler:v56 andCompletionHandler:v45 andCancelBlock:&stru_100286C00];
       }
     }
 
@@ -537,7 +537,7 @@ LABEL_69:
     }
   }
 
-  v6[2](v6, 0);
+  replyCopy[2](replyCopy, 0);
 LABEL_68:
 }
 
@@ -571,9 +571,9 @@ LABEL_68:
   }
 }
 
-- (void)wakeWithReply:(id)a3
+- (void)wakeWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   if (MediaAnalysisLogLevel() >= 7)
   {
     v4 = VCPLogToOSLogType[7];
@@ -585,7 +585,7 @@ LABEL_68:
   }
 
   v5 = getpid();
-  v3[2](v3, v5);
+  replyCopy[2](replyCopy, v5);
 }
 
 @end

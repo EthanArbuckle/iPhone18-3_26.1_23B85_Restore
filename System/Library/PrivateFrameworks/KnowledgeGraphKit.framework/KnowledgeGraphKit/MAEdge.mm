@@ -1,99 +1,99 @@
 @interface MAEdge
-- (BOOL)conformsToEdgeSchema:(id)a3;
-- (BOOL)hasEqualPropertiesToEdge:(id)a3;
+- (BOOL)conformsToEdgeSchema:(id)schema;
+- (BOOL)hasEqualPropertiesToEdge:(id)edge;
 - (BOOL)hasProperties;
-- (BOOL)hasProperties:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEdge:(id)a3;
+- (BOOL)hasProperties:(id)properties;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEdge:(id)edge;
 - (BOOL)isLoop;
-- (BOOL)isSameEdgeAsEdge:(id)a3;
+- (BOOL)isSameEdgeAsEdge:(id)edge;
 - (BOOL)isUnique;
-- (MAEdge)initWithIdentifier:(unint64_t)a3 labels:(id)a4 properties:(id)a5 sourceNode:(id)a6 targetNode:(id)a7;
-- (MAEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 weight:(float)a7 properties:(id)a8;
-- (MAEdge)initWithSourceNode:(id)a3 targetNode:(id)a4;
+- (MAEdge)initWithIdentifier:(unint64_t)identifier labels:(id)labels properties:(id)properties sourceNode:(id)node targetNode:(id)targetNode;
+- (MAEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain weight:(float)weight properties:(id)properties;
+- (MAEdge)initWithSourceNode:(id)node targetNode:(id)targetNode;
 - (NSDictionary)properties;
 - (NSSet)labels;
 - (NSString)description;
-- (id)commonNode:(id)a3;
-- (id)oppositeNode:(id)a3;
+- (id)commonNode:(id)node;
+- (id)oppositeNode:(id)node;
 - (id)propertyDictionary;
-- (id)propertyForKey:(id)a3;
-- (id)propertyForKey:(id)a3 kindOfClass:(Class)a4;
+- (id)propertyForKey:(id)key;
+- (id)propertyForKey:(id)key kindOfClass:(Class)class;
 - (id)propertyKeys;
 - (id)shortDescription;
-- (id)visualStringWithName:(id)a3 andPropertyKeys:(id)a4;
+- (id)visualStringWithName:(id)name andPropertyKeys:(id)keys;
 - (unint64_t)hash;
 - (unint64_t)propertiesCount;
-- (void)enumeratePropertiesUsingBlock:(id)a3;
-- (void)setGraphReference:(id)a3;
+- (void)enumeratePropertiesUsingBlock:(id)block;
+- (void)setGraphReference:(id)reference;
 @end
 
 @implementation MAEdge
 
-- (id)visualStringWithName:(id)a3 andPropertyKeys:(id)a4
+- (id)visualStringWithName:(id)name andPropertyKeys:(id)keys
 {
-  v6 = a3;
+  nameCopy = name;
   v7 = MEMORY[0x277CCAB68];
-  v8 = a4;
-  v9 = [v7 string];
-  [v9 appendString:@"["];
-  if (v6)
+  keysCopy = keys;
+  string = [v7 string];
+  [string appendString:@"["];
+  if (nameCopy)
   {
-    [v9 appendString:v6];
+    [string appendString:nameCopy];
   }
 
-  v10 = [(MAEdge *)self label];
+  label = [(MAEdge *)self label];
 
-  if (v10)
+  if (label)
   {
-    v11 = [(MAEdge *)self label];
-    [v9 appendFormat:@":%@", v11];
+    label2 = [(MAEdge *)self label];
+    [string appendFormat:@":%@", label2];
   }
 
   else
   {
-    [v9 appendFormat:@":"];
+    [string appendFormat:@":"];
   }
 
   if ([(MAEdge *)self domain]&& [(MAEdge *)self domain]!= 1)
   {
-    [v9 appendFormat:@":%lu", -[MAEdge domain](self, "domain")];
+    [string appendFormat:@":%lu", -[MAEdge domain](self, "domain")];
   }
 
-  v12 = [(MAEdge *)self propertyDictionary];
-  v13 = PropertiesVisualStringForKeys(v8, v12);
+  propertyDictionary = [(MAEdge *)self propertyDictionary];
+  v13 = PropertiesVisualStringForKeys(keysCopy, propertyDictionary);
 
   if ([v13 length] >= 3)
   {
-    [v9 appendFormat:@" %@", v13];
+    [string appendFormat:@" %@", v13];
   }
 
-  [v9 appendString:@"]"];
+  [string appendString:@"]"];
 
-  return v9;
+  return string;
 }
 
 - (BOOL)isLoop
 {
-  v2 = self;
-  v3 = [(MAEdge *)self sourceNode];
-  v4 = [(MAEdge *)v2 targetNode];
-  LOBYTE(v2) = v3 == v4;
+  selfCopy = self;
+  sourceNode = [(MAEdge *)self sourceNode];
+  targetNode = [(MAEdge *)selfCopy targetNode];
+  LOBYTE(selfCopy) = sourceNode == targetNode;
 
-  return v2;
+  return selfCopy;
 }
 
-- (id)commonNode:(id)a3
+- (id)commonNode:(id)node
 {
-  v4 = a3;
-  v5 = [(MAEdge *)self sourceNode];
-  v6 = [(MAEdge *)self targetNode];
-  v7 = [v4 sourceNode];
-  v8 = [v4 targetNode];
+  nodeCopy = node;
+  sourceNode = [(MAEdge *)self sourceNode];
+  targetNode = [(MAEdge *)self targetNode];
+  sourceNode2 = [nodeCopy sourceNode];
+  targetNode2 = [nodeCopy targetNode];
 
-  v9 = [v5 isEqual:v7];
-  v10 = v5;
-  if (v9 & 1) != 0 || (v11 = [v5 isEqual:v8], v10 = v5, (v11) || (v12 = objc_msgSend(v6, "isEqual:", v7), v10 = v6, (v12) || (v13 = objc_msgSend(v6, "isEqual:", v8), v10 = v6, v13))
+  v9 = [sourceNode isEqual:sourceNode2];
+  v10 = sourceNode;
+  if (v9 & 1) != 0 || (v11 = [sourceNode isEqual:targetNode2], v10 = sourceNode, (v11) || (v12 = objc_msgSend(targetNode, "isEqual:", sourceNode2), v10 = targetNode, (v12) || (v13 = objc_msgSend(targetNode, "isEqual:", targetNode2), v10 = targetNode, v13))
   {
     v14 = v10;
   }
@@ -106,14 +106,14 @@
   return v14;
 }
 
-- (id)oppositeNode:(id)a3
+- (id)oppositeNode:(id)node
 {
-  v4 = a3;
-  v5 = [(MAEdge *)self sourceNode];
-  v6 = [(MAEdge *)self targetNode];
-  v7 = [v4 isSameNodeAsNode:v5];
-  v8 = v6;
-  if ((v7 & 1) != 0 || (v9 = [v4 isSameNodeAsNode:v6], v8 = v5, v9))
+  nodeCopy = node;
+  sourceNode = [(MAEdge *)self sourceNode];
+  targetNode = [(MAEdge *)self targetNode];
+  v7 = [nodeCopy isSameNodeAsNode:sourceNode];
+  v8 = targetNode;
+  if ((v7 & 1) != 0 || (v9 = [nodeCopy isSameNodeAsNode:targetNode], v8 = sourceNode, v9))
   {
     v10 = v8;
   }
@@ -150,16 +150,16 @@
   objc_exception_throw(v2);
 }
 
-- (void)enumeratePropertiesUsingBlock:(id)a3
+- (void)enumeratePropertiesUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MAEdge *)self propertyDictionary];
-  [v5 enumerateKeysAndObjectsUsingBlock:v4];
+  blockCopy = block;
+  propertyDictionary = [(MAEdge *)self propertyDictionary];
+  [propertyDictionary enumerateKeysAndObjectsUsingBlock:blockCopy];
 }
 
-- (id)propertyForKey:(id)a3 kindOfClass:(Class)a4
+- (id)propertyForKey:(id)key kindOfClass:(Class)class
 {
-  v4 = [(MAEdge *)self propertyForKey:a3];
+  v4 = [(MAEdge *)self propertyForKey:key];
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -173,16 +173,16 @@
   return v5;
 }
 
-- (id)propertyForKey:(id)a3
+- (id)propertyForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MAEdge *)v5 propertyDictionary];
-  v7 = v6;
-  if (v6)
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  propertyDictionary = [(MAEdge *)selfCopy propertyDictionary];
+  v7 = propertyDictionary;
+  if (propertyDictionary)
   {
-    v8 = [v6 objectForKeyedSubscript:v4];
+    v8 = [propertyDictionary objectForKeyedSubscript:keyCopy];
   }
 
   else
@@ -190,16 +190,16 @@
     v8 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (propertiesCopy && [propertiesCopy count])
   {
     v6 = [v5 count];
     if (v6 <= [(MAEdge *)self propertiesCount])
@@ -250,18 +250,18 @@ void __24__MAEdge_hasProperties___block_invoke(uint64_t a1, uint64_t a2, void *a
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 1;
-  v3 = [(MAGraphReference *)self->_graphReference concreteGraph];
-  if (v3)
+  concreteGraph = [(MAGraphReference *)self->_graphReference concreteGraph];
+  if (concreteGraph)
   {
-    v4 = [(MAEdge *)self sourceNode];
-    v5 = [(MAEdge *)self label];
+    sourceNode = [(MAEdge *)self sourceNode];
+    label = [(MAEdge *)self label];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __18__MAEdge_isUnique__block_invoke;
     v8[3] = &unk_2797FF270;
     v8[4] = self;
     v8[5] = &v9;
-    [v4 enumerateEdgesWithLabel:v5 domain:0 usingBlock:v8];
+    [sourceNode enumerateEdgesWithLabel:label domain:0 usingBlock:v8];
   }
 
   v6 = *(v10 + 24);
@@ -280,20 +280,20 @@ void __18__MAEdge_isUnique__block_invoke(uint64_t a1, void *a2, _BYTE *a3)
   }
 }
 
-- (BOOL)isEqualToEdge:(id)a3
+- (BOOL)isEqualToEdge:(id)edge
 {
-  v4 = a3;
-  if (v4 && (v5 = -[MAEdge domain](self, "domain"), v5 == [v4 domain]) && (-[MAEdge weight](self, "weight"), v7 = v6, objc_msgSend(v4, "weight"), v7 == v8))
+  edgeCopy = edge;
+  if (edgeCopy && (v5 = -[MAEdge domain](self, "domain"), v5 == [edgeCopy domain]) && (-[MAEdge weight](self, "weight"), v7 = v6, objc_msgSend(edgeCopy, "weight"), v7 == v8))
   {
-    v11 = [(MAEdge *)self label];
-    v12 = [v4 label];
-    if ((v11 == v12 || [v11 isEqualToString:v12]) && -[MAEdge hasEqualPropertiesToEdge:](self, "hasEqualPropertiesToEdge:", v4))
+    label = [(MAEdge *)self label];
+    label2 = [edgeCopy label];
+    if ((label == label2 || [label isEqualToString:label2]) && -[MAEdge hasEqualPropertiesToEdge:](self, "hasEqualPropertiesToEdge:", edgeCopy))
     {
-      v13 = [(MAEdge *)self sourceNode];
-      v14 = [(MAEdge *)self targetNode];
-      v15 = [v4 sourceNode];
-      v16 = [v4 targetNode];
-      v9 = (v13 == v15 || [v13 isEqualToNode:v15]) && (v14 == v16 || (objc_msgSend(v14, "isEqualToNode:", v16) & 1) != 0);
+      sourceNode = [(MAEdge *)self sourceNode];
+      targetNode = [(MAEdge *)self targetNode];
+      sourceNode2 = [edgeCopy sourceNode];
+      targetNode2 = [edgeCopy targetNode];
+      v9 = (sourceNode == sourceNode2 || [sourceNode isEqualToNode:sourceNode2]) && (targetNode == targetNode2 || (objc_msgSend(targetNode, "isEqualToNode:", targetNode2) & 1) != 0);
     }
 
     else
@@ -310,33 +310,33 @@ void __18__MAEdge_isUnique__block_invoke(uint64_t a1, void *a2, _BYTE *a3)
   return v9;
 }
 
-- (BOOL)hasEqualPropertiesToEdge:(id)a3
+- (BOOL)hasEqualPropertiesToEdge:(id)edge
 {
-  v4 = a3;
-  v5 = [(MAEdge *)self propertyDictionary];
-  v6 = [v4 propertyDictionary];
+  edgeCopy = edge;
+  propertyDictionary = [(MAEdge *)self propertyDictionary];
+  propertyDictionary2 = [edgeCopy propertyDictionary];
 
-  LOBYTE(v4) = [v5 isEqualToDictionary:v6];
-  return v4;
+  LOBYTE(edgeCopy) = [propertyDictionary isEqualToDictionary:propertyDictionary2];
+  return edgeCopy;
 }
 
-- (BOOL)isSameEdgeAsEdge:(id)a3
+- (BOOL)isSameEdgeAsEdge:(id)edge
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  edgeCopy = edge;
+  v5 = edgeCopy;
+  if (edgeCopy == self)
   {
     v8 = 1;
   }
 
   else
   {
-    v6 = [(MAEdge *)v4 graphReference];
-    v7 = [(MAEdge *)self graphReference];
-    if (v6 == v7)
+    graphReference = [(MAEdge *)edgeCopy graphReference];
+    graphReference2 = [(MAEdge *)self graphReference];
+    if (graphReference == graphReference2)
     {
-      v9 = [(MAEdge *)v5 identifier];
-      v8 = v9 == [(MAEdge *)self identifier];
+      identifier = [(MAEdge *)v5 identifier];
+      v8 = identifier == [(MAEdge *)self identifier];
     }
 
     else
@@ -357,10 +357,10 @@ void __18__MAEdge_isUnique__block_invoke(uint64_t a1, void *a2, _BYTE *a3)
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
     goto LABEL_13;
@@ -369,7 +369,7 @@ void __18__MAEdge_isUnique__block_invoke(uint64_t a1, void *a2, _BYTE *a3)
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
+    v7 = equalCopy;
     v8 = v7;
     identifier = self->_identifier;
     if (identifier == 0x7FFFFFFFFFFFFFFFLL && v7->_identifier == 0x7FFFFFFFFFFFFFFFLL)
@@ -379,10 +379,10 @@ void __18__MAEdge_isUnique__block_invoke(uint64_t a1, void *a2, _BYTE *a3)
 
     if (self->_graphReference != v7->_graphReference)
     {
-      v10 = [(MAEdge *)self graph];
-      v11 = [(MAEdge *)v8 graph];
+      graph = [(MAEdge *)self graph];
+      graph2 = [(MAEdge *)v8 graph];
 
-      if (v10 != v11)
+      if (graph != graph2)
       {
 LABEL_9:
         v6 = [(MAEdge *)self isEqualToEdge:v8];
@@ -406,42 +406,42 @@ LABEL_13:
 
 - (NSDictionary)properties
 {
-  v3 = [(MAEdge *)self propertyDictionary];
+  propertyDictionary = [(MAEdge *)self propertyDictionary];
   [(MAEdge *)self weight];
-  v5 = [(MAKGWeightConversion *)v4 kgPropertiesForMAProperties:v3 weight:?];
+  v5 = [(MAKGWeightConversion *)v4 kgPropertiesForMAProperties:propertyDictionary weight:?];
 
   return v5;
 }
 
 - (NSSet)labels
 {
-  v3 = [(MAEdge *)self graphReference];
-  v4 = [v3 concreteGraph];
-  v5 = [(MAEdge *)self label];
-  v6 = [v4 labelsForLabel:v5 domain:{-[MAEdge domain](self, "domain")}];
+  graphReference = [(MAEdge *)self graphReference];
+  concreteGraph = [graphReference concreteGraph];
+  label = [(MAEdge *)self label];
+  v6 = [concreteGraph labelsForLabel:label domain:{-[MAEdge domain](self, "domain")}];
 
   return v6;
 }
 
-- (MAEdge)initWithIdentifier:(unint64_t)a3 labels:(id)a4 properties:(id)a5 sourceNode:(id)a6 targetNode:(id)a7
+- (MAEdge)initWithIdentifier:(unint64_t)identifier labels:(id)labels properties:(id)properties sourceNode:(id)node targetNode:(id)targetNode
 {
   v22 = 1;
   v21 = 0;
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  MALabelAndDomainFromKGLabels(a4, &v21, &v22);
+  targetNodeCopy = targetNode;
+  nodeCopy = node;
+  propertiesCopy = properties;
+  MALabelAndDomainFromKGLabels(labels, &v21, &v22);
   v15 = v21;
   v20 = 0;
   v19 = 0;
-  [MAKGWeightConversion maPropertiesAndWeightForKGProperties:v14 maProperties:&v19 maWeight:&v20];
+  [MAKGWeightConversion maPropertiesAndWeightForKGProperties:propertiesCopy maProperties:&v19 maWeight:&v20];
 
   LODWORD(v16) = v20;
-  v17 = [(MAEdge *)self initWithLabel:v15 sourceNode:v13 targetNode:v12 domain:v22 weight:v19 properties:v16];
+  v17 = [(MAEdge *)self initWithLabel:v15 sourceNode:nodeCopy targetNode:targetNodeCopy domain:v22 weight:v19 properties:v16];
 
   if (v17)
   {
-    [(MAEdge *)v17 setIdentifier:a3];
+    [(MAEdge *)v17 setIdentifier:identifier];
   }
 
   return v17;
@@ -456,15 +456,15 @@ LABEL_13:
   identifier = self->_identifier;
   [(MAEdge *)self weight];
   v7 = v6;
-  v8 = [(MAEdge *)self label];
-  v9 = [v3 stringWithFormat:@"[%@] id:[%lu] weight:[%f] label:[%@]", v4, identifier, *&v7, v8];
+  label = [(MAEdge *)self label];
+  v9 = [v3 stringWithFormat:@"[%@] id:[%lu] weight:[%f] label:[%@]", v4, identifier, *&v7, label];
 
   v10 = MEMORY[0x277CCACA8];
-  v11 = [(MAEdge *)self sourceNode];
-  v12 = [v11 shortDescription];
-  v13 = [(MAEdge *)self targetNode];
-  v14 = [v13 shortDescription];
-  v15 = [v10 stringWithFormat:@"%@\n\t\tsourceNode:%@\n\t\ttargetNode:%@", v9, v12, v14];
+  sourceNode = [(MAEdge *)self sourceNode];
+  shortDescription = [sourceNode shortDescription];
+  targetNode = [(MAEdge *)self targetNode];
+  shortDescription2 = [targetNode shortDescription];
+  v15 = [v10 stringWithFormat:@"%@\n\t\tsourceNode:%@\n\t\ttargetNode:%@", v9, shortDescription, shortDescription2];
 
   return v15;
 }
@@ -478,80 +478,80 @@ LABEL_13:
   identifier = self->_identifier;
   [(MAEdge *)self weight];
   v7 = v6;
-  v8 = [(MAEdge *)self label];
-  v9 = [v3 stringWithFormat:@"[%@] id:[%lu] weight:[%f] label:[%@]", v4, identifier, *&v7, v8];
+  label = [(MAEdge *)self label];
+  v9 = [v3 stringWithFormat:@"[%@] id:[%lu] weight:[%f] label:[%@]", v4, identifier, *&v7, label];
 
   v10 = MEMORY[0x277CCACA8];
-  v11 = [(MAEdge *)self visualString];
-  v12 = [(MAEdge *)self sourceNode];
-  v13 = [(MAEdge *)self targetNode];
-  v14 = [v10 stringWithFormat:@"%@ %@\n\t\tsourceNode:%@\n\t\ttargetNode:%@", v9, v11, v12, v13];
+  visualString = [(MAEdge *)self visualString];
+  sourceNode = [(MAEdge *)self sourceNode];
+  targetNode = [(MAEdge *)self targetNode];
+  v14 = [v10 stringWithFormat:@"%@ %@\n\t\tsourceNode:%@\n\t\ttargetNode:%@", v9, visualString, sourceNode, targetNode];
 
   return v14;
 }
 
-- (void)setGraphReference:(id)a3
+- (void)setGraphReference:(id)reference
 {
-  v5 = a3;
+  referenceCopy = reference;
   p_graphReference = &self->_graphReference;
-  if (self->_graphReference != v5)
+  if (self->_graphReference != referenceCopy)
   {
-    v9 = v5;
-    objc_storeStrong(p_graphReference, a3);
+    v9 = referenceCopy;
+    objc_storeStrong(p_graphReference, reference);
     if (v9)
     {
-      v7 = [(MAEdge *)self sourceNode];
-      [v7 setGraphReference:v9];
+      sourceNode = [(MAEdge *)self sourceNode];
+      [sourceNode setGraphReference:v9];
 
-      v8 = [(MAEdge *)self targetNode];
-      [v8 setGraphReference:v9];
+      targetNode = [(MAEdge *)self targetNode];
+      [targetNode setGraphReference:v9];
     }
   }
 
   MEMORY[0x2821F9730](p_graphReference);
 }
 
-- (MAEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 weight:(float)a7 properties:(id)a8
+- (MAEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain weight:(float)weight properties:(id)properties
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a8;
+  labelCopy = label;
+  nodeCopy = node;
+  targetNodeCopy = targetNode;
+  propertiesCopy = properties;
   v17 = KGMethodNotImplentedException(self, a2);
   objc_exception_throw(v17);
 }
 
-- (MAEdge)initWithSourceNode:(id)a3 targetNode:(id)a4
+- (MAEdge)initWithSourceNode:(id)node targetNode:(id)targetNode
 {
-  v7 = a3;
-  v8 = a4;
+  nodeCopy = node;
+  targetNodeCopy = targetNode;
   v12.receiver = self;
   v12.super_class = MAEdge;
   v9 = [(MAEdge *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sourceNode, a3);
-    objc_storeStrong(&v10->_targetNode, a4);
+    objc_storeStrong(&v9->_sourceNode, node);
+    objc_storeStrong(&v10->_targetNode, targetNode);
   }
 
   return v10;
 }
 
-- (BOOL)conformsToEdgeSchema:(id)a3
+- (BOOL)conformsToEdgeSchema:(id)schema
 {
-  v4 = a3;
-  v5 = elementMatchesDefinition(v4, self);
-  v6 = [v4 sourceNode];
-  v7 = [(MAEdge *)self sourceNode];
-  v8 = v5 & elementMatchesDefinition(v6, v7);
+  schemaCopy = schema;
+  v5 = elementMatchesDefinition(schemaCopy, self);
+  sourceNode = [schemaCopy sourceNode];
+  sourceNode2 = [(MAEdge *)self sourceNode];
+  v8 = v5 & elementMatchesDefinition(sourceNode, sourceNode2);
 
-  v9 = [v4 targetNode];
+  targetNode = [schemaCopy targetNode];
 
-  v10 = [(MAEdge *)self targetNode];
-  LOBYTE(v4) = elementMatchesDefinition(v9, v10);
+  targetNode2 = [(MAEdge *)self targetNode];
+  LOBYTE(schemaCopy) = elementMatchesDefinition(targetNode, targetNode2);
 
-  return v8 & v4;
+  return v8 & schemaCopy;
 }
 
 @end

@@ -1,72 +1,72 @@
 @interface BLSBacklightSceneEnvironmentUpdater
-- (BLSBacklightSceneEnvironmentUpdater)initWithEnvironment:(id)a3;
-- (BOOL)ensureAlwaysOnSessionCreatedForEnvironment:(_BOOL8)a1;
-- (void)performDesiredFidelityRequest:(id)a3;
-- (void)performFrameSpecifiersRequest:(id)a3;
-- (void)updatedEnvironmentWithDelta:(id)a3 backlightSceneUpdate:(id)a4;
+- (BLSBacklightSceneEnvironmentUpdater)initWithEnvironment:(id)environment;
+- (BOOL)ensureAlwaysOnSessionCreatedForEnvironment:(_BOOL8)environment;
+- (void)performDesiredFidelityRequest:(id)request;
+- (void)performFrameSpecifiersRequest:(id)request;
+- (void)updatedEnvironmentWithDelta:(id)delta backlightSceneUpdate:(id)update;
 @end
 
 @implementation BLSBacklightSceneEnvironmentUpdater
 
-- (BLSBacklightSceneEnvironmentUpdater)initWithEnvironment:(id)a3
+- (BLSBacklightSceneEnvironmentUpdater)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v8.receiver = self;
   v8.super_class = BLSBacklightSceneEnvironmentUpdater;
   v5 = [(BLSBacklightSceneEnvironmentUpdater *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_environment, v4);
+    objc_storeWeak(&v5->_environment, environmentCopy);
   }
 
   return v6;
 }
 
-- (void)updatedEnvironmentWithDelta:(id)a3 backlightSceneUpdate:(id)a4
+- (void)updatedEnvironmentWithDelta:(id)delta backlightSceneUpdate:(id)update
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  updateCopy = update;
   WeakRetained = objc_loadWeakRetained(&self->_environment);
   v8 = WeakRetained;
   if (!WeakRetained)
   {
-    v20 = bls_environment_log();
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+    delegate = bls_environment_log();
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
     {
-      [BLSBacklightSceneEnvironmentUpdater updatedEnvironmentWithDelta:v20 backlightSceneUpdate:?];
+      [BLSBacklightSceneEnvironmentUpdater updatedEnvironmentWithDelta:delegate backlightSceneUpdate:?];
     }
 
     goto LABEL_27;
   }
 
-  if ((*&a3 & 4) != 0)
+  if ((*&delta & 4) != 0)
   {
-    v9 = [WeakRetained visualState];
-    v10 = [v9 updateFidelity];
-    v11 = [v9 adjustedLuminance];
-    v12 = [v8 alwaysOnSession];
-    v13 = v12;
-    if (v11 == 1 || (v10 - 1) <= 1)
+    visualState = [WeakRetained visualState];
+    updateFidelity = [visualState updateFidelity];
+    adjustedLuminance = [visualState adjustedLuminance];
+    alwaysOnSession = [v8 alwaysOnSession];
+    v13 = alwaysOnSession;
+    if (adjustedLuminance == 1 || (updateFidelity - 1) <= 1)
     {
       if (![(BLSBacklightSceneEnvironmentUpdater *)self ensureAlwaysOnSessionCreatedForEnvironment:v8])
       {
         goto LABEL_16;
       }
 
-      v19 = [v8 alwaysOnSession];
+      alwaysOnSession2 = [v8 alwaysOnSession];
 
       v15 = bls_environment_log();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
-        v36 = [v8 identifier];
-        v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"{ visualState:%u date:%u active:%u seed:%u }", 1, (*&a3 >> 3) & 1, (*&a3 >> 1) & 1, (*&a3 >> 4) & 1];
+        identifier = [v8 identifier];
+        v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"{ visualState:%u date:%u active:%u seed:%u }", 1, (*&delta >> 3) & 1, (*&delta >> 1) & 1, (*&delta >> 4) & 1];
         *buf = 134218754;
-        v39 = self;
+        selfCopy5 = self;
         v40 = 2114;
-        v41 = v19;
+        v41 = alwaysOnSession2;
         v42 = 2112;
-        v43 = v36;
+        v43 = identifier;
         v44 = 2112;
         v45 = v37;
         _os_log_impl(&dword_21FE25000, v15, OS_LOG_TYPE_INFO, "%p created alwaysOnSession:%{public}@ for updatedEnvironment:%@ withDelta:%@", buf, 0x2Au);
@@ -75,7 +75,7 @@
 
     else
     {
-      if (!v12)
+      if (!alwaysOnSession)
       {
 LABEL_16:
 
@@ -89,34 +89,34 @@ LABEL_16:
       {
         if (v16)
         {
-          v17 = [v8 identifier];
-          v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"{ visualState:%u date:%u active:%u seed:%u }", 1, (*&a3 >> 3) & 1, (*&a3 >> 1) & 1, (*&a3 >> 4) & 1];
+          identifier2 = [v8 identifier];
+          v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"{ visualState:%u date:%u active:%u seed:%u }", 1, (*&delta >> 3) & 1, (*&delta >> 1) & 1, (*&delta >> 4) & 1];
           *buf = 134218754;
-          v39 = self;
+          selfCopy5 = self;
           v40 = 2114;
           v41 = v13;
           v42 = 2112;
-          v43 = v17;
+          v43 = identifier2;
           v44 = 2112;
           v45 = v18;
           _os_log_impl(&dword_21FE25000, v15, OS_LOG_TYPE_INFO, "%p (rdar://133418257)  keeping alwaysOnSession:%{public}@ for updatedEnvironment:%@ withDelta:%@", buf, 0x2Au);
         }
 
-        v19 = v13;
+        alwaysOnSession2 = v13;
       }
 
       else
       {
         if (v16)
         {
-          v21 = [v8 identifier];
-          v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"{ visualState:%u date:%u active:%u seed:%u }", 1, (*&a3 >> 3) & 1, (*&a3 >> 1) & 1, (*&a3 >> 4) & 1];
+          identifier3 = [v8 identifier];
+          v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"{ visualState:%u date:%u active:%u seed:%u }", 1, (*&delta >> 3) & 1, (*&delta >> 1) & 1, (*&delta >> 4) & 1];
           *buf = 134218754;
-          v39 = self;
+          selfCopy5 = self;
           v40 = 2114;
           v41 = v13;
           v42 = 2112;
-          v43 = v21;
+          v43 = identifier3;
           v44 = 2112;
           v45 = v22;
           _os_log_impl(&dword_21FE25000, v15, OS_LOG_TYPE_INFO, "%p destroying alwaysOnSession:%{public}@ for updatedEnvironment:%@ withDelta:%@", buf, 0x2Au);
@@ -124,53 +124,53 @@ LABEL_16:
 
         [v13 invalidate];
         [v8 setAlwaysOnSession:0];
-        v19 = 0;
+        alwaysOnSession2 = 0;
         v15 = v13;
       }
     }
 
-    v13 = v19;
+    v13 = alwaysOnSession2;
     goto LABEL_16;
   }
 
 LABEL_17:
-  if (v6)
+  if (updateCopy)
   {
-    v23 = [v6 context];
-    v24 = [v23 triggerEvent];
+    context = [updateCopy context];
+    triggerEvent = [context triggerEvent];
 
-    [v24 eventID];
-    [v24 state];
-    v25 = [v8 identifier];
-    BLSEncode4Chars(v25, 4);
-    v26 = [v8 identifier];
-    BLSEncode4Chars(v26, 0);
+    [triggerEvent eventID];
+    [triggerEvent state];
+    identifier4 = [v8 identifier];
+    BLSEncode4Chars(identifier4, 4);
+    identifier5 = [v8 identifier];
+    BLSEncode4Chars(identifier5, 0);
     kdebug_trace();
 
-    v20 = [v8 delegate];
+    delegate = [v8 delegate];
     v27 = bls_environment_log();
     v28 = v27;
-    if (v20)
+    if (delegate)
     {
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
-        v29 = [v8 identifier];
+        identifier6 = [v8 identifier];
         v30 = objc_opt_class();
         v31 = NSStringFromClass(v30);
         *buf = 134219010;
-        v39 = self;
+        selfCopy5 = self;
         v40 = 2114;
-        v41 = v29;
+        v41 = identifier6;
         v42 = 2048;
-        v43 = v20;
+        v43 = delegate;
         v44 = 2114;
         v45 = v31;
         v46 = 2114;
-        v47 = v6;
+        v47 = updateCopy;
         _os_log_impl(&dword_21FE25000, v28, OS_LOG_TYPE_INFO, "%p calling performBacklightSceneUpdate: on delegate for %{public}@: %p %{public}@ with %{public}@", buf, 0x34u);
       }
 
-      [v20 environment:v8 performBacklightSceneUpdate:v6];
+      [delegate environment:v8 performBacklightSceneUpdate:updateCopy];
     }
 
     else
@@ -178,26 +178,26 @@ LABEL_17:
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
         *buf = 134218498;
-        v39 = self;
+        selfCopy5 = self;
         v40 = 2114;
         v41 = v8;
         v42 = 2114;
-        v43 = v6;
+        v43 = updateCopy;
         _os_log_error_impl(&dword_21FE25000, v28, OS_LOG_TYPE_ERROR, "%p delegate:<NULL> (will complete immediately) environment:%{public}@ performBacklightSceneUpdate:%{public}@", buf, 0x20u);
       }
 
-      [v6 sceneContentsDidUpdate];
-      v32 = [v6 context];
-      v33 = [v32 isAnimated];
+      [updateCopy sceneContentsDidUpdate];
+      context2 = [updateCopy context];
+      isAnimated = [context2 isAnimated];
       v34 = 0.0;
-      if (v33)
+      if (isAnimated)
       {
         v34 = 0.5;
       }
 
-      [v6 performBacklightRampWithDuration:v34];
+      [updateCopy performBacklightRampWithDuration:v34];
 
-      [v6 sceneContentsAnimationDidComplete];
+      [updateCopy sceneContentsAnimationDidComplete];
     }
 
 LABEL_27:
@@ -206,65 +206,65 @@ LABEL_27:
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performDesiredFidelityRequest:(id)a3
+- (void)performDesiredFidelityRequest:(id)request
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   WeakRetained = objc_loadWeakRetained(&self->_environment);
   if (WeakRetained)
   {
     [0 eventID];
     [0 state];
-    v8 = [WeakRetained identifier];
-    BLSEncode4Chars(v8, 4);
-    v9 = [WeakRetained identifier];
-    BLSEncode4Chars(v9, 0);
+    identifier = [WeakRetained identifier];
+    BLSEncode4Chars(identifier, 4);
+    identifier2 = [WeakRetained identifier];
+    BLSEncode4Chars(identifier2, 0);
     kdebug_trace();
 
     v10 = [(BLSBacklightSceneEnvironmentUpdater *)self ensureAlwaysOnSessionCreatedForEnvironment:?];
-    v11 = [WeakRetained alwaysOnSession];
+    alwaysOnSession = [WeakRetained alwaysOnSession];
     v12 = bls_environment_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [WeakRetained identifier];
+      identifier3 = [WeakRetained identifier];
       *buf = 134219266;
-      v25 = self;
+      selfCopy = self;
       v26 = 2114;
-      v27 = v4;
+      v27 = requestCopy;
       v28 = 2114;
-      v29 = v11;
+      v29 = alwaysOnSession;
       v30 = 2048;
       v31 = WeakRetained;
       v32 = 2114;
-      v33 = v13;
+      v33 = identifier3;
       v34 = 1024;
       v35 = v10;
       _os_log_impl(&dword_21FE25000, v12, OS_LOG_TYPE_INFO, "%p performDesiredFidelityRequest:%{public}@ alwaysOnSession:%{public}@ environment:<%p %{public}@>, createdSession=%{BOOL}u", buf, 0x3Au);
     }
 
-    v14 = [WeakRetained delegate];
+    delegate = [WeakRetained delegate];
 
-    if (v14)
+    if (delegate)
     {
       v15 = objc_alloc(MEMORY[0x277CCA970]);
       v16 = [MEMORY[0x277CBEAA8] now];
       v17 = [v15 initWithStartDate:v16 duration:60.0];
 
-      v18 = [WeakRetained delegate];
+      delegate2 = [WeakRetained delegate];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __69__BLSBacklightSceneEnvironmentUpdater_performDesiredFidelityRequest___block_invoke;
       v20[3] = &unk_278428790;
-      v21 = v11;
+      v21 = alwaysOnSession;
       v22 = v17;
-      v23 = v4;
+      v23 = requestCopy;
       v19 = v17;
-      [v18 environment:WeakRetained timelinesForDateInterval:v19 previousSpecifier:0 completion:v20];
+      [delegate2 environment:WeakRetained timelinesForDateInterval:v19 previousSpecifier:0 completion:v20];
     }
 
     else
     {
-      [v4 completeWithDesiredFidelity:1];
+      [requestCopy completeWithDesiredFidelity:1];
     }
   }
 
@@ -276,7 +276,7 @@ LABEL_27:
       [(BLSBacklightSceneEnvironmentUpdater *)self performDesiredFidelityRequest:v6];
     }
 
-    [v4 completeWithDesiredFidelity:1];
+    [requestCopy completeWithDesiredFidelity:1];
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -294,50 +294,50 @@ void __69__BLSBacklightSceneEnvironmentUpdater_performDesiredFidelityRequest___b
   [v3 desiredFidelityForDateInterval:v4 timelines:a2 withCompletion:v5];
 }
 
-- (void)performFrameSpecifiersRequest:(id)a3
+- (void)performFrameSpecifiersRequest:(id)request
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   WeakRetained = objc_loadWeakRetained(&self->_environment);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    v7 = [WeakRetained alwaysOnSession];
+    alwaysOnSession = [WeakRetained alwaysOnSession];
     v8 = bls_environment_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [v6 identifier];
+      identifier = [v6 identifier];
       *buf = 134219010;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2114;
-      v21 = v4;
+      v21 = requestCopy;
       v22 = 2114;
-      v23 = v7;
+      v23 = alwaysOnSession;
       v24 = 2048;
       v25 = v6;
       v26 = 2114;
-      v27 = v9;
+      v27 = identifier;
       _os_log_impl(&dword_21FE25000, v8, OS_LOG_TYPE_INFO, "%p performFrameSpecifiersRequest:%{public}@ alwaysOnSession:%{public}@ environment:<%p %{public}@>", buf, 0x34u);
     }
 
-    v10 = [v6 delegate];
+    delegate = [v6 delegate];
 
-    if (v10 && v7)
+    if (delegate && alwaysOnSession)
     {
-      v11 = [v4 dateInterval];
-      v12 = [v6 delegate];
+      dateInterval = [requestCopy dateInterval];
+      delegate2 = [v6 delegate];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __69__BLSBacklightSceneEnvironmentUpdater_performFrameSpecifiersRequest___block_invoke;
       v15[3] = &unk_2784287B8;
-      v16 = v7;
-      v17 = v4;
-      [v12 environment:v6 timelinesForDateInterval:v11 previousSpecifier:0 completion:v15];
+      v16 = alwaysOnSession;
+      v17 = requestCopy;
+      [delegate2 environment:v6 timelinesForDateInterval:dateInterval previousSpecifier:0 completion:v15];
     }
 
     else
     {
-      [v4 completeWithDateSpecifiers:MEMORY[0x277CBEBF8]];
+      [requestCopy completeWithDateSpecifiers:MEMORY[0x277CBEBF8]];
     }
   }
 
@@ -347,32 +347,32 @@ void __69__BLSBacklightSceneEnvironmentUpdater_performDesiredFidelityRequest___b
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v19 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_21FE25000, v13, OS_LOG_TYPE_DEFAULT, "%p: performFrameSpecifiersRequest: environment is nil", buf, 0xCu);
     }
 
-    [v4 completeWithDateSpecifiers:MEMORY[0x277CBEBF8]];
+    [requestCopy completeWithDateSpecifiers:MEMORY[0x277CBEBF8]];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)ensureAlwaysOnSessionCreatedForEnvironment:(_BOOL8)a1
+- (BOOL)ensureAlwaysOnSessionCreatedForEnvironment:(_BOOL8)environment
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (environment)
   {
-    v5 = [v3 alwaysOnSession];
-    a1 = v5 == 0;
-    if (!v5)
+    alwaysOnSession = [v3 alwaysOnSession];
+    environment = alwaysOnSession == 0;
+    if (!alwaysOnSession)
     {
-      v5 = [[BLSAlwaysOnSession alloc] initWithEnvironment:v4];
-      [v4 setAlwaysOnSession:v5];
+      alwaysOnSession = [[BLSAlwaysOnSession alloc] initWithEnvironment:v4];
+      [v4 setAlwaysOnSession:alwaysOnSession];
     }
   }
 
-  return a1;
+  return environment;
 }
 
 - (void)updatedEnvironmentWithDelta:(uint64_t)a1 backlightSceneUpdate:(NSObject *)a2 .cold.1(uint64_t a1, NSObject *a2)

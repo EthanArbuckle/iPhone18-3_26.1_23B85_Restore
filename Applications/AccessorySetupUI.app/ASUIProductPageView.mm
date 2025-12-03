@@ -1,11 +1,11 @@
 @interface ASUIProductPageView
-- (_TtC16AccessorySetupUI19ASUIProductPageView)initWithCoder:(id)a3;
-- (_TtC16AccessorySetupUI19ASUIProductPageView)initWithFrame:(CGRect)a3;
+- (_TtC16AccessorySetupUI19ASUIProductPageView)initWithCoder:(id)coder;
+- (_TtC16AccessorySetupUI19ASUIProductPageView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ASUIProductPageView
 
-- (_TtC16AccessorySetupUI19ASUIProductPageView)initWithCoder:(id)a3
+- (_TtC16AccessorySetupUI19ASUIProductPageView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16AccessorySetupUI19ASUIProductPageView_imageView) = 0;
   v4 = String._bridgeToObjectiveC()();
@@ -22,7 +22,7 @@
   return result;
 }
 
-- (_TtC16AccessorySetupUI19ASUIProductPageView)initWithFrame:(CGRect)a3
+- (_TtC16AccessorySetupUI19ASUIProductPageView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

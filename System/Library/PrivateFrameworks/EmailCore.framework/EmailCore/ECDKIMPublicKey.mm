@@ -1,50 +1,50 @@
 @interface ECDKIMPublicKey
-- (ECDKIMPublicKey)initWithKeyValueDictionary:(id)a3;
-- (ECDKIMPublicKey)initWithRecord:(id)a3;
-- (ECDKIMPublicKey)initWithVersion:(id)a3 hashingAlgorithm:(unint64_t)a4 signingAlgorithm:(unint64_t)a5 notes:(id)a6 publicKeyData:(id)a7 serviceType:(id)a8 flags:(id)a9;
+- (ECDKIMPublicKey)initWithKeyValueDictionary:(id)dictionary;
+- (ECDKIMPublicKey)initWithRecord:(id)record;
+- (ECDKIMPublicKey)initWithVersion:(id)version hashingAlgorithm:(unint64_t)algorithm signingAlgorithm:(unint64_t)signingAlgorithm notes:(id)notes publicKeyData:(id)data serviceType:(id)type flags:(id)flags;
 - (id)description;
-- (void)_parseAcceptableHashingAlgorithmsFromDictionary:(id)a3;
-- (void)_parseFlagsFromDictionary:(id)a3;
-- (void)_parseNotesFromDictionary:(id)a3;
-- (void)_parsePublicKeyDataFromDictionary:(id)a3;
-- (void)_parseServiceTypeFromDictionary:(id)a3;
-- (void)_parseSigningAlgorithmFromDictionary:(id)a3;
-- (void)_parseVersionFromDictionary:(id)a3;
+- (void)_parseAcceptableHashingAlgorithmsFromDictionary:(id)dictionary;
+- (void)_parseFlagsFromDictionary:(id)dictionary;
+- (void)_parseNotesFromDictionary:(id)dictionary;
+- (void)_parsePublicKeyDataFromDictionary:(id)dictionary;
+- (void)_parseServiceTypeFromDictionary:(id)dictionary;
+- (void)_parseSigningAlgorithmFromDictionary:(id)dictionary;
+- (void)_parseVersionFromDictionary:(id)dictionary;
 @end
 
 @implementation ECDKIMPublicKey
 
-- (ECDKIMPublicKey)initWithVersion:(id)a3 hashingAlgorithm:(unint64_t)a4 signingAlgorithm:(unint64_t)a5 notes:(id)a6 publicKeyData:(id)a7 serviceType:(id)a8 flags:(id)a9
+- (ECDKIMPublicKey)initWithVersion:(id)version hashingAlgorithm:(unint64_t)algorithm signingAlgorithm:(unint64_t)signingAlgorithm notes:(id)notes publicKeyData:(id)data serviceType:(id)type flags:(id)flags
 {
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  versionCopy = version;
+  notesCopy = notes;
+  dataCopy = data;
+  typeCopy = type;
+  flagsCopy = flags;
   v32.receiver = self;
   v32.super_class = ECDKIMPublicKey;
   v20 = [(ECDKIMPublicKey *)&v32 init];
   if (v20)
   {
-    v21 = [v15 copy];
+    v21 = [versionCopy copy];
     version = v20->_version;
     v20->_version = v21;
 
-    v20->_hashingAlgorithm = a4;
-    v20->_signingAlgorithm = a5;
-    v23 = [v16 copy];
+    v20->_hashingAlgorithm = algorithm;
+    v20->_signingAlgorithm = signingAlgorithm;
+    v23 = [notesCopy copy];
     notes = v20->_notes;
     v20->_notes = v23;
 
-    v25 = [v17 copy];
+    v25 = [dataCopy copy];
     publicKeyData = v20->_publicKeyData;
     v20->_publicKeyData = v25;
 
-    v27 = [v18 copy];
+    v27 = [typeCopy copy];
     serviceType = v20->_serviceType;
     v20->_serviceType = v27;
 
-    v29 = [v19 copy];
+    v29 = [flagsCopy copy];
     flags = v20->_flags;
     v20->_flags = v29;
   }
@@ -52,31 +52,31 @@
   return 0;
 }
 
-- (ECDKIMPublicKey)initWithKeyValueDictionary:(id)a3
+- (ECDKIMPublicKey)initWithKeyValueDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = ECDKIMPublicKey;
   v5 = [(ECDKIMPublicKey *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ECDKIMPublicKey *)v5 _parseVersionFromDictionary:v4];
-    [(ECDKIMPublicKey *)v6 _parseAcceptableHashingAlgorithmsFromDictionary:v4];
-    [(ECDKIMPublicKey *)v6 _parseSigningAlgorithmFromDictionary:v4];
-    [(ECDKIMPublicKey *)v6 _parseNotesFromDictionary:v4];
-    [(ECDKIMPublicKey *)v6 _parsePublicKeyDataFromDictionary:v4];
-    [(ECDKIMPublicKey *)v6 _parseServiceTypeFromDictionary:v4];
-    [(ECDKIMPublicKey *)v6 _parseFlagsFromDictionary:v4];
+    [(ECDKIMPublicKey *)v5 _parseVersionFromDictionary:dictionaryCopy];
+    [(ECDKIMPublicKey *)v6 _parseAcceptableHashingAlgorithmsFromDictionary:dictionaryCopy];
+    [(ECDKIMPublicKey *)v6 _parseSigningAlgorithmFromDictionary:dictionaryCopy];
+    [(ECDKIMPublicKey *)v6 _parseNotesFromDictionary:dictionaryCopy];
+    [(ECDKIMPublicKey *)v6 _parsePublicKeyDataFromDictionary:dictionaryCopy];
+    [(ECDKIMPublicKey *)v6 _parseServiceTypeFromDictionary:dictionaryCopy];
+    [(ECDKIMPublicKey *)v6 _parseFlagsFromDictionary:dictionaryCopy];
   }
 
   return v6;
 }
 
-- (ECDKIMPublicKey)initWithRecord:(id)a3
+- (ECDKIMPublicKey)initWithRecord:(id)record
 {
   v25 = *MEMORY[0x277D85DE8];
-  v17 = [a3 componentsSeparatedByString:@""];;
+  v17 = [record componentsSeparatedByString:@""];;
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
@@ -100,13 +100,13 @@
         v6 = [*(*(&v20 + 1) + 8 * v5) ef_componentsSeparatedByString:@"=" maxSeparations:1];
         if ([v6 count] == 2)
         {
-          v7 = [v6 firstObject];
-          v8 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-          v9 = [v7 stringByTrimmingCharactersInSet:v8];
+          firstObject = [v6 firstObject];
+          whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+          v9 = [firstObject stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-          v10 = [v6 lastObject];
-          v11 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-          v12 = [v10 stringByTrimmingCharactersInSet:v11];
+          lastObject = [v6 lastObject];
+          whitespaceAndNewlineCharacterSet2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+          v12 = [lastObject stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet2];
 
           [v18 setObject:v12 forKeyedSubscript:v9];
         }
@@ -138,10 +138,10 @@
   return v3;
 }
 
-- (void)_parseVersionFromDictionary:(id)a3
+- (void)_parseVersionFromDictionary:(id)dictionary
 {
-  v6 = a3;
-  v4 = [v6 objectForKeyedSubscript:@"v"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"v"];
   v5 = v4;
   if (v4 && ([v4 isEqualToString:@"DKIM1"] & 1) != 0)
   {
@@ -149,10 +149,10 @@
   }
 }
 
-- (void)_parseAcceptableHashingAlgorithmsFromDictionary:(id)a3
+- (void)_parseAcceptableHashingAlgorithmsFromDictionary:(id)dictionary
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [a3 objectForKeyedSubscript:@"h"];
+  v4 = [dictionary objectForKeyedSubscript:@"h"];
   v14 = v4;
   if (v4)
   {
@@ -179,8 +179,8 @@
         }
 
         v9 = *(*(&v15 + 1) + 8 * v8);
-        v10 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-        v11 = [v9 stringByTrimmingCharactersInSet:v10];
+        whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+        v11 = [v9 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
         if ([v11 isEqualToString:@"sha1"])
         {
@@ -218,15 +218,15 @@ LABEL_14:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_parseSigningAlgorithmFromDictionary:(id)a3
+- (void)_parseSigningAlgorithmFromDictionary:(id)dictionary
 {
   self->_signingAlgorithm = 0;
-  v4 = [a3 objectForKeyedSubscript:@"k"];
+  v4 = [dictionary objectForKeyedSubscript:@"k"];
   if (v4)
   {
     v8 = v4;
-    v5 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v6 = [v8 stringByTrimmingCharactersInSet:v5];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v6 = [v8 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
     if ([v6 isEqualToString:@"rsa"])
     {
@@ -253,23 +253,23 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)_parseNotesFromDictionary:(id)a3
+- (void)_parseNotesFromDictionary:(id)dictionary
 {
-  v8 = a3;
-  v4 = [v8 objectForKeyedSubscript:@"n"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"n"];
   if (v4)
   {
-    v5 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v6 = [v4 stringByTrimmingCharactersInSet:v5];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v6 = [v4 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
     notes = self->_notes;
     self->_notes = v6;
   }
 }
 
-- (void)_parsePublicKeyDataFromDictionary:(id)a3
+- (void)_parsePublicKeyDataFromDictionary:(id)dictionary
 {
-  v6 = a3;
-  v4 = [v6 objectForKeyedSubscript:@"p"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"p"];
   if (v4)
   {
     v5 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v4 options:1];
@@ -280,27 +280,27 @@ LABEL_8:
   }
 }
 
-- (void)_parseServiceTypeFromDictionary:(id)a3
+- (void)_parseServiceTypeFromDictionary:(id)dictionary
 {
-  v8 = a3;
-  v4 = [v8 objectForKeyedSubscript:@"s"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"s"];
   if (v4)
   {
-    v5 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v6 = [v4 stringByTrimmingCharactersInSet:v5];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v6 = [v4 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
     serviceType = self->_serviceType;
     self->_serviceType = v6;
   }
 }
 
-- (void)_parseFlagsFromDictionary:(id)a3
+- (void)_parseFlagsFromDictionary:(id)dictionary
 {
-  v8 = a3;
-  v4 = [v8 objectForKeyedSubscript:@"t"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"t"];
   if (v4)
   {
-    v5 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v6 = [v4 stringByTrimmingCharactersInSet:v5];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v6 = [v4 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
     flags = self->_flags;
     self->_flags = v6;
   }

@@ -1,14 +1,14 @@
 @interface VideosExtrasActivityIndicator
 - (CGSize)intrinsicContentSize;
-- (VideosExtrasActivityIndicator)initWithElement:(id)a3;
-- (void)setAlpha:(double)a3;
+- (VideosExtrasActivityIndicator)initWithElement:(id)element;
+- (void)setAlpha:(double)alpha;
 @end
 
 @implementation VideosExtrasActivityIndicator
 
-- (VideosExtrasActivityIndicator)initWithElement:(id)a3
+- (VideosExtrasActivityIndicator)initWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v31.receiver = self;
   v31.super_class = VideosExtrasActivityIndicator;
   v5 = *MEMORY[0x1E695F058];
@@ -18,17 +18,17 @@
   v9 = [(VideosExtrasActivityIndicator *)&v31 initWithFrame:*MEMORY[0x1E695F058], v6, v7, v8];
   if (v9)
   {
-    v10 = [MEMORY[0x1E69DC888] clearColor];
-    [(VideosExtrasActivityIndicator *)v9 setBackgroundColor:v10];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(VideosExtrasActivityIndicator *)v9 setBackgroundColor:clearColor];
 
-    if (v4)
+    if (elementCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [v4 title];
-        v12 = [v11 text];
-        v13 = [v12 length];
+        title = [elementCopy title];
+        text = [title text];
+        v13 = [text length];
 
         if (v13)
         {
@@ -38,8 +38,8 @@
 
           [(UILabel *)v9->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
           v16 = v9->_titleLabel;
-          v17 = [MEMORY[0x1E69DC888] clearColor];
-          [(UILabel *)v16 setBackgroundColor:v17];
+          clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+          [(UILabel *)v16 setBackgroundColor:clearColor2];
 
           v18 = v9->_titleLabel;
           v19 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.7];
@@ -47,7 +47,7 @@
 
           v20 = *MEMORY[0x1E69DDCF8];
           v21 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDCF8]];
-          [(UILabel *)v9->_titleLabel configureForIKTextElement:v11 fontDescriptor:v21 textStyle:v20];
+          [(UILabel *)v9->_titleLabel configureForIKTextElement:title fontDescriptor:v21 textStyle:v20];
           [(UILabel *)v9->_titleLabel setAlpha:0.0];
           [(VideosExtrasActivityIndicator *)v9 addSubview:v9->_titleLabel];
         }
@@ -63,27 +63,27 @@
     [(UIActivityIndicatorView *)v9->_spinner startAnimating];
     [(UIActivityIndicatorView *)v9->_spinner setAlpha:0.0];
     [(VideosExtrasActivityIndicator *)v9 addSubview:v9->_spinner];
-    v24 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v25 = [MEMORY[0x1E696ACD8] constraintWithItem:v9->_spinner attribute:9 relatedBy:0 toItem:v9 attribute:9 multiplier:1.0 constant:0.0];
-    [v24 addObject:v25];
+    [array addObject:v25];
     v26 = v9->_spinner;
     if (v9->_titleLabel)
     {
       v27 = [MEMORY[0x1E696ACD8] constraintWithItem:v26 attribute:3 relatedBy:0 toItem:v9 attribute:3 multiplier:1.0 constant:0.0];
-      [v24 addObject:v27];
+      [array addObject:v27];
       v28 = [MEMORY[0x1E696ACD8] constraintWithItem:v9->_titleLabel attribute:3 relatedBy:0 toItem:v9->_spinner attribute:4 multiplier:1.0 constant:5.0];
-      [v24 addObject:v28];
+      [array addObject:v28];
       v29 = [MEMORY[0x1E696ACD8] constraintWithItem:v9->_titleLabel attribute:9 relatedBy:0 toItem:v9->_spinner attribute:9 multiplier:1.0 constant:0.0];
-      [v24 addObject:v29];
+      [array addObject:v29];
     }
 
     else
     {
       v27 = [MEMORY[0x1E696ACD8] constraintWithItem:v26 attribute:10 relatedBy:0 toItem:v9 attribute:10 multiplier:1.0 constant:0.0];
-      [v24 addObject:v27];
+      [array addObject:v27];
     }
 
-    [(VideosExtrasActivityIndicator *)v9 addConstraints:v24];
+    [(VideosExtrasActivityIndicator *)v9 addConstraints:array];
   }
 
   return v9;
@@ -113,12 +113,12 @@
   return result;
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   [(UILabel *)self->_titleLabel setAlpha:?];
   spinner = self->_spinner;
 
-  [(UIActivityIndicatorView *)spinner setAlpha:a3];
+  [(UIActivityIndicatorView *)spinner setAlpha:alpha];
 }
 
 @end

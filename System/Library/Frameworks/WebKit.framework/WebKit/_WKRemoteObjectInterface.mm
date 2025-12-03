@@ -1,13 +1,13 @@
 @interface _WKRemoteObjectInterface
-+ (_WKRemoteObjectInterface)remoteObjectInterfaceWithProtocol:(id)a3;
-- (_WKRemoteObjectInterface)initWithProtocol:(id)a3 identifier:(id)a4;
++ (_WKRemoteObjectInterface)remoteObjectInterfaceWithProtocol:(id)protocol;
+- (_WKRemoteObjectInterface)initWithProtocol:(id)protocol identifier:(id)identifier;
 - (id).cxx_construct;
-- (id)_invocationForReplyBlockOfSelector:(SEL)a3;
-- (id)_invocationForSelector:(SEL)a3;
-- (id)classesForSelector:(SEL)a3 argumentIndex:(unint64_t)a4 ofReply:(BOOL)a5;
+- (id)_invocationForReplyBlockOfSelector:(SEL)selector;
+- (id)_invocationForSelector:(SEL)selector;
+- (id)classesForSelector:(SEL)selector argumentIndex:(unint64_t)index ofReply:(BOOL)reply;
 - (id)debugDescription;
 - (uint64_t)debugDescription;
-- (void)setClasses:(id)a3 forSelector:(SEL)a4 argumentIndex:(unint64_t)a5 ofReply:(BOOL)a6;
+- (void)setClasses:(id)classes forSelector:(SEL)selector argumentIndex:(unint64_t)index ofReply:(BOOL)reply;
 @end
 
 @implementation _WKRemoteObjectInterface
@@ -19,7 +19,7 @@
   return self;
 }
 
-- (_WKRemoteObjectInterface)initWithProtocol:(id)a3 identifier:(id)a4
+- (_WKRemoteObjectInterface)initWithProtocol:(id)protocol identifier:(id)identifier
 {
   v11.receiver = self;
   v11.super_class = _WKRemoteObjectInterface;
@@ -27,8 +27,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_protocol = a3;
-    v8 = [a4 copy];
+    v6->_protocol = protocol;
+    v8 = [identifier copy];
     m_ptr = v7->_identifier.m_ptr;
     v7->_identifier.m_ptr = v8;
     if (m_ptr)
@@ -41,9 +41,9 @@
   return v7;
 }
 
-+ (_WKRemoteObjectInterface)remoteObjectInterfaceWithProtocol:(id)a3
++ (_WKRemoteObjectInterface)remoteObjectInterfaceWithProtocol:(id)protocol
 {
-  v3 = [[a1 alloc] initWithProtocol:a3 identifier:NSStringFromProtocol(a3)];
+  v3 = [[self alloc] initWithProtocol:protocol identifier:NSStringFromProtocol(protocol)];
   v4 = v3;
   if (v3)
   {
@@ -136,12 +136,12 @@ LABEL_13:
 - (uint64_t)debugDescription
 {
   v2 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"["];
-  v3 = *(a1 + 12);
+  v3 = *(self + 12);
   if (v3)
   {
     v4 = 0;
-    v5 = *a1;
-    v6 = *a1 + 8 * v3;
+    v5 = *self;
+    v6 = *self + 8 * v3;
     while (1)
     {
       if (v4)
@@ -281,11 +281,11 @@ LABEL_37:
   return v2;
 }
 
-- (id)classesForSelector:(SEL)a3 argumentIndex:(unint64_t)a4 ofReply:(BOOL)a5
+- (id)classesForSelector:(SEL)selector argumentIndex:(unint64_t)index ofReply:(BOOL)reply
 {
-  v5 = a5;
+  replyCopy = reply;
   v9 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v10 = *classesForSelectorArgument(self, a3, a4, v5);
+  v10 = *classesForSelectorArgument(self, selector, index, replyCopy);
   v11 = WTF::HashTable<void const*,void const*,WTF::IdentityExtractor,WTF::DefaultHash<void const*>,WTF::HashTraits<void const*>,WTF::HashTraits<void const*>,WTF::FastMalloc>::begin(v10);
   v12 = v11;
   v14 = v13;
@@ -318,16 +318,16 @@ LABEL_37:
   return v9;
 }
 
-- (void)setClasses:(id)a3 forSelector:(SEL)a4 argumentIndex:(unint64_t)a5 ofReply:(BOOL)a6
+- (void)setClasses:(id)classes forSelector:(SEL)selector argumentIndex:(unint64_t)index ofReply:(BOOL)reply
 {
-  v6 = a6;
+  replyCopy = reply;
   v25 = *MEMORY[0x1E69E9840];
   v23 = 0;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = [a3 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  v11 = [classes countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v11)
   {
     v12 = *v20;
@@ -338,7 +338,7 @@ LABEL_37:
       {
         if (*v20 != v12)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(classes);
         }
 
         v18 = *(*(&v19 + 1) + 8 * v13);
@@ -347,13 +347,13 @@ LABEL_37:
       }
 
       while (v11 != v13);
-      v11 = [a3 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v11 = [classes countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v11);
   }
 
-  v14 = classesForSelectorArgument(self, a4, a5, v6);
+  v14 = classesForSelectorArgument(self, selector, index, replyCopy);
   v16 = *v14;
   *v14 = v23;
   if (v16)
@@ -362,10 +362,10 @@ LABEL_37:
   }
 }
 
-- (id)_invocationForSelector:(SEL)a3
+- (id)_invocationForSelector:(SEL)selector
 {
-  v10 = a3;
-  v4 = WTF::HashTable<objc_selector *,WTF::KeyValuePair<objc_selector *,MethodInfo>,WTF::KeyValuePairKeyExtractor<WTF::KeyValuePair<objc_selector *,MethodInfo>>,WTF::DefaultHash<objc_selector *>,WTF::HashMap<objc_selector *,MethodInfo,WTF::DefaultHash<objc_selector *>,WTF::HashTraits<objc_selector *>,WTF::HashTraits<MethodInfo>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::KeyValuePairTraits,WTF::HashTraits<objc_selector *>,WTF::FastMalloc>::find<WTF::IdentityHashTranslator<WTF::HashMap<objc_selector *,MethodInfo,WTF::DefaultHash<objc_selector *>,WTF::HashTraits<objc_selector *>,WTF::HashTraits<MethodInfo>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::KeyValuePairTraits,WTF::DefaultHash<objc_selector *>>,(WTF::ShouldValidateKey)1,objc_selector *>(&self->_methods, &v10);
+  selectorCopy = selector;
+  v4 = WTF::HashTable<objc_selector *,WTF::KeyValuePair<objc_selector *,MethodInfo>,WTF::KeyValuePairKeyExtractor<WTF::KeyValuePair<objc_selector *,MethodInfo>>,WTF::DefaultHash<objc_selector *>,WTF::HashMap<objc_selector *,MethodInfo,WTF::DefaultHash<objc_selector *>,WTF::HashTraits<objc_selector *>,WTF::HashTraits<MethodInfo>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::KeyValuePairTraits,WTF::HashTraits<objc_selector *>,WTF::FastMalloc>::find<WTF::IdentityHashTranslator<WTF::HashMap<objc_selector *,MethodInfo,WTF::DefaultHash<objc_selector *>,WTF::HashTraits<objc_selector *>,WTF::HashTraits<MethodInfo>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::KeyValuePairTraits,WTF::DefaultHash<objc_selector *>>,(WTF::ShouldValidateKey)1,objc_selector *>(&self->_methods, &selectorCopy);
   m_table = self->_methods.m_impl.m_table;
   if (m_table)
   {
@@ -387,10 +387,10 @@ LABEL_37:
   return v7;
 }
 
-- (id)_invocationForReplyBlockOfSelector:(SEL)a3
+- (id)_invocationForReplyBlockOfSelector:(SEL)selector
 {
-  v10 = a3;
-  v4 = WTF::HashTable<objc_selector *,WTF::KeyValuePair<objc_selector *,MethodInfo>,WTF::KeyValuePairKeyExtractor<WTF::KeyValuePair<objc_selector *,MethodInfo>>,WTF::DefaultHash<objc_selector *>,WTF::HashMap<objc_selector *,MethodInfo,WTF::DefaultHash<objc_selector *>,WTF::HashTraits<objc_selector *>,WTF::HashTraits<MethodInfo>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::KeyValuePairTraits,WTF::HashTraits<objc_selector *>,WTF::FastMalloc>::find<WTF::IdentityHashTranslator<WTF::HashMap<objc_selector *,MethodInfo,WTF::DefaultHash<objc_selector *>,WTF::HashTraits<objc_selector *>,WTF::HashTraits<MethodInfo>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::KeyValuePairTraits,WTF::DefaultHash<objc_selector *>>,(WTF::ShouldValidateKey)1,objc_selector *>(&self->_methods, &v10);
+  selectorCopy = selector;
+  v4 = WTF::HashTable<objc_selector *,WTF::KeyValuePair<objc_selector *,MethodInfo>,WTF::KeyValuePairKeyExtractor<WTF::KeyValuePair<objc_selector *,MethodInfo>>,WTF::DefaultHash<objc_selector *>,WTF::HashMap<objc_selector *,MethodInfo,WTF::DefaultHash<objc_selector *>,WTF::HashTraits<objc_selector *>,WTF::HashTraits<MethodInfo>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::KeyValuePairTraits,WTF::HashTraits<objc_selector *>,WTF::FastMalloc>::find<WTF::IdentityHashTranslator<WTF::HashMap<objc_selector *,MethodInfo,WTF::DefaultHash<objc_selector *>,WTF::HashTraits<objc_selector *>,WTF::HashTraits<MethodInfo>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::KeyValuePairTraits,WTF::DefaultHash<objc_selector *>>,(WTF::ShouldValidateKey)1,objc_selector *>(&self->_methods, &selectorCopy);
   m_table = self->_methods.m_impl.m_table;
   if (m_table)
   {

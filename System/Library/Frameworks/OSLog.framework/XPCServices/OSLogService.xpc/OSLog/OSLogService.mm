@@ -1,15 +1,15 @@
 @interface OSLogService
 - (OSLogService)init;
-- (id)_queue_getNextOSLogEntryWithReply:(id)a3;
-- (void)_queue_setupWithPredicate:(id)a3 reply:(id)a4;
-- (void)getNextOSLogEntryWithReply:(id)a3;
+- (id)_queue_getNextOSLogEntryWithReply:(id)reply;
+- (void)_queue_setupWithPredicate:(id)predicate reply:(id)reply;
+- (void)getNextOSLogEntryWithReply:(id)reply;
 - (void)invalidate;
-- (void)setUpWithPredicate:(id)a3 reply:(id)a4;
+- (void)setUpWithPredicate:(id)predicate reply:(id)reply;
 @end
 
 @implementation OSLogService
 
-- (id)_queue_getNextOSLogEntryWithReply:(id)a3
+- (id)_queue_getNextOSLogEntryWithReply:(id)reply
 {
   dispatch_assert_queue_V2(self->_serial_queue);
   if (self->_done || ![(NSMutableArray *)self->_events count])
@@ -26,9 +26,9 @@
   return v4;
 }
 
-- (void)getNextOSLogEntryWithReply:(id)a3
+- (void)getNextOSLogEntryWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -42,7 +42,7 @@
   block[3] = &unk_100004350;
   v9 = &v10;
   block[4] = self;
-  v6 = v4;
+  v6 = replyCopy;
   v8 = v6;
   dispatch_sync(serial_queue, block);
   (*(v6 + 2))(v6, v11[5]);
@@ -61,17 +61,17 @@
   dispatch_sync(serial_queue, block);
 }
 
-- (void)_queue_setupWithPredicate:(id)a3 reply:(id)a4
+- (void)_queue_setupWithPredicate:(id)predicate reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  replyCopy = reply;
   dispatch_assert_queue_V2(self->_serial_queue);
   v8 = [NSPredicate predicateWithFormat:@"processIdentifier == %d and processIdentifierVersion == %u", self->_callingProcessIdentifier, self->_callingProcessIdentifierVersion];
   v9 = v8;
-  if (v6)
+  if (predicateCopy)
   {
     v49[0] = v8;
-    v49[1] = v6;
+    v49[1] = predicateCopy;
     v10 = [NSArray arrayWithObjects:v49 count:2];
     v11 = [[NSCompoundPredicate alloc] initWithType:1 subpredicates:v10];
     predicate = self->_predicate;
@@ -139,7 +139,7 @@
       v25[2] = sub_1000017B0;
       v25[3] = &unk_100004328;
       objc_copyWeak(&v28, &location);
-      v26 = v7;
+      v26 = replyCopy;
       v27 = v29;
       [(OSLogEventStream *)v21 setInvalidationHandler:v25];
       [(OSLogEventStream *)self->_stream _activateStreamFromTimeIntervalSinceLastBoot:0.0];
@@ -153,7 +153,7 @@
 
     else
     {
-      (*(v7 + 2))(v7, v42[5]);
+      (*(replyCopy + 2))(replyCopy, v42[5]);
     }
 
     _Block_object_dispose(&v35, 8);
@@ -168,26 +168,26 @@
     v24 = v42[5];
     v42[5] = v23;
 
-    (*(v7 + 2))(v7, v42[5]);
+    (*(replyCopy + 2))(replyCopy, v42[5]);
   }
 
   _Block_object_dispose(&v41, 8);
 }
 
-- (void)setUpWithPredicate:(id)a3 reply:(id)a4
+- (void)setUpWithPredicate:(id)predicate reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  replyCopy = reply;
   serial_queue = self->_serial_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100001A24;
   block[3] = &unk_100004260;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = predicateCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = predicateCopy;
   dispatch_sync(serial_queue, block);
 }
 

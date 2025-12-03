@@ -2,22 +2,22 @@
 - (BOOL)isCompactFlowPresentation;
 - (BOOL)isExpanded;
 - (BOOL)isReflowablePresentation;
-- (THWViewportLayout)initWithInfo:(id)a3;
-- (id)layoutGeometryForLayout:(id)a3;
+- (THWViewportLayout)initWithInfo:(id)info;
+- (id)layoutGeometryForLayout:(id)layout;
 - (id)layoutGeometryFromProvider;
 - (void)dealloc;
 - (void)p_invalidateExternal;
 - (void)updateChildrenFromInfo;
-- (void)wasAddedToLayoutController:(id)a3;
+- (void)wasAddedToLayoutController:(id)controller;
 @end
 
 @implementation THWViewportLayout
 
-- (THWViewportLayout)initWithInfo:(id)a3
+- (THWViewportLayout)initWithInfo:(id)info
 {
   v4.receiver = self;
   v4.super_class = THWViewportLayout;
-  return [(THWViewportLayout *)&v4 initWithInfo:a3];
+  return [(THWViewportLayout *)&v4 initWithInfo:info];
 }
 
 - (void)dealloc
@@ -35,11 +35,11 @@
   [(THWViewportLayout *)self invalidateChildren];
 }
 
-- (void)wasAddedToLayoutController:(id)a3
+- (void)wasAddedToLayoutController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = THWViewportLayout;
-  [(THWViewportLayout *)&v4 wasAddedToLayoutController:a3];
+  [(THWViewportLayout *)&v4 wasAddedToLayoutController:controller];
   [(THWViewportLayout *)self p_invalidateExternal];
 }
 
@@ -56,16 +56,16 @@
 
 - (BOOL)isCompactFlowPresentation
 {
-  v3 = [(THWViewportLayout *)self delegate];
+  delegate = [(THWViewportLayout *)self delegate];
 
-  return [(THWWidgetLayoutDelegate *)v3 widgetLayoutIsCompactFlow:self];
+  return [(THWWidgetLayoutDelegate *)delegate widgetLayoutIsCompactFlow:self];
 }
 
 - (BOOL)isReflowablePresentation
 {
-  v3 = [(THWViewportLayout *)self delegate];
+  delegate = [(THWViewportLayout *)self delegate];
 
-  return [(THWWidgetLayoutDelegate *)v3 widgetLayoutIsReflowablePresentation:self];
+  return [(THWWidgetLayoutDelegate *)delegate widgetLayoutIsReflowablePresentation:self];
 }
 
 - (id)layoutGeometryFromProvider
@@ -111,7 +111,7 @@
   [(THWViewportLayout *)self setChildren:v3];
 }
 
-- (id)layoutGeometryForLayout:(id)a3
+- (id)layoutGeometryForLayout:(id)layout
 {
   [-[THWViewportLayout geometry](self "geometry")];
   TSDRectWithSize();
@@ -119,7 +119,7 @@
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  if (-[THWViewportLayout scrollableCanvasControlLayout](self, "scrollableCanvasControlLayout") != a3 && [-[THWViewportLayout layoutController](self "layoutController")] != a3)
+  if (-[THWViewportLayout scrollableCanvasControlLayout](self, "scrollableCanvasControlLayout") != layout && [-[THWViewportLayout layoutController](self "layoutController")] != layout)
   {
     return 0;
   }

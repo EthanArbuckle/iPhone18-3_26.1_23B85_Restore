@@ -1,27 +1,27 @@
 @interface PKCombinedSelectActionViewControllerListSectionController
-- (PKCombinedSelectActionViewControllerListSectionController)initWithIdentifier:(id)a3 pass:(id)a4 actions:(id)a5;
+- (PKCombinedSelectActionViewControllerListSectionController)initWithIdentifier:(id)identifier pass:(id)pass actions:(id)actions;
 - (PKCombinedSelectActionViewControllerListSectionControllerDelegate)delegate;
 - (id)defaultListLayout;
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)didSelectItem:(id)a3;
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)didSelectItem:(id)item;
 @end
 
 @implementation PKCombinedSelectActionViewControllerListSectionController
 
-- (PKCombinedSelectActionViewControllerListSectionController)initWithIdentifier:(id)a3 pass:(id)a4 actions:(id)a5
+- (PKCombinedSelectActionViewControllerListSectionController)initWithIdentifier:(id)identifier pass:(id)pass actions:(id)actions
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  passCopy = pass;
+  actionsCopy = actions;
   v34.receiver = self;
   v34.super_class = PKCombinedSelectActionViewControllerListSectionController;
   v11 = [(PKCombinedSelectActionViewControllerListSectionController *)&v34 init];
   if (v11)
   {
-    v27 = v8;
-    v36[0] = v8;
+    v27 = identifierCopy;
+    v36[0] = identifierCopy;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:1];
     [(PKDynamicListSectionController *)v11 setIdentifiers:v12];
 
@@ -31,7 +31,7 @@
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v14 = v10;
+    v14 = actionsCopy;
     v15 = [v14 countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v15)
     {
@@ -60,7 +60,7 @@
     actionViewModels = v11->_actionViewModels;
     v11->_actionViewModels = v20;
 
-    objc_storeStrong(&v11->_pass, a4);
+    objc_storeStrong(&v11->_pass, pass);
     v22 = MEMORY[0x1E69DC800];
     v23 = objc_opt_class();
     v28[0] = MEMORY[0x1E69E9820];
@@ -72,7 +72,7 @@
     v25 = [v22 registrationWithCellClass:v23 configurationHandler:v28];
     [(PKCombinedSelectActionViewControllerListSectionController *)v24 setCellRegistration:v25];
 
-    v8 = v27;
+    identifierCopy = v27;
   }
 
   return v11;
@@ -130,7 +130,7 @@ void __93__PKCombinedSelectActionViewControllerListSectionController_initWithIde
   [v5 setAccessories:v21];
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v5 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
   [v5 appendItems:self->_actionViewModels];
@@ -138,22 +138,22 @@ void __93__PKCombinedSelectActionViewControllerListSectionController_initWithIde
   return v5;
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  v4 = a3;
-  [v4 setIsInPreflight:1];
-  v5 = [(PKCombinedSelectActionViewControllerListSectionController *)self delegate];
-  [v5 reloadItem:v4 animated:1];
-  v6 = [v4 action];
+  itemCopy = item;
+  [itemCopy setIsInPreflight:1];
+  delegate = [(PKCombinedSelectActionViewControllerListSectionController *)self delegate];
+  [delegate reloadItem:itemCopy animated:1];
+  action = [itemCopy action];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __75__PKCombinedSelectActionViewControllerListSectionController_didSelectItem___block_invoke;
   v9[3] = &unk_1E8010A10;
-  v10 = v4;
-  v11 = v5;
-  v7 = v5;
-  v8 = v4;
-  [v7 didSelectAction:v6 completion:v9];
+  v10 = itemCopy;
+  v11 = delegate;
+  v7 = delegate;
+  v8 = itemCopy;
+  [v7 didSelectAction:action completion:v9];
 }
 
 uint64_t __75__PKCombinedSelectActionViewControllerListSectionController_didSelectItem___block_invoke(uint64_t a1)
@@ -174,12 +174,12 @@ uint64_t __75__PKCombinedSelectActionViewControllerListSectionController_didSele
   return v2;
 }
 
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = [(PKCombinedSelectActionViewControllerListSectionController *)self defaultListLayout];
-  [v6 setHeaderMode:1];
-  v7 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v6 layoutEnvironment:v5];
+  environmentCopy = environment;
+  defaultListLayout = [(PKCombinedSelectActionViewControllerListSectionController *)self defaultListLayout];
+  [defaultListLayout setHeaderMode:1];
+  v7 = [MEMORY[0x1E6995580] sectionWithListConfiguration:defaultListLayout layoutEnvironment:environmentCopy];
 
   [v7 contentInsets];
   [v7 setContentInsets:PKSetupViewConstantsListSectionInset(v8)];

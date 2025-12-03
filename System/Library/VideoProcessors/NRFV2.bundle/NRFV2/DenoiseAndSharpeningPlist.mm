@@ -1,7 +1,7 @@
 @interface DenoiseAndSharpeningPlist
 - (DenoiseAndSharpeningPlist)init;
-- (int)readBandData:(id)a3;
-- (int)readPlist:(id)a3;
+- (int)readBandData:(id)data;
+- (int)readPlist:(id)plist;
 - (void)applyOverrides;
 @end
 
@@ -22,9 +22,9 @@
   return v2;
 }
 
-- (int)readBandData:(id)a3
+- (int)readBandData:(id)data
 {
-  v4 = objc_msgSend_valueForKey_(a3, a2, @"Bands", v3);
+  v4 = objc_msgSend_valueForKey_(data, a2, @"Bands", v3);
   v5 = v4;
   if (v4)
   {
@@ -552,10 +552,10 @@ LABEL_114:
   return v240;
 }
 
-- (int)readPlist:(id)a3
+- (int)readPlist:(id)plist
 {
-  v4 = a3;
-  v7 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"TuningParameters", v6);
+  plistCopy = plist;
+  v7 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v5, @"TuningParameters", v6);
   if (objc_msgSend_readBandData_(self, v8, v7, v9))
   {
     sub_2958AE250();
@@ -673,25 +673,25 @@ LABEL_28:
   LODWORD(v88) = 1061997773;
   objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v7, v89, @"RadialTexturenessKneeEnd", 0, v88);
   self->tuningParameters->radialTexturenessKneeEnd = v90;
-  self->enableLumaDenoiseSharpening = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(v4, v91, @"EnableLumaDenoiseSharpening", 0, 0);
-  self->enableChromaDenoiseSharpening = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(v4, v92, @"EnableChromaDenoiseSharpening", 0, 0);
-  self->enableBilateralRegression = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(v4, v93, @"EnableBilateralRegression", 0, 0);
-  self->enableLowVarSharpening = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(v4, v94, @"EnableLowVarSharpening", 0, 0);
-  self->enableGdFlatness = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(v4, v95, @"EnableGdFlatness", 0, 0);
-  self->gdNumDir = objc_msgSend_cmi_intValueForKey_defaultValue_found_(v4, v96, @"GDNumDir", 0, 0);
-  objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v4, v97, @"GDFlatnessThreshold", 0, 0.0);
+  self->enableLumaDenoiseSharpening = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(plistCopy, v91, @"EnableLumaDenoiseSharpening", 0, 0);
+  self->enableChromaDenoiseSharpening = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(plistCopy, v92, @"EnableChromaDenoiseSharpening", 0, 0);
+  self->enableBilateralRegression = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(plistCopy, v93, @"EnableBilateralRegression", 0, 0);
+  self->enableLowVarSharpening = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(plistCopy, v94, @"EnableLowVarSharpening", 0, 0);
+  self->enableGdFlatness = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(plistCopy, v95, @"EnableGdFlatness", 0, 0);
+  self->gdNumDir = objc_msgSend_cmi_intValueForKey_defaultValue_found_(plistCopy, v96, @"GDNumDir", 0, 0);
+  objc_msgSend_cmi_floatValueForKey_defaultValue_found_(plistCopy, v97, @"GDFlatnessThreshold", 0, 0.0);
   self->gdFlatnessThreshold = v98;
-  objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v4, v99, @"GDFilterSigma", 0, 0.0);
+  objc_msgSend_cmi_floatValueForKey_defaultValue_found_(plistCopy, v99, @"GDFilterSigma", 0, 0.0);
   self->gdFilterSigma = v100;
-  self->enableLoGOffset = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(v4, v101, @"EnableLoGOffset", 0, 0);
-  self->enableOPC = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(v4, v102, @"EnableOPC", 0, 0);
-  objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v4, v103, @"OPCThresholdGain", 0, 0.0);
+  self->enableLoGOffset = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(plistCopy, v101, @"EnableLoGOffset", 0, 0);
+  self->enableOPC = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(plistCopy, v102, @"EnableOPC", 0, 0);
+  objc_msgSend_cmi_floatValueForKey_defaultValue_found_(plistCopy, v103, @"OPCThresholdGain", 0, 0.0);
   self->OPCThresholdGain = v104;
-  v107 = objc_msgSend_objectForKeyedSubscript_(v4, v105, @"SkinMaskDefaultValue", v106);
+  v107 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v105, @"SkinMaskDefaultValue", v106);
 
   if (v107)
   {
-    objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v4, v108, @"SkinMaskDefaultValue", 0, 0.0);
+    objc_msgSend_cmi_floatValueForKey_defaultValue_found_(plistCopy, v108, @"SkinMaskDefaultValue", 0, 0.0);
   }
 
   else
@@ -700,19 +700,19 @@ LABEL_28:
   }
 
   self->skinMaskDefaultValue = v110;
-  v111 = objc_msgSend_objectForKeyedSubscript_(v4, v108, @"BluenessCb", v109);
+  v111 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v108, @"BluenessCb", v109);
 
   if (v111)
   {
-    v114 = objc_msgSend_objectForKeyedSubscript_(v4, v112, @"BluenessCb", v113);
+    v114 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v112, @"BluenessCb", v113);
     objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v114, v115, @"start", 0, 0.0);
     self->bluenessCb.start = v116;
 
-    v119 = objc_msgSend_objectForKeyedSubscript_(v4, v117, @"BluenessCb", v118);
+    v119 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v117, @"BluenessCb", v118);
     objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v119, v120, @"end", 0, 0.0);
     self->bluenessCb.end = v121;
 
-    v124 = objc_msgSend_objectForKeyedSubscript_(v4, v122, @"BluenessCb", v123);
+    v124 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v122, @"BluenessCb", v123);
     objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v124, v125, @"margin", 0, 0.0);
     self->bluenessCb.margin = v126;
   }
@@ -723,7 +723,7 @@ LABEL_28:
     self->bluenessCb.margin = 0.05;
   }
 
-  v127 = objc_msgSend_objectForKeyedSubscript_(v4, v112, @"BluenessCr", v113);
+  v127 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v112, @"BluenessCr", v113);
 
   if (!v127)
   {
@@ -733,15 +733,15 @@ LABEL_28:
     goto LABEL_19;
   }
 
-  v130 = objc_msgSend_objectForKeyedSubscript_(v4, v128, @"BluenessCr", v129);
+  v130 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v128, @"BluenessCr", v129);
   objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v130, v131, @"start", 0, 0.0);
   self->bluenessCr.start = v132;
 
-  v135 = objc_msgSend_objectForKeyedSubscript_(v4, v133, @"BluenessCr", v134);
+  v135 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v133, @"BluenessCr", v134);
   objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v135, v136, @"end", 0, 0.0);
   self->bluenessCr.end = v137;
 
-  v140 = objc_msgSend_objectForKeyedSubscript_(v4, v138, @"BluenessCr", v139);
+  v140 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v138, @"BluenessCr", v139);
   objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v140, v141, @"margin", 0, 0.0);
   self->bluenessCr.margin = v142;
 

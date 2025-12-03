@@ -1,35 +1,35 @@
 @interface _SFPBPerformContactActionCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBPerformContactActionCommand)initWithDictionary:(id)a3;
-- (_SFPBPerformContactActionCommand)initWithFacade:(id)a3;
-- (_SFPBPerformContactActionCommand)initWithJSON:(id)a3;
+- (_SFPBPerformContactActionCommand)initWithDictionary:(id)dictionary;
+- (_SFPBPerformContactActionCommand)initWithFacade:(id)facade;
+- (_SFPBPerformContactActionCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBPerformContactActionCommand
 
-- (_SFPBPerformContactActionCommand)initWithFacade:(id)a3
+- (_SFPBPerformContactActionCommand)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBPerformContactActionCommand *)self init];
   if (v5)
   {
-    if ([v4 hasContactActionType])
+    if ([facadeCopy hasContactActionType])
     {
-      -[_SFPBPerformContactActionCommand setContactActionType:](v5, "setContactActionType:", [v4 contactActionType]);
+      -[_SFPBPerformContactActionCommand setContactActionType:](v5, "setContactActionType:", [facadeCopy contactActionType]);
     }
 
-    if ([v4 hasDidDisplayHandleOptions])
+    if ([facadeCopy hasDidDisplayHandleOptions])
     {
-      -[_SFPBPerformContactActionCommand setDidDisplayHandleOptions:](v5, "setDidDisplayHandleOptions:", [v4 didDisplayHandleOptions]);
+      -[_SFPBPerformContactActionCommand setDidDisplayHandleOptions:](v5, "setDidDisplayHandleOptions:", [facadeCopy didDisplayHandleOptions]);
     }
 
-    if ([v4 hasDidSelectFromOptionsMenu])
+    if ([facadeCopy hasDidSelectFromOptionsMenu])
     {
-      -[_SFPBPerformContactActionCommand setDidSelectFromOptionsMenu:](v5, "setDidSelectFromOptionsMenu:", [v4 didSelectFromOptionsMenu]);
+      -[_SFPBPerformContactActionCommand setDidSelectFromOptionsMenu:](v5, "setDidSelectFromOptionsMenu:", [facadeCopy didSelectFromOptionsMenu]);
     }
 
     v6 = v5;
@@ -38,29 +38,29 @@
   return v5;
 }
 
-- (_SFPBPerformContactActionCommand)initWithDictionary:(id)a3
+- (_SFPBPerformContactActionCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = _SFPBPerformContactActionCommand;
   v5 = [(_SFPBPerformContactActionCommand *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"contactActionType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"contactActionType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBPerformContactActionCommand setContactActionType:](v5, "setContactActionType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"didDisplayHandleOptions"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"didDisplayHandleOptions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBPerformContactActionCommand setDidDisplayHandleOptions:](v5, "setDidDisplayHandleOptions:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"didSelectFromOptionsMenu"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"didSelectFromOptionsMenu"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,30 +73,30 @@
   return v5;
 }
 
-- (_SFPBPerformContactActionCommand)initWithJSON:(id)a3
+- (_SFPBPerformContactActionCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBPerformContactActionCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBPerformContactActionCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBPerformContactActionCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -109,36 +109,36 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_contactActionType)
   {
-    v4 = [(_SFPBPerformContactActionCommand *)self contactActionType];
-    if (v4 >= 0xA)
+    contactActionType = [(_SFPBPerformContactActionCommand *)self contactActionType];
+    if (contactActionType >= 0xA)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", contactActionType];
     }
 
     else
     {
-      v5 = off_1E7ACE220[v4];
+      v5 = off_1E7ACE220[contactActionType];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"contactActionType"];
+    [dictionary setObject:v5 forKeyedSubscript:@"contactActionType"];
   }
 
   if (self->_didDisplayHandleOptions)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBPerformContactActionCommand didDisplayHandleOptions](self, "didDisplayHandleOptions")}];
-    [v3 setObject:v6 forKeyedSubscript:@"didDisplayHandleOptions"];
+    [dictionary setObject:v6 forKeyedSubscript:@"didDisplayHandleOptions"];
   }
 
   if (self->_didSelectFromOptionsMenu)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBPerformContactActionCommand didSelectFromOptionsMenu](self, "didSelectFromOptionsMenu")}];
-    [v3 setObject:v7 forKeyedSubscript:@"didSelectFromOptionsMenu"];
+    [dictionary setObject:v7 forKeyedSubscript:@"didSelectFromOptionsMenu"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -162,13 +162,13 @@
   return v3 ^ v2 ^ (2654435761 * self->_contactActionType);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (contactActionType = self->_contactActionType, contactActionType == objc_msgSend(v4, "contactActionType")) && (didDisplayHandleOptions = self->_didDisplayHandleOptions, didDisplayHandleOptions == objc_msgSend(v4, "didDisplayHandleOptions")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (contactActionType = self->_contactActionType, contactActionType == objc_msgSend(equalCopy, "contactActionType")) && (didDisplayHandleOptions = self->_didDisplayHandleOptions, didDisplayHandleOptions == objc_msgSend(equalCopy, "didDisplayHandleOptions")))
   {
     didSelectFromOptionsMenu = self->_didSelectFromOptionsMenu;
-    v8 = didSelectFromOptionsMenu == [v4 didSelectFromOptionsMenu];
+    v8 = didSelectFromOptionsMenu == [equalCopy didSelectFromOptionsMenu];
   }
 
   else
@@ -179,9 +179,9 @@
   return v8;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ([(_SFPBPerformContactActionCommand *)self contactActionType])
   {
     PBDataWriterWriteInt32Field();

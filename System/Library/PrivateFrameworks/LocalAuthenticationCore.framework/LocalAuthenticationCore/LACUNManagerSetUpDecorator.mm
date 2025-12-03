@@ -1,15 +1,15 @@
 @interface LACUNManagerSetUpDecorator
 - (LACUNManagerDelegate)delegate;
-- (LACUNManagerSetUpDecorator)initWithManagerBuilder:(id)a3;
-- (LACUNManagerSetUpDecorator)initWithManagerBuilder:(id)a3 setupStateProvider:(id)a4;
+- (LACUNManagerSetUpDecorator)initWithManagerBuilder:(id)builder;
+- (LACUNManagerSetUpDecorator)initWithManagerBuilder:(id)builder setupStateProvider:(id)provider;
 - (id)responder;
 - (void)_registerNotificationObservers;
 - (void)_setupResponder;
-- (void)cancelAllNotificationsWithCompletion:(id)a3;
+- (void)cancelAllNotificationsWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)notificationCenter:(id)a3 didReceiveNotification:(__CFString *)a4;
-- (void)postNotification:(id)a3 completion:(id)a4;
-- (void)setDelegate:(id)a3;
+- (void)notificationCenter:(id)center didReceiveNotification:(__CFString *)notification;
+- (void)postNotification:(id)notification completion:(id)completion;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation LACUNManagerSetUpDecorator
@@ -22,19 +22,19 @@
   }
 }
 
-- (LACUNManagerSetUpDecorator)initWithManagerBuilder:(id)a3
+- (LACUNManagerSetUpDecorator)initWithManagerBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v5 = +[LACSetUpStateProvider sharedInstance];
-  v6 = [(LACUNManagerSetUpDecorator *)self initWithManagerBuilder:v4 setupStateProvider:v5];
+  v6 = [(LACUNManagerSetUpDecorator *)self initWithManagerBuilder:builderCopy setupStateProvider:v5];
 
   return v6;
 }
 
-- (LACUNManagerSetUpDecorator)initWithManagerBuilder:(id)a3 setupStateProvider:(id)a4
+- (LACUNManagerSetUpDecorator)initWithManagerBuilder:(id)builder setupStateProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  builderCopy = builder;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = LACUNManagerSetUpDecorator;
   v8 = [(LACUNManagerSetUpDecorator *)&v13 init];
@@ -42,11 +42,11 @@
   if (v8)
   {
     v8->_builderLock._os_unfair_lock_opaque = 0;
-    v10 = _Block_copy(v6);
+    v10 = _Block_copy(builderCopy);
     responderBuilder = v9->_responderBuilder;
     v9->_responderBuilder = v10;
 
-    objc_storeStrong(&v9->_setupStateProvider, a4);
+    objc_storeStrong(&v9->_setupStateProvider, provider);
     [(LACUNManagerSetUpDecorator *)v9 _setupResponder];
     [(LACUNManagerSetUpDecorator *)v9 _registerNotificationObservers];
   }
@@ -64,14 +64,14 @@
   [(LACUNManagerSetUpDecorator *)&v4 dealloc];
 }
 
-- (void)cancelAllNotificationsWithCompletion:(id)a3
+- (void)cancelAllNotificationsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(LACUNManagerSetUpDecorator *)self responder];
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  responder = [(LACUNManagerSetUpDecorator *)self responder];
+  v6 = responder;
+  if (responder)
   {
-    [v5 cancelAllNotificationsWithCompletion:v4];
+    [responder cancelAllNotificationsWithCompletion:completionCopy];
   }
 
   else
@@ -82,23 +82,23 @@
       [(LACUNManagerSetUpDecorator *)v7 cancelAllNotificationsWithCompletion:v8, v9, v10, v11, v12, v13, v14];
     }
 
-    if (v4)
+    if (completionCopy)
     {
       v15 = [LACError errorWithCode:-1000 debugDescription:@"Service not available in Setup"];
-      v4[2](v4, v15);
+      completionCopy[2](completionCopy, v15);
     }
   }
 }
 
-- (void)postNotification:(id)a3 completion:(id)a4
+- (void)postNotification:(id)notification completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(LACUNManagerSetUpDecorator *)self responder];
-  v9 = v8;
-  if (v8)
+  notificationCopy = notification;
+  completionCopy = completion;
+  responder = [(LACUNManagerSetUpDecorator *)self responder];
+  v9 = responder;
+  if (responder)
   {
-    [v8 postNotification:v6 completion:v7];
+    [responder postNotification:notificationCopy completion:completionCopy];
   }
 
   else
@@ -109,10 +109,10 @@
       [(LACUNManagerSetUpDecorator *)v10 cancelAllNotificationsWithCompletion:v11, v12, v13, v14, v15, v16, v17];
     }
 
-    if (v7)
+    if (completionCopy)
     {
       v18 = [LACError errorWithCode:-1000 debugDescription:@"Service not available in Setup"];
-      v7[2](v7, v18);
+      completionCopy[2](completionCopy, v18);
     }
   }
 }
@@ -124,16 +124,16 @@
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
-  [(LACUNManager *)self->_responder setDelegate:v4];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
+  [(LACUNManager *)self->_responder setDelegate:delegateCopy];
 }
 
-- (void)notificationCenter:(id)a3 didReceiveNotification:(__CFString *)a4
+- (void)notificationCenter:(id)center didReceiveNotification:(__CFString *)notification
 {
-  if (LACDarwinNotificationsEqual(a4, @"com.apple.springboard.lockstate"))
+  if (LACDarwinNotificationsEqual(notification, @"com.apple.springboard.lockstate"))
   {
 
     [(LACUNManagerSetUpDecorator *)self _setupResponder];
@@ -166,8 +166,8 @@
     self->_responder = v4;
 
     v7 = self->_responder;
-    v8 = [(LACUNManagerSetUpDecorator *)self delegate];
-    [(LACUNManager *)v7 setDelegate:v8];
+    delegate = [(LACUNManagerSetUpDecorator *)self delegate];
+    [(LACUNManager *)v7 setDelegate:delegate];
 
     v9 = LACLogNotifications();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))

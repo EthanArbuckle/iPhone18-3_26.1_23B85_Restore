@@ -1,22 +1,22 @@
 @interface CPLEngineTransport
 + (id)platformImplementationProtocol;
-- (BOOL)getProposedStagingScopeIdentifier:(id *)a3 stagingTransportScope:(id *)a4 forScope:(id)a5 transportScope:(id)a6 transportUserIdentifier:(id)a7;
-- (BOOL)isNewTransportScope:(id)a3 compatibleWithOldTransportScope:(id)a4;
-- (BOOL)isResourceDynamic:(id)a3;
-- (BOOL)shouldIgnoreScopeWithIdentifier:(id)a3;
+- (BOOL)getProposedStagingScopeIdentifier:(id *)identifier stagingTransportScope:(id *)scope forScope:(id)forScope transportScope:(id)transportScope transportUserIdentifier:(id)userIdentifier;
+- (BOOL)isNewTransportScope:(id)scope compatibleWithOldTransportScope:(id)transportScope;
+- (BOOL)isResourceDynamic:(id)dynamic;
+- (BOOL)shouldIgnoreScopeWithIdentifier:(id)identifier;
 - (CPLEngineLibrary)engineLibrary;
-- (CPLEngineTransport)initWithEngineLibrary:(id)a3;
+- (CPLEngineTransport)initWithEngineLibrary:(id)library;
 - (CPLFingerprintContext)fingerprintContext;
 - (CPLSharedRecordPropertyMapping)propertyMapping;
 - (Class)transportGroupClass;
 - (Class)userIdentifierClass;
 - (NSArray)involvedProcesses;
-- (id)acceptTaskForSharedScope:(id)a3 completionHandler:(id)a4;
-- (id)acquireReschedulerTaskWithCompletionHandler:(id)a3;
-- (id)bestErrorForUnderlyingError:(id)a3;
-- (id)cleanupStagedScope:(id)a3 stagingScope:(id)a4 destinationScope:(id)a5 transportScopeMapping:(id)a6 progressHandler:(id)a7 completionHandler:(id)a8;
+- (id)acceptTaskForSharedScope:(id)scope completionHandler:(id)handler;
+- (id)acquireReschedulerTaskWithCompletionHandler:(id)handler;
+- (id)bestErrorForUnderlyingError:(id)error;
+- (id)cleanupStagedScope:(id)scope stagingScope:(id)stagingScope destinationScope:(id)destinationScope transportScopeMapping:(id)mapping progressHandler:(id)handler completionHandler:(id)completionHandler;
 - (id)componentName;
-- (id)concreteScopeFromTransportScope:(id)a3;
+- (id)concreteScopeFromTransportScope:(id)scope;
 - (id)createGroupForAcceptingLibraryShare;
 - (id)createGroupForAcceptingMomentShare;
 - (id)createGroupForAnalysisDownload;
@@ -26,7 +26,7 @@
 - (id)createGroupForComputeStateDownloadOnDemand;
 - (id)createGroupForComputeStateDownloadPrefetch;
 - (id)createGroupForComputeStateUpload;
-- (id)createGroupForDownloadWithIntent:(unint64_t)a3 priority:(unint64_t)a4;
+- (id)createGroupForDownloadWithIntent:(unint64_t)intent priority:(unint64_t)priority;
 - (id)createGroupForExitSharedLibrary;
 - (id)createGroupForFeedback;
 - (id)createGroupForFetchScopeListChanges;
@@ -39,7 +39,7 @@
 - (id)createGroupForKeepOriginalsPrefetch;
 - (id)createGroupForLibraryStateCheck;
 - (id)createGroupForMemoriesPrefetch;
-- (id)createGroupForMovieStreamingWithIntent:(unint64_t)a3;
+- (id)createGroupForMovieStreamingWithIntent:(unint64_t)intent;
 - (id)createGroupForNonDerivativePrefetch;
 - (id)createGroupForPrefetch;
 - (id)createGroupForPruningCheck;
@@ -60,65 +60,65 @@
 - (id)createGroupForTransportScopeUpdate;
 - (id)createGroupForWidgetPrefetch;
 - (id)createGroupForWidgetResourcesDownload;
-- (id)createScopeTaskForScope:(id)a3 completionHandler:(id)a4;
-- (id)deleteTransportScope:(id)a3 scope:(id)a4 completionHandler:(id)a5;
-- (id)descriptionForTransportScope:(id)a3;
-- (id)downloadBatchTaskForSyncAnchor:(id)a3 scope:(id)a4 transportScopeMapping:(id)a5 currentScopeChange:(id)a6 progressHandler:(id)a7 completionHandler:(id)a8;
-- (id)downloadComputeStatesWithScopedIdentifiers:(id)a3 scope:(id)a4 sharedScope:(id)a5 targetStorageURL:(id)a6 transportScopeMapping:(id)a7 completionHandler:(id)a8;
-- (id)fetchExistingSharedLibraryScopeTaskWithCompletionHandler:(id)a3;
-- (id)fetchRecordsTaskForRecordsWithScopedIdentifiers:(id)a3 targetMapping:(id)a4 transportScopeMapping:(id)a5 completionHandler:(id)a6;
-- (id)fetchScopeListChangesForScopeListSyncAnchor:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5;
-- (id)fetchTaskForScopeWithShareURL:(id)a3 completionHandler:(id)a4;
-- (id)fetchTransportScopeForScope:(id)a3 transportScope:(id)a4 completionHandler:(id)a5;
-- (id)fixUpSparseRecordsTaskWithTasks:(id)a3 transportScopeMapping:(id)a4 completionHandler:(id)a5;
-- (id)getCurrentSyncAnchorWithTransportScope:(id)a3 scope:(id)a4 previousScopeChange:(id)a5 completionHandler:(id)a6;
-- (id)getScopeInfoWithTransportScope:(id)a3 scope:(id)a4 previousScopeChange:(id)a5 completionHandler:(id)a6;
-- (id)getStreamingURLTaskForResource:(id)a3 intent:(unint64_t)a4 hints:(id)a5 timeRange:(id *)a6 target:(id)a7 transportScopeMapping:(id)a8 clientBundleID:(id)a9 completionHandler:(id)a10;
-- (id)inMemoryDownloadTaskForResource:(id)a3 record:(id)a4 target:(id)a5 transportScopeMapping:(id)a6 clientBundleID:(id)a7 completionHandler:(id)a8;
-- (id)queryTaskForCursor:(id)a3 class:(Class)a4 scope:(id)a5 transportScopeMapping:(id)a6 progressHandler:(id)a7 completionHandler:(id)a8;
-- (id)queryUserDetailsTaskForParticipants:(id)a3 completionHandler:(id)a4;
-- (id)rampingRequestTaskForResourceType:(unint64_t)a3 numRequested:(unint64_t)a4 completionHandler:(id)a5;
-- (id)removeParticipantInSharedLibraryTaskFromSharedScope:(id)a3 transportScope:(id)a4 share:(id)a5 retentionPolicy:(int64_t)a6 exitSource:(int64_t)a7 userIdentifiersToRemove:(id)a8 participantIDsToRemove:(id)a9 completionHandler:(id)a10;
-- (id)reshareRecordsTaskWithRecords:(id)a3 sourceScope:(id)a4 destinationScope:(id)a5 transportScopeMapping:(id)a6 completionHandler:(id)a7;
-- (id)resourceCheckTaskForResources:(id)a3 targetMapping:(id)a4 transportScopeMapping:(id)a5 completionHandler:(id)a6;
-- (id)resourcesDownloadTaskWithCompletionHandler:(id)a3;
-- (id)scopeNameForTransportScope:(id)a3;
-- (id)sendFeedbackTaskForMessages:(id)a3 completionHandler:(id)a4;
-- (id)sharedLibraryServerRampTaskWithCompletionHandler:(id)a3;
-- (id)simpleDescriptionForScopeListSyncAnchor:(id)a3;
-- (id)simpleDescriptionForSyncAnchor:(id)a3;
-- (id)startExitTaskFromSharedScope:(id)a3 transportScope:(id)a4 share:(id)a5 retentionPolicy:(int64_t)a6 exitSource:(int64_t)a7 completionHandler:(id)a8;
-- (id)tentativeConcreteScopeForScope:(id)a3;
-- (id)transportScopeForUpgradeFromScopeName:(id)a3;
-- (id)transportScopeFromConcreteScope:(id)a3;
-- (id)updateContributorsTaskWithSharedScope:(id)a3 contributorsUpdates:(id)a4 transportScopeMapping:(id)a5 completionHandler:(id)a6;
-- (id)updateShareTaskForScope:(id)a3 transportScope:(id)a4 completionHandler:(id)a5;
-- (id)updateTransportScope:(id)a3 scope:(id)a4 scopeChange:(id)a5 completionHandler:(id)a6;
-- (id)uploadBatchTaskForBatch:(id)a3 scope:(id)a4 targetMapping:(id)a5 transportScopeMapping:(id)a6 progressHandler:(id)a7 completionHandler:(id)a8;
-- (id)uploadComputeStates:(id)a3 scope:(id)a4 sharedScope:(id)a5 targetMapping:(id)a6 transportScopeMapping:(id)a7 knownRecords:(id)a8 completionHandler:(id)a9;
+- (id)createScopeTaskForScope:(id)scope completionHandler:(id)handler;
+- (id)deleteTransportScope:(id)scope scope:(id)a4 completionHandler:(id)handler;
+- (id)descriptionForTransportScope:(id)scope;
+- (id)downloadBatchTaskForSyncAnchor:(id)anchor scope:(id)scope transportScopeMapping:(id)mapping currentScopeChange:(id)change progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (id)downloadComputeStatesWithScopedIdentifiers:(id)identifiers scope:(id)scope sharedScope:(id)sharedScope targetStorageURL:(id)l transportScopeMapping:(id)mapping completionHandler:(id)handler;
+- (id)fetchExistingSharedLibraryScopeTaskWithCompletionHandler:(id)handler;
+- (id)fetchRecordsTaskForRecordsWithScopedIdentifiers:(id)identifiers targetMapping:(id)mapping transportScopeMapping:(id)scopeMapping completionHandler:(id)handler;
+- (id)fetchScopeListChangesForScopeListSyncAnchor:(id)anchor progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (id)fetchTaskForScopeWithShareURL:(id)l completionHandler:(id)handler;
+- (id)fetchTransportScopeForScope:(id)scope transportScope:(id)transportScope completionHandler:(id)handler;
+- (id)fixUpSparseRecordsTaskWithTasks:(id)tasks transportScopeMapping:(id)mapping completionHandler:(id)handler;
+- (id)getCurrentSyncAnchorWithTransportScope:(id)scope scope:(id)a4 previousScopeChange:(id)change completionHandler:(id)handler;
+- (id)getScopeInfoWithTransportScope:(id)scope scope:(id)a4 previousScopeChange:(id)change completionHandler:(id)handler;
+- (id)getStreamingURLTaskForResource:(id)resource intent:(unint64_t)intent hints:(id)hints timeRange:(id *)range target:(id)target transportScopeMapping:(id)mapping clientBundleID:(id)d completionHandler:(id)self0;
+- (id)inMemoryDownloadTaskForResource:(id)resource record:(id)record target:(id)target transportScopeMapping:(id)mapping clientBundleID:(id)d completionHandler:(id)handler;
+- (id)queryTaskForCursor:(id)cursor class:(Class)class scope:(id)scope transportScopeMapping:(id)mapping progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (id)queryUserDetailsTaskForParticipants:(id)participants completionHandler:(id)handler;
+- (id)rampingRequestTaskForResourceType:(unint64_t)type numRequested:(unint64_t)requested completionHandler:(id)handler;
+- (id)removeParticipantInSharedLibraryTaskFromSharedScope:(id)scope transportScope:(id)transportScope share:(id)share retentionPolicy:(int64_t)policy exitSource:(int64_t)source userIdentifiersToRemove:(id)remove participantIDsToRemove:(id)toRemove completionHandler:(id)self0;
+- (id)reshareRecordsTaskWithRecords:(id)records sourceScope:(id)scope destinationScope:(id)destinationScope transportScopeMapping:(id)mapping completionHandler:(id)handler;
+- (id)resourceCheckTaskForResources:(id)resources targetMapping:(id)mapping transportScopeMapping:(id)scopeMapping completionHandler:(id)handler;
+- (id)resourcesDownloadTaskWithCompletionHandler:(id)handler;
+- (id)scopeNameForTransportScope:(id)scope;
+- (id)sendFeedbackTaskForMessages:(id)messages completionHandler:(id)handler;
+- (id)sharedLibraryServerRampTaskWithCompletionHandler:(id)handler;
+- (id)simpleDescriptionForScopeListSyncAnchor:(id)anchor;
+- (id)simpleDescriptionForSyncAnchor:(id)anchor;
+- (id)startExitTaskFromSharedScope:(id)scope transportScope:(id)transportScope share:(id)share retentionPolicy:(int64_t)policy exitSource:(int64_t)source completionHandler:(id)handler;
+- (id)tentativeConcreteScopeForScope:(id)scope;
+- (id)transportScopeForUpgradeFromScopeName:(id)name;
+- (id)transportScopeFromConcreteScope:(id)scope;
+- (id)updateContributorsTaskWithSharedScope:(id)scope contributorsUpdates:(id)updates transportScopeMapping:(id)mapping completionHandler:(id)handler;
+- (id)updateShareTaskForScope:(id)scope transportScope:(id)transportScope completionHandler:(id)handler;
+- (id)updateTransportScope:(id)scope scope:(id)a4 scopeChange:(id)change completionHandler:(id)handler;
+- (id)uploadBatchTaskForBatch:(id)batch scope:(id)scope targetMapping:(id)mapping transportScopeMapping:(id)scopeMapping progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (id)uploadComputeStates:(id)states scope:(id)scope sharedScope:(id)sharedScope targetMapping:(id)mapping transportScopeMapping:(id)scopeMapping knownRecords:(id)records completionHandler:(id)handler;
 - (void)dropPersistedInitialSyncSession;
-- (void)findPersistedInitialSyncSession:(id)a3 completionHandler:(id)a4;
-- (void)getBackgroundSchedulingStatusDictionaryWithCompletionHandler:(id)a3;
-- (void)getBackgroundSchedulingStatusWithCompletionHandler:(id)a3;
-- (void)getStatusDictionaryWithCompletionHandler:(id)a3;
-- (void)getStatusWithCompletionHandler:(id)a3;
-- (void)getSystemBudgetsWithCompletionHandler:(id)a3;
+- (void)findPersistedInitialSyncSession:(id)session completionHandler:(id)handler;
+- (void)getBackgroundSchedulingStatusDictionaryWithCompletionHandler:(id)handler;
+- (void)getBackgroundSchedulingStatusWithCompletionHandler:(id)handler;
+- (void)getStatusDictionaryWithCompletionHandler:(id)handler;
+- (void)getStatusWithCompletionHandler:(id)handler;
+- (void)getSystemBudgetsWithCompletionHandler:(id)handler;
 - (void)noteClientIsBeginningSignificantWork;
 - (void)noteClientIsEndingSignificantWork;
 - (void)noteClientIsInBackground;
 - (void)noteClientIsInForeground;
-- (void)openWithCompletionHandler:(id)a3;
-- (void)upgradeFlags:(id)a3 fromTransportScope:(id)a4;
+- (void)openWithCompletionHandler:(id)handler;
+- (void)upgradeFlags:(id)flags fromTransportScope:(id)scope;
 @end
 
 @implementation CPLEngineTransport
 
 - (id)createGroupForFetchScopeListChanges
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForFetchScopeListChanges];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForFetchScopeListChanges = [platformObject createGroupForFetchScopeListChanges];
 
-  return v3;
+  return createGroupForFetchScopeListChanges;
 }
 
 - (CPLEngineLibrary)engineLibrary
@@ -130,347 +130,347 @@
 
 - (id)createGroupForSharedLibraryRampCheck
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForSharedLibraryRampCheck];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForSharedLibraryRampCheck = [platformObject createGroupForSharedLibraryRampCheck];
 
-  return v3;
+  return createGroupForSharedLibraryRampCheck;
 }
 
 - (id)createGroupForFetchingExistingSharedScope
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForFetchingExistingSharedScope];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForFetchingExistingSharedScope = [platformObject createGroupForFetchingExistingSharedScope];
 
-  return v3;
+  return createGroupForFetchingExistingSharedScope;
 }
 
 - (id)createGroupForExitSharedLibrary
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForExitSharedLibrary];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForExitSharedLibrary = [platformObject createGroupForExitSharedLibrary];
 
-  return v3;
+  return createGroupForExitSharedLibrary;
 }
 
 - (id)createGroupForCleanupLibrary
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForCleanupLibrary];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForCleanupLibrary = [platformObject createGroupForCleanupLibrary];
 
-  return v3;
+  return createGroupForCleanupLibrary;
 }
 
 - (id)createGroupForAcceptingLibraryShare
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForAcceptingLibraryShare];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForAcceptingLibraryShare = [platformObject createGroupForAcceptingLibraryShare];
 
-  return v3;
+  return createGroupForAcceptingLibraryShare;
 }
 
 - (id)createGroupForFetchingLibraryShare
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForFetchingLibraryShare];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForFetchingLibraryShare = [platformObject createGroupForFetchingLibraryShare];
 
-  return v3;
+  return createGroupForFetchingLibraryShare;
 }
 
 - (id)createGroupForPublishingLibraryShare
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForPublishingLibraryShare];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForPublishingLibraryShare = [platformObject createGroupForPublishingLibraryShare];
 
-  return v3;
+  return createGroupForPublishingLibraryShare;
 }
 
 - (id)createGroupForQueryUserIdentities
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForQueryUserIdentities];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForQueryUserIdentities = [platformObject createGroupForQueryUserIdentities];
 
-  return v3;
+  return createGroupForQueryUserIdentities;
 }
 
 - (id)createGroupForAcceptingMomentShare
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForAcceptingMomentShare];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForAcceptingMomentShare = [platformObject createGroupForAcceptingMomentShare];
 
-  return v3;
+  return createGroupForAcceptingMomentShare;
 }
 
 - (id)createGroupForFetchingMomentShare
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForFetchingMomentShare];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForFetchingMomentShare = [platformObject createGroupForFetchingMomentShare];
 
-  return v3;
+  return createGroupForFetchingMomentShare;
 }
 
 - (id)createGroupForPublishingMomentShare
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForPublishingMomentShare];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForPublishingMomentShare = [platformObject createGroupForPublishingMomentShare];
 
-  return v3;
+  return createGroupForPublishingMomentShare;
 }
 
 - (id)createGroupForPruningCheck
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForPruningCheck];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForPruningCheck = [platformObject createGroupForPruningCheck];
 
-  return v3;
+  return createGroupForPruningCheck;
 }
 
 - (id)createGroupForAnalysisDownload
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForAnalysisDownload];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForAnalysisDownload = [platformObject createGroupForAnalysisDownload];
 
-  return v3;
+  return createGroupForAnalysisDownload;
 }
 
-- (id)createGroupForMovieStreamingWithIntent:(unint64_t)a3
+- (id)createGroupForMovieStreamingWithIntent:(unint64_t)intent
 {
-  v4 = [(CPLEngineTransport *)self platformObject];
-  v5 = [v4 createGroupForMovieStreamingWithIntent:a3];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v5 = [platformObject createGroupForMovieStreamingWithIntent:intent];
 
   return v5;
 }
 
-- (id)createGroupForDownloadWithIntent:(unint64_t)a3 priority:(unint64_t)a4
+- (id)createGroupForDownloadWithIntent:(unint64_t)intent priority:(unint64_t)priority
 {
-  v6 = [(CPLEngineTransport *)self platformObject];
-  v7 = [v6 createGroupForDownloadWithIntent:a3 priority:a4];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v7 = [platformObject createGroupForDownloadWithIntent:intent priority:priority];
 
   return v7;
 }
 
 - (id)createGroupForWidgetResourcesDownload
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForWidgetResourcesDownload];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForWidgetResourcesDownload = [platformObject createGroupForWidgetResourcesDownload];
 
-  return v3;
+  return createGroupForWidgetResourcesDownload;
 }
 
 - (id)createGroupForResourcesDownload
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForResourcesDownload];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForResourcesDownload = [platformObject createGroupForResourcesDownload];
 
-  return v3;
+  return createGroupForResourcesDownload;
 }
 
 - (id)createGroupForThumbnailsDownload
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForThumbnailsDownload];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForThumbnailsDownload = [platformObject createGroupForThumbnailsDownload];
 
-  return v3;
+  return createGroupForThumbnailsDownload;
 }
 
 - (id)createGroupForStagedScopeCleanup
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForStagedScopeCleanup];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForStagedScopeCleanup = [platformObject createGroupForStagedScopeCleanup];
 
-  return v3;
+  return createGroupForStagedScopeCleanup;
 }
 
 - (id)createGroupForReshare
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForReshare];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForReshare = [platformObject createGroupForReshare];
 
-  return v3;
+  return createGroupForReshare;
 }
 
 - (id)createGroupForFixUpTasks
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForFixUpTasks];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForFixUpTasks = [platformObject createGroupForFixUpTasks];
 
-  return v3;
+  return createGroupForFixUpTasks;
 }
 
 - (id)createGroupForComputeStateDownloadPrefetch
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForComputeStateDownloadPrefetch];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForComputeStateDownloadPrefetch = [platformObject createGroupForComputeStateDownloadPrefetch];
 
-  return v3;
+  return createGroupForComputeStateDownloadPrefetch;
 }
 
 - (id)createGroupForComputeStateDownloadOnDemand
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForComputeStateDownloadOnDemand];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForComputeStateDownloadOnDemand = [platformObject createGroupForComputeStateDownloadOnDemand];
 
-  return v3;
+  return createGroupForComputeStateDownloadOnDemand;
 }
 
 - (id)createGroupForComputeStateUpload
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForComputeStateUpload];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForComputeStateUpload = [platformObject createGroupForComputeStateUpload];
 
-  return v3;
+  return createGroupForComputeStateUpload;
 }
 
 - (id)createGroupForChangeDownload
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForChangeDownload];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForChangeDownload = [platformObject createGroupForChangeDownload];
 
-  return v3;
+  return createGroupForChangeDownload;
 }
 
 - (id)createGroupForChangeUpload
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForChangeUpload];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForChangeUpload = [platformObject createGroupForChangeUpload];
 
-  return v3;
+  return createGroupForChangeUpload;
 }
 
 - (id)createGroupForLibraryStateCheck
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForLibraryStateCheck];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForLibraryStateCheck = [platformObject createGroupForLibraryStateCheck];
 
-  return v3;
+  return createGroupForLibraryStateCheck;
 }
 
 - (id)createGroupForFeedback
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForFeedback];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForFeedback = [platformObject createGroupForFeedback];
 
-  return v3;
+  return createGroupForFeedback;
 }
 
 - (id)createGroupForTransportScopeRefresh
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForTransportScopeRefresh];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForTransportScopeRefresh = [platformObject createGroupForTransportScopeRefresh];
 
-  return v3;
+  return createGroupForTransportScopeRefresh;
 }
 
 - (id)createGroupForTransportScopeUpdate
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForTransportScopeUpdate];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForTransportScopeUpdate = [platformObject createGroupForTransportScopeUpdate];
 
-  return v3;
+  return createGroupForTransportScopeUpdate;
 }
 
 - (id)createGroupForTransportScopeDelete
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForTransportScopeDelete];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForTransportScopeDelete = [platformObject createGroupForTransportScopeDelete];
 
-  return v3;
+  return createGroupForTransportScopeDelete;
 }
 
 - (id)createGroupForSetup
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForSetup];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForSetup = [platformObject createGroupForSetup];
 
-  return v3;
+  return createGroupForSetup;
 }
 
 - (id)createGroupForWidgetPrefetch
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForWidgetPrefetch];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForWidgetPrefetch = [platformObject createGroupForWidgetPrefetch];
 
-  return v3;
+  return createGroupForWidgetPrefetch;
 }
 
 - (id)createGroupForRecoveryDownload
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForRecoveryDownload];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForRecoveryDownload = [platformObject createGroupForRecoveryDownload];
 
-  return v3;
+  return createGroupForRecoveryDownload;
 }
 
 - (id)createGroupForMemoriesPrefetch
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForMemoriesPrefetch];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForMemoriesPrefetch = [platformObject createGroupForMemoriesPrefetch];
 
-  return v3;
+  return createGroupForMemoriesPrefetch;
 }
 
 - (id)createGroupForKeepOriginalsPrefetch
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForKeepOriginalsPrefetch];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForKeepOriginalsPrefetch = [platformObject createGroupForKeepOriginalsPrefetch];
 
-  return v3;
+  return createGroupForKeepOriginalsPrefetch;
 }
 
 - (id)createGroupForNonDerivativePrefetch
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForNonDerivativePrefetch];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForNonDerivativePrefetch = [platformObject createGroupForNonDerivativePrefetch];
 
-  return v3;
+  return createGroupForNonDerivativePrefetch;
 }
 
 - (id)createGroupForThumbnailPrefetch
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForThumbnailPrefetch];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForThumbnailPrefetch = [platformObject createGroupForThumbnailPrefetch];
 
-  return v3;
+  return createGroupForThumbnailPrefetch;
 }
 
 - (id)createGroupForPrefetch
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForPrefetch];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForPrefetch = [platformObject createGroupForPrefetch];
 
-  return v3;
+  return createGroupForPrefetch;
 }
 
 - (id)createGroupForInitialDownload
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForInitialDownload];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForInitialDownload = [platformObject createGroupForInitialDownload];
 
-  return v3;
+  return createGroupForInitialDownload;
 }
 
 - (id)createGroupForResetSync
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForResetSync];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForResetSync = [platformObject createGroupForResetSync];
 
-  return v3;
+  return createGroupForResetSync;
 }
 
 - (id)createGroupForInitialUpload
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 createGroupForInitialUpload];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  createGroupForInitialUpload = [platformObject createGroupForInitialUpload];
 
-  return v3;
+  return createGroupForInitialUpload;
 }
 
 - (CPLFingerprintContext)fingerprintContext
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = [(CPLEngineTransport *)self platformObject];
-  v5 = [v4 fingerprintContext];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  fingerprintContext = [platformObject fingerprintContext];
 
-  if (!v5)
+  if (!fingerprintContext)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -484,212 +484,212 @@
       }
     }
 
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLEngineTransport.m"];
     v12 = NSStringFromSelector(a2);
-    [v10 handleFailureInMethod:a2 object:self file:v11 lineNumber:532 description:{@"Trying to access %@ while it has not been set yet", v12}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v11 lineNumber:532 description:{@"Trying to access %@ while it has not been set yet", v12}];
 
     abort();
   }
 
   v6 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return fingerprintContext;
 }
 
-- (BOOL)shouldIgnoreScopeWithIdentifier:(id)a3
+- (BOOL)shouldIgnoreScopeWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLEngineTransport *)self platformObject];
-  v6 = [v5 shouldIgnoreScopeWithIdentifier:v4];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v6 = [platformObject shouldIgnoreScopeWithIdentifier:identifierCopy];
 
   return v6;
 }
 
 - (void)dropPersistedInitialSyncSession
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  [v2 dropPersistedInitialSyncSession];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  [platformObject dropPersistedInitialSyncSession];
 }
 
-- (void)findPersistedInitialSyncSession:(id)a3 completionHandler:(id)a4
+- (void)findPersistedInitialSyncSession:(id)session completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CPLEngineTransport *)self platformObject];
-  [v8 findPersistedInitialSyncSession:v7 completionHandler:v6];
+  handlerCopy = handler;
+  sessionCopy = session;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  [platformObject findPersistedInitialSyncSession:sessionCopy completionHandler:handlerCopy];
 }
 
-- (BOOL)isResourceDynamic:(id)a3
+- (BOOL)isResourceDynamic:(id)dynamic
 {
-  v4 = a3;
-  v5 = [(CPLEngineTransport *)self platformObject];
-  v6 = [v5 isResourceDynamic:v4];
+  dynamicCopy = dynamic;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v6 = [platformObject isResourceDynamic:dynamicCopy];
 
   return v6;
 }
 
 - (void)noteClientIsInBackground
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  [v2 noteClientIsInBackground];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  [platformObject noteClientIsInBackground];
 }
 
 - (void)noteClientIsInForeground
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  [v2 noteClientIsInForeground];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  [platformObject noteClientIsInForeground];
 }
 
-- (id)concreteScopeFromTransportScope:(id)a3
+- (id)concreteScopeFromTransportScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineTransport *)self platformObject];
-  v6 = [v5 concreteScopeFromTransportScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v6 = [platformObject concreteScopeFromTransportScope:scopeCopy];
 
   return v6;
 }
 
-- (id)transportScopeFromConcreteScope:(id)a3
+- (id)transportScopeFromConcreteScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineTransport *)self platformObject];
-  v6 = [v5 transportScopeFromConcreteScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v6 = [platformObject transportScopeFromConcreteScope:scopeCopy];
 
   return v6;
 }
 
-- (void)getStatusDictionaryWithCompletionHandler:(id)a3
+- (void)getStatusDictionaryWithCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v4 = [(CPLEngineTransport *)self platformObject];
+  handlerCopy = handler;
+  platformObject = [(CPLEngineTransport *)self platformObject];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CPLEngineTransport *)self platformObject];
-    [v6 getStatusDictionaryWithCompletionHandler:v7];
+    platformObject2 = [(CPLEngineTransport *)self platformObject];
+    [platformObject2 getStatusDictionaryWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
-- (void)getStatusWithCompletionHandler:(id)a3
+- (void)getStatusWithCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v4 = [(CPLEngineTransport *)self platformObject];
+  handlerCopy = handler;
+  platformObject = [(CPLEngineTransport *)self platformObject];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CPLEngineTransport *)self platformObject];
-    [v6 getStatusWithCompletionHandler:v7];
+    platformObject2 = [(CPLEngineTransport *)self platformObject];
+    [platformObject2 getStatusWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
 - (id)componentName
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 componentName];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  componentName = [platformObject componentName];
 
-  return v3;
+  return componentName;
 }
 
-- (void)openWithCompletionHandler:(id)a3
+- (void)openWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CPLEngineTransport *)self platformObject];
-  [v5 openWithCompletionHandler:v4];
+  handlerCopy = handler;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  [platformObject openWithCompletionHandler:handlerCopy];
 }
 
-- (BOOL)isNewTransportScope:(id)a3 compatibleWithOldTransportScope:(id)a4
+- (BOOL)isNewTransportScope:(id)scope compatibleWithOldTransportScope:(id)transportScope
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CPLEngineTransport *)self platformObject];
-  v9 = [v8 isNewTransportScope:v7 compatibleWithOldTransportScope:v6];
+  transportScopeCopy = transportScope;
+  scopeCopy = scope;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v9 = [platformObject isNewTransportScope:scopeCopy compatibleWithOldTransportScope:transportScopeCopy];
 
   return v9;
 }
 
-- (void)upgradeFlags:(id)a3 fromTransportScope:(id)a4
+- (void)upgradeFlags:(id)flags fromTransportScope:(id)scope
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CPLEngineTransport *)self platformObject];
-  [v8 upgradeFlags:v7 fromTransportScope:v6];
+  scopeCopy = scope;
+  flagsCopy = flags;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  [platformObject upgradeFlags:flagsCopy fromTransportScope:scopeCopy];
 }
 
-- (id)transportScopeForUpgradeFromScopeName:(id)a3
+- (id)transportScopeForUpgradeFromScopeName:(id)name
 {
-  v4 = a3;
-  v5 = [(CPLEngineTransport *)self platformObject];
-  v6 = [v5 transportScopeForUpgradeFromScopeName:v4];
+  nameCopy = name;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v6 = [platformObject transportScopeForUpgradeFromScopeName:nameCopy];
 
   return v6;
 }
 
-- (id)scopeNameForTransportScope:(id)a3
+- (id)scopeNameForTransportScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineTransport *)self platformObject];
-  v6 = [v5 scopeNameForTransportScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v6 = [platformObject scopeNameForTransportScope:scopeCopy];
 
   return v6;
 }
 
-- (id)descriptionForTransportScope:(id)a3
+- (id)descriptionForTransportScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineTransport *)self platformObject];
-  v6 = [v5 descriptionForTransportScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v6 = [platformObject descriptionForTransportScope:scopeCopy];
 
   return v6;
 }
 
-- (id)tentativeConcreteScopeForScope:(id)a3
+- (id)tentativeConcreteScopeForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineTransport *)self platformObject];
-  v6 = [v5 tentativeConcreteScopeForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v6 = [platformObject tentativeConcreteScopeForScope:scopeCopy];
 
   return v6;
 }
 
 - (void)noteClientIsEndingSignificantWork
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
+  platformObject = [(CPLEngineTransport *)self platformObject];
   if (objc_opt_respondsToSelector())
   {
-    [v2 noteClientIsEndingSignificantWork];
+    [platformObject noteClientIsEndingSignificantWork];
   }
 }
 
 - (void)noteClientIsBeginningSignificantWork
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
+  platformObject = [(CPLEngineTransport *)self platformObject];
   if (objc_opt_respondsToSelector())
   {
-    [v2 noteClientIsBeginningSignificantWork];
+    [platformObject noteClientIsBeginningSignificantWork];
   }
 }
 
-- (void)getSystemBudgetsWithCompletionHandler:(id)a3
+- (void)getSystemBudgetsWithCompletionHandler:(id)handler
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CPLEngineTransport *)self platformObject];
+  handlerCopy = handler;
+  platformObject = [(CPLEngineTransport *)self platformObject];
   if (objc_opt_respondsToSelector())
   {
-    [v5 getSystemBudgetsWithCompletionHandler:v4];
+    [platformObject getSystemBudgetsWithCompletionHandler:handlerCopy];
   }
 
   else
@@ -701,62 +701,62 @@
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
     v9 = [v6 errorWithDomain:@"CloudPhotoLibraryErrorDomain" code:255 userInfo:v8];
 
-    v4[2](v4, 0, v9);
+    handlerCopy[2](handlerCopy, 0, v9);
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)getProposedStagingScopeIdentifier:(id *)a3 stagingTransportScope:(id *)a4 forScope:(id)a5 transportScope:(id)a6 transportUserIdentifier:(id)a7
+- (BOOL)getProposedStagingScopeIdentifier:(id *)identifier stagingTransportScope:(id *)scope forScope:(id)forScope transportScope:(id)transportScope transportUserIdentifier:(id)userIdentifier
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = [(CPLEngineTransport *)self platformObject];
-  LOBYTE(a4) = [v15 getProposedStagingScopeIdentifier:a3 stagingTransportScope:a4 forScope:v14 transportScope:v13 transportUserIdentifier:v12];
+  userIdentifierCopy = userIdentifier;
+  transportScopeCopy = transportScope;
+  forScopeCopy = forScope;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  LOBYTE(scope) = [platformObject getProposedStagingScopeIdentifier:identifier stagingTransportScope:scope forScope:forScopeCopy transportScope:transportScopeCopy transportUserIdentifier:userIdentifierCopy];
 
-  return a4;
+  return scope;
 }
 
-- (id)simpleDescriptionForScopeListSyncAnchor:(id)a3
+- (id)simpleDescriptionForScopeListSyncAnchor:(id)anchor
 {
-  v4 = a3;
-  v5 = [(CPLEngineTransport *)self platformObject];
-  v6 = [v5 simpleDescriptionForScopeListSyncAnchor:v4];
+  anchorCopy = anchor;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v6 = [platformObject simpleDescriptionForScopeListSyncAnchor:anchorCopy];
 
   return v6;
 }
 
-- (id)simpleDescriptionForSyncAnchor:(id)a3
+- (id)simpleDescriptionForSyncAnchor:(id)anchor
 {
-  v4 = a3;
-  v5 = [(CPLEngineTransport *)self platformObject];
+  anchorCopy = anchor;
+  platformObject = [(CPLEngineTransport *)self platformObject];
   if (objc_opt_respondsToSelector())
   {
-    [v5 simpleDescriptionForSyncAnchor:v4];
+    [platformObject simpleDescriptionForSyncAnchor:anchorCopy];
   }
 
   else
   {
-    [v4 base64EncodedStringWithOptions:0];
+    [anchorCopy base64EncodedStringWithOptions:0];
   }
   v6 = ;
 
   return v6;
 }
 
-- (id)bestErrorForUnderlyingError:(id)a3
+- (id)bestErrorForUnderlyingError:(id)error
 {
-  v4 = a3;
-  v5 = [(CPLEngineTransport *)self platformObject];
+  errorCopy = error;
+  platformObject = [(CPLEngineTransport *)self platformObject];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 bestErrorForUnderlyingError:v4];
+    v6 = [platformObject bestErrorForUnderlyingError:errorCopy];
   }
 
   else
   {
-    v6 = v4;
+    v6 = errorCopy;
   }
 
   v7 = v6;
@@ -764,364 +764,364 @@
   return v7;
 }
 
-- (id)sendFeedbackTaskForMessages:(id)a3 completionHandler:(id)a4
+- (id)sendFeedbackTaskForMessages:(id)messages completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CPLEngineTransport *)self platformObject];
-  v9 = [v8 sendFeedbackTaskForMessages:v7 completionHandler:v6];
+  handlerCopy = handler;
+  messagesCopy = messages;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v9 = [platformObject sendFeedbackTaskForMessages:messagesCopy completionHandler:handlerCopy];
 
   return v9;
 }
 
-- (id)queryUserDetailsTaskForParticipants:(id)a3 completionHandler:(id)a4
+- (id)queryUserDetailsTaskForParticipants:(id)participants completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CPLEngineTransport *)self platformObject];
-  v9 = [v8 queryUserDetailsTaskForParticipants:v7 completionHandler:v6];
+  handlerCopy = handler;
+  participantsCopy = participants;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v9 = [platformObject queryUserDetailsTaskForParticipants:participantsCopy completionHandler:handlerCopy];
 
   return v9;
 }
 
-- (id)cleanupStagedScope:(id)a3 stagingScope:(id)a4 destinationScope:(id)a5 transportScopeMapping:(id)a6 progressHandler:(id)a7 completionHandler:(id)a8
+- (id)cleanupStagedScope:(id)scope stagingScope:(id)stagingScope destinationScope:(id)destinationScope transportScopeMapping:(id)mapping progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [(CPLEngineTransport *)self platformObject];
-  v21 = [v20 cleanupStagedScope:v19 stagingScope:v18 destinationScope:v17 transportScopeMapping:v16 progressHandler:v15 completionHandler:v14];
+  completionHandlerCopy = completionHandler;
+  handlerCopy = handler;
+  mappingCopy = mapping;
+  destinationScopeCopy = destinationScope;
+  stagingScopeCopy = stagingScope;
+  scopeCopy = scope;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v21 = [platformObject cleanupStagedScope:scopeCopy stagingScope:stagingScopeCopy destinationScope:destinationScopeCopy transportScopeMapping:mappingCopy progressHandler:handlerCopy completionHandler:completionHandlerCopy];
 
   return v21;
 }
 
-- (id)updateContributorsTaskWithSharedScope:(id)a3 contributorsUpdates:(id)a4 transportScopeMapping:(id)a5 completionHandler:(id)a6
+- (id)updateContributorsTaskWithSharedScope:(id)scope contributorsUpdates:(id)updates transportScopeMapping:(id)mapping completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(CPLEngineTransport *)self platformObject];
-  v15 = [v14 updateContributorsTaskWithSharedScope:v13 contributorsUpdates:v12 transportScopeMapping:v11 completionHandler:v10];
+  handlerCopy = handler;
+  mappingCopy = mapping;
+  updatesCopy = updates;
+  scopeCopy = scope;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v15 = [platformObject updateContributorsTaskWithSharedScope:scopeCopy contributorsUpdates:updatesCopy transportScopeMapping:mappingCopy completionHandler:handlerCopy];
 
   return v15;
 }
 
-- (id)sharedLibraryServerRampTaskWithCompletionHandler:(id)a3
+- (id)sharedLibraryServerRampTaskWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CPLEngineTransport *)self platformObject];
-  v6 = [v5 sharedLibraryServerRampTaskWithCompletionHandler:v4];
+  handlerCopy = handler;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v6 = [platformObject sharedLibraryServerRampTaskWithCompletionHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)fixUpSparseRecordsTaskWithTasks:(id)a3 transportScopeMapping:(id)a4 completionHandler:(id)a5
+- (id)fixUpSparseRecordsTaskWithTasks:(id)tasks transportScopeMapping:(id)mapping completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CPLEngineTransport *)self platformObject];
-  v12 = [v11 fixUpSparseRecordsTaskWithTasks:v10 transportScopeMapping:v9 completionHandler:v8];
+  handlerCopy = handler;
+  mappingCopy = mapping;
+  tasksCopy = tasks;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v12 = [platformObject fixUpSparseRecordsTaskWithTasks:tasksCopy transportScopeMapping:mappingCopy completionHandler:handlerCopy];
 
   return v12;
 }
 
-- (id)removeParticipantInSharedLibraryTaskFromSharedScope:(id)a3 transportScope:(id)a4 share:(id)a5 retentionPolicy:(int64_t)a6 exitSource:(int64_t)a7 userIdentifiersToRemove:(id)a8 participantIDsToRemove:(id)a9 completionHandler:(id)a10
+- (id)removeParticipantInSharedLibraryTaskFromSharedScope:(id)scope transportScope:(id)transportScope share:(id)share retentionPolicy:(int64_t)policy exitSource:(int64_t)source userIdentifiersToRemove:(id)remove participantIDsToRemove:(id)toRemove completionHandler:(id)self0
 {
-  v17 = a10;
-  v18 = a9;
-  v19 = a8;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
-  v23 = [(CPLEngineTransport *)self platformObject];
-  v24 = [v23 removeParticipantInSharedLibraryTaskFromSharedScope:v22 transportScope:v21 share:v20 retentionPolicy:a6 exitSource:a7 userIdentifiersToRemove:v19 participantIDsToRemove:v18 completionHandler:v17];
+  handlerCopy = handler;
+  toRemoveCopy = toRemove;
+  removeCopy = remove;
+  shareCopy = share;
+  transportScopeCopy = transportScope;
+  scopeCopy = scope;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v24 = [platformObject removeParticipantInSharedLibraryTaskFromSharedScope:scopeCopy transportScope:transportScopeCopy share:shareCopy retentionPolicy:policy exitSource:source userIdentifiersToRemove:removeCopy participantIDsToRemove:toRemoveCopy completionHandler:handlerCopy];
 
   return v24;
 }
 
-- (id)startExitTaskFromSharedScope:(id)a3 transportScope:(id)a4 share:(id)a5 retentionPolicy:(int64_t)a6 exitSource:(int64_t)a7 completionHandler:(id)a8
+- (id)startExitTaskFromSharedScope:(id)scope transportScope:(id)transportScope share:(id)share retentionPolicy:(int64_t)policy exitSource:(int64_t)source completionHandler:(id)handler
 {
-  v14 = a8;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
-  v18 = [(CPLEngineTransport *)self platformObject];
-  v19 = [v18 startExitTaskFromSharedScope:v17 transportScope:v16 share:v15 retentionPolicy:a6 exitSource:a7 completionHandler:v14];
+  handlerCopy = handler;
+  shareCopy = share;
+  transportScopeCopy = transportScope;
+  scopeCopy = scope;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v19 = [platformObject startExitTaskFromSharedScope:scopeCopy transportScope:transportScopeCopy share:shareCopy retentionPolicy:policy exitSource:source completionHandler:handlerCopy];
 
   return v19;
 }
 
-- (id)fetchExistingSharedLibraryScopeTaskWithCompletionHandler:(id)a3
+- (id)fetchExistingSharedLibraryScopeTaskWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CPLEngineTransport *)self platformObject];
-  v6 = [v5 fetchExistingSharedLibraryScopeTaskWithCompletionHandler:v4];
+  handlerCopy = handler;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v6 = [platformObject fetchExistingSharedLibraryScopeTaskWithCompletionHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)acceptTaskForSharedScope:(id)a3 completionHandler:(id)a4
+- (id)acceptTaskForSharedScope:(id)scope completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CPLEngineTransport *)self platformObject];
-  v9 = [v8 acceptTaskForSharedScope:v7 completionHandler:v6];
+  handlerCopy = handler;
+  scopeCopy = scope;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v9 = [platformObject acceptTaskForSharedScope:scopeCopy completionHandler:handlerCopy];
 
   return v9;
 }
 
-- (id)fetchTaskForScopeWithShareURL:(id)a3 completionHandler:(id)a4
+- (id)fetchTaskForScopeWithShareURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CPLEngineTransport *)self platformObject];
-  v9 = [v8 fetchTaskForScopeWithShareURL:v7 completionHandler:v6];
+  handlerCopy = handler;
+  lCopy = l;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v9 = [platformObject fetchTaskForScopeWithShareURL:lCopy completionHandler:handlerCopy];
 
   return v9;
 }
 
-- (id)updateShareTaskForScope:(id)a3 transportScope:(id)a4 completionHandler:(id)a5
+- (id)updateShareTaskForScope:(id)scope transportScope:(id)transportScope completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CPLEngineTransport *)self platformObject];
-  v12 = [v11 updateShareTaskForScope:v10 transportScope:v9 completionHandler:v8];
+  handlerCopy = handler;
+  transportScopeCopy = transportScope;
+  scopeCopy = scope;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v12 = [platformObject updateShareTaskForScope:scopeCopy transportScope:transportScopeCopy completionHandler:handlerCopy];
 
   return v12;
 }
 
-- (id)createScopeTaskForScope:(id)a3 completionHandler:(id)a4
+- (id)createScopeTaskForScope:(id)scope completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CPLEngineTransport *)self platformObject];
-  v9 = [v8 createScopeTaskForScope:v7 completionHandler:v6];
+  handlerCopy = handler;
+  scopeCopy = scope;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v9 = [platformObject createScopeTaskForScope:scopeCopy completionHandler:handlerCopy];
 
   return v9;
 }
 
-- (id)inMemoryDownloadTaskForResource:(id)a3 record:(id)a4 target:(id)a5 transportScopeMapping:(id)a6 clientBundleID:(id)a7 completionHandler:(id)a8
+- (id)inMemoryDownloadTaskForResource:(id)resource record:(id)record target:(id)target transportScopeMapping:(id)mapping clientBundleID:(id)d completionHandler:(id)handler
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [(CPLEngineTransport *)self platformObject];
-  v21 = [v20 inMemoryDownloadTaskForResource:v19 record:v18 target:v17 transportScopeMapping:v16 clientBundleID:v15 completionHandler:v14];
+  handlerCopy = handler;
+  dCopy = d;
+  mappingCopy = mapping;
+  targetCopy = target;
+  recordCopy = record;
+  resourceCopy = resource;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v21 = [platformObject inMemoryDownloadTaskForResource:resourceCopy record:recordCopy target:targetCopy transportScopeMapping:mappingCopy clientBundleID:dCopy completionHandler:handlerCopy];
 
   return v21;
 }
 
-- (id)resourcesDownloadTaskWithCompletionHandler:(id)a3
+- (id)resourcesDownloadTaskWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CPLEngineTransport *)self platformObject];
-  v6 = [v5 resourcesDownloadTaskWithCompletionHandler:v4];
+  handlerCopy = handler;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v6 = [platformObject resourcesDownloadTaskWithCompletionHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)rampingRequestTaskForResourceType:(unint64_t)a3 numRequested:(unint64_t)a4 completionHandler:(id)a5
+- (id)rampingRequestTaskForResourceType:(unint64_t)type numRequested:(unint64_t)requested completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = [(CPLEngineTransport *)self platformObject];
-  v10 = [v9 rampingRequestTaskForResourceType:a3 numRequested:a4 completionHandler:v8];
+  handlerCopy = handler;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v10 = [platformObject rampingRequestTaskForResourceType:type numRequested:requested completionHandler:handlerCopy];
 
   return v10;
 }
 
-- (id)resourceCheckTaskForResources:(id)a3 targetMapping:(id)a4 transportScopeMapping:(id)a5 completionHandler:(id)a6
+- (id)resourceCheckTaskForResources:(id)resources targetMapping:(id)mapping transportScopeMapping:(id)scopeMapping completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(CPLEngineTransport *)self platformObject];
-  v15 = [v14 resourceCheckTaskForResources:v13 targetMapping:v12 transportScopeMapping:v11 completionHandler:v10];
+  handlerCopy = handler;
+  scopeMappingCopy = scopeMapping;
+  mappingCopy = mapping;
+  resourcesCopy = resources;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v15 = [platformObject resourceCheckTaskForResources:resourcesCopy targetMapping:mappingCopy transportScopeMapping:scopeMappingCopy completionHandler:handlerCopy];
 
   return v15;
 }
 
-- (id)getStreamingURLTaskForResource:(id)a3 intent:(unint64_t)a4 hints:(id)a5 timeRange:(id *)a6 target:(id)a7 transportScopeMapping:(id)a8 clientBundleID:(id)a9 completionHandler:(id)a10
+- (id)getStreamingURLTaskForResource:(id)resource intent:(unint64_t)intent hints:(id)hints timeRange:(id *)range target:(id)target transportScopeMapping:(id)mapping clientBundleID:(id)d completionHandler:(id)self0
 {
-  v17 = a10;
-  v18 = a9;
-  v19 = a8;
-  v20 = a7;
-  v21 = a5;
-  v22 = a3;
-  v23 = [(CPLEngineTransport *)self platformObject];
-  v24 = *&a6->var0.var3;
-  v27[0] = *&a6->var0.var0;
+  handlerCopy = handler;
+  dCopy = d;
+  mappingCopy = mapping;
+  targetCopy = target;
+  hintsCopy = hints;
+  resourceCopy = resource;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v24 = *&range->var0.var3;
+  v27[0] = *&range->var0.var0;
   v27[1] = v24;
-  v27[2] = *&a6->var1.var1;
-  v25 = [v23 getStreamingURLTaskForResource:v22 intent:a4 hints:v21 timeRange:v27 target:v20 transportScopeMapping:v19 clientBundleID:v18 completionHandler:v17];
+  v27[2] = *&range->var1.var1;
+  v25 = [platformObject getStreamingURLTaskForResource:resourceCopy intent:intent hints:hintsCopy timeRange:v27 target:targetCopy transportScopeMapping:mappingCopy clientBundleID:dCopy completionHandler:handlerCopy];
 
   return v25;
 }
 
-- (id)fetchTransportScopeForScope:(id)a3 transportScope:(id)a4 completionHandler:(id)a5
+- (id)fetchTransportScopeForScope:(id)scope transportScope:(id)transportScope completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CPLEngineTransport *)self platformObject];
-  v12 = [v11 fetchTransportScopeForScope:v10 transportScope:v9 completionHandler:v8];
+  handlerCopy = handler;
+  transportScopeCopy = transportScope;
+  scopeCopy = scope;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v12 = [platformObject fetchTransportScopeForScope:scopeCopy transportScope:transportScopeCopy completionHandler:handlerCopy];
 
   return v12;
 }
 
-- (id)getCurrentSyncAnchorWithTransportScope:(id)a3 scope:(id)a4 previousScopeChange:(id)a5 completionHandler:(id)a6
+- (id)getCurrentSyncAnchorWithTransportScope:(id)scope scope:(id)a4 previousScopeChange:(id)change completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
+  handlerCopy = handler;
+  changeCopy = change;
   v12 = a4;
-  v13 = a3;
-  v14 = [(CPLEngineTransport *)self platformObject];
-  v15 = [v14 getCurrentSyncAnchorWithTransportScope:v13 scope:v12 previousScopeChange:v11 completionHandler:v10];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v15 = [platformObject getCurrentSyncAnchorWithTransportScope:scopeCopy scope:v12 previousScopeChange:changeCopy completionHandler:handlerCopy];
 
   return v15;
 }
 
-- (id)getScopeInfoWithTransportScope:(id)a3 scope:(id)a4 previousScopeChange:(id)a5 completionHandler:(id)a6
+- (id)getScopeInfoWithTransportScope:(id)scope scope:(id)a4 previousScopeChange:(id)change completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
+  handlerCopy = handler;
+  changeCopy = change;
   v12 = a4;
-  v13 = a3;
-  v14 = [(CPLEngineTransport *)self platformObject];
-  v15 = [v14 getScopeInfoWithTransportScope:v13 scope:v12 previousScopeChange:v11 completionHandler:v10];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v15 = [platformObject getScopeInfoWithTransportScope:scopeCopy scope:v12 previousScopeChange:changeCopy completionHandler:handlerCopy];
 
   return v15;
 }
 
-- (id)updateTransportScope:(id)a3 scope:(id)a4 scopeChange:(id)a5 completionHandler:(id)a6
+- (id)updateTransportScope:(id)scope scope:(id)a4 scopeChange:(id)change completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
+  handlerCopy = handler;
+  changeCopy = change;
   v12 = a4;
-  v13 = a3;
-  v14 = [(CPLEngineTransport *)self platformObject];
-  v15 = [v14 updateTransportScope:v13 scope:v12 scopeChange:v11 completionHandler:v10];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v15 = [platformObject updateTransportScope:scopeCopy scope:v12 scopeChange:changeCopy completionHandler:handlerCopy];
 
   return v15;
 }
 
-- (id)deleteTransportScope:(id)a3 scope:(id)a4 completionHandler:(id)a5
+- (id)deleteTransportScope:(id)scope scope:(id)a4 completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v9 = a4;
-  v10 = a3;
-  v11 = [(CPLEngineTransport *)self platformObject];
-  v12 = [v11 deleteTransportScope:v10 scope:v9 completionHandler:v8];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v12 = [platformObject deleteTransportScope:scopeCopy scope:v9 completionHandler:handlerCopy];
 
   return v12;
 }
 
-- (id)fetchScopeListChangesForScopeListSyncAnchor:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5
+- (id)fetchScopeListChangesForScopeListSyncAnchor:(id)anchor progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CPLEngineTransport *)self platformObject];
-  v12 = [v11 fetchScopeListChangesForScopeListSyncAnchor:v10 progressHandler:v9 completionHandler:v8];
+  completionHandlerCopy = completionHandler;
+  handlerCopy = handler;
+  anchorCopy = anchor;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v12 = [platformObject fetchScopeListChangesForScopeListSyncAnchor:anchorCopy progressHandler:handlerCopy completionHandler:completionHandlerCopy];
 
   return v12;
 }
 
-- (id)downloadComputeStatesWithScopedIdentifiers:(id)a3 scope:(id)a4 sharedScope:(id)a5 targetStorageURL:(id)a6 transportScopeMapping:(id)a7 completionHandler:(id)a8
+- (id)downloadComputeStatesWithScopedIdentifiers:(id)identifiers scope:(id)scope sharedScope:(id)sharedScope targetStorageURL:(id)l transportScopeMapping:(id)mapping completionHandler:(id)handler
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [(CPLEngineTransport *)self platformObject];
-  v21 = [v20 downloadComputeStatesWithScopedIdentifiers:v19 scope:v18 sharedScope:v17 targetStorageURL:v16 transportScopeMapping:v15 completionHandler:v14];
+  handlerCopy = handler;
+  mappingCopy = mapping;
+  lCopy = l;
+  sharedScopeCopy = sharedScope;
+  scopeCopy = scope;
+  identifiersCopy = identifiers;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v21 = [platformObject downloadComputeStatesWithScopedIdentifiers:identifiersCopy scope:scopeCopy sharedScope:sharedScopeCopy targetStorageURL:lCopy transportScopeMapping:mappingCopy completionHandler:handlerCopy];
 
   return v21;
 }
 
-- (id)uploadComputeStates:(id)a3 scope:(id)a4 sharedScope:(id)a5 targetMapping:(id)a6 transportScopeMapping:(id)a7 knownRecords:(id)a8 completionHandler:(id)a9
+- (id)uploadComputeStates:(id)states scope:(id)scope sharedScope:(id)sharedScope targetMapping:(id)mapping transportScopeMapping:(id)scopeMapping knownRecords:(id)records completionHandler:(id)handler
 {
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
-  v23 = [(CPLEngineTransport *)self platformObject];
-  v24 = [v23 uploadComputeStates:v22 scope:v21 sharedScope:v20 targetMapping:v19 transportScopeMapping:v18 knownRecords:v17 completionHandler:v16];
+  handlerCopy = handler;
+  recordsCopy = records;
+  scopeMappingCopy = scopeMapping;
+  mappingCopy = mapping;
+  sharedScopeCopy = sharedScope;
+  scopeCopy = scope;
+  statesCopy = states;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v24 = [platformObject uploadComputeStates:statesCopy scope:scopeCopy sharedScope:sharedScopeCopy targetMapping:mappingCopy transportScopeMapping:scopeMappingCopy knownRecords:recordsCopy completionHandler:handlerCopy];
 
   return v24;
 }
 
-- (id)downloadBatchTaskForSyncAnchor:(id)a3 scope:(id)a4 transportScopeMapping:(id)a5 currentScopeChange:(id)a6 progressHandler:(id)a7 completionHandler:(id)a8
+- (id)downloadBatchTaskForSyncAnchor:(id)anchor scope:(id)scope transportScopeMapping:(id)mapping currentScopeChange:(id)change progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [(CPLEngineTransport *)self platformObject];
-  v21 = [v20 downloadBatchTaskForSyncAnchor:v19 scope:v18 transportScopeMapping:v17 currentScopeChange:v16 progressHandler:v15 completionHandler:v14];
+  completionHandlerCopy = completionHandler;
+  handlerCopy = handler;
+  changeCopy = change;
+  mappingCopy = mapping;
+  scopeCopy = scope;
+  anchorCopy = anchor;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v21 = [platformObject downloadBatchTaskForSyncAnchor:anchorCopy scope:scopeCopy transportScopeMapping:mappingCopy currentScopeChange:changeCopy progressHandler:handlerCopy completionHandler:completionHandlerCopy];
 
   return v21;
 }
 
-- (id)queryTaskForCursor:(id)a3 class:(Class)a4 scope:(id)a5 transportScopeMapping:(id)a6 progressHandler:(id)a7 completionHandler:(id)a8
+- (id)queryTaskForCursor:(id)cursor class:(Class)class scope:(id)scope transportScopeMapping:(id)mapping progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a3;
-  v19 = [(CPLEngineTransport *)self platformObject];
-  v20 = [v19 queryTaskForCursor:v18 class:a4 scope:v17 transportScopeMapping:v16 progressHandler:v15 completionHandler:v14];
+  completionHandlerCopy = completionHandler;
+  handlerCopy = handler;
+  mappingCopy = mapping;
+  scopeCopy = scope;
+  cursorCopy = cursor;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v20 = [platformObject queryTaskForCursor:cursorCopy class:class scope:scopeCopy transportScopeMapping:mappingCopy progressHandler:handlerCopy completionHandler:completionHandlerCopy];
 
   return v20;
 }
 
-- (id)reshareRecordsTaskWithRecords:(id)a3 sourceScope:(id)a4 destinationScope:(id)a5 transportScopeMapping:(id)a6 completionHandler:(id)a7
+- (id)reshareRecordsTaskWithRecords:(id)records sourceScope:(id)scope destinationScope:(id)destinationScope transportScopeMapping:(id)mapping completionHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(CPLEngineTransport *)self platformObject];
-  v18 = [v17 reshareRecordsTaskWithRecords:v16 sourceScope:v15 destinationScope:v14 transportScopeMapping:v13 completionHandler:v12];
+  handlerCopy = handler;
+  mappingCopy = mapping;
+  destinationScopeCopy = destinationScope;
+  scopeCopy = scope;
+  recordsCopy = records;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v18 = [platformObject reshareRecordsTaskWithRecords:recordsCopy sourceScope:scopeCopy destinationScope:destinationScopeCopy transportScopeMapping:mappingCopy completionHandler:handlerCopy];
 
   return v18;
 }
 
-- (id)uploadBatchTaskForBatch:(id)a3 scope:(id)a4 targetMapping:(id)a5 transportScopeMapping:(id)a6 progressHandler:(id)a7 completionHandler:(id)a8
+- (id)uploadBatchTaskForBatch:(id)batch scope:(id)scope targetMapping:(id)mapping transportScopeMapping:(id)scopeMapping progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v14 = a7;
-  v15 = a8;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [(CPLEngineTransport *)self platformObject];
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  scopeMappingCopy = scopeMapping;
+  mappingCopy = mapping;
+  scopeCopy = scope;
+  batchCopy = batch;
+  platformObject = [(CPLEngineTransport *)self platformObject];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __122__CPLEngineTransport_uploadBatchTaskForBatch_scope_targetMapping_transportScopeMapping_progressHandler_completionHandler___block_invoke;
   v24[3] = &unk_1E861C120;
-  v25 = v14;
-  v21 = v14;
-  v22 = [v20 uploadBatchTaskForBatch:v19 scope:v18 targetMapping:v17 transportScopeMapping:v16 progressHandler:v24 completionHandler:v15];
+  v25 = handlerCopy;
+  v21 = handlerCopy;
+  v22 = [platformObject uploadBatchTaskForBatch:batchCopy scope:scopeCopy targetMapping:mappingCopy transportScopeMapping:scopeMappingCopy progressHandler:v24 completionHandler:completionHandlerCopy];
 
   return v22;
 }
@@ -1137,106 +1137,106 @@ uint64_t __122__CPLEngineTransport_uploadBatchTaskForBatch_scope_targetMapping_t
   return result;
 }
 
-- (id)fetchRecordsTaskForRecordsWithScopedIdentifiers:(id)a3 targetMapping:(id)a4 transportScopeMapping:(id)a5 completionHandler:(id)a6
+- (id)fetchRecordsTaskForRecordsWithScopedIdentifiers:(id)identifiers targetMapping:(id)mapping transportScopeMapping:(id)scopeMapping completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(CPLEngineTransport *)self platformObject];
-  v15 = [v14 fetchRecordsTaskForRecordsWithScopedIdentifiers:v13 targetMapping:v12 transportScopeMapping:v11 completionHandler:v10];
+  handlerCopy = handler;
+  scopeMappingCopy = scopeMapping;
+  mappingCopy = mapping;
+  identifiersCopy = identifiers;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v15 = [platformObject fetchRecordsTaskForRecordsWithScopedIdentifiers:identifiersCopy targetMapping:mappingCopy transportScopeMapping:scopeMappingCopy completionHandler:handlerCopy];
 
   return v15;
 }
 
-- (void)getBackgroundSchedulingStatusDictionaryWithCompletionHandler:(id)a3
+- (void)getBackgroundSchedulingStatusDictionaryWithCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v4 = [(CPLEngineTransport *)self platformObject];
+  handlerCopy = handler;
+  platformObject = [(CPLEngineTransport *)self platformObject];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CPLEngineTransport *)self platformObject];
-    [v6 getBackgroundSchedulingStatusDictionaryWithCompletionHandler:v7];
+    platformObject2 = [(CPLEngineTransport *)self platformObject];
+    [platformObject2 getBackgroundSchedulingStatusDictionaryWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    (*(v7 + 2))(v7, MEMORY[0x1E695E0F8], 0);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x1E695E0F8], 0);
   }
 }
 
-- (void)getBackgroundSchedulingStatusWithCompletionHandler:(id)a3
+- (void)getBackgroundSchedulingStatusWithCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v4 = [(CPLEngineTransport *)self platformObject];
+  handlerCopy = handler;
+  platformObject = [(CPLEngineTransport *)self platformObject];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CPLEngineTransport *)self platformObject];
-    [v6 getBackgroundSchedulingStatusWithCompletionHandler:v7];
+    platformObject2 = [(CPLEngineTransport *)self platformObject];
+    [platformObject2 getBackgroundSchedulingStatusWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    v7[2](v7, &stru_1F57BD298, 0);
+    handlerCopy[2](handlerCopy, &stru_1F57BD298, 0);
   }
 }
 
-- (id)acquireReschedulerTaskWithCompletionHandler:(id)a3
+- (id)acquireReschedulerTaskWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CPLEngineTransport *)self platformObject];
-  v6 = [v5 acquireReschedulerTaskWithCompletionHandler:v4];
+  handlerCopy = handler;
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  v6 = [platformObject acquireReschedulerTaskWithCompletionHandler:handlerCopy];
 
   return v6;
 }
 
 - (CPLSharedRecordPropertyMapping)propertyMapping
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 propertyMapping];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  propertyMapping = [platformObject propertyMapping];
 
-  return v3;
+  return propertyMapping;
 }
 
 - (Class)userIdentifierClass
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 userIdentifierClass];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  userIdentifierClass = [platformObject userIdentifierClass];
 
-  return v3;
+  return userIdentifierClass;
 }
 
 - (Class)transportGroupClass
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 transportGroupClass];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  transportGroupClass = [platformObject transportGroupClass];
 
-  return v3;
+  return transportGroupClass;
 }
 
 - (NSArray)involvedProcesses
 {
-  v2 = [(CPLEngineTransport *)self platformObject];
-  v3 = [v2 involvedProcesses];
+  platformObject = [(CPLEngineTransport *)self platformObject];
+  involvedProcesses = [platformObject involvedProcesses];
 
-  return v3;
+  return involvedProcesses;
 }
 
-- (CPLEngineTransport)initWithEngineLibrary:(id)a3
+- (CPLEngineTransport)initWithEngineLibrary:(id)library
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  libraryCopy = library;
   v18.receiver = self;
   v18.super_class = CPLEngineTransport;
   v6 = [(CPLEngineTransport *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_engineLibrary, v5);
+    objc_storeWeak(&v6->_engineLibrary, libraryCopy);
     v8 = +[CPLPlatform currentPlatform];
     v9 = [v8 newPlatformImplementationForObject:v7];
     platformObject = v7->_platformObject;
@@ -1257,9 +1257,9 @@ uint64_t __122__CPLEngineTransport_uploadBatchTaskForBatch_scope_targetMapping_t
         }
       }
 
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLEngineTransport.m"];
-      [v16 handleFailureInMethod:a2 object:v7 file:v17 lineNumber:25 description:{@"No platform object specified for %@", objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:v7 file:v17 lineNumber:25 description:{@"No platform object specified for %@", objc_opt_class()}];
 
       abort();
     }

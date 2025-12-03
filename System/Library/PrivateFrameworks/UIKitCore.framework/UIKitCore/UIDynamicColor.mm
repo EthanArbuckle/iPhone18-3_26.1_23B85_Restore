@@ -1,17 +1,17 @@
 @interface UIDynamicColor
 - (BOOL)_isDeepColor;
-- (BOOL)getHue:(double *)a3 saturation:(double *)a4 brightness:(double *)a5 alpha:(double *)a6;
-- (BOOL)getRed:(double *)a3 green:(double *)a4 blue:(double *)a5 alpha:(double *)a6;
-- (BOOL)getWhite:(double *)a3 alpha:(double *)a4;
+- (BOOL)getHue:(double *)hue saturation:(double *)saturation brightness:(double *)brightness alpha:(double *)alpha;
+- (BOOL)getRed:(double *)red green:(double *)green blue:(double *)blue alpha:(double *)alpha;
+- (BOOL)getWhite:(double *)white alpha:(double *)alpha;
 - (BOOL)isPatternColor;
 - (CGColor)CGColor;
-- (UIDynamicColor)colorWithAlphaComponent:(double)a3;
-- (UIDynamicColor)colorWithProminence:(int64_t)a3;
+- (UIDynamicColor)colorWithAlphaComponent:(double)component;
+- (UIDynamicColor)colorWithProminence:(int64_t)prominence;
 - (double)alphaComponent;
 - (id)_highContrastDynamicColor;
-- (id)_resolvedColorWithTraitCollection:(id)a3;
+- (id)_resolvedColorWithTraitCollection:(id)collection;
 - (id)colorSpaceName;
-- (id)resolvedColorWithTraitCollection:(id)a3;
+- (id)resolvedColorWithTraitCollection:(id)collection;
 - (int64_t)prominence;
 - (void)set;
 - (void)setFill;
@@ -39,15 +39,15 @@
   {
     v10.receiver = self;
     v10.super_class = UIDynamicColor;
-    v7 = [(UIColor *)&v10 CGColor];
+    cGColor = [(UIColor *)&v10 CGColor];
   }
 
   else
   {
-    v7 = [(UIDynamicColor *)v4 CGColor];
+    cGColor = [(UIDynamicColor *)v4 CGColor];
   }
 
-  v8 = v7;
+  v8 = cGColor;
 
   return v8;
 }
@@ -168,16 +168,16 @@
   }
 }
 
-- (id)resolvedColorWithTraitCollection:(id)a3
+- (id)resolvedColorWithTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(UIDynamicColor *)self _resolvedColorWithTraitCollection:v4];
-  v6 = [v5 resolvedColorWithTraitCollection:v4];
+  collectionCopy = collection;
+  v5 = [(UIDynamicColor *)self _resolvedColorWithTraitCollection:collectionCopy];
+  v6 = [v5 resolvedColorWithTraitCollection:collectionCopy];
 
   return v6;
 }
 
-- (id)_resolvedColorWithTraitCollection:(id)a3
+- (id)_resolvedColorWithTraitCollection:(id)collection
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D920];
@@ -189,9 +189,9 @@
   return 0;
 }
 
-- (UIDynamicColor)colorWithAlphaComponent:(double)a3
+- (UIDynamicColor)colorWithAlphaComponent:(double)component
 {
-  v3 = [[UIDynamicModifiedColor alloc] initWithBaseColor:0xFFFFFFFFFFFFFFFFLL alphaComponent:a3 contrast:?];
+  v3 = [[UIDynamicModifiedColor alloc] initWithBaseColor:0xFFFFFFFFFFFFFFFFLL alphaComponent:component contrast:?];
 
   return v3;
 }
@@ -203,7 +203,7 @@
   return v2;
 }
 
-- (BOOL)getWhite:(double *)a3 alpha:(double *)a4
+- (BOOL)getWhite:(double *)white alpha:(double *)alpha
 {
   v7 = +[UITraitCollection _currentTraitCollectionWithUnmarkedFallback];
   v8 = [(UIDynamicColor *)self _resolvedColorWithTraitCollection:v7];
@@ -222,12 +222,12 @@
   {
     v14.receiver = self;
     v14.super_class = UIDynamicColor;
-    v11 = [(UIColor *)&v14 getWhite:a3 alpha:a4];
+    v11 = [(UIColor *)&v14 getWhite:white alpha:alpha];
   }
 
   else
   {
-    v11 = [(UIDynamicColor *)v8 getWhite:a3 alpha:a4];
+    v11 = [(UIDynamicColor *)v8 getWhite:white alpha:alpha];
   }
 
   v12 = v11;
@@ -235,7 +235,7 @@
   return v12;
 }
 
-- (BOOL)getHue:(double *)a3 saturation:(double *)a4 brightness:(double *)a5 alpha:(double *)a6
+- (BOOL)getHue:(double *)hue saturation:(double *)saturation brightness:(double *)brightness alpha:(double *)alpha
 {
   v11 = +[UITraitCollection _currentTraitCollectionWithUnmarkedFallback];
   v12 = [(UIDynamicColor *)self _resolvedColorWithTraitCollection:v11];
@@ -254,12 +254,12 @@
   {
     v18.receiver = self;
     v18.super_class = UIDynamicColor;
-    v15 = [(UIColor *)&v18 getHue:a3 saturation:a4 brightness:a5 alpha:a6];
+    v15 = [(UIColor *)&v18 getHue:hue saturation:saturation brightness:brightness alpha:alpha];
   }
 
   else
   {
-    v15 = [(UIDynamicColor *)v12 getHue:a3 saturation:a4 brightness:a5 alpha:a6];
+    v15 = [(UIDynamicColor *)v12 getHue:hue saturation:saturation brightness:brightness alpha:alpha];
   }
 
   v16 = v15;
@@ -267,7 +267,7 @@
   return v16;
 }
 
-- (BOOL)getRed:(double *)a3 green:(double *)a4 blue:(double *)a5 alpha:(double *)a6
+- (BOOL)getRed:(double *)red green:(double *)green blue:(double *)blue alpha:(double *)alpha
 {
   v11 = +[UITraitCollection _currentTraitCollectionWithUnmarkedFallback];
   v12 = [(UIDynamicColor *)self _resolvedColorWithTraitCollection:v11];
@@ -286,12 +286,12 @@
   {
     v18.receiver = self;
     v18.super_class = UIDynamicColor;
-    v15 = [(UIColor *)&v18 getRed:a3 green:a4 blue:a5 alpha:a6];
+    v15 = [(UIColor *)&v18 getRed:red green:green blue:blue alpha:alpha];
   }
 
   else
   {
-    v15 = [(UIDynamicColor *)v12 getRed:a3 green:a4 blue:a5 alpha:a6];
+    v15 = [(UIDynamicColor *)v12 getRed:red green:green blue:blue alpha:alpha];
   }
 
   v16 = v15;
@@ -318,15 +318,15 @@
   {
     v10.receiver = self;
     v10.super_class = UIDynamicColor;
-    v7 = [(UIColor *)&v10 isPatternColor];
+    isPatternColor = [(UIColor *)&v10 isPatternColor];
   }
 
   else
   {
-    v7 = [(UIDynamicColor *)v4 isPatternColor];
+    isPatternColor = [(UIDynamicColor *)v4 isPatternColor];
   }
 
-  v8 = v7;
+  v8 = isPatternColor;
 
   return v8;
 }
@@ -350,15 +350,15 @@
   {
     v10.receiver = self;
     v10.super_class = UIDynamicColor;
-    v7 = [(UIColor *)&v10 _isDeepColor];
+    _isDeepColor = [(UIColor *)&v10 _isDeepColor];
   }
 
   else
   {
-    v7 = [(UIDynamicColor *)v4 _isDeepColor];
+    _isDeepColor = [(UIDynamicColor *)v4 _isDeepColor];
   }
 
-  v8 = v7;
+  v8 = _isDeepColor;
 
   return v8;
 }
@@ -382,33 +382,33 @@
   {
     v10.receiver = self;
     v10.super_class = UIDynamicColor;
-    v7 = [(UIColor *)&v10 colorSpaceName];
+    colorSpaceName = [(UIColor *)&v10 colorSpaceName];
   }
 
   else
   {
-    v7 = [(UIDynamicColor *)v4 colorSpaceName];
+    colorSpaceName = [(UIDynamicColor *)v4 colorSpaceName];
   }
 
-  v8 = v7;
+  v8 = colorSpaceName;
 
   return v8;
 }
 
-- (UIDynamicColor)colorWithProminence:(int64_t)a3
+- (UIDynamicColor)colorWithProminence:(int64_t)prominence
 {
-  v5 = [(UIColor *)self _systemColorName];
-  if (([v5 isEqualToString:@"labelColor"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"secondaryLabelColor") & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"tertiaryLabelColor") & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"quaternaryLabelColor"))
+  _systemColorName = [(UIColor *)self _systemColorName];
+  if (([_systemColorName isEqualToString:@"labelColor"] & 1) != 0 || (objc_msgSend(_systemColorName, "isEqualToString:", @"secondaryLabelColor") & 1) != 0 || (objc_msgSend(_systemColorName, "isEqualToString:", @"tertiaryLabelColor") & 1) != 0 || objc_msgSend(_systemColorName, "isEqualToString:", @"quaternaryLabelColor"))
   {
-    if (a3 > 1)
+    if (prominence > 1)
     {
-      if (a3 == 2)
+      if (prominence == 2)
       {
         v6 = +[UIColor tertiaryLabelColor];
         goto LABEL_22;
       }
 
-      if (a3 == 3)
+      if (prominence == 3)
       {
         v6 = +[UIColor quaternaryLabelColor];
         goto LABEL_22;
@@ -417,13 +417,13 @@
 
     else
     {
-      if (!a3)
+      if (!prominence)
       {
         v6 = +[UIColor labelColor];
         goto LABEL_22;
       }
 
-      if (a3 == 1)
+      if (prominence == 1)
       {
         v6 = +[UIColor secondaryLabelColor];
         goto LABEL_22;
@@ -431,17 +431,17 @@
     }
   }
 
-  if (([v5 isEqualToString:@"systemFillColor"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"secondarySystemFillColor") & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"tertiarySystemFillColor") & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"quaternarySystemFillColor"))
+  if (([_systemColorName isEqualToString:@"systemFillColor"] & 1) != 0 || (objc_msgSend(_systemColorName, "isEqualToString:", @"secondarySystemFillColor") & 1) != 0 || (objc_msgSend(_systemColorName, "isEqualToString:", @"tertiarySystemFillColor") & 1) != 0 || objc_msgSend(_systemColorName, "isEqualToString:", @"quaternarySystemFillColor"))
   {
-    if (a3 > 1)
+    if (prominence > 1)
     {
-      if (a3 == 2)
+      if (prominence == 2)
       {
         v6 = +[UIColor tertiarySystemFillColor];
         goto LABEL_22;
       }
 
-      if (a3 == 3)
+      if (prominence == 3)
       {
         v6 = +[UIColor quaternarySystemFillColor];
         goto LABEL_22;
@@ -450,13 +450,13 @@
 
     else
     {
-      if (!a3)
+      if (!prominence)
       {
         v6 = +[UIColor systemFillColor];
         goto LABEL_22;
       }
 
-      if (a3 == 1)
+      if (prominence == 1)
       {
         v6 = +[UIColor secondarySystemFillColor];
         goto LABEL_22;
@@ -464,11 +464,11 @@
     }
   }
 
-  if (([v5 isEqualToString:@"systemBackgroundColor"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"secondarySystemBackgroundColor") & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"tertiarySystemBackgroundColor"))
+  if (([_systemColorName isEqualToString:@"systemBackgroundColor"] & 1) != 0 || (objc_msgSend(_systemColorName, "isEqualToString:", @"secondarySystemBackgroundColor") & 1) != 0 || objc_msgSend(_systemColorName, "isEqualToString:", @"tertiarySystemBackgroundColor"))
   {
-    if (a3 > 1)
+    if (prominence > 1)
     {
-      if (a3 == 2 || a3 == 3)
+      if (prominence == 2 || prominence == 3)
       {
         v6 = +[UIColor tertiarySystemBackgroundColor];
         goto LABEL_22;
@@ -477,13 +477,13 @@
 
     else
     {
-      if (!a3)
+      if (!prominence)
       {
         v6 = +[UIColor systemBackgroundColor];
         goto LABEL_22;
       }
 
-      if (a3 == 1)
+      if (prominence == 1)
       {
         v6 = +[UIColor secondarySystemBackgroundColor];
         goto LABEL_22;
@@ -491,11 +491,11 @@
     }
   }
 
-  if (([v5 isEqualToString:@"systemGroupedBackgroundColor"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"secondarySystemGroupedBackgroundColor") & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"tertiarySystemGroupedBackgroundColor"))
+  if (([_systemColorName isEqualToString:@"systemGroupedBackgroundColor"] & 1) != 0 || (objc_msgSend(_systemColorName, "isEqualToString:", @"secondarySystemGroupedBackgroundColor") & 1) != 0 || objc_msgSend(_systemColorName, "isEqualToString:", @"tertiarySystemGroupedBackgroundColor"))
   {
-    if (a3 > 1)
+    if (prominence > 1)
     {
-      if (a3 == 2 || a3 == 3)
+      if (prominence == 2 || prominence == 3)
       {
         v6 = +[UIColor tertiarySystemGroupedBackgroundColor];
         goto LABEL_22;
@@ -504,13 +504,13 @@
 
     else
     {
-      if (!a3)
+      if (!prominence)
       {
         v6 = +[UIColor systemGroupedBackgroundColor];
         goto LABEL_22;
       }
 
-      if (a3 == 1)
+      if (prominence == 1)
       {
         v6 = +[UIColor secondarySystemGroupedBackgroundColor];
         goto LABEL_22;
@@ -518,16 +518,16 @@
     }
   }
 
-  if (([v5 isEqualToString:@"systemGrayColor"] & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"systemGray2Color") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"systemGray3Color") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"systemGray4Color") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"systemGray5Color") & 1) == 0 && !objc_msgSend(v5, "isEqualToString:", @"systemGray6Color"))
+  if (([_systemColorName isEqualToString:@"systemGrayColor"] & 1) == 0 && (objc_msgSend(_systemColorName, "isEqualToString:", @"systemGray2Color") & 1) == 0 && (objc_msgSend(_systemColorName, "isEqualToString:", @"systemGray3Color") & 1) == 0 && (objc_msgSend(_systemColorName, "isEqualToString:", @"systemGray4Color") & 1) == 0 && (objc_msgSend(_systemColorName, "isEqualToString:", @"systemGray5Color") & 1) == 0 && !objc_msgSend(_systemColorName, "isEqualToString:", @"systemGray6Color"))
   {
     goto LABEL_65;
   }
 
-  if (a3 > 1)
+  if (prominence > 1)
   {
-    if (a3 != 2)
+    if (prominence != 2)
     {
-      if (a3 == 3)
+      if (prominence == 3)
       {
         v6 = +[UIColor systemGray4Color];
         goto LABEL_22;
@@ -541,16 +541,16 @@
 
   else
   {
-    if (a3)
+    if (prominence)
     {
-      if (a3 == 1)
+      if (prominence == 1)
       {
         v6 = +[UIColor systemGray2Color];
         goto LABEL_22;
       }
 
 LABEL_65:
-      v6 = [[UIDynamicModifiedColor alloc] initWithBaseColor:0xFFFFFFFFFFFFFFFFLL alphaComponent:a3 contrast:1.79769313e308 prominence:?];
+      v6 = [[UIDynamicModifiedColor alloc] initWithBaseColor:0xFFFFFFFFFFFFFFFFLL alphaComponent:prominence contrast:1.79769313e308 prominence:?];
       goto LABEL_22;
     }
 
@@ -565,52 +565,52 @@ LABEL_22:
 
 - (int64_t)prominence
 {
-  v3 = [(UIColor *)self _systemColorName];
-  if (([v3 hasPrefix:@"secondary"] & 1) == 0)
+  _systemColorName = [(UIColor *)self _systemColorName];
+  if (([_systemColorName hasPrefix:@"secondary"] & 1) == 0)
   {
-    if ([v3 hasPrefix:@"tertiary"])
+    if ([_systemColorName hasPrefix:@"tertiary"])
     {
       goto LABEL_4;
     }
 
-    if (([v3 hasPrefix:@"quaternary"] & 1) == 0)
+    if (([_systemColorName hasPrefix:@"quaternary"] & 1) == 0)
     {
-      if ([v3 isEqualToString:@"systemGrayColor"])
+      if ([_systemColorName isEqualToString:@"systemGrayColor"])
       {
-        v4 = 0;
+        prominence = 0;
         goto LABEL_9;
       }
 
-      if ([v3 isEqualToString:@"systemGray2Color"])
+      if ([_systemColorName isEqualToString:@"systemGray2Color"])
       {
         goto LABEL_2;
       }
 
-      if ([v3 isEqualToString:@"systemGray3Color"])
+      if ([_systemColorName isEqualToString:@"systemGray3Color"])
       {
 LABEL_4:
-        v4 = 2;
+        prominence = 2;
         goto LABEL_9;
       }
 
-      if (([v3 isEqualToString:@"systemGray4Color"] & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", @"systemGray5Color") & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", @"systemGray6Color") & 1) == 0)
+      if (([_systemColorName isEqualToString:@"systemGray4Color"] & 1) == 0 && (objc_msgSend(_systemColorName, "isEqualToString:", @"systemGray5Color") & 1) == 0 && (objc_msgSend(_systemColorName, "isEqualToString:", @"systemGray6Color") & 1) == 0)
       {
         v6.receiver = self;
         v6.super_class = UIDynamicColor;
-        v4 = [(UIColor *)&v6 prominence];
+        prominence = [(UIColor *)&v6 prominence];
         goto LABEL_9;
       }
     }
 
-    v4 = 3;
+    prominence = 3;
     goto LABEL_9;
   }
 
 LABEL_2:
-  v4 = 1;
+  prominence = 1;
 LABEL_9:
 
-  return v4;
+  return prominence;
 }
 
 id ___UIDynamicColor_block_invoke(uint64_t a1, void *a2)

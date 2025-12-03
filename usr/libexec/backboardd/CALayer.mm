@@ -1,13 +1,13 @@
 @interface CALayer
-- (void)bk_setBackgroundColorRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6;
-- (void)bk_setForegroundColorRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6;
+- (void)bk_setBackgroundColorRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
+- (void)bk_setForegroundColorRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
 @end
 
 @implementation CALayer
 
-- (void)bk_setBackgroundColorRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6
+- (void)bk_setBackgroundColorRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
-  v7 = sub_10002D3BC(a3, a4, a5, a6);
+  v7 = sub_10002D3BC(red, green, blue, alpha);
   if (v7)
   {
     v8 = v7;
@@ -26,9 +26,9 @@
   }
 }
 
-- (void)bk_setForegroundColorRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6
+- (void)bk_setForegroundColorRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
-  v7 = sub_10002D3BC(a3, a4, a5, a6);
+  v7 = sub_10002D3BC(red, green, blue, alpha);
   if (v7)
   {
     v8 = v7;

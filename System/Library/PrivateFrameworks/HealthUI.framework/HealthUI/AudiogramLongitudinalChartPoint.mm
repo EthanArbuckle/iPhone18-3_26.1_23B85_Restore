@@ -2,7 +2,7 @@
 - (_TtC8HealthUI31AudiogramLongitudinalChartPoint)init;
 - (id)allYValues;
 - (id)yValue;
-- (id)yValueForKey:(id)a3;
+- (id)yValueForKey:(id)key;
 @end
 
 @implementation AudiogramLongitudinalChartPoint
@@ -16,7 +16,7 @@
 
 - (id)yValue
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C3C9B5E4(v11);
 
   v3 = v12;
@@ -40,10 +40,10 @@
   return v9;
 }
 
-- (id)yValueForKey:(id)a3
+- (id)yValueForKey:(id)key
 {
   sub_1C3D20104();
-  v4 = self;
+  selfCopy = self;
   sub_1C3C9B5E4(v13);
 
   v5 = v14;
@@ -69,7 +69,7 @@
 
 - (id)allYValues
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C3C9B960();
 
   v3 = sub_1C3D202A4();

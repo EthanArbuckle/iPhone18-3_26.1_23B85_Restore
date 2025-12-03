@@ -1,6 +1,6 @@
 @interface DaemonProtocolDataProvider
-- (BOOL)processDictionary:(id)a3 error:(id *)a4;
-- (void)_presentDialog:(id)a3;
+- (BOOL)processDictionary:(id)dictionary error:(id *)error;
+- (void)_presentDialog:(id)dialog;
 - (void)dealloc;
 @end
 
@@ -13,14 +13,14 @@
   [(DaemonProtocolDataProvider *)&v3 dealloc];
 }
 
-- (void)_presentDialog:(id)a3
+- (void)_presentDialog:(id)dialog
 {
-  v4 = [[DaemonDialogOperation alloc] initWithDialog:a3];
+  v4 = [[DaemonDialogOperation alloc] initWithDialog:dialog];
   -[DaemonDialogOperation setDisplaysOnLockscreen:](v4, "setDisplaysOnLockscreen:", [-[DaemonProtocolDataProvider authenticationContext](self "authenticationContext")]);
   [+[ISOperationQueue mainQueue](ISOperationQueue "mainQueue")];
 }
 
-- (BOOL)processDictionary:(id)a3 error:(id *)a4
+- (BOOL)processDictionary:(id)dictionary error:(id *)error
 {
   v7 = [self->_willBeginProcessingDictionaryHandler copy];
   if (v7)
@@ -35,9 +35,9 @@
   v24 = 0x2020000000;
   v21.receiver = self;
   v21.super_class = DaemonProtocolDataProvider;
-  v25 = [(DaemonProtocolDataProvider *)&v21 processDictionary:a3 error:&v26];
+  v25 = [(DaemonProtocolDataProvider *)&v21 processDictionary:dictionary error:&v26];
   v9 = SSErrorSessionPropertyFailureType;
-  v10 = [a3 objectForKey:SSErrorSessionPropertyFailureType];
+  v10 = [dictionary objectForKey:SSErrorSessionPropertyFailureType];
   if (v10)
   {
     v11 = objc_alloc_init(ErrorHandlerSession);
@@ -50,7 +50,7 @@
     do
     {
       v13 = v27[v12];
-      v14 = [a3 objectForKey:v13];
+      v14 = [dictionary objectForKey:v13];
       if (v14)
       {
         [(ErrorHandlerSession *)v11 setValue:v14 forSessionProperty:v13];
@@ -73,22 +73,22 @@
     dispatch_release(v15);
   }
 
-  v16 = [(DaemonProtocolDataProvider *)self authenticatedAccountDSID];
-  if (!v16)
+  authenticatedAccountDSID = [(DaemonProtocolDataProvider *)self authenticatedAccountDSID];
+  if (!authenticatedAccountDSID)
   {
-    v16 = [-[DaemonProtocolDataProvider authenticationContext](self "authenticationContext")];
-    if (!v16)
+    authenticatedAccountDSID = [-[DaemonProtocolDataProvider authenticationContext](self "authenticationContext")];
+    if (!authenticatedAccountDSID)
     {
-      v16 = [objc_msgSend(+[SSAccountStore defaultStore](SSAccountStore "defaultStore")];
+      authenticatedAccountDSID = [objc_msgSend(+[SSAccountStore defaultStore](SSAccountStore "defaultStore")];
     }
   }
 
-  [SSVSubscriptionStatusCoordinator updateWithResponseDictionary:a3 accountIdentifier:v16];
+  [SSVSubscriptionStatusCoordinator updateWithResponseDictionary:dictionary accountIdentifier:authenticatedAccountDSID];
   v17 = v23;
   v18 = *(v23 + 24);
-  if (a4 && (v23[3] & 1) == 0)
+  if (error && (v23[3] & 1) == 0)
   {
-    *a4 = v26;
+    *error = v26;
     v18 = *(v17 + 24);
   }
 

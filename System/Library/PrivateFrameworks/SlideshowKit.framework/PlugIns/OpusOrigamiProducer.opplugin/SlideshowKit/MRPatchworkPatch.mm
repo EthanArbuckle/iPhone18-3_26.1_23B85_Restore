@@ -1,28 +1,28 @@
 @interface MRPatchworkPatch
 - (CGRect)rectangle;
-- (MRPatchworkPatch)initWithImage:(id)a3 rectangle:(CGRect)a4 needsBlend:(BOOL)a5;
+- (MRPatchworkPatch)initWithImage:(id)image rectangle:(CGRect)rectangle needsBlend:(BOOL)blend;
 - (void)dealloc;
 @end
 
 @implementation MRPatchworkPatch
 
-- (MRPatchworkPatch)initWithImage:(id)a3 rectangle:(CGRect)a4 needsBlend:(BOOL)a5
+- (MRPatchworkPatch)initWithImage:(id)image rectangle:(CGRect)rectangle needsBlend:(BOOL)blend
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
   v13.receiver = self;
   v13.super_class = MRPatchworkPatch;
   v11 = [(MRPatchworkPatch *)&v13 init];
   if (v11)
   {
-    v11->_image = [a3 retainByUser];
+    v11->_image = [image retainByUser];
     v11->rectangle.origin.x = x;
     v11->rectangle.origin.y = y;
     v11->rectangle.size.width = width;
     v11->rectangle.size.height = height;
-    v11->needsBlend = a5;
+    v11->needsBlend = blend;
   }
 
   return v11;

@@ -1,9 +1,9 @@
 @interface WRM_QMIDsdClient
-- (WRM_QMIDsdClient)initWithSub:(int64_t)a3;
-- (void)bindQMIClientToSlotType:(int)a3;
+- (WRM_QMIDsdClient)initWithSub:(int64_t)sub;
+- (void)bindQMIClientToSlotType:(int)type;
 - (void)dealloc;
-- (void)handleBandwidthEstimationInd:(Indication *)a3;
-- (void)handleDataSystemStatusInd:(Indication *)a3;
+- (void)handleBandwidthEstimationInd:(Indication *)ind;
+- (void)handleDataSystemStatusInd:(Indication *)ind;
 - (void)sendRegisterIndicationRequest;
 - (void)start;
 - (void)started;
@@ -13,7 +13,7 @@
 
 @implementation WRM_QMIDsdClient
 
-- (WRM_QMIDsdClient)initWithSub:(int64_t)a3
+- (WRM_QMIDsdClient)initWithSub:(int64_t)sub
 {
   v7.receiver = self;
   v7.super_class = WRM_QMIDsdClient;
@@ -28,7 +28,7 @@
       v4->mQueue = &_dispatch_main_q;
     }
 
-    v4->mSub = a3;
+    v4->mSub = sub;
     [(WRM_QMIDsdClient *)v4 initNewClient];
     v4->mQmiClientRunning = 0;
     v4->mSlotOneCellID = 0;
@@ -106,7 +106,7 @@
   dispatch_async([+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")], v4);
 }
 
-- (void)handleDataSystemStatusInd:(Indication *)a3
+- (void)handleDataSystemStatusInd:(Indication *)ind
 {
   [WCM_Logging logLevel:22 message:@"QMI.DSD client system status report received\n"];
   v5[0] = _NSConcreteStackBlock;
@@ -115,10 +115,10 @@
   v5[3] = &unk_10023E9A0;
   v5[4] = self;
   v6 = v5;
-  sub_10005468C(a3, 16, &v6);
+  sub_10005468C(ind, 16, &v6);
 }
 
-- (void)handleBandwidthEstimationInd:(Indication *)a3
+- (void)handleBandwidthEstimationInd:(Indication *)ind
 {
   v5 = +[WRM_HandoverManager WRM_HandoverManagerSingleton];
   v6 = +[WRM_EnhancedCTService wrm_EnhancedCTServiceSingleton];
@@ -151,7 +151,7 @@
   v13[5] = v16;
   v13[6] = &v22;
   v26 = v13;
-  sub_1000547BC(a3, 22, &v26);
+  sub_1000547BC(ind, 22, &v26);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000532D0;
@@ -165,7 +165,7 @@
   v12[6] = v5;
   v12[7] = &v22;
   v26 = v12;
-  sub_1000548C0(a3, 1, &v26);
+  sub_1000548C0(ind, 1, &v26);
   [WCM_Logging logLevel:22 message:@"===QMI.DSD.%u Configured Max Bandwidth===\n", *(v23 + 24)];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -174,7 +174,7 @@
   v11[4] = v6;
   v11[5] = &v22;
   v26 = v11;
-  sub_1000549C4(a3, 16, &v26);
+  sub_1000549C4(ind, 16, &v26);
   [WCM_Logging logLevel:22 message:@"===QMI.DSD.%u Downlink Bandwidth Estimation===\n", *(v23 + 24)];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -184,7 +184,7 @@
   v10[6] = &v22;
   v10[4] = v6;
   v26 = v10;
-  sub_100054AC8(a3, 17, &v26);
+  sub_100054AC8(ind, 17, &v26);
   [WCM_Logging logLevel:22 message:@"===QMI.DSD.%u Uplink Bandwidth Estimation===\n", *(v23 + 24)];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -194,7 +194,7 @@
   v9[6] = &v22;
   v9[4] = v6;
   v26 = v9;
-  sub_100054BDC(a3, 18, &v26);
+  sub_100054BDC(ind, 18, &v26);
   [WCM_Logging logLevel:22 message:@"===QMI.DSD.%u Connected State Summary===\n", *(v23 + 24)];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -206,7 +206,7 @@
   v8[5] = v5;
   v8[8] = v18;
   v26 = v8;
-  sub_100054CE8(a3, 19, &v26);
+  sub_100054CE8(ind, 19, &v26);
   [WCM_Logging logLevel:22 message:@"===QMI.DSD.%u RLGS Info===\n", *(v23 + 24)];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -216,7 +216,7 @@
   v7[6] = &v22;
   v7[4] = v6;
   v26 = v7;
-  sub_100054DEC(a3, 20, &v26);
+  sub_100054DEC(ind, 20, &v26);
   _Block_object_dispose(v14, 8);
   _Block_object_dispose(v16, 8);
   _Block_object_dispose(v18, 8);
@@ -246,14 +246,14 @@
   qmi::MutableMessageBase::~MutableMessageBase(v6);
 }
 
-- (void)bindQMIClientToSlotType:(int)a3
+- (void)bindQMIClientToSlotType:(int)type
 {
   qmi::MutableMessageBase::MutableMessageBase(v13, 0x27u);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000541F4;
   v11[3] = &unk_10023EB18;
-  v12 = a3;
+  typeCopy = type;
   v5 = sub_100055298(v13, 1);
   sub_1000541F4(v11, v5);
   v7[5] = self->mClient;

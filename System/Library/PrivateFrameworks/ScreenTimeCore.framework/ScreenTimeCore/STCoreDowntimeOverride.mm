@@ -1,16 +1,16 @@
 @interface STCoreDowntimeOverride
-- (BOOL)_validateAssociatedDowntime:(id)a3;
-- (BOOL)_validateState:(id)a3;
-- (BOOL)_validateType:(id)a3;
-- (BOOL)updateWithDictionaryRepresentation:(id)a3;
-- (BOOL)validateForDelete:(id *)a3;
-- (BOOL)validateForInsert:(id *)a3;
-- (BOOL)validateForUpdate:(id *)a3;
+- (BOOL)_validateAssociatedDowntime:(id)downtime;
+- (BOOL)_validateState:(id)state;
+- (BOOL)_validateType:(id)type;
+- (BOOL)updateWithDictionaryRepresentation:(id)representation;
+- (BOOL)validateForDelete:(id *)delete;
+- (BOOL)validateForInsert:(id *)insert;
+- (BOOL)validateForUpdate:(id *)update;
 - (id)dictionaryRepresentation;
 - (int64_t)state;
 - (int64_t)type;
-- (void)setState:(int64_t)a3;
-- (void)setType:(int64_t)a3;
+- (void)setState:(int64_t)state;
+- (void)setType:(int64_t)type;
 @end
 
 @implementation STCoreDowntimeOverride
@@ -18,17 +18,17 @@
 - (int64_t)type
 {
   [(STCoreDowntimeOverride *)self willAccessValueForKey:@"type"];
-  v3 = [(STCoreDowntimeOverride *)self primitiveType];
-  v4 = [v3 integerValue];
+  primitiveType = [(STCoreDowntimeOverride *)self primitiveType];
+  integerValue = [primitiveType integerValue];
 
   [(STCoreDowntimeOverride *)self didAccessValueForKey:@"type"];
-  return v4;
+  return integerValue;
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
   [(STCoreDowntimeOverride *)self willChangeValueForKey:@"type"];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   [(STCoreDowntimeOverride *)self setPrimitiveType:v5];
 
   [(STCoreDowntimeOverride *)self didChangeValueForKey:@"type"];
@@ -37,27 +37,27 @@
 - (int64_t)state
 {
   [(STCoreDowntimeOverride *)self willAccessValueForKey:@"state"];
-  v3 = [(STCoreDowntimeOverride *)self primitiveState];
-  v4 = [v3 integerValue];
+  primitiveState = [(STCoreDowntimeOverride *)self primitiveState];
+  integerValue = [primitiveState integerValue];
 
   [(STCoreDowntimeOverride *)self didAccessValueForKey:@"state"];
-  return v4;
+  return integerValue;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   [(STCoreDowntimeOverride *)self willChangeValueForKey:@"state"];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:state];
   [(STCoreDowntimeOverride *)self setPrimitiveState:v5];
 
   [(STCoreDowntimeOverride *)self didChangeValueForKey:@"state"];
 }
 
-- (BOOL)updateWithDictionaryRepresentation:(id)a3
+- (BOOL)updateWithDictionaryRepresentation:(id)representation
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"isTombstoned"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKeyedSubscript:@"isTombstoned"];
   -[STCoreDowntimeOverride setIsTombstoned:](self, "setIsTombstoned:", [v5 BOOLValue]);
 
   if ([(STCoreDowntimeOverride *)self isTombstoned])
@@ -66,30 +66,30 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B831F000, v6, OS_LOG_TYPE_DEFAULT, "Deleting tombstoned downtime override: %@", &v14, 0xCu);
     }
 
-    v7 = [(STCoreDowntimeOverride *)self managedObjectContext];
-    [v7 deleteObject:self];
+    managedObjectContext = [(STCoreDowntimeOverride *)self managedObjectContext];
+    [managedObjectContext deleteObject:self];
   }
 
   else
   {
-    v8 = [v4 objectForKeyedSubscript:@"type"];
+    v8 = [representationCopy objectForKeyedSubscript:@"type"];
     -[STCoreDowntimeOverride setType:](self, "setType:", [v8 integerValue]);
 
-    v9 = [v4 objectForKeyedSubscript:@"state"];
+    v9 = [representationCopy objectForKeyedSubscript:@"state"];
     -[STCoreDowntimeOverride setState:](self, "setState:", [v9 integerValue]);
 
-    v10 = [v4 objectForKeyedSubscript:@"creationDate"];
+    v10 = [representationCopy objectForKeyedSubscript:@"creationDate"];
     [(STCoreDowntimeOverride *)self setCreationDate:v10];
 
-    v11 = [v4 objectForKeyedSubscript:@"calendarIdentifier"];
+    v11 = [representationCopy objectForKeyedSubscript:@"calendarIdentifier"];
     [(STCoreDowntimeOverride *)self setCalendarIdentifier:v11];
 
-    v7 = [v4 objectForKeyedSubscript:@"endDate"];
-    [(STCoreDowntimeOverride *)self setEndDate:v7];
+    managedObjectContext = [representationCopy objectForKeyedSubscript:@"endDate"];
+    [(STCoreDowntimeOverride *)self setEndDate:managedObjectContext];
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -105,14 +105,14 @@
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:{-[STCoreDowntimeOverride state](self, "state")}];
   [v3 setObject:v5 forKeyedSubscript:@"state"];
 
-  v6 = [(STCoreDowntimeOverride *)self creationDate];
-  [v3 setObject:v6 forKeyedSubscript:@"creationDate"];
+  creationDate = [(STCoreDowntimeOverride *)self creationDate];
+  [v3 setObject:creationDate forKeyedSubscript:@"creationDate"];
 
-  v7 = [(STCoreDowntimeOverride *)self calendarIdentifier];
-  [v3 setObject:v7 forKeyedSubscript:@"calendarIdentifier"];
+  calendarIdentifier = [(STCoreDowntimeOverride *)self calendarIdentifier];
+  [v3 setObject:calendarIdentifier forKeyedSubscript:@"calendarIdentifier"];
 
-  v8 = [(STCoreDowntimeOverride *)self endDate];
-  [v3 setObject:v8 forKeyedSubscript:@"endDate"];
+  endDate = [(STCoreDowntimeOverride *)self endDate];
+  [v3 setObject:endDate forKeyedSubscript:@"endDate"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[STCoreDowntimeOverride isTombstoned](self, "isTombstoned")}];
   [v3 setObject:v9 forKeyedSubscript:@"isTombstoned"];
@@ -122,7 +122,7 @@
   return v10;
 }
 
-- (BOOL)validateForUpdate:(id *)a3
+- (BOOL)validateForUpdate:(id *)update
 {
   v10.receiver = self;
   v10.super_class = STCoreDowntimeOverride;
@@ -148,7 +148,7 @@
 
     v9.receiver = self;
     v9.super_class = STCoreDowntimeOverride;
-    v7 = [(NSManagedObject *)&v9 parseValidationErrors:a3 otherErrors:v5];
+    v7 = [(NSManagedObject *)&v9 parseValidationErrors:update otherErrors:v5];
   }
 
   else
@@ -156,7 +156,7 @@
     v5 = +[STLog coreDataValidation];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
-      [STCoreDowntimeOverride validateForUpdate:a3];
+      [STCoreDowntimeOverride validateForUpdate:update];
     }
 
     v7 = 0;
@@ -165,7 +165,7 @@
   return v7;
 }
 
-- (BOOL)validateForInsert:(id *)a3
+- (BOOL)validateForInsert:(id *)insert
 {
   v10.receiver = self;
   v10.super_class = STCoreDowntimeOverride;
@@ -191,7 +191,7 @@
 
     v9.receiver = self;
     v9.super_class = STCoreDowntimeOverride;
-    v7 = [(NSManagedObject *)&v9 parseValidationErrors:a3 otherErrors:v5];
+    v7 = [(NSManagedObject *)&v9 parseValidationErrors:insert otherErrors:v5];
   }
 
   else
@@ -199,7 +199,7 @@
     v5 = +[STLog coreDataValidation];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
-      [STCoreDowntimeOverride validateForInsert:a3];
+      [STCoreDowntimeOverride validateForInsert:insert];
     }
 
     v7 = 0;
@@ -208,7 +208,7 @@
   return v7;
 }
 
-- (BOOL)validateForDelete:(id *)a3
+- (BOOL)validateForDelete:(id *)delete
 {
   v7.receiver = self;
   v7.super_class = STCoreDowntimeOverride;
@@ -223,69 +223,69 @@
     v5 = +[STLog coreDataValidation];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
-      [STCoreDowntimeOverride validateForDelete:a3];
+      [STCoreDowntimeOverride validateForDelete:delete];
     }
   }
 
   return v4;
 }
 
-- (BOOL)_validateState:(id)a3
+- (BOOL)_validateState:(id)state
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(STCoreDowntimeOverride *)self state];
-  if (v5 >= 2)
+  stateCopy = state;
+  state = [(STCoreDowntimeOverride *)self state];
+  if (state >= 2)
   {
     v6 = MEMORY[0x1E696ABC0];
     v11 = *MEMORY[0x1E696A578];
     v12[0] = @"CoreDowntimeOverride has an unexpected state.";
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
     v8 = [v6 errorWithDomain:@"STErrorDomain" code:544 userInfo:v7];
-    [v4 addObject:v8];
+    [stateCopy addObject:v8];
   }
 
   v9 = *MEMORY[0x1E69E9840];
-  return v5 < 2;
+  return state < 2;
 }
 
-- (BOOL)_validateType:(id)a3
+- (BOOL)_validateType:(id)type
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(STCoreDowntimeOverride *)self type];
-  if (v5 >= 2)
+  typeCopy = type;
+  type = [(STCoreDowntimeOverride *)self type];
+  if (type >= 2)
   {
     v6 = MEMORY[0x1E696ABC0];
     v11 = *MEMORY[0x1E696A578];
     v12[0] = @"CoreDowntimeOverride has an unexpected type.";
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
     v8 = [v6 errorWithDomain:@"STErrorDomain" code:544 userInfo:v7];
-    [v4 addObject:v8];
+    [typeCopy addObject:v8];
   }
 
   v9 = *MEMORY[0x1E69E9840];
-  return v5 < 2;
+  return type < 2;
 }
 
-- (BOOL)_validateAssociatedDowntime:(id)a3
+- (BOOL)_validateAssociatedDowntime:(id)downtime
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(STCoreDowntimeOverride *)self downtime];
+  downtimeCopy = downtime;
+  downtime = [(STCoreDowntimeOverride *)self downtime];
 
-  if (!v5)
+  if (!downtime)
   {
     v6 = MEMORY[0x1E696ABC0];
     v11 = *MEMORY[0x1E696A578];
     v12[0] = @"CoreDowntimeOverride does not have an associated Downtime blueprint.";
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
     v8 = [v6 errorWithDomain:@"STErrorDomain" code:546 userInfo:v7];
-    [v4 addObject:v8];
+    [downtimeCopy addObject:v8];
   }
 
   v9 = *MEMORY[0x1E69E9840];
-  return v5 != 0;
+  return downtime != 0;
 }
 
 - (void)validateForUpdate:(uint64_t *)a1 .cold.1(uint64_t *a1)

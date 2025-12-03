@@ -1,46 +1,46 @@
 @interface ContainerDetail.ViewController
-- (_TtCV5Music15ContainerDetail14ViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)_bridgedUpdateContentUnavailableConfigurationUsingState:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtCV5Music15ContainerDetail14ViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)_bridgedUpdateContentUnavailableConfigurationUsingState:(id)state;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ContainerDetail.ViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10069D888();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10069E30C(a3);
+  selfCopy = self;
+  sub_10069E30C(appear);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10069E54C(a3);
+  selfCopy = self;
+  sub_10069E54C(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_10069E8B4(a3);
+  selfCopy = self;
+  sub_10069E8B4(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v8.receiver = self;
   v8.super_class = type metadata accessor for ContainerDetail.ViewController(0);
   v4 = v8.receiver;
-  [(ContainerDetail.ViewController *)&v8 viewDidDisappear:v3];
+  [(ContainerDetail.ViewController *)&v8 viewDidDisappear:disappearCopy];
   v5 = &v4[OBJC_IVAR____TtCV5Music15ContainerDetail14ViewController_dataSource];
   swift_beginAccess();
   v6 = *(v5 + 1);
@@ -51,20 +51,20 @@
   }
 }
 
-- (void)_bridgedUpdateContentUnavailableConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateContentUnavailableConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UIContentUnavailableConfigurationState();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UIContentUnavailableConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_10069F2A8();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (_TtCV5Music15ContainerDetail14ViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtCV5Music15ContainerDetail14ViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

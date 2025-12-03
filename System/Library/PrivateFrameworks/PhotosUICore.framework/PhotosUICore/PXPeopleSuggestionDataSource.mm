@@ -1,32 +1,32 @@
 @interface PXPeopleSuggestionDataSource
-+ (void)_mergeAndSaveUserFeedbackForPersons:(id)a3 personChangeRequest:(id)a4;
-- (BOOL)cancelSuggestionForPerson:(id)a3 withToken:(id)a4 error:(id *)a5;
-- (PXPeopleSuggestionDataSource)initWithFlowType:(unint64_t)a3;
-- (id)commitSuggestionsForPerson:(id)a3 withConfirmedSuggestions:(id)a4 andRejectedSuggestions:(id)a5;
-- (id)fetchAndCacheMergeCandidatesForPerson:(id)a3;
-- (id)suggestionsForPerson:(id)a3 withConfirmedSuggestions:(id)a4 andRejectedSuggestions:(id)a5 completion:(id)a6;
-- (void)photoLibraryDidChange:(id)a3;
-- (void)setFlowType:(unint64_t)a3;
++ (void)_mergeAndSaveUserFeedbackForPersons:(id)persons personChangeRequest:(id)request;
+- (BOOL)cancelSuggestionForPerson:(id)person withToken:(id)token error:(id *)error;
+- (PXPeopleSuggestionDataSource)initWithFlowType:(unint64_t)type;
+- (id)commitSuggestionsForPerson:(id)person withConfirmedSuggestions:(id)suggestions andRejectedSuggestions:(id)rejectedSuggestions;
+- (id)fetchAndCacheMergeCandidatesForPerson:(id)person;
+- (id)suggestionsForPerson:(id)person withConfirmedSuggestions:(id)suggestions andRejectedSuggestions:(id)rejectedSuggestions completion:(id)completion;
+- (void)photoLibraryDidChange:(id)change;
+- (void)setFlowType:(unint64_t)type;
 - (void)startListeningForLibraryChanges;
 - (void)stopListeningForLibraryChanges;
 @end
 
 @implementation PXPeopleSuggestionDataSource
 
-- (void)photoLibraryDidChange:(id)a3
+- (void)photoLibraryDidChange:(id)change
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXPeopleSuggestionDataSource *)self mergeCandidateFetchResult];
-  v6 = [v4 changeDetailsForFetchResult:v5];
+  changeCopy = change;
+  mergeCandidateFetchResult = [(PXPeopleSuggestionDataSource *)self mergeCandidateFetchResult];
+  v6 = [changeCopy changeDetailsForFetchResult:mergeCandidateFetchResult];
   if (v6)
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v8 = v5;
+    v8 = mergeCandidateFetchResult;
     v9 = [v8 countByEnumeratingWithState:&v19 objects:v25 count:16];
     if (v9)
     {
@@ -42,10 +42,10 @@
           }
 
           v13 = *(*(&v19 + 1) + 8 * i);
-          v14 = [v13 objectID];
-          if ([v4 keyFaceChangedForPersonOID:v14])
+          objectID = [v13 objectID];
+          if ([changeCopy keyFaceChangedForPersonOID:objectID])
           {
-            [v7 addObject:v13];
+            [array addObject:v13];
           }
         }
 
@@ -55,10 +55,10 @@
       while (v10);
     }
 
-    if ([v7 count])
+    if ([array count])
     {
       v23 = @"PXPeopleUpdatedKeyFacePersonsKey";
-      v24 = v7;
+      v24 = array;
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -81,8 +81,8 @@ void __54__PXPeopleSuggestionDataSource_photoLibraryDidChange___block_invoke(uin
 {
   if ([(PXPeopleSuggestionDataSource *)self flowType]== 1)
   {
-    v3 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-    [v3 unregisterChangeObserver:self];
+    px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+    [px_deprecated_appPhotoLibrary unregisterChangeObserver:self];
   }
 }
 
@@ -90,21 +90,21 @@ void __54__PXPeopleSuggestionDataSource_photoLibraryDidChange___block_invoke(uin
 {
   if ([(PXPeopleSuggestionDataSource *)self flowType]== 1)
   {
-    v3 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-    [v3 registerChangeObserver:self];
+    px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+    [px_deprecated_appPhotoLibrary registerChangeObserver:self];
   }
 }
 
-- (id)commitSuggestionsForPerson:(id)a3 withConfirmedSuggestions:(id)a4 andRejectedSuggestions:(id)a5
+- (id)commitSuggestionsForPerson:(id)person withConfirmedSuggestions:(id)suggestions andRejectedSuggestions:(id)rejectedSuggestions
 {
   v161 = *MEMORY[0x1E69E9840];
-  v96 = a3;
-  v95 = a4;
-  v94 = a5;
+  personCopy = person;
+  suggestionsCopy = suggestions;
+  rejectedSuggestionsCopy = rejectedSuggestions;
   v97 = +[PXPeopleUISettings sharedInstance];
   if (([v97 enableBootstrapDemoMode] & 1) != 0 || objc_msgSend(v97, "useBootstrapMockDataSource"))
   {
-    v8 = v96;
+    v8 = personCopy;
   }
 
   else
@@ -127,42 +127,42 @@ void __54__PXPeopleSuggestionDataSource_photoLibraryDidChange___block_invoke(uin
     v13 = objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v78 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v78 handleFailureInMethod:a2 object:self file:@"PXPeopleSuggestionDataSource.m" lineNumber:206 description:{@"Invalid parameter not satisfying: %@", @"[person isKindOfClass:personClass]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleSuggestionDataSource.m" lineNumber:206 description:{@"Invalid parameter not satisfying: %@", @"[person isKindOfClass:personClass]"}];
     }
 
-    if ([v95 count])
+    if ([suggestionsCopy count])
     {
-      v14 = [v95 firstObject];
+      firstObject = [suggestionsCopy firstObject];
       if ((objc_opt_isKindOfClass() & 1) == 0 && (objc_opt_isKindOfClass() & 1) == 0)
       {
-        v79 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v79 handleFailureInMethod:a2 object:self file:@"PXPeopleSuggestionDataSource.m" lineNumber:209 description:{@"Invalid parameter not satisfying: %@", @"[confirmedSuggestion isKindOfClass:suggestionClass] || [confirmedSuggestion isKindOfClass:personClass]"}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPeopleSuggestionDataSource.m" lineNumber:209 description:{@"Invalid parameter not satisfying: %@", @"[confirmedSuggestion isKindOfClass:suggestionClass] || [confirmedSuggestion isKindOfClass:personClass]"}];
       }
     }
 
-    if ([v94 count])
+    if ([rejectedSuggestionsCopy count])
     {
-      v15 = [v94 firstObject];
+      firstObject2 = [rejectedSuggestionsCopy firstObject];
       if ((objc_opt_isKindOfClass() & 1) == 0 && (objc_opt_isKindOfClass() & 1) == 0)
       {
-        v80 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v80 handleFailureInMethod:a2 object:self file:@"PXPeopleSuggestionDataSource.m" lineNumber:213 description:{@"Invalid parameter not satisfying: %@", @"[rejectedSuggestion isKindOfClass:suggestionClass] || [rejectedSuggestion isKindOfClass:personClass]"}];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXPeopleSuggestionDataSource.m" lineNumber:213 description:{@"Invalid parameter not satisfying: %@", @"[rejectedSuggestion isKindOfClass:suggestionClass] || [rejectedSuggestion isKindOfClass:personClass]"}];
       }
     }
 
-    v92 = v96;
+    v92 = personCopy;
     if (v92)
     {
-      v103 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v95, "count")}];
-      v100 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v95, "count")}];
-      v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v94, "count")}];
-      v102 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v94, "count")}];
+      v103 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(suggestionsCopy, "count")}];
+      v100 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(suggestionsCopy, "count")}];
+      v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(rejectedSuggestionsCopy, "count")}];
+      v102 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(rejectedSuggestionsCopy, "count")}];
       v147 = 0u;
       v148 = 0u;
       v145 = 0u;
       v146 = 0u;
-      obj = v95;
+      obj = suggestionsCopy;
       v17 = [obj countByEnumeratingWithState:&v145 objects:v160 count:16];
       if (v17)
       {
@@ -184,8 +184,8 @@ void __54__PXPeopleSuggestionDataSource_photoLibraryDidChange___block_invoke(uin
 
             else if (objc_opt_isKindOfClass())
             {
-              v21 = [v20 person];
-              [v100 addObject:v21];
+              person = [v20 person];
+              [v100 addObject:person];
             }
           }
 
@@ -199,7 +199,7 @@ void __54__PXPeopleSuggestionDataSource_photoLibraryDidChange___block_invoke(uin
       v144 = 0u;
       v141 = 0u;
       v142 = 0u;
-      v22 = v94;
+      v22 = rejectedSuggestionsCopy;
       v23 = [v22 countByEnumeratingWithState:&v141 objects:v159 count:16];
       if (v23)
       {
@@ -263,7 +263,7 @@ void __54__PXPeopleSuggestionDataSource_photoLibraryDidChange___block_invoke(uin
 
       if (v30 != 0 || v31 != 0 || v32 != 0 || v87 != 0)
       {
-        v84 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+        px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
         v101 = objc_alloc_init(MEMORY[0x1E695DF90]);
         if (PFOSVariantHasInternalDiagnostics())
         {
@@ -297,8 +297,8 @@ void __54__PXPeopleSuggestionDataSource_photoLibraryDidChange___block_invoke(uin
             v38 = [MEMORY[0x1E696AE18] predicateWithFormat:@"personUUID IN %@", v83];
             [v82 setInternalPredicate:v38];
 
-            v39 = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
-            [v82 setIncludedDetectionTypes:v39];
+            px_defaultDetectionTypes = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
+            [v82 setIncludedDetectionTypes:px_defaultDetectionTypes];
 
             [MEMORY[0x1E6978980] fetchMergeCandidateWithConfidencePersonsForPerson:v92 options:v82];
             v133 = 0u;
@@ -322,8 +322,8 @@ void __54__PXPeopleSuggestionDataSource_photoLibraryDidChange___block_invoke(uin
                   v44 = MEMORY[0x1E696AD98];
                   [v43 mergeCandidateConfidence];
                   v45 = [v44 numberWithDouble:?];
-                  v46 = [v43 uuid];
-                  [v101 setObject:v45 forKeyedSubscript:v46];
+                  uuid = [v43 uuid];
+                  [v101 setObject:v45 forKeyedSubscript:uuid];
                 }
 
                 v40 = [v98 countByEnumeratingWithState:&v131 objects:v150 count:16];
@@ -354,8 +354,8 @@ void __54__PXPeopleSuggestionDataSource_photoLibraryDidChange___block_invoke(uin
                   v52 = MEMORY[0x1E696AD98];
                   [v51 mergeCandidateConfidence];
                   v53 = [v52 numberWithDouble:?];
-                  v54 = [v51 uuid];
-                  [v101 setObject:v53 forKeyedSubscript:v54];
+                  uuid2 = [v51 uuid];
+                  [v101 setObject:v53 forKeyedSubscript:uuid2];
                 }
 
                 v48 = [v47 countByEnumeratingWithState:&v127 objects:v149 count:16];
@@ -408,7 +408,7 @@ void __54__PXPeopleSuggestionDataSource_photoLibraryDidChange___block_invoke(uin
         v123 = v86;
         v124 = buf;
         v117 = 0;
-        [v84 performChangesAndWait:v118 error:&v117];
+        [px_deprecated_appPhotoLibrary performChangesAndWait:v118 error:&v117];
         v63 = v117;
         v64 = v60;
         v65 = v64;
@@ -418,14 +418,14 @@ void __54__PXPeopleSuggestionDataSource_photoLibraryDidChange___block_invoke(uin
           _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v65, OS_SIGNPOST_INTERVAL_END, spid, "updateDatabaseWithSuggestions", "", v151, 2u);
         }
 
-        v66 = [(PXPeopleSuggestionDataSource *)self flowType];
-        if (!v66)
+        flowType = [(PXPeopleSuggestionDataSource *)self flowType];
+        if (!flowType)
         {
           v67 = [MEMORY[0x1E695DFD8] setWithArray:v61];
           v68 = [PXPeopleConfirmationInfo alloc];
           v69 = [(PXPeopleConfirmationInfo *)v68 initWithSourcePerson:v62 targetPerson:*(v136 + 5) confirmedSuggestions:v67];
-          v70 = [MEMORY[0x1E696AD88] defaultCenter];
-          [v70 postNotificationName:@"PXPeopleConfirmationDidFinish" object:v69];
+          defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+          [defaultCenter postNotificationName:@"PXPeopleConfirmationDidFinish" object:v69];
         }
 
         if (v63)
@@ -448,7 +448,7 @@ void __54__PXPeopleSuggestionDataSource_photoLibraryDidChange___block_invoke(uin
         v107 = v61;
         v108 = v86;
         v109 = v62;
-        v114 = v66;
+        v114 = flowType;
         v110 = v102;
         v111 = v101;
         v115 = v87;
@@ -851,60 +851,60 @@ void __107__PXPeopleSuggestionDataSource_commitSuggestionsForPerson_withConfirme
   }
 }
 
-- (BOOL)cancelSuggestionForPerson:(id)a3 withToken:(id)a4 error:(id *)a5
+- (BOOL)cancelSuggestionForPerson:(id)person withToken:(id)token error:(id *)error
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  [v5 cancel];
-  v6 = [v5 token];
+  tokenCopy = token;
+  [tokenCopy cancel];
+  token = [tokenCopy token];
 
-  if (v6 != 0x7FFFFFFFFFFFFFFFLL)
+  if (token != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v6];
+    px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:token];
     v11[0] = v8;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-    [v7 cancelOperationsWithIdentifiers:v9 reply:&__block_literal_global_51812];
+    [px_deprecated_appPhotoLibrary cancelOperationsWithIdentifiers:v9 reply:&__block_literal_global_51812];
   }
 
   return 1;
 }
 
-- (id)suggestionsForPerson:(id)a3 withConfirmedSuggestions:(id)a4 andRejectedSuggestions:(id)a5 completion:(id)a6
+- (id)suggestionsForPerson:(id)person withConfirmedSuggestions:(id)suggestions andRejectedSuggestions:(id)rejectedSuggestions completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  personCopy = person;
+  suggestionsCopy = suggestions;
+  rejectedSuggestionsCopy = rejectedSuggestions;
+  completionCopy = completion;
   v15 = objc_opt_class();
   v16 = objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"PXPeopleSuggestionDataSource.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"[person isKindOfClass:personClass]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleSuggestionDataSource.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"[person isKindOfClass:personClass]"}];
   }
 
-  if ([v12 count])
+  if ([suggestionsCopy count])
   {
-    v17 = [v12 firstObject];
+    firstObject = [suggestionsCopy firstObject];
     if ((objc_opt_isKindOfClass() & 1) == 0 && (objc_opt_isKindOfClass() & 1) == 0)
     {
-      v32 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v32 handleFailureInMethod:a2 object:self file:@"PXPeopleSuggestionDataSource.m" lineNumber:100 description:{@"Invalid parameter not satisfying: %@", @"[confirmedSuggestion isKindOfClass:suggestionClass] || [confirmedSuggestion isKindOfClass:personClass]"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPeopleSuggestionDataSource.m" lineNumber:100 description:{@"Invalid parameter not satisfying: %@", @"[confirmedSuggestion isKindOfClass:suggestionClass] || [confirmedSuggestion isKindOfClass:personClass]"}];
     }
   }
 
-  if ([v13 count])
+  if ([rejectedSuggestionsCopy count])
   {
-    v18 = [v13 firstObject];
+    firstObject2 = [rejectedSuggestionsCopy firstObject];
     if ((objc_opt_isKindOfClass() & 1) == 0 && (objc_opt_isKindOfClass() & 1) == 0)
     {
-      v33 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v33 handleFailureInMethod:a2 object:self file:@"PXPeopleSuggestionDataSource.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"[rejectedSuggestion isKindOfClass:suggestionClass] || [rejectedSuggestion isKindOfClass:personClass]"}];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXPeopleSuggestionDataSource.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"[rejectedSuggestion isKindOfClass:suggestionClass] || [rejectedSuggestion isKindOfClass:personClass]"}];
     }
   }
 
-  v19 = v11;
+  v19 = personCopy;
   v20 = PLUIGetLog();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
@@ -922,16 +922,16 @@ void __107__PXPeopleSuggestionDataSource_commitSuggestionsForPerson_withConfirme
   objc_copyWeak(v40, buf);
   block[4] = self;
   v35 = v19;
-  v36 = v12;
-  v37 = v13;
-  v39 = v14;
+  v36 = suggestionsCopy;
+  v37 = rejectedSuggestionsCopy;
+  v39 = completionCopy;
   v23 = v21;
   v38 = v23;
   v40[1] = v15;
   v40[2] = v16;
-  v24 = v14;
-  v25 = v13;
-  v26 = v12;
+  v24 = completionCopy;
+  v25 = rejectedSuggestionsCopy;
+  v26 = suggestionsCopy;
   v27 = v19;
   dispatch_async(v22, block);
 
@@ -1152,17 +1152,17 @@ void __112__PXPeopleSuggestionDataSource_suggestionsForPerson_withConfirmedSugge
   }
 }
 
-- (void)setFlowType:(unint64_t)a3
+- (void)setFlowType:(unint64_t)type
 {
-  self->_flowType = a3;
-  if (a3 == 1)
+  self->_flowType = type;
+  if (type == 1)
   {
     v3 = 0;
   }
 
   else
   {
-    if (a3)
+    if (type)
     {
       return;
     }
@@ -1173,14 +1173,14 @@ void __112__PXPeopleSuggestionDataSource_suggestionsForPerson_withConfirmedSugge
   [(PXPeopleSuggestionDataSource *)self setSuggestionFetchType:v3];
 }
 
-- (id)fetchAndCacheMergeCandidatesForPerson:(id)a3
+- (id)fetchAndCacheMergeCandidatesForPerson:(id)person
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXPeopleSuggestionDataSource *)self mergeCandidateFetchResult];
-  if (!v5)
+  personCopy = person;
+  mergeCandidateFetchResult = [(PXPeopleSuggestionDataSource *)self mergeCandidateFetchResult];
+  if (!mergeCandidateFetchResult)
   {
-    v6 = [MEMORY[0x1E6978830] fetchOptionsWithPhotoLibrary:0 orObject:v4];
+    v6 = [MEMORY[0x1E6978830] fetchOptionsWithPhotoLibrary:0 orObject:personCopy];
     [v6 setIncludeOnlyPersonsWithVisibleKeyFaces:1];
     v18[0] = *MEMORY[0x1E6978F38];
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
@@ -1192,8 +1192,8 @@ void __112__PXPeopleSuggestionDataSource_suggestionsForPerson_withConfirmedSugge
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
     [v6 setSortDescriptors:v10];
 
-    v11 = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
-    [v6 setIncludedDetectionTypes:v11];
+    px_defaultDetectionTypes = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
+    [v6 setIncludedDetectionTypes:px_defaultDetectionTypes];
 
     v12 = +[PXPeopleUISettings sharedInstance];
     LODWORD(v9) = [v12 useBootstrapMockDataSource];
@@ -1206,20 +1206,20 @@ void __112__PXPeopleSuggestionDataSource_suggestionsForPerson_withConfirmedSugge
 
     else
     {
-      [MEMORY[0x1E6978980] fetchMergeCandidatePersonsForPerson:v4 options:v6];
+      [MEMORY[0x1E6978980] fetchMergeCandidatePersonsForPerson:personCopy options:v6];
     }
-    v5 = ;
-    [(PXPeopleSuggestionDataSource *)self setMergeCandidateFetchResult:v5];
+    mergeCandidateFetchResult = ;
+    [(PXPeopleSuggestionDataSource *)self setMergeCandidateFetchResult:mergeCandidateFetchResult];
     v13 = MEMORY[0x1E695DEC8];
-    v14 = [v5 fetchedObjects];
-    v15 = [v13 arrayWithArray:v14];
+    fetchedObjects = [mergeCandidateFetchResult fetchedObjects];
+    v15 = [v13 arrayWithArray:fetchedObjects];
     [(PXPeopleSuggestionDataSource *)self setMergeCandidates:v15];
   }
 
-  return v5;
+  return mergeCandidateFetchResult;
 }
 
-- (PXPeopleSuggestionDataSource)initWithFlowType:(unint64_t)a3
+- (PXPeopleSuggestionDataSource)initWithFlowType:(unint64_t)type
 {
   v7.receiver = self;
   v7.super_class = PXPeopleSuggestionDataSource;
@@ -1228,22 +1228,22 @@ void __112__PXPeopleSuggestionDataSource_suggestionsForPerson_withConfirmedSugge
   if (v4)
   {
     v4->_initialPageLimit = 1;
-    [(PXPeopleSuggestionDataSource *)v4 setFlowType:a3];
+    [(PXPeopleSuggestionDataSource *)v4 setFlowType:type];
   }
 
   return v5;
 }
 
-+ (void)_mergeAndSaveUserFeedbackForPersons:(id)a3 personChangeRequest:(id)a4
++ (void)_mergeAndSaveUserFeedbackForPersons:(id)persons personChangeRequest:(id)request
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  personsCopy = persons;
+  requestCopy = request;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v7 = [personsCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1255,21 +1255,21 @@ void __112__PXPeopleSuggestionDataSource_suggestionsForPerson_withConfirmedSugge
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(personsCopy);
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
         [v12 fetchPropertySetsIfNeeded];
-        v13 = [v12 userFeedbackProperties];
-        v14 = [v13 userFeedback];
+        userFeedbackProperties = [v12 userFeedbackProperties];
+        userFeedback = [userFeedbackProperties userFeedback];
 
-        if (v14)
+        if (userFeedback)
         {
-          v9 = [MEMORY[0x1E6978B00] mergeFeedbackType:objc_msgSend(v14 withOtherFeedbackType:{"type"), v9}];
+          v9 = [MEMORY[0x1E6978B00] mergeFeedbackType:objc_msgSend(userFeedback withOtherFeedbackType:{"type"), v9}];
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v8 = [personsCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v8);
@@ -1280,15 +1280,15 @@ void __112__PXPeopleSuggestionDataSource_suggestionsForPerson_withConfirmedSugge
     v9 = 0;
   }
 
-  v15 = [v6 targetPerson];
-  v16 = [v15 userFeedbackProperties];
-  v17 = [v16 userFeedback];
-  v18 = [v17 type];
+  targetPerson = [requestCopy targetPerson];
+  userFeedbackProperties2 = [targetPerson userFeedbackProperties];
+  userFeedback2 = [userFeedbackProperties2 userFeedback];
+  type = [userFeedback2 type];
 
-  if (v9 != v18)
+  if (v9 != type)
   {
     v19 = [objc_alloc(MEMORY[0x1E6978B00]) initWithType:v9 feature:0 context:0];
-    [v6 setUserFeedback:v19];
+    [requestCopy setUserFeedback:v19];
   }
 }
 

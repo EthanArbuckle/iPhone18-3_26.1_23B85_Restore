@@ -1,33 +1,33 @@
 @interface LAEndpointProviderServer
-+ (BOOL)handleConnection:(id)a3;
-- (void)provideEndpoint:(int64_t)a3 uid:(unsigned int)a4 reply:(id)a5;
++ (BOOL)handleConnection:(id)connection;
+- (void)provideEndpoint:(int64_t)endpoint uid:(unsigned int)uid reply:(id)reply;
 @end
 
 @implementation LAEndpointProviderServer
 
-+ (BOOL)handleConnection:(id)a3
++ (BOOL)handleConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   v4 = objc_opt_new();
-  objc_storeWeak(v4 + 1, v3);
+  objc_storeWeak(v4 + 1, connectionCopy);
   v5 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___LAProtocolEndpointProviderServer];
-  [v3 setExportedInterface:v5];
+  [connectionCopy setExportedInterface:v5];
 
-  [v3 setExportedObject:v4];
-  [v3 setInvalidationHandler:&stru_100054FC8];
+  [connectionCopy setExportedObject:v4];
+  [connectionCopy setInvalidationHandler:&stru_100054FC8];
 
   return 1;
 }
 
-- (void)provideEndpoint:(int64_t)a3 uid:(unsigned int)a4 reply:(id)a5
+- (void)provideEndpoint:(int64_t)endpoint uid:(unsigned int)uid reply:(id)reply
 {
-  v6 = a5;
-  if (a3 >= 4)
+  replyCopy = reply;
+  if (endpoint >= 4)
   {
     v8 = sub_1000064CC();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      sub_100022844(a3, v8);
+      sub_100022844(endpoint, v8);
     }
 
     v7 = 0;
@@ -35,7 +35,7 @@
 
   else
   {
-    v7 = qword_100055070[a3];
+    v7 = qword_100055070[endpoint];
   }
 
   v15 = 0;
@@ -44,10 +44,10 @@
   v18 = sub_10000670C;
   v19 = sub_10000671C;
   v20 = 0;
-  if (a3)
+  if (endpoint)
   {
     v9 = [[NSXPCConnection alloc] initWithMachServiceName:v7 options:0];
-    v10 = [v9 _xpcConnection];
+    _xpcConnection = [v9 _xpcConnection];
     xpc_connection_set_target_uid();
 
     v11 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___LAProtocolEndpointProvider];
@@ -71,7 +71,7 @@
     v13 = 0;
   }
 
-  v6[2](v6, v13);
+  replyCopy[2](replyCopy, v13);
   _Block_object_dispose(&v15, 8);
 }
 

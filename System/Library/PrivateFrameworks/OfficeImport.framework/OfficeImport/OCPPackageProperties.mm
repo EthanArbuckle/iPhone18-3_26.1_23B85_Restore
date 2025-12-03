@@ -1,21 +1,21 @@
 @interface OCPPackageProperties
-- (void)readFromAppXml:(_xmlDoc *)a3;
-- (void)readFromCoreXml:(_xmlDoc *)a3;
-- (void)readFromCoreXml:(_xmlDoc *)a3 appXml:(_xmlDoc *)a4;
+- (void)readFromAppXml:(_xmlDoc *)xml;
+- (void)readFromCoreXml:(_xmlDoc *)xml;
+- (void)readFromCoreXml:(_xmlDoc *)xml appXml:(_xmlDoc *)appXml;
 @end
 
 @implementation OCPPackageProperties
 
-- (void)readFromCoreXml:(_xmlDoc *)a3
+- (void)readFromCoreXml:(_xmlDoc *)xml
 {
-  RootElement = xmlDocGetRootElement(a3);
-  v6 = xmlSearchNsByHref(a3, RootElement, "http://schemas.openxmlformats.org/package/2006/metadata/core-properties");
+  RootElement = xmlDocGetRootElement(xml);
+  v6 = xmlSearchNsByHref(xml, RootElement, "http://schemas.openxmlformats.org/package/2006/metadata/core-properties");
   if (!v6)
   {
     [OCPException raise:@"OCPPackagePropertiesError" format:@"Could not find XML namespace"];
   }
 
-  v7 = xmlSearchNsByHref(a3, RootElement, "http://purl.org/dc/elements/1.1/");
+  v7 = xmlSearchNsByHref(xml, RootElement, "http://purl.org/dc/elements/1.1/");
   if (!v7)
   {
     children = RootElement->children;
@@ -26,7 +26,7 @@
 
     do
     {
-      v9 = xmlSearchNsByHref(a3, children, "http://purl.org/dc/elements/1.1/");
+      v9 = xmlSearchNsByHref(xml, children, "http://purl.org/dc/elements/1.1/");
       children = children->next;
       if (children)
       {
@@ -182,18 +182,18 @@ LABEL_43:
   }
 }
 
-- (void)readFromAppXml:(_xmlDoc *)a3
+- (void)readFromAppXml:(_xmlDoc *)xml
 {
-  if (!a3)
+  if (!xml)
   {
     return;
   }
 
-  RootElement = xmlDocGetRootElement(a3);
-  v6 = xmlSearchNsByHref(a3, RootElement, "http://schemas.openxmlformats.org/officeDocument/2006/extended-properties");
+  RootElement = xmlDocGetRootElement(xml);
+  v6 = xmlSearchNsByHref(xml, RootElement, "http://schemas.openxmlformats.org/officeDocument/2006/extended-properties");
   if (!v6)
   {
-    v7 = xmlSearchNsByHref(a3, RootElement, "http://purl.oclc.org/ooxml/officeDocument/extendedProperties");
+    v7 = xmlSearchNsByHref(xml, RootElement, "http://purl.oclc.org/ooxml/officeDocument/extendedProperties");
     if (v7)
     {
       if (RootElement)
@@ -274,11 +274,11 @@ LABEL_17:
   }
 }
 
-- (void)readFromCoreXml:(_xmlDoc *)a3 appXml:(_xmlDoc *)a4
+- (void)readFromCoreXml:(_xmlDoc *)xml appXml:(_xmlDoc *)appXml
 {
-  [(OCPPackageProperties *)self readFromCoreXml:a3];
+  [(OCPPackageProperties *)self readFromCoreXml:xml];
 
-  [(OCPPackageProperties *)self readFromAppXml:a4];
+  [(OCPPackageProperties *)self readFromAppXml:appXml];
 }
 
 @end

@@ -2,8 +2,8 @@
 + (AMSObservable)observable;
 + (NSString)lastKnownStatus;
 + (void)initialize;
-+ (void)subscribe:(id)a3;
-+ (void)unsubscribe:(id)a3;
++ (void)subscribe:(id)subscribe;
++ (void)unsubscribe:(id)unsubscribe;
 @end
 
 @implementation AMSMemoryPressure
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __31__AMSMemoryPressure_initialize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initialize_onceToken[0] != -1)
   {
     dispatch_once(initialize_onceToken, block);
@@ -96,10 +96,10 @@ void __31__AMSMemoryPressure_initialize__block_invoke_2(uint64_t a1)
 
 + (NSString)lastKnownStatus
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = _MergedGlobals_128;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -123,18 +123,18 @@ uint64_t __31__AMSMemoryPressure_observable__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)subscribe:(id)a3
++ (void)subscribe:(id)subscribe
 {
-  v4 = a3;
-  v5 = [a1 observable];
-  [v5 subscribe:v4];
+  subscribeCopy = subscribe;
+  observable = [self observable];
+  [observable subscribe:subscribeCopy];
 }
 
-+ (void)unsubscribe:(id)a3
++ (void)unsubscribe:(id)unsubscribe
 {
-  v4 = a3;
-  v5 = [a1 observable];
-  [v5 unsubscribe:v4];
+  unsubscribeCopy = unsubscribe;
+  observable = [self observable];
+  [observable unsubscribe:unsubscribeCopy];
 }
 
 @end

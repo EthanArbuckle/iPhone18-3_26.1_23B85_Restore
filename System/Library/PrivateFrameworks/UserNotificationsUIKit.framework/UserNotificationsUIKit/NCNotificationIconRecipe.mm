@@ -1,81 +1,81 @@
 @interface NCNotificationIconRecipe
-+ (id)iconRecipeForApplicationIdentifier:(id)a3;
-+ (id)iconRecipeForDate:(id)a3;
-+ (id)iconRecipeForDateIconIdentifier:(id)a3;
-+ (id)iconRecipeForImage:(id)a3;
-+ (id)iconRecipeForSectionIcon:(id)a3 scale:(double)a4 applicationIdentifier:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithIconRecipeForApplicationIdentifier:(id)a3;
-- (id)_initWithIconRecipeForDate:(id)a3;
-- (id)_initWithIconRecipeForDateIconIdentifier:(id)a3;
-- (id)_initWithIconRecipeForImage:(id)a3;
-- (id)_initWithIconRecipeForSectionIcon:(id)a3 scale:(double)a4 applicationIdentifier:(id)a5;
-- (int64_t)_iconFormatForPointSize:(double)a3;
++ (id)iconRecipeForApplicationIdentifier:(id)identifier;
++ (id)iconRecipeForDate:(id)date;
++ (id)iconRecipeForDateIconIdentifier:(id)identifier;
++ (id)iconRecipeForImage:(id)image;
++ (id)iconRecipeForSectionIcon:(id)icon scale:(double)scale applicationIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithIconRecipeForApplicationIdentifier:(id)identifier;
+- (id)_initWithIconRecipeForDate:(id)date;
+- (id)_initWithIconRecipeForDateIconIdentifier:(id)identifier;
+- (id)_initWithIconRecipeForImage:(id)image;
+- (id)_initWithIconRecipeForSectionIcon:(id)icon scale:(double)scale applicationIdentifier:(id)identifier;
+- (int64_t)_iconFormatForPointSize:(double)size;
 - (unint64_t)hash;
-- (void)imageForPointSize:(double)a3 interfaceStyle:(int64_t)a4 completionOnMain:(id)a5;
+- (void)imageForPointSize:(double)size interfaceStyle:(int64_t)style completionOnMain:(id)main;
 @end
 
 @implementation NCNotificationIconRecipe
 
-+ (id)iconRecipeForImage:(id)a3
++ (id)iconRecipeForImage:(id)image
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithIconRecipeForImage:v4];
+  imageCopy = image;
+  v5 = [[self alloc] _initWithIconRecipeForImage:imageCopy];
 
   return v5;
 }
 
-+ (id)iconRecipeForApplicationIdentifier:(id)a3
++ (id)iconRecipeForApplicationIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithIconRecipeForApplicationIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[self alloc] _initWithIconRecipeForApplicationIdentifier:identifierCopy];
 
   return v5;
 }
 
-+ (id)iconRecipeForSectionIcon:(id)a3 scale:(double)a4 applicationIdentifier:(id)a5
++ (id)iconRecipeForSectionIcon:(id)icon scale:(double)scale applicationIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[a1 alloc] _initWithIconRecipeForSectionIcon:v9 scale:v8 applicationIdentifier:a4];
+  identifierCopy = identifier;
+  iconCopy = icon;
+  v10 = [[self alloc] _initWithIconRecipeForSectionIcon:iconCopy scale:identifierCopy applicationIdentifier:scale];
 
   return v10;
 }
 
-+ (id)iconRecipeForDateIconIdentifier:(id)a3
++ (id)iconRecipeForDateIconIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithIconRecipeForDateIconIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[self alloc] _initWithIconRecipeForDateIconIdentifier:identifierCopy];
 
   return v5;
 }
 
-+ (id)iconRecipeForDate:(id)a3
++ (id)iconRecipeForDate:(id)date
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithIconRecipeForDate:v4];
+  dateCopy = date;
+  v5 = [[self alloc] _initWithIconRecipeForDate:dateCopy];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendInteger:self->_type];
-  v5 = [v3 appendString:self->_applicationIdentifier];
-  v6 = [v3 appendObject:self->_sectionIcon];
-  v7 = [v3 appendCGFloat:self->_scale];
-  v8 = [v3 appendString:self->_dateIconIdentifier];
-  v9 = [v3 appendObject:self->_date];
-  v10 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendInteger:self->_type];
+  v5 = [builder appendString:self->_applicationIdentifier];
+  v6 = [builder appendObject:self->_sectionIcon];
+  v7 = [builder appendCGFloat:self->_scale];
+  v8 = [builder appendString:self->_dateIconIdentifier];
+  v9 = [builder appendObject:self->_date];
+  v10 = [builder hash];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -85,7 +85,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (self->_type == v5->_type && BSEqualStrings() && BSEqualObjects() && BSFloatEqualToFloat() && BSEqualStrings() && BSEqualObjects())
       {
         v6 = BSEqualObjects();
@@ -106,9 +106,9 @@
   return v6;
 }
 
-- (id)_initWithIconRecipeForImage:(id)a3
+- (id)_initWithIconRecipeForImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   v9.receiver = self;
   v9.super_class = NCNotificationIconRecipe;
   v6 = [(NCNotificationIconRecipe *)&v9 init];
@@ -116,15 +116,15 @@
   if (v6)
   {
     v6->_type = 4;
-    objc_storeStrong(&v6->_image, a3);
+    objc_storeStrong(&v6->_image, image);
   }
 
   return v7;
 }
 
-- (id)_initWithIconRecipeForApplicationIdentifier:(id)a3
+- (id)_initWithIconRecipeForApplicationIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = NCNotificationIconRecipe;
   v6 = [(NCNotificationIconRecipe *)&v9 init];
@@ -132,16 +132,16 @@
   if (v6)
   {
     v6->_type = 0;
-    objc_storeStrong(&v6->_applicationIdentifier, a3);
+    objc_storeStrong(&v6->_applicationIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (id)_initWithIconRecipeForSectionIcon:(id)a3 scale:(double)a4 applicationIdentifier:(id)a5
+- (id)_initWithIconRecipeForSectionIcon:(id)icon scale:(double)scale applicationIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a5;
+  iconCopy = icon;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = NCNotificationIconRecipe;
   v11 = [(NCNotificationIconRecipe *)&v14 init];
@@ -149,17 +149,17 @@
   if (v11)
   {
     v11->_type = 1;
-    objc_storeStrong(&v11->_sectionIcon, a3);
-    v12->_scale = a4;
-    objc_storeStrong(&v12->_applicationIdentifier, a5);
+    objc_storeStrong(&v11->_sectionIcon, icon);
+    v12->_scale = scale;
+    objc_storeStrong(&v12->_applicationIdentifier, identifier);
   }
 
   return v12;
 }
 
-- (id)_initWithIconRecipeForDateIconIdentifier:(id)a3
+- (id)_initWithIconRecipeForDateIconIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = NCNotificationIconRecipe;
   v6 = [(NCNotificationIconRecipe *)&v9 init];
@@ -167,15 +167,15 @@
   if (v6)
   {
     v6->_type = 2;
-    objc_storeStrong(&v6->_dateIconIdentifier, a3);
+    objc_storeStrong(&v6->_dateIconIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (id)_initWithIconRecipeForDate:(id)a3
+- (id)_initWithIconRecipeForDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v9.receiver = self;
   v9.super_class = NCNotificationIconRecipe;
   v6 = [(NCNotificationIconRecipe *)&v9 init];
@@ -183,19 +183,19 @@
   if (v6)
   {
     v6->_type = 3;
-    objc_storeStrong(&v6->_date, a3);
+    objc_storeStrong(&v6->_date, date);
   }
 
   return v7;
 }
 
-- (void)imageForPointSize:(double)a3 interfaceStyle:(int64_t)a4 completionOnMain:(id)a5
+- (void)imageForPointSize:(double)size interfaceStyle:(int64_t)style completionOnMain:(id)main
 {
-  v8 = a5;
-  v9 = [(NCNotificationIconRecipe *)self _iconFormatForPointSize:a3];
-  if (a4 <= 1)
+  mainCopy = main;
+  v9 = [(NCNotificationIconRecipe *)self _iconFormatForPointSize:size];
+  if (style <= 1)
   {
-    a4 = 1;
+    style = 1;
   }
 
   type = self->_type;
@@ -208,8 +208,8 @@
       v22[1] = 3221225472;
       v22[2] = __78__NCNotificationIconRecipe_imageForPointSize_interfaceStyle_completionOnMain___block_invoke_2_3;
       v22[3] = &unk_278371880;
-      v23 = v8;
-      NCDateIconImageForDateIconIdentifierWithFormat(v9, a4, dateIconIdentifier, v22);
+      v23 = mainCopy;
+      NCDateIconImageForDateIconIdentifierWithFormat(v9, style, dateIconIdentifier, v22);
       v17 = v23;
     }
 
@@ -219,7 +219,7 @@
       {
         if (type == 4)
         {
-          (*(v8 + 2))(v8, self->_image, 0);
+          (*(mainCopy + 2))(mainCopy, self->_image, 0);
         }
 
         goto LABEL_15;
@@ -230,8 +230,8 @@
       v20[1] = 3221225472;
       v20[2] = __78__NCNotificationIconRecipe_imageForPointSize_interfaceStyle_completionOnMain___block_invoke_3;
       v20[3] = &unk_278371880;
-      v21 = v8;
-      NCDateIconImageForDateWithFormat(v9, a4, date, v20);
+      v21 = mainCopy;
+      NCDateIconImageForDateWithFormat(v9, style, date, v20);
       v17 = v21;
     }
 
@@ -247,8 +247,8 @@ LABEL_14:
     v30[1] = 3221225472;
     v30[2] = __78__NCNotificationIconRecipe_imageForPointSize_interfaceStyle_completionOnMain___block_invoke;
     v30[3] = &unk_278371880;
-    v31 = v8;
-    NCIconImageForApplicationIdentifierWithFormatAsync(applicationIdentifier, v9, a4, v30);
+    v31 = mainCopy;
+    NCIconImageForApplicationIdentifierWithFormatAsync(applicationIdentifier, v9, style, v30);
     v17 = v31;
     goto LABEL_14;
   }
@@ -265,11 +265,11 @@ LABEL_14:
     v25 = v12;
     v26 = v11;
     v28 = v9;
-    v29 = a4;
-    v27 = v8;
+    styleCopy = style;
+    v27 = mainCopy;
     v14 = v11;
     v15 = v12;
-    [(BBSectionIcon *)v14 nc_imageForFormat:v9 scale:a4 userInterfaceStyle:v24 completionOnMain:scale];
+    [(BBSectionIcon *)v14 nc_imageForFormat:v9 scale:style userInterfaceStyle:v24 completionOnMain:scale];
   }
 
 LABEL_15:
@@ -303,7 +303,7 @@ void __78__NCNotificationIconRecipe_imageForPointSize_interfaceStyle_completionO
   }
 }
 
-- (int64_t)_iconFormatForPointSize:(double)a3
+- (int64_t)_iconFormatForPointSize:(double)size
 {
   if (BSFloatLessThanOrEqualToFloat())
   {

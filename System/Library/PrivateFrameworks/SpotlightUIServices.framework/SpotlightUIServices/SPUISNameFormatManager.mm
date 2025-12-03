@@ -1,5 +1,5 @@
 @interface SPUISNameFormatManager
-+ (id)contactFromName:(id)a3;
++ (id)contactFromName:(id)name;
 + (void)initialize;
 - (SPUISNameFormatManager)init;
 @end
@@ -8,7 +8,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     sharedNameFormatManager = objc_opt_new();
 
@@ -30,9 +30,9 @@
   return v2;
 }
 
-+ (id)contactFromName:(id)a3
++ (id)contactFromName:(id)name
 {
-  v3 = [a1 personNameComponentsFromString:a3];
+  v3 = [self personNameComponentsFromString:name];
   v4 = objc_opt_new();
   [v3 overrideComponentsInContact:v4];
   v5 = [v4 copy];

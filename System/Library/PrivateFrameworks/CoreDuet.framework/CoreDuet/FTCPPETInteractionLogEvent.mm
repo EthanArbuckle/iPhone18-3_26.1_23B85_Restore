@@ -1,32 +1,32 @@
 @interface FTCPPETInteractionLogEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addInteractions:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addInteractions:(id)interactions;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FTCPPETInteractionLogEvent
 
-- (void)addInteractions:(id)a3
+- (void)addInteractions:(id)interactions
 {
-  v4 = a3;
+  interactionsCopy = interactions;
   interactions = self->_interactions;
-  v8 = v4;
+  v8 = interactionsCopy;
   if (!interactions)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_interactions;
     self->_interactions = v6;
 
-    v4 = v8;
+    interactionsCopy = v8;
     interactions = self->_interactions;
   }
 
-  [(NSMutableArray *)interactions addObject:v4];
+  [(NSMutableArray *)interactions addObject:interactionsCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v8.receiver = self;
   v8.super_class = FTCPPETInteractionLogEvent;
   v4 = [(FTCPPETInteractionLogEvent *)&v8 description];
-  v5 = [(FTCPPETInteractionLogEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(FTCPPETInteractionLogEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -44,12 +44,12 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_hashedUserId];
-  [v3 setObject:v4 forKey:@"hashedUserId"];
+  [dictionary setObject:v4 forKey:@"hashedUserId"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_snapshotTimestamp];
-  [v3 setObject:v5 forKey:@"snapshotTimestamp"];
+  [dictionary setObject:v5 forKey:@"snapshotTimestamp"];
 
   if ([(NSMutableArray *)self->_interactions count])
   {
@@ -73,8 +73,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -83,18 +83,18 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"interactions"];
+    [dictionary setObject:v6 forKey:@"interactions"];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   hashedUserId = self->_hashedUserId;
   PBDataWriterWriteUint64Field();
   snapshotTimestamp = self->_snapshotTimestamp;
@@ -134,19 +134,19 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[1] = self->_hashedUserId;
-  v9 = v4;
-  v4[2] = self->_snapshotTimestamp;
+  toCopy = to;
+  toCopy[1] = self->_hashedUserId;
+  v9 = toCopy;
+  toCopy[2] = self->_snapshotTimestamp;
   if ([(FTCPPETInteractionLogEvent *)self interactionsCount])
   {
     [v9 clearInteractions];
-    v5 = [(FTCPPETInteractionLogEvent *)self interactionsCount];
-    if (v5)
+    interactionsCount = [(FTCPPETInteractionLogEvent *)self interactionsCount];
+    if (interactionsCount)
     {
-      v6 = v5;
+      v6 = interactionsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(FTCPPETInteractionLogEvent *)self interactionsAtIndex:i];
@@ -156,10 +156,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[1] = self->_hashedUserId;
   v5[2] = self->_snapshotTimestamp;
   v14 = 0u;
@@ -182,7 +182,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{a3, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{zone, v14}];
         [v5 addInteractions:v11];
 
         ++v10;
@@ -199,13 +199,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_hashedUserId == v4[1] && self->_snapshotTimestamp == v4[2])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_hashedUserId == equalCopy[1] && self->_snapshotTimestamp == equalCopy[2])
   {
     interactions = self->_interactions;
-    if (interactions | v4[3])
+    if (interactions | equalCopy[3])
     {
       v6 = [(NSMutableArray *)interactions isEqual:?];
     }
@@ -224,17 +224,17 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  self->_hashedUserId = *(v4 + 1);
-  self->_snapshotTimestamp = *(v4 + 2);
+  fromCopy = from;
+  self->_hashedUserId = *(fromCopy + 1);
+  self->_snapshotTimestamp = *(fromCopy + 2);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 3);
+  v5 = *(fromCopy + 3);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

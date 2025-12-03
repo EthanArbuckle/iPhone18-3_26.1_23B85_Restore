@@ -1,13 +1,13 @@
 @interface LACAccessControlOperation
-- (LACAccessControlOperation)initWithTypeErasedOperation:(id)a3;
+- (LACAccessControlOperation)initWithTypeErasedOperation:(id)operation;
 - (NSString)keyOp;
 @end
 
 @implementation LACAccessControlOperation
 
-- (LACAccessControlOperation)initWithTypeErasedOperation:(id)a3
+- (LACAccessControlOperation)initWithTypeErasedOperation:(id)operation
 {
-  v5 = a3;
+  operationCopy = operation;
   v8.receiver = self;
   v8.super_class = LACAccessControlOperation;
   v6 = [(LACAccessControlOperation *)&v8 init];
@@ -16,13 +16,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6->_rawValue = [v5 integerValue];
+      v6->_rawValue = [operationCopy integerValue];
     }
 
     else
     {
       v6->_rawValue = 1001;
-      objc_storeStrong(&v6->_aksOp, a3);
+      objc_storeStrong(&v6->_aksOp, operation);
     }
   }
 

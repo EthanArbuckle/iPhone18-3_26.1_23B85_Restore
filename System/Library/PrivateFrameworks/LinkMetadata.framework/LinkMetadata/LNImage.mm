@@ -1,16 +1,16 @@
 @interface LNImage
-- (BOOL)isEqual:(id)a3;
-- (LNImage)initWithCoder:(id)a3;
-- (LNImage)initWithData:(id)a3 renderingMode:(unint64_t)a4 displayStyle:(unint64_t)a5;
-- (LNImage)initWithINImage:(id)a3 displayStyle:(unint64_t)a4 size:(id)a5;
-- (LNImage)initWithImageNamed:(id)a3 renderingMode:(unint64_t)a4 displayStyle:(unint64_t)a5;
-- (LNImage)initWithSystemImageNamed:(id)a3;
-- (LNImage)initWithURL:(id)a3 renderingMode:(unint64_t)a4 displayStyle:(unint64_t)a5;
-- (LNImage)initWithURL:(id)a3 width:(double)a4 height:(double)a5 renderingMode:(unint64_t)a6 displayStyle:(unint64_t)a7;
+- (BOOL)isEqual:(id)equal;
+- (LNImage)initWithCoder:(id)coder;
+- (LNImage)initWithData:(id)data renderingMode:(unint64_t)mode displayStyle:(unint64_t)style;
+- (LNImage)initWithINImage:(id)image displayStyle:(unint64_t)style size:(id)size;
+- (LNImage)initWithImageNamed:(id)named renderingMode:(unint64_t)mode displayStyle:(unint64_t)style;
+- (LNImage)initWithSystemImageNamed:(id)named;
+- (LNImage)initWithURL:(id)l renderingMode:(unint64_t)mode displayStyle:(unint64_t)style;
+- (LNImage)initWithURL:(id)l width:(double)width height:(double)height renderingMode:(unint64_t)mode displayStyle:(unint64_t)style;
 - (LNImage)proxiedImageCopy;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNImage
@@ -24,7 +24,7 @@
   v15 = __Block_byref_object_dispose_;
   v16 = 0;
   v3 = dispatch_semaphore_create(0);
-  v4 = [(LNImage *)self inImage];
+  inImage = [(LNImage *)self inImage];
   v10 = v3;
   v5 = *MEMORY[0x1E696E570];
   v6 = *(MEMORY[0x1E696E570] + 8);
@@ -69,8 +69,8 @@ intptr_t __27__LNImage_proxiedImageCopy__block_invoke_2(uint64_t a1, void *a2)
 
 - (unint64_t)hash
 {
-  v3 = [(LNImage *)self inImage];
-  v4 = [v3 hash];
+  inImage = [(LNImage *)self inImage];
+  v4 = [inImage hash];
   v5 = [(LNImage *)self displayStyle]^ v4;
   v6 = [(LNImage *)self size];
   v7 = [v6 hash];
@@ -78,13 +78,13 @@ intptr_t __27__LNImage_proxiedImageCopy__block_invoke_2(uint64_t a1, void *a2)
   return v5 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -93,10 +93,10 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v7 = [(LNImage *)self inImage];
-    v8 = [(LNImage *)v6 inImage];
-    v9 = v7;
-    v10 = v8;
+    inImage = [(LNImage *)self inImage];
+    inImage2 = [(LNImage *)v6 inImage];
+    v9 = inImage;
+    v10 = inImage2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -120,8 +120,8 @@ LABEL_17:
       }
     }
 
-    v15 = [(LNImage *)self displayStyle];
-    if (v15 != [(LNImage *)v6 displayStyle])
+    displayStyle = [(LNImage *)self displayStyle];
+    if (displayStyle != [(LNImage *)v6 displayStyle])
     {
       LOBYTE(v12) = 0;
       goto LABEL_16;
@@ -142,24 +142,24 @@ LABEL_18:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNImage *)self inImage];
-  [v4 encodeObject:v5 forKey:@"inImage"];
+  coderCopy = coder;
+  inImage = [(LNImage *)self inImage];
+  [coderCopy encodeObject:inImage forKey:@"inImage"];
 
-  [v4 encodeInteger:-[LNImage displayStyle](self forKey:{"displayStyle"), @"displayStyle"}];
+  [coderCopy encodeInteger:-[LNImage displayStyle](self forKey:{"displayStyle"), @"displayStyle"}];
   v6 = [(LNImage *)self size];
-  [v4 encodeObject:v6 forKey:@"size"];
+  [coderCopy encodeObject:v6 forKey:@"size"];
 }
 
-- (LNImage)initWithCoder:(id)a3
+- (LNImage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inImage"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inImage"];
   if (v5)
   {
-    v6 = [v4 decodeIntegerForKey:@"displayStyle"];
+    v6 = [coderCopy decodeIntegerForKey:@"displayStyle"];
     if (v6 <= 1)
     {
       v7 = v6;
@@ -170,18 +170,18 @@ LABEL_18:
       v7 = 0;
     }
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"size"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"size"];
     self = [(LNImage *)self initWithINImage:v5 displayStyle:v7 size:v8];
 
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)description
@@ -189,20 +189,20 @@ LABEL_18:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNImage *)self inImage];
-  v7 = [v3 stringWithFormat:@"<%@: %p, inImage: %@>", v5, self, v6];
+  inImage = [(LNImage *)self inImage];
+  v7 = [v3 stringWithFormat:@"<%@: %p, inImage: %@>", v5, self, inImage];
 
   return v7;
 }
 
-- (LNImage)initWithINImage:(id)a3 displayStyle:(unint64_t)a4 size:(id)a5
+- (LNImage)initWithINImage:(id)image displayStyle:(unint64_t)style size:(id)size
 {
-  v10 = a3;
-  v11 = a5;
-  if (!v10)
+  imageCopy = image;
+  sizeCopy = size;
+  if (!imageCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"LNImage.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"inImage"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNImage.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"inImage"}];
   }
 
   v17.receiver = self;
@@ -211,148 +211,148 @@ LABEL_18:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_inImage, a3);
-    v13->_displayStyle = a4;
-    objc_storeStrong(&v13->_size, a5);
+    objc_storeStrong(&v12->_inImage, image);
+    v13->_displayStyle = style;
+    objc_storeStrong(&v13->_size, size);
     v14 = v13;
   }
 
   return v13;
 }
 
-- (LNImage)initWithURL:(id)a3 width:(double)a4 height:(double)a5 renderingMode:(unint64_t)a6 displayStyle:(unint64_t)a7
+- (LNImage)initWithURL:(id)l width:(double)width height:(double)height renderingMode:(unint64_t)mode displayStyle:(unint64_t)style
 {
-  v12 = [MEMORY[0x1E696E868] imageWithURL:a3 width:? height:?];
+  v12 = [MEMORY[0x1E696E868] imageWithURL:l width:? height:?];
   v13 = v12;
   if (v12)
   {
-    if (a6 == 1)
+    if (mode == 1)
     {
       v14 = 1;
     }
 
     else
     {
-      v14 = 2 * (a6 == 2);
+      v14 = 2 * (mode == 2);
     }
 
     [v12 _setRenderingMode:v14];
-    v15 = [MEMORY[0x1E696B098] valueWithSize:{a4, a5}];
-    self = [(LNImage *)self initWithINImage:v13 displayStyle:a7 size:v15];
+    v15 = [MEMORY[0x1E696B098] valueWithSize:{width, height}];
+    self = [(LNImage *)self initWithINImage:v13 displayStyle:style size:v15];
 
-    v16 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-- (LNImage)initWithURL:(id)a3 renderingMode:(unint64_t)a4 displayStyle:(unint64_t)a5
+- (LNImage)initWithURL:(id)l renderingMode:(unint64_t)mode displayStyle:(unint64_t)style
 {
-  v8 = [MEMORY[0x1E696E868] imageWithURL:a3];
+  v8 = [MEMORY[0x1E696E868] imageWithURL:l];
   v9 = v8;
   if (v8)
   {
-    if (a4 == 1)
+    if (mode == 1)
     {
       v10 = 1;
     }
 
     else
     {
-      v10 = 2 * (a4 == 2);
+      v10 = 2 * (mode == 2);
     }
 
     [v8 _setRenderingMode:v10];
-    self = [(LNImage *)self initWithINImage:v9 displayStyle:a5 size:0];
-    v11 = self;
+    self = [(LNImage *)self initWithINImage:v9 displayStyle:style size:0];
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (LNImage)initWithData:(id)a3 renderingMode:(unint64_t)a4 displayStyle:(unint64_t)a5
+- (LNImage)initWithData:(id)data renderingMode:(unint64_t)mode displayStyle:(unint64_t)style
 {
-  v8 = [MEMORY[0x1E696E868] imageWithImageData:a3];
+  v8 = [MEMORY[0x1E696E868] imageWithImageData:data];
   v9 = v8;
   if (v8)
   {
-    if (a4 == 1)
+    if (mode == 1)
     {
       v10 = 1;
     }
 
     else
     {
-      v10 = 2 * (a4 == 2);
+      v10 = 2 * (mode == 2);
     }
 
     [v8 _setRenderingMode:v10];
-    self = [(LNImage *)self initWithINImage:v9 displayStyle:a5 size:0];
-    v11 = self;
+    self = [(LNImage *)self initWithINImage:v9 displayStyle:style size:0];
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (LNImage)initWithSystemImageNamed:(id)a3
+- (LNImage)initWithSystemImageNamed:(id)named
 {
-  v4 = [MEMORY[0x1E696E868] systemImageNamed:a3];
+  v4 = [MEMORY[0x1E696E868] systemImageNamed:named];
   if (v4)
   {
     self = [(LNImage *)self initWithINImage:v4 displayStyle:0 size:0];
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (LNImage)initWithImageNamed:(id)a3 renderingMode:(unint64_t)a4 displayStyle:(unint64_t)a5
+- (LNImage)initWithImageNamed:(id)named renderingMode:(unint64_t)mode displayStyle:(unint64_t)style
 {
-  v8 = [MEMORY[0x1E696E868] imageNamed:a3];
+  v8 = [MEMORY[0x1E696E868] imageNamed:named];
   v9 = v8;
   if (v8)
   {
-    if (a4 == 1)
+    if (mode == 1)
     {
       v10 = 1;
     }
 
     else
     {
-      v10 = 2 * (a4 == 2);
+      v10 = 2 * (mode == 2);
     }
 
     [v8 _setRenderingMode:v10];
-    self = [(LNImage *)self initWithINImage:v9 displayStyle:a5 size:0];
-    v11 = self;
+    self = [(LNImage *)self initWithINImage:v9 displayStyle:style size:0];
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 @end

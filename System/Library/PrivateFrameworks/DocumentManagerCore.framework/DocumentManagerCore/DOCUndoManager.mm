@@ -1,11 +1,11 @@
 @interface DOCUndoManager
 + (DOCUndoManager)shared;
-- (BOOL)isActionOperation:(id)a3;
+- (BOOL)isActionOperation:(id)operation;
 - (BOOL)processSupportsUndoingActions;
 - (DOCUndoManager)init;
 - (void)dealloc;
 - (void)didPerformUndoableOperation;
-- (void)registerUndoOperationForSender:(id)a3;
+- (void)registerUndoOperationForSender:(id)sender;
 - (void)startUndoNotificationsObservation;
 - (void)stopUndoNotificationsObservation;
 @end
@@ -58,17 +58,17 @@ uint64_t __24__DOCUndoManager_shared__block_invoke()
 
 - (void)startUndoNotificationsObservation
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_didPerformUndoableOperation name:*MEMORY[0x277CCA808] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_didPerformUndoableOperation name:*MEMORY[0x277CCA808] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel_didPerformUndoableOperation name:*MEMORY[0x277CCA810] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_didPerformUndoableOperation name:*MEMORY[0x277CCA810] object:0];
 }
 
 - (void)stopUndoNotificationsObservation
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
 - (void)didPerformUndoableOperation
@@ -81,9 +81,9 @@ uint64_t __24__DOCUndoManager_shared__block_invoke()
   }
 }
 
-- (void)registerUndoOperationForSender:(id)a3
+- (void)registerUndoOperationForSender:(id)sender
 {
-  v4 = a3;
+  senderCopy = sender;
   if ([(DOCUndoManager *)self processSupportsUndoingActions])
   {
     v5[0] = MEMORY[0x277D85DD0];
@@ -91,7 +91,7 @@ uint64_t __24__DOCUndoManager_shared__block_invoke()
     v5[2] = __49__DOCUndoManager_registerUndoOperationForSender___block_invoke;
     v5[3] = &unk_278F9B430;
     v5[4] = self;
-    v6 = v4;
+    v6 = senderCopy;
     DOCRunInMainThread(v5);
   }
 }
@@ -174,9 +174,9 @@ void __49__DOCUndoManager_registerUndoOperationForSender___block_invoke_2(uint64
   }
 }
 
-- (BOOL)isActionOperation:(id)a3
+- (BOOL)isActionOperation:(id)operation
 {
-  v3 = a3;
+  operationCopy = operation;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -185,11 +185,11 @@ void __49__DOCUndoManager_registerUndoOperationForSender___block_invoke_2(uint64
 
 - (BOOL)processSupportsUndoingActions
 {
-  v2 = [MEMORY[0x277CCAC38] processInfo];
-  v3 = [v2 processName];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processName = [processInfo processName];
 
-  LOBYTE(v2) = [&unk_285C77F10 containsObject:v3];
-  return v2;
+  LOBYTE(processInfo) = [&unk_285C77F10 containsObject:processName];
+  return processInfo;
 }
 
 void __49__DOCUndoManager_registerUndoOperationForSender___block_invoke_2_cold_1(uint64_t *a1, uint64_t a2, os_log_t log)

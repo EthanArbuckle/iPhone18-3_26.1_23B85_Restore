@@ -5,17 +5,17 @@
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setAudioRoute:(int64_t)a3;
-- (void)setCallIdentifier:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setAudioRoute:(int64_t)route;
+- (void)setCallIdentifier:(id)identifier;
 @end
 
 @implementation INAnswerCallIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INAnswerCallIntent *)self _typedBackingStore:a3];
+  v6 = [(INAnswerCallIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -24,21 +24,21 @@
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v13[0] = @"audioRoute";
-  v3 = [(INAnswerCallIntent *)self audioRoute];
+  audioRoute = [(INAnswerCallIntent *)self audioRoute];
   v4 = @"speakerphoneAudioRoute";
   v5 = @"heySiriAudioRoute";
   v6 = @"unknown";
-  if (v3 == INCallAudioRouteBluetoothAudioRoute)
+  if (audioRoute == INCallAudioRouteBluetoothAudioRoute)
   {
     v6 = @"bluetoothAudioRoute";
   }
 
-  if (v3 != 1000)
+  if (audioRoute != 1000)
   {
     v5 = v6;
   }
 
-  if (v3 != INCallAudioRouteSpeakerphoneAudioRoute)
+  if (audioRoute != INCallAudioRouteSpeakerphoneAudioRoute)
   {
     v4 = v5;
   }
@@ -46,16 +46,16 @@
   v7 = v4;
   v13[1] = @"callIdentifier";
   v14[0] = v7;
-  v8 = [(INAnswerCallIntent *)self callIdentifier];
-  v9 = v8;
-  if (!v8)
+  callIdentifier = [(INAnswerCallIntent *)self callIdentifier];
+  null = callIdentifier;
+  if (!callIdentifier)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[1] = v9;
+  v14[1] = null;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
-  if (!v8)
+  if (!callIdentifier)
   {
   }
 
@@ -64,25 +64,25 @@
   return v10;
 }
 
-- (void)setCallIdentifier:(id)a3
+- (void)setCallIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(INAnswerCallIntent *)self _typedBackingStore];
-  [v5 setCallIdentifier:v4];
+  identifierCopy = identifier;
+  _typedBackingStore = [(INAnswerCallIntent *)self _typedBackingStore];
+  [_typedBackingStore setCallIdentifier:identifierCopy];
 }
 
 - (NSString)callIdentifier
 {
-  v2 = [(INAnswerCallIntent *)self _typedBackingStore];
-  v3 = [v2 callIdentifier];
-  v4 = [v3 copy];
+  _typedBackingStore = [(INAnswerCallIntent *)self _typedBackingStore];
+  callIdentifier = [_typedBackingStore callIdentifier];
+  v4 = [callIdentifier copy];
 
   return v4;
 }
 
-- (void)setAudioRoute:(int64_t)a3
+- (void)setAudioRoute:(int64_t)route
 {
-  switch(a3)
+  switch(route)
   {
     case 1:
       v3 = 2;
@@ -93,25 +93,25 @@
     case 2:
       v3 = 3;
 LABEL_7:
-      v4 = [(INAnswerCallIntent *)self _typedBackingStore];
-      [v4 setAudioRoute:v3];
+      _typedBackingStore = [(INAnswerCallIntent *)self _typedBackingStore];
+      [_typedBackingStore setAudioRoute:v3];
       goto LABEL_9;
   }
 
-  v4 = [(INAnswerCallIntent *)self _typedBackingStore];
-  [v4 setHasAudioRoute:0];
+  _typedBackingStore = [(INAnswerCallIntent *)self _typedBackingStore];
+  [_typedBackingStore setHasAudioRoute:0];
 LABEL_9:
 }
 
 - (INCallAudioRoute)audioRoute
 {
-  v3 = [(INAnswerCallIntent *)self _typedBackingStore];
-  v4 = [v3 hasAudioRoute];
-  v5 = [(INAnswerCallIntent *)self _typedBackingStore];
-  v6 = [v5 audioRoute];
-  if (v4 && (v6 - 2) <= 2)
+  _typedBackingStore = [(INAnswerCallIntent *)self _typedBackingStore];
+  hasAudioRoute = [_typedBackingStore hasAudioRoute];
+  _typedBackingStore2 = [(INAnswerCallIntent *)self _typedBackingStore];
+  audioRoute = [_typedBackingStore2 audioRoute];
+  if (hasAudioRoute && (audioRoute - 2) <= 2)
   {
-    v7 = qword_18EE5EFD0[v6 - 2];
+    v7 = qword_18EE5EFD0[audioRoute - 2];
   }
 
   else
@@ -138,28 +138,28 @@ LABEL_9:
   return v8;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INAnswerCallIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INAnswerCallIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INAnswerCallIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INAnswerCallIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

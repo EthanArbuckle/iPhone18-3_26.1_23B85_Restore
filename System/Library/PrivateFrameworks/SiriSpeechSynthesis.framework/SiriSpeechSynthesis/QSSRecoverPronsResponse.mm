@@ -4,8 +4,8 @@
 - (NSString)error_str;
 - (NSString)session_id;
 - (NSString)speech_id;
-- (Offset<siri::speech::schema_fb::RecoverPronsResponse>)addObjectToBuffer:(void *)a3;
-- (QSSRecoverPronsResponse)initWithFlatbuffData:(id)a3 root:(const RecoverPronsResponse *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::RecoverPronsResponse>)addObjectToBuffer:(void *)buffer;
+- (QSSRecoverPronsResponse)initWithFlatbuffData:(id)data root:(const RecoverPronsResponse *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 - (int)error_code;
 @end
@@ -41,54 +41,54 @@ flatbuffers::DetachedBuffer *__39__QSSRecoverPronsResponse_flatbuffData__block_i
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::RecoverPronsResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::RecoverPronsResponse>)addObjectToBuffer:(void *)buffer
 {
   v52 = *MEMORY[0x277D85DE8];
-  v5 = [(QSSRecoverPronsResponse *)self speech_id];
-  v6 = v5;
-  if (!v5)
+  speech_id = [(QSSRecoverPronsResponse *)self speech_id];
+  v6 = speech_id;
+  if (!speech_id)
   {
-    v5 = &stru_2879AE8E0;
+    speech_id = &stru_2879AE8E0;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)speech_id UTF8String];
+  v8 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v10 = [(QSSRecoverPronsResponse *)self session_id];
-  v11 = v10;
-  if (!v10)
+  session_id = [(QSSRecoverPronsResponse *)self session_id];
+  v11 = session_id;
+  if (!session_id)
   {
-    v10 = &stru_2879AE8E0;
+    session_id = &stru_2879AE8E0;
   }
 
-  v12 = [(__CFString *)v10 UTF8String];
-  v13 = strlen(v12);
-  v38 = flatbuffers::FlatBufferBuilder::CreateString(a3, v12, v13);
+  uTF8String2 = [(__CFString *)session_id UTF8String];
+  v13 = strlen(uTF8String2);
+  v38 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String2, v13);
 
-  v37 = [(QSSRecoverPronsResponse *)self error_code];
-  v14 = [(QSSRecoverPronsResponse *)self error_str];
-  v15 = v14;
-  if (!v14)
+  error_code = [(QSSRecoverPronsResponse *)self error_code];
+  error_str = [(QSSRecoverPronsResponse *)self error_str];
+  v15 = error_str;
+  if (!error_str)
   {
-    v14 = &stru_2879AE8E0;
+    error_str = &stru_2879AE8E0;
   }
 
-  v16 = [(__CFString *)v14 UTF8String];
-  v17 = strlen(v16);
-  v18 = flatbuffers::FlatBufferBuilder::CreateString(a3, v16, v17);
+  uTF8String3 = [(__CFString *)error_str UTF8String];
+  v17 = strlen(uTF8String3);
+  v18 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String3, v17);
 
   memset(&v49, 0, sizeof(v49));
-  v19 = [(QSSRecoverPronsResponse *)self recovery_return_codes];
-  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v49, [v19 count]);
+  recovery_return_codes = [(QSSRecoverPronsResponse *)self recovery_return_codes];
+  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v49, [recovery_return_codes count]);
 
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v20 = [(QSSRecoverPronsResponse *)self recovery_return_codes];
+  recovery_return_codes2 = [(QSSRecoverPronsResponse *)self recovery_return_codes];
   v36 = v18;
-  v21 = [v20 countByEnumeratingWithState:&v45 objects:v51 count:16];
+  v21 = [recovery_return_codes2 countByEnumeratingWithState:&v45 objects:v51 count:16];
   if (v21)
   {
     v22 = *v46;
@@ -98,14 +98,14 @@ flatbuffers::DetachedBuffer *__39__QSSRecoverPronsResponse_flatbuffData__block_i
       {
         if (*v46 != v22)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(recovery_return_codes2);
         }
 
-        v44 = [*(*(&v45 + 1) + 8 * i) intValue];
-        std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::push_back[abi:ne200100](&v49, &v44);
+        intValue = [*(*(&v45 + 1) + 8 * i) intValue];
+        std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::push_back[abi:ne200100](&v49, &intValue);
       }
 
-      v21 = [v20 countByEnumeratingWithState:&v45 objects:v51 count:16];
+      v21 = [recovery_return_codes2 countByEnumeratingWithState:&v45 objects:v51 count:16];
     }
 
     while (v21);
@@ -121,9 +121,9 @@ flatbuffers::DetachedBuffer *__39__QSSRecoverPronsResponse_flatbuffData__block_i
     begin = v49.__begin_;
   }
 
-  v35 = flatbuffers::FlatBufferBuilder::CreateVector<int>(a3, begin, v49.__end_ - v49.__begin_);
-  v25 = [(QSSRecoverPronsResponse *)self voc_tokens];
-  v26 = [v25 count];
+  v35 = flatbuffers::FlatBufferBuilder::CreateVector<int>(buffer, begin, v49.__end_ - v49.__begin_);
+  voc_tokens = [(QSSRecoverPronsResponse *)self voc_tokens];
+  v26 = [voc_tokens count];
   if (v26)
   {
     if (!(v26 >> 62))
@@ -143,29 +143,29 @@ flatbuffers::DetachedBuffer *__39__QSSRecoverPronsResponse_flatbuffData__block_i
   {
     *v41;
     *v41;
-    [**(&v40 + 1) addObjectToBuffer:a3];
+    [**(&v40 + 1) addObjectToBuffer:buffer];
     std::__allocate_at_least[abi:ne200100]<std::allocator<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>>(1uLL);
   }
 
-  flatbuffers::FlatBufferBuilder::StartVector(a3, 0, 4uLL);
-  v27 = flatbuffers::FlatBufferBuilder::EndVector(a3, 0);
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v28 = *(a3 + 8);
-  v29 = *(a3 + 12);
-  v30 = *(a3 + 10);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, String);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 6, v38);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 8, v37);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 10, v36);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 12, v35);
+  flatbuffers::FlatBufferBuilder::StartVector(buffer, 0, 4uLL);
+  v27 = flatbuffers::FlatBufferBuilder::EndVector(buffer, 0);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v28 = *(buffer + 8);
+  v29 = *(buffer + 12);
+  v30 = *(buffer + 10);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, String);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 6, v38);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 8, error_code);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 10, v36);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 12, v35);
   if (v27)
   {
-    v31 = flatbuffers::FlatBufferBuilder::ReferTo(a3, v27);
-    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 14, v31);
+    v31 = flatbuffers::FlatBufferBuilder::ReferTo(buffer, v27);
+    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 14, v31);
   }
 
-  v32.var0 = flatbuffers::FlatBufferBuilder::EndTable(a3, v28 - v29 + v30);
+  v32.var0 = flatbuffers::FlatBufferBuilder::EndTable(buffer, v28 - v29 + v30);
   if (v49.__begin_)
   {
     operator delete(v49.__begin_);
@@ -177,10 +177,10 @@ flatbuffers::DetachedBuffer *__39__QSSRecoverPronsResponse_flatbuffData__block_i
 
 - (NSArray)voc_tokens
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"voc_tokens"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"voc_tokens"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 0xFu)
@@ -197,7 +197,7 @@ flatbuffers::DetachedBuffer *__39__QSSRecoverPronsResponse_flatbuffData__block_i
           do
           {
             v11 = [[QSSVocToken alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -208,18 +208,18 @@ flatbuffers::DetachedBuffer *__39__QSSRecoverPronsResponse_flatbuffData__block_i
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"voc_tokens"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"voc_tokens"];
   }
 
-  return v3;
+  return array;
 }
 
 - (NSArray)recovery_return_codes
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"recovery_return_codes"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"recovery_return_codes"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 0xDu)
@@ -238,7 +238,7 @@ flatbuffers::DetachedBuffer *__39__QSSRecoverPronsResponse_flatbuffData__block_i
             v11 = *v10->var0;
             v10 += 4;
             v12 = [MEMORY[0x277CCABB0] numberWithInt:v11];
-            [v3 addObject:v12];
+            [array addObject:v12];
 
             v9 -= 4;
           }
@@ -248,10 +248,10 @@ flatbuffers::DetachedBuffer *__39__QSSRecoverPronsResponse_flatbuffData__block_i
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"recovery_return_codes"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"recovery_return_codes"];
   }
 
-  return v3;
+  return array;
 }
 
 - (NSString)error_str
@@ -338,10 +338,10 @@ flatbuffers::DetachedBuffer *__39__QSSRecoverPronsResponse_flatbuffData__block_i
   return v6;
 }
 
-- (QSSRecoverPronsResponse)initWithFlatbuffData:(id)a3 root:(const RecoverPronsResponse *)a4 verify:(BOOL)a5
+- (QSSRecoverPronsResponse)initWithFlatbuffData:(id)data root:(const RecoverPronsResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v43.receiver = self;
   v43.super_class = QSSRecoverPronsResponse;
   v10 = [(QSSRecoverPronsResponse *)&v43 init];
@@ -351,35 +351,35 @@ flatbuffers::DetachedBuffer *__39__QSSRecoverPronsResponse_flatbuffData__block_i
     goto LABEL_50;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_51;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v12 = [(NSData *)v10->_data bytes];
-    a4 = v12 + *v12;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_49;
   }
 
-  v13 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v14 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v13 || root > v13 + v14)
+  if (root < bytes2 || root > bytes2 + v14)
   {
     goto LABEL_51;
   }
 
-  v17 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v18 = [(NSData *)v10->_data length];
-  v38 = v17;
+  v38 = bytes3;
   v39 = v18;
   v40 = xmmword_26914CD70;
   v41 = 0;
@@ -514,9 +514,9 @@ LABEL_48:
   }
 
 LABEL_49:
-  v34 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   storage = v11->_storage;
-  v11->_storage = v34;
+  v11->_storage = dictionary;
 
 LABEL_50:
   v36 = v11;

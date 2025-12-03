@@ -1,34 +1,34 @@
 @interface CarDictationButton
-- (CarDictationButton)initWithFrame:(CGRect)a3;
-- (void)setKeyboardDisabled:(BOOL)a3;
+- (CarDictationButton)initWithFrame:(CGRect)frame;
+- (void)setKeyboardDisabled:(BOOL)disabled;
 @end
 
 @implementation CarDictationButton
 
-- (void)setKeyboardDisabled:(BOOL)a3
+- (void)setKeyboardDisabled:(BOOL)disabled
 {
-  v7 = [(UIButton *)self->_siriButton configuration];
-  if (a3)
+  configuration = [(UIButton *)self->_siriButton configuration];
+  if (disabled)
   {
     v5 = +[NSBundle mainBundle];
     v6 = [v5 localizedStringForKey:@"CarPlay_UserInputCell" value:@"localized string not found" table:0];
-    [v7 setTitle:v6];
+    [configuration setTitle:v6];
   }
 
   else
   {
-    [v7 setTitle:0];
+    [configuration setTitle:0];
   }
 
-  [(UIButton *)self->_siriButton setConfiguration:v7];
+  [(UIButton *)self->_siriButton setConfiguration:configuration];
 }
 
-- (CarDictationButton)initWithFrame:(CGRect)a3
+- (CarDictationButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v26.receiver = self;
   v26.super_class = CarDictationButton;
   v7 = [(CarFocusableControl *)&v26 initWithFrame:?];
@@ -49,21 +49,21 @@
     [v10 setImagePlacement:2];
     [(UIButton *)v7->_siriButton setConfiguration:v10];
     [(CarFocusableControl *)v7 addSubview:v7->_siriButton];
-    v25 = [(UIButton *)v7->_siriButton topAnchor];
-    v24 = [(CarDictationButton *)v7 topAnchor];
-    v23 = [v25 constraintEqualToAnchor:v24];
+    topAnchor = [(UIButton *)v7->_siriButton topAnchor];
+    topAnchor2 = [(CarDictationButton *)v7 topAnchor];
+    v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v27[0] = v23;
-    v22 = [(UIButton *)v7->_siriButton bottomAnchor];
-    v21 = [(CarDictationButton *)v7 bottomAnchor];
-    v12 = [v22 constraintEqualToAnchor:v21];
+    bottomAnchor = [(UIButton *)v7->_siriButton bottomAnchor];
+    bottomAnchor2 = [(CarDictationButton *)v7 bottomAnchor];
+    v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v27[1] = v12;
-    v13 = [(UIButton *)v7->_siriButton leadingAnchor];
-    v14 = [(CarDictationButton *)v7 leadingAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    leadingAnchor = [(UIButton *)v7->_siriButton leadingAnchor];
+    leadingAnchor2 = [(CarDictationButton *)v7 leadingAnchor];
+    v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v27[2] = v15;
-    v16 = [(UIButton *)v7->_siriButton trailingAnchor];
-    v17 = [(CarDictationButton *)v7 trailingAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    trailingAnchor = [(UIButton *)v7->_siriButton trailingAnchor];
+    trailingAnchor2 = [(CarDictationButton *)v7 trailingAnchor];
+    v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v27[3] = v18;
     v19 = [NSArray arrayWithObjects:v27 count:4];
     [NSLayoutConstraint activateConstraints:v19];

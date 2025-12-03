@@ -1,132 +1,132 @@
 @interface CFXTextEffectEditorView
-+ (id)viewWithFrame:(CGRect)a3 textEditingProperties:(id)a4;
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (CFXTextEffectEditorView)initWithFrame:(CGRect)a3 textEditingProperties:(id)a4;
++ (id)viewWithFrame:(CGRect)frame textEditingProperties:(id)properties;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
+- (CFXTextEffectEditorView)initWithFrame:(CGRect)frame textEditingProperties:(id)properties;
 - (CFXTextEffectEditorViewDelegate)delegate;
-- (CGRect)textEditingFrameRelativeToView:(id)a3;
+- (CGRect)textEditingFrameRelativeToView:(id)view;
 - (NSString)text;
-- (void)CFX_setupTextField:(id)a3;
-- (void)applyTextEditingProperties:(id)a3;
+- (void)CFX_setupTextField:(id)field;
+- (void)applyTextEditingProperties:(id)properties;
 - (void)endTextEditing;
 - (void)selectAll;
 - (void)selectAtEnd;
-- (void)textEffectEditorTextViewDidUnmarkText:(id)a3;
-- (void)textViewDidChange:(id)a3;
+- (void)textEffectEditorTextViewDidUnmarkText:(id)text;
+- (void)textViewDidChange:(id)change;
 @end
 
 @implementation CFXTextEffectEditorView
 
-+ (id)viewWithFrame:(CGRect)a3 textEditingProperties:(id)a4
++ (id)viewWithFrame:(CGRect)frame textEditingProperties:(id)properties
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [[a1 alloc] initWithFrame:v9 textEditingProperties:{x, y, width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  propertiesCopy = properties;
+  v10 = [[self alloc] initWithFrame:propertiesCopy textEditingProperties:{x, y, width, height}];
 
   return v10;
 }
 
-- (CFXTextEffectEditorView)initWithFrame:(CGRect)a3 textEditingProperties:(id)a4
+- (CFXTextEffectEditorView)initWithFrame:(CGRect)frame textEditingProperties:(id)properties
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  propertiesCopy = properties;
   v14.receiver = self;
   v14.super_class = CFXTextEffectEditorView;
-  v10 = [(CFXTextEffectEditorView *)&v14 initWithFrame:x, y, width, height];
-  if (v10)
+  height = [(CFXTextEffectEditorView *)&v14 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v11 = [MEMORY[0x277D75348] clearColor];
-    [(CFXTextEffectEditorView *)v10 setBackgroundColor:v11];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(CFXTextEffectEditorView *)height setBackgroundColor:clearColor];
 
-    [(CFXTextEffectEditorView *)v10 CFX_setupTextField:v9];
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v10 selector:sel_applicationDidEnterBackground_ name:*MEMORY[0x277D76768] object:0];
+    [(CFXTextEffectEditorView *)height CFX_setupTextField:propertiesCopy];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:height selector:sel_applicationDidEnterBackground_ name:*MEMORY[0x277D76768] object:0];
   }
 
-  return v10;
+  return height;
 }
 
-- (void)CFX_setupTextField:(id)a3
+- (void)CFX_setupTextField:(id)field
 {
-  v4 = a3;
+  fieldCopy = field;
   v5 = [JFXTextEffectEditorView alloc];
   [(CFXTextEffectEditorView *)self bounds];
-  v6 = [(JFXTextEffectEditorView *)v5 initWithFrame:v4 textEditingProperties:?];
+  v6 = [(JFXTextEffectEditorView *)v5 initWithFrame:fieldCopy textEditingProperties:?];
 
   [(CFXTextEffectEditorView *)self setEditorView:v6];
-  v7 = [(CFXTextEffectEditorView *)self editorView];
-  v9 = [v7 editField];
+  editorView = [(CFXTextEffectEditorView *)self editorView];
+  editField = [editorView editField];
 
-  [v9 setDelegate:self];
-  [v9 setPasteDelegate:self];
-  [v9 setTextDragDelegate:self];
-  v8 = [(CFXTextEffectEditorView *)self editorView];
-  [(CFXTextEffectEditorView *)self addSubview:v8];
+  [editField setDelegate:self];
+  [editField setPasteDelegate:self];
+  [editField setTextDragDelegate:self];
+  editorView2 = [(CFXTextEffectEditorView *)self editorView];
+  [(CFXTextEffectEditorView *)self addSubview:editorView2];
 }
 
 - (void)selectAtEnd
 {
-  v2 = [(CFXTextEffectEditorView *)self editorView];
-  v4 = [v2 editField];
+  editorView = [(CFXTextEffectEditorView *)self editorView];
+  editField = [editorView editField];
 
-  [v4 becomeFirstResponder];
-  v3 = [v4 text];
-  [v4 setSelectedRange:{objc_msgSend(v3, "length"), 0}];
+  [editField becomeFirstResponder];
+  text = [editField text];
+  [editField setSelectedRange:{objc_msgSend(text, "length"), 0}];
 }
 
 - (void)selectAll
 {
-  v2 = [(CFXTextEffectEditorView *)self editorView];
-  [v2 selectAll];
+  editorView = [(CFXTextEffectEditorView *)self editorView];
+  [editorView selectAll];
 }
 
 - (void)endTextEditing
 {
-  v2 = [(CFXTextEffectEditorView *)self editorView];
-  [v2 endEditing];
+  editorView = [(CFXTextEffectEditorView *)self editorView];
+  [editorView endEditing];
 }
 
 - (NSString)text
 {
-  v2 = [(CFXTextEffectEditorView *)self editorView];
-  v3 = [v2 text];
+  editorView = [(CFXTextEffectEditorView *)self editorView];
+  text = [editorView text];
 
-  return v3;
+  return text;
 }
 
-- (void)applyTextEditingProperties:(id)a3
+- (void)applyTextEditingProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [(CFXTextEffectEditorView *)self editorView];
-  [v5 applyTextEditingProperties:v4];
+  propertiesCopy = properties;
+  editorView = [(CFXTextEffectEditorView *)self editorView];
+  [editorView applyTextEditingProperties:propertiesCopy];
 }
 
-- (CGRect)textEditingFrameRelativeToView:(id)a3
+- (CGRect)textEditingFrameRelativeToView:(id)view
 {
-  v4 = a3;
-  v5 = [(CFXTextEffectEditorView *)self editorView];
-  v6 = [v5 editField];
+  viewCopy = view;
+  editorView = [(CFXTextEffectEditorView *)self editorView];
+  editField = [editorView editField];
 
-  if (v6)
+  if (editField)
   {
-    [v6 textEditingFrame];
+    [editField textEditingFrame];
     x = v23.origin.x;
     y = v23.origin.y;
     width = v23.size.width;
     height = v23.size.height;
     if (!CGRectIsNull(v23))
     {
-      [v6 convertRect:v4 toView:{x, y, width, height}];
+      [editField convertRect:viewCopy toView:{x, y, width, height}];
       v12 = v11;
       v14 = v13;
       v16 = v15;
       v18 = v17;
-      [v4 bounds];
+      [viewCopy bounds];
       v27.origin.x = v12;
       v27.origin.y = v14;
       v27.size.width = v16;
@@ -158,34 +158,34 @@
   return result;
 }
 
-- (void)textEffectEditorTextViewDidUnmarkText:(id)a3
+- (void)textEffectEditorTextViewDidUnmarkText:(id)text
 {
-  v4 = a3;
-  v6 = [(CFXTextEffectEditorView *)self delegate];
-  v5 = [v4 text];
+  textCopy = text;
+  delegate = [(CFXTextEffectEditorView *)self delegate];
+  text = [textCopy text];
 
-  [v6 textEffectEditorView:self textChanged:v5 shouldUpdateTextEditingProperties:1];
+  [delegate textEffectEditorView:self textChanged:text shouldUpdateTextEditingProperties:1];
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 markedTextRange];
-  v6 = v5 == 0;
+  changeCopy = change;
+  markedTextRange = [changeCopy markedTextRange];
+  v6 = markedTextRange == 0;
 
-  v8 = [(CFXTextEffectEditorView *)self delegate];
-  v7 = [v4 text];
+  delegate = [(CFXTextEffectEditorView *)self delegate];
+  text = [changeCopy text];
 
-  [v8 textEffectEditorView:self textChanged:v7 shouldUpdateTextEditingProperties:v6];
+  [delegate textEffectEditorView:self textChanged:text shouldUpdateTextEditingProperties:v6];
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a5;
-  v9 = [(CFXTextEffectEditorView *)self delegate];
-  LOBYTE(length) = [v9 textEffectEditorView:self shouldChangeTextInRange:location replacementText:{length, v8}];
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  delegate = [(CFXTextEffectEditorView *)self delegate];
+  LOBYTE(length) = [delegate textEffectEditorView:self shouldChangeTextInRange:location replacementText:{length, textCopy}];
 
   return length;
 }

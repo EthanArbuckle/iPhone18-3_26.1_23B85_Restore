@@ -1,26 +1,26 @@
 @interface TSTPasteMap
-- (TSTPasteMap)initWithPbRange:(TSUCellRect)a3 tgtRange:(TSUCellRect)a4;
-- (TSTPasteMap)initWithPbTable:(id)a3 pbRange:(TSUCellRect)a4 tgtTable:(id)a5 tgtRange:(TSUCellRect)a6 flag:(int)a7;
-- (TSUCellCoord)pbCellIDForTgtCellID:(TSUCellCoord)a3;
-- (TSUCellRect)p_tgtRangeForPbRange:(TSUCellRect)a3 givenColumnMaps:(const void *)a4 rowMaps:(const void *)a5;
-- (TSUCellRect)pbRangeForTgtRange:(TSUCellRect)a3;
-- (_NSRange)p_tgtRangeFromPbRange:(const TSTColumnOrRowMap *)a3 andMap:(const void *)a4;
+- (TSTPasteMap)initWithPbRange:(TSUCellRect)range tgtRange:(TSUCellRect)tgtRange;
+- (TSTPasteMap)initWithPbTable:(id)table pbRange:(TSUCellRect)range tgtTable:(id)tgtTable tgtRange:(TSUCellRect)tgtRange flag:(int)flag;
+- (TSUCellCoord)pbCellIDForTgtCellID:(TSUCellCoord)d;
+- (TSUCellRect)p_tgtRangeForPbRange:(TSUCellRect)range givenColumnMaps:(const void *)maps rowMaps:(const void *)rowMaps;
+- (TSUCellRect)pbRangeForTgtRange:(TSUCellRect)range;
+- (_NSRange)p_tgtRangeFromPbRange:(const TSTColumnOrRowMap *)range andMap:(const void *)map;
 - (id).cxx_construct;
-- (id)createTgtRegionByIntersectingPbRegion:(id)a3 tgtTableInfo:(id)a4 tgtRegion:(id)a5;
-- (id)createTgtRegionFromPbRegion:(id)a3;
-- (unsigned)p_indexForTgtToPbMaps:(void *)a3 andMap:(TSTColumnOrRowMap *)a4;
-- (vector<TSUCellRect,)createTgtMergeMapFromPbMergeMap:(TSTPasteMap *)self andTgtRegion:(SEL)a3 andTgtBodyRange:(const void *)a4;
-- (void)p_tgtRangesForPbRange:(TSUCellRect)a3 givenColumnMaps:(const void *)a4 rowMaps:(const void *)a5;
+- (id)createTgtRegionByIntersectingPbRegion:(id)region tgtTableInfo:(id)info tgtRegion:(id)tgtRegion;
+- (id)createTgtRegionFromPbRegion:(id)region;
+- (unsigned)p_indexForTgtToPbMaps:(void *)maps andMap:(TSTColumnOrRowMap *)map;
+- (vector<TSUCellRect,)createTgtMergeMapFromPbMergeMap:(TSTPasteMap *)self andTgtRegion:(SEL)region andTgtBodyRange:(const void *)range;
+- (void)p_tgtRangesForPbRange:(TSUCellRect)range givenColumnMaps:(const void *)maps rowMaps:(const void *)rowMaps;
 @end
 
 @implementation TSTPasteMap
 
-- (TSTPasteMap)initWithPbRange:(TSUCellRect)a3 tgtRange:(TSUCellRect)a4
+- (TSTPasteMap)initWithPbRange:(TSUCellRect)range tgtRange:(TSUCellRect)tgtRange
 {
-  size = a4.size;
-  origin = a4.origin;
-  v6 = a3.size;
-  v7 = a3.origin;
+  size = tgtRange.size;
+  origin = tgtRange.origin;
+  v6 = range.size;
+  v7 = range.origin;
   v23.receiver = self;
   v23.super_class = TSTPasteMap;
   v8 = [(TSTPasteMap *)&v23 init];
@@ -95,24 +95,24 @@
   return v8;
 }
 
-- (TSTPasteMap)initWithPbTable:(id)a3 pbRange:(TSUCellRect)a4 tgtTable:(id)a5 tgtRange:(TSUCellRect)a6 flag:(int)a7
+- (TSTPasteMap)initWithPbTable:(id)table pbRange:(TSUCellRect)range tgtTable:(id)tgtTable tgtRange:(TSUCellRect)tgtRange flag:(int)flag
 {
-  size = a4.size;
-  v108 = a6.size;
-  origin = a4.origin;
-  v112 = a6.origin;
-  v9 = a3;
-  v10 = a5;
+  size = range.size;
+  v108 = tgtRange.size;
+  origin = range.origin;
+  v112 = tgtRange.origin;
+  tableCopy = table;
+  tgtTableCopy = tgtTable;
   v125.receiver = self;
   v125.super_class = TSTPasteMap;
-  v116 = v9;
+  v116 = tableCopy;
   v120 = [(TSTPasteMap *)&v125 init];
   if (!v120)
   {
     goto LABEL_166;
   }
 
-  v119 = v10;
+  v119 = tgtTableCopy;
   v15 = objc_msgSend_sharedTableConfiguration(TSTConfiguration, v11, v12, v13, v14);
   v20 = objc_msgSend_maxNumberOfColumns(v15, v16, v17, v18, v19);
 
@@ -197,7 +197,7 @@
         goto LABEL_64;
       }
 
-      if (a7)
+      if (flag)
       {
         v22 = v29;
         if (v29 > v117)
@@ -297,7 +297,7 @@ LABEL_63:
     goto LABEL_64;
   }
 
-  if (a7 == 1)
+  if (flag == 1)
   {
     v41 = objc_msgSend_range(v119, v21, v22, v23, v24);
     v42 = v21 + WORD2(v41) - 1;
@@ -529,7 +529,7 @@ LABEL_116:
         goto LABEL_149;
       }
 
-      if (a7)
+      if (flag)
       {
         if (v85 > v115)
         {
@@ -572,7 +572,7 @@ LABEL_116:
         goto LABEL_149;
       }
 
-      if (a7 == 1)
+      if (flag == 1)
       {
         if (v61 > Index)
         {
@@ -727,24 +727,24 @@ LABEL_149:
     while (v100 != v120 + 16);
   }
 
-  v9 = v116;
-  v10 = v119;
+  tableCopy = v116;
+  tgtTableCopy = v119;
 LABEL_166:
 
   return v120;
 }
 
-- (unsigned)p_indexForTgtToPbMaps:(void *)a3 andMap:(TSTColumnOrRowMap *)a4
+- (unsigned)p_indexForTgtToPbMaps:(void *)maps andMap:(TSTColumnOrRowMap *)map
 {
-  v6 = *(a3 + 1);
-  v4 = a3 + 8;
+  v6 = *(maps + 1);
+  v4 = maps + 8;
   v5 = v6;
   if (!v6)
   {
     return 0x7FFFFFFF;
   }
 
-  var1 = a4->var1;
+  var1 = map->var1;
   v8 = v4;
   do
   {
@@ -757,7 +757,7 @@ LABEL_166:
   }
 
   while (v5);
-  if (v8 != v4 && (v9 = *(v8 + 8), a4->var2 + var1 <= *(v8 + 9) + v9))
+  if (v8 != v4 && (v9 = *(v8 + 8), map->var2 + var1 <= *(v8 + 9) + v9))
   {
     return var1 - v9 + *(v8 + 7);
   }
@@ -768,16 +768,16 @@ LABEL_166:
   }
 }
 
-- (_NSRange)p_tgtRangeFromPbRange:(const TSTColumnOrRowMap *)a3 andMap:(const void *)a4
+- (_NSRange)p_tgtRangeFromPbRange:(const TSTColumnOrRowMap *)range andMap:(const void *)map
 {
   v4 = *MEMORY[0x277D81490];
   var2 = *(MEMORY[0x277D81490] + 8);
-  v8 = *(a4 + 1);
-  v6 = (a4 + 8);
+  v8 = *(map + 1);
+  v6 = (map + 8);
   v7 = v8;
   if (v8)
   {
-    var0 = a3->var0;
+    var0 = range->var0;
     v10 = v6;
     do
     {
@@ -793,10 +793,10 @@ LABEL_166:
     if (v10 != v6)
     {
       v11 = v10[7];
-      if (var0 >= v11 && v10[9] + v11 >= a3->var2 + var0)
+      if (var0 >= v11 && v10[9] + v11 >= range->var2 + var0)
       {
         v4 = var0 - v11 + v10[8];
-        var2 = a3->var2;
+        var2 = range->var2;
       }
     }
   }
@@ -806,26 +806,26 @@ LABEL_166:
   return result;
 }
 
-- (TSUCellRect)p_tgtRangeForPbRange:(TSUCellRect)a3 givenColumnMaps:(const void *)a4 rowMaps:(const void *)a5
+- (TSUCellRect)p_tgtRangeForPbRange:(TSUCellRect)range givenColumnMaps:(const void *)maps rowMaps:(const void *)rowMaps
 {
-  numberOfRows = a3.size.numberOfRows;
-  row = a3.origin.row;
-  v9 = *&a3.origin & 0xFFFF00000000;
-  if (a3.origin.row != 0x7FFFFFFF && v9 == 0x7FFF00000000)
+  numberOfRows = range.size.numberOfRows;
+  row = range.origin.row;
+  v9 = *&range.origin & 0xFFFF00000000;
+  if (range.origin.row != 0x7FFFFFFF && v9 == 0x7FFF00000000)
   {
     column = 0;
   }
 
   else
   {
-    column = a3.origin.column;
+    column = range.origin.column;
   }
 
   v27[0] = column;
   v27[1] = 0;
-  v27[2] = a3.size.numberOfColumns;
+  v27[2] = range.size.numberOfColumns;
   v28 = 0;
-  v12 = objc_msgSend_p_tgtRangeFromPbRange_andMap_(self, a2, v27, a4, a4);
+  v12 = objc_msgSend_p_tgtRangeFromPbRange_andMap_(self, a2, v27, maps, maps);
   if (v12 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v15 = 0;
@@ -860,7 +860,7 @@ LABEL_166:
   v25[1] = 0;
   v25[2] = numberOfRows;
   v26 = 0;
-  v19 = objc_msgSend_p_tgtRangeFromPbRange_andMap_(self, v13, v25, a5, v14);
+  v19 = objc_msgSend_p_tgtRangeFromPbRange_andMap_(self, v13, v25, rowMaps, v14);
   v21 = v20 << 32;
   v22 = v19;
   if (v19 == 0x7FFFFFFFFFFFFFFFLL)
@@ -876,26 +876,26 @@ LABEL_166:
   return result;
 }
 
-- (TSUCellRect)pbRangeForTgtRange:(TSUCellRect)a3
+- (TSUCellRect)pbRangeForTgtRange:(TSUCellRect)range
 {
-  LODWORD(v4) = a3.size.numberOfColumns;
-  row = a3.origin.row;
-  v7 = *&a3.origin & 0xFFFF00000000;
-  if (a3.origin.row != 0x7FFFFFFF && v7 == 0x7FFF00000000)
+  LODWORD(v4) = range.size.numberOfColumns;
+  row = range.origin.row;
+  v7 = *&range.origin & 0xFFFF00000000;
+  if (range.origin.row != 0x7FFFFFFF && v7 == 0x7FFF00000000)
   {
     column = 0;
   }
 
   else
   {
-    column = a3.origin.column;
+    column = range.origin.column;
   }
 
   v22 = 0;
   v23 = column;
-  numberOfRows = a3.size.numberOfRows;
-  v11 = *&a3.size & 0xFFFFFFFF00000000;
-  numberOfColumns = a3.size.numberOfColumns;
+  numberOfRows = range.size.numberOfRows;
+  v11 = *&range.size & 0xFFFFFFFF00000000;
+  numberOfColumns = range.size.numberOfColumns;
   v25 = 0;
   v12 = objc_msgSend_p_indexForTgtToPbMaps_andMap_(self, a2, &self->_columnTgtToPbMaps, &v22, v3);
   if (v12 == 0x7FFFFFFF)
@@ -950,11 +950,11 @@ LABEL_166:
   return result;
 }
 
-- (TSUCellCoord)pbCellIDForTgtCellID:(TSUCellCoord)a3
+- (TSUCellCoord)pbCellIDForTgtCellID:(TSUCellCoord)d
 {
-  row = a3.row;
+  row = d.row;
   v11 = 0;
-  column = a3.column;
+  column = d.column;
   v13 = 1;
   v14 = 0;
   v6 = objc_msgSend_p_indexForTgtToPbMaps_andMap_(self, a2, &self->_columnTgtToPbMaps, &v11, v3);
@@ -975,9 +975,9 @@ LABEL_166:
   return (v9 | objc_msgSend_p_indexForTgtToPbMaps_andMap_(self, v7, &self->_rowTgtToPbMaps, &v11, v8));
 }
 
-- (id)createTgtRegionFromPbRegion:(id)a3
+- (id)createTgtRegionFromPbRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   sub_2214A24F4(v28, self->_rowTgtToPbMaps.__tree_.__begin_node_, &self->_rowTgtToPbMaps.__tree_.__end_node_);
   sub_2214A24F4(v27, self->_columnTgtToPbMaps.__tree_.__begin_node_, &self->_columnTgtToPbMaps.__tree_.__end_node_);
   v18 = 0;
@@ -997,7 +997,7 @@ LABEL_166:
   sub_2214A274C(v16, v27);
   sub_2214A274C(v17, v28);
   v15[5] = &v18;
-  objc_msgSend_enumerateCellRangesUsingBlock_(v4, v5, v15, v6, v7);
+  objc_msgSend_enumerateCellRangesUsingBlock_(regionCopy, v5, v15, v6, v7);
   v8 = objc_alloc_init(TSTCellRegion);
   v11 = v8;
   v12 = v19[6];
@@ -1034,23 +1034,23 @@ LABEL_166:
   return v13;
 }
 
-- (id)createTgtRegionByIntersectingPbRegion:(id)a3 tgtTableInfo:(id)a4 tgtRegion:(id)a5
+- (id)createTgtRegionByIntersectingPbRegion:(id)region tgtTableInfo:(id)info tgtRegion:(id)tgtRegion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (objc_msgSend_isRectangle(v8, v11, v12, v13, v14))
+  regionCopy = region;
+  infoCopy = info;
+  tgtRegionCopy = tgtRegion;
+  if (objc_msgSend_isRectangle(regionCopy, v11, v12, v13, v14))
   {
-    v19 = objc_msgSend_boundingCellRange(v10, v15, v16, v17, v18);
-    v22 = objc_msgSend_indexesOfHiddenColumnsInCellRange_(v9, v20, v19, v20, v21);
-    v26 = objc_msgSend_regionBySubtractingColumnIndexes_(v10, v23, v22, v24, v25);
+    v19 = objc_msgSend_boundingCellRange(tgtRegionCopy, v15, v16, v17, v18);
+    v22 = objc_msgSend_indexesOfHiddenColumnsInCellRange_(infoCopy, v20, v19, v20, v21);
+    v26 = objc_msgSend_regionBySubtractingColumnIndexes_(tgtRegionCopy, v23, v22, v24, v25);
 
     v31 = objc_msgSend_boundingCellRange(v26, v27, v28, v29, v30);
-    v34 = objc_msgSend_indexesOfHiddenRowsInCellRange_(v9, v32, v31, v32, v33);
+    v34 = objc_msgSend_indexesOfHiddenRowsInCellRange_(infoCopy, v32, v31, v32, v33);
     v38 = objc_msgSend_regionBySubtractingRowIndexes_(v26, v35, v34, v36, v37);
 
-    v10 = v38;
-    v39 = v10;
+    tgtRegionCopy = v38;
+    v39 = tgtRegionCopy;
   }
 
   else
@@ -1061,39 +1061,39 @@ LABEL_166:
     v50[2] = sub_2214A15D8;
     v50[3] = &unk_278460BD0;
     v50[4] = self;
-    v51 = v8;
+    v51 = regionCopy;
     v41 = v40;
     v52 = v41;
-    objc_msgSend_enumerateCellRangesUsingBlock_(v10, v42, v50, v43, v44);
+    objc_msgSend_enumerateCellRangesUsingBlock_(tgtRegionCopy, v42, v50, v43, v44);
     v39 = objc_msgSend_gatheredCellRegion(v41, v45, v46, v47, v48);
   }
 
   return v39;
 }
 
-- (void)p_tgtRangesForPbRange:(TSUCellRect)a3 givenColumnMaps:(const void *)a4 rowMaps:(const void *)a5
+- (void)p_tgtRangesForPbRange:(TSUCellRect)range givenColumnMaps:(const void *)maps rowMaps:(const void *)rowMaps
 {
-  numberOfRows = a3.size.numberOfRows;
-  row = a3.origin.row;
+  numberOfRows = range.size.numberOfRows;
+  row = range.origin.row;
   v48 = 0u;
   memset(v47, 0, sizeof(v47));
   memset(__p, 0, sizeof(__p));
-  v9 = *&a3.origin & 0xFFFF00000000;
-  v10 = a3.origin.row != 0x7FFFFFFF && v9 == 0x7FFF00000000;
-  column = a3.origin.column;
+  v9 = *&range.origin & 0xFFFF00000000;
+  v10 = range.origin.row != 0x7FFFFFFF && v9 == 0x7FFF00000000;
+  column = range.origin.column;
   if (v10)
   {
     column = 0;
   }
 
   v43.n128_u64[0] = column | 0x7FFFFFFF00000000;
-  v43.n128_u32[2] = a3.size.numberOfColumns;
+  v43.n128_u32[2] = range.size.numberOfColumns;
   v43.n128_u8[12] = 0;
   sub_2214A27A4(v47, &v43);
   v12 = *(&v48 + 1);
   if (*(&v48 + 1))
   {
-    v13 = a4 + 8;
+    v13 = maps + 8;
     do
     {
       v14 = v12 - 1;
@@ -1204,7 +1204,7 @@ LABEL_166:
   v29 = *(&v48 + 1);
   if (*(&v48 + 1))
   {
-    v30 = a5 + 8;
+    v30 = rowMaps + 8;
     do
     {
       v31 = v29 - 1;
@@ -1296,22 +1296,22 @@ LABEL_166:
   operator new();
 }
 
-- (vector<TSUCellRect,)createTgtMergeMapFromPbMergeMap:(TSTPasteMap *)self andTgtRegion:(SEL)a3 andTgtBodyRange:(const void *)a4
+- (vector<TSUCellRect,)createTgtMergeMapFromPbMergeMap:(TSTPasteMap *)self andTgtRegion:(SEL)region andTgtBodyRange:(const void *)range
 {
   size = a6.size;
   origin = a6.origin;
   sub_2214A24F4(v27, self->_rowTgtToPbMaps.__tree_.__begin_node_, &self->_rowTgtToPbMaps.__tree_.__end_node_);
-  v25 = self;
+  selfCopy = self;
   sub_2214A24F4(v26, self->_columnTgtToPbMaps.__tree_.__begin_node_, &self->_columnTgtToPbMaps.__tree_.__end_node_);
   retstr->__begin_ = 0;
   retstr->__end_ = 0;
   retstr->__cap_ = 0;
-  v14 = *a4;
-  v13 = *(a4 + 1);
+  v14 = *range;
+  v13 = *(range + 1);
   v24 = v13;
   while (v14 != v13)
   {
-    v15 = objc_msgSend_p_tgtRangesForPbRange_givenColumnMaps_rowMaps_(v25, v12, *v14, *(v14 + 8), v26, v27);
+    v15 = objc_msgSend_p_tgtRangesForPbRange_givenColumnMaps_rowMaps_(selfCopy, v12, *v14, *(v14 + 8), v26, v27);
     v17 = *v15;
     v16 = v15[1];
     if (*v15 != v16)

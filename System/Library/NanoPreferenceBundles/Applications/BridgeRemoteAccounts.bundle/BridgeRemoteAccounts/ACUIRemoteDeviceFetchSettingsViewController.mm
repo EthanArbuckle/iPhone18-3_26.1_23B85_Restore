@@ -1,7 +1,7 @@
 @interface ACUIRemoteDeviceFetchSettingsViewController
 - (id)specifiers;
 - (id)title;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -17,18 +17,18 @@
 
 - (void)viewDidLoad
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
-  v3 = [(ACUIRemoteDeviceFetchSettingsViewController *)self specifier];
-  v2 = [v3 userInfo];
-  location[0] = [v2 objectForKeyedSubscript:ACUIRemoteSettingsControllerKey];
+  specifier = [(ACUIRemoteDeviceFetchSettingsViewController *)self specifier];
+  userInfo = [specifier userInfo];
+  location[0] = [userInfo objectForKeyedSubscript:ACUIRemoteSettingsControllerKey];
 
   if (location[0])
   {
-    objc_storeStrong(&v6->_settingsController, location[0]);
+    objc_storeStrong(&selfCopy->_settingsController, location[0]);
   }
 
-  v4.receiver = v6;
+  v4.receiver = selfCopy;
   v4.super_class = ACUIRemoteDeviceFetchSettingsViewController;
   [(ACUIRemoteDeviceFetchSettingsViewController *)&v4 viewDidLoad];
   objc_storeStrong(location, 0);
@@ -36,7 +36,7 @@
 
 - (id)specifiers
 {
-  v23 = self;
+  selfCopy = self;
   v22[1] = a2;
   if (!*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers])
   {
@@ -45,7 +45,7 @@
     [v21 setProperty:&__kCFBooleanTrue forKey:PSIsRadioGroupKey];
     [v22[0] addObject:v21];
     memset(__b, 0, 0x40uLL);
-    obj = [(ACUIRemoteDeviceFetchSettingsViewController *)v23 _options];
+    obj = [(ACUIRemoteDeviceFetchSettingsViewController *)selfCopy _options];
     v17 = [obj countByEnumeratingWithState:__b objects:v24 count:16];
     if (v17)
     {
@@ -65,10 +65,10 @@
         v9 = ACUIFetchSettingTitle();
         v18 = [PSSpecifier preferenceSpecifierNamed:"preferenceSpecifierNamed:target:set:get:detail:cell:edit:" target:0 set:? get:? detail:? cell:? edit:?];
 
-        v10 = [(ACUIRemoteDeviceFetchSettingsViewController *)v23 settingsController];
-        v11 = [(ACUIRemoteDeviceSettingsController *)v10 pollInterval];
+        settingsController = [(ACUIRemoteDeviceFetchSettingsViewController *)selfCopy settingsController];
+        pollInterval = [(ACUIRemoteDeviceSettingsController *)settingsController pollInterval];
 
-        if (v19 == v11)
+        if (v19 == pollInterval)
         {
           [v21 setProperty:v18 forKey:PSRadioGroupCheckedSpecifierKey];
         }
@@ -93,7 +93,7 @@
     }
 
     v2 = [v22[0] copy];
-    v3 = &v23->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
+    v3 = &selfCopy->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
     v4 = *v3;
     *v3 = v2;
 
@@ -101,20 +101,20 @@
     objc_storeStrong(v22, 0);
   }
 
-  v5 = *&v23->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
+  v5 = *&selfCopy->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
 
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  v11 = [(ACUIRemoteDeviceFetchSettingsViewController *)v14 specifierAtIndexPath:v12];
+  objc_storeStrong(&v12, path);
+  v11 = [(ACUIRemoteDeviceFetchSettingsViewController *)selfCopy specifierAtIndexPath:v12];
   v10 = [v11 propertyForKey:PSValueKey];
   v9 = _ACUILogSystem();
   v8 = OS_LOG_TYPE_DEFAULT;
@@ -126,10 +126,10 @@
 
   objc_storeStrong(&v9, 0);
   v7 = ACUIFetchSettingFromNumber();
-  v4 = [(ACUIRemoteDeviceFetchSettingsViewController *)v14 settingsController];
-  [(ACUIRemoteDeviceSettingsController *)v4 setPollInterval:v7];
+  settingsController = [(ACUIRemoteDeviceFetchSettingsViewController *)selfCopy settingsController];
+  [(ACUIRemoteDeviceSettingsController *)settingsController setPollInterval:v7];
 
-  v6.receiver = v14;
+  v6.receiver = selfCopy;
   v6.super_class = ACUIRemoteDeviceFetchSettingsViewController;
   [(ACUIRemoteDeviceFetchSettingsViewController *)&v6 tableView:location[0] didSelectRowAtIndexPath:v12];
   objc_storeStrong(&v10, 0);

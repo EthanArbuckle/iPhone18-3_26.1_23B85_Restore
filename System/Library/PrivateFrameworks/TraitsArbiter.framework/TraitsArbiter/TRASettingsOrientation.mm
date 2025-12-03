@@ -1,75 +1,75 @@
 @interface TRASettingsOrientation
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToOrientationSettings:(id)a3;
-- (TRASettingsOrientation)initWithOrientation:(int64_t)a3;
-- (TRASettingsOrientation)initWithOrientation:(int64_t)a3 orientationMapResolver:(id)a4 validatedOrientationInputs:(id)a5 rawOrientationInputs:(id)a6;
-- (TRASettingsOrientation)initWithOrientationSettings:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToOrientationSettings:(id)settings;
+- (TRASettingsOrientation)initWithOrientation:(int64_t)orientation;
+- (TRASettingsOrientation)initWithOrientation:(int64_t)orientation orientationMapResolver:(id)resolver validatedOrientationInputs:(id)inputs rawOrientationInputs:(id)orientationInputs;
+- (TRASettingsOrientation)initWithOrientationSettings:(id)settings;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 @end
 
 @implementation TRASettingsOrientation
 
-- (TRASettingsOrientation)initWithOrientation:(int64_t)a3 orientationMapResolver:(id)a4 validatedOrientationInputs:(id)a5 rawOrientationInputs:(id)a6
+- (TRASettingsOrientation)initWithOrientation:(int64_t)orientation orientationMapResolver:(id)resolver validatedOrientationInputs:(id)inputs rawOrientationInputs:(id)orientationInputs
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  resolverCopy = resolver;
+  inputsCopy = inputs;
+  orientationInputsCopy = orientationInputs;
   v17.receiver = self;
   v17.super_class = TRASettingsOrientation;
   v14 = [(TRASettingsOrientation *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_orientation = a3;
-    objc_storeStrong(&v14->_orientationMapResolver, a4);
-    objc_storeStrong(&v15->_validatedOrientationInputs, a5);
-    objc_storeStrong(&v15->_rawOrientationInputs, a6);
+    v14->_orientation = orientation;
+    objc_storeStrong(&v14->_orientationMapResolver, resolver);
+    objc_storeStrong(&v15->_validatedOrientationInputs, inputs);
+    objc_storeStrong(&v15->_rawOrientationInputs, orientationInputs);
   }
 
   return v15;
 }
 
-- (TRASettingsOrientation)initWithOrientationSettings:(id)a3
+- (TRASettingsOrientation)initWithOrientationSettings:(id)settings
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  settingsCopy = settings;
+  v5 = settingsCopy;
+  if (settingsCopy)
   {
-    v6 = [v4 orientation];
-    v7 = [v5 orientationMapResolver];
-    v8 = [v5 validatedOrientationInputs];
-    v9 = [v5 rawOrientationInputs];
+    orientation = [settingsCopy orientation];
+    orientationMapResolver = [v5 orientationMapResolver];
+    validatedOrientationInputs = [v5 validatedOrientationInputs];
+    rawOrientationInputs = [v5 rawOrientationInputs];
   }
 
   else
   {
-    v7 = [objc_alloc(MEMORY[0x277CF0BC0]) initWithTargetOrientation:0 currentOrientation:0];
-    v8 = [[TRAArbitrationDeviceOrientationInputs alloc] initWithCurrentDeviceOrientation:0 nonFlatDeviceOrientation:0];
-    v9 = [[TRAArbitrationDeviceOrientationInputs alloc] initWithCurrentDeviceOrientation:0 nonFlatDeviceOrientation:0];
-    v6 = 0;
+    orientationMapResolver = [objc_alloc(MEMORY[0x277CF0BC0]) initWithTargetOrientation:0 currentOrientation:0];
+    validatedOrientationInputs = [[TRAArbitrationDeviceOrientationInputs alloc] initWithCurrentDeviceOrientation:0 nonFlatDeviceOrientation:0];
+    rawOrientationInputs = [[TRAArbitrationDeviceOrientationInputs alloc] initWithCurrentDeviceOrientation:0 nonFlatDeviceOrientation:0];
+    orientation = 0;
   }
 
-  v10 = [(TRASettingsOrientation *)self initWithOrientation:v6 orientationMapResolver:v7 validatedOrientationInputs:v8 rawOrientationInputs:v9];
+  v10 = [(TRASettingsOrientation *)self initWithOrientation:orientation orientationMapResolver:orientationMapResolver validatedOrientationInputs:validatedOrientationInputs rawOrientationInputs:rawOrientationInputs];
 
   return v10;
 }
 
-- (TRASettingsOrientation)initWithOrientation:(int64_t)a3
+- (TRASettingsOrientation)initWithOrientation:(int64_t)orientation
 {
   v5 = [objc_alloc(MEMORY[0x277CF0BC0]) initWithTargetOrientation:0 currentOrientation:0];
   v6 = [[TRAArbitrationDeviceOrientationInputs alloc] initWithCurrentDeviceOrientation:0 nonFlatDeviceOrientation:0];
   v7 = [[TRAArbitrationDeviceOrientationInputs alloc] initWithCurrentDeviceOrientation:0 nonFlatDeviceOrientation:0];
-  v8 = [(TRASettingsOrientation *)self initWithOrientation:a3 orientationMapResolver:v5 validatedOrientationInputs:v6 rawOrientationInputs:v7];
+  v8 = [(TRASettingsOrientation *)self initWithOrientation:orientation orientationMapResolver:v5 validatedOrientationInputs:v6 rawOrientationInputs:v7];
 
   return v8;
 }
 
-- (BOOL)isEqualToOrientationSettings:(id)a3
+- (BOOL)isEqualToOrientationSettings:(id)settings
 {
-  v4 = a3;
-  if (!v4)
+  settingsCopy = settings;
+  if (!settingsCopy)
   {
     goto LABEL_9;
   }
@@ -80,21 +80,21 @@
     [TRASettingsOrientation isEqualToOrientationSettings:];
   }
 
-  if (self == v4)
+  if (self == settingsCopy)
   {
     v12 = 1;
     goto LABEL_11;
   }
 
   orientation = self->_orientation;
-  if (orientation != [(TRASettingsOrientation *)v4 orientation])
+  if (orientation != [(TRASettingsOrientation *)settingsCopy orientation])
   {
     goto LABEL_9;
   }
 
   orientationMapResolver = self->_orientationMapResolver;
-  v7 = [(TRASettingsOrientation *)v4 orientationMapResolver];
-  LODWORD(orientationMapResolver) = [(BSInterfaceOrientationMapResolving *)orientationMapResolver isEqual:v7];
+  orientationMapResolver = [(TRASettingsOrientation *)settingsCopy orientationMapResolver];
+  LODWORD(orientationMapResolver) = [(BSInterfaceOrientationMapResolving *)orientationMapResolver isEqual:orientationMapResolver];
 
   if (!orientationMapResolver)
   {
@@ -102,14 +102,14 @@
   }
 
   validatedOrientationInputs = self->_validatedOrientationInputs;
-  v9 = [(TRASettingsOrientation *)v4 validatedOrientationInputs];
-  LODWORD(validatedOrientationInputs) = [(TRAArbitrationDeviceOrientationInputs *)validatedOrientationInputs isEqual:v9];
+  validatedOrientationInputs = [(TRASettingsOrientation *)settingsCopy validatedOrientationInputs];
+  LODWORD(validatedOrientationInputs) = [(TRAArbitrationDeviceOrientationInputs *)validatedOrientationInputs isEqual:validatedOrientationInputs];
 
   if (validatedOrientationInputs)
   {
     rawOrientationInputs = self->_rawOrientationInputs;
-    v11 = [(TRASettingsOrientation *)v4 rawOrientationInputs];
-    v12 = [(TRAArbitrationDeviceOrientationInputs *)rawOrientationInputs isEqual:v11];
+    rawOrientationInputs = [(TRASettingsOrientation *)settingsCopy rawOrientationInputs];
+    v12 = [(TRAArbitrationDeviceOrientationInputs *)rawOrientationInputs isEqual:rawOrientationInputs];
   }
 
   else
@@ -123,17 +123,17 @@ LABEL_11:
   return v12;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [TRAMutableSettingsOrientation allocWithZone:a3];
+  v4 = [TRAMutableSettingsOrientation allocWithZone:zone];
 
   return [(TRASettingsOrientation *)v4 initWithOrientationSettings:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -141,7 +141,7 @@ LABEL_11:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TRASettingsOrientation *)self isEqualToOrientationSettings:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TRASettingsOrientation *)self isEqualToOrientationSettings:equalCopy];
   }
 
   return v5;
@@ -156,7 +156,7 @@ LABEL_11:
   return v4;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x277CCACA8];
   v5 = TRAStringForBSDeviceOrientation([(TRAArbitrationDeviceOrientationInputs *)self->_validatedOrientationInputs currentDeviceOrientation]);

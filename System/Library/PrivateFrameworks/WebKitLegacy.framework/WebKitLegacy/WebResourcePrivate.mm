@@ -1,6 +1,6 @@
 @interface WebResourcePrivate
 - (WebResourcePrivate)init;
-- (WebResourcePrivate)initWithCoreResource:(void *)a3;
+- (WebResourcePrivate)initWithCoreResource:(void *)resource;
 - (void)dealloc;
 @end
 
@@ -13,15 +13,15 @@
   return [(WebResourcePrivate *)&v3 init];
 }
 
-- (WebResourcePrivate)initWithCoreResource:(void *)a3
+- (WebResourcePrivate)initWithCoreResource:(void *)resource
 {
   v8.receiver = self;
   v8.super_class = WebResourcePrivate;
   result = [(WebResourcePrivate *)&v8 init];
   if (result)
   {
-    v5 = *a3;
-    *a3 = 0;
+    v5 = *resource;
+    *resource = 0;
     m_ptr = result->coreResource.m_ptr;
     result->coreResource.m_ptr = v5;
     if (m_ptr)

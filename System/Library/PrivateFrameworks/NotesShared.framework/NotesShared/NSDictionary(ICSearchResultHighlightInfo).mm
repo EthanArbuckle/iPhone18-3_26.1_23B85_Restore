@@ -56,13 +56,13 @@ LABEL_15:
   v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v10 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v11 = MEMORY[0x277CBEB98];
-  v12 = [v5 allKeys];
-  v13 = [v11 setWithArray:v12];
+  allKeys = [v5 allKeys];
+  v13 = [v11 setWithArray:allKeys];
   [v10 unionSet:v13];
 
   v14 = MEMORY[0x277CBEB98];
-  v15 = [v7 allKeys];
-  v16 = [v14 setWithArray:v15];
+  allKeys2 = [v7 allKeys];
+  v16 = [v14 setWithArray:allKeys2];
   [v10 unionSet:v16];
 
   v32 = 0u;
@@ -89,7 +89,7 @@ LABEL_15:
         v23 = v22 = v5;
         [v7 objectForKeyedSubscript:v21];
         v25 = v24 = v7;
-        v26 = [a1 mergeFieldElement:v23 withElement:v25];
+        v26 = [self mergeFieldElement:v23 withElement:v25];
         [v9 setObject:v26 forKeyedSubscript:v21];
 
         v7 = v24;
@@ -131,13 +131,13 @@ LABEL_17:
   v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v10 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v11 = MEMORY[0x277CBEB98];
-  v12 = [v8 allKeys];
-  v13 = [v11 setWithArray:v12];
+  allKeys = [v8 allKeys];
+  v13 = [v11 setWithArray:allKeys];
   [v10 unionSet:v13];
 
   v14 = MEMORY[0x277CBEB98];
-  v15 = [v7 allKeys];
-  v16 = [v14 setWithArray:v15];
+  allKeys2 = [v7 allKeys];
+  v16 = [v14 setWithArray:allKeys2];
   [v10 unionSet:v16];
 
   v29 = 0u;
@@ -198,8 +198,8 @@ LABEL_18:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [v3 allKeys];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    allKeys = [v3 allKeys];
+    v6 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
@@ -210,7 +210,7 @@ LABEL_18:
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allKeys);
           }
 
           v10 = [v4 objectForKeyedSubscript:*(*(&v14 + 1) + 8 * i)];
@@ -223,7 +223,7 @@ LABEL_18:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v7)
         {
           continue;
@@ -272,7 +272,7 @@ LABEL_12:
 
         v24 = v4;
         v5 = *(*(&v38 + 1) + 8 * v4);
-        v27 = [v5 unsignedIntegerValue];
+        unsignedIntegerValue = [v5 unsignedIntegerValue];
         v6 = [v22 objectForKeyedSubscript:v5];
         v34 = 0u;
         v35 = 0u;
@@ -292,7 +292,7 @@ LABEL_12:
               }
 
               v8 = *(*(&v34 + 1) + 8 * i);
-              if (([v8 unsignedIntegerValue] & v27) != 0)
+              if (([v8 unsignedIntegerValue] & unsignedIntegerValue) != 0)
               {
                 v29 = i;
                 v9 = [v25 objectForKeyedSubscript:v8];
@@ -331,8 +331,8 @@ LABEL_12:
                           [v9 setObject:v16 forKeyedSubscript:v14];
                         }
 
-                        v17 = [v15 allObjects];
-                        [v16 addObjectsFromArray:v17];
+                        allObjects = [v15 allObjects];
+                        [v16 addObjectsFromArray:allObjects];
                       }
                     }
 

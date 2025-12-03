@@ -1,73 +1,73 @@
 @interface PHAMemoryElectionTask
-+ (BOOL)_reloadWidgetTimelineForWidgetKind:(id)a3 loggingConnection:(id)a4 error:(id *)a5;
-+ (BOOL)reloadForYouWidgetTimelineWithLoggingConnection:(id)a3 error:(id *)a4;
-+ (id)_filterMemoriesWithAcceptableUserFeedback:(id)a3 allMemoriesFetchResult:(id)a4 photoLibrary:(id)a5;
-+ (id)_filterSuggestionsToFeatureBasedOnUserFeedbackForSuggestionsToFeature:(id)a3 sugestionsFetchResult:(id)a4 photoLibrary:(id)a5;
-+ (id)_userFeedbackCalculatorWithPhotoLibrary:(id)a3;
-+ (void)findAndSetFeaturedStateForMemoriesAndSuggestionsIfNeededInPhotoLibrary:(id)a3 loggingConnection:(id)a4;
-+ (void)findMemoriesAndSetFeaturedStateIfNeededInPhotoLibrary:(id)a3 loggingConnection:(id)a4;
-+ (void)findMemoriesAndSetNeverFeatureStateIfNeededInPhotoLibrary:(id)a3 loggingConnection:(id)a4;
-+ (void)findSuggestionsAndSetFeaturedStateIfNeededInPhotoLibrary:(id)a3 loggingConnection:(id)a4;
-+ (void)sendElectedMemoriesPipelineAnalyticsEventWithCountsOfMemories:(id)a3 loggingConnection:(id)a4 analytics:(id)a5;
-+ (void)sendGeneratedMemoriesPipelineAnalyticsEventWithCountsOfMemories:(id)a3 loggingConnection:(id)a4 analytics:(id)a5;
-+ (void)sendMemoryTriggersAnalyticsEventWithElectedMemoryType:(id)a3 triggerType:(id)a4 loggingConnection:(id)a5 analytics:(id)a6;
-+ (void)sendNotifiedMemoriesPipelineAnalyticsEventWithMemoryType:(id)a3 loggingConnection:(id)a4 analytics:(id)a5;
-+ (void)sendTriggeredMemoriesPipelineAnalyticsEventWithCountsOfMemories:(id)a3 loggingConnection:(id)a4 analytics:(id)a5;
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5;
-- (BOOL)shouldRunWithGraphManager:(id)a3;
++ (BOOL)_reloadWidgetTimelineForWidgetKind:(id)kind loggingConnection:(id)connection error:(id *)error;
++ (BOOL)reloadForYouWidgetTimelineWithLoggingConnection:(id)connection error:(id *)error;
++ (id)_filterMemoriesWithAcceptableUserFeedback:(id)feedback allMemoriesFetchResult:(id)result photoLibrary:(id)library;
++ (id)_filterSuggestionsToFeatureBasedOnUserFeedbackForSuggestionsToFeature:(id)feature sugestionsFetchResult:(id)result photoLibrary:(id)library;
++ (id)_userFeedbackCalculatorWithPhotoLibrary:(id)library;
++ (void)findAndSetFeaturedStateForMemoriesAndSuggestionsIfNeededInPhotoLibrary:(id)library loggingConnection:(id)connection;
++ (void)findMemoriesAndSetFeaturedStateIfNeededInPhotoLibrary:(id)library loggingConnection:(id)connection;
++ (void)findMemoriesAndSetNeverFeatureStateIfNeededInPhotoLibrary:(id)library loggingConnection:(id)connection;
++ (void)findSuggestionsAndSetFeaturedStateIfNeededInPhotoLibrary:(id)library loggingConnection:(id)connection;
++ (void)sendElectedMemoriesPipelineAnalyticsEventWithCountsOfMemories:(id)memories loggingConnection:(id)connection analytics:(id)analytics;
++ (void)sendGeneratedMemoriesPipelineAnalyticsEventWithCountsOfMemories:(id)memories loggingConnection:(id)connection analytics:(id)analytics;
++ (void)sendMemoryTriggersAnalyticsEventWithElectedMemoryType:(id)type triggerType:(id)triggerType loggingConnection:(id)connection analytics:(id)analytics;
++ (void)sendNotifiedMemoriesPipelineAnalyticsEventWithMemoryType:(id)type loggingConnection:(id)connection analytics:(id)analytics;
++ (void)sendTriggeredMemoriesPipelineAnalyticsEventWithCountsOfMemories:(id)memories loggingConnection:(id)connection analytics:(id)analytics;
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error;
+- (BOOL)shouldRunWithGraphManager:(id)manager;
 - (PHAMemoryElectionTask)init;
-- (id)_electorConfigurationForExistingMemories:(id)a3 graphManager:(id)a4 loggingConnection:(id)a5;
-- (id)_recentlySuggestedMoodsFromExistingMemoriesSortedByCreationDate:(id)a3;
+- (id)_electorConfigurationForExistingMemories:(id)memories graphManager:(id)manager loggingConnection:(id)connection;
+- (id)_recentlySuggestedMoodsFromExistingMemoriesSortedByCreationDate:(id)date;
 - (id)taskClassDependencies;
-- (void)collectMetricsOnElectedEnrichedMemories:(id)a3 loggingConnection:(id)a4 analytics:(id)a5;
-- (void)collectMetricsOnExistingMemories:(id)a3 loggingConnection:(id)a4 analytics:(id)a5;
-- (void)collectMetricsOnMemoriesInGraphWithWorkingContext:(id)a3 loggingConnection:(id)a4 analytics:(id)a5;
-- (void)handleNotificationsForMemories:(id)a3 graphManager:(id)a4 userFeedbackCalculator:(id)a5 loggingConnection:(id)a6;
-- (void)runWithGraphManager:(id)a3 progressReporter:(id)a4 reply:(id)a5;
-- (void)timeoutFatal:(BOOL)a3;
+- (void)collectMetricsOnElectedEnrichedMemories:(id)memories loggingConnection:(id)connection analytics:(id)analytics;
+- (void)collectMetricsOnExistingMemories:(id)memories loggingConnection:(id)connection analytics:(id)analytics;
+- (void)collectMetricsOnMemoriesInGraphWithWorkingContext:(id)context loggingConnection:(id)connection analytics:(id)analytics;
+- (void)handleNotificationsForMemories:(id)memories graphManager:(id)manager userFeedbackCalculator:(id)calculator loggingConnection:(id)connection;
+- (void)runWithGraphManager:(id)manager progressReporter:(id)reporter reply:(id)reply;
+- (void)timeoutFatal:(BOOL)fatal;
 @end
 
 @implementation PHAMemoryElectionTask
 
-- (void)handleNotificationsForMemories:(id)a3 graphManager:(id)a4 userFeedbackCalculator:(id)a5 loggingConnection:(id)a6
+- (void)handleNotificationsForMemories:(id)memories graphManager:(id)manager userFeedbackCalculator:(id)calculator loggingConnection:(id)connection
 {
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  memoriesCopy = memories;
+  managerCopy = manager;
+  calculatorCopy = calculator;
+  connectionCopy = connection;
   if ([MEMORY[0x277D3BC38] isMemoriesNotificationDisabled])
   {
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
       v14 = "[PHAMemoryElectionTask] Not firing memories notification: disabled in settings";
 LABEL_11:
-      _os_log_impl(&dword_22FA28000, v13, OS_LOG_TYPE_INFO, v14, buf, 2u);
+      _os_log_impl(&dword_22FA28000, connectionCopy, OS_LOG_TYPE_INFO, v14, buf, 2u);
     }
   }
 
   else if (PLIsFeaturedContentAllowed())
   {
     v30 = objc_alloc_init(MEMORY[0x277D3BBA0]);
-    v31 = v11;
+    v31 = managerCopy;
     if (([v30 BOOLValueForKey:@"com.apple.photos.graphservice.forcedailynotifications" withFallbackValue:0] & 1) != 0 || -[PHAMemoryElectionTask forceNotification](self, "forceNotification"))
     {
       v15 = 1;
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_INFO))
       {
         *buf = 67109120;
         v39 = 1;
-        _os_log_impl(&dword_22FA28000, v13, OS_LOG_TYPE_INFO, "[PHAMemoryElectionTask] Memory notifications will be forced: %d", buf, 8u);
+        _os_log_impl(&dword_22FA28000, connectionCopy, OS_LOG_TYPE_INFO, "[PHAMemoryElectionTask] Memory notifications will be forced: %d", buf, 8u);
       }
     }
 
     else
     {
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
-        _os_log_impl(&dword_22FA28000, v13, OS_LOG_TYPE_INFO, "[PHAMemoryElectionTask] Handling notifications for memories", buf, 2u);
+        _os_log_impl(&dword_22FA28000, connectionCopy, OS_LOG_TYPE_INFO, "[PHAMemoryElectionTask] Handling notifications for memories", buf, 2u);
       }
 
       v15 = 0;
@@ -80,8 +80,8 @@ LABEL_11:
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v32 = v10;
-    v18 = v10;
+    v32 = memoriesCopy;
+    v18 = memoriesCopy;
     v19 = [v18 countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v19)
     {
@@ -102,8 +102,8 @@ LABEL_11:
           v25 = [v24 numberWithDouble:?];
           [v16 addObject:v25];
 
-          v26 = [v23 localIdentifier];
-          [v17 addObject:v26];
+          localIdentifier = [v23 localIdentifier];
+          [v17 addObject:localIdentifier];
         }
 
         v20 = [v18 countByEnumeratingWithState:&v33 objects:v37 count:16];
@@ -112,18 +112,18 @@ LABEL_11:
       while (v20);
     }
 
-    v11 = v31;
-    v27 = [[PHANotificationController alloc] initWithGraphManager:v31 userFeedbackCalculator:v12];
+    managerCopy = v31;
+    v27 = [[PHANotificationController alloc] initWithGraphManager:v31 userFeedbackCalculator:calculatorCopy];
     v28 = v27;
     if ((v29 & 1) != 0 || [(PHANotificationController *)v27 shouldFireNotificationForMemoriesWithScores:v16 withCreationReason:2])
     {
       [(PHANotificationController *)v28 fireNotificationForMemoryIdentifiers:v17 withCreationReason:2];
     }
 
-    v10 = v32;
+    memoriesCopy = v32;
   }
 
-  else if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+  else if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_INFO))
   {
     *buf = 0;
     v14 = "[PHAMemoryElectionTask] Not firing memories notification: featured content is disabled in settings";
@@ -131,12 +131,12 @@ LABEL_11:
   }
 }
 
-- (id)_electorConfigurationForExistingMemories:(id)a3 graphManager:(id)a4 loggingConnection:(id)a5
+- (id)_electorConfigurationForExistingMemories:(id)memories graphManager:(id)manager loggingConnection:(id)connection
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  memoriesCopy = memories;
+  managerCopy = manager;
+  connectionCopy = connection;
   v11 = objc_alloc_init(MEMORY[0x277D3BA60]);
   [v11 setRequestedMemoryCategory:self->_requestedCategory];
   [v11 setRequestedTriggerType:self->_requestedTriggerType];
@@ -170,30 +170,30 @@ LABEL_11:
   [v11 setMinimumTargetNumberOfMemories:v15];
   [v11 setMaximumTargetNumberOfMemories:v16];
   [v11 setUseMaximumTargetNumberOfMemories:v17];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_INFO))
   {
     v24 = 134217984;
     v25 = v15;
-    _os_log_impl(&dword_22FA28000, v10, OS_LOG_TYPE_INFO, "[PHAMemoryElectionTask] ElectionConfiguration: minimumTargetNumberOfMemories:%lu", &v24, 0xCu);
+    _os_log_impl(&dword_22FA28000, connectionCopy, OS_LOG_TYPE_INFO, "[PHAMemoryElectionTask] ElectionConfiguration: minimumTargetNumberOfMemories:%lu", &v24, 0xCu);
   }
 
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_INFO))
   {
     v24 = 134217984;
     v25 = v16;
-    _os_log_impl(&dword_22FA28000, v10, OS_LOG_TYPE_INFO, "[PHAMemoryElectionTask] ElectionConfiguration: maximumTargetNumberOfMemories:%lu", &v24, 0xCu);
+    _os_log_impl(&dword_22FA28000, connectionCopy, OS_LOG_TYPE_INFO, "[PHAMemoryElectionTask] ElectionConfiguration: maximumTargetNumberOfMemories:%lu", &v24, 0xCu);
   }
 
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_INFO))
   {
     v24 = 67109120;
     LODWORD(v25) = v17;
-    _os_log_impl(&dword_22FA28000, v10, OS_LOG_TYPE_INFO, "[PHAMemoryElectionTask] ElectionConfiguration: useMaximumTargetNumberOfMemories:%d", &v24, 8u);
+    _os_log_impl(&dword_22FA28000, connectionCopy, OS_LOG_TYPE_INFO, "[PHAMemoryElectionTask] ElectionConfiguration: useMaximumTargetNumberOfMemories:%d", &v24, 8u);
   }
 
   if (self->_requestedCategory)
   {
-    v18 = [[PHASuggestionController alloc] initWithGraphManager:v9];
+    v18 = [[PHASuggestionController alloc] initWithGraphManager:managerCopy];
     v19 = objc_alloc_init(MEMORY[0x277D3BBF0]);
     v20 = [MEMORY[0x277D27690] localDateFromUniversalDate:self->_universalDate];
     [v19 setLocalToday:v20];
@@ -204,15 +204,15 @@ LABEL_11:
     [v11 setCollidableSuggestions:v21];
   }
 
-  v22 = [(PHAMemoryElectionTask *)self _recentlySuggestedMoodsFromExistingMemoriesSortedByCreationDate:v8];
+  v22 = [(PHAMemoryElectionTask *)self _recentlySuggestedMoodsFromExistingMemoriesSortedByCreationDate:memoriesCopy];
   [v11 setMoodHistory:v22];
 
   return v11;
 }
 
-- (void)timeoutFatal:(BOOL)a3
+- (void)timeoutFatal:(BOOL)fatal
 {
-  if (a3)
+  if (fatal)
   {
     __assert_rtn("[PHAMemoryElectionTask timeoutFatal:]", "PHAMemoryElectionTask.m", 357, "NO");
   }
@@ -224,17 +224,17 @@ LABEL_11:
   }
 }
 
-- (id)_recentlySuggestedMoodsFromExistingMemoriesSortedByCreationDate:(id)a3
+- (id)_recentlySuggestedMoodsFromExistingMemoriesSortedByCreationDate:(id)date
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dateCopy = date;
   v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:10];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [v3 reverseObjectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  reverseObjectEnumerator = [dateCopy reverseObjectEnumerator];
+  v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -245,7 +245,7 @@ LABEL_3:
     {
       if (*v18 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v10 = *(*(&v17 + 1) + 8 * v9);
@@ -256,11 +256,11 @@ LABEL_3:
 
       if ([v10 pendingState] != 1)
       {
-        v11 = [v10 photosGraphProperties];
-        v12 = v11;
-        if (v11)
+        photosGraphProperties = [v10 photosGraphProperties];
+        v12 = photosGraphProperties;
+        if (photosGraphProperties)
         {
-          v13 = [v11 objectForKeyedSubscript:@"suggestedMood"];
+          v13 = [photosGraphProperties objectForKeyedSubscript:@"suggestedMood"];
           v14 = PHMemoryMoodForString();
 
           if (v14 != 16)
@@ -273,7 +273,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -287,58 +287,58 @@ LABEL_3:
   return v4;
 }
 
-- (void)runWithGraphManager:(id)a3 progressReporter:(id)a4 reply:(id)a5
+- (void)runWithGraphManager:(id)manager progressReporter:(id)reporter reply:(id)reply
 {
   v91[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v48 = a5;
-  v42 = [v7 analytics];
-  v9 = [objc_alloc(MEMORY[0x277D22C88]) initWithProgressReporter:v8];
+  managerCopy = manager;
+  reporterCopy = reporter;
+  replyCopy = reply;
+  analytics = [managerCopy analytics];
+  v9 = [objc_alloc(MEMORY[0x277D22C88]) initWithProgressReporter:reporterCopy];
   v46 = [v9 childProgressReporterToCheckpoint:0.25];
   v45 = [v9 childProgressReporterToCheckpoint:0.5];
   v44 = [v9 childProgressReporterToCheckpoint:0.75];
   v43 = [v9 childProgressReporterToCheckpoint:1.0];
-  v51 = [v7 workingContextForMemories];
-  v50 = [v51 photoLibrary];
-  v10 = [v51 loggingConnection];
-  v11 = [v50 librarySpecificFetchOptions];
-  [v11 setIncludePendingMemories:1];
+  workingContextForMemories = [managerCopy workingContextForMemories];
+  photoLibrary = [workingContextForMemories photoLibrary];
+  loggingConnection = [workingContextForMemories loggingConnection];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludePendingMemories:1];
   v12 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:1];
   v91[0] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v91 count:1];
-  [v11 setSortDescriptors:v13];
+  [librarySpecificFetchOptions setSortDescriptors:v13];
 
-  v14 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:v11];
-  v49 = [v14 fetchedObjects];
+  v14 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:librarySpecificFetchOptions];
+  fetchedObjects = [v14 fetchedObjects];
 
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
-    v15 = v10;
+    v15 = loggingConnection;
     *buf = 67109120;
-    *&buf[4] = [v49 count];
+    *&buf[4] = [fetchedObjects count];
     _os_log_impl(&dword_22FA28000, v15, OS_LOG_TYPE_INFO, "[PHAMemoryElectionTask] Found %d existing memories.", buf, 8u);
   }
 
-  if ([v8 isCancelled])
+  if ([reporterCopy isCancelled])
   {
-    (*(v48 + 2))(v48, MEMORY[0x277CBEC10], 0);
+    (*(replyCopy + 2))(replyCopy, MEMORY[0x277CBEC10], 0);
   }
 
   else
   {
-    v16 = self;
+    selfCopy2 = self;
     userInitiated = self->_userInitiated;
     if (!userInitiated)
     {
-      [(PHAMemoryElectionTask *)self collectMetricsOnExistingMemories:v49 loggingConnection:v10 analytics:v42];
-      v18 = [v7 workingContext];
-      [(PHAMemoryElectionTask *)self collectMetricsOnMemoriesInGraphWithWorkingContext:v18 loggingConnection:v10 analytics:v42];
+      [(PHAMemoryElectionTask *)self collectMetricsOnExistingMemories:fetchedObjects loggingConnection:loggingConnection analytics:analytics];
+      workingContext = [managerCopy workingContext];
+      [(PHAMemoryElectionTask *)self collectMetricsOnMemoriesInGraphWithWorkingContext:workingContext loggingConnection:loggingConnection analytics:analytics];
 
-      v16 = self;
+      selfCopy2 = self;
     }
 
-    v19 = [(PHAMemoryElectionTask *)v16 _electorConfigurationForExistingMemories:v49 graphManager:v7 loggingConnection:v10];
+    v19 = [(PHAMemoryElectionTask *)selfCopy2 _electorConfigurationForExistingMemories:fetchedObjects graphManager:managerCopy loggingConnection:loggingConnection];
     *buf = 0;
     v86 = buf;
     v87 = 0x3032000000;
@@ -356,28 +356,28 @@ LABEL_3:
     v72 = &v71;
     v73 = 0x2020000000;
     v74 = 1;
-    v20 = [objc_alloc(MEMORY[0x277CD99F8]) initWithPhotoLibrary:v50];
-    v21 = [v7 workingContext];
+    v20 = [objc_alloc(MEMORY[0x277CD99F8]) initWithPhotoLibrary:photoLibrary];
+    workingContext2 = [managerCopy workingContext];
     v22 = !userInitiated;
     v53[0] = MEMORY[0x277D85DD0];
     v53[1] = 3221225472;
     v53[2] = __68__PHAMemoryElectionTask_runWithGraphManager_progressReporter_reply___block_invoke;
     v53[3] = &unk_2788B1DD0;
-    v37 = v7;
+    v37 = managerCopy;
     v54 = v37;
     v23 = v20;
     v55 = v23;
     v38 = v19;
     v56 = v38;
     v57 = v46;
-    v58 = v8;
-    v39 = v48;
+    v58 = reporterCopy;
+    v39 = replyCopy;
     v66 = v39;
-    v59 = self;
-    v24 = v50;
+    selfCopy3 = self;
+    v24 = photoLibrary;
     v60 = v24;
     v61 = v45;
-    v25 = v10;
+    v25 = loggingConnection;
     v62 = v25;
     v63 = v44;
     v67 = &v75;
@@ -387,7 +387,7 @@ LABEL_3:
     v41 = v40;
     v65 = v41;
     v70 = v22;
-    [v21 performSynchronousConcurrentGraphReadUsingBlock:v53];
+    [workingContext2 performSynchronousConcurrentGraphReadUsingBlock:v53];
 
     if (v72[3])
     {
@@ -403,11 +403,11 @@ LABEL_3:
           _os_log_error_impl(&dword_22FA28000, v25, OS_LOG_TYPE_ERROR, "[PHAMemoryElectionTask] Error calling reloadForYouWidgetTimelineWithLoggingConnection (%@)", v83, 0xCu);
         }
 
-        v27 = [v24 librarySpecificFetchOptions];
-        [v27 setIncludePendingMemories:1];
-        v28 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 localIdentifiers:*(v86 + 5) options:v27];
-        v29 = [v28 fetchedObjects];
-        [(PHAMemoryElectionTask *)self handleNotificationsForMemories:v29 graphManager:v37 userFeedbackCalculator:v23 loggingConnection:v25];
+        librarySpecificFetchOptions2 = [v24 librarySpecificFetchOptions];
+        [librarySpecificFetchOptions2 setIncludePendingMemories:1];
+        v28 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 localIdentifiers:*(v86 + 5) options:librarySpecificFetchOptions2];
+        fetchedObjects2 = [v28 fetchedObjects];
+        [(PHAMemoryElectionTask *)self handleNotificationsForMemories:fetchedObjects2 graphManager:v37 userFeedbackCalculator:v23 loggingConnection:v25];
       }
 
       v30 = v25;
@@ -734,10 +734,10 @@ void __68__PHAMemoryElectionTask_runWithGraphManager_progressReporter_reply___bl
   }
 }
 
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  managerCopy = manager;
+  reporterCopy = reporter;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -754,12 +754,12 @@ void __68__PHAMemoryElectionTask_runWithGraphManager_progressReporter_reply___bl
   v13[3] = &unk_2788B1D58;
   v15 = &v23;
   v16 = &v17;
-  v10 = v9;
+  v10 = reporterCopy;
   v14 = v10;
-  [(PHAMemoryElectionTask *)self runWithGraphManager:v8 progressReporter:v10 reply:v13];
-  if (a5)
+  [(PHAMemoryElectionTask *)self runWithGraphManager:managerCopy progressReporter:v10 reply:v13];
+  if (error)
   {
-    *a5 = v18[5];
+    *error = v18[5];
   }
 
   v11 = *(v24 + 24);
@@ -786,26 +786,26 @@ void __68__PHAMemoryElectionTask_runWithGraphManager_progressReporter_error___bl
   }
 }
 
-- (BOOL)shouldRunWithGraphManager:(id)a3
+- (BOOL)shouldRunWithGraphManager:(id)manager
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  managerCopy = manager;
   v35 = 0;
-  v5 = [v4 isReadyWithError:&v35];
+  v5 = [managerCopy isReadyWithError:&v35];
   v6 = v35;
   if (v5)
   {
-    v7 = [v4 workingContextForMemories];
-    v8 = [v7 photoLibrary];
-    v9 = [v7 loggingConnection];
+    workingContextForMemories = [managerCopy workingContextForMemories];
+    photoLibrary = [workingContextForMemories photoLibrary];
+    loggingConnection = [workingContextForMemories loggingConnection];
     if ([MEMORY[0x277D3BC38] isMemoryElectionDisabled])
     {
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
         v10 = "PHAMemoryElectionTask is disabled via user defaults";
 LABEL_19:
-        _os_log_impl(&dword_22FA28000, v9, OS_LOG_TYPE_DEFAULT, v10, buf, 2u);
+        _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_DEFAULT, v10, buf, 2u);
       }
     }
 
@@ -813,19 +813,19 @@ LABEL_19:
     {
       if (PLIsFeaturedContentAllowed())
       {
-        v12 = [MEMORY[0x277CBEA80] currentCalendar];
-        v13 = [v8 librarySpecificFetchOptions];
+        currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+        librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
         v11 = 1;
-        [v13 setIncludePendingMemories:1];
-        [v13 setFetchLimit:10];
+        [librarySpecificFetchOptions setIncludePendingMemories:1];
+        [librarySpecificFetchOptions setFetchLimit:10];
         [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:0];
-        v14 = v30 = v8;
+        v14 = v30 = photoLibrary;
         v39[0] = v14;
         v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:1];
-        [v13 setSortDescriptors:v15];
+        [librarySpecificFetchOptions setSortDescriptors:v15];
 
-        v29 = v13;
-        [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:v13];
+        v29 = librarySpecificFetchOptions;
+        [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:librarySpecificFetchOptions];
         v31 = 0u;
         v32 = 0u;
         v33 = 0u;
@@ -834,7 +834,7 @@ LABEL_19:
         if (v17)
         {
           v18 = v17;
-          oslog = v9;
+          oslog = loggingConnection;
           v28 = v6;
           v19 = *v32;
           while (2)
@@ -851,12 +851,12 @@ LABEL_19:
               if (PLMemoriesAlgorithmsVersionFromPhotosGraphVersion() >= 0x301)
               {
                 universalDate = self->_universalDate;
-                v23 = [v21 creationDate];
-                v24 = [v12 compareDate:universalDate toDate:v23 toUnitGranularity:16];
+                creationDate = [v21 creationDate];
+                v24 = [currentCalendar compareDate:universalDate toDate:creationDate toUnitGranularity:16];
 
                 if (v24 != 1)
                 {
-                  v9 = oslog;
+                  loggingConnection = oslog;
                   if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
                   {
                     v25 = self->_universalDate;
@@ -882,22 +882,22 @@ LABEL_19:
           }
 
           v11 = 1;
-          v9 = oslog;
+          loggingConnection = oslog;
           v6 = v28;
 LABEL_24:
-          v8 = v30;
-          v13 = v29;
+          photoLibrary = v30;
+          librarySpecificFetchOptions = v29;
         }
 
         else
         {
-          v8 = v30;
+          photoLibrary = v30;
         }
 
         goto LABEL_27;
       }
 
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
         v10 = "[PHAMemoryElectionTask] featured content is disabled in settings";
@@ -933,9 +933,9 @@ LABEL_28:
   v2 = [(PHAMemoryElectionTask *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     universalDate = v2->_universalDate;
-    v2->_universalDate = v3;
+    v2->_universalDate = date;
 
     *&v2->_userInitiated = 0;
     v2->_requestedCategory = 0;
@@ -946,36 +946,36 @@ LABEL_28:
   return v2;
 }
 
-+ (id)_userFeedbackCalculatorWithPhotoLibrary:(id)a3
++ (id)_userFeedbackCalculatorWithPhotoLibrary:(id)library
 {
   v3 = MEMORY[0x277CD99F8];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithPhotoLibrary:v4];
+  libraryCopy = library;
+  v5 = [[v3 alloc] initWithPhotoLibrary:libraryCopy];
 
   return v5;
 }
 
-+ (id)_filterSuggestionsToFeatureBasedOnUserFeedbackForSuggestionsToFeature:(id)a3 sugestionsFetchResult:(id)a4 photoLibrary:(id)a5
++ (id)_filterSuggestionsToFeatureBasedOnUserFeedbackForSuggestionsToFeature:(id)feature sugestionsFetchResult:(id)result photoLibrary:(id)library
 {
   v61 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  featureCopy = feature;
+  resultCopy = result;
+  libraryCopy = library;
   v48 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if ([v8 count])
+  if ([featureCopy count])
   {
     v11 = MEMORY[0x277CD97A8];
-    v12 = [v10 librarySpecificFetchOptions];
-    v46 = v9;
-    v50 = [v11 fetchKeyAssetBySuggestionUUIDForSuggestions:v9 options:v12];
+    librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+    v46 = resultCopy;
+    v50 = [v11 fetchKeyAssetBySuggestionUUIDForSuggestions:resultCopy options:librarySpecificFetchOptions];
 
     v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v47 = v8;
-    v14 = v8;
+    v47 = featureCopy;
+    v14 = featureCopy;
     v15 = [v14 countByEnumeratingWithState:&v55 objects:v60 count:16];
     if (v15)
     {
@@ -991,14 +991,14 @@ LABEL_28:
           }
 
           v19 = *(*(&v55 + 1) + 8 * i);
-          v20 = [v19 uuid];
-          v21 = [v50 objectForKeyedSubscript:v20];
+          uuid = [v19 uuid];
+          v21 = [v50 objectForKeyedSubscript:uuid];
 
           if (v21)
           {
-            v22 = [v21 uuid];
-            v23 = [v19 uuid];
-            [v13 setObject:v22 forKeyedSubscript:v23];
+            uuid2 = [v21 uuid];
+            uuid3 = [v19 uuid];
+            [v13 setObject:uuid2 forKeyedSubscript:uuid3];
           }
         }
 
@@ -1008,15 +1008,15 @@ LABEL_28:
       while (v16);
     }
 
-    v24 = [v10 librarySpecificFetchOptions];
-    [v24 setIncludedDetectionTypes:&unk_2844CCB58];
+    librarySpecificFetchOptions2 = [libraryCopy librarySpecificFetchOptions];
+    [librarySpecificFetchOptions2 setIncludedDetectionTypes:&unk_2844CCB58];
     v25 = MEMORY[0x277CD9938];
-    v26 = [v13 allValues];
-    v44 = v24;
-    v49 = [v25 fetchPersonUUIDsGroupedByAssetUUIDForAssetUUIDs:v26 options:v24];
+    allValues = [v13 allValues];
+    v44 = librarySpecificFetchOptions2;
+    v49 = [v25 fetchPersonUUIDsGroupedByAssetUUIDForAssetUUIDs:allValues options:librarySpecificFetchOptions2];
 
-    v45 = v10;
-    v27 = [a1 _userFeedbackCalculatorWithPhotoLibrary:v10];
+    v45 = libraryCopy;
+    v27 = [self _userFeedbackCalculatorWithPhotoLibrary:libraryCopy];
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
@@ -1038,8 +1038,8 @@ LABEL_28:
           }
 
           v34 = *(*(&v51 + 1) + 8 * j);
-          v35 = [v34 uuid];
-          v36 = [v13 objectForKeyedSubscript:v35];
+          uuid4 = [v34 uuid];
+          v36 = [v13 objectForKeyedSubscript:uuid4];
 
           if (v36)
           {
@@ -1069,23 +1069,23 @@ LABEL_28:
       while (v30);
     }
 
-    v9 = v46;
-    v8 = v47;
-    v10 = v45;
+    resultCopy = v46;
+    featureCopy = v47;
+    libraryCopy = v45;
   }
 
   return v48;
 }
 
-+ (void)findSuggestionsAndSetFeaturedStateIfNeededInPhotoLibrary:(id)a3 loggingConnection:(id)a4
++ (void)findSuggestionsAndSetFeaturedStateIfNeededInPhotoLibrary:(id)library loggingConnection:(id)connection
 {
   v91[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = os_signpost_id_generate(v6);
+  libraryCopy = library;
+  connectionCopy = connection;
+  v7 = os_signpost_id_generate(connectionCopy);
   info = 0;
   mach_timebase_info(&info);
-  v8 = v6;
+  v8 = connectionCopy;
   v9 = v8;
   v68 = v7 - 1;
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
@@ -1097,52 +1097,52 @@ LABEL_28:
   spid = v7;
 
   v66 = mach_absolute_time();
-  v10 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v11 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-86400.0];
-  v12 = [v10 startOfDayForDate:v11];
+  v12 = [currentCalendar startOfDayForDate:v11];
 
   v74 = v12;
   v13 = [v12 dateByAddingTimeInterval:-60.0];
-  v73 = v5;
-  v14 = [v5 librarySpecificFetchOptions];
-  [v14 setWantsIncrementalChangeDetails:0];
+  v73 = libraryCopy;
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
   v15 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:0];
   v91[0] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v91 count:1];
-  [v14 setSortDescriptors:v16];
+  [librarySpecificFetchOptions setSortDescriptors:v16];
 
-  v17 = [MEMORY[0x277CD99E0] predicateForAllFeaturedStateEnabledSuggestionTypesForWidget];
+  predicateForAllFeaturedStateEnabledSuggestionTypesForWidget = [MEMORY[0x277CD99E0] predicateForAllFeaturedStateEnabledSuggestionTypesForWidget];
   v18 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(state == %d || state == %d)", 1, 0];
   v72 = v13;
   v19 = [MEMORY[0x277CCAC30] predicateWithFormat:@"creationDate > %@ OR featuredState == %d", v13, 1];
   v20 = MEMORY[0x277CCA920];
   v69 = v18;
-  v70 = v17;
-  v90[0] = v17;
+  v70 = predicateForAllFeaturedStateEnabledSuggestionTypesForWidget;
+  v90[0] = predicateForAllFeaturedStateEnabledSuggestionTypesForWidget;
   v90[1] = v18;
   v90[2] = v19;
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v90 count:3];
   v22 = [v20 andPredicateWithSubpredicates:v21];
-  [v14 setPredicate:v22];
+  [librarySpecificFetchOptions setPredicate:v22];
 
-  v71 = v14;
-  v23 = [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:v14];
+  v71 = librarySpecificFetchOptions;
+  v23 = [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:librarySpecificFetchOptions];
   if ([v23 count])
   {
     v24 = v9;
-    v25 = [v23 firstObject];
-    v26 = [v25 creationDate];
+    firstObject = [v23 firstObject];
+    creationDate = [firstObject creationDate];
 
-    v27 = [MEMORY[0x277CBEB18] array];
-    v75 = [MEMORY[0x277CBEB18] array];
-    v28 = [v10 startOfDayForDate:v26];
-    v64 = v10;
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
+    v28 = [currentCalendar startOfDayForDate:creationDate];
+    v64 = currentCalendar;
     if ([v28 compare:v12] == -1)
     {
-      v29 = [MEMORY[0x277CBEAA8] distantFuture];
+      distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
 
-      v26 = 0;
-      v28 = v29;
+      creationDate = 0;
+      v28 = distantFuture;
     }
 
     v61 = v23;
@@ -1175,25 +1175,25 @@ LABEL_28:
             ++v33;
           }
 
-          v37 = [v36 creationDate];
-          if ([v37 compare:v28] != -1 || v26 && (objc_msgSend(v26, "timeIntervalSinceDate:", v37), v39 < 2.0))
+          creationDate2 = [v36 creationDate];
+          if ([creationDate2 compare:v28] != -1 || creationDate && (objc_msgSend(creationDate, "timeIntervalSinceDate:", creationDate2), v39 < 2.0))
           {
             if (![v36 featuredState])
             {
-              [v27 addObject:v36];
+              [array addObject:v36];
             }
 
-            v38 = v37;
+            v38 = creationDate2;
             goto LABEL_18;
           }
 
           if ([v36 featuredState] == 1)
           {
-            [v75 addObject:v36];
+            [array2 addObject:v36];
             v38 = 0;
 LABEL_18:
 
-            v26 = v38;
+            creationDate = v38;
           }
 
           ++v35;
@@ -1213,10 +1213,10 @@ LABEL_18:
 LABEL_35:
 
     v48 = v73;
-    v49 = [a1 _filterSuggestionsToFeatureBasedOnUserFeedbackForSuggestionsToFeature:v27 sugestionsFetchResult:v30 photoLibrary:v73];
+    v49 = [self _filterSuggestionsToFeatureBasedOnUserFeedbackForSuggestionsToFeature:array sugestionsFetchResult:v30 photoLibrary:v73];
 
     v50 = [v49 count];
-    v51 = [v75 count];
+    v51 = [array2 count];
     v52 = v51 <= 0 && v50 <= 0;
     if (v52 || (v53 = *&v51, v50 + v33 - v51 < 1))
     {
@@ -1254,7 +1254,7 @@ LABEL_35:
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v87 = v75;
+        v87 = array2;
         _os_log_debug_impl(&dword_22FA28000, oslog, OS_LOG_TYPE_DEBUG, "[PHAMemoryElectionTask+WidgetTimeline] Suggestions to remove featured state: %@", buf, 0xCu);
       }
 
@@ -1263,7 +1263,7 @@ LABEL_35:
       v77[2] = __116__PHAMemoryElectionTask_WidgetTimeline__findSuggestionsAndSetFeaturedStateIfNeededInPhotoLibrary_loggingConnection___block_invoke;
       v77[3] = &unk_2788B2C00;
       v78 = v49;
-      v79 = v75;
+      v79 = array2;
       v76 = 0;
       v54 = [v73 performChangesAndWait:v77 error:&v76];
       v55 = v76;
@@ -1295,7 +1295,7 @@ LABEL_35:
       _os_log_impl(&dword_22FA28000, v60, OS_LOG_TYPE_INFO, "[Performance] %s: %f ms", buf, 0x16u);
     }
 
-    v10 = v64;
+    currentCalendar = v64;
     v41 = v74;
   }
 
@@ -1402,22 +1402,22 @@ void __116__PHAMemoryElectionTask_WidgetTimeline__findSuggestionsAndSetFeaturedS
   }
 }
 
-+ (id)_filterMemoriesWithAcceptableUserFeedback:(id)a3 allMemoriesFetchResult:(id)a4 photoLibrary:(id)a5
++ (id)_filterMemoriesWithAcceptableUserFeedback:(id)feedback allMemoriesFetchResult:(id)result photoLibrary:(id)library
 {
   v71 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  feedbackCopy = feedback;
+  resultCopy = result;
+  libraryCopy = library;
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if ([v8 count])
+  if ([feedbackCopy count])
   {
     v53 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v50 = v8;
-    v12 = v8;
+    v50 = feedbackCopy;
+    v12 = feedbackCopy;
     v13 = [v12 countByEnumeratingWithState:&v64 objects:v70 count:16];
     if (v13)
     {
@@ -1440,8 +1440,8 @@ void __116__PHAMemoryElectionTask_WidgetTimeline__findSuggestionsAndSetFeaturedS
 
           else
           {
-            v18 = [v17 objectID];
-            [v53 addObject:v18];
+            objectID = [v17 objectID];
+            [v53 addObject:objectID];
           }
         }
 
@@ -1453,12 +1453,12 @@ void __116__PHAMemoryElectionTask_WidgetTimeline__findSuggestionsAndSetFeaturedS
 
     v52 = v11;
 
-    v49 = v9;
-    v19 = [objc_alloc(MEMORY[0x277CD9888]) initWithExistingFetchResult:v9 filteredObjectIDs:v53];
-    v20 = [v10 librarySpecificFetchOptions];
-    [v20 setIncludedDetectionTypes:&unk_2844CCB40];
-    v51 = v20;
-    v21 = [MEMORY[0x277CD97A8] fetchKeyAssetByMemoryUUIDForMemories:v19 options:v20];
+    v49 = resultCopy;
+    v19 = [objc_alloc(MEMORY[0x277CD9888]) initWithExistingFetchResult:resultCopy filteredObjectIDs:v53];
+    librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+    [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_2844CCB40];
+    v51 = librarySpecificFetchOptions;
+    v21 = [MEMORY[0x277CD97A8] fetchKeyAssetByMemoryUUIDForMemories:v19 options:librarySpecificFetchOptions];
     v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v60 = 0u;
     v61 = 0u;
@@ -1480,8 +1480,8 @@ void __116__PHAMemoryElectionTask_WidgetTimeline__findSuggestionsAndSetFeaturedS
           }
 
           v28 = [v23 objectForKeyedSubscript:*(*(&v60 + 1) + 8 * j)];
-          v29 = [v28 uuid];
-          [v22 addObject:v29];
+          uuid = [v28 uuid];
+          [v22 addObject:uuid];
         }
 
         v25 = [v23 countByEnumeratingWithState:&v60 objects:v69 count:16];
@@ -1491,8 +1491,8 @@ void __116__PHAMemoryElectionTask_WidgetTimeline__findSuggestionsAndSetFeaturedS
     }
 
     v55 = [MEMORY[0x277CD9938] fetchPersonUUIDsGroupedByAssetUUIDForAssetUUIDs:v22 options:v51];
-    v48 = v10;
-    v30 = [a1 _userFeedbackCalculatorWithPhotoLibrary:v10];
+    v48 = libraryCopy;
+    v30 = [self _userFeedbackCalculatorWithPhotoLibrary:libraryCopy];
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
@@ -1514,13 +1514,13 @@ void __116__PHAMemoryElectionTask_WidgetTimeline__findSuggestionsAndSetFeaturedS
           }
 
           v36 = *(*(&v56 + 1) + 8 * k);
-          v37 = [v36 uuid];
-          v38 = [v23 objectForKeyedSubscript:v37];
-          v39 = [v38 uuid];
+          uuid2 = [v36 uuid];
+          v38 = [v23 objectForKeyedSubscript:uuid2];
+          uuid3 = [v38 uuid];
 
-          if (v39)
+          if (uuid3)
           {
-            v40 = [v55 objectForKeyedSubscript:v39];
+            v40 = [v55 objectForKeyedSubscript:uuid3];
             v41 = v40;
             v42 = MEMORY[0x277CBEBF8];
             if (v40)
@@ -1530,8 +1530,8 @@ void __116__PHAMemoryElectionTask_WidgetTimeline__findSuggestionsAndSetFeaturedS
 
             v43 = v42;
 
-            v44 = [v36 blockableFeatures];
-            [v30 scoreForKeyAssetUUID:v39 personsUUIDsInKeyAsset:v43 memoryFeatures:v44];
+            blockableFeatures = [v36 blockableFeatures];
+            [v30 scoreForKeyAssetUUID:uuid3 personsUUIDsInKeyAsset:v43 memoryFeatures:blockableFeatures];
             v46 = v45;
 
             if ([MEMORY[0x277CD99F8] score:v46 meetsScoreThreshold:v34])
@@ -1547,24 +1547,24 @@ void __116__PHAMemoryElectionTask_WidgetTimeline__findSuggestionsAndSetFeaturedS
       while (v32);
     }
 
-    v9 = v49;
-    v8 = v50;
+    resultCopy = v49;
+    feedbackCopy = v50;
     v11 = v52;
-    v10 = v48;
+    libraryCopy = v48;
   }
 
   return v11;
 }
 
-+ (void)findMemoriesAndSetFeaturedStateIfNeededInPhotoLibrary:(id)a3 loggingConnection:(id)a4
++ (void)findMemoriesAndSetFeaturedStateIfNeededInPhotoLibrary:(id)library loggingConnection:(id)connection
 {
   v80[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = os_signpost_id_generate(v6);
+  libraryCopy = library;
+  connectionCopy = connection;
+  v7 = os_signpost_id_generate(connectionCopy);
   info = 0;
   mach_timebase_info(&info);
-  v8 = v6;
+  v8 = connectionCopy;
   v9 = v8;
   v63 = v7 - 1;
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
@@ -1576,50 +1576,50 @@ void __116__PHAMemoryElectionTask_WidgetTimeline__findSuggestionsAndSetFeaturedS
   spid = v7;
 
   v61 = mach_absolute_time();
-  v10 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v11 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-86400.0];
-  v12 = [v10 startOfDayForDate:v11];
+  v12 = [currentCalendar startOfDayForDate:v11];
 
   v13 = [v12 dateByAddingTimeInterval:-60.0];
-  v14 = [v5 librarySpecificFetchOptions];
-  [v14 setWantsIncrementalChangeDetails:0];
-  [v14 setIncludePendingMemories:1];
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
+  [librarySpecificFetchOptions setIncludePendingMemories:1];
   v15 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(creationDate > %@ OR featuredState == %d) AND userCreated == NO AND featuredState != %d", v13, 1, -1];
-  [v14 setPredicate:v15];
+  [librarySpecificFetchOptions setPredicate:v15];
 
   v16 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:0];
   v80[0] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v80 count:1];
-  [v14 setSortDescriptors:v17];
+  [librarySpecificFetchOptions setSortDescriptors:v17];
 
-  v18 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:v14];
+  v18 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:librarySpecificFetchOptions];
   v64 = v18;
   if ([v18 count])
   {
-    v55 = v14;
+    v55 = librarySpecificFetchOptions;
     v56 = v13;
-    v19 = [v18 firstObject];
-    v20 = [v19 creationDate];
+    firstObject = [v18 firstObject];
+    creationDate = [firstObject creationDate];
 
-    v65 = [MEMORY[0x277CBEB18] array];
-    v21 = [MEMORY[0x277CBEB18] array];
-    v22 = [v10 startOfDayForDate:v20];
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
+    v22 = [currentCalendar startOfDayForDate:creationDate];
     v23 = v12;
     v24 = v22;
     v57 = v23;
-    v58 = v10;
+    v58 = currentCalendar;
     if ([v22 compare:?] == -1)
     {
       [MEMORY[0x277CBEAA8] distantFuture];
       v26 = v25 = v18;
 
-      v20 = 0;
+      creationDate = 0;
       v24 = v26;
       v18 = v25;
     }
 
     oslog = v9;
-    v60 = v5;
+    v60 = libraryCopy;
     v72 = 0u;
     v73 = 0u;
     v70 = 0u;
@@ -1650,15 +1650,15 @@ void __116__PHAMemoryElectionTask_WidgetTimeline__findSuggestionsAndSetFeaturedS
           ++v30;
         }
 
-        v34 = [v33 creationDate];
-        if ([v34 compare:v24] == -1 && (!v20 || (objc_msgSend(v20, "timeIntervalSinceDate:", v34), v36 >= 2.0)) || (objc_msgSend(v33, "photosGraphVersion"), PLMemoriesAlgorithmsVersionFromPhotosGraphVersion() < 0x301))
+        creationDate2 = [v33 creationDate];
+        if ([creationDate2 compare:v24] == -1 && (!creationDate || (objc_msgSend(creationDate, "timeIntervalSinceDate:", creationDate2), v36 >= 2.0)) || (objc_msgSend(v33, "photosGraphVersion"), PLMemoriesAlgorithmsVersionFromPhotosGraphVersion() < 0x301))
         {
           if ([v33 featuredState] != 1)
           {
             goto LABEL_24;
           }
 
-          [v21 addObject:v33];
+          [array2 addObject:v33];
           v35 = 0;
         }
 
@@ -1666,13 +1666,13 @@ void __116__PHAMemoryElectionTask_WidgetTimeline__findSuggestionsAndSetFeaturedS
         {
           if (![v33 featuredState])
           {
-            [v65 addObject:v33];
+            [array addObject:v33];
           }
 
-          v35 = v34;
+          v35 = creationDate2;
         }
 
-        v20 = v35;
+        creationDate = v35;
 LABEL_24:
       }
 
@@ -1681,11 +1681,11 @@ LABEL_24:
       {
 LABEL_35:
 
-        v5 = v60;
-        v42 = [a1 _filterMemoriesWithAcceptableUserFeedback:v65 allMemoriesFetchResult:v27 photoLibrary:v60];
+        libraryCopy = v60;
+        v42 = [self _filterMemoriesWithAcceptableUserFeedback:array allMemoriesFetchResult:v27 photoLibrary:v60];
 
         v43 = [v42 count];
-        v44 = [v21 count];
+        v44 = [array2 count];
         v45 = v44 <= 0 && v43 <= 0;
         if (v45 || (v46 = *&v44, v43 + v30 - v44 < 1))
         {
@@ -1719,7 +1719,7 @@ LABEL_35:
           if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v77 = v21;
+            v77 = array2;
             _os_log_debug_impl(&dword_22FA28000, oslog, OS_LOG_TYPE_DEBUG, "[PHAMemoryElectionTask+WidgetTimeline] Memories to remove featured state: %@", buf, 0xCu);
           }
 
@@ -1728,7 +1728,7 @@ LABEL_35:
           v67[2] = __113__PHAMemoryElectionTask_WidgetTimeline__findMemoriesAndSetFeaturedStateIfNeededInPhotoLibrary_loggingConnection___block_invoke;
           v67[3] = &unk_2788B2C00;
           v68 = v42;
-          v69 = v21;
+          v69 = array2;
           v66 = 0;
           v47 = [v60 performChangesAndWait:v67 error:&v66];
           v48 = v66;
@@ -1761,8 +1761,8 @@ LABEL_35:
         }
 
         v12 = v57;
-        v10 = v58;
-        v14 = v55;
+        currentCalendar = v58;
+        librarySpecificFetchOptions = v55;
         v13 = v56;
         goto LABEL_58;
       }
@@ -1868,15 +1868,15 @@ void __113__PHAMemoryElectionTask_WidgetTimeline__findMemoriesAndSetFeaturedStat
   }
 }
 
-+ (void)findMemoriesAndSetNeverFeatureStateIfNeededInPhotoLibrary:(id)a3 loggingConnection:(id)a4
++ (void)findMemoriesAndSetNeverFeatureStateIfNeededInPhotoLibrary:(id)library loggingConnection:(id)connection
 {
   v53[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = os_signpost_id_generate(v7);
+  libraryCopy = library;
+  connectionCopy = connection;
+  v8 = os_signpost_id_generate(connectionCopy);
   info = 0;
   mach_timebase_info(&info);
-  v9 = v7;
+  v9 = connectionCopy;
   v10 = v9;
   v11 = v8 - 1;
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
@@ -1886,27 +1886,27 @@ void __113__PHAMemoryElectionTask_WidgetTimeline__findMemoriesAndSetFeaturedStat
   }
 
   v12 = mach_absolute_time();
-  v13 = [v6 librarySpecificFetchOptions];
-  [v13 setFetchLimit:13];
-  [v13 setIncludePendingMemories:1];
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setFetchLimit:13];
+  [librarySpecificFetchOptions setIncludePendingMemories:1];
   v14 = [MEMORY[0x277CCAC30] predicateWithFormat:@"rejected == NO AND userCreated == NO AND featuredState != %d", -1];
-  [v13 setPredicate:v14];
+  [librarySpecificFetchOptions setPredicate:v14];
 
   v15 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:0];
   v53[0] = v15;
   v16 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"objectID" ascending:0];
   v53[1] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:2];
-  [v13 setSortDescriptors:v17];
+  [librarySpecificFetchOptions setSortDescriptors:v17];
 
-  v18 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:v13];
-  v19 = [v18 fetchedObjects];
-  if ([v19 count])
+  v18 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:librarySpecificFetchOptions];
+  fetchedObjects = [v18 fetchedObjects];
+  if ([fetchedObjects count])
   {
     spid = v8;
-    v44 = [a1 _filterMemoriesWithAcceptableUserFeedback:v19 allMemoriesFetchResult:v18 photoLibrary:v6];
+    v44 = [self _filterMemoriesWithAcceptableUserFeedback:fetchedObjects allMemoriesFetchResult:v18 photoLibrary:libraryCopy];
     v20 = [MEMORY[0x277CBEB98] setWithArray:?];
-    v21 = [MEMORY[0x277CBEB58] setWithArray:v19];
+    v21 = [MEMORY[0x277CBEB58] setWithArray:fetchedObjects];
     v43 = v20;
     [v21 minusSet:v20];
     if ([v21 count])
@@ -1927,7 +1927,7 @@ void __113__PHAMemoryElectionTask_WidgetTimeline__findMemoriesAndSetFeaturedStat
       v46[3] = &unk_2788B2E78;
       v47 = v21;
       v45 = 0;
-      v24 = [v6 performChangesAndWait:v46 error:&v45];
+      v24 = [libraryCopy performChangesAndWait:v46 error:&v45];
       v25 = v45;
       if ((v24 & 1) == 0 && os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
@@ -2054,15 +2054,15 @@ void __117__PHAMemoryElectionTask_WidgetTimeline__findMemoriesAndSetNeverFeature
   }
 }
 
-+ (void)findAndSetFeaturedStateForMemoriesAndSuggestionsIfNeededInPhotoLibrary:(id)a3 loggingConnection:(id)a4
++ (void)findAndSetFeaturedStateForMemoriesAndSuggestionsIfNeededInPhotoLibrary:(id)library loggingConnection:(id)connection
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = os_signpost_id_generate(v6);
+  connectionCopy = connection;
+  libraryCopy = library;
+  v8 = os_signpost_id_generate(connectionCopy);
   info = 0;
   mach_timebase_info(&info);
-  v9 = v6;
+  v9 = connectionCopy;
   v10 = v9;
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
   {
@@ -2071,9 +2071,9 @@ void __117__PHAMemoryElectionTask_WidgetTimeline__findMemoriesAndSetNeverFeature
   }
 
   v11 = mach_absolute_time();
-  [a1 findMemoriesAndSetNeverFeatureStateIfNeededInPhotoLibrary:v7 loggingConnection:v10];
-  [a1 findMemoriesAndSetFeaturedStateIfNeededInPhotoLibrary:v7 loggingConnection:v10];
-  [a1 findSuggestionsAndSetFeaturedStateIfNeededInPhotoLibrary:v7 loggingConnection:v10];
+  [self findMemoriesAndSetNeverFeatureStateIfNeededInPhotoLibrary:libraryCopy loggingConnection:v10];
+  [self findMemoriesAndSetFeaturedStateIfNeededInPhotoLibrary:libraryCopy loggingConnection:v10];
+  [self findSuggestionsAndSetFeaturedStateIfNeededInPhotoLibrary:libraryCopy loggingConnection:v10];
 
   v12 = mach_absolute_time();
   numer = info.numer;
@@ -2096,30 +2096,30 @@ void __117__PHAMemoryElectionTask_WidgetTimeline__findMemoriesAndSetNeverFeature
   }
 }
 
-+ (BOOL)_reloadWidgetTimelineForWidgetKind:(id)a3 loggingConnection:(id)a4 error:(id *)a5
++ (BOOL)_reloadWidgetTimelineForWidgetKind:(id)kind loggingConnection:(id)connection error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [objc_alloc(MEMORY[0x277CFA320]) initWithExtensionBundleIdentifier:@"com.apple.mobileslideshow.PhotosReliveWidget" kind:v7];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  kindCopy = kind;
+  connectionCopy = connection;
+  v9 = [objc_alloc(MEMORY[0x277CFA320]) initWithExtensionBundleIdentifier:@"com.apple.mobileslideshow.PhotosReliveWidget" kind:kindCopy];
+  if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_INFO))
   {
     v13 = 138412290;
-    v14 = v7;
-    _os_log_impl(&dword_22FA28000, v8, OS_LOG_TYPE_INFO, "[PHAMemoryElectionTask+%@] Calling reloadTimeline on CHSTimelineController", &v13, 0xCu);
+    v14 = kindCopy;
+    _os_log_impl(&dword_22FA28000, connectionCopy, OS_LOG_TYPE_INFO, "[PHAMemoryElectionTask+%@] Calling reloadTimeline on CHSTimelineController", &v13, 0xCu);
   }
 
   v10 = [v9 reloadTimelineWithReason:@"WidgetAssetChanged"];
   if (v10)
   {
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412546;
-      v14 = v7;
+      v14 = kindCopy;
       v15 = 2112;
       v16 = v10;
-      _os_log_error_impl(&dword_22FA28000, v8, OS_LOG_TYPE_ERROR, "[PHAMemoryElectionTask+%@] CHSTimelineController reloadTimeline error: %@", &v13, 0x16u);
-      if (!a5)
+      _os_log_error_impl(&dword_22FA28000, connectionCopy, OS_LOG_TYPE_ERROR, "[PHAMemoryElectionTask+%@] CHSTimelineController reloadTimeline error: %@", &v13, 0x16u);
+      if (!error)
       {
         goto LABEL_9;
       }
@@ -2127,19 +2127,19 @@ void __117__PHAMemoryElectionTask_WidgetTimeline__findMemoriesAndSetNeverFeature
       goto LABEL_6;
     }
 
-    if (a5)
+    if (error)
     {
 LABEL_6:
       v11 = v10;
-      *a5 = v10;
+      *error = v10;
     }
   }
 
-  else if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  else if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_INFO))
   {
     v13 = 138412290;
-    v14 = v7;
-    _os_log_impl(&dword_22FA28000, v8, OS_LOG_TYPE_INFO, "[PHAMemoryElectionTask+%@] CHSTimelineController reloadTimeline completed", &v13, 0xCu);
+    v14 = kindCopy;
+    _os_log_impl(&dword_22FA28000, connectionCopy, OS_LOG_TYPE_INFO, "[PHAMemoryElectionTask+%@] CHSTimelineController reloadTimeline completed", &v13, 0xCu);
   }
 
 LABEL_9:
@@ -2147,26 +2147,26 @@ LABEL_9:
   return v10 == 0;
 }
 
-+ (BOOL)reloadForYouWidgetTimelineWithLoggingConnection:(id)a3 error:(id *)a4
++ (BOOL)reloadForYouWidgetTimelineWithLoggingConnection:(id)connection error:(id *)error
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  connectionCopy = connection;
   v6 = [objc_alloc(MEMORY[0x277CFA320]) initWithExtensionBundleIdentifier:@"com.apple.mobileslideshow.PhotosReliveWidget" kind:@"com.apple.mobileslideshow.PhotosReliveWidget"];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_INFO))
   {
     LOWORD(v10) = 0;
-    _os_log_impl(&dword_22FA28000, v5, OS_LOG_TYPE_INFO, "[PHAMemoryElectionTask+ForYouWidgetTimeline] Calling reloadTimeline on CHSTimelineController", &v10, 2u);
+    _os_log_impl(&dword_22FA28000, connectionCopy, OS_LOG_TYPE_INFO, "[PHAMemoryElectionTask+ForYouWidgetTimeline] Calling reloadTimeline on CHSTimelineController", &v10, 2u);
   }
 
   v7 = [v6 reloadTimelineWithReason:@"WidgetAssetChanged"];
   if (v7)
   {
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_ERROR))
     {
       v10 = 138412290;
       v11 = v7;
-      _os_log_error_impl(&dword_22FA28000, v5, OS_LOG_TYPE_ERROR, "[PHAMemoryElectionTask+ForYouWidgetTimeline] CHSTimelineController reloadTimeline error: %@", &v10, 0xCu);
-      if (!a4)
+      _os_log_error_impl(&dword_22FA28000, connectionCopy, OS_LOG_TYPE_ERROR, "[PHAMemoryElectionTask+ForYouWidgetTimeline] CHSTimelineController reloadTimeline error: %@", &v10, 0xCu);
+      if (!error)
       {
         goto LABEL_9;
       }
@@ -2174,18 +2174,18 @@ LABEL_9:
       goto LABEL_6;
     }
 
-    if (a4)
+    if (error)
     {
 LABEL_6:
       v8 = v7;
-      *a4 = v7;
+      *error = v7;
     }
   }
 
-  else if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  else if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_INFO))
   {
     LOWORD(v10) = 0;
-    _os_log_impl(&dword_22FA28000, v5, OS_LOG_TYPE_INFO, "[PHAMemoryElectionTask+ForYouWidgetTimeline] CHSTimelineController reloadTimeline completed", &v10, 2u);
+    _os_log_impl(&dword_22FA28000, connectionCopy, OS_LOG_TYPE_INFO, "[PHAMemoryElectionTask+ForYouWidgetTimeline] CHSTimelineController reloadTimeline completed", &v10, 2u);
   }
 
 LABEL_9:
@@ -2193,12 +2193,12 @@ LABEL_9:
   return v7 == 0;
 }
 
-- (void)collectMetricsOnElectedEnrichedMemories:(id)a3 loggingConnection:(id)a4 analytics:(id)a5
+- (void)collectMetricsOnElectedEnrichedMemories:(id)memories loggingConnection:(id)connection analytics:(id)analytics
 {
   v49 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v33 = a4;
-  v32 = a5;
+  memoriesCopy = memories;
+  connectionCopy = connection;
+  analyticsCopy = analytics;
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v34 = objc_alloc_init(MEMORY[0x277CCA940]);
   v30 = objc_alloc_init(MEMORY[0x277CCA940]);
@@ -2206,7 +2206,7 @@ LABEL_9:
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v9 = v7;
+  v9 = memoriesCopy;
   v10 = [v9 countByEnumeratingWithState:&v43 objects:v48 count:16];
   if (v10)
   {
@@ -2262,28 +2262,28 @@ LABEL_9:
         }
 
         v22 = *(*(&v39 + 1) + 8 * j);
-        v23 = [v22 memoryCategorySubcategory];
+        memoryCategorySubcategory = [v22 memoryCategorySubcategory];
         v24 = MEMORY[0x277D3B958];
-        v25 = [v22 memoryFeatureNodes];
-        v26 = [v24 fullMemoryTypeStringWithMemoryCategorySubcategory:v23 featureNodes:v25];
+        memoryFeatureNodes = [v22 memoryFeatureNodes];
+        v26 = [v24 fullMemoryTypeStringWithMemoryCategorySubcategory:memoryCategorySubcategory featureNodes:memoryFeatureNodes];
 
         [v34 addObject:v26];
-        v27 = [v22 triggerTypes];
-        v28 = [v27 count];
+        triggerTypes = [v22 triggerTypes];
+        v28 = [triggerTypes count];
 
         if (v28)
         {
           [v30 addObject:v26];
-          v29 = [v22 triggerTypes];
+          triggerTypes2 = [v22 triggerTypes];
           v35[0] = MEMORY[0x277D85DD0];
           v35[1] = 3221225472;
           v35[2] = __102__PHAMemoryElectionTask_Metrics__collectMetricsOnElectedEnrichedMemories_loggingConnection_analytics___block_invoke;
           v35[3] = &unk_2788B2B08;
           v35[4] = self;
           v36 = v26;
-          v37 = v33;
-          v38 = v32;
-          [v29 enumerateIndexesUsingBlock:v35];
+          v37 = connectionCopy;
+          v38 = analyticsCopy;
+          [triggerTypes2 enumerateIndexesUsingBlock:v35];
         }
       }
 
@@ -2293,9 +2293,9 @@ LABEL_9:
     while (v19);
   }
 
-  [v32 sendEvent:@"com.apple.Photos.memories.generation" withPayload:v8];
-  [objc_opt_class() sendElectedMemoriesPipelineAnalyticsEventWithCountsOfMemories:v34 loggingConnection:v33 analytics:v32];
-  [objc_opt_class() sendTriggeredMemoriesPipelineAnalyticsEventWithCountsOfMemories:v30 loggingConnection:v33 analytics:v32];
+  [analyticsCopy sendEvent:@"com.apple.Photos.memories.generation" withPayload:v8];
+  [objc_opt_class() sendElectedMemoriesPipelineAnalyticsEventWithCountsOfMemories:v34 loggingConnection:connectionCopy analytics:analyticsCopy];
+  [objc_opt_class() sendTriggeredMemoriesPipelineAnalyticsEventWithCountsOfMemories:v30 loggingConnection:connectionCopy analytics:analyticsCopy];
 }
 
 void __102__PHAMemoryElectionTask_Metrics__collectMetricsOnElectedEnrichedMemories_loggingConnection_analytics___block_invoke(void *a1, uint64_t a2)
@@ -2304,12 +2304,12 @@ void __102__PHAMemoryElectionTask_Metrics__collectMetricsOnElectedEnrichedMemori
   [objc_opt_class() sendMemoryTriggersAnalyticsEventWithElectedMemoryType:a1[5] triggerType:v3 loggingConnection:a1[6] analytics:a1[7]];
 }
 
-- (void)collectMetricsOnMemoriesInGraphWithWorkingContext:(id)a3 loggingConnection:(id)a4 analytics:(id)a5
+- (void)collectMetricsOnMemoriesInGraphWithWorkingContext:(id)context loggingConnection:(id)connection analytics:(id)analytics
 {
   v7 = MEMORY[0x277CCA940];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  analyticsCopy = analytics;
+  connectionCopy = connection;
+  contextCopy = context;
   v11 = objc_alloc_init(v7);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -2317,9 +2317,9 @@ void __102__PHAMemoryElectionTask_Metrics__collectMetricsOnElectedEnrichedMemori
   v13[3] = &unk_2788B2AD0;
   v14 = v11;
   v12 = v11;
-  [v10 performSynchronousConcurrentGraphReadUsingBlock:v13];
+  [contextCopy performSynchronousConcurrentGraphReadUsingBlock:v13];
 
-  [objc_opt_class() sendGeneratedMemoriesPipelineAnalyticsEventWithCountsOfMemories:v12 loggingConnection:v9 analytics:v8];
+  [objc_opt_class() sendGeneratedMemoriesPipelineAnalyticsEventWithCountsOfMemories:v12 loggingConnection:connectionCopy analytics:analyticsCopy];
 }
 
 void __112__PHAMemoryElectionTask_Metrics__collectMetricsOnMemoriesInGraphWithWorkingContext_loggingConnection_analytics___block_invoke(uint64_t a1, void *a2)
@@ -2350,13 +2350,13 @@ void __112__PHAMemoryElectionTask_Metrics__collectMetricsOnMemoriesInGraphWithWo
   [*(a1 + 40) addObject:v11];
 }
 
-- (void)collectMetricsOnExistingMemories:(id)a3 loggingConnection:(id)a4 analytics:(id)a5
+- (void)collectMetricsOnExistingMemories:(id)memories loggingConnection:(id)connection analytics:(id)analytics
 {
-  v72 = self;
+  selfCopy = self;
   v110 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  oslog = a4;
-  v73 = a5;
+  memoriesCopy = memories;
+  oslog = connection;
+  analyticsCopy = analytics;
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v92 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v78 = +[PHAMetricsHelper memoryCategoryValueToDataAggregationKeyLookup];
@@ -2367,7 +2367,7 @@ void __112__PHAMemoryElectionTask_Metrics__collectMetricsOnMemoriesInGraphWithWo
   v102 = 0u;
   v103 = 0u;
   v104 = 0u;
-  obj = v7;
+  obj = memoriesCopy;
   v79 = [obj countByEnumeratingWithState:&v101 objects:v109 count:16];
   v11 = 0;
   if (v79)
@@ -2387,9 +2387,9 @@ void __112__PHAMemoryElectionTask_Metrics__collectMetricsOnMemoriesInGraphWithWo
         v87 = v12;
         v13 = *(*(&v101 + 1) + 8 * v12);
         context = objc_autoreleasePoolPush();
-        v84 = [v13 isFavorite];
-        v90 = [v13 photosGraphProperties];
-        v14 = [v90 objectForKeyedSubscript:@"triggerTypes"];
+        isFavorite = [v13 isFavorite];
+        photosGraphProperties = [v13 photosGraphProperties];
+        v14 = [photosGraphProperties objectForKeyedSubscript:@"triggerTypes"];
         v15 = v14;
         v16 = MEMORY[0x277CBEBF8];
         if (v14)
@@ -2424,7 +2424,7 @@ void __112__PHAMemoryElectionTask_Metrics__collectMetricsOnMemoriesInGraphWithWo
 
         v85 = v17;
         v88 = v11;
-        v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{v21, v72}];
+        v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{v21, selfCopy}];
         v83 = v19;
         [v8 setValue:v22 forKey:v19];
 
@@ -2454,8 +2454,8 @@ void __112__PHAMemoryElectionTask_Metrics__collectMetricsOnMemoriesInGraphWithWo
         v100 = 0u;
         v97 = 0u;
         v98 = 0u;
-        v29 = [v13 blockableFeatures];
-        v30 = [v29 countByEnumeratingWithState:&v97 objects:v108 count:16];
+        blockableFeatures = [v13 blockableFeatures];
+        v30 = [blockableFeatures countByEnumeratingWithState:&v97 objects:v108 count:16];
         if (v30)
         {
           v31 = v30;
@@ -2466,11 +2466,11 @@ void __112__PHAMemoryElectionTask_Metrics__collectMetricsOnMemoriesInGraphWithWo
             {
               if (*v98 != v32)
               {
-                objc_enumerationMutation(v29);
+                objc_enumerationMutation(blockableFeatures);
               }
 
-              v34 = [*(*(&v97 + 1) + 8 * i) type];
-              v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v34];
+              type = [*(*(&v97 + 1) + 8 * i) type];
+              v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
               v36 = [v9 objectForKeyedSubscript:v35];
 
               if (v36)
@@ -2494,25 +2494,25 @@ void __112__PHAMemoryElectionTask_Metrics__collectMetricsOnMemoriesInGraphWithWo
               else if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
               {
                 *buf = 134217984;
-                v107 = v34;
+                v107 = type;
                 _os_log_error_impl(&dword_22FA28000, oslog, OS_LOG_TYPE_ERROR, "[PHAMemoryGenerationTask] Not logging aggregate stats for existing memory blockable feature type %lu", buf, 0xCu);
               }
             }
 
-            v31 = [v29 countByEnumeratingWithState:&v97 objects:v108 count:16];
+            v31 = [blockableFeatures countByEnumeratingWithState:&v97 objects:v108 count:16];
           }
 
           while (v31);
         }
 
-        v41 = [v80 blacklistedFeature];
-        v42 = v41;
+        blacklistedFeature = [v80 blacklistedFeature];
+        v42 = blacklistedFeature;
         v8 = v28;
         v10 = v77;
-        if (v41)
+        if (blacklistedFeature)
         {
-          v43 = [v41 type];
-          v44 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v43];
+          type2 = [blacklistedFeature type];
+          v44 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type2];
           v45 = [v75 objectForKeyedSubscript:v44];
 
           if (v45)
@@ -2536,12 +2536,12 @@ void __112__PHAMemoryElectionTask_Metrics__collectMetricsOnMemoriesInGraphWithWo
           else if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
           {
             *buf = 134217984;
-            v107 = v43;
+            v107 = type2;
             _os_log_error_impl(&dword_22FA28000, oslog, OS_LOG_TYPE_ERROR, "[PHAMemoryGenerationTask] Not logging aggregate stats for existing memory blocked feature type %lu", buf, 0xCu);
           }
         }
 
-        v50 = [v90 objectForKeyedSubscript:@"moodKeywords"];
+        v50 = [photosGraphProperties objectForKeyedSubscript:@"moodKeywords"];
         if ([v50 count])
         {
           v95 = 0u;
@@ -2578,7 +2578,7 @@ void __112__PHAMemoryElectionTask_Metrics__collectMetricsOnMemoriesInGraphWithWo
           [v77 addObject:@"None"];
         }
 
-        v11 = v88 + v84;
+        v11 = v88 + isFavorite;
 
         objc_autoreleasePoolPop(context);
         v12 = v87 + 1;
@@ -2591,19 +2591,19 @@ void __112__PHAMemoryElectionTask_Metrics__collectMetricsOnMemoriesInGraphWithWo
     while (v79);
   }
 
-  v56 = [obj lastObject];
-  if (v56)
+  lastObject = [obj lastObject];
+  if (lastObject)
   {
     v89 = v11;
     v57 = v8;
     v58 = objc_alloc(MEMORY[0x277CBEA80]);
     v59 = [v58 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
-    v60 = v56;
-    v61 = [v56 creationDate];
-    v62 = [v59 startOfDayForDate:v61];
+    v60 = lastObject;
+    creationDate = [lastObject creationDate];
+    v62 = [v59 startOfDayForDate:creationDate];
 
-    v63 = [(PHAMemoryElectionTask *)v72 universalDate];
-    v64 = [v59 startOfDayForDate:v63];
+    universalDate = [(PHAMemoryElectionTask *)selfCopy universalDate];
+    v64 = [v59 startOfDayForDate:universalDate];
 
     v65 = [v59 components:16 fromDate:v62 toDate:v64 options:0];
     v66 = [v65 day];
@@ -2615,10 +2615,10 @@ void __112__PHAMemoryElectionTask_Metrics__collectMetricsOnMemoriesInGraphWithWo
 
     v8 = v57;
     v11 = v89;
-    v56 = v60;
+    lastObject = v60;
   }
 
-  v68 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(obj, "count", v72)}];
+  v68 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(obj, "count", selfCopy)}];
   [v8 setValue:v68 forKey:@"totalMemoriesCount"];
 
   v69 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v11];
@@ -2628,59 +2628,59 @@ void __112__PHAMemoryElectionTask_Metrics__collectMetricsOnMemoriesInGraphWithWo
   v71 = [PHAMetricsHelper aggregatedStatsForMoodKeywordCountedSet:v10];
   [v70 addEntriesFromDictionary:v71];
 
-  [v73 sendEvent:@"com.apple.Photos.memories.feed" withPayload:v8];
-  [v73 sendEvent:@"com.apple.Photos.memories.mood" withPayload:v70];
-  [v73 sendEvent:@"com.apple.Photos.memories.blacklist" withPayload:v92];
+  [analyticsCopy sendEvent:@"com.apple.Photos.memories.feed" withPayload:v8];
+  [analyticsCopy sendEvent:@"com.apple.Photos.memories.mood" withPayload:v70];
+  [analyticsCopy sendEvent:@"com.apple.Photos.memories.blacklist" withPayload:v92];
 }
 
-+ (void)sendMemoryTriggersAnalyticsEventWithElectedMemoryType:(id)a3 triggerType:(id)a4 loggingConnection:(id)a5 analytics:(id)a6
++ (void)sendMemoryTriggersAnalyticsEventWithElectedMemoryType:(id)type triggerType:(id)triggerType loggingConnection:(id)connection analytics:(id)analytics
 {
   v14[4] = *MEMORY[0x277D85DE8];
   v13[0] = @"triggerType";
   v13[1] = @"triggerCount";
-  v14[0] = a4;
+  v14[0] = triggerType;
   v14[1] = &unk_2844CCA08;
   v13[2] = @"fullMemoryType";
   v13[3] = @"memoryElected";
-  v14[2] = a3;
+  v14[2] = type;
   v14[3] = &unk_2844CCA08;
   v8 = MEMORY[0x277CBEAC0];
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
+  analyticsCopy = analytics;
+  triggerTypeCopy = triggerType;
+  typeCopy = type;
   v12 = [v8 dictionaryWithObjects:v14 forKeys:v13 count:4];
 
-  [v9 sendEvent:@"com.apple.Photos.memories.triggers" withPayload:v12];
+  [analyticsCopy sendEvent:@"com.apple.Photos.memories.triggers" withPayload:v12];
 }
 
-+ (void)sendNotifiedMemoriesPipelineAnalyticsEventWithMemoryType:(id)a3 loggingConnection:(id)a4 analytics:(id)a5
++ (void)sendNotifiedMemoriesPipelineAnalyticsEventWithMemoryType:(id)type loggingConnection:(id)connection analytics:(id)analytics
 {
   v11[3] = *MEMORY[0x277D85DE8];
   v10[0] = @"pipelineStage";
   v10[1] = @"fullMemoryType";
   v11[0] = @"notified";
-  v11[1] = a3;
+  v11[1] = type;
   v10[2] = @"memoryCount";
   v11[2] = &unk_2844CCA08;
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a5;
-  v8 = a3;
+  analyticsCopy = analytics;
+  typeCopy = type;
   v9 = [v6 dictionaryWithObjects:v11 forKeys:v10 count:3];
 
-  [v7 sendEvent:@"com.apple.Photos.memories.pipeline" withPayload:v9];
+  [analyticsCopy sendEvent:@"com.apple.Photos.memories.pipeline" withPayload:v9];
 }
 
-+ (void)sendTriggeredMemoriesPipelineAnalyticsEventWithCountsOfMemories:(id)a3 loggingConnection:(id)a4 analytics:(id)a5
++ (void)sendTriggeredMemoriesPipelineAnalyticsEventWithCountsOfMemories:(id)memories loggingConnection:(id)connection analytics:(id)analytics
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v18 = a4;
-  v8 = a5;
+  memoriesCopy = memories;
+  connectionCopy = connection;
+  analyticsCopy = analytics;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v7;
+  v9 = memoriesCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v10)
   {
@@ -2707,7 +2707,7 @@ void __112__PHAMemoryElectionTask_Metrics__collectMetricsOnMemoriesInGraphWithWo
         v24[2] = v16;
         v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:3];
 
-        [v8 sendEvent:@"com.apple.Photos.memories.pipeline" withPayload:v17];
+        [analyticsCopy sendEvent:@"com.apple.Photos.memories.pipeline" withPayload:v17];
         objc_autoreleasePoolPop(v15);
         ++v13;
       }
@@ -2720,17 +2720,17 @@ void __112__PHAMemoryElectionTask_Metrics__collectMetricsOnMemoriesInGraphWithWo
   }
 }
 
-+ (void)sendElectedMemoriesPipelineAnalyticsEventWithCountsOfMemories:(id)a3 loggingConnection:(id)a4 analytics:(id)a5
++ (void)sendElectedMemoriesPipelineAnalyticsEventWithCountsOfMemories:(id)memories loggingConnection:(id)connection analytics:(id)analytics
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v18 = a4;
-  v8 = a5;
+  memoriesCopy = memories;
+  connectionCopy = connection;
+  analyticsCopy = analytics;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v7;
+  v9 = memoriesCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v10)
   {
@@ -2757,7 +2757,7 @@ void __112__PHAMemoryElectionTask_Metrics__collectMetricsOnMemoriesInGraphWithWo
         v24[2] = v16;
         v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:3];
 
-        [v8 sendEvent:@"com.apple.Photos.memories.pipeline" withPayload:v17];
+        [analyticsCopy sendEvent:@"com.apple.Photos.memories.pipeline" withPayload:v17];
         objc_autoreleasePoolPop(v15);
         ++v13;
       }
@@ -2770,14 +2770,14 @@ void __112__PHAMemoryElectionTask_Metrics__collectMetricsOnMemoriesInGraphWithWo
   }
 }
 
-+ (void)sendGeneratedMemoriesPipelineAnalyticsEventWithCountsOfMemories:(id)a3 loggingConnection:(id)a4 analytics:(id)a5
++ (void)sendGeneratedMemoriesPipelineAnalyticsEventWithCountsOfMemories:(id)memories loggingConnection:(id)connection analytics:(id)analytics
 {
   v34 = *MEMORY[0x277D85DE8];
-  v23 = a3;
-  v6 = a5;
+  memoriesCopy = memories;
+  analyticsCopy = analytics;
   v7 = objc_alloc(MEMORY[0x277CBEB18]);
-  v8 = [MEMORY[0x277D3B958] allMemoryTypeStrings];
-  v9 = [v7 initWithArray:v8];
+  allMemoryTypeStrings = [MEMORY[0x277D3B958] allMemoryTypeStrings];
+  v9 = [v7 initWithArray:allMemoryTypeStrings];
 
   [v9 pha_shuffle];
   v27 = 0u;
@@ -2801,7 +2801,7 @@ void __112__PHAMemoryElectionTask_Metrics__collectMetricsOnMemoriesInGraphWithWo
         }
 
         v13 = *(*(&v25 + 1) + 8 * i);
-        v14 = [v23 countForObject:v13];
+        v14 = [memoriesCopy countForObject:v13];
         if (v14)
         {
           v31[0] = @"pipelineStage";
@@ -2817,7 +2817,7 @@ void __112__PHAMemoryElectionTask_Metrics__collectMetricsOnMemoriesInGraphWithWo
 
           v10 = v16;
           v11 = v15;
-          [v6 sendEvent:@"com.apple.Photos.memories.pipeline" withPayload:v18];
+          [analyticsCopy sendEvent:@"com.apple.Photos.memories.pipeline" withPayload:v18];
         }
 
         v29[1] = v11;
@@ -2827,7 +2827,7 @@ void __112__PHAMemoryElectionTask_Metrics__collectMetricsOnMemoriesInGraphWithWo
         v30[1] = v19;
         v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:2];
 
-        [v6 sendEvent:@"com.apple.Photos.memories.generationByType" withPayload:v20];
+        [analyticsCopy sendEvent:@"com.apple.Photos.memories.generationByType" withPayload:v20];
       }
 
       v24 = [obj countByEnumeratingWithState:&v25 objects:v33 count:16];

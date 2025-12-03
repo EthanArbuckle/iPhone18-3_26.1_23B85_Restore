@@ -1,44 +1,44 @@
 @interface NTKPigmentPersistentStorageController
 + (id)globalStoresFolder;
 + (id)perDeviceFolder;
-- (BOOL)createColorSyncFolderIfNeededForDeviceUUID:(id)a3;
-- (BOOL)createFolderIfNeeded:(id)a3;
+- (BOOL)createColorSyncFolderIfNeededForDeviceUUID:(id)d;
+- (BOOL)createFolderIfNeeded:(id)needed;
 - (NTKPigmentPersistentStorageController)init;
-- (NTKPigmentPersistentStorageController)initWithRootDirectory:(id)a3;
+- (NTKPigmentPersistentStorageController)initWithRootDirectory:(id)directory;
 - (id)_sharedCollections;
-- (id)colorDomainFilePath:(id)a3 deviceUUID:(id)a4;
-- (id)colorSyncFolderPathWithDeviceUUID:(id)a3;
+- (id)colorDomainFilePath:(id)path deviceUUID:(id)d;
+- (id)colorSyncFolderPathWithDeviceUUID:(id)d;
 - (id)device;
-- (id)facePigmentSetForDomain:(id)a3 sharedCollections:(id)a4;
-- (id)readPigmentSetFromData:(id)a3 sharedCollections:(id)a4;
-- (id)readSharedCollectionsFromData:(id)a3;
-- (id)serializeFacePigmentSet:(id)a3;
+- (id)facePigmentSetForDomain:(id)domain sharedCollections:(id)collections;
+- (id)readPigmentSetFromData:(id)data sharedCollections:(id)collections;
+- (id)readSharedCollectionsFromData:(id)data;
+- (id)serializeFacePigmentSet:(id)set;
 - (id)sharedCollections;
-- (id)transactionLockerFileNameForDeviceUUID:(id)a3;
+- (id)transactionLockerFileNameForDeviceUUID:(id)d;
 - (void)_sharedCollections;
-- (void)_writeData:(id)a3 toFile:(id)a4;
-- (void)closeTransactionForDeviceUUID:(id)a3;
+- (void)_writeData:(id)data toFile:(id)file;
+- (void)closeTransactionForDeviceUUID:(id)d;
 - (void)deleteContent;
-- (void)persistFacePigmentSet:(id)a3 deviceUUID:(id)a4;
-- (void)persistFacePigmentSetData:(id)a3 domain:(id)a4 deviceUUID:(id)a5;
-- (void)persistSharedCollections:(id)a3 deviceUUID:(id)a4;
-- (void)persistSharedCollectionsData:(id)a3 deviceUUID:(id)a4;
-- (void)startTransactionForDeviceUUID:(id)a3;
+- (void)persistFacePigmentSet:(id)set deviceUUID:(id)d;
+- (void)persistFacePigmentSetData:(id)data domain:(id)domain deviceUUID:(id)d;
+- (void)persistSharedCollections:(id)collections deviceUUID:(id)d;
+- (void)persistSharedCollectionsData:(id)data deviceUUID:(id)d;
+- (void)startTransactionForDeviceUUID:(id)d;
 @end
 
 @implementation NTKPigmentPersistentStorageController
 
 - (NTKPigmentPersistentStorageController)init
 {
-  v3 = [objc_opt_class() perDeviceFolder];
-  v4 = [(NTKPigmentPersistentStorageController *)self initWithRootDirectory:v3];
+  perDeviceFolder = [objc_opt_class() perDeviceFolder];
+  v4 = [(NTKPigmentPersistentStorageController *)self initWithRootDirectory:perDeviceFolder];
 
   return v4;
 }
 
-- (NTKPigmentPersistentStorageController)initWithRootDirectory:(id)a3
+- (NTKPigmentPersistentStorageController)initWithRootDirectory:(id)directory
 {
-  v5 = a3;
+  directoryCopy = directory;
   v11.receiver = self;
   v11.super_class = NTKPigmentPersistentStorageController;
   v6 = [(NTKPigmentPersistentStorageController *)&v11 init];
@@ -49,16 +49,16 @@
     privateQueue = v6->_privateQueue;
     v6->_privateQueue = v8;
 
-    objc_storeStrong(&v6->_rootDirectory, a3);
+    objc_storeStrong(&v6->_rootDirectory, directory);
   }
 
   return v6;
 }
 
-- (id)facePigmentSetForDomain:(id)a3 sharedCollections:(id)a4
+- (id)facePigmentSetForDomain:(id)domain sharedCollections:(id)collections
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  collectionsCopy = collections;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -71,11 +71,11 @@
   v13[2] = __83__NTKPigmentPersistentStorageController_facePigmentSetForDomain_sharedCollections___block_invoke;
   v13[3] = &unk_2787805B0;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = domainCopy;
+  v15 = collectionsCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = collectionsCopy;
+  v10 = domainCopy;
   dispatch_sync(privateQueue, v13);
   v11 = v18[5];
 
@@ -162,13 +162,13 @@ void __58__NTKPigmentPersistentStorageController_sharedCollections__block_invoke
 
 - (id)_sharedCollections
 {
-  v3 = [MEMORY[0x277CBBAE8] currentDevice];
-  v4 = [v3 pdrDevice];
-  v5 = [v4 pairingID];
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  pdrDevice = [currentDevice pdrDevice];
+  pairingID = [pdrDevice pairingID];
 
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [(NTKPigmentPersistentStorageController *)self colorDomainFilePath:@"sharedCollections" deviceUUID:v5];
-  if ([v6 fileExistsAtPath:v7])
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v7 = [(NTKPigmentPersistentStorageController *)self colorDomainFilePath:@"sharedCollections" deviceUUID:pairingID];
+  if ([defaultManager fileExistsAtPath:v7])
   {
     v13 = 0;
     v8 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v7 options:1 error:&v13];
@@ -202,23 +202,23 @@ LABEL_10:
   return v10;
 }
 
-- (void)persistFacePigmentSetData:(id)a3 domain:(id)a4 deviceUUID:(id)a5
+- (void)persistFacePigmentSetData:(id)data domain:(id)domain deviceUUID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  domainCopy = domain;
+  dCopy = d;
   privateQueue = self->_privateQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __85__NTKPigmentPersistentStorageController_persistFacePigmentSetData_domain_deviceUUID___block_invoke;
   v15[3] = &unk_278780FF8;
   v15[4] = self;
-  v16 = v10;
-  v17 = v9;
-  v18 = v8;
-  v12 = v8;
-  v13 = v9;
-  v14 = v10;
+  v16 = dCopy;
+  v17 = domainCopy;
+  v18 = dataCopy;
+  v12 = dataCopy;
+  v13 = domainCopy;
+  v14 = dCopy;
   dispatch_sync(privateQueue, v15);
 }
 
@@ -229,12 +229,12 @@ void __85__NTKPigmentPersistentStorageController_persistFacePigmentSetData_domai
   [*(a1 + 32) _writeData:*(a1 + 56) toFile:v2];
 }
 
-- (void)_writeData:(id)a3 toFile:(id)a4
+- (void)_writeData:(id)data toFile:(id)file
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  fileCopy = file;
   v10 = 0;
-  v6 = [a3 writeToFile:v5 options:268435457 error:&v10];
+  v6 = [data writeToFile:fileCopy options:268435457 error:&v10];
   v7 = v10;
   v8 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
   v9 = v8;
@@ -243,7 +243,7 @@ void __85__NTKPigmentPersistentStorageController_persistFacePigmentSetData_domai
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v12 = v5;
+      v12 = fileCopy;
       _os_log_impl(&dword_22D9C5000, v9, OS_LOG_TYPE_INFO, "#persistence Persisted synced pigment options %{public}@.", buf, 0xCu);
     }
   }
@@ -254,20 +254,20 @@ void __85__NTKPigmentPersistentStorageController_persistFacePigmentSetData_domai
   }
 }
 
-- (void)persistFacePigmentSet:(id)a3 deviceUUID:(id)a4
+- (void)persistFacePigmentSet:(id)set deviceUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 collectionBySlots];
-  v9 = [v8 count];
+  setCopy = set;
+  dCopy = d;
+  collectionBySlots = [setCopy collectionBySlots];
+  v9 = [collectionBySlots count];
 
   if (v9)
   {
-    v10 = [v6 domain];
-    if ([v10 length])
+    domain = [setCopy domain];
+    if ([domain length])
     {
-      v11 = [(NTKPigmentPersistentStorageController *)self serializeFacePigmentSet:v6];
-      [(NTKPigmentPersistentStorageController *)self persistFacePigmentSetData:v11 domain:v10 deviceUUID:v7];
+      v11 = [(NTKPigmentPersistentStorageController *)self serializeFacePigmentSet:setCopy];
+      [(NTKPigmentPersistentStorageController *)self persistFacePigmentSetData:v11 domain:domain deviceUUID:dCopy];
     }
 
     else
@@ -282,22 +282,22 @@ void __85__NTKPigmentPersistentStorageController_persistFacePigmentSetData_domai
 
   else
   {
-    v10 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    domain = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
+    if (os_log_type_enabled(domain, OS_LOG_TYPE_ERROR))
     {
       [NTKPigmentPersistentStorageController persistFacePigmentSet:deviceUUID:];
     }
   }
 }
 
-- (void)persistSharedCollections:(id)a3 deviceUUID:(id)a4
+- (void)persistSharedCollections:(id)collections deviceUUID:(id)d
 {
-  v6 = a4;
-  if (a3)
+  dCopy = d;
+  if (collections)
   {
-    v7 = [NTKProtoSharedCollections protoBufferFromSharedCollections:a3];
-    v8 = [v7 data];
-    [(NTKPigmentPersistentStorageController *)self persistSharedCollectionsData:v8 deviceUUID:v6];
+    v7 = [NTKProtoSharedCollections protoBufferFromSharedCollections:collections];
+    data = [v7 data];
+    [(NTKPigmentPersistentStorageController *)self persistSharedCollectionsData:data deviceUUID:dCopy];
   }
 
   else
@@ -310,20 +310,20 @@ void __85__NTKPigmentPersistentStorageController_persistFacePigmentSetData_domai
   }
 }
 
-- (void)persistSharedCollectionsData:(id)a3 deviceUUID:(id)a4
+- (void)persistSharedCollectionsData:(id)data deviceUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  dCopy = d;
   privateQueue = self->_privateQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __81__NTKPigmentPersistentStorageController_persistSharedCollectionsData_deviceUUID___block_invoke;
   block[3] = &unk_27877E238;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = dCopy;
+  v13 = dataCopy;
+  v9 = dataCopy;
+  v10 = dCopy;
   dispatch_sync(privateQueue, block);
 }
 
@@ -334,17 +334,17 @@ void __81__NTKPigmentPersistentStorageController_persistSharedCollectionsData_de
   [*(a1 + 32) _writeData:*(a1 + 48) toFile:v2];
 }
 
-- (void)closeTransactionForDeviceUUID:(id)a3
+- (void)closeTransactionForDeviceUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   privateQueue = self->_privateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__NTKPigmentPersistentStorageController_closeTransactionForDeviceUUID___block_invoke;
   v7[3] = &unk_27877E438;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_sync(privateQueue, v7);
 }
 
@@ -411,17 +411,17 @@ void __54__NTKPigmentPersistentStorageController_deleteContent__block_invoke(uin
   }
 }
 
-- (void)startTransactionForDeviceUUID:(id)a3
+- (void)startTransactionForDeviceUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   privateQueue = self->_privateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__NTKPigmentPersistentStorageController_startTransactionForDeviceUUID___block_invoke;
   v7[3] = &unk_27877E438;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_sync(privateQueue, v7);
 }
 
@@ -443,23 +443,23 @@ void __71__NTKPigmentPersistentStorageController_startTransactionForDeviceUUID__
 
 - (id)device
 {
-  v2 = [MEMORY[0x277CBBB68] sharedRenderingContext];
-  v3 = [v2 device];
+  mEMORY[0x277CBBB68] = [MEMORY[0x277CBBB68] sharedRenderingContext];
+  device = [mEMORY[0x277CBBB68] device];
 
-  return v3;
+  return device;
 }
 
-- (id)transactionLockerFileNameForDeviceUUID:(id)a3
+- (id)transactionLockerFileNameForDeviceUUID:(id)d
 {
-  v3 = [(NTKPigmentPersistentStorageController *)self colorSyncFolderPathWithDeviceUUID:a3];
+  v3 = [(NTKPigmentPersistentStorageController *)self colorSyncFolderPathWithDeviceUUID:d];
   v4 = [v3 stringByAppendingPathComponent:@"__TRANSACTION_IN_PROGRESS__"];
 
   return v4;
 }
 
-- (BOOL)createColorSyncFolderIfNeededForDeviceUUID:(id)a3
+- (BOOL)createColorSyncFolderIfNeededForDeviceUUID:(id)d
 {
-  v4 = [(NTKPigmentPersistentStorageController *)self colorSyncFolderPathWithDeviceUUID:a3];
+  v4 = [(NTKPigmentPersistentStorageController *)self colorSyncFolderPathWithDeviceUUID:d];
   v5 = [(NTKPigmentPersistentStorageController *)self createFolderIfNeeded:v4];
   if (!v5)
   {
@@ -475,27 +475,27 @@ void __71__NTKPigmentPersistentStorageController_startTransactionForDeviceUUID__
 
 + (id)globalStoresFolder
 {
-  v2 = [a1 faceColorRootFolder];
-  v3 = [v2 stringByAppendingPathComponent:@"GlobalStores"];
+  faceColorRootFolder = [self faceColorRootFolder];
+  v3 = [faceColorRootFolder stringByAppendingPathComponent:@"GlobalStores"];
 
   return v3;
 }
 
 + (id)perDeviceFolder
 {
-  v2 = [a1 faceColorRootFolder];
-  v3 = [v2 stringByAppendingPathComponent:@"PerDeviceStores"];
+  faceColorRootFolder = [self faceColorRootFolder];
+  v3 = [faceColorRootFolder stringByAppendingPathComponent:@"PerDeviceStores"];
 
   return v3;
 }
 
-- (id)colorSyncFolderPathWithDeviceUUID:(id)a3
+- (id)colorSyncFolderPathWithDeviceUUID:(id)d
 {
   v4 = self->_rootDirectory;
-  if (a3)
+  if (d)
   {
-    v5 = [a3 UUIDString];
-    v6 = [(NSString *)v4 stringByAppendingPathComponent:v5];
+    uUIDString = [d UUIDString];
+    v6 = [(NSString *)v4 stringByAppendingPathComponent:uUIDString];
 
     v4 = v6;
   }
@@ -503,24 +503,24 @@ void __71__NTKPigmentPersistentStorageController_startTransactionForDeviceUUID__
   return v4;
 }
 
-- (id)colorDomainFilePath:(id)a3 deviceUUID:(id)a4
+- (id)colorDomainFilePath:(id)path deviceUUID:(id)d
 {
-  v6 = a3;
-  v7 = [(NTKPigmentPersistentStorageController *)self colorSyncFolderPathWithDeviceUUID:a4];
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.protobuffer", v6];
+  pathCopy = path;
+  v7 = [(NTKPigmentPersistentStorageController *)self colorSyncFolderPathWithDeviceUUID:d];
+  pathCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.protobuffer", pathCopy];
 
-  v9 = [v7 stringByAppendingPathComponent:v8];
+  v9 = [v7 stringByAppendingPathComponent:pathCopy];
 
   return v9;
 }
 
-- (BOOL)createFolderIfNeeded:(id)a3
+- (BOOL)createFolderIfNeeded:(id)needed
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  neededCopy = needed;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v13 = 0;
-  if ([v4 fileExistsAtPath:v3 isDirectory:&v13] && (v13 & 1) != 0)
+  if ([defaultManager fileExistsAtPath:neededCopy isDirectory:&v13] && (v13 & 1) != 0)
   {
     v5 = 1;
   }
@@ -532,7 +532,7 @@ void __71__NTKPigmentPersistentStorageController_startTransactionForDeviceUUID__
     v5 = 1;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
     v12 = 0;
-    v7 = [v4 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:v6 error:&v12];
+    v7 = [defaultManager createDirectoryAtPath:neededCopy withIntermediateDirectories:1 attributes:v6 error:&v12];
     v8 = v12;
 
     if (v7)
@@ -560,14 +560,14 @@ void __71__NTKPigmentPersistentStorageController_startTransactionForDeviceUUID__
   return v5;
 }
 
-- (id)readPigmentSetFromData:(id)a3 sharedCollections:(id)a4
+- (id)readPigmentSetFromData:(id)data sharedCollections:(id)collections
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[NTKProtoFacePigmentSet alloc] initWithData:v5];
+  dataCopy = data;
+  collectionsCopy = collections;
+  v7 = [[NTKProtoFacePigmentSet alloc] initWithData:dataCopy];
   if (v7)
   {
-    v8 = [NTKFacePigmentSet facePigmentSetFromProtoBuffer:v7 sharedCollections:v6];
+    v8 = [NTKFacePigmentSet facePigmentSetFromProtoBuffer:v7 sharedCollections:collectionsCopy];
   }
 
   else
@@ -584,23 +584,23 @@ void __71__NTKPigmentPersistentStorageController_startTransactionForDeviceUUID__
   return v8;
 }
 
-- (id)readSharedCollectionsFromData:(id)a3
+- (id)readSharedCollectionsFromData:(id)data
 {
-  v3 = a3;
-  v4 = [[NTKProtoSharedCollections alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[NTKProtoSharedCollections alloc] initWithData:dataCopy];
 
-  v5 = [(NTKProtoSharedCollections *)v4 sharedCollectionsDictionary];
+  sharedCollectionsDictionary = [(NTKProtoSharedCollections *)v4 sharedCollectionsDictionary];
 
-  return v5;
+  return sharedCollectionsDictionary;
 }
 
-- (id)serializeFacePigmentSet:(id)a3
+- (id)serializeFacePigmentSet:(id)set
 {
-  v3 = a3;
-  v4 = [v3 protoBuffer];
-  v5 = [v4 data];
+  setCopy = set;
+  protoBuffer = [setCopy protoBuffer];
+  data = [protoBuffer data];
 
-  if (!v5)
+  if (!data)
   {
     v6 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -609,7 +609,7 @@ void __71__NTKPigmentPersistentStorageController_startTransactionForDeviceUUID__
     }
   }
 
-  return v5;
+  return data;
 }
 
 void __83__NTKPigmentPersistentStorageController_facePigmentSetForDomain_sharedCollections___block_invoke_cold_1(void *a1)

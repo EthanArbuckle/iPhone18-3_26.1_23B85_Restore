@@ -1,15 +1,15 @@
 @interface LNDaemonConnection
-- (BOOL)refreshWithOptions:(id)a3;
-- (void)connectWithOptions:(id)a3;
+- (BOOL)refreshWithOptions:(id)options;
+- (void)connectWithOptions:(id)options;
 @end
 
 @implementation LNDaemonConnection
 
-- (BOOL)refreshWithOptions:(id)a3
+- (BOOL)refreshWithOptions:(id)options
 {
   v6.receiver = self;
   v6.super_class = LNDaemonConnection;
-  v4 = [(LNConnection *)&v6 refreshWithOptions:a3];
+  v4 = [(LNConnection *)&v6 refreshWithOptions:options];
   if (v4)
   {
     [(LNConnection *)self setConnected];
@@ -18,76 +18,76 @@
   return v4;
 }
 
-- (void)connectWithOptions:(id)a3
+- (void)connectWithOptions:(id)options
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   v28.receiver = self;
   v28.super_class = LNDaemonConnection;
-  [(LNConnection *)&v28 connectWithOptions:v4];
+  [(LNConnection *)&v28 connectWithOptions:optionsCopy];
   v5 = getLNLogCategoryConnection();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(LNConnection *)self logPrefix];
+    logPrefix = [(LNConnection *)self logPrefix];
     LODWORD(buf.opaque[0]) = 138543362;
-    *(buf.opaque + 4) = v6;
+    *(buf.opaque + 4) = logPrefix;
     _os_log_impl(&dword_19763D000, v5, OS_LOG_TYPE_INFO, "%{public}@ Establishing a mediator connection to the daemon", &buf, 0xCu);
   }
 
-  v7 = [(LNConnection *)self queue];
-  dispatch_assert_queue_V2(v7);
+  queue = [(LNConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v8 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.linkd.extension" options:0];
   [(LNDaemonConnection *)self setMediatorXPCConnection:v8];
 
   v9 = LNDaemonExtensionXPCInterface();
-  v10 = [(LNDaemonConnection *)self mediatorXPCConnection];
-  [v10 setRemoteObjectInterface:v9];
+  mediatorXPCConnection = [(LNDaemonConnection *)self mediatorXPCConnection];
+  [mediatorXPCConnection setRemoteObjectInterface:v9];
 
-  v11 = [(LNConnection *)self activity];
+  activity = [(LNConnection *)self activity];
   buf.opaque[0] = 0;
   buf.opaque[1] = 0;
-  os_activity_scope_enter(v11, &buf);
+  os_activity_scope_enter(activity, &buf);
   objc_initWeak(&location, self);
-  v12 = [(LNDaemonConnection *)self mediatorXPCConnection];
-  v13 = [(LNConnection *)self queue];
-  [v12 _setQueue:v13];
+  mediatorXPCConnection2 = [(LNDaemonConnection *)self mediatorXPCConnection];
+  queue2 = [(LNConnection *)self queue];
+  [mediatorXPCConnection2 _setQueue:queue2];
 
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __41__LNDaemonConnection_connectWithOptions___block_invoke;
   v25[3] = &unk_1E74B22C8;
-  v25[4] = v11;
+  v25[4] = activity;
   objc_copyWeak(&v26, &location);
-  v14 = [(LNDaemonConnection *)self mediatorXPCConnection];
-  [v14 setInterruptionHandler:v25];
+  mediatorXPCConnection3 = [(LNDaemonConnection *)self mediatorXPCConnection];
+  [mediatorXPCConnection3 setInterruptionHandler:v25];
 
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __41__LNDaemonConnection_connectWithOptions___block_invoke_8;
   v23[3] = &unk_1E74B22C8;
-  v23[4] = v11;
+  v23[4] = activity;
   objc_copyWeak(&v24, &location);
-  v15 = [(LNDaemonConnection *)self mediatorXPCConnection];
-  [v15 setInvalidationHandler:v23];
+  mediatorXPCConnection4 = [(LNDaemonConnection *)self mediatorXPCConnection];
+  [mediatorXPCConnection4 setInvalidationHandler:v23];
 
-  v16 = [(LNDaemonConnection *)self mediatorXPCConnection];
-  [v16 resume];
+  mediatorXPCConnection5 = [(LNDaemonConnection *)self mediatorXPCConnection];
+  [mediatorXPCConnection5 resume];
 
-  v17 = [(LNDaemonConnection *)self mediatorXPCConnection];
+  mediatorXPCConnection6 = [(LNDaemonConnection *)self mediatorXPCConnection];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __41__LNDaemonConnection_connectWithOptions___block_invoke_9;
   v22[3] = &unk_1E74B1B90;
   v22[4] = self;
-  v18 = [v17 remoteObjectProxyWithErrorHandler:v22];
-  v19 = [(LNConnection *)self bundleIdentifier];
+  v18 = [mediatorXPCConnection6 remoteObjectProxyWithErrorHandler:v22];
+  bundleIdentifier = [(LNConnection *)self bundleIdentifier];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __41__LNDaemonConnection_connectWithOptions___block_invoke_11;
   v21[3] = &unk_1E74B13F0;
   v21[4] = self;
-  [v18 getConnectionHostInterfaceForBundleIdentifier:v19 completionHandler:v21];
+  [v18 getConnectionHostInterfaceForBundleIdentifier:bundleIdentifier completionHandler:v21];
 
   objc_destroyWeak(&v24);
   objc_destroyWeak(&v26);

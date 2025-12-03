@@ -1,17 +1,17 @@
 @interface CRLiOSScribbleInteractionSetupHelper
-+ (void)setupScribbleEditingProvider:(id)a3 scribbleObserver:(id)a4 scribbleActive:(BOOL)a5;
++ (void)setupScribbleEditingProvider:(id)provider scribbleObserver:(id)observer scribbleActive:(BOOL)active;
 @end
 
 @implementation CRLiOSScribbleInteractionSetupHelper
 
-+ (void)setupScribbleEditingProvider:(id)a3 scribbleObserver:(id)a4 scribbleActive:(BOOL)a5
++ (void)setupScribbleEditingProvider:(id)provider scribbleObserver:(id)observer scribbleActive:(BOOL)active
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 scribbleInteraction];
-  v10 = v9;
-  if (v5)
+  activeCopy = active;
+  providerCopy = provider;
+  observerCopy = observer;
+  scribbleInteraction = [providerCopy scribbleInteraction];
+  v10 = scribbleInteraction;
+  if (activeCopy)
   {
 
     if (v10)
@@ -44,25 +44,25 @@
       [CRLAssertionHandler handleFailureInFunction:v14 file:v15 lineNumber:24 isFatal:0 description:"expected nil value for '%{public}s'", "editingProvider.scribbleInteraction"];
     }
 
-    v16 = [[CRLiOSScribbleInteractionDelegate alloc] initWithEditingProvider:v7 scribbleInteractionObserver:v8];
-    [v7 setScribbleInteractionDelegate:v16];
+    v16 = [[CRLiOSScribbleInteractionDelegate alloc] initWithEditingProvider:providerCopy scribbleInteractionObserver:observerCopy];
+    [providerCopy setScribbleInteractionDelegate:v16];
 
     v17 = [UIIndirectScribbleInteraction alloc];
-    v18 = [v7 scribbleInteractionDelegate];
-    v19 = [v17 initWithDelegate:v18];
+    scribbleInteractionDelegate = [providerCopy scribbleInteractionDelegate];
+    v19 = [v17 initWithDelegate:scribbleInteractionDelegate];
 
-    v20 = [v7 view];
-    [v20 addInteraction:v19];
+    view = [providerCopy view];
+    [view addInteraction:v19];
 
     v21 = [UIScribbleInteraction alloc];
-    v22 = [v7 scribbleInteractionDelegate];
-    v23 = [v21 initWithDelegate:v22];
+    scribbleInteractionDelegate2 = [providerCopy scribbleInteractionDelegate];
+    v23 = [v21 initWithDelegate:scribbleInteractionDelegate2];
 
-    v24 = [v7 view];
-    [v24 addInteraction:v23];
+    view2 = [providerCopy view];
+    [view2 addInteraction:v23];
 
-    [v7 setScribbleInteraction:v19];
-    [v7 setDirectScribbleInteraction:v23];
+    [providerCopy setScribbleInteraction:v19];
+    [providerCopy setDirectScribbleInteraction:v23];
   }
 
   else
@@ -70,15 +70,15 @@
 
     if (v10)
     {
-      v25 = [v7 view];
-      v26 = [v7 scribbleInteraction];
-      [v25 removeInteraction:v26];
+      view3 = [providerCopy view];
+      scribbleInteraction2 = [providerCopy scribbleInteraction];
+      [view3 removeInteraction:scribbleInteraction2];
 
-      [v7 setScribbleInteraction:0];
+      [providerCopy setScribbleInteraction:0];
     }
 
-    [v7 setScribbleInteractionDelegate:0];
-    [v7 setDirectScribbleInteraction:0];
+    [providerCopy setScribbleInteractionDelegate:0];
+    [providerCopy setDirectScribbleInteraction:0];
   }
 }
 

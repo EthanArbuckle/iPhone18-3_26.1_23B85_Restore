@@ -25,8 +25,8 @@
 
 - (id)ic_attributedStringByAppendingString:()IC
 {
-  v4 = [a3 ic_attributedString];
-  v5 = [a1 ic_attributedStringByAppendingAttributedString:v4];
+  ic_attributedString = [a3 ic_attributedString];
+  v5 = [self ic_attributedStringByAppendingAttributedString:ic_attributedString];
 
   return v5;
 }
@@ -34,7 +34,7 @@
 - (id)ic_attributedStringByAppendingAttributedString:()IC
 {
   v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:a1];
+  v5 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:self];
   [v5 appendAttributedString:v4];
   v6 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithAttributedString:v5];
 
@@ -43,8 +43,8 @@
 
 - (id)ic_attributedStringByPrependingString:()IC
 {
-  v4 = [a3 ic_attributedString];
-  v5 = [a1 ic_attributedStringByPrependingAttributedString:v4];
+  ic_attributedString = [a3 ic_attributedString];
+  v5 = [self ic_attributedStringByPrependingAttributedString:ic_attributedString];
 
   return v5;
 }
@@ -53,7 +53,7 @@
 {
   v4 = a3;
   v5 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:v4];
-  [v5 appendAttributedString:a1];
+  [v5 appendAttributedString:self];
   v6 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithAttributedString:v5];
 
   return v6;
@@ -62,8 +62,8 @@
 - (id)ic_componentRangesSeparatedByPredicate:()IC inRange:
 {
   v8 = a3;
-  v9 = [a1 string];
-  v10 = [MEMORY[0x1E695DF70] array];
+  string = [self string];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = a4 + a5;
   if (a4 < a4 + a5)
   {
@@ -72,12 +72,12 @@
     v14 = a4;
     do
     {
-      while ((v8[2](v8, v14, [v9 characterAtIndex:v14]) & 1) != 0)
+      while ((v8[2](v8, v14, [string characterAtIndex:v14]) & 1) != 0)
       {
         if (v13)
         {
           v15 = [MEMORY[0x1E696B098] valueWithRange:{a4, v12}];
-          [v10 addObject:v15];
+          [array addObject:v15];
         }
 
         v12 = 0;
@@ -99,24 +99,24 @@
     if (v13)
     {
       v16 = [MEMORY[0x1E696B098] valueWithRange:{a4, v13}];
-      [v10 addObject:v16];
+      [array addObject:v16];
     }
   }
 
 LABEL_11:
 
-  return v10;
+  return array;
 }
 
 - (uint64_t)ic_rangeByTrimmingCharactersInSet:()IC inRange:
 {
   v8 = a3;
-  v9 = [a1 string];
+  string = [self string];
   v10 = a4 + a5;
   v11 = a4;
   if (a4 < a4 + a5)
   {
-    while (([v8 characterIsMember:{objc_msgSend(v9, "characterAtIndex:", v11)}] & 1) != 0)
+    while (([v8 characterIsMember:{objc_msgSend(string, "characterAtIndex:", v11)}] & 1) != 0)
     {
       v12 = 0;
       if (++v11 < v10)
@@ -139,7 +139,7 @@ LABEL_7:
   if (a5 && v10 > a4)
   {
     v13 = a5 - 1;
-    while (([v8 characterIsMember:{objc_msgSend(v9, "characterAtIndex:", v10 - 1)}] & 1) != 0)
+    while (([v8 characterIsMember:{objc_msgSend(string, "characterAtIndex:", v10 - 1)}] & 1) != 0)
     {
       v14 = v13 - 1;
       if (v13)
@@ -172,7 +172,7 @@ LABEL_15:
 - (uint64_t)ic_enclosingRangeContainingCharactersInSet:()IC forRange:
 {
   v8 = a3;
-  v9 = [a1 string];
+  string = [self string];
   v10 = a4 + a5;
   while (1)
   {
@@ -184,10 +184,10 @@ LABEL_15:
 
     v12 = a5;
     --a4;
-    if (v11 - 1 < [v9 length])
+    if (v11 - 1 < [string length])
     {
       ++a5;
-      if ([v8 characterIsMember:{objc_msgSend(v9, "characterAtIndex:", v11 - 1)}])
+      if ([v8 characterIsMember:{objc_msgSend(string, "characterAtIndex:", v11 - 1)}])
       {
         continue;
       }
@@ -200,7 +200,7 @@ LABEL_15:
   do
   {
 LABEL_7:
-    if (v11 + v12 >= [v9 length])
+    if (v11 + v12 >= [string length])
     {
       break;
     }
@@ -208,16 +208,16 @@ LABEL_7:
     ++v12;
   }
 
-  while (([v8 characterIsMember:{objc_msgSend(v9, "characterAtIndex:")}] & 1) != 0);
+  while (([v8 characterIsMember:{objc_msgSend(string, "characterAtIndex:")}] & 1) != 0);
 
   return v11;
 }
 
 - (id)ic_attributedSubstringFromRange:()IC
 {
-  v7 = [a1 string];
-  v8 = [v7 rangeOfComposedCharacterSequencesForRange:{a3, a4}];
-  v10 = [a1 attributedSubstringFromRange:{v8, v9}];
+  string = [self string];
+  v8 = [string rangeOfComposedCharacterSequencesForRange:{a3, a4}];
+  v10 = [self attributedSubstringFromRange:{v8, v9}];
 
   return v10;
 }
@@ -225,7 +225,7 @@ LABEL_7:
 - (void)ic_enumerateAttributesInClampedRange:()IC options:usingBlock:
 {
   v10 = a6;
-  v19.location = [a1 ic_range];
+  v19.location = [self ic_range];
   v19.length = v11;
   v18.location = a3;
   v18.length = a4;
@@ -245,7 +245,7 @@ LABEL_7:
     v13[3] = &unk_1E8485558;
     v14 = v10;
     v15 = v16;
-    [a1 enumerateAttributesInRange:v12.location options:v12.length usingBlock:{a5, v13}];
+    [self enumerateAttributesInRange:v12.location options:v12.length usingBlock:{a5, v13}];
 
     _Block_object_dispose(v16, 8);
   }
@@ -255,7 +255,7 @@ LABEL_7:
 {
   v12 = a3;
   v13 = a7;
-  v22.location = [a1 ic_range];
+  v22.location = [self ic_range];
   v22.length = v14;
   v21.location = a4;
   v21.length = a5;
@@ -275,7 +275,7 @@ LABEL_7:
     v16[3] = &unk_1E8485580;
     v17 = v13;
     v18 = v19;
-    [a1 enumerateAttribute:v12 inRange:v15.location options:v15.length usingBlock:{a6, v16}];
+    [self enumerateAttribute:v12 inRange:v15.location options:v15.length usingBlock:{a6, v16}];
 
     _Block_object_dispose(v19, 8);
   }
@@ -285,7 +285,7 @@ LABEL_7:
 {
   v12 = a3;
   v13 = a7;
-  v29.location = [a1 ic_range];
+  v29.location = [self ic_range];
   v29.length = v14;
   v28.location = a4;
   v28.length = a5;
@@ -294,7 +294,7 @@ LABEL_7:
   if (v15.length)
   {
     v27 = 0;
-    v17 = [a1 length];
+    v17 = [self length];
     v18 = v15.location + ((v15.length - 1) & (a6 << 62 >> 63));
     if ((a6 & 0x100000) != 0)
     {
@@ -302,7 +302,7 @@ LABEL_7:
     }
 
 LABEL_3:
-    for (i = [a1 attribute:v12 atIndex:v18 longestEffectiveRange:&v25 inRange:{0, v17}];
+    for (i = [self attribute:v12 atIndex:v18 longestEffectiveRange:&v25 inRange:{0, v17}];
     {
       v20 = i;
       v13[2](v13, i, v25, v26, &v27);
@@ -323,7 +323,7 @@ LABEL_3:
 
       else
       {
-        v21 = [a1 length];
+        v21 = [self length];
         v22 = v21 - v17 + v25 + v26;
         v23 = length - v17 + v21;
         v24 = v21 == v17;
@@ -355,15 +355,15 @@ LABEL_3:
       }
 
 LABEL_4:
-      [a1 attribute:v12 atIndex:v18 effectiveRange:&v25];
+      [self attribute:v12 atIndex:v18 effectiveRange:&v25];
     }
   }
 }
 
 - (id)ic_attributedStringByReplacingNewlineCharactersWithWhiteSpace
 {
-  v2 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-  v3 = [a1 ic_attributedStringByReplacingCharactersInSet:v2 withString:@" "];
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  v3 = [self ic_attributedStringByReplacingCharactersInSet:newlineCharacterSet withString:@" "];
 
   return v3;
 }
@@ -372,25 +372,25 @@ LABEL_4:
 {
   v6 = a3;
   v7 = a4;
-  v8 = a1;
-  v9 = [v8 string];
-  v10 = [v9 rangeOfCharacterFromSet:v6];
+  selfCopy = self;
+  string = [selfCopy string];
+  v10 = [string rangeOfCharacterFromSet:v6];
 
   if (v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [v8 mutableCopy];
-    v12 = [v11 string];
-    v13 = [v12 rangeOfCharacterFromSet:v6];
+    v11 = [selfCopy mutableCopy];
+    string2 = [v11 string];
+    v13 = [string2 rangeOfCharacterFromSet:v6];
     v15 = v14;
 
     while (v13 != 0x7FFFFFFFFFFFFFFFLL)
     {
       [v11 replaceCharactersInRange:v13 withString:{v15, v7}];
-      v16 = [v11 string];
-      v17 = [v16 length];
+      string3 = [v11 string];
+      v17 = [string3 length];
 
-      v18 = [v11 string];
-      v13 = [v18 rangeOfCharacterFromSet:v6 options:2 range:{v13, v17 - v13}];
+      string4 = [v11 string];
+      v13 = [string4 rangeOfCharacterFromSet:v6 options:2 range:{v13, v17 - v13}];
       v15 = v19;
     }
 
@@ -398,18 +398,18 @@ LABEL_4:
     {
       v20 = [v11 copy];
 
-      v8 = v20;
+      selfCopy = v20;
     }
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (uint64_t)ic_containsAttribute:()IC
 {
   v4 = a3;
-  v5 = [a1 ic_range];
-  v7 = [a1 ic_containsAttribute:v4 inRange:{v5, v6}];
+  ic_range = [self ic_range];
+  v7 = [self ic_containsAttribute:v4 inRange:{ic_range, v6}];
 
   return v7;
 }
@@ -425,7 +425,7 @@ LABEL_4:
   v7[2] = __55__NSAttributedString_IC__ic_containsAttribute_inRange___block_invoke;
   v7[3] = &unk_1E84855A8;
   v7[4] = &v8;
-  [a1 enumerateAttribute:a3 inRange:a4 options:a5 usingBlock:{0x100000, v7}];
+  [self enumerateAttribute:a3 inRange:a4 options:a5 usingBlock:{0x100000, v7}];
   v5 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
   return v5;
@@ -434,8 +434,8 @@ LABEL_4:
 - (id)ic_attributedStringByRemovingAllAttributesExcept:()IC
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
-  v6 = [a1 ic_range];
+  v5 = [self mutableCopy];
+  ic_range = [self ic_range];
   v8 = v7;
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
@@ -445,7 +445,7 @@ LABEL_4:
   v19 = v9;
   v10 = v5;
   v18 = v10;
-  [v10 enumerateAttributesInRange:v6 options:v8 usingBlock:{0, &v14}];
+  [v10 enumerateAttributesInRange:ic_range options:v8 usingBlock:{0, &v14}];
   v11 = objc_alloc(MEMORY[0x1E696AAB0]);
   v12 = [v11 initWithAttributedString:{v10, v14, v15, v16, v17}];
 
@@ -455,18 +455,18 @@ LABEL_4:
 - (id)ic_attributedStringByTrimmingCharactersInSet:()IC
 {
   v4 = a3;
-  v5 = [a1 string];
+  string = [self string];
     ;
   }
 
-  if ([a1 length] == i)
+  if ([self length] == i)
   {
     v7 = objc_opt_new();
   }
 
   else
   {
-    v8 = [a1 length];
+    v8 = [self length];
     v9 = v8 - i;
     v10 = v8 - 1;
     do
@@ -477,13 +477,13 @@ LABEL_4:
         break;
       }
 
-      v12 = [v4 characterIsMember:{objc_msgSend(v5, "characterAtIndex:", v10)}];
+      v12 = [v4 characterIsMember:{objc_msgSend(string, "characterAtIndex:", v10)}];
       v9 = v11 - 1;
       --v10;
     }
 
     while ((v12 & 1) != 0);
-    v7 = [a1 attributedSubstringFromRange:{i, v11}];
+    v7 = [self attributedSubstringFromRange:{i, v11}];
   }
 
   v13 = v7;
@@ -499,9 +499,9 @@ LABEL_4:
   }
 
   v2 = [NSAttributedString(IC) ic_whitespaceAndNewlineCoalescedAttributedString]::regex;
-  v4 = [a1 ic_range];
+  ic_range = [self ic_range];
 
-  return [v2 ic_attributedStringByReplacingMatchesInAttributedString:a1 options:0 range:v4 withTemplate:{v3, @" "}];
+  return [v2 ic_attributedStringByReplacingMatchesInAttributedString:self options:0 range:ic_range withTemplate:{v3, @" "}];
 }
 
 + (id)ic_emptyAttributedString
@@ -515,7 +515,7 @@ LABEL_4:
 {
   v4 = a3;
   v5 = objc_opt_new();
-  v6 = [a1 ic_range];
+  ic_range = [self ic_range];
   v8 = v7;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -523,7 +523,7 @@ LABEL_4:
   v12[3] = &unk_1E84855F8;
   v9 = v5;
   v13 = v9;
-  [a1 enumerateAttribute:v4 inRange:v6 options:v8 usingBlock:{0, v12}];
+  [self enumerateAttribute:v4 inRange:ic_range options:v8 usingBlock:{0, v12}];
   v10 = [v9 copy];
 
   return v10;

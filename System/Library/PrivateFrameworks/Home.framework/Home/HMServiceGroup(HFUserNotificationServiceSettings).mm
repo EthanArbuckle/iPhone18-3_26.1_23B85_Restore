@@ -8,8 +8,8 @@
 
 - (id)_hf_allBulletinBoardNotifications
 {
-  v1 = [a1 services];
-  v2 = [v1 na_map:&__block_literal_global_131];
+  services = [self services];
+  v2 = [services na_map:&__block_literal_global_131];
 
   return v2;
 }
@@ -17,8 +17,8 @@
 - (HFUserNotificationServiceSettings)hf_userNotificationSettings
 {
   v2 = [HFUserNotificationServiceSettings alloc];
-  v3 = [a1 _hf_allBulletinBoardNotifications];
-  v4 = [(HFUserNotificationServiceSettings *)v2 initWithBulletinBoardNotifications:v3];
+  _hf_allBulletinBoardNotifications = [self _hf_allBulletinBoardNotifications];
+  v4 = [(HFUserNotificationServiceSettings *)v2 initWithBulletinBoardNotifications:_hf_allBulletinBoardNotifications];
 
   return v4;
 }
@@ -26,19 +26,19 @@
 - (id)hf_updateUserNotificationSettings:()HFUserNotificationServiceSettings
 {
   v4 = a3;
-  v5 = [a1 hf_userNotificationSettings];
+  hf_userNotificationSettings = [self hf_userNotificationSettings];
 
-  if (v5)
+  if (hf_userNotificationSettings)
   {
-    v6 = [a1 _hf_allBulletinBoardNotifications];
-    [v4 applySettingsToBulletinBoardNotifications:v6];
+    _hf_allBulletinBoardNotifications = [self _hf_allBulletinBoardNotifications];
+    [v4 applySettingsToBulletinBoardNotifications:_hf_allBulletinBoardNotifications];
   }
 
   else
   {
     v7 = MEMORY[0x277D2C900];
-    v6 = [MEMORY[0x277CCA9B8] hf_errorWithCode:32];
-    [v7 futureWithError:v6];
+    _hf_allBulletinBoardNotifications = [MEMORY[0x277CCA9B8] hf_errorWithCode:32];
+    [v7 futureWithError:_hf_allBulletinBoardNotifications];
   }
   v8 = ;
 

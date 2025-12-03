@@ -1,19 +1,19 @@
 @interface CoreCECTypesInternal
 + (id)defaultTypes;
 - (CoreCECTypesInternal)init;
-- (id)stringForActivationStatus:(unint64_t)a3;
-- (id)stringForDeckControlMode:(unint64_t)a3;
-- (id)stringForDeckInfo:(unint64_t)a3;
-- (id)stringForDeviceType:(unint64_t)a3;
-- (id)stringForPlayMode:(unint64_t)a3;
-- (id)stringForRequestType:(unint64_t)a3;
-- (id)stringForSystemAudioStatus:(unint64_t)a3;
-- (unint64_t)deckControlModeForString:(id)a3;
-- (unint64_t)deckInfoForString:(id)a3;
-- (unint64_t)deviceTypeForString:(id)a3;
-- (unint64_t)playModeForString:(id)a3;
-- (unint64_t)requestTypeForString:(id)a3;
-- (unint64_t)systemAudioStatusForString:(id)a3;
+- (id)stringForActivationStatus:(unint64_t)status;
+- (id)stringForDeckControlMode:(unint64_t)mode;
+- (id)stringForDeckInfo:(unint64_t)info;
+- (id)stringForDeviceType:(unint64_t)type;
+- (id)stringForPlayMode:(unint64_t)mode;
+- (id)stringForRequestType:(unint64_t)type;
+- (id)stringForSystemAudioStatus:(unint64_t)status;
+- (unint64_t)deckControlModeForString:(id)string;
+- (unint64_t)deckInfoForString:(id)string;
+- (unint64_t)deviceTypeForString:(id)string;
+- (unint64_t)playModeForString:(id)string;
+- (unint64_t)requestTypeForString:(id)string;
+- (unint64_t)systemAudioStatusForString:(id)string;
 - (void)dealloc;
 @end
 
@@ -117,17 +117,17 @@
 
 + (id)defaultTypes
 {
-  objc_sync_enter(a1);
+  objc_sync_enter(self);
   if (!defaultTypes_gTypes)
   {
     defaultTypes_gTypes = objc_alloc_init(CoreCECTypesInternal);
   }
 
-  objc_sync_exit(a1);
+  objc_sync_exit(self);
   return defaultTypes_gTypes;
 }
 
-- (id)stringForDeckControlMode:(unint64_t)a3
+- (id)stringForDeckControlMode:(unint64_t)mode
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -153,7 +153,7 @@
           objc_enumerationMutation(deckControlConstants);
         }
 
-        if ([*(*(&v13 + 1) + 8 * v10) unsignedIntegerValue] == a3)
+        if ([*(*(&v13 + 1) + 8 * v10) unsignedIntegerValue] == mode)
         {
           result = [(NSArray *)self->deckControlStrings objectAtIndex:v11];
           goto LABEL_11;
@@ -180,7 +180,7 @@ LABEL_11:
   return result;
 }
 
-- (unint64_t)deckControlModeForString:(id)a3
+- (unint64_t)deckControlModeForString:(id)string
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -206,7 +206,7 @@ LABEL_11:
           objc_enumerationMutation(deckControlStrings);
         }
 
-        if (![*(*(&v13 + 1) + 8 * v10) compare:a3 options:1])
+        if (![*(*(&v13 + 1) + 8 * v10) compare:string options:1])
         {
           result = [-[NSArray objectAtIndex:](self->deckControlConstants objectAtIndex:{v11), "unsignedIntegerValue"}];
           goto LABEL_11;
@@ -233,7 +233,7 @@ LABEL_11:
   return result;
 }
 
-- (id)stringForDeckInfo:(unint64_t)a3
+- (id)stringForDeckInfo:(unint64_t)info
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -259,7 +259,7 @@ LABEL_11:
           objc_enumerationMutation(deckInfoConstants);
         }
 
-        if ([*(*(&v13 + 1) + 8 * v10) unsignedIntegerValue] == a3)
+        if ([*(*(&v13 + 1) + 8 * v10) unsignedIntegerValue] == info)
         {
           result = [(NSArray *)self->deckInfoStrings objectAtIndex:v11];
           goto LABEL_11;
@@ -286,7 +286,7 @@ LABEL_11:
   return result;
 }
 
-- (unint64_t)deckInfoForString:(id)a3
+- (unint64_t)deckInfoForString:(id)string
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -312,7 +312,7 @@ LABEL_11:
           objc_enumerationMutation(deckInfoStrings);
         }
 
-        if (![*(*(&v13 + 1) + 8 * v10) compare:a3 options:1])
+        if (![*(*(&v13 + 1) + 8 * v10) compare:string options:1])
         {
           result = [-[NSArray objectAtIndex:](self->deckInfoConstants objectAtIndex:{v11), "unsignedIntegerValue"}];
           goto LABEL_11;
@@ -339,7 +339,7 @@ LABEL_11:
   return result;
 }
 
-- (id)stringForPlayMode:(unint64_t)a3
+- (id)stringForPlayMode:(unint64_t)mode
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -365,7 +365,7 @@ LABEL_11:
           objc_enumerationMutation(playModeConstants);
         }
 
-        if ([*(*(&v13 + 1) + 8 * v10) unsignedIntegerValue] == a3)
+        if ([*(*(&v13 + 1) + 8 * v10) unsignedIntegerValue] == mode)
         {
           result = [(NSArray *)self->playModeStrings objectAtIndex:v11];
           goto LABEL_11;
@@ -392,7 +392,7 @@ LABEL_11:
   return result;
 }
 
-- (unint64_t)playModeForString:(id)a3
+- (unint64_t)playModeForString:(id)string
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -418,7 +418,7 @@ LABEL_11:
           objc_enumerationMutation(playModeStrings);
         }
 
-        if (![*(*(&v13 + 1) + 8 * v10) compare:a3 options:1])
+        if (![*(*(&v13 + 1) + 8 * v10) compare:string options:1])
         {
           result = [-[NSArray objectAtIndex:](self->playModeConstants objectAtIndex:{v11), "unsignedIntegerValue"}];
           goto LABEL_11;
@@ -445,7 +445,7 @@ LABEL_11:
   return result;
 }
 
-- (id)stringForDeviceType:(unint64_t)a3
+- (id)stringForDeviceType:(unint64_t)type
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -471,7 +471,7 @@ LABEL_11:
           objc_enumerationMutation(deviceTypesConstants);
         }
 
-        if ([*(*(&v13 + 1) + 8 * v10) unsignedIntegerValue] == a3)
+        if ([*(*(&v13 + 1) + 8 * v10) unsignedIntegerValue] == type)
         {
           result = [(NSArray *)self->deviceTypesStrings objectAtIndex:v11];
           goto LABEL_11;
@@ -498,7 +498,7 @@ LABEL_11:
   return result;
 }
 
-- (unint64_t)deviceTypeForString:(id)a3
+- (unint64_t)deviceTypeForString:(id)string
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -524,7 +524,7 @@ LABEL_11:
           objc_enumerationMutation(deviceTypesStrings);
         }
 
-        if (![*(*(&v13 + 1) + 8 * v10) compare:a3 options:1])
+        if (![*(*(&v13 + 1) + 8 * v10) compare:string options:1])
         {
           result = [-[NSArray objectAtIndex:](self->deviceTypesConstants objectAtIndex:{v11), "unsignedIntegerValue"}];
           goto LABEL_11;
@@ -551,7 +551,7 @@ LABEL_11:
   return result;
 }
 
-- (id)stringForRequestType:(unint64_t)a3
+- (id)stringForRequestType:(unint64_t)type
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -577,7 +577,7 @@ LABEL_11:
           objc_enumerationMutation(requestTypeConstants);
         }
 
-        if ([*(*(&v13 + 1) + 8 * v10) unsignedIntegerValue] == a3)
+        if ([*(*(&v13 + 1) + 8 * v10) unsignedIntegerValue] == type)
         {
           result = [(NSArray *)self->requestTypeStrings objectAtIndex:v11];
           goto LABEL_11;
@@ -604,7 +604,7 @@ LABEL_11:
   return result;
 }
 
-- (unint64_t)requestTypeForString:(id)a3
+- (unint64_t)requestTypeForString:(id)string
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -630,7 +630,7 @@ LABEL_11:
           objc_enumerationMutation(requestTypeStrings);
         }
 
-        if (![*(*(&v13 + 1) + 8 * v10) compare:a3 options:1])
+        if (![*(*(&v13 + 1) + 8 * v10) compare:string options:1])
         {
           result = [-[NSArray objectAtIndex:](self->requestTypeConstants objectAtIndex:{v11), "unsignedIntegerValue"}];
           goto LABEL_11;
@@ -657,7 +657,7 @@ LABEL_11:
   return result;
 }
 
-- (id)stringForSystemAudioStatus:(unint64_t)a3
+- (id)stringForSystemAudioStatus:(unint64_t)status
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -683,7 +683,7 @@ LABEL_11:
           objc_enumerationMutation(systemAudioModeStatusConstants);
         }
 
-        if ([*(*(&v13 + 1) + 8 * v10) unsignedIntegerValue] == a3)
+        if ([*(*(&v13 + 1) + 8 * v10) unsignedIntegerValue] == status)
         {
           result = [(NSArray *)self->systemAudioModeStatusStrings objectAtIndex:v11];
           goto LABEL_11;
@@ -710,7 +710,7 @@ LABEL_11:
   return result;
 }
 
-- (unint64_t)systemAudioStatusForString:(id)a3
+- (unint64_t)systemAudioStatusForString:(id)string
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -736,7 +736,7 @@ LABEL_11:
           objc_enumerationMutation(systemAudioModeStatusStrings);
         }
 
-        if (![*(*(&v13 + 1) + 8 * v10) compare:a3 options:1])
+        if (![*(*(&v13 + 1) + 8 * v10) compare:string options:1])
         {
           result = [-[NSArray objectAtIndex:](self->systemAudioModeStatusConstants objectAtIndex:{v11), "unsignedIntegerValue"}];
           goto LABEL_11;
@@ -763,16 +763,16 @@ LABEL_11:
   return result;
 }
 
-- (id)stringForActivationStatus:(unint64_t)a3
+- (id)stringForActivationStatus:(unint64_t)status
 {
   v3 = kCoreCECActivationStatusStringInactive;
   v4 = &kCoreCECActivationStatusStringActive;
-  if (a3 != 1)
+  if (status != 1)
   {
     v4 = kCoreCECGenericStringUnknown;
   }
 
-  if (a3)
+  if (status)
   {
     v3 = v4;
   }

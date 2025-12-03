@@ -1,64 +1,64 @@
 @interface PLDuplicateMerge
-+ (BOOL)mergeAssets:(id)a3 targetAssetOID:(id)a4 photolibrary:(id)a5 error:(id *)a6;
-- (BOOL)_checkCPLDisabledAssetHasValidOriginalResourcesForAsset:(id)a3;
-- (BOOL)_isValidForLocationOverwriteWithSource:(id)a3;
-- (BOOL)_mergeAdjustmentsFromSource:(id)a3 error:(id *)a4;
-- (BOOL)mergeResourcesFromSource:(id)a3 error:(id *)a4;
-- (PLDuplicateMerge)initWithSourceAssets:(id)a3 targetAsset:(id)a4 photolibrary:(id)a5;
-- (PLDuplicateMerge)mergeWithError:(id *)a3;
-- (void)_mergeFaceRelationshipsFromSource:(id)a3;
-- (void)_mergeLocationFromSource:(id)a3 forceUpdate:(BOOL)a4;
-- (void)_mergeMetadataFromSource:(id)a3;
-- (void)_mergeSharedLibraryMetadataFromSource:(id)a3;
-- (void)_preFileCloneChecksForURL:(id)a3;
-- (void)_resetMediaAnalysisStateWithType:(int64_t)a3;
-- (void)_setDCIMFilenameFromSource:(id)a3;
-- (void)_setUBFFilenameFromDuplicateSource:(id)a3;
++ (BOOL)mergeAssets:(id)assets targetAssetOID:(id)d photolibrary:(id)photolibrary error:(id *)error;
+- (BOOL)_checkCPLDisabledAssetHasValidOriginalResourcesForAsset:(id)asset;
+- (BOOL)_isValidForLocationOverwriteWithSource:(id)source;
+- (BOOL)_mergeAdjustmentsFromSource:(id)source error:(id *)error;
+- (BOOL)mergeResourcesFromSource:(id)source error:(id *)error;
+- (PLDuplicateMerge)initWithSourceAssets:(id)assets targetAsset:(id)asset photolibrary:(id)photolibrary;
+- (PLDuplicateMerge)mergeWithError:(id *)error;
+- (void)_mergeFaceRelationshipsFromSource:(id)source;
+- (void)_mergeLocationFromSource:(id)source forceUpdate:(BOOL)update;
+- (void)_mergeMetadataFromSource:(id)source;
+- (void)_mergeSharedLibraryMetadataFromSource:(id)source;
+- (void)_preFileCloneChecksForURL:(id)l;
+- (void)_resetMediaAnalysisStateWithType:(int64_t)type;
+- (void)_setDCIMFilenameFromSource:(id)source;
+- (void)_setUBFFilenameFromDuplicateSource:(id)source;
 @end
 
 @implementation PLDuplicateMerge
 
-- (BOOL)_isValidForLocationOverwriteWithSource:(id)a3
+- (BOOL)_isValidForLocationOverwriteWithSource:(id)source
 {
-  v4 = a3;
-  v5 = [(PLDuplicateMerge *)self asset];
-  v6 = [v4 asset];
-  v7 = [v6 location];
+  sourceCopy = source;
+  asset = [(PLDuplicateMerge *)self asset];
+  asset2 = [sourceCopy asset];
+  location = [asset2 location];
 
-  if (!v7)
+  if (!location)
   {
     goto LABEL_6;
   }
 
-  v8 = [v5 location];
+  location2 = [asset location];
 
-  if (!v8)
+  if (!location2)
   {
     LOBYTE(v12) = 1;
     goto LABEL_10;
   }
 
-  v9 = [v4 hasModifiedUserLocation];
-  v10 = [(PLDuplicateMerge *)self targetAsset];
-  if (![v10 hasModifiedUserLocation])
+  hasModifiedUserLocation = [sourceCopy hasModifiedUserLocation];
+  targetAsset = [(PLDuplicateMerge *)self targetAsset];
+  if (![targetAsset hasModifiedUserLocation])
   {
 
-    if ((v9 & 1) == 0)
+    if ((hasModifiedUserLocation & 1) == 0)
     {
       goto LABEL_6;
     }
 
 LABEL_9:
-    [v7 coordinate];
-    v12 = [v5 isLocatedAtCoordinates:?] ^ 1;
+    [location coordinate];
+    v12 = [asset isLocatedAtCoordinates:?] ^ 1;
     goto LABEL_10;
   }
 
-  v11 = [v4 hasModifiedUserLocation];
+  hasModifiedUserLocation2 = [sourceCopy hasModifiedUserLocation];
 
-  if (!v11)
+  if (!hasModifiedUserLocation2)
   {
-    if (!v9)
+    if (!hasModifiedUserLocation)
     {
       goto LABEL_6;
     }
@@ -66,7 +66,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if ([(PLDuplicateMergeModelProperties *)self->_mergeModelProperties isRecentlyModifiedSourceAsset:v4])
+  if ([(PLDuplicateMergeModelProperties *)self->_mergeModelProperties isRecentlyModifiedSourceAsset:sourceCopy])
   {
     goto LABEL_9;
   }
@@ -78,45 +78,45 @@ LABEL_10:
   return v12;
 }
 
-- (void)_setDCIMFilenameFromSource:(id)a3
+- (void)_setDCIMFilenameFromSource:(id)source
 {
-  v15 = [a3 asset];
-  v4 = [(PLDuplicateMerge *)self asset];
-  v5 = [v4 filename];
-  v6 = [v5 pathExtension];
-  v7 = [v15 filename];
-  v8 = [v7 pathExtension];
-  v9 = [v6 isEqualToString:v8];
+  asset = [source asset];
+  asset2 = [(PLDuplicateMerge *)self asset];
+  filename = [asset2 filename];
+  pathExtension = [filename pathExtension];
+  filename2 = [asset filename];
+  pathExtension2 = [filename2 pathExtension];
+  v9 = [pathExtension isEqualToString:pathExtension2];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [v15 filename];
-    v11 = [v10 pathExtension];
+    filename3 = [asset filename];
+    pathExtension3 = [filename3 pathExtension];
 
-    if (v11)
+    if (pathExtension3)
     {
-      v12 = [v4 filename];
-      v13 = [v12 stringByDeletingPathExtension];
+      filename4 = [asset2 filename];
+      stringByDeletingPathExtension = [filename4 stringByDeletingPathExtension];
 
-      v14 = [v13 stringByAppendingPathExtension:v11];
-      [v4 setFilename:v14];
+      v14 = [stringByDeletingPathExtension stringByAppendingPathExtension:pathExtension3];
+      [asset2 setFilename:v14];
     }
   }
 }
 
-- (void)_resetMediaAnalysisStateWithType:(int64_t)a3
+- (void)_resetMediaAnalysisStateWithType:(int64_t)type
 {
-  v4 = [(PLDuplicateMerge *)self asset];
-  v6 = v4;
-  if (a3 != 1)
+  asset = [(PLDuplicateMerge *)self asset];
+  v6 = asset;
+  if (type != 1)
   {
-    v5 = v4;
-    if (a3)
+    v5 = asset;
+    if (type)
     {
       goto LABEL_5;
     }
 
-    PLResetMediaProcessingStateOnAsset(2, v4, 1uLL);
+    PLResetMediaProcessingStateOnAsset(2, asset, 1uLL);
     PLResetMediaProcessingStateOnAsset(1, v6, 1uLL);
     PLResetMediaProcessingStateOnAsset(17, v6, 1uLL);
     PLResetMediaProcessingStateOnAsset(12, v6, 0xFFFFFuLL);
@@ -128,31 +128,31 @@ LABEL_10:
 LABEL_5:
 }
 
-- (BOOL)_mergeAdjustmentsFromSource:(id)a3 error:(id *)a4
+- (BOOL)_mergeAdjustmentsFromSource:(id)source error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(PLDuplicateMerge *)self asset];
-  v7 = [v5 resourceSwapAssetUUID];
-  v8 = [v6 uuid];
-  v9 = [v7 isEqualToString:v8];
+  sourceCopy = source;
+  asset = [(PLDuplicateMerge *)self asset];
+  resourceSwapAssetUUID = [sourceCopy resourceSwapAssetUUID];
+  uuid = [asset uuid];
+  v9 = [resourceSwapAssetUUID isEqualToString:uuid];
 
   if (v9)
   {
-    v10 = [v5 asset];
-    v11 = [v10 originalHeight];
-    if (v11 != [v6 originalHeight] || (v12 = -[NSObject originalWidth](v10, "originalWidth"), v12 != objc_msgSend(v6, "originalWidth")))
+    asset2 = [sourceCopy asset];
+    originalHeight = [asset2 originalHeight];
+    if (originalHeight != [asset originalHeight] || (v12 = -[NSObject originalWidth](asset2, "originalWidth"), v12 != objc_msgSend(asset, "originalWidth")))
     {
       v15 = PLDuplicateDetectionGetLog();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v29 = [v5 shortDescription];
-        v30 = [(PLDuplicateMerge *)self targetAsset];
-        v31 = [v30 shortDescription];
+        shortDescription = [sourceCopy shortDescription];
+        targetAsset = [(PLDuplicateMerge *)self targetAsset];
+        shortDescription2 = [targetAsset shortDescription];
         *buf = 138543618;
-        v38 = v29;
+        v38 = shortDescription;
         v39 = 2114;
-        v40 = v31;
+        v40 = shortDescription2;
         _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "Duplicate Merge: skipping adjustment merge - resource size mismatch [%{public}@ -> %{public}@]", buf, 0x16u);
       }
 
@@ -160,39 +160,39 @@ LABEL_5:
       goto LABEL_14;
     }
 
-    if ([v10 hasAdjustments])
+    if ([asset2 hasAdjustments])
     {
       library = self->_library;
       v36 = 0;
-      v14 = [PLUnmanagedAdjustment copyUnmanagedAdjustmentFromSourceAsset:v10 forPlaceholderAsset:v6 inLibrary:library error:&v36];
+      shortDescription5 = [PLUnmanagedAdjustment copyUnmanagedAdjustmentFromSourceAsset:asset2 forPlaceholderAsset:asset inLibrary:library error:&v36];
       v15 = v36;
-      v16 = v14 != 0;
-      if (v14)
+      v16 = shortDescription5 != 0;
+      if (shortDescription5)
       {
-        [v6 setAdjustmentsState:{-[NSObject adjustmentsState](v10, "adjustmentsState")}];
-        v17 = [v10 imageRequestHints];
-        [v6 setImageRequestHints:v17];
+        [asset setAdjustmentsState:{-[NSObject adjustmentsState](asset2, "adjustmentsState")}];
+        imageRequestHints = [asset2 imageRequestHints];
+        [asset setImageRequestHints:imageRequestHints];
 
-        [v6 setPackedAcceptableCropRect:{-[NSObject packedAcceptableCropRect](v10, "packedAcceptableCropRect")}];
-        [v6 setPackedPreferredCropRect:{-[NSObject packedPreferredCropRect](v10, "packedPreferredCropRect")}];
-        v18 = [v10 additionalAttributes];
-        v19 = [v18 adjustedStableHash];
-        v20 = [v6 additionalAttributes];
-        [v20 setAdjustedStableHash:v19];
+        [asset setPackedAcceptableCropRect:{-[NSObject packedAcceptableCropRect](asset2, "packedAcceptableCropRect")}];
+        [asset setPackedPreferredCropRect:{-[NSObject packedPreferredCropRect](asset2, "packedPreferredCropRect")}];
+        additionalAttributes = [asset2 additionalAttributes];
+        adjustedStableHash = [additionalAttributes adjustedStableHash];
+        additionalAttributes2 = [asset additionalAttributes];
+        [additionalAttributes2 setAdjustedStableHash:adjustedStableHash];
 
-        v21 = [v6 additionalAttributes];
-        [v21 setUnmanagedAdjustment:v14];
+        additionalAttributes3 = [asset additionalAttributes];
+        [additionalAttributes3 setUnmanagedAdjustment:shortDescription5];
 
         v22 = PLDuplicateDetectionGetLog();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
-          v23 = [v5 shortDescription];
-          v24 = [(PLDuplicateMerge *)self targetAsset];
-          v25 = [v24 shortDescription];
+          shortDescription3 = [sourceCopy shortDescription];
+          targetAsset2 = [(PLDuplicateMerge *)self targetAsset];
+          shortDescription4 = [targetAsset2 shortDescription];
           *buf = 138543618;
-          v38 = v23;
+          v38 = shortDescription3;
           v39 = 2114;
-          v40 = v25;
+          v40 = shortDescription4;
           _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_INFO, "Duplicate Merge: transfer adjustment [%{public}@ -> %{public}@]", buf, 0x16u);
         }
       }
@@ -211,20 +211,20 @@ LABEL_5:
       goto LABEL_25;
     }
 
-    if ([v6 hasAdjustments])
+    if ([asset hasAdjustments])
     {
-      [v6 revertToOriginal];
+      [asset revertToOriginal];
       v15 = PLDuplicateDetectionGetLog();
       v16 = 1;
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
-        v14 = [v5 shortDescription];
-        v33 = [(PLDuplicateMerge *)self targetAsset];
-        v34 = [v33 shortDescription];
+        shortDescription5 = [sourceCopy shortDescription];
+        targetAsset3 = [(PLDuplicateMerge *)self targetAsset];
+        shortDescription6 = [targetAsset3 shortDescription];
         *buf = 138543618;
-        v38 = v14;
+        v38 = shortDescription5;
         v39 = 2114;
-        v40 = v34;
+        v40 = shortDescription6;
         v35 = "Duplicate Merge: revert adjustment [%{public}@ -> %{public}@]";
 LABEL_21:
         _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_INFO, v35, buf, 0x16u);
@@ -239,13 +239,13 @@ LABEL_25:
       v16 = 1;
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
-        v14 = [v5 shortDescription];
-        v33 = [(PLDuplicateMerge *)self targetAsset];
-        v34 = [v33 shortDescription];
+        shortDescription5 = [sourceCopy shortDescription];
+        targetAsset3 = [(PLDuplicateMerge *)self targetAsset];
+        shortDescription6 = [targetAsset3 shortDescription];
         *buf = 138543618;
-        v38 = v14;
+        v38 = shortDescription5;
         v39 = 2114;
-        v40 = v34;
+        v40 = shortDescription6;
         v35 = "Duplicate Merge: no adjustment migration [%{public}@ -> %{public}@]";
         goto LABEL_21;
       }
@@ -256,17 +256,17 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v10 = PLDuplicateDetectionGetLog();
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+  asset2 = PLDuplicateDetectionGetLog();
+  if (os_log_type_enabled(asset2, OS_LOG_TYPE_ERROR))
   {
-    v26 = [v5 shortDescription];
-    v27 = [(PLDuplicateMerge *)self targetAsset];
-    v28 = [v27 shortDescription];
+    shortDescription7 = [sourceCopy shortDescription];
+    targetAsset4 = [(PLDuplicateMerge *)self targetAsset];
+    shortDescription8 = [targetAsset4 shortDescription];
     *buf = 138543618;
-    v38 = v26;
+    v38 = shortDescription7;
     v39 = 2114;
-    v40 = v28;
-    _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_ERROR, "Duplicate Merge: skipping adjustment merge - resource swap uuid mismatch [%{public}@ -> %{public}@]", buf, 0x16u);
+    v40 = shortDescription8;
+    _os_log_impl(&dword_19BF1F000, asset2, OS_LOG_TYPE_ERROR, "Duplicate Merge: skipping adjustment merge - resource swap uuid mismatch [%{public}@ -> %{public}@]", buf, 0x16u);
   }
 
   v16 = 1;
@@ -275,41 +275,41 @@ LABEL_15:
   return v16;
 }
 
-- (void)_setUBFFilenameFromDuplicateSource:(id)a3
+- (void)_setUBFFilenameFromDuplicateSource:(id)source
 {
-  v13 = a3;
-  v4 = [(PLDuplicateMerge *)self asset];
-  v5 = [v4 pathManager];
-  v6 = [v5 isUBF];
+  sourceCopy = source;
+  asset = [(PLDuplicateMerge *)self asset];
+  pathManager = [asset pathManager];
+  isUBF = [pathManager isUBF];
 
-  if (v6)
+  if (isUBF)
   {
-    v7 = [v13 asset];
-    v8 = [v7 originalFilename];
-    [v4 setOriginalFilename:v8];
+    asset2 = [sourceCopy asset];
+    originalFilename = [asset2 originalFilename];
+    [asset setOriginalFilename:originalFilename];
 
-    v9 = [v7 primaryStoreOriginalResource];
-    if (v9)
+    primaryStoreOriginalResource = [asset2 primaryStoreOriginalResource];
+    if (primaryStoreOriginalResource)
     {
-      [v4 setDirectory:0];
-      [v4 setFilename:0];
-      v10 = [v9 uniformTypeIdentifier];
-      v11 = [v10 identifier];
-      v12 = [v4 originalFilename];
-      [v4 setUBFFilenameAndDirectoryWithOriginalUniformTypeIdentifier:v11 originalFilename:v12];
+      [asset setDirectory:0];
+      [asset setFilename:0];
+      uniformTypeIdentifier = [primaryStoreOriginalResource uniformTypeIdentifier];
+      identifier = [uniformTypeIdentifier identifier];
+      originalFilename2 = [asset originalFilename];
+      [asset setUBFFilenameAndDirectoryWithOriginalUniformTypeIdentifier:identifier originalFilename:originalFilename2];
     }
   }
 }
 
-- (void)_preFileCloneChecksForURL:(id)a3
+- (void)_preFileCloneChecksForURL:(id)l
 {
   *&v31[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  lCopy = l;
+  v5 = lCopy;
+  if (lCopy)
   {
     v29 = 0;
-    v6 = [v4 checkResourceIsReachableAndReturnError:&v29];
+    v6 = [lCopy checkResourceIsReachableAndReturnError:&v29];
     v7 = v29;
     if (v6)
     {
@@ -338,11 +338,11 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      v12 = [v10 BOOLValue];
-      v13 = [v5 fileSystemRepresentation];
-      if (v12)
+      bOOLValue = [v10 BOOLValue];
+      fileSystemRepresentation = [v5 fileSystemRepresentation];
+      if (bOOLValue)
       {
-        if (rmdir(v13))
+        if (rmdir(fileSystemRepresentation))
         {
           v14 = PLDuplicateDetectionGetLog();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -365,7 +365,7 @@ LABEL_19:
         }
       }
 
-      else if (unlink(v13))
+      else if (unlink(fileSystemRepresentation))
       {
         v14 = PLDuplicateDetectionGetLog();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -410,11 +410,11 @@ LABEL_22:
     v7 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v19 = [(PLDuplicateMerge *)self targetAsset];
-      v20 = [v19 asset];
-      v21 = [v20 uuid];
+      targetAsset = [(PLDuplicateMerge *)self targetAsset];
+      asset = [targetAsset asset];
+      uuid = [asset uuid];
       *buf = 138543362;
-      *v31 = v21;
+      *v31 = uuid;
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_INFO, "Duplicate Merge: Skipping pre clone check for asset: %{public}@", buf, 0xCu);
     }
   }
@@ -422,13 +422,13 @@ LABEL_22:
 LABEL_23:
 }
 
-- (BOOL)_checkCPLDisabledAssetHasValidOriginalResourcesForAsset:(id)a3
+- (BOOL)_checkCPLDisabledAssetHasValidOriginalResourcesForAsset:(id)asset
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 primaryStoreOriginalResource];
-  v5 = [v3 persistedResourcesMatching:&__block_literal_global_116];
-  if (!v4 || (([v3 isRAWPlusJPEG] & 1) != 0 || objc_msgSend(v3, "isPhotoIris")) && objc_msgSend(v5, "count") < 2)
+  assetCopy = asset;
+  primaryStoreOriginalResource = [assetCopy primaryStoreOriginalResource];
+  v5 = [assetCopy persistedResourcesMatching:&__block_literal_global_116];
+  if (!primaryStoreOriginalResource || (([assetCopy isRAWPlusJPEG] & 1) != 0 || objc_msgSend(assetCopy, "isPhotoIris")) && objc_msgSend(v5, "count") < 2)
   {
     v6 = 0;
   }
@@ -454,8 +454,8 @@ LABEL_23:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) fileURL];
-          v13 = [v12 checkResourceIsReachableAndReturnError:0];
+          fileURL = [*(*(&v15 + 1) + 8 * i) fileURL];
+          v13 = [fileURL checkResourceIsReachableAndReturnError:0];
 
           if (!v13)
           {
@@ -489,17 +489,17 @@ BOOL __76__PLDuplicateMerge__checkCPLDisabledAssetHasValidOriginalResourcesForAs
   return v3;
 }
 
-- (BOOL)mergeResourcesFromSource:(id)a3 error:(id *)a4
+- (BOOL)mergeResourcesFromSource:(id)source error:(id *)error
 {
   v163[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sourceCopy = source;
   v114 = objc_alloc_init(MEMORY[0x1E696AC08]);
-  v119 = v4;
-  v110 = [v4 asset];
-  v5 = [(PLDuplicateMerge *)self asset];
-  v121 = [v5 pathManager];
-  v106 = [v5 persistedResourcesMatching:&__block_literal_global_100];
-  if (([v4 isCPLEnabled] & 1) != 0 || (objc_msgSend(v110, "master"), v6 = objc_claimAutoreleasedReturnValue(), v6, !v6) || !-[PLDuplicateMerge _checkCPLDisabledAssetHasValidOriginalResourcesForAsset:](self, "_checkCPLDisabledAssetHasValidOriginalResourcesForAsset:", v5) || -[PLDuplicateMerge _checkCPLDisabledAssetHasValidOriginalResourcesForAsset:](self, "_checkCPLDisabledAssetHasValidOriginalResourcesForAsset:", v110))
+  v119 = sourceCopy;
+  asset = [sourceCopy asset];
+  asset2 = [(PLDuplicateMerge *)self asset];
+  pathManager = [asset2 pathManager];
+  v106 = [asset2 persistedResourcesMatching:&__block_literal_global_100];
+  if (([sourceCopy isCPLEnabled] & 1) != 0 || (objc_msgSend(asset, "master"), v6 = objc_claimAutoreleasedReturnValue(), v6, !v6) || !-[PLDuplicateMerge _checkCPLDisabledAssetHasValidOriginalResourcesForAsset:](self, "_checkCPLDisabledAssetHasValidOriginalResourcesForAsset:", asset2) || -[PLDuplicateMerge _checkCPLDisabledAssetHasValidOriginalResourcesForAsset:](self, "_checkCPLDisabledAssetHasValidOriginalResourcesForAsset:", asset))
   {
     v146 = 0u;
     v147 = 0u;
@@ -520,7 +520,7 @@ BOOL __76__PLDuplicateMerge__checkCPLDisabledAssetHasValidOriginalResourcesForAs
           }
 
           v11 = *(*(&v144 + 1) + 8 * i);
-          [v5 removeLocalFileForResource:v11 allowDCIMPath:1];
+          [asset2 removeLocalFileForResource:v11 allowDCIMPath:1];
           [v11 deleteResource];
         }
 
@@ -530,7 +530,7 @@ BOOL __76__PLDuplicateMerge__checkCPLDisabledAssetHasValidOriginalResourcesForAs
       while (v8);
     }
 
-    if ([v121 isDCIM])
+    if ([pathManager isDCIM])
     {
       [(PLDuplicateMerge *)self _setDCIMFilenameFromSource:v119];
     }
@@ -540,22 +540,22 @@ BOOL __76__PLDuplicateMerge__checkCPLDisabledAssetHasValidOriginalResourcesForAs
       [(PLDuplicateMerge *)self _setUBFFilenameFromDuplicateSource:v119];
     }
 
-    if (![v119 isCPLEnabled] || (objc_msgSend(v110, "master"), v12 = objc_claimAutoreleasedReturnValue(), v13 = v12 == 0, v12, v13))
+    if (![v119 isCPLEnabled] || (objc_msgSend(asset, "master"), v12 = objc_claimAutoreleasedReturnValue(), v13 = v12 == 0, v12, v13))
     {
-      v24 = [v110 master];
+      master = [asset master];
 
-      if (v24)
+      if (master)
       {
         v25 = PLDuplicateDetectionGetLog();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
-          v26 = [v119 shortDescription];
-          v27 = [(PLDuplicateMerge *)self targetAsset];
-          v28 = [v27 shortDescription];
+          shortDescription = [v119 shortDescription];
+          targetAsset = [(PLDuplicateMerge *)self targetAsset];
+          shortDescription2 = [targetAsset shortDescription];
           *buf = 138543618;
-          *&buf[4] = v26;
+          *&buf[4] = shortDescription;
           *&buf[12] = 2114;
-          *&buf[14] = v28;
+          *&buf[14] = shortDescription2;
           _os_log_impl(&dword_19BF1F000, v25, OS_LOG_TYPE_DEFAULT, "Duplicate Merge: Source asset has a master record, but CPL is not enabled [%{public}@ -> %{public}@]", buf, 0x16u);
         }
       }
@@ -563,17 +563,17 @@ BOOL __76__PLDuplicateMerge__checkCPLDisabledAssetHasValidOriginalResourcesForAs
       v29 = PLDuplicateDetectionGetLog();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
-        v30 = [v119 shortDescription];
-        v31 = [(PLDuplicateMerge *)self targetAsset];
-        v32 = [v31 shortDescription];
+        shortDescription3 = [v119 shortDescription];
+        targetAsset2 = [(PLDuplicateMerge *)self targetAsset];
+        shortDescription4 = [targetAsset2 shortDescription];
         *buf = 138543618;
-        *&buf[4] = v30;
+        *&buf[4] = shortDescription3;
         *&buf[12] = 2114;
-        *&buf[14] = v32;
+        *&buf[14] = shortDescription4;
         _os_log_impl(&dword_19BF1F000, v29, OS_LOG_TYPE_INFO, "Duplicate Merge: no master to remap, going to copy all resources manually [%{public}@ -> %{public}@]", buf, 0x16u);
       }
 
-      v23 = [v110 persistedResourcesMatching:&__block_literal_global_107_87899];
+      v23 = [asset persistedResourcesMatching:&__block_literal_global_107_87899];
       v116 = 0;
     }
 
@@ -582,29 +582,29 @@ BOOL __76__PLDuplicateMerge__checkCPLDisabledAssetHasValidOriginalResourcesForAs
       v14 = PLDuplicateDetectionGetLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
-        v15 = [(PLDuplicateMerge *)self targetAsset];
-        v16 = [v15 shortDescription];
-        v17 = [v110 master];
-        v18 = [v17 scopedIdentifier];
-        v19 = [v119 shortDescription];
+        targetAsset3 = [(PLDuplicateMerge *)self targetAsset];
+        shortDescription5 = [targetAsset3 shortDescription];
+        master2 = [asset master];
+        scopedIdentifier = [master2 scopedIdentifier];
+        shortDescription6 = [v119 shortDescription];
         *buf = 138543874;
-        *&buf[4] = v16;
+        *&buf[4] = shortDescription5;
         *&buf[12] = 2114;
-        *&buf[14] = v18;
+        *&buf[14] = scopedIdentifier;
         *&buf[22] = 2114;
-        v155 = v19;
+        v155 = shortDescription6;
         _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_INFO, "Duplicate Merge: going to remap master on %{public}@ with master %{public}@ from %{public}@", buf, 0x20u);
       }
 
-      v20 = [v110 master];
-      [PLManagedAsset fixupCloudPhotoLibraryAsset:v5 withCloudMaster:v20 inLibrary:self->_library];
+      master3 = [asset master];
+      [PLManagedAsset fixupCloudPhotoLibraryAsset:asset2 withCloudMaster:master3 inLibrary:self->_library];
 
-      v21 = [v110 allAssetCPLResources];
-      v22 = [v21 count];
+      allAssetCPLResources = [asset allAssetCPLResources];
+      v22 = [allAssetCPLResources count];
       v116 = v22 != 0;
       if (v22)
       {
-        v23 = [v21 copy];
+        v23 = [allAssetCPLResources copy];
       }
 
       else
@@ -613,23 +613,23 @@ BOOL __76__PLDuplicateMerge__checkCPLDisabledAssetHasValidOriginalResourcesForAs
       }
 
       mergeCrashRecovery = self->_mergeCrashRecovery;
-      v34 = [v5 uuid];
-      [(PLDuplicateMergeCrashRecovery *)mergeCrashRecovery writeCrashRecoveryMarkerFileForTargetAssetUUID:v34 error:0];
+      uuid = [asset2 uuid];
+      [(PLDuplicateMergeCrashRecovery *)mergeCrashRecovery writeCrashRecoveryMarkerFileForTargetAssetUUID:uuid error:0];
     }
 
     v35 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
     {
       v36 = [v23 count];
-      v37 = [v119 shortDescription];
-      v38 = [(PLDuplicateMerge *)self targetAsset];
-      v39 = [v38 shortDescription];
+      shortDescription7 = [v119 shortDescription];
+      targetAsset4 = [(PLDuplicateMerge *)self targetAsset];
+      shortDescription8 = [targetAsset4 shortDescription];
       *buf = 134218498;
       *&buf[4] = v36;
       *&buf[12] = 2114;
-      *&buf[14] = v37;
+      *&buf[14] = shortDescription7;
       *&buf[22] = 2114;
-      v155 = v39;
+      v155 = shortDescription8;
       _os_log_impl(&dword_19BF1F000, v35, OS_LOG_TYPE_INFO, "Duplicate Merge: manually installing %lu resources [%{public}@ -> %{public}@]", buf, 0x20u);
     }
 
@@ -658,35 +658,35 @@ BOOL __76__PLDuplicateMerge__checkCPLDisabledAssetHasValidOriginalResourcesForAs
 
           v41 = *(*(&v140 + 1) + 8 * v40);
           v42 = [v41 validatedExternalResourceRepresentationUsingFileURL:0];
-          v125 = [v5 storedResourceForExternalResource:v42 asset:v5];
+          v125 = [asset2 storedResourceForExternalResource:v42 asset:asset2];
           v43 = v125;
           if (!v125)
           {
             v44 = PLDuplicateDetectionGetLog();
             if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
             {
-              v45 = [v119 shortDescription];
-              v46 = [(PLDuplicateMerge *)self targetAsset];
-              v47 = [v46 shortDescription];
+              shortDescription9 = [v119 shortDescription];
+              targetAsset5 = [(PLDuplicateMerge *)self targetAsset];
+              shortDescription10 = [targetAsset5 shortDescription];
               *buf = 138543874;
-              *&buf[4] = v45;
+              *&buf[4] = shortDescription9;
               *&buf[12] = 2114;
-              *&buf[14] = v47;
+              *&buf[14] = shortDescription10;
               *&buf[22] = 2112;
               v155 = v42;
               _os_log_impl(&dword_19BF1F000, v44, OS_LOG_TYPE_ERROR, "Duplicate Merge: failed to install new resource on target with external source resource: [%{public}@ -> %{public}@] %@", buf, 0x20u);
             }
 
-            v48 = [v41 isDerivative];
+            isDerivative = [v41 isDerivative];
             v43 = 0;
-            if ((v48 & 1) == 0)
+            if ((isDerivative & 1) == 0)
             {
               v70 = MEMORY[0x1E696ABC0];
               v158 = v104;
               v71 = MEMORY[0x1E696AEC0];
-              v72 = [v110 uuid];
-              v73 = [v5 uuid];
-              v74 = [v71 stringWithFormat:@"Duplicate Merge: failed to install new resource on target with external source resource: [%@ -> %@] %@", v72, v73, v42];
+              uuid2 = [asset uuid];
+              uuid3 = [asset2 uuid];
+              v74 = [v71 stringWithFormat:@"Duplicate Merge: failed to install new resource on target with external source resource: [%@ -> %@] %@", uuid2, uuid3, v42];
               v159 = v74;
               v75 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v159 forKeys:&v158 count:1];
               v76 = [v70 errorWithDomain:v103 code:47011 userInfo:v75];
@@ -698,7 +698,7 @@ BOOL __76__PLDuplicateMerge__checkCPLDisabledAssetHasValidOriginalResourcesForAs
           }
 
           [v43 resetPrefetchState];
-          v124 = [v41 fileURL];
+          fileURL = [v41 fileURL];
           *buf = 0;
           *&buf[8] = buf;
           *&buf[16] = 0x3032000000;
@@ -709,39 +709,39 @@ BOOL __76__PLDuplicateMerge__checkCPLDisabledAssetHasValidOriginalResourcesForAs
           v137 = &v136;
           v138 = 0x2020000000;
           v139 = 0;
-          if (!v124)
+          if (!fileURL)
           {
             goto LABEL_94;
           }
 
-          if ([v121 isUBF])
+          if ([pathManager isUBF])
           {
             v111 = v40;
             v112 = v42;
             v113 = objc_alloc(MEMORY[0x1E69BF298]);
-            v117 = [v5 uuid];
-            v49 = [v5 bundleScope];
-            v118 = [v41 uniformTypeIdentifier];
-            v50 = [v118 identifier];
-            v51 = [v41 version];
-            v52 = [v41 resourceType];
-            v53 = [v41 recipeID];
-            v54 = [v41 recipeID];
-            if (v54)
+            uuid4 = [asset2 uuid];
+            bundleScope = [asset2 bundleScope];
+            uniformTypeIdentifier = [v41 uniformTypeIdentifier];
+            identifier = [uniformTypeIdentifier identifier];
+            version = [v41 version];
+            resourceType = [v41 resourceType];
+            recipeID = [v41 recipeID];
+            recipeID2 = [v41 recipeID];
+            if (recipeID2)
             {
               v55 = 0;
             }
 
             else
             {
-              v108 = [v110 originalFilename];
-              v55 = v108;
+              originalFilename = [asset originalFilename];
+              v55 = originalFilename;
             }
 
-            v59 = [v41 customSuffix];
-            v56 = [v113 initWithAssetUuid:v117 bundleScope:v49 uti:v50 resourceVersion:v51 resourceType:v52 recipeID:v53 originalFilename:v55 customSuffix:v59];
+            customSuffix = [v41 customSuffix];
+            cplFileURL = [v113 initWithAssetUuid:uuid4 bundleScope:bundleScope uti:identifier resourceVersion:version resourceType:resourceType recipeID:recipeID originalFilename:v55 customSuffix:customSuffix];
 
-            if (!v54)
+            if (!recipeID2)
             {
             }
 
@@ -751,12 +751,12 @@ BOOL __76__PLDuplicateMerge__checkCPLDisabledAssetHasValidOriginalResourcesForAs
             v129[3] = &unk_1E7573410;
             v129[4] = self;
             v134 = &v136;
-            v130 = v124;
+            v130 = fileURL;
             v131 = v125;
-            v132 = v5;
+            v132 = asset2;
             v133 = v114;
             v135 = buf;
-            [v121 obtainAccessAndWaitWithFileWithIdentifier:v56 mode:2 toURLWithHandler:v129];
+            [pathManager obtainAccessAndWaitWithFileWithIdentifier:cplFileURL mode:2 toURLWithHandler:v129];
 
             v40 = v111;
             v42 = v112;
@@ -764,13 +764,13 @@ BOOL __76__PLDuplicateMerge__checkCPLDisabledAssetHasValidOriginalResourcesForAs
 
           else
           {
-            v56 = [v125 cplFileURL];
-            if (v56)
+            cplFileURL = [v125 cplFileURL];
+            if (cplFileURL)
             {
-              [(PLDuplicateMerge *)self _preFileCloneChecksForURL:v56];
+              [(PLDuplicateMerge *)self _preFileCloneChecksForURL:cplFileURL];
               v57 = (*&buf[8] + 40);
               v128 = *(*&buf[8] + 40);
-              v58 = [PLManagedAsset cloneResourceFileFromURL:v124 toURL:v56 forDestinationResource:v125 forDestinationAsset:v5 fileManager:v114 error:&v128];
+              v58 = [PLManagedAsset cloneResourceFileFromURL:fileURL toURL:cplFileURL forDestinationResource:v125 forDestinationAsset:asset2 fileManager:v114 error:&v128];
               objc_storeStrong(v57, v128);
               *(v137 + 24) = v58;
             }
@@ -784,14 +784,14 @@ BOOL __76__PLDuplicateMerge__checkCPLDisabledAssetHasValidOriginalResourcesForAs
           v60 = PLDuplicateDetectionGetLog();
           if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
           {
-            v61 = [v119 shortDescription];
-            v62 = [(PLDuplicateMerge *)self targetAsset];
-            v63 = [v62 shortDescription];
+            shortDescription11 = [v119 shortDescription];
+            targetAsset6 = [(PLDuplicateMerge *)self targetAsset];
+            shortDescription12 = [targetAsset6 shortDescription];
             v64 = *(*&buf[8] + 40);
             *v148 = 138543874;
-            v149 = v61;
+            v149 = shortDescription11;
             v150 = 2114;
-            v151 = v63;
+            v151 = shortDescription12;
             v152 = 2112;
             v153 = v64;
             _os_log_impl(&dword_19BF1F000, v60, OS_LOG_TYPE_ERROR, "Duplicate Merge: clone resource file failed: [%{public}@ -> %{public}@] Error: %@", v148, 0x20u);
@@ -802,11 +802,11 @@ BOOL __76__PLDuplicateMerge__checkCPLDisabledAssetHasValidOriginalResourcesForAs
 LABEL_94:
             if (v116 && [v41 isCPLAssetResource] && objc_msgSend(v41, "isCPLResource") && (v137[3] & 1) == 0 && objc_msgSend(v41, "isRemotelyAvailable"))
             {
-              v65 = [v5 additionalAttributes];
-              v66 = [v110 scopedIdentifier];
-              [v65 setSourceAssetForDuplicationCPLScopedIdentifier:v66];
+              additionalAttributes = [asset2 additionalAttributes];
+              scopedIdentifier2 = [asset scopedIdentifier];
+              [additionalAttributes setSourceAssetForDuplicationCPLScopedIdentifier:scopedIdentifier2];
 
-              [v5 setCloudLocalState:0];
+              [asset2 setCloudLocalState:0];
             }
 
             v67 = 1;
@@ -848,31 +848,31 @@ LABEL_94:
 
 LABEL_70:
 
-    v77 = [v110 master];
-    [PLCloudMaster deleteMasterIfNecessary:v77 inLibrary:self->_library];
+    master4 = [asset master];
+    [PLCloudMaster deleteMasterIfNecessary:master4 inLibrary:self->_library];
 
     if (v107)
     {
-      v78 = [(PLDuplicateMerge *)self asset];
-      v79 = [v78 uuid];
-      [v119 setResourceSwapAssetUUID:v79];
+      asset3 = [(PLDuplicateMerge *)self asset];
+      uuid5 = [asset3 uuid];
+      [v119 setResourceSwapAssetUUID:uuid5];
 
       mergeModelProperties = self->_mergeModelProperties;
       v127 = 0;
-      LOBYTE(v79) = [(PLDuplicateMergeModelProperties *)mergeModelProperties transferPropertiesFromSourceAsset:v119 propertyMergeType:1 error:&v127];
+      LOBYTE(uuid5) = [(PLDuplicateMergeModelProperties *)mergeModelProperties transferPropertiesFromSourceAsset:v119 propertyMergeType:1 error:&v127];
       v81 = v127;
-      if ((v79 & 1) == 0)
+      if ((uuid5 & 1) == 0)
       {
         v82 = PLDuplicateDetectionGetLog();
         if (os_log_type_enabled(v82, OS_LOG_TYPE_ERROR))
         {
-          v83 = [v119 shortDescription];
-          v84 = [(PLDuplicateMerge *)self targetAsset];
-          v85 = [v84 shortDescription];
+          shortDescription13 = [v119 shortDescription];
+          targetAsset7 = [(PLDuplicateMerge *)self targetAsset];
+          shortDescription14 = [targetAsset7 shortDescription];
           *buf = 138412802;
-          *&buf[4] = v83;
+          *&buf[4] = shortDescription13;
           *&buf[12] = 2112;
-          *&buf[14] = v85;
+          *&buf[14] = shortDescription14;
           *&buf[22] = 2112;
           v155 = v81;
           _os_log_impl(&dword_19BF1F000, v82, OS_LOG_TYPE_ERROR, "Duplicate Merge: update extended attributes failed: [%@ -> %@] Error: %@", buf, 0x20u);
@@ -887,13 +887,13 @@ LABEL_70:
       v86 = PLDuplicateDetectionGetLog();
       if (os_log_type_enabled(v86, OS_LOG_TYPE_INFO))
       {
-        v87 = [v119 shortDescription];
-        v88 = [(PLDuplicateMerge *)self targetAsset];
-        v89 = [v88 shortDescription];
+        shortDescription15 = [v119 shortDescription];
+        targetAsset8 = [(PLDuplicateMerge *)self targetAsset];
+        shortDescription16 = [targetAsset8 shortDescription];
         *buf = 138543618;
-        *&buf[4] = v87;
+        *&buf[4] = shortDescription15;
         *&buf[12] = 2114;
-        *&buf[14] = v89;
+        *&buf[14] = shortDescription16;
         _os_log_impl(&dword_19BF1F000, v86, OS_LOG_TYPE_INFO, "Duplicate Merge: resource merge [%{public}@ -> %{public}@]", buf, 0x16u);
       }
 
@@ -905,11 +905,11 @@ LABEL_70:
       {
         if ((MEMORY[0x19EAEE520]() & 1) == 0)
         {
-          [v5 invalidateThumbnailIfNeededAfterMasterResourceChangeInLibrary:self->_library];
-          [v5 generateAndUpdateThumbnailsWithPreviewImage:0 thumbnailImage:0 fromImageSource:0 imageData:0 forceSRGBConversion:0];
+          [asset2 invalidateThumbnailIfNeededAfterMasterResourceChangeInLibrary:self->_library];
+          [asset2 generateAndUpdateThumbnailsWithPreviewImage:0 thumbnailImage:0 fromImageSource:0 imageData:0 forceSRGBConversion:0];
         }
 
-        -[PLDuplicateMerge _resetMediaAnalysisStateWithType:](self, "_resetMediaAnalysisStateWithType:", [v5 originalHeight] * objc_msgSend(v5, "originalWidth") > 89999);
+        -[PLDuplicateMerge _resetMediaAnalysisStateWithType:](self, "_resetMediaAnalysisStateWithType:", [asset2 originalHeight] * objc_msgSend(asset2, "originalWidth") > 89999);
         v92 = v91;
         v93 = 1;
         goto LABEL_87;
@@ -920,11 +920,11 @@ LABEL_70:
 
     v94 = v109;
     v92 = v94;
-    if (a4)
+    if (error)
     {
       v95 = v94;
       v93 = 0;
-      *a4 = v92;
+      *error = v92;
     }
 
     else
@@ -938,9 +938,9 @@ LABEL_87:
   }
 
   v97 = MEMORY[0x1E696AEC0];
-  v98 = [v110 uuid];
-  v99 = [v5 uuid];
-  obj = [v97 stringWithFormat:@"Duplicate Merge: Invalid non-iCPL original resources: [%@ -> %@]", v98, v99];
+  uuid6 = [asset uuid];
+  uuid7 = [asset2 uuid];
+  obj = [v97 stringWithFormat:@"Duplicate Merge: Invalid non-iCPL original resources: [%@ -> %@]", uuid6, uuid7];
 
   v100 = MEMORY[0x1E696ABC0];
   v162 = *MEMORY[0x1E696A278];
@@ -948,11 +948,11 @@ LABEL_87:
   v101 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v163 forKeys:&v162 count:1];
   v92 = [v100 errorWithDomain:*MEMORY[0x1E69BFF48] code:47011 userInfo:v101];
 
-  if (a4)
+  if (error)
   {
     v102 = v92;
     v93 = 0;
-    *a4 = v92;
+    *error = v92;
   }
 
   else
@@ -989,69 +989,69 @@ void __51__PLDuplicateMerge_mergeResourcesFromSource_error___block_invoke_112(ui
   }
 }
 
-- (void)_mergeFaceRelationshipsFromSource:(id)a3
+- (void)_mergeFaceRelationshipsFromSource:(id)source
 {
   v77 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 asset];
-  v6 = [(PLDuplicateMerge *)self asset];
-  v7 = [v6 faceAdjustmentVersion];
-  v8 = [v5 faceAdjustmentVersion];
-  v9 = [v5 detectedFaces];
-  v10 = [v5 temporalDetectedFaces];
-  v60 = [v6 detectedFaces];
-  v59 = [v6 temporalDetectedFaces];
-  v58 = [v5 legacyFaces];
-  v11 = [v6 legacyFaces];
-  v12 = [(PLDuplicateMerge *)self targetAsset];
+  sourceCopy = source;
+  asset = [sourceCopy asset];
+  asset2 = [(PLDuplicateMerge *)self asset];
+  faceAdjustmentVersion = [asset2 faceAdjustmentVersion];
+  faceAdjustmentVersion2 = [asset faceAdjustmentVersion];
+  detectedFaces = [asset detectedFaces];
+  temporalDetectedFaces = [asset temporalDetectedFaces];
+  detectedFaces2 = [asset2 detectedFaces];
+  temporalDetectedFaces2 = [asset2 temporalDetectedFaces];
+  legacyFaces = [asset legacyFaces];
+  legacyFaces2 = [asset2 legacyFaces];
+  targetAsset = [(PLDuplicateMerge *)self targetAsset];
   v62 = 0;
-  v61 = v11;
-  if (![v12 facesUpdated] && !v7 && v8)
+  v61 = legacyFaces2;
+  if (![targetAsset facesUpdated] && !faceAdjustmentVersion && faceAdjustmentVersion2)
   {
-    v13 = [v9 count];
-    v14 = v13 + [v10 count] == 0;
-    v11 = v61;
+    v13 = [detectedFaces count];
+    v14 = v13 + [temporalDetectedFaces count] == 0;
+    legacyFaces2 = v61;
     v15 = !v14;
     v62 = v15;
   }
 
-  v55 = v8;
+  v55 = faceAdjustmentVersion2;
 
-  if ([v11 count])
+  if ([legacyFaces2 count])
   {
     v16 = 0;
   }
 
   else
   {
-    v16 = [v58 count] != 0;
+    v16 = [legacyFaces count] != 0;
   }
 
-  v56 = v7;
-  v57 = v9;
-  v54 = v10;
+  v56 = faceAdjustmentVersion;
+  v57 = detectedFaces;
+  v54 = temporalDetectedFaces;
   if (v62)
   {
-    [v6 setDetectedFaces:v9];
-    [v6 setTemporalDetectedFaces:v10];
-    [v6 setFaceAreaPoints:{objc_msgSend(v5, "faceAreaPoints")}];
-    v17 = [v5 additionalAttributes];
-    v18 = [v17 faceRegions];
-    v19 = [v6 additionalAttributes];
-    [v19 setFaceRegions:v18];
+    [asset2 setDetectedFaces:detectedFaces];
+    [asset2 setTemporalDetectedFaces:temporalDetectedFaces];
+    [asset2 setFaceAreaPoints:{objc_msgSend(asset, "faceAreaPoints")}];
+    additionalAttributes = [asset additionalAttributes];
+    faceRegions = [additionalAttributes faceRegions];
+    additionalAttributes2 = [asset2 additionalAttributes];
+    [additionalAttributes2 setFaceRegions:faceRegions];
 
     v20 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    if ([v60 count])
+    if ([detectedFaces2 count])
     {
-      v21 = [v60 allObjects];
-      [v20 addObjectsFromArray:v21];
+      allObjects = [detectedFaces2 allObjects];
+      [v20 addObjectsFromArray:allObjects];
     }
 
-    v52 = v4;
-    if ([v59 count])
+    v52 = sourceCopy;
+    if ([temporalDetectedFaces2 count])
     {
-      v22 = [v59 allObjects];
-      [v20 addObjectsFromArray:v22];
+      allObjects2 = [temporalDetectedFaces2 allObjects];
+      [v20 addObjectsFromArray:allObjects2];
     }
 
     v69 = 0u;
@@ -1078,12 +1078,12 @@ void __51__PLDuplicateMerge_mergeResourcesFromSource_error___block_invoke_112(ui
 
           if (v29)
           {
-            v31 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v31 handleFailureInMethod:a2 object:self file:@"PLDuplicateMerge.m" lineNumber:227 description:{@"Invalid parameter not satisfying: %@", @"[face associatedAssetForFaceOrTorso:YES orTemporal:YES] == nil"}];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"PLDuplicateMerge.m" lineNumber:227 description:{@"Invalid parameter not satisfying: %@", @"[face associatedAssetForFaceOrTorso:YES orTemporal:YES] == nil"}];
           }
 
-          v30 = [v28 managedObjectContext];
-          [v30 deleteObject:v28];
+          managedObjectContext = [v28 managedObjectContext];
+          [managedObjectContext deleteObject:v28];
         }
 
         v25 = [v23 countByEnumeratingWithState:&v67 objects:v76 count:16];
@@ -1092,27 +1092,27 @@ void __51__PLDuplicateMerge_mergeResourcesFromSource_error___block_invoke_112(ui
       while (v25);
     }
 
-    PLResetMediaProcessingStateOnAsset(3, v5, 1uLL);
-    v32 = [(PLDuplicateMerge *)self targetAsset];
-    [v32 setFacesUpdated:1];
+    PLResetMediaProcessingStateOnAsset(3, asset, 1uLL);
+    targetAsset2 = [(PLDuplicateMerge *)self targetAsset];
+    [targetAsset2 setFacesUpdated:1];
 
-    v4 = v52;
-    v7 = v56;
-    v9 = v57;
-    v10 = v54;
-    v11 = v61;
+    sourceCopy = v52;
+    faceAdjustmentVersion = v56;
+    detectedFaces = v57;
+    temporalDetectedFaces = v54;
+    legacyFaces2 = v61;
   }
 
   if (v16)
   {
-    v33 = [v5 legacyFaces];
-    [v6 setLegacyFaces:v33];
+    legacyFaces3 = [asset legacyFaces];
+    [asset2 setLegacyFaces:legacyFaces3];
 
     v65 = 0u;
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v34 = v11;
+    v34 = legacyFaces2;
     v35 = [v34 countByEnumeratingWithState:&v63 objects:v75 count:16];
     if (v35)
     {
@@ -1128,16 +1128,16 @@ void __51__PLDuplicateMerge_mergeResourcesFromSource_error___block_invoke_112(ui
           }
 
           v39 = *(*(&v63 + 1) + 8 * j);
-          v40 = [v39 asset];
+          asset3 = [v39 asset];
 
-          if (v40)
+          if (asset3)
           {
-            v42 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v42 handleFailureInMethod:a2 object:self file:@"PLDuplicateMerge.m" lineNumber:238 description:{@"Invalid parameter not satisfying: %@", @"face.asset == nil"}];
+            currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLDuplicateMerge.m" lineNumber:238 description:{@"Invalid parameter not satisfying: %@", @"face.asset == nil"}];
           }
 
-          v41 = [v39 managedObjectContext];
-          [v41 deleteObject:v39];
+          managedObjectContext2 = [v39 managedObjectContext];
+          [managedObjectContext2 deleteObject:v39];
         }
 
         v36 = [v34 countByEnumeratingWithState:&v63 objects:v75 count:16];
@@ -1149,20 +1149,20 @@ void __51__PLDuplicateMerge_mergeResourcesFromSource_error___block_invoke_112(ui
     v43 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
     {
-      v44 = [v4 shortDescription];
-      v45 = [(PLDuplicateMerge *)self targetAsset];
-      v46 = [v45 shortDescription];
+      shortDescription = [sourceCopy shortDescription];
+      targetAsset3 = [(PLDuplicateMerge *)self targetAsset];
+      shortDescription2 = [targetAsset3 shortDescription];
       *buf = 138543618;
-      v72 = v44;
+      v72 = shortDescription;
       v73 = 2114;
-      v74 = v46;
+      v74 = shortDescription2;
       _os_log_impl(&dword_19BF1F000, v43, OS_LOG_TYPE_INFO, "Duplicate Merge: merged over legacy faces: [%{public}@ -> %{public}@]", buf, 0x16u);
     }
 
-    v7 = v56;
-    v9 = v57;
-    v10 = v54;
-    v11 = v61;
+    faceAdjustmentVersion = v56;
+    detectedFaces = v57;
+    temporalDetectedFaces = v54;
+    legacyFaces2 = v61;
   }
 
   if (v62)
@@ -1171,74 +1171,74 @@ void __51__PLDuplicateMerge_mergeResourcesFromSource_error___block_invoke_112(ui
     v47 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
     {
-      v48 = [v4 shortDescription];
-      v49 = [(PLDuplicateMerge *)self targetAsset];
-      [v49 shortDescription];
-      v51 = v50 = v10;
+      shortDescription3 = [sourceCopy shortDescription];
+      targetAsset4 = [(PLDuplicateMerge *)self targetAsset];
+      [targetAsset4 shortDescription];
+      v51 = v50 = temporalDetectedFaces;
       *buf = 138543618;
-      v72 = v48;
+      v72 = shortDescription3;
       v73 = 2114;
       v74 = v51;
       _os_log_impl(&dword_19BF1F000, v47, OS_LOG_TYPE_INFO, "Duplicate Merge: merged over faces: [%{public}@ -> %{public}@]", buf, 0x16u);
 
-      v10 = v50;
-      v11 = v61;
+      temporalDetectedFaces = v50;
+      legacyFaces2 = v61;
 
-      v9 = v57;
+      detectedFaces = v57;
     }
   }
 }
 
-- (void)_mergeSharedLibraryMetadataFromSource:(id)a3
+- (void)_mergeSharedLibraryMetadataFromSource:(id)source
 {
-  v21 = [a3 asset];
-  v4 = [(PLDuplicateMerge *)self asset];
-  v5 = [v4 libraryScope];
-  if (v5)
+  asset = [source asset];
+  asset2 = [(PLDuplicateMerge *)self asset];
+  libraryScope = [asset2 libraryScope];
+  if (libraryScope)
   {
-    v6 = v5;
-    v7 = [v4 libraryScopeShareState];
+    v6 = libraryScope;
+    libraryScopeShareState = [asset2 libraryScopeShareState];
 
-    if ((v7 & 0x800000) != 0)
+    if ((libraryScopeShareState & 0x800000) != 0)
     {
-      v8 = [v4 libraryScope];
-      v9 = [v4 libraryScopeContributors];
-      v10 = [v9 mutableCopy];
+      libraryScope2 = [asset2 libraryScope];
+      libraryScopeContributors = [asset2 libraryScopeContributors];
+      v10 = [libraryScopeContributors mutableCopy];
 
       v11 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-      v12 = [v21 libraryScope];
+      libraryScope3 = [asset libraryScope];
 
-      if (v12)
+      if (libraryScope3)
       {
-        v13 = [v21 libraryScopeContributors];
-        v14 = [v13 count];
+        libraryScopeContributors2 = [asset libraryScopeContributors];
+        v14 = [libraryScopeContributors2 count];
 
         if (!v14)
         {
 LABEL_8:
-          [v4 setLibraryScope:v8 withContributors:v10];
-          v20 = [v4 additionalAttributes];
-          [v20 appendLibraryScopeAssetContributorsToUpdate:v11];
+          [asset2 setLibraryScope:libraryScope2 withContributors:v10];
+          additionalAttributes = [asset2 additionalAttributes];
+          [additionalAttributes appendLibraryScopeAssetContributorsToUpdate:v11];
 
           goto LABEL_9;
         }
 
-        v15 = [v21 libraryScopeContributors];
-        v16 = [v15 allObjects];
-        [v10 addObjectsFromArray:v16];
+        libraryScopeContributors3 = [asset libraryScopeContributors];
+        allObjects = [libraryScopeContributors3 allObjects];
+        [v10 addObjectsFromArray:allObjects];
 
-        v17 = [v21 libraryScopeContributors];
-        v18 = [v17 allObjects];
-        v19 = [v18 _pl_map:&__block_literal_global_90];
+        libraryScopeContributors4 = [asset libraryScopeContributors];
+        allObjects2 = [libraryScopeContributors4 allObjects];
+        v19 = [allObjects2 _pl_map:&__block_literal_global_90];
         [v11 addObjectsFromArray:v19];
       }
 
       else
       {
-        v17 = [v8 currentUserParticipant];
-        [v10 addObject:v17];
-        v18 = [v17 userIdentifier];
-        [v11 addObject:v18];
+        libraryScopeContributors4 = [libraryScope2 currentUserParticipant];
+        [v10 addObject:libraryScopeContributors4];
+        allObjects2 = [libraryScopeContributors4 userIdentifier];
+        [v11 addObject:allObjects2];
       }
 
       goto LABEL_8;
@@ -1248,16 +1248,16 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)_mergeLocationFromSource:(id)a3 forceUpdate:(BOOL)a4
+- (void)_mergeLocationFromSource:(id)source forceUpdate:(BOOL)update
 {
-  v4 = a4;
+  updateCopy = update;
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PLDuplicateMerge *)self targetAsset];
-  if (([v7 locationUpdated] & 1) != 0 || !-[PLDuplicateMerge _isValidForLocationOverwriteWithSource:](self, "_isValidForLocationOverwriteWithSource:", v6))
+  sourceCopy = source;
+  targetAsset = [(PLDuplicateMerge *)self targetAsset];
+  if (([targetAsset locationUpdated] & 1) != 0 || !-[PLDuplicateMerge _isValidForLocationOverwriteWithSource:](self, "_isValidForLocationOverwriteWithSource:", sourceCopy))
   {
 
-    if (!v4)
+    if (!updateCopy)
     {
       goto LABEL_10;
     }
@@ -1267,74 +1267,74 @@ LABEL_9:
   {
   }
 
-  v8 = [(PLDuplicateMerge *)self asset];
-  v9 = [v6 asset];
-  v10 = [v9 location];
-  [v8 setLocation:v10];
+  asset = [(PLDuplicateMerge *)self asset];
+  asset2 = [sourceCopy asset];
+  location = [asset2 location];
+  [asset setLocation:location];
 
-  v11 = [(PLDuplicateMerge *)self targetAsset];
-  [v11 setLocationUpdated:1];
+  targetAsset2 = [(PLDuplicateMerge *)self targetAsset];
+  [targetAsset2 setLocationUpdated:1];
 
   v12 = PLDuplicateDetectionGetLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = @"NO";
-    if (v4)
+    if (updateCopy)
     {
       v13 = @"YES";
     }
 
     v14 = v13;
-    v15 = [v8 location];
-    v16 = [v6 shortDescription];
-    v17 = [(PLDuplicateMerge *)self targetAsset];
-    v18 = [v17 shortDescription];
+    location2 = [asset location];
+    shortDescription = [sourceCopy shortDescription];
+    targetAsset3 = [(PLDuplicateMerge *)self targetAsset];
+    shortDescription2 = [targetAsset3 shortDescription];
     v19 = 138544130;
     v20 = v14;
     v21 = 2112;
-    v22 = v15;
+    v22 = location2;
     v23 = 2114;
-    v24 = v16;
+    v24 = shortDescription;
     v25 = 2114;
-    v26 = v18;
+    v26 = shortDescription2;
     _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_INFO, "Duplicate Merge: location (forced:%{public}@): %@ [%{public}@ -> %{public}@]", &v19, 0x2Au);
   }
 
 LABEL_10:
 }
 
-- (void)_mergeMetadataFromSource:(id)a3
+- (void)_mergeMetadataFromSource:(id)source
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sourceCopy = source;
   mergeModelProperties = self->_mergeModelProperties;
   v12 = 0;
-  v6 = [(PLDuplicateMergeModelProperties *)mergeModelProperties transferPropertiesFromSourceAsset:v4 propertyMergeType:0 error:&v12];
+  v6 = [(PLDuplicateMergeModelProperties *)mergeModelProperties transferPropertiesFromSourceAsset:sourceCopy propertyMergeType:0 error:&v12];
   v7 = v12;
   if (!v6)
   {
     v8 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [v4 shortDescription];
-      v10 = [(PLDuplicateMerge *)self targetAsset];
-      v11 = [v10 shortDescription];
+      shortDescription = [sourceCopy shortDescription];
+      targetAsset = [(PLDuplicateMerge *)self targetAsset];
+      shortDescription2 = [targetAsset shortDescription];
       *buf = 138543874;
-      v14 = v9;
+      v14 = shortDescription;
       v15 = 2114;
-      v16 = v11;
+      v16 = shortDescription2;
       v17 = 2112;
       v18 = v7;
       _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_ERROR, "Duplicate Merge: failed to merge properties for %{public}@, target asset: %{public}@. Error: %@", buf, 0x20u);
     }
   }
 
-  [(PLDuplicateMerge *)self _mergeLocationFromSource:v4 forceUpdate:0];
-  [(PLDuplicateMerge *)self _mergeSharedLibraryMetadataFromSource:v4];
-  [(PLDuplicateMerge *)self _mergeFaceRelationshipsFromSource:v4];
+  [(PLDuplicateMerge *)self _mergeLocationFromSource:sourceCopy forceUpdate:0];
+  [(PLDuplicateMerge *)self _mergeSharedLibraryMetadataFromSource:sourceCopy];
+  [(PLDuplicateMerge *)self _mergeFaceRelationshipsFromSource:sourceCopy];
 }
 
-- (PLDuplicateMerge)mergeWithError:(id *)a3
+- (PLDuplicateMerge)mergeWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -1357,10 +1357,10 @@ LABEL_10:
   [(PLPhotoLibrary *)library performBlockAndWait:v9];
   v5 = *(v17 + 24);
   v6 = v11[5];
-  if (a3 && (v5 & 1) == 0)
+  if (error && (v5 & 1) == 0)
   {
     v6 = v6;
-    *a3 = v6;
+    *error = v6;
   }
 
   v7 = *(v17 + 24);
@@ -1469,14 +1469,14 @@ LABEL_7:
   }
 }
 
-- (PLDuplicateMerge)initWithSourceAssets:(id)a3 targetAsset:(id)a4 photolibrary:(id)a5
+- (PLDuplicateMerge)initWithSourceAssets:(id)assets targetAsset:(id)asset photolibrary:(id)photolibrary
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  assetsCopy = assets;
+  assetCopy = asset;
+  photolibraryCopy = photolibrary;
+  if (assetsCopy)
   {
-    if (v11)
+    if (assetCopy)
     {
       goto LABEL_3;
     }
@@ -1484,17 +1484,17 @@ LABEL_7:
 
   else
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PLDuplicateMerge.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"sourceAssets"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDuplicateMerge.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"sourceAssets"}];
 
-    if (v11)
+    if (assetCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v21 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v21 handleFailureInMethod:a2 object:self file:@"PLDuplicateMerge.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"targetAsset"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLDuplicateMerge.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"targetAsset"}];
 
 LABEL_3:
   v22.receiver = self;
@@ -1503,14 +1503,14 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_library, a5);
-    v15 = [[PLDuplicateMergeCrashRecovery alloc] initWithPhotoLibrary:v12];
+    objc_storeStrong(&v13->_library, photolibrary);
+    v15 = [[PLDuplicateMergeCrashRecovery alloc] initWithPhotoLibrary:photolibraryCopy];
     mergeCrashRecovery = v14->_mergeCrashRecovery;
     v14->_mergeCrashRecovery = v15;
 
-    objc_storeStrong(&v14->_sourceAssets, a3);
-    objc_storeStrong(&v14->_targetAsset, a4);
-    v17 = [[PLDuplicateMergeModelProperties alloc] initWithTargetAsset:v11 photoLibrary:v12];
+    objc_storeStrong(&v14->_sourceAssets, assets);
+    objc_storeStrong(&v14->_targetAsset, asset);
+    v17 = [[PLDuplicateMergeModelProperties alloc] initWithTargetAsset:assetCopy photoLibrary:photolibraryCopy];
     mergeModelProperties = v14->_mergeModelProperties;
     v14->_mergeModelProperties = v17;
   }
@@ -1518,24 +1518,24 @@ LABEL_3:
   return v14;
 }
 
-+ (BOOL)mergeAssets:(id)a3 targetAssetOID:(id)a4 photolibrary:(id)a5 error:(id *)a6
++ (BOOL)mergeAssets:(id)assets targetAssetOID:(id)d photolibrary:(id)photolibrary error:(id *)error
 {
   v54 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  assetsCopy = assets;
+  dCopy = d;
+  photolibraryCopy = photolibrary;
+  if (assetsCopy)
   {
-    if (v11)
+    if (dCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_32:
-    v38 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v38 handleFailureInMethod:a2 object:a1 file:@"PLDuplicateMerge.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"targetOID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDuplicateMerge.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"targetOID"}];
 
-    if (v12)
+    if (photolibraryCopy)
     {
       goto LABEL_4;
     }
@@ -1543,36 +1543,36 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  v37 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v37 handleFailureInMethod:a2 object:a1 file:@"PLDuplicateMerge.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"assets"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLDuplicateMerge.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"assets"}];
 
-  if (!v11)
+  if (!dCopy)
   {
     goto LABEL_32;
   }
 
 LABEL_3:
-  if (v12)
+  if (photolibraryCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_33:
-  v39 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v39 handleFailureInMethod:a2 object:a1 file:@"PLDuplicateMerge.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"library"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLDuplicateMerge.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"library"}];
 
 LABEL_4:
-  v42 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v10, "count")}];
+  v42 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(assetsCopy, "count")}];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v13 = v10;
+  v13 = assetsCopy;
   v14 = [v13 countByEnumeratingWithState:&v43 objects:v53 count:16];
   if (v14)
   {
     v15 = v14;
-    v40 = v12;
+    v40 = photolibraryCopy;
     v16 = 0;
     v17 = *v44;
     while (2)
@@ -1590,9 +1590,9 @@ LABEL_4:
           v26 = PLDuplicateDetectionGetLog();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
           {
-            v27 = [v19 shortDescription];
+            shortDescription = [v19 shortDescription];
             *buf = 138543362;
-            v52 = v27;
+            v52 = shortDescription;
             _os_log_impl(&dword_19BF1F000, v26, OS_LOG_TYPE_ERROR, "Duplicate Merge: Skipping merge, asset is not merge ready: %{public}@", buf, 0xCu);
           }
 
@@ -1600,21 +1600,21 @@ LABEL_4:
           v29 = *MEMORY[0x1E69BFF48];
           v47 = *MEMORY[0x1E696A578];
           v48 = @"Merge skipped asset failed isMergeReady";
-          v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
-          v30 = [v28 errorWithDomain:v29 code:49405 userInfo:v24];
-          v12 = v40;
-          if (a6)
+          dCopy = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
+          v30 = [v28 errorWithDomain:v29 code:49405 userInfo:dCopy];
+          photolibraryCopy = v40;
+          if (error)
           {
             v30 = v30;
-            *a6 = v30;
+            *error = v30;
           }
 
           goto LABEL_29;
         }
 
-        v20 = [v19 asset];
-        v21 = [v20 objectID];
-        v22 = [v21 isEqual:v11];
+        asset = [v19 asset];
+        objectID = [asset objectID];
+        v22 = [objectID isEqual:dCopy];
 
         if (v22)
         {
@@ -1623,7 +1623,7 @@ LABEL_4:
           v16 = v23;
         }
 
-        else if (v20)
+        else if (asset)
         {
           [v42 addObject:v19];
         }
@@ -1638,11 +1638,11 @@ LABEL_4:
       break;
     }
 
-    v12 = v40;
+    photolibraryCopy = v40;
     if (v16)
     {
-      v24 = [[PLDuplicateMerge alloc] initWithSourceAssets:v42 targetAsset:v16 photolibrary:v40];
-      v25 = [(PLDuplicateMerge *)v24 mergeWithError:a6];
+      dCopy = [[PLDuplicateMerge alloc] initWithSourceAssets:v42 targetAsset:v16 photolibrary:v40];
+      v25 = [(PLDuplicateMerge *)dCopy mergeWithError:error];
       goto LABEL_30;
     }
   }
@@ -1651,25 +1651,25 @@ LABEL_4:
   {
   }
 
-  v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Merge: No targetAsset found for targetOID %@", v11];
+  dCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Merge: No targetAsset found for targetOID %@", dCopy];
   v31 = PLDuplicateDetectionGetLog();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v52 = v24;
+    v52 = dCopy;
     _os_log_impl(&dword_19BF1F000, v31, OS_LOG_TYPE_ERROR, "%{public}@", buf, 0xCu);
   }
 
   v32 = MEMORY[0x1E696ABC0];
   v33 = *MEMORY[0x1E69BFF48];
   v49 = *MEMORY[0x1E696A278];
-  v50 = v24;
+  v50 = dCopy;
   v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
   v35 = [v32 errorWithDomain:v33 code:49403 userInfo:v34];
-  if (a6)
+  if (error)
   {
     v35 = v35;
-    *a6 = v35;
+    *error = v35;
   }
 
   v16 = 0;

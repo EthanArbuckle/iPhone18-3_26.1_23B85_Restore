@@ -1,5 +1,5 @@
 @interface _AFApplicationContextMutation
-- (_AFApplicationContextMutation)initWithBase:(id)a3;
+- (_AFApplicationContextMutation)initWithBase:(id)base;
 - (id)getAceContext;
 - (id)getAceContexts;
 - (id)getAssociatedBundleIdentifier;
@@ -13,87 +13,87 @@
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_associatedBundleIdentifier;
+    associatedBundleIdentifier = self->_associatedBundleIdentifier;
   }
 
   else
   {
-    v2 = [(AFApplicationContext *)self->_base associatedBundleIdentifier];
+    associatedBundleIdentifier = [(AFApplicationContext *)self->_base associatedBundleIdentifier];
   }
 
-  return v2;
+  return associatedBundleIdentifier;
 }
 
 - (id)getBulletin
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_bulletin;
+    bulletin = self->_bulletin;
   }
 
   else
   {
-    v2 = [(AFApplicationContext *)self->_base bulletin];
+    bulletin = [(AFApplicationContext *)self->_base bulletin];
   }
 
-  return v2;
+  return bulletin;
 }
 
 - (id)getAceContext
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_aceContext;
+    aceContext = self->_aceContext;
   }
 
   else
   {
-    v2 = [(AFApplicationContext *)self->_base aceContext];
+    aceContext = [(AFApplicationContext *)self->_base aceContext];
   }
 
-  return v2;
+  return aceContext;
 }
 
 - (id)getContextDictionary
 {
   if ((*&self->_mutationFlags & 0x10) != 0)
   {
-    v2 = self->_contextDictionary;
+    contextDictionary = self->_contextDictionary;
   }
 
   else
   {
-    v2 = [(AFApplicationContext *)self->_base contextDictionary];
+    contextDictionary = [(AFApplicationContext *)self->_base contextDictionary];
   }
 
-  return v2;
+  return contextDictionary;
 }
 
 - (id)getAceContexts
 {
   if ((*&self->_mutationFlags & 0x20) != 0)
   {
-    v2 = self->_aceContexts;
+    aceContexts = self->_aceContexts;
   }
 
   else
   {
-    v2 = [(AFApplicationContext *)self->_base aceContexts];
+    aceContexts = [(AFApplicationContext *)self->_base aceContexts];
   }
 
-  return v2;
+  return aceContexts;
 }
 
-- (_AFApplicationContextMutation)initWithBase:(id)a3
+- (_AFApplicationContextMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFApplicationContextMutation;
   v6 = [(_AFApplicationContextMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

@@ -1,15 +1,15 @@
 @interface HFAccessoriesToReadSet
-- (HFAccessoriesToReadSet)initWithTransportType:(id)a3;
+- (HFAccessoriesToReadSet)initWithTransportType:(id)type;
 - (int64_t)count;
-- (void)addCharacteristic:(id)a3;
-- (void)markCharacteristicAsRead:(id)a3 withLogger:(id)a4;
+- (void)addCharacteristic:(id)characteristic;
+- (void)markCharacteristicAsRead:(id)read withLogger:(id)logger;
 @end
 
 @implementation HFAccessoriesToReadSet
 
-- (HFAccessoriesToReadSet)initWithTransportType:(id)a3
+- (HFAccessoriesToReadSet)initWithTransportType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v10.receiver = self;
   v10.super_class = HFAccessoriesToReadSet;
   v6 = [(HFAccessoriesToReadSet *)&v10 init];
@@ -19,23 +19,23 @@
     accessories = v6->_accessories;
     v6->_accessories = v7;
 
-    objc_storeStrong(&v6->_transportKey, a3);
+    objc_storeStrong(&v6->_transportKey, type);
   }
 
   return v6;
 }
 
-- (void)addCharacteristic:(id)a3
+- (void)addCharacteristic:(id)characteristic
 {
-  v4 = a3;
-  v5 = [v4 service];
-  v9 = [v5 accessory];
+  characteristicCopy = characteristic;
+  service = [characteristicCopy service];
+  accessory = [service accessory];
 
-  v6 = [(HFAccessoriesToReadSet *)self accessories];
-  v7 = [v9 uniqueIdentifier];
-  v8 = [v6 na_objectForKey:v7 withDefaultValue:&__block_literal_global_92];
+  accessories = [(HFAccessoriesToReadSet *)self accessories];
+  uniqueIdentifier = [accessory uniqueIdentifier];
+  v8 = [accessories na_objectForKey:uniqueIdentifier withDefaultValue:&__block_literal_global_92];
 
-  [v8 addObject:v4];
+  [v8 addObject:characteristicCopy];
 }
 
 id __44__HFAccessoriesToReadSet_addCharacteristic___block_invoke()
@@ -45,43 +45,43 @@ id __44__HFAccessoriesToReadSet_addCharacteristic___block_invoke()
   return v0;
 }
 
-- (void)markCharacteristicAsRead:(id)a3 withLogger:(id)a4
+- (void)markCharacteristicAsRead:(id)read withLogger:(id)logger
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 service];
-  v9 = [v8 accessory];
+  loggerCopy = logger;
+  readCopy = read;
+  service = [readCopy service];
+  accessory = [service accessory];
 
-  v10 = [(HFAccessoriesToReadSet *)self accessories];
-  v11 = [v9 uniqueIdentifier];
-  v12 = [v10 objectForKeyedSubscript:v11];
+  accessories = [(HFAccessoriesToReadSet *)self accessories];
+  uniqueIdentifier = [accessory uniqueIdentifier];
+  v12 = [accessories objectForKeyedSubscript:uniqueIdentifier];
 
   v13 = [v12 count];
-  [v12 removeObject:v7];
+  [v12 removeObject:readCopy];
 
   if (![v12 count])
   {
-    v14 = [(HFAccessoriesToReadSet *)self accessories];
-    v15 = [v9 uniqueIdentifier];
-    [v14 removeObjectForKey:v15];
+    accessories2 = [(HFAccessoriesToReadSet *)self accessories];
+    uniqueIdentifier2 = [accessory uniqueIdentifier];
+    [accessories2 removeObjectForKey:uniqueIdentifier2];
 
     if (v13)
     {
-      if (v6)
+      if (loggerCopy)
       {
-        v16 = [v6 loggerActivity];
-        os_activity_scope_enter(v16, &v28);
+        loggerActivity = [loggerCopy loggerActivity];
+        os_activity_scope_enter(loggerActivity, &v28);
 
         v17 = HFLogForCategory(0x3DuLL);
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [(HFAccessoriesToReadSet *)self accessories];
-          v19 = [v18 count];
-          v20 = [(HFAccessoriesToReadSet *)self transportKey];
-          v21 = +[HFCharacteristicReadLogger nameForTransportType:](HFCharacteristicReadLogger, "nameForTransportType:", [v20 integerValue]);
+          accessories3 = [(HFAccessoriesToReadSet *)self accessories];
+          v19 = [accessories3 count];
+          transportKey = [(HFAccessoriesToReadSet *)self transportKey];
+          v21 = +[HFCharacteristicReadLogger nameForTransportType:](HFCharacteristicReadLogger, "nameForTransportType:", [transportKey integerValue]);
           *buf = 138412802;
-          v30 = v9;
+          v30 = accessory;
           v31 = 2048;
           v32 = v19;
           v33 = 2112;
@@ -97,12 +97,12 @@ id __44__HFAccessoriesToReadSet_addCharacteristic___block_invoke()
         v23 = HFLogForCategory(0x3DuLL);
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = [(HFAccessoriesToReadSet *)self accessories];
-          v25 = [v24 count];
-          v26 = [(HFAccessoriesToReadSet *)self transportKey];
-          v27 = +[HFCharacteristicReadLogger nameForTransportType:](HFCharacteristicReadLogger, "nameForTransportType:", [v26 integerValue]);
+          accessories4 = [(HFAccessoriesToReadSet *)self accessories];
+          v25 = [accessories4 count];
+          transportKey2 = [(HFAccessoriesToReadSet *)self transportKey];
+          v27 = +[HFCharacteristicReadLogger nameForTransportType:](HFCharacteristicReadLogger, "nameForTransportType:", [transportKey2 integerValue]);
           *buf = 138412802;
-          v30 = v9;
+          v30 = accessory;
           v31 = 2048;
           v32 = v25;
           v33 = 2112;
@@ -118,8 +118,8 @@ id __44__HFAccessoriesToReadSet_addCharacteristic___block_invoke()
 
 - (int64_t)count
 {
-  v2 = [(HFAccessoriesToReadSet *)self accessories];
-  v3 = [v2 count];
+  accessories = [(HFAccessoriesToReadSet *)self accessories];
+  v3 = [accessories count];
 
   return v3;
 }

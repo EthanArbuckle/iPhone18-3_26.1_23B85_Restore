@@ -1,15 +1,15 @@
 @interface MTLBinaryEntry
-- (MTLBinaryEntry)initWithData:(id)a3 binaryPosition:(unint64_t)a4;
-- (MTLBinaryEntry)initWithData:(id)a3 importedSymbols:(id)a4 importedLibraries:(id)a5;
-- (MTLBinaryEntry)initWithData:(id)a3 reflectionBlock:(id)a4;
-- (MTLBinaryEntry)initWithData:(id)a3 reflectionBlock:(id)a4 binaryPosition:(unint64_t)a5;
+- (MTLBinaryEntry)initWithData:(id)data binaryPosition:(unint64_t)position;
+- (MTLBinaryEntry)initWithData:(id)data importedSymbols:(id)symbols importedLibraries:(id)libraries;
+- (MTLBinaryEntry)initWithData:(id)data reflectionBlock:(id)block;
+- (MTLBinaryEntry)initWithData:(id)data reflectionBlock:(id)block binaryPosition:(unint64_t)position;
 - (id)description;
-- (void)addReflectionWithData:(id)a3 flag:(int)a4;
+- (void)addReflectionWithData:(id)data flag:(int)flag;
 - (void)dealloc;
-- (void)internalInitWithData:(id)a3 reflectionBlock:(id)a4 binaryPosition:(unint64_t)a5;
-- (void)setAirScript:(id)a3;
-- (void)setBitcode:(id)a3;
-- (void)setLinkedBitcodes:(id)a3;
+- (void)internalInitWithData:(id)data reflectionBlock:(id)block binaryPosition:(unint64_t)position;
+- (void)setAirScript:(id)script;
+- (void)setBitcode:(id)bitcode;
+- (void)setLinkedBitcodes:(id)bitcodes;
 @end
 
 @implementation MTLBinaryEntry
@@ -40,38 +40,38 @@
   [(MTLBinaryEntry *)&v6 dealloc];
 }
 
-- (MTLBinaryEntry)initWithData:(id)a3 importedSymbols:(id)a4 importedLibraries:(id)a5
+- (MTLBinaryEntry)initWithData:(id)data importedSymbols:(id)symbols importedLibraries:(id)libraries
 {
   v13.receiver = self;
   v13.super_class = MTLBinaryEntry;
   v8 = [(MTLBinaryEntry *)&v13 init];
   if (v8)
   {
-    dispatch_retain(a3);
-    v8->_data = a3;
+    dispatch_retain(data);
+    v8->_data = data;
     v9 = MEMORY[0x1E695E0F0];
-    if (a4)
+    if (symbols)
     {
-      v10 = a4;
+      symbolsCopy = symbols;
     }
 
     else
     {
-      v10 = MEMORY[0x1E695E0F0];
+      symbolsCopy = MEMORY[0x1E695E0F0];
     }
 
-    v8->_importedSymbols = v10;
-    if (a5)
+    v8->_importedSymbols = symbolsCopy;
+    if (libraries)
     {
-      v11 = a5;
+      librariesCopy = libraries;
     }
 
     else
     {
-      v11 = v9;
+      librariesCopy = v9;
     }
 
-    v8->_importedLibraries = v11;
+    v8->_importedLibraries = librariesCopy;
     v8->_bitcode = 0;
     v8->_airScript = 0;
     v8->_linkedBitcodes = 0;
@@ -81,46 +81,46 @@
   return v8;
 }
 
-- (MTLBinaryEntry)initWithData:(id)a3 binaryPosition:(unint64_t)a4
+- (MTLBinaryEntry)initWithData:(id)data binaryPosition:(unint64_t)position
 {
   v9.receiver = self;
   v9.super_class = MTLBinaryEntry;
   v6 = [(MTLBinaryEntry *)&v9 init];
   if (v6)
   {
-    dispatch_retain(a3);
-    v6->_data = a3;
+    dispatch_retain(data);
+    v6->_data = data;
     v7 = MEMORY[0x1E695E0F0];
     v6->_importedSymbols = MEMORY[0x1E695E0F0];
     v6->_importedLibraries = v7;
     v6->_bitcode = 0;
     v6->_airScript = 0;
-    v6->_binaryPosition = a4;
+    v6->_binaryPosition = position;
     v6->_linkedBitcodes = 0;
   }
 
   return v6;
 }
 
-- (void)internalInitWithData:(id)a3 reflectionBlock:(id)a4 binaryPosition:(unint64_t)a5
+- (void)internalInitWithData:(id)data reflectionBlock:(id)block binaryPosition:(unint64_t)position
 {
   self->_reflectionFlags = 0;
-  dispatch_retain(a3);
-  self->_data = a3;
-  if (a4)
+  dispatch_retain(data);
+  self->_data = data;
+  if (block)
   {
-    self->_reflectionBlock = a4;
-    dispatch_retain(a4);
-    self->_reflectionFlags = MTLGetReflectionFlags(a4);
+    self->_reflectionBlock = block;
+    dispatch_retain(block);
+    self->_reflectionFlags = MTLGetReflectionFlags(block);
   }
 
-  self->_binaryPosition = a5;
+  self->_binaryPosition = position;
   *&self->_importedLibraries = 0u;
   *&self->_linkedBitcodes = 0u;
   self->_airScript = 0;
 }
 
-- (MTLBinaryEntry)initWithData:(id)a3 reflectionBlock:(id)a4 binaryPosition:(unint64_t)a5
+- (MTLBinaryEntry)initWithData:(id)data reflectionBlock:(id)block binaryPosition:(unint64_t)position
 {
   v11.receiver = self;
   v11.super_class = MTLBinaryEntry;
@@ -128,13 +128,13 @@
   v9 = v8;
   if (v8)
   {
-    [(MTLBinaryEntry *)v8 internalInitWithData:a3 reflectionBlock:a4 binaryPosition:a5];
+    [(MTLBinaryEntry *)v8 internalInitWithData:data reflectionBlock:block binaryPosition:position];
   }
 
   return v9;
 }
 
-- (MTLBinaryEntry)initWithData:(id)a3 reflectionBlock:(id)a4
+- (MTLBinaryEntry)initWithData:(id)data reflectionBlock:(id)block
 {
   v9.receiver = self;
   v9.super_class = MTLBinaryEntry;
@@ -142,15 +142,15 @@
   v7 = v6;
   if (v6)
   {
-    [(MTLBinaryEntry *)v6 internalInitWithData:a3 reflectionBlock:a4 binaryPosition:0xFFFFFFFFLL];
+    [(MTLBinaryEntry *)v6 internalInitWithData:data reflectionBlock:block binaryPosition:0xFFFFFFFFLL];
   }
 
   return v7;
 }
 
-- (void)addReflectionWithData:(id)a3 flag:(int)a4
+- (void)addReflectionWithData:(id)data flag:(int)flag
 {
-  v5 = MTLNewReflectionBlock(self->_reflectionBlock, a3, a4);
+  v5 = MTLNewReflectionBlock(self->_reflectionBlock, data, flag);
   reflectionBlock = self->_reflectionBlock;
   if (reflectionBlock)
   {
@@ -168,7 +168,7 @@
   return [v3 stringByAppendingFormat:@" (%lu bytes)", dispatch_data_get_size(self->_data)];
 }
 
-- (void)setBitcode:(id)a3
+- (void)setBitcode:(id)bitcode
 {
   bitcode = self->_bitcode;
   if (bitcode)
@@ -176,12 +176,12 @@
     dispatch_release(bitcode);
   }
 
-  self->_bitcode = a3;
+  self->_bitcode = bitcode;
 
-  dispatch_retain(a3);
+  dispatch_retain(bitcode);
 }
 
-- (void)setAirScript:(id)a3
+- (void)setAirScript:(id)script
 {
   airScript = self->_airScript;
   if (airScript)
@@ -189,24 +189,24 @@
     dispatch_release(airScript);
   }
 
-  self->_airScript = a3;
+  self->_airScript = script;
 
-  dispatch_retain(a3);
+  dispatch_retain(script);
 }
 
-- (void)setLinkedBitcodes:(id)a3
+- (void)setLinkedBitcodes:(id)bitcodes
 {
   linkedBitcodes = self->_linkedBitcodes;
   if (linkedBitcodes)
   {
-    v6 = a3;
+    bitcodesCopy = bitcodes;
 
-    a3 = v6;
+    bitcodes = bitcodesCopy;
   }
 
-  self->_linkedBitcodes = a3;
+  self->_linkedBitcodes = bitcodes;
 
-  v5 = a3;
+  bitcodesCopy2 = bitcodes;
 }
 
 @end

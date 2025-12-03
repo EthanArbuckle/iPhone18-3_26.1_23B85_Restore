@@ -1,13 +1,13 @@
 @interface CPMemoryPoolFile
-- (CPMemoryPoolFile)initWithLabel:(const char *)a3 slotCount:(unint64_t)a4 slotLength:(unint64_t)a5;
-- (id)nextSlotWithBytes:(const void *)a3 length:(unint64_t)a4;
+- (CPMemoryPoolFile)initWithLabel:(const char *)label slotCount:(unint64_t)count slotLength:(unint64_t)length;
+- (id)nextSlotWithBytes:(const void *)bytes length:(unint64_t)length;
 - (void)dealloc;
-- (void)returnSlot:(void *)a3;
+- (void)returnSlot:(void *)slot;
 @end
 
 @implementation CPMemoryPoolFile
 
-- (CPMemoryPoolFile)initWithLabel:(const char *)a3 slotCount:(unint64_t)a4 slotLength:(unint64_t)a5
+- (CPMemoryPoolFile)initWithLabel:(const char *)label slotCount:(unint64_t)count slotLength:(unint64_t)length
 {
   v26 = *MEMORY[0x1E69E9840];
   v24.receiver = self;
@@ -17,16 +17,16 @@
   if (v8)
   {
     v8->_fd = -1;
-    v10 = *MEMORY[0x1E69E9AC8] + a5 * a4 - 1;
+    v10 = *MEMORY[0x1E69E9AC8] + length * count - 1;
     v11 = -*MEMORY[0x1E69E9AC8];
     pthread_mutex_init(&v8->_mutex, 0);
     v9->_slots = -1;
-    v9->_slotCount = a4;
-    v9->_slotLength = a5;
+    v9->_slotCount = count;
+    v9->_slotLength = length;
     v12 = *MEMORY[0x1E695E480];
-    Mutable = CFBitVectorCreateMutable(*MEMORY[0x1E695E480], a4);
+    Mutable = CFBitVectorCreateMutable(*MEMORY[0x1E695E480], count);
     v9->_usedSlots = Mutable;
-    CFBitVectorSetCount(Mutable, a4);
+    CFBitVectorSetCount(Mutable, count);
     context.version = 0;
     memset(&context.retain, 0, 40);
     context.info = v9;
@@ -41,7 +41,7 @@
       v15 = v14;
     }
 
-    if (snprintf(__str, 0x400uLL, "%s/%s.XXXXXX", v15, a3) != -1)
+    if (snprintf(__str, 0x400uLL, "%s/%s.XXXXXX", v15, label) != -1)
     {
       v16 = mkstemp(__str);
       v9->_fd = v16;
@@ -123,9 +123,9 @@
   [(CPMemoryPoolFile *)&v7 dealloc];
 }
 
-- (id)nextSlotWithBytes:(const void *)a3 length:(unint64_t)a4
+- (id)nextSlotWithBytes:(const void *)bytes length:(unint64_t)length
 {
-  if (self->_slotLength < a4)
+  if (self->_slotLength < length)
   {
     [CPMemoryPoolFile nextSlotWithBytes:a2 length:self];
   }
@@ -144,30 +144,30 @@
   slotLength = self->_slotLength;
   CFBitVectorSetBitAtIndex(self->_usedSlots, FirstIndexOfBit, 1u);
   slots = self->_slots;
-  v12 = &slots[(*MEMORY[0x1E69E9AC8] + self->_slotLength * self->_slotCount - 1) & -*MEMORY[0x1E69E9AC8]] > a3 && a3 + a4 > slots;
-  v13 = a3;
+  v12 = &slots[(*MEMORY[0x1E69E9AC8] + self->_slotLength * self->_slotCount - 1) & -*MEMORY[0x1E69E9AC8]] > bytes && bytes + length > slots;
+  bytesCopy = bytes;
   if (v12)
   {
-    v13 = malloc_type_malloc(a4, 0xD0738A1DuLL);
-    memcpy(v13, a3, a4);
+    bytesCopy = malloc_type_malloc(length, 0xD0738A1DuLL);
+    memcpy(bytesCopy, bytes, length);
   }
 
   v14 = slotLength * v9;
   fd = self->_fd;
   if (fd == -1)
   {
-    memcpy(&self->_slots[v14], v13, a4);
+    memcpy(&self->_slots[v14], bytesCopy, length);
     v16 = 1;
   }
 
   else
   {
-    v16 = pwrite(fd, v13, a4, v14) >= 0;
+    v16 = pwrite(fd, bytesCopy, length, v14) >= 0;
   }
 
-  if (v13 != a3)
+  if (bytesCopy != bytes)
   {
-    free(v13);
+    free(bytesCopy);
   }
 
   if (!v16)
@@ -185,16 +185,16 @@ LABEL_19:
   }
 
   v18 = v17;
-  v19 = self;
+  selfCopy = self;
 LABEL_20:
   pthread_mutex_unlock(&self->_mutex);
   return v18;
 }
 
-- (void)returnSlot:(void *)a3
+- (void)returnSlot:(void *)slot
 {
   pthread_mutex_lock(&self->_mutex);
-  CFBitVectorSetBitAtIndex(self->_usedSlots, (a3 - self->_slots) / self->_slotLength, 0);
+  CFBitVectorSetBitAtIndex(self->_usedSlots, (slot - self->_slots) / self->_slotLength, 0);
   pthread_mutex_unlock(&self->_mutex);
 }
 

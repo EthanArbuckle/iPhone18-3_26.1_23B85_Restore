@@ -1,46 +1,46 @@
 @interface UISplitViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (double)_axModalizeViewControllerViews;
 - (id)_accessibilitySpeakThisViewController;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)setViewControllers:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setViewControllers:(id)controllers;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation UISplitViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"UISplitViewController" hasInstanceVariable:@"_impl" withType:"<_UISplitViewControllerImplementing>"];
   [location[0] validateClass:@"UISplitViewControllerClassicImpl" conformsToProtocol:?];
   [location[0] validateClass:@"UISplitViewControllerPanelImpl" conformsToProtocol:@"UISplitViewControllerImpl"];
   objc_storeStrong(location, 0);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  appearCopy = appear;
   v3.receiver = self;
   v3.super_class = UISplitViewControllerAccessibility;
-  [(UISplitViewControllerAccessibility *)&v3 viewDidAppear:a3];
-  [(UISplitViewControllerAccessibility *)v6 _axModalizeViewControllerViews];
+  [(UISplitViewControllerAccessibility *)&v3 viewDidAppear:appear];
+  [(UISplitViewControllerAccessibility *)selfCopy _axModalizeViewControllerViews];
 }
 
 - (double)_axModalizeViewControllerViews
 {
   v15 = *MEMORY[0x29EDCA608];
-  v13 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v12 = 1;
     memset(__b, 0, sizeof(__b));
-    obj = [v13 safeValueForKey:@"viewControllers"];
+    obj = [selfCopy safeValueForKey:@"viewControllers"];
     v8 = [obj countByEnumeratingWithState:__b objects:v14 count:16];
     if (v8)
     {
@@ -58,7 +58,7 @@
         v11 = *(__b[1] + 8 * v5);
         location = [v11 view];
         [location setShouldGroupAccessibilityChildren:1];
-        if ((v12 & 1) != 0 && ([v13 isCollapsed] & 1) == 0 && objc_msgSend(v13, "displayMode") == 2)
+        if ((v12 & 1) != 0 && ([selfCopy isCollapsed] & 1) == 0 && objc_msgSend(selfCopy, "displayMode") == 2)
         {
           [location _accessibilitySetIsScannerGroup:1];
           [location _accessibilitySetScannerGroupTraits:16];
@@ -92,28 +92,28 @@
   return result;
 }
 
-- (void)setViewControllers:(id)a3
+- (void)setViewControllers:(id)controllers
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, controllers);
+  v3.receiver = selfCopy;
   v3.super_class = UISplitViewControllerAccessibility;
   [(UISplitViewControllerAccessibility *)&v3 setViewControllers:location[0]];
-  [(UISplitViewControllerAccessibility *)v5 _axModalizeViewControllerViews];
+  [(UISplitViewControllerAccessibility *)selfCopy _axModalizeViewControllerViews];
   objc_storeStrong(location, 0);
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
   v10.receiver = self;
   v10.super_class = UISplitViewControllerAccessibility;
   [(UISplitViewControllerAccessibility *)&v10 _accessibilityLoadAccessibilityInformation];
-  v2 = [(UISplitViewControllerAccessibility *)v12 _axModalizeViewControllerViews];
-  v9 = [(UISplitViewControllerAccessibility *)v12 safeValueForKey:@"_impl", v2];
+  _axModalizeViewControllerViews = [(UISplitViewControllerAccessibility *)selfCopy _axModalizeViewControllerViews];
+  v9 = [(UISplitViewControllerAccessibility *)selfCopy safeValueForKey:@"_impl", _axModalizeViewControllerViews];
   v3 = MEMORY[0x29EDCA5F8];
   v4 = -1073741824;
   v5 = 0;
@@ -130,10 +130,10 @@
   v4[2] = self;
   v4[1] = a2;
   v4[0] = [(UISplitViewControllerAccessibility *)self safeValueForKey:@"_impl"];
-  v3 = [v4[0] _accessibilitySpeakThisViewController];
+  _accessibilitySpeakThisViewController = [v4[0] _accessibilitySpeakThisViewController];
   objc_storeStrong(v4, 0);
 
-  return v3;
+  return _accessibilitySpeakThisViewController;
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface VGFrameSelectionDumpOutput
-- (VGFrameSelectionDumpOutput)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (VGFrameSelectionDumpOutput)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VGFrameSelectionDumpOutput
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   selectedPoses = self->_selectedPoses;
   v5 = NSStringFromSelector(sel_selectedPoses);
-  [v6 encodeObject:selectedPoses forKey:v5];
+  [coderCopy encodeObject:selectedPoses forKey:v5];
 }
 
-- (VGFrameSelectionDumpOutput)initWithCoder:(id)a3
+- (VGFrameSelectionDumpOutput)initWithCoder:(id)coder
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = VGFrameSelectionDumpOutput;
   v5 = [(VGFrameSelectionDumpOutput *)&v15 init];
@@ -28,7 +28,7 @@
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
     v8 = [v6 setWithArray:v7];
     v9 = NSStringFromSelector(sel_selectedPoses);
-    v10 = [v4 decodeObjectOfClasses:v8 forKey:v9];
+    v10 = [coderCopy decodeObjectOfClasses:v8 forKey:v9];
     selectedPoses = v5->_selectedPoses;
     v5->_selectedPoses = v10;
 

@@ -1,38 +1,38 @@
 @interface _PASCompression
-+ (id)_compress:(id)a3 fast:(BOOL)a4 lowMemory:(BOOL)a5;
-+ (id)decompress:(id)a3 maxLength:(int64_t)a4;
++ (id)_compress:(id)_compress fast:(BOOL)fast lowMemory:(BOOL)memory;
++ (id)decompress:(id)decompress maxLength:(int64_t)length;
 @end
 
 @implementation _PASCompression
 
-+ (id)decompress:(id)a3 maxLength:(int64_t)a4
++ (id)decompress:(id)decompress maxLength:(int64_t)length
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  decompressCopy = decompress;
+  if (!decompressCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[_PASCompression decompress:maxLength:]"];
-    [v18 handleFailureInFunction:v19 file:@"_PASCompression.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"data"}];
+    [currentHandler handleFailureInFunction:v19 file:@"_PASCompression.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"data"}];
   }
 
-  if ([v5 length] < 8)
+  if ([decompressCopy length] < 8)
   {
     goto LABEL_20;
   }
 
-  v6 = [v5 bytes];
-  v7 = v6 + 1;
-  v8 = *v6;
-  v9 = [v5 length];
-  if ((a4 & 0x8000000000000000) == 0 && v8 >> 2 > a4)
+  bytes = [decompressCopy bytes];
+  v7 = bytes + 1;
+  v8 = *bytes;
+  v9 = [decompressCopy length];
+  if ((length & 0x8000000000000000) == 0 && v8 >> 2 > length)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
       *buf = 67109376;
       v23 = v8 >> 2;
       v24 = 2048;
-      v25 = a4;
+      lengthCopy = length;
       _os_log_impl(&dword_1A7F47000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "Decompressed data size %u greater than limit %li", buf, 0x12u);
     }
 
@@ -51,9 +51,9 @@
       {
         if (v10 != v11)
         {
-          v20 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
           v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[_PASCompression decompress:maxLength:]"];
-          [v20 handleFailureInFunction:v21 file:@"_PASCompression.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"compressedLen == hdr.length"}];
+          [currentHandler2 handleFailureInFunction:v21 file:@"_PASCompression.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"compressedLen == hdr.length"}];
         }
 
         memcpy(v13, v7, v10);
@@ -90,24 +90,24 @@ LABEL_21:
   return v15;
 }
 
-+ (id)_compress:(id)a3 fast:(BOOL)a4 lowMemory:(BOOL)a5
++ (id)_compress:(id)_compress fast:(BOOL)fast lowMemory:(BOOL)memory
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  if (!v7)
+  memoryCopy = memory;
+  fastCopy = fast;
+  _compressCopy = _compress;
+  if (!_compressCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[_PASCompression _compress:fast:lowMemory:]"];
-    [v21 handleFailureInFunction:v22 file:@"_PASCompression.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"data"}];
+    [currentHandler handleFailureInFunction:v22 file:@"_PASCompression.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"data"}];
   }
 
-  v8 = [v7 length];
+  v8 = [_compressCopy length];
   if (v8 >= 0x3FFFFFFF)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v24 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[_PASCompression _compress:fast:lowMemory:]"];
-    [v23 handleFailureInFunction:v24 file:@"_PASCompression.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"uncompressedLen < 0x3fffffff"}];
+    [currentHandler2 handleFailureInFunction:v24 file:@"_PASCompression.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"uncompressedLen < 0x3fffffff"}];
   }
 
   v9 = v8 + 8;
@@ -118,7 +118,7 @@ LABEL_21:
   }
 
   v11 = v10;
-  if (v5)
+  if (memoryCopy)
   {
     v12 = 2050;
   }
@@ -128,7 +128,7 @@ LABEL_21:
     v12 = 2049;
   }
 
-  if (v6)
+  if (fastCopy)
   {
     v13 = 3;
   }
@@ -139,7 +139,7 @@ LABEL_21:
   }
 
   v14 = v13 & 0xFFFFFFFF00000003 | (4 * (v8 & 0x3FFFFFFF));
-  if (v6)
+  if (fastCopy)
   {
     v15 = COMPRESSION_LZ4;
   }
@@ -149,11 +149,11 @@ LABEL_21:
     v15 = v12;
   }
 
-  v16 = compression_encode_buffer(v10 + 8, v8, [v7 bytes], v8, 0, v15);
+  v16 = compression_encode_buffer(v10 + 8, v8, [_compressCopy bytes], v8, 0, v15);
   if (!v16)
   {
     v14 = v14 & 0xFFFFFFFE;
-    memcpy(v11 + 1, [v7 bytes], v8);
+    memcpy(v11 + 1, [_compressCopy bytes], v8);
     goto LABEL_20;
   }
 

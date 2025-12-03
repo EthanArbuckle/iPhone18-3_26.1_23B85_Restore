@@ -1,22 +1,22 @@
 @interface BMWriteServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation BMWriteServer
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = objc_autoreleasePoolPush();
-  v9 = [MEMORY[0x1E698E9D8] processWithXPCConnection:v7];
+  v9 = [MEMORY[0x1E698E9D8] processWithXPCConnection:connectionCopy];
   v10 = __biome_log_for_category();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 executableName];
+    executableName = [v9 executableName];
     v25 = 138543618;
-    v26 = v11;
+    v26 = executableName;
     v27 = 1024;
     v28 = [v9 pid];
     _os_log_impl(&dword_1C928A000, v10, OS_LOG_TYPE_DEFAULT, "Incoming connection from %{public}@(%d)", &v25, 0x12u);
@@ -47,30 +47,30 @@
   }
 
   client = self->_client;
-  v15 = [v9 identifier];
-  v16 = v15;
+  identifier = [v9 identifier];
+  v16 = identifier;
   if (!client)
   {
     v22 = self->_client;
-    self->_client = v15;
+    self->_client = identifier;
 
     goto LABEL_16;
   }
 
-  v17 = [(NSString *)client isEqualToString:v15];
+  v17 = [(NSString *)client isEqualToString:identifier];
 
   if (v17)
   {
 LABEL_16:
     v18 = [[BMWriteServerExported alloc] initWithProcess:v9 accessControlPolicy:v12];
     v23 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F48E3A68];
-    [v7 setExportedInterface:v23];
+    [connectionCopy setExportedInterface:v23];
 
-    [v7 setExportedObject:v18];
+    [connectionCopy setExportedObject:v18];
     v24 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F48E3548];
-    [v7 setRemoteObjectInterface:v24];
+    [connectionCopy setRemoteObjectInterface:v24];
 
-    [v7 resume];
+    [connectionCopy resume];
     v19 = 1;
     goto LABEL_14;
   }

@@ -2,9 +2,9 @@
 - (StreamGroupStats)init;
 - (void)dealloc;
 - (void)finalizeStats;
-- (void)processKeyFrameReceived:(double)a3;
-- (void)processKeyFrameRequestSent:(double)a3;
-- (void)processMLStreamData:(id)a3;
+- (void)processKeyFrameReceived:(double)received;
+- (void)processKeyFrameRequestSent:(double)sent;
+- (void)processMLStreamData:(id)data;
 - (void)resetMLStats;
 - (void)setUpMLHistograms;
 @end
@@ -95,15 +95,15 @@
   }
 }
 
-- (void)processKeyFrameRequestSent:(double)a3
+- (void)processKeyFrameRequestSent:(double)sent
 {
   if (self->_oldestPendingFirTime == 0.0)
   {
-    self->_oldestPendingFirTime = a3;
+    self->_oldestPendingFirTime = sent;
   }
 }
 
-- (void)processKeyFrameReceived:(double)a3
+- (void)processKeyFrameReceived:(double)received
 {
   v8[2] = *MEMORY[0x277D85DE8];
   oldestPendingFirTime = self->_oldestPendingFirTime;
@@ -112,7 +112,7 @@
     firResponseTime = self->_firResponseTime;
     v7[0] = @"FIRResponseTimeSum";
     v7[1] = @"FIRResponseTimeCount";
-    v8[0] = [MEMORY[0x277CCABA8] numberWithDouble:(a3 - oldestPendingFirTime) * 1000.0];
+    v8[0] = [MEMORY[0x277CCABA8] numberWithDouble:(received - oldestPendingFirTime) * 1000.0];
     v8[1] = &unk_284FA5420;
     -[VCReportingDistribution updateWithPayload:](firResponseTime, "updateWithPayload:", [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2]);
     self->_oldestPendingFirTime = 0.0;
@@ -121,11 +121,11 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processMLStreamData:(id)a3
+- (void)processMLStreamData:(id)data
 {
   v52 = *MEMORY[0x277D85DE8];
-  v5 = [a3 objectForKeyedSubscript:@"DecOutMLEnhancedFrameCnt"];
-  v6 = [a3 objectForKeyedSubscript:@"DecOutFrameCnt"];
+  v5 = [data objectForKeyedSubscript:@"DecOutMLEnhancedFrameCnt"];
+  v6 = [data objectForKeyedSubscript:@"DecOutFrameCnt"];
   v7 = v6;
   if (v5 && v6)
   {
@@ -153,13 +153,13 @@
     {
       [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%d", @"DecOutMLEnhancedHistInputRes", v14];
       v17 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%d", @"DecOutMLEnhancedHistOutputRes", v14];
-      if (!OUTLINED_FUNCTION_75() || ![a3 objectForKeyedSubscript:v17])
+      if (!OUTLINED_FUNCTION_75() || ![data objectForKeyedSubscript:v17])
       {
         goto LABEL_25;
       }
 
       v18 = OUTLINED_FUNCTION_75();
-      v19 = [a3 objectForKeyedSubscript:v17];
+      v19 = [data objectForKeyedSubscript:v17];
       if ([v18 count] == 35 && objc_msgSend(v19, "count") == 35)
       {
         for (i = 0; i != 35; ++i)
@@ -199,8 +199,8 @@
           *v44 = v36;
           *&v44[4] = v37;
           *&v44[6] = v38;
-          LOWORD(v45) = v37;
-          *(&v45 + 2) = 35;
+          LOWORD(selfCopy) = v37;
+          *(&selfCopy + 2) = 35;
           v31 = v35;
           v32 = " [%s] %s:%d ML array size does not match histogram size! inputResolutionArraySize=%d outputResolutionArraySize=%d VCReportingVideoResolutionCount=%d";
           v33 = 46;
@@ -235,7 +235,7 @@
           v43 = 2112;
           *v44 = v25;
           *&v44[8] = 2048;
-          v45 = self;
+          selfCopy = self;
           v46 = v29;
           v47 = v28;
           v48 = v29;

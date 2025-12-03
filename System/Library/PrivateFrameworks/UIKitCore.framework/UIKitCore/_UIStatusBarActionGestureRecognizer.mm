@@ -1,34 +1,34 @@
 @interface _UIStatusBarActionGestureRecognizer
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
-- (void)setHighlighted:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation _UIStatusBarActionGestureRecognizer
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  [(_UIStatusBarActionGestureRecognizer *)self setHighlighted:1, a4];
+  [(_UIStatusBarActionGestureRecognizer *)self setHighlighted:1, event];
 
   [(UIGestureRecognizer *)self setState:1];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v10 = a3;
-  v6 = a4;
-  if ([v10 count] < 2)
+  movedCopy = moved;
+  eventCopy = event;
+  if ([movedCopy count] < 2)
   {
-    v7 = [v10 anyObject];
-    v8 = [(UIGestureRecognizer *)self view];
-    v9 = [(UIGestureRecognizer *)self view];
-    [v7 locationInView:v9];
-    -[_UIStatusBarActionGestureRecognizer setHighlighted:](self, "setHighlighted:", [v8 pointInside:v6 withEvent:?]);
+    anyObject = [movedCopy anyObject];
+    view = [(UIGestureRecognizer *)self view];
+    view2 = [(UIGestureRecognizer *)self view];
+    [anyObject locationInView:view2];
+    -[_UIStatusBarActionGestureRecognizer setHighlighted:](self, "setHighlighted:", [view pointInside:eventCopy withEvent:?]);
   }
 
   else
@@ -37,9 +37,9 @@
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  if ([(_UIStatusBarActionGestureRecognizer *)self highlighted:a3])
+  if ([(_UIStatusBarActionGestureRecognizer *)self highlighted:ended])
   {
     v5 = 3;
   }
@@ -52,16 +52,16 @@
   [(UIGestureRecognizer *)self setState:v5];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  [(_UIStatusBarActionGestureRecognizer *)self setHighlighted:0, a4];
+  [(_UIStatusBarActionGestureRecognizer *)self setHighlighted:0, event];
 
   [(UIGestureRecognizer *)self setState:4];
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  if (_UIPressesContainsPressType(a3, 4))
+  if (_UIPressesContainsPressType(began, 4))
   {
     [(_UIStatusBarActionGestureRecognizer *)self setHighlighted:1];
 
@@ -69,9 +69,9 @@
   }
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
-  if (_UIPressesContainsPressType(a3, 4))
+  if (_UIPressesContainsPressType(ended, 4))
   {
     if ([(_UIStatusBarActionGestureRecognizer *)self highlighted])
     {
@@ -87,18 +87,18 @@
   }
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
-  [(_UIStatusBarActionGestureRecognizer *)self setHighlighted:0, a4];
+  [(_UIStatusBarActionGestureRecognizer *)self setHighlighted:0, event];
 
   [(UIGestureRecognizer *)self setState:4];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     if ([(UIGestureRecognizer *)self state]>= UIGestureRecognizerStateBegan)
     {
 

@@ -1,29 +1,29 @@
 @interface CSAttSiriAFTMNode
-- (BOOL)_shouldHandleMitigationDecision:(BOOL)a3;
+- (BOOL)_shouldHandleMitigationDecision:(BOOL)decision;
 - (CSAttSiriAFTMNode)init;
-- (CSAttSiriAFTMNode)initWithAttSiriController:(id)a3;
+- (CSAttSiriAFTMNode)initWithAttSiriController:(id)controller;
 - (CSAttSiriController)attSiriController;
 - (id)_createResultDict;
-- (void)_addAudio:(id)a3;
-- (void)_handleAFTMResults:(id)a3;
-- (void)_logAFTMEndMsgWithScore:(float)a3 analyzedSamples:(unint64_t)a4;
-- (void)_logAFTMStartMsg:(id)a3 taskType:(id)a4;
+- (void)_addAudio:(id)audio;
+- (void)_handleAFTMResults:(id)results;
+- (void)_logAFTMEndMsgWithScore:(float)score analyzedSamples:(unint64_t)samples;
+- (void)_logAFTMStartMsg:(id)msg taskType:(id)type;
 - (void)_logResultToVTDirectory;
 - (void)_reportResultToAnalytics;
 - (void)_reset;
-- (void)_setAsset:(id)a3 forTask:(id)a4;
-- (void)_startRequestWithContext:(id)a3 withVtei:(id)a4 withRequestId:(id)a5 completion:(id)a6;
-- (void)_startRequestWithContext:(id)a3 withVtei:(id)a4 withVTAssets:(id)a5 taskType:(id)a6 withRequestId:(id)a7 completion:(id)a8;
-- (void)addAudio:(id)a3;
-- (void)addReceiver:(id)a3;
-- (void)analyzer:(id)a3 hasFinalResult:(id)a4;
-- (void)analyzer:(id)a3 hasPartialResult:(id)a4;
-- (void)attSiriAudioSrcNodeDidStop:(id)a3;
-- (void)attSiriAudioSrcNodeLPCMRecordBufferAvailable:(id)a3 audioChunk:(id)a4;
+- (void)_setAsset:(id)asset forTask:(id)task;
+- (void)_startRequestWithContext:(id)context withVtei:(id)vtei withRequestId:(id)id completion:(id)completion;
+- (void)_startRequestWithContext:(id)context withVtei:(id)vtei withVTAssets:(id)assets taskType:(id)type withRequestId:(id)id completion:(id)completion;
+- (void)addAudio:(id)audio;
+- (void)addReceiver:(id)receiver;
+- (void)analyzer:(id)analyzer hasFinalResult:(id)result;
+- (void)analyzer:(id)analyzer hasPartialResult:(id)result;
+- (void)attSiriAudioSrcNodeDidStop:(id)stop;
+- (void)attSiriAudioSrcNodeLPCMRecordBufferAvailable:(id)available audioChunk:(id)chunk;
 - (void)endAudio;
-- (void)setPrefetchedAsset:(id)a3;
-- (void)startRequestWithContext:(id)a3 withVtei:(id)a4 taskType:(id)a5 withRequestId:(id)a6 completion:(id)a7;
-- (void)startRequestWithContext:(id)a3 withVtei:(id)a4 withVTAssets:(id)a5 taskType:(id)a6 withRequestId:(id)a7 completion:(id)a8;
+- (void)setPrefetchedAsset:(id)asset;
+- (void)startRequestWithContext:(id)context withVtei:(id)vtei taskType:(id)type withRequestId:(id)id completion:(id)completion;
+- (void)startRequestWithContext:(id)context withVtei:(id)vtei withVTAssets:(id)assets taskType:(id)type withRequestId:(id)id completion:(id)completion;
 - (void)stop;
 @end
 
@@ -38,8 +38,8 @@
 
 - (void)_reportResultToAnalytics
 {
-  v2 = [(CSAttSiriAFTMNode *)self _createResultDict];
-  if (v2)
+  _createResultDict = [(CSAttSiriAFTMNode *)self _createResultDict];
+  if (_createResultDict)
   {
     v3 = CSLogCategorySDSD;
     if (os_log_type_enabled(CSLogCategorySDSD, OS_LOG_TYPE_DEFAULT))
@@ -47,12 +47,12 @@
       v6 = 136315394;
       v7 = "[CSAttSiriAFTMNode _reportResultToAnalytics]";
       v8 = 2112;
-      v9 = v2;
+      v9 = _createResultDict;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s Submitting AcousticFTM analytics: %@", &v6, 0x16u);
     }
 
     v4 = +[AFAnalytics sharedAnalytics];
-    v5 = [v2 copy];
+    v5 = [_createResultDict copy];
     [v4 logEventWithType:4713 context:v5];
   }
 }
@@ -62,8 +62,8 @@
   if (self->_latestResult && self->_context && [(NSArray *)self->_thresholds count])
   {
     v13[0] = @"SLAssetVersion";
-    v3 = [(CSAsset *)self->_currentAsset configVersion];
-    v14[0] = v3;
+    configVersion = [(CSAsset *)self->_currentAsset configVersion];
+    v14[0] = configVersion;
     v13[1] = @"SLScore";
     [(SLProgressiveCheckerResult *)self->_latestResult score];
     v4 = [NSNumber numberWithFloat:?];
@@ -101,23 +101,23 @@
   if (CSIsInternalBuild())
   {
     v3 = +[CSFPreferences sharedPreferences];
-    v4 = [v3 fileLoggingIsEnabled];
+    fileLoggingIsEnabled = [v3 fileLoggingIsEnabled];
 
-    if (v4)
+    if (fileLoggingIsEnabled)
     {
-      v5 = [(CSAttSiriAFTMNode *)self _createResultDict];
-      if (v5)
+      _createResultDict = [(CSAttSiriAFTMNode *)self _createResultDict];
+      if (_createResultDict)
       {
         v6 = +[NSFileManager defaultManager];
         v7 = +[CSFPreferences sharedPreferences];
-        v8 = [v7 voiceTriggerAudioLogDirectory];
+        voiceTriggerAudioLogDirectory = [v7 voiceTriggerAudioLogDirectory];
 
-        if ([v6 fileExistsAtPath:v8])
+        if ([v6 fileExistsAtPath:voiceTriggerAudioLogDirectory])
         {
           v9 = [(NSString *)self->_mhId stringByAppendingString:@"-SL.json"];
-          v10 = [v8 stringByAppendingPathComponent:v9];
+          v10 = [voiceTriggerAudioLogDirectory stringByAppendingPathComponent:v9];
           v18 = 0;
-          v11 = [NSJSONSerialization dataWithJSONObject:v5 options:3 error:&v18];
+          v11 = [NSJSONSerialization dataWithJSONObject:_createResultDict options:3 error:&v18];
           v12 = v18;
           if (v12)
           {
@@ -125,11 +125,11 @@
             if (os_log_type_enabled(CSLogCategorySDSD, OS_LOG_TYPE_DEFAULT))
             {
               v14 = v13;
-              v15 = [v12 localizedDescription];
+              localizedDescription = [v12 localizedDescription];
               *buf = 136315394;
               v20 = "[CSAttSiriAFTMNode _logResultToVTDirectory]";
               v21 = 2114;
-              v22 = v15;
+              v22 = localizedDescription;
               _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s Error writing out AcousticSL info meta: %{public}@", buf, 0x16u);
             }
           }
@@ -165,7 +165,7 @@
   }
 }
 
-- (void)_logAFTMEndMsgWithScore:(float)a3 analyzedSamples:(unint64_t)a4
+- (void)_logAFTMEndMsgWithScore:(float)score analyzedSamples:(unint64_t)samples
 {
   if (self->_mhId)
   {
@@ -174,10 +174,10 @@
     v9 = [v7 initWithNSUUID:v8];
 
     v10 = objc_alloc_init(MHSchemaMHAcousticFalseTriggerMitigationScoreGenerated);
-    *&v11 = a3;
+    *&v11 = score;
     [v10 setScore:v11];
     +[CSConfig inputRecordingSampleRate];
-    [v10 setAudioDurationInNs:{+[CSFTimeUtils convertSampleCountToNs:sampleRate:](CSFTimeUtils, "convertSampleCountToNs:sampleRate:", a4)}];
+    [v10 setAudioDurationInNs:{+[CSFTimeUtils convertSampleCountToNs:sampleRate:](CSFTimeUtils, "convertSampleCountToNs:sampleRate:", samples)}];
     v12 = objc_alloc_init(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext);
     [v12 setScoreGenerated:v10];
     v13 = objc_alloc_init(MHSchemaMHClientEventMetadata);
@@ -213,10 +213,10 @@
   }
 }
 
-- (void)_logAFTMStartMsg:(id)a3 taskType:(id)a4
+- (void)_logAFTMStartMsg:(id)msg taskType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  msgCopy = msg;
+  typeCopy = type;
   if (self->_mhId)
   {
     v8 = [SISchemaUUID alloc];
@@ -224,8 +224,8 @@
     v10 = [v8 initWithNSUUID:v9];
 
     v11 = objc_alloc_init(MHSchemaMHAcousticFalseTriggerMitigationStarted);
-    [v11 setModelVersion:v6];
-    if ([v7 isEqualToString:@"AcousticSLTaskTypeVoiceTrigger"])
+    [v11 setModelVersion:msgCopy];
+    if ([typeCopy isEqualToString:@"AcousticSLTaskTypeVoiceTrigger"])
     {
       v12 = 2;
     }
@@ -271,50 +271,50 @@
   }
 }
 
-- (void)analyzer:(id)a3 hasPartialResult:(id)a4
+- (void)analyzer:(id)analyzer hasPartialResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  analyzerCopy = analyzer;
+  resultCopy = result;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000E86A0;
   block[3] = &unk_100253680;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = analyzerCopy;
+  v13 = resultCopy;
+  v9 = resultCopy;
+  v10 = analyzerCopy;
   dispatch_async(queue, block);
 }
 
-- (void)analyzer:(id)a3 hasFinalResult:(id)a4
+- (void)analyzer:(id)analyzer hasFinalResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  analyzerCopy = analyzer;
+  resultCopy = result;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000E88D8;
   block[3] = &unk_100253680;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = analyzerCopy;
+  v13 = resultCopy;
+  v9 = resultCopy;
+  v10 = analyzerCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_handleAFTMResults:(id)a3
+- (void)_handleAFTMResults:(id)results
 {
-  v5 = a3;
-  if (v5)
+  resultsCopy = results;
+  if (resultsCopy)
   {
-    objc_storeStrong(&self->_latestResult, a3);
-    [v5 score];
+    objc_storeStrong(&self->_latestResult, results);
+    [resultsCopy score];
     v7 = v6;
-    v8 = [(NSArray *)self->_thresholds firstObject];
-    [v8 floatValue];
+    firstObject = [(NSArray *)self->_thresholds firstObject];
+    [firstObject floatValue];
     v10 = v9;
     v11 = v7 < v9;
 
@@ -324,7 +324,7 @@
       if (os_log_type_enabled(CSLogCategorySDSD, OS_LOG_TYPE_DEFAULT))
       {
         v13 = v12;
-        [v5 score];
+        [resultsCopy score];
         v15 = v14;
         v16 = [(NSArray *)self->_thresholds objectAtIndexedSubscript:0];
         [v16 floatValue];
@@ -376,9 +376,9 @@
 
     [(SLProgressiveCheckerResult *)self->_latestResult score];
     v26 = v25;
-    v27 = [(SLProgressiveCheckerResult *)self->_latestResult analyzedSamples];
+    analyzedSamples = [(SLProgressiveCheckerResult *)self->_latestResult analyzedSamples];
     LODWORD(v28) = v26;
-    [(CSAttSiriAFTMNode *)self _logAFTMEndMsgWithScore:v27 analyzedSamples:v28];
+    [(CSAttSiriAFTMNode *)self _logAFTMEndMsgWithScore:analyzedSamples analyzedSamples:v28];
     [(CSAttSiriAFTMNode *)self _reportResultToAnalytics];
     [(CSAttSiriAFTMNode *)self _logResultToVTDirectory];
   }
@@ -395,9 +395,9 @@
   }
 }
 
-- (BOOL)_shouldHandleMitigationDecision:(BOOL)a3
+- (BOOL)_shouldHandleMitigationDecision:(BOOL)decision
 {
-  if (a3)
+  if (decision)
   {
     return ![(NSString *)self->_taskName isEqualToString:@"AcousticSLTaskTypeContConv"]&& !self->_isShadowModeEnabled && self->_makeStandaloneMitigation;
   }
@@ -422,9 +422,9 @@
   self->_sessionInProgress = 0;
 }
 
-- (void)_addAudio:(id)a3
+- (void)_addAudio:(id)audio
 {
-  v4 = a3;
+  audioCopy = audio;
   if (self->_sessionInProgress)
   {
     v5 = qword_10029E340;
@@ -437,7 +437,7 @@
         v10 = 136315650;
         v11 = "[CSAttSiriAFTMNode _addAudio:]";
         v12 = 1026;
-        v13 = [v4 numSamples];
+        numSamples = [audioCopy numSamples];
         v14 = 2050;
         v15 = qword_10029E340;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s CSAcousticProxy has received %{public}d samples, heartbeat = %{public}lld", &v10, 0x1Cu);
@@ -448,22 +448,22 @@
 
     qword_10029E340 = v5 + 1;
     acousticAnalyzer = self->_acousticAnalyzer;
-    v9 = [v4 dataForChannel:0];
+    v9 = [audioCopy dataForChannel:0];
     [(SLProgressiveCheckerAnalyzer *)acousticAnalyzer addAudio:v9];
   }
 }
 
-- (void)_startRequestWithContext:(id)a3 withVtei:(id)a4 withRequestId:(id)a5 completion:(id)a6
+- (void)_startRequestWithContext:(id)context withVtei:(id)vtei withRequestId:(id)id completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  contextCopy = context;
+  vteiCopy = vtei;
+  idCopy = id;
+  completionCopy = completion;
   v15 = CSLogCategorySDSD;
   if (os_log_type_enabled(CSLogCategorySDSD, OS_LOG_TYPE_DEFAULT))
   {
     v16 = v15;
-    v17 = +[CSAudioRecordContext recordTypeString:](CSAudioRecordContext, "recordTypeString:", [v11 type]);
+    v17 = +[CSAudioRecordContext recordTypeString:](CSAudioRecordContext, "recordTypeString:", [contextCopy type]);
     supportedRecordType = self->_supportedRecordType;
     taskName = self->_taskName;
     *buf = 136315906;
@@ -497,7 +497,7 @@
   if (self->_currentAsset)
   {
     v21 = self->_supportedRecordType;
-    if ((v21 & (1 << [v11 type])) != 0)
+    if ((v21 & (1 << [contextCopy type])) != 0)
     {
       v22 = [SLProgressiveCheckerAnalyzer alloc];
       configFile = self->_configFile;
@@ -517,8 +517,8 @@
           v29 = 0;
         }
 
-        v30 = [CSUtils getInputoriginFromRecordType:v11 withAsset:self->_currentAsset, v29];
-        v46 = v13;
+        v30 = [CSUtils getInputoriginFromRecordType:contextCopy withAsset:self->_currentAsset, v29];
+        v46 = idCopy;
         v44 = v30;
         if ([v30 unsignedIntegerValue])
         {
@@ -552,9 +552,9 @@
         v35 = [NSNumber numberWithUnsignedInteger:v43];
         [v33 setObject:v35 forKey:kSLAudioSourceOption];
 
-        if (v12)
+        if (vteiCopy)
         {
-          [v33 setObject:v12 forKey:kSLVoiceTriggerEventInfo];
+          [v33 setObject:vteiCopy forKey:kSLVoiceTriggerEventInfo];
         }
 
         v47 = 0;
@@ -568,8 +568,8 @@
           latestResult = self->_latestResult;
           self->_latestResult = 0;
 
-          objc_storeStrong(&self->_context, a3);
-          objc_storeStrong(&self->_requestId, a5);
+          objc_storeStrong(&self->_context, context);
+          objc_storeStrong(&self->_requestId, id);
           v39 = CSLogCategorySDSD;
           if (os_log_type_enabled(CSLogCategorySDSD, OS_LOG_TYPE_DEFAULT))
           {
@@ -583,12 +583,12 @@
             _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "%s Created SLProgressiveCheckerAnalyzer %{public}@ with context %{public}@", buf, 0x20u);
           }
 
-          v41 = [(CSAsset *)self->_currentAsset configVersion];
-          [(CSAttSiriAFTMNode *)self _logAFTMStartMsg:v41 taskType:self->_taskName];
+          configVersion = [(CSAsset *)self->_currentAsset configVersion];
+          [(CSAttSiriAFTMNode *)self _logAFTMStartMsg:configVersion taskType:self->_taskName];
 
-          if (v14)
+          if (completionCopy)
           {
-            v14[2](v14, 1, 0);
+            completionCopy[2](completionCopy, 1, 0);
           }
 
           goto LABEL_34;
@@ -602,21 +602,21 @@
           v51 = 2114;
           v52 = v25;
           _os_log_error_impl(&_mh_execute_header, v42, OS_LOG_TYPE_ERROR, "%s Unable to create progressive checker context with error:%{public}@", buf, 0x16u);
-          if (!v14)
+          if (!completionCopy)
           {
             goto LABEL_34;
           }
         }
 
-        else if (!v14)
+        else if (!completionCopy)
         {
 LABEL_34:
 
-          v13 = v46;
+          idCopy = v46;
           goto LABEL_35;
         }
 
-        (v14)[2](v14, 0, v25);
+        (completionCopy)[2](completionCopy, 0, v25);
         goto LABEL_34;
       }
 
@@ -628,20 +628,20 @@ LABEL_34:
         v51 = 2114;
         v52 = v25;
         _os_log_error_impl(&_mh_execute_header, v32, OS_LOG_TYPE_ERROR, "%s Unable to create progressive checker with error:%{public}@", buf, 0x16u);
-        if (!v14)
+        if (!completionCopy)
         {
           goto LABEL_35;
         }
       }
 
-      else if (!v14)
+      else if (!completionCopy)
       {
 LABEL_35:
 
         goto LABEL_36;
       }
 
-      (v14)[2](v14, 0, v25);
+      (completionCopy)[2](completionCopy, 0, v25);
       goto LABEL_35;
     }
   }
@@ -649,36 +649,36 @@ LABEL_35:
 LABEL_36:
 }
 
-- (void)_setAsset:(id)a3 forTask:(id)a4
+- (void)_setAsset:(id)asset forTask:(id)task
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_currentAsset, a3);
-  objc_storeStrong(&self->_taskName, a4);
-  if ([v8 isEqualToString:@"AcousticSLTaskTypeVoiceTrigger"])
+  assetCopy = asset;
+  taskCopy = task;
+  objc_storeStrong(&self->_currentAsset, asset);
+  objc_storeStrong(&self->_taskName, task);
+  if ([taskCopy isEqualToString:@"AcousticSLTaskTypeVoiceTrigger"])
   {
-    v9 = [v7 progCheckerConfigFile];
+    progCheckerConfigFile = [assetCopy progCheckerConfigFile];
     configFile = self->_configFile;
-    self->_configFile = v9;
+    self->_configFile = progCheckerConfigFile;
 
-    self->_supportedRecordType = [v7 supportedInputOrigins];
-    v11 = [v7 checkerThresholds];
+    self->_supportedRecordType = [assetCopy supportedInputOrigins];
+    checkerThresholds = [assetCopy checkerThresholds];
     thresholds = self->_thresholds;
-    self->_thresholds = v11;
+    self->_thresholds = checkerThresholds;
 
-    self->_isShadowModeEnabled = [v7 progCheckerShadowMode];
+    self->_isShadowModeEnabled = [assetCopy progCheckerShadowMode];
   }
 
-  else if ([v8 isEqualToString:@"AcousticSLTaskTypeContConv"])
+  else if ([taskCopy isEqualToString:@"AcousticSLTaskTypeContConv"])
   {
-    v13 = [v7 contConvConfigFile];
+    contConvConfigFile = [assetCopy contConvConfigFile];
     v14 = self->_configFile;
-    self->_configFile = v13;
+    self->_configFile = contConvConfigFile;
 
     self->_supportedRecordType = -1;
-    v15 = [v7 contConvThresholds];
+    contConvThresholds = [assetCopy contConvThresholds];
     v16 = self->_thresholds;
-    self->_thresholds = v15;
+    self->_thresholds = contConvThresholds;
 
     self->_isShadowModeEnabled = 1;
   }
@@ -694,7 +694,7 @@ LABEL_36:
       v26 = 2114;
       v27 = v17;
       v28 = 2114;
-      v29 = v8;
+      v29 = taskCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%s Reading config from: %{public}@ for task %{public}@", &v24, 0x20u);
       v18 = CSLogCategorySDSD;
     }
@@ -742,7 +742,7 @@ LABEL_36:
       v26 = 2114;
       v27 = v17;
       v28 = 2114;
-      v29 = v8;
+      v29 = taskCopy;
       _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%s Invalid FTM config read from configFile %{public}@ for task %{public}@", &v24, 0x20u);
     }
 
@@ -751,7 +751,7 @@ LABEL_36:
   }
 }
 
-- (void)attSiriAudioSrcNodeDidStop:(id)a3
+- (void)attSiriAudioSrcNodeDidStop:(id)stop
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -762,17 +762,17 @@ LABEL_36:
   dispatch_async(queue, block);
 }
 
-- (void)attSiriAudioSrcNodeLPCMRecordBufferAvailable:(id)a3 audioChunk:(id)a4
+- (void)attSiriAudioSrcNodeLPCMRecordBufferAvailable:(id)available audioChunk:(id)chunk
 {
-  v5 = a4;
+  chunkCopy = chunk;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000E9A10;
   v8[3] = &unk_100253C48;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = chunkCopy;
+  v7 = chunkCopy;
   dispatch_async(queue, v8);
 }
 
@@ -787,58 +787,58 @@ LABEL_36:
   dispatch_async(queue, block);
 }
 
-- (void)addAudio:(id)a3
+- (void)addAudio:(id)audio
 {
-  v4 = a3;
+  audioCopy = audio;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000E9B34;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = audioCopy;
+  v6 = audioCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)startRequestWithContext:(id)a3 withVtei:(id)a4 taskType:(id)a5 withRequestId:(id)a6 completion:(id)a7
+- (void)startRequestWithContext:(id)context withVtei:(id)vtei taskType:(id)type withRequestId:(id)id completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  contextCopy = context;
+  vteiCopy = vtei;
+  typeCopy = type;
+  idCopy = id;
+  completionCopy = completion;
   queue = self->_queue;
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_1000E9C78;
   v23[3] = &unk_100252CD0;
   v23[4] = self;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
+  v24 = contextCopy;
+  v25 = vteiCopy;
+  v26 = typeCopy;
+  v27 = idCopy;
+  v28 = completionCopy;
+  v18 = completionCopy;
+  v19 = idCopy;
+  v20 = typeCopy;
+  v21 = vteiCopy;
+  v22 = contextCopy;
   dispatch_async(queue, v23);
 }
 
-- (void)_startRequestWithContext:(id)a3 withVtei:(id)a4 withVTAssets:(id)a5 taskType:(id)a6 withRequestId:(id)a7 completion:(id)a8
+- (void)_startRequestWithContext:(id)context withVtei:(id)vtei withVTAssets:(id)assets taskType:(id)type withRequestId:(id)id completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if ([v14 isVoiceTriggered] & 1) != 0 || (objc_msgSend(v14, "isContinuousConversation"))
+  contextCopy = context;
+  vteiCopy = vtei;
+  assetsCopy = assets;
+  typeCopy = type;
+  idCopy = id;
+  completionCopy = completion;
+  if ([contextCopy isVoiceTriggered] & 1) != 0 || (objc_msgSend(contextCopy, "isContinuousConversation"))
   {
-    [(CSAttSiriAFTMNode *)self _setAsset:v16 forTask:v17];
-    [(CSAttSiriAFTMNode *)self _startRequestWithContext:v14 withVtei:v15 withRequestId:v18 completion:v19];
+    [(CSAttSiriAFTMNode *)self _setAsset:assetsCopy forTask:typeCopy];
+    [(CSAttSiriAFTMNode *)self _startRequestWithContext:contextCopy withVtei:vteiCopy withRequestId:idCopy completion:completionCopy];
   }
 
   else
@@ -850,54 +850,54 @@ LABEL_36:
       v22 = 136315394;
       v23 = "[CSAttSiriAFTMNode _startRequestWithContext:withVtei:withVTAssets:taskType:withRequestId:completion:]";
       v24 = 2048;
-      v25 = [v14 type];
+      type = [contextCopy type];
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%s Don't run AFTM for recordType: %lld", &v22, 0x16u);
     }
 
-    (*(v19 + 2))(v19, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)startRequestWithContext:(id)a3 withVtei:(id)a4 withVTAssets:(id)a5 taskType:(id)a6 withRequestId:(id)a7 completion:(id)a8
+- (void)startRequestWithContext:(id)context withVtei:(id)vtei withVTAssets:(id)assets taskType:(id)type withRequestId:(id)id completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  contextCopy = context;
+  vteiCopy = vtei;
+  assetsCopy = assets;
+  typeCopy = type;
+  idCopy = id;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000EA0C0;
   block[3] = &unk_100251540;
   block[4] = self;
-  v28 = v14;
-  v29 = v15;
-  v30 = v16;
-  v31 = v17;
-  v32 = v18;
-  v33 = v19;
-  v21 = v19;
-  v22 = v18;
-  v23 = v17;
-  v24 = v16;
-  v25 = v15;
-  v26 = v14;
+  v28 = contextCopy;
+  v29 = vteiCopy;
+  v30 = assetsCopy;
+  v31 = typeCopy;
+  v32 = idCopy;
+  v33 = completionCopy;
+  v21 = completionCopy;
+  v22 = idCopy;
+  v23 = typeCopy;
+  v24 = assetsCopy;
+  v25 = vteiCopy;
+  v26 = contextCopy;
   dispatch_async(queue, block);
 }
 
-- (void)setPrefetchedAsset:(id)a3
+- (void)setPrefetchedAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000EA170;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assetCopy;
+  v6 = assetCopy;
   dispatch_async(queue, v7);
 }
 
@@ -912,14 +912,14 @@ LABEL_36:
   dispatch_async(queue, block);
 }
 
-- (void)addReceiver:(id)a3
+- (void)addReceiver:(id)receiver
 {
-  v4 = a3;
-  if (![(NSHashTable *)self->_receivers containsObject:v4])
+  receiverCopy = receiver;
+  if (![(NSHashTable *)self->_receivers containsObject:receiverCopy])
   {
-    if ([v4 conformsToProtocol:&OBJC_PROTOCOL___CSAttSiriAFTMNodeDelegate])
+    if ([receiverCopy conformsToProtocol:&OBJC_PROTOCOL___CSAttSiriAFTMNodeDelegate])
     {
-      [(NSHashTable *)self->_receivers addObject:v4];
+      [(NSHashTable *)self->_receivers addObject:receiverCopy];
     }
 
     else
@@ -930,21 +930,21 @@ LABEL_36:
         v6 = 136315394;
         v7 = "[CSAttSiriAFTMNode addReceiver:]";
         v8 = 2112;
-        v9 = v4;
+        v9 = receiverCopy;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s Unsupported receiver: %@", &v6, 0x16u);
       }
     }
   }
 }
 
-- (CSAttSiriAFTMNode)initWithAttSiriController:(id)a3
+- (CSAttSiriAFTMNode)initWithAttSiriController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [(CSAttSiriAFTMNode *)self init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_attSiriController, v4);
+    objc_storeWeak(&v5->_attSiriController, controllerCopy);
   }
 
   return v6;
@@ -954,7 +954,7 @@ LABEL_36:
 {
   if ((+[CSUtils isDarwinOS]& 1) != 0)
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -991,10 +991,10 @@ LABEL_36:
     }
 
     self = v5;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

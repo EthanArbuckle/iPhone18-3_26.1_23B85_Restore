@@ -1,6 +1,6 @@
 @interface TTRIBoardEditableColumnHeader
 + (Class)containerViewClass;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
 - (void)invalidateIntrinsicContentSize;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
@@ -18,18 +18,18 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_100603BD0();
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UICellConfigurationState();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_100603EB8();
 
   (*(v5 + 8))(v7, v4);
@@ -50,7 +50,7 @@
   v8[2] = sub_100026440;
   v8[3] = &unk_1007336E8;
   v6 = _Block_copy(v8);
-  v7 = self;
+  selfCopy = self;
 
   [v3 performWithoutAnimation:v6];
   _Block_release(v6);
@@ -77,7 +77,7 @@
   v8[2] = sub_100026440;
   v8[3] = &unk_100733670;
   v6 = _Block_copy(v8);
-  v7 = self;
+  selfCopy = self;
 
   [v3 performWithoutAnimation:v6];
   _Block_release(v6);

@@ -3,7 +3,7 @@
 - (CGSize)imageSize;
 - (id)entryLocationFromParameters;
 - (void)deleteEntry;
-- (void)setImageSize:(CGSize)a3;
+- (void)setImageSize:(CGSize)size;
 @end
 
 @implementation BICMemoryImageEntry
@@ -20,11 +20,11 @@
   return result;
 }
 
-- (void)setImageSize:(CGSize)a3
+- (void)setImageSize:(CGSize)size
 {
-  height = a3.height;
-  *&a3.width = a3.width;
-  [(BICMemoryImageEntry *)self setWidth:a3.width];
+  height = size.height;
+  *&size.width = size.width;
+  [(BICMemoryImageEntry *)self setWidth:size.width];
 
   *&v5 = height;
   [(BICMemoryImageEntry *)self setHeight:v5];
@@ -32,30 +32,30 @@
 
 - (void)deleteEntry
 {
-  v3 = [(BICMemoryImageEntry *)self imageSet];
-  [v3 deleteEntry:self];
+  imageSet = [(BICMemoryImageEntry *)self imageSet];
+  [imageSet deleteEntry:self];
 }
 
 - (id)entryLocationFromParameters
 {
-  v3 = [(BICMemoryImageEntry *)self imageSet];
-  v4 = [v3 identifier];
-  v5 = [(BICMemoryImageEntry *)self level];
+  imageSet = [(BICMemoryImageEntry *)self imageSet];
+  identifier = [imageSet identifier];
+  level = [(BICMemoryImageEntry *)self level];
   [(BICMemoryImageEntry *)self width];
   v7 = v6;
   [(BICMemoryImageEntry *)self height];
-  v9 = [NSString stringWithFormat:@"%@|%d|%d|%d|%hd", v4, v5, v7, v8, [(BICMemoryImageEntry *)self processingOptions]];
+  v9 = [NSString stringWithFormat:@"%@|%d|%d|%d|%hd", identifier, level, v7, v8, [(BICMemoryImageEntry *)self processingOptions]];
 
   return v9;
 }
 
 - (BOOL)isExpired
 {
-  v3 = [(BICMemoryImageEntry *)self expiry];
-  if (v3)
+  expiry = [(BICMemoryImageEntry *)self expiry];
+  if (expiry)
   {
-    v4 = [(BICMemoryImageEntry *)self expiry];
-    [v4 timeIntervalSinceNow];
+    expiry2 = [(BICMemoryImageEntry *)self expiry];
+    [expiry2 timeIntervalSinceNow];
     v6 = v5 < 0.0;
   }
 

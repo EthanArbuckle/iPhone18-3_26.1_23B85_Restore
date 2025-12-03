@@ -4,7 +4,7 @@
 - (MPSMatrixNeuronGradient)initWithDevice:(id)device;
 - (void)dealloc;
 - (void)encodeToCommandBuffer:(id)commandBuffer gradientMatrix:(MPSMatrix *)gradientMatrix inputMatrix:(MPSMatrix *)inputMatrix biasVector:(MPSVector *)biasVector resultGradientForDataMatrix:(MPSMatrix *)resultGradientForDataMatrix resultGradientForBiasVector:(MPSVector *)resultGradientForBiasVector;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setNeuronToPReLUWithParametersA:(NSData *)A;
 - (void)setNeuronType:(MPSCNNNeuronType)neuronType parameterA:(float)parameterA parameterB:(float)parameterB parameterC:(float)parameterC;
 @end
@@ -298,7 +298,7 @@ LABEL_37:
           v541 = 3221225472;
           v542 = sub_239D30D48;
           v543 = &unk_278B28F28;
-          v544 = self;
+          selfCopy = self;
           objc_msgSend_addCompletedHandler_(v533, v505, &v540, v506, v507, v508, v509, v510);
         }
       }
@@ -568,22 +568,22 @@ LABEL_17:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v96.receiver = self;
   v96.super_class = MPSMatrixNeuronGradient;
   [(MPSMatrixBinaryKernel *)&v96 encodeWithCoder:?];
-  objc_msgSend_encodeDouble_forKey_(a3, v5, @"MPSMatrixNeuronGradient._alpha;", v6, v7, v8, v9, v10, self->_alpha);
-  objc_msgSend_encodeInt64_forKey_(a3, v11, self->_sourceNumberOfFeatureVectors, @"MPSMatrixNeuronGradient._sourceNumberOfFeatureVectors;", v12, v13, v14, v15);
-  objc_msgSend_encodeInt64_forKey_(a3, v16, self->_sourceInputFeatureChannels, @"MPSMatrixNeuronGradient._sourceInputFeatureChannels;", v17, v18, v19, v20);
-  objc_msgSend_encodeInt32_forKey_(a3, v21, self->_neuronType, @"MPSMatrixNeuronGradient._neuronType;", v22, v23, v24, v25);
+  objc_msgSend_encodeDouble_forKey_(coder, v5, @"MPSMatrixNeuronGradient._alpha;", v6, v7, v8, v9, v10, self->_alpha);
+  objc_msgSend_encodeInt64_forKey_(coder, v11, self->_sourceNumberOfFeatureVectors, @"MPSMatrixNeuronGradient._sourceNumberOfFeatureVectors;", v12, v13, v14, v15);
+  objc_msgSend_encodeInt64_forKey_(coder, v16, self->_sourceInputFeatureChannels, @"MPSMatrixNeuronGradient._sourceInputFeatureChannels;", v17, v18, v19, v20);
+  objc_msgSend_encodeInt32_forKey_(coder, v21, self->_neuronType, @"MPSMatrixNeuronGradient._neuronType;", v22, v23, v24, v25);
   *&v26 = self->_neuronA;
-  objc_msgSend_encodeFloat_forKey_(a3, v27, @"MPSMatrixNeuronGradient._neuronA;", v28, v29, v30, v31, v32, v26);
+  objc_msgSend_encodeFloat_forKey_(coder, v27, @"MPSMatrixNeuronGradient._neuronA;", v28, v29, v30, v31, v32, v26);
   *&v33 = self->_neuronB;
-  objc_msgSend_encodeFloat_forKey_(a3, v34, @"MPSMatrixNeuronGradient._neuronB;", v35, v36, v37, v38, v39, v33);
+  objc_msgSend_encodeFloat_forKey_(coder, v34, @"MPSMatrixNeuronGradient._neuronB;", v35, v36, v37, v38, v39, v33);
   *&v40 = self->_neuronC;
-  objc_msgSend_encodeFloat_forKey_(a3, v41, @"MPSMatrixNeuronGradient._neuronC;", v42, v43, v44, v45, v46, v40);
+  objc_msgSend_encodeFloat_forKey_(coder, v41, @"MPSMatrixNeuronGradient._neuronC;", v42, v43, v44, v45, v46, v40);
   if (self->_neuronType == 10)
   {
     neuronAParamBuf = self->neuronAParamBuf;
@@ -591,21 +591,21 @@ LABEL_17:
     {
       v55 = objc_msgSend_length(self->neuronAParamBuf, v47, v48, v49, v50, v51, v52, v53);
       v63 = objc_msgSend_contents(neuronAParamBuf, v56, v57, v58, v59, v60, v61, v62);
-      objc_msgSend_encodeBool_forKey_(a3, v64, v63 != 0, @"MPSMatrixNeuronGradient._perChannelNeuronA;", v65, v66, v67, v68);
+      objc_msgSend_encodeBool_forKey_(coder, v64, v63 != 0, @"MPSMatrixNeuronGradient._perChannelNeuronA;", v65, v66, v67, v68);
       if (v63)
       {
         v69 = objc_alloc(MEMORY[0x277CCACA8]);
         v76 = objc_msgSend_initWithFormat_(v69, v70, @"%@%@", v71, v72, v73, v74, v75, @"MPSMatrixNeuronGradient._perChannelNeuronA;", @".length");
         v77 = objc_alloc(MEMORY[0x277CCACA8]);
         v84 = objc_msgSend_initWithFormat_(v77, v78, @"%@%@", v79, v80, v81, v82, v83, @"MPSMatrixNeuronGradient._perChannelNeuronA;", @".data");
-        objc_msgSend_encodeInt64_forKey_(a3, v85, v55 >> 2, v76, v86, v87, v88, v89);
+        objc_msgSend_encodeInt64_forKey_(coder, v85, v55 >> 2, v76, v86, v87, v88, v89);
 
         v90 = malloc_type_malloc(v55 & 0xFFFFFFFFFFFFFFFCLL, 0x100004052888210uLL);
         if (v90)
         {
           v91 = v90;
           MPSCopyToFromNetworkByteOrder32();
-          objc_msgSend_encodeBytes_length_forKey_(a3, v92, v91, v55 & 0xFFFFFFFFFFFFFFFCLL, v84, v93, v94, v95);
+          objc_msgSend_encodeBytes_length_forKey_(coder, v92, v91, v55 & 0xFFFFFFFFFFFFFFFCLL, v84, v93, v94, v95);
           free(v91);
         }
       }

@@ -1,6 +1,6 @@
 @interface AuthorizationServiceServer.ClientConnection
 - (void)dealloc;
-- (void)subscribeToDescriptorCollection:(id)a3;
+- (void)subscribeToDescriptorCollection:(id)collection;
 @end
 
 @implementation AuthorizationServiceServer.ClientConnection
@@ -10,14 +10,14 @@
   ObjectType = swift_getObjectType();
   if (*(&self->super.isa + OBJC_IVAR____TtCC18SmartStackSettings26AuthorizationServiceServer16ClientConnection_subscribeTask))
   {
-    v4 = self;
+    selfCopy = self;
 
     sub_26A09E074();
   }
 
   else
   {
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6.receiver = self;
@@ -25,7 +25,7 @@
   [(AuthorizationServiceServer.ClientConnection *)&v6 dealloc];
 }
 
-- (void)subscribeToDescriptorCollection:(id)a3
+- (void)subscribeToDescriptorCollection:(id)collection
 {
   if (qword_280369100 != -1)
   {
@@ -40,10 +40,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(collection);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
-  v7 = self;
+  selfCopy = self;
   sub_26A08866C(sub_26A08ADD0, v6);
 }
 

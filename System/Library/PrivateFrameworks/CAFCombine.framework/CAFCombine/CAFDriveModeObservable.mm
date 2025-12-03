@@ -1,19 +1,19 @@
 @interface CAFDriveModeObservable
 - (NSString)description;
-- (void)driveModeService:(id)a3 didUpdateHidden:(BOOL)a4;
-- (void)modeItemsService:(id)a3 didUpdateCurrentIndex:(unsigned int)a4;
-- (void)modeItemsService:(id)a3 didUpdateDefaultIndex:(unsigned int)a4;
-- (void)modeItemsService:(id)a3 didUpdateIdentifiers:(id)a4;
-- (void)serviceDidFinishGroupUpdate:(id)a3;
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5;
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
+- (void)driveModeService:(id)service didUpdateHidden:(BOOL)hidden;
+- (void)modeItemsService:(id)service didUpdateCurrentIndex:(unsigned int)index;
+- (void)modeItemsService:(id)service didUpdateDefaultIndex:(unsigned int)index;
+- (void)modeItemsService:(id)service didUpdateIdentifiers:(id)identifiers;
+- (void)serviceDidFinishGroupUpdate:(id)update;
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate;
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values;
 @end
 
 @implementation CAFDriveModeObservable
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CAFDriveModeObservable.description.getter();
   v5 = v4;
 
@@ -22,54 +22,54 @@
   return v6;
 }
 
-- (void)modeItemsService:(id)a3 didUpdateIdentifiers:(id)a4
+- (void)modeItemsService:(id)service didUpdateIdentifiers:(id)identifiers
 {
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = a3;
-  v7 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFDriveModeObservable.modeItemsService(_:didUpdateIdentifiers:)();
 }
 
-- (void)modeItemsService:(id)a3 didUpdateCurrentIndex:(unsigned int)a4
+- (void)modeItemsService:(id)service didUpdateCurrentIndex:(unsigned int)index
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFDriveModeObservable.modeItemsService(_:didUpdateCurrentIndex:)();
 }
 
-- (void)modeItemsService:(id)a3 didUpdateDefaultIndex:(unsigned int)a4
+- (void)modeItemsService:(id)service didUpdateDefaultIndex:(unsigned int)index
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFDriveModeObservable.modeItemsService(_:didUpdateDefaultIndex:)();
 }
 
-- (void)driveModeService:(id)a3 didUpdateHidden:(BOOL)a4
+- (void)driveModeService:(id)service didUpdateHidden:(BOOL)hidden
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFDriveModeObservable.driveModeService(_:didUpdateHidden:)();
 }
 
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = self;
-  CAFDriveModeObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(v11, v10, a5);
+  updateCopy = update;
+  characteristicCopy = characteristic;
+  selfCopy = self;
+  CAFDriveModeObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(selfCopy, v10, groupUpdate);
 }
 
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  v6 = a3;
-  v7 = self;
-  CAFDriveModeObservable.serviceDidUpdate(_:receivedAllValues:)(v7, a4);
+  updateCopy = update;
+  selfCopy = self;
+  CAFDriveModeObservable.serviceDidUpdate(_:receivedAllValues:)(selfCopy, values);
 }
 
-- (void)serviceDidFinishGroupUpdate:(id)a3
+- (void)serviceDidFinishGroupUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
+  updateCopy = update;
+  selfCopy = self;
   CAFDriveModeObservable.serviceDidFinishGroupUpdate(_:)();
 }
 

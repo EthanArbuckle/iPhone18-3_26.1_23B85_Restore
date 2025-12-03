@@ -1,25 +1,25 @@
 @interface DADeviceResolver
 - (DADeviceResolver)init;
-- (id)descriptionWithLevel:(int)a3;
-- (void)_addEndpoint:(id)a3;
+- (id)descriptionWithLevel:(int)level;
+- (void)_addEndpoint:(id)endpoint;
 - (void)_ensureInitialized;
 - (void)_evaluateEndpoints;
-- (void)_groupEndpoint:(id)a3 matchedEndpoint:(id)a4;
+- (void)_groupEndpoint:(id)endpoint matchedEndpoint:(id)matchedEndpoint;
 - (void)_invalidated;
-- (void)_removeEndpoint:(id)a3;
-- (void)_reportDeviceWithSoloEndpoint:(id)a3;
-- (void)_reportEvent:(id)a3;
-- (void)_reportEventType:(int64_t)a3;
-- (void)_selectEndpoint:(id)a3;
-- (void)_startResolvingBonjourFullName:(const char *)a3 interfaceIndex:(unsigned int)a4 endpoint:(id)a5;
-- (void)_startResolvingBonjourName:(const char *)a3 type:(const char *)a4 interfaceIndex:(unsigned int)a5 endpoint:(id)a6;
-- (void)_startResolvingEndpoint:(id)a3;
-- (void)_startResolvingHostname:(const char *)a3 interfaceIndex:(unsigned int)a4 endpoint:(id)a5;
-- (void)_updateSelectedEndpoint:(id)a3;
-- (void)addEndpoint:(id)a3;
+- (void)_removeEndpoint:(id)endpoint;
+- (void)_reportDeviceWithSoloEndpoint:(id)endpoint;
+- (void)_reportEvent:(id)event;
+- (void)_reportEventType:(int64_t)type;
+- (void)_selectEndpoint:(id)endpoint;
+- (void)_startResolvingBonjourFullName:(const char *)name interfaceIndex:(unsigned int)index endpoint:(id)endpoint;
+- (void)_startResolvingBonjourName:(const char *)name type:(const char *)type interfaceIndex:(unsigned int)index endpoint:(id)endpoint;
+- (void)_startResolvingEndpoint:(id)endpoint;
+- (void)_startResolvingHostname:(const char *)hostname interfaceIndex:(unsigned int)index endpoint:(id)endpoint;
+- (void)_updateSelectedEndpoint:(id)endpoint;
+- (void)addEndpoint:(id)endpoint;
 - (void)invalidate;
-- (void)removeEndpoint:(id)a3;
-- (void)selectEndpoint:(id)a3;
+- (void)removeEndpoint:(id)endpoint;
+- (void)selectEndpoint:(id)endpoint;
 @end
 
 @implementation DADeviceResolver
@@ -39,9 +39,9 @@
   return v3;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if (a3 < 0x15u)
+  if (level < 0x15u)
   {
     v12 = 0;
     v13 = &v12;
@@ -124,35 +124,35 @@ void __41__DADeviceResolver_descriptionWithLevel___block_invoke_2(uint64_t a1, v
   objc_storeStrong((v4 + 40), v5);
 }
 
-- (void)addEndpoint:(id)a3
+- (void)addEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__DADeviceResolver_addEndpoint___block_invoke;
   v7[3] = &unk_278F57CB8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = endpointCopy;
+  v6 = endpointCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_addEndpoint:(id)a3
+- (void)_addEndpoint:(id)endpoint
 {
-  v6 = a3;
+  endpointCopy = endpoint;
   [(DADeviceResolver *)self _ensureInitialized];
-  v4 = [v6 identifier];
-  if (v4)
+  identifier = [endpointCopy identifier];
+  if (identifier)
   {
-    v5 = [(NSMutableDictionary *)self->_endpoints objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_endpoints objectForKeyedSubscript:identifier];
     if (!v5)
     {
       v5 = objc_alloc_init(DAEndpoint);
-      [(NSMutableDictionary *)self->_endpoints setObject:v5 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_endpoints setObject:v5 forKeyedSubscript:identifier];
     }
 
-    [(DAEndpoint *)v5 updateWithEndpoint:v6];
+    [(DAEndpoint *)v5 updateWithEndpoint:endpointCopy];
     [(DAEndpoint *)v5 setAddTicks:mach_absolute_time()];
     if (gLogCategory_DADeviceResolver <= 30 && (gLogCategory_DADeviceResolver != -1 || _LogCategory_Initialize()))
     {
@@ -169,39 +169,39 @@ void __41__DADeviceResolver_descriptionWithLevel___block_invoke_2(uint64_t a1, v
   }
 }
 
-- (void)removeEndpoint:(id)a3
+- (void)removeEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__DADeviceResolver_removeEndpoint___block_invoke;
   v7[3] = &unk_278F57CB8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = endpointCopy;
+  v6 = endpointCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_removeEndpoint:(id)a3
+- (void)_removeEndpoint:(id)endpoint
 {
-  v15 = a3;
+  endpointCopy = endpoint;
   [(DADeviceResolver *)self _ensureInitialized];
-  v4 = [v15 identifier];
-  if (v4)
+  identifier = [endpointCopy identifier];
+  if (identifier)
   {
-    v5 = [(NSMutableDictionary *)self->_endpoints objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_endpoints objectForKeyedSubscript:identifier];
     if (v5)
     {
-      [(NSMutableDictionary *)self->_endpoints setObject:0 forKeyedSubscript:v4];
-      v6 = [v5 parentDevice];
-      v7 = v6;
-      if (v6)
+      [(NSMutableDictionary *)self->_endpoints setObject:0 forKeyedSubscript:identifier];
+      parentDevice = [v5 parentDevice];
+      v7 = parentDevice;
+      if (parentDevice)
       {
-        v8 = [v6 endpoints];
-        v9 = [v8 mutableCopy];
+        endpoints = [parentDevice endpoints];
+        v9 = [endpoints mutableCopy];
 
-        [v9 setObject:0 forKeyedSubscript:v4];
+        [v9 setObject:0 forKeyedSubscript:identifier];
         [v7 setEndpoints:v9];
         if ([v9 count])
         {
@@ -210,21 +210,21 @@ void __41__DADeviceResolver_descriptionWithLevel___block_invoke_2(uint64_t a1, v
             [DADeviceResolver _removeEndpoint:];
           }
 
-          v10 = [(DAEventDevice *)[DADeviceEvent alloc] initWithEventType:40 device:v7];
+          identifier2 = [(DAEventDevice *)[DADeviceEvent alloc] initWithEventType:40 device:v7];
           v11 = _Block_copy(self->_eventHandler);
           v12 = v11;
           if (v11)
           {
-            (v11->super.super._error)(v11, v10);
+            (v11->super.super._error)(v11, identifier2);
           }
         }
 
         else
         {
-          v10 = [v7 identifier];
-          if (v10)
+          identifier2 = [v7 identifier];
+          if (identifier2)
           {
-            [(NSMutableDictionary *)self->_devices setObject:0 forKeyedSubscript:v10];
+            [(NSMutableDictionary *)self->_devices setObject:0 forKeyedSubscript:identifier2];
           }
 
           if (gLogCategory_DADeviceResolver <= 30 && (gLogCategory_DADeviceResolver != -1 || _LogCategory_Initialize()))
@@ -250,25 +250,25 @@ void __41__DADeviceResolver_descriptionWithLevel___block_invoke_2(uint64_t a1, v
   }
 }
 
-- (void)selectEndpoint:(id)a3
+- (void)selectEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__DADeviceResolver_selectEndpoint___block_invoke;
   v7[3] = &unk_278F57CB8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = endpointCopy;
+  v6 = endpointCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_selectEndpoint:(id)a3
+- (void)_selectEndpoint:(id)endpoint
 {
-  v12 = a3;
+  endpointCopy = endpoint;
   [(DADeviceResolver *)self _ensureInitialized];
-  if (!v12)
+  if (!endpointCopy)
   {
     v9 = 0;
     v7 = 0;
@@ -281,10 +281,10 @@ LABEL_7:
         [DADeviceResolver _selectEndpoint:];
       }
 
-      v10 = [v7 persistentDictionaryRepresentation];
-      if (v10)
+      persistentDictionaryRepresentation = [v7 persistentDictionaryRepresentation];
+      if (persistentDictionaryRepresentation)
       {
-        v11 = [[DAEndpoint alloc] initWithPersistentDictionaryRepresentation:v10 error:0];
+        v11 = [[DAEndpoint alloc] initWithPersistentDictionaryRepresentation:persistentDictionaryRepresentation error:0];
       }
 
       else
@@ -303,18 +303,18 @@ LABEL_7:
     goto LABEL_15;
   }
 
-  v4 = [v12 identifier];
-  if (v4)
+  identifier = [endpointCopy identifier];
+  if (identifier)
   {
-    v5 = v4;
-    v6 = [(NSMutableDictionary *)self->_endpoints objectForKeyedSubscript:v4];
+    v5 = identifier;
+    v6 = [(NSMutableDictionary *)self->_endpoints objectForKeyedSubscript:identifier];
     if (v6)
     {
       v7 = v6;
-      v8 = [v6 protocolTypeString];
-      if (v8)
+      protocolTypeString = [v6 protocolTypeString];
+      if (protocolTypeString)
       {
-        v9 = v8;
+        v9 = protocolTypeString;
         goto LABEL_7;
       }
 
@@ -564,18 +564,18 @@ void __38__DADeviceResolver__evaluateEndpoints__block_invoke_2(uint64_t a1, void
   }
 }
 
-- (void)_groupEndpoint:(id)a3 matchedEndpoint:(id)a4
+- (void)_groupEndpoint:(id)endpoint matchedEndpoint:(id)matchedEndpoint
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 mergeMissingInfoFromEndpoint:v7];
-  [v7 mergeMissingInfoFromEndpoint:v6];
-  v8 = [v7 parentDevice];
-  if (v8)
+  endpointCopy = endpoint;
+  matchedEndpointCopy = matchedEndpoint;
+  [endpointCopy mergeMissingInfoFromEndpoint:matchedEndpointCopy];
+  [matchedEndpointCopy mergeMissingInfoFromEndpoint:endpointCopy];
+  parentDevice = [matchedEndpointCopy parentDevice];
+  if (parentDevice)
   {
-    v9 = v8;
-    v10 = [(DADevice *)v8 endpoints];
-    v11 = [v10 mutableCopy];
+    v9 = parentDevice;
+    endpoints = [(DADevice *)parentDevice endpoints];
+    v11 = [endpoints mutableCopy];
     v12 = v11;
     if (v11)
     {
@@ -587,40 +587,40 @@ void __38__DADeviceResolver__evaluateEndpoints__block_invoke_2(uint64_t a1, void
       v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
     }
 
-    v15 = v13;
+    uUIDString = v13;
 
-    v16 = [v6 identifier];
-    if (v16)
+    identifier = [endpointCopy identifier];
+    if (identifier)
     {
-      [v15 setObject:v6 forKeyedSubscript:v16];
+      [uUIDString setObject:endpointCopy forKeyedSubscript:identifier];
     }
 
-    [(DADevice *)v9 setEndpoints:v15];
+    [(DADevice *)v9 setEndpoints:uUIDString];
   }
 
   else
   {
     v9 = objc_alloc_init(DADevice);
-    v14 = [MEMORY[0x277CCAD78] UUID];
-    v15 = [v14 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
-    [(DADevice *)v9 setIdentifier:v15];
-    [v7 setParentDevice:v9];
-    v16 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v17 = [v6 identifier];
-    if (v17)
+    [(DADevice *)v9 setIdentifier:uUIDString];
+    [matchedEndpointCopy setParentDevice:v9];
+    identifier = objc_alloc_init(MEMORY[0x277CBEB38]);
+    identifier2 = [endpointCopy identifier];
+    if (identifier2)
     {
-      [v16 setObject:v6 forKeyedSubscript:v17];
+      [identifier setObject:endpointCopy forKeyedSubscript:identifier2];
     }
 
-    v18 = [v7 identifier];
+    identifier3 = [matchedEndpointCopy identifier];
 
-    if (v18)
+    if (identifier3)
     {
-      [v16 setObject:v7 forKeyedSubscript:v18];
+      [identifier setObject:matchedEndpointCopy forKeyedSubscript:identifier3];
     }
 
-    [(DADevice *)v9 setEndpoints:v16];
+    [(DADevice *)v9 setEndpoints:identifier];
     devices = self->_devices;
     if (!devices)
     {
@@ -631,17 +631,17 @@ void __38__DADeviceResolver__evaluateEndpoints__block_invoke_2(uint64_t a1, void
       devices = self->_devices;
     }
 
-    [(NSMutableDictionary *)devices setObject:v9 forKeyedSubscript:v15];
+    [(NSMutableDictionary *)devices setObject:v9 forKeyedSubscript:uUIDString];
   }
 
-  v22 = [v6 parentDevice];
-  v23 = v22;
-  if (v22)
+  parentDevice2 = [endpointCopy parentDevice];
+  v23 = parentDevice2;
+  if (parentDevice2)
   {
-    v24 = [v22 identifier];
-    if (v24)
+    identifier4 = [parentDevice2 identifier];
+    if (identifier4)
     {
-      [(NSMutableDictionary *)self->_devices setObject:0 forKeyedSubscript:v24];
+      [(NSMutableDictionary *)self->_devices setObject:0 forKeyedSubscript:identifier4];
     }
 
     if (gLogCategory_DADeviceResolver <= 30 && (gLogCategory_DADeviceResolver != -1 || _LogCategory_Initialize()))
@@ -658,9 +658,9 @@ void __38__DADeviceResolver__evaluateEndpoints__block_invoke_2(uint64_t a1, void
     }
   }
 
-  [v6 setParentDevice:v9];
-  [v6 setGrouped:1];
-  [v7 setGrouped:1];
+  [endpointCopy setParentDevice:v9];
+  [endpointCopy setGrouped:1];
+  [matchedEndpointCopy setGrouped:1];
   if (gLogCategory_DADeviceResolver <= 30 && (gLogCategory_DADeviceResolver != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -679,11 +679,11 @@ void __38__DADeviceResolver__evaluateEndpoints__block_invoke_2(uint64_t a1, void
   block[1] = 3221225472;
   block[2] = __51__DADeviceResolver__groupEndpoint_matchedEndpoint___block_invoke;
   block[3] = &unk_278F57D58;
-  v35 = v6;
-  v36 = self;
-  v37 = v7;
-  v32 = v7;
-  v33 = v6;
+  v35 = endpointCopy;
+  selfCopy = self;
+  v37 = matchedEndpointCopy;
+  v32 = matchedEndpointCopy;
+  v33 = endpointCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -951,9 +951,9 @@ LABEL_14:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reportEvent:(id)a3
+- (void)_reportEvent:(id)event
 {
-  v6 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (gLogCategory_DADeviceResolver <= 30 && (gLogCategory_DADeviceResolver != -1 || _LogCategory_Initialize()))
   {
@@ -964,30 +964,30 @@ LABEL_14:
   v5 = v4;
   if (v4)
   {
-    (*(v4 + 2))(v4, v6);
+    (*(v4 + 2))(v4, eventCopy);
   }
 }
 
-- (void)_reportEventType:(int64_t)a3
+- (void)_reportEventType:(int64_t)type
 {
-  v4 = [[DAEvent alloc] initWithEventType:a3];
+  v4 = [[DAEvent alloc] initWithEventType:type];
   [(DADeviceResolver *)self _reportEvent:v4];
 }
 
-- (void)_updateSelectedEndpoint:(id)a3
+- (void)_updateSelectedEndpoint:(id)endpoint
 {
   v96 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  endpointCopy = endpoint;
   v88 = 0;
   v89 = &v88;
   v90 = 0x2020000000;
   prefNameBasedSelect = self->_prefNameBasedSelect;
   v91 = prefNameBasedSelect;
-  v48 = v4;
-  v49 = self;
-  if (v4 && prefNameBasedSelect)
+  v48 = endpointCopy;
+  selfCopy = self;
+  if (endpointCopy && prefNameBasedSelect)
   {
-    v6 = v4;
+    v6 = endpointCopy;
     endpoints = self->_endpoints;
     v85[0] = MEMORY[0x277D85DD0];
     v85[1] = 3221225472;
@@ -999,7 +999,7 @@ LABEL_14:
     [(NSMutableDictionary *)endpoints enumerateKeysAndObjectsUsingBlock:v85];
   }
 
-  else if (!v4)
+  else if (!endpointCopy)
   {
     goto LABEL_40;
   }
@@ -1011,10 +1011,10 @@ LABEL_14:
   }
 
   v9 = v48;
-  v10 = [(NSString *)v9 protocolTypeString];
-  v11 = [MEMORY[0x277CBEB18] array];
+  protocolTypeString = [(NSString *)v9 protocolTypeString];
+  array = [MEMORY[0x277CBEB18] array];
   p_selectedProtocolStr = &self->_selectedProtocolStr;
-  if ([(NSString *)self->_selectedProtocolStr isEqualToString:v10])
+  if ([(NSString *)self->_selectedProtocolStr isEqualToString:protocolTypeString])
   {
     if (gLogCategory_DADeviceResolver <= 30 && (gLogCategory_DADeviceResolver != -1 || _LogCategory_Initialize()))
     {
@@ -1043,8 +1043,8 @@ LABEL_14:
           v18 = *(*(&v81 + 1) + 8 * i);
           if (v15)
           {
-            v19 = [*(*(&v81 + 1) + 8 * i) persistentDictionaryRepresentation];
-            [v11 addObject:v19];
+            persistentDictionaryRepresentation = [*(*(&v81 + 1) + 8 * i) persistentDictionaryRepresentation];
+            [array addObject:persistentDictionaryRepresentation];
           }
 
           else if ([*(*(&v81 + 1) + 8 * i) matchesSelectedEndpoint:v9 allowName:*(v89 + 24)])
@@ -1054,8 +1054,8 @@ LABEL_14:
 
           else
           {
-            v20 = [v18 persistentDictionaryRepresentation];
-            [v11 addObject:v20];
+            persistentDictionaryRepresentation2 = [v18 persistentDictionaryRepresentation];
+            [array addObject:persistentDictionaryRepresentation2];
 
             v15 = 0;
           }
@@ -1071,12 +1071,12 @@ LABEL_14:
         if (gLogCategory_DADeviceResolver <= 30 && (gLogCategory_DADeviceResolver != -1 || _LogCategory_Initialize()))
         {
           LogPrintF();
-          [(NSMutableArray *)v49->_selectedEndpoints removeObject:v15, v15, v9];
+          [(NSMutableArray *)selfCopy->_selectedEndpoints removeObject:v15, v15, v9];
         }
 
         else
         {
-          [(NSMutableArray *)v49->_selectedEndpoints removeObject:v15, bundleID, v47];
+          [(NSMutableArray *)selfCopy->_selectedEndpoints removeObject:v15, bundleID, v47];
         }
       }
     }
@@ -1087,9 +1087,9 @@ LABEL_14:
       v15 = 0;
     }
 
-    [(NSMutableArray *)v49->_selectedEndpoints addObject:v9, bundleID];
-    v21 = [(NSString *)v9 persistentDictionaryRepresentation];
-    [v11 addObject:v21];
+    [(NSMutableArray *)selfCopy->_selectedEndpoints addObject:v9, bundleID];
+    persistentDictionaryRepresentation3 = [(NSString *)v9 persistentDictionaryRepresentation];
+    [array addObject:persistentDictionaryRepresentation3];
   }
 
   else
@@ -1097,22 +1097,22 @@ LABEL_14:
     if (gLogCategory_DADeviceResolver <= 30 && (gLogCategory_DADeviceResolver != -1 || _LogCategory_Initialize()))
     {
       v45 = *p_selectedProtocolStr;
-      v47 = v10;
+      v47 = protocolTypeString;
       LogPrintF();
     }
 
-    objc_storeStrong(p_selectedProtocolStr, v10);
+    objc_storeStrong(p_selectedProtocolStr, protocolTypeString);
     [(NSMutableArray *)self->_selectedEndpoints removeAllObjects];
-    v21 = [(NSString *)v9 persistentDictionaryRepresentation];
-    [v11 addObject:v21];
+    persistentDictionaryRepresentation3 = [(NSString *)v9 persistentDictionaryRepresentation];
+    [array addObject:persistentDictionaryRepresentation3];
     v15 = 0;
   }
 
-  bundleID = v49->_bundleID;
+  bundleID = selfCopy->_bundleID;
   NSPrintF();
   CFPrefs_SetValue();
 
-  self = v49;
+  self = selfCopy;
 LABEL_40:
   v75 = 0;
   v76 = &v75;
@@ -1171,8 +1171,8 @@ LABEL_40:
             LogPrintF();
           }
 
-          v29 = [v28 parentDevice];
-          v30 = [(DAEventDevice *)[DADeviceEvent alloc] initWithEventType:40 device:v29];
+          parentDevice = [v28 parentDevice];
+          v30 = [(DAEventDevice *)[DADeviceEvent alloc] initWithEventType:40 device:parentDevice];
           v23[2](v23, v30);
         }
 
@@ -1207,8 +1207,8 @@ LABEL_40:
             LogPrintF();
           }
 
-          v36 = [v35 parentDevice];
-          v37 = [(DAEventDevice *)[DADeviceEvent alloc] initWithEventType:40 device:v36];
+          parentDevice2 = [v35 parentDevice];
+          v37 = [(DAEventDevice *)[DADeviceEvent alloc] initWithEventType:40 device:parentDevice2];
           v23[2](v23, v37);
         }
 
@@ -1219,7 +1219,7 @@ LABEL_40:
     }
   }
 
-  if (v49->_selectedEndpoints && [v76[5] count])
+  if (selfCopy->_selectedEndpoints && [v76[5] count])
   {
     v52 = 0u;
     v53 = 0u;
@@ -1388,42 +1388,42 @@ LABEL_17:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startResolvingEndpoint:(id)a3
+- (void)_startResolvingEndpoint:(id)endpoint
 {
-  v14 = a3;
-  v4 = [v14 ipv4String];
-  if (![v4 length])
+  endpointCopy = endpoint;
+  ipv4String = [endpointCopy ipv4String];
+  if (![ipv4String length])
   {
-    v5 = [v14 bonjourHostname];
-    v6 = [v5 UTF8String];
+    bonjourHostname = [endpointCopy bonjourHostname];
+    uTF8String = [bonjourHostname UTF8String];
 
-    if (v6)
+    if (uTF8String)
     {
-      [(DADeviceResolver *)self _startResolvingHostname:v6 interfaceIndex:0 endpoint:v14];
+      [(DADeviceResolver *)self _startResolvingHostname:uTF8String interfaceIndex:0 endpoint:endpointCopy];
     }
 
     else
     {
-      v7 = [v14 bonjourFullName];
-      v8 = [v7 UTF8String];
+      bonjourFullName = [endpointCopy bonjourFullName];
+      uTF8String2 = [bonjourFullName UTF8String];
 
-      v9 = [v14 bonjourInterfaceIndex];
-      if (v8)
+      bonjourInterfaceIndex = [endpointCopy bonjourInterfaceIndex];
+      if (uTF8String2)
       {
-        [(DADeviceResolver *)self _startResolvingBonjourFullName:v8 interfaceIndex:v9 endpoint:v14];
+        [(DADeviceResolver *)self _startResolvingBonjourFullName:uTF8String2 interfaceIndex:bonjourInterfaceIndex endpoint:endpointCopy];
       }
 
       else
       {
-        v10 = [v14 bonjourName];
-        v11 = [v10 UTF8String];
+        bonjourName = [endpointCopy bonjourName];
+        uTF8String3 = [bonjourName UTF8String];
 
-        v12 = [v14 bonjourType];
-        v13 = [v12 UTF8String];
+        bonjourType = [endpointCopy bonjourType];
+        uTF8String4 = [bonjourType UTF8String];
 
-        if (v11 && v13)
+        if (uTF8String3 && uTF8String4)
         {
-          [(DADeviceResolver *)self _startResolvingBonjourName:v11 type:v13 interfaceIndex:v9 endpoint:v14];
+          [(DADeviceResolver *)self _startResolvingBonjourName:uTF8String3 type:uTF8String4 interfaceIndex:bonjourInterfaceIndex endpoint:endpointCopy];
         }
 
         else if (gLogCategory_DADeviceResolver <= 90 && (gLogCategory_DADeviceResolver != -1 || _LogCategory_Initialize()))
@@ -1435,19 +1435,19 @@ LABEL_17:
   }
 }
 
-- (void)_startResolvingBonjourFullName:(const char *)a3 interfaceIndex:(unsigned int)a4 endpoint:(id)a5
+- (void)_startResolvingBonjourFullName:(const char *)name interfaceIndex:(unsigned int)index endpoint:(id)endpoint
 {
-  v8 = a5;
+  endpointCopy = endpoint;
   if (gLogCategory_DADeviceResolver <= 30 && (gLogCategory_DADeviceResolver != -1 || _LogCategory_Initialize()))
   {
-    [DADeviceResolver _startResolvingBonjourFullName:v8 interfaceIndex:? endpoint:?];
+    [DADeviceResolver _startResolvingBonjourFullName:endpointCopy interfaceIndex:? endpoint:?];
   }
 
   v9 = objc_alloc_init(DADeviceResolveOperation);
   [(DADeviceResolveOperation *)v9 setResolver:self];
-  [(DADeviceResolveOperation *)v9 setEndpoint:v8];
+  [(DADeviceResolveOperation *)v9 setEndpoint:endpointCopy];
   sdRef = self->_bonjourSharedService;
-  if (DNSServiceQueryRecord(&sdRef, 0x404000u, a4, a3, 0x21u, 1u, _resolveSRVCallack, v9))
+  if (DNSServiceQueryRecord(&sdRef, 0x404000u, index, name, 0x21u, 1u, _resolveSRVCallack, v9))
   {
     [DADeviceResolver _startResolvingBonjourFullName:interfaceIndex:endpoint:];
   }
@@ -1459,23 +1459,23 @@ LABEL_17:
   }
 }
 
-- (void)_startResolvingBonjourName:(const char *)a3 type:(const char *)a4 interfaceIndex:(unsigned int)a5 endpoint:(id)a6
+- (void)_startResolvingBonjourName:(const char *)name type:(const char *)type interfaceIndex:(unsigned int)index endpoint:(id)endpoint
 {
   v16 = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  endpointCopy = endpoint;
   if (gLogCategory_DADeviceResolver <= 30 && (gLogCategory_DADeviceResolver != -1 || _LogCategory_Initialize()))
   {
-    v13 = [v10 identifier];
+    identifier = [endpointCopy identifier];
     LogPrintF();
   }
 
-  if (!DNSServiceConstructFullName(fullName, a3, a4, "local."))
+  if (!DNSServiceConstructFullName(fullName, name, type, "local."))
   {
     v11 = objc_alloc_init(DADeviceResolveOperation);
     [(DADeviceResolveOperation *)v11 setResolver:self];
-    [(DADeviceResolveOperation *)v11 setEndpoint:v10];
+    [(DADeviceResolveOperation *)v11 setEndpoint:endpointCopy];
     sdRef = self->_bonjourSharedService;
-    if (DNSServiceQueryRecord(&sdRef, 0x404000u, a5, fullName, 0x21u, 1u, _resolveSRVCallack, v11))
+    if (DNSServiceQueryRecord(&sdRef, 0x404000u, index, fullName, 0x21u, 1u, _resolveSRVCallack, v11))
     {
       [DADeviceResolver _startResolvingBonjourName:type:interfaceIndex:endpoint:];
     }
@@ -1499,19 +1499,19 @@ LABEL_8:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startResolvingHostname:(const char *)a3 interfaceIndex:(unsigned int)a4 endpoint:(id)a5
+- (void)_startResolvingHostname:(const char *)hostname interfaceIndex:(unsigned int)index endpoint:(id)endpoint
 {
-  v8 = a5;
+  endpointCopy = endpoint;
   if (gLogCategory_DADeviceResolver <= 30 && (gLogCategory_DADeviceResolver != -1 || _LogCategory_Initialize()))
   {
-    [DADeviceResolver _startResolvingHostname:v8 interfaceIndex:? endpoint:?];
+    [DADeviceResolver _startResolvingHostname:endpointCopy interfaceIndex:? endpoint:?];
   }
 
   v9 = objc_alloc_init(DADeviceResolveOperation);
   [(DADeviceResolveOperation *)v9 setResolver:self];
-  [(DADeviceResolveOperation *)v9 setEndpoint:v8];
+  [(DADeviceResolveOperation *)v9 setEndpoint:endpointCopy];
   sdRef = self->_bonjourSharedService;
-  if (DNSServiceGetAddrInfo(&sdRef, 0x4000u, a4, 1u, a3, _resolveHostnameCallback, v9))
+  if (DNSServiceGetAddrInfo(&sdRef, 0x4000u, index, 1u, hostname, _resolveHostnameCallback, v9))
   {
     [DADeviceResolver _startResolvingHostname:interfaceIndex:endpoint:];
   }
@@ -1523,24 +1523,24 @@ LABEL_8:
   }
 }
 
-- (void)_reportDeviceWithSoloEndpoint:(id)a3
+- (void)_reportDeviceWithSoloEndpoint:(id)endpoint
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 identifier];
-  if (v5)
+  endpointCopy = endpoint;
+  identifier = [endpointCopy identifier];
+  if (identifier)
   {
     v6 = objc_alloc_init(DADevice);
-    v7 = [MEMORY[0x277CCAD78] UUID];
-    v8 = [v7 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
-    [(DADevice *)v6 setIdentifier:v8];
-    v21 = v5;
-    v22[0] = v4;
+    [(DADevice *)v6 setIdentifier:uUIDString];
+    v21 = identifier;
+    v22[0] = endpointCopy;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
     [(DADevice *)v6 setEndpoints:v9];
 
-    [v4 setParentDevice:v6];
+    [endpointCopy setParentDevice:v6];
     devices = self->_devices;
     if (!devices)
     {
@@ -1551,7 +1551,7 @@ LABEL_8:
       devices = self->_devices;
     }
 
-    [(NSMutableDictionary *)devices setObject:v6 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)devices setObject:v6 forKeyedSubscript:uUIDString];
     if (gLogCategory_DADeviceResolver <= 30 && (gLogCategory_DADeviceResolver != -1 || _LogCategory_Initialize()))
     {
       LogPrintF();
@@ -1570,8 +1570,8 @@ LABEL_8:
     block[1] = 3221225472;
     block[2] = __50__DADeviceResolver__reportDeviceWithSoloEndpoint___block_invoke;
     block[3] = &unk_278F57CB8;
-    v19 = v4;
-    v20 = self;
+    v19 = endpointCopy;
+    selfCopy = self;
     dispatch_async(dispatchQueue, block);
   }
 

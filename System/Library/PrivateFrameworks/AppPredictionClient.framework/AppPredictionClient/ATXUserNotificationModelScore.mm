@@ -1,64 +1,64 @@
 @interface ATXUserNotificationModelScore
-- (ATXUserNotificationModelScore)initWithCoder:(id)a3;
-- (ATXUserNotificationModelScore)initWithProto:(id)a3;
-- (ATXUserNotificationModelScore)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXUserNotificationModelScore:(id)a3;
+- (ATXUserNotificationModelScore)initWithCoder:(id)coder;
+- (ATXUserNotificationModelScore)initWithProto:(id)proto;
+- (ATXUserNotificationModelScore)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXUserNotificationModelScore:(id)score;
 - (id)encodeAsProto;
-- (id)initFromJSON:(id)a3;
-- (id)initFromModelScoreData:(id)a3 modelVersion:(unint64_t)a4 score:(double)a5 scoreTimestamp:(double)a6 scoreUUID:(id)a7 scoreInfo:(id)a8;
+- (id)initFromJSON:(id)n;
+- (id)initFromModelScoreData:(id)data modelVersion:(unint64_t)version score:(double)score scoreTimestamp:(double)timestamp scoreUUID:(id)d scoreInfo:(id)info;
 - (id)jsonRepresentation;
 - (id)proto;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXUserNotificationModelScore
 
-- (id)initFromModelScoreData:(id)a3 modelVersion:(unint64_t)a4 score:(double)a5 scoreTimestamp:(double)a6 scoreUUID:(id)a7 scoreInfo:(id)a8
+- (id)initFromModelScoreData:(id)data modelVersion:(unint64_t)version score:(double)score scoreTimestamp:(double)timestamp scoreUUID:(id)d scoreInfo:(id)info
 {
-  v15 = a3;
-  v16 = a7;
-  v17 = a8;
+  dataCopy = data;
+  dCopy = d;
+  infoCopy = info;
   v21.receiver = self;
   v21.super_class = ATXUserNotificationModelScore;
   v18 = [(ATXUserNotificationModelScore *)&v21 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_modelId, a3);
-    v19->_modelVersion = a4;
-    v19->_score = a5;
-    v19->_scoreTimestamp = a6;
-    objc_storeStrong(&v19->_scoreUUID, a7);
-    objc_storeStrong(&v19->_scoreInfo, a8);
+    objc_storeStrong(&v18->_modelId, data);
+    v19->_modelVersion = version;
+    v19->_score = score;
+    v19->_scoreTimestamp = timestamp;
+    objc_storeStrong(&v19->_scoreUUID, d);
+    objc_storeStrong(&v19->_scoreInfo, info);
   }
 
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXUserNotificationModelScore *)self isEqualToATXUserNotificationModelScore:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXUserNotificationModelScore *)self isEqualToATXUserNotificationModelScore:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXUserNotificationModelScore:(id)a3
+- (BOOL)isEqualToATXUserNotificationModelScore:(id)score
 {
-  v4 = a3;
+  scoreCopy = score;
   v5 = self->_modelId;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == scoreCopy[1])
   {
   }
 
@@ -72,14 +72,14 @@
     }
   }
 
-  if (self->_modelVersion != v4[2] || self->_score != *(v4 + 3) || self->_scoreTimestamp != *(v4 + 4))
+  if (self->_modelVersion != scoreCopy[2] || self->_score != *(scoreCopy + 3) || self->_scoreTimestamp != *(scoreCopy + 4))
   {
     goto LABEL_8;
   }
 
   v10 = self->_scoreUUID;
   v11 = v10;
-  if (v10 == v4[5])
+  if (v10 == scoreCopy[5])
   {
   }
 
@@ -97,7 +97,7 @@ LABEL_8:
 
   v13 = self->_scoreInfo;
   v14 = v13;
-  if (v13 == v4[6])
+  if (v13 == scoreCopy[6])
   {
     v8 = 1;
   }
@@ -111,10 +111,10 @@ LABEL_9:
   return v8;
 }
 
-- (id)initFromJSON:(id)a3
+- (id)initFromJSON:(id)n
 {
-  v4 = a3;
-  v5 = [[ATXPBUserNotificationModelScore alloc] initFromJSON:v4];
+  nCopy = n;
+  v5 = [[ATXPBUserNotificationModelScore alloc] initFromJSON:nCopy];
 
   v6 = [(ATXUserNotificationModelScore *)self initWithProto:v5];
   return v6;
@@ -122,46 +122,46 @@ LABEL_9:
 
 - (id)jsonRepresentation
 {
-  v2 = [(ATXUserNotificationModelScore *)self proto];
-  v3 = [v2 jsonRepresentation];
+  proto = [(ATXUserNotificationModelScore *)self proto];
+  jsonRepresentation = [proto jsonRepresentation];
 
-  return v3;
+  return jsonRepresentation;
 }
 
-- (ATXUserNotificationModelScore)initWithProtoData:(id)a3
+- (ATXUserNotificationModelScore)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBUserNotificationModelScore alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBUserNotificationModelScore alloc] initWithData:dataCopy];
 
     self = [(ATXUserNotificationModelScore *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXUserNotificationModelScore *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXUserNotificationModelScore *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXUserNotificationModelScore)initWithProto:(id)a3
+- (ATXUserNotificationModelScore)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -177,23 +177,23 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
-  v6 = [v5 modelId];
-  v7 = [v5 modelVersion];
+  v5 = protoCopy;
+  modelId = [v5 modelId];
+  modelVersion = [v5 modelVersion];
   [v5 score];
   v9 = v8;
   [v5 scoreTimestamp];
   v11 = v10;
   v12 = objc_alloc(MEMORY[0x1E696AFB0]);
-  v13 = [v5 scoreUUID];
-  v14 = [v12 initWithUUIDString:v13];
-  v15 = [v5 scoreInfo];
+  scoreUUID = [v5 scoreUUID];
+  v14 = [v12 initWithUUIDString:scoreUUID];
+  scoreInfo = [v5 scoreInfo];
 
-  self = [(ATXUserNotificationModelScore *)self initFromModelScoreData:v6 modelVersion:v7 score:v14 scoreTimestamp:v15 scoreUUID:v9 scoreInfo:v11];
-  v16 = self;
+  self = [(ATXUserNotificationModelScore *)self initFromModelScoreData:modelId modelVersion:modelVersion score:v14 scoreTimestamp:scoreInfo scoreUUID:v9 scoreInfo:v11];
+  selfCopy = self;
 LABEL_8:
 
-  return v16;
+  return selfCopy;
 }
 
 - (id)proto
@@ -203,38 +203,38 @@ LABEL_8:
   [v3 setModelVersion:self->_modelVersion];
   [v3 setScore:self->_score];
   [v3 setScoreTimestamp:self->_scoreTimestamp];
-  v4 = [(NSUUID *)self->_scoreUUID UUIDString];
-  [v3 setScoreUUID:v4];
+  uUIDString = [(NSUUID *)self->_scoreUUID UUIDString];
+  [v3 setScoreUUID:uUIDString];
 
   [v3 setScoreInfo:self->_scoreInfo];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXUserNotificationModelScore *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXUserNotificationModelScore *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXUserNotificationModelScore)initWithCoder:(id)a3
+- (ATXUserNotificationModelScore)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   if (v5)
   {
     self = [(ATXUserNotificationModelScore *)self initWithProtoData:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

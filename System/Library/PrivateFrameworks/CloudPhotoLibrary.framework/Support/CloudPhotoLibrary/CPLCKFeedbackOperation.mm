@@ -1,18 +1,18 @@
 @interface CPLCKFeedbackOperation
-- (CPLCKFeedbackOperation)initWithFeedbackMessages:(id)a3;
+- (CPLCKFeedbackOperation)initWithFeedbackMessages:(id)messages;
 @end
 
 @implementation CPLCKFeedbackOperation
 
-- (CPLCKFeedbackOperation)initWithFeedbackMessages:(id)a3
+- (CPLCKFeedbackOperation)initWithFeedbackMessages:(id)messages
 {
-  v5 = a3;
+  messagesCopy = messages;
   v6 = objc_alloc_init(CPLServerFeedbackRequest);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v5;
+  v7 = messagesCopy;
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -35,8 +35,8 @@
     while (v8);
   }
 
-  v11 = [v6 data];
-  if (!v11)
+  data = [v6 data];
+  if (!data)
   {
     sub_100198AEC(a2, self, v6);
   }

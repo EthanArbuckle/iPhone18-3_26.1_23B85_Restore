@@ -1,25 +1,25 @@
 @interface _DPTokenFetcherHelper
-+ (id)filesInDirectory:(id)a3 withPrefix:(id)a4;
++ (id)filesInDirectory:(id)directory withPrefix:(id)prefix;
 @end
 
 @implementation _DPTokenFetcherHelper
 
-+ (id)filesInDirectory:(id)a3 withPrefix:(id)a4
++ (id)filesInDirectory:(id)directory withPrefix:(id)prefix
 {
-  v5 = a3;
-  v6 = a4;
+  directoryCopy = directory;
+  prefixCopy = prefix;
   v7 = [&__NSArray0__struct mutableCopy];
   v8 = +[NSFileManager defaultManager];
-  v9 = [v8 enumeratorAtPath:v5];
-  v10 = [v9 nextObject];
-  if (v10)
+  v9 = [v8 enumeratorAtPath:directoryCopy];
+  nextObject = [v9 nextObject];
+  if (nextObject)
   {
-    v11 = v10;
+    v11 = nextObject;
     do
     {
-      if (!v6 || [v11 hasPrefix:v6])
+      if (!prefixCopy || [v11 hasPrefix:prefixCopy])
       {
-        v12 = [v5 stringByAppendingPathComponent:v11];
+        v12 = [directoryCopy stringByAppendingPathComponent:v11];
         v16 = 0;
         if ([v8 fileExistsAtPath:v12 isDirectory:&v16])
         {
@@ -36,12 +36,12 @@
         }
       }
 
-      v14 = [v9 nextObject];
+      nextObject2 = [v9 nextObject];
 
-      v11 = v14;
+      v11 = nextObject2;
     }
 
-    while (v14);
+    while (nextObject2);
   }
 
   return v7;

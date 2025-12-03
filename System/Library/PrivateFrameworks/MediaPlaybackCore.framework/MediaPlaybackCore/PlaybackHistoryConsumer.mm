@@ -1,16 +1,16 @@
 @interface PlaybackHistoryConsumer
 + (NSString)identifier;
-- (void)subscribeToEventStream:(id)a3;
-- (void)unsubscribeFromEventStream:(id)a3;
+- (void)subscribeToEventStream:(id)stream;
+- (void)unsubscribeFromEventStream:(id)stream;
 @end
 
 @implementation PlaybackHistoryConsumer
 
-- (void)subscribeToEventStream:(id)a3
+- (void)subscribeToEventStream:(id)stream
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1C5C7E940(a3);
+  selfCopy = self;
+  sub_1C5C7E940(stream);
   swift_unknownObjectRelease();
 }
 
@@ -22,10 +22,10 @@
   return v2;
 }
 
-- (void)unsubscribeFromEventStream:(id)a3
+- (void)unsubscribeFromEventStream:(id)stream
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1C5CCB2F4();
   swift_unknownObjectRelease();
 }

@@ -1,5 +1,5 @@
 @interface FPStitchingSession
-- (BOOL)cleanStitchedItemForItemID:(id)a3;
+- (BOOL)cleanStitchedItemForItemID:(id)d;
 - (BOOL)isActive;
 - (FPStitchingSession)init;
 - (NSArray)deletedIDs;
@@ -7,24 +7,24 @@
 - (NSArray)placeholderReplacementsIDs;
 - (NSDictionary)stitchedFieldsAndItemsByItemIDs;
 - (NSDictionary)stitchedItemsByParentID;
-- (id)createArchivePlaceholderForItem:(id)a3 underParent:(id)a4 inProviderDomainID:(id)a5 withArchiveFormat:(unint64_t)a6;
-- (id)createGenericArchivePlaceholderUnderParent:(id)a3 inProviderDomainID:(id)a4 withArchiveFormat:(unint64_t)a5;
-- (id)createPlaceholderWithCopyOfExistingItem:(id)a3 lastUsageUpdatePolicy:(unint64_t)a4 underParent:(id)a5 inProviderDomainID:(id)a6;
-- (id)createPlaceholderWithName:(id)a3 contentType:(id)a4 contentAccessDate:(id)a5 underParent:(id)a6 inProviderDomainID:(id)a7;
-- (id)createPlaceholderWithName:(id)a3 isFolder:(BOOL)a4 contentAccessDate:(id)a5 underParent:(id)a6 inProviderDomainID:(id)a7;
-- (id)createPlaceholderWithName:(id)a3 typeIdentifier:(id)a4 contentAccessDate:(id)a5 underParent:(id)a6 inProviderDomainID:(id)a7;
-- (id)itemWithPlaceholderID:(id)a3;
-- (void)associateItem:(id)a3 withPlaceholderID:(id)a4;
+- (id)createArchivePlaceholderForItem:(id)item underParent:(id)parent inProviderDomainID:(id)d withArchiveFormat:(unint64_t)format;
+- (id)createGenericArchivePlaceholderUnderParent:(id)parent inProviderDomainID:(id)d withArchiveFormat:(unint64_t)format;
+- (id)createPlaceholderWithCopyOfExistingItem:(id)item lastUsageUpdatePolicy:(unint64_t)policy underParent:(id)parent inProviderDomainID:(id)d;
+- (id)createPlaceholderWithName:(id)name contentType:(id)type contentAccessDate:(id)date underParent:(id)parent inProviderDomainID:(id)d;
+- (id)createPlaceholderWithName:(id)name isFolder:(BOOL)folder contentAccessDate:(id)date underParent:(id)parent inProviderDomainID:(id)d;
+- (id)createPlaceholderWithName:(id)name typeIdentifier:(id)identifier contentAccessDate:(id)date underParent:(id)parent inProviderDomainID:(id)d;
+- (id)itemWithPlaceholderID:(id)d;
+- (void)associateItem:(id)item withPlaceholderID:(id)d;
 - (void)dealloc;
-- (void)deleteItems:(id)a3;
+- (void)deleteItems:(id)items;
 - (void)finish;
-- (void)finishWithItem:(id)a3 error:(id)a4;
-- (void)finishWithItems:(id)a3 error:(id)a4;
+- (void)finishWithItem:(id)item error:(id)error;
+- (void)finishWithItems:(id)items error:(id)error;
 - (void)flush;
-- (void)replacePlaceholderWithID:(id)a3 withItem:(id)a4;
+- (void)replacePlaceholderWithID:(id)d withItem:(id)item;
 - (void)start;
-- (void)transformItems:(id)a3 handler:(id)a4;
-- (void)trashItems:(id)a3;
+- (void)transformItems:(id)items handler:(id)handler;
+- (void)trashItems:(id)items;
 @end
 
 @implementation FPStitchingSession
@@ -81,31 +81,31 @@
 {
   v3 = +[FPStitchingManager sharedInstance];
   objc_sync_enter(v3);
-  v4 = [(NSMutableDictionary *)self->_stitchedPlaceholders allValues];
+  allValues = [(NSMutableDictionary *)self->_stitchedPlaceholders allValues];
   objc_sync_exit(v3);
 
-  return v4;
+  return allValues;
 }
 
 - (NSArray)placeholderReplacementsIDs
 {
   v3 = +[FPStitchingManager sharedInstance];
   objc_sync_enter(v3);
-  v4 = [(NSMutableDictionary *)self->_placeholderReplacements allKeys];
+  allKeys = [(NSMutableDictionary *)self->_placeholderReplacements allKeys];
   objc_sync_exit(v3);
 
-  return v4;
+  return allKeys;
 }
 
-- (BOOL)cleanStitchedItemForItemID:(id)a3
+- (BOOL)cleanStitchedItemForItemID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_stitchedItems objectForKeyedSubscript:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_stitchedItems objectForKeyedSubscript:dCopy];
   v6 = v5;
   if (v5 && [v5 isTrashed])
   {
-    [(NSMutableDictionary *)self->_stitchedItems removeObjectForKey:v4];
-    [(NSMutableDictionary *)self->_stitchedFields removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_stitchedItems removeObjectForKey:dCopy];
+    [(NSMutableDictionary *)self->_stitchedFields removeObjectForKey:dCopy];
     v7 = 1;
   }
 
@@ -127,8 +127,8 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(NSMutableDictionary *)self->_stitchedFields allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v23 count:16];
+  allKeys = [(NSMutableDictionary *)self->_stitchedFields allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v5)
   {
     v6 = *v18;
@@ -138,7 +138,7 @@
       {
         if (*v18 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v17 + 1) + 8 * i);
@@ -166,7 +166,7 @@
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v17 objects:v23 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v17 objects:v23 count:16];
     }
 
     while (v5);
@@ -188,8 +188,8 @@
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v3 = [(NSMutableDictionary *)self->_stitchedFields allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  allKeys = [(NSMutableDictionary *)self->_stitchedFields allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v4)
   {
     v5 = *v22;
@@ -199,7 +199,7 @@
       {
         if (*v22 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v7 = *(*(&v21 + 1) + 8 * i);
@@ -218,8 +218,8 @@
 
         if (!v11 && [v9 containsObject:@"parentItemIdentifier"])
         {
-          v12 = [v8 parentItemID];
-          v13 = [v20 objectForKeyedSubscript:v12];
+          parentItemID = [v8 parentItemID];
+          v13 = [v20 objectForKeyedSubscript:parentItemID];
           v14 = v13;
           if (v13)
           {
@@ -234,11 +234,11 @@
           v16 = v15;
 
           [v16 addObject:v8];
-          [v20 setObject:v16 forKeyedSubscript:v12];
+          [v20 setObject:v16 forKeyedSubscript:parentItemID];
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v4 = [allKeys countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v4);
@@ -296,8 +296,8 @@ void __32__FPStitchingSession_deletedIDs__block_invoke(uint64_t a1, void *a2, vo
   objc_sync_enter(obj);
   if (self->_started)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"FPStitchingSession.m" lineNumber:293 description:@"already started"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"FPStitchingSession.m" lineNumber:293 description:@"already started"];
   }
 
   self->_started = 1;
@@ -311,7 +311,7 @@ void __32__FPStitchingSession_deletedIDs__block_invoke(uint64_t a1, void *a2, vo
   if (self->_started && !self->_finished)
   {
     [(NSMutableDictionary *)self->_originalItems removeAllObjects];
-    v5 = [(NSMutableDictionary *)self->_stitchedItems allKeys];
+    allKeys = [(NSMutableDictionary *)self->_stitchedItems allKeys];
     [(NSMutableDictionary *)self->_stitchedItems removeAllObjects];
     [(NSMutableDictionary *)self->_stitchedPlaceholders removeAllObjects];
     [(NSMutableDictionary *)self->_placeholderReplacements removeAllObjects];
@@ -322,13 +322,13 @@ void __32__FPStitchingSession_deletedIDs__block_invoke(uint64_t a1, void *a2, vo
 
   else
   {
-    v5 = 0;
+    allKeys = 0;
   }
 
   objc_sync_exit(v3);
 
   v4 = +[FPStitchingManager sharedInstance];
-  [v4 removeBouncedItemsWithIDs:v5];
+  [v4 removeBouncedItemsWithIDs:allKeys];
 }
 
 - (BOOL)isActive
@@ -346,16 +346,16 @@ void __32__FPStitchingSession_deletedIDs__block_invoke(uint64_t a1, void *a2, vo
   v24 = *MEMORY[0x1E69E9840];
   v3 = +[FPStitchingManager sharedInstance];
   objc_sync_enter(v3);
-  v17 = [(NSMutableDictionary *)self->_stitchedItems allValues];
-  v18 = [(NSMutableDictionary *)self->_stitchedPlaceholders allValues];
-  v16 = [v17 arrayByAddingObjectsFromArray:v18];
-  v15 = [(FPStitchingSession *)self deletedIDs];
+  allValues = [(NSMutableDictionary *)self->_stitchedItems allValues];
+  allValues2 = [(NSMutableDictionary *)self->_stitchedPlaceholders allValues];
+  v16 = [allValues arrayByAddingObjectsFromArray:allValues2];
+  deletedIDs = [(FPStitchingSession *)self deletedIDs];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(NSMutableDictionary *)self->_stitchedItems allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  allKeys = [(NSMutableDictionary *)self->_stitchedItems allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
     v6 = *v20;
@@ -365,7 +365,7 @@ void __32__FPStitchingSession_deletedIDs__block_invoke(uint64_t a1, void *a2, vo
       {
         if (*v20 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v19 + 1) + 8 * i);
@@ -388,7 +388,7 @@ void __32__FPStitchingSession_deletedIDs__block_invoke(uint64_t a1, void *a2, vo
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v5);
@@ -399,24 +399,24 @@ void __32__FPStitchingSession_deletedIDs__block_invoke(uint64_t a1, void *a2, vo
 
   if (v13)
   {
-    v13[2](v13, v18);
+    v13[2](v13, allValues2);
   }
 
-  [FPItemCollection consumeUpdates:v16 deletes:v15];
+  [FPItemCollection consumeUpdates:v16 deletes:deletedIDs];
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)transformItems:(id)a3 handler:(id)a4
+- (void)transformItems:(id)items handler:(id)handler
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  handlerCopy = handler;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v6;
+  obj = itemsCopy;
   v8 = [obj countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (v8)
   {
@@ -431,40 +431,40 @@ void __32__FPStitchingSession_deletedIDs__block_invoke(uint64_t a1, void *a2, vo
         }
 
         v10 = *(*(&v28 + 1) + 8 * i);
-        v11 = [v10 copyAsPending];
-        v7[2](v7, v11);
-        v12 = [v11 providerDomainID];
-        v13 = [v10 providerDomainID];
-        v14 = [v12 isEqualToString:v13];
+        copyAsPending = [v10 copyAsPending];
+        handlerCopy[2](handlerCopy, copyAsPending);
+        providerDomainID = [copyAsPending providerDomainID];
+        providerDomainID2 = [v10 providerDomainID];
+        v14 = [providerDomainID isEqualToString:providerDomainID2];
 
         if ((v14 & 1) == 0)
         {
-          v15 = [v11 providerDomainID];
-          v16 = [v10 providerDomainID];
-          v17 = [v15 isEqualToString:v16];
+          providerDomainID3 = [copyAsPending providerDomainID];
+          providerDomainID4 = [v10 providerDomainID];
+          v17 = [providerDomainID3 isEqualToString:providerDomainID4];
 
           if ((v17 & 1) == 0)
           {
-            [(FPStitchingSession *)a2 transformItems:v10 handler:v11];
+            [(FPStitchingSession *)a2 transformItems:v10 handler:copyAsPending];
           }
         }
 
-        v18 = self;
-        objc_sync_enter(v18);
+        selfCopy = self;
+        objc_sync_enter(selfCopy);
         originalItems = self->_originalItems;
-        v20 = [v10 itemID];
-        [(NSMutableDictionary *)originalItems setObject:v10 forKeyedSubscript:v20];
+        itemID = [v10 itemID];
+        [(NSMutableDictionary *)originalItems setObject:v10 forKeyedSubscript:itemID];
 
         stitchedItems = self->_stitchedItems;
-        v22 = [v11 itemID];
-        [(NSMutableDictionary *)stitchedItems setObject:v11 forKeyedSubscript:v22];
+        itemID2 = [copyAsPending itemID];
+        [(NSMutableDictionary *)stitchedItems setObject:copyAsPending forKeyedSubscript:itemID2];
 
-        objc_sync_exit(v18);
+        objc_sync_exit(selfCopy);
         v23 = fp_current_or_default_log();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
-          v33 = v11;
+          v33 = copyAsPending;
           _os_log_debug_impl(&dword_1AAAE1000, v23, OS_LOG_TYPE_DEBUG, "[DEBUG] FPStitchingSession: stitched item %@", buf, 0xCu);
         }
       }
@@ -478,17 +478,17 @@ void __32__FPStitchingSession_deletedIDs__block_invoke(uint64_t a1, void *a2, vo
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteItems:(id)a3
+- (void)deleteItems:(id)items
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v5 = +[FPStitchingManager sharedInstance];
   objc_sync_enter(v5);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -504,12 +504,12 @@ void __32__FPStitchingSession_deletedIDs__block_invoke(uint64_t a1, void *a2, vo
 
         v10 = *(*(&v16 + 1) + 8 * i);
         originalItems = self->_originalItems;
-        v12 = [v10 itemID];
-        [(NSMutableDictionary *)originalItems setObject:v10 forKeyedSubscript:v12];
+        itemID = [v10 itemID];
+        [(NSMutableDictionary *)originalItems setObject:v10 forKeyedSubscript:itemID];
 
         deletedItems = self->_deletedItems;
-        v14 = [v10 itemID];
-        [(NSMutableDictionary *)deletedItems setObject:v10 forKeyedSubscript:v14];
+        itemID2 = [v10 itemID];
+        [(NSMutableDictionary *)deletedItems setObject:v10 forKeyedSubscript:itemID2];
       }
 
       v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -522,17 +522,17 @@ void __32__FPStitchingSession_deletedIDs__block_invoke(uint64_t a1, void *a2, vo
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)trashItems:(id)a3
+- (void)trashItems:(id)items
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   obj = +[FPStitchingManager sharedInstance];
   objc_sync_enter(obj);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v19 = v4;
+  v19 = itemsCopy;
   v5 = [v19 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
@@ -547,20 +547,20 @@ void __32__FPStitchingSession_deletedIDs__block_invoke(uint64_t a1, void *a2, vo
         }
 
         v8 = *(*(&v20 + 1) + 8 * i);
-        v9 = [v8 providerDomainID];
-        v10 = [FPItem placeholderWithCopyOfExistingItem:v8 lastUsageUpdatePolicy:1 underParent:@"NSFileProviderTrashContainerItemIdentifier" inProviderDomainID:v9];
+        providerDomainID = [v8 providerDomainID];
+        v10 = [FPItem placeholderWithCopyOfExistingItem:v8 lastUsageUpdatePolicy:1 underParent:@"NSFileProviderTrashContainerItemIdentifier" inProviderDomainID:providerDomainID];
 
         originalItems = self->_originalItems;
-        v12 = [v8 itemID];
-        [(NSMutableDictionary *)originalItems setObject:v8 forKeyedSubscript:v12];
+        itemID = [v8 itemID];
+        [(NSMutableDictionary *)originalItems setObject:v8 forKeyedSubscript:itemID];
 
         deletedItems = self->_deletedItems;
-        v14 = [v8 itemID];
-        [(NSMutableDictionary *)deletedItems setObject:v8 forKeyedSubscript:v14];
+        itemID2 = [v8 itemID];
+        [(NSMutableDictionary *)deletedItems setObject:v8 forKeyedSubscript:itemID2];
 
         stitchedPlaceholders = self->_stitchedPlaceholders;
-        v16 = [v10 itemID];
-        [(NSMutableDictionary *)stitchedPlaceholders setObject:v10 forKeyedSubscript:v16];
+        itemID3 = [v10 itemID];
+        [(NSMutableDictionary *)stitchedPlaceholders setObject:v10 forKeyedSubscript:itemID3];
       }
 
       v5 = [v19 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -573,17 +573,17 @@ void __32__FPStitchingSession_deletedIDs__block_invoke(uint64_t a1, void *a2, vo
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)finishWithItems:(id)a3 error:(id)a4
+- (void)finishWithItems:(id)items error:(id)error
 {
   v61 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v40 = a4;
+  itemsCopy = items;
+  errorCopy = error;
   v6 = objc_opt_new();
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v7 = v5;
+  v7 = itemsCopy;
   v8 = [v7 countByEnumeratingWithState:&v51 objects:v60 count:16];
   if (v8)
   {
@@ -598,8 +598,8 @@ void __32__FPStitchingSession_deletedIDs__block_invoke(uint64_t a1, void *a2, vo
         }
 
         v11 = *(*(&v51 + 1) + 8 * i);
-        v12 = [v11 itemID];
-        [v6 setObject:v11 forKeyedSubscript:v12];
+        itemID = [v11 itemID];
+        [v6 setObject:v11 forKeyedSubscript:itemID];
       }
 
       v8 = [v7 countByEnumeratingWithState:&v51 objects:v60 count:16];
@@ -610,22 +610,22 @@ void __32__FPStitchingSession_deletedIDs__block_invoke(uint64_t a1, void *a2, vo
 
   obj = +[FPStitchingManager sharedInstance];
   objc_sync_enter(obj);
-  if (v40)
+  if (errorCopy)
   {
     section = __fp_create_section();
     v13 = fp_current_or_default_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      v14 = [v40 fp_prettyDescription];
-      [(FPStitchingSession *)v14 finishWithItems:v59 error:section, v13];
+      fp_prettyDescription = [errorCopy fp_prettyDescription];
+      [(FPStitchingSession *)fp_prettyDescription finishWithItems:v59 error:section, v13];
     }
 
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v15 = [(NSMutableDictionary *)self->_originalItems allValues];
-    v16 = [v15 countByEnumeratingWithState:&v46 objects:v58 count:16];
+    allValues = [(NSMutableDictionary *)self->_originalItems allValues];
+    v16 = [allValues countByEnumeratingWithState:&v46 objects:v58 count:16];
     if (v16)
     {
       v17 = *v47;
@@ -635,12 +635,12 @@ void __32__FPStitchingSession_deletedIDs__block_invoke(uint64_t a1, void *a2, vo
         {
           if (*v47 != v17)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(allValues);
           }
 
           v19 = *(*(&v46 + 1) + 8 * j);
-          v20 = [v19 itemID];
-          v21 = [v6 objectForKeyedSubscript:v20];
+          itemID2 = [v19 itemID];
+          v21 = [v6 objectForKeyedSubscript:itemID2];
           v22 = v21 == 0;
 
           if (v22)
@@ -653,12 +653,12 @@ void __32__FPStitchingSession_deletedIDs__block_invoke(uint64_t a1, void *a2, vo
               _os_log_debug_impl(&dword_1AAAE1000, v23, OS_LOG_TYPE_DEBUG, "[DEBUG] reverting to %@", buf, 0xCu);
             }
 
-            v24 = [v19 itemID];
-            [v6 setObject:v19 forKeyedSubscript:v24];
+            itemID3 = [v19 itemID];
+            [v6 setObject:v19 forKeyedSubscript:itemID3];
           }
         }
 
-        v16 = [v15 countByEnumeratingWithState:&v46 objects:v58 count:16];
+        v16 = [allValues countByEnumeratingWithState:&v46 objects:v58 count:16];
       }
 
       while (v16);
@@ -668,15 +668,15 @@ void __32__FPStitchingSession_deletedIDs__block_invoke(uint64_t a1, void *a2, vo
   }
 
   v41 = objc_opt_new();
-  if (!v40 && [v7 count])
+  if (!errorCopy && [v7 count])
   {
-    v25 = [v6 allKeys];
+    allKeys = [v6 allKeys];
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v26 = [(NSMutableDictionary *)self->_stitchedItems allValues];
-    v27 = [v26 countByEnumeratingWithState:&v42 objects:v55 count:16];
+    allValues2 = [(NSMutableDictionary *)self->_stitchedItems allValues];
+    v27 = [allValues2 countByEnumeratingWithState:&v42 objects:v55 count:16];
     if (v27)
     {
       v28 = *v43;
@@ -686,84 +686,84 @@ void __32__FPStitchingSession_deletedIDs__block_invoke(uint64_t a1, void *a2, vo
         {
           if (*v43 != v28)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(allValues2);
           }
 
           v30 = *(*(&v42 + 1) + 8 * k);
-          v31 = [v30 itemID];
-          v32 = [v25 containsObject:v31];
+          itemID4 = [v30 itemID];
+          v32 = [allKeys containsObject:itemID4];
 
           if ((v32 & 1) == 0)
           {
-            v33 = [v30 itemID];
-            [v41 addObject:v33];
+            itemID5 = [v30 itemID];
+            [v41 addObject:itemID5];
           }
         }
 
-        v27 = [v26 countByEnumeratingWithState:&v42 objects:v55 count:16];
+        v27 = [allValues2 countByEnumeratingWithState:&v42 objects:v55 count:16];
       }
 
       while (v27);
     }
   }
 
-  v34 = [(NSMutableDictionary *)self->_stitchedPlaceholders allValues];
-  v35 = [v34 fp_itemIDs];
+  allValues3 = [(NSMutableDictionary *)self->_stitchedPlaceholders allValues];
+  fp_itemIDs = [allValues3 fp_itemIDs];
 
   [(FPStitchingSession *)self finish];
   objc_sync_exit(obj);
 
-  v36 = [v6 allValues];
-  [FPItemCollection replacePlaceholders:v35 withActualItems:v36 deletedIDs:v41];
+  allValues4 = [v6 allValues];
+  [FPItemCollection replacePlaceholders:fp_itemIDs withActualItems:allValues4 deletedIDs:v41];
 
   v37 = *MEMORY[0x1E69E9840];
 }
 
-- (void)finishWithItem:(id)a3 error:(id)a4
+- (void)finishWithItem:(id)item error:(id)error
 {
   v11 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (a3)
+  errorCopy = error;
+  if (item)
   {
-    v10 = a3;
+    itemCopy = item;
     v7 = MEMORY[0x1E695DEC8];
-    v8 = a3;
-    a3 = [v7 arrayWithObjects:&v10 count:1];
+    itemCopy2 = item;
+    item = [v7 arrayWithObjects:&itemCopy count:1];
   }
 
-  [(FPStitchingSession *)self finishWithItems:a3 error:v6, v10, v11];
+  [(FPStitchingSession *)self finishWithItems:item error:errorCopy, itemCopy, v11];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)associateItem:(id)a3 withPlaceholderID:(id)a4
+- (void)associateItem:(id)item withPlaceholderID:(id)d
 {
-  v6 = a3;
-  v7 = [a4 identifier];
-  [v6 setFormerIdentifier:v7];
+  itemCopy = item;
+  identifier = [d identifier];
+  [itemCopy setFormerIdentifier:identifier];
 
   v8 = +[FPStitchingManager sharedInstance];
-  v9 = [v6 itemID];
-  LODWORD(self) = [v8 cleanStitchedForItemID:v9 ignoreSession:self];
+  itemID = [itemCopy itemID];
+  LODWORD(self) = [v8 cleanStitchedForItemID:itemID ignoreSession:self];
 
   if (self)
   {
     v10 = fp_current_or_default_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [FPStitchingSession associateItem:v6 withPlaceholderID:?];
+      [FPStitchingSession associateItem:itemCopy withPlaceholderID:?];
     }
   }
 }
 
-- (id)itemWithPlaceholderID:(id)a3
+- (id)itemWithPlaceholderID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v5 = +[FPStitchingManager sharedInstance];
     objc_sync_enter(v5);
-    v6 = [(NSMutableDictionary *)self->_stitchedPlaceholders objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)self->_stitchedPlaceholders objectForKeyedSubscript:dCopy];
     objc_sync_exit(v5);
   }
 
@@ -775,39 +775,39 @@ void __32__FPStitchingSession_deletedIDs__block_invoke(uint64_t a1, void *a2, vo
   return v6;
 }
 
-- (void)replacePlaceholderWithID:(id)a3 withItem:(id)a4
+- (void)replacePlaceholderWithID:(id)d withItem:(id)item
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  dCopy = d;
+  itemCopy = item;
+  v8 = itemCopy;
+  if (dCopy && itemCopy)
   {
     v9 = +[FPStitchingManager sharedInstance];
     objc_sync_enter(v9);
-    [(FPStitchingSession *)self associateItem:v8 withPlaceholderID:v6];
-    v10 = [v8 formerItemID];
+    [(FPStitchingSession *)self associateItem:v8 withPlaceholderID:dCopy];
+    formerItemID = [v8 formerItemID];
 
-    if (v10)
+    if (formerItemID)
     {
       placeholderReplacements = self->_placeholderReplacements;
-      v12 = [v8 itemID];
-      [(NSMutableDictionary *)placeholderReplacements setObject:v8 forKeyedSubscript:v12];
+      itemID = [v8 itemID];
+      [(NSMutableDictionary *)placeholderReplacements setObject:v8 forKeyedSubscript:itemID];
 
       v13 = +[FPStitchingManager sharedInstance];
-      v23[0] = v6;
+      v23[0] = dCopy;
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
       [v13 removeBouncedItemsWithIDs:v14];
 
       stitchedPlaceholders = self->_stitchedPlaceholders;
-      v16 = [v8 formerItemID];
-      [(NSMutableDictionary *)stitchedPlaceholders setObject:0 forKeyedSubscript:v16];
+      formerItemID2 = [v8 formerItemID];
+      [(NSMutableDictionary *)stitchedPlaceholders setObject:0 forKeyedSubscript:formerItemID2];
     }
 
     objc_sync_exit(v9);
 
-    v17 = [v8 formerItemID];
-    v22 = v17;
+    formerItemID3 = [v8 formerItemID];
+    v22 = formerItemID3;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
     v21 = v8;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
@@ -817,101 +817,101 @@ void __32__FPStitchingSession_deletedIDs__block_invoke(uint64_t a1, void *a2, vo
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (id)createPlaceholderWithCopyOfExistingItem:(id)a3 lastUsageUpdatePolicy:(unint64_t)a4 underParent:(id)a5 inProviderDomainID:(id)a6
+- (id)createPlaceholderWithCopyOfExistingItem:(id)item lastUsageUpdatePolicy:(unint64_t)policy underParent:(id)parent inProviderDomainID:(id)d
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [FPItem placeholderWithCopyOfExistingItem:v10 lastUsageUpdatePolicy:a4 underParent:v11 inProviderDomainID:v12];
+  itemCopy = item;
+  parentCopy = parent;
+  dCopy = d;
+  v13 = [FPItem placeholderWithCopyOfExistingItem:itemCopy lastUsageUpdatePolicy:policy underParent:parentCopy inProviderDomainID:dCopy];
   v14 = +[FPStitchingManager sharedInstance];
   objc_sync_enter(v14);
   stitchedPlaceholders = self->_stitchedPlaceholders;
-  v16 = [v13 itemID];
-  [(NSMutableDictionary *)stitchedPlaceholders setObject:v13 forKeyedSubscript:v16];
+  itemID = [v13 itemID];
+  [(NSMutableDictionary *)stitchedPlaceholders setObject:v13 forKeyedSubscript:itemID];
 
   objc_sync_exit(v14);
-  v17 = [v13 itemID];
+  itemID2 = [v13 itemID];
 
-  return v17;
+  return itemID2;
 }
 
-- (id)createGenericArchivePlaceholderUnderParent:(id)a3 inProviderDomainID:(id)a4 withArchiveFormat:(unint64_t)a5
+- (id)createGenericArchivePlaceholderUnderParent:(id)parent inProviderDomainID:(id)d withArchiveFormat:(unint64_t)format
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [FPItem genericArchivePlaceholderUnderParent:v8 inProviderDomainID:v9 withArchiveFormat:a5];
+  parentCopy = parent;
+  dCopy = d;
+  v10 = [FPItem genericArchivePlaceholderUnderParent:parentCopy inProviderDomainID:dCopy withArchiveFormat:format];
   v11 = +[FPStitchingManager sharedInstance];
   objc_sync_enter(v11);
   stitchedPlaceholders = self->_stitchedPlaceholders;
-  v13 = [v10 itemID];
-  [(NSMutableDictionary *)stitchedPlaceholders setObject:v10 forKeyedSubscript:v13];
+  itemID = [v10 itemID];
+  [(NSMutableDictionary *)stitchedPlaceholders setObject:v10 forKeyedSubscript:itemID];
 
   objc_sync_exit(v11);
-  v14 = [v10 itemID];
+  itemID2 = [v10 itemID];
 
-  return v14;
+  return itemID2;
 }
 
-- (id)createArchivePlaceholderForItem:(id)a3 underParent:(id)a4 inProviderDomainID:(id)a5 withArchiveFormat:(unint64_t)a6
+- (id)createArchivePlaceholderForItem:(id)item underParent:(id)parent inProviderDomainID:(id)d withArchiveFormat:(unint64_t)format
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [FPItem archivePlaceholderForItem:v10 underParent:v11 inProviderDomainID:v12 withArchiveFormat:a6];
+  itemCopy = item;
+  parentCopy = parent;
+  dCopy = d;
+  v13 = [FPItem archivePlaceholderForItem:itemCopy underParent:parentCopy inProviderDomainID:dCopy withArchiveFormat:format];
   v14 = +[FPStitchingManager sharedInstance];
   objc_sync_enter(v14);
   stitchedPlaceholders = self->_stitchedPlaceholders;
-  v16 = [v13 itemID];
-  [(NSMutableDictionary *)stitchedPlaceholders setObject:v13 forKeyedSubscript:v16];
+  itemID = [v13 itemID];
+  [(NSMutableDictionary *)stitchedPlaceholders setObject:v13 forKeyedSubscript:itemID];
 
   objc_sync_exit(v14);
-  v17 = [v13 itemID];
+  itemID2 = [v13 itemID];
 
-  return v17;
+  return itemID2;
 }
 
-- (id)createPlaceholderWithName:(id)a3 isFolder:(BOOL)a4 contentAccessDate:(id)a5 underParent:(id)a6 inProviderDomainID:(id)a7
+- (id)createPlaceholderWithName:(id)name isFolder:(BOOL)folder contentAccessDate:(id)date underParent:(id)parent inProviderDomainID:(id)d
 {
   v7 = MEMORY[0x1E6982DC8];
-  if (!a4)
+  if (!folder)
   {
     v7 = MEMORY[0x1E6982E48];
   }
 
-  return [(FPStitchingSession *)self createPlaceholderWithName:a3 contentType:*v7 contentAccessDate:a5 underParent:a6 inProviderDomainID:a7];
+  return [(FPStitchingSession *)self createPlaceholderWithName:name contentType:*v7 contentAccessDate:date underParent:parent inProviderDomainID:d];
 }
 
-- (id)createPlaceholderWithName:(id)a3 typeIdentifier:(id)a4 contentAccessDate:(id)a5 underParent:(id)a6 inProviderDomainID:(id)a7
+- (id)createPlaceholderWithName:(id)name typeIdentifier:(id)identifier contentAccessDate:(id)date underParent:(id)parent inProviderDomainID:(id)d
 {
   v12 = MEMORY[0x1E6982C40];
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a3;
-  v17 = [v12 fp_cachedTypeWithIdentifier:a4];
-  v18 = [(FPStitchingSession *)self createPlaceholderWithName:v16 contentType:v17 contentAccessDate:v15 underParent:v14 inProviderDomainID:v13];
+  dCopy = d;
+  parentCopy = parent;
+  dateCopy = date;
+  nameCopy = name;
+  v17 = [v12 fp_cachedTypeWithIdentifier:identifier];
+  v18 = [(FPStitchingSession *)self createPlaceholderWithName:nameCopy contentType:v17 contentAccessDate:dateCopy underParent:parentCopy inProviderDomainID:dCopy];
 
   return v18;
 }
 
-- (id)createPlaceholderWithName:(id)a3 contentType:(id)a4 contentAccessDate:(id)a5 underParent:(id)a6 inProviderDomainID:(id)a7
+- (id)createPlaceholderWithName:(id)name contentType:(id)type contentAccessDate:(id)date underParent:(id)parent inProviderDomainID:(id)d
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [FPItem placeholderWithName:v12 contentType:v13 contentAccessDate:v14 underParent:v15 inProviderDomainID:v16];
+  nameCopy = name;
+  typeCopy = type;
+  dateCopy = date;
+  parentCopy = parent;
+  dCopy = d;
+  v17 = [FPItem placeholderWithName:nameCopy contentType:typeCopy contentAccessDate:dateCopy underParent:parentCopy inProviderDomainID:dCopy];
   v18 = +[FPStitchingManager sharedInstance];
   objc_sync_enter(v18);
   stitchedPlaceholders = self->_stitchedPlaceholders;
-  v20 = [v17 itemID];
-  [(NSMutableDictionary *)stitchedPlaceholders setObject:v17 forKeyedSubscript:v20];
+  itemID = [v17 itemID];
+  [(NSMutableDictionary *)stitchedPlaceholders setObject:v17 forKeyedSubscript:itemID];
 
   objc_sync_exit(v18);
-  v21 = [v17 itemID];
+  itemID2 = [v17 itemID];
 
-  return v21;
+  return itemID2;
 }
 
 - (void)transformItems:(uint64_t)a3 handler:(uint64_t)a4 .cold.1(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)

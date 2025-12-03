@@ -1,15 +1,15 @@
 @interface AngelSceneProviderRemoteAlert
 - (_TtC28LocalAuthenticationUIService29AngelSceneProviderRemoteAlert)init;
-- (id)makeSceneForRequest:(id)a3;
+- (id)makeSceneForRequest:(id)request;
 @end
 
 @implementation AngelSceneProviderRemoteAlert
 
-- (id)makeSceneForRequest:(id)a3
+- (id)makeSceneForRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
-  v6 = specialized AngelSceneProviderRemoteAlert.makeRemoteAlertScene(for:)(v4);
+  requestCopy = request;
+  selfCopy = self;
+  v6 = specialized AngelSceneProviderRemoteAlert.makeRemoteAlertScene(for:)(requestCopy);
 
   return v6;
 }

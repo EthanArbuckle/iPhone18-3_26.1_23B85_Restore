@@ -1,48 +1,48 @@
 @interface CKEffectPickerStandardView
-- (CGRect)_updateBalloonViewOrigin:(CGRect)a3 forButtonFrame:(CGRect)a4;
+- (CGRect)_updateBalloonViewOrigin:(CGRect)origin forButtonFrame:(CGRect)frame;
 - (double)marginBetweenPickerDotButtons;
-- (void)activateTextSizeDependentConstraintsForSendButtonFrame:(CGRect)a3;
-- (void)setCloseButtonYPosition:(double)a3;
+- (void)activateTextSizeDependentConstraintsForSendButtonFrame:(CGRect)frame;
+- (void)setCloseButtonYPosition:(double)position;
 @end
 
 @implementation CKEffectPickerStandardView
 
-- (void)activateTextSizeDependentConstraintsForSendButtonFrame:(CGRect)a3
+- (void)activateTextSizeDependentConstraintsForSendButtonFrame:(CGRect)frame
 {
-  y = a3.origin.y;
+  y = frame.origin.y;
   v15.receiver = self;
   v15.super_class = CKEffectPickerStandardView;
-  [(CKEffectPickerView *)&v15 activateTextSizeDependentConstraintsForSendButtonFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CKEffectPickerView *)&v15 activateTextSizeDependentConstraintsForSendButtonFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = MEMORY[0x1E696ACD8];
-  v6 = [(CKEffectPickerView *)self closeButton];
-  v7 = [v5 constraintWithItem:v6 attribute:3 relatedBy:0 toItem:self attribute:3 multiplier:1.0 constant:y];
+  closeButton = [(CKEffectPickerView *)self closeButton];
+  v7 = [v5 constraintWithItem:closeButton attribute:3 relatedBy:0 toItem:self attribute:3 multiplier:1.0 constant:y];
 
   [(CKEffectPickerStandardView *)self addConstraint:v7];
   [(CKEffectPickerView *)self setCloseButtonBottomConstraint:v7];
   v8 = MEMORY[0x1E696ACD8];
-  v9 = [(CKEffectPickerView *)self roundedContainerView];
-  v10 = [(CKEffectPickerView *)self closeButton];
-  v11 = [v8 constraintWithItem:v9 attribute:4 relatedBy:0 toItem:v10 attribute:3 multiplier:1.0 constant:-25.0];
+  roundedContainerView = [(CKEffectPickerView *)self roundedContainerView];
+  closeButton2 = [(CKEffectPickerView *)self closeButton];
+  v11 = [v8 constraintWithItem:roundedContainerView attribute:4 relatedBy:0 toItem:closeButton2 attribute:3 multiplier:1.0 constant:-25.0];
 
   [(CKEffectPickerStandardView *)self addConstraint:v11];
   v12 = MEMORY[0x1E696ACD8];
-  v13 = [(CKEffectPickerView *)self sendMomentButton];
-  v14 = [v12 constraintWithItem:v13 attribute:3 relatedBy:0 toItem:self attribute:3 multiplier:1.0 constant:y + -60.0];
+  sendMomentButton = [(CKEffectPickerView *)self sendMomentButton];
+  v14 = [v12 constraintWithItem:sendMomentButton attribute:3 relatedBy:0 toItem:self attribute:3 multiplier:1.0 constant:y + -60.0];
 
   [(CKEffectPickerStandardView *)self addConstraint:v14];
 }
 
-- (void)setCloseButtonYPosition:(double)a3
+- (void)setCloseButtonYPosition:(double)position
 {
-  v4 = [(CKEffectPickerView *)self closeButtonBottomConstraint];
-  [v4 setConstant:a3];
+  closeButtonBottomConstraint = [(CKEffectPickerView *)self closeButtonBottomConstraint];
+  [closeButtonBottomConstraint setConstant:position];
 }
 
 - (double)marginBetweenPickerDotButtons
 {
-  v2 = [objc_opt_class() shouldUseLargeScreenDimension];
+  shouldUseLargeScreenDimension = [objc_opt_class() shouldUseLargeScreenDimension];
   result = 36.0;
-  if (v2)
+  if (shouldUseLargeScreenDimension)
   {
     return 48.0;
   }
@@ -50,29 +50,29 @@
   return result;
 }
 
-- (CGRect)_updateBalloonViewOrigin:(CGRect)a3 forButtonFrame:(CGRect)a4
+- (CGRect)_updateBalloonViewOrigin:(CGRect)origin forButtonFrame:(CGRect)frame
 {
-  y = a4.origin.y;
-  x = a4.origin.x;
-  height = a3.size.height;
-  width = a3.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  height = origin.size.height;
+  width = origin.size.width;
   v27.receiver = self;
   v27.super_class = CKEffectPickerStandardView;
-  [(CKEffectPickerView *)&v27 _updateBalloonViewOrigin:a3.origin.x forButtonFrame:a3.origin.y, a3.size.width, a3.size.height, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
-  v9 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v10 = [v9 isEntryViewRefreshEnabled];
+  [(CKEffectPickerView *)&v27 _updateBalloonViewOrigin:origin.origin.x forButtonFrame:origin.origin.y, origin.size.width, origin.size.height, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
   v11 = width + 20.0;
-  if (v10)
+  if (isEntryViewRefreshEnabled)
   {
-    v12 = [(CKEffectPickerStandardView *)self stylingMetrics];
-    [v12 roundTrackPadding];
+    stylingMetrics = [(CKEffectPickerStandardView *)self stylingMetrics];
+    [stylingMetrics roundTrackPadding];
     v11 = v11 + v13;
   }
 
   v14 = x - v11;
-  v15 = [(CKEffectPickerView *)self closeButton];
-  [v15 frame];
+  closeButton = [(CKEffectPickerView *)self closeButton];
+  [closeButton frame];
   v17 = v16;
   v28.origin.x = v14;
   v28.origin.y = y;
@@ -87,8 +87,8 @@
 
   else
   {
-    v20 = [(CKEffectPickerView *)self effectLabelFont];
-    [v20 _scaledValueForValue:1 useLanguageAwareScaling:20.0];
+    effectLabelFont = [(CKEffectPickerView *)self effectLabelFont];
+    [effectLabelFont _scaledValueForValue:1 useLanguageAwareScaling:20.0];
     v22 = v21;
 
     v23 = y - fmin(20.0 - (v22 + -20.0), 20.0);

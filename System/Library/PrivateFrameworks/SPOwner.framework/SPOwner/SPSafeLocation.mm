@@ -1,8 +1,8 @@
 @interface SPSafeLocation
-- (BOOL)isEqual:(id)a3;
-- (SPSafeLocation)initWithCoder:(id)a3;
-- (SPSafeLocation)initWithIdentifier:(id)a3 type:(int64_t)a4 name:(id)a5 location:(id)a6 approvalState:(int64_t)a7;
-- (SPSafeLocation)initWithType:(int64_t)a3 name:(id)a4 location:(id)a5 approvalState:(int64_t)a6;
+- (BOOL)isEqual:(id)equal;
+- (SPSafeLocation)initWithCoder:(id)coder;
+- (SPSafeLocation)initWithIdentifier:(id)identifier type:(int64_t)type name:(id)name location:(id)location approvalState:(int64_t)state;
+- (SPSafeLocation)initWithType:(int64_t)type name:(id)name location:(id)location approvalState:(int64_t)state;
 - (double)altitude;
 - (double)course;
 - (double)courseAccuracy;
@@ -12,50 +12,50 @@
 - (double)speed;
 - (double)speedAccuracy;
 - (double)verticalAccuracy;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)mutableSafeLocation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPSafeLocation
 
-- (SPSafeLocation)initWithIdentifier:(id)a3 type:(int64_t)a4 name:(id)a5 location:(id)a6 approvalState:(int64_t)a7
+- (SPSafeLocation)initWithIdentifier:(id)identifier type:(int64_t)type name:(id)name location:(id)location approvalState:(int64_t)state
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  identifierCopy = identifier;
+  nameCopy = name;
+  locationCopy = location;
   v19.receiver = self;
   v19.super_class = SPSafeLocation;
   v16 = [(SPSafeLocation *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_identifier, a3);
-    v17->_type = a4;
-    objc_storeStrong(&v17->_name, a5);
-    objc_storeStrong(&v17->_location, a6);
-    v17->_approvalState = a7;
+    objc_storeStrong(&v16->_identifier, identifier);
+    v17->_type = type;
+    objc_storeStrong(&v17->_name, name);
+    objc_storeStrong(&v17->_location, location);
+    v17->_approvalState = state;
   }
 
   return v17;
 }
 
-- (SPSafeLocation)initWithType:(int64_t)a3 name:(id)a4 location:(id)a5 approvalState:(int64_t)a6
+- (SPSafeLocation)initWithType:(int64_t)type name:(id)name location:(id)location approvalState:(int64_t)state
 {
-  v10 = a5;
-  v11 = a4;
+  locationCopy = location;
+  nameCopy = name;
   v12 = objc_opt_new();
-  v13 = [(SPSafeLocation *)self initWithIdentifier:v12 type:a3 name:v11 location:v10 approvalState:a6];
+  v13 = [(SPSafeLocation *)self initWithIdentifier:v12 type:type name:nameCopy location:locationCopy approvalState:state];
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v15 = 1;
   }
@@ -65,22 +65,22 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SPSafeLocation *)self identifier];
-      v7 = [(SPSafeLocation *)v5 identifier];
-      if ([v6 isEqual:v7])
+      v5 = equalCopy;
+      identifier = [(SPSafeLocation *)self identifier];
+      identifier2 = [(SPSafeLocation *)v5 identifier];
+      if ([identifier isEqual:identifier2])
       {
-        v8 = [(SPSafeLocation *)self name];
-        v9 = [(SPSafeLocation *)v5 name];
-        if ([v8 isEqual:v9])
+        name = [(SPSafeLocation *)self name];
+        name2 = [(SPSafeLocation *)v5 name];
+        if ([name isEqual:name2])
         {
-          v10 = [(SPSafeLocation *)self location];
-          v11 = [(SPSafeLocation *)v5 location];
-          [v10 distanceFromLocation:v11];
+          location = [(SPSafeLocation *)self location];
+          location2 = [(SPSafeLocation *)v5 location];
+          [location distanceFromLocation:location2];
           if (v12 == 0.0 && (v13 = [(SPSafeLocation *)self type], v13 == [(SPSafeLocation *)v5 type]))
           {
-            v14 = [(SPSafeLocation *)self approvalState];
-            v15 = v14 == [(SPSafeLocation *)v5 approvalState];
+            approvalState = [(SPSafeLocation *)self approvalState];
+            v15 = approvalState == [(SPSafeLocation *)v5 approvalState];
           }
 
           else
@@ -112,61 +112,61 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SPSafeLocation *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(SPSafeLocation *)self name];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(SPSafeLocation *)self type];
-  v8 = v7 ^ [(SPSafeLocation *)self approvalState];
+  identifier = [(SPSafeLocation *)self identifier];
+  v4 = [identifier hash];
+  name = [(SPSafeLocation *)self name];
+  v6 = [name hash] ^ v4;
+  type = [(SPSafeLocation *)self type];
+  v8 = type ^ [(SPSafeLocation *)self approvalState];
 
   return v6 ^ v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SPSafeLocation alloc];
-  v5 = [(SPSafeLocation *)self identifier];
-  v6 = [(SPSafeLocation *)self type];
-  v7 = [(SPSafeLocation *)self name];
-  v8 = [(SPSafeLocation *)self location];
-  v9 = [(SPSafeLocation *)v4 initWithIdentifier:v5 type:v6 name:v7 location:v8 approvalState:[(SPSafeLocation *)self approvalState]];
+  identifier = [(SPSafeLocation *)self identifier];
+  type = [(SPSafeLocation *)self type];
+  name = [(SPSafeLocation *)self name];
+  location = [(SPSafeLocation *)self location];
+  v9 = [(SPSafeLocation *)v4 initWithIdentifier:identifier type:type name:name location:location approvalState:[(SPSafeLocation *)self approvalState]];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(SPSafeLocation *)self identifier];
-  [v7 encodeObject:v4 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(SPSafeLocation *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  [v7 encodeInteger:-[SPSafeLocation type](self forKey:{"type"), @"type"}];
-  v5 = [(SPSafeLocation *)self name];
-  [v7 encodeObject:v5 forKey:@"name"];
+  [coderCopy encodeInteger:-[SPSafeLocation type](self forKey:{"type"), @"type"}];
+  name = [(SPSafeLocation *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v6 = [(SPSafeLocation *)self location];
-  [v7 encodeObject:v6 forKey:@"location"];
+  location = [(SPSafeLocation *)self location];
+  [coderCopy encodeObject:location forKey:@"location"];
 
-  [v7 encodeInteger:-[SPSafeLocation approvalState](self forKey:{"approvalState"), @"approvalState"}];
+  [coderCopy encodeInteger:-[SPSafeLocation approvalState](self forKey:{"approvalState"), @"approvalState"}];
 }
 
-- (SPSafeLocation)initWithCoder:(id)a3
+- (SPSafeLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   identifier = self->_identifier;
   self->_identifier = v5;
 
-  self->_type = [v4 decodeIntegerForKey:@"type"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  self->_type = [coderCopy decodeIntegerForKey:@"type"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
   name = self->_name;
   self->_name = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location"];
   location = self->_location;
   self->_location = v9;
 
-  v11 = [v4 decodeIntegerForKey:@"approvalState"];
+  v11 = [coderCopy decodeIntegerForKey:@"approvalState"];
   self->_approvalState = v11;
   return self;
 }
@@ -174,11 +174,11 @@
 - (id)mutableSafeLocation
 {
   v3 = [SPMutableSafeLocation alloc];
-  v4 = [(SPSafeLocation *)self identifier];
-  v5 = [(SPSafeLocation *)self type];
-  v6 = [(SPSafeLocation *)self name];
-  v7 = [(SPSafeLocation *)self location];
-  v8 = [(SPSafeLocation *)v3 initWithIdentifier:v4 type:v5 name:v6 location:v7 approvalState:[(SPSafeLocation *)self approvalState]];
+  identifier = [(SPSafeLocation *)self identifier];
+  type = [(SPSafeLocation *)self type];
+  name = [(SPSafeLocation *)self name];
+  location = [(SPSafeLocation *)self location];
+  v8 = [(SPSafeLocation *)v3 initWithIdentifier:identifier type:type name:name location:location approvalState:[(SPSafeLocation *)self approvalState]];
 
   return v8;
 }
@@ -187,26 +187,26 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(SPSafeLocation *)self identifier];
-  v6 = [(SPSafeLocation *)self location];
-  [v6 coordinate];
+  identifier = [(SPSafeLocation *)self identifier];
+  location = [(SPSafeLocation *)self location];
+  [location coordinate];
   v8 = v7;
-  v9 = [(SPSafeLocation *)self location];
-  [v9 coordinate];
+  location2 = [(SPSafeLocation *)self location];
+  [location2 coordinate];
   v11 = v10;
-  v12 = [(SPSafeLocation *)self location];
-  [v12 horizontalAccuracy];
+  location3 = [(SPSafeLocation *)self location];
+  [location3 horizontalAccuracy];
   v14 = v13;
-  v15 = [(SPSafeLocation *)self name];
-  v16 = [v3 stringWithFormat:@"<%@: %p %@ loc: %f, %f (%f) n:%@ a:%ld>", v4, self, v5, v8, v11, v14, v15, -[SPSafeLocation approvalState](self, "approvalState")];
+  name = [(SPSafeLocation *)self name];
+  v16 = [v3 stringWithFormat:@"<%@: %p %@ loc: %f, %f (%f) n:%@ a:%ld>", v4, self, identifier, v8, v11, v14, name, -[SPSafeLocation approvalState](self, "approvalState")];
 
   return v16;
 }
 
 - (double)latitude
 {
-  v2 = [(SPSafeLocation *)self location];
-  [v2 coordinate];
+  location = [(SPSafeLocation *)self location];
+  [location coordinate];
   v4 = v3;
 
   return v4;
@@ -214,8 +214,8 @@
 
 - (double)longitude
 {
-  v2 = [(SPSafeLocation *)self location];
-  [v2 coordinate];
+  location = [(SPSafeLocation *)self location];
+  [location coordinate];
   v4 = v3;
 
   return v4;
@@ -223,8 +223,8 @@
 
 - (double)horizontalAccuracy
 {
-  v2 = [(SPSafeLocation *)self location];
-  [v2 horizontalAccuracy];
+  location = [(SPSafeLocation *)self location];
+  [location horizontalAccuracy];
   v4 = v3;
 
   return v4;
@@ -232,8 +232,8 @@
 
 - (double)altitude
 {
-  v2 = [(SPSafeLocation *)self location];
-  [v2 altitude];
+  location = [(SPSafeLocation *)self location];
+  [location altitude];
   v4 = v3;
 
   return v4;
@@ -241,8 +241,8 @@
 
 - (double)verticalAccuracy
 {
-  v2 = [(SPSafeLocation *)self location];
-  [v2 verticalAccuracy];
+  location = [(SPSafeLocation *)self location];
+  [location verticalAccuracy];
   v4 = v3;
 
   return v4;
@@ -250,8 +250,8 @@
 
 - (double)speed
 {
-  v2 = [(SPSafeLocation *)self location];
-  [v2 speed];
+  location = [(SPSafeLocation *)self location];
+  [location speed];
   v4 = v3;
 
   return v4;
@@ -259,8 +259,8 @@
 
 - (double)speedAccuracy
 {
-  v2 = [(SPSafeLocation *)self location];
-  [v2 speedAccuracy];
+  location = [(SPSafeLocation *)self location];
+  [location speedAccuracy];
   v4 = v3;
 
   return v4;
@@ -268,8 +268,8 @@
 
 - (double)course
 {
-  v2 = [(SPSafeLocation *)self location];
-  [v2 course];
+  location = [(SPSafeLocation *)self location];
+  [location course];
   v4 = v3;
 
   return v4;
@@ -277,8 +277,8 @@
 
 - (double)courseAccuracy
 {
-  v2 = [(SPSafeLocation *)self location];
-  [v2 courseAccuracy];
+  location = [(SPSafeLocation *)self location];
+  [location courseAccuracy];
   v4 = v3;
 
   return v4;

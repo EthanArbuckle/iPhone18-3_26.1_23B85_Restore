@@ -1,26 +1,26 @@
 @interface CKDMapShareURLsToInstalledBundleIDsOperation
-+ (id)nameForState:(unint64_t)a3;
++ (id)nameForState:(unint64_t)state;
 - (BOOL)makeStateTransition;
-- (CKDMapShareURLsToInstalledBundleIDsOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDMapShareURLsToInstalledBundleIDsOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)activityCreate;
 - (void)_fetchRegisteredBundleIDs;
 - (void)_fetchShareMetadata;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
-- (void)_performCallbackForURL:(id)a3 withAppBundleIDs:(id)a4 daemonBundleIDs:(id)a5 error:(id)a6;
+- (void)_finishOnCallbackQueueWithError:(id)error;
+- (void)_performCallbackForURL:(id)l withAppBundleIDs:(id)ds daemonBundleIDs:(id)iDs error:(id)error;
 - (void)main;
 @end
 
 @implementation CKDMapShareURLsToInstalledBundleIDsOperation
 
-- (CKDMapShareURLsToInstalledBundleIDsOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDMapShareURLsToInstalledBundleIDsOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v18.receiver = self;
   v18.super_class = CKDMapShareURLsToInstalledBundleIDsOperation;
-  v9 = [(CKDOperation *)&v18 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDOperation *)&v18 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v10 = objc_msgSend_shareURLs(v6, v7, v8);
+    v10 = objc_msgSend_shareURLs(infoCopy, v7, v8);
     v13 = objc_msgSend_mutableCopy(v10, v11, v12);
     shareURLs = v9->_shareURLs;
     v9->_shareURLs = v13;
@@ -64,14 +64,14 @@
   return 1;
 }
 
-+ (id)nameForState:(unint64_t)a3
++ (id)nameForState:(unint64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     v5 = @"Fetch Share Metadata";
   }
 
-  else if (a3 == 3)
+  else if (state == 3)
   {
     v5 = @"Fetch Registered bundleIDs";
   }
@@ -80,7 +80,7 @@
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKDMapShareURLsToInstalledBundleIDsOperation;
     v5 = objc_msgSendSuper2(&v7, sel_nameForState_);
   }
@@ -88,16 +88,16 @@
   return v5;
 }
 
-- (void)_performCallbackForURL:(id)a3 withAppBundleIDs:(id)a4 daemonBundleIDs:(id)a5 error:(id)a6
+- (void)_performCallbackForURL:(id)l withAppBundleIDs:(id)ds daemonBundleIDs:(id)iDs error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  errorCopy = error;
   v16 = objc_msgSend_shareURLs(self, v14, v15);
   objc_sync_enter(v16);
   v19 = objc_msgSend_shareURLs(self, v17, v18);
-  objc_msgSend_removeObject_(v19, v20, v10);
+  objc_msgSend_removeObject_(v19, v20, lCopy);
 
   objc_sync_exit(v16);
   v23 = objc_msgSend_bundleIDsFetchedBlock(self, v21, v22);
@@ -110,10 +110,10 @@
     block[2] = sub_2252370B4;
     block[3] = &unk_278548978;
     block[4] = self;
-    v28 = v10;
-    v29 = v11;
-    v30 = v12;
-    v31 = v13;
+    v28 = lCopy;
+    v29 = dsCopy;
+    v30 = iDsCopy;
+    v31 = errorCopy;
     dispatch_async(v26, block);
   }
 }
@@ -171,7 +171,7 @@
   v76 = 0u;
   v73 = 0u;
   v74 = 0u;
-  v65 = self;
+  selfCopy = self;
   obj = objc_msgSend_shareURLs(self, v12, v13);
   v68 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v14, &v73, v77, 16);
   if (v68)
@@ -189,21 +189,21 @@
 
         v18 = *(*(&v73 + 1) + 8 * v17);
         v70 = v18;
-        v19 = objc_msgSend_shareMetadatasByURL(v65, v15, v16);
+        v19 = objc_msgSend_shareMetadatasByURL(selfCopy, v15, v16);
         v71 = objc_msgSend_objectForKeyedSubscript_(v19, v20, v18);
 
         v21 = [CKDAppContainerTuple alloc];
         v22 = [CKDApplicationID alloc];
         v24 = objc_msgSend_initWithApplicationBundleIdentifier_(v22, v23, @"com.apple.cloudd");
         v27 = objc_msgSend_containerID(v71, v25, v26);
-        v30 = objc_msgSend_container(v65, v28, v29);
+        v30 = objc_msgSend_container(selfCopy, v28, v29);
         v33 = objc_msgSend_personaID(v30, v31, v32);
         v69 = v17;
         v35 = objc_msgSend_initWithApplicationID_containerID_personaID_(v21, v34, v24, v27, v33);
 
-        v38 = objc_msgSend_container(v65, v36, v37);
+        v38 = objc_msgSend_container(selfCopy, v36, v37);
         v41 = objc_msgSend_entitlements(v38, v39, v40);
-        v44 = objc_msgSend_container(v65, v42, v43);
+        v44 = objc_msgSend_container(selfCopy, v42, v43);
         v47 = objc_msgSend_options(v44, v45, v46);
         v50 = objc_msgSend_clientConnection(v67, v48, v49);
         v53 = objc_msgSend_sharedContainers(v50, v51, v52);
@@ -216,10 +216,10 @@
         v72[2] = sub_225237B54;
         v72[3] = &unk_278548C48;
         v72[4] = v70;
-        v72[5] = v65;
-        objc_msgSend_spawnAndRunOperationOfClass_operationInfo_spawnQueue_container_operationConfigurationBlock_(v65, v58, v56, v57, 0, v55, v72);
+        v72[5] = selfCopy;
+        objc_msgSend_spawnAndRunOperationOfClass_operationInfo_spawnQueue_container_operationConfigurationBlock_(selfCopy, v58, v56, v57, 0, v55, v72);
 
-        v61 = objc_msgSend_stateTransitionGroup(v65, v59, v60);
+        v61 = objc_msgSend_stateTransitionGroup(selfCopy, v59, v60);
         dispatch_group_enter(v61);
 
         v17 = v69 + 1;
@@ -235,13 +235,13 @@
   v62 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_msgSend_setBundleIDsFetchedBlock_(self, v5, 0);
   v6.receiver = self;
   v6.super_class = CKDMapShareURLsToInstalledBundleIDsOperation;
-  [(CKDOperation *)&v6 _finishOnCallbackQueueWithError:v4];
+  [(CKDOperation *)&v6 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 - (void)main
@@ -265,7 +265,7 @@
     v25 = 138544130;
     v26 = v14;
     v27 = 2048;
-    v28 = self;
+    selfCopy = self;
     v29 = 2114;
     v30 = v19;
     v31 = 2112;

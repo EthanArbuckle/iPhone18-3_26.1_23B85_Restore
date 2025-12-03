@@ -1,14 +1,14 @@
 @interface _MUPhotoSliderViewFlowLayout
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
 @end
 
 @implementation _MUPhotoSliderViewFlowLayout
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v5 = [(_MUPhotoSliderViewFlowLayout *)self collectionView:a3.origin.x];
+  height = change.size.height;
+  width = change.size.width;
+  v5 = [(_MUPhotoSliderViewFlowLayout *)self collectionView:change.origin.x];
   [v5 bounds];
   v8 = width != v6 || height != v7;
 

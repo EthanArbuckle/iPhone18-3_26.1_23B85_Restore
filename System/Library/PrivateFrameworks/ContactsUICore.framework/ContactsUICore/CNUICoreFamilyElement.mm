@@ -1,18 +1,18 @@
 @interface CNUICoreFamilyElement
-- (BOOL)containsFamilyMember:(id)a3;
+- (BOOL)containsFamilyMember:(id)member;
 - (BOOL)hasMatchingContacts;
 - (BOOL)isParent;
-- (CNUICoreFamilyElement)initWithFamilyMember:(id)a3 matchingContacts:(id)a4;
+- (CNUICoreFamilyElement)initWithFamilyMember:(id)member matchingContacts:(id)contacts;
 - (id)description;
 @end
 
 @implementation CNUICoreFamilyElement
 
-- (CNUICoreFamilyElement)initWithFamilyMember:(id)a3 matchingContacts:(id)a4
+- (CNUICoreFamilyElement)initWithFamilyMember:(id)member matchingContacts:(id)contacts
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  memberCopy = member;
+  contactsCopy = contacts;
+  if (memberCopy)
   {
     goto LABEL_5;
   }
@@ -26,7 +26,7 @@
   if (os_log_type_enabled(CNGuardOSLog_cn_once_object_0_15, OS_LOG_TYPE_FAULT))
   {
     [CNUICoreFamilyElement initWithFamilyMember:v9 matchingContacts:?];
-    if (v8)
+    if (contactsCopy)
     {
       goto LABEL_10;
     }
@@ -35,7 +35,7 @@
   else
   {
 LABEL_5:
-    if (v8)
+    if (contactsCopy)
     {
       goto LABEL_10;
     }
@@ -59,8 +59,8 @@ LABEL_10:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_familyMember, a3);
-    objc_storeStrong(&v12->_matchingContacts, a4);
+    objc_storeStrong(&v11->_familyMember, member);
+    objc_storeStrong(&v12->_matchingContacts, contacts);
     v13 = v12;
   }
 
@@ -70,46 +70,46 @@ LABEL_10:
 - (BOOL)hasMatchingContacts
 {
   v2 = *MEMORY[0x1E6996530];
-  v3 = [(CNUICoreFamilyElement *)self matchingContacts];
-  LOBYTE(v2) = (*(v2 + 16))(v2, v3);
+  matchingContacts = [(CNUICoreFamilyElement *)self matchingContacts];
+  LOBYTE(v2) = (*(v2 + 16))(v2, matchingContacts);
 
   return v2 ^ 1;
 }
 
 - (BOOL)isParent
 {
-  v2 = [(CNUICoreFamilyElement *)self familyMember];
-  v3 = [v2 isParent];
+  familyMember = [(CNUICoreFamilyElement *)self familyMember];
+  isParent = [familyMember isParent];
 
-  return v3;
+  return isParent;
 }
 
-- (BOOL)containsFamilyMember:(id)a3
+- (BOOL)containsFamilyMember:(id)member
 {
-  v4 = a3;
-  v5 = [(CNUICoreFamilyElement *)self familyMember];
+  memberCopy = member;
+  familyMember = [(CNUICoreFamilyElement *)self familyMember];
 
-  if (v5 == v4)
+  if (familyMember == memberCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    v6 = [v4 dsid];
-    v7 = [(CNUICoreFamilyElement *)self familyMember];
-    v8 = [v7 dsid];
-    if ([v6 isEqual:v8])
+    dsid = [memberCopy dsid];
+    familyMember2 = [(CNUICoreFamilyElement *)self familyMember];
+    dsid2 = [familyMember2 dsid];
+    if ([dsid isEqual:dsid2])
     {
       v9 = 1;
     }
 
     else
     {
-      v10 = [v4 altDSID];
-      v11 = [(CNUICoreFamilyElement *)self familyMember];
-      v12 = [v11 altDSID];
-      v9 = [v10 isEqualToString:v12];
+      altDSID = [memberCopy altDSID];
+      familyMember3 = [(CNUICoreFamilyElement *)self familyMember];
+      altDSID2 = [familyMember3 altDSID];
+      v9 = [altDSID isEqualToString:altDSID2];
     }
   }
 
@@ -119,15 +119,15 @@ LABEL_10:
 - (id)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNUICoreFamilyElement *)self familyMember];
-  v5 = [v3 appendObject:v4 withName:@"familyMember"];
+  familyMember = [(CNUICoreFamilyElement *)self familyMember];
+  v5 = [v3 appendObject:familyMember withName:@"familyMember"];
 
-  v6 = [(CNUICoreFamilyElement *)self matchingContacts];
-  v7 = [v3 appendObject:v6 withName:@"matchingContacts"];
+  matchingContacts = [(CNUICoreFamilyElement *)self matchingContacts];
+  v7 = [v3 appendObject:matchingContacts withName:@"matchingContacts"];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 @end

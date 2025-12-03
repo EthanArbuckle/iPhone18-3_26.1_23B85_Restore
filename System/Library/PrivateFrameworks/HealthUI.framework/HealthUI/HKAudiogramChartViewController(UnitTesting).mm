@@ -69,13 +69,13 @@
       v28 = v27;
 
       v29 = [v10 objectAtIndexedSubscript:v16];
-      v30 = [v29 xValueAsGenericType];
-      [v30 doubleValue];
+      xValueAsGenericType = [v29 xValueAsGenericType];
+      [xValueAsGenericType doubleValue];
       v32 = v31;
 
       v33 = [v10 objectAtIndexedSubscript:v16];
-      v34 = [v33 yValue];
-      [v34 doubleValue];
+      yValue = [v33 yValue];
+      [yValue doubleValue];
       v36 = v35;
 
       if (vabdd_f64(v24, v32) > 0.000001)

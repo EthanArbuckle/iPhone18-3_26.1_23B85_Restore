@@ -1,34 +1,34 @@
 @interface HKInteractiveChartInsulinFormatter
-- (id)_formattedSelectedRangeLabelDataWithChartData:(id)a3 items:(id)a4;
-- (id)_formattedStringWithBasalValue:(double)a3 bolusValue:(double)a4;
-- (id)_formattedStringWithValue:(double)a3 unit:(id)a4 deliveryReason:(int64_t)a5;
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4;
+- (id)_formattedSelectedRangeLabelDataWithChartData:(id)data items:(id)items;
+- (id)_formattedStringWithBasalValue:(double)value bolusValue:(double)bolusValue;
+- (id)_formattedStringWithValue:(double)value unit:(id)unit deliveryReason:(int64_t)reason;
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context;
 @end
 
 @implementation HKInteractiveChartInsulinFormatter
 
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context
 {
-  v5 = a3;
-  v6 = [(HKInteractiveChartGenericStatFormatter *)self configuredStatItems];
-  v7 = [(HKInteractiveChartInsulinFormatter *)self _formattedSelectedRangeLabelDataWithChartData:v5 items:v6];
+  dataCopy = data;
+  configuredStatItems = [(HKInteractiveChartGenericStatFormatter *)self configuredStatItems];
+  v7 = [(HKInteractiveChartInsulinFormatter *)self _formattedSelectedRangeLabelDataWithChartData:dataCopy items:configuredStatItems];
 
   return v7;
 }
 
-- (id)_formattedSelectedRangeLabelDataWithChartData:(id)a3 items:(id)a4
+- (id)_formattedSelectedRangeLabelDataWithChartData:(id)data items:(id)items
 {
   v59 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5 && [v5 count])
+  dataCopy = data;
+  itemsCopy = items;
+  if (dataCopy && [dataCopy count])
   {
     v55 = 0u;
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v44 = v5;
-    v7 = v5;
+    v44 = dataCopy;
+    v7 = dataCopy;
     v8 = [v7 countByEnumeratingWithState:&v53 objects:v58 count:16];
     if (v8)
     {
@@ -65,13 +65,13 @@
     }
 
     v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v18 = [MEMORY[0x1E696C510] internationalUnit];
+    internationalUnit = [MEMORY[0x1E696C510] internationalUnit];
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v43 = v6;
-    obj = v6;
+    v43 = itemsCopy;
+    obj = itemsCopy;
     v19 = [obj countByEnumeratingWithState:&v49 objects:v57 count:16];
     if (v19)
     {
@@ -105,7 +105,7 @@
 
               v36 = [[HKSelectedRangeData alloc] initWithStatisticsType:v35];
               [(HKSelectedRangeData *)v36 setDataType:3];
-              v37 = -[HKInteractiveChartDataFormatter attributedStringWithValue:unit:showUnit:](self, "attributedStringWithValue:unit:showUnit:", v18, 1, v12 / [v7 count]);
+              v37 = -[HKInteractiveChartDataFormatter attributedStringWithValue:unit:showUnit:](self, "attributedStringWithValue:unit:showUnit:", internationalUnit, 1, v12 / [v7 count]);
               [(HKSelectedRangeData *)v36 setAttributedString:v37];
 
               v38 = [MEMORY[0x1E696AD98] numberWithDouble:{v12 / objc_msgSend(v7, "count")}];
@@ -117,7 +117,7 @@
 
               [(HKSelectedRangeData *)v24 setDataType:4];
               v21 = v45;
-              v39 = -[HKInteractiveChartDataFormatter attributedStringWithValue:unit:showUnit:](self, "attributedStringWithValue:unit:showUnit:", v18, 1, v11 / [v7 count]);
+              v39 = -[HKInteractiveChartDataFormatter attributedStringWithValue:unit:showUnit:](self, "attributedStringWithValue:unit:showUnit:", internationalUnit, 1, v11 / [v7 count]);
               [(HKSelectedRangeData *)v24 setAttributedString:v39];
 
               v40 = MEMORY[0x1E696AD98];
@@ -144,7 +144,7 @@
 
               v29 = [[HKSelectedRangeData alloc] initWithStatisticsType:v28];
               [(HKSelectedRangeData *)v29 setDataType:3];
-              v30 = [(HKInteractiveChartDataFormatter *)self attributedStringWithValue:v18 unit:1 showUnit:v12];
+              v30 = [(HKInteractiveChartDataFormatter *)self attributedStringWithValue:internationalUnit unit:1 showUnit:v12];
               [(HKSelectedRangeData *)v29 setAttributedString:v30];
 
               v31 = [MEMORY[0x1E696AD98] numberWithDouble:v12];
@@ -156,7 +156,7 @@
 
               [(HKSelectedRangeData *)v24 setDataType:4];
               v21 = v45;
-              v32 = [(HKInteractiveChartDataFormatter *)self attributedStringWithValue:v18 unit:1 showUnit:v11];
+              v32 = [(HKInteractiveChartDataFormatter *)self attributedStringWithValue:internationalUnit unit:1 showUnit:v11];
               [(HKSelectedRangeData *)v24 setAttributedString:v32];
 
               v26 = MEMORY[0x1E696AD98];
@@ -173,7 +173,7 @@
 
             v24 = [[HKSelectedRangeData alloc] initWithStatisticsType:5];
             [(HKSelectedRangeData *)v24 setDataType:5];
-            v25 = [(HKInteractiveChartDataFormatter *)self attributedStringWithValue:v18 unit:1 showUnit:v11 + v12];
+            v25 = [(HKInteractiveChartDataFormatter *)self attributedStringWithValue:internationalUnit unit:1 showUnit:v11 + v12];
             [(HKSelectedRangeData *)v24 setAttributedString:v25];
 
             v26 = MEMORY[0x1E696AD98];
@@ -185,7 +185,7 @@
             v24 = [[HKSelectedRangeData alloc] initWithStatisticsType:3];
             v33 = (v11 + v12) / [v7 count];
             [(HKSelectedRangeData *)v24 setDataType:5];
-            v34 = [(HKInteractiveChartDataFormatter *)self attributedStringWithValue:v18 unit:1 showUnit:v33];
+            v34 = [(HKInteractiveChartDataFormatter *)self attributedStringWithValue:internationalUnit unit:1 showUnit:v33];
             [(HKSelectedRangeData *)v24 setAttributedString:v34];
 
             v26 = MEMORY[0x1E696AD98];
@@ -204,8 +204,8 @@
       while (v20);
     }
 
-    v6 = v43;
-    v5 = v44;
+    itemsCopy = v43;
+    dataCopy = v44;
   }
 
   else
@@ -216,17 +216,17 @@
   return v17;
 }
 
-- (id)_formattedStringWithBasalValue:(double)a3 bolusValue:(double)a4
+- (id)_formattedStringWithBasalValue:(double)value bolusValue:(double)bolusValue
 {
   v17[3] = *MEMORY[0x1E69E9840];
-  v7 = [MEMORY[0x1E696C510] internationalUnit];
-  v8 = [(HKInteractiveChartInsulinFormatter *)self _formattedStringWithValue:v7 unit:1 deliveryReason:a3];
+  internationalUnit = [MEMORY[0x1E696C510] internationalUnit];
+  v8 = [(HKInteractiveChartInsulinFormatter *)self _formattedStringWithValue:internationalUnit unit:1 deliveryReason:value];
   v9 = objc_alloc(MEMORY[0x1E696AAB0]);
   v10 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v11 = [v10 localizedStringForKey:@"CHART_COMMA_SEPARATOR" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
   v12 = [v9 initWithString:v11];
 
-  v13 = [(HKInteractiveChartInsulinFormatter *)self _formattedStringWithValue:v7 unit:2 deliveryReason:a4];
+  v13 = [(HKInteractiveChartInsulinFormatter *)self _formattedStringWithValue:internationalUnit unit:2 deliveryReason:bolusValue];
   v17[0] = v8;
   v17[1] = v12;
   v17[2] = v13;
@@ -236,42 +236,42 @@
   return v15;
 }
 
-- (id)_formattedStringWithValue:(double)a3 unit:(id)a4 deliveryReason:(int64_t)a5
+- (id)_formattedStringWithValue:(double)value unit:(id)unit deliveryReason:(int64_t)reason
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [(HKInteractiveChartDataFormatter *)self displayType];
-  v10 = [v9 presentation];
-  v11 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v35 = [v10 adjustedValueForDaemonValue:v11];
+  unitCopy = unit;
+  displayType = [(HKInteractiveChartDataFormatter *)self displayType];
+  presentation = [displayType presentation];
+  v11 = [MEMORY[0x1E696AD98] numberWithDouble:value];
+  v35 = [presentation adjustedValueForDaemonValue:v11];
 
-  v12 = [(HKInteractiveChartDataFormatter *)self displayType];
-  v13 = [(HKInteractiveChartDataFormatter *)self unitController];
-  v34 = HKFormattedStringFromValue(v35, v12, v13, 0, 0);
+  displayType2 = [(HKInteractiveChartDataFormatter *)self displayType];
+  unitController = [(HKInteractiveChartDataFormatter *)self unitController];
+  v34 = HKFormattedStringFromValue(v35, displayType2, unitController, 0, 0);
 
-  v14 = [(HKInteractiveChartDataFormatter *)self unitController];
-  v15 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v16 = [v14 localizedDisplayNameForUnit:v8 value:v15];
+  unitController2 = [(HKInteractiveChartDataFormatter *)self unitController];
+  v15 = [MEMORY[0x1E696AD98] numberWithDouble:value];
+  v16 = [unitController2 localizedDisplayNameForUnit:unitCopy value:v15];
 
   v39 = *MEMORY[0x1E69DB648];
   v17 = v39;
-  v18 = [(HKInteractiveChartDataFormatter *)self minorFont];
-  v40[0] = v18;
+  minorFont = [(HKInteractiveChartDataFormatter *)self minorFont];
+  v40[0] = minorFont;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:&v39 count:1];
 
   v20 = objc_alloc(MEMORY[0x1E696AAB0]);
   v37 = v17;
-  v21 = [(HKInteractiveChartDataFormatter *)self majorFont];
-  v38 = v21;
+  majorFont = [(HKInteractiveChartDataFormatter *)self majorFont];
+  v38 = majorFont;
   v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
   v23 = [v20 initWithString:v34 attributes:v22];
 
   v24 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v16 attributes:v19];
   v25 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@" " attributes:v19];
-  v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"INSULIN_DELIVERY_REASON_%zd", a5];
+  reason = [MEMORY[0x1E696AEC0] stringWithFormat:@"INSULIN_DELIVERY_REASON_%zd", reason];
   v27 = objc_alloc(MEMORY[0x1E696AAB0]);
   v28 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-  v29 = [v28 localizedStringForKey:v26 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
+  v29 = [v28 localizedStringForKey:reason value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
   v30 = [v27 initWithString:v29 attributes:v19];
 
   v36[0] = v23;

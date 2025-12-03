@@ -1,12 +1,12 @@
 @interface _INPBPlaceList
-- (BOOL)isEqual:(id)a3;
-- (_INPBPlaceList)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBPlaceList)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)addPlace:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setPlaces:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPlace:(id)place;
+- (void)encodeWithCoder:(id)coder;
+- (void)setPlaces:(id)places;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBPlaceList
@@ -14,14 +14,14 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBPlaceList *)self condition];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"condition"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  condition = [(_INPBPlaceList *)self condition];
+  dictionaryRepresentation = [condition dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"condition"];
 
   if ([(NSArray *)self->_places count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -41,8 +41,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -51,36 +51,36 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"place"];
+    [dictionary setObject:array forKeyedSubscript:@"place"];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_INPBPlaceList *)self condition];
-  v6 = [v4 condition];
-  if ((v5 != 0) == (v6 == 0))
+  condition = [(_INPBPlaceList *)self condition];
+  condition2 = [equalCopy condition];
+  if ((condition != 0) == (condition2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_INPBPlaceList *)self condition];
-  if (v7)
+  condition3 = [(_INPBPlaceList *)self condition];
+  if (condition3)
   {
-    v8 = v7;
-    v9 = [(_INPBPlaceList *)self condition];
-    v10 = [v4 condition];
-    v11 = [v9 isEqual:v10];
+    v8 = condition3;
+    condition4 = [(_INPBPlaceList *)self condition];
+    condition5 = [equalCopy condition];
+    v11 = [condition4 isEqual:condition5];
 
     if (!v11)
     {
@@ -92,12 +92,12 @@
   {
   }
 
-  v5 = [(_INPBPlaceList *)self places];
-  v6 = [v4 places];
-  if ((v5 != 0) != (v6 == 0))
+  condition = [(_INPBPlaceList *)self places];
+  condition2 = [equalCopy places];
+  if ((condition != 0) != (condition2 == 0))
   {
-    v12 = [(_INPBPlaceList *)self places];
-    if (!v12)
+    places = [(_INPBPlaceList *)self places];
+    if (!places)
     {
 
 LABEL_15:
@@ -105,10 +105,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_INPBPlaceList *)self places];
-    v15 = [v4 places];
-    v16 = [v14 isEqual:v15];
+    v13 = places;
+    places2 = [(_INPBPlaceList *)self places];
+    places3 = [equalCopy places];
+    v16 = [places2 isEqual:places3];
 
     if (v16)
     {
@@ -128,51 +128,51 @@ LABEL_13:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBPlaceList allocWithZone:](_INPBPlaceList init];
-  v6 = [(_INPBCondition *)self->_condition copyWithZone:a3];
+  v6 = [(_INPBCondition *)self->_condition copyWithZone:zone];
   [(_INPBPlaceList *)v5 setCondition:v6];
 
-  v7 = [(NSArray *)self->_places copyWithZone:a3];
+  v7 = [(NSArray *)self->_places copyWithZone:zone];
   [(_INPBPlaceList *)v5 setPlaces:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBPlaceList *)self data];
+  coderCopy = coder;
+  data = [(_INPBPlaceList *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBPlaceList)initWithCoder:(id)a3
+- (_INPBPlaceList)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBPlaceList *)self initWithData:v6];
+    self = [(_INPBPlaceList *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBPlaceList *)self condition];
+  toCopy = to;
+  condition = [(_INPBPlaceList *)self condition];
 
-  if (v5)
+  if (condition)
   {
-    v6 = [(_INPBPlaceList *)self condition];
+    condition2 = [(_INPBPlaceList *)self condition];
     PBDataWriterWriteSubmessage();
   }
 
@@ -211,27 +211,27 @@ LABEL_13:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addPlace:(id)a3
+- (void)addPlace:(id)place
 {
-  v4 = a3;
+  placeCopy = place;
   places = self->_places;
-  v8 = v4;
+  v8 = placeCopy;
   if (!places)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_places;
-    self->_places = v6;
+    self->_places = array;
 
-    v4 = v8;
+    placeCopy = v8;
     places = self->_places;
   }
 
-  [(NSArray *)places addObject:v4];
+  [(NSArray *)places addObject:placeCopy];
 }
 
-- (void)setPlaces:(id)a3
+- (void)setPlaces:(id)places
 {
-  v4 = [a3 mutableCopy];
+  v4 = [places mutableCopy];
   places = self->_places;
   self->_places = v4;
 

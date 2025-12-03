@@ -1,32 +1,32 @@
 @interface PKAccountAssistanceProgramMessage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PKAccountAssistanceProgramMessage)initWithCoder:(id)a3;
-- (PKAccountAssistanceProgramMessage)initWithRecord:(id)a3;
+- (PKAccountAssistanceProgramMessage)initWithCoder:(id)coder;
+- (PKAccountAssistanceProgramMessage)initWithRecord:(id)record;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithRecord:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithRecord:(id)record;
 @end
 
 @implementation PKAccountAssistanceProgramMessage
 
-- (PKAccountAssistanceProgramMessage)initWithCoder:(id)a3
+- (PKAccountAssistanceProgramMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKAccountAssistanceProgramMessage;
   v5 = [(PKAccountAssistanceProgramMessage *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pastDue"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pastDue"];
     pastDue = v5->_pastDue;
     v5->_pastDue = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"chargeOffPreventionAmount"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"chargeOffPreventionAmount"];
     chargeOffPreventionAmount = v5->_chargeOffPreventionAmount;
     v5->_chargeOffPreventionAmount = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentBalance"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentBalance"];
     currentBalance = v5->_currentBalance;
     v5->_currentBalance = v10;
   }
@@ -34,32 +34,32 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   pastDue = self->_pastDue;
-  v5 = a3;
-  [v5 encodeObject:pastDue forKey:@"pastDue"];
-  [v5 encodeObject:self->_chargeOffPreventionAmount forKey:@"chargeOffPreventionAmount"];
-  [v5 encodeObject:self->_currentBalance forKey:@"currentBalance"];
+  coderCopy = coder;
+  [coderCopy encodeObject:pastDue forKey:@"pastDue"];
+  [coderCopy encodeObject:self->_chargeOffPreventionAmount forKey:@"chargeOffPreventionAmount"];
+  [coderCopy encodeObject:self->_currentBalance forKey:@"currentBalance"];
 }
 
-- (PKAccountAssistanceProgramMessage)initWithRecord:(id)a3
+- (PKAccountAssistanceProgramMessage)initWithRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v13.receiver = self;
   v13.super_class = PKAccountAssistanceProgramMessage;
   v5 = [(PKAccountAssistanceProgramMessage *)&v13 init];
   if (v5)
   {
-    v6 = [v4 pk_encryptedDecimalNumberForKey:@"pastDue"];
+    v6 = [recordCopy pk_encryptedDecimalNumberForKey:@"pastDue"];
     pastDue = v5->_pastDue;
     v5->_pastDue = v6;
 
-    v8 = [v4 pk_encryptedDecimalNumberForKey:@"chargeOffPreventionAmount"];
+    v8 = [recordCopy pk_encryptedDecimalNumberForKey:@"chargeOffPreventionAmount"];
     chargeOffPreventionAmount = v5->_chargeOffPreventionAmount;
     v5->_chargeOffPreventionAmount = v8;
 
-    v10 = [v4 pk_encryptedDecimalNumberForKey:@"currentBalance"];
+    v10 = [recordCopy pk_encryptedDecimalNumberForKey:@"currentBalance"];
     currentBalance = v5->_currentBalance;
     v5->_currentBalance = v10;
   }
@@ -67,20 +67,20 @@
   return v5;
 }
 
-- (void)encodeWithRecord:(id)a3
+- (void)encodeWithRecord:(id)record
 {
-  v4 = [a3 encryptedValues];
+  encryptedValues = [record encryptedValues];
   if (PKApplePayContainerEnvironment() == 2)
   {
-    [v4 setObject:self->_pastDue forKey:@"pastDue"];
-    [v4 setObject:self->_chargeOffPreventionAmount forKey:@"chargeOffPreventionAmount"];
-    [v4 setObject:self->_currentBalance forKey:@"currentBalance"];
+    [encryptedValues setObject:self->_pastDue forKey:@"pastDue"];
+    [encryptedValues setObject:self->_chargeOffPreventionAmount forKey:@"chargeOffPreventionAmount"];
+    [encryptedValues setObject:self->_currentBalance forKey:@"currentBalance"];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -88,7 +88,7 @@
   }
 
   pastDue = self->_pastDue;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (pastDue && v6)
   {
     if (([(NSDecimalNumber *)pastDue isEqual:?]& 1) == 0)
@@ -103,7 +103,7 @@
   }
 
   chargeOffPreventionAmount = self->_chargeOffPreventionAmount;
-  v8 = v4[2];
+  v8 = equalCopy[2];
   if (!chargeOffPreventionAmount || !v8)
   {
     if (chargeOffPreventionAmount == v8)
@@ -123,7 +123,7 @@ LABEL_14:
 
 LABEL_10:
   currentBalance = self->_currentBalance;
-  v10 = v4[3];
+  v10 = equalCopy[3];
   if (currentBalance && v10)
   {
     v11 = [(NSDecimalNumber *)currentBalance isEqual:?];
@@ -141,11 +141,11 @@ LABEL_15:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_pastDue];
-  [v3 safelyAddObject:self->_chargeOffPreventionAmount];
-  [v3 safelyAddObject:self->_currentBalance];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_pastDue];
+  [array safelyAddObject:self->_chargeOffPreventionAmount];
+  [array safelyAddObject:self->_currentBalance];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }

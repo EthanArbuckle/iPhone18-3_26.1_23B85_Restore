@@ -1,12 +1,12 @@
 @interface _EXUtil
 + (const)auditTokenForCurrentProcess;
-+ (id)createRunningExtensionWithClassName:(id)a3 error:(id *)a4;
-+ (id)ditionaryFromPropertyList:(id)a3;
-+ (id)xpcObjectFromDictionary:(id)a3;
++ (id)createRunningExtensionWithClassName:(id)name error:(id *)error;
++ (id)ditionaryFromPropertyList:(id)list;
++ (id)xpcObjectFromDictionary:(id)dictionary;
 + (void)_checkIn;
 + (void)_getEntryPointFunction;
 + (void)bootstrap;
-+ (void)queryControllerDelegate:(id)a3 didUpdateController:(id)a4;
++ (void)queryControllerDelegate:(id)delegate didUpdateController:(id)controller;
 @end
 
 @implementation _EXUtil
@@ -54,21 +54,21 @@
   memorystatus_control();
 }
 
-+ (void)queryControllerDelegate:(id)a3 didUpdateController:(id)a4
++ (void)queryControllerDelegate:(id)delegate didUpdateController:(id)controller
 {
-  v5 = a3;
-  v6 = a4;
-  v8 = v5;
+  delegateCopy = delegate;
+  controllerCopy = controller;
+  v8 = delegateCopy;
   if (objc_opt_respondsToSelector())
   {
-    [v8 queryControllerDidUpdate:v6];
+    [v8 queryControllerDidUpdate:controllerCopy];
     goto LABEL_8;
   }
 
   if (objc_opt_respondsToSelector())
   {
     v7 = objc_opt_new();
-    [v8 queryControllerDidUpdate:v6 resultDifference:v7];
+    [v8 queryControllerDidUpdate:controllerCopy resultDifference:v7];
   }
 
   else
@@ -79,49 +79,49 @@
     }
 
     v7 = objc_opt_new();
-    [v8 queryControllerDidUpdate:v6 difference:v7];
+    [v8 queryControllerDidUpdate:controllerCopy difference:v7];
   }
 
 LABEL_8:
 }
 
-+ (id)ditionaryFromPropertyList:(id)a3
++ (id)ditionaryFromPropertyList:(id)list
 {
-  v3 = a3;
+  listCopy = list;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 _expensiveDictionaryRepresentation];
+    _expensiveDictionaryRepresentation = [listCopy _expensiveDictionaryRepresentation];
   }
 
   else
   {
-    v4 = MEMORY[0x1E695E0F8];
+    _expensiveDictionaryRepresentation = MEMORY[0x1E695E0F8];
   }
 
-  return v4;
+  return _expensiveDictionaryRepresentation;
 }
 
-+ (id)xpcObjectFromDictionary:(id)a3
++ (id)xpcObjectFromDictionary:(id)dictionary
 {
   v3 = _CFXPCCreateXPCObjectFromCFObject();
 
   return v3;
 }
 
-+ (id)createRunningExtensionWithClassName:(id)a3 error:(id *)a4
++ (id)createRunningExtensionWithClassName:(id)name error:(id *)error
 {
-  v5 = NSClassFromString(a3);
+  v5 = NSClassFromString(name);
   if (v5)
   {
     v6 = objc_alloc_init(v5);
   }
 
-  else if (a4)
+  else if (error)
   {
-    v7 = [MEMORY[0x1E696ABC0] _EX_parameterError];
-    v8 = v7;
+    _EX_parameterError = [MEMORY[0x1E696ABC0] _EX_parameterError];
+    v8 = _EX_parameterError;
     v6 = 0;
-    *a4 = v7;
+    *error = _EX_parameterError;
   }
 
   else

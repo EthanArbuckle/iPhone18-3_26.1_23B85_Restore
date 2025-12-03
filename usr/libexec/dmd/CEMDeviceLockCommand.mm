@@ -1,17 +1,17 @@
 @interface CEMDeviceLockCommand
-- (id)dmf_executeRequestWithContext:(id)a3 error:(id *)a4;
+- (id)dmf_executeRequestWithContext:(id)context error:(id *)error;
 @end
 
 @implementation CEMDeviceLockCommand
 
-- (id)dmf_executeRequestWithContext:(id)a3 error:(id *)a4
+- (id)dmf_executeRequestWithContext:(id)context error:(id *)error
 {
   v5 = objc_opt_new();
-  v6 = [(CEMDeviceLockCommand *)self payloadMessage];
-  [v5 setMessage:v6];
+  payloadMessage = [(CEMDeviceLockCommand *)self payloadMessage];
+  [v5 setMessage:payloadMessage];
 
-  v7 = [(CEMDeviceLockCommand *)self payloadPhoneNumber];
-  [v5 setPhoneNumber:v7];
+  payloadPhoneNumber = [(CEMDeviceLockCommand *)self payloadPhoneNumber];
+  [v5 setPhoneNumber:payloadPhoneNumber];
 
   return v5;
 }

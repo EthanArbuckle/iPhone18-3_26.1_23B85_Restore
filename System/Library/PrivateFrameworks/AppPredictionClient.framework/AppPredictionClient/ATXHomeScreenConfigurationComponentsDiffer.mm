@@ -1,67 +1,67 @@
 @interface ATXHomeScreenConfigurationComponentsDiffer
-- (ATXHomeScreenConfigurationComponentsDiffer)initWithPreviousComponents:(id)a3 currentComponents:(id)a4;
+- (ATXHomeScreenConfigurationComponentsDiffer)initWithPreviousComponents:(id)components currentComponents:(id)currentComponents;
 - (NSArray)addedApps;
 - (NSArray)addedPinnedWidgets;
 - (NSArray)addedStacks;
 - (NSArray)deletedPinnedWidgets;
 - (NSArray)deletedStacks;
 - (NSArray)removedApps;
-- (id)_widgetsByWidgetUniqueIds:(id)a3;
+- (id)_widgetsByWidgetUniqueIds:(id)ids;
 @end
 
 @implementation ATXHomeScreenConfigurationComponentsDiffer
 
 - (NSArray)addedApps
 {
-  v2 = [(NSOrderedCollectionDifference *)self->_appsDifference insertions];
-  v3 = [v2 _pas_mappedArrayWithTransform:&__block_literal_global_19_2];
+  insertions = [(NSOrderedCollectionDifference *)self->_appsDifference insertions];
+  v3 = [insertions _pas_mappedArrayWithTransform:&__block_literal_global_19_2];
 
   return v3;
 }
 
 - (NSArray)removedApps
 {
-  v2 = [(NSOrderedCollectionDifference *)self->_appsDifference removals];
-  v3 = [v2 _pas_mappedArrayWithTransform:&__block_literal_global_21];
+  removals = [(NSOrderedCollectionDifference *)self->_appsDifference removals];
+  v3 = [removals _pas_mappedArrayWithTransform:&__block_literal_global_21];
 
   return v3;
 }
 
-- (ATXHomeScreenConfigurationComponentsDiffer)initWithPreviousComponents:(id)a3 currentComponents:(id)a4
+- (ATXHomeScreenConfigurationComponentsDiffer)initWithPreviousComponents:(id)components currentComponents:(id)currentComponents
 {
   v80 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  componentsCopy = components;
+  currentComponentsCopy = currentComponents;
   v76.receiver = self;
   v76.super_class = ATXHomeScreenConfigurationComponentsDiffer;
   v8 = [(ATXHomeScreenConfigurationComponentsDiffer *)&v76 init];
   if (v8)
   {
-    v9 = [v7 pinnedWidgets];
-    v10 = [v6 pinnedWidgets];
-    v11 = [v9 differenceFromArray:v10 withOptions:0 usingEquivalenceTest:&__block_literal_global_67];
+    pinnedWidgets = [currentComponentsCopy pinnedWidgets];
+    pinnedWidgets2 = [componentsCopy pinnedWidgets];
+    v11 = [pinnedWidgets differenceFromArray:pinnedWidgets2 withOptions:0 usingEquivalenceTest:&__block_literal_global_67];
     pinnedWidgetsDifference = v8->_pinnedWidgetsDifference;
     v8->_pinnedWidgetsDifference = v11;
 
-    v13 = [v7 stacks];
-    v14 = [v6 stacks];
-    v15 = [v13 differenceFromArray:v14 withOptions:0 usingEquivalenceTest:&__block_literal_global_13_0];
+    stacks = [currentComponentsCopy stacks];
+    stacks2 = [componentsCopy stacks];
+    v15 = [stacks differenceFromArray:stacks2 withOptions:0 usingEquivalenceTest:&__block_literal_global_13_0];
     stacksDifference = v8->_stacksDifference;
     v8->_stacksDifference = v15;
 
     obj = objc_opt_new();
-    v57 = v6;
-    v17 = [v6 stackedWidgets];
+    v57 = componentsCopy;
+    stackedWidgets = [componentsCopy stackedWidgets];
     v58 = v8;
-    v18 = [(ATXHomeScreenConfigurationComponentsDiffer *)v8 _widgetsByWidgetUniqueIds:v17];
+    v18 = [(ATXHomeScreenConfigurationComponentsDiffer *)v8 _widgetsByWidgetUniqueIds:stackedWidgets];
 
     v74 = 0u;
     v75 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v59 = v7;
-    v19 = [v7 stackedWidgets];
-    v20 = [v19 countByEnumeratingWithState:&v72 objects:v79 count:16];
+    v59 = currentComponentsCopy;
+    stackedWidgets2 = [currentComponentsCopy stackedWidgets];
+    v20 = [stackedWidgets2 countByEnumeratingWithState:&v72 objects:v79 count:16];
     if (v20)
     {
       v21 = v20;
@@ -72,14 +72,14 @@
         {
           if (*v73 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(stackedWidgets2);
           }
 
           v24 = *(*(&v72 + 1) + 8 * i);
           if (([v24 isSuggestedWidget] & 1) == 0)
           {
-            v25 = [v24 widgetUniqueId];
-            v26 = [v18 objectForKeyedSubscript:v25];
+            widgetUniqueId = [v24 widgetUniqueId];
+            v26 = [v18 objectForKeyedSubscript:widgetUniqueId];
 
             if (!v26 || [v26 isSuggestedWidget])
             {
@@ -88,7 +88,7 @@
           }
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v72 objects:v79 count:16];
+        v21 = [stackedWidgets2 countByEnumeratingWithState:&v72 objects:v79 count:16];
       }
 
       while (v21);
@@ -97,15 +97,15 @@
     objc_storeStrong(&v8->_userAddedStackedWidgets, obj);
     v63 = objc_opt_new();
     v62 = objc_opt_new();
-    v27 = [v59 stackedWidgets];
-    v28 = [(ATXHomeScreenConfigurationComponentsDiffer *)v8 _widgetsByWidgetUniqueIds:v27];
+    stackedWidgets3 = [v59 stackedWidgets];
+    v28 = [(ATXHomeScreenConfigurationComponentsDiffer *)v8 _widgetsByWidgetUniqueIds:stackedWidgets3];
 
     v70 = 0u;
     v71 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v29 = [v57 stackedWidgets];
-    v30 = [v29 countByEnumeratingWithState:&v68 objects:v78 count:16];
+    stackedWidgets4 = [v57 stackedWidgets];
+    v30 = [stackedWidgets4 countByEnumeratingWithState:&v68 objects:v78 count:16];
     if (v30)
     {
       v31 = v30;
@@ -116,12 +116,12 @@
         {
           if (*v69 != v32)
           {
-            objc_enumerationMutation(v29);
+            objc_enumerationMutation(stackedWidgets4);
           }
 
           v34 = *(*(&v68 + 1) + 8 * j);
-          v35 = [v34 widgetUniqueId];
-          v36 = [v28 objectForKeyedSubscript:v35];
+          widgetUniqueId2 = [v34 widgetUniqueId];
+          v36 = [v28 objectForKeyedSubscript:widgetUniqueId2];
 
           if (!v36)
           {
@@ -139,7 +139,7 @@
           }
         }
 
-        v31 = [v29 countByEnumeratingWithState:&v68 objects:v78 count:16];
+        v31 = [stackedWidgets4 countByEnumeratingWithState:&v68 objects:v78 count:16];
       }
 
       while (v31);
@@ -148,9 +148,9 @@
     objc_storeStrong(&v8->_userDeletedStackedWidgets, v63);
     objc_storeStrong(&v8->_deletedPreviousSuggestedWidgets, v62);
     v60 = objc_opt_new();
-    v38 = [v59 stackedWidgets];
-    v39 = [v59 pinnedWidgets];
-    v40 = [v38 arrayByAddingObjectsFromArray:v39];
+    stackedWidgets5 = [v59 stackedWidgets];
+    pinnedWidgets3 = [v59 pinnedWidgets];
+    v40 = [stackedWidgets5 arrayByAddingObjectsFromArray:pinnedWidgets3];
 
     v66 = 0u;
     v67 = 0u;
@@ -174,11 +174,11 @@
           v46 = *(*(&v64 + 1) + 8 * k);
           if (([v46 isSuggestedWidget] & 1) == 0)
           {
-            v47 = [v46 widgetUniqueId];
-            v48 = [v18 objectForKeyedSubscript:v47];
-            v49 = [v48 isSuggestedWidget];
+            widgetUniqueId3 = [v46 widgetUniqueId];
+            v48 = [v18 objectForKeyedSubscript:widgetUniqueId3];
+            isSuggestedWidget = [v48 isSuggestedWidget];
 
-            if (v49)
+            if (isSuggestedWidget)
             {
               [(NSArray *)v60 addObject:v46];
             }
@@ -196,11 +196,11 @@
     v58->_userAddedPreviousSuggestedWidgets = v60;
     v51 = v60;
 
-    v7 = v59;
-    v52 = [v59 apps];
-    v6 = v57;
-    v53 = [v57 apps];
-    v54 = [v52 differenceFromArray:v53 withOptions:0 usingEquivalenceTest:&__block_literal_global_16_0];
+    currentComponentsCopy = v59;
+    apps = [v59 apps];
+    componentsCopy = v57;
+    apps2 = [v57 apps];
+    v54 = [apps differenceFromArray:apps2 withOptions:0 usingEquivalenceTest:&__block_literal_global_16_0];
     appsDifference = v58->_appsDifference;
     v58->_appsDifference = v54;
   }
@@ -256,46 +256,46 @@ BOOL __91__ATXHomeScreenConfigurationComponentsDiffer_initWithPreviousComponents
 
 - (NSArray)addedPinnedWidgets
 {
-  v2 = [(NSOrderedCollectionDifference *)self->_pinnedWidgetsDifference insertions];
-  v3 = [v2 _pas_mappedArrayWithTransform:&__block_literal_global_23];
+  insertions = [(NSOrderedCollectionDifference *)self->_pinnedWidgetsDifference insertions];
+  v3 = [insertions _pas_mappedArrayWithTransform:&__block_literal_global_23];
 
   return v3;
 }
 
 - (NSArray)deletedPinnedWidgets
 {
-  v2 = [(NSOrderedCollectionDifference *)self->_pinnedWidgetsDifference removals];
-  v3 = [v2 _pas_mappedArrayWithTransform:&__block_literal_global_25];
+  removals = [(NSOrderedCollectionDifference *)self->_pinnedWidgetsDifference removals];
+  v3 = [removals _pas_mappedArrayWithTransform:&__block_literal_global_25];
 
   return v3;
 }
 
 - (NSArray)addedStacks
 {
-  v2 = [(NSOrderedCollectionDifference *)self->_stacksDifference insertions];
-  v3 = [v2 _pas_mappedArrayWithTransform:&__block_literal_global_27_1];
+  insertions = [(NSOrderedCollectionDifference *)self->_stacksDifference insertions];
+  v3 = [insertions _pas_mappedArrayWithTransform:&__block_literal_global_27_1];
 
   return v3;
 }
 
 - (NSArray)deletedStacks
 {
-  v2 = [(NSOrderedCollectionDifference *)self->_stacksDifference removals];
-  v3 = [v2 _pas_mappedArrayWithTransform:&__block_literal_global_29];
+  removals = [(NSOrderedCollectionDifference *)self->_stacksDifference removals];
+  v3 = [removals _pas_mappedArrayWithTransform:&__block_literal_global_29];
 
   return v3;
 }
 
-- (id)_widgetsByWidgetUniqueIds:(id)a3
+- (id)_widgetsByWidgetUniqueIds:(id)ids
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  idsCopy = ids;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = idsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -311,12 +311,12 @@ BOOL __91__ATXHomeScreenConfigurationComponentsDiffer_initWithPreviousComponents
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 widgetUniqueId];
+        widgetUniqueId = [v10 widgetUniqueId];
 
-        if (v11)
+        if (widgetUniqueId)
         {
-          v12 = [v10 widgetUniqueId];
-          [v4 setObject:v10 forKeyedSubscript:v12];
+          widgetUniqueId2 = [v10 widgetUniqueId];
+          [v4 setObject:v10 forKeyedSubscript:widgetUniqueId2];
         }
       }
 

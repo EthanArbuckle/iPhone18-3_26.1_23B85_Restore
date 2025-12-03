@@ -1,6 +1,6 @@
 @interface WFExternalUIPresenterXPCConnection
-- (WFExternalUIPresenterXPCConnection)initWithEndpoint:(id)a3;
-- (id)presenterWithErrorHandler:(id)a3;
+- (WFExternalUIPresenterXPCConnection)initWithEndpoint:(id)endpoint;
+- (id)presenterWithErrorHandler:(id)handler;
 - (void)resumeConnectionIfNecessary;
 @end
 
@@ -10,25 +10,25 @@
 {
   if (![(WFExternalUIPresenterXPCConnection *)self connected])
   {
-    v3 = [(WFExternalUIPresenterXPCConnection *)self xpcConnection];
-    [v3 resume];
+    xpcConnection = [(WFExternalUIPresenterXPCConnection *)self xpcConnection];
+    [xpcConnection resume];
 
     [(WFExternalUIPresenterXPCConnection *)self setConnected:1];
   }
 }
 
-- (id)presenterWithErrorHandler:(id)a3
+- (id)presenterWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(WFExternalUIPresenterXPCConnection *)self resumeConnectionIfNecessary];
-  v5 = [(WFExternalUIPresenterXPCConnection *)self xpcConnection];
+  xpcConnection = [(WFExternalUIPresenterXPCConnection *)self xpcConnection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __64__WFExternalUIPresenterXPCConnection_presenterWithErrorHandler___block_invoke;
   v9[3] = &unk_1E7B02940;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
@@ -60,17 +60,17 @@ void __64__WFExternalUIPresenterXPCConnection_presenterWithErrorHandler___block_
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (WFExternalUIPresenterXPCConnection)initWithEndpoint:(id)a3
+- (WFExternalUIPresenterXPCConnection)initWithEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   v13.receiver = self;
   v13.super_class = WFExternalUIPresenterXPCConnection;
   v6 = [(WFExternalUIPresenterXPCConnection *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_endpoint, a3);
-    v8 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v5];
+    objc_storeStrong(&v6->_endpoint, endpoint);
+    v8 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:endpointCopy];
     xpcConnection = v7->_xpcConnection;
     v7->_xpcConnection = v8;
 

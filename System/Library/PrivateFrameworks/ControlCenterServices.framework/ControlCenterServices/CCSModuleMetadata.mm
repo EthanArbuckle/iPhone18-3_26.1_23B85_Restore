@@ -1,29 +1,29 @@
 @interface CCSModuleMetadata
-+ (id)_requiredCapabilitiesForInfoDictionary:(id)a3;
-+ (id)_requiredIncapabilitiesForInfoDictionary:(id)a3;
-+ (id)_supportedDeviceFamiliesForBundleInfoDictionary:(id)a3;
-+ (id)metadataForBundleAtURL:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithModuleIdentifier:(id)a3 supportedDeviceFamilies:(id)a4 requiredDeviceCapabilities:(id)a5 requiredDeviceIncapabilities:(id)a6 associatedBundleIdentifier:(id)a7 associatedBundleMinimumVersion:(id)a8 visibilityPreference:(unint64_t)a9 moduleBundleURL:(id)a10;
++ (id)_requiredCapabilitiesForInfoDictionary:(id)dictionary;
++ (id)_requiredIncapabilitiesForInfoDictionary:(id)dictionary;
++ (id)_supportedDeviceFamiliesForBundleInfoDictionary:(id)dictionary;
++ (id)metadataForBundleAtURL:(id)l;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithModuleIdentifier:(id)identifier supportedDeviceFamilies:(id)families requiredDeviceCapabilities:(id)capabilities requiredDeviceIncapabilities:(id)incapabilities associatedBundleIdentifier:(id)bundleIdentifier associatedBundleMinimumVersion:(id)version visibilityPreference:(unint64_t)preference moduleBundleURL:(id)self0;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation CCSModuleMetadata
 
-+ (id)metadataForBundleAtURL:(id)a3
++ (id)metadataForBundleAtURL:(id)l
 {
-  v4 = a3;
-  v5 = CFBundleCopyInfoDictionaryInDirectory(v4);
+  lCopy = l;
+  v5 = CFBundleCopyInfoDictionaryInDirectory(lCopy);
   v6 = [(__CFDictionary *)v5 bs_safeObjectForKey:*MEMORY[0x277CBED38] ofType:objc_opt_class()];
   if (v6)
   {
-    v7 = [a1 _supportedDeviceFamiliesForBundleInfoDictionary:v5];
-    v8 = [a1 _requiredCapabilitiesForInfoDictionary:v5];
-    v9 = [a1 _requiredIncapabilitiesForInfoDictionary:v5];
+    v7 = [self _supportedDeviceFamiliesForBundleInfoDictionary:v5];
+    v8 = [self _requiredCapabilitiesForInfoDictionary:v5];
+    v9 = [self _requiredIncapabilitiesForInfoDictionary:v5];
     v10 = [(__CFDictionary *)v5 bs_safeObjectForKey:@"CCAssociatedBundleIdentifier" ofType:objc_opt_class()];
     v11 = [(__CFDictionary *)v5 bs_safeObjectForKey:@"CCAssociatedBundleMinimumVersion" ofType:objc_opt_class()];
-    v12 = [[a1 alloc] _initWithModuleIdentifier:v6 supportedDeviceFamilies:v7 requiredDeviceCapabilities:v8 requiredDeviceIncapabilities:v9 associatedBundleIdentifier:v10 associatedBundleMinimumVersion:v11 visibilityPreference:CCSVisibilityPreferenceForBundleInfoDictionary(v5) moduleBundleURL:v4];
+    v12 = [[self alloc] _initWithModuleIdentifier:v6 supportedDeviceFamilies:v7 requiredDeviceCapabilities:v8 requiredDeviceIncapabilities:v9 associatedBundleIdentifier:v10 associatedBundleMinimumVersion:v11 visibilityPreference:CCSVisibilityPreferenceForBundleInfoDictionary(v5) moduleBundleURL:lCopy];
   }
 
   else
@@ -34,10 +34,10 @@
   return v12;
 }
 
-+ (id)_supportedDeviceFamiliesForBundleInfoDictionary:(id)a3
++ (id)_supportedDeviceFamiliesForBundleInfoDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 bs_safeObjectForKey:@"UIDeviceFamily" ofType:objc_opt_class()];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy bs_safeObjectForKey:@"UIDeviceFamily" ofType:objc_opt_class()];
 
   v5 = MEMORY[0x277CBEBF8];
   if (v4)
@@ -82,10 +82,10 @@ BOOL __69__CCSModuleMetadata__supportedDeviceFamiliesForBundleInfoDictionary___b
   return v6 == v4;
 }
 
-+ (id)_requiredCapabilitiesForInfoDictionary:(id)a3
++ (id)_requiredCapabilitiesForInfoDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 bs_safeObjectForKey:@"UIRequiredDeviceCapabilities" ofType:objc_opt_class()];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy bs_safeObjectForKey:@"UIRequiredDeviceCapabilities" ofType:objc_opt_class()];
 
   v5 = MEMORY[0x277CBEBF8];
   if (v4)
@@ -140,10 +140,10 @@ uint64_t __60__CCSModuleMetadata__requiredCapabilitiesForInfoDictionary___block_
   return v7;
 }
 
-+ (id)_requiredIncapabilitiesForInfoDictionary:(id)a3
++ (id)_requiredIncapabilitiesForInfoDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 bs_safeObjectForKey:@"CCRequiredDeviceIncapabilities" ofType:objc_opt_class()];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy bs_safeObjectForKey:@"CCRequiredDeviceIncapabilities" ofType:objc_opt_class()];
 
   v5 = MEMORY[0x277CBEBF8];
   if (v4)
@@ -198,46 +198,46 @@ uint64_t __62__CCSModuleMetadata__requiredIncapabilitiesForInfoDictionary___bloc
   return v7;
 }
 
-- (id)_initWithModuleIdentifier:(id)a3 supportedDeviceFamilies:(id)a4 requiredDeviceCapabilities:(id)a5 requiredDeviceIncapabilities:(id)a6 associatedBundleIdentifier:(id)a7 associatedBundleMinimumVersion:(id)a8 visibilityPreference:(unint64_t)a9 moduleBundleURL:(id)a10
+- (id)_initWithModuleIdentifier:(id)identifier supportedDeviceFamilies:(id)families requiredDeviceCapabilities:(id)capabilities requiredDeviceIncapabilities:(id)incapabilities associatedBundleIdentifier:(id)bundleIdentifier associatedBundleMinimumVersion:(id)version visibilityPreference:(unint64_t)preference moduleBundleURL:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a10;
+  identifierCopy = identifier;
+  familiesCopy = families;
+  capabilitiesCopy = capabilities;
+  incapabilitiesCopy = incapabilities;
+  bundleIdentifierCopy = bundleIdentifier;
+  versionCopy = version;
+  lCopy = l;
   v39.receiver = self;
   v39.super_class = CCSModuleMetadata;
   v23 = [(CCSModuleMetadata *)&v39 init];
   if (v23)
   {
-    v24 = [v16 copy];
+    v24 = [identifierCopy copy];
     moduleIdentifier = v23->_moduleIdentifier;
     v23->_moduleIdentifier = v24;
 
-    v26 = [v17 copy];
+    v26 = [familiesCopy copy];
     supportedDeviceFamilies = v23->_supportedDeviceFamilies;
     v23->_supportedDeviceFamilies = v26;
 
-    v28 = [v18 copy];
+    v28 = [capabilitiesCopy copy];
     requiredDeviceCapabilities = v23->_requiredDeviceCapabilities;
     v23->_requiredDeviceCapabilities = v28;
 
-    v30 = [v19 copy];
+    v30 = [incapabilitiesCopy copy];
     requiredDeviceIncapabilities = v23->_requiredDeviceIncapabilities;
     v23->_requiredDeviceIncapabilities = v30;
 
-    v32 = [v20 copy];
+    v32 = [bundleIdentifierCopy copy];
     associatedBundleIdentifier = v23->_associatedBundleIdentifier;
     v23->_associatedBundleIdentifier = v32;
 
-    v34 = [v21 copy];
+    v34 = [versionCopy copy];
     associatedBundleMinimumVersion = v23->_associatedBundleMinimumVersion;
     v23->_associatedBundleMinimumVersion = v34;
 
-    v23->_visibilityPreference = a9;
-    v36 = [v22 copy];
+    v23->_visibilityPreference = preference;
+    v36 = [lCopy copy];
     moduleBundleURL = v23->_moduleBundleURL;
     v23->_moduleBundleURL = v36;
   }
@@ -248,71 +248,71 @@ uint64_t __62__CCSModuleMetadata__requiredIncapabilitiesForInfoDictionary___bloc
 - (id)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(CCSModuleMetadata *)self moduleIdentifier];
-  v5 = [v3 appendObject:v4 withName:@"Module Identifier"];
+  moduleIdentifier = [(CCSModuleMetadata *)self moduleIdentifier];
+  v5 = [v3 appendObject:moduleIdentifier withName:@"Module Identifier"];
 
-  v6 = [(CCSModuleMetadata *)self supportedDeviceFamilies];
-  v7 = [v3 appendObject:v6 withName:@"Supported Device Families"];
+  supportedDeviceFamilies = [(CCSModuleMetadata *)self supportedDeviceFamilies];
+  v7 = [v3 appendObject:supportedDeviceFamilies withName:@"Supported Device Families"];
 
-  v8 = [(CCSModuleMetadata *)self requiredDeviceCapabilities];
-  v9 = [v3 appendObject:v8 withName:@"Required Device Capabilities"];
+  requiredDeviceCapabilities = [(CCSModuleMetadata *)self requiredDeviceCapabilities];
+  v9 = [v3 appendObject:requiredDeviceCapabilities withName:@"Required Device Capabilities"];
 
-  v10 = [(CCSModuleMetadata *)self requiredDeviceIncapabilities];
-  if ([v10 count])
+  requiredDeviceIncapabilities = [(CCSModuleMetadata *)self requiredDeviceIncapabilities];
+  if ([requiredDeviceIncapabilities count])
   {
-    v11 = [v3 appendObject:v10 withName:@"Required Device Incapabilities"];
+    v11 = [v3 appendObject:requiredDeviceIncapabilities withName:@"Required Device Incapabilities"];
   }
 
-  v12 = [(CCSModuleMetadata *)self associatedBundleIdentifier];
-  v13 = [v3 appendObject:v12 withName:@"Associated Bundle Identifier"];
+  associatedBundleIdentifier = [(CCSModuleMetadata *)self associatedBundleIdentifier];
+  v13 = [v3 appendObject:associatedBundleIdentifier withName:@"Associated Bundle Identifier"];
 
-  v14 = [(CCSModuleMetadata *)self associatedBundleMinimumVersion];
-  v15 = [v3 appendObject:v14 withName:@"Associated Bundle Minimum Version"];
+  associatedBundleMinimumVersion = [(CCSModuleMetadata *)self associatedBundleMinimumVersion];
+  v15 = [v3 appendObject:associatedBundleMinimumVersion withName:@"Associated Bundle Minimum Version"];
 
   v16 = CCSModuleVisibilityPreferenceDescription(self->_visibilityPreference);
   [v3 appendString:v16 withName:@"Visibility Preference"];
 
-  v17 = [(CCSModuleMetadata *)self moduleBundleURL];
-  v18 = [v3 appendObject:v17 withName:@"Module Bundle URL"];
+  moduleBundleURL = [(CCSModuleMetadata *)self moduleBundleURL];
+  v18 = [v3 appendObject:moduleBundleURL withName:@"Module Bundle URL"];
 
-  v19 = [v3 build];
+  build = [v3 build];
 
-  return v19;
+  return build;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [(CCSModuleMetadata *)self moduleIdentifier];
-  v5 = [v3 appendObject:v4];
+  builder = [MEMORY[0x277CF0C40] builder];
+  moduleIdentifier = [(CCSModuleMetadata *)self moduleIdentifier];
+  v5 = [builder appendObject:moduleIdentifier];
 
-  v6 = [(CCSModuleMetadata *)self supportedDeviceFamilies];
-  v7 = [v3 appendObject:v6];
+  supportedDeviceFamilies = [(CCSModuleMetadata *)self supportedDeviceFamilies];
+  v7 = [builder appendObject:supportedDeviceFamilies];
 
-  v8 = [(CCSModuleMetadata *)self requiredDeviceCapabilities];
-  v9 = [v3 appendObject:v8];
+  requiredDeviceCapabilities = [(CCSModuleMetadata *)self requiredDeviceCapabilities];
+  v9 = [builder appendObject:requiredDeviceCapabilities];
 
-  v10 = [(CCSModuleMetadata *)self requiredDeviceIncapabilities];
-  v11 = [v3 appendObject:v10];
+  requiredDeviceIncapabilities = [(CCSModuleMetadata *)self requiredDeviceIncapabilities];
+  v11 = [builder appendObject:requiredDeviceIncapabilities];
 
-  v12 = [(CCSModuleMetadata *)self associatedBundleIdentifier];
-  v13 = [v3 appendObject:v12];
+  associatedBundleIdentifier = [(CCSModuleMetadata *)self associatedBundleIdentifier];
+  v13 = [builder appendObject:associatedBundleIdentifier];
 
-  v14 = [(CCSModuleMetadata *)self associatedBundleMinimumVersion];
-  v15 = [v3 appendObject:v14];
+  associatedBundleMinimumVersion = [(CCSModuleMetadata *)self associatedBundleMinimumVersion];
+  v15 = [builder appendObject:associatedBundleMinimumVersion];
 
-  v16 = [v3 appendUnsignedInteger:{-[CCSModuleMetadata visibilityPreference](self, "visibilityPreference")}];
-  v17 = [(CCSModuleMetadata *)self moduleBundleURL];
-  v18 = [v3 appendObject:v17];
+  v16 = [builder appendUnsignedInteger:{-[CCSModuleMetadata visibilityPreference](self, "visibilityPreference")}];
+  moduleBundleURL = [(CCSModuleMetadata *)self moduleBundleURL];
+  v18 = [builder appendObject:moduleBundleURL];
 
-  v19 = [v3 hash];
+  v19 = [builder hash];
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v16 = 1;
   }
@@ -322,36 +322,36 @@ uint64_t __62__CCSModuleMetadata__requiredIncapabilitiesForInfoDictionary___bloc
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v5 = v4;
-      v6 = [(CCSModuleMetadata *)self moduleIdentifier];
-      v7 = [(CCSModuleMetadata *)v5 moduleIdentifier];
+      v5 = equalCopy;
+      moduleIdentifier = [(CCSModuleMetadata *)self moduleIdentifier];
+      moduleIdentifier2 = [(CCSModuleMetadata *)v5 moduleIdentifier];
       if (BSEqualObjects())
       {
-        v8 = [(CCSModuleMetadata *)self supportedDeviceFamilies];
-        v9 = [(CCSModuleMetadata *)v5 supportedDeviceFamilies];
+        supportedDeviceFamilies = [(CCSModuleMetadata *)self supportedDeviceFamilies];
+        supportedDeviceFamilies2 = [(CCSModuleMetadata *)v5 supportedDeviceFamilies];
         if (BSEqualObjects())
         {
-          v10 = [(CCSModuleMetadata *)self requiredDeviceCapabilities];
-          v11 = [(CCSModuleMetadata *)v5 requiredDeviceCapabilities];
+          requiredDeviceCapabilities = [(CCSModuleMetadata *)self requiredDeviceCapabilities];
+          requiredDeviceCapabilities2 = [(CCSModuleMetadata *)v5 requiredDeviceCapabilities];
           if (BSEqualObjects())
           {
-            v12 = [(CCSModuleMetadata *)self requiredDeviceIncapabilities];
-            v24 = [(CCSModuleMetadata *)v5 requiredDeviceIncapabilities];
-            v25 = v12;
+            requiredDeviceIncapabilities = [(CCSModuleMetadata *)self requiredDeviceIncapabilities];
+            requiredDeviceIncapabilities2 = [(CCSModuleMetadata *)v5 requiredDeviceIncapabilities];
+            v25 = requiredDeviceIncapabilities;
             if (BSEqualObjects())
             {
-              v13 = [(CCSModuleMetadata *)self associatedBundleIdentifier];
-              v22 = [(CCSModuleMetadata *)v5 associatedBundleIdentifier];
-              v23 = v13;
+              associatedBundleIdentifier = [(CCSModuleMetadata *)self associatedBundleIdentifier];
+              associatedBundleIdentifier2 = [(CCSModuleMetadata *)v5 associatedBundleIdentifier];
+              v23 = associatedBundleIdentifier;
               if (BSEqualObjects())
               {
-                v14 = [(CCSModuleMetadata *)self associatedBundleMinimumVersion];
+                associatedBundleMinimumVersion = [(CCSModuleMetadata *)self associatedBundleMinimumVersion];
                 [(CCSModuleMetadata *)v5 associatedBundleMinimumVersion];
-                v15 = v21 = v14;
+                v15 = v21 = associatedBundleMinimumVersion;
                 if (BSEqualObjects() && (v19 = [(CCSModuleMetadata *)self visibilityPreference], v19 == [(CCSModuleMetadata *)v5 visibilityPreference]))
                 {
-                  v20 = [(CCSModuleMetadata *)self moduleBundleURL];
-                  v18 = [(CCSModuleMetadata *)v5 moduleBundleURL];
+                  moduleBundleURL = [(CCSModuleMetadata *)self moduleBundleURL];
+                  moduleBundleURL2 = [(CCSModuleMetadata *)v5 moduleBundleURL];
                   v16 = BSEqualObjects();
                 }
 

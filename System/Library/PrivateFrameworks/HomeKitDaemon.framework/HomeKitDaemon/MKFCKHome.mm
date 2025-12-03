@@ -1,100 +1,100 @@
 @interface MKFCKHome
-+ (BOOL)exportDeleteWithObjectID:(id)a3 modelID:(id)a4 additionalUpdates:(id)a5 context:(id)a6;
-+ (BOOL)exportInsertWithObjectID:(id)a3 additionalUpdates:(id)a4 context:(id)a5;
-+ (BOOL)exportUpdateWithObjectID:(id)a3 updatedProperties:(id)a4 additionalUpdates:(id)a5 context:(id)a6;
-+ (BOOL)importDeleteWithObjectID:(id)a3 modelID:(id)a4 additionalUpdates:(id)a5 context:(id)a6;
-+ (BOOL)importInsertWithObjectID:(id)a3 additionalUpdates:(id)a4 context:(id)a5;
-+ (BOOL)importUpdateWithObjectID:(id)a3 updatedProperties:(id)a4 additionalUpdates:(id)a5 context:(id)a6;
-+ (id)__dictionaryFromGuestAccessCodeDictionaryForUnitTest:(id)a3 tombStonedPinCodes:(int)a4;
-+ (id)__dictionaryFromGuestAccessCodeForUnitTest:(id)a3 label:(id)a4 userUniqueIDForAccessories:(id)a5;
-+ (id)__dictionaryFromHMRemovedUserInfoForUnitTest:(id)a3;
-+ (id)__dictionaryFromRemovedUserAccessCodeDictionaryForUnitTest:(id)a3 tombStonedPinCodes:(int)a4;
-+ (id)__removedUserInfoFromDictionaryForUnitTest:(id)a3;
-+ (id)_balanceFakeHAPAccessoriesForHome:(id)a3 context:(id)a4;
-+ (id)_balanceFakeMediaAccessoriesForHome:(id)a3 context:(id)a4;
-+ (id)_balanceFakeRoomsForHome:(id)a3 context:(id)a4;
-+ (id)_balanceFakeScenesForHome:(id)a3 context:(id)a4;
-+ (id)_balanceFakeTriggersForHome:(id)a3 context:(id)a4;
-+ (id)_balanceFakeUsersForHome:(id)a3 context:(id)a4;
-+ (id)_balanceFakeZonesForHome:(id)a3 context:(id)a4;
-+ (id)_createFakeHomeInPersistentStore:(id)a3 context:(id)a4;
-+ (id)_createHomeManagerContextFromContext:(id)a3;
-+ (id)_encodeNetworkProtectionGroupModelID:(id)a3 manufacturer:(id)a4 category:(id)a5 targetProtectionMode:(id)a6;
-+ (id)_encodeRemovedUserInfoWithUserID:(id)a3 removedUserModelID:(id)a4 userName:(id)a5 dateRemoved:(id)a6;
-+ (id)_homeManagerContextFromContext:(id)a3;
-+ (id)_homeManagerHomeWithModelID:(id)a3 homeManager:(id)a4 context:(id)a5;
-+ (id)createWithLocalModel:(id)a3 context:(id)a4;
-+ (id)createWithModelID:(id)a3 persistentStore:(id)a4 context:(id)a5;
-+ (void)_maybeCreateFakeHomes:(id)a3 context:(id)a4;
-+ (void)_maybeDeleteFakeHomes:(id)a3 context:(id)a4;
-+ (void)_rebalanceFakeHomesWithContext:(id)a3;
-+ (void)_setCommonPropertiesOnAccessory:(id)a3;
-+ (void)_setPropertiesOnUser:(id)a3 isOwner:(BOOL)a4;
-- (BOOL)_exportApplicationDataFromLocalModel:(id)a3 context:(id)a4;
-- (BOOL)_exportGuestAccessCodesFromLocalModel:(id)a3 context:(id)a4;
-- (BOOL)_exportHomeManagerWithContext:(id)a3;
-- (BOOL)_exportMatterKeyValueStoreFromLocalModel:(id)a3 context:(id)a4;
-- (BOOL)_exportNetworkProtectionGroupsFromLocalModel:(id)a3 context:(id)a4;
-- (BOOL)_exportPinCodesFromLocalModel:(id)a3 context:(id)a4;
-- (BOOL)_exportRelationshipsFromLocalHome:(id)a3 localRelationship:(id)a4 cloudRelationship:(id)a5 context:(id)a6;
-- (BOOL)_exportRelationshipsFromLocalHome:(id)a3 localRelationshipName:(id)a4 context:(id)a5;
-- (BOOL)_exportRelationshipsFromLocalModel:(id)a3 localRelationship:(id)a4 cloudRelationship:(id)a5 cloudModels:(id)a6 context:(id)a7;
-- (BOOL)_exportRemovedUserAccessCodesFromLocalModel:(id)a3 context:(id)a4;
-- (BOOL)_exportRoomsFromLocalModel:(id)a3 context:(id)a4;
-- (BOOL)_exportSettingsFromLocalModel:(id)a3 context:(id)a4;
-- (BOOL)_exportUsersFromLocalModel:(id)a3 context:(id)a4;
-- (BOOL)_importApplicationDataIntoLocalModel:(id)a3 context:(id)a4;
-- (BOOL)_importGuestAccessCodesIntoLocalModel:(id)a3 context:(id)a4;
-- (BOOL)_importHomeManagerNewHome:(BOOL)a3 newPrimaryHome:(id)a4 newApplicationData:(id)a5 context:(id)a6;
-- (BOOL)_importHomeManagerWithContext:(id)a3;
-- (BOOL)_importMatterKeyValueStoreIntoLocalModel:(id)a3 context:(id)a4;
-- (BOOL)_importNetworkProtectionGroupsIntoLocalModel:(id)a3 context:(id)a4;
-- (BOOL)_importPinCodesIntoLocalModel:(id)a3 context:(id)a4;
-- (BOOL)_importRelationshipsIntoLocalModel:(id)a3 localRelationshipName:(id)a4 context:(id)a5;
-- (BOOL)_importRemovedUserAccessCodesIntoLocalModel:(id)a3 context:(id)a4;
-- (BOOL)_importRoomsIntoLocalModel:(id)a3 context:(id)a4;
-- (BOOL)_importSettingsIntoLocalModel:(id)a3 context:(id)a4;
-- (BOOL)_importUsersIntoLocalModel:(id)a3 context:(id)a4;
-- (BOOL)validateOwner:(id *)a3 error:(id *)a4;
-- (id)_populateGuestAccessCodeWithDictionary:(id)a3 hh2ModelID:(id)a4 home:(id)a5 groupsByModelID:(id)a6 context:(id)a7;
-- (id)_populateRemovedUserAccessCodeFromDictionary:(id)a3 withAccessCode:(id)a4 hh2ModelID:(id)a5 home:(id)a6 groupsByModelID:(id)a7 context:(id)a8;
++ (BOOL)exportDeleteWithObjectID:(id)d modelID:(id)iD additionalUpdates:(id)updates context:(id)context;
++ (BOOL)exportInsertWithObjectID:(id)d additionalUpdates:(id)updates context:(id)context;
++ (BOOL)exportUpdateWithObjectID:(id)d updatedProperties:(id)properties additionalUpdates:(id)updates context:(id)context;
++ (BOOL)importDeleteWithObjectID:(id)d modelID:(id)iD additionalUpdates:(id)updates context:(id)context;
++ (BOOL)importInsertWithObjectID:(id)d additionalUpdates:(id)updates context:(id)context;
++ (BOOL)importUpdateWithObjectID:(id)d updatedProperties:(id)properties additionalUpdates:(id)updates context:(id)context;
++ (id)__dictionaryFromGuestAccessCodeDictionaryForUnitTest:(id)test tombStonedPinCodes:(int)codes;
++ (id)__dictionaryFromGuestAccessCodeForUnitTest:(id)test label:(id)label userUniqueIDForAccessories:(id)accessories;
++ (id)__dictionaryFromHMRemovedUserInfoForUnitTest:(id)test;
++ (id)__dictionaryFromRemovedUserAccessCodeDictionaryForUnitTest:(id)test tombStonedPinCodes:(int)codes;
++ (id)__removedUserInfoFromDictionaryForUnitTest:(id)test;
++ (id)_balanceFakeHAPAccessoriesForHome:(id)home context:(id)context;
++ (id)_balanceFakeMediaAccessoriesForHome:(id)home context:(id)context;
++ (id)_balanceFakeRoomsForHome:(id)home context:(id)context;
++ (id)_balanceFakeScenesForHome:(id)home context:(id)context;
++ (id)_balanceFakeTriggersForHome:(id)home context:(id)context;
++ (id)_balanceFakeUsersForHome:(id)home context:(id)context;
++ (id)_balanceFakeZonesForHome:(id)home context:(id)context;
++ (id)_createFakeHomeInPersistentStore:(id)store context:(id)context;
++ (id)_createHomeManagerContextFromContext:(id)context;
++ (id)_encodeNetworkProtectionGroupModelID:(id)d manufacturer:(id)manufacturer category:(id)category targetProtectionMode:(id)mode;
++ (id)_encodeRemovedUserInfoWithUserID:(id)d removedUserModelID:(id)iD userName:(id)name dateRemoved:(id)removed;
++ (id)_homeManagerContextFromContext:(id)context;
++ (id)_homeManagerHomeWithModelID:(id)d homeManager:(id)manager context:(id)context;
++ (id)createWithLocalModel:(id)model context:(id)context;
++ (id)createWithModelID:(id)d persistentStore:(id)store context:(id)context;
++ (void)_maybeCreateFakeHomes:(id)homes context:(id)context;
++ (void)_maybeDeleteFakeHomes:(id)homes context:(id)context;
++ (void)_rebalanceFakeHomesWithContext:(id)context;
++ (void)_setCommonPropertiesOnAccessory:(id)accessory;
++ (void)_setPropertiesOnUser:(id)user isOwner:(BOOL)owner;
+- (BOOL)_exportApplicationDataFromLocalModel:(id)model context:(id)context;
+- (BOOL)_exportGuestAccessCodesFromLocalModel:(id)model context:(id)context;
+- (BOOL)_exportHomeManagerWithContext:(id)context;
+- (BOOL)_exportMatterKeyValueStoreFromLocalModel:(id)model context:(id)context;
+- (BOOL)_exportNetworkProtectionGroupsFromLocalModel:(id)model context:(id)context;
+- (BOOL)_exportPinCodesFromLocalModel:(id)model context:(id)context;
+- (BOOL)_exportRelationshipsFromLocalHome:(id)home localRelationship:(id)relationship cloudRelationship:(id)cloudRelationship context:(id)context;
+- (BOOL)_exportRelationshipsFromLocalHome:(id)home localRelationshipName:(id)name context:(id)context;
+- (BOOL)_exportRelationshipsFromLocalModel:(id)model localRelationship:(id)relationship cloudRelationship:(id)cloudRelationship cloudModels:(id)models context:(id)context;
+- (BOOL)_exportRemovedUserAccessCodesFromLocalModel:(id)model context:(id)context;
+- (BOOL)_exportRoomsFromLocalModel:(id)model context:(id)context;
+- (BOOL)_exportSettingsFromLocalModel:(id)model context:(id)context;
+- (BOOL)_exportUsersFromLocalModel:(id)model context:(id)context;
+- (BOOL)_importApplicationDataIntoLocalModel:(id)model context:(id)context;
+- (BOOL)_importGuestAccessCodesIntoLocalModel:(id)model context:(id)context;
+- (BOOL)_importHomeManagerNewHome:(BOOL)home newPrimaryHome:(id)primaryHome newApplicationData:(id)data context:(id)context;
+- (BOOL)_importHomeManagerWithContext:(id)context;
+- (BOOL)_importMatterKeyValueStoreIntoLocalModel:(id)model context:(id)context;
+- (BOOL)_importNetworkProtectionGroupsIntoLocalModel:(id)model context:(id)context;
+- (BOOL)_importPinCodesIntoLocalModel:(id)model context:(id)context;
+- (BOOL)_importRelationshipsIntoLocalModel:(id)model localRelationshipName:(id)name context:(id)context;
+- (BOOL)_importRemovedUserAccessCodesIntoLocalModel:(id)model context:(id)context;
+- (BOOL)_importRoomsIntoLocalModel:(id)model context:(id)context;
+- (BOOL)_importSettingsIntoLocalModel:(id)model context:(id)context;
+- (BOOL)_importUsersIntoLocalModel:(id)model context:(id)context;
+- (BOOL)validateOwner:(id *)owner error:(id *)error;
+- (id)_populateGuestAccessCodeWithDictionary:(id)dictionary hh2ModelID:(id)d home:(id)home groupsByModelID:(id)iD context:(id)context;
+- (id)_populateRemovedUserAccessCodeFromDictionary:(id)dictionary withAccessCode:(id)code hh2ModelID:(id)d home:(id)home groupsByModelID:(id)iD context:(id)context;
 - (int64_t)ensureCanonicalModel;
-- (uint64_t)_importIntoLocalHomeModel:(void *)a3 cloudModels:(void *)a4 localModelsByModelID:(void *)a5 processedCloudModels:(void *)a6 context:;
-- (uint64_t)_importIntoLocalModel:(void *)a3 updatedProperties:(void *)a4 context:;
-- (uint64_t)_importWithContext:(void *)a3 updatedProperties:;
-- (void)_exportFromLocalModel:(void *)a3 updatedProperties:(void *)a4 context:;
-- (void)_maybeDeleteStaleLocalModels:(id)a3 modelIDKey:(id)a4 context:(id)a5;
-- (void)_settingModelsForHome:(void *)a3 media:(void *)a4 networkRouter:(void *)a5 personManager:(void *)a6 softwareUpdate:;
+- (uint64_t)_importIntoLocalHomeModel:(void *)model cloudModels:(void *)models localModelsByModelID:(void *)d processedCloudModels:(void *)cloudModels context:;
+- (uint64_t)_importIntoLocalModel:(void *)model updatedProperties:(void *)properties context:;
+- (uint64_t)_importWithContext:(void *)context updatedProperties:;
+- (void)_exportFromLocalModel:(void *)model updatedProperties:(void *)properties context:;
+- (void)_maybeDeleteStaleLocalModels:(id)models modelIDKey:(id)key context:(id)context;
+- (void)_settingModelsForHome:(void *)home media:(void *)media networkRouter:(void *)router personManager:(void *)manager softwareUpdate:;
 - (void)awakeFromInsert;
 @end
 
 @implementation MKFCKHome
 
-- (BOOL)_exportHomeManagerWithContext:(id)a3
+- (BOOL)_exportHomeManagerWithContext:(id)context
 {
   v48[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v41 = 0;
-  v5 = [_MKFHomeManager fetchWithContext:v4 error:&v41];
+  v5 = [_MKFHomeManager fetchWithContext:contextCopy error:&v41];
   v6 = v41;
   if (v5)
   {
-    v7 = [objc_opt_class() fetchRequest];
-    [v7 setFetchBatchSize:10];
+    fetchRequest = [objc_opt_class() fetchRequest];
+    [fetchRequest setFetchBatchSize:10];
     v48[0] = @"primaryHomeCounter";
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:1];
     v9 = [(MKFCKModel *)MKFCKHome appendDefaultPreloadedPropertiesTo:v8];
-    [v7 setPropertiesToFetch:v9];
+    [fetchRequest setPropertiesToFetch:v9];
 
     v40 = v6;
-    v10 = [v4 executeFetchRequest:v7 error:&v40];
+    v10 = [contextCopy executeFetchRequest:fetchRequest error:&v40];
     v11 = v40;
 
     v12 = v10 != 0;
     if (!v10)
     {
       v25 = objc_autoreleasePoolPush();
-      v26 = self;
+      selfCopy = self;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
@@ -111,10 +111,10 @@
     }
 
     v39 = v11;
-    v13 = [v5 primaryHome];
-    v14 = [v13 handle];
-    v15 = [v14 homeUUID];
-    v16 = [HMDCoreDataCloudTransformHomeManager fixUpPrimaryHomeCounterForPrimaryHome:v10 primaryHomeModelID:v15];
+    primaryHome = [v5 primaryHome];
+    handle = [primaryHome handle];
+    homeUUID = [handle homeUUID];
+    v16 = [HMDCoreDataCloudTransformHomeManager fixUpPrimaryHomeCounterForPrimaryHome:v10 primaryHomeModelID:homeUUID];
 
     if (v16)
     {
@@ -128,13 +128,13 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v17 = [v5 appDataDictionary];
-      v18 = [(MKFCKHome *)self homeManagerApplicationData];
-      v19 = isEqualDeepCompare(v17, v18);
+      appDataDictionary = [v5 appDataDictionary];
+      homeManagerApplicationData = [(MKFCKHome *)self homeManagerApplicationData];
+      v19 = isEqualDeepCompare(appDataDictionary, homeManagerApplicationData);
 
       if ((v19 & 1) == 0)
       {
-        v20 = [v17 copy];
+        v20 = [appDataDictionary copy];
         [(MKFCKHome *)self setHomeManagerApplicationData:v20];
       }
     }
@@ -142,14 +142,14 @@ LABEL_19:
     else
     {
       v29 = objc_autoreleasePoolPush();
-      v30 = self;
+      selfCopy2 = self;
       v31 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
       {
         v32 = HMFGetLogIdentifier();
-        v37 = [v5 primaryHome];
-        v36 = [v37 handle];
-        [v36 homeUUID];
+        primaryHome2 = [v5 primaryHome];
+        handle2 = [primaryHome2 handle];
+        [handle2 homeUUID];
         v33 = v38 = v29;
         *buf = 138543874;
         v43 = v32;
@@ -170,7 +170,7 @@ LABEL_19:
   }
 
   v21 = objc_autoreleasePoolPush();
-  v22 = self;
+  selfCopy3 = self;
   v23 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
@@ -190,38 +190,38 @@ LABEL_20:
   return v12;
 }
 
-- (BOOL)_importHomeManagerWithContext:(id)a3
+- (BOOL)_importHomeManagerWithContext:(id)context
 {
   v78[2] = *MEMORY[0x277D85DE8];
   v71 = 0;
-  v54 = a3;
+  contextCopy = context;
   v4 = [_MKFHomeManager fetchWithContext:"fetchWithContext:error:" error:?];
   v5 = 0;
   if (v4)
   {
     v6 = MEMORY[0x277CBEB58];
-    v7 = [v4 homes];
-    v8 = [v6 setWithCapacity:{objc_msgSend(v7, "count") + 1}];
+    homes = [v4 homes];
+    v8 = [v6 setWithCapacity:{objc_msgSend(homes, "count") + 1}];
 
-    v9 = [v4 homes];
+    homes2 = [v4 homes];
     v69[0] = MEMORY[0x277D85DD0];
     v69[1] = 3221225472;
     v69[2] = __56__MKFCKHome_HomeManager___importHomeManagerWithContext___block_invoke;
     v69[3] = &unk_278684438;
     v10 = v8;
     v70 = v10;
-    [v9 hmf_enumerateWithAutoreleasePoolUsingBlock:v69];
+    [homes2 hmf_enumerateWithAutoreleasePoolUsingBlock:v69];
 
-    v11 = [(MKFCKHome *)self modelID];
-    v52 = [v10 containsObject:v11];
+    modelID = [(MKFCKHome *)self modelID];
+    v52 = [v10 containsObject:modelID];
 
     if ((v52 & 1) == 0)
     {
-      v12 = [(MKFCKHome *)self modelID];
-      [v10 addObject:v12];
+      modelID2 = [(MKFCKHome *)self modelID];
+      [v10 addObject:modelID2];
 
       v13 = objc_autoreleasePoolPush();
-      v14 = self;
+      selfCopy = self;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
@@ -246,7 +246,7 @@ LABEL_20:
     [v17 setPropertiesToFetch:v20];
 
     v68 = v5;
-    v21 = [v54 executeFetchRequest:v17 error:&v68];
+    v21 = [contextCopy executeFetchRequest:v17 error:&v68];
     v51 = v68;
 
     v53 = v21 != 0;
@@ -276,10 +276,10 @@ LABEL_20:
       v60[5] = v61;
       v60[6] = &v62;
       [v21 hmf_enumerateWithAutoreleasePoolUsingBlock:v60];
-      v22 = [v4 primaryHome];
-      v23 = [v22 handle];
-      v24 = [v23 homeUUID];
-      v25 = [v24 isEqual:*(*&buf[8] + 40)];
+      primaryHome = [v4 primaryHome];
+      handle = [primaryHome handle];
+      homeUUID = [handle homeUUID];
+      v25 = [homeUUID isEqual:*(*&buf[8] + 40)];
 
       if (v25)
       {
@@ -290,7 +290,7 @@ LABEL_20:
       {
         v26 = *(*&buf[8] + 40);
         v35 = objc_autoreleasePoolPush();
-        v36 = self;
+        selfCopy2 = self;
         v37 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
         {
@@ -304,8 +304,8 @@ LABEL_20:
       }
 
       v39 = v63[5];
-      v40 = [v4 appDataDictionary];
-      LOBYTE(v39) = isEqualDeepCompare(v39, v40);
+      appDataDictionary = [v4 appDataDictionary];
+      LOBYTE(v39) = isEqualDeepCompare(v39, appDataDictionary);
 
       if (v39)
       {
@@ -316,7 +316,7 @@ LABEL_20:
       {
         v41 = v63[5];
         context = objc_autoreleasePoolPush();
-        v42 = self;
+        selfCopy3 = self;
         v43 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
         {
@@ -341,7 +341,7 @@ LABEL_20:
 
       if ((v45 & 1) != 0 || v41)
       {
-        v46 = [objc_opt_class() _homeManagerContextFromContext:v54];
+        v46 = [objc_opt_class() _homeManagerContextFromContext:contextCopy];
         v55[0] = MEMORY[0x277D85DD0];
         v55[1] = 3221225472;
         v55[2] = __56__MKFCKHome_HomeManager___importHomeManagerWithContext___block_invoke_15;
@@ -364,7 +364,7 @@ LABEL_20:
     else
     {
       v31 = objc_autoreleasePoolPush();
-      v32 = self;
+      selfCopy4 = self;
       v33 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
@@ -385,7 +385,7 @@ LABEL_20:
   else
   {
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy5 = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -462,20 +462,20 @@ LABEL_6:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_importHomeManagerNewHome:(BOOL)a3 newPrimaryHome:(id)a4 newApplicationData:(id)a5 context:(id)a6
+- (BOOL)_importHomeManagerNewHome:(BOOL)home newPrimaryHome:(id)primaryHome newApplicationData:(id)data context:(id)context
 {
-  v8 = a3;
+  homeCopy = home;
   v59 = *MEMORY[0x277D85DE8];
-  v44 = a4;
-  v10 = a5;
-  v11 = a6;
+  primaryHomeCopy = primaryHome;
+  dataCopy = data;
+  contextCopy = context;
   v48 = 0;
-  v12 = [_MKFHomeManager fetchWithContext:v11 error:&v48];
+  v12 = [_MKFHomeManager fetchWithContext:contextCopy error:&v48];
   v43 = v48;
   if (!v12)
   {
     v35 = objc_autoreleasePoolPush();
-    v39 = self;
+    selfCopy = self;
     v37 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
@@ -490,14 +490,14 @@ LABEL_6:
     goto LABEL_20;
   }
 
-  if (v8)
+  if (homeCopy)
   {
     v13 = objc_opt_class();
-    v14 = [(MKFCKHome *)self modelID];
-    v15 = [v13 _homeManagerHomeWithModelID:v14 homeManager:v12 context:v11];
+    modelID = [(MKFCKHome *)self modelID];
+    v15 = [v13 _homeManagerHomeWithModelID:modelID homeManager:v12 context:contextCopy];
 
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy2 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
@@ -511,7 +511,7 @@ LABEL_6:
 
     objc_autoreleasePoolPop(v16);
     v20 = objc_autoreleasePoolPush();
-    v21 = v17;
+    v21 = selfCopy2;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
@@ -527,7 +527,7 @@ LABEL_6:
     objc_autoreleasePoolPop(v20);
   }
 
-  if (v44)
+  if (primaryHomeCopy)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -535,35 +535,35 @@ LABEL_6:
     v56 = __Block_byref_object_copy_;
     v57 = __Block_byref_object_dispose_;
     v58 = 0;
-    v25 = [v12 homes];
+    homes = [v12 homes];
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = __94__MKFCKHome_HomeManager___importHomeManagerNewHome_newPrimaryHome_newApplicationData_context___block_invoke;
     v45[3] = &unk_27867B6F0;
-    v46 = v44;
+    v46 = primaryHomeCopy;
     v47 = buf;
-    [v25 hmf_enumerateWithAutoreleasePoolUsingBlock:v45];
+    [homes hmf_enumerateWithAutoreleasePoolUsingBlock:v45];
 
-    v26 = [v12 primaryHome];
-    LOBYTE(v25) = [v26 isEqual:*(*&buf[8] + 40)];
+    primaryHome = [v12 primaryHome];
+    LOBYTE(homes) = [primaryHome isEqual:*(*&buf[8] + 40)];
 
-    if ((v25 & 1) == 0)
+    if ((homes & 1) == 0)
     {
       [v12 setPrimaryHome:*(*&buf[8] + 40)];
       v27 = objc_autoreleasePoolPush();
-      v28 = self;
+      selfCopy3 = self;
       v29 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
         v30 = HMFGetLogIdentifier();
-        v31 = [*(*&buf[8] + 40) handle];
-        v32 = [v31 homeUUID];
+        handle = [*(*&buf[8] + 40) handle];
+        homeUUID = [handle homeUUID];
         *v49 = 138543874;
         v50 = v30;
         v51 = 2160;
         v52 = 1752392040;
         v53 = 2112;
-        v54 = v32;
+        v54 = homeUUID;
         _os_log_impl(&dword_229538000, v29, OS_LOG_TYPE_INFO, "%{public}@Setting new primary home with modelID %{mask.hash}@", v49, 0x20u);
       }
 
@@ -573,16 +573,16 @@ LABEL_6:
     _Block_object_dispose(buf, 8);
   }
 
-  if (v10)
+  if (dataCopy)
   {
-    v33 = [v12 appDataDictionary];
-    v34 = isEqualDeepCompare(v33, v10);
+    appDataDictionary = [v12 appDataDictionary];
+    v34 = isEqualDeepCompare(appDataDictionary, dataCopy);
 
     if ((v34 & 1) == 0)
     {
-      [v12 setAppDataDictionary:v10];
+      [v12 setAppDataDictionary:dataCopy];
       v35 = objc_autoreleasePoolPush();
-      v36 = self;
+      selfCopy4 = self;
       v37 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
       {
@@ -590,7 +590,7 @@ LABEL_6:
         *buf = 138543618;
         *&buf[4] = v38;
         *&buf[12] = 2112;
-        *&buf[14] = v10;
+        *&buf[14] = dataCopy;
         _os_log_impl(&dword_229538000, v37, OS_LOG_TYPE_INFO, "%{public}@Setting new home manager application data: %@", buf, 0x16u);
       }
 
@@ -618,30 +618,30 @@ void __94__MKFCKHome_HomeManager___importHomeManagerNewHome_newPrimaryHome_newAp
   }
 }
 
-+ (id)_createHomeManagerContextFromContext:(id)a3
++ (id)_createHomeManagerContextFromContext:(id)context
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 hmd_coreData];
-  v6 = v5;
-  if (v5)
+  contextCopy = context;
+  hmd_coreData = [contextCopy hmd_coreData];
+  v6 = hmd_coreData;
+  if (hmd_coreData)
   {
-    v7 = [v5 newManagedObjectContext];
-    [v7 setName:@"HomeManager"];
-    v8 = [MEMORY[0x277CBE4F8] currentQueryGenerationToken];
+    newManagedObjectContext = [hmd_coreData newManagedObjectContext];
+    [newManagedObjectContext setName:@"HomeManager"];
+    currentQueryGenerationToken = [MEMORY[0x277CBE4F8] currentQueryGenerationToken];
     v22 = 0;
-    v9 = [v4 setQueryGenerationFromToken:v8 error:&v22];
+    v9 = [contextCopy setQueryGenerationFromToken:currentQueryGenerationToken error:&v22];
     v10 = v22;
 
     if (v9)
     {
-      v11 = v7;
+      v11 = newManagedObjectContext;
     }
 
     else
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = a1;
+      selfCopy = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
@@ -661,7 +661,7 @@ void __94__MKFCKHome_HomeManager___importHomeManagerNewHome_newPrimaryHome_newAp
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = a1;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -680,16 +680,16 @@ void __94__MKFCKHome_HomeManager___importHomeManagerNewHome_newPrimaryHome_newAp
   return v11;
 }
 
-+ (id)_homeManagerContextFromContext:(id)a3
++ (id)_homeManagerContextFromContext:(id)context
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 hmd_homeManagerContext];
-  if (v5)
+  contextCopy = context;
+  hmd_homeManagerContext = [contextCopy hmd_homeManagerContext];
+  if (hmd_homeManagerContext)
   {
-    v6 = v5;
+    v6 = hmd_homeManagerContext;
     v7 = objc_autoreleasePoolPush();
-    v8 = a1;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
@@ -704,11 +704,11 @@ void __94__MKFCKHome_HomeManager___importHomeManagerNewHome_newPrimaryHome_newAp
 
   else
   {
-    v6 = [objc_opt_class() _createHomeManagerContextFromContext:v4];
+    v6 = [objc_opt_class() _createHomeManagerContextFromContext:contextCopy];
     if (v6)
     {
       v11 = objc_autoreleasePoolPush();
-      v12 = a1;
+      selfCopy2 = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
@@ -719,7 +719,7 @@ void __94__MKFCKHome_HomeManager___importHomeManagerNewHome_newPrimaryHome_newAp
       }
 
       objc_autoreleasePoolPop(v11);
-      [v4 setHmd_homeManagerContext:v6];
+      [contextCopy setHmd_homeManagerContext:v6];
     }
   }
 
@@ -728,51 +728,51 @@ void __94__MKFCKHome_HomeManager___importHomeManagerNewHome_newPrimaryHome_newAp
   return v6;
 }
 
-+ (id)_homeManagerHomeWithModelID:(id)a3 homeManager:(id)a4 context:(id)a5
++ (id)_homeManagerHomeWithModelID:(id)d homeManager:(id)manager context:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[_MKFHomeManagerHome alloc] initWithContext:v7];
+  contextCopy = context;
+  managerCopy = manager;
+  dCopy = d;
+  v10 = [[_MKFHomeManagerHome alloc] initWithContext:contextCopy];
 
-  v11 = [HMDHomeManagerHomeModel deriveUUIDFromHomeUUID:v9];
+  v11 = [HMDHomeManagerHomeModel deriveUUIDFromHomeUUID:dCopy];
   [(_MKFHomeManagerHome *)v10 setModelID:v11];
 
   v12 = [HMDHomeManagerHomeHandle alloc];
-  v13 = [MEMORY[0x277CCAD78] UUID];
-  v14 = [(HMDHomeManagerHomeHandle *)v12 initWithBackingStoreUUID:v13 homeUUID:v9];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v14 = [(HMDHomeManagerHomeHandle *)v12 initWithBackingStoreUUID:uUID homeUUID:dCopy];
 
   [(_MKFHomeManagerHome *)v10 setHandle:v14];
-  [(_MKFHomeManagerHome *)v10 setHomeManager:v8];
-  [v8 addHomes_Object:v10];
+  [(_MKFHomeManagerHome *)v10 setHomeManager:managerCopy];
+  [managerCopy addHomes_Object:v10];
 
   return v10;
 }
 
-- (BOOL)_exportUsersFromLocalModel:(id)a3 context:(id)a4
+- (BOOL)_exportUsersFromLocalModel:(id)model context:(id)context
 {
   v57 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([(MKFCKHome *)self _exportRelationshipsFromLocalHome:v6 localRelationshipName:@"users_" context:v7])
+  modelCopy = model;
+  contextCopy = context;
+  if ([(MKFCKHome *)self _exportRelationshipsFromLocalHome:modelCopy localRelationshipName:@"users_" context:contextCopy])
   {
-    v8 = v6;
-    v9 = v7;
+    v8 = modelCopy;
+    v9 = contextCopy;
     v10 = self != 0;
     if (self)
     {
-      v11 = [v8 owner];
-      v12 = [(MKFCKHome *)self owner];
+      owner = [v8 owner];
+      owner2 = [(MKFCKHome *)self owner];
 
-      if (!v12)
+      if (!owner2)
       {
         v38 = self != 0;
-        v39 = v7;
-        v40 = v6;
-        v36 = v11;
-        v13 = [(MKFCKModel *)MKFCKUser fetchWithLocalModel:v11 context:v9];
+        v39 = contextCopy;
+        v40 = modelCopy;
+        v36 = owner;
+        v13 = [(MKFCKModel *)MKFCKUser fetchWithLocalModel:owner context:v9];
         v14 = objc_autoreleasePoolPush();
-        v15 = self;
+        selfCopy = self;
         v16 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
         {
@@ -786,7 +786,7 @@ void __94__MKFCKHome_HomeManager___importHomeManagerNewHome_newPrimaryHome_newAp
 
         objc_autoreleasePoolPop(v14);
         v35 = v13;
-        [(MKFCKHome *)v15 setOwner:v13];
+        [(MKFCKHome *)selfCopy setOwner:v13];
         v37 = v8;
         v18 = v8;
         v19 = v9;
@@ -797,7 +797,7 @@ void __94__MKFCKHome_HomeManager___importHomeManagerNewHome_newPrimaryHome_newAp
         v34 = v18;
         obj = [v18 accessories];
         v20 = [obj countByEnumeratingWithState:&v45 objects:buf count:16];
-        v43 = v15;
+        v43 = selfCopy;
         if (v20)
         {
           v21 = v20;
@@ -861,11 +861,11 @@ void __94__MKFCKHome_HomeManager___importHomeManagerNewHome_newPrimaryHome_newAp
           while (v21);
         }
 
-        v7 = v39;
-        v6 = v40;
+        contextCopy = v39;
+        modelCopy = v40;
         v10 = v38;
         v8 = v37;
-        v11 = v36;
+        owner = v36;
       }
     }
   }
@@ -879,30 +879,30 @@ void __94__MKFCKHome_HomeManager___importHomeManagerNewHome_newPrimaryHome_newAp
   return v10;
 }
 
-- (BOOL)_importUsersIntoLocalModel:(id)a3 context:(id)a4
+- (BOOL)_importUsersIntoLocalModel:(id)model context:(id)context
 {
   v63 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([(MKFCKHome *)self _importRelationshipsIntoLocalModel:v6 localRelationshipName:@"users_" context:v7])
+  modelCopy = model;
+  contextCopy = context;
+  if ([(MKFCKHome *)self _importRelationshipsIntoLocalModel:modelCopy localRelationshipName:@"users_" context:contextCopy])
   {
-    v8 = v6;
-    v9 = v7;
+    v8 = modelCopy;
+    v9 = contextCopy;
     if (self)
     {
-      v10 = [(MKFCKHome *)self owner];
-      v11 = v10;
-      v12 = v10 != 0;
-      if (v10)
+      owner = [(MKFCKHome *)self owner];
+      v11 = owner;
+      v12 = owner != 0;
+      if (owner)
       {
-        v48 = self;
-        v47 = [v10 fetchLocalModelWithContext:v9];
-        v13 = [v8 owner];
+        selfCopy = self;
+        v47 = [owner fetchLocalModelWithContext:v9];
+        owner2 = [v8 owner];
 
-        if (!v13)
+        if (!owner2)
         {
           v14 = objc_autoreleasePoolPush();
-          v15 = self;
+          selfCopy2 = self;
           v16 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
           {
@@ -922,15 +922,15 @@ void __94__MKFCKHome_HomeManager___importHomeManagerNewHome_newPrimaryHome_newAp
         v42 = v9;
         v43 = v8;
         v44 = v12;
-        v45 = v7;
-        v46 = v6;
+        v45 = contextCopy;
+        v46 = modelCopy;
         v18 = v9;
         v51 = 0u;
         v52 = 0u;
         v53 = 0u;
         v54 = 0u;
-        v19 = v48;
-        obj = [(MKFCKHome *)v48 accessories];
+        v19 = selfCopy;
+        obj = [(MKFCKHome *)selfCopy accessories];
         v20 = [obj countByEnumeratingWithState:&v51 objects:buf count:16];
         if (v20)
         {
@@ -983,7 +983,7 @@ void __94__MKFCKHome_HomeManager___importHomeManagerNewHome_newPrimaryHome_newAp
                   v58 = v25;
                   _os_log_impl(&dword_229538000, v33, OS_LOG_TYPE_ERROR, "%{public}@Unable to find local model for accessory: %@", v55, 0x16u);
 
-                  v19 = v48;
+                  v19 = selfCopy;
                 }
 
                 objc_autoreleasePoolPop(v31);
@@ -999,8 +999,8 @@ void __94__MKFCKHome_HomeManager___importHomeManagerNewHome_newPrimaryHome_newAp
           while (v21);
         }
 
-        v7 = v45;
-        v6 = v46;
+        contextCopy = v45;
+        modelCopy = v46;
         v12 = v44;
         v9 = v42;
         v8 = v43;
@@ -1010,7 +1010,7 @@ void __94__MKFCKHome_HomeManager___importHomeManagerNewHome_newPrimaryHome_newAp
       else
       {
         v35 = objc_autoreleasePoolPush();
-        v36 = self;
+        selfCopy3 = self;
         v37 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
         {
@@ -1046,8 +1046,8 @@ void __94__MKFCKHome_HomeManager___importHomeManagerNewHome_newPrimaryHome_newAp
   v48[1] = *MEMORY[0x277D85DE8];
   v41.receiver = self;
   v41.super_class = MKFCKHome;
-  v3 = [(MKFCKModel *)&v41 ensureCanonicalModel];
-  if (v3 == 1)
+  ensureCanonicalModel = [(MKFCKModel *)&v41 ensureCanonicalModel];
+  if (ensureCanonicalModel == 1)
   {
     v37 = 0;
     v38 = &v37;
@@ -1055,57 +1055,57 @@ void __94__MKFCKHome_HomeManager___importHomeManagerNewHome_newPrimaryHome_newAp
     v40 = 0;
     v4 = objc_autoreleasePoolPush();
     v5 = @"HMD.CFU";
-    v6 = [MEMORY[0x277CBE4C8] fetchRequest];
-    v28 = [v6 entity];
-    v7 = [v28 propertiesByName];
-    v31 = [v7 objectForKeyedSubscript:@"author"];
+    fetchRequest = [MEMORY[0x277CBE4C8] fetchRequest];
+    entity = [fetchRequest entity];
+    propertiesByName = [entity propertiesByName];
+    v31 = [propertiesByName objectForKeyedSubscript:@"author"];
 
-    v8 = [(MKFCKHome *)self entity];
-    v9 = [HMDCoreDataCloudTransform localTransformableEntityFromEntity:v8];
+    entity2 = [(MKFCKHome *)self entity];
+    v9 = [HMDCoreDataCloudTransform localTransformableEntityFromEntity:entity2];
 
     v10 = MEMORY[0x277CCAC30];
-    v11 = [v31 name];
-    v30 = [v10 predicateWithFormat:@"(%K == %@)", v11, @"HMD.CFU"];
+    name = [v31 name];
+    v30 = [v10 predicateWithFormat:@"(%K == %@)", name, @"HMD.CFU"];
 
-    [v6 setPredicate:v30];
-    v12 = [(MKFCKHome *)self managedObjectContext];
-    v13 = [MEMORY[0x277CBE4B0] fetchHistoryWithFetchRequest:v6];
-    v14 = [v12 hmd_coreData];
-    v29 = [v14 workingStore];
+    [fetchRequest setPredicate:v30];
+    managedObjectContext = [(MKFCKHome *)self managedObjectContext];
+    v13 = [MEMORY[0x277CBE4B0] fetchHistoryWithFetchRequest:fetchRequest];
+    hmd_coreData = [managedObjectContext hmd_coreData];
+    workingStore = [hmd_coreData workingStore];
 
-    v48[0] = v29;
+    v48[0] = workingStore;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:1];
     [v13 setAffectedStores:v15];
 
     [v13 setFetchBatchSize:20];
     [v13 setResultType:5];
     v36 = 0;
-    v16 = [v12 executeRequest:v13 error:&v36];
+    v16 = [managedObjectContext executeRequest:v13 error:&v36];
     v27 = v36;
-    v17 = [v16 result];
+    result = [v16 result];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __33__MKFCKHome_ensureCanonicalModel__block_invoke;
     v32[3] = &unk_278671590;
     v18 = v9;
     v33 = v18;
-    v34 = self;
+    selfCopy = self;
     v35 = &v37;
-    [v17 hmf_enumerateWithAutoreleasePoolUsingBlock:v32];
+    [result hmf_enumerateWithAutoreleasePoolUsingBlock:v32];
     if (*(v38 + 24) == 1)
     {
       context = objc_autoreleasePoolPush();
-      v19 = self;
+      selfCopy2 = self;
       v20 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         v25 = v4;
         v21 = HMFGetLogIdentifier();
-        v22 = [(MKFCKModel *)v19 debugDescription];
+        v22 = [(MKFCKModel *)selfCopy2 debugDescription];
         *buf = 138543874;
         v43 = v21;
         v44 = 2112;
-        v45 = v19;
+        v45 = selfCopy2;
         v46 = 2112;
         v47 = v22;
         _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@Re-doing delete of record since it is locally deleted by the user: %@\n%@", buf, 0x20u);
@@ -1114,13 +1114,13 @@ void __94__MKFCKHome_HomeManager___importHomeManagerNewHome_newPrimaryHome_newAp
       }
 
       objc_autoreleasePoolPop(context);
-      [v12 deleteObject:v19];
-      v3 = -2;
+      [managedObjectContext deleteObject:selfCopy2];
+      ensureCanonicalModel = -2;
     }
 
     else
     {
-      v3 = 1;
+      ensureCanonicalModel = 1;
     }
 
     objc_autoreleasePoolPop(v4);
@@ -1128,7 +1128,7 @@ void __94__MKFCKHome_HomeManager___importHomeManagerNewHome_newPrimaryHome_newAp
   }
 
   v23 = *MEMORY[0x277D85DE8];
-  return v3;
+  return ensureCanonicalModel;
 }
 
 void __33__MKFCKHome_ensureCanonicalModel__block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -1171,32 +1171,32 @@ void __33__MKFCKHome_ensureCanonicalModel__block_invoke_2(uint64_t a1, void *a2,
   }
 }
 
-- (BOOL)_exportRelationshipsFromLocalModel:(id)a3 localRelationship:(id)a4 cloudRelationship:(id)a5 cloudModels:(id)a6 context:(id)a7
+- (BOOL)_exportRelationshipsFromLocalModel:(id)model localRelationship:(id)relationship cloudRelationship:(id)cloudRelationship cloudModels:(id)models context:(id)context
 {
   v57 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v40 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [v14 hmd_coreData];
-  v38 = [v15 cloudPrivateStore];
-  v16 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v13, "count")}];
+  modelCopy = model;
+  relationshipCopy = relationship;
+  cloudRelationshipCopy = cloudRelationship;
+  modelsCopy = models;
+  contextCopy = context;
+  hmd_coreData = [contextCopy hmd_coreData];
+  cloudPrivateStore = [hmd_coreData cloudPrivateStore];
+  v16 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(modelsCopy, "count")}];
   v53[0] = MEMORY[0x277D85DD0];
   v53[1] = 3221225472;
   v53[2] = __104__MKFCKHome__exportRelationshipsFromLocalModel_localRelationship_cloudRelationship_cloudModels_context___block_invoke;
   v53[3] = &unk_2786735A0;
   v17 = v16;
   v54 = v17;
-  [v13 hmf_enumerateWithAutoreleasePoolUsingBlock:v53];
+  [modelsCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v53];
 
-  v18 = [v40 name];
-  v19 = [v11 valueForKey:v18];
+  name = [relationshipCopy name];
+  v19 = [modelCopy valueForKey:name];
 
   if ([v19 count])
   {
-    v20 = [v12 destinationEntity];
-    v21 = [v38 hmd_deletedModelIDsForEntity:v20 modelIDKey:@"modelID" duration:v14 context:3600.0];
+    destinationEntity = [cloudRelationshipCopy destinationEntity];
+    v21 = [cloudPrivateStore hmd_deletedModelIDsForEntity:destinationEntity modelIDKey:@"modelID" duration:contextCopy context:3600.0];
 
     if (v21)
     {
@@ -1204,17 +1204,17 @@ void __33__MKFCKHome_ensureCanonicalModel__block_invoke_2(uint64_t a1, void *a2,
     }
 
     context = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       v35 = HMFGetLogIdentifier();
-      v36 = [v12 destinationEntity];
-      v24 = [v36 name];
+      destinationEntity2 = [cloudRelationshipCopy destinationEntity];
+      name2 = [destinationEntity2 name];
       *buf = 138543618;
       *&buf[4] = v35;
       *&buf[12] = 2114;
-      *&buf[14] = v24;
+      *&buf[14] = name2;
       _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_ERROR, "%{public}@Failed to gather modelIDs for recently deleted %{public}@", buf, 0x16u);
     }
 
@@ -1235,27 +1235,27 @@ LABEL_7:
   v46 = v25;
   v26 = v21;
   v47 = v26;
-  v48 = self;
-  v27 = v12;
+  selfCopy2 = self;
+  v27 = cloudRelationshipCopy;
   v49 = v27;
-  v28 = v14;
+  v28 = contextCopy;
   v50 = v28;
-  v29 = v11;
+  v29 = modelCopy;
   v51 = v29;
   v52 = buf;
   [v19 hmf_enumerateWithAutoreleasePoolUsingBlock:v45];
   v30 = *(*&buf[8] + 24);
   if (v30)
   {
-    v31 = [v15 workingStore];
+    workingStore = [hmd_coreData workingStore];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __104__MKFCKHome__exportRelationshipsFromLocalModel_localRelationship_cloudRelationship_cloudModels_context___block_invoke_20;
     v41[3] = &unk_278671568;
-    v32 = v31;
+    v32 = workingStore;
     v42 = v32;
     v43 = v28;
-    v44 = self;
+    selfCopy3 = self;
     [v25 enumerateKeysAndObjectsUsingBlock:v41];
   }
 
@@ -1515,54 +1515,54 @@ void __104__MKFCKHome__exportRelationshipsFromLocalModel_localRelationship_cloud
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_exportRelationshipsFromLocalHome:(id)a3 localRelationship:(id)a4 cloudRelationship:(id)a5 context:(id)a6
+- (BOOL)_exportRelationshipsFromLocalHome:(id)home localRelationship:(id)relationship cloudRelationship:(id)cloudRelationship context:(id)context
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v11 name];
-  v15 = [(MKFCKHome *)self valueForKey:v14];
+  contextCopy = context;
+  cloudRelationshipCopy = cloudRelationship;
+  relationshipCopy = relationship;
+  homeCopy = home;
+  name = [cloudRelationshipCopy name];
+  v15 = [(MKFCKHome *)self valueForKey:name];
 
-  LOBYTE(self) = [(MKFCKHome *)self _exportRelationshipsFromLocalModel:v13 localRelationship:v12 cloudRelationship:v11 cloudModels:v15 context:v10];
+  LOBYTE(self) = [(MKFCKHome *)self _exportRelationshipsFromLocalModel:homeCopy localRelationship:relationshipCopy cloudRelationship:cloudRelationshipCopy cloudModels:v15 context:contextCopy];
   return self;
 }
 
-- (BOOL)_exportRelationshipsFromLocalHome:(id)a3 localRelationshipName:(id)a4 context:(id)a5
+- (BOOL)_exportRelationshipsFromLocalHome:(id)home localRelationshipName:(id)name context:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 entity];
-  v12 = [v11 relationshipsByName];
-  v13 = [v12 objectForKeyedSubscript:v9];
+  contextCopy = context;
+  nameCopy = name;
+  homeCopy = home;
+  entity = [homeCopy entity];
+  relationshipsByName = [entity relationshipsByName];
+  v13 = [relationshipsByName objectForKeyedSubscript:nameCopy];
 
-  v14 = [(MKFCKModel *)self relationshipForLocalName:v9 localModel:v10];
+  v14 = [(MKFCKModel *)self relationshipForLocalName:nameCopy localModel:homeCopy];
 
-  LOBYTE(v9) = [(MKFCKHome *)self _exportRelationshipsFromLocalHome:v10 localRelationship:v13 cloudRelationship:v14 context:v8];
-  return v9;
+  LOBYTE(nameCopy) = [(MKFCKHome *)self _exportRelationshipsFromLocalHome:homeCopy localRelationship:v13 cloudRelationship:v14 context:contextCopy];
+  return nameCopy;
 }
 
-- (void)_maybeDeleteStaleLocalModels:(id)a3 modelIDKey:(id)a4 context:(id)a5
+- (void)_maybeDeleteStaleLocalModels:(id)models modelIDKey:(id)key context:(id)context
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v9 hmd_coreData];
-  v12 = [v11 cloudPrivateStore];
+  keyCopy = key;
+  contextCopy = context;
+  modelsCopy = models;
+  hmd_coreData = [contextCopy hmd_coreData];
+  cloudPrivateStore = [hmd_coreData cloudPrivateStore];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __61__MKFCKHome__maybeDeleteStaleLocalModels_modelIDKey_context___block_invoke;
   v16[3] = &unk_2786714F0;
-  v17 = v12;
-  v18 = v8;
-  v19 = v9;
-  v20 = self;
-  v13 = v9;
-  v14 = v8;
-  v15 = v12;
-  [v10 enumerateKeysAndObjectsUsingBlock:v16];
+  v17 = cloudPrivateStore;
+  v18 = keyCopy;
+  v19 = contextCopy;
+  selfCopy = self;
+  v13 = contextCopy;
+  v14 = keyCopy;
+  v15 = cloudPrivateStore;
+  [modelsCopy enumerateKeysAndObjectsUsingBlock:v16];
 }
 
 void __61__MKFCKHome__maybeDeleteStaleLocalModels_modelIDKey_context___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1627,19 +1627,19 @@ void __61__MKFCKHome__maybeDeleteStaleLocalModels_modelIDKey_context___block_inv
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_importRelationshipsIntoLocalModel:(id)a3 localRelationshipName:(id)a4 context:(id)a5
+- (BOOL)_importRelationshipsIntoLocalModel:(id)model localRelationshipName:(id)name context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 entity];
-  v12 = [v11 relationshipsByName];
-  v13 = [v12 objectForKeyedSubscript:v10];
+  modelCopy = model;
+  contextCopy = context;
+  nameCopy = name;
+  entity = [modelCopy entity];
+  relationshipsByName = [entity relationshipsByName];
+  v13 = [relationshipsByName objectForKeyedSubscript:nameCopy];
 
-  v14 = [(MKFCKModel *)self relationshipForLocalName:v10 localModel:v8];
+  v14 = [(MKFCKModel *)self relationshipForLocalName:nameCopy localModel:modelCopy];
 
-  v15 = [v13 name];
-  v16 = [v8 valueForKey:v15];
+  name = [v13 name];
+  v16 = [modelCopy valueForKey:name];
 
   v17 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v16, "count")}];
   v32[0] = MEMORY[0x277D85DD0];
@@ -1650,12 +1650,12 @@ void __61__MKFCKHome__maybeDeleteStaleLocalModels_modelIDKey_context___block_inv
   v33 = v18;
   [v16 hmf_enumerateWithAutoreleasePoolUsingBlock:v32];
 
-  v19 = [v14 name];
-  v20 = [(MKFCKHome *)self valueForKey:v19];
+  name2 = [v14 name];
+  v20 = [(MKFCKHome *)self valueForKey:name2];
   v21 = [v20 mutableCopy];
 
   v22 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v21, "count")}];
-  if (-[MKFCKHome _importIntoLocalHomeModel:cloudModels:localModelsByModelID:processedCloudModels:context:](self, v8, v21, v18, v22, v9) && ((v23 = [v22 count], v23 == objc_msgSend(v21, "count")) || (objc_msgSend(v21, "minusSet:", v22), -[MKFCKHome _importIntoLocalHomeModel:cloudModels:localModelsByModelID:processedCloudModels:context:](self, v8, v21, v18, v22, v9))))
+  if (-[MKFCKHome _importIntoLocalHomeModel:cloudModels:localModelsByModelID:processedCloudModels:context:](self, modelCopy, v21, v18, v22, contextCopy) && ((v23 = [v22 count], v23 == objc_msgSend(v21, "count")) || (objc_msgSend(v21, "minusSet:", v22), -[MKFCKHome _importIntoLocalHomeModel:cloudModels:localModelsByModelID:processedCloudModels:context:](self, modelCopy, v21, v18, v22, contextCopy))))
   {
     v27 = MEMORY[0x277D85DD0];
     v28 = 3221225472;
@@ -1664,7 +1664,7 @@ void __61__MKFCKHome__maybeDeleteStaleLocalModels_modelIDKey_context___block_inv
     v24 = v18;
     v31 = v24;
     [v22 hmf_enumerateWithAutoreleasePoolUsingBlock:&v27];
-    [(MKFCKHome *)self _maybeDeleteStaleLocalModels:v24 context:v9, v27, v28, v29, v30];
+    [(MKFCKHome *)self _maybeDeleteStaleLocalModels:v24 context:contextCopy, v27, v28, v29, v30];
 
     v25 = 1;
   }
@@ -1685,15 +1685,15 @@ void __78__MKFCKHome__importRelationshipsIntoLocalModel_localRelationshipName_co
   [v2 setObject:v3 forKeyedSubscript:v4];
 }
 
-- (uint64_t)_importIntoLocalHomeModel:(void *)a3 cloudModels:(void *)a4 localModelsByModelID:(void *)a5 processedCloudModels:(void *)a6 context:
+- (uint64_t)_importIntoLocalHomeModel:(void *)model cloudModels:(void *)models localModelsByModelID:(void *)d processedCloudModels:(void *)cloudModels context:
 {
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = v15;
-  if (a1)
+  modelCopy = model;
+  modelsCopy = models;
+  dCopy = d;
+  cloudModelsCopy = cloudModels;
+  v16 = cloudModelsCopy;
+  if (self)
   {
     v25 = 0;
     v26 = &v25;
@@ -1703,19 +1703,19 @@ void __78__MKFCKHome__importRelationshipsIntoLocalModel_localRelationshipName_co
     v18[1] = 3221225472;
     v18[2] = __101__MKFCKHome__importIntoLocalHomeModel_cloudModels_localModelsByModelID_processedCloudModels_context___block_invoke;
     v18[3] = &unk_278671518;
-    v19 = v15;
-    v20 = a1;
-    v21 = v14;
-    v22 = v13;
+    v19 = cloudModelsCopy;
+    selfCopy = self;
+    v21 = dCopy;
+    v22 = modelsCopy;
     v23 = v11;
     v24 = &v25;
-    [v12 hmf_enumerateWithAutoreleasePoolUsingBlock:v18];
-    LOBYTE(a1) = *(v26 + 24);
+    [modelCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v18];
+    LOBYTE(self) = *(v26 + 24);
 
     _Block_object_dispose(&v25, 8);
   }
 
-  return a1 & 1;
+  return self & 1;
 }
 
 void __78__MKFCKHome__importRelationshipsIntoLocalModel_localRelationshipName_context___block_invoke_2(uint64_t a1, void *a2)
@@ -1919,42 +1919,42 @@ LABEL_34:
   [(MKFCKHome *)self setPrimitiveValue:v3 forKey:@"removedUserAccessCodes"];
 }
 
-+ (id)createWithLocalModel:(id)a3 context:(id)a4
++ (id)createWithLocalModel:(id)model context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 hmd_coreData];
-  v9 = [v8 cloudPrivateStore];
+  modelCopy = model;
+  contextCopy = context;
+  hmd_coreData = [contextCopy hmd_coreData];
+  cloudPrivateStore = [hmd_coreData cloudPrivateStore];
 
-  v10 = [v6 modelID];
-  v11 = [a1 createWithModelID:v10 persistentStore:v9 context:v7];
+  modelID = [modelCopy modelID];
+  v11 = [self createWithModelID:modelID persistentStore:cloudPrivateStore context:contextCopy];
 
   return v11;
 }
 
-+ (BOOL)exportDeleteWithObjectID:(id)a3 modelID:(id)a4 additionalUpdates:(id)a5 context:(id)a6
++ (BOOL)exportDeleteWithObjectID:(id)d modelID:(id)iD additionalUpdates:(id)updates context:(id)context
 {
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v11)
+  dCopy = d;
+  iDCopy = iD;
+  updatesCopy = updates;
+  contextCopy = context;
+  if (iDCopy)
   {
     v27 = 0;
-    v14 = [(MKFCKModel *)MKFCKHome modelWithModelID:v11 context:v13 error:&v27];
+    v14 = [(MKFCKModel *)MKFCKHome modelWithModelID:iDCopy context:contextCopy error:&v27];
     v15 = v27;
     v16 = v15;
     if (v14)
     {
-      [v13 deleteObject:v14];
-      [a1 _rebalanceFakeHomesWithContext:v13];
+      [contextCopy deleteObject:v14];
+      [self _rebalanceFakeHomesWithContext:contextCopy];
     }
 
     else if (v15)
     {
       v21 = objc_autoreleasePoolPush();
-      v22 = a1;
+      selfCopy = self;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
@@ -1973,7 +1973,7 @@ LABEL_34:
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = a1;
+    selfCopy2 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -1981,7 +1981,7 @@ LABEL_34:
       *buf = 138543618;
       v29 = v20;
       v30 = 2114;
-      v31 = v10;
+      v31 = dCopy;
       _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_ERROR, "%{public}@Can't process export delete for %{public}@ without a modelID", buf, 0x16u);
     }
 
@@ -1992,22 +1992,22 @@ LABEL_34:
   return 1;
 }
 
-+ (BOOL)exportUpdateWithObjectID:(id)a3 updatedProperties:(id)a4 additionalUpdates:(id)a5 context:(id)a6
++ (BOOL)exportUpdateWithObjectID:(id)d updatedProperties:(id)properties additionalUpdates:(id)updates context:(id)context
 {
   v46 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v13 objectWithID:v10];
-  v15 = MKFPropertyNamesFromDescriptions(v11);
-  v16 = [a1 fetchWithLocalModel:v14 context:v13];
+  dCopy = d;
+  propertiesCopy = properties;
+  updatesCopy = updates;
+  contextCopy = context;
+  v14 = [contextCopy objectWithID:dCopy];
+  v15 = MKFPropertyNamesFromDescriptions(propertiesCopy);
+  v16 = [self fetchWithLocalModel:v14 context:contextCopy];
   v17 = v16;
   if (!v16)
   {
     v39 = v15;
     v19 = objc_autoreleasePoolPush();
-    v32 = a1;
+    selfCopy = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -2024,16 +2024,16 @@ LABEL_34:
     goto LABEL_17;
   }
 
-  if ([(MKFCKHome *)v16 _exportFromLocalModel:v14 updatedProperties:v11 context:v13])
+  if ([(MKFCKHome *)v16 _exportFromLocalModel:v14 updatedProperties:propertiesCopy context:contextCopy])
   {
-    v38 = v12;
+    v38 = updatesCopy;
     v39 = v15;
-    v18 = [v17 hasPersistentChangedValues];
+    hasPersistentChangedValues = [v17 hasPersistentChangedValues];
     v19 = objc_autoreleasePoolPush();
-    v20 = a1;
+    selfCopy2 = self;
     v21 = HMFGetOSLogHandle();
     v22 = v21;
-    if (v18)
+    if (hasPersistentChangedValues)
     {
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
@@ -2049,7 +2049,7 @@ LABEL_34:
 
       objc_autoreleasePoolPop(v19);
       v24 = objc_autoreleasePoolPush();
-      v25 = v20;
+      v25 = selfCopy2;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
@@ -2088,7 +2088,7 @@ LABEL_34:
       if (!os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
 LABEL_16:
-        v12 = v38;
+        updatesCopy = v38;
 LABEL_17:
 
         objc_autoreleasePoolPop(v19);
@@ -2115,39 +2115,39 @@ LABEL_18:
   return v34;
 }
 
-- (void)_exportFromLocalModel:(void *)a3 updatedProperties:(void *)a4 context:
+- (void)_exportFromLocalModel:(void *)model updatedProperties:(void *)properties context:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  modelCopy = model;
+  propertiesCopy = properties;
+  if (self)
   {
-    if ([a1 copyPropertiesFromLocalModel:v7 context:v9] && objc_msgSend(a1, "_exportResidentsFromLocalModel:context:", v7, v9) && objc_msgSend(a1, "_exportRoomsFromLocalModel:context:", v7, v9) && objc_msgSend(a1, "_exportZonesFromLocalModel:context:", v7, v9) && objc_msgSend(a1, "_exportAccessoriesFromLocalModel:context:", v7, v9) && objc_msgSend(a1, "_exportApplicationDataFromLocalModel:context:", v7, v9) && objc_msgSend(a1, "_exportMatterKeyValueStoreFromLocalModel:context:", v7, v9) && objc_msgSend(a1, "_exportUsersFromLocalModel:context:", v7, v9) && objc_msgSend(a1, "_exportGuestsFromLocalModel:context:", v7, v9) && objc_msgSend(a1, "_exportScenesFromLocalModel:context:", v7, v9) && objc_msgSend(a1, "_exportSettingsFromLocalModel:context:", v7, v9) && objc_msgSend(a1, "_exportServiceGroupsFromLocalModel:context:", v7, v9) && objc_msgSend(a1, "_exportTriggersFromLocalModel:context:", v7, v9) && objc_msgSend(a1, "_exportPersonsFromLocalModel:context:", v7, v9) && objc_msgSend(a1, "_exportInvitationOutgoingFromLocalModel:context:", v7, v9) && objc_msgSend(a1, "_exportNetworkProtectionGroupsFromLocalModel:context:", v7, v9) && objc_msgSend(a1, "_exportPinCodesFromLocalModel:context:", v7, v9))
+    if ([self copyPropertiesFromLocalModel:v7 context:propertiesCopy] && objc_msgSend(self, "_exportResidentsFromLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_exportRoomsFromLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_exportZonesFromLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_exportAccessoriesFromLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_exportApplicationDataFromLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_exportMatterKeyValueStoreFromLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_exportUsersFromLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_exportGuestsFromLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_exportScenesFromLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_exportSettingsFromLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_exportServiceGroupsFromLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_exportTriggersFromLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_exportPersonsFromLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_exportInvitationOutgoingFromLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_exportNetworkProtectionGroupsFromLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_exportPinCodesFromLocalModel:context:", v7, propertiesCopy))
     {
-      a1 = [a1 _exportHomeManagerWithContext:v9];
+      self = [self _exportHomeManagerWithContext:propertiesCopy];
     }
 
     else
     {
-      a1 = 0;
+      self = 0;
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)exportInsertWithObjectID:(id)a3 additionalUpdates:(id)a4 context:(id)a5
++ (BOOL)exportInsertWithObjectID:(id)d additionalUpdates:(id)updates context:(id)context
 {
   v60 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 objectWithID:v8];
-  v12 = [a1 fetchWithLocalModel:v11 context:v10];
+  dCopy = d;
+  updatesCopy = updates;
+  contextCopy = context;
+  v11 = [contextCopy objectWithID:dCopy];
+  v12 = [self fetchWithLocalModel:v11 context:contextCopy];
   if (v12)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = a1;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -2165,31 +2165,31 @@ LABEL_18:
 
   else
   {
-    v17 = [a1 createWithLocalModel:v11 context:v10];
+    v17 = [self createWithLocalModel:v11 context:contextCopy];
   }
 
   v18 = [MEMORY[0x277CBEB98] set];
-  v19 = [(MKFCKHome *)v17 _exportFromLocalModel:v11 updatedProperties:v18 context:v10];
+  v19 = [(MKFCKHome *)v17 _exportFromLocalModel:v11 updatedProperties:v18 context:contextCopy];
 
   if (v19)
   {
-    v53 = v9;
+    v53 = updatesCopy;
     if (v12)
     {
-      v20 = [v17 hasPersistentChangedValues];
+      hasPersistentChangedValues = [v17 hasPersistentChangedValues];
       v21 = objc_autoreleasePoolPush();
-      v22 = a1;
+      selfCopy2 = self;
       v23 = HMFGetOSLogHandle();
       v24 = v23;
-      if (v20)
+      if (hasPersistentChangedValues)
       {
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
           HMFGetLogIdentifier();
           v25 = v52 = v21;
-          v51 = [v17 changedValues];
-          v26 = [v51 allKeys];
-          v27 = [v26 sortedArrayUsingSelector:sel_compare_];
+          changedValues = [v17 changedValues];
+          allKeys = [changedValues allKeys];
+          v27 = [allKeys sortedArrayUsingSelector:sel_compare_];
           *buf = 138543874;
           v55 = v25;
           v56 = 2112;
@@ -2203,7 +2203,7 @@ LABEL_18:
 
         objc_autoreleasePoolPop(v21);
         v28 = objc_autoreleasePoolPush();
-        v29 = v22;
+        v29 = selfCopy2;
         v30 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
         {
@@ -2218,7 +2218,7 @@ LABEL_18:
 
         objc_autoreleasePoolPop(v28);
         v21 = objc_autoreleasePoolPush();
-        v22 = v29;
+        selfCopy2 = v29;
         v24 = HMFGetOSLogHandle();
         if (!os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
         {
@@ -2241,7 +2241,7 @@ LABEL_18:
 LABEL_25:
 
           objc_autoreleasePoolPop(v21);
-          v9 = v53;
+          updatesCopy = v53;
           goto LABEL_26;
         }
 
@@ -2257,7 +2257,7 @@ LABEL_25:
     }
 
     v35 = objc_autoreleasePoolPush();
-    v36 = a1;
+    selfCopy3 = self;
     v37 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
@@ -2271,7 +2271,7 @@ LABEL_25:
 
     objc_autoreleasePoolPop(v35);
     v39 = objc_autoreleasePoolPush();
-    v40 = v36;
+    v40 = selfCopy3;
     v41 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
     {
@@ -2283,7 +2283,7 @@ LABEL_25:
       v57 = v43;
       _os_log_impl(&dword_229538000, v41, OS_LOG_TYPE_INFO, "%{public}@%@", buf, 0x16u);
 
-      v9 = v53;
+      updatesCopy = v53;
     }
 
     objc_autoreleasePoolPop(v39);
@@ -2300,11 +2300,11 @@ LABEL_25:
       v57 = v48;
       _os_log_impl(&dword_229538000, v46, OS_LOG_TYPE_DEBUG, "%{public}@%@", buf, 0x16u);
 
-      v9 = v53;
+      updatesCopy = v53;
     }
 
     objc_autoreleasePoolPop(v44);
-    [v45 _rebalanceFakeHomesWithContext:v10];
+    [v45 _rebalanceFakeHomesWithContext:contextCopy];
   }
 
 LABEL_26:
@@ -2313,30 +2313,30 @@ LABEL_26:
   return v19;
 }
 
-+ (BOOL)importDeleteWithObjectID:(id)a3 modelID:(id)a4 additionalUpdates:(id)a5 context:(id)a6
++ (BOOL)importDeleteWithObjectID:(id)d modelID:(id)iD additionalUpdates:(id)updates context:(id)context
 {
   v39 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v11)
+  dCopy = d;
+  iDCopy = iD;
+  updatesCopy = updates;
+  contextCopy = context;
+  if (iDCopy)
   {
     v34 = 0;
-    v14 = [(_MKFModel *)_MKFHome modelWithModelID:v11 context:v13 error:&v34];
+    v14 = [(_MKFModel *)_MKFHome modelWithModelID:iDCopy context:contextCopy error:&v34];
     v15 = v34;
     v16 = v15;
     if (v14)
     {
-      [v13 deleteObject:v14];
-      v17 = [objc_opt_class() _homeManagerContextFromContext:v13];
+      [contextCopy deleteObject:v14];
+      v17 = [objc_opt_class() _homeManagerContextFromContext:contextCopy];
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
       v30[2] = __72__MKFCKHome_importDeleteWithObjectID_modelID_additionalUpdates_context___block_invoke;
       v30[3] = &unk_278685DF8;
       v31 = v17;
-      v33 = a1;
-      v32 = v11;
+      selfCopy = self;
+      v32 = iDCopy;
       v18 = v17;
       [v18 performBlockAndWait:v30];
     }
@@ -2344,7 +2344,7 @@ LABEL_26:
     else if (v15)
     {
       v24 = objc_autoreleasePoolPush();
-      v25 = a1;
+      selfCopy2 = self;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
@@ -2368,7 +2368,7 @@ LABEL_12:
   }
 
   v20 = objc_autoreleasePoolPush();
-  v21 = a1;
+  selfCopy3 = self;
   v22 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
   {
@@ -2376,7 +2376,7 @@ LABEL_12:
     *buf = 138543618;
     v36 = v23;
     v37 = 2114;
-    v38 = v10;
+    v38 = dCopy;
     _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_ERROR, "%{public}@Can't process import delete for %{public}@ without a modelID", buf, 0x16u);
   }
 
@@ -2477,41 +2477,41 @@ void __72__MKFCKHome_importDeleteWithObjectID_modelID_additionalUpdates_context_
   }
 }
 
-+ (BOOL)importUpdateWithObjectID:(id)a3 updatedProperties:(id)a4 additionalUpdates:(id)a5 context:(id)a6
++ (BOOL)importUpdateWithObjectID:(id)d updatedProperties:(id)properties additionalUpdates:(id)updates context:(id)context
 {
   v13 = 0;
-  v8 = a6;
-  v9 = a4;
-  v10 = [(MKFCKModel *)MKFCKHome modelWithObjectID:a3 context:v8 error:&v13];
-  v11 = [(MKFCKHome *)v10 _importWithContext:v8 updatedProperties:v9];
+  contextCopy = context;
+  propertiesCopy = properties;
+  v10 = [(MKFCKModel *)MKFCKHome modelWithObjectID:d context:contextCopy error:&v13];
+  v11 = [(MKFCKHome *)v10 _importWithContext:contextCopy updatedProperties:propertiesCopy];
 
   return v11;
 }
 
-- (uint64_t)_importWithContext:(void *)a3 updatedProperties:
+- (uint64_t)_importWithContext:(void *)context updatedProperties:
 {
   v48 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (!a1)
+  contextCopy = context;
+  if (!self)
   {
     goto LABEL_27;
   }
 
-  if (![a1 isDeletedLocallyWithContext:v5])
+  if (![self isDeletedLocallyWithContext:v5])
   {
-    v11 = [a1 fetchLocalModelWithContext:v5];
+    v11 = [self fetchLocalModelWithContext:v5];
     if (v11)
     {
       v12 = v11;
-      if (([(MKFCKHome *)a1 _importIntoLocalModel:v11 updatedProperties:v6 context:v5]& 1) != 0)
+      if (([(MKFCKHome *)self _importIntoLocalModel:v11 updatedProperties:contextCopy context:v5]& 1) != 0)
       {
-        v13 = [v12 hasPersistentChangedValues];
+        hasPersistentChangedValues = [v12 hasPersistentChangedValues];
         v14 = objc_autoreleasePoolPush();
-        v15 = a1;
+        selfCopy = self;
         v16 = HMFGetOSLogHandle();
         v17 = v16;
-        if (!v13)
+        if (!hasPersistentChangedValues)
         {
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
           {
@@ -2529,9 +2529,9 @@ void __72__MKFCKHome_importDeleteWithObjectID_modelID_additionalUpdates_context_
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           v18 = HMFGetLogIdentifier();
-          v41 = [v12 changedValues];
-          v19 = [v41 allKeys];
-          v20 = [v19 sortedArrayUsingSelector:sel_compare_];
+          changedValues = [v12 changedValues];
+          allKeys = [changedValues allKeys];
+          v20 = [allKeys sortedArrayUsingSelector:sel_compare_];
           *buf = 138543874;
           v43 = v18;
           v44 = 2112;
@@ -2543,7 +2543,7 @@ void __72__MKFCKHome_importDeleteWithObjectID_modelID_additionalUpdates_context_
 
         objc_autoreleasePoolPop(v14);
         v21 = objc_autoreleasePoolPush();
-        v22 = v15;
+        v22 = selfCopy;
         v23 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
         {
@@ -2565,7 +2565,7 @@ void __72__MKFCKHome_importDeleteWithObjectID_modelID_additionalUpdates_context_
 LABEL_25:
 
           objc_autoreleasePoolPop(v14);
-          a1 = 1;
+          self = 1;
           goto LABEL_26;
         }
 
@@ -2584,12 +2584,12 @@ LABEL_21:
 
     else
     {
-      v12 = [a1 createLocalModelWithContext:v5];
+      v12 = [self createLocalModelWithContext:v5];
       [v12 setOwned:MEMORY[0x277CBEC38]];
-      if (([(MKFCKHome *)a1 _importIntoLocalModel:v12 updatedProperties:v6 context:v5]& 1) != 0)
+      if (([(MKFCKHome *)self _importIntoLocalModel:v12 updatedProperties:contextCopy context:v5]& 1) != 0)
       {
         v27 = objc_autoreleasePoolPush();
-        v28 = a1;
+        selfCopy2 = self;
         v29 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
         {
@@ -2603,7 +2603,7 @@ LABEL_21:
 
         objc_autoreleasePoolPop(v27);
         v31 = objc_autoreleasePoolPush();
-        v32 = v28;
+        v32 = selfCopy2;
         v33 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
         {
@@ -2629,14 +2629,14 @@ LABEL_21:
       }
     }
 
-    a1 = 0;
+    self = 0;
 LABEL_26:
 
     goto LABEL_27;
   }
 
   v7 = objc_autoreleasePoolPush();
-  v8 = a1;
+  selfCopy3 = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -2644,26 +2644,26 @@ LABEL_26:
     *buf = 138543618;
     v43 = v10;
     v44 = 2112;
-    v45 = v8;
+    v45 = selfCopy3;
     _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@Skip import processing since home model is already deleted locally: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v7);
-  a1 = 1;
+  self = 1;
 LABEL_27:
 
   v39 = *MEMORY[0x277D85DE8];
-  return a1;
+  return self;
 }
 
-- (uint64_t)_importIntoLocalModel:(void *)a3 updatedProperties:(void *)a4 context:
+- (uint64_t)_importIntoLocalModel:(void *)model updatedProperties:(void *)properties context:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if ([a1 copyPropertiesIntoLocalModel:v7 context:v9] && objc_msgSend(a1, "_importResidentsIntoLocalModel:context:", v7, v9) && objc_msgSend(a1, "_importRoomsIntoLocalModel:context:", v7, v9) && objc_msgSend(a1, "_importZonesIntoLocalModel:context:", v7, v9) && objc_msgSend(a1, "_importAccessoriesIntoLocalModel:context:", v7, v9) && objc_msgSend(a1, "_importApplicationDataIntoLocalModel:context:", v7, v9) && objc_msgSend(a1, "_importMatterKeyValueStoreIntoLocalModel:context:", v7, v9) && objc_msgSend(a1, "_importUsersIntoLocalModel:context:", v7, v9) && objc_msgSend(a1, "_importGuestsIntoLocalModel:context:", v7, v9) && objc_msgSend(a1, "_importScenesIntoLocalModel:context:", v7, v9) && objc_msgSend(a1, "_importSettingsIntoLocalModel:context:", v7, v9) && objc_msgSend(a1, "_importServiceGroupsIntoLocalModel:context:", v7, v9) && objc_msgSend(a1, "_importTriggersIntoLocalModel:context:", v7, v9) && objc_msgSend(a1, "_importPersonsIntoLocalModel:context:", v7, v9) && objc_msgSend(a1, "_importInvitationOutgoingIntoLocalModel:context:", v7, v9) && objc_msgSend(a1, "_importNetworkProtectionGroupsIntoLocalModel:context:", v7, v9) && objc_msgSend(a1, "_importPinCodesIntoLocalModel:context:", v7, v9))
+  modelCopy = model;
+  propertiesCopy = properties;
+  if ([self copyPropertiesIntoLocalModel:v7 context:propertiesCopy] && objc_msgSend(self, "_importResidentsIntoLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_importRoomsIntoLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_importZonesIntoLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_importAccessoriesIntoLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_importApplicationDataIntoLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_importMatterKeyValueStoreIntoLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_importUsersIntoLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_importGuestsIntoLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_importScenesIntoLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_importSettingsIntoLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_importServiceGroupsIntoLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_importTriggersIntoLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_importPersonsIntoLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_importInvitationOutgoingIntoLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_importNetworkProtectionGroupsIntoLocalModel:context:", v7, propertiesCopy) && objc_msgSend(self, "_importPinCodesIntoLocalModel:context:", v7, propertiesCopy))
   {
-    v10 = [a1 _importHomeManagerWithContext:v9];
+    v10 = [self _importHomeManagerWithContext:propertiesCopy];
   }
 
   else
@@ -2674,25 +2674,25 @@ LABEL_27:
   return v10;
 }
 
-+ (BOOL)importInsertWithObjectID:(id)a3 additionalUpdates:(id)a4 context:(id)a5
++ (BOOL)importInsertWithObjectID:(id)d additionalUpdates:(id)updates context:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  updatesCopy = updates;
+  contextCopy = context;
   v24 = 0;
-  v11 = [(MKFCKModel *)MKFCKHome modelWithObjectID:v8 context:v10 error:&v24];
+  v11 = [(MKFCKModel *)MKFCKHome modelWithObjectID:dCopy context:contextCopy error:&v24];
   v12 = v24;
   if (!v11 || ([v11 owner], (v13 = objc_claimAutoreleasedReturnValue()) != 0) && (v14 = v13, objc_msgSend(v11, "defaultRoom"), v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15))
   {
     v16 = [MEMORY[0x277CBEB98] set];
-    v17 = [(MKFCKHome *)v11 _importWithContext:v10 updatedProperties:v16];
+    v17 = [(MKFCKHome *)v11 _importWithContext:contextCopy updatedProperties:v16];
   }
 
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = a1;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -2712,25 +2712,25 @@ LABEL_27:
   return v17;
 }
 
-+ (id)createWithModelID:(id)a3 persistentStore:(id)a4 context:(id)a5
++ (id)createWithModelID:(id)d persistentStore:(id)store context:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithContext:v8];
-  [v8 assignObject:v11 toPersistentStore:v9];
+  contextCopy = context;
+  storeCopy = store;
+  dCopy = d;
+  v11 = [[self alloc] initWithContext:contextCopy];
+  [contextCopy assignObject:v11 toPersistentStore:storeCopy];
 
-  [v11 setModelID:v10];
+  [v11 setModelID:dCopy];
 
   return v11;
 }
 
-- (BOOL)validateOwner:(id *)a3 error:(id *)a4
+- (BOOL)validateOwner:(id *)owner error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
   if (![(MKFCKModel *)self shouldSkipValidationDuringImport])
   {
-    v8 = *a3;
+    v8 = *owner;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2746,8 +2746,8 @@ LABEL_27:
 
     if (v10)
     {
-      v11 = [(MKFCKHome *)self users];
-      v12 = [v11 containsObject:v10];
+      users = [(MKFCKHome *)self users];
+      v12 = [users containsObject:v10];
 
       if (v12)
       {
@@ -2758,12 +2758,12 @@ LABEL_15:
       }
 
       v13 = objc_autoreleasePoolPush();
-      v21 = self;
+      selfCopy = self;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         v16 = HMFGetLogIdentifier();
-        v22 = *a3;
+        v22 = *owner;
         v25 = 138543618;
         v26 = v16;
         v27 = 2112;
@@ -2778,12 +2778,12 @@ LABEL_15:
     else
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = self;
+      selfCopy2 = self;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         v16 = HMFGetLogIdentifier();
-        v17 = *a3;
+        v17 = *owner;
         v25 = 138543874;
         v26 = v16;
         v27 = 2114;
@@ -2799,8 +2799,8 @@ LABEL_13:
     }
 
     objc_autoreleasePoolPop(v13);
-    [objc_opt_class() hmd_errorForInvalidValue:*a3 key:@"owner"];
-    *a4 = v7 = 0;
+    [objc_opt_class() hmd_errorForInvalidValue:*owner key:@"owner"];
+    *error = v7 = 0;
     goto LABEL_15;
   }
 
@@ -2810,14 +2810,14 @@ LABEL_16:
   return v7;
 }
 
-- (BOOL)_exportNetworkProtectionGroupsFromLocalModel:(id)a3 context:(id)a4
+- (BOOL)_exportNetworkProtectionGroupsFromLocalModel:(id)model context:(id)context
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [v7 hmd_assertIsExecuting];
-  v8 = [v6 networkProtectionGroups];
-  v9 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v8, "count")}];
+  modelCopy = model;
+  contextCopy = context;
+  [contextCopy hmd_assertIsExecuting];
+  networkProtectionGroups = [modelCopy networkProtectionGroups];
+  v9 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(networkProtectionGroups, "count")}];
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
@@ -2826,20 +2826,20 @@ LABEL_16:
   v24 = 3221225472;
   v25 = __91__MKFCKHome_NetworkProtectionGroups___exportNetworkProtectionGroupsFromLocalModel_context___block_invoke;
   v26 = &unk_278671EE8;
-  v27 = self;
-  v10 = v7;
+  selfCopy = self;
+  v10 = contextCopy;
   v28 = v10;
   v30 = &v31;
   v11 = v9;
   v29 = v11;
-  [v8 hmf_enumerateWithAutoreleasePoolUsingBlock:&v23];
+  [networkProtectionGroups hmf_enumerateWithAutoreleasePoolUsingBlock:&v23];
   if (v32[3])
   {
-    v12 = [v11 allKeys];
-    v13 = [v12 sortedArrayUsingSelector:sel_compare_];
+    allKeys = [v11 allKeys];
+    v13 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
     v14 = [v11 objectsForKeys:v13 notFoundMarker:MEMORY[0x277CBEC10]];
-    v15 = [(MKFCKHome *)self networkProtectionGroups];
+    networkProtectionGroups2 = [(MKFCKHome *)self networkProtectionGroups];
     v16 = HMFEqualObjects();
 
     if ((v16 & 1) == 0)
@@ -2851,7 +2851,7 @@ LABEL_16:
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy2 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
@@ -2901,14 +2901,14 @@ void __91__MKFCKHome_NetworkProtectionGroups___exportNetworkProtectionGroupsFrom
 LABEL_6:
 }
 
-- (BOOL)_importNetworkProtectionGroupsIntoLocalModel:(id)a3 context:(id)a4
+- (BOOL)_importNetworkProtectionGroupsIntoLocalModel:(id)model context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 hmd_assertIsExecuting];
-  v8 = [v6 networkProtectionGroups];
-  v9 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v8, "count")}];
-  v10 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v8, "count")}];
+  modelCopy = model;
+  contextCopy = context;
+  [contextCopy hmd_assertIsExecuting];
+  networkProtectionGroups = [modelCopy networkProtectionGroups];
+  v9 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(networkProtectionGroups, "count")}];
+  v10 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(networkProtectionGroups, "count")}];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __91__MKFCKHome_NetworkProtectionGroups___importNetworkProtectionGroupsIntoLocalModel_context___block_invoke;
@@ -2917,23 +2917,23 @@ LABEL_6:
   v33 = v11;
   v12 = v10;
   v34 = v12;
-  [v8 hmf_enumerateWithAutoreleasePoolUsingBlock:v32];
+  [networkProtectionGroups hmf_enumerateWithAutoreleasePoolUsingBlock:v32];
 
-  v13 = [(MKFCKHome *)self networkProtectionGroups];
+  networkProtectionGroups2 = [(MKFCKHome *)self networkProtectionGroups];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __91__MKFCKHome_NetworkProtectionGroups___importNetworkProtectionGroupsIntoLocalModel_context___block_invoke_2;
   v27[3] = &unk_278671EC0;
   v27[4] = self;
-  v28 = v6;
+  v28 = modelCopy;
   v14 = v11;
   v29 = v14;
-  v15 = v7;
+  v15 = contextCopy;
   v30 = v15;
   v31 = v12;
   v16 = v12;
-  v17 = v6;
-  [v13 hmf_enumerateWithAutoreleasePoolUsingBlock:v27];
+  v17 = modelCopy;
+  [networkProtectionGroups2 hmf_enumerateWithAutoreleasePoolUsingBlock:v27];
 
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
@@ -2945,8 +2945,8 @@ LABEL_6:
   v19 = v14;
   [v16 hmf_enumerateWithAutoreleasePoolUsingBlock:v24];
   v20 = MEMORY[0x277CBEB98];
-  v21 = [v19 allValues];
-  v22 = [v20 setWithArray:v21];
+  allValues = [v19 allValues];
+  v22 = [v20 setWithArray:allValues];
   [v17 setNetworkProtectionGroups_:v22];
 
   return 1;
@@ -3156,37 +3156,37 @@ void __91__MKFCKHome_NetworkProtectionGroups___importNetworkProtectionGroupsInto
   }
 }
 
-+ (id)_encodeNetworkProtectionGroupModelID:(id)a3 manufacturer:(id)a4 category:(id)a5 targetProtectionMode:(id)a6
++ (id)_encodeNetworkProtectionGroupModelID:(id)d manufacturer:(id)manufacturer category:(id)category targetProtectionMode:(id)mode
 {
   v26 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v11 length])
+  dCopy = d;
+  manufacturerCopy = manufacturer;
+  categoryCopy = category;
+  modeCopy = mode;
+  if ([manufacturerCopy length])
   {
-    [v13 integerValue];
+    [modeCopy integerValue];
     v22[0] = @"i";
     v22[1] = @"m";
-    v23[0] = v10;
-    v23[1] = v11;
+    v23[0] = dCopy;
+    v23[1] = manufacturerCopy;
     v22[2] = @"c";
     v22[3] = @"p";
     v14 = &unk_283E71D20;
-    if (v12)
+    if (categoryCopy)
     {
-      v14 = v12;
+      v14 = categoryCopy;
     }
 
     v23[2] = v14;
-    v23[3] = v13;
+    v23[3] = modeCopy;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:4];
   }
 
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = a1;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -3205,23 +3205,23 @@ void __91__MKFCKHome_NetworkProtectionGroups___importNetworkProtectionGroupsInto
   return v15;
 }
 
-- (BOOL)_exportSettingsFromLocalModel:(id)a3 context:(id)a4
+- (BOOL)_exportSettingsFromLocalModel:(id)model context:(id)context
 {
   v89 = *MEMORY[0x277D85DE8];
   v83 = 0;
   v84 = 0;
   v81 = 0;
   v82 = 0;
-  v6 = a4;
-  v7 = a3;
-  [(MKFCKHome *)self _settingModelsForHome:v7 media:&v84 networkRouter:&v83 personManager:&v82 softwareUpdate:&v81];
+  contextCopy = context;
+  modelCopy = model;
+  [(MKFCKHome *)self _settingModelsForHome:modelCopy media:&v84 networkRouter:&v83 personManager:&v82 softwareUpdate:&v81];
   v8 = v84;
   v9 = v83;
   v78 = v82;
   v80 = v81;
-  v10 = v7;
+  v10 = modelCopy;
   v11 = v8;
-  v12 = v6;
+  v12 = contextCopy;
   v13 = v12;
   v79 = v11;
   v77 = v10;
@@ -3236,70 +3236,70 @@ void __91__MKFCKHome_NetworkProtectionGroups___importNetworkProtectionGroupsInto
 
   if (v11)
   {
-    v14 = [v11 mediaPassword];
-    v15 = [v11 mediaPeerToPeerEnabled];
-    v16 = [v15 BOOLValue];
+    mediaPassword = [v11 mediaPassword];
+    mediaPeerToPeerEnabled = [v11 mediaPeerToPeerEnabled];
+    bOOLValue = [mediaPeerToPeerEnabled BOOLValue];
 
-    v17 = [v11 minimumMediaUserPrivilege];
-    v18 = [v17 unsignedIntegerValue];
+    minimumMediaUserPrivilege = [v11 minimumMediaUserPrivilege];
+    unsignedIntegerValue = [minimumMediaUserPrivilege unsignedIntegerValue];
   }
 
   else
   {
-    v19 = [(MKFCKHome *)self entity];
-    v17 = [v19 attributesByName];
+    entity = [(MKFCKHome *)self entity];
+    minimumMediaUserPrivilege = [entity attributesByName];
 
-    v20 = [v17 objectForKeyedSubscript:@"mediaPeerToPeerEnabled"];
-    v21 = [v20 defaultValue];
-    v16 = [v21 BOOLValue];
+    v20 = [minimumMediaUserPrivilege objectForKeyedSubscript:@"mediaPeerToPeerEnabled"];
+    defaultValue = [v20 defaultValue];
+    bOOLValue = [defaultValue BOOLValue];
 
-    v22 = [v17 objectForKeyedSubscript:@"mediaMinimumUserPrivilege"];
-    v23 = [v22 defaultValue];
-    v18 = [v23 unsignedIntegerValue];
+    v22 = [minimumMediaUserPrivilege objectForKeyedSubscript:@"mediaMinimumUserPrivilege"];
+    defaultValue2 = [v22 defaultValue];
+    unsignedIntegerValue = [defaultValue2 unsignedIntegerValue];
 
-    v14 = 0;
+    mediaPassword = 0;
   }
 
-  v24 = [(MKFCKHome *)self mediaPassword];
+  mediaPassword2 = [(MKFCKHome *)self mediaPassword];
   v25 = HMFEqualObjects();
 
   if ((v25 & 1) == 0)
   {
-    [(MKFCKHome *)self setMediaPassword:v14];
+    [(MKFCKHome *)self setMediaPassword:mediaPassword];
   }
 
-  if (v16 != [(MKFCKHome *)self mediaPeerToPeerEnabled])
+  if (bOOLValue != [(MKFCKHome *)self mediaPeerToPeerEnabled])
   {
-    [(MKFCKHome *)self setMediaPeerToPeerEnabled:v16];
+    [(MKFCKHome *)self setMediaPeerToPeerEnabled:bOOLValue];
   }
 
-  if ([(MKFCKHome *)self mediaMinimumUserPrivilege]!= v18)
+  if ([(MKFCKHome *)self mediaMinimumUserPrivilege]!= unsignedIntegerValue)
   {
-    [(MKFCKHome *)self setMediaMinimumUserPrivilege:v18];
+    [(MKFCKHome *)self setMediaMinimumUserPrivilege:unsignedIntegerValue];
   }
 
   v26 = v10;
-  v27 = v9;
+  minHomeKitVersionForAccessoryNetworkProtectionChange = v9;
   v28 = v13;
-  if (!v27)
+  if (!minHomeKitVersionForAccessoryNetworkProtectionChange)
   {
-    v36 = 0;
+    minimumNetworkRouterSupportHomeKitVersion = 0;
     v31 = 0;
     goto LABEL_20;
   }
 
   v29 = v28;
-  v30 = [v27 networkAccessory];
-  if (!v30)
+  networkAccessory = [minHomeKitVersionForAccessoryNetworkProtectionChange networkAccessory];
+  if (!networkAccessory)
   {
     goto LABEL_17;
   }
 
-  v31 = [MKFCKHAPAccessory fetchWithLocalModel:v30 context:v29];
+  v31 = [MKFCKHAPAccessory fetchWithLocalModel:networkAccessory context:v29];
   if (!v31)
   {
     v32 = objc_autoreleasePoolPush();
-    v33 = self;
+    selfCopy = self;
     v34 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
@@ -3308,7 +3308,7 @@ void __91__MKFCKHome_NetworkProtectionGroups___importNetworkProtectionGroupsInto
       *buf = 138543618;
       v86 = v35;
       v87 = 2112;
-      v88 = v30;
+      v88 = networkAccessory;
       _os_log_impl(&dword_229538000, v34, OS_LOG_TYPE_ERROR, "%{public}@Failed to find cloud network router matching local: %@", buf, 0x16u);
 
       v32 = v76;
@@ -3319,12 +3319,12 @@ LABEL_17:
     v31 = 0;
   }
 
-  v36 = [v27 minimumNetworkRouterSupportHomeKitVersion];
-  v27 = [v27 minHomeKitVersionForAccessoryNetworkProtectionChange];
+  minimumNetworkRouterSupportHomeKitVersion = [minHomeKitVersionForAccessoryNetworkProtectionChange minimumNetworkRouterSupportHomeKitVersion];
+  minHomeKitVersionForAccessoryNetworkProtectionChange = [minHomeKitVersionForAccessoryNetworkProtectionChange minHomeKitVersionForAccessoryNetworkProtectionChange];
 
 LABEL_20:
   v37 = v9;
-  v38 = [(MKFCKHome *)self activeNetworkRouter];
+  activeNetworkRouter = [(MKFCKHome *)self activeNetworkRouter];
   v39 = HMFEqualObjects();
 
   if ((v39 & 1) == 0)
@@ -3332,23 +3332,23 @@ LABEL_20:
     [(MKFCKHome *)self setActiveNetworkRouter:v31];
   }
 
-  v40 = [(MKFCKHome *)self minimumHomeKitVersionForNetworkRouterSupport];
-  v41 = [v40 versionString];
+  minimumHomeKitVersionForNetworkRouterSupport = [(MKFCKHome *)self minimumHomeKitVersionForNetworkRouterSupport];
+  versionString = [minimumHomeKitVersionForNetworkRouterSupport versionString];
   v42 = HMFEqualObjects();
 
   if ((v42 & 1) == 0)
   {
-    v43 = [[HMDHomeKitVersion alloc] initWithString:v36];
+    v43 = [[HMDHomeKitVersion alloc] initWithString:minimumNetworkRouterSupportHomeKitVersion];
     [(MKFCKHome *)self setMinimumHomeKitVersionForNetworkRouterSupport:v43];
   }
 
-  v44 = [(MKFCKHome *)self minimumHomeKitVersionForAccessoryNetworkProtectionChanges];
-  v45 = [v44 versionString];
+  minimumHomeKitVersionForAccessoryNetworkProtectionChanges = [(MKFCKHome *)self minimumHomeKitVersionForAccessoryNetworkProtectionChanges];
+  versionString2 = [minimumHomeKitVersionForAccessoryNetworkProtectionChanges versionString];
   v46 = HMFEqualObjects();
 
   if ((v46 & 1) == 0)
   {
-    v47 = [[HMDHomeKitVersion alloc] initWithString:v27];
+    v47 = [[HMDHomeKitVersion alloc] initWithString:minHomeKitVersionForAccessoryNetworkProtectionChange];
     [(MKFCKHome *)self setMinimumHomeKitVersionForAccessoryNetworkProtectionChanges:v47];
   }
 
@@ -3362,14 +3362,14 @@ LABEL_27:
   v52 = v51;
   if (self)
   {
-    v53 = [(MKFCKHome *)self personDataZoneUUID];
-    v54 = [v50 zoneUUID];
+    personDataZoneUUID = [(MKFCKHome *)self personDataZoneUUID];
+    zoneUUID = [v50 zoneUUID];
     v55 = HMFEqualObjects();
 
     if ((v55 & 1) == 0)
     {
-      v56 = [v50 zoneUUID];
-      [(MKFCKHome *)self setPersonDataZoneUUID:v56];
+      zoneUUID2 = [v50 zoneUUID];
+      [(MKFCKHome *)self setPersonDataZoneUUID:zoneUUID2];
     }
 
     v57 = v49;
@@ -3378,34 +3378,34 @@ LABEL_27:
     v60 = v52;
     if (v59)
     {
-      v61 = [v59 automaticSoftwareUpdateEnabled];
-      v62 = [v61 BOOLValue];
+      automaticSoftwareUpdateEnabled = [v59 automaticSoftwareUpdateEnabled];
+      bOOLValue2 = [automaticSoftwareUpdateEnabled BOOLValue];
 
-      v63 = [v59 automaticThirdPartyAccessorySoftwareUpdateEnabled];
-      v64 = [v63 BOOLValue];
+      automaticThirdPartyAccessorySoftwareUpdateEnabled = [v59 automaticThirdPartyAccessorySoftwareUpdateEnabled];
+      bOOLValue3 = [automaticThirdPartyAccessorySoftwareUpdateEnabled BOOLValue];
     }
 
     else
     {
-      v65 = [(MKFCKHome *)self homeModelID];
-      v63 = [HMDHomeSettingsModel defaultModelForHomeUUID:v65];
+      homeModelID = [(MKFCKHome *)self homeModelID];
+      automaticThirdPartyAccessorySoftwareUpdateEnabled = [HMDHomeSettingsModel defaultModelForHomeUUID:homeModelID];
 
       v58 = v80;
-      v66 = [v63 automaticSoftwareUpdateEnabled];
-      v62 = [v66 BOOLValue];
+      automaticSoftwareUpdateEnabled2 = [automaticThirdPartyAccessorySoftwareUpdateEnabled automaticSoftwareUpdateEnabled];
+      bOOLValue2 = [automaticSoftwareUpdateEnabled2 BOOLValue];
 
-      v67 = [v63 automaticThirdPartyAccessorySoftwareUpdateEnabled];
-      v64 = [v67 BOOLValue];
+      v63AutomaticThirdPartyAccessorySoftwareUpdateEnabled = [automaticThirdPartyAccessorySoftwareUpdateEnabled automaticThirdPartyAccessorySoftwareUpdateEnabled];
+      bOOLValue3 = [v63AutomaticThirdPartyAccessorySoftwareUpdateEnabled BOOLValue];
     }
 
-    if (v62 != [(MKFCKHome *)self automaticSoftwareUpdateEnabled])
+    if (bOOLValue2 != [(MKFCKHome *)self automaticSoftwareUpdateEnabled])
     {
-      [(MKFCKHome *)self setAutomaticSoftwareUpdateEnabled:v62];
+      [(MKFCKHome *)self setAutomaticSoftwareUpdateEnabled:bOOLValue2];
     }
 
-    if (v64 != [(MKFCKHome *)self automaticThirdPartyAccessorySoftwareUpdateEnabled])
+    if (bOOLValue3 != [(MKFCKHome *)self automaticThirdPartyAccessorySoftwareUpdateEnabled])
     {
-      [(MKFCKHome *)self setAutomaticThirdPartyAccessorySoftwareUpdateEnabled:v64];
+      [(MKFCKHome *)self setAutomaticThirdPartyAccessorySoftwareUpdateEnabled:bOOLValue3];
     }
   }
 
@@ -3422,11 +3422,11 @@ LABEL_27:
   return 1;
 }
 
-- (void)_settingModelsForHome:(void *)a3 media:(void *)a4 networkRouter:(void *)a5 personManager:(void *)a6 softwareUpdate:
+- (void)_settingModelsForHome:(void *)home media:(void *)media networkRouter:(void *)router personManager:(void *)manager softwareUpdate:
 {
   v10 = a2;
   v11 = v10;
-  if (a1)
+  if (self)
   {
     v38 = 0;
     v39 = &v38;
@@ -3452,7 +3452,7 @@ LABEL_27:
     v23 = __Block_byref_object_copy__80429;
     v24 = __Block_byref_object_dispose__80430;
     v25 = 0;
-    v12 = [v10 settings];
+    settings = [v10 settings];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __94__MKFCKHome_Settings___settingModelsForHome_media_networkRouter_personManager_softwareUpdate___block_invoke;
@@ -3461,14 +3461,14 @@ LABEL_27:
     v18 = &v20;
     v19 = &v26;
     v16 = &v38;
-    v14[4] = a1;
+    v14[4] = self;
     v15 = v11;
-    [v12 hmf_enumerateWithAutoreleasePoolUsingBlock:v14];
+    [settings hmf_enumerateWithAutoreleasePoolUsingBlock:v14];
 
-    *a3 = v39[5];
-    *a4 = v33[5];
-    *a5 = v21[5];
-    *a6 = v27[5];
+    *home = v39[5];
+    *media = v33[5];
+    *router = v21[5];
+    *manager = v27[5];
 
     _Block_object_dispose(&v20, 8);
     _Block_object_dispose(&v26, 8);
@@ -3543,23 +3543,23 @@ LABEL_10:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_importSettingsIntoLocalModel:(id)a3 context:(id)a4
+- (BOOL)_importSettingsIntoLocalModel:(id)model context:(id)context
 {
   v99 = *MEMORY[0x277D85DE8];
   v93 = 0;
   v94 = 0;
   v91 = 0;
   v92 = 0;
-  v6 = a4;
-  v7 = a3;
-  [(MKFCKHome *)self _settingModelsForHome:v7 media:&v94 networkRouter:&v93 personManager:&v92 softwareUpdate:&v91];
+  contextCopy = context;
+  modelCopy = model;
+  [(MKFCKHome *)self _settingModelsForHome:modelCopy media:&v94 networkRouter:&v93 personManager:&v92 softwareUpdate:&v91];
   v8 = v94;
   v9 = v93;
   v87 = v92;
   v88 = v91;
-  v10 = v7;
+  v10 = modelCopy;
   v11 = v8;
-  v12 = v6;
+  v12 = contextCopy;
   v13 = v12;
   v89 = v11;
   v90 = v9;
@@ -3576,28 +3576,28 @@ LABEL_10:
   if (!v11)
   {
     v14 = [[_MKFHomeMediaSetting alloc] initWithContext:v12, v87];
-    v15 = [v10 modelID];
-    v16 = [HMDHomeMediaSettingsModel modelIDForHomeUUID:v15];
+    modelID = [v10 modelID];
+    v16 = [HMDHomeMediaSettingsModel modelIDForHomeUUID:modelID];
     [(_MKFHomeMediaSetting *)v14 setModelID:v16];
 
-    v17 = [(MKFCKHome *)self writerTimestamp];
-    [(_MKFHomeMediaSetting *)v14 setWriterTimestamp:v17];
+    writerTimestamp = [(MKFCKHome *)self writerTimestamp];
+    [(_MKFHomeMediaSetting *)v14 setWriterTimestamp:writerTimestamp];
 
     [(_MKFHomeMediaSetting *)v14 setHome:v10];
   }
 
-  v18 = [(_MKFHomeMediaSetting *)v14 mediaPassword];
-  v19 = [(MKFCKHome *)self mediaPassword];
+  mediaPassword = [(_MKFHomeMediaSetting *)v14 mediaPassword];
+  mediaPassword2 = [(MKFCKHome *)self mediaPassword];
   v20 = HMFEqualObjects();
 
   if ((v20 & 1) == 0)
   {
-    v21 = [(MKFCKHome *)self mediaPassword];
-    [(_MKFHomeMediaSetting *)v14 setMediaPassword:v21];
+    mediaPassword3 = [(MKFCKHome *)self mediaPassword];
+    [(_MKFHomeMediaSetting *)v14 setMediaPassword:mediaPassword3];
   }
 
   v22 = [MEMORY[0x277CCABB0] numberWithBool:{-[MKFCKHome mediaPeerToPeerEnabled](self, "mediaPeerToPeerEnabled")}];
-  v23 = [(_MKFHomeMediaSetting *)v14 mediaPeerToPeerEnabled];
+  mediaPeerToPeerEnabled = [(_MKFHomeMediaSetting *)v14 mediaPeerToPeerEnabled];
   v24 = HMFEqualObjects();
 
   if ((v24 & 1) == 0)
@@ -3606,7 +3606,7 @@ LABEL_10:
   }
 
   v25 = [MEMORY[0x277CCABB0] numberWithLongLong:{-[MKFCKHome mediaMinimumUserPrivilege](self, "mediaMinimumUserPrivilege")}];
-  v26 = [(_MKFHomeMediaSetting *)v14 minimumMediaUserPrivilege];
+  minimumMediaUserPrivilege = [(_MKFHomeMediaSetting *)v14 minimumMediaUserPrivilege];
   v27 = HMFEqualObjects();
 
   if ((v27 & 1) == 0)
@@ -3620,30 +3620,30 @@ LABEL_10:
   if (!v29)
   {
     v29 = [[_MKFHomeNetworkRouterSetting alloc] initWithContext:v30];
-    v31 = [v28 modelID];
-    v32 = [HMDHomeNetworkRouterSettingsModel modelIDForHomeUUID:v31];
+    modelID2 = [v28 modelID];
+    v32 = [HMDHomeNetworkRouterSettingsModel modelIDForHomeUUID:modelID2];
     [(_MKFHomeNetworkRouterSetting *)v29 setModelID:v32];
 
-    v33 = [(MKFCKHome *)self writerTimestamp];
-    [(_MKFHomeNetworkRouterSetting *)v29 setWriterTimestamp:v33];
+    writerTimestamp2 = [(MKFCKHome *)self writerTimestamp];
+    [(_MKFHomeNetworkRouterSetting *)v29 setWriterTimestamp:writerTimestamp2];
 
     [(_MKFHomeNetworkRouterSetting *)v29 setHome:v28];
   }
 
-  v34 = [(MKFCKHome *)self activeNetworkRouter];
-  v35 = [(_MKFHomeNetworkRouterSetting *)v29 networkAccessory];
-  v36 = [v35 modelID];
-  v37 = [v34 modelID];
+  activeNetworkRouter = [(MKFCKHome *)self activeNetworkRouter];
+  networkAccessory = [(_MKFHomeNetworkRouterSetting *)v29 networkAccessory];
+  modelID3 = [networkAccessory modelID];
+  modelID4 = [activeNetworkRouter modelID];
   v38 = HMFEqualObjects();
 
   if ((v38 & 1) == 0)
   {
-    if (v34)
+    if (activeNetworkRouter)
     {
-      v39 = [v34 fetchLocalModelWithContext:v30];
+      v39 = [activeNetworkRouter fetchLocalModelWithContext:v30];
 
       v40 = objc_autoreleasePoolPush();
-      v41 = self;
+      selfCopy = self;
       v42 = HMFGetOSLogHandle();
       v43 = v42;
       if (v39)
@@ -3668,7 +3668,7 @@ LABEL_10:
         *buf = 138543618;
         v96 = v49;
         v97 = 2112;
-        v98 = v34;
+        v98 = activeNetworkRouter;
         _os_log_impl(&dword_229538000, v43, OS_LOG_TYPE_ERROR, "%{public}@Failed to find local network router matching cloud: %@", buf, 0x16u);
       }
 
@@ -3678,7 +3678,7 @@ LABEL_10:
     else
     {
       v45 = objc_autoreleasePoolPush();
-      v46 = self;
+      selfCopy2 = self;
       v47 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
       {
@@ -3694,29 +3694,29 @@ LABEL_10:
     v39 = 0;
 LABEL_25:
     [(_MKFHomeNetworkRouterSetting *)v29 setNetworkAccessory:v39];
-    v35 = v39;
+    networkAccessory = v39;
   }
 
-  v50 = [(MKFCKHome *)self minimumHomeKitVersionForNetworkRouterSupport];
-  v51 = [v50 versionString];
+  minimumHomeKitVersionForNetworkRouterSupport = [(MKFCKHome *)self minimumHomeKitVersionForNetworkRouterSupport];
+  versionString = [minimumHomeKitVersionForNetworkRouterSupport versionString];
 
-  v52 = [(_MKFHomeNetworkRouterSetting *)v29 minimumNetworkRouterSupportHomeKitVersion];
+  minimumNetworkRouterSupportHomeKitVersion = [(_MKFHomeNetworkRouterSetting *)v29 minimumNetworkRouterSupportHomeKitVersion];
   v53 = HMFEqualObjects();
 
   if ((v53 & 1) == 0)
   {
-    [(_MKFHomeNetworkRouterSetting *)v29 setMinimumNetworkRouterSupportHomeKitVersion:v51];
+    [(_MKFHomeNetworkRouterSetting *)v29 setMinimumNetworkRouterSupportHomeKitVersion:versionString];
   }
 
-  v54 = [(MKFCKHome *)self minimumHomeKitVersionForAccessoryNetworkProtectionChanges];
-  v55 = [v54 versionString];
+  minimumHomeKitVersionForAccessoryNetworkProtectionChanges = [(MKFCKHome *)self minimumHomeKitVersionForAccessoryNetworkProtectionChanges];
+  versionString2 = [minimumHomeKitVersionForAccessoryNetworkProtectionChanges versionString];
 
-  v56 = [(_MKFHomeNetworkRouterSetting *)v29 minHomeKitVersionForAccessoryNetworkProtectionChange];
+  minHomeKitVersionForAccessoryNetworkProtectionChange = [(_MKFHomeNetworkRouterSetting *)v29 minHomeKitVersionForAccessoryNetworkProtectionChange];
   v57 = HMFEqualObjects();
 
   if ((v57 & 1) == 0)
   {
-    [(_MKFHomeNetworkRouterSetting *)v29 setMinHomeKitVersionForAccessoryNetworkProtectionChange:v55];
+    [(_MKFHomeNetworkRouterSetting *)v29 setMinHomeKitVersionForAccessoryNetworkProtectionChange:versionString2];
   }
 
 LABEL_31:
@@ -3730,23 +3730,23 @@ LABEL_31:
     if (!v59)
     {
       v62 = [[_MKFHomePersonManagerSetting alloc] initWithContext:v60];
-      v63 = [v58 modelID];
-      v64 = [HMDHomePersonManagerSettingsModel modelIDForHomeUUID:v63];
+      modelID5 = [v58 modelID];
+      v64 = [HMDHomePersonManagerSettingsModel modelIDForHomeUUID:modelID5];
       [(_MKFHomePersonManagerSetting *)v62 setModelID:v64];
 
-      v65 = [(MKFCKHome *)self writerTimestamp];
-      [(_MKFHomePersonManagerSetting *)v62 setWriterTimestamp:v65];
+      writerTimestamp3 = [(MKFCKHome *)self writerTimestamp];
+      [(_MKFHomePersonManagerSetting *)v62 setWriterTimestamp:writerTimestamp3];
 
       [(_MKFHomePersonManagerSetting *)v62 setHome:v58];
     }
 
-    v66 = [(MKFCKHome *)self personDataZoneUUID];
-    v67 = [(_MKFHomePersonManagerSetting *)v62 zoneUUID];
+    personDataZoneUUID = [(MKFCKHome *)self personDataZoneUUID];
+    zoneUUID = [(_MKFHomePersonManagerSetting *)v62 zoneUUID];
     v68 = HMFEqualObjects();
 
     if ((v68 & 1) == 0)
     {
-      [(_MKFHomePersonManagerSetting *)v62 setZoneUUID:v66];
+      [(_MKFHomePersonManagerSetting *)v62 setZoneUUID:personDataZoneUUID];
     }
 
     v69 = v58;
@@ -3755,18 +3755,18 @@ LABEL_31:
     if (!v70)
     {
       v70 = [[_MKFHomeSoftwareUpdateSetting alloc] initWithContext:v71];
-      v72 = [v69 modelID];
-      v73 = [HMDHomeSettingsModel modelIDForHomeUUID:v72];
+      modelID6 = [v69 modelID];
+      v73 = [HMDHomeSettingsModel modelIDForHomeUUID:modelID6];
       [(_MKFHomeSoftwareUpdateSetting *)v70 setModelID:v73];
 
-      v74 = [(MKFCKHome *)self writerTimestamp];
-      [(_MKFHomeSoftwareUpdateSetting *)v70 setWriterTimestamp:v74];
+      writerTimestamp4 = [(MKFCKHome *)self writerTimestamp];
+      [(_MKFHomeSoftwareUpdateSetting *)v70 setWriterTimestamp:writerTimestamp4];
 
       [(_MKFHomeSoftwareUpdateSetting *)v70 setHome:v69];
     }
 
     v75 = [MEMORY[0x277CCABB0] numberWithBool:{-[MKFCKHome automaticSoftwareUpdateEnabled](self, "automaticSoftwareUpdateEnabled")}];
-    v76 = [(_MKFHomeSoftwareUpdateSetting *)v70 automaticSoftwareUpdateEnabled];
+    automaticSoftwareUpdateEnabled = [(_MKFHomeSoftwareUpdateSetting *)v70 automaticSoftwareUpdateEnabled];
     v77 = HMFEqualObjects();
 
     if ((v77 & 1) == 0)
@@ -3775,7 +3775,7 @@ LABEL_31:
     }
 
     v78 = [MEMORY[0x277CCABB0] numberWithBool:{-[MKFCKHome automaticThirdPartyAccessorySoftwareUpdateEnabled](self, "automaticThirdPartyAccessorySoftwareUpdateEnabled")}];
-    v79 = [(_MKFHomeSoftwareUpdateSetting *)v70 automaticThirdPartyAccessorySoftwareUpdateEnabled];
+    automaticThirdPartyAccessorySoftwareUpdateEnabled = [(_MKFHomeSoftwareUpdateSetting *)v70 automaticThirdPartyAccessorySoftwareUpdateEnabled];
     v80 = HMFEqualObjects();
 
     if ((v80 & 1) == 0)
@@ -3796,22 +3796,22 @@ LABEL_31:
   return 1;
 }
 
-- (BOOL)_exportRoomsFromLocalModel:(id)a3 context:(id)a4
+- (BOOL)_exportRoomsFromLocalModel:(id)model context:(id)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MKFCKHome *)self _exportRelationshipsFromLocalHome:v6 localRelationshipName:@"rooms_" context:v7];
+  modelCopy = model;
+  contextCopy = context;
+  v8 = [(MKFCKHome *)self _exportRelationshipsFromLocalHome:modelCopy localRelationshipName:@"rooms_" context:contextCopy];
   if (v8)
   {
-    v9 = [v6 defaultRoom];
-    v10 = [(MKFCKHome *)self defaultRoom];
+    defaultRoom = [modelCopy defaultRoom];
+    defaultRoom2 = [(MKFCKHome *)self defaultRoom];
 
-    if (!v10)
+    if (!defaultRoom2)
     {
-      v11 = [(MKFCKModel *)MKFCKRoom fetchWithLocalModel:v9 context:v7];
+      v11 = [(MKFCKModel *)MKFCKRoom fetchWithLocalModel:defaultRoom context:contextCopy];
       v12 = objc_autoreleasePoolPush();
-      v13 = self;
+      selfCopy = self;
       v14 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
@@ -3824,7 +3824,7 @@ LABEL_31:
       }
 
       objc_autoreleasePoolPop(v12);
-      [(MKFCKHome *)v13 setDefaultRoom:v11];
+      [(MKFCKHome *)selfCopy setDefaultRoom:v11];
     }
   }
 
@@ -3832,25 +3832,25 @@ LABEL_31:
   return v8;
 }
 
-- (BOOL)_importRoomsIntoLocalModel:(id)a3 context:(id)a4
+- (BOOL)_importRoomsIntoLocalModel:(id)model context:(id)context
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([(MKFCKHome *)self _importRelationshipsIntoLocalModel:v6 localRelationshipName:@"rooms_" context:v7])
+  modelCopy = model;
+  contextCopy = context;
+  if ([(MKFCKHome *)self _importRelationshipsIntoLocalModel:modelCopy localRelationshipName:@"rooms_" context:contextCopy])
   {
-    v8 = [(MKFCKHome *)self defaultRoom];
-    v9 = v8;
-    v10 = v8 != 0;
-    if (v8)
+    defaultRoom = [(MKFCKHome *)self defaultRoom];
+    v9 = defaultRoom;
+    v10 = defaultRoom != 0;
+    if (defaultRoom)
     {
-      v11 = [v8 fetchLocalModelWithContext:v7];
-      v12 = [v6 defaultRoom];
+      v11 = [defaultRoom fetchLocalModelWithContext:contextCopy];
+      defaultRoom2 = [modelCopy defaultRoom];
 
-      if (!v12)
+      if (!defaultRoom2)
       {
         v13 = objc_autoreleasePoolPush();
-        v14 = self;
+        selfCopy = self;
         v15 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
         {
@@ -3863,14 +3863,14 @@ LABEL_31:
         }
 
         objc_autoreleasePoolPop(v13);
-        [v6 setDefaultRoom:v11];
+        [modelCopy setDefaultRoom:v11];
       }
     }
 
     else
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = self;
+      selfCopy2 = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
@@ -3878,7 +3878,7 @@ LABEL_31:
         v23 = 138543618;
         v24 = v20;
         v25 = 2112;
-        v26 = v6;
+        v26 = modelCopy;
         _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@Can't assign default room during import because the record hasn't downloaded yet: %@", &v23, 0x16u);
       }
 
@@ -3895,40 +3895,40 @@ LABEL_31:
   return v10;
 }
 
-- (BOOL)_exportApplicationDataFromLocalModel:(id)a3 context:(id)a4
+- (BOOL)_exportApplicationDataFromLocalModel:(id)model context:(id)context
 {
-  v5 = [_MKFApplicationData appDataDictionaryForContainer:a3, a4];
-  v6 = [(MKFCKHome *)self applicationData];
+  context = [_MKFApplicationData appDataDictionaryForContainer:model, context];
+  applicationData = [(MKFCKHome *)self applicationData];
   v7 = HMFEqualObjects();
 
   if ((v7 & 1) == 0)
   {
-    [(MKFCKHome *)self setApplicationData:v5];
+    [(MKFCKHome *)self setApplicationData:context];
   }
 
   return 1;
 }
 
-- (BOOL)_importApplicationDataIntoLocalModel:(id)a3 context:(id)a4
+- (BOOL)_importApplicationDataIntoLocalModel:(id)model context:(id)context
 {
-  v5 = a3;
-  v6 = [(MKFCKHome *)self applicationData];
-  [_MKFApplicationData setAppDataDictionary:v6 forContainer:v5];
+  modelCopy = model;
+  applicationData = [(MKFCKHome *)self applicationData];
+  [_MKFApplicationData setAppDataDictionary:applicationData forContainer:modelCopy];
 
   return 1;
 }
 
-- (BOOL)_exportMatterKeyValueStoreFromLocalModel:(id)a3 context:(id)a4
+- (BOOL)_exportMatterKeyValueStoreFromLocalModel:(id)model context:(id)context
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  modelCopy = model;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = [v4 matterKeyValueStore];
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  matterKeyValueStore = [modelCopy matterKeyValueStore];
+  v7 = [matterKeyValueStore countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -3940,7 +3940,7 @@ LABEL_31:
       {
         if (*v23 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(matterKeyValueStore);
         }
 
         v11 = *(*(&v22 + 1) + 8 * v10);
@@ -3949,9 +3949,9 @@ LABEL_31:
         {
 
 LABEL_13:
-          v12 = [v4 matterKeyValueStore];
-          v13 = [v12 objectForKeyedSubscript:v11];
-          [v5 setObject:v13 forKeyedSubscript:v11];
+          matterKeyValueStore2 = [modelCopy matterKeyValueStore];
+          v13 = [matterKeyValueStore2 objectForKeyedSubscript:v11];
+          [dictionary setObject:v13 forKeyedSubscript:v11];
 
           goto LABEL_14;
         }
@@ -3968,19 +3968,19 @@ LABEL_14:
       }
 
       while (v8 != v10);
-      v15 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v15 = [matterKeyValueStore countByEnumeratingWithState:&v22 objects:v26 count:16];
       v8 = v15;
     }
 
     while (v15);
   }
 
-  v16 = [(MKFCKHome *)self matterKeyValueStore];
+  matterKeyValueStore3 = [(MKFCKHome *)self matterKeyValueStore];
   v17 = HMFEqualObjects();
 
   if ((v17 & 1) == 0)
   {
-    v18 = [v5 copy];
+    v18 = [dictionary copy];
     [(MKFCKHome *)self setMatterKeyValueStore:v18];
   }
 
@@ -3988,39 +3988,39 @@ LABEL_14:
   return 1;
 }
 
-- (BOOL)_importMatterKeyValueStoreIntoLocalModel:(id)a3 context:(id)a4
+- (BOOL)_importMatterKeyValueStoreIntoLocalModel:(id)model context:(id)context
 {
-  v5 = a3;
-  v6 = [v5 matterKeyValueStore];
-  v7 = [(MKFCKHome *)self matterKeyValueStore];
+  modelCopy = model;
+  matterKeyValueStore = [modelCopy matterKeyValueStore];
+  matterKeyValueStore2 = [(MKFCKHome *)self matterKeyValueStore];
   v8 = HMFEqualObjects();
 
   if ((v8 & 1) == 0)
   {
-    v9 = [(MKFCKHome *)self matterKeyValueStore];
-    [v5 setMatterKeyValueStore:v9];
+    matterKeyValueStore3 = [(MKFCKHome *)self matterKeyValueStore];
+    [modelCopy setMatterKeyValueStore:matterKeyValueStore3];
   }
 
   return 1;
 }
 
-+ (id)_balanceFakeZonesForHome:(id)a3 context:(id)a4
++ (id)_balanceFakeZonesForHome:(id)home context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
+  homeCopy = home;
+  contextCopy = context;
+  array = [MEMORY[0x277CBEB18] array];
   v8 = arc4random_uniform(0);
   if (v8)
   {
     v9 = v8;
     do
     {
-      v10 = [[MKFCKZone alloc] initWithContext:v6];
-      [v7 addObject:v10];
-      v11 = [MEMORY[0x277CCAD78] UUID];
-      [(MKFCKZone *)v10 setModelID:v11];
+      v10 = [[MKFCKZone alloc] initWithContext:contextCopy];
+      [array addObject:v10];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      [(MKFCKZone *)v10 setModelID:uUID];
 
-      [(MKFCKZone *)v10 setHome:v5];
+      [(MKFCKZone *)v10 setHome:homeCopy];
       v12 = arc4random_uniform(0x14u);
       v13 = randomStringWithLength(v12);
       [(MKFCKZone *)v10 setName:v13];
@@ -4028,20 +4028,20 @@ LABEL_14:
       v22 = 0;
       v23 = &v22;
       v24 = 0x2020000000;
-      v14 = [v5 rooms];
-      v15 = arc4random_uniform([v14 count] - 1);
+      rooms = [homeCopy rooms];
+      v15 = arc4random_uniform([rooms count] - 1);
 
       v25 = v15;
       if (v23[3])
       {
-        v16 = [v5 rooms];
+        rooms2 = [homeCopy rooms];
         v19[0] = MEMORY[0x277D85DD0];
         v19[1] = 3221225472;
         v19[2] = __59__MKFCKHome_FakeRecords___balanceFakeZonesForHome_context___block_invoke;
         v19[3] = &unk_27867FD28;
         v20 = v10;
         v21 = &v22;
-        [v16 hmf_enumerateWithAutoreleasePoolUsingBlock:v19];
+        [rooms2 hmf_enumerateWithAutoreleasePoolUsingBlock:v19];
       }
 
       _Block_object_dispose(&v22, 8);
@@ -4052,7 +4052,7 @@ LABEL_14:
     while (v9);
   }
 
-  v17 = [v7 copy];
+  v17 = [array copy];
 
   return v17;
 }
@@ -4083,15 +4083,15 @@ void __59__MKFCKHome_FakeRecords___balanceFakeZonesForHome_context___block_invok
   }
 }
 
-+ (id)_balanceFakeUsersForHome:(id)a3 context:(id)a4
++ (id)_balanceFakeUsersForHome:(id)home context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [[MKFCKUser alloc] initWithContext:v7];
-  [v8 addObject:v9];
-  [(MKFCKUser *)v9 setHome:v6];
-  [a1 _setPropertiesOnUser:v9 isOwner:1];
+  homeCopy = home;
+  contextCopy = context;
+  array = [MEMORY[0x277CBEB18] array];
+  v9 = [[MKFCKUser alloc] initWithContext:contextCopy];
+  [array addObject:v9];
+  [(MKFCKUser *)v9 setHome:homeCopy];
+  [self _setPropertiesOnUser:v9 isOwner:1];
 
   v10 = arc4random_uniform(2u);
   if (v10)
@@ -4099,10 +4099,10 @@ void __59__MKFCKHome_FakeRecords___balanceFakeZonesForHome_context___block_invok
     v11 = v10;
     do
     {
-      v12 = [[MKFCKUser alloc] initWithContext:v7];
-      [v8 addObject:v12];
-      [(MKFCKUser *)v12 setHome:v6];
-      [a1 _setPropertiesOnUser:v12 isOwner:0];
+      v12 = [[MKFCKUser alloc] initWithContext:contextCopy];
+      [array addObject:v12];
+      [(MKFCKUser *)v12 setHome:homeCopy];
+      [self _setPropertiesOnUser:v12 isOwner:0];
 
       --v11;
     }
@@ -4110,50 +4110,50 @@ void __59__MKFCKHome_FakeRecords___balanceFakeZonesForHome_context___block_invok
     while (v11);
   }
 
-  v13 = [v8 copy];
+  v13 = [array copy];
 
   return v13;
 }
 
-+ (void)_setPropertiesOnUser:(id)a3 isOwner:(BOOL)a4
++ (void)_setPropertiesOnUser:(id)user isOwner:(BOOL)owner
 {
-  v4 = a4;
-  v16 = a3;
-  v5 = [v16 home];
+  ownerCopy = owner;
+  userCopy = user;
+  home = [userCopy home];
   v6 = arc4random_uniform(0x14u);
   v7 = randomStringWithLength(v6);
-  [v16 setAccountHandle:v7];
+  [userCopy setAccountHandle:v7];
 
-  [v16 setAnnounceAccessLevel:arc4random_uniform(4u)];
-  [v16 setCamerasAccessLevel:arc4random_uniform(4u)];
-  v8 = [MEMORY[0x277CCAD78] UUID];
-  [v16 setModelID:v8];
+  [userCopy setAnnounceAccessLevel:arc4random_uniform(4u)];
+  [userCopy setCamerasAccessLevel:arc4random_uniform(4u)];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  [userCopy setModelID:uUID];
 
-  [v16 setPrivilege:arc4random_uniform(4u)];
-  [v16 setRemoteAccessAllowed:arc4random_uniform(1u) != 0];
-  v9 = [MEMORY[0x277D0F8A8] pairingIdentity];
+  [userCopy setPrivilege:arc4random_uniform(4u)];
+  [userCopy setRemoteAccessAllowed:arc4random_uniform(1u) != 0];
+  pairingIdentity = [MEMORY[0x277D0F8A8] pairingIdentity];
   v10 = objc_alloc(MEMORY[0x277CFEC20]);
-  v11 = [MEMORY[0x277CCAD78] UUID];
-  v12 = [v11 UUIDString];
-  v13 = [v9 publicKey];
-  if (v4)
+  uUID2 = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID2 UUIDString];
+  publicKey = [pairingIdentity publicKey];
+  if (ownerCopy)
   {
-    v14 = [v9 privateKey];
+    privateKey = [pairingIdentity privateKey];
   }
 
   else
   {
-    v14 = 0;
+    privateKey = 0;
   }
 
-  v15 = [v10 initWithIdentifier:v12 publicKey:v13 privateKey:v14 permissions:v4];
-  [v16 setPairingIdentity:v15];
+  v15 = [v10 initWithIdentifier:uUIDString publicKey:publicKey privateKey:privateKey permissions:ownerCopy];
+  [userCopy setPairingIdentity:v15];
 
-  if (v4)
+  if (ownerCopy)
   {
 
-    [v5 setOwner:v16];
-    [v16 setOwnedHome:v5];
+    [home setOwner:userCopy];
+    [userCopy setOwnedHome:home];
   }
 
   else
@@ -4161,23 +4161,23 @@ void __59__MKFCKHome_FakeRecords___balanceFakeZonesForHome_context___block_invok
   }
 }
 
-+ (id)_balanceFakeTriggersForHome:(id)a3 context:(id)a4
++ (id)_balanceFakeTriggersForHome:(id)home context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
+  homeCopy = home;
+  contextCopy = context;
+  array = [MEMORY[0x277CBEB18] array];
   v8 = arc4random_uniform(2u);
   if (v8)
   {
     v9 = v8;
     do
     {
-      v10 = [[MKFCKEventTrigger alloc] initWithContext:v6];
-      [v7 addObject:v10];
-      v11 = [MEMORY[0x277CCAD78] UUID];
-      [(MKFCKEventTrigger *)v10 setModelID:v11];
+      v10 = [[MKFCKEventTrigger alloc] initWithContext:contextCopy];
+      [array addObject:v10];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      [(MKFCKEventTrigger *)v10 setModelID:uUID];
 
-      [(MKFCKEventTrigger *)v10 setHome:v5];
+      [(MKFCKEventTrigger *)v10 setHome:homeCopy];
       [(MKFCKEventTrigger *)v10 setAutoDelete:arc4random_uniform(1u) != 0];
       v12 = randomStringWithLength(20);
       [(MKFCKEventTrigger *)v10 setConfiguredName:v12];
@@ -4194,58 +4194,58 @@ void __59__MKFCKHome_FakeRecords___balanceFakeZonesForHome_context___block_invok
       v43 = 0;
       v44 = &v43;
       v45 = 0x2020000000;
-      v15 = [v5 scenes];
-      v16 = arc4random_uniform([v15 count]);
+      scenes = [homeCopy scenes];
+      v16 = arc4random_uniform([scenes count]);
 
       v46 = v16;
       if (v44[3])
       {
-        v17 = [v5 scenes];
+        scenes2 = [homeCopy scenes];
         v40[0] = MEMORY[0x277D85DD0];
         v40[1] = 3221225472;
         v40[2] = __62__MKFCKHome_FakeRecords___balanceFakeTriggersForHome_context___block_invoke;
         v40[3] = &unk_27867FCD8;
         v41 = v10;
         v42 = &v43;
-        [v17 hmf_enumerateWithAutoreleasePoolUsingBlock:v40];
+        [scenes2 hmf_enumerateWithAutoreleasePoolUsingBlock:v40];
       }
 
       v36 = 0;
       v37 = &v36;
       v38 = 0x2020000000;
-      v18 = [v5 accessories];
-      v19 = arc4random_uniform([v18 count]);
+      accessories = [homeCopy accessories];
+      v19 = arc4random_uniform([accessories count]);
 
       v39 = v19;
       if (v37[3])
       {
-        v20 = [v5 accessories];
+        accessories2 = [homeCopy accessories];
         v33[0] = MEMORY[0x277D85DD0];
         v33[1] = 3221225472;
         v33[2] = __62__MKFCKHome_FakeRecords___balanceFakeTriggersForHome_context___block_invoke_2;
         v33[3] = &unk_27867FCB0;
         v34 = v10;
         v35 = &v36;
-        [v20 hmf_enumerateWithAutoreleasePoolUsingBlock:v33];
+        [accessories2 hmf_enumerateWithAutoreleasePoolUsingBlock:v33];
       }
 
       v29 = 0;
       v30 = &v29;
       v31 = 0x2020000000;
-      v21 = [v5 users];
-      v22 = arc4random_uniform([v21 count]);
+      users = [homeCopy users];
+      v22 = arc4random_uniform([users count]);
 
       v32 = v22;
       if (v30[3])
       {
-        v23 = [v5 users];
+        users2 = [homeCopy users];
         v26[0] = MEMORY[0x277D85DD0];
         v26[1] = 3221225472;
         v26[2] = __62__MKFCKHome_FakeRecords___balanceFakeTriggersForHome_context___block_invoke_3;
         v26[3] = &unk_27867FD00;
         v27 = v10;
         v28 = &v29;
-        [v23 hmf_enumerateWithAutoreleasePoolUsingBlock:v26];
+        [users2 hmf_enumerateWithAutoreleasePoolUsingBlock:v26];
       }
 
       _Block_object_dispose(&v29, 8);
@@ -4258,7 +4258,7 @@ void __59__MKFCKHome_FakeRecords___balanceFakeZonesForHome_context___block_invok
     while (v9);
   }
 
-  v24 = [v7 copy];
+  v24 = [array copy];
 
   return v24;
 }
@@ -4305,12 +4305,12 @@ uint64_t __62__MKFCKHome_FakeRecords___balanceFakeTriggersForHome_context___bloc
   return result;
 }
 
-+ (id)_balanceFakeScenesForHome:(id)a3 context:(id)a4
++ (id)_balanceFakeScenesForHome:(id)home context:(id)context
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
+  homeCopy = home;
+  contextCopy = context;
+  array = [MEMORY[0x277CBEB18] array];
   v8 = arc4random_uniform(0xAu);
   if (v8 <= 4)
   {
@@ -4324,15 +4324,15 @@ uint64_t __62__MKFCKHome_FakeRecords___balanceFakeTriggersForHome_context___bloc
 
   do
   {
-    v10 = [[MKFCKScene alloc] initWithContext:v6];
-    [v7 addObject:v10];
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    [(MKFCKScene *)v10 setModelID:v11];
+    v10 = [[MKFCKScene alloc] initWithContext:contextCopy];
+    [array addObject:v10];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    [(MKFCKScene *)v10 setModelID:uUID];
 
-    [(MKFCKScene *)v10 setHome:v5];
+    [(MKFCKScene *)v10 setHome:homeCopy];
     v31 = @"foo";
-    v12 = [MEMORY[0x277CCAD78] UUID];
-    v32 = v12;
+    uUID2 = [MEMORY[0x277CCAD78] UUID];
+    v32 = uUID2;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
     v33[0] = v13;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:1];
@@ -4350,20 +4350,20 @@ uint64_t __62__MKFCKHome_FakeRecords___balanceFakeTriggersForHome_context___bloc
     v27 = 0;
     v28 = &v27;
     v29 = 0x2020000000;
-    v19 = [v5 accessories];
-    LODWORD(v13) = arc4random_uniform([v19 count]);
+    accessories = [homeCopy accessories];
+    LODWORD(v13) = arc4random_uniform([accessories count]);
 
     v30 = v13;
     if (v28[3])
     {
-      v20 = [v5 accessories];
+      accessories2 = [homeCopy accessories];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __60__MKFCKHome_FakeRecords___balanceFakeScenesForHome_context___block_invoke;
       v24[3] = &unk_27867FCB0;
       v25 = v10;
       v26 = &v27;
-      [v20 hmf_enumerateWithAutoreleasePoolUsingBlock:v24];
+      [accessories2 hmf_enumerateWithAutoreleasePoolUsingBlock:v24];
     }
 
     _Block_object_dispose(&v27, 8);
@@ -4372,7 +4372,7 @@ uint64_t __62__MKFCKHome_FakeRecords___balanceFakeTriggersForHome_context___bloc
   }
 
   while (v9);
-  v21 = [v7 copy];
+  v21 = [array copy];
 
   v22 = *MEMORY[0x277D85DE8];
 
@@ -4393,18 +4393,18 @@ uint64_t __60__MKFCKHome_FakeRecords___balanceFakeScenesForHome_context___block_
   return result;
 }
 
-+ (id)_balanceFakeRoomsForHome:(id)a3 context:(id)a4
++ (id)_balanceFakeRoomsForHome:(id)home context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [[MKFCKRoom alloc] initWithContext:v6];
-  [v7 addObject:v8];
-  v9 = [MEMORY[0x277CCAD78] UUID];
-  [(MKFCKRoom *)v8 setModelID:v9];
+  homeCopy = home;
+  contextCopy = context;
+  array = [MEMORY[0x277CBEB18] array];
+  v8 = [[MKFCKRoom alloc] initWithContext:contextCopy];
+  [array addObject:v8];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  [(MKFCKRoom *)v8 setModelID:uUID];
 
-  [(MKFCKRoom *)v8 setHome:v5];
-  [v5 setDefaultRoom:v8];
+  [(MKFCKRoom *)v8 setHome:homeCopy];
+  [homeCopy setDefaultRoom:v8];
 
   v10 = arc4random_uniform(8u);
   if (v10)
@@ -4412,12 +4412,12 @@ uint64_t __60__MKFCKHome_FakeRecords___balanceFakeScenesForHome_context___block_
     v11 = v10;
     do
     {
-      v12 = [[MKFCKRoom alloc] initWithContext:v6];
-      [v7 addObject:v12];
-      v13 = [MEMORY[0x277CCAD78] UUID];
-      [(MKFCKRoom *)v12 setModelID:v13];
+      v12 = [[MKFCKRoom alloc] initWithContext:contextCopy];
+      [array addObject:v12];
+      uUID2 = [MEMORY[0x277CCAD78] UUID];
+      [(MKFCKRoom *)v12 setModelID:uUID2];
 
-      [(MKFCKRoom *)v12 setHome:v5];
+      [(MKFCKRoom *)v12 setHome:homeCopy];
       v14 = arc4random_uniform(0x14u);
       v15 = randomStringWithLength(v14);
       [(MKFCKRoom *)v12 setName:v15];
@@ -4428,28 +4428,28 @@ uint64_t __60__MKFCKHome_FakeRecords___balanceFakeScenesForHome_context___block_
     while (v11);
   }
 
-  v16 = [v7 copy];
+  v16 = [array copy];
 
   return v16;
 }
 
-+ (id)_balanceFakeMediaAccessoriesForHome:(id)a3 context:(id)a4
++ (id)_balanceFakeMediaAccessoriesForHome:(id)home context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
+  homeCopy = home;
+  contextCopy = context;
+  array = [MEMORY[0x277CBEB18] array];
   v9 = arc4random_uniform(2u);
   if (v9)
   {
     v10 = v9;
     do
     {
-      v11 = [[MKFCKAppleMediaAccessory alloc] initWithContext:v7];
-      [v8 addObject:v11];
-      [(MKFCKAppleMediaAccessory *)v11 setHome:v6];
-      [a1 _setCommonPropertiesOnAccessory:v11];
-      v12 = [MEMORY[0x277D0F8A8] pairingIdentity];
-      [(MKFCKAppleMediaAccessory *)v11 setPairingIdentity:v12];
+      v11 = [[MKFCKAppleMediaAccessory alloc] initWithContext:contextCopy];
+      [array addObject:v11];
+      [(MKFCKAppleMediaAccessory *)v11 setHome:homeCopy];
+      [self _setCommonPropertiesOnAccessory:v11];
+      pairingIdentity = [MEMORY[0x277D0F8A8] pairingIdentity];
+      [(MKFCKAppleMediaAccessory *)v11 setPairingIdentity:pairingIdentity];
 
       --v10;
     }
@@ -4457,16 +4457,16 @@ uint64_t __60__MKFCKHome_FakeRecords___balanceFakeScenesForHome_context___block_
     while (v10);
   }
 
-  v13 = [v8 copy];
+  v13 = [array copy];
 
   return v13;
 }
 
-+ (id)_balanceFakeHAPAccessoriesForHome:(id)a3 context:(id)a4
++ (id)_balanceFakeHAPAccessoriesForHome:(id)home context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
+  homeCopy = home;
+  contextCopy = context;
+  array = [MEMORY[0x277CBEB18] array];
   v9 = arc4random_uniform(0x14u);
   if (v9)
   {
@@ -4474,10 +4474,10 @@ uint64_t __60__MKFCKHome_FakeRecords___balanceFakeScenesForHome_context___block_
     v11 = *MEMORY[0x277D0F1D8];
     do
     {
-      v12 = [[MKFCKHAPAccessory alloc] initWithContext:v7];
-      [v8 addObject:v12];
-      [(MKFCKHAPAccessory *)v12 setHome:v6];
-      [a1 _setCommonPropertiesOnAccessory:v12];
+      v12 = [[MKFCKHAPAccessory alloc] initWithContext:contextCopy];
+      [array addObject:v12];
+      [(MKFCKHAPAccessory *)v12 setHome:homeCopy];
+      [self _setCommonPropertiesOnAccessory:v12];
       v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:arc4random_uniform(6u)];
       [(MKFCKHAPAccessory *)v12 setCertificationStatus:v13];
 
@@ -4486,8 +4486,8 @@ uint64_t __60__MKFCKHome_FakeRecords___balanceFakeScenesForHome_context___block_
       [(MKFCKHAPAccessory *)v12 setPublicKey:v14];
 
       v15 = MEMORY[0x277CCACA8];
-      v16 = [(MKFCKHAPAccessory *)v12 identifier];
-      v17 = [v15 stringWithFormat:@"%@+1", v16];
+      identifier = [(MKFCKHAPAccessory *)v12 identifier];
+      v17 = [v15 stringWithFormat:@"%@+1", identifier];
       [(MKFCKHAPAccessory *)v12 setUniqueIdentifier:v17];
 
       --v10;
@@ -4496,68 +4496,68 @@ uint64_t __60__MKFCKHome_FakeRecords___balanceFakeScenesForHome_context___block_
     while (v10);
   }
 
-  v18 = [v8 copy];
+  v18 = [array copy];
 
   return v18;
 }
 
-+ (void)_setCommonPropertiesOnAccessory:(id)a3
++ (void)_setCommonPropertiesOnAccessory:(id)accessory
 {
-  v19 = a3;
-  v3 = [v19 home];
-  [v19 setApplicationData:MEMORY[0x277CBEC10]];
+  accessoryCopy = accessory;
+  home = [accessoryCopy home];
+  [accessoryCopy setApplicationData:MEMORY[0x277CBEC10]];
   v4 = arc4random_uniform(0x14u);
   v5 = randomStringWithLength(v4);
-  [v19 setConfiguredName:v5];
+  [accessoryCopy setConfiguredName:v5];
 
   v6 = randomStringWithLength(14);
-  [v19 setIdentifier:v6];
+  [accessoryCopy setIdentifier:v6];
 
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:arc4random_uniform(0x40u)];
-  [v19 setInitialCategory:v7];
+  [accessoryCopy setInitialCategory:v7];
 
   v8 = arc4random_uniform(0x14u);
   v9 = randomStringWithLength(v8);
-  [v19 setInitialManufacturer:v9];
+  [accessoryCopy setInitialManufacturer:v9];
 
   v10 = arc4random_uniform(0x14u);
   v11 = randomStringWithLength(v10);
-  [v19 setInitialModel:v11];
+  [accessoryCopy setInitialModel:v11];
 
-  v12 = [MEMORY[0x277CCAD78] UUID];
-  [v19 setModelID:v12];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  [accessoryCopy setModelID:uUID];
 
   v13 = randomStringWithLength(16);
-  [v19 setProductData:v13];
+  [accessoryCopy setProductData:v13];
 
   v14 = arc4random_uniform(0x14u);
   v15 = randomStringWithLength(v14);
-  [v19 setSerialNumber:v15];
+  [accessoryCopy setSerialNumber:v15];
 
   if (arc4random_uniform(1u))
   {
-    [v19 setNetworkClientIdentifier:arc4random_uniform(0x20u)];
-    [v19 setNetworkClientLAN:arc4random_uniform(0x20u)];
-    v16 = [MEMORY[0x277CCAD78] UUID];
-    [v19 setNetworkRouterUUID:v16];
+    [accessoryCopy setNetworkClientIdentifier:arc4random_uniform(0x20u)];
+    [accessoryCopy setNetworkClientLAN:arc4random_uniform(0x20u)];
+    uUID2 = [MEMORY[0x277CCAD78] UUID];
+    [accessoryCopy setNetworkRouterUUID:uUID2];
   }
 
-  v17 = [v3 rooms];
-  v18 = [v17 anyObject];
-  [v19 setRoom:v18];
+  rooms = [home rooms];
+  anyObject = [rooms anyObject];
+  [accessoryCopy setRoom:anyObject];
 }
 
-+ (id)_createFakeHomeInPersistentStore:(id)a3 context:(id)a4
++ (id)_createFakeHomeInPersistentStore:(id)store context:(id)context
 {
   v38[3] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  contextCopy = context;
   v7 = MEMORY[0x277CBEB18];
-  v8 = a3;
-  v9 = [v7 array];
-  v10 = [MEMORY[0x277CCAD78] UUID];
-  v11 = [MKFCKHome createWithModelID:v10 persistentStore:v8 context:v6];
+  storeCopy = store;
+  array = [v7 array];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v11 = [MKFCKHome createWithModelID:uUID persistentStore:storeCopy context:contextCopy];
 
-  [v9 addObject:v11];
+  [array addObject:v11];
   v37[0] = @"foo";
   v12 = randomStringWithLength(32);
   v38[0] = v12;
@@ -4566,8 +4566,8 @@ uint64_t __60__MKFCKHome_FakeRecords___balanceFakeScenesForHome_context___block_
   v38[1] = v13;
   v37[2] = @"baz";
   v35 = &stru_283CF9D50;
-  v14 = [MEMORY[0x277CCAD78] UUID];
-  v36 = v14;
+  uUID2 = [MEMORY[0x277CCAD78] UUID];
+  v36 = uUID2;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
   v38[2] = v15;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:v37 count:3];
@@ -4592,8 +4592,8 @@ uint64_t __60__MKFCKHome_FakeRecords___balanceFakeScenesForHome_context___block_
   v21 = +[HMDHomeNFCReaderKey createRandomKey];
   [v11 setNfcReaderKey:v21];
 
-  v22 = [MEMORY[0x277CCAD78] UUID];
-  [v11 setPersonDataZoneUUID:v22];
+  uUID3 = [MEMORY[0x277CCAD78] UUID];
+  [v11 setPersonDataZoneUUID:uUID3];
 
   [v11 setPrimaryHomeCounter:arc4random_uniform(0x40u)];
   [v11 setAutomaticSoftwareUpdateEnabled:arc4random_uniform(1u) != 0];
@@ -4612,33 +4612,33 @@ uint64_t __60__MKFCKHome_FakeRecords___balanceFakeScenesForHome_context___block_
     [v11 setNetworkProtectionMode:arc4random_uniform(4u)];
   }
 
-  v25 = [a1 _balanceFakeRoomsForHome:v11 context:v6];
-  [v9 addObjectsFromArray:v25];
+  v25 = [self _balanceFakeRoomsForHome:v11 context:contextCopy];
+  [array addObjectsFromArray:v25];
 
-  v26 = [a1 _balanceFakeUsersForHome:v11 context:v6];
-  [v9 addObjectsFromArray:v26];
+  v26 = [self _balanceFakeUsersForHome:v11 context:contextCopy];
+  [array addObjectsFromArray:v26];
 
-  v27 = [a1 _balanceFakeZonesForHome:v11 context:v6];
-  [v9 addObjectsFromArray:v27];
+  v27 = [self _balanceFakeZonesForHome:v11 context:contextCopy];
+  [array addObjectsFromArray:v27];
 
-  v28 = [a1 _balanceFakeHAPAccessoriesForHome:v11 context:v6];
-  [v9 addObjectsFromArray:v28];
+  v28 = [self _balanceFakeHAPAccessoriesForHome:v11 context:contextCopy];
+  [array addObjectsFromArray:v28];
 
-  v29 = [a1 _balanceFakeMediaAccessoriesForHome:v11 context:v6];
-  [v9 addObjectsFromArray:v29];
+  v29 = [self _balanceFakeMediaAccessoriesForHome:v11 context:contextCopy];
+  [array addObjectsFromArray:v29];
 
-  v30 = [a1 _balanceFakeScenesForHome:v11 context:v6];
-  [v9 addObjectsFromArray:v30];
+  v30 = [self _balanceFakeScenesForHome:v11 context:contextCopy];
+  [array addObjectsFromArray:v30];
 
-  v31 = [a1 _balanceFakeTriggersForHome:v11 context:v6];
-  [v9 addObjectsFromArray:v31];
+  v31 = [self _balanceFakeTriggersForHome:v11 context:contextCopy];
+  [array addObjectsFromArray:v31];
 
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __67__MKFCKHome_FakeRecords___createFakeHomeInPersistentStore_context___block_invoke;
   v34[3] = &__block_descriptor_40_e27_v32__0__MKFCKModel_8Q16_B24l;
-  v34[4] = a1;
-  [v9 hmf_enumerateWithAutoreleasePoolUsingBlock:v34];
+  v34[4] = self;
+  [array hmf_enumerateWithAutoreleasePoolUsingBlock:v34];
 
   v32 = *MEMORY[0x277D85DE8];
 
@@ -4667,12 +4667,12 @@ void __67__MKFCKHome_FakeRecords___createFakeHomeInPersistentStore_context___blo
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_maybeDeleteFakeHomes:(id)a3 context:(id)a4
++ (void)_maybeDeleteFakeHomes:(id)homes context:(id)context
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 count];
+  homesCopy = homes;
+  contextCopy = context;
+  v8 = [homesCopy count];
   v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:v8];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -4680,8 +4680,8 @@ void __67__MKFCKHome_FakeRecords___createFakeHomeInPersistentStore_context___blo
   v21[3] = &unk_27867FC48;
   v10 = v9;
   v22 = v10;
-  v20 = v6;
-  [v6 hmf_enumerateWithAutoreleasePoolUsingBlock:v21];
+  v20 = homesCopy;
+  [homesCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v21];
   [v10 sortUsingComparator:&__block_literal_global_204541];
   if ([v10 count])
   {
@@ -4698,10 +4698,10 @@ void __67__MKFCKHome_FakeRecords___createFakeHomeInPersistentStore_context___blo
     v12 = v8 - 1;
     do
     {
-      v13 = [v10 lastObject];
+      lastObject = [v10 lastObject];
       [v10 removeLastObject];
       v14 = objc_autoreleasePoolPush();
-      v15 = a1;
+      selfCopy = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
@@ -4709,12 +4709,12 @@ void __67__MKFCKHome_FakeRecords___createFakeHomeInPersistentStore_context___blo
         *buf = 138543618;
         v24 = v17;
         v25 = 2112;
-        v26 = v13;
+        v26 = lastObject;
         _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_INFO, "%{public}@Pruning fake home: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v14);
-      [v7 deleteObject:v13];
+      [contextCopy deleteObject:lastObject];
 
       if (![v10 count])
       {
@@ -4747,17 +4747,17 @@ uint64_t __56__MKFCKHome_FakeRecords___maybeDeleteFakeHomes_context___block_invo
   return v7;
 }
 
-+ (void)_maybeCreateFakeHomes:(id)a3 context:(id)a4
++ (void)_maybeCreateFakeHomes:(id)homes context:(id)context
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 count];
+  homesCopy = homes;
+  contextCopy = context;
+  v8 = [homesCopy count];
   v9 = v8;
   if ((v8 & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = a1;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -4798,7 +4798,7 @@ LABEL_22:
   if (!v16)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = a1;
+    selfCopy2 = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
@@ -4811,11 +4811,11 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v17 = [v7 hmd_coreData];
-  v18 = [v17 cloudPrivateStore];
+  hmd_coreData = [contextCopy hmd_coreData];
+  cloudPrivateStore = [hmd_coreData cloudPrivateStore];
 
   v19 = objc_autoreleasePoolPush();
-  v20 = a1;
+  selfCopy3 = self;
   v21 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
@@ -4838,21 +4838,21 @@ LABEL_22:
   objc_autoreleasePoolPop(v19);
   for (i = 0; i < v16; ++i)
   {
-    v25 = [v20 _createFakeHomeInPersistentStore:v18 context:{v7, *v29}];
+    v25 = [selfCopy3 _createFakeHomeInPersistentStore:cloudPrivateStore context:{contextCopy, *v29}];
   }
 
 LABEL_23:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_rebalanceFakeHomesWithContext:(id)a3
++ (void)_rebalanceFakeHomesWithContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (isInternalBuild() && ([v4 hmd_fakeRecordsEnabled] & 1) == 0)
+  contextCopy = context;
+  if (isInternalBuild() && ([contextCopy hmd_fakeRecordsEnabled] & 1) == 0)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = a1;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -4867,13 +4867,13 @@ LABEL_23:
 
   else
   {
-    v5 = [a1 fetchRequest];
+    fetchRequest = [self fetchRequest];
     v6 = +[(MKFCKModel *)MKFCKHome];
-    [v5 setPropertiesToFetch:v6];
+    [fetchRequest setPropertiesToFetch:v6];
 
-    [v5 setFetchBatchSize:3];
+    [fetchRequest setFetchBatchSize:3];
     v18 = 0;
-    v7 = [v4 executeFetchRequest:v5 error:&v18];
+    v7 = [contextCopy executeFetchRequest:fetchRequest error:&v18];
     v8 = v18;
     if (v7)
     {
@@ -4881,12 +4881,12 @@ LABEL_23:
       {
         if ([v7 count] > 3)
         {
-          [a1 _maybeDeleteFakeHomes:v7 context:v4];
+          [self _maybeDeleteFakeHomes:v7 context:contextCopy];
         }
 
         else
         {
-          [a1 _maybeCreateFakeHomes:v7 context:v4];
+          [self _maybeCreateFakeHomes:v7 context:contextCopy];
         }
       }
     }
@@ -4894,7 +4894,7 @@ LABEL_23:
     else
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = a1;
+      selfCopy2 = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
@@ -4913,14 +4913,14 @@ LABEL_23:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_exportPinCodesFromLocalModel:(id)a3 context:(id)a4
+- (BOOL)_exportPinCodesFromLocalModel:(id)model context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 hmd_assertIsExecuting];
-  if ([(MKFCKHome *)self _exportGuestAccessCodesFromLocalModel:v6 context:v7])
+  modelCopy = model;
+  contextCopy = context;
+  [contextCopy hmd_assertIsExecuting];
+  if ([(MKFCKHome *)self _exportGuestAccessCodesFromLocalModel:modelCopy context:contextCopy])
   {
-    v8 = [(MKFCKHome *)self _exportRemovedUserAccessCodesFromLocalModel:v6 context:v7];
+    v8 = [(MKFCKHome *)self _exportRemovedUserAccessCodesFromLocalModel:modelCopy context:contextCopy];
   }
 
   else
@@ -4931,18 +4931,18 @@ LABEL_23:
   return v8;
 }
 
-- (BOOL)_exportRemovedUserAccessCodesFromLocalModel:(id)a3 context:(id)a4
+- (BOOL)_exportRemovedUserAccessCodesFromLocalModel:(id)model context:(id)context
 {
-  v5 = [a3 removedAccessCodes];
-  v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
-  v7 = [(MKFCKHome *)self removedUserAccessCodes];
+  removedAccessCodes = [model removedAccessCodes];
+  v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(removedAccessCodes, "count")}];
+  removedUserAccessCodes = [(MKFCKHome *)self removedUserAccessCodes];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __75__MKFCKHome_PinCodes___exportRemovedUserAccessCodesFromLocalModel_context___block_invoke;
   v15[3] = &unk_278687720;
   v8 = v6;
   v16 = v8;
-  [v7 enumerateKeysAndObjectsUsingBlock:v15];
+  [removedUserAccessCodes enumerateKeysAndObjectsUsingBlock:v15];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -4951,8 +4951,8 @@ LABEL_23:
   v13[4] = self;
   v9 = v8;
   v14 = v9;
-  [v5 hmf_enumerateWithAutoreleasePoolUsingBlock:v13];
-  v10 = [(MKFCKHome *)self removedUserAccessCodes];
+  [removedAccessCodes hmf_enumerateWithAutoreleasePoolUsingBlock:v13];
+  removedUserAccessCodes2 = [(MKFCKHome *)self removedUserAccessCodes];
   v11 = HMFEqualObjects();
 
   if ((v11 & 1) == 0)
@@ -5065,18 +5065,18 @@ void __75__MKFCKHome_PinCodes___exportRemovedUserAccessCodesFromLocalModel_conte
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_exportGuestAccessCodesFromLocalModel:(id)a3 context:(id)a4
+- (BOOL)_exportGuestAccessCodesFromLocalModel:(id)model context:(id)context
 {
-  v5 = [a3 guestAccessCodes];
-  v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
-  v7 = [(MKFCKHome *)self guestAccessCodes];
+  guestAccessCodes = [model guestAccessCodes];
+  v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(guestAccessCodes, "count")}];
+  guestAccessCodes2 = [(MKFCKHome *)self guestAccessCodes];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __69__MKFCKHome_PinCodes___exportGuestAccessCodesFromLocalModel_context___block_invoke;
   v15[3] = &unk_278687720;
   v8 = v6;
   v16 = v8;
-  [v7 enumerateKeysAndObjectsUsingBlock:v15];
+  [guestAccessCodes2 enumerateKeysAndObjectsUsingBlock:v15];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -5085,8 +5085,8 @@ void __75__MKFCKHome_PinCodes___exportRemovedUserAccessCodesFromLocalModel_conte
   v13[4] = self;
   v9 = v8;
   v14 = v9;
-  [v5 hmf_enumerateWithAutoreleasePoolUsingBlock:v13];
-  v10 = [(MKFCKHome *)self guestAccessCodes];
+  [guestAccessCodes hmf_enumerateWithAutoreleasePoolUsingBlock:v13];
+  guestAccessCodes3 = [(MKFCKHome *)self guestAccessCodes];
   v11 = HMFEqualObjects();
 
   if ((v11 & 1) == 0)
@@ -5181,14 +5181,14 @@ void __69__MKFCKHome_PinCodes___exportGuestAccessCodesFromLocalModel_context___b
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_importPinCodesIntoLocalModel:(id)a3 context:(id)a4
+- (BOOL)_importPinCodesIntoLocalModel:(id)model context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 hmd_assertIsExecuting];
-  if ([(MKFCKHome *)self _importGuestAccessCodesIntoLocalModel:v6 context:v7])
+  modelCopy = model;
+  contextCopy = context;
+  [contextCopy hmd_assertIsExecuting];
+  if ([(MKFCKHome *)self _importGuestAccessCodesIntoLocalModel:modelCopy context:contextCopy])
   {
-    v8 = [(MKFCKHome *)self _importRemovedUserAccessCodesIntoLocalModel:v6 context:v7];
+    v8 = [(MKFCKHome *)self _importRemovedUserAccessCodesIntoLocalModel:modelCopy context:contextCopy];
   }
 
   else
@@ -5199,25 +5199,25 @@ void __69__MKFCKHome_PinCodes___exportGuestAccessCodesFromLocalModel_context___b
   return v8;
 }
 
-- (BOOL)_importRemovedUserAccessCodesIntoLocalModel:(id)a3 context:(id)a4
+- (BOOL)_importRemovedUserAccessCodesIntoLocalModel:(id)model context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 hmd_assertIsExecuting];
+  modelCopy = model;
+  contextCopy = context;
+  [contextCopy hmd_assertIsExecuting];
   v8 = MEMORY[0x277CBEB38];
-  v9 = [v6 removedAccessCodes];
-  v10 = [v8 dictionaryWithCapacity:{objc_msgSend(v9, "count")}];
+  removedAccessCodes = [modelCopy removedAccessCodes];
+  v10 = [v8 dictionaryWithCapacity:{objc_msgSend(removedAccessCodes, "count")}];
 
-  v11 = [v6 removedAccessCodes];
+  removedAccessCodes2 = [modelCopy removedAccessCodes];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __75__MKFCKHome_PinCodes___importRemovedUserAccessCodesIntoLocalModel_context___block_invoke;
   v27[3] = &unk_2786876F8;
   v12 = v10;
   v28 = v12;
-  [v11 hmf_enumerateWithAutoreleasePoolUsingBlock:v27];
+  [removedAccessCodes2 hmf_enumerateWithAutoreleasePoolUsingBlock:v27];
 
-  v13 = [(MKFCKHome *)self removedUserAccessCodes];
+  removedUserAccessCodes = [(MKFCKHome *)self removedUserAccessCodes];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __75__MKFCKHome_PinCodes___importRemovedUserAccessCodesIntoLocalModel_context___block_invoke_2;
@@ -5225,17 +5225,17 @@ void __69__MKFCKHome_PinCodes___exportGuestAccessCodesFromLocalModel_context___b
   v23[4] = self;
   v14 = v12;
   v24 = v14;
-  v15 = v7;
+  v15 = contextCopy;
   v25 = v15;
-  v16 = v6;
+  v16 = modelCopy;
   v26 = v16;
-  [v13 enumerateKeysAndObjectsUsingBlock:v23];
+  [removedUserAccessCodes enumerateKeysAndObjectsUsingBlock:v23];
 
   v17 = MEMORY[0x277CBEB98];
-  v18 = [v14 allValues];
-  v19 = [v17 setWithArray:v18];
+  allValues = [v14 allValues];
+  v19 = [v17 setWithArray:allValues];
 
-  v20 = [v16 removedAccessCodes];
+  removedAccessCodes3 = [v16 removedAccessCodes];
   v21 = HMFEqualObjects();
 
   if ((v21 & 1) == 0)
@@ -5314,19 +5314,19 @@ void __75__MKFCKHome_PinCodes___importRemovedUserAccessCodesIntoLocalModel_conte
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_populateRemovedUserAccessCodeFromDictionary:(id)a3 withAccessCode:(id)a4 hh2ModelID:(id)a5 home:(id)a6 groupsByModelID:(id)a7 context:(id)a8
+- (id)_populateRemovedUserAccessCodeFromDictionary:(id)dictionary withAccessCode:(id)code hh2ModelID:(id)d home:(id)home groupsByModelID:(id)iD context:(id)context
 {
   v97 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (!v15 || ![v15 length])
+  dictionaryCopy = dictionary;
+  codeCopy = code;
+  dCopy = d;
+  homeCopy = home;
+  iDCopy = iD;
+  contextCopy = context;
+  if (!codeCopy || ![codeCopy length])
   {
     v43 = objc_autoreleasePoolPush();
-    v44 = self;
+    selfCopy2 = self;
     v45 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
     {
@@ -5341,7 +5341,7 @@ LABEL_26:
     *buf = 138543618;
     v94 = v46;
     v95 = 2112;
-    v96 = v14;
+    v96 = dictionaryCopy;
     v47 = "%{public}@Without accessCode cannot import _MKFRemovedUserAccessCode : %@";
     v48 = v45;
     v49 = 22;
@@ -5351,10 +5351,10 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (!v16)
+  if (!dCopy)
   {
     v43 = objc_autoreleasePoolPush();
-    v44 = self;
+    selfCopy2 = self;
     v45 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
     {
@@ -5370,39 +5370,39 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v20 = [v14 hmf_stringForKey:@"ui"];
+  v20 = [dictionaryCopy hmf_stringForKey:@"ui"];
   v21 = v20;
   if (v20 && [v20 length])
   {
-    v22 = [v14 hmf_stringForKey:@"un"];
+    v22 = [dictionaryCopy hmf_stringForKey:@"un"];
     v23 = v22;
     if (v22 && [v22 length])
     {
-      v24 = [v14 hmf_UUIDForKey:@"i"];
+      v24 = [dictionaryCopy hmf_UUIDForKey:@"i"];
       v90 = v24;
       if (v24)
       {
         v25 = v24;
-        v26 = [v14 hmf_dateForKey:@"d"];
+        v26 = [dictionaryCopy hmf_dateForKey:@"d"];
         context = v26;
         if (v26)
         {
           v82 = v21;
           v27 = [objc_alloc(MEMORY[0x277CD1D50]) initWithName:v23 userUUID:v25 userID:v21 dateRemoved:v26];
-          [v17 modelID];
+          [homeCopy modelID];
           v29 = v28 = v23;
           v81 = v27;
-          v30 = [HMDRemovedUserAccessCodeModel modelUUIDForHomeUUID:v29 removedUserInfo:v27 accessCode:v15];
+          v30 = [HMDRemovedUserAccessCodeModel modelUUIDForHomeUUID:v29 removedUserInfo:v27 accessCode:codeCopy];
 
-          v31 = [v18 objectForKeyedSubscript:v16];
+          v31 = [iDCopy objectForKeyedSubscript:dCopy];
           if (!v31)
           {
-            v31 = [[_MKFRemovedUserAccessCode alloc] initWithContext:v19];
+            v31 = [[_MKFRemovedUserAccessCode alloc] initWithContext:contextCopy];
             [(_MKFRemovedUserAccessCode *)v31 setModelID:v30];
-            [(_MKFRemovedUserAccessCode *)v31 setHh2ModelID:v16];
+            [(_MKFRemovedUserAccessCode *)v31 setHh2ModelID:dCopy];
           }
 
-          v32 = [(_MKFRemovedUserAccessCode *)v31 userName];
+          userName = [(_MKFRemovedUserAccessCode *)v31 userName];
           v86 = v28;
           v33 = HMFEqualObjects();
 
@@ -5411,7 +5411,7 @@ LABEL_25:
             [(_MKFRemovedUserAccessCode *)v31 setUserName:v28];
           }
 
-          v34 = [(_MKFRemovedUserAccessCode *)v31 userModelID];
+          userModelID = [(_MKFRemovedUserAccessCode *)v31 userModelID];
           v35 = v90;
           v36 = HMFEqualObjects();
 
@@ -5420,7 +5420,7 @@ LABEL_25:
             [(_MKFRemovedUserAccessCode *)v31 setUserModelID:v90];
           }
 
-          v37 = [(_MKFRemovedUserAccessCode *)v31 userID];
+          userID = [(_MKFRemovedUserAccessCode *)v31 userID];
           v38 = HMFEqualObjects();
 
           if ((v38 & 1) == 0)
@@ -5428,7 +5428,7 @@ LABEL_25:
             [(_MKFRemovedUserAccessCode *)v31 setUserID:v82];
           }
 
-          v39 = [(_MKFRemovedUserAccessCode *)v31 dateRemoved];
+          dateRemoved = [(_MKFRemovedUserAccessCode *)v31 dateRemoved];
           v40 = HMFEqualObjects();
 
           if ((v40 & 1) == 0)
@@ -5436,12 +5436,12 @@ LABEL_25:
             [(_MKFRemovedUserAccessCode *)v31 setDateRemoved:context];
           }
 
-          v41 = [(_MKFRemovedUserAccessCode *)v31 accessCode];
+          accessCode = [(_MKFRemovedUserAccessCode *)v31 accessCode];
           v42 = HMFEqualObjects();
 
           if ((v42 & 1) == 0)
           {
-            [(_MKFRemovedUserAccessCode *)v31 setAccessCode:v15];
+            [(_MKFRemovedUserAccessCode *)v31 setAccessCode:codeCopy];
           }
 
           v21 = v82;
@@ -5451,26 +5451,26 @@ LABEL_25:
         else
         {
           v83 = objc_autoreleasePoolPush();
-          v71 = self;
+          selfCopy3 = self;
           v72 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v72, OS_LOG_TYPE_ERROR))
           {
             HMFGetLogIdentifier();
             v89 = v23;
-            v73 = v19;
-            v74 = v18;
-            v75 = v17;
+            v73 = contextCopy;
+            v74 = iDCopy;
+            v75 = homeCopy;
             v77 = v76 = v21;
             *buf = 138543618;
             v94 = v77;
             v95 = 2112;
-            v96 = v14;
+            v96 = dictionaryCopy;
             _os_log_impl(&dword_229538000, v72, OS_LOG_TYPE_ERROR, "%{public}@No dateRemoved field found for removed user access code: %@. Not importing _MKFRemovedUserAccessCode", buf, 0x16u);
 
             v21 = v76;
-            v17 = v75;
-            v18 = v74;
-            v19 = v73;
+            homeCopy = v75;
+            iDCopy = v74;
+            contextCopy = v73;
             v23 = v89;
           }
 
@@ -5483,26 +5483,26 @@ LABEL_25:
       else
       {
         contexta = objc_autoreleasePoolPush();
-        v64 = self;
+        selfCopy4 = self;
         v65 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
         {
           HMFGetLogIdentifier();
           v88 = v23;
-          v66 = v19;
-          v67 = v18;
-          v68 = v17;
+          v66 = contextCopy;
+          v67 = iDCopy;
+          v68 = homeCopy;
           v70 = v69 = v21;
           *buf = 138543618;
           v94 = v70;
           v95 = 2112;
-          v96 = v14;
+          v96 = dictionaryCopy;
           _os_log_impl(&dword_229538000, v65, OS_LOG_TYPE_ERROR, "%{public}@No modelID field found for removed user access code: %@. Not importing _MKFRemovedUserAccessCode", buf, 0x16u);
 
           v21 = v69;
-          v17 = v68;
-          v18 = v67;
-          v19 = v66;
+          homeCopy = v68;
+          iDCopy = v67;
+          contextCopy = v66;
           v23 = v88;
         }
 
@@ -5516,25 +5516,25 @@ LABEL_25:
     {
       v87 = v23;
       v57 = objc_autoreleasePoolPush();
-      v58 = self;
+      selfCopy5 = self;
       v59 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
       {
         HMFGetLogIdentifier();
-        v92 = v19;
-        v60 = v18;
-        v61 = v17;
+        v92 = contextCopy;
+        v60 = iDCopy;
+        v61 = homeCopy;
         v63 = v62 = v21;
         *buf = 138543618;
         v94 = v63;
         v95 = 2112;
-        v96 = v14;
+        v96 = dictionaryCopy;
         _os_log_impl(&dword_229538000, v59, OS_LOG_TYPE_ERROR, "%{public}@No userName field found for removed user access code: %@. Not importing _MKFRemovedUserAccessCode", buf, 0x16u);
 
         v21 = v62;
-        v17 = v61;
-        v18 = v60;
-        v19 = v92;
+        homeCopy = v61;
+        iDCopy = v60;
+        contextCopy = v92;
       }
 
       objc_autoreleasePoolPop(v57);
@@ -5546,25 +5546,25 @@ LABEL_25:
   else
   {
     v50 = objc_autoreleasePoolPush();
-    v51 = self;
+    selfCopy6 = self;
     v52 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
     {
       HMFGetLogIdentifier();
-      v91 = v19;
-      v53 = v18;
-      v54 = v17;
+      v91 = contextCopy;
+      v53 = iDCopy;
+      v54 = homeCopy;
       v56 = v55 = v21;
       *buf = 138543618;
       v94 = v56;
       v95 = 2112;
-      v96 = v14;
+      v96 = dictionaryCopy;
       _os_log_impl(&dword_229538000, v52, OS_LOG_TYPE_ERROR, "%{public}@No userID field found for removed user access code: %@. Not importing _MKFRemovedUserAccessCode", buf, 0x16u);
 
       v21 = v55;
-      v17 = v54;
-      v18 = v53;
-      v19 = v91;
+      homeCopy = v54;
+      iDCopy = v53;
+      contextCopy = v91;
     }
 
     objc_autoreleasePoolPop(v50);
@@ -5577,25 +5577,25 @@ LABEL_45:
   return v31;
 }
 
-- (BOOL)_importGuestAccessCodesIntoLocalModel:(id)a3 context:(id)a4
+- (BOOL)_importGuestAccessCodesIntoLocalModel:(id)model context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 hmd_assertIsExecuting];
+  modelCopy = model;
+  contextCopy = context;
+  [contextCopy hmd_assertIsExecuting];
   v8 = MEMORY[0x277CBEB38];
-  v9 = [v6 guestAccessCodes];
-  v10 = [v8 dictionaryWithCapacity:{objc_msgSend(v9, "count")}];
+  guestAccessCodes = [modelCopy guestAccessCodes];
+  v10 = [v8 dictionaryWithCapacity:{objc_msgSend(guestAccessCodes, "count")}];
 
-  v11 = [v6 guestAccessCodes];
+  guestAccessCodes2 = [modelCopy guestAccessCodes];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __69__MKFCKHome_PinCodes___importGuestAccessCodesIntoLocalModel_context___block_invoke;
   v27[3] = &unk_2786876A8;
   v12 = v10;
   v28 = v12;
-  [v11 hmf_enumerateWithAutoreleasePoolUsingBlock:v27];
+  [guestAccessCodes2 hmf_enumerateWithAutoreleasePoolUsingBlock:v27];
 
-  v13 = [(MKFCKHome *)self guestAccessCodes];
+  guestAccessCodes3 = [(MKFCKHome *)self guestAccessCodes];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __69__MKFCKHome_PinCodes___importGuestAccessCodesIntoLocalModel_context___block_invoke_2;
@@ -5603,17 +5603,17 @@ LABEL_45:
   v23[4] = self;
   v14 = v12;
   v24 = v14;
-  v15 = v7;
+  v15 = contextCopy;
   v25 = v15;
-  v16 = v6;
+  v16 = modelCopy;
   v26 = v16;
-  [v13 enumerateKeysAndObjectsUsingBlock:v23];
+  [guestAccessCodes3 enumerateKeysAndObjectsUsingBlock:v23];
 
   v17 = MEMORY[0x277CBEB98];
-  v18 = [v14 allValues];
-  v19 = [v17 setWithArray:v18];
+  allValues = [v14 allValues];
+  v19 = [v17 setWithArray:allValues];
 
-  v20 = [v16 guestAccessCodes];
+  guestAccessCodes4 = [v16 guestAccessCodes];
   v21 = HMFEqualObjects();
 
   if ((v21 & 1) == 0)
@@ -5689,34 +5689,34 @@ void __69__MKFCKHome_PinCodes___importGuestAccessCodesIntoLocalModel_context___b
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_populateGuestAccessCodeWithDictionary:(id)a3 hh2ModelID:(id)a4 home:(id)a5 groupsByModelID:(id)a6 context:(id)a7
+- (id)_populateGuestAccessCodeWithDictionary:(id)dictionary hh2ModelID:(id)d home:(id)home groupsByModelID:(id)iD context:(id)context
 {
   v48 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v12 hmf_stringForKey:@"a"];
-  v18 = [v12 hmf_stringForKey:@"l"];
-  v41 = [v12 hmf_numberForKey:@"uu"];
-  if (v13 && v17 && v18 && [v17 length])
+  dictionaryCopy = dictionary;
+  dCopy = d;
+  homeCopy = home;
+  iDCopy = iD;
+  contextCopy = context;
+  v17 = [dictionaryCopy hmf_stringForKey:@"a"];
+  v18 = [dictionaryCopy hmf_stringForKey:@"l"];
+  v41 = [dictionaryCopy hmf_numberForKey:@"uu"];
+  if (dCopy && v17 && v18 && [v17 length])
   {
-    v38 = v14;
-    v19 = [v14 modelID];
-    v39 = [HMDHomeAccessCodeModel modelUUIDForHomeUUID:v19 accessCodeValue:v17];
+    v38 = homeCopy;
+    modelID = [homeCopy modelID];
+    v39 = [HMDHomeAccessCodeModel modelUUIDForHomeUUID:modelID accessCodeValue:v17];
 
-    v20 = [v15 objectForKeyedSubscript:v13];
+    v20 = [iDCopy objectForKeyedSubscript:dCopy];
     if (!v20)
     {
-      v20 = [[_MKFGuestAccessCode alloc] initWithContext:v16];
+      v20 = [[_MKFGuestAccessCode alloc] initWithContext:contextCopy];
       [(_MKFGuestAccessCode *)v20 setModelID:v39];
-      [(_MKFGuestAccessCode *)v20 setHh2ModelID:v13];
-      v21 = [(MKFCKHome *)self writerTimestamp];
-      [(_MKFGuestAccessCode *)v20 setWriterTimestamp:v21];
+      [(_MKFGuestAccessCode *)v20 setHh2ModelID:dCopy];
+      writerTimestamp = [(MKFCKHome *)self writerTimestamp];
+      [(_MKFGuestAccessCode *)v20 setWriterTimestamp:writerTimestamp];
     }
 
-    v22 = [(_MKFGuestAccessCode *)v20 accessCode];
+    accessCode = [(_MKFGuestAccessCode *)v20 accessCode];
     v23 = HMFEqualObjects();
 
     if ((v23 & 1) == 0)
@@ -5724,7 +5724,7 @@ void __69__MKFCKHome_PinCodes___importGuestAccessCodesIntoLocalModel_context___b
       [(_MKFGuestAccessCode *)v20 setAccessCode:v17];
     }
 
-    v24 = [(_MKFGuestAccessCode *)v20 label];
+    label = [(_MKFGuestAccessCode *)v20 label];
     v25 = HMFEqualObjects();
 
     v26 = v41;
@@ -5733,7 +5733,7 @@ void __69__MKFCKHome_PinCodes___importGuestAccessCodesIntoLocalModel_context___b
       [(_MKFGuestAccessCode *)v20 setLabel:v18];
     }
 
-    v27 = [(_MKFGuestAccessCode *)v20 userUniqueIDForAccessories];
+    userUniqueIDForAccessories = [(_MKFGuestAccessCode *)v20 userUniqueIDForAccessories];
     v28 = HMFEqualObjects();
 
     if ((v28 & 1) == 0)
@@ -5741,21 +5741,21 @@ void __69__MKFCKHome_PinCodes___importGuestAccessCodesIntoLocalModel_context___b
       [(_MKFGuestAccessCode *)v20 setUserUniqueIDForAccessories:v41];
     }
 
-    v14 = v38;
+    homeCopy = v38;
   }
 
   else
   {
     v29 = objc_autoreleasePoolPush();
-    v30 = self;
+    selfCopy = self;
     v31 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
       HMFGetLogIdentifier();
-      v40 = v13;
-      v32 = v16;
-      v33 = v15;
-      v35 = v34 = v14;
+      v40 = dCopy;
+      v32 = contextCopy;
+      v33 = iDCopy;
+      v35 = v34 = homeCopy;
       *buf = 138543874;
       v43 = v35;
       v44 = 2112;
@@ -5764,10 +5764,10 @@ void __69__MKFCKHome_PinCodes___importGuestAccessCodesIntoLocalModel_context___b
       v47 = v18;
       _os_log_impl(&dword_229538000, v31, OS_LOG_TYPE_ERROR, "%{public}@Invalid accessCode [%@] or label [%@] for guest access code. Not importing.", buf, 0x20u);
 
-      v14 = v34;
-      v15 = v33;
-      v16 = v32;
-      v13 = v40;
+      homeCopy = v34;
+      iDCopy = v33;
+      contextCopy = v32;
+      dCopy = v40;
     }
 
     objc_autoreleasePoolPop(v29);
@@ -5780,22 +5780,22 @@ void __69__MKFCKHome_PinCodes___importGuestAccessCodesIntoLocalModel_context___b
   return v20;
 }
 
-+ (id)_encodeRemovedUserInfoWithUserID:(id)a3 removedUserModelID:(id)a4 userName:(id)a5 dateRemoved:(id)a6
++ (id)_encodeRemovedUserInfoWithUserID:(id)d removedUserModelID:(id)iD userName:(id)name dateRemoved:(id)removed
 {
   v18[4] = *MEMORY[0x277D85DE8];
   v17[0] = @"ui";
   v17[1] = @"un";
-  v18[0] = a3;
-  v18[1] = a5;
+  v18[0] = d;
+  v18[1] = name;
   v17[2] = @"i";
   v17[3] = @"d";
-  v18[2] = a4;
-  v18[3] = a6;
+  v18[2] = iD;
+  v18[3] = removed;
   v9 = MEMORY[0x277CBEAC0];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  removedCopy = removed;
+  nameCopy = name;
+  iDCopy = iD;
+  dCopy = d;
   v14 = [v9 dictionaryWithObjects:v18 forKeys:v17 count:4];
 
   v15 = *MEMORY[0x277D85DE8];
@@ -5803,33 +5803,33 @@ void __69__MKFCKHome_PinCodes___importGuestAccessCodesIntoLocalModel_context___b
   return v14;
 }
 
-+ (id)__dictionaryFromRemovedUserAccessCodeDictionaryForUnitTest:(id)a3 tombStonedPinCodes:(int)a4
++ (id)__dictionaryFromRemovedUserAccessCodeDictionaryForUnitTest:(id)test tombStonedPinCodes:(int)codes
 {
-  v6 = a3;
-  if (v6)
+  testCopy = test;
+  if (testCopy)
   {
-    v7 = v6;
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    v7 = testCopy;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v16 = MEMORY[0x277D85DD0];
     v17 = 3221225472;
     v18 = __108__MKFCKHome_PinCodeUnitTest____dictionaryFromRemovedUserAccessCodeDictionaryForUnitTest_tombStonedPinCodes___block_invoke;
     v19 = &unk_2786877C0;
-    v9 = v8;
+    v9 = dictionary;
     v20 = v9;
-    v21 = a1;
+    selfCopy = self;
     [v7 enumerateKeysAndObjectsUsingBlock:&v16];
-    if (a4 >= 1)
+    if (codes >= 1)
     {
       do
       {
-        v10 = [MEMORY[0x277CBEB68] null];
-        v11 = [MEMORY[0x277CCAD78] UUID];
-        [v9 setObject:v10 forKeyedSubscript:v11];
+        null = [MEMORY[0x277CBEB68] null];
+        uUID = [MEMORY[0x277CCAD78] UUID];
+        [v9 setObject:null forKeyedSubscript:uUID];
 
-        --a4;
+        --codes;
       }
 
-      while (a4);
+      while (codes);
     }
 
     return v9;
@@ -5864,55 +5864,55 @@ void __108__MKFCKHome_PinCodeUnitTest____dictionaryFromRemovedUserAccessCodeDict
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)__dictionaryFromGuestAccessCodeForUnitTest:(id)a3 label:(id)a4 userUniqueIDForAccessories:(id)a5
++ (id)__dictionaryFromGuestAccessCodeForUnitTest:(id)test label:(id)label userUniqueIDForAccessories:(id)accessories
 {
   v17[3] = *MEMORY[0x277D85DE8];
   v7 = MEMORY[0x277CBEB38];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v7 dictionary];
+  accessoriesCopy = accessories;
+  labelCopy = label;
+  testCopy = test;
+  dictionary = [v7 dictionary];
   v16[0] = @"a";
   v16[1] = @"l";
-  v17[0] = v10;
-  v17[1] = v9;
+  v17[0] = testCopy;
+  v17[1] = labelCopy;
   v16[2] = @"uu";
-  v17[2] = v8;
+  v17[2] = accessoriesCopy;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:3];
-  v13 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
 
-  [v11 setObject:v12 forKeyedSubscript:v13];
+  [dictionary setObject:v12 forKeyedSubscript:uUID];
   v14 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return dictionary;
 }
 
-+ (id)__dictionaryFromGuestAccessCodeDictionaryForUnitTest:(id)a3 tombStonedPinCodes:(int)a4
++ (id)__dictionaryFromGuestAccessCodeDictionaryForUnitTest:(id)test tombStonedPinCodes:(int)codes
 {
-  v5 = a3;
-  if (v5)
+  testCopy = test;
+  if (testCopy)
   {
-    v6 = v5;
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    v6 = testCopy;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __102__MKFCKHome_PinCodeUnitTest____dictionaryFromGuestAccessCodeDictionaryForUnitTest_tombStonedPinCodes___block_invoke;
     v15[3] = &unk_278687798;
-    v8 = v7;
+    v8 = dictionary;
     v16 = v8;
     [v6 enumerateKeysAndObjectsUsingBlock:v15];
-    if (a4 >= 1)
+    if (codes >= 1)
     {
       do
       {
-        v9 = [MEMORY[0x277CBEB68] null];
-        v10 = [MEMORY[0x277CCAD78] UUID];
-        [v8 setObject:v9 forKeyedSubscript:v10];
+        null = [MEMORY[0x277CBEB68] null];
+        uUID = [MEMORY[0x277CCAD78] UUID];
+        [v8 setObject:null forKeyedSubscript:uUID];
 
-        --a4;
+        --codes;
       }
 
-      while (a4);
+      while (codes);
     }
 
     return v8;
@@ -5945,18 +5945,18 @@ void __102__MKFCKHome_PinCodeUnitTest____dictionaryFromGuestAccessCodeDictionary
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)__dictionaryFromHMRemovedUserInfoForUnitTest:(id)a3
++ (id)__dictionaryFromHMRemovedUserInfoForUnitTest:(id)test
 {
-  v3 = a3;
-  if (v3)
+  testCopy = test;
+  if (testCopy)
   {
-    v4 = v3;
+    v4 = testCopy;
     v5 = objc_opt_class();
-    v6 = [v4 userID];
-    v7 = [v4 userUUID];
-    v8 = [v4 name];
-    v9 = [v4 dateRemoved];
-    v10 = [v5 _encodeRemovedUserInfoWithUserID:v6 removedUserModelID:v7 userName:v8 dateRemoved:v9];
+    userID = [v4 userID];
+    userUUID = [v4 userUUID];
+    name = [v4 name];
+    dateRemoved = [v4 dateRemoved];
+    v10 = [v5 _encodeRemovedUserInfoWithUserID:userID removedUserModelID:userUUID userName:name dateRemoved:dateRemoved];
 
     return v10;
   }
@@ -5968,15 +5968,15 @@ void __102__MKFCKHome_PinCodeUnitTest____dictionaryFromGuestAccessCodeDictionary
   }
 }
 
-+ (id)__removedUserInfoFromDictionaryForUnitTest:(id)a3
++ (id)__removedUserInfoFromDictionaryForUnitTest:(id)test
 {
   v3 = MEMORY[0x277CD1D50];
-  v4 = a3;
+  testCopy = test;
   v5 = [v3 alloc];
-  v6 = [v4 hmf_stringForKey:@"un"];
-  v7 = [v4 hmf_UUIDForKey:@"i"];
-  v8 = [v4 hmf_stringForKey:@"ui"];
-  v9 = [v4 hmf_dateForKey:@"d"];
+  v6 = [testCopy hmf_stringForKey:@"un"];
+  v7 = [testCopy hmf_UUIDForKey:@"i"];
+  v8 = [testCopy hmf_stringForKey:@"ui"];
+  v9 = [testCopy hmf_dateForKey:@"d"];
 
   v10 = [v5 initWithName:v6 userUUID:v7 userID:v8 dateRemoved:v9];
 

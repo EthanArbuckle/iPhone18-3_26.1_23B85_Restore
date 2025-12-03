@@ -1,19 +1,19 @@
 @interface AMSUIWebPluginAction
-- (AMSUIWebPluginAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebPluginAction)initWithJSObject:(id)object context:(id)context;
 - (id)runAction;
 @end
 
 @implementation AMSUIWebPluginAction
 
-- (AMSUIWebPluginAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebPluginAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
+  objectCopy = object;
   v18.receiver = self;
   v18.super_class = AMSUIWebPluginAction;
-  v7 = [(AMSUIWebAction *)&v18 initWithJSObject:v6 context:a4];
+  v7 = [(AMSUIWebAction *)&v18 initWithJSObject:objectCopy context:context];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"actionIdentifier"];
+    v8 = [objectCopy objectForKeyedSubscript:@"actionIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
     actionIdentifier = v7->_actionIdentifier;
     v7->_actionIdentifier = v9;
 
-    v11 = [v6 objectForKeyedSubscript:@"bundleIdentifier"];
+    v11 = [objectCopy objectForKeyedSubscript:@"bundleIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,7 +43,7 @@
     bundleIdentifier = v7->_bundleIdentifier;
     v7->_bundleIdentifier = v12;
 
-    v14 = [v6 objectForKeyedSubscript:@"options"];
+    v14 = [objectCopy objectForKeyedSubscript:@"options"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,56 +67,56 @@
   v32 = *MEMORY[0x1E69E9840];
   v23.receiver = self;
   v23.super_class = AMSUIWebPluginAction;
-  v3 = [(AMSUIWebAction *)&v23 runAction];
-  v4 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v4)
+  runAction = [(AMSUIWebAction *)&v23 runAction];
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v4 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = AMSLogKey();
-    v8 = [(AMSUIWebPluginAction *)self bundleIdentifier];
-    v9 = [(AMSUIWebPluginAction *)self actionIdentifier];
+    bundleIdentifier = [(AMSUIWebPluginAction *)self bundleIdentifier];
+    actionIdentifier = [(AMSUIWebPluginAction *)self actionIdentifier];
     *buf = 138544130;
     v25 = v6;
     v26 = 2114;
     v27 = v7;
     v28 = 2114;
-    v29 = v8;
+    v29 = bundleIdentifier;
     v30 = 2114;
-    v31 = v9;
-    _os_log_impl(&dword_1BB036000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running plugin action. Bundle identifier: %{public}@, action identifier: %{public}@", buf, 0x2Au);
+    v31 = actionIdentifier;
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running plugin action. Bundle identifier: %{public}@, action identifier: %{public}@", buf, 0x2Au);
   }
 
-  v10 = [(AMSUIWebPluginAction *)self actionIdentifier];
+  actionIdentifier2 = [(AMSUIWebPluginAction *)self actionIdentifier];
 
-  if (v10)
+  if (actionIdentifier2)
   {
-    v11 = [(AMSUIWebPluginAction *)self bundleIdentifier];
+    bundleIdentifier2 = [(AMSUIWebPluginAction *)self bundleIdentifier];
 
-    if (v11)
+    if (bundleIdentifier2)
     {
-      v12 = [(AMSUIWebAction *)self context];
-      v13 = [v12 pluginLoader];
-      v14 = [(AMSUIWebPluginAction *)self bundleIdentifier];
-      v15 = [v13 pluginForBundleIdentifier:v14];
+      context = [(AMSUIWebAction *)self context];
+      pluginLoader = [context pluginLoader];
+      bundleIdentifier3 = [(AMSUIWebPluginAction *)self bundleIdentifier];
+      v15 = [pluginLoader pluginForBundleIdentifier:bundleIdentifier3];
 
       if (v15)
       {
-        v16 = [(AMSUIWebPluginAction *)self actionIdentifier];
-        v17 = [(AMSUIWebPluginAction *)self options];
-        v18 = [v15 runActionWithIdentifier:v16 options:v17];
+        actionIdentifier3 = [(AMSUIWebPluginAction *)self actionIdentifier];
+        options = [(AMSUIWebPluginAction *)self options];
+        v18 = [v15 runActionWithIdentifier:actionIdentifier3 options:options];
       }
 
       else
       {
         v20 = MEMORY[0x1E698CAD0];
-        v16 = AMSError();
-        v18 = [v20 promiseWithError:v16];
+        actionIdentifier3 = AMSError();
+        v18 = [v20 promiseWithError:actionIdentifier3];
       }
 
       goto LABEL_14;

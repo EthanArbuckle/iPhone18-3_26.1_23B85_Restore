@@ -1,62 +1,62 @@
 @interface HUControlPanelClassRule
-+ (id)ruleWithControlItemClass:(Class)a3;
-+ (id)ruleWithControlItemProtocol:(id)a3;
-- (BOOL)ruleMatchesItem:(id)a3;
-- (HUControlPanelClassRule)initWithControlItemClass:(Class)a3 protocol:(id)a4;
++ (id)ruleWithControlItemClass:(Class)class;
++ (id)ruleWithControlItemProtocol:(id)protocol;
+- (BOOL)ruleMatchesItem:(id)item;
+- (HUControlPanelClassRule)initWithControlItemClass:(Class)class protocol:(id)protocol;
 @end
 
 @implementation HUControlPanelClassRule
 
-+ (id)ruleWithControlItemClass:(Class)a3
++ (id)ruleWithControlItemClass:(Class)class
 {
-  v3 = [[a1 alloc] initWithControlItemClass:a3 protocol:&unk_282494538];
+  v3 = [[self alloc] initWithControlItemClass:class protocol:&unk_282494538];
 
   return v3;
 }
 
-+ (id)ruleWithControlItemProtocol:(id)a3
++ (id)ruleWithControlItemProtocol:(id)protocol
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithControlItemClass:objc_opt_class() protocol:v4];
+  protocolCopy = protocol;
+  v5 = [[self alloc] initWithControlItemClass:objc_opt_class() protocol:protocolCopy];
 
   return v5;
 }
 
-- (HUControlPanelClassRule)initWithControlItemClass:(Class)a3 protocol:(id)a4
+- (HUControlPanelClassRule)initWithControlItemClass:(Class)class protocol:(id)protocol
 {
-  v6 = a4;
+  protocolCopy = protocol;
   v10.receiver = self;
   v10.super_class = HUControlPanelClassRule;
   v7 = [(HUControlPanelClassRule *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(HUControlPanelClassRule *)v7 setClass:a3];
-    [(HUControlPanelClassRule *)v8 setProtocol:v6];
+    [(HUControlPanelClassRule *)v7 setClass:class];
+    [(HUControlPanelClassRule *)v8 setProtocol:protocolCopy];
   }
 
   return v8;
 }
 
-- (BOOL)ruleMatchesItem:(id)a3
+- (BOOL)ruleMatchesItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 controlItems];
+  itemCopy = item;
+  controlItems = [itemCopy controlItems];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __43__HUControlPanelClassRule_ruleMatchesItem___block_invoke;
   v10[3] = &unk_277DB7330;
   v10[4] = self;
-  v6 = [v5 na_all:v10];
+  v6 = [controlItems na_all:v10];
 
-  v7 = [v4 controlItems];
+  controlItems2 = [itemCopy controlItems];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __43__HUControlPanelClassRule_ruleMatchesItem___block_invoke_2;
   v9[3] = &unk_277DB7330;
   v9[4] = self;
-  LOBYTE(self) = [v7 na_all:v9];
+  LOBYTE(self) = [controlItems2 na_all:v9];
 
   return v6 & self;
 }

@@ -1,25 +1,25 @@
 @interface KDevice
-- (BOOL)isEqual:(id)a3;
-- (KDevice)initWithPushToken:(id)a3 registrationData:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (KDevice)initWithPushToken:(id)token registrationData:(id)data;
 - (NSString)state;
 - (unint64_t)hash;
-- (void)addApplication:(id)a3;
+- (void)addApplication:(id)application;
 @end
 
 @implementation KDevice
 
-- (KDevice)initWithPushToken:(id)a3 registrationData:(id)a4
+- (KDevice)initWithPushToken:(id)token registrationData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  dataCopy = data;
   v13.receiver = self;
   v13.super_class = KDevice;
   v8 = [(KDevice *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    [(KDevice *)v8 setPushToken:v6];
-    [(KDevice *)v9 setRegistrationData:v7];
+    [(KDevice *)v8 setPushToken:tokenCopy];
+    [(KDevice *)v9 setRegistrationData:dataCopy];
     v10 = +[NSMutableSet set];
     [(KDevice *)v9 setApps:v10];
 
@@ -29,19 +29,19 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(KDevice *)self pushToken];
-    v6 = [v4 pushToken];
-    if ([v5 isEqual:v6])
+    pushToken = [(KDevice *)self pushToken];
+    pushToken2 = [equalCopy pushToken];
+    if ([pushToken isEqual:pushToken2])
     {
-      v7 = [(KDevice *)self registrationData];
-      v8 = [v4 registrationData];
-      v9 = [v7 isEqual:v8];
+      registrationData = [(KDevice *)self registrationData];
+      registrationData2 = [equalCopy registrationData];
+      v9 = [registrationData isEqual:registrationData2];
     }
 
     else
@@ -60,19 +60,19 @@
 
 - (unint64_t)hash
 {
-  v3 = [(KDevice *)self pushToken];
-  v4 = [v3 hash];
-  v5 = [(KDevice *)self registrationData];
-  v6 = [v5 hash];
+  pushToken = [(KDevice *)self pushToken];
+  v4 = [pushToken hash];
+  registrationData = [(KDevice *)self registrationData];
+  v6 = [registrationData hash];
 
   return v4 + v6;
 }
 
-- (void)addApplication:(id)a3
+- (void)addApplication:(id)application
 {
-  v4 = a3;
-  v5 = [(KDevice *)self apps];
-  [v5 addObject:v4];
+  applicationCopy = application;
+  apps = [(KDevice *)self apps];
+  [apps addObject:applicationCopy];
 }
 
 - (NSString)state

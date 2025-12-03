@@ -1,18 +1,18 @@
 @interface PTPersonSemanticsNetwork
-- (PTPersonSemanticsNetwork)initWithMetalContext:(id)a3 sharedResources:(id)a4;
-- (id)espressoFileURLFor:(id)a3 prefix:(id)a4 chipId:(id)a5;
-- (unsigned)executeNetwork:(id)a3;
+- (PTPersonSemanticsNetwork)initWithMetalContext:(id)context sharedResources:(id)resources;
+- (id)espressoFileURLFor:(id)for prefix:(id)prefix chipId:(id)id;
+- (unsigned)executeNetwork:(id)network;
 @end
 
 @implementation PTPersonSemanticsNetwork
 
-- (id)espressoFileURLFor:(id)a3 prefix:(id)a4 chipId:(id)a5
+- (id)espressoFileURLFor:(id)for prefix:(id)prefix chipId:(id)id
 {
-  if (a5)
+  if (id)
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@.%@.espresso.net", a3, a4, a5];
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
-    v7 = [v6 fileExistsAtPath:v5];
+    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@.%@.espresso.net", for, prefix, id];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v7 = [defaultManager fileExistsAtPath:v5];
 
     if (v7)
     {
@@ -33,18 +33,18 @@
   return v8;
 }
 
-- (PTPersonSemanticsNetwork)initWithMetalContext:(id)a3 sharedResources:(id)a4
+- (PTPersonSemanticsNetwork)initWithMetalContext:(id)context sharedResources:(id)resources
 {
   v67 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  resourcesCopy = resources;
   v63.receiver = self;
   v63.super_class = PTPersonSemanticsNetwork;
   v9 = [(PTPersonSemanticsNetwork *)&v63 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_metalContext, a3);
+    objc_storeStrong(&v9->_metalContext, context);
     kdebug_trace();
     if ((MGGetBoolAnswer() & 1) == 0)
     {
@@ -59,9 +59,9 @@
     }
 
     PTKTraceInit();
-    v11 = [v8 effectUtil];
+    effectUtil = [resourcesCopy effectUtil];
     effectUtil = v10->_effectUtil;
-    v10->_effectUtil = v11;
+    v10->_effectUtil = effectUtil;
 
     inRGBAName = v10->_inRGBAName;
     v10->_inRGBAName = @"image__Placeholder__0";
@@ -72,17 +72,17 @@
     if (!(v15 | v16))
     {
       v58 = v14;
-      v54 = v8;
+      v54 = resourcesCopy;
       v17 = _PTLogSystem();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
         [PTPersonSemanticsNetwork initWithMetalContext:sharedResources:];
       }
 
-      v56 = v7;
+      v56 = contextCopy;
 
-      v18 = [MEMORY[0x277CCAA00] defaultManager];
-      v19 = [v18 contentsOfDirectoryAtPath:@"/System/Library/ImagingNetworks" error:0];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      v19 = [defaultManager contentsOfDirectoryAtPath:@"/System/Library/ImagingNetworks" error:0];
 
       v61 = 0u;
       v62 = 0u;
@@ -139,8 +139,8 @@
         {
 LABEL_26:
 
-          v8 = v54;
-          v7 = v56;
+          resourcesCopy = v54;
+          contextCopy = v56;
           v14 = v58;
           v15 = v24;
           v32 = v23;
@@ -155,13 +155,13 @@ LABEL_27:
     if (v15 || (v33 = v32) != 0)
     {
       v34 = [MEMORY[0x277CBEBC0] fileURLWithPath:v33];
-      v35 = [v8 segmentationNetwork];
+      segmentationNetwork = [resourcesCopy segmentationNetwork];
 
-      if (v35)
+      if (segmentationNetwork)
       {
-        v36 = [v8 segmentationNetwork];
+        segmentationNetwork2 = [resourcesCopy segmentationNetwork];
         executor = v10->_executor;
-        v10->_executor = v36;
+        v10->_executor = segmentationNetwork2;
       }
 
       else
@@ -194,7 +194,7 @@ LABEL_27:
           goto LABEL_53;
         }
 
-        [v8 setSegmentationNetwork:?];
+        [resourcesCopy setSegmentationNetwork:?];
         v15 = v57;
         v32 = v55;
       }
@@ -284,9 +284,9 @@ LABEL_55:
   return v31;
 }
 
-- (unsigned)executeNetwork:(id)a3
+- (unsigned)executeNetwork:(id)network
 {
-  v4 = a3;
+  networkCopy = network;
   kdebug_trace();
   executor = self->_executor;
   v7[0] = MEMORY[0x277D85DD0];
@@ -294,7 +294,7 @@ LABEL_55:
   v7[2] = __43__PTPersonSemanticsNetwork_executeNetwork___block_invoke;
   v7[3] = &unk_278522E90;
   v7[4] = self;
-  LODWORD(self) = [(PTEspressoGenericExecutor *)executor executeAsync:v7 metalContext:v4];
+  LODWORD(self) = [(PTEspressoGenericExecutor *)executor executeAsync:v7 metalContext:networkCopy];
 
   return self;
 }

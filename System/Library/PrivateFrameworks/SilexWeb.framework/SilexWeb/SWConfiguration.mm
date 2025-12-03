@@ -1,77 +1,77 @@
 @interface SWConfiguration
-+ (id)configurationWithContainerConfiguration:(id)a3;
-- (BOOL)isEqualToConfiguration:(id)a3;
-- (SWConfiguration)initWithStoreFront:(id)a3 locale:(id)a4 contentEnvironment:(id)a5 contentSizeCategory:(id)a6 layoutGuide:(id)a7 dataSources:(id)a8 location:(id)a9 sourceURL:(id)a10 activePictureInPictureURL:(id)a11 feedConfiguration:(id)a12 supportsLiveActivities:(BOOL)a13 keyboardConfiguration:(id)a14 networkStatus:(int64_t)a15 isTransitioning:(BOOL)a16;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)configurationWithContainerConfiguration:(id)configuration;
+- (BOOL)isEqualToConfiguration:(id)configuration;
+- (SWConfiguration)initWithStoreFront:(id)front locale:(id)locale contentEnvironment:(id)environment contentSizeCategory:(id)category layoutGuide:(id)guide dataSources:(id)sources location:(id)location sourceURL:(id)self0 activePictureInPictureURL:(id)self1 feedConfiguration:(id)self2 supportsLiveActivities:(BOOL)self3 keyboardConfiguration:(id)self4 networkStatus:(int64_t)self5 isTransitioning:(BOOL)self6;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SWConfiguration
 
-+ (id)configurationWithContainerConfiguration:(id)a3
++ (id)configurationWithContainerConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v4 = [SWConfiguration alloc];
-  v5 = [v3 storeFront];
-  v6 = [v3 locale];
-  v19 = [v3 contentEnvironment];
-  v18 = [v3 contentSizeCategory];
-  v17 = [v3 layoutGuide];
-  v7 = [v3 dataSources];
-  v8 = [v3 location];
-  v9 = [v3 sourceURL];
-  v10 = [v3 activePictureInPictureURL];
-  v11 = [v3 feedConfiguration];
-  v12 = [v3 supportsLiveActivities];
+  storeFront = [configurationCopy storeFront];
+  locale = [configurationCopy locale];
+  contentEnvironment = [configurationCopy contentEnvironment];
+  contentSizeCategory = [configurationCopy contentSizeCategory];
+  layoutGuide = [configurationCopy layoutGuide];
+  dataSources = [configurationCopy dataSources];
+  location = [configurationCopy location];
+  sourceURL = [configurationCopy sourceURL];
+  activePictureInPictureURL = [configurationCopy activePictureInPictureURL];
+  feedConfiguration = [configurationCopy feedConfiguration];
+  supportsLiveActivities = [configurationCopy supportsLiveActivities];
 
   LOBYTE(v15) = 0;
-  LOBYTE(v14) = v12;
-  v16 = [(SWConfiguration *)v4 initWithStoreFront:v5 locale:v6 contentEnvironment:v19 contentSizeCategory:v18 layoutGuide:v17 dataSources:v7 location:v8 sourceURL:v9 activePictureInPictureURL:v10 feedConfiguration:v11 supportsLiveActivities:v14 keyboardConfiguration:0 networkStatus:0 isTransitioning:v15];
+  LOBYTE(v14) = supportsLiveActivities;
+  v16 = [(SWConfiguration *)v4 initWithStoreFront:storeFront locale:locale contentEnvironment:contentEnvironment contentSizeCategory:contentSizeCategory layoutGuide:layoutGuide dataSources:dataSources location:location sourceURL:sourceURL activePictureInPictureURL:activePictureInPictureURL feedConfiguration:feedConfiguration supportsLiveActivities:v14 keyboardConfiguration:0 networkStatus:0 isTransitioning:v15];
 
   return v16;
 }
 
-- (SWConfiguration)initWithStoreFront:(id)a3 locale:(id)a4 contentEnvironment:(id)a5 contentSizeCategory:(id)a6 layoutGuide:(id)a7 dataSources:(id)a8 location:(id)a9 sourceURL:(id)a10 activePictureInPictureURL:(id)a11 feedConfiguration:(id)a12 supportsLiveActivities:(BOOL)a13 keyboardConfiguration:(id)a14 networkStatus:(int64_t)a15 isTransitioning:(BOOL)a16
+- (SWConfiguration)initWithStoreFront:(id)front locale:(id)locale contentEnvironment:(id)environment contentSizeCategory:(id)category layoutGuide:(id)guide dataSources:(id)sources location:(id)location sourceURL:(id)self0 activePictureInPictureURL:(id)self1 feedConfiguration:(id)self2 supportsLiveActivities:(BOOL)self3 keyboardConfiguration:(id)self4 networkStatus:(int64_t)self5 isTransitioning:(BOOL)self6
 {
-  v52 = a3;
-  v51 = a4;
-  v21 = a5;
-  v22 = a6;
-  v23 = a7;
-  v24 = a8;
-  v25 = a9;
-  v26 = a10;
-  v27 = a11;
-  v28 = a12;
-  v29 = a14;
+  frontCopy = front;
+  localeCopy = locale;
+  environmentCopy = environment;
+  categoryCopy = category;
+  guideCopy = guide;
+  sourcesCopy = sources;
+  locationCopy = location;
+  lCopy = l;
+  rLCopy = rL;
+  configurationCopy = configuration;
+  keyboardConfigurationCopy = keyboardConfiguration;
   v53.receiver = self;
   v53.super_class = SWConfiguration;
   v30 = [(SWConfiguration *)&v53 init];
   if (v30)
   {
-    v47 = v29;
+    v47 = keyboardConfigurationCopy;
     [MEMORY[0x1E696AFB0] UUID];
-    v48 = v28;
-    v32 = v31 = v25;
+    v48 = configurationCopy;
+    v32 = v31 = locationCopy;
     [v32 UUIDString];
-    v33 = v50 = v21;
+    v33 = v50 = environmentCopy;
     [(SWConfiguration *)v30 setIdentifier:v33];
 
-    [(SWConfiguration *)v30 setStoreFront:v52];
-    [(SWConfiguration *)v30 setLocale:v51];
+    [(SWConfiguration *)v30 setStoreFront:frontCopy];
+    [(SWConfiguration *)v30 setLocale:localeCopy];
     [(SWConfiguration *)v30 setContentEnvironment:v50];
-    v46 = v22;
-    [(SWConfiguration *)v30 setContentSizeCategory:v22];
-    [(SWConfiguration *)v30 setLayoutGuide:v23];
-    [(SWConfiguration *)v30 setDataSources:v24];
+    v46 = categoryCopy;
+    [(SWConfiguration *)v30 setContentSizeCategory:categoryCopy];
+    [(SWConfiguration *)v30 setLayoutGuide:guideCopy];
+    [(SWConfiguration *)v30 setDataSources:sourcesCopy];
     v45 = v31;
     [(SWConfiguration *)v30 setLocation:v31];
-    [(SWConfiguration *)v30 setSourceURL:v26];
-    [(SWConfiguration *)v30 setActivePictureInPictureURL:v27];
+    [(SWConfiguration *)v30 setSourceURL:lCopy];
+    [(SWConfiguration *)v30 setActivePictureInPictureURL:rLCopy];
     [(SWConfiguration *)v30 setFeedConfiguration:v48];
-    [(SWConfiguration *)v30 setSupportsLiveActivities:a13];
-    v34 = [MEMORY[0x1E696AB78] dateFormatFromTemplate:@"j" options:0 locale:v51];
+    [(SWConfiguration *)v30 setSupportsLiveActivities:activities];
+    v34 = [MEMORY[0x1E696AB78] dateFormatFromTemplate:@"j" options:0 locale:localeCopy];
     if ([v34 containsString:@"H"])
     {
       v35 = 1;
@@ -83,158 +83,158 @@
     }
 
     [(SWConfiguration *)v30 setIs24HourTime:v35];
-    [(SWConfiguration *)v30 setKeyboardConfiguration:v29];
-    [(SWConfiguration *)v30 setNetworkStatus:a15];
-    [(SWConfiguration *)v30 setIsTransitioning:a16];
+    [(SWConfiguration *)v30 setKeyboardConfiguration:keyboardConfigurationCopy];
+    [(SWConfiguration *)v30 setNetworkStatus:status];
+    [(SWConfiguration *)v30 setIsTransitioning:transitioning];
     v36 = MEMORY[0x1E696AEC0];
-    v37 = [MEMORY[0x1E69DC938] currentDevice];
-    v38 = [v37 systemName];
-    v39 = [MEMORY[0x1E69DC938] currentDevice];
-    v40 = [v39 systemVersion];
-    v41 = [v36 stringWithFormat:@"%@ %@", v38, v40];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    systemName = [currentDevice systemName];
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    systemVersion = [currentDevice2 systemVersion];
+    v41 = [v36 stringWithFormat:@"%@ %@", systemName, systemVersion];
     [(SWConfiguration *)v30 setSystemVersion:v41];
 
-    v29 = v47;
-    v42 = [MEMORY[0x1E696AAE8] mainBundle];
-    v43 = [v42 objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    keyboardConfigurationCopy = v47;
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    v43 = [mainBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     [(SWConfiguration *)v30 setAppVersion:v43];
 
-    v28 = v48;
-    v21 = v50;
-    v25 = v45;
-    v22 = v46;
+    configurationCopy = v48;
+    environmentCopy = v50;
+    locationCopy = v45;
+    categoryCopy = v46;
   }
 
   return v30;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SWConfiguration alloc];
-  v22 = [(SWConfiguration *)self storeFront];
-  v5 = [(SWConfiguration *)self locale];
-  v21 = [(SWConfiguration *)self contentEnvironment];
-  v20 = [(SWConfiguration *)self contentSizeCategory];
-  v19 = [(SWConfiguration *)self layoutGuide];
-  v18 = [(SWConfiguration *)self dataSources];
-  v16 = [(SWConfiguration *)self location];
-  v6 = [(SWConfiguration *)self sourceURL];
-  v7 = [(SWConfiguration *)self activePictureInPictureURL];
-  v8 = [(SWConfiguration *)self feedConfiguration];
-  v9 = [(SWConfiguration *)self supportsLiveActivities];
-  v10 = [(SWConfiguration *)self keyboardConfiguration];
-  v11 = [(SWConfiguration *)self networkStatus];
+  storeFront = [(SWConfiguration *)self storeFront];
+  locale = [(SWConfiguration *)self locale];
+  contentEnvironment = [(SWConfiguration *)self contentEnvironment];
+  contentSizeCategory = [(SWConfiguration *)self contentSizeCategory];
+  layoutGuide = [(SWConfiguration *)self layoutGuide];
+  dataSources = [(SWConfiguration *)self dataSources];
+  location = [(SWConfiguration *)self location];
+  sourceURL = [(SWConfiguration *)self sourceURL];
+  activePictureInPictureURL = [(SWConfiguration *)self activePictureInPictureURL];
+  feedConfiguration = [(SWConfiguration *)self feedConfiguration];
+  supportsLiveActivities = [(SWConfiguration *)self supportsLiveActivities];
+  keyboardConfiguration = [(SWConfiguration *)self keyboardConfiguration];
+  networkStatus = [(SWConfiguration *)self networkStatus];
   LOBYTE(v15) = [(SWConfiguration *)self isTransitioning];
-  LOBYTE(v14) = v9;
-  v17 = [(SWConfiguration *)v4 initWithStoreFront:v22 locale:v5 contentEnvironment:v21 contentSizeCategory:v20 layoutGuide:v19 dataSources:v18 location:v16 sourceURL:v6 activePictureInPictureURL:v7 feedConfiguration:v8 supportsLiveActivities:v14 keyboardConfiguration:v10 networkStatus:v11 isTransitioning:v15];
+  LOBYTE(v14) = supportsLiveActivities;
+  v17 = [(SWConfiguration *)v4 initWithStoreFront:storeFront locale:locale contentEnvironment:contentEnvironment contentSizeCategory:contentSizeCategory layoutGuide:layoutGuide dataSources:dataSources location:location sourceURL:sourceURL activePictureInPictureURL:activePictureInPictureURL feedConfiguration:feedConfiguration supportsLiveActivities:v14 keyboardConfiguration:keyboardConfiguration networkStatus:networkStatus isTransitioning:v15];
 
-  v12 = [(SWConfiguration *)self identifier];
-  [(SWConfiguration *)v17 setIdentifier:v12];
+  identifier = [(SWConfiguration *)self identifier];
+  [(SWConfiguration *)v17 setIdentifier:identifier];
 
   return v17;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [SWMutableConfiguration alloc];
-  v5 = [(SWConfiguration *)self storeFront];
-  v21 = [(SWConfiguration *)self locale];
-  v20 = [(SWConfiguration *)self contentEnvironment];
-  v19 = [(SWConfiguration *)self contentSizeCategory];
-  v18 = [(SWConfiguration *)self layoutGuide];
-  v17 = [(SWConfiguration *)self dataSources];
-  v15 = [(SWConfiguration *)self location];
-  v6 = [(SWConfiguration *)self sourceURL];
-  v7 = [(SWConfiguration *)self activePictureInPictureURL];
-  v8 = [(SWConfiguration *)self feedConfiguration];
-  v9 = [(SWConfiguration *)self supportsLiveActivities];
-  v10 = [(SWConfiguration *)self keyboardConfiguration];
-  v11 = [(SWConfiguration *)self networkStatus];
+  storeFront = [(SWConfiguration *)self storeFront];
+  locale = [(SWConfiguration *)self locale];
+  contentEnvironment = [(SWConfiguration *)self contentEnvironment];
+  contentSizeCategory = [(SWConfiguration *)self contentSizeCategory];
+  layoutGuide = [(SWConfiguration *)self layoutGuide];
+  dataSources = [(SWConfiguration *)self dataSources];
+  location = [(SWConfiguration *)self location];
+  sourceURL = [(SWConfiguration *)self sourceURL];
+  activePictureInPictureURL = [(SWConfiguration *)self activePictureInPictureURL];
+  feedConfiguration = [(SWConfiguration *)self feedConfiguration];
+  supportsLiveActivities = [(SWConfiguration *)self supportsLiveActivities];
+  keyboardConfiguration = [(SWConfiguration *)self keyboardConfiguration];
+  networkStatus = [(SWConfiguration *)self networkStatus];
   LOBYTE(v14) = [(SWConfiguration *)self isTransitioning];
-  LOBYTE(v13) = v9;
-  v16 = [(SWConfiguration *)v4 initWithStoreFront:v5 locale:v21 contentEnvironment:v20 contentSizeCategory:v19 layoutGuide:v18 dataSources:v17 location:v15 sourceURL:v6 activePictureInPictureURL:v7 feedConfiguration:v8 supportsLiveActivities:v13 keyboardConfiguration:v10 networkStatus:v11 isTransitioning:v14];
+  LOBYTE(v13) = supportsLiveActivities;
+  v16 = [(SWConfiguration *)v4 initWithStoreFront:storeFront locale:locale contentEnvironment:contentEnvironment contentSizeCategory:contentSizeCategory layoutGuide:layoutGuide dataSources:dataSources location:location sourceURL:sourceURL activePictureInPictureURL:activePictureInPictureURL feedConfiguration:feedConfiguration supportsLiveActivities:v13 keyboardConfiguration:keyboardConfiguration networkStatus:networkStatus isTransitioning:v14];
 
   return v16;
 }
 
-- (BOOL)isEqualToConfiguration:(id)a3
+- (BOOL)isEqualToConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(SWConfiguration *)self storeFront];
-  v6 = [v4 storeFront];
-  if (v5 == v6 || [v5 isEqualToString:v6])
+  configurationCopy = configuration;
+  storeFront = [(SWConfiguration *)self storeFront];
+  storeFront2 = [configurationCopy storeFront];
+  if (storeFront == storeFront2 || [storeFront isEqualToString:storeFront2])
   {
-    v7 = [(SWConfiguration *)self locale];
-    v8 = [v4 locale];
-    if (v7 == v8 || [v7 isEqual:v8])
+    locale = [(SWConfiguration *)self locale];
+    locale2 = [configurationCopy locale];
+    if (locale == locale2 || [locale isEqual:locale2])
     {
-      v9 = [(SWConfiguration *)self contentEnvironment];
-      v10 = [v4 contentEnvironment];
-      if (v9 == v10 || [v9 isEqualToString:v10])
+      contentEnvironment = [(SWConfiguration *)self contentEnvironment];
+      contentEnvironment2 = [configurationCopy contentEnvironment];
+      if (contentEnvironment == contentEnvironment2 || [contentEnvironment isEqualToString:contentEnvironment2])
       {
-        v11 = [(SWConfiguration *)self contentSizeCategory];
-        v12 = [v4 contentSizeCategory];
-        if (v11 == v12 || [v11 isEqualToString:v12])
+        contentSizeCategory = [(SWConfiguration *)self contentSizeCategory];
+        contentSizeCategory2 = [configurationCopy contentSizeCategory];
+        if (contentSizeCategory == contentSizeCategory2 || [contentSizeCategory isEqualToString:contentSizeCategory2])
         {
-          v53 = v12;
-          v54 = v11;
-          v13 = [(SWConfiguration *)self layoutGuide];
-          v14 = [v4 layoutGuide];
-          if (v13 == v14 || [v13 isEqual:v14])
+          v53 = contentSizeCategory2;
+          v54 = contentSizeCategory;
+          layoutGuide = [(SWConfiguration *)self layoutGuide];
+          layoutGuide2 = [configurationCopy layoutGuide];
+          if (layoutGuide == layoutGuide2 || [layoutGuide isEqual:layoutGuide2])
           {
-            v51 = v9;
-            v52 = v14;
-            v15 = [(SWConfiguration *)self dataSources];
-            v16 = [v4 dataSources];
-            if (v15 == v16 || [v15 isEqualToDictionary:v16])
+            v51 = contentEnvironment;
+            v52 = layoutGuide2;
+            dataSources = [(SWConfiguration *)self dataSources];
+            dataSources2 = [configurationCopy dataSources];
+            if (dataSources == dataSources2 || [dataSources isEqualToDictionary:dataSources2])
             {
-              v49 = v10;
-              v50 = v16;
-              v17 = [(SWConfiguration *)self location];
-              v18 = [v4 location];
-              if (v17 == v18 || [v17 isEqual:v18])
+              v49 = contentEnvironment2;
+              v50 = dataSources2;
+              location = [(SWConfiguration *)self location];
+              location2 = [configurationCopy location];
+              if (location == location2 || [location isEqual:location2])
               {
-                v47 = v7;
-                v48 = v18;
-                v19 = [(SWConfiguration *)self sourceURL];
-                v20 = [v4 sourceURL];
-                v46 = v19;
-                if (v19 == v20 || [v19 isEqual:v20])
+                v47 = locale;
+                v48 = location2;
+                sourceURL = [(SWConfiguration *)self sourceURL];
+                sourceURL2 = [configurationCopy sourceURL];
+                v46 = sourceURL;
+                if (sourceURL == sourceURL2 || [sourceURL isEqual:sourceURL2])
                 {
-                  v45 = v20;
-                  v21 = [(SWConfiguration *)self systemVersion];
-                  v43 = [v4 systemVersion];
-                  v44 = v21;
-                  if ([v21 isEqualToString:v43])
+                  v45 = sourceURL2;
+                  systemVersion = [(SWConfiguration *)self systemVersion];
+                  systemVersion2 = [configurationCopy systemVersion];
+                  v44 = systemVersion;
+                  if ([systemVersion isEqualToString:systemVersion2])
                   {
-                    v22 = [(SWConfiguration *)self appVersion];
-                    v41 = [v4 appVersion];
-                    v42 = v22;
-                    if ([v22 isEqualToString:v41])
+                    appVersion = [(SWConfiguration *)self appVersion];
+                    appVersion2 = [configurationCopy appVersion];
+                    v42 = appVersion;
+                    if ([appVersion isEqualToString:appVersion2])
                     {
-                      v23 = [(SWConfiguration *)self activePictureInPictureURL];
-                      v24 = [v4 activePictureInPictureURL];
-                      v40 = v23;
-                      if (v23 == v24 || [v23 isEqual:v24])
+                      activePictureInPictureURL = [(SWConfiguration *)self activePictureInPictureURL];
+                      activePictureInPictureURL2 = [configurationCopy activePictureInPictureURL];
+                      v40 = activePictureInPictureURL;
+                      if (activePictureInPictureURL == activePictureInPictureURL2 || [activePictureInPictureURL isEqual:activePictureInPictureURL2])
                       {
-                        v39 = v24;
-                        v25 = [(SWConfiguration *)self feedConfiguration];
-                        v26 = [v4 feedConfiguration];
-                        if (v25 == v26 || [v25 isEqual:v26])
+                        v39 = activePictureInPictureURL2;
+                        feedConfiguration = [(SWConfiguration *)self feedConfiguration];
+                        feedConfiguration2 = [configurationCopy feedConfiguration];
+                        if (feedConfiguration == feedConfiguration2 || [feedConfiguration isEqual:feedConfiguration2])
                         {
-                          v38 = v26;
-                          v27 = [(SWConfiguration *)self supportsLiveActivities];
-                          if (v27 == [v4 supportsLiveActivities])
+                          v38 = feedConfiguration2;
+                          supportsLiveActivities = [(SWConfiguration *)self supportsLiveActivities];
+                          if (supportsLiveActivities == [configurationCopy supportsLiveActivities])
                           {
-                            v29 = [(SWConfiguration *)self keyboardConfiguration];
-                            v30 = [v4 keyboardConfiguration];
-                            v37 = v29;
-                            v31 = v29;
-                            v32 = v30;
-                            if ([v31 isEqual:v30] && (v35 = -[SWConfiguration networkStatus](self, "networkStatus"), v35 == objc_msgSend(v4, "networkStatus")) && (v36 = -[SWConfiguration is24HourTime](self, "is24HourTime"), v36 == objc_msgSend(v4, "is24HourTime")))
+                            keyboardConfiguration = [(SWConfiguration *)self keyboardConfiguration];
+                            keyboardConfiguration2 = [configurationCopy keyboardConfiguration];
+                            v37 = keyboardConfiguration;
+                            v31 = keyboardConfiguration;
+                            v32 = keyboardConfiguration2;
+                            if ([v31 isEqual:keyboardConfiguration2] && (v35 = -[SWConfiguration networkStatus](self, "networkStatus"), v35 == objc_msgSend(configurationCopy, "networkStatus")) && (v36 = -[SWConfiguration is24HourTime](self, "is24HourTime"), v36 == objc_msgSend(configurationCopy, "is24HourTime")))
                             {
-                              v34 = [(SWConfiguration *)self isTransitioning];
-                              v28 = v34 ^ [v4 isTransitioning] ^ 1;
+                              isTransitioning = [(SWConfiguration *)self isTransitioning];
+                              v28 = isTransitioning ^ [configurationCopy isTransitioning] ^ 1;
                             }
 
                             else
@@ -248,7 +248,7 @@
                             LOBYTE(v28) = 0;
                           }
 
-                          v26 = v38;
+                          feedConfiguration2 = v38;
                         }
 
                         else
@@ -256,7 +256,7 @@
                           LOBYTE(v28) = 0;
                         }
 
-                        v24 = v39;
+                        activePictureInPictureURL2 = v39;
                       }
 
                       else
@@ -276,7 +276,7 @@
                     LOBYTE(v28) = 0;
                   }
 
-                  v20 = v45;
+                  sourceURL2 = v45;
                 }
 
                 else
@@ -284,8 +284,8 @@
                   LOBYTE(v28) = 0;
                 }
 
-                v7 = v47;
-                v18 = v48;
+                locale = v47;
+                location2 = v48;
               }
 
               else
@@ -293,8 +293,8 @@
                 LOBYTE(v28) = 0;
               }
 
-              v10 = v49;
-              v16 = v50;
+              contentEnvironment2 = v49;
+              dataSources2 = v50;
             }
 
             else
@@ -302,8 +302,8 @@
               LOBYTE(v28) = 0;
             }
 
-            v14 = v52;
-            v9 = v51;
+            layoutGuide2 = v52;
+            contentEnvironment = v51;
           }
 
           else
@@ -311,8 +311,8 @@
             LOBYTE(v28) = 0;
           }
 
-          v12 = v53;
-          v11 = v54;
+          contentSizeCategory2 = v53;
+          contentSizeCategory = v54;
         }
 
         else
@@ -344,11 +344,11 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(SWConfiguration *)self storeFront];
-  v5 = v4;
-  if (v4)
+  storeFront = [(SWConfiguration *)self storeFront];
+  v5 = storeFront;
+  if (storeFront)
   {
-    v6 = v4;
+    v6 = storeFront;
   }
 
   else
@@ -358,14 +358,14 @@
 
   [v3 appendFormat:@"; storeFront: %@", v6];
 
-  v7 = [(SWConfiguration *)self locale];
-  [v3 appendFormat:@"; locale: %@", v7];
+  locale = [(SWConfiguration *)self locale];
+  [v3 appendFormat:@"; locale: %@", locale];
 
-  v8 = [(SWConfiguration *)self contentEnvironment];
-  v9 = v8;
-  if (v8)
+  contentEnvironment = [(SWConfiguration *)self contentEnvironment];
+  v9 = contentEnvironment;
+  if (contentEnvironment)
   {
-    v10 = v8;
+    v10 = contentEnvironment;
   }
 
   else
@@ -375,37 +375,37 @@
 
   [v3 appendFormat:@"; contentEnvironment: %@", v10];
 
-  v11 = [(SWConfiguration *)self contentSizeCategory];
-  [v3 appendFormat:@"; contentSizeCategory: %@", v11];
+  contentSizeCategory = [(SWConfiguration *)self contentSizeCategory];
+  [v3 appendFormat:@"; contentSizeCategory: %@", contentSizeCategory];
 
-  v12 = [(SWConfiguration *)self layoutGuide];
-  v13 = [v12 description];
+  layoutGuide = [(SWConfiguration *)self layoutGuide];
+  v13 = [layoutGuide description];
   [v3 appendFormat:@"; layoutGuide: %@", v13];
 
-  v14 = [(SWConfiguration *)self dataSources];
-  [v3 appendFormat:@"; dataSources: %@", v14];
+  dataSources = [(SWConfiguration *)self dataSources];
+  [v3 appendFormat:@"; dataSources: %@", dataSources];
 
-  v15 = [(SWConfiguration *)self location];
-  [v3 appendFormat:@"; location: %@", v15];
+  location = [(SWConfiguration *)self location];
+  [v3 appendFormat:@"; location: %@", location];
 
-  v16 = [(SWConfiguration *)self sourceURL];
-  [v3 appendFormat:@"; sourceURL: %@", v16];
+  sourceURL = [(SWConfiguration *)self sourceURL];
+  [v3 appendFormat:@"; sourceURL: %@", sourceURL];
 
-  v17 = [(SWConfiguration *)self systemVersion];
-  [v3 appendFormat:@"; systemVersion: %@", v17];
+  systemVersion = [(SWConfiguration *)self systemVersion];
+  [v3 appendFormat:@"; systemVersion: %@", systemVersion];
 
-  v18 = [(SWConfiguration *)self appVersion];
-  [v3 appendFormat:@"; appVersion: %@", v18];
+  appVersion = [(SWConfiguration *)self appVersion];
+  [v3 appendFormat:@"; appVersion: %@", appVersion];
 
-  v19 = [(SWConfiguration *)self activePictureInPictureURL];
-  [v3 appendFormat:@"; activePictureInPictureURL: %@", v19];
+  activePictureInPictureURL = [(SWConfiguration *)self activePictureInPictureURL];
+  [v3 appendFormat:@"; activePictureInPictureURL: %@", activePictureInPictureURL];
 
-  v20 = [(SWConfiguration *)self feedConfiguration];
-  [v3 appendFormat:@"; feedConfiguration: %@", v20];
+  feedConfiguration = [(SWConfiguration *)self feedConfiguration];
+  [v3 appendFormat:@"; feedConfiguration: %@", feedConfiguration];
 
   [v3 appendFormat:@"; supportsLiveActivities: %d", -[SWConfiguration supportsLiveActivities](self, "supportsLiveActivities")];
-  v21 = [(SWConfiguration *)self keyboardConfiguration];
-  [v3 appendFormat:@"; keyboardConfiguration: %@", v21];
+  keyboardConfiguration = [(SWConfiguration *)self keyboardConfiguration];
+  [v3 appendFormat:@"; keyboardConfiguration: %@", keyboardConfiguration];
 
   [v3 appendFormat:@"; networkStatus: %d", -[SWConfiguration networkStatus](self, "networkStatus")];
   [v3 appendFormat:@"; is24HourTime: %d", -[SWConfiguration is24HourTime](self, "is24HourTime")];

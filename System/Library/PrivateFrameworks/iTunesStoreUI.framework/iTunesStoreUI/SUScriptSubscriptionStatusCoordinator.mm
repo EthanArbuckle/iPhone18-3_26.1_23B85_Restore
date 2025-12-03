@@ -1,6 +1,6 @@
 @interface SUScriptSubscriptionStatusCoordinator
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (id)scriptAttributeKeys;
 - (void)invalidateLastKnownStatus;
@@ -10,33 +10,33 @@
 
 - (void)invalidateLastKnownStatus
 {
-  v2 = [(objc_class *)getICUserIdentityClass() autoupdatingActiveAccount];
-  v3 = [(objc_class *)getICMusicSubscriptionStatusMonitorClass() sharedMonitorForIdentity:v2];
+  autoupdatingActiveAccount = [(objc_class *)getICUserIdentityClass() autoupdatingActiveAccount];
+  v3 = [(objc_class *)getICMusicSubscriptionStatusMonitorClass() sharedMonitorForIdentity:autoupdatingActiveAccount];
 
   [v3 refreshSubscriptionStatus];
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_1 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptSubscriptionStatusCoordinator;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping, 1);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping, 1);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptSubscriptionStatusCoordinator;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -46,14 +46,14 @@
 {
   v4.receiver = self;
   v4.super_class = SUScriptSubscriptionStatusCoordinator;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_1 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_1 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping = sel_invalidateLastKnownStatus;
     unk_1EBF39CD0 = @"invalidateLastKnownStatus";

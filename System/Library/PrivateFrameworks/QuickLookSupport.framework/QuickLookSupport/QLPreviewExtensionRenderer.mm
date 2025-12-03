@@ -1,34 +1,34 @@
 @interface QLPreviewExtensionRenderer
-- (QLPreviewExtensionRenderer)initWithPreview:(id)a3;
+- (QLPreviewExtensionRenderer)initWithPreview:(id)preview;
 - (id)_failedToDrawError;
-- (void)drawInContextOfSize:(CGSize)a3 drawingBlock:(id)a4 completionHandler:(id)a5;
-- (void)drawInPDFContextOfSize:(CGSize)a3 drawingBlock:(id)a4 completionHandler:(id)a5;
+- (void)drawInContextOfSize:(CGSize)size drawingBlock:(id)block completionHandler:(id)handler;
+- (void)drawInPDFContextOfSize:(CGSize)size drawingBlock:(id)block completionHandler:(id)handler;
 @end
 
 @implementation QLPreviewExtensionRenderer
 
-- (QLPreviewExtensionRenderer)initWithPreview:(id)a3
+- (QLPreviewExtensionRenderer)initWithPreview:(id)preview
 {
-  v5 = a3;
+  previewCopy = preview;
   v9.receiver = self;
   v9.super_class = QLPreviewExtensionRenderer;
   v6 = [(QLPreviewExtensionRenderer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_preview, a3);
+    objc_storeStrong(&v6->_preview, preview);
   }
 
   return v7;
 }
 
-- (void)drawInContextOfSize:(CGSize)a3 drawingBlock:(id)a4 completionHandler:(id)a5
+- (void)drawInContextOfSize:(CGSize)size drawingBlock:(id)block completionHandler:(id)handler
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  height = size.height;
+  width = size.width;
+  blockCopy = block;
+  handlerCopy = handler;
+  if (!blockCopy)
   {
     v14 = extensionLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -63,12 +63,12 @@
 
 LABEL_13:
 
-    v13 = [(QLPreviewExtensionRenderer *)self _failedToDrawError];
+    _failedToDrawError = [(QLPreviewExtensionRenderer *)self _failedToDrawError];
     goto LABEL_14;
   }
 
-  v13 = v9[2](v9, v12);
-  if (!v13)
+  _failedToDrawError = blockCopy[2](blockCopy, v12);
+  if (!_failedToDrawError)
   {
     Data = CGBitmapContextGetData(v12);
     BytesPerRow = CGBitmapContextGetBytesPerRow(v12);
@@ -77,7 +77,7 @@ LABEL_13:
     v19 = dispatch_data_create(Data, v17, v18, *MEMORY[0x277D85CB8]);
 
     v20 = [objc_alloc(MEMORY[0x277CDAAB0]) initWithBitmapContext:v12];
-    v10[2](v10, v19, v20, 0);
+    handlerCopy[2](handlerCopy, v19, v20, 0);
     CGContextRelease(v12);
 
     goto LABEL_15;
@@ -85,23 +85,23 @@ LABEL_13:
 
   CGContextRelease(v12);
 LABEL_14:
-  (v10)[2](v10, 0, 0, v13);
+  (handlerCopy)[2](handlerCopy, 0, 0, _failedToDrawError);
 LABEL_15:
 }
 
-- (void)drawInPDFContextOfSize:(CGSize)a3 drawingBlock:(id)a4 completionHandler:(id)a5
+- (void)drawInPDFContextOfSize:(CGSize)size drawingBlock:(id)block completionHandler:(id)handler
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a4;
-  v10 = a5;
+  height = size.height;
+  width = size.width;
+  blockCopy = block;
+  handlerCopy = handler;
   v11 = extensionLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     [QLPreviewExtensionRenderer drawInPDFContextOfSize:v11 drawingBlock:? completionHandler:?];
   }
 
-  if (!v9)
+  if (!blockCopy)
   {
     v21 = extensionLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -122,13 +122,13 @@ LABEL_15:
 
 LABEL_15:
 
-    v13 = [(QLPreviewExtensionRenderer *)self _failedToDrawError];
-    v10[2](v10, 0, v13);
+    _failedToDrawError = [(QLPreviewExtensionRenderer *)self _failedToDrawError];
+    handlerCopy[2](handlerCopy, 0, _failedToDrawError);
     goto LABEL_27;
   }
 
   v12 = objc_opt_new();
-  v13 = v12;
+  _failedToDrawError = v12;
   if (!v12)
   {
     v22 = extensionLog();
@@ -151,8 +151,8 @@ LABEL_15:
 
 LABEL_20:
 
-    v18 = [(QLPreviewExtensionRenderer *)self _failedToDrawError];
-    v10[2](v10, 0, v18);
+    _failedToDrawError2 = [(QLPreviewExtensionRenderer *)self _failedToDrawError];
+    handlerCopy[2](handlerCopy, 0, _failedToDrawError2);
 LABEL_26:
 
     goto LABEL_27;
@@ -167,22 +167,22 @@ LABEL_26:
   {
     v17 = v16;
     CGPDFContextBeginPage(v16, 0);
-    v18 = v9[2](v9, v17);
+    _failedToDrawError2 = blockCopy[2](blockCopy, v17);
     CGPDFContextEndPage(v17);
     CGPDFContextClose(v17);
-    if (v18)
+    if (_failedToDrawError2)
     {
       v19 = 0;
-      v20 = v18;
+      v20 = _failedToDrawError2;
     }
 
     else
     {
-      v19 = v13;
+      v19 = _failedToDrawError;
       v20 = 0;
     }
 
-    (v10)[2](v10, v19, v20);
+    (handlerCopy)[2](handlerCopy, v19, v20);
     CGContextRelease(v17);
     CGDataConsumerRelease(v15);
     goto LABEL_26;
@@ -194,8 +194,8 @@ LABEL_26:
     [QLPreviewExtensionRenderer drawInPDFContextOfSize:? drawingBlock:? completionHandler:?];
   }
 
-  v24 = [(QLPreviewExtensionRenderer *)self _failedToDrawError];
-  v10[2](v10, 0, v24);
+  _failedToDrawError3 = [(QLPreviewExtensionRenderer *)self _failedToDrawError];
+  handlerCopy[2](handlerCopy, 0, _failedToDrawError3);
 
   CGDataConsumerRelease(v15);
 LABEL_27:

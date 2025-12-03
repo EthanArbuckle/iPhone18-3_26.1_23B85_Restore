@@ -1,8 +1,8 @@
 @interface CHUISControlInstanceToggle
 - (BOOL)state;
 - (CHUISControlIconView)iconView;
-- (CHUISControlInstanceToggle)initWithControl:(id)a3 contentType:(unint64_t)a4;
-- (CHUISControlInstanceToggle)initWithWidget:(id)a3;
+- (CHUISControlInstanceToggle)initWithControl:(id)control contentType:(unint64_t)type;
+- (CHUISControlInstanceToggle)initWithWidget:(id)widget;
 - (CHUISControlToggleViewModel)viewModel;
 - (UIColor)tintColor;
 @end
@@ -24,7 +24,7 @@
 
 - (UIColor)tintColor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CHUISControlInstanceToggle.tintColor.getter();
 
   return v3;
@@ -32,7 +32,7 @@
 
 - (BOOL)state
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CHUISControlInstanceToggle.state.getter();
 
   return v3 & 1;
@@ -52,20 +52,20 @@
   return v4;
 }
 
-- (CHUISControlInstanceToggle)initWithControl:(id)a3 contentType:(unint64_t)a4
+- (CHUISControlInstanceToggle)initWithControl:(id)control contentType:(unint64_t)type
 {
   v7 = objc_allocWithZone(MEMORY[0x1E6994270]);
-  v8 = a3;
-  v9 = [v7 initWithControl:v8 contentType:a4 hostIdentifier:0 configurationIdentifier:0];
+  controlCopy = control;
+  v9 = [v7 initWithControl:controlCopy contentType:type hostIdentifier:0 configurationIdentifier:0];
   v10 = [(CHUISControlInstanceToggle *)self initWithInstanceIdentity:v9];
 
   return v10;
 }
 
-- (CHUISControlInstanceToggle)initWithWidget:(id)a3
+- (CHUISControlInstanceToggle)initWithWidget:(id)widget
 {
-  v3 = a3;
-  v4 = sub_1D92E79C8(v3);
+  widgetCopy = widget;
+  v4 = sub_1D92E79C8(widgetCopy);
 
   return v4;
 }

@@ -1,14 +1,14 @@
 @interface WidgetGalleryViewController
-- (_TtC14CarPlayAssetUI27WidgetGalleryViewController)initWithCoder:(id)a3;
-- (_TtC14CarPlayAssetUI27WidgetGalleryViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC14CarPlayAssetUI27WidgetGalleryViewController)initWithCoder:(id)coder;
+- (_TtC14CarPlayAssetUI27WidgetGalleryViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation WidgetGalleryViewController
 
-- (_TtC14CarPlayAssetUI27WidgetGalleryViewController)initWithCoder:(id)a3
+- (_TtC14CarPlayAssetUI27WidgetGalleryViewController)initWithCoder:(id)coder
 {
   result = sub_242F05C60();
   __break(1u);
@@ -25,19 +25,19 @@
   [v2 bs:v3 addChildViewController:{v4.receiver, v4.super_class}];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_242E3522C(a3);
+  selfCopy = self;
+  sub_242E3522C(appear);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_242E35398();
 }
 
-- (_TtC14CarPlayAssetUI27WidgetGalleryViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC14CarPlayAssetUI27WidgetGalleryViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

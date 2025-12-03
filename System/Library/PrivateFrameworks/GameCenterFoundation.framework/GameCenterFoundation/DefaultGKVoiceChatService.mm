@@ -1,34 +1,34 @@
 @interface DefaultGKVoiceChatService
-- (BOOL)acceptCallID:(int64_t)a3 error:(id *)a4;
+- (BOOL)acceptCallID:(int64_t)d error:(id *)error;
 - (BOOL)isInputMeteringEnabled;
 - (BOOL)isMicrophoneMuted;
 - (BOOL)isOutputMeteringEnabled;
-- (BOOL)startVoiceChatWithParticipantID:(id)a3 error:(id *)a4;
+- (BOOL)startVoiceChatWithParticipantID:(id)d error:(id *)error;
 - (float)inputMeterLevel;
 - (float)outputMeterLevel;
 - (float)remoteParticipantVolume;
 - (id)getClient;
-- (void)denyCallID:(int64_t)a3;
-- (void)receivedData:(id)a3 fromParticipantID:(id)a4;
-- (void)setClient:(id)a3 gkVoiceChatService:(id)a4;
-- (void)setRemoteParticipantVolume:(float)a3;
-- (void)stopVoiceChatWithParticipantID:(id)a3;
+- (void)denyCallID:(int64_t)d;
+- (void)receivedData:(id)data fromParticipantID:(id)d;
+- (void)setClient:(id)client gkVoiceChatService:(id)service;
+- (void)setRemoteParticipantVolume:(float)volume;
+- (void)stopVoiceChatWithParticipantID:(id)d;
 @end
 
 @implementation DefaultGKVoiceChatService
 
 - (BOOL)isInputMeteringEnabled
 {
-  v2 = [(DefaultGKVoiceChatService *)self service];
-  v3 = [v2 isInputMeteringEnabled];
+  service = [(DefaultGKVoiceChatService *)self service];
+  isInputMeteringEnabled = [service isInputMeteringEnabled];
 
-  return v3;
+  return isInputMeteringEnabled;
 }
 
 - (float)inputMeterLevel
 {
-  v2 = [(DefaultGKVoiceChatService *)self service];
-  [v2 inputMeterLevel];
+  service = [(DefaultGKVoiceChatService *)self service];
+  [service inputMeterLevel];
   v4 = v3;
 
   return v4;
@@ -36,24 +36,24 @@
 
 - (BOOL)isMicrophoneMuted
 {
-  v2 = [(DefaultGKVoiceChatService *)self service];
-  v3 = [v2 isMicrophoneMuted];
+  service = [(DefaultGKVoiceChatService *)self service];
+  isMicrophoneMuted = [service isMicrophoneMuted];
 
-  return v3;
+  return isMicrophoneMuted;
 }
 
 - (BOOL)isOutputMeteringEnabled
 {
-  v2 = [(DefaultGKVoiceChatService *)self service];
-  v3 = [v2 isOutputMeteringEnabled];
+  service = [(DefaultGKVoiceChatService *)self service];
+  isOutputMeteringEnabled = [service isOutputMeteringEnabled];
 
-  return v3;
+  return isOutputMeteringEnabled;
 }
 
 - (float)outputMeterLevel
 {
-  v2 = [(DefaultGKVoiceChatService *)self service];
-  [v2 outputMeterLevel];
+  service = [(DefaultGKVoiceChatService *)self service];
+  [service outputMeterLevel];
   v4 = v3;
 
   return v4;
@@ -61,21 +61,21 @@
 
 - (float)remoteParticipantVolume
 {
-  v2 = [(DefaultGKVoiceChatService *)self service];
-  [v2 remoteParticipantVolume];
+  service = [(DefaultGKVoiceChatService *)self service];
+  [service remoteParticipantVolume];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setRemoteParticipantVolume:(float)a3
+- (void)setRemoteParticipantVolume:(float)volume
 {
-  v5 = [(DefaultGKVoiceChatService *)self service];
-  *&v4 = a3;
-  [v5 setRemoteParticipantVolume:v4];
+  service = [(DefaultGKVoiceChatService *)self service];
+  *&v4 = volume;
+  [service setRemoteParticipantVolume:v4];
 }
 
-- (BOOL)acceptCallID:(int64_t)a3 error:(id *)a4
+- (BOOL)acceptCallID:(int64_t)d error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
   v7 = os_log_GKGeneral;
@@ -88,50 +88,50 @@
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v9 = v7;
-    v10 = [(DefaultGKVoiceChatService *)self service];
+    service = [(DefaultGKVoiceChatService *)self service];
     v15 = 138412290;
-    v16 = v10;
+    v16 = service;
     _os_log_impl(&dword_227904000, v9, OS_LOG_TYPE_INFO, "[DefaultGKVoiceChatService] acceptCallID with %@", &v15, 0xCu);
   }
 
-  v11 = [(DefaultGKVoiceChatService *)self service];
-  v12 = [v11 acceptCallID:a3 error:a4];
+  service2 = [(DefaultGKVoiceChatService *)self service];
+  v12 = [service2 acceptCallID:d error:error];
 
   v13 = *MEMORY[0x277D85DE8];
   return v12;
 }
 
-- (void)denyCallID:(int64_t)a3
+- (void)denyCallID:(int64_t)d
 {
-  v4 = [(DefaultGKVoiceChatService *)self service];
-  [v4 denyCallID:a3];
+  service = [(DefaultGKVoiceChatService *)self service];
+  [service denyCallID:d];
 }
 
 - (id)getClient
 {
-  v2 = [(DefaultGKVoiceChatService *)self service];
-  v3 = [v2 client];
+  service = [(DefaultGKVoiceChatService *)self service];
+  client = [service client];
 
-  return v3;
+  return client;
 }
 
-- (void)receivedData:(id)a3 fromParticipantID:(id)a4
+- (void)receivedData:(id)data fromParticipantID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DefaultGKVoiceChatService *)self service];
-  [v8 receivedData:v7 fromParticipantID:v6];
+  dCopy = d;
+  dataCopy = data;
+  service = [(DefaultGKVoiceChatService *)self service];
+  [service receivedData:dataCopy fromParticipantID:dCopy];
 }
 
-- (void)setClient:(id)a3 gkVoiceChatService:(id)a4
+- (void)setClient:(id)client gkVoiceChatService:(id)service
 {
   v20 = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277D0C940];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 defaultVoiceChatService];
+  serviceCopy = service;
+  clientCopy = client;
+  defaultVoiceChatService = [v6 defaultVoiceChatService];
   service = self->_service;
-  self->_service = v9;
+  self->_service = defaultVoiceChatService;
 
   v11 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
@@ -143,25 +143,25 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v13 = v11;
-    v14 = [(DefaultGKVoiceChatService *)self service];
+    service = [(DefaultGKVoiceChatService *)self service];
     v18 = 138412290;
-    v19 = v14;
+    v19 = service;
     _os_log_impl(&dword_227904000, v13, OS_LOG_TYPE_INFO, "[DefaultGKVoiceChatService] initWithGKVoiceChatServicePrivate  = %@", &v18, 0xCu);
   }
 
-  v15 = [(DefaultGKVoiceChatService *)self service];
-  [v15 setWrapperService:v7];
+  service2 = [(DefaultGKVoiceChatService *)self service];
+  [service2 setWrapperService:serviceCopy];
 
-  v16 = [(DefaultGKVoiceChatService *)self service];
-  [v16 setClient:v8];
+  service3 = [(DefaultGKVoiceChatService *)self service];
+  [service3 setClient:clientCopy];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)startVoiceChatWithParticipantID:(id)a3 error:(id *)a4
+- (BOOL)startVoiceChatWithParticipantID:(id)d error:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   v7 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -172,26 +172,26 @@
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v9 = v7;
-    v10 = [(DefaultGKVoiceChatService *)self service];
+    service = [(DefaultGKVoiceChatService *)self service];
     v15 = 138412546;
-    v16 = v10;
+    v16 = service;
     v17 = 2112;
-    v18 = v6;
+    v18 = dCopy;
     _os_log_impl(&dword_227904000, v9, OS_LOG_TYPE_INFO, "[DefaultGKVoiceChatService] %@: startVoiceChatWithParticipantID with %@", &v15, 0x16u);
   }
 
-  v11 = [(DefaultGKVoiceChatService *)self service];
-  v12 = [v11 startVoiceChatWithParticipantID:v6 error:a4];
+  service2 = [(DefaultGKVoiceChatService *)self service];
+  v12 = [service2 startVoiceChatWithParticipantID:dCopy error:error];
 
   v13 = *MEMORY[0x277D85DE8];
   return v12;
 }
 
-- (void)stopVoiceChatWithParticipantID:(id)a3
+- (void)stopVoiceChatWithParticipantID:(id)d
 {
-  v4 = a3;
-  v5 = [(DefaultGKVoiceChatService *)self service];
-  [v5 stopVoiceChatWithParticipantID:v4];
+  dCopy = d;
+  service = [(DefaultGKVoiceChatService *)self service];
+  [service stopVoiceChatWithParticipantID:dCopy];
 }
 
 @end

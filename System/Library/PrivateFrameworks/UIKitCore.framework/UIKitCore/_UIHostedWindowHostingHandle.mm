@@ -1,40 +1,40 @@
 @interface _UIHostedWindowHostingHandle
-+ (_UIHostedWindowHostingHandle)hostedWindowHostingHandleWithContextID:(unsigned int)a3 rootLayerTransform:(CGAffineTransform *)a4 rootLayerFrame:(CGRect)a5;
++ (_UIHostedWindowHostingHandle)hostedWindowHostingHandleWithContextID:(unsigned int)d rootLayerTransform:(CGAffineTransform *)transform rootLayerFrame:(CGRect)frame;
 - (CGAffineTransform)rootLayerTransform;
 - (CGRect)rootLayerFrame;
-- (_UIHostedWindowHostingHandle)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_UIHostedWindowHostingHandle)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIHostedWindowHostingHandle
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   pid = self->_pid;
-  v5 = a3;
-  [v5 encodeInt32:pid forKey:@"pid"];
-  [v5 encodeInt32:self->_contextID forKey:@"contextID"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:pid forKey:@"pid"];
+  [coderCopy encodeInt32:self->_contextID forKey:@"contextID"];
   v6 = *&self->_rootLayerTransform.c;
   v7[0] = *&self->_rootLayerTransform.a;
   v7[1] = v6;
   v7[2] = *&self->_rootLayerTransform.tx;
-  [v5 encodeCGAffineTransform:v7 forKey:@"rootLayerTransform"];
-  [v5 encodeCGRect:@"rootLayerFrame" forKey:{self->_rootLayerFrame.origin.x, self->_rootLayerFrame.origin.y, self->_rootLayerFrame.size.width, self->_rootLayerFrame.size.height}];
+  [coderCopy encodeCGAffineTransform:v7 forKey:@"rootLayerTransform"];
+  [coderCopy encodeCGRect:@"rootLayerFrame" forKey:{self->_rootLayerFrame.origin.x, self->_rootLayerFrame.origin.y, self->_rootLayerFrame.size.width, self->_rootLayerFrame.size.height}];
 }
 
-- (_UIHostedWindowHostingHandle)initWithCoder:(id)a3
+- (_UIHostedWindowHostingHandle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = _UIHostedWindowHostingHandle;
   v5 = [(_UIHostedWindowHostingHandle *)&v15 init];
   if (v5)
   {
-    v5->_pid = [v4 decodeInt32ForKey:@"pid"];
-    v5->_contextID = [v4 decodeInt32ForKey:@"contextID"];
-    if (v4)
+    v5->_pid = [coderCopy decodeInt32ForKey:@"pid"];
+    v5->_contextID = [coderCopy decodeInt32ForKey:@"contextID"];
+    if (coderCopy)
     {
-      [v4 decodeCGAffineTransformForKey:@"rootLayerTransform"];
+      [coderCopy decodeCGAffineTransformForKey:@"rootLayerTransform"];
     }
 
     else
@@ -47,7 +47,7 @@
     *&v5->_rootLayerTransform.a = v12;
     *&v5->_rootLayerTransform.c = v13;
     *&v5->_rootLayerTransform.tx = v14;
-    [v4 decodeCGRectForKey:{@"rootLayerFrame", v12, v13, v14}];
+    [coderCopy decodeCGRectForKey:{@"rootLayerFrame", v12, v13, v14}];
     v5->_rootLayerFrame.origin.x = v6;
     v5->_rootLayerFrame.origin.y = v7;
     v5->_rootLayerFrame.size.width = v8;
@@ -58,18 +58,18 @@
   return v5;
 }
 
-+ (_UIHostedWindowHostingHandle)hostedWindowHostingHandleWithContextID:(unsigned int)a3 rootLayerTransform:(CGAffineTransform *)a4 rootLayerFrame:(CGRect)a5
++ (_UIHostedWindowHostingHandle)hostedWindowHostingHandleWithContextID:(unsigned int)d rootLayerTransform:(CGAffineTransform *)transform rootLayerFrame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v11 = objc_alloc_init(_UIHostedWindowHostingHandle);
   v11->_pid = getpid();
-  v11->_contextID = a3;
-  v13 = *&a4->c;
-  v12 = *&a4->tx;
-  *&v11->_rootLayerTransform.a = *&a4->a;
+  v11->_contextID = d;
+  v13 = *&transform->c;
+  v12 = *&transform->tx;
+  *&v11->_rootLayerTransform.a = *&transform->a;
   *&v11->_rootLayerTransform.c = v13;
   *&v11->_rootLayerTransform.tx = v12;
   v11->_rootLayerFrame.origin.x = x;

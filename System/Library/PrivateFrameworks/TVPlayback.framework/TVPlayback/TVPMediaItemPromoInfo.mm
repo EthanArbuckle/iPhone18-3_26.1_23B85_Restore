@@ -1,46 +1,46 @@
 @interface TVPMediaItemPromoInfo
 - (CGSize)_calculateImageSize;
 - (CGSize)expectedImageSize;
-- (TVPMediaItemPromoInfo)initWithTitleImageURL:(id)a3 originalTitleImageWidth:(double)a4 originalTitleImageHeight:(double)a5 title:(id)a6 genre:(id)a7 ratingDisplayName:(id)a8 ratingSystem:(id)a9 movieRuntime:(id)a10 canonicalId:(id)a11 isAddedToUpNext:(BOOL)a12 addToUpNextLabelString:(id)a13 addedToUpNextLabelString:(id)a14;
+- (TVPMediaItemPromoInfo)initWithTitleImageURL:(id)l originalTitleImageWidth:(double)width originalTitleImageHeight:(double)height title:(id)title genre:(id)genre ratingDisplayName:(id)name ratingSystem:(id)system movieRuntime:(id)self0 canonicalId:(id)self1 isAddedToUpNext:(BOOL)self2 addToUpNextLabelString:(id)self3 addedToUpNextLabelString:(id)self4;
 - (void)_loadImage;
-- (void)getTitleImageUsingCompletionHandler:(id)a3;
+- (void)getTitleImageUsingCompletionHandler:(id)handler;
 @end
 
 @implementation TVPMediaItemPromoInfo
 
-- (TVPMediaItemPromoInfo)initWithTitleImageURL:(id)a3 originalTitleImageWidth:(double)a4 originalTitleImageHeight:(double)a5 title:(id)a6 genre:(id)a7 ratingDisplayName:(id)a8 ratingSystem:(id)a9 movieRuntime:(id)a10 canonicalId:(id)a11 isAddedToUpNext:(BOOL)a12 addToUpNextLabelString:(id)a13 addedToUpNextLabelString:(id)a14
+- (TVPMediaItemPromoInfo)initWithTitleImageURL:(id)l originalTitleImageWidth:(double)width originalTitleImageHeight:(double)height title:(id)title genre:(id)genre ratingDisplayName:(id)name ratingSystem:(id)system movieRuntime:(id)self0 canonicalId:(id)self1 isAddedToUpNext:(BOOL)self2 addToUpNextLabelString:(id)self3 addedToUpNextLabelString:(id)self4
 {
-  v36 = a3;
-  obj = a6;
-  v23 = a6;
-  v33 = a7;
-  v24 = a7;
-  v38 = a8;
-  v34 = a9;
-  v37 = a9;
-  v35 = a10;
-  v25 = a10;
-  v26 = a11;
-  v27 = a13;
-  v28 = a14;
+  lCopy = l;
+  obj = title;
+  titleCopy = title;
+  genreCopy = genre;
+  genreCopy2 = genre;
+  nameCopy = name;
+  systemCopy = system;
+  systemCopy2 = system;
+  runtimeCopy = runtime;
+  runtimeCopy2 = runtime;
+  idCopy = id;
+  stringCopy = string;
+  labelStringCopy = labelString;
   v39.receiver = self;
   v39.super_class = TVPMediaItemPromoInfo;
   v29 = [(TVPMediaItemPromoInfo *)&v39 init];
   v30 = v29;
   if (v29)
   {
-    objc_storeStrong(&v29->_titleImageURLString, a3);
-    v30->_originalTitleImageWidth = a4;
-    v30->_originalTitleImageHeight = a5;
+    objc_storeStrong(&v29->_titleImageURLString, l);
+    v30->_originalTitleImageWidth = width;
+    v30->_originalTitleImageHeight = height;
     objc_storeStrong(&v30->_title, obj);
-    objc_storeStrong(&v30->_genre, v33);
-    objc_storeStrong(&v30->_ratingDisplayName, a8);
-    objc_storeStrong(&v30->_ratingSystem, v34);
-    objc_storeStrong(&v30->_movieRuntime, v35);
-    objc_storeStrong(&v30->_canonicalId, a11);
-    v30->_isAddedToUpNext = a12;
-    objc_storeStrong(&v30->_addToUpNextLabelString, a13);
-    objc_storeStrong(&v30->_addedToUpNextLabelString, a14);
+    objc_storeStrong(&v30->_genre, genreCopy);
+    objc_storeStrong(&v30->_ratingDisplayName, name);
+    objc_storeStrong(&v30->_ratingSystem, systemCopy);
+    objc_storeStrong(&v30->_movieRuntime, runtimeCopy);
+    objc_storeStrong(&v30->_canonicalId, id);
+    v30->_isAddedToUpNext = next;
+    objc_storeStrong(&v30->_addToUpNextLabelString, string);
+    objc_storeStrong(&v30->_addedToUpNextLabelString, labelString);
     *&v30->_promoViewWidth = xmmword_26CF4C4A0;
     [(TVPMediaItemPromoInfo *)v30 _loadImage];
   }
@@ -48,20 +48,20 @@
   return v30;
 }
 
-- (void)getTitleImageUsingCompletionHandler:(id)a3
+- (void)getTitleImageUsingCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v4 = [(TVPMediaItemPromoInfo *)self titleImage];
+  handlerCopy = handler;
+  titleImage = [(TVPMediaItemPromoInfo *)self titleImage];
 
-  if (v4)
+  if (titleImage)
   {
-    v5 = [(TVPMediaItemPromoInfo *)self titleImage];
-    v6[2](v6, v5);
+    titleImage2 = [(TVPMediaItemPromoInfo *)self titleImage];
+    handlerCopy[2](handlerCopy, titleImage2);
   }
 
   else
   {
-    [(TVPMediaItemPromoInfo *)self setImageCompletionHandler:v6];
+    [(TVPMediaItemPromoInfo *)self setImageCompletionHandler:handlerCopy];
   }
 }
 
@@ -72,13 +72,13 @@
   v6 = v5;
   [(TVPMediaItemPromoInfo *)self setExpectedImageSize:?];
   v7 = objc_alloc(MEMORY[0x277D6C498]);
-  v8 = [(TVPMediaItemPromoInfo *)self titleImageURLString];
-  v9 = [v7 initUrlWithProperties:v8 imageSize:0 focusSizeIncrease:@"png" cropCode:v4 urlFormat:v6, 0.0];
+  titleImageURLString = [(TVPMediaItemPromoInfo *)self titleImageURLString];
+  v9 = [v7 initUrlWithProperties:titleImageURLString imageSize:0 focusSizeIncrease:@"png" cropCode:v4 urlFormat:v6, 0.0];
 
   v10 = [MEMORY[0x277D6C4B0] imageURLWithDescription:v9];
   v11 = objc_alloc(MEMORY[0x277D6C490]);
-  v12 = [MEMORY[0x277D6C4A0] sharedInstance];
-  v13 = [v11 initWithObject:v10 imageLoader:v12 groupType:0];
+  mEMORY[0x277D6C4A0] = [MEMORY[0x277D6C4A0] sharedInstance];
+  v13 = [v11 initWithObject:v10 imageLoader:mEMORY[0x277D6C4A0] groupType:0];
 
   if (v13)
   {

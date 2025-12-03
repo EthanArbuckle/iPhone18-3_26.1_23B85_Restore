@@ -1,15 +1,15 @@
 @interface NTKAegirVistaEditOption
-+ (id)_orderedValuesForDevice:(id)a3;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_orderedValuesForDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)localizedName;
 @end
 
 @implementation NTKAegirVistaEditOption
 
-+ (id)_orderedValuesForDevice:(id)a3
++ (id)_orderedValuesForDevice:(id)device
 {
-  sub_9788(a1, a3);
+  sub_9788(self, device);
   v3 = qword_1A338;
 
   return v3;
@@ -34,16 +34,16 @@
   return v5;
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 0xA)
+  if (value > 0xA)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_14938 + a3);
+    return *(&off_14938 + value);
   }
 }
 

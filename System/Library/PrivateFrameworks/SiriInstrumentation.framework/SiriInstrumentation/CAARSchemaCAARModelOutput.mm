@@ -1,27 +1,27 @@
 @interface CAARSchemaCAARModelOutput
-- (BOOL)isEqual:(id)a3;
-- (CAARSchemaCAARModelOutput)initWithDictionary:(id)a3;
-- (CAARSchemaCAARModelOutput)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CAARSchemaCAARModelOutput)initWithDictionary:(id)dictionary;
+- (CAARSchemaCAARModelOutput)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addActionModelOutputs:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addActionModelOutputs:(id)outputs;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CAARSchemaCAARModelOutput
 
-- (CAARSchemaCAARModelOutput)initWithDictionary:(id)a3
+- (CAARSchemaCAARModelOutput)initWithDictionary:(id)dictionary
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = CAARSchemaCAARModelOutput;
   v5 = [(CAARSchemaCAARModelOutput *)&v21 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"actionModelOutputs"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"actionModelOutputs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -71,30 +71,30 @@
   return v5;
 }
 
-- (CAARSchemaCAARModelOutput)initWithJSON:(id)a3
+- (CAARSchemaCAARModelOutput)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CAARSchemaCAARModelOutput *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CAARSchemaCAARModelOutput *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CAARSchemaCAARModelOutput *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -108,10 +108,10 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_actionModelOutputs count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
@@ -131,16 +131,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -150,26 +150,26 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"actionModelOutputs"];
+    [dictionary setObject:array forKeyedSubscript:@"actionModelOutputs"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v13];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v13];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(CAARSchemaCAARModelOutput *)self actionModelOutputs];
-    v6 = [v4 actionModelOutputs];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    actionModelOutputs = [(CAARSchemaCAARModelOutput *)self actionModelOutputs];
+    actionModelOutputs2 = [equalCopy actionModelOutputs];
+    v7 = actionModelOutputs2;
+    if ((actionModelOutputs != 0) != (actionModelOutputs2 == 0))
     {
-      v8 = [(CAARSchemaCAARModelOutput *)self actionModelOutputs];
-      if (!v8)
+      actionModelOutputs3 = [(CAARSchemaCAARModelOutput *)self actionModelOutputs];
+      if (!actionModelOutputs3)
       {
 
 LABEL_10:
@@ -177,10 +177,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(CAARSchemaCAARModelOutput *)self actionModelOutputs];
-      v11 = [v4 actionModelOutputs];
-      v12 = [v10 isEqual:v11];
+      v9 = actionModelOutputs3;
+      actionModelOutputs4 = [(CAARSchemaCAARModelOutput *)self actionModelOutputs];
+      actionModelOutputs5 = [equalCopy actionModelOutputs];
+      v12 = [actionModelOutputs4 isEqual:actionModelOutputs5];
 
       if (v12)
       {
@@ -199,10 +199,10 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -235,32 +235,32 @@ LABEL_8:
   }
 }
 
-- (void)addActionModelOutputs:(id)a3
+- (void)addActionModelOutputs:(id)outputs
 {
-  v4 = a3;
+  outputsCopy = outputs;
   actionModelOutputs = self->_actionModelOutputs;
-  v8 = v4;
+  v8 = outputsCopy;
   if (!actionModelOutputs)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_actionModelOutputs;
-    self->_actionModelOutputs = v6;
+    self->_actionModelOutputs = array;
 
-    v4 = v8;
+    outputsCopy = v8;
     actionModelOutputs = self->_actionModelOutputs;
   }
 
-  [(NSArray *)actionModelOutputs addObject:v4];
+  [(NSArray *)actionModelOutputs addObject:outputsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = CAARSchemaCAARModelOutput;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(CAARSchemaCAARModelOutput *)self actionModelOutputs:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(CAARSchemaCAARModelOutput *)self setActionModelOutputs:v7];
 

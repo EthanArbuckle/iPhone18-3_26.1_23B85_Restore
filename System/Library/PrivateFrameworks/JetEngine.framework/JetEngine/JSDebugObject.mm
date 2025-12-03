@@ -7,7 +7,7 @@
 
 - (id)pollPoints
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AB4584F8();
 
   v3 = sub_1AB460934();
@@ -17,7 +17,7 @@
 
 - (void)enable
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AB4585F0();
 }
 

@@ -1,58 +1,58 @@
 @interface PKCreditInstallmentPlanPayment
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToInstallmentPlanPayment:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToInstallmentPlanPayment:(id)payment;
 - (BOOL)isPaid;
 - (NSString)localizedDisplay;
-- (PKCreditInstallmentPlanPayment)initWithCoder:(id)a3;
-- (PKCreditInstallmentPlanPayment)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKCreditInstallmentPlanPayment)initWithCoder:(id)coder;
+- (PKCreditInstallmentPlanPayment)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKCreditInstallmentPlanPayment
 
-- (PKCreditInstallmentPlanPayment)initWithDictionary:(id)a3
+- (PKCreditInstallmentPlanPayment)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = PKCreditInstallmentPlanPayment;
   v5 = [(PKCreditInstallmentPlanPayment *)&v27 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"identifier"];
+    v6 = [dictionaryCopy PKStringForKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 PKStringForKey:@"statementIdentifier"];
+    v8 = [dictionaryCopy PKStringForKey:@"statementIdentifier"];
     statementIdentifier = v5->_statementIdentifier;
     v5->_statementIdentifier = v8;
 
-    v10 = [v4 PKStringForKey:@"currencyCode"];
+    v10 = [dictionaryCopy PKStringForKey:@"currencyCode"];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v10;
 
-    v12 = [v4 PKDecimalNumberFromStringForKey:@"originalAmountDue"];
+    v12 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"originalAmountDue"];
     originalAmountDue = v5->_originalAmountDue;
     v5->_originalAmountDue = v12;
 
-    v14 = [v4 PKDecimalNumberFromStringForKey:@"amountDue"];
+    v14 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"amountDue"];
     amountDue = v5->_amountDue;
     v5->_amountDue = v14;
 
-    v16 = [v4 PKDecimalNumberFromStringForKey:@"amountPaid"];
+    v16 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"amountPaid"];
     amountPaid = v5->_amountPaid;
     v5->_amountPaid = v16;
 
-    v18 = [v4 PKDateForKey:@"dueDate"];
+    v18 = [dictionaryCopy PKDateForKey:@"dueDate"];
     dueDate = v5->_dueDate;
     v5->_dueDate = v18;
 
-    v20 = [v4 PKDateForKey:@"statementDate"];
+    v20 = [dictionaryCopy PKDateForKey:@"statementDate"];
     statementDate = v5->_statementDate;
     v5->_statementDate = v20;
 
-    v22 = [v4 PKArrayContaining:objc_opt_class() forKey:@"lineItems"];
+    v22 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"lineItems"];
     v23 = v22;
     if (v22)
     {
@@ -80,8 +80,8 @@ PKCreditInstallmentPlanLineItem *__53__PKCreditInstallmentPlanPayment_initWithDi
   {
     if (self->_amountDue)
     {
-      v3 = [MEMORY[0x1E696AB90] zero];
-      LOBYTE(amountPaid) = [(NSDecimalNumber *)amountPaid compare:v3]== NSOrderedDescending;
+      zero = [MEMORY[0x1E696AB90] zero];
+      LOBYTE(amountPaid) = [(NSDecimalNumber *)amountPaid compare:zero]== NSOrderedDescending;
     }
 
     else
@@ -113,33 +113,33 @@ PKCreditInstallmentPlanLineItem *__53__PKCreditInstallmentPlanPayment_initWithDi
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKCreditInstallmentPlanPayment *)self isEqualToInstallmentPlanPayment:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKCreditInstallmentPlanPayment *)self isEqualToInstallmentPlanPayment:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToInstallmentPlanPayment:(id)a3
+- (BOOL)isEqualToInstallmentPlanPayment:(id)payment
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  paymentCopy = payment;
+  v5 = paymentCopy;
+  if (!paymentCopy)
   {
     goto LABEL_20;
   }
 
-  v6 = v4[1];
+  v6 = paymentCopy[1];
   v7 = self->_identifier;
   v8 = v6;
   v9 = v8;
@@ -347,119 +347,119 @@ LABEL_21:
   return v6;
 }
 
-- (PKCreditInstallmentPlanPayment)initWithCoder:(id)a3
+- (PKCreditInstallmentPlanPayment)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v30.receiver = self;
   v30.super_class = PKCreditInstallmentPlanPayment;
   v5 = [(PKCreditInstallmentPlanPayment *)&v30 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"statementIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"statementIdentifier"];
     statementIdentifier = v5->_statementIdentifier;
     v5->_statementIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originalAmountDue"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originalAmountDue"];
     originalAmountDue = v5->_originalAmountDue;
     v5->_originalAmountDue = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amountDue"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amountDue"];
     amountDue = v5->_amountDue;
     v5->_amountDue = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amountPaid"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amountPaid"];
     amountPaid = v5->_amountPaid;
     v5->_amountPaid = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dueDate"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dueDate"];
     dueDate = v5->_dueDate;
     v5->_dueDate = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"statementDate"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"statementDate"];
     statementDate = v5->_statementDate;
     v5->_statementDate = v20;
 
     v22 = MEMORY[0x1E695DFD8];
     v23 = objc_opt_class();
     v24 = [v22 setWithObjects:{v23, objc_opt_class(), 0}];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"lineItems"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"lineItems"];
     lineItems = v5->_lineItems;
     v5->_lineItems = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"statement"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"statement"];
     statement = v5->_statement;
     v5->_statement = v27;
 
-    v5->_paymentNumber = [v4 decodeIntegerForKey:@"paymentNumber"];
-    v5->_paymentCount = [v4 decodeIntegerForKey:@"paymentCount"];
+    v5->_paymentNumber = [coderCopy decodeIntegerForKey:@"paymentNumber"];
+    v5->_paymentCount = [coderCopy decodeIntegerForKey:@"paymentCount"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_statementIdentifier forKey:@"statementIdentifier"];
-  [v5 encodeObject:self->_currencyCode forKey:@"currencyCode"];
-  [v5 encodeObject:self->_originalAmountDue forKey:@"originalAmountDue"];
-  [v5 encodeObject:self->_amountDue forKey:@"amountDue"];
-  [v5 encodeObject:self->_amountPaid forKey:@"amountPaid"];
-  [v5 encodeObject:self->_dueDate forKey:@"dueDate"];
-  [v5 encodeObject:self->_statementDate forKey:@"statementDate"];
-  [v5 encodeObject:self->_lineItems forKey:@"lineItems"];
-  [v5 encodeObject:self->_statement forKey:@"statement"];
-  [v5 encodeInteger:self->_paymentNumber forKey:@"paymentNumber"];
-  [v5 encodeInteger:self->_paymentCount forKey:@"paymentCount"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_statementIdentifier forKey:@"statementIdentifier"];
+  [coderCopy encodeObject:self->_currencyCode forKey:@"currencyCode"];
+  [coderCopy encodeObject:self->_originalAmountDue forKey:@"originalAmountDue"];
+  [coderCopy encodeObject:self->_amountDue forKey:@"amountDue"];
+  [coderCopy encodeObject:self->_amountPaid forKey:@"amountPaid"];
+  [coderCopy encodeObject:self->_dueDate forKey:@"dueDate"];
+  [coderCopy encodeObject:self->_statementDate forKey:@"statementDate"];
+  [coderCopy encodeObject:self->_lineItems forKey:@"lineItems"];
+  [coderCopy encodeObject:self->_statement forKey:@"statement"];
+  [coderCopy encodeInteger:self->_paymentNumber forKey:@"paymentNumber"];
+  [coderCopy encodeInteger:self->_paymentCount forKey:@"paymentCount"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_statementIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_statementIdentifier copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSString *)self->_currencyCode copyWithZone:a3];
+  v10 = [(NSString *)self->_currencyCode copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [(NSDecimalNumber *)self->_originalAmountDue copyWithZone:a3];
+  v12 = [(NSDecimalNumber *)self->_originalAmountDue copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
-  v14 = [(NSDecimalNumber *)self->_amountDue copyWithZone:a3];
+  v14 = [(NSDecimalNumber *)self->_amountDue copyWithZone:zone];
   v15 = v5[5];
   v5[5] = v14;
 
-  v16 = [(NSDecimalNumber *)self->_amountPaid copyWithZone:a3];
+  v16 = [(NSDecimalNumber *)self->_amountPaid copyWithZone:zone];
   v17 = v5[6];
   v5[6] = v16;
 
-  v18 = [(NSDate *)self->_dueDate copyWithZone:a3];
+  v18 = [(NSDate *)self->_dueDate copyWithZone:zone];
   v19 = v5[7];
   v5[7] = v18;
 
-  v20 = [(NSDate *)self->_statementDate copyWithZone:a3];
+  v20 = [(NSDate *)self->_statementDate copyWithZone:zone];
   v21 = v5[8];
   v5[8] = v20;
 
-  v22 = [(PKCreditAccountStatement *)self->_statement copyWithZone:a3];
+  v22 = [(PKCreditAccountStatement *)self->_statement copyWithZone:zone];
   v23 = v5[12];
   v5[12] = v22;
 
@@ -486,7 +486,7 @@ LABEL_21:
           objc_enumerationMutation(v25);
         }
 
-        v30 = [*(*(&v34 + 1) + 8 * v29) copyWithZone:{a3, v34}];
+        v30 = [*(*(&v34 + 1) + 8 * v29) copyWithZone:{zone, v34}];
         [v24 addObject:v30];
 
         ++v29;

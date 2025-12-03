@@ -1,49 +1,49 @@
 @interface MKFCKAirPlayAccessory
-+ (id)fetchWithLocalModel:(id)a3 context:(id)a4;
-- (BOOL)exportFromLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5;
-- (BOOL)importIntoLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5;
-- (BOOL)validateMinimumUserPrivilege:(id *)a3 error:(id *)a4;
-- (id)fetchLocalModelWithContext:(id)a3;
++ (id)fetchWithLocalModel:(id)model context:(id)context;
+- (BOOL)exportFromLocalModel:(id)model updatedProperties:(id)properties context:(id)context;
+- (BOOL)importIntoLocalModel:(id)model updatedProperties:(id)properties context:(id)context;
+- (BOOL)validateMinimumUserPrivilege:(id *)privilege error:(id *)error;
+- (id)fetchLocalModelWithContext:(id)context;
 @end
 
 @implementation MKFCKAirPlayAccessory
 
-+ (id)fetchWithLocalModel:(id)a3 context:(id)a4
++ (id)fetchWithLocalModel:(id)model context:(id)context
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___MKFCKAirPlayAccessory;
-  v4 = objc_msgSendSuper2(&v6, sel_fetchWithLocalModel_context_, a3, a4);
+  v4 = objc_msgSendSuper2(&v6, sel_fetchWithLocalModel_context_, model, context);
 
   return v4;
 }
 
-- (BOOL)exportFromLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5
+- (BOOL)exportFromLocalModel:(id)model updatedProperties:(id)properties context:(id)context
 {
   v6.receiver = self;
   v6.super_class = MKFCKAirPlayAccessory;
-  return [(MKFCKAccessory *)&v6 exportFromLocalModel:a3 updatedProperties:a4 context:a5];
+  return [(MKFCKAccessory *)&v6 exportFromLocalModel:model updatedProperties:properties context:context];
 }
 
-- (BOOL)importIntoLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5
+- (BOOL)importIntoLocalModel:(id)model updatedProperties:(id)properties context:(id)context
 {
   v6.receiver = self;
   v6.super_class = MKFCKAirPlayAccessory;
-  return [(MKFCKAccessory *)&v6 importIntoLocalModel:a3 updatedProperties:a4 context:a5];
+  return [(MKFCKAccessory *)&v6 importIntoLocalModel:model updatedProperties:properties context:context];
 }
 
-- (id)fetchLocalModelWithContext:(id)a3
+- (id)fetchLocalModelWithContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = MKFCKAirPlayAccessory;
-  v3 = [(MKFCKModel *)&v5 fetchLocalModelWithContext:a3];
+  v3 = [(MKFCKModel *)&v5 fetchLocalModelWithContext:context];
 
   return v3;
 }
 
-- (BOOL)validateMinimumUserPrivilege:(id *)a3 error:(id *)a4
+- (BOOL)validateMinimumUserPrivilege:(id *)privilege error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  if (-[MKFCKModel shouldSkipValidationDuringImport](self, "shouldSkipValidationDuringImport") || -[NSManagedObject hmd_validateNumber:key:error:](self, "hmd_validateNumber:key:error:", *a3, @"minimumUserPrivilege", a4) && [*a3 integerValue] < 4)
+  if (-[MKFCKModel shouldSkipValidationDuringImport](self, "shouldSkipValidationDuringImport") || -[NSManagedObject hmd_validateNumber:key:error:](self, "hmd_validateNumber:key:error:", *privilege, @"minimumUserPrivilege", error) && [*privilege integerValue] < 4)
   {
     result = 1;
   }
@@ -51,12 +51,12 @@
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = *a3;
+      v12 = *privilege;
       v16 = 138543874;
       v17 = v11;
       v18 = 2114;
@@ -67,12 +67,12 @@
     }
 
     objc_autoreleasePoolPop(v8);
-    if (a4)
+    if (error)
     {
-      v13 = [objc_opt_class() hmd_errorForInvalidValue:*a3 key:@"minimumUserPrivilege"];
+      v13 = [objc_opt_class() hmd_errorForInvalidValue:*privilege key:@"minimumUserPrivilege"];
       v14 = v13;
       result = 0;
-      *a4 = v13;
+      *error = v13;
     }
 
     else

@@ -3,51 +3,51 @@
 + (id)_titleFont;
 - (BOOL)shouldDisplayForEvent;
 - (BOOL)update;
-- (EKEventDetailOrganizerCell)initWithEvent:(id)a3 editable:(BOOL)a4 organizerOverride:(id)a5;
+- (EKEventDetailOrganizerCell)initWithEvent:(id)event editable:(BOOL)editable organizerOverride:(id)override;
 - (id)_organizerLabel;
 - (id)_organizerView;
 - (id)_titleView;
 - (void)_updateDisclosureIndicator;
-- (void)setHideDisclosureIndicator:(BOOL)a3;
+- (void)setHideDisclosureIndicator:(BOOL)indicator;
 @end
 
 @implementation EKEventDetailOrganizerCell
 
-- (EKEventDetailOrganizerCell)initWithEvent:(id)a3 editable:(BOOL)a4 organizerOverride:(id)a5
+- (EKEventDetailOrganizerCell)initWithEvent:(id)event editable:(BOOL)editable organizerOverride:(id)override
 {
-  v5 = a4;
-  v8 = a5;
+  editableCopy = editable;
+  overrideCopy = override;
   v68.receiver = self;
   v68.super_class = EKEventDetailOrganizerCell;
-  v9 = [(EKEventDetailCell *)&v68 initWithEvent:a3 editable:v5 style:0];
+  v9 = [(EKEventDetailCell *)&v68 initWithEvent:event editable:editableCopy style:0];
   organizerOverride = v9->_organizerOverride;
-  v9->_organizerOverride = v8;
-  v67 = v8;
+  v9->_organizerOverride = overrideCopy;
+  v67 = overrideCopy;
 
-  v11 = [(EKEventDetailOrganizerCell *)v9 _titleView];
-  v12 = [(EKEventDetailOrganizerCell *)v9 _organizerView];
-  v13 = [(EKEventDetailOrganizerCell *)v9 _organizerLabel];
-  v14 = [(EKEventDetailOrganizerCell *)v9 contentView];
-  [v14 addSubview:v11];
+  _titleView = [(EKEventDetailOrganizerCell *)v9 _titleView];
+  _organizerView = [(EKEventDetailOrganizerCell *)v9 _organizerView];
+  _organizerLabel = [(EKEventDetailOrganizerCell *)v9 _organizerLabel];
+  contentView = [(EKEventDetailOrganizerCell *)v9 contentView];
+  [contentView addSubview:_titleView];
 
-  v15 = [(EKEventDetailOrganizerCell *)v9 contentView];
-  [v15 addSubview:v13];
+  contentView2 = [(EKEventDetailOrganizerCell *)v9 contentView];
+  [contentView2 addSubview:_organizerLabel];
 
-  v16 = [(EKEventDetailOrganizerCell *)v9 contentView];
-  [v16 addSubview:v12];
+  contentView3 = [(EKEventDetailOrganizerCell *)v9 contentView];
+  [contentView3 addSubview:_organizerView];
 
-  v17 = v12;
-  v18 = _NSDictionaryOfVariableBindings(&cfstr_TitleAvatarNam.isa, v11, v12, v13, 0);
-  v19 = [MEMORY[0x1E695DF70] array];
+  v17 = _organizerView;
+  v18 = _NSDictionaryOfVariableBindings(&cfstr_TitleAvatarNam.isa, _titleView, _organizerView, _organizerLabel, 0);
+  array = [MEMORY[0x1E695DF70] array];
   v20 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|-[avatar(==37)]-(12)-[title]-|" options:0 metrics:0 views:v18];
-  [v19 addObjectsFromArray:v20];
+  [array addObjectsFromArray:v20];
 
   v66 = v18;
   v21 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|-[avatar(==37)]-(12)-[name]-|" options:0 metrics:0 views:v18];
-  [v19 addObjectsFromArray:v21];
+  [array addObjectsFromArray:v21];
 
   v22 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|-(>=0)-[avatar]-(>=0)-|" options:0 metrics:0 views:v18];
-  [v19 addObjectsFromArray:v22];
+  [array addObjectsFromArray:v22];
 
   v23 = +[EKEventDetailOrganizerCell _titleFont];
   [v23 _scaledValueForValue:25.0];
@@ -64,56 +64,56 @@
   CalRoundToScreenScale(v32);
   v34 = v33;
 
-  v35 = [v13 firstBaselineAnchor];
-  v36 = [v11 lastBaselineAnchor];
-  v37 = [v35 constraintEqualToAnchor:v36 constant:v30];
-  [v19 addObject:v37];
+  firstBaselineAnchor = [_organizerLabel firstBaselineAnchor];
+  lastBaselineAnchor = [_titleView lastBaselineAnchor];
+  v37 = [firstBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor constant:v30];
+  [array addObject:v37];
 
   v38 = objc_alloc_init(MEMORY[0x1E69DCC20]);
-  v39 = [(EKEventDetailOrganizerCell *)v9 contentView];
-  [v39 addLayoutGuide:v38];
+  contentView4 = [(EKEventDetailOrganizerCell *)v9 contentView];
+  [contentView4 addLayoutGuide:v38];
 
-  v40 = [v11 firstBaselineAnchor];
-  v41 = [v38 topAnchor];
-  v42 = [v40 constraintEqualToAnchor:v41 constant:v26];
-  [v19 addObject:v42];
+  firstBaselineAnchor2 = [_titleView firstBaselineAnchor];
+  topAnchor = [v38 topAnchor];
+  v42 = [firstBaselineAnchor2 constraintEqualToAnchor:topAnchor constant:v26];
+  [array addObject:v42];
 
-  v43 = [v38 bottomAnchor];
-  v44 = [v13 lastBaselineAnchor];
-  v45 = [v43 constraintEqualToAnchor:v44 constant:v34];
-  [v19 addObject:v45];
+  bottomAnchor = [v38 bottomAnchor];
+  lastBaselineAnchor2 = [_organizerLabel lastBaselineAnchor];
+  v45 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor2 constant:v34];
+  [array addObject:v45];
 
-  v46 = [v38 centerYAnchor];
-  v47 = [(EKEventDetailOrganizerCell *)v9 contentView];
-  v48 = [v47 centerYAnchor];
-  v49 = [v46 constraintEqualToAnchor:v48];
-  [v19 addObject:v49];
+  centerYAnchor = [v38 centerYAnchor];
+  contentView5 = [(EKEventDetailOrganizerCell *)v9 contentView];
+  centerYAnchor2 = [contentView5 centerYAnchor];
+  v49 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+  [array addObject:v49];
 
-  v50 = [v38 topAnchor];
-  v51 = [(EKEventDetailOrganizerCell *)v9 contentView];
-  v52 = [v51 topAnchor];
-  v53 = [v50 constraintGreaterThanOrEqualToAnchor:v52];
-  [v19 addObject:v53];
+  topAnchor2 = [v38 topAnchor];
+  contentView6 = [(EKEventDetailOrganizerCell *)v9 contentView];
+  topAnchor3 = [contentView6 topAnchor];
+  v53 = [topAnchor2 constraintGreaterThanOrEqualToAnchor:topAnchor3];
+  [array addObject:v53];
 
-  v54 = [v38 bottomAnchor];
-  v55 = [(EKEventDetailOrganizerCell *)v9 contentView];
-  v56 = [v55 bottomAnchor];
-  v57 = [v54 constraintLessThanOrEqualToAnchor:v56];
-  [v19 addObject:v57];
+  bottomAnchor2 = [v38 bottomAnchor];
+  contentView7 = [(EKEventDetailOrganizerCell *)v9 contentView];
+  bottomAnchor3 = [contentView7 bottomAnchor];
+  v57 = [bottomAnchor2 constraintLessThanOrEqualToAnchor:bottomAnchor3];
+  [array addObject:v57];
 
-  v58 = [v17 centerYAnchor];
-  v59 = [(EKEventDetailOrganizerCell *)v9 contentView];
-  v60 = [v59 centerYAnchor];
-  v61 = [v58 constraintEqualToAnchor:v60];
-  [v19 addObject:v61];
+  centerYAnchor3 = [v17 centerYAnchor];
+  contentView8 = [(EKEventDetailOrganizerCell *)v9 contentView];
+  centerYAnchor4 = [contentView8 centerYAnchor];
+  v61 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
+  [array addObject:v61];
 
-  v62 = [(EKEventDetailOrganizerCell *)v9 contentView];
-  v63 = [v62 heightAnchor];
-  v64 = [v63 constraintGreaterThanOrEqualToConstant:60.0];
-  [v19 addObject:v64];
+  contentView9 = [(EKEventDetailOrganizerCell *)v9 contentView];
+  heightAnchor = [contentView9 heightAnchor];
+  v64 = [heightAnchor constraintGreaterThanOrEqualToConstant:60.0];
+  [array addObject:v64];
 
   [(EKEventDetailOrganizerCell *)v9 update];
-  [MEMORY[0x1E696ACD8] activateConstraints:v19];
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
 
   return v9;
 }
@@ -144,9 +144,9 @@
 
 - (BOOL)shouldDisplayForEvent
 {
-  v3 = [(EKEvent *)self->super._event organizer];
-  v4 = v3;
-  v5 = v3 && ![v3 isCurrentUser] || self->_organizerOverride != 0;
+  organizer = [(EKEvent *)self->super._event organizer];
+  v4 = organizer;
+  v5 = organizer && ![organizer isCurrentUser] || self->_organizerOverride != 0;
 
   return v5;
 }
@@ -171,19 +171,19 @@
 
     v8 = [v5 localizedStringForKey:v7 value:&stru_1F4EF6790 table:0];
 
-    v9 = [(EKEventDetailOrganizerCell *)self _titleView];
-    [v9 setText:v8];
+    _titleView = [(EKEventDetailOrganizerCell *)self _titleView];
+    [_titleView setText:v8];
 
     v10 = +[EKEventDetailOrganizerCell _titleFont];
-    v11 = [(EKEventDetailOrganizerCell *)self _titleView];
-    [v11 setFont:v10];
+    _titleView2 = [(EKEventDetailOrganizerCell *)self _titleView];
+    [_titleView2 setFont:v10];
 
-    v12 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v13 = [(EKEventDetailOrganizerCell *)self _titleView];
-    [v13 setTextColor:v12];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    _titleView3 = [(EKEventDetailOrganizerCell *)self _titleView];
+    [_titleView3 setTextColor:secondaryLabelColor];
 
-    v14 = [(EKEventDetailOrganizerCell *)self textLabel];
-    [v14 setText:0];
+    textLabel = [(EKEventDetailOrganizerCell *)self textLabel];
+    [textLabel setText:0];
 
     organizerName = self->_organizerName;
     self->_organizerName = 0;
@@ -191,13 +191,13 @@
     v16 = self->_organizerOverride;
     if (v16)
     {
-      v17 = v16;
+      organizer = v16;
     }
 
     else
     {
-      v17 = [(EKEvent *)self->super._event organizer];
-      if (!v17)
+      organizer = [(EKEvent *)self->super._event organizer];
+      if (!organizer)
       {
 LABEL_15:
         [(EKEventDetailOrganizerCell *)self _updateDisclosureIndicator];
@@ -206,7 +206,7 @@ LABEL_15:
       }
     }
 
-    v18 = DisplayStringForIdentity(v17, 1, 0);
+    v18 = DisplayStringForIdentity(organizer, 1, 0);
     if ([v18 length])
     {
       v19 = v18;
@@ -225,42 +225,42 @@ LABEL_15:
     if ([(EKEvent *)self->super._event couldBeJunk])
     {
       v23 = objc_opt_new();
-      v24 = [(EKEventDetailOrganizerCell *)self _organizerView];
-      [v24 setContact:v23];
+      _organizerView = [(EKEventDetailOrganizerCell *)self _organizerView];
+      [_organizerView setContact:v23];
 
-      v25 = DisplayAddressForIdentity(v17);
-      v26 = [(EKEventDetailOrganizerCell *)self _organizerLabel];
-      [v26 setText:v25];
+      _organizerLabel2 = DisplayAddressForIdentity(organizer);
+      _organizerLabel = [(EKEventDetailOrganizerCell *)self _organizerLabel];
+      [_organizerLabel setText:_organizerLabel2];
     }
 
     else
     {
-      v27 = [(EKEventDetailOrganizerCell *)self _organizerView];
-      v28 = DisplayAddressForIdentity(v17);
-      [(EKIdentityProtocol *)v17 name];
+      _organizerView2 = [(EKEventDetailOrganizerCell *)self _organizerView];
+      v28 = DisplayAddressForIdentity(organizer);
+      [(EKIdentityProtocol *)organizer name];
       v39 = v3;
       v3 = v18;
       v30 = v29 = v8;
-      v31 = [(EKIdentityProtocol *)v17 firstName];
-      v32 = [(EKIdentityProtocol *)v17 lastName];
-      [v27 updateWithAddress:v28 fullName:v30 firstName:v31 lastName:v32];
+      firstName = [(EKIdentityProtocol *)organizer firstName];
+      lastName = [(EKIdentityProtocol *)organizer lastName];
+      [_organizerView2 updateWithAddress:v28 fullName:v30 firstName:firstName lastName:lastName];
 
       v8 = v29;
       v18 = v3;
       LOBYTE(v3) = v39;
 
       v33 = self->_organizerName;
-      v25 = [(EKEventDetailOrganizerCell *)self _organizerLabel];
-      [v25 setText:v33];
+      _organizerLabel2 = [(EKEventDetailOrganizerCell *)self _organizerLabel];
+      [_organizerLabel2 setText:v33];
     }
 
     v34 = +[EKEventDetailOrganizerCell _organizerFont];
-    v35 = [(EKEventDetailOrganizerCell *)self _organizerLabel];
-    [v35 setFont:v34];
+    _organizerLabel3 = [(EKEventDetailOrganizerCell *)self _organizerLabel];
+    [_organizerLabel3 setFont:v34];
 
-    v36 = [MEMORY[0x1E69DC888] labelColor];
-    v37 = [(EKEventDetailOrganizerCell *)self _organizerLabel];
-    [v37 setTextColor:v36];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    _organizerLabel4 = [(EKEventDetailOrganizerCell *)self _organizerLabel];
+    [_organizerLabel4 setTextColor:labelColor];
 
     goto LABEL_15;
   }
@@ -325,11 +325,11 @@ LABEL_15:
   [(EKEventDetailOrganizerCell *)self setAccessoryType:v3];
 }
 
-- (void)setHideDisclosureIndicator:(BOOL)a3
+- (void)setHideDisclosureIndicator:(BOOL)indicator
 {
-  if (self->_hideDisclosureIndicator != a3)
+  if (self->_hideDisclosureIndicator != indicator)
   {
-    self->_hideDisclosureIndicator = a3;
+    self->_hideDisclosureIndicator = indicator;
     [(EKEventDetailOrganizerCell *)self _updateDisclosureIndicator];
   }
 }

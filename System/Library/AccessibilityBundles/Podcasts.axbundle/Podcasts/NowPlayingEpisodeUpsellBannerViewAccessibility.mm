@@ -1,18 +1,18 @@
 @interface NowPlayingEpisodeUpsellBannerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityCustomActions;
 - (id)accessibilityLabel;
 @end
 
 @implementation NowPlayingEpisodeUpsellBannerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NowPlayingUI.NowPlayingEpisodeUpsellBannerView" isKindOfClass:@"PodcastsUI.EpisodeUpsellBannerView"];
-  [v3 validateClass:@"PodcastsUI.EpisodeUpsellBannerView" hasSwiftField:@"titleLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"PodcastsUI.EpisodeUpsellBannerView" hasInstanceMethod:@"accessibilitySubtitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PodcastsUI.EpisodeUpsellBannerView" hasInstanceMethod:@"closeButtonTapped" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NowPlayingUI.NowPlayingEpisodeUpsellBannerView" isKindOfClass:@"PodcastsUI.EpisodeUpsellBannerView"];
+  [validationsCopy validateClass:@"PodcastsUI.EpisodeUpsellBannerView" hasSwiftField:@"titleLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"PodcastsUI.EpisodeUpsellBannerView" hasInstanceMethod:@"accessibilitySubtitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PodcastsUI.EpisodeUpsellBannerView" hasInstanceMethod:@"closeButtonTapped" withFullSignature:{"v", 0}];
 }
 
 - (id)accessibilityLabel

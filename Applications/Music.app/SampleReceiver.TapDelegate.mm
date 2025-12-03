@@ -1,14 +1,14 @@
 @interface SampleReceiver.TapDelegate
 - (_TtCC9MusicCore14SampleReceiver11TapDelegate)init;
-- (void)processAudioTapDidReceiveAudioSamples:(void *)a3 numberOfSamples:(unsigned int)a4;
+- (void)processAudioTapDidReceiveAudioSamples:(void *)samples numberOfSamples:(unsigned int)ofSamples;
 @end
 
 @implementation SampleReceiver.TapDelegate
 
-- (void)processAudioTapDidReceiveAudioSamples:(void *)a3 numberOfSamples:(unsigned int)a4
+- (void)processAudioTapDidReceiveAudioSamples:(void *)samples numberOfSamples:(unsigned int)ofSamples
 {
-  v6 = self;
-  sub_100A765BC(a3, a4);
+  selfCopy = self;
+  sub_100A765BC(samples, ofSamples);
 }
 
 - (_TtCC9MusicCore14SampleReceiver11TapDelegate)init

@@ -1,19 +1,19 @@
 @interface GSDaemonProxySync
 + (id)proxy;
-- (GSDaemonProxySync)initWithXPCObject:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (GSDaemonProxySync)initWithXPCObject:(id)object;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (void)finalize;
-- (void)forwardInvocation:(id)a3;
-- (void)handleBoolResult:(BOOL)a3 error:(id)a4;
-- (void)handleObjResult:(id)a3 error:(id)a4;
+- (void)forwardInvocation:(id)invocation;
+- (void)handleBoolResult:(BOOL)result error:(id)error;
+- (void)handleObjResult:(id)result error:(id)error;
 @end
 
 @implementation GSDaemonProxySync
 
-- (GSDaemonProxySync)initWithXPCObject:(id)a3
+- (GSDaemonProxySync)initWithXPCObject:(id)object
 {
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
@@ -26,7 +26,7 @@
     v10[2] = sub_1000078F8;
     v10[3] = &unk_100040DC8;
     objc_copyWeak(&v11, &location);
-    v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v10];
+    v5 = [objectCopy synchronousRemoteObjectProxyWithErrorHandler:v10];
     target = self->_target;
     self->_target = v5;
 
@@ -79,20 +79,20 @@
   [(GSDaemonProxySync *)&v2 finalize];
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   target = self->_target;
   if (!target)
   {
     sub_10002636C();
   }
 
-  v6 = v4;
-  [(GSProtocol *)target forwardInvocation:v4];
+  v6 = invocationCopy;
+  [(GSProtocol *)target forwardInvocation:invocationCopy];
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   target = self->_target;
   if (!target)
@@ -100,15 +100,15 @@
     sub_100026398();
   }
 
-  return [(GSProtocol *)target methodSignatureForSelector:a3];
+  return [(GSProtocol *)target methodSignatureForSelector:selector];
 }
 
-- (void)handleBoolResult:(BOOL)a3 error:(id)a4
+- (void)handleBoolResult:(BOOL)result error:(id)error
 {
-  v4 = a3;
-  v6 = a4;
-  v9 = v6;
-  if (v4)
+  resultCopy = result;
+  errorCopy = error;
+  v9 = errorCopy;
+  if (resultCopy)
   {
     v7 = &__kCFBooleanTrue;
   }
@@ -118,25 +118,25 @@
     v7 = 0;
   }
 
-  if (v4)
+  if (resultCopy)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = v6;
+    v8 = errorCopy;
   }
 
   [(GSDaemonProxySync *)self setResult:v7];
   [(GSDaemonProxySync *)self setError:v8];
 }
 
-- (void)handleObjResult:(id)a3 error:(id)a4
+- (void)handleObjResult:(id)result error:(id)error
 {
-  v6 = a4;
-  [(GSDaemonProxySync *)self setResult:a3];
-  [(GSDaemonProxySync *)self setError:v6];
+  errorCopy = error;
+  [(GSDaemonProxySync *)self setResult:result];
+  [(GSDaemonProxySync *)self setError:errorCopy];
 }
 
 @end

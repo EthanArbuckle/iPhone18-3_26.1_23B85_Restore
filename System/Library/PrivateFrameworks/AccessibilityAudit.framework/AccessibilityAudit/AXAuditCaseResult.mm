@@ -3,8 +3,8 @@
 - (AXAuditCategoryResult)result;
 - (NSArray)auditIssues;
 - (id)description;
-- (void)addAuditIssue:(id)a3;
-- (void)setAuditIssues:(id)a3;
+- (void)addAuditIssue:(id)issue;
+- (void)setAuditIssues:(id)issues;
 @end
 
 @implementation AXAuditCaseResult
@@ -26,32 +26,32 @@
 
 - (NSArray)auditIssues
 {
-  v2 = [(AXAuditCaseResult *)self _mutableIssues];
-  v3 = [v2 copy];
+  _mutableIssues = [(AXAuditCaseResult *)self _mutableIssues];
+  v3 = [_mutableIssues copy];
 
   return v3;
 }
 
-- (void)setAuditIssues:(id)a3
+- (void)setAuditIssues:(id)issues
 {
-  v4 = [a3 mutableCopy];
+  v4 = [issues mutableCopy];
   [(AXAuditCaseResult *)self set_mutableIssues:v4];
 }
 
-- (void)addAuditIssue:(id)a3
+- (void)addAuditIssue:(id)issue
 {
-  v4 = a3;
-  if (v4)
+  issueCopy = issue;
+  if (issueCopy)
   {
-    v8 = v4;
-    if ([v4 issueClassification])
+    v8 = issueCopy;
+    if ([issueCopy issueClassification])
     {
-      v5 = [(AXAuditCaseResult *)self result];
-      v6 = [v8 foundLogMessage];
-      [v5 appendLog:v6];
+      result = [(AXAuditCaseResult *)self result];
+      foundLogMessage = [v8 foundLogMessage];
+      [result appendLog:foundLogMessage];
 
-      v7 = [(AXAuditCaseResult *)self _mutableIssues];
-      [v7 addObject:v8];
+      _mutableIssues = [(AXAuditCaseResult *)self _mutableIssues];
+      [_mutableIssues addObject:v8];
     }
   }
 
@@ -63,8 +63,8 @@
   v7.receiver = self;
   v7.super_class = AXAuditCaseResult;
   v3 = [(AXAuditCaseResult *)&v7 description];
-  v4 = [(AXAuditCaseResult *)self auditIssues];
-  v5 = [v3 stringByAppendingFormat:@"AuditIssues:%@", v4];
+  auditIssues = [(AXAuditCaseResult *)self auditIssues];
+  v5 = [v3 stringByAppendingFormat:@"AuditIssues:%@", auditIssues];
 
   return v5;
 }

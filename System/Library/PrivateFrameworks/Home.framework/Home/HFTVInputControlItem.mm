@@ -1,13 +1,13 @@
 @interface HFTVInputControlItem
-+ (id)_inputSourceValueComparatorForTelevisionProfile:(id)a3;
++ (id)_inputSourceValueComparatorForTelevisionProfile:(id)profile;
 + (id)inputCharacteristicTypes;
 + (id)readOnlyOptionalInputCharacteristicTypes;
-- (HFTVInputControlItem)initWithValueSource:(id)a3 characteristicOptions:(id)a4 displayResults:(id)a5;
-- (HFTVInputControlItem)initWithValueSource:(id)a3 displayResults:(id)a4;
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4;
+- (HFTVInputControlItem)initWithValueSource:(id)source characteristicOptions:(id)options displayResults:(id)results;
+- (HFTVInputControlItem)initWithValueSource:(id)source displayResults:(id)results;
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source;
 - (id)readValueAndPopulateStandardResults;
-- (id)valueForCharacteristicType:(id)a3 inBatchReadResponse:(id)a4;
-- (id)writeValue:(id)a3;
+- (id)valueForCharacteristicType:(id)type inBatchReadResponse:(id)response;
+- (id)writeValue:(id)value;
 @end
 
 @implementation HFTVInputControlItem
@@ -50,15 +50,15 @@ void __64__HFTVInputControlItem_readOnlyOptionalInputCharacteristicTypes__block_
   qword_280E03AC0 = v0;
 }
 
-+ (id)_inputSourceValueComparatorForTelevisionProfile:(id)a3
++ (id)_inputSourceValueComparatorForTelevisionProfile:(id)profile
 {
-  v3 = a3;
+  profileCopy = profile;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __72__HFTVInputControlItem__inputSourceValueComparatorForTelevisionProfile___block_invoke;
   aBlock[3] = &unk_277E00310;
-  v8 = v3;
-  v4 = v3;
+  v8 = profileCopy;
+  v4 = profileCopy;
   v5 = _Block_copy(aBlock);
 
   return v5;
@@ -83,43 +83,43 @@ uint64_t __72__HFTVInputControlItem__inputSourceValueComparatorForTelevisionProf
   return v10;
 }
 
-- (HFTVInputControlItem)initWithValueSource:(id)a3 characteristicOptions:(id)a4 displayResults:(id)a5
+- (HFTVInputControlItem)initWithValueSource:(id)source characteristicOptions:(id)options displayResults:(id)results
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v8 = NSStringFromSelector(sel_initWithValueSource_characteristicOptions_displayResults_);
-  [v7 handleFailureInMethod:a2 object:self file:@"HFTVInputControlItem.m" lineNumber:66 description:{@"%s is unavailable; use %@ instead", "-[HFTVInputControlItem initWithValueSource:characteristicOptions:displayResults:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFTVInputControlItem.m" lineNumber:66 description:{@"%s is unavailable; use %@ instead", "-[HFTVInputControlItem initWithValueSource:characteristicOptions:displayResults:]", v8}];
 
   return 0;
 }
 
-- (HFTVInputControlItem)initWithValueSource:(id)a3 displayResults:(id)a4
+- (HFTVInputControlItem)initWithValueSource:(id)source displayResults:(id)results
 {
   v17[2] = *MEMORY[0x277D85DE8];
   v16[0] = &unk_282524E58;
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() inputCharacteristicTypes];
+  resultsCopy = results;
+  sourceCopy = source;
+  inputCharacteristicTypes = [objc_opt_class() inputCharacteristicTypes];
   v16[1] = &unk_282524E70;
-  v17[0] = v8;
-  v9 = [objc_opt_class() readOnlyOptionalInputCharacteristicTypes];
-  v17[1] = v9;
+  v17[0] = inputCharacteristicTypes;
+  readOnlyOptionalInputCharacteristicTypes = [objc_opt_class() readOnlyOptionalInputCharacteristicTypes];
+  v17[1] = readOnlyOptionalInputCharacteristicTypes;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
 
   v11 = [[HFControlItemCharacteristicOptions alloc] initWithCharacteristicTypesByUsage:v10];
   v15.receiver = self;
   v15.super_class = HFTVInputControlItem;
-  v12 = [(HFControlItem *)&v15 initWithValueSource:v7 characteristicOptions:v11 displayResults:v6];
+  v12 = [(HFControlItem *)&v15 initWithValueSource:sourceCopy characteristicOptions:v11 displayResults:resultsCopy];
 
   v13 = *MEMORY[0x277D85DE8];
   return v12;
 }
 
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source
 {
-  v5 = a4;
+  sourceCopy = source;
   v6 = objc_alloc(objc_opt_class());
-  v7 = [(HFControlItem *)self displayResults];
-  v8 = [v6 initWithValueSource:v5 displayResults:v7];
+  displayResults = [(HFControlItem *)self displayResults];
+  v8 = [v6 initWithValueSource:sourceCopy displayResults:displayResults];
 
   [v8 copyLatestResultsFromItem:self];
   return v8;
@@ -147,19 +147,19 @@ uint64_t __57__HFTVInputControlItem_supportsItemRepresentingServices___block_inv
 {
   v10.receiver = self;
   v10.super_class = HFTVInputControlItem;
-  v2 = [(HFControlItem *)&v10 readValueAndPopulateStandardResults];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  readValueAndPopulateStandardResults = [(HFControlItem *)&v10 readValueAndPopulateStandardResults];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = _HFLocalizedStringWithDefaultValue(@"HFControlShortTitleInputSelection", @"HFControlShortTitleInputSelection", 1);
-  [v3 setObject:v4 forKeyedSubscript:@"title"];
+  [dictionary setObject:v4 forKeyedSubscript:@"title"];
 
-  [v3 setObject:&unk_282524E88 forKeyedSubscript:@"controlItemPurpose"];
+  [dictionary setObject:&unk_282524E88 forKeyedSubscript:@"controlItemPurpose"];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __59__HFTVInputControlItem_readValueAndPopulateStandardResults__block_invoke;
   v8[3] = &unk_277DF3FD0;
-  v9 = v3;
-  v5 = v3;
-  v6 = [v2 flatMap:v8];
+  v9 = dictionary;
+  v5 = dictionary;
+  v6 = [readValueAndPopulateStandardResults flatMap:v8];
 
   return v6;
 }
@@ -173,42 +173,42 @@ id __59__HFTVInputControlItem_readValueAndPopulateStandardResults__block_invoke(
   return v4;
 }
 
-- (id)valueForCharacteristicType:(id)a3 inBatchReadResponse:(id)a4
+- (id)valueForCharacteristicType:(id)type inBatchReadResponse:(id)response
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  responseCopy = response;
   v31.receiver = self;
   v31.super_class = HFTVInputControlItem;
-  v8 = [(HFControlItem *)&v31 valueForCharacteristicType:v6 inBatchReadResponse:v7];
-  if (![v6 isEqualToString:*MEMORY[0x277CCF8E8]] && (v9 = *MEMORY[0x277CCF750], objc_msgSend(v6, "isEqualToString:", *MEMORY[0x277CCF750])) && (objc_msgSend(v7, "responseForCharacteristicType:", v9), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "value"), v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
+  v8 = [(HFControlItem *)&v31 valueForCharacteristicType:typeCopy inBatchReadResponse:responseCopy];
+  if (![typeCopy isEqualToString:*MEMORY[0x277CCF8E8]] && (v9 = *MEMORY[0x277CCF750], objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x277CCF750])) && (objc_msgSend(responseCopy, "responseForCharacteristicType:", v9), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "value"), v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
   {
-    v12 = [v7 responseForCharacteristicType:v9];
+    v12 = [responseCopy responseForCharacteristicType:v9];
     v13 = [v12 valueWithExpectedClass:objc_opt_class()];
 
     if (v13)
     {
-      v14 = [v7 servicesWithValue:v13 forCharacteristicType:v9];
-      v15 = [v14 anyObject];
+      v14 = [responseCopy servicesWithValue:v13 forCharacteristicType:v9];
+      anyObject = [v14 anyObject];
 
-      v27 = v15;
-      v16 = [v15 accessory];
-      v17 = [v16 televisionProfiles];
-      v18 = [v17 firstObject];
+      v27 = anyObject;
+      accessory = [anyObject accessory];
+      televisionProfiles = [accessory televisionProfiles];
+      firstObject = [televisionProfiles firstObject];
 
-      v19 = [v15 hf_childServices];
-      v20 = [v19 na_filter:&__block_literal_global_37_6];
+      hf_childServices = [anyObject hf_childServices];
+      v20 = [hf_childServices na_filter:&__block_literal_global_37_6];
 
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __71__HFTVInputControlItem_valueForCharacteristicType_inBatchReadResponse___block_invoke_2;
       v28[3] = &unk_277DFB4C0;
       v29 = v13;
-      v30 = v7;
+      v30 = responseCopy;
       v21 = [v20 na_map:v28];
-      v22 = [v21 allObjects];
-      v23 = v18;
-      v24 = [objc_opt_class() _inputSourceValueComparatorForTelevisionProfile:v18];
-      v25 = [v22 sortedArrayUsingComparator:v24];
+      allObjects = [v21 allObjects];
+      v23 = firstObject;
+      v24 = [objc_opt_class() _inputSourceValueComparatorForTelevisionProfile:firstObject];
+      v25 = [allObjects sortedArrayUsingComparator:v24];
     }
 
     else
@@ -319,12 +319,12 @@ uint64_t __71__HFTVInputControlItem_valueForCharacteristicType_inBatchReadRespon
   return result;
 }
 
-- (id)writeValue:(id)a3
+- (id)writeValue:(id)value
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
-  v5 = v4;
+  v5 = valueCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -342,22 +342,22 @@ uint64_t __71__HFTVInputControlItem_valueForCharacteristicType_inBatchReadRespon
     v8 = [HFServiceTreeTypePredicate predicateWithServiceType:*MEMORY[0x277CD0F20]];
     v9 = [HFServiceStateCharacteristicRecipe alloc];
     v10 = [(HFServiceStateCharacteristicRecipe *)v9 initWithCharacteristicType:*MEMORY[0x277CCF750] servicePredicate:v8 required:1];
-    v11 = [(HFControlItem *)self valueSource];
+    valueSource = [(HFControlItem *)self valueSource];
     v17 = v10;
-    v12 = [v7 identifier];
-    v18[0] = v12;
+    identifier = [v7 identifier];
+    v18[0] = identifier;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
-    v14 = [v11 writeValuesForCharacteristicRecipes:v13];
+    futureWithNoResult = [valueSource writeValuesForCharacteristicRecipes:v13];
   }
 
   else
   {
-    v14 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return futureWithNoResult;
 }
 
 @end

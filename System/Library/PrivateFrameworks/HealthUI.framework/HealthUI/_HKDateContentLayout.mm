@@ -6,8 +6,8 @@
 - (int64_t)_viewCount;
 - (void)_invalidateLayout;
 - (void)layoutSubviews;
-- (void)setContentView:(id)a3;
-- (void)setDateView:(id)a3;
+- (void)setContentView:(id)view;
+- (void)setDateView:(id)view;
 @end
 
 @implementation _HKDateContentLayout
@@ -30,32 +30,32 @@
   return v3;
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v6 = a3;
+  viewCopy = view;
   if (([(UIView *)self->_contentView isEqual:?]& 1) == 0)
   {
-    v5 = [(_HKDateContentLayout *)self contentView];
-    [v5 removeFromSuperview];
+    contentView = [(_HKDateContentLayout *)self contentView];
+    [contentView removeFromSuperview];
 
-    objc_storeStrong(&self->_contentView, a3);
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:1];
-    [(_HKDateContentLayout *)self addSubview:v6];
+    objc_storeStrong(&self->_contentView, view);
+    [viewCopy setTranslatesAutoresizingMaskIntoConstraints:1];
+    [(_HKDateContentLayout *)self addSubview:viewCopy];
     [(_HKDateContentLayout *)self _invalidateLayout];
   }
 }
 
-- (void)setDateView:(id)a3
+- (void)setDateView:(id)view
 {
-  v6 = a3;
+  viewCopy = view;
   if (([(UIView *)self->_dateView isEqual:?]& 1) == 0)
   {
-    v5 = [(_HKDateContentLayout *)self dateView];
-    [v5 removeFromSuperview];
+    dateView = [(_HKDateContentLayout *)self dateView];
+    [dateView removeFromSuperview];
 
-    objc_storeStrong(&self->_dateView, a3);
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:1];
-    [(_HKDateContentLayout *)self addSubview:v6];
+    objc_storeStrong(&self->_dateView, view);
+    [viewCopy setTranslatesAutoresizingMaskIntoConstraints:1];
+    [(_HKDateContentLayout *)self addSubview:viewCopy];
     [(_HKDateContentLayout *)self _invalidateLayout];
   }
 }
@@ -80,38 +80,38 @@
   [(_HKDateContentLayout *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(_HKDateContentLayout *)self dateView];
+  dateView = [(_HKDateContentLayout *)self dateView];
   v8 = v6;
-  if (v7)
+  if (dateView)
   {
-    v9 = v7;
-    v10 = [(_HKDateContentLayout *)self dateView];
-    v11 = [v10 isHidden];
+    v9 = dateView;
+    dateView2 = [(_HKDateContentLayout *)self dateView];
+    isHidden = [dateView2 isHidden];
 
     v8 = v6;
-    if ((v11 & 1) == 0)
+    if ((isHidden & 1) == 0)
     {
-      v12 = [(_HKDateContentLayout *)self dateView];
-      [v12 systemLayoutSizeFittingSize:{v4, v6}];
+      dateView3 = [(_HKDateContentLayout *)self dateView];
+      [dateView3 systemLayoutSizeFittingSize:{v4, v6}];
       v14 = v13;
 
       v8 = v6 - v14;
-      v15 = [(_HKDateContentLayout *)self dateView];
-      [v15 setFrame:{0.0, v6 - v14, v4, v14}];
+      dateView4 = [(_HKDateContentLayout *)self dateView];
+      [dateView4 setFrame:{0.0, v6 - v14, v4, v14}];
     }
   }
 
-  v16 = [(_HKDateContentLayout *)self contentView];
-  if (v16)
+  contentView = [(_HKDateContentLayout *)self contentView];
+  if (contentView)
   {
-    v17 = v16;
-    v18 = [(_HKDateContentLayout *)self contentView];
-    v19 = [v18 isHidden];
+    v17 = contentView;
+    contentView2 = [(_HKDateContentLayout *)self contentView];
+    isHidden2 = [contentView2 isHidden];
 
-    if ((v19 & 1) == 0)
+    if ((isHidden2 & 1) == 0)
     {
-      v20 = [(_HKDateContentLayout *)self contentView];
-      [v20 systemLayoutSizeFittingSize:{v4, v6}];
+      contentView3 = [(_HKDateContentLayout *)self contentView];
+      [contentView3 systemLayoutSizeFittingSize:{v4, v6}];
       v22 = v21;
 
       if (v8 - v22 >= 0.0)
@@ -124,8 +124,8 @@
         v23 = 0.0;
       }
 
-      v24 = [(_HKDateContentLayout *)self contentView];
-      [v24 setFrame:{0.0, v23, v4, v8 - v23}];
+      contentView4 = [(_HKDateContentLayout *)self contentView];
+      [contentView4 setFrame:{0.0, v23, v4, v8 - v23}];
     }
   }
 }
@@ -141,12 +141,12 @@
 {
   [(_HKDateContentLayout *)self bounds];
   v4 = v3;
-  v5 = [(_HKDateContentLayout *)self dateView];
+  dateView = [(_HKDateContentLayout *)self dateView];
 
-  if (v5)
+  if (dateView)
   {
-    v6 = [(_HKDateContentLayout *)self dateView];
-    [v6 systemLayoutSizeFittingSize:{1.79769313e308, v4}];
+    dateView2 = [(_HKDateContentLayout *)self dateView];
+    [dateView2 systemLayoutSizeFittingSize:{1.79769313e308, v4}];
     v8 = v7;
 
     v9 = fmax(v8, 0.0);
@@ -157,12 +157,12 @@
     v9 = 0.0;
   }
 
-  v10 = [(_HKDateContentLayout *)self contentView];
+  contentView = [(_HKDateContentLayout *)self contentView];
 
-  if (v10)
+  if (contentView)
   {
-    v11 = [(_HKDateContentLayout *)self contentView];
-    [v11 systemLayoutSizeFittingSize:{1.79769313e308, v4}];
+    contentView2 = [(_HKDateContentLayout *)self contentView];
+    [contentView2 systemLayoutSizeFittingSize:{1.79769313e308, v4}];
     v13 = v12;
 
     if (v9 < v13)
@@ -184,35 +184,35 @@
 {
   [(_HKDateContentLayout *)self bounds];
   v4 = v3;
-  v5 = [(_HKDateContentLayout *)self dateView];
+  dateView = [(_HKDateContentLayout *)self dateView];
   v6 = 0.0;
-  if (v5)
+  if (dateView)
   {
-    v7 = v5;
-    v8 = [(_HKDateContentLayout *)self dateView];
-    v9 = [v8 isHidden];
+    v7 = dateView;
+    dateView2 = [(_HKDateContentLayout *)self dateView];
+    isHidden = [dateView2 isHidden];
 
-    if ((v9 & 1) == 0)
+    if ((isHidden & 1) == 0)
     {
-      v10 = [(_HKDateContentLayout *)self dateView];
-      [v10 systemLayoutSizeFittingSize:{v4, 1.79769313e308}];
+      dateView3 = [(_HKDateContentLayout *)self dateView];
+      [dateView3 systemLayoutSizeFittingSize:{v4, 1.79769313e308}];
       v12 = v11;
 
       v6 = v12 + 0.0;
     }
   }
 
-  v13 = [(_HKDateContentLayout *)self contentView];
-  if (v13)
+  contentView = [(_HKDateContentLayout *)self contentView];
+  if (contentView)
   {
-    v14 = v13;
-    v15 = [(_HKDateContentLayout *)self contentView];
-    v16 = [v15 isHidden];
+    v14 = contentView;
+    contentView2 = [(_HKDateContentLayout *)self contentView];
+    isHidden2 = [contentView2 isHidden];
 
-    if ((v16 & 1) == 0)
+    if ((isHidden2 & 1) == 0)
     {
-      v17 = [(_HKDateContentLayout *)self contentView];
-      [v17 systemLayoutSizeFittingSize:{v4, 1.79769313e308}];
+      contentView3 = [(_HKDateContentLayout *)self contentView];
+      [contentView3 systemLayoutSizeFittingSize:{v4, 1.79769313e308}];
       v19 = v18;
 
       v6 = v6 + v19;
@@ -230,26 +230,26 @@
 
 - (int64_t)_viewCount
 {
-  v3 = [(_HKDateContentLayout *)self dateView];
-  if (v3)
+  dateView = [(_HKDateContentLayout *)self dateView];
+  if (dateView)
   {
-    v4 = [(_HKDateContentLayout *)self dateView];
-    v5 = ~[v4 isHidden];
+    dateView2 = [(_HKDateContentLayout *)self dateView];
+    v5 = ~[dateView2 isHidden];
 
-    v3 = v5 & 1;
+    dateView = v5 & 1;
   }
 
-  v6 = [(_HKDateContentLayout *)self contentView];
-  if (v6)
+  contentView = [(_HKDateContentLayout *)self contentView];
+  if (contentView)
   {
-    v7 = v6;
-    v8 = [(_HKDateContentLayout *)self contentView];
-    v9 = ~[v8 isHidden];
+    v7 = contentView;
+    contentView2 = [(_HKDateContentLayout *)self contentView];
+    v9 = ~[contentView2 isHidden];
 
-    v3 += v9 & 1;
+    dateView += v9 & 1;
   }
 
-  return v3;
+  return dateView;
 }
 
 @end

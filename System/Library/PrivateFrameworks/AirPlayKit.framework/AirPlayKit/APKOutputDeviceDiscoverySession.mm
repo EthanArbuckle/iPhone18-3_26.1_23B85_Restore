@@ -33,22 +33,22 @@
 
 - (NSArray)availableOutputDevices
 {
-  v2 = [(APKOutputDeviceDiscoverySession *)self session];
-  v3 = [v2 availableOutputDevices];
+  session = [(APKOutputDeviceDiscoverySession *)self session];
+  availableOutputDevices = [session availableOutputDevices];
 
-  return v3;
+  return availableOutputDevices;
 }
 
 - (void)activate
 {
-  v2 = [(APKOutputDeviceDiscoverySession *)self session];
-  [v2 setDiscoveryMode:2];
+  session = [(APKOutputDeviceDiscoverySession *)self session];
+  [session setDiscoveryMode:2];
 }
 
 - (void)deactivate
 {
-  v2 = [(APKOutputDeviceDiscoverySession *)self session];
-  [v2 setDiscoveryMode:0];
+  session = [(APKOutputDeviceDiscoverySession *)self session];
+  [session setDiscoveryMode:0];
 }
 
 @end

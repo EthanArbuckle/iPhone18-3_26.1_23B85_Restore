@@ -1,14 +1,14 @@
 @interface CVNLPLexiconCursors
-- (CVNLPLexiconCursors)initWithSortedCursors:(void *)a3;
+- (CVNLPLexiconCursors)initWithSortedCursors:(void *)cursors;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)enumerateLexiconCursorsSortedByPriorityWithBlock:(id)a3;
+- (void)enumerateLexiconCursorsSortedByPriorityWithBlock:(id)block;
 @end
 
 @implementation CVNLPLexiconCursors
 
-- (CVNLPLexiconCursors)initWithSortedCursors:(void *)a3
+- (CVNLPLexiconCursors)initWithSortedCursors:(void *)cursors
 {
   v22.receiver = self;
   v22.super_class = CVNLPLexiconCursors;
@@ -17,7 +17,7 @@
   p_sortedCursors = &v4->_sortedCursors;
   if (v4)
   {
-    v7 = p_sortedCursors == a3;
+    v7 = p_sortedCursors == cursors;
   }
 
   else
@@ -27,9 +27,9 @@
 
   if (!v7)
   {
-    v8 = *a3;
-    v9 = *(a3 + 1);
-    v10 = &v9[-*a3];
+    v8 = *cursors;
+    v9 = *(cursors + 1);
+    v10 = &v9[-*cursors];
     cap = v4->_sortedCursors.__cap_;
     begin = v4->_sortedCursors.__begin_;
     if (cap - begin < v10)
@@ -109,9 +109,9 @@
   return v5;
 }
 
-- (void)enumerateLexiconCursorsSortedByPriorityWithBlock:(id)a3
+- (void)enumerateLexiconCursorsSortedByPriorityWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   begin = self->_sortedCursors.__begin_;
   end = self->_sortedCursors.__end_;
   if (begin != end)
@@ -121,7 +121,7 @@
     {
       v8 = *(v7 - 1);
       v10 = 0;
-      v4[2](v4, v8, &v10);
+      blockCopy[2](blockCopy, v8, &v10);
       if (v10)
       {
         break;
@@ -132,7 +132,7 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   __p = 0;
   v12 = 0;

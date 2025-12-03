@@ -1,13 +1,13 @@
 @interface SAFSEEvent
-+ (id)initWithFSEventString:(id)a3;
++ (id)initWithFSEventString:(id)string;
 @end
 
 @implementation SAFSEEvent
 
-+ (id)initWithFSEventString:(id)a3
++ (id)initWithFSEventString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 componentsSeparatedByString:@"/"];
+  stringCopy = string;
+  v4 = [stringCopy componentsSeparatedByString:@"/"];
   v5 = v4;
   if (!v4 || [v4 count] <= 8)
   {
@@ -43,23 +43,23 @@ LABEL_5:
   -[NSObject setPurgeableATime:](v6, "setPurgeableATime:", [v13 longLongValue]);
 
   v14 = [v5 objectAtIndexedSubscript:6];
-  v15 = [v14 longLongValue];
+  longLongValue = [v14 longLongValue];
 
   v16 = [v5 objectAtIndexedSubscript:7];
-  v17 = [v16 longLongValue];
+  longLongValue2 = [v16 longLongValue];
 
   v18 = [v5 objectAtIndexedSubscript:8];
   -[NSObject setSize:](v6, "setSize:", [v18 longLongValue]);
 
-  [v6 setUseState:v15];
-  [v6 setResidency:HIWORD(v15)];
-  v19 = __ROR8__(v17, 9);
+  [v6 setUseState:longLongValue];
+  [v6 setResidency:HIWORD(longLongValue)];
+  v19 = __ROR8__(longLongValue2, 9);
   if (v19 < 5 && ((0x17u >> v19) & 1) != 0)
   {
     v20 = dword_10004CD90[v19];
   }
 
-  else if (v17 == 0x8000)
+  else if (longLongValue2 == 0x8000)
   {
     v20 = 4;
   }

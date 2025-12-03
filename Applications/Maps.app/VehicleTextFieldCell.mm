@@ -1,5 +1,5 @@
 @interface VehicleTextFieldCell
-- (VehicleTextFieldCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (VehicleTextFieldCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_commonInit;
 @end
 
@@ -21,41 +21,41 @@
   [(UITextField *)self->_textField setFont:v6];
 
   [(UITextField *)self->_textField setClearButtonMode:3];
-  v7 = [(UITextField *)self->_textField rightView];
-  [v7 setAccessibilityIdentifier:@"RightView"];
+  rightView = [(UITextField *)self->_textField rightView];
+  [rightView setAccessibilityIdentifier:@"RightView"];
 
-  v8 = [(UITextField *)self->_textField leftView];
-  [v8 setAccessibilityIdentifier:@"LeftView"];
+  leftView = [(UITextField *)self->_textField leftView];
+  [leftView setAccessibilityIdentifier:@"LeftView"];
 
   [(VehicleTextFieldCell *)self addSubview:self->_textField];
-  v9 = [(VehicleTextFieldCell *)self contentView];
-  [v9 setUserInteractionEnabled:0];
+  contentView = [(VehicleTextFieldCell *)self contentView];
+  [contentView setUserInteractionEnabled:0];
 
-  v22 = [(UITextField *)self->_textField leadingAnchor];
-  v21 = [(VehicleTextFieldCell *)self leadingAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21 constant:16.0];
+  leadingAnchor = [(UITextField *)self->_textField leadingAnchor];
+  leadingAnchor2 = [(VehicleTextFieldCell *)self leadingAnchor];
+  v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v23[0] = v20;
-  v10 = [(UITextField *)self->_textField trailingAnchor];
-  v11 = [(VehicleTextFieldCell *)self trailingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11 constant:-16.0];
+  trailingAnchor = [(UITextField *)self->_textField trailingAnchor];
+  trailingAnchor2 = [(VehicleTextFieldCell *)self trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   v23[1] = v12;
-  v13 = [(UITextField *)self->_textField topAnchor];
-  v14 = [(VehicleTextFieldCell *)self topAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  topAnchor = [(UITextField *)self->_textField topAnchor];
+  topAnchor2 = [(VehicleTextFieldCell *)self topAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v23[2] = v15;
-  v16 = [(UITextField *)self->_textField bottomAnchor];
-  v17 = [(VehicleTextFieldCell *)self bottomAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  bottomAnchor = [(UITextField *)self->_textField bottomAnchor];
+  bottomAnchor2 = [(VehicleTextFieldCell *)self bottomAnchor];
+  v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v23[3] = v18;
   v19 = [NSArray arrayWithObjects:v23 count:4];
   [NSLayoutConstraint activateConstraints:v19];
 }
 
-- (VehicleTextFieldCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (VehicleTextFieldCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = VehicleTextFieldCell;
-  v4 = [(VehicleTextFieldCell *)&v7 initWithStyle:0 reuseIdentifier:a4];
+  v4 = [(VehicleTextFieldCell *)&v7 initWithStyle:0 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {

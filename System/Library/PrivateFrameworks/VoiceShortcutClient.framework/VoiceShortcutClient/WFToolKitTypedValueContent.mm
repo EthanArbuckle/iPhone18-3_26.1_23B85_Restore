@@ -1,46 +1,46 @@
 @interface WFToolKitTypedValueContent
-- (WFToolKitTypedValueContent)initWithCoder:(id)a3;
-- (WFToolKitTypedValueContent)initWithEncodedTypedValue:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (WFToolKitTypedValueContent)initWithCoder:(id)coder;
+- (WFToolKitTypedValueContent)initWithEncodedTypedValue:(id)value;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFToolKitTypedValueContent
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFToolKitTypedValueContent *)self encodedTypedValue];
-  [v4 encodeObject:v5 forKey:@"encodedTypedValue"];
+  coderCopy = coder;
+  encodedTypedValue = [(WFToolKitTypedValueContent *)self encodedTypedValue];
+  [coderCopy encodeObject:encodedTypedValue forKey:@"encodedTypedValue"];
 }
 
-- (WFToolKitTypedValueContent)initWithCoder:(id)a3
+- (WFToolKitTypedValueContent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"encodedTypedValue"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"encodedTypedValue"];
 
   if (v5)
   {
     self = [(WFToolKitTypedValueContent *)self initWithEncodedTypedValue:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (WFToolKitTypedValueContent)initWithEncodedTypedValue:(id)a3
+- (WFToolKitTypedValueContent)initWithEncodedTypedValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v10.receiver = self;
   v10.super_class = WFToolKitTypedValueContent;
   v5 = [(WFToolKitTypedValueContent *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [valueCopy copy];
     encodedTypedValue = v5->_encodedTypedValue;
     v5->_encodedTypedValue = v6;
 

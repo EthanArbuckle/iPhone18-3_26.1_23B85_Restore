@@ -1,25 +1,25 @@
 @interface _UIPreviewPresentationContainerView
 - (BOOL)shouldRasterizeForTransition;
-- (CGRect)_preferredPlatterRectForContainerRect:(CGRect)a3;
+- (CGRect)_preferredPlatterRectForContainerRect:(CGRect)rect;
 - (CGSize)_standardPreferredContentSize;
 - (CGSize)preferredContentSize;
-- (_UIPreviewPresentationContainerView)initWithFrame:(CGRect)a3;
+- (_UIPreviewPresentationContainerView)initWithFrame:(CGRect)frame;
 - (double)blurRadius;
 - (void)initPlatterViewsIfNeeded;
 - (void)layoutSubviews;
-- (void)setBlurRadius:(double)a3;
-- (void)setContentView:(id)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setShouldRasterizeForTransition:(BOOL)a3;
+- (void)setBlurRadius:(double)radius;
+- (void)setContentView:(id)view;
+- (void)setCornerRadius:(double)radius;
+- (void)setShouldRasterizeForTransition:(BOOL)transition;
 @end
 
 @implementation _UIPreviewPresentationContainerView
 
-- (_UIPreviewPresentationContainerView)initWithFrame:(CGRect)a3
+- (_UIPreviewPresentationContainerView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = _UIPreviewPresentationContainerView;
-  v3 = [(UIView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -30,60 +30,60 @@
   return v4;
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  if (contentView != v5)
+  if (contentView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(UIView *)contentView removeFromSuperview];
-    objc_storeStrong(&self->_contentView, a3);
-    v7 = [(_UIPreviewPresentationContainerView *)self contentTransformView];
-    [v7 addSubview:v8];
+    objc_storeStrong(&self->_contentView, view);
+    contentTransformView = [(_UIPreviewPresentationContainerView *)self contentTransformView];
+    [contentTransformView addSubview:v8];
 
     [(UIView *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
 - (double)blurRadius
 {
-  v2 = [(_UIPreviewPresentationContainerView *)self platterView];
-  [v2 blurRadius];
+  platterView = [(_UIPreviewPresentationContainerView *)self platterView];
+  [platterView blurRadius];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setBlurRadius:(double)a3
+- (void)setBlurRadius:(double)radius
 {
-  v4 = [(_UIPreviewPresentationContainerView *)self platterView];
-  [v4 setBlurRadius:a3];
+  platterView = [(_UIPreviewPresentationContainerView *)self platterView];
+  [platterView setBlurRadius:radius];
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(UIView *)self setNeedsLayout];
   }
 }
 
 - (BOOL)shouldRasterizeForTransition
 {
-  v2 = [(_UIPreviewPresentationContainerView *)self platterView];
-  v3 = [v2 shouldRasterizeForTransition];
+  platterView = [(_UIPreviewPresentationContainerView *)self platterView];
+  shouldRasterizeForTransition = [platterView shouldRasterizeForTransition];
 
-  return v3;
+  return shouldRasterizeForTransition;
 }
 
-- (void)setShouldRasterizeForTransition:(BOOL)a3
+- (void)setShouldRasterizeForTransition:(BOOL)transition
 {
-  v3 = a3;
-  v4 = [(_UIPreviewPresentationContainerView *)self platterView];
-  [v4 setShouldRasterizeForTransition:v3];
+  transitionCopy = transition;
+  platterView = [(_UIPreviewPresentationContainerView *)self platterView];
+  [platterView setShouldRasterizeForTransition:transitionCopy];
 }
 
 - (void)layoutSubviews
@@ -189,17 +189,17 @@ LABEL_16:
     v33 = MidY - v23 * 0.5;
   }
 
-  v36 = [(_UIPreviewPresentationContainerView *)self platterView];
-  [v36 setFrame:{v31, v33, v21, v23}];
+  platterView = [(_UIPreviewPresentationContainerView *)self platterView];
+  [platterView setFrame:{v31, v33, v21, v23}];
 
-  v37 = [(_UIPreviewPresentationContainerView *)self platterView];
-  [v37 bounds];
+  platterView2 = [(_UIPreviewPresentationContainerView *)self platterView];
+  [platterView2 bounds];
   v39 = v38;
   v41 = v40;
   v43 = v42;
   v45 = v44;
-  v46 = [(_UIPreviewPresentationContainerView *)self platterClippingView];
-  [v46 setFrame:{v39, v41, v43, v45}];
+  platterClippingView = [(_UIPreviewPresentationContainerView *)self platterClippingView];
+  [platterClippingView setFrame:{v39, v41, v43, v45}];
 
   v47 = 0.0;
   if (![(_UIPreviewPresentationContainerView *)self shouldLayoutForCommitPhase])
@@ -208,11 +208,11 @@ LABEL_16:
     v47 = v48;
   }
 
-  v49 = [(_UIPreviewPresentationContainerView *)self platterClippingView];
-  [v49 _setContinuousCornerRadius:v47];
+  platterClippingView2 = [(_UIPreviewPresentationContainerView *)self platterClippingView];
+  [platterClippingView2 _setContinuousCornerRadius:v47];
 
-  v50 = [(_UIPreviewPresentationContainerView *)self platterView];
-  [v50 bounds];
+  platterView3 = [(_UIPreviewPresentationContainerView *)self platterView];
+  [platterView3 bounds];
   v52 = v51 + -13.0;
   v54 = v53 + -36.0;
   v56 = v55 + 26.0;
@@ -227,28 +227,28 @@ LABEL_16:
   v60 = v97.origin.y;
   v61 = v97.size.width;
   v62 = v97.size.height;
-  v63 = [(_UIPreviewPresentationContainerView *)self platterShadowView];
-  [v63 setFrame:{v59, v60, v61, v62}];
+  platterShadowView = [(_UIPreviewPresentationContainerView *)self platterShadowView];
+  [platterShadowView setFrame:{v59, v60, v61, v62}];
 
-  v64 = [(_UIPreviewPresentationContainerView *)self platterClippingView];
-  [v64 bounds];
+  platterClippingView3 = [(_UIPreviewPresentationContainerView *)self platterClippingView];
+  [platterClippingView3 bounds];
   v66 = v65;
   v68 = v67;
   v70 = v69;
   v72 = v71;
 
-  v73 = [(_UIPreviewPresentationContainerView *)self contentTransformView];
+  contentTransformView = [(_UIPreviewPresentationContainerView *)self contentTransformView];
   v74 = *(MEMORY[0x1E695EFD0] + 16);
   *&v88.a = *MEMORY[0x1E695EFD0];
   *&v88.c = v74;
   *&v88.tx = *(MEMORY[0x1E695EFD0] + 32);
-  [v73 setTransform:&v88];
+  [contentTransformView setTransform:&v88];
 
-  v75 = [(_UIPreviewPresentationContainerView *)self contentTransformView];
-  [v75 setFrame:{v66, v68, v70, v72}];
+  contentTransformView2 = [(_UIPreviewPresentationContainerView *)self contentTransformView];
+  [contentTransformView2 setFrame:{v66, v68, v70, v72}];
 
-  v76 = [(_UIPreviewPresentationContainerView *)self contentView];
-  [v76 setFrame:{v86, v19, v85, v82}];
+  contentView = [(_UIPreviewPresentationContainerView *)self contentView];
+  [contentView setFrame:{v86, v19, v85, v82}];
 
   v98.origin.x = v66;
   v98.origin.y = v68;
@@ -263,17 +263,17 @@ LABEL_16:
   if (![(_UIPreviewPresentationContainerView *)self shouldLayoutForCommitPhase])
   {
     CGAffineTransformMakeScale(&v87, v77 / v78, v77 / v78);
-    v79 = [(_UIPreviewPresentationContainerView *)self contentTransformView];
+    contentTransformView3 = [(_UIPreviewPresentationContainerView *)self contentTransformView];
     v88 = v87;
-    [v79 setTransform:&v88];
+    [contentTransformView3 setTransform:&v88];
   }
 }
 
 - (void)initPlatterViewsIfNeeded
 {
-  v3 = [(_UIPreviewPresentationContainerView *)self platterView];
+  platterView = [(_UIPreviewPresentationContainerView *)self platterView];
 
-  if (!v3)
+  if (!platterView)
   {
     v4 = objc_alloc_init(_UIPreviewPresentationEffectView);
     [(UIView *)self bounds];
@@ -298,33 +298,33 @@ LABEL_16:
     [(UIView *)v9 setAnchorPoint:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
     [(_UIPreviewPresentationContainerView *)self setContentTransformView:v9];
 
-    v10 = [(_UIPreviewPresentationContainerView *)self platterClippingView];
-    v11 = [(_UIPreviewPresentationContainerView *)self contentTransformView];
-    [v10 addSubview:v11];
+    platterClippingView = [(_UIPreviewPresentationContainerView *)self platterClippingView];
+    contentTransformView = [(_UIPreviewPresentationContainerView *)self contentTransformView];
+    [platterClippingView addSubview:contentTransformView];
 
-    v12 = [(_UIPreviewPresentationContainerView *)self platterView];
-    v13 = [(_UIPreviewPresentationContainerView *)self platterClippingView];
-    [v12 addSubview:v13];
+    platterView2 = [(_UIPreviewPresentationContainerView *)self platterView];
+    platterClippingView2 = [(_UIPreviewPresentationContainerView *)self platterClippingView];
+    [platterView2 addSubview:platterClippingView2];
 
-    v14 = [(_UIPreviewPresentationContainerView *)self platterView];
-    v15 = [(_UIPreviewPresentationContainerView *)self platterShadowView];
-    v16 = [(_UIPreviewPresentationContainerView *)self platterClippingView];
-    [v14 insertSubview:v15 belowSubview:v16];
+    platterView3 = [(_UIPreviewPresentationContainerView *)self platterView];
+    platterShadowView = [(_UIPreviewPresentationContainerView *)self platterShadowView];
+    platterClippingView3 = [(_UIPreviewPresentationContainerView *)self platterClippingView];
+    [platterView3 insertSubview:platterShadowView belowSubview:platterClippingView3];
 
-    v17 = [(_UIPreviewPresentationContainerView *)self platterView];
-    [(UIView *)self addSubview:v17];
+    platterView4 = [(_UIPreviewPresentationContainerView *)self platterView];
+    [(UIView *)self addSubview:platterView4];
 
     [(_UIPreviewPresentationContainerView *)self setCornerRadius:13.0];
   }
 }
 
-- (CGRect)_preferredPlatterRectForContainerRect:(CGRect)a3
+- (CGRect)_preferredPlatterRectForContainerRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsEmpty(a3))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (CGRectIsEmpty(rect))
   {
     v7 = *MEMORY[0x1E695F058];
     v8 = *(MEMORY[0x1E695F058] + 8);

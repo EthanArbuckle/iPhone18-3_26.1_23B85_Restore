@@ -11,11 +11,11 @@
   v16 = 0u;
   v17 = 0u;
   v15 = 0u;
-  [a1 transform];
+  [self transform];
   memset(&v14, 0, sizeof(v14));
   CGAffineTransformMakeScale(&v14, 0.95, 0.95);
   v13 = v14;
-  [a1 setTransform:&v13];
+  [self setTransform:&v13];
   v5 = MEMORY[0x1E69DD250];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -23,7 +23,7 @@
   v11 = v16;
   v9[2] = __77__UIView_CKMessageAcknowledgmentAnimations__messageAcknowledgmentBounceView___block_invoke;
   v9[3] = &unk_1E72ECB00;
-  v9[4] = a1;
+  v9[4] = self;
   v12 = v17;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -37,19 +37,19 @@
 - (void)messageAcknowledgmentShrinkViewToPoint:()CKMessageAcknowledgmentAnimations completion:
 {
   v8 = a5;
-  [a1 frame];
+  [self frame];
   v10 = v9;
   v12 = v11;
-  [a1 frame];
+  [self frame];
   Width = CGRectGetWidth(v35);
-  [a1 frame];
+  [self frame];
   Height = CGRectGetHeight(v36);
   memset(&v34, 0, sizeof(v34));
-  v15 = [a1 layer];
-  v16 = v15;
-  if (v15)
+  layer = [self layer];
+  v16 = layer;
+  if (layer)
   {
-    [v15 transform];
+    [layer transform];
   }
 
   else
@@ -84,8 +84,8 @@
   v28 = v8;
   v21 = v8;
   [v20 setCompletionBlock:v27];
-  v22 = [a1 layer];
-  [v22 addAnimation:v17 forKey:@"transform"];
+  layer2 = [self layer];
+  [layer2 addAnimation:v17 forKey:@"transform"];
 
   v23 = MEMORY[0x1E6979518];
   v24 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
@@ -95,9 +95,9 @@
   [MEMORY[0x1E6979518] setDisableActions:0];
   [MEMORY[0x1E6979518] begin];
   v26 = v31;
-  v25 = [a1 layer];
+  layer3 = [self layer];
   a = v26;
-  [v25 setTransform:&a];
+  [layer3 setTransform:&a];
 
   [MEMORY[0x1E6979518] commit];
 }

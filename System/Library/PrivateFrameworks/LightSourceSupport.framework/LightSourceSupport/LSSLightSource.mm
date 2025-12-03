@@ -1,6 +1,6 @@
 @interface LSSLightSource
-- (LSSLightSource)initWithIntensity:(double)a3 angle:(double)a4 direction:(_LSSVec3)a5 orientation:(_LSSQuaternion)a6 timestamp:(double)a7;
-- (LSSLightSource)initWithSample:(id)a3;
+- (LSSLightSource)initWithIntensity:(double)intensity angle:(double)angle direction:(_LSSVec3)direction orientation:(_LSSQuaternion)orientation timestamp:(double)timestamp;
+- (LSSLightSource)initWithSample:(id)sample;
 - (_LSSQuaternion)orientation;
 - (_LSSVec3)direction;
 @end
@@ -18,35 +18,35 @@
   return result;
 }
 
-- (LSSLightSource)initWithIntensity:(double)a3 angle:(double)a4 direction:(_LSSVec3)a5 orientation:(_LSSQuaternion)a6 timestamp:(double)a7
+- (LSSLightSource)initWithIntensity:(double)intensity angle:(double)angle direction:(_LSSVec3)direction orientation:(_LSSQuaternion)orientation timestamp:(double)timestamp
 {
-  z = a5.z;
-  y = a5.y;
-  x = a5.x;
+  z = direction.z;
+  y = direction.y;
+  x = direction.x;
   v13.receiver = self;
   v13.super_class = LSSLightSource;
   result = [(LSSLightSource *)&v13 init];
   if (result)
   {
-    result->_angle = a4;
+    result->_angle = angle;
     result->_direction.x = x;
     result->_direction.y = y;
     result->_direction.z = z;
-    result->_orientation = a6;
-    result->_timestamp = a7;
-    result->_intensity = a3;
+    result->_orientation = orientation;
+    result->_timestamp = timestamp;
+    result->_intensity = intensity;
   }
 
   return result;
 }
 
-- (LSSLightSource)initWithSample:(id)a3
+- (LSSLightSource)initWithSample:(id)sample
 {
-  v3 = *(*&a3.var0 + 16);
-  v4 = *(*&a3.var0 + 32);
+  v3 = *(*&sample.var0 + 16);
+  v4 = *(*&sample.var0 + 32);
   v5 = vmulq_f64(v4, v4);
   v5.f64[0] = 1.0 / sqrt(v5.f64[0] + vaddvq_f64(vmulq_f64(v3, v3)));
-  return [(LSSLightSource *)self initWithIntensity:*(*&a3.var0 + 80) angle:LSSAngleFromLightDirection(&v7) direction:vmulq_n_f64(v3 orientation:v5.f64[0]) timestamp:vmulq_f64(v4, v5).f64[0], *(*&a3.var0 + 48), *(*&a3.var0 + 56), *(*&a3.var0 + 64), *(*&a3.var0 + 72), **&a3.var0];
+  return [(LSSLightSource *)self initWithIntensity:*(*&sample.var0 + 80) angle:LSSAngleFromLightDirection(&v7) direction:vmulq_n_f64(v3 orientation:v5.f64[0]) timestamp:vmulq_f64(v4, v5).f64[0], *(*&sample.var0 + 48), *(*&sample.var0 + 56), *(*&sample.var0 + 64), *(*&sample.var0 + 72), **&sample.var0];
 }
 
 - (_LSSQuaternion)orientation

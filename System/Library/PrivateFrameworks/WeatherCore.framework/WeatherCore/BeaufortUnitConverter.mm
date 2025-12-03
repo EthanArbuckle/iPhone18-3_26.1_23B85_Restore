@@ -1,13 +1,13 @@
 @interface BeaufortUnitConverter
-- (double)baseUnitValueFromValue:(double)a3;
+- (double)baseUnitValueFromValue:(double)value;
 @end
 
 @implementation BeaufortUnitConverter
 
-- (double)baseUnitValueFromValue:(double)a3
+- (double)baseUnitValueFromValue:(double)value
 {
-  v4 = self;
-  v5 = sub_1C95D4944(a3);
+  selfCopy = self;
+  v5 = sub_1C95D4944(value);
 
   return v5;
 }

@@ -1,27 +1,27 @@
 @interface MOThematicSummarizationUtility
 + (id)HKWorkoutActivityTypesNotEligibleForThematicSummary;
 + (id)POICategoriesEligibleForThematicSummary;
-- (MOThematicSummarizationUtility)initWithUniverse:(id)a3;
-- (id)clusteringParamsFor:(unint64_t)a3;
+- (MOThematicSummarizationUtility)initWithUniverse:(id)universe;
+- (id)clusteringParamsFor:(unint64_t)for;
 - (id)getClusteringParamsForCommonActivityThematicSummary;
 - (id)getClusteringParamsForCommonPlaceThematicSummary;
 - (id)getClusteringParamsForHolidayThematicSummary;
 - (id)getClusteringParamsForNotablePhotoSubjectThematicSummary;
 - (id)getClusteringParamsForSocialThematicSummary;
 - (id)getClusteringParamsForStateOfMindThematicSummary;
-- (id)inputPredicateFor:(unint64_t)a3;
-- (id)thematicSummarizationStringKeyFor:(unint64_t)a3;
-- (unint64_t)bundleSubtypeFor:(unint64_t)a3;
+- (id)inputPredicateFor:(unint64_t)for;
+- (id)thematicSummarizationStringKeyFor:(unint64_t)for;
+- (unint64_t)bundleSubtypeFor:(unint64_t)for;
 @end
 
 @implementation MOThematicSummarizationUtility
 
-- (MOThematicSummarizationUtility)initWithUniverse:(id)a3
+- (MOThematicSummarizationUtility)initWithUniverse:(id)universe
 {
-  v4 = a3;
+  universeCopy = universe;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [v4 getService:v6];
+  v7 = [universeCopy getService:v6];
 
   v25.receiver = self;
   v25.super_class = MOThematicSummarizationUtility;
@@ -30,31 +30,31 @@
   {
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = [v10 UTF8String];
+    uTF8String = [v10 UTF8String];
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v13 = dispatch_queue_create(v11, v12);
+    v13 = dispatch_queue_create(uTF8String, v12);
     queue = v8->_queue;
     v8->_queue = v13;
 
     objc_storeStrong(&v8->_configurationManager, v7);
     v15 = objc_opt_new();
-    v16 = [(MOThematicSummarizationUtility *)v8 getClusteringParamsForStateOfMindThematicSummary];
-    [v15 setObject:v16 forKeyedSubscript:@"thematicSummary_stateOfMind"];
+    getClusteringParamsForStateOfMindThematicSummary = [(MOThematicSummarizationUtility *)v8 getClusteringParamsForStateOfMindThematicSummary];
+    [v15 setObject:getClusteringParamsForStateOfMindThematicSummary forKeyedSubscript:@"thematicSummary_stateOfMind"];
 
-    v17 = [(MOThematicSummarizationUtility *)v8 getClusteringParamsForHolidayThematicSummary];
-    [v15 setObject:v17 forKeyedSubscript:@"thematicSummary_holiday"];
+    getClusteringParamsForHolidayThematicSummary = [(MOThematicSummarizationUtility *)v8 getClusteringParamsForHolidayThematicSummary];
+    [v15 setObject:getClusteringParamsForHolidayThematicSummary forKeyedSubscript:@"thematicSummary_holiday"];
 
-    v18 = [(MOThematicSummarizationUtility *)v8 getClusteringParamsForNotablePhotoSubjectThematicSummary];
-    [v15 setObject:v18 forKeyedSubscript:@"thematicSummary_notablePhotoSubject"];
+    getClusteringParamsForNotablePhotoSubjectThematicSummary = [(MOThematicSummarizationUtility *)v8 getClusteringParamsForNotablePhotoSubjectThematicSummary];
+    [v15 setObject:getClusteringParamsForNotablePhotoSubjectThematicSummary forKeyedSubscript:@"thematicSummary_notablePhotoSubject"];
 
-    v19 = [(MOThematicSummarizationUtility *)v8 getClusteringParamsForSocialThematicSummary];
-    [v15 setObject:v19 forKeyedSubscript:@"thematicSummary_social"];
+    getClusteringParamsForSocialThematicSummary = [(MOThematicSummarizationUtility *)v8 getClusteringParamsForSocialThematicSummary];
+    [v15 setObject:getClusteringParamsForSocialThematicSummary forKeyedSubscript:@"thematicSummary_social"];
 
-    v20 = [(MOThematicSummarizationUtility *)v8 getClusteringParamsForCommonActivityThematicSummary];
-    [v15 setObject:v20 forKeyedSubscript:@"thematicSummary_commonActivity"];
+    getClusteringParamsForCommonActivityThematicSummary = [(MOThematicSummarizationUtility *)v8 getClusteringParamsForCommonActivityThematicSummary];
+    [v15 setObject:getClusteringParamsForCommonActivityThematicSummary forKeyedSubscript:@"thematicSummary_commonActivity"];
 
-    v21 = [(MOThematicSummarizationUtility *)v8 getClusteringParamsForCommonPlaceThematicSummary];
-    [v15 setObject:v21 forKeyedSubscript:@"thematicSummary_commonPlace"];
+    getClusteringParamsForCommonPlaceThematicSummary = [(MOThematicSummarizationUtility *)v8 getClusteringParamsForCommonPlaceThematicSummary];
+    [v15 setObject:getClusteringParamsForCommonPlaceThematicSummary forKeyedSubscript:@"thematicSummary_commonPlace"];
 
     objc_storeStrong(&v8->_clusteringParamsDict, v15);
     v22 = _mo_log_facility_get_os_log(&MOLogFacilityThematicSummarization);
@@ -400,60 +400,60 @@
   return v9;
 }
 
-- (id)thematicSummarizationStringKeyFor:(unint64_t)a3
+- (id)thematicSummarizationStringKeyFor:(unint64_t)for
 {
-  if (a3 - 1 > 5)
+  if (for - 1 > 5)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *off_100336978[a3 - 1];
+    v4 = *off_100336978[for - 1];
   }
 
   return v4;
 }
 
-- (unint64_t)bundleSubtypeFor:(unint64_t)a3
+- (unint64_t)bundleSubtypeFor:(unint64_t)for
 {
-  if (a3 - 1 >= 6)
+  if (for - 1 >= 6)
   {
     return 0;
   }
 
   else
   {
-    return a3 + 1000;
+    return for + 1000;
   }
 }
 
-- (id)clusteringParamsFor:(unint64_t)a3
+- (id)clusteringParamsFor:(unint64_t)for
 {
-  if (a3 - 1 > 5)
+  if (for - 1 > 5)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSDictionary *)self->_clusteringParamsDict objectForKeyedSubscript:*off_100336978[a3 - 1], v3];
+    v5 = [(NSDictionary *)self->_clusteringParamsDict objectForKeyedSubscript:*off_100336978[for - 1], v3];
   }
 
   return v5;
 }
 
-- (id)inputPredicateFor:(unint64_t)a3
+- (id)inputPredicateFor:(unint64_t)for
 {
   v4 = objc_opt_new();
-  if (a3 - 1 > 5)
+  if (for - 1 > 5)
   {
     v6 = 0;
   }
 
   else
   {
-    v5 = [NSPredicate predicateWithBlock:off_1003369A8[a3 - 1]];
+    v5 = [NSPredicate predicateWithBlock:off_1003369A8[for - 1]];
 
     v6 = v5;
     v4 = v6;

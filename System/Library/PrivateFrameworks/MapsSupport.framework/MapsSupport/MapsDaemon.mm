@@ -4,7 +4,7 @@
 - (void)_main;
 - (void)_postDarwinNotification;
 - (void)_registerXPCActivities;
-- (void)mapsInstallStateDidChange:(BOOL)a3;
+- (void)mapsInstallStateDidChange:(BOOL)change;
 - (void)start;
 @end
 
@@ -27,8 +27,8 @@
 
   [(MDState *)self->_state setNotificationCenter:self->_notificationCenter];
   v9 = [MDGeoServicesServer alloc];
-  v10 = [(MDState *)self->_state notificationCenter];
-  v11 = [(MDGeoServicesServer *)v9 initWithNotificationCenter:v10];
+  notificationCenter = [(MDState *)self->_state notificationCenter];
+  v11 = [(MDGeoServicesServer *)v9 initWithNotificationCenter:notificationCenter];
   geoServicesServer = self->_geoServicesServer;
   self->_geoServicesServer = v11;
 
@@ -102,8 +102,8 @@
 
     [(MDBackgroundTaskRunner *)self->_taskRunner addTask:self->_announcementsManager];
     v5 = +[GEOCountryConfiguration sharedConfiguration];
-    v6 = [v5 countryCode];
-    v7 = [v6 isEqualToString:@"CN"];
+    countryCode = [v5 countryCode];
+    v7 = [countryCode isEqualToString:@"CN"];
 
     if ((v7 & 1) == 0)
     {
@@ -123,9 +123,9 @@ LABEL_12:
         return;
       }
 
-      v11 = [v9 identifier];
+      identifier = [v9 identifier];
       *buf = 138412290;
-      v17 = v11;
+      v17 = identifier;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Task already registered, skipping registration: %@", buf, 0xCu);
     }
 
@@ -139,7 +139,7 @@ LABEL_12:
       v12 = +[BGSystemTaskScheduler sharedScheduler];
       v15 = 0;
       v13 = [v12 submitTaskRequest:v10 error:&v15];
-      v11 = v15;
+      identifier = v15;
 
       if ((v13 & 1) == 0)
       {
@@ -147,7 +147,7 @@ LABEL_12:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v17 = v11;
+          v17 = identifier;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Failed to submit task with error: %@", buf, 0xCu);
         }
       }
@@ -157,9 +157,9 @@ LABEL_12:
   }
 }
 
-- (void)mapsInstallStateDidChange:(BOOL)a3
+- (void)mapsInstallStateDidChange:(BOOL)change
 {
-  if (a3)
+  if (change)
   {
 
     [(MapsDaemon *)self _registerXPCActivities];
@@ -175,18 +175,18 @@ LABEL_12:
 - (void)_adoptPersonalPersona
 {
   v2 = +[UMUserManager sharedManager];
-  v3 = [v2 isSharedIPad];
+  isSharedIPad = [v2 isSharedIPad];
 
-  if ((v3 & 1) == 0)
+  if ((isSharedIPad & 1) == 0)
   {
     v4 = +[UMUserManager sharedManager];
-    v5 = [v4 currentPersona];
+    currentPersona = [v4 currentPersona];
 
-    if (([v5 isPersonalPersona] & 1) == 0)
+    if (([currentPersona isPersonalPersona] & 1) == 0)
     {
       v6 = [UMUserPersonaAttributes personaAttributesForPersonaType:0];
-      v7 = [v6 userPersonaUniqueString];
-      v8 = [v5 generateAndRestorePersonaContextWithPersonaUniqueString:v7];
+      userPersonaUniqueString = [v6 userPersonaUniqueString];
+      v8 = [currentPersona generateAndRestorePersonaContextWithPersonaUniqueString:userPersonaUniqueString];
 
       if (v8)
       {

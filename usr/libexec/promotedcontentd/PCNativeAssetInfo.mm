@@ -1,28 +1,28 @@
 @interface PCNativeAssetInfo
-- (id)initWithAssetInfo:(id)a3;
+- (id)initWithAssetInfo:(id)info;
 @end
 
 @implementation PCNativeAssetInfo
 
-- (id)initWithAssetInfo:(id)a3
+- (id)initWithAssetInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = [(PCNativeAssetInfo *)self init];
   v6 = v5;
-  if (v4 && v5)
+  if (infoCopy && v5)
   {
-    -[PCNativeAssetInfo setContentType:](v5, "setContentType:", [v4 contentType]);
-    -[PCNativeAssetInfo setWidth:](v6, "setWidth:", [v4 width]);
-    -[PCNativeAssetInfo setHeight:](v6, "setHeight:", [v4 height]);
-    v7 = [v4 url];
+    -[PCNativeAssetInfo setContentType:](v5, "setContentType:", [infoCopy contentType]);
+    -[PCNativeAssetInfo setWidth:](v6, "setWidth:", [infoCopy width]);
+    -[PCNativeAssetInfo setHeight:](v6, "setHeight:", [infoCopy height]);
+    v7 = [infoCopy url];
     v8 = [NSURL URLWithString:v7];
     [(PCNativeAssetInfo *)v6 setUrl:v8];
 
-    [v4 length];
+    [infoCopy length];
     [(PCNativeAssetInfo *)v6 setLength:v9];
-    [v4 bitrate];
+    [infoCopy bitrate];
     [(PCNativeAssetInfo *)v6 setBitrate:?];
-    -[PCNativeAssetInfo setAutoloop:](v6, "setAutoloop:", [v4 autoloop]);
+    -[PCNativeAssetInfo setAutoloop:](v6, "setAutoloop:", [infoCopy autoloop]);
   }
 
   return v6;

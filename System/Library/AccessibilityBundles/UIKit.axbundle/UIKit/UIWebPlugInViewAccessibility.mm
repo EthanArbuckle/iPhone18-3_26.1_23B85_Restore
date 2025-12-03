@@ -6,7 +6,7 @@
 
 - (void)webPlugInStart
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = UIWebPlugInViewAccessibility;

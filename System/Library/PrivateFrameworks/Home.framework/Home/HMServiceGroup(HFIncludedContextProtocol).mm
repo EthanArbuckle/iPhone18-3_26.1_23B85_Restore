@@ -10,38 +10,38 @@
 
 - (uint64_t)hf_isOnForContextType:()HFIncludedContextProtocol
 {
-  v4 = [a1 services];
+  services = [self services];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__HMServiceGroup_HFIncludedContextProtocol__hf_isOnForContextType___block_invoke;
   v7[3] = &__block_descriptor_40_e19_B16__0__HMService_8l;
   v7[4] = a3;
-  v5 = [v4 na_any:v7];
+  v5 = [services na_any:v7];
 
   return v5;
 }
 
 - (uint64_t)hf_hasSetForContextType:()HFIncludedContextProtocol
 {
-  v4 = [a1 services];
+  services = [self services];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__HMServiceGroup_HFIncludedContextProtocol__hf_hasSetForContextType___block_invoke;
   v7[3] = &__block_descriptor_40_e19_B16__0__HMService_8l;
   v7[4] = a3;
-  v5 = [v4 na_any:v7];
+  v5 = [services na_any:v7];
 
   return v5;
 }
 
 - (uint64_t)hf_shouldBeOnForContextType:()HFIncludedContextProtocol
 {
-  v4 = a1;
+  selfCopy = self;
   if (a2 < 2)
   {
-    if (([a1 hf_isOnForContextType:a2] & 1) == 0)
+    if (([self hf_isOnForContextType:a2] & 1) == 0)
     {
-      a3 = [v4 hf_hasSetForContextType:a2] ^ 1;
+      a3 = [selfCopy hf_hasSetForContextType:a2] ^ 1;
       return a3 & 1;
     }
 
@@ -59,18 +59,18 @@
     return a3 & 1;
   }
 
-  if (![a1 hf_hasSetForContextType:3])
+  if (![self hf_hasSetForContextType:3])
   {
 LABEL_7:
     a3 = 1;
     return a3 & 1;
   }
 
-  a1 = v4;
+  self = selfCopy;
   v5 = 3;
 LABEL_9:
 
-  return [a1 hf_isOnForContextType:v5];
+  return [self hf_isOnForContextType:v5];
 }
 
 - (uint64_t)hf_shouldHideForContextType:()HFIncludedContextProtocol
@@ -80,13 +80,13 @@ LABEL_9:
     return 0;
   }
 
-  v3 = [a1 services];
+  services = [self services];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __73__HMServiceGroup_HFIncludedContextProtocol__hf_shouldHideForContextType___block_invoke;
   v6[3] = &__block_descriptor_40_e19_B16__0__HMService_8l;
   v6[4] = 1;
-  v4 = [v3 na_all:v6];
+  v4 = [services na_all:v6];
 
   return v4;
 }
@@ -98,7 +98,7 @@ LABEL_9:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v26 = a1;
+    selfCopy = self;
     v27 = 2080;
     v28 = "[HMServiceGroup(HFIncludedContextProtocol) hf_updateValue:forContextType:]";
     v29 = 1024;
@@ -108,13 +108,13 @@ LABEL_9:
     _os_log_impl(&dword_20D9BF000, v7, OS_LOG_TYPE_DEFAULT, "(%@:%s) Updating value to %{BOOL}d for context %lu", buf, 0x26u);
   }
 
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = [a1 services];
-  v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  services = [self services];
+  v10 = [services countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
     v11 = v10;
@@ -125,22 +125,22 @@ LABEL_9:
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(services);
         }
 
         v14 = [*(*(&v20 + 1) + 8 * i) hf_updateValue:a3 forContextType:a4];
-        [v8 addObject:v14];
+        [array addObject:v14];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v11 = [services countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v11);
   }
 
   v15 = MEMORY[0x277D2C900];
-  v16 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v17 = [v15 combineAllFutures:v8 ignoringErrors:0 scheduler:v16];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v17 = [v15 combineAllFutures:array ignoringErrors:0 scheduler:mainThreadScheduler];
 
   v18 = *MEMORY[0x277D85DE8];
 

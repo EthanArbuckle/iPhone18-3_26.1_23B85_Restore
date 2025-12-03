@@ -1,28 +1,28 @@
 @interface AMSDataMigratorOptions
-+ (id)_stringFromOptionsArray:(id)a3 atIndex:(unint64_t)a4;
-- (AMSDataMigratorOptions)initWithOptionsArray:(id)a3;
++ (id)_stringFromOptionsArray:(id)array atIndex:(unint64_t)index;
+- (AMSDataMigratorOptions)initWithOptionsArray:(id)array;
 - (NSArray)optionsArray;
 @end
 
 @implementation AMSDataMigratorOptions
 
-- (AMSDataMigratorOptions)initWithOptionsArray:(id)a3
+- (AMSDataMigratorOptions)initWithOptionsArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v12.receiver = self;
   v12.super_class = AMSDataMigratorOptions;
   v5 = [(AMSDataMigratorOptions *)&v12 init];
   if (v5)
   {
-    v6 = [AMSDataMigratorOptions _stringFromOptionsArray:v4 atIndex:0];
+    v6 = [AMSDataMigratorOptions _stringFromOptionsArray:arrayCopy atIndex:0];
     currentBuildVersion = v5->_currentBuildVersion;
     v5->_currentBuildVersion = v6;
 
-    v8 = [AMSDataMigratorOptions _stringFromOptionsArray:v4 atIndex:1];
+    v8 = [AMSDataMigratorOptions _stringFromOptionsArray:arrayCopy atIndex:1];
     previousBuildVersion = v5->_previousBuildVersion;
     v5->_previousBuildVersion = v8;
 
-    v10 = [AMSDataMigratorOptions _stringFromOptionsArray:v4 atIndex:2];
+    v10 = [AMSDataMigratorOptions _stringFromOptionsArray:arrayCopy atIndex:2];
     v5->_scenario = [v10 integerValue];
   }
 
@@ -32,11 +32,11 @@
 - (NSArray)optionsArray
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v3 = [(AMSDataMigratorOptions *)self currentBuildVersion];
-  v4 = v3;
-  if (v3)
+  currentBuildVersion = [(AMSDataMigratorOptions *)self currentBuildVersion];
+  v4 = currentBuildVersion;
+  if (currentBuildVersion)
   {
-    v5 = v3;
+    v5 = currentBuildVersion;
   }
 
   else
@@ -44,11 +44,11 @@
     v5 = &stru_1F071BA78;
   }
 
-  v6 = [(AMSDataMigratorOptions *)self previousBuildVersion];
-  v7 = v6;
-  if (v6)
+  previousBuildVersion = [(AMSDataMigratorOptions *)self previousBuildVersion];
+  v7 = previousBuildVersion;
+  if (previousBuildVersion)
   {
-    v8 = v6;
+    v8 = previousBuildVersion;
   }
 
   else
@@ -58,24 +58,24 @@
 
   v13[1] = v8;
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[AMSDataMigratorOptions scenario](self, "scenario")}];
-  v10 = [v9 stringValue];
-  v13[2] = v10;
+  stringValue = [v9 stringValue];
+  v13[2] = stringValue;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:3];
 
   return v11;
 }
 
-+ (id)_stringFromOptionsArray:(id)a3 atIndex:(unint64_t)a4
++ (id)_stringFromOptionsArray:(id)array atIndex:(unint64_t)index
 {
-  v5 = a3;
-  if ([v5 count] <= a4)
+  arrayCopy = array;
+  if ([arrayCopy count] <= index)
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = [v5 objectAtIndexedSubscript:a4];
+    v6 = [arrayCopy objectAtIndexedSubscript:index];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

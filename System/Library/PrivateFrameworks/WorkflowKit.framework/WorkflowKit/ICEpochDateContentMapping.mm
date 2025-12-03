@@ -1,19 +1,19 @@
 @interface ICEpochDateContentMapping
-- (void)getStringRepresentation:(id)a3 withInput:(id)a4 parameters:(id)a5;
+- (void)getStringRepresentation:(id)representation withInput:(id)input parameters:(id)parameters;
 @end
 
 @implementation ICEpochDateContentMapping
 
-- (void)getStringRepresentation:(id)a3 withInput:(id)a4 parameters:(id)a5
+- (void)getStringRepresentation:(id)representation withInput:(id)input parameters:(id)parameters
 {
-  v8 = a3;
+  representationCopy = representation;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __74__ICEpochDateContentMapping_getStringRepresentation_withInput_parameters___block_invoke;
   v10[3] = &unk_1E837DBF8;
-  v11 = v8;
-  v9 = v8;
-  [(WFInterchangeContentMapping *)self getContentCollection:v10 withInput:a4 parameters:a5];
+  v11 = representationCopy;
+  v9 = representationCopy;
+  [(WFInterchangeContentMapping *)self getContentCollection:v10 withInput:input parameters:parameters];
 }
 
 void __74__ICEpochDateContentMapping_getStringRepresentation_withInput_parameters___block_invoke(uint64_t a1, void *a2)

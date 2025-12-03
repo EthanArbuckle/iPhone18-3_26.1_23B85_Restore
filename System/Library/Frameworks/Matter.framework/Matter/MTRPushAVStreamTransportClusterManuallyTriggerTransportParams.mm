@@ -1,8 +1,8 @@
 @interface MTRPushAVStreamTransportClusterManuallyTriggerTransportParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRPushAVStreamTransportClusterManuallyTriggerTransportParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -38,26 +38,26 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams);
-  v5 = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self connectionID];
-  [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)v4 setConnectionID:v5];
+  connectionID = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self connectionID];
+  [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)v4 setConnectionID:connectionID];
 
-  v6 = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self activationReason];
-  [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)v4 setActivationReason:v6];
+  activationReason = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self activationReason];
+  [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)v4 setActivationReason:activationReason];
 
-  v7 = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self timeControl];
-  [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)v4 setTimeControl:v7];
+  timeControl = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self timeControl];
+  [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)v4 setTimeControl:timeControl];
 
-  v8 = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self userDefined];
-  [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)v4 setUserDefined:v8];
+  userDefined = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self userDefined];
+  [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)v4 setUserDefined:userDefined];
 
-  v9 = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self timedInvokeTimeoutMs];
-  [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)v4 setTimedInvokeTimeoutMs:v9];
+  timedInvokeTimeoutMs = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self timedInvokeTimeoutMs];
+  [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v10 = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self serverSideProcessingTimeout];
-  [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)v4 setServerSideProcessingTimeout:v10];
+  serverSideProcessingTimeout = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self serverSideProcessingTimeout];
+  [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -76,53 +76,53 @@
   return v10;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
-  v34 = 0;
-  v35 = 0;
+  unsignedShortValue = 0;
+  unsignedCharValue = 0;
   v36 = 0;
   v39 = 0;
   v33[0] = 0;
   v33[1] = 0;
   v32 = v33;
-  v5 = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self connectionID];
-  v34 = [v5 unsignedShortValue];
+  connectionID = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self connectionID];
+  unsignedShortValue = [connectionID unsignedShortValue];
 
-  v6 = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self activationReason];
-  v35 = [v6 unsignedCharValue];
+  activationReason = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self activationReason];
+  unsignedCharValue = [activationReason unsignedCharValue];
 
-  v7 = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self timeControl];
+  timeControl = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self timeControl];
 
-  if (v7)
+  if (timeControl)
   {
     v36 = 1;
     v37 = 0;
     v38 = 0;
-    v8 = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self timeControl];
-    v9 = [v8 initialDuration];
-    LOWORD(v37) = [v9 unsignedShortValue];
+    timeControl2 = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self timeControl];
+    initialDuration = [timeControl2 initialDuration];
+    LOWORD(v37) = [initialDuration unsignedShortValue];
 
-    v10 = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self timeControl];
-    v11 = [v10 augmentationDuration];
-    WORD1(v37) = [v11 unsignedShortValue];
+    timeControl3 = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self timeControl];
+    augmentationDuration = [timeControl3 augmentationDuration];
+    WORD1(v37) = [augmentationDuration unsignedShortValue];
 
-    v12 = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self timeControl];
-    v13 = [v12 maxDuration];
-    HIDWORD(v37) = [v13 unsignedIntValue];
+    timeControl4 = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self timeControl];
+    maxDuration = [timeControl4 maxDuration];
+    HIDWORD(v37) = [maxDuration unsignedIntValue];
 
-    v14 = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self timeControl];
-    v15 = [v14 blindDuration];
-    LOWORD(v38) = [v15 unsignedShortValue];
+    timeControl5 = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self timeControl];
+    blindDuration = [timeControl5 blindDuration];
+    LOWORD(v38) = [blindDuration unsignedShortValue];
   }
 
-  v16 = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self userDefined];
+  userDefined = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self userDefined];
 
-  if (v16)
+  if (userDefined)
   {
     v39 = 1;
     v40 = 0uLL;
-    v17 = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self userDefined];
-    sub_238DB6950(v26, [v17 bytes], objc_msgSend(v17, "length"));
+    userDefined2 = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self userDefined];
+    sub_238DB6950(v26, [userDefined2 bytes], objc_msgSend(userDefined2, "length"));
 
     v40 = v26[0];
   }
@@ -137,7 +137,7 @@
     v30 = 0;
     sub_238EA16C4(&v27, &v31, 0);
     sub_2393C7BF0(v26, &v27, 0xFFFFFFFF);
-    v18 = sub_238F24E60(&v34, v26, 0x100uLL);
+    v18 = sub_238F24E60(&unsignedShortValue, v26, 0x100uLL);
     v20 = v18;
     if (v18 || (v18 = sub_238DD2EFC(v26, &v31), v20 = v18, v18))
     {
@@ -146,8 +146,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v31);
-      v18 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v31);
+      v18 = sub_2393C7114(reader, 21, 256);
       v21 = v25;
       v20 = v18;
     }
@@ -175,19 +175,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRPushAVStreamTransportClusterManuallyTriggerTransportParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -198,7 +198,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x950F00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

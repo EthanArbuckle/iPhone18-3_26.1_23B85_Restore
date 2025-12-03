@@ -1,19 +1,19 @@
 @interface SUUIGiftCharity
-- (SUUIGiftCharity)initWithCharityDictionary:(id)a3;
+- (SUUIGiftCharity)initWithCharityDictionary:(id)dictionary;
 @end
 
 @implementation SUUIGiftCharity
 
-- (SUUIGiftCharity)initWithCharityDictionary:(id)a3
+- (SUUIGiftCharity)initWithCharityDictionary:(id)dictionary
 {
   v56 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v54.receiver = self;
   v54.super_class = SUUIGiftCharity;
   v5 = [(SUUIGiftCharity *)&v54 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"amountDisclaimer"];
+    v6 = [dictionaryCopy objectForKey:@"amountDisclaimer"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -22,7 +22,7 @@
       v5->_amountDisclaimer = v7;
     }
 
-    v9 = [v4 objectForKey:@"description"];
+    v9 = [dictionaryCopy objectForKey:@"description"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -32,7 +32,7 @@
       v5->_description = v10;
     }
 
-    v12 = [v4 objectForKey:@"id"];
+    v12 = [dictionaryCopy objectForKey:@"id"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -42,7 +42,7 @@
       v5->_identifier = v13;
     }
 
-    v15 = [v4 objectForKey:@"legalText"];
+    v15 = [dictionaryCopy objectForKey:@"legalText"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -52,7 +52,7 @@
       v5->_legalText = v16;
     }
 
-    v18 = [v4 objectForKey:@"legalText2"];
+    v18 = [dictionaryCopy objectForKey:@"legalText2"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -62,7 +62,7 @@
       v5->_legalText2 = v19;
     }
 
-    v21 = [v4 objectForKey:@"name"];
+    v21 = [dictionaryCopy objectForKey:@"name"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -72,15 +72,15 @@
       v5->_name = v22;
     }
 
-    v24 = [v4 objectForKey:@"logo"];
+    v24 = [dictionaryCopy objectForKey:@"logo"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v25 = [MEMORY[0x277D75418] currentDevice];
-      v26 = [v25 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v26 == 1)
+      if (userInterfaceIdiom == 1)
       {
         v27 = @"iPad";
       }
@@ -90,8 +90,8 @@
         v27 = @"iPhone";
       }
 
-      v28 = [MEMORY[0x277D759A0] mainScreen];
-      [v28 scale];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
       v30 = v29;
 
       if (v30 == 2.0)
@@ -99,8 +99,8 @@
         v27 = [(__CFString *)v27 stringByAppendingString:@"_2x"];
       }
 
-      v31 = [MEMORY[0x277D759A0] mainScreen];
-      [v31 scale];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 scale];
       v33 = v32;
 
       if (v33 == 3.0)
@@ -120,12 +120,12 @@
       }
     }
 
-    v38 = [v4 objectForKey:@"amounts"];
+    v38 = [dictionaryCopy objectForKey:@"amounts"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v49 = v4;
+      v49 = dictionaryCopy;
       v39 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v50 = 0u;
       v51 = 0u;
@@ -168,7 +168,7 @@
       amounts = v5->_amounts;
       v5->_amounts = v39;
 
-      v4 = v49;
+      dictionaryCopy = v49;
     }
   }
 

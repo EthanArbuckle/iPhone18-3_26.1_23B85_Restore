@@ -1,38 +1,38 @@
 @interface WBSParsecDFeedbackDispatcher
-- (BOOL)_rankingFeedback:(id)a3 isShallowEqual:(id)a4;
-- (WBSParsecDFeedbackDispatcher)initWithSession:(id)a3;
-- (id)_customFeedbackOfType:(unint64_t)a3 JSONDictionary:(id)a4;
-- (id)_takeStartSearchFeedbackForSearchOfType:(int64_t)a3 forQuery:(id)a4;
-- (void)_postFeedbackOnFeedbackQueue:(id)a3 forQueryID:(int64_t)a4;
-- (void)_postPendingVisibleResultsFeedbackEventsForQueryID:(int64_t)a3 queryString:(id)a4;
-- (void)_setStartSearchFeedback:(id)a3 forSearchOfType:(int64_t)a4 withQuery:(id)a5;
+- (BOOL)_rankingFeedback:(id)feedback isShallowEqual:(id)equal;
+- (WBSParsecDFeedbackDispatcher)initWithSession:(id)session;
+- (id)_customFeedbackOfType:(unint64_t)type JSONDictionary:(id)dictionary;
+- (id)_takeStartSearchFeedbackForSearchOfType:(int64_t)type forQuery:(id)query;
+- (void)_postFeedbackOnFeedbackQueue:(id)queue forQueryID:(int64_t)d;
+- (void)_postPendingVisibleResultsFeedbackEventsForQueryID:(int64_t)d queryString:(id)string;
+- (void)_setStartSearchFeedback:(id)feedback forSearchOfType:(int64_t)type withQuery:(id)query;
 - (void)dealloc;
-- (void)didBeginSearchOfType:(int64_t)a3 withQuery:(id)a4 urlString:(id)a5 endpoint:(unint64_t)a6;
-- (void)didDisplayCompletionListItems:(id)a3 forQuery:(id)a4 forEvent:(int64_t)a5;
-- (void)didGenerateCompletionListItemsWithRankingObserver:(id)a3 forQueryID:(int64_t)a4;
-- (void)didHideRepeatedlyIgnoredSiriSuggestedSiteWithFeedbackEvent:(id)a3;
-- (void)didRankSections:(id)a3 blendingDuration:(double)a4 feedbackForHiddenAndDuplicateResults:(id)a5 forQueryID:(int64_t)a6 rankingFeedbackConfiguration:(id)a7;
-- (void)didReceiveParsecResultsAfterTimeout:(id)a3;
-- (void)didReceiveResultsForQuery:(id)a3 searchType:(int64_t)a4;
-- (void)postFeedback:(id)a3 forQueryID:(int64_t)a4;
-- (void)searchViewAppearedBecauseOfEvent:(unint64_t)a3 isSafariReaderAvailable:(BOOL)a4 forQueryID:(int64_t)a5 usesLoweredSearchBar:(BOOL)a6;
-- (void)searchViewDisappearedBecauseOfEvent:(int64_t)a3 forQueryID:(int64_t)a4;
-- (void)sendClearInputFeedbackWithTriggerEvent:(unint64_t)a3 forQueryID:(int64_t)a4;
-- (void)sendNewTabFeedback:(BOOL)a3;
-- (void)triggeredExperimentWithTreatmentId:(id)a3 withQueryID:(int64_t)a4;
-- (void)triggeredExperimentWithTreatmentId:(id)a3 withQueryID:(int64_t)a4 cfDiffered:(BOOL)a5 cfUsed:(BOOL)a6 cfError:(unint64_t)a7;
-- (void)userDidEngageWithCompletionListItem:(id)a3 onActionButton:(BOOL)a4 method:(int64_t)a5 doesMatchSiriSuggestion:(BOOL)a6 voiceSearchQueryID:(id)a7;
-- (void)userDidTapMicKey:(int64_t)a3;
-- (void)userDidTypeKey:(int64_t)a3;
-- (void)userTypedGoToSearch:(id)a3 endpoint:(unint64_t)a4 triggerEvent:(int64_t)a5 forQueryID:(int64_t)a6;
-- (void)userTypedURLDirectlyForQuery:(id)a3 triggerEvent:(int64_t)a4;
+- (void)didBeginSearchOfType:(int64_t)type withQuery:(id)query urlString:(id)string endpoint:(unint64_t)endpoint;
+- (void)didDisplayCompletionListItems:(id)items forQuery:(id)query forEvent:(int64_t)event;
+- (void)didGenerateCompletionListItemsWithRankingObserver:(id)observer forQueryID:(int64_t)d;
+- (void)didHideRepeatedlyIgnoredSiriSuggestedSiteWithFeedbackEvent:(id)event;
+- (void)didRankSections:(id)sections blendingDuration:(double)duration feedbackForHiddenAndDuplicateResults:(id)results forQueryID:(int64_t)d rankingFeedbackConfiguration:(id)configuration;
+- (void)didReceiveParsecResultsAfterTimeout:(id)timeout;
+- (void)didReceiveResultsForQuery:(id)query searchType:(int64_t)type;
+- (void)postFeedback:(id)feedback forQueryID:(int64_t)d;
+- (void)searchViewAppearedBecauseOfEvent:(unint64_t)event isSafariReaderAvailable:(BOOL)available forQueryID:(int64_t)d usesLoweredSearchBar:(BOOL)bar;
+- (void)searchViewDisappearedBecauseOfEvent:(int64_t)event forQueryID:(int64_t)d;
+- (void)sendClearInputFeedbackWithTriggerEvent:(unint64_t)event forQueryID:(int64_t)d;
+- (void)sendNewTabFeedback:(BOOL)feedback;
+- (void)triggeredExperimentWithTreatmentId:(id)id withQueryID:(int64_t)d;
+- (void)triggeredExperimentWithTreatmentId:(id)id withQueryID:(int64_t)d cfDiffered:(BOOL)differed cfUsed:(BOOL)used cfError:(unint64_t)error;
+- (void)userDidEngageWithCompletionListItem:(id)item onActionButton:(BOOL)button method:(int64_t)method doesMatchSiriSuggestion:(BOOL)suggestion voiceSearchQueryID:(id)d;
+- (void)userDidTapMicKey:(int64_t)key;
+- (void)userDidTypeKey:(int64_t)key;
+- (void)userTypedGoToSearch:(id)search endpoint:(unint64_t)endpoint triggerEvent:(int64_t)event forQueryID:(int64_t)d;
+- (void)userTypedURLDirectlyForQuery:(id)query triggerEvent:(int64_t)event;
 @end
 
 @implementation WBSParsecDFeedbackDispatcher
 
-- (WBSParsecDFeedbackDispatcher)initWithSession:(id)a3
+- (WBSParsecDFeedbackDispatcher)initWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v22.receiver = self;
   v22.super_class = WBSParsecDFeedbackDispatcher;
   v5 = [(WBSParsecDFeedbackDispatcher *)&v22 init];
@@ -40,22 +40,22 @@
   {
     v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
     v7 = v6;
-    if (v4)
+    if (sessionCopy)
     {
-      [(NSArray *)v6 addObject:v4];
+      [(NSArray *)v6 addObject:sessionCopy];
     }
 
     feedbackListeners = v5->_feedbackListeners;
     v5->_feedbackListeners = v7;
     v9 = v7;
 
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     visibleResultsFeedbackEventsToBeSent = v5->_visibleResultsFeedbackEventsToBeSent;
-    v5->_visibleResultsFeedbackEventsToBeSent = v10;
+    v5->_visibleResultsFeedbackEventsToBeSent = array;
 
-    v12 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     previousRankingFeedbackEventsSentForCurrentQueryID = v5->_previousRankingFeedbackEventsSentForCurrentQueryID;
-    v5->_previousRankingFeedbackEventsSentForCurrentQueryID = v12;
+    v5->_previousRankingFeedbackEventsSentForCurrentQueryID = array2;
 
     v14 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v15 = dispatch_queue_create("com.apple.SafariShared.WBSParsecDFeedbackDispatcher", v14);
@@ -90,9 +90,9 @@
   [(WBSParsecDFeedbackDispatcher *)&v4 dealloc];
 }
 
-- (void)postFeedback:(id)a3 forQueryID:(int64_t)a4
+- (void)postFeedback:(id)feedback forQueryID:(int64_t)d
 {
-  v6 = a3;
+  feedbackCopy = feedback;
   v7 = WBS_LOG_CHANNEL_PREFIXSafariSuggestions();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -103,14 +103,14 @@
   v8 = WBS_LOG_CHANNEL_PREFIXSafariSuggestions();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [WBSParsecDFeedbackDispatcher postFeedback:v6 forQueryID:v8];
-    if (!v6)
+    [WBSParsecDFeedbackDispatcher postFeedback:feedbackCopy forQueryID:v8];
+    if (!feedbackCopy)
     {
       goto LABEL_7;
     }
   }
 
-  else if (!v6)
+  else if (!feedbackCopy)
   {
     goto LABEL_7;
   }
@@ -123,18 +123,18 @@
     block[2] = __56__WBSParsecDFeedbackDispatcher_postFeedback_forQueryID___block_invoke;
     block[3] = &unk_1E7FC9E88;
     block[4] = self;
-    v11 = v6;
-    v12 = a4;
+    v11 = feedbackCopy;
+    dCopy = d;
     dispatch_async(feedbackQueue, block);
   }
 
 LABEL_7:
 }
 
-- (void)_postFeedbackOnFeedbackQueue:(id)a3 forQueryID:(int64_t)a4
+- (void)_postFeedbackOnFeedbackQueue:(id)queue forQueryID:(int64_t)d
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  queueCopy = queue;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -155,7 +155,7 @@ LABEL_7:
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v12 + 1) + 8 * v11++) reportFeedback:v6 queryId:{a4, v12}];
+        [*(*(&v12 + 1) + 8 * v11++) reportFeedback:queueCopy queryId:{d, v12}];
       }
 
       while (v9 != v11);
@@ -166,34 +166,34 @@ LABEL_7:
   }
 }
 
-- (void)didDisplayCompletionListItems:(id)a3 forQuery:(id)a4 forEvent:(int64_t)a5
+- (void)didDisplayCompletionListItems:(id)items forQuery:(id)query forEvent:(int64_t)event
 {
-  v9 = a4;
-  v10 = [a3 safari_mapObjectsUsingBlock:&__block_literal_global_6];
+  queryCopy = query;
+  v10 = [items safari_mapObjectsUsingBlock:&__block_literal_global_6];
   v11 = objc_alloc(MEMORY[0x1E69CA588]);
-  if ((a5 - 1) > 2)
+  if ((event - 1) > 2)
   {
     v12 = 1;
   }
 
   else
   {
-    v12 = *&asc_1BB9537B0[8 * a5 - 8];
+    v12 = *&asc_1BB9537B0[8 * event - 8];
   }
 
   v13 = [v11 initWithResults:v10 triggerEvent:v12];
-  v14 = [v9 queryID];
+  queryID = [queryCopy queryID];
   v15 = self->_previousQueryForVisibleResultsFeedback;
-  objc_storeStrong(&self->_currentQueryForVisibleResultsFeedback, a4);
+  objc_storeStrong(&self->_currentQueryForVisibleResultsFeedback, query);
   [(NSTimer *)self->_sendPendingVisibleResultsFeedbackFeedbackEventsTimer invalidate];
-  if (v14 != [(WBSCompletionQuery *)v15 queryID])
+  if (queryID != [(WBSCompletionQuery *)v15 queryID])
   {
-    objc_storeStrong(&self->_previousQueryForVisibleResultsFeedback, a4);
+    objc_storeStrong(&self->_previousQueryForVisibleResultsFeedback, query);
     if ([(NSMutableArray *)self->_visibleResultsFeedbackEventsToBeSent count])
     {
-      v16 = [(WBSCompletionQuery *)v15 queryID];
-      v17 = [(WBSCompletionQuery *)v15 queryString];
-      [(WBSParsecDFeedbackDispatcher *)self _postPendingVisibleResultsFeedbackEventsForQueryID:v16 queryString:v17];
+      queryID2 = [(WBSCompletionQuery *)v15 queryID];
+      queryString = [(WBSCompletionQuery *)v15 queryString];
+      [(WBSParsecDFeedbackDispatcher *)self _postPendingVisibleResultsFeedbackEventsForQueryID:queryID2 queryString:queryString];
     }
   }
 
@@ -203,10 +203,10 @@ LABEL_7:
   v22[1] = 3221225472;
   v22[2] = __80__WBSParsecDFeedbackDispatcher_didDisplayCompletionListItems_forQuery_forEvent___block_invoke_2;
   v22[3] = &unk_1E7FCA3B0;
-  v23 = v9;
-  v24 = v14;
+  v23 = queryCopy;
+  v24 = queryID;
   v22[4] = self;
-  v19 = v9;
+  v19 = queryCopy;
   v20 = [v18 scheduledTimerWithTimeInterval:0 repeats:v22 block:0.5];
   sendPendingVisibleResultsFeedbackFeedbackEventsTimer = self->_sendPendingVisibleResultsFeedbackFeedbackEventsTimer;
   self->_sendPendingVisibleResultsFeedbackFeedbackEventsTimer = v20;
@@ -223,7 +223,7 @@ void __80__WBSParsecDFeedbackDispatcher_didDisplayCompletionListItems_forQuery_f
   }
 }
 
-- (void)_postPendingVisibleResultsFeedbackEventsForQueryID:(int64_t)a3 queryString:(id)a4
+- (void)_postPendingVisibleResultsFeedbackEventsForQueryID:(int64_t)d queryString:(id)string
 {
   v6 = [MEMORY[0x1E695DFA8] set];
   if ([(NSMutableArray *)self->_visibleResultsFeedbackEventsToBeSent count])
@@ -232,13 +232,13 @@ void __80__WBSParsecDFeedbackDispatcher_didDisplayCompletionListItems_forQuery_f
     do
     {
       v8 = [(NSMutableArray *)self->_visibleResultsFeedbackEventsToBeSent objectAtIndexedSubscript:v7];
-      v9 = [v8 results];
-      [v6 addObjectsFromArray:v9];
+      results = [v8 results];
+      [v6 addObjectsFromArray:results];
 
       if (v7 == [(NSMutableArray *)self->_visibleResultsFeedbackEventsToBeSent count]- 1)
       {
-        v10 = [v6 allObjects];
-        [v8 setResults:v10];
+        allObjects = [v6 allObjects];
+        [v8 setResults:allObjects];
       }
 
       else
@@ -253,7 +253,7 @@ void __80__WBSParsecDFeedbackDispatcher_didDisplayCompletionListItems_forQuery_f
       block[3] = &unk_1E7FC9E88;
       block[4] = self;
       v14 = v8;
-      v15 = a3;
+      dCopy = d;
       v12 = v8;
       dispatch_async(feedbackQueue, block);
 
@@ -266,48 +266,48 @@ void __80__WBSParsecDFeedbackDispatcher_didDisplayCompletionListItems_forQuery_f
   [(NSMutableArray *)self->_visibleResultsFeedbackEventsToBeSent removeAllObjects];
 }
 
-- (void)userDidEngageWithCompletionListItem:(id)a3 onActionButton:(BOOL)a4 method:(int64_t)a5 doesMatchSiriSuggestion:(BOOL)a6 voiceSearchQueryID:(id)a7
+- (void)userDidEngageWithCompletionListItem:(id)item onActionButton:(BOOL)button method:(int64_t)method doesMatchSiriSuggestion:(BOOL)suggestion voiceSearchQueryID:(id)d
 {
-  v8 = a6;
-  v10 = a4;
-  v28 = a3;
-  v12 = a7;
-  v13 = [v28 sfSearchResultValue];
-  v14 = [v13 copy];
+  suggestionCopy = suggestion;
+  buttonCopy = button;
+  itemCopy = item;
+  dCopy = d;
+  sfSearchResultValue = [itemCopy sfSearchResultValue];
+  v14 = [sfSearchResultValue copy];
 
   if (v14)
   {
     if (objc_opt_respondsToSelector())
     {
-      v15 = [v14 title];
+      title = [v14 title];
 
-      if (!v15)
+      if (!title)
       {
         v16 = MEMORY[0x1E69CA4F0];
-        v17 = [v28 siriSuggestion];
-        v18 = [v17 title];
-        v19 = [v16 textWithString:v18];
+        siriSuggestion = [itemCopy siriSuggestion];
+        title2 = [siriSuggestion title];
+        v19 = [v16 textWithString:title2];
         [v14 setTitle:v19];
       }
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v20 = [v28 engagementDestination];
+      engagementDestination = [itemCopy engagementDestination];
     }
 
     else
     {
-      v20 = 3;
+      engagementDestination = 3;
     }
 
     v21 = 1;
-    if (a5 != 1)
+    if (method != 1)
     {
       v21 = 2;
     }
 
-    if (a5 == 2)
+    if (method == 2)
     {
       v22 = 20;
     }
@@ -317,70 +317,70 @@ void __80__WBSParsecDFeedbackDispatcher_didDisplayCompletionListItems_forQuery_f
       v22 = v21;
     }
 
-    v23 = [objc_alloc(MEMORY[0x1E69CA368]) initWithResult:v14 triggerEvent:v22 destination:v20];
+    v23 = [objc_alloc(MEMORY[0x1E69CA368]) initWithResult:v14 triggerEvent:v22 destination:engagementDestination];
     v24 = v23;
-    if (v10)
+    if (buttonCopy)
     {
       [v23 setActionTarget:4];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v24 setMatchesUnengagedSuggestion:v8];
+      [v24 setMatchesUnengagedSuggestion:suggestionCopy];
     }
 
-    v25 = [(WBSCompletionQuery *)self->_currentQueryForVisibleResultsFeedback queryID];
-    if (a5 == 2)
+    queryID = [(WBSCompletionQuery *)self->_currentQueryForVisibleResultsFeedback queryID];
+    if (method == 2)
     {
-      v26 = [v12 intValue];
+      intValue = [dCopy intValue];
     }
 
     else
     {
-      v26 = v25;
+      intValue = queryID;
     }
 
     if ([(NSMutableArray *)self->_visibleResultsFeedbackEventsToBeSent count])
     {
       [(NSTimer *)self->_sendPendingVisibleResultsFeedbackFeedbackEventsTimer invalidate];
-      v27 = [(WBSCompletionQuery *)self->_currentQueryForVisibleResultsFeedback queryString];
-      [(WBSParsecDFeedbackDispatcher *)self _postPendingVisibleResultsFeedbackEventsForQueryID:v26 queryString:v27];
+      queryString = [(WBSCompletionQuery *)self->_currentQueryForVisibleResultsFeedback queryString];
+      [(WBSParsecDFeedbackDispatcher *)self _postPendingVisibleResultsFeedbackEventsForQueryID:intValue queryString:queryString];
     }
 
-    [(WBSParsecDFeedbackDispatcher *)self postFeedback:v24 forQueryID:v26];
+    [(WBSParsecDFeedbackDispatcher *)self postFeedback:v24 forQueryID:intValue];
   }
 }
 
-- (void)userTypedURLDirectlyForQuery:(id)a3 triggerEvent:(int64_t)a4
+- (void)userTypedURLDirectlyForQuery:(id)query triggerEvent:(int64_t)event
 {
-  v11 = a3;
+  queryCopy = query;
   v6 = objc_alloc(MEMORY[0x1E69CA030]);
-  v7 = [v11 queryString];
-  v8 = [v6 initWithInput:v7];
+  queryString = [queryCopy queryString];
+  v8 = [v6 initWithInput:queryString];
 
-  if (a4 == 1)
+  if (event == 1)
   {
     [v8 setTriggerEvent:20];
   }
 
-  v9 = [v11 queryID];
+  queryID = [queryCopy queryID];
   if ([(NSMutableArray *)self->_visibleResultsFeedbackEventsToBeSent count])
   {
     [(NSTimer *)self->_sendPendingVisibleResultsFeedbackFeedbackEventsTimer invalidate];
-    v10 = [v11 queryString];
-    [(WBSParsecDFeedbackDispatcher *)self _postPendingVisibleResultsFeedbackEventsForQueryID:v9 queryString:v10];
+    queryString2 = [queryCopy queryString];
+    [(WBSParsecDFeedbackDispatcher *)self _postPendingVisibleResultsFeedbackEventsForQueryID:queryID queryString:queryString2];
   }
 
-  -[WBSParsecDFeedbackDispatcher postFeedback:forQueryID:](self, "postFeedback:forQueryID:", v8, [v11 queryID]);
+  -[WBSParsecDFeedbackDispatcher postFeedback:forQueryID:](self, "postFeedback:forQueryID:", v8, [queryCopy queryID]);
 }
 
-- (void)userTypedGoToSearch:(id)a3 endpoint:(unint64_t)a4 triggerEvent:(int64_t)a5 forQueryID:(int64_t)a6
+- (void)userTypedGoToSearch:(id)search endpoint:(unint64_t)endpoint triggerEvent:(int64_t)event forQueryID:(int64_t)d
 {
   v10 = MEMORY[0x1E69CA028];
-  v11 = a3;
-  v13 = [[v10 alloc] initWithInput:v11 endpoint:a4];
+  searchCopy = search;
+  v13 = [[v10 alloc] initWithInput:searchCopy endpoint:endpoint];
 
-  if (a5 == 1)
+  if (event == 1)
   {
     [v13 setTriggerEvent:20];
   }
@@ -388,18 +388,18 @@ void __80__WBSParsecDFeedbackDispatcher_didDisplayCompletionListItems_forQuery_f
   if ([(NSMutableArray *)self->_visibleResultsFeedbackEventsToBeSent count])
   {
     [(NSTimer *)self->_sendPendingVisibleResultsFeedbackFeedbackEventsTimer invalidate];
-    v12 = [(WBSCompletionQuery *)self->_currentQueryForVisibleResultsFeedback queryString];
-    [(WBSParsecDFeedbackDispatcher *)self _postPendingVisibleResultsFeedbackEventsForQueryID:a6 queryString:v12];
+    queryString = [(WBSCompletionQuery *)self->_currentQueryForVisibleResultsFeedback queryString];
+    [(WBSParsecDFeedbackDispatcher *)self _postPendingVisibleResultsFeedbackEventsForQueryID:d queryString:queryString];
   }
 
-  [(WBSParsecDFeedbackDispatcher *)self postFeedback:v13 forQueryID:a6];
+  [(WBSParsecDFeedbackDispatcher *)self postFeedback:v13 forQueryID:d];
 }
 
-- (void)didReceiveResultsForQuery:(id)a3 searchType:(int64_t)a4
+- (void)didReceiveResultsForQuery:(id)query searchType:(int64_t)type
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(WBSParsecDFeedbackDispatcher *)self _takeStartSearchFeedbackForSearchOfType:a4 forQuery:v6];
+  queryCopy = query;
+  v7 = [(WBSParsecDFeedbackDispatcher *)self _takeStartSearchFeedbackForSearchOfType:type forQuery:queryCopy];
   if (v7)
   {
     v8 = [objc_alloc(MEMORY[0x1E69CA058]) initWithStartSearch:v7];
@@ -421,63 +421,63 @@ void __80__WBSParsecDFeedbackDispatcher_didDisplayCompletionListItems_forQuery_f
         [WBSParsecDFeedbackDispatcher didReceiveResultsForQuery:searchType:];
       }
 
-      -[WBSParsecDFeedbackDispatcher postFeedback:forQueryID:](self, "postFeedback:forQueryID:", v8, [v6 queryID]);
+      -[WBSParsecDFeedbackDispatcher postFeedback:forQueryID:](self, "postFeedback:forQueryID:", v8, [queryCopy queryID]);
     }
   }
 }
 
-- (void)didBeginSearchOfType:(int64_t)a3 withQuery:(id)a4 urlString:(id)a5 endpoint:(unint64_t)a6
+- (void)didBeginSearchOfType:(int64_t)type withQuery:(id)query urlString:(id)string endpoint:(unint64_t)endpoint
 {
   v28 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 triggerEvent];
+  queryCopy = query;
+  stringCopy = string;
+  triggerEvent = [queryCopy triggerEvent];
   if ([MEMORY[0x1E69C8880] defaultSearchEngineMatchesExperiment])
   {
     v13 = MEMORY[0x1E696AD98];
     v14 = +[WBSTrialManager shared];
     v15 = [v13 numberWithUnsignedInteger:{objc_msgSend(v14, "trialABGroupIdentifier")}];
-    v16 = [v15 stringValue];
+    stringValue = [v15 stringValue];
   }
 
   else
   {
-    v16 = 0;
+    stringValue = 0;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v23 = objc_alloc(MEMORY[0x1E69CA478]);
-    v18 = [v10 queryString];
-    v20 = [v23 initWithInput:v18 triggerEvent:9 searchType:1 indexType:0 queryId:objc_msgSend(v10 originatingApp:{"queryID"), v16}];
+    queryString = [queryCopy queryString];
+    v20 = [v23 initWithInput:queryString triggerEvent:9 searchType:1 indexType:0 queryId:objc_msgSend(queryCopy originatingApp:{"queryID"), stringValue}];
     v21 = @"recent searches";
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
     v22 = objc_alloc(MEMORY[0x1E69CA478]);
-    v18 = [v10 queryString];
-    v20 = [v22 initWithInput:v18 triggerEvent:v12 searchType:2 indexType:5 queryId:objc_msgSend(v10 originatingApp:{"queryID"), v16}];
+    queryString = [queryCopy queryString];
+    v20 = [v22 initWithInput:queryString triggerEvent:triggerEvent searchType:2 indexType:5 queryId:objc_msgSend(queryCopy originatingApp:{"queryID"), stringValue}];
     v21 = @"bookmarks/history";
   }
 
   else
   {
-    if (a3)
+    if (type)
     {
       goto LABEL_16;
     }
 
     v17 = objc_alloc(MEMORY[0x1E69CA480]);
-    v18 = [v10 queryString];
-    v19 = [v10 queryID];
-    v20 = [v17 initWithInput:v18 url:v11 headers:MEMORY[0x1E695E0F8] triggerEvent:v12 endpoint:a6 queryId:v19];
+    queryString = [queryCopy queryString];
+    queryID = [queryCopy queryID];
+    v20 = [v17 initWithInput:queryString url:stringCopy headers:MEMORY[0x1E695E0F8] triggerEvent:triggerEvent endpoint:endpoint queryId:queryID];
     v21 = @"search engine";
   }
 
   if (v20)
   {
-    [(WBSParsecDFeedbackDispatcher *)self _setStartSearchFeedback:v20 forSearchOfType:a3 withQuery:v10];
+    [(WBSParsecDFeedbackDispatcher *)self _setStartSearchFeedback:v20 forSearchOfType:type withQuery:queryCopy];
     v24 = WBS_LOG_CHANNEL_PREFIXSafariSuggestions();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
@@ -492,37 +492,37 @@ void __80__WBSParsecDFeedbackDispatcher_didDisplayCompletionListItems_forQuery_f
       [WBSParsecDFeedbackDispatcher didBeginSearchOfType:withQuery:urlString:endpoint:];
     }
 
-    -[WBSParsecDFeedbackDispatcher postFeedback:forQueryID:](self, "postFeedback:forQueryID:", v20, [v10 queryID]);
+    -[WBSParsecDFeedbackDispatcher postFeedback:forQueryID:](self, "postFeedback:forQueryID:", v20, [queryCopy queryID]);
   }
 
 LABEL_16:
 }
 
-- (void)didGenerateCompletionListItemsWithRankingObserver:(id)a3 forQueryID:(int64_t)a4
+- (void)didGenerateCompletionListItemsWithRankingObserver:(id)observer forQueryID:(int64_t)d
 {
-  v6 = [a3 rankingFeedback];
-  [(WBSParsecDFeedbackDispatcher *)self postFeedback:v6 forQueryID:a4];
+  rankingFeedback = [observer rankingFeedback];
+  [(WBSParsecDFeedbackDispatcher *)self postFeedback:rankingFeedback forQueryID:d];
 }
 
-- (void)didRankSections:(id)a3 blendingDuration:(double)a4 feedbackForHiddenAndDuplicateResults:(id)a5 forQueryID:(int64_t)a6 rankingFeedbackConfiguration:(id)a7
+- (void)didRankSections:(id)sections blendingDuration:(double)duration feedbackForHiddenAndDuplicateResults:(id)results forQueryID:(int64_t)d rankingFeedbackConfiguration:(id)configuration
 {
   v50[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
-  if ([v12 count])
+  sectionsCopy = sections;
+  resultsCopy = results;
+  configurationCopy = configuration;
+  if ([sectionsCopy count])
   {
-    v15 = [v14 prefixNavigationalIntent];
-    if (v15)
+    prefixNavigationalIntent = [configurationCopy prefixNavigationalIntent];
+    if (prefixNavigationalIntent)
     {
       v16 = MEMORY[0x1E696AD98];
-      [v14 prefixNavigationalIntent];
-      v18 = v17 = a6;
+      [configurationCopy prefixNavigationalIntent];
+      v18 = v17 = d;
       [v18 floatValue];
       *&v20 = v19 / 100.0;
       v21 = [v16 numberWithFloat:v20];
 
-      a6 = v17;
+      d = v17;
     }
 
     else
@@ -530,7 +530,7 @@ LABEL_16:
       v21 = &unk_1F3A9B000;
     }
 
-    if ([v14 serverCompletionDidMatchFirstSearchSuggestionFrom3rdParty])
+    if ([configurationCopy serverCompletionDidMatchFirstSearchSuggestionFrom3rdParty])
     {
       v22 = 2;
     }
@@ -550,31 +550,31 @@ LABEL_16:
     v24 = v21;
     v46 = v24;
     v48 = v22;
-    v39 = v13;
-    v47 = v13;
-    v37 = [v12 safari_mapAndFilterObjectsWithOptions:0 usingBlock:v44];
-    v25 = [objc_alloc(MEMORY[0x1E69CA340]) initWithSections:v37 blendingDuration:a4];
-    v26 = [v14 hiddenSiriSuggestedSite];
-    v27 = v26;
-    if (v26)
+    v39 = resultsCopy;
+    v47 = resultsCopy;
+    v37 = [sectionsCopy safari_mapAndFilterObjectsWithOptions:0 usingBlock:v44];
+    v25 = [objc_alloc(MEMORY[0x1E69CA340]) initWithSections:v37 blendingDuration:duration];
+    hiddenSiriSuggestedSite = [configurationCopy hiddenSiriSuggestedSite];
+    v27 = hiddenSiriSuggestedSite;
+    if (hiddenSiriSuggestedSite)
     {
-      [v26 setThirdPartyNavigationIntentScore:v24];
+      [hiddenSiriSuggestedSite setThirdPartyNavigationIntentScore:v24];
       [v27 setThirdPartyQueryCompletionMatched:v22];
       v50[0] = v27;
       v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:1];
       [v25 setHiddenResults:v28];
     }
 
-    if (self->_previousQueryIDForRankedResultsFeedback != a6)
+    if (self->_previousQueryIDForRankedResultsFeedback != d)
     {
-      v29 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       previousRankingFeedbackEventsSentForCurrentQueryID = self->_previousRankingFeedbackEventsSentForCurrentQueryID;
-      self->_previousRankingFeedbackEventsSentForCurrentQueryID = v29;
+      self->_previousRankingFeedbackEventsSentForCurrentQueryID = array;
 
-      self->_previousQueryIDForRankedResultsFeedback = a6;
+      self->_previousQueryIDForRankedResultsFeedback = d;
     }
 
-    v36 = a6;
+    dCopy = d;
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
@@ -594,7 +594,7 @@ LABEL_16:
             objc_enumerationMutation(v31);
           }
 
-          if ([(WBSParsecDFeedbackDispatcher *)self _rankingFeedback:v25 isShallowEqual:*(*(&v40 + 1) + 8 * i), v36])
+          if ([(WBSParsecDFeedbackDispatcher *)self _rankingFeedback:v25 isShallowEqual:*(*(&v40 + 1) + 8 * i), dCopy])
           {
 
             goto LABEL_22;
@@ -612,10 +612,10 @@ LABEL_16:
     }
 
     [(NSMutableArray *)self->_previousRankingFeedbackEventsSentForCurrentQueryID addObject:v25];
-    [(WBSParsecDFeedbackDispatcher *)self postFeedback:v25 forQueryID:v36];
+    [(WBSParsecDFeedbackDispatcher *)self postFeedback:v25 forQueryID:dCopy];
 LABEL_22:
 
-    v13 = v39;
+    resultsCopy = v39;
   }
 }
 
@@ -666,24 +666,24 @@ id __142__WBSParsecDFeedbackDispatcher_didRankSections_blendingDuration_feedback
   return v6;
 }
 
-- (BOOL)_rankingFeedback:(id)a3 isShallowEqual:(id)a4
+- (BOOL)_rankingFeedback:(id)feedback isShallowEqual:(id)equal
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 queryId];
-  v54 = v6;
-  if (v7 != [v6 queryId])
+  feedbackCopy = feedback;
+  equalCopy = equal;
+  queryId = [feedbackCopy queryId];
+  v54 = equalCopy;
+  if (queryId != [equalCopy queryId])
   {
     goto LABEL_4;
   }
 
-  v8 = [v5 sections];
-  if ([v8 count])
+  sections = [feedbackCopy sections];
+  if ([sections count])
   {
-    v9 = [v5 sections];
-    v10 = [v9 count];
-    v11 = [v54 sections];
-    v12 = [v11 count];
+    sections2 = [feedbackCopy sections];
+    v10 = [sections2 count];
+    sections3 = [v54 sections];
+    v12 = [sections3 count];
 
     if (v10 != v12)
     {
@@ -695,8 +695,8 @@ id __142__WBSParsecDFeedbackDispatcher_didRankSections_blendingDuration_feedback
   {
   }
 
-  v15 = [v5 sections];
-  v16 = [v15 count];
+  sections4 = [feedbackCopy sections];
+  v16 = [sections4 count];
 
   if (!v16)
   {
@@ -705,37 +705,37 @@ id __142__WBSParsecDFeedbackDispatcher_didRankSections_blendingDuration_feedback
   }
 
   v17 = 0;
-  v53 = v5;
+  v53 = feedbackCopy;
   while (1)
   {
-    v61 = [v5 sections];
-    v18 = [v61 objectAtIndexedSubscript:v17];
-    v19 = [v18 section];
-    v20 = [v19 identifier];
-    v21 = [v54 sections];
-    v22 = [v21 objectAtIndexedSubscript:v17];
-    v23 = [v22 section];
-    v24 = [v23 identifier];
-    v25 = [v20 isEqualToString:v24];
+    sections5 = [feedbackCopy sections];
+    v18 = [sections5 objectAtIndexedSubscript:v17];
+    section = [v18 section];
+    identifier = [section identifier];
+    sections6 = [v54 sections];
+    v22 = [sections6 objectAtIndexedSubscript:v17];
+    section2 = [v22 section];
+    identifier2 = [section2 identifier];
+    v25 = [identifier isEqualToString:identifier2];
 
     if (!v25)
     {
       break;
     }
 
-    v26 = [v5 sections];
-    v27 = [v26 objectAtIndexedSubscript:v17];
-    v28 = [v27 results];
-    if ([v28 count])
+    sections7 = [feedbackCopy sections];
+    v27 = [sections7 objectAtIndexedSubscript:v17];
+    results = [v27 results];
+    if ([results count])
     {
-      v59 = [v5 sections];
-      v29 = [v59 objectAtIndexedSubscript:v17];
-      v30 = [v29 results];
-      v62 = [v30 count];
-      v31 = [v54 sections];
-      v32 = [v31 objectAtIndexedSubscript:v17];
-      v33 = [v32 results];
-      v57 = [v33 count];
+      sections8 = [feedbackCopy sections];
+      v29 = [sections8 objectAtIndexedSubscript:v17];
+      results2 = [v29 results];
+      v62 = [results2 count];
+      sections9 = [v54 sections];
+      v32 = [sections9 objectAtIndexedSubscript:v17];
+      results3 = [v32 results];
+      v57 = [results3 count];
 
       if (v62 != v57)
       {
@@ -750,33 +750,33 @@ id __142__WBSParsecDFeedbackDispatcher_didRankSections_blendingDuration_feedback
     v34 = 0;
     while (1)
     {
-      v35 = [v5 sections];
-      v36 = [v35 objectAtIndexedSubscript:v17];
-      v37 = [v36 results];
-      v38 = [v37 count];
+      sections10 = [feedbackCopy sections];
+      v36 = [sections10 objectAtIndexedSubscript:v17];
+      results4 = [v36 results];
+      v38 = [results4 count];
 
       if (v34 >= v38)
       {
         break;
       }
 
-      v63 = [v5 sections];
-      v60 = [v63 objectAtIndexedSubscript:v17];
-      v58 = [v60 results];
-      v56 = [v58 objectAtIndexedSubscript:v34];
-      v39 = [v56 result];
-      v40 = [v39 identifier];
-      v41 = [v54 sections];
-      v42 = [v41 objectAtIndexedSubscript:v17];
+      sections11 = [feedbackCopy sections];
+      v60 = [sections11 objectAtIndexedSubscript:v17];
+      results5 = [v60 results];
+      v56 = [results5 objectAtIndexedSubscript:v34];
+      result = [v56 result];
+      identifier3 = [result identifier];
+      sections12 = [v54 sections];
+      v42 = [sections12 objectAtIndexedSubscript:v17];
       [v42 results];
       v44 = v43 = v17;
       v45 = [v44 objectAtIndexedSubscript:v34];
-      v46 = [v45 result];
-      v47 = [v46 identifier];
-      v55 = [v40 isEqualToString:v47];
+      result2 = [v45 result];
+      identifier4 = [result2 identifier];
+      v55 = [identifier3 isEqualToString:identifier4];
 
       v17 = v43;
-      v5 = v53;
+      feedbackCopy = v53;
 
       ++v34;
       if ((v55 & 1) == 0)
@@ -786,11 +786,11 @@ id __142__WBSParsecDFeedbackDispatcher_didRankSections_blendingDuration_feedback
     }
 
     v48 = v17 + 1;
-    [v5 sections];
-    v50 = v49 = v5;
+    [feedbackCopy sections];
+    v50 = v49 = feedbackCopy;
     v51 = [v50 count];
 
-    v5 = v49;
+    feedbackCopy = v49;
     v13 = 1;
     v52 = v48 >= v51;
     v17 = v48;
@@ -807,32 +807,32 @@ LABEL_5:
   return v13;
 }
 
-- (void)didReceiveParsecResultsAfterTimeout:(id)a3
+- (void)didReceiveParsecResultsAfterTimeout:(id)timeout
 {
-  v7 = a3;
-  if ([v7 count])
+  timeoutCopy = timeout;
+  if ([timeoutCopy count])
   {
-    v4 = [v7 safari_mapObjectsUsingBlock:&__block_literal_global_47];
+    v4 = [timeoutCopy safari_mapObjectsUsingBlock:&__block_literal_global_47];
     v5 = [objc_alloc(MEMORY[0x1E69CA398]) initWithResults:v4];
-    v6 = [v7 firstObject];
-    -[WBSParsecDFeedbackDispatcher postFeedback:forQueryID:](self, "postFeedback:forQueryID:", v5, [v6 parsecQueryID]);
+    firstObject = [timeoutCopy firstObject];
+    -[WBSParsecDFeedbackDispatcher postFeedback:forQueryID:](self, "postFeedback:forQueryID:", v5, [firstObject parsecQueryID]);
   }
 }
 
-- (void)didHideRepeatedlyIgnoredSiriSuggestedSiteWithFeedbackEvent:(id)a3
+- (void)didHideRepeatedlyIgnoredSiriSuggestedSiteWithFeedbackEvent:(id)event
 {
-  v4 = a3;
-  -[WBSParsecDFeedbackDispatcher postFeedback:forQueryID:](self, "postFeedback:forQueryID:", v4, [v4 queryId]);
+  eventCopy = event;
+  -[WBSParsecDFeedbackDispatcher postFeedback:forQueryID:](self, "postFeedback:forQueryID:", eventCopy, [eventCopy queryId]);
 }
 
-- (id)_customFeedbackOfType:(unint64_t)a3 JSONDictionary:(id)a4
+- (id)_customFeedbackOfType:(unint64_t)type JSONDictionary:(id)dictionary
 {
   v10 = 0;
-  v5 = [MEMORY[0x1E696ACB0] dataWithJSONObject:a4 options:0 error:&v10];
+  v5 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionary options:0 error:&v10];
   v6 = v10;
   if (v5)
   {
-    v7 = [objc_alloc(MEMORY[0x1E69CA008]) initWithType:a3 data:v5];
+    v7 = [objc_alloc(MEMORY[0x1E69CA008]) initWithType:type data:v5];
   }
 
   else
@@ -840,7 +840,7 @@ LABEL_5:
     v8 = WBS_LOG_CHANNEL_PREFIXParsec();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(WBSParsecDFeedbackDispatcher *)v8 _customFeedbackOfType:v6 JSONDictionary:a3];
+      [(WBSParsecDFeedbackDispatcher *)v8 _customFeedbackOfType:v6 JSONDictionary:type];
     }
 
     v7 = 0;
@@ -849,19 +849,19 @@ LABEL_5:
   return v7;
 }
 
-- (void)sendNewTabFeedback:(BOOL)a3
+- (void)sendNewTabFeedback:(BOOL)feedback
 {
-  v3 = a3;
+  feedbackCopy = feedback;
   v5 = WBS_LOG_CHANNEL_PREFIXSafariSuggestions();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [WBSParsecDFeedbackDispatcher sendNewTabFeedback:v5];
   }
 
-  [(WBSParsecDFeedbackDispatcher *)self searchViewAppearedBecauseOfEvent:8 forQueryID:+[WBSCompletionQuery usesLoweredSearchBar:"currentQueryID"], v3];
+  [(WBSParsecDFeedbackDispatcher *)self searchViewAppearedBecauseOfEvent:8 forQueryID:+[WBSCompletionQuery usesLoweredSearchBar:"currentQueryID"], feedbackCopy];
 }
 
-- (void)sendClearInputFeedbackWithTriggerEvent:(unint64_t)a3 forQueryID:(int64_t)a4
+- (void)sendClearInputFeedbackWithTriggerEvent:(unint64_t)event forQueryID:(int64_t)d
 {
   v7 = WBS_LOG_CHANNEL_PREFIXSafariSuggestions();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -869,43 +869,43 @@ LABEL_5:
     [WBSParsecDFeedbackDispatcher sendClearInputFeedbackWithTriggerEvent:v7 forQueryID:?];
   }
 
-  v8 = [objc_alloc(MEMORY[0x1E69C9F30]) initWithEvent:a3];
-  [(WBSParsecDFeedbackDispatcher *)self postFeedback:v8 forQueryID:a4];
+  v8 = [objc_alloc(MEMORY[0x1E69C9F30]) initWithEvent:event];
+  [(WBSParsecDFeedbackDispatcher *)self postFeedback:v8 forQueryID:d];
 }
 
-- (void)triggeredExperimentWithTreatmentId:(id)a3 withQueryID:(int64_t)a4 cfDiffered:(BOOL)a5 cfUsed:(BOOL)a6 cfError:(unint64_t)a7
+- (void)triggeredExperimentWithTreatmentId:(id)id withQueryID:(int64_t)d cfDiffered:(BOOL)differed cfUsed:(BOOL)used cfError:(unint64_t)error
 {
-  if (a3)
+  if (id)
   {
-    v9 = [objc_alloc(MEMORY[0x1E69CA098]) initWithCfDiffered:a5 cfUsed:a6 cfError:a7];
-    [(WBSParsecDFeedbackDispatcher *)self postFeedback:v9 forQueryID:a4];
+    v9 = [objc_alloc(MEMORY[0x1E69CA098]) initWithCfDiffered:differed cfUsed:used cfError:error];
+    [(WBSParsecDFeedbackDispatcher *)self postFeedback:v9 forQueryID:d];
   }
 }
 
-- (void)triggeredExperimentWithTreatmentId:(id)a3 withQueryID:(int64_t)a4
+- (void)triggeredExperimentWithTreatmentId:(id)id withQueryID:(int64_t)d
 {
-  if (a3)
+  if (id)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69CA098]);
-    [(WBSParsecDFeedbackDispatcher *)self postFeedback:v6 forQueryID:a4];
+    [(WBSParsecDFeedbackDispatcher *)self postFeedback:v6 forQueryID:d];
   }
 }
 
-- (void)_setStartSearchFeedback:(id)a3 forSearchOfType:(int64_t)a4 withQuery:(id)a5
+- (void)_setStartSearchFeedback:(id)feedback forSearchOfType:(int64_t)type withQuery:(id)query
 {
-  v8 = a3;
-  v9 = a5;
+  feedbackCopy = feedback;
+  queryCopy = query;
   queriesToDictionariesMappingQueue = self->_queriesToDictionariesMappingQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __82__WBSParsecDFeedbackDispatcher__setStartSearchFeedback_forSearchOfType_withQuery___block_invoke;
   v13[3] = &unk_1E7FC6D98;
   v13[4] = self;
-  v14 = v9;
-  v15 = v8;
-  v16 = a4;
-  v11 = v8;
-  v12 = v9;
+  v14 = queryCopy;
+  v15 = feedbackCopy;
+  typeCopy = type;
+  v11 = feedbackCopy;
+  v12 = queryCopy;
   dispatch_async(queriesToDictionariesMappingQueue, v13);
 }
 
@@ -937,27 +937,27 @@ void __82__WBSParsecDFeedbackDispatcher__setStartSearchFeedback_forSearchOfType_
   [v11 setObject:v9 forKeyedSubscript:v10];
 }
 
-- (id)_takeStartSearchFeedbackForSearchOfType:(int64_t)a3 forQuery:(id)a4
+- (id)_takeStartSearchFeedbackForSearchOfType:(int64_t)type forQuery:(id)query
 {
-  v6 = a4;
+  queryCopy = query;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__33;
   v21 = __Block_byref_object_dispose__33;
   v22 = 0;
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   queriesToDictionariesMappingQueue = self->_queriesToDictionariesMappingQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __81__WBSParsecDFeedbackDispatcher__takeStartSearchFeedbackForSearchOfType_forQuery___block_invoke;
   v13[3] = &unk_1E7FCA448;
   v13[4] = self;
-  v14 = v6;
+  v14 = queryCopy;
   v15 = v7;
   v16 = &v17;
   v9 = v7;
-  v10 = v6;
+  v10 = queryCopy;
   dispatch_sync(queriesToDictionariesMappingQueue, v13);
   v11 = v18[5];
 
@@ -977,44 +977,44 @@ void __81__WBSParsecDFeedbackDispatcher__takeStartSearchFeedbackForSearchOfType_
   [v5 removeObjectForKey:a1[6]];
 }
 
-- (void)searchViewAppearedBecauseOfEvent:(unint64_t)a3 isSafariReaderAvailable:(BOOL)a4 forQueryID:(int64_t)a5 usesLoweredSearchBar:(BOOL)a6
+- (void)searchViewAppearedBecauseOfEvent:(unint64_t)event isSafariReaderAvailable:(BOOL)available forQueryID:(int64_t)d usesLoweredSearchBar:(BOOL)bar
 {
-  v6 = a6;
-  v8 = a4;
-  v10 = [objc_alloc(MEMORY[0x1E69CA3F8]) initWithEvent:a3];
-  [v10 setReaderTextAvailable:v8];
+  barCopy = bar;
+  availableCopy = available;
+  v10 = [objc_alloc(MEMORY[0x1E69CA3F8]) initWithEvent:event];
+  [v10 setReaderTextAvailable:availableCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v10 setIsUsingLoweredSearchBar:v6];
+    [v10 setIsUsingLoweredSearchBar:barCopy];
   }
 
-  [(WBSParsecDFeedbackDispatcher *)self postFeedback:v10 forQueryID:a5];
+  [(WBSParsecDFeedbackDispatcher *)self postFeedback:v10 forQueryID:d];
 }
 
-- (void)searchViewDisappearedBecauseOfEvent:(int64_t)a3 forQueryID:(int64_t)a4
+- (void)searchViewDisappearedBecauseOfEvent:(int64_t)event forQueryID:(int64_t)d
 {
   if ([(NSMutableArray *)self->_visibleResultsFeedbackEventsToBeSent count])
   {
     [(NSTimer *)self->_sendPendingVisibleResultsFeedbackFeedbackEventsTimer invalidate];
-    v7 = [(WBSCompletionQuery *)self->_currentQueryForVisibleResultsFeedback queryID];
-    v8 = [(WBSCompletionQuery *)self->_currentQueryForVisibleResultsFeedback queryString];
-    [(WBSParsecDFeedbackDispatcher *)self _postPendingVisibleResultsFeedbackEventsForQueryID:v7 queryString:v8];
+    queryID = [(WBSCompletionQuery *)self->_currentQueryForVisibleResultsFeedback queryID];
+    queryString = [(WBSCompletionQuery *)self->_currentQueryForVisibleResultsFeedback queryString];
+    [(WBSParsecDFeedbackDispatcher *)self _postPendingVisibleResultsFeedbackEventsForQueryID:queryID queryString:queryString];
   }
 
-  v9 = [objc_alloc(MEMORY[0x1E69CA400]) initWithEvent:a3];
-  [(WBSParsecDFeedbackDispatcher *)self postFeedback:v9 forQueryID:a4];
+  v9 = [objc_alloc(MEMORY[0x1E69CA400]) initWithEvent:event];
+  [(WBSParsecDFeedbackDispatcher *)self postFeedback:v9 forQueryID:d];
 }
 
-- (void)userDidTypeKey:(int64_t)a3
+- (void)userDidTypeKey:(int64_t)key
 {
-  v5 = [objc_alloc(MEMORY[0x1E69C9F40]) initWithEvent:@"com.apple.safari.keystroke" timeInterval:0 queryId:a3];
-  [(WBSParsecDFeedbackDispatcher *)self postFeedback:v5 forQueryID:a3];
+  v5 = [objc_alloc(MEMORY[0x1E69C9F40]) initWithEvent:@"com.apple.safari.keystroke" timeInterval:0 queryId:key];
+  [(WBSParsecDFeedbackDispatcher *)self postFeedback:v5 forQueryID:key];
 }
 
-- (void)userDidTapMicKey:(int64_t)a3
+- (void)userDidTapMicKey:(int64_t)key
 {
-  v5 = [objc_alloc(MEMORY[0x1E69C9F40]) initWithEvent:@"com.apple.safari.mictap" timeInterval:0 queryId:a3];
-  [(WBSParsecDFeedbackDispatcher *)self postFeedback:v5 forQueryID:a3];
+  v5 = [objc_alloc(MEMORY[0x1E69C9F40]) initWithEvent:@"com.apple.safari.mictap" timeInterval:0 queryId:key];
+  [(WBSParsecDFeedbackDispatcher *)self postFeedback:v5 forQueryID:key];
 }
 
 - (void)postFeedback:(uint64_t)a1 forQueryID:(NSObject *)a2 .cold.1(uint64_t a1, NSObject *a2)

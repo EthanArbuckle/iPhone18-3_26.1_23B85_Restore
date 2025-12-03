@@ -1,8 +1,8 @@
 @interface EDTableFilterColumn
 - (EDTableFilterColumn)init;
 - (id)description;
-- (id)filterAtIndex:(unint64_t)a3;
-- (void)addFilter:(id)a3;
+- (id)filterAtIndex:(unint64_t)index;
+- (void)addFilter:(id)filter;
 @end
 
 @implementation EDTableFilterColumn
@@ -24,27 +24,27 @@
   return v2;
 }
 
-- (id)filterAtIndex:(unint64_t)a3
+- (id)filterAtIndex:(unint64_t)index
 {
-  if ([(EDTableFilterColumn *)self filterCount]<= a3)
+  if ([(EDTableFilterColumn *)self filterCount]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->mFilters objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->mFilters objectAtIndex:index];
   }
 
   return v5;
 }
 
-- (void)addFilter:(id)a3
+- (void)addFilter:(id)filter
 {
-  v4 = a3;
-  if (v4)
+  filterCopy = filter;
+  if (filterCopy)
   {
-    [(NSMutableArray *)self->mFilters addObject:v4];
+    [(NSMutableArray *)self->mFilters addObject:filterCopy];
   }
 }
 

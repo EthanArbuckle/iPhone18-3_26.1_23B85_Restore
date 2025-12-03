@@ -1,8 +1,8 @@
 @interface _BRObservableFilePresenter
 - (BRObservableFile)parent;
-- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)a3;
+- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)handler;
 - (void)presentedItemDidChange;
-- (void)presentedItemDidMoveToURL:(id)a3;
+- (void)presentedItemDidMoveToURL:(id)l;
 - (void)presentedItemUbiquityDidChange;
 @end
 
@@ -10,31 +10,31 @@
 
 - (void)presentedItemDidChange
 {
-  v2 = [(_BRObservableFilePresenter *)self parent];
-  [v2 _presenterDidChange];
+  parent = [(_BRObservableFilePresenter *)self parent];
+  [parent _presenterDidChange];
 }
 
 - (void)presentedItemUbiquityDidChange
 {
-  v2 = [(_BRObservableFilePresenter *)self parent];
-  [v2 _presenterDidChange];
+  parent = [(_BRObservableFilePresenter *)self parent];
+  [parent _presenterDidChange];
 }
 
-- (void)presentedItemDidMoveToURL:(id)a3
+- (void)presentedItemDidMoveToURL:(id)l
 {
-  [(_BRObservableFilePresenter *)self setPresentedItemURL:a3];
-  v4 = [(_BRObservableFilePresenter *)self parent];
-  [v4 _presenterDidChange];
+  [(_BRObservableFilePresenter *)self setPresentedItemURL:l];
+  parent = [(_BRObservableFilePresenter *)self parent];
+  [parent _presenterDidChange];
 }
 
-- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)a3
+- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   [(_BRObservableFilePresenter *)self setPresentedItemURL:0];
-  v4 = [(_BRObservableFilePresenter *)self parent];
-  [v4 _presenterDidChange];
+  parent = [(_BRObservableFilePresenter *)self parent];
+  [parent _presenterDidChange];
 
-  v5[2](v5, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
 - (BRObservableFile)parent

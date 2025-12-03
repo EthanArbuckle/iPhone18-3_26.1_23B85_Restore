@@ -1,23 +1,23 @@
 @interface LocalSearchCompleterManager
-- (void)completer:(id)a3 didFailWithError:(id)a4;
-- (void)completerDidUpdateResults:(id)a3;
+- (void)completer:(id)completer didFailWithError:(id)error;
+- (void)completerDidUpdateResults:(id)results;
 @end
 
 @implementation LocalSearchCompleterManager
 
-- (void)completerDidUpdateResults:(id)a3
+- (void)completerDidUpdateResults:(id)results
 {
-  v4 = a3;
-  v5 = self;
-  LocalSearchCompleterManager.completerDidUpdateResults(_:)(v5);
+  resultsCopy = results;
+  selfCopy = self;
+  LocalSearchCompleterManager.completerDidUpdateResults(_:)(selfCopy);
 }
 
-- (void)completer:(id)a3 didFailWithError:(id)a4
+- (void)completer:(id)completer didFailWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  LocalSearchCompleterManager.completer(_:didFailWithError:)(v7, v8);
+  completerCopy = completer;
+  errorCopy = error;
+  selfCopy = self;
+  LocalSearchCompleterManager.completer(_:didFailWithError:)(selfCopy, errorCopy);
 }
 
 @end

@@ -7,50 +7,50 @@
 - (CGAffineTransform)tritiumTransform;
 - (CGSize)maxSize;
 - (CGSize)preferredSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (CLKMonochromeFilterProvider)filterProvider;
 - (NTKComplicationDisplayWrapperAppLaunchDelegate)appLaunchDelegate;
 - (NTKComplicationDisplayWrapperView)init;
-- (NTKComplicationDisplayWrapperView)initWithCustomRichDisplay:(id)a3;
-- (NTKComplicationDisplayWrapperView)initWithCustomTemplateDisplay:(id)a3 isDetachedDisplay:(BOOL)a4 family:(int64_t)a5;
-- (NTKComplicationDisplayWrapperView)initWithFamily:(int64_t)a3;
-- (NTKComplicationDisplayWrapperView)initWithLegacyDisplay:(id)a3;
-- (NTKComplicationDisplayWrapperView)initWithLegacyDisplay:(id)a3 layoutOverride:(int64_t)a4;
+- (NTKComplicationDisplayWrapperView)initWithCustomRichDisplay:(id)display;
+- (NTKComplicationDisplayWrapperView)initWithCustomTemplateDisplay:(id)display isDetachedDisplay:(BOOL)detachedDisplay family:(int64_t)family;
+- (NTKComplicationDisplayWrapperView)initWithFamily:(int64_t)family;
+- (NTKComplicationDisplayWrapperView)initWithLegacyDisplay:(id)display;
+- (NTKComplicationDisplayWrapperView)initWithLegacyDisplay:(id)display layoutOverride:(int64_t)override;
 - (NTKComplicationDisplayWrapperViewAnimationDelegate)animationDelegate;
-- (void)_didSetDisplayFromDisplay:(id)a3 withComplicationAnimation:(unint64_t)a4;
+- (void)_didSetDisplayFromDisplay:(id)display withComplicationAnimation:(unint64_t)animation;
 - (void)_invokeNeedsResizeHandler;
 - (void)_invokeTouchDownHandler;
-- (void)_prepareToSetDisplay:(id)a3 withComplicationAnimation:(unint64_t *)a4;
-- (void)_replaceDisplayWithDisplayClass:(Class)a3 template:(id)a4 reason:(int64_t)a5 animation:(unint64_t)a6 animationType:(unint64_t)a7 animationFraction:(float)a8;
+- (void)_prepareToSetDisplay:(id)display withComplicationAnimation:(unint64_t *)animation;
+- (void)_replaceDisplayWithDisplayClass:(Class)class template:(id)template reason:(int64_t)reason animation:(unint64_t)animation animationType:(unint64_t)type animationFraction:(float)fraction;
 - (void)_resetComplicationViews;
-- (void)_setComplicationTemplate:(id)a3 reason:(int64_t)a4 animation:(unint64_t)a5 animationType:(unint64_t)a6 animationFraction:(float)a7;
-- (void)_setDimmed:(BOOL)a3 animated:(BOOL)a4;
-- (void)_setDisplay:(id)a3 withComplicationAnimation:(unint64_t)a4 animationType:(unint64_t)a5 animationFraction:(float)a6;
-- (void)_setDisplayEditing:(BOOL)a3;
-- (void)_setDisplayMaxSize:(CGSize)a3;
+- (void)_setComplicationTemplate:(id)template reason:(int64_t)reason animation:(unint64_t)animation animationType:(unint64_t)type animationFraction:(float)fraction;
+- (void)_setDimmed:(BOOL)dimmed animated:(BOOL)animated;
+- (void)_setDisplay:(id)display withComplicationAnimation:(unint64_t)animation animationType:(unint64_t)type animationFraction:(float)fraction;
+- (void)_setDisplayEditing:(BOOL)editing;
+- (void)_setDisplayMaxSize:(CGSize)size;
 - (void)_timelineAnimationDidFinish;
-- (void)_tryToSetDisplayHighlighted:(BOOL)a3;
+- (void)_tryToSetDisplayHighlighted:(BOOL)highlighted;
 - (void)_updateConcatenatedTransform;
-- (void)_updateVisibilityForSensitivity:(int64_t)a3;
-- (void)complicationDisplay:(id)a3 renderStatsWithTime:(double)a4 cost:(double)a5;
+- (void)_updateVisibilityForSensitivity:(int64_t)sensitivity;
+- (void)complicationDisplay:(id)display renderStatsWithTime:(double)time cost:(double)cost;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)sensitiveUIStateChanged;
-- (void)setComplicationView:(id)a3 withComplicationAnimation:(unint64_t)a4 animationType:(unint64_t)a5 animationFraction:(float)a6;
-- (void)setContentTransform:(CGAffineTransform *)a3;
-- (void)setDimmed:(BOOL)a3 animated:(BOOL)a4;
-- (void)setEditing:(BOOL)a3;
-- (void)setEditingTransform:(CGAffineTransform *)a3;
-- (void)setFilterProvider:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setMaxSize:(CGSize)a3;
-- (void)setPaused:(BOOL)a3;
-- (void)setTapAnimationEnabled:(BOOL)a3;
-- (void)setTapEnabled:(BOOL)a3;
-- (void)setTapInternalInputEnabled:(BOOL)a3;
-- (void)setTimeTravelDate:(id)a3 animated:(BOOL)a4;
-- (void)setTritiumTransform:(CGAffineTransform *)a3;
-- (void)willPerformAppLaunchForComplication:(id)a3;
+- (void)setComplicationView:(id)view withComplicationAnimation:(unint64_t)animation animationType:(unint64_t)type animationFraction:(float)fraction;
+- (void)setContentTransform:(CGAffineTransform *)transform;
+- (void)setDimmed:(BOOL)dimmed animated:(BOOL)animated;
+- (void)setEditing:(BOOL)editing;
+- (void)setEditingTransform:(CGAffineTransform *)transform;
+- (void)setFilterProvider:(id)provider;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setMaxSize:(CGSize)size;
+- (void)setPaused:(BOOL)paused;
+- (void)setTapAnimationEnabled:(BOOL)enabled;
+- (void)setTapEnabled:(BOOL)enabled;
+- (void)setTapInternalInputEnabled:(BOOL)enabled;
+- (void)setTimeTravelDate:(id)date animated:(BOOL)animated;
+- (void)setTritiumTransform:(CGAffineTransform *)transform;
+- (void)willPerformAppLaunchForComplication:(id)complication;
 @end
 
 @implementation NTKComplicationDisplayWrapperView
@@ -85,36 +85,36 @@
     *(v3 + 760) = v7;
     [v3 addTarget:v3 action:sel__invokeTouchUpInsideHandler forControlEvents:64];
     [v3 addTarget:v3 action:sel__invokeTouchDownHandler forControlEvents:1];
-    v8 = [MEMORY[0x277CBBB70] sharedMonitor];
-    [v8 addSensitiveUIObserver:v3];
+    mEMORY[0x277CBBB70] = [MEMORY[0x277CBBB70] sharedMonitor];
+    [mEMORY[0x277CBBB70] addSensitiveUIObserver:v3];
 
-    v9 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v10 = *(v3 + 67);
-    *(v3 + 67) = v9;
+    *(v3 + 67) = weakObjectsHashTable;
   }
 
   return v3;
 }
 
-- (NTKComplicationDisplayWrapperView)initWithFamily:(int64_t)a3
+- (NTKComplicationDisplayWrapperView)initWithFamily:(int64_t)family
 {
   result = [(NTKComplicationDisplayWrapperView *)self init];
   if (result)
   {
-    result->_family = a3;
+    result->_family = family;
   }
 
   return result;
 }
 
-- (NTKComplicationDisplayWrapperView)initWithLegacyDisplay:(id)a3 layoutOverride:(int64_t)a4
+- (NTKComplicationDisplayWrapperView)initWithLegacyDisplay:(id)display layoutOverride:(int64_t)override
 {
   v6 = [(NTKComplicationDisplayWrapperView *)self initWithLegacyDisplay:?];
   v8 = v6;
   if (v6)
   {
-    v6->_layoutOverride = a4;
-    if (!a3)
+    v6->_layoutOverride = override;
+    if (!display)
     {
       if (NTKInternalBuild(v6, v7))
       {
@@ -124,8 +124,8 @@
           [NTKComplicationDisplayWrapperView initWithLegacyDisplay:v9 layoutOverride:?];
         }
 
-        v10 = [MEMORY[0x277D75348] magentaColor];
-        [(NTKComplicationDisplayWrapperView *)v8 setBackgroundColor:v10];
+        magentaColor = [MEMORY[0x277D75348] magentaColor];
+        [(NTKComplicationDisplayWrapperView *)v8 setBackgroundColor:magentaColor];
       }
     }
   }
@@ -133,45 +133,45 @@
   return v8;
 }
 
-- (NTKComplicationDisplayWrapperView)initWithLegacyDisplay:(id)a3
+- (NTKComplicationDisplayWrapperView)initWithLegacyDisplay:(id)display
 {
-  v4 = a3;
+  displayCopy = display;
   v5 = [(NTKComplicationDisplayWrapperView *)self init];
   v7 = v5;
   if (v5)
   {
     v5->_hasLegacyDisplay = 1;
     LODWORD(v6) = -1.0;
-    [(NTKComplicationDisplayWrapperView *)v5 _setDisplay:v4 withComplicationAnimation:0 animationType:0 animationFraction:v6];
+    [(NTKComplicationDisplayWrapperView *)v5 _setDisplay:displayCopy withComplicationAnimation:0 animationType:0 animationFraction:v6];
   }
 
   return v7;
 }
 
-- (NTKComplicationDisplayWrapperView)initWithCustomRichDisplay:(id)a3
+- (NTKComplicationDisplayWrapperView)initWithCustomRichDisplay:(id)display
 {
-  v4 = a3;
+  displayCopy = display;
   v5 = [(NTKComplicationDisplayWrapperView *)self init];
   v7 = v5;
   if (v5)
   {
     LODWORD(v6) = -1.0;
-    [(NTKComplicationDisplayWrapperView *)v5 _setDisplay:v4 withComplicationAnimation:0 animationType:0 animationFraction:v6];
+    [(NTKComplicationDisplayWrapperView *)v5 _setDisplay:displayCopy withComplicationAnimation:0 animationType:0 animationFraction:v6];
   }
 
   return v7;
 }
 
-- (NTKComplicationDisplayWrapperView)initWithCustomTemplateDisplay:(id)a3 isDetachedDisplay:(BOOL)a4 family:(int64_t)a5
+- (NTKComplicationDisplayWrapperView)initWithCustomTemplateDisplay:(id)display isDetachedDisplay:(BOOL)detachedDisplay family:(int64_t)family
 {
-  v8 = a3;
+  displayCopy = display;
   v9 = [(NTKComplicationDisplayWrapperView *)self init];
   v10 = v9;
   if (v9)
   {
-    v9->_family = a5;
-    v9->_isDetachedDisplay = a4;
-    [(NTKComplicationDisplayWrapperView *)v9 setCustomDisplay:v8];
+    v9->_family = family;
+    v9->_isDetachedDisplay = detachedDisplay;
+    [(NTKComplicationDisplayWrapperView *)v9 setCustomDisplay:displayCopy];
   }
 
   return v10;
@@ -179,8 +179,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CBBB70] sharedMonitor];
-  [v3 removeSensitiveUIObserver:self];
+  mEMORY[0x277CBBB70] = [MEMORY[0x277CBBB70] sharedMonitor];
+  [mEMORY[0x277CBBB70] removeSensitiveUIObserver:self];
 
   [(CLKComplicationTemplate *)self->_template endUpdatesForClient:self];
   v4.receiver = self;
@@ -221,45 +221,45 @@
   [(NTKComplicationDisplayWrapperView *)&v7 setTransform:&t1];
 }
 
-- (void)setEditingTransform:(CGAffineTransform *)a3
+- (void)setEditingTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_editingTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_editingTransform.a = *&transform->a;
   *&self->_editingTransform.c = v4;
   *&self->_editingTransform.tx = v3;
   [(NTKComplicationDisplayWrapperView *)self _updateConcatenatedTransform];
 }
 
-- (void)setTritiumTransform:(CGAffineTransform *)a3
+- (void)setTritiumTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_tritiumTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_tritiumTransform.a = *&transform->a;
   *&self->_tritiumTransform.c = v4;
   *&self->_tritiumTransform.tx = v3;
   [(NTKComplicationDisplayWrapperView *)self _updateConcatenatedTransform];
 }
 
-- (void)setContentTransform:(CGAffineTransform *)a3
+- (void)setContentTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_contentTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_contentTransform.a = *&transform->a;
   *&self->_contentTransform.c = v4;
   *&self->_contentTransform.tx = v3;
   [(NTKComplicationDisplayWrapperView *)self _updateConcatenatedTransform];
 }
 
-- (void)_setComplicationTemplate:(id)a3 reason:(int64_t)a4 animation:(unint64_t)a5 animationType:(unint64_t)a6 animationFraction:(float)a7
+- (void)_setComplicationTemplate:(id)template reason:(int64_t)reason animation:(unint64_t)animation animationType:(unint64_t)type animationFraction:(float)fraction
 {
   v38 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  if (self->_template != v13)
+  templateCopy = template;
+  if (self->_template != templateCopy)
   {
     [(CLKComplicationTemplate *)self->_prevTemplate endUpdatesForClient:self];
     objc_storeStrong(&self->_prevTemplate, self->_template);
-    objc_storeStrong(&self->_template, a3);
+    objc_storeStrong(&self->_template, template);
     if (!self->_paused)
     {
       [(CLKComplicationTemplate *)self->_template beginUpdatesForClient:self];
@@ -299,7 +299,7 @@
     if (!self->_isDetachedDisplay)
     {
       v20 = objc_opt_class();
-      v21 = NTKComplicationDisplayClassForTemplateAndFamily(v13, self->_family);
+      v21 = NTKComplicationDisplayClassForTemplateAndFamily(templateCopy, self->_family);
       if (!v21)
       {
         objc_opt_class();
@@ -314,60 +314,60 @@
         }
       }
 
-      v22 = [(NTKComplicationDisplayWrapperView *)self display];
-      v23 = [v22 conformsToProtocol:&unk_28A7FCA58];
+      display = [(NTKComplicationDisplayWrapperView *)self display];
+      v23 = [display conformsToProtocol:&unk_28A7FCA58];
 
       if (v23)
       {
-        v25 = [(NTKComplicationDisplayWrapperView *)self display];
-        v26 = [v25 complicationTemplate];
+        display2 = [(NTKComplicationDisplayWrapperView *)self display];
+        complicationTemplate = [display2 complicationTemplate];
         v32 = v20;
-        v27 = a5;
-        v28 = a4;
-        v29 = a6;
-        v30 = [(CLKComplicationTemplate *)v13 isEqual:v26];
+        animationCopy = animation;
+        reasonCopy = reason;
+        typeCopy = type;
+        v30 = [(CLKComplicationTemplate *)templateCopy isEqual:complicationTemplate];
 
         v31 = v30 == 0;
-        a6 = v29;
-        a4 = v28;
-        a5 = v27;
+        type = typeCopy;
+        reason = reasonCopy;
+        animation = animationCopy;
         v20 = v32;
         if (!v31)
         {
-          a5 = 0;
+          animation = 0;
         }
       }
 
-      if (!v20 || v20 != v21 || a5)
+      if (!v20 || v20 != v21 || animation)
       {
-        *&v24 = a7;
-        [(NTKComplicationDisplayWrapperView *)self _replaceDisplayWithDisplayClass:v21 template:v13 reason:a4 animation:a5 animationType:a6 animationFraction:v24];
+        *&v24 = fraction;
+        [(NTKComplicationDisplayWrapperView *)self _replaceDisplayWithDisplayClass:v21 template:templateCopy reason:reason animation:animation animationType:type animationFraction:v24];
         goto LABEL_27;
       }
 
       if (![(CDComplicationDisplay *)self->_display conformsToProtocol:&unk_28A7FCA58])
       {
 LABEL_27:
-        [(NTKComplicationDisplayWrapperView *)self _updateVisibilityForSensitivity:[(CLKComplicationTemplate *)v13 uiSensitivity]];
+        [(NTKComplicationDisplayWrapperView *)self _updateVisibilityForSensitivity:[(CLKComplicationTemplate *)templateCopy uiSensitivity]];
         goto LABEL_28;
       }
 
       display = self->_display;
     }
 
-    [(CDComplicationDisplay *)display setComplicationTemplate:v13 reason:a4];
+    [(CDComplicationDisplay *)display setComplicationTemplate:templateCopy reason:reason];
     goto LABEL_27;
   }
 
 LABEL_28:
 }
 
-- (void)_replaceDisplayWithDisplayClass:(Class)a3 template:(id)a4 reason:(int64_t)a5 animation:(unint64_t)a6 animationType:(unint64_t)a7 animationFraction:(float)a8
+- (void)_replaceDisplayWithDisplayClass:(Class)class template:(id)template reason:(int64_t)reason animation:(unint64_t)animation animationType:(unint64_t)type animationFraction:(float)fraction
 {
-  v18 = a6;
-  v13 = a4;
-  v14 = [(NTKComplicationDisplayWrapperView *)self display];
-  v15 = objc_alloc_init(a3);
+  animationCopy = animation;
+  templateCopy = template;
+  display = [(NTKComplicationDisplayWrapperView *)self display];
+  v15 = objc_alloc_init(class);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -376,58 +376,58 @@ LABEL_28:
   }
 
   [v15 setTextLayoutStyle:{-[NTKComplicationDisplayWrapperView textLayoutStyle](self, "textLayoutStyle")}];
-  [(NTKComplicationDisplayWrapperView *)self _prepareToSetDisplay:v15 withComplicationAnimation:&v18];
-  [v15 setComplicationTemplate:v13 reason:a5];
+  [(NTKComplicationDisplayWrapperView *)self _prepareToSetDisplay:v15 withComplicationAnimation:&animationCopy];
+  [v15 setComplicationTemplate:templateCopy reason:reason];
 
-  *&v17 = a8;
-  [(NTKComplicationDisplayWrapperView *)self _setDisplay:v15 withComplicationAnimation:v18 animationType:a7 animationFraction:v17];
-  [(NTKComplicationDisplayWrapperView *)self _didSetDisplayFromDisplay:v14 withComplicationAnimation:v18];
+  *&v17 = fraction;
+  [(NTKComplicationDisplayWrapperView *)self _setDisplay:v15 withComplicationAnimation:animationCopy animationType:type animationFraction:v17];
+  [(NTKComplicationDisplayWrapperView *)self _didSetDisplayFromDisplay:display withComplicationAnimation:animationCopy];
   if (objc_opt_respondsToSelector())
   {
-    [(CDComplicationDisplay *)self->_display setTimeTravelDate:self->_timeTravelDate animated:v18 != 0];
+    [(CDComplicationDisplay *)self->_display setTimeTravelDate:self->_timeTravelDate animated:animationCopy != 0];
   }
 }
 
-- (void)_prepareToSetDisplay:(id)a3 withComplicationAnimation:(unint64_t *)a4
+- (void)_prepareToSetDisplay:(id)display withComplicationAnimation:(unint64_t *)animation
 {
-  v8 = a3;
+  displayCopy = display;
   objc_opt_class();
   if (objc_opt_respondsToSelector())
   {
-    v6 = [objc_opt_class() layoutOverride];
+    layoutOverride = [objc_opt_class() layoutOverride];
   }
 
   else
   {
-    v6 = 0;
+    layoutOverride = 0;
   }
 
   layoutOverride = self->_layoutOverride;
-  self->_didChangeLayoutOverride = v6 != layoutOverride;
-  if (v6 != layoutOverride)
+  self->_didChangeLayoutOverride = layoutOverride != layoutOverride;
+  if (layoutOverride != layoutOverride)
   {
-    self->_layoutOverride = v6;
-    *a4 = 0;
+    self->_layoutOverride = layoutOverride;
+    *animation = 0;
   }
 }
 
-- (void)_didSetDisplayFromDisplay:(id)a3 withComplicationAnimation:(unint64_t)a4
+- (void)_didSetDisplayFromDisplay:(id)display withComplicationAnimation:(unint64_t)animation
 {
   if (self->_didChangeLayoutOverride)
   {
     self->_didChangeLayoutOverride = 0;
-    [(NTKComplicationDisplayWrapperView *)self _invokeNeedsResizeHandler:a3];
+    [(NTKComplicationDisplayWrapperView *)self _invokeNeedsResizeHandler:display];
   }
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  if (self->_paused != a3)
+  if (self->_paused != paused)
   {
-    v3 = a3;
-    self->_paused = a3;
+    pausedCopy = paused;
+    self->_paused = paused;
     v5 = self->_template;
-    if (a3)
+    if (paused)
     {
       [(CLKComplicationTemplate *)v5 endUpdatesForClient:self];
     }
@@ -442,50 +442,50 @@ LABEL_28:
     {
       display = self->_display;
 
-      [(CDComplicationDisplay *)display setPaused:v3];
+      [(CDComplicationDisplay *)display setPaused:pausedCopy];
     }
   }
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
-    self->_editing = a3;
+    self->_editing = editing;
     [(NTKComplicationDisplayWrapperView *)self _setDisplayEditing:?];
   }
 }
 
-- (void)setMaxSize:(CGSize)a3
+- (void)setMaxSize:(CGSize)size
 {
-  if (a3.width != self->_maxSize.width || a3.height != self->_maxSize.height)
+  if (size.width != self->_maxSize.width || size.height != self->_maxSize.height)
   {
-    self->_maxSize = a3;
+    self->_maxSize = size;
     [(NTKComplicationDisplayWrapperView *)self _setDisplayMaxSize:?];
   }
 }
 
-- (void)setDimmed:(BOOL)a3 animated:(BOOL)a4
+- (void)setDimmed:(BOOL)dimmed animated:(BOOL)animated
 {
-  if (self->_dimmed != a3)
+  if (self->_dimmed != dimmed)
   {
-    self->_dimmed = a3;
+    self->_dimmed = dimmed;
     [NTKComplicationDisplayWrapperView _setDimmed:"_setDimmed:animated:" animated:?];
   }
 }
 
-- (void)_setDimmed:(BOOL)a3 animated:(BOOL)a4
+- (void)_setDimmed:(BOOL)dimmed animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__NTKComplicationDisplayWrapperView__setDimmed_animated___block_invoke;
   v7[3] = &unk_27877F7E8;
   v7[4] = self;
-  v8 = a3;
+  dimmedCopy = dimmed;
   v5 = _Block_copy(v7);
   v6 = v5;
-  if (v4)
+  if (animatedCopy)
   {
     [MEMORY[0x277D75D18] animateWithDuration:v5 animations:0.2];
   }
@@ -508,11 +508,11 @@ uint64_t __57__NTKComplicationDisplayWrapperView__setDimmed_animated___block_inv
   return [v1 setAlpha:v2];
 }
 
-- (void)setTapEnabled:(BOOL)a3
+- (void)setTapEnabled:(BOOL)enabled
 {
-  if (self->_tapEnabled != a3)
+  if (self->_tapEnabled != enabled)
   {
-    self->_tapEnabled = a3;
+    self->_tapEnabled = enabled;
     [(NTKComplicationDisplayWrapperView *)self _tryToSetDisplayHighlighted:0];
     tapEnabled = self->_tapEnabled;
 
@@ -520,20 +520,20 @@ uint64_t __57__NTKComplicationDisplayWrapperView__setDimmed_animated___block_inv
   }
 }
 
-- (void)setTapAnimationEnabled:(BOOL)a3
+- (void)setTapAnimationEnabled:(BOOL)enabled
 {
-  if (self->_tapAnimationEnabled != a3)
+  if (self->_tapAnimationEnabled != enabled)
   {
-    self->_tapAnimationEnabled = a3;
+    self->_tapAnimationEnabled = enabled;
     [(NTKComplicationDisplayWrapperView *)self _tryToSetDisplayHighlighted:0];
   }
 }
 
-- (void)setTapInternalInputEnabled:(BOOL)a3
+- (void)setTapInternalInputEnabled:(BOOL)enabled
 {
-  if (self->_tapInternalInputEnabled != a3)
+  if (self->_tapInternalInputEnabled != enabled)
   {
-    self->_tapInternalInputEnabled = a3;
+    self->_tapInternalInputEnabled = enabled;
     [(NTKComplicationDisplayWrapperView *)self _tryToSetDisplayHighlighted:0];
   }
 }
@@ -543,8 +543,8 @@ uint64_t __57__NTKComplicationDisplayWrapperView__setDimmed_animated___block_inv
   touchDownHandler = self->_touchDownHandler;
   if (touchDownHandler)
   {
-    v4 = [(NTKComplicationDisplayWrapperView *)self display];
-    touchDownHandler[2](touchDownHandler, v4);
+    display = [(NTKComplicationDisplayWrapperView *)self display];
+    touchDownHandler[2](touchDownHandler, display);
 
     touchUpInsideHandler = self->_touchUpInsideHandler;
     if (!touchUpInsideHandler)
@@ -559,8 +559,8 @@ uint64_t __57__NTKComplicationDisplayWrapperView__setDimmed_animated___block_inv
   if (touchUpInsideHandler)
   {
 LABEL_5:
-    v6 = [(NTKComplicationDisplayWrapperView *)self display];
-    touchUpInsideHandler[2](touchUpInsideHandler, v6);
+    display2 = [(NTKComplicationDisplayWrapperView *)self display];
+    touchUpInsideHandler[2](touchUpInsideHandler, display2);
 
     return 1;
   }
@@ -570,9 +570,9 @@ LABEL_5:
 
 - (BOOL)_displayIsTappable
 {
-  v3 = [(NTKComplicationDisplayWrapperView *)self display];
-  v4 = v3;
-  if (self->_tapEnabled && ([v3 alpha], v5 > 0.0))
+  display = [(NTKComplicationDisplayWrapperView *)self display];
+  v4 = display;
+  if (self->_tapEnabled && ([display alpha], v5 > 0.0))
   {
     v6 = [v4 isHidden] ^ 1;
   }
@@ -592,24 +592,24 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v3 = [(NTKComplicationDisplayWrapperView *)self _displayIsTappable];
-  if (v3)
+  _displayIsTappable = [(NTKComplicationDisplayWrapperView *)self _displayIsTappable];
+  if (_displayIsTappable)
   {
     if (self->_tapInternalInputEnabled)
     {
       touchUpInsideHandler = self->_touchUpInsideHandler;
-      v5 = [(NTKComplicationDisplayWrapperView *)self display];
-      touchUpInsideHandler[2](touchUpInsideHandler, v5);
+      display = [(NTKComplicationDisplayWrapperView *)self display];
+      touchUpInsideHandler[2](touchUpInsideHandler, display);
 
-      LOBYTE(v3) = 1;
-      return v3;
+      LOBYTE(_displayIsTappable) = 1;
+      return _displayIsTappable;
     }
 
 LABEL_5:
-    LOBYTE(v3) = 0;
+    LOBYTE(_displayIsTappable) = 0;
   }
 
-  return v3;
+  return _displayIsTappable;
 }
 
 - (void)_invokeTouchDownHandler
@@ -617,15 +617,15 @@ LABEL_5:
   if (self->_touchDownHandler && [(NTKComplicationDisplayWrapperView *)self _displayIsTappable]&& self->_tapInternalInputEnabled)
   {
     touchDownHandler = self->_touchDownHandler;
-    v4 = [(NTKComplicationDisplayWrapperView *)self display];
-    touchDownHandler[2](touchDownHandler, v4);
+    display = [(NTKComplicationDisplayWrapperView *)self display];
+    touchDownHandler[2](touchDownHandler, display);
   }
 }
 
 - (void)sensitiveUIStateChanged
 {
-  v3 = [(NTKComplicationDisplayWrapperView *)self complicationTemplate];
-  -[NTKComplicationDisplayWrapperView _updateVisibilityForSensitivity:](self, "_updateVisibilityForSensitivity:", [v3 uiSensitivity]);
+  complicationTemplate = [(NTKComplicationDisplayWrapperView *)self complicationTemplate];
+  -[NTKComplicationDisplayWrapperView _updateVisibilityForSensitivity:](self, "_updateVisibilityForSensitivity:", [complicationTemplate uiSensitivity]);
 }
 
 - (void)_invokeNeedsResizeHandler
@@ -637,21 +637,21 @@ LABEL_5:
   }
 }
 
-- (void)_tryToSetDisplayHighlighted:(BOOL)a3
+- (void)_tryToSetDisplayHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   if (objc_opt_respondsToSelector())
   {
     display = self->_display;
 
-    [(CDComplicationDisplay *)display setHighlighted:v3];
+    [(CDComplicationDisplay *)display setHighlighted:highlightedCopy];
   }
 }
 
-- (void)_setDisplayMaxSize:(CGSize)a3
+- (void)_setDisplayMaxSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (objc_opt_respondsToSelector())
   {
     display = self->_display;
@@ -660,27 +660,27 @@ LABEL_5:
   }
 }
 
-- (void)_setDisplayEditing:(BOOL)a3
+- (void)_setDisplayEditing:(BOOL)editing
 {
-  v3 = a3;
+  editingCopy = editing;
   if (objc_opt_respondsToSelector())
   {
     display = self->_display;
 
-    [(CDComplicationDisplay *)display setEditing:v3];
+    [(CDComplicationDisplay *)display setEditing:editingCopy];
   }
 }
 
-- (void)_setDisplay:(id)a3 withComplicationAnimation:(unint64_t)a4 animationType:(unint64_t)a5 animationFraction:(float)a6
+- (void)_setDisplay:(id)display withComplicationAnimation:(unint64_t)animation animationType:(unint64_t)type animationFraction:(float)fraction
 {
-  v11 = a3;
+  displayCopy = display;
   display = self->_display;
-  if (display != v11)
+  if (display != displayCopy)
   {
-    v18 = v11;
+    v18 = displayCopy;
     if (display)
     {
-      if (([(CDComplicationDisplay *)v11 conformsToProtocol:&unk_28A7FCA58]& 1) == 0)
+      if (([(CDComplicationDisplay *)displayCopy conformsToProtocol:&unk_28A7FCA58]& 1) == 0)
       {
         v13 = self->_template;
         self->_template = 0;
@@ -690,14 +690,14 @@ LABEL_5:
       [(NTKComplicationDisplayWrapperView *)self _removeDisplay:self->_display];
     }
 
-    objc_storeStrong(&self->_display, a3);
+    objc_storeStrong(&self->_display, display);
     if (self->_display)
     {
       if (objc_opt_respondsToSelector())
       {
         v14 = self->_display;
-        v15 = [(NTKComplicationDisplayWrapperView *)self filterProvider];
-        [(CDComplicationDisplay *)v14 setFilterProvider:v15];
+        filterProvider = [(NTKComplicationDisplayWrapperView *)self filterProvider];
+        [(CDComplicationDisplay *)v14 setFilterProvider:filterProvider];
       }
 
       [(CDComplicationDisplay *)self->_display setDisplayObserver:self];
@@ -712,8 +712,8 @@ LABEL_5:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        *&v17 = a6;
-        [(NTKComplicationDisplayWrapperView *)self setComplicationView:v18 withComplicationAnimation:a4 animationType:a5 animationFraction:v17];
+        *&v17 = fraction;
+        [(NTKComplicationDisplayWrapperView *)self setComplicationView:v18 withComplicationAnimation:animation animationType:type animationFraction:v17];
       }
     }
   }
@@ -721,9 +721,9 @@ LABEL_5:
   MEMORY[0x2821F9730]();
 }
 
-- (void)setFilterProvider:(id)a3
+- (void)setFilterProvider:(id)provider
 {
-  obj = a3;
+  obj = provider;
   WeakRetained = objc_loadWeakRetained(&self->_filterProvider);
 
   if (WeakRetained != obj)
@@ -748,10 +748,10 @@ LABEL_5:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(CDComplicationDisplay *)self->_currentComplicationView sizeThatFits:?];
   v7 = v6;
   v9 = v8;
@@ -843,7 +843,7 @@ LABEL_5:
   }
 }
 
-- (void)willPerformAppLaunchForComplication:(id)a3
+- (void)willPerformAppLaunchForComplication:(id)complication
 {
   WeakRetained = objc_loadWeakRetained(&self->_appLaunchDelegate);
 
@@ -854,10 +854,10 @@ LABEL_5:
   }
 }
 
-- (void)_updateVisibilityForSensitivity:(int64_t)a3
+- (void)_updateVisibilityForSensitivity:(int64_t)sensitivity
 {
-  v5 = [MEMORY[0x277CBBB70] sharedMonitor];
-  v6 = [v5 shouldHideForSensitivity:a3];
+  mEMORY[0x277CBBB70] = [MEMORY[0x277CBBB70] sharedMonitor];
+  v6 = [mEMORY[0x277CBBB70] shouldHideForSensitivity:sensitivity];
 
   if (objc_opt_respondsToSelector() & 1) != 0 && v6 != [(CDComplicationDisplay *)self->_display isHidden]&& (objc_opt_respondsToSelector())
   {
@@ -867,40 +867,40 @@ LABEL_5:
   }
 }
 
-- (void)complicationDisplay:(id)a3 renderStatsWithTime:(double)a4 cost:(double)a5
+- (void)complicationDisplay:(id)display renderStatsWithTime:(double)time cost:(double)cost
 {
   renderStatsHandler = self->_renderStatsHandler;
   if (renderStatsHandler)
   {
-    renderStatsHandler[2](renderStatsHandler, self, a4, a5);
+    renderStatsHandler[2](renderStatsHandler, self, time, cost);
   }
 }
 
-- (void)setTimeTravelDate:(id)a3 animated:(BOOL)a4
+- (void)setTimeTravelDate:(id)date animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  if (([v7 isEqual:self->_timeTravelDate] & 1) == 0)
+  animatedCopy = animated;
+  dateCopy = date;
+  if (([dateCopy isEqual:self->_timeTravelDate] & 1) == 0)
   {
-    objc_storeStrong(&self->_timeTravelDate, a3);
+    objc_storeStrong(&self->_timeTravelDate, date);
     if (objc_opt_respondsToSelector())
     {
-      [(CDComplicationDisplay *)self->_display setTimeTravelDate:self->_timeTravelDate animated:v4];
+      [(CDComplicationDisplay *)self->_display setTimeTravelDate:self->_timeTravelDate animated:animatedCopy];
     }
   }
 }
 
-- (void)setComplicationView:(id)a3 withComplicationAnimation:(unint64_t)a4 animationType:(unint64_t)a5 animationFraction:(float)a6
+- (void)setComplicationView:(id)view withComplicationAnimation:(unint64_t)animation animationType:(unint64_t)type animationFraction:(float)fraction
 {
   v33 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  viewCopy = view;
   p_currentComplicationView = &self->_currentComplicationView;
   currentComplicationView = self->_currentComplicationView;
-  if (currentComplicationView != v9)
+  if (currentComplicationView != viewCopy)
   {
     if (self->_isAnimating)
     {
-      objc_storeStrong(&self->_deferredComplicationView, a3);
+      objc_storeStrong(&self->_deferredComplicationView, view);
       v12 = _NTKLoggingObjectForDomain(23, "NTKLoggingDomainFace");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
@@ -911,11 +911,11 @@ LABEL_5:
       }
     }
 
-    else if (a4 && currentComplicationView)
+    else if (animation && currentComplicationView)
     {
-      objc_storeStrong(&self->_nextComplicationView, a3);
+      objc_storeStrong(&self->_nextComplicationView, view);
       [(CDComplicationDisplay *)*p_currentComplicationView removeFromSuperview];
-      if (a4 == 1)
+      if (animation == 1)
       {
         p_nextComplicationView = &self->_currentComplicationView;
       }
@@ -926,7 +926,7 @@ LABEL_5:
       }
 
       v15 = *p_nextComplicationView;
-      if (a4 == 1)
+      if (animation == 1)
       {
         v16 = &self->_nextComplicationView;
       }
@@ -975,7 +975,7 @@ LABEL_5:
       }
 
       [(CDComplicationDisplay *)*p_currentComplicationView removeFromSuperview];
-      objc_storeStrong(&self->_currentComplicationView, a3);
+      objc_storeStrong(&self->_currentComplicationView, view);
       [(NTKComplicationDisplayWrapperView *)self _resetComplicationViews];
       [(CDComplicationDisplay *)self->_nextComplicationView removeFromSuperview];
       nextComplicationView = self->_nextComplicationView;
@@ -1052,17 +1052,17 @@ LABEL_5:
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   if (self->_tapAnimationEnabled)
   {
     v8 = v3;
     v9 = v4;
-    v5 = a3;
+    highlightedCopy = highlighted;
     v7.receiver = self;
     v7.super_class = NTKComplicationDisplayWrapperView;
     [(NTKComplicationDisplayWrapperView *)&v7 setHighlighted:?];
-    [(NTKComplicationDisplayWrapperView *)self _tryToSetDisplayHighlighted:v5];
+    [(NTKComplicationDisplayWrapperView *)self _tryToSetDisplayHighlighted:highlightedCopy];
   }
 }
 

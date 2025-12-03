@@ -1,25 +1,25 @@
 @interface PGWrapperMusicCatalogMonitor
-+ (BOOL)clearCatalogMusicFromCacheWithPhotoLibrary:(id)a3 progressReporter:(id)a4 error:(id *)a5;
-+ (void)checkMusicCatalogEligibilityWithProgressReporter:(id)a3 completionHandler:(id)a4;
++ (BOOL)clearCatalogMusicFromCacheWithPhotoLibrary:(id)library progressReporter:(id)reporter error:(id *)error;
++ (void)checkMusicCatalogEligibilityWithProgressReporter:(id)reporter completionHandler:(id)handler;
 - (PGWrapperMusicCatalogMonitor)init;
 @end
 
 @implementation PGWrapperMusicCatalogMonitor
 
-+ (void)checkMusicCatalogEligibilityWithProgressReporter:(id)a3 completionHandler:(id)a4
++ (void)checkMusicCatalogEligibilityWithProgressReporter:(id)reporter completionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
-  v7 = a3;
+  reporterCopy = reporter;
   sub_22F393CF4(sub_22F394154, v6);
 }
 
-+ (BOOL)clearCatalogMusicFromCacheWithPhotoLibrary:(id)a3 progressReporter:(id)a4 error:(id *)a5
++ (BOOL)clearCatalogMusicFromCacheWithPhotoLibrary:(id)library progressReporter:(id)reporter error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
-  sub_22F393E04(v6);
+  libraryCopy = library;
+  reporterCopy = reporter;
+  sub_22F393E04(libraryCopy);
 
   return 1;
 }

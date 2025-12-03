@@ -7,19 +7,19 @@
 - (id)describe
 {
   v3 = +[NSMutableArray array];
-  v4 = [(NSError *)self domain];
-  v5 = [(NSError *)self code];
-  v6 = [(NSError *)self userInfo];
-  v7 = [v6 objectForKey:NSLocalizedDescriptionKey];
-  v8 = [NSString stringWithFormat:@"domain = %@, code = %lu, description = %@", v4, v5, v7];
+  domain = [(NSError *)self domain];
+  code = [(NSError *)self code];
+  userInfo = [(NSError *)self userInfo];
+  v7 = [userInfo objectForKey:NSLocalizedDescriptionKey];
+  v8 = [NSString stringWithFormat:@"domain = %@, code = %lu, description = %@", domain, code, v7];
   [v3 addObject:v8];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = [(NSError *)self underlyingErrors];
-  v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  underlyingErrors = [(NSError *)self underlyingErrors];
+  v10 = [underlyingErrors countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
   {
     v11 = v10;
@@ -30,14 +30,14 @@
       {
         if (*v23 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(underlyingErrors);
         }
 
-        v14 = [*(*(&v22 + 1) + 8 * i) describe];
-        [v3 addObjectsFromArray:v14];
+        describe = [*(*(&v22 + 1) + 8 * i) describe];
+        [v3 addObjectsFromArray:describe];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v11 = [underlyingErrors countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v11);
@@ -49,18 +49,18 @@
     do
     {
       v16 = [v3 objectAtIndexedSubscript:v15];
-      v17 = [v3 firstObject];
+      firstObject = [v3 firstObject];
 
-      if (v17 == v16)
+      if (firstObject == v16)
       {
         v19 = @"├── ";
       }
 
       else
       {
-        v18 = [v3 lastObject];
+        lastObject = [v3 lastObject];
 
-        if (v18 == v16)
+        if (lastObject == v16)
         {
           v19 = @"└── ";
         }

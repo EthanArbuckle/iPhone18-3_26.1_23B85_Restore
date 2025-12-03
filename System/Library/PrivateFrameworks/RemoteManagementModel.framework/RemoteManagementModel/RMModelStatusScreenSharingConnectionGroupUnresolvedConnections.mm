@@ -1,11 +1,11 @@
 @interface RMModelStatusScreenSharingConnectionGroupUnresolvedConnections
 + (NSSet)allowedStatusKeys;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3;
-+ (id)buildWithIdentifier:(id)a3 removed:(id)a4 unresolvedConnections:(id)a5;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier;
++ (id)buildWithIdentifier:(id)identifier removed:(id)removed unresolvedConnections:(id)connections;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelStatusScreenSharingConnectionGroupUnresolvedConnections
@@ -25,17 +25,17 @@
   return v4;
 }
 
-+ (id)buildWithIdentifier:(id)a3 removed:(id)a4 unresolvedConnections:(id)a5
++ (id)buildWithIdentifier:(id)identifier removed:(id)removed unresolvedConnections:(id)connections
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  connectionsCopy = connections;
+  removedCopy = removed;
+  identifierCopy = identifier;
   v10 = objc_opt_new();
-  [v10 setStatusIdentifier:v9];
+  [v10 setStatusIdentifier:identifierCopy];
 
-  if (v8)
+  if (removedCopy)
   {
-    v11 = v8;
+    v11 = removedCopy;
   }
 
   else
@@ -45,16 +45,16 @@
 
   [v10 setStatusRemoved:v11];
 
-  [v10 setStatusUnresolvedConnections:v7];
+  [v10 setStatusUnresolvedConnections:connectionsCopy];
 
   return v10;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_new();
-  [v4 setStatusIdentifier:v3];
+  [v4 setStatusIdentifier:identifierCopy];
 
   return v4;
 }
@@ -76,12 +76,12 @@
   return v5;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelStatusScreenSharingConnectionGroupUnresolvedConnections allowedStatusKeys];
   [v10 minusSet:v11];
@@ -89,7 +89,7 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"identifier" forKeyPath:@"statusIdentifier" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"_removed" forKeyPath:@"statusRemoved" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]&& [(RMModelPayloadBase *)self loadArrayFromDictionary:v7 usingKey:@"unresolved_connections" forKeyPath:@"statusUnresolvedConnections" validator:&__block_literal_global_25 isRequired:0 defaultValue:0 error:a5];
+  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"identifier" forKeyPath:@"statusIdentifier" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"_removed" forKeyPath:@"statusRemoved" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]&& [(RMModelPayloadBase *)self loadArrayFromDictionary:dictionaryCopy usingKey:@"unresolved_connections" forKeyPath:@"statusUnresolvedConnections" validator:&__block_literal_global_25 isRequired:0 defaultValue:0 error:error];
   return v13;
 }
 
@@ -102,28 +102,28 @@ uint64_t __116__RMModelStatusScreenSharingConnectionGroupUnresolvedConnections_l
   return isKindOfClass & 1;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelStatusScreenSharingConnectionGroupUnresolvedConnections *)self statusIdentifier];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"identifier" value:v5 isRequired:1 defaultValue:0];
+  statusIdentifier = [(RMModelStatusScreenSharingConnectionGroupUnresolvedConnections *)self statusIdentifier];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"identifier" value:statusIdentifier isRequired:1 defaultValue:0];
 
-  v6 = [(RMModelStatusScreenSharingConnectionGroupUnresolvedConnections *)self statusRemoved];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"_removed" value:v6 isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
+  statusRemoved = [(RMModelStatusScreenSharingConnectionGroupUnresolvedConnections *)self statusRemoved];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"_removed" value:statusRemoved isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
 
-  v7 = [(RMModelStatusScreenSharingConnectionGroupUnresolvedConnections *)self statusUnresolvedConnections];
-  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v4 usingKey:@"unresolved_connections" value:v7 itemSerializer:&__block_literal_global_38 isRequired:0 defaultValue:0];
+  statusUnresolvedConnections = [(RMModelStatusScreenSharingConnectionGroupUnresolvedConnections *)self statusUnresolvedConnections];
+  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v4 usingKey:@"unresolved_connections" value:statusUnresolvedConnections itemSerializer:&__block_literal_global_38 isRequired:0 defaultValue:0];
 
   v8 = [v4 copy];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = RMModelStatusScreenSharingConnectionGroupUnresolvedConnections;
-  v4 = [(RMModelPayloadBase *)&v12 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v12 copyWithZone:zone];
   v5 = [(NSString *)self->_statusIdentifier copy];
   v6 = v4[2];
   v4[2] = v5;

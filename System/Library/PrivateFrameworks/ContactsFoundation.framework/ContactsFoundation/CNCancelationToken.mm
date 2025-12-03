@@ -1,14 +1,14 @@
 @interface CNCancelationToken
-+ (id)tokenWithCancelationBlock:(id)a3;
-+ (id)tokenWrappingCancelable:(id)a3;
++ (id)tokenWithCancelationBlock:(id)block;
++ (id)tokenWrappingCancelable:(id)cancelable;
 - (BOOL)isCanceled;
 - (CNCancelationToken)init;
 - (id)nts_cancel;
-- (void)addCancelable:(id)a3;
-- (void)addCancelationBlock:(id)a3;
-- (void)callCancelationBlocks:(id)a3;
+- (void)addCancelable:(id)cancelable;
+- (void)addCancelationBlock:(id)block;
+- (void)callCancelationBlocks:(id)blocks;
 - (void)cancel;
-- (void)performBlock:(id)a3;
+- (void)performBlock:(id)block;
 @end
 
 @implementation CNCancelationToken
@@ -32,22 +32,22 @@
 
 - (BOOL)isCanceled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  isCanceled = v2->_isCanceled;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isCanceled = selfCopy->_isCanceled;
+  objc_sync_exit(selfCopy);
 
   return isCanceled;
 }
 
 - (void)cancel
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CNCancelationToken *)v2 nts_cancel];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  nts_cancel = [(CNCancelationToken *)selfCopy nts_cancel];
+  objc_sync_exit(selfCopy);
 
-  [(CNCancelationToken *)v2 callCancelationBlocks:v3];
+  [(CNCancelationToken *)selfCopy callCancelationBlocks:nts_cancel];
 }
 
 - (id)nts_cancel
@@ -68,56 +68,56 @@
   return v2;
 }
 
-+ (id)tokenWithCancelationBlock:(id)a3
++ (id)tokenWithCancelationBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_alloc_init(CNWrappingCancelableToken);
-  [(CNCancelationToken *)v4 addCancelationBlock:v3];
+  [(CNCancelationToken *)v4 addCancelationBlock:blockCopy];
 
   return v4;
 }
 
-+ (id)tokenWrappingCancelable:(id)a3
++ (id)tokenWrappingCancelable:(id)cancelable
 {
-  v4 = a3;
+  cancelableCopy = cancelable;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __46__CNCancelationToken_tokenWrappingCancelable___block_invoke;
   v8[3] = &unk_1E6ED5830;
-  v9 = v4;
-  v5 = v4;
-  v6 = [a1 tokenWithCancelationBlock:v8];
+  v9 = cancelableCopy;
+  v5 = cancelableCopy;
+  v6 = [self tokenWithCancelationBlock:v8];
 
   return v6;
 }
 
-- (void)addCancelationBlock:(id)a3
+- (void)addCancelationBlock:(id)block
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_isCanceled)
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_isCanceled)
   {
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 
-    v8[2]();
+    blockCopy[2]();
   }
 
   else
   {
-    cancelationBlocks = v4->_cancelationBlocks;
-    v6 = [v8 copy];
+    cancelationBlocks = selfCopy->_cancelationBlocks;
+    v6 = [blockCopy copy];
     v7 = _Block_copy(v6);
     [(NSMutableArray *)cancelationBlocks addObject:v7];
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)addCancelable:(id)a3
+- (void)addCancelable:(id)cancelable
 {
-  v4 = a3;
-  if (!v4)
+  cancelableCopy = cancelable;
+  if (!cancelableCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_4 != -1)
     {
@@ -135,36 +135,36 @@
   v7[1] = 3221225472;
   v7[2] = __36__CNCancelationToken_addCancelable___block_invoke;
   v7[3] = &unk_1E6ED5830;
-  v8 = v4;
-  v6 = v4;
+  v8 = cancelableCopy;
+  v6 = cancelableCopy;
   [(CNCancelationToken *)self addCancelationBlock:v7];
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  isCanceled = v4->_isCanceled;
-  objc_sync_exit(v4);
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isCanceled = selfCopy->_isCanceled;
+  objc_sync_exit(selfCopy);
 
-  v6 = v7;
-  if (v7 && !isCanceled)
+  v6 = blockCopy;
+  if (blockCopy && !isCanceled)
   {
-    (*(v7 + 2))(v7);
-    v6 = v7;
+    (*(blockCopy + 2))(blockCopy);
+    v6 = blockCopy;
   }
 }
 
-- (void)callCancelationBlocks:(id)a3
+- (void)callCancelationBlocks:(id)blocks
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  blocksCopy = blocks;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [blocksCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -176,14 +176,14 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(blocksCopy);
         }
 
         (*(*(*(&v9 + 1) + 8 * v7++) + 16))();
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [blocksCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);

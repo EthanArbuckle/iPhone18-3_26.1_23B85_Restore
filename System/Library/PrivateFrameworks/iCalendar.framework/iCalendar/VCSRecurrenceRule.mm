@@ -1,23 +1,23 @@
 @interface VCSRecurrenceRule
-- (BOOL)decodeDigits:(const char *)a3 withResult:(int64_t *)a4;
-- (BOOL)decodeDuration:(const char *)a3;
-- (BOOL)decodeInterval:(const char *)a3;
-- (BOOL)decodeMonthlyByDay:(const char *)a3;
-- (BOOL)decodeMonthlyByPos:(const char *)a3;
-- (BOOL)decodeOccurrenceList:(const char *)a3;
-- (BOOL)decodeWeekdayList:(const char *)a3;
-- (BOOL)decodeWeekly:(const char *)a3;
-- (BOOL)decodeYearlyByDay:(const char *)a3;
-- (BOOL)decodeYearlyByMonth:(const char *)a3;
+- (BOOL)decodeDigits:(const char *)digits withResult:(int64_t *)result;
+- (BOOL)decodeDuration:(const char *)duration;
+- (BOOL)decodeInterval:(const char *)interval;
+- (BOOL)decodeMonthlyByDay:(const char *)day;
+- (BOOL)decodeMonthlyByPos:(const char *)pos;
+- (BOOL)decodeOccurrenceList:(const char *)list;
+- (BOOL)decodeWeekdayList:(const char *)list;
+- (BOOL)decodeWeekly:(const char *)weekly;
+- (BOOL)decodeYearlyByDay:(const char *)day;
+- (BOOL)decodeYearlyByMonth:(const char *)month;
 - (NSString)description;
-- (VCSRecurrenceRule)initWithString:(const char *)a3;
-- (id)_decodeNumberList:(const char *)a3 min:(int64_t)a4 max:(int64_t)a5;
+- (VCSRecurrenceRule)initWithString:(const char *)string;
+- (id)_decodeNumberList:(const char *)list min:(int64_t)min max:(int64_t)max;
 - (id)dictify;
 @end
 
 @implementation VCSRecurrenceRule
 
-- (VCSRecurrenceRule)initWithString:(const char *)a3
+- (VCSRecurrenceRule)initWithString:(const char *)string
 {
   v22.receiver = self;
   v22.super_class = VCSRecurrenceRule;
@@ -30,15 +30,15 @@ LABEL_39:
   }
 
   v5 = 0;
-  v21 = a3;
-  v6 = *a3;
+  stringCopy = string;
+  v6 = *string;
   if (v6 > 0x56)
   {
     if (v6 == 87)
     {
       v4->_recurrenceType = 2;
-      v21 = a3 + 1;
-      v5 = [(VCSRecurrenceRule *)v4 decodeWeekly:&v21];
+      stringCopy = string + 1;
+      v5 = [(VCSRecurrenceRule *)v4 decodeWeekly:&stringCopy];
       goto LABEL_18;
     }
 
@@ -47,15 +47,15 @@ LABEL_39:
       goto LABEL_18;
     }
 
-    v8 = *(a3 + 1);
-    v21 = a3 + 1;
+    v8 = *(string + 1);
+    stringCopy = string + 1;
     if (v8 != 68)
     {
       if (v8 == 77)
       {
         v4->_recurrenceType = 5;
-        v21 = a3 + 2;
-        v5 = [(VCSRecurrenceRule *)v4 decodeYearlyByMonth:&v21];
+        stringCopy = string + 2;
+        v5 = [(VCSRecurrenceRule *)v4 decodeYearlyByMonth:&stringCopy];
         goto LABEL_18;
       }
 
@@ -63,8 +63,8 @@ LABEL_39:
     }
 
     v4->_recurrenceType = 6;
-    v21 = a3 + 2;
-    v5 = [(VCSRecurrenceRule *)v4 decodeYearlyByDay:&v21];
+    stringCopy = string + 2;
+    v5 = [(VCSRecurrenceRule *)v4 decodeYearlyByDay:&stringCopy];
   }
 
   else
@@ -72,8 +72,8 @@ LABEL_39:
     if (v6 == 68)
     {
       v4->_recurrenceType = 1;
-      v21 = a3 + 1;
-      v5 = [(VCSRecurrenceRule *)v4 decodeDaily:&v21];
+      stringCopy = string + 1;
+      v5 = [(VCSRecurrenceRule *)v4 decodeDaily:&stringCopy];
       goto LABEL_18;
     }
 
@@ -82,15 +82,15 @@ LABEL_39:
       goto LABEL_18;
     }
 
-    v7 = *(a3 + 1);
-    v21 = a3 + 1;
+    v7 = *(string + 1);
+    stringCopy = string + 1;
     if (v7 != 68)
     {
       if (v7 == 80)
       {
         v4->_recurrenceType = 3;
-        v21 = a3 + 2;
-        v5 = [(VCSRecurrenceRule *)v4 decodeMonthlyByPos:&v21];
+        stringCopy = string + 2;
+        v5 = [(VCSRecurrenceRule *)v4 decodeMonthlyByPos:&stringCopy];
         goto LABEL_18;
       }
 
@@ -100,8 +100,8 @@ LABEL_15:
     }
 
     v4->_recurrenceType = 4;
-    v21 = a3 + 2;
-    v5 = [(VCSRecurrenceRule *)v4 decodeMonthlyByDay:&v21];
+    stringCopy = string + 2;
+    v5 = [(VCSRecurrenceRule *)v4 decodeMonthlyByDay:&stringCopy];
   }
 
 LABEL_18:
@@ -109,7 +109,7 @@ LABEL_18:
   {
     if (v5)
     {
-      for (i = v21; ; v21 = i)
+      for (i = stringCopy; ; stringCopy = i)
       {
         v10 = *i++;
         if (v10 != 32 && v10 != 9)
@@ -118,9 +118,9 @@ LABEL_18:
         }
       }
 
-      if ([(VCSRecurrenceRule *)v4 decodeDuration:&v21])
+      if ([(VCSRecurrenceRule *)v4 decodeDuration:&stringCopy])
       {
-        for (j = v21; ; v21 = j)
+        for (j = stringCopy; ; stringCopy = j)
         {
           v14 = *j++;
           if (v14 != 32 && v14 != 9)
@@ -130,7 +130,7 @@ LABEL_18:
         }
 
         v17 = [VCSDate alloc];
-        v18 = [(VCSDate *)v17 initWithDateString:v21];
+        v18 = [(VCSDate *)v17 initWithDateString:stringCopy];
         endDate = v4->_endDate;
         v4->_endDate = v18;
 
@@ -234,18 +234,18 @@ __CFString *__28__VCSRecurrenceRule_dictify__block_invoke(uint64_t a1, void *a2)
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(VCSRecurrenceRule *)self dictify];
-  v6 = [v3 stringWithFormat:@"<%@: %p> %@", v4, self, v5];
+  dictify = [(VCSRecurrenceRule *)self dictify];
+  v6 = [v3 stringWithFormat:@"<%@: %p> %@", v4, self, dictify];
 
   return v6;
 }
 
-- (BOOL)decodeWeekly:(const char *)a3
+- (BOOL)decodeWeekly:(const char *)weekly
 {
   v5 = [(VCSRecurrenceRule *)self decodeInterval:?];
   if (v5)
   {
-    for (i = *a3; ; *a3 = i)
+    for (i = *weekly; ; *weekly = i)
     {
       v7 = *i++;
       if (v7 != 32 && v7 != 9)
@@ -254,18 +254,18 @@ __CFString *__28__VCSRecurrenceRule_dictify__block_invoke(uint64_t a1, void *a2)
       }
     }
 
-    LOBYTE(v5) = [(VCSRecurrenceRule *)self decodeWeekdayList:a3];
+    LOBYTE(v5) = [(VCSRecurrenceRule *)self decodeWeekdayList:weekly];
   }
 
   return v5;
 }
 
-- (BOOL)decodeMonthlyByPos:(const char *)a3
+- (BOOL)decodeMonthlyByPos:(const char *)pos
 {
   v5 = [(VCSRecurrenceRule *)self decodeInterval:?];
   if (v5)
   {
-    for (i = *a3; ; *a3 = i)
+    for (i = *pos; ; *pos = i)
     {
       v7 = *i++;
       if (v7 != 32 && v7 != 9)
@@ -274,12 +274,12 @@ __CFString *__28__VCSRecurrenceRule_dictify__block_invoke(uint64_t a1, void *a2)
       }
     }
 
-    v5 = [(VCSRecurrenceRule *)self decodeOccurrenceList:a3];
+    v5 = [(VCSRecurrenceRule *)self decodeOccurrenceList:pos];
     if (v5)
     {
       if (self->_occurrenceList)
       {
-        for (j = *a3; ; *a3 = j)
+        for (j = *pos; ; *pos = j)
         {
           v10 = *j++;
           if (v10 != 32 && v10 != 9)
@@ -288,7 +288,7 @@ __CFString *__28__VCSRecurrenceRule_dictify__block_invoke(uint64_t a1, void *a2)
           }
         }
 
-        LOBYTE(v5) = [(VCSRecurrenceRule *)self decodeWeekdayList:a3];
+        LOBYTE(v5) = [(VCSRecurrenceRule *)self decodeWeekdayList:pos];
       }
 
       else
@@ -301,12 +301,12 @@ __CFString *__28__VCSRecurrenceRule_dictify__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (BOOL)decodeMonthlyByDay:(const char *)a3
+- (BOOL)decodeMonthlyByDay:(const char *)day
 {
   v5 = [(VCSRecurrenceRule *)self decodeInterval:?];
   if (v5)
   {
-    for (i = *a3; ; *a3 = i)
+    for (i = *day; ; *day = i)
     {
       v7 = *i++;
       if (v7 != 32 && v7 != 9)
@@ -315,7 +315,7 @@ __CFString *__28__VCSRecurrenceRule_dictify__block_invoke(uint64_t a1, void *a2)
       }
     }
 
-    v9 = [(VCSRecurrenceRule *)self _decodeNumberList:a3 min:1 max:31];
+    v9 = [(VCSRecurrenceRule *)self _decodeNumberList:day min:1 max:31];
     dayNumberList = self->_dayNumberList;
     self->_dayNumberList = v9;
   }
@@ -323,12 +323,12 @@ __CFString *__28__VCSRecurrenceRule_dictify__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (BOOL)decodeYearlyByMonth:(const char *)a3
+- (BOOL)decodeYearlyByMonth:(const char *)month
 {
   v5 = [(VCSRecurrenceRule *)self decodeInterval:?];
   if (v5)
   {
-    for (i = *a3; ; *a3 = i)
+    for (i = *month; ; *month = i)
     {
       v7 = *i++;
       if (v7 != 32 && v7 != 9)
@@ -337,7 +337,7 @@ __CFString *__28__VCSRecurrenceRule_dictify__block_invoke(uint64_t a1, void *a2)
       }
     }
 
-    v9 = [(VCSRecurrenceRule *)self _decodeNumberList:a3 min:1 max:12];
+    v9 = [(VCSRecurrenceRule *)self _decodeNumberList:month min:1 max:12];
     monthList = self->_monthList;
     self->_monthList = v9;
   }
@@ -345,12 +345,12 @@ __CFString *__28__VCSRecurrenceRule_dictify__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (BOOL)decodeYearlyByDay:(const char *)a3
+- (BOOL)decodeYearlyByDay:(const char *)day
 {
   v5 = [(VCSRecurrenceRule *)self decodeInterval:?];
   if (v5)
   {
-    for (i = *a3; ; *a3 = i)
+    for (i = *day; ; *day = i)
     {
       v7 = *i++;
       if (v7 != 32 && v7 != 9)
@@ -359,7 +359,7 @@ __CFString *__28__VCSRecurrenceRule_dictify__block_invoke(uint64_t a1, void *a2)
       }
     }
 
-    v9 = [(VCSRecurrenceRule *)self _decodeNumberList:a3 min:1 max:366];
+    v9 = [(VCSRecurrenceRule *)self _decodeNumberList:day min:1 max:366];
     dayList = self->_dayList;
     self->_dayList = v9;
   }
@@ -367,10 +367,10 @@ __CFString *__28__VCSRecurrenceRule_dictify__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (BOOL)decodeInterval:(const char *)a3
+- (BOOL)decodeInterval:(const char *)interval
 {
   v6 = 0;
-  v4 = [(VCSRecurrenceRule *)self decodeDigits:a3 withResult:&v6];
+  v4 = [(VCSRecurrenceRule *)self decodeDigits:interval withResult:&v6];
   if (v4)
   {
     self->_interval = v6;
@@ -379,9 +379,9 @@ __CFString *__28__VCSRecurrenceRule_dictify__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (BOOL)decodeWeekdayList:(const char *)a3
+- (BOOL)decodeWeekdayList:(const char *)list
 {
-  v5 = *a3;
+  v5 = *list;
 LABEL_2:
   while (1)
   {
@@ -428,14 +428,14 @@ LABEL_2:
   }
 
   while (v7 != 7);
-  *a3 = v5;
+  *list = v5;
   return 1;
 }
 
-- (BOOL)decodeOccurrenceList:(const char *)a3
+- (BOOL)decodeOccurrenceList:(const char *)list
 {
-  v5 = *a3;
-  LOBYTE(v6) = **a3;
+  v5 = *list;
+  LOBYTE(v6) = **list;
   do
   {
     if ((v6 - 49) > 4u)
@@ -485,16 +485,16 @@ LABEL_2:
   }
 
   while (v12 > 0xFFFFFFF5);
-  *a3 = v5;
+  *list = v5;
   return 1;
 }
 
-- (id)_decodeNumberList:(const char *)a3 min:(int64_t)a4 max:(int64_t)a5
+- (id)_decodeNumberList:(const char *)list min:(int64_t)min max:(int64_t)max
 {
-  i = *a3;
+  i = *list;
   v18 = 0;
   v19 = i;
-  if ([(VCSRecurrenceRule *)self decodeDigits:&v19 withResult:&v18]&& (v18 >= a4 ? (v10 = v18 <= a5) : (v10 = 0), v10))
+  if ([(VCSRecurrenceRule *)self decodeDigits:&v19 withResult:&v18]&& (v18 >= min ? (v10 = v18 <= max) : (v10 = 0), v10))
   {
     v11 = 0;
     do
@@ -523,7 +523,7 @@ LABEL_2:
       }
     }
 
-    while (v18 >= a4 && v18 <= a5);
+    while (v18 >= min && v18 <= max);
   }
 
   else
@@ -531,24 +531,24 @@ LABEL_2:
     v11 = 0;
   }
 
-  *a3 = i;
+  *list = i;
 
   return v11;
 }
 
-- (BOOL)decodeDuration:(const char *)a3
+- (BOOL)decodeDuration:(const char *)duration
 {
-  v3 = self;
-  if (**a3 == 35)
+  selfCopy = self;
+  if (**duration == 35)
   {
-    v6 = *a3 + 1;
+    v6 = *duration + 1;
     LODWORD(self) = [(VCSRecurrenceRule *)self decodeDigits:&v6 withResult:&self->_duration];
     if (self)
     {
-      v3->_hasDuration = 1;
+      selfCopy->_hasDuration = 1;
     }
 
-    *a3 = v6;
+    *duration = v6;
   }
 
   else
@@ -560,13 +560,13 @@ LABEL_2:
   return self;
 }
 
-- (BOOL)decodeDigits:(const char *)a3 withResult:(int64_t *)a4
+- (BOOL)decodeDigits:(const char *)digits withResult:(int64_t *)result
 {
-  if ((**a3 - 48) <= 9)
+  if ((**digits - 48) <= 9)
   {
     __endptr = 0;
     *__error() = 0;
-    v6 = strtol(*a3, &__endptr, 10);
+    v6 = strtol(*digits, &__endptr, 10);
     v7 = v6;
     if (v6)
     {
@@ -579,8 +579,8 @@ LABEL_2:
     else if (*__error() != 22)
     {
 LABEL_5:
-      *a4 = v7;
-      *a3 = __endptr;
+      *result = v7;
+      *digits = __endptr;
       return 1;
     }
   }

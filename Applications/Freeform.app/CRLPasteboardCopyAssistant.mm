@@ -1,16 +1,16 @@
 @interface CRLPasteboardCopyAssistant
-- (CRLPasteboardCopyAssistant)initWithPasteboard:(id)a3 sourceContext:(id)a4;
-- (void)copyToPasteboardIsSmartCopy:(BOOL)a3;
+- (CRLPasteboardCopyAssistant)initWithPasteboard:(id)pasteboard sourceContext:(id)context;
+- (void)copyToPasteboardIsSmartCopy:(BOOL)copy;
 - (void)loadData;
 @end
 
 @implementation CRLPasteboardCopyAssistant
 
-- (CRLPasteboardCopyAssistant)initWithPasteboard:(id)a3 sourceContext:(id)a4
+- (CRLPasteboardCopyAssistant)initWithPasteboard:(id)pasteboard sourceContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  pasteboardCopy = pasteboard;
+  contextCopy = context;
+  if (!pasteboardCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -43,11 +43,11 @@
 
   v15.receiver = self;
   v15.super_class = CRLPasteboardCopyAssistant;
-  v12 = [(CRLPasteboardWriteAssistant *)&v15 initWithContext:v8];
+  v12 = [(CRLPasteboardWriteAssistant *)&v15 initWithContext:contextCopy];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_pasteboard, a3);
+    objc_storeStrong(&v12->_pasteboard, pasteboard);
   }
 
   return v13;
@@ -94,9 +94,9 @@
   }
 }
 
-- (void)copyToPasteboardIsSmartCopy:(BOOL)a3
+- (void)copyToPasteboardIsSmartCopy:(BOOL)copy
 {
-  v3 = a3;
+  copyCopy = copy;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -130,9 +130,9 @@
 
   [(CRLPasteboard *)self->_pasteboard clearContents];
   pasteboard = self->_pasteboard;
-  v10 = self;
-  v9 = [NSArray arrayWithObjects:&v10 count:1];
-  [(CRLPasteboard *)pasteboard addItems:v9 isSmartCopy:v3];
+  selfCopy = self;
+  v9 = [NSArray arrayWithObjects:&selfCopy count:1];
+  [(CRLPasteboard *)pasteboard addItems:v9 isSmartCopy:copyCopy];
 
   self->_didAttemptToCopy = 1;
 }

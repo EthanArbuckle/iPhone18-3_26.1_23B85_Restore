@@ -1,15 +1,15 @@
 @interface THPageThumbnailViewTapGestureRecognizer
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation THPageThumbnailViewTapGestureRecognizer
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = THPageThumbnailViewTapGestureRecognizer;
-  [(THPageThumbnailViewTapGestureRecognizer *)&v6 touchesBegan:a3 withEvent:a4];
+  [(THPageThumbnailViewTapGestureRecognizer *)&v6 touchesBegan:began withEvent:event];
   [(THPageThumbnailViewTapGestureRecognizer *)self delegate];
   v5 = TSUProtocolCast();
   if (v5)

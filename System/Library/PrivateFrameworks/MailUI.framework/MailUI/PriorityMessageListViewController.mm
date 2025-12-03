@@ -1,14 +1,14 @@
 @interface PriorityMessageListViewController
-- (BOOL)collectionView:(id)a3 canFocusItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 selectionFollowsFocusForItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (_TtC6MailUI33PriorityMessageListViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6;
-- (void)hostingSceneDidBecomeActive:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (BOOL)collectionView:(id)view canFocusItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view selectionFollowsFocusForItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (_TtC6MailUI33PriorityMessageListViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path;
+- (void)hostingSceneDidBecomeActive:(id)active;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -21,7 +21,7 @@
   MEMORY[0x277D82BD8](self);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   MEMORY[0x277D82BE0](self);
   v3 = sub_214CCD394();
@@ -29,7 +29,7 @@
   MEMORY[0x277D82BD8](self);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   MEMORY[0x277D82BE0](self);
   v3 = sub_214CCD394();
@@ -37,15 +37,15 @@
   MEMORY[0x277D82BD8](self);
 }
 
-- (_TtC6MailUI33PriorityMessageListViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC6MailUI33PriorityMessageListViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  MEMORY[0x277D82BE0](a3);
-  MEMORY[0x277D82BE0](a4);
-  if (a3)
+  MEMORY[0x277D82BE0](name);
+  MEMORY[0x277D82BE0](bundle);
+  if (name)
   {
     v6 = sub_214CCF564();
     v7 = v4;
-    MEMORY[0x277D82BD8](a3);
+    MEMORY[0x277D82BD8](name);
     v8 = v6;
     v9 = v7;
   }
@@ -56,171 +56,171 @@
     v9 = 0;
   }
 
-  return PriorityMessageListViewController.init(nibName:bundle:)(v8, v9, a4);
+  return PriorityMessageListViewController.init(nibName:bundle:)(v8, v9, bundle);
 }
 
-- (void)hostingSceneDidBecomeActive:(id)a3
+- (void)hostingSceneDidBecomeActive:(id)active
 {
-  v12 = self;
-  v11 = a3;
+  selfCopy = self;
+  activeCopy = active;
   v10 = sub_214CCCE94();
   v7 = *(v10 - 8);
   v8 = v10 - 8;
   v6 = (*(v7 + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
-  MEMORY[0x28223BE20](v11);
+  MEMORY[0x28223BE20](activeCopy);
   v9 = &v5 - v6;
   MEMORY[0x277D82BE0](v4);
   MEMORY[0x277D82BE0](self);
   sub_214CCCE74();
   sub_214C9D570(v9);
   (*(v7 + 8))(v9, v10);
-  MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v12);
+  MEMORY[0x277D82BD8](activeCopy);
+  MEMORY[0x277D82BD8](selfCopy);
 }
 
-- (BOOL)collectionView:(id)a3 selectionFollowsFocusForItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view selectionFollowsFocusForItemAtIndexPath:(id)path
 {
-  v14 = self;
-  v15 = a3;
-  v13 = a4;
+  selfCopy = self;
+  viewCopy = view;
+  pathCopy = path;
   v11 = sub_214CCD374();
   v9 = *(v11 - 8);
   v10 = v11 - 8;
   v8 = (*(v9 + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
-  MEMORY[0x28223BE20](v15);
+  MEMORY[0x28223BE20](viewCopy);
   v12 = &v7 - v8;
   MEMORY[0x277D82BE0](v5);
-  MEMORY[0x277D82BE0](v13);
+  MEMORY[0x277D82BE0](pathCopy);
   MEMORY[0x277D82BE0](self);
   sub_214CCD324();
   v16 = PriorityMessageListViewController.collectionView(_:selectionFollowsFocusForItemAt:)();
   (*(v9 + 8))(v12, v11);
-  MEMORY[0x277D82BD8](v13);
-  MEMORY[0x277D82BD8](v14);
-  MEMORY[0x277D82BD8](v15);
+  MEMORY[0x277D82BD8](pathCopy);
+  MEMORY[0x277D82BD8](selfCopy);
+  MEMORY[0x277D82BD8](viewCopy);
   return sub_214CCD384() & 1;
 }
 
-- (BOOL)collectionView:(id)a3 canFocusItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canFocusItemAtIndexPath:(id)path
 {
-  v14 = self;
-  v15 = a3;
-  v13 = a4;
+  selfCopy = self;
+  viewCopy = view;
+  pathCopy = path;
   v11 = sub_214CCD374();
   v9 = *(v11 - 8);
   v10 = v11 - 8;
   v8 = (*(v9 + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
-  MEMORY[0x28223BE20](v15);
+  MEMORY[0x28223BE20](viewCopy);
   v12 = &v7 - v8;
   MEMORY[0x277D82BE0](v5);
-  MEMORY[0x277D82BE0](v13);
+  MEMORY[0x277D82BE0](pathCopy);
   MEMORY[0x277D82BE0](self);
   sub_214CCD324();
   v16 = PriorityMessageListViewController.collectionView(_:canFocusItemAt:)();
   (*(v9 + 8))(v12, v11);
-  MEMORY[0x277D82BD8](v13);
-  MEMORY[0x277D82BD8](v14);
-  MEMORY[0x277D82BD8](v15);
+  MEMORY[0x277D82BD8](pathCopy);
+  MEMORY[0x277D82BD8](selfCopy);
+  MEMORY[0x277D82BD8](viewCopy);
   return sub_214CCD384() & 1;
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v14 = self;
-  v15 = a3;
-  v13 = a4;
+  selfCopy = self;
+  viewCopy = view;
+  pathCopy = path;
   v11 = sub_214CCD374();
   v9 = *(v11 - 8);
   v10 = v11 - 8;
   v8 = (*(v9 + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
-  MEMORY[0x28223BE20](v15);
+  MEMORY[0x28223BE20](viewCopy);
   v12 = &v7 - v8;
   MEMORY[0x277D82BE0](v5);
-  MEMORY[0x277D82BE0](v13);
+  MEMORY[0x277D82BE0](pathCopy);
   MEMORY[0x277D82BE0](self);
   sub_214CCD324();
   v16 = PriorityMessageListViewController.collectionView(_:shouldHighlightItemAt:)();
   (*(v9 + 8))(v12, v11);
-  MEMORY[0x277D82BD8](v13);
-  MEMORY[0x277D82BD8](v14);
-  MEMORY[0x277D82BD8](v15);
+  MEMORY[0x277D82BD8](pathCopy);
+  MEMORY[0x277D82BD8](selfCopy);
+  MEMORY[0x277D82BD8](viewCopy);
   return sub_214CCD384() & 1;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v14 = self;
-  v15 = a3;
-  v13 = a4;
+  selfCopy = self;
+  viewCopy = view;
+  pathCopy = path;
   v11 = sub_214CCD374();
   v9 = *(v11 - 8);
   v10 = v11 - 8;
   v8 = (*(v9 + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
-  MEMORY[0x28223BE20](v15);
+  MEMORY[0x28223BE20](viewCopy);
   v12 = &v7 - v8;
   MEMORY[0x277D82BE0](v5);
-  MEMORY[0x277D82BE0](v13);
+  MEMORY[0x277D82BE0](pathCopy);
   MEMORY[0x277D82BE0](self);
   sub_214CCD324();
   v16 = PriorityMessageListViewController.collectionView(_:shouldSelectItemAt:)();
   (*(v9 + 8))(v12, v11);
-  MEMORY[0x277D82BD8](v13);
-  MEMORY[0x277D82BD8](v14);
-  MEMORY[0x277D82BD8](v15);
+  MEMORY[0x277D82BD8](pathCopy);
+  MEMORY[0x277D82BD8](selfCopy);
+  MEMORY[0x277D82BD8](viewCopy);
   return sub_214CCD384() & 1;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v12 = self;
-  v13 = a3;
-  v11 = a4;
+  selfCopy = self;
+  viewCopy = view;
+  pathCopy = path;
   v10 = sub_214CCD374();
   v7 = *(v10 - 8);
   v8 = v10 - 8;
   v6 = (*(v7 + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
-  MEMORY[0x28223BE20](v13);
+  MEMORY[0x28223BE20](viewCopy);
   v9 = &v6 - v6;
   MEMORY[0x277D82BE0](v5);
-  MEMORY[0x277D82BE0](v11);
+  MEMORY[0x277D82BE0](pathCopy);
   MEMORY[0x277D82BE0](self);
   sub_214CCD324();
-  PriorityMessageListViewController.collectionView(_:didSelectItemAt:)(v13, v9);
+  PriorityMessageListViewController.collectionView(_:didSelectItemAt:)(viewCopy, v9);
   (*(v7 + 8))(v9, v10);
-  MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v12);
-  MEMORY[0x277D82BD8](v13);
+  MEMORY[0x277D82BD8](pathCopy);
+  MEMORY[0x277D82BD8](selfCopy);
+  MEMORY[0x277D82BD8](viewCopy);
 }
 
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path
 {
-  v18 = self;
-  v20 = a3;
-  v19 = a4;
-  v17 = a5;
-  v15 = a6;
+  selfCopy = self;
+  viewCopy = view;
+  supplementaryViewCopy = supplementaryView;
+  kindCopy = kind;
+  pathCopy = path;
   v14 = sub_214CCD374();
   v11 = *(v14 - 8);
   v12 = v14 - 8;
   v9 = (*(v11 + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
-  MEMORY[0x28223BE20](v20);
+  MEMORY[0x28223BE20](viewCopy);
   v13 = &v9 - v9;
   MEMORY[0x277D82BE0](v7);
-  MEMORY[0x277D82BE0](v19);
-  MEMORY[0x277D82BE0](v17);
-  MEMORY[0x277D82BE0](v15);
+  MEMORY[0x277D82BE0](supplementaryViewCopy);
+  MEMORY[0x277D82BE0](kindCopy);
+  MEMORY[0x277D82BE0](pathCopy);
   MEMORY[0x277D82BE0](self);
   v10 = sub_214CCF564();
   v16 = v8;
   sub_214CCD324();
-  PriorityMessageListViewController.collectionView(_:willDisplaySupplementaryView:forElementKind:at:)(v20, v19, v10, v16);
+  PriorityMessageListViewController.collectionView(_:willDisplaySupplementaryView:forElementKind:at:)(viewCopy, supplementaryViewCopy, v10, v16);
   (*(v11 + 8))(v13, v14);
-  MEMORY[0x277D82BD8](v15);
+  MEMORY[0x277D82BD8](pathCopy);
 
-  MEMORY[0x277D82BD8](v17);
-  MEMORY[0x277D82BD8](v18);
-  MEMORY[0x277D82BD8](v19);
-  MEMORY[0x277D82BD8](v20);
+  MEMORY[0x277D82BD8](kindCopy);
+  MEMORY[0x277D82BD8](selfCopy);
+  MEMORY[0x277D82BD8](supplementaryViewCopy);
+  MEMORY[0x277D82BD8](viewCopy);
 }
 
 @end

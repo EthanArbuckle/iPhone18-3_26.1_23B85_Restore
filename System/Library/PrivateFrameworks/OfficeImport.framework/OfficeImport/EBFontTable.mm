@@ -1,18 +1,18 @@
 @interface EBFontTable
-+ (unsigned)xlFontIndexFromEDFontIndex:(unint64_t)a3;
-+ (void)readWithState:(id)a3;
++ (unsigned)xlFontIndexFromEDFontIndex:(unint64_t)index;
++ (void)readWithState:(id)state;
 @end
 
 @implementation EBFontTable
 
-+ (void)readWithState:(id)a3
++ (void)readWithState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 resources];
-  v5 = [v4 fonts];
+  stateCopy = state;
+  resources = [stateCopy resources];
+  fonts = [resources fonts];
   XlFontTable::XlFontTable(&v10);
-  v6 = [v3 xlReader];
-  (*(*v6 + 168))(v6, &v10);
+  xlReader = [stateCopy xlReader];
+  (*(*xlReader + 168))(xlReader, &v10);
   v7 = XlFontTable::size(&v10);
   if (v7)
   {
@@ -21,8 +21,8 @@
     {
       if (v8 != 4)
       {
-        v9 = [EBFont edFontFromXlFont:XlFontTable::at(&v10 edResources:v8), v4];
-        [v5 addObject:v9];
+        v9 = [EBFont edFontFromXlFont:XlFontTable::at(&v10 edResources:v8), resources];
+        [fonts addObject:v9];
       }
 
       ++v8;
@@ -36,16 +36,16 @@
   OcText::~OcText(&v11);
 }
 
-+ (unsigned)xlFontIndexFromEDFontIndex:(unint64_t)a3
++ (unsigned)xlFontIndexFromEDFontIndex:(unint64_t)index
 {
-  if (a3 <= 3)
+  if (index <= 3)
   {
-    return a3;
+    return index;
   }
 
   else
   {
-    return a3 + 1;
+    return index + 1;
   }
 }
 

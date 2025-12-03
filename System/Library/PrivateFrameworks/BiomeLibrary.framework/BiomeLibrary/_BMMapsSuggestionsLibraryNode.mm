@@ -2,7 +2,7 @@
 + (id)RecentConversationsIntent;
 + (id)configurationForRecentConversationsIntent;
 + (id)storeConfigurationForRecentConversationsIntent;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -11,7 +11,7 @@
 + (id)RecentConversationsIntent
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForRecentConversationsIntent];
+  configurationForRecentConversationsIntent = [self configurationForRecentConversationsIntent];
   v3 = +[BMMapsRecentConversationsIntent columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -23,7 +23,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Maps.Suggestions.RecentConversationsIntent" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Maps.Suggestions.RecentConversationsIntent" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Maps.Suggestions.RecentConversationsIntent" schema:v9 configuration:configurationForRecentConversationsIntent];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -32,13 +32,13 @@
 
 + (id)configurationForRecentConversationsIntent
 {
-  v3 = [a1 storeConfigurationForRecentConversationsIntent];
-  v4 = [a1 syncPolicyForRecentConversationsIntent];
+  storeConfigurationForRecentConversationsIntent = [self storeConfigurationForRecentConversationsIntent];
+  syncPolicyForRecentConversationsIntent = [self syncPolicyForRecentConversationsIntent];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"A3DCDA05-C1AC-40D4-B30A-A0B8DC2AECA6"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Maps.Suggestions.RecentConversationsIntent" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.Maps" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Maps.Suggestions.RecentConversationsIntent" eventClass:objc_opt_class() storeConfig:storeConfigurationForRecentConversationsIntent syncPolicy:syncPolicyForRecentConversationsIntent legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.Maps" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -51,19 +51,19 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"RecentConversationsIntent"])
+  if ([name isEqualToString:@"RecentConversationsIntent"])
   {
-    v4 = [a1 RecentConversationsIntent];
+    recentConversationsIntent = [self RecentConversationsIntent];
   }
 
   else
   {
-    v4 = 0;
+    recentConversationsIntent = 0;
   }
 
-  return v4;
+  return recentConversationsIntent;
 }
 
 + (id)validKeyPaths

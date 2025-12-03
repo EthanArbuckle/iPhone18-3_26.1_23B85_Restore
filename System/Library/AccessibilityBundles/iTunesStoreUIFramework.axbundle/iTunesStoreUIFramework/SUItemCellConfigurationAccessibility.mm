@@ -7,15 +7,15 @@
 - (id)_accessibilityVideoIconString
 {
   v2 = [(SUItemCellConfigurationAccessibility *)self safeValueForKey:@"mediaIconType"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  if (v3 == 2)
+  if (intValue == 2)
   {
     v4 = @"video";
     goto LABEL_5;
   }
 
-  if (v3 == 1)
+  if (intValue == 1)
   {
     v4 = @"ringtone";
 LABEL_5:

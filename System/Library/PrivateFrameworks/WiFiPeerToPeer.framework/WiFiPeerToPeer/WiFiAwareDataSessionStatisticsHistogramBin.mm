@@ -1,40 +1,40 @@
 @interface WiFiAwareDataSessionStatisticsHistogramBin
-- (BOOL)isEqual:(id)a3;
-- (WiFiAwareDataSessionStatisticsHistogramBin)initWithBinStart:(double)a3 binEnd:(double)a4 value:(double)a5;
-- (WiFiAwareDataSessionStatisticsHistogramBin)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (WiFiAwareDataSessionStatisticsHistogramBin)initWithBinStart:(double)start binEnd:(double)end value:(double)value;
+- (WiFiAwareDataSessionStatisticsHistogramBin)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WiFiAwareDataSessionStatisticsHistogramBin
 
-- (WiFiAwareDataSessionStatisticsHistogramBin)initWithBinStart:(double)a3 binEnd:(double)a4 value:(double)a5
+- (WiFiAwareDataSessionStatisticsHistogramBin)initWithBinStart:(double)start binEnd:(double)end value:(double)value
 {
   v9.receiver = self;
   v9.super_class = WiFiAwareDataSessionStatisticsHistogramBin;
   result = [(WiFiAwareDataSessionStatisticsHistogramBin *)&v9 init];
   if (result)
   {
-    result->_binStart = a3;
-    result->_binEnd = a4;
-    result->_value = a5;
+    result->_binStart = start;
+    result->_binEnd = end;
+    result->_value = value;
   }
 
   return result;
 }
 
-- (WiFiAwareDataSessionStatisticsHistogramBin)initWithCoder:(id)a3
+- (WiFiAwareDataSessionStatisticsHistogramBin)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsHistogramBin.binStart"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsHistogramBin.binStart"];
   [v5 doubleValue];
   v7 = v6;
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsHistogramBin.binEnd"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsHistogramBin.binEnd"];
   [v8 doubleValue];
   v10 = v9;
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsHistogramBin.value"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsHistogramBin.value"];
 
   [v11 doubleValue];
   v13 = v12;
@@ -42,29 +42,29 @@
   return [(WiFiAwareDataSessionStatisticsHistogramBin *)self initWithBinStart:v7 binEnd:v10 value:v13];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
+  coderCopy = coder;
   [(WiFiAwareDataSessionStatisticsHistogramBin *)self binStart];
   v6 = [v4 numberWithDouble:?];
-  [v5 encodeObject:v6 forKey:@"WiFiAwareDataSessionStatisticsHistogramBin.binStart"];
+  [coderCopy encodeObject:v6 forKey:@"WiFiAwareDataSessionStatisticsHistogramBin.binStart"];
 
   v7 = MEMORY[0x277CCABB0];
   [(WiFiAwareDataSessionStatisticsHistogramBin *)self binEnd];
   v8 = [v7 numberWithDouble:?];
-  [v5 encodeObject:v8 forKey:@"WiFiAwareDataSessionStatisticsHistogramBin.binEnd"];
+  [coderCopy encodeObject:v8 forKey:@"WiFiAwareDataSessionStatisticsHistogramBin.binEnd"];
 
   v9 = MEMORY[0x277CCABB0];
   [(WiFiAwareDataSessionStatisticsHistogramBin *)self value];
   v10 = [v9 numberWithDouble:?];
-  [v5 encodeObject:v10 forKey:@"WiFiAwareDataSessionStatisticsHistogramBin.value"];
+  [coderCopy encodeObject:v10 forKey:@"WiFiAwareDataSessionStatisticsHistogramBin.value"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 0;
 LABEL_8:
@@ -80,7 +80,7 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   [(WiFiAwareDataSessionStatisticsHistogramBin *)self binStart];
   v7 = v6;
   [(WiFiAwareDataSessionStatisticsHistogramBin *)v5 binStart];

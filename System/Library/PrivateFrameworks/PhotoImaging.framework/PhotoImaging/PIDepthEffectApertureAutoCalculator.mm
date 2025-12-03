@@ -1,14 +1,14 @@
 @interface PIDepthEffectApertureAutoCalculator
-- (void)submit:(id)a3;
+- (void)submit:(id)submit;
 @end
 
 @implementation PIDepthEffectApertureAutoCalculator
 
-- (void)submit:(id)a3
+- (void)submit:(id)submit
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  submitCopy = submit;
+  if (!submitCopy)
   {
     v13 = NUAssertLogger_27584();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -30,8 +30,8 @@
         v21 = dispatch_get_specific(*v15);
         v22 = MEMORY[0x1E696AF00];
         v23 = v21;
-        v24 = [v22 callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v22 callStackSymbols];
+        v25 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v30 = v21;
         v31 = 2114;
@@ -42,8 +42,8 @@
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v20;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -52,13 +52,13 @@
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
+  v5 = submitCopy;
   v6 = objc_alloc(MEMORY[0x1E69B3B30]);
-  v7 = [(NURenderRequest *)self composition];
-  v8 = [v6 initWithComposition:v7];
+  composition = [(NURenderRequest *)self composition];
+  v8 = [v6 initWithComposition:composition];
 
-  v9 = [(NURenderRequest *)self responseQueue];
-  [v8 setResponseQueue:v9];
+  responseQueue = [(NURenderRequest *)self responseQueue];
+  [v8 setResponseQueue:responseQueue];
 
   [v8 setName:@"PIDepthEffectApertureAutoCalculator-getValuesAtCapture-imageProperties"];
   v10 = [MEMORY[0x1E69B3C30] stopAtTagFilter:@"pre-Adjustments"];

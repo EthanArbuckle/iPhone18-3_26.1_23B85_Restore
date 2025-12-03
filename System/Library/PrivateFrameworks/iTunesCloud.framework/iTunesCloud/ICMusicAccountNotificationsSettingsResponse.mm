@@ -1,6 +1,6 @@
 @interface ICMusicAccountNotificationsSettingsResponse
-+ (id)createResponseBodyWithSwitches:(id)a3;
-- (ICMusicAccountNotificationsSettingsResponse)initWithResponseDictionary:(id)a3;
++ (id)createResponseBodyWithSwitches:(id)switches;
+- (ICMusicAccountNotificationsSettingsResponse)initWithResponseDictionary:(id)dictionary;
 - (NSArray)settingsSwitches;
 @end
 
@@ -85,18 +85,18 @@ LABEL_19:
   return v3;
 }
 
-- (ICMusicAccountNotificationsSettingsResponse)initWithResponseDictionary:(id)a3
+- (ICMusicAccountNotificationsSettingsResponse)initWithResponseDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = ICMusicAccountNotificationsSettingsResponse;
   v6 = [(ICMusicAccountNotificationsSettingsResponse *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_responseDictionary, a3);
+    objc_storeStrong(&v6->_responseDictionary, dictionary);
     v7->_wasSuccessful = 0;
-    v8 = [v5 objectForKey:@"status"];
+    v8 = [dictionaryCopy objectForKey:@"status"];
     if (_NSIsNSString())
     {
       v7->_wasSuccessful = [v8 isEqualToString:@"success"];
@@ -106,16 +106,16 @@ LABEL_19:
   return v7;
 }
 
-+ (id)createResponseBodyWithSwitches:(id)a3
++ (id)createResponseBodyWithSwitches:(id)switches
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  switchesCopy = switches;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  obj = v3;
+  obj = switchesCopy;
   v5 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
@@ -132,8 +132,8 @@ LABEL_19:
 
         v9 = *(*(&v16 + 1) + 8 * i);
         v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-        v11 = [v9 identifier];
-        [v10 setObject:v11 forKeyedSubscript:ICMusicAccountNotificationsSettingsSwitchIdentifierKey];
+        identifier = [v9 identifier];
+        [v10 setObject:identifier forKeyedSubscript:ICMusicAccountNotificationsSettingsSwitchIdentifierKey];
 
         v12 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v9, "isToggled")}];
         [v10 setObject:v12 forKeyedSubscript:ICMusicAccountNotificationsSettingsSwitchIsToggledKey];

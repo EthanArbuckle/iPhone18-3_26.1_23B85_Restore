@@ -1,14 +1,14 @@
 @interface HMDAppleHomePod_6_1_Accessory
-- (HMDAppleHomePod_6_1_Accessory)initWithCoder:(id)a3;
+- (HMDAppleHomePod_6_1_Accessory)initWithCoder:(id)coder;
 @end
 
 @implementation HMDAppleHomePod_6_1_Accessory
 
-- (HMDAppleHomePod_6_1_Accessory)initWithCoder:(id)a3
+- (HMDAppleHomePod_6_1_Accessory)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = HMDAppleHomePod_6_1_Accessory;
-  v3 = [(HMDAppleMediaAccessory *)&v6 initWithCoder:a3];
+  v3 = [(HMDAppleMediaAccessory *)&v6 initWithCoder:coder];
   if (v3)
   {
     v4 = objc_opt_class();

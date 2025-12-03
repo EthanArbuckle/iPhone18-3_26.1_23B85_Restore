@@ -4,9 +4,9 @@
 - (UIColor)statusBarTintColor;
 - (UIColor)timeColor;
 - (UIFont)timeFont;
-- (void)setStatusBarTintColor:(id)a3;
-- (void)setTimeColor:(id)a3;
-- (void)setTimeFont:(id)a3;
+- (void)setStatusBarTintColor:(id)color;
+- (void)setTimeColor:(id)color;
+- (void)setTimeFont:(id)font;
 @end
 
 @implementation AmbientPhotoFramePlayergroundViewController.PlaygroundPosterMutablePreferences
@@ -28,11 +28,11 @@
   return v2;
 }
 
-- (void)setTimeFont:(id)a3
+- (void)setTimeFont:(id)font
 {
-  v5 = a3;
-  v6 = self;
-  sub_1B3896E20(a3);
+  fontCopy = font;
+  selfCopy = self;
+  sub_1B3896E20(font);
 }
 
 - (UIColor)timeColor
@@ -42,11 +42,11 @@
   return v2;
 }
 
-- (void)setTimeColor:(id)a3
+- (void)setTimeColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_1B3896EF4(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_1B3896EF4(color);
 }
 
 - (UIColor)statusBarTintColor
@@ -56,11 +56,11 @@
   return v2;
 }
 
-- (void)setStatusBarTintColor:(id)a3
+- (void)setStatusBarTintColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_1B3896FC8(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_1B3896FC8(color);
 }
 
 - (CGRect)px_preferredSalientContentRectangle

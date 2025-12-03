@@ -1,44 +1,44 @@
 @interface MBDomainRecord
-+ (id)_recordIDForDomain:(id)a3 commitID:(id)a4 hmacKey:(id)a5 pageIndex:(unint64_t)a6;
-+ (id)baseRecordIDForDomain:(id)a3 commitID:(id)a4 hmacKey:(id)a5;
-+ (id)domainHmacFromBaseRecordID:(id)a3;
-+ (id)domainRecordForDomain:(id)a3 commitID:(id)a4 addedOrModifiedAssets:(id)a5 deletedAssets:(id)a6 hmacKey:(id)a7 fileListStats:(id *)a8 fileListPath:(id)a9 fileListEncodingType:(char)a10;
-+ (id)domainRecordFromCKRecord:(id)a3;
-+ (id)domainRecordPageForDomain:(id)a3 commitID:(id)a4 addedOrModifiedAssets:(id)a5 deletedAssets:(id)a6 hmacKey:(id)a7 pageIndex:(unint64_t)a8;
-+ (id)recordIDFromBaseRecordID:(id)a3 pageIndex:(unint64_t)a4;
-- (BOOL)decompressAssetIntoSnapshotDirectoryRoot:(id)a3 commitID:(id)a4 error:(id *)a5;
-- (MBDomainRecord)initWithDomainName:(id)a3 recordID:(id)a4 pageIndex:(unint64_t)a5 addedOrModifiedAssets:(id)a6 deletedAssets:(id)a7 cumulativeDirectoryCount:(unint64_t)a8 cumulativeRegCount:(unint64_t)a9 cumulativeEmptyRegCount:(unint64_t)a10 cumulativeSymlinkCount:(unint64_t)a11 cumulativeAssetCount:(unint64_t)a12 fileList:(id)a13 fileListEncodingType:(char)a14;
++ (id)_recordIDForDomain:(id)domain commitID:(id)d hmacKey:(id)key pageIndex:(unint64_t)index;
++ (id)baseRecordIDForDomain:(id)domain commitID:(id)d hmacKey:(id)key;
++ (id)domainHmacFromBaseRecordID:(id)d;
++ (id)domainRecordForDomain:(id)domain commitID:(id)d addedOrModifiedAssets:(id)assets deletedAssets:(id)deletedAssets hmacKey:(id)key fileListStats:(id *)stats fileListPath:(id)path fileListEncodingType:(char)self0;
++ (id)domainRecordFromCKRecord:(id)record;
++ (id)domainRecordPageForDomain:(id)domain commitID:(id)d addedOrModifiedAssets:(id)assets deletedAssets:(id)deletedAssets hmacKey:(id)key pageIndex:(unint64_t)index;
++ (id)recordIDFromBaseRecordID:(id)d pageIndex:(unint64_t)index;
+- (BOOL)decompressAssetIntoSnapshotDirectoryRoot:(id)root commitID:(id)d error:(id *)error;
+- (MBDomainRecord)initWithDomainName:(id)name recordID:(id)d pageIndex:(unint64_t)index addedOrModifiedAssets:(id)assets deletedAssets:(id)deletedAssets cumulativeDirectoryCount:(unint64_t)count cumulativeRegCount:(unint64_t)regCount cumulativeEmptyRegCount:(unint64_t)self0 cumulativeSymlinkCount:(unint64_t)self1 cumulativeAssetCount:(unint64_t)self2 fileList:(id)self3 fileListEncodingType:(char)self4;
 - (id)asCKRecord;
 @end
 
 @implementation MBDomainRecord
 
-- (MBDomainRecord)initWithDomainName:(id)a3 recordID:(id)a4 pageIndex:(unint64_t)a5 addedOrModifiedAssets:(id)a6 deletedAssets:(id)a7 cumulativeDirectoryCount:(unint64_t)a8 cumulativeRegCount:(unint64_t)a9 cumulativeEmptyRegCount:(unint64_t)a10 cumulativeSymlinkCount:(unint64_t)a11 cumulativeAssetCount:(unint64_t)a12 fileList:(id)a13 fileListEncodingType:(char)a14
+- (MBDomainRecord)initWithDomainName:(id)name recordID:(id)d pageIndex:(unint64_t)index addedOrModifiedAssets:(id)assets deletedAssets:(id)deletedAssets cumulativeDirectoryCount:(unint64_t)count cumulativeRegCount:(unint64_t)regCount cumulativeEmptyRegCount:(unint64_t)self0 cumulativeSymlinkCount:(unint64_t)self1 cumulativeAssetCount:(unint64_t)self2 fileList:(id)self3 fileListEncodingType:(char)self4
 {
-  v19 = a3;
-  v20 = a4;
-  v21 = a6;
-  v22 = a7;
-  v28 = a13;
+  nameCopy = name;
+  dCopy = d;
+  assetsCopy = assets;
+  deletedAssetsCopy = deletedAssets;
+  listCopy = list;
   v29.receiver = self;
   v29.super_class = MBDomainRecord;
   v23 = [(MBDomainRecord *)&v29 init];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_domainName, a3);
-    objc_storeStrong(&v24->_recordID, a4);
-    v24->_pageIndex = a5;
-    v24->_cumulativeDirectoryCount = a8;
-    v24->_cumulativeRegCount = a9;
-    v24->_cumulativeEmptyRegCount = a10;
-    v24->_cumulativeSymlinkCount = a11;
-    v24->_cumulativeAssetCount = a12;
-    objc_storeStrong(&v24->_addedOrModifiedAssets, a6);
-    objc_storeStrong(&v24->_deletedAssets, a7);
-    objc_storeStrong(&v24->_fileList, a13);
-    v24->_fileListEncodingType = a14;
-    if (a14 == -1)
+    objc_storeStrong(&v23->_domainName, name);
+    objc_storeStrong(&v24->_recordID, d);
+    v24->_pageIndex = index;
+    v24->_cumulativeDirectoryCount = count;
+    v24->_cumulativeRegCount = regCount;
+    v24->_cumulativeEmptyRegCount = emptyRegCount;
+    v24->_cumulativeSymlinkCount = symlinkCount;
+    v24->_cumulativeAssetCount = assetCount;
+    objc_storeStrong(&v24->_addedOrModifiedAssets, assets);
+    objc_storeStrong(&v24->_deletedAssets, deletedAssets);
+    objc_storeStrong(&v24->_fileList, list);
+    v24->_fileListEncodingType = type;
+    if (type == -1)
     {
       __assert_rtn("[MBDomainRecord initWithDomainName:recordID:pageIndex:addedOrModifiedAssets:deletedAssets:cumulativeDirectoryCount:cumulativeRegCount:cumulativeEmptyRegCount:cumulativeSymlinkCount:cumulativeAssetCount:fileList:fileListEncodingType:]", "MBDomainRecord.m", 55, "fileListEncodingType != MBFileCompressionMethodDefault");
     }
@@ -50,39 +50,39 @@
 - (id)asCKRecord
 {
   v3 = [CKRecord alloc];
-  v4 = [(MBDomainRecord *)self recordID];
-  v5 = [v3 initWithRecordType:@"Domain" recordID:v4];
+  recordID = [(MBDomainRecord *)self recordID];
+  v5 = [v3 initWithRecordType:@"Domain" recordID:recordID];
 
-  v6 = [(MBDomainRecord *)self domainName];
-  [v5 setObject:v6 forKeyedSubscript:@"domainName"];
+  domainName = [(MBDomainRecord *)self domainName];
+  [v5 setObject:domainName forKeyedSubscript:@"domainName"];
 
-  v7 = [(MBDomainRecord *)self domainName];
-  v8 = [v7 dataUsingEncoding:4];
-  v9 = [v5 encryptedValues];
-  [v9 setObject:v8 forKeyedSubscript:@"domain"];
+  domainName2 = [(MBDomainRecord *)self domainName];
+  v8 = [domainName2 dataUsingEncoding:4];
+  encryptedValues = [v5 encryptedValues];
+  [encryptedValues setObject:v8 forKeyedSubscript:@"domain"];
 
-  v10 = [(MBDomainRecord *)self addedOrModifiedAssets];
-  v11 = [v10 count];
+  addedOrModifiedAssets = [(MBDomainRecord *)self addedOrModifiedAssets];
+  v11 = [addedOrModifiedAssets count];
 
   if (v11)
   {
-    v12 = [(MBDomainRecord *)self addedOrModifiedAssets];
-    [v5 setObject:v12 forKeyedSubscript:@"newAssets"];
+    addedOrModifiedAssets2 = [(MBDomainRecord *)self addedOrModifiedAssets];
+    [v5 setObject:addedOrModifiedAssets2 forKeyedSubscript:@"newAssets"];
   }
 
-  v13 = [(MBDomainRecord *)self deletedAssets];
-  v14 = [v13 count];
+  deletedAssets = [(MBDomainRecord *)self deletedAssets];
+  v14 = [deletedAssets count];
 
   if (v14)
   {
-    v15 = [(MBDomainRecord *)self deletedAssets];
-    [v5 setObject:v15 forKeyedSubscript:@"deletedAssets"];
+    deletedAssets2 = [(MBDomainRecord *)self deletedAssets];
+    [v5 setObject:deletedAssets2 forKeyedSubscript:@"deletedAssets"];
   }
 
   if (![(MBDomainRecord *)self pageIndex])
   {
-    v16 = [(MBDomainRecord *)self fileList];
-    [v5 setObject:v16 forKeyedSubscript:@"fileList"];
+    fileList = [(MBDomainRecord *)self fileList];
+    [v5 setObject:fileList forKeyedSubscript:@"fileList"];
 
     v17 = [NSNumber numberWithChar:[(MBDomainRecord *)self fileListEncodingType]];
     [v5 setObject:v17 forKeyedSubscript:@"fileListEncoding"];
@@ -106,48 +106,48 @@
   return v5;
 }
 
-- (BOOL)decompressAssetIntoSnapshotDirectoryRoot:(id)a3 commitID:(id)a4 error:(id *)a5
+- (BOOL)decompressAssetIntoSnapshotDirectoryRoot:(id)root commitID:(id)d error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(MBDomainRecord *)self fileList];
-  v11 = [v10 fileURL];
+  rootCopy = root;
+  dCopy = d;
+  fileList = [(MBDomainRecord *)self fileList];
+  fileURL = [fileList fileURL];
 
-  if (!v11)
+  if (!fileURL)
   {
     __assert_rtn("[MBDomainRecord decompressAssetIntoSnapshotDirectoryRoot:commitID:error:]", "MBDomainRecord.m", 89, "assetURL");
   }
 
-  v12 = [v11 path];
-  v13 = [(MBDomainRecord *)self fileListEncodingType];
-  v14 = [(MBDomainRecord *)self domainName];
-  v15 = MBDecompressFileListDB(v12, v13, v8, v9, v14, a5);
+  path = [fileURL path];
+  fileListEncodingType = [(MBDomainRecord *)self fileListEncodingType];
+  domainName = [(MBDomainRecord *)self domainName];
+  v15 = MBDecompressFileListDB(path, fileListEncodingType, rootCopy, dCopy, domainName, error);
   v16 = v15 != 0;
 
   return v16;
 }
 
-+ (id)baseRecordIDForDomain:(id)a3 commitID:(id)a4 hmacKey:(id)a5
++ (id)baseRecordIDForDomain:(id)domain commitID:(id)d hmacKey:(id)key
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_opt_class() domainHmacForDomainName:v9 hmacKey:v7];
+  keyCopy = key;
+  dCopy = d;
+  domainCopy = domain;
+  v10 = [objc_opt_class() domainHmacForDomainName:domainCopy hmacKey:keyCopy];
 
-  v11 = [[NSString alloc] initWithFormat:@"%@%@:%@", @"N:", v8, v10];
+  v11 = [[NSString alloc] initWithFormat:@"%@%@:%@", @"N:", dCopy, v10];
 
   return v11;
 }
 
-+ (id)domainHmacFromBaseRecordID:(id)a3
++ (id)domainHmacFromBaseRecordID:(id)d
 {
-  v3 = a3;
-  if (([v3 hasPrefix:@"N:"] & 1) == 0)
+  dCopy = d;
+  if (([dCopy hasPrefix:@"N:"] & 1) == 0)
   {
     __assert_rtn("+[MBDomainRecord domainHmacFromBaseRecordID:]", "MBDomainRecord.m", 105, "[recordID hasPrefix:MBDomainRecordPrefix]");
   }
 
-  v4 = [v3 componentsSeparatedByString:@":"];
+  v4 = [dCopy componentsSeparatedByString:@":"];
   if ([v4 count] != 3)
   {
     __assert_rtn("+[MBDomainRecord domainHmacFromBaseRecordID:]", "MBDomainRecord.m", 108, "components.count == 3");
@@ -158,101 +158,101 @@
   return v5;
 }
 
-+ (id)recordIDFromBaseRecordID:(id)a3 pageIndex:(unint64_t)a4
++ (id)recordIDFromBaseRecordID:(id)d pageIndex:(unint64_t)index
 {
-  v5 = a3;
+  dCopy = d;
   v6 = [MBCKDatabaseManager zoneIDOfType:1];
-  v7 = [[NSString alloc] initWithFormat:@"%@:%llu", v5, a4];
+  index = [[NSString alloc] initWithFormat:@"%@:%llu", dCopy, index];
 
-  v8 = [[CKRecordID alloc] initWithRecordName:v7 zoneID:v6];
+  v8 = [[CKRecordID alloc] initWithRecordName:index zoneID:v6];
 
   return v8;
 }
 
-+ (id)_recordIDForDomain:(id)a3 commitID:(id)a4 hmacKey:(id)a5 pageIndex:(unint64_t)a6
++ (id)_recordIDForDomain:(id)domain commitID:(id)d hmacKey:(id)key pageIndex:(unint64_t)index
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [objc_opt_class() baseRecordIDForDomain:v11 commitID:v10 hmacKey:v9];
+  keyCopy = key;
+  dCopy = d;
+  domainCopy = domain;
+  v12 = [objc_opt_class() baseRecordIDForDomain:domainCopy commitID:dCopy hmacKey:keyCopy];
 
-  v13 = [objc_opt_class() recordIDFromBaseRecordID:v12 pageIndex:a6];
+  v13 = [objc_opt_class() recordIDFromBaseRecordID:v12 pageIndex:index];
 
   return v13;
 }
 
-+ (id)domainRecordForDomain:(id)a3 commitID:(id)a4 addedOrModifiedAssets:(id)a5 deletedAssets:(id)a6 hmacKey:(id)a7 fileListStats:(id *)a8 fileListPath:(id)a9 fileListEncodingType:(char)a10
++ (id)domainRecordForDomain:(id)domain commitID:(id)d addedOrModifiedAssets:(id)assets deletedAssets:(id)deletedAssets hmacKey:(id)key fileListStats:(id *)stats fileListPath:(id)path fileListEncodingType:(char)self0
 {
-  HIDWORD(v27) = a10;
-  v16 = a9;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
-  v22 = [objc_opt_class() _recordIDForDomain:v21 commitID:v20 hmacKey:v17 pageIndex:0];
+  HIDWORD(v27) = type;
+  pathCopy = path;
+  keyCopy = key;
+  deletedAssetsCopy = deletedAssets;
+  assetsCopy = assets;
+  dCopy = d;
+  domainCopy = domain;
+  v22 = [objc_opt_class() _recordIDForDomain:domainCopy commitID:dCopy hmacKey:keyCopy pageIndex:0];
 
-  v23 = [NSURL fileURLWithPath:v16];
+  v23 = [NSURL fileURLWithPath:pathCopy];
 
   v24 = [[CKAsset alloc] initWithFileURL:v23];
-  LOBYTE(v27) = a10;
-  v25 = [[MBDomainRecord alloc] initWithDomainName:v21 recordID:v22 pageIndex:0 addedOrModifiedAssets:v19 deletedAssets:v18 cumulativeDirectoryCount:a8->var3 cumulativeRegCount:a8->var1 cumulativeEmptyRegCount:a8->var2 cumulativeSymlinkCount:a8->var4 cumulativeAssetCount:a8->var0 fileList:v24 fileListEncodingType:v27];
+  LOBYTE(v27) = type;
+  v25 = [[MBDomainRecord alloc] initWithDomainName:domainCopy recordID:v22 pageIndex:0 addedOrModifiedAssets:assetsCopy deletedAssets:deletedAssetsCopy cumulativeDirectoryCount:stats->var3 cumulativeRegCount:stats->var1 cumulativeEmptyRegCount:stats->var2 cumulativeSymlinkCount:stats->var4 cumulativeAssetCount:stats->var0 fileList:v24 fileListEncodingType:v27];
 
   return v25;
 }
 
-+ (id)domainRecordPageForDomain:(id)a3 commitID:(id)a4 addedOrModifiedAssets:(id)a5 deletedAssets:(id)a6 hmacKey:(id)a7 pageIndex:(unint64_t)a8
++ (id)domainRecordPageForDomain:(id)domain commitID:(id)d addedOrModifiedAssets:(id)assets deletedAssets:(id)deletedAssets hmacKey:(id)key pageIndex:(unint64_t)index
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (!a8)
+  domainCopy = domain;
+  dCopy = d;
+  assetsCopy = assets;
+  deletedAssetsCopy = deletedAssets;
+  keyCopy = key;
+  if (!index)
   {
     __assert_rtn("+[MBDomainRecord domainRecordPageForDomain:commitID:addedOrModifiedAssets:deletedAssets:hmacKey:pageIndex:]", "MBDomainRecord.m", 144, "pageIndex != 0");
   }
 
-  v18 = v17;
-  v19 = [objc_opt_class() _recordIDForDomain:v13 commitID:v14 hmacKey:v17 pageIndex:a8];
+  v18 = keyCopy;
+  v19 = [objc_opt_class() _recordIDForDomain:domainCopy commitID:dCopy hmacKey:keyCopy pageIndex:index];
   LOBYTE(v22) = 0;
-  v20 = [[MBDomainRecord alloc] initWithDomainName:v13 recordID:v19 pageIndex:a8 addedOrModifiedAssets:v15 deletedAssets:v16 cumulativeDirectoryCount:0 cumulativeRegCount:0 cumulativeEmptyRegCount:0 cumulativeSymlinkCount:0 cumulativeAssetCount:0 fileList:0 fileListEncodingType:v22];
+  v20 = [[MBDomainRecord alloc] initWithDomainName:domainCopy recordID:v19 pageIndex:index addedOrModifiedAssets:assetsCopy deletedAssets:deletedAssetsCopy cumulativeDirectoryCount:0 cumulativeRegCount:0 cumulativeEmptyRegCount:0 cumulativeSymlinkCount:0 cumulativeAssetCount:0 fileList:0 fileListEncodingType:v22];
 
   return v20;
 }
 
-+ (id)domainRecordFromCKRecord:(id)a3
++ (id)domainRecordFromCKRecord:(id)record
 {
-  v3 = a3;
-  v28 = [v3 recordID];
-  v4 = [v3 encryptedValues];
-  v30 = [v4 objectForKeyedSubscript:@"domain"];
+  recordCopy = record;
+  recordID = [recordCopy recordID];
+  encryptedValues = [recordCopy encryptedValues];
+  v30 = [encryptedValues objectForKeyedSubscript:@"domain"];
 
   v5 = [[NSString alloc] initWithData:v30 encoding:4];
-  v29 = [v3 objectForKeyedSubscript:@"cumulativeDirectoryCount"];
-  v25 = [v29 unsignedLongLongValue];
-  v27 = [v3 objectForKeyedSubscript:@"cumulativeFileCount"];
-  v23 = [v27 unsignedLongLongValue];
-  v26 = [v3 objectForKeyedSubscript:@"cumulativeSymLinkCount"];
-  v22 = [v26 unsignedLongLongValue];
-  v24 = [v3 objectForKeyedSubscript:@"cumulativeEmptyFileCount"];
-  v21 = [v24 unsignedLongLongValue];
-  v6 = [v3 objectForKeyedSubscript:@"cumulativeAssetCount"];
-  v20 = [v6 unsignedLongLongValue];
-  v7 = [v3 recordID];
-  v8 = [v7 recordName];
-  v9 = [v8 componentsSeparatedByString:@":"];
-  v10 = [v9 lastObject];
+  v29 = [recordCopy objectForKeyedSubscript:@"cumulativeDirectoryCount"];
+  unsignedLongLongValue = [v29 unsignedLongLongValue];
+  v27 = [recordCopy objectForKeyedSubscript:@"cumulativeFileCount"];
+  unsignedLongLongValue2 = [v27 unsignedLongLongValue];
+  v26 = [recordCopy objectForKeyedSubscript:@"cumulativeSymLinkCount"];
+  unsignedLongLongValue3 = [v26 unsignedLongLongValue];
+  v24 = [recordCopy objectForKeyedSubscript:@"cumulativeEmptyFileCount"];
+  unsignedLongLongValue4 = [v24 unsignedLongLongValue];
+  v6 = [recordCopy objectForKeyedSubscript:@"cumulativeAssetCount"];
+  unsignedLongLongValue5 = [v6 unsignedLongLongValue];
+  recordID2 = [recordCopy recordID];
+  recordName = [recordID2 recordName];
+  v9 = [recordName componentsSeparatedByString:@":"];
+  lastObject = [v9 lastObject];
 
-  v11 = [v10 longLongValue];
-  v12 = [v3 objectForKeyedSubscript:@"fileList"];
-  v13 = [v3 objectForKeyedSubscript:@"fileListEncoding"];
-  v14 = [v13 unsignedLongLongValue];
-  v15 = [v3 objectForKeyedSubscript:@"newAssets"];
-  v16 = [v3 objectForKeyedSubscript:@"deletedAssets"];
+  longLongValue = [lastObject longLongValue];
+  v12 = [recordCopy objectForKeyedSubscript:@"fileList"];
+  v13 = [recordCopy objectForKeyedSubscript:@"fileListEncoding"];
+  unsignedLongLongValue6 = [v13 unsignedLongLongValue];
+  v15 = [recordCopy objectForKeyedSubscript:@"newAssets"];
+  v16 = [recordCopy objectForKeyedSubscript:@"deletedAssets"];
 
-  LOBYTE(v19) = v14;
-  v17 = [[MBDomainRecord alloc] initWithDomainName:v5 recordID:v28 pageIndex:v11 addedOrModifiedAssets:v15 deletedAssets:v16 cumulativeDirectoryCount:v25 cumulativeRegCount:v23 cumulativeEmptyRegCount:v21 cumulativeSymlinkCount:v22 cumulativeAssetCount:v20 fileList:v12 fileListEncodingType:v19];
+  LOBYTE(v19) = unsignedLongLongValue6;
+  v17 = [[MBDomainRecord alloc] initWithDomainName:v5 recordID:recordID pageIndex:longLongValue addedOrModifiedAssets:v15 deletedAssets:v16 cumulativeDirectoryCount:unsignedLongLongValue cumulativeRegCount:unsignedLongLongValue2 cumulativeEmptyRegCount:unsignedLongLongValue4 cumulativeSymlinkCount:unsignedLongLongValue3 cumulativeAssetCount:unsignedLongLongValue5 fileList:v12 fileListEncodingType:v19];
 
   return v17;
 }

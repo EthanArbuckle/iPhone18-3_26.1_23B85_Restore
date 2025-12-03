@@ -1,7 +1,7 @@
 @interface DDSBackgroundActivityScheduler
 - (DDSBackgroundActivityScheduler)init;
-- (void)cancelActivityWithIdentifier:(id)a3;
-- (void)scheduleActivityWithIdentifier:(id)a3 interval:(double)a4 tolerance:(double)a5;
+- (void)cancelActivityWithIdentifier:(id)identifier;
+- (void)scheduleActivityWithIdentifier:(id)identifier interval:(double)interval tolerance:(double)tolerance;
 @end
 
 @implementation DDSBackgroundActivityScheduler
@@ -20,17 +20,17 @@
   return v2;
 }
 
-- (void)scheduleActivityWithIdentifier:(id)a3 interval:(double)a4 tolerance:(double)a5
+- (void)scheduleActivityWithIdentifier:(id)identifier interval:(double)interval tolerance:(double)tolerance
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [MEMORY[0x1E695DF00] date];
-  v10 = [v9 dateByAddingTimeInterval:a4];
+  identifierCopy = identifier;
+  date = [MEMORY[0x1E695DF00] date];
+  v10 = [date dateByAddingTimeInterval:interval];
 
   v11 = UpdateLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    [DDSBackgroundActivityScheduler scheduleActivityWithIdentifier:v10 interval:v11 tolerance:a4];
+    [DDSBackgroundActivityScheduler scheduleActivityWithIdentifier:v10 interval:v11 tolerance:interval];
   }
 
   v12 = UpdateLog();
@@ -38,24 +38,24 @@
   {
     v13 = DDS_STRING_FROM_DATE(v10);
     *buf = 138543874;
-    v23 = v8;
+    v23 = identifierCopy;
     v24 = 2114;
     v25 = v13;
     v26 = 2048;
-    v27 = a5;
+    toleranceCopy = tolerance;
     _os_log_impl(&dword_1DF7C6000, v12, OS_LOG_TYPE_DEFAULT, "Scheduling activity: %{public}@ for approximately %{public}@ (tolerance of %ld seconds)", buf, 0x20u);
   }
 
-  v14 = [objc_alloc(MEMORY[0x1E696AAD0]) initWithIdentifier:v8];
+  v14 = [objc_alloc(MEMORY[0x1E696AAD0]) initWithIdentifier:identifierCopy];
   [v14 setQualityOfService:17];
   [v14 setRepeats:0];
-  [v14 setDelay:a4];
-  [v14 setTolerance:a5];
+  [v14 setDelay:interval];
+  [v14 setTolerance:tolerance];
   v15 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_int64(v15, *MEMORY[0x1E69E9C68], a4);
+  xpc_dictionary_set_int64(v15, *MEMORY[0x1E69E9C68], interval);
   [v14 _setAdditionalXPCActivityProperties:v15];
-  v16 = [(DDSBackgroundActivityScheduler *)self schedulerByIdentifier];
-  [v16 setObject:v14 forKey:v8];
+  schedulerByIdentifier = [(DDSBackgroundActivityScheduler *)self schedulerByIdentifier];
+  [schedulerByIdentifier setObject:v14 forKey:identifierCopy];
 
   objc_initWeak(buf, self);
   v19[0] = MEMORY[0x1E69E9820];
@@ -63,7 +63,7 @@
   v19[2] = __84__DDSBackgroundActivityScheduler_scheduleActivityWithIdentifier_interval_tolerance___block_invoke;
   v19[3] = &unk_1E86C5FE8;
   objc_copyWeak(&v21, buf);
-  v17 = v8;
+  v17 = identifierCopy;
   v20 = v17;
   [v14 scheduleWithBlock:v19];
 
@@ -101,11 +101,11 @@ void __84__DDSBackgroundActivityScheduler_scheduleActivityWithIdentifier_interva
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cancelActivityWithIdentifier:(id)a3
+- (void)cancelActivityWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DDSBackgroundActivityScheduler *)self schedulerByIdentifier];
-  v7 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  schedulerByIdentifier = [(DDSBackgroundActivityScheduler *)self schedulerByIdentifier];
+  v7 = [schedulerByIdentifier objectForKeyedSubscript:identifierCopy];
 
   v6 = v7;
   if (v7)

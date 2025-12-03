@@ -1,12 +1,12 @@
 @interface GQDWPPageStart
-- (int)readAttributesFromReader:(_xmlTextReader *)a3;
+- (int)readAttributesFromReader:(_xmlTextReader *)reader;
 @end
 
 @implementation GQDWPPageStart
 
-- (int)readAttributesFromReader:(_xmlTextReader *)a3
+- (int)readAttributesFromReader:(_xmlTextReader *)reader
 {
-  if (sub_42384(a3, qword_A35E8, "page-index", &self->mIndex))
+  if (sub_42384(reader, qword_A35E8, "page-index", &self->mIndex))
   {
     return 1;
   }

@@ -1,18 +1,18 @@
 @interface SBFluidSwitcherMultipleWindowsIndicatorView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)_hitTestBounds;
-- (SBFluidSwitcherMultipleWindowsIndicatorView)initWithFrame:(CGRect)a3;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (SBFluidSwitcherMultipleWindowsIndicatorView)initWithFrame:(CGRect)frame;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 @end
 
 @implementation SBFluidSwitcherMultipleWindowsIndicatorView
 
-- (SBFluidSwitcherMultipleWindowsIndicatorView)initWithFrame:(CGRect)a3
+- (SBFluidSwitcherMultipleWindowsIndicatorView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = SBFluidSwitcherMultipleWindowsIndicatorView;
-  v3 = [(SBFluidSwitcherMultipleWindowsIndicatorView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBFluidSwitcherMultipleWindowsIndicatorView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x277D755D0] configurationWithPointSize:14.0];
@@ -30,13 +30,13 @@
   return v3;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v8.receiver = self;
   v8.super_class = SBFluidSwitcherMultipleWindowsIndicatorView;
-  if ([(SBFluidSwitcherMultipleWindowsIndicatorView *)&v8 pointInside:a4 withEvent:?])
+  if ([(SBFluidSwitcherMultipleWindowsIndicatorView *)&v8 pointInside:event withEvent:?])
   {
     return 1;
   }
@@ -47,23 +47,23 @@
   return CGRectContainsPoint(v10, v9);
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
   v6 = MEMORY[0x277D75880];
-  v7 = a5;
+  regionCopy = region;
   [(SBFluidSwitcherMultipleWindowsIndicatorView *)self _hitTestBounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [v7 identifier];
+  identifier = [regionCopy identifier];
 
-  v17 = [v6 regionWithRect:v16 identifier:{v9, v11, v13, v15}];
+  v17 = [v6 regionWithRect:identifier identifier:{v9, v11, v13, v15}];
 
   return v17;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v5 = objc_alloc_init(MEMORY[0x277D758D8]);
   v6 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:self parameters:v5];

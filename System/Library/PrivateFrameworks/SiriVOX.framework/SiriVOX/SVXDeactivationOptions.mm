@@ -1,29 +1,29 @@
 @interface SVXDeactivationOptions
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SVXDeactivationOptions)initWithAudioSessionDeactivationDelay:(double)a3;
-- (SVXDeactivationOptions)initWithCoder:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SVXDeactivationOptions)initWithAudioSessionDeactivationDelay:(double)delay;
+- (SVXDeactivationOptions)initWithCoder:(id)coder;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SVXDeactivationOptions
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3 = MEMORY[0x277CCABB0];
   audioSessionDeactivationDelay = self->_audioSessionDeactivationDelay;
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v3 numberWithDouble:audioSessionDeactivationDelay];
-  [v5 encodeObject:v6 forKey:@"SVXDeactivationOptions::audioSessionDeactivationDelay"];
+  [coderCopy encodeObject:v6 forKey:@"SVXDeactivationOptions::audioSessionDeactivationDelay"];
 }
 
-- (SVXDeactivationOptions)initWithCoder:(id)a3
+- (SVXDeactivationOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXDeactivationOptions::audioSessionDeactivationDelay"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXDeactivationOptions::audioSessionDeactivationDelay"];
 
   [v5 doubleValue];
   v7 = v6;
@@ -31,10 +31,10 @@
   return [(SVXDeactivationOptions *)self initWithAudioSessionDeactivationDelay:v7];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -45,7 +45,7 @@
     if (objc_opt_isKindOfClass())
     {
       audioSessionDeactivationDelay = self->_audioSessionDeactivationDelay;
-      [(SVXDeactivationOptions *)v4 audioSessionDeactivationDelay];
+      [(SVXDeactivationOptions *)equalCopy audioSessionDeactivationDelay];
       v7 = audioSessionDeactivationDelay == v6;
     }
 
@@ -66,7 +66,7 @@
   return v3;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v8.receiver = self;
@@ -77,49 +77,49 @@
   return v6;
 }
 
-- (SVXDeactivationOptions)initWithAudioSessionDeactivationDelay:(double)a3
+- (SVXDeactivationOptions)initWithAudioSessionDeactivationDelay:(double)delay
 {
   v5.receiver = self;
   v5.super_class = SVXDeactivationOptions;
   result = [(SVXDeactivationOptions *)&v5 init];
   if (result)
   {
-    result->_audioSessionDeactivationDelay = a3;
+    result->_audioSessionDeactivationDelay = delay;
   }
 
   return result;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SVXDeactivationOptionsMutation alloc] initWithBaseModel:self];
-    v4[2](v4, v5);
-    v6 = [(_SVXDeactivationOptionsMutation *)v5 generate];
+    mutatorCopy[2](mutatorCopy, v5);
+    generate = [(_SVXDeactivationOptionsMutation *)v5 generate];
   }
 
   else
   {
-    v6 = [(SVXDeactivationOptions *)self copy];
+    generate = [(SVXDeactivationOptions *)self copy];
   }
 
-  return v6;
+  return generate;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(_SVXDeactivationOptionsMutation);
-  if (v3)
+  if (builderCopy)
   {
-    v3[2](v3, v4);
+    builderCopy[2](builderCopy, v4);
   }
 
-  v5 = [(_SVXDeactivationOptionsMutation *)v4 generate];
+  generate = [(_SVXDeactivationOptionsMutation *)v4 generate];
 
-  return v5;
+  return generate;
 }
 
 @end

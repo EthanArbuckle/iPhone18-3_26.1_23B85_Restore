@@ -1,8 +1,8 @@
 @interface NTKRichComplicationBaseCircularStackSwiftUIView
 - (id)line1View;
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4;
-- (void)setPaused:(BOOL)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)_handleTemplate:(id)template reason:(int64_t)reason;
+- (void)setPaused:(BOOL)paused;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
@@ -13,9 +13,9 @@
   line1SwiftUIView = self->_line1SwiftUIView;
   if (!line1SwiftUIView)
   {
-    v4 = [off_27877BE70 async];
+    async = [off_27877BE70 async];
     v5 = self->_line1SwiftUIView;
-    self->_line1SwiftUIView = v4;
+    self->_line1SwiftUIView = async;
 
     [(CDComplicationHostingView *)self->_line1SwiftUIView setFilterProvider:self];
     objc_initWeak(&location, self);
@@ -40,32 +40,32 @@ void __60__NTKRichComplicationBaseCircularStackSwiftUIView_line1View__block_invo
   [v5 complicationDisplay:WeakRetained renderStatsWithTime:a2 cost:a3];
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
+  pausedCopy = paused;
   v5.receiver = self;
   v5.super_class = NTKRichComplicationBaseCircularStackSwiftUIView;
   [(CDRichComplicationView *)&v5 setPaused:?];
-  [(CDComplicationHostingView *)self->_line1SwiftUIView setPaused:v3];
+  [(CDComplicationHostingView *)self->_line1SwiftUIView setPaused:pausedCopy];
 }
 
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4
+- (void)_handleTemplate:(id)template reason:(int64_t)reason
 {
   v8.receiver = self;
   v8.super_class = NTKRichComplicationBaseCircularStackSwiftUIView;
-  v6 = a3;
-  [(NTKRichComplicationCircularStackContentTextView *)&v8 _handleTemplate:v6 reason:a4];
-  v7 = [v6 contentData];
+  templateCopy = template;
+  [(NTKRichComplicationCircularStackContentTextView *)&v8 _handleTemplate:templateCopy reason:reason];
+  contentData = [templateCopy contentData];
 
-  [(CDComplicationHostingView *)self->_line1SwiftUIView setViewData:v7];
+  [(CDComplicationHostingView *)self->_line1SwiftUIView setViewData:contentData];
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
   v5.receiver = self;
   v5.super_class = NTKRichComplicationBaseCircularStackSwiftUIView;
   [(NTKRichComplicationCircularStackContentTextView *)&v5 transitionToMonochromeWithFraction:?];
-  [(CDComplicationHostingView *)self->_line1SwiftUIView transitionToMonochromeWithFraction:a3];
+  [(CDComplicationHostingView *)self->_line1SwiftUIView transitionToMonochromeWithFraction:fraction];
 }
 
 - (void)updateMonochromeColor

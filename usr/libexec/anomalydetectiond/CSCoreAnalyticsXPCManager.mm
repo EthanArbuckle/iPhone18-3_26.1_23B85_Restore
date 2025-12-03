@@ -1,16 +1,16 @@
 @interface CSCoreAnalyticsXPCManager
-- (CSCoreAnalyticsXPCManager)initWithMartyUploadHandler:(id)a3 andKappaHandler:(id)a4 andIgneousHandler:(id)a5;
-- (void)registerForCoreAnalyticsUserInfoWithCriteria:(id)a3;
+- (CSCoreAnalyticsXPCManager)initWithMartyUploadHandler:(id)handler andKappaHandler:(id)kappaHandler andIgneousHandler:(id)igneousHandler;
+- (void)registerForCoreAnalyticsUserInfoWithCriteria:(id)criteria;
 - (void)registerForCoreAnalyticsUserInfoWithExplicitCriteria;
 @end
 
 @implementation CSCoreAnalyticsXPCManager
 
-- (CSCoreAnalyticsXPCManager)initWithMartyUploadHandler:(id)a3 andKappaHandler:(id)a4 andIgneousHandler:(id)a5
+- (CSCoreAnalyticsXPCManager)initWithMartyUploadHandler:(id)handler andKappaHandler:(id)kappaHandler andIgneousHandler:(id)igneousHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handlerCopy = handler;
+  kappaHandlerCopy = kappaHandler;
+  igneousHandlerCopy = igneousHandler;
   v26.receiver = self;
   v26.super_class = CSCoreAnalyticsXPCManager;
   v11 = [(CSCoreAnalyticsXPCManager *)&v26 init];
@@ -38,15 +38,15 @@
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "configure to send after %llu seconds", buf, 0xCu);
     }
 
-    v15 = objc_retainBlock(v8);
+    v15 = objc_retainBlock(handlerCopy);
     martyHandler = v11->_martyHandler;
     v11->_martyHandler = v15;
 
-    v17 = objc_retainBlock(v9);
+    v17 = objc_retainBlock(kappaHandlerCopy);
     kappaHandler = v11->_kappaHandler;
     v11->_kappaHandler = v17;
 
-    v19 = objc_retainBlock(v10);
+    v19 = objc_retainBlock(igneousHandlerCopy);
     igneousHandler = v11->_igneousHandler;
     v11->_igneousHandler = v19;
 
@@ -102,14 +102,14 @@
   [(CSCoreAnalyticsXPCManager *)self registerForCoreAnalyticsUserInfoWithCriteria:xdict];
 }
 
-- (void)registerForCoreAnalyticsUserInfoWithCriteria:(id)a3
+- (void)registerForCoreAnalyticsUserInfoWithCriteria:(id)criteria
 {
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_1002E9BC0;
   handler[3] = &unk_1004318E8;
   handler[4] = self;
-  xpc_activity_register("com.apple.anomalydetectiond.CoreAnalytics.UserInfo", a3, handler);
+  xpc_activity_register("com.apple.anomalydetectiond.CoreAnalytics.UserInfo", criteria, handler);
 }
 
 @end

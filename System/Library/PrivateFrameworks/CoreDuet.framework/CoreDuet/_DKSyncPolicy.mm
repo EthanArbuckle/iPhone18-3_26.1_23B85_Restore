@@ -1,13 +1,13 @@
 @interface _DKSyncPolicy
-+ (Class)policyFromDictionary:(uint64_t)a1;
++ (Class)policyFromDictionary:(uint64_t)dictionary;
 + (id)configurationPlist;
 + (id)forceSyncPolicy;
 + (id)policy;
 + (id)syncPolicyConfigPath;
 + (void)possiblyDownloadSyncPolicyWithPolicyDownloadIntervalInDays:;
-- (double)hoursBetweenSyncsWhenIsSingleDevice:(BOOL)a3;
+- (double)hoursBetweenSyncsWhenIsSingleDevice:(BOOL)device;
 - (id)description;
-- (id)initWithSyncDisabled:(void *)a3 alwaysSyncUpAndDown:(void *)a4 assetThresholdInBytes:(void *)a5 firstSyncPeriodInDays:(void *)a6 maxSyncDownIntervalInDays:(void *)a7 minSyncIntervalInSeconds:(void *)a8 minSyncsPerDay:(void *)a9 maxSyncsPerDay:(void *)a10 numChangesTriggeringSync:(void *)a11 policyDownloadIntervalInDays:(void *)a12 pushTriggersSync:(void *)a13 singleDeviceSyncIntervalInDays:(void *)a14 streamNamesWithAdditionsTriggeringSync:(void *)a15 streamNamesWithDeletionsTriggeringSync:(void *)a16 syncTimeoutInSeconds:(void *)a17 triggeredSyncDelayInSeconds:;
+- (id)initWithSyncDisabled:(void *)disabled alwaysSyncUpAndDown:(void *)down assetThresholdInBytes:(void *)bytes firstSyncPeriodInDays:(void *)days maxSyncDownIntervalInDays:(void *)inDays minSyncIntervalInSeconds:(void *)seconds minSyncsPerDay:(void *)day maxSyncsPerDay:(void *)self0 numChangesTriggeringSync:(void *)self1 policyDownloadIntervalInDays:(void *)self2 pushTriggersSync:(void *)self3 singleDeviceSyncIntervalInDays:(void *)self4 streamNamesWithAdditionsTriggeringSync:(void *)self5 streamNamesWithDeletionsTriggeringSync:(void *)self6 syncTimeoutInSeconds:(void *)self7 triggeredSyncDelayInSeconds:;
 @end
 
 @implementation _DKSyncPolicy
@@ -39,7 +39,7 @@
   return v2;
 }
 
-+ (Class)policyFromDictionary:(uint64_t)a1
++ (Class)policyFromDictionary:(uint64_t)dictionary
 {
   v2 = a2;
   v94 = objc_opt_self();
@@ -440,7 +440,7 @@
 
 + (id)forceSyncPolicy
 {
-  result = [a1 policy];
+  result = [self policy];
   if (result)
   {
     *(result + 11) = 1;
@@ -469,15 +469,15 @@
   return v1;
 }
 
-- (double)hoursBetweenSyncsWhenIsSingleDevice:(BOOL)a3
+- (double)hoursBetweenSyncsWhenIsSingleDevice:(BOOL)device
 {
-  v3 = a3;
+  deviceCopy = device;
   if (![(_DKSyncPolicy *)self minSyncsPerDay])
   {
     return -1.0;
   }
 
-  if (v3)
+  if (deviceCopy)
   {
     return [(_DKSyncPolicy *)self singleDeviceSyncIntervalInDays]* 24.0;
   }
@@ -505,7 +505,7 @@
     [v3 addEntriesFromDictionary:v6];
   }
 
-  v7 = [(_DKSyncPolicy *)a1 policyFromDictionary:v3];
+  v7 = [(_DKSyncPolicy *)self policyFromDictionary:v3];
   if (([v3 isEqualToDictionary:policy_previousPolicyDict] & 1) == 0)
   {
     v8 = policy_previousPolicyDict;
@@ -554,36 +554,36 @@ LABEL_21:
   return v7;
 }
 
-- (id)initWithSyncDisabled:(void *)a3 alwaysSyncUpAndDown:(void *)a4 assetThresholdInBytes:(void *)a5 firstSyncPeriodInDays:(void *)a6 maxSyncDownIntervalInDays:(void *)a7 minSyncIntervalInSeconds:(void *)a8 minSyncsPerDay:(void *)a9 maxSyncsPerDay:(void *)a10 numChangesTriggeringSync:(void *)a11 policyDownloadIntervalInDays:(void *)a12 pushTriggersSync:(void *)a13 singleDeviceSyncIntervalInDays:(void *)a14 streamNamesWithAdditionsTriggeringSync:(void *)a15 streamNamesWithDeletionsTriggeringSync:(void *)a16 syncTimeoutInSeconds:(void *)a17 triggeredSyncDelayInSeconds:
+- (id)initWithSyncDisabled:(void *)disabled alwaysSyncUpAndDown:(void *)down assetThresholdInBytes:(void *)bytes firstSyncPeriodInDays:(void *)days maxSyncDownIntervalInDays:(void *)inDays minSyncIntervalInSeconds:(void *)seconds minSyncsPerDay:(void *)day maxSyncsPerDay:(void *)self0 numChangesTriggeringSync:(void *)self1 policyDownloadIntervalInDays:(void *)self2 pushTriggersSync:(void *)self3 singleDeviceSyncIntervalInDays:(void *)self4 streamNamesWithAdditionsTriggeringSync:(void *)self5 streamNamesWithDeletionsTriggeringSync:(void *)self6 syncTimeoutInSeconds:(void *)self7 triggeredSyncDelayInSeconds:
 {
   v55 = a2;
-  v54 = a3;
-  v23 = a4;
-  v60 = a5;
-  v59 = a6;
-  v58 = a7;
-  v57 = a8;
-  v56 = a9;
-  v24 = a10;
-  v25 = a11;
-  v26 = a12;
-  v27 = a13;
-  v53 = a14;
-  v52 = a15;
-  v28 = a16;
-  v29 = a17;
-  if (!a1)
+  disabledCopy = disabled;
+  downCopy = down;
+  bytesCopy = bytes;
+  daysCopy = days;
+  inDaysCopy = inDays;
+  secondsCopy = seconds;
+  dayCopy = day;
+  perDayCopy = perDay;
+  syncCopy = sync;
+  intervalInDaysCopy = intervalInDays;
+  triggersSyncCopy = triggersSync;
+  syncIntervalInDaysCopy = syncIntervalInDays;
+  triggeringSyncCopy = triggeringSync;
+  deletionsTriggeringSyncCopy = deletionsTriggeringSync;
+  inSecondsCopy = inSeconds;
+  if (!self)
   {
     v30 = 0;
-    v31 = v54;
+    v31 = disabledCopy;
     v32 = v55;
     goto LABEL_64;
   }
 
-  v61.receiver = a1;
+  v61.receiver = self;
   v61.super_class = _DKSyncPolicy;
   v30 = objc_msgSendSuper2(&v61, sel_init);
-  v31 = v54;
+  v31 = disabledCopy;
   if (!v30)
   {
     v32 = v55;
@@ -593,160 +593,160 @@ LABEL_21:
   v32 = v55;
   if (v55)
   {
-    v33 = [v55 BOOLValue];
+    bOOLValue = [v55 BOOLValue];
   }
 
   else
   {
-    v33 = 0;
+    bOOLValue = 0;
   }
 
-  *(v30 + 8) = v33;
-  if (v54)
+  *(v30 + 8) = bOOLValue;
+  if (disabledCopy)
   {
-    v34 = [v54 BOOLValue];
+    bOOLValue2 = [disabledCopy BOOLValue];
   }
 
   else
   {
-    v34 = 0;
+    bOOLValue2 = 0;
   }
 
-  *(v30 + 9) = v34;
-  if (v23)
+  *(v30 + 9) = bOOLValue2;
+  if (downCopy)
   {
-    v35 = [v23 unsignedIntegerValue];
+    unsignedIntegerValue = [downCopy unsignedIntegerValue];
   }
 
   else
   {
-    v35 = 20480;
+    unsignedIntegerValue = 20480;
   }
 
-  *(v30 + 2) = v35;
-  if (v60)
+  *(v30 + 2) = unsignedIntegerValue;
+  if (bytesCopy)
   {
-    v36 = [v60 unsignedIntegerValue];
+    unsignedIntegerValue2 = [bytesCopy unsignedIntegerValue];
   }
 
   else
   {
-    v36 = 7;
+    unsignedIntegerValue2 = 7;
   }
 
-  *(v30 + 3) = v36;
-  if (v59)
+  *(v30 + 3) = unsignedIntegerValue2;
+  if (daysCopy)
   {
-    v37 = [v59 unsignedIntegerValue];
+    unsignedIntegerValue3 = [daysCopy unsignedIntegerValue];
   }
 
   else
   {
-    v37 = 7;
+    unsignedIntegerValue3 = 7;
   }
 
-  *(v30 + 4) = v37;
-  if (v58)
+  *(v30 + 4) = unsignedIntegerValue3;
+  if (inDaysCopy)
   {
-    v38 = [v58 unsignedIntegerValue];
+    unsignedIntegerValue4 = [inDaysCopy unsignedIntegerValue];
   }
 
   else
   {
-    v38 = 60;
+    unsignedIntegerValue4 = 60;
   }
 
-  *(v30 + 5) = v38;
-  if (v57)
+  *(v30 + 5) = unsignedIntegerValue4;
+  if (secondsCopy)
   {
-    v39 = [v57 unsignedIntegerValue];
+    unsignedIntegerValue5 = [secondsCopy unsignedIntegerValue];
   }
 
   else
   {
-    v39 = 4;
+    unsignedIntegerValue5 = 4;
   }
 
-  *(v30 + 6) = v39;
-  if (v56)
+  *(v30 + 6) = unsignedIntegerValue5;
+  if (dayCopy)
   {
-    v40 = [v56 unsignedIntegerValue];
+    unsignedIntegerValue6 = [dayCopy unsignedIntegerValue];
   }
 
   else
   {
-    v40 = 6;
+    unsignedIntegerValue6 = 6;
   }
 
-  *(v30 + 7) = v40;
-  if (v24)
+  *(v30 + 7) = unsignedIntegerValue6;
+  if (perDayCopy)
   {
-    v41 = [v24 unsignedIntegerValue];
+    unsignedIntegerValue7 = [perDayCopy unsignedIntegerValue];
   }
 
   else
   {
-    v41 = 0;
+    unsignedIntegerValue7 = 0;
   }
 
-  *(v30 + 8) = v41;
-  if (v25)
+  *(v30 + 8) = unsignedIntegerValue7;
+  if (syncCopy)
   {
-    v42 = [v25 unsignedIntegerValue];
+    unsignedIntegerValue8 = [syncCopy unsignedIntegerValue];
   }
 
   else
   {
-    v42 = 7;
+    unsignedIntegerValue8 = 7;
   }
 
-  *(v30 + 14) = v42;
-  if (v26)
+  *(v30 + 14) = unsignedIntegerValue8;
+  if (intervalInDaysCopy)
   {
-    v43 = [v26 BOOLValue];
+    bOOLValue3 = [intervalInDaysCopy BOOLValue];
   }
 
   else
   {
-    v43 = 1;
+    bOOLValue3 = 1;
   }
 
-  *(v30 + 10) = v43;
-  if (v27)
+  *(v30 + 10) = bOOLValue3;
+  if (triggersSyncCopy)
   {
-    v44 = [v27 unsignedIntegerValue];
+    unsignedIntegerValue9 = [triggersSyncCopy unsignedIntegerValue];
   }
 
   else
   {
-    v44 = 1;
+    unsignedIntegerValue9 = 1;
   }
 
-  *(v30 + 9) = v44;
-  objc_storeStrong(v30 + 10, a14);
-  objc_storeStrong(v30 + 11, a15);
-  if (v28)
+  *(v30 + 9) = unsignedIntegerValue9;
+  objc_storeStrong(v30 + 10, syncIntervalInDays);
+  objc_storeStrong(v30 + 11, triggeringSync);
+  if (deletionsTriggeringSyncCopy)
   {
-    v45 = [v28 unsignedIntegerValue];
+    unsignedIntegerValue10 = [deletionsTriggeringSyncCopy unsignedIntegerValue];
   }
 
   else
   {
-    v45 = 30;
+    unsignedIntegerValue10 = 30;
   }
 
-  *(v30 + 12) = v45;
-  if (v29)
+  *(v30 + 12) = unsignedIntegerValue10;
+  if (inSecondsCopy)
   {
-    v46 = [v29 unsignedIntegerValue];
+    unsignedIntegerValue11 = [inSecondsCopy unsignedIntegerValue];
   }
 
   else
   {
-    v46 = 10;
+    unsignedIntegerValue11 = 10;
   }
 
-  *(v30 + 13) = v46;
+  *(v30 + 13) = unsignedIntegerValue11;
   if (*(v30 + 5) > 0x15180uLL)
   {
     *(v30 + 5) = 86400;
@@ -788,7 +788,7 @@ LABEL_56:
     *(v30 + 12) = 30;
   }
 
-  if (v46 > 0x15180)
+  if (unsignedIntegerValue11 > 0x15180)
   {
     *(v30 + 13) = 86400;
   }

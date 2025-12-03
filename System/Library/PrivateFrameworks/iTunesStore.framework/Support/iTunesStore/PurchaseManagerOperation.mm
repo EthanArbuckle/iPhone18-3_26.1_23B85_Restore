@@ -3,43 +3,43 @@
 - (BOOL)useRemoteAuthentication;
 - (NSString)clientIdentifier;
 - (NSString)clientIdentifierHeader;
-- (PurchaseManagerOperation)initWithPurchase:(id)a3;
-- (id)_appleIDForApp:(id)a3 error:(id *)a4;
-- (id)_familyPurchaserAccountIdentifierForApplication:(id)a3;
-- (id)_incompatibleErrorWithPurchase:(id)a3;
-- (id)_installedSoftwareApplicationForPurchase:(id)a3;
-- (id)_localRedownloadParametersForPurchase:(id)a3;
-- (id)_newPurchaseOperationWithPurchase:(id)a3;
-- (id)_personalizedRedownloadParametersForPurchase:(id)a3;
+- (PurchaseManagerOperation)initWithPurchase:(id)purchase;
+- (id)_appleIDForApp:(id)app error:(id *)error;
+- (id)_familyPurchaserAccountIdentifierForApplication:(id)application;
+- (id)_incompatibleErrorWithPurchase:(id)purchase;
+- (id)_installedSoftwareApplicationForPurchase:(id)purchase;
+- (id)_localRedownloadParametersForPurchase:(id)purchase;
+- (id)_newPurchaseOperationWithPurchase:(id)purchase;
+- (id)_personalizedRedownloadParametersForPurchase:(id)purchase;
 - (id)_urlBagKey;
 - (id)purchaseBlock;
 - (int64_t)URLBagType;
 - (void)_performSetup;
-- (void)_performTeardownWithResult:(BOOL)a3 queueResponse:(id)a4;
-- (void)_showDialogForPurchase:(id)a3 error:(id)a4;
-- (void)_updateAccount:(id)a3 withPurchaseResponse:(id)a4;
+- (void)_performTeardownWithResult:(BOOL)result queueResponse:(id)response;
+- (void)_showDialogForPurchase:(id)purchase error:(id)error;
+- (void)_updateAccount:(id)account withPurchaseResponse:(id)response;
 - (void)run;
-- (void)setClientIdentifier:(id)a3;
-- (void)setClientIdentifierHeader:(id)a3;
-- (void)setPurchaseBlock:(id)a3;
-- (void)setURLBagType:(int64_t)a3;
-- (void)setUseRemoteAuthentication:(BOOL)a3;
+- (void)setClientIdentifier:(id)identifier;
+- (void)setClientIdentifierHeader:(id)header;
+- (void)setPurchaseBlock:(id)block;
+- (void)setURLBagType:(int64_t)type;
+- (void)setUseRemoteAuthentication:(BOOL)authentication;
 @end
 
 @implementation PurchaseManagerOperation
 
-- (PurchaseManagerOperation)initWithPurchase:(id)a3
+- (PurchaseManagerOperation)initWithPurchase:(id)purchase
 {
-  v5 = a3;
+  purchaseCopy = purchase;
   v10.receiver = self;
   v10.super_class = PurchaseManagerOperation;
   v6 = [(PurchaseManagerOperation *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_purchase, a3);
-    v8 = [v5 requestProperties];
-    v7->_urlBagType = [v8 URLBagType];
+    objc_storeStrong(&v6->_purchase, purchase);
+    requestProperties = [purchaseCopy requestProperties];
+    v7->_urlBagType = [requestProperties URLBagType];
   }
 
   return v7;
@@ -73,13 +73,13 @@
   return v4;
 }
 
-- (void)setClientIdentifier:(id)a3
+- (void)setClientIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   [(PurchaseManagerOperation *)self lock];
-  if (self->_clientIdentifier != v6)
+  if (self->_clientIdentifier != identifierCopy)
   {
-    v4 = [(NSString *)v6 copy];
+    v4 = [(NSString *)identifierCopy copy];
     clientIdentifier = self->_clientIdentifier;
     self->_clientIdentifier = v4;
   }
@@ -87,13 +87,13 @@
   [(PurchaseManagerOperation *)self unlock];
 }
 
-- (void)setClientIdentifierHeader:(id)a3
+- (void)setClientIdentifierHeader:(id)header
 {
-  v6 = a3;
+  headerCopy = header;
   [(PurchaseManagerOperation *)self lock];
-  if (self->_clientIdentifierHeader != v6)
+  if (self->_clientIdentifierHeader != headerCopy)
   {
-    v4 = [(NSString *)v6 copy];
+    v4 = [(NSString *)headerCopy copy];
     clientIdentifierHeader = self->_clientIdentifierHeader;
     self->_clientIdentifierHeader = v4;
   }
@@ -101,13 +101,13 @@
   [(PurchaseManagerOperation *)self unlock];
 }
 
-- (void)setPurchaseBlock:(id)a3
+- (void)setPurchaseBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(PurchaseManagerOperation *)self lock];
-  if (self->_purchaseBlock != v6)
+  if (self->_purchaseBlock != blockCopy)
   {
-    v4 = [v6 copy];
+    v4 = [blockCopy copy];
     purchaseBlock = self->_purchaseBlock;
     self->_purchaseBlock = v4;
   }
@@ -115,18 +115,18 @@
   [(PurchaseManagerOperation *)self unlock];
 }
 
-- (void)setURLBagType:(int64_t)a3
+- (void)setURLBagType:(int64_t)type
 {
   [(PurchaseManagerOperation *)self lock];
-  self->_urlBagType = a3;
+  self->_urlBagType = type;
 
   [(PurchaseManagerOperation *)self unlock];
 }
 
-- (void)setUseRemoteAuthentication:(BOOL)a3
+- (void)setUseRemoteAuthentication:(BOOL)authentication
 {
   [(PurchaseManagerOperation *)self lock];
-  self->_useRemoteAuthentication = a3;
+  self->_useRemoteAuthentication = authentication;
 
   [(PurchaseManagerOperation *)self unlock];
 }
@@ -149,89 +149,89 @@
 
 - (void)run
 {
-  v2 = self;
+  selfCopy = self;
   if ([(PurchaseManagerOperation *)self _isDeviceCapableForPurchase])
   {
-    [(PurchaseManagerOperation *)v2 _performSetup];
-    v3 = [(SSPurchase *)v2->_purchase gratisIdentifiers];
-    v4 = [v3 count];
+    [(PurchaseManagerOperation *)selfCopy _performSetup];
+    gratisIdentifiers = [(SSPurchase *)selfCopy->_purchase gratisIdentifiers];
+    v4 = [gratisIdentifiers count];
 
     if (v4)
     {
-      if ([(SSPurchase *)v2->_purchase isGratisSoftwareClaim])
+      if ([(SSPurchase *)selfCopy->_purchase isGratisSoftwareClaim])
       {
-        [AppStoreUtility claimAppsWithPurchase:v2->_purchase];
+        [AppStoreUtility claimAppsWithPurchase:selfCopy->_purchase];
         v5 = 0;
-        v6 = 0;
-        v7 = 0;
-        v105 = 0;
+        authenticatedAccountDSID = 0;
+        rawOutput = 0;
+        requestPerformanceMetrics = 0;
         v8 = 0;
-        v114 = 0;
-        v115 = 0;
+        uRLResponse = 0;
+        tidHeaders = 0;
         goto LABEL_45;
       }
 
-      v22 = [[GratisClaimOperation alloc] initWithPurchase:v2->_purchase];
+      v22 = [[GratisClaimOperation alloc] initWithPurchase:selfCopy->_purchase];
       v117 = 0;
-      v5 = [(PurchaseManagerOperation *)v2 runSubOperation:v22 returningError:&v117];
+      v5 = [(PurchaseManagerOperation *)selfCopy runSubOperation:v22 returningError:&v117];
       v116 = v117;
-      v6 = [(GratisClaimOperation *)v22 authenticatedAccountDSID];
-      v7 = [(GratisClaimOperation *)v22 rawOutput];
-      v114 = [(GratisClaimOperation *)v22 URLResponse];
-      v115 = 0;
-      v105 = 0;
-      v19 = 0;
+      authenticatedAccountDSID = [(GratisClaimOperation *)v22 authenticatedAccountDSID];
+      rawOutput = [(GratisClaimOperation *)v22 rawOutput];
+      uRLResponse = [(GratisClaimOperation *)v22 URLResponse];
+      tidHeaders = 0;
+      requestPerformanceMetrics = 0;
+      storeCorrelationID = 0;
       goto LABEL_42;
     }
 
-    v22 = [(PurchaseManagerOperation *)v2 _newPurchaseOperationWithPurchase:v2->_purchase];
+    v22 = [(PurchaseManagerOperation *)selfCopy _newPurchaseOperationWithPurchase:selfCopy->_purchase];
     v118 = 0;
-    v5 = [(PurchaseManagerOperation *)v2 runSubOperation:v22 returningError:&v118];
+    v5 = [(PurchaseManagerOperation *)selfCopy runSubOperation:v22 returningError:&v118];
     v116 = v118;
-    v23 = [(GratisClaimOperation *)v22 shim];
+    shim = [(GratisClaimOperation *)v22 shim];
 
-    if (v23)
+    if (shim)
     {
-      v24 = [(GratisClaimOperation *)v22 shim];
-      v6 = [v24 authenticatedAccountDSID];
+      shim2 = [(GratisClaimOperation *)v22 shim];
+      authenticatedAccountDSID = [shim2 authenticatedAccountDSID];
 
-      v25 = [(GratisClaimOperation *)v22 shim];
-      v7 = [v25 rawOutput];
+      shim3 = [(GratisClaimOperation *)v22 shim];
+      rawOutput = [shim3 rawOutput];
 
-      v26 = [(GratisClaimOperation *)v22 shim];
-      v105 = [v26 requestPerformanceMetrics];
+      shim4 = [(GratisClaimOperation *)v22 shim];
+      requestPerformanceMetrics = [shim4 requestPerformanceMetrics];
 
-      v27 = [(GratisClaimOperation *)v22 shim];
-      v19 = [v27 storeCorrelationID];
+      shim5 = [(GratisClaimOperation *)v22 shim];
+      storeCorrelationID = [shim5 storeCorrelationID];
 
-      v28 = [(GratisClaimOperation *)v22 shim];
-      v115 = [v28 tidHeaders];
+      shim6 = [(GratisClaimOperation *)v22 shim];
+      tidHeaders = [shim6 tidHeaders];
 
-      v29 = [(GratisClaimOperation *)v22 shim];
-      v114 = [v29 URLResponse];
+      shim7 = [(GratisClaimOperation *)v22 shim];
+      uRLResponse = [shim7 URLResponse];
     }
 
     else
     {
-      v6 = [(GratisClaimOperation *)v22 authenticatedAccountDSID];
-      v7 = [(GratisClaimOperation *)v22 rawOutput];
-      v105 = [(GratisClaimOperation *)v22 requestPerformanceMetrics];
-      v19 = [(GratisClaimOperation *)v22 storeCorrelationID];
-      v115 = [(GratisClaimOperation *)v22 tidHeaders];
-      v114 = [(GratisClaimOperation *)v22 URLResponse];
+      authenticatedAccountDSID = [(GratisClaimOperation *)v22 authenticatedAccountDSID];
+      rawOutput = [(GratisClaimOperation *)v22 rawOutput];
+      requestPerformanceMetrics = [(GratisClaimOperation *)v22 requestPerformanceMetrics];
+      storeCorrelationID = [(GratisClaimOperation *)v22 storeCorrelationID];
+      tidHeaders = [(GratisClaimOperation *)v22 tidHeaders];
+      uRLResponse = [(GratisClaimOperation *)v22 URLResponse];
     }
 
     if (![(GratisClaimOperation *)v22 isMoveToiOS])
     {
 LABEL_42:
 
-      v39 = [v7 objectForKey:@"cancel-purchase-batch"];
+      v39 = [rawOutput objectForKey:@"cancel-purchase-batch"];
       if ((objc_opt_respondsToSelector() & 1) == 0)
       {
         v108 = 0;
 LABEL_48:
 
-        if (v6)
+        if (authenticatedAccountDSID)
         {
           goto LABEL_52;
         }
@@ -239,71 +239,71 @@ LABEL_48:
         goto LABEL_49;
       }
 
-      v40 = [v39 BOOLValue];
+      bOOLValue = [v39 BOOLValue];
 
-      if (!v40)
+      if (!bOOLValue)
       {
         v108 = 0;
-        if (v6)
+        if (authenticatedAccountDSID)
         {
           goto LABEL_52;
         }
 
 LABEL_49:
-        v6 = [(SSPurchase *)v2->_purchase valueForDownloadProperty:SSDownloadPropertyStoreAccountIdentifier, v91];
-        if (!v6)
+        authenticatedAccountDSID = [(SSPurchase *)selfCopy->_purchase valueForDownloadProperty:SSDownloadPropertyStoreAccountIdentifier, v91];
+        if (!authenticatedAccountDSID)
         {
 LABEL_53:
-          v109 = v6;
-          if (!v7)
+          v109 = authenticatedAccountDSID;
+          if (!rawOutput)
           {
             v21 = 0;
-            v20 = v105;
+            v20 = requestPerformanceMetrics;
 LABEL_85:
-            [(PurchaseManagerOperation *)v2 _performTeardownWithResult:v5 queueResponse:v21, v91];
+            [(PurchaseManagerOperation *)selfCopy _performTeardownWithResult:v5 queueResponse:v21, v91];
             goto LABEL_86;
           }
 
-          v42 = [(SSPurchase *)v2->_purchase valueForDownloadProperty:SSDownloadPropertyPreferredAssetFlavor];
-          v21 = [[StoreDownloadQueueResponse alloc] initWithDictionary:v7 userIdentifier:v6 preferredAssetFlavor:v42];
-          if ([v19 length])
+          v42 = [(SSPurchase *)selfCopy->_purchase valueForDownloadProperty:SSDownloadPropertyPreferredAssetFlavor];
+          v21 = [[StoreDownloadQueueResponse alloc] initWithDictionary:rawOutput userIdentifier:authenticatedAccountDSID preferredAssetFlavor:v42];
+          if ([storeCorrelationID length])
           {
-            [(StoreDownloadQueueResponse *)v21 setStoreCorrelationID:v19];
+            [(StoreDownloadQueueResponse *)v21 setStoreCorrelationID:storeCorrelationID];
           }
 
-          v43 = [v7 objectForKey:@"jingleAction"];
+          v43 = [rawOutput objectForKey:@"jingleAction"];
           objc_opt_class();
-          v20 = v105;
+          v20 = requestPerformanceMetrics;
           if ((objc_opt_isKindOfClass() & 1) != 0 && [v43 isEqualToString:@"inAppBuy"])
           {
             v44 = v21;
             v45 = [[MicroPaymentQueueResponse alloc] initWithRequestType:0];
-            if ([(MicroPaymentQueueResponse *)v45 loadFromPropertyList:v7])
+            if ([(MicroPaymentQueueResponse *)v45 loadFromPropertyList:rawOutput])
             {
               +[MicroPaymentQueue paymentQueue];
               v98 = v43;
-              v46 = v2;
-              v47 = v19;
+              v46 = selfCopy;
+              v47 = storeCorrelationID;
               v49 = v48 = v42;
               [v49 updateWithPurchaseResponse:v45];
 
               v42 = v48;
-              v19 = v47;
-              v2 = v46;
+              storeCorrelationID = v47;
+              selfCopy = v46;
               v43 = v98;
             }
 
             v21 = v44;
           }
 
-          v112 = v7;
-          v50 = [v7 objectForKeyedSubscript:@"ad-network"];
+          v112 = rawOutput;
+          v50 = [rawOutput objectForKeyedSubscript:@"ad-network"];
           v51 = v50;
           if (!v50)
           {
 LABEL_84:
 
-            v7 = v112;
+            rawOutput = v112;
             goto LABEL_85;
           }
 
@@ -320,19 +320,19 @@ LABEL_84:
               v53 = +[SSLogConfig sharedConfig];
             }
 
-            v54 = [v53 shouldLog];
+            shouldLog = [v53 shouldLog];
             if ([v53 shouldLogToDisk])
             {
-              v55 = v54 | 2;
+              v55 = shouldLog | 2;
             }
 
             else
             {
-              v55 = v54;
+              v55 = shouldLog;
             }
 
-            v56 = [v53 OSLogObject];
-            if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
+            oSLogObject = [v53 OSLogObject];
+            if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
             {
               v57 = v55;
             }
@@ -352,7 +352,7 @@ LABEL_82:
             }
 
             v97 = v42;
-            v106 = v19;
+            v106 = storeCorrelationID;
             v58 = objc_opt_class();
             v59 = v58;
             v60 = [v51 objectForKeyedSubscript:@"error"];
@@ -367,7 +367,7 @@ LABEL_82:
             if (!v61)
             {
               v5 = v103;
-              v19 = v106;
+              storeCorrelationID = v106;
               v21 = v100;
               v42 = v97;
 LABEL_83:
@@ -376,17 +376,17 @@ LABEL_83:
               goto LABEL_84;
             }
 
-            v56 = [NSString stringWithCString:v61 encoding:4, &v119, v92];
+            oSLogObject = [NSString stringWithCString:v61 encoding:4, &v119, v92];
             free(v61);
-            v91 = v56;
+            v91 = oSLogObject;
             SSFileLog();
           }
 
           else
           {
-            v106 = v19;
+            v106 = storeCorrelationID;
             v53 = [v51 objectForKeyedSubscript:@"ad-network-id"];
-            v56 = [v51 objectForKeyedSubscript:@"adam-id"];
+            oSLogObject = [v51 objectForKeyedSubscript:@"adam-id"];
             v95 = [v51 objectForKeyedSubscript:@"campaign-id"];
             v62 = [v51 objectForKeyedSubscript:@"transaction-id"];
             v96 = [v51 objectForKeyedSubscript:@"signature"];
@@ -409,29 +409,29 @@ LABEL_83:
 
             v67 = [InstallAttributionPingback alloc];
             v68 = [NSNumber numberWithLongLong:v66];
-            v69 = [(InstallAttributionPingback *)v67 initWithAppAdamId:v56 transactionId:v62 campaignId:v95 adNetworkId:v53 attributionSignature:v96 pingbackUrl:v94 retryCount:0 localTimestamp:v68];
+            v69 = [(InstallAttributionPingback *)v67 initWithAppAdamId:oSLogObject transactionId:v62 campaignId:v95 adNetworkId:v53 attributionSignature:v96 pingbackUrl:v94 retryCount:0 localTimestamp:v68];
 
             v70 = +[PurchaseActionsManager sharedInstance];
             [v70 insertInstallAttributionPingback:v69];
 
             v71 = +[PurchaseActionsManager sharedInstance];
-            [v71 removeInstallAttributionParamsForApp:v56];
+            [v71 removeInstallAttributionParamsForApp:oSLogObject];
           }
 
           v5 = v103;
-          v19 = v106;
+          storeCorrelationID = v106;
           v21 = v100;
           v42 = v97;
           goto LABEL_82;
         }
 
 LABEL_52:
-        [(PurchaseManagerOperation *)v2 _updateAccount:v6 withPurchaseResponse:v7, v91];
+        [(PurchaseManagerOperation *)selfCopy _updateAccount:authenticatedAccountDSID withPurchaseResponse:rawOutput, v91];
         goto LABEL_53;
       }
 
 LABEL_44:
-      v8 = v19;
+      v8 = storeCorrelationID;
       if (v116)
       {
 LABEL_46:
@@ -440,7 +440,7 @@ LABEL_46:
         v41 = SSErrorBySettingUserInfoValue();
 
         v116 = v41;
-        v19 = v8;
+        storeCorrelationID = v8;
         goto LABEL_48;
       }
 
@@ -449,7 +449,7 @@ LABEL_45:
       goto LABEL_46;
     }
 
-    v111 = v7;
+    v111 = rawOutput;
     v102 = v5;
     v30 = +[SSLogConfig sharedDaemonConfig];
     if (!v30)
@@ -457,19 +457,19 @@ LABEL_45:
       v30 = +[SSLogConfig sharedConfig];
     }
 
-    v31 = [v30 shouldLog];
+    shouldLog2 = [v30 shouldLog];
     if ([v30 shouldLogToDisk])
     {
-      v32 = v31 | 2;
+      v32 = shouldLog2 | 2;
     }
 
     else
     {
-      v32 = v31;
+      v32 = shouldLog2;
     }
 
-    v33 = [v30 OSLogObject];
-    if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v30 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v34 = v32;
     }
@@ -481,13 +481,13 @@ LABEL_45:
 
     if (v34)
     {
-      v35 = v6;
+      v35 = authenticatedAccountDSID;
       v36 = objc_opt_class();
       v110 = v36;
       v37 = AMSLogableError();
       v119 = 138412546;
       v120 = v36;
-      v6 = v35;
+      authenticatedAccountDSID = v35;
       v121 = 2112;
       v122 = v37;
       LODWORD(v92) = 22;
@@ -500,9 +500,9 @@ LABEL_45:
         goto LABEL_37;
       }
 
-      v33 = [NSString stringWithCString:v38 encoding:4, &v119, v92];
+      oSLogObject2 = [NSString stringWithCString:v38 encoding:4, &v119, v92];
       free(v38);
-      v91 = v33;
+      v91 = oSLogObject2;
       SSFileLog();
     }
 
@@ -515,11 +515,11 @@ LABEL_37:
     if ([v116 ams_hasDomain:ISErrorDomain code:16] & 1) != 0 || (objc_msgSend(v116, "ams_hasDomain:code:", SSErrorDomain, 140) & 1) != 0 || (objc_msgSend(v116, "ams_hasDomain:code:", AMSErrorDomain, 6))
     {
 
-      v7 = v111;
+      rawOutput = v111;
       goto LABEL_44;
     }
 
-    v7 = v111;
+    rawOutput = v111;
     goto LABEL_42;
   }
 
@@ -529,19 +529,19 @@ LABEL_37:
     v9 = +[SSLogConfig sharedConfig];
   }
 
-  v10 = [v9 shouldLog];
+  shouldLog3 = [v9 shouldLog];
   if ([v9 shouldLogToDisk])
   {
-    v11 = v10 | 2;
+    v11 = shouldLog3 | 2;
   }
 
   else
   {
-    v11 = v10;
+    v11 = shouldLog3;
   }
 
-  v12 = [v9 OSLogObject];
-  if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  oSLogObject3 = [v9 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
   {
     v11 &= 2u;
   }
@@ -552,7 +552,7 @@ LABEL_37:
   }
 
   v13 = objc_opt_class();
-  purchase = v2->_purchase;
+  purchase = selfCopy->_purchase;
   v119 = 138412546;
   v120 = v13;
   v121 = 2112;
@@ -564,56 +564,56 @@ LABEL_37:
 
   if (v16)
   {
-    v12 = [NSString stringWithCString:v16 encoding:4, &v119, v92];
+    oSLogObject3 = [NSString stringWithCString:v16 encoding:4, &v119, v92];
     free(v16);
-    v91 = v12;
+    v91 = oSLogObject3;
     SSFileLog();
 LABEL_15:
   }
 
-  v116 = [(PurchaseManagerOperation *)v2 _incompatibleErrorWithPurchase:v2->_purchase];
-  v17 = [(SSPurchase *)v2->_purchase valueForDownloadProperty:SSDownloadPropertyShouldSuppressErrorDialogs];
-  v18 = [v17 BOOLValue];
+  v116 = [(PurchaseManagerOperation *)selfCopy _incompatibleErrorWithPurchase:selfCopy->_purchase];
+  v17 = [(SSPurchase *)selfCopy->_purchase valueForDownloadProperty:SSDownloadPropertyShouldSuppressErrorDialogs];
+  bOOLValue2 = [v17 BOOLValue];
 
-  if ((v18 & 1) == 0)
+  if ((bOOLValue2 & 1) == 0)
   {
-    [(PurchaseManagerOperation *)v2 _showDialogForPurchase:v2->_purchase error:v116];
+    [(PurchaseManagerOperation *)selfCopy _showDialogForPurchase:selfCopy->_purchase error:v116];
   }
 
-  v114 = 0;
-  v115 = 0;
-  v19 = 0;
+  uRLResponse = 0;
+  tidHeaders = 0;
+  storeCorrelationID = 0;
   v108 = 0;
   v20 = 0;
-  v7 = 0;
+  rawOutput = 0;
   v21 = 0;
   v109 = 0;
   v5 = 0;
 LABEL_86:
-  v72 = [(SSPurchase *)v2->_purchase enabledServiceType];
-  v73 = v72;
-  if (v5 && v72 && ![v72 integerValue])
+  enabledServiceType = [(SSPurchase *)selfCopy->_purchase enabledServiceType];
+  v73 = enabledServiceType;
+  if (v5 && enabledServiceType && ![enabledServiceType integerValue])
   {
     v101 = v21;
     v74 = objc_alloc_init(SubscriptionOperation);
     [(SubscriptionOperation *)v74 setOperationType:1];
-    [(SSPurchase *)v2->_purchase requestProperties];
+    [(SSPurchase *)selfCopy->_purchase requestProperties];
     v75 = v104 = v5;
-    v76 = [v75 HTTPHeaders];
-    v77 = [v76 objectForKey:SSHTTPHeaderUserAgent];
+    hTTPHeaders = [v75 HTTPHeaders];
+    v77 = [hTTPHeaders objectForKey:SSHTTPHeaderUserAgent];
     [(SubscriptionOperation *)v74 setUserAgent:v77];
 
     v5 = v104;
-    [(PurchaseManagerOperation *)v2 runSubOperation:v74 returningError:0];
+    [(PurchaseManagerOperation *)selfCopy runSubOperation:v74 returningError:0];
 
     v21 = v101;
   }
 
-  v78 = [(PurchaseManagerOperation *)v2 purchaseBlock];
-  if (v78)
+  purchaseBlock = [(PurchaseManagerOperation *)selfCopy purchaseBlock];
+  if (purchaseBlock)
   {
     v79 = v21;
-    v113 = v7;
+    v113 = rawOutput;
     v80 = v116;
     if (v80)
     {
@@ -634,15 +634,15 @@ LABEL_86:
     [(DaemonPurchaseResponse *)v82 setCancelsPurchaseBatch:v108];
     [(DaemonPurchaseResponse *)v82 setDecodedResponse:v79];
     [(DaemonPurchaseResponse *)v82 setError:v80];
-    [(DaemonPurchaseResponse *)v82 setPurchase:v2->_purchase];
-    [(DaemonPurchaseResponse *)v82 setTidHeaders:v115];
-    [(DaemonPurchaseResponse *)v82 setURLResponse:v114];
+    [(DaemonPurchaseResponse *)v82 setPurchase:selfCopy->_purchase];
+    [(DaemonPurchaseResponse *)v82 setTidHeaders:tidHeaders];
+    [(DaemonPurchaseResponse *)v82 setURLResponse:uRLResponse];
     if (v20)
     {
       [v20 startTime];
       v84 = v83;
       [NSDate dateWithTimeIntervalSinceReferenceDate:?];
-      v107 = v19;
+      v107 = storeCorrelationID;
       v86 = v85 = v5;
       [v86 timeIntervalSince1970];
       [(DaemonPurchaseResponse *)v82 setRequestStartTime:?];
@@ -658,26 +658,26 @@ LABEL_86:
       [(DaemonPurchaseResponse *)v82 setResponseEndTime:?];
 
       v5 = v85;
-      v19 = v107;
+      storeCorrelationID = v107;
     }
 
-    (v78)[2](v78, v82);
+    (purchaseBlock)[2](purchaseBlock, v82);
 
-    v7 = v113;
+    rawOutput = v113;
     v21 = v79;
   }
 
-  [(PurchaseManagerOperation *)v2 setError:v116];
-  [(PurchaseManagerOperation *)v2 setSuccess:v5];
+  [(PurchaseManagerOperation *)selfCopy setError:v116];
+  [(PurchaseManagerOperation *)selfCopy setSuccess:v5];
 }
 
-- (id)_appleIDForApp:(id)a3 error:(id *)a4
+- (id)_appleIDForApp:(id)app error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 appState];
-  v7 = [v6 isValid];
+  appCopy = app;
+  appState = [appCopy appState];
+  isValid = [appState isValid];
 
-  if ((v7 & 1) == 0)
+  if ((isValid & 1) == 0)
   {
     v9 = +[SSLogConfig sharedDaemonConfig];
     if (!v9)
@@ -685,19 +685,19 @@ LABEL_86:
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v16 = [v9 shouldLog];
+    shouldLog = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v17 = v16 | 2;
+      v17 = shouldLog | 2;
     }
 
     else
     {
-      v17 = v16;
+      v17 = shouldLog;
     }
 
-    v18 = [v9 OSLogObject];
-    if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v9 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v17 &= 2u;
     }
@@ -707,7 +707,7 @@ LABEL_86:
       v29 = 138543618;
       v30 = objc_opt_class();
       v31 = 2114;
-      v32 = v5;
+      v32 = appCopy;
       v19 = v30;
       LODWORD(v27) = 22;
       v20 = _os_log_send_and_compose_impl();
@@ -719,7 +719,7 @@ LABEL_21:
         goto LABEL_39;
       }
 
-      v18 = [NSString stringWithCString:v20 encoding:4, &v29, v27];
+      oSLogObject = [NSString stringWithCString:v20 encoding:4, &v29, v27];
       free(v20);
       SSFileLog();
     }
@@ -727,8 +727,8 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v8 = [v5 bundleContainerURL];
-  v9 = [v8 URLByAppendingPathComponent:@"iTunesMetadata.plist"];
+  bundleContainerURL = [appCopy bundleContainerURL];
+  v9 = [bundleContainerURL URLByAppendingPathComponent:@"iTunesMetadata.plist"];
 
   if (v9)
   {
@@ -738,7 +738,7 @@ LABEL_21:
     v10 = [NSArray arrayWithObjects:v28 count:3];
     v11 = [v10 componentsJoinedByString:@":"];
 
-    v12 = [MappedPropertyList readKeyPath:v11 fromURL:v9 error:a4];
+    v12 = [MappedPropertyList readKeyPath:v11 fromURL:v9 error:error];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -781,19 +781,19 @@ LABEL_36:
     v11 = +[SSLogConfig sharedConfig];
   }
 
-  v21 = [v11 shouldLog];
+  shouldLog2 = [v11 shouldLog];
   if ([v11 shouldLogToDisk])
   {
-    v22 = v21 | 2;
+    v22 = shouldLog2 | 2;
   }
 
   else
   {
-    v22 = v21;
+    v22 = shouldLog2;
   }
 
-  v23 = [v11 OSLogObject];
-  if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+  oSLogObject2 = [v11 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
   {
     v22 &= 2u;
   }
@@ -806,14 +806,14 @@ LABEL_36:
   v29 = 138543618;
   v30 = objc_opt_class();
   v31 = 2114;
-  v32 = v5;
+  v32 = appCopy;
   v24 = v30;
   LODWORD(v27) = 22;
   v25 = _os_log_send_and_compose_impl();
 
   if (v25)
   {
-    v23 = [NSString stringWithCString:v25 encoding:4, &v29, v27];
+    oSLogObject2 = [NSString stringWithCString:v25 encoding:4, &v29, v27];
     free(v25);
     SSFileLog();
 LABEL_32:
@@ -827,13 +827,13 @@ LABEL_39:
   return v15;
 }
 
-- (id)_familyPurchaserAccountIdentifierForApplication:(id)a3
+- (id)_familyPurchaserAccountIdentifierForApplication:(id)application
 {
-  v3 = [a3 bundleIdentifier];
-  if (v3)
+  bundleIdentifier = [application bundleIdentifier];
+  if (bundleIdentifier)
   {
     v4 = +[ApplicationWorkspace defaultWorkspace];
-    v5 = [v4 sinfPathForBundleID:v3];
+    v5 = [v4 sinfPathForBundleID:bundleIdentifier];
 
     if (v5)
     {
@@ -889,21 +889,21 @@ LABEL_39:
   return v8;
 }
 
-- (id)_incompatibleErrorWithPurchase:(id)a3
+- (id)_incompatibleErrorWithPurchase:(id)purchase
 {
-  v3 = [a3 valueForDownloadProperty:SSDownloadPropertyTitle];
+  v3 = [purchase valueForDownloadProperty:SSDownloadPropertyTitle];
   v4 = ISDeviceIncompatibleAppErrorWithAppTitle();
 
   return v4;
 }
 
-- (id)_installedSoftwareApplicationForPurchase:(id)a3
+- (id)_installedSoftwareApplicationForPurchase:(id)purchase
 {
-  v3 = a3;
-  v4 = [v3 valueForDownloadProperty:SSDownloadPropertyStoreItemIdentifier];
+  purchaseCopy = purchase;
+  v4 = [purchaseCopy valueForDownloadProperty:SSDownloadPropertyStoreItemIdentifier];
   if (!v4 || ([LSApplicationProxy applicationProxyForItemID:v4], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v6 = [v3 valueForDownloadProperty:SSDownloadPropertyBundleIdentifier];
+    v6 = [purchaseCopy valueForDownloadProperty:SSDownloadPropertyBundleIdentifier];
     if (v6)
     {
       v5 = [LSApplicationProxy applicationProxyForIdentifier:v6];
@@ -920,11 +920,11 @@ LABEL_39:
 
 - (BOOL)_isDeviceCapableForPurchase
 {
-  v2 = [(SSPurchase *)self->_purchase requiredDeviceCapabilities];
-  v3 = v2;
-  if (v2)
+  requiredDeviceCapabilities = [(SSPurchase *)self->_purchase requiredDeviceCapabilities];
+  v3 = requiredDeviceCapabilities;
+  if (requiredDeviceCapabilities)
   {
-    v4 = v2;
+    v4 = requiredDeviceCapabilities;
     v5 = MobileInstallationCheckCapabilitiesMatch();
     if (v5)
     {
@@ -959,16 +959,16 @@ LABEL_39:
   return v8;
 }
 
-- (id)_localRedownloadParametersForPurchase:(id)a3
+- (id)_localRedownloadParametersForPurchase:(id)purchase
 {
-  v3 = a3;
+  purchaseCopy = purchase;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = sub_10021EDBC;
   v15 = sub_10021EDCC;
   v16 = 0;
-  v4 = [v3 valueForDownloadProperty:SSDownloadPropertyStoreItemIdentifier];
+  v4 = [purchaseCopy valueForDownloadProperty:SSDownloadPropertyStoreItemIdentifier];
   if (v4)
   {
     v5 = +[SSAppPurchaseHistoryDatabase newDefaultInstance];
@@ -988,22 +988,22 @@ LABEL_39:
   return v6;
 }
 
-- (id)_newPurchaseOperationWithPurchase:(id)a3
+- (id)_newPurchaseOperationWithPurchase:(id)purchase
 {
-  v4 = a3;
-  v5 = [[PurchaseOperation alloc] initWithPurchase:v4];
+  purchaseCopy = purchase;
+  v5 = [[PurchaseOperation alloc] initWithPurchase:purchaseCopy];
 
   [(PurchaseOperation *)v5 setBagType:[(PurchaseManagerOperation *)self URLBagType]];
-  v6 = [(PurchaseManagerOperation *)self clientIdentifier];
-  [(PurchaseOperation *)v5 setClientIdentifier:v6];
+  clientIdentifier = [(PurchaseManagerOperation *)self clientIdentifier];
+  [(PurchaseOperation *)v5 setClientIdentifier:clientIdentifier];
 
-  v7 = [(PurchaseManagerOperation *)self clientIdentifierHeader];
-  [(PurchaseOperation *)v5 setClientIdentifierHeader:v7];
+  clientIdentifierHeader = [(PurchaseManagerOperation *)self clientIdentifierHeader];
+  [(PurchaseOperation *)v5 setClientIdentifierHeader:clientIdentifierHeader];
 
   [(PurchaseOperation *)v5 setOriginalProductOwnerAccountDSID:self->_applicationOwnerAccountDSID];
   [(PurchaseOperation *)v5 setShouldSendKeyBagSyncData:1];
-  v8 = [(PurchaseManagerOperation *)self _urlBagKey];
-  [(PurchaseOperation *)v5 setUrlBagKey:v8];
+  _urlBagKey = [(PurchaseManagerOperation *)self _urlBagKey];
+  [(PurchaseOperation *)v5 setUrlBagKey:_urlBagKey];
 
   if ([(PurchaseManagerOperation *)self useRemoteAuthentication])
   {
@@ -1068,8 +1068,8 @@ LABEL_39:
       }
     }
 
-    v9 = [(SSPurchase *)self->_purchase buyParameters];
-    v10 = [NSURL copyDictionaryForQueryString:v9 unescapedValues:1];
+    buyParameters = [(SSPurchase *)self->_purchase buyParameters];
+    v10 = [NSURL copyDictionaryForQueryString:buyParameters unescapedValues:1];
 
     v97 = *off_10032CB08;
     v11 = &v97;
@@ -1097,19 +1097,19 @@ LABEL_39:
       v17 = +[SSLogConfig sharedConfig];
     }
 
-    v18 = [v17 shouldLog];
+    shouldLog = [v17 shouldLog];
     if ([v17 shouldLogToDisk])
     {
-      v18 |= 2u;
+      shouldLog |= 2u;
     }
 
-    v19 = [v17 OSLogObject];
-    if (!os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+    oSLogObject = [v17 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
-      v18 &= 2u;
+      shouldLog &= 2u;
     }
 
-    if (v18)
+    if (shouldLog)
     {
       *v93 = 138412546;
       *&v93[4] = objc_opt_class();
@@ -1135,15 +1135,15 @@ LABEL_26:
         }
 
 LABEL_31:
-        v23 = [(SSPurchase *)self->_purchase accountIdentifier];
-        if (v23)
+        accountIdentifier = [(SSPurchase *)self->_purchase accountIdentifier];
+        if (accountIdentifier)
         {
           goto LABEL_54;
         }
 
         if (([(SSPurchase *)self->_purchase skipSoftwareAccountPreflight]& 1) != 0)
         {
-          v23 = 0;
+          accountIdentifier = 0;
           goto LABEL_54;
         }
 
@@ -1162,52 +1162,52 @@ LABEL_31:
         applicationOwnerAccountDSID = [v88 purchaserDSID];
         if ([applicationOwnerAccountDSID unsignedLongLongValue] == -1)
         {
-          v23 = 0;
+          accountIdentifier = 0;
         }
 
         else
         {
-          v26 = [v88 purchaserDSID];
-          v27 = [v26 unsignedLongLongValue] == 0;
+          purchaserDSID = [v88 purchaserDSID];
+          v27 = [purchaserDSID unsignedLongLongValue] == 0;
 
           if (v27)
           {
 LABEL_37:
-            v23 = 0;
+            accountIdentifier = 0;
             goto LABEL_43;
           }
 
-          v23 = [v88 purchaserDSID];
-          v28 = [v23 copy];
+          accountIdentifier = [v88 purchaserDSID];
+          v28 = [accountIdentifier copy];
           applicationOwnerAccountDSID = self->_applicationOwnerAccountDSID;
           self->_applicationOwnerAccountDSID = v28;
         }
 
 LABEL_43:
         v29 = +[SSAccountStore defaultStore];
-        v30 = [v29 activeAccount];
-        v31 = [v30 uniqueIdentifier];
+        activeAccount = [v29 activeAccount];
+        uniqueIdentifier = [activeAccount uniqueIdentifier];
 
-        if (!v23)
+        if (!accountIdentifier)
         {
 LABEL_53:
 
 LABEL_54:
-          v38 = [(SSPurchase *)self->_purchase ownerAccountDSID];
+          ownerAccountDSID = [(SSPurchase *)self->_purchase ownerAccountDSID];
 
-          if (v38)
+          if (ownerAccountDSID)
           {
-            v39 = [(SSPurchase *)self->_purchase ownerAccountDSID];
-            v40 = [v39 copy];
+            ownerAccountDSID2 = [(SSPurchase *)self->_purchase ownerAccountDSID];
+            v40 = [ownerAccountDSID2 copy];
             v41 = self->_applicationOwnerAccountDSID;
             self->_applicationOwnerAccountDSID = v40;
           }
 
-          if (!v23)
+          if (!accountIdentifier)
           {
 LABEL_83:
-            v61 = [(SSPurchase *)self->_purchase downloadProperties];
-            v62 = [v61 objectForKeyedSubscript:SSDownloadPropertyIsRedownload];
+            downloadProperties = [(SSPurchase *)self->_purchase downloadProperties];
+            v62 = [downloadProperties objectForKeyedSubscript:SSDownloadPropertyIsRedownload];
             v63 = [v62 integerValue] == 0;
 
             if (!v63)
@@ -1223,12 +1223,12 @@ LABEL_97:
             *&v93[16] = 0x3032000000;
             v94 = sub_10021EDBC;
             v95 = sub_10021EDCC;
-            v65 = [(SSPurchase *)self->_purchase buyParameters];
-            v96 = [v65 copy];
+            buyParameters2 = [(SSPurchase *)self->_purchase buyParameters];
+            v96 = [buyParameters2 copy];
 
             v66 = +[PurchaseActionsManager sharedInstance];
-            v67 = [(SSPurchase *)self->_purchase downloadProperties];
-            v68 = [v67 objectForKeyedSubscript:SSDownloadPropertyStoreItemIdentifier];
+            downloadProperties2 = [(SSPurchase *)self->_purchase downloadProperties];
+            v68 = [downloadProperties2 objectForKeyedSubscript:SSDownloadPropertyStoreItemIdentifier];
             v89[0] = _NSConcreteStackBlock;
             v89[1] = 3221225472;
             v89[2] = sub_10021FF84;
@@ -1255,21 +1255,21 @@ LABEL_96:
               v71 = +[SSLogConfig sharedConfig];
             }
 
-            v72 = [v71 shouldLog];
-            v73 = [v71 shouldLogToDisk];
-            v74 = [v71 OSLogObject];
-            v75 = v74;
-            if (v73)
+            shouldLog2 = [v71 shouldLog];
+            shouldLogToDisk = [v71 shouldLogToDisk];
+            oSLogObject2 = [v71 OSLogObject];
+            v75 = oSLogObject2;
+            if (shouldLogToDisk)
             {
-              v72 |= 2u;
+              shouldLog2 |= 2u;
             }
 
-            if (!os_log_type_enabled(v74, OS_LOG_TYPE_ERROR))
+            if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
             {
-              v72 &= 2u;
+              shouldLog2 &= 2u;
             }
 
-            if (v72)
+            if (shouldLog2)
             {
               v76 = objc_opt_class();
               LODWORD(v97) = 138543362;
@@ -1296,7 +1296,7 @@ LABEL_95:
           }
 
           v87 = +[SSAccountStore defaultStore];
-          v42 = [v87 accountWithUniqueIdentifier:v23];
+          v42 = [v87 accountWithUniqueIdentifier:accountIdentifier];
           if (v42)
           {
 LABEL_82:
@@ -1316,32 +1316,32 @@ LABEL_82:
             }
 
             v85 = v53;
-            v54 = [v53 shouldLog];
+            shouldLog3 = [v53 shouldLog];
             if ([v85 shouldLogToDisk])
             {
-              v54 |= 2u;
+              shouldLog3 |= 2u;
             }
 
-            v55 = [v85 OSLogObject];
-            if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
+            oSLogObject3 = [v85 OSLogObject];
+            if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
             {
-              v56 = v54;
+              v56 = shouldLog3;
             }
 
             else
             {
-              v56 = v54 & 2;
+              v56 = shouldLog3 & 2;
             }
 
             if (v56)
             {
               v57 = objc_opt_class();
               v58 = v57;
-              v59 = [v88 bundleIdentifier];
+              bundleIdentifier = [v88 bundleIdentifier];
               *v93 = 138543874;
               *&v93[4] = v57;
               *&v93[12] = 2114;
-              *&v93[14] = v59;
+              *&v93[14] = bundleIdentifier;
               *&v93[22] = 2114;
               v94 = v83;
               LODWORD(v81) = 32;
@@ -1353,9 +1353,9 @@ LABEL_82:
                 goto LABEL_81;
               }
 
-              v55 = [NSString stringWithCString:v60 encoding:4, v93, v81];
+              oSLogObject3 = [NSString stringWithCString:v60 encoding:4, v93, v81];
               free(v60);
-              v79 = v55;
+              v79 = oSLogObject3;
               SSFileLog();
             }
 
@@ -1364,37 +1364,37 @@ LABEL_82:
 
           v85 = objc_alloc_init(SSAccount);
           [v85 setAccountName:v84];
-          v43 = [v87 activeAccount];
-          [v85 setActive:v43 == 0];
+          activeAccount2 = [v87 activeAccount];
+          [v85 setActive:activeAccount2 == 0];
 
-          v44 = [v88 storeFront];
-          v45 = [v44 stringValue];
-          [v85 setStoreFrontIdentifier:v45];
+          storeFront = [v88 storeFront];
+          stringValue = [storeFront stringValue];
+          [v85 setStoreFrontIdentifier:stringValue];
 
-          [v85 setUniqueIdentifier:v23];
+          [v85 setUniqueIdentifier:accountIdentifier];
           v46 = +[SSLogConfig sharedAccountsConfig];
           if (!v46)
           {
             v46 = +[SSLogConfig sharedConfig];
           }
 
-          v47 = [v46 shouldLog];
+          shouldLog4 = [v46 shouldLog];
           if ([v46 shouldLogToDisk])
           {
-            v47 |= 2u;
+            shouldLog4 |= 2u;
           }
 
-          v48 = [v46 OSLogObject];
-          if (!os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
+          oSLogObject4 = [v46 OSLogObject];
+          if (!os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
           {
-            v47 &= 2u;
+            shouldLog4 &= 2u;
           }
 
-          if (v47)
+          if (shouldLog4)
           {
             v49 = objc_opt_class();
             v82 = v49;
-            v50 = [v85 accountName];
+            accountName = [v85 accountName];
             v51 = SSHashIfNeeded();
             *v93 = 138543618;
             *&v93[4] = v49;
@@ -1415,51 +1415,51 @@ LABEL_81:
               goto LABEL_82;
             }
 
-            v48 = [NSString stringWithCString:v52 encoding:4, v93, v81];
+            oSLogObject4 = [NSString stringWithCString:v52 encoding:4, v93, v81];
             free(v52);
-            v79 = v48;
+            v79 = oSLogObject4;
             SSFileLog();
           }
 
           goto LABEL_69;
         }
 
-        if (([v23 isEqual:v31] & 1) == 0)
+        if (([accountIdentifier isEqual:uniqueIdentifier] & 1) == 0)
         {
           v32 = [(PurchaseManagerOperation *)self _familyPurchaserAccountIdentifierForApplication:v88];
           if (v32)
           {
 LABEL_46:
-            v33 = [(SSPurchase *)self->_purchase buyParameters];
-            v34 = [v33 stringByAppendingFormat:@"&ownerDsid=%llu", objc_msgSend(v32, "unsignedLongLongValue")];
+            buyParameters3 = [(SSPurchase *)self->_purchase buyParameters];
+            v34 = [buyParameters3 stringByAppendingFormat:@"&ownerDsid=%llu", objc_msgSend(v32, "unsignedLongLongValue")];
 
             [(SSPurchase *)self->_purchase setBuyParameters:v34];
-            v23 = 0;
+            accountIdentifier = 0;
             goto LABEL_53;
           }
 
           v35 = objc_alloc_init(FamilyCircleOperation);
           if ([(PurchaseManagerOperation *)self runSubOperation:v35 returningError:0])
           {
-            v36 = [(FamilyCircleOperation *)v35 familyCircle];
-            v37 = [v36 allITunesIdentifiers];
+            familyCircle = [(FamilyCircleOperation *)v35 familyCircle];
+            allITunesIdentifiers = [familyCircle allITunesIdentifiers];
 
-            if ([v37 containsObject:v23])
+            if ([allITunesIdentifiers containsObject:accountIdentifier])
             {
-              v32 = v23;
+              v32 = accountIdentifier;
 
               goto LABEL_46;
             }
           }
         }
 
-        [(SSPurchase *)self->_purchase setAccountIdentifier:v23];
+        [(SSPurchase *)self->_purchase setAccountIdentifier:accountIdentifier];
         goto LABEL_53;
       }
 
-      v19 = [NSString stringWithCString:v21 encoding:4, v93, v81];
+      oSLogObject = [NSString stringWithCString:v21 encoding:4, v93, v81];
       free(v21);
-      v79 = v19;
+      v79 = oSLogObject;
       SSFileLog();
     }
 
@@ -1469,19 +1469,19 @@ LABEL_46:
 LABEL_98:
 }
 
-- (void)_performTeardownWithResult:(BOOL)a3 queueResponse:(id)a4
+- (void)_performTeardownWithResult:(BOOL)result queueResponse:(id)response
 {
-  v6 = a4;
+  responseCopy = response;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7 = objc_alloc_init(RingtonePurchaseStore);
-    if (a3)
+    if (result)
     {
       purchase = self->_purchase;
       v8 = [NSArray arrayWithObjects:&purchase count:1];
-      v9 = [v6 downloads];
-      [(RingtonePurchaseStore *)v7 updateRingtonesForPurchases:v8 withDownloads:v9];
+      downloads = [responseCopy downloads];
+      [(RingtonePurchaseStore *)v7 updateRingtonesForPurchases:v8 withDownloads:downloads];
     }
 
     else
@@ -1500,26 +1500,26 @@ LABEL_98:
   }
 }
 
-- (id)_personalizedRedownloadParametersForPurchase:(id)a3
+- (id)_personalizedRedownloadParametersForPurchase:(id)purchase
 {
-  v4 = [a3 valueForDownloadProperty:SSDownloadPropertyStoreItemIdentifier];
-  v5 = [v4 stringValue];
+  v4 = [purchase valueForDownloadProperty:SSDownloadPropertyStoreItemIdentifier];
+  stringValue = [v4 stringValue];
 
-  if (v5)
+  if (stringValue)
   {
     v6 = objc_alloc_init(SSLookupProperties);
     [v6 setKeyProfile:@"offer"];
     [v6 setTimeoutInterval:&off_10034CCF0];
     [v6 setValue:@"itunesstored" forRequestParameter:SSLookupParameterCaller];
-    [v6 setValue:v5 forRequestParameter:SSLookupParameterItemIdentifiers];
+    [v6 setValue:stringValue forRequestParameter:SSLookupParameterItemIdentifiers];
     [v6 setValue:@"1" forRequestParameter:SSLookupParameterProtocolVersion];
     v7 = [[LookupRequestOperation alloc] initWithLookupProperties:v6];
     [(LookupRequestOperation *)v7 setPersonalizationStyle:0];
     v8 = 0;
     if ([(PurchaseManagerOperation *)self runSubOperation:v7 returningError:0])
     {
-      v9 = [(LookupRequestOperation *)v7 lookupResponse];
-      v10 = [v9 itemForKey:v5];
+      lookupResponse = [(LookupRequestOperation *)v7 lookupResponse];
+      v10 = [lookupResponse itemForKey:stringValue];
 
       [v10 offers];
       v23 = 0u;
@@ -1531,7 +1531,7 @@ LABEL_98:
       {
         v13 = v12;
         v21 = v10;
-        v22 = v5;
+        v22 = stringValue;
         v14 = *v24;
         while (2)
         {
@@ -1543,13 +1543,13 @@ LABEL_98:
             }
 
             v16 = *(*(&v23 + 1) + 8 * i);
-            v17 = [v16 offerType];
-            v18 = [v17 isEqualToString:@"redownload"];
+            offerType = [v16 offerType];
+            v18 = [offerType isEqualToString:@"redownload"];
 
             if (v18)
             {
-              v19 = [v16 buyParameters];
-              v8 = [v19 copy];
+              buyParameters = [v16 buyParameters];
+              v8 = [buyParameters copy];
 
               goto LABEL_14;
             }
@@ -1567,7 +1567,7 @@ LABEL_98:
         v8 = 0;
 LABEL_14:
         v10 = v21;
-        v5 = v22;
+        stringValue = v22;
       }
 
       else
@@ -1585,26 +1585,26 @@ LABEL_14:
   return v8;
 }
 
-- (void)_showDialogForPurchase:(id)a3 error:(id)a4
+- (void)_showDialogForPurchase:(id)purchase error:(id)error
 {
-  v5 = a4;
-  v6 = a3;
-  v10 = [[ISDialog alloc] initWithError:v5];
+  errorCopy = error;
+  purchaseCopy = purchase;
+  v10 = [[ISDialog alloc] initWithError:errorCopy];
 
   v7 = [[DaemonDialogOperation alloc] initWithDialog:v10];
-  v8 = [v6 displaysOnLockScreen];
+  displaysOnLockScreen = [purchaseCopy displaysOnLockScreen];
 
-  [(DaemonDialogOperation *)v7 setDisplaysOnLockscreen:v8];
+  [(DaemonDialogOperation *)v7 setDisplaysOnLockscreen:displaysOnLockScreen];
   v9 = +[ISOperationQueue mainQueue];
   [v9 addOperation:v7];
 }
 
-- (void)_updateAccount:(id)a3 withPurchaseResponse:(id)a4
+- (void)_updateAccount:(id)account withPurchaseResponse:(id)response
 {
-  v5 = a4;
-  v6 = a3;
+  responseCopy = response;
+  accountCopy = account;
   v7 = +[SSAccountStore defaultStore];
-  v8 = [v7 accountWithUniqueIdentifier:v6];
+  v8 = [v7 accountWithUniqueIdentifier:accountCopy];
 
   v9 = [v8 copy];
   if (!v9)
@@ -1612,22 +1612,22 @@ LABEL_14:
     goto LABEL_22;
   }
 
-  v10 = [v5 objectForKey:@"newCustomer"];
+  v10 = [responseCopy objectForKey:@"newCustomer"];
   if (!v10)
   {
-    v11 = 0;
+    bOOLValue = 0;
     goto LABEL_6;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v10 BOOLValue];
+    bOOLValue = [v10 BOOLValue];
 LABEL_6:
-    [v9 setNewCustomer:v11];
+    [v9 setNewCustomer:bOOLValue];
   }
 
-  v30 = v5;
-  v12 = [v5 valueForKey:@"passwordSettings"];
+  v30 = responseCopy;
+  v12 = [responseCopy valueForKey:@"passwordSettings"];
   v13 = v12;
   if (v12)
   {
@@ -1645,19 +1645,19 @@ LABEL_6:
     v18 = +[SSLogConfig sharedConfig];
   }
 
-  v19 = [v18 shouldLog];
+  shouldLog = [v18 shouldLog];
   if ([v18 shouldLogToDisk])
   {
-    v20 = v19 | 2;
+    v20 = shouldLog | 2;
   }
 
   else
   {
-    v20 = v19;
+    v20 = shouldLog;
   }
 
-  v21 = [v18 OSLogObject];
-  if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v18 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v22 = v20;
   }
@@ -1694,7 +1694,7 @@ LABEL_6:
   }
 
   [v7 saveAccount:v9 verifyCredentials:0 completion:0];
-  v5 = v30;
+  responseCopy = v30;
 LABEL_22:
 }
 
@@ -1705,16 +1705,16 @@ LABEL_22:
 
   if (v4)
   {
-    v5 = @"p2-order-pre-order";
+    uRLBagKey = @"p2-order-pre-order";
   }
 
   else
   {
-    v6 = [(SSPurchase *)self->_purchase requestProperties];
-    v5 = [v6 URLBagKey];
+    requestProperties = [(SSPurchase *)self->_purchase requestProperties];
+    uRLBagKey = [requestProperties URLBagKey];
   }
 
-  return v5;
+  return uRLBagKey;
 }
 
 @end

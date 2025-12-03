@@ -1,5 +1,5 @@
 @interface CKLTrafficLogMessage
-- (CKLTrafficLogMessage)initWithUuid:(id)a3 requestMetadata:(id)a4 requestObjects:(id)a5 bodyStreamResetCount:(int64_t)a6 responseMetadata:(id)a7 responseObjects:(id)a8;
+- (CKLTrafficLogMessage)initWithUuid:(id)uuid requestMetadata:(id)metadata requestObjects:(id)objects bodyStreamResetCount:(int64_t)count responseMetadata:(id)responseMetadata responseObjects:(id)responseObjects;
 - (NSString)description;
 - (NSString)requestMethod;
 - (NSString)uuid;
@@ -51,30 +51,30 @@
   return v8;
 }
 
-- (CKLTrafficLogMessage)initWithUuid:(id)a3 requestMetadata:(id)a4 requestObjects:(id)a5 bodyStreamResetCount:(int64_t)a6 responseMetadata:(id)a7 responseObjects:(id)a8
+- (CKLTrafficLogMessage)initWithUuid:(id)uuid requestMetadata:(id)metadata requestObjects:(id)objects bodyStreamResetCount:(int64_t)count responseMetadata:(id)responseMetadata responseObjects:(id)responseObjects
 {
   v13 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v15 = v14;
-  if (a5)
+  if (objects)
   {
     sub_2250B0DFC(&qword_27D7197C0, &qword_225447A70);
-    a5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
+    objects = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  if (a8)
+  if (responseObjects)
   {
     sub_2250B0DFC(&qword_27D7197C0, &qword_225447A70);
-    a8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
+    responseObjects = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v16 = a4;
-  v17 = a7;
-  return sub_2250FE3F4(v13, v15, a4, a5, a6, a7, a8);
+  metadataCopy = metadata;
+  responseMetadataCopy = responseMetadata;
+  return sub_2250FE3F4(v13, v15, metadata, objects, count, responseMetadata, responseObjects);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2250FEA14();
   v5 = v4;
 

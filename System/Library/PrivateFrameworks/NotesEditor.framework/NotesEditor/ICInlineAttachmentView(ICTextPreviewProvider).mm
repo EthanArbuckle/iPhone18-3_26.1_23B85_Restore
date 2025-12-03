@@ -13,8 +13,8 @@
 
   if (v12)
   {
-    v9 = [v8 displayTextRange];
-    v11 = [a1 imageForTextPreviewInRange:{v9, v10}];
+    displayTextRange = [v8 displayTextRange];
+    v11 = [self imageForTextPreviewInRange:{displayTextRange, v10}];
     v12[2](v12, v11);
   }
 }

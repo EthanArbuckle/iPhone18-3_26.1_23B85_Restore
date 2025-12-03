@@ -1,58 +1,58 @@
 @interface PKGroupQuery
-+ (id)_strokesInLine:(id)a3 inDrawing:(id)a4;
-- (BOOL)_strokes:(id)a3 containsAnyStrokes:(id)a4;
++ (id)_strokesInLine:(id)line inDrawing:(id)drawing;
+- (BOOL)_strokes:(id)_strokes containsAnyStrokes:(id)strokes;
 - (PKDrawing)drawing;
-- (PKGroupQuery)initWithRecognitionSessionManager:(id)a3;
-- (id)_closestLineToPoint:(CGPoint)a3 isTop:(BOOL)a4;
-- (id)_lines:(id)a3 containingStrokes:(id)a4;
-- (id)_strokesAtLineIndex:(int64_t)a3 containingStrokes:(id)a4;
-- (id)_strokesForIdentifiers:(id)a3 inDrawing:(id)a4;
-- (id)_strokesInLine:(id)a3 leftOf:(BOOL)a4 point:(CGPoint)a5;
+- (PKGroupQuery)initWithRecognitionSessionManager:(id)manager;
+- (id)_closestLineToPoint:(CGPoint)point isTop:(BOOL)top;
+- (id)_lines:(id)_lines containingStrokes:(id)strokes;
+- (id)_strokesAtLineIndex:(int64_t)index containingStrokes:(id)strokes;
+- (id)_strokesForIdentifiers:(id)identifiers inDrawing:(id)drawing;
+- (id)_strokesInLine:(id)line leftOf:(BOOL)of point:(CGPoint)point;
 - (id)fetchCurrentHandwritingStrokeUUIDs;
-- (id)firstStrokesInStrokes:(id)a3 isRTL:(BOOL)a4;
+- (id)firstStrokesInStrokes:(id)strokes isRTL:(BOOL)l;
 - (id)handwritingStrokeUUIDs;
-- (id)lastStrokesInStrokes:(id)a3 isRTL:(BOOL)a4;
+- (id)lastStrokesInStrokes:(id)strokes isRTL:(BOOL)l;
 - (id)strokeGroups;
-- (int64_t)_firstLineIndexFromInitialStrokes:(id)a3;
-- (int64_t)_lastLineIndexFromInitialStrokes:(id)a3;
-- (int64_t)_tokenizationLevelForSelectionType:(int64_t)a3;
-- (int64_t)contentTypeForIntersectedStrokes:(id)a3;
-- (void)_precalculateStrokeGroupProperties:(id)a3;
+- (int64_t)_firstLineIndexFromInitialStrokes:(id)strokes;
+- (int64_t)_lastLineIndexFromInitialStrokes:(id)strokes;
+- (int64_t)_tokenizationLevelForSelectionType:(int64_t)type;
+- (int64_t)contentTypeForIntersectedStrokes:(id)strokes;
+- (void)_precalculateStrokeGroupProperties:(id)properties;
 - (void)dealloc;
-- (void)fetchCurrentStrokeGroupItems:(id)a3;
+- (void)fetchCurrentStrokeGroupItems:(id)items;
 - (void)pause;
-- (void)q_fetchStrokesAmbiguouslyBelowAndAboveInsertSpaceHandleWithStrokes:(id)a3 completion:(id)a4;
-- (void)q_fetchStrokesBetweenTopPoint:(CGPoint)a3 bottomPoint:(CGPoint)a4 isRTL:(BOOL)a5 completion:(id)a6;
-- (void)q_fetchStrokesForPoint:(CGPoint)a3 selectionType:(int64_t)a4 inputType:(int64_t)a5 visibleOnscreenStrokes:(id)a6 completion:(id)a7;
-- (void)queryDidUpdateResult:(id)a3;
-- (void)setHandwritingStrokeUUIDs:(id)a3;
-- (void)setMathPreferredUpdatesInterval:(double)a3;
-- (void)setStrokeGroups:(id)a3;
+- (void)q_fetchStrokesAmbiguouslyBelowAndAboveInsertSpaceHandleWithStrokes:(id)strokes completion:(id)completion;
+- (void)q_fetchStrokesBetweenTopPoint:(CGPoint)point bottomPoint:(CGPoint)bottomPoint isRTL:(BOOL)l completion:(id)completion;
+- (void)q_fetchStrokesForPoint:(CGPoint)point selectionType:(int64_t)type inputType:(int64_t)inputType visibleOnscreenStrokes:(id)strokes completion:(id)completion;
+- (void)queryDidUpdateResult:(id)result;
+- (void)setHandwritingStrokeUUIDs:(id)ds;
+- (void)setMathPreferredUpdatesInterval:(double)interval;
+- (void)setStrokeGroups:(id)groups;
 - (void)start;
 - (void)teardown;
-- (void)textStrokesCoveredByStroke:(id)a3 completion:(id)a4;
+- (void)textStrokesCoveredByStroke:(id)stroke completion:(id)completion;
 @end
 
 @implementation PKGroupQuery
 
-- (PKGroupQuery)initWithRecognitionSessionManager:(id)a3
+- (PKGroupQuery)initWithRecognitionSessionManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v24.receiver = self;
   v24.super_class = PKGroupQuery;
-  v5 = [(PKQuery *)&v24 initWithRecognitionSessionManager:v4];
+  v5 = [(PKQuery *)&v24 initWithRecognitionSessionManager:managerCopy];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x1E6997BB8]);
-    v7 = [(PKRecognitionSessionManager *)v4 session];
-    v8 = [v6 initWithRecognitionSession:v7];
+    session = [(PKRecognitionSessionManager *)managerCopy session];
+    v8 = [v6 initWithRecognitionSession:session];
     strokeGroupQuery = v5->_strokeGroupQuery;
     v5->_strokeGroupQuery = v8;
 
     [(CHStrokeGroupQuery *)v5->_strokeGroupQuery preferredUpdatesInterval];
     v5->_defaultUpdatesInterval = v10;
-    v11 = [(PKGroupQuery *)v5 strokeGroupQuery];
-    [v11 setDelegate:v5];
+    strokeGroupQuery = [(PKGroupQuery *)v5 strokeGroupQuery];
+    [strokeGroupQuery setDelegate:v5];
 
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v13 = dispatch_queue_attr_make_with_qos_class(v12, QOS_CLASS_USER_INITIATED, 0);
@@ -67,24 +67,24 @@
     v5->_strokeGroupComputationQueue = v17;
   }
 
-  v19 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v20 = [v19 BOOLForKey:@"internalSettings.drawing.forceFastGroupingForLassolessSelection"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v20 = [standardUserDefaults BOOLForKey:@"internalSettings.drawing.forceFastGroupingForLassolessSelection"];
 
   if (v20)
   {
-    v21 = [(PKQuery *)v5 sessionManager];
-    v22 = [(PKRecognitionSessionManager *)v21 session];
-    [v22 setShouldForceFastGrouping:1];
+    sessionManager = [(PKQuery *)v5 sessionManager];
+    session2 = [(PKRecognitionSessionManager *)sessionManager session];
+    [session2 setShouldForceFastGrouping:1];
   }
 
   return v5;
 }
 
-- (void)setMathPreferredUpdatesInterval:(double)a3
+- (void)setMathPreferredUpdatesInterval:(double)interval
 {
-  defaultUpdatesInterval = a3;
+  defaultUpdatesInterval = interval;
   v12 = *MEMORY[0x1E69E9840];
-  if (a3 == 0.0)
+  if (interval == 0.0)
   {
     defaultUpdatesInterval = self->_defaultUpdatesInterval;
   }
@@ -100,55 +100,55 @@
     _os_log_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_DEFAULT, "Update preferred updates interval: %g, default: %g", &v8, 0x16u);
   }
 
-  v7 = [(PKGroupQuery *)self strokeGroupQuery];
-  [v7 setPreferredUpdatesInterval:defaultUpdatesInterval];
+  strokeGroupQuery = [(PKGroupQuery *)self strokeGroupQuery];
+  [strokeGroupQuery setPreferredUpdatesInterval:defaultUpdatesInterval];
 }
 
-- (void)fetchCurrentStrokeGroupItems:(id)a3
+- (void)fetchCurrentStrokeGroupItems:(id)items
 {
-  v8 = a3;
-  v4 = [(PKGroupQuery *)self strokeGroups];
-  v5 = v4;
+  itemsCopy = items;
+  strokeGroups = [(PKGroupQuery *)self strokeGroups];
+  v5 = strokeGroups;
   v6 = MEMORY[0x1E695E0F0];
-  if (v4)
+  if (strokeGroups)
   {
-    v6 = v4;
+    v6 = strokeGroups;
   }
 
   v7 = v6;
 
-  v8[2](v8, v7);
+  itemsCopy[2](itemsCopy, v7);
 }
 
-- (void)setStrokeGroups:(id)a3
+- (void)setStrokeGroups:(id)groups
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
-  strokeGroups = v4->_strokeGroups;
-  v4->_strokeGroups = v5;
+  groupsCopy = groups;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [groupsCopy copy];
+  strokeGroups = selfCopy->_strokeGroups;
+  selfCopy->_strokeGroups = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)strokeGroups
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_strokeGroups;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_strokeGroups;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (id)fetchCurrentHandwritingStrokeUUIDs
 {
-  v2 = [(PKGroupQuery *)self handwritingStrokeUUIDs];
-  v3 = v2;
-  if (v2)
+  handwritingStrokeUUIDs = [(PKGroupQuery *)self handwritingStrokeUUIDs];
+  v3 = handwritingStrokeUUIDs;
+  if (handwritingStrokeUUIDs)
   {
-    v4 = v2;
+    v4 = handwritingStrokeUUIDs;
   }
 
   else
@@ -161,37 +161,37 @@
   return v5;
 }
 
-- (void)setHandwritingStrokeUUIDs:(id)a3
+- (void)setHandwritingStrokeUUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   obj = self;
   objc_sync_enter(obj);
   handwritingStrokeUUIDs = obj->_handwritingStrokeUUIDs;
-  obj->_handwritingStrokeUUIDs = v4;
+  obj->_handwritingStrokeUUIDs = dsCopy;
 
   objc_sync_exit(obj);
 }
 
 - (id)handwritingStrokeUUIDs
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_handwritingStrokeUUIDs;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_handwritingStrokeUUIDs;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (void)start
 {
-  v2 = [(PKGroupQuery *)self strokeGroupQuery];
-  [v2 start];
+  strokeGroupQuery = [(PKGroupQuery *)self strokeGroupQuery];
+  [strokeGroupQuery start];
 }
 
 - (void)pause
 {
-  v2 = [(PKGroupQuery *)self strokeGroupQuery];
-  [v2 pause];
+  strokeGroupQuery = [(PKGroupQuery *)self strokeGroupQuery];
+  [strokeGroupQuery pause];
 }
 
 - (void)teardown
@@ -213,38 +213,38 @@
 
 - (PKDrawing)drawing
 {
-  v2 = [(PKQuery *)self sessionManager];
-  v3 = [(PKRecognitionSessionManager *)v2 drawing];
+  sessionManager = [(PKQuery *)self sessionManager];
+  drawing = [(PKRecognitionSessionManager *)sessionManager drawing];
 
-  return v3;
+  return drawing;
 }
 
-- (void)queryDidUpdateResult:(id)a3
+- (void)queryDidUpdateResult:(id)result
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [a3 strokeGroupItems];
+  strokeGroupItems = [result strokeGroupItems];
   v5 = os_log_create("com.apple.pencilkit", "Recognition");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 count];
-    v7 = [(PKQuery *)self sessionManager];
+    v6 = [strokeGroupItems count];
+    sessionManager = [(PKQuery *)self sessionManager];
     v8 = 138412802;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
     v11 = v6;
     v12 = 2112;
-    v13 = v7;
+    v13 = sessionManager;
     _os_log_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_DEFAULT, "StateUpdate: Did update group query results for %@ with %lu stroke group items for session manager %@", &v8, 0x20u);
   }
 
-  [(PKGroupQuery *)self _precalculateStrokeGroupProperties:v4];
+  [(PKGroupQuery *)self _precalculateStrokeGroupProperties:strokeGroupItems];
 }
 
-- (void)textStrokesCoveredByStroke:(id)a3 completion:(id)a4
+- (void)textStrokesCoveredByStroke:(id)stroke completion:(id)completion
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  strokeCopy = stroke;
+  completionCopy = completion;
   v8 = _PKSignpostLog();
   v9 = os_signpost_id_generate(v8);
 
@@ -263,7 +263,7 @@
     _os_log_impl(&dword_1C7CCA000, v12, OS_LOG_TYPE_INFO, "BEGIN textStrokesCoveredByStroke", buf, 2u);
   }
 
-  v24[0] = v6;
+  v24[0] = strokeCopy;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
   v14 = [PKStrokeProvider slicesForStrokes:v13];
 
@@ -273,12 +273,12 @@
   aBlock[3] = &unk_1E82D62E8;
   aBlock[4] = self;
   v22 = v9;
-  v15 = v7;
+  v15 = completionCopy;
   v21 = v15;
   v16 = _Block_copy(aBlock);
-  v17 = [(PKGroupQuery *)self strokeGroupQuery];
+  strokeGroupQuery = [(PKGroupQuery *)self strokeGroupQuery];
   v18 = [v14 objectAtIndex:0];
-  v19 = [v17 tokenStrokeIdentifiersWithCoveringStroke:v18 completion:v16 shouldCancel:0];
+  v19 = [strokeGroupQuery tokenStrokeIdentifiersWithCoveringStroke:v18 completion:v16 shouldCancel:0];
 }
 
 void __54__PKGroupQuery_textStrokesCoveredByStroke_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -326,13 +326,13 @@ void __54__PKGroupQuery_textStrokesCoveredByStroke_completion___block_invoke(uin
   (*(*(a1 + 40) + 16))(*(a1 + 40), v14, v18, [v5 resultLevel] == 0);
 }
 
-- (void)_precalculateStrokeGroupProperties:(id)a3
+- (void)_precalculateStrokeGroupProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [(PKGroupQuery *)self drawing];
-  v6 = [v5 copy];
+  propertiesCopy = properties;
+  drawing = [(PKGroupQuery *)self drawing];
+  v6 = [drawing copy];
 
-  v7 = [v4 copy];
+  v7 = [propertiesCopy copy];
   strokeGroupComputationQueue = self->_strokeGroupComputationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -340,7 +340,7 @@ void __54__PKGroupQuery_textStrokesCoveredByStroke_completion___block_invoke(uin
   block[3] = &unk_1E82D6400;
   v12 = v7;
   v13 = v6;
-  v14 = self;
+  selfCopy = self;
   v9 = v6;
   v10 = v7;
   dispatch_async(strokeGroupComputationQueue, block);
@@ -419,17 +419,17 @@ void __51__PKGroupQuery__precalculateStrokeGroupProperties___block_invoke_2(uint
   [v2 addObject:?];
 }
 
-- (id)_strokesForIdentifiers:(id)a3 inDrawing:(id)a4
+- (id)_strokesForIdentifiers:(id)identifiers inDrawing:(id)drawing
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
+  identifiersCopy = identifiers;
+  drawingCopy = drawing;
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = v5;
+  v8 = identifiersCopy;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -443,12 +443,12 @@ void __51__PKGroupQuery__precalculateStrokeGroupProperties___block_invoke_2(uint
           objc_enumerationMutation(v8);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * i) strokeUUID];
-        v13 = [v6 _visibleStrokeForIdentifier:v12];
+        strokeUUID = [*(*(&v15 + 1) + 8 * i) strokeUUID];
+        v13 = [drawingCopy _visibleStrokeForIdentifier:strokeUUID];
 
         if (v13)
         {
-          [v7 addObject:v13];
+          [array addObject:v13];
         }
       }
 
@@ -458,22 +458,22 @@ void __51__PKGroupQuery__precalculateStrokeGroupProperties___block_invoke_2(uint
     while (v9);
   }
 
-  return v7;
+  return array;
 }
 
-+ (id)_strokesInLine:(id)a3 inDrawing:(id)a4
++ (id)_strokesInLine:(id)line inDrawing:(id)drawing
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v17 = v5;
-  v7 = [MEMORY[0x1E695DF70] array];
+  lineCopy = line;
+  drawingCopy = drawing;
+  v17 = lineCopy;
+  array = [MEMORY[0x1E695DF70] array];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [v5 strokeIdentifiers];
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  strokeIdentifiers = [lineCopy strokeIdentifiers];
+  v9 = [strokeIdentifiers countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = *v20;
@@ -484,15 +484,15 @@ void __51__PKGroupQuery__precalculateStrokeGroupProperties___block_invoke_2(uint
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(strokeIdentifiers);
         }
 
-        v12 = [*(*(&v19 + 1) + 8 * v11) strokeUUID];
-        v13 = [v6 _visibleStrokeForIdentifier:v12];
+        strokeUUID = [*(*(&v19 + 1) + 8 * v11) strokeUUID];
+        v13 = [drawingCopy _visibleStrokeForIdentifier:strokeUUID];
 
         if (v13)
         {
-          [v7 addObject:v13];
+          [array addObject:v13];
         }
 
         else
@@ -509,28 +509,28 @@ void __51__PKGroupQuery__precalculateStrokeGroupProperties___block_invoke_2(uint
       }
 
       while (v9 != v11);
-      v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [strokeIdentifiers countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v9);
   }
 
-  v15 = [v7 copy];
+  v15 = [array copy];
 
   return v15;
 }
 
-- (id)_lines:(id)a3 containingStrokes:(id)a4
+- (id)_lines:(id)_lines containingStrokes:(id)strokes
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
+  _linesCopy = _lines;
+  strokesCopy = strokes;
+  array = [MEMORY[0x1E695DF70] array];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v6;
+  v9 = _linesCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -557,9 +557,9 @@ void __51__PKGroupQuery__precalculateStrokeGroupProperties___block_invoke_2(uint
         }
 
         v15 = v14;
-        if ([(PKGroupQuery *)self _strokes:v15 containsAnyStrokes:v7, v18])
+        if ([(PKGroupQuery *)self _strokes:v15 containsAnyStrokes:strokesCopy, v18])
         {
-          [v8 addObject:v13];
+          [array addObject:v13];
         }
 
         ++v12;
@@ -573,19 +573,19 @@ void __51__PKGroupQuery__precalculateStrokeGroupProperties___block_invoke_2(uint
     while (v16);
   }
 
-  return v8;
+  return array;
 }
 
-- (BOOL)_strokes:(id)a3 containsAnyStrokes:(id)a4
+- (BOOL)_strokes:(id)_strokes containsAnyStrokes:(id)strokes
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v22 = a4;
+  _strokesCopy = _strokes;
+  strokesCopy = strokes;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = v5;
+  v6 = _strokesCopy;
   v7 = [v6 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v7)
   {
@@ -605,7 +605,7 @@ void __51__PKGroupQuery__precalculateStrokeGroupProperties___block_invoke_2(uint
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v10 = v22;
+        v10 = strokesCopy;
         v11 = [v10 countByEnumeratingWithState:&v23 objects:v31 count:16];
         if (v11)
         {
@@ -620,9 +620,9 @@ void __51__PKGroupQuery__precalculateStrokeGroupProperties___block_invoke_2(uint
               }
 
               v14 = *(*(&v23 + 1) + 8 * j);
-              v15 = [v9 _strokeUUID];
-              v16 = [v14 _strokeUUID];
-              v17 = [v15 isEqual:v16];
+              _strokeUUID = [v9 _strokeUUID];
+              _strokeUUID2 = [v14 _strokeUUID];
+              v17 = [_strokeUUID isEqual:_strokeUUID2];
 
               if (v17)
               {
@@ -660,15 +660,15 @@ LABEL_19:
   return v18;
 }
 
-- (void)q_fetchStrokesForPoint:(CGPoint)a3 selectionType:(int64_t)a4 inputType:(int64_t)a5 visibleOnscreenStrokes:(id)a6 completion:(id)a7
+- (void)q_fetchStrokesForPoint:(CGPoint)point selectionType:(int64_t)type inputType:(int64_t)inputType visibleOnscreenStrokes:(id)strokes completion:(id)completion
 {
-  y = a3.y;
-  x = a3.x;
-  v13 = a6;
-  v14 = a7;
+  y = point.y;
+  x = point.x;
+  strokesCopy = strokes;
+  completionCopy = completion;
   v15 = objc_alloc_init(PKIntersectionResult);
-  v16 = [(PKQuery *)self sessionManager];
-  if ([v16 state] == 3)
+  sessionManager = [(PKQuery *)self sessionManager];
+  if ([sessionManager state] == 3)
   {
     v17 = 3;
   }
@@ -680,9 +680,9 @@ LABEL_19:
 
   [(PKIntersectionResult *)v15 setIntersectionAlgorithmType:v17];
 
-  if (a4 == 6 || !a4)
+  if (type == 6 || !type)
   {
-    v14[2](v14, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   v35[0] = 0;
@@ -690,13 +690,13 @@ LABEL_19:
   v35[2] = 0x3032000000;
   v35[3] = __Block_byref_object_copy_;
   v35[4] = __Block_byref_object_dispose_;
-  v36 = [(PKGroupQuery *)self strokeGroupQuery];
+  strokeGroupQuery = [(PKGroupQuery *)self strokeGroupQuery];
   v33[0] = 0;
   v33[1] = v33;
   v33[2] = 0x3032000000;
   v33[3] = __Block_byref_object_copy_;
   v33[4] = __Block_byref_object_dispose_;
-  v34 = [(PKGroupQuery *)self drawing];
+  drawing = [(PKGroupQuery *)self drawing];
   intersectionQueue = self->_intersectionQueue;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
@@ -704,17 +704,17 @@ LABEL_19:
   v22[3] = &unk_1E82D6360;
   v29 = x;
   v30 = y;
-  v23 = v13;
+  v23 = strokesCopy;
   v24 = v15;
-  v25 = self;
-  v26 = v14;
-  v31 = a5;
-  v32 = a4;
+  selfCopy = self;
+  v26 = completionCopy;
+  inputTypeCopy = inputType;
+  typeCopy = type;
   v27 = v35;
   v28 = v33;
-  v19 = v14;
+  v19 = completionCopy;
   v20 = v15;
-  v21 = v13;
+  v21 = strokesCopy;
   dispatch_async(intersectionQueue, v22);
 
   _Block_object_dispose(v33, 8);
@@ -840,24 +840,24 @@ uint64_t __97__PKGroupQuery_q_fetchStrokesForPoint_selectionType_inputType_visib
   return result;
 }
 
-- (int64_t)_tokenizationLevelForSelectionType:(int64_t)a3
+- (int64_t)_tokenizationLevelForSelectionType:(int64_t)type
 {
-  if ((a3 - 2) > 3)
+  if ((type - 2) > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_1C801C140[a3 - 2];
+    return qword_1C801C140[type - 2];
   }
 }
 
-- (id)_closestLineToPoint:(CGPoint)a3 isTop:(BOOL)a4
+- (id)_closestLineToPoint:(CGPoint)point isTop:(BOOL)top
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  topCopy = top;
+  y = point.y;
+  x = point.x;
   v41 = *MEMORY[0x1E69E9840];
   v35 = 0u;
   v36 = 0u;
@@ -922,7 +922,7 @@ uint64_t __97__PKGroupQuery_q_fetchStrokesForPoint_selectionType_inputType_visib
               v44.size.height = height;
               MidY = CGRectGetMidY(v44);
               v24 = MidY <= y;
-              if (!v4)
+              if (!topCopy)
               {
                 v24 = MidY >= y;
               }
@@ -960,30 +960,30 @@ uint64_t __97__PKGroupQuery_q_fetchStrokesForPoint_selectionType_inputType_visib
   return v7;
 }
 
-- (void)q_fetchStrokesBetweenTopPoint:(CGPoint)a3 bottomPoint:(CGPoint)a4 isRTL:(BOOL)a5 completion:(id)a6
+- (void)q_fetchStrokesBetweenTopPoint:(CGPoint)point bottomPoint:(CGPoint)bottomPoint isRTL:(BOOL)l completion:(id)completion
 {
-  v6 = a5;
-  y = a4.y;
-  x = a4.x;
-  v9 = a3.y;
-  v10 = a3.x;
-  v12 = a6;
-  v13 = [(PKGroupQuery *)self strokeGroups];
-  if (v13)
+  lCopy = l;
+  y = bottomPoint.y;
+  x = bottomPoint.x;
+  v9 = point.y;
+  v10 = point.x;
+  completionCopy = completion;
+  strokeGroups = [(PKGroupQuery *)self strokeGroups];
+  if (strokeGroups)
   {
-    v14 = [(PKGroupQuery *)self strokeGroups];
-    v15 = [v14 count];
+    strokeGroups2 = [(PKGroupQuery *)self strokeGroups];
+    v15 = [strokeGroups2 count];
 
     if (v15)
     {
-      v49 = v12;
+      v49 = completionCopy;
       v16 = [(PKGroupQuery *)self _closestLineToPoint:1 isTop:v10, v9];
       v17 = [(PKGroupQuery *)self _closestLineToPoint:0 isTop:x, y];
-      v18 = [(PKGroupQuery *)self strokeGroups];
-      v19 = [v18 indexOfObject:v16];
+      strokeGroups3 = [(PKGroupQuery *)self strokeGroups];
+      v19 = [strokeGroups3 indexOfObject:v16];
 
-      v20 = [(PKGroupQuery *)self strokeGroups];
-      v21 = [v20 indexOfObject:v17];
+      strokeGroups4 = [(PKGroupQuery *)self strokeGroups];
+      v21 = [strokeGroups4 indexOfObject:v17];
 
       if (!(v16 | v17))
       {
@@ -991,7 +991,7 @@ uint64_t __97__PKGroupQuery_q_fetchStrokesForPoint_selectionType_inputType_visib
         block[1] = 3221225472;
         block[2] = __75__PKGroupQuery_q_fetchStrokesBetweenTopPoint_bottomPoint_isRTL_completion___block_invoke;
         block[3] = &unk_1E82D63B0;
-        v57 = v12;
+        v57 = completionCopy;
         dispatch_async(MEMORY[0x1E69E96A0], block);
       }
 
@@ -1053,8 +1053,8 @@ uint64_t __97__PKGroupQuery_q_fetchStrokesForPoint_selectionType_inputType_visib
 LABEL_21:
           v30 = *(v17 + 24);
 LABEL_22:
-          v48 = v6;
-          v31 = [MEMORY[0x1E695DFA0] orderedSet];
+          v48 = lCopy;
+          orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
           if (v29 == v30)
           {
             v32 = v29;
@@ -1070,8 +1070,8 @@ LABEL_22:
           {
             do
             {
-              v34 = [(PKGroupQuery *)self strokeGroups];
-              v35 = [v34 objectAtIndexedSubscript:v33];
+              strokeGroups5 = [(PKGroupQuery *)self strokeGroups];
+              v35 = [strokeGroups5 objectAtIndexedSubscript:v33];
 
               if (v35)
               {
@@ -1084,7 +1084,7 @@ LABEL_22:
               }
 
               v37 = v36;
-              [v31 addObjectsFromArray:v37];
+              [orderedSet addObjectsFromArray:v37];
 
               if (v32 != 3)
               {
@@ -1101,7 +1101,7 @@ LABEL_22:
             while (v26 != v33);
           }
 
-          v41 = v31;
+          v41 = orderedSet;
           v51 = [v41 mutableCopy];
           v50 = [(PKGroupQuery *)self _strokesInLine:v16 leftOf:v48 point:v10, v9];
           v42 = [(PKGroupQuery *)self _strokesInLine:v17 leftOf:!v48 point:x, y];
@@ -1122,8 +1122,8 @@ LABEL_22:
 
           v40 = objc_alloc_init(PKIntersectionResult);
           [(PKIntersectionResult *)v40 setIntersectedStrokes:v39];
-          v44 = [(PKQuery *)self sessionManager];
-          if ([v44 state] == 3)
+          sessionManager = [(PKQuery *)self sessionManager];
+          if ([sessionManager state] == 3)
           {
             v45 = 3;
           }
@@ -1136,7 +1136,7 @@ LABEL_22:
           [(PKIntersectionResult *)v40 setIntersectionAlgorithmType:v45];
 
           [(PKIntersectionResult *)v40 setContentType:v32];
-          v12 = v49;
+          completionCopy = v49;
           goto LABEL_47;
         }
       }
@@ -1171,26 +1171,26 @@ LABEL_47:
   v52[2] = __75__PKGroupQuery_q_fetchStrokesBetweenTopPoint_bottomPoint_isRTL_completion___block_invoke_37;
   v52[3] = &unk_1E82D63D8;
   v53 = v40;
-  v54 = v12;
+  v54 = completionCopy;
   v46 = v40;
-  v47 = v12;
+  v47 = completionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v52);
 }
 
-- (id)_strokesInLine:(id)a3 leftOf:(BOOL)a4 point:(CGPoint)a5
+- (id)_strokesInLine:(id)line leftOf:(BOOL)of point:(CGPoint)point
 {
-  x = a5.x;
-  v6 = a4;
+  x = point.x;
+  ofCopy = of;
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  lineCopy = line;
   v8 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  if (v7)
+  if (lineCopy)
   {
-    v9 = v7[2];
+    v9 = lineCopy[2];
   }
 
   else
@@ -1225,7 +1225,7 @@ LABEL_47:
         v31.size.height = height;
         MidY = CGRectGetMidY(v31);
         v21 = MidX < x;
-        if (!v6)
+        if (!ofCopy)
         {
           v21 = MidX > x;
         }
@@ -1245,27 +1245,27 @@ LABEL_47:
   return v8;
 }
 
-- (int64_t)_firstLineIndexFromInitialStrokes:(id)a3
+- (int64_t)_firstLineIndexFromInitialStrokes:(id)strokes
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 array];
+  strokesCopy = strokes;
+  array = [strokesCopy array];
   for (i = 0; ; ++i)
   {
-    v7 = [(PKGroupQuery *)self strokeGroups];
-    v8 = i < [v7 count];
+    strokeGroups = [(PKGroupQuery *)self strokeGroups];
+    v8 = i < [strokeGroups count];
 
     if (!v8)
     {
       break;
     }
 
-    v9 = [(PKGroupQuery *)self strokeGroups];
-    v10 = [v9 objectAtIndexedSubscript:i];
+    strokeGroups2 = [(PKGroupQuery *)self strokeGroups];
+    v10 = [strokeGroups2 objectAtIndexedSubscript:i];
 
     v14[0] = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-    v12 = [(PKGroupQuery *)self _lines:v11 containingStrokes:v5];
+    v12 = [(PKGroupQuery *)self _lines:v11 containingStrokes:array];
 
     LOBYTE(v11) = [v12 count] == 1;
     if (v11)
@@ -1280,21 +1280,21 @@ LABEL_6:
   return i;
 }
 
-- (int64_t)_lastLineIndexFromInitialStrokes:(id)a3
+- (int64_t)_lastLineIndexFromInitialStrokes:(id)strokes
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = [a3 array];
-  v5 = [(PKGroupQuery *)self strokeGroups];
-  v6 = [v5 count];
+  array = [strokes array];
+  strokeGroups = [(PKGroupQuery *)self strokeGroups];
+  v6 = [strokeGroups count];
 
   while (--v6 >= 0)
   {
-    v7 = [(PKGroupQuery *)self strokeGroups];
-    v8 = [v7 objectAtIndexedSubscript:v6];
+    strokeGroups2 = [(PKGroupQuery *)self strokeGroups];
+    v8 = [strokeGroups2 objectAtIndexedSubscript:v6];
 
     v12[0] = v8;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-    v10 = [(PKGroupQuery *)self _lines:v9 containingStrokes:v4];
+    v10 = [(PKGroupQuery *)self _lines:v9 containingStrokes:array];
 
     LOBYTE(v9) = [v10 count] == 1;
     if (v9)
@@ -1309,14 +1309,14 @@ LABEL_6:
   return v6;
 }
 
-- (id)firstStrokesInStrokes:(id)a3 isRTL:(BOOL)a4
+- (id)firstStrokesInStrokes:(id)strokes isRTL:(BOOL)l
 {
-  v6 = a3;
-  v7 = [(PKGroupQuery *)self strokeGroups];
-  v8 = v7;
-  if (v7 && [v7 count] && (v9 = -[PKGroupQuery _firstLineIndexFromInitialStrokes:](self, "_firstLineIndexFromInitialStrokes:", v6), v9 != 0x7FFFFFFFFFFFFFFFLL))
+  strokesCopy = strokes;
+  strokeGroups = [(PKGroupQuery *)self strokeGroups];
+  v8 = strokeGroups;
+  if (strokeGroups && [strokeGroups count] && (v9 = -[PKGroupQuery _firstLineIndexFromInitialStrokes:](self, "_firstLineIndexFromInitialStrokes:", strokesCopy), v9 != 0x7FFFFFFFFFFFFFFFLL))
   {
-    v12 = [(PKGroupQuery *)self _strokesAtLineIndex:v9 containingStrokes:v6];
+    v12 = [(PKGroupQuery *)self _strokesAtLineIndex:v9 containingStrokes:strokesCopy];
     v13 = [v12 mutableCopy];
     v14 = [v8 objectAtIndexedSubscript:v9];
     if (v14)
@@ -1375,7 +1375,7 @@ LABEL_6:
       v24 = CGRectIntersectsRect(v33, v34);
       if (MinY - v23 < 20.0 && v24)
       {
-        v26 = [(PKGroupQuery *)self _strokesAtLineIndex:v9 containingStrokes:v6, MinY - v23];
+        v26 = [(PKGroupQuery *)self _strokesAtLineIndex:v9 containingStrokes:strokesCopy, MinY - v23];
         v27 = v26;
         if (v26 && [v26 count])
         {
@@ -1386,7 +1386,7 @@ LABEL_6:
       ++v9;
     }
 
-    if (a4)
+    if (l)
     {
       [PKDrawing _findRightmostStrokes:v13];
     }
@@ -1406,21 +1406,21 @@ LABEL_6:
   return v10;
 }
 
-- (id)_strokesAtLineIndex:(int64_t)a3 containingStrokes:(id)a4
+- (id)_strokesAtLineIndex:(int64_t)index containingStrokes:(id)strokes
 {
-  v6 = a4;
-  v7 = [(PKGroupQuery *)self strokeGroups];
-  v8 = [v7 count];
+  strokesCopy = strokes;
+  strokeGroups = [(PKGroupQuery *)self strokeGroups];
+  v8 = [strokeGroups count];
 
-  if (v8 <= a3)
+  if (v8 <= index)
   {
     v14 = 0;
   }
 
   else
   {
-    v9 = [(PKGroupQuery *)self strokeGroups];
-    v10 = [v9 objectAtIndexedSubscript:a3];
+    strokeGroups2 = [(PKGroupQuery *)self strokeGroups];
+    v10 = [strokeGroups2 objectAtIndexedSubscript:index];
     v11 = v10;
     if (v10)
     {
@@ -1435,20 +1435,20 @@ LABEL_6:
     v13 = v12;
 
     v14 = [MEMORY[0x1E695DFA0] orderedSetWithArray:v13];
-    [v14 intersectOrderedSet:v6];
+    [v14 intersectOrderedSet:strokesCopy];
   }
 
   return v14;
 }
 
-- (id)lastStrokesInStrokes:(id)a3 isRTL:(BOOL)a4
+- (id)lastStrokesInStrokes:(id)strokes isRTL:(BOOL)l
 {
-  v6 = a3;
-  v7 = [(PKGroupQuery *)self strokeGroups];
-  v8 = v7;
-  if (v7 && [v7 count] && (v9 = -[PKGroupQuery _lastLineIndexFromInitialStrokes:](self, "_lastLineIndexFromInitialStrokes:", v6), v9 != 0x7FFFFFFFFFFFFFFFLL))
+  strokesCopy = strokes;
+  strokeGroups = [(PKGroupQuery *)self strokeGroups];
+  v8 = strokeGroups;
+  if (strokeGroups && [strokeGroups count] && (v9 = -[PKGroupQuery _lastLineIndexFromInitialStrokes:](self, "_lastLineIndexFromInitialStrokes:", strokesCopy), v9 != 0x7FFFFFFFFFFFFFFFLL))
   {
-    v12 = [(PKGroupQuery *)self _strokesAtLineIndex:v9 containingStrokes:v6];
+    v12 = [(PKGroupQuery *)self _strokesAtLineIndex:v9 containingStrokes:strokesCopy];
     v13 = [v12 mutableCopy];
     v14 = [v8 objectAtIndexedSubscript:v9];
     if (v14)
@@ -1509,7 +1509,7 @@ LABEL_6:
         v24 = CGRectIntersectsRect(v34, v35);
         if (MaxY - v23 > -20.0 && v24)
         {
-          v26 = [(PKGroupQuery *)self _strokesAtLineIndex:v9 containingStrokes:v6, MaxY - v23];
+          v26 = [(PKGroupQuery *)self _strokesAtLineIndex:v9 containingStrokes:strokesCopy, MaxY - v23];
           v27 = v26;
           if (v26 && [v26 count])
           {
@@ -1521,7 +1521,7 @@ LABEL_6:
       while (v9-- > 0);
     }
 
-    if (a4)
+    if (l)
     {
       [PKDrawing _findLeftmostStrokes:v13];
     }
@@ -1541,18 +1541,18 @@ LABEL_6:
   return v10;
 }
 
-- (void)q_fetchStrokesAmbiguouslyBelowAndAboveInsertSpaceHandleWithStrokes:(id)a3 completion:(id)a4
+- (void)q_fetchStrokesAmbiguouslyBelowAndAboveInsertSpaceHandleWithStrokes:(id)strokes completion:(id)completion
 {
   v54 = *MEMORY[0x1E69E9840];
-  v43 = a3;
-  v6 = a4;
-  v7 = [(PKGroupQuery *)self strokeGroups];
-  if (v7 && (-[PKGroupQuery strokeGroups](self, "strokeGroups"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 count], v8, v7, v9))
+  strokesCopy = strokes;
+  completionCopy = completion;
+  strokeGroups = [(PKGroupQuery *)self strokeGroups];
+  if (strokeGroups && (-[PKGroupQuery strokeGroups](self, "strokeGroups"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 count], v8, strokeGroups, v9))
   {
-    v10 = [MEMORY[0x1E695DFA0] orderedSet];
-    v11 = [MEMORY[0x1E695DFA0] orderedSet];
-    v12 = [(PKGroupQuery *)self strokeGroups];
-    v13 = [(PKGroupQuery *)self _lines:v12 containingStrokes:v43];
+    orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+    orderedSet2 = [MEMORY[0x1E695DFA0] orderedSet];
+    strokeGroups2 = [(PKGroupQuery *)self strokeGroups];
+    v13 = [(PKGroupQuery *)self _lines:strokeGroups2 containingStrokes:strokesCopy];
 
     x = *MEMORY[0x1E695F058];
     y = *(MEMORY[0x1E695F058] + 8);
@@ -1589,7 +1589,7 @@ LABEL_6:
           }
 
           v24 = v23;
-          [v10 addObjectsFromArray:v24];
+          [orderedSet addObjectsFromArray:v24];
 
           if (v22)
           {
@@ -1631,8 +1631,8 @@ LABEL_6:
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v30 = [(PKGroupQuery *)self strokeGroups];
-    v31 = [v30 countByEnumeratingWithState:&v44 objects:v52 count:16];
+    strokeGroups3 = [(PKGroupQuery *)self strokeGroups];
+    v31 = [strokeGroups3 countByEnumeratingWithState:&v44 objects:v52 count:16];
     if (v31)
     {
       v32 = y + -20.0;
@@ -1644,7 +1644,7 @@ LABEL_6:
         {
           if (*v45 != v33)
           {
-            objc_enumerationMutation(v30);
+            objc_enumerationMutation(strokeGroups3);
           }
 
           v35 = *(*(&v44 + 1) + 8 * v34);
@@ -1683,7 +1683,7 @@ LABEL_6:
               }
 
               v41 = v40;
-              [v11 addObjectsFromArray:v41];
+              [orderedSet2 addObjectsFromArray:v41];
             }
           }
 
@@ -1691,34 +1691,34 @@ LABEL_6:
         }
 
         while (v31 != v34);
-        v42 = [v30 countByEnumeratingWithState:&v44 objects:v52 count:16];
+        v42 = [strokeGroups3 countByEnumeratingWithState:&v44 objects:v52 count:16];
         v31 = v42;
       }
 
       while (v42);
     }
 
-    v6[2](v6, v10, v11);
+    completionCopy[2](completionCopy, orderedSet, orderedSet2);
   }
 
   else
   {
-    v6[2](v6, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 }
 
-- (int64_t)contentTypeForIntersectedStrokes:(id)a3
+- (int64_t)contentTypeForIntersectedStrokes:(id)strokes
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  strokesCopy = strokes;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [(PKGroupQuery *)self strokeGroups];
-  obj = v5;
+  strokeGroups = [(PKGroupQuery *)self strokeGroups];
+  obj = strokeGroups;
   v6 = 0;
-  v7 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v7 = [strokeGroups countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
     v8 = *v21;
@@ -1746,7 +1746,7 @@ LABEL_6:
         v12 = MEMORY[0x1E695DFB8];
         v13 = v11;
         v14 = [v12 orderedSetWithArray:v13];
-        v15 = [v4 intersectsOrderedSet:v14];
+        v15 = [strokesCopy intersectsOrderedSet:v14];
 
         if (v15)
         {
@@ -1765,7 +1765,7 @@ LABEL_6:
             if (v6 != v16)
             {
               v6 = 3;
-              v5 = obj;
+              strokeGroups = obj;
               goto LABEL_22;
             }
           }
@@ -1785,7 +1785,7 @@ LABEL_6:
       }
 
       while (v7 != v9);
-      v5 = obj;
+      strokeGroups = obj;
       v17 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
       v7 = v17;
     }

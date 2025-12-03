@@ -1,59 +1,59 @@
 @interface SFUCryptoKey
-- (id)initAes128Key:(const char *)a3 length:(unsigned int)a4 iterationCount:(unsigned int)a5;
-- (id)initAes128KeyFromPassphrase:(const char *)a3 length:(unsigned int)a4 iterationCount:(unsigned int)a5 saltData:(id)a6;
-- (id)initAes128KeyFromPassphrase:(id)a3 iterationCount:(unsigned int)a4;
-- (id)initAes128KeyFromPassphrase:(id)a3 iterationCount:(unsigned int)a4 saltData:(id)a5;
-- (id)initAes128KeyFromPassphrase:(id)a3 withIterationCountAndSaltDataFromCryptoKey:(id)a4;
+- (id)initAes128Key:(const char *)key length:(unsigned int)length iterationCount:(unsigned int)count;
+- (id)initAes128KeyFromPassphrase:(const char *)passphrase length:(unsigned int)length iterationCount:(unsigned int)count saltData:(id)data;
+- (id)initAes128KeyFromPassphrase:(id)passphrase iterationCount:(unsigned int)count;
+- (id)initAes128KeyFromPassphrase:(id)passphrase iterationCount:(unsigned int)count saltData:(id)data;
+- (id)initAes128KeyFromPassphrase:(id)passphrase withIterationCountAndSaltDataFromCryptoKey:(id)key;
 - (void)dealloc;
 @end
 
 @implementation SFUCryptoKey
 
-- (id)initAes128KeyFromPassphrase:(id)a3 iterationCount:(unsigned int)a4
+- (id)initAes128KeyFromPassphrase:(id)passphrase iterationCount:(unsigned int)count
 {
-  if (!a3)
+  if (!passphrase)
   {
     return 0;
   }
 
-  v4 = *&a4;
-  v6 = [a3 UTF8String];
-  v7 = strlen(v6);
+  v4 = *&count;
+  uTF8String = [passphrase UTF8String];
+  v7 = strlen(uTF8String);
   v8 = [SFUCryptoUtils generateRandomSaltWithLength:16];
 
-  return [(SFUCryptoKey *)self initAes128KeyFromPassphrase:v6 length:v7 iterationCount:v4 saltData:v8];
+  return [(SFUCryptoKey *)self initAes128KeyFromPassphrase:uTF8String length:v7 iterationCount:v4 saltData:v8];
 }
 
-- (id)initAes128KeyFromPassphrase:(id)a3 withIterationCountAndSaltDataFromCryptoKey:(id)a4
+- (id)initAes128KeyFromPassphrase:(id)passphrase withIterationCountAndSaltDataFromCryptoKey:(id)key
 {
-  if (!a3)
+  if (!passphrase)
   {
     return 0;
   }
 
-  v6 = [a3 UTF8String];
-  v7 = strlen(v6);
-  v8 = [a4 iterationCount];
-  v9 = [a4 saltData];
+  uTF8String = [passphrase UTF8String];
+  v7 = strlen(uTF8String);
+  iterationCount = [key iterationCount];
+  saltData = [key saltData];
 
-  return [(SFUCryptoKey *)self initAes128KeyFromPassphrase:v6 length:v7 iterationCount:v8 saltData:v9];
+  return [(SFUCryptoKey *)self initAes128KeyFromPassphrase:uTF8String length:v7 iterationCount:iterationCount saltData:saltData];
 }
 
-- (id)initAes128KeyFromPassphrase:(id)a3 iterationCount:(unsigned int)a4 saltData:(id)a5
+- (id)initAes128KeyFromPassphrase:(id)passphrase iterationCount:(unsigned int)count saltData:(id)data
 {
-  if (!a3)
+  if (!passphrase)
   {
     return 0;
   }
 
-  v6 = *&a4;
-  v9 = [a3 UTF8String];
-  v10 = strlen([a3 UTF8String]);
+  v6 = *&count;
+  uTF8String = [passphrase UTF8String];
+  v10 = strlen([passphrase UTF8String]);
 
-  return [(SFUCryptoKey *)self initAes128KeyFromPassphrase:v9 length:v10 iterationCount:v6 saltData:a5];
+  return [(SFUCryptoKey *)self initAes128KeyFromPassphrase:uTF8String length:v10 iterationCount:v6 saltData:data];
 }
 
-- (id)initAes128KeyFromPassphrase:(const char *)a3 length:(unsigned int)a4 iterationCount:(unsigned int)a5 saltData:(id)a6
+- (id)initAes128KeyFromPassphrase:(const char *)passphrase length:(unsigned int)length iterationCount:(unsigned int)count saltData:(id)data
 {
   v14.receiver = self;
   v14.super_class = SFUCryptoKey;
@@ -61,13 +61,13 @@
   v11 = v10;
   if (v10)
   {
-    v10->mIterationCount = a5;
+    v10->mIterationCount = count;
     v10->mKeyLength = 16;
     v10->mKey = malloc_type_calloc(1uLL, 0x10uLL, 0x100004077774924uLL);
-    v11->_passphrase = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:a3 length:a4 encoding:4];
-    v12 = [a6 copy];
+    v11->_passphrase = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:passphrase length:length encoding:4];
+    v12 = [data copy];
     v11->mSaltData = v12;
-    if ((SFUDeriveAes128Key(a3, a4, v11->mIterationCount, v11->mKey, v11->mKeyLength, [(NSData *)v12 bytes], [(NSData *)v11->mSaltData length]) & 1) == 0)
+    if ((SFUDeriveAes128Key(passphrase, length, v11->mIterationCount, v11->mKey, v11->mKeyLength, [(NSData *)v12 bytes], [(NSData *)v11->mSaltData length]) & 1) == 0)
     {
 
       return 0;
@@ -77,7 +77,7 @@
   return v11;
 }
 
-- (id)initAes128Key:(const char *)a3 length:(unsigned int)a4 iterationCount:(unsigned int)a5
+- (id)initAes128Key:(const char *)key length:(unsigned int)length iterationCount:(unsigned int)count
 {
   v12.receiver = self;
   v12.super_class = SFUCryptoKey;
@@ -85,12 +85,12 @@
   v9 = v8;
   if (v8)
   {
-    v8->mIterationCount = a5;
+    v8->mIterationCount = count;
     v8->mKeyLength = 16;
     v10 = malloc_type_calloc(1uLL, 0x10uLL, 0x100004077774924uLL);
     v9->mKey = v10;
-    memcpy(v10, a3, v9->mKeyLength);
-    if (v9->mKeyLength != a4)
+    memcpy(v10, key, v9->mKeyLength);
+    if (v9->mKeyLength != length)
     {
 
       return 0;

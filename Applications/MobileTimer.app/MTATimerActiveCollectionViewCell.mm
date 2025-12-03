@@ -1,79 +1,79 @@
 @interface MTATimerActiveCollectionViewCell
-- (MTATimerActiveCollectionViewCell)initWithFrame:(CGRect)a3;
-- (id)titleForTimer:(id)a3;
-- (void)cancelTimer:(id)a3;
-- (void)didSelectPresetWithDuration:(double)a3;
-- (void)pauseResumeTimer:(id)a3;
-- (void)refreshUI:(id)a3 animated:(BOOL)a4;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)startTimer:(id)a3;
+- (MTATimerActiveCollectionViewCell)initWithFrame:(CGRect)frame;
+- (id)titleForTimer:(id)timer;
+- (void)cancelTimer:(id)timer;
+- (void)didSelectPresetWithDuration:(double)duration;
+- (void)pauseResumeTimer:(id)timer;
+- (void)refreshUI:(id)i animated:(BOOL)animated;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
+- (void)startTimer:(id)timer;
 @end
 
 @implementation MTATimerActiveCollectionViewCell
 
-- (MTATimerActiveCollectionViewCell)initWithFrame:(CGRect)a3
+- (MTATimerActiveCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = MTATimerActiveCollectionViewCell;
-  v3 = [(MTATimerBaseCollectionViewCell *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MTATimerBaseCollectionViewCell *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(MTATimerBaseCollectionViewCell *)v3 timerControlsView];
+    timerControlsView = [(MTATimerBaseCollectionViewCell *)v3 timerControlsView];
     v6 = +[UIColor clearColor];
-    [v5 applyBackgroundColor:v6];
+    [timerControlsView applyBackgroundColor:v6];
   }
 
   return v4;
 }
 
-- (void)refreshUI:(id)a3 animated:(BOOL)a4
+- (void)refreshUI:(id)i animated:(BOOL)animated
 {
-  v5 = a3;
-  v6 = [(MTATimerBaseCollectionViewCell *)self timerControlsView];
-  [v5 remainingTime];
+  iCopy = i;
+  timerControlsView = [(MTATimerBaseCollectionViewCell *)self timerControlsView];
+  [iCopy remainingTime];
   v8 = v7;
-  [v5 duration];
+  [iCopy duration];
   v10 = v9;
-  v11 = [v5 state];
-  v12 = [(MTATimerActiveCollectionViewCell *)self titleForTimer:v5];
-  [v6 setRemainingTime:v11 duration:v12 state:1 title:v8 forceRefresh:v10];
+  state = [iCopy state];
+  v12 = [(MTATimerActiveCollectionViewCell *)self titleForTimer:iCopy];
+  [timerControlsView setRemainingTime:state duration:v12 state:1 title:v8 forceRefresh:v10];
 
-  v13 = [(MTATimerBaseCollectionViewCell *)self timerControlsView];
-  [v5 remainingTime];
+  timerControlsView2 = [(MTATimerBaseCollectionViewCell *)self timerControlsView];
+  [iCopy remainingTime];
   v15 = v14;
 
-  [v13 setTime:v15];
+  [timerControlsView2 setTime:v15];
 
   [(MTATimerActiveCollectionViewCell *)self setNeedsLayout];
 }
 
-- (id)titleForTimer:(id)a3
+- (id)titleForTimer:(id)timer
 {
-  v3 = a3;
-  if ([v3 hasDefaultTitle])
+  timerCopy = timer;
+  if ([timerCopy hasDefaultTitle])
   {
-    [v3 duration];
+    [timerCopy duration];
     v5 = v4;
 
-    v6 = [MTAUtilities durationStringFromInterval:v5];
+    title = [MTAUtilities durationStringFromInterval:v5];
   }
 
   else
   {
-    v6 = [v3 title];
+    title = [timerCopy title];
   }
 
-  return v6;
+  return title;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v9.receiver = self;
   v9.super_class = MTATimerActiveCollectionViewCell;
   [(MTATimerActiveCollectionViewCell *)&v9 setHighlighted:?];
-  if (a3 || [(MTATimerActiveCollectionViewCell *)self isSelected])
+  if (highlighted || [(MTATimerActiveCollectionViewCell *)self isSelected])
   {
     v5 = +[UIColor mtui_cellHighlightColor];
     v6 = 0;
@@ -87,8 +87,8 @@
     v6 = 1;
   }
 
-  v8 = [(MTATimerActiveCollectionViewCell *)self contentView];
-  [v8 setBackgroundColor:v5];
+  contentView = [(MTATimerActiveCollectionViewCell *)self contentView];
+  [contentView setBackgroundColor:v5];
 
   if (v6)
   {
@@ -99,12 +99,12 @@
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v9.receiver = self;
   v9.super_class = MTATimerActiveCollectionViewCell;
   [(MTATimerActiveCollectionViewCell *)&v9 setSelected:?];
-  if (a3 || [(MTATimerActiveCollectionViewCell *)self isHighlighted])
+  if (selected || [(MTATimerActiveCollectionViewCell *)self isHighlighted])
   {
     v5 = +[UIColor mtui_cellHighlightColor];
     v6 = 0;
@@ -118,8 +118,8 @@
     v6 = 1;
   }
 
-  v8 = [(MTATimerActiveCollectionViewCell *)self contentView];
-  [v8 setBackgroundColor:v5];
+  contentView = [(MTATimerActiveCollectionViewCell *)self contentView];
+  [contentView setBackgroundColor:v5];
 
   if (v6)
   {
@@ -130,30 +130,30 @@
   }
 }
 
-- (void)startTimer:(id)a3
+- (void)startTimer:(id)timer
 {
-  v5 = [(MTATimerBaseCollectionViewCell *)self delegate];
-  v4 = [(MTATimerBaseCollectionViewCell *)self timerControlsView];
-  [v4 countDownDuration];
-  [v5 startTimerForCell:self withDuration:?];
+  delegate = [(MTATimerBaseCollectionViewCell *)self delegate];
+  timerControlsView = [(MTATimerBaseCollectionViewCell *)self timerControlsView];
+  [timerControlsView countDownDuration];
+  [delegate startTimerForCell:self withDuration:?];
 }
 
-- (void)cancelTimer:(id)a3
+- (void)cancelTimer:(id)timer
 {
-  v4 = [(MTATimerBaseCollectionViewCell *)self delegate];
-  [v4 cancelTimerForCell:self];
+  delegate = [(MTATimerBaseCollectionViewCell *)self delegate];
+  [delegate cancelTimerForCell:self];
 }
 
-- (void)pauseResumeTimer:(id)a3
+- (void)pauseResumeTimer:(id)timer
 {
-  v4 = [(MTATimerBaseCollectionViewCell *)self delegate];
-  [v4 pauseResumeTimerForCell:self];
+  delegate = [(MTATimerBaseCollectionViewCell *)self delegate];
+  [delegate pauseResumeTimerForCell:self];
 }
 
-- (void)didSelectPresetWithDuration:(double)a3
+- (void)didSelectPresetWithDuration:(double)duration
 {
-  v5 = [(MTATimerBaseCollectionViewCell *)self delegate];
-  [v5 startTimerForCell:self withDuration:a3];
+  delegate = [(MTATimerBaseCollectionViewCell *)self delegate];
+  [delegate startTimerForCell:self withDuration:duration];
 }
 
 @end

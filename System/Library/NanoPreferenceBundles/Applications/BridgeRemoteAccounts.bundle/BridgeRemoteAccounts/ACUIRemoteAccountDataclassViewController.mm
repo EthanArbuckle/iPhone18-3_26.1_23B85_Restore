@@ -1,24 +1,24 @@
 @interface ACUIRemoteAccountDataclassViewController
 - (ACUIRemoteAccountDataclassViewController)init;
 - (BOOL)_isPresentedAsModalSheet;
-- (BOOL)shouldShowSpecifierForDataclass:(id)a3;
+- (BOOL)shouldShowSpecifierForDataclass:(id)dataclass;
 - (id)_navigationTitle;
-- (id)dataclassSwitchStateForSpecifier:(id)a3;
-- (id)specifierForDataclass:(id)a3;
+- (id)dataclassSwitchStateForSpecifier:(id)specifier;
+- (id)specifierForDataclass:(id)dataclass;
 - (id)specifiers;
-- (id)specifiersForDataclasses:(id)a3;
+- (id)specifiersForDataclasses:(id)dataclasses;
 - (void)_dismiss;
 - (void)_displayFailedToDeleteAlert;
-- (void)_displayFailedToSaveAlertShouldDismiss:(BOOL)a3;
-- (void)cancelButtonTapped:(id)a3;
-- (void)dataclassSwitchStateDidChange:(id)a3 withSpecifier:(id)a4;
-- (void)deleteButtonTapped:(id)a3;
-- (void)doneButtonTapped:(id)a3;
-- (void)setDeleting:(BOOL)a3;
-- (void)setSaving:(BOOL)a3;
+- (void)_displayFailedToSaveAlertShouldDismiss:(BOOL)dismiss;
+- (void)cancelButtonTapped:(id)tapped;
+- (void)dataclassSwitchStateDidChange:(id)change withSpecifier:(id)specifier;
+- (void)deleteButtonTapped:(id)tapped;
+- (void)doneButtonTapped:(id)tapped;
+- (void)setDeleting:(BOOL)deleting;
+- (void)setSaving:(BOOL)saving;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ACUIRemoteAccountDataclassViewController
@@ -48,11 +48,11 @@
 
 - (void)viewDidLoad
 {
-  v34 = self;
+  selfCopy = self;
   v33[1] = a2;
-  v27 = [(ACUIRemoteAccountDataclassViewController *)self specifier];
-  v26 = [v27 userInfo];
-  v33[0] = [v26 objectForKeyedSubscript:ACUIAccountKey];
+  specifier = [(ACUIRemoteAccountDataclassViewController *)self specifier];
+  userInfo = [specifier userInfo];
+  v33[0] = [userInfo objectForKeyedSubscript:ACUIAccountKey];
 
   if (v33[0])
   {
@@ -65,131 +65,131 @@
     }
 
     objc_storeStrong(&location, 0);
-    [(ACUIRemoteAccountDataclassViewController *)v34 setAccount:v33[0]];
+    [(ACUIRemoteAccountDataclassViewController *)selfCopy setAccount:v33[0]];
   }
 
-  v25 = [(ACUIRemoteAccountDataclassViewController *)v34 specifier];
-  v24 = [v25 userInfo];
-  v30 = [v24 objectForKeyedSubscript:ACUIRemoteSyncControllerKey];
+  specifier2 = [(ACUIRemoteAccountDataclassViewController *)selfCopy specifier];
+  userInfo2 = [specifier2 userInfo];
+  v30 = [userInfo2 objectForKeyedSubscript:ACUIRemoteSyncControllerKey];
 
   if (v30)
   {
-    [(ACUIRemoteAccountDataclassViewController *)v34 setSyncController:v30];
+    [(ACUIRemoteAccountDataclassViewController *)selfCopy setSyncController:v30];
   }
 
-  v22 = [(ACUIRemoteAccountDataclassViewController *)v34 specifier];
-  v21 = [v22 userInfo];
-  v23 = [v21 objectForKeyedSubscript:ACUIShowDeleteButtonKey];
+  specifier3 = [(ACUIRemoteAccountDataclassViewController *)selfCopy specifier];
+  userInfo3 = [specifier3 userInfo];
+  v23 = [userInfo3 objectForKeyedSubscript:ACUIShowDeleteButtonKey];
 
   if (v23)
   {
-    v20 = [(ACUIRemoteAccountDataclassViewController *)v34 specifier];
-    v19 = [v20 userInfo];
-    v18 = [v19 objectForKeyedSubscript:ACUIShowDeleteButtonKey];
-    v2 = [v18 BOOLValue];
-    [(ACUIRemoteAccountDataclassViewController *)v34 setShowDeleteButton:v2];
+    specifier4 = [(ACUIRemoteAccountDataclassViewController *)selfCopy specifier];
+    userInfo4 = [specifier4 userInfo];
+    v18 = [userInfo4 objectForKeyedSubscript:ACUIShowDeleteButtonKey];
+    bOOLValue = [v18 BOOLValue];
+    [(ACUIRemoteAccountDataclassViewController *)selfCopy setShowDeleteButton:bOOLValue];
   }
 
   else
   {
-    [(ACUIRemoteAccountDataclassViewController *)v34 setShowDeleteButton:0];
+    [(ACUIRemoteAccountDataclassViewController *)selfCopy setShowDeleteButton:0];
   }
 
   v11 = [UIBarButtonItem alloc];
   v13 = [NSBundle bundleForClass:objc_opt_class()];
   v12 = [NSBundle localizedStringForKey:v13 value:"localizedStringForKey:value:table:" table:@"CANCEL"];
   v3 = [v11 initWithTitle:? style:? target:? action:?];
-  cancelButton = v34->_cancelButton;
-  v34->_cancelButton = v3;
+  cancelButton = selfCopy->_cancelButton;
+  selfCopy->_cancelButton = v3;
 
   v14 = [UIBarButtonItem alloc];
   v16 = [NSBundle bundleForClass:objc_opt_class()];
   v15 = [(NSBundle *)v16 localizedStringForKey:@"DONE" value:&stru_1C810 table:@"Localizable"];
   v5 = [v14 initWithTitle:? style:? target:? action:?];
-  doneButton = v34->_doneButton;
-  v34->_doneButton = v5;
+  doneButton = selfCopy->_doneButton;
+  selfCopy->_doneButton = v5;
 
-  v29 = [(ACUIRemoteAccountDataclassViewController *)v34 navigationItem];
-  [v29 setLeftBarButtonItem:v34->_cancelButton];
-  [v29 setRightBarButtonItem:v34->_doneButton];
-  v17 = [(ACUIRemoteAccountDataclassViewController *)v34 _navigationTitle];
-  [v29 setTitle:?];
+  navigationItem = [(ACUIRemoteAccountDataclassViewController *)selfCopy navigationItem];
+  [navigationItem setLeftBarButtonItem:selfCopy->_cancelButton];
+  [navigationItem setRightBarButtonItem:selfCopy->_doneButton];
+  _navigationTitle = [(ACUIRemoteAccountDataclassViewController *)selfCopy _navigationTitle];
+  [navigationItem setTitle:?];
 
-  if ([(ACUIRemoteAccountDataclassViewController *)v34 isFirstTimeSetup])
+  if ([(ACUIRemoteAccountDataclassViewController *)selfCopy isFirstTimeSetup])
   {
-    [v29 setHidesBackButton:1];
+    [navigationItem setHidesBackButton:1];
     v10 = [NSBundle bundleForClass:objc_opt_class()];
     v9 = [(NSBundle *)v10 localizedStringForKey:@"SAVE" value:&stru_1C810 table:@"Localizable"];
-    v8 = [v29 rightBarButtonItem];
-    [v8 setTitle:v9];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    [rightBarButtonItem setTitle:v9];
   }
 
   else
   {
-    if (![(ACUIRemoteAccountDataclassViewController *)v34 _isPresentedAsModalSheet])
+    if (![(ACUIRemoteAccountDataclassViewController *)selfCopy _isPresentedAsModalSheet])
     {
-      [v29 setRightBarButtonItem:0];
+      [navigationItem setRightBarButtonItem:0];
     }
 
-    [v29 setLeftBarButtonItem:?];
-    [(ACUIRemoteAccountDataclassViewController *)v34 setCancelButton:0];
-    [v29 setHidesBackButton:0];
+    [navigationItem setLeftBarButtonItem:?];
+    [(ACUIRemoteAccountDataclassViewController *)selfCopy setCancelButton:0];
+    [navigationItem setHidesBackButton:0];
   }
 
-  v7 = [(ACUIRemoteAccountDataclassViewController *)v34 table];
-  [v7 setAccessibilityIdentifier:@"DATACLASS_CONFIGURATION_TABLE"];
+  table = [(ACUIRemoteAccountDataclassViewController *)selfCopy table];
+  [table setAccessibilityIdentifier:@"DATACLASS_CONFIGURATION_TABLE"];
 
-  v28.receiver = v34;
+  v28.receiver = selfCopy;
   v28.super_class = ACUIRemoteAccountDataclassViewController;
   [(ACUIRemoteAccountDataclassViewController *)&v28 viewDidLoad];
-  objc_storeStrong(&v29, 0);
+  objc_storeStrong(&navigationItem, 0);
   objc_storeStrong(&v30, 0);
   objc_storeStrong(v33, 0);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = ACUIRemoteAccountDataclassViewController;
-  [(ACUIRemoteAccountDataclassViewController *)&v6 viewWillAppear:a3];
+  [(ACUIRemoteAccountDataclassViewController *)&v6 viewWillAppear:appear];
   oslog = _ACUILogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(ACUIRemoteAccountDataclassViewController *)v9 account];
-    v3 = [(ACAccount *)v4 identifier];
-    sub_1C78(v10, "[ACUIRemoteAccountDataclassViewController viewWillAppear:]", 120, v3);
+    account = [(ACUIRemoteAccountDataclassViewController *)selfCopy account];
+    identifier = [(ACAccount *)account identifier];
+    sub_1C78(v10, "[ACUIRemoteAccountDataclassViewController viewWillAppear:]", 120, identifier);
     _os_log_impl(&dword_0, oslog, OS_LOG_TYPE_DEFAULT, "%s (%d) Presenting dataclass view for %{public}@", v10, 0x1Cu);
   }
 
   objc_storeStrong(&oslog, 0);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
-  v9 = a3;
+  disappearCopy = disappear;
   v8.receiver = self;
   v8.super_class = ACUIRemoteAccountDataclassViewController;
-  [(ACUIRemoteAccountDataclassViewController *)&v8 viewWillDisappear:a3];
+  [(ACUIRemoteAccountDataclassViewController *)&v8 viewWillDisappear:disappear];
   oslog = _ACUILogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ACUIRemoteAccountDataclassViewController *)v11 account];
-    v5 = [(ACAccount *)v6 identifier];
-    sub_1C78(v12, "[ACUIRemoteAccountDataclassViewController viewWillDisappear:]", 125, v5);
+    account = [(ACUIRemoteAccountDataclassViewController *)selfCopy account];
+    identifier = [(ACAccount *)account identifier];
+    sub_1C78(v12, "[ACUIRemoteAccountDataclassViewController viewWillDisappear:]", 125, identifier);
     _os_log_impl(&dword_0, oslog, OS_LOG_TYPE_DEFAULT, "%s (%d) Dismissing dataclass view for %{public}@", v12, 0x1Cu);
   }
 
   objc_storeStrong(&oslog, 0);
-  if ([(ACUIRemoteAccountDataclassViewController *)v11 didModifyAccount]&& ![(ACUIRemoteAccountDataclassViewController *)v11 isFirstTimeSetup]&& ![(ACUIRemoteAccountDataclassViewController *)v11 didDeleteAccount])
+  if ([(ACUIRemoteAccountDataclassViewController *)selfCopy didModifyAccount]&& ![(ACUIRemoteAccountDataclassViewController *)selfCopy isFirstTimeSetup]&& ![(ACUIRemoteAccountDataclassViewController *)selfCopy didDeleteAccount])
   {
-    account = v11->_account;
-    v4 = [(ACUIRemoteAccountSyncController *)v11->_syncController topLevelAccounts];
-    +[ACUIRemoteAccountsAnalytics reportAccountActionForAccount:action:numberOfAccounts:](ACUIRemoteAccountsAnalytics, "reportAccountActionForAccount:action:numberOfAccounts:", account, 3, [v4 count]);
+    account = selfCopy->_account;
+    topLevelAccounts = [(ACUIRemoteAccountSyncController *)selfCopy->_syncController topLevelAccounts];
+    +[ACUIRemoteAccountsAnalytics reportAccountActionForAccount:action:numberOfAccounts:](ACUIRemoteAccountsAnalytics, "reportAccountActionForAccount:action:numberOfAccounts:", account, 3, [topLevelAccounts count]);
   }
 }
 
@@ -197,24 +197,24 @@
 {
   if ([(ACUIRemoteAccountDataclassViewController *)self isFirstTimeSetup])
   {
-    v5 = [(ACUIRemoteAccountDataclassViewController *)self account];
-    v4 = [(ACAccount *)v5 accountType];
-    v7 = [(ACAccountType *)v4 accountTypeDescription];
+    account = [(ACUIRemoteAccountDataclassViewController *)self account];
+    accountType = [(ACAccount *)account accountType];
+    accountTypeDescription = [(ACAccountType *)accountType accountTypeDescription];
   }
 
   else
   {
-    v3 = [(ACUIRemoteAccountDataclassViewController *)self account];
-    v7 = [(ACAccount *)v3 accountDescription];
+    account2 = [(ACUIRemoteAccountDataclassViewController *)self account];
+    accountTypeDescription = [(ACAccount *)account2 accountDescription];
   }
 
-  return v7;
+  return accountTypeDescription;
 }
 
 - (BOOL)_isPresentedAsModalSheet
 {
-  v2 = [(ACUIRemoteAccountDataclassViewController *)self navigationController];
-  v4 = v2 == 0;
+  navigationController = [(ACUIRemoteAccountDataclassViewController *)self navigationController];
+  v4 = navigationController == 0;
 
   return v4;
 }
@@ -222,32 +222,32 @@
 - (id)specifiers
 {
   v40 = "[ACUIRemoteAccountDataclassViewController specifiers]";
-  v52 = self;
+  selfCopy = self;
   v51[1] = a2;
   if (!*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers])
   {
     v51[0] = objc_opt_new();
-    if (!v52->_isFirstTimeSetup)
+    if (!selfCopy->_isFirstTimeSetup)
     {
       v38 = &v50;
       v50 = [PSSpecifier groupSpecifierWithID:@"ACUIRemoteAcountDetailAccountNameGroupID"];
       [v51[0] addObject:v50];
       v33 = ACUIAccountSummaryCell;
-      v36 = [(ACUIRemoteAccountDataclassViewController *)v52 account];
-      v35 = [(ACUIRemoteAccountDataclassViewController *)v52 account];
-      v34 = [v35 displayUsername];
+      account = [(ACUIRemoteAccountDataclassViewController *)selfCopy account];
+      account2 = [(ACUIRemoteAccountDataclassViewController *)selfCopy account];
+      displayUsername = [account2 displayUsername];
       v39 = 0;
       v37 = &v49;
-      v49 = [ACUIAccountSummaryCell specifierWithStyle:"specifierWithStyle:account:valueText:detailControllerClass:presentationStyle:" account:1 valueText:v36 detailControllerClass:? presentationStyle:?];
+      v49 = [ACUIAccountSummaryCell specifierWithStyle:"specifierWithStyle:account:valueText:detailControllerClass:presentationStyle:" account:1 valueText:account detailControllerClass:? presentationStyle:?];
 
       [v51[0] addObject:v49];
       objc_storeStrong(&v49, 0);
       objc_storeStrong(&v50, 0);
     }
 
-    v30 = v52;
-    v32 = [(ACUIRemoteAccountDataclassViewController *)v52 account];
-    v31 = [v32 provisionedDataclasses];
+    v30 = selfCopy;
+    account3 = [(ACUIRemoteAccountDataclassViewController *)selfCopy account];
+    provisionedDataclasses = [account3 provisionedDataclasses];
     v48 = [(ACUIRemoteAccountDataclassViewController *)v30 specifiersForDataclasses:?];
 
     [v51[0] addObjectsFromArray:v48];
@@ -257,10 +257,10 @@
     {
       log = location;
       *type = v46;
-      v29 = [(ACUIRemoteAccountDataclassViewController *)v52 account];
-      v28 = [v29 provisionedDataclasses];
+      account4 = [(ACUIRemoteAccountDataclassViewController *)selfCopy account];
+      provisionedDataclasses2 = [account4 provisionedDataclasses];
       buf = v54;
-      sub_A7C8(v54, v40, 167, [v28 count]);
+      sub_A7C8(v54, v40, 167, [provisionedDataclasses2 count]);
       _os_log_debug_impl(&dword_0, location, v46, "%s (%d) Number of provisioned data classes: %ld", v54, 0x1Cu);
     }
 
@@ -277,11 +277,11 @@
     }
 
     objc_storeStrong(&v45, 0);
-    if ([(ACUIRemoteAccountDataclassViewController *)v52 showDeleteButton]&& ![(ACUIRemoteAccountDataclassViewController *)v52 isFirstTimeSetup])
+    if ([(ACUIRemoteAccountDataclassViewController *)selfCopy showDeleteButton]&& ![(ACUIRemoteAccountDataclassViewController *)selfCopy isFirstTimeSetup])
     {
       v43 = [PSSpecifier groupSpecifierWithID:@"ACUIRemoteAcountDetailDeleteGroupID"];
       [v51[0] addObject:v43];
-      if ([(ACUIRemoteAccountDataclassViewController *)v52 isDeleting])
+      if ([(ACUIRemoteAccountDataclassViewController *)selfCopy isDeleting])
       {
         v17 = PSSpecifier;
         v16 = NSBundle;
@@ -314,7 +314,7 @@
 
     v9 = v51;
     v3 = [v51[0] copy];
-    v4 = &v52->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
+    v4 = &selfCopy->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
     v5 = *v4;
     *v4 = v3;
 
@@ -323,28 +323,28 @@
     objc_storeStrong(v9, v10);
   }
 
-  v8 = *&v52->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
+  v8 = *&selfCopy->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   v6 = v8;
 
   return v6;
 }
 
-- (BOOL)shouldShowSpecifierForDataclass:(id)a3
+- (BOOL)shouldShowSpecifierForDataclass:(id)dataclass
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dataclass);
   objc_storeStrong(location, 0);
   return 1;
 }
 
-- (id)specifiersForDataclasses:(id)a3
+- (id)specifiersForDataclasses:(id)dataclasses
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dataclasses);
   v22 = +[NSMutableArray array];
   v21 = ACUIOrderedDataClassList();
   v20 = [PSSpecifier groupSpecifierWithID:@"ACUIRemoteAcountDetailDataClassGroupID"];
@@ -366,17 +366,17 @@
       }
 
       v19 = *(__b[1] + 8 * v9);
-      v3 = [(ACUIRemoteAccountDataclassViewController *)v24 shouldShowSpecifierForDataclass:v19];
+      v3 = [(ACUIRemoteAccountDataclassViewController *)selfCopy shouldShowSpecifierForDataclass:v19];
       v16 = 0;
       v14 = 0;
       v6 = 0;
       if (v3)
       {
-        v17 = [(ACUIRemoteAccountDataclassViewController *)v24 account];
+        account = [(ACUIRemoteAccountDataclassViewController *)selfCopy account];
         v16 = 1;
-        v15 = [v17 provisionedDataclasses];
+        provisionedDataclasses = [account provisionedDataclasses];
         v14 = 1;
-        v6 = [v15 containsObject:v19];
+        v6 = [provisionedDataclasses containsObject:v19];
       }
 
       if (v14)
@@ -389,7 +389,7 @@
 
       if (v6)
       {
-        v13 = [(ACUIRemoteAccountDataclassViewController *)v24 specifierForDataclass:v19];
+        v13 = [(ACUIRemoteAccountDataclassViewController *)selfCopy specifierForDataclass:v19];
         if (v13)
         {
           [v22 addObject:v13];
@@ -420,12 +420,12 @@
   return v5;
 }
 
-- (id)specifierForDataclass:(id)a3
+- (id)specifierForDataclass:(id)dataclass
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dataclass);
   if ([location[0] isEqualToString:kAccountDataclassContactsSearch])
   {
     v21 = 0;
@@ -435,7 +435,7 @@
   else
   {
     v5 = location[0];
-    v6 = [(ACUIRemoteAccountDataclassViewController *)v20 account];
+    account = [(ACUIRemoteAccountDataclassViewController *)selfCopy account];
     v17 = [PSSpecifier acui_specifierForDataclass:"acui_specifierForDataclass:account:target:set:get:" account:v5 target:? set:? get:?];
 
     v22 = @"ACUIRemoteAcountDetailDataclassKey";
@@ -443,23 +443,23 @@
     v7 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
     [v17 setUserInfo:?];
 
-    v8 = [(ACUIRemoteAccountDataclassViewController *)v20 account];
-    v16 = [(ACAccount *)v8 accountPropertyForKey:ACAccountPropertyGrantedDataclasses];
+    account2 = [(ACUIRemoteAccountDataclassViewController *)selfCopy account];
+    v16 = [(ACAccount *)account2 accountPropertyForKey:ACAccountPropertyGrantedDataclasses];
 
     v14 = 0;
     v12 = 0;
     v10 = 0;
     v9 = 0;
-    if ([(ACUIRemoteAccountDataclassViewController *)v20 isFirstTimeSetup])
+    if ([(ACUIRemoteAccountDataclassViewController *)selfCopy isFirstTimeSetup])
     {
-      v15 = [(ACUIRemoteAccountDataclassViewController *)v20 account];
+      account3 = [(ACUIRemoteAccountDataclassViewController *)selfCopy account];
       v14 = 1;
-      v13 = [(ACAccount *)v15 accountType];
+      accountType = [(ACAccount *)account3 accountType];
       v12 = 1;
-      v11 = [(ACAccountType *)v13 identifier];
+      identifier = [(ACAccountType *)accountType identifier];
       v10 = 1;
       v9 = 0;
-      if ([(NSString *)v11 isEqualToString:ACAccountTypeIdentifierGmail])
+      if ([(NSString *)identifier isEqualToString:ACAccountTypeIdentifierGmail])
       {
         v9 = v16 != 0;
       }
@@ -494,72 +494,72 @@
   return v3;
 }
 
-- (id)dataclassSwitchStateForSpecifier:(id)a3
+- (id)dataclassSwitchStateForSpecifier:(id)specifier
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = [location[0] acui_dataclass];
-  v5 = [(ACUIRemoteAccountDataclassViewController *)v11 account];
-  v6 = [(ACAccount *)v5 isEnabledForDataclass:v9];
+  objc_storeStrong(location, specifier);
+  acui_dataclass = [location[0] acui_dataclass];
+  account = [(ACUIRemoteAccountDataclassViewController *)selfCopy account];
+  v6 = [(ACAccount *)account isEnabledForDataclass:acui_dataclass];
 
   v8 = v6;
   oslog = _ACUILogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
-    sub_B1B8(v12, "[ACUIRemoteAccountDataclassViewController dataclassSwitchStateForSpecifier:]", 247, v9, v8 & 1);
+    sub_B1B8(v12, "[ACUIRemoteAccountDataclassViewController dataclassSwitchStateForSpecifier:]", 247, acui_dataclass, v8 & 1);
     _os_log_debug_impl(&dword_0, oslog, OS_LOG_TYPE_DEBUG, "%s (%d) %{public}@: %d", v12, 0x22u);
   }
 
   objc_storeStrong(&oslog, 0);
   v4 = [NSNumber numberWithBool:v8 & 1];
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&acui_dataclass, 0);
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-- (void)dataclassSwitchStateDidChange:(id)a3 withSpecifier:(id)a4
+- (void)dataclassSwitchStateDidChange:(id)change withSpecifier:(id)specifier
 {
-  v65 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, change);
   v63 = 0;
-  objc_storeStrong(&v63, a4);
-  v62 = [v63 acui_dataclass];
+  objc_storeStrong(&v63, specifier);
+  acui_dataclass = [v63 acui_dataclass];
   v61 = _ACUILogSystem();
   v60 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
   {
-    sub_B1B8(v67, "-[ACUIRemoteAccountDataclassViewController dataclassSwitchStateDidChange:withSpecifier:]", 253, v62, [location[0] BOOLValue]);
+    sub_B1B8(v67, "-[ACUIRemoteAccountDataclassViewController dataclassSwitchStateDidChange:withSpecifier:]", 253, acui_dataclass, [location[0] BOOLValue]);
     _os_log_impl(&dword_0, v61, v60, "%s (%d) Recieved data class state change for class %{public}@, value %d", v67, 0x22u);
   }
 
   objc_storeStrong(&v61, 0);
-  v24 = [(ACUIRemoteAccountDataclassViewController *)v65 account];
-  v59 = [(ACAccount *)v24 accountPropertyForKey:ACAccountPropertyGrantedDataclasses];
+  account = [(ACUIRemoteAccountDataclassViewController *)selfCopy account];
+  v59 = [(ACAccount *)account accountPropertyForKey:ACAccountPropertyGrantedDataclasses];
 
   v56 = 0;
   v54 = 0;
   v52 = 0;
-  v23 = 0;
-  if (![(ACUIRemoteAccountDataclassViewController *)v65 isFirstTimeSetup])
+  bOOLValue = 0;
+  if (![(ACUIRemoteAccountDataclassViewController *)selfCopy isFirstTimeSetup])
   {
-    v57 = [(ACUIRemoteAccountDataclassViewController *)v65 account];
+    account2 = [(ACUIRemoteAccountDataclassViewController *)selfCopy account];
     v56 = 1;
-    v55 = [(ACAccount *)v57 accountType];
+    accountType = [(ACAccount *)account2 accountType];
     v54 = 1;
-    v53 = [(ACAccountType *)v55 identifier];
+    identifier = [(ACAccountType *)accountType identifier];
     v52 = 1;
-    v23 = 0;
-    if ([(NSString *)v53 isEqualToString:ACAccountTypeIdentifierGmail])
+    bOOLValue = 0;
+    if ([(NSString *)identifier isEqualToString:ACAccountTypeIdentifierGmail])
     {
-      v23 = 0;
+      bOOLValue = 0;
       if (v59)
       {
-        v23 = [location[0] BOOLValue];
+        bOOLValue = [location[0] BOOLValue];
       }
     }
   }
@@ -576,38 +576,38 @@
   {
   }
 
-  v58 = v23 & 1;
-  if (v23 & 1) == 0 || ([v59 containsObject:v62])
+  v58 = bOOLValue & 1;
+  if (bOOLValue & 1) == 0 || ([v59 containsObject:acui_dataclass])
   {
-    if ([(ACUIRemoteAccountDataclassViewController *)v65 isFirstTimeSetup])
+    if ([(ACUIRemoteAccountDataclassViewController *)selfCopy isFirstTimeSetup])
     {
-      v10 = [(ACUIRemoteAccountDataclassViewController *)v65 account];
-      v11 = [location[0] BOOLValue];
-      [(ACAccount *)v10 setEnabled:v11 forDataclass:v62];
+      account3 = [(ACUIRemoteAccountDataclassViewController *)selfCopy account];
+      bOOLValue2 = [location[0] BOOLValue];
+      [(ACAccount *)account3 setEnabled:bOOLValue2 forDataclass:acui_dataclass];
     }
 
     else
     {
-      v9 = [(ACUIRemoteAccountDataclassViewController *)v65 account];
-      v40 = [(ACAccount *)v9 copy];
+      account4 = [(ACUIRemoteAccountDataclassViewController *)selfCopy account];
+      v40 = [(ACAccount *)account4 copy];
 
-      v8 = [location[0] BOOLValue];
-      [v40 setEnabled:v8 forDataclass:v62];
+      bOOLValue3 = [location[0] BOOLValue];
+      [v40 setEnabled:bOOLValue3 forDataclass:acui_dataclass];
       object = [v63 _switchSpinnerTimer];
       dispatch_resume(object);
       oslog = _ACUILogSystem();
       v37 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [(ACUIRemoteAccountDataclassViewController *)v65 account];
-        v6 = [(ACAccount *)v7 identifier];
-        sub_1C78(v66, "[ACUIRemoteAccountDataclassViewController dataclassSwitchStateDidChange:withSpecifier:]", 279, v6);
+        account5 = [(ACUIRemoteAccountDataclassViewController *)selfCopy account];
+        identifier2 = [(ACAccount *)account5 identifier];
+        sub_1C78(v66, "[ACUIRemoteAccountDataclassViewController dataclassSwitchStateDidChange:withSpecifier:]", 279, identifier2);
         _os_log_impl(&dword_0, oslog, v37, "%s (%d) Beginning update on remote device for account: %{public}@", v66, 0x1Cu);
       }
 
       objc_storeStrong(&oslog, 0);
-      objc_initWeak(&v36, v65);
-      v4 = [(ACUIRemoteAccountDataclassViewController *)v65 syncController];
+      objc_initWeak(&v36, selfCopy);
+      syncController = [(ACUIRemoteAccountDataclassViewController *)selfCopy syncController];
       v5 = v40;
       v26 = _NSConcreteStackBlock;
       v27 = -1073741824;
@@ -615,11 +615,11 @@
       v29 = sub_C0D4;
       v30 = &unk_1C530;
       objc_copyWeak(&v35, &v36);
-      v31 = v65;
+      v31 = selfCopy;
       v32 = location[0];
-      v33 = v62;
+      v33 = acui_dataclass;
       v34 = object;
-      [(ACUIRemoteAccountSyncController *)v4 updateRemoteAccount:v5 completion:&v26];
+      [(ACUIRemoteAccountSyncController *)syncController updateRemoteAccount:v5 completion:&v26];
 
       objc_storeStrong(&v34, 0);
       objc_storeStrong(&v33, 0);
@@ -634,8 +634,8 @@
 
   else
   {
-    v22 = v62;
-    v21 = [(ACUIRemoteAccountDataclassViewController *)v65 account];
+    v22 = acui_dataclass;
+    account6 = [(ACUIRemoteAccountDataclassViewController *)selfCopy account];
     v51 = [ACUILocalization localizedStringForDataclass:v22 withSuffix:@"LABEL" forAccount:?];
 
     v20 = [NSBundle bundleForClass:objc_opt_class()];
@@ -645,7 +645,7 @@
     v16 = [NSString localizedStringWithFormat:v51, v51];
     v50 = [UIAlertController alertControllerWithTitle:"alertControllerWithTitle:message:preferredStyle:" message:v19 preferredStyle:?];
 
-    objc_initWeak(&from, v65);
+    objc_initWeak(&from, selfCopy);
     v15 = v50;
     v14 = [NSBundle bundleForClass:objc_opt_class()];
     v13 = [(NSBundle *)v14 localizedStringForKey:@"OK" value:&stru_1C810 table:@"Localizable"];
@@ -660,7 +660,7 @@
     [v15 addAction:?];
     v41 = 0;
 
-    [(ACUIRemoteAccountDataclassViewController *)v65 presentViewController:v50 animated:1 completion:0];
+    [(ACUIRemoteAccountDataclassViewController *)selfCopy presentViewController:v50 animated:1 completion:0];
     objc_storeStrong(&v47, 0);
     objc_destroyWeak(&v48);
     objc_destroyWeak(&from);
@@ -669,17 +669,17 @@
   }
 
   objc_storeStrong(&v59, 0);
-  objc_storeStrong(&v62, 0);
+  objc_storeStrong(&acui_dataclass, 0);
   objc_storeStrong(&v63, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)deleteButtonTapped:(id)a3
+- (void)deleteButtonTapped:(id)tapped
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, tapped);
   v7 = [NSBundle bundleForClass:objc_opt_class()];
   v21 = [NSBundle localizedStringForKey:v7 value:"localizedStringForKey:value:table:" table:@"REMOTE_DELETE_CONFIRMATION_MESSAGE"];
 
@@ -687,7 +687,7 @@
   v8 = [(NSBundle *)v9 localizedStringForKey:@"DELETE_ACCOUNT" value:&stru_1C810 table:@"Localizable"];
   v20 = [UIAlertController alertControllerWithTitle:"alertControllerWithTitle:message:preferredStyle:" message:? preferredStyle:?];
 
-  objc_initWeak(&v19, v23);
+  objc_initWeak(&v19, selfCopy);
   v12 = _NSConcreteStackBlock;
   v13 = -1073741824;
   v14 = 0;
@@ -705,7 +705,7 @@
 
   [v20 addAction:v11];
   [v20 addAction:v10];
-  [(ACUIRemoteAccountDataclassViewController *)v23 presentViewController:v20 animated:1 completion:0];
+  [(ACUIRemoteAccountDataclassViewController *)selfCopy presentViewController:v20 animated:1 completion:0];
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v18, 0);
@@ -716,19 +716,19 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)setDeleting:(BOOL)a3
+- (void)setDeleting:(BOOL)deleting
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
-  if (self->_deleting != a3)
+  deletingCopy = deleting;
+  if (self->_deleting != deleting)
   {
-    v15->_deleting = v13;
-    v4 = [(ACUIRemoteAccountDataclassViewController *)v15 cancelButton];
-    [(UIBarButtonItem *)v4 setEnabled:!v15->_deleting];
+    selfCopy->_deleting = deletingCopy;
+    cancelButton = [(ACUIRemoteAccountDataclassViewController *)selfCopy cancelButton];
+    [(UIBarButtonItem *)cancelButton setEnabled:!selfCopy->_deleting];
 
-    v5 = [(ACUIRemoteAccountDataclassViewController *)v15 doneButton];
-    [(UIBarButtonItem *)v5 setEnabled:!v15->_deleting];
+    doneButton = [(ACUIRemoteAccountDataclassViewController *)selfCopy doneButton];
+    [(UIBarButtonItem *)doneButton setEnabled:!selfCopy->_deleting];
 
     v3 = &_dispatch_main_q;
     queue = &_dispatch_main_q;
@@ -737,21 +737,21 @@
     v9 = 0;
     v10 = sub_D378;
     v11 = &unk_1C410;
-    v12 = v15;
+    v12 = selfCopy;
     dispatch_async(queue, &v7);
 
     objc_storeStrong(&v12, 0);
   }
 }
 
-- (void)setSaving:(BOOL)a3
+- (void)setSaving:(BOOL)saving
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
-  if (self->_saving != a3)
+  savingCopy = saving;
+  if (self->_saving != saving)
   {
-    v13->_saving = v11;
+    selfCopy->_saving = savingCopy;
     v3 = &_dispatch_main_q;
     queue = &_dispatch_main_q;
     v5 = _NSConcreteStackBlock;
@@ -759,61 +759,61 @@
     v7 = 0;
     v8 = sub_D4D8;
     v9 = &unk_1C410;
-    v10 = v13;
+    v10 = selfCopy;
     dispatch_async(queue, &v5);
 
     objc_storeStrong(&v10, 0);
   }
 }
 
-- (void)cancelButtonTapped:(id)a3
+- (void)cancelButtonTapped:(id)tapped
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(ACUIRemoteAccountDataclassViewController *)v4 _dismiss];
+  objc_storeStrong(location, tapped);
+  [(ACUIRemoteAccountDataclassViewController *)selfCopy _dismiss];
   objc_storeStrong(location, 0);
 }
 
-- (void)doneButtonTapped:(id)a3
+- (void)doneButtonTapped:(id)tapped
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_initWeak(&from, v21);
-  [(ACUIRemoteAccountDataclassViewController *)v21 setSaving:1];
+  objc_storeStrong(location, tapped);
+  objc_initWeak(&from, selfCopy);
+  [(ACUIRemoteAccountDataclassViewController *)selfCopy setSaving:1];
   v18 = _ACUILogSystem();
   v17 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(ACUIRemoteAccountDataclassViewController *)v21 account];
-    v8 = [(ACAccount *)v9 identifier];
-    sub_1C78(v22, "[ACUIRemoteAccountDataclassViewController doneButtonTapped:]", 379, v8);
+    account = [(ACUIRemoteAccountDataclassViewController *)selfCopy account];
+    identifier = [(ACAccount *)account identifier];
+    sub_1C78(v22, "[ACUIRemoteAccountDataclassViewController doneButtonTapped:]", 379, identifier);
     _os_log_impl(&dword_0, v18, v17, "%s (%d) Beginning saving to remote device for account: %{public}@", v22, 0x1Cu);
   }
 
   objc_storeStrong(&v18, 0);
-  v6 = [(ACUIRemoteAccountDataclassViewController *)v21 account];
-  v7 = [(ACAccount *)v6 supportsPush];
+  account2 = [(ACUIRemoteAccountDataclassViewController *)selfCopy account];
+  supportsPush = [(ACAccount *)account2 supportsPush];
 
-  if ((v7 & 1) == 0)
+  if ((supportsPush & 1) == 0)
   {
-    v5 = [(ACUIRemoteAccountDataclassViewController *)v21 settingsController];
-    [(ACUIRemoteDeviceSettingsController *)v5 setDefaultPollIntervalIfNeeded];
+    settingsController = [(ACUIRemoteAccountDataclassViewController *)selfCopy settingsController];
+    [(ACUIRemoteDeviceSettingsController *)settingsController setDefaultPollIntervalIfNeeded];
   }
 
-  v4 = [(ACUIRemoteAccountDataclassViewController *)v21 syncController];
-  v3 = [(ACUIRemoteAccountDataclassViewController *)v21 account];
+  syncController = [(ACUIRemoteAccountDataclassViewController *)selfCopy syncController];
+  account3 = [(ACUIRemoteAccountDataclassViewController *)selfCopy account];
   v10 = _NSConcreteStackBlock;
   v11 = -1073741824;
   v12 = 0;
   v13 = sub_DB10;
   v14 = &unk_1C5F8;
   objc_copyWeak(&v16, &from);
-  v15 = v21;
-  [(ACUIRemoteAccountSyncController *)v4 saveRemoteAccount:v3 completion:&v10];
+  v15 = selfCopy;
+  [(ACUIRemoteAccountSyncController *)syncController saveRemoteAccount:account3 completion:&v10];
 
   objc_storeStrong(&v15, 0);
   objc_destroyWeak(&v16);
@@ -823,21 +823,21 @@
 
 - (void)_dismiss
 {
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
-  v17 = [(ACUIRemoteAccountDataclassViewController *)self presentingViewController];
+  presentingViewController = [(ACUIRemoteAccountDataclassViewController *)self presentingViewController];
 
-  if (v17)
+  if (presentingViewController)
   {
-    v16 = [(ACUIRemoteAccountDataclassViewController *)v22 navigationController];
-    [v16 dismissViewControllerAnimated:1 completion:0];
+    navigationController = [(ACUIRemoteAccountDataclassViewController *)selfCopy navigationController];
+    [navigationController dismissViewControllerAnimated:1 completion:0];
   }
 
   else
   {
     memset(__b, 0, sizeof(__b));
-    v13 = [(ACUIRemoteAccountDataclassViewController *)v22 navigationController];
-    obj = [v13 viewControllers];
+    navigationController2 = [(ACUIRemoteAccountDataclassViewController *)selfCopy navigationController];
+    obj = [navigationController2 viewControllers];
 
     v15 = [obj countByEnumeratingWithState:__b objects:v23 count:16];
     if (v15)
@@ -872,8 +872,8 @@
         }
       }
 
-      v8 = [(ACUIRemoteAccountDataclassViewController *)v22 navigationController];
-      v2 = [v8 popToViewController:v20 animated:1];
+      navigationController3 = [(ACUIRemoteAccountDataclassViewController *)selfCopy navigationController];
+      v2 = [navigationController3 popToViewController:v20 animated:1];
 
       v18 = 1;
     }
@@ -886,36 +886,36 @@ LABEL_11:
 
     if (!v18)
     {
-      v6 = [(ACUIRemoteAccountDataclassViewController *)v22 traitCollection];
+      traitCollection = [(ACUIRemoteAccountDataclassViewController *)selfCopy traitCollection];
       v7 = [ACUIStatefulNavigation acui_statefulNavigation:?];
 
       if (v7)
       {
-        v5 = [(ACUIRemoteAccountDataclassViewController *)v22 traitCollection];
+        traitCollection2 = [(ACUIRemoteAccountDataclassViewController *)selfCopy traitCollection];
         [ACUIStatefulNavigation acui_popLastItemFromStack:?];
       }
 
       else
       {
-        v4 = [(ACUIRemoteAccountDataclassViewController *)v22 navigationController];
-        v3 = [v4 popViewControllerAnimated:1];
+        navigationController4 = [(ACUIRemoteAccountDataclassViewController *)selfCopy navigationController];
+        v3 = [navigationController4 popViewControllerAnimated:1];
       }
     }
   }
 }
 
-- (void)_displayFailedToSaveAlertShouldDismiss:(BOOL)a3
+- (void)_displayFailedToSaveAlertShouldDismiss:(BOOL)dismiss
 {
-  v27 = self;
+  selfCopy = self;
   v26 = a2;
-  v25 = a3;
+  dismissCopy = dismiss;
   v12 = [NSBundle bundleForClass:objc_opt_class()];
   v11 = [(NSBundle *)v12 localizedStringForKey:@"FAILED_TO_SAVE" value:&stru_1C810 table:@"Localizable"];
   v10 = [NSBundle bundleForClass:objc_opt_class()];
   v9 = [(NSBundle *)v10 localizedStringForKey:@"PLEASE_TRY_AGAIN" value:&stru_1C810 table:@"Localizable"];
   v24 = [UIAlertController alertControllerWithTitle:"alertControllerWithTitle:message:preferredStyle:" message:v11 preferredStyle:?];
 
-  objc_initWeak(&location, v27);
+  objc_initWeak(&location, selfCopy);
   v8 = v24;
   v7 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [(NSBundle *)v7 localizedStringForKey:@"OK" value:&stru_1C810 table:@"Localizable"];
@@ -926,7 +926,7 @@ LABEL_11:
   v19 = &unk_1C648;
   v20 = v24;
   objc_copyWeak(&v21, &location);
-  v22 = v25;
+  v22 = dismissCopy;
   v5 = [UIAlertAction actionWithTitle:v6 style:0 handler:&v15];
   [v8 addAction:?];
   v14 = 0;
@@ -934,14 +934,14 @@ LABEL_11:
   v13 = _ACUILogSystem();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(ACUIRemoteAccountDataclassViewController *)v27 account];
-    v3 = [(ACAccount *)v4 identifier];
-    sub_1C78(v28, "[ACUIRemoteAccountDataclassViewController _displayFailedToSaveAlertShouldDismiss:]", 454, v3);
+    account = [(ACUIRemoteAccountDataclassViewController *)selfCopy account];
+    identifier = [(ACAccount *)account identifier];
+    sub_1C78(v28, "[ACUIRemoteAccountDataclassViewController _displayFailedToSaveAlertShouldDismiss:]", 454, identifier);
     _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "%s (%d) Displaying failed to save alert for account: %{public}@", v28, 0x1Cu);
   }
 
   objc_storeStrong(&v13, 0);
-  [(ACUIRemoteAccountDataclassViewController *)v27 presentViewController:v24 animated:1 completion:0];
+  [(ACUIRemoteAccountDataclassViewController *)selfCopy presentViewController:v24 animated:1 completion:0];
   objc_destroyWeak(&v21);
   objc_storeStrong(&v20, 0);
   objc_destroyWeak(&location);
@@ -950,7 +950,7 @@ LABEL_11:
 
 - (void)_displayFailedToDeleteAlert
 {
-  v13 = self;
+  selfCopy = self;
   v12[1] = a2;
   v7 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [NSBundle localizedStringForKey:v7 value:"localizedStringForKey:value:table:" table:@"FAILED_TO_DELETE"];
@@ -966,14 +966,14 @@ LABEL_11:
   location = _ACUILogSystem();
   if (os_log_type_enabled(location, OS_LOG_TYPE_DEFAULT))
   {
-    v3 = [(ACUIRemoteAccountDataclassViewController *)v13 account];
-    v2 = [(ACAccount *)v3 identifier];
-    sub_1C78(v14, "[ACUIRemoteAccountDataclassViewController _displayFailedToDeleteAlert]", 463, v2);
+    account = [(ACUIRemoteAccountDataclassViewController *)selfCopy account];
+    identifier = [(ACAccount *)account identifier];
+    sub_1C78(v14, "[ACUIRemoteAccountDataclassViewController _displayFailedToDeleteAlert]", 463, identifier);
     _os_log_impl(&dword_0, location, OS_LOG_TYPE_DEFAULT, "%s (%d) Displaying failed to delete alert for account: %{public}@", v14, 0x1Cu);
   }
 
   objc_storeStrong(&location, 0);
-  [(ACUIRemoteAccountDataclassViewController *)v13 presentViewController:v12[0] animated:1 completion:0];
+  [(ACUIRemoteAccountDataclassViewController *)selfCopy presentViewController:v12[0] animated:1 completion:0];
   objc_storeStrong(v12, 0);
 }
 

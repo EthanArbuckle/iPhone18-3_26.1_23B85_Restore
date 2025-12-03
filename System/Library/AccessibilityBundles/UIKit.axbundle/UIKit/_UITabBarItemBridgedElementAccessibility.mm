@@ -1,5 +1,5 @@
 @interface _UITabBarItemBridgedElementAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityAttributedHint;
 - (id)accessibilityAttributedLabel;
 - (id)accessibilityAttributedValue;
@@ -14,14 +14,14 @@
 
 @implementation _UITabBarItemBridgedElementAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v5 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"_UITabBarItemBridgedElement";
   [location[0] validateClass:? isKindOfClass:?];
   [location[0] validateClass:@"_UITabBarItemBridgedElement" hasInstanceMethod:@"tabBarItem" withFullSignature:{"@", 0}];
@@ -31,90 +31,90 @@
 - (id)accessibilityLabel
 {
   v3 = [(_UITabBarItemBridgedElementAccessibility *)self safeValueForKey:@"tabBarItem"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
   MEMORY[0x29EDC9740](v3);
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityAttributedLabel
 {
   v3 = [(_UITabBarItemBridgedElementAccessibility *)self safeValueForKey:@"tabBarItem"];
-  v4 = [v3 accessibilityAttributedLabel];
+  accessibilityAttributedLabel = [v3 accessibilityAttributedLabel];
   MEMORY[0x29EDC9740](v3);
 
-  return v4;
+  return accessibilityAttributedLabel;
 }
 
 - (id)accessibilityValue
 {
   v3 = [(_UITabBarItemBridgedElementAccessibility *)self safeValueForKey:@"tabBarItem"];
-  v4 = [v3 accessibilityValue];
+  accessibilityValue = [v3 accessibilityValue];
   MEMORY[0x29EDC9740](v3);
 
-  return v4;
+  return accessibilityValue;
 }
 
 - (id)accessibilityAttributedValue
 {
   v3 = [(_UITabBarItemBridgedElementAccessibility *)self safeValueForKey:@"tabBarItem"];
-  v4 = [v3 accessibilityAttributedValue];
+  accessibilityAttributedValue = [v3 accessibilityAttributedValue];
   MEMORY[0x29EDC9740](v3);
 
-  return v4;
+  return accessibilityAttributedValue;
 }
 
 - (id)accessibilityHint
 {
   v3 = [(_UITabBarItemBridgedElementAccessibility *)self safeValueForKey:@"tabBarItem"];
-  v4 = [v3 accessibilityHint];
+  accessibilityHint = [v3 accessibilityHint];
   MEMORY[0x29EDC9740](v3);
 
-  return v4;
+  return accessibilityHint;
 }
 
 - (id)accessibilityAttributedHint
 {
   v3 = [(_UITabBarItemBridgedElementAccessibility *)self safeValueForKey:@"tabBarItem"];
-  v4 = [v3 accessibilityAttributedHint];
+  accessibilityAttributedHint = [v3 accessibilityAttributedHint];
   MEMORY[0x29EDC9740](v3);
 
-  return v4;
+  return accessibilityAttributedHint;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v3 = [(_UITabBarItemBridgedElementAccessibility *)self safeValueForKey:@"tabBarItem"];
-  v4 = [v3 accessibilityTraits];
+  accessibilityTraits = [v3 accessibilityTraits];
   MEMORY[0x29EDC9740](v3);
-  return v4;
+  return accessibilityTraits;
 }
 
 - (id)accessibilityIdentifier
 {
   v3 = [(_UITabBarItemBridgedElementAccessibility *)self safeValueForKey:@"tabBarItem"];
-  v4 = [v3 accessibilityIdentifier];
+  accessibilityIdentifier = [v3 accessibilityIdentifier];
   MEMORY[0x29EDC9740](v3);
 
-  return v4;
+  return accessibilityIdentifier;
 }
 
 - (id)accessibilityUserInputLabels
 {
   v3 = [(_UITabBarItemBridgedElementAccessibility *)self safeValueForKey:@"tabBarItem"];
-  v4 = [v3 accessibilityUserInputLabels];
+  accessibilityUserInputLabels = [v3 accessibilityUserInputLabels];
   MEMORY[0x29EDC9740](v3);
 
-  return v4;
+  return accessibilityUserInputLabels;
 }
 
 - (id)accessibilityCustomActions
 {
   v3 = [(_UITabBarItemBridgedElementAccessibility *)self safeValueForKey:@"tabBarItem"];
-  v4 = [v3 accessibilityCustomActions];
+  accessibilityCustomActions = [v3 accessibilityCustomActions];
   MEMORY[0x29EDC9740](v3);
 
-  return v4;
+  return accessibilityCustomActions;
 }
 
 @end

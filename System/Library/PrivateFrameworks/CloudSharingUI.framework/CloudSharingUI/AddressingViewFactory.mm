@@ -1,33 +1,33 @@
 @interface AddressingViewFactory
 - (_TtC14CloudSharingUI21AddressingViewFactory)init;
-- (_TtC14CloudSharingUI21AddressingViewFactory)initWithHeaderImageData:(id)a3 headerTitle:(id)a4 loadingText:(id)a5 supplementaryText:(id)a6 userInfoText:(id)a7 primaryButtonText:(id)a8 secondaryButtonText:(id)a9 shouldAllowEmptyAddresses:(BOOL)a10 userDidClickPrimaryButton:(id)a11 userDidClickSecondaryButton:(id)a12 userDidClickShowContactPicker:(id)a13 userDidChangeAddresses:(id)a14;
-- (void)addAddressFrom:(id)a3 contactProperty:(id)a4;
-- (void)updateWithHeaderImageData:(id)a3 headerTitle:(id)a4 loadingText:(id)a5 supplementaryText:(id)a6 userInfoText:(id)a7 primaryButtonText:(id)a8 secondaryButtonText:(id)a9;
+- (_TtC14CloudSharingUI21AddressingViewFactory)initWithHeaderImageData:(id)data headerTitle:(id)title loadingText:(id)text supplementaryText:(id)supplementaryText userInfoText:(id)infoText primaryButtonText:(id)buttonText secondaryButtonText:(id)secondaryButtonText shouldAllowEmptyAddresses:(BOOL)self0 userDidClickPrimaryButton:(id)self1 userDidClickSecondaryButton:(id)self2 userDidClickShowContactPicker:(id)self3 userDidChangeAddresses:(id)self4;
+- (void)addAddressFrom:(id)from contactProperty:(id)property;
+- (void)updateWithHeaderImageData:(id)data headerTitle:(id)title loadingText:(id)text supplementaryText:(id)supplementaryText userInfoText:(id)infoText primaryButtonText:(id)buttonText secondaryButtonText:(id)secondaryButtonText;
 @end
 
 @implementation AddressingViewFactory
 
-- (_TtC14CloudSharingUI21AddressingViewFactory)initWithHeaderImageData:(id)a3 headerTitle:(id)a4 loadingText:(id)a5 supplementaryText:(id)a6 userInfoText:(id)a7 primaryButtonText:(id)a8 secondaryButtonText:(id)a9 shouldAllowEmptyAddresses:(BOOL)a10 userDidClickPrimaryButton:(id)a11 userDidClickSecondaryButton:(id)a12 userDidClickShowContactPicker:(id)a13 userDidChangeAddresses:(id)a14
+- (_TtC14CloudSharingUI21AddressingViewFactory)initWithHeaderImageData:(id)data headerTitle:(id)title loadingText:(id)text supplementaryText:(id)supplementaryText userInfoText:(id)infoText primaryButtonText:(id)buttonText secondaryButtonText:(id)secondaryButtonText shouldAllowEmptyAddresses:(BOOL)self0 userDidClickPrimaryButton:(id)self1 userDidClickSecondaryButton:(id)self2 userDidClickShowContactPicker:(id)self3 userDidChangeAddresses:(id)self4
 {
-  v70 = _Block_copy(a11);
-  v20 = _Block_copy(a12);
-  v78 = _Block_copy(a13);
-  v21 = _Block_copy(a14);
-  if (a3)
+  v70 = _Block_copy(button);
+  v20 = _Block_copy(secondaryButton);
+  v78 = _Block_copy(picker);
+  v21 = _Block_copy(changeAddresses);
+  if (data)
   {
-    v22 = a4;
-    v23 = a5;
-    v24 = a6;
-    v25 = a7;
-    v26 = a8;
-    v27 = a9;
-    v28 = a3;
+    titleCopy = title;
+    textCopy = text;
+    supplementaryTextCopy = supplementaryText;
+    infoTextCopy = infoText;
+    buttonTextCopy = buttonText;
+    secondaryButtonTextCopy = secondaryButtonText;
+    dataCopy = data;
     v29 = sub_243B6FAAC();
     v76 = v30;
     v77 = v29;
 
     v31 = v20;
-    if (a4)
+    if (title)
     {
       goto LABEL_3;
     }
@@ -35,16 +35,16 @@
 
   else
   {
-    v55 = a4;
-    v56 = a5;
-    v57 = a6;
-    v58 = a7;
-    v59 = a8;
-    v60 = a9;
+    titleCopy2 = title;
+    textCopy2 = text;
+    supplementaryTextCopy2 = supplementaryText;
+    infoTextCopy2 = infoText;
+    buttonTextCopy2 = buttonText;
+    secondaryButtonTextCopy2 = secondaryButtonText;
     v76 = 0xF000000000000000;
     v77 = 0;
     v31 = v20;
-    if (a4)
+    if (title)
     {
 LABEL_3:
       v32 = sub_243B7082C();
@@ -52,7 +52,7 @@ LABEL_3:
       v75 = v32;
 
       v34 = v21;
-      if (a5)
+      if (text)
       {
         goto LABEL_4;
       }
@@ -64,14 +64,14 @@ LABEL_3:
   v74 = 0;
   v75 = 0;
   v34 = v21;
-  if (a5)
+  if (text)
   {
 LABEL_4:
     v35 = sub_243B7082C();
     v72 = v36;
     v73 = v35;
 
-    if (a6)
+    if (supplementaryText)
     {
       goto LABEL_5;
     }
@@ -82,7 +82,7 @@ LABEL_4:
 LABEL_15:
   v72 = 0;
   v73 = 0;
-  if (a6)
+  if (supplementaryText)
   {
 LABEL_5:
     v37 = sub_243B7082C();
@@ -90,7 +90,7 @@ LABEL_5:
     v69 = v37;
 
     v39 = v70;
-    if (a7)
+    if (infoText)
     {
       goto LABEL_6;
     }
@@ -102,13 +102,13 @@ LABEL_16:
   v68 = 0;
   v69 = 0;
   v39 = v70;
-  if (a7)
+  if (infoText)
   {
 LABEL_6:
     v71 = sub_243B7082C();
     v67 = v40;
 
-    if (a8)
+    if (buttonText)
     {
       goto LABEL_7;
     }
@@ -119,14 +119,14 @@ LABEL_6:
 LABEL_17:
   v71 = 0;
   v67 = 0;
-  if (a8)
+  if (buttonText)
   {
 LABEL_7:
     v41 = sub_243B7082C();
     v65 = v42;
     v66 = v41;
 
-    if (a9)
+    if (secondaryButtonText)
     {
       goto LABEL_8;
     }
@@ -137,7 +137,7 @@ LABEL_7:
 LABEL_18:
   v65 = 0;
   v66 = 0;
-  if (a9)
+  if (secondaryButtonText)
   {
 LABEL_8:
     v43 = sub_243B7082C();
@@ -186,7 +186,7 @@ LABEL_10:
 LABEL_22:
     v50 = 0;
     v49 = 0;
-    v51 = a10;
+    addressesCopy2 = addresses;
     if (v34)
     {
       goto LABEL_12;
@@ -209,7 +209,7 @@ LABEL_11:
   v49 = swift_allocObject();
   *(v49 + 16) = v78;
   v50 = sub_243B6EAC4;
-  v51 = a10;
+  addressesCopy2 = addresses;
   if (!v34)
   {
     goto LABEL_23;
@@ -223,7 +223,7 @@ LABEL_12:
   v54 = sub_243B6EA50;
 LABEL_24:
   v79 = v46;
-  v61 = sub_243B6DD7C(v77, v76, v75, v74, v73, v72, v69, v68, v71, v67, v66, v65, v64, v63, v51, v46, v45, v48, v47, v50, v49, v54, v34);
+  v61 = sub_243B6DD7C(v77, v76, v75, v74, v73, v72, v69, v68, v71, v67, v66, v65, v64, v63, addressesCopy2, v46, v45, v48, v47, v50, v49, v54, v34);
   sub_243B2BFCC(v54);
   sub_243B2BFCC(v50);
   sub_243B2BFCC(v48);
@@ -232,23 +232,23 @@ LABEL_24:
   return v61;
 }
 
-- (void)updateWithHeaderImageData:(id)a3 headerTitle:(id)a4 loadingText:(id)a5 supplementaryText:(id)a6 userInfoText:(id)a7 primaryButtonText:(id)a8 secondaryButtonText:(id)a9
+- (void)updateWithHeaderImageData:(id)data headerTitle:(id)title loadingText:(id)text supplementaryText:(id)supplementaryText userInfoText:(id)infoText primaryButtonText:(id)buttonText secondaryButtonText:(id)secondaryButtonText
 {
-  if (a3)
+  if (data)
   {
-    v15 = a4;
-    v16 = a5;
-    v17 = a6;
-    v18 = a7;
-    v19 = a8;
-    v20 = a9;
-    v21 = self;
-    v22 = a3;
+    titleCopy = title;
+    textCopy = text;
+    supplementaryTextCopy = supplementaryText;
+    infoTextCopy = infoText;
+    buttonTextCopy = buttonText;
+    secondaryButtonTextCopy = secondaryButtonText;
+    selfCopy = self;
+    dataCopy = data;
     v23 = sub_243B6FAAC();
     v50 = v24;
     v51 = v23;
 
-    if (a4)
+    if (title)
     {
       goto LABEL_3;
     }
@@ -256,22 +256,22 @@ LABEL_24:
 
   else
   {
-    v40 = a4;
-    v41 = a5;
-    v42 = a6;
-    v43 = a7;
-    v44 = a8;
-    v45 = a9;
-    v46 = self;
+    titleCopy2 = title;
+    textCopy2 = text;
+    supplementaryTextCopy2 = supplementaryText;
+    infoTextCopy2 = infoText;
+    buttonTextCopy2 = buttonText;
+    secondaryButtonTextCopy2 = secondaryButtonText;
+    selfCopy2 = self;
     v50 = 0xF000000000000000;
     v51 = 0;
-    if (a4)
+    if (title)
     {
 LABEL_3:
       v48 = sub_243B7082C();
       v49 = v25;
 
-      if (a5)
+      if (text)
       {
         goto LABEL_4;
       }
@@ -282,13 +282,13 @@ LABEL_3:
 
   v48 = 0;
   v49 = 0;
-  if (a5)
+  if (text)
   {
 LABEL_4:
     v47 = sub_243B7082C();
     v27 = v26;
 
-    if (a6)
+    if (supplementaryText)
     {
       goto LABEL_5;
     }
@@ -299,13 +299,13 @@ LABEL_4:
 LABEL_11:
   v47 = 0;
   v27 = 0;
-  if (a6)
+  if (supplementaryText)
   {
 LABEL_5:
     v28 = sub_243B7082C();
     v30 = v29;
 
-    if (a7)
+    if (infoText)
     {
       goto LABEL_6;
     }
@@ -316,13 +316,13 @@ LABEL_5:
 LABEL_12:
   v28 = 0;
   v30 = 0;
-  if (a7)
+  if (infoText)
   {
 LABEL_6:
     v31 = sub_243B7082C();
     v33 = v32;
 
-    if (a8)
+    if (buttonText)
     {
       goto LABEL_7;
     }
@@ -330,7 +330,7 @@ LABEL_6:
 LABEL_14:
     v34 = 0;
     v36 = 0;
-    if (a9)
+    if (secondaryButtonText)
     {
       goto LABEL_8;
     }
@@ -341,7 +341,7 @@ LABEL_14:
 LABEL_13:
   v31 = 0;
   v33 = 0;
-  if (!a8)
+  if (!buttonText)
   {
     goto LABEL_14;
   }
@@ -350,7 +350,7 @@ LABEL_7:
   v34 = sub_243B7082C();
   v36 = v35;
 
-  if (a9)
+  if (secondaryButtonText)
   {
 LABEL_8:
     v37 = sub_243B7082C();
@@ -368,13 +368,13 @@ LABEL_16:
   sub_243B58410(v51, v50);
 }
 
-- (void)addAddressFrom:(id)a3 contactProperty:(id)a4
+- (void)addAddressFrom:(id)from contactProperty:(id)property
 {
   v7 = *(&self->super.isa + OBJC_IVAR____TtC14CloudSharingUI21AddressingViewFactory_viewModel);
-  v8 = a3;
-  v10 = a4;
-  v9 = self;
-  sub_243B584E0(a3, a4);
+  fromCopy = from;
+  propertyCopy = property;
+  selfCopy = self;
+  sub_243B584E0(from, property);
 }
 
 - (_TtC14CloudSharingUI21AddressingViewFactory)init

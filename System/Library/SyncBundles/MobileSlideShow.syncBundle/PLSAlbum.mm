@@ -1,22 +1,22 @@
 @interface PLSAlbum
 + (id)album;
-+ (id)albumWithUUID:(id)a3;
-- (BOOL)isEqualToAlbum:(id)a3;
++ (id)albumWithUUID:(id)d;
+- (BOOL)isEqualToAlbum:(id)album;
 - (PLSAlbum)init;
-- (PLSAlbum)initWithCoder:(id)a3;
-- (PLSAlbum)initWithUUID:(id)a3;
+- (PLSAlbum)initWithCoder:(id)coder;
+- (PLSAlbum)initWithUUID:(id)d;
 - (id)description;
-- (id)initFromPropertyList:(id)a3;
+- (id)initFromPropertyList:(id)list;
 - (id)propertyList;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PLSAlbum
 
-- (BOOL)isEqualToAlbum:(id)a3
+- (BOOL)isEqualToAlbum:(id)album
 {
-  v4 = a3;
-  if (!v4)
+  albumCopy = album;
+  if (!albumCopy)
   {
     goto LABEL_30;
   }
@@ -36,15 +36,15 @@
     goto LABEL_29;
   }
 
-  if (v4 == self)
+  if (albumCopy == self)
   {
     v25 = 1;
     goto LABEL_31;
   }
 
-  v5 = [(PLSAlbum *)self name];
-  v6 = [(PLSAlbum *)v4 name];
-  v7 = [PLSLibraryChangeSnapshot string:v5 equalsString:v6];
+  name = [(PLSAlbum *)self name];
+  name2 = [(PLSAlbum *)albumCopy name];
+  v7 = [PLSLibraryChangeSnapshot string:name equalsString:name2];
 
   if ((v7 & 1) == 0)
   {
@@ -60,9 +60,9 @@
     goto LABEL_29;
   }
 
-  v8 = [(PLSAlbum *)self albumSubclass];
-  v9 = [(PLSAlbum *)v4 albumSubclass];
-  v10 = [PLSLibraryChangeSnapshot number:v8 equalsNumber:v9];
+  albumSubclass = [(PLSAlbum *)self albumSubclass];
+  albumSubclass2 = [(PLSAlbum *)albumCopy albumSubclass];
+  v10 = [PLSLibraryChangeSnapshot number:albumSubclass equalsNumber:albumSubclass2];
 
   if ((v10 & 1) == 0)
   {
@@ -78,9 +78,9 @@
     goto LABEL_29;
   }
 
-  v11 = [(PLSAlbum *)self albumKeyAssetFaceIndex];
-  v12 = [(PLSAlbum *)v4 albumKeyAssetFaceIndex];
-  v13 = [PLSLibraryChangeSnapshot number:v11 equalsNumber:v12];
+  albumKeyAssetFaceIndex = [(PLSAlbum *)self albumKeyAssetFaceIndex];
+  albumKeyAssetFaceIndex2 = [(PLSAlbum *)albumCopy albumKeyAssetFaceIndex];
+  v13 = [PLSLibraryChangeSnapshot number:albumKeyAssetFaceIndex equalsNumber:albumKeyAssetFaceIndex2];
 
   if ((v13 & 1) == 0)
   {
@@ -96,9 +96,9 @@
     goto LABEL_29;
   }
 
-  v14 = [(PLSAlbum *)self parentUUID];
-  v15 = [(PLSAlbum *)v4 parentUUID];
-  v16 = [PLSLibraryChangeSnapshot string:v14 equalsString:v15];
+  parentUUID = [(PLSAlbum *)self parentUUID];
+  parentUUID2 = [(PLSAlbum *)albumCopy parentUUID];
+  v16 = [PLSLibraryChangeSnapshot string:parentUUID equalsString:parentUUID2];
 
   if ((v16 & 1) == 0)
   {
@@ -114,9 +114,9 @@
     goto LABEL_29;
   }
 
-  v17 = [(PLSAlbum *)self keyAssetUUID];
-  v18 = [(PLSAlbum *)v4 keyAssetUUID];
-  v19 = [PLSLibraryChangeSnapshot string:v17 equalsString:v18];
+  keyAssetUUID = [(PLSAlbum *)self keyAssetUUID];
+  keyAssetUUID2 = [(PLSAlbum *)albumCopy keyAssetUUID];
+  v19 = [PLSLibraryChangeSnapshot string:keyAssetUUID equalsString:keyAssetUUID2];
 
   if ((v19 & 1) == 0)
   {
@@ -141,21 +141,21 @@ LABEL_30:
   *(&buf + 1) = &buf;
   v37 = 0x2020000000;
   v38 = 1;
-  v21 = [(PLSAlbum *)v4 assetUUIDs];
-  v22 = [(PLSAlbum *)self assetUUIDs];
-  v23 = [v22 count];
-  LOBYTE(v23) = v23 == [v21 count];
+  assetUUIDs = [(PLSAlbum *)albumCopy assetUUIDs];
+  assetUUIDs2 = [(PLSAlbum *)self assetUUIDs];
+  v23 = [assetUUIDs2 count];
+  LOBYTE(v23) = v23 == [assetUUIDs count];
 
   if (v23)
   {
-    v24 = [(PLSAlbum *)self assetUUIDs];
+    assetUUIDs3 = [(PLSAlbum *)self assetUUIDs];
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
     v31[2] = sub_209C;
     v31[3] = &unk_24BC8;
-    v32 = v21;
+    v32 = assetUUIDs;
     p_buf = &buf;
-    [v24 enumerateObjectsUsingBlock:v31];
+    [assetUUIDs3 enumerateObjectsUsingBlock:v31];
 
     v25 = *(*(&buf + 1) + 24);
     v26 = v32;
@@ -186,8 +186,8 @@ LABEL_31:
 {
   v12.receiver = self;
   v12.super_class = PLSAlbum;
-  v3 = [(PLSItem *)&v12 propertyList];
-  v4 = [NSMutableDictionary dictionaryWithDictionary:v3];
+  propertyList = [(PLSItem *)&v12 propertyList];
+  v4 = [NSMutableDictionary dictionaryWithDictionary:propertyList];
 
   name = self->_name;
   if (name)
@@ -228,35 +228,35 @@ LABEL_31:
   return v4;
 }
 
-- (id)initFromPropertyList:(id)a3
+- (id)initFromPropertyList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v19.receiver = self;
   v19.super_class = PLSAlbum;
-  v5 = [(PLSItem *)&v19 initFromPropertyList:v4];
+  v5 = [(PLSItem *)&v19 initFromPropertyList:listCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:kPLSAlbumNameKey];
+    v6 = [listCopy objectForKey:kPLSAlbumNameKey];
     v7 = v5[4];
     v5[4] = v6;
 
-    v8 = [v4 objectForKey:kPLSAlbumAssetUUIDsKey];
+    v8 = [listCopy objectForKey:kPLSAlbumAssetUUIDsKey];
     v9 = v5[5];
     v5[5] = v8;
 
-    v10 = [v4 objectForKey:kPLSAlbumParentUUIDKey];
+    v10 = [listCopy objectForKey:kPLSAlbumParentUUIDKey];
     v11 = v5[6];
     v5[6] = v10;
 
-    v12 = [v4 objectForKey:kPLSAlbumSubclassKey];
+    v12 = [listCopy objectForKey:kPLSAlbumSubclassKey];
     v13 = v5[7];
     v5[7] = v12;
 
-    v14 = [v4 objectForKey:kPLSAlbumKeyAssetFaceIndexKey];
+    v14 = [listCopy objectForKey:kPLSAlbumKeyAssetFaceIndexKey];
     v15 = v5[8];
     v5[8] = v14;
 
-    v16 = [v4 objectForKey:kPLSKeyAssetUUIDKey];
+    v16 = [listCopy objectForKey:kPLSKeyAssetUUIDKey];
     v17 = v5[9];
     v5[9] = v16;
   }
@@ -264,61 +264,61 @@ LABEL_31:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PLSAlbum *)self name];
-  [v4 encodeObject:v5 forKey:kPLSAlbumNameKey];
+  coderCopy = coder;
+  name = [(PLSAlbum *)self name];
+  [coderCopy encodeObject:name forKey:kPLSAlbumNameKey];
 
-  v6 = [(PLSAlbum *)self assetUUIDs];
-  [v4 encodeObject:v6 forKey:kPLSAlbumAssetUUIDsKey];
+  assetUUIDs = [(PLSAlbum *)self assetUUIDs];
+  [coderCopy encodeObject:assetUUIDs forKey:kPLSAlbumAssetUUIDsKey];
 
-  v7 = [(PLSAlbum *)self parentUUID];
-  [v4 encodeObject:v7 forKey:kPLSAlbumParentUUIDKey];
+  parentUUID = [(PLSAlbum *)self parentUUID];
+  [coderCopy encodeObject:parentUUID forKey:kPLSAlbumParentUUIDKey];
 
-  v8 = [(PLSAlbum *)self albumSubclass];
-  [v4 encodeObject:v8 forKey:kPLSAlbumSubclassKey];
+  albumSubclass = [(PLSAlbum *)self albumSubclass];
+  [coderCopy encodeObject:albumSubclass forKey:kPLSAlbumSubclassKey];
 
-  v9 = [(PLSAlbum *)self albumKeyAssetFaceIndex];
-  [v4 encodeObject:v9 forKey:kPLSAlbumKeyAssetFaceIndexKey];
+  albumKeyAssetFaceIndex = [(PLSAlbum *)self albumKeyAssetFaceIndex];
+  [coderCopy encodeObject:albumKeyAssetFaceIndex forKey:kPLSAlbumKeyAssetFaceIndexKey];
 
-  v10 = [(PLSAlbum *)self keyAssetUUID];
-  [v4 encodeObject:v10 forKey:kPLSKeyAssetUUIDKey];
+  keyAssetUUID = [(PLSAlbum *)self keyAssetUUID];
+  [coderCopy encodeObject:keyAssetUUID forKey:kPLSKeyAssetUUIDKey];
 
   v11.receiver = self;
   v11.super_class = PLSAlbum;
-  [(PLSItem *)&v11 encodeWithCoder:v4];
+  [(PLSItem *)&v11 encodeWithCoder:coderCopy];
 }
 
-- (PLSAlbum)initWithCoder:(id)a3
+- (PLSAlbum)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = PLSAlbum;
-  v5 = [(PLSItem *)&v19 initWithCoder:v4];
+  v5 = [(PLSItem *)&v19 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:kPLSAlbumNameKey];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:kPLSAlbumNameKey];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodePropertyListForKey:kPLSAlbumAssetUUIDsKey];
+    v8 = [coderCopy decodePropertyListForKey:kPLSAlbumAssetUUIDsKey];
     assetUUIDs = v5->_assetUUIDs;
     v5->_assetUUIDs = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:kPLSAlbumParentUUIDKey];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:kPLSAlbumParentUUIDKey];
     parentUUID = v5->_parentUUID;
     v5->_parentUUID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:kPLSAlbumSubclassKey];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:kPLSAlbumSubclassKey];
     albumSubclass = v5->_albumSubclass;
     v5->_albumSubclass = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:kPLSAlbumKeyAssetFaceIndexKey];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:kPLSAlbumKeyAssetFaceIndexKey];
     albumKeyAssetFaceIndex = v5->_albumKeyAssetFaceIndex;
     v5->_albumKeyAssetFaceIndex = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:kPLSKeyAssetUUIDKey];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:kPLSKeyAssetUUIDKey];
     keyAssetUUID = v5->_keyAssetUUID;
     v5->_keyAssetUUID = v16;
   }
@@ -331,18 +331,18 @@ LABEL_31:
   v8.receiver = self;
   v8.super_class = PLSAlbum;
   v3 = [(PLSItem *)&v8 description];
-  v4 = [(PLSAlbum *)self name];
-  v5 = [(PLSAlbum *)self albumSubclass];
-  v6 = [NSString stringWithFormat:@"Album - %@, name: %@ subclass type:(%@)", v3, v4, v5];
+  name = [(PLSAlbum *)self name];
+  albumSubclass = [(PLSAlbum *)self albumSubclass];
+  v6 = [NSString stringWithFormat:@"Album - %@, name: %@ subclass type:(%@)", v3, name, albumSubclass];
 
   return v6;
 }
 
-- (PLSAlbum)initWithUUID:(id)a3
+- (PLSAlbum)initWithUUID:(id)d
 {
   v12.receiver = self;
   v12.super_class = PLSAlbum;
-  v3 = [(PLSItem *)&v12 initWithUUID:a3];
+  v3 = [(PLSItem *)&v12 initWithUUID:d];
   v4 = v3;
   if (v3)
   {
@@ -376,10 +376,10 @@ LABEL_31:
   return v4;
 }
 
-+ (id)albumWithUUID:(id)a3
++ (id)albumWithUUID:(id)d
 {
-  v3 = a3;
-  v4 = [[PLSAlbum alloc] initWithUUID:v3];
+  dCopy = d;
+  v4 = [[PLSAlbum alloc] initWithUUID:dCopy];
 
   return v4;
 }

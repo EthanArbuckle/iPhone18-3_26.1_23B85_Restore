@@ -1,9 +1,9 @@
 @interface _SBUISystemApertureAspectFittingView
 - (CGSize)explicitIntrinsicSize;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (id)contentContainer;
-- (id)initWithContentView:(id *)a1;
+- (id)initWithContentView:(id *)view;
 - (id)setContentContainer:(id *)result;
 - (uint64_t)contentView;
 - (void)layoutSubviews;
@@ -11,11 +11,11 @@
 
 @implementation _SBUISystemApertureAspectFittingView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  if (a3.width != 0.0 && a3.height != 0.0)
+  height = fits.height;
+  width = fits.width;
+  if (fits.width != 0.0 && fits.height != 0.0)
   {
     [(_SBUISystemApertureAspectFittingView *)self explicitIntrinsicSize];
     v8 = v7;
@@ -96,25 +96,25 @@
   return result;
 }
 
-- (id)initWithContentView:(id *)a1
+- (id)initWithContentView:(id *)view
 {
   v4 = a2;
   v5 = v4;
-  if (a1)
+  if (view)
   {
     [v4 bounds];
-    v8.receiver = a1;
+    v8.receiver = view;
     v8.super_class = _SBUISystemApertureAspectFittingView;
     v6 = objc_msgSendSuper2(&v8, sel_initWithFrame_);
-    a1 = v6;
+    view = v6;
     if (v6)
     {
       objc_storeStrong(v6 + 51, a2);
-      [a1 addSubview:v5];
+      [view addSubview:v5];
     }
   }
 
-  return a1;
+  return view;
 }
 
 - (id)setContentContainer:(id *)result

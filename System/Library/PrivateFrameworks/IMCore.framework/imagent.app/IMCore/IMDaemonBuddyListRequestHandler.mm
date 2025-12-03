@@ -1,18 +1,18 @@
 @interface IMDaemonBuddyListRequestHandler
-- (void)changeGroup:(id)a3 changes:(id)a4 account:(id)a5;
-- (void)changeGroups:(id)a3 account:(id)a4;
-- (void)renameGroup:(id)a3 to:(id)a4 account:(id)a5;
-- (void)requestSubscriptionTo:(id)a3 account:(id)a4;
+- (void)changeGroup:(id)group changes:(id)changes account:(id)account;
+- (void)changeGroups:(id)groups account:(id)account;
+- (void)renameGroup:(id)group to:(id)to account:(id)account;
+- (void)requestSubscriptionTo:(id)to account:(id)account;
 @end
 
 @implementation IMDaemonBuddyListRequestHandler
 
-- (void)changeGroups:(id)a3 account:(id)a4
+- (void)changeGroups:(id)groups account:(id)account
 {
-  v5 = a3;
-  v6 = a4;
+  groupsCopy = groups;
+  accountCopy = account;
   v7 = +[IMDAccountController sharedAccountController];
-  v8 = [v7 sessionForAccount:v6];
+  v8 = [v7 sessionForAccount:accountCopy];
 
   if (v8)
   {
@@ -25,22 +25,22 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v16 = 138412290;
-      v17 = v6;
+      v17 = accountCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "FIND_SESSION: No session found for account, attempting to find ANYTHING for the service: %@", &v16, 0xCu);
     }
   }
 
   v10 = +[IMDAccountController sharedAccountController];
   v11 = +[IMDAccountController sharedAccountController];
-  v12 = [v11 accountForAccountID:v6];
-  v13 = [v12 service];
-  v14 = [v13 internalName];
-  v8 = [v10 anySessionForServiceName:v14];
+  v12 = [v11 accountForAccountID:accountCopy];
+  service = [v12 service];
+  internalName = [service internalName];
+  v8 = [v10 anySessionForServiceName:internalName];
 
   if (v8)
   {
 LABEL_7:
-    [v8 changeGroups:v5];
+    [v8 changeGroups:groupsCopy];
   }
 
   else if (IMOSLoggingEnabled())
@@ -49,19 +49,19 @@ LABEL_7:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v16 = 138412290;
-      v17 = v6;
+      v17 = accountCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "FIND_SESSION: No session ever found for account: %@", &v16, 0xCu);
     }
   }
 }
 
-- (void)changeGroup:(id)a3 changes:(id)a4 account:(id)a5
+- (void)changeGroup:(id)group changes:(id)changes account:(id)account
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  groupCopy = group;
+  changesCopy = changes;
+  accountCopy = account;
   v10 = +[IMDAccountController sharedAccountController];
-  v11 = [v10 sessionForAccount:v9];
+  v11 = [v10 sessionForAccount:accountCopy];
 
   if (v11)
   {
@@ -74,22 +74,22 @@ LABEL_7:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v19 = 138412290;
-      v20 = v9;
+      v20 = accountCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "FIND_SESSION: No session found for account, attempting to find ANYTHING for the service: %@", &v19, 0xCu);
     }
   }
 
   v13 = +[IMDAccountController sharedAccountController];
   v14 = +[IMDAccountController sharedAccountController];
-  v15 = [v14 accountForAccountID:v9];
-  v16 = [v15 service];
-  v17 = [v16 internalName];
-  v11 = [v13 anySessionForServiceName:v17];
+  v15 = [v14 accountForAccountID:accountCopy];
+  service = [v15 service];
+  internalName = [service internalName];
+  v11 = [v13 anySessionForServiceName:internalName];
 
   if (v11)
   {
 LABEL_7:
-    [v11 changeGroup:v7 changes:v8];
+    [v11 changeGroup:groupCopy changes:changesCopy];
   }
 
   else if (IMOSLoggingEnabled())
@@ -98,19 +98,19 @@ LABEL_7:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       v19 = 138412290;
-      v20 = v9;
+      v20 = accountCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "FIND_SESSION: No session ever found for account: %@", &v19, 0xCu);
     }
   }
 }
 
-- (void)renameGroup:(id)a3 to:(id)a4 account:(id)a5
+- (void)renameGroup:(id)group to:(id)to account:(id)account
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  groupCopy = group;
+  toCopy = to;
+  accountCopy = account;
   v10 = +[IMDAccountController sharedAccountController];
-  v11 = [v10 sessionForAccount:v9];
+  v11 = [v10 sessionForAccount:accountCopy];
 
   if (v11)
   {
@@ -123,22 +123,22 @@ LABEL_7:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v19 = 138412290;
-      v20 = v9;
+      v20 = accountCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "FIND_SESSION: No session found for account, attempting to find ANYTHING for the service: %@", &v19, 0xCu);
     }
   }
 
   v13 = +[IMDAccountController sharedAccountController];
   v14 = +[IMDAccountController sharedAccountController];
-  v15 = [v14 accountForAccountID:v9];
-  v16 = [v15 service];
-  v17 = [v16 internalName];
-  v11 = [v13 anySessionForServiceName:v17];
+  v15 = [v14 accountForAccountID:accountCopy];
+  service = [v15 service];
+  internalName = [service internalName];
+  v11 = [v13 anySessionForServiceName:internalName];
 
   if (v11)
   {
 LABEL_7:
-    [v11 renameGroup:v7 to:v8];
+    [v11 renameGroup:groupCopy to:toCopy];
   }
 
   else if (IMOSLoggingEnabled())
@@ -147,18 +147,18 @@ LABEL_7:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       v19 = 138412290;
-      v20 = v9;
+      v20 = accountCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "FIND_SESSION: No session ever found for account: %@", &v19, 0xCu);
     }
   }
 }
 
-- (void)requestSubscriptionTo:(id)a3 account:(id)a4
+- (void)requestSubscriptionTo:(id)to account:(id)account
 {
-  v5 = a3;
-  v6 = a4;
+  toCopy = to;
+  accountCopy = account;
   v7 = +[IMDAccountController sharedAccountController];
-  v8 = [v7 sessionForAccount:v6];
+  v8 = [v7 sessionForAccount:accountCopy];
 
   if (v8)
   {
@@ -171,22 +171,22 @@ LABEL_7:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v16 = 138412290;
-      v17 = v6;
+      v17 = accountCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "FIND_SESSION: No session found for account, attempting to find ANYTHING for the service: %@", &v16, 0xCu);
     }
   }
 
   v10 = +[IMDAccountController sharedAccountController];
   v11 = +[IMDAccountController sharedAccountController];
-  v12 = [v11 accountForAccountID:v6];
-  v13 = [v12 service];
-  v14 = [v13 internalName];
-  v8 = [v10 anySessionForServiceName:v14];
+  v12 = [v11 accountForAccountID:accountCopy];
+  service = [v12 service];
+  internalName = [service internalName];
+  v8 = [v10 anySessionForServiceName:internalName];
 
   if (v8)
   {
 LABEL_7:
-    [v8 requestSubscriptionTo:v5];
+    [v8 requestSubscriptionTo:toCopy];
   }
 
   else if (IMOSLoggingEnabled())
@@ -195,7 +195,7 @@ LABEL_7:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v16 = 138412290;
-      v17 = v6;
+      v17 = accountCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "FIND_SESSION: No session ever found for account: %@", &v16, 0xCu);
     }
   }

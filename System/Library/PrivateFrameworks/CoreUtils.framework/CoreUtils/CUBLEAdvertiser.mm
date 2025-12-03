@@ -1,8 +1,8 @@
 @interface CUBLEAdvertiser
 - (CUBLEAdvertiser)init;
 - (id)_advertiseParameters;
-- (id)_advertiseParametersSummary:(id)a3;
-- (void)_advertiseParametersAddLGWake:(id)a3;
+- (id)_advertiseParametersSummary:(id)summary;
+- (void)_advertiseParametersAddLGWake:(id)wake;
 - (void)_advertiseParametersAddOSR;
 - (void)_ensureStarted;
 - (void)_ensureStopped;
@@ -11,25 +11,25 @@
 - (void)activate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)peripheralManagerDidStartAdvertising:(id)a3 error:(id)a4;
-- (void)peripheralManagerDidUpdateState:(id)a3;
-- (void)setAdvertiseFlags:(unsigned int)a3;
-- (void)setAppleManufacturerData:(id)a3;
-- (void)setLabel:(id)a3;
-- (void)setLgBTAddress:(id)a3;
-- (void)setLgDeviceID:(id)a3;
+- (void)peripheralManagerDidStartAdvertising:(id)advertising error:(id)error;
+- (void)peripheralManagerDidUpdateState:(id)state;
+- (void)setAdvertiseFlags:(unsigned int)flags;
+- (void)setAppleManufacturerData:(id)data;
+- (void)setLabel:(id)label;
+- (void)setLgBTAddress:(id)address;
+- (void)setLgDeviceID:(id)d;
 @end
 
 @implementation CUBLEAdvertiser
 
-- (void)peripheralManagerDidStartAdvertising:(id)a3 error:(id)a4
+- (void)peripheralManagerDidStartAdvertising:(id)advertising error:(id)error
 {
-  v14 = a3;
-  v6 = a4;
+  advertisingCopy = advertising;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   ucat = self->_ucat;
   var0 = ucat->var0;
-  if (!v6)
+  if (!errorCopy)
   {
     if (var0 > 30)
     {
@@ -62,11 +62,11 @@
       ucat = self->_ucat;
     }
 
-    LogPrintF(ucat, "[CUBLEAdvertiser peripheralManagerDidStartAdvertising:error:]", 0x5Au, "### Advertiser start failed: %{error}\n", v7, v8, v9, v10, v6);
+    LogPrintF(ucat, "[CUBLEAdvertiser peripheralManagerDidStartAdvertising:error:]", 0x5Au, "### Advertiser start failed: %{error}\n", v7, v8, v9, v10, errorCopy);
   }
 
 LABEL_9:
-  if (([v14 isAdvertising] & 1) == 0)
+  if (([advertisingCopy isAdvertising] & 1) == 0)
   {
     self->_startAdvertisingCalled = 0;
   }
@@ -75,12 +75,12 @@ LABEL_9:
 LABEL_12:
 }
 
-- (void)peripheralManagerDidUpdateState:(id)a3
+- (void)peripheralManagerDidUpdateState:(id)state
 {
   dispatchQueue = self->_dispatchQueue;
-  v5 = a3;
+  stateCopy = state;
   dispatch_assert_queue_V2(dispatchQueue);
-  v6 = [v5 state];
+  state = [stateCopy state];
 
   ucat = self->_ucat;
   if (ucat->var0 <= 30)
@@ -95,45 +95,45 @@ LABEL_12:
       ucat = self->_ucat;
     }
 
-    if (v6 > 0xA)
+    if (state > 0xA)
     {
       v12 = "?";
     }
 
     else
     {
-      v12 = off_1E73A3018[v6];
+      v12 = off_1E73A3018[state];
     }
 
     LogPrintF(ucat, "[CUBLEAdvertiser peripheralManagerDidUpdateState:]", 0x1Eu, "Bluetooth advertiser state changed: %s\n", v7, v8, v9, v10, v12);
   }
 
 LABEL_9:
-  if (v6 == 1 || v6 == 4)
+  if (state == 1 || state == 4)
   {
     self->_startAdvertisingCalled = 0;
   }
 
-  else if (v6 == 5)
+  else if (state == 5)
   {
 
     [(CUBLEAdvertiser *)self _ensureStarted];
   }
 }
 
-- (id)_advertiseParametersSummary:(id)a3
+- (id)_advertiseParametersSummary:(id)summary
 {
-  v3 = a3;
+  summaryCopy = summary;
   CBAdvertisementDataAppleMfgData = getCBAdvertisementDataAppleMfgData();
   TypeID = CFDataGetTypeID();
-  v6 = CFDictionaryGetTypedValue(v3, CBAdvertisementDataAppleMfgData, TypeID, 0);
+  v6 = CFDictionaryGetTypedValue(summaryCopy, CBAdvertisementDataAppleMfgData, TypeID, 0);
   v7 = v6;
   if (v6)
   {
     v61 = 0;
-    v8 = [v6 bytes];
+    bytes = [v6 bytes];
     [v7 length];
-    NSAppendPrintF(&v61, "AMD <%H>", v9, v10, v11, v12, v13, v14, v8);
+    NSAppendPrintF(&v61, "AMD <%H>", v9, v10, v11, v12, v13, v14, bytes);
     v15 = v61;
   }
 
@@ -143,35 +143,35 @@ LABEL_9:
   }
 
   v16 = CFDataGetTypeID();
-  v17 = CFDictionaryGetTypedValue(v3, @"kCBAdvDataManufacturerDataInternal", v16, 0);
+  v17 = CFDictionaryGetTypedValue(summaryCopy, @"kCBAdvDataManufacturerDataInternal", v16, 0);
   v18 = v17;
   if (v17)
   {
     v60 = v15;
-    v19 = [v17 bytes];
+    bytes2 = [v17 bytes];
     [v18 length];
-    NSAppendPrintF(&v60, "Mfr <%H>", v20, v21, v22, v23, v24, v25, v19);
+    NSAppendPrintF(&v60, "Mfr <%H>", v20, v21, v22, v23, v24, v25, bytes2);
     v26 = v60;
 
     v15 = v26;
   }
 
   v27 = CFDataGetTypeID();
-  v28 = CFDictionaryGetTypedValue(v3, @"kCBAdvDataNonAppleMfgData", v27, 0);
+  v28 = CFDictionaryGetTypedValue(summaryCopy, @"kCBAdvDataNonAppleMfgData", v27, 0);
   v29 = v28;
   if (v28)
   {
     v59 = v15;
-    v30 = [v28 bytes];
+    bytes3 = [v28 bytes];
     [v29 length];
-    NSAppendPrintF(&v59, "Mfr <%H>", v31, v32, v33, v34, v35, v36, v30);
+    NSAppendPrintF(&v59, "Mfr <%H>", v31, v32, v33, v34, v35, v36, bytes3);
     v37 = v59;
 
     v15 = v37;
   }
 
   CBAdvertisementDataIsConnectable = getCBAdvertisementDataIsConnectable();
-  if (CFDictionaryGetInt64(v3, CBAdvertisementDataIsConnectable, 0))
+  if (CFDictionaryGetInt64(summaryCopy, CBAdvertisementDataIsConnectable, 0))
   {
     v58 = v15;
     NSAppendPrintF(&v58, ", Cnx", v39, v40, v41, v42, v43, v44, v56);
@@ -180,7 +180,7 @@ LABEL_9:
     v15 = v45;
   }
 
-  if (CFDictionaryGetInt64(v3, @"kCBAdvDataIsExtended", 0))
+  if (CFDictionaryGetInt64(summaryCopy, @"kCBAdvDataIsExtended", 0))
   {
     v57 = v15;
     NSAppendPrintF(&v57, ", Extended", v46, v47, v48, v49, v50, v51, v56);
@@ -263,9 +263,9 @@ LABEL_18:
   self->_appleManufacturerData = v4;
 }
 
-- (void)_advertiseParametersAddLGWake:(id)a3
+- (void)_advertiseParametersAddLGWake:(id)wake
 {
-  v4 = a3;
+  wakeCopy = wake;
   v5 = objc_alloc_init(MEMORY[0x1E695DF88]);
   v7 = 196;
   [v5 appendBytes:&v7 length:2];
@@ -275,8 +275,8 @@ LABEL_18:
     [v5 appendData:v6];
     v7 = 7;
     [v5 appendBytes:&v7 length:2];
-    [v4 setObject:v5 forKeyedSubscript:@"kCBAdvDataManufacturerDataInternal"];
-    [v4 setObject:v5 forKeyedSubscript:@"kCBAdvDataNonAppleMfgData"];
+    [wakeCopy setObject:v5 forKeyedSubscript:@"kCBAdvDataManufacturerDataInternal"];
+    [wakeCopy setObject:v5 forKeyedSubscript:@"kCBAdvDataNonAppleMfgData"];
   }
 }
 
@@ -284,19 +284,19 @@ LABEL_18:
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = self;
-  objc_sync_enter(v4);
-  if ([(NSData *)v4->_lgDeviceID length]== 6)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NSData *)selfCopy->_lgDeviceID length]== 6)
   {
-    [(CUBLEAdvertiser *)v4 _advertiseParametersAddLGWake:v3];
+    [(CUBLEAdvertiser *)selfCopy _advertiseParametersAddLGWake:v3];
   }
 
-  if ((v4->_advertiseFlags & 8) != 0)
+  if ((selfCopy->_advertiseFlags & 8) != 0)
   {
-    [(CUBLEAdvertiser *)v4 _advertiseParametersAddOSR];
+    [(CUBLEAdvertiser *)selfCopy _advertiseParametersAddOSR];
   }
 
-  v5 = v4->_appleManufacturerData;
+  v5 = selfCopy->_appleManufacturerData;
   v6 = [(NSData *)v5 length];
   if (v6 - 1 <= 0x19)
   {
@@ -311,7 +311,7 @@ LABEL_18:
     [v3 setObject:v8 forKeyedSubscript:v9];
   }
 
-  advertiseFlags = v4->_advertiseFlags;
+  advertiseFlags = selfCopy->_advertiseFlags;
   v11 = getCBAdvertisementDataIsConnectable();
   if ((advertiseFlags & 2) != 0)
   {
@@ -325,7 +325,7 @@ LABEL_18:
 
   [v3 setObject:v12 forKeyedSubscript:v11];
 
-  if ((v4->_advertiseFlags & 4) != 0)
+  if ((selfCopy->_advertiseFlags & 4) != 0)
   {
     [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"kCBAdvDataIsExtended"];
   }
@@ -333,7 +333,7 @@ LABEL_18:
   v13 = getCBManagerIsPrivilegedDaemonKey();
   [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:v13];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -386,10 +386,10 @@ LABEL_8:
   peripheralManager = self->_peripheralManager;
   if (peripheralManager)
   {
-    v4 = [(CBPeripheralManager *)peripheralManager state];
-    if (v4 != 5)
+    state = [(CBPeripheralManager *)peripheralManager state];
+    if (state != 5)
     {
-      v9 = v4;
+      v9 = state;
       ucat = self->_ucat;
       if (ucat->var0 > 30)
       {
@@ -444,9 +444,9 @@ LABEL_9:
         return;
       }
 
-      v21 = [(CUBLEAdvertiser *)self _advertiseParameters];
+      _advertiseParameters = [(CUBLEAdvertiser *)self _advertiseParameters];
       advertiseParametersCurrent = self->_advertiseParametersCurrent;
-      v23 = v21;
+      v23 = _advertiseParameters;
       v24 = advertiseParametersCurrent;
       v25 = v24;
       if (v23 == v24)
@@ -488,7 +488,7 @@ LABEL_39:
           }
 
 LABEL_47:
-          objc_storeStrong(&self->_advertiseParametersCurrent, v21);
+          objc_storeStrong(&self->_advertiseParametersCurrent, _advertiseParameters);
           [(CBPeripheralManager *)self->_peripheralManager stopAdvertising];
           goto LABEL_35;
         }
@@ -515,7 +515,7 @@ LABEL_36:
       return;
     }
 
-    v31 = [(CUBLEAdvertiser *)self _advertiseParameters];
+    _advertiseParameters2 = [(CUBLEAdvertiser *)self _advertiseParameters];
     v32 = self->_ucat;
     if (v32->var0 <= 30)
     {
@@ -529,14 +529,14 @@ LABEL_36:
         v32 = self->_ucat;
       }
 
-      v33 = [(CUBLEAdvertiser *)self _advertiseParametersSummary:v31];
+      v33 = [(CUBLEAdvertiser *)self _advertiseParametersSummary:_advertiseParameters2];
       LogPrintF(v32, "[CUBLEAdvertiser _ensureStarted]", 0x1Eu, "Advertiser start: %@\n", v34, v35, v36, v37, v33);
     }
 
 LABEL_34:
     v40 = self->_advertiseParametersCurrent;
-    self->_advertiseParametersCurrent = v31;
-    v23 = v31;
+    self->_advertiseParametersCurrent = _advertiseParameters2;
+    v23 = _advertiseParameters2;
 
     self->_changesPending = 0;
     self->_startAdvertisingCalled = 1;
@@ -671,17 +671,17 @@ LABEL_6:
 
 - (void)activate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v2->_activateCalled = 1;
-  dispatchQueue = v2->_dispatchQueue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_activateCalled = 1;
+  dispatchQueue = selfCopy->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __27__CUBLEAdvertiser_activate__block_invoke;
   block[3] = &unk_1E73A4F68;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(dispatchQueue, block);
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 uint64_t __27__CUBLEAdvertiser_activate__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8)
@@ -712,13 +712,13 @@ LABEL_5:
   return [v9 _ensureStarted];
 }
 
-- (void)setLgDeviceID:(id)a3
+- (void)setLgDeviceID:(id)d
 {
-  v4 = a3;
-  v5 = [v4 copy];
-  v6 = self;
-  objc_sync_enter(v6);
-  lgDeviceID = v6->_lgDeviceID;
+  dCopy = d;
+  v5 = [dCopy copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  lgDeviceID = selfCopy->_lgDeviceID;
   v8 = v5;
   v9 = lgDeviceID;
   v10 = v9;
@@ -742,30 +742,30 @@ LABEL_5:
     {
     }
 
-    objc_storeStrong(&v6->_lgDeviceID, v5);
-    if (v6->_activateCalled)
+    objc_storeStrong(&selfCopy->_lgDeviceID, v5);
+    if (selfCopy->_activateCalled)
     {
-      dispatchQueue = v6->_dispatchQueue;
+      dispatchQueue = selfCopy->_dispatchQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __33__CUBLEAdvertiser_setLgDeviceID___block_invoke;
       block[3] = &unk_1E73A4F68;
-      block[4] = v6;
+      block[4] = selfCopy;
       dispatch_async(dispatchQueue, block);
     }
   }
 
 LABEL_9:
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setLgBTAddress:(id)a3
+- (void)setLgBTAddress:(id)address
 {
-  v4 = a3;
-  v5 = [v4 copy];
-  v6 = self;
-  objc_sync_enter(v6);
-  lgBTAddress = v6->_lgBTAddress;
+  addressCopy = address;
+  v5 = [addressCopy copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  lgBTAddress = selfCopy->_lgBTAddress;
   v8 = v5;
   v9 = lgBTAddress;
   v10 = v9;
@@ -789,40 +789,40 @@ LABEL_9:
     {
     }
 
-    objc_storeStrong(&v6->_lgBTAddress, v5);
-    if (v6->_activateCalled)
+    objc_storeStrong(&selfCopy->_lgBTAddress, v5);
+    if (selfCopy->_activateCalled)
     {
-      dispatchQueue = v6->_dispatchQueue;
+      dispatchQueue = selfCopy->_dispatchQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __34__CUBLEAdvertiser_setLgBTAddress___block_invoke;
       block[3] = &unk_1E73A4F68;
-      block[4] = v6;
+      block[4] = selfCopy;
       dispatch_async(dispatchQueue, block);
     }
   }
 
 LABEL_9:
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v13 = a3;
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
   v5 = qword_1EADE9148;
-  v6 = v13;
-  [v13 UTF8String];
+  v6 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF(&self->_ucat, "%s-%s", v7, v8, v9, v10, v11, v12, v5);
 }
 
-- (void)setAppleManufacturerData:(id)a3
+- (void)setAppleManufacturerData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 copy];
-  v6 = self;
-  objc_sync_enter(v6);
-  appleManufacturerData = v6->_appleManufacturerData;
+  dataCopy = data;
+  v5 = [dataCopy copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  appleManufacturerData = selfCopy->_appleManufacturerData;
   v8 = v5;
   v9 = appleManufacturerData;
   v10 = v9;
@@ -846,43 +846,43 @@ LABEL_9:
     {
     }
 
-    objc_storeStrong(&v6->_appleManufacturerData, v5);
-    if (v6->_activateCalled)
+    objc_storeStrong(&selfCopy->_appleManufacturerData, v5);
+    if (selfCopy->_activateCalled)
     {
-      dispatchQueue = v6->_dispatchQueue;
+      dispatchQueue = selfCopy->_dispatchQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __44__CUBLEAdvertiser_setAppleManufacturerData___block_invoke;
       block[3] = &unk_1E73A4F68;
-      block[4] = v6;
+      block[4] = selfCopy;
       dispatch_async(dispatchQueue, block);
     }
   }
 
 LABEL_9:
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setAdvertiseFlags:(unsigned int)a3
+- (void)setAdvertiseFlags:(unsigned int)flags
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_advertiseFlags != a3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_advertiseFlags != flags)
   {
-    v4->_advertiseFlags = a3;
-    if (v4->_activateCalled)
+    selfCopy->_advertiseFlags = flags;
+    if (selfCopy->_activateCalled)
     {
-      dispatchQueue = v4->_dispatchQueue;
+      dispatchQueue = selfCopy->_dispatchQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __37__CUBLEAdvertiser_setAdvertiseFlags___block_invoke;
       block[3] = &unk_1E73A4F68;
-      block[4] = v4;
+      block[4] = selfCopy;
       dispatch_async(dispatchQueue, block);
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)dealloc

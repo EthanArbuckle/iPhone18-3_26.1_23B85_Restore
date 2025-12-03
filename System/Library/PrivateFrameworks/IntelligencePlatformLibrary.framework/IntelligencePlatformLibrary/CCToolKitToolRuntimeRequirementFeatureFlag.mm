@@ -1,27 +1,27 @@
 @interface CCToolKitToolRuntimeRequirementFeatureFlag
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolRuntimeRequirementFeatureFlag)initWithDomain:(id)a3 feature:(id)a4 value:(id)a5 error:(id *)a6;
-- (CCToolKitToolRuntimeRequirementFeatureFlag)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolRuntimeRequirementFeatureFlag)initWithDomain:(id)domain feature:(id)feature value:(id)value error:(id *)error;
+- (CCToolKitToolRuntimeRequirementFeatureFlag)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (NSString)domain;
 - (NSString)feature;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolRuntimeRequirementFeatureFlag
 
-- (CCToolKitToolRuntimeRequirementFeatureFlag)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolRuntimeRequirementFeatureFlag)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"domain"];
-    v10 = [v6 objectForKeyedSubscript:@"feature"];
-    v11 = [v6 objectForKeyedSubscript:@"value"];
-    v12 = [[CCToolKitToolRuntimeRequirementFeatureFlag alloc] initWithDomain:v9 feature:v10 value:v11 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"domain"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"feature"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"value"];
+    v12 = [[CCToolKitToolRuntimeRequirementFeatureFlag alloc] initWithDomain:v9 feature:v10 value:v11 error:error];
   }
 
   else
@@ -38,14 +38,14 @@
   v3 = objc_opt_new();
   if (self->_domain)
   {
-    v4 = [(CCToolKitToolRuntimeRequirementFeatureFlag *)self domain];
-    [v3 setObject:v4 forKeyedSubscript:@"domain"];
+    domain = [(CCToolKitToolRuntimeRequirementFeatureFlag *)self domain];
+    [v3 setObject:domain forKeyedSubscript:@"domain"];
   }
 
   if (self->_feature)
   {
-    v5 = [(CCToolKitToolRuntimeRequirementFeatureFlag *)self feature];
-    [v3 setObject:v5 forKeyedSubscript:@"feature"];
+    feature = [(CCToolKitToolRuntimeRequirementFeatureFlag *)self feature];
+    [v3 setObject:feature forKeyedSubscript:@"feature"];
   }
 
   if (self->_hasValue)
@@ -59,11 +59,11 @@
   return v7;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = MEMORY[0x1E69939A8];
-  v10 = v5;
+  v10 = blockCopy;
   if (self->_domain)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] stringValue:self->_domain];
@@ -97,10 +97,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -252,11 +252,11 @@ LABEL_45:
           {
             v35 = objc_opt_class();
             NSStringFromClass(v35);
-            v37 = v36 = v5;
+            v37 = v36 = dataCopy;
             v38 = *&v6[*v9];
             v10 = CCSkipFieldErrorForMessage();
 
-            v5 = v36;
+            dataCopy = v36;
             goto LABEL_45;
           }
 
@@ -305,13 +305,13 @@ LABEL_52:
   return v43;
 }
 
-- (CCToolKitToolRuntimeRequirementFeatureFlag)initWithDomain:(id)a3 feature:(id)a4 value:(id)a5 error:(id *)a6
+- (CCToolKitToolRuntimeRequirementFeatureFlag)initWithDomain:(id)domain feature:(id)feature value:(id)value error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  domainCopy = domain;
+  featureCopy = feature;
+  valueCopy = value;
   v13 = objc_opt_new();
-  if (v10)
+  if (domainCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -322,11 +322,11 @@ LABEL_52:
     }
 
     CCPBDataWriterWriteStringField();
-    if (!v11)
+    if (!featureCopy)
     {
 LABEL_4:
       v16 = v15;
-      if (v12)
+      if (valueCopy)
       {
         goto LABEL_5;
       }
@@ -340,7 +340,7 @@ LABEL_11:
   else
   {
     v15 = 0;
-    if (!v11)
+    if (!featureCopy)
     {
       goto LABEL_4;
     }
@@ -353,13 +353,13 @@ LABEL_11:
   if (!v19)
   {
     CCSetError();
-    v18 = 0;
+    selfCopy = 0;
     v15 = v16;
     goto LABEL_14;
   }
 
   CCPBDataWriterWriteStringField();
-  if (!v12)
+  if (!valueCopy)
   {
     goto LABEL_11;
   }
@@ -371,22 +371,22 @@ LABEL_5:
 
   if (v17)
   {
-    [v12 BOOLValue];
+    [valueCopy BOOLValue];
     CCPBDataWriterWriteBOOLField();
 LABEL_12:
-    v20 = [v13 immutableData];
-    self = [(CCItemMessage *)self initWithData:v20 error:a6];
+    immutableData = [v13 immutableData];
+    self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-    v18 = self;
+    selfCopy = self;
     goto LABEL_14;
   }
 
 LABEL_7:
   CCSetError();
-  v18 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v18;
+  return selfCopy;
 }
 
 @end

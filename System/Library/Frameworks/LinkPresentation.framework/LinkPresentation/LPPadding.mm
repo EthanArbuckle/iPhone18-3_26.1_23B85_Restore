@@ -1,8 +1,8 @@
 @interface LPPadding
 - (LPPadding)init;
-- (UIEdgeInsets)asInsetsForLTR:(BOOL)a3;
+- (UIEdgeInsets)asInsetsForLTR:(BOOL)r;
 - (id)_lp_CSSText;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation LPPadding
@@ -36,12 +36,12 @@
   return v2;
 }
 
-- (UIEdgeInsets)asInsetsForLTR:(BOOL)a3
+- (UIEdgeInsets)asInsetsForLTR:(BOOL)r
 {
-  v3 = a3;
+  rCopy = r;
   [(LPPointUnit *)self->_top value];
   v6 = v5;
-  if (v3)
+  if (rCopy)
   {
     v7 = 16;
   }
@@ -51,7 +51,7 @@
     v7 = 32;
   }
 
-  if (v3)
+  if (rCopy)
   {
     v8 = 32;
   }
@@ -111,9 +111,9 @@
   return [v4 stringWithFormat:@"%gpx %gpx %gpx %gpx", v6, v10, v12, v13];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPPadding allocWithZone:a3];
+  v4 = [LPPadding allocWithZone:zone];
   p_isa = &v4->super.isa;
   if (v4)
   {

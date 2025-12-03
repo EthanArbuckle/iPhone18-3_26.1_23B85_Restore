@@ -1,7 +1,7 @@
 @interface UARPMetaDataPayloadCompressionAlgorithm
 - (UARPMetaDataPayloadCompressionAlgorithm)init;
-- (UARPMetaDataPayloadCompressionAlgorithm)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataPayloadCompressionAlgorithm)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataPayloadCompressionAlgorithm)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataPayloadCompressionAlgorithm)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 - (id)tlvValue;
 @end
@@ -25,9 +25,9 @@
   return v3;
 }
 
-- (UARPMetaDataPayloadCompressionAlgorithm)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataPayloadCompressionAlgorithm)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataPayloadCompressionAlgorithm *)self init];
   if (!v6)
   {
@@ -37,7 +37,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
+    v7 = valueCopy;
     if ([v7 compare:@"LZBitmapFast2"])
     {
       v8 = 1;
@@ -68,14 +68,14 @@ LABEL_11:
   return v9;
 }
 
-- (UARPMetaDataPayloadCompressionAlgorithm)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataPayloadCompressionAlgorithm)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataPayloadCompressionAlgorithm *)self init];
   v7 = v6;
   v8 = 0;
-  if (a3 == 4 && v6)
+  if (length == 4 && v6)
   {
-    v6->_compressionAlgorithm = uarpNtohl(*a4);
+    v6->_compressionAlgorithm = uarpNtohl(*value);
     v8 = v7;
   }
 
@@ -93,8 +93,8 @@ LABEL_11:
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [NSString stringWithFormat:@"<%@: %u>", v3, [(UARPMetaDataPayloadCompressionAlgorithm *)self compressionAlgorithm]];
+  tlvName = [(UARPMetaData *)self tlvName];
+  v4 = [NSString stringWithFormat:@"<%@: %u>", tlvName, [(UARPMetaDataPayloadCompressionAlgorithm *)self compressionAlgorithm]];
 
   return v4;
 }

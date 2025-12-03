@@ -1,23 +1,23 @@
 @interface EDProcessors
-- (EDProcessors)initWithWorkbook:(id)a3;
-- (void)addProcessorClass:(Class)a3;
-- (void)applyProcessorsWithSheet:(id)a3;
-- (void)markObject:(id)a3 processor:(Class)a4;
-- (void)removeProcessorClass:(Class)a3;
+- (EDProcessors)initWithWorkbook:(id)workbook;
+- (void)addProcessorClass:(Class)class;
+- (void)applyProcessorsWithSheet:(id)sheet;
+- (void)markObject:(id)object processor:(Class)processor;
+- (void)removeProcessorClass:(Class)class;
 @end
 
 @implementation EDProcessors
 
-- (EDProcessors)initWithWorkbook:(id)a3
+- (EDProcessors)initWithWorkbook:(id)workbook
 {
-  v4 = a3;
+  workbookCopy = workbook;
   v10.receiver = self;
   v10.super_class = EDProcessors;
   v5 = [(EDProcessors *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mWorkbook, v4);
+    objc_storeWeak(&v5->mWorkbook, workbookCopy);
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     mProcessors = v6->mProcessors;
     v6->mProcessors = v7;
@@ -26,16 +26,16 @@
   return v6;
 }
 
-- (void)addProcessorClass:(Class)a3
+- (void)addProcessorClass:(Class)class
 {
-  v4 = [a3 alloc];
+  v4 = [class alloc];
   WeakRetained = objc_loadWeakRetained(&self->mWorkbook);
   v6 = [v4 initWithWorkbook:WeakRetained];
 
   [(NSMutableArray *)self->mProcessors addObject:v6];
 }
 
-- (void)removeProcessorClass:(Class)a3
+- (void)removeProcessorClass:(Class)class
 {
   v5 = [(NSMutableArray *)self->mProcessors count];
   if (v5)
@@ -47,7 +47,7 @@
       v8 = [(NSMutableArray *)self->mProcessors objectAtIndex:v7];
       v9 = objc_opt_class();
 
-      if (v9 == a3)
+      if (v9 == class)
       {
         break;
       }
@@ -64,9 +64,9 @@
   }
 }
 
-- (void)markObject:(id)a3 processor:(Class)a4
+- (void)markObject:(id)object processor:(Class)processor
 {
-  v9 = a3;
+  objectCopy = object;
   v6 = [(NSMutableArray *)self->mProcessors count];
   if (v6)
   {
@@ -76,7 +76,7 @@
       v8 = [(NSMutableArray *)self->mProcessors objectAtIndex:v7];
       if (v8)
       {
-        if (objc_opt_class() == a4 && [v8 isObjectSupported:v9])
+        if (objc_opt_class() == processor && [v8 isObjectSupported:objectCopy])
         {
           break;
         }
@@ -88,15 +88,15 @@
       }
     }
 
-    [v8 markObjectForPostProcessing:v9];
+    [v8 markObjectForPostProcessing:objectCopy];
   }
 
 LABEL_7:
 }
 
-- (void)applyProcessorsWithSheet:(id)a3
+- (void)applyProcessorsWithSheet:(id)sheet
 {
-  v8 = a3;
+  sheetCopy = sheet;
   v4 = objc_autoreleasePoolPush();
   v5 = [(NSMutableArray *)self->mProcessors count];
   [TCProgressContext createStageWithSteps:v5 takingSteps:1.0];
@@ -105,7 +105,7 @@ LABEL_7:
     for (i = 0; i != v5; ++i)
     {
       v7 = [(NSMutableArray *)self->mProcessors objectAtIndex:i];
-      [v7 applyProcessorWithSheet:v8];
+      [v7 applyProcessorWithSheet:sheetCopy];
 
       [TCProgressContext advanceProgress:1.0];
     }

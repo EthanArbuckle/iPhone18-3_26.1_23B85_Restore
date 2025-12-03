@@ -1,17 +1,17 @@
 @interface MPStoreLyricsRequest
-+ (BOOL)supportsLyricsForURLBag:(id)a3;
-+ (BOOL)supportsLyricsForURLBagDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)newOperationWithResponseHandler:(id)a3;
++ (BOOL)supportsLyricsForURLBag:(id)bag;
++ (BOOL)supportsLyricsForURLBagDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)newOperationWithResponseHandler:(id)handler;
 @end
 
 @implementation MPStoreLyricsRequest
 
-+ (BOOL)supportsLyricsForURLBagDictionary:(id)a3
++ (BOOL)supportsLyricsForURLBagDictionary:(id)dictionary
 {
   v3 = MEMORY[0x1E69E4650];
-  v4 = a3;
-  v5 = [[v3 alloc] _initWithDictionary:v4];
+  dictionaryCopy = dictionary;
+  v5 = [[v3 alloc] _initWithDictionary:dictionaryCopy];
 
   v6 = _os_feature_enabled_impl();
   v7 = off_1E7672BA8;
@@ -25,9 +25,9 @@
   return v8;
 }
 
-+ (BOOL)supportsLyricsForURLBag:(id)a3
++ (BOOL)supportsLyricsForURLBag:(id)bag
 {
-  v3 = a3;
+  bagCopy = bag;
   v4 = _os_feature_enabled_impl();
   v5 = off_1E7672BA8;
   if (!v4)
@@ -35,54 +35,54 @@
     v5 = off_1E7672BB0;
   }
 
-  v6 = [(__objc2_class *)*v5 supportsLyricsForURLBag:v3];
+  v6 = [(__objc2_class *)*v5 supportsLyricsForURLBag:bagCopy];
 
   return v6;
 }
 
-- (id)newOperationWithResponseHandler:(id)a3
+- (id)newOperationWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   _os_feature_enabled_impl();
   v5 = objc_opt_new();
-  v6 = [(MPStoreLyricsRequest *)self song];
-  v7 = [v6 identifiers];
-  v8 = [v7 universalStore];
-  v9 = [v8 lyricsAdamID];
-  if (v9)
+  song = [(MPStoreLyricsRequest *)self song];
+  identifiers = [song identifiers];
+  universalStore = [identifiers universalStore];
+  lyricsAdamID = [universalStore lyricsAdamID];
+  if (lyricsAdamID)
   {
-    [v5 setSongAdamID:v9];
+    [v5 setSongAdamID:lyricsAdamID];
   }
 
   else
   {
-    v10 = [(MPStoreLyricsRequest *)self song];
-    v11 = [v10 identifiers];
-    v12 = [v11 universalStore];
-    v13 = [v12 subscriptionAdamID];
-    if (v13)
+    song2 = [(MPStoreLyricsRequest *)self song];
+    identifiers2 = [song2 identifiers];
+    universalStore2 = [identifiers2 universalStore];
+    subscriptionAdamID = [universalStore2 subscriptionAdamID];
+    if (subscriptionAdamID)
     {
-      [v5 setSongAdamID:v13];
+      [v5 setSongAdamID:subscriptionAdamID];
     }
 
     else
     {
-      v20 = [(MPStoreLyricsRequest *)self song];
-      v19 = [v20 identifiers];
-      v14 = [v19 universalStore];
-      [v5 setSongAdamID:{objc_msgSend(v14, "adamID")}];
+      song3 = [(MPStoreLyricsRequest *)self song];
+      identifiers3 = [song3 identifiers];
+      universalStore3 = [identifiers3 universalStore];
+      [v5 setSongAdamID:{objc_msgSend(universalStore3, "adamID")}];
     }
   }
 
-  v15 = [(MPStoreLyricsRequest *)self song];
+  song4 = [(MPStoreLyricsRequest *)self song];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __56__MPStoreLyricsRequest_newOperationWithResponseHandler___block_invoke;
   v21[3] = &unk_1E767D118;
-  v22 = v15;
-  v23 = v4;
-  v16 = v15;
-  v17 = v4;
+  v22 = song4;
+  v23 = handlerCopy;
+  v16 = song4;
+  v17 = handlerCopy;
   [v5 setResponseHandler:v21];
 
   return v5;
@@ -173,7 +173,7 @@ void __56__MPStoreLyricsRequest_newOperationWithResponseHandler___block_invoke_4
   [v3 setTTML:v4];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = v4;

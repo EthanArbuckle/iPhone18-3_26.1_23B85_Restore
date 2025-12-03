@@ -1,21 +1,21 @@
 @interface ICTextElementAnimator
 - (ICTextElementAnimator)init;
-- (ICTextElementAnimator)initWithTextView:(id)a3 originTrackedParagraphs:(id)a4 destinationTrackedParagraphs:(id)a5;
-- (void)animateWithCompletion:(id)a3;
+- (ICTextElementAnimator)initWithTextView:(id)view originTrackedParagraphs:(id)paragraphs destinationTrackedParagraphs:(id)trackedParagraphs;
+- (void)animateWithCompletion:(id)completion;
 @end
 
 @implementation ICTextElementAnimator
 
-- (ICTextElementAnimator)initWithTextView:(id)a3 originTrackedParagraphs:(id)a4 destinationTrackedParagraphs:(id)a5
+- (ICTextElementAnimator)initWithTextView:(id)view originTrackedParagraphs:(id)paragraphs destinationTrackedParagraphs:(id)trackedParagraphs
 {
   ObjectType = swift_getObjectType();
   sub_2151A6C9C(0, &qword_27CA5D958);
   v8 = sub_2154A1F4C();
   v9 = sub_2154A1F4C();
-  *(&self->super.isa + OBJC_IVAR___ICTextElementAnimator_textView) = a3;
+  *(&self->super.isa + OBJC_IVAR___ICTextElementAnimator_textView) = view;
   *(&self->super.isa + OBJC_IVAR___ICTextElementAnimator_originTrackedParagraphs) = v8;
   *(&self->super.isa + OBJC_IVAR___ICTextElementAnimator_destinationTrackedParagraphs) = v9;
-  v10 = a3;
+  viewCopy = view;
   *(&self->super.isa + OBJC_IVAR___ICTextElementAnimator_uuidsToElementAnimationConfigurations) = sub_215328A80(MEMORY[0x277D84F90]);
   v13.receiver = self;
   v13.super_class = ObjectType;
@@ -25,9 +25,9 @@
   return v11;
 }
 
-- (void)animateWithCompletion:(id)a3
+- (void)animateWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -42,7 +42,7 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   TextElementAnimator.animate(completion:)(v7, v6);
   sub_21532594C(v7);
 }

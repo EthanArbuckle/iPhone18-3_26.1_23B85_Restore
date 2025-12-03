@@ -1,20 +1,20 @@
 @interface StocksTapDragGestureRecognizer
 - (CGRect)touchableBounds;
-- (StocksTapDragGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (StocksTapDragGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)reset;
-- (void)touchDelayTimerFired:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchDelayTimerFired:(id)fired;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation StocksTapDragGestureRecognizer
 
-- (StocksTapDragGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (StocksTapDragGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v5.receiver = self;
   v5.super_class = StocksTapDragGestureRecognizer;
-  result = [(StocksTapDragGestureRecognizer *)&v5 initWithTarget:a3 action:a4];
+  result = [(StocksTapDragGestureRecognizer *)&v5 initWithTarget:target action:action];
   if (result)
   {
     result->_minimumNumberOfTouches = 1;
@@ -24,14 +24,14 @@
   return result;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v56 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v45 = a4;
+  beganCopy = began;
+  eventCopy = event;
   if (CGRectEqualToRect(self->_touchableBounds, *MEMORY[0x277CBF3A0]))
   {
-    v7 = [v6 mutableCopy];
+    v7 = [beganCopy mutableCopy];
   }
 
   else
@@ -41,8 +41,8 @@
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v44 = v6;
-    v8 = v6;
+    v44 = beganCopy;
+    v8 = beganCopy;
     v9 = [v8 countByEnumeratingWithState:&v50 objects:v55 count:16];
     if (v9)
     {
@@ -58,8 +58,8 @@
           }
 
           v13 = *(*(&v50 + 1) + 8 * i);
-          v14 = [(StocksTapDragGestureRecognizer *)self view];
-          [v13 locationInView:v14];
+          view = [(StocksTapDragGestureRecognizer *)self view];
+          [v13 locationInView:view];
           v57.x = v15;
           v57.y = v16;
           v17 = CGRectContainsPoint(self->_touchableBounds, v57);
@@ -76,7 +76,7 @@
       while (v10);
     }
 
-    v6 = v44;
+    beganCopy = v44;
   }
 
   touches = self->_touches;
@@ -85,18 +85,18 @@
     if ([v7 count] <= self->_maximumNumberOfTouches)
     {
       v33 = v7;
-      v28 = self->_touches;
+      allObjects = self->_touches;
       self->_touches = v33;
     }
 
     else
     {
-      v26 = v6;
+      v26 = beganCopy;
       v27 = MEMORY[0x277CBEB58];
-      v28 = [v7 allObjects];
-      v29 = [v28 subarrayWithRange:{0, self->_maximumNumberOfTouches}];
+      allObjects = [v7 allObjects];
+      v29 = [allObjects subarrayWithRange:{0, self->_maximumNumberOfTouches}];
       v30 = v27;
-      v6 = v26;
+      beganCopy = v26;
       v31 = [v30 setWithArray:v29];
       v32 = self->_touches;
       self->_touches = v31;
@@ -114,9 +114,9 @@
       self->_touchDelayTimer = v34;
 
       p_startingPosition = &self->_startingPosition;
-      v37 = [(NSMutableSet *)self->_touches anyObject];
-      v38 = [(StocksTapDragGestureRecognizer *)self view];
-      [v37 locationInView:v38];
+      anyObject = [(NSMutableSet *)self->_touches anyObject];
+      view2 = [(StocksTapDragGestureRecognizer *)self view];
+      [anyObject locationInView:view2];
       p_startingPosition->x = v39;
       p_startingPosition->y = v40;
 
@@ -124,7 +124,7 @@
     }
 
 LABEL_41:
-    v42 = self;
+    selfCopy2 = self;
     v43 = 1;
     goto LABEL_42;
   }
@@ -134,7 +134,7 @@ LABEL_41:
     goto LABEL_43;
   }
 
-  v44 = v6;
+  v44 = beganCopy;
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
@@ -158,7 +158,7 @@ LABEL_41:
         v25 = *(*(&v46 + 1) + 8 * j);
         if ([(NSMutableSet *)self->_touches count]>= self->_maximumNumberOfTouches)
         {
-          [(StocksTapDragGestureRecognizer *)self ignoreTouch:v25 forEvent:v45];
+          [(StocksTapDragGestureRecognizer *)self ignoreTouch:v25 forEvent:eventCopy];
         }
 
         else
@@ -183,11 +183,11 @@ LABEL_41:
   if (v41)
   {
     [(NSTimer *)v41 fire];
-    v6 = v44;
+    beganCopy = v44;
     goto LABEL_43;
   }
 
-  v6 = v44;
+  beganCopy = v44;
   if (![(StocksTapDragGestureRecognizer *)self state]&& [(NSMutableSet *)self->_touches count]>= self->_minimumNumberOfTouches)
   {
     goto LABEL_41;
@@ -195,16 +195,16 @@ LABEL_41:
 
   if ((v22 & 1) != 0 && [(StocksTapDragGestureRecognizer *)self state]== 2)
   {
-    v42 = self;
+    selfCopy2 = self;
     v43 = 2;
 LABEL_42:
-    [(StocksTapDragGestureRecognizer *)v42 setState:v43, v44];
+    [(StocksTapDragGestureRecognizer *)selfCopy2 setState:v43, v44];
   }
 
 LABEL_43:
 }
 
-- (void)touchDelayTimerFired:(id)a3
+- (void)touchDelayTimerFired:(id)fired
 {
   [(NSTimer *)self->_touchDelayTimer invalidate];
   touchDelayTimer = self->_touchDelayTimer;
@@ -213,12 +213,12 @@ LABEL_43:
   [(StocksTapDragGestureRecognizer *)self setState:1];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v15 = a3;
-  v5 = [v15 anyObject];
-  v6 = [(StocksTapDragGestureRecognizer *)self view];
-  [v5 locationInView:v6];
+  movedCopy = moved;
+  anyObject = [movedCopy anyObject];
+  view = [(StocksTapDragGestureRecognizer *)self view];
+  [anyObject locationInView:view];
   v8 = v7;
   v10 = v9;
 
@@ -234,18 +234,18 @@ LABEL_43:
     }
   }
 
-  if ([(NSMutableSet *)self->_touches intersectsSet:v15]&& [(StocksTapDragGestureRecognizer *)self state]== 2)
+  if ([(NSMutableSet *)self->_touches intersectsSet:movedCopy]&& [(StocksTapDragGestureRecognizer *)self state]== 2)
   {
     [(StocksTapDragGestureRecognizer *)self setState:2];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  if ([(NSMutableSet *)self->_touches intersectsSet:v6])
+  endedCopy = ended;
+  if ([(NSMutableSet *)self->_touches intersectsSet:endedCopy])
   {
-    [(NSMutableSet *)self->_touches minusSet:v6];
+    [(NSMutableSet *)self->_touches minusSet:endedCopy];
     if ([(NSMutableSet *)self->_touches count]>= self->_minimumNumberOfTouches)
     {
       v5 = 2;

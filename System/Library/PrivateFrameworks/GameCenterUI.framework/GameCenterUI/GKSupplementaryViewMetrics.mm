@@ -1,12 +1,12 @@
 @interface GKSupplementaryViewMetrics
 + (id)supplementaryMetrics;
-- (CGSize)sizeForCollectionView:(id)a3;
+- (CGSize)sizeForCollectionView:(id)view;
 - (GKSupplementaryViewMetrics)init;
 - (SEL)configurator;
 - (_NSRange)globalSectionRange;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)localDescription;
-- (void)setConfigurator:(SEL)a3;
+- (void)setConfigurator:(SEL)configurator;
 @end
 
 @implementation GKSupplementaryViewMetrics
@@ -32,7 +32,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = v4;
@@ -147,11 +147,11 @@
   return v15;
 }
 
-- (CGSize)sizeForCollectionView:(id)a3
+- (CGSize)sizeForCollectionView:(id)view
 {
   desiredWidth = self->_desiredWidth;
   desiredHeight = self->_desiredHeight;
-  [a3 bounds];
+  [view bounds];
   if (desiredWidth == 1.79769313e308)
   {
     v7 = v5;
@@ -190,19 +190,19 @@
   }
 }
 
-- (void)setConfigurator:(SEL)a3
+- (void)setConfigurator:(SEL)configurator
 {
-  if (a3)
+  if (configurator)
   {
-    v3 = a3;
+    configuratorCopy = configurator;
   }
 
   else
   {
-    v3 = 0;
+    configuratorCopy = 0;
   }
 
-  self->_configurator = v3;
+  self->_configurator = configuratorCopy;
 }
 
 - (_NSRange)globalSectionRange

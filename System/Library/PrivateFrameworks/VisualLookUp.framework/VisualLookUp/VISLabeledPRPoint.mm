@@ -1,34 +1,34 @@
 @interface VISLabeledPRPoint
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (VISLabeledPRPoint)initWithDictionary:(id)a3;
-- (VISLabeledPRPoint)initWithJSON:(id)a3;
+- (VISLabeledPRPoint)initWithDictionary:(id)dictionary;
+- (VISLabeledPRPoint)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setLabel:(id)a3;
-- (void)setReadable_label:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setLabel:(id)label;
+- (void)setReadable_label:(id)readable_label;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VISLabeledPRPoint
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  self->_label = [a3 copy];
+  self->_label = [label copy];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setReadable_label:(id)a3
+- (void)setReadable_label:(id)readable_label
 {
-  self->_readable_label = [a3 copy];
+  self->_readable_label = [readable_label copy];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   [(VISLabeledPRPoint *)self confidence];
   if (v4 != 0.0)
   {
@@ -47,62 +47,62 @@
     PBDataWriterWriteFloatField();
   }
 
-  v7 = [(VISLabeledPRPoint *)self label];
-  if (v7)
+  label = [(VISLabeledPRPoint *)self label];
+  if (label)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(VISLabeledPRPoint *)self readable_label];
-  if (v8)
+  readable_label = [(VISLabeledPRPoint *)self readable_label];
+  if (readable_label)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   confidence = self->_confidence;
-  [v4 confidence];
+  [equalCopy confidence];
   if (confidence != v6)
   {
     goto LABEL_15;
   }
 
   precision = self->_precision;
-  [v4 precision];
+  [equalCopy precision];
   if (precision != v8)
   {
     goto LABEL_15;
   }
 
   recall = self->_recall;
-  [v4 recall];
+  [equalCopy recall];
   if (recall != v10)
   {
     goto LABEL_15;
   }
 
-  v11 = [(VISLabeledPRPoint *)self label];
-  v12 = [v4 label];
-  if ((v11 != 0) == (v12 == 0))
+  label = [(VISLabeledPRPoint *)self label];
+  label2 = [equalCopy label];
+  if ((label != 0) == (label2 == 0))
   {
     goto LABEL_14;
   }
 
-  v13 = [(VISLabeledPRPoint *)self label];
-  if (v13)
+  label3 = [(VISLabeledPRPoint *)self label];
+  if (label3)
   {
-    v14 = v13;
-    v15 = [(VISLabeledPRPoint *)self label];
-    v16 = [v4 label];
-    v17 = [v15 isEqual:v16];
+    v14 = label3;
+    label4 = [(VISLabeledPRPoint *)self label];
+    label5 = [equalCopy label];
+    v17 = [label4 isEqual:label5];
 
     if (!v17)
     {
@@ -114,12 +114,12 @@
   {
   }
 
-  v11 = [(VISLabeledPRPoint *)self readable_label];
-  v12 = [v4 readable_label];
-  if ((v11 != 0) != (v12 == 0))
+  label = [(VISLabeledPRPoint *)self readable_label];
+  label2 = [equalCopy readable_label];
+  if ((label != 0) != (label2 == 0))
   {
-    v18 = [(VISLabeledPRPoint *)self readable_label];
-    if (!v18)
+    readable_label = [(VISLabeledPRPoint *)self readable_label];
+    if (!readable_label)
     {
 
 LABEL_18:
@@ -127,10 +127,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v19 = v18;
-    v20 = [(VISLabeledPRPoint *)self readable_label];
-    v21 = [v4 readable_label];
-    v22 = [v20 isEqual:v21];
+    v19 = readable_label;
+    readable_label2 = [(VISLabeledPRPoint *)self readable_label];
+    readable_label3 = [equalCopy readable_label];
+    v22 = [readable_label2 isEqual:readable_label3];
 
     if (v22)
     {
@@ -265,20 +265,20 @@ LABEL_16:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_confidence != 0.0)
   {
     v4 = MEMORY[0x1E696AD98];
     [(VISLabeledPRPoint *)self confidence];
     v5 = [v4 numberWithFloat:?];
-    [v3 setObject:v5 forKeyedSubscript:@"confidence"];
+    [dictionary setObject:v5 forKeyedSubscript:@"confidence"];
   }
 
   if (self->_label)
   {
-    v6 = [(VISLabeledPRPoint *)self label];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"label"];
+    label = [(VISLabeledPRPoint *)self label];
+    v7 = [label copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"label"];
   }
 
   if (self->_precision != 0.0)
@@ -286,14 +286,14 @@ LABEL_16:
     v8 = MEMORY[0x1E696AD98];
     [(VISLabeledPRPoint *)self precision];
     v9 = [v8 numberWithFloat:?];
-    [v3 setObject:v9 forKeyedSubscript:@"precision"];
+    [dictionary setObject:v9 forKeyedSubscript:@"precision"];
   }
 
   if (self->_readable_label)
   {
-    v10 = [(VISLabeledPRPoint *)self readable_label];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"readableLabel"];
+    readable_label = [(VISLabeledPRPoint *)self readable_label];
+    v11 = [readable_label copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"readableLabel"];
   }
 
   if (self->_recall != 0.0)
@@ -301,18 +301,18 @@ LABEL_16:
     v12 = MEMORY[0x1E696AD98];
     [(VISLabeledPRPoint *)self recall];
     v13 = [v12 numberWithFloat:?];
-    [v3 setObject:v13 forKeyedSubscript:@"recall"];
+    [dictionary setObject:v13 forKeyedSubscript:@"recall"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(VISLabeledPRPoint *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(VISLabeledPRPoint *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -323,33 +323,33 @@ LABEL_16:
   return v3;
 }
 
-- (VISLabeledPRPoint)initWithJSON:(id)a3
+- (VISLabeledPRPoint)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(VISLabeledPRPoint *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (VISLabeledPRPoint)initWithDictionary:(id)a3
+- (VISLabeledPRPoint)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = VISLabeledPRPoint;
   v5 = [(VISLabeledPRPoint *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"confidence"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"confidence"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -357,7 +357,7 @@ LABEL_16:
       [(VISLabeledPRPoint *)v5 setConfidence:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"precision"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"precision"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -365,7 +365,7 @@ LABEL_16:
       [(VISLabeledPRPoint *)v5 setPrecision:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"recall"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"recall"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -373,7 +373,7 @@ LABEL_16:
       [(VISLabeledPRPoint *)v5 setRecall:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"label"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"label"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -381,7 +381,7 @@ LABEL_16:
       [(VISLabeledPRPoint *)v5 setLabel:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"readableLabel"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"readableLabel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

@@ -7,8 +7,8 @@
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v2 = [(UIPresentationController *)self containerView];
-  [v2 bounds];
+  containerView = [(UIPresentationController *)self containerView];
+  [containerView bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -27,15 +27,15 @@
 
 - (BOOL)_shouldRestoreFirstResponder
 {
-  v2 = self;
-  v3 = [(UIPresentationController *)self presentedViewController];
+  selfCopy = self;
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(UIPresentationController *)v2 presentedViewController];
-    LODWORD(v2) = [v5 keyWindowChangedDuringInsert] ^ 1;
+    presentedViewController2 = [(UIPresentationController *)selfCopy presentedViewController];
+    LODWORD(selfCopy) = [presentedViewController2 keyWindowChangedDuringInsert] ^ 1;
   }
 
   else
@@ -47,12 +47,12 @@
       _os_log_error_impl(&dword_188A29000, v6, OS_LOG_TYPE_ERROR, "Unexpected presented controller", buf, 2u);
     }
 
-    v8.receiver = v2;
+    v8.receiver = selfCopy;
     v8.super_class = UIStickerPresentationController;
-    LOBYTE(v2) = [(UIPresentationController *)&v8 _shouldRestoreFirstResponder];
+    LOBYTE(selfCopy) = [(UIPresentationController *)&v8 _shouldRestoreFirstResponder];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 @end

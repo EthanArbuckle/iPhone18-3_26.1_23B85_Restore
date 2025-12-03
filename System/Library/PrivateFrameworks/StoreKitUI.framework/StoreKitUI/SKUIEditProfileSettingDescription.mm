@@ -1,42 +1,42 @@
 @interface SKUIEditProfileSettingDescription
-- (BOOL)_validateHandle:(id)a3;
-- (BOOL)_validateName:(id)a3;
-- (BOOL)commitEdits:(id)a3;
+- (BOOL)_validateHandle:(id)handle;
+- (BOOL)_validateName:(id)name;
+- (BOOL)commitEdits:(id)edits;
 - (NSString)handle;
 - (NSString)name;
-- (SKUIEditProfileSettingDescription)initWithViewElement:(id)a3 parent:(id)a4;
+- (SKUIEditProfileSettingDescription)initWithViewElement:(id)element parent:(id)parent;
 - (UIImage)photo;
-- (void)_authenticateOnCompletion:(id)a3;
-- (void)_displayFooter:(id)a3;
-- (void)_displayRules:(BOOL)a3;
-- (void)_displaySuggestedHandles:(id)a3;
+- (void)_authenticateOnCompletion:(id)completion;
+- (void)_displayFooter:(id)footer;
+- (void)_displayRules:(BOOL)rules;
+- (void)_displaySuggestedHandles:(id)handles;
 - (void)_enterEditMode;
 - (void)_fetchAccountInfo;
 - (void)_fetchProfilePhoto;
 - (void)_fetchSuggestedHandles;
-- (void)_finalizeCommitWithSuccess:(BOOL)a3 error:(id)a4;
+- (void)_finalizeCommitWithSuccess:(BOOL)success error:(id)error;
 - (void)_hideFooter;
 - (void)_leaveEditMode;
 - (void)_reloadData;
 - (void)_updateAccountInfo;
 - (void)_updateValidity;
-- (void)_uploadProfileImage:(id)a3;
+- (void)_uploadProfileImage:(id)image;
 - (void)chooseNewProfilePhoto;
 - (void)dealloc;
 - (void)discardEdits;
-- (void)profileImagePicker:(id)a3 didPickProfileImage:(id)a4 withCropRect:(id)a5;
-- (void)setHandle:(id)a3;
-- (void)setName:(id)a3;
-- (void)setPhoto:(id)a3 withCropRect:(CGRect)a4;
-- (void)suggestedHandlesSettingsHeaderFooterDescription:(id)a3 didSelectSuggestedHandle:(id)a4;
+- (void)profileImagePicker:(id)picker didPickProfileImage:(id)image withCropRect:(id)rect;
+- (void)setHandle:(id)handle;
+- (void)setName:(id)name;
+- (void)setPhoto:(id)photo withCropRect:(CGRect)rect;
+- (void)suggestedHandlesSettingsHeaderFooterDescription:(id)description didSelectSuggestedHandle:(id)handle;
 @end
 
 @implementation SKUIEditProfileSettingDescription
 
-- (SKUIEditProfileSettingDescription)initWithViewElement:(id)a3 parent:(id)a4
+- (SKUIEditProfileSettingDescription)initWithViewElement:(id)element parent:(id)parent
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  parentCopy = parent;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIEditProfileSettingDescription initWithViewElement:parent:];
@@ -44,7 +44,7 @@
 
   v14.receiver = self;
   v14.super_class = SKUIEditProfileSettingDescription;
-  v8 = [(SKUISettingDescription *)&v14 initWithViewElement:v6 parent:v7];
+  v8 = [(SKUISettingDescription *)&v14 initWithViewElement:elementCopy parent:parentCopy];
   if (v8)
   {
     v9 = objc_alloc_init(MEMORY[0x277CCABD8]);
@@ -74,9 +74,9 @@
 - (void)chooseNewProfilePhoto
 {
   v3 = [SKUIProfileImagePicker alloc];
-  v4 = [(SKUISettingDescription *)self parent];
-  v5 = [v4 clientContext];
-  v6 = [(SKUIProfileImagePicker *)v3 initWithClientContext:v5];
+  parent = [(SKUISettingDescription *)self parent];
+  clientContext = [parent clientContext];
+  v6 = [(SKUIProfileImagePicker *)v3 initWithClientContext:clientContext];
 
   [(SKUIProfileImagePicker *)v6 setDelegate:self];
   [(SKUISettingDescription *)self _presentViewController:v6 animated:1 completion:0];
@@ -109,74 +109,74 @@
   return v5;
 }
 
-- (void)setHandle:(id)a3
+- (void)setHandle:(id)handle
 {
   v4 = MEMORY[0x277CCA900];
-  v5 = a3;
-  v6 = [v4 whitespaceAndNewlineCharacterSet];
-  v7 = [v5 stringByTrimmingCharactersInSet:v6];
+  handleCopy = handle;
+  whitespaceAndNewlineCharacterSet = [v4 whitespaceAndNewlineCharacterSet];
+  v7 = [handleCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   [(SKUISettingValueStore *)self->_valueStore setModifiedValue:v7 forKey:@"handle"];
   [(SKUIEditProfileSettingDescription *)self _updateValidity];
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v4 = MEMORY[0x277CCA900];
-  v5 = a3;
-  v6 = [v4 whitespaceAndNewlineCharacterSet];
-  v7 = [v5 stringByTrimmingCharactersInSet:v6];
+  nameCopy = name;
+  whitespaceAndNewlineCharacterSet = [v4 whitespaceAndNewlineCharacterSet];
+  v7 = [nameCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   [(SKUISettingValueStore *)self->_valueStore setModifiedValue:v7 forKey:@"name"];
   [(SKUIEditProfileSettingDescription *)self _updateValidity];
 }
 
-- (void)setPhoto:(id)a3 withCropRect:(CGRect)a4
+- (void)setPhoto:(id)photo withCropRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v7 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  photoCopy = photo;
   v12.width = width;
   v12.height = height;
   UIGraphicsBeginImageContextWithOptions(v12, 1, 1.0);
   memset(&v11, 0, sizeof(v11));
   CGAffineTransformMakeScale(&v11, -1.0, -1.0);
-  [v7 drawAtPoint:{vaddq_f64(*&v11.tx, vmlaq_n_f64(vmulq_n_f64(*&v11.c, y), *&v11.a, x))}];
+  [photoCopy drawAtPoint:{vaddq_f64(*&v11.tx, vmlaq_n_f64(vmulq_n_f64(*&v11.c, y), *&v11.a, x))}];
 
   v8 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   [(SKUISettingValueStore *)self->_valueStore setModifiedValue:v8 forKey:@"photo"];
 }
 
-- (void)profileImagePicker:(id)a3 didPickProfileImage:(id)a4 withCropRect:(id)a5
+- (void)profileImagePicker:(id)picker didPickProfileImage:(id)image withCropRect:(id)rect
 {
-  v8 = a5;
-  v9 = a4;
-  [(SKUISettingDescription *)self _dismissViewController:a3 animated:1 completion:0];
-  [v8 CGRectValue];
+  rectCopy = rect;
+  imageCopy = image;
+  [(SKUISettingDescription *)self _dismissViewController:picker animated:1 completion:0];
+  [rectCopy CGRectValue];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
 
-  [(SKUIEditProfileSettingDescription *)self setPhoto:v9 withCropRect:v11, v13, v15, v17];
+  [(SKUIEditProfileSettingDescription *)self setPhoto:imageCopy withCropRect:v11, v13, v15, v17];
 
   [(SKUISettingDescription *)self _reloadSetting];
 }
 
-- (BOOL)commitEdits:(id)a3
+- (BOOL)commitEdits:(id)edits
 {
-  v4 = [a3 copy];
+  v4 = [edits copy];
   commitBlock = self->_commitBlock;
   self->_commitBlock = v4;
 
-  v6 = [(SKUISettingValueStore *)self->_valueStore hasChanges];
-  if (v6)
+  hasChanges = [(SKUISettingValueStore *)self->_valueStore hasChanges];
+  if (hasChanges)
   {
-    v7 = [(SKUISettingValueStore *)self->_valueStore modifiedKeys];
-    if ([v7 containsObject:@"photo"])
+    modifiedKeys = [(SKUISettingValueStore *)self->_valueStore modifiedKeys];
+    if ([modifiedKeys containsObject:@"photo"])
     {
       v8 = [(SKUISettingValueStore *)self->_valueStore resolvedValueForKey:@"photo"];
       [(SKUIEditProfileSettingDescription *)self _uploadProfileImage:v8];
@@ -193,7 +193,7 @@
     [(SKUIEditProfileSettingDescription *)self _finalizeCommitWithSuccess:1 error:0];
   }
 
-  return v6;
+  return hasChanges;
 }
 
 - (void)discardEdits
@@ -203,40 +203,40 @@
   [(SKUIEditProfileSettingDescription *)self _leaveEditMode];
 }
 
-- (void)suggestedHandlesSettingsHeaderFooterDescription:(id)a3 didSelectSuggestedHandle:(id)a4
+- (void)suggestedHandlesSettingsHeaderFooterDescription:(id)description didSelectSuggestedHandle:(id)handle
 {
   valueStore = self->_valueStore;
-  v6 = [a4 copy];
+  v6 = [handle copy];
   [(SKUISettingValueStore *)valueStore setModifiedValue:v6 forKey:@"handle"];
 
   [(SKUISettingDescription *)self _reloadSetting];
 }
 
-- (void)_authenticateOnCompletion:(id)a3
+- (void)_authenticateOnCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D69A20] defaultStore];
-  v5 = [v4 activeAccount];
+  completionCopy = completion;
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  activeAccount = [defaultStore activeAccount];
 
-  if (v5)
+  if (activeAccount)
   {
-    v6 = [objc_alloc(MEMORY[0x277D69BC8]) initWithAccount:v5];
-    [v6 setPromptStyle:1];
-    [v6 setShouldCreateNewSession:1];
+    contextForSignIn = [objc_alloc(MEMORY[0x277D69BC8]) initWithAccount:activeAccount];
+    [contextForSignIn setPromptStyle:1];
+    [contextForSignIn setShouldCreateNewSession:1];
   }
 
   else
   {
-    v6 = [MEMORY[0x277D69BC8] contextForSignIn];
+    contextForSignIn = [MEMORY[0x277D69BC8] contextForSignIn];
   }
 
-  v7 = [objc_alloc(MEMORY[0x277D69A50]) initWithAuthenticationContext:v6];
+  v7 = [objc_alloc(MEMORY[0x277D69A50]) initWithAuthenticationContext:contextForSignIn];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __63__SKUIEditProfileSettingDescription__authenticateOnCompletion___block_invoke;
   v9[3] = &unk_2781FE8F8;
-  v10 = v3;
-  v8 = v3;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [v7 startWithAuthenticateResponseBlock:v9];
 }
 
@@ -267,40 +267,40 @@ uint64_t __63__SKUIEditProfileSettingDescription__authenticateOnCompletion___blo
   return result;
 }
 
-- (void)_displayFooter:(id)a3
+- (void)_displayFooter:(id)footer
 {
-  v4 = a3;
-  v8 = [(SKUISettingDescription *)self parent];
-  [v8 setFooterDescription:v4];
+  footerCopy = footer;
+  parent = [(SKUISettingDescription *)self parent];
+  [parent setFooterDescription:footerCopy];
 
   v5 = [[SKUISettingsDescriptionUpdate alloc] initWithUpdateType:2];
-  v6 = [v8 index];
-  v7 = [MEMORY[0x277CCAA78] indexSetWithIndex:v6];
+  index = [parent index];
+  v7 = [MEMORY[0x277CCAA78] indexSetWithIndex:index];
   [(SKUISettingsDescriptionUpdate *)v5 setIndexSet:v7];
 
-  [v8 dispatchUpdate:v5];
+  [parent dispatchUpdate:v5];
 }
 
-- (void)_displayRules:(BOOL)a3
+- (void)_displayRules:(BOOL)rules
 {
-  v3 = a3;
+  rulesCopy = rules;
   v5 = [SKUIHandleRulesSettingsHeaderFooterDescription alloc];
-  v6 = [(SKUISettingDescription *)self parent];
-  v7 = [v6 clientContext];
-  v8 = [(SKUIHandleRulesSettingsHeaderFooterDescription *)v5 initWithClientContext:v7];
+  parent = [(SKUISettingDescription *)self parent];
+  clientContext = [parent clientContext];
+  v8 = [(SKUIHandleRulesSettingsHeaderFooterDescription *)v5 initWithClientContext:clientContext];
 
-  [(SKUIHandleRulesSettingsHeaderFooterDescription *)v8 setShowInvalid:v3];
+  [(SKUIHandleRulesSettingsHeaderFooterDescription *)v8 setShowInvalid:rulesCopy];
   [(SKUIEditProfileSettingDescription *)self _displayFooter:v8];
 }
 
-- (void)_displaySuggestedHandles:(id)a3
+- (void)_displaySuggestedHandles:(id)handles
 {
   self->_suggestedHandlesDisplayed = 1;
-  v4 = a3;
+  handlesCopy = handles;
   v5 = [SKUISuggestedHandlesSettingsHeaderFooterDescription alloc];
-  v6 = [(SKUISettingDescription *)self parent];
-  v7 = [v6 clientContext];
-  v8 = [(SKUISuggestedHandlesSettingsHeaderFooterDescription *)v5 initWithSuggestedHandles:v4 clientContext:v7 delegate:self];
+  parent = [(SKUISettingDescription *)self parent];
+  clientContext = [parent clientContext];
+  v8 = [(SKUISuggestedHandlesSettingsHeaderFooterDescription *)v5 initWithSuggestedHandles:handlesCopy clientContext:clientContext delegate:self];
 
   [(SKUIEditProfileSettingDescription *)self _displayFooter:v8];
 }
@@ -366,10 +366,10 @@ void __54__SKUIEditProfileSettingDescription__fetchAccountInfo__block_invoke_2(u
 
 - (void)_fetchProfilePhoto
 {
-  v3 = [(SKUISettingDescription *)self parent];
-  v4 = [v3 clientContext];
+  parent = [(SKUISettingDescription *)self parent];
+  clientContext = [parent clientContext];
 
-  v5 = [[SKUIMediaSocialLoadProfilePhotoOperation alloc] initWithClientContext:v4];
+  v5 = [[SKUIMediaSocialLoadProfilePhotoOperation alloc] initWithClientContext:clientContext];
   objc_initWeak(&location, self);
   v6 = MEMORY[0x277D85DD0];
   v7 = 3221225472;
@@ -408,10 +408,10 @@ void __55__SKUIEditProfileSettingDescription__fetchProfilePhoto__block_invoke(ui
 
 - (void)_fetchSuggestedHandles
 {
-  v3 = [(SKUISettingDescription *)self parent];
-  v4 = [v3 clientContext];
+  parent = [(SKUISettingDescription *)self parent];
+  clientContext = [parent clientContext];
 
-  v5 = [[SKUIMediaSocialSuggestedHandlesOperation alloc] initWithClientContext:v4];
+  v5 = [[SKUIMediaSocialSuggestedHandlesOperation alloc] initWithClientContext:clientContext];
   v6 = objc_alloc(MEMORY[0x277CBEA60]);
   v7 = [(SKUISettingValueStore *)self->_valueStore resolvedValueForKey:@"name"];
   v8 = [(SKUISettingValueStore *)self->_valueStore resolvedValueForKey:@"handle"];
@@ -465,20 +465,20 @@ void __59__SKUIEditProfileSettingDescription__fetchSuggestedHandles__block_invok
   [WeakRetained _displaySuggestedHandles:v3];
 }
 
-- (void)_finalizeCommitWithSuccess:(BOOL)a3 error:(id)a4
+- (void)_finalizeCommitWithSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
-  v11 = a4;
+  successCopy = success;
+  errorCopy = error;
   [(SKUISettingValueStore *)self->_valueStore clearValueForKey:@"photoUpload"];
   commitBlock = self->_commitBlock;
   if (commitBlock)
   {
-    commitBlock[2](commitBlock, v4);
+    commitBlock[2](commitBlock, successCopy);
     v7 = self->_commitBlock;
     self->_commitBlock = 0;
   }
 
-  if (v4)
+  if (successCopy)
   {
     [(SKUIEditProfileSettingDescription *)self _leaveEditMode];
     [(SKUIEditProfileSettingDescription *)self _reloadData];
@@ -486,19 +486,19 @@ void __59__SKUIEditProfileSettingDescription__fetchSuggestedHandles__block_invok
 
   else
   {
-    v8 = v11;
-    if (!v11)
+    v8 = errorCopy;
+    if (!errorCopy)
     {
       goto LABEL_11;
     }
 
-    v9 = [v11 domain];
-    if ([v9 isEqualToString:@"SKUIErrorDomain"])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:@"SKUIErrorDomain"])
     {
-      v10 = [v11 code];
+      code = [errorCopy code];
 
-      v8 = v11;
-      if (v10 != 5)
+      v8 = errorCopy;
+      if (code != 5)
       {
         goto LABEL_11;
       }
@@ -511,21 +511,21 @@ void __59__SKUIEditProfileSettingDescription__fetchSuggestedHandles__block_invok
     }
   }
 
-  v8 = v11;
+  v8 = errorCopy;
 LABEL_11:
 }
 
 - (void)_hideFooter
 {
   self->_suggestedHandlesDisplayed = 0;
-  v5 = [(SKUISettingDescription *)self parent];
-  [v5 setFooterDescription:0];
+  parent = [(SKUISettingDescription *)self parent];
+  [parent setFooterDescription:0];
   v2 = [[SKUISettingsDescriptionUpdate alloc] initWithUpdateType:2];
-  v3 = [v5 index];
-  v4 = [MEMORY[0x277CCAA78] indexSetWithIndex:v3];
+  index = [parent index];
+  v4 = [MEMORY[0x277CCAA78] indexSetWithIndex:index];
   [(SKUISettingsDescriptionUpdate *)v2 setIndexSet:v4];
 
-  [v5 dispatchUpdate:v2];
+  [parent dispatchUpdate:v2];
 }
 
 - (void)_leaveEditMode
@@ -548,16 +548,16 @@ LABEL_11:
   v32 = *MEMORY[0x277D85DE8];
   v3 = [SKUIMediaSocialUpdateProfileOperation alloc];
   val = self;
-  v4 = [(SKUISettingDescription *)self parent];
-  v5 = [v4 clientContext];
-  v23 = [(SKUIMediaSocialUpdateProfileOperation *)v3 initWithClientContext:v5];
+  parent = [(SKUISettingDescription *)self parent];
+  clientContext = [parent clientContext];
+  v23 = [(SKUIMediaSocialUpdateProfileOperation *)v3 initWithClientContext:clientContext];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = [(SKUISettingValueStore *)self->_valueStore modifiedKeys];
-  v7 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  modifiedKeys = [(SKUISettingValueStore *)self->_valueStore modifiedKeys];
+  v7 = [modifiedKeys countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v7)
   {
     v8 = *v28;
@@ -568,7 +568,7 @@ LABEL_11:
       {
         if (*v28 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(modifiedKeys);
         }
 
         v10 = *(*(&v27 + 1) + 8 * v9);
@@ -583,19 +583,19 @@ LABEL_11:
             goto LABEL_16;
           }
 
-          v16 = [(SKUISettingValueStore *)val->_valueStore resolvedValueForKey:v10];
+          null = [(SKUISettingValueStore *)val->_valueStore resolvedValueForKey:v10];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v17 = v16;
-            v16 = v17;
+            v17 = null;
+            null = v17;
             if ([v17 isEqualToString:&stru_2827FFAC8])
             {
-              v16 = [MEMORY[0x277CBEB68] null];
+              null = [MEMORY[0x277CBEB68] null];
             }
           }
 
-          [(SKUIMediaSocialUpdateProfileOperation *)v23 setValue:v16 forProfileField:v15];
+          [(SKUIMediaSocialUpdateProfileOperation *)v23 setValue:null forProfileField:v15];
         }
 
         else
@@ -608,18 +608,18 @@ LABEL_16:
       }
 
       while (v7 != v9);
-      v18 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v18 = [modifiedKeys countByEnumeratingWithState:&v27 objects:v31 count:16];
       v7 = v18;
     }
 
     while (v18);
   }
 
-  v19 = [MEMORY[0x277D69A20] defaultStore];
-  v20 = [v19 activeAccount];
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  activeAccount = [defaultStore activeAccount];
 
-  v21 = [v20 uniqueIdentifier];
-  [(SKUIMediaSocialUpdateProfileOperation *)v23 setIdentifier:v21];
+  uniqueIdentifier = [activeAccount uniqueIdentifier];
+  [(SKUIMediaSocialUpdateProfileOperation *)v23 setIdentifier:uniqueIdentifier];
 
   [(SKUIMediaSocialUpdateProfileOperation *)v23 setEntityType:@"user"];
   objc_initWeak(&location, val);
@@ -717,22 +717,22 @@ void __55__SKUIEditProfileSettingDescription__updateAccountInfo__block_invoke_3(
   }
 }
 
-- (void)_uploadProfileImage:(id)a3
+- (void)_uploadProfileImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v5 = [SKUIMediaSocialSaveProfilePhotoOperation alloc];
-  v6 = [(SKUISettingDescription *)self parent];
-  v7 = [v6 clientContext];
-  v8 = [(SKUIMediaSocialSaveProfilePhotoOperation *)v5 initWithClientContext:v7];
+  parent = [(SKUISettingDescription *)self parent];
+  clientContext = [parent clientContext];
+  v8 = [(SKUIMediaSocialSaveProfilePhotoOperation *)v5 initWithClientContext:clientContext];
 
-  [(SKUIMediaSocialSaveProfilePhotoOperation *)v8 setPhoto:v4];
+  [(SKUIMediaSocialSaveProfilePhotoOperation *)v8 setPhoto:imageCopy];
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __57__SKUIEditProfileSettingDescription__uploadProfileImage___block_invoke;
   v10[3] = &unk_278200C08;
   objc_copyWeak(&v12, &location);
-  v9 = v4;
+  v9 = imageCopy;
   v11 = v9;
   [(SKUIMediaSocialSaveProfilePhotoOperation *)v8 setOutputBlock:v10];
   [(NSOperationQueue *)self->_operationQueue addOperation:v8];
@@ -806,11 +806,11 @@ void __57__SKUIEditProfileSettingDescription__uploadProfileImage___block_invoke_
   [(SKUISettingDescription *)self _setEditsValid:[(SKUIEditProfileSettingDescription *)self _validateName:v4]& [(SKUIEditProfileSettingDescription *)self _validateHandle:v3]];
 }
 
-- (BOOL)_validateHandle:(id)a3
+- (BOOL)_validateHandle:(id)handle
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || ([v4 isEqualToString:&stru_2827FFAC8] & 1) != 0 || objc_msgSend(v5, "length") > 0x20)
+  handleCopy = handle;
+  v5 = handleCopy;
+  if (!handleCopy || ([handleCopy isEqualToString:&stru_2827FFAC8] & 1) != 0 || objc_msgSend(v5, "length") > 0x20)
   {
     v11 = 0;
   }
@@ -843,11 +843,11 @@ void __57__SKUIEditProfileSettingDescription__uploadProfileImage___block_invoke_
   return v11;
 }
 
-- (BOOL)_validateName:(id)a3
+- (BOOL)_validateName:(id)name
 {
-  if (a3)
+  if (name)
   {
-    return [a3 isEqualToString:&stru_2827FFAC8] ^ 1;
+    return [name isEqualToString:&stru_2827FFAC8] ^ 1;
   }
 
   else

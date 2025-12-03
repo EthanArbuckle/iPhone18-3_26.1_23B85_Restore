@@ -1,9 +1,9 @@
 @interface JavaIoStringWriter
-- (id)appendWithJavaLangCharSequence:(id)a3;
+- (id)appendWithJavaLangCharSequence:(id)sequence;
 - (id)description;
 - (void)dealloc;
-- (void)writeWithInt:(int)a3;
-- (void)writeWithNSString:(id)a3;
+- (void)writeWithInt:(int)int;
+- (void)writeWithNSString:(id)string;
 @end
 
 @implementation JavaIoStringWriter
@@ -19,7 +19,7 @@
   return [(JavaLangStringBuffer *)buf description];
 }
 
-- (void)writeWithInt:(int)a3
+- (void)writeWithInt:(int)int
 {
   buf = self->buf_;
   if (!buf)
@@ -27,10 +27,10 @@
     JreThrowNullPointerException();
   }
 
-  [(JavaLangStringBuffer *)buf appendWithChar:a3];
+  [(JavaLangStringBuffer *)buf appendWithChar:int];
 }
 
-- (void)writeWithNSString:(id)a3
+- (void)writeWithNSString:(id)string
 {
   buf = self->buf_;
   if (!buf)
@@ -38,22 +38,22 @@
     JreThrowNullPointerException();
   }
 
-  [(JavaLangStringBuffer *)buf appendWithNSString:a3];
+  [(JavaLangStringBuffer *)buf appendWithNSString:string];
 }
 
-- (id)appendWithJavaLangCharSequence:(id)a3
+- (id)appendWithJavaLangCharSequence:(id)sequence
 {
-  if (a3)
+  if (sequence)
   {
-    v4 = a3;
+    sequenceCopy = sequence;
   }
 
   else
   {
-    v4 = @"null";
+    sequenceCopy = @"null";
   }
 
-  [(JavaIoStringWriter *)self writeWithNSString:[(__CFString *)v4 description]];
+  [(JavaIoStringWriter *)self writeWithNSString:[(__CFString *)sequenceCopy description]];
   return self;
 }
 

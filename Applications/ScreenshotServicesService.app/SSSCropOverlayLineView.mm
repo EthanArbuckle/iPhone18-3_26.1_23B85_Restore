@@ -1,16 +1,16 @@
 @interface SSSCropOverlayLineView
-- (SSSCropOverlayLineView)initWithEdge:(unint64_t)a3;
+- (SSSCropOverlayLineView)initWithEdge:(unint64_t)edge;
 - (void)tintColorDidChange;
 @end
 
 @implementation SSSCropOverlayLineView
 
-- (SSSCropOverlayLineView)initWithEdge:(unint64_t)a3
+- (SSSCropOverlayLineView)initWithEdge:(unint64_t)edge
 {
   v5.receiver = self;
   v5.super_class = SSSCropOverlayLineView;
   result = [(SSSCropOverlayLineView *)&v5 init];
-  result->_edge = a3;
+  result->_edge = edge;
   return result;
 }
 
@@ -19,8 +19,8 @@
   v4.receiver = self;
   v4.super_class = SSSCropOverlayLineView;
   [(SSSCropOverlayLineView *)&v4 tintColorDidChange];
-  v3 = [(SSSCropOverlayLineView *)self tintColor];
-  [(SSSCropOverlayLineView *)self setBackgroundColor:v3];
+  tintColor = [(SSSCropOverlayLineView *)self tintColor];
+  [(SSSCropOverlayLineView *)self setBackgroundColor:tintColor];
 }
 
 @end

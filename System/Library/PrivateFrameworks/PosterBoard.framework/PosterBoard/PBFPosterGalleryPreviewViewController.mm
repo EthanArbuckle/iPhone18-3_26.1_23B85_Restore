@@ -1,46 +1,46 @@
 @interface PBFPosterGalleryPreviewViewController
 + (PREditingSceneViewControllerTopButtonLayout)_topButtonLayout;
-+ (void)configureSheetPresentationController:(id)a3;
++ (void)configureSheetPresentationController:(id)controller;
 + (void)prewarmTopButtonLayout;
-- ($E55302FE00A828021E966018723DA9D2)metricsForEnvironment:(SEL)a3;
+- ($E55302FE00A828021E966018723DA9D2)metricsForEnvironment:(SEL)environment;
 - (NSSet)displayedPreviewIdentifiers;
 - (NSSet)tappedPreviewIdentifiers;
 - (NSString)addedPreviewIdentifier;
-- (PBFPosterGalleryPreviewViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PBFPosterGalleryPreviewViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (PBFPosterGalleryPreviewViewControllerDelegate)delegate;
 - (PREditingSceneViewControllerDelegate)editingSceneDelegate;
-- (PREditingSceneViewControllerTopButtonLayout)topButtonLayoutForEditingSceneViewController:(SEL)a3;
+- (PREditingSceneViewControllerTopButtonLayout)topButtonLayoutForEditingSceneViewController:(SEL)controller;
 - (UIView)recycledViewsContainer;
-- (id)_layoutSectionForSection:(int64_t)a3 environment:(id)a4 galleryViewSpec:(id)a5;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)navigationControllerForPresentingSceneViewController:(id)a3;
+- (id)_layoutSectionForSection:(int64_t)section environment:(id)environment galleryViewSpec:(id)spec;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)navigationControllerForPresentingSceneViewController:(id)controller;
 - (int64_t)layoutOrientation;
-- (void)_closeButtonTapped:(id)a3;
-- (void)_updatePreferredContentSizeForOrientation:(int64_t)a3;
+- (void)_closeButtonTapped:(id)tapped;
+- (void)_updatePreferredContentSizeForOrientation:(int64_t)orientation;
 - (void)dealloc;
-- (void)editingSceneViewController:(id)a3 userDidDismissWithAction:(int64_t)a4 updatedConfiguration:(id)a5 updatedConfiguredProperties:(id)a6 completion:(id)a7;
-- (void)editingSceneViewControllerDidFinishShowingContent:(id)a3;
-- (void)forwardAppearanceNotificationName:(id)a3;
-- (void)galleryCollectionViewControllerDidSelectPreview:(id)a3 fromPreviewView:(id)a4;
-- (void)galleryCollectionViewControllerWillDisplayPreview:(id)a3;
+- (void)editingSceneViewController:(id)controller userDidDismissWithAction:(int64_t)action updatedConfiguration:(id)configuration updatedConfiguredProperties:(id)properties completion:(id)completion;
+- (void)editingSceneViewControllerDidFinishShowingContent:(id)content;
+- (void)forwardAppearanceNotificationName:(id)name;
+- (void)galleryCollectionViewControllerDidSelectPreview:(id)preview fromPreviewView:(id)view;
+- (void)galleryCollectionViewControllerWillDisplayPreview:(id)preview;
 - (void)noteEditingDidDismiss;
-- (void)presentPreview:(id)a3 withMode:(int64_t)a4 fromView:(id)a5;
-- (void)presentationControllerWillDismiss:(id)a3;
-- (void)setApplicationStateMonitor:(id)a3;
-- (void)setDataProvider:(id)a3;
-- (void)setEditingExtensionInstance:(id)a3;
-- (void)updatePreferredContentSizeForSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)presentPreview:(id)preview withMode:(int64_t)mode fromView:(id)view;
+- (void)presentationControllerWillDismiss:(id)dismiss;
+- (void)setApplicationStateMonitor:(id)monitor;
+- (void)setDataProvider:(id)provider;
+- (void)setEditingExtensionInstance:(id)instance;
+- (void)updatePreferredContentSizeForSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)viewDidLoad;
 @end
 
 @implementation PBFPosterGalleryPreviewViewController
 
-- (PBFPosterGalleryPreviewViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PBFPosterGalleryPreviewViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v6.receiver = self;
   v6.super_class = PBFPosterGalleryPreviewViewController;
-  v4 = [(PBFPosterGalleryPreviewViewController *)&v6 initWithNibName:a3 bundle:a4];
+  v4 = [(PBFPosterGalleryPreviewViewController *)&v6 initWithNibName:name bundle:bundle];
   if (v4)
   {
     [objc_opt_class() prewarmTopButtonLayout];
@@ -66,21 +66,21 @@
   [(PBFPosterGalleryPreviewViewController *)self setEditingExtensionInstance:0];
 }
 
-+ (void)configureSheetPresentationController:(id)a3
++ (void)configureSheetPresentationController:(id)controller
 {
-  v3 = a3;
-  [v3 _setShouldDismissWhenTappedOutside:1];
-  [v3 setPrefersGrabberVisible:0];
+  controllerCopy = controller;
+  [controllerCopy _setShouldDismissWhenTappedOutside:1];
+  [controllerCopy setPrefersGrabberVisible:0];
   PRSheetCornerRadius();
-  [v3 setPreferredCornerRadius:?];
+  [controllerCopy setPreferredCornerRadius:?];
 }
 
-- (void)setApplicationStateMonitor:(id)a3
+- (void)setApplicationStateMonitor:(id)monitor
 {
-  v5 = a3;
+  monitorCopy = monitor;
   if (([(PBFApplicationStateMonitor *)self->_applicationStateMonitor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_applicationStateMonitor, a3);
+    objc_storeStrong(&self->_applicationStateMonitor, monitor);
     [(_PBFGalleryCollectionViewController *)self->_collectionViewController setApplicationStateMonitor:self->_applicationStateMonitor];
   }
 }
@@ -92,18 +92,18 @@
   v72.super_class = PBFPosterGalleryPreviewViewController;
   [(PBFPosterGalleryPreviewViewController *)&v72 viewDidLoad];
   objc_initWeak(&location, self);
-  v3 = [(PBFPosterGalleryPreviewViewController *)self view];
-  v4 = [MEMORY[0x277D75348] blackColor];
-  [v3 setBackgroundColor:v4];
+  view = [(PBFPosterGalleryPreviewViewController *)self view];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [view setBackgroundColor:blackColor];
 
   if (!self->_collectionViewController)
   {
     v5 = objc_alloc_init(MEMORY[0x277D752C0]);
     [v5 setScrollDirection:0];
-    v6 = [(PBFPosterGalleryPreviewViewController *)self view];
-    v7 = [v6 window];
-    v8 = [v7 screen];
-    v9 = [PBFPosterGalleryViewSpec specForScreen:v8];
+    view2 = [(PBFPosterGalleryPreviewViewController *)self view];
+    window = [view2 window];
+    screen = [window screen];
+    v9 = [PBFPosterGalleryViewSpec specForScreen:screen];
 
     v10 = objc_alloc(MEMORY[0x277D752B8]);
     v68[0] = MEMORY[0x277D85DD0];
@@ -119,8 +119,8 @@
     self->_collectionViewController = v13;
 
     v15 = self->_collectionViewController;
-    v16 = [(PBFPosterGalleryPreviewViewController *)self dataProvider];
-    [(_PBFGalleryCollectionViewController *)v15 setDataProvider:v16];
+    dataProvider = [(PBFPosterGalleryPreviewViewController *)self dataProvider];
+    [(_PBFGalleryCollectionViewController *)v15 setDataProvider:dataProvider];
 
     [(_PBFGalleryCollectionViewController *)self->_collectionViewController setDelegate:self];
     [(_PBFGalleryCollectionViewController *)self->_collectionViewController setRecycledViewsContainerProviding:self];
@@ -143,12 +143,12 @@
 
     else
     {
-      v49 = [(_PBFGalleryCollectionViewController *)self->_collectionViewController navigationItem];
+      navigationItem = [(_PBFGalleryCollectionViewController *)self->_collectionViewController navigationItem];
       v50 = PBFLocalizedString(@"POSTER_GALLERY_PREVIEW_VIEW_TITLE");
-      [v49 setTitle:v50];
+      [navigationItem setTitle:v50];
 
       v51 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:24 target:self action:sel__closeButtonTapped_];
-      [v49 setLeftBarButtonItem:v51];
+      [navigationItem setLeftBarButtonItem:v51];
     }
 
     v20 = self->_navigationController;
@@ -163,7 +163,7 @@
   v65[2] = __52__PBFPosterGalleryPreviewViewController_viewDidLoad__block_invoke_2;
   v65[3] = &unk_2782C6FD8;
   v66 = v21;
-  v22 = v3;
+  v22 = view;
   v67 = v22;
   v52 = v66;
   [(PBFPosterGalleryPreviewViewController *)self bs_addChildViewController:v66 withSuperview:v22 animated:0 transitionBlock:v65];
@@ -230,13 +230,13 @@
     }
 
     v35 = MEMORY[0x277CCAAD0];
-    v36 = [v60[5] leadingAnchor];
-    v37 = [v22 leadingAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37 constant:MinX];
+    leadingAnchor = [v60[5] leadingAnchor];
+    leadingAnchor2 = [v22 leadingAnchor];
+    v38 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:MinX];
     v73[0] = v38;
-    v39 = [v60[5] topAnchor];
-    v40 = [v22 topAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40 constant:MinY];
+    topAnchor = [v60[5] topAnchor];
+    topAnchor2 = [v22 topAnchor];
+    v41 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:MinY];
     v73[1] = v41;
     v42 = [MEMORY[0x277CBEA60] arrayWithObjects:v73 count:2];
     [v35 activateConstraints:v42];
@@ -292,32 +292,32 @@ void __52__PBFPosterGalleryPreviewViewController_viewDidLoad__block_invoke_37(ui
   [WeakRetained _closeButtonTapped:*(*(*(a1 + 32) + 8) + 40)];
 }
 
-- (id)_layoutSectionForSection:(int64_t)a3 environment:(id)a4 galleryViewSpec:(id)a5
+- (id)_layoutSectionForSection:(int64_t)section environment:(id)environment galleryViewSpec:(id)spec
 {
   v128[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(PBFPosterGalleryPreviewViewController *)self dataProvider];
-  v11 = [v10 sectionIdentifierForIndex:a3];
+  environmentCopy = environment;
+  specCopy = spec;
+  dataProvider = [(PBFPosterGalleryPreviewViewController *)self dataProvider];
+  v11 = [dataProvider sectionIdentifierForIndex:section];
   v119 = 0u;
   v120 = 0u;
   v117 = 0u;
   v118 = 0u;
   v116 = 0u;
   memset(v115, 0, sizeof(v115));
-  v108 = v8;
-  [(PBFPosterGalleryPreviewViewController *)self metricsForEnvironment:v8];
+  v108 = environmentCopy;
+  [(PBFPosterGalleryPreviewViewController *)self metricsForEnvironment:environmentCopy];
   v105 = v11;
-  v106 = v10;
-  v12 = [v10 sectionTypeForSectionWithIdentifier:v11];
+  v106 = dataProvider;
+  v12 = [dataProvider sectionTypeForSectionWithIdentifier:v11];
   v13 = &v115[v12];
   v14 = *v13;
   v15 = v13[1];
   v16 = v120;
   v17 = MEMORY[0x277CFB840];
-  v107 = v9;
-  v18 = [v9 sectionHeaderTitleFont];
-  [v18 lineHeight];
+  v107 = specCopy;
+  sectionHeaderTitleFont = [specCopy sectionHeaderTitleFont];
+  [sectionHeaderTitleFont lineHeight];
   v19 = [v17 estimatedDimension:?];
 
   v20 = [MEMORY[0x277CFB840] estimatedDimension:v14];
@@ -401,13 +401,13 @@ void __52__PBFPosterGalleryPreviewViewController_viewDidLoad__block_invoke_37(ui
     v64 = *(&v117 + 1);
     [v107 heroSpacingForOrientation:{-[PBFPosterGalleryPreviewViewController layoutOrientation](self, "layoutOrientation")}];
     v66 = v65;
-    v67 = [v108 container];
-    [v67 effectiveContentSize];
+    container = [v108 container];
+    [container effectiveContentSize];
     v69 = v68 - v63 - v64;
 
     v70 = v66 * (v62 - 1);
     v104 = v19;
-    if (a3)
+    if (section)
     {
       v112 = 0;
     }
@@ -569,76 +569,76 @@ LABEL_23:
   return v25;
 }
 
-- (void)setDataProvider:(id)a3
+- (void)setDataProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_dataProvider != v5)
+  providerCopy = provider;
+  if (self->_dataProvider != providerCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_dataProvider, a3);
-    v6 = [(PBFPosterGalleryPreviewViewController *)self isViewLoaded];
-    v5 = v7;
-    if (v6)
+    v7 = providerCopy;
+    objc_storeStrong(&self->_dataProvider, provider);
+    isViewLoaded = [(PBFPosterGalleryPreviewViewController *)self isViewLoaded];
+    providerCopy = v7;
+    if (isViewLoaded)
     {
       [(_PBFGalleryCollectionViewController *)self->_collectionViewController setDataProvider:self->_dataProvider];
-      v5 = v7;
+      providerCopy = v7;
     }
   }
 }
 
 - (int64_t)layoutOrientation
 {
-  v2 = [(PBFPosterGalleryPreviewViewController *)self view];
-  v3 = [v2 window];
-  v4 = [v3 windowScene];
-  v5 = [v4 interfaceOrientation];
+  view = [(PBFPosterGalleryPreviewViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
-  if (!v5)
+  if (!interfaceOrientation)
   {
-    v6 = [MEMORY[0x277D75128] sharedApplication];
-    v5 = [v6 activeInterfaceOrientation];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    interfaceOrientation = [mEMORY[0x277D75128] activeInterfaceOrientation];
   }
 
-  if ((v5 - 1) < 2)
+  if ((interfaceOrientation - 1) < 2)
   {
     return 1;
   }
 
   else
   {
-    return v5;
+    return interfaceOrientation;
   }
 }
 
-- (void)_updatePreferredContentSizeForOrientation:(int64_t)a3
+- (void)_updatePreferredContentSizeForOrientation:(int64_t)orientation
 {
   BSDispatchQueueAssertMain();
-  v5 = [(PBFPosterGalleryPreviewViewController *)self traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  traitCollection = [(PBFPosterGalleryPreviewViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v6 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    v7 = [(PBFPosterGalleryPreviewViewController *)self view];
-    v8 = [v7 window];
-    v9 = [v8 screen];
-    v20 = [PBFPosterGalleryViewSpec specForScreen:v9];
+    view = [(PBFPosterGalleryPreviewViewController *)self view];
+    window = [view window];
+    screen = [window screen];
+    v20 = [PBFPosterGalleryViewSpec specForScreen:screen];
 
-    [v20 gallerySizeForPadOrientation:a3];
+    [v20 gallerySizeForPadOrientation:orientation];
     [(PBFPosterGalleryPreviewViewController *)self setPreferredContentSize:?];
   }
 
   else
   {
-    v10 = [(PBFPosterGalleryPreviewViewController *)self view];
-    v11 = [v10 window];
-    [v11 bounds];
+    view2 = [(PBFPosterGalleryPreviewViewController *)self view];
+    window2 = [view2 window];
+    [window2 bounds];
     v13 = v12;
     v15 = v14;
 
     if (v13 == *MEMORY[0x277CBF3A8] && v15 == *(MEMORY[0x277CBF3A8] + 8))
     {
-      v17 = [MEMORY[0x277D759A0] mainScreen];
-      [v17 bounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen bounds];
       v13 = v18;
       v15 = v19;
     }
@@ -647,16 +647,16 @@ LABEL_23:
   }
 }
 
-- (void)updatePreferredContentSizeForSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)updatePreferredContentSizeForSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   BSDispatchQueueAssertMain();
-  v8 = [(PBFPosterGalleryPreviewViewController *)self traitCollection];
-  v9 = [v8 userInterfaceIdiom];
+  traitCollection = [(PBFPosterGalleryPreviewViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v9 == 1)
+  if (userInterfaceIdiom == 1)
   {
     if (width < height)
     {
@@ -675,7 +675,7 @@ LABEL_23:
     v11[2] = __101__PBFPosterGalleryPreviewViewController_updatePreferredContentSizeForSize_withTransitionCoordinator___block_invoke;
     v11[3] = &unk_2782C7028;
     objc_copyWeak(&v12, &location);
-    [v7 animateAlongsideTransition:v11 completion:0];
+    [coordinatorCopy animateAlongsideTransition:v11 completion:0];
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
   }
@@ -688,18 +688,18 @@ void __101__PBFPosterGalleryPreviewViewController_updatePreferredContentSizeForS
   [v1 layoutIfNeeded];
 }
 
-- ($E55302FE00A828021E966018723DA9D2)metricsForEnvironment:(SEL)a3
+- ($E55302FE00A828021E966018723DA9D2)metricsForEnvironment:(SEL)environment
 {
   v71 = a4;
-  v6 = [v71 container];
-  [v6 contentSize];
+  container = [v71 container];
+  [container contentSize];
   if (v8 != self->_environmentContainerContentSize.width || v7 != self->_environmentContainerContentSize.height)
   {
     goto LABEL_14;
   }
 
-  v10 = [v71 container];
-  [v10 contentInsets];
+  container2 = [v71 container];
+  [container2 contentInsets];
   v14 = v13;
   if (v15 != self->_environmentContainerContentInsets.leading || v11 != self->_environmentContainerContentInsets.top || v12 != self->_environmentContainerContentInsets.trailing)
   {
@@ -757,26 +757,26 @@ LABEL_15:
   *&self->_metrics.sectionContentInsets[4].top = 0u;
   *&self->_metrics.sectionContentInsets[4].bottom = 0u;
   *&self->_metrics.standardSpacing = 0u;
-  v19 = [(PBFPosterGalleryPreviewViewController *)self view];
-  v20 = [v19 window];
-  v21 = [v20 screen];
-  v22 = [PBFPosterGalleryViewSpec specForScreen:v21];
+  view = [(PBFPosterGalleryPreviewViewController *)self view];
+  window = [view window];
+  screen = [window screen];
+  v22 = [PBFPosterGalleryViewSpec specForScreen:screen];
 
-  v23 = [v71 container];
-  [v23 effectiveContentSize];
+  container3 = [v71 container];
+  [container3 effectiveContentSize];
   v70 = v24;
 
-  v25 = [(PBFPosterGalleryPreviewViewController *)self layoutOrientation];
-  [PBFPosterGalleryPreviewCell contentSizeForCellWithTitle:0 interfaceOrientation:v25 spec:v22];
+  layoutOrientation = [(PBFPosterGalleryPreviewViewController *)self layoutOrientation];
+  [PBFPosterGalleryPreviewCell contentSizeForCellWithTitle:0 interfaceOrientation:layoutOrientation spec:v22];
   v27 = v26;
   v29 = v28;
-  [PBFPosterGalleryPreviewCell contentSizeForCellWithTitle:0 interfaceOrientation:v25 spec:v22];
+  [PBFPosterGalleryPreviewCell contentSizeForCellWithTitle:0 interfaceOrientation:layoutOrientation spec:v22];
   v31 = v30;
   v33 = v32;
-  [PBFPosterGalleryPreviewCell contentSizeForCellWithTitle:1 interfaceOrientation:v25 spec:v22];
+  [PBFPosterGalleryPreviewCell contentSizeForCellWithTitle:1 interfaceOrientation:layoutOrientation spec:v22];
   v35 = v34;
   v37 = v36;
-  [PBFPosterGalleryPreviewCell heroContentSizeForCellWithTitle:1 interfaceOrientation:v25 spec:v22];
+  [PBFPosterGalleryPreviewCell heroContentSizeForCellWithTitle:1 interfaceOrientation:layoutOrientation spec:v22];
   v39 = v38;
   v41 = v40;
   [v22 sectionHorizontalMargin];
@@ -851,143 +851,143 @@ LABEL_18:
   return result;
 }
 
-- (void)setEditingExtensionInstance:(id)a3
+- (void)setEditingExtensionInstance:(id)instance
 {
-  v4 = a3;
+  instanceCopy = instance;
   [(PFPosterExtensionInstance *)self->_editingExtensionInstance terminateWithExplanation:@"terminating for gallery reuse" error:0];
   editingExtensionInstance = self->_editingExtensionInstance;
-  self->_editingExtensionInstance = v4;
+  self->_editingExtensionInstance = instanceCopy;
 }
 
-- (void)presentPreview:(id)a3 withMode:(int64_t)a4 fromView:(id)a5
+- (void)presentPreview:(id)preview withMode:(int64_t)mode fromView:(id)view
 {
   v73 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 posterDescriptorLookupInfo];
-  v11 = [v10 posterDescriptorPath];
+  previewCopy = preview;
+  viewCopy = view;
+  posterDescriptorLookupInfo = [previewCopy posterDescriptorLookupInfo];
+  posterDescriptorPath = [posterDescriptorLookupInfo posterDescriptorPath];
 
-  v12 = [v8 posterDescriptorLookupInfo];
-  v13 = [v12 posterDescriptorExtension];
+  posterDescriptorLookupInfo2 = [previewCopy posterDescriptorLookupInfo];
+  posterDescriptorExtension = [posterDescriptorLookupInfo2 posterDescriptorExtension];
 
   v14 = MEMORY[0x277D3EB78];
-  v15 = [v13 identity];
+  identity = [posterDescriptorExtension identity];
   v16 = [MEMORY[0x277CCAD78] pf_UUIDFromArbitraryString:@"PosterGalleryEditing"];
-  v17 = [v14 extensionInstanceForIdentity:v15 instanceIdentifier:v16];
+  v17 = [v14 extensionInstanceForIdentity:identity instanceIdentifier:v16];
 
   [(PBFPosterGalleryPreviewViewController *)self setEditingExtensionInstance:v17];
   v60 = self->_collectionViewController;
-  if (v11 && v17)
+  if (posterDescriptorPath && v17)
   {
-    if (a4 == 2)
+    if (mode == 2)
     {
       [(PBFPosterGalleryPreviewViewController *)self setPresentingPreview:1];
-      v18 = [v8 previewUniqueIdentifier];
+      previewUniqueIdentifier = [previewCopy previewUniqueIdentifier];
       currentlyEditingPreviewIdentifier = self->_currentlyEditingPreviewIdentifier;
-      self->_currentlyEditingPreviewIdentifier = v18;
+      self->_currentlyEditingPreviewIdentifier = previewUniqueIdentifier;
 
-      v57 = [(PBFPosterGalleryPreviewViewController *)self loadingHeroEditingSceneViewController];
-      if (v57)
+      loadingHeroEditingSceneViewController = [(PBFPosterGalleryPreviewViewController *)self loadingHeroEditingSceneViewController];
+      if (loadingHeroEditingSceneViewController)
       {
-        [v57 removeObserver:self];
-        [v57 setForcesSceneForeground:0];
-        v20 = [v57 view];
-        [v20 removeFromSuperview];
+        [loadingHeroEditingSceneViewController removeObserver:self];
+        [loadingHeroEditingSceneViewController setForcesSceneForeground:0];
+        view = [loadingHeroEditingSceneViewController view];
+        [view removeFromSuperview];
 
         [(PBFPosterGalleryPreviewViewController *)self setLoadingHeroEditingSceneViewController:0];
-        v21 = [(PBFPosterGalleryPreviewViewController *)self loadingHeroPreviewView];
-        [v21 setShowsLoadingIndicator:0];
+        loadingHeroPreviewView = [(PBFPosterGalleryPreviewViewController *)self loadingHeroPreviewView];
+        [loadingHeroPreviewView setShowsLoadingIndicator:0];
 
         [(PBFPosterGalleryPreviewViewController *)self setLoadingHeroPreviewView:0];
-        v22 = [(PBFPosterGalleryPreviewViewController *)self loadingHeroActivityIndicationTimer];
-        [v22 invalidate];
+        loadingHeroActivityIndicationTimer = [(PBFPosterGalleryPreviewViewController *)self loadingHeroActivityIndicationTimer];
+        [loadingHeroActivityIndicationTimer invalidate];
 
         [(PBFPosterGalleryPreviewViewController *)self setLoadingHeroActivityIndicationTimer:0];
       }
 
       v23 = [PBFGalleryEditingSceneViewController alloc];
-      v24 = [MEMORY[0x277D3ED50] pbf_configurableOptionsForPreview:v8];
-      v25 = [MEMORY[0x277D3ED60] pbf_configuredPropertiesForPreview:v8];
-      v26 = [(PRSceneViewController *)v23 initWithProvider:v17 contents:v11 configurableOptions:v24 configuredProperties:v25];
+      v24 = [MEMORY[0x277D3ED50] pbf_configurableOptionsForPreview:previewCopy];
+      v25 = [MEMORY[0x277D3ED60] pbf_configuredPropertiesForPreview:previewCopy];
+      v26 = [(PRSceneViewController *)v23 initWithProvider:v17 contents:posterDescriptorPath configurableOptions:v24 configuredProperties:v25];
 
-      v27 = [v8 previewUniqueIdentifier];
-      [(PBFEditingSceneViewController *)v26 setGalleryPreviewUniqueIdentifier:v27];
+      previewUniqueIdentifier2 = [previewCopy previewUniqueIdentifier];
+      [(PBFEditingSceneViewController *)v26 setGalleryPreviewUniqueIdentifier:previewUniqueIdentifier2];
 
-      v28 = [v8 galleryOptions];
-      [(PBFEditingSceneViewController *)v26 setGalleryOptions:v28];
+      galleryOptions = [previewCopy galleryOptions];
+      [(PBFEditingSceneViewController *)v26 setGalleryOptions:galleryOptions];
 
-      v29 = [MEMORY[0x277D3EDE0] modelObjectCacheForPath:v11];
-      v30 = [v29 galleryOptions];
-      if (v30)
+      v29 = [MEMORY[0x277D3EDE0] modelObjectCacheForPath:posterDescriptorPath];
+      galleryOptions2 = [v29 galleryOptions];
+      if (galleryOptions2)
       {
-        [(PBFEditingSceneViewController *)v26 setDescriptorGalleryOptions:v30];
+        [(PBFEditingSceneViewController *)v26 setDescriptorGalleryOptions:galleryOptions2];
       }
 
       else
       {
-        v32 = [MEMORY[0x277D3EDE8] loadPosterDescriptorGalleryOptionsForPath:v11 error:0];
+        v32 = [MEMORY[0x277D3EDE8] loadPosterDescriptorGalleryOptionsForPath:posterDescriptorPath error:0];
         [(PBFEditingSceneViewController *)v26 setDescriptorGalleryOptions:v32];
       }
 
-      [v9 posterPreviewFrame];
+      [viewCopy posterPreviewFrame];
       v34 = v33;
       v36 = v35;
       v38 = v37;
       v40 = v39;
-      v41 = [v9 window];
-      [v9 convertRect:v41 toCoordinateSpace:{v34, v36, v38, v40}];
+      window = [viewCopy window];
+      [viewCopy convertRect:window toCoordinateSpace:{v34, v36, v38, v40}];
       [(PBFEditingSceneViewController *)v26 setGalleryPreviewFrame:?];
 
-      v42 = [v9 window];
-      v43 = [v42 screen];
-      v44 = [PBFPosterGalleryViewSpec specForScreen:v43];
+      window2 = [viewCopy window];
+      screen = [window2 screen];
+      v44 = [PBFPosterGalleryViewSpec specForScreen:screen];
       [v44 posterCornerRadius];
       [(PBFEditingSceneViewController *)v26 setGalleryPreviewCornerRadius:?];
 
-      v58 = [v9 contentView];
-      if (v58)
+      contentView = [viewCopy contentView];
+      if (contentView)
       {
-        v45 = [v8 presentationStyle];
+        presentationStyle = [previewCopy presentationStyle];
       }
 
       else
       {
-        v45 = 1;
+        presentationStyle = 1;
       }
 
-      [(PBFEditingSceneViewController *)v26 setGalleryPreviewView:v58];
-      [(PBFEditingSceneViewController *)v26 setGalleryPresentationStyle:v45];
-      v46 = [v8 type];
-      [(PBFEditingSceneViewController *)v26 setGalleryPreviewType:v46];
+      [(PBFEditingSceneViewController *)v26 setGalleryPreviewView:contentView];
+      [(PBFEditingSceneViewController *)v26 setGalleryPresentationStyle:presentationStyle];
+      type = [previewCopy type];
+      [(PBFEditingSceneViewController *)v26 setGalleryPreviewType:type];
 
-      v47 = [v9 makeComplicationsPortalView];
-      [(PBFEditingSceneViewController *)v26 setGalleryPreviewComplicationsView:v47];
+      makeComplicationsPortalView = [viewCopy makeComplicationsPortalView];
+      [(PBFEditingSceneViewController *)v26 setGalleryPreviewComplicationsView:makeComplicationsPortalView];
 
       [(PREditingSceneViewController *)v26 setDelegate:self];
-      v59 = v45 != 1;
-      if (v45 == 1)
+      v59 = presentationStyle != 1;
+      if (presentationStyle == 1)
       {
         v48 = PBFLogCommon();
         if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
         {
-          v49 = [v13 posterExtensionBundleIdentifier];
+          posterExtensionBundleIdentifier = [posterDescriptorExtension posterExtensionBundleIdentifier];
           *buf = 138412290;
-          v66 = v49;
+          v66 = posterExtensionBundleIdentifier;
           _os_log_impl(&dword_21B526000, v48, OS_LOG_TYPE_DEFAULT, "Delaying the start of presentation for hero poster until it finishes loading: %@", buf, 0xCu);
         }
 
         [(PBFPosterGalleryPreviewViewController *)self setLoadingHeroEditingSceneViewController:v26];
         [(PREditingSceneViewController *)v26 addObserver:self];
         [(PREditingSceneViewController *)v26 setShowsContentWhenReady:1];
-        v50 = [(PBFGalleryEditingSceneViewController *)v26 view];
-        [v50 setHidden:1];
-        v51 = [(PBFPosterGalleryPreviewViewController *)self view];
-        v52 = [v51 window];
-        [v52 bounds];
-        [v50 setFrame:?];
+        view2 = [(PBFGalleryEditingSceneViewController *)v26 view];
+        [view2 setHidden:1];
+        view3 = [(PBFPosterGalleryPreviewViewController *)self view];
+        window3 = [view3 window];
+        [window3 bounds];
+        [view2 setFrame:?];
 
-        v53 = [(PBFPosterGalleryPreviewViewController *)self view];
-        [v53 addSubview:v50];
+        view4 = [(PBFPosterGalleryPreviewViewController *)self view];
+        [view4 addSubview:view2];
 
         v54 = MEMORY[0x277CBEBB8];
         v63[0] = MEMORY[0x277D85DD0];
@@ -995,7 +995,7 @@ LABEL_18:
         v63[2] = __74__PBFPosterGalleryPreviewViewController_presentPreview_withMode_fromView___block_invoke;
         v63[3] = &unk_2782C7050;
         v63[4] = self;
-        v64 = v9;
+        v64 = viewCopy;
         v55 = [v54 scheduledTimerWithTimeInterval:0 repeats:v63 block:0.5];
         [(PBFPosterGalleryPreviewViewController *)self setLoadingHeroActivityIndicationTimer:v55];
         [(PRSceneViewController *)v26 setForcesSceneForeground:1];
@@ -1004,7 +1004,7 @@ LABEL_18:
 
     else
     {
-      v26 = [objc_alloc(MEMORY[0x277D3EE60]) initWithProvider:v17 contents:v11 previewing:a4 == 1];
+      v26 = [objc_alloc(MEMORY[0x277D3EE60]) initWithProvider:v17 contents:posterDescriptorPath previewing:mode == 1];
       v59 = 1;
     }
 
@@ -1027,15 +1027,15 @@ LABEL_18:
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v31 = [v17 processIdentity];
+    processIdentity = [v17 processIdentity];
     *buf = 138413058;
-    v66 = v8;
+    v66 = previewCopy;
     v67 = 2048;
-    v68 = a4;
+    modeCopy = mode;
     v69 = 2112;
-    v70 = v11;
+    v70 = posterDescriptorPath;
     v71 = 2112;
-    v72 = v31;
+    v72 = processIdentity;
     _os_log_impl(&dword_21B526000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "cannot present preview %@ (with mode=%lli) due to invalid lookup info : path=%@ processIdentity=%@", buf, 0x2Au);
   }
 }
@@ -1058,10 +1058,10 @@ void __74__PBFPosterGalleryPreviewViewController_presentPreview_withMode_fromVie
   [WeakRetained noteEditingDidPresent];
 }
 
-- (id)navigationControllerForPresentingSceneViewController:(id)a3
+- (id)navigationControllerForPresentingSceneViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [[PBFEditingSceneNavigationController alloc] initWithRootViewController:v4];
+  controllerCopy = controller;
+  v5 = [[PBFEditingSceneNavigationController alloc] initWithRootViewController:controllerCopy];
 
   [(PBFEditingSceneNavigationController *)v5 setNavigationBarHidden:1 animated:0];
   [(PBFEditingSceneNavigationController *)v5 setModalPresentationStyle:5];
@@ -1070,8 +1070,8 @@ void __74__PBFPosterGalleryPreviewViewController_presentPreview_withMode_fromVie
   [(PBFEditingSceneNavigationController *)v5 setDismissalDelegate:self];
   if (PUIDynamicRotationIsActive())
   {
-    v6 = [(PBFEditingSceneNavigationController *)v5 view];
-    [v6 setClipsToBounds:0];
+    view = [(PBFEditingSceneNavigationController *)v5 view];
+    [view setClipsToBounds:0];
 
     [(PBFEditingSceneNavigationController *)v5 _setClipsToBounds:0];
   }
@@ -1134,24 +1134,24 @@ double __57__PBFPosterGalleryPreviewViewController__topButtonLayout__block_invok
   v4[1] = 3221225472;
   v4[2] = __63__PBFPosterGalleryPreviewViewController_prewarmTopButtonLayout__block_invoke;
   v4[3] = &__block_descriptor_40_e5_v8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   PBFDispatchAsyncWithString(v3, QOS_CLASS_UTILITY, v4);
 }
 
-- (void)_closeButtonTapped:(id)a3
+- (void)_closeButtonTapped:(id)tapped
 {
-  v4 = [(PBFPosterGalleryPreviewViewController *)self activePresentationController];
-  v5 = [v4 delegate];
-  v6 = [(PBFPosterGalleryPreviewViewController *)self presentingViewController];
+  activePresentationController = [(PBFPosterGalleryPreviewViewController *)self activePresentationController];
+  delegate = [activePresentationController delegate];
+  presentingViewController = [(PBFPosterGalleryPreviewViewController *)self presentingViewController];
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __60__PBFPosterGalleryPreviewViewController__closeButtonTapped___block_invoke;
   v12 = &unk_2782C58B0;
-  v7 = v5;
+  v7 = delegate;
   v13 = v7;
-  v8 = v4;
+  v8 = activePresentationController;
   v14 = v8;
-  [v6 dismissViewControllerAnimated:1 completion:&v9];
+  [presentingViewController dismissViewControllerAnimated:1 completion:&v9];
 
   if (objc_opt_respondsToSelector())
   {
@@ -1173,15 +1173,15 @@ uint64_t __60__PBFPosterGalleryPreviewViewController__closeButtonTapped___block_
   return result;
 }
 
-- (PREditingSceneViewControllerTopButtonLayout)topButtonLayoutForEditingSceneViewController:(SEL)a3
+- (PREditingSceneViewControllerTopButtonLayout)topButtonLayoutForEditingSceneViewController:(SEL)controller
 {
   v10 = a4;
-  v6 = [(PBFPosterGalleryPreviewViewController *)self editingSceneDelegate];
+  editingSceneDelegate = [(PBFPosterGalleryPreviewViewController *)self editingSceneDelegate];
   if (objc_opt_respondsToSelector())
   {
-    if (v6)
+    if (editingSceneDelegate)
     {
-      [v6 topButtonLayoutForEditingSceneViewController:v10];
+      [editingSceneDelegate topButtonLayoutForEditingSceneViewController:v10];
     }
 
     else
@@ -1206,13 +1206,13 @@ uint64_t __60__PBFPosterGalleryPreviewViewController__closeButtonTapped___block_
   return result;
 }
 
-- (void)editingSceneViewController:(id)a3 userDidDismissWithAction:(int64_t)a4 updatedConfiguration:(id)a5 updatedConfiguredProperties:(id)a6 completion:(id)a7
+- (void)editingSceneViewController:(id)controller userDidDismissWithAction:(int64_t)action updatedConfiguration:(id)configuration updatedConfiguredProperties:(id)properties completion:(id)completion
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = v12;
+  controllerCopy = controller;
+  configurationCopy = configuration;
+  propertiesCopy = properties;
+  completionCopy = completion;
+  v16 = controllerCopy;
   NSClassFromString(&cfstr_Pbfgalleryedit.isa);
   if (!v16)
   {
@@ -1225,15 +1225,15 @@ uint64_t __60__PBFPosterGalleryPreviewViewController__closeButtonTapped___block_
   }
 
   v17 = 0x27CD8F000uLL;
-  if (a4 == 1)
+  if (action == 1)
   {
     objc_storeStrong(&self->_addedPreviewIdentifier, self->_currentlyEditingPreviewIdentifier);
     v18 = v16;
     [v18 setGalleryDismissalAction:1];
-    v19 = [v18 galleryOptions];
-    v20 = [v19 modeSemanticTypeToCreate];
+    galleryOptions = [v18 galleryOptions];
+    modeSemanticTypeToCreate = [galleryOptions modeSemanticTypeToCreate];
 
-    if (v20)
+    if (modeSemanticTypeToCreate)
     {
       v57 = 0;
       v58 = &v57;
@@ -1251,48 +1251,48 @@ uint64_t __60__PBFPosterGalleryPreviewViewController__closeButtonTapped___block_
         v21 = v58[3];
       }
 
-      v49 = v15;
+      v49 = completionCopy;
       v22 = v21;
       _Block_object_dispose(&v57, 8);
       v23 = [v21 serviceForClientIdentifier:@"com.apple.PosterBoard.gallery.MadeForFocus"];
       v55 = 0;
-      v24 = [v23 createModeConfigurationUsingTemplateForModeSemanticType:objc_msgSend(v20 error:{"integerValue"), &v55}];
+      v24 = [v23 createModeConfigurationUsingTemplateForModeSemanticType:objc_msgSend(modeSemanticTypeToCreate error:{"integerValue"), &v55}];
       v52 = v55;
       v53 = v24;
       if (v24)
       {
         v43 = v23;
         v25 = objc_alloc(MEMORY[0x277D3ED98]);
-        v26 = [v24 mode];
-        [v26 modeIdentifier];
-        v27 = v46 = v13;
+        mode = [v24 mode];
+        [mode modeIdentifier];
+        v27 = v46 = configurationCopy;
         [v24 mode];
-        v28 = v44 = v20;
+        v28 = v44 = modeSemanticTypeToCreate;
         [v28 identifier];
         v29 = v45 = v18;
         v50 = [v25 initWithActivityIdentifier:v27 activityUUID:v29];
 
         v41 = objc_alloc(MEMORY[0x277D3ED60]);
-        v48 = [v14 titleStyleConfiguration];
-        v47 = [v14 complicationLayout];
-        v40 = [v14 renderingConfiguration];
-        v39 = [v14 homeScreenConfiguration];
-        v30 = [v14 colorVariationsConfiguration];
-        v38 = [v14 quickActionsConfiguration];
-        v31 = [v14 suggestionMetadata];
-        v32 = [v14 otherMetadata];
-        v33 = [v14 userInfo];
+        titleStyleConfiguration = [propertiesCopy titleStyleConfiguration];
+        complicationLayout = [propertiesCopy complicationLayout];
+        renderingConfiguration = [propertiesCopy renderingConfiguration];
+        homeScreenConfiguration = [propertiesCopy homeScreenConfiguration];
+        colorVariationsConfiguration = [propertiesCopy colorVariationsConfiguration];
+        quickActionsConfiguration = [propertiesCopy quickActionsConfiguration];
+        suggestionMetadata = [propertiesCopy suggestionMetadata];
+        otherMetadata = [propertiesCopy otherMetadata];
+        userInfo = [propertiesCopy userInfo];
         v34 = v50;
-        v42 = [v41 initWithTitleStyleConfiguration:v48 focusConfiguration:v50 complicationLayout:v47 renderingConfiguration:v40 homeScreenConfiguration:v39 colorVariationsConfiguration:v30 quickActionsConfiguration:v38 suggestionMetadata:v31 otherMetadata:v32 userInfo:v33];
+        v42 = [v41 initWithTitleStyleConfiguration:titleStyleConfiguration focusConfiguration:v50 complicationLayout:complicationLayout renderingConfiguration:renderingConfiguration homeScreenConfiguration:homeScreenConfiguration colorVariationsConfiguration:colorVariationsConfiguration quickActionsConfiguration:quickActionsConfiguration suggestionMetadata:suggestionMetadata otherMetadata:otherMetadata userInfo:userInfo];
 
         v17 = 0x27CD8F000;
-        v13 = v46;
+        configurationCopy = v46;
 
         v18 = v45;
-        v20 = v44;
+        modeSemanticTypeToCreate = v44;
 
         v23 = v43;
-        v14 = v42;
+        propertiesCopy = v42;
       }
 
       else
@@ -1305,12 +1305,12 @@ uint64_t __60__PBFPosterGalleryPreviewViewController__closeButtonTapped___block_
         }
       }
 
-      v15 = v49;
+      completionCopy = v49;
     }
   }
 
-  v35 = [(PBFPosterGalleryPreviewViewController *)self editingSceneDelegate];
-  [v35 editingSceneViewController:v16 userDidDismissWithAction:a4 updatedConfiguration:v13 updatedConfiguredProperties:v14 completion:v15];
+  editingSceneDelegate = [(PBFPosterGalleryPreviewViewController *)self editingSceneDelegate];
+  [editingSceneDelegate editingSceneViewController:v16 userDidDismissWithAction:action updatedConfiguration:configurationCopy updatedConfiguredProperties:propertiesCopy completion:completionCopy];
 
   [(PBFPosterGalleryPreviewViewController *)self setPresentingPreview:0];
   v36 = *(v17 + 2856);
@@ -1318,43 +1318,43 @@ uint64_t __60__PBFPosterGalleryPreviewViewController__closeButtonTapped___block_
   *(&self->super.super.super.isa + v36) = 0;
 }
 
-- (void)editingSceneViewControllerDidFinishShowingContent:(id)a3
+- (void)editingSceneViewControllerDidFinishShowingContent:(id)content
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PBFPosterGalleryPreviewViewController *)self loadingHeroEditingSceneViewController];
+  contentCopy = content;
+  loadingHeroEditingSceneViewController = [(PBFPosterGalleryPreviewViewController *)self loadingHeroEditingSceneViewController];
 
-  if (v5 == v4)
+  if (loadingHeroEditingSceneViewController == contentCopy)
   {
     v6 = PBFLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v4 contentsIdentity];
-      v8 = [v7 provider];
+      contentsIdentity = [contentCopy contentsIdentity];
+      provider = [contentsIdentity provider];
       *buf = 138412290;
-      v19 = v8;
+      v19 = provider;
       _os_log_impl(&dword_21B526000, v6, OS_LOG_TYPE_DEFAULT, "Restarting of presentation for hero poster: %@", buf, 0xCu);
     }
 
-    v9 = [v4 view];
-    [v9 removeFromSuperview];
-    [v9 setHidden:0];
-    v10 = [(PBFPosterGalleryPreviewViewController *)self loadingHeroPreviewView];
-    v11 = [(PBFPosterGalleryPreviewViewController *)self navigationControllerForPresentingSceneViewController:v4];
+    view = [contentCopy view];
+    [view removeFromSuperview];
+    [view setHidden:0];
+    loadingHeroPreviewView = [(PBFPosterGalleryPreviewViewController *)self loadingHeroPreviewView];
+    v11 = [(PBFPosterGalleryPreviewViewController *)self navigationControllerForPresentingSceneViewController:contentCopy];
     objc_initWeak(buf, self);
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __91__PBFPosterGalleryPreviewViewController_editingSceneViewControllerDidFinishShowingContent___block_invoke;
     v14[3] = &unk_2782C7078;
-    v15 = v4;
-    v12 = v10;
+    v15 = contentCopy;
+    v12 = loadingHeroPreviewView;
     v16 = v12;
     objc_copyWeak(&v17, buf);
     [(PBFPosterGalleryPreviewViewController *)self presentViewController:v11 animated:1 completion:v14];
     [(PBFPosterGalleryPreviewViewController *)self setLoadingHeroEditingSceneViewController:0];
     [(PBFPosterGalleryPreviewViewController *)self setLoadingHeroPreviewView:0];
-    v13 = [(PBFPosterGalleryPreviewViewController *)self loadingHeroActivityIndicationTimer];
-    [v13 invalidate];
+    loadingHeroActivityIndicationTimer = [(PBFPosterGalleryPreviewViewController *)self loadingHeroActivityIndicationTimer];
+    [loadingHeroActivityIndicationTimer invalidate];
 
     [(PBFPosterGalleryPreviewViewController *)self setLoadingHeroActivityIndicationTimer:0];
     objc_destroyWeak(&v17);
@@ -1371,15 +1371,15 @@ void __91__PBFPosterGalleryPreviewViewController_editingSceneViewControllerDidFi
   [WeakRetained noteEditingDidPresent];
 }
 
-- (void)forwardAppearanceNotificationName:(id)a3
+- (void)forwardAppearanceNotificationName:(id)name
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PBFPosterGalleryPreviewViewController *)self presentedViewController];
-  v6 = [v5 childViewControllers];
+  nameCopy = name;
+  presentedViewController = [(PBFPosterGalleryPreviewViewController *)self presentedViewController];
+  childViewControllers = [presentedViewController childViewControllers];
 
-  v14 = v6;
-  v7 = [v6 bs_filter:&__block_literal_global_105];
+  v14 = childViewControllers;
+  v7 = [childViewControllers bs_filter:&__block_literal_global_105];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -1403,13 +1403,13 @@ void __91__PBFPosterGalleryPreviewViewController_editingSceneViewControllerDidFi
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v20 = v4;
+          v20 = nameCopy;
           v21 = 2114;
           v22 = v12;
           _os_log_impl(&dword_21B526000, v13, OS_LOG_TYPE_DEFAULT, "Forwarding %{public}@ appearance notification to child view controller: %{public}@", buf, 0x16u);
         }
 
-        [v12 forwardAppearanceNotificationName:v4];
+        [v12 forwardAppearanceNotificationName:nameCopy];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v15 objects:v23 count:16];
@@ -1419,22 +1419,22 @@ void __91__PBFPosterGalleryPreviewViewController_editingSceneViewControllerDidFi
   }
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
-  v5 = [(_PBFGalleryCollectionViewController *)self->_collectionViewController collectionView];
-  v3 = [v5 indexPathsForSelectedItems];
-  v4 = [v3 firstObject];
-  [v5 deselectItemAtIndexPath:v4 animated:1];
+  collectionView = [(_PBFGalleryCollectionViewController *)self->_collectionViewController collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  firstObject = [indexPathsForSelectedItems firstObject];
+  [collectionView deselectItemAtIndexPath:firstObject animated:1];
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v7 = a3;
-  if (a5 == self && (objc_opt_self(), v8 = objc_claimAutoreleasedReturnValue(), isKindOfClass = objc_opt_isKindOfClass(), v8, (isKindOfClass & 1) != 0))
+  controllerCopy = controller;
+  if (sourceController == self && (objc_opt_self(), v8 = objc_claimAutoreleasedReturnValue(), isKindOfClass = objc_opt_isKindOfClass(), v8, (isKindOfClass & 1) != 0))
   {
-    v10 = [v7 bottomViewController];
+    bottomViewController = [controllerCopy bottomViewController];
     v11 = objc_opt_class();
-    v12 = v10;
+    v12 = bottomViewController;
     if (v11)
     {
       if (objc_opt_isKindOfClass())
@@ -1469,9 +1469,9 @@ void __91__PBFPosterGalleryPreviewViewController_editingSceneViewControllerDidFi
       v24 = v23;
       [v16 galleryPreviewCornerRadius];
       v26 = v25;
-      v27 = [v16 galleryPreviewView];
-      v28 = [v16 galleryPreviewComplicationsView];
-      v14 = [(PBFEditingZoomAnimationController *)[PBFEditingZoomUpAnimationController alloc] initWithPreviewFrame:v27 previewCornerRadius:v28 previewView:v18 complicationsView:v20, v22, v24, v26];
+      galleryPreviewView = [v16 galleryPreviewView];
+      galleryPreviewComplicationsView = [v16 galleryPreviewComplicationsView];
+      v14 = [(PBFEditingZoomAnimationController *)[PBFEditingZoomUpAnimationController alloc] initWithPreviewFrame:galleryPreviewView previewCornerRadius:galleryPreviewComplicationsView previewView:v18 complicationsView:v20, v22, v24, v26];
     }
   }
 
@@ -1483,9 +1483,9 @@ void __91__PBFPosterGalleryPreviewViewController_editingSceneViewControllerDidFi
   return v14;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v6 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1494,9 +1494,9 @@ void __91__PBFPosterGalleryPreviewViewController_editingSceneViewControllerDidFi
     goto LABEL_14;
   }
 
-  v8 = [v5 bottomViewController];
+  bottomViewController = [controllerCopy bottomViewController];
   v9 = objc_opt_class();
-  v10 = v8;
+  v10 = bottomViewController;
   if (v9)
   {
     if (objc_opt_isKindOfClass())
@@ -1524,40 +1524,40 @@ void __91__PBFPosterGalleryPreviewViewController_editingSceneViewControllerDidFi
   v20 = v19;
   [v12 galleryPreviewCornerRadius];
   v22 = v21;
-  v23 = [v12 galleryPreviewView];
-  v24 = [v12 galleryPreviewComplicationsView];
-  v25 = [v12 galleryPresentationStyle];
-  if (!v25)
+  galleryPreviewView = [v12 galleryPreviewView];
+  galleryPreviewComplicationsView = [v12 galleryPreviewComplicationsView];
+  galleryPresentationStyle = [v12 galleryPresentationStyle];
+  if (!galleryPresentationStyle)
   {
     v40 = v22;
-    v26 = [v12 galleryPreviewUniqueIdentifier];
-    [(_PBFGalleryCollectionViewController *)self->_collectionViewController previewFrameForScrollingPreviewWithIdentifierToVisible:v26];
+    galleryPreviewUniqueIdentifier = [v12 galleryPreviewUniqueIdentifier];
+    [(_PBFGalleryCollectionViewController *)self->_collectionViewController previewFrameForScrollingPreviewWithIdentifierToVisible:galleryPreviewUniqueIdentifier];
     x = v42.origin.x;
     y = v42.origin.y;
     width = v42.size.width;
     height = v42.size.height;
     if (!CGRectIsNull(v42))
     {
-      v31 = [(_PBFGalleryCollectionViewController *)self->_collectionViewController collectionView];
-      v32 = [v31 window];
-      [v31 convertRect:v32 toCoordinateSpace:{x, y, width, height}];
+      collectionView = [(_PBFGalleryCollectionViewController *)self->_collectionViewController collectionView];
+      window = [collectionView window];
+      [collectionView convertRect:window toCoordinateSpace:{x, y, width, height}];
       v14 = v33;
       v16 = v34;
       v18 = v35;
       v20 = v36;
     }
 
-    v3 = [(PBFEditingZoomAnimationController *)[PBFEditingZoomDownAnimationController alloc] initWithPreviewFrame:v23 previewCornerRadius:v24 previewView:v14 complicationsView:v16, v18, v20, v40];
-    v37 = [(PBFPosterGalleryPreviewViewController *)self delegate];
+    v3 = [(PBFEditingZoomAnimationController *)[PBFEditingZoomDownAnimationController alloc] initWithPreviewFrame:galleryPreviewView previewCornerRadius:galleryPreviewComplicationsView previewView:v14 complicationsView:v16, v18, v20, v40];
+    delegate = [(PBFPosterGalleryPreviewViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v38 = [v37 galleryViewController:self willUseAnimationController:v3 forDismissingEditingViewControllerWithAction:{objc_msgSend(v12, "galleryDismissalAction")}];
+      v38 = [delegate galleryViewController:self willUseAnimationController:v3 forDismissingEditingViewControllerWithAction:{objc_msgSend(v12, "galleryDismissalAction")}];
 
       v3 = v38;
     }
   }
 
-  if (v25)
+  if (galleryPresentationStyle)
   {
 LABEL_14:
     v3 = 0;
@@ -1566,24 +1566,24 @@ LABEL_14:
   return v3;
 }
 
-- (void)galleryCollectionViewControllerWillDisplayPreview:(id)a3
+- (void)galleryCollectionViewControllerWillDisplayPreview:(id)preview
 {
   displayedPreviewIdentifiers = self->_displayedPreviewIdentifiers;
-  v4 = [a3 previewUniqueIdentifier];
-  [(NSMutableSet *)displayedPreviewIdentifiers addObject:v4];
+  previewUniqueIdentifier = [preview previewUniqueIdentifier];
+  [(NSMutableSet *)displayedPreviewIdentifiers addObject:previewUniqueIdentifier];
 }
 
-- (void)galleryCollectionViewControllerDidSelectPreview:(id)a3 fromPreviewView:(id)a4
+- (void)galleryCollectionViewControllerDidSelectPreview:(id)preview fromPreviewView:(id)view
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PBFPosterGalleryPreviewViewController *)self delegate];
-  [v8 galleryViewController:self didSelectPreview:v7 fromPreviewView:v6];
+  viewCopy = view;
+  previewCopy = preview;
+  delegate = [(PBFPosterGalleryPreviewViewController *)self delegate];
+  [delegate galleryViewController:self didSelectPreview:previewCopy fromPreviewView:viewCopy];
 
   tappedPreviewIdentifiers = self->_tappedPreviewIdentifiers;
-  v10 = [v7 previewUniqueIdentifier];
+  previewUniqueIdentifier = [previewCopy previewUniqueIdentifier];
 
-  [(NSMutableSet *)tappedPreviewIdentifiers addObject:v10];
+  [(NSMutableSet *)tappedPreviewIdentifiers addObject:previewUniqueIdentifier];
 }
 
 - (UIView)recycledViewsContainer

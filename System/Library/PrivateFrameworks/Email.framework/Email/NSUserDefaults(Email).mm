@@ -27,17 +27,17 @@
 + (void)em_migrateDefault:()Email
 {
   v7 = a3;
-  v3 = [MEMORY[0x1E695E000] em_userDefaults];
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = [v3 valueForKey:v7];
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5 = [em_userDefaults valueForKey:v7];
 
   if (!v5)
   {
-    v6 = [v4 valueForKey:v7];
+    v6 = [standardUserDefaults valueForKey:v7];
     if (v6)
     {
-      [v3 setObject:v6 forKey:v7];
-      [v4 removeObjectForKey:v7];
+      [em_userDefaults setObject:v6 forKey:v7];
+      [standardUserDefaults removeObjectForKey:v7];
     }
   }
 }
@@ -45,8 +45,8 @@
 + (BOOL)em_defaultExistsForKey:()Email
 {
   v3 = a3;
-  v4 = [MEMORY[0x1E695E000] em_userDefaults];
-  v5 = [v4 objectForKey:v3];
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+  v5 = [em_userDefaults objectForKey:v3];
 
   return v5 != 0;
 }
@@ -63,19 +63,19 @@
 
 - (BOOL)shouldPresentRemoteContentOptionsSheet
 {
-  v0 = [MEMORY[0x1E695E000] em_userDefaults];
-  v1 = [v0 integerForKey:@"LoadRemoteContent-v2"];
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+  v1 = [em_userDefaults integerForKey:@"LoadRemoteContent-v2"];
 
   return (v1 & 3) == 0;
 }
 
 - (uint64_t)shouldPresentRemoteContentAlert
 {
-  v0 = [MEMORY[0x1E695E000] em_userDefaults];
-  v1 = [v0 objectForKey:@"RemoteContentAlertDate"];
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+  v1 = [em_userDefaults objectForKey:@"RemoteContentAlertDate"];
 
-  v2 = [MEMORY[0x1E695DF00] date];
-  v3 = [v1 ef_isEarlierThanDate:v2];
+  date = [MEMORY[0x1E695DF00] date];
+  v3 = [v1 ef_isEarlierThanDate:date];
 
   return v3;
 }
@@ -92,7 +92,7 @@
     v3 = 9;
   }
 
-  return [a1 setInteger:v3 forKey:@"LoadRemoteContent-v2"];
+  return [self setInteger:v3 forKey:@"LoadRemoteContent-v2"];
 }
 
 + (uint64_t)_em_linesOfPreviewShouldReset:()Email
@@ -100,21 +100,21 @@
   result = _em_linesOfPreviewShouldReset__linesOfPreview;
   if (_em_linesOfPreviewShouldReset__linesOfPreview < 0 || a3)
   {
-    v4 = [MEMORY[0x1E695E000] em_userDefaults];
-    v5 = [v4 objectForKey:@"LinesOfPreview"];
+    em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+    v5 = [em_userDefaults objectForKey:@"LinesOfPreview"];
 
     if (v5)
     {
-      v6 = [v5 intValue];
-      _em_linesOfPreviewShouldReset__linesOfPreview = v6;
-      if ((v6 & 0x80000000) != 0)
+      intValue = [v5 intValue];
+      _em_linesOfPreviewShouldReset__linesOfPreview = intValue;
+      if ((intValue & 0x80000000) != 0)
       {
         v7 = 0;
       }
 
       else
       {
-        if (v6 < 6)
+        if (intValue < 6)
         {
 LABEL_10:
 
@@ -139,19 +139,19 @@ LABEL_10:
 
 - (uint64_t)preferredGroupedSenderGrouping
 {
-  v1 = [a1 objectForKey:@"PreferredGroupedSenderGroupingLogic"];
+  v1 = [self objectForKey:@"PreferredGroupedSenderGroupingLogic"];
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 integerValue];
+    integerValue = [v1 integerValue];
   }
 
   else
   {
-    v3 = 1;
+    integerValue = 1;
   }
 
-  return v3;
+  return integerValue;
 }
 
 @end

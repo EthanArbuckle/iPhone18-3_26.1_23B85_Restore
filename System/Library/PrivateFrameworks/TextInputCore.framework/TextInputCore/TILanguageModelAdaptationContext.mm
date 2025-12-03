@@ -1,13 +1,13 @@
 @interface TILanguageModelAdaptationContext
 - (NSString)identifier;
-- (TILanguageModelAdaptationContext)initWithClientIdentifier:(id)a3 andRecipientContactInfo:(id)a4;
-- (TILanguageModelAdaptationContext)initWithClientIdentifier:(id)a3 andRecipientRecord:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TILanguageModelAdaptationContext)initWithClientIdentifier:(id)identifier andRecipientContactInfo:(id)info;
+- (TILanguageModelAdaptationContext)initWithClientIdentifier:(id)identifier andRecipientRecord:(id)record;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TILanguageModelAdaptationContext
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(TILanguageModelAdaptationContext);
   v5 = [(NSString *)self->_appContext copy];
@@ -27,26 +27,26 @@
   recipientNameDigest = self->_recipientNameDigest;
   if (recipientNameDigest)
   {
-    v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@@%@", self->_appContext, recipientNameDigest];
+    recipientNameDigest = [MEMORY[0x277CCACA8] stringWithFormat:@"%@@%@", self->_appContext, recipientNameDigest];
   }
 
   else
   {
-    v3 = self->_appContext;
+    recipientNameDigest = self->_appContext;
   }
 
-  return v3;
+  return recipientNameDigest;
 }
 
-- (TILanguageModelAdaptationContext)initWithClientIdentifier:(id)a3 andRecipientContactInfo:(id)a4
+- (TILanguageModelAdaptationContext)initWithClientIdentifier:(id)identifier andRecipientContactInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length])
+  identifierCopy = identifier;
+  infoCopy = info;
+  if ([infoCopy length])
   {
-    v8 = [MEMORY[0x277CBEB98] setWithObject:v7];
+    v8 = [MEMORY[0x277CBEB98] setWithObject:infoCopy];
     v9 = TIAddressBookFindRecordsMatchingRecipients(v8);
-    v10 = [v9 objectForKey:v7];
+    v10 = [v9 objectForKey:infoCopy];
   }
 
   else
@@ -54,29 +54,29 @@
     v10 = 0;
   }
 
-  v11 = [(TILanguageModelAdaptationContext *)self initWithClientIdentifier:v6 andRecipientRecord:v10];
+  v11 = [(TILanguageModelAdaptationContext *)self initWithClientIdentifier:identifierCopy andRecipientRecord:v10];
 
   return v11;
 }
 
-- (TILanguageModelAdaptationContext)initWithClientIdentifier:(id)a3 andRecipientRecord:(id)a4
+- (TILanguageModelAdaptationContext)initWithClientIdentifier:(id)identifier andRecipientRecord:(id)record
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  recordCopy = record;
   v21.receiver = self;
   v21.super_class = TILanguageModelAdaptationContext;
   v8 = [(TILanguageModelAdaptationContext *)&v21 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     appContext = v8->_appContext;
     v8->_appContext = v9;
 
     v8->_isOnline = 1;
-    if (v7)
+    if (recordCopy)
     {
       v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v12 = [v7 objectForKey:@"compositeName"];
+      v12 = [recordCopy objectForKey:@"compositeName"];
       if (v12)
       {
         v13 = +[TICryptographer sharedCryptographer];
@@ -88,13 +88,13 @@
         v14 = 0;
       }
 
-      v15 = [v7 objectForKey:@"firstName"];
+      v15 = [recordCopy objectForKey:@"firstName"];
       if (v15)
       {
         [(NSDictionary *)v11 setObject:v15 forKey:*MEMORY[0x277D23138]];
       }
 
-      v16 = [v7 objectForKey:@"lastName"];
+      v16 = [recordCopy objectForKey:@"lastName"];
       if (v16)
       {
         [(NSDictionary *)v11 setObject:v16 forKey:*MEMORY[0x277D23130]];

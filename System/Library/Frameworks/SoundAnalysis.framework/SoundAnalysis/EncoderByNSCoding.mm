@@ -1,36 +1,36 @@
 @interface EncoderByNSCoding
-- (void)encodeBool:(BOOL)a3 forKey:(id)a4;
-- (void)encodeBytes:(const char *)a3 length:(int64_t)a4 forKey:(id)a5;
-- (void)encodeCMTime:(id *)a3 forKey:(id)a4;
-- (void)encodeCMTimeRange:(id *)a3 forKey:(id)a4;
-- (void)encodeConditionalObject:(id)a3 forKey:(id)a4;
-- (void)encodeDouble:(double)a3 forKey:(id)a4;
-- (void)encodeFloat:(float)a3 forKey:(id)a4;
-- (void)encodeObject:(id)a3 forKey:(id)a4;
+- (void)encodeBool:(BOOL)bool forKey:(id)key;
+- (void)encodeBytes:(const char *)bytes length:(int64_t)length forKey:(id)key;
+- (void)encodeCMTime:(id *)time forKey:(id)key;
+- (void)encodeCMTimeRange:(id *)range forKey:(id)key;
+- (void)encodeConditionalObject:(id)object forKey:(id)key;
+- (void)encodeDouble:(double)double forKey:(id)key;
+- (void)encodeFloat:(float)float forKey:(id)key;
+- (void)encodeObject:(id)object forKey:(id)key;
 @end
 
 @implementation EncoderByNSCoding
 
-- (void)encodeCMTime:(id *)a3 forKey:(id)a4
+- (void)encodeCMTime:(id *)time forKey:(id)key
 {
   sub_1C9A924A8();
-  v5 = self;
+  selfCopy = self;
   sub_1C9981D30();
 }
 
-- (void)encodeCMTimeRange:(id *)a3 forKey:(id)a4
+- (void)encodeCMTimeRange:(id *)range forKey:(id)key
 {
   sub_1C9A924A8();
-  v5 = self;
+  selfCopy = self;
   sub_1C9981DB8();
 }
 
-- (void)encodeObject:(id)a3 forKey:(id)a4
+- (void)encodeObject:(id)object forKey:(id)key
 {
-  if (a3)
+  if (object)
   {
-    v6 = a4;
-    v7 = self;
+    keyCopy = key;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1C9A93318();
     swift_unknownObjectRelease();
@@ -39,8 +39,8 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = a4;
-    v9 = self;
+    keyCopy2 = key;
+    selfCopy2 = self;
   }
 
   sub_1C9A924A8();
@@ -50,40 +50,40 @@
   sub_1C97A59D0(v10);
 }
 
-- (void)encodeBool:(BOOL)a3 forKey:(id)a4
+- (void)encodeBool:(BOOL)bool forKey:(id)key
 {
   sub_1C9A924A8();
-  v5 = self;
+  selfCopy = self;
   sub_1C998204C();
 }
 
-- (void)encodeFloat:(float)a3 forKey:(id)a4
+- (void)encodeFloat:(float)float forKey:(id)key
 {
   sub_1C9A924A8();
-  v5 = self;
+  selfCopy = self;
   sub_1C99821D4();
 }
 
-- (void)encodeDouble:(double)a3 forKey:(id)a4
+- (void)encodeDouble:(double)double forKey:(id)key
 {
   sub_1C9A924A8();
-  v5 = self;
+  selfCopy = self;
   sub_1C9982250();
 }
 
-- (void)encodeBytes:(const char *)a3 length:(int64_t)a4 forKey:(id)a5
+- (void)encodeBytes:(const char *)bytes length:(int64_t)length forKey:(id)key
 {
   sub_1C9A924A8();
-  v8 = self;
-  sub_1C99822CC(a3, a4);
+  selfCopy = self;
+  sub_1C99822CC(bytes, length);
 }
 
-- (void)encodeConditionalObject:(id)a3 forKey:(id)a4
+- (void)encodeConditionalObject:(id)object forKey:(id)key
 {
-  if (a3)
+  if (object)
   {
-    v8 = a4;
-    v9 = self;
+    keyCopy = key;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1C9A93318();
     swift_unknownObjectRelease();
@@ -91,8 +91,8 @@
 
   else
   {
-    v6 = a4;
-    v7 = self;
+    keyCopy2 = key;
+    selfCopy2 = self;
   }
 
   sub_1C9A924A8();

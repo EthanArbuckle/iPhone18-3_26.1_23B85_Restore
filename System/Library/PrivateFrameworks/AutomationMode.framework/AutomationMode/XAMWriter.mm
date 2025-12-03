@@ -1,21 +1,21 @@
 @interface XAMWriter
 + (XAMWriter)sharedInstance;
 + (void)resetSharedWriter;
-- (BOOL)_usingSyncProxy:(id)a3 withError:(id *)a4;
-- (BOOL)enableAutomationModeWithError:(id *)a3;
-- (XAMWriter)initWithWriterConnectionFactory:(id)a3 authorizationProvider:(id)a4;
-- (void)_authenticateAndEnableAutomationModeWithProxy:(id)a3 completion:(id)a4;
-- (void)_enableAutomationModeWithProxy:(id)a3 authorization:(id)a4 completion:(id)a5;
-- (void)_enableAutomationModeWithProxy:(id)a3 completion:(id)a4;
-- (void)_setAutomationModeEnabled:(BOOL)a3 withCompletion:(id)a4;
-- (void)_usingAsyncProxyEnablePasswordlessAutomation:(BOOL)a3 withCompletion:(id)a4;
+- (BOOL)_usingSyncProxy:(id)proxy withError:(id *)error;
+- (BOOL)enableAutomationModeWithError:(id *)error;
+- (XAMWriter)initWithWriterConnectionFactory:(id)factory authorizationProvider:(id)provider;
+- (void)_authenticateAndEnableAutomationModeWithProxy:(id)proxy completion:(id)completion;
+- (void)_enableAutomationModeWithProxy:(id)proxy authorization:(id)authorization completion:(id)completion;
+- (void)_enableAutomationModeWithProxy:(id)proxy completion:(id)completion;
+- (void)_setAutomationModeEnabled:(BOOL)enabled withCompletion:(id)completion;
+- (void)_usingAsyncProxyEnablePasswordlessAutomation:(BOOL)automation withCompletion:(id)completion;
 @end
 
 @implementation XAMWriter
 
 + (void)resetSharedWriter
 {
-  obj = a1;
+  obj = self;
   objc_sync_enter(obj);
   v2 = XAMSharedWriter;
   XAMSharedWriter = 0;
@@ -25,8 +25,8 @@
 
 + (XAMWriter)sharedInstance
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!XAMSharedWriter)
   {
     v3 = [XAMWriter alloc];
@@ -36,7 +36,7 @@
     XAMSharedWriter = v5;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v7 = XAMSharedWriter;
 
@@ -55,29 +55,29 @@ id __27__XAMWriter_sharedInstance__block_invoke()
   return v1;
 }
 
-- (XAMWriter)initWithWriterConnectionFactory:(id)a3 authorizationProvider:(id)a4
+- (XAMWriter)initWithWriterConnectionFactory:(id)factory authorizationProvider:(id)provider
 {
-  v6 = a4;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = XAMWriter;
-  v7 = a3;
+  factoryCopy = factory;
   v8 = [(XAMWriter *)&v13 init];
-  v9 = [v7 copy];
+  v9 = [factoryCopy copy];
 
   writerConnectionFactory = v8->_writerConnectionFactory;
   v8->_writerConnectionFactory = v9;
 
   authorizationProvider = v8->_authorizationProvider;
-  v8->_authorizationProvider = v6;
+  v8->_authorizationProvider = providerCopy;
 
   return v8;
 }
 
-- (void)_setAutomationModeEnabled:(BOOL)a3 withCompletion:(id)a4
+- (void)_setAutomationModeEnabled:(BOOL)enabled withCompletion:(id)completion
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = (*(self->_writerConnectionFactory + 2))();
   v8 = XAMLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -93,7 +93,7 @@ id __27__XAMWriter_sharedInstance__block_invoke()
   v22[3] = &unk_278CF9318;
   v9 = v7;
   v23 = v9;
-  v10 = v6;
+  v10 = completionCopy;
   v24 = v10;
   v11 = MEMORY[0x245CF2E50](v22);
   v20[0] = MEMORY[0x277D85DD0];
@@ -103,7 +103,7 @@ id __27__XAMWriter_sharedInstance__block_invoke()
   v12 = v11;
   v21 = v12;
   v13 = [v9 remoteObjectProxyWithErrorHandler:v20];
-  if (v4)
+  if (enabledCopy)
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
@@ -159,10 +159,10 @@ void __54__XAMWriter__setAutomationModeEnabled_withCompletion___block_invoke_14(
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_enableAutomationModeWithProxy:(id)a3 completion:(id)a4
+- (void)_enableAutomationModeWithProxy:(id)proxy completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  proxyCopy = proxy;
+  completionCopy = completion;
   v8 = XAMLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -175,10 +175,10 @@ void __54__XAMWriter__setAutomationModeEnabled_withCompletion___block_invoke_14(
   v11[2] = __55__XAMWriter__enableAutomationModeWithProxy_completion___block_invoke;
   v11[3] = &unk_278CF9368;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = proxyCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = proxyCopy;
   [v10 enableAutomationModeWithCompletion:v11];
 }
 
@@ -227,10 +227,10 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)_authenticateAndEnableAutomationModeWithProxy:(id)a3 completion:(id)a4
+- (void)_authenticateAndEnableAutomationModeWithProxy:(id)proxy completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  proxyCopy = proxy;
+  completionCopy = completion;
   v8 = XAMLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -238,17 +238,17 @@ LABEL_13:
     _os_log_impl(&dword_241927000, v8, OS_LOG_TYPE_DEFAULT, "Writer daemon requires authentication to enable automation mode.", buf, 2u);
   }
 
-  v9 = [(XAMWriter *)self authorizationProvider];
+  authorizationProvider = [(XAMWriter *)self authorizationProvider];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __70__XAMWriter__authenticateAndEnableAutomationModeWithProxy_completion___block_invoke;
   v12[3] = &unk_278CF9390;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  [v9 requestAuthorizationWithReply:v12];
+  v13 = proxyCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = proxyCopy;
+  [authorizationProvider requestAuthorizationWithReply:v12];
 }
 
 uint64_t __70__XAMWriter__authenticateAndEnableAutomationModeWithProxy_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -264,11 +264,11 @@ uint64_t __70__XAMWriter__authenticateAndEnableAutomationModeWithProxy_completio
   }
 }
 
-- (void)_enableAutomationModeWithProxy:(id)a3 authorization:(id)a4 completion:(id)a5
+- (void)_enableAutomationModeWithProxy:(id)proxy authorization:(id)authorization completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  authorizationCopy = authorization;
+  completionCopy = completion;
+  proxyCopy = proxy;
   v10 = XAMLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -276,16 +276,16 @@ uint64_t __70__XAMWriter__authenticateAndEnableAutomationModeWithProxy_completio
     _os_log_impl(&dword_241927000, v10, OS_LOG_TYPE_DEFAULT, "User authenticated, forwarding authorization to writer daemon.", buf, 2u);
   }
 
-  v11 = [v7 externalizedContext];
+  externalizedContext = [authorizationCopy externalizedContext];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __69__XAMWriter__enableAutomationModeWithProxy_authorization_completion___block_invoke;
   v14[3] = &unk_278CF9318;
-  v15 = v7;
-  v16 = v8;
-  v12 = v8;
-  v13 = v7;
-  [v9 enableAutomationModeWithAuthorization:v11 completion:v14];
+  v15 = authorizationCopy;
+  v16 = completionCopy;
+  v12 = completionCopy;
+  v13 = authorizationCopy;
+  [proxyCopy enableAutomationModeWithAuthorization:externalizedContext completion:v14];
 }
 
 void __69__XAMWriter__enableAutomationModeWithProxy_authorization_completion___block_invoke(uint64_t a1, void *a2)
@@ -302,11 +302,11 @@ void __69__XAMWriter__enableAutomationModeWithProxy_authorization_completion___b
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_usingAsyncProxyEnablePasswordlessAutomation:(BOOL)a3 withCompletion:(id)a4
+- (void)_usingAsyncProxyEnablePasswordlessAutomation:(BOOL)automation withCompletion:(id)completion
 {
-  v4 = a3;
+  automationCopy = automation;
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = (*(self->_writerConnectionFactory + 2))();
   v8 = XAMLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -322,8 +322,8 @@ void __69__XAMWriter__enableAutomationModeWithProxy_authorization_completion___b
   v18[3] = &unk_278CF9318;
   v9 = v7;
   v19 = v9;
-  v20 = v6;
-  v10 = v6;
+  v20 = completionCopy;
+  v10 = completionCopy;
   v11 = MEMORY[0x245CF2E50](v18);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -333,7 +333,7 @@ void __69__XAMWriter__enableAutomationModeWithProxy_authorization_completion___b
   v17 = v12;
   v13 = [v9 remoteObjectProxyWithErrorHandler:v16];
   v14 = v13;
-  if (v4)
+  if (automationCopy)
   {
     [v13 createNoAuthenticationRequiredCookieWithCompletion:v12];
   }
@@ -377,10 +377,10 @@ void __73__XAMWriter__usingAsyncProxyEnablePasswordlessAutomation_withCompletion
   (*(*(a1 + 32) + 16))();
 }
 
-- (BOOL)_usingSyncProxy:(id)a3 withError:(id *)a4
+- (BOOL)_usingSyncProxy:(id)proxy withError:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  proxyCopy = proxy;
   v7 = (*(self->_writerConnectionFactory + 2))();
   v8 = XAMLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -402,7 +402,7 @@ void __73__XAMWriter__usingAsyncProxyEnablePasswordlessAutomation_withCompletion
   v17[3] = &unk_278CF93B8;
   v17[4] = &buf;
   v9 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v17];
-  v10 = v6[2](v6, v9);
+  v10 = proxyCopy[2](proxyCopy, v9);
   v11 = v10;
   if (!v10)
   {
@@ -420,10 +420,10 @@ void __73__XAMWriter__usingAsyncProxyEnablePasswordlessAutomation_withCompletion
   }
 
   [v7 invalidate];
-  if (a4)
+  if (error)
   {
     v14 = v12;
-    *a4 = v12;
+    *error = v12;
   }
 
   _Block_object_dispose(&buf, 8);
@@ -466,14 +466,14 @@ id __44__XAMWriter_disableAutomationModeWithError___block_invoke(uint64_t a1, vo
   return v3;
 }
 
-- (BOOL)enableAutomationModeWithError:(id *)a3
+- (BOOL)enableAutomationModeWithError:(id *)error
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __43__XAMWriter_enableAutomationModeWithError___block_invoke;
   v4[3] = &unk_278CF9400;
   v4[4] = self;
-  return [(XAMWriter *)self _usingSyncProxy:v4 withError:a3];
+  return [(XAMWriter *)self _usingSyncProxy:v4 withError:error];
 }
 
 id __43__XAMWriter_enableAutomationModeWithError___block_invoke(uint64_t a1, void *a2)

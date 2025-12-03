@@ -1,25 +1,25 @@
 @interface NEIPSecSALocalSession
-- (BOOL)addLarvalSA:(id)a3;
-- (NEIPSecSALocalSession)initWithName:(id)a3 delegate:(id)a4;
+- (BOOL)addLarvalSA:(id)a;
+- (NEIPSecSALocalSession)initWithName:(id)name delegate:(id)delegate;
 - (id)description;
 @end
 
 @implementation NEIPSecSALocalSession
 
-- (BOOL)addLarvalSA:(id)a3
+- (BOOL)addLarvalSA:(id)a
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 spi];
+  aCopy = a;
+  v5 = [aCopy spi];
   if (v5)
   {
     v6 = ne_log_obj();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412546;
-      v14 = self;
+      selfCopy = self;
       v15 = 1024;
-      v16 = bswap32([v4 spi]);
+      v16 = bswap32([aCopy spi]);
       _os_log_error_impl(&dword_1BA83C000, v6, OS_LOG_TYPE_ERROR, "%@ SPI is not 0, it is %X", &v13, 0x12u);
     }
 
@@ -34,9 +34,9 @@
   else
   {
     v8 = arc4random();
-    if (v4)
+    if (aCopy)
     {
-      v4[5] = v8;
+      aCopy[5] = v8;
     }
 
     if (self)
@@ -49,7 +49,7 @@
       Property = 0;
     }
 
-    [Property addObject:v4];
+    [Property addObject:aCopy];
   }
 
   v11 = *MEMORY[0x1E69E9840];
@@ -69,17 +69,17 @@
     uniqueIndex = 0;
   }
 
-  v5 = [(NEIPSecSASession *)self name];
-  v6 = [v3 initWithFormat:@"LocalSASession[%llu, %@]", uniqueIndex, v5];
+  name = [(NEIPSecSASession *)self name];
+  v6 = [v3 initWithFormat:@"LocalSASession[%llu, %@]", uniqueIndex, name];
 
   return v6;
 }
 
-- (NEIPSecSALocalSession)initWithName:(id)a3 delegate:(id)a4
+- (NEIPSecSALocalSession)initWithName:(id)name delegate:(id)delegate
 {
   v10.receiver = self;
   v10.super_class = NEIPSecSALocalSession;
-  v4 = [(NEIPSecSASession *)&v10 initWithName:a3 delegate:a4];
+  v4 = [(NEIPSecSASession *)&v10 initWithName:name delegate:delegate];
   v5 = v4;
   if (v4)
   {

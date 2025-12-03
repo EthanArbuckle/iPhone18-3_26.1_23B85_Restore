@@ -1,25 +1,25 @@
 @interface TypistKeyboardThai
 - (BOOL)is24KeyThaiKeyboard;
-- (id)getPostfixKey:(id)a3;
-- (id)init:(id)a3 options:(id)a4;
-- (id)setupKeyboardInfo:(id)a3 options:(id)a4;
+- (id)getPostfixKey:(id)key;
+- (id)init:(id)init options:(id)options;
+- (id)setupKeyboardInfo:(id)info options:(id)options;
 @end
 
 @implementation TypistKeyboardThai
 
-- (id)init:(id)a3 options:(id)a4
+- (id)init:(id)init options:(id)options
 {
   v5.receiver = self;
   v5.super_class = TypistKeyboardThai;
-  return [(TypistKeyboard *)&v5 init:a3 options:a4 locale:@"th_TH"];
+  return [(TypistKeyboard *)&v5 init:init options:options locale:@"th_TH"];
 }
 
-- (id)setupKeyboardInfo:(id)a3 options:(id)a4
+- (id)setupKeyboardInfo:(id)info options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 lowercaseString];
-  v9 = [v8 containsString:@"24key"];
+  infoCopy = info;
+  optionsCopy = options;
+  lowercaseString = [infoCopy lowercaseString];
+  v9 = [lowercaseString containsString:@"24key"];
 
   if (v9)
   {
@@ -28,7 +28,7 @@
 
   v13.receiver = self;
   v13.super_class = TypistKeyboardThai;
-  v10 = [(TypistKeyboard *)&v13 setupKeyboardInfo:v6 options:v7];
+  v10 = [(TypistKeyboard *)&v13 setupKeyboardInfo:infoCopy options:optionsCopy];
   if (!v10)
   {
     v11 = [TypistCandidateBar initWithTypistKeyboard:self];
@@ -40,20 +40,20 @@
 
 - (BOOL)is24KeyThaiKeyboard
 {
-  v2 = [(TypistKeyboard *)self keyboardID];
-  v3 = [v2 lowercaseString];
-  v4 = [v3 containsString:@"24key"];
+  keyboardID = [(TypistKeyboard *)self keyboardID];
+  lowercaseString = [keyboardID lowercaseString];
+  v4 = [lowercaseString containsString:@"24key"];
 
   return v4;
 }
 
-- (id)getPostfixKey:(id)a3
+- (id)getPostfixKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if ([(TypistKeyboardThai *)self is24KeyThaiKeyboard])
   {
-    v5 = [(TypistKeyboardThai *)self baseCharacters];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    baseCharacters = [(TypistKeyboardThai *)self baseCharacters];
+    v6 = [baseCharacters objectForKeyedSubscript:keyCopy];
     v7 = v6;
     if (v6)
     {
@@ -62,7 +62,7 @@
 
     else
     {
-      v8 = v4;
+      v8 = keyCopy;
     }
 
     v9 = v8;
@@ -70,7 +70,7 @@
 
   else
   {
-    v9 = v4;
+    v9 = keyCopy;
   }
 
   return v9;

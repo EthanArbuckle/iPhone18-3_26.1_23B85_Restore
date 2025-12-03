@@ -1,28 +1,28 @@
 @interface CFXFeedbackController
 - (CFXFeedbackController)init;
-- (CFXFeedbackController)initWithShutterButton:(id)a3;
-- (id)_debugStringForPairedFeedback:(unint64_t)a3;
-- (id)_feedbackGeneratorForPairedFeedback:(unint64_t)a3;
+- (CFXFeedbackController)initWithShutterButton:(id)button;
+- (id)_debugStringForPairedFeedback:(unint64_t)feedback;
+- (id)_feedbackGeneratorForPairedFeedback:(unint64_t)feedback;
 - (unint64_t)shutterButtonFeedbackForCurrentConfiguration;
-- (void)performPressButtonFeedback:(unint64_t)a3;
-- (void)performReleaseButtonFeedback:(unint64_t)a3;
-- (void)prepareButtonFeedback:(unint64_t)a3;
-- (void)shutterButtonDown:(id)a3;
-- (void)shutterButtonUp:(id)a3;
+- (void)performPressButtonFeedback:(unint64_t)feedback;
+- (void)performReleaseButtonFeedback:(unint64_t)feedback;
+- (void)prepareButtonFeedback:(unint64_t)feedback;
+- (void)shutterButtonDown:(id)down;
+- (void)shutterButtonUp:(id)up;
 @end
 
 @implementation CFXFeedbackController
 
-- (CFXFeedbackController)initWithShutterButton:(id)a3
+- (CFXFeedbackController)initWithShutterButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   v6 = [(CFXFeedbackController *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_shutterButton, a3);
-    [v5 addTarget:v7 action:sel_shutterButtonDown_ forControlEvents:1];
-    [v5 addTarget:v7 action:sel_shutterButtonUp_ forControlEvents:64];
+    objc_storeStrong(&v6->_shutterButton, button);
+    [buttonCopy addTarget:v7 action:sel_shutterButtonDown_ forControlEvents:1];
+    [buttonCopy addTarget:v7 action:sel_shutterButtonUp_ forControlEvents:64];
     [(CFXFeedbackController *)v7 setFeedbackToPerform:[(CFXFeedbackController *)v7 shutterButtonFeedbackForCurrentConfiguration]];
     [(CFXFeedbackController *)v7 prepareButtonFeedback:[(CFXFeedbackController *)v7 feedbackToPerform]];
   }
@@ -30,50 +30,50 @@
   return v7;
 }
 
-- (void)shutterButtonDown:(id)a3
+- (void)shutterButtonDown:(id)down
 {
   [(CFXFeedbackController *)self setFeedbackToPerform:[(CFXFeedbackController *)self shutterButtonFeedbackForCurrentConfiguration]];
-  v4 = [(CFXFeedbackController *)self feedbackToPerform];
+  feedbackToPerform = [(CFXFeedbackController *)self feedbackToPerform];
 
-  [(CFXFeedbackController *)self performPressButtonFeedback:v4];
+  [(CFXFeedbackController *)self performPressButtonFeedback:feedbackToPerform];
 }
 
-- (void)shutterButtonUp:(id)a3
+- (void)shutterButtonUp:(id)up
 {
   [(CFXFeedbackController *)self performReleaseButtonFeedback:[(CFXFeedbackController *)self feedbackToPerform]];
   [(CFXFeedbackController *)self setFeedbackToPerform:[(CFXFeedbackController *)self shutterButtonFeedbackForCurrentConfiguration]];
-  v4 = [(CFXFeedbackController *)self feedbackToPerform];
+  feedbackToPerform = [(CFXFeedbackController *)self feedbackToPerform];
 
-  [(CFXFeedbackController *)self prepareButtonFeedback:v4];
+  [(CFXFeedbackController *)self prepareButtonFeedback:feedbackToPerform];
 }
 
 - (unint64_t)shutterButtonFeedbackForCurrentConfiguration
 {
-  v2 = [(CFXFeedbackController *)self shutterButton];
-  v3 = [v2 mode];
+  shutterButton = [(CFXFeedbackController *)self shutterButton];
+  mode = [shutterButton mode];
 
-  if (v3 == 6)
+  if (mode == 6)
   {
     return 2;
   }
 
   else
   {
-    return v3 == 1;
+    return mode == 1;
   }
 }
 
 - (CFXFeedbackController)init
 {
-  v3 = [MEMORY[0x277CF7E78] capabilities];
-  v4 = [v3 allowHaptics];
+  capabilities = [MEMORY[0x277CF7E78] capabilities];
+  allowHaptics = [capabilities allowHaptics];
 
-  if (v4 && (v23.receiver = self, v23.super_class = CFXFeedbackController, (self = [(CFXFeedbackController *)&v23 init]) != 0))
+  if (allowHaptics && (v23.receiver = self, v23.super_class = CFXFeedbackController, (self = [(CFXFeedbackController *)&v23 init]) != 0))
   {
     v5 = [MEMORY[0x277D75EC8] feedbackWithDictionaryRepresentation:&unk_28556DA60];
     v6 = [MEMORY[0x277D75EC8] feedbackWithDictionaryRepresentation:&unk_28556DAB0];
-    v7 = [MEMORY[0x277D75E28] defaultConfiguration];
-    v8 = [v7 tweakedConfigurationForCaller:self usage:@"shutterButtonMomentary"];
+    defaultConfiguration = [MEMORY[0x277D75E28] defaultConfiguration];
+    v8 = [defaultConfiguration tweakedConfigurationForCaller:self usage:@"shutterButtonMomentary"];
 
     [v8 setInteractionStartedFeedback:v5];
     [v8 setInteractionEndedFeedback:v5];
@@ -82,8 +82,8 @@
     self->__shutterButtonMomentaryFeedbackGenerator = v9;
 
     [(_UIButtonFeedbackGenerator *)self->__shutterButtonMomentaryFeedbackGenerator _setOutputMode:5];
-    v11 = [MEMORY[0x277D75E28] defaultConfiguration];
-    v12 = [v11 tweakedConfigurationForCaller:self usage:@"shutterButtonLatchingOn"];
+    defaultConfiguration2 = [MEMORY[0x277D75E28] defaultConfiguration];
+    v12 = [defaultConfiguration2 tweakedConfigurationForCaller:self usage:@"shutterButtonLatchingOn"];
 
     [v12 setInteractionStartedFeedback:v5];
     [v12 setInteractionEndedFeedback:v6];
@@ -92,8 +92,8 @@
     self->__shutterButtonLatchingOnFeedbackGenerator = v13;
 
     [(_UIButtonFeedbackGenerator *)self->__shutterButtonLatchingOnFeedbackGenerator _setOutputMode:5];
-    v15 = [MEMORY[0x277D75E28] defaultConfiguration];
-    v16 = [v15 tweakedConfigurationForCaller:self usage:@"shutterButtonLatchingOff"];
+    defaultConfiguration3 = [MEMORY[0x277D75E28] defaultConfiguration];
+    v16 = [defaultConfiguration3 tweakedConfigurationForCaller:self usage:@"shutterButtonLatchingOff"];
 
     [v16 setInteractionStartedFeedback:v6];
     [v16 setInteractionEndedFeedback:v5];
@@ -107,51 +107,51 @@
     self->__activePairedFeedbackGenerators = v19;
 
     self = self;
-    v21 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v21 = 0;
+    selfCopy = 0;
   }
 
-  return v21;
+  return selfCopy;
 }
 
-- (void)prepareButtonFeedback:(unint64_t)a3
+- (void)prepareButtonFeedback:(unint64_t)feedback
 {
-  v3 = [(CFXFeedbackController *)self _feedbackGeneratorForPairedFeedback:a3];
+  v3 = [(CFXFeedbackController *)self _feedbackGeneratorForPairedFeedback:feedback];
   [v3 prepare];
 }
 
-- (void)performPressButtonFeedback:(unint64_t)a3
+- (void)performPressButtonFeedback:(unint64_t)feedback
 {
   v5 = [(CFXFeedbackController *)self _feedbackGeneratorForPairedFeedback:?];
-  v6 = [(CFXFeedbackController *)self _activePairedFeedbackGenerators];
-  if ([v6 containsObject:v5])
+  _activePairedFeedbackGenerators = [(CFXFeedbackController *)self _activePairedFeedbackGenerators];
+  if ([_activePairedFeedbackGenerators containsObject:v5])
   {
     v7 = CFXLog_DebugFeedback();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [(CFXFeedbackController *)self performPressButtonFeedback:a3];
+      [(CFXFeedbackController *)self performPressButtonFeedback:feedback];
     }
   }
 
   else
   {
     [v5 userInteractionStarted];
-    [v6 addObject:v5];
+    [_activePairedFeedbackGenerators addObject:v5];
   }
 }
 
-- (void)performReleaseButtonFeedback:(unint64_t)a3
+- (void)performReleaseButtonFeedback:(unint64_t)feedback
 {
   v5 = [(CFXFeedbackController *)self _feedbackGeneratorForPairedFeedback:?];
-  v6 = [(CFXFeedbackController *)self _activePairedFeedbackGenerators];
-  if ([v6 containsObject:v5])
+  _activePairedFeedbackGenerators = [(CFXFeedbackController *)self _activePairedFeedbackGenerators];
+  if ([_activePairedFeedbackGenerators containsObject:v5])
   {
     [v5 userInteractionEnded];
-    [v6 removeObject:v5];
+    [_activePairedFeedbackGenerators removeObject:v5];
   }
 
   else
@@ -159,46 +159,46 @@
     v7 = CFXLog_DebugFeedback();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [(CFXFeedbackController *)self performReleaseButtonFeedback:a3];
+      [(CFXFeedbackController *)self performReleaseButtonFeedback:feedback];
     }
   }
 }
 
-- (id)_feedbackGeneratorForPairedFeedback:(unint64_t)a3
+- (id)_feedbackGeneratorForPairedFeedback:(unint64_t)feedback
 {
-  if (a3 == 2)
+  if (feedback == 2)
   {
-    v3 = [(CFXFeedbackController *)self _shutterButtonLatchingOffFeedbackGenerator];
+    _shutterButtonLatchingOffFeedbackGenerator = [(CFXFeedbackController *)self _shutterButtonLatchingOffFeedbackGenerator];
   }
 
-  else if (a3 == 1)
+  else if (feedback == 1)
   {
-    v3 = [(CFXFeedbackController *)self _shutterButtonLatchingOnFeedbackGenerator];
+    _shutterButtonLatchingOffFeedbackGenerator = [(CFXFeedbackController *)self _shutterButtonLatchingOnFeedbackGenerator];
   }
 
-  else if (a3)
+  else if (feedback)
   {
-    v3 = 0;
+    _shutterButtonLatchingOffFeedbackGenerator = 0;
   }
 
   else
   {
-    v3 = [(CFXFeedbackController *)self _shutterButtonMomentaryFeedbackGenerator];
+    _shutterButtonLatchingOffFeedbackGenerator = [(CFXFeedbackController *)self _shutterButtonMomentaryFeedbackGenerator];
   }
 
-  return v3;
+  return _shutterButtonLatchingOffFeedbackGenerator;
 }
 
-- (id)_debugStringForPairedFeedback:(unint64_t)a3
+- (id)_debugStringForPairedFeedback:(unint64_t)feedback
 {
-  if (a3 > 2)
+  if (feedback > 2)
   {
     return &stru_28553D028;
   }
 
   else
   {
-    return off_278D7C5D0[a3];
+    return off_278D7C5D0[feedback];
   }
 }
 

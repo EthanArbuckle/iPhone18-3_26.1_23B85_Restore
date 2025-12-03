@@ -1,22 +1,22 @@
 @interface PLMediaAnalysisEmbeddingSearch
-+ (BOOL)prewarmSearchWithConcurrencyLimit:(unint64_t)a3 photoLibraryURL:(id)a4 error:(id *)a5;
++ (BOOL)prewarmSearchWithConcurrencyLimit:(unint64_t)limit photoLibraryURL:(id)l error:(id *)error;
 + (double)_scalingFactorForNumberOfProbes;
-+ (id)_numberOfProbesForEmbeddingSearchWithLimit:(int)a3;
-+ (id)_searchWithEmbeddings:(id)a3 photoLibraryURL:(id)a4 searchOptions:(id)a5 numberOfProbes:(id)a6 error:(id *)a7;
-+ (id)fetchEmbeddingsWithAssetUUIDs:(id)a3 photoLibraryURL:(id)a4 error:(id *)a5;
-+ (id)searchWithEmbeddings:(id)a3 photoLibraryURL:(id)a4 searchOptions:(id)a5 error:(id *)a6;
++ (id)_numberOfProbesForEmbeddingSearchWithLimit:(int)limit;
++ (id)_searchWithEmbeddings:(id)embeddings photoLibraryURL:(id)l searchOptions:(id)options numberOfProbes:(id)probes error:(id *)error;
++ (id)fetchEmbeddingsWithAssetUUIDs:(id)ds photoLibraryURL:(id)l error:(id *)error;
++ (id)searchWithEmbeddings:(id)embeddings photoLibraryURL:(id)l searchOptions:(id)options error:(id *)error;
 + (unint64_t)_minimumNumberOfProbes;
 @end
 
 @implementation PLMediaAnalysisEmbeddingSearch
 
-+ (id)fetchEmbeddingsWithAssetUUIDs:(id)a3 photoLibraryURL:(id)a4 error:(id *)a5
++ (id)fetchEmbeddingsWithAssetUUIDs:(id)ds photoLibraryURL:(id)l error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [getMADEmbeddingClass_114193() fetchEmbeddingsWithAssetUUIDs:v8 photoLibraryURL:v7 options:0 error:a5];
+  lCopy = l;
+  dsCopy = ds;
+  v9 = [getMADEmbeddingClass_114193() fetchEmbeddingsWithAssetUUIDs:dsCopy photoLibraryURL:lCopy options:0 error:error];
 
-  if (!a5)
+  if (!error)
   {
     if (!v9)
     {
@@ -38,7 +38,7 @@ LABEL_6:
   }
 
   v10 = 0;
-  if (!*a5 && v9)
+  if (!*error && v9)
   {
     goto LABEL_6;
   }
@@ -57,21 +57,21 @@ void __86__PLMediaAnalysisEmbeddingSearch_fetchEmbeddingsWithAssetUUIDs_photoLib
   [*(a1 + 32) setObject:v7 forKeyedSubscript:v6];
 }
 
-+ (BOOL)prewarmSearchWithConcurrencyLimit:(unint64_t)a3 photoLibraryURL:(id)a4 error:(id *)a5
++ (BOOL)prewarmSearchWithConcurrencyLimit:(unint64_t)limit photoLibraryURL:(id)l error:(id *)error
 {
-  v7 = a4;
-  [getMADEmbeddingClass_114193() prewarmSearchWithConcurrencyLimit:a3 photoLibraryURL:v7 error:a5];
+  lCopy = l;
+  [getMADEmbeddingClass_114193() prewarmSearchWithConcurrencyLimit:limit photoLibraryURL:lCopy error:error];
 
   return 1;
 }
 
-+ (id)_searchWithEmbeddings:(id)a3 photoLibraryURL:(id)a4 searchOptions:(id)a5 numberOfProbes:(id)a6 error:(id *)a7
++ (id)_searchWithEmbeddings:(id)embeddings photoLibraryURL:(id)l searchOptions:(id)options numberOfProbes:(id)probes error:(id *)error
 {
   v65 = *MEMORY[0x1E69E9840];
-  v36 = a3;
-  v37 = a4;
-  v40 = a5;
-  v34 = a6;
+  embeddingsCopy = embeddings;
+  lCopy = l;
+  optionsCopy = options;
+  probesCopy = probes;
   v55 = 0;
   v56 = &v55;
   v57 = 0x2050000000;
@@ -90,25 +90,25 @@ void __86__PLMediaAnalysisEmbeddingSearch_fetchEmbeddingsWithAssetUUIDs_photoLib
 
   v12 = v11;
   _Block_object_dispose(&v55, 8);
-  v41 = [v11 defaultOptions];
-  [v41 setResultLimit:{objc_msgSend(v40, "resultLimit")}];
-  v39 = [v40 assetUUIDsForPrefilter];
-  [v41 setAssetUUIDs:v39];
-  if ([v39 count])
+  defaultOptions = [v11 defaultOptions];
+  [defaultOptions setResultLimit:{objc_msgSend(optionsCopy, "resultLimit")}];
+  assetUUIDsForPrefilter = [optionsCopy assetUUIDsForPrefilter];
+  [defaultOptions setAssetUUIDs:assetUUIDsForPrefilter];
+  if ([assetUUIDsForPrefilter count])
   {
     v13 = PLBackendGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v39 count];
+      v14 = [assetUUIDsForPrefilter count];
       LODWORD(buf) = 134217984;
       *(&buf + 4) = v14;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "[PLMediaAnalysisEmbeddingSearch] Using %lu assets for prefiltering", &buf, 0xCu);
     }
   }
 
-  v15 = [v40 fullScan];
-  [v41 setFullScan:v15];
-  if (v15)
+  fullScan = [optionsCopy fullScan];
+  [defaultOptions setFullScan:fullScan];
+  if (fullScan)
   {
     v16 = PLBackendGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -117,30 +117,30 @@ void __86__PLMediaAnalysisEmbeddingSearch_fetchEmbeddingsWithAssetUUIDs_photoLib
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEFAULT, "[PLMediaAnalysisEmbeddingSearch] Using full scan (brute force) for embedding search.", &buf, 2u);
     }
 
-    v17 = [v40 numConcurrentReaders];
-    [v41 setNumConcurrentReaders:v17];
+    numConcurrentReaders = [optionsCopy numConcurrentReaders];
+    [defaultOptions setNumConcurrentReaders:numConcurrentReaders];
   }
 
   else
   {
-    v18 = [v40 numConcurrentReaders];
-    [v41 setNumConcurrentReaders:v18];
+    numConcurrentReaders2 = [optionsCopy numConcurrentReaders];
+    [defaultOptions setNumConcurrentReaders:numConcurrentReaders2];
 
-    [v41 setNumberOfProbes:v35];
-    v17 = PLBackendGetLog();
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    [defaultOptions setNumberOfProbes:v35];
+    numConcurrentReaders = PLBackendGetLog();
+    if (os_log_type_enabled(numConcurrentReaders, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
       *(&buf + 4) = v35;
-      _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_DEFAULT, "[PLMediaAnalysisEmbeddingSearch] Using number of probes = %@", &buf, 0xCu);
+      _os_log_impl(&dword_19BF1F000, numConcurrentReaders, OS_LOG_TYPE_DEFAULT, "[PLMediaAnalysisEmbeddingSearch] Using number of probes = %@", &buf, 0xCu);
     }
   }
 
-  v38 = [getMADEmbeddingClass_114193() searchWithEmbeddings:v36 photoLibraryURL:v37 options:v41 error:a7];
-  if (a7)
+  v38 = [getMADEmbeddingClass_114193() searchWithEmbeddings:embeddingsCopy photoLibraryURL:lCopy options:defaultOptions error:error];
+  if (error)
   {
     v44 = 0;
-    if (*a7 || !v38)
+    if (*error || !v38)
     {
       goto LABEL_34;
     }
@@ -197,10 +197,10 @@ void __86__PLMediaAnalysisEmbeddingSearch_fetchEmbeddingsWithAssetUUIDs_photoLib
 
               v27 = *(*(&v47 + 1) + 8 * i);
               v28 = [PLMediaAnalysisEmbeddingSearchResult alloc];
-              v29 = [v27 assetUUID];
-              v30 = [v27 metric];
-              v31 = [v27 distance];
-              v32 = [(PLMediaAnalysisEmbeddingSearchResult *)v28 initWithAssetUUID:v29 metric:v30 metricValue:v31];
+              assetUUID = [v27 assetUUID];
+              metric = [v27 metric];
+              distance = [v27 distance];
+              v32 = [(PLMediaAnalysisEmbeddingSearchResult *)v28 initWithAssetUUID:assetUUID metric:metric metricValue:distance];
               [v22 addObject:v32];
             }
 
@@ -226,36 +226,36 @@ LABEL_34:
   return v44;
 }
 
-+ (id)searchWithEmbeddings:(id)a3 photoLibraryURL:(id)a4 searchOptions:(id)a5 error:(id *)a6
++ (id)searchWithEmbeddings:(id)embeddings photoLibraryURL:(id)l searchOptions:(id)options error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [a1 _numberOfProbesForEmbeddingSearchWithLimit:{objc_msgSend(v10, "resultLimit")}];
-  v14 = [a1 _searchWithEmbeddings:v12 photoLibraryURL:v11 searchOptions:v10 numberOfProbes:v13 error:a6];
+  optionsCopy = options;
+  lCopy = l;
+  embeddingsCopy = embeddings;
+  v13 = [self _numberOfProbesForEmbeddingSearchWithLimit:{objc_msgSend(optionsCopy, "resultLimit")}];
+  v14 = [self _searchWithEmbeddings:embeddingsCopy photoLibraryURL:lCopy searchOptions:optionsCopy numberOfProbes:v13 error:error];
 
   return v14;
 }
 
-+ (id)_numberOfProbesForEmbeddingSearchWithLimit:(int)a3
++ (id)_numberOfProbesForEmbeddingSearchWithLimit:(int)limit
 {
-  v5 = [a1 _minimumNumberOfProbes];
-  v6 = a3 / 100.0;
-  if (v6 >= v5)
+  _minimumNumberOfProbes = [self _minimumNumberOfProbes];
+  v6 = limit / 100.0;
+  if (v6 >= _minimumNumberOfProbes)
   {
-    [a1 _scalingFactorForNumberOfProbes];
-    v5 = (v6 * v7);
+    [self _scalingFactorForNumberOfProbes];
+    _minimumNumberOfProbes = (v6 * v7);
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:v5];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:_minimumNumberOfProbes];
 
   return v8;
 }
 
 + (double)_scalingFactorForNumberOfProbes
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 doubleForKey:@"PLVectorSearchKitScalingFactorForNumberOfProbes"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"PLVectorSearchKitScalingFactorForNumberOfProbes"];
   v4 = v3;
 
   result = 1.0;
@@ -269,8 +269,8 @@ LABEL_34:
 
 + (unint64_t)_minimumNumberOfProbes
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PLVectorSearchKitMinimumNumberOfProbes"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PLVectorSearchKitMinimumNumberOfProbes"];
 
   if (v3 <= 0)
   {

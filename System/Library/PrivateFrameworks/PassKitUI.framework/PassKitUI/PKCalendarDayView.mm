@@ -1,31 +1,31 @@
 @interface PKCalendarDayView
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKCalendarDayView)initWithDate:(id)a3 dayString:(id)a4 delegate:(id)a5;
-- (double)verticalMarginWithBounds:(CGRect)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKCalendarDayView)initWithDate:(id)date dayString:(id)string delegate:(id)delegate;
+- (double)verticalMarginWithBounds:(CGRect)bounds;
 - (void)layoutSubviews;
-- (void)setDecorationView:(id)a3;
-- (void)setHideDayLabel:(BOOL)a3;
-- (void)setSelectable:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setDecorationView:(id)view;
+- (void)setHideDayLabel:(BOOL)label;
+- (void)setSelectable:(BOOL)selectable;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation PKCalendarDayView
 
-- (PKCalendarDayView)initWithDate:(id)a3 dayString:(id)a4 delegate:(id)a5
+- (PKCalendarDayView)initWithDate:(id)date dayString:(id)string delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dateCopy = date;
+  stringCopy = string;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = PKCalendarDayView;
   v12 = [(PKCalendarDayView *)&v17 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_date, a3);
-    objc_storeStrong(&v13->_delegate, a5);
-    v14 = [[PKCalendarDayLabelView alloc] initWithDayString:v10];
+    objc_storeStrong(&v12->_date, date);
+    objc_storeStrong(&v13->_delegate, delegate);
+    v14 = [[PKCalendarDayLabelView alloc] initWithDayString:stringCopy];
     dayLabelView = v13->_dayLabelView;
     v13->_dayLabelView = v14;
 
@@ -35,20 +35,20 @@
   return v13;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  [(PKCalendarDayLabelView *)self->_dayLabelView setSelected:a3];
+  [(PKCalendarDayLabelView *)self->_dayLabelView setSelected:selected];
 
   [(PKCalendarDayView *)self setNeedsLayout];
 }
 
-- (void)setSelectable:(BOOL)a3
+- (void)setSelectable:(BOOL)selectable
 {
-  if (self->_selectable != a3)
+  if (self->_selectable != selectable)
   {
-    self->_selectable = a3;
+    self->_selectable = selectable;
     tapRecognizer = self->_tapRecognizer;
-    if (a3)
+    if (selectable)
     {
       if (!tapRecognizer)
       {
@@ -80,36 +80,36 @@
   }
 }
 
-- (void)setHideDayLabel:(BOOL)a3
+- (void)setHideDayLabel:(BOOL)label
 {
-  if (self->_hideDayLabel != a3)
+  if (self->_hideDayLabel != label)
   {
-    self->_hideDayLabel = a3;
+    self->_hideDayLabel = label;
     [(PKCalendarDayLabelView *)self->_dayLabelView setHidden:?];
   }
 }
 
-- (void)setDecorationView:(id)a3
+- (void)setDecorationView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   decorationView = self->_decorationView;
-  if (decorationView != v5)
+  if (decorationView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)decorationView removeFromSuperview];
-    objc_storeStrong(&self->_decorationView, a3);
+    objc_storeStrong(&self->_decorationView, view);
     [(PKCalendarDayView *)self addSubview:self->_decorationView];
     [(PKCalendarDayView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (double)verticalMarginWithBounds:(CGRect)a3
+- (double)verticalMarginWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(PKCalendarDayLabelView *)self->_dayLabelView labelFrameForBounds:?];
   v8 = v7;
   v10 = v9;
@@ -136,22 +136,22 @@
   [(PKCalendarDayView *)self _layoutWithBounds:0 isTemplateLayout:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKCalendarDayView *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKCalendarDayView *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = bounds.size.height;
+  width = bounds.size.width;
   v8 = MEMORY[0x1E695F058];
   v9 = *MEMORY[0x1E695F058];
   v10 = *(MEMORY[0x1E695F058] + 8);
-  [(PKCalendarDayLabelView *)self->_dayLabelView sizeThatFits:a3.size.width, 1.79769313e308];
+  [(PKCalendarDayLabelView *)self->_dayLabelView sizeThatFits:bounds.size.width, 1.79769313e308];
   PKRectCenteredXInRect();
   v14 = v13;
   v15 = v12;
@@ -159,7 +159,7 @@
   {
     v20 = *(v8 + 16);
     v26 = *(v8 + 24);
-    if (a4)
+    if (layout)
     {
       goto LABEL_6;
     }
@@ -193,7 +193,7 @@
 
   v11 = v22;
   v26 = v29;
-  if (!a4)
+  if (!layout)
   {
 LABEL_5:
     [(PKCalendarDayLabelView *)self->_dayLabelView setFrame:v14, 0.0, v11, v15];

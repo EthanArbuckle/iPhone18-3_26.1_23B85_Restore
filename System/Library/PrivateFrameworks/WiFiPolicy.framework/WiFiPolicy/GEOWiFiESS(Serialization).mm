@@ -17,24 +17,24 @@
 - (void)encodeWithCoder:()Serialization
 {
   v13 = a3;
-  [v13 encodeBool:objc_msgSend(a1 forKey:{"isMoving"), @"moving"}];
-  [v13 encodeBool:objc_msgSend(a1 forKey:{"isCaptive"), @"captive"}];
-  [v13 encodeBool:objc_msgSend(a1 forKey:{"isSuspicious"), @"suspicious"}];
-  [v13 encodeBool:objc_msgSend(a1 forKey:{"isPublic"), @"public"}];
-  v4 = [a1 name];
-  [v13 encodeObject:v4 forKey:@"name"];
+  [v13 encodeBool:objc_msgSend(self forKey:{"isMoving"), @"moving"}];
+  [v13 encodeBool:objc_msgSend(self forKey:{"isCaptive"), @"captive"}];
+  [v13 encodeBool:objc_msgSend(self forKey:{"isSuspicious"), @"suspicious"}];
+  [v13 encodeBool:objc_msgSend(self forKey:{"isPublic"), @"public"}];
+  name = [self name];
+  [v13 encodeObject:name forKey:@"name"];
 
-  v5 = [a1 identifier];
-  [v13 encodeObject:v5 forKey:@"identifier"];
+  identifier = [self identifier];
+  [v13 encodeObject:identifier forKey:@"identifier"];
 
-  [v13 encodeInt64:objc_msgSend(a1 forKey:{"authMask"), @"authMask"}];
-  [v13 encodeInt64:objc_msgSend(a1 forKey:{"tileKey"), @"tileKey"}];
-  v6 = [a1 popularityScore];
+  [v13 encodeInt64:objc_msgSend(self forKey:{"authMask"), @"authMask"}];
+  [v13 encodeInt64:objc_msgSend(self forKey:{"tileKey"), @"tileKey"}];
+  popularityScore = [self popularityScore];
 
-  if (v6)
+  if (popularityScore)
   {
-    v7 = [a1 popularityScore];
-    [v13 encodeInt64:objc_msgSend(v7 forKey:{"score"), @"popularityScoreValue"}];
+    popularityScore2 = [self popularityScore];
+    [v13 encodeInt64:objc_msgSend(popularityScore2 forKey:{"score"), @"popularityScoreValue"}];
   }
 
   else
@@ -42,12 +42,12 @@
     [v13 encodeInt64:0 forKey:@"popularityScoreValue"];
   }
 
-  v8 = [a1 qualityScore];
+  qualityScore = [self qualityScore];
 
-  if (v8)
+  if (qualityScore)
   {
-    v9 = [a1 qualityScore];
-    [v13 encodeInt64:objc_msgSend(v9 forKey:{"score"), @"qualityScoreValue"}];
+    qualityScore2 = [self qualityScore];
+    [v13 encodeInt64:objc_msgSend(qualityScore2 forKey:{"score"), @"qualityScoreValue"}];
   }
 
   else
@@ -55,88 +55,88 @@
     [v13 encodeInt64:0 forKey:@"qualityScoreValue"];
   }
 
-  v10 = [a1 accessPoints];
-  [v13 encodeObject:v10 forKey:@"accessPoints"];
+  accessPoints = [self accessPoints];
+  [v13 encodeObject:accessPoints forKey:@"accessPoints"];
 
-  v11 = [a1 ownerIdentifiers];
+  ownerIdentifiers = [self ownerIdentifiers];
 
-  if (v11)
+  if (ownerIdentifiers)
   {
-    v12 = [a1 ownerIdentifiers];
-    [v13 encodeObject:v12 forKey:@"ownerIdentifiers"];
+    ownerIdentifiers2 = [self ownerIdentifiers];
+    [v13 encodeObject:ownerIdentifiers2 forKey:@"ownerIdentifiers"];
   }
 
-  [v13 encodeInt32:objc_msgSend(a1 forKey:{"venueType"), @"venueType"}];
-  [v13 encodeInteger:objc_msgSend(a1 forKey:{"venueGroup"), @"venueGroup"}];
-  [v13 encodeInteger:objc_msgSend(a1 forKey:{"type"), @"type"}];
+  [v13 encodeInt32:objc_msgSend(self forKey:{"venueType"), @"venueType"}];
+  [v13 encodeInteger:objc_msgSend(self forKey:{"venueGroup"), @"venueGroup"}];
+  [v13 encodeInteger:objc_msgSend(self forKey:{"type"), @"type"}];
 }
 
 - (id)dictionaryRepresentation
 {
   v40 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB38] dictionary];
-  v3 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "isMoving")}];
-  [v2 setObject:v3 forKey:@"moving"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v3 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "isMoving")}];
+  [dictionary setObject:v3 forKey:@"moving"];
 
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "isCaptive")}];
-  [v2 setObject:v4 forKey:@"captive"];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "isCaptive")}];
+  [dictionary setObject:v4 forKey:@"captive"];
 
-  v5 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "isSuspicious")}];
-  [v2 setObject:v5 forKey:@"suspicious"];
+  v5 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "isSuspicious")}];
+  [dictionary setObject:v5 forKey:@"suspicious"];
 
-  v6 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "isPublic")}];
-  [v2 setObject:v6 forKey:@"public"];
+  v6 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "isPublic")}];
+  [dictionary setObject:v6 forKey:@"public"];
 
-  v7 = [a1 name];
+  name = [self name];
 
-  if (v7)
+  if (name)
   {
-    v8 = [a1 name];
-    [v2 setObject:v8 forKey:@"name"];
+    name2 = [self name];
+    [dictionary setObject:name2 forKey:@"name"];
   }
 
-  v9 = [a1 identifier];
+  identifier = [self identifier];
 
-  if (v9)
+  if (identifier)
   {
-    v10 = [a1 identifier];
-    [v2 setObject:v10 forKey:@"identifier"];
+    identifier2 = [self identifier];
+    [dictionary setObject:identifier2 forKey:@"identifier"];
   }
 
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(a1, "authMask")}];
-  [v2 setObject:v11 forKey:@"authMask"];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(self, "authMask")}];
+  [dictionary setObject:v11 forKey:@"authMask"];
 
-  v12 = [a1 popularityScore];
+  popularityScore = [self popularityScore];
 
-  if (v12)
+  if (popularityScore)
   {
     v13 = MEMORY[0x277CCABB0];
-    v14 = [a1 popularityScore];
-    v15 = [v13 numberWithUnsignedInteger:{objc_msgSend(v14, "score")}];
-    [v2 setObject:v15 forKey:@"popularityScoreValue"];
+    popularityScore2 = [self popularityScore];
+    v15 = [v13 numberWithUnsignedInteger:{objc_msgSend(popularityScore2, "score")}];
+    [dictionary setObject:v15 forKey:@"popularityScoreValue"];
   }
 
-  v16 = [a1 qualityScore];
+  qualityScore = [self qualityScore];
 
-  if (v16)
+  if (qualityScore)
   {
     v17 = MEMORY[0x277CCABB0];
-    v18 = [a1 qualityScore];
-    v19 = [v17 numberWithUnsignedInteger:{objc_msgSend(v18, "score")}];
-    [v2 setObject:v19 forKey:@"qualityScoreValue"];
+    qualityScore2 = [self qualityScore];
+    v19 = [v17 numberWithUnsignedInteger:{objc_msgSend(qualityScore2, "score")}];
+    [dictionary setObject:v19 forKey:@"qualityScoreValue"];
   }
 
-  v20 = [a1 accessPoints];
+  accessPoints = [self accessPoints];
 
-  if (v20)
+  if (accessPoints)
   {
-    v21 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v22 = [a1 accessPoints];
-    v23 = [v22 countByEnumeratingWithState:&v35 objects:v39 count:16];
+    accessPoints2 = [self accessPoints];
+    v23 = [accessPoints2 countByEnumeratingWithState:&v35 objects:v39 count:16];
     if (v23)
     {
       v24 = v23;
@@ -147,47 +147,47 @@
         {
           if (*v36 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(accessPoints2);
           }
 
-          v27 = [*(*(&v35 + 1) + 8 * i) dictionaryRepresentation];
-          [v21 addObject:v27];
+          dictionaryRepresentation = [*(*(&v35 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v35 objects:v39 count:16];
+        v24 = [accessPoints2 countByEnumeratingWithState:&v35 objects:v39 count:16];
       }
 
       while (v24);
     }
 
-    [v2 setObject:v21 forKey:@"accessPoints"];
+    [dictionary setObject:array forKey:@"accessPoints"];
   }
 
-  v28 = [a1 ownerIdentifiers];
+  ownerIdentifiers = [self ownerIdentifiers];
 
-  if (v28)
+  if (ownerIdentifiers)
   {
-    v29 = [a1 ownerIdentifiers];
-    [v2 setObject:v29 forKey:@"ownerIdentifiers"];
+    ownerIdentifiers2 = [self ownerIdentifiers];
+    [dictionary setObject:ownerIdentifiers2 forKey:@"ownerIdentifiers"];
   }
 
-  v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(a1, "venueType")}];
-  [v2 setObject:v30 forKey:@"venueType"];
+  v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(self, "venueType")}];
+  [dictionary setObject:v30 forKey:@"venueType"];
 
-  v31 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(a1, "venueGroup")}];
-  [v2 setObject:v31 forKey:@"venueGroup"];
+  v31 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(self, "venueGroup")}];
+  [dictionary setObject:v31 forKey:@"venueGroup"];
 
-  v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(a1, "type")}];
-  [v2 setObject:v32 forKey:@"type"];
+  v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(self, "type")}];
+  [dictionary setObject:v32 forKey:@"type"];
 
   v33 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return dictionary;
 }
 
 - (uint64_t)authMask
 {
-  if (![a1 authTraitsCount] || !objc_msgSend(a1, "authTraitsCount"))
+  if (![self authTraitsCount] || !objc_msgSend(self, "authTraitsCount"))
   {
     return 0;
   }
@@ -196,7 +196,7 @@
   v3 = 0;
   do
   {
-    v4 = [a1 authTraitsAtIndex:v3];
+    v4 = [self authTraitsAtIndex:v3];
     v5 = v2 | 8;
     v6 = v2 | 4;
     if (v4 != 3)
@@ -234,90 +234,90 @@
     ++v3;
   }
 
-  while (v3 < [a1 authTraitsCount]);
+  while (v3 < [self authTraitsCount]);
   return v2;
 }
 
 - (id)authDescription
 {
-  if ([a1 authTraitsCount])
+  if ([self authTraitsCount])
   {
-    v2 = [MEMORY[0x277CCAB68] string];
-    if ([a1 authTraitsCount])
+    string = [MEMORY[0x277CCAB68] string];
+    if ([self authTraitsCount])
     {
       v3 = 0;
       do
       {
         v4 = MEMORY[0x277CCACA8];
-        v5 = [a1 authTraitsAsString:{objc_msgSend(a1, "authTraitsAtIndex:", v3)}];
+        v5 = [self authTraitsAsString:{objc_msgSend(self, "authTraitsAtIndex:", v3)}];
         v6 = [v4 stringWithFormat:@"%@", v5];
-        [v2 appendString:v6];
+        [string appendString:v6];
 
-        if (v3 < [a1 authTraitsCount] - 1)
+        if (v3 < [self authTraitsCount] - 1)
         {
-          [v2 appendString:{@", "}];
+          [string appendString:{@", "}];
         }
 
         ++v3;
       }
 
-      while (v3 < [a1 authTraitsCount]);
+      while (v3 < [self authTraitsCount]);
     }
   }
 
   else
   {
-    v2 = 0;
+    string = 0;
   }
 
-  return v2;
+  return string;
 }
 
 - (id)attributesDescription
 {
-  if ([a1 attributesCount])
+  if ([self attributesCount])
   {
-    v2 = [MEMORY[0x277CCAB68] string];
-    if ([a1 attributesCount])
+    string = [MEMORY[0x277CCAB68] string];
+    if ([self attributesCount])
     {
       v3 = 0;
       do
       {
         v4 = MEMORY[0x277CCACA8];
-        v5 = [a1 attributesAsString:{objc_msgSend(a1, "attributesAtIndex:", v3)}];
+        v5 = [self attributesAsString:{objc_msgSend(self, "attributesAtIndex:", v3)}];
         v6 = [v4 stringWithFormat:@"%@", v5];
-        [v2 appendString:v6];
+        [string appendString:v6];
 
-        if (v3 < [a1 attributesCount] - 1)
+        if (v3 < [self attributesCount] - 1)
         {
-          [v2 appendString:{@", "}];
+          [string appendString:{@", "}];
         }
 
         ++v3;
       }
 
-      while (v3 < [a1 attributesCount]);
+      while (v3 < [self attributesCount]);
     }
   }
 
   else
   {
-    v2 = 0;
+    string = 0;
   }
 
-  return v2;
+  return string;
 }
 
 - (id)remoteIdentifier
 {
-  if ([a1 hasUniqueIdentifier])
+  if ([self hasUniqueIdentifier])
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", objc_msgSend(a1, "uniqueIdentifier")];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", objc_msgSend(self, "uniqueIdentifier")];
   }
 
   else
   {
-    [a1 identifier];
+    [self identifier];
   }
   v2 = ;
 
@@ -326,12 +326,12 @@
 
 - (id)accessPoints
 {
-  v2 = [a1 bss];
+  v2 = [self bss];
 
   if (v2)
   {
     v3 = MEMORY[0x277CBEB98];
-    v4 = [a1 bss];
+    v4 = [self bss];
     v5 = [v3 setWithArray:v4];
   }
 
@@ -345,8 +345,8 @@
 
 - (uint64_t)accessPointCount
 {
-  v1 = [a1 accessPoints];
-  v2 = [v1 count];
+  accessPoints = [self accessPoints];
+  v2 = [accessPoints count];
 
   return v2;
 }
@@ -354,27 +354,27 @@
 - (id)popularityScore
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [a1 qualities];
+  qualities = [self qualities];
 
-  if (!v2)
+  if (!qualities)
   {
     goto LABEL_19;
   }
 
-  v3 = [a1 qualities];
-  v2 = [v3 firstObject];
+  qualities2 = [self qualities];
+  qualities = [qualities2 firstObject];
 
-  v4 = [a1 qualities];
-  v5 = [v4 count];
+  qualities3 = [self qualities];
+  v5 = [qualities3 count];
 
   if (v5 >= 2)
   {
     NSLog(&cfstr_SMulitpleQuali.isa, "[GEOWiFiESS(Serialization) popularityScore]");
   }
 
-  if ([v2 qualitiesCount])
+  if ([qualities qualitiesCount])
   {
-    v6 = [OUTLINED_FUNCTION_1_0() qualities];
+    qualities4 = [OUTLINED_FUNCTION_1_0() qualities];
     OUTLINED_FUNCTION_0_1();
     v8 = [v7 countByEnumeratingWithState:? objects:? count:?];
     if (v8)
@@ -386,7 +386,7 @@
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(qualities4);
           }
 
           v11 = *(v14 + 8 * i);
@@ -398,7 +398,7 @@
         }
 
         OUTLINED_FUNCTION_0_1();
-        v8 = [v6 countByEnumeratingWithState:? objects:? count:?];
+        v8 = [qualities4 countByEnumeratingWithState:? objects:? count:?];
         if (v8)
         {
           continue;
@@ -425,27 +425,27 @@ LABEL_19:
 - (id)qualityScore
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [a1 qualities];
+  qualities = [self qualities];
 
-  if (!v2)
+  if (!qualities)
   {
     goto LABEL_19;
   }
 
-  v3 = [a1 qualities];
-  v2 = [v3 firstObject];
+  qualities2 = [self qualities];
+  qualities = [qualities2 firstObject];
 
-  v4 = [a1 qualities];
-  v5 = [v4 count];
+  qualities3 = [self qualities];
+  v5 = [qualities3 count];
 
   if (v5 >= 2)
   {
     NSLog(&cfstr_SMulitpleQuali.isa, "[GEOWiFiESS(Serialization) qualityScore]");
   }
 
-  if ([v2 qualitiesCount])
+  if ([qualities qualitiesCount])
   {
-    v6 = [OUTLINED_FUNCTION_1_0() qualities];
+    qualities4 = [OUTLINED_FUNCTION_1_0() qualities];
     OUTLINED_FUNCTION_0_1();
     v8 = [v7 countByEnumeratingWithState:? objects:? count:?];
     if (v8)
@@ -457,7 +457,7 @@ LABEL_19:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(qualities4);
           }
 
           v11 = *(v14 + 8 * i);
@@ -469,7 +469,7 @@ LABEL_19:
         }
 
         OUTLINED_FUNCTION_0_1();
-        v8 = [v6 countByEnumeratingWithState:? objects:? count:?];
+        v8 = [qualities4 countByEnumeratingWithState:? objects:? count:?];
         if (v8)
         {
           continue;
@@ -495,7 +495,7 @@ LABEL_19:
 
 - (BOOL)_hasAttribute:()Serialization
 {
-  if (![a1 attributes] || !objc_msgSend(a1, "attributesCount"))
+  if (![self attributes] || !objc_msgSend(self, "attributesCount"))
   {
     return 0;
   }
@@ -503,7 +503,7 @@ LABEL_19:
   v5 = 0;
   do
   {
-    v6 = [a1 attributesAtIndex:v5];
+    v6 = [self attributesAtIndex:v5];
     v7 = v6 == a3;
     if (v6 == a3)
     {
@@ -513,7 +513,7 @@ LABEL_19:
     ++v5;
   }
 
-  while ([a1 attributesCount] > v5);
+  while ([self attributesCount] > v5);
   return v7;
 }
 

@@ -6,8 +6,8 @@
 
 - (void)performSetup
 {
-  v3 = [(ICCollapsibleContainerView *)self containedView];
-  [(ICCollapsibleBaseView *)self performSetUpWithContentView:v3];
+  containedView = [(ICCollapsibleContainerView *)self containedView];
+  [(ICCollapsibleBaseView *)self performSetUpWithContentView:containedView];
 }
 
 @end

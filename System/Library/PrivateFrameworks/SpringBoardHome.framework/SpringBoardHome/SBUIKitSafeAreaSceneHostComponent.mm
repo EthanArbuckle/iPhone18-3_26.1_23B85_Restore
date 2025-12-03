@@ -1,19 +1,19 @@
 @interface SBUIKitSafeAreaSceneHostComponent
-- (void)scene:(id)a3 willUpdateSettings:(id)a4;
+- (void)scene:(id)scene willUpdateSettings:(id)settings;
 @end
 
 @implementation SBUIKitSafeAreaSceneHostComponent
 
-- (void)scene:(id)a3 willUpdateSettings:(id)a4
+- (void)scene:(id)scene willUpdateSettings:(id)settings
 {
-  v10 = [a4 mutableSettings];
-  if ([v10 isUISubclass])
+  mutableSettings = [settings mutableSettings];
+  if ([mutableSettings isUISubclass])
   {
-    v4 = [v10 displayConfiguration];
-    if ([v4 isMainRootDisplay])
+    displayConfiguration = [mutableSettings displayConfiguration];
+    if ([displayConfiguration isMainRootDisplay])
     {
-      v5 = [MEMORY[0x1E69DEBC0] sb_thisDeviceDisplayEdgeInfo];
-      [v5 sb_applyDisplayEdgeInfoToSceneSettings:v10];
+      sb_thisDeviceDisplayEdgeInfo = [MEMORY[0x1E69DEBC0] sb_thisDeviceDisplayEdgeInfo];
+      [sb_thisDeviceDisplayEdgeInfo sb_applyDisplayEdgeInfoToSceneSettings:mutableSettings];
     }
 
     else
@@ -22,9 +22,9 @@
       v7 = *(MEMORY[0x1E69DDCE0] + 8);
       v8 = *(MEMORY[0x1E69DDCE0] + 16);
       v9 = *(MEMORY[0x1E69DDCE0] + 24);
-      [v10 setSafeAreaInsetsPortrait:{*MEMORY[0x1E69DDCE0], v7, v8, v9}];
-      [v10 setPeripheryInsets:{v6, v7, v8, v9}];
-      [v10 setHomeAffordanceOverlayAllowance:0.0];
+      [mutableSettings setSafeAreaInsetsPortrait:{*MEMORY[0x1E69DDCE0], v7, v8, v9}];
+      [mutableSettings setPeripheryInsets:{v6, v7, v8, v9}];
+      [mutableSettings setHomeAffordanceOverlayAllowance:0.0];
     }
   }
 }

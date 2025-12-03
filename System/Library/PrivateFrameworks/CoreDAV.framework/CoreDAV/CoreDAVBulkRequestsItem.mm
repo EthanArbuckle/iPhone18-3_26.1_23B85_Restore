@@ -1,11 +1,11 @@
 @interface CoreDAVBulkRequestsItem
 + (id)copyParseRules;
-- (BOOL)supportsItemWithNameSpace:(id)a3 name:(id)a4;
+- (BOOL)supportsItemWithNameSpace:(id)space name:(id)name;
 - (NSDictionary)dictRepresentation;
 - (id)description;
 - (int64_t)maxResources;
 - (int64_t)maxSize;
-- (void)addSupportedItem:(id)a3;
+- (void)addSupportedItem:(id)item;
 @end
 
 @implementation CoreDAVBulkRequestsItem
@@ -18,35 +18,35 @@
   v4 = [(CoreDAVItem *)&v8 description];
   [v3 appendFormat:@"[%@]", v4];
 
-  v5 = [(CoreDAVItem *)self->_maxResourcesItem payloadAsString];
-  v6 = [(CoreDAVItem *)self->_maxSizeItem payloadAsString];
-  [v3 appendFormat:@"\n  maxResources %@, maxSize %@", v5, v6];
+  payloadAsString = [(CoreDAVItem *)self->_maxResourcesItem payloadAsString];
+  payloadAsString2 = [(CoreDAVItem *)self->_maxSizeItem payloadAsString];
+  [v3 appendFormat:@"\n  maxResources %@, maxSize %@", payloadAsString, payloadAsString2];
 
   return v3;
 }
 
-- (void)addSupportedItem:(id)a3
+- (void)addSupportedItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   supportedItems = self->_supportedItems;
-  v8 = v4;
+  v8 = itemCopy;
   if (!supportedItems)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v7 = self->_supportedItems;
     self->_supportedItems = v6;
 
-    v4 = v8;
+    itemCopy = v8;
     supportedItems = self->_supportedItems;
   }
 
-  [(NSMutableSet *)supportedItems addObject:v4];
+  [(NSMutableSet *)supportedItems addObject:itemCopy];
 }
 
 + (id)copyParseRules
 {
   v3 = +[CoreDAVItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -61,7 +61,7 @@
     v5 = [v15 initWithObjectsAndKeys:{v6, v7, v8, v9, v10, v11, 0}];
 
     v12 = +[CoreDAVItem parseRuleCache];
-    v13 = NSStringFromClass(a1);
+    v13 = NSStringFromClass(self);
     [v12 setObject:v5 forKey:v13];
   }
 
@@ -96,33 +96,33 @@
 
 - (int64_t)maxResources
 {
-  v2 = [(CoreDAVItem *)self->_maxResourcesItem payloadAsString];
-  v3 = [v2 integerValue];
+  payloadAsString = [(CoreDAVItem *)self->_maxResourcesItem payloadAsString];
+  integerValue = [payloadAsString integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)maxSize
 {
-  v2 = [(CoreDAVItem *)self->_maxSizeItem payloadAsString];
-  v3 = [v2 integerValue];
+  payloadAsString = [(CoreDAVItem *)self->_maxSizeItem payloadAsString];
+  integerValue = [payloadAsString integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (BOOL)supportsItemWithNameSpace:(id)a3 name:(id)a4
+- (BOOL)supportsItemWithNameSpace:(id)space name:(id)name
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  spaceCopy = space;
+  nameCopy = name;
   if (![(NSMutableSet *)self->_supportedItems count])
   {
-    if ([v6 isEqualToString:@"http://me.com/_namespace/"])
+    if ([spaceCopy isEqualToString:@"http://me.com/_namespace/"])
     {
-      v21 = v7;
-      v22 = [v7 isEqualToString:@"insert"];
-      v23 = [(CoreDAVItem *)self name];
-      v24 = [v23 isEqualToString:@"crud"];
+      v21 = nameCopy;
+      v22 = [nameCopy isEqualToString:@"insert"];
+      name = [(CoreDAVItem *)self name];
+      v24 = [name isEqualToString:@"crud"];
       v25 = v24;
       if (v22)
       {
@@ -133,8 +133,8 @@
 
         else
         {
-          v28 = [(CoreDAVItem *)self name];
-          v26 = [v28 isEqualToString:@"simple"];
+          name2 = [(CoreDAVItem *)self name];
+          v26 = [name2 isEqualToString:@"simple"];
         }
 
         goto LABEL_30;
@@ -142,19 +142,19 @@
 
       if (v25)
       {
-        v27 = [(CoreDAVItem *)self name];
-        v26 = [@"crud" isEqualToString:v27];
+        name3 = [(CoreDAVItem *)self name];
+        v26 = [@"crud" isEqualToString:name3];
 
 LABEL_30:
-        v7 = v21;
+        nameCopy = v21;
         goto LABEL_34;
       }
 
-      v7 = v21;
+      nameCopy = v21;
       if ([v21 isEqualToString:@"delete"])
       {
-        v29 = [(CoreDAVItem *)self name];
-        v26 = [v29 isEqualToString:@"crud"];
+        name4 = [(CoreDAVItem *)self name];
+        v26 = [name4 isEqualToString:@"crud"];
 
         goto LABEL_34;
       }
@@ -164,9 +164,9 @@ LABEL_30:
     goto LABEL_34;
   }
 
-  v32 = v7;
-  v33 = v6;
-  v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCDVNameSpace:v6 andName:v7];
+  v32 = nameCopy;
+  v33 = spaceCopy;
+  v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCDVNameSpace:spaceCopy andName:nameCopy];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
@@ -191,8 +191,8 @@ LABEL_30:
         v39 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v11 = [v10 extraChildItems];
-        v12 = [v11 countByEnumeratingWithState:&v38 objects:v46 count:16];
+        extraChildItems = [v10 extraChildItems];
+        v12 = [extraChildItems countByEnumeratingWithState:&v38 objects:v46 count:16];
         if (v12)
         {
           v13 = v12;
@@ -203,24 +203,24 @@ LABEL_30:
             {
               if (*v39 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(extraChildItems);
               }
 
               v16 = *(*(&v38 + 1) + 8 * j);
               v17 = objc_alloc(MEMORY[0x277CCACA8]);
-              v18 = [v16 nameSpace];
-              v19 = [v16 name];
-              v20 = [v17 initWithCDVNameSpace:v18 andName:v19];
+              nameSpace = [v16 nameSpace];
+              name5 = [v16 name];
+              v20 = [v17 initWithCDVNameSpace:nameSpace andName:name5];
 
-              LOBYTE(v18) = [v8 isEqualToString:v20];
-              if (v18)
+              LOBYTE(nameSpace) = [v8 isEqualToString:v20];
+              if (nameSpace)
               {
                 v35 = 1;
                 goto LABEL_17;
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v38 objects:v46 count:16];
+            v13 = [extraChildItems countByEnumeratingWithState:&v38 objects:v46 count:16];
             if (v13)
             {
               continue;
@@ -244,8 +244,8 @@ LABEL_17:
     v35 = 0;
   }
 
-  v7 = v32;
-  v6 = v33;
+  nameCopy = v32;
+  spaceCopy = v33;
   v26 = v35;
 LABEL_34:
 

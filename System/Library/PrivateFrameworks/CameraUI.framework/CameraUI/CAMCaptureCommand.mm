@@ -1,23 +1,23 @@
 @interface CAMCaptureCommand
-- (CAMCaptureCommand)initWithCoder:(id)a3;
-- (CAMCaptureCommand)initWithSubcommands:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addSubcommand:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeSubcommand:(id)a3;
+- (CAMCaptureCommand)initWithCoder:(id)coder;
+- (CAMCaptureCommand)initWithSubcommands:(id)subcommands;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addSubcommand:(id)subcommand;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeSubcommand:(id)subcommand;
 @end
 
 @implementation CAMCaptureCommand
 
-- (CAMCaptureCommand)initWithSubcommands:(id)a3
+- (CAMCaptureCommand)initWithSubcommands:(id)subcommands
 {
-  v4 = a3;
+  subcommandsCopy = subcommands;
   v10.receiver = self;
   v10.super_class = CAMCaptureCommand;
   v5 = [(CAMCaptureCommand *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [subcommandsCopy copy];
     subcommands = v5->_subcommands;
     v5->_subcommands = v6;
 
@@ -27,22 +27,22 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(CAMCaptureCommand *)self reason];
-  v6 = [v5 copy];
+  reason = [(CAMCaptureCommand *)self reason];
+  v6 = [reason copy];
   v7 = v4[1];
   v4[1] = v6;
 
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = [(CAMCaptureCommand *)self subcommands];
-  v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  subcommands = [(CAMCaptureCommand *)self subcommands];
+  v10 = [subcommands countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -54,66 +54,66 @@
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(subcommands);
         }
 
         v14 = [*(*(&v18 + 1) + 8 * v13) copy];
-        [v8 addObject:v14];
+        [array addObject:v14];
 
         ++v13;
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v11 = [subcommands countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v11);
   }
 
-  v15 = [v8 copy];
+  v15 = [array copy];
   v16 = v4[2];
   v4[2] = v15;
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
-  v4 = [(CAMCaptureCommand *)self reason];
+  coderCopy = coder;
+  reason = [(CAMCaptureCommand *)self reason];
 
-  if (v4)
+  if (reason)
   {
-    v5 = [(CAMCaptureCommand *)self reason];
-    [v11 encodeObject:v5 forKey:@"CAMCaptureCommandReason"];
+    reason2 = [(CAMCaptureCommand *)self reason];
+    [coderCopy encodeObject:reason2 forKey:@"CAMCaptureCommandReason"];
   }
 
-  v6 = [(CAMCaptureCommand *)self subcommands];
-  if (v6)
+  subcommands = [(CAMCaptureCommand *)self subcommands];
+  if (subcommands)
   {
-    v7 = v6;
-    v8 = [(CAMCaptureCommand *)self subcommands];
-    v9 = [v8 count];
+    v7 = subcommands;
+    subcommands2 = [(CAMCaptureCommand *)self subcommands];
+    v9 = [subcommands2 count];
 
     if (v9)
     {
-      v10 = [(CAMCaptureCommand *)self subcommands];
-      [v11 encodeObject:v10 forKey:@"CAMCaptureCommandSubcommands"];
+      subcommands3 = [(CAMCaptureCommand *)self subcommands];
+      [coderCopy encodeObject:subcommands3 forKey:@"CAMCaptureCommandSubcommands"];
     }
   }
 }
 
-- (CAMCaptureCommand)initWithCoder:(id)a3
+- (CAMCaptureCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CAMCaptureCommand *)self initWithSubcommands:0];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"CAMCaptureCommandReason"];
+    v6 = [coderCopy decodeObjectForKey:@"CAMCaptureCommandReason"];
     reason = v5->_reason;
     v5->_reason = v6;
 
-    v8 = [v4 decodeObjectForKey:@"CAMCaptureCommandSubcommands"];
+    v8 = [coderCopy decodeObjectForKey:@"CAMCaptureCommandSubcommands"];
     subcommands = v5->_subcommands;
     v5->_subcommands = v8;
 
@@ -123,28 +123,28 @@
   return v5;
 }
 
-- (void)addSubcommand:(id)a3
+- (void)addSubcommand:(id)subcommand
 {
-  v6 = a3;
-  v4 = [(CAMCaptureCommand *)self subcommands];
-  v5 = [v4 mutableCopy];
+  subcommandCopy = subcommand;
+  subcommands = [(CAMCaptureCommand *)self subcommands];
+  v5 = [subcommands mutableCopy];
 
   if (!v5)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
 
-  [v5 addObject:v6];
+  [v5 addObject:subcommandCopy];
   [(CAMCaptureCommand *)self setSubcommands:v5];
 }
 
-- (void)removeSubcommand:(id)a3
+- (void)removeSubcommand:(id)subcommand
 {
-  v4 = a3;
-  v5 = [(CAMCaptureCommand *)self subcommands];
-  v6 = [v5 mutableCopy];
+  subcommandCopy = subcommand;
+  subcommands = [(CAMCaptureCommand *)self subcommands];
+  v6 = [subcommands mutableCopy];
 
-  [v6 removeObject:v4];
+  [v6 removeObject:subcommandCopy];
   [(CAMCaptureCommand *)self setSubcommands:v6];
 }
 

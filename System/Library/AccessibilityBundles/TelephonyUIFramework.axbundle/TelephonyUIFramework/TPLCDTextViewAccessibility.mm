@@ -8,8 +8,8 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(TPLCDTextViewAccessibility *)self accessibilityLabel];
-  v3 = [v2 length] != 0;
+  accessibilityLabel = [(TPLCDTextViewAccessibility *)self accessibilityLabel];
+  v3 = [accessibilityLabel length] != 0;
 
   return v3;
 }
@@ -43,15 +43,15 @@
 {
   v6.receiver = self;
   v6.super_class = TPLCDTextViewAccessibility;
-  v3 = [(TPLCDTextViewAccessibility *)&v6 accessibilityLabel];
-  if (![v3 length])
+  accessibilityLabel = [(TPLCDTextViewAccessibility *)&v6 accessibilityLabel];
+  if (![accessibilityLabel length])
   {
     v4 = [(TPLCDTextViewAccessibility *)self safeValueForKey:@"text"];
 
-    v3 = v4;
+    accessibilityLabel = v4;
   }
 
-  return v3;
+  return accessibilityLabel;
 }
 
 @end

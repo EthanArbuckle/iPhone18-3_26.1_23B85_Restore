@@ -1,14 +1,14 @@
 @interface PLAssetsdPrivacySupportClient
-- (void)presentLimitedLibraryPickerRepromptWithCompletionHandler:(id)a3;
-- (void)setClientPrivacyOptions:(id)a3;
+- (void)presentLimitedLibraryPickerRepromptWithCompletionHandler:(id)handler;
+- (void)setClientPrivacyOptions:(id)options;
 @end
 
 @implementation PLAssetsdPrivacySupportClient
 
-- (void)setClientPrivacyOptions:(id)a3
+- (void)setClientPrivacyOptions:(id)options
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   v13 = 0u;
   *sel = 0u;
   v11 = 0u;
@@ -21,9 +21,9 @@
     os_activity_scope_enter(*(&v11 + 1), (&v13 + 8));
   }
 
-  v6 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_11370];
-  [v7 setClientPrivacyOptions:v4 reply:&__block_literal_global_9_11371];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v7 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_11370];
+  [v7 setClientPrivacyOptions:optionsCopy reply:&__block_literal_global_9_11371];
 
   if (v12 == 1)
   {
@@ -70,10 +70,10 @@ void __57__PLAssetsdPrivacySupportClient_setClientPrivacyOptions___block_invoke(
   }
 }
 
-- (void)presentLimitedLibraryPickerRepromptWithCompletionHandler:(id)a3
+- (void)presentLimitedLibraryPickerRepromptWithCompletionHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  handlerCopy = handler;
   v25 = 0u;
   v26 = 0u;
   v24 = 0u;
@@ -88,12 +88,12 @@ void __57__PLAssetsdPrivacySupportClient_setClientPrivacyOptions___block_invoke(
     os_activity_scope_enter(v7, (&v25 + 8));
   }
 
-  v9 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __90__PLAssetsdPrivacySupportClient_presentLimitedLibraryPickerRepromptWithCompletionHandler___block_invoke;
   v22[3] = &unk_1E7932DA8;
-  v23 = v5;
+  v23 = handlerCopy;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3254779904;
   v15[2] = __90__PLAssetsdPrivacySupportClient_presentLimitedLibraryPickerRepromptWithCompletionHandler___block_invoke_1;
@@ -105,7 +105,7 @@ void __57__PLAssetsdPrivacySupportClient_setClientPrivacyOptions___block_invoke(
   v21 = a2;
   v10 = v23;
   v16 = v10;
-  [v9 remoteObjectProxyWithErrorHandler:v22 handler:v15];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v22 handler:v15];
 
   if (v24 == 1)
   {

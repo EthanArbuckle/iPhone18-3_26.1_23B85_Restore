@@ -1,39 +1,39 @@
 @interface QuickWebsiteSearchCompletionItem
-- (BOOL)isEquivalentTo:(id)a3;
+- (BOOL)isEquivalentTo:(id)to;
 - (NSArray)tableItemEqualityInfo;
 - (NSString)matchedTextForInputAnalytics;
-- (QuickWebsiteSearchCompletionItem)initWithProvider:(id)a3 query:(id)a4 forQueryID:(int64_t)a5;
+- (QuickWebsiteSearchCompletionItem)initWithProvider:(id)provider query:(id)query forQueryID:(int64_t)d;
 - (SFSearchResult)sfSearchResultValue;
-- (id)completionTableViewCellForCompletionList:(id)a3;
-- (id)searchFieldIconForCompletionList:(id)a3;
-- (void)acceptCompletionWithActionHandler:(id)a3;
-- (void)auditAcceptedCompletionWithRank:(unint64_t)a3;
-- (void)configureCompletionTableViewCell:(id)a3 forCompletionList:(id)a4;
-- (void)setQuery:(id)a3;
+- (id)completionTableViewCellForCompletionList:(id)list;
+- (id)searchFieldIconForCompletionList:(id)list;
+- (void)acceptCompletionWithActionHandler:(id)handler;
+- (void)auditAcceptedCompletionWithRank:(unint64_t)rank;
+- (void)configureCompletionTableViewCell:(id)cell forCompletionList:(id)list;
+- (void)setQuery:(id)query;
 @end
 
 @implementation QuickWebsiteSearchCompletionItem
 
-- (QuickWebsiteSearchCompletionItem)initWithProvider:(id)a3 query:(id)a4 forQueryID:(int64_t)a5
+- (QuickWebsiteSearchCompletionItem)initWithProvider:(id)provider query:(id)query forQueryID:(int64_t)d
 {
-  v9 = a3;
-  v10 = a4;
+  providerCopy = provider;
+  queryCopy = query;
   v15.receiver = self;
   v15.super_class = QuickWebsiteSearchCompletionItem;
   v11 = [(QuickWebsiteSearchCompletionItem *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_searchProvider, a3);
-    objc_storeStrong(&v12->_searchQuery, a4);
-    v12->_parsecQueryID = a5;
+    objc_storeStrong(&v11->_searchProvider, provider);
+    objc_storeStrong(&v12->_searchQuery, query);
+    v12->_parsecQueryID = d;
     v13 = v12;
   }
 
   return v12;
 }
 
-- (id)searchFieldIconForCompletionList:(id)a3
+- (id)searchFieldIconForCompletionList:(id)list
 {
   v3 = MEMORY[0x277D755B8];
   v4 = systemImageNameForCompletionIcon(4);
@@ -42,50 +42,50 @@
   return v5;
 }
 
-- (id)completionTableViewCellForCompletionList:(id)a3
+- (id)completionTableViewCellForCompletionList:(id)list
 {
   v4 = [SearchSuggestionTableViewCell alloc];
-  v5 = [(QuickWebsiteSearchCompletionItem *)self completionTableViewCellReuseIdentifier];
-  v6 = [(SearchSuggestionTableViewCell *)v4 initWithStyle:0 reuseIdentifier:v5];
+  completionTableViewCellReuseIdentifier = [(QuickWebsiteSearchCompletionItem *)self completionTableViewCellReuseIdentifier];
+  v6 = [(SearchSuggestionTableViewCell *)v4 initWithStyle:0 reuseIdentifier:completionTableViewCellReuseIdentifier];
 
   return v6;
 }
 
-- (void)configureCompletionTableViewCell:(id)a3 forCompletionList:(id)a4
+- (void)configureCompletionTableViewCell:(id)cell forCompletionList:(id)list
 {
-  v12 = a3;
-  v5 = [v12 textLabel];
-  [v5 setLineBreakMode:4];
+  cellCopy = cell;
+  textLabel = [cellCopy textLabel];
+  [textLabel setLineBreakMode:4];
 
-  v6 = [v12 textLabel];
+  textLabel2 = [cellCopy textLabel];
   v7 = MEMORY[0x277CCACA8];
   v8 = _WBSLocalizedString();
-  v9 = [(WBSQuickWebsiteSearchProvider *)self->_searchProvider displayName];
-  v10 = [(QuickWebsiteSearchQuery *)self->_searchQuery searchTerms];
-  v11 = [v7 stringWithFormat:v8, v9, v10];
-  [v6 setText:v11];
+  displayName = [(WBSQuickWebsiteSearchProvider *)self->_searchProvider displayName];
+  searchTerms = [(QuickWebsiteSearchQuery *)self->_searchQuery searchTerms];
+  v11 = [v7 stringWithFormat:v8, displayName, searchTerms];
+  [textLabel2 setText:v11];
 
-  [(UITableViewCell *)v12 safari_setCompletionIcon:?];
-  [v12 setAccessibilityIdentifier:@"QuickWebsiteSearch"];
+  [(UITableViewCell *)cellCopy safari_setCompletionIcon:?];
+  [cellCopy setAccessibilityIdentifier:@"QuickWebsiteSearch"];
 }
 
-- (void)acceptCompletionWithActionHandler:(id)a3
+- (void)acceptCompletionWithActionHandler:(id)handler
 {
   v4 = MEMORY[0x277D4A028];
-  v5 = a3;
-  v6 = [v4 sharedController];
-  [v6 didPerformSearchWithProvider:self->_searchProvider];
+  handlerCopy = handler;
+  sharedController = [v4 sharedController];
+  [sharedController didPerformSearchWithProvider:self->_searchProvider];
 
-  v9 = [(WBSQuickWebsiteSearchProvider *)self->_searchProvider searchURLTemplate];
-  v7 = [(QuickWebsiteSearchQuery *)self->_searchQuery searchTerms];
-  v8 = [v9 URLWithSearchTerms:v7];
-  [v5 goToURL:v8];
+  searchURLTemplate = [(WBSQuickWebsiteSearchProvider *)self->_searchProvider searchURLTemplate];
+  searchTerms = [(QuickWebsiteSearchQuery *)self->_searchQuery searchTerms];
+  v8 = [searchURLTemplate URLWithSearchTerms:searchTerms];
+  [handlerCopy goToURL:v8];
 }
 
-- (void)auditAcceptedCompletionWithRank:(unint64_t)a3
+- (void)auditAcceptedCompletionWithRank:(unint64_t)rank
 {
-  v4 = [MEMORY[0x277D499B8] sharedLogger];
-  [v4 didAcceptCompletionItemOfType:7 atRank:a3];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] didAcceptCompletionItemOfType:7 atRank:rank];
 }
 
 - (SFSearchResult)sfSearchResultValue
@@ -98,13 +98,13 @@
 
   else
   {
-    v5 = [MEMORY[0x277D4C5D0] safari_sfSearchResultWithUniqueIdentifier];
+    safari_sfSearchResultWithUniqueIdentifier = [MEMORY[0x277D4C5D0] safari_sfSearchResultWithUniqueIdentifier];
     v6 = self->_sfSearchResultValue;
-    self->_sfSearchResultValue = v5;
+    self->_sfSearchResultValue = safari_sfSearchResultWithUniqueIdentifier;
 
     v7 = MEMORY[0x277D4C690];
-    v8 = [(QuickWebsiteSearchQuery *)self->_searchQuery searchTerms];
-    v9 = [v7 textWithString:v8];
+    searchTerms = [(QuickWebsiteSearchQuery *)self->_searchQuery searchTerms];
+    v9 = [v7 textWithString:searchTerms];
     [(SFSearchResult *)self->_sfSearchResultValue setTitle:v9];
 
     v10 = [@"com.apple.Safari.CompletionList." stringByAppendingString:@"QuickWebsiteSearch"];
@@ -117,25 +117,25 @@
   return v3;
 }
 
-- (BOOL)isEquivalentTo:(id)a3
+- (BOOL)isEquivalentTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(QuickWebsiteSearchCompletionItem *)self searchProvider];
-    v7 = [v6 displayName];
-    v8 = [v5 searchProvider];
-    v9 = [v8 displayName];
+    v5 = toCopy;
+    searchProvider = [(QuickWebsiteSearchCompletionItem *)self searchProvider];
+    displayName = [searchProvider displayName];
+    searchProvider2 = [v5 searchProvider];
+    displayName2 = [searchProvider2 displayName];
     v10 = WBSIsEqual();
 
     if (v10)
     {
-      v11 = [(QuickWebsiteSearchCompletionItem *)self searchQuery];
-      v12 = [v11 searchTerms];
-      v13 = [v5 searchQuery];
-      v14 = [v13 searchTerms];
+      searchQuery = [(QuickWebsiteSearchCompletionItem *)self searchQuery];
+      searchTerms = [searchQuery searchTerms];
+      searchQuery2 = [v5 searchQuery];
+      searchTerms2 = [searchQuery2 searchTerms];
       v15 = WBSIsEqual();
     }
 
@@ -155,24 +155,24 @@
 
 - (NSArray)tableItemEqualityInfo
 {
-  v3 = [(QuickWebsiteSearchCompletionItem *)self searchProvider];
-  v4 = [v3 displayName];
-  v5 = [(QuickWebsiteSearchCompletionItem *)self searchQuery];
-  v15 = [v5 searchTerms];
-  v13 = CompletionListTableItemEqualityInfo(2, v6, v7, v8, v9, v10, v11, v12, v4);
+  searchProvider = [(QuickWebsiteSearchCompletionItem *)self searchProvider];
+  displayName = [searchProvider displayName];
+  searchQuery = [(QuickWebsiteSearchCompletionItem *)self searchQuery];
+  searchTerms = [searchQuery searchTerms];
+  v13 = CompletionListTableItemEqualityInfo(2, v6, v7, v8, v9, v10, v11, v12, displayName);
 
   return v13;
 }
 
-- (void)setQuery:(id)a3
+- (void)setQuery:(id)query
 {
-  v8 = a3;
-  v4 = [(QuickWebsiteSearchQuery *)self->_searchQuery completionQuery];
+  queryCopy = query;
+  completionQuery = [(QuickWebsiteSearchQuery *)self->_searchQuery completionQuery];
   v5 = WBSIsEqual();
 
   if ((v5 & 1) == 0)
   {
-    v6 = [[QuickWebsiteSearchQuery alloc] initWithUserEnteredQuery:v8];
+    v6 = [[QuickWebsiteSearchQuery alloc] initWithUserEnteredQuery:queryCopy];
     searchQuery = self->_searchQuery;
     self->_searchQuery = v6;
   }
@@ -180,12 +180,12 @@
 
 - (NSString)matchedTextForInputAnalytics
 {
-  v3 = [(WBSQuickWebsiteSearchProvider *)self->_searchProvider searchURLTemplate];
-  v4 = [(QuickWebsiteSearchQuery *)self->_searchQuery searchTerms];
-  v5 = [v3 URLWithSearchTerms:v4];
-  v6 = [v5 absoluteString];
+  searchURLTemplate = [(WBSQuickWebsiteSearchProvider *)self->_searchProvider searchURLTemplate];
+  searchTerms = [(QuickWebsiteSearchQuery *)self->_searchQuery searchTerms];
+  v5 = [searchURLTemplate URLWithSearchTerms:searchTerms];
+  absoluteString = [v5 absoluteString];
 
-  return v6;
+  return absoluteString;
 }
 
 @end

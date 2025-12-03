@@ -1,18 +1,18 @@
 @interface BKSHIDEventSimpleProvenance
 + (BKSHIDEventSimpleProvenance)new;
-+ (id)_withInternalKey:(id)a3 buildMessage:(id)a4;
-+ (id)build:(id)a3;
++ (id)_withInternalKey:(id)key buildMessage:(id)message;
++ (id)build:(id)build;
 - (BKSHIDEventSimpleProvenance)init;
-- (BKSHIDEventSimpleProvenance)initWithCoder:(id)a3;
-- (BOOL)_verifySignatureWithInternalKey:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_calculateSignatureWithHMACContext:(uint64_t)a1;
+- (BKSHIDEventSimpleProvenance)initWithCoder:(id)coder;
+- (BOOL)_verifySignatureWithInternalKey:(id)key;
+- (BOOL)isEqual:(id)equal;
+- (id)_calculateSignatureWithHMACContext:(uint64_t)context;
 - (id)_init;
-- (id)_initWithCopyOf:(id *)a1;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithCopyOf:(id *)of;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BKSHIDEventSimpleProvenance
@@ -75,30 +75,30 @@ void __45__BKSHIDEventSimpleProvenance_protobufSchema__block_invoke(uint64_t a1,
   [v2 addField:"_timestamp"];
 }
 
-- (id)_initWithCopyOf:(id *)a1
+- (id)_initWithCopyOf:(id *)of
 {
   v3 = a2;
-  if (a1)
+  if (of)
   {
-    v4 = [(BKSHIDEventSimpleProvenance *)a1 _init];
-    a1 = v4;
-    if (v4)
+    _init = [(BKSHIDEventSimpleProvenance *)of _init];
+    of = _init;
+    if (_init)
     {
-      objc_storeStrong(v4 + 1, v3[1]);
-      a1[2] = v3[2];
-      *(a1 + 6) = *(v3 + 6);
-      a1[4] = v3[4];
+      objc_storeStrong(_init + 1, v3[1]);
+      of[2] = v3[2];
+      *(of + 6) = *(v3 + 6);
+      of[4] = v3[4];
     }
   }
 
-  return a1;
+  return of;
 }
 
-- (BOOL)_verifySignatureWithInternalKey:(id)a3
+- (BOOL)_verifySignatureWithInternalKey:(id)key
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  keyCopy = key;
+  if (!keyCopy)
   {
     v13 = MEMORY[0x1E696AEC0];
     v14 = objc_opt_class();
@@ -131,18 +131,18 @@ void __45__BKSHIDEventSimpleProvenance_protobufSchema__block_invoke(uint64_t a1,
     JUMPOUT(0x18636E564);
   }
 
-  v6 = v5;
+  v6 = keyCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v20 = MEMORY[0x1E696AEC0];
-    v21 = [v6 classForCoder];
-    if (!v21)
+    classForCoder = [v6 classForCoder];
+    if (!classForCoder)
     {
-      v21 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v22 = NSStringFromClass(v21);
+    v22 = NSStringFromClass(classForCoder);
     v23 = objc_opt_class();
     v24 = NSStringFromClass(v23);
     v25 = [v20 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"key", v22, v24];
@@ -173,8 +173,8 @@ void __45__BKSHIDEventSimpleProvenance_protobufSchema__block_invoke(uint64_t a1,
     JUMPOUT(0x18636E6A0);
   }
 
-  v7 = [(_BKSHIDEventAuthenticationKey *)v6 _context];
-  memcpy(&__dst, v7, sizeof(__dst));
+  _context = [(_BKSHIDEventAuthenticationKey *)v6 _context];
+  memcpy(&__dst, _context, sizeof(__dst));
   v8 = [(BKSHIDEventSimpleProvenance *)self _calculateSignatureWithHMACContext:?];
   v9 = [(NSData *)self->_signature length];
   v10 = v9 == [v8 length] && timingsafe_bcmp(objc_msgSend(v8, "bytes"), -[NSData bytes](self->_signature, "bytes"), v9) == 0;
@@ -183,47 +183,47 @@ void __45__BKSHIDEventSimpleProvenance_protobufSchema__block_invoke(uint64_t a1,
   return v10;
 }
 
-- (id)_calculateSignatureWithHMACContext:(uint64_t)a1
+- (id)_calculateSignatureWithHMACContext:(uint64_t)context
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (context)
   {
-    v3 = a1;
-    CCHmacUpdate(ctx, (a1 + 32), 8uLL);
-    CCHmacUpdate(ctx, (v3 + 24), 4uLL);
-    CCHmacUpdate(ctx, (v3 + 16), 8uLL);
+    contextCopy = context;
+    CCHmacUpdate(ctx, (context + 32), 8uLL);
+    CCHmacUpdate(ctx, (contextCopy + 24), 4uLL);
+    CCHmacUpdate(ctx, (contextCopy + 16), 8uLL);
     CCHmacFinal(ctx, macOut);
-    a1 = [MEMORY[0x1E695DEF0] dataWithBytes:macOut length:32];
+    context = [MEMORY[0x1E695DEF0] dataWithBytes:macOut length:32];
   }
 
   v4 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return context;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v8 = a3;
-  v4 = [v8 appendObject:self->_signature withName:@"signature"];
-  v5 = [v8 appendInteger:self->_versionedPID withName:@"versionedPID"];
-  v6 = [v8 appendInteger:self->_eventType withName:@"eventType"];
-  v7 = [v8 appendInt64:self->_timestamp withName:@"timestamp"];
+  streamCopy = stream;
+  v4 = [streamCopy appendObject:self->_signature withName:@"signature"];
+  v5 = [streamCopy appendInteger:self->_versionedPID withName:@"versionedPID"];
+  v6 = [streamCopy appendInteger:self->_eventType withName:@"eventType"];
+  v7 = [streamCopy appendInt64:self->_timestamp withName:@"timestamp"];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [BKSMutableHIDEventSimpleProvenance alloc];
 
   return [(BKSHIDEventSimpleProvenance *)&v4->super.super.isa _initWithCopyOf:?];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5[1];
     signature = self->_signature;
     v8 = BSEqualObjects() && v5[2] == self->_versionedPID && *(v5 + 6) == self->_eventType && v5[4] == self->_timestamp;
@@ -261,35 +261,35 @@ void __45__BKSHIDEventSimpleProvenance_protobufSchema__block_invoke(uint64_t a1,
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   signature = self->_signature;
-  v6 = v4;
+  v6 = coderCopy;
   if (signature)
   {
-    [v4 encodeObject:signature forKey:@"signature"];
-    v4 = v6;
+    [coderCopy encodeObject:signature forKey:@"signature"];
+    coderCopy = v6;
   }
 
-  [v4 encodeInteger:self->_versionedPID forKey:@"versionedPID"];
+  [coderCopy encodeInteger:self->_versionedPID forKey:@"versionedPID"];
   [v6 encodeInteger:self->_eventType forKey:@"eventType"];
   [v6 encodeInt64:self->_timestamp forKey:@"timestamp"];
 }
 
-- (BKSHIDEventSimpleProvenance)initWithCoder:(id)a3
+- (BKSHIDEventSimpleProvenance)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = BKSHIDEventSimpleProvenance;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(BKSHIDEventSimpleProvenance *)&v9 init];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:{@"signature", v9.receiver, v9.super_class}];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"signature", v9.receiver, v9.super_class}];
   signature = v4->_signature;
   v4->_signature = v5;
 
-  v4->_versionedPID = [v3 decodeIntegerForKey:@"versionedPID"];
-  v4->_eventType = [v3 decodeIntegerForKey:@"eventType"];
-  v7 = [v3 decodeInt64ForKey:@"timestamp"];
+  v4->_versionedPID = [coderCopy decodeIntegerForKey:@"versionedPID"];
+  v4->_eventType = [coderCopy decodeIntegerForKey:@"eventType"];
+  v7 = [coderCopy decodeInt64ForKey:@"timestamp"];
 
   v4->_timestamp = v7;
   return v4;
@@ -318,12 +318,12 @@ void __45__BKSHIDEventSimpleProvenance_protobufSchema__block_invoke(uint64_t a1,
   return result;
 }
 
-+ (id)_withInternalKey:(id)a3 buildMessage:(id)a4
++ (id)_withInternalKey:(id)key buildMessage:(id)message
 {
   v38 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  keyCopy = key;
+  messageCopy = message;
+  v9 = keyCopy;
   if (!v9)
   {
     v20 = MEMORY[0x1E696AEC0];
@@ -341,7 +341,7 @@ void __45__BKSHIDEventSimpleProvenance_protobufSchema__block_invoke(uint64_t a1,
       LOWORD(__dst.ctx[3]) = 2114;
       *(&__dst.ctx[3] + 2) = v26;
       HIWORD(__dst.ctx[5]) = 2048;
-      *&__dst.ctx[6] = a1;
+      *&__dst.ctx[6] = self;
       LOWORD(__dst.ctx[8]) = 2114;
       *(&__dst.ctx[8] + 2) = @"BKSHIDEventSimpleProvenance.m";
       HIWORD(__dst.ctx[10]) = 1024;
@@ -362,13 +362,13 @@ void __45__BKSHIDEventSimpleProvenance_protobufSchema__block_invoke(uint64_t a1,
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v27 = MEMORY[0x1E696AEC0];
-    v28 = [v10 classForCoder];
-    if (!v28)
+    classForCoder = [v10 classForCoder];
+    if (!classForCoder)
     {
-      v28 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v29 = NSStringFromClass(v28);
+    v29 = NSStringFromClass(classForCoder);
     v30 = objc_opt_class();
     v31 = NSStringFromClass(v30);
     v32 = [v27 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"key", v29, v31];
@@ -383,7 +383,7 @@ void __45__BKSHIDEventSimpleProvenance_protobufSchema__block_invoke(uint64_t a1,
       LOWORD(__dst.ctx[3]) = 2114;
       *(&__dst.ctx[3] + 2) = v35;
       HIWORD(__dst.ctx[5]) = 2048;
-      *&__dst.ctx[6] = a1;
+      *&__dst.ctx[6] = self;
       LOWORD(__dst.ctx[8]) = 2114;
       *(&__dst.ctx[8] + 2) = @"BKSHIDEventSimpleProvenance.m";
       HIWORD(__dst.ctx[10]) = 1024;
@@ -399,22 +399,22 @@ void __45__BKSHIDEventSimpleProvenance_protobufSchema__block_invoke(uint64_t a1,
     JUMPOUT(0x18636F000);
   }
 
-  if (!v8)
+  if (!messageCopy)
   {
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v36 handleFailureInMethod:a2 object:a1 file:@"BKSHIDEventSimpleProvenance.m" lineNumber:222 description:{@"Invalid parameter not satisfying: %@", @"builder != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BKSHIDEventSimpleProvenance.m" lineNumber:222 description:{@"Invalid parameter not satisfying: %@", @"builder != nil"}];
   }
 
-  v11 = [(BKSHIDEventSimpleProvenance *)[BKSMutableHIDEventSimpleProvenance alloc] _init];
-  v8[2](v8, v11);
-  [v11 setTimestamp:mach_continuous_time()];
-  if (v11)
+  _init = [(BKSHIDEventSimpleProvenance *)[BKSMutableHIDEventSimpleProvenance alloc] _init];
+  messageCopy[2](messageCopy, _init);
+  [_init setTimestamp:mach_continuous_time()];
+  if (_init)
   {
     v12 = v10;
-    v13 = [v11 copy];
-    v14 = [(_BKSHIDEventAuthenticationKey *)v12 _context];
+    v13 = [_init copy];
+    _context = [(_BKSHIDEventAuthenticationKey *)v12 _context];
 
-    memcpy(&__dst, v14, sizeof(__dst));
+    memcpy(&__dst, _context, sizeof(__dst));
     v15 = [(BKSHIDEventSimpleProvenance *)v13 _calculateSignatureWithHMACContext:?];
     v16 = [v15 copy];
     v17 = v13[1];
@@ -454,13 +454,13 @@ void __45__BKSHIDEventSimpleProvenance_protobufSchema__block_invoke(uint64_t a1,
   return result;
 }
 
-+ (id)build:(id)a3
++ (id)build:(id)build
 {
-  v3 = a3;
-  v4 = [(BKSHIDEventSimpleProvenance *)[BKSMutableHIDEventSimpleProvenance alloc] _init];
-  v3[2](v3, v4);
+  buildCopy = build;
+  _init = [(BKSHIDEventSimpleProvenance *)[BKSMutableHIDEventSimpleProvenance alloc] _init];
+  buildCopy[2](buildCopy, _init);
 
-  v5 = [v4 copy];
+  v5 = [_init copy];
 
   return v5;
 }

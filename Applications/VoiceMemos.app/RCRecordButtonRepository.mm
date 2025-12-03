@@ -4,10 +4,10 @@
 - (_TtC10VoiceMemos24RCRecordButtonRepository)init;
 - (int64_t)state;
 - (unint64_t)trackState;
-- (void)setAnimationsAreDisabled:(BOOL)a3;
-- (void)setIsEnabled:(BOOL)a3;
-- (void)setState:(int64_t)a3;
-- (void)setTrackState:(unint64_t)a3;
+- (void)setAnimationsAreDisabled:(BOOL)disabled;
+- (void)setIsEnabled:(BOOL)enabled;
+- (void)setState:(int64_t)state;
+- (void)setTrackState:(unint64_t)state;
 @end
 
 @implementation RCRecordButtonRepository
@@ -29,23 +29,23 @@
   return [(RCRecordButtonRepository *)&v4 init];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  v3 = self;
+  selfCopy = self;
   CurrentValueSubject.value.getter();
   CurrentValueSubject.value.setter();
 }
 
-- (void)setIsEnabled:(BOOL)a3
+- (void)setIsEnabled:(BOOL)enabled
 {
-  v3 = self;
+  selfCopy = self;
   CurrentValueSubject.value.getter();
   CurrentValueSubject.value.setter();
 }
 
 - (int64_t)state
 {
-  v2 = self;
+  selfCopy = self;
   CurrentValueSubject.value.getter();
 
   return v4;
@@ -53,22 +53,22 @@
 
 - (unint64_t)trackState
 {
-  v2 = self;
+  selfCopy = self;
   CurrentValueSubject.value.getter();
 
   return v4;
 }
 
-- (void)setTrackState:(unint64_t)a3
+- (void)setTrackState:(unint64_t)state
 {
-  v3 = self;
+  selfCopy = self;
   CurrentValueSubject.value.getter();
   CurrentValueSubject.value.setter();
 }
 
 - (BOOL)isEnabled
 {
-  v2 = self;
+  selfCopy = self;
   CurrentValueSubject.value.getter();
 
   return v4;
@@ -76,15 +76,15 @@
 
 - (BOOL)animationsAreDisabled
 {
-  v2 = self;
+  selfCopy = self;
   CurrentValueSubject.value.getter();
 
   return v4;
 }
 
-- (void)setAnimationsAreDisabled:(BOOL)a3
+- (void)setAnimationsAreDisabled:(BOOL)disabled
 {
-  v3 = self;
+  selfCopy = self;
   CurrentValueSubject.value.setter();
 }
 

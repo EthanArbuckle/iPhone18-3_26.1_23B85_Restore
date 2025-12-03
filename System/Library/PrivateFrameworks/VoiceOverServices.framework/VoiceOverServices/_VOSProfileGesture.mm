@@ -1,30 +1,30 @@
 @interface _VOSProfileGesture
-+ (id)profileGestureWithGesture:(id)a3;
-+ (id)profileGestureWithStringValue:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)profileGestureWithGesture:(id)gesture;
++ (id)profileGestureWithStringValue:(id)value;
+- (BOOL)isEqual:(id)equal;
 - (_VOSProfileCommand)command;
-- (_VOSProfileGesture)initWithCoder:(id)a3;
-- (id)_initWithGesture:(id)a3;
+- (_VOSProfileGesture)initWithCoder:(id)coder;
+- (id)_initWithGesture:(id)gesture;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _VOSProfileGesture
 
-+ (id)profileGestureWithGesture:(id)a3
++ (id)profileGestureWithGesture:(id)gesture
 {
-  v3 = a3;
-  v4 = [[_VOSProfileGesture alloc] _initWithGesture:v3];
+  gestureCopy = gesture;
+  v4 = [[_VOSProfileGesture alloc] _initWithGesture:gestureCopy];
 
   return v4;
 }
 
-+ (id)profileGestureWithStringValue:(id)a3
++ (id)profileGestureWithStringValue:(id)value
 {
-  v4 = [VOSGesture gestureWithStringValue:a3];
+  v4 = [VOSGesture gestureWithStringValue:value];
   if (v4)
   {
-    v5 = [a1 profileGestureWithGesture:v4];
+    v5 = [self profileGestureWithGesture:v4];
   }
 
   else
@@ -35,16 +35,16 @@
   return v5;
 }
 
-- (id)_initWithGesture:(id)a3
+- (id)_initWithGesture:(id)gesture
 {
-  v5 = a3;
+  gestureCopy = gesture;
   v9.receiver = self;
   v9.super_class = _VOSProfileGesture;
   v6 = [(_VOSProfileGesture *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_gesture, a3);
+    objc_storeStrong(&v6->_gesture, gesture);
   }
 
   return v7;
@@ -55,22 +55,22 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_VOSProfileGesture *)self gesture];
-  v7 = [v6 rawValue];
-  v8 = [v3 stringWithFormat:@"%@<%p>: rawValue '%@'", v5, self, v7];
+  gesture = [(_VOSProfileGesture *)self gesture];
+  rawValue = [gesture rawValue];
+  v8 = [v3 stringWithFormat:@"%@<%p>: rawValue '%@'", v5, self, rawValue];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 gesture];
-    v6 = [(_VOSProfileGesture *)self gesture];
-    v7 = [v5 isEqual:v6];
+    gesture = [equalCopy gesture];
+    gesture2 = [(_VOSProfileGesture *)self gesture];
+    v7 = [gesture isEqual:gesture2];
   }
 
   else
@@ -81,10 +81,10 @@
   return v7;
 }
 
-- (_VOSProfileGesture)initWithCoder:(id)a3
+- (_VOSProfileGesture)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gesture"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gesture"];
 
   v6 = [VOSGesture gestureWithStringValue:v5];
   if (!v6)
@@ -97,12 +97,12 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   gesture = self->_gesture;
-  v4 = a3;
-  v5 = [(VOSGesture *)gesture rawValue];
-  [v4 encodeObject:v5 forKey:@"gesture"];
+  coderCopy = coder;
+  rawValue = [(VOSGesture *)gesture rawValue];
+  [coderCopy encodeObject:rawValue forKey:@"gesture"];
 }
 
 - (_VOSProfileCommand)command

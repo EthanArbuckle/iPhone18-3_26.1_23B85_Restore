@@ -1,8 +1,8 @@
 @interface D2DConnectionFactory
 + (id)sharedInstance;
-- (BOOL)getValue:(id)a3;
-- (BOOL)useFakeConnection:(shared_ptr<const Registry>)a3;
-- (id)createConnectionWithRegistry:(shared_ptr<const Registry>)a3 queue:(queue)a4;
+- (BOOL)getValue:(id)value;
+- (BOOL)useFakeConnection:(shared_ptr<const Registry>)connection;
+- (id)createConnectionWithRegistry:(shared_ptr<const Registry>)registry queue:(queue)queue;
 @end
 
 @implementation D2DConnectionFactory
@@ -20,10 +20,10 @@
   return v2;
 }
 
-- (BOOL)getValue:(id)a3
+- (BOOL)getValue:(id)value
 {
-  v3 = a3;
-  CCPreferences::create(cf, v3);
+  valueCopy = value;
+  CCPreferences::create(cf, valueCopy);
   v4 = cf[0];
   v5 = cf[1];
   cf[0] = 0;
@@ -54,9 +54,9 @@
   return v6 & 1;
 }
 
-- (BOOL)useFakeConnection:(shared_ptr<const Registry>)a3
+- (BOOL)useFakeConnection:(shared_ptr<const Registry>)connection
 {
-  ServiceMap = Registry::getServiceMap(*a3.__ptr_);
+  ServiceMap = Registry::getServiceMap(*connection.__ptr_);
   v5 = ServiceMap;
   if ((v6 & 0x8000000000000000) != 0)
   {
@@ -116,7 +116,7 @@ LABEL_9:
   }
 }
 
-- (id)createConnectionWithRegistry:(shared_ptr<const Registry>)a3 queue:(queue)a4
+- (id)createConnectionWithRegistry:(shared_ptr<const Registry>)registry queue:(queue)queue
 {
   connection = self->_connection;
   if (connection)
@@ -125,17 +125,17 @@ LABEL_9:
     goto LABEL_16;
   }
 
-  cntrl = a3.__cntrl_;
-  ptr = a3.__ptr_;
-  v8 = *(a3.__ptr_ + 1);
-  v24 = *a3.__ptr_;
+  cntrl = registry.__cntrl_;
+  ptr = registry.__ptr_;
+  v8 = *(registry.__ptr_ + 1);
+  v24 = *registry.__ptr_;
   v25 = v8;
   if (v8)
   {
     atomic_fetch_add_explicit(&v8->__shared_owners_, 1uLL, memory_order_relaxed);
   }
 
-  v9 = [(D2DConnectionFactory *)self useFakeConnection:&v24, a3.__cntrl_, a4.fObj.fObj];
+  v9 = [(D2DConnectionFactory *)self useFakeConnection:&v24, registry.__cntrl_, queue.fObj.fObj];
   if (v25)
   {
     sub_100004A34(v25);

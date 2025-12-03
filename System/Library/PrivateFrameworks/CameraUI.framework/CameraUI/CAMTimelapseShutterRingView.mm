@@ -1,23 +1,23 @@
 @interface CAMTimelapseShutterRingView
 - ($EA90F2AF3C0DC35AB2D8304CE3BCA89E)spec;
-- (CAMTimelapseShutterRingView)initWithFrame:(CGRect)a3 spec:(id *)a4;
-- (CAMTimelapseShutterRingView)initWithSpec:(id *)a3;
-- (double)_tickRadiusForTickSize:(CGSize)a3 ringSize:(CGSize)a4;
+- (CAMTimelapseShutterRingView)initWithFrame:(CGRect)frame spec:(id *)spec;
+- (CAMTimelapseShutterRingView)initWithSpec:(id *)spec;
+- (double)_tickRadiusForTickSize:(CGSize)size ringSize:(CGSize)ringSize;
 - (void)_addStartAnimations;
 - (void)_addStopAnimations;
-- (void)_commonCAMTimelapseShutterRingViewInitializationWithSpec:(id *)a3;
+- (void)_commonCAMTimelapseShutterRingViewInitializationWithSpec:(id *)spec;
 - (void)_removeStartAnimations;
 - (void)_removeStopAnimations;
 - (void)_startAnimating;
 - (void)_stopAnimating;
-- (void)layoutSublayersOfLayer:(id)a3;
-- (void)setAnimating:(BOOL)a3;
-- (void)setSpec:(id *)a3;
+- (void)layoutSublayersOfLayer:(id)layer;
+- (void)setAnimating:(BOOL)animating;
+- (void)setSpec:(id *)spec;
 @end
 
 @implementation CAMTimelapseShutterRingView
 
-- (CAMTimelapseShutterRingView)initWithSpec:(id *)a3
+- (CAMTimelapseShutterRingView)initWithSpec:(id *)spec
 {
   v9.receiver = self;
   v9.super_class = CAMTimelapseShutterRingView;
@@ -25,8 +25,8 @@
   v5 = v4;
   if (v4)
   {
-    v6 = *&a3->var2;
-    v8[0] = *&a3->var0;
+    v6 = *&spec->var2;
+    v8[0] = *&spec->var0;
     v8[1] = v6;
     [(CAMTimelapseShutterRingView *)v4 _commonCAMTimelapseShutterRingViewInitializationWithSpec:v8];
   }
@@ -34,16 +34,16 @@
   return v5;
 }
 
-- (CAMTimelapseShutterRingView)initWithFrame:(CGRect)a3 spec:(id *)a4
+- (CAMTimelapseShutterRingView)initWithFrame:(CGRect)frame spec:(id *)spec
 {
   v10.receiver = self;
   v10.super_class = CAMTimelapseShutterRingView;
-  v5 = [(CAMTimelapseShutterRingView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(CAMTimelapseShutterRingView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v7 = *&a4->var2;
-    v9[0] = *&a4->var0;
+    v7 = *&spec->var2;
+    v9[0] = *&spec->var0;
     v9[1] = v7;
     [(CAMTimelapseShutterRingView *)v5 _commonCAMTimelapseShutterRingViewInitializationWithSpec:v9];
   }
@@ -51,21 +51,21 @@
   return v6;
 }
 
-- (void)_commonCAMTimelapseShutterRingViewInitializationWithSpec:(id *)a3
+- (void)_commonCAMTimelapseShutterRingViewInitializationWithSpec:(id *)spec
 {
   [(CAMTimelapseShutterRingView *)self setUserInteractionEnabled:0];
-  v5 = *&a3->var2;
-  *&self->_spec.smallTickCount = *&a3->var0;
+  v5 = *&spec->var2;
+  *&self->_spec.smallTickCount = *&spec->var0;
   *&self->_spec.smallTickLength = v5;
   [(CAMTimelapseShutterRingView *)self _rotationRadiansFromTickCount:self->_spec.smallTickCount];
   self->__smallTickRotationRadians = v6;
   [(CAMTimelapseShutterRingView *)self _rotationRadiansFromTickCount:self->_spec.largeTickCount];
   self->__largeTickRotationRadians = v7;
-  v8 = [(CAMTimelapseShutterRingView *)self traitCollection];
-  [v8 displayScale];
+  traitCollection = [(CAMTimelapseShutterRingView *)self traitCollection];
+  [traitCollection displayScale];
   v10 = v9;
 
-  v11 = [(CAMTimelapseShutterRingView *)self layer];
+  layer = [(CAMTimelapseShutterRingView *)self layer];
   memset(&v34, 0, sizeof(v34));
   CATransform3DMakeRotation(&v34, self->__smallTickRotationRadians, 0.0, 0.0, 1.0);
   memset(&v33, 0, sizeof(v33));
@@ -74,7 +74,7 @@
   smallTickReplicatorLayer = self->__smallTickReplicatorLayer;
   self->__smallTickReplicatorLayer = v12;
 
-  [v11 addSublayer:self->__smallTickReplicatorLayer];
+  [layer addSublayer:self->__smallTickReplicatorLayer];
   [(CAReplicatorLayer *)self->__smallTickReplicatorLayer setInstanceCount:self->_spec.smallTickCount + 1];
   v14 = self->__smallTickReplicatorLayer;
   v32 = v34;
@@ -83,7 +83,7 @@
   largeTickReplicatorLayer = self->__largeTickReplicatorLayer;
   self->__largeTickReplicatorLayer = v15;
 
-  [v11 addSublayer:self->__largeTickReplicatorLayer];
+  [layer addSublayer:self->__largeTickReplicatorLayer];
   [(CAReplicatorLayer *)self->__largeTickReplicatorLayer setInstanceCount:self->_spec.largeTickCount + 1];
   v17 = self->__largeTickReplicatorLayer;
   v32 = v33;
@@ -94,8 +94,8 @@
 
   [(CAReplicatorLayer *)self->__smallTickReplicatorLayer addSublayer:self->__smallTickLayer];
   v20 = self->__smallTickLayer;
-  v21 = [MEMORY[0x1E69DC888] whiteColor];
-  -[CALayer setBackgroundColor:](v20, "setBackgroundColor:", [v21 CGColor]);
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  -[CALayer setBackgroundColor:](v20, "setBackgroundColor:", [whiteColor CGColor]);
 
   [(CALayer *)self->__smallTickLayer setRasterizationScale:v10];
   [(CALayer *)self->__smallTickLayer setAllowsEdgeAntialiasing:1];
@@ -105,8 +105,8 @@
 
   [(CAReplicatorLayer *)self->__largeTickReplicatorLayer addSublayer:self->__largeTickLayer];
   v24 = self->__largeTickLayer;
-  v25 = [MEMORY[0x1E69DC888] whiteColor];
-  -[CALayer setBackgroundColor:](v24, "setBackgroundColor:", [v25 CGColor]);
+  whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+  -[CALayer setBackgroundColor:](v24, "setBackgroundColor:", [whiteColor2 CGColor]);
 
   [(CALayer *)self->__largeTickLayer setRasterizationScale:v10];
   [(CALayer *)self->__largeTickLayer setAllowsEdgeAntialiasing:1];
@@ -114,26 +114,26 @@
   timerHandParentLayer = self->__timerHandParentLayer;
   self->__timerHandParentLayer = v26;
 
-  [v11 addSublayer:self->__timerHandParentLayer];
+  [layer addSublayer:self->__timerHandParentLayer];
   v28 = objc_alloc_init(MEMORY[0x1E6979398]);
   timerHandLayer = self->__timerHandLayer;
   self->__timerHandLayer = v28;
 
   [(CALayer *)self->__timerHandParentLayer addSublayer:self->__timerHandLayer];
   v30 = self->__timerHandLayer;
-  v31 = [MEMORY[0x1E69DC888] whiteColor];
-  -[CALayer setBackgroundColor:](v30, "setBackgroundColor:", [v31 CGColor]);
+  whiteColor3 = [MEMORY[0x1E69DC888] whiteColor];
+  -[CALayer setBackgroundColor:](v30, "setBackgroundColor:", [whiteColor3 CGColor]);
 
   [(CALayer *)self->__timerHandLayer setRasterizationScale:v10];
   [(CALayer *)self->__timerHandLayer setAllowsEdgeAntialiasing:1];
 }
 
-- (void)setAnimating:(BOOL)a3
+- (void)setAnimating:(BOOL)animating
 {
-  if (self->_animating != a3)
+  if (self->_animating != animating)
   {
-    self->_animating = a3;
-    if (a3)
+    self->_animating = animating;
+    if (animating)
     {
       [(CAMTimelapseShutterRingView *)self _startAnimating];
     }
@@ -145,13 +145,13 @@
   }
 }
 
-- (void)setSpec:(id *)a3
+- (void)setSpec:(id *)spec
 {
   p_spec = &self->_spec;
-  if (self->_spec.smallTickCount != a3->var0 || self->_spec.largeTickCount != a3->var1 || self->_spec.smallTickLength != a3->var2 || self->_spec.largeTickLength != a3->var3)
+  if (self->_spec.smallTickCount != spec->var0 || self->_spec.largeTickCount != spec->var1 || self->_spec.smallTickLength != spec->var2 || self->_spec.largeTickLength != spec->var3)
   {
-    v5 = *&a3->var2;
-    *&p_spec->smallTickCount = *&a3->var0;
+    v5 = *&spec->var2;
+    *&p_spec->smallTickCount = *&spec->var0;
     *&self->_spec.smallTickLength = v5;
     [(CAMTimelapseShutterRingView *)self _rotationRadiansFromTickCount:p_spec->smallTickCount];
     self->__smallTickRotationRadians = v6;
@@ -160,7 +160,7 @@
   }
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
   [(CAMTimelapseShutterRingView *)self bounds];
   x = v20.origin.x;
@@ -197,19 +197,19 @@
   [(CALayer *)timerHandLayer setPosition:MidX, v17];
 }
 
-- (double)_tickRadiusForTickSize:(CGSize)a3 ringSize:(CGSize)a4
+- (double)_tickRadiusForTickSize:(CGSize)size ringSize:(CGSize)ringSize
 {
-  if (a4.width >= a4.height)
+  if (ringSize.width >= ringSize.height)
   {
-    height = a4.height;
+    height = ringSize.height;
   }
 
   else
   {
-    height = a4.width;
+    height = ringSize.width;
   }
 
-  return height * 0.5 - a3.height * 0.5;
+  return height * 0.5 - size.height * 0.5;
 }
 
 - (void)_startAnimating
@@ -355,18 +355,18 @@
     v50[2] = v25;
     v50[3] = v47;
     v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:4];
-    v42 = [MEMORY[0x1E6979308] animation];
-    [v42 setAnimations:v41];
-    [v42 setDuration:6048000.0];
+    animation = [MEMORY[0x1E6979308] animation];
+    [animation setAnimations:v41];
+    [animation setDuration:6048000.0];
     v49[0] = v36;
     v49[1] = v38;
     v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:2];
-    v44 = [MEMORY[0x1E6979308] animation];
-    [v44 setAnimations:v43];
-    [v44 setDuration:6048000.0];
+    animation2 = [MEMORY[0x1E6979308] animation];
+    [animation2 setAnimations:v43];
+    [animation2 setDuration:6048000.0];
     [MEMORY[0x1E6979518] begin];
-    [(CAReplicatorLayer *)self->__smallTickReplicatorLayer addAnimation:v42 forKey:@"kStartAnimationsKey"];
-    [(CALayer *)self->__timerHandParentLayer addAnimation:v44 forKey:@"kStartAnimationsKey"];
+    [(CAReplicatorLayer *)self->__smallTickReplicatorLayer addAnimation:animation forKey:@"kStartAnimationsKey"];
+    [(CALayer *)self->__timerHandParentLayer addAnimation:animation2 forKey:@"kStartAnimationsKey"];
     [MEMORY[0x1E6979518] commit];
   }
 }
@@ -376,18 +376,18 @@
   v82[2] = *MEMORY[0x1E69E9840];
   if ([(CAMTimelapseShutterRingView *)self _shouldUseAnimations])
   {
-    v3 = [(CAReplicatorLayer *)self->__smallTickReplicatorLayer presentationLayer];
-    smallTickReplicatorLayer = v3;
-    if (!v3)
+    presentationLayer = [(CAReplicatorLayer *)self->__smallTickReplicatorLayer presentationLayer];
+    smallTickReplicatorLayer = presentationLayer;
+    if (!presentationLayer)
     {
       smallTickReplicatorLayer = self->__smallTickReplicatorLayer;
     }
 
     v5 = smallTickReplicatorLayer;
 
-    v6 = [(CALayer *)self->__timerHandParentLayer presentationLayer];
-    timerHandParentLayer = v6;
-    if (!v6)
+    presentationLayer2 = [(CALayer *)self->__timerHandParentLayer presentationLayer];
+    timerHandParentLayer = presentationLayer2;
+    if (!presentationLayer2)
     {
       timerHandParentLayer = self->__timerHandParentLayer;
     }
@@ -559,11 +559,11 @@
     }
 
     v49 = [v46 arrayWithObjects:v47 count:{v48, v19}];
-    v50 = [MEMORY[0x1E6979308] animation];
-    [v50 setAnimations:v49];
-    [v50 setDuration:v16];
+    animation = [MEMORY[0x1E6979308] animation];
+    [animation setAnimations:v49];
+    [animation setDuration:v16];
     [MEMORY[0x1E6979518] begin];
-    [(CAReplicatorLayer *)self->__smallTickReplicatorLayer addAnimation:v50 forKey:@"kStopAnimationsKey"];
+    [(CAReplicatorLayer *)self->__smallTickReplicatorLayer addAnimation:animation forKey:@"kStopAnimationsKey"];
     [(CALayer *)self->__timerHandParentLayer addAnimation:v43 forKey:@"kStopAnimationsKey"];
     [MEMORY[0x1E6979518] commit];
   }

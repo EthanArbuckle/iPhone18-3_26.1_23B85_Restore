@@ -1,34 +1,34 @@
 @interface WFHomePickerParameter
-- (WFHomePickerParameter)initWithDefinition:(id)a3;
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4;
-- (void)loadDefaultSerializedRepresentationForEnumeration:(id)a3 completionHandler:(id)a4;
-- (void)loadPossibleStatesForEnumeration:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5;
+- (WFHomePickerParameter)initWithDefinition:(id)definition;
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state;
+- (void)loadDefaultSerializedRepresentationForEnumeration:(id)enumeration completionHandler:(id)handler;
+- (void)loadPossibleStatesForEnumeration:(id)enumeration searchTerm:(id)term completionHandler:(id)handler;
 @end
 
 @implementation WFHomePickerParameter
 
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state
 {
-  v4 = a4;
+  stateCopy = state;
   v5 = +[WFHomeManager sharedManager];
-  v6 = [v4 value];
+  value = [stateCopy value];
 
-  v7 = [v5 homeWithIdentifier:v6];
-  v8 = [v7 name];
+  v7 = [v5 homeWithIdentifier:value];
+  name = [v7 name];
 
-  return v8;
+  return name;
 }
 
-- (void)loadDefaultSerializedRepresentationForEnumeration:(id)a3 completionHandler:(id)a4
+- (void)loadDefaultSerializedRepresentationForEnumeration:(id)enumeration completionHandler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   v5 = +[WFHomeManager sharedManager];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __93__WFHomePickerParameter_loadDefaultSerializedRepresentationForEnumeration_completionHandler___block_invoke;
   v7[3] = &unk_1E837F4E8;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [v5 ensureHomesAreLoadedWithCompletionHandler:v7];
 }
 
@@ -54,16 +54,16 @@ void __93__WFHomePickerParameter_loadDefaultSerializedRepresentationForEnumerati
   }
 }
 
-- (void)loadPossibleStatesForEnumeration:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5
+- (void)loadPossibleStatesForEnumeration:(id)enumeration searchTerm:(id)term completionHandler:(id)handler
 {
-  v5 = a5;
+  handlerCopy = handler;
   v6 = +[WFHomeManager sharedManager];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __87__WFHomePickerParameter_loadPossibleStatesForEnumeration_searchTerm_completionHandler___block_invoke;
   v8[3] = &unk_1E837F4E8;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [v6 ensureHomesAreLoadedWithCompletionHandler:v8];
 }
 
@@ -119,11 +119,11 @@ void __87__WFHomePickerParameter_loadPossibleStatesForEnumeration_searchTerm_com
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (WFHomePickerParameter)initWithDefinition:(id)a3
+- (WFHomePickerParameter)initWithDefinition:(id)definition
 {
   v7.receiver = self;
   v7.super_class = WFHomePickerParameter;
-  v3 = [(WFDynamicEnumerationParameter *)&v7 initWithDefinition:a3];
+  v3 = [(WFDynamicEnumerationParameter *)&v7 initWithDefinition:definition];
   v4 = v3;
   if (v3)
   {

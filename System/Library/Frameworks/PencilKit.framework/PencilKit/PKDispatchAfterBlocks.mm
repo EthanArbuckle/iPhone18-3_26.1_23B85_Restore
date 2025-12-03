@@ -1,21 +1,21 @@
 @interface PKDispatchAfterBlocks
-- (PKDispatchAfterBlocks)initWithIdentifier:(id)a3;
+- (PKDispatchAfterBlocks)initWithIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)dispatchAfter:(double)a3 withBlock:(id)a4;
+- (void)dispatchAfter:(double)after withBlock:(id)block;
 @end
 
 @implementation PKDispatchAfterBlocks
 
-- (PKDispatchAfterBlocks)initWithIdentifier:(id)a3
+- (PKDispatchAfterBlocks)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v8.receiver = self;
   v8.super_class = PKDispatchAfterBlocks;
   v5 = [(PKDispatchAfterBlocks *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(PKDispatchAfterBlocks *)v5 setIdentifier:v4];
+    [(PKDispatchAfterBlocks *)v5 setIdentifier:identifierCopy];
   }
 
   return v6;
@@ -29,11 +29,11 @@
   [(PKDispatchAfterBlocks *)&v3 dealloc];
 }
 
-- (void)dispatchAfter:(double)a3 withBlock:(id)a4
+- (void)dispatchAfter:(double)after withBlock:(id)block
 {
-  v7 = [a4 copy];
+  v7 = [block copy];
   v6 = _Block_copy(v7);
-  [(PKDispatchAfterBlocks *)self performSelector:sel_performBlock_ withObject:v6 afterDelay:a3];
+  [(PKDispatchAfterBlocks *)self performSelector:sel_performBlock_ withObject:v6 afterDelay:after];
 }
 
 @end

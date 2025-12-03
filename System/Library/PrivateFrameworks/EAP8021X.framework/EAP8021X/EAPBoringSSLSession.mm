@@ -1,8 +1,8 @@
 @interface EAPBoringSSLSession
-- (BOOL)configureSecProtocol:(EAPBoringSSLSessionParameters_s *)a3;
+- (BOOL)configureSecProtocol:(EAPBoringSSLSessionParameters_s *)protocol;
 - (BOOL)getSessionResumed;
-- (BOOL)setClientIdentity:(__SecIdentity *)a3 certificates:(id)a4;
-- (BOOL)setup:(EAPBoringSSLSessionParameters_s *)a3 clientContext:(void *)a4;
+- (BOOL)setClientIdentity:(__SecIdentity *)identity certificates:(id)certificates;
+- (BOOL)setup:(EAPBoringSSLSessionParameters_s *)setup clientContext:(void *)context;
 - (EAPBoringSSLSession)init;
 - (id)copyPeerCertificateChain;
 - (id)customProtocolDefinition;
@@ -15,9 +15,9 @@
 - (unsigned)getNegotiatedTLSVersion;
 - (void)dealloc;
 - (void)readApplicationData;
-- (void)setHandshakeStatus:(int)a3;
+- (void)setHandshakeStatus:(int)status;
 - (void)setSecProtocolMetadata;
-- (void)setState:(int)a3;
+- (void)setState:(int)state;
 - (void)start;
 - (void)stop;
 @end
@@ -284,11 +284,11 @@ uint64_t __47__EAPBoringSSLSession_customProtocolDefinition__block_invoke_7(uint
   return result;
 }
 
-- (BOOL)setClientIdentity:(__SecIdentity *)a3 certificates:(id)a4
+- (BOOL)setClientIdentity:(__SecIdentity *)identity certificates:(id)certificates
 {
-  v6 = a4;
-  v7 = [(EAPBoringSSLSession *)self tlsProtocol];
-  v8 = v7;
+  certificatesCopy = certificates;
+  tlsProtocol = [(EAPBoringSSLSession *)self tlsProtocol];
+  v8 = tlsProtocol;
 
   if (!v8)
   {
@@ -309,16 +309,16 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (a3)
+  if (identity)
   {
-    if (v6 && [(__CFArray *)v6 count])
+    if (certificatesCopy && [(__CFArray *)certificatesCopy count])
     {
-      v9 = sec_identity_create_with_certificates(a3, v6);
+      v9 = sec_identity_create_with_certificates(identity, certificatesCopy);
     }
 
     else
     {
-      v9 = sec_identity_create(a3);
+      v9 = sec_identity_create(identity);
     }
 
     v14 = v9;
@@ -349,18 +349,18 @@ LABEL_16:
   return v15;
 }
 
-- (BOOL)configureSecProtocol:(EAPBoringSSLSessionParameters_s *)a3
+- (BOOL)configureSecProtocol:(EAPBoringSSLSessionParameters_s *)protocol
 {
-  if (a3)
+  if (protocol)
   {
-    v5 = [(EAPBoringSSLSession *)self tlsProtocol];
-    v6 = v5;
+    tlsProtocol = [(EAPBoringSSLSession *)self tlsProtocol];
+    v6 = tlsProtocol;
 
     if (v6)
     {
       sec_protocol_options_set_tls_early_data_enabled();
-      sec_protocol_options_set_min_tls_protocol_version(v6, a3->var2);
-      sec_protocol_options_set_max_tls_protocol_version(v6, a3->var3);
+      sec_protocol_options_set_min_tls_protocol_version(v6, protocol->var2);
+      sec_protocol_options_set_max_tls_protocol_version(v6, protocol->var3);
       v7 = 0;
       if ([(EAPBoringSSLSession *)self eapType]!= 13)
       {
@@ -370,8 +370,8 @@ LABEL_17:
       }
 
       sec_protocol_options_set_eap_method();
-      var0 = a3->var0;
-      if (!a3->var0)
+      var0 = protocol->var0;
+      if (!protocol->var0)
       {
 LABEL_16:
         objc_initWeak(buf, self);
@@ -380,8 +380,8 @@ LABEL_16:
         verify_block[2] = __44__EAPBoringSSLSession_configureSecProtocol___block_invoke;
         verify_block[3] = &unk_278FBDE70;
         objc_copyWeak(&v18, buf);
-        v15 = [(EAPBoringSSLSession *)self queue];
-        sec_protocol_options_set_verify_block(v6, verify_block, v15);
+        queue = [(EAPBoringSSLSession *)self queue];
+        sec_protocol_options_set_verify_block(v6, verify_block, queue);
 
         objc_destroyWeak(&v18);
         objc_destroyWeak(buf);
@@ -389,9 +389,9 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      if (a3->var1 && (Count = CFArrayGetCount(a3->var1), var0 = a3->var0, Count >= 1))
+      if (protocol->var1 && (Count = CFArrayGetCount(protocol->var1), var0 = protocol->var0, Count >= 1))
       {
-        v10 = sec_identity_create_with_certificates(var0, a3->var1);
+        v10 = sec_identity_create_with_certificates(var0, protocol->var1);
       }
 
       else
@@ -478,9 +478,9 @@ void __44__EAPBoringSSLSession_configureSecProtocol___block_invoke(uint64_t a1, 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setup:(EAPBoringSSLSessionParameters_s *)a3 clientContext:(void *)a4
+- (BOOL)setup:(EAPBoringSSLSessionParameters_s *)setup clientContext:(void *)context
 {
-  if (a3)
+  if (setup)
   {
     v7 = MEMORY[0x24C207790](self, a2);
     v8 = v7;
@@ -505,22 +505,22 @@ void __44__EAPBoringSSLSession_configureSecProtocol___block_invoke(uint64_t a1, 
       options = nw_tls_create_options();
       [(EAPBoringSSLSession *)self setTlsProtocol:options];
 
-      v11 = [(EAPBoringSSLSession *)self tlsProtocol];
+      tlsProtocol = [(EAPBoringSSLSession *)self tlsProtocol];
 
-      if (v11)
+      if (tlsProtocol)
       {
-        [(EAPBoringSSLSession *)self setEapType:a3->var6];
-        [(EAPBoringSSLSession *)self setRead:a3->var4];
-        [(EAPBoringSSLSession *)self setWrite:a3->var5];
+        [(EAPBoringSSLSession *)self setEapType:setup->var6];
+        [(EAPBoringSSLSession *)self setRead:setup->var4];
+        [(EAPBoringSSLSession *)self setWrite:setup->var5];
         v12 = dispatch_queue_create("EAPBoringSSLSession", 0);
         [(EAPBoringSSLSession *)self setQueue:v12];
 
-        [(EAPBoringSSLSession *)self setClientContext:a4];
-        [(EAPBoringSSLSession *)self setMemIO:a3->var7];
-        if ([(EAPBoringSSLSession *)self configureSecProtocol:a3])
+        [(EAPBoringSSLSession *)self setClientContext:context];
+        [(EAPBoringSSLSession *)self setMemIO:setup->var7];
+        if ([(EAPBoringSSLSession *)self configureSecProtocol:setup])
         {
-          v13 = [(EAPBoringSSLSession *)self customProtocolDefinition];
-          v14 = nw_framer_create_options(v13);
+          customProtocolDefinition = [(EAPBoringSSLSession *)self customProtocolDefinition];
+          v14 = nw_framer_create_options(customProtocolDefinition);
 
           if (!v14)
           {
@@ -535,7 +535,7 @@ void __44__EAPBoringSSLSession_configureSecProtocol___block_invoke(uint64_t a1, 
             goto LABEL_33;
           }
 
-          v15 = [(EAPBoringSSLSession *)self tlsProtocol];
+          tlsProtocol2 = [(EAPBoringSSLSession *)self tlsProtocol];
           nw_protocol_stack_append_application_protocol();
 
           nw_protocol_stack_append_application_protocol();
@@ -546,9 +546,9 @@ void __44__EAPBoringSSLSession_configureSecProtocol___block_invoke(uint64_t a1, 
             v18 = nw_connection_create(host, v8);
             [(EAPBoringSSLSession *)self setConnection:v18];
 
-            v19 = [(EAPBoringSSLSession *)self connection];
+            connection = [(EAPBoringSSLSession *)self connection];
 
-            if (v19)
+            if (connection)
             {
               v20 = 1;
 LABEL_34:
@@ -646,8 +646,8 @@ LABEL_20:
 {
   if ([(EAPBoringSSLSession *)self handshakeStatus]== -9841 && ([(EAPBoringSSLSession *)self secTrustCompletionHandler], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v4 = [(EAPBoringSSLSession *)self secTrustCompletionHandler];
-    v4[2](v4, 1);
+    secTrustCompletionHandler = [(EAPBoringSSLSession *)self secTrustCompletionHandler];
+    secTrustCompletionHandler[2](secTrustCompletionHandler, 1);
 
     v5 = EAPLogGetLogHandle();
     v6 = _SC_syslog_os_log_mapping();
@@ -663,14 +663,14 @@ LABEL_20:
     [(EAPBoringSSLSession *)self deliverInput];
   }
 
-  v7 = [(EAPBoringSSLSession *)self statusUpdateLock];
-  [v7 lockWhenCondition:0];
+  statusUpdateLock = [(EAPBoringSSLSession *)self statusUpdateLock];
+  [statusUpdateLock lockWhenCondition:0];
 
-  LODWORD(v7) = [(EAPBoringSSLSession *)self handshakeStatus];
-  v8 = [(EAPBoringSSLSession *)self statusUpdateLock];
-  [v8 unlockWithCondition:1];
+  LODWORD(statusUpdateLock) = [(EAPBoringSSLSession *)self handshakeStatus];
+  statusUpdateLock2 = [(EAPBoringSSLSession *)self statusUpdateLock];
+  [statusUpdateLock2 unlockWithCondition:1];
 
-  return v7;
+  return statusUpdateLock;
 }
 
 - (int)deliverInput
@@ -678,8 +678,8 @@ LABEL_20:
   location[3] = *MEMORY[0x277D85DE8];
   if ([(EAPBoringSSLSession *)self state]== 1)
   {
-    v3 = [(EAPBoringSSLSession *)self customProtocol];
-    v4 = nw_protocol_options_copy_definition(v3);
+    customProtocol = [(EAPBoringSSLSession *)self customProtocol];
+    v4 = nw_protocol_options_copy_definition(customProtocol);
 
     v27 = v4;
     if (v4 && (v5 = MEMORY[0x24C2077B0](v4)) != 0)
@@ -719,7 +719,7 @@ LABEL_20:
           }
 
           objc_initWeak(location, self);
-          v14 = [(EAPBoringSSLSession *)self customFramer];
+          customFramer = [(EAPBoringSSLSession *)self customFramer];
           async_block[0] = MEMORY[0x277D85DD0];
           async_block[1] = 3221225472;
           v30[0] = __35__EAPBoringSSLSession_deliverInput__block_invoke;
@@ -730,7 +730,7 @@ LABEL_20:
           v15 = v13;
           v32 = v15;
           v33[1] = v35;
-          nw_framer_async(v14, async_block);
+          nw_framer_async(customFramer, async_block);
           v16 = v11 == 0;
 
           v17 = v35;
@@ -754,8 +754,8 @@ LABEL_20:
           _os_log_impl(&dword_249EFB000, v20, v21, "failed to read from the MemIO read buffer", location, 2u);
         }
 
-        v22 = [(EAPBoringSSLSession *)self customFramer];
-        nw_framer_mark_failed_with_error(v22, 100);
+        customFramer2 = [(EAPBoringSSLSession *)self customFramer];
+        nw_framer_mark_failed_with_error(customFramer2, 100);
 
 LABEL_21:
         if (v9)
@@ -857,8 +857,8 @@ LABEL_7:
 
 - (unsigned)getEAPMethodInUse
 {
-  v2 = [(EAPBoringSSLSession *)self tlsProtocol];
-  v3 = v2;
+  tlsProtocol = [(EAPBoringSSLSession *)self tlsProtocol];
+  v3 = tlsProtocol;
 
   if (v3)
   {
@@ -883,17 +883,17 @@ LABEL_7:
 
 - (void)setSecProtocolMetadata
 {
-  v3 = [(EAPBoringSSLSession *)self secProtocolMetadata];
+  secProtocolMetadata = [(EAPBoringSSLSession *)self secProtocolMetadata];
 
-  if (!v3)
+  if (!secProtocolMetadata)
   {
-    v4 = [(EAPBoringSSLSession *)self tlsProtocol];
-    definition = nw_protocol_options_copy_definition(v4);
+    tlsProtocol = [(EAPBoringSSLSession *)self tlsProtocol];
+    definition = nw_protocol_options_copy_definition(tlsProtocol);
 
     if (definition)
     {
-      v5 = [(EAPBoringSSLSession *)self connection];
-      v6 = nw_connection_copy_protocol_metadata(v5, definition);
+      connection = [(EAPBoringSSLSession *)self connection];
+      v6 = nw_connection_copy_protocol_metadata(connection, definition);
       [(EAPBoringSSLSession *)self setSecProtocolMetadata:v6];
     }
   }
@@ -908,14 +908,14 @@ LABEL_7:
   }
 
   [(EAPBoringSSLSession *)self setSecProtocolMetadata];
-  v3 = [(EAPBoringSSLSession *)self secProtocolMetadata];
+  secProtocolMetadata = [(EAPBoringSSLSession *)self secProtocolMetadata];
 
-  if (!v3)
+  if (!secProtocolMetadata)
   {
     goto LABEL_5;
   }
 
-  v4 = [(EAPBoringSSLSession *)self secProtocolMetadata];
+  secProtocolMetadata2 = [(EAPBoringSSLSession *)self secProtocolMetadata];
   eap_key_material = sec_protocol_metadata_get_eap_key_material();
 
   if (eap_key_material)
@@ -937,15 +937,15 @@ LABEL_5:
 - (unsigned)getNegotiatedTLSVersion
 {
   [(EAPBoringSSLSession *)self setSecProtocolMetadata];
-  v3 = [(EAPBoringSSLSession *)self secProtocolMetadata];
+  secProtocolMetadata = [(EAPBoringSSLSession *)self secProtocolMetadata];
 
-  if (!v3)
+  if (!secProtocolMetadata)
   {
     return 0;
   }
 
-  v4 = [(EAPBoringSSLSession *)self secProtocolMetadata];
-  negotiated_tls_protocol_version = sec_protocol_metadata_get_negotiated_tls_protocol_version(v4);
+  secProtocolMetadata2 = [(EAPBoringSSLSession *)self secProtocolMetadata];
+  negotiated_tls_protocol_version = sec_protocol_metadata_get_negotiated_tls_protocol_version(secProtocolMetadata2);
 
   return negotiated_tls_protocol_version;
 }
@@ -953,14 +953,14 @@ LABEL_5:
 - (BOOL)getSessionResumed
 {
   [(EAPBoringSSLSession *)self setSecProtocolMetadata];
-  v3 = [(EAPBoringSSLSession *)self secProtocolMetadata];
+  secProtocolMetadata = [(EAPBoringSSLSession *)self secProtocolMetadata];
 
-  if (!v3)
+  if (!secProtocolMetadata)
   {
     return 0;
   }
 
-  v4 = [(EAPBoringSSLSession *)self secProtocolMetadata];
+  secProtocolMetadata2 = [(EAPBoringSSLSession *)self secProtocolMetadata];
   session_resumed = sec_protocol_metadata_get_session_resumed();
 
   return session_resumed;
@@ -969,9 +969,9 @@ LABEL_5:
 - (id)copyPeerCertificateChain
 {
   [(EAPBoringSSLSession *)self setSecProtocolMetadata];
-  v3 = [(EAPBoringSSLSession *)self secProtocolMetadata];
+  secProtocolMetadata = [(EAPBoringSSLSession *)self secProtocolMetadata];
 
-  if (!v3)
+  if (!secProtocolMetadata)
   {
     return 0;
   }
@@ -982,13 +982,13 @@ LABEL_5:
   v12 = __Block_byref_object_copy_;
   v13 = __Block_byref_object_dispose_;
   v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(EAPBoringSSLSession *)self secProtocolMetadata];
+  secProtocolMetadata2 = [(EAPBoringSSLSession *)self secProtocolMetadata];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __47__EAPBoringSSLSession_copyPeerCertificateChain__block_invoke;
   handler[3] = &unk_278FBDEC0;
   handler[4] = &v9;
-  v5 = sec_protocol_metadata_access_peer_certificate_chain(v4, handler);
+  v5 = sec_protocol_metadata_access_peer_certificate_chain(secProtocolMetadata2, handler);
 
   if (v5 && [v10[5] count])
   {
@@ -1013,50 +1013,50 @@ void __47__EAPBoringSSLSession_copyPeerCertificateChain__block_invoke(uint64_t a
 
 - (int)state
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  state = v2->_state;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  state = selfCopy->_state;
+  objc_sync_exit(selfCopy);
 
   return state;
 }
 
-- (void)setState:(int)a3
+- (void)setState:(int)state
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_state = a3;
+  obj->_state = state;
   objc_sync_exit(obj);
 }
 
 - (int)handshakeStatus
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  handshakeStatus = v2->_handshakeStatus;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  handshakeStatus = selfCopy->_handshakeStatus;
+  objc_sync_exit(selfCopy);
 
   return handshakeStatus;
 }
 
-- (void)setHandshakeStatus:(int)a3
+- (void)setHandshakeStatus:(int)status
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_handshakeStatus = a3;
+  obj->_handshakeStatus = status;
   objc_sync_exit(obj);
 }
 
 - (void)readApplicationData
 {
   objc_initWeak(&location, self);
-  v3 = [(EAPBoringSSLSession *)self connection];
+  connection = [(EAPBoringSSLSession *)self connection];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __42__EAPBoringSSLSession_readApplicationData__block_invoke;
   v4[3] = &unk_278FBDEE8;
   objc_copyWeak(&v5, &location);
-  nw_connection_receive(v3, 0, 1u, v4);
+  nw_connection_receive(connection, 0, 1u, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1134,21 +1134,21 @@ LABEL_10:
 - (void)start
 {
   objc_initWeak(&location, self);
-  v3 = [(EAPBoringSSLSession *)self connection];
+  connection = [(EAPBoringSSLSession *)self connection];
   v7 = MEMORY[0x277D85DD0];
   v8 = 3221225472;
   v9 = __28__EAPBoringSSLSession_start__block_invoke;
   v10 = &unk_278FBDF10;
   objc_copyWeak(&v11, &location);
-  nw_connection_set_state_changed_handler(v3, &v7);
+  nw_connection_set_state_changed_handler(connection, &v7);
 
   v4 = [(EAPBoringSSLSession *)self connection:v7];
-  v5 = [(EAPBoringSSLSession *)self queue];
-  nw_connection_set_queue(v4, v5);
+  queue = [(EAPBoringSSLSession *)self queue];
+  nw_connection_set_queue(v4, queue);
 
   [(EAPBoringSSLSession *)self setState:0];
-  v6 = [(EAPBoringSSLSession *)self connection];
-  nw_connection_start(v6);
+  connection2 = [(EAPBoringSSLSession *)self connection];
+  nw_connection_start(connection2);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -1248,8 +1248,8 @@ LABEL_23:
   v29 = *MEMORY[0x277D85DE8];
   if ([(EAPBoringSSLSession *)self handshakeStatus]== -9841 && ([(EAPBoringSSLSession *)self secTrustCompletionHandler], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v4 = [(EAPBoringSSLSession *)self secTrustCompletionHandler];
-    v4[2](v4, 0);
+    secTrustCompletionHandler = [(EAPBoringSSLSession *)self secTrustCompletionHandler];
+    secTrustCompletionHandler[2](secTrustCompletionHandler, 0);
 
     v5 = EAPLogGetLogHandle();
     v6 = _SC_syslog_os_log_mapping();
@@ -1259,8 +1259,8 @@ LABEL_23:
       _os_log_impl(&dword_249EFB000, v5, v6, "delivered trust evaluation result=failure to TLS protocol", &v25, 2u);
     }
 
-    v7 = [(EAPBoringSSLSession *)self connection];
-    nw_connection_set_state_changed_handler(v7, 0);
+    connection = [(EAPBoringSSLSession *)self connection];
+    nw_connection_set_state_changed_handler(connection, 0);
 
     v8 = EAPLogGetLogHandle();
     v9 = _SC_syslog_os_log_mapping();
@@ -1270,36 +1270,36 @@ LABEL_23:
       _os_log_impl(&dword_249EFB000, v8, v9, "removed network connection state change handler", &v25, 2u);
     }
 
-    v10 = [(EAPBoringSSLSession *)self statusUpdateLock];
-    [v10 lockWhenCondition:0];
+    statusUpdateLock = [(EAPBoringSSLSession *)self statusUpdateLock];
+    [statusUpdateLock lockWhenCondition:0];
 
-    v11 = [(EAPBoringSSLSession *)self handshakeStatus];
-    v12 = [(EAPBoringSSLSession *)self statusUpdateLock];
-    [v12 unlockWithCondition:1];
+    handshakeStatus = [(EAPBoringSSLSession *)self handshakeStatus];
+    statusUpdateLock2 = [(EAPBoringSSLSession *)self statusUpdateLock];
+    [statusUpdateLock2 unlockWithCondition:1];
 
     v13 = EAPLogGetLogHandle();
     v14 = _SC_syslog_os_log_mapping();
     v15 = v13;
     if (os_log_type_enabled(v15, v14))
     {
-      v16 = EAPSecurityErrorString(v11);
+      v16 = EAPSecurityErrorString(handshakeStatus);
       v25 = 136315394;
       v26 = v16;
       v27 = 1024;
-      v28 = v11;
+      v28 = handshakeStatus;
       _os_log_impl(&dword_249EFB000, v15, v14, "[session stopper]: handshake status updated to [%s]:[%d]", &v25, 0x12u);
     }
   }
 
   else
   {
-    v17 = [(EAPBoringSSLSession *)self connection];
+    connection2 = [(EAPBoringSSLSession *)self connection];
 
-    if (v17)
+    if (connection2)
     {
       [(EAPBoringSSLSession *)self setState:3];
-      v18 = [(EAPBoringSSLSession *)self connection];
-      nw_connection_set_state_changed_handler(v18, 0);
+      connection3 = [(EAPBoringSSLSession *)self connection];
+      nw_connection_set_state_changed_handler(connection3, 0);
 
       v19 = EAPLogGetLogHandle();
       v20 = _SC_syslog_os_log_mapping();
@@ -1309,8 +1309,8 @@ LABEL_23:
         _os_log_impl(&dword_249EFB000, v19, v20, "removed network connection state change handler", &v25, 2u);
       }
 
-      v21 = [(EAPBoringSSLSession *)self connection];
-      nw_connection_cancel(v21);
+      connection4 = [(EAPBoringSSLSession *)self connection];
+      nw_connection_cancel(connection4);
 
       v22 = EAPLogGetLogHandle();
       v23 = _SC_syslog_os_log_mapping();

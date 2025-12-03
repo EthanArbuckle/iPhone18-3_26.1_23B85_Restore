@@ -1,6 +1,6 @@
 @interface PHASESpatialMixer
 - (PHASESpatialMixer)init;
-- (PHASESpatialMixer)initWithIdentifier:(id)a3 spatialModelerSends:(id)a4 source:(id)a5 listener:(id)a6 sourceDirectivityModel:(Handle64)a7 listenerDirectivityModel:(Handle64)a8 distanceModel:(Handle64)a9;
+- (PHASESpatialMixer)initWithIdentifier:(id)identifier spatialModelerSends:(id)sends source:(id)source listener:(id)listener sourceDirectivityModel:(Handle64)model listenerDirectivityModel:(Handle64)directivityModel distanceModel:(Handle64)distanceModel;
 - (id).cxx_construct;
 @end
 
@@ -13,26 +13,26 @@
   return 0;
 }
 
-- (PHASESpatialMixer)initWithIdentifier:(id)a3 spatialModelerSends:(id)a4 source:(id)a5 listener:(id)a6 sourceDirectivityModel:(Handle64)a7 listenerDirectivityModel:(Handle64)a8 distanceModel:(Handle64)a9
+- (PHASESpatialMixer)initWithIdentifier:(id)identifier spatialModelerSends:(id)sends source:(id)source listener:(id)listener sourceDirectivityModel:(Handle64)model listenerDirectivityModel:(Handle64)directivityModel distanceModel:(Handle64)distanceModel
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
+  identifierCopy = identifier;
+  sendsCopy = sends;
+  sourceCopy = source;
+  listenerCopy = listener;
   v24.receiver = self;
   v24.super_class = PHASESpatialMixer;
-  v19 = [(PHASEMixer *)&v24 initWithIdentifier:v15];
+  v19 = [(PHASEMixer *)&v24 initWithIdentifier:identifierCopy];
   if (v19)
   {
-    v20 = [MEMORY[0x277CBEA60] arrayWithArray:v16];
+    v20 = [MEMORY[0x277CBEA60] arrayWithArray:sendsCopy];
     spatialModelerSends = v19->_spatialModelerSends;
     v19->_spatialModelerSends = v20;
 
-    objc_storeStrong(&v19->_source, a5);
-    objc_storeStrong(&v19->_listener, a6);
-    v19->_sourceDirectivityModel = a7;
-    v19->_listenerDirectivityModel = a8;
-    v19->_distanceModel = a9;
+    objc_storeStrong(&v19->_source, source);
+    objc_storeStrong(&v19->_listener, listener);
+    v19->_sourceDirectivityModel = model;
+    v19->_listenerDirectivityModel = directivityModel;
+    v19->_distanceModel = distanceModel;
     v22 = v19;
   }
 

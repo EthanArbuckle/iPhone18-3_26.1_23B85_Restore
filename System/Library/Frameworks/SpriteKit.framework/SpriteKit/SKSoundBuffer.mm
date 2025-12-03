@@ -1,5 +1,5 @@
 @interface SKSoundBuffer
-+ (id)bufferWithFileNamed:(id)a3;
++ (id)bufferWithFileNamed:(id)named;
 - (SKSoundBuffer)init;
 - (id)description;
 - (void)dealloc;
@@ -25,9 +25,9 @@
   return v3;
 }
 
-+ (id)bufferWithFileNamed:(id)a3
++ (id)bufferWithFileNamed:(id)named
 {
-  v3 = a3;
+  namedCopy = named;
   v4 = +[SKSoundContext currentContext];
 
   if (!v4)
@@ -37,7 +37,7 @@
 
   if (+[SKSoundBuffer bufferWithFileNamed:]::onceToken == -1)
   {
-    if (!v3)
+    if (!namedCopy)
     {
       goto LABEL_44;
     }
@@ -46,29 +46,29 @@
   else
   {
     +[SKSoundBuffer bufferWithFileNamed:];
-    if (!v3)
+    if (!namedCopy)
     {
       goto LABEL_44;
     }
   }
 
-  if ([v3 isAbsolutePath])
+  if ([namedCopy isAbsolutePath])
   {
-    v3 = v3;
-    v5 = v3;
+    namedCopy = namedCopy;
+    v5 = namedCopy;
     goto LABEL_9;
   }
 
-  v6 = [v3 pathExtension];
-  if (![v6 length])
+  pathExtension = [namedCopy pathExtension];
+  if (![pathExtension length])
   {
-    v7 = [v3 stringByAppendingPathExtension:@"caf"];
+    v7 = [namedCopy stringByAppendingPathExtension:@"caf"];
 
-    v3 = v7;
+    namedCopy = v7;
   }
 
   v8 = SKGetResourceBundle();
-  v5 = [v8 pathForResource:v3 ofType:0];
+  v5 = [v8 pathForResource:namedCopy ofType:0];
 
   if (v5)
   {
@@ -77,14 +77,14 @@ LABEL_9:
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 nonretainedObjectValue];
-      if (v11)
+      nonretainedObjectValue = [v9 nonretainedObjectValue];
+      if (nonretainedObjectValue)
       {
         goto LABEL_11;
       }
     }
 
-    v11 = objc_alloc_init(SKSoundBuffer);
+    nonretainedObjectValue = objc_alloc_init(SKSoundBuffer);
     v13 = [MEMORY[0x277CBEBC0] fileURLWithPath:v5];
     v14 = v13;
     if (!v13)
@@ -150,16 +150,16 @@ LABEL_30:
             alGenBuffers(1, &outExtAudioFile);
             alBufferData(outExtAudioFile, v19, v20, ioNumBytes, v15);
             free(v20);
-            objc_storeStrong(&v11->_path, v5);
-            v11->_bufferId = outExtAudioFile;
-            v11->_duration = inPropertyData;
+            objc_storeStrong(&nonretainedObjectValue->_path, v5);
+            nonretainedObjectValue->_bufferId = outExtAudioFile;
+            nonretainedObjectValue->_duration = inPropertyData;
             v21 = _buffers;
-            v22 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:v11];
-            [v21 setObject:v22 forKey:v11->_path];
+            v22 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:nonretainedObjectValue];
+            [v21 setObject:v22 forKey:nonretainedObjectValue->_path];
 
 LABEL_11:
-            v11 = v11;
-            v12 = v11;
+            nonretainedObjectValue = nonretainedObjectValue;
+            v12 = nonretainedObjectValue;
 LABEL_20:
 
             goto LABEL_45;
@@ -235,14 +235,14 @@ LABEL_20:
               alGenBuffers(1, &buffers);
               alBufferData(buffers, 4355, v25, v24, v15);
               free(v25);
-              objc_storeStrong(&v11->_path, v5);
-              v11->_bufferId = buffers;
-              v11->_duration = v31;
+              objc_storeStrong(&nonretainedObjectValue->_path, v5);
+              nonretainedObjectValue->_bufferId = buffers;
+              nonretainedObjectValue->_duration = v31;
               v26 = _buffers;
-              v27 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:v11];
-              [v26 setObject:v27 forKey:v11->_path];
+              v27 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:nonretainedObjectValue];
+              [v26 setObject:v27 forKey:nonretainedObjectValue->_path];
 
-              v12 = v11;
+              v12 = nonretainedObjectValue;
               goto LABEL_19;
             }
 
@@ -282,8 +282,8 @@ void __37__SKSoundBuffer_bufferWithFileNamed___block_invoke()
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NSString *)self->_path lastPathComponent];
-  v5 = [v3 stringWithFormat:@"file:'%@' duration:%.2f bufferId:%d", v4, *&self->_duration, self->_bufferId];
+  lastPathComponent = [(NSString *)self->_path lastPathComponent];
+  v5 = [v3 stringWithFormat:@"file:'%@' duration:%.2f bufferId:%d", lastPathComponent, *&self->_duration, self->_bufferId];
 
   return v5;
 }

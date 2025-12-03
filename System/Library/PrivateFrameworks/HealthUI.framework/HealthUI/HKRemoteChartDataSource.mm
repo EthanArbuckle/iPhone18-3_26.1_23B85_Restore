@@ -1,9 +1,9 @@
 @interface HKRemoteChartDataSource
-- (HKGraphSeriesDataBlockPath)blockPathForX:(SEL)a3 zoom:(id)a4 resolution:(int64_t)a5;
+- (HKGraphSeriesDataBlockPath)blockPathForX:(SEL)x zoom:(id)zoom resolution:(int64_t)resolution;
 - (HKRemoteChartDataSource)init;
-- (id)cachedBlockForPath:(HKGraphSeriesDataBlockPath *)a3 context:(id)a4;
+- (id)cachedBlockForPath:(HKGraphSeriesDataBlockPath *)path context:(id)context;
 - (void)invalidateCache;
-- (void)setDataForTimeScope:(int64_t)a3 seriesData:(id)a4 dataSourceForMapping:(id)a5 seriesDataSourceContext:(id)a6;
+- (void)setDataForTimeScope:(int64_t)scope seriesData:(id)data dataSourceForMapping:(id)mapping seriesDataSourceContext:(id)context;
 @end
 
 @implementation HKRemoteChartDataSource
@@ -23,50 +23,50 @@
   return v2;
 }
 
-- (void)setDataForTimeScope:(int64_t)a3 seriesData:(id)a4 dataSourceForMapping:(id)a5 seriesDataSourceContext:(id)a6
+- (void)setDataForTimeScope:(int64_t)scope seriesData:(id)data dataSourceForMapping:(id)mapping seriesDataSourceContext:(id)context
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v15 = [[_HKRemoteChartDataEntry alloc] initWithSeriesData:v12 dataSourceForMapping:v11 seriesDataSourceContext:v10];
+  contextCopy = context;
+  mappingCopy = mapping;
+  dataCopy = data;
+  v15 = [[_HKRemoteChartDataEntry alloc] initWithSeriesData:dataCopy dataSourceForMapping:mappingCopy seriesDataSourceContext:contextCopy];
 
-  v13 = [(HKRemoteChartDataSource *)self dataBlocksForTimescopes];
-  v14 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v13 setObject:v15 forKeyedSubscript:v14];
+  dataBlocksForTimescopes = [(HKRemoteChartDataSource *)self dataBlocksForTimescopes];
+  v14 = [MEMORY[0x1E696AD98] numberWithInteger:scope];
+  [dataBlocksForTimescopes setObject:v15 forKeyedSubscript:v14];
 }
 
-- (HKGraphSeriesDataBlockPath)blockPathForX:(SEL)a3 zoom:(id)a4 resolution:(int64_t)a5
+- (HKGraphSeriesDataBlockPath)blockPathForX:(SEL)x zoom:(id)zoom resolution:(int64_t)resolution
 {
   retstr->index = 0;
-  retstr->zoom = a5;
+  retstr->zoom = resolution;
   retstr->resolution = 0;
   return self;
 }
 
-- (id)cachedBlockForPath:(HKGraphSeriesDataBlockPath *)a3 context:(id)a4
+- (id)cachedBlockForPath:(HKGraphSeriesDataBlockPath *)path context:(id)context
 {
-  v5 = [(HKRemoteChartDataSource *)self dataBlocksForTimescopes:a3];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3->zoom];
+  v5 = [(HKRemoteChartDataSource *)self dataBlocksForTimescopes:path];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:path->zoom];
   v7 = [v5 objectForKeyedSubscript:v6];
 
-  if (v7 && !a3->index)
+  if (v7 && !path->index)
   {
-    v8 = [v7 seriesDataWithMappingApplied];
+    seriesDataWithMappingApplied = [v7 seriesDataWithMappingApplied];
   }
 
   else
   {
-    v8 = objc_alloc_init(HKGraphSeriesDataBlock);
-    [(HKGraphSeriesDataBlock *)v8 setChartPoints:MEMORY[0x1E695E0F0]];
+    seriesDataWithMappingApplied = objc_alloc_init(HKGraphSeriesDataBlock);
+    [(HKGraphSeriesDataBlock *)seriesDataWithMappingApplied setChartPoints:MEMORY[0x1E695E0F0]];
   }
 
-  return v8;
+  return seriesDataWithMappingApplied;
 }
 
 - (void)invalidateCache
 {
-  v3 = [(HKGraphSeriesDataSource *)self delegate];
-  [v3 dataSourceDidUpdateCache:self];
+  delegate = [(HKGraphSeriesDataSource *)self delegate];
+  [delegate dataSourceDidUpdateCache:self];
 }
 
 @end

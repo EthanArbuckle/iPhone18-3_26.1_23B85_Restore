@@ -1,31 +1,31 @@
 @interface DTGPUAGXCounterSource
-- (BOOL)request:(unint64_t)a3 vendorFeatures:(id)a4;
-- (DTGPUAGXCounterSource)initWithSource:(id)a3 sourceGroup:(id)a4 selects:(id)a5 sourceIndex:(unsigned int)a6;
+- (BOOL)request:(unint64_t)request vendorFeatures:(id)features;
+- (DTGPUAGXCounterSource)initWithSource:(id)source sourceGroup:(id)group selects:(id)selects sourceIndex:(unsigned int)index;
 - (id).cxx_construct;
 - (void)dealloc;
 - (void)pullAndDrainCounters;
-- (void)sampleAPS:(id)a3;
-- (void)sampleCounters:(unint64_t)a3 callback:(id)a4;
+- (void)sampleAPS:(id)s;
+- (void)sampleCounters:(unint64_t)counters callback:(id)callback;
 - (void)stop;
 @end
 
 @implementation DTGPUAGXCounterSource
 
-- (DTGPUAGXCounterSource)initWithSource:(id)a3 sourceGroup:(id)a4 selects:(id)a5 sourceIndex:(unsigned int)a6
+- (DTGPUAGXCounterSource)initWithSource:(id)source sourceGroup:(id)group selects:(id)selects sourceIndex:(unsigned int)index
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  sourceCopy = source;
+  groupCopy = group;
+  selectsCopy = selects;
   v19.receiver = self;
   v19.super_class = DTGPUAGXCounterSource;
   v14 = [(DTGPUAGXCounterSource *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_source, a3);
-    objc_storeStrong(&v15->_sourceGroup, a4);
-    objc_storeStrong(&v15->_selects, a5);
-    v15->_sourceIndex = a6;
+    objc_storeStrong(&v14->_source, source);
+    objc_storeStrong(&v15->_sourceGroup, group);
+    objc_storeStrong(&v15->_selects, selects);
+    v15->_sourceIndex = index;
     pullTimer = v15->_pullTimer;
     v15->_pullTimer = 0;
 
@@ -44,31 +44,31 @@
   [(DTGPUAGXCounterSource *)&v3 dealloc];
 }
 
-- (BOOL)request:(unint64_t)a3 vendorFeatures:(id)a4
+- (BOOL)request:(unint64_t)request vendorFeatures:(id)features
 {
   v70 = *MEMORY[0x277D85DE8];
-  v49 = a4;
+  featuresCopy = features;
   if (self->_source && self->_sourceGroup)
   {
     v6 = [MEMORY[0x277CBEB18] arrayWithArray:self->_selects];
-    v46 = a3;
+    requestCopy = request;
     v47 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:&unk_285A37038];
-    v7 = [(GPURawCounterSource *)self->_source name];
+    name = [(GPURawCounterSource *)self->_source name];
     val = self;
-    if ([v7 hasPrefix:@"RDE"])
+    if ([name hasPrefix:@"RDE"])
     {
-      v8 = [v49 objectForKeyedSubscript:@"ShaderProfiler"];
-      v9 = [v8 unsignedIntegerValue];
+      v8 = [featuresCopy objectForKeyedSubscript:@"ShaderProfiler"];
+      unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-      if (v9)
+      if (unsignedIntegerValue)
       {
         v10 = objc_opt_new();
         v61 = 0u;
         v62 = 0u;
         v59 = 0u;
         v60 = 0u;
-        v11 = [(GPURawCounterSource *)self->_source availableCounters];
-        v12 = [v11 countByEnumeratingWithState:&v59 objects:v69 count:16];
+        availableCounters = [(GPURawCounterSource *)self->_source availableCounters];
+        v12 = [availableCounters countByEnumeratingWithState:&v59 objects:v69 count:16];
         if (v12)
         {
           v13 = *v60;
@@ -78,21 +78,21 @@
             {
               if (*v60 != v13)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(availableCounters);
               }
 
               v15 = *(*(&v59 + 1) + 8 * i);
-              v16 = [v15 name];
-              v17 = [v16 rangeOfString:@"GRC_SHADER_PROFILER_DATA_"] == 0;
+              name2 = [v15 name];
+              v17 = [name2 rangeOfString:@"GRC_SHADER_PROFILER_DATA_"] == 0;
 
               if (v17)
               {
-                v18 = [v15 name];
-                [v10 addObject:v18];
+                name3 = [v15 name];
+                [v10 addObject:name3];
               }
             }
 
-            v12 = [v11 countByEnumeratingWithState:&v59 objects:v69 count:16];
+            v12 = [availableCounters countByEnumeratingWithState:&v59 objects:v69 count:16];
           }
 
           while (v12);
@@ -143,14 +143,14 @@
     }
 
     [(GPURawCounterSource *)self->_source setOptions:v47];
-    v25 = [(GPURawCounterSource *)self->_source name];
-    v26 = [v25 containsString:@"BMPR"];
+    name4 = [(GPURawCounterSource *)self->_source name];
+    v26 = [name4 containsString:@"BMPR"];
 
     if (v26)
     {
       v27 = MEMORY[0x277D0AF30];
       v66 = @"Period";
-      v28 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:(v46 / 125.0 * 3.0)];
+      v28 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:(requestCopy / 125.0 * 3.0)];
       v67 = v28;
       v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v67 forKeys:&v66 count:1];
       [v27 selectWithName:@"TimerNClock" options:v29];
@@ -160,7 +160,7 @@
     {
       v30 = MEMORY[0x277D0AF30];
       v64 = @"Period";
-      v28 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v46];
+      v28 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:requestCopy];
       v65 = v28;
       v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v65 forKeys:&v64 count:1];
       [v30 selectWithName:@"TimerFixed" options:v29];
@@ -318,9 +318,9 @@
   }
 }
 
-- (void)sampleCounters:(unint64_t)a3 callback:(id)a4
+- (void)sampleCounters:(unint64_t)counters callback:(id)callback
 {
-  v5 = a4;
+  callbackCopy = callback;
   [(NSLock *)self->_pullLock lock];
   memset(v36, 0, sizeof(v36));
   sub_247FCD8A8(v36, self->_counterBuffers.__begin_, self->_counterBuffers.__end_, 0xAAAAAAAAAAAAAAABLL * ((self->_counterBuffers.__end_ - self->_counterBuffers.__begin_) >> 3));
@@ -451,13 +451,13 @@ LABEL_24:
               {
                 if (v29 == 7)
                 {
-                  (*(v5 + 2))(v5, v25 + 6, v26 >> 3, *(v25 + 1), 1, i, self->_sourceIndex);
+                  (*(callbackCopy + 2))(callbackCopy, v25 + 6, v26 >> 3, *(v25 + 1), 1, i, self->_sourceIndex);
                 }
               }
 
               else if (v28 == [(NSArray *)self->_selects count])
               {
-                (*(v5 + 2))(v5, v25 + 1, [(NSArray *)self->_selects count], *(v25 + 1), 0, i, self->_sourceIndex);
+                (*(callbackCopy + 2))(callbackCopy, v25 + 1, [(NSArray *)self->_selects count], *(v25 + 1), 0, i, self->_sourceIndex);
               }
             }
 
@@ -484,9 +484,9 @@ LABEL_24:
   sub_247FCDB30(&__p);
 }
 
-- (void)sampleAPS:(id)a3
+- (void)sampleAPS:(id)s
 {
-  v4 = a3;
+  sCopy = s;
   [(NSLock *)self->_pullLock lock];
   memset(v39, 0, sizeof(v39));
   sub_247FCD8A8(v39, self->_counterBuffers.__begin_, self->_counterBuffers.__end_, 0xAAAAAAAAAAAAAAABLL * ((self->_counterBuffers.__end_ - self->_counterBuffers.__begin_) >> 3));
@@ -632,7 +632,7 @@ LABEL_25:
     }
 
 LABEL_35:
-    v4[2](v4, __p, v32 - __p, 3, i, self->_sourceIndex);
+    sCopy[2](sCopy, __p, v32 - __p, 3, i, self->_sourceIndex);
     if (__p)
     {
       v32 = __p;

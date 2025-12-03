@@ -3,36 +3,36 @@
 + (void)deleteInteractionsWithGroupIdentifier:(NSString *)groupIdentifier completion:(void *)completion;
 + (void)deleteInteractionsWithIdentifiers:(NSArray *)identifiers completion:(void *)completion;
 + (void)initialize;
-- (BOOL)_intents_enumerateObjectsOfClass:(Class)a3 withBlock:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_intents_enumerateObjectsOfClass:(Class)class withBlock:(id)block;
+- (BOOL)isEqual:(id)equal;
 - (INImage)_keyImage;
-- (INInteraction)initWithCoder:(id)a3;
+- (INInteraction)initWithCoder:(id)coder;
 - (INInteraction)initWithIntent:(INIntent *)intent response:(INIntentResponse *)response;
 - (NSDate)date;
 - (double)duration;
 - (id)_dictionaryRepresentation;
-- (id)_initWithIntent:(id)a3 response:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_initWithIntent:(id)intent response:(id)response;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (id)parameterValueForParameter:(INParameter *)parameter;
-- (int64_t)_compareSubProducerOne:(id)a3 subProducerTwo:(id)a4;
+- (int64_t)_compareSubProducerOne:(id)one subProducerTwo:(id)two;
 - (int64_t)_indexingHash;
 - (unint64_t)hash;
 - (void)_commonInit;
-- (void)_donateInteractionWithBundleId:(id)a3 completion:(id)a4;
-- (void)_injectProxiesForImages:(id)a3 completion:(id)a4;
-- (void)_setDonatedBySiri:(BOOL)a3;
+- (void)_donateInteractionWithBundleId:(id)id completion:(id)completion;
+- (void)_injectProxiesForImages:(id)images completion:(id)completion;
+- (void)_setDonatedBySiri:(BOOL)siri;
 - (void)donateInteractionWithCompletion:(void *)completion;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDate:(id)a3;
-- (void)setDuration:(double)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDate:(id)date;
+- (void)setDuration:(double)duration;
 @end
 
 @implementation INInteraction
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && INLogInitIfNeeded_once != -1)
+  if (objc_opt_class() == self && INLogInitIfNeeded_once != -1)
   {
 
     dispatch_once(&INLogInitIfNeeded_once, &__block_literal_global_72043);
@@ -42,15 +42,15 @@
 - (void)_commonInit
 {
   v3 = objc_alloc(MEMORY[0x1E696AB80]);
-  v4 = [MEMORY[0x1E695DF00] date];
-  v5 = [v3 initWithStartDate:v4 duration:0.0];
+  date = [MEMORY[0x1E695DF00] date];
+  v5 = [v3 initWithStartDate:date duration:0.0];
   dateInterval = self->_dateInterval;
   self->_dateInterval = v5;
 
-  v7 = [MEMORY[0x1E696AFB0] UUID];
-  v8 = [v7 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
   identifier = self->_identifier;
-  self->_identifier = v8;
+  self->_identifier = uUIDString;
 
   self->_donatedBySiri = 0;
 }
@@ -70,71 +70,71 @@
   v27[0] = intent;
   v26[1] = @"intentResponse";
   intentResponse = self->_intentResponse;
-  v5 = intentResponse;
+  null = intentResponse;
   if (!intentResponse)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v5;
-  v27[1] = v5;
+  v21 = null;
+  v27[1] = null;
   v26[2] = @"intentHandlingStatus";
-  v6 = [(INInteraction *)self intentHandlingStatus];
-  v7 = v6;
-  if (v6 <= INIntentHandlingStatusUserConfirmationRequired)
+  intentHandlingStatus = [(INInteraction *)self intentHandlingStatus];
+  v7 = intentHandlingStatus;
+  if (intentHandlingStatus <= INIntentHandlingStatusUserConfirmationRequired)
   {
-    v8 = off_1E727E068[v6];
+    null2 = off_1E727E068[intentHandlingStatus];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v8;
-  v27[2] = v8;
+  v24 = null2;
+  v27[2] = null2;
   v26[3] = @"direction";
-  v9 = [(INInteraction *)self direction];
-  v10 = v9;
-  if (v9 <= INInteractionDirectionIncoming)
+  direction = [(INInteraction *)self direction];
+  v10 = direction;
+  if (direction <= INInteractionDirectionIncoming)
   {
-    v11 = off_1E727E0A0[v9];
+    null3 = off_1E727E0A0[direction];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23 = v11;
-  v27[3] = v11;
+  v23 = null3;
+  v27[3] = null3;
   v26[4] = @"dateInterval";
   dateInterval = self->_dateInterval;
-  v13 = dateInterval;
+  null4 = dateInterval;
   if (!dateInterval)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[4] = v13;
+  v27[4] = null4;
   v26[5] = @"identifier";
   identifier = self->_identifier;
-  v15 = identifier;
+  null5 = identifier;
   if (!identifier)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[5] = v15;
+  v27[5] = null5;
   v26[6] = @"groupIdentifier";
   groupIdentifier = self->_groupIdentifier;
-  v17 = groupIdentifier;
+  null6 = groupIdentifier;
   if (!groupIdentifier)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[6] = v17;
+  v27[6] = null6;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:7];
   if (groupIdentifier)
   {
@@ -188,65 +188,65 @@ LABEL_20:
   return v18;
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
-  v5 = [(INInteraction *)self dateInterval];
-  v6 = [v5 startDate];
-  v7 = v6;
-  if (v6)
+  dateInterval = [(INInteraction *)self dateInterval];
+  startDate = [dateInterval startDate];
+  v7 = startDate;
+  if (startDate)
   {
-    v8 = v6;
+    date = startDate;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
   }
 
-  v10 = v8;
+  v10 = date;
 
-  v9 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v10 duration:a3];
+  v9 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v10 duration:duration];
   [(INInteraction *)self setDateInterval:v9];
 }
 
 - (double)duration
 {
-  v2 = [(INInteraction *)self dateInterval];
-  [v2 duration];
+  dateInterval = [(INInteraction *)self dateInterval];
+  [dateInterval duration];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
   v4 = MEMORY[0x1E696AB80];
-  v5 = a3;
+  dateCopy = date;
   v6 = [v4 alloc];
-  v7 = [(INInteraction *)self dateInterval];
-  [v7 duration];
-  v8 = [v6 initWithStartDate:v5 duration:?];
+  dateInterval = [(INInteraction *)self dateInterval];
+  [dateInterval duration];
+  v8 = [v6 initWithStartDate:dateCopy duration:?];
 
   [(INInteraction *)self setDateInterval:v8];
 }
 
 - (NSDate)date
 {
-  v2 = [(INInteraction *)self dateInterval];
-  v3 = [v2 startDate];
+  dateInterval = [(INInteraction *)self dateInterval];
+  startDate = [dateInterval startDate];
 
-  return v3;
+  return startDate;
 }
 
 - (id)parameterValueForParameter:(INParameter *)parameter
 {
   v4 = parameter;
   [(INParameter *)v4 parameterClass];
-  v5 = [(INInteraction *)self intent];
-  v6 = [(INInteraction *)self intentResponse];
+  intent = [(INInteraction *)self intent];
+  intentResponse = [(INInteraction *)self intentResponse];
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(INInteraction *)self intent];
+    intent2 = [(INInteraction *)self intent];
   }
 
   else
@@ -256,13 +256,13 @@ LABEL_20:
       goto LABEL_7;
     }
 
-    v7 = [(INInteraction *)self intentResponse];
+    intent2 = [(INInteraction *)self intentResponse];
   }
 
-  v8 = v7;
-  if (v7)
+  v8 = intent2;
+  if (intent2)
   {
-    v9 = [(INParameter *)v4 _parameterValueForParameterizedObject:v7];
+    v9 = [(INParameter *)v4 _parameterValueForParameterizedObject:intent2];
 
     goto LABEL_8;
   }
@@ -276,20 +276,20 @@ LABEL_8:
 
 - (int64_t)_indexingHash
 {
-  v2 = [(INInteraction *)self intent];
-  v3 = [v2 _indexingHash];
+  intent = [(INInteraction *)self intent];
+  _indexingHash = [intent _indexingHash];
 
-  return v3;
+  return _indexingHash;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INInteraction;
   v6 = [(INInteraction *)&v11 description];
-  v7 = [(INInteraction *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INInteraction *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
@@ -314,10 +314,10 @@ LABEL_8:
   return v11 ^ v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -327,7 +327,7 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       identifier = self->_identifier;
       v13 = 0;
       if (identifier == v5->_identifier || [(NSString *)identifier isEqual:?])
@@ -369,46 +369,46 @@ LABEL_8:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(INInteraction *)self intent];
-  v7 = [(INInteraction *)self intentResponse];
-  v8 = [v5 initWithIntent:v6 response:v7];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  intent = [(INInteraction *)self intent];
+  intentResponse = [(INInteraction *)self intentResponse];
+  v8 = [v5 initWithIntent:intent response:intentResponse];
 
   if (v8)
   {
-    v9 = [(INInteraction *)self identifier];
-    [v8 setIdentifier:v9];
+    identifier = [(INInteraction *)self identifier];
+    [v8 setIdentifier:identifier];
 
-    v10 = [(INInteraction *)self dateInterval];
-    [v8 setDateInterval:v10];
+    dateInterval = [(INInteraction *)self dateInterval];
+    [v8 setDateInterval:dateInterval];
 
-    v11 = [(INInteraction *)self groupIdentifier];
-    [v8 setGroupIdentifier:v11];
+    groupIdentifier = [(INInteraction *)self groupIdentifier];
+    [v8 setGroupIdentifier:groupIdentifier];
 
     [v8 setDirection:{-[INInteraction direction](self, "direction")}];
     [v8 setIntentHandlingStatus:{-[INInteraction intentHandlingStatus](self, "intentHandlingStatus")}];
     v8[24] = [(INInteraction *)self _donatedBySiri];
-    v12 = [(INInteraction *)self _contextExtensionUUID];
-    [v8 _setContextExtensionUUID:v12];
+    _contextExtensionUUID = [(INInteraction *)self _contextExtensionUUID];
+    [v8 _setContextExtensionUUID:_contextExtensionUUID];
 
-    v13 = [(INInteraction *)self _snippet];
-    v14 = [v13 copyWithZone:a3];
+    _snippet = [(INInteraction *)self _snippet];
+    v14 = [_snippet copyWithZone:zone];
     [v8 _setSnippet:v14];
   }
 
   return v8;
 }
 
-- (int64_t)_compareSubProducerOne:(id)a3 subProducerTwo:(id)a4
+- (int64_t)_compareSubProducerOne:(id)one subProducerTwo:(id)two
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 _keyImage];
-  v8 = [v6 _keyImage];
+  oneCopy = one;
+  twoCopy = two;
+  _keyImage = [oneCopy _keyImage];
+  _keyImage2 = [twoCopy _keyImage];
 
-  if (v7 && v8)
+  if (_keyImage && _keyImage2)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -424,7 +424,7 @@ LABEL_8:
 
   else
   {
-    if (v8)
+    if (_keyImage2)
     {
       v10 = -1;
     }
@@ -434,7 +434,7 @@ LABEL_8:
       v10 = 0;
     }
 
-    if (v7)
+    if (_keyImage)
     {
       v9 = 1;
     }
@@ -450,29 +450,29 @@ LABEL_8:
 
 - (INImage)_keyImage
 {
-  v3 = [(INInteraction *)self intentResponse];
-  v4 = [v3 _keyImage];
-  v5 = v4;
-  if (v4)
+  intentResponse = [(INInteraction *)self intentResponse];
+  _keyImage = [intentResponse _keyImage];
+  v5 = _keyImage;
+  if (_keyImage)
   {
-    v6 = v4;
+    _keyImage2 = _keyImage;
   }
 
   else
   {
-    v7 = [(INInteraction *)self intent];
-    v6 = [v7 _keyImage];
+    intent = [(INInteraction *)self intent];
+    _keyImage2 = [intent _keyImage];
   }
 
-  return v6;
+  return _keyImage2;
 }
 
-- (void)_injectProxiesForImages:(id)a3 completion:(id)a4
+- (void)_injectProxiesForImages:(id)images completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(INInteraction *)self intent];
-  v9 = [(INInteraction *)self intentResponse];
+  imagesCopy = images;
+  completionCopy = completion;
+  intent = [(INInteraction *)self intent];
+  intentResponse = [(INInteraction *)self intentResponse];
   v10 = [(INInteraction *)self copy];
   v11 = objc_alloc_init(MEMORY[0x1E696ADC8]);
   v12 = INImageProxyInjectionQueue();
@@ -485,15 +485,15 @@ LABEL_8:
   v20[1] = 3221225472;
   v20[2] = __52__INInteraction__injectProxiesForImages_completion___block_invoke;
   v20[3] = &unk_1E7287140;
-  v14 = v7;
+  v14 = completionCopy;
   v20[4] = v10;
   v21 = v14;
   v15 = [v13 blockOperationWithBlock:v20];
-  if (v8)
+  if (intent)
   {
     v16 = objc_alloc_init(INImageProxyInjectionOperation);
-    [(INImageProxyInjectionOperation *)v16 setInjector:v8];
-    [(INImageProxyInjectionOperation *)v16 setImageProxyRequestBlock:v6];
+    [(INImageProxyInjectionOperation *)v16 setInjector:intent];
+    [(INImageProxyInjectionOperation *)v16 setImageProxyRequestBlock:imagesCopy];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __52__INInteraction__injectProxiesForImages_completion___block_invoke_2;
@@ -504,11 +504,11 @@ LABEL_8:
     [v11 addOperation:v16];
   }
 
-  if (v9)
+  if (intentResponse)
   {
     v17 = objc_alloc_init(INImageProxyInjectionOperation);
-    [(INImageProxyInjectionOperation *)v17 setInjector:v9];
-    [(INImageProxyInjectionOperation *)v17 setImageProxyRequestBlock:v6];
+    [(INImageProxyInjectionOperation *)v17 setInjector:intentResponse];
+    [(INImageProxyInjectionOperation *)v17 setImageProxyRequestBlock:imagesCopy];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __52__INInteraction__injectProxiesForImages_completion___block_invoke_3;
@@ -543,12 +543,12 @@ uint64_t __52__INInteraction__injectProxiesForImages_completion___block_invoke_3
   return result;
 }
 
-- (void)_donateInteractionWithBundleId:(id)a3 completion:(id)a4
+- (void)_donateInteractionWithBundleId:(id)id completion:(id)completion
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [getCSSearchableIndexClass() defaultSearchableIndex];
+  idCopy = id;
+  completionCopy = completion;
+  defaultSearchableIndex = [getCSSearchableIndexClass() defaultSearchableIndex];
   if (!self->_donatedBySiri)
   {
     self->_donatedBySiri = INThisProcessIsDonatingBySiri();
@@ -557,18 +557,18 @@ uint64_t __52__INInteraction__injectProxiesForImages_completion___block_invoke_3
   v9 = INInteractionWithTypedInteraction(self);
   if (![v9 direction])
   {
-    v10 = [v9 intent];
-    [v9 setDirection:{objc_msgSend(v10, "_preferredInteractionDirection")}];
+    intent = [v9 intent];
+    [v9 setDirection:{objc_msgSend(intent, "_preferredInteractionDirection")}];
   }
 
-  v11 = [v9 intent];
-  v12 = [v11 _className];
+  intent2 = [v9 intent];
+  _className = [intent2 _className];
 
-  v13 = [v9 _contextExtensionUUID];
+  _contextExtensionUUID = [v9 _contextExtensionUUID];
 
-  if (!v13)
+  if (!_contextExtensionUUID)
   {
-    v14 = [INIntent _sharedExtensionContextUUIDForIntentClassName:v12];
+    v14 = [INIntent _sharedExtensionContextUUIDForIntentClassName:_className];
     [v9 _setContextExtensionUUID:v14];
   }
 
@@ -576,11 +576,11 @@ uint64_t __52__INInteraction__injectProxiesForImages_completion___block_invoke_3
   if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
   {
     v16 = v15;
-    v17 = [(INInteraction *)self _donatedBySiri];
+    _donatedBySiri = [(INInteraction *)self _donatedBySiri];
     v18 = @"NO";
     v35 = "[INInteraction _donateInteractionWithBundleId:completion:]";
     *buf = 136315650;
-    if (v17)
+    if (_donatedBySiri)
     {
       v18 = @"YES";
     }
@@ -592,8 +592,8 @@ uint64_t __52__INInteraction__injectProxiesForImages_completion___block_invoke_3
     _os_log_impl(&dword_18E991000, v16, OS_LOG_TYPE_INFO, "%s Donating on behalf of Siri: %{public}@ for %@", buf, 0x20u);
   }
 
-  v19 = [v9 intent];
-  [v19 _intents_preferredScaledImageSize];
+  intent3 = [v9 intent];
+  [intent3 _intents_preferredScaledImageSize];
   v21 = v20;
   v23 = v22;
   v29[0] = MEMORY[0x1E69E9820];
@@ -601,14 +601,14 @@ uint64_t __52__INInteraction__injectProxiesForImages_completion___block_invoke_3
   v29[2] = __59__INInteraction__donateInteractionWithBundleId_completion___block_invoke;
   v29[3] = &unk_1E727DFF8;
   v29[4] = self;
-  v30 = v12;
-  v31 = v6;
-  v32 = v8;
-  v33 = v7;
-  v24 = v7;
-  v25 = v8;
-  v26 = v6;
-  v27 = v12;
+  v30 = _className;
+  v31 = idCopy;
+  v32 = defaultSearchableIndex;
+  v33 = completionCopy;
+  v24 = completionCopy;
+  v25 = defaultSearchableIndex;
+  v26 = idCopy;
+  v27 = _className;
   INImageProxyInjectionUtilitiesInjectProxiesIntoObjectWithContinuationHandler(v9, 0x15u, 0, 1, 0, v29, v21, v23);
 
   v28 = *MEMORY[0x1E69E9840];
@@ -1205,65 +1205,65 @@ LABEL_13:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setDonatedBySiri:(BOOL)a3
+- (void)_setDonatedBySiri:(BOOL)siri
 {
   if (INThisProcessIsSystemProcess_onceToken != -1)
   {
     dispatch_once(&INThisProcessIsSystemProcess_onceToken, &__block_literal_global_48);
   }
 
-  self->_donatedBySiri = INThisProcessIsSystemProcess_isSystemProcess & a3;
+  self->_donatedBySiri = INThisProcessIsSystemProcess_isSystemProcess & siri;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   intent = self->_intent;
-  v5 = a3;
-  [v5 encodeObject:intent forKey:@"intent"];
-  [v5 encodeObject:self->_intentResponse forKey:@"intentResponse"];
-  [v5 encodeObject:self->_contextExtensionUUID forKey:@"_contextExtensionUUID"];
-  [v5 encodeInteger:self->_direction forKey:@"direction"];
-  [v5 encodeObject:self->_dateInterval forKey:@"dateInterval"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_groupIdentifier forKey:@"groupIdentifier"];
-  [v5 encodeInteger:self->_intentHandlingStatus forKey:@"intentHandlingStatus"];
-  [v5 encodeBool:self->_donatedBySiri forKey:@"_donatedBySiri"];
-  [v5 encodeObject:self->_snippet forKey:@"_snippet"];
+  coderCopy = coder;
+  [coderCopy encodeObject:intent forKey:@"intent"];
+  [coderCopy encodeObject:self->_intentResponse forKey:@"intentResponse"];
+  [coderCopy encodeObject:self->_contextExtensionUUID forKey:@"_contextExtensionUUID"];
+  [coderCopy encodeInteger:self->_direction forKey:@"direction"];
+  [coderCopy encodeObject:self->_dateInterval forKey:@"dateInterval"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_groupIdentifier forKey:@"groupIdentifier"];
+  [coderCopy encodeInteger:self->_intentHandlingStatus forKey:@"intentHandlingStatus"];
+  [coderCopy encodeBool:self->_donatedBySiri forKey:@"_donatedBySiri"];
+  [coderCopy encodeObject:self->_snippet forKey:@"_snippet"];
 }
 
-- (INInteraction)initWithCoder:(id)a3
+- (INInteraction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(INInteraction *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(INInteraction *)self _init];
+  if (_init)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"intent"];
-    intent = v5->_intent;
-    v5->_intent = v6;
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intent"];
+    intent = _init->_intent;
+    _init->_intent = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"intentResponse"];
-    intentResponse = v5->_intentResponse;
-    v5->_intentResponse = v8;
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intentResponse"];
+    intentResponse = _init->_intentResponse;
+    _init->_intentResponse = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_contextExtensionUUID"];
-    contextExtensionUUID = v5->_contextExtensionUUID;
-    v5->_contextExtensionUUID = v10;
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_contextExtensionUUID"];
+    contextExtensionUUID = _init->_contextExtensionUUID;
+    _init->_contextExtensionUUID = v10;
 
-    v5->_direction = [v4 decodeIntegerForKey:@"direction"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
-    dateInterval = v5->_dateInterval;
-    v5->_dateInterval = v12;
+    _init->_direction = [coderCopy decodeIntegerForKey:@"direction"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
+    dateInterval = _init->_dateInterval;
+    _init->_dateInterval = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-    identifier = v5->_identifier;
-    v5->_identifier = v14;
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    identifier = _init->_identifier;
+    _init->_identifier = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupIdentifier"];
-    groupIdentifier = v5->_groupIdentifier;
-    v5->_groupIdentifier = v16;
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupIdentifier"];
+    groupIdentifier = _init->_groupIdentifier;
+    _init->_groupIdentifier = v16;
 
-    v5->_intentHandlingStatus = [v4 decodeIntegerForKey:@"intentHandlingStatus"];
-    v5->_donatedBySiri = [v4 decodeBoolForKey:@"_donatedBySiri"];
+    _init->_intentHandlingStatus = [coderCopy decodeIntegerForKey:@"intentHandlingStatus"];
+    _init->_donatedBySiri = [coderCopy decodeBoolForKey:@"_donatedBySiri"];
     v24 = 0;
     v25 = &v24;
     v26 = 0x2050000000;
@@ -1284,13 +1284,13 @@ LABEL_13:
     _Block_object_dispose(&v24, 8);
     if (v18)
     {
-      v20 = [v4 decodeObjectOfClass:v18 forKey:@"_snippet"];
-      snippet = v5->_snippet;
-      v5->_snippet = v20;
+      v20 = [coderCopy decodeObjectOfClass:v18 forKey:@"_snippet"];
+      snippet = _init->_snippet;
+      _init->_snippet = v20;
     }
   }
 
-  return v5;
+  return _init;
 }
 
 - (INInteraction)initWithIntent:(INIntent *)intent response:(INIntentResponse *)response
@@ -1332,10 +1332,10 @@ LABEL_13:
   return v9;
 }
 
-- (id)_initWithIntent:(id)a3 response:(id)a4
+- (id)_initWithIntent:(id)intent response:(id)response
 {
-  v7 = a3;
-  v8 = a4;
+  intentCopy = intent;
+  responseCopy = response;
   v12.receiver = self;
   v12.super_class = INInteraction;
   v9 = [(INInteraction *)&v12 init];
@@ -1343,9 +1343,9 @@ LABEL_13:
   if (v9)
   {
     [(INInteraction *)v9 _commonInit];
-    objc_storeStrong(&v10->_intent, a3);
-    objc_storeStrong(&v10->_intentResponse, a4);
-    v10->_intentHandlingStatus = [v8 _intentHandlingStatus];
+    objc_storeStrong(&v10->_intent, intent);
+    objc_storeStrong(&v10->_intentResponse, response);
+    v10->_intentHandlingStatus = [responseCopy _intentHandlingStatus];
   }
 
   return v10;
@@ -1356,7 +1356,7 @@ LABEL_13:
   v13[1] = *MEMORY[0x1E69E9840];
   v5 = completion;
   v6 = groupIdentifier;
-  v7 = [getCSSearchableIndexClass() defaultSearchableIndex];
+  defaultSearchableIndex = [getCSSearchableIndexClass() defaultSearchableIndex];
   v13[0] = v6;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   v11[0] = MEMORY[0x1E69E9820];
@@ -1365,7 +1365,7 @@ LABEL_13:
   v11[3] = &unk_1E7282710;
   v12 = v5;
   v9 = v5;
-  [v7 deleteInteractionsWithGroupIdentifiers:v8 completionHandler:v11];
+  [defaultSearchableIndex deleteInteractionsWithGroupIdentifiers:v8 completionHandler:v11];
 
   v10 = *MEMORY[0x1E69E9840];
 }
@@ -1401,14 +1401,14 @@ void __66__INInteraction_deleteInteractionsWithGroupIdentifier_completion___bloc
 {
   v5 = completion;
   v6 = identifiers;
-  v7 = [getCSSearchableIndexClass() defaultSearchableIndex];
+  defaultSearchableIndex = [getCSSearchableIndexClass() defaultSearchableIndex];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __62__INInteraction_deleteInteractionsWithIdentifiers_completion___block_invoke;
   v9[3] = &unk_1E7282710;
   v10 = v5;
   v8 = v5;
-  [v7 deleteInteractionsWithIdentifiers:v6 completionHandler:v9];
+  [defaultSearchableIndex deleteInteractionsWithIdentifiers:v6 completionHandler:v9];
 }
 
 void __62__INInteraction_deleteInteractionsWithIdentifiers_completion___block_invoke(uint64_t a1, void *a2)
@@ -1441,14 +1441,14 @@ void __62__INInteraction_deleteInteractionsWithIdentifiers_completion___block_in
 + (void)deleteAllInteractionsWithCompletion:(void *)completion
 {
   v3 = completion;
-  v4 = [getCSSearchableIndexClass() defaultSearchableIndex];
+  defaultSearchableIndex = [getCSSearchableIndexClass() defaultSearchableIndex];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__INInteraction_deleteAllInteractionsWithCompletion___block_invoke;
   v6[3] = &unk_1E7282710;
   v7 = v3;
   v5 = v3;
-  [v4 deleteAllInteractionsWithCompletionHandler:v6];
+  [defaultSearchableIndex deleteAllInteractionsWithCompletionHandler:v6];
 }
 
 void __53__INInteraction_deleteAllInteractionsWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -1478,16 +1478,16 @@ void __53__INInteraction_deleteAllInteractionsWithCompletion___block_invoke(uint
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_intents_enumerateObjectsOfClass:(Class)a3 withBlock:(id)a4
+- (BOOL)_intents_enumerateObjectsOfClass:(Class)class withBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(INInteraction *)self intent];
-  v8 = [v7 _intents_enumerateObjectsOfClass:a3 withBlock:v6];
+  blockCopy = block;
+  intent = [(INInteraction *)self intent];
+  v8 = [intent _intents_enumerateObjectsOfClass:class withBlock:blockCopy];
 
-  v9 = [(INInteraction *)self intentResponse];
-  LOBYTE(a3) = [v9 _intents_enumerateObjectsOfClass:a3 withBlock:v6];
+  intentResponse = [(INInteraction *)self intentResponse];
+  LOBYTE(class) = [intentResponse _intents_enumerateObjectsOfClass:class withBlock:blockCopy];
 
-  return (v8 | a3) & 1;
+  return (v8 | class) & 1;
 }
 
 @end

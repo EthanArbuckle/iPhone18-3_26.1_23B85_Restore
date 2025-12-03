@@ -1,8 +1,8 @@
 @interface PUCameraImportItemCell
-- (BOOL)shouldBeginGestureForPoint:(CGPoint)a3;
-- (CGRect)_filledPhotosRectForImage:(id)a3;
+- (BOOL)shouldBeginGestureForPoint:(CGPoint)point;
+- (CGRect)_filledPhotosRectForImage:(id)image;
 - (CGRect)scaledDisplayRect;
-- (PUCameraImportItemCell)initWithFrame:(CGRect)a3;
+- (PUCameraImportItemCell)initWithFrame:(CGRect)frame;
 - (PUCameraImportItemCellDelegate)delegate;
 - (id)accessibilityCustomActions;
 - (id)accessibilityLabel;
@@ -13,17 +13,17 @@
 - (void)cancelThumbnailLoadIfActive;
 - (void)clearImage;
 - (void)dealloc;
-- (void)handleTapGesture:(id)a3;
+- (void)handleTapGesture:(id)gesture;
 - (void)layoutSubviews;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)prepareForReuse;
 - (void)refreshThumbnail;
-- (void)setCachedImage:(id)a3 isPlaceholder:(BOOL)a4;
-- (void)setPhotoImage:(id)a3 withSize:(CGSize)a4 fillMode:(int64_t)a5 videoDuration:(double)a6 isPlaceholder:(BOOL)a7;
-- (void)setRepresentedImportItem:(id)a3;
-- (void)showActivityBadge:(BOOL)a3;
+- (void)setCachedImage:(id)image isPlaceholder:(BOOL)placeholder;
+- (void)setPhotoImage:(id)image withSize:(CGSize)size fillMode:(int64_t)mode videoDuration:(double)duration isPlaceholder:(BOOL)placeholder;
+- (void)setRepresentedImportItem:(id)item;
+- (void)showActivityBadge:(BOOL)badge;
 - (void)updateBadgeUIIfNeeded;
-- (void)updateDebugLabel:(id)a3;
+- (void)updateDebugLabel:(id)label;
 @end
 
 @implementation PUCameraImportItemCell
@@ -48,13 +48,13 @@
   return WeakRetained;
 }
 
-- (void)updateDebugLabel:(id)a3
+- (void)updateDebugLabel:(id)label
 {
-  v4 = a3;
-  v10 = v4;
-  if (v4)
+  labelCopy = label;
+  v10 = labelCopy;
+  if (labelCopy)
   {
-    v5 = v4;
+    v5 = labelCopy;
     if (!self->_debugTextField)
     {
       v6 = objc_alloc(MEMORY[0x1E69DD0B0]);
@@ -64,13 +64,13 @@
 
       [(UITextField *)self->_debugTextField setTextAlignment:1];
       [(UITextField *)self->_debugTextField setAdjustsFontSizeToFitWidth:1];
-      v9 = [MEMORY[0x1E69DC888] whiteColor];
-      [(UITextField *)self->_debugTextField setBackgroundColor:v9];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [(UITextField *)self->_debugTextField setBackgroundColor:whiteColor];
 
       [(UITextField *)self->_debugTextField setEnabled:0];
       [(PUCameraImportItemCell *)self addSubview:self->_debugTextField];
       [(PUCameraImportItemCell *)self setNeedsLayout];
-      v4 = v10;
+      labelCopy = v10;
       v5 = v10;
     }
   }
@@ -80,30 +80,30 @@
     v5 = &stru_1F2AC6818;
   }
 
-  [(UITextField *)self->_debugTextField setHidden:[(__CFString *)v4 length]== 0];
+  [(UITextField *)self->_debugTextField setHidden:[(__CFString *)labelCopy length]== 0];
   [(UITextField *)self->_debugTextField setText:v5];
 }
 
 - (id)accessibilityCustomActions
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PUCameraImportItemCell *)self representedImportItem];
-  [v3 isSelected];
+  representedImportItem = [(PUCameraImportItemCell *)self representedImportItem];
+  [representedImportItem isSelected];
   v4 = PLLocalizedFrameworkString();
 
   v5 = [objc_alloc(MEMORY[0x1E69DC5E8]) initWithName:v4 target:self selector:sel__selectAction];
-  v6 = [(PUCameraImportItemCell *)self representedImportItem];
-  v7 = [v6 isMediaAsset];
+  representedImportItem2 = [(PUCameraImportItemCell *)self representedImportItem];
+  isMediaAsset = [representedImportItem2 isMediaAsset];
 
-  if (v7)
+  if (isMediaAsset)
   {
     v8 = PLLocalizedFrameworkString();
 
     v9 = [objc_alloc(MEMORY[0x1E69DC5E8]) initWithName:v8 target:self selector:sel__enterOneUpAction];
-    v10 = [(PUCameraImportItemCell *)self representedImportItem];
-    v11 = [v10 isSelectable];
+    representedImportItem3 = [(PUCameraImportItemCell *)self representedImportItem];
+    isSelectable = [representedImportItem3 isSelectable];
 
-    if (v11)
+    if (isSelectable)
     {
       v22[0] = v9;
       v22[1] = v5;
@@ -127,9 +127,9 @@
 
   else
   {
-    v15 = [(PUCameraImportItemCell *)self representedImportItem];
-    v16 = [v15 kind];
-    v17 = [v16 isEqualToString:*MEMORY[0x1E69C4080]];
+    representedImportItem4 = [(PUCameraImportItemCell *)self representedImportItem];
+    kind = [representedImportItem4 kind];
+    v17 = [kind isEqualToString:*MEMORY[0x1E69C4080]];
 
     if (v17)
     {
@@ -148,45 +148,45 @@
 
 - (void)accessibilityElementDidBecomeFocused
 {
-  v4 = [(PUCameraImportItemCell *)self superview];
-  v3 = [v4 indexPathForCell:self];
-  [v4 scrollToItemAtIndexPath:v3 atScrollPosition:18 animated:0];
+  superview = [(PUCameraImportItemCell *)self superview];
+  v3 = [superview indexPathForCell:self];
+  [superview scrollToItemAtIndexPath:v3 atScrollPosition:18 animated:0];
 
   UIAccessibilityPostNotification(*MEMORY[0x1E69DD8E8], self);
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(PUCameraImportItemCell *)self representedImportItem];
-  v3 = [v2 accessibilityLabel];
+  representedImportItem = [(PUCameraImportItemCell *)self representedImportItem];
+  accessibilityLabel = [representedImportItem accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (void)_selectAction
 {
-  v3 = [(PUCameraImportItemCell *)self delegate];
-  [v3 handleTouchEvent:0 forCell:self];
+  delegate = [(PUCameraImportItemCell *)self delegate];
+  [delegate handleTouchEvent:0 forCell:self];
 }
 
 - (void)_enterOneUpAction
 {
-  v3 = [(PUCameraImportItemCell *)self delegate];
-  [v3 handleTouchEvent:1 forCell:self];
+  delegate = [(PUCameraImportItemCell *)self delegate];
+  [delegate handleTouchEvent:1 forCell:self];
 }
 
-- (void)handleTapGesture:(id)a3
+- (void)handleTapGesture:(id)gesture
 {
   p_badgeTapZone = &self->_badgeTapZone;
-  [a3 locationInView:self];
+  [gesture locationInView:self];
   v10.x = v5;
   v10.y = v6;
   if (CGRectContainsPoint(*p_badgeTapZone, v10) && [(PUCameraImportItemCell *)self selectable])
   {
-    v7 = [(PUCameraImportItemCell *)self representedImportItem];
-    v8 = [v7 state];
+    representedImportItem = [(PUCameraImportItemCell *)self representedImportItem];
+    state = [representedImportItem state];
 
-    if (v8 != 1)
+    if (state != 1)
     {
 
       [(PUCameraImportItemCell *)self _selectAction];
@@ -200,13 +200,13 @@
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
   v22 = *MEMORY[0x1E69E9840];
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PUCameraImportItemCell.m" lineNumber:330 description:@"Expecting main thread only for cell signals"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCameraImportItemCell.m" lineNumber:330 description:@"Expecting main thread only for cell signals"];
   }
 
   v9 = _importGridLog();
@@ -215,37 +215,37 @@
     v18 = 136315394;
     v19 = "[PUCameraImportItemCell observable:didChange:context:]";
     v20 = 2048;
-    v21 = a4;
+    changeCopy = change;
     _os_log_debug_impl(&dword_1B36F3000, v9, OS_LOG_TYPE_DEBUG, "%s: message %llu", &v18, 0x16u);
   }
 
-  if (PXImportItemViewModelContext == a5)
+  if (PXImportItemViewModelContext == context)
   {
-    if ((a4 & 4) != 0)
+    if ((change & 4) != 0)
     {
-      v10 = [(PUCameraImportItemCell *)self representedImportItem];
-      -[PUCameraImportItemCell setSelectable:](self, "setSelectable:", [v10 isSelectable]);
+      representedImportItem = [(PUCameraImportItemCell *)self representedImportItem];
+      -[PUCameraImportItemCell setSelectable:](self, "setSelectable:", [representedImportItem isSelectable]);
     }
 
-    v11 = (a4 & 5) != 0;
-    if ((a4 & 8) != 0)
+    v11 = (change & 5) != 0;
+    if ((change & 8) != 0)
     {
-      v12 = [(PUCameraImportItemCell *)self representedImportItem];
-      v13 = [v12 isDuplicate];
+      representedImportItem2 = [(PUCameraImportItemCell *)self representedImportItem];
+      isDuplicate = [representedImportItem2 isDuplicate];
 
-      if ((a4 & 5) != 0)
+      if ((change & 5) != 0)
       {
         v11 = 1;
       }
 
       else
       {
-        v11 = v13;
+        v11 = isDuplicate;
       }
     }
 
-    v14 = (a4 & 0x12) != 0 || v11;
-    if ((a4 & 0x80) != 0)
+    v14 = (change & 0x12) != 0 || v11;
+    if ((change & 0x80) != 0)
     {
       v15 = _importGridLog();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -260,17 +260,17 @@
 
     if (v14)
     {
-      v16 = [(PUCameraImportItemCell *)self representedImportItem];
-      -[PUCameraImportItemCell setBadgeType:](self, "setBadgeType:", [v16 badgeType]);
+      representedImportItem3 = [(PUCameraImportItemCell *)self representedImportItem];
+      -[PUCameraImportItemCell setBadgeType:](self, "setBadgeType:", [representedImportItem3 badgeType]);
 
       [(PUCameraImportItemCell *)self updateBadgeUIIfNeeded];
     }
   }
 }
 
-- (CGRect)_filledPhotosRectForImage:(id)a3
+- (CGRect)_filledPhotosRectForImage:(id)image
 {
-  [a3 size];
+  [image size];
   v5 = v4;
   v7 = v6;
   [(PUCameraImportItemCell *)self bounds];
@@ -299,15 +299,15 @@
 
 - (void)clearImage
 {
-  v3 = [(PUPhotoView *)self->_photoView contentHelper];
-  [v3 setFillMode:0];
-  [v3 setPhotoSize:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
-  [v3 setPhotoImage:0];
+  contentHelper = [(PUPhotoView *)self->_photoView contentHelper];
+  [contentHelper setFillMode:0];
+  [contentHelper setPhotoSize:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+  [contentHelper setPhotoImage:0];
   v4 = *(MEMORY[0x1E69C4840] + 16);
   v5[0] = *MEMORY[0x1E69C4840];
   v5[1] = v4;
-  [v3 setBadgeInfo:v5];
-  [v3 setBadgeStyle:0];
+  [contentHelper setBadgeInfo:v5];
+  [contentHelper setBadgeStyle:0];
   [(PUCameraImportItemCell *)self setNeedsLayout];
 }
 
@@ -315,68 +315,68 @@
 {
   if ([(PUCameraImportItemCell *)self thumbnailRequestID])
   {
-    v3 = [(PUCameraImportItemCell *)self delegate];
-    [v3 importCell:self didRequestCancellationOfThumbnailRequestWithID:{-[PUCameraImportItemCell thumbnailRequestID](self, "thumbnailRequestID")}];
+    delegate = [(PUCameraImportItemCell *)self delegate];
+    [delegate importCell:self didRequestCancellationOfThumbnailRequestWithID:{-[PUCameraImportItemCell thumbnailRequestID](self, "thumbnailRequestID")}];
   }
 
   [(PUCameraImportItemCell *)self setThumbnailRequestID:0];
 }
 
-- (void)setPhotoImage:(id)a3 withSize:(CGSize)a4 fillMode:(int64_t)a5 videoDuration:(double)a6 isPlaceholder:(BOOL)a7
+- (void)setPhotoImage:(id)image withSize:(CGSize)size fillMode:(int64_t)mode videoDuration:(double)duration isPlaceholder:(BOOL)placeholder
 {
-  height = a4.height;
-  width = a4.width;
-  v13 = a3;
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
   v14 = MEMORY[0x1E69C4840];
   v15 = *MEMORY[0x1E69C4840];
   if ([MEMORY[0x1E69C3610] hasPanoramaImageDimensions:{width, height}])
   {
-    if (a5 != 1)
+    if (mode != 1)
     {
-      [(PUCameraImportItemCell *)self _filledPhotosRectForImage:v13];
+      [(PUCameraImportItemCell *)self _filledPhotosRectForImage:imageCopy];
       [(PUCameraImportItemCell *)self setScaledDisplayRect:?];
     }
 
     v15 |= 2uLL;
-    a5 = 1;
+    mode = 1;
   }
 
-  v16 = [(PUPhotoView *)self->_photoView contentHelper];
-  [v16 setFillMode:a5];
-  [v16 setPhotoSize:{width, height}];
-  [v16 setPhotoImage:v13];
+  contentHelper = [(PUPhotoView *)self->_photoView contentHelper];
+  [contentHelper setFillMode:mode];
+  [contentHelper setPhotoSize:{width, height}];
+  [contentHelper setPhotoImage:imageCopy];
   v18[0] = v15;
-  *&v18[1] = a6;
+  *&v18[1] = duration;
   v19 = *(v14 + 16);
-  [v16 setBadgeInfo:v18];
-  [v16 setBadgeStyle:7];
-  if (a7)
+  [contentHelper setBadgeInfo:v18];
+  [contentHelper setBadgeStyle:7];
+  if (placeholder)
   {
-    v17 = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
-    [v16 setBackgroundColor:v17];
+    quaternarySystemFillColor = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
+    [contentHelper setBackgroundColor:quaternarySystemFillColor];
   }
 
   else
   {
-    [v16 setBackgroundColor:0];
+    [contentHelper setBackgroundColor:0];
   }
 
   [(PUCameraImportItemCell *)self setNeedsLayout];
   self->_needsThumbnailRefresh = 0;
 }
 
-- (void)setCachedImage:(id)a3 isPlaceholder:(BOOL)a4
+- (void)setCachedImage:(id)image isPlaceholder:(BOOL)placeholder
 {
-  v4 = a4;
-  v9 = a3;
-  v6 = [(PUCameraImportItemCell *)self representedImportItem];
-  [v6 duration];
+  placeholderCopy = placeholder;
+  imageCopy = image;
+  representedImportItem = [(PUCameraImportItemCell *)self representedImportItem];
+  [representedImportItem duration];
 
-  v7 = [(PUCameraImportItemCell *)self delegate];
-  v8 = [v7 contentFillModeForImportCell:self];
+  delegate = [(PUCameraImportItemCell *)self delegate];
+  v8 = [delegate contentFillModeForImportCell:self];
 
-  [v9 size];
-  [PUCameraImportItemCell setPhotoImage:"setPhotoImage:withSize:fillMode:videoDuration:isPlaceholder:" withSize:v9 fillMode:v8 videoDuration:v4 isPlaceholder:?];
+  [imageCopy size];
+  [PUCameraImportItemCell setPhotoImage:"setPhotoImage:withSize:fillMode:videoDuration:isPlaceholder:" withSize:imageCopy fillMode:v8 videoDuration:placeholderCopy isPlaceholder:?];
 }
 
 - (void)_fetchThumbnailReady
@@ -392,36 +392,36 @@
 
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PUCameraImportItemCell.m" lineNumber:225 description:@"Expecting main thread only"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCameraImportItemCell.m" lineNumber:225 description:@"Expecting main thread only"];
   }
 
-  v5 = [(PUCameraImportItemCell *)self delegate];
-  v6 = v5 == 0;
+  delegate = [(PUCameraImportItemCell *)self delegate];
+  v6 = delegate == 0;
 
   if (v6)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PUCameraImportItemCell.m" lineNumber:226 description:@"Missing thumbnail provider"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUCameraImportItemCell.m" lineNumber:226 description:@"Missing thumbnail provider"];
   }
 
-  v7 = [(PUCameraImportItemCell *)self representedImportItem];
-  v8 = [v7 isDeleted];
+  representedImportItem = [(PUCameraImportItemCell *)self representedImportItem];
+  isDeleted = [representedImportItem isDeleted];
 
-  if ((v8 & 1) == 0)
+  if ((isDeleted & 1) == 0)
   {
-    v9 = [(PUCameraImportItemCell *)self representedImportItem];
+    representedImportItem2 = [(PUCameraImportItemCell *)self representedImportItem];
     objc_initWeak(location, self);
-    v10 = [(PUCameraImportItemCell *)self delegate];
-    v11 = [(PUCameraImportItemCell *)self representedImportItem];
+    delegate2 = [(PUCameraImportItemCell *)self delegate];
+    representedImportItem3 = [(PUCameraImportItemCell *)self representedImportItem];
     v16 = MEMORY[0x1E69E9820];
     v17 = 3221225472;
     v18 = __46__PUCameraImportItemCell__fetchThumbnailReady__block_invoke;
     v19 = &unk_1E7B760B0;
     objc_copyWeak(&v21, location);
-    v12 = v9;
+    v12 = representedImportItem2;
     v20 = v12;
-    v13 = [v10 importCell:self requestImageForImportItem:v11 ofSize:0 completion:&v16];
+    v13 = [delegate2 importCell:self requestImageForImportItem:representedImportItem3 ofSize:0 completion:&v16];
     [(PUCameraImportItemCell *)self setThumbnailRequestID:v13, v16, v17, v18, v19];
 
     objc_destroyWeak(&v21);
@@ -453,19 +453,19 @@ void __46__PUCameraImportItemCell__fetchThumbnailReady__block_invoke(uint64_t a1
 - (void)refreshThumbnail
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(PUCameraImportItemCell *)self representedImportItem];
-  v4 = [v3 isMediaAsset];
+  representedImportItem = [(PUCameraImportItemCell *)self representedImportItem];
+  isMediaAsset = [representedImportItem isMediaAsset];
 
-  if (v4)
+  if (isMediaAsset)
   {
     v5 = _importGridLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [(PUCameraImportItemCell *)self representedImportItem];
+      representedImportItem2 = [(PUCameraImportItemCell *)self representedImportItem];
       v7 = 136315394;
       v8 = "[PUCameraImportItemCell refreshThumbnail]";
       v9 = 2112;
-      v10 = v6;
+      v10 = representedImportItem2;
       _os_log_debug_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_DEBUG, "%s: public interfacing callig for thumbnail: %@", &v7, 0x16u);
     }
 
@@ -478,7 +478,7 @@ void __46__PUCameraImportItemCell__fetchThumbnailReady__block_invoke(uint64_t a1
   if ([(PUCameraImportItemCell *)self needsBadgeUpdate])
   {
     [(PUCameraImportItemCell *)self setNeedsBadgeUpdate:0];
-    v3 = [(PUCameraImportItemCell *)self badgeType];
+    badgeType = [(PUCameraImportItemCell *)self badgeType];
     v4 = 1.0;
     if ([(PUCameraImportItemCell *)self badgeType]== 1)
     {
@@ -486,8 +486,8 @@ void __46__PUCameraImportItemCell__fetchThumbnailReady__block_invoke(uint64_t a1
       v4 = v5;
     }
 
-    v6 = [(PUCameraImportItemCell *)self badgeView];
-    [v6 removeFromSuperview];
+    badgeView = [(PUCameraImportItemCell *)self badgeView];
+    [badgeView removeFromSuperview];
 
     [(PUCameraImportItemCell *)self setBadgeView:0];
     [(PUCameraImportItemCell *)self badgeType];
@@ -495,51 +495,51 @@ void __46__PUCameraImportItemCell__fetchThumbnailReady__block_invoke(uint64_t a1
     v10 = PXImportBadgeViewForTypeAndSelectable();
     if (v10)
     {
-      v7 = [(PUCameraImportItemCell *)self badgeContainerView];
-      [v7 addSubview:v10];
+      badgeContainerView = [(PUCameraImportItemCell *)self badgeContainerView];
+      [badgeContainerView addSubview:v10];
 
       [(PUCameraImportItemCell *)self setBadgeView:v10];
     }
 
-    [(PUCameraImportItemCell *)self showActivityBadge:v3 == 2];
-    v8 = [(PUCameraImportItemCell *)self photoView];
-    v9 = [v8 contentHelper];
-    [v9 setContentAlpha:v4];
+    [(PUCameraImportItemCell *)self showActivityBadge:badgeType == 2];
+    photoView = [(PUCameraImportItemCell *)self photoView];
+    contentHelper = [photoView contentHelper];
+    [contentHelper setContentAlpha:v4];
 
     [(PUCameraImportItemCell *)self setNeedsLayout];
   }
 }
 
-- (void)setRepresentedImportItem:(id)a3
+- (void)setRepresentedImportItem:(id)item
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  itemCopy = item;
   v6 = _importGridLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v12 = 136315394;
     v13 = "[PUCameraImportItemCell setRepresentedImportItem:]";
     v14 = 2112;
-    v15 = v5;
+    v15 = itemCopy;
     _os_log_debug_impl(&dword_1B36F3000, v6, OS_LOG_TYPE_DEBUG, "%s: %@", &v12, 0x16u);
   }
 
   representedImportItem = self->_representedImportItem;
-  if (representedImportItem != v5)
+  if (representedImportItem != itemCopy)
   {
     [(PXImportItemViewModel *)representedImportItem unregisterChangeObserver:self context:PXImportItemViewModelContext];
-    objc_storeStrong(&self->_representedImportItem, a3);
+    objc_storeStrong(&self->_representedImportItem, item);
     [(PXImportItemViewModel *)self->_representedImportItem registerChangeObserver:self context:PXImportItemViewModelContext];
-    [(PUCameraImportItemCell *)self setSelectable:[(PXImportItemViewModel *)v5 isSelectable]];
-    [(PUCameraImportItemCell *)self setBadgeType:[(PXImportItemViewModel *)v5 badgeType]];
+    [(PUCameraImportItemCell *)self setSelectable:[(PXImportItemViewModel *)itemCopy isSelectable]];
+    [(PUCameraImportItemCell *)self setBadgeType:[(PXImportItemViewModel *)itemCopy badgeType]];
     self->_needsThumbnailRefresh = 1;
     v8 = self->_representedImportItem;
     if (v8)
     {
       if (([(PXImportItemViewModel *)v8 isMediaAsset]& 1) == 0)
       {
-        v9 = [(PXImportItemViewModel *)self->_representedImportItem kind];
-        v10 = [v9 isEqualToString:*MEMORY[0x1E69C4080]];
+        kind = [(PXImportItemViewModel *)self->_representedImportItem kind];
+        v10 = [kind isEqualToString:*MEMORY[0x1E69C4080]];
 
         if (v10)
         {
@@ -565,11 +565,11 @@ void __46__PUCameraImportItemCell__fetchThumbnailReady__block_invoke(uint64_t a1
   v3 = _importGridLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(PUCameraImportItemCell *)self representedImportItem];
+    representedImportItem = [(PUCameraImportItemCell *)self representedImportItem];
     *buf = 136315394;
     v9 = "[PUCameraImportItemCell prepareForReuse]";
     v10 = 2112;
-    v11 = v6;
+    v11 = representedImportItem;
     _os_log_debug_impl(&dword_1B36F3000, v3, OS_LOG_TYPE_DEBUG, "%s: clearing item from cell: %@", buf, 0x16u);
   }
 
@@ -577,22 +577,22 @@ void __46__PUCameraImportItemCell__fetchThumbnailReady__block_invoke(uint64_t a1
   v7.super_class = PUCameraImportItemCell;
   [(PUCameraImportItemCell *)&v7 prepareForReuse];
   [(PUCameraImportItemCell *)self setBadgeType:0];
-  v4 = [(PUCameraImportItemCell *)self badgeView];
-  [v4 removeFromSuperview];
+  badgeView = [(PUCameraImportItemCell *)self badgeView];
+  [badgeView removeFromSuperview];
 
   [(PUCameraImportItemCell *)self setBadgeView:0];
-  v5 = [(PUCameraImportItemCell *)self representedImportItem];
-  [v5 unregisterChangeObserver:self context:PXImportItemViewModelContext];
+  representedImportItem2 = [(PUCameraImportItemCell *)self representedImportItem];
+  [representedImportItem2 unregisterChangeObserver:self context:PXImportItemViewModelContext];
 
   [(PUCameraImportItemCell *)self cancelThumbnailLoadIfActive];
   [(PUCameraImportItemCell *)self setRepresentedImportItem:0];
   [(PUCameraImportItemCell *)self setScaledDisplayRect:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
 }
 
-- (void)showActivityBadge:(BOOL)a3
+- (void)showActivityBadge:(BOOL)badge
 {
   spinner = self->_spinner;
-  if (a3)
+  if (badge)
   {
     if (!spinner)
     {
@@ -600,12 +600,12 @@ void __46__PUCameraImportItemCell__fetchThumbnailReady__block_invoke(uint64_t a1
       v6 = self->_spinner;
       self->_spinner = v5;
 
-      v7 = [MEMORY[0x1E69DC888] whiteColor];
-      [(UIActivityIndicatorView *)self->_spinner setColor:v7];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [(UIActivityIndicatorView *)self->_spinner setColor:whiteColor];
 
       v8 = self->_spinner;
-      v9 = [(PUCameraImportItemCell *)self badgeContainerView];
-      [(PUCameraImportItemCell *)self insertSubview:v8 aboveSubview:v9];
+      badgeContainerView = [(PUCameraImportItemCell *)self badgeContainerView];
+      [(PUCameraImportItemCell *)self insertSubview:v8 aboveSubview:badgeContainerView];
 
       spinner = self->_spinner;
     }
@@ -620,10 +620,10 @@ void __46__PUCameraImportItemCell__fetchThumbnailReady__block_invoke(uint64_t a1
   }
 }
 
-- (BOOL)shouldBeginGestureForPoint:(CGPoint)a3
+- (BOOL)shouldBeginGestureForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(PUCameraImportItemCell *)self bounds];
   v9 = x;
   v10 = y;
@@ -654,8 +654,8 @@ void __46__PUCameraImportItemCell__fetchThumbnailReady__block_invoke(uint64_t a1
   [(PUCameraImportItemCell *)self scaledDisplayRect];
   if (NSIsEmptyRect(v46))
   {
-    v5 = [(PUPhotoView *)self->_photoView contentHelper];
-    [v5 imageContentFrame];
+    contentHelper = [(PUPhotoView *)self->_photoView contentHelper];
+    [contentHelper imageContentFrame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -689,18 +689,18 @@ void __46__PUCameraImportItemCell__fetchThumbnailReady__block_invoke(uint64_t a1
   v21 = MaxX - *&PUCameraImportItemBadgeSize_0 + -6.0;
   v22 = *&PUCameraImportItemBadgeSize_1;
   v23 = MaxY - *&PUCameraImportItemBadgeSize_1 + -6.0;
-  v24 = [(PUCameraImportItemCell *)self badgeContainerView];
-  [v24 setFrame:{v21, v23, v20, v22}];
+  badgeContainerView = [(PUCameraImportItemCell *)self badgeContainerView];
+  [badgeContainerView setFrame:{v21, v23, v20, v22}];
 
-  v25 = [(PUCameraImportItemCell *)self badgeView];
-  [v25 frame];
+  badgeView = [(PUCameraImportItemCell *)self badgeView];
+  [badgeView frame];
   v27 = v26;
   v29 = v28;
 
   v30 = *MEMORY[0x1E695EFF8];
   v31 = *(MEMORY[0x1E695EFF8] + 8);
-  v32 = [(PUCameraImportItemCell *)self badgeView];
-  [v32 setFrame:{v30, v31, v27, v29}];
+  badgeView2 = [(PUCameraImportItemCell *)self badgeView];
+  [badgeView2 setFrame:{v30, v31, v27, v29}];
 
   v49.origin.x = v21;
   v49.origin.y = v23;
@@ -757,11 +757,11 @@ void __46__PUCameraImportItemCell__fetchThumbnailReady__block_invoke(uint64_t a1
   [(PUCameraImportItemCell *)&v3 dealloc];
 }
 
-- (PUCameraImportItemCell)initWithFrame:(CGRect)a3
+- (PUCameraImportItemCell)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = PUCameraImportItemCell;
-  v3 = [(PUCameraImportItemCell *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUCameraImportItemCell *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     if (initWithFrame__onceToken != -1)

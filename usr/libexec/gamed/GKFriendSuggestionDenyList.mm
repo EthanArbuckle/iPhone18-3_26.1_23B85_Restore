@@ -1,6 +1,6 @@
 @interface GKFriendSuggestionDenyList
 + (GKFriendSuggestionDenyList)empty;
-- (GKFriendSuggestionDenyList)initWithContactIDs:(id)a3 playerIDs:(id)a4;
+- (GKFriendSuggestionDenyList)initWithContactIDs:(id)ds playerIDs:(id)iDs;
 @end
 
 @implementation GKFriendSuggestionDenyList
@@ -12,7 +12,7 @@
   return v2;
 }
 
-- (GKFriendSuggestionDenyList)initWithContactIDs:(id)a3 playerIDs:(id)a4
+- (GKFriendSuggestionDenyList)initWithContactIDs:(id)ds playerIDs:(id)iDs
 {
   v4 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = static Set._unconditionallyBridgeFromObjectiveC(_:)();

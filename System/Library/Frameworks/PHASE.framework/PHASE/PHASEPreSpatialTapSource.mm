@@ -1,14 +1,14 @@
 @interface PHASEPreSpatialTapSource
 - (PHASEPreSpatialTapSource)init;
-- (PHASEPreSpatialTapSource)initWithEngine:(id)a3 description:(id)a4;
-- (PHASEPreSpatialTapSource)initWithEngine:(id)a3 identifier:(id)a4 binding:(int64_t)a5 tapType:(int64_t)a6;
-- (void)addMixer:(id)a3;
-- (void)addSource:(id)a3;
-- (void)addSubmixId:(UniqueObjectId)a3;
+- (PHASEPreSpatialTapSource)initWithEngine:(id)engine description:(id)description;
+- (PHASEPreSpatialTapSource)initWithEngine:(id)engine identifier:(id)identifier binding:(int64_t)binding tapType:(int64_t)type;
+- (void)addMixer:(id)mixer;
+- (void)addSource:(id)source;
+- (void)addSubmixId:(UniqueObjectId)id;
 - (void)dealloc;
-- (void)removeMixer:(id)a3;
-- (void)removeSource:(id)a3;
-- (void)removeSubmixId:(UniqueObjectId)a3;
+- (void)removeMixer:(id)mixer;
+- (void)removeSource:(id)source;
+- (void)removeSubmixId:(UniqueObjectId)id;
 @end
 
 @implementation PHASEPreSpatialTapSource
@@ -20,38 +20,38 @@
   return 0;
 }
 
-- (PHASEPreSpatialTapSource)initWithEngine:(id)a3 identifier:(id)a4 binding:(int64_t)a5 tapType:(int64_t)a6
+- (PHASEPreSpatialTapSource)initWithEngine:(id)engine identifier:(id)identifier binding:(int64_t)binding tapType:(int64_t)type
 {
-  v10 = a3;
-  v11 = a4;
+  engineCopy = engine;
+  identifierCopy = identifier;
   v22.receiver = self;
   v22.super_class = PHASEPreSpatialTapSource;
   v12 = [(PHASEPreSpatialTapSource *)&v22 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_weakEngine, v10);
-    objc_storeStrong(&v13->_identifier, a4);
+    objc_storeWeak(&v12->_weakEngine, engineCopy);
+    objc_storeStrong(&v13->_identifier, identifier);
     v14 = [objc_alloc(MEMORY[0x277CB8368]) initWithLayoutTag:6553601];
     v15 = [objc_alloc(MEMORY[0x277CB83A8]) initWithCommonFormat:1 sampleRate:0 interleaved:v14 channelLayout:48000.0];
     format = v13->_format;
     v13->_format = v15;
 
-    v17 = *([v10 implementation] + 424);
+    v17 = *([engineCopy implementation] + 424);
     StringHashId = Phase::GetStringHashId(v13->_identifier, v18);
-    (*(*v17 + 16))(v17, StringHashId, 0, a5, a6);
+    (*(*v17 + 16))(v17, StringHashId, 0, binding, type);
     v20 = v13;
   }
 
   return v13;
 }
 
-- (PHASEPreSpatialTapSource)initWithEngine:(id)a3 description:(id)a4
+- (PHASEPreSpatialTapSource)initWithEngine:(id)engine description:(id)description
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 uidString];
-  v9 = -[PHASEPreSpatialTapSource initWithEngine:identifier:binding:tapType:](self, "initWithEngine:identifier:binding:tapType:", v6, v8, [v7 binding], objc_msgSend(v7, "type"));
+  engineCopy = engine;
+  descriptionCopy = description;
+  uidString = [descriptionCopy uidString];
+  v9 = -[PHASEPreSpatialTapSource initWithEngine:identifier:binding:tapType:](self, "initWithEngine:identifier:binding:tapType:", engineCopy, uidString, [descriptionCopy binding], objc_msgSend(descriptionCopy, "type"));
 
   return v9;
 }
@@ -72,10 +72,10 @@
   [(PHASEPreSpatialTapSource *)&v8 dealloc];
 }
 
-- (void)addSubmixId:(UniqueObjectId)a3
+- (void)addSubmixId:(UniqueObjectId)id
 {
-  v3 = a3.mStorage[1];
-  v4 = a3.mStorage[0];
+  v3 = id.mStorage[1];
+  v4 = id.mStorage[0];
   WeakRetained = objc_loadWeakRetained(&self->_weakEngine);
   if (WeakRetained)
   {
@@ -85,10 +85,10 @@
   }
 }
 
-- (void)removeSubmixId:(UniqueObjectId)a3
+- (void)removeSubmixId:(UniqueObjectId)id
 {
-  v3 = a3.mStorage[1];
-  v4 = a3.mStorage[0];
+  v3 = id.mStorage[1];
+  v4 = id.mStorage[0];
   WeakRetained = objc_loadWeakRetained(&self->_weakEngine);
   if (WeakRetained)
   {
@@ -98,10 +98,10 @@
   }
 }
 
-- (void)addMixer:(id)a3
+- (void)addMixer:(id)mixer
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  mixerCopy = mixer;
   WeakRetained = objc_loadWeakRetained(&self->_weakEngine);
   v6 = WeakRetained;
   if (!WeakRetained)
@@ -109,7 +109,7 @@
     goto LABEL_15;
   }
 
-  if (!v4 || ([v4 weakActionTreeObject], (WeakRetained = *&v19[8]) == 0))
+  if (!mixerCopy || ([mixerCopy weakActionTreeObject], (WeakRetained = *&v19[8]) == 0))
   {
     v7 = 0;
     goto LABEL_11;
@@ -143,8 +143,8 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  v9 = [v4 identifier];
-  StringHashId = Phase::GetStringHashId(v9, v10);
+  identifier = [mixerCopy identifier];
+  StringHashId = Phase::GetStringHashId(identifier, v10);
   SubmixIdFromHashName = Phase::ActionTreeObject::FindSubmixIdFromHashName(v8, StringHashId);
   v14 = v13;
 
@@ -164,10 +164,10 @@ LABEL_13:
 LABEL_15:
 }
 
-- (void)removeMixer:(id)a3
+- (void)removeMixer:(id)mixer
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  mixerCopy = mixer;
   WeakRetained = objc_loadWeakRetained(&self->_weakEngine);
   v6 = WeakRetained;
   if (!WeakRetained)
@@ -175,7 +175,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if (!v4 || ([v4 weakActionTreeObject], (WeakRetained = *&v19[8]) == 0))
+  if (!mixerCopy || ([mixerCopy weakActionTreeObject], (WeakRetained = *&v19[8]) == 0))
   {
     v7 = 0;
     goto LABEL_11;
@@ -209,8 +209,8 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  v9 = [v4 identifier];
-  StringHashId = Phase::GetStringHashId(v9, v10);
+  identifier = [mixerCopy identifier];
+  StringHashId = Phase::GetStringHashId(identifier, v10);
   SubmixIdFromHashName = Phase::ActionTreeObject::FindSubmixIdFromHashName(v8, StringHashId);
   v14 = v13;
 
@@ -230,20 +230,20 @@ LABEL_13:
 LABEL_15:
 }
 
-- (void)addSource:(id)a3
+- (void)addSource:(id)source
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sourceCopy = source;
   WeakRetained = objc_loadWeakRetained(&self->_weakEngine);
   if (WeakRetained)
   {
-    v6 = [v4 engine];
+    engine = [sourceCopy engine];
 
-    if (WeakRetained == v6)
+    if (WeakRetained == engine)
     {
       v9 = *([WeakRetained implementation] + 424);
       StringHashId = Phase::GetStringHashId(self->_identifier, v10);
-      (*(*v9 + 48))(v9, StringHashId, 0, [v4 geoEntityHandle]);
+      (*(*v9 + 48))(v9, StringHashId, 0, [sourceCopy geoEntityHandle]);
     }
 
     else
@@ -261,16 +261,16 @@ LABEL_15:
   }
 }
 
-- (void)removeSource:(id)a3
+- (void)removeSource:(id)source
 {
-  v9 = a3;
+  sourceCopy = source;
   WeakRetained = objc_loadWeakRetained(&self->_weakEngine);
   v5 = WeakRetained;
   if (WeakRetained)
   {
     v6 = *([WeakRetained implementation] + 424);
     StringHashId = Phase::GetStringHashId(self->_identifier, v7);
-    (*(*v6 + 56))(v6, StringHashId, 0, [v9 geoEntityHandle]);
+    (*(*v6 + 56))(v6, StringHashId, 0, [sourceCopy geoEntityHandle]);
   }
 }
 

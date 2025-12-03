@@ -1,56 +1,56 @@
 @interface BuddyRestoreState
-+ (BOOL)hasStateFromPreferences:(id)a3;
-+ (id)_loadClassicState:(id)a3;
-+ (id)_loadModernState:(id)a3;
-+ (id)loadFromPreferences:(id)a3;
-+ (void)removeFromPreferences:(id)a3;
-- (BuddyRestoreState)initWithProductBuild:(id)a3 backup:(id)a4 snapshot:(id)a5 useLatestSnapshot:(BOOL)a6 allowCellularNetwork:(BOOL)a7;
-- (BuddyRestoreState)initWithProductBuild:(id)a3 backupUDID:(id)a4 backupUUID:(id)a5 snapshotID:(unint64_t)a6 snapshotDate:(id)a7 useLatestSnapshot:(BOOL)a8 allowCellularNetwork:(BOOL)a9 persistDate:(id)a10;
++ (BOOL)hasStateFromPreferences:(id)preferences;
++ (id)_loadClassicState:(id)state;
++ (id)_loadModernState:(id)state;
++ (id)loadFromPreferences:(id)preferences;
++ (void)removeFromPreferences:(id)preferences;
+- (BuddyRestoreState)initWithProductBuild:(id)build backup:(id)backup snapshot:(id)snapshot useLatestSnapshot:(BOOL)latestSnapshot allowCellularNetwork:(BOOL)network;
+- (BuddyRestoreState)initWithProductBuild:(id)build backupUDID:(id)d backupUUID:(id)iD snapshotID:(unint64_t)snapshotID snapshotDate:(id)date useLatestSnapshot:(BOOL)snapshot allowCellularNetwork:(BOOL)network persistDate:(id)self0;
 - (id)description;
-- (void)persistUsingPreferences:(id)a3;
+- (void)persistUsingPreferences:(id)preferences;
 @end
 
 @implementation BuddyRestoreState
 
-- (BuddyRestoreState)initWithProductBuild:(id)a3 backupUDID:(id)a4 backupUUID:(id)a5 snapshotID:(unint64_t)a6 snapshotDate:(id)a7 useLatestSnapshot:(BOOL)a8 allowCellularNetwork:(BOOL)a9 persistDate:(id)a10
+- (BuddyRestoreState)initWithProductBuild:(id)build backupUDID:(id)d backupUUID:(id)iD snapshotID:(unint64_t)snapshotID snapshotDate:(id)date useLatestSnapshot:(BOOL)snapshot allowCellularNetwork:(BOOL)network persistDate:(id)self0
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, build);
   obj = 0;
-  objc_storeStrong(&obj, a4);
+  objc_storeStrong(&obj, d);
   v25 = 0;
-  objc_storeStrong(&v25, a5);
-  v24 = a6;
+  objc_storeStrong(&v25, iD);
+  snapshotIDCopy = snapshotID;
   v23 = 0;
-  objc_storeStrong(&v23, a7);
-  v22 = a8;
-  v21 = a9;
+  objc_storeStrong(&v23, date);
+  snapshotCopy = snapshot;
+  networkCopy = network;
   v20 = 0;
-  objc_storeStrong(&v20, a10);
+  objc_storeStrong(&v20, persistDate);
   if (location[0] && obj)
   {
-    v15 = v28;
-    v28 = 0;
+    v15 = selfCopy;
+    selfCopy = 0;
     v18.receiver = v15;
     v18.super_class = BuddyRestoreState;
     v16 = [(BuddyRestoreState *)&v18 init];
-    v28 = v16;
-    objc_storeStrong(&v28, v16);
+    selfCopy = v16;
+    objc_storeStrong(&selfCopy, v16);
     if (v16)
     {
-      objc_storeStrong(v28 + 2, location[0]);
-      objc_storeStrong(v28 + 3, obj);
-      objc_storeStrong(v28 + 4, v25);
-      *(v28 + 5) = v24;
-      objc_storeStrong(v28 + 6, v23);
-      *(v28 + 8) = v22;
-      *(v28 + 9) = v21;
-      objc_storeStrong(v28 + 7, v20);
+      objc_storeStrong(selfCopy + 2, location[0]);
+      objc_storeStrong(selfCopy + 3, obj);
+      objc_storeStrong(selfCopy + 4, v25);
+      *(selfCopy + 5) = snapshotIDCopy;
+      objc_storeStrong(selfCopy + 6, v23);
+      *(selfCopy + 8) = snapshotCopy;
+      *(selfCopy + 9) = networkCopy;
+      objc_storeStrong(selfCopy + 7, v20);
     }
 
-    v29 = v28;
+    v29 = selfCopy;
     v19 = 1;
   }
 
@@ -65,46 +65,46 @@
   objc_storeStrong(&v25, 0);
   objc_storeStrong(&obj, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v28, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v29;
 }
 
-- (BuddyRestoreState)initWithProductBuild:(id)a3 backup:(id)a4 snapshot:(id)a5 useLatestSnapshot:(BOOL)a6 allowCellularNetwork:(BOOL)a7
+- (BuddyRestoreState)initWithProductBuild:(id)build backup:(id)backup snapshot:(id)snapshot useLatestSnapshot:(BOOL)latestSnapshot allowCellularNetwork:(BOOL)network
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, build);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
+  objc_storeStrong(&v23, backup);
   v22 = 0;
-  objc_storeStrong(&v22, a5);
-  v21 = a6;
-  v20 = a7;
-  v11 = v25;
+  objc_storeStrong(&v22, snapshot);
+  latestSnapshotCopy = latestSnapshot;
+  networkCopy = network;
+  v11 = selfCopy;
   v12 = location[0];
-  v13 = [v23 backupUDID];
-  v14 = [v23 backupUUID];
-  v15 = [v22 snapshotID];
-  v16 = [v22 date];
-  v25 = 0;
-  LOBYTE(v19) = v20;
-  v25 = [v11 initWithProductBuild:v12 backupUDID:v13 backupUUID:v14 snapshotID:v15 snapshotDate:v16 useLatestSnapshot:v21 allowCellularNetwork:v19 persistDate:0];
-  v17 = v25;
+  backupUDID = [v23 backupUDID];
+  backupUUID = [v23 backupUUID];
+  snapshotID = [v22 snapshotID];
+  date = [v22 date];
+  selfCopy = 0;
+  LOBYTE(v19) = networkCopy;
+  selfCopy = [v11 initWithProductBuild:v12 backupUDID:backupUDID backupUUID:backupUUID snapshotID:snapshotID snapshotDate:date useLatestSnapshot:latestSnapshotCopy allowCellularNetwork:v19 persistDate:0];
+  v17 = selfCopy;
 
   objc_storeStrong(&v22, 0);
   objc_storeStrong(&v23, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v25, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v17;
 }
 
-+ (id)loadFromPreferences:(id)a3
++ (id)loadFromPreferences:(id)preferences
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, preferences);
   v16 = [location[0] objectForKey:@"showiCloudRestoreOnLaunch" includeCache:0];
   v15 = 0;
   objc_opt_class();
@@ -156,12 +156,12 @@
   return v9;
 }
 
-+ (BOOL)hasStateFromPreferences:(id)a3
++ (BOOL)hasStateFromPreferences:(id)preferences
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, preferences);
   v3 = [location[0] objectForKey:@"showiCloudRestoreOnLaunch"];
   v4 = v3 != 0;
 
@@ -169,32 +169,32 @@
   return v4;
 }
 
-- (void)persistUsingPreferences:(id)a3
+- (void)persistUsingPreferences:(id)preferences
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, preferences);
   v11 = objc_alloc_init(NSMutableDictionary);
-  v3 = [(BuddyRestoreState *)v13 productBuild];
-  [v11 setObject:v3 forKeyedSubscript:@"productBuild"];
+  productBuild = [(BuddyRestoreState *)selfCopy productBuild];
+  [v11 setObject:productBuild forKeyedSubscript:@"productBuild"];
 
-  v4 = [(BuddyRestoreState *)v13 backupUDID];
-  [v11 setObject:v4 forKeyedSubscript:@"backupUDID"];
+  backupUDID = [(BuddyRestoreState *)selfCopy backupUDID];
+  [v11 setObject:backupUDID forKeyedSubscript:@"backupUDID"];
 
-  v5 = [(BuddyRestoreState *)v13 backupUUID];
-  [v11 setObject:v5 forKeyedSubscript:@"backupUUID"];
+  backupUUID = [(BuddyRestoreState *)selfCopy backupUUID];
+  [v11 setObject:backupUUID forKeyedSubscript:@"backupUUID"];
 
-  v6 = [NSNumber numberWithUnsignedInteger:[(BuddyRestoreState *)v13 snapshotID]];
+  v6 = [NSNumber numberWithUnsignedInteger:[(BuddyRestoreState *)selfCopy snapshotID]];
   [v11 setObject:v6 forKeyedSubscript:@"snapshotID"];
 
-  v7 = [(BuddyRestoreState *)v13 snapshotDate];
-  [v11 setObject:v7 forKeyedSubscript:@"snapshotDate"];
+  snapshotDate = [(BuddyRestoreState *)selfCopy snapshotDate];
+  [v11 setObject:snapshotDate forKeyedSubscript:@"snapshotDate"];
 
-  v8 = [NSNumber numberWithBool:[(BuddyRestoreState *)v13 useLatestSnapshot]];
+  v8 = [NSNumber numberWithBool:[(BuddyRestoreState *)selfCopy useLatestSnapshot]];
   [v11 setObject:v8 forKeyedSubscript:@"useLatestSnapshot"];
 
-  v9 = [NSNumber numberWithBool:[(BuddyRestoreState *)v13 allowCellularNetwork]];
+  v9 = [NSNumber numberWithBool:[(BuddyRestoreState *)selfCopy allowCellularNetwork]];
   [v11 setObject:v9 forKeyedSubscript:@"allowCellularNetwork"];
 
   v10 = +[NSDate date];
@@ -205,12 +205,12 @@
   objc_storeStrong(location, 0);
 }
 
-+ (void)removeFromPreferences:(id)a3
++ (void)removeFromPreferences:(id)preferences
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, preferences);
   [location[0] removeObjectForKey:@"showiCloudRestoreOnLaunch" onlyFromMemory:0];
   objc_storeStrong(location, 0);
 }
@@ -218,28 +218,28 @@
 - (id)description
 {
   v2 = objc_opt_class();
-  v3 = [(BuddyRestoreState *)self productBuild];
-  v4 = [(BuddyRestoreState *)self backupUDID];
-  v5 = [(BuddyRestoreState *)self backupUUID];
-  v6 = [(BuddyRestoreState *)self snapshotID];
-  v7 = [(BuddyRestoreState *)self snapshotDate];
-  v8 = [NSString stringWithFormat:@"<%@ : %p> Build: %@ Backup UDID: %@ Backup UUID: %@ Snapshot ID: %lu Snapshot Date: %@", v2, self, v3, v4, v5, v6, v7];
+  productBuild = [(BuddyRestoreState *)self productBuild];
+  backupUDID = [(BuddyRestoreState *)self backupUDID];
+  backupUUID = [(BuddyRestoreState *)self backupUUID];
+  snapshotID = [(BuddyRestoreState *)self snapshotID];
+  snapshotDate = [(BuddyRestoreState *)self snapshotDate];
+  v8 = [NSString stringWithFormat:@"<%@ : %p> Build: %@ Backup UDID: %@ Backup UUID: %@ Snapshot ID: %lu Snapshot Date: %@", v2, self, productBuild, backupUDID, backupUUID, snapshotID, snapshotDate];
 
   return v8;
 }
 
-+ (id)_loadClassicState:(id)a3
++ (id)_loadClassicState:(id)state
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, state);
   if ([location[0] count] >= 3)
   {
     v38 = 0;
     v37 = 0;
     v36 = 0;
-    v35 = 0;
+    unsignedIntegerValue = 0;
     v34 = 1;
     v3 = [location[0] objectAtIndexedSubscript:0];
     v32 = 0;
@@ -303,7 +303,7 @@
     if (v12)
     {
       v13 = [location[0] objectAtIndexedSubscript:2];
-      v35 = [v13 unsignedIntegerValue];
+      unsignedIntegerValue = [v13 unsignedIntegerValue];
     }
 
     else
@@ -363,7 +363,7 @@
     {
       v19 = objc_alloc(objc_opt_class());
       LOBYTE(v22) = 0;
-      v41 = [v19 initWithProductBuild:v38 backupUDID:v37 backupUUID:v36 snapshotID:v35 snapshotDate:0 useLatestSnapshot:0 allowCellularNetwork:v22 persistDate:0];
+      v41 = [v19 initWithProductBuild:v38 backupUDID:v37 backupUUID:v36 snapshotID:unsignedIntegerValue snapshotDate:0 useLatestSnapshot:0 allowCellularNetwork:v22 persistDate:0];
     }
 
     else
@@ -389,30 +389,30 @@
   return v20;
 }
 
-+ (id)_loadModernState:(id)a3
++ (id)_loadModernState:(id)state
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, state);
   v17 = [location[0] objectForKeyedSubscript:@"productBuild"];
   v16 = [location[0] objectForKeyedSubscript:@"backupUDID"];
   v15 = [location[0] objectForKeyedSubscript:@"backupUUID"];
   v3 = [location[0] objectForKeyedSubscript:@"snapshotID"];
-  v4 = [v3 unsignedIntegerValue];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  v14 = v4;
+  v14 = unsignedIntegerValue;
   v13 = [location[0] objectForKeyedSubscript:@"snapshotDate"];
   v5 = [location[0] objectForKeyedSubscript:@"useLatestSnapshot"];
-  LOBYTE(v4) = [v5 BOOLValue];
+  LOBYTE(unsignedIntegerValue) = [v5 BOOLValue];
 
-  v12 = v4;
+  v12 = unsignedIntegerValue;
   v6 = [location[0] objectForKeyedSubscript:@"allowCellularNetwork"];
-  LOBYTE(v4) = [v6 BOOLValue];
+  LOBYTE(unsignedIntegerValue) = [v6 BOOLValue];
 
-  v11 = v4;
+  v11 = unsignedIntegerValue;
   v10 = [location[0] objectForKeyedSubscript:@"persistDate"];
-  LOBYTE(v9) = v4 & 1;
+  LOBYTE(v9) = unsignedIntegerValue & 1;
   v7 = [objc_alloc(objc_opt_class()) initWithProductBuild:v17 backupUDID:v16 backupUUID:v15 snapshotID:v14 snapshotDate:v13 useLatestSnapshot:v12 & 1 allowCellularNetwork:v9 persistDate:v10];
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v13, 0);

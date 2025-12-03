@@ -19,8 +19,8 @@
   if (v2)
   {
     v2->_mainScreenClass = MGGetSInt32Answer();
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    v2->_isPad = [v3 userInterfaceIdiom] == 1;
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    v2->_isPad = [currentDevice userInterfaceIdiom] == 1;
   }
 
   return v2;
@@ -52,12 +52,12 @@ uint64_t __28__BKUIDevice_sharedInstance__block_invoke()
     return 0;
   }
 
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   if (v3 == 414.0)
   {
-    v4 = [MEMORY[0x277D759A0] mainScreen];
-    [v4 bounds];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 bounds];
     v6 = v5 == 896.0;
   }
 
@@ -93,9 +93,9 @@ uint64_t __28__BKUIDevice_sharedInstance__block_invoke()
 
   if (DisplayAndBrightnessSettingsLibraryCore_frameworkLibrary)
   {
-    v2 = [MEMORY[0x277D4D820] defaultController];
-    v3 = [v2 currentDisplayZoomMode];
-    v4 = [v3 displayZoomOption] == 1;
+    defaultController = [MEMORY[0x277D4D820] defaultController];
+    currentDisplayZoomMode = [defaultController currentDisplayZoomMode];
+    v4 = [currentDisplayZoomMode displayZoomOption] == 1;
   }
 
   else

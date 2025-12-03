@@ -1,32 +1,32 @@
 @interface CIVNFaceDetector
-- (CIVNFaceDetector)initWithContext:(id)a3 options:(id)a4;
-- (id)featuresInImage:(id)a3 options:(id)a4;
+- (CIVNFaceDetector)initWithContext:(id)context options:(id)options;
+- (id)featuresInImage:(id)image options:(id)options;
 - (void)dealloc;
 @end
 
 @implementation CIVNFaceDetector
 
-- (CIVNFaceDetector)initWithContext:(id)a3 options:(id)a4
+- (CIVNFaceDetector)initWithContext:(id)context options:(id)options
 {
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = CIVNFaceDetector;
-  v5 = [(CIDetector *)&v8 init:a3];
+  v5 = [(CIDetector *)&v8 init:context];
   if (v5)
   {
-    if (!v4)
+    if (!contextCopy)
     {
-      v4 = +[CIContext _singletonContext];
+      contextCopy = +[CIContext _singletonContext];
     }
 
-    v5->context = v4;
-    v6 = v4;
+    v5->context = contextCopy;
+    v6 = contextCopy;
   }
 
   return v5;
 }
 
-- (id)featuresInImage:(id)a3 options:(id)a4
+- (id)featuresInImage:(id)image options:(id)options
 {
   v130 = *MEMORY[0x1E69E9840];
   v110 = 0;
@@ -50,14 +50,14 @@
   v105[1] = 3221225472;
   v106 = __44__CIVNFaceDetector_featuresInImage_options___block_invoke;
   v107 = &unk_1E75C25C0;
-  v109 = self;
+  selfCopy = self;
   v108 = &v110;
-  if (a4)
+  if (options)
   {
-    v7 = [objc_msgSend(a4 objectForKey:{@"CIDetectorAccuracy", "isEqual:", @"CIDetectorAccuracyLow"}];
-    if ([a4 objectForKey:@"CIDetectorSmile"])
+    v7 = [objc_msgSend(options objectForKey:{@"CIDetectorAccuracy", "isEqual:", @"CIDetectorAccuracyLow"}];
+    if ([options objectForKey:@"CIDetectorSmile"])
     {
-      v8 = [objc_msgSend(a4 objectForKey:{@"CIDetectorSmile", "BOOLValue"}];
+      v8 = [objc_msgSend(options objectForKey:{@"CIDetectorSmile", "BOOLValue"}];
     }
 
     else
@@ -65,9 +65,9 @@
       v8 = 0;
     }
 
-    if ([a4 objectForKey:@"CIDetectorEyeBlink"])
+    if ([options objectForKey:@"CIDetectorEyeBlink"])
     {
-      v13 = [objc_msgSend(a4 objectForKey:{@"CIDetectorEyeBlink", "BOOLValue"}];
+      v13 = [objc_msgSend(options objectForKey:{@"CIDetectorEyeBlink", "BOOLValue"}];
     }
 
     else
@@ -75,9 +75,9 @@
       v13 = 0;
     }
 
-    if ([a4 objectForKey:@"CIDetectorImageOrientation"])
+    if ([options objectForKey:@"CIDetectorImageOrientation"])
     {
-      v78 = [objc_msgSend(a4 objectForKey:{@"CIDetectorImageOrientation", "intValue"}];
+      v78 = [objc_msgSend(options objectForKey:{@"CIDetectorImageOrientation", "intValue"}];
     }
 
     else
@@ -85,7 +85,7 @@
       v78 = 1;
     }
 
-    v9 = [a4 mutableCopy];
+    v9 = [options mutableCopy];
     v10 = v8 | v13;
   }
 
@@ -107,7 +107,7 @@
   v122[3] = @"kCIVNDetectOptionRequestFast";
   v123[3] = [MEMORY[0x1E696AD98] numberWithBool:v7];
   [v9 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v123, v122, 4)}];
-  obj = CIVNDetectFaces(a3, v78, self->context, v9);
+  obj = CIVNDetectFaces(image, v78, self->context, v9);
 
   if (!obj)
   {
@@ -137,7 +137,7 @@
       }
 
       v15 = *(*(&v101 + 1) + 8 * i);
-      v16 = CIVNDenormalizedLandmarks(a3, v78, v15);
+      v16 = CIVNDenormalizedLandmarks(image, v78, v15);
       v87 = [v16 objectForKeyedSubscript:@"allPoints"];
       v17 = [v16 objectForKeyedSubscript:@"leftEye"];
       v88 = [v16 objectForKeyedSubscript:@"outerLips"];
@@ -209,7 +209,7 @@ LABEL_33:
             }
 
             v31 = *(*(&v95 + 1) + 8 * j);
-            v32 = [v31 identifier];
+            identifier = [v31 identifier];
             v114 = 0;
             v115 = &v114;
             v116 = 0x2020000000;
@@ -236,7 +236,7 @@ LABEL_33:
               goto LABEL_67;
             }
 
-            if ([v32 isEqualToString:*v33])
+            if ([identifier isEqualToString:*v33])
             {
               [v31 confidence];
               v17 = v81;
@@ -287,7 +287,7 @@ LABEL_49:
         }
 
         v41 = *(*(&v91 + 1) + 8 * v40);
-        v42 = [v41 identifier];
+        identifier2 = [v41 identifier];
         v114 = 0;
         v115 = &v114;
         v116 = 0x2020000000;
@@ -315,7 +315,7 @@ LABEL_67:
           __break(1u);
         }
 
-        if ([v42 isEqualToString:*v43])
+        if ([identifier2 isEqualToString:*v43])
         {
           break;
         }

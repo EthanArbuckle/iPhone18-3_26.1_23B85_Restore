@@ -1,32 +1,32 @@
 @interface VisionCoreRuntimeUtilities
-+ (BOOL)item:(id)a3 overridesClassSelector:(SEL)a4;
-+ (BOOL)item:(id)a3 overridesSelector:(SEL)a4;
-+ (BOOL)linkTimeOrRunTimeAtLeastVersion:(int)a3;
-+ (BOOL)linkTimeOrRunTimeBeforeVersion:(int)a3;
-+ (id)_leafClassesFromSubclasses:(uint64_t)a3 withRootClass:;
-+ (id)_subclassesOfClass:(uint64_t)a3 excludingRootClass:(void *)a4 passingTest:;
-+ (id)allSubclassesOfClass:(Class)a3 excludingRootClass:(BOOL)a4 overridingClassSelector:(SEL)a5;
-+ (id)allSubclassesOfClass:(Class)a3 excludingRootClass:(BOOL)a4 overridingSelector:(SEL)a5;
-+ (id)leafSubclassesOfClass:(Class)a3 excludingRootClass:(BOOL)a4;
-+ (id)leafSubclassesOfClass:(Class)a3 excludingRootClass:(BOOL)a4 overridingClassSelector:(SEL)a5;
-+ (id)leafSubclassesOfClass:(Class)a3 excludingRootClass:(BOOL)a4 overridingSelector:(SEL)a5;
-+ (id)signatureForItem:(id)a3 selector:(SEL)a4;
++ (BOOL)item:(id)item overridesClassSelector:(SEL)selector;
++ (BOOL)item:(id)item overridesSelector:(SEL)selector;
++ (BOOL)linkTimeOrRunTimeAtLeastVersion:(int)version;
++ (BOOL)linkTimeOrRunTimeBeforeVersion:(int)version;
++ (id)_leafClassesFromSubclasses:(uint64_t)subclasses withRootClass:;
++ (id)_subclassesOfClass:(uint64_t)class excludingRootClass:(void *)rootClass passingTest:;
++ (id)allSubclassesOfClass:(Class)class excludingRootClass:(BOOL)rootClass overridingClassSelector:(SEL)selector;
++ (id)allSubclassesOfClass:(Class)class excludingRootClass:(BOOL)rootClass overridingSelector:(SEL)selector;
++ (id)leafSubclassesOfClass:(Class)class excludingRootClass:(BOOL)rootClass;
++ (id)leafSubclassesOfClass:(Class)class excludingRootClass:(BOOL)rootClass overridingClassSelector:(SEL)selector;
++ (id)leafSubclassesOfClass:(Class)class excludingRootClass:(BOOL)rootClass overridingSelector:(SEL)selector;
++ (id)signatureForItem:(id)item selector:(SEL)selector;
 + (int)linkTimeVersion;
 + (int)runTimeVersion;
-+ (void)enumerateSubclassesOfClass:(Class)a3 excludingRootClass:(BOOL)a4 usingBlock:(id)a5;
++ (void)enumerateSubclassesOfClass:(Class)class excludingRootClass:(BOOL)rootClass usingBlock:(id)block;
 @end
 
 @implementation VisionCoreRuntimeUtilities
 
-+ (id)leafSubclassesOfClass:(Class)a3 excludingRootClass:(BOOL)a4 overridingClassSelector:(SEL)a5
++ (id)leafSubclassesOfClass:(Class)class excludingRootClass:(BOOL)rootClass overridingClassSelector:(SEL)selector
 {
-  v7 = [VisionCoreRuntimeUtilities allSubclassesOfClass:a3 excludingRootClass:a4 overridingClassSelector:a5];
-  v8 = [(VisionCoreRuntimeUtilities *)a1 _leafClassesFromSubclasses:v7 withRootClass:a3];
+  v7 = [VisionCoreRuntimeUtilities allSubclassesOfClass:class excludingRootClass:rootClass overridingClassSelector:selector];
+  v8 = [(VisionCoreRuntimeUtilities *)self _leafClassesFromSubclasses:v7 withRootClass:class];
 
   return v8;
 }
 
-+ (id)_leafClassesFromSubclasses:(uint64_t)a3 withRootClass:
++ (id)_leafClassesFromSubclasses:(uint64_t)subclasses withRootClass:
 {
   v4 = a2;
   objc_opt_self();
@@ -47,7 +47,7 @@
     }
 
     v10 = [v4 objectAtIndexedSubscript:i];
-    v11 = [v10 isSubclassOfClass:a3];
+    v11 = [v10 isSubclassOfClass:subclasses];
     v12 = i;
     if (v11)
     {
@@ -88,36 +88,36 @@ LABEL_15:
   return v6;
 }
 
-+ (id)leafSubclassesOfClass:(Class)a3 excludingRootClass:(BOOL)a4 overridingSelector:(SEL)a5
++ (id)leafSubclassesOfClass:(Class)class excludingRootClass:(BOOL)rootClass overridingSelector:(SEL)selector
 {
-  v7 = [VisionCoreRuntimeUtilities allSubclassesOfClass:a3 excludingRootClass:a4 overridingSelector:a5];
-  v8 = [(VisionCoreRuntimeUtilities *)a1 _leafClassesFromSubclasses:v7 withRootClass:a3];
+  v7 = [VisionCoreRuntimeUtilities allSubclassesOfClass:class excludingRootClass:rootClass overridingSelector:selector];
+  v8 = [(VisionCoreRuntimeUtilities *)self _leafClassesFromSubclasses:v7 withRootClass:class];
 
   return v8;
 }
 
-+ (id)leafSubclassesOfClass:(Class)a3 excludingRootClass:(BOOL)a4
++ (id)leafSubclassesOfClass:(Class)class excludingRootClass:(BOOL)rootClass
 {
-  v6 = [(VisionCoreRuntimeUtilities *)a1 _subclassesOfClass:a3 excludingRootClass:a4 passingTest:0];
-  v7 = [(VisionCoreRuntimeUtilities *)a1 _leafClassesFromSubclasses:v6 withRootClass:a3];
+  v6 = [(VisionCoreRuntimeUtilities *)self _subclassesOfClass:class excludingRootClass:rootClass passingTest:0];
+  v7 = [(VisionCoreRuntimeUtilities *)self _leafClassesFromSubclasses:v6 withRootClass:class];
 
   return v7;
 }
 
-+ (id)_subclassesOfClass:(uint64_t)a3 excludingRootClass:(void *)a4 passingTest:
++ (id)_subclassesOfClass:(uint64_t)class excludingRootClass:(void *)rootClass passingTest:
 {
-  v6 = a4;
+  rootClassCopy = rootClass;
   v7 = objc_opt_self();
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __80__VisionCoreRuntimeUtilities__subclassesOfClass_excludingRootClass_passingTest___block_invoke;
   v14[3] = &unk_1E86989E0;
-  v16 = v6;
+  v16 = rootClassCopy;
   v9 = v8;
   v15 = v9;
-  v10 = v6;
-  [v7 enumerateSubclassesOfClass:a2 excludingRootClass:a3 usingBlock:v14];
+  v10 = rootClassCopy;
+  [v7 enumerateSubclassesOfClass:a2 excludingRootClass:class usingBlock:v14];
   v11 = v15;
   v12 = v9;
 
@@ -137,52 +137,52 @@ uint64_t __80__VisionCoreRuntimeUtilities__subclassesOfClass_excludingRootClass_
   return result;
 }
 
-+ (id)allSubclassesOfClass:(Class)a3 excludingRootClass:(BOOL)a4 overridingClassSelector:(SEL)a5
++ (id)allSubclassesOfClass:(Class)class excludingRootClass:(BOOL)rootClass overridingClassSelector:(SEL)selector
 {
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __94__VisionCoreRuntimeUtilities_allSubclassesOfClass_excludingRootClass_overridingClassSelector___block_invoke;
   v7[3] = &__block_descriptor_40_e12_B24__0_8_B16l;
-  v7[4] = a5;
-  v5 = [(VisionCoreRuntimeUtilities *)a1 _subclassesOfClass:a3 excludingRootClass:a4 passingTest:v7];
+  v7[4] = selector;
+  v5 = [(VisionCoreRuntimeUtilities *)self _subclassesOfClass:class excludingRootClass:rootClass passingTest:v7];
 
   return v5;
 }
 
-+ (id)allSubclassesOfClass:(Class)a3 excludingRootClass:(BOOL)a4 overridingSelector:(SEL)a5
++ (id)allSubclassesOfClass:(Class)class excludingRootClass:(BOOL)rootClass overridingSelector:(SEL)selector
 {
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __89__VisionCoreRuntimeUtilities_allSubclassesOfClass_excludingRootClass_overridingSelector___block_invoke;
   v7[3] = &__block_descriptor_40_e12_B24__0_8_B16l;
-  v7[4] = a5;
-  v5 = [(VisionCoreRuntimeUtilities *)a1 _subclassesOfClass:a3 excludingRootClass:a4 passingTest:v7];
+  v7[4] = selector;
+  v5 = [(VisionCoreRuntimeUtilities *)self _subclassesOfClass:class excludingRootClass:rootClass passingTest:v7];
 
   return v5;
 }
 
-+ (void)enumerateSubclassesOfClass:(Class)a3 excludingRootClass:(BOOL)a4 usingBlock:(id)a5
++ (void)enumerateSubclassesOfClass:(Class)class excludingRootClass:(BOOL)rootClass usingBlock:(id)block
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = v7;
-  if (v5)
+  rootClassCopy = rootClass;
+  blockCopy = block;
+  v8 = blockCopy;
+  if (rootClassCopy)
   {
-    v9 = MEMORY[0x1E12C8870](v7);
+    v9 = MEMORY[0x1E12C8870](blockCopy);
   }
 
   else
   {
-    Superclass = class_getSuperclass(a3);
+    Superclass = class_getSuperclass(class);
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __87__VisionCoreRuntimeUtilities_enumerateSubclassesOfClass_excludingRootClass_usingBlock___block_invoke;
     v20[3] = &unk_1E8698A08;
-    v22 = a3;
+    classCopy = class;
     v21 = v8;
     v9 = MEMORY[0x1E12C8870](v20);
 
-    a3 = Superclass;
+    class = Superclass;
   }
 
   v11 = v9;
@@ -219,7 +219,7 @@ uint64_t __80__VisionCoreRuntimeUtilities__subclassesOfClass_excludingRootClass_
           v19 = v18;
           if (v18)
           {
-            objc_enumerateClasses(v18, 0, 0, a3, v17);
+            objc_enumerateClasses(v18, 0, 0, class, v17);
             dlclose(v19);
           }
         }
@@ -258,17 +258,17 @@ Class __87__VisionCoreRuntimeUtilities_enumerateSubclassesOfClass_excludingRootC
   return result;
 }
 
-+ (BOOL)item:(id)a3 overridesClassSelector:(SEL)a4
++ (BOOL)item:(id)item overridesClassSelector:(SEL)selector
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  itemCopy = item;
+  v6 = itemCopy;
+  if (!itemCopy)
   {
     goto LABEL_8;
   }
 
-  Class = v5;
-  if (!object_isClass(v5))
+  Class = itemCopy;
+  if (!object_isClass(itemCopy))
   {
     Class = object_getClass(v6);
     if (!Class)
@@ -293,26 +293,26 @@ LABEL_8:
 
   v8 = Class;
 LABEL_7:
-  v10 = _classImplementsSelector(Class, a4);
+  v10 = _classImplementsSelector(Class, selector);
 LABEL_9:
 
   return v10;
 }
 
-+ (BOOL)item:(id)a3 overridesSelector:(SEL)a4
++ (BOOL)item:(id)item overridesSelector:(SEL)selector
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  itemCopy = item;
+  v6 = itemCopy;
+  if (itemCopy)
   {
-    isClass = object_isClass(v5);
+    isClass = object_isClass(itemCopy);
     Class = v6;
     if (!isClass)
     {
       Class = object_getClass(v6);
     }
 
-    v9 = _classImplementsSelector(Class, a4);
+    v9 = _classImplementsSelector(Class, selector);
   }
 
   else
@@ -323,15 +323,15 @@ LABEL_9:
   return v9;
 }
 
-+ (id)signatureForItem:(id)a3 selector:(SEL)a4
++ (id)signatureForItem:(id)item selector:(SEL)selector
 {
-  v5 = a3;
-  isClass = object_isClass(v5);
-  Class = object_getClass(v5);
+  itemCopy = item;
+  isClass = object_isClass(itemCopy);
+  Class = object_getClass(itemCopy);
 
   v8 = objc_alloc(MEMORY[0x1E696AEC0]);
   v9 = NSStringFromClass(Class);
-  v10 = NSStringFromSelector(a4);
+  v10 = NSStringFromSelector(selector);
   v11 = 45;
   if (isClass)
   {
@@ -343,26 +343,26 @@ LABEL_9:
   return v12;
 }
 
-+ (BOOL)linkTimeOrRunTimeAtLeastVersion:(int)a3
++ (BOOL)linkTimeOrRunTimeAtLeastVersion:(int)version
 {
-  v5 = [a1 linkTimeVersion];
-  if (v5 == -1)
+  linkTimeVersion = [self linkTimeVersion];
+  if (linkTimeVersion == -1)
   {
-    v5 = [a1 runTimeVersion];
+    linkTimeVersion = [self runTimeVersion];
   }
 
-  return v5 > a3;
+  return linkTimeVersion > version;
 }
 
-+ (BOOL)linkTimeOrRunTimeBeforeVersion:(int)a3
++ (BOOL)linkTimeOrRunTimeBeforeVersion:(int)version
 {
-  v5 = [a1 linkTimeVersion];
-  if (v5 == -1)
+  linkTimeVersion = [self linkTimeVersion];
+  if (linkTimeVersion == -1)
   {
-    v5 = [a1 runTimeVersion];
+    linkTimeVersion = [self runTimeVersion];
   }
 
-  return v5 < a3;
+  return linkTimeVersion < version;
 }
 
 + (int)runTimeVersion

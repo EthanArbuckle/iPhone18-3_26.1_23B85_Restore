@@ -1,9 +1,9 @@
 @interface MFComposePhotoPickerItem
 + (NSString)contentIdentifierPrefix;
-+ (id)assetIdentifierFromContentIdentifier:(id)a3;
-+ (id)bestTypeToLoadFrom:(id)a3;
++ (id)assetIdentifierFromContentIdentifier:(id)identifier;
++ (id)bestTypeToLoadFrom:(id)from;
 - (BOOL)isVideo;
-- (MFComposePhotoPickerItem)initWithAssetIdentifier:(id)a3 assetURL:(id)a4 assetData:(id)a5 contentType:(id)a6;
+- (MFComposePhotoPickerItem)initWithAssetIdentifier:(id)identifier assetURL:(id)l assetData:(id)data contentType:(id)type;
 - (NSData)assetData;
 - (NSString)assetIdentifier;
 - (NSString)contentIdentifier;
@@ -25,14 +25,14 @@
 
 - (NSURL)assetURL
 {
-  v12 = self;
+  selfCopy = self;
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBDB60D0);
   v11 = (*(*(v3 - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x1EEE9AC00](v3, v4, v5, v6);
   v13 = &v9 - v11;
   MEMORY[0x1E69E5928](self);
   PhotoPickerItem.assetURL.getter(v13);
-  MEMORY[0x1E69E5920](v12);
+  MEMORY[0x1E69E5920](selfCopy);
   v14 = sub_1BE941E5C();
   v15 = *(v14 - 8);
   v16 = v14 - 8;
@@ -76,7 +76,7 @@
 
 - (UTType)contentType
 {
-  v10 = self;
+  selfCopy = self;
   v13 = sub_1BE941F5C();
   v11 = *(v13 - 8);
   v12 = v13 - 8;
@@ -85,7 +85,7 @@
   v14 = &v8 - v9;
   MEMORY[0x1E69E5928](self);
   PhotoPickerItem.contentType.getter(v14);
-  MEMORY[0x1E69E5920](v10);
+  MEMORY[0x1E69E5920](selfCopy);
   v15 = sub_1BE941F0C();
   (*(v11 + 8))(v14, v13);
   v6 = v15;
@@ -121,13 +121,13 @@
   return v3;
 }
 
-- (MFComposePhotoPickerItem)initWithAssetIdentifier:(id)a3 assetURL:(id)a4 assetData:(id)a5 contentType:(id)a6
+- (MFComposePhotoPickerItem)initWithAssetIdentifier:(id)identifier assetURL:(id)l assetData:(id)data contentType:(id)type
 {
-  v30 = self;
-  v43 = a3;
-  v44 = a4;
-  v41 = a5;
-  v42 = a6;
+  selfCopy = self;
+  identifierCopy = identifier;
+  lCopy = l;
+  dataCopy = data;
+  typeCopy = type;
   v31 = 0;
   v32 = (*(*(sub_1BE941F5C() - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x1EEE9AC00](0, v6, v7, v8);
@@ -139,18 +139,18 @@
   MEMORY[0x1EEE9AC00](v34, v9, v10, v11);
   v38 = &v19 - v37;
   v39 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBDB60D0) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
-  v15 = MEMORY[0x1EEE9AC00](v43, v12, v13, v14);
+  v15 = MEMORY[0x1EEE9AC00](identifierCopy, v12, v13, v14);
   v40 = &v19 - v39;
   MEMORY[0x1E69E5928](v15);
-  MEMORY[0x1E69E5928](v44);
-  MEMORY[0x1E69E5928](v41);
-  MEMORY[0x1E69E5928](v42);
+  MEMORY[0x1E69E5928](lCopy);
+  MEMORY[0x1E69E5928](dataCopy);
+  MEMORY[0x1E69E5928](typeCopy);
   v45 = sub_1BE94225C();
   v46 = v16;
-  if (v44)
+  if (lCopy)
   {
-    v29 = v44;
-    v28 = v44;
+    v29 = lCopy;
+    v28 = lCopy;
     sub_1BE941E4C();
     (*(v35 + 32))(v40, v38, v34);
     (*(v35 + 56))(v40, 0, 1, v34);
@@ -162,10 +162,10 @@
     (*(v35 + 56))(v40, 1, 1, v34);
   }
 
-  if (v41)
+  if (dataCopy)
   {
-    v27 = v41;
-    v22 = v41;
+    v27 = dataCopy;
+    v22 = dataCopy;
     v23 = sub_1BE941E7C();
     v24 = v17;
     MEMORY[0x1E69E5920](v22);
@@ -183,18 +183,18 @@
   v19 = v25;
   sub_1BE941F1C();
   v21 = PhotoPickerItem.init(assetIdentifier:assetURL:assetData:contentType:)(v45, v46, v40, v19, v20, v33);
-  MEMORY[0x1E69E5920](v42);
-  MEMORY[0x1E69E5920](v43);
+  MEMORY[0x1E69E5920](typeCopy);
+  MEMORY[0x1E69E5920](identifierCopy);
   return v21;
 }
 
-+ (id)bestTypeToLoadFrom:(id)a3
++ (id)bestTypeToLoadFrom:(id)from
 {
-  v12 = a1;
-  v14 = a3;
+  selfCopy = self;
+  fromCopy = from;
   swift_getObjCClassMetadata();
   v11 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBDB6500) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
-  v6 = MEMORY[0x1EEE9AC00](v14, v3, v4, v5);
+  v6 = MEMORY[0x1EEE9AC00](fromCopy, v3, v4, v5);
   v15 = &v9 - v11;
   MEMORY[0x1E69E5928](v6);
   v16 = sub_1BE941F5C();
@@ -202,7 +202,7 @@
   swift_getObjCClassMetadata();
   sub_1BE939E04(v13, v15);
 
-  MEMORY[0x1E69E5920](v14);
+  MEMORY[0x1E69E5920](fromCopy);
   v17 = *(v16 - 8);
   v18 = v16 - 8;
   if ((*(v17 + 48))(v15, 1) == 1)
@@ -222,16 +222,16 @@
   return v7;
 }
 
-+ (id)assetIdentifierFromContentIdentifier:(id)a3
++ (id)assetIdentifierFromContentIdentifier:(id)identifier
 {
   swift_getObjCClassMetadata();
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](identifier);
   sub_1BE94225C();
   swift_getObjCClassMetadata();
   sub_1BE93AC78();
   v8 = v3;
 
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](identifier);
   if (v8)
   {
     v5 = sub_1BE94224C();

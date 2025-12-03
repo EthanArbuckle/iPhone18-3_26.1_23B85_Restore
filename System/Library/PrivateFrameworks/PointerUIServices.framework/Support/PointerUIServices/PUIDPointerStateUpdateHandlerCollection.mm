@@ -1,35 +1,35 @@
 @interface PUIDPointerStateUpdateHandlerCollection
-- (void)performAllHandlersWithFinished:(BOOL)a3 retargeted:(BOOL)a4;
+- (void)performAllHandlersWithFinished:(BOOL)finished retargeted:(BOOL)retargeted;
 @end
 
 @implementation PUIDPointerStateUpdateHandlerCollection
 
-- (void)performAllHandlersWithFinished:(BOOL)a3 retargeted:(BOOL)a4
+- (void)performAllHandlersWithFinished:(BOOL)finished retargeted:(BOOL)retargeted
 {
-  v4 = a4;
-  v5 = a3;
+  retargetedCopy = retargeted;
+  finishedCopy = finished;
   shapeTransitionCompletion = self->_shapeTransitionCompletion;
   if (shapeTransitionCompletion)
   {
-    shapeTransitionCompletion[2](shapeTransitionCompletion, a3, a4);
+    shapeTransitionCompletion[2](shapeTransitionCompletion, finished, retargeted);
   }
 
   visibilityTransitionCompletion = self->_visibilityTransitionCompletion;
   if (visibilityTransitionCompletion)
   {
-    visibilityTransitionCompletion[2](visibilityTransitionCompletion, v5, v4);
+    visibilityTransitionCompletion[2](visibilityTransitionCompletion, finishedCopy, retargetedCopy);
   }
 
   portalSourceTransitionCompletion = self->_portalSourceTransitionCompletion;
   if (portalSourceTransitionCompletion)
   {
-    portalSourceTransitionCompletion[2](portalSourceTransitionCompletion, v5, v4);
+    portalSourceTransitionCompletion[2](portalSourceTransitionCompletion, finishedCopy, retargetedCopy);
   }
 
   overlayEffectTransitionCompletion = self->_overlayEffectTransitionCompletion;
   if (overlayEffectTransitionCompletion)
   {
-    overlayEffectTransitionCompletion[2](overlayEffectTransitionCompletion, v5, v4);
+    overlayEffectTransitionCompletion[2](overlayEffectTransitionCompletion, finishedCopy, retargetedCopy);
   }
 
   contentMatchMoveSourceTransitionCompletion = self->_contentMatchMoveSourceTransitionCompletion;

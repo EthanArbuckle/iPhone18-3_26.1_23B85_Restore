@@ -6,7 +6,7 @@
 
 - (void)segmentedControlTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_1373E8();
 }
 

@@ -1,7 +1,7 @@
 @interface MUPlacePhotoObfuscationView
-- (MUPlacePhotoObfuscationView)initWithCoder:(id)a3;
+- (MUPlacePhotoObfuscationView)initWithCoder:(id)coder;
 - (NSAttributedString)attributedText;
-- (void)setAttributedText:(id)a3;
+- (void)setAttributedText:(id)text;
 @end
 
 @implementation MUPlacePhotoObfuscationView
@@ -13,19 +13,19 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
   v5 = OBJC_IVAR___MUPlacePhotoObfuscationView_attributedText;
   swift_beginAccess();
   v6 = *(&self->super.super.super.isa + v5);
-  *(&self->super.super.super.isa + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(&self->super.super.super.isa + v5) = text;
+  textCopy = text;
+  selfCopy = self;
 
-  [*(&v8->super.super.super.isa + OBJC_IVAR___MUPlacePhotoObfuscationView_label) setAttributedText_];
+  [*(&selfCopy->super.super.super.isa + OBJC_IVAR___MUPlacePhotoObfuscationView_label) setAttributedText_];
 }
 
-- (MUPlacePhotoObfuscationView)initWithCoder:(id)a3
+- (MUPlacePhotoObfuscationView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR___MUPlacePhotoObfuscationView_attributedText) = 0;
   result = sub_1C584FD00();

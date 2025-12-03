@@ -18,19 +18,19 @@
   }
 
   v5 = v4;
-  [a1 setExternalAnalyticsConfigurationsData:v4];
+  [self setExternalAnalyticsConfigurationsData:v4];
 }
 
 - (id)externalAnalyticsConfigurations
 {
-  v1 = [a1 externalAnalyticsConfigurationsData];
-  if (v1)
+  externalAnalyticsConfigurationsData = [self externalAnalyticsConfigurationsData];
+  if (externalAnalyticsConfigurationsData)
   {
     v2 = MEMORY[0x277CCAAC8];
     v3 = MEMORY[0x277CBEB98];
     v4 = objc_opt_class();
     v5 = [v3 setWithObjects:{v4, objc_opt_class(), 0}];
-    v6 = [v2 nf_securelyUnarchiveObjectOfClasses:v5 withData:v1];
+    v6 = [v2 nf_securelyUnarchiveObjectOfClasses:v5 withData:externalAnalyticsConfigurationsData];
   }
 
   else

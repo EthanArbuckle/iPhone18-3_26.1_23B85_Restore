@@ -1,47 +1,47 @@
 @interface CDMSELFLogUtil
-+ (BOOL)cdmAllServicesSetupEnded:(id)a3 logMessage:(id)a4 dataDispatcherContext:(id)a5;
-+ (BOOL)cdmAllServicesSetupFailed:(id)a3 logMessage:(id)a4 dataDispatcherContext:(id)a5;
-+ (BOOL)cdmAllServicesSetupStarted:(id)a3 logMessage:(id)a4 dataDispatcherContext:(id)a5;
-+ (BOOL)cdmAllServicesWarmupEnded:(id)a3 logMessage:(id)a4 dataDispatcherContext:(id)a5;
-+ (BOOL)cdmAllServicesWarmupFailed:(id)a3 logMessage:(id)a4 dataDispatcherContext:(id)a5;
-+ (BOOL)cdmAllServicesWarmupStarted:(id)a3 logMessage:(id)a4 dataDispatcherContext:(id)a5;
-+ (BOOL)cdmAssetSetupEnded:(id)a3 contextId:(id)a4 logMessage:(id)a5 dataDispatcherContext:(id)a6;
-+ (BOOL)cdmAssetSetupStarted:(id)a3 contextId:(id)a4 serviceNames:(id)a5 logMessage:(id)a6 dataDispatcherContext:(id)a7;
-+ (BOOL)cdmAssetsReported:(id)a3 metadata:(id)a4 dataDispatcherContext:(id)a5;
-+ (BOOL)cdmClientSetupEnded:(id)a3 logMessage:(id)a4 dataDispatcherContext:(id)a5;
-+ (BOOL)cdmClientWarmupEnded:(id)a3 logMessage:(id)a4 dataDispatcherContext:(id)a5;
-+ (BOOL)cdmEnded:(id)a3 metadata:(id)a4 logMessage:(id)a5 machAbsoluteTime:(unint64_t)a6 dataDispatcherContext:(id)a7;
-+ (BOOL)cdmSetupMissingAssetsDetected:(id)a3 contextId:(id)a4 serviceNames:(id)a5 logMessage:(id)a6 dataDispatcherContext:(id)a7;
-+ (BOOL)cdmXpcProcessingEnded:(id)a3 metadata:(id)a4 logMessage:(id)a5 dataDispatcherContext:(id)a6;
-+ (BOOL)contextUpdateEnded:(id)a3 metadata:(id)a4 logMessage:(id)a5 dataDispatcherContext:(id)a6;
-+ (BOOL)curareRequestLink:(id)a3 nlId:(id)a4 metadata:(id)a5 logMessage:(id)a6 dataDispatcherContext:(id)a7;
-+ (BOOL)emitCurareContext:(id)a3 metadata:(id)a4 dataDispatcherContext:(id)a5;
-+ (BOOL)emitEventsFromContainer:(id)a3 mainEventLogMessage:(id)a4 machAbsoluteTime:(unint64_t)a5 logLevel:(id)a6 dataDispatcherContext:(id)a7;
-+ (BOOL)emitNLXRequestLink:(id)a3 logMessage:(id)a4 dataDispatcherContext:(id)a5;
-+ (BOOL)emitRequestLink:(id)a3 metadata:(id)a4 dataDispatcherContext:(id)a5;
-+ (BOOL)isEventSampledForEmission:(id)a3;
-+ (BOOL)matchingSpanEnded:(id)a3 metadata:(id)a4 logMessage:(id)a5 dataDispatcherContext:(id)a6;
-+ (BOOL)orchestratorRequestLink:(id)a3 nlId:(id)a4 metadata:(id)a5 logMessage:(id)a6 dataDispatcherContext:(id)a7;
-+ (id)convertNLAssetToSISchemaAsset:(id)a3 nlAsset:(id)a4;
-+ (id)createSELFMetadataWithNlId:(id)a3 andWithTrpId:(id)a4 andWithRequestId:(id)a5 andWithResultCandidateId:(id)a6 andWithConnectionId:(id)a7;
-+ (id)createSELFMetadataWithRequestId:(id)a3;
-+ (id)getAssetNameWithLocaleSuffix:(id)a3 locale:(id)a4;
-+ (id)getVersionForAsset:(id)a3;
++ (BOOL)cdmAllServicesSetupEnded:(id)ended logMessage:(id)message dataDispatcherContext:(id)context;
++ (BOOL)cdmAllServicesSetupFailed:(id)failed logMessage:(id)message dataDispatcherContext:(id)context;
++ (BOOL)cdmAllServicesSetupStarted:(id)started logMessage:(id)message dataDispatcherContext:(id)context;
++ (BOOL)cdmAllServicesWarmupEnded:(id)ended logMessage:(id)message dataDispatcherContext:(id)context;
++ (BOOL)cdmAllServicesWarmupFailed:(id)failed logMessage:(id)message dataDispatcherContext:(id)context;
++ (BOOL)cdmAllServicesWarmupStarted:(id)started logMessage:(id)message dataDispatcherContext:(id)context;
++ (BOOL)cdmAssetSetupEnded:(id)ended contextId:(id)id logMessage:(id)message dataDispatcherContext:(id)context;
++ (BOOL)cdmAssetSetupStarted:(id)started contextId:(id)id serviceNames:(id)names logMessage:(id)message dataDispatcherContext:(id)context;
++ (BOOL)cdmAssetsReported:(id)reported metadata:(id)metadata dataDispatcherContext:(id)context;
++ (BOOL)cdmClientSetupEnded:(id)ended logMessage:(id)message dataDispatcherContext:(id)context;
++ (BOOL)cdmClientWarmupEnded:(id)ended logMessage:(id)message dataDispatcherContext:(id)context;
++ (BOOL)cdmEnded:(id)ended metadata:(id)metadata logMessage:(id)message machAbsoluteTime:(unint64_t)time dataDispatcherContext:(id)context;
++ (BOOL)cdmSetupMissingAssetsDetected:(id)detected contextId:(id)id serviceNames:(id)names logMessage:(id)message dataDispatcherContext:(id)context;
++ (BOOL)cdmXpcProcessingEnded:(id)ended metadata:(id)metadata logMessage:(id)message dataDispatcherContext:(id)context;
++ (BOOL)contextUpdateEnded:(id)ended metadata:(id)metadata logMessage:(id)message dataDispatcherContext:(id)context;
++ (BOOL)curareRequestLink:(id)link nlId:(id)id metadata:(id)metadata logMessage:(id)message dataDispatcherContext:(id)context;
++ (BOOL)emitCurareContext:(id)context metadata:(id)metadata dataDispatcherContext:(id)dispatcherContext;
++ (BOOL)emitEventsFromContainer:(id)container mainEventLogMessage:(id)message machAbsoluteTime:(unint64_t)time logLevel:(id)level dataDispatcherContext:(id)context;
++ (BOOL)emitNLXRequestLink:(id)link logMessage:(id)message dataDispatcherContext:(id)context;
++ (BOOL)emitRequestLink:(id)link metadata:(id)metadata dataDispatcherContext:(id)context;
++ (BOOL)isEventSampledForEmission:(id)emission;
++ (BOOL)matchingSpanEnded:(id)ended metadata:(id)metadata logMessage:(id)message dataDispatcherContext:(id)context;
++ (BOOL)orchestratorRequestLink:(id)link nlId:(id)id metadata:(id)metadata logMessage:(id)message dataDispatcherContext:(id)context;
++ (id)convertNLAssetToSISchemaAsset:(id)asset nlAsset:(id)nlAsset;
++ (id)createSELFMetadataWithNlId:(id)id andWithTrpId:(id)trpId andWithRequestId:(id)requestId andWithResultCandidateId:(id)candidateId andWithConnectionId:(id)connectionId;
++ (id)createSELFMetadataWithRequestId:(id)id;
++ (id)getAssetNameWithLocaleSuffix:(id)suffix locale:(id)locale;
++ (id)getVersionForAsset:(id)asset;
 + (id)mintRequestIdAndCreateSELFMetadataWithRequestId;
-+ (int)getLocaleForAsset:(id)a3;
-+ (int)stringNodeNameToEnum:(id)a3;
-+ (int)stringServiceTypeToEnum:(id)a3;
-+ (int)stringXPCSystemEventTypeToEnum:(id)a3;
-+ (unsigned)getSampleRateForEvent:(id)a3;
++ (int)getLocaleForAsset:(id)asset;
++ (int)stringNodeNameToEnum:(id)enum;
++ (int)stringServiceTypeToEnum:(id)enum;
++ (int)stringXPCSystemEventTypeToEnum:(id)enum;
++ (unsigned)getSampleRateForEvent:(id)event;
 @end
 
 @implementation CDMSELFLogUtil
 
-+ (unsigned)getSampleRateForEvent:(id)a3
++ (unsigned)getSampleRateForEvent:(id)event
 {
-  v3 = [a3 cdmXpcEventProcessingContext];
+  cdmXpcEventProcessingContext = [event cdmXpcEventProcessingContext];
 
-  if (v3)
+  if (cdmXpcEventProcessingContext)
   {
     return 5;
   }
@@ -57,9 +57,9 @@
   v16 = *MEMORY[0x1E69E9840];
   v2 = objc_alloc_init(MEMORY[0x1E69D11C0]);
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [MEMORY[0x1E696AFB0] UUID];
-  v5 = [v4 UUIDString];
-  v6 = [v3 stringWithFormat:@"%@:0", v5];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v6 = [v3 stringWithFormat:@"%@:0", uUIDString];
   [v2 setIdA:v6];
 
   v7 = CDMOSLoggerForCategory(0);
@@ -80,19 +80,19 @@
   return v8;
 }
 
-+ (id)getAssetNameWithLocaleSuffix:(id)a3 locale:(id)a4
++ (id)getAssetNameWithLocaleSuffix:(id)suffix locale:(id)locale
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6 && ![v5 hasSuffix:v6])
+  suffixCopy = suffix;
+  localeCopy = locale;
+  v7 = localeCopy;
+  if (suffixCopy && localeCopy && ![suffixCopy hasSuffix:localeCopy])
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v5, v7];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", suffixCopy, v7];
   }
 
   else
   {
-    v8 = v5;
+    v8 = suffixCopy;
   }
 
   v9 = v8;
@@ -100,10 +100,10 @@
   return v9;
 }
 
-+ (int)getLocaleForAsset:(id)a3
++ (int)getLocaleForAsset:(id)asset
 {
-  v3 = [a3 uppercaseString];
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", @"LOCALE_", v3];
+  uppercaseString = [asset uppercaseString];
+  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", @"LOCALE_", uppercaseString];
 
   v5 = v4;
   if ([v5 isEqualToString:@"LOCALE_UNKNOWN_LOCALE"])
@@ -429,12 +429,12 @@
   return v6;
 }
 
-+ (id)getVersionForAsset:(id)a3
++ (id)getVersionForAsset:(id)asset
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (asset)
   {
-    v3 = [a3 componentsSeparatedByString:@"."];
+    v3 = [asset componentsSeparatedByString:@"."];
     v4 = objc_alloc_init(MEMORY[0x1E69CF648]);
     if ([v3 count] >= 2 && objc_msgSend(v3, "count") < 4)
     {
@@ -479,45 +479,45 @@
   return v6;
 }
 
-+ (id)convertNLAssetToSISchemaAsset:(id)a3 nlAsset:(id)a4
++ (id)convertNLAssetToSISchemaAsset:(id)asset nlAsset:(id)nlAsset
 {
   v5 = MEMORY[0x1E69CF570];
-  v6 = a4;
-  v7 = a3;
+  nlAssetCopy = nlAsset;
+  assetCopy = asset;
   v8 = objc_alloc_init(v5);
-  v9 = [v6 getAssetSetName];
-  [v8 setTrialNamespace:v9];
+  getAssetSetName = [nlAssetCopy getAssetSetName];
+  [v8 setTrialNamespace:getAssetSetName];
 
-  v10 = [v6 getAssetLocale];
-  v11 = [CDMSELFLogUtil getAssetNameWithLocaleSuffix:v7 locale:v10];
+  getAssetLocale = [nlAssetCopy getAssetLocale];
+  v11 = [CDMSELFLogUtil getAssetNameWithLocaleSuffix:assetCopy locale:getAssetLocale];
 
   [v8 setAssetName:v11];
-  v12 = [v6 getAssetLocale];
-  [v8 setAssetLocale:{+[CDMSELFLogUtil getLocaleForAsset:](CDMSELFLogUtil, "getLocaleForAsset:", v12)}];
+  getAssetLocale2 = [nlAssetCopy getAssetLocale];
+  [v8 setAssetLocale:{+[CDMSELFLogUtil getLocaleForAsset:](CDMSELFLogUtil, "getLocaleForAsset:", getAssetLocale2)}];
 
-  v13 = [v6 getAssetVersion];
+  getAssetVersion = [nlAssetCopy getAssetVersion];
 
-  v14 = [CDMSELFLogUtil getVersionForAsset:v13];
+  v14 = [CDMSELFLogUtil getVersionForAsset:getAssetVersion];
   [v8 setAssetVersion:v14];
 
   return v8;
 }
 
-+ (int)stringXPCSystemEventTypeToEnum:(id)a3
++ (int)stringXPCSystemEventTypeToEnum:(id)enum
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  enumCopy = enum;
+  if (enumCopy)
   {
     v4 = +[CDMXPCSystemEventTypeNames getNameStringToEnumDict];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 objectForKey:v3];
+      v6 = [v4 objectForKey:enumCopy];
       if (v6)
       {
         v7 = v6;
-        v8 = [v6 intValue];
+        intValue = [v6 intValue];
 LABEL_14:
 
         goto LABEL_15;
@@ -545,7 +545,7 @@ LABEL_14:
       }
     }
 
-    v8 = 0;
+    intValue = 0;
     goto LABEL_14;
   }
 
@@ -557,28 +557,28 @@ LABEL_14:
     _os_log_impl(&dword_1DC287000, v5, OS_LOG_TYPE_INFO, "%s [WARN]: Nil given to stringXPCSystemEventTypeToEnum method!", &v12, 0xCu);
   }
 
-  v8 = 0;
+  intValue = 0;
 LABEL_15:
 
   v10 = *MEMORY[0x1E69E9840];
-  return v8;
+  return intValue;
 }
 
-+ (int)stringServiceTypeToEnum:(id)a3
++ (int)stringServiceTypeToEnum:(id)enum
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  enumCopy = enum;
+  if (enumCopy)
   {
     v4 = +[CDMServiceTypeNames getNameStringToEnumDict];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 objectForKey:v3];
+      v6 = [v4 objectForKey:enumCopy];
       if (v6)
       {
         v7 = v6;
-        v8 = [v6 intValue];
+        intValue = [v6 intValue];
 LABEL_14:
 
         goto LABEL_15;
@@ -606,7 +606,7 @@ LABEL_14:
       }
     }
 
-    v8 = 0;
+    intValue = 0;
     goto LABEL_14;
   }
 
@@ -618,28 +618,28 @@ LABEL_14:
     _os_log_impl(&dword_1DC287000, v5, OS_LOG_TYPE_INFO, "%s [WARN]: Nil given to stringServiceTypeToEnum method!", &v12, 0xCu);
   }
 
-  v8 = 0;
+  intValue = 0;
 LABEL_15:
 
   v10 = *MEMORY[0x1E69E9840];
-  return v8;
+  return intValue;
 }
 
-+ (int)stringNodeNameToEnum:(id)a3
++ (int)stringNodeNameToEnum:(id)enum
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  enumCopy = enum;
+  if (enumCopy)
   {
     v4 = +[CDMServiceNodeNames getNameStringToEnumDict];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 objectForKey:v3];
+      v6 = [v4 objectForKey:enumCopy];
       if (v6)
       {
         v7 = v6;
-        v8 = [v6 intValue];
+        intValue = [v6 intValue];
 LABEL_14:
 
         goto LABEL_15;
@@ -667,7 +667,7 @@ LABEL_14:
       }
     }
 
-    v8 = 0;
+    intValue = 0;
     goto LABEL_14;
   }
 
@@ -679,19 +679,19 @@ LABEL_14:
     _os_log_impl(&dword_1DC287000, v5, OS_LOG_TYPE_INFO, "%s [WARN]: Nil given to stringNodeNameToEnum method!", &v12, 0xCu);
   }
 
-  v8 = 0;
+  intValue = 0;
 LABEL_15:
 
   v10 = *MEMORY[0x1E69E9840];
-  return v8;
+  return intValue;
 }
 
-+ (BOOL)cdmAssetsReported:(id)a3 metadata:(id)a4 dataDispatcherContext:(id)a5
++ (BOOL)cdmAssetsReported:(id)reported metadata:(id)metadata dataDispatcherContext:(id)context
 {
   v36 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v24 = a4;
-  v8 = a5;
+  reportedCopy = reported;
+  metadataCopy = metadata;
+  contextCopy = context;
   v9 = CDMLogContext;
   if (os_log_type_enabled(CDMLogContext, OS_LOG_TYPE_INFO))
   {
@@ -700,16 +700,16 @@ LABEL_15:
     v32 = 2112;
     v33 = @"assets";
     v34 = 2112;
-    v35 = v7;
+    v35 = reportedCopy;
     _os_log_impl(&dword_1DC287000, v9, OS_LOG_TYPE_INFO, "%s [insights-cdm-%@]:\nAssets available are: %@", buf, 0x20u);
   }
 
-  v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v7, "count")}];
+  v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(reportedCopy, "count")}];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v11 = v7;
+  v11 = reportedCopy;
   v12 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v12)
   {
@@ -736,8 +736,8 @@ LABEL_15:
     while (v13);
   }
 
-  v19 = [MEMORY[0x1E69D1420] createCDMAssetsReportedLog:v10 metadata:v24];
-  v20 = [CDMSELFLogUtil emitEventsFromContainer:v19 mainEventLogMessage:@"Logging assets information!" dataDispatcherContext:v8];
+  v19 = [MEMORY[0x1E69D1420] createCDMAssetsReportedLog:v10 metadata:metadataCopy];
+  v20 = [CDMSELFLogUtil emitEventsFromContainer:v19 mainEventLogMessage:@"Logging assets information!" dataDispatcherContext:contextCopy];
   if (!v20)
   {
     v21 = CDMOSLoggerForCategory(0);
@@ -753,14 +753,14 @@ LABEL_15:
   return v20;
 }
 
-+ (BOOL)cdmXpcProcessingEnded:(id)a3 metadata:(id)a4 logMessage:(id)a5 dataDispatcherContext:(id)a6
++ (BOOL)cdmXpcProcessingEnded:(id)ended metadata:(id)metadata logMessage:(id)message dataDispatcherContext:(id)context
 {
   v19 = *MEMORY[0x1E69E9840];
   v9 = MEMORY[0x1E69D1420];
-  v10 = a6;
-  v11 = a5;
-  v12 = [v9 createCdmXpcEventProcessingEndedLog:a3 metadata:a4];
-  v13 = [CDMSELFLogUtil emitEventsFromContainer:v12 mainEventLogMessage:v11 dataDispatcherContext:v10];
+  contextCopy = context;
+  messageCopy = message;
+  v12 = [v9 createCdmXpcEventProcessingEndedLog:ended metadata:metadata];
+  v13 = [CDMSELFLogUtil emitEventsFromContainer:v12 mainEventLogMessage:messageCopy dataDispatcherContext:contextCopy];
 
   if (!v13)
   {
@@ -777,20 +777,20 @@ LABEL_15:
   return v13;
 }
 
-+ (BOOL)cdmSetupMissingAssetsDetected:(id)a3 contextId:(id)a4 serviceNames:(id)a5 logMessage:(id)a6 dataDispatcherContext:(id)a7
++ (BOOL)cdmSetupMissingAssetsDetected:(id)detected contextId:(id)id serviceNames:(id)names logMessage:(id)message dataDispatcherContext:(id)context
 {
   v36 = *MEMORY[0x1E69E9840];
-  v28 = a3;
-  v27 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v11, "count")}];
+  detectedCopy = detected;
+  idCopy = id;
+  namesCopy = names;
+  messageCopy = message;
+  contextCopy = context;
+  v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(namesCopy, "count")}];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v15 = v11;
+  v15 = namesCopy;
   v16 = [v15 countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v16)
   {
@@ -805,8 +805,8 @@ LABEL_15:
           objc_enumerationMutation(v15);
         }
 
-        v20 = [CDMSELFLogUtil stringServiceTypeToEnum:*(*(&v29 + 1) + 8 * i), v27];
-        v21 = [MEMORY[0x1E696AD98] numberWithInt:v20];
+        idCopy = [CDMSELFLogUtil stringServiceTypeToEnum:*(*(&v29 + 1) + 8 * i), idCopy];
+        v21 = [MEMORY[0x1E696AD98] numberWithInt:idCopy];
         [v14 addObject:v21];
       }
 
@@ -816,8 +816,8 @@ LABEL_15:
     while (v17);
   }
 
-  v22 = [MEMORY[0x1E69D1420] createCDMSetupMissingAssetsDetectedLog:v27 services:v14 metadata:v28];
-  v23 = [CDMSELFLogUtil emitEventsFromContainer:v22 mainEventLogMessage:v12 dataDispatcherContext:v13];
+  v22 = [MEMORY[0x1E69D1420] createCDMSetupMissingAssetsDetectedLog:idCopy services:v14 metadata:detectedCopy];
+  v23 = [CDMSELFLogUtil emitEventsFromContainer:v22 mainEventLogMessage:messageCopy dataDispatcherContext:contextCopy];
   if (!v23)
   {
     v24 = CDMOSLoggerForCategory(0);
@@ -833,14 +833,14 @@ LABEL_15:
   return v23;
 }
 
-+ (BOOL)cdmAssetSetupEnded:(id)a3 contextId:(id)a4 logMessage:(id)a5 dataDispatcherContext:(id)a6
++ (BOOL)cdmAssetSetupEnded:(id)ended contextId:(id)id logMessage:(id)message dataDispatcherContext:(id)context
 {
   v19 = *MEMORY[0x1E69E9840];
   v9 = MEMORY[0x1E69D1420];
-  v10 = a6;
-  v11 = a5;
-  v12 = [v9 createCDMAssetSetupEndedLog:a4 metadata:a3];
-  v13 = [CDMSELFLogUtil emitEventsFromContainer:v12 mainEventLogMessage:v11 dataDispatcherContext:v10];
+  contextCopy = context;
+  messageCopy = message;
+  v12 = [v9 createCDMAssetSetupEndedLog:id metadata:ended];
+  v13 = [CDMSELFLogUtil emitEventsFromContainer:v12 mainEventLogMessage:messageCopy dataDispatcherContext:contextCopy];
 
   if (!v13)
   {
@@ -857,20 +857,20 @@ LABEL_15:
   return v13;
 }
 
-+ (BOOL)cdmAssetSetupStarted:(id)a3 contextId:(id)a4 serviceNames:(id)a5 logMessage:(id)a6 dataDispatcherContext:(id)a7
++ (BOOL)cdmAssetSetupStarted:(id)started contextId:(id)id serviceNames:(id)names logMessage:(id)message dataDispatcherContext:(id)context
 {
   v36 = *MEMORY[0x1E69E9840];
-  v28 = a3;
-  v27 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v11, "count")}];
+  startedCopy = started;
+  idCopy = id;
+  namesCopy = names;
+  messageCopy = message;
+  contextCopy = context;
+  v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(namesCopy, "count")}];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v15 = v11;
+  v15 = namesCopy;
   v16 = [v15 countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v16)
   {
@@ -885,8 +885,8 @@ LABEL_15:
           objc_enumerationMutation(v15);
         }
 
-        v20 = [CDMSELFLogUtil stringServiceTypeToEnum:*(*(&v29 + 1) + 8 * i), v27];
-        v21 = [MEMORY[0x1E696AD98] numberWithInt:v20];
+        idCopy = [CDMSELFLogUtil stringServiceTypeToEnum:*(*(&v29 + 1) + 8 * i), idCopy];
+        v21 = [MEMORY[0x1E696AD98] numberWithInt:idCopy];
         [v14 addObject:v21];
       }
 
@@ -896,8 +896,8 @@ LABEL_15:
     while (v17);
   }
 
-  v22 = [MEMORY[0x1E69D1420] createCDMAssetSetupStartedLog:v27 serviceTypes:v14 metadata:v28];
-  v23 = [CDMSELFLogUtil emitEventsFromContainer:v22 mainEventLogMessage:v12 dataDispatcherContext:v13];
+  v22 = [MEMORY[0x1E69D1420] createCDMAssetSetupStartedLog:idCopy serviceTypes:v14 metadata:startedCopy];
+  v23 = [CDMSELFLogUtil emitEventsFromContainer:v22 mainEventLogMessage:messageCopy dataDispatcherContext:contextCopy];
   if (!v23)
   {
     v24 = CDMOSLoggerForCategory(0);
@@ -913,14 +913,14 @@ LABEL_15:
   return v23;
 }
 
-+ (BOOL)cdmAllServicesWarmupFailed:(id)a3 logMessage:(id)a4 dataDispatcherContext:(id)a5
++ (BOOL)cdmAllServicesWarmupFailed:(id)failed logMessage:(id)message dataDispatcherContext:(id)context
 {
   v17 = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E69D1420];
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 createCDMAllServicesWarmupFailedLog:a3];
-  v11 = [CDMSELFLogUtil emitEventsFromContainer:v10 mainEventLogMessage:v9 dataDispatcherContext:v8];
+  contextCopy = context;
+  messageCopy = message;
+  v10 = [v7 createCDMAllServicesWarmupFailedLog:failed];
+  v11 = [CDMSELFLogUtil emitEventsFromContainer:v10 mainEventLogMessage:messageCopy dataDispatcherContext:contextCopy];
 
   if (!v11)
   {
@@ -937,14 +937,14 @@ LABEL_15:
   return v11;
 }
 
-+ (BOOL)cdmAllServicesWarmupEnded:(id)a3 logMessage:(id)a4 dataDispatcherContext:(id)a5
++ (BOOL)cdmAllServicesWarmupEnded:(id)ended logMessage:(id)message dataDispatcherContext:(id)context
 {
   v17 = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E69D1420];
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 createCDMAllServicesWarmupEndedLog:a3];
-  v11 = [CDMSELFLogUtil emitEventsFromContainer:v10 mainEventLogMessage:v9 dataDispatcherContext:v8];
+  contextCopy = context;
+  messageCopy = message;
+  v10 = [v7 createCDMAllServicesWarmupEndedLog:ended];
+  v11 = [CDMSELFLogUtil emitEventsFromContainer:v10 mainEventLogMessage:messageCopy dataDispatcherContext:contextCopy];
 
   if (!v11)
   {
@@ -961,14 +961,14 @@ LABEL_15:
   return v11;
 }
 
-+ (BOOL)cdmAllServicesWarmupStarted:(id)a3 logMessage:(id)a4 dataDispatcherContext:(id)a5
++ (BOOL)cdmAllServicesWarmupStarted:(id)started logMessage:(id)message dataDispatcherContext:(id)context
 {
   v17 = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E69D1420];
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 createCDMAllServicesWarmupStartedLog:a3];
-  v11 = [CDMSELFLogUtil emitEventsFromContainer:v10 mainEventLogMessage:v9 dataDispatcherContext:v8];
+  contextCopy = context;
+  messageCopy = message;
+  v10 = [v7 createCDMAllServicesWarmupStartedLog:started];
+  v11 = [CDMSELFLogUtil emitEventsFromContainer:v10 mainEventLogMessage:messageCopy dataDispatcherContext:contextCopy];
 
   if (!v11)
   {
@@ -985,14 +985,14 @@ LABEL_15:
   return v11;
 }
 
-+ (BOOL)cdmClientWarmupEnded:(id)a3 logMessage:(id)a4 dataDispatcherContext:(id)a5
++ (BOOL)cdmClientWarmupEnded:(id)ended logMessage:(id)message dataDispatcherContext:(id)context
 {
   v17 = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E69D1420];
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 createCDMClientWarmupEndedLog:a3];
-  v11 = [CDMSELFLogUtil emitEventsFromContainer:v10 mainEventLogMessage:v9 dataDispatcherContext:v8];
+  contextCopy = context;
+  messageCopy = message;
+  v10 = [v7 createCDMClientWarmupEndedLog:ended];
+  v11 = [CDMSELFLogUtil emitEventsFromContainer:v10 mainEventLogMessage:messageCopy dataDispatcherContext:contextCopy];
 
   if (!v11)
   {
@@ -1009,14 +1009,14 @@ LABEL_15:
   return v11;
 }
 
-+ (BOOL)cdmAllServicesSetupFailed:(id)a3 logMessage:(id)a4 dataDispatcherContext:(id)a5
++ (BOOL)cdmAllServicesSetupFailed:(id)failed logMessage:(id)message dataDispatcherContext:(id)context
 {
   v17 = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E69D1420];
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 createCDMAllServicesSetupFailedLog:a3];
-  v11 = [CDMSELFLogUtil emitEventsFromContainer:v10 mainEventLogMessage:v9 dataDispatcherContext:v8];
+  contextCopy = context;
+  messageCopy = message;
+  v10 = [v7 createCDMAllServicesSetupFailedLog:failed];
+  v11 = [CDMSELFLogUtil emitEventsFromContainer:v10 mainEventLogMessage:messageCopy dataDispatcherContext:contextCopy];
 
   if (!v11)
   {
@@ -1033,14 +1033,14 @@ LABEL_15:
   return v11;
 }
 
-+ (BOOL)cdmAllServicesSetupEnded:(id)a3 logMessage:(id)a4 dataDispatcherContext:(id)a5
++ (BOOL)cdmAllServicesSetupEnded:(id)ended logMessage:(id)message dataDispatcherContext:(id)context
 {
   v17 = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E69D1420];
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 createCDMAllServicesSetupEndedLog:a3];
-  v11 = [CDMSELFLogUtil emitEventsFromContainer:v10 mainEventLogMessage:v9 dataDispatcherContext:v8];
+  contextCopy = context;
+  messageCopy = message;
+  v10 = [v7 createCDMAllServicesSetupEndedLog:ended];
+  v11 = [CDMSELFLogUtil emitEventsFromContainer:v10 mainEventLogMessage:messageCopy dataDispatcherContext:contextCopy];
 
   if (!v11)
   {
@@ -1057,14 +1057,14 @@ LABEL_15:
   return v11;
 }
 
-+ (BOOL)cdmAllServicesSetupStarted:(id)a3 logMessage:(id)a4 dataDispatcherContext:(id)a5
++ (BOOL)cdmAllServicesSetupStarted:(id)started logMessage:(id)message dataDispatcherContext:(id)context
 {
   v17 = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E69D1420];
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 createCDMAllServicesSetupStartedLog:a3];
-  v11 = [CDMSELFLogUtil emitEventsFromContainer:v10 mainEventLogMessage:v9 dataDispatcherContext:v8];
+  contextCopy = context;
+  messageCopy = message;
+  v10 = [v7 createCDMAllServicesSetupStartedLog:started];
+  v11 = [CDMSELFLogUtil emitEventsFromContainer:v10 mainEventLogMessage:messageCopy dataDispatcherContext:contextCopy];
 
   if (!v11)
   {
@@ -1081,14 +1081,14 @@ LABEL_15:
   return v11;
 }
 
-+ (BOOL)cdmClientSetupEnded:(id)a3 logMessage:(id)a4 dataDispatcherContext:(id)a5
++ (BOOL)cdmClientSetupEnded:(id)ended logMessage:(id)message dataDispatcherContext:(id)context
 {
   v17 = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E69D1420];
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 createCDMClientSetupEndedLog:a3];
-  v11 = [CDMSELFLogUtil emitEventsFromContainer:v10 mainEventLogMessage:v9 dataDispatcherContext:v8];
+  contextCopy = context;
+  messageCopy = message;
+  v10 = [v7 createCDMClientSetupEndedLog:ended];
+  v11 = [CDMSELFLogUtil emitEventsFromContainer:v10 mainEventLogMessage:messageCopy dataDispatcherContext:contextCopy];
 
   if (!v11)
   {
@@ -1105,14 +1105,14 @@ LABEL_15:
   return v11;
 }
 
-+ (BOOL)contextUpdateEnded:(id)a3 metadata:(id)a4 logMessage:(id)a5 dataDispatcherContext:(id)a6
++ (BOOL)contextUpdateEnded:(id)ended metadata:(id)metadata logMessage:(id)message dataDispatcherContext:(id)context
 {
   v19 = *MEMORY[0x1E69E9840];
   v9 = MEMORY[0x1E69D1420];
-  v10 = a6;
-  v11 = a5;
-  v12 = [v9 createContextUpdateEndedLog:0 contextUpdateResponse:a3 metadata:a4];
-  v13 = [CDMSELFLogUtil emitEventsFromContainer:v12 mainEventLogMessage:v11 dataDispatcherContext:v10];
+  contextCopy = context;
+  messageCopy = message;
+  v12 = [v9 createContextUpdateEndedLog:0 contextUpdateResponse:ended metadata:metadata];
+  v13 = [CDMSELFLogUtil emitEventsFromContainer:v12 mainEventLogMessage:messageCopy dataDispatcherContext:contextCopy];
 
   if (!v13)
   {
@@ -1129,14 +1129,14 @@ LABEL_15:
   return v13;
 }
 
-+ (BOOL)matchingSpanEnded:(id)a3 metadata:(id)a4 logMessage:(id)a5 dataDispatcherContext:(id)a6
++ (BOOL)matchingSpanEnded:(id)ended metadata:(id)metadata logMessage:(id)message dataDispatcherContext:(id)context
 {
   v28 = *MEMORY[0x1E69E9840];
   v9 = CDMLogContext;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  contextCopy = context;
+  messageCopy = message;
+  metadataCopy = metadata;
+  endedCopy = ended;
   v14 = os_signpost_id_generate(v9);
   v15 = CDMLogContext;
   v16 = v15;
@@ -1147,9 +1147,9 @@ LABEL_15:
     _os_signpost_emit_with_name_impl(&dword_1DC287000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v14, "SpanMatcher", "SELFLogSpanMatching", &v26, 2u);
   }
 
-  v18 = [MEMORY[0x1E69D1420] createMatchingSpanEndedLog:0 spanMatchResponse:v13 metadata:v12];
+  v18 = [MEMORY[0x1E69D1420] createMatchingSpanEndedLog:0 spanMatchResponse:endedCopy metadata:metadataCopy];
 
-  v19 = [CDMSELFLogUtil emitEventsFromContainer:v18 mainEventLogMessage:v11 dataDispatcherContext:v10];
+  v19 = [CDMSELFLogUtil emitEventsFromContainer:v18 mainEventLogMessage:messageCopy dataDispatcherContext:contextCopy];
   if (v19)
   {
     v20 = CDMLogContext;
@@ -1185,14 +1185,14 @@ LABEL_13:
   return v19;
 }
 
-+ (BOOL)cdmEnded:(id)a3 metadata:(id)a4 logMessage:(id)a5 machAbsoluteTime:(unint64_t)a6 dataDispatcherContext:(id)a7
++ (BOOL)cdmEnded:(id)ended metadata:(id)metadata logMessage:(id)message machAbsoluteTime:(unint64_t)time dataDispatcherContext:(id)context
 {
   v21 = *MEMORY[0x1E69E9840];
   v11 = MEMORY[0x1E69D1420];
-  v12 = a7;
-  v13 = a5;
-  v14 = [v11 createCDMRequestEndedLog:a3 metadata:a4];
-  v15 = [CDMSELFLogUtil emitEventsFromContainer:v14 mainEventLogMessage:v13 machAbsoluteTime:a6 dataDispatcherContext:v12];
+  contextCopy = context;
+  messageCopy = message;
+  v14 = [v11 createCDMRequestEndedLog:ended metadata:metadata];
+  v15 = [CDMSELFLogUtil emitEventsFromContainer:v14 mainEventLogMessage:messageCopy machAbsoluteTime:time dataDispatcherContext:contextCopy];
 
   if (!v15)
   {
@@ -1209,13 +1209,13 @@ LABEL_13:
   return v15;
 }
 
-+ (BOOL)emitRequestLink:(id)a3 metadata:(id)a4 dataDispatcherContext:(id)a5
++ (BOOL)emitRequestLink:(id)link metadata:(id)metadata dataDispatcherContext:(id)context
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7)
+  linkCopy = link;
+  metadataCopy = metadata;
+  contextCopy = context;
+  if (!linkCopy)
   {
     v16 = CDMOSLoggerForCategory(0);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -1231,9 +1231,9 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v10 = [v7 targetName];
+  targetName = [linkCopy targetName];
 
-  if (!v10)
+  if (!targetName)
   {
     v16 = CDMOSLoggerForCategory(0);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -1247,14 +1247,14 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v11 = [v7 targetName];
-  v12 = [v11 isEqualToString:@"ORCHESTRATOR"];
+  targetName2 = [linkCopy targetName];
+  v12 = [targetName2 isEqualToString:@"ORCHESTRATOR"];
 
   if (v12)
   {
-    v13 = [v7 targetUUID];
-    v14 = [v7 nlId];
-    v15 = [CDMSELFLogUtil orchestratorRequestLink:v13 nlId:v14 metadata:v8 logMessage:@"SELF emitting RequestLink message linking NLX and Orchestrator" dataDispatcherContext:v9];
+    targetUUID = [linkCopy targetUUID];
+    nlId = [linkCopy nlId];
+    v15 = [CDMSELFLogUtil orchestratorRequestLink:targetUUID nlId:nlId metadata:metadataCopy logMessage:@"SELF emitting RequestLink message linking NLX and Orchestrator" dataDispatcherContext:contextCopy];
 LABEL_13:
     v18 = v15;
 
@@ -1262,27 +1262,27 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v19 = [v7 targetName];
-  v20 = [v19 isEqualToString:@"CURARE"];
+  targetName3 = [linkCopy targetName];
+  v20 = [targetName3 isEqualToString:@"CURARE"];
 
   if (v20)
   {
-    v21 = [v7 targetUUID];
-    [CDMSELFLogUtil emitCurareContext:v21 metadata:v8 dataDispatcherContext:v9];
+    targetUUID2 = [linkCopy targetUUID];
+    [CDMSELFLogUtil emitCurareContext:targetUUID2 metadata:metadataCopy dataDispatcherContext:contextCopy];
 
-    v13 = [v7 targetUUID];
-    v14 = [v7 nlId];
-    v15 = [CDMSELFLogUtil curareRequestLink:v13 nlId:v14 metadata:v8 logMessage:@"SELF emitting RequestLink message linking NLX and Curare" dataDispatcherContext:v9];
+    targetUUID = [linkCopy targetUUID];
+    nlId = [linkCopy nlId];
+    v15 = [CDMSELFLogUtil curareRequestLink:targetUUID nlId:nlId metadata:metadataCopy logMessage:@"SELF emitting RequestLink message linking NLX and Curare" dataDispatcherContext:contextCopy];
     goto LABEL_13;
   }
 
-  v24 = [v7 targetName];
-  v25 = [v24 isEqualToString:@"LIGHTHOUSE"];
+  targetName4 = [linkCopy targetName];
+  v25 = [targetName4 isEqualToString:@"LIGHTHOUSE"];
 
   if (v25)
   {
-    v13 = [v7 targetUUID];
-    v18 = [CDMSELFLogUtil emitCurareContext:v13 metadata:v8 dataDispatcherContext:v9];
+    targetUUID = [linkCopy targetUUID];
+    v18 = [CDMSELFLogUtil emitCurareContext:targetUUID metadata:metadataCopy dataDispatcherContext:contextCopy];
     goto LABEL_14;
   }
 
@@ -1304,14 +1304,14 @@ LABEL_15:
   return v18;
 }
 
-+ (BOOL)emitCurareContext:(id)a3 metadata:(id)a4 dataDispatcherContext:(id)a5
++ (BOOL)emitCurareContext:(id)context metadata:(id)metadata dataDispatcherContext:(id)dispatcherContext
 {
   v15 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  if (a3)
+  dispatcherContextCopy = dispatcherContext;
+  if (context)
   {
-    v8 = [MEMORY[0x1E69D1420] createNLXCurareContext:a3 metadata:a4];
-    v9 = [CDMSELFLogUtil emitEventsFromContainer:v8 mainEventLogMessage:@"SELF emitting CurareContext" dataDispatcherContext:v7];
+    v8 = [MEMORY[0x1E69D1420] createNLXCurareContext:context metadata:metadata];
+    v9 = [CDMSELFLogUtil emitEventsFromContainer:v8 mainEventLogMessage:@"SELF emitting CurareContext" dataDispatcherContext:dispatcherContextCopy];
   }
 
   else
@@ -1331,15 +1331,15 @@ LABEL_15:
   return v9;
 }
 
-+ (BOOL)curareRequestLink:(id)a3 nlId:(id)a4 metadata:(id)a5 logMessage:(id)a6 dataDispatcherContext:(id)a7
++ (BOOL)curareRequestLink:(id)link nlId:(id)id metadata:(id)metadata logMessage:(id)message dataDispatcherContext:(id)context
 {
   v24 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (!v11)
+  linkCopy = link;
+  idCopy = id;
+  metadataCopy = metadata;
+  messageCopy = message;
+  contextCopy = context;
+  if (!linkCopy)
   {
     v16 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -1356,7 +1356,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v12)
+  if (!idCopy)
   {
     v16 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -1370,8 +1370,8 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v16 = [MEMORY[0x1E69D1420] createNLXRequestLinkWithTarget:16 andTargetId:v11 metadata:v13];
-  if (![CDMSELFLogUtil emitNLXRequestLink:v16 logMessage:v14 dataDispatcherContext:v15])
+  v16 = [MEMORY[0x1E69D1420] createNLXRequestLinkWithTarget:16 andTargetId:linkCopy metadata:metadataCopy];
+  if (![CDMSELFLogUtil emitNLXRequestLink:v16 logMessage:messageCopy dataDispatcherContext:contextCopy])
   {
     v19 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
@@ -1391,15 +1391,15 @@ LABEL_14:
   return v17;
 }
 
-+ (BOOL)orchestratorRequestLink:(id)a3 nlId:(id)a4 metadata:(id)a5 logMessage:(id)a6 dataDispatcherContext:(id)a7
++ (BOOL)orchestratorRequestLink:(id)link nlId:(id)id metadata:(id)metadata logMessage:(id)message dataDispatcherContext:(id)context
 {
   v25 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (!v11)
+  linkCopy = link;
+  idCopy = id;
+  metadataCopy = metadata;
+  messageCopy = message;
+  contextCopy = context;
+  if (!linkCopy)
   {
     v17 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -1416,7 +1416,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v12)
+  if (!idCopy)
   {
     v17 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -1440,8 +1440,8 @@ LABEL_16:
     v16 = 1;
   }
 
-  v17 = [MEMORY[0x1E69D1420] createNLXRequestLinkWithTarget:v16 andTargetId:v11 metadata:v13];
-  if (![CDMSELFLogUtil emitNLXRequestLink:v17 logMessage:v14 dataDispatcherContext:v15])
+  v17 = [MEMORY[0x1E69D1420] createNLXRequestLinkWithTarget:v16 andTargetId:linkCopy metadata:metadataCopy];
+  if (![CDMSELFLogUtil emitNLXRequestLink:v17 logMessage:messageCopy dataDispatcherContext:contextCopy])
   {
     v20 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
@@ -1461,15 +1461,15 @@ LABEL_17:
   return v18;
 }
 
-+ (BOOL)emitNLXRequestLink:(id)a3 logMessage:(id)a4 dataDispatcherContext:(id)a5
++ (BOOL)emitNLXRequestLink:(id)link logMessage:(id)message dataDispatcherContext:(id)context
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  linkCopy = link;
+  messageCopy = message;
+  if (linkCopy)
   {
-    v8 = [MEMORY[0x1E69CE1F0] sharedStream];
-    [v8 emitMessage:v6];
+    mEMORY[0x1E69CE1F0] = [MEMORY[0x1E69CE1F0] sharedStream];
+    [mEMORY[0x1E69CE1F0] emitMessage:linkCopy];
 
     v9 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -1477,7 +1477,7 @@ LABEL_17:
       v12 = 136315394;
       v13 = "+[CDMSELFLogUtil emitNLXRequestLink:logMessage:dataDispatcherContext:]";
       v14 = 2112;
-      v15 = v7;
+      v15 = messageCopy;
       _os_log_debug_impl(&dword_1DC287000, v9, OS_LOG_TYPE_DEBUG, "%s %@", &v12, 0x16u);
     }
   }
@@ -1494,30 +1494,30 @@ LABEL_17:
   }
 
   v10 = *MEMORY[0x1E69E9840];
-  return v6 != 0;
+  return linkCopy != 0;
 }
 
-+ (BOOL)isEventSampledForEmission:(id)a3
++ (BOOL)isEventSampledForEmission:(id)emission
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [CDMSELFLogUtil getSampleRateForEvent:v3];
+  emissionCopy = emission;
+  v4 = [CDMSELFLogUtil getSampleRateForEvent:emissionCopy];
   if (v4 > 0x63)
   {
     goto LABEL_9;
   }
 
   v5 = v4;
-  v6 = [v3 eventMetadata];
-  v7 = [v6 nlId];
-  v8 = [v7 toSafeNSUUID];
-  v9 = [v8 UUIDString];
-  v10 = [v9 substringToIndex:8];
+  eventMetadata = [emissionCopy eventMetadata];
+  nlId = [eventMetadata nlId];
+  toSafeNSUUID = [nlId toSafeNSUUID];
+  uUIDString = [toSafeNSUUID UUIDString];
+  v10 = [uUIDString substringToIndex:8];
 
-  v11 = [v10 UTF8String];
-  if (v11)
+  uTF8String = [v10 UTF8String];
+  if (uTF8String)
   {
-    v12 = strtoul(v11, 0, 16);
+    v12 = strtoul(uTF8String, 0, 16);
   }
 
   else
@@ -1559,15 +1559,15 @@ LABEL_13:
   return v14;
 }
 
-+ (BOOL)emitEventsFromContainer:(id)a3 mainEventLogMessage:(id)a4 machAbsoluteTime:(unint64_t)a5 logLevel:(id)a6 dataDispatcherContext:(id)a7
++ (BOOL)emitEventsFromContainer:(id)container mainEventLogMessage:(id)message machAbsoluteTime:(unint64_t)time logLevel:(id)level dataDispatcherContext:(id)context
 {
   v59 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  v15 = v14;
-  if (!v14 || ([(CDMDataDispatcherContext *)v14 callingBundleId], v16 = objc_claimAutoreleasedReturnValue(), v16, !v16))
+  containerCopy = container;
+  messageCopy = message;
+  levelCopy = level;
+  contextCopy = context;
+  v15 = contextCopy;
+  if (!contextCopy || ([(CDMDataDispatcherContext *)contextCopy callingBundleId], v16 = objc_claimAutoreleasedReturnValue(), v16, !v16))
   {
     v17 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -1583,8 +1583,8 @@ LABEL_13:
 
   if (![CDMSELFLoggingPolicy isSELFLoggingAllowed:[(CDMDataDispatcherContext *)v15 cdmSELFLoggingPolicyType]])
   {
-    v31 = CDMOSLoggerForCategory(0);
-    if (!os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
+    tier1Events = CDMOSLoggerForCategory(0);
+    if (!os_log_type_enabled(tier1Events, OS_LOG_TYPE_DEBUG))
     {
       goto LABEL_29;
     }
@@ -1593,14 +1593,14 @@ LABEL_13:
     v56 = "+[CDMSELFLogUtil emitEventsFromContainer:mainEventLogMessage:machAbsoluteTime:logLevel:dataDispatcherContext:]";
     v32 = "%s Tried to emit a SELF event, but logging is not allowed!";
 LABEL_22:
-    _os_log_debug_impl(&dword_1DC287000, v31, OS_LOG_TYPE_DEBUG, v32, buf, 0xCu);
+    _os_log_debug_impl(&dword_1DC287000, tier1Events, OS_LOG_TYPE_DEBUG, v32, buf, 0xCu);
     goto LABEL_29;
   }
 
   if (![(CDMDataDispatcherContext *)v15 isSampledForEmission])
   {
-    v31 = CDMOSLoggerForCategory(0);
-    if (!os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
+    tier1Events = CDMOSLoggerForCategory(0);
+    if (!os_log_type_enabled(tier1Events, OS_LOG_TYPE_DEBUG))
     {
       goto LABEL_29;
     }
@@ -1611,26 +1611,26 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (v11)
+  if (containerCopy)
   {
-    v19 = [v11 mainEvent];
+    mainEvent = [containerCopy mainEvent];
 
-    if (!v19)
+    if (!mainEvent)
     {
       goto LABEL_53;
     }
 
-    v20 = [v11 mainEvent];
-    if ([v20 hasEventMetadata])
+    mainEvent2 = [containerCopy mainEvent];
+    if ([mainEvent2 hasEventMetadata])
     {
-      v21 = [v11 mainEvent];
-      v22 = [v21 eventMetadata];
-      v23 = [v22 hasNlId];
+      mainEvent3 = [containerCopy mainEvent];
+      eventMetadata = [mainEvent3 eventMetadata];
+      hasNlId = [eventMetadata hasNlId];
 
-      if (v23)
+      if (hasNlId)
       {
-        v24 = [v11 mainEvent];
-        v25 = [CDMSELFLogUtil isEventSampledForEmission:v24];
+        mainEvent4 = [containerCopy mainEvent];
+        v25 = [CDMSELFLogUtil isEventSampledForEmission:mainEvent4];
 
         if (!v25)
         {
@@ -1638,10 +1638,10 @@ LABEL_22:
           goto LABEL_31;
         }
 
-        v26 = [(CDMDataDispatcherContext *)v15 cdmSELFLoggingPolicyType];
+        cdmSELFLoggingPolicyType = [(CDMDataDispatcherContext *)v15 cdmSELFLoggingPolicyType];
         v27 = CDMOSLoggerForCategory(0);
         v28 = os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG);
-        if (v26 == 1)
+        if (cdmSELFLoggingPolicyType == 1)
         {
           if (v28)
           {
@@ -1650,16 +1650,16 @@ LABEL_22:
             _os_log_debug_impl(&dword_1DC287000, v27, OS_LOG_TYPE_DEBUG, "%s CDM Log policy - Siri", buf, 0xCu);
           }
 
-          v29 = [MEMORY[0x1E69CE1F0] sharedStream];
-          v30 = [v11 mainEvent];
-          if (a5)
+          mEMORY[0x1E69CE1F0] = [MEMORY[0x1E69CE1F0] sharedStream];
+          mainEvent5 = [containerCopy mainEvent];
+          if (time)
           {
-            [v29 emitMessage:v30 timestamp:a5];
+            [mEMORY[0x1E69CE1F0] emitMessage:mainEvent5 timestamp:time];
           }
 
           else
           {
-            [v29 emitMessage:v30];
+            [mEMORY[0x1E69CE1F0] emitMessage:mainEvent5];
           }
         }
 
@@ -1672,22 +1672,22 @@ LABEL_22:
             _os_log_debug_impl(&dword_1DC287000, v27, OS_LOG_TYPE_DEBUG, "%s CDM Log policy - Non Siri", buf, 0xCu);
           }
 
-          v29 = [MEMORY[0x1E69CE1F0] sharedAnalytics];
-          v30 = [v29 defaultMessageStream];
-          v37 = [v11 mainEvent];
-          v38 = [(CDMDataDispatcherContext *)v15 streamUUID];
-          if (a5)
+          mEMORY[0x1E69CE1F0] = [MEMORY[0x1E69CE1F0] sharedAnalytics];
+          mainEvent5 = [mEMORY[0x1E69CE1F0] defaultMessageStream];
+          mainEvent6 = [containerCopy mainEvent];
+          streamUUID = [(CDMDataDispatcherContext *)v15 streamUUID];
+          if (time)
           {
-            [v30 emitMessage:v37 timestamp:a5 isolatedStreamUUID:v38];
+            [mainEvent5 emitMessage:mainEvent6 timestamp:time isolatedStreamUUID:streamUUID];
           }
 
           else
           {
-            [v30 emitMessage:v37 isolatedStreamUUID:v38];
+            [mainEvent5 emitMessage:mainEvent6 isolatedStreamUUID:streamUUID];
           }
         }
 
-        if ([v13 isEqualToString:@"LOG_DEBUG"])
+        if ([levelCopy isEqualToString:@"LOG_DEBUG"])
         {
           v39 = CDMOSLoggerForCategory(0);
           if (!os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
@@ -1699,12 +1699,12 @@ LABEL_53:
             v53 = 0u;
             v50 = 0u;
             v51 = 0u;
-            v31 = [v11 tier1Events];
-            v42 = [v31 countByEnumeratingWithState:&v50 objects:v54 count:16];
+            tier1Events = [containerCopy tier1Events];
+            v42 = [tier1Events countByEnumeratingWithState:&v50 objects:v54 count:16];
             if (v42)
             {
               v43 = v42;
-              v49 = v13;
+              v49 = levelCopy;
               v44 = *v51;
               do
               {
@@ -1712,22 +1712,22 @@ LABEL_53:
                 {
                   if (*v51 != v44)
                   {
-                    objc_enumerationMutation(v31);
+                    objc_enumerationMutation(tier1Events);
                   }
 
                   v46 = *(*(&v50 + 1) + 8 * i);
                   if ([(CDMDataDispatcherContext *)v15 cdmSELFLoggingPolicyType]== 1)
                   {
-                    v47 = [MEMORY[0x1E69CE1F0] sharedStream];
-                    v48 = v47;
-                    if (a5)
+                    mEMORY[0x1E69CE1F0]2 = [MEMORY[0x1E69CE1F0] sharedStream];
+                    v48 = mEMORY[0x1E69CE1F0]2;
+                    if (time)
                     {
-                      [v47 emitMessage:v46 timestamp:a5];
+                      [mEMORY[0x1E69CE1F0]2 emitMessage:v46 timestamp:time];
                     }
 
                     else
                     {
-                      [v47 emitMessage:v46];
+                      [mEMORY[0x1E69CE1F0]2 emitMessage:v46];
                     }
                   }
 
@@ -1743,12 +1743,12 @@ LABEL_53:
                   }
                 }
 
-                v43 = [v31 countByEnumeratingWithState:&v50 objects:v54 count:16];
+                v43 = [tier1Events countByEnumeratingWithState:&v50 objects:v54 count:16];
               }
 
               while (v43);
               v34 = 1;
-              v13 = v49;
+              levelCopy = v49;
             }
 
             else
@@ -1762,7 +1762,7 @@ LABEL_53:
 
         else
         {
-          if ([v13 isEqualToString:@"LOG_WARN"])
+          if ([levelCopy isEqualToString:@"LOG_WARN"])
           {
             v39 = CDMOSLoggerForCategory(0);
             if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
@@ -1770,14 +1770,14 @@ LABEL_53:
               *buf = 136315394;
               v56 = "+[CDMSELFLogUtil emitEventsFromContainer:mainEventLogMessage:machAbsoluteTime:logLevel:dataDispatcherContext:]";
               v57 = 2112;
-              v58 = v12;
+              v58 = messageCopy;
               _os_log_impl(&dword_1DC287000, v39, OS_LOG_TYPE_INFO, "%s [WARN]: %@", buf, 0x16u);
             }
 
             goto LABEL_52;
           }
 
-          v40 = [v13 isEqualToString:@"LOG_ERROR"];
+          v40 = [levelCopy isEqualToString:@"LOG_ERROR"];
           v41 = CDMOSLoggerForCategory(0);
           v39 = v41;
           if (v40)
@@ -1787,7 +1787,7 @@ LABEL_53:
               *buf = 136315394;
               v56 = "+[CDMSELFLogUtil emitEventsFromContainer:mainEventLogMessage:machAbsoluteTime:logLevel:dataDispatcherContext:]";
               v57 = 2112;
-              v58 = v12;
+              v58 = messageCopy;
               _os_log_error_impl(&dword_1DC287000, v39, OS_LOG_TYPE_ERROR, "%s [ERR]: %@", buf, 0x16u);
             }
 
@@ -1811,7 +1811,7 @@ LABEL_53:
         *buf = 136315394;
         v56 = "+[CDMSELFLogUtil emitEventsFromContainer:mainEventLogMessage:machAbsoluteTime:logLevel:dataDispatcherContext:]";
         v57 = 2112;
-        v58 = v12;
+        v58 = messageCopy;
         _os_log_debug_impl(&dword_1DC287000, v39, OS_LOG_TYPE_DEBUG, "%s %@", buf, 0x16u);
         goto LABEL_52;
       }
@@ -1821,8 +1821,8 @@ LABEL_53:
     {
     }
 
-    v31 = CDMOSLoggerForCategory(0);
-    if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
+    tier1Events = CDMOSLoggerForCategory(0);
+    if (os_log_type_enabled(tier1Events, OS_LOG_TYPE_INFO))
     {
       *buf = 136315138;
       v56 = "+[CDMSELFLogUtil emitEventsFromContainer:mainEventLogMessage:machAbsoluteTime:logLevel:dataDispatcherContext:]";
@@ -1833,14 +1833,14 @@ LABEL_53:
 
   else
   {
-    v31 = CDMOSLoggerForCategory(0);
-    if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
+    tier1Events = CDMOSLoggerForCategory(0);
+    if (os_log_type_enabled(tier1Events, OS_LOG_TYPE_INFO))
     {
       *buf = 136315138;
       v56 = "+[CDMSELFLogUtil emitEventsFromContainer:mainEventLogMessage:machAbsoluteTime:logLevel:dataDispatcherContext:]";
       v33 = "%s [WARN]: Tried to emit a SELF event, but the given eventContainer was nil!";
 LABEL_28:
-      _os_log_impl(&dword_1DC287000, v31, OS_LOG_TYPE_INFO, v33, buf, 0xCu);
+      _os_log_impl(&dword_1DC287000, tier1Events, OS_LOG_TYPE_INFO, v33, buf, 0xCu);
     }
   }
 
@@ -1853,18 +1853,18 @@ LABEL_31:
   return v34;
 }
 
-+ (id)createSELFMetadataWithRequestId:(id)a3
++ (id)createSELFMetadataWithRequestId:(id)id
 {
-  v3 = [MEMORY[0x1E69D1420] extractRequestLinkData:a3];
+  v3 = [MEMORY[0x1E69D1420] extractRequestLinkData:id];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 nlId];
-    v6 = [v4 trpId];
-    v7 = [v4 targetUUID];
-    v8 = [v4 resultCandidateId];
-    v9 = [v4 targetName];
-    v10 = [CDMSELFLogUtil createSELFMetadataWithNlId:v5 andWithTrpId:v6 andWithRequestId:v7 andWithResultCandidateId:v8 andWithConnectionId:v9];
+    nlId = [v3 nlId];
+    trpId = [v4 trpId];
+    targetUUID = [v4 targetUUID];
+    resultCandidateId = [v4 resultCandidateId];
+    targetName = [v4 targetName];
+    v10 = [CDMSELFLogUtil createSELFMetadataWithNlId:nlId andWithTrpId:trpId andWithRequestId:targetUUID andWithResultCandidateId:resultCandidateId andWithConnectionId:targetName];
   }
 
   else
@@ -1875,19 +1875,19 @@ LABEL_31:
   return v10;
 }
 
-+ (id)createSELFMetadataWithNlId:(id)a3 andWithTrpId:(id)a4 andWithRequestId:(id)a5 andWithResultCandidateId:(id)a6 andWithConnectionId:(id)a7
++ (id)createSELFMetadataWithNlId:(id)id andWithTrpId:(id)trpId andWithRequestId:(id)requestId andWithResultCandidateId:(id)candidateId andWithConnectionId:(id)connectionId
 {
   v32 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = v15;
+  idCopy = id;
+  trpIdCopy = trpId;
+  requestIdCopy = requestId;
+  candidateIdCopy = candidateId;
+  connectionIdCopy = connectionId;
+  v16 = connectionIdCopy;
   v29 = 0;
-  if (v15)
+  if (connectionIdCopy)
   {
-    if ([v15 isEqualToString:@"ORCHESTRATOR"])
+    if ([connectionIdCopy isEqualToString:@"ORCHESTRATOR"])
     {
       v17 = 1;
     }
@@ -1916,7 +1916,7 @@ LABEL_31:
   }
 
 LABEL_11:
-  v18 = [MEMORY[0x1E69D13F8] convertFromUUID:v13];
+  v18 = [MEMORY[0x1E69D13F8] convertFromUUID:requestIdCopy];
   v19 = AFDeviceSupportsSAE();
   v20 = CDMOSLoggerForCategory(0);
   v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG);
@@ -1948,7 +1948,7 @@ LABEL_11:
 
   v24 = MEMORY[0x1E69D1420];
   v25 = v18;
-  v26 = [v24 createNLXClientEventMetadataWithNlId:v11 andWithTrpId:v12 andWithRequestId:v22 andWithSubRequestId:v23 andWithResultCandidateId:v14 andWithRequester:&v29];
+  v26 = [v24 createNLXClientEventMetadataWithNlId:idCopy andWithTrpId:trpIdCopy andWithRequestId:v22 andWithSubRequestId:v23 andWithResultCandidateId:candidateIdCopy andWithRequester:&v29];
 
   v27 = *MEMORY[0x1E69E9840];
 

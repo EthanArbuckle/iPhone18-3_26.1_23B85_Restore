@@ -1,8 +1,8 @@
 @interface SBHStackConfigurationBackgroundViewController
 - (CGSize)apertureSize;
 - (void)loadView;
-- (void)setApertureSize:(CGSize)a3;
-- (void)setFooterButtons:(id)a3;
+- (void)setApertureSize:(CGSize)size;
+- (void)setFooterButtons:(id)buttons;
 - (void)viewDidLoad;
 @end
 
@@ -20,7 +20,7 @@
   v32.receiver = self;
   v32.super_class = SBHStackConfigurationBackgroundViewController;
   [(SBHStackConfigurationBackgroundViewController *)&v32 viewDidLoad];
-  v27 = [(SBHStackConfigurationBackgroundViewController *)self view];
+  view = [(SBHStackConfigurationBackgroundViewController *)self view];
   v34 = 0;
   v35 = &v34;
   v36 = 0x2050000000;
@@ -42,12 +42,12 @@
   v5 = objc_alloc_init(v3);
   [(SBHStackConfigurationBackgroundViewController *)self setBackgroundViewController:v5];
   [(SBHStackConfigurationBackgroundViewController *)self bs_addChildViewController:v5];
-  v6 = [v5 requiredVisualStyleCategories];
+  requiredVisualStyleCategories = [v5 requiredVisualStyleCategories];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v28 objects:v39 count:16];
+  v7 = [requiredVisualStyleCategories countByEnumeratingWithState:&v28 objects:v39 count:16];
   if (v7)
   {
     v8 = *v29;
@@ -58,71 +58,71 @@
       {
         if (*v29 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(requiredVisualStyleCategories);
         }
 
-        v10 = [*(*(&v28 + 1) + 8 * v9) integerValue];
-        v11 = [MEMORY[0x1E69AE170] _visualStylingProviderForRecipe:4 andCategory:v10];
-        [v5 setVisualStylingProvider:v11 forCategory:v10];
+        integerValue = [*(*(&v28 + 1) + 8 * v9) integerValue];
+        v11 = [MEMORY[0x1E69AE170] _visualStylingProviderForRecipe:4 andCategory:integerValue];
+        [v5 setVisualStylingProvider:v11 forCategory:integerValue];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v28 objects:v39 count:16];
+      v7 = [requiredVisualStyleCategories countByEnumeratingWithState:&v28 objects:v39 count:16];
     }
 
     while (v7);
   }
 
-  v12 = [v5 view];
-  [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view2 = [v5 view];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
   v20 = MEMORY[0x1E696ACD8];
-  v26 = [v12 topAnchor];
-  v25 = [v27 topAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25];
+  topAnchor = [view2 topAnchor];
+  topAnchor2 = [view topAnchor];
+  v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v38[0] = v24;
-  v23 = [v12 bottomAnchor];
-  v22 = [v27 bottomAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  bottomAnchor = [view2 bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v38[1] = v21;
-  v13 = [v12 leadingAnchor];
-  v14 = [v27 leadingAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  leadingAnchor = [view2 leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v38[2] = v15;
-  v16 = [v12 trailingAnchor];
-  v17 = [v27 trailingAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  trailingAnchor = [view2 trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v38[3] = v18;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:4];
   [v20 activateConstraints:v19];
 }
 
-- (void)setApertureSize:(CGSize)a3
+- (void)setApertureSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(SBHStackConfigurationBackgroundViewController *)self loadViewIfNeeded];
-  v6 = [(SBHStackConfigurationBackgroundViewController *)self backgroundViewController];
-  [v6 setExpandedContentModuleWidth:width];
-  [v6 setExpandedContentModuleHeight:height];
+  backgroundViewController = [(SBHStackConfigurationBackgroundViewController *)self backgroundViewController];
+  [backgroundViewController setExpandedContentModuleWidth:width];
+  [backgroundViewController setExpandedContentModuleHeight:height];
 }
 
-- (void)setFooterButtons:(id)a3
+- (void)setFooterButtons:(id)buttons
 {
-  v4 = a3;
-  v7 = [(SBHStackConfigurationBackgroundViewController *)self backgroundViewController];
-  v5 = [v4 bs_compactMap:&__block_literal_global_6];
+  buttonsCopy = buttons;
+  backgroundViewController = [(SBHStackConfigurationBackgroundViewController *)self backgroundViewController];
+  v5 = [buttonsCopy bs_compactMap:&__block_literal_global_6];
 
   if ([*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] == 1)
   {
-    v6 = [v5 bs_reverse];
-    [v7 setFooterButtons:v6];
+    bs_reverse = [v5 bs_reverse];
+    [backgroundViewController setFooterButtons:bs_reverse];
   }
 
   else
   {
-    [v7 setFooterButtons:v5];
+    [backgroundViewController setFooterButtons:v5];
   }
 }
 

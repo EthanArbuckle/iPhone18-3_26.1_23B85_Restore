@@ -1,5 +1,5 @@
 @interface UIInputViewSetPlacement_FloatingApplicator
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPopoverRequired;
 - (CGAffineTransform)scaledPopoverTransform;
 - (CGRect)popoverFrame;
@@ -7,9 +7,9 @@
 - (UIEdgeInsets)contentInsets;
 - (id)backdropContainer;
 - (id)draggableView;
-- (id)startingPropertiesFromPlacementProperties:(id)a3;
+- (id)startingPropertiesFromPlacementProperties:(id)properties;
 - (id)twoFingerDraggableView;
-- (void)applyChanges:(id)a3;
+- (void)applyChanges:(id)changes;
 - (void)invalidate;
 - (void)invalidatePopover;
 - (void)prepare;
@@ -19,37 +19,37 @@
 
 - (id)draggableView
 {
-  v2 = [(UIInputViewSetPlacement_FloatingApplicator *)self popover];
-  v3 = [v2 affordance];
+  popover = [(UIInputViewSetPlacement_FloatingApplicator *)self popover];
+  affordance = [popover affordance];
 
-  return v3;
+  return affordance;
 }
 
 - (id)twoFingerDraggableView
 {
   WeakRetained = objc_loadWeakRetained(&self->super.super._owner);
-  v3 = [WeakRetained hostView];
+  hostView = [WeakRetained hostView];
 
-  return v3;
+  return hostView;
 }
 
 - (id)backdropContainer
 {
-  v3 = [(UIInputViewSetPlacement_FloatingApplicator *)self popover];
-  v4 = [v3 backdropParent];
-  v5 = v4;
-  if (v4)
+  popover = [(UIInputViewSetPlacement_FloatingApplicator *)self popover];
+  backdropParent = [popover backdropParent];
+  v5 = backdropParent;
+  if (backdropParent)
   {
-    v6 = v4;
+    hostView = backdropParent;
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->super.super._owner);
-    v6 = [WeakRetained hostView];
+    hostView = [WeakRetained hostView];
   }
 
-  return v6;
+  return hostView;
 }
 
 - (UIEdgeInsets)contentInsets
@@ -72,11 +72,11 @@
 
   else
   {
-    v4 = [WeakRetained inputViewSet];
-    v5 = [v4 inputView];
-    if (v5)
+    inputViewSet = [WeakRetained inputViewSet];
+    inputView = [inputViewSet inputView];
+    if (inputView)
     {
-      v3 = [v4 isInputViewPlaceholder] ^ 1;
+      v3 = [inputViewSet isInputViewPlaceholder] ^ 1;
     }
 
     else
@@ -88,27 +88,27 @@
   return v3;
 }
 
-- (void)applyChanges:(id)a3
+- (void)applyChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   WeakRetained = objc_loadWeakRetained(&self->super.super._owner);
-  v6 = [WeakRetained containerView];
-  v7 = [v6 _window];
+  containerView = [WeakRetained containerView];
+  _window = [containerView _window];
 
-  if ([v7 _isTextEffectsWindow])
+  if ([_window _isTextEffectsWindow])
   {
-    v8 = [(UIWindow *)v7 _fbsScene];
+    _fbsScene = [(UIWindow *)_window _fbsScene];
 
-    if (v8)
+    if (_fbsScene)
     {
       v9 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-      v10 = [v9 visualModeManager];
-      v11 = [v10 shouldShowWithinAppWindow];
+      visualModeManager = [v9 visualModeManager];
+      shouldShowWithinAppWindow = [visualModeManager shouldShowWithinAppWindow];
 
-      if (((v11 & 1) != 0 || (+[_UIRemoteKeyboards sharedRemoteKeyboards](_UIRemoteKeyboards, "sharedRemoteKeyboards"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 oldPathForSnapshot], v12, v13)) && (+[UIKeyboardSceneDelegate automaticKeyboardArbiterClient](UIKeyboardSceneDelegate, "automaticKeyboardArbiterClient"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "keyboardActive"), v14, v15))
+      if (((shouldShowWithinAppWindow & 1) != 0 || (+[_UIRemoteKeyboards sharedRemoteKeyboards](_UIRemoteKeyboards, "sharedRemoteKeyboards"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 oldPathForSnapshot], v12, v13)) && (+[UIKeyboardSceneDelegate automaticKeyboardArbiterClient](UIKeyboardSceneDelegate, "automaticKeyboardArbiterClient"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "keyboardActive"), v14, v15))
       {
-        v16 = [(UIInputViewSetPlacement_FloatingApplicator *)self popover];
-        if (v16)
+        popover = [(UIInputViewSetPlacement_FloatingApplicator *)self popover];
+        if (popover)
         {
         }
 
@@ -116,9 +116,9 @@
         {
           v25 = [UIKeyboardPopoverContainer alloc];
           v26 = objc_loadWeakRetained(&self->super.super._owner);
-          v27 = [v26 containerView];
+          containerView2 = [v26 containerView];
           v28 = objc_loadWeakRetained(&self->super.super._owner);
-          v29 = -[UIKeyboardPopoverContainer initWithView:usingBackdropStyle:](v25, "initWithView:usingBackdropStyle:", v27, [v28 inputViewBackdropStyle]);
+          v29 = -[UIKeyboardPopoverContainer initWithView:usingBackdropStyle:](v25, "initWithView:usingBackdropStyle:", containerView2, [v28 inputViewBackdropStyle]);
           [(UIInputViewSetPlacement_FloatingApplicator *)self setPopover:v29];
         }
       }
@@ -132,8 +132,8 @@
 
   v36.receiver = self;
   v36.super_class = UIInputViewSetPlacement_FloatingApplicator;
-  [(UIInputViewSetPlacement_UndockedApplicator *)&v36 applyChanges:v4];
-  v17 = [v4 objectForKey:@"Origin"];
+  [(UIInputViewSetPlacement_UndockedApplicator *)&v36 applyChanges:changesCopy];
+  v17 = [changesCopy objectForKey:@"Origin"];
   v18 = v17;
   if (v17)
   {
@@ -145,7 +145,7 @@
     }
   }
 
-  v19 = [v4 objectForKey:@"PopoverRect"];
+  v19 = [changesCopy objectForKey:@"PopoverRect"];
   v20 = v19;
   if (v19)
   {
@@ -155,8 +155,8 @@
 
   if ([(UIInputViewSetPlacement_FloatingApplicator *)self isPopoverRequired])
   {
-    v21 = [(UIInputViewSetPlacement_FloatingApplicator *)self popover];
-    [v21 applyProperties:v4];
+    popover2 = [(UIInputViewSetPlacement_FloatingApplicator *)self popover];
+    [popover2 applyProperties:changesCopy];
   }
 
   else
@@ -169,7 +169,7 @@
   v31 = 3221225472;
   v32 = __59__UIInputViewSetPlacement_FloatingApplicator_applyChanges___block_invoke;
   v33 = &unk_1E70F35B8;
-  v34 = self;
+  selfCopy = self;
   v35 = v22;
   v23 = v22;
   [UIView performWithoutAnimation:&v30];
@@ -186,12 +186,12 @@
   if ([(UIInputViewSetPlacement_FloatingApplicator *)self isPopoverRequired])
   {
     v4 = [UIKeyboardPopoverContainer alloc];
-    v5 = [WeakRetained containerView];
-    v6 = -[UIKeyboardPopoverContainer initWithView:usingBackdropStyle:](v4, "initWithView:usingBackdropStyle:", v5, [WeakRetained inputViewBackdropStyle]);
+    containerView = [WeakRetained containerView];
+    v6 = -[UIKeyboardPopoverContainer initWithView:usingBackdropStyle:](v4, "initWithView:usingBackdropStyle:", containerView, [WeakRetained inputViewBackdropStyle]);
     [(UIInputViewSetPlacement_FloatingApplicator *)self setPopover:v6];
 
-    v7 = [WeakRetained placement];
-    v8 = [v7 applicatorInfoForOwner:WeakRetained];
+    placement = [WeakRetained placement];
+    v8 = [placement applicatorInfoForOwner:WeakRetained];
     v9 = [(UIInputViewSetPlacement_FloatingApplicator *)self startingPropertiesFromPlacementProperties:v8];
 
     v11[0] = MEMORY[0x1E69E9820];
@@ -205,10 +205,10 @@
   }
 }
 
-- (id)startingPropertiesFromPlacementProperties:(id)a3
+- (id)startingPropertiesFromPlacementProperties:(id)properties
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (properties)
   {
     v4 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:?];
     [v4 setObject:&unk_1EFE31A98 forKey:@"Alpha"];
@@ -258,12 +258,12 @@
 
 - (void)invalidatePopover
 {
-  v3 = [(UIInputViewSetPlacement_FloatingApplicator *)self popover];
+  popover = [(UIInputViewSetPlacement_FloatingApplicator *)self popover];
 
-  if (v3)
+  if (popover)
   {
-    v4 = [(UIInputViewSetPlacement_FloatingApplicator *)self popover];
-    [v4 invalidate];
+    popover2 = [(UIInputViewSetPlacement_FloatingApplicator *)self popover];
+    [popover2 invalidate];
 
     [(UIInputViewSetPlacement_FloatingApplicator *)self setPopover:0];
   }
@@ -279,12 +279,12 @@
 
 - (CGRect)popoverFrame
 {
-  v3 = [(UIInputViewSetPlacement_FloatingApplicator *)self popover];
+  popover = [(UIInputViewSetPlacement_FloatingApplicator *)self popover];
 
-  if (v3)
+  if (popover)
   {
-    v4 = [(UIInputViewSetPlacement_FloatingApplicator *)self popover];
-    [v4 frame];
+    popover2 = [(UIInputViewSetPlacement_FloatingApplicator *)self popover];
+    [popover2 frame];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -311,19 +311,19 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10.receiver = self;
   v10.super_class = UIInputViewSetPlacement_FloatingApplicator;
-  v5 = [(UIInputViewSetPlacement_GenericApplicator *)&v10 isEqual:v4];
+  v5 = [(UIInputViewSetPlacement_GenericApplicator *)&v10 isEqual:equalCopy];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v7 = (isKindOfClass ^ 1) & v5;
   if ((isKindOfClass ^ 1) & 1) == 0 && (v5)
   {
-    v8 = [(UIInputViewSetPlacement_FloatingApplicator *)self popover];
-    v7 = v8 != 0;
+    popover = [(UIInputViewSetPlacement_FloatingApplicator *)self popover];
+    v7 = popover != 0;
   }
 
   return v7 & 1;

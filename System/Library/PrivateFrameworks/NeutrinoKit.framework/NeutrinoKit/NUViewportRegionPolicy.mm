@@ -1,15 +1,15 @@
 @interface NUViewportRegionPolicy
 - (NUViewportRegionPolicy)init;
-- (NUViewportRegionPolicy)initWithViewport:(id)a3;
-- (id)regionForGeometry:(id)a3;
+- (NUViewportRegionPolicy)initWithViewport:(id)viewport;
+- (id)regionForGeometry:(id)geometry;
 @end
 
 @implementation NUViewportRegionPolicy
 
-- (id)regionForGeometry:(id)a3
+- (id)regionForGeometry:(id)geometry
 {
-  v4 = a3;
-  [v4 scaledExtent];
+  geometryCopy = geometry;
+  [geometryCopy scaledExtent];
   v6 = v5;
   v8 = v7;
   [(NUViewport *)self->_viewport anchorPoint];
@@ -25,9 +25,9 @@
   v23.origin.x = v14;
   v23.origin.y = v16;
   CGRectOffset(v23, -v6, -v8);
-  [v4 roundingPolicy];
+  [geometryCopy roundingPolicy];
   NUPixelRectFromCGRect();
-  [v4 scaledSize];
+  [geometryCopy scaledSize];
 
   NUPixelRectIntersection();
   NUPixelRectFlipYOrigin();
@@ -37,11 +37,11 @@
   return v19;
 }
 
-- (NUViewportRegionPolicy)initWithViewport:(id)a3
+- (NUViewportRegionPolicy)initWithViewport:(id)viewport
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  viewportCopy = viewport;
+  if (!viewportCopy)
   {
     v10 = NUAssertLogger_873();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -63,8 +63,8 @@
         v18 = dispatch_get_specific(*v12);
         v19 = MEMORY[0x277CCACC8];
         v20 = v18;
-        v21 = [v19 callStackSymbols];
-        v22 = [v21 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v19 callStackSymbols];
+        v22 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v25 = v18;
         v26 = 2114;
@@ -75,8 +75,8 @@
 
     else if (v15)
     {
-      v16 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v25 = v17;
       _os_log_error_impl(&dword_25BD29000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -85,7 +85,7 @@
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
+  v5 = viewportCopy;
   v23.receiver = self;
   v23.super_class = NUViewportRegionPolicy;
   v6 = [(NUViewportRegionPolicy *)&v23 init];
@@ -137,8 +137,8 @@ LABEL_11:
           v20 = MEMORY[0x277CCACC8];
           v21 = specific;
           v22 = v18;
-          v23 = [v20 callStackSymbols];
-          v24 = [v23 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v20 callStackSymbols];
+          v24 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v27 = specific;
           v28 = 2114;
@@ -165,8 +165,8 @@ LABEL_11:
     {
       v14 = MEMORY[0x277CCACC8];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v14 callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v17;
       _os_log_error_impl(&dword_25BD29000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

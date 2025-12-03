@@ -1,28 +1,28 @@
 @interface PXPeopleBootstrapCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
-- (void)setConfirmed:(BOOL)a3;
+- (void)setConfirmed:(BOOL)confirmed;
 @end
 
 @implementation PXPeopleBootstrapCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXPeopleBootstrapCollectionViewCell" hasInstanceMethod:@"image" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXPeopleBootstrapCollectionViewCell" hasInstanceMethod:@"setConfirmed:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXPeopleBootstrapCollectionViewCell" hasInstanceMethod:@"image" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXPeopleBootstrapCollectionViewCell" hasInstanceMethod:@"setConfirmed:" withFullSignature:{"v", "B", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(PXPeopleBootstrapCollectionViewCellAccessibility *)self safeValueForKey:@"image"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
-- (void)setConfirmed:(BOOL)a3
+- (void)setConfirmed:(BOOL)confirmed
 {
   v7.receiver = self;
   v7.super_class = PXPeopleBootstrapCollectionViewCellAccessibility;
@@ -31,7 +31,7 @@
   v5[1] = 3221225472;
   v5[2] = __65__PXPeopleBootstrapCollectionViewCellAccessibility_setConfirmed___block_invoke;
   v5[3] = &__block_descriptor_33_e15___NSString_8__0l;
-  v6 = a3;
+  confirmedCopy = confirmed;
   [(PXPeopleBootstrapCollectionViewCellAccessibility *)self _setAccessibilityValueBlock:v5];
 }
 

@@ -1,27 +1,27 @@
 @interface PHChangeRequestHelper
-+ (id)changeRequestForObject:(id)a3;
-+ (id)changeRequestWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5;
-- (BOOL)allowMutationToManagedObject:(id)a3 propertyKey:(id)a4 error:(id *)a5;
-- (BOOL)applyMutationsToManagedObject:(id)a3 error:(id *)a4;
-- (BOOL)getCloudGUIDIfReserved:(id *)a3 entityName:(id)a4 photoLibrary:(id)a5 error:(id *)a6;
-- (BOOL)prepareForPhotoLibraryCheck:(id)a3 error:(id *)a4;
-- (BOOL)validateMutationsToManagedObject:(id)a3 error:(id *)a4;
++ (id)changeRequestForObject:(id)object;
++ (id)changeRequestWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization;
+- (BOOL)allowMutationToManagedObject:(id)object propertyKey:(id)key error:(id *)error;
+- (BOOL)applyMutationsToManagedObject:(id)object error:(id *)error;
+- (BOOL)getCloudGUIDIfReserved:(id *)reserved entityName:(id)name photoLibrary:(id)library error:(id *)error;
+- (BOOL)prepareForPhotoLibraryCheck:(id)check error:(id *)error;
+- (BOOL)validateMutationsToManagedObject:(id)object error:(id *)error;
 - (NSString)clientBundleIdentifier;
 - (PHChangeRequest)changeRequest;
 - (PHChangeRequestHelper)init;
-- (PHChangeRequestHelper)initWithCoder:(id)a3;
-- (PHChangeRequestHelper)initWithUUID:(id)a3 objectID:(id)a4 changeRequest:(id)a5;
-- (PHChangeRequestHelper)initWithUUID:(id)a3 objectID:(id)a4 isNew:(BOOL)a5 changeRequest:(id)a6;
-- (PHChangeRequestHelper)initWithXPCDict:(id)a3 changeRequest:(id)a4 request:(id)a5 clientAuthorization:(id)a6;
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4;
+- (PHChangeRequestHelper)initWithCoder:(id)coder;
+- (PHChangeRequestHelper)initWithUUID:(id)d objectID:(id)iD changeRequest:(id)request;
+- (PHChangeRequestHelper)initWithUUID:(id)d objectID:(id)iD isNew:(BOOL)new changeRequest:(id)request;
+- (PHChangeRequestHelper)initWithXPCDict:(id)dict changeRequest:(id)request request:(id)a5 clientAuthorization:(id)authorization;
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error;
 - (id)description;
-- (id)initForNewObjectWithUUID:(id)a3 changeRequest:(id)a4;
-- (id)placeholderForCreatedObjectWithClass:(Class)a3 changeRequest:(id)a4;
-- (id)validateMutationsToManagedObject:(id)a3;
+- (id)initForNewObjectWithUUID:(id)d changeRequest:(id)request;
+- (id)placeholderForCreatedObjectWithClass:(Class)class changeRequest:(id)request;
+- (id)validateMutationsToManagedObject:(id)object;
 - (void)didMutate;
-- (void)encodeToXPCDict:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)overrideNewObjectUUIDForCrashRecovery:(id)a3;
+- (void)encodeToXPCDict:(id)dict;
+- (void)encodeWithCoder:(id)coder;
+- (void)overrideNewObjectUUIDForCrashRecovery:(id)recovery;
 @end
 
 @implementation PHChangeRequestHelper
@@ -33,32 +33,32 @@
   return WeakRetained;
 }
 
-- (PHChangeRequestHelper)initWithCoder:(id)a3
+- (PHChangeRequestHelper)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v48.receiver = self;
   v48.super_class = PHChangeRequestHelper;
   v5 = [(PHChangeRequestHelper *)&v48 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     if (v6)
     {
       if ((objc_opt_respondsToSelector() & 1) == 0)
       {
-        v42 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v43 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"id  _Nullable _PLAssertRespondsToSelector(id  _Nullable __strong, SEL _Nonnull)"}];
         v44 = NSStringFromSelector(sel_userInfo);
-        [v42 handleFailureInFunction:v43 file:@"PLHelperExtension.h" lineNumber:91 description:{@"Object does not respond to selector %@: %@", v44, v6}];
+        [currentHandler handleFailureInFunction:v43 file:@"PLHelperExtension.h" lineNumber:91 description:{@"Object does not respond to selector %@: %@", v44, v6}];
       }
 
       v7 = v6;
     }
 
-    v47 = v4;
+    v47 = coderCopy;
 
-    v46 = [v6 userInfo];
-    v8 = [v46 persistentStoreCoordinator];
+    userInfo = [v6 userInfo];
+    persistentStoreCoordinator = [userInfo persistentStoreCoordinator];
     v9 = objc_opt_class();
     v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"uuid"];
     v11 = [v6 decodeObjectOfClass:v9 forKey:v10];
@@ -108,53 +108,53 @@
     creationOptions = v5->_creationOptions;
     v5->_creationOptions = v39;
 
-    v4 = v47;
+    coderCopy = v47;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v22 = a3;
-  v4 = [(PHChangeRequestHelper *)self uuid];
+  coderCopy = coder;
+  uuid = [(PHChangeRequestHelper *)self uuid];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"uuid"];
-  [v22 encodeObject:v4 forKey:v5];
+  [coderCopy encodeObject:uuid forKey:v5];
 
-  v6 = [(PHChangeRequestHelper *)self changeRequest];
+  changeRequest = [(PHChangeRequestHelper *)self changeRequest];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"className"];
-  [v22 encodeObject:v8 forKey:v9];
+  [coderCopy encodeObject:v8 forKey:v9];
 
-  v10 = [(PHChangeRequestHelper *)self mutations];
+  mutations = [(PHChangeRequestHelper *)self mutations];
   v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"mutations"];
-  [v22 encodeObject:v10 forKey:v11];
+  [coderCopy encodeObject:mutations forKey:v11];
 
-  v12 = [(PHChangeRequestHelper *)self nilMutations];
+  nilMutations = [(PHChangeRequestHelper *)self nilMutations];
   v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"nilMutations"];
-  [v22 encodeObject:v12 forKey:v13];
+  [coderCopy encodeObject:nilMutations forKey:v13];
 
-  v14 = [(PHChangeRequestHelper *)self isNewRequest];
+  isNewRequest = [(PHChangeRequestHelper *)self isNewRequest];
   v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"isNewRequest"];
-  [v22 encodeBool:v14 forKey:v15];
+  [coderCopy encodeBool:isNewRequest forKey:v15];
 
-  v16 = [(PHChangeRequestHelper *)self objectID];
+  objectID = [(PHChangeRequestHelper *)self objectID];
 
-  if (v16)
+  if (objectID)
   {
-    v17 = [(PHChangeRequestHelper *)self objectID];
+    objectID2 = [(PHChangeRequestHelper *)self objectID];
     v18 = PLDataFromManagedObjectID();
     v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"objectID"];
-    [v22 encodeObject:v18 forKey:v19];
+    [coderCopy encodeObject:v18 forKey:v19];
   }
 
-  v20 = [(PHChangeRequestHelper *)self creationOptions];
+  creationOptions = [(PHChangeRequestHelper *)self creationOptions];
 
-  if (v20)
+  if (creationOptions)
   {
-    v21 = [(PHChangeRequestHelper *)self creationOptions];
-    [v22 encodeObject:v21 forKey:@"creationOptions"];
+    creationOptions2 = [(PHChangeRequestHelper *)self creationOptions];
+    [coderCopy encodeObject:creationOptions2 forKey:@"creationOptions"];
   }
 }
 
@@ -174,41 +174,41 @@
   return v4;
 }
 
-- (void)encodeToXPCDict:(id)a3
+- (void)encodeToXPCDict:(id)dict
 {
-  xdict = a3;
+  xdict = dict;
   [(PHClientLinkedAgainst *)self->_clientLinkedAgainst encodeToXPCDict:xdict];
-  v4 = [(PHChangeRequestHelper *)self uuid];
+  uuid = [(PHChangeRequestHelper *)self uuid];
   PLXPCDictionarySetString();
 
-  v5 = [(PHChangeRequestHelper *)self changeRequest];
+  changeRequest = [(PHChangeRequestHelper *)self changeRequest];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   PLXPCDictionarySetString();
 
-  v8 = [(PHChangeRequestHelper *)self objectID];
+  objectID = [(PHChangeRequestHelper *)self objectID];
   PLXPCDictionarySetManagedObjectID();
 
-  v9 = [(PHChangeRequestHelper *)self mutations];
+  mutations = [(PHChangeRequestHelper *)self mutations];
   PLXPCDictionarySetDictionary();
 
-  v10 = [(PHChangeRequestHelper *)self nilMutations];
-  v11 = [v10 allObjects];
+  nilMutations = [(PHChangeRequestHelper *)self nilMutations];
+  allObjects = [nilMutations allObjects];
   PLXPCDictionarySetArray();
 
   xpc_dictionary_set_BOOL(xdict, "isNewRequest", [(PHChangeRequestHelper *)self isNewRequest]);
   if (self->_creationOptions)
   {
-    v12 = [(PHChangeRequestHelper *)self creationOptions];
-    [v12 encodeToXPCDict:xdict];
+    creationOptions = [(PHChangeRequestHelper *)self creationOptions];
+    [creationOptions encodeToXPCDict:xdict];
   }
 }
 
-- (BOOL)applyMutationsToManagedObject:(id)a3 error:(id *)a4
+- (BOOL)applyMutationsToManagedObject:(id)object error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
+  objectCopy = object;
+  v7 = objectCopy;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -227,7 +227,7 @@
     v17[2] = __61__PHChangeRequestHelper_applyMutationsToManagedObject_error___block_invoke;
     v17[3] = &unk_1E75A4998;
     v17[4] = self;
-    v9 = v6;
+    v9 = objectCopy;
     v18 = v9;
     v19 = &v21;
     v20 = &v27;
@@ -245,9 +245,9 @@
   }
 
   v11 = *(v28 + 24);
-  if (a4 && (v28[3] & 1) == 0)
+  if (error && (v28[3] & 1) == 0)
   {
-    *a4 = v22[5];
+    *error = v22[5];
     v11 = *(v28 + 24);
   }
 
@@ -302,17 +302,17 @@ void __61__PHChangeRequestHelper_applyMutationsToManagedObject_error___block_inv
   }
 }
 
-- (id)validateMutationsToManagedObject:(id)a3
+- (id)validateMutationsToManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
   v26 = __Block_byref_object_copy__9146;
   v27 = __Block_byref_object_dispose__9147;
   v5 = MEMORY[0x1E69BF2D0];
-  v6 = [MEMORY[0x1E695DFB0] null];
-  v7 = [v5 successWithResult:v6];
+  null = [MEMORY[0x1E695DFB0] null];
+  v7 = [v5 successWithResult:null];
 
   v28 = v7;
   v21[0] = 0;
@@ -329,7 +329,7 @@ void __61__PHChangeRequestHelper_applyMutationsToManagedObject_error___block_inv
     v17[2] = __58__PHChangeRequestHelper_validateMutationsToManagedObject___block_invoke;
     v17[3] = &unk_1E75A4998;
     v17[4] = self;
-    v9 = v4;
+    v9 = objectCopy;
     v18 = v9;
     v19 = v21;
     v20 = &v23;
@@ -398,29 +398,29 @@ void __58__PHChangeRequestHelper_validateMutationsToManagedObject___block_invoke
   }
 }
 
-- (BOOL)validateMutationsToManagedObject:(id)a3 error:(id *)a4
+- (BOOL)validateMutationsToManagedObject:(id)object error:(id *)error
 {
-  v5 = [(PHChangeRequestHelper *)self validateMutationsToManagedObject:a3];
-  v6 = [v5 resultWithError:a4];
-  LOBYTE(a4) = v6 != 0;
+  v5 = [(PHChangeRequestHelper *)self validateMutationsToManagedObject:object];
+  v6 = [v5 resultWithError:error];
+  LOBYTE(error) = v6 != 0;
 
-  return a4;
+  return error;
 }
 
-- (BOOL)allowMutationToManagedObject:(id)a3 propertyKey:(id)a4 error:(id *)a5
+- (BOOL)allowMutationToManagedObject:(id)object propertyKey:(id)key error:(id *)error
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PHChangeRequestHelper *)self changeRequest];
-  v11 = [v10 managedEntityName];
-  v12 = [v8 managedObjectContext];
+  objectCopy = object;
+  keyCopy = key;
+  changeRequest = [(PHChangeRequestHelper *)self changeRequest];
+  managedEntityName = [changeRequest managedEntityName];
+  managedObjectContext = [objectCopy managedObjectContext];
   v13 = PLSafeEntityForNameInManagedObjectContext();
   v14 = 0;
 
   if (!v13)
   {
-    if (!a5)
+    if (!error)
     {
       v20 = 0;
       goto LABEL_14;
@@ -430,20 +430,20 @@ void __58__PHChangeRequestHelper_validateMutationsToManagedObject___block_invoke
 LABEL_12:
     v28 = v21;
     v20 = 0;
-    *a5 = v21;
+    *error = v21;
     goto LABEL_14;
   }
 
-  v15 = [v8 entity];
-  v16 = [v15 isKindOfEntity:v13];
+  entity = [objectCopy entity];
+  v16 = [entity isKindOfEntity:v13];
 
   if (!v16)
   {
     v22 = MEMORY[0x1E696ABC0];
     v30 = *MEMORY[0x1E696A578];
     v23 = MEMORY[0x1E696AEC0];
-    v24 = [v13 name];
-    v25 = [v23 stringWithFormat:@"Invalid entity %@", v24];
+    name = [v13 name];
+    v25 = [v23 stringWithFormat:@"Invalid entity %@", name];
     v31 = v25;
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
     v21 = [v22 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v26];
@@ -451,7 +451,7 @@ LABEL_12:
     v14 = v26;
 LABEL_10:
 
-    if (!a5)
+    if (!error)
     {
       v20 = 0;
       v14 = v21;
@@ -462,16 +462,16 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  v17 = [v8 entity];
-  v18 = [v17 attributesByName];
-  v19 = [v18 objectForKey:v9];
+  entity2 = [objectCopy entity];
+  attributesByName = [entity2 attributesByName];
+  v19 = [attributesByName objectForKey:keyCopy];
 
   if (!v19)
   {
     v27 = MEMORY[0x1E696ABC0];
     v32 = *MEMORY[0x1E696A578];
-    v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid property %@", v9];
-    v33[0] = v24;
+    name = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid property %@", keyCopy];
+    v33[0] = name;
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:&v32 count:1];
     v21 = [v27 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v25];
     goto LABEL_10;
@@ -483,49 +483,49 @@ LABEL_14:
   return v20;
 }
 
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PHChangeRequestHelper *)self changeRequest];
-  v8 = [v7 managedEntityName];
-  v9 = [v6 managedObjectContext];
+  libraryCopy = library;
+  changeRequest = [(PHChangeRequestHelper *)self changeRequest];
+  managedEntityName = [changeRequest managedEntityName];
+  managedObjectContext = [libraryCopy managedObjectContext];
 
   v10 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext();
   v11 = 0;
 
-  if (a4 && !v10)
+  if (error && !v10)
   {
     v12 = MEMORY[0x1E696ABC0];
     v15 = *MEMORY[0x1E696AA08];
     v16[0] = v11;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-    *a4 = [v12 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v13];
+    *error = [v12 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v13];
   }
 
   return v10;
 }
 
-- (BOOL)getCloudGUIDIfReserved:(id *)a3 entityName:(id)a4 photoLibrary:(id)a5 error:(id *)a6
+- (BOOL)getCloudGUIDIfReserved:(id *)reserved entityName:(id)name photoLibrary:(id)library error:(id *)error
 {
   v49[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = [(PHChangeRequestHelper *)self creationOptions];
-  v13 = [v12 reservedCloudIdentifier];
+  nameCopy = name;
+  libraryCopy = library;
+  creationOptions = [(PHChangeRequestHelper *)self creationOptions];
+  reservedCloudIdentifier = [creationOptions reservedCloudIdentifier];
 
-  if (v13)
+  if (reservedCloudIdentifier)
   {
-    v42 = a6;
-    v14 = [v13 identifierCode];
-    v15 = [PHPhotoLibrary PHObjectClassForIdentifierCode:v14];
+    errorCopy = error;
+    identifierCode = [reservedCloudIdentifier identifierCode];
+    v15 = [PHPhotoLibrary PHObjectClassForIdentifierCode:identifierCode];
 
-    v16 = [(objc_class *)v15 managedEntityName];
-    if (v16)
+    managedEntityName = [(objc_class *)v15 managedEntityName];
+    if (managedEntityName)
     {
       v17 = MEMORY[0x1E695D5B8];
-      v18 = [v11 managedObjectContext];
-      v19 = [v17 entityForName:v16 inManagedObjectContext:v18];
+      managedObjectContext = [libraryCopy managedObjectContext];
+      v19 = [v17 entityForName:managedEntityName inManagedObjectContext:managedObjectContext];
     }
 
     else
@@ -534,38 +534,38 @@ LABEL_14:
     }
 
     v21 = MEMORY[0x1E695D5B8];
-    v43 = v11;
-    v22 = [v11 managedObjectContext];
-    v23 = [v21 entityForName:v10 inManagedObjectContext:v22];
+    v43 = libraryCopy;
+    managedObjectContext2 = [libraryCopy managedObjectContext];
+    v23 = [v21 entityForName:nameCopy inManagedObjectContext:managedObjectContext2];
 
-    v24 = [v13 localCloudIdentifier];
-    v25 = v10;
-    v26 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v24];
+    localCloudIdentifier = [reservedCloudIdentifier localCloudIdentifier];
+    v25 = nameCopy;
+    v26 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:localCloudIdentifier];
     v45 = v23;
     v46 = v19;
     v44 = v25;
     if ([v19 isKindOfEntity:v23])
     {
-      v41 = a3;
-      v27 = [(PHChangeRequestHelper *)self request];
-      v28 = [v27 libraryServicesManager];
-      v29 = [v28 cloudIdentifierReservationSupport];
+      reservedCopy = reserved;
+      request = [(PHChangeRequestHelper *)self request];
+      libraryServicesManager = [request libraryServicesManager];
+      cloudIdentifierReservationSupport = [libraryServicesManager cloudIdentifierReservationSupport];
 
-      v30 = [v27 clientBundleID];
+      clientBundleID = [request clientBundleID];
       v47 = 0;
       v31 = v26;
-      v32 = [v29 takeReservedCloudIdentifierWithEntityName:v16 uuid:v26 clientBundleIdentifier:v30 error:&v47];
+      v32 = [cloudIdentifierReservationSupport takeReservedCloudIdentifierWithEntityName:managedEntityName uuid:v26 clientBundleIdentifier:clientBundleID error:&v47];
       v33 = v47;
 
       if (v32)
       {
-        v34 = v24;
-        *v41 = v24;
+        v34 = localCloudIdentifier;
+        *reservedCopy = localCloudIdentifier;
         v20 = 1;
 LABEL_13:
-        v10 = v44;
+        nameCopy = v44;
 
-        v11 = v43;
+        libraryCopy = v43;
         goto LABEL_14;
       }
     }
@@ -583,11 +583,11 @@ LABEL_13:
       v31 = v26;
     }
 
-    if (v42)
+    if (errorCopy)
     {
       v39 = v33;
       v20 = 0;
-      *v42 = v33;
+      *errorCopy = v33;
     }
 
     else
@@ -607,8 +607,8 @@ LABEL_14:
 - (NSString)clientBundleIdentifier
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(PLClientAuthorization *)self->_clientAuthorization trustedCallerBundleID];
-  if ([v3 length])
+  trustedCallerBundleID = [(PLClientAuthorization *)self->_clientAuthorization trustedCallerBundleID];
+  if ([trustedCallerBundleID length])
   {
 LABEL_2:
 
@@ -619,25 +619,25 @@ LABEL_2:
 
   if (HasInternalDiagnostics)
   {
-    v3 = PLPhotoKitGetLog();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
+    trustedCallerBundleID = PLPhotoKitGetLog();
+    if (os_log_type_enabled(trustedCallerBundleID, OS_LOG_TYPE_FAULT))
     {
-      v7 = [(PLClientAuthorization *)self->_clientAuthorization clientProcessIdentifier];
-      v8 = [(PHChangeRequestHelper *)self clientDisplayName];
+      clientProcessIdentifier = [(PLClientAuthorization *)self->_clientAuthorization clientProcessIdentifier];
+      clientDisplayName = [(PHChangeRequestHelper *)self clientDisplayName];
       v9 = 134218242;
-      v10 = v7;
+      v10 = clientProcessIdentifier;
       v11 = 2112;
-      v12 = v8;
-      _os_log_impl(&dword_19C86F000, v3, OS_LOG_TYPE_FAULT, "Client has no bundle identifier. PID %ld, name %@", &v9, 0x16u);
+      v12 = clientDisplayName;
+      _os_log_impl(&dword_19C86F000, trustedCallerBundleID, OS_LOG_TYPE_FAULT, "Client has no bundle identifier. PID %ld, name %@", &v9, 0x16u);
     }
 
     goto LABEL_2;
   }
 
 LABEL_3:
-  v4 = [(PLClientAuthorization *)self->_clientAuthorization trustedCallerBundleID];
+  trustedCallerBundleID2 = [(PLClientAuthorization *)self->_clientAuthorization trustedCallerBundleID];
 
-  return v4;
+  return trustedCallerBundleID2;
 }
 
 - (void)didMutate
@@ -646,47 +646,47 @@ LABEL_3:
   if (!self->_isMutated)
   {
     v3 = +[PHPhotoLibrary photoLibraryForCurrentTransaction];
-    v4 = [(PHChangeRequestHelper *)self changeRequest];
-    [v3 recordUpdateRequest:v4];
+    changeRequest = [(PHChangeRequestHelper *)self changeRequest];
+    [v3 recordUpdateRequest:changeRequest];
 
     self->_isMutated = 1;
   }
 }
 
-- (void)overrideNewObjectUUIDForCrashRecovery:(id)a3
+- (void)overrideNewObjectUUIDForCrashRecovery:(id)recovery
 {
-  v5 = a3;
+  recoveryCopy = recovery;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v8 = NSStringFromSelector(a2);
-    [v7 handleFailureInMethod:a2 object:self file:@"PHChangeRequestHelper.m" lineNumber:208 description:{@"%@ can only be called from assetsd", v8}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHChangeRequestHelper.m" lineNumber:208 description:{@"%@ can only be called from assetsd", v8}];
   }
 
   uuid = self->_uuid;
-  self->_uuid = v5;
+  self->_uuid = recoveryCopy;
 }
 
-- (id)placeholderForCreatedObjectWithClass:(Class)a3 changeRequest:(id)a4
+- (id)placeholderForCreatedObjectWithClass:(Class)class changeRequest:(id)request
 {
-  v6 = a4;
+  requestCopy = request;
   +[PHPhotoLibrary assertTransaction];
-  v7 = [v6 isNewRequest];
+  isNewRequest = [requestCopy isNewRequest];
 
-  if (v7)
+  if (isNewRequest)
   {
-    v8 = [(PHChangeRequestHelper *)self uuid];
+    uuid = [(PHChangeRequestHelper *)self uuid];
 
-    if (!v8)
+    if (!uuid)
     {
-      v9 = [MEMORY[0x1E696AFB0] UUID];
-      v10 = [v9 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
       uuid = self->_uuid;
-      self->_uuid = v10;
+      self->_uuid = uUIDString;
     }
 
-    v12 = [(PHChangeRequestHelper *)self uuid];
-    v13 = [(objc_class *)a3 localIdentifierWithUUID:v12];
+    uuid2 = [(PHChangeRequestHelper *)self uuid];
+    v13 = [(objc_class *)class localIdentifierWithUUID:uuid2];
 
     v14 = [[PHObjectPlaceholder alloc] initWithLocalIdentifier:v13];
   }
@@ -699,18 +699,18 @@ LABEL_3:
   return v14;
 }
 
-- (BOOL)prepareForPhotoLibraryCheck:(id)a3 error:(id *)a4
+- (BOOL)prepareForPhotoLibraryCheck:(id)check error:(id *)error
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = [a3 type];
-  v6 = v5;
-  if (a4 && v5)
+  type = [check type];
+  v6 = type;
+  if (error && type)
   {
     v7 = MEMORY[0x1E696ABC0];
     v10 = *MEMORY[0x1E696A578];
     v11[0] = @"Change must be performed within the sharedPhotoLibrary";
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    *a4 = [v7 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v8];
+    *error = [v7 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v8];
   }
 
   return v6 == 0;
@@ -722,20 +722,20 @@ LABEL_3:
   objc_exception_throw(v2);
 }
 
-- (PHChangeRequestHelper)initWithXPCDict:(id)a3 changeRequest:(id)a4 request:(id)a5 clientAuthorization:(id)a6
+- (PHChangeRequestHelper)initWithXPCDict:(id)dict changeRequest:(id)request request:(id)a5 clientAuthorization:(id)authorization
 {
-  v11 = a3;
-  v12 = a4;
+  dictCopy = dict;
+  requestCopy = request;
   v13 = a5;
-  v37 = a6;
-  if (!v12)
+  authorizationCopy = authorization;
+  if (!requestCopy)
   {
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"PHChangeRequestHelper.m" lineNumber:144 description:@"Must provide a change request"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHChangeRequestHelper.m" lineNumber:144 description:@"Must provide a change request"];
   }
 
-  v14 = [(PHPerformChangesRequest *)v13 persistentStoreCoordinator];
-  v15 = xpc_dictionary_get_value(v11, "objectID");
+  persistentStoreCoordinator = [(PHPerformChangesRequest *)v13 persistentStoreCoordinator];
+  v15 = xpc_dictionary_get_value(dictCopy, "objectID");
   if (v15)
   {
     v16 = PLManagedObjectIDFromXPCValue();
@@ -746,14 +746,14 @@ LABEL_3:
     v16 = 0;
   }
 
-  v17 = xpc_dictionary_get_BOOL(v11, "isNewRequest");
+  v17 = xpc_dictionary_get_BOOL(dictCopy, "isNewRequest");
   v18 = PLStringFromXPCDictionary();
-  v19 = [(PHChangeRequestHelper *)self initWithUUID:v18 objectID:v16 isNew:v17 changeRequest:v12];
+  v19 = [(PHChangeRequestHelper *)self initWithUUID:v18 objectID:v16 isNew:v17 changeRequest:requestCopy];
 
   if (v19)
   {
     v19->_request = v13;
-    objc_storeStrong(&v19->_clientAuthorization, a6);
+    objc_storeStrong(&v19->_clientAuthorization, authorization);
     v20 = PLDictionaryFromXPCDictionary();
     v21 = [v20 mutableCopy];
     mutations = v19->_mutations;
@@ -766,32 +766,32 @@ LABEL_3:
     v19->_nilMutations = v25;
 
     v19->_isNewRequest = v17;
-    v27 = [[PHClientLinkedAgainst alloc] initWithXPCDict:v11];
+    v27 = [[PHClientLinkedAgainst alloc] initWithXPCDict:dictCopy];
     clientLinkedAgainst = v19->_clientLinkedAgainst;
     v19->_clientLinkedAgainst = v27;
 
     if (!v16)
     {
-      [(PHPerformChangesRequest *)v13 recordInsertRequest:v12];
+      [(PHPerformChangesRequest *)v13 recordInsertRequest:requestCopy];
     }
 
-    v29 = [(PHChangeRequestHelper *)v19 uuid];
+    uuid = [(PHChangeRequestHelper *)v19 uuid];
 
-    if (!v29)
+    if (!uuid)
     {
-      v30 = [MEMORY[0x1E696AFB0] UUID];
-      v31 = [v30 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
       uuid = v19->_uuid;
-      v19->_uuid = v31;
+      v19->_uuid = uUIDString;
     }
 
     if ([(NSMutableDictionary *)v19->_mutations count]|| [(NSMutableSet *)v19->_nilMutations count])
     {
-      [(PHPerformChangesRequest *)v13 recordUpdateRequest:v12];
+      [(PHPerformChangesRequest *)v13 recordUpdateRequest:requestCopy];
       v19->_isMutated = 1;
     }
 
-    v33 = [[PHCreationRequestOptions alloc] initWithXPCDict:v11];
+    v33 = [[PHCreationRequestOptions alloc] initWithXPCDict:dictCopy];
     creationOptions = v19->_creationOptions;
     v19->_creationOptions = v33;
   }
@@ -799,14 +799,14 @@ LABEL_3:
   return v19;
 }
 
-- (id)initForNewObjectWithUUID:(id)a3 changeRequest:(id)a4
+- (id)initForNewObjectWithUUID:(id)d changeRequest:(id)request
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  requestCopy = request;
   +[PHPhotoLibrary assertTransaction];
-  if (v8)
+  if (requestCopy)
   {
-    if (v7)
+    if (dCopy)
     {
       goto LABEL_4;
     }
@@ -814,18 +814,18 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v14 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v14 handleFailureInMethod:a2 object:self file:@"PHChangeRequestHelper.m" lineNumber:130 description:@"Must provide a change request"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PHChangeRequestHelper.m" lineNumber:130 description:@"Must provide a change request"];
 
-  if (!v7)
+  if (!dCopy)
   {
 LABEL_3:
-    v7 = [MEMORY[0x1E696AFB0] UUID];
+    dCopy = [MEMORY[0x1E696AFB0] UUID];
   }
 
 LABEL_4:
-  v9 = [v7 UUIDString];
-  v10 = [(PHChangeRequestHelper *)self initWithUUID:v9 objectID:0 isNew:1 changeRequest:v8];
+  uUIDString = [dCopy UUIDString];
+  v10 = [(PHChangeRequestHelper *)self initWithUUID:uUIDString objectID:0 isNew:1 changeRequest:requestCopy];
 
   if (v10)
   {
@@ -837,9 +837,9 @@ LABEL_4:
   return v10;
 }
 
-- (PHChangeRequestHelper)initWithUUID:(id)a3 objectID:(id)a4 changeRequest:(id)a5
+- (PHChangeRequestHelper)initWithUUID:(id)d objectID:(id)iD changeRequest:(id)request
 {
-  v5 = [(PHChangeRequestHelper *)self initWithUUID:a3 objectID:a4 isNew:0 changeRequest:a5];
+  v5 = [(PHChangeRequestHelper *)self initWithUUID:d objectID:iD isNew:0 changeRequest:request];
   if (v5)
   {
     v6 = objc_alloc_init(PHClientLinkedAgainst);
@@ -850,18 +850,18 @@ LABEL_4:
   return v5;
 }
 
-- (PHChangeRequestHelper)initWithUUID:(id)a3 objectID:(id)a4 isNew:(BOOL)a5 changeRequest:(id)a6
+- (PHChangeRequestHelper)initWithUUID:(id)d objectID:(id)iD isNew:(BOOL)new changeRequest:(id)request
 {
-  v7 = a5;
+  newCopy = new;
   v38 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  requestCopy = request;
   +[PHPhotoLibrary assertTransaction];
-  if (!v14)
+  if (!requestCopy)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"PHChangeRequestHelper.m" lineNumber:81 description:@"Must provide a change request"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHChangeRequestHelper.m" lineNumber:81 description:@"Must provide a change request"];
   }
 
   v31.receiver = self;
@@ -870,21 +870,21 @@ LABEL_4:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_uuid, a3);
-    objc_storeStrong(&v16->_objectID, a4);
-    v17 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v15->_uuid, d);
+    objc_storeStrong(&v16->_objectID, iD);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     mutations = v16->_mutations;
-    v16->_mutations = v17;
+    v16->_mutations = dictionary;
 
     v19 = [MEMORY[0x1E695DFA8] set];
     nilMutations = v16->_nilMutations;
     v16->_nilMutations = v19;
 
-    objc_storeWeak(&v16->_changeRequest, v14);
+    objc_storeWeak(&v16->_changeRequest, requestCopy);
     v21 = +[PHPhotoLibrary photoLibraryForCurrentTransaction];
     if (v21 || (PLIsAssetsd() & 1) != 0)
     {
-      if (v13)
+      if (iDCopy)
       {
         goto LABEL_11;
       }
@@ -892,16 +892,16 @@ LABEL_4:
 
     else
     {
-      v28 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v28 handleFailureInMethod:a2 object:v16 file:@"PHChangeRequestHelper.m" lineNumber:90 description:@"must be in a transaction PHPhotoLibrary or be running in assetsd"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:v16 file:@"PHChangeRequestHelper.m" lineNumber:90 description:@"must be in a transaction PHPhotoLibrary or be running in assetsd"];
 
-      if (v13)
+      if (iDCopy)
       {
         goto LABEL_11;
       }
     }
 
-    if (!v7)
+    if (!newCopy)
     {
       v22 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
@@ -910,7 +910,7 @@ LABEL_4:
         *buf = 138543618;
         v33 = v23;
         v34 = 2112;
-        v35 = v14;
+        v35 = requestCopy;
         v24 = "Invalid change request %{public}@ %@ with isNew = NO and objectID = nil";
         v25 = v22;
         v26 = 22;
@@ -923,16 +923,16 @@ LABEL_15:
     }
 
 LABEL_11:
-    if (!v13 || !v7)
+    if (!iDCopy || !newCopy)
     {
-      if (v12)
+      if (dCopy)
       {
-        [v21 setChangeRequest:v14 forUUID:v12];
+        [v21 setChangeRequest:requestCopy forUUID:dCopy];
       }
 
-      if (!v13)
+      if (!iDCopy)
       {
-        [v21 recordInsertRequest:v14];
+        [v21 recordInsertRequest:requestCopy];
         *&v16->_isMutated = 257;
       }
 
@@ -946,9 +946,9 @@ LABEL_11:
       *buf = 138543874;
       v33 = v29;
       v34 = 2112;
-      v35 = v14;
+      v35 = requestCopy;
       v36 = 2114;
-      v37 = v13;
+      v37 = iDCopy;
       v24 = "Invalid change request %{public}@ %@ with isNew = YES and objectID = %{public}@";
       v25 = v22;
       v26 = 32;
@@ -964,44 +964,44 @@ LABEL_17:
   return v16;
 }
 
-+ (id)changeRequestWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5
++ (id)changeRequestWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a4;
+  dictCopy = dict;
+  authorizationCopy = authorization;
+  requestCopy = request;
   v12 = PLStringFromXPCDictionary();
   v13 = NSClassFromString(v12);
   if (!v13)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"PHChangeRequestHelper.m" lineNumber:415 description:{@"encoded missing 'className' field: %@", v9}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHChangeRequestHelper.m" lineNumber:415 description:{@"encoded missing 'className' field: %@", dictCopy}];
   }
 
-  v14 = [[v13 alloc] initWithXPCDict:v9 request:v11 clientAuthorization:v10];
+  v14 = [[v13 alloc] initWithXPCDict:dictCopy request:requestCopy clientAuthorization:authorizationCopy];
 
   return v14;
 }
 
-+ (id)changeRequestForObject:(id)a3
++ (id)changeRequestForObject:(id)object
 {
-  v5 = a3;
-  v6 = [v5 uuid];
-  v7 = [v5 photoLibrary];
-  v8 = [v7 changeRequestForUUID:v6];
+  objectCopy = object;
+  uuid = [objectCopy uuid];
+  photoLibrary = [objectCopy photoLibrary];
+  v8 = [photoLibrary changeRequestForUUID:uuid];
   if (!v8)
   {
-    v9 = [v5 changeRequestClass];
-    if (v9)
+    changeRequestClass = [objectCopy changeRequestClass];
+    if (changeRequestClass)
     {
-      v10 = [v9 alloc];
-      v11 = [v5 objectID];
-      v8 = [v10 initWithUUID:v6 objectID:v11];
+      v10 = [changeRequestClass alloc];
+      objectID = [objectCopy objectID];
+      v8 = [v10 initWithUUID:uuid objectID:objectID];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:a1 file:@"PHChangeRequestHelper.m" lineNumber:69 description:@"Unsupported change request type!"];
+      objectID = [MEMORY[0x1E696AAA8] currentHandler];
+      [objectID handleFailureInMethod:a2 object:self file:@"PHChangeRequestHelper.m" lineNumber:69 description:@"Unsupported change request type!"];
       v8 = 0;
     }
   }

@@ -1,7 +1,7 @@
 @interface OSSystemExtensionsWorkspace
 + (OSSystemExtensionsWorkspace)sharedWorkspace;
 - (OSSystemExtensionsWorkspace)init;
-- (id)systemExtensionsForApplicationWithBundleID:(id)a3 error:(id *)a4;
+- (id)systemExtensionsForApplicationWithBundleID:(id)d error:(id *)error;
 @end
 
 @implementation OSSystemExtensionsWorkspace
@@ -32,14 +32,14 @@ uint64_t __46__OSSystemExtensionsWorkspace_sharedWorkspace__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)systemExtensionsForApplicationWithBundleID:(id)a3 error:(id *)a4
+- (id)systemExtensionsForApplicationWithBundleID:(id)d error:(id *)error
 {
   v61[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dCopy = d;
   error = 0;
-  v6 = [MEMORY[0x277CCA8D8] mainBundle];
-  v7 = [v6 bundleIdentifier];
-  v8 = [v7 isEqualToString:v5];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v8 = [bundleIdentifier isEqualToString:dCopy];
 
   if ((v8 & 1) == 0)
   {
@@ -74,7 +74,7 @@ LABEL_20:
   v11 = SecTaskCopyValueForEntitlement(v9, @"com.apple.developer.system-extension.install", &error);
   if (!v11)
   {
-    v37 = error;
+    errorCopy = error;
     if (error)
     {
       [(__CFError *)error localizedDescription];
@@ -108,20 +108,20 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v14 = [MEMORY[0x277D06988] sharedManager];
-  v15 = [v14 driverApprovalStatesForThirdPartyApp:v5];
+  mEMORY[0x277D06988] = [MEMORY[0x277D06988] sharedManager];
+  v15 = [mEMORY[0x277D06988] driverApprovalStatesForThirdPartyApp:dCopy];
 
   if (!v15)
   {
-    v41 = [MEMORY[0x277CCACA8] stringWithFormat:@"DriverManagement returned nil for %@", v5];
+    dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"DriverManagement returned nil for %@", dCopy];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      [OSSystemExtensionsWorkspace systemExtensionsForApplicationWithBundleID:v41 error:?];
+      [OSSystemExtensionsWorkspace systemExtensionsForApplicationWithBundleID:dCopy error:?];
     }
 
     v42 = MEMORY[0x277CCA9B8];
     v54 = *MEMORY[0x277CCA450];
-    v55 = v41;
+    v55 = dCopy;
     v43 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
     v28 = [v42 errorWithDomain:@"OSSystemExtensionErrorDomain" code:1 userInfo:v43];
 
@@ -129,8 +129,8 @@ LABEL_20:
   }
 
   v44 = v10;
-  v45 = a4;
-  v46 = v5;
+  errorCopy2 = error;
+  v46 = dCopy;
   v16 = objc_opt_new();
   v48 = 0u;
   v49 = 0u;
@@ -153,11 +153,11 @@ LABEL_20:
 
         v21 = *(*(&v48 + 1) + 8 * i);
         v22 = [OSSystemExtensionProperties alloc];
-        v23 = [v21 bundleIdentifier];
-        v24 = [v21 driverIsApproved];
-        v25 = [v21 displayName];
-        v26 = [v21 usageText];
-        v27 = [(OSSystemExtensionProperties *)v22 initWithBundleIdentifier:v23 isEnabled:v24 displayName:v25 usageDescription:v26];
+        bundleIdentifier2 = [v21 bundleIdentifier];
+        driverIsApproved = [v21 driverIsApproved];
+        displayName = [v21 displayName];
+        usageText = [v21 usageText];
+        v27 = [(OSSystemExtensionProperties *)v22 initWithBundleIdentifier:bundleIdentifier2 isEnabled:driverIsApproved displayName:displayName usageDescription:usageText];
 
         [v16 addObject:v27];
       }
@@ -169,14 +169,14 @@ LABEL_20:
   }
 
   v28 = 0;
-  a4 = v45;
-  v5 = v46;
+  error = errorCopy2;
+  dCopy = v46;
   v10 = v44;
 LABEL_21:
-  if (a4 && !v16)
+  if (error && !v16)
   {
     v31 = v28;
-    *a4 = v28;
+    *error = v28;
   }
 
   if (v10)

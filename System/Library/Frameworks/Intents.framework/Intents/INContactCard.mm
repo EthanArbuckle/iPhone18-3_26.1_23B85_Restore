@@ -1,44 +1,44 @@
 @interface INContactCard
-- (BOOL)isEqual:(id)a3;
-- (INContactCard)initWithCoder:(id)a3;
-- (INContactCard)initWithContactIdentifier:(id)a3 nameComponents:(id)a4 isMe:(BOOL)a5 image:(id)a6 organizationName:(id)a7 departmentName:(id)a8 jobTitle:(id)a9 phoneNumbers:(id)a10 emailAddresses:(id)a11 postalAddresses:(id)a12 urlAddresses:(id)a13 contactRelations:(id)a14 instantMessageAddresses:(id)a15 birthday:(id)a16 dates:(id)a17;
+- (BOOL)isEqual:(id)equal;
+- (INContactCard)initWithCoder:(id)coder;
+- (INContactCard)initWithContactIdentifier:(id)identifier nameComponents:(id)components isMe:(BOOL)me image:(id)image organizationName:(id)name departmentName:(id)departmentName jobTitle:(id)title phoneNumbers:(id)self0 emailAddresses:(id)self1 postalAddresses:(id)self2 urlAddresses:(id)self3 contactRelations:(id)self4 instantMessageAddresses:(id)self5 birthday:(id)self6 dates:(id)self7;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INContactCard
 
-- (INContactCard)initWithCoder:(id)a3
+- (INContactCard)initWithCoder:(id)coder
 {
   v75[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v60.receiver = self;
   v60.super_class = INContactCard;
   v5 = [(INContactCard *)&v60 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contactIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contactIdentifier"];
     contactIdentifier = v5->_contactIdentifier;
     v5->_contactIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nameComponents"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nameComponents"];
     nameComponents = v5->_nameComponents;
     v5->_nameComponents = v8;
 
-    v5->_isMe = [v4 decodeBoolForKey:@"isMe"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"image"];
+    v5->_isMe = [coderCopy decodeBoolForKey:@"isMe"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"image"];
     image = v5->_image;
     v5->_image = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"organizationName"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"organizationName"];
     organizationName = v5->_organizationName;
     v5->_organizationName = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"departmentName"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"departmentName"];
     departmentName = v5->_departmentName;
     v5->_departmentName = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"jobTitle"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"jobTitle"];
     jobTitle = v5->_jobTitle;
     v5->_jobTitle = v16;
 
@@ -66,7 +66,7 @@
     v75[2] = v19;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v75 count:3];
     v22 = [v18 setWithArray:v21];
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"phoneNumbers"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"phoneNumbers"];
     phoneNumbers = v5->_phoneNumbers;
     v5->_phoneNumbers = v23;
 
@@ -94,7 +94,7 @@
     v74[2] = v26;
     v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v74 count:3];
     v29 = [v25 setWithArray:v28];
-    v30 = [v4 decodeObjectOfClasses:v29 forKey:@"postalAddresses"];
+    v30 = [coderCopy decodeObjectOfClasses:v29 forKey:@"postalAddresses"];
     postalAddresses = v5->_postalAddresses;
     v5->_postalAddresses = v30;
 
@@ -104,7 +104,7 @@
     v73[2] = objc_opt_class();
     v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v73 count:3];
     v34 = [v32 setWithArray:v33];
-    v35 = [v4 decodeObjectOfClasses:v34 forKey:@"urlAddresses"];
+    v35 = [coderCopy decodeObjectOfClasses:v34 forKey:@"urlAddresses"];
     urlAddresses = v5->_urlAddresses;
     v5->_urlAddresses = v35;
 
@@ -132,7 +132,7 @@
     v72[2] = v38;
     v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v72 count:3];
     v41 = [v37 setWithArray:v40];
-    v42 = [v4 decodeObjectOfClasses:v41 forKey:@"contactRelations"];
+    v42 = [coderCopy decodeObjectOfClasses:v41 forKey:@"contactRelations"];
     contactRelations = v5->_contactRelations;
     v5->_contactRelations = v42;
 
@@ -160,11 +160,11 @@
     v71[2] = v45;
     v47 = [MEMORY[0x1E695DEC8] arrayWithObjects:v71 count:3];
     v48 = [v44 setWithArray:v47];
-    v49 = [v4 decodeObjectOfClasses:v48 forKey:@"instantMessageAddresses"];
+    v49 = [coderCopy decodeObjectOfClasses:v48 forKey:@"instantMessageAddresses"];
     instantMessageAddresses = v5->_instantMessageAddresses;
     v5->_instantMessageAddresses = v49;
 
-    v51 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"birthday"];
+    v51 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"birthday"];
     birthday = v5->_birthday;
     v5->_birthday = v51;
 
@@ -174,7 +174,7 @@
     v70[2] = objc_opt_class();
     v54 = [MEMORY[0x1E695DEC8] arrayWithObjects:v70 count:3];
     v55 = [v53 setWithArray:v54];
-    v56 = [v4 decodeObjectOfClasses:v55 forKey:@"dates"];
+    v56 = [coderCopy decodeObjectOfClasses:v55 forKey:@"dates"];
     dates = v5->_dates;
     v5->_dates = v56;
   }
@@ -183,34 +183,34 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contactIdentifier = self->_contactIdentifier;
-  v5 = a3;
-  [v5 encodeObject:contactIdentifier forKey:@"contactIdentifier"];
-  [v5 encodeObject:self->_nameComponents forKey:@"nameComponents"];
-  [v5 encodeBool:self->_isMe forKey:@"isMe"];
-  [v5 encodeObject:self->_image forKey:@"image"];
-  [v5 encodeObject:self->_organizationName forKey:@"organizationName"];
-  [v5 encodeObject:self->_departmentName forKey:@"departmentName"];
-  [v5 encodeObject:self->_jobTitle forKey:@"jobTitle"];
-  [v5 encodeObject:self->_phoneNumbers forKey:@"phoneNumbers"];
-  [v5 encodeObject:self->_emailAddresses forKey:@"emailAddresses"];
-  [v5 encodeObject:self->_postalAddresses forKey:@"postalAddresses"];
-  [v5 encodeObject:self->_urlAddresses forKey:@"urlAddresses"];
-  [v5 encodeObject:self->_contactRelations forKey:@"contactRelations"];
-  [v5 encodeObject:self->_instantMessageAddresses forKey:@"instantMessageAddresses"];
-  [v5 encodeObject:self->_birthday forKey:@"birthday"];
-  [v5 encodeObject:self->_dates forKey:@"dates"];
+  coderCopy = coder;
+  [coderCopy encodeObject:contactIdentifier forKey:@"contactIdentifier"];
+  [coderCopy encodeObject:self->_nameComponents forKey:@"nameComponents"];
+  [coderCopy encodeBool:self->_isMe forKey:@"isMe"];
+  [coderCopy encodeObject:self->_image forKey:@"image"];
+  [coderCopy encodeObject:self->_organizationName forKey:@"organizationName"];
+  [coderCopy encodeObject:self->_departmentName forKey:@"departmentName"];
+  [coderCopy encodeObject:self->_jobTitle forKey:@"jobTitle"];
+  [coderCopy encodeObject:self->_phoneNumbers forKey:@"phoneNumbers"];
+  [coderCopy encodeObject:self->_emailAddresses forKey:@"emailAddresses"];
+  [coderCopy encodeObject:self->_postalAddresses forKey:@"postalAddresses"];
+  [coderCopy encodeObject:self->_urlAddresses forKey:@"urlAddresses"];
+  [coderCopy encodeObject:self->_contactRelations forKey:@"contactRelations"];
+  [coderCopy encodeObject:self->_instantMessageAddresses forKey:@"instantMessageAddresses"];
+  [coderCopy encodeObject:self->_birthday forKey:@"birthday"];
+  [coderCopy encodeObject:self->_dates forKey:@"dates"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     contactIdentifier = self->_contactIdentifier;
     if (contactIdentifier && v5[1] && ([(NSString *)contactIdentifier isEqual:?]& 1) != 0)
     {
@@ -301,31 +301,31 @@ LABEL_34:
   return v16 ^ v18;
 }
 
-- (INContactCard)initWithContactIdentifier:(id)a3 nameComponents:(id)a4 isMe:(BOOL)a5 image:(id)a6 organizationName:(id)a7 departmentName:(id)a8 jobTitle:(id)a9 phoneNumbers:(id)a10 emailAddresses:(id)a11 postalAddresses:(id)a12 urlAddresses:(id)a13 contactRelations:(id)a14 instantMessageAddresses:(id)a15 birthday:(id)a16 dates:(id)a17
+- (INContactCard)initWithContactIdentifier:(id)identifier nameComponents:(id)components isMe:(BOOL)me image:(id)image organizationName:(id)name departmentName:(id)departmentName jobTitle:(id)title phoneNumbers:(id)self0 emailAddresses:(id)self1 postalAddresses:(id)self2 urlAddresses:(id)self3 contactRelations:(id)self4 instantMessageAddresses:(id)self5 birthday:(id)self6 dates:(id)self7
 {
-  v21 = a3;
-  v22 = a4;
-  v23 = a6;
-  v24 = a7;
-  v69 = a8;
-  v25 = v24;
-  v68 = a9;
-  v26 = v23;
-  v67 = a10;
-  v27 = v22;
-  v66 = a11;
-  v65 = a12;
-  v28 = a13;
-  v29 = a14;
-  v30 = a15;
-  v31 = a16;
-  v32 = a17;
+  identifierCopy = identifier;
+  componentsCopy = components;
+  imageCopy = image;
+  nameCopy = name;
+  departmentNameCopy = departmentName;
+  v25 = nameCopy;
+  titleCopy = title;
+  v26 = imageCopy;
+  numbersCopy = numbers;
+  v27 = componentsCopy;
+  addressesCopy = addresses;
+  postalAddressesCopy = postalAddresses;
+  urlAddressesCopy = urlAddresses;
+  relationsCopy = relations;
+  messageAddressesCopy = messageAddresses;
+  birthdayCopy = birthday;
+  datesCopy = dates;
   v70.receiver = self;
   v70.super_class = INContactCard;
   v33 = [(INContactCard *)&v70 init];
   if (v33)
   {
-    v34 = [v21 copy];
+    v34 = [identifierCopy copy];
     contactIdentifier = v33->_contactIdentifier;
     v33->_contactIdentifier = v34;
 
@@ -333,7 +333,7 @@ LABEL_34:
     nameComponents = v33->_nameComponents;
     v33->_nameComponents = v36;
 
-    v33->_isMe = a5;
+    v33->_isMe = me;
     v38 = [v26 copy];
     image = v33->_image;
     v33->_image = v38;
@@ -342,43 +342,43 @@ LABEL_34:
     organizationName = v33->_organizationName;
     v33->_organizationName = v40;
 
-    v42 = [v69 copy];
+    v42 = [departmentNameCopy copy];
     departmentName = v33->_departmentName;
     v33->_departmentName = v42;
 
-    v44 = [v68 copy];
+    v44 = [titleCopy copy];
     jobTitle = v33->_jobTitle;
     v33->_jobTitle = v44;
 
-    v46 = [v67 copy];
+    v46 = [numbersCopy copy];
     phoneNumbers = v33->_phoneNumbers;
     v33->_phoneNumbers = v46;
 
-    v48 = [v66 copy];
+    v48 = [addressesCopy copy];
     emailAddresses = v33->_emailAddresses;
     v33->_emailAddresses = v48;
 
-    v50 = [v65 copy];
+    v50 = [postalAddressesCopy copy];
     postalAddresses = v33->_postalAddresses;
     v33->_postalAddresses = v50;
 
-    v52 = [v28 copy];
+    v52 = [urlAddressesCopy copy];
     urlAddresses = v33->_urlAddresses;
     v33->_urlAddresses = v52;
 
-    v54 = [v29 copy];
+    v54 = [relationsCopy copy];
     contactRelations = v33->_contactRelations;
     v33->_contactRelations = v54;
 
-    v56 = [v30 copy];
+    v56 = [messageAddressesCopy copy];
     instantMessageAddresses = v33->_instantMessageAddresses;
     v33->_instantMessageAddresses = v56;
 
-    v58 = [v31 copy];
+    v58 = [birthdayCopy copy];
     birthday = v33->_birthday;
     v33->_birthday = v58;
 
-    v60 = [v32 copy];
+    v60 = [datesCopy copy];
     dates = v33->_dates;
     v33->_dates = v60;
   }

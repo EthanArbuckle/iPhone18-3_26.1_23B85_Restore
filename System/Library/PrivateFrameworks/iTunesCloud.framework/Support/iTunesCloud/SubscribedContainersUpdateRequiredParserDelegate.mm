@@ -1,14 +1,14 @@
 @interface SubscribedContainersUpdateRequiredParserDelegate
-- (void)parser:(id)a3 didParseDataCode:(unsigned int)a4 bytes:(char *)a5 contentLength:(unsigned int)a6;
+- (void)parser:(id)parser didParseDataCode:(unsigned int)code bytes:(char *)bytes contentLength:(unsigned int)length;
 @end
 
 @implementation SubscribedContainersUpdateRequiredParserDelegate
 
-- (void)parser:(id)a3 didParseDataCode:(unsigned int)a4 bytes:(char *)a5 contentLength:(unsigned int)a6
+- (void)parser:(id)parser didParseDataCode:(unsigned int)code bytes:(char *)bytes contentLength:(unsigned int)length
 {
-  if (a4 == 1836413042)
+  if (code == 1836413042)
   {
-    self->_updateRequired = *a5 != 0;
+    self->_updateRequired = *bytes != 0;
   }
 }
 

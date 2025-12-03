@@ -1,17 +1,17 @@
 @interface XRRecountConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (XRRecountConfiguration)init;
-- (XRRecountConfiguration)initWithAnalysisMode:(id)a3 countingMode:(id)a4;
-- (XRRecountConfiguration)initWithCoder:(id)a3;
-- (id)initFromAttribute:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (XRRecountConfiguration)initWithAnalysisMode:(id)mode countingMode:(id)countingMode;
+- (XRRecountConfiguration)initWithCoder:(id)coder;
+- (id)initFromAttribute:(id)attribute;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation XRRecountConfiguration
 
-- (id)initFromAttribute:(id)a3
+- (id)initFromAttribute:(id)attribute
 {
-  if (a3)
+  if (attribute)
   {
     swift_unknownObjectRetain();
     sub_248030D68();
@@ -26,7 +26,7 @@
   return XRRecountConfiguration.init(from:)(v4);
 }
 
-- (XRRecountConfiguration)initWithAnalysisMode:(id)a3 countingMode:(id)a4
+- (XRRecountConfiguration)initWithAnalysisMode:(id)mode countingMode:(id)countingMode
 {
   v5 = sub_248030B38();
   v7 = v6;
@@ -42,26 +42,26 @@
   return [(XRRecountConfiguration *)&v13 init];
 }
 
-- (XRRecountConfiguration)initWithCoder:(id)a3
+- (XRRecountConfiguration)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_2480269F4(v3);
+  coderCopy = coder;
+  v4 = sub_2480269F4(coderCopy);
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  XRRecountConfiguration.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  XRRecountConfiguration.encode(with:)(coderCopy);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_248030D68();
     swift_unknownObjectRelease();
@@ -70,7 +70,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = XRRecountConfiguration.isEqual(_:)(v8);

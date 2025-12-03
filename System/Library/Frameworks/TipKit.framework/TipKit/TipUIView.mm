@@ -1,10 +1,10 @@
 @interface TipUIView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIColor)backgroundColor;
-- (_TtC6TipKit9TipUIView)initWithCoder:(id)a3;
-- (_TtC6TipKit9TipUIView)initWithFrame:(CGRect)a3;
-- (void)setBackgroundColor:(id)a3;
+- (_TtC6TipKit9TipUIView)initWithCoder:(id)coder;
+- (_TtC6TipKit9TipUIView)initWithFrame:(CGRect)frame;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation TipUIView
@@ -19,13 +19,13 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   v4 = TipUIView.backgroundColor.getter();
 
   return v4;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   sub_1A3622E3C();
   sub_1A3622E2C();
@@ -35,9 +35,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  TipUIView.backgroundColor.setter(a3);
+  colorCopy = color;
+  selfCopy = self;
+  TipUIView.backgroundColor.setter(color);
 }
 
 - (CGSize)intrinsicContentSize
@@ -50,7 +50,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   TipUIView.intrinsicContentSize.getter();
   v5 = v4;
   v7 = v6;
@@ -62,7 +62,7 @@
   return result;
 }
 
-- (_TtC6TipKit9TipUIView)initWithCoder:(id)a3
+- (_TtC6TipKit9TipUIView)initWithCoder:(id)coder
 {
   sub_1A3622E3C();
   sub_1A3622E2C();
@@ -72,15 +72,15 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  TipUIView.init(coder:)(a3);
+  TipUIView.init(coder:)(coder);
 
   return 0;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   sub_1A3622E3C();
   sub_1A3622E2C();
   sub_1A3622DFC();
@@ -89,7 +89,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v6 = self;
+  selfCopy = self;
   v7 = TipUIView.sizeThatFits(_:)(__PAIR128__(*&height, *&width));
 
   v8 = v7.width;
@@ -99,7 +99,7 @@
   return result;
 }
 
-- (_TtC6TipKit9TipUIView)initWithFrame:(CGRect)a3
+- (_TtC6TipKit9TipUIView)initWithFrame:(CGRect)frame
 {
   sub_1A3622E3C();
   sub_1A3622E2C();

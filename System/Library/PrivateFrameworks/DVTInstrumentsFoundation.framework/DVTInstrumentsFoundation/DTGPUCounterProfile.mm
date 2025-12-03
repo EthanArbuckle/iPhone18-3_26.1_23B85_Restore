@@ -1,25 +1,25 @@
 @interface DTGPUCounterProfile
-- (DTGPUCounterProfile)initWithProfile:(unint64_t)a3 device:(id)a4;
+- (DTGPUCounterProfile)initWithProfile:(unint64_t)profile device:(id)device;
 - (id)counterProfileForHost;
 @end
 
 @implementation DTGPUCounterProfile
 
-- (DTGPUCounterProfile)initWithProfile:(unint64_t)a3 device:(id)a4
+- (DTGPUCounterProfile)initWithProfile:(unint64_t)profile device:(id)device
 {
-  v7 = a4;
+  deviceCopy = device;
   v13.receiver = self;
   v13.super_class = DTGPUCounterProfile;
   v8 = [(DTGPUCounterProfile *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    v8->_profile = a3;
+    v8->_profile = profile;
     v10 = objc_opt_new();
     counters = v9->_counters;
     v9->_counters = v10;
 
-    objc_storeStrong(&v9->_device, a4);
+    objc_storeStrong(&v9->_device, device);
   }
 
   return v9;
@@ -47,8 +47,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v13 + 1) + 8 * i) infoArray];
-        [v3 addObject:v8];
+        infoArray = [*(*(&v13 + 1) + 8 * i) infoArray];
+        [v3 addObject:infoArray];
       }
 
       v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v13 objects:v20 count:16];

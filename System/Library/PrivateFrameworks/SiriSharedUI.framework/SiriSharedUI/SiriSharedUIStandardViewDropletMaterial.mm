@@ -1,12 +1,12 @@
 @interface SiriSharedUIStandardViewDropletMaterial
-- (_TtC12SiriSharedUI39SiriSharedUIStandardViewDropletMaterial)initWithCoder:(id)a3;
-- (_TtC12SiriSharedUI39SiriSharedUIStandardViewDropletMaterial)initWithEffect:(id)a3;
+- (_TtC12SiriSharedUI39SiriSharedUIStandardViewDropletMaterial)initWithCoder:(id)coder;
+- (_TtC12SiriSharedUI39SiriSharedUIStandardViewDropletMaterial)initWithEffect:(id)effect;
 - (void)layoutSubviews;
 @end
 
 @implementation SiriSharedUIStandardViewDropletMaterial
 
-- (_TtC12SiriSharedUI39SiriSharedUIStandardViewDropletMaterial)initWithCoder:(id)a3
+- (_TtC12SiriSharedUI39SiriSharedUIStandardViewDropletMaterial)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC12SiriSharedUI39SiriSharedUIStandardViewDropletMaterial_isLightMode) = 1;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC12SiriSharedUI39SiriSharedUIStandardViewDropletMaterial_fresnelAlphaLightMode) = 0x3FE999999999999ALL;
@@ -25,7 +25,7 @@
   sub_21E451A80();
 }
 
-- (_TtC12SiriSharedUI39SiriSharedUIStandardViewDropletMaterial)initWithEffect:(id)a3
+- (_TtC12SiriSharedUI39SiriSharedUIStandardViewDropletMaterial)initWithEffect:(id)effect
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,122 +1,122 @@
 @interface HRCHeartRateData
-- (HRCHeartRateData)initWithCoder:(id)a3;
-- (HRCHeartRateData)initWithHeartRate:(double)a3 confidence:(id)a4 confidenceLevel:(unsigned __int8)a5 arbitrationStatus:(unsigned __int8)a6 context:(int64_t)a7 hrContext:(int64_t)a8 timestamp:(id)a9 sampleUuid:(id)a10 sourceType:(unsigned __int8)a11 streamingThrottleStatus:(unsigned __int8)a12 deviceUuid:(id)a13 device:(id)a14 sensorLocation:(unsigned __int8)a15 flags:(unsigned int)a16;
+- (HRCHeartRateData)initWithCoder:(id)coder;
+- (HRCHeartRateData)initWithHeartRate:(double)rate confidence:(id)confidence confidenceLevel:(unsigned __int8)level arbitrationStatus:(unsigned __int8)status context:(int64_t)context hrContext:(int64_t)hrContext timestamp:(id)timestamp sampleUuid:(id)self0 sourceType:(unsigned __int8)self1 streamingThrottleStatus:(unsigned __int8)self2 deviceUuid:(id)self3 device:(id)self4 sensorLocation:(unsigned __int8)self5 flags:(unsigned int)self6;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HRCHeartRateData
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   heartRate = self->_heartRate;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_heartRate);
-  [v5 encodeDouble:v6 forKey:heartRate];
+  [coderCopy encodeDouble:v6 forKey:heartRate];
 
   confidence = self->_confidence;
   v8 = NSStringFromSelector(sel_confidence);
-  [v5 encodeObject:confidence forKey:v8];
+  [coderCopy encodeObject:confidence forKey:v8];
 
   confidenceLevel = self->_confidenceLevel;
   v10 = NSStringFromSelector(sel_confidenceLevel);
-  [v5 encodeInt:confidenceLevel forKey:v10];
+  [coderCopy encodeInt:confidenceLevel forKey:v10];
 
   arbitrationStatus = self->_arbitrationStatus;
   v12 = NSStringFromSelector(sel_arbitrationStatus);
-  [v5 encodeInt:arbitrationStatus forKey:v12];
+  [coderCopy encodeInt:arbitrationStatus forKey:v12];
 
   context = self->_context;
   v14 = NSStringFromSelector(sel_context);
-  [v5 encodeInteger:context forKey:v14];
+  [coderCopy encodeInteger:context forKey:v14];
 
   hrContext = self->_hrContext;
   v16 = NSStringFromSelector(sel_hrContext);
-  [v5 encodeInteger:hrContext forKey:v16];
+  [coderCopy encodeInteger:hrContext forKey:v16];
 
   timestamp = self->_timestamp;
   v18 = NSStringFromSelector(sel_timestamp);
-  [v5 encodeObject:timestamp forKey:v18];
+  [coderCopy encodeObject:timestamp forKey:v18];
 
   uuid = self->_uuid;
   v20 = NSStringFromSelector(sel_uuid);
-  [v5 encodeObject:uuid forKey:v20];
+  [coderCopy encodeObject:uuid forKey:v20];
 
   sourceType = self->_sourceType;
   v22 = NSStringFromSelector(sel_sourceType);
-  [v5 encodeInt:sourceType forKey:v22];
+  [coderCopy encodeInt:sourceType forKey:v22];
 
   streamingThrottleStatus = self->_streamingThrottleStatus;
   v24 = NSStringFromSelector(sel_streamingThrottleStatus);
-  [v5 encodeInt:streamingThrottleStatus forKey:v24];
+  [coderCopy encodeInt:streamingThrottleStatus forKey:v24];
 
   deviceUuid = self->_deviceUuid;
   v26 = NSStringFromSelector(sel_deviceUuid);
-  [v5 encodeObject:deviceUuid forKey:v26];
+  [coderCopy encodeObject:deviceUuid forKey:v26];
 
   device = self->_device;
   v28 = NSStringFromSelector(sel_device);
-  [v5 encodeObject:device forKey:v28];
+  [coderCopy encodeObject:device forKey:v28];
 
   sensorLocation = self->_sensorLocation;
   v30 = NSStringFromSelector(sel_sensorLocation);
-  [v5 encodeInt:sensorLocation forKey:v30];
+  [coderCopy encodeInt:sensorLocation forKey:v30];
 
   flags = self->_flags;
   v32 = NSStringFromSelector(sel_flags);
-  [v5 encodeInt:flags forKey:v32];
+  [coderCopy encodeInt:flags forKey:v32];
 }
 
-- (HRCHeartRateData)initWithCoder:(id)a3
+- (HRCHeartRateData)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = NSStringFromSelector(sel_heartRate);
-  [v3 decodeDoubleForKey:v4];
+  [coderCopy decodeDoubleForKey:v4];
   v6 = v5;
 
   v7 = objc_opt_class();
   v8 = NSStringFromSelector(sel_confidence);
-  v40 = [v3 decodeObjectOfClass:v7 forKey:v8];
+  v40 = [coderCopy decodeObjectOfClass:v7 forKey:v8];
 
   v9 = NSStringFromSelector(sel_confidenceLevel);
-  v39 = [v3 decodeIntForKey:v9];
+  v39 = [coderCopy decodeIntForKey:v9];
 
   v10 = NSStringFromSelector(sel_arbitrationStatus);
-  v38 = [v3 decodeIntForKey:v10];
+  v38 = [coderCopy decodeIntForKey:v10];
 
   v11 = NSStringFromSelector(sel_context);
-  v37 = [v3 decodeIntegerForKey:v11];
+  v37 = [coderCopy decodeIntegerForKey:v11];
 
   v12 = NSStringFromSelector(sel_hrContext);
-  v36 = [v3 decodeIntegerForKey:v12];
+  v36 = [coderCopy decodeIntegerForKey:v12];
 
   v13 = objc_opt_class();
   v14 = NSStringFromSelector(sel_timestamp);
-  v15 = [v3 decodeObjectOfClass:v13 forKey:v14];
+  v15 = [coderCopy decodeObjectOfClass:v13 forKey:v14];
 
   v16 = objc_opt_class();
   v17 = NSStringFromSelector(sel_uuid);
-  v18 = [v3 decodeObjectOfClass:v16 forKey:v17];
+  v18 = [coderCopy decodeObjectOfClass:v16 forKey:v17];
 
   v19 = NSStringFromSelector(sel_sourceType);
-  v20 = [v3 decodeIntForKey:v19];
+  v20 = [coderCopy decodeIntForKey:v19];
 
   v21 = NSStringFromSelector(sel_streamingThrottleStatus);
-  LOBYTE(v19) = [v3 decodeIntForKey:v21];
+  LOBYTE(v19) = [coderCopy decodeIntForKey:v21];
 
   v22 = objc_opt_class();
   v23 = NSStringFromSelector(sel_deviceUuid);
-  v24 = [v3 decodeObjectOfClass:v22 forKey:v23];
+  v24 = [coderCopy decodeObjectOfClass:v22 forKey:v23];
 
   v25 = objc_opt_class();
   v26 = NSStringFromSelector(sel_device);
-  v27 = [v3 decodeObjectOfClass:v25 forKey:v26];
+  v27 = [coderCopy decodeObjectOfClass:v25 forKey:v26];
 
   v28 = NSStringFromSelector(sel_sensorLocation);
-  v29 = [v3 decodeIntForKey:v28];
+  v29 = [coderCopy decodeIntForKey:v28];
 
   v30 = NSStringFromSelector(sel_flags);
-  v31 = [v3 decodeIntForKey:v30];
+  v31 = [coderCopy decodeIntForKey:v30];
 
   HIDWORD(v35) = v31;
   LOBYTE(v35) = v29;
@@ -127,60 +127,60 @@
   return v32;
 }
 
-- (HRCHeartRateData)initWithHeartRate:(double)a3 confidence:(id)a4 confidenceLevel:(unsigned __int8)a5 arbitrationStatus:(unsigned __int8)a6 context:(int64_t)a7 hrContext:(int64_t)a8 timestamp:(id)a9 sampleUuid:(id)a10 sourceType:(unsigned __int8)a11 streamingThrottleStatus:(unsigned __int8)a12 deviceUuid:(id)a13 device:(id)a14 sensorLocation:(unsigned __int8)a15 flags:(unsigned int)a16
+- (HRCHeartRateData)initWithHeartRate:(double)rate confidence:(id)confidence confidenceLevel:(unsigned __int8)level arbitrationStatus:(unsigned __int8)status context:(int64_t)context hrContext:(int64_t)hrContext timestamp:(id)timestamp sampleUuid:(id)self0 sourceType:(unsigned __int8)self1 streamingThrottleStatus:(unsigned __int8)self2 deviceUuid:(id)self3 device:(id)self4 sensorLocation:(unsigned __int8)self5 flags:(unsigned int)self6
 {
-  v22 = a4;
-  v23 = a9;
-  v24 = a10;
-  v25 = a13;
-  v37 = a14;
+  confidenceCopy = confidence;
+  timestampCopy = timestamp;
+  uuidCopy = uuid;
+  deviceUuidCopy = deviceUuid;
+  deviceCopy = device;
   v39.receiver = self;
   v39.super_class = HRCHeartRateData;
   v26 = [(HRCHeartRateData *)&v39 init];
-  v26->_heartRate = a3;
+  v26->_heartRate = rate;
   confidence = v26->_confidence;
-  v26->_confidence = v22;
-  v28 = v22;
+  v26->_confidence = confidenceCopy;
+  v28 = confidenceCopy;
 
-  v26->_confidenceLevel = a5;
-  v26->_arbitrationStatus = a6;
-  v26->_context = a7;
-  v26->_hrContext = a8;
+  v26->_confidenceLevel = level;
+  v26->_arbitrationStatus = status;
+  v26->_context = context;
+  v26->_hrContext = hrContext;
   timestamp = v26->_timestamp;
-  v26->_timestamp = v23;
-  v30 = v23;
+  v26->_timestamp = timestampCopy;
+  v30 = timestampCopy;
 
   uuid = v26->_uuid;
-  v26->_uuid = v24;
-  v32 = v24;
+  v26->_uuid = uuidCopy;
+  v32 = uuidCopy;
 
-  v26->_sourceType = a11;
-  v26->_streamingThrottleStatus = a12;
+  v26->_sourceType = type;
+  v26->_streamingThrottleStatus = throttleStatus;
   deviceUuid = v26->_deviceUuid;
-  v26->_deviceUuid = v25;
-  v34 = v25;
+  v26->_deviceUuid = deviceUuidCopy;
+  v34 = deviceUuidCopy;
 
   device = v26->_device;
-  v26->_device = v37;
+  v26->_device = deviceCopy;
 
-  v26->_sensorLocation = a15;
-  v26->_flags = a16;
+  v26->_sensorLocation = location;
+  v26->_flags = flags;
   return v26;
 }
 
 - (id)description
 {
   v14 = MEMORY[0x277CCACA8];
-  v3 = [(HRCHeartRateData *)self uuid];
+  uuid = [(HRCHeartRateData *)self uuid];
   [(HRCHeartRateData *)self heartRate];
   v5 = v4;
-  v6 = [(HRCHeartRateData *)self confidence];
-  [v6 doubleValue];
+  confidence = [(HRCHeartRateData *)self confidence];
+  [confidence doubleValue];
   v8 = v7;
-  v13 = [(HRCHeartRateData *)self hrContext];
-  v9 = [(HRCHeartRateData *)self timestamp];
-  v10 = [(HRCHeartRateData *)self deviceUuid];
-  v11 = [v14 stringWithFormat:@"HRCHeartRateData uuid:%@, bpm:%f, confidence:%f, context:%ld, date:%@, DeviceUUID:%@, Throttle:%d, SourceType:%d, Arbitration:%d, ConfidenceLevel:%d, loc:%d, flags:%08x", v3, v5, v8, v13, v9, v10, -[HRCHeartRateData streamingThrottleStatus](self, "streamingThrottleStatus"), -[HRCHeartRateData sourceType](self, "sourceType"), -[HRCHeartRateData arbitrationStatus](self, "arbitrationStatus"), -[HRCHeartRateData confidenceLevel](self, "confidenceLevel"), -[HRCHeartRateData sensorLocation](self, "sensorLocation"), -[HRCHeartRateData flags](self, "flags")];
+  hrContext = [(HRCHeartRateData *)self hrContext];
+  timestamp = [(HRCHeartRateData *)self timestamp];
+  deviceUuid = [(HRCHeartRateData *)self deviceUuid];
+  v11 = [v14 stringWithFormat:@"HRCHeartRateData uuid:%@, bpm:%f, confidence:%f, context:%ld, date:%@, DeviceUUID:%@, Throttle:%d, SourceType:%d, Arbitration:%d, ConfidenceLevel:%d, loc:%d, flags:%08x", uuid, v5, v8, hrContext, timestamp, deviceUuid, -[HRCHeartRateData streamingThrottleStatus](self, "streamingThrottleStatus"), -[HRCHeartRateData sourceType](self, "sourceType"), -[HRCHeartRateData arbitrationStatus](self, "arbitrationStatus"), -[HRCHeartRateData confidenceLevel](self, "confidenceLevel"), -[HRCHeartRateData sensorLocation](self, "sensorLocation"), -[HRCHeartRateData flags](self, "flags")];
 
   return v11;
 }

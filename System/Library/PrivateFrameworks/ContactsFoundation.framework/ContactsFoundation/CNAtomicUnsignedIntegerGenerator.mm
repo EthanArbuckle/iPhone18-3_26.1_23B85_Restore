@@ -25,9 +25,9 @@
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
   atomic_fetch_or_explicit(&self->_n, 0, memory_order_relaxed);
   v4 = [v3 appendName:@"n" unsignedInteger:?];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 @end

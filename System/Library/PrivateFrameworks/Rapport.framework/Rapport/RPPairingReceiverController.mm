@@ -2,13 +2,13 @@
 - (BOOL)pairingValueUIVisible;
 - (OS_dispatch_queue)queue;
 - (_TtC7Rapport27RPPairingReceiverController)init;
-- (_TtC7Rapport27RPPairingReceiverController)initWithCoder:(id)a3;
-- (_TtC7Rapport27RPPairingReceiverController)initWithQueue:(id)a3;
+- (_TtC7Rapport27RPPairingReceiverController)initWithCoder:(id)coder;
+- (_TtC7Rapport27RPPairingReceiverController)initWithQueue:(id)queue;
 - (id)pairingValueUpdatedHandler;
-- (void)pairingValueUpdated:(id)a3;
-- (void)setPairingValueUIVisible:(BOOL)a3;
-- (void)setPairingValueUpdatedHandler:(id)a3;
-- (void)setQueue:(id)a3;
+- (void)pairingValueUpdated:(id)updated;
+- (void)setPairingValueUIVisible:(BOOL)visible;
+- (void)setPairingValueUpdatedHandler:(id)handler;
+- (void)setQueue:(id)queue;
 - (void)start;
 - (void)stop;
 @end
@@ -22,13 +22,13 @@
   return *(self + v3);
 }
 
-- (void)setQueue:(id)a3
+- (void)setQueue:(id)queue
 {
   v5 = OBJC_IVAR____TtC7Rapport27RPPairingReceiverController_queue;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = queue;
+  queueCopy = queue;
 }
 
 - (id)pairingValueUpdatedHandler
@@ -55,9 +55,9 @@
   return v4;
 }
 
-- (void)setPairingValueUpdatedHandler:(id)a3
+- (void)setPairingValueUpdatedHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -76,7 +76,7 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_1B6F13D8C(v7);
 }
 
@@ -87,16 +87,16 @@
   return *(self + v3);
 }
 
-- (void)setPairingValueUIVisible:(BOOL)a3
+- (void)setPairingValueUIVisible:(BOOL)visible
 {
   v5 = OBJC_IVAR____TtC7Rapport27RPPairingReceiverController_pairingValueUIVisible;
   swift_beginAccess();
-  *(self + v5) = a3;
-  v6 = self;
+  *(self + v5) = visible;
+  selfCopy = self;
   sub_1B6F1415C();
 }
 
-- (_TtC7Rapport27RPPairingReceiverController)initWithCoder:(id)a3
+- (_TtC7Rapport27RPPairingReceiverController)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   v6 = (self + OBJC_IVAR____TtC7Rapport27RPPairingReceiverController_pairingValueUpdatedHandler);
@@ -105,7 +105,7 @@
   *(self + OBJC_IVAR____TtC7Rapport27RPPairingReceiverController_pairingValueUIVisible) = 0;
   *(self + OBJC_IVAR____TtC7Rapport27RPPairingReceiverController_xpcCnx) = 0;
   sub_1B6F14B44();
-  v7 = a3;
+  coderCopy = coder;
   *(self + OBJC_IVAR____TtC7Rapport27RPPairingReceiverController_queue) = sub_1B6F22AD8();
   v10.receiver = self;
   v10.super_class = ObjectType;
@@ -126,7 +126,7 @@
   return result;
 }
 
-- (_TtC7Rapport27RPPairingReceiverController)initWithQueue:(id)a3
+- (_TtC7Rapport27RPPairingReceiverController)initWithQueue:(id)queue
 {
   ObjectType = swift_getObjectType();
   v6 = (self + OBJC_IVAR____TtC7Rapport27RPPairingReceiverController_pairingValueUpdatedHandler);
@@ -134,28 +134,28 @@
   v6[1] = 0;
   *(self + OBJC_IVAR____TtC7Rapport27RPPairingReceiverController_pairingValueUIVisible) = 0;
   *(self + OBJC_IVAR____TtC7Rapport27RPPairingReceiverController_xpcCnx) = 0;
-  *(self + OBJC_IVAR____TtC7Rapport27RPPairingReceiverController_queue) = a3;
+  *(self + OBJC_IVAR____TtC7Rapport27RPPairingReceiverController_queue) = queue;
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v7 = a3;
+  queueCopy = queue;
   return [(RPPairingReceiverController *)&v9 init];
 }
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   RPPairingReceiverController.start()();
 }
 
 - (void)stop
 {
-  v2 = self;
+  selfCopy = self;
   RPPairingReceiverController.stop()();
 }
 
-- (void)pairingValueUpdated:(id)a3
+- (void)pairingValueUpdated:(id)updated
 {
-  if (a3)
+  if (updated)
   {
     v4 = sub_1B6F22A08();
     v6 = v5;
@@ -167,7 +167,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_1B6F157F8(v4, v6);
 }
 

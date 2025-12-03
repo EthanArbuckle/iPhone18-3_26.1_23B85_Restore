@@ -1,13 +1,13 @@
 @interface MUAppleRatingRowSubtitleView
-- (MUAppleRatingRowSubtitleView)initWithArrangedSubviews:(id)a3;
+- (MUAppleRatingRowSubtitleView)initWithArrangedSubviews:(id)subviews;
 - (void)contentSizeDidChange;
 - (void)layoutSubviews;
-- (void)setPercentageString:(id)a3 ratingsValueString:(id)a4 ratingsValueAnimation:(int64_t)a5 ratingsString:(id)a6;
+- (void)setPercentageString:(id)string ratingsValueString:(id)valueString ratingsValueAnimation:(int64_t)animation ratingsString:(id)ratingsString;
 @end
 
 @implementation MUAppleRatingRowSubtitleView
 
-- (MUAppleRatingRowSubtitleView)initWithArrangedSubviews:(id)a3
+- (MUAppleRatingRowSubtitleView)initWithArrangedSubviews:(id)subviews
 {
   sub_1C570CB68();
   sub_1C584F770();
@@ -16,22 +16,22 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   AppleRatingRowSubtitleView.layoutSubviews()();
 }
 
-- (void)setPercentageString:(id)a3 ratingsValueString:(id)a4 ratingsValueAnimation:(int64_t)a5 ratingsString:(id)a6
+- (void)setPercentageString:(id)string ratingsValueString:(id)valueString ratingsValueAnimation:(int64_t)animation ratingsString:(id)ratingsString
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = self;
-  AppleRatingRowSubtitleView.set(percentageString:ratingsValueString:ratingsValueAnimation:ratingsString:)(a3, a4, a5, v13);
+  stringCopy = string;
+  valueStringCopy = valueString;
+  ratingsStringCopy = ratingsString;
+  selfCopy = self;
+  AppleRatingRowSubtitleView.set(percentageString:ratingsValueString:ratingsValueAnimation:ratingsString:)(string, valueString, animation, ratingsStringCopy);
 }
 
 - (void)contentSizeDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5749AE0(0, 0);
 }
 

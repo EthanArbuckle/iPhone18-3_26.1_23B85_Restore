@@ -1,8 +1,8 @@
 @interface PXCTFrame
-- (BOOL)_truncateLine:(const __CTLine *)a3 withOrigin:(CGPoint *)a4 referenceAttributedString:(id *)a5 bounds:(CGRect)a6;
+- (BOOL)_truncateLine:(const __CTLine *)line withOrigin:(CGPoint *)origin referenceAttributedString:(id *)string bounds:(CGRect)bounds;
 - (CGPoint)origin;
 - (PXCTFrame)init;
-- (PXCTFrame)initWithFrame:(__CTFrame *)a3 maximumLineCount:(unint64_t)a4 allowTruncation:(BOOL)a5 framesetter:(id)a6;
+- (PXCTFrame)initWithFrame:(__CTFrame *)frame maximumLineCount:(unint64_t)count allowTruncation:(BOOL)truncation framesetter:(id)framesetter;
 - (PXCTFramesetter)framesetter;
 - (void)dealloc;
 - (void)prepare;
@@ -26,31 +26,31 @@
   return WeakRetained;
 }
 
-- (BOOL)_truncateLine:(const __CTLine *)a3 withOrigin:(CGPoint *)a4 referenceAttributedString:(id *)a5 bounds:(CGRect)a6
+- (BOOL)_truncateLine:(const __CTLine *)line withOrigin:(CGPoint *)origin referenceAttributedString:(id *)string bounds:(CGRect)bounds
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if (![(PXCTFrame *)self allowTruncation])
   {
     return 0;
   }
 
-  StringRange = CTLineGetStringRange(*a3);
-  v15 = [(PXCTFrame *)self framesetter];
-  v16 = [v15 attributedString];
-  if (StringRange.location + StringRange.length >= [v16 length])
+  StringRange = CTLineGetStringRange(*line);
+  framesetter = [(PXCTFrame *)self framesetter];
+  attributedString = [framesetter attributedString];
+  if (StringRange.location + StringRange.length >= [attributedString length])
   {
     v24 = 0;
   }
 
   else
   {
-    v34 = a5;
-    v17 = [v16 attributedSubstringFromRange:{StringRange.location, objc_msgSend(v16, "length") - StringRange.location}];
+    stringCopy = string;
+    v17 = [attributedString attributedSubstringFromRange:{StringRange.location, objc_msgSend(attributedString, "length") - StringRange.location}];
     v18 = CTLineCreateWithAttributedString(v17);
-    v19 = [v16 attributesAtIndex:objc_msgSend(v16 effectiveRange:{"length") - 1, 0}];
+    v19 = [attributedString attributesAtIndex:objc_msgSend(attributedString effectiveRange:{"length") - 1, 0}];
     v20 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"…" attributes:v19];
     v21 = CTLineCreateWithAttributedString(v20);
     v35.origin.x = x;
@@ -64,19 +64,19 @@
     v24 = TruncatedLine != 0;
     if (TruncatedLine)
     {
-      *a3 = CFAutorelease(TruncatedLine);
+      *line = CFAutorelease(TruncatedLine);
       v25 = [v19 objectForKeyedSubscript:*MEMORY[0x1E69DB688]];
       v26 = v25;
       if (v25)
       {
-        v27 = [v25 alignment];
+        alignment = [v25 alignment];
         v28 = 0.0;
-        if (v27 == 1)
+        if (alignment == 1)
         {
           v28 = 0.5;
         }
 
-        if (v27 == 2)
+        if (alignment == 2)
         {
           v29 = 1.0;
         }
@@ -102,9 +102,9 @@
       v37.origin.y = y;
       v37.size.width = width;
       v37.size.height = height;
-      a4->x = PenOffsetForFlush + CGRectGetMinX(v37);
+      origin->x = PenOffsetForFlush + CGRectGetMinX(v37);
       v32 = v17;
-      *v34 = v17;
+      *stringCopy = v17;
     }
   }
 
@@ -116,20 +116,20 @@
   if (!self->_prepared)
   {
     self->_prepared = 1;
-    v3 = [(PXCTFrame *)self frameRef];
-    Path = CTFrameGetPath(v3);
+    frameRef = [(PXCTFrame *)self frameRef];
+    Path = CTFrameGetPath(frameRef);
     BoundingBox = CGPathGetBoundingBox(Path);
     x = BoundingBox.origin.x;
     y = BoundingBox.origin.y;
     width = BoundingBox.size.width;
     height = BoundingBox.size.height;
-    v7 = CTFrameGetLines(v3);
+    v7 = CTFrameGetLines(frameRef);
     v8 = [v7 count];
     v9 = v8 > [(PXCTFrame *)self maximumLineCount];
-    v10 = [(PXCTFrame *)self maximumLineCount];
-    if (v8 >= v10)
+    maximumLineCount = [(PXCTFrame *)self maximumLineCount];
+    if (v8 >= maximumLineCount)
     {
-      v11 = v10;
+      v11 = maximumLineCount;
     }
 
     else
@@ -155,25 +155,25 @@
 
         v30 = v16;
         v29 = vaddq_f64(v13[v14], v27);
-        v17 = [(PXCTFrame *)self framesetter];
-        v18 = [v17 attributedString];
+        framesetter = [(PXCTFrame *)self framesetter];
+        attributedString = [framesetter attributedString];
 
         if (v11 == 1)
         {
-          v28 = v18;
-          v19 = [(PXCTFrame *)self _truncateLine:&v30 withOrigin:&v29 referenceAttributedString:&v28 bounds:x, y, width, height];
+          v28 = attributedString;
+          height = [(PXCTFrame *)self _truncateLine:&v30 withOrigin:&v29 referenceAttributedString:&v28 bounds:x, y, width, height];
           v20 = v28;
 
-          v18 = v20;
+          attributedString = v20;
         }
 
         else
         {
-          v19 = 0;
+          height = 0;
         }
 
         v21 = [PXCTLine alloc];
-        v22 = [(PXCTLine *)v21 initWithLine:v30 origin:self frame:v18 referenceAttributedString:v19 truncated:*&v29];
+        v22 = [(PXCTLine *)v21 initWithLine:v30 origin:self frame:attributedString referenceAttributedString:height truncated:*&v29];
         [(PXCTLine *)v22 prepare];
         [(NSArray *)v12 addObject:v22];
 
@@ -203,18 +203,18 @@
   [(PXCTFrame *)&v3 dealloc];
 }
 
-- (PXCTFrame)initWithFrame:(__CTFrame *)a3 maximumLineCount:(unint64_t)a4 allowTruncation:(BOOL)a5 framesetter:(id)a6
+- (PXCTFrame)initWithFrame:(__CTFrame *)frame maximumLineCount:(unint64_t)count allowTruncation:(BOOL)truncation framesetter:(id)framesetter
 {
-  v10 = a6;
+  framesetterCopy = framesetter;
   v13.receiver = self;
   v13.super_class = PXCTFrame;
   v11 = [(PXCTFrame *)&v13 init];
   if (v11)
   {
-    v11->_frameRef = CFRetain(a3);
-    v11->_maximumLineCount = a4;
-    v11->_allowTruncation = a5;
-    objc_storeWeak(&v11->_framesetter, v10);
+    v11->_frameRef = CFRetain(frame);
+    v11->_maximumLineCount = count;
+    v11->_allowTruncation = truncation;
+    objc_storeWeak(&v11->_framesetter, framesetterCopy);
   }
 
   return v11;
@@ -222,8 +222,8 @@
 
 - (PXCTFrame)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"CoreText+PhotosUIFoundation.m" lineNumber:117 description:{@"%s is not available as initializer", "-[PXCTFrame init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CoreText+PhotosUIFoundation.m" lineNumber:117 description:{@"%s is not available as initializer", "-[PXCTFrame init]"}];
 
   abort();
 }

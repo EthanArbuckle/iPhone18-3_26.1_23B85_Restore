@@ -1,13 +1,13 @@
 @interface TextItemCell
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (_TtC19HealthMedicationsUI12TextItemCell)initWithCoder:(id)a3;
-- (void)didTapDoneWithSender:(id)a3;
-- (void)textViewDidChange:(id)a3;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
+- (_TtC19HealthMedicationsUI12TextItemCell)initWithCoder:(id)coder;
+- (void)didTapDoneWithSender:(id)sender;
+- (void)textViewDidChange:(id)change;
 @end
 
 @implementation TextItemCell
 
-- (_TtC19HealthMedicationsUI12TextItemCell)initWithCoder:(id)a3
+- (_TtC19HealthMedicationsUI12TextItemCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI12TextItemCell____lazy_storage___textView) = 0;
   v3 = self + OBJC_IVAR____TtC19HealthMedicationsUI12TextItemCell_item;
@@ -19,31 +19,31 @@
   return result;
 }
 
-- (void)didTapDoneWithSender:(id)a3
+- (void)didTapDoneWithSender:(id)sender
 {
-  v4 = self;
+  selfCopy = self;
   v3 = sub_22826B6C4();
   [v3 resignFirstResponder];
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v9 = sub_228392000();
   v11 = v10;
-  v12 = a3;
-  v13 = self;
-  LOBYTE(length) = sub_22826C6A4(v12, location, length, v9, v11);
+  viewCopy = view;
+  selfCopy = self;
+  LOBYTE(length) = sub_22826C6A4(viewCopy, location, length, v9, v11);
 
   return length & 1;
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_22826CC70(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_22826CC70(changeCopy);
 }
 
 @end

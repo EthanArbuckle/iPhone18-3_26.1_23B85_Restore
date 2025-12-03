@@ -1,27 +1,27 @@
 @interface MSVBidirectionalDictionary
 + (id)bidirectionalDictionary;
-- (BOOL)isEqual:(id)a3;
-- (MSVBidirectionalDictionary)initWithCoder:(id)a3;
-- (MSVBidirectionalDictionary)initWithDictionary:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MSVBidirectionalDictionary)initWithCoder:(id)coder;
+- (MSVBidirectionalDictionary)initWithDictionary:(id)dictionary;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MSVBidirectionalDictionary
 
 + (id)bidirectionalDictionary
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [(NSDictionary *)self->_keyToObjectDictionary isEqual:v4[1]];
+    v5 = [(NSDictionary *)self->_keyToObjectDictionary isEqual:equalCopy[1]];
   }
 
   else
@@ -32,7 +32,7 @@
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [MSVMutableBidirectionalDictionary alloc];
   keyToObjectDictionary = self->_keyToObjectDictionary;
@@ -40,34 +40,34 @@
   return [(MSVMutableBidirectionalDictionary *)v4 initWithDictionary:keyToObjectDictionary];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   keyToObjectDictionary = self->_keyToObjectDictionary;
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(NSDictionary *)keyToObjectDictionary copy];
-  [v4 encodeObject:v5 forKey:@"keyToObjectDictionary"];
+  [coderCopy encodeObject:v5 forKey:@"keyToObjectDictionary"];
 }
 
-- (MSVBidirectionalDictionary)initWithCoder:(id)a3
+- (MSVBidirectionalDictionary)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 allowedClasses];
-  v6 = [v5 setByAddingObject:objc_opt_class()];
-  v7 = [v4 decodeObjectOfClasses:v6 forKey:@"keyToObjectDictionary"];
+  coderCopy = coder;
+  allowedClasses = [coderCopy allowedClasses];
+  v6 = [allowedClasses setByAddingObject:objc_opt_class()];
+  v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"keyToObjectDictionary"];
 
   v8 = [(MSVBidirectionalDictionary *)self initWithDictionary:v7];
   return v8;
 }
 
-- (MSVBidirectionalDictionary)initWithDictionary:(id)a3
+- (MSVBidirectionalDictionary)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = MSVBidirectionalDictionary;
   v5 = [(MSVBidirectionalDictionary *)&v16 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     keyToObjectDictionary = v5->_keyToObjectDictionary;
     v5->_keyToObjectDictionary = v6;
 

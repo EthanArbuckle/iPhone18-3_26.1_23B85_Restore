@@ -1,17 +1,17 @@
 @interface VUILibraryAlertView
-- (VUILibraryAlertView)initWithFrame:(CGRect)a3;
-- (void)configureSubtitleTextLayout:(id)a3;
-- (void)configureTitleTextLayout:(id)a3;
+- (VUILibraryAlertView)initWithFrame:(CGRect)frame;
+- (void)configureSubtitleTextLayout:(id)layout;
+- (void)configureTitleTextLayout:(id)layout;
 - (void)layoutSubviews;
 @end
 
 @implementation VUILibraryAlertView
 
-- (VUILibraryAlertView)initWithFrame:(CGRect)a3
+- (VUILibraryAlertView)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = VUILibraryAlertView;
-  v3 = [(VUILibraryAlertView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUILibraryAlertView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCEF8]);
@@ -41,8 +41,8 @@
     v3->_subtitleLabel = v12;
 
     [(UIView *)v3->_containerView addSubview:v3->_subtitleLabel];
-    v14 = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
-    [(VUILibraryAlertView *)v3 setBackgroundColor:v14];
+    vui_primaryDynamicBackgroundColor = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
+    [(VUILibraryAlertView *)v3 setBackgroundColor:vui_primaryDynamicBackgroundColor];
 
     [(UIScrollView *)v3->_scrollView setContentInsetAdjustmentBehavior:3];
   }
@@ -50,27 +50,27 @@
   return v3;
 }
 
-- (void)configureTitleTextLayout:(id)a3
+- (void)configureTitleTextLayout:(id)layout
 {
-  v4 = a3;
-  [v4 setTextStyle:2];
-  v3 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
-  [v4 setColor:v3];
+  layoutCopy = layout;
+  [layoutCopy setTextStyle:2];
+  vui_primaryTextColor = [MEMORY[0x1E69DC888] vui_primaryTextColor];
+  [layoutCopy setColor:vui_primaryTextColor];
 
-  [v4 setFontWeight:10];
-  [v4 setAlignment:1];
-  [v4 setNumberOfLines:0];
+  [layoutCopy setFontWeight:10];
+  [layoutCopy setAlignment:1];
+  [layoutCopy setNumberOfLines:0];
 }
 
-- (void)configureSubtitleTextLayout:(id)a3
+- (void)configureSubtitleTextLayout:(id)layout
 {
-  v4 = a3;
-  [v4 setTextStyle:14];
-  v3 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-  [v4 setColor:v3];
+  layoutCopy = layout;
+  [layoutCopy setTextStyle:14];
+  vui_secondaryTextColor = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+  [layoutCopy setColor:vui_secondaryTextColor];
 
-  [v4 setAlignment:1];
-  [v4 setNumberOfLines:0];
+  [layoutCopy setAlignment:1];
+  [layoutCopy setNumberOfLines:0];
 }
 
 - (void)layoutSubviews
@@ -133,12 +133,12 @@
   subtitleLabel = self->_subtitleLabel;
   if (subtitleLabel)
   {
-    v30 = [(VUILabel *)subtitleLabel text];
-    if (v30)
+    text = [(VUILabel *)subtitleLabel text];
+    if (text)
     {
-      v31 = v30;
-      v32 = [(VUILabel *)self->_subtitleLabel text];
-      v33 = [v32 isEqualToString:&stru_1F5DB25C0];
+      v31 = text;
+      text2 = [(VUILabel *)self->_subtitleLabel text];
+      v33 = [text2 isEqualToString:&stru_1F5DB25C0];
 
       if ((v33 & 1) == 0)
       {

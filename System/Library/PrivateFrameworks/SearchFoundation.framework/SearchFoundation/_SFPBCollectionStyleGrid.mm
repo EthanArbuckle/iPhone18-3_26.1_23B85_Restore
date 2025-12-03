@@ -1,29 +1,29 @@
 @interface _SFPBCollectionStyleGrid
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBCollectionStyleGrid)initWithDictionary:(id)a3;
-- (_SFPBCollectionStyleGrid)initWithFacade:(id)a3;
-- (_SFPBCollectionStyleGrid)initWithJSON:(id)a3;
+- (_SFPBCollectionStyleGrid)initWithDictionary:(id)dictionary;
+- (_SFPBCollectionStyleGrid)initWithFacade:(id)facade;
+- (_SFPBCollectionStyleGrid)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBCollectionStyleGrid
 
-- (_SFPBCollectionStyleGrid)initWithFacade:(id)a3
+- (_SFPBCollectionStyleGrid)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBCollectionStyleGrid *)self init];
   if (v5)
   {
-    if ([v4 hasNumberOfColumns])
+    if ([facadeCopy hasNumberOfColumns])
     {
-      -[_SFPBCollectionStyleGrid setNumberOfColumns:](v5, "setNumberOfColumns:", [v4 numberOfColumns]);
+      -[_SFPBCollectionStyleGrid setNumberOfColumns:](v5, "setNumberOfColumns:", [facadeCopy numberOfColumns]);
     }
 
-    if ([v4 hasGridStyle])
+    if ([facadeCopy hasGridStyle])
     {
-      -[_SFPBCollectionStyleGrid setGridStyle:](v5, "setGridStyle:", [v4 gridStyle]);
+      -[_SFPBCollectionStyleGrid setGridStyle:](v5, "setGridStyle:", [facadeCopy gridStyle]);
     }
 
     v6 = v5;
@@ -32,22 +32,22 @@
   return v5;
 }
 
-- (_SFPBCollectionStyleGrid)initWithDictionary:(id)a3
+- (_SFPBCollectionStyleGrid)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = _SFPBCollectionStyleGrid;
   v5 = [(_SFPBCollectionStyleGrid *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"numberOfColumns"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"numberOfColumns"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBCollectionStyleGrid setNumberOfColumns:](v5, "setNumberOfColumns:", [v6 unsignedLongLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"gridStyle"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"gridStyle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -60,30 +60,30 @@
   return v5;
 }
 
-- (_SFPBCollectionStyleGrid)initWithJSON:(id)a3
+- (_SFPBCollectionStyleGrid)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBCollectionStyleGrid *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBCollectionStyleGrid *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBCollectionStyleGrid *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -96,39 +96,39 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_gridStyle)
   {
-    v4 = [(_SFPBCollectionStyleGrid *)self gridStyle];
-    if (v4 >= 3)
+    gridStyle = [(_SFPBCollectionStyleGrid *)self gridStyle];
+    if (gridStyle >= 3)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", gridStyle];
     }
 
     else
     {
-      v5 = off_1E7ACE548[v4];
+      v5 = off_1E7ACE548[gridStyle];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"gridStyle"];
+    [dictionary setObject:v5 forKeyedSubscript:@"gridStyle"];
   }
 
   if (self->_numberOfColumns)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[_SFPBCollectionStyleGrid numberOfColumns](self, "numberOfColumns")}];
-    [v3 setObject:v6 forKeyedSubscript:@"numberOfColumns"];
+    [dictionary setObject:v6 forKeyedSubscript:@"numberOfColumns"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (numberOfColumns = self->_numberOfColumns, numberOfColumns == objc_msgSend(v4, "numberOfColumns")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (numberOfColumns = self->_numberOfColumns, numberOfColumns == objc_msgSend(equalCopy, "numberOfColumns")))
   {
     gridStyle = self->_gridStyle;
-    v7 = gridStyle == [v4 gridStyle];
+    v7 = gridStyle == [equalCopy gridStyle];
   }
 
   else
@@ -139,9 +139,9 @@
   return v7;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ([(_SFPBCollectionStyleGrid *)self numberOfColumns])
   {
     PBDataWriterWriteUint64Field();

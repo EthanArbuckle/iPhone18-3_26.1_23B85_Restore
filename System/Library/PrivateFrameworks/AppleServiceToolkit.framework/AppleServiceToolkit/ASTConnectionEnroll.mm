@@ -1,25 +1,25 @@
 @interface ASTConnectionEnroll
-- (ASTConnectionEnroll)initWithIdentity:(id)a3;
+- (ASTConnectionEnroll)initWithIdentity:(id)identity;
 @end
 
 @implementation ASTConnectionEnroll
 
-- (ASTConnectionEnroll)initWithIdentity:(id)a3
+- (ASTConnectionEnroll)initWithIdentity:(id)identity
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identityCopy = identity;
   v11.receiver = self;
   v11.super_class = ASTConnectionEnroll;
   v5 = [(ASTMaterializedConnection *)&v11 init];
   if (v5)
   {
-    v6 = [v4 json];
+    json = [identityCopy json];
 
-    if (v6)
+    if (json)
     {
       v12 = @"identifiers";
-      v7 = [v4 json];
-      v13[0] = v7;
+      json2 = [identityCopy json];
+      v13[0] = json2;
       v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
       [(ASTMaterializedConnection *)v5 addBody:v8];
     }

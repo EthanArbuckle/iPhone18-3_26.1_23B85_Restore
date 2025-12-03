@@ -1,27 +1,27 @@
 @interface GEOAPFuzzers
-+ (double)fuzzTime:(double)a3 bySeconds:(unsigned int)a4;
-+ (id)saltedHashWithSalt:(unint64_t)a3 value:(id)a4;
-+ (id)twoDecimalLocation:(id)a3;
-+ (unint64_t)bucketNavDurationTime:(unint64_t)a3;
-+ (unsigned)bucket1800:(unsigned int)a3;
-+ (unsigned)bucket21:(unsigned int)a3;
-+ (unsigned)max11:(unsigned int)a3;
-+ (unsigned)max2:(unsigned int)a3;
-+ (unsigned)max6:(unsigned int)a3;
++ (double)fuzzTime:(double)time bySeconds:(unsigned int)seconds;
++ (id)saltedHashWithSalt:(unint64_t)salt value:(id)value;
++ (id)twoDecimalLocation:(id)location;
++ (unint64_t)bucketNavDurationTime:(unint64_t)time;
++ (unsigned)bucket1800:(unsigned int)bucket1800;
++ (unsigned)bucket21:(unsigned int)bucket21;
++ (unsigned)max11:(unsigned int)max11;
++ (unsigned)max2:(unsigned int)max2;
++ (unsigned)max6:(unsigned int)max6;
 @end
 
 @implementation GEOAPFuzzers
 
-+ (id)saltedHashWithSalt:(unint64_t)a3 value:(id)a4
++ (id)saltedHashWithSalt:(unint64_t)salt value:(id)value
 {
   v26 = *MEMORY[0x1E69E9840];
-  data = a3;
-  v4 = a4;
-  v5 = v4;
-  if (v4)
+  data = salt;
+  valueCopy = value;
+  v5 = valueCopy;
+  if (valueCopy)
   {
     *len = 64;
-    [v4 getBytes:v24 maxLength:64 usedLength:len encoding:4 options:0 range:0 remainingRange:{objc_msgSend(v4, "length"), 0}];
+    [valueCopy getBytes:v24 maxLength:64 usedLength:len encoding:4 options:0 range:0 remainingRange:{objc_msgSend(valueCopy, "length"), 0}];
     memset(&c, 0, sizeof(c));
     CC_SHA256_Init(&c);
     CC_SHA256_Update(&c, &data, 8u);
@@ -68,33 +68,33 @@
   return v17;
 }
 
-+ (unint64_t)bucketNavDurationTime:(unint64_t)a3
++ (unint64_t)bucketNavDurationTime:(unint64_t)time
 {
   v3 = 600;
   v4 = 1010;
   v5 = 1800;
   v6 = 2669;
-  if (a3 > 0xA6D)
+  if (time > 0xA6D)
   {
     v6 = 3985;
   }
 
-  if (a3 >= 0x709)
+  if (time >= 0x709)
   {
     v5 = v6;
   }
 
-  if (a3 >= 0x3F3)
+  if (time >= 0x3F3)
   {
     v4 = v5;
   }
 
-  if (a3 >= 0x259)
+  if (time >= 0x259)
   {
     v3 = v4;
   }
 
-  if (a3 >= 0x126)
+  if (time >= 0x126)
   {
     return v3;
   }
@@ -105,84 +105,84 @@
   }
 }
 
-+ (unsigned)bucket1800:(unsigned int)a3
++ (unsigned)bucket1800:(unsigned int)bucket1800
 {
-  if (a3 < 7)
+  if (bucket1800 < 7)
   {
     return 0;
   }
 
-  if (a3 < 0x1F)
+  if (bucket1800 < 0x1F)
   {
     return 6;
   }
 
-  if (a3 < 0x3D)
+  if (bucket1800 < 0x3D)
   {
     return 30;
   }
 
-  if (a3 < 0x79)
+  if (bucket1800 < 0x79)
   {
     return 60;
   }
 
-  if (a3 < 0xB5)
+  if (bucket1800 < 0xB5)
   {
     return 120;
   }
 
-  if (a3 < 0xF1)
+  if (bucket1800 < 0xF1)
   {
     return 180;
   }
 
-  if (a3 < 0x12D)
+  if (bucket1800 < 0x12D)
   {
     return 240;
   }
 
-  if (a3 < 0x169)
+  if (bucket1800 < 0x169)
   {
     return 300;
   }
 
-  if (a3 < 0x1A5)
+  if (bucket1800 < 0x1A5)
   {
     return 360;
   }
 
-  if (a3 < 0x1E1)
+  if (bucket1800 < 0x1E1)
   {
     return 420;
   }
 
-  if (a3 < 0x21D)
+  if (bucket1800 < 0x21D)
   {
     return 480;
   }
 
-  if (a3 < 0x259)
+  if (bucket1800 < 0x259)
   {
     return 540;
   }
 
-  if (a3 < 0x385)
+  if (bucket1800 < 0x385)
   {
     return 600;
   }
 
-  if (a3 < 0x4B1)
+  if (bucket1800 < 0x4B1)
   {
     return 900;
   }
 
-  if (a3 < 0x5DD)
+  if (bucket1800 < 0x5DD)
   {
     return 1200;
   }
 
-  if (a3 <= 0x708)
+  if (bucket1800 <= 0x708)
   {
     return 1500;
   }
@@ -190,9 +190,9 @@
   return 1800;
 }
 
-+ (unsigned)bucket21:(unsigned int)a3
++ (unsigned)bucket21:(unsigned int)bucket21
 {
-  if (a3 >= 0x15)
+  if (bucket21 >= 0x15)
   {
     v3 = 21;
   }
@@ -202,7 +202,7 @@
     v3 = 16;
   }
 
-  if (a3 >= 0x10)
+  if (bucket21 >= 0x10)
   {
     v4 = v3;
   }
@@ -212,61 +212,61 @@
     v4 = 11;
   }
 
-  if (a3 >= 0xB)
+  if (bucket21 >= 0xB)
   {
     return v4;
   }
 
   else
   {
-    return a3;
+    return bucket21;
   }
 }
 
-+ (unsigned)max11:(unsigned int)a3
++ (unsigned)max11:(unsigned int)max11
 {
-  if (a3 >= 0xB)
+  if (max11 >= 0xB)
   {
     return 11;
   }
 
   else
   {
-    return a3;
+    return max11;
   }
 }
 
-+ (unsigned)max6:(unsigned int)a3
++ (unsigned)max6:(unsigned int)max6
 {
-  if (a3 >= 6)
+  if (max6 >= 6)
   {
     return 6;
   }
 
   else
   {
-    return a3;
+    return max6;
   }
 }
 
-+ (unsigned)max2:(unsigned int)a3
++ (unsigned)max2:(unsigned int)max2
 {
-  if (a3 >= 2)
+  if (max2 >= 2)
   {
     return 2;
   }
 
   else
   {
-    return a3;
+    return max2;
   }
 }
 
-+ (id)twoDecimalLocation:(id)a3
++ (id)twoDecimalLocation:(id)location
 {
-  if (a3)
+  if (location)
   {
-    [a3 coordinate];
+    [location coordinate];
     GEOCoordinateWithReducedPrecision();
     v6 = [objc_alloc(MEMORY[0x1E69A1E50]) initWithCoordinate:{v4, v5}];
   }
@@ -279,13 +279,13 @@
   return v6;
 }
 
-+ (double)fuzzTime:(double)a3 bySeconds:(unsigned int)a4
++ (double)fuzzTime:(double)time bySeconds:(unsigned int)seconds
 {
-  v4 = a4;
-  v5 = a3 % a4;
+  secondsCopy = seconds;
+  v5 = time % seconds;
   if (v5)
   {
-    v6 = a3 < 0.0;
+    v6 = time < 0.0;
   }
 
   else
@@ -295,10 +295,10 @@
 
   if (!v6)
   {
-    v4 = 0;
+    secondsCopy = 0;
   }
 
-  return floor(a3 - (v4 + v5));
+  return floor(time - (secondsCopy + v5));
 }
 
 @end

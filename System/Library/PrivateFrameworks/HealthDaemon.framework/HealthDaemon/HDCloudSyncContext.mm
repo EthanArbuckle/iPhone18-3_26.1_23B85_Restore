@@ -1,11 +1,11 @@
 @interface HDCloudSyncContext
 + (id)contextForFastPush;
-- (BOOL)isEquivalent:(id)a3;
+- (BOOL)isEquivalent:(id)equivalent;
 - (HDCloudSyncContext)init;
 - (id)description;
-- (id)initForPurpose:(int64_t)a3 options:(unint64_t)a4 reason:(int64_t)a5 backgroundTask:(id)a6;
-- (id)subContextByAddingOptions:(unint64_t)a3;
-- (id)subContextByRemovingOptions:(unint64_t)a3;
+- (id)initForPurpose:(int64_t)purpose options:(unint64_t)options reason:(int64_t)reason backgroundTask:(id)task;
+- (id)subContextByAddingOptions:(unint64_t)options;
+- (id)subContextByRemovingOptions:(unint64_t)options;
 @end
 
 @implementation HDCloudSyncContext
@@ -20,27 +20,27 @@
   return 0;
 }
 
-- (id)initForPurpose:(int64_t)a3 options:(unint64_t)a4 reason:(int64_t)a5 backgroundTask:(id)a6
+- (id)initForPurpose:(int64_t)purpose options:(unint64_t)options reason:(int64_t)reason backgroundTask:(id)task
 {
-  v11 = a6;
+  taskCopy = task;
   v19.receiver = self;
   v19.super_class = HDCloudSyncContext;
   v12 = [(HDCloudSyncContext *)&v19 init];
   if (v12)
   {
-    v13 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v12->_identifier;
-    v12->_identifier = v13;
+    v12->_identifier = uUID;
 
-    v15 = [(NSUUID *)v12->_identifier UUIDString];
-    v16 = [v15 substringToIndex:4];
+    uUIDString = [(NSUUID *)v12->_identifier UUIDString];
+    v16 = [uUIDString substringToIndex:4];
     shortIdentifier = v12->_shortIdentifier;
     v12->_shortIdentifier = v16;
 
-    v12->_purpose = a3;
-    v12->_options = a4;
-    v12->_reason = a5;
-    objc_storeStrong(&v12->_backgroundTask, a6);
+    v12->_purpose = purpose;
+    v12->_options = options;
+    v12->_reason = reason;
+    objc_storeStrong(&v12->_backgroundTask, task);
   }
 
   return v12;
@@ -63,8 +63,8 @@
   v3 = MEMORY[0x277CCACA8];
   options = self->_options;
   v5 = HKCloudSyncOptionsToString();
-  v6 = [(HDCloudSyncContext *)self syncRequest];
-  v7 = [v3 stringWithFormat:@"Options: %@, \n Request: %@", v5, v6];
+  syncRequest = [(HDCloudSyncContext *)self syncRequest];
+  v7 = [v3 stringWithFormat:@"Options: %@, \n Request: %@", v5, syncRequest];
 
   backgroundTask = self->_backgroundTask;
   v9 = MEMORY[0x277CCACA8];
@@ -74,8 +74,8 @@
   v13 = v12;
   if (backgroundTask)
   {
-    v14 = [(HDBackgroundSystemTask *)self->_backgroundTask identifier];
-    v15 = [v9 stringWithFormat:@"<%@ %@ (%@) %@>", shortIdentifier, v13, v7, v14];
+    identifier = [(HDBackgroundSystemTask *)self->_backgroundTask identifier];
+    v15 = [v9 stringWithFormat:@"<%@ %@ (%@) %@>", shortIdentifier, v13, v7, identifier];
   }
 
   else
@@ -86,9 +86,9 @@
   return v15;
 }
 
-- (id)subContextByAddingOptions:(unint64_t)a3
+- (id)subContextByAddingOptions:(unint64_t)options
 {
-  v4 = [objc_alloc(objc_opt_class()) initForPurpose:self->_purpose options:self->_options | a3 reason:self->_reason backgroundTask:self->_backgroundTask];
+  v4 = [objc_alloc(objc_opt_class()) initForPurpose:self->_purpose options:self->_options | options reason:self->_reason backgroundTask:self->_backgroundTask];
   v5 = [(NSUUID *)self->_identifier copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -108,9 +108,9 @@
   return v4;
 }
 
-- (id)subContextByRemovingOptions:(unint64_t)a3
+- (id)subContextByRemovingOptions:(unint64_t)options
 {
-  v4 = [objc_alloc(objc_opt_class()) initForPurpose:self->_purpose options:self->_options & ~a3 reason:self->_reason backgroundTask:self->_backgroundTask];
+  v4 = [objc_alloc(objc_opt_class()) initForPurpose:self->_purpose options:self->_options & ~options reason:self->_reason backgroundTask:self->_backgroundTask];
   v5 = [(NSUUID *)self->_identifier copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -130,11 +130,11 @@
   return v4;
 }
 
-- (BOOL)isEquivalent:(id)a3
+- (BOOL)isEquivalent:(id)equivalent
 {
-  v4 = a3;
-  v5 = v4;
-  if (*&self->_purpose == *(v4 + 24) && self->_reason == *(v4 + 5) && self->_backgroundTask == *(v4 + 7))
+  equivalentCopy = equivalent;
+  v5 = equivalentCopy;
+  if (*&self->_purpose == *(equivalentCopy + 24) && self->_reason == *(equivalentCopy + 5) && self->_backgroundTask == *(equivalentCopy + 7))
   {
     syncRequest = self->_syncRequest;
     if (syncRequest)

@@ -1,29 +1,29 @@
 @interface MTLTileRenderPipelineDescriptorInternal
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validateWithDevice:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validateWithDevice:(id)device error:(id *)error;
 - (MTLTileRenderPipelineDescriptorInternal)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formattedDescription:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formattedDescription:(unint64_t)description;
 - (id)linkedFunctions;
-- (id)newSerializedTileDataWithFlags:(unint64_t)a3 options:(unint64_t)a4 error:(id *)a5;
+- (id)newSerializedTileDataWithFlags:(unint64_t)flags options:(unint64_t)options error:(id *)error;
 - (uint64_t)setTextureWriteFPRoundingMode:(uint64_t)result;
 - (uint64_t)textureWriteFPRoundingMode;
 - (unint64_t)hash;
 - (void)dealloc;
 - (void)reset;
-- (void)setBinaryArchives:(id)a3;
-- (void)setGpuCompilerSPIOptions:(id)a3;
-- (void)setInsertLibraries:(id)a3;
-- (void)setLabel:(id)a3;
-- (void)setLinkedFunctions:(id)a3;
-- (void)setMaxTotalThreadsPerThreadgroup:(unint64_t)a3;
-- (void)setName:(id)a3;
-- (void)setPluginData:(id)a3;
-- (void)setPreloadedLibraries:(id)a3;
-- (void)setProfileControl:(id)a3;
-- (void)setRequiredThreadsPerThreadgroup:(id *)a3;
-- (void)setTileFunction:(id)a3;
-- (void)validateWithDevice:(id)a3;
+- (void)setBinaryArchives:(id)archives;
+- (void)setGpuCompilerSPIOptions:(id)options;
+- (void)setInsertLibraries:(id)libraries;
+- (void)setLabel:(id)label;
+- (void)setLinkedFunctions:(id)functions;
+- (void)setMaxTotalThreadsPerThreadgroup:(unint64_t)threadgroup;
+- (void)setName:(id)name;
+- (void)setPluginData:(id)data;
+- (void)setPreloadedLibraries:(id)libraries;
+- (void)setProfileControl:(id)control;
+- (void)setRequiredThreadsPerThreadgroup:(id *)threadgroup;
+- (void)setTileFunction:(id)function;
+- (void)validateWithDevice:(id)device;
 @end
 
 @implementation MTLTileRenderPipelineDescriptorInternal
@@ -67,9 +67,9 @@
   [(MTLTileRenderPipelineDescriptorInternal *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (v5)
   {
@@ -78,21 +78,21 @@
     v9 = (v5 + 56);
     do
     {
-      *(*v9 + 8 + v7 * 8) = [(MTLTileRenderPipelineColorAttachmentDescriptorInternal *)p_private->attachments->_descriptors[v7] copyWithZone:a3];
+      *(*v9 + 8 + v7 * 8) = [(MTLTileRenderPipelineColorAttachmentDescriptorInternal *)p_private->attachments->_descriptors[v7] copyWithZone:zone];
       ++v7;
     }
 
     while (v7 != 8);
     *(v6 + 64) = p_private->var0.sampleCount;
     *(v6 + 104) = p_private->colorSampleCount;
-    *(v6 + 72) = [(NSString *)p_private->label copyWithZone:a3];
-    *(v6 + 248) = [(NSString *)p_private->name copyWithZone:a3];
+    *(v6 + 72) = [(NSString *)p_private->label copyWithZone:zone];
+    *(v6 + 248) = [(NSString *)p_private->name copyWithZone:zone];
     v10 = 0;
     *(v6 + 80) = p_private->tileFunction;
     *(v6 + 88) = p_private->threadgroupSizeMatchesTileSize;
     do
     {
-      *(*(v6 + 112) + 8 + v10 * 8) = [(MTLPipelineBufferDescriptorInternal *)p_private->tileBuffers->_descriptors[v10] copyWithZone:a3];
+      *(*(v6 + 112) + 8 + v10 * 8) = [(MTLPipelineBufferDescriptorInternal *)p_private->tileBuffers->_descriptors[v10] copyWithZone:zone];
       ++v10;
     }
 
@@ -123,13 +123,13 @@
   return v6;
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
-  [@"\n" stringByPaddingToLength:a3 + 8 withString:@" " startingAtIndex:0];
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
+  [@"\n" stringByPaddingToLength:description + 8 withString:@" " startingAtIndex:0];
   v31 = 0;
-  v29 = self;
+  selfCopy = self;
   p_private = &self->_private;
   requiredThreadsPerThreadgroup = self->_private.requiredThreadsPerThreadgroup;
   MTLSizeToNSArray(&requiredThreadsPerThreadgroup, &v31);
@@ -161,15 +161,15 @@
   tileFunction = self->_private.tileFunction;
   if (tileFunction)
   {
-    v12 = [(MTLFunction *)tileFunction formattedDescription:a3 + 8];
+    null = [(MTLFunction *)tileFunction formattedDescription:description + 8];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v40[11] = v12;
+  v40[11] = null;
   v40[12] = v5;
   v13 = @"false";
   if (self->_private.threadgroupSizeMatchesTileSize)
@@ -199,7 +199,7 @@
     {
       v39[0] = v5;
       v39[1] = [MEMORY[0x1E696AEC0] stringWithFormat:@"Color Attachment %u:", i];
-      v39[2] = tileColorAttachmentFormattedDescription(a3 + 8, &p_private->attachments->_descriptors[i]->super);
+      v39[2] = tileColorAttachmentFormattedDescription(description + 8, &p_private->attachments->_descriptors[i]->super);
       v20 = v39;
     }
 
@@ -207,7 +207,7 @@
     {
       v38[0] = v5;
       v38[1] = [MEMORY[0x1E696AEC0] stringWithFormat:@"Color Attachment %u:", i];
-      requiredThreadsPerThreadgroup.width = [@"\n" stringByPaddingToLength:a3 + 12 withString:@" " startingAtIndex:0];
+      requiredThreadsPerThreadgroup.width = [@"\n" stringByPaddingToLength:description + 12 withString:@" " startingAtIndex:0];
       requiredThreadsPerThreadgroup.height = @"pixelFormat =";
       v16 = v14;
       v17 = MEMORY[0x1E696AEC0];
@@ -229,12 +229,12 @@
     v22 = p_private->tileBuffers->_descriptors[j];
     if (v22)
     {
-      v23 = pipelineBufferFormattedDescription(a3 + 8, v22);
+      v23 = pipelineBufferFormattedDescription(description + 8, v22);
     }
 
     else
     {
-      v23 = pipelineBufferDefaultFormattedDescription(a3 + 8);
+      v23 = pipelineBufferDefaultFormattedDescription(description + 8);
     }
 
     [v7 addObject:v23];
@@ -245,15 +245,15 @@
   linkedFunctions = p_private->linkedFunctions;
   if (linkedFunctions)
   {
-    v25 = [(MTLLinkedFunctions *)linkedFunctions formattedDescription:a3 + 8];
+    null2 = [(MTLLinkedFunctions *)linkedFunctions formattedDescription:description + 8];
   }
 
   else
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v37[2] = v25;
+  v37[2] = null2;
   [v7 addObjectsFromArray:{objc_msgSend(*(v14 + 3784), "arrayWithObjects:count:", v37, 3)}];
   v36[0] = v5;
   v36[1] = @"supportAddingBinaryFunctions =";
@@ -285,32 +285,32 @@
   v32[1] = @"shaderValidationState =";
   v32[2] = [MEMORY[0x1E696AD98] numberWithInteger:p_private->shaderValidationState];
   [v7 addObjectsFromArray:{objc_msgSend(*(v14 + 3784), "arrayWithObjects:count:", v32, 3)}];
-  v30.receiver = v29;
+  v30.receiver = selfCopy;
   v30.super_class = MTLTileRenderPipelineDescriptorInternal;
   result = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", -[MTLTileRenderPipelineDescriptorInternal description](&v30, sel_description), objc_msgSend(v7, "componentsJoinedByString:", @" "];
   v28 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (void)setPluginData:(id)a3
+- (void)setPluginData:(id)data
 {
   p_private = &self->_private;
   pluginData = self->_private.pluginData;
-  if (pluginData != a3)
+  if (pluginData != data)
   {
 
-    p_private->pluginData = a3;
+    p_private->pluginData = data;
   }
 }
 
-- (void)setProfileControl:(id)a3
+- (void)setProfileControl:(id)control
 {
   p_private = &self->_private;
   profileControl = self->_private.profileControl;
-  if (profileControl != a3)
+  if (profileControl != control)
   {
 
-    p_private->profileControl = [a3 copy];
+    p_private->profileControl = [control copy];
   }
 }
 
@@ -357,9 +357,9 @@
   p_private->requiredThreadsPerThreadgroup.width = 0;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -376,16 +376,16 @@
 
   p_private = &self->_private;
   label = p_private->label;
-  if (label != a3)
+  if (label != label)
   {
 
-    p_private->label = [a3 copy];
+    p_private->label = [label copy];
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  if (a3)
+  if (name)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -402,52 +402,52 @@
 
   p_private = &self->_private;
   name = p_private->name;
-  if (name != a3)
+  if (name != name)
   {
 
-    p_private->name = [a3 copy];
+    p_private->name = [name copy];
   }
 }
 
-- (void)setTileFunction:(id)a3
+- (void)setTileFunction:(id)function
 {
-  if (a3 && MTLFailureTypeGetEnabled(1uLL))
+  if (function && MTLFailureTypeGetEnabled(1uLL))
   {
-    [(MTLTileRenderPipelineDescriptorInternal *)a3 setTileFunction:v5, v6, v7, v8, v9, v10, v11, v14];
+    [(MTLTileRenderPipelineDescriptorInternal *)function setTileFunction:v5, v6, v7, v8, v9, v10, v11, v14];
   }
 
-  v12 = a3;
+  functionCopy = function;
   p_private = &self->_private;
 
-  p_private->tileFunction = a3;
+  p_private->tileFunction = function;
 }
 
-- (void)setMaxTotalThreadsPerThreadgroup:(unint64_t)a3
+- (void)setMaxTotalThreadsPerThreadgroup:(unint64_t)threadgroup
 {
-  v8 = a3;
-  if (a3 >= 0x10000)
+  threadgroupCopy = threadgroup;
+  if (threadgroup >= 0x10000)
   {
-    [(MTLTileRenderPipelineDescriptorInternal *)self setMaxTotalThreadsPerThreadgroup:a2, a3, v3, v4, v5, v6, v7];
+    [(MTLTileRenderPipelineDescriptorInternal *)self setMaxTotalThreadsPerThreadgroup:a2, threadgroup, v3, v4, v5, v6, v7];
   }
 
-  self->_private.maxTotalThreadsPerThreadgroup = v8;
+  self->_private.maxTotalThreadsPerThreadgroup = threadgroupCopy;
 }
 
-- (void)setRequiredThreadsPerThreadgroup:(id *)a3
+- (void)setRequiredThreadsPerThreadgroup:(id *)threadgroup
 {
-  var2 = a3->var2;
-  *&self->_private.requiredThreadsPerThreadgroup.width = *&a3->var0;
+  var2 = threadgroup->var2;
+  *&self->_private.requiredThreadsPerThreadgroup.width = *&threadgroup->var0;
   self->_private.requiredThreadsPerThreadgroup.depth = var2;
 }
 
-- (void)setBinaryArchives:(id)a3
+- (void)setBinaryArchives:(id)archives
 {
   p_private = &self->_private;
   binaryArchives = self->_private.binaryArchives;
-  if (binaryArchives != a3)
+  if (binaryArchives != archives)
   {
 
-    p_private->binaryArchives = [a3 copy];
+    p_private->binaryArchives = [archives copy];
   }
 }
 
@@ -475,9 +475,9 @@
   return result;
 }
 
-- (void)setLinkedFunctions:(id)a3
+- (void)setLinkedFunctions:(id)functions
 {
-  if (a3)
+  if (functions)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -488,32 +488,32 @@
   }
 
   p_private = &self->_private;
-  if (p_private->linkedFunctions != a3)
+  if (p_private->linkedFunctions != functions)
   {
     linkedFunctions = p_private->linkedFunctions;
-    p_private->linkedFunctions = [a3 copy];
+    p_private->linkedFunctions = [functions copy];
   }
 }
 
-- (void)setPreloadedLibraries:(id)a3
+- (void)setPreloadedLibraries:(id)libraries
 {
   p_private = &self->_private;
   preloadedLibraries = self->_private.preloadedLibraries;
-  if (preloadedLibraries != a3)
+  if (preloadedLibraries != libraries)
   {
 
-    p_private->preloadedLibraries = [a3 copy];
+    p_private->preloadedLibraries = [libraries copy];
   }
 }
 
-- (void)setInsertLibraries:(id)a3
+- (void)setInsertLibraries:(id)libraries
 {
-  if (!a3)
+  if (!libraries)
   {
-    a3 = MEMORY[0x1E695E0F0];
+    libraries = MEMORY[0x1E695E0F0];
   }
 
-  [(MTLTileRenderPipelineDescriptorInternal *)self setPreloadedLibraries:a3];
+  [(MTLTileRenderPipelineDescriptorInternal *)self setPreloadedLibraries:libraries];
 }
 
 - (unint64_t)hash
@@ -582,9 +582,9 @@
   return _MTLHashState(v19, 0x1C8uLL);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v6) = 1;
   }
@@ -592,11 +592,11 @@
   else
   {
     Class = object_getClass(self);
-    if (Class == object_getClass(a3))
+    if (Class == object_getClass(equal))
     {
       v7 = 0;
       p_private = &self->_private;
-      v9 = a3 + 56;
+      v9 = equal + 56;
       while (1)
       {
         v10 = p_private->attachments->_descriptors[v7];
@@ -704,13 +704,13 @@ LABEL_3:
   return v6;
 }
 
-- (BOOL)validateWithDevice:(id)a3 error:(id *)a4
+- (BOOL)validateWithDevice:(id)device error:(id *)error
 {
   p_private = &self->_private;
-  if (self->_private.var0.sampleCount || ([a3 supportsTextureSampleCount:0] & 1) != 0)
+  if (self->_private.var0.sampleCount || ([device supportsTextureSampleCount:0] & 1) != 0)
   {
-    [a3 registerTileRenderPipelineDescriptor:{self, a4}];
-    validateWithDevice(a3, p_private);
+    [device registerTileRenderPipelineDescriptor:{self, error}];
+    validateWithDevice(device, p_private);
     return 1;
   }
 
@@ -720,28 +720,28 @@ LABEL_3:
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObject:v9 forKey:*MEMORY[0x1E696A578]];
     v11 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PipelineError" code:1 userInfo:v10];
     result = 0;
-    *a4 = v11;
+    *error = v11;
   }
 
   return result;
 }
 
-- (void)validateWithDevice:(id)a3
+- (void)validateWithDevice:(id)device
 {
-  [a3 registerTileRenderPipelineDescriptor:self];
+  [device registerTileRenderPipelineDescriptor:self];
 
-  validateWithDevice(a3, &self->_private);
+  validateWithDevice(device, &self->_private);
 }
 
-- (id)newSerializedTileDataWithFlags:(unint64_t)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)newSerializedTileDataWithFlags:(unint64_t)flags options:(unint64_t)options error:(id *)error
 {
-  v5 = a4;
+  optionsCopy = options;
   p_private = &self->_private;
-  v7 = [(MTLFunction *)self->_private.tileFunction functionType:a3];
+  v7 = [(MTLFunction *)self->_private.tileFunction functionType:flags];
   if (v7 == 3)
   {
     linkedFunctions = p_private->linkedFunctions;
-    v38 = v5;
+    v38 = optionsCopy;
     if (linkedFunctions && ([(MTLLinkedFunctions *)linkedFunctions functions]&& [(NSArray *)[(MTLLinkedFunctions *)p_private->linkedFunctions functions] count]|| [(MTLLinkedFunctions *)p_private->linkedFunctions privateFunctions]&& [(NSArray *)[(MTLLinkedFunctions *)p_private->linkedFunctions privateFunctions] count]))
     {
       v11 = 1;
@@ -848,7 +848,7 @@ LABEL_3:
     v27 = v26;
     v28 = 0;
     v29 = 0;
-    v26[2] = (v5 << 6) & 0x40000000 | v15 | v26[2] & 0xBFFFFF00;
+    v26[2] = (optionsCopy << 6) & 0x40000000 | v15 | v26[2] & 0xBFFFFF00;
     do
     {
       v30 = p_private->attachments->_descriptors[v28];
@@ -892,14 +892,14 @@ LABEL_3:
   return dispatch_data_create(v27, v21, 0, v35);
 }
 
-- (void)setGpuCompilerSPIOptions:(id)a3
+- (void)setGpuCompilerSPIOptions:(id)options
 {
   p_private = &self->_private;
   gpuCompilerSPIOptions = self->_private.gpuCompilerSPIOptions;
-  if (gpuCompilerSPIOptions != a3)
+  if (gpuCompilerSPIOptions != options)
   {
 
-    p_private->gpuCompilerSPIOptions = [a3 copy];
+    p_private->gpuCompilerSPIOptions = [options copy];
   }
 }
 

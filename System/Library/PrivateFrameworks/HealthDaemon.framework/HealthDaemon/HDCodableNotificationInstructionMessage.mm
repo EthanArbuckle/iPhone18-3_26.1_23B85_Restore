@@ -1,23 +1,23 @@
 @interface HDCodableNotificationInstructionMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCreationDateTimeInterval:(BOOL)a3;
-- (void)setHasCurrentCompatibilityVersion:(BOOL)a3;
-- (void)setHasExpirationDateTimeInterval:(BOOL)a3;
-- (void)setHasMinimumCompatibleVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCreationDateTimeInterval:(BOOL)interval;
+- (void)setHasCurrentCompatibilityVersion:(BOOL)version;
+- (void)setHasExpirationDateTimeInterval:(BOOL)interval;
+- (void)setHasMinimumCompatibleVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableNotificationInstructionMessage
 
-- (void)setHasCurrentCompatibilityVersion:(BOOL)a3
+- (void)setHasCurrentCompatibilityVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasMinimumCompatibleVersion:(BOOL)a3
+- (void)setHasMinimumCompatibleVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 16;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasCreationDateTimeInterval:(BOOL)a3
+- (void)setHasCreationDateTimeInterval:(BOOL)interval
 {
-  if (a3)
+  if (interval)
   {
     v3 = 2;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasExpirationDateTimeInterval:(BOOL)a3
+- (void)setHasExpirationDateTimeInterval:(BOOL)interval
 {
-  if (a3)
+  if (interval)
   {
     v3 = 8;
   }
@@ -81,20 +81,20 @@
   v8.receiver = self;
   v8.super_class = HDCodableNotificationInstructionMessage;
   v4 = [(HDCodableNotificationInstructionMessage *)&v8 description];
-  v5 = [(HDCodableNotificationInstructionMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableNotificationInstructionMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v14 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_currentCompatibilityVersion];
-    [v3 setObject:v14 forKey:@"currentCompatibilityVersion"];
+    [dictionary setObject:v14 forKey:@"currentCompatibilityVersion"];
 
     has = self->_has;
     if ((has & 0x10) == 0)
@@ -115,66 +115,66 @@ LABEL_3:
   }
 
   v15 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_minimumCompatibleVersion];
-  [v3 setObject:v15 forKey:@"minimumCompatibleVersion"];
+  [dictionary setObject:v15 forKey:@"minimumCompatibleVersion"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_creationDateTimeInterval];
-    [v3 setObject:v5 forKey:@"creationDateTimeInterval"];
+    [dictionary setObject:v5 forKey:@"creationDateTimeInterval"];
   }
 
 LABEL_5:
   sendingDeviceInfo = self->_sendingDeviceInfo;
   if (sendingDeviceInfo)
   {
-    [v3 setObject:sendingDeviceInfo forKey:@"sendingDeviceInfo"];
+    [dictionary setObject:sendingDeviceInfo forKey:@"sendingDeviceInfo"];
   }
 
   if (*&self->_has)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_action];
-    [v3 setObject:v7 forKey:@"action"];
+    [dictionary setObject:v7 forKey:@"action"];
   }
 
   clientIdentifier = self->_clientIdentifier;
   if (clientIdentifier)
   {
-    [v3 setObject:clientIdentifier forKey:@"clientIdentifier"];
+    [dictionary setObject:clientIdentifier forKey:@"clientIdentifier"];
   }
 
   categoryIdentifier = self->_categoryIdentifier;
   if (categoryIdentifier)
   {
-    [v3 setObject:categoryIdentifier forKey:@"categoryIdentifier"];
+    [dictionary setObject:categoryIdentifier forKey:@"categoryIdentifier"];
   }
 
   if ((*&self->_has & 8) != 0)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithDouble:self->_expirationDateTimeInterval];
-    [v3 setObject:v10 forKey:@"expirationDateTimeInterval"];
+    [dictionary setObject:v10 forKey:@"expirationDateTimeInterval"];
   }
 
   criteria = self->_criteria;
   if (criteria)
   {
-    v12 = [(HDCodableNotificationInstructionCriteria *)criteria dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"criteria"];
+    dictionaryRepresentation = [(HDCodableNotificationInstructionCriteria *)criteria dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"criteria"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v11 = v4;
+  v11 = toCopy;
   if ((has & 4) != 0)
   {
     currentCompatibilityVersion = self->_currentCompatibilityVersion;
     PBDataWriterWriteInt64Field();
-    v4 = v11;
+    toCopy = v11;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -195,63 +195,63 @@ LABEL_3:
 
   minimumCompatibleVersion = self->_minimumCompatibleVersion;
   PBDataWriterWriteInt64Field();
-  v4 = v11;
+  toCopy = v11;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
     creationDateTimeInterval = self->_creationDateTimeInterval;
     PBDataWriterWriteDoubleField();
-    v4 = v11;
+    toCopy = v11;
   }
 
 LABEL_5:
   if (self->_sendingDeviceInfo)
   {
     PBDataWriterWriteStringField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (*&self->_has)
   {
     action = self->_action;
     PBDataWriterWriteInt64Field();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_clientIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_categoryIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if ((*&self->_has & 8) != 0)
   {
     expirationDateTimeInterval = self->_expirationDateTimeInterval;
     PBDataWriterWriteDoubleField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_criteria)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v11;
+    toCopy = v11;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[3] = self->_currentCompatibilityVersion;
-    *(v4 + 80) |= 4u;
+    toCopy[3] = self->_currentCompatibilityVersion;
+    *(toCopy + 80) |= 4u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -270,57 +270,57 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[5] = self->_minimumCompatibleVersion;
-  *(v4 + 80) |= 0x10u;
+  toCopy[5] = self->_minimumCompatibleVersion;
+  *(toCopy + 80) |= 0x10u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
-    v4[2] = *&self->_creationDateTimeInterval;
-    *(v4 + 80) |= 2u;
+    toCopy[2] = *&self->_creationDateTimeInterval;
+    *(toCopy + 80) |= 2u;
   }
 
 LABEL_5:
-  v6 = v4;
+  v6 = toCopy;
   if (self->_sendingDeviceInfo)
   {
-    [v4 setSendingDeviceInfo:?];
-    v4 = v6;
+    [toCopy setSendingDeviceInfo:?];
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
-    v4[1] = self->_action;
-    *(v4 + 80) |= 1u;
+    toCopy[1] = self->_action;
+    *(toCopy + 80) |= 1u;
   }
 
   if (self->_clientIdentifier)
   {
     [v6 setClientIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_categoryIdentifier)
   {
     [v6 setCategoryIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    v4[4] = *&self->_expirationDateTimeInterval;
-    *(v4 + 80) |= 8u;
+    toCopy[4] = *&self->_expirationDateTimeInterval;
+    *(toCopy + 80) |= 8u;
   }
 
   if (self->_criteria)
   {
     [v6 setCriteria:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) != 0)
@@ -355,7 +355,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSString *)self->_sendingDeviceInfo copyWithZone:a3];
+  v8 = [(NSString *)self->_sendingDeviceInfo copyWithZone:zone];
   v9 = *(v6 + 72);
   *(v6 + 72) = v8;
 
@@ -365,11 +365,11 @@ LABEL_5:
     *(v6 + 80) |= 1u;
   }
 
-  v10 = [(NSString *)self->_clientIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_clientIdentifier copyWithZone:zone];
   v11 = *(v6 + 56);
   *(v6 + 56) = v10;
 
-  v12 = [(NSString *)self->_categoryIdentifier copyWithZone:a3];
+  v12 = [(NSString *)self->_categoryIdentifier copyWithZone:zone];
   v13 = *(v6 + 48);
   *(v6 + 48) = v12;
 
@@ -379,64 +379,64 @@ LABEL_5:
     *(v6 + 80) |= 8u;
   }
 
-  v14 = [(HDCodableNotificationInstructionCriteria *)self->_criteria copyWithZone:a3];
+  v14 = [(HDCodableNotificationInstructionCriteria *)self->_criteria copyWithZone:zone];
   v15 = *(v6 + 64);
   *(v6 + 64) = v14;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_36;
   }
 
   has = self->_has;
-  v6 = *(v4 + 80);
+  v6 = *(equalCopy + 80);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 80) & 4) == 0 || self->_currentCompatibilityVersion != *(v4 + 3))
+    if ((*(equalCopy + 80) & 4) == 0 || self->_currentCompatibilityVersion != *(equalCopy + 3))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 80) & 4) != 0)
+  else if ((*(equalCopy + 80) & 4) != 0)
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 80) & 0x10) == 0 || self->_minimumCompatibleVersion != *(v4 + 5))
+    if ((*(equalCopy + 80) & 0x10) == 0 || self->_minimumCompatibleVersion != *(equalCopy + 5))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 80) & 0x10) != 0)
+  else if ((*(equalCopy + 80) & 0x10) != 0)
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 80) & 2) == 0 || self->_creationDateTimeInterval != *(v4 + 2))
+    if ((*(equalCopy + 80) & 2) == 0 || self->_creationDateTimeInterval != *(equalCopy + 2))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 80) & 2) != 0)
+  else if ((*(equalCopy + 80) & 2) != 0)
   {
     goto LABEL_36;
   }
 
   sendingDeviceInfo = self->_sendingDeviceInfo;
-  if (sendingDeviceInfo | *(v4 + 9))
+  if (sendingDeviceInfo | *(equalCopy + 9))
   {
     if (![(NSString *)sendingDeviceInfo isEqual:?])
     {
@@ -446,12 +446,12 @@ LABEL_36:
     }
 
     has = self->_has;
-    v6 = *(v4 + 80);
+    v6 = *(equalCopy + 80);
   }
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_action != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_action != *(equalCopy + 1))
     {
       goto LABEL_36;
     }
@@ -463,13 +463,13 @@ LABEL_36:
   }
 
   clientIdentifier = self->_clientIdentifier;
-  if (clientIdentifier | *(v4 + 7) && ![(NSString *)clientIdentifier isEqual:?])
+  if (clientIdentifier | *(equalCopy + 7) && ![(NSString *)clientIdentifier isEqual:?])
   {
     goto LABEL_36;
   }
 
   categoryIdentifier = self->_categoryIdentifier;
-  if (categoryIdentifier | *(v4 + 6))
+  if (categoryIdentifier | *(equalCopy + 6))
   {
     if (![(NSString *)categoryIdentifier isEqual:?])
     {
@@ -477,22 +477,22 @@ LABEL_36:
     }
   }
 
-  v10 = *(v4 + 80);
+  v10 = *(equalCopy + 80);
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 80) & 8) == 0 || self->_expirationDateTimeInterval != *(v4 + 4))
+    if ((*(equalCopy + 80) & 8) == 0 || self->_expirationDateTimeInterval != *(equalCopy + 4))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 80) & 8) != 0)
+  else if ((*(equalCopy + 80) & 8) != 0)
   {
     goto LABEL_36;
   }
 
   criteria = self->_criteria;
-  if (criteria | *(v4 + 8))
+  if (criteria | *(equalCopy + 8))
   {
     v12 = [(HDCodableNotificationInstructionCriteria *)criteria isEqual:?];
   }
@@ -618,16 +618,16 @@ LABEL_11:
   return v6 ^ v5 ^ v10 ^ v12 ^ v11 ^ v13 ^ v14 ^ v17 ^ [(HDCodableNotificationInstructionCriteria *)self->_criteria hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 80);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 80);
   if ((v6 & 4) != 0)
   {
-    self->_currentCompatibilityVersion = *(v4 + 3);
+    self->_currentCompatibilityVersion = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v6 = *(v4 + 80);
+    v6 = *(fromCopy + 80);
     if ((v6 & 0x10) == 0)
     {
 LABEL_3:
@@ -640,23 +640,23 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 80) & 0x10) == 0)
+  else if ((*(fromCopy + 80) & 0x10) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_minimumCompatibleVersion = *(v4 + 5);
+  self->_minimumCompatibleVersion = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 80) & 2) != 0)
+  if ((*(fromCopy + 80) & 2) != 0)
   {
 LABEL_4:
-    self->_creationDateTimeInterval = *(v4 + 2);
+    self->_creationDateTimeInterval = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
 LABEL_5:
-  v9 = v4;
-  if (*(v4 + 9))
+  v9 = fromCopy;
+  if (*(fromCopy + 9))
   {
     [(HDCodableNotificationInstructionMessage *)self setSendingDeviceInfo:?];
     v5 = v9;

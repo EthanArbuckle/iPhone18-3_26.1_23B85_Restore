@@ -1,8 +1,8 @@
 @interface HMDCloudPairedMetadata
-+ (id)__decodeVersionConfigurationWithVersionString:(id)a3 versionConfigurationValue:(id)a4 baseAccessoryIdentifier:(id)a5;
-+ (id)_decodeVersionConfigurationsFromJSONDictionary:(id)a3 baseAccessoryIdentifier:(id)a4 allowUnzippedData:(BOOL)a5;
++ (id)__decodeVersionConfigurationWithVersionString:(id)string versionConfigurationValue:(id)value baseAccessoryIdentifier:(id)identifier;
++ (id)_decodeVersionConfigurationsFromJSONDictionary:(id)dictionary baseAccessoryIdentifier:(id)identifier allowUnzippedData:(BOOL)data;
 + (id)logCategory;
-- (HMDCloudPairedMetadata)initWithBaseAccessoryIdentifier:(id)a3 versionConfigurations:(id)a4;
+- (HMDCloudPairedMetadata)initWithBaseAccessoryIdentifier:(id)identifier versionConfigurations:(id)configurations;
 - (NSDictionary)prettyJSONDictionary;
 - (id)attributeDescriptions;
 @end
@@ -12,13 +12,13 @@
 - (NSDictionary)prettyJSONDictionary
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(HMDCloudPairedMetadata *)self versionConfigurations];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v24 count:16];
+  versionConfigurations = [(HMDCloudPairedMetadata *)self versionConfigurations];
+  v5 = [versionConfigurations countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -29,26 +29,26 @@
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(versionConfigurations);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 accessoryIdentifier];
-        v11 = [v10 firmwareVersion];
-        v12 = [v11 versionString];
+        accessoryIdentifier = [v9 accessoryIdentifier];
+        firmwareVersion = [accessoryIdentifier firmwareVersion];
+        versionString = [firmwareVersion versionString];
 
-        v13 = [v9 prettyJSONDictionary];
-        [v3 setObject:v13 forKeyedSubscript:v12];
+        prettyJSONDictionary = [v9 prettyJSONDictionary];
+        [dictionary setObject:prettyJSONDictionary forKeyedSubscript:versionString];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v24 count:16];
+      v6 = [versionConfigurations countByEnumeratingWithState:&v18 objects:v24 count:16];
     }
 
     while (v6);
   }
 
   v22 = @"versionConfigurations";
-  v14 = [v3 copy];
+  v14 = [dictionary copy];
   v23 = v14;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
 
@@ -61,8 +61,8 @@
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDCloudPairedMetadata *)self versionConfigurations];
-  v5 = [v3 initWithName:@"VersionConfigurations" value:v4];
+  versionConfigurations = [(HMDCloudPairedMetadata *)self versionConfigurations];
+  v5 = [v3 initWithName:@"VersionConfigurations" value:versionConfigurations];
   v9[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
 
@@ -71,33 +71,33 @@
   return v6;
 }
 
-- (HMDCloudPairedMetadata)initWithBaseAccessoryIdentifier:(id)a3 versionConfigurations:(id)a4
+- (HMDCloudPairedMetadata)initWithBaseAccessoryIdentifier:(id)identifier versionConfigurations:(id)configurations
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  configurationsCopy = configurations;
   v13.receiver = self;
   v13.super_class = HMDCloudPairedMetadata;
   v9 = [(HMDCloudPairedMetadata *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseAccessoryIdentifier, a3);
-    objc_storeStrong(&v10->_versionConfigurations, a4);
+    objc_storeStrong(&v9->_baseAccessoryIdentifier, identifier);
+    objc_storeStrong(&v10->_versionConfigurations, configurations);
     v11 = v10;
   }
 
   return v10;
 }
 
-+ (id)_decodeVersionConfigurationsFromJSONDictionary:(id)a3 baseAccessoryIdentifier:(id)a4 allowUnzippedData:(BOOL)a5
++ (id)_decodeVersionConfigurationsFromJSONDictionary:(id)dictionary baseAccessoryIdentifier:(id)identifier allowUnzippedData:(BOOL)data
 {
-  v5 = a5;
+  dataCopy = data;
   v55 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (v5)
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
+  if (dataCopy)
   {
-    v10 = [v8 objectForKeyedSubscript:@"v"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"v"];
     objc_opt_class();
     v11 = (objc_opt_isKindOfClass() & 1) != 0 ? v10 : 0;
     v12 = v11;
@@ -109,7 +109,7 @@
   }
 
   v50 = 0;
-  v16 = decodeStringFromJSONDictionary(v8, @"v", 1, &v50);
+  v16 = decodeStringFromJSONDictionary(dictionaryCopy, @"v", 1, &v50);
   v17 = v50;
   v18 = v17;
   if ((v16 & 1) == 0)
@@ -124,7 +124,7 @@ LABEL_26:
   if (!v19)
   {
     v27 = objc_autoreleasePoolPush();
-    v28 = a1;
+    selfCopy = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -134,7 +134,7 @@ LABEL_26:
       *&buf[12] = 2112;
       *&buf[14] = @"v";
       *&buf[22] = 2112;
-      v52 = v8;
+      v52 = dictionaryCopy;
       _os_log_impl(&dword_2531F8000, v29, OS_LOG_TYPE_ERROR, "%{public}@JSON contains '%@' value that is not valid base64: %@", buf, 0x20u);
     }
 
@@ -143,11 +143,11 @@ LABEL_26:
   }
 
   v20 = v19;
-  v21 = [v19 hmd_uncompressedData];
-  if (!v21)
+  hmd_uncompressedData = [v19 hmd_uncompressedData];
+  if (!hmd_uncompressedData)
   {
     v31 = objc_autoreleasePoolPush();
-    v32 = a1;
+    selfCopy2 = self;
     v33 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
@@ -157,7 +157,7 @@ LABEL_26:
       *&buf[12] = 2112;
       *&buf[14] = @"v";
       *&buf[22] = 2112;
-      v52 = v8;
+      v52 = dictionaryCopy;
       _os_log_impl(&dword_2531F8000, v33, OS_LOG_TYPE_ERROR, "%{public}@JSON contains '%@' value that is not compressed properly: %@", buf, 0x20u);
     }
 
@@ -166,7 +166,7 @@ LABEL_26:
   }
 
   v49 = 0;
-  v22 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v21 options:0 error:&v49];
+  v22 = [MEMORY[0x277CCAAA0] JSONObjectWithData:hmd_uncompressedData options:0 error:&v49];
   v43 = v49;
   if (v22)
   {
@@ -192,7 +192,7 @@ LABEL_26:
     }
 
     context = objc_autoreleasePoolPush();
-    v40 = a1;
+    selfCopy3 = self;
     v38 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
     {
@@ -202,7 +202,7 @@ LABEL_26:
       *&buf[12] = 2112;
       *&buf[14] = @"v";
       *&buf[22] = 2112;
-      v52 = v8;
+      v52 = dictionaryCopy;
       _os_log_impl(&dword_2531F8000, v38, OS_LOG_TYPE_ERROR, "%{public}@JSON contains a '%@' value that is not a dictionary: %@", buf, 0x20u);
     }
   }
@@ -210,7 +210,7 @@ LABEL_26:
   else
   {
     context = objc_autoreleasePoolPush();
-    v37 = a1;
+    selfCopy4 = self;
     v38 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
     {
@@ -220,7 +220,7 @@ LABEL_26:
       *&buf[12] = 2112;
       *&buf[14] = @"v";
       *&buf[22] = 2112;
-      v52 = v8;
+      v52 = dictionaryCopy;
       v53 = 2112;
       v54 = v43;
       _os_log_impl(&dword_2531F8000, v38, OS_LOG_TYPE_ERROR, "%{public}@JSON contains '%@' value that is not valid JSON: %@: %@", buf, 0x2Au);
@@ -244,8 +244,8 @@ LABEL_6:
     v44[1] = 3221225472;
     v44[2] = __115__HMDCloudPairedMetadata__decodeVersionConfigurationsFromJSONDictionary_baseAccessoryIdentifier_allowUnzippedData___block_invoke;
     v44[3] = &unk_279730FB8;
-    v48 = a1;
-    v45 = v9;
+    selfCopy5 = self;
+    v45 = identifierCopy;
     v47 = buf;
     v14 = v13;
     v46 = v14;
@@ -294,16 +294,16 @@ void __115__HMDCloudPairedMetadata__decodeVersionConfigurationsFromJSONDictionar
   }
 }
 
-+ (id)__decodeVersionConfigurationWithVersionString:(id)a3 versionConfigurationValue:(id)a4 baseAccessoryIdentifier:(id)a5
++ (id)__decodeVersionConfigurationWithVersionString:(id)string versionConfigurationValue:(id)value baseAccessoryIdentifier:(id)identifier
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [objc_alloc(MEMORY[0x277D0F940]) initWithString:v8];
+  stringCopy = string;
+  valueCopy = value;
+  identifierCopy = identifier;
+  v11 = [objc_alloc(MEMORY[0x277D0F940]) initWithString:stringCopy];
   if (v11)
   {
-    v12 = v9;
+    v12 = valueCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -320,9 +320,9 @@ void __115__HMDCloudPairedMetadata__decodeVersionConfigurationsFromJSONDictionar
     if (v14)
     {
       v15 = [HMDNetworkRouterFirewallRuleAccessoryIdentifier alloc];
-      v16 = [v10 productGroup];
-      v17 = [v10 productNumber];
-      v18 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v15 initWithProductGroup:v16 productNumber:v17 firmwareVersion:v11];
+      productGroup = [identifierCopy productGroup];
+      productNumber = [identifierCopy productNumber];
+      v18 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v15 initWithProductGroup:productGroup productNumber:productNumber firmwareVersion:v11];
 
       v19 = [[HMDCloudPairedMetadataVersionConfiguration alloc] initWithAccessoryIdentifier:v18 jsonDictionary:v14];
     }
@@ -330,7 +330,7 @@ void __115__HMDCloudPairedMetadata__decodeVersionConfigurationsFromJSONDictionar
     else
     {
       v24 = objc_autoreleasePoolPush();
-      v25 = a1;
+      selfCopy = self;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
@@ -338,7 +338,7 @@ void __115__HMDCloudPairedMetadata__decodeVersionConfigurationsFromJSONDictionar
         v30 = 138543874;
         v31 = v27;
         v32 = 2112;
-        v33 = v8;
+        v33 = stringCopy;
         v34 = 2112;
         v35 = v12;
         _os_log_impl(&dword_2531F8000, v26, OS_LOG_TYPE_ERROR, "%{public}@Version configuration for version '%@' is not a dictionary: %@", &v30, 0x20u);
@@ -352,7 +352,7 @@ void __115__HMDCloudPairedMetadata__decodeVersionConfigurationsFromJSONDictionar
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = a1;
+    selfCopy2 = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -360,7 +360,7 @@ void __115__HMDCloudPairedMetadata__decodeVersionConfigurationsFromJSONDictionar
       v30 = 138543618;
       v31 = v23;
       v32 = 2112;
-      v33 = v8;
+      v33 = stringCopy;
       _os_log_impl(&dword_2531F8000, v22, OS_LOG_TYPE_ERROR, "%{public}@Version configuration contains an invalid version string: %@", &v30, 0x16u);
     }
 

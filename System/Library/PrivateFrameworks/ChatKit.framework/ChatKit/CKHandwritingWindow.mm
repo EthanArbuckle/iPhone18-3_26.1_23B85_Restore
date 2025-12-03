@@ -1,10 +1,10 @@
 @interface CKHandwritingWindow
-- (void)_updateInterfaceOrientationFromDeviceOrientation:(BOOL)a3;
+- (void)_updateInterfaceOrientationFromDeviceOrientation:(BOOL)orientation;
 @end
 
 @implementation CKHandwritingWindow
 
-- (void)_updateInterfaceOrientationFromDeviceOrientation:(BOOL)a3
+- (void)_updateInterfaceOrientationFromDeviceOrientation:(BOOL)orientation
 {
   if (![(CKHandwritingWindow *)self eatOrientationEvents])
   {

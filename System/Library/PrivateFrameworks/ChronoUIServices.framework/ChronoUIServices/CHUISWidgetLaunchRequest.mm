@@ -1,32 +1,32 @@
 @interface CHUISWidgetLaunchRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BSAction)launchAction;
-- (CHUISWidgetLaunchRequest)initWithBSXPCCoder:(id)a3;
-- (CHUISWidgetLaunchRequest)initWithLaunchAction:(id)a3 effectiveContainerBundleIdentifier:(id)a4 isEntitledToOpenSystemProcesses:(BOOL)a5;
+- (CHUISWidgetLaunchRequest)initWithBSXPCCoder:(id)coder;
+- (CHUISWidgetLaunchRequest)initWithLaunchAction:(id)action effectiveContainerBundleIdentifier:(id)identifier isEntitledToOpenSystemProcesses:(BOOL)processes;
 - (NSURL)url;
 - (NSUserActivity)newUserActivity;
 - (id)_stateDumpDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)userActivityData;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation CHUISWidgetLaunchRequest
 
-- (CHUISWidgetLaunchRequest)initWithLaunchAction:(id)a3 effectiveContainerBundleIdentifier:(id)a4 isEntitledToOpenSystemProcesses:(BOOL)a5
+- (CHUISWidgetLaunchRequest)initWithLaunchAction:(id)action effectiveContainerBundleIdentifier:(id)identifier isEntitledToOpenSystemProcesses:(BOOL)processes
 {
-  v9 = a3;
-  v10 = a4;
+  actionCopy = action;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = CHUISWidgetLaunchRequest;
   v11 = [(CHUISWidgetLaunchRequest *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_action, a3);
-    objc_storeStrong(&v12->_effectiveContainerBundleIdentifier, a4);
-    v12->_isEntitledToOpenSystemProcesses = a5;
+    objc_storeStrong(&v11->_action, action);
+    objc_storeStrong(&v12->_effectiveContainerBundleIdentifier, identifier);
+    v12->_isEntitledToOpenSystemProcesses = processes;
   }
 
   return v12;
@@ -55,23 +55,23 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(BSAction *)self->_action userActivityData];
+    userActivityData = [(BSAction *)self->_action userActivityData];
   }
 
   else
   {
-    v4 = 0;
+    userActivityData = 0;
   }
 
-  return v4;
+  return userActivityData;
 }
 
 - (NSUserActivity)newUserActivity
 {
-  v2 = [(CHUISWidgetLaunchRequest *)self userActivityData];
-  if (v2)
+  userActivityData = [(CHUISWidgetLaunchRequest *)self userActivityData];
+  if (userActivityData)
   {
-    v3 = [objc_alloc(MEMORY[0x1E69636A8]) _initWithUserActivityData:v2];
+    v3 = [objc_alloc(MEMORY[0x1E69636A8]) _initWithUserActivityData:userActivityData];
   }
 
   else
@@ -98,7 +98,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CHUISWidgetLaunchRequest alloc];
   effectiveContainerBundleIdentifier = self->_effectiveContainerBundleIdentifier;
@@ -108,23 +108,23 @@
   return [(CHUISWidgetLaunchRequest *)v4 initWithLaunchAction:action effectiveContainerBundleIdentifier:effectiveContainerBundleIdentifier isEntitledToOpenSystemProcesses:isEntitledToOpenSystemProcesses];
 }
 
-- (CHUISWidgetLaunchRequest)initWithBSXPCCoder:(id)a3
+- (CHUISWidgetLaunchRequest)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeStringForKey:@"effectiveContainerBundleIdentifier"];
-  v6 = [v4 decodeBoolForKey:@"isEntitledToOpenSystemProcesses"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"launchAction"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeStringForKey:@"effectiveContainerBundleIdentifier"];
+  v6 = [coderCopy decodeBoolForKey:@"isEntitledToOpenSystemProcesses"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"launchAction"];
   v8 = [(CHUISWidgetLaunchRequest *)self initWithLaunchAction:v7 effectiveContainerBundleIdentifier:v5 isEntitledToOpenSystemProcesses:v6];
 
   return v8;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_effectiveContainerBundleIdentifier forKey:@"effectiveContainerBundleIdentifier"];
-  [v4 encodeObject:self->_action forKey:@"launchAction"];
-  [v4 encodeBool:self->_isEntitledToOpenSystemProcesses forKey:@"isEntitledToOpenSystemProcesses"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_effectiveContainerBundleIdentifier forKey:@"effectiveContainerBundleIdentifier"];
+  [coderCopy encodeObject:self->_action forKey:@"launchAction"];
+  [coderCopy encodeBool:self->_isEntitledToOpenSystemProcesses forKey:@"isEntitledToOpenSystemProcesses"];
 }
 
 - (id)_stateDumpDescription
@@ -136,7 +136,7 @@
   v16[3] = &unk_1E8575520;
   v4 = v3;
   v17 = v4;
-  v18 = self;
+  selfCopy = self;
   v5 = [v4 modifyProem:v16];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
@@ -144,11 +144,11 @@
   v13 = &unk_1E8575520;
   v6 = v4;
   v14 = v6;
-  v15 = self;
+  selfCopy2 = self;
   v7 = [v6 modifyBody:&v10];
-  v8 = [v6 build];
+  build = [v6 build];
 
-  return v8;
+  return build;
 }
 
 id __49__CHUISWidgetLaunchRequest__stateDumpDescription__block_invoke(uint64_t a1)
@@ -173,11 +173,11 @@ void __49__CHUISWidgetLaunchRequest__stateDumpDescription__block_invoke_2(uint64
   v7 = [v6 appendObject:? withName:?];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -237,11 +237,11 @@ void __49__CHUISWidgetLaunchRequest__stateDumpDescription__block_invoke_2(uint64
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendObject:self->_action];
-  v5 = [v3 appendString:self->_effectiveContainerBundleIdentifier];
-  v6 = [v3 appendBool:self->_isEntitledToOpenSystemProcesses];
-  v7 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendObject:self->_action];
+  v5 = [builder appendString:self->_effectiveContainerBundleIdentifier];
+  v6 = [builder appendBool:self->_isEntitledToOpenSystemProcesses];
+  v7 = [builder hash];
 
   return v7;
 }

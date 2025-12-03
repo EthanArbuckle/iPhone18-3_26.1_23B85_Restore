@@ -1,22 +1,22 @@
 @interface IDSEncryptionHelpers
-+ (BOOL)areDataProtectionKeysAvailableForService:(id)a3 withDataProtectionClass:(unsigned int)a4 fromDevice:(id)a5;
-+ (id)decryptLocalDeliveryPayload:(id)a3 forService:(id)a4 withDataProtectionClass:(unsigned int)a5 fromDevice:(id)a6 encryptionType:(int64_t)a7 priority:(int64_t)a8 error:(id *)a9;
-+ (id)encryptLocalDeliveryPayload:(id)a3 toDevice:(id)a4 forService:(id)a5 withDataProtectionClass:(unsigned int)a6 encryptionType:(int64_t)a7 priority:(int64_t)a8 error:(int64_t *)a9;
-+ (void)logEncryptionErrorForToken:(id)a3 deviceID:(id)a4 forURI:(id)a5 fromURI:(id)a6 forService:(id)a7 messageData:(id)a8 type:(int64_t)a9 encrypt:(BOOL)a10 remote:(BOOL)a11 priority:(int64_t)a12;
++ (BOOL)areDataProtectionKeysAvailableForService:(id)service withDataProtectionClass:(unsigned int)class fromDevice:(id)device;
++ (id)decryptLocalDeliveryPayload:(id)payload forService:(id)service withDataProtectionClass:(unsigned int)class fromDevice:(id)device encryptionType:(int64_t)type priority:(int64_t)priority error:(id *)error;
++ (id)encryptLocalDeliveryPayload:(id)payload toDevice:(id)device forService:(id)service withDataProtectionClass:(unsigned int)class encryptionType:(int64_t)type priority:(int64_t)priority error:(int64_t *)error;
++ (void)logEncryptionErrorForToken:(id)token deviceID:(id)d forURI:(id)i fromURI:(id)rI forService:(id)service messageData:(id)data type:(int64_t)type encrypt:(BOOL)self0 remote:(BOOL)self1 priority:(int64_t)self2;
 @end
 
 @implementation IDSEncryptionHelpers
 
-+ (void)logEncryptionErrorForToken:(id)a3 deviceID:(id)a4 forURI:(id)a5 fromURI:(id)a6 forService:(id)a7 messageData:(id)a8 type:(int64_t)a9 encrypt:(BOOL)a10 remote:(BOOL)a11 priority:(int64_t)a12
++ (void)logEncryptionErrorForToken:(id)token deviceID:(id)d forURI:(id)i fromURI:(id)rI forService:(id)service messageData:(id)data type:(int64_t)type encrypt:(BOOL)self0 remote:(BOOL)self1 priority:(int64_t)self2
 {
-  v70 = a3;
-  v69 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v66 = a8;
+  tokenCopy = token;
+  dCopy = d;
+  iCopy = i;
+  rICopy = rI;
+  serviceCopy = service;
+  dataCopy = data;
   v20 = @"Decryption";
-  if (a10)
+  if (encrypt)
   {
     v20 = @"Encryption";
     v21 = @"encrypt";
@@ -29,7 +29,7 @@
 
   v68 = v20;
   v67 = v21;
-  if (!a9)
+  if (!type)
   {
     goto LABEL_134;
   }
@@ -50,13 +50,13 @@
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v73 = v68;
+    priorityCopy = v68;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "*******************  %@ Error ****************************", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v61 = v68;
+    priorityCopy2 = v68;
     _IDSLogV();
   }
 
@@ -76,30 +76,30 @@
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v73 = a12;
+    priorityCopy = priority;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "***  Priority: %ld", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v61 = a12;
+    priorityCopy2 = priority;
     _IDSLogV();
   }
 
   v26 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
-    v27 = [v70 rawToken];
+    rawToken = [tokenCopy rawToken];
     v28 = IDSLoggableDescriptionForTokenOnService();
     *buf = 138412290;
-    v73 = v28;
+    priorityCopy = v28;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "***     Token: %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v29 = [v70 rawToken];
-    v61 = IDSLoggableDescriptionForTokenOnService();
+    rawToken2 = [tokenCopy rawToken];
+    priorityCopy2 = IDSLoggableDescriptionForTokenOnService();
     _IDSLogV();
   }
 
@@ -107,13 +107,13 @@
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v73 = v69;
+    priorityCopy = dCopy;
     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "*** Device ID: %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v61 = v69;
+    priorityCopy2 = dCopy;
     _IDSLogV();
   }
 
@@ -121,13 +121,13 @@
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v73 = v18;
+    priorityCopy = rICopy;
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "***      From: %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v61 = v18;
+    priorityCopy2 = rICopy;
     _IDSLogV();
   }
 
@@ -135,13 +135,13 @@
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v73 = v17;
+    priorityCopy = iCopy;
     _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "***        To: %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v61 = v17;
+    priorityCopy2 = iCopy;
     _IDSLogV();
   }
 
@@ -157,9 +157,9 @@
     _IDSLogV();
   }
 
-  if (a9 > 3)
+  if (type > 3)
   {
-    if ((a9 - 4) >= 2)
+    if ((type - 4) >= 2)
     {
       goto LABEL_129;
     }
@@ -167,11 +167,11 @@
     goto LABEL_60;
   }
 
-  if (a9 != -1)
+  if (type != -1)
   {
-    if (a9 != 1)
+    if (type != 1)
     {
-      if (a9 != 2)
+      if (type != 2)
       {
         goto LABEL_129;
       }
@@ -196,32 +196,32 @@ LABEL_60:
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v73 = v68;
+      priorityCopy = v68;
       _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "Public/Private %@ failed :(", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v61 = v68;
+      priorityCopy2 = v68;
       _IDSLogV();
     }
 
     v36 = +[IDSPeerIDManager sharedInstance];
-    v62 = [v36 publicKeyForURI:v17 pushToken:v70 fromURI:v18 service:v19];
+    v62 = [v36 publicKeyForURI:iCopy pushToken:tokenCopy fromURI:rICopy service:serviceCopy];
 
     v37 = +[IDSPublicKeyStorage sharedInstance];
-    v64 = [v37 publicDeviceIdentityContainerForDeviceID:v69];
+    v64 = [v37 publicDeviceIdentityContainerForDeviceID:dCopy];
 
     v38 = +[IDSRegistrationKeyManager sharedInstance];
-    v63 = [v38 publicMessageProtectionData];
+    publicMessageProtectionData = [v38 publicMessageProtectionData];
 
     v39 = +[IDSRegistrationKeyManager sharedInstance];
-    v40 = [v39 copyMessageProtectionIdentity];
+    copyMessageProtectionIdentity = [v39 copyMessageProtectionIdentity];
 
-    v65 = v70;
-    v41 = v17;
-    v42 = v18;
-    v43 = v19;
+    v65 = tokenCopy;
+    v41 = iCopy;
+    v42 = rICopy;
+    v43 = serviceCopy;
     v44 = +[IDSPeerIDManager sharedInstance];
     v45 = [v44 publicKeyForURI:v41 pushToken:v65 fromURI:v42 service:v43];
 
@@ -245,7 +245,7 @@ LABEL_60:
         if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v73 = v45;
+          priorityCopy = v45;
           v74 = 2112;
           v75 = cf;
           _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_ERROR, "Failed creating public identity from data: %@  (Error: %@)", buf, 0x16u);
@@ -271,12 +271,12 @@ LABEL_76:
       v46 = 0;
     }
 
-    v48 = [v64 legacyPublicIdentity];
+    legacyPublicIdentity = [v64 legacyPublicIdentity];
     v49 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v73 = v40;
+      priorityCopy = copyMessageProtectionIdentity;
       _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, " => Current local publicIdentity: %@", buf, 0xCu);
     }
 
@@ -289,7 +289,7 @@ LABEL_76:
     if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v73 = v63;
+      priorityCopy = publicMessageProtectionData;
       _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_DEFAULT, " => Current local publicIdentity data: %@", buf, 0xCu);
     }
 
@@ -302,7 +302,7 @@ LABEL_76:
     if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v73 = v46;
+      priorityCopy = v46;
       _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_DEFAULT, " => Current remote publicIdentity for token: %@", buf, 0xCu);
     }
 
@@ -315,7 +315,7 @@ LABEL_76:
     if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v73 = v48;
+      priorityCopy = legacyPublicIdentity;
       _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEFAULT, " => Current remote publicIdentity for device: %@", buf, 0xCu);
     }
 
@@ -329,16 +329,16 @@ LABEL_76:
       CFRelease(v46);
     }
 
-    if (v40)
+    if (copyMessageProtectionIdentity)
     {
-      CFRelease(v40);
+      CFRelease(copyMessageProtectionIdentity);
     }
 
     v53 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v73 = v62;
+      priorityCopy = v62;
       _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEFAULT, " => Current remote public key data for token: %@", buf, 0xCu);
     }
 
@@ -351,7 +351,7 @@ LABEL_76:
     if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v73 = v64;
+      priorityCopy = v64;
       _os_log_impl(&_mh_execute_header, v54, OS_LOG_TYPE_DEFAULT, " => Current remote public key data for device: %@", buf, 0xCu);
     }
 
@@ -364,9 +364,9 @@ LABEL_76:
     if (os_log_type_enabled(v55, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v73 = v67;
+      priorityCopy = v67;
       v74 = 2112;
-      v75 = v66;
+      v75 = dataCopy;
       _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEBUG, " => Data we tried to %@: %@", buf, 0x16u);
     }
 
@@ -379,13 +379,13 @@ LABEL_76:
     if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
     {
       v57 = @"NO";
-      if (a11)
+      if (remote)
       {
         v57 = @"YES";
       }
 
       *buf = 138412290;
-      v73 = v57;
+      priorityCopy = v57;
       _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_DEFAULT, " => Is remote: %@", buf, 0xCu);
     }
 
@@ -398,7 +398,7 @@ LABEL_76:
     if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v73 = v65;
+      priorityCopy = v65;
       _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_DEFAULT, " => Token: %@", buf, 0xCu);
     }
 
@@ -440,12 +440,12 @@ LABEL_129:
 LABEL_134:
 }
 
-+ (id)encryptLocalDeliveryPayload:(id)a3 toDevice:(id)a4 forService:(id)a5 withDataProtectionClass:(unsigned int)a6 encryptionType:(int64_t)a7 priority:(int64_t)a8 error:(int64_t *)a9
++ (id)encryptLocalDeliveryPayload:(id)payload toDevice:(id)device forService:(id)service withDataProtectionClass:(unsigned int)class encryptionType:(int64_t)type priority:(int64_t)priority error:(int64_t *)error
 {
-  v9 = *&a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  v9 = *&class;
+  payloadCopy = payload;
+  deviceCopy = device;
+  serviceCopy = service;
   v15 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -470,16 +470,16 @@ LABEL_134:
 
   v51 = 0;
   v16 = +[IDSPairingManager sharedInstance];
-  v17 = [v16 pairedDeviceForUniqueID:v13];
+  v17 = [v16 pairedDeviceForUniqueID:deviceCopy];
 
-  v18 = [v17 publicClassAKey];
+  publicClassAKey = [v17 publicClassAKey];
   v19 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v53 = v13;
+    v53 = deviceCopy;
     v54 = 2112;
-    v55 = v18;
+    v55 = publicClassAKey;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Public Key for Device Class A for UniqueID %@: %@", buf, 0x16u);
   }
 
@@ -492,20 +492,20 @@ LABEL_134:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     v21 = +[IDSCurrentDevice sharedInstance];
-    v22 = [v21 encryptionClassAKey];
+    encryptionClassAKey = [v21 encryptionClassAKey];
     *buf = 138412290;
-    v53 = v22;
+    v53 = encryptionClassAKey;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Public Key for My Class A key is %@:", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
     v23 = +[IDSCurrentDevice sharedInstance];
-    v45 = [v23 encryptionClassAKey];
+    encryptionClassAKey2 = [v23 encryptionClassAKey];
     _IDSLogV();
   }
 
-  if (!off_100CBD4E8 || (v24 = off_100CBD4E8(0, v18, &v51)) == 0)
+  if (!off_100CBD4E8 || (v24 = off_100CBD4E8(0, publicClassAKey, &v51)) == 0)
   {
     v31 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -623,7 +623,7 @@ LABEL_50:
     _IDSLogV();
   }
 
-  v47 = sub_1004A3480(1, v12, v48);
+  v47 = sub_1004A3480(1, payloadCopy, v48);
   if (v47)
   {
     v38 = OSLogHandleForIDSCategory();
@@ -679,9 +679,9 @@ LABEL_50:
       _IDSLogV();
     }
 
-    if (a9)
+    if (error)
     {
-      *a9 = 201;
+      *error = 201;
       if (CFErrorGetCode(err) == -25304)
       {
         v44 = OSLogHandleForIDSCategory();
@@ -716,12 +716,12 @@ LABEL_51:
   return v34;
 }
 
-+ (id)decryptLocalDeliveryPayload:(id)a3 forService:(id)a4 withDataProtectionClass:(unsigned int)a5 fromDevice:(id)a6 encryptionType:(int64_t)a7 priority:(int64_t)a8 error:(id *)a9
++ (id)decryptLocalDeliveryPayload:(id)payload forService:(id)service withDataProtectionClass:(unsigned int)class fromDevice:(id)device encryptionType:(int64_t)type priority:(int64_t)priority error:(id *)error
 {
-  v10 = *&a5;
-  v12 = a3;
-  v50 = a4;
-  v51 = a6;
+  v10 = *&class;
+  payloadCopy = payload;
+  serviceCopy = service;
+  deviceCopy = device;
   v13 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -778,16 +778,16 @@ LABEL_51:
         [v49 addMessageHash:v21];
         v53 = 0;
         v22 = +[IDSPairingManager sharedInstance];
-        v23 = [v22 pairedDeviceForUniqueID:v51];
-        v48 = [v23 publicClassAKey];
+        v23 = [v22 pairedDeviceForUniqueID:deviceCopy];
+        publicClassAKey = [v23 publicClassAKey];
 
         v24 = OSLogHandleForIDSCategory();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          *&buf[4] = v51;
+          *&buf[4] = deviceCopy;
           v55 = 2112;
-          v56 = v48;
+          v56 = publicClassAKey;
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Public Key for Device Class A for UniqueID %@: %@", buf, 0x16u);
         }
 
@@ -800,16 +800,16 @@ LABEL_51:
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
           v26 = +[IDSCurrentDevice sharedInstance];
-          v27 = [v26 encryptionClassAKey];
+          encryptionClassAKey = [v26 encryptionClassAKey];
           *buf = 138412290;
-          *&buf[4] = v27;
+          *&buf[4] = encryptionClassAKey;
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Public Key for My Class A key is %@:", buf, 0xCu);
         }
 
         if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
         {
           v28 = +[IDSCurrentDevice sharedInstance];
-          v45 = [v28 encryptionClassAKey];
+          encryptionClassAKey2 = [v28 encryptionClassAKey];
           _IDSLogV();
         }
 
@@ -823,7 +823,7 @@ LABEL_51:
           sub_100921B40();
         }
 
-        if (off_100CBD4F8 && (v29 = off_100CBD4F8(0, v48, &v53)) != 0)
+        if (off_100CBD4F8 && (v29 = off_100CBD4F8(0, publicClassAKey, &v53)) != 0)
         {
           v30 = +[IDSRegistrationKeyManager sharedInstance];
           cf = [v30 latestCopyMessageProtectionIdentityForDataProtectionClass:v10];
@@ -911,10 +911,10 @@ LABEL_51:
                 _IDSLogV();
               }
 
-              if (a9)
+              if (error)
               {
                 v35 = 0;
-                *a9 = v52;
+                *error = v52;
 LABEL_100:
                 CFRelease(cf);
                 CFRelease(v29);
@@ -1007,14 +1007,14 @@ LABEL_78:
   return v35;
 }
 
-+ (BOOL)areDataProtectionKeysAvailableForService:(id)a3 withDataProtectionClass:(unsigned int)a4 fromDevice:(id)a5
++ (BOOL)areDataProtectionKeysAvailableForService:(id)service withDataProtectionClass:(unsigned int)class fromDevice:(id)device
 {
-  v5 = *&a4;
-  v6 = a5;
+  v5 = *&class;
+  deviceCopy = device;
   v7 = +[IDSPairingManager sharedInstance];
-  v8 = [v7 pairedDeviceForUniqueID:v6];
+  v8 = [v7 pairedDeviceForUniqueID:deviceCopy];
 
-  v9 = [v8 publicClassAKey];
+  publicClassAKey = [v8 publicClassAKey];
 
   v10 = +[IDSRegistrationKeyManager sharedInstance];
   v11 = [v10 latestCopyMessageProtectionIdentityForDataProtectionClass:v5];
@@ -1024,7 +1024,7 @@ LABEL_78:
     CFRelease(v11);
   }
 
-  if (v9)
+  if (publicClassAKey)
   {
     v12 = v11 == 0;
   }

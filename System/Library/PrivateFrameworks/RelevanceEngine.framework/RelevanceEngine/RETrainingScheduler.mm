@@ -1,19 +1,19 @@
 @interface RETrainingScheduler
-+ (RETrainingScheduler)schedulerWithBehavior:(unint64_t)a3;
++ (RETrainingScheduler)schedulerWithBehavior:(unint64_t)behavior;
 @end
 
 @implementation RETrainingScheduler
 
-+ (RETrainingScheduler)schedulerWithBehavior:(unint64_t)a3
++ (RETrainingScheduler)schedulerWithBehavior:(unint64_t)behavior
 {
-  if (a3 > 2)
+  if (behavior > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = *off_2785FD960[a3];
+    v4 = *off_2785FD960[behavior];
     v5 = objc_opt_new();
   }
 

@@ -1,24 +1,24 @@
 @interface PXGMultiplexedItemPlacementController
-+ (id)itemPlacementControllerForItemPlacementControllers:(id)a3;
++ (id)itemPlacementControllerForItemPlacementControllers:(id)controllers;
 - (PXGMultiplexedItemPlacementController)init;
-- (PXGMultiplexedItemPlacementController)initWithItemPlacementControllers:(id)a3;
-- (id)placementInContext:(id)a3 forItemReference:(id)a4;
-- (void)setPlacementOverride:(id)a3 forItemReference:(id)a4;
+- (PXGMultiplexedItemPlacementController)initWithItemPlacementControllers:(id)controllers;
+- (id)placementInContext:(id)context forItemReference:(id)reference;
+- (void)setPlacementOverride:(id)override forItemReference:(id)reference;
 @end
 
 @implementation PXGMultiplexedItemPlacementController
 
-- (void)setPlacementOverride:(id)a3 forItemReference:(id)a4
+- (void)setPlacementOverride:(id)override forItemReference:(id)reference
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  overrideCopy = override;
+  referenceCopy = reference;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [(PXGMultiplexedItemPlacementController *)self itemPlacementControllers];
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  itemPlacementControllers = [(PXGMultiplexedItemPlacementController *)self itemPlacementControllers];
+  v9 = [itemPlacementControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -30,40 +30,40 @@
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(itemPlacementControllers);
         }
 
-        [*(*(&v13 + 1) + 8 * v12++) setPlacementOverride:v6 forItemReference:v7];
+        [*(*(&v13 + 1) + 8 * v12++) setPlacementOverride:overrideCopy forItemReference:referenceCopy];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [itemPlacementControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 }
 
-- (id)placementInContext:(id)a3 forItemReference:(id)a4
+- (id)placementInContext:(id)context forItemReference:(id)reference
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXGMultiplexedItemPlacementController *)self mainItemPlacementController];
-  v9 = [v8 placementInContext:v7 forItemReference:v6];
+  referenceCopy = reference;
+  contextCopy = context;
+  mainItemPlacementController = [(PXGMultiplexedItemPlacementController *)self mainItemPlacementController];
+  v9 = [mainItemPlacementController placementInContext:contextCopy forItemReference:referenceCopy];
 
   return v9;
 }
 
-- (PXGMultiplexedItemPlacementController)initWithItemPlacementControllers:(id)a3
+- (PXGMultiplexedItemPlacementController)initWithItemPlacementControllers:(id)controllers
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllersCopy = controllers;
   v21.receiver = self;
   v21.super_class = PXGMultiplexedItemPlacementController;
   v5 = [(PXGMultiplexedItemPlacementController *)&v21 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [controllersCopy copy];
     itemPlacementControllers = v5->_itemPlacementControllers;
     v5->_itemPlacementControllers = v6;
 
@@ -121,26 +121,26 @@
 
 - (PXGMultiplexedItemPlacementController)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGItemPlacementController.m" lineNumber:80 description:{@"%s is not available as initializer", "-[PXGMultiplexedItemPlacementController init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGItemPlacementController.m" lineNumber:80 description:{@"%s is not available as initializer", "-[PXGMultiplexedItemPlacementController init]"}];
 
   abort();
 }
 
-+ (id)itemPlacementControllerForItemPlacementControllers:(id)a3
++ (id)itemPlacementControllerForItemPlacementControllers:(id)controllers
 {
-  v3 = a3;
-  if ([v3 count] < 2)
+  controllersCopy = controllers;
+  if ([controllersCopy count] < 2)
   {
-    v4 = [v3 firstObject];
+    firstObject = [controllersCopy firstObject];
   }
 
   else
   {
-    v4 = [[PXGMultiplexedItemPlacementController alloc] initWithItemPlacementControllers:v3];
+    firstObject = [[PXGMultiplexedItemPlacementController alloc] initWithItemPlacementControllers:controllersCopy];
   }
 
-  v5 = v4;
+  v5 = firstObject;
 
   return v5;
 }

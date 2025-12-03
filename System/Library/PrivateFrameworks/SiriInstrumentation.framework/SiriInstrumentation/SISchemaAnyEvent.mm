@@ -1,29 +1,29 @@
 @interface SISchemaAnyEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (Class)topLevelUnionTypeClass;
 - (NSData)jsonData;
-- (SISchemaAnyEvent)initWithAnyEventType:(int)a3 payload:(id)a4;
-- (SISchemaAnyEvent)initWithDictionary:(id)a3;
-- (SISchemaAnyEvent)initWithJSON:(id)a3;
+- (SISchemaAnyEvent)initWithAnyEventType:(int)type payload:(id)payload;
+- (SISchemaAnyEvent)initWithDictionary:(id)dictionary;
+- (SISchemaAnyEvent)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (id)unwrap;
 - (unint64_t)hash;
-- (void)unwrapMessageWithCompletion:(id)a3;
-- (void)willProduceDictionaryRepresentation:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)unwrapMessageWithCompletion:(id)completion;
+- (void)willProduceDictionaryRepresentation:(id)representation;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaAnyEvent
 
 - (id)unwrap
 {
-  v3 = [(SISchemaAnyEvent *)self topLevelUnionTypeClass];
-  if (v3)
+  topLevelUnionTypeClass = [(SISchemaAnyEvent *)self topLevelUnionTypeClass];
+  if (topLevelUnionTypeClass)
   {
-    v4 = [v3 alloc];
-    v5 = [(SISchemaAnyEvent *)self payload];
-    v6 = [v4 initWithData:v5];
+    v4 = [topLevelUnionTypeClass alloc];
+    payload = [(SISchemaAnyEvent *)self payload];
+    v6 = [v4 initWithData:payload];
   }
 
   else
@@ -36,9 +36,9 @@
 
 - (Class)topLevelUnionTypeClass
 {
-  v2 = [(SISchemaAnyEvent *)self anyEventType];
+  anyEventType = [(SISchemaAnyEvent *)self anyEventType];
   v3 = 0;
-  switch(v2)
+  switch(anyEventType)
   {
     case 1:
     case 2:
@@ -154,18 +154,18 @@
   return v3;
 }
 
-- (void)willProduceDictionaryRepresentation:(id)a3
+- (void)willProduceDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v6 = [(SISchemaAnyEvent *)self unwrap];
-  v5 = [v6 dictionaryRepresentation];
-  [v4 setObject:v5 forKeyedSubscript:@"payload"];
+  representationCopy = representation;
+  unwrap = [(SISchemaAnyEvent *)self unwrap];
+  dictionaryRepresentation = [unwrap dictionaryRepresentation];
+  [representationCopy setObject:dictionaryRepresentation forKeyedSubscript:@"payload"];
 }
 
-- (SISchemaAnyEvent)initWithAnyEventType:(int)a3 payload:(id)a4
+- (SISchemaAnyEvent)initWithAnyEventType:(int)type payload:(id)payload
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&type;
+  payloadCopy = payload;
   v10.receiver = self;
   v10.super_class = SISchemaAnyEvent;
   v7 = [(SISchemaAnyEvent *)&v10 init];
@@ -173,28 +173,28 @@
   if (v7)
   {
     [(SISchemaAnyEvent *)v7 setAnyEventType:v4];
-    [(SISchemaAnyEvent *)v8 setPayload:v6];
+    [(SISchemaAnyEvent *)v8 setPayload:payloadCopy];
   }
 
   return v8;
 }
 
-- (SISchemaAnyEvent)initWithDictionary:(id)a3
+- (SISchemaAnyEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = SISchemaAnyEvent;
   v5 = [(SISchemaAnyEvent *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"anyEventType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"anyEventType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaAnyEvent setAnyEventType:](v5, "setAnyEventType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"payload"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"payload"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -208,30 +208,30 @@
   return v5;
 }
 
-- (SISchemaAnyEvent)initWithJSON:(id)a3
+- (SISchemaAnyEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaAnyEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaAnyEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaAnyEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -244,7 +244,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [(SISchemaAnyEvent *)self anyEventType]- 1;
@@ -258,28 +258,28 @@
       v5 = off_1E78E2E78[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"anyEventType"];
+    [dictionary setObject:v5 forKeyedSubscript:@"anyEventType"];
   }
 
   if (self->_payload)
   {
-    v6 = [(SISchemaAnyEvent *)self payload];
-    v7 = [v6 base64EncodedStringWithOptions:0];
+    payload = [(SISchemaAnyEvent *)self payload];
+    v7 = [payload base64EncodedStringWithOptions:0];
     if (v7)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"payload"];
+      [dictionary setObject:v7 forKeyedSubscript:@"payload"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"payload"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"payload"];
     }
   }
 
-  [(SISchemaAnyEvent *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaAnyEvent *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -297,22 +297,22 @@
   return [(NSData *)self->_payload hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[24] & 1))
+    if ((*&self->_has & 1) == (equalCopy[24] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (anyEventType = self->_anyEventType, anyEventType == [v4 anyEventType]))
+      if ((*&self->_has & 1) == 0 || (anyEventType = self->_anyEventType, anyEventType == [equalCopy anyEventType]))
       {
-        v6 = [(SISchemaAnyEvent *)self payload];
-        v7 = [v4 payload];
-        v8 = v7;
-        if ((v6 != 0) != (v7 == 0))
+        payload = [(SISchemaAnyEvent *)self payload];
+        payload2 = [equalCopy payload];
+        v8 = payload2;
+        if ((payload != 0) != (payload2 == 0))
         {
-          v9 = [(SISchemaAnyEvent *)self payload];
-          if (!v9)
+          payload3 = [(SISchemaAnyEvent *)self payload];
+          if (!payload3)
           {
 
 LABEL_13:
@@ -320,10 +320,10 @@ LABEL_13:
             goto LABEL_11;
           }
 
-          v10 = v9;
-          v11 = [(SISchemaAnyEvent *)self payload];
-          v12 = [v4 payload];
-          v13 = [v11 isEqual:v12];
+          v10 = payload3;
+          payload4 = [(SISchemaAnyEvent *)self payload];
+          payload5 = [equalCopy payload];
+          v13 = [payload4 isEqual:payload5];
 
           if (v13)
           {
@@ -344,21 +344,21 @@ LABEL_11:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = [(SISchemaAnyEvent *)self payload];
+  payload = [(SISchemaAnyEvent *)self payload];
 
-  v5 = v6;
-  if (v4)
+  v5 = toCopy;
+  if (payload)
   {
     PBDataWriterWriteDataField();
-    v5 = v6;
+    v5 = toCopy;
   }
 }
 
@@ -370,19 +370,19 @@ LABEL_11:
   return v2;
 }
 
-- (void)unwrapMessageWithCompletion:(id)a3
+- (void)unwrapMessageWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SISchemaAnyEvent *)self unwrap];
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  unwrap = [(SISchemaAnyEvent *)self unwrap];
+  v6 = unwrap;
+  if (unwrap)
   {
-    [v5 unwrapMessageWithCompletion:v4];
+    [unwrap unwrapMessageWithCompletion:completionCopy];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 }
 

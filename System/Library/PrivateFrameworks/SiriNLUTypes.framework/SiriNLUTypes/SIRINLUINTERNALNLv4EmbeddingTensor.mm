@@ -1,16 +1,16 @@
 @interface SIRINLUINTERNALNLv4EmbeddingTensor
-- (BOOL)isEqual:(id)a3;
-- (float)valuesAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (float)valuesAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNumLayer:(BOOL)a3;
-- (void)setHasNumToken:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasNumLayer:(BOOL)layer;
+- (void)setHasNumToken:(BOOL)token;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALNLv4EmbeddingTensor
@@ -23,27 +23,27 @@
   [(SIRINLUINTERNALNLv4EmbeddingTensor *)&v3 dealloc];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v9 = a3;
-  v4 = [v9 valuesCount];
-  if (v4)
+  fromCopy = from;
+  valuesCount = [fromCopy valuesCount];
+  if (valuesCount)
   {
-    v5 = v4;
+    v5 = valuesCount;
     for (i = 0; i != v5; ++i)
     {
-      [v9 valuesAtIndex:i];
+      [fromCopy valuesAtIndex:i];
       [(SIRINLUINTERNALNLv4EmbeddingTensor *)self addValues:?];
     }
   }
 
-  v7 = v9;
-  v8 = *(v9 + 64);
+  v7 = fromCopy;
+  v8 = *(fromCopy + 64);
   if ((v8 & 4) != 0)
   {
-    self->_numToken = v9[6];
+    self->_numToken = fromCopy[6];
     *&self->_has |= 4u;
-    v8 = *(v9 + 64);
+    v8 = *(fromCopy + 64);
     if ((v8 & 2) == 0)
     {
 LABEL_6:
@@ -56,25 +56,25 @@ LABEL_6:
     }
   }
 
-  else if ((v9[8] & 2) == 0)
+  else if ((fromCopy[8] & 2) == 0)
   {
     goto LABEL_6;
   }
 
-  self->_numLayer = v9[5];
+  self->_numLayer = fromCopy[5];
   *&self->_has |= 2u;
-  if (v9[8])
+  if (fromCopy[8])
   {
 LABEL_7:
-    self->_embeddingDim = v9[4];
+    self->_embeddingDim = fromCopy[4];
     *&self->_has |= 1u;
   }
 
 LABEL_8:
-  if (v9[7])
+  if (fromCopy[7])
   {
     [(SIRINLUINTERNALNLv4EmbeddingTensor *)self setEmbedderId:?];
-    v7 = v9;
+    v7 = fromCopy;
   }
 }
 
@@ -119,24 +119,24 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6 ^ [(NSString *)self->_embedderId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || !PBRepeatedFloatIsEqual())
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || !PBRepeatedFloatIsEqual())
   {
     goto LABEL_20;
   }
 
-  v5 = *(v4 + 64);
+  v5 = *(equalCopy + 64);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 64) & 4) == 0 || self->_numToken != *(v4 + 6))
+    if ((*(equalCopy + 64) & 4) == 0 || self->_numToken != *(equalCopy + 6))
     {
       goto LABEL_20;
     }
   }
 
-  else if ((*(v4 + 64) & 4) != 0)
+  else if ((*(equalCopy + 64) & 4) != 0)
   {
 LABEL_20:
     v7 = 0;
@@ -145,32 +145,32 @@ LABEL_20:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_numLayer != *(v4 + 5))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_numLayer != *(equalCopy + 5))
     {
       goto LABEL_20;
     }
   }
 
-  else if ((*(v4 + 64) & 2) != 0)
+  else if ((*(equalCopy + 64) & 2) != 0)
   {
     goto LABEL_20;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_embeddingDim != *(v4 + 4))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_embeddingDim != *(equalCopy + 4))
     {
       goto LABEL_20;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
     goto LABEL_20;
   }
 
   embedderId = self->_embedderId;
-  if (embedderId | *(v4 + 7))
+  if (embedderId | *(equalCopy + 7))
   {
     v7 = [(NSString *)embedderId isEqual:?];
   }
@@ -185,9 +185,9 @@ LABEL_21:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   PBRepeatedFloatCopy();
   has = self->_has;
   if ((has & 4) == 0)
@@ -225,37 +225,37 @@ LABEL_4:
   }
 
 LABEL_5:
-  v7 = [(NSString *)self->_embedderId copyWithZone:a3];
+  v7 = [(NSString *)self->_embedderId copyWithZone:zone];
   v8 = *(v5 + 56);
   *(v5 + 56) = v7;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if ([(SIRINLUINTERNALNLv4EmbeddingTensor *)self valuesCount])
   {
-    [v9 clearValues];
-    v4 = [(SIRINLUINTERNALNLv4EmbeddingTensor *)self valuesCount];
-    if (v4)
+    [toCopy clearValues];
+    valuesCount = [(SIRINLUINTERNALNLv4EmbeddingTensor *)self valuesCount];
+    if (valuesCount)
     {
-      v5 = v4;
+      v5 = valuesCount;
       for (i = 0; i != v5; ++i)
       {
         [(SIRINLUINTERNALNLv4EmbeddingTensor *)self valuesAtIndex:i];
-        [v9 addValues:?];
+        [toCopy addValues:?];
       }
     }
   }
 
   has = self->_has;
-  v8 = v9;
+  v8 = toCopy;
   if ((has & 4) != 0)
   {
-    *(v9 + 6) = self->_numToken;
-    *(v9 + 64) |= 4u;
+    *(toCopy + 6) = self->_numToken;
+    *(toCopy + 64) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -274,27 +274,27 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v9 + 5) = self->_numLayer;
-  *(v9 + 64) |= 2u;
+  *(toCopy + 5) = self->_numLayer;
+  *(toCopy + 64) |= 2u;
   if (*&self->_has)
   {
 LABEL_8:
-    *(v9 + 4) = self->_embeddingDim;
-    *(v9 + 64) |= 1u;
+    *(toCopy + 4) = self->_embeddingDim;
+    *(toCopy + 64) |= 1u;
   }
 
 LABEL_9:
   if (self->_embedderId)
   {
-    [v9 setEmbedderId:?];
-    v8 = v9;
+    [toCopy setEmbedderId:?];
+    v8 = toCopy;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v11 = v4;
+  toCopy = to;
+  v11 = toCopy;
   if (self->_values.count)
   {
     v5 = 0;
@@ -302,7 +302,7 @@ LABEL_9:
     {
       v6 = self->_values.list[v5];
       PBDataWriterWriteFloatField();
-      v4 = v11;
+      toCopy = v11;
       ++v5;
     }
 
@@ -314,7 +314,7 @@ LABEL_9:
   {
     numToken = self->_numToken;
     PBDataWriterWriteUint64Field();
-    v4 = v11;
+    toCopy = v11;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -335,34 +335,34 @@ LABEL_6:
 
   numLayer = self->_numLayer;
   PBDataWriterWriteUint64Field();
-  v4 = v11;
+  toCopy = v11;
   if (*&self->_has)
   {
 LABEL_7:
     embeddingDim = self->_embeddingDim;
     PBDataWriterWriteUint64Field();
-    v4 = v11;
+    toCopy = v11;
   }
 
 LABEL_8:
   if (self->_embedderId)
   {
     PBDataWriterWriteStringField();
-    v4 = v11;
+    toCopy = v11;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = PBRepeatedFloatNSArray();
-  [v3 setObject:v4 forKey:@"values"];
+  [dictionary setObject:v4 forKey:@"values"];
 
   has = self->_has;
   if ((has & 4) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_numToken];
-    [v3 setObject:v9 forKey:@"num_token"];
+    [dictionary setObject:v9 forKey:@"num_token"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -383,23 +383,23 @@ LABEL_3:
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_numLayer];
-  [v3 setObject:v10 forKey:@"num_layer"];
+  [dictionary setObject:v10 forKey:@"num_layer"];
 
   if (*&self->_has)
   {
 LABEL_4:
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_embeddingDim];
-    [v3 setObject:v6 forKey:@"embedding_dim"];
+    [dictionary setObject:v6 forKey:@"embedding_dim"];
   }
 
 LABEL_5:
   embedderId = self->_embedderId;
   if (embedderId)
   {
-    [v3 setObject:embedderId forKey:@"embedder_id"];
+    [dictionary setObject:embedderId forKey:@"embedder_id"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -408,15 +408,15 @@ LABEL_5:
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALNLv4EmbeddingTensor;
   v4 = [(SIRINLUINTERNALNLv4EmbeddingTensor *)&v8 description];
-  v5 = [(SIRINLUINTERNALNLv4EmbeddingTensor *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALNLv4EmbeddingTensor *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasNumLayer:(BOOL)a3
+- (void)setHasNumLayer:(BOOL)layer
 {
-  if (a3)
+  if (layer)
   {
     v3 = 2;
   }
@@ -429,9 +429,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasNumToken:(BOOL)a3
+- (void)setHasNumToken:(BOOL)token
 {
-  if (a3)
+  if (token)
   {
     v3 = 4;
   }
@@ -444,20 +444,20 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (float)valuesAtIndex:(unint64_t)a3
+- (float)valuesAtIndex:(unint64_t)index
 {
   p_values = &self->_values;
   count = self->_values.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_values->list[a3];
+  return p_values->list[index];
 }
 
 @end

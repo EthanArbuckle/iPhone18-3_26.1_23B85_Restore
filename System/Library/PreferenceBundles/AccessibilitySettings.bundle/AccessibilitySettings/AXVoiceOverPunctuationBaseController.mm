@@ -8,8 +8,8 @@
 - (NSArray)systemPunctuationGroups
 {
   v2 = +[AXSSPunctuationManager sharedDatabase];
-  v3 = [v2 punctuationGroups];
-  v4 = [v3 ax_filteredArrayUsingBlock:&__block_literal_global_28];
+  punctuationGroups = [v2 punctuationGroups];
+  v4 = [punctuationGroups ax_filteredArrayUsingBlock:&__block_literal_global_28];
 
   v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_286];
 
@@ -58,8 +58,8 @@ LABEL_8:
 - (NSArray)customPunctuationGroups
 {
   v2 = +[AXSSPunctuationManager sharedDatabase];
-  v3 = [v2 punctuationGroups];
-  v4 = [v3 ax_filteredArrayUsingBlock:&__block_literal_global_288];
+  punctuationGroups = [v2 punctuationGroups];
+  v4 = [punctuationGroups ax_filteredArrayUsingBlock:&__block_literal_global_288];
   v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_290];
 
   return v5;

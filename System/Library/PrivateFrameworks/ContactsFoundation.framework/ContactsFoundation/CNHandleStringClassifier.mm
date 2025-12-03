@@ -1,18 +1,18 @@
 @interface CNHandleStringClassifier
-+ (id)classificationOfHandleStrings:(id)a3 classificationQuality:(unint64_t)a4;
-+ (id)classificationStrategyForQuality:(unint64_t)a3;
-- (CNHandleStringClassifier)initWithClassificationQuality:(unint64_t)a3;
-- (CNHandleStringClassifier)initWithClassificationStrategy:(id)a3;
++ (id)classificationOfHandleStrings:(id)strings classificationQuality:(unint64_t)quality;
++ (id)classificationStrategyForQuality:(unint64_t)quality;
+- (CNHandleStringClassifier)initWithClassificationQuality:(unint64_t)quality;
+- (CNHandleStringClassifier)initWithClassificationStrategy:(id)strategy;
 - (id)description;
-- (unint64_t)typeOfHandleString:(id)a3;
-- (void)classifyHandleString:(id)a3 builder:(id)a4;
+- (unint64_t)typeOfHandleString:(id)string;
+- (void)classifyHandleString:(id)string builder:(id)builder;
 @end
 
 @implementation CNHandleStringClassifier
 
-+ (id)classificationOfHandleStrings:(id)a3 classificationQuality:(unint64_t)a4
++ (id)classificationOfHandleStrings:(id)strings classificationQuality:(unint64_t)quality
 {
-  v6 = a3;
+  stringsCopy = strings;
   v7 = +[CNLogging apiUsageLog];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -22,17 +22,17 @@
   v8 = +[CNLogging apiUsageLog];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [CNHandleStringClassifier classificationOfHandleStrings:v6 classificationQuality:v8];
+    [CNHandleStringClassifier classificationOfHandleStrings:stringsCopy classificationQuality:v8];
   }
 
   v9 = +[CNLogging apiUsageLog];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [CNHandleStringClassifier classificationOfHandleStrings:a4 classificationQuality:v9];
+    [CNHandleStringClassifier classificationOfHandleStrings:quality classificationQuality:v9];
   }
 
   v10 = objc_alloc_init(CNHandleStringsClassificationBuilder);
-  v11 = [[a1 alloc] initWithClassificationQuality:a4];
+  v11 = [[self alloc] initWithClassificationQuality:quality];
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __80__CNHandleStringClassifier_classificationOfHandleStrings_classificationQuality___block_invoke;
@@ -41,7 +41,7 @@
   v21 = v12;
   v13 = v10;
   v22 = v13;
-  [v6 _cn_each:&v17];
+  [stringsCopy _cn_each:&v17];
   v14 = [(CNHandleStringsClassificationBuilder *)v13 build:v17];
   v15 = +[CNLogging apiUsageLog];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -52,17 +52,17 @@
   return v14;
 }
 
-- (CNHandleStringClassifier)initWithClassificationQuality:(unint64_t)a3
+- (CNHandleStringClassifier)initWithClassificationQuality:(unint64_t)quality
 {
-  v4 = [objc_opt_class() classificationStrategyForQuality:a3];
+  v4 = [objc_opt_class() classificationStrategyForQuality:quality];
   v5 = [(CNHandleStringClassifier *)self initWithClassificationStrategy:v4];
 
   return v5;
 }
 
-+ (id)classificationStrategyForQuality:(unint64_t)a3
++ (id)classificationStrategyForQuality:(unint64_t)quality
 {
-  if (a3 == 1)
+  if (quality == 1)
   {
     v3 = +[_CNDataDetectorsHandleStringClassificationStrategy assistedDataDetectorsStrategy];
   }
@@ -75,10 +75,10 @@
   return v3;
 }
 
-- (CNHandleStringClassifier)initWithClassificationStrategy:(id)a3
+- (CNHandleStringClassifier)initWithClassificationStrategy:(id)strategy
 {
-  v5 = a3;
-  if (!v5)
+  strategyCopy = strategy;
+  if (!strategyCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_7 != -1)
     {
@@ -98,7 +98,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_classificationStrategy, a3);
+    objc_storeStrong(&v7->_classificationStrategy, strategy);
     v9 = v8;
   }
 
@@ -109,46 +109,46 @@
 {
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"classificationStrategy" object:self->_classificationStrategy];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (void)classifyHandleString:(id)a3 builder:(id)a4
+- (void)classifyHandleString:(id)string builder:(id)builder
 {
-  v8 = a3;
-  v6 = a4;
-  if ((off_1EF440708(&__block_literal_global_120, v8) & 1) == 0)
+  stringCopy = string;
+  builderCopy = builder;
+  if ((off_1EF440708(&__block_literal_global_120, stringCopy) & 1) == 0)
   {
-    v7 = [(CNHandleStringClassifier *)self typeOfHandleString:v8];
+    v7 = [(CNHandleStringClassifier *)self typeOfHandleString:stringCopy];
     if (v7 == 2)
     {
-      [v6 addPhoneNumber:v8];
+      [builderCopy addPhoneNumber:stringCopy];
     }
 
     else if (v7 == 1)
     {
-      [v6 addEmailAddress:v8];
+      [builderCopy addEmailAddress:stringCopy];
     }
 
     else
     {
-      [v6 addUnknown:v8];
+      [builderCopy addUnknown:stringCopy];
     }
   }
 }
 
-- (unint64_t)typeOfHandleString:(id)a3
+- (unint64_t)typeOfHandleString:(id)string
 {
-  v4 = [a3 _cn_trimmedString];
-  if (off_1EF440708(&__block_literal_global_120, v4))
+  _cn_trimmedString = [string _cn_trimmedString];
+  if (off_1EF440708(&__block_literal_global_120, _cn_trimmedString))
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(_CNHandleStringClassificationStrategy *)self->_classificationStrategy classificationOfHandleString:v4];
+    v5 = [(_CNHandleStringClassificationStrategy *)self->_classificationStrategy classificationOfHandleString:_cn_trimmedString];
   }
 
   return v5;

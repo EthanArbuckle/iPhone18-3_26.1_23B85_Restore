@@ -2,7 +2,7 @@
 + (id)learnMoreController;
 - (void)continueButtonTapped;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation AXMotionCuesLearnMoreController
@@ -20,11 +20,11 @@
 - (void)viewDidLoad
 {
   v19 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"cancelButtonTapped:"];
-  v3 = [(AXMotionCuesLearnMoreController *)self navigationItem];
-  [v3 setRightBarButtonItem:v19];
+  navigationItem = [(AXMotionCuesLearnMoreController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v19];
 
-  v4 = [(AXMotionCuesLearnMoreController *)self navigationItem];
-  [v4 setBackButtonDisplayMode:1];
+  navigationItem2 = [(AXMotionCuesLearnMoreController *)self navigationItem];
+  [navigationItem2 setBackButtonDisplayMode:1];
 
   v5 = +[UIDevice currentDevice];
   if ([v5 userInterfaceIdiom] == &dword_0 + 1)
@@ -58,15 +58,15 @@
 
   [v16 addTarget:self action:"continueButtonTapped" forControlEvents:64];
   [(AXMotionCuesLearnMoreController *)self setMainButton:v16];
-  v18 = [(AXMotionCuesLearnMoreController *)self buttonTray];
-  [v18 addButton:v16];
+  buttonTray = [(AXMotionCuesLearnMoreController *)self buttonTray];
+  [buttonTray addButton:v16];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = AXMotionCuesLearnMoreController;
-  [(AXMotionCuesLearnMoreController *)&v5 viewWillDisappear:a3];
+  [(AXMotionCuesLearnMoreController *)&v5 viewWillDisappear:disappear];
   dismissHandler = self->_dismissHandler;
   if (dismissHandler)
   {
@@ -77,8 +77,8 @@
 - (void)continueButtonTapped
 {
   v4 = [[AXMotionCuesLearnMorePageController alloc] initWithPage:1];
-  v3 = [(AXMotionCuesLearnMoreController *)self navigationController];
-  [v3 pushViewController:v4 animated:1];
+  navigationController = [(AXMotionCuesLearnMoreController *)self navigationController];
+  [navigationController pushViewController:v4 animated:1];
 }
 
 @end

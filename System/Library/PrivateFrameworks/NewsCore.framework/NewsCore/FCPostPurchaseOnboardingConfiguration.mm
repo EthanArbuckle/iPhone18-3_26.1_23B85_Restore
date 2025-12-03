@@ -1,8 +1,8 @@
 @interface FCPostPurchaseOnboardingConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (FCPostPurchaseOnboardingConfiguration)init;
-- (FCPostPurchaseOnboardingConfiguration)initWithConfigDictionary:(id)a3;
-- (FCPostPurchaseOnboardingConfiguration)initWithPostPurchaseOnboardingStep:(unint64_t)a3 landingPageArticleID:(id)a4 callToActionText:(id)a5 deepLinkURL:(id)a6;
+- (FCPostPurchaseOnboardingConfiguration)initWithConfigDictionary:(id)dictionary;
+- (FCPostPurchaseOnboardingConfiguration)initWithPostPurchaseOnboardingStep:(unint64_t)step landingPageArticleID:(id)d callToActionText:(id)text deepLinkURL:(id)l;
 - (unint64_t)hash;
 @end
 
@@ -34,11 +34,11 @@
   objc_exception_throw(v6);
 }
 
-- (FCPostPurchaseOnboardingConfiguration)initWithConfigDictionary:(id)a3
+- (FCPostPurchaseOnboardingConfiguration)initWithConfigDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"data", 0);
-  v6 = FCAppConfigurationStringValue(v4, @"type", 0);
+  dictionaryCopy = dictionary;
+  v5 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"data", 0);
+  v6 = FCAppConfigurationStringValue(dictionaryCopy, @"type", 0);
 
   v7 = FCPostPurchaseOnboardingStepWithValue(v6);
   v8 = FCAppConfigurationStringValue(v5, @"articleID", 0);
@@ -49,27 +49,27 @@
   return v11;
 }
 
-- (FCPostPurchaseOnboardingConfiguration)initWithPostPurchaseOnboardingStep:(unint64_t)a3 landingPageArticleID:(id)a4 callToActionText:(id)a5 deepLinkURL:(id)a6
+- (FCPostPurchaseOnboardingConfiguration)initWithPostPurchaseOnboardingStep:(unint64_t)step landingPageArticleID:(id)d callToActionText:(id)text deepLinkURL:(id)l
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  textCopy = text;
+  lCopy = l;
   v22.receiver = self;
   v22.super_class = FCPostPurchaseOnboardingConfiguration;
   v13 = [(FCPostPurchaseOnboardingConfiguration *)&v22 init];
   v14 = v13;
   if (v13)
   {
-    v13->_postPurchaseOnboardingStep = a3;
-    v15 = [v10 copy];
+    v13->_postPurchaseOnboardingStep = step;
+    v15 = [dCopy copy];
     landingPageArticleID = v14->_landingPageArticleID;
     v14->_landingPageArticleID = v15;
 
-    v17 = [v11 copy];
+    v17 = [textCopy copy];
     callToActionText = v14->_callToActionText;
     v14->_callToActionText = v17;
 
-    v19 = [v12 copy];
+    v19 = [lCopy copy];
     deepLinkURL = v14->_deepLinkURL;
     v14->_deepLinkURL = v19;
   }
@@ -77,15 +77,15 @@
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -104,19 +104,19 @@
   if (v6 && (v7 = -[FCPostPurchaseOnboardingConfiguration postPurchaseOnboardingStep](self, "postPurchaseOnboardingStep"), v7 == [v6 postPurchaseOnboardingStep]))
   {
     v8 = MEMORY[0x1E69E58C0];
-    v9 = [(FCPostPurchaseOnboardingConfiguration *)self landingPageArticleID];
-    v10 = [v6 landingPageArticleID];
-    if ([v8 nf_object:v9 isEqualToObject:v10])
+    landingPageArticleID = [(FCPostPurchaseOnboardingConfiguration *)self landingPageArticleID];
+    landingPageArticleID2 = [v6 landingPageArticleID];
+    if ([v8 nf_object:landingPageArticleID isEqualToObject:landingPageArticleID2])
     {
       v11 = MEMORY[0x1E69E58C0];
-      v12 = [(FCPostPurchaseOnboardingConfiguration *)self callToActionText];
-      v13 = [v6 callToActionText];
-      if ([v11 nf_object:v12 isEqualToObject:v13])
+      callToActionText = [(FCPostPurchaseOnboardingConfiguration *)self callToActionText];
+      callToActionText2 = [v6 callToActionText];
+      if ([v11 nf_object:callToActionText isEqualToObject:callToActionText2])
       {
         v14 = MEMORY[0x1E69E58C0];
-        v15 = [(FCPostPurchaseOnboardingConfiguration *)self deepLinkURL];
-        v16 = [v6 deepLinkURL];
-        v17 = [v14 nf_object:v15 isEqualToObject:v16];
+        deepLinkURL = [(FCPostPurchaseOnboardingConfiguration *)self deepLinkURL];
+        deepLinkURL2 = [v6 deepLinkURL];
+        v17 = [v14 nf_object:deepLinkURL isEqualToObject:deepLinkURL2];
       }
 
       else
@@ -143,12 +143,12 @@
 {
   v3 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[FCPostPurchaseOnboardingConfiguration postPurchaseOnboardingStep](self, "postPurchaseOnboardingStep")}];
   v4 = [v3 hash];
-  v5 = [(FCPostPurchaseOnboardingConfiguration *)self landingPageArticleID];
-  v6 = [v5 hash];
-  v7 = [(FCPostPurchaseOnboardingConfiguration *)self callToActionText];
-  v8 = v6 ^ [v7 hash];
-  v9 = [(FCPostPurchaseOnboardingConfiguration *)self deepLinkURL];
-  v10 = v8 ^ [v9 hash];
+  landingPageArticleID = [(FCPostPurchaseOnboardingConfiguration *)self landingPageArticleID];
+  v6 = [landingPageArticleID hash];
+  callToActionText = [(FCPostPurchaseOnboardingConfiguration *)self callToActionText];
+  v8 = v6 ^ [callToActionText hash];
+  deepLinkURL = [(FCPostPurchaseOnboardingConfiguration *)self deepLinkURL];
+  v10 = v8 ^ [deepLinkURL hash];
 
   return v10 ^ v4;
 }

@@ -1,14 +1,14 @@
 @interface TWCLocationUpdater
 + (id)sharedLocationUpdater;
 - (TWCLocationUpdater)init;
-- (void)_completeReverseGeocodeForLocation:(id)a3 currentCity:(id)a4 geocodeError:(id)a5 completionHandler:(id)a6;
-- (void)_geocodeLocation:(id)a3 currentCity:(id)a4 completionHandler:(id)a5;
-- (void)_updateWeatherForLocation:(id)a3 city:(id)a4 completionHandler:(id)a5;
+- (void)_completeReverseGeocodeForLocation:(id)location currentCity:(id)city geocodeError:(id)error completionHandler:(id)handler;
+- (void)_geocodeLocation:(id)location currentCity:(id)city completionHandler:(id)handler;
+- (void)_updateWeatherForLocation:(id)location city:(id)city completionHandler:(id)handler;
 - (void)dealloc;
-- (void)parsedResultCity:(id)a3;
-- (void)updateWeatherForCities:(id)a3 withCompletionHandler:(id)a4;
-- (void)updateWeatherForCity:(id)a3;
-- (void)updateWeatherForLocation:(id)a3 city:(id)a4;
+- (void)parsedResultCity:(id)city;
+- (void)updateWeatherForCities:(id)cities withCompletionHandler:(id)handler;
+- (void)updateWeatherForCity:(id)city;
+- (void)updateWeatherForLocation:(id)location city:(id)city;
 @end
 
 @implementation TWCLocationUpdater
@@ -74,49 +74,49 @@ uint64_t __43__TWCLocationUpdater_sharedLocationUpdater__block_invoke()
   [(TWCLocationUpdater *)&v3 dealloc];
 }
 
-- (void)parsedResultCity:(id)a3
+- (void)parsedResultCity:(id)city
 {
-  v3 = a3;
-  v4 = [v3 locationID];
-  if (v4)
+  cityCopy = city;
+  locationID = [cityCopy locationID];
+  if (locationID)
   {
-    v5 = v4;
-    v6 = [v3 isRequestedByFrameworkClient];
+    v5 = locationID;
+    isRequestedByFrameworkClient = [cityCopy isRequestedByFrameworkClient];
 
-    if ((v6 & 1) == 0)
+    if ((isRequestedByFrameworkClient & 1) == 0)
     {
-      v7 = [v3 wfLocation];
-      v8 = [v7 displayName];
-      if (v8)
+      wfLocation = [cityCopy wfLocation];
+      displayName = [wfLocation displayName];
+      if (displayName)
       {
-        [v3 setName:v8];
+        [cityCopy setName:displayName];
       }
 
       else
       {
         v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v10 = [v9 localizedStringForKey:@"LOCAL_WEATHER" value:&stru_2882270E8 table:@"WeatherFrameworkLocalizableStrings"];
-        [v3 setName:v10];
+        [cityCopy setName:v10];
       }
 
-      v11 = [v7 geoLocation];
-      [v3 setLocation:v11];
+      geoLocation = [wfLocation geoLocation];
+      [cityCopy setLocation:geoLocation];
 
-      v12 = [MEMORY[0x277CBEAA8] date];
-      [v3 setUpdateTime:v12];
+      date = [MEMORY[0x277CBEAA8] date];
+      [cityCopy setUpdateTime:date];
 
       v13 = +[WeatherPreferences sharedPreferences];
       if (__internalInstall == 1)
       {
         v14 = +[WeatherInternalPreferences sharedInternalPreferences];
         v15 = [v14 objectForKey:@"RandomizeWeather"];
-        v16 = [v15 BOOLValue];
+        bOOLValue = [v15 BOOLValue];
 
-        if (v16)
+        if (bOOLValue)
         {
           v17 = [objc_alloc(MEMORY[0x277D7B2C0]) initWithTemperatureUnit:2 value:(rand() % 50 - 50)];
-          [v3 setTemperature:v17];
-          [v3 setConditionCode:rand() % 37];
+          [cityCopy setTemperature:v17];
+          [cityCopy setConditionCode:rand() % 37];
           v18 = WALogForCategory(0);
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
           {
@@ -125,7 +125,7 @@ uint64_t __43__TWCLocationUpdater_sharedLocationUpdater__block_invoke()
         }
       }
 
-      [v13 saveToDiskWithLocalWeatherCity:v3];
+      [v13 saveToDiskWithLocalWeatherCity:cityCopy];
       DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
       CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.weather.localCityChanged", 0, 0, 1u);
     }
@@ -133,42 +133,42 @@ uint64_t __43__TWCLocationUpdater_sharedLocationUpdater__block_invoke()
 
   if ((__launchedToTest & 1) == 0 && __internalInstall == 1)
   {
-    v20 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v20 postNotificationName:@"RestStateNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"RestStateNotification" object:0];
   }
 }
 
-- (void)updateWeatherForCity:(id)a3
+- (void)updateWeatherForCity:(id)city
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cityCopy = city;
   v5 = WALogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "isLocalWeatherCity")}];
+    v6 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(cityCopy, "isLocalWeatherCity")}];
     v12 = 138412546;
-    v13 = v4;
+    v13 = cityCopy;
     v14 = 2112;
     v15 = v6;
     _os_log_impl(&dword_272ACF000, v5, OS_LOG_TYPE_DEFAULT, "Update weather for city : %@, isLocalWeatherCity=%@", &v12, 0x16u);
   }
 
-  if ([v4 isLocalWeatherCity])
+  if ([cityCopy isLocalWeatherCity])
   {
     v7 = +[WeatherLocationManager sharedWeatherLocationManager];
-    v8 = [v7 location];
+    location = [v7 location];
     v9 = WALogForCategory(0);
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-    if (v8)
+    if (location)
     {
       if (v10)
       {
         v12 = 138412290;
-        v13 = v8;
+        v13 = location;
         _os_log_impl(&dword_272ACF000, v9, OS_LOG_TYPE_DEFAULT, "Has location: %@", &v12, 0xCu);
       }
 
-      [(TWCLocationUpdater *)self updateWeatherForLocation:v8 city:v4];
+      [(TWCLocationUpdater *)self updateWeatherForLocation:location city:cityCopy];
     }
 
     else
@@ -186,66 +186,66 @@ uint64_t __43__TWCLocationUpdater_sharedLocationUpdater__block_invoke()
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWeatherForLocation:(id)a3 city:(id)a4
+- (void)updateWeatherForLocation:(id)location city:(id)city
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 setIsRequestedByFrameworkClient:0];
-  [(TWCLocationUpdater *)self _updateWeatherForLocation:v7 city:v6 completionHandler:0];
+  cityCopy = city;
+  locationCopy = location;
+  [cityCopy setIsRequestedByFrameworkClient:0];
+  [(TWCLocationUpdater *)self _updateWeatherForLocation:locationCopy city:cityCopy completionHandler:0];
 }
 
-- (void)_updateWeatherForLocation:(id)a3 city:(id)a4 completionHandler:(id)a5
+- (void)_updateWeatherForLocation:(id)location city:(id)city completionHandler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  locationCopy = location;
+  cityCopy = city;
+  handlerCopy = handler;
   v11 = WALogForCategory(0);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 136315650;
     v15 = "[TWCLocationUpdater _updateWeatherForLocation:city:completionHandler:]";
     v16 = 2112;
-    v17 = v8;
+    v17 = locationCopy;
     v18 = 2112;
-    v19 = v9;
+    v19 = cityCopy;
     _os_log_impl(&dword_272ACF000, v11, OS_LOG_TYPE_DEFAULT, "%s currentLocation=%@, localCity=%@", &v14, 0x20u);
   }
 
-  if (v9)
+  if (cityCopy)
   {
-    [(TWCLocationUpdater *)self setCurrentCity:v9];
-    [(TWCLocationUpdater *)self _geocodeLocation:v8 currentCity:v9 completionHandler:v10];
+    [(TWCLocationUpdater *)self setCurrentCity:cityCopy];
+    [(TWCLocationUpdater *)self _geocodeLocation:locationCopy currentCity:cityCopy completionHandler:handlerCopy];
   }
 
-  else if (v10)
+  else if (handlerCopy)
   {
     v12 = WAErrorWithCode(4, 0, 0, 0);
-    v10[2](v10, 0, v12);
+    handlerCopy[2](handlerCopy, 0, v12);
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_geocodeLocation:(id)a3 currentCity:(id)a4 completionHandler:(id)a5
+- (void)_geocodeLocation:(id)location currentCity:(id)city completionHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  locationCopy = location;
+  cityCopy = city;
+  handlerCopy = handler;
   v11 = WALogForCategory(4);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v23 = "[TWCLocationUpdater _geocodeLocation:currentCity:completionHandler:]";
     v24 = 2112;
-    v25 = v8;
+    v25 = locationCopy;
     v26 = 2112;
-    v27 = v9;
+    v27 = cityCopy;
     _os_log_impl(&dword_272ACF000, v11, OS_LOG_TYPE_DEFAULT, "%s location=%@, currentCity=%@", buf, 0x20u);
   }
 
-  if ([v9 isLocalWeatherCity])
+  if ([cityCopy isLocalWeatherCity])
   {
     [(TWCLocationUpdater *)self greenTeaLogger];
     v12 = getCTGreenTeaOsLogHandle();
@@ -262,12 +262,12 @@ uint64_t __43__TWCLocationUpdater_sharedLocationUpdater__block_invoke()
   v18[2] = __69__TWCLocationUpdater__geocodeLocation_currentCity_completionHandler___block_invoke;
   v18[3] = &unk_279E69400;
   v18[4] = self;
-  v19 = v8;
-  v20 = v9;
-  v21 = v10;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
+  v19 = locationCopy;
+  v20 = cityCopy;
+  v21 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = cityCopy;
+  v16 = locationCopy;
   dispatch_async(MEMORY[0x277D85CD0], v18);
 
   v17 = *MEMORY[0x277D85DE8];
@@ -381,52 +381,52 @@ void __69__TWCLocationUpdater__geocodeLocation_currentCity_completionHandler___b
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_completeReverseGeocodeForLocation:(id)a3 currentCity:(id)a4 geocodeError:(id)a5 completionHandler:(id)a6
+- (void)_completeReverseGeocodeForLocation:(id)location currentCity:(id)city geocodeError:(id)error completionHandler:(id)handler
 {
   v45 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  locationCopy = location;
+  cityCopy = city;
+  errorCopy = error;
+  handlerCopy = handler;
   v14 = WALogForCategory(4);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315906;
     v38 = "[TWCLocationUpdater _completeReverseGeocodeForLocation:currentCity:geocodeError:completionHandler:]";
     v39 = 2112;
-    v40 = v10;
+    v40 = locationCopy;
     v41 = 2112;
-    v42 = v11;
+    v42 = cityCopy;
     v43 = 2112;
-    v44 = v12;
+    v44 = errorCopy;
     _os_log_impl(&dword_272ACF000, v14, OS_LOG_TYPE_DEFAULT, "%s resultLocation=%@, currentCity=%@, geocodeError=%@", buf, 0x2Au);
   }
 
   v15 = +[WeatherPreferences sharedPreferences];
-  v16 = v15;
-  if (v12)
+  displayName = v15;
+  if (errorCopy)
   {
-    [v15 saveToDiskWithLocalWeatherCity:v11];
+    [v15 saveToDiskWithLocalWeatherCity:cityCopy];
     v17 = WALogForCategory(4);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      [TWCLocationUpdater _completeReverseGeocodeForLocation:v12 currentCity:v11 geocodeError:v17 completionHandler:?];
+      [TWCLocationUpdater _completeReverseGeocodeForLocation:errorCopy currentCity:cityCopy geocodeError:v17 completionHandler:?];
     }
 
-    v18 = [v12 domain];
-    if ([v18 isEqualToString:*MEMORY[0x277CBFCF0]])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:*MEMORY[0x277CBFCF0]])
     {
-      v19 = [v12 code];
+      code = [errorCopy code];
 
-      if (v19 == 10)
+      if (code == 10)
       {
-        v20 = v12;
+        v20 = errorCopy;
 LABEL_15:
         v25 = v20;
-        [v11 cityDidFinishUpdatingWithError:v20];
-        if (v13)
+        [cityCopy cityDidFinishUpdatingWithError:v20];
+        if (handlerCopy)
         {
-          v13[2](v13, v11, v25);
+          handlerCopy[2](handlerCopy, cityCopy, v25);
         }
 
         goto LABEL_24;
@@ -437,51 +437,51 @@ LABEL_15:
     {
     }
 
-    v20 = WAErrorWithCode(2, v12, v11, 0);
+    v20 = WAErrorWithCode(2, errorCopy, cityCopy, 0);
     goto LABEL_15;
   }
 
   v21 = MEMORY[0x277CCABB0];
-  v22 = [MEMORY[0x277CBEAA8] date];
-  [v22 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v23 = [v21 numberWithDouble:?];
-  [v16 writeDefaultValue:v23 forKey:@"LastLocationParseTime"];
+  [displayName writeDefaultValue:v23 forKey:@"LastLocationParseTime"];
 
   v24 = WALogForCategory(4);
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v38 = v11;
+    v38 = cityCopy;
     v39 = 2112;
-    v40 = v10;
+    v40 = locationCopy;
     _os_log_impl(&dword_272ACF000, v24, OS_LOG_TYPE_DEFAULT, "Updating City '%@' with geocode location '%@'", buf, 0x16u);
   }
 
-  [v11 setWfLocation:v10];
-  [v11 clearForecasts];
-  v16 = [v10 displayName];
-  if (v16)
+  [cityCopy setWfLocation:locationCopy];
+  [cityCopy clearForecasts];
+  displayName = [locationCopy displayName];
+  if (displayName)
   {
-    [v11 setName:v16];
+    [cityCopy setName:displayName];
   }
 
   else
   {
     v26 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v27 = [v26 localizedStringForKey:@"LOCAL_WEATHER" value:&stru_2882270E8 table:@"WeatherFrameworkLocalizableStrings"];
-    [v11 setName:v27];
+    [cityCopy setName:v27];
   }
 
   v28 = +[WeatherPreferences sharedPreferences];
-  [v28 saveToDiskWithLocalWeatherCity:v11];
+  [v28 saveToDiskWithLocalWeatherCity:cityCopy];
 
   v29 = WALogForCategory(4);
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v38 = v10;
+    v38 = locationCopy;
     v39 = 2112;
-    v40 = v11;
+    v40 = cityCopy;
     _os_log_impl(&dword_272ACF000, v29, OS_LOG_TYPE_DEFAULT, "Received reverse geocode for %@, currentCity=%@", buf, 0x16u);
   }
 
@@ -489,19 +489,19 @@ LABEL_15:
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v38 = v11;
+    v38 = cityCopy;
     _os_log_impl(&dword_272ACF000, v30, OS_LOG_TYPE_DEFAULT, "Updating weather for currentCity: %@", buf, 0xCu);
   }
 
-  v36 = v11;
+  v36 = cityCopy;
   v31 = [MEMORY[0x277CBEA60] arrayWithObjects:&v36 count:1];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __100__TWCLocationUpdater__completeReverseGeocodeForLocation_currentCity_geocodeError_completionHandler___block_invoke;
   v33[3] = &unk_279E69428;
   v33[4] = self;
-  v34 = v11;
-  v35 = v13;
+  v34 = cityCopy;
+  v35 = handlerCopy;
   [(TWCLocationUpdater *)self updateWeatherForCities:v31 withCompletionHandler:v33];
 
 LABEL_24:
@@ -541,27 +541,27 @@ void __100__TWCLocationUpdater__completeReverseGeocodeForLocation_currentCity_ge
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWeatherForCities:(id)a3 withCompletionHandler:(id)a4
+- (void)updateWeatherForCities:(id)cities withCompletionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  citiesCopy = cities;
+  handlerCopy = handler;
   v8 = WALogForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v12 = "[TWCLocationUpdater updateWeatherForCities:withCompletionHandler:]";
     v13 = 2112;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v6;
+    v16 = citiesCopy;
     _os_log_impl(&dword_272ACF000, v8, OS_LOG_TYPE_DEFAULT, "%s self=%@, updating weather for cities: %@ in locationUpdater", buf, 0x20u);
   }
 
   [(TWCCityUpdater *)self cancel];
   v10.receiver = self;
   v10.super_class = TWCLocationUpdater;
-  [(TWCCityUpdater *)&v10 updateWeatherForCities:v6 withCompletionHandler:v7];
+  [(TWCCityUpdater *)&v10 updateWeatherForCities:citiesCopy withCompletionHandler:handlerCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }

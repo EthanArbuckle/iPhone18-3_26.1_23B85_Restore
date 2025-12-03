@@ -1,28 +1,28 @@
 @interface TimingCurveParameter
-- (id)copyWithZone:(void *)a3;
-- (void)setCubicTimingParameters:(id)a3;
-- (void)setSpringTimingParameters:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)setCubicTimingParameters:(id)parameters;
+- (void)setSpringTimingParameters:(id)parameters;
 @end
 
 @implementation TimingCurveParameter
 
-- (void)setCubicTimingParameters:(id)a3
+- (void)setCubicTimingParameters:(id)parameters
 {
   OUTLINED_FUNCTION_14_0();
   cubicTimingParameters = self->cubicTimingParameters;
-  self->cubicTimingParameters = a3;
-  v6 = a3;
+  self->cubicTimingParameters = parameters;
+  parametersCopy = parameters;
 }
 
-- (void)setSpringTimingParameters:(id)a3
+- (void)setSpringTimingParameters:(id)parameters
 {
   OUTLINED_FUNCTION_14_0();
   springTimingParameters = self->springTimingParameters;
-  self->springTimingParameters = a3;
-  v6 = a3;
+  self->springTimingParameters = parameters;
+  parametersCopy = parameters;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
 
   sub_1E3C8C90C(v5);

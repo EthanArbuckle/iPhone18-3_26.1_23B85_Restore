@@ -1,36 +1,36 @@
 @interface PGMergeCandidateQuestionFactory
-- (PGMergeCandidateQuestionFactory)initWithWorkingContext:(id)a3 questionVersion:(signed __int16)a4;
+- (PGMergeCandidateQuestionFactory)initWithWorkingContext:(id)context questionVersion:(signed __int16)version;
 - (PHFetchResult)persons;
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4;
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block;
 @end
 
 @implementation PGMergeCandidateQuestionFactory
 
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block
 {
   v50[2] = *MEMORY[0x277D85DE8];
-  v34 = a4;
-  v5 = [(PGMergeCandidateQuestionFactory *)self persons];
-  v6 = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
-  v7 = [v6 librarySpecificFetchOptions];
+  blockCopy = block;
+  persons = [(PGMergeCandidateQuestionFactory *)self persons];
+  photoLibrary = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v7 setFetchLimit:9];
+  [librarySpecificFetchOptions setFetchLimit:9];
   v8 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"faceCount" ascending:0];
   v50[0] = v8;
   v9 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"uuid" ascending:1];
   v50[1] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:2];
-  [v7 setSortDescriptors:v10];
+  [librarySpecificFetchOptions setSortDescriptors:v10];
 
   v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"verifiedType == %d", 0];
-  [v7 setPredicate:v11];
+  [librarySpecificFetchOptions setPredicate:v11];
 
   v35 = objc_opt_new();
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v5;
+  obj = persons;
   v12 = [obj countByEnumeratingWithState:&v43 objects:v49 count:16];
   if (v12)
   {
@@ -51,7 +51,7 @@
 
         v17 = *(*(&v43 + 1) + 8 * v16);
         v18 = objc_autoreleasePoolPush();
-        v19 = [*(v15 + 2360) fetchMergeCandidatePersonsForPerson:v17 options:v7];
+        v19 = [*(v15 + 2360) fetchMergeCandidatePersonsForPerson:v17 options:librarySpecificFetchOptions];
         if ([v19 count])
         {
           v41 = 0u;
@@ -63,7 +63,7 @@
           if (v21)
           {
             v22 = v21;
-            v23 = v7;
+            v23 = librarySpecificFetchOptions;
             v24 = 0;
             v25 = *v40;
             do
@@ -83,7 +83,7 @@
 
             while (v22);
             v27 = v24;
-            v7 = v23;
+            librarySpecificFetchOptions = v23;
             v14 = v36;
             v13 = v37;
             v15 = 0x277CD9000;
@@ -128,8 +128,8 @@
   persons = self->_persons;
   if (!persons)
   {
-    v4 = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
-    v5 = [PGPeopleQuestionFactoryUtils personsWithPeopleHomeContextForPhotoLibrary:v4];
+    photoLibrary = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
+    v5 = [PGPeopleQuestionFactoryUtils personsWithPeopleHomeContextForPhotoLibrary:photoLibrary];
     v6 = self->_persons;
     self->_persons = v5;
 
@@ -139,17 +139,17 @@
   return persons;
 }
 
-- (PGMergeCandidateQuestionFactory)initWithWorkingContext:(id)a3 questionVersion:(signed __int16)a4
+- (PGMergeCandidateQuestionFactory)initWithWorkingContext:(id)context questionVersion:(signed __int16)version
 {
-  v7 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = PGMergeCandidateQuestionFactory;
   v8 = [(PGMergeCandidateQuestionFactory *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_workingContext, a3);
-    v9->_questionVersion = a4;
+    objc_storeStrong(&v8->_workingContext, context);
+    v9->_questionVersion = version;
   }
 
   return v9;

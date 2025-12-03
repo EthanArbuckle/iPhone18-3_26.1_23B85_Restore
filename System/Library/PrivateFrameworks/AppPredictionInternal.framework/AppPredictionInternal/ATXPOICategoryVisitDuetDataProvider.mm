@@ -1,7 +1,7 @@
 @interface ATXPOICategoryVisitDuetDataProvider
 + (id)sharedInstance;
 - (ATXPOICategoryVisitDuetDataProvider)init;
-- (id)fetchEventsBetweenStartDate:(id)a3 andEndDate:(id)a4 withPredicates:(id)a5 limit:(unint64_t)a6 ascending:(BOOL)a7;
+- (id)fetchEventsBetweenStartDate:(id)date andEndDate:(id)endDate withPredicates:(id)predicates limit:(unint64_t)limit ascending:(BOOL)ascending;
 - (id)getCurrentVisit;
 @end
 
@@ -48,22 +48,22 @@ void __53__ATXPOICategoryVisitDuetDataProvider_sharedInstance__block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-- (id)fetchEventsBetweenStartDate:(id)a3 andEndDate:(id)a4 withPredicates:(id)a5 limit:(unint64_t)a6 ascending:(BOOL)a7
+- (id)fetchEventsBetweenStartDate:(id)date andEndDate:(id)endDate withPredicates:(id)predicates limit:(unint64_t)limit ascending:(BOOL)ascending
 {
   v44 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  [v9 timeIntervalSinceReferenceDate];
+  dateCopy = date;
+  endDateCopy = endDate;
+  [dateCopy timeIntervalSinceReferenceDate];
   v12 = v11;
-  v36 = v10;
-  [v10 timeIntervalSinceReferenceDate];
+  v36 = endDateCopy;
+  [endDateCopy timeIntervalSinceReferenceDate];
   v14 = v13;
   v15 = BiomeLibrary();
-  v16 = [v15 Location];
-  v17 = [v16 PointOfInterest];
-  v18 = [v17 Category];
-  v37 = v9;
-  v19 = [v18 atx_publisherFromStartDate:v9];
+  location = [v15 Location];
+  pointOfInterest = [location PointOfInterest];
+  category = [pointOfInterest Category];
+  v37 = dateCopy;
+  v19 = [category atx_publisherFromStartDate:dateCopy];
 
   v35 = v19;
   v20 = [(ATXPOICategoryEventAggregator *)self->_streamAggregator groupVisitsFromPublisher:v19 startTimestamp:v12 endTimestamp:v14];
@@ -90,10 +90,10 @@ void __53__ATXPOICategoryVisitDuetDataProvider_sharedInstance__block_invoke()
 
         v26 = *(*(&v39 + 1) + 8 * i);
         v27 = [ATXPOICategoryVisitDuetEvent alloc];
-        v28 = [v26 possibleCategoryNames];
-        v29 = [v26 startDate];
-        v30 = [v26 endDate];
-        v31 = -[ATXPOICategoryVisitDuetEvent initWithPossibleCategoryNames:startDate:endDate:hasExited:](v27, "initWithPossibleCategoryNames:startDate:endDate:hasExited:", v28, v29, v30, [v26 hasExited]);
+        possibleCategoryNames = [v26 possibleCategoryNames];
+        startDate = [v26 startDate];
+        endDate = [v26 endDate];
+        v31 = -[ATXPOICategoryVisitDuetEvent initWithPossibleCategoryNames:startDate:endDate:hasExited:](v27, "initWithPossibleCategoryNames:startDate:endDate:hasExited:", possibleCategoryNames, startDate, endDate, [v26 hasExited]);
 
         [v21 addObject:v31];
       }
@@ -111,12 +111,12 @@ void __53__ATXPOICategoryVisitDuetDataProvider_sharedInstance__block_invoke()
 
 - (id)getCurrentVisit
 {
-  v2 = [(ATXPOICategoryVisitDataProvider *)self->_dataProvider getCurrentVisit];
+  getCurrentVisit = [(ATXPOICategoryVisitDataProvider *)self->_dataProvider getCurrentVisit];
   v3 = [ATXPOICategoryVisitDuetEvent alloc];
-  v4 = [v2 possibleCategoryNames];
-  v5 = [v2 startDate];
-  v6 = [v2 endDate];
-  v7 = [(ATXPOICategoryVisitDuetEvent *)v3 initWithPossibleCategoryNames:v4 startDate:v5 endDate:v6];
+  possibleCategoryNames = [getCurrentVisit possibleCategoryNames];
+  startDate = [getCurrentVisit startDate];
+  endDate = [getCurrentVisit endDate];
+  v7 = [(ATXPOICategoryVisitDuetEvent *)v3 initWithPossibleCategoryNames:possibleCategoryNames startDate:startDate endDate:endDate];
 
   return v7;
 }

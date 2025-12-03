@@ -1,9 +1,9 @@
 @interface CHDelegateManager
 - (CHDelegateManager)init;
-- (void)addDelegate:(id)a3 queue:(id)a4;
-- (void)performDelegateSelector:(SEL)a3;
-- (void)performDelegateSelector:(SEL)a3 withDelegate:(id)a4;
-- (void)removeDelegate:(id)a3;
+- (void)addDelegate:(id)delegate queue:(id)queue;
+- (void)performDelegateSelector:(SEL)selector;
+- (void)performDelegateSelector:(SEL)selector withDelegate:(id)delegate;
+- (void)removeDelegate:(id)delegate;
 @end
 
 @implementation CHDelegateManager
@@ -17,36 +17,36 @@
   if (v2)
   {
     v2->_accessorLock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     delegateToQueue = v3->_delegateToQueue;
-    v3->_delegateToQueue = v4;
+    v3->_delegateToQueue = weakToStrongObjectsMapTable;
   }
 
   return v3;
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
+  queueCopy = queue;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_accessorLock);
-  v8 = [(CHDelegateManager *)self delegateToQueue];
-  [v8 setObject:v6 forKey:v7];
+  delegateToQueue = [(CHDelegateManager *)self delegateToQueue];
+  [delegateToQueue setObject:queueCopy forKey:delegateCopy];
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_accessorLock);
-  v5 = [(CHDelegateManager *)self delegateToQueue];
-  [v5 removeObjectForKey:v4];
+  delegateToQueue = [(CHDelegateManager *)self delegateToQueue];
+  [delegateToQueue removeObjectForKey:delegateCopy];
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)performDelegateSelector:(SEL)a3
+- (void)performDelegateSelector:(SEL)selector
 {
   v20 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_accessorLock);
@@ -54,8 +54,8 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(CHDelegateManager *)self delegateToQueue];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  delegateToQueue = [(CHDelegateManager *)self delegateToQueue];
+  v6 = [delegateToQueue countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -67,21 +67,21 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(delegateToQueue);
         }
 
         v10 = *(*(&v15 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          v11 = [(CHDelegateManager *)self delegateToQueue];
-          v12 = [v11 objectForKey:v10];
+          delegateToQueue2 = [(CHDelegateManager *)self delegateToQueue];
+          v12 = [delegateToQueue2 objectForKey:v10];
 
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
           block[2] = __45__CHDelegateManager_performDelegateSelector___block_invoke;
           block[3] = &unk_1E81DC398;
           block[5] = v10;
-          block[6] = a3;
+          block[6] = selector;
           block[4] = self;
           dispatch_async(v12, block);
         }
@@ -90,7 +90,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [delegateToQueue countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -100,9 +100,9 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performDelegateSelector:(SEL)a3 withDelegate:(id)a4
+- (void)performDelegateSelector:(SEL)selector withDelegate:(id)delegate
 {
-  v5 = a4;
+  delegateCopy = delegate;
   v6 = MEMORY[0x1E695DF30];
   v7 = *MEMORY[0x1E695D930];
   v8 = MEMORY[0x1E696AEC0];

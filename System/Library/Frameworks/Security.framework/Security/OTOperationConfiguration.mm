@@ -1,7 +1,7 @@
 @interface OTOperationConfiguration
 - (OTOperationConfiguration)init;
-- (OTOperationConfiguration)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (OTOperationConfiguration)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation OTOperationConfiguration
@@ -22,40 +22,40 @@
   return v3;
 }
 
-- (OTOperationConfiguration)initWithCoder:(id)a3
+- (OTOperationConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeoutWaitForCKAccount"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeoutWaitForCKAccount"];
   self->_timeoutWaitForCKAccount = [v5 unsignedLongLongValue];
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"qualityOfService"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"qualityOfService"];
   self->_qualityOfService = [v6 integerValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"discretionaryNetwork"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"discretionaryNetwork"];
   self->_discretionaryNetwork = [v7 BOOLValue];
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"useCachedAccountStatus"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"useCachedAccountStatus"];
 
   self->_useCachedAccountStatus = [v8 BOOLValue];
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   timeoutWaitForCKAccount = self->_timeoutWaitForCKAccount;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithUnsignedLongLong:timeoutWaitForCKAccount];
-  [v6 encodeObject:v7 forKey:@"timeoutWaitForCKAccount"];
+  [coderCopy encodeObject:v7 forKey:@"timeoutWaitForCKAccount"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:self->_qualityOfService];
-  [v6 encodeObject:v8 forKey:@"qualityOfService"];
+  [coderCopy encodeObject:v8 forKey:@"qualityOfService"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:self->_discretionaryNetwork];
-  [v6 encodeObject:v9 forKey:@"discretionaryNetwork"];
+  [coderCopy encodeObject:v9 forKey:@"discretionaryNetwork"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithBool:self->_useCachedAccountStatus];
-  [v6 encodeObject:v10 forKey:@"useCachedAccountStatus"];
+  [coderCopy encodeObject:v10 forKey:@"useCachedAccountStatus"];
 }
 
 @end

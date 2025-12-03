@@ -1,21 +1,21 @@
 @interface PLAtomicObject
-- (PLAtomicObject)initWithObject:(id)a3;
-- (void)atomicallyPerformBlockAndWait:(id)a3;
-- (void)invalidateWithHandler:(id)a3;
+- (PLAtomicObject)initWithObject:(id)object;
+- (void)atomicallyPerformBlockAndWait:(id)wait;
+- (void)invalidateWithHandler:(id)handler;
 @end
 
 @implementation PLAtomicObject
 
-- (void)invalidateWithHandler:(id)a3
+- (void)invalidateWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __40__PLAtomicObject_invalidateWithHandler___block_invoke;
   v6[3] = &unk_1E7932AB8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   PLRunWithUnfairLock(&self->_lock, v6);
 }
 
@@ -27,29 +27,29 @@ void __40__PLAtomicObject_invalidateWithHandler___block_invoke(uint64_t a1)
   *(v2 + 16) = 0;
 }
 
-- (void)atomicallyPerformBlockAndWait:(id)a3
+- (void)atomicallyPerformBlockAndWait:(id)wait
 {
-  v4 = a3;
+  waitCopy = wait;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48__PLAtomicObject_atomicallyPerformBlockAndWait___block_invoke;
   v6[3] = &unk_1E7932AB8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = waitCopy;
+  v5 = waitCopy;
   PLRunWithUnfairLock(&self->_lock, v6);
 }
 
-- (PLAtomicObject)initWithObject:(id)a3
+- (PLAtomicObject)initWithObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = PLAtomicObject;
   v6 = [(PLAtomicObject *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_object, a3);
+    objc_storeStrong(&v6->_object, object);
   }
 
   return v7;

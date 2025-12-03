@@ -1,12 +1,12 @@
 @interface PreflightDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation PreflightDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v5 = objc_opt_class();
   v6 = objc_opt_class();
   v7 = objc_opt_class();
@@ -19,9 +19,9 @@
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Received a connection on preflightControl!", buf, 2u);
   }
 
-  v11 = [v4 valueForEntitlement:off_100016580];
-  v12 = [v4 valueForEntitlement:off_100016590];
-  v13 = [v4 valueForEntitlement:off_100016598];
+  v11 = [connectionCopy valueForEntitlement:off_100016580];
+  v12 = [connectionCopy valueForEntitlement:off_100016590];
+  v13 = [connectionCopy valueForEntitlement:off_100016598];
   v14 = v13;
   if (!v11 || !(v12 | v13))
   {
@@ -29,7 +29,7 @@
 LABEL_15:
 
 LABEL_16:
-    [v4 invalidate];
+    [connectionCopy invalidate];
     v18 = 0;
     goto LABEL_12;
   }
@@ -47,18 +47,18 @@ LABEL_16:
   }
 
   v15 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CoreRepairPreflightProtocol];
-  [v4 setExportedInterface:v15];
+  [connectionCopy setExportedInterface:v15];
 
-  v16 = [v4 exportedInterface];
-  [v16 setClasses:v9 forSelector:"challengeStrongComponents:withReply:" argumentIndex:0 ofReply:0];
+  exportedInterface = [connectionCopy exportedInterface];
+  [exportedInterface setClasses:v9 forSelector:"challengeStrongComponents:withReply:" argumentIndex:0 ofReply:0];
 
-  v17 = [v4 exportedInterface];
+  exportedInterface2 = [connectionCopy exportedInterface];
   v18 = 1;
-  [v17 setClasses:v9 forSelector:"challengeStrongComponents:withReply:" argumentIndex:1 ofReply:1];
+  [exportedInterface2 setClasses:v9 forSelector:"challengeStrongComponents:withReply:" argumentIndex:1 ofReply:1];
 
   v19 = +[CRPreflightHelper sharedInstance];
-  [v4 setExportedObject:v19];
-  [v4 resume];
+  [connectionCopy setExportedObject:v19];
+  [connectionCopy resume];
 
 LABEL_12:
   return v18;

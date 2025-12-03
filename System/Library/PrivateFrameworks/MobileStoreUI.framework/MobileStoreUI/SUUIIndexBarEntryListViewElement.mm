@@ -1,26 +1,26 @@
 @interface SUUIIndexBarEntryListViewElement
 - (NSArray)childIndexBarEntryElements;
-- (SUUIIndexBarEntryListViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SUUIIndexBarEntryListViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SUUIIndexBarEntryListViewElement
 
-- (SUUIIndexBarEntryListViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIIndexBarEntryListViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v17.receiver = self;
   v17.super_class = SUUIIndexBarEntryListViewElement;
-  v9 = [(SUUIViewElement *)&v17 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v17 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"targetIndexBarEntryID"];
+    v10 = [elementCopy getAttribute:@"targetIndexBarEntryID"];
     if ([v10 length])
     {
       objc_storeStrong(&v9->_targetIndexBarEntryID, v10);
     }
 
-    v11 = [v8 getAttribute:@"type"];
+    v11 = [elementCopy getAttribute:@"type"];
     if ([v11 isEqualToString:@"dynamicElement"])
     {
       v12 = 1;
@@ -38,31 +38,31 @@
 
     v9->_entryListElementType = v12;
 
-    v14 = [v8 getAttribute:@"indexBarHiddenWhenEmpty"];
+    v14 = [elementCopy getAttribute:@"indexBarHiddenWhenEmpty"];
     v9->_indexBarHiddenWhenEmpty = [v14 BOOLValue];
 
-    v15 = [v8 getAttribute:@"minimumEntityCount"];
+    v15 = [elementCopy getAttribute:@"minimumEntityCount"];
     v9->_minimumEntityCount = [v15 integerValue];
   }
 
   return v9;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v10.receiver = self;
   v10.super_class = SUUIIndexBarEntryListViewElement;
-  v5 = [(SUUIViewElement *)&v10 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v10 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    self->_entryListElementType = [(SUUIIndexBarEntryListViewElement *)v4 entryListElementType];
-    self->_indexBarHiddenWhenEmpty = [(SUUIIndexBarEntryListViewElement *)v4 isIndexBarHiddenWhenEmpty];
-    self->_minimumEntityCount = [(SUUIIndexBarEntryListViewElement *)v4 minimumEntityCount];
-    v7 = [(SUUIIndexBarEntryListViewElement *)v4 targetIndexBarEntryID];
+    self->_entryListElementType = [(SUUIIndexBarEntryListViewElement *)elementCopy entryListElementType];
+    self->_indexBarHiddenWhenEmpty = [(SUUIIndexBarEntryListViewElement *)elementCopy isIndexBarHiddenWhenEmpty];
+    self->_minimumEntityCount = [(SUUIIndexBarEntryListViewElement *)elementCopy minimumEntityCount];
+    targetIndexBarEntryID = [(SUUIIndexBarEntryListViewElement *)elementCopy targetIndexBarEntryID];
     targetIndexBarEntryID = self->_targetIndexBarEntryID;
-    self->_targetIndexBarEntryID = v7;
+    self->_targetIndexBarEntryID = targetIndexBarEntryID;
   }
 
   return v6;

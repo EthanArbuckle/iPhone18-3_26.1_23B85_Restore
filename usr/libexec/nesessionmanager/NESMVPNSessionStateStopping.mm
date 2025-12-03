@@ -2,21 +2,21 @@
 - (BOOL)handleClearConfiguration;
 - (BOOL)handleSetConfiguration;
 - (NESMVPNSessionStateStopping)init;
-- (void)enterWithSession:(id)a3;
-- (void)handleClearConfigurationResult:(BOOL)a3;
+- (void)enterWithSession:(id)session;
+- (void)handleClearConfigurationResult:(BOOL)result;
 - (void)handleEstablishIPC;
-- (void)handlePlugin:(id)a3 didStartWithPID:(int)a4 error:(id)a5;
-- (void)handleSetConfigurationResult:(BOOL)a3;
+- (void)handlePlugin:(id)plugin didStartWithPID:(int)d error:(id)error;
+- (void)handleSetConfigurationResult:(BOOL)result;
 - (void)handleTimeout;
 @end
 
 @implementation NESMVPNSessionStateStopping
 
-- (void)handlePlugin:(id)a3 didStartWithPID:(int)a4 error:(id)a5
+- (void)handlePlugin:(id)plugin didStartWithPID:(int)d error:(id)error
 {
   v5.receiver = self;
   v5.super_class = NESMVPNSessionStateStopping;
-  [(NESMVPNSessionState *)&v5 handlePlugin:a3 didStartWithPID:0 error:a5];
+  [(NESMVPNSessionState *)&v5 handlePlugin:plugin didStartWithPID:0 error:error];
 }
 
 - (void)handleEstablishIPC
@@ -74,7 +74,7 @@
   [Property setState:8];
 }
 
-- (void)handleClearConfigurationResult:(BOOL)a3
+- (void)handleClearConfigurationResult:(BOOL)result
 {
   v4 = ne_log_obj();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -151,9 +151,9 @@
     v17 = 0;
   }
 
-  v18 = [v17 primaryTunnelPlugin];
-  v20 = v18;
-  if (v18 && *(v18 + 64) == 6)
+  primaryTunnelPlugin = [v17 primaryTunnelPlugin];
+  primaryTunnelPlugin3 = primaryTunnelPlugin;
+  if (primaryTunnelPlugin && *(primaryTunnelPlugin + 64) == 6)
   {
     goto LABEL_32;
   }
@@ -168,14 +168,14 @@
     v21 = 0;
   }
 
-  v22 = [v21 primaryTunnelPlugin];
-  if (!v22)
+  primaryTunnelPlugin2 = [v21 primaryTunnelPlugin];
+  if (!primaryTunnelPlugin2)
   {
-    v36 = 0;
+    remotePluginObject = 0;
     goto LABEL_31;
   }
 
-  v23 = v22[16];
+  v23 = primaryTunnelPlugin2[16];
 
   if (!v23)
   {
@@ -214,7 +214,7 @@
     v31 = 0;
   }
 
-  v20 = [v31 primaryTunnelPlugin];
+  primaryTunnelPlugin3 = [v31 primaryTunnelPlugin];
   if (self)
   {
     v33 = objc_getProperty(self, v32, 16, 1);
@@ -225,12 +225,12 @@
     v33 = 0;
   }
 
-  v34 = [v33 lastStopReason];
-  if (v20)
+  lastStopReason = [v33 lastStopReason];
+  if (primaryTunnelPlugin3)
   {
-    v35 = v34;
-    v36 = [v20 remotePluginObject];
-    [v36 disconnectWithReason:v35];
+    v35 = lastStopReason;
+    remotePluginObject = [primaryTunnelPlugin3 remotePluginObject];
+    [remotePluginObject disconnectWithReason:v35];
 LABEL_31:
   }
 
@@ -247,8 +247,8 @@ LABEL_33:
     v37 = 0;
   }
 
-  v38 = [v37 primaryTunnelPlugin];
-  if (!v38 || (v39 = v38[16], v38, !v39))
+  primaryTunnelPlugin4 = [v37 primaryTunnelPlugin];
+  if (!primaryTunnelPlugin4 || (v39 = primaryTunnelPlugin4[16], primaryTunnelPlugin4, !v39))
   {
     v40 = ne_log_obj();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
@@ -313,7 +313,7 @@ LABEL_33:
   return 0;
 }
 
-- (void)handleSetConfigurationResult:(BOOL)a3
+- (void)handleSetConfigurationResult:(BOOL)result
 {
   v4 = ne_log_obj();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -365,14 +365,14 @@ LABEL_33:
   return 0;
 }
 
-- (void)enterWithSession:(id)a3
+- (void)enterWithSession:(id)session
 {
   if (self)
   {
     self->_isUninstalled = 0;
     v6.receiver = self;
     v6.super_class = NESMVPNSessionStateStopping;
-    [(NESMVPNSessionState *)&v6 enterWithSession:a3];
+    [(NESMVPNSessionState *)&v6 enterWithSession:session];
     Property = objc_getProperty(self, v4, 16, 1);
   }
 
@@ -380,7 +380,7 @@ LABEL_33:
   {
     v6.receiver = 0;
     v6.super_class = NESMVPNSessionStateStopping;
-    [(NESMVPNSessionState *)&v6 enterWithSession:a3];
+    [(NESMVPNSessionState *)&v6 enterWithSession:session];
     Property = 0;
   }
 

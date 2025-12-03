@@ -1,37 +1,37 @@
 @interface CNContactDowntimeView
 + (id)lockImageAttachment;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CNContactDowntimeView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CNContactDowntimeView)initWithFrame:(CGRect)frame;
 - (void)invalidateIntrinsicContentSize;
-- (void)setAb_textAttributes:(id)a3;
-- (void)setElements:(int64_t)a3;
+- (void)setAb_textAttributes:(id)attributes;
+- (void)setElements:(int64_t)elements;
 - (void)updateAttributedText;
 @end
 
 @implementation CNContactDowntimeView
 
-- (void)setAb_textAttributes:(id)a3
+- (void)setAb_textAttributes:(id)attributes
 {
-  v20 = a3;
-  objc_storeStrong(&self->_ab_textAttributes, a3);
-  [(UILabel *)self->_downtimeLabel setAb_textAttributes:v20];
-  v5 = [(UILabel *)self->_downtimeLabel font];
-  [v5 lineHeight];
+  attributesCopy = attributes;
+  objc_storeStrong(&self->_ab_textAttributes, attributes);
+  [(UILabel *)self->_downtimeLabel setAb_textAttributes:attributesCopy];
+  font = [(UILabel *)self->_downtimeLabel font];
+  [font lineHeight];
   v7 = v6 * 0.8;
 
   [(NSTextAttachment *)self->_imageAttachment bounds];
   if (v9 != v7)
   {
     v10 = v8;
-    v11 = [(NSTextAttachment *)self->_imageAttachment image];
-    [v11 size];
+    image = [(NSTextAttachment *)self->_imageAttachment image];
+    [image size];
     v13 = v12;
     v15 = v14;
 
     v16 = v13 / v15;
-    v17 = [(NSTextAttachment *)self->_imageAttachment image];
-    [v17 baselineOffsetFromBottom];
+    image2 = [(NSTextAttachment *)self->_imageAttachment image];
+    [image2 baselineOffsetFromBottom];
     v19 = -(v18 * (v7 / v15));
 
     [(NSTextAttachment *)self->_imageAttachment setBounds:v10, v19, v7 * v16, v7];
@@ -47,9 +47,9 @@
   [(CNContactDowntimeView *)&v3 invalidateIntrinsicContentSize];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UILabel *)self->_downtimeLabel sizeThatFits:a3.width, a3.height];
+  [(UILabel *)self->_downtimeLabel sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -81,27 +81,27 @@
     [v9 appendAttributedString:v7];
   }
 
-  v8 = [(CNContactDowntimeView *)self downtimeLabel];
-  [v8 setAttributedText:v9];
+  downtimeLabel = [(CNContactDowntimeView *)self downtimeLabel];
+  [downtimeLabel setAttributedText:v9];
 }
 
-- (void)setElements:(int64_t)a3
+- (void)setElements:(int64_t)elements
 {
-  if (self->_elements != a3)
+  if (self->_elements != elements)
   {
-    self->_elements = a3;
+    self->_elements = elements;
     [(CNContactDowntimeView *)self updateAttributedText];
 
     [(CNContactDowntimeView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (CNContactDowntimeView)initWithFrame:(CGRect)a3
+- (CNContactDowntimeView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v28[4] = *MEMORY[0x1E69E9840];
   v27.receiver = self;
   v27.super_class = CNContactDowntimeView;
@@ -115,26 +115,26 @@
     [(UILabel *)v7->_downtimeLabel setTextAlignment:1];
     [(UILabel *)v7->_downtimeLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v7->_downtimeLabel setNumberOfLines:0];
-    v10 = [objc_opt_class() lockImageAttachment];
+    lockImageAttachment = [objc_opt_class() lockImageAttachment];
     imageAttachment = v7->_imageAttachment;
-    v7->_imageAttachment = v10;
+    v7->_imageAttachment = lockImageAttachment;
 
     [(CNContactDowntimeView *)v7 addSubview:v7->_downtimeLabel];
-    v26 = [(UILabel *)v7->_downtimeLabel topAnchor];
-    v25 = [(CNContactDowntimeView *)v7 topAnchor];
-    v24 = [v26 constraintEqualToAnchor:v25];
+    topAnchor = [(UILabel *)v7->_downtimeLabel topAnchor];
+    topAnchor2 = [(CNContactDowntimeView *)v7 topAnchor];
+    v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v28[0] = v24;
-    v23 = [(UILabel *)v7->_downtimeLabel bottomAnchor];
-    v12 = [(CNContactDowntimeView *)v7 bottomAnchor];
-    v13 = [v23 constraintEqualToAnchor:v12];
+    bottomAnchor = [(UILabel *)v7->_downtimeLabel bottomAnchor];
+    bottomAnchor2 = [(CNContactDowntimeView *)v7 bottomAnchor];
+    v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v28[1] = v13;
-    v14 = [(UILabel *)v7->_downtimeLabel leftAnchor];
-    v15 = [(CNContactDowntimeView *)v7 leftAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    leftAnchor = [(UILabel *)v7->_downtimeLabel leftAnchor];
+    leftAnchor2 = [(CNContactDowntimeView *)v7 leftAnchor];
+    v16 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v28[2] = v16;
-    v17 = [(UILabel *)v7->_downtimeLabel rightAnchor];
-    v18 = [(CNContactDowntimeView *)v7 rightAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    rightAnchor = [(UILabel *)v7->_downtimeLabel rightAnchor];
+    rightAnchor2 = [(CNContactDowntimeView *)v7 rightAnchor];
+    v19 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v28[3] = v19;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:4];
     [(CNContactDowntimeView *)v7 addConstraints:v20];

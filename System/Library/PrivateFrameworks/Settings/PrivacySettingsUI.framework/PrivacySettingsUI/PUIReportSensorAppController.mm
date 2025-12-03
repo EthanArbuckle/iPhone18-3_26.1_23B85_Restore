@@ -12,8 +12,8 @@
   v2 = [(PUIReportSensorAppController *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_dataDidChange name:@"PUIReportSensorManagerDataHasChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_dataDidChange name:@"PUIReportSensorManagerDataHasChangedNotification" object:0];
   }
 
   return v2;
@@ -28,35 +28,35 @@
     v49 = *MEMORY[0x277D3FC48];
     v58 = objc_opt_new();
     v4 = objc_opt_new();
-    v5 = [(PUIReportSensorAppController *)self bundleID];
+    bundleID = [(PUIReportSensorAppController *)self bundleID];
 
-    if (!v5)
+    if (!bundleID)
     {
-      v6 = [(PUIReportSensorAppController *)self specifier];
-      v7 = [v6 objectForKeyedSubscript:@"PUIReportAppIDKey"];
+      specifier = [(PUIReportSensorAppController *)self specifier];
+      v7 = [specifier objectForKeyedSubscript:@"PUIReportAppIDKey"];
       [(PUIReportSensorAppController *)self setBundleID:v7];
 
-      v8 = [(PUIReportSensorAppController *)self specifier];
-      v9 = [v8 objectForKeyedSubscript:@"PUIReportSensorManagerKey"];
+      specifier2 = [(PUIReportSensorAppController *)self specifier];
+      v9 = [specifier2 objectForKeyedSubscript:@"PUIReportSensorManagerKey"];
       [(PUIReportSensorAppController *)self setManager:v9];
     }
 
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    v12 = [(PUIReportSensorAppController *)self bundleID];
-    PUIAnalyticsLogView(v11, v12, 0);
+    bundleID2 = [(PUIReportSensorAppController *)self bundleID];
+    PUIAnalyticsLogView(v11, bundleID2, 0);
 
-    v13 = [(PUIReportSensorAppController *)self manager];
+    manager = [(PUIReportSensorAppController *)self manager];
     v65[0] = MEMORY[0x277D85DD0];
     v65[1] = 3221225472;
     v65[2] = __42__PUIReportSensorAppController_specifiers__block_invoke;
     v65[3] = &unk_279BA21E0;
     v65[4] = self;
-    v14 = [v13 eventsFiltered:v65];
+    v14 = [manager eventsFiltered:v65];
 
-    v15 = [(PUIReportSensorAppController *)self manager];
+    manager2 = [(PUIReportSensorAppController *)self manager];
     v47 = v14;
-    v16 = [v15 categoriesAndLatestDatesFromEvents:v14];
+    v16 = [manager2 categoriesAndLatestDatesFromEvents:v14];
 
     v17 = MEMORY[0x277D3FAD8];
     v18 = PUI_LocalizedStringForAppReport(@"PAST_7_DAYS");
@@ -98,11 +98,11 @@
           v27 = [v25 preferenceSpecifierNamed:v26 target:self set:0 get:sel_valueForSpecifier_ detail:objc_opt_class() cell:2 edit:0];
 
           [v27 setIdentifier:v24];
-          v28 = [(PUIReportSensorAppController *)self manager];
-          [v27 setObject:v28 forKeyedSubscript:@"PUIReportSensorManagerKey"];
+          manager3 = [(PUIReportSensorAppController *)self manager];
+          [v27 setObject:manager3 forKeyedSubscript:@"PUIReportSensorManagerKey"];
 
-          v29 = [(PUIReportSensorAppController *)self bundleID];
-          [v27 setObject:v29 forKeyedSubscript:@"PUIReportAppIDKey"];
+          bundleID3 = [(PUIReportSensorAppController *)self bundleID];
+          [v27 setObject:bundleID3 forKeyedSubscript:@"PUIReportAppIDKey"];
 
           v30 = [PUIReportSensorManager iconTypeIdentifierForCategory:v24];
 

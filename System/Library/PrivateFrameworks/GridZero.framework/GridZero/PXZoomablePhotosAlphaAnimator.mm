@@ -1,26 +1,26 @@
 @interface PXZoomablePhotosAlphaAnimator
-- (PXAlphaTransitionInfo)_transitionInfoForValue:(double)a3;
+- (PXAlphaTransitionInfo)_transitionInfoForValue:(double)value;
 - (PXZoomablePhotosAlphaAnimator)init;
 - (double)_targetColumnIndex;
 - (id)description;
 - (void)_invalidatePresentationValue;
 - (void)_resetAnimatedValues;
-- (void)_tick:(id)a3;
+- (void)_tick:(id)_tick;
 - (void)_updatePresentationValue;
 - (void)_updateTransitionInfo;
 - (void)dealloc;
 - (void)didPerformChanges;
-- (void)performChanges:(id)a3;
-- (void)performChangesWithAnimation:(BOOL)a3 changeBlock:(id)a4;
-- (void)setAllowedColumns:(id)a3;
-- (void)setAutoFadeAmount:(double)a3;
-- (void)setAutoFadeColumnIndex:(double)a3;
-- (void)setColumnIndex:(double)a3;
-- (void)setIsAnimating:(BOOL)a3;
-- (void)setMaxColumnsForAspectFit:(int64_t)a3;
-- (void)setPresentationAutoFadeAmount:(double)a3;
-- (void)setPresentationColumnIndex:(double)a3;
-- (void)setTargetColumnIndex:(double)a3;
+- (void)performChanges:(id)changes;
+- (void)performChangesWithAnimation:(BOOL)animation changeBlock:(id)block;
+- (void)setAllowedColumns:(id)columns;
+- (void)setAutoFadeAmount:(double)amount;
+- (void)setAutoFadeColumnIndex:(double)index;
+- (void)setColumnIndex:(double)index;
+- (void)setIsAnimating:(BOOL)animating;
+- (void)setMaxColumnsForAspectFit:(int64_t)fit;
+- (void)setPresentationAutoFadeAmount:(double)amount;
+- (void)setPresentationColumnIndex:(double)index;
+- (void)setTargetColumnIndex:(double)index;
 @end
 
 @implementation PXZoomablePhotosAlphaAnimator
@@ -65,9 +65,9 @@
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXZoomablePhotosAlphaAnimator didPerformChanges]"];
-      [v6 handleFailureInFunction:v7 file:@"PXZoomablePhotosAlphaAnimator.m" lineNumber:360 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXZoomablePhotosAlphaAnimator.m" lineNumber:360 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -80,9 +80,9 @@
       [(PXZoomablePhotosAlphaAnimator *)self _updateTransitionInfo];
       if (!self->_updateFlags.isPerformingUpdate)
       {
-        v8 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXZoomablePhotosAlphaAnimator didPerformChanges]"];
-        [v8 handleFailureInFunction:v9 file:@"PXZoomablePhotosAlphaAnimator.m" lineNumber:364 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+        [currentHandler2 handleFailureInFunction:v9 file:@"PXZoomablePhotosAlphaAnimator.m" lineNumber:364 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -98,17 +98,17 @@
     self->_updateFlags.isPerformingUpdate = 0;
     if (v5)
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXZoomablePhotosAlphaAnimator didPerformChanges]"];
-      [v10 handleFailureInFunction:v11 file:@"PXZoomablePhotosAlphaAnimator.m" lineNumber:367 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler3 handleFailureInFunction:v11 file:@"PXZoomablePhotosAlphaAnimator.m" lineNumber:367 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 }
 
 - (void)_updateTransitionInfo
 {
-  v33 = [(PXZoomablePhotosAlphaAnimator *)self allowedColumns];
-  v3 = [v33 count];
+  allowedColumns = [(PXZoomablePhotosAlphaAnimator *)self allowedColumns];
+  v3 = [allowedColumns count];
   self->_layerCount = v3;
   v4 = 176;
   v5 = 576;
@@ -122,8 +122,8 @@
     v10 = v3;
     do
     {
-      v11 = [v33 objectAtIndexedSubscript:{v7, v31}];
-      v12 = [v11 integerValue];
+      v11 = [allowedColumns objectAtIndexedSubscript:{v7, v31}];
+      integerValue = [v11 integerValue];
 
       v13 = self + v8;
       v14 = self + v9;
@@ -135,8 +135,8 @@
 
       --v10;
       *v13 = v7;
-      *(v13 + 1) = v12;
-      *(v13 + 2) = 1.0 / v12;
+      *(v13 + 1) = integerValue;
+      *(v13 + 2) = 1.0 / integerValue;
       if (!v10)
       {
         v14 = 0;
@@ -155,10 +155,10 @@
   v16 = +[PXZoomablePhotosSettings sharedInstance];
   [v16 minAcceptableCoverage];
   v18 = v17;
-  v19 = [(PXZoomablePhotosAlphaAnimator *)self maxColumnsForAspectFit];
+  maxColumnsForAspectFit = [(PXZoomablePhotosAlphaAnimator *)self maxColumnsForAspectFit];
   if (v32 >= 2)
   {
-    v20 = v19;
+    v20 = maxColumnsForAspectFit;
     v21 = 0;
     do
     {
@@ -226,9 +226,9 @@
   [(PXZoomablePhotosAlphaAnimator *)self signalChange:0];
   if (self->_updateFlags.isPerformingUpdate && (self->_updateFlags.updated & 2) != 0)
   {
-    v3 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXZoomablePhotosAlphaAnimator _invalidatePresentationValue]"];
-    [v3 handleFailureInFunction:v4 file:@"PXZoomablePhotosAlphaAnimator.m" lineNumber:441 description:{@"invalidating %lu after it already has been updated", 2}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXZoomablePhotosAlphaAnimator.m" lineNumber:441 description:{@"invalidating %lu after it already has been updated", 2}];
 
     abort();
   }
@@ -292,18 +292,18 @@
   return v4;
 }
 
-- (void)_tick:(id)a3
+- (void)_tick:(id)_tick
 {
-  v4 = a3;
+  _tickCopy = _tick;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__PXZoomablePhotosAlphaAnimator__tick___block_invoke;
   v7[3] = &unk_278297FE8;
   v7[4] = self;
-  v8 = v4;
+  v8 = _tickCopy;
   v6.receiver = self;
   v6.super_class = PXZoomablePhotosAlphaAnimator;
-  v5 = v4;
+  v5 = _tickCopy;
   [(PXZoomablePhotosAlphaAnimator *)&v6 performChanges:v7];
 }
 
@@ -424,7 +424,7 @@ void __39__PXZoomablePhotosAlphaAnimator__tick___block_invoke(uint64_t a1)
   *(*(a1 + 32) + 128) = v24;
 }
 
-- (PXAlphaTransitionInfo)_transitionInfoForValue:(double)a3
+- (PXAlphaTransitionInfo)_transitionInfoForValue:(double)value
 {
   layerCount = self->_layerCount;
   v4 = layerCount < 2;
@@ -434,7 +434,7 @@ void __39__PXZoomablePhotosAlphaAnimator__tick___block_invoke(uint64_t a1)
     return 0;
   }
 
-  v7 = vcvtmd_s64_f64(a3);
+  v7 = vcvtmd_s64_f64(value);
   if (v5 >= v7)
   {
     v5 = v7;
@@ -443,31 +443,31 @@ void __39__PXZoomablePhotosAlphaAnimator__tick___block_invoke(uint64_t a1)
   return &self->_transitionInfos[v5 & ~(v5 >> 63)];
 }
 
-- (void)setPresentationAutoFadeAmount:(double)a3
+- (void)setPresentationAutoFadeAmount:(double)amount
 {
-  if (self->_presentationAutoFadeAmount != a3)
+  if (self->_presentationAutoFadeAmount != amount)
   {
-    self->_presentationAutoFadeAmount = a3;
+    self->_presentationAutoFadeAmount = amount;
     [(PXZoomablePhotosAlphaAnimator *)self _invalidatePresentationValue];
   }
 }
 
-- (void)setAutoFadeColumnIndex:(double)a3
+- (void)setAutoFadeColumnIndex:(double)index
 {
-  if (self->_autoFadeColumnIndex != a3)
+  if (self->_autoFadeColumnIndex != index)
   {
-    self->_autoFadeColumnIndex = a3;
+    self->_autoFadeColumnIndex = index;
     [(PXZoomablePhotosAlphaAnimator *)self _invalidatePresentationValue];
   }
 }
 
-- (void)setIsAnimating:(BOOL)a3
+- (void)setIsAnimating:(BOOL)animating
 {
-  if (self->_isAnimating != a3)
+  if (self->_isAnimating != animating)
   {
-    self->_isAnimating = a3;
-    [(PXDisplayLink *)self->_displayLink setPaused:!a3];
-    if (!a3)
+    self->_isAnimating = animating;
+    [(PXDisplayLink *)self->_displayLink setPaused:!animating];
+    if (!animating)
     {
       self->_lastTickTime = 0.0;
     }
@@ -476,40 +476,40 @@ void __39__PXZoomablePhotosAlphaAnimator__tick___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setPresentationColumnIndex:(double)a3
+- (void)setPresentationColumnIndex:(double)index
 {
-  if (self->_presentationColumnIndex != a3)
+  if (self->_presentationColumnIndex != index)
   {
-    self->_presentationColumnIndex = a3;
+    self->_presentationColumnIndex = index;
     [(PXZoomablePhotosAlphaAnimator *)self signalChange:2];
   }
 }
 
-- (void)setAutoFadeAmount:(double)a3
+- (void)setAutoFadeAmount:(double)amount
 {
   if ((PXFloatApproximatelyEqualToFloat() & 1) == 0)
   {
-    self->_autoFadeAmount = a3;
+    self->_autoFadeAmount = amount;
 
     [(PXZoomablePhotosAlphaAnimator *)self _invalidatePresentationValue];
   }
 }
 
-- (void)setTargetColumnIndex:(double)a3
+- (void)setTargetColumnIndex:(double)index
 {
-  if (self->_targetColumnIndex != a3)
+  if (self->_targetColumnIndex != index)
   {
-    self->_targetColumnIndex = a3;
+    self->_targetColumnIndex = index;
     [(PXZoomablePhotosAlphaAnimator *)self _invalidatePresentationValue];
   }
 }
 
-- (void)setColumnIndex:(double)a3
+- (void)setColumnIndex:(double)index
 {
   columnIndex = self->_columnIndex;
-  if (columnIndex != a3)
+  if (columnIndex != index)
   {
-    v6 = a3 - columnIndex;
+    v6 = index - columnIndex;
     PXFloatSign();
     v8 = v7;
     if (!self->_isPerformingChangesWithoutAnimation)
@@ -519,40 +519,40 @@ void __39__PXZoomablePhotosAlphaAnimator__tick___block_invoke(uint64_t a1)
 
     if (v7 == self->_currentDirection)
     {
-      self->_directionAnchorColumnIndex = a3;
+      self->_directionAnchorColumnIndex = index;
     }
 
     else
     {
-      v9 = vabdd_f64(self->_directionAnchorColumnIndex, a3);
+      v9 = vabdd_f64(self->_directionAnchorColumnIndex, index);
       v10 = +[PXZoomablePhotosSettings sharedInstance];
       [v10 alphaDistanceForDirectionChange];
       v12 = v11;
 
       if (v9 >= v12)
       {
-        self->_directionAnchorColumnIndex = a3;
+        self->_directionAnchorColumnIndex = index;
         self->_currentDirection = v8;
       }
     }
 
-    self->_columnIndex = a3;
+    self->_columnIndex = index;
     [(PXZoomablePhotosAlphaAnimator *)self signalChange:1];
 
     [(PXZoomablePhotosAlphaAnimator *)self _invalidatePresentationValue];
   }
 }
 
-- (void)setMaxColumnsForAspectFit:(int64_t)a3
+- (void)setMaxColumnsForAspectFit:(int64_t)fit
 {
-  if (self->_maxColumnsForAspectFit != a3)
+  if (self->_maxColumnsForAspectFit != fit)
   {
-    self->_maxColumnsForAspectFit = a3;
+    self->_maxColumnsForAspectFit = fit;
     if (self->_updateFlags.isPerformingUpdate && (self->_updateFlags.updated & 1) != 0)
     {
-      v3 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXZoomablePhotosAlphaAnimator setMaxColumnsForAspectFit:]"];
-      [v3 handleFailureInFunction:v4 file:@"PXZoomablePhotosAlphaAnimator.m" lineNumber:155 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v4 file:@"PXZoomablePhotosAlphaAnimator.m" lineNumber:155 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -561,19 +561,19 @@ void __39__PXZoomablePhotosAlphaAnimator__tick___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setAllowedColumns:(id)a3
+- (void)setAllowedColumns:(id)columns
 {
-  v5 = a3;
+  columnsCopy = columns;
   allowedColumns = self->_allowedColumns;
-  if (allowedColumns != v5)
+  if (allowedColumns != columnsCopy)
   {
-    v12 = v5;
-    if (([(NSArray *)allowedColumns isEqual:v5]& 1) == 0)
+    v12 = columnsCopy;
+    if (([(NSArray *)allowedColumns isEqual:columnsCopy]& 1) == 0)
     {
       if ([(NSArray *)v12 count]>= 0xB)
       {
-        v9 = [MEMORY[0x277CCA890] currentHandler];
-        [v9 handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosAlphaAnimator.m" lineNumber:145 description:{@"Invalid parameter not satisfying: %@", @"allowedColumns.count <= PXZoomablePhotosMaxLayers"}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosAlphaAnimator.m" lineNumber:145 description:{@"Invalid parameter not satisfying: %@", @"allowedColumns.count <= PXZoomablePhotosMaxLayers"}];
       }
 
       v7 = [(NSArray *)v12 copy];
@@ -582,9 +582,9 @@ void __39__PXZoomablePhotosAlphaAnimator__tick___block_invoke(uint64_t a1)
 
       if (self->_updateFlags.isPerformingUpdate && (self->_updateFlags.updated & 1) != 0)
       {
-        v10 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
         v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXZoomablePhotosAlphaAnimator setAllowedColumns:]"];
-        [v10 handleFailureInFunction:v11 file:@"PXZoomablePhotosAlphaAnimator.m" lineNumber:147 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler2 handleFailureInFunction:v11 file:@"PXZoomablePhotosAlphaAnimator.m" lineNumber:147 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -596,17 +596,17 @@ void __39__PXZoomablePhotosAlphaAnimator__tick___block_invoke(uint64_t a1)
   MEMORY[0x2821F96F8]();
 }
 
-- (void)performChangesWithAnimation:(BOOL)a3 changeBlock:(id)a4
+- (void)performChangesWithAnimation:(BOOL)animation changeBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __73__PXZoomablePhotosAlphaAnimator_performChangesWithAnimation_changeBlock___block_invoke;
   v8[3] = &unk_278297FC0;
-  v10 = a3;
+  animationCopy = animation;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = blockCopy;
+  v7 = blockCopy;
   [(PXZoomablePhotosAlphaAnimator *)self performChanges:v8];
 }
 
@@ -625,13 +625,13 @@ uint64_t __73__PXZoomablePhotosAlphaAnimator_performChangesWithAnimation_changeB
   return result;
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   isBeingMutated = self->_isBeingMutated;
   self->_isBeingMutated = 1;
   v5.receiver = self;
   v5.super_class = PXZoomablePhotosAlphaAnimator;
-  [(PXZoomablePhotosAlphaAnimator *)&v5 performChanges:a3];
+  [(PXZoomablePhotosAlphaAnimator *)&v5 performChanges:changes];
   self->_isBeingMutated = isBeingMutated;
 }
 
@@ -645,9 +645,9 @@ uint64_t __73__PXZoomablePhotosAlphaAnimator_performChangesWithAnimation_changeB
   [(PXZoomablePhotosAlphaAnimator *)self presentationColumnIndex];
   v9 = v8;
   layerCount = self->_layerCount;
-  v11 = [(PXZoomablePhotosAlphaAnimator *)self isAnimating];
+  isAnimating = [(PXZoomablePhotosAlphaAnimator *)self isAnimating];
   v12 = @"NO";
-  if (v11)
+  if (isAnimating)
   {
     v12 = @"YES";
   }

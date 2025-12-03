@@ -1,31 +1,31 @@
 @interface GKLocalPlayerInternal
-- (void)updateWithCacheObject:(id)a3;
+- (void)updateWithCacheObject:(id)object;
 @end
 
 @implementation GKLocalPlayerInternal
 
-- (void)updateWithCacheObject:(id)a3
+- (void)updateWithCacheObject:(id)object
 {
   v9.receiver = self;
   v9.super_class = GKLocalPlayerInternal;
-  v4 = a3;
-  [(GKLocalPlayerInternal *)&v9 updateWithCacheObject:v4];
-  -[GKLocalPlayerInternal setUnderage:](self, "setUnderage:", [v4 isUnderage]);
-  -[GKLocalPlayerInternal setPurpleBuddyAccount:](self, "setPurpleBuddyAccount:", [v4 purpleBuddyAccount]);
-  -[GKLocalPlayerInternal setDefaultNickname:](self, "setDefaultNickname:", [v4 defaultNickname]);
-  -[GKLocalPlayerInternal setDefaultPrivacyVisibility:](self, "setDefaultPrivacyVisibility:", [v4 defaultPrivacyVisibility]);
-  -[GKLocalPlayerInternal setDefaultContactsIntegrationConsent:](self, "setDefaultContactsIntegrationConsent:", [v4 defaultContactsIntegrationConsent]);
-  -[GKLocalPlayerInternal setFindable:](self, "setFindable:", [v4 isFindable]);
-  v5 = [v4 friendRequestList];
-  v6 = [v5 entries];
-  -[GKLocalPlayerInternal setNumberOfRequests:](self, "setNumberOfRequests:", [v6 count]);
+  objectCopy = object;
+  [(GKLocalPlayerInternal *)&v9 updateWithCacheObject:objectCopy];
+  -[GKLocalPlayerInternal setUnderage:](self, "setUnderage:", [objectCopy isUnderage]);
+  -[GKLocalPlayerInternal setPurpleBuddyAccount:](self, "setPurpleBuddyAccount:", [objectCopy purpleBuddyAccount]);
+  -[GKLocalPlayerInternal setDefaultNickname:](self, "setDefaultNickname:", [objectCopy defaultNickname]);
+  -[GKLocalPlayerInternal setDefaultPrivacyVisibility:](self, "setDefaultPrivacyVisibility:", [objectCopy defaultPrivacyVisibility]);
+  -[GKLocalPlayerInternal setDefaultContactsIntegrationConsent:](self, "setDefaultContactsIntegrationConsent:", [objectCopy defaultContactsIntegrationConsent]);
+  -[GKLocalPlayerInternal setFindable:](self, "setFindable:", [objectCopy isFindable]);
+  friendRequestList = [objectCopy friendRequestList];
+  entries = [friendRequestList entries];
+  -[GKLocalPlayerInternal setNumberOfRequests:](self, "setNumberOfRequests:", [entries count]);
 
-  v7 = [v4 challengeList];
-  v8 = [v7 entries];
-  -[GKLocalPlayerInternal setNumberOfChallenges:](self, "setNumberOfChallenges:", [v8 count]);
+  challengeList = [objectCopy challengeList];
+  entries2 = [challengeList entries];
+  -[GKLocalPlayerInternal setNumberOfChallenges:](self, "setNumberOfChallenges:", [entries2 count]);
 
-  LOWORD(v7) = [v4 numberOfTurns];
-  [(GKLocalPlayerInternal *)self setNumberOfTurns:v7];
+  LOWORD(challengeList) = [objectCopy numberOfTurns];
+  [(GKLocalPlayerInternal *)self setNumberOfTurns:challengeList];
 }
 
 @end

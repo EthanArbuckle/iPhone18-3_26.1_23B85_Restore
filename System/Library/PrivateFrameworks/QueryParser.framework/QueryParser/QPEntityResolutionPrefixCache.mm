@@ -1,8 +1,8 @@
 @interface QPEntityResolutionPrefixCache
 + (id)sharedCache;
-- (BOOL)hasPreviouslyGroundedPrefixOfToken:(id)a3;
-- (QPEntityResolutionPrefixCache)initWithMaxCount:(int64_t)a3 minPrefixLength:(int64_t)a4;
-- (void)cacheGroundedToken:(id)a3;
+- (BOOL)hasPreviouslyGroundedPrefixOfToken:(id)token;
+- (QPEntityResolutionPrefixCache)initWithMaxCount:(int64_t)count minPrefixLength:(int64_t)length;
+- (void)cacheGroundedToken:(id)token;
 @end
 
 @implementation QPEntityResolutionPrefixCache
@@ -26,7 +26,7 @@ void __44__QPEntityResolutionPrefixCache_sharedCache__block_invoke()
   sharedCache_cache = v0;
 }
 
-- (QPEntityResolutionPrefixCache)initWithMaxCount:(int64_t)a3 minPrefixLength:(int64_t)a4
+- (QPEntityResolutionPrefixCache)initWithMaxCount:(int64_t)count minPrefixLength:(int64_t)length
 {
   v12.receiver = self;
   v12.super_class = QPEntityResolutionPrefixCache;
@@ -35,15 +35,15 @@ void __44__QPEntityResolutionPrefixCache_sharedCache__block_invoke()
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    v8 = 2;
-    if (a3 > 2)
+    countCopy = 2;
+    if (count > 2)
     {
-      v8 = a3;
+      countCopy = count;
     }
 
-    v6->_maxCount = v8;
-    v6->_minPrefixLength = a4;
-    v9 = [MEMORY[0x1E695DFA0] orderedSetWithCapacity:a3];
+    v6->_maxCount = countCopy;
+    v6->_minPrefixLength = length;
+    v9 = [MEMORY[0x1E695DFA0] orderedSetWithCapacity:count];
     cache = v7->_cache;
     v7->_cache = v9;
   }
@@ -51,11 +51,11 @@ void __44__QPEntityResolutionPrefixCache_sharedCache__block_invoke()
   return v7;
 }
 
-- (BOOL)hasPreviouslyGroundedPrefixOfToken:(id)a3
+- (BOOL)hasPreviouslyGroundedPrefixOfToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_minPrefixLength >= [v4 length])
+  if (self->_minPrefixLength >= [tokenCopy length])
   {
     LOBYTE(v8) = 0;
   }
@@ -66,7 +66,7 @@ void __44__QPEntityResolutionPrefixCache_sharedCache__block_invoke()
     v6 = -1;
     do
     {
-      v7 = [v4 substringToIndex:{objc_msgSend(v4, "length") + v6}];
+      v7 = [tokenCopy substringToIndex:{objc_msgSend(tokenCopy, "length") + v6}];
       v8 = [(NSMutableOrderedSet *)self->_cache containsObject:v7];
 
       if (v8)
@@ -74,7 +74,7 @@ void __44__QPEntityResolutionPrefixCache_sharedCache__block_invoke()
         break;
       }
 
-      v9 = [v4 length] - self->_minPrefixLength;
+      v9 = [tokenCopy length] - self->_minPrefixLength;
       if (v9 >= 2)
       {
         v9 = 2;
@@ -92,14 +92,14 @@ void __44__QPEntityResolutionPrefixCache_sharedCache__block_invoke()
   return v8;
 }
 
-- (void)cacheGroundedToken:(id)a3
+- (void)cacheGroundedToken:(id)token
 {
-  v4 = a3;
-  if ([v4 length] >= self->_minPrefixLength)
+  tokenCopy = token;
+  if ([tokenCopy length] >= self->_minPrefixLength)
   {
     os_unfair_lock_lock(&self->_lock);
     p_cache = &self->_cache;
-    if (([(NSMutableOrderedSet *)self->_cache containsObject:v4]& 1) == 0)
+    if (([(NSMutableOrderedSet *)self->_cache containsObject:tokenCopy]& 1) == 0)
     {
       if ([(NSMutableOrderedSet *)self->_cache count]>= self->_maxCount)
       {
@@ -116,7 +116,7 @@ void __44__QPEntityResolutionPrefixCache_sharedCache__block_invoke()
         }
       }
 
-      [(NSMutableOrderedSet *)*p_cache addObject:v4];
+      [(NSMutableOrderedSet *)*p_cache addObject:tokenCopy];
     }
 
     os_unfair_lock_unlock(&self->_lock);

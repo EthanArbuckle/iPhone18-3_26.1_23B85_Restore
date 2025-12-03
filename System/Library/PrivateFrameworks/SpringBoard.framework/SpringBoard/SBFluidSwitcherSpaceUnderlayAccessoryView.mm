@@ -1,43 +1,43 @@
 @interface SBFluidSwitcherSpaceUnderlayAccessoryView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (BOOL)shouldBeginPointerInteractionRequest:(id)a3 atLocation:(CGPoint)a4 forView:(id)a5;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (BOOL)shouldBeginPointerInteractionRequest:(id)request atLocation:(CGPoint)location forView:(id)view;
 - (CGPoint)contentViewOffset;
 - (CGPoint)resizeGrabberCenter;
 - (CGRect)resizeGrabberBounds;
-- (SBFluidSwitcherSpaceUnderlayAccessoryView)initWithDelegate:(id)a3 systemPointerInteractionManager:(id)a4;
+- (SBFluidSwitcherSpaceUnderlayAccessoryView)initWithDelegate:(id)delegate systemPointerInteractionManager:(id)manager;
 - (SBFluidSwitcherSpaceUnderlayAccessoryViewDelegate)delegate;
-- (UIEdgeInsets)pointerInteractionHitTestInsetsForView:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)styleForRegion:(id)a3 forView:(id)a4;
+- (UIEdgeInsets)pointerInteractionHitTestInsetsForView:(id)view;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)styleForRegion:(id)region forView:(id)view;
 - (void)_configureDebugBorder;
 - (void)_updateBackgroundView;
 - (void)_updateBackgroundViewVisibility;
 - (void)_updateContentView;
-- (void)_updateHeaderAnimated:(BOOL)a3;
+- (void)_updateHeaderAnimated:(BOOL)animated;
 - (void)_updateResizeGrabber;
 - (void)_updateResizeGrabberVisibility;
 - (void)_updateShadowView;
 - (void)_updateShadowVisibility;
 - (void)dealloc;
-- (void)itemContainerHeaderView:(id)a3 didSelectTitleItem:(id)a4;
+- (void)itemContainerHeaderView:(id)view didSelectTitleItem:(id)item;
 - (void)layoutSubviews;
-- (void)setBackgroundOpacity:(double)a3;
-- (void)setContentScale:(double)a3;
-- (void)setContentViewOffset:(CGPoint)a3;
-- (void)setContentViewScale:(double)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setHeaderOpacity:(double)a3 updateMode:(int64_t)a4 settings:(id)a5 completion:(id)a6;
-- (void)setKeyboardHeight:(double)a3;
-- (void)setMaskedCorners:(unint64_t)a3;
-- (void)setResizeGrabberBounds:(CGRect)a3;
-- (void)setResizeGrabberCenter:(CGPoint)a3;
-- (void)setResizeGrabberOpacity:(double)a3;
-- (void)setShadowAlpha:(double)a3;
-- (void)setShadowOffset:(double)a3;
-- (void)setShadowPath:(id)a3;
-- (void)setShadowStyle:(int64_t)a3;
-- (void)setTitleItems:(id)a3 animated:(BOOL)a4;
-- (void)setTitleOpacity:(double)a3;
+- (void)setBackgroundOpacity:(double)opacity;
+- (void)setContentScale:(double)scale;
+- (void)setContentViewOffset:(CGPoint)offset;
+- (void)setContentViewScale:(double)scale;
+- (void)setCornerRadius:(double)radius;
+- (void)setHeaderOpacity:(double)opacity updateMode:(int64_t)mode settings:(id)settings completion:(id)completion;
+- (void)setKeyboardHeight:(double)height;
+- (void)setMaskedCorners:(unint64_t)corners;
+- (void)setResizeGrabberBounds:(CGRect)bounds;
+- (void)setResizeGrabberCenter:(CGPoint)center;
+- (void)setResizeGrabberOpacity:(double)opacity;
+- (void)setShadowAlpha:(double)alpha;
+- (void)setShadowOffset:(double)offset;
+- (void)setShadowPath:(id)path;
+- (void)setShadowStyle:(int64_t)style;
+- (void)setTitleItems:(id)items animated:(BOOL)animated;
+- (void)setTitleOpacity:(double)opacity;
 @end
 
 @implementation SBFluidSwitcherSpaceUnderlayAccessoryView
@@ -46,8 +46,8 @@
 {
   [(UIView *)self->_backgroundView setAlpha:self->_backgroundOpacity];
   [(UIView *)self->_backgroundView _setContinuousCornerRadius:self->_cornerRadius];
-  v3 = [(UIView *)self->_backgroundView layer];
-  [v3 setMaskedCorners:self->_maskedCorners];
+  layer = [(UIView *)self->_backgroundView layer];
+  [layer setMaskedCorners:self->_maskedCorners];
 }
 
 - (void)_updateShadowView
@@ -57,8 +57,8 @@
   [(SBAppSwitcherPageShadowView *)self->_shadowView setShadowOffset:self->_shadowOffset];
   [(SBAppSwitcherPageShadowView *)self->_shadowView setShadowPath:self->_shadowPath];
   [(SBAppSwitcherPageShadowView *)self->_shadowView _setContinuousCornerRadius:self->_cornerRadius];
-  v3 = [(SBAppSwitcherPageShadowView *)self->_shadowView layer];
-  [v3 setMaskedCorners:self->_maskedCorners];
+  layer = [(SBAppSwitcherPageShadowView *)self->_shadowView layer];
+  [layer setMaskedCorners:self->_maskedCorners];
 
   shadowView = self->_shadowView;
   contentScale = self->_contentScale;
@@ -73,18 +73,18 @@
   [(SBSeparatorView *)self->_resizeGrabber setAlpha:self->_resizeGrabberOpacity];
   [(SBSeparatorView *)self->_resizeGrabber setKeyboardHeight:self->_keyboardHeight];
   WeakRetained = objc_loadWeakRetained(&self->_systemPointerInteractionManager);
-  v3 = [(SBSeparatorView *)self->_resizeGrabber nubView];
-  if (BSFloatIsZero() & 1) != 0 || ([WeakRetained isViewRegistered:v3])
+  nubView = [(SBSeparatorView *)self->_resizeGrabber nubView];
+  if (BSFloatIsZero() & 1) != 0 || ([WeakRetained isViewRegistered:nubView])
   {
-    if (BSFloatIsZero() && [WeakRetained isViewRegistered:v3])
+    if (BSFloatIsZero() && [WeakRetained isViewRegistered:nubView])
     {
-      [WeakRetained unregisterView:v3];
+      [WeakRetained unregisterView:nubView];
     }
   }
 
   else
   {
-    [WeakRetained registerView:v3 delegate:self];
+    [WeakRetained registerView:nubView delegate:self];
   }
 }
 
@@ -114,8 +114,8 @@
   v29.size.width = v8;
   v29.size.height = v10;
   CGRectGetWidth(v29);
-  v15 = [(SBFluidSwitcherItemContainerHeaderView *)self->_headerView layer];
-  [v15 anchorPoint];
+  layer = [(SBFluidSwitcherItemContainerHeaderView *)self->_headerView layer];
+  [layer anchorPoint];
 
   [(SBFluidSwitcherItemContainerHeaderView *)self->_headerView preferredHeaderHeight];
   v30.origin.x = v4;
@@ -128,8 +128,8 @@
   v31.size.width = v8;
   v31.size.height = v10;
   CGRectGetMinY(v31);
-  v16 = [MEMORY[0x277D759A0] mainScreen];
-  [v16 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   UIRectIntegralWithScale();
   v18 = v17;
   v20 = v19;
@@ -238,8 +238,8 @@ uint64_t __68__SBFluidSwitcherSpaceUnderlayAccessoryView__updateShadowVisibility
     goto LABEL_7;
   }
 
-  v9 = [MEMORY[0x277D75418] currentDevice];
-  if ([v9 userInterfaceIdiom] == 1)
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 1)
   {
     resizeGrabber = self->_resizeGrabber;
 
@@ -264,10 +264,10 @@ LABEL_7:
   }
 }
 
-- (SBFluidSwitcherSpaceUnderlayAccessoryView)initWithDelegate:(id)a3 systemPointerInteractionManager:(id)a4
+- (SBFluidSwitcherSpaceUnderlayAccessoryView)initWithDelegate:(id)delegate systemPointerInteractionManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  managerCopy = manager;
   v21.receiver = self;
   v21.super_class = SBFluidSwitcherSpaceUnderlayAccessoryView;
   v8 = *MEMORY[0x277CBF3A0];
@@ -278,12 +278,12 @@ LABEL_7:
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_delegate, v6);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
     v14 = +[SBAppSwitcherDomain rootSettings];
     settings = v13->_settings;
     v13->_settings = v14;
 
-    objc_storeWeak(&v13->_systemPointerInteractionManager, v7);
+    objc_storeWeak(&v13->_systemPointerInteractionManager, managerCopy);
     v13->_titleOpacity = 1.0;
     v13->_backgroundOpacity = 0.0;
     v13->_shadowStyle = 1;
@@ -293,8 +293,8 @@ LABEL_7:
     v13->_contentView = v16;
 
     v18 = v13->_contentView;
-    v19 = [MEMORY[0x277D75348] clearColor];
-    [(SBFTouchPassThroughView *)v18 setBackgroundColor:v19];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SBFTouchPassThroughView *)v18 setBackgroundColor:clearColor];
 
     [(SBFTouchPassThroughClippingView *)v13 addSubview:v13->_contentView];
     [(SBFluidSwitcherSpaceUnderlayAccessoryView *)v13 _updateBackgroundViewVisibility];
@@ -309,43 +309,43 @@ LABEL_7:
 {
   [(SBFluidSwitcherSpaceUnderlayAccessoryView *)self prepareForReuse];
   WeakRetained = objc_loadWeakRetained(&self->_systemPointerInteractionManager);
-  v4 = [(SBSeparatorView *)self->_resizeGrabber nubView];
-  [WeakRetained unregisterView:v4];
+  nubView = [(SBSeparatorView *)self->_resizeGrabber nubView];
+  [WeakRetained unregisterView:nubView];
 
   v5.receiver = self;
   v5.super_class = SBFluidSwitcherSpaceUnderlayAccessoryView;
   [(SBFluidSwitcherSpaceUnderlayAccessoryView *)&v5 dealloc];
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
   v5.receiver = self;
   v5.super_class = SBFluidSwitcherSpaceUnderlayAccessoryView;
   [(SBFTouchPassThroughClippingView *)&v5 _setContinuousCornerRadius:?];
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(SBFluidSwitcherSpaceUnderlayAccessoryView *)self _updateBackgroundView];
     [(SBFluidSwitcherSpaceUnderlayAccessoryView *)self _updateShadowView];
   }
 }
 
-- (void)setMaskedCorners:(unint64_t)a3
+- (void)setMaskedCorners:(unint64_t)corners
 {
-  if (self->_maskedCorners != a3)
+  if (self->_maskedCorners != corners)
   {
-    self->_maskedCorners = a3;
+    self->_maskedCorners = corners;
     [(SBFluidSwitcherSpaceUnderlayAccessoryView *)self _updateBackgroundView];
 
     [(SBFluidSwitcherSpaceUnderlayAccessoryView *)self _updateShadowView];
   }
 }
 
-- (void)setContentScale:(double)a3
+- (void)setContentScale:(double)scale
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_contentScale = a3;
+    self->_contentScale = scale;
     [(SBFluidSwitcherSpaceUnderlayAccessoryView *)self _updateShadowView];
     [(SBFluidSwitcherSpaceUnderlayAccessoryView *)self setNeedsLayout];
 
@@ -353,31 +353,31 @@ LABEL_7:
   }
 }
 
-- (void)setKeyboardHeight:(double)a3
+- (void)setKeyboardHeight:(double)height
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_keyboardHeight = a3;
+    self->_keyboardHeight = height;
 
     [(SBFluidSwitcherSpaceUnderlayAccessoryView *)self _updateResizeGrabber];
   }
 }
 
-- (void)setHeaderOpacity:(double)a3 updateMode:(int64_t)a4 settings:(id)a5 completion:(id)a6
+- (void)setHeaderOpacity:(double)opacity updateMode:(int64_t)mode settings:(id)settings completion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
+  settingsCopy = settings;
+  completionCopy = completion;
   if (BSFloatEqualToFloat())
   {
-    if (v11)
+    if (completionCopy)
     {
-      v11[2](v11, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
   }
 
   else
   {
-    self->_headerOpacity = a3;
+    self->_headerOpacity = opacity;
     IsZero = BSFloatIsZero();
     headerView = self->_headerView;
     if (IsZero)
@@ -396,8 +396,8 @@ LABEL_7:
         v15[2] = __93__SBFluidSwitcherSpaceUnderlayAccessoryView_setHeaderOpacity_updateMode_settings_completion___block_invoke_4;
         v15[3] = &unk_2783AEC78;
         objc_copyWeak(&v17, &location);
-        v16 = v11;
-        [v14 sb_animateWithSettings:v10 mode:a4 animations:v18 completion:v15];
+        v16 = completionCopy;
+        [v14 sb_animateWithSettings:settingsCopy mode:mode animations:v18 completion:v15];
 
         objc_destroyWeak(&v17);
         objc_destroyWeak(&location);
@@ -421,7 +421,7 @@ LABEL_7:
       v20[2] = __93__SBFluidSwitcherSpaceUnderlayAccessoryView_setHeaderOpacity_updateMode_settings_completion___block_invoke_2;
       v20[3] = &unk_2783A8C18;
       v20[4] = self;
-      [MEMORY[0x277D75D18] sb_animateWithSettings:v10 mode:a4 animations:v20 completion:v11];
+      [MEMORY[0x277D75D18] sb_animateWithSettings:settingsCopy mode:mode animations:v20 completion:completionCopy];
     }
   }
 }
@@ -482,106 +482,106 @@ void __93__SBFluidSwitcherSpaceUnderlayAccessoryView_setHeaderOpacity_updateMode
   }
 }
 
-- (void)setTitleItems:(id)a3 animated:(BOOL)a4
+- (void)setTitleItems:(id)items animated:(BOOL)animated
 {
-  v4 = a4;
-  v8 = a3;
+  animatedCopy = animated;
+  itemsCopy = items;
   if ((BSEqualArrays() & 1) == 0)
   {
-    v6 = [v8 copy];
+    v6 = [itemsCopy copy];
     titleItems = self->_titleItems;
     self->_titleItems = v6;
 
-    [(SBFluidSwitcherSpaceUnderlayAccessoryView *)self _updateHeaderAnimated:v4];
+    [(SBFluidSwitcherSpaceUnderlayAccessoryView *)self _updateHeaderAnimated:animatedCopy];
   }
 }
 
-- (void)setTitleOpacity:(double)a3
+- (void)setTitleOpacity:(double)opacity
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_titleOpacity = a3;
+    self->_titleOpacity = opacity;
 
     [(SBFluidSwitcherSpaceUnderlayAccessoryView *)self _updateHeaderAnimated:0];
   }
 }
 
-- (void)setBackgroundOpacity:(double)a3
+- (void)setBackgroundOpacity:(double)opacity
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_backgroundOpacity = a3;
+    self->_backgroundOpacity = opacity;
 
     [(SBFluidSwitcherSpaceUnderlayAccessoryView *)self _updateBackgroundView];
   }
 }
 
-- (void)setShadowStyle:(int64_t)a3
+- (void)setShadowStyle:(int64_t)style
 {
-  if (self->_shadowStyle != a3)
+  if (self->_shadowStyle != style)
   {
-    self->_shadowStyle = a3;
+    self->_shadowStyle = style;
     [(SBFluidSwitcherSpaceUnderlayAccessoryView *)self _updateShadowView];
   }
 }
 
-- (void)setShadowAlpha:(double)a3
+- (void)setShadowAlpha:(double)alpha
 {
-  if (self->_shadowAlpha != a3)
+  if (self->_shadowAlpha != alpha)
   {
-    self->_shadowAlpha = a3;
+    self->_shadowAlpha = alpha;
     [(SBFluidSwitcherSpaceUnderlayAccessoryView *)self _updateShadowView];
   }
 }
 
-- (void)setShadowOffset:(double)a3
+- (void)setShadowOffset:(double)offset
 {
-  if (self->_shadowOffset != a3)
+  if (self->_shadowOffset != offset)
   {
-    self->_shadowOffset = a3;
+    self->_shadowOffset = offset;
     [(SBFluidSwitcherSpaceUnderlayAccessoryView *)self _updateShadowView];
   }
 }
 
-- (void)setShadowPath:(id)a3
+- (void)setShadowPath:(id)path
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_shadowPath] & 1) == 0)
+  pathCopy = path;
+  if (([pathCopy isEqual:self->_shadowPath] & 1) == 0)
   {
-    objc_storeStrong(&self->_shadowPath, a3);
+    objc_storeStrong(&self->_shadowPath, path);
     [(SBFluidSwitcherSpaceUnderlayAccessoryView *)self _updateShadowView];
   }
 }
 
-- (void)setContentViewScale:(double)a3
+- (void)setContentViewScale:(double)scale
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_contentViewScale = a3;
+    self->_contentViewScale = scale;
 
     [(SBFluidSwitcherSpaceUnderlayAccessoryView *)self _updateContentView];
   }
 }
 
-- (void)setContentViewOffset:(CGPoint)a3
+- (void)setContentViewOffset:(CGPoint)offset
 {
-  if (a3.x != self->_contentViewOffset.x || a3.y != self->_contentViewOffset.y)
+  if (offset.x != self->_contentViewOffset.x || offset.y != self->_contentViewOffset.y)
   {
-    self->_contentViewOffset = a3;
+    self->_contentViewOffset = offset;
     [(SBFluidSwitcherSpaceUnderlayAccessoryView *)self setNeedsLayout];
 
     [(SBFluidSwitcherSpaceUnderlayAccessoryView *)self layoutIfNeeded];
   }
 }
 
-- (void)setResizeGrabberBounds:(CGRect)a3
+- (void)setResizeGrabberBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   p_resizeGrabberBounds = &self->_resizeGrabberBounds;
-  if (!CGRectEqualToRect(a3, self->_resizeGrabberBounds))
+  if (!CGRectEqualToRect(bounds, self->_resizeGrabberBounds))
   {
     p_resizeGrabberBounds->origin.x = x;
     p_resizeGrabberBounds->origin.y = y;
@@ -592,37 +592,37 @@ void __93__SBFluidSwitcherSpaceUnderlayAccessoryView_setHeaderOpacity_updateMode
   }
 }
 
-- (void)setResizeGrabberCenter:(CGPoint)a3
+- (void)setResizeGrabberCenter:(CGPoint)center
 {
-  if (a3.x != self->_resizeGrabberCenter.x || a3.y != self->_resizeGrabberCenter.y)
+  if (center.x != self->_resizeGrabberCenter.x || center.y != self->_resizeGrabberCenter.y)
   {
-    self->_resizeGrabberCenter = a3;
+    self->_resizeGrabberCenter = center;
     [(SBFluidSwitcherSpaceUnderlayAccessoryView *)self _updateResizeGrabber];
   }
 }
 
-- (void)setResizeGrabberOpacity:(double)a3
+- (void)setResizeGrabberOpacity:(double)opacity
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_resizeGrabberOpacity = a3;
+    self->_resizeGrabberOpacity = opacity;
 
     [(SBFluidSwitcherSpaceUnderlayAccessoryView *)self _updateResizeGrabber];
   }
 }
 
-- (void)itemContainerHeaderView:(id)a3 didSelectTitleItem:(id)a4
+- (void)itemContainerHeaderView:(id)view didSelectTitleItem:(id)item
 {
-  v11 = a3;
-  v6 = a4;
-  if (v6)
+  viewCopy = view;
+  itemCopy = item;
+  if (itemCopy)
   {
     v7 = &SBLayoutRolePrimary;
     if ([(NSArray *)self->_titleItems count]>= 2)
     {
       v8 = [(NSArray *)self->_titleItems objectAtIndex:1];
 
-      if (v8 == v6)
+      if (v8 == itemCopy)
       {
         v7 = &SBLayoutRoleSide;
       }
@@ -634,10 +634,10 @@ void __93__SBFluidSwitcherSpaceUnderlayAccessoryView_setHeaderOpacity_updateMode
   }
 }
 
-- (BOOL)shouldBeginPointerInteractionRequest:(id)a3 atLocation:(CGPoint)a4 forView:(id)a5
+- (BOOL)shouldBeginPointerInteractionRequest:(id)request atLocation:(CGPoint)location forView:(id)view
 {
-  v7 = a5;
-  if ([a3 _isPencilInitiated])
+  viewCopy = view;
+  if ([request _isPencilInitiated])
   {
     isKindOfClass = 0;
   }
@@ -660,7 +660,7 @@ void __93__SBFluidSwitcherSpaceUnderlayAccessoryView_setHeaderOpacity_updateMode
   return isKindOfClass & 1;
 }
 
-- (UIEdgeInsets)pointerInteractionHitTestInsetsForView:(id)a3
+- (UIEdgeInsets)pointerInteractionHitTestInsetsForView:(id)view
 {
   v3 = -20.0;
   v4 = -20.0;
@@ -673,11 +673,11 @@ void __93__SBFluidSwitcherSpaceUnderlayAccessoryView_setHeaderOpacity_updateMode
   return result;
 }
 
-- (id)styleForRegion:(id)a3 forView:(id)a4
+- (id)styleForRegion:(id)region forView:(id)view
 {
-  v4 = a4;
+  viewCopy = view;
   v5 = objc_opt_class();
-  v6 = SBSafeCast(v5, v4);
+  v6 = SBSafeCast(v5, viewCopy);
 
   if (v6)
   {
@@ -711,14 +711,14 @@ void __93__SBFluidSwitcherSpaceUnderlayAccessoryView_setHeaderOpacity_updateMode
   return v27;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   v11.receiver = self;
   v11.super_class = SBFluidSwitcherSpaceUnderlayAccessoryView;
-  if ([(SBFluidSwitcherSpaceUnderlayAccessoryView *)&v11 pointInside:v7 withEvent:x, y])
+  if ([(SBFluidSwitcherSpaceUnderlayAccessoryView *)&v11 pointInside:eventCopy withEvent:x, y])
   {
     v8 = 1;
   }
@@ -730,7 +730,7 @@ void __93__SBFluidSwitcherSpaceUnderlayAccessoryView_setHeaderOpacity_updateMode
     {
       headerView = self->_headerView;
       [(SBFluidSwitcherSpaceUnderlayAccessoryView *)self convertPoint:headerView toView:x, y];
-      v8 = [(SBFluidSwitcherItemContainerHeaderView *)headerView pointInside:v7 withEvent:?];
+      v8 = [(SBFluidSwitcherItemContainerHeaderView *)headerView pointInside:eventCopy withEvent:?];
     }
 
     else
@@ -742,15 +742,15 @@ void __93__SBFluidSwitcherSpaceUnderlayAccessoryView_setHeaderOpacity_updateMode
   return v8;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v12.receiver = self;
   v12.super_class = SBFluidSwitcherSpaceUnderlayAccessoryView;
-  v8 = [(SBFTouchPassThroughView *)&v12 hitTest:v7 withEvent:x, y];
-  if (v8 || ([(SBFluidSwitcherItemContainerHeaderView *)self->_headerView alpha], BSFloatGreaterThanFloat()) && (headerView = self->_headerView, [(SBFluidSwitcherSpaceUnderlayAccessoryView *)self convertPoint:headerView toView:x, y], [(SBFluidSwitcherItemContainerHeaderView *)headerView hitTest:v7 withEvent:?], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  v8 = [(SBFTouchPassThroughView *)&v12 hitTest:eventCopy withEvent:x, y];
+  if (v8 || ([(SBFluidSwitcherItemContainerHeaderView *)self->_headerView alpha], BSFloatGreaterThanFloat()) && (headerView = self->_headerView, [(SBFluidSwitcherSpaceUnderlayAccessoryView *)self convertPoint:headerView toView:x, y], [(SBFluidSwitcherItemContainerHeaderView *)headerView hitTest:eventCopy withEvent:?], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v9 = v8;
   }
@@ -770,9 +770,9 @@ void __93__SBFluidSwitcherSpaceUnderlayAccessoryView_setHeaderOpacity_updateMode
   [(SBFTouchPassThroughView *)contentView setTransform:&v3];
 }
 
-- (void)_updateHeaderAnimated:(BOOL)a3
+- (void)_updateHeaderAnimated:(BOOL)animated
 {
-  [(SBFluidSwitcherItemContainerHeaderView *)self->_headerView setTextAlpha:a3, self->_titleOpacity];
+  [(SBFluidSwitcherItemContainerHeaderView *)self->_headerView setTextAlpha:animated, self->_titleOpacity];
   headerView = self->_headerView;
   titleItems = self->_titleItems;
 
@@ -782,27 +782,27 @@ void __93__SBFluidSwitcherSpaceUnderlayAccessoryView_setHeaderOpacity_updateMode
 - (void)_configureDebugBorder
 {
   v14[7] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D75348] systemRedColor];
-  v4 = [MEMORY[0x277D75348] systemBlueColor];
-  v14[1] = v4;
-  v5 = [MEMORY[0x277D75348] systemYellowColor];
-  v14[2] = v5;
-  v6 = [MEMORY[0x277D75348] systemMintColor];
-  v14[3] = v6;
-  v7 = [MEMORY[0x277D75348] systemPurpleColor];
-  v14[4] = v7;
-  v8 = [MEMORY[0x277D75348] systemOrangeColor];
-  v14[5] = v8;
-  v9 = [MEMORY[0x277D75348] systemIndigoColor];
-  v14[6] = v9;
+  systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  v14[1] = systemBlueColor;
+  systemYellowColor = [MEMORY[0x277D75348] systemYellowColor];
+  v14[2] = systemYellowColor;
+  systemMintColor = [MEMORY[0x277D75348] systemMintColor];
+  v14[3] = systemMintColor;
+  systemPurpleColor = [MEMORY[0x277D75348] systemPurpleColor];
+  v14[4] = systemPurpleColor;
+  systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+  v14[5] = systemOrangeColor;
+  systemIndigoColor = [MEMORY[0x277D75348] systemIndigoColor];
+  v14[6] = systemIndigoColor;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:7];
 
   v11 = [v10 objectAtIndex:{arc4random() % objc_msgSend(v10, "count")}];
-  v12 = [(SBFluidSwitcherSpaceUnderlayAccessoryView *)self layer];
-  [v12 setBorderColor:{objc_msgSend(v11, "cgColor")}];
+  layer = [(SBFluidSwitcherSpaceUnderlayAccessoryView *)self layer];
+  [layer setBorderColor:{objc_msgSend(v11, "cgColor")}];
 
-  v13 = [(SBFluidSwitcherSpaceUnderlayAccessoryView *)self layer];
-  [v13 setBorderWidth:8.0];
+  layer2 = [(SBFluidSwitcherSpaceUnderlayAccessoryView *)self layer];
+  [layer2 setBorderWidth:8.0];
 }
 
 - (SBFluidSwitcherSpaceUnderlayAccessoryViewDelegate)delegate

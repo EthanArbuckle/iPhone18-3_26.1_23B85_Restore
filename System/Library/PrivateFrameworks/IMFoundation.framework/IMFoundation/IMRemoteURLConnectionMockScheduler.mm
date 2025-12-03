@@ -1,8 +1,8 @@
 @interface IMRemoteURLConnectionMockScheduler
 - (BOOL)_connect;
 - (IMRemoteURLConnectionMockScheduler)init;
-- (void)scheduleMockResponse:(id)a3;
-- (void)scheduleMockResponse:(id)a3 forURL:(id)a4;
+- (void)scheduleMockResponse:(id)response;
+- (void)scheduleMockResponse:(id)response forURL:(id)l;
 @end
 
 @implementation IMRemoteURLConnectionMockScheduler
@@ -36,25 +36,25 @@
   return self->_connection != 0;
 }
 
-- (void)scheduleMockResponse:(id)a3 forURL:(id)a4
+- (void)scheduleMockResponse:(id)response forURL:(id)l
 {
-  v14 = a3;
+  responseCopy = response;
   if (objc_msgSend__connect(self, v5, v6))
   {
     v7 = xpc_dictionary_create(0, 0, 0);
-    IMInsertKeyedCodableObjectsToXPCDictionary(v7, "mockResponse", v8, v9, v10, v11, v12, v13, v14);
+    IMInsertKeyedCodableObjectsToXPCDictionary(v7, "mockResponse", v8, v9, v10, v11, v12, v13, responseCopy);
     xpc_connection_send_message(self->_connection, v7);
   }
 }
 
-- (void)scheduleMockResponse:(id)a3
+- (void)scheduleMockResponse:(id)response
 {
-  v4 = a3;
-  v14 = objc_msgSend_response(v4, v5, v6);
+  responseCopy = response;
+  v14 = objc_msgSend_response(responseCopy, v5, v6);
   v9 = objc_msgSend_URL(v14, v7, v8);
   v12 = objc_msgSend_absoluteString(v9, v10, v11);
 
-  objc_msgSend_scheduleMockResponse_forURL_(self, v13, v4, v12);
+  objc_msgSend_scheduleMockResponse_forURL_(self, v13, responseCopy, v12);
 }
 
 @end

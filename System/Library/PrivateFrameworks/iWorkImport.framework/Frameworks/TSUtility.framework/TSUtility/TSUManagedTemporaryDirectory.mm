@@ -1,36 +1,36 @@
 @interface TSUManagedTemporaryDirectory
 - (TSUManagedTemporaryDirectory)init;
-- (TSUManagedTemporaryDirectory)initWithURL:(id)a3;
+- (TSUManagedTemporaryDirectory)initWithURL:(id)l;
 - (void)dealloc;
 @end
 
 @implementation TSUManagedTemporaryDirectory
 
-- (TSUManagedTemporaryDirectory)initWithURL:(id)a3
+- (TSUManagedTemporaryDirectory)initWithURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
     v10.receiver = self;
     v10.super_class = TSUManagedTemporaryDirectory;
     v5 = [(TSUManagedTemporaryDirectory *)&v10 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [lCopy copy];
       URL = v5->_URL;
       v5->_URL = v6;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (TSUManagedTemporaryDirectory)init
@@ -58,10 +58,10 @@
 
   if ([(NSURL *)self->_URL checkResourceIsReachableAndReturnError:0])
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     URL = self->_URL;
     v7 = 0;
-    v5 = [v3 removeItemAtURL:URL error:&v7];
+    v5 = [defaultManager removeItemAtURL:URL error:&v7];
 
     if ((v5 & 1) == 0 && TSUManagedTemporaryLogCat_init_token != -1)
     {

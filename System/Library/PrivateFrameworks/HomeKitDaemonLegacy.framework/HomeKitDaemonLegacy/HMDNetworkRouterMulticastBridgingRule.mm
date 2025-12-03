@@ -1,47 +1,47 @@
 @interface HMDNetworkRouterMulticastBridgingRule
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-+ (id)ruleFromFirewallRuleLAN:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
++ (id)ruleFromFirewallRuleLAN:(id)n;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HMDNetworkRouterMulticastBridgingRule)init;
-- (HMDNetworkRouterMulticastBridgingRule)initWithDirection:(id)a3 lanIdentifierList:(id)a4 destinationIPAddress:(id)a5 destinationPort:(id)a6;
+- (HMDNetworkRouterMulticastBridgingRule)initWithDirection:(id)direction lanIdentifierList:(id)list destinationIPAddress:(id)address destinationPort:(id)port;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
-- (void)addTo:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
+- (void)addTo:(id)to;
 @end
 
 @implementation HMDNetworkRouterMulticastBridgingRule
 
-- (void)addTo:(id)a3
+- (void)addTo:(id)to
 {
-  v7 = a3;
-  v4 = [v7 multicastBridgingRules];
-  v5 = v4;
-  if (v4)
+  toCopy = to;
+  multicastBridgingRules = [toCopy multicastBridgingRules];
+  v5 = multicastBridgingRules;
+  if (multicastBridgingRules)
   {
-    [v4 addObject:self];
+    [multicastBridgingRules addObject:self];
   }
 
   else
   {
     v6 = [MEMORY[0x277CBEB18] arrayWithObject:self];
-    [v7 setMulticastBridgingRules:v6];
+    [toCopy setMulticastBridgingRules:v6];
   }
 }
 
-+ (id)ruleFromFirewallRuleLAN:(id)a3
++ (id)ruleFromFirewallRuleLAN:(id)n
 {
-  v3 = a3;
-  v4 = +[HMDNetworkRouterRuleDirection directionFromLANDirection:](HMDNetworkRouterRuleDirection, "directionFromLANDirection:", [v3 direction]);
-  v5 = createIdentifierListFromLANRule(v3);
+  nCopy = n;
+  v4 = +[HMDNetworkRouterRuleDirection directionFromLANDirection:](HMDNetworkRouterRuleDirection, "directionFromLANDirection:", [nCopy direction]);
+  v5 = createIdentifierListFromLANRule(nCopy);
   v6 = objc_alloc(MEMORY[0x277CFEC98]);
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(v3, "port")}];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(nCopy, "port")}];
   v8 = [v6 initWithValue:v7];
 
-  v9 = [v3 ipAddress];
+  ipAddress = [nCopy ipAddress];
 
-  v10 = [HMDNetworkRouterIPAddress ipAddressFromRuleAddress:v9 allowWildcard:0];
+  v10 = [HMDNetworkRouterIPAddress ipAddressFromRuleAddress:ipAddress allowWildcard:0];
 
   v11 = 0;
   if (v4 && v5 && v8 && v10)
@@ -55,19 +55,19 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDNetworkRouterMulticastBridgingRule *)self direction];
-  v5 = [(HMDNetworkRouterMulticastBridgingRule *)self lanIdentifierList];
-  v6 = [(HMDNetworkRouterMulticastBridgingRule *)self destinationIPAddress];
-  v7 = [(HMDNetworkRouterMulticastBridgingRule *)self destinationPort];
-  v8 = [v3 stringWithFormat:@"<HMDNetworkRouterMulticastBridgingRule direction=%@, lanIdentifierList=%@, destinationIPAddress=%@, destinationPort=%@>", v4, v5, v6, v7];
+  direction = [(HMDNetworkRouterMulticastBridgingRule *)self direction];
+  lanIdentifierList = [(HMDNetworkRouterMulticastBridgingRule *)self lanIdentifierList];
+  destinationIPAddress = [(HMDNetworkRouterMulticastBridgingRule *)self destinationIPAddress];
+  destinationPort = [(HMDNetworkRouterMulticastBridgingRule *)self destinationPort];
+  v8 = [v3 stringWithFormat:@"<HMDNetworkRouterMulticastBridgingRule direction=%@, lanIdentifierList=%@, destinationIPAddress=%@, destinationPort=%@>", direction, lanIdentifierList, destinationIPAddress, destinationPort];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -77,34 +77,34 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HMDNetworkRouterMulticastBridgingRule *)self direction];
-      v8 = [(HMDNetworkRouterMulticastBridgingRule *)v6 direction];
-      if (v7 != v8)
+      v6 = equalCopy;
+      direction = [(HMDNetworkRouterMulticastBridgingRule *)self direction];
+      direction2 = [(HMDNetworkRouterMulticastBridgingRule *)v6 direction];
+      if (direction != direction2)
       {
-        v9 = [(HMDNetworkRouterMulticastBridgingRule *)self direction];
+        direction3 = [(HMDNetworkRouterMulticastBridgingRule *)self direction];
         [(HMDNetworkRouterMulticastBridgingRule *)v6 direction];
-        v33 = v32 = v9;
-        if (![v9 isEqual:?])
+        v33 = v32 = direction3;
+        if (![direction3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_24;
         }
       }
 
-      v11 = [(HMDNetworkRouterMulticastBridgingRule *)self lanIdentifierList];
-      v12 = [(HMDNetworkRouterMulticastBridgingRule *)v6 lanIdentifierList];
-      if (v11 != v12)
+      lanIdentifierList = [(HMDNetworkRouterMulticastBridgingRule *)self lanIdentifierList];
+      lanIdentifierList2 = [(HMDNetworkRouterMulticastBridgingRule *)v6 lanIdentifierList];
+      if (lanIdentifierList != lanIdentifierList2)
       {
-        v3 = [(HMDNetworkRouterMulticastBridgingRule *)self lanIdentifierList];
-        v30 = [(HMDNetworkRouterMulticastBridgingRule *)v6 lanIdentifierList];
-        if (![v3 isEqual:?])
+        lanIdentifierList3 = [(HMDNetworkRouterMulticastBridgingRule *)self lanIdentifierList];
+        lanIdentifierList4 = [(HMDNetworkRouterMulticastBridgingRule *)v6 lanIdentifierList];
+        if (![lanIdentifierList3 isEqual:?])
         {
           v10 = 0;
 LABEL_22:
 
 LABEL_23:
-          if (v7 == v8)
+          if (direction == direction2)
           {
 LABEL_25:
 
@@ -117,38 +117,38 @@ LABEL_24:
         }
       }
 
-      v13 = [(HMDNetworkRouterMulticastBridgingRule *)self destinationIPAddress];
-      v14 = [(HMDNetworkRouterMulticastBridgingRule *)v6 destinationIPAddress];
-      v31 = v13;
-      v15 = v13 == v14;
-      v16 = v14;
+      destinationIPAddress = [(HMDNetworkRouterMulticastBridgingRule *)self destinationIPAddress];
+      destinationIPAddress2 = [(HMDNetworkRouterMulticastBridgingRule *)v6 destinationIPAddress];
+      v31 = destinationIPAddress;
+      v15 = destinationIPAddress == destinationIPAddress2;
+      v16 = destinationIPAddress2;
       if (v15)
       {
-        v28 = v3;
-        v29 = v12;
+        v28 = lanIdentifierList3;
+        v29 = lanIdentifierList2;
       }
 
       else
       {
-        v17 = [(HMDNetworkRouterMulticastBridgingRule *)self destinationIPAddress];
-        v25 = [(HMDNetworkRouterMulticastBridgingRule *)v6 destinationIPAddress];
-        v26 = v17;
-        if (![v17 isEqual:?])
+        destinationIPAddress3 = [(HMDNetworkRouterMulticastBridgingRule *)self destinationIPAddress];
+        destinationIPAddress4 = [(HMDNetworkRouterMulticastBridgingRule *)v6 destinationIPAddress];
+        v26 = destinationIPAddress3;
+        if (![destinationIPAddress3 isEqual:?])
         {
           v10 = 0;
           v23 = v31;
           goto LABEL_20;
         }
 
-        v28 = v3;
-        v29 = v12;
+        v28 = lanIdentifierList3;
+        v29 = lanIdentifierList2;
       }
 
       v27 = v16;
-      v18 = [(HMDNetworkRouterMulticastBridgingRule *)self destinationPort];
-      v19 = [(HMDNetworkRouterMulticastBridgingRule *)v6 destinationPort];
-      v20 = v19;
-      if (v18 == v19)
+      destinationPort = [(HMDNetworkRouterMulticastBridgingRule *)self destinationPort];
+      destinationPort2 = [(HMDNetworkRouterMulticastBridgingRule *)v6 destinationPort];
+      v20 = destinationPort2;
+      if (destinationPort == destinationPort2)
       {
 
         v10 = 1;
@@ -156,20 +156,20 @@ LABEL_24:
 
       else
       {
-        v21 = [(HMDNetworkRouterMulticastBridgingRule *)self destinationPort];
-        v22 = [(HMDNetworkRouterMulticastBridgingRule *)v6 destinationPort];
-        v10 = [v21 isEqual:v22];
+        destinationPort3 = [(HMDNetworkRouterMulticastBridgingRule *)self destinationPort];
+        destinationPort4 = [(HMDNetworkRouterMulticastBridgingRule *)v6 destinationPort];
+        v10 = [destinationPort3 isEqual:destinationPort4];
       }
 
       v23 = v31;
       v16 = v27;
-      v3 = v28;
-      v12 = v29;
+      lanIdentifierList3 = v28;
+      lanIdentifierList2 = v29;
       if (v31 == v27)
       {
 LABEL_21:
 
-        if (v11 == v12)
+        if (lanIdentifierList == lanIdentifierList2)
         {
           goto LABEL_23;
         }
@@ -190,19 +190,19 @@ LABEL_26:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDNetworkRouterMulticastBridgingRule allocWithZone:a3];
-  v5 = [(HMDNetworkRouterMulticastBridgingRule *)self direction];
-  v6 = [(HMDNetworkRouterMulticastBridgingRule *)self lanIdentifierList];
-  v7 = [(HMDNetworkRouterMulticastBridgingRule *)self destinationIPAddress];
-  v8 = [(HMDNetworkRouterMulticastBridgingRule *)self destinationPort];
-  v9 = [(HMDNetworkRouterMulticastBridgingRule *)v4 initWithDirection:v5 lanIdentifierList:v6 destinationIPAddress:v7 destinationPort:v8];
+  v4 = [HMDNetworkRouterMulticastBridgingRule allocWithZone:zone];
+  direction = [(HMDNetworkRouterMulticastBridgingRule *)self direction];
+  lanIdentifierList = [(HMDNetworkRouterMulticastBridgingRule *)self lanIdentifierList];
+  destinationIPAddress = [(HMDNetworkRouterMulticastBridgingRule *)self destinationIPAddress];
+  destinationPort = [(HMDNetworkRouterMulticastBridgingRule *)self destinationPort];
+  v9 = [(HMDNetworkRouterMulticastBridgingRule *)v4 initWithDirection:direction lanIdentifierList:lanIdentifierList destinationIPAddress:destinationIPAddress destinationPort:destinationPort];
 
   return v9;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
   v43 = 0u;
@@ -227,13 +227,13 @@ LABEL_26:
   v26 = 0u;
   v24 = 0u;
   TLV8BufferInit();
-  v5 = [(HMDNetworkRouterMulticastBridgingRule *)self direction];
+  direction = [(HMDNetworkRouterMulticastBridgingRule *)self direction];
 
-  if (v5)
+  if (direction)
   {
-    v6 = [(HMDNetworkRouterMulticastBridgingRule *)self direction];
+    direction2 = [(HMDNetworkRouterMulticastBridgingRule *)self direction];
     v23 = 0;
-    v7 = [v6 serializeWithError:&v23];
+    v7 = [direction2 serializeWithError:&v23];
     v8 = v23;
 
     if (v8)
@@ -249,16 +249,16 @@ LABEL_26:
     }
   }
 
-  v9 = [(HMDNetworkRouterMulticastBridgingRule *)self lanIdentifierList];
+  lanIdentifierList = [(HMDNetworkRouterMulticastBridgingRule *)self lanIdentifierList];
 
-  if (!v9)
+  if (!lanIdentifierList)
   {
     goto LABEL_9;
   }
 
-  v10 = [(HMDNetworkRouterMulticastBridgingRule *)self lanIdentifierList];
+  lanIdentifierList2 = [(HMDNetworkRouterMulticastBridgingRule *)self lanIdentifierList];
   v22 = 0;
-  v7 = [v10 serializeWithError:&v22];
+  v7 = [lanIdentifierList2 serializeWithError:&v22];
   v8 = v22;
 
   if (v8)
@@ -273,11 +273,11 @@ LABEL_26:
 LABEL_12:
 
 LABEL_13:
-    if (a3)
+    if (error)
     {
       HMErrorFromOSStatus();
       v8 = 0;
-      *a3 = v13 = 0;
+      *error = v13 = 0;
       goto LABEL_22;
     }
 
@@ -288,13 +288,13 @@ LABEL_21:
   }
 
 LABEL_9:
-  v11 = [(HMDNetworkRouterMulticastBridgingRule *)self destinationIPAddress];
+  destinationIPAddress = [(HMDNetworkRouterMulticastBridgingRule *)self destinationIPAddress];
 
-  if (v11)
+  if (destinationIPAddress)
   {
-    v12 = [(HMDNetworkRouterMulticastBridgingRule *)self destinationIPAddress];
+    destinationIPAddress2 = [(HMDNetworkRouterMulticastBridgingRule *)self destinationIPAddress];
     v21 = 0;
-    v7 = [v12 serializeWithError:&v21];
+    v7 = [destinationIPAddress2 serializeWithError:&v21];
     v8 = v21;
 
     if (v8)
@@ -310,24 +310,24 @@ LABEL_9:
     }
   }
 
-  v14 = [(HMDNetworkRouterMulticastBridgingRule *)self destinationPort];
+  destinationPort = [(HMDNetworkRouterMulticastBridgingRule *)self destinationPort];
 
-  if (v14)
+  if (destinationPort)
   {
-    v15 = [(HMDNetworkRouterMulticastBridgingRule *)self destinationPort];
+    destinationPort2 = [(HMDNetworkRouterMulticastBridgingRule *)self destinationPort];
     v20 = 0;
-    v7 = [v15 serializeWithError:&v20];
+    v7 = [destinationPort2 serializeWithError:&v20];
     v8 = v20;
 
     if (v8)
     {
 LABEL_19:
 
-      if (a3)
+      if (error)
       {
         v16 = v8;
         v13 = 0;
-        *a3 = v8;
+        *error = v8;
         goto LABEL_22;
       }
 
@@ -354,16 +354,16 @@ LABEL_22:
   return v13;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v8 = [v6 bytes];
+  bytes = [dataCopy bytes];
   v9 = [v7 length];
   if (!v9)
   {
@@ -374,14 +374,14 @@ LABEL_22:
     goto LABEL_31;
   }
 
-  v25 = self;
-  v26 = a4;
+  selfCopy = self;
+  errorCopy = error;
   v10 = 0;
   v11 = 0;
   v12 = 0;
   v13 = 0;
   v14 = 0;
-  v15 = v8 + v9;
+  v15 = bytes + v9;
   while (1)
   {
     v35 = 0;
@@ -392,10 +392,10 @@ LABEL_22:
     if (TLV8GetNext() || TLV8GetOrCopyCoalesced())
     {
       v20 = v14;
-      if (v26)
+      if (errorCopy)
       {
         HMErrorFromOSStatus();
-        *v26 = v21 = 0;
+        *errorCopy = v21 = 0;
         goto LABEL_32;
       }
 
@@ -476,18 +476,18 @@ LABEL_26:
   v20 = v14;
   if (v10)
   {
-    if (v26)
+    if (errorCopy)
     {
       v23 = v10;
       v21 = 0;
-      *v26 = v10;
+      *errorCopy = v10;
       goto LABEL_32;
     }
 
     goto LABEL_29;
   }
 
-  self = v25;
+  self = selfCopy;
 LABEL_31:
   [(HMDNetworkRouterMulticastBridgingRule *)self setDirection:v20];
   [(HMDNetworkRouterMulticastBridgingRule *)self setLanIdentifierList:v13];
@@ -500,22 +500,22 @@ LABEL_32:
   return v21;
 }
 
-- (HMDNetworkRouterMulticastBridgingRule)initWithDirection:(id)a3 lanIdentifierList:(id)a4 destinationIPAddress:(id)a5 destinationPort:(id)a6
+- (HMDNetworkRouterMulticastBridgingRule)initWithDirection:(id)direction lanIdentifierList:(id)list destinationIPAddress:(id)address destinationPort:(id)port
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  directionCopy = direction;
+  listCopy = list;
+  addressCopy = address;
+  portCopy = port;
   v18.receiver = self;
   v18.super_class = HMDNetworkRouterMulticastBridgingRule;
   v15 = [(HMDNetworkRouterMulticastBridgingRule *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_direction, a3);
-    objc_storeStrong(&v16->_lanIdentifierList, a4);
-    objc_storeStrong(&v16->_destinationIPAddress, a5);
-    objc_storeStrong(&v16->_destinationPort, a6);
+    objc_storeStrong(&v15->_direction, direction);
+    objc_storeStrong(&v16->_lanIdentifierList, list);
+    objc_storeStrong(&v16->_destinationIPAddress, address);
+    objc_storeStrong(&v16->_destinationPort, port);
   }
 
   return v16;
@@ -528,24 +528,24 @@ LABEL_32:
   return [(HMDNetworkRouterMulticastBridgingRule *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HMDNetworkRouterMulticastBridgingRule);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HMDNetworkRouterMulticastBridgingRule *)v6 parseFromData:v5 error:&v11];
+    [(HMDNetworkRouterMulticastBridgingRule *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

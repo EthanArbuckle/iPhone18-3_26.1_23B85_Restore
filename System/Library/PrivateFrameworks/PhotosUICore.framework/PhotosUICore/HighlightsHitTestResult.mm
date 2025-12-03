@@ -1,5 +1,5 @@
 @interface HighlightsHitTestResult
-- (_TtC12PhotosUICore23HighlightsHitTestResult)initWithSpriteReference:(id)a3 layout:(id)a4 identifier:(id)a5 userDataProvider:(id)a6;
+- (_TtC12PhotosUICore23HighlightsHitTestResult)initWithSpriteReference:(id)reference layout:(id)layout identifier:(id)identifier userDataProvider:(id)provider;
 - (id)px_photosViewTouchableHitTestResultTouchAction;
 @end
 
@@ -19,7 +19,7 @@
   return v3;
 }
 
-- (_TtC12PhotosUICore23HighlightsHitTestResult)initWithSpriteReference:(id)a3 layout:(id)a4 identifier:(id)a5 userDataProvider:(id)a6
+- (_TtC12PhotosUICore23HighlightsHitTestResult)initWithSpriteReference:(id)reference layout:(id)layout identifier:(id)identifier userDataProvider:(id)provider
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,189 +1,189 @@
 @interface SWConfigurationSerializer
-- (id)serializeWebContentConfiguration:(id)a3;
-- (id)serializedRectFromCGRect:(CGRect)a3;
+- (id)serializeWebContentConfiguration:(id)configuration;
+- (id)serializedRectFromCGRect:(CGRect)rect;
 @end
 
 @implementation SWConfigurationSerializer
 
-- (id)serializeWebContentConfiguration:(id)a3
+- (id)serializeWebContentConfiguration:(id)configuration
 {
   v106[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
-    v97 = self;
-    v5 = [MEMORY[0x1E695DF90] dictionary];
-    v6 = [v4 identifier];
+    selfCopy = self;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    identifier = [configurationCopy identifier];
 
-    if (v6)
+    if (identifier)
     {
-      v7 = [v4 identifier];
-      [v5 setObject:v7 forKey:@"identifier"];
+      identifier2 = [configurationCopy identifier];
+      [dictionary setObject:identifier2 forKey:@"identifier"];
     }
 
-    v8 = [v4 storeFront];
+    storeFront = [configurationCopy storeFront];
 
-    if (v8)
+    if (storeFront)
     {
-      v9 = [v4 storeFront];
-      [v5 setObject:v9 forKey:@"storeFront"];
+      storeFront2 = [configurationCopy storeFront];
+      [dictionary setObject:storeFront2 forKey:@"storeFront"];
     }
 
-    v10 = [v4 locale];
+    locale = [configurationCopy locale];
 
-    if (v10)
+    if (locale)
     {
-      v11 = [v4 locale];
-      v12 = [v11 localeIdentifier];
-      [v5 setObject:v12 forKey:@"locale"];
+      locale2 = [configurationCopy locale];
+      localeIdentifier = [locale2 localeIdentifier];
+      [dictionary setObject:localeIdentifier forKey:@"locale"];
     }
 
-    v13 = [v4 contentEnvironment];
+    contentEnvironment = [configurationCopy contentEnvironment];
 
-    if (v13)
+    if (contentEnvironment)
     {
-      v14 = [v4 contentEnvironment];
-      [v5 setObject:v14 forKey:@"environment"];
+      contentEnvironment2 = [configurationCopy contentEnvironment];
+      [dictionary setObject:contentEnvironment2 forKey:@"environment"];
     }
 
-    v15 = [v4 contentSizeCategory];
+    contentSizeCategory = [configurationCopy contentSizeCategory];
 
-    if (v15)
+    if (contentSizeCategory)
     {
-      v16 = [v4 contentSizeCategory];
-      [v5 setObject:v16 forKey:@"dynamicType"];
+      contentSizeCategory2 = [configurationCopy contentSizeCategory];
+      [dictionary setObject:contentSizeCategory2 forKey:@"dynamicType"];
     }
 
-    v17 = [v4 location];
+    location = [configurationCopy location];
 
-    if (v17)
+    if (location)
     {
-      v18 = [MEMORY[0x1E695DF90] dictionary];
-      v19 = [v4 location];
-      v20 = [v19 URL];
-      v21 = [v20 absoluteString];
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+      location2 = [configurationCopy location];
+      v20 = [location2 URL];
+      absoluteString = [v20 absoluteString];
 
-      if (v21)
+      if (absoluteString)
       {
-        v22 = [v4 location];
-        v23 = [v22 URL];
-        v24 = [v23 absoluteString];
-        [v18 setObject:v24 forKey:@"URL"];
+        location3 = [configurationCopy location];
+        v23 = [location3 URL];
+        absoluteString2 = [v23 absoluteString];
+        [dictionary2 setObject:absoluteString2 forKey:@"URL"];
       }
 
-      v25 = [v4 location];
-      v26 = [v25 context];
+      location4 = [configurationCopy location];
+      context = [location4 context];
 
-      if (v26)
+      if (context)
       {
-        v27 = [v4 location];
-        v28 = [v27 context];
-        [v18 setObject:v28 forKey:@"context"];
+        location5 = [configurationCopy location];
+        context2 = [location5 context];
+        [dictionary2 setObject:context2 forKey:@"context"];
       }
 
-      [v5 setObject:v18 forKey:@"location"];
+      [dictionary setObject:dictionary2 forKey:@"location"];
     }
 
-    v29 = [v4 sourceURL];
-    v30 = [v29 absoluteString];
+    sourceURL = [configurationCopy sourceURL];
+    absoluteString3 = [sourceURL absoluteString];
 
-    if (v30)
+    if (absoluteString3)
     {
-      v31 = [v4 sourceURL];
-      v32 = [v31 absoluteString];
-      [v5 setObject:v32 forKey:@"sourceURL"];
+      sourceURL2 = [configurationCopy sourceURL];
+      absoluteString4 = [sourceURL2 absoluteString];
+      [dictionary setObject:absoluteString4 forKey:@"sourceURL"];
     }
 
-    v33 = [v4 systemVersion];
+    systemVersion = [configurationCopy systemVersion];
 
-    if (v33)
+    if (systemVersion)
     {
-      v34 = [v4 systemVersion];
-      [v5 setObject:v34 forKey:@"systemVersion"];
+      systemVersion2 = [configurationCopy systemVersion];
+      [dictionary setObject:systemVersion2 forKey:@"systemVersion"];
     }
 
-    v35 = [v4 appVersion];
+    appVersion = [configurationCopy appVersion];
 
-    if (v35)
+    if (appVersion)
     {
-      v36 = [v4 appVersion];
-      [v5 setObject:v36 forKey:@"appVersion"];
+      appVersion2 = [configurationCopy appVersion];
+      [dictionary setObject:appVersion2 forKey:@"appVersion"];
     }
 
-    v37 = [v4 dataSources];
-    v38 = [v37 count];
+    dataSources = [configurationCopy dataSources];
+    v38 = [dataSources count];
 
     if (v38)
     {
-      v39 = [MEMORY[0x1E695DF90] dictionary];
-      v40 = [v4 dataSources];
+      dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+      dataSources2 = [configurationCopy dataSources];
       v99[0] = MEMORY[0x1E69E9820];
       v99[1] = 3221225472;
       v99[2] = __62__SWConfigurationSerializer_serializeWebContentConfiguration___block_invoke;
       v99[3] = &unk_1E84DB658;
-      v100 = v39;
-      v41 = v39;
-      [v40 enumerateKeysAndObjectsUsingBlock:v99];
+      v100 = dictionary3;
+      v41 = dictionary3;
+      [dataSources2 enumerateKeysAndObjectsUsingBlock:v99];
 
-      [v5 setObject:v41 forKey:@"dataSources"];
+      [dictionary setObject:v41 forKey:@"dataSources"];
     }
 
     v105[0] = @"width";
     v42 = MEMORY[0x1E696AD98];
-    v43 = [v4 layoutGuide];
-    [v43 bounds];
+    layoutGuide = [configurationCopy layoutGuide];
+    [layoutGuide bounds];
     v45 = [v42 numberWithDouble:v44];
     v105[1] = @"height";
     v106[0] = v45;
     v46 = MEMORY[0x1E696AD98];
-    v47 = [v4 layoutGuide];
-    [v47 bounds];
+    layoutGuide2 = [configurationCopy layoutGuide];
+    [layoutGuide2 bounds];
     v49 = [v46 numberWithDouble:v48];
     v106[1] = v49;
     v50 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v106 forKeys:v105 count:2];
 
-    [v5 setObject:v50 forKey:@"canvasSize"];
+    [dictionary setObject:v50 forKey:@"canvasSize"];
     v96 = v50;
     v104[0] = v50;
     v103[0] = @"canvasSize";
     v103[1] = @"contentFrame";
-    v51 = [v4 layoutGuide];
-    [v51 contentFrame];
-    v52 = v97;
-    v53 = [(SWConfigurationSerializer *)v97 serializedRectFromCGRect:?];
+    layoutGuide3 = [configurationCopy layoutGuide];
+    [layoutGuide3 contentFrame];
+    v52 = selfCopy;
+    v53 = [(SWConfigurationSerializer *)selfCopy serializedRectFromCGRect:?];
     v104[1] = v53;
     v103[2] = @"contentSafeAreaFrame";
-    v54 = [v4 layoutGuide];
-    [v54 contentSafeAreaFrame];
-    v55 = [(SWConfigurationSerializer *)v97 serializedRectFromCGRect:?];
+    layoutGuide4 = [configurationCopy layoutGuide];
+    [layoutGuide4 contentSafeAreaFrame];
+    v55 = [(SWConfigurationSerializer *)selfCopy serializedRectFromCGRect:?];
     v104[2] = v55;
     v103[3] = @"systemSafeAreaFrame";
-    v56 = [v4 layoutGuide];
-    [v56 systemSafeAreaFrame];
-    v57 = [(SWConfigurationSerializer *)v97 serializedRectFromCGRect:?];
+    layoutGuide5 = [configurationCopy layoutGuide];
+    [layoutGuide5 systemSafeAreaFrame];
+    v57 = [(SWConfigurationSerializer *)selfCopy serializedRectFromCGRect:?];
     v104[3] = v57;
     v58 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v104 forKeys:v103 count:4];
 
     v95 = v58;
-    [v5 setObject:v58 forKey:@"layoutGuide"];
-    v59 = [v4 layoutGuide];
-    [v59 contentFrame];
-    v60 = [(SWConfigurationSerializer *)v97 serializedRectFromCGRect:?];
+    [dictionary setObject:v58 forKey:@"layoutGuide"];
+    layoutGuide6 = [configurationCopy layoutGuide];
+    [layoutGuide6 contentFrame];
+    v60 = [(SWConfigurationSerializer *)selfCopy serializedRectFromCGRect:?];
 
-    [v5 setObject:v60 forKey:@"contentFrame"];
-    v61 = [v4 keyboardConfiguration];
+    [dictionary setObject:v60 forKey:@"contentFrame"];
+    keyboardConfiguration = [configurationCopy keyboardConfiguration];
 
-    if (v61)
+    if (keyboardConfiguration)
     {
-      [v4 keyboardConfiguration];
+      [configurationCopy keyboardConfiguration];
       v62 = v94 = v60;
       v101[0] = @"keyboardFrame";
       [v62 keyboardFrame];
-      v93 = [(SWConfigurationSerializer *)v97 serializedRectFromCGRect:?];
+      v93 = [(SWConfigurationSerializer *)selfCopy serializedRectFromCGRect:?];
       v102[0] = v93;
       v101[1] = @"inputAccessoryViewFrame";
       [v62 inputAccessoryViewFrame];
-      v63 = [(SWConfigurationSerializer *)v97 serializedRectFromCGRect:?];
+      v63 = [(SWConfigurationSerializer *)selfCopy serializedRectFromCGRect:?];
       v102[1] = v63;
       v101[2] = @"isKeyboardSplit";
       v64 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v62, "isKeyboardSplit")}];
@@ -202,63 +202,63 @@
       v102[6] = v68;
       v69 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v102 forKeys:v101 count:7];
 
-      v52 = v97;
-      [v5 setObject:v69 forKey:@"keyboardInfo"];
+      v52 = selfCopy;
+      [dictionary setObject:v69 forKey:@"keyboardInfo"];
 
       v60 = v94;
     }
 
-    v70 = -[SWConfigurationSerializer isNetworkReachableForStatus:](v52, "isNetworkReachableForStatus:", [v4 networkStatus]);
+    v70 = -[SWConfigurationSerializer isNetworkReachableForStatus:](v52, "isNetworkReachableForStatus:", [configurationCopy networkStatus]);
     v71 = [MEMORY[0x1E696AD98] numberWithBool:v70];
-    [v5 setObject:v71 forKey:@"isNetworkReachable"];
+    [dictionary setObject:v71 forKey:@"isNetworkReachable"];
 
-    v72 = [v4 activePictureInPictureURL];
-    v73 = [v72 absoluteString];
+    activePictureInPictureURL = [configurationCopy activePictureInPictureURL];
+    absoluteString5 = [activePictureInPictureURL absoluteString];
 
-    if (v73)
+    if (absoluteString5)
     {
-      v74 = [v4 activePictureInPictureURL];
-      v75 = [v74 absoluteString];
-      [v5 setObject:v75 forKey:@"activePictureInPictureURL"];
+      activePictureInPictureURL2 = [configurationCopy activePictureInPictureURL];
+      absoluteString6 = [activePictureInPictureURL2 absoluteString];
+      [dictionary setObject:absoluteString6 forKey:@"activePictureInPictureURL"];
     }
 
-    v76 = [v4 feedConfiguration];
+    feedConfiguration = [configurationCopy feedConfiguration];
 
-    if (v76)
+    if (feedConfiguration)
     {
-      v77 = [v4 feedConfiguration];
-      v78 = [v77 selectors];
+      feedConfiguration2 = [configurationCopy feedConfiguration];
+      selectors = [feedConfiguration2 selectors];
 
-      if (v78)
+      if (selectors)
       {
-        v79 = [v4 feedConfiguration];
-        v80 = [v79 selectors];
-        v81 = [v80 allObjects];
-        [v5 setObject:v81 forKey:@"selectors"];
+        feedConfiguration3 = [configurationCopy feedConfiguration];
+        selectors2 = [feedConfiguration3 selectors];
+        allObjects = [selectors2 allObjects];
+        [dictionary setObject:allObjects forKey:@"selectors"];
       }
 
-      v82 = [v4 feedConfiguration];
-      v83 = [v82 configuration];
+      feedConfiguration4 = [configurationCopy feedConfiguration];
+      configuration = [feedConfiguration4 configuration];
 
-      if (v83)
+      if (configuration)
       {
-        v84 = [v4 feedConfiguration];
-        v85 = [v84 configuration];
-        [v5 setObject:v85 forKey:@"feed"];
+        feedConfiguration5 = [configurationCopy feedConfiguration];
+        configuration2 = [feedConfiguration5 configuration];
+        [dictionary setObject:configuration2 forKey:@"feed"];
       }
     }
 
-    v86 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "is24HourTime")}];
-    [v5 setObject:v86 forKey:@"is24HourTime"];
+    v86 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(configurationCopy, "is24HourTime")}];
+    [dictionary setObject:v86 forKey:@"is24HourTime"];
 
-    v87 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "isTransitioning")}];
-    [v5 setObject:v87 forKey:@"isTransitioning"];
+    v87 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(configurationCopy, "isTransitioning")}];
+    [dictionary setObject:v87 forKey:@"isTransitioning"];
 
-    v88 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "supportsLiveActivities")}];
-    [v5 setObject:v88 forKey:@"supportsLiveActivities"];
+    v88 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(configurationCopy, "supportsLiveActivities")}];
+    [dictionary setObject:v88 forKey:@"supportsLiveActivities"];
 
     v98 = 0;
-    v89 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v5 options:0 error:&v98];
+    v89 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionary options:0 error:&v98];
     if (v89)
     {
       v90 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v89 encoding:4];
@@ -272,7 +272,7 @@
 
   else
   {
-    v5 = 0;
+    dictionary = 0;
     v90 = 0;
   }
 
@@ -289,14 +289,14 @@ void __62__SWConfigurationSerializer_serializeWebContentConfiguration___block_in
   [v4 setObject:v6 forKey:v5];
 }
 
-- (id)serializedRectFromCGRect:(CGRect)a3
+- (id)serializedRectFromCGRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
   v14[4] = *MEMORY[0x1E69E9840];
   v13[0] = @"x";
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3.origin.x];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:rect.origin.x];
   v14[0] = v6;
   v13[1] = @"y";
   v7 = [MEMORY[0x1E696AD98] numberWithDouble:y];

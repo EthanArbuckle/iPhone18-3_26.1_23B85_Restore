@@ -2,28 +2,28 @@
 + (id)_blendingPressedView;
 + (id)_blendingSeparatorView;
 - (UIEdgeInsets)_effectiveNonDirectionalContentInsets;
-- (_UIBlendingHighlightView)initWithCompositingBurnColor:(id)a3 plusDColor:(id)a4;
-- (_UIBlendingHighlightView)initWithTopLevelFilters:(id)a3 compositingColors:(id)a4 compositingFilterModes:(id)a5;
-- (void)_enumerateAllBlendingViewsWithBlock:(id)a3;
-- (void)_enumerateBlendingBorderViewsWithBlock:(id)a3;
-- (void)_setContinuousCornerRadius:(double)a3;
+- (_UIBlendingHighlightView)initWithCompositingBurnColor:(id)color plusDColor:(id)dColor;
+- (_UIBlendingHighlightView)initWithTopLevelFilters:(id)filters compositingColors:(id)colors compositingFilterModes:(id)modes;
+- (void)_enumerateAllBlendingViewsWithBlock:(id)block;
+- (void)_enumerateBlendingBorderViewsWithBlock:(id)block;
+- (void)_setContinuousCornerRadius:(double)radius;
 - (void)layoutSubviews;
-- (void)setCornerRadius:(double)a3;
-- (void)setRoundedCornerPosition:(unint64_t)a3;
+- (void)setCornerRadius:(double)radius;
+- (void)setRoundedCornerPosition:(unint64_t)position;
 @end
 
 @implementation _UIBlendingHighlightView
 
-- (_UIBlendingHighlightView)initWithTopLevelFilters:(id)a3 compositingColors:(id)a4 compositingFilterModes:(id)a5
+- (_UIBlendingHighlightView)initWithTopLevelFilters:(id)filters compositingColors:(id)colors compositingFilterModes:(id)modes
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 count];
-  if (v12 != [v11 count])
+  filtersCopy = filters;
+  colorsCopy = colors;
+  modesCopy = modes;
+  v12 = [colorsCopy count];
+  if (v12 != [modesCopy count])
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"_UIBlendingHighlightView.m" lineNumber:30 description:@"Invalid parameter.  Blending colors/modes must have same number of items"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIBlendingHighlightView.m" lineNumber:30 description:@"Invalid parameter.  Blending colors/modes must have same number of items"];
   }
 
   v28.receiver = self;
@@ -32,35 +32,35 @@
   v14 = v13;
   if (v13)
   {
-    v15 = [(UIView *)v13 layer];
-    [v15 setAllowsGroupBlending:0];
+    layer = [(UIView *)v13 layer];
+    [layer setAllowsGroupBlending:0];
 
     [(UIView *)v14 setDirectionalLayoutMargins:0.0, 0.0, 0.0, 0.0];
-    if ([v9 count])
+    if ([filtersCopy count])
     {
-      v16 = [(UIView *)v14 layer];
-      [v16 setFilters:v9];
+      layer2 = [(UIView *)v14 layer];
+      [layer2 setFilters:filtersCopy];
     }
 
-    v17 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     blendingViews = v14->_blendingViews;
-    v14->_blendingViews = v17;
+    v14->_blendingViews = array;
 
-    if ([v10 count])
+    if ([colorsCopy count])
     {
       v19 = 0;
       do
       {
-        v20 = [v10 objectAtIndexedSubscript:v19];
-        v21 = [v11 objectAtIndexedSubscript:v19];
+        v20 = [colorsCopy objectAtIndexedSubscript:v19];
+        v21 = [modesCopy objectAtIndexedSubscript:v19];
         v22 = [UIView alloc];
         [(UIView *)v14 bounds];
         v23 = [(UIView *)v22 initWithFrame:?];
         [(UIView *)v23 setTranslatesAutoresizingMaskIntoConstraints:0];
         if ([objc_opt_class() isBorderView])
         {
-          v24 = [(UIView *)v23 layer];
-          [v24 setBorderColor:{objc_msgSend(v20, "CGColor")}];
+          layer3 = [(UIView *)v23 layer];
+          [layer3 setBorderColor:{objc_msgSend(v20, "CGColor")}];
         }
 
         else
@@ -68,8 +68,8 @@
           [(UIView *)v23 setBackgroundColor:v20];
         }
 
-        v25 = [(UIView *)v23 layer];
-        [v25 setCompositingFilter:v21];
+        layer4 = [(UIView *)v23 layer];
+        [layer4 setCompositingFilter:v21];
 
         [(NSMutableArray *)v14->_blendingViews addObject:v23];
         [(UIView *)v14 addSubview:v23];
@@ -77,7 +77,7 @@
         ++v19;
       }
 
-      while (v19 < [v10 count]);
+      while (v19 < [colorsCopy count]);
     }
 
     [(UIView *)v14 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -86,14 +86,14 @@
   return v14;
 }
 
-- (_UIBlendingHighlightView)initWithCompositingBurnColor:(id)a3 plusDColor:(id)a4
+- (_UIBlendingHighlightView)initWithCompositingBurnColor:(id)color plusDColor:(id)dColor
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v15[0] = a3;
-  v15[1] = a4;
+  v15[0] = color;
+  v15[1] = dColor;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
+  dColorCopy = dColor;
+  colorCopy = color;
   v9 = [v6 arrayWithObjects:v15 count:2];
   v10 = *MEMORY[0x1E6979CE8];
   v14[0] = *MEMORY[0x1E6979850];
@@ -111,10 +111,10 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UIView *)self traitCollection];
-  v12 = [v11 layoutDirection];
+  traitCollection = [(UIView *)self traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
-  if (v12 == 1)
+  if (layoutDirection == 1)
   {
     v13 = v6;
   }
@@ -124,7 +124,7 @@
     v13 = v10;
   }
 
-  if (v12 == 1)
+  if (layoutDirection == 1)
   {
     v14 = v10;
   }
@@ -191,20 +191,20 @@
   return v5;
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  v5 = [(UIView *)self layer];
-  [v5 setCornerRadius:a3];
+  layer = [(UIView *)self layer];
+  [layer setCornerRadius:radius];
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __44___UIBlendingHighlightView_setCornerRadius___block_invoke;
   v6[3] = &__block_descriptor_40_e16_v16__0__UIView_8l;
-  *&v6[4] = a3;
+  *&v6[4] = radius;
   [(_UIBlendingHighlightView *)self _enumerateAllBlendingViewsWithBlock:v6];
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   v6.receiver = self;
   v6.super_class = _UIBlendingHighlightView;
@@ -213,27 +213,27 @@
   v5[1] = 3221225472;
   v5[2] = __55___UIBlendingHighlightView__setContinuousCornerRadius___block_invoke;
   v5[3] = &__block_descriptor_40_e16_v16__0__UIView_8l;
-  *&v5[4] = a3;
+  *&v5[4] = radius;
   [(_UIBlendingHighlightView *)self _enumerateAllBlendingViewsWithBlock:v5];
 }
 
-- (void)setRoundedCornerPosition:(unint64_t)a3
+- (void)setRoundedCornerPosition:(unint64_t)position
 {
-  v5 = [(UIView *)self layer];
-  [v5 setMaskedCorners:a3];
+  layer = [(UIView *)self layer];
+  [layer setMaskedCorners:position];
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53___UIBlendingHighlightView_setRoundedCornerPosition___block_invoke;
   v6[3] = &__block_descriptor_40_e16_v16__0__UIView_8l;
-  v6[4] = a3;
+  v6[4] = position;
   [(_UIBlendingHighlightView *)self _enumerateAllBlendingViewsWithBlock:v6];
 }
 
-- (void)_enumerateBlendingBorderViewsWithBlock:(id)a3
+- (void)_enumerateBlendingBorderViewsWithBlock:(id)block
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   if ([objc_opt_class() isBorderView])
   {
     v12 = 0u;
@@ -256,7 +256,7 @@
             objc_enumerationMutation(v5);
           }
 
-          v4[2](v4, *(*(&v10 + 1) + 8 * v9++));
+          blockCopy[2](blockCopy, *(*(&v10 + 1) + 8 * v9++));
         }
 
         while (v7 != v9);
@@ -268,10 +268,10 @@
   }
 }
 
-- (void)_enumerateAllBlendingViewsWithBlock:(id)a3
+- (void)_enumerateAllBlendingViewsWithBlock:(id)block
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -292,7 +292,7 @@
           objc_enumerationMutation(v5);
         }
 
-        v4[2](v4, *(*(&v10 + 1) + 8 * v9++));
+        blockCopy[2](blockCopy, *(*(&v10 + 1) + 8 * v9++));
       }
 
       while (v7 != v9);

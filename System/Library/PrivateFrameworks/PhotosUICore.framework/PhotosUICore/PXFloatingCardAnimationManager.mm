@@ -2,7 +2,7 @@
 - (PXFloatingCardAnimation)heightAnimation;
 - (id)defaultHeightAnimation;
 - (void)popHeightAnimation;
-- (void)pushHeightAnimation:(id)a3;
+- (void)pushHeightAnimation:(id)animation;
 @end
 
 @implementation PXFloatingCardAnimationManager
@@ -12,8 +12,8 @@
   heightAnimationPushCount = self->_heightAnimationPushCount;
   if (!heightAnimationPushCount)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXFloatingCardAnimationManager.m" lineNumber:218 description:@"Calls to popHeightAnimation must mirror push calls"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFloatingCardAnimationManager.m" lineNumber:218 description:@"Calls to popHeightAnimation must mirror push calls"];
 
     heightAnimationPushCount = self->_heightAnimationPushCount;
   }
@@ -27,24 +27,24 @@
   }
 }
 
-- (void)pushHeightAnimation:(id)a3
+- (void)pushHeightAnimation:(id)animation
 {
-  v6 = a3;
-  if (!v6)
+  animationCopy = animation;
+  if (!animationCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXFloatingCardAnimationManager.m" lineNumber:208 description:{@"Invalid parameter not satisfying: %@", @"animation"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFloatingCardAnimationManager.m" lineNumber:208 description:{@"Invalid parameter not satisfying: %@", @"animation"}];
 
-    v6 = 0;
+    animationCopy = 0;
   }
 
   heightAnimationPushCount = self->_heightAnimationPushCount;
   self->_heightAnimationPushCount = heightAnimationPushCount + 1;
   if (!heightAnimationPushCount)
   {
-    v9 = v6;
-    objc_storeStrong(&self->_heightAnimation, a3);
-    v6 = v9;
+    v9 = animationCopy;
+    objc_storeStrong(&self->_heightAnimation, animation);
+    animationCopy = v9;
   }
 }
 
@@ -53,15 +53,15 @@
   heightAnimation = self->_heightAnimation;
   if (heightAnimation)
   {
-    v3 = heightAnimation;
+    defaultHeightAnimation = heightAnimation;
   }
 
   else
   {
-    v3 = [(PXFloatingCardAnimationManager *)self defaultHeightAnimation];
+    defaultHeightAnimation = [(PXFloatingCardAnimationManager *)self defaultHeightAnimation];
   }
 
-  return v3;
+  return defaultHeightAnimation;
 }
 
 - (id)defaultHeightAnimation

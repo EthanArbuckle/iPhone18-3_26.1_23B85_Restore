@@ -1,26 +1,26 @@
 @interface CKVocabularyAdminEventSimulator
-- (CKVocabularyAdminEventSimulator)initWithAdminService:(id)a3 timeout:(double)a4;
+- (CKVocabularyAdminEventSimulator)initWithAdminService:(id)service timeout:(double)timeout;
 - (int64_t)finish;
 - (void)dealloc;
-- (void)handleTask:(unsigned __int16)a3 reason:(unsigned __int16)a4 completion:(id)a5;
+- (void)handleTask:(unsigned __int16)task reason:(unsigned __int16)reason completion:(id)completion;
 @end
 
 @implementation CKVocabularyAdminEventSimulator
 
-- (void)handleTask:(unsigned __int16)a3 reason:(unsigned __int16)a4 completion:(id)a5
+- (void)handleTask:(unsigned __int16)task reason:(unsigned __int16)reason completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
+  reasonCopy = reason;
+  taskCopy = task;
+  completionCopy = completion;
   adminService = self->_adminService;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __64__CKVocabularyAdminEventSimulator_handleTask_reason_completion___block_invoke;
   v11[3] = &unk_1E831EB80;
-  v13 = v6;
-  v12 = v8;
-  v10 = v8;
-  [(CKVAdminService *)adminService handleTask:v6 reason:v5 completion:v11];
+  v13 = taskCopy;
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [(CKVAdminService *)adminService handleTask:taskCopy reason:reasonCopy completion:v11];
 }
 
 uint64_t __64__CKVocabularyAdminEventSimulator_handleTask_reason_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -162,23 +162,23 @@ void __41__CKVocabularyAdminEventSimulator_finish__block_invoke(uint64_t a1, uin
   [(CKVocabularyAdminEventSimulator *)&v3 dealloc];
 }
 
-- (CKVocabularyAdminEventSimulator)initWithAdminService:(id)a3 timeout:(double)a4
+- (CKVocabularyAdminEventSimulator)initWithAdminService:(id)service timeout:(double)timeout
 {
-  v7 = a3;
+  serviceCopy = service;
   v12.receiver = self;
   v12.super_class = CKVocabularyAdminEventSimulator;
   v8 = [(CKVocabularyAdminEventSimulator *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_adminService, a3);
+    objc_storeStrong(&v8->_adminService, service);
     if (!v9->_adminService)
     {
       v10 = 0;
       goto LABEL_6;
     }
 
-    v9->_timeout = a4;
+    v9->_timeout = timeout;
     v9->_simulationFinished = 0;
   }
 

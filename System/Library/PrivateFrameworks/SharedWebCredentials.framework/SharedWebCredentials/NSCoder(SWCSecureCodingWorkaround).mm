@@ -11,7 +11,7 @@
   v6 = a4;
   v7 = objc_autoreleasePoolPush();
   v8 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{a3, 0}];
-  v9 = [a1 decodeObjectOfClasses:v8 forKey:v6];
+  v9 = [self decodeObjectOfClasses:v8 forKey:v6];
 
   objc_autoreleasePoolPop(v7);
   if (v9 && (objc_opt_isKindOfClass() & 1) == 0)
@@ -25,7 +25,7 @@
     v17[1] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
     v13 = [v10 initWithDomain:*MEMORY[0x277CCA050] code:4864 userInfo:v12];
-    [a1 failWithError:v13];
+    [self failWithError:v13];
 
     v9 = 0;
   }
@@ -41,7 +41,7 @@
   v6 = a3;
   v7 = a4;
   v8 = objc_autoreleasePoolPush();
-  v9 = [a1 decodeObjectOfClasses:v6 forKey:v7];
+  v9 = [self decodeObjectOfClasses:v6 forKey:v7];
   objc_autoreleasePoolPop(v8);
   if (v9)
   {
@@ -94,7 +94,7 @@ LABEL_10:
       v25[1] = v10;
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:2];
       v17 = [v15 initWithDomain:*MEMORY[0x277CCA050] code:4864 userInfo:v16];
-      [a1 failWithError:v17];
+      [self failWithError:v17];
 
       v9 = 0;
     }

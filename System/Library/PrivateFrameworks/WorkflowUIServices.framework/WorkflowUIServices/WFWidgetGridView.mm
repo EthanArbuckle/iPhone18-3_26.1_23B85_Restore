@@ -1,19 +1,19 @@
 @interface WFWidgetGridView
-- (BOOL)cellExistsAtIndex:(unint64_t)a3;
-- (BOOL)maybeNeedsLayoutWithActions:(id)a3;
+- (BOOL)cellExistsAtIndex:(unint64_t)index;
+- (BOOL)maybeNeedsLayoutWithActions:(id)actions;
 - (CGSize)lastKnownSize;
-- (WFWidgetGridView)initWithFamily:(int64_t)a3 widgetType:(int64_t)a4 cornerRadius:(double)a5 log:(id)a6;
+- (WFWidgetGridView)initWithFamily:(int64_t)family widgetType:(int64_t)type cornerRadius:(double)radius log:(id)log;
 - (WFWidgetGridViewDelegate)delegate;
 - (id)actionsForVisibleCells;
-- (id)cellAtIndex:(unint64_t)a3;
-- (id)cellForSystemAction:(id)a3;
-- (void)disableAllCellsExceptCell:(id)a3;
+- (id)cellAtIndex:(unint64_t)index;
+- (id)cellForSystemAction:(id)action;
+- (void)disableAllCellsExceptCell:(id)cell;
 - (void)enableAllCells;
-- (void)layoutWithActions:(id)a3 dataSource:(id)a4;
-- (void)setCellsToClear:(BOOL)a3;
-- (void)tintWithHomeScreenTintColor:(id)a3;
-- (void)widgetCellDidTransitionToState:(int64_t)a3;
-- (void)widgetCellWasTapped:(id)a3;
+- (void)layoutWithActions:(id)actions dataSource:(id)source;
+- (void)setCellsToClear:(BOOL)clear;
+- (void)tintWithHomeScreenTintColor:(id)color;
+- (void)widgetCellDidTransitionToState:(int64_t)state;
+- (void)widgetCellWasTapped:(id)tapped;
 @end
 
 @implementation WFWidgetGridView
@@ -34,30 +34,30 @@
   return WeakRetained;
 }
 
-- (void)widgetCellDidTransitionToState:(int64_t)a3
+- (void)widgetCellDidTransitionToState:(int64_t)state
 {
-  if (a3 == 3 || !a3)
+  if (state == 3 || !state)
   {
     [(WFWidgetGridView *)self enableAllCells];
   }
 
-  v5 = [(WFWidgetGridView *)self delegate];
-  [v5 gridView:self cellDidTransitionToRunningState:a3];
+  delegate = [(WFWidgetGridView *)self delegate];
+  [delegate gridView:self cellDidTransitionToRunningState:state];
 }
 
-- (void)widgetCellWasTapped:(id)a3
+- (void)widgetCellWasTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(WFWidgetGridView *)self delegate];
-  [v5 gridView:self didTapCell:v4];
+  tappedCopy = tapped;
+  delegate = [(WFWidgetGridView *)self delegate];
+  [delegate gridView:self didTapCell:tappedCopy];
 }
 
-- (id)cellAtIndex:(unint64_t)a3
+- (id)cellAtIndex:(unint64_t)index
 {
   if ([(WFWidgetGridView *)self cellExistsAtIndex:?])
   {
-    v5 = [(WFWidgetGridView *)self subviews];
-    v6 = [v5 objectAtIndex:a3];
+    subviews = [(WFWidgetGridView *)self subviews];
+    v6 = [subviews objectAtIndex:index];
   }
 
   else
@@ -68,13 +68,13 @@
   return v6;
 }
 
-- (BOOL)cellExistsAtIndex:(unint64_t)a3
+- (BOOL)cellExistsAtIndex:(unint64_t)index
 {
-  v5 = [(WFWidgetGridView *)self subviews];
-  if ([v5 count])
+  subviews = [(WFWidgetGridView *)self subviews];
+  if ([subviews count])
   {
-    v6 = [(WFWidgetGridView *)self subviews];
-    v7 = [v6 count] - 1 >= a3;
+    subviews2 = [(WFWidgetGridView *)self subviews];
+    v7 = [subviews2 count] - 1 >= index;
   }
 
   else
@@ -85,13 +85,13 @@
   return v7;
 }
 
-- (void)layoutWithActions:(id)a3 dataSource:(id)a4
+- (void)layoutWithActions:(id)actions dataSource:(id)source
 {
   v98 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v83 = a4;
-  v7 = [MEMORY[0x1E69DC668] sharedApplication];
-  v8 = [v7 preferredContentSizeCategory];
+  actionsCopy = actions;
+  sourceCopy = source;
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
 
   [(WFWidgetGridView *)self lastKnownSize];
   v11 = v10 == *(MEMORY[0x1E695F060] + 8) && v9 == *MEMORY[0x1E695F060];
@@ -100,25 +100,25 @@
   v15 = v14;
   [(WFWidgetGridView *)self lastKnownSize];
   v18 = v15 == v17 && v13 == v16;
-  v19 = [(WFWidgetGridView *)self actions];
-  v80 = v6;
-  if (![v6 isEqualToArray:v19] || !v18)
+  actions = [(WFWidgetGridView *)self actions];
+  v80 = actionsCopy;
+  if (![actionsCopy isEqualToArray:actions] || !v18)
   {
     goto LABEL_19;
   }
 
-  v20 = [(WFWidgetGridView *)self lastKnownContentSizeCategory];
-  v21 = v8;
+  lastKnownContentSizeCategory = [(WFWidgetGridView *)self lastKnownContentSizeCategory];
+  v21 = preferredContentSizeCategory;
   v22 = v21;
-  if (v20 == v21)
+  if (lastKnownContentSizeCategory == v21)
   {
 
     goto LABEL_15;
   }
 
-  if (v21 && v20)
+  if (v21 && lastKnownContentSizeCategory)
   {
-    v23 = [v20 isEqualToString:v21];
+    v23 = [lastKnownContentSizeCategory isEqualToString:v21];
 
     if ((v23 & 1) == 0)
     {
@@ -146,7 +146,7 @@ LABEL_20:
   v26 = v25;
   size = v27;
   [(WFWidgetGridView *)self setLastKnownSize:v27, v25];
-  [(WFWidgetGridView *)self setLastKnownContentSizeCategory:v8];
+  [(WFWidgetGridView *)self setLastKnownContentSizeCategory:preferredContentSizeCategory];
   v28 = [(WFWidgetGridView *)self log];
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
@@ -155,7 +155,7 @@ LABEL_20:
     v99.height = v26;
     v30 = NSStringFromCGSize(v99);
     *buf = 138543874;
-    v91 = v29;
+    selfCopy = v29;
     v92 = 2114;
     v93 = *&v30;
     v94 = 2048;
@@ -165,11 +165,11 @@ LABEL_20:
 
   if ([(WFWidgetGridView *)self widgetType]== 2)
   {
-    v31 = [(WFWidgetGridView *)self family];
+    family = [(WFWidgetGridView *)self family];
     v32 = 0.0;
     v33 = 2;
     v34 = 4;
-    if (v31 == 4)
+    if (family == 4)
     {
       v35 = 8.0;
     }
@@ -179,7 +179,7 @@ LABEL_20:
       v35 = 0.0;
     }
 
-    if (v31 == 4)
+    if (family == 4)
     {
       v36 = 4;
     }
@@ -189,7 +189,7 @@ LABEL_20:
       v36 = 1;
     }
 
-    if (v31 == 3)
+    if (family == 3)
     {
       v35 = 8.0;
     }
@@ -199,15 +199,15 @@ LABEL_20:
       v34 = v36;
     }
 
-    v37 = v31 == 3 || v31 == 4;
-    v38 = v31 != 3 && v31 != 4;
-    if (v31 != 3)
+    v37 = family == 3 || family == 4;
+    v38 = family != 3 && family != 4;
+    if (family != 3)
     {
       v33 = v36;
     }
 
     v39 = 2;
-    if (v31 == 2)
+    if (family == 2)
     {
       v32 = 8.0;
       v40 = 2;
@@ -218,9 +218,9 @@ LABEL_20:
       v40 = 1;
     }
 
-    v41 = v31 == 2;
-    v42 = v31 != 2;
-    if (v31 == 1)
+    v41 = family == 2;
+    v42 = family != 2;
+    if (family == 1)
     {
       v32 = 8.0;
     }
@@ -230,7 +230,7 @@ LABEL_20:
       v39 = v40;
     }
 
-    if (v31 == 1)
+    if (family == 1)
     {
       v41 = 0;
       v42 = 1;
@@ -242,7 +242,7 @@ LABEL_20:
       v43 = v40;
     }
 
-    if (v31 <= 2)
+    if (family <= 2)
     {
       v44 = v32;
     }
@@ -252,7 +252,7 @@ LABEL_20:
       v44 = v35;
     }
 
-    if (v31 <= 2)
+    if (family <= 2)
     {
       v45 = v39;
     }
@@ -262,7 +262,7 @@ LABEL_20:
       v45 = v34;
     }
 
-    if (v31 <= 2)
+    if (family <= 2)
     {
       v46 = v41;
     }
@@ -272,13 +272,13 @@ LABEL_20:
       v46 = v37;
     }
 
-    if (v31 > 2)
+    if (family > 2)
     {
       v42 = v38;
     }
 
     v78 = v42;
-    if (v31 <= 2)
+    if (family <= 2)
     {
       v47 = v43;
     }
@@ -305,11 +305,11 @@ LABEL_20:
 
   v48 = (size - v44 * (v47 + 1)) / v47;
   v49 = (v26 - v44) / v45;
-  v50 = [(WFWidgetGridView *)self traitCollection];
-  v51 = [v50 layoutDirection];
+  traitCollection = [(WFWidgetGridView *)self traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
-  v81 = v51;
-  if (v51 == 1)
+  v81 = layoutDirection;
+  if (layoutDirection == 1)
   {
     v52 = v48 + v44 * 2.0;
   }
@@ -328,7 +328,7 @@ LABEL_20:
   if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134219264;
-    v91 = v45;
+    selfCopy = v45;
     v92 = 2048;
     v93 = *&v47;
     v94 = 2048;
@@ -342,7 +342,7 @@ LABEL_20:
     _os_log_impl(&dword_1C830A000, v53, OS_LOG_TYPE_DEFAULT, "Grid will layout with %li rows, %li columns, %f padding, isRTL: %i. Starting at %f, %f", buf, 0x3Au);
   }
 
-  v76 = v8;
+  v76 = preferredContentSizeCategory;
   v54 = v49 - v44;
 
   v55 = [(WFWidgetGridView *)self log];
@@ -350,13 +350,13 @@ LABEL_20:
   {
     v56 = objc_opt_class();
     v57 = NSStringFromClass(v56);
-    v58 = [(WFWidgetGridView *)self homeScreenTintColor];
+    homeScreenTintColor = [(WFWidgetGridView *)self homeScreenTintColor];
     *buf = 134218498;
-    v91 = self;
+    selfCopy = self;
     v92 = 2112;
     v93 = *&v57;
     v94 = 2112;
-    v95 = *&v58;
+    v95 = *&homeScreenTintColor;
     _os_log_impl(&dword_1C830A000, v55, OS_LOG_TYPE_DEFAULT, "<%p %@> Configuring cells with home screen tint color %@", buf, 0x20u);
   }
 
@@ -388,10 +388,10 @@ LABEL_20:
 
     [(WFWidgetGridView *)self cornerRadius];
     v67 = v66 - v44;
-    v68 = [(WFWidgetGridView *)self widgetType];
-    v69 = [(WFWidgetGridView *)self family];
-    v70 = [(WFWidgetGridView *)self homeScreenTintColor];
-    [(WFWidgetCell *)v64 configureWithAction:v65 dataSource:v83 cornerRadius:v68 widgetType:v69 family:v70 homeScreenTintColor:[(WFWidgetGridView *)self isClearStyleEnabled] isClearStyleEnabled:v67];
+    widgetType = [(WFWidgetGridView *)self widgetType];
+    family2 = [(WFWidgetGridView *)self family];
+    homeScreenTintColor2 = [(WFWidgetGridView *)self homeScreenTintColor];
+    [(WFWidgetCell *)v64 configureWithAction:v65 dataSource:sourceCopy cornerRadius:widgetType widgetType:family2 family:homeScreenTintColor2 homeScreenTintColor:[(WFWidgetGridView *)self isClearStyleEnabled] isClearStyleEnabled:v67];
 
     if (v61)
     {
@@ -448,9 +448,9 @@ LABEL_20:
     v72 = [(WFWidgetGridView *)self log];
     if (os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
     {
-      v73 = [(WFWidgetCell *)v64 enabled];
+      enabled = [(WFWidgetCell *)v64 enabled];
       *buf = 134219264;
-      v91 = v61;
+      selfCopy = v61;
       v92 = 2048;
       v93 = v52;
       v94 = 2048;
@@ -460,7 +460,7 @@ LABEL_20:
       *&v97[8] = 2048;
       *&v97[10] = v54;
       *&v97[18] = 1024;
-      *&v97[20] = v73;
+      *&v97[20] = enabled;
       _os_log_impl(&dword_1C830A000, v72, OS_LOG_TYPE_DEFAULT, "Placing cell %li at {%f, %f}, w: %f, h: %f, cell enabled: %i", buf, 0x3Au);
     }
 
@@ -488,16 +488,16 @@ LABEL_20:
   }
 
   while (v60 != v61);
-  v75 = [(WFWidgetGridView *)self delegate];
-  [v75 gridViewDidFinishLayout:self];
+  delegate = [(WFWidgetGridView *)self delegate];
+  [delegate gridViewDidFinishLayout:self];
 
-  v8 = v76;
+  preferredContentSizeCategory = v76;
 LABEL_103:
 }
 
-- (BOOL)maybeNeedsLayoutWithActions:(id)a3
+- (BOOL)maybeNeedsLayoutWithActions:(id)actions
 {
-  v3 = [a3 if_objectsPassingTest:&__block_literal_global_55];
+  v3 = [actions if_objectsPassingTest:&__block_literal_global_55];
   v4 = [v3 count] != 0;
 
   return v4;
@@ -514,8 +514,8 @@ uint64_t __48__WFWidgetGridView_maybeNeedsLayoutWithActions___block_invoke(uint6
 
 - (id)actionsForVisibleCells
 {
-  v2 = [(WFWidgetGridView *)self subviews];
-  v3 = [v2 if_compactMap:&__block_literal_global_2782];
+  subviews = [(WFWidgetGridView *)self subviews];
+  v3 = [subviews if_compactMap:&__block_literal_global_2782];
 
   return v3;
 }
@@ -548,16 +548,16 @@ id __42__WFWidgetGridView_actionsForVisibleCells__block_invoke(uint64_t a1, void
   return v5;
 }
 
-- (id)cellForSystemAction:(id)a3
+- (id)cellForSystemAction:(id)action
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionCopy = action;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(WFWidgetGridView *)self subviews];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  subviews = [(WFWidgetGridView *)self subviews];
+  v6 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -568,7 +568,7 @@ LABEL_3:
     {
       if (*v17 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(subviews);
       }
 
       v10 = *(*(&v16 + 1) + 8 * v9);
@@ -577,18 +577,18 @@ LABEL_3:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v10 action];
-          v12 = v4;
+          action = [v10 action];
+          v12 = actionCopy;
           v13 = v12;
-          if (v11 == v12)
+          if (action == v12)
           {
 
             goto LABEL_21;
           }
 
-          if (v4 && v11)
+          if (actionCopy && action)
           {
-            v14 = [v11 isEqual:v12];
+            v14 = [action isEqual:v12];
 
             if (v14)
             {
@@ -601,20 +601,20 @@ LABEL_3:
 
         else
         {
-          v11 = v10;
+          action = v10;
           v10 = 0;
         }
       }
 
       else
       {
-        v11 = 0;
+        action = 0;
       }
 
 LABEL_17:
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v7 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -631,17 +631,17 @@ LABEL_21:
   return v10;
 }
 
-- (void)setCellsToClear:(BOOL)a3
+- (void)setCellsToClear:(BOOL)clear
 {
-  v3 = a3;
+  clearCopy = clear;
   v15 = *MEMORY[0x1E69E9840];
-  self->_isClearStyleEnabled = a3;
+  self->_isClearStyleEnabled = clear;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(WFWidgetGridView *)self subviews];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  subviews = [(WFWidgetGridView *)self subviews];
+  v5 = [subviews countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -653,7 +653,7 @@ LABEL_21:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         v9 = *(*(&v10 + 1) + 8 * v8);
@@ -662,7 +662,7 @@ LABEL_21:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v9 setClearStyle:v3];
+            [v9 setClearStyle:clearCopy];
           }
         }
 
@@ -670,38 +670,38 @@ LABEL_21:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [subviews countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)tintWithHomeScreenTintColor:(id)a3
+- (void)tintWithHomeScreenTintColor:(id)color
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  colorCopy = color;
   v6 = [(WFWidgetGridView *)self log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     *buf = 134218498;
-    v21 = self;
+    selfCopy = self;
     v22 = 2112;
     v23 = v8;
     v24 = 2112;
-    v25 = v5;
+    v25 = colorCopy;
     _os_log_impl(&dword_1C830A000, v6, OS_LOG_TYPE_DEFAULT, "<%p %@> Received home screen tint color %@", buf, 0x20u);
   }
 
-  objc_storeStrong(&self->_homeScreenTintColor, a3);
+  objc_storeStrong(&self->_homeScreenTintColor, color);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [(WFWidgetGridView *)self subviews];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  subviews = [(WFWidgetGridView *)self subviews];
+  v10 = [subviews countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -713,7 +713,7 @@ LABEL_21:
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(subviews);
         }
 
         v14 = *(*(&v15 + 1) + 8 * v13);
@@ -722,7 +722,7 @@ LABEL_21:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v14 setHomeScreenTintColor:v5];
+            [v14 setHomeScreenTintColor:colorCopy];
           }
         }
 
@@ -730,7 +730,7 @@ LABEL_21:
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v11 = [subviews countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v11);
@@ -744,8 +744,8 @@ LABEL_21:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(WFWidgetGridView *)self subviews];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  subviews = [(WFWidgetGridView *)self subviews];
+  v3 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -756,35 +756,35 @@ LABEL_21:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(subviews);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
-        v8 = [v7 action];
+        action = [v7 action];
 
-        if (v8)
+        if (action)
         {
           [v7 setEnabled:1];
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)disableAllCellsExceptCell:(id)a3
+- (void)disableAllCellsExceptCell:(id)cell
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  cellCopy = cell;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(WFWidgetGridView *)self subviews];
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  subviews = [(WFWidgetGridView *)self subviews];
+  v6 = [subviews countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -795,14 +795,14 @@ LABEL_21:
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subviews);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 action];
-        v12 = [v4 action];
-        v13 = v11;
-        v14 = v12;
+        action = [v10 action];
+        action2 = [cellCopy action];
+        v13 = action;
+        v14 = action2;
         v15 = v14;
         if (v13 == v14)
         {
@@ -836,26 +836,26 @@ LABEL_15:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v7);
   }
 }
 
-- (WFWidgetGridView)initWithFamily:(int64_t)a3 widgetType:(int64_t)a4 cornerRadius:(double)a5 log:(id)a6
+- (WFWidgetGridView)initWithFamily:(int64_t)family widgetType:(int64_t)type cornerRadius:(double)radius log:(id)log
 {
-  v11 = a6;
+  logCopy = log;
   v16.receiver = self;
   v16.super_class = WFWidgetGridView;
   v12 = [(WFWidgetGridView *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    v12->_family = a3;
-    v12->_widgetType = a4;
-    v12->_cornerRadius = a5;
-    objc_storeStrong(&v12->_log, a6);
+    v12->_family = family;
+    v12->_widgetType = type;
+    v12->_cornerRadius = radius;
+    objc_storeStrong(&v12->_log, log);
     v14 = v13;
   }
 

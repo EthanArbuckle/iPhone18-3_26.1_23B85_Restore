@@ -1,16 +1,16 @@
 @interface UITextTapRecognizer
-- (UITextTapRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (UITextTapRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation UITextTapRecognizer
 
-- (UITextTapRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (UITextTapRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = UITextTapRecognizer;
-  v4 = [(UITapGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(UITapGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -23,12 +23,12 @@
   return v5;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 anyObject];
-  if ([v8 _isPointerTouch])
+  beganCopy = began;
+  eventCopy = event;
+  anyObject = [beganCopy anyObject];
+  if ([anyObject _isPointerTouch])
   {
     [(UITextTapRecognizer *)self touchBasedAllowableMovement];
     v10 = v9;
@@ -47,19 +47,19 @@
 
   v11.receiver = self;
   v11.super_class = UITextTapRecognizer;
-  [(UITapGestureRecognizer *)&v11 touchesBegan:v6 withEvent:v7];
+  [(UITapGestureRecognizer *)&v11 touchesBegan:beganCopy withEvent:eventCopy];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UITapGestureRecognizer *)self touches];
-  [(UITextTapRecognizer *)self setTouchesForTap:v8];
+  eventCopy = event;
+  endedCopy = ended;
+  touches = [(UITapGestureRecognizer *)self touches];
+  [(UITextTapRecognizer *)self setTouchesForTap:touches];
 
   v10.receiver = self;
   v10.super_class = UITextTapRecognizer;
-  [(UITapGestureRecognizer *)&v10 touchesEnded:v7 withEvent:v6];
+  [(UITapGestureRecognizer *)&v10 touchesEnded:endedCopy withEvent:eventCopy];
 
   [(UITextTapRecognizer *)self touchBasedAllowableMovement];
   if (v9 > 0.0)

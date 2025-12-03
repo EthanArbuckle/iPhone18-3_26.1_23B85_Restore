@@ -1,20 +1,20 @@
 @interface _UIStatusBarCellularCondensedItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (_UIStatusBarCellularCondensedItemAccessibility)init;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation _UIStatusBarCellularCondensedItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v7 = location;
   v6 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v5 = "@";
   v3 = @"_UIStatusBarCellularCondensedItem";
   [location[0] validateClass:"@" hasInstanceMethod:"@" withFullSignature:0];
@@ -27,12 +27,12 @@
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v5.receiver = self;
   v5.super_class = _UIStatusBarCellularCondensedItemAccessibility;
   [(_UIStatusBarCellularCondensedItemAccessibility *)&v5 _accessibilityLoadAccessibilityInformation];
-  v4 = [(_UIStatusBarCellularCondensedItemAccessibility *)v7 safeValueForKey:@"dualSignalView"];
+  v4 = [(_UIStatusBarCellularCondensedItemAccessibility *)selfCopy safeValueForKey:@"dualSignalView"];
   v3 = [v4 safeUIViewForKey:@"topSignalView"];
   v2 = [v4 safeUIViewForKey:@"bottomSignalView"];
   [v3 _accessibilitySetRetainedValue:? forKey:?];
@@ -60,18 +60,18 @@
   return v3;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, update);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  v7.receiver = v11;
+  objc_storeStrong(&v9, item);
+  v7.receiver = selfCopy;
   v7.super_class = _UIStatusBarCellularCondensedItemAccessibility;
   v8 = [(_UIStatusBarCellularCondensedItemAccessibility *)&v7 applyUpdate:location[0] toDisplayItem:v9];
-  [(_UIStatusBarCellularCondensedItemAccessibility *)v11 _accessibilityLoadAccessibilityInformation];
+  [(_UIStatusBarCellularCondensedItemAccessibility *)selfCopy _accessibilityLoadAccessibilityInformation];
   v6 = MEMORY[0x29EDC9748](v8);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);

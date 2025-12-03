@@ -1,93 +1,93 @@
 @interface AKCustodianDaemonService
 - (AKCustodianDaemonService)init;
-- (AKCustodianDaemonService)initWithClient:(id)a3;
-- (BOOL)verifyRecoveryTransactionWithContext:(id)a3 verifySessionID:(BOOL)a4 error:(id *)a5;
+- (AKCustodianDaemonService)initWithClient:(id)client;
+- (BOOL)verifyRecoveryTransactionWithContext:(id)context verifySessionID:(BOOL)d error:(id *)error;
 - (void)dealloc;
-- (void)fetchCustodianDataRecoveryKeyWithContext:(id)a3 completion:(id)a4;
-- (void)fetchCustodianRecoveryCodeConfigurationWithCompletion:(id)a3;
-- (void)fetchCustodianRecoveryTokenWithContext:(id)a3 completion:(id)a4;
-- (void)finalizeCustodianSetupWithContext:(id)a3 completion:(id)a4;
-- (void)initiateCustodianSetupWithContext:(id)a3 completion:(id)a4;
-- (void)revokeCustodianWithContext:(id)a3 completion:(id)a4;
-- (void)sendEmbargoEndNotificationFeedbackWithContext:(id)a3 urlKey:(id)a4 completion:(id)a5;
-- (void)startCustodianRecoveryRequestWithContext:(id)a3 completion:(id)a4;
-- (void)startCustodianRecoveryTransactionWithContext:(id)a3 completion:(id)a4;
-- (void)updateCustodianRecoveryKeyWithContext:(id)a3 completion:(id)a4;
+- (void)fetchCustodianDataRecoveryKeyWithContext:(id)context completion:(id)completion;
+- (void)fetchCustodianRecoveryCodeConfigurationWithCompletion:(id)completion;
+- (void)fetchCustodianRecoveryTokenWithContext:(id)context completion:(id)completion;
+- (void)finalizeCustodianSetupWithContext:(id)context completion:(id)completion;
+- (void)initiateCustodianSetupWithContext:(id)context completion:(id)completion;
+- (void)revokeCustodianWithContext:(id)context completion:(id)completion;
+- (void)sendEmbargoEndNotificationFeedbackWithContext:(id)context urlKey:(id)key completion:(id)completion;
+- (void)startCustodianRecoveryRequestWithContext:(id)context completion:(id)completion;
+- (void)startCustodianRecoveryTransactionWithContext:(id)context completion:(id)completion;
+- (void)updateCustodianRecoveryKeyWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation AKCustodianDaemonService
 
 - (AKCustodianDaemonService)init
 {
-  v3 = self;
+  selfCopy = self;
   [(AKCustodianDaemonService *)self doesNotRecognizeSelector:a2];
-  objc_storeStrong(&v3, 0);
+  objc_storeStrong(&selfCopy, 0);
   return 0;
 }
 
-- (AKCustodianDaemonService)initWithClient:(id)a3
+- (AKCustodianDaemonService)initWithClient:(id)client
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v8 = 0;
+  objc_storeStrong(location, client);
+  v3 = selfCopy;
+  selfCopy = 0;
   v6.receiver = v3;
   v6.super_class = AKCustodianDaemonService;
-  v8 = [(AKCustodianDaemonService *)&v6 init];
-  objc_storeStrong(&v8, v8);
-  if (v8)
+  selfCopy = [(AKCustodianDaemonService *)&v6 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v8->_client, location[0]);
+    objc_storeStrong(&selfCopy->_client, location[0]);
   }
 
-  v5 = _objc_retain(v8);
+  v5 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _AKLogSystem();
   type = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEBUG))
   {
-    sub_1000194D4(v6, v5);
+    sub_1000194D4(v6, selfCopy);
     _os_log_debug_impl(&_mh_execute_header, oslog[0], type, "%@ deallocated", v6, 0xCu);
   }
 
   objc_storeStrong(oslog, 0);
-  v2.receiver = v5;
+  v2.receiver = selfCopy;
   v2.super_class = AKCustodianDaemonService;
   [(AKCustodianDaemonService *)&v2 dealloc];
 }
 
-- (void)initiateCustodianSetupWithContext:(id)a3 completion:(id)a4
+- (void)initiateCustodianSetupWithContext:(id)context completion:(id)completion
 {
-  v45 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v43 = 0;
-  objc_storeStrong(&v43, a4);
-  if ([(AKClient *)v45->_client hasInternalPrivateAccess])
+  objc_storeStrong(&v43, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
-    v16 = [location[0] custodianUUID];
-    _objc_release(v16);
-    if (v16)
+    custodianUUID = [location[0] custodianUUID];
+    _objc_release(custodianUUID);
+    if (custodianUUID)
     {
-      v11 = [location[0] custodianSetupToken];
-      _objc_release(v11);
-      if (v11)
+      custodianSetupToken = [location[0] custodianSetupToken];
+      _objc_release(custodianSetupToken);
+      if (custodianSetupToken)
       {
         v4 = [AKCustodianRequestProvider alloc];
         v32 = [(AKCustodianRequestProvider *)v4 initWithContext:location[0] urlBagKey:AKURLBagKeyCustodianInitiation];
         [(AKCustodianRequestProvider *)v32 setAuthenticatedRequest:1];
-        [(AKURLRequestProviderImpl *)v32 setClient:v45->_client];
+        [(AKURLRequestProviderImpl *)v32 setClient:selfCopy->_client];
         v5 = [AKServiceControllerImpl alloc];
         v31 = [(AKServiceControllerImpl *)v5 initWithRequestProvider:v32];
         v30 = objc_alloc_init(AKAuthHandlerImpl);
@@ -190,29 +190,29 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)finalizeCustodianSetupWithContext:(id)a3 completion:(id)a4
+- (void)finalizeCustodianSetupWithContext:(id)context completion:(id)completion
 {
-  v45 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v43 = 0;
-  objc_storeStrong(&v43, a4);
-  if ([(AKClient *)v45->_client hasInternalPrivateAccess])
+  objc_storeStrong(&v43, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
-    v16 = [location[0] custodianUUID];
-    _objc_release(v16);
-    if (v16)
+    custodianUUID = [location[0] custodianUUID];
+    _objc_release(custodianUUID);
+    if (custodianUUID)
     {
-      v11 = [location[0] altDSID];
-      _objc_release(v11);
-      if (v11)
+      altDSID = [location[0] altDSID];
+      _objc_release(altDSID);
+      if (altDSID)
       {
         v4 = [AKCustodianRequestProvider alloc];
         v32 = [(AKCustodianRequestProvider *)v4 initWithContext:location[0] urlBagKey:AKURLBagKeyCustodianApproval];
         [(AKCustodianRequestProvider *)v32 setAuthenticatedRequest:1];
         [(AKCustodianRequestProvider *)v32 setSignWithIdentityToken:1];
-        [(AKURLRequestProviderImpl *)v32 setClient:v45->_client];
+        [(AKURLRequestProviderImpl *)v32 setClient:selfCopy->_client];
         v5 = [AKServiceControllerImpl alloc];
         v31 = [(AKServiceControllerImpl *)v5 initWithRequestProvider:v32];
         v30 = objc_alloc_init(AKAuthHandlerImpl);
@@ -315,29 +315,29 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)revokeCustodianWithContext:(id)a3 completion:(id)a4
+- (void)revokeCustodianWithContext:(id)context completion:(id)completion
 {
-  v45 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v43 = 0;
-  objc_storeStrong(&v43, a4);
-  if ([(AKClient *)v45->_client hasInternalPrivateAccess])
+  objc_storeStrong(&v43, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
-    v16 = [location[0] custodianUUID];
-    _objc_release(v16);
-    if (v16)
+    custodianUUID = [location[0] custodianUUID];
+    _objc_release(custodianUUID);
+    if (custodianUUID)
     {
-      v11 = [location[0] altDSID];
-      _objc_release(v11);
-      if (v11)
+      altDSID = [location[0] altDSID];
+      _objc_release(altDSID);
+      if (altDSID)
       {
         v4 = [AKCustodianRequestProvider alloc];
         v32 = [(AKCustodianRequestProvider *)v4 initWithContext:location[0] urlBagKey:AKURLBagKeyCustodianDeletion];
         [(AKCustodianRequestProvider *)v32 setAuthenticatedRequest:1];
         [(AKCustodianRequestProvider *)v32 setSignWithIdentityToken:1];
-        [(AKURLRequestProviderImpl *)v32 setClient:v45->_client];
+        [(AKURLRequestProviderImpl *)v32 setClient:selfCopy->_client];
         v5 = [AKServiceControllerImpl alloc];
         v31 = [(AKServiceControllerImpl *)v5 initWithRequestProvider:v32];
         v30 = objc_alloc_init(AKAuthHandlerImpl);
@@ -440,33 +440,33 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)updateCustodianRecoveryKeyWithContext:(id)a3 completion:(id)a4
+- (void)updateCustodianRecoveryKeyWithContext:(id)context completion:(id)completion
 {
-  v52 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v50 = 0;
-  objc_storeStrong(&v50, a4);
-  if ([(AKClient *)v52->_client hasInternalPrivateAccess])
+  objc_storeStrong(&v50, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
-    v21 = [location[0] custodianUUID];
-    _objc_release(v21);
-    if (v21)
+    custodianUUID = [location[0] custodianUUID];
+    _objc_release(custodianUUID);
+    if (custodianUUID)
     {
-      v16 = [location[0] altDSID];
-      _objc_release(v16);
-      if (v16)
+      altDSID = [location[0] altDSID];
+      _objc_release(altDSID);
+      if (altDSID)
       {
-        v11 = [location[0] wrappingKeyRKC];
-        _objc_release(v11);
-        if (v11)
+        wrappingKeyRKC = [location[0] wrappingKeyRKC];
+        _objc_release(wrappingKeyRKC);
+        if (wrappingKeyRKC)
         {
           v4 = [AKCustodianRequestProvider alloc];
           v36 = [(AKCustodianRequestProvider *)v4 initWithContext:location[0] urlBagKey:AKURLBagKeyCustodianUpdateRecoveryKey];
           [(AKCustodianRequestProvider *)v36 setAuthenticatedRequest:1];
           [(AKCustodianRequestProvider *)v36 setSignWithIdentityToken:1];
-          [(AKURLRequestProviderImpl *)v36 setClient:v52->_client];
+          [(AKURLRequestProviderImpl *)v36 setClient:selfCopy->_client];
           v5 = [AKServiceControllerImpl alloc];
           v35 = [(AKServiceControllerImpl *)v5 initWithRequestProvider:v36];
           v34 = objc_alloc_init(AKAuthHandlerImpl);
@@ -592,14 +592,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)startCustodianRecoveryRequestWithContext:(id)a3 completion:(id)a4
+- (void)startCustodianRecoveryRequestWithContext:(id)context completion:(id)completion
 {
-  v43 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v41 = 0;
-  objc_storeStrong(&v41, a4);
+  objc_storeStrong(&v41, completion);
   v40 = _AKLogSystem();
   v39 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
@@ -611,15 +611,15 @@
   objc_storeStrong(&v40, 0);
   v38 = 0;
   v37 = 0;
-  v12 = [(AKCustodianDaemonService *)v43 verifyRecoveryTransactionWithContext:location[0] verifySessionID:0 error:&v37];
+  v12 = [(AKCustodianDaemonService *)selfCopy verifyRecoveryTransactionWithContext:location[0] verifySessionID:0 error:&v37];
   objc_storeStrong(&v38, v37);
   if (v12)
   {
     v35 = +[AKAccountManager sharedInstance];
-    v34 = [v35 primaryAuthKitAccount];
+    primaryAuthKitAccount = [v35 primaryAuthKitAccount];
     v33 = 0;
     v32 = 0;
-    if (v34)
+    if (primaryAuthKitAccount)
     {
       v31 = _AKLogSystem();
       v30 = 2;
@@ -633,7 +633,7 @@
 
       objc_storeStrong(&v31, 0);
       v33 = 1;
-      v9 = [v35 altDSIDForAccount:v34];
+      v9 = [v35 altDSIDForAccount:primaryAuthKitAccount];
       [location[0] setAltDSID:?];
       _objc_release(v9);
       v8 = objc_alloc_init(AKAuthHandlerImpl);
@@ -646,7 +646,7 @@
     v7 = [AKCustodianRequestProvider alloc];
     v28 = [(AKCustodianRequestProvider *)v7 initWithContext:location[0] urlBagKey:AKURLBagKeyCustodianRecoveryRequest];
     [v28 setAuthenticatedRequest:v33 & 1];
-    [v28 setClient:v43->_client];
+    [v28 setClient:selfCopy->_client];
     v22[0] = 0;
     v22[1] = v22;
     v23 = 838860800;
@@ -674,7 +674,7 @@
     objc_storeStrong(&v27, 0);
     objc_storeStrong(&v28, 0);
     objc_storeStrong(&v32, 0);
-    objc_storeStrong(&v34, 0);
+    objc_storeStrong(&primaryAuthKitAccount, 0);
     objc_storeStrong(&v35, 0);
     v36 = 0;
   }
@@ -694,23 +694,23 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchCustodianRecoveryCodeConfigurationWithCompletion:(id)a3
+- (void)fetchCustodianRecoveryCodeConfigurationWithCompletion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(AKClient *)v14->_client hasInternalPrivateAccess])
+  objc_storeStrong(location, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
     v3 = [AKURLBag bagForAltDSID:0];
-    v8 = [v3 custodianCodeConfiguration];
+    custodianCodeConfiguration = [v3 custodianCodeConfiguration];
     _objc_release(v3);
     if (location[0])
     {
-      (*(location[0] + 2))(location[0], v8, 0);
+      (*(location[0] + 2))(location[0], custodianCodeConfiguration, 0);
     }
 
-    objc_storeStrong(&v8, 0);
+    objc_storeStrong(&custodianCodeConfiguration, 0);
     v9 = 0;
   }
 
@@ -741,17 +741,17 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)startCustodianRecoveryTransactionWithContext:(id)a3 completion:(id)a4
+- (void)startCustodianRecoveryTransactionWithContext:(id)context completion:(id)completion
 {
-  v32 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v30 = 0;
-  objc_storeStrong(&v30, a4);
+  objc_storeStrong(&v30, completion);
   v29 = 0;
   v28 = 0;
-  v11 = [(AKCustodianDaemonService *)v32 verifyRecoveryTransactionWithContext:location[0] verifySessionID:0 error:&v28];
+  v11 = [(AKCustodianDaemonService *)selfCopy verifyRecoveryTransactionWithContext:location[0] verifySessionID:0 error:&v28];
   objc_storeStrong(&v29, v28);
   if (v11)
   {
@@ -760,22 +760,22 @@
     if (![location[0] ownerDevice])
     {
       v9 = +[AKAccountManager sharedInstance];
-      v24 = [(AKAccountManager *)v9 altDSIDforPrimaryiCloudAccount];
+      altDSIDforPrimaryiCloudAccount = [(AKAccountManager *)v9 altDSIDforPrimaryiCloudAccount];
       _objc_release(v9);
-      [location[0] setAltDSID:v24];
+      [location[0] setAltDSID:altDSIDforPrimaryiCloudAccount];
       v25 = 1;
       v4 = objc_alloc_init(AKAuthHandlerImpl);
       v5 = v26;
       v26 = v4;
       _objc_release(v5);
       [v26 setForceSilentAuth:1];
-      objc_storeStrong(&v24, 0);
+      objc_storeStrong(&altDSIDforPrimaryiCloudAccount, 0);
     }
 
     v6 = [AKCustodianRequestProvider alloc];
     v23 = [(AKCustodianRequestProvider *)v6 initWithContext:location[0] urlBagKey:AKURLBagKeyCustodianRecoveryCircle];
     [v23 setAuthenticatedRequest:v25 & 1];
-    [v23 setClient:v32->_client];
+    [v23 setClient:selfCopy->_client];
     v19[0] = 0;
     v19[1] = v19;
     v20 = 0x20000000;
@@ -816,14 +816,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchCustodianRecoveryTokenWithContext:(id)a3 completion:(id)a4
+- (void)fetchCustodianRecoveryTokenWithContext:(id)context completion:(id)completion
 {
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v25 = 0;
-  objc_storeStrong(&v25, a4);
+  objc_storeStrong(&v25, completion);
   v18 = 0;
   v19 = &v18;
   v20 = 838860800;
@@ -832,13 +832,13 @@
   v23 = sub_100011350;
   v24 = 0;
   v17 = 0;
-  v7 = [(AKCustodianDaemonService *)v27 verifyRecoveryTransactionWithContext:location[0] verifySessionID:1 error:&v17];
+  v7 = [(AKCustodianDaemonService *)selfCopy verifyRecoveryTransactionWithContext:location[0] verifySessionID:1 error:&v17];
   objc_storeStrong(&v24, v17);
   if (v7)
   {
     v5 = [AKCustodianRequestProvider alloc];
     v15 = [(AKCustodianRequestProvider *)v5 initWithContext:location[0] urlBagKey:AKURLBagKeyCustodianPostCircle];
-    [v15 setClient:v27->_client];
+    [v15 setClient:selfCopy->_client];
     [v15 setAuthenticatedRequest:0];
     v14 = [[AKServiceControllerImpl alloc] initWithRequestProvider:v15];
     v4 = v14;
@@ -872,32 +872,32 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchCustodianDataRecoveryKeyWithContext:(id)a3 completion:(id)a4
+- (void)fetchCustodianDataRecoveryKeyWithContext:(id)context completion:(id)completion
 {
-  v54 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v52 = 0;
-  objc_storeStrong(&v52, a4);
-  if ([(AKClient *)v54->_client hasInternalPrivateAccess])
+  objc_storeStrong(&v52, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
-    v16 = [location[0] recoverySessionID];
+    recoverySessionID = [location[0] recoverySessionID];
     v46 = 0;
     v17 = 1;
-    if (v16)
+    if (recoverySessionID)
     {
-      v47 = [location[0] custodianRecoveryToken];
+      custodianRecoveryToken = [location[0] custodianRecoveryToken];
       v46 = 1;
-      v17 = v47 == 0;
+      v17 = custodianRecoveryToken == 0;
     }
 
     if (v46)
     {
-      _objc_release(v47);
+      _objc_release(custodianRecoveryToken);
     }
 
-    _objc_release(v16);
+    _objc_release(recoverySessionID);
     if (v17)
     {
       v45 = _AKLogSystem();
@@ -925,16 +925,16 @@
     else
     {
       v11 = +[AKAccountManager sharedInstance];
-      v42 = [(AKAccountManager *)v11 altDSIDforPrimaryiCloudAccount];
+      altDSIDforPrimaryiCloudAccount = [(AKAccountManager *)v11 altDSIDforPrimaryiCloudAccount];
       _objc_release(v11);
-      if (v42)
+      if (altDSIDforPrimaryiCloudAccount)
       {
-        [location[0] setAltDSID:v42];
+        [location[0] setAltDSID:altDSIDforPrimaryiCloudAccount];
         v4 = [AKCustodianRequestProvider alloc];
         v38 = [(AKCustodianRequestProvider *)v4 initWithContext:location[0] urlBagKey:AKURLBagKeyCustodianRecoveryWrappingKey];
         [v38 setAuthenticatedRequest:1];
         [v38 setSignWithIdentityToken:1];
-        [v38 setClient:v54->_client];
+        [v38 setClient:selfCopy->_client];
         v32[0] = 0;
         v32[1] = v32;
         v33 = 838860800;
@@ -953,7 +953,7 @@
         v25 = 0;
         v26 = sub_100142EC8;
         v27 = &unk_1003246C8;
-        v28 = _objc_retain(v42);
+        v28 = _objc_retain(altDSIDforPrimaryiCloudAccount);
         v29[1] = v32;
         v29[0] = _objc_retain(v52);
         [v5 executeRequestWithCompletion:&v23];
@@ -991,7 +991,7 @@
         v48 = 1;
       }
 
-      objc_storeStrong(&v42, 0);
+      objc_storeStrong(&altDSIDforPrimaryiCloudAccount, 0);
     }
   }
 
@@ -1023,25 +1023,25 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)sendEmbargoEndNotificationFeedbackWithContext:(id)a3 urlKey:(id)a4 completion:(id)a5
+- (void)sendEmbargoEndNotificationFeedbackWithContext:(id)context urlKey:(id)key completion:(id)completion
 {
-  v48 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v46 = 0;
-  objc_storeStrong(&v46, a4);
+  objc_storeStrong(&v46, key);
   v45 = 0;
-  objc_storeStrong(&v45, a5);
-  if ([(AKClient *)v48->_client hasInternalPrivateAccess])
+  objc_storeStrong(&v45, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
-    v17 = [location[0] altDSID];
-    _objc_release(v17);
-    if (v17)
+    altDSID = [location[0] altDSID];
+    _objc_release(altDSID);
+    if (altDSID)
     {
-      v12 = [location[0] recoverySessionID];
-      _objc_release(v12);
-      if (v12)
+      recoverySessionID = [location[0] recoverySessionID];
+      _objc_release(recoverySessionID);
+      if (recoverySessionID)
       {
         v34 = _objc_retain(v46);
         if (!v34)
@@ -1061,7 +1061,7 @@
         v5 = [AKCustodianRequestProvider alloc];
         v31 = [(AKCustodianRequestProvider *)v5 initWithContext:location[0] urlBagKey:v34];
         [(AKCustodianRequestProvider *)v31 setAuthenticatedRequest:0];
-        [(AKURLRequestProviderImpl *)v31 setClient:v48->_client];
+        [(AKURLRequestProviderImpl *)v31 setClient:selfCopy->_client];
         v6 = [AKServiceControllerImpl alloc];
         v30 = [(AKServiceControllerImpl *)v6 initWithRequestProvider:v31];
         v7 = v30;
@@ -1158,44 +1158,44 @@
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)verifyRecoveryTransactionWithContext:(id)a3 verifySessionID:(BOOL)a4 error:(id *)a5
+- (BOOL)verifyRecoveryTransactionWithContext:(id)context verifySessionID:(BOOL)d error:(id *)error
 {
-  v57 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v55 = a4;
-  v54 = a5;
-  if ([(AKClient *)v57->_client hasInternalPrivateAccess])
+  objc_storeStrong(location, context);
+  dCopy = d;
+  errorCopy = error;
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
-    v24 = [location[0] ownerAppleID];
+    ownerAppleID = [location[0] ownerAppleID];
     v48 = 0;
     v46 = 0;
     v25 = 0;
-    if (!v24)
+    if (!ownerAppleID)
     {
-      v49 = [location[0] ownerCustodianAltDSID];
+      ownerCustodianAltDSID = [location[0] ownerCustodianAltDSID];
       v48 = 1;
       v25 = 0;
-      if (!v49)
+      if (!ownerCustodianAltDSID)
       {
-        v47 = [location[0] custodianUUID];
+        custodianUUID = [location[0] custodianUUID];
         v46 = 1;
-        v25 = v47 == 0;
+        v25 = custodianUUID == 0;
       }
     }
 
     if (v46)
     {
-      _objc_release(v47);
+      _objc_release(custodianUUID);
     }
 
     if (v48)
     {
-      _objc_release(v49);
+      _objc_release(ownerCustodianAltDSID);
     }
 
-    _objc_release(v24);
+    _objc_release(ownerAppleID);
     if (v25)
     {
       v45 = _AKLogSystem();
@@ -1209,11 +1209,11 @@
       }
 
       objc_storeStrong(&v45, 0);
-      if (v54)
+      if (errorCopy)
       {
         v21 = [NSError ak_errorWithCode:-7022];
         v6 = v21;
-        *v54 = v21;
+        *errorCopy = v21;
       }
 
       v58 = 0;
@@ -1222,9 +1222,9 @@
 
     else
     {
-      v20 = [location[0] pushToken];
-      _objc_release(v20);
-      if (v20)
+      pushToken = [location[0] pushToken];
+      _objc_release(pushToken);
+      if (pushToken)
       {
         goto LABEL_31;
       }
@@ -1241,11 +1241,11 @@
 
       objc_storeStrong(&v42, 0);
       v17 = +[AKAppleIDPushHelperService sharedService];
-      v39 = [v17 publicAPSTokenString];
+      publicAPSTokenString = [v17 publicAPSTokenString];
       _objc_release(v17);
-      if ([v39 length])
+      if ([publicAPSTokenString length])
       {
-        [location[0] setPushToken:v39];
+        [location[0] setPushToken:publicAPSTokenString];
         v50 = 0;
       }
 
@@ -1262,33 +1262,33 @@
         }
 
         objc_storeStrong(&v38, 0);
-        if (v54)
+        if (errorCopy)
         {
           v14 = [NSError ak_errorWithCode:-7041];
           v7 = v14;
-          *v54 = v14;
+          *errorCopy = v14;
         }
 
         v58 = 0;
         v50 = 1;
       }
 
-      objc_storeStrong(&v39, 0);
+      objc_storeStrong(&publicAPSTokenString, 0);
       if (!v50)
       {
 LABEL_31:
         v34 = 0;
         v13 = 0;
-        if (v55)
+        if (dCopy)
         {
-          v35 = [location[0] recoverySessionID];
+          recoverySessionID = [location[0] recoverySessionID];
           v34 = 1;
-          v13 = v35 == 0;
+          v13 = recoverySessionID == 0;
         }
 
         if (v34)
         {
-          _objc_release(v35);
+          _objc_release(recoverySessionID);
         }
 
         if (v13)
@@ -1304,11 +1304,11 @@ LABEL_31:
           }
 
           objc_storeStrong(&v33, 0);
-          if (v54)
+          if (errorCopy)
           {
             v10 = [NSError ak_errorWithCode:-7044];
             v8 = v10;
-            *v54 = v10;
+            *errorCopy = v10;
           }
 
           v58 = 0;
@@ -1337,11 +1337,11 @@ LABEL_31:
     }
 
     objc_storeStrong(&v53, 0);
-    if (v54)
+    if (errorCopy)
     {
       v26 = [NSError ak_errorWithCode:-7026];
       v5 = v26;
-      *v54 = v26;
+      *errorCopy = v26;
     }
 
     v58 = 0;

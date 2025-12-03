@@ -1,17 +1,17 @@
 @interface TSWPChangeDetails
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToChangeDetails:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToChangeDetails:(id)details;
 - (NSDate)date;
 - (TSKAnnotationAuthor)author;
-- (TSWPChangeDetails)initWithChange:(id)a3 changeString:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSWPChangeDetails)initWithChange:(id)change changeString:(id)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)setAuthor:(id)a3;
+- (void)setAuthor:(id)author;
 @end
 
 @implementation TSWPChangeDetails
 
-- (TSWPChangeDetails)initWithChange:(id)a3 changeString:(id)a4
+- (TSWPChangeDetails)initWithChange:(id)change changeString:(id)string
 {
   v9.receiver = self;
   v9.super_class = TSWPChangeDetails;
@@ -19,8 +19,8 @@
   v7 = v6;
   if (v6)
   {
-    [(TSWPChangeDetails *)v6 setChange:a3];
-    v7->mChangeString = a4;
+    [(TSWPChangeDetails *)v6 setChange:change];
+    v7->mChangeString = string;
   }
 
   return v7;
@@ -33,14 +33,14 @@
   [(TSWPChangeDetails *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -51,32 +51,32 @@
     return 0;
   }
 
-  return [(TSWPChangeDetails *)self isEqualToChangeDetails:a3];
+  return [(TSWPChangeDetails *)self isEqualToChangeDetails:equal];
 }
 
-- (BOOL)isEqualToChangeDetails:(id)a3
+- (BOOL)isEqualToChangeDetails:(id)details
 {
-  if (self == a3)
+  if (self == details)
   {
     LOBYTE(v6) = 1;
   }
 
   else
   {
-    v5 = [(TSWPChangeDetails *)self change];
-    if (v5 == [a3 change])
+    change = [(TSWPChangeDetails *)self change];
+    if (change == [details change])
     {
-      v6 = -[TSKAnnotationAuthor isEqual:](-[TSWPChangeDetails author](self, "author"), "isEqual:", [a3 author]);
+      v6 = -[TSKAnnotationAuthor isEqual:](-[TSWPChangeDetails author](self, "author"), "isEqual:", [details author]);
       if (v6)
       {
-        v6 = -[NSDate isEqual:](-[TSWPChangeDetails date](self, "date"), "isEqual:", [a3 date]);
+        v6 = -[NSDate isEqual:](-[TSWPChangeDetails date](self, "date"), "isEqual:", [details date]);
         if (v6)
         {
-          v6 = -[NSString isEqual:](-[TSWPChangeDetails changeTrackingString](self, "changeTrackingString"), "isEqual:", [a3 changeTrackingString]);
+          v6 = -[NSString isEqual:](-[TSWPChangeDetails changeTrackingString](self, "changeTrackingString"), "isEqual:", [details changeTrackingString]);
           if (v6)
           {
-            v7 = [(TSWPChangeDetails *)self annotationType];
-            LOBYTE(v6) = v7 == [a3 annotationType];
+            annotationType = [(TSWPChangeDetails *)self annotationType];
+            LOBYTE(v6) = annotationType == [details annotationType];
           }
         }
       }
@@ -91,37 +91,37 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPChangeDetails copyWithZone:]"];
-  [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPChangeDetails.mm"), 71, @"please don't call me"}];
+  [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPChangeDetails.mm"), 71, @"please don't call me"}];
   v6 = [TSWPChangeDetails alloc];
-  v7 = [(TSWPChangeDetails *)self change];
-  v8 = [(TSWPChangeDetails *)self changeTrackingString];
+  change = [(TSWPChangeDetails *)self change];
+  changeTrackingString = [(TSWPChangeDetails *)self changeTrackingString];
 
-  return [(TSWPChangeDetails *)v6 initWithChange:v7 changeString:v8];
+  return [(TSWPChangeDetails *)v6 initWithChange:change changeString:changeTrackingString];
 }
 
 - (TSKAnnotationAuthor)author
 {
-  v2 = [[(TSWPChangeDetails *)self change] session];
+  session = [[(TSWPChangeDetails *)self change] session];
 
-  return [(TSWPChangeSession *)v2 author];
+  return [(TSWPChangeSession *)session author];
 }
 
-- (void)setAuthor:(id)a3
+- (void)setAuthor:(id)author
 {
-  v4 = [[(TSWPChangeDetails *)self change] session];
+  session = [[(TSWPChangeDetails *)self change] session];
 
-  [(TSWPChangeSession *)v4 setAuthor:a3];
+  [(TSWPChangeSession *)session setAuthor:author];
 }
 
 - (NSDate)date
 {
-  v2 = [(TSWPChangeDetails *)self change];
+  change = [(TSWPChangeDetails *)self change];
 
-  return [(TSWPChange *)v2 date];
+  return [(TSWPChange *)change date];
 }
 
 @end

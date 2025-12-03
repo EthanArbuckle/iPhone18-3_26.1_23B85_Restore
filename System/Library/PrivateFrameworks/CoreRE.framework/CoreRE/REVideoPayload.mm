@@ -1,12 +1,12 @@
 @interface REVideoPayload
-- (REVideoPayload)initWithAudioInputMode:(REVideoPayload *)self reverbSendLevel:(SEL)a2 diffuseSpillMapDimensions:(unsigned __int8)a3 specularSpillMapDimensions:(float)a4 diffuseSpillBlurSigma:(int)a5 specularSpillBlurSigma:(int)a6 desiredViewingMode:(unsigned __int8)a7 preventPlaybackUntilReady:(BOOL)a8;
-- (REVideoPayload)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (REVideoPayload)initWithAudioInputMode:(REVideoPayload *)self reverbSendLevel:(SEL)level diffuseSpillMapDimensions:(unsigned __int8)dimensions specularSpillMapDimensions:(float)mapDimensions diffuseSpillBlurSigma:(int)sigma specularSpillBlurSigma:(int)blurSigma desiredViewingMode:(unsigned __int8)mode preventPlaybackUntilReady:(BOOL)ready;
+- (REVideoPayload)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REVideoPayload
 
-- (REVideoPayload)initWithAudioInputMode:(REVideoPayload *)self reverbSendLevel:(SEL)a2 diffuseSpillMapDimensions:(unsigned __int8)a3 specularSpillMapDimensions:(float)a4 diffuseSpillBlurSigma:(int)a5 specularSpillBlurSigma:(int)a6 desiredViewingMode:(unsigned __int8)a7 preventPlaybackUntilReady:(BOOL)a8
+- (REVideoPayload)initWithAudioInputMode:(REVideoPayload *)self reverbSendLevel:(SEL)level diffuseSpillMapDimensions:(unsigned __int8)dimensions specularSpillMapDimensions:(float)mapDimensions diffuseSpillBlurSigma:(int)sigma specularSpillBlurSigma:(int)blurSigma desiredViewingMode:(unsigned __int8)mode preventPlaybackUntilReady:(BOOL)ready
 {
   v17 = v8;
   v18 = v9;
@@ -15,57 +15,57 @@
   result = [(RESharedResourcePayload *)&v19 init];
   if (result)
   {
-    result->_audioInputMode = a3;
-    result->_reverbSendLevel = a4;
+    result->_audioInputMode = dimensions;
+    result->_reverbSendLevel = mapDimensions;
     *&result->_diffuseSpillMapWidth = v17;
     *&result->_specularSpillMapWidth = v18;
-    result->_diffuseSpillBlurSigma = a5;
-    result->_specularSpillBlurSigma = a6;
-    result->_desiredViewingMode = a7;
-    result->_preventPlaybackUntilReady = a8;
+    result->_diffuseSpillBlurSigma = sigma;
+    result->_specularSpillBlurSigma = blurSigma;
+    result->_desiredViewingMode = mode;
+    result->_preventPlaybackUntilReady = ready;
   }
 
   return result;
 }
 
-- (REVideoPayload)initWithCoder:(id)a3
+- (REVideoPayload)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = REVideoPayload;
-  v5 = [(RESharedResourcePayload *)&v8 initWithCoder:v4];
+  v5 = [(RESharedResourcePayload *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_audioInputMode = [v4 decodeIntForKey:@"audioInputMode"];
-    [v4 decodeFloatForKey:@"reverbSendLevel"];
+    v5->_audioInputMode = [coderCopy decodeIntForKey:@"audioInputMode"];
+    [coderCopy decodeFloatForKey:@"reverbSendLevel"];
     v5->_reverbSendLevel = v6;
-    v5->_diffuseSpillMapWidth = [v4 decodeInt32ForKey:@"diffuseSpillMapWidth"];
-    v5->_diffuseSpillMapHeight = [v4 decodeInt32ForKey:@"diffuseSpillMapHeight"];
-    v5->_specularSpillMapWidth = [v4 decodeInt32ForKey:@"specularSpillMapWidth"];
-    v5->_specularSpillMapHeight = [v4 decodeInt32ForKey:@"specularSpillMapHeight"];
-    v5->_diffuseSpillBlurSigma = [v4 decodeInt32ForKey:@"diffuseSpillBlurSigma"];
-    v5->_specularSpillBlurSigma = [v4 decodeInt32ForKey:@"specularSpillBlurSigma"];
-    v5->_desiredViewingMode = [v4 decodeIntForKey:@"desiredViewingMode"];
-    v5->_preventPlaybackUntilReady = [v4 decodeBoolForKey:@"preventPlaybackUntilReady"];
+    v5->_diffuseSpillMapWidth = [coderCopy decodeInt32ForKey:@"diffuseSpillMapWidth"];
+    v5->_diffuseSpillMapHeight = [coderCopy decodeInt32ForKey:@"diffuseSpillMapHeight"];
+    v5->_specularSpillMapWidth = [coderCopy decodeInt32ForKey:@"specularSpillMapWidth"];
+    v5->_specularSpillMapHeight = [coderCopy decodeInt32ForKey:@"specularSpillMapHeight"];
+    v5->_diffuseSpillBlurSigma = [coderCopy decodeInt32ForKey:@"diffuseSpillBlurSigma"];
+    v5->_specularSpillBlurSigma = [coderCopy decodeInt32ForKey:@"specularSpillBlurSigma"];
+    v5->_desiredViewingMode = [coderCopy decodeIntForKey:@"desiredViewingMode"];
+    v5->_preventPlaybackUntilReady = [coderCopy decodeBoolForKey:@"preventPlaybackUntilReady"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInt:self->_audioInputMode forKey:@"audioInputMode"];
+  coderCopy = coder;
+  [coderCopy encodeInt:self->_audioInputMode forKey:@"audioInputMode"];
   *&v4 = self->_reverbSendLevel;
-  [v5 encodeFloat:@"reverbSendLevel" forKey:v4];
-  [v5 encodeInt32:self->_diffuseSpillMapWidth forKey:@"diffuseSpillMapWidth"];
-  [v5 encodeInt32:self->_diffuseSpillMapHeight forKey:@"diffuseSpillMapHeight"];
-  [v5 encodeInt32:self->_specularSpillMapWidth forKey:@"specularSpillMapWidth"];
-  [v5 encodeInt32:self->_specularSpillMapHeight forKey:@"specularSpillMapHeight"];
-  [v5 encodeInt32:self->_diffuseSpillBlurSigma forKey:@"diffuseSpillBlurSigma"];
-  [v5 encodeInt32:self->_specularSpillBlurSigma forKey:@"specularSpillBlurSigma"];
-  [v5 encodeInt:self->_desiredViewingMode forKey:@"desiredViewingMode"];
-  [v5 encodeBool:self->_preventPlaybackUntilReady forKey:@"preventPlaybackUntilReady"];
+  [coderCopy encodeFloat:@"reverbSendLevel" forKey:v4];
+  [coderCopy encodeInt32:self->_diffuseSpillMapWidth forKey:@"diffuseSpillMapWidth"];
+  [coderCopy encodeInt32:self->_diffuseSpillMapHeight forKey:@"diffuseSpillMapHeight"];
+  [coderCopy encodeInt32:self->_specularSpillMapWidth forKey:@"specularSpillMapWidth"];
+  [coderCopy encodeInt32:self->_specularSpillMapHeight forKey:@"specularSpillMapHeight"];
+  [coderCopy encodeInt32:self->_diffuseSpillBlurSigma forKey:@"diffuseSpillBlurSigma"];
+  [coderCopy encodeInt32:self->_specularSpillBlurSigma forKey:@"specularSpillBlurSigma"];
+  [coderCopy encodeInt:self->_desiredViewingMode forKey:@"desiredViewingMode"];
+  [coderCopy encodeBool:self->_preventPlaybackUntilReady forKey:@"preventPlaybackUntilReady"];
 }
 
 @end

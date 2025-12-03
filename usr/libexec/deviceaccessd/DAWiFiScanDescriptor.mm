@@ -1,23 +1,23 @@
 @interface DAWiFiScanDescriptor
-- (DAWiFiScanDescriptor)initWithPrefix:(id)a3;
-- (DAWiFiScanDescriptor)initWithSSID:(id)a3;
-- (DAWiFiScanDescriptor)initWithServiceName:(id)a3 vendorNameMatch:(id)a4 modelNameMatch:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithLevel:(int)a3;
+- (DAWiFiScanDescriptor)initWithPrefix:(id)prefix;
+- (DAWiFiScanDescriptor)initWithSSID:(id)d;
+- (DAWiFiScanDescriptor)initWithServiceName:(id)name vendorNameMatch:(id)match modelNameMatch:(id)nameMatch;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithLevel:(int)level;
 - (id)scanResultPredicate;
 @end
 
 @implementation DAWiFiScanDescriptor
 
-- (DAWiFiScanDescriptor)initWithSSID:(id)a3
+- (DAWiFiScanDescriptor)initWithSSID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = DAWiFiScanDescriptor;
   v5 = [(DAWiFiScanDescriptor *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     SSID = v5->_SSID;
     v5->_SSID = v6;
 
@@ -27,15 +27,15 @@
   return v5;
 }
 
-- (DAWiFiScanDescriptor)initWithPrefix:(id)a3
+- (DAWiFiScanDescriptor)initWithPrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v10.receiver = self;
   v10.super_class = DAWiFiScanDescriptor;
   v5 = [(DAWiFiScanDescriptor *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [prefixCopy copy];
     prefix = v5->_prefix;
     v5->_prefix = v6;
 
@@ -45,25 +45,25 @@
   return v5;
 }
 
-- (DAWiFiScanDescriptor)initWithServiceName:(id)a3 vendorNameMatch:(id)a4 modelNameMatch:(id)a5
+- (DAWiFiScanDescriptor)initWithServiceName:(id)name vendorNameMatch:(id)match modelNameMatch:(id)nameMatch
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  matchCopy = match;
+  nameMatchCopy = nameMatch;
   v20.receiver = self;
   v20.super_class = DAWiFiScanDescriptor;
   v11 = [(DAWiFiScanDescriptor *)&v20 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     serviceName = v11->_serviceName;
     v11->_serviceName = v12;
 
-    v14 = [v9 copy];
+    v14 = [matchCopy copy];
     wifiAwareVendorNameMatch = v11->_wifiAwareVendorNameMatch;
     v11->_wifiAwareVendorNameMatch = v14;
 
-    v16 = [v10 copy];
+    v16 = [nameMatchCopy copy];
     wifiAwareModelNameMatch = v11->_wifiAwareModelNameMatch;
     v11->_wifiAwareModelNameMatch = v16;
 
@@ -75,9 +75,9 @@
 
 - (id)scanResultPredicate
 {
-  v3 = [(DAWiFiScanDescriptor *)self SSID];
+  sSID = [(DAWiFiScanDescriptor *)self SSID];
 
-  if (v3)
+  if (sSID)
   {
     v4 = @"SELF.networkName ==[c] %@";
     v5 = 40;
@@ -86,9 +86,9 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v6 = [(DAWiFiScanDescriptor *)self prefix];
+  prefix = [(DAWiFiScanDescriptor *)self prefix];
 
-  if (v6)
+  if (prefix)
   {
     v4 = @"SELF.networkName beginswith %@";
     v5 = 32;
@@ -101,9 +101,9 @@ LABEL_6:
   return v7;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v4 = 0;
   }
@@ -166,9 +166,9 @@ LABEL_6:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSString *)self->_associationIdentifier copy];
   v6 = v4[1];
   v4[1] = v5;

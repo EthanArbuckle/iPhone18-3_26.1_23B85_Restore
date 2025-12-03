@@ -1,43 +1,43 @@
 @interface SKAPresenceClientConnection
-+ (BOOL)clientIsEntitledForPresence:(id)a3;
-+ (id)clientIDForConnection:(id)a3;
++ (BOOL)clientIsEntitledForPresence:(id)presence;
++ (id)clientIDForConnection:(id)connection;
 + (id)logger;
-- (SKAPresenceClientConnection)initWithXPCConnection:(id)a3 queue:(id)a4 daemonProtocolDelegate:(id)a5 connectionLifecycleDelegate:(id)a6;
+- (SKAPresenceClientConnection)initWithXPCConnection:(id)connection queue:(id)queue daemonProtocolDelegate:(id)delegate connectionLifecycleDelegate:(id)lifecycleDelegate;
 - (SKAPresenceClientConnectionLifecycleDelegate)connectionLifecycleDelegate;
-- (id)asynchronousRemoteDaemonDelegateWithErrorHandler:(id)a3;
+- (id)asynchronousRemoteDaemonDelegateWithErrorHandler:(id)handler;
 - (id)description;
-- (id)synchronousRemoteDaemonDelegateWithErrorHandler:(id)a3;
+- (id)synchronousRemoteDaemonDelegateWithErrorHandler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation SKAPresenceClientConnection
 
-- (SKAPresenceClientConnection)initWithXPCConnection:(id)a3 queue:(id)a4 daemonProtocolDelegate:(id)a5 connectionLifecycleDelegate:(id)a6
+- (SKAPresenceClientConnection)initWithXPCConnection:(id)connection queue:(id)queue daemonProtocolDelegate:(id)delegate connectionLifecycleDelegate:(id)lifecycleDelegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  dispatch_assert_queue_V2(v12);
+  connectionCopy = connection;
+  queueCopy = queue;
+  delegateCopy = delegate;
+  lifecycleDelegateCopy = lifecycleDelegate;
+  dispatch_assert_queue_V2(queueCopy);
   v32.receiver = self;
   v32.super_class = SKAPresenceClientConnection;
   v15 = [(SKAPresenceClientConnection *)&v32 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeWeak(&v15->_connectionLifecycleDelegate, v14);
-    objc_storeStrong(&v16->_xpcConnection, a3);
-    v17 = [MEMORY[0x277D680F0] daemonXPCInterface];
-    [v11 setExportedInterface:v17];
+    objc_storeWeak(&v15->_connectionLifecycleDelegate, lifecycleDelegateCopy);
+    objc_storeStrong(&v16->_xpcConnection, connection);
+    daemonXPCInterface = [MEMORY[0x277D680F0] daemonXPCInterface];
+    [connectionCopy setExportedInterface:daemonXPCInterface];
 
-    v18 = [objc_alloc(MEMORY[0x277D68168]) initWithForwardingTarget:v13];
-    [v11 setExportedObject:v18];
+    v18 = [objc_alloc(MEMORY[0x277D68168]) initWithForwardingTarget:delegateCopy];
+    [connectionCopy setExportedObject:v18];
 
-    v19 = [MEMORY[0x277D680F0] daemonDelegateXPCInterface];
-    [v11 setRemoteObjectInterface:v19];
+    daemonDelegateXPCInterface = [MEMORY[0x277D680F0] daemonDelegateXPCInterface];
+    [connectionCopy setRemoteObjectInterface:daemonDelegateXPCInterface];
 
-    [v11 _setQueue:v12];
-    objc_initWeak(&location, v11);
+    [connectionCopy _setQueue:queueCopy];
+    objc_initWeak(&location, connectionCopy);
     objc_initWeak(&from, v16);
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
@@ -45,15 +45,15 @@
     v27[3] = &unk_27843F068;
     objc_copyWeak(&v28, &from);
     objc_copyWeak(&v29, &location);
-    [v11 setInterruptionHandler:v27];
+    [connectionCopy setInterruptionHandler:v27];
     v21 = MEMORY[0x277D85DD0];
     v22 = 3221225472;
     v23 = __110__SKAPresenceClientConnection_initWithXPCConnection_queue_daemonProtocolDelegate_connectionLifecycleDelegate___block_invoke_3;
     v24 = &unk_27843F068;
     objc_copyWeak(&v25, &from);
     objc_copyWeak(&v26, &location);
-    [v11 setInvalidationHandler:&v21];
-    [v11 resume];
+    [connectionCopy setInvalidationHandler:&v21];
+    [connectionCopy resume];
     objc_destroyWeak(&v26);
     objc_destroyWeak(&v25);
     objc_destroyWeak(&v29);
@@ -103,17 +103,17 @@ void __110__SKAPresenceClientConnection_initWithXPCConnection_queue_daemonProtoc
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)asynchronousRemoteDaemonDelegateWithErrorHandler:(id)a3
+- (id)asynchronousRemoteDaemonDelegateWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKAPresenceClientConnection *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(SKAPresenceClientConnection *)self xpcConnection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __80__SKAPresenceClientConnection_asynchronousRemoteDaemonDelegateWithErrorHandler___block_invoke;
   v9[3] = &unk_27843F090;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
@@ -130,17 +130,17 @@ void __80__SKAPresenceClientConnection_asynchronousRemoteDaemonDelegateWithError
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)synchronousRemoteDaemonDelegateWithErrorHandler:(id)a3
+- (id)synchronousRemoteDaemonDelegateWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKAPresenceClientConnection *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(SKAPresenceClientConnection *)self xpcConnection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __79__SKAPresenceClientConnection_synchronousRemoteDaemonDelegateWithErrorHandler___block_invoke;
   v9[3] = &unk_27843F090;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
@@ -164,7 +164,7 @@ void __79__SKAPresenceClientConnection_synchronousRemoteDaemonDelegateWithErrorH
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_220099000, v3, OS_LOG_TYPE_DEFAULT, "Deallocing {pointer: %p}", buf, 0xCu);
   }
 
@@ -175,17 +175,17 @@ void __79__SKAPresenceClientConnection_synchronousRemoteDaemonDelegateWithErrorH
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)clientIsEntitledForPresence:(id)a3
++ (BOOL)clientIsEntitledForPresence:(id)presence
 {
-  v3 = a3;
-  v4 = [SKAPresenceClientConnection clientIDForConnection:v3];
+  presenceCopy = presence;
+  v4 = [SKAPresenceClientConnection clientIDForConnection:presenceCopy];
   v5 = [v4 length];
   if ((ValidateClientIsInAllowlistForServiceName() & 1) == 0)
   {
     v6 = +[SKAPresenceClientConnection logger];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
-      [(SKAPresenceClientConnection *)v3 clientIsEntitledForPresence:v4, v6];
+      [(SKAPresenceClientConnection *)presenceCopy clientIsEntitledForPresence:v4, v6];
     }
   }
 
@@ -202,9 +202,9 @@ void __79__SKAPresenceClientConnection_synchronousRemoteDaemonDelegateWithErrorH
   return v6;
 }
 
-+ (id)clientIDForConnection:(id)a3
++ (id)clientIDForConnection:(id)connection
 {
-  v3 = [a3 sk_stringValueForEntitlement:@"com.apple.StatusKit.presence.clientID"];
+  v3 = [connection sk_stringValueForEntitlement:@"com.apple.StatusKit.presence.clientID"];
   if (!v3)
   {
     v4 = +[SKAPresenceClientConnection logger];

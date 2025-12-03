@@ -1,47 +1,47 @@
 @interface AFDeleteSiriHistoryContext
-+ (id)newWithBuilder:(id)a3;
-- (AFDeleteSiriHistoryContext)initWithBuilder:(id)a3;
-- (AFDeleteSiriHistoryContext)initWithCoder:(id)a3;
-- (AFDeleteSiriHistoryContext)initWithSuccessTitle:(id)a3 successBody:(id)a4 successButtonText:(id)a5 errorTitle:(id)a6 errorBody:(id)a7 errorButtonText:(id)a8;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFDeleteSiriHistoryContext)initWithBuilder:(id)builder;
+- (AFDeleteSiriHistoryContext)initWithCoder:(id)coder;
+- (AFDeleteSiriHistoryContext)initWithSuccessTitle:(id)title successBody:(id)body successButtonText:(id)text errorTitle:(id)errorTitle errorBody:(id)errorBody errorButtonText:(id)buttonText;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFDeleteSiriHistoryContext
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   successTitle = self->_successTitle;
-  v5 = a3;
-  [v5 encodeObject:successTitle forKey:@"AFDeleteSiriHistoryContext::successTitle"];
-  [v5 encodeObject:self->_successBody forKey:@"AFDeleteSiriHistoryContext::successBody"];
-  [v5 encodeObject:self->_successButtonText forKey:@"AFDeleteSiriHistoryContext::successButtonText"];
-  [v5 encodeObject:self->_errorTitle forKey:@"AFDeleteSiriHistoryContext::errorTitle"];
-  [v5 encodeObject:self->_errorBody forKey:@"AFDeleteSiriHistoryContext::errorBody"];
-  [v5 encodeObject:self->_errorButtonText forKey:@"AFDeleteSiriHistoryContext::errorButtonText"];
+  coderCopy = coder;
+  [coderCopy encodeObject:successTitle forKey:@"AFDeleteSiriHistoryContext::successTitle"];
+  [coderCopy encodeObject:self->_successBody forKey:@"AFDeleteSiriHistoryContext::successBody"];
+  [coderCopy encodeObject:self->_successButtonText forKey:@"AFDeleteSiriHistoryContext::successButtonText"];
+  [coderCopy encodeObject:self->_errorTitle forKey:@"AFDeleteSiriHistoryContext::errorTitle"];
+  [coderCopy encodeObject:self->_errorBody forKey:@"AFDeleteSiriHistoryContext::errorBody"];
+  [coderCopy encodeObject:self->_errorButtonText forKey:@"AFDeleteSiriHistoryContext::errorButtonText"];
 }
 
-- (AFDeleteSiriHistoryContext)initWithCoder:(id)a3
+- (AFDeleteSiriHistoryContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFDeleteSiriHistoryContext::successTitle"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFDeleteSiriHistoryContext::successBody"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFDeleteSiriHistoryContext::successButtonText"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFDeleteSiriHistoryContext::errorTitle"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFDeleteSiriHistoryContext::errorBody"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFDeleteSiriHistoryContext::errorButtonText"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFDeleteSiriHistoryContext::successTitle"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFDeleteSiriHistoryContext::successBody"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFDeleteSiriHistoryContext::successButtonText"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFDeleteSiriHistoryContext::errorTitle"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFDeleteSiriHistoryContext::errorBody"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFDeleteSiriHistoryContext::errorButtonText"];
 
   v11 = [(AFDeleteSiriHistoryContext *)self initWithSuccessTitle:v5 successBody:v6 successButtonText:v7 errorTitle:v8 errorBody:v9 errorButtonText:v10];
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v18 = 1;
   }
@@ -51,30 +51,30 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(AFDeleteSiriHistoryContext *)v5 successTitle];
+      v5 = equalCopy;
+      successTitle = [(AFDeleteSiriHistoryContext *)v5 successTitle];
       successTitle = self->_successTitle;
-      if (successTitle == v6 || [(NSString *)successTitle isEqual:v6])
+      if (successTitle == successTitle || [(NSString *)successTitle isEqual:successTitle])
       {
-        v8 = [(AFDeleteSiriHistoryContext *)v5 successBody];
+        successBody = [(AFDeleteSiriHistoryContext *)v5 successBody];
         successBody = self->_successBody;
-        if (successBody == v8 || [(NSString *)successBody isEqual:v8])
+        if (successBody == successBody || [(NSString *)successBody isEqual:successBody])
         {
-          v10 = [(AFDeleteSiriHistoryContext *)v5 successButtonText];
+          successButtonText = [(AFDeleteSiriHistoryContext *)v5 successButtonText];
           successButtonText = self->_successButtonText;
-          if (successButtonText == v10 || [(NSString *)successButtonText isEqual:v10])
+          if (successButtonText == successButtonText || [(NSString *)successButtonText isEqual:successButtonText])
           {
-            v12 = [(AFDeleteSiriHistoryContext *)v5 errorTitle];
+            errorTitle = [(AFDeleteSiriHistoryContext *)v5 errorTitle];
             errorTitle = self->_errorTitle;
-            if (errorTitle == v12 || [(NSString *)errorTitle isEqual:v12])
+            if (errorTitle == errorTitle || [(NSString *)errorTitle isEqual:errorTitle])
             {
-              v14 = [(AFDeleteSiriHistoryContext *)v5 errorBody];
+              errorBody = [(AFDeleteSiriHistoryContext *)v5 errorBody];
               errorBody = self->_errorBody;
-              if (errorBody == v14 || [(NSString *)errorBody isEqual:v14])
+              if (errorBody == errorBody || [(NSString *)errorBody isEqual:errorBody])
               {
-                v16 = [(AFDeleteSiriHistoryContext *)v5 errorButtonText];
+                errorButtonText = [(AFDeleteSiriHistoryContext *)v5 errorButtonText];
                 errorButtonText = self->_errorButtonText;
-                v18 = errorButtonText == v16 || [(NSString *)errorButtonText isEqual:v16];
+                v18 = errorButtonText == errorButtonText || [(NSString *)errorButtonText isEqual:errorButtonText];
               }
 
               else
@@ -126,7 +126,7 @@
   return v6 ^ v7 ^ [(NSString *)self->_errorButtonText hash];
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v8.receiver = self;
@@ -137,30 +137,30 @@
   return v6;
 }
 
-- (AFDeleteSiriHistoryContext)initWithSuccessTitle:(id)a3 successBody:(id)a4 successButtonText:(id)a5 errorTitle:(id)a6 errorBody:(id)a7 errorButtonText:(id)a8
+- (AFDeleteSiriHistoryContext)initWithSuccessTitle:(id)title successBody:(id)body successButtonText:(id)text errorTitle:(id)errorTitle errorBody:(id)errorBody errorButtonText:(id)buttonText
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  titleCopy = title;
+  bodyCopy = body;
+  textCopy = text;
+  errorTitleCopy = errorTitle;
+  errorBodyCopy = errorBody;
+  buttonTextCopy = buttonText;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __118__AFDeleteSiriHistoryContext_initWithSuccessTitle_successBody_successButtonText_errorTitle_errorBody_errorButtonText___block_invoke;
   v28[3] = &unk_1E7342F50;
-  v29 = v14;
-  v30 = v15;
-  v31 = v16;
-  v32 = v17;
-  v33 = v18;
-  v34 = v19;
-  v20 = v19;
-  v21 = v18;
-  v22 = v17;
-  v23 = v16;
-  v24 = v15;
-  v25 = v14;
+  v29 = titleCopy;
+  v30 = bodyCopy;
+  v31 = textCopy;
+  v32 = errorTitleCopy;
+  v33 = errorBodyCopy;
+  v34 = buttonTextCopy;
+  v20 = buttonTextCopy;
+  v21 = errorBodyCopy;
+  v22 = errorTitleCopy;
+  v23 = textCopy;
+  v24 = bodyCopy;
+  v25 = titleCopy;
   v26 = [(AFDeleteSiriHistoryContext *)self initWithBuilder:v28];
 
   return v26;
@@ -178,46 +178,46 @@ void __118__AFDeleteSiriHistoryContext_initWithSuccessTitle_successBody_successB
   [v4 setErrorButtonText:a1[9]];
 }
 
-- (AFDeleteSiriHistoryContext)initWithBuilder:(id)a3
+- (AFDeleteSiriHistoryContext)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v27.receiver = self;
   v27.super_class = AFDeleteSiriHistoryContext;
   v5 = [(AFDeleteSiriHistoryContext *)&v27 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFDeleteSiriHistoryContextMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFDeleteSiriHistoryContextMutation *)v7 isDirty])
     {
-      v8 = [(_AFDeleteSiriHistoryContextMutation *)v7 getSuccessTitle];
-      v9 = [v8 copy];
+      getSuccessTitle = [(_AFDeleteSiriHistoryContextMutation *)v7 getSuccessTitle];
+      v9 = [getSuccessTitle copy];
       successTitle = v6->_successTitle;
       v6->_successTitle = v9;
 
-      v11 = [(_AFDeleteSiriHistoryContextMutation *)v7 getSuccessBody];
-      v12 = [v11 copy];
+      getSuccessBody = [(_AFDeleteSiriHistoryContextMutation *)v7 getSuccessBody];
+      v12 = [getSuccessBody copy];
       successBody = v6->_successBody;
       v6->_successBody = v12;
 
-      v14 = [(_AFDeleteSiriHistoryContextMutation *)v7 getSuccessButtonText];
-      v15 = [v14 copy];
+      getSuccessButtonText = [(_AFDeleteSiriHistoryContextMutation *)v7 getSuccessButtonText];
+      v15 = [getSuccessButtonText copy];
       successButtonText = v6->_successButtonText;
       v6->_successButtonText = v15;
 
-      v17 = [(_AFDeleteSiriHistoryContextMutation *)v7 getErrorTitle];
-      v18 = [v17 copy];
+      getErrorTitle = [(_AFDeleteSiriHistoryContextMutation *)v7 getErrorTitle];
+      v18 = [getErrorTitle copy];
       errorTitle = v6->_errorTitle;
       v6->_errorTitle = v18;
 
-      v20 = [(_AFDeleteSiriHistoryContextMutation *)v7 getErrorBody];
-      v21 = [v20 copy];
+      getErrorBody = [(_AFDeleteSiriHistoryContextMutation *)v7 getErrorBody];
+      v21 = [getErrorBody copy];
       errorBody = v6->_errorBody;
       v6->_errorBody = v21;
 
-      v23 = [(_AFDeleteSiriHistoryContextMutation *)v7 getErrorButtonText];
-      v24 = [v23 copy];
+      getErrorButtonText = [(_AFDeleteSiriHistoryContextMutation *)v7 getErrorButtonText];
+      v24 = [getErrorButtonText copy];
       errorButtonText = v6->_errorButtonText;
       v6->_errorButtonText = v24;
     }
@@ -226,51 +226,51 @@ void __118__AFDeleteSiriHistoryContext_initWithSuccessTitle_successBody_successB
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFDeleteSiriHistoryContextMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFDeleteSiriHistoryContextMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFDeleteSiriHistoryContext);
-      v7 = [(_AFDeleteSiriHistoryContextMutation *)v5 getSuccessTitle];
-      v8 = [v7 copy];
+      getSuccessTitle = [(_AFDeleteSiriHistoryContextMutation *)v5 getSuccessTitle];
+      v8 = [getSuccessTitle copy];
       successTitle = v6->_successTitle;
       v6->_successTitle = v8;
 
-      v10 = [(_AFDeleteSiriHistoryContextMutation *)v5 getSuccessBody];
-      v11 = [v10 copy];
+      getSuccessBody = [(_AFDeleteSiriHistoryContextMutation *)v5 getSuccessBody];
+      v11 = [getSuccessBody copy];
       successBody = v6->_successBody;
       v6->_successBody = v11;
 
-      v13 = [(_AFDeleteSiriHistoryContextMutation *)v5 getSuccessButtonText];
-      v14 = [v13 copy];
+      getSuccessButtonText = [(_AFDeleteSiriHistoryContextMutation *)v5 getSuccessButtonText];
+      v14 = [getSuccessButtonText copy];
       successButtonText = v6->_successButtonText;
       v6->_successButtonText = v14;
 
-      v16 = [(_AFDeleteSiriHistoryContextMutation *)v5 getErrorTitle];
-      v17 = [v16 copy];
+      getErrorTitle = [(_AFDeleteSiriHistoryContextMutation *)v5 getErrorTitle];
+      v17 = [getErrorTitle copy];
       errorTitle = v6->_errorTitle;
       v6->_errorTitle = v17;
 
-      v19 = [(_AFDeleteSiriHistoryContextMutation *)v5 getErrorBody];
-      v20 = [v19 copy];
+      getErrorBody = [(_AFDeleteSiriHistoryContextMutation *)v5 getErrorBody];
+      v20 = [getErrorBody copy];
       errorBody = v6->_errorBody;
       v6->_errorBody = v20;
 
-      v22 = [(_AFDeleteSiriHistoryContextMutation *)v5 getErrorButtonText];
-      v23 = [v22 copy];
+      getErrorButtonText = [(_AFDeleteSiriHistoryContextMutation *)v5 getErrorButtonText];
+      v23 = [getErrorButtonText copy];
       errorButtonText = v6->_errorButtonText;
       v6->_errorButtonText = v23;
     }

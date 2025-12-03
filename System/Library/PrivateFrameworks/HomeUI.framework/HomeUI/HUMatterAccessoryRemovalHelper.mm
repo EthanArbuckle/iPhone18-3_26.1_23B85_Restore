@@ -1,29 +1,29 @@
 @interface HUMatterAccessoryRemovalHelper
 - (BOOL)updateShouldUseEcosystemRemovalConfirmation;
 - (HFServiceLikeItem)item;
-- (HUMatterAccessoryRemovalHelper)initWithItem:(id)a3 connectedEcosystems:(id)a4;
-- (void)matterAccessoryGenerateRemovalConfirmationForAccessoryName:(id)a3;
+- (HUMatterAccessoryRemovalHelper)initWithItem:(id)item connectedEcosystems:(id)ecosystems;
+- (void)matterAccessoryGenerateRemovalConfirmationForAccessoryName:(id)name;
 @end
 
 @implementation HUMatterAccessoryRemovalHelper
 
-- (HUMatterAccessoryRemovalHelper)initWithItem:(id)a3 connectedEcosystems:(id)a4
+- (HUMatterAccessoryRemovalHelper)initWithItem:(id)item connectedEcosystems:(id)ecosystems
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  ecosystemsCopy = ecosystems;
   v16.receiver = self;
   v16.super_class = HUMatterAccessoryRemovalHelper;
   v8 = [(HUMatterAccessoryRemovalHelper *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_item, v6);
-    v10 = [MEMORY[0x277CD1888] hf_ecosystemComparator];
-    v11 = [v7 sortedArrayUsingComparator:v10];
+    objc_storeWeak(&v8->_item, itemCopy);
+    hf_ecosystemComparator = [MEMORY[0x277CD1888] hf_ecosystemComparator];
+    v11 = [ecosystemsCopy sortedArrayUsingComparator:hf_ecosystemComparator];
     connectedEcosystems = v9->_connectedEcosystems;
     v9->_connectedEcosystems = v11;
 
-    v13 = [v7 na_filter:&__block_literal_global_0];
+    v13 = [ecosystemsCopy na_filter:&__block_literal_global_0];
     thirdPartyEcosystems = v9->_thirdPartyEcosystems;
     v9->_thirdPartyEcosystems = v13;
 
@@ -53,10 +53,10 @@ uint64_t __67__HUMatterAccessoryRemovalHelper_initWithItem_connectedEcosystems__
 
 - (BOOL)updateShouldUseEcosystemRemovalConfirmation
 {
-  v3 = [(HUMatterAccessoryRemovalHelper *)self item];
-  if ([v3 conformsToProtocol:&unk_28251B268])
+  item = [(HUMatterAccessoryRemovalHelper *)self item];
+  if ([item conformsToProtocol:&unk_28251B268])
   {
-    v4 = v3;
+    v4 = item;
   }
 
   else
@@ -66,15 +66,15 @@ uint64_t __67__HUMatterAccessoryRemovalHelper_initWithItem_connectedEcosystems__
 
   v5 = v4;
 
-  v6 = [v5 isItemGroup];
-  if (v6)
+  isItemGroup = [v5 isItemGroup];
+  if (isItemGroup)
   {
     return 0;
   }
 
   objc_opt_class();
-  v7 = [(HUMatterAccessoryRemovalHelper *)self item];
-  v8 = (objc_opt_isKindOfClass() & 1) != 0 ? v7 : 0;
+  item2 = [(HUMatterAccessoryRemovalHelper *)self item];
+  v8 = (objc_opt_isKindOfClass() & 1) != 0 ? item2 : 0;
 
   if (v8)
   {
@@ -82,35 +82,35 @@ uint64_t __67__HUMatterAccessoryRemovalHelper_initWithItem_connectedEcosystems__
   }
 
   objc_opt_class();
-  v9 = [(HUMatterAccessoryRemovalHelper *)self item];
-  v10 = (objc_opt_isKindOfClass() & 1) != 0 ? v9 : 0;
+  item3 = [(HUMatterAccessoryRemovalHelper *)self item];
+  v10 = (objc_opt_isKindOfClass() & 1) != 0 ? item3 : 0;
   v11 = v10;
 
-  v12 = [v11 accessories];
+  accessories = [v11 accessories];
 
-  LOBYTE(v11) = [v12 na_any:&__block_literal_global_59];
+  LOBYTE(v11) = [accessories na_any:&__block_literal_global_59];
   if (v11)
   {
     return 0;
   }
 
-  v13 = [(HUMatterAccessoryRemovalHelper *)self item];
-  v14 = [v13 accessories];
-  v15 = [v14 count];
+  item4 = [(HUMatterAccessoryRemovalHelper *)self item];
+  accessories2 = [item4 accessories];
+  v15 = [accessories2 count];
 
   if (v15 != 1)
   {
     return 0;
   }
 
-  v16 = [(HUMatterAccessoryRemovalHelper *)self item];
-  v17 = [v16 accessories];
-  v18 = [v17 anyObject];
+  item5 = [(HUMatterAccessoryRemovalHelper *)self item];
+  accessories3 = [item5 accessories];
+  anyObject = [accessories3 anyObject];
 
-  if ([v18 supportsCHIP])
+  if ([anyObject supportsCHIP])
   {
-    v19 = [(HUMatterAccessoryRemovalHelper *)self thirdPartyEcosystems];
-    v20 = [v19 count] != 0;
+    thirdPartyEcosystems = [(HUMatterAccessoryRemovalHelper *)self thirdPartyEcosystems];
+    v20 = [thirdPartyEcosystems count] != 0;
   }
 
   else
@@ -130,28 +130,28 @@ uint64_t __77__HUMatterAccessoryRemovalHelper_updateShouldUseEcosystemRemovalCon
   return v4;
 }
 
-- (void)matterAccessoryGenerateRemovalConfirmationForAccessoryName:(id)a3
+- (void)matterAccessoryGenerateRemovalConfirmationForAccessoryName:(id)name
 {
   v100 = *MEMORY[0x277D85DE8];
-  v88 = a3;
+  nameCopy = name;
   [(HUMatterAccessoryRemovalHelper *)self setTitle:0];
-  v4 = [(HUMatterAccessoryRemovalHelper *)self item];
-  v5 = [v4 home];
-  v6 = [v5 name];
-  v13 = HULocalizedStringWithFormat(@"HUEcosystemAccessoryRemovalActionForAppleHome", @"%@", v7, v8, v9, v10, v11, v12, v6);
+  item = [(HUMatterAccessoryRemovalHelper *)self item];
+  home = [item home];
+  name = [home name];
+  v13 = HULocalizedStringWithFormat(@"HUEcosystemAccessoryRemovalActionForAppleHome", @"%@", v7, v8, v9, v10, v11, v12, name);
   [(HUMatterAccessoryRemovalHelper *)self setRemovalActionTitle:v13];
 
-  v20 = HULocalizedStringWithFormat(@"HUServiceDetailsRemoveDeviceAlertTitle", @"%@", v14, v15, v16, v17, v18, v19, v88);
+  v20 = HULocalizedStringWithFormat(@"HUServiceDetailsRemoveDeviceAlertTitle", @"%@", v14, v15, v16, v17, v18, v19, nameCopy);
   [(HUMatterAccessoryRemovalHelper *)self setRemovalActionConfirmationTitle:v20];
 
   v21 = _HULocalizedStringWithDefaultValue(@"HURemoveTitle", @"HURemoveTitle", 1);
   [(HUMatterAccessoryRemovalHelper *)self setRemovalActionConfirmationButtonTitle:v21];
 
   objc_opt_class();
-  v22 = [(HUMatterAccessoryRemovalHelper *)self item];
+  item2 = [(HUMatterAccessoryRemovalHelper *)self item];
   if (objc_opt_isKindOfClass())
   {
-    v23 = v22;
+    v23 = item2;
   }
 
   else
@@ -161,12 +161,12 @@ uint64_t __77__HUMatterAccessoryRemovalHelper_updateShouldUseEcosystemRemovalCon
 
   v24 = v23;
 
-  v25 = [v24 profile];
-  v26 = [v25 hf_supportsRecordingEvents];
+  profile = [v24 profile];
+  hf_supportsRecordingEvents = [profile hf_supportsRecordingEvents];
 
-  if (v26)
+  if (hf_supportsRecordingEvents)
   {
-    v33 = HULocalizedStringWithFormat(@"HUServiceDetailsRemoveCameraWithClipsAlertTitle", @"%@", v27, v28, v29, v30, v31, v32, v88);
+    v33 = HULocalizedStringWithFormat(@"HUServiceDetailsRemoveCameraWithClipsAlertTitle", @"%@", v27, v28, v29, v30, v31, v32, nameCopy);
     [(HUMatterAccessoryRemovalHelper *)self setTitle:v33];
 
     v34 = _HULocalizedStringWithDefaultValue(@"HUServiceDetailsRemoveDeviceAlertRemoveCameraButton", @"HUServiceDetailsRemoveDeviceAlertRemoveCameraButton", 1);
@@ -180,7 +180,7 @@ uint64_t __77__HUMatterAccessoryRemovalHelper_updateShouldUseEcosystemRemovalCon
   v96 = __Block_byref_object_dispose_;
   v97 = 0;
   v35 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v36 = [(HUMatterAccessoryRemovalHelper *)self connectedEcosystems];
+  connectedEcosystems = [(HUMatterAccessoryRemovalHelper *)self connectedEcosystems];
   v89[0] = MEMORY[0x277D85DD0];
   v89[1] = 3221225472;
   v89[2] = __93__HUMatterAccessoryRemovalHelper_matterAccessoryGenerateRemovalConfirmationForAccessoryName___block_invoke;
@@ -188,7 +188,7 @@ uint64_t __77__HUMatterAccessoryRemovalHelper_updateShouldUseEcosystemRemovalCon
   v91 = &v92;
   v37 = v35;
   v90 = v37;
-  [v36 na_each:v89];
+  [connectedEcosystems na_each:v89];
 
   [v37 sortUsingSelector:sel_localizedStandardCompare_];
   v38 = HFLogForCategory();
@@ -211,16 +211,16 @@ uint64_t __77__HUMatterAccessoryRemovalHelper_updateShouldUseEcosystemRemovalCon
   v41 = [MEMORY[0x277CCAB68] stringWithString:&stru_2823E0EE8];
   if ([v37 count] == 1)
   {
-    v42 = [v37 firstObject];
-    v49 = HULocalizedStringWithFormat(@"HUEcosystemAccessoryRemovalActionConfirmationTitleForOneEcosystem", @"%@", v43, v44, v45, v46, v47, v48, v42);
-    [v41 appendString:v49];
+    firstObject = [v37 firstObject];
+    lastObject = HULocalizedStringWithFormat(@"HUEcosystemAccessoryRemovalActionConfirmationTitleForOneEcosystem", @"%@", v43, v44, v45, v46, v47, v48, firstObject);
+    [v41 appendString:lastObject];
   }
 
   else if ([v37 count] == 2)
   {
-    v42 = [v37 firstObject];
-    v49 = [v37 lastObject];
-    v56 = HULocalizedStringWithFormat(@"HUEcosystemAccessoryRemovalActionConfirmationTitleForTwoEcosystems", @"%@%@", v50, v51, v52, v53, v54, v55, v42);
+    firstObject = [v37 firstObject];
+    lastObject = [v37 lastObject];
+    v56 = HULocalizedStringWithFormat(@"HUEcosystemAccessoryRemovalActionConfirmationTitleForTwoEcosystems", @"%@%@", v50, v51, v52, v53, v54, v55, firstObject);
     [v41 appendString:v56];
   }
 
@@ -231,8 +231,8 @@ uint64_t __77__HUMatterAccessoryRemovalHelper_updateShouldUseEcosystemRemovalCon
       goto LABEL_20;
     }
 
-    v57 = [v37 firstObject];
-    v64 = HULocalizedStringWithFormat(@"HUEcosystemAccessoryRemovalActionConfirmationTitleForMultipleEcosystems_FirstEcosystem", @"%@", v58, v59, v60, v61, v62, v63, v57);
+    firstObject2 = [v37 firstObject];
+    v64 = HULocalizedStringWithFormat(@"HUEcosystemAccessoryRemovalActionConfirmationTitleForMultipleEcosystems_FirstEcosystem", @"%@", v58, v59, v60, v61, v62, v63, firstObject2);
     [v41 appendString:v64];
 
     v65 = [v37 count];
@@ -253,9 +253,9 @@ uint64_t __77__HUMatterAccessoryRemovalHelper_updateShouldUseEcosystemRemovalCon
       while (v66);
     }
 
-    v42 = [v37 lastObject];
-    v49 = HULocalizedStringWithFormat(@"HUEcosystemAccessoryRemovalActionConfirmationTitleForMultipleEcosystems_LastEcosystem", @"%@", v76, v77, v78, v79, v80, v81, v42);
-    [v41 appendString:v49];
+    firstObject = [v37 lastObject];
+    lastObject = HULocalizedStringWithFormat(@"HUEcosystemAccessoryRemovalActionConfirmationTitleForMultipleEcosystems_LastEcosystem", @"%@", v76, v77, v78, v79, v80, v81, firstObject);
+    [v41 appendString:lastObject];
   }
 
 LABEL_20:

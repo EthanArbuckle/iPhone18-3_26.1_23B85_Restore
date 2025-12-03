@@ -1,44 +1,44 @@
 @interface PLIntensiveResourceTask
-+ (id)taskForDeferredFinalizationForAsset:(id)a3 resourceRecipe:(id)a4 options:(id)a5 preCompletionBlock:(id)a6;
-+ (id)taskForGeneratingDeferredAdjustmentForAsset:(id)a3 trackingIdentifier:(id)a4 imageConversionClient:(id)a5 videoConversionClient:(id)a6 reason:(id)a7 clientBundleID:(id)a8 allowCancellationByService:(BOOL)a9;
-- (BOOL)_lock_transitionToState:(unint64_t)a3;
-- (BOOL)addResponder:(id)a3;
++ (id)taskForDeferredFinalizationForAsset:(id)asset resourceRecipe:(id)recipe options:(id)options preCompletionBlock:(id)block;
++ (id)taskForGeneratingDeferredAdjustmentForAsset:(id)asset trackingIdentifier:(id)identifier imageConversionClient:(id)client videoConversionClient:(id)conversionClient reason:(id)reason clientBundleID:(id)d allowCancellationByService:(BOOL)service;
+- (BOOL)_lock_transitionToState:(unint64_t)state;
+- (BOOL)addResponder:(id)responder;
 - (NSProgress)progress;
 - (NSString)description;
-- (PLIntensiveResourceTask)initWithAssetUUID:(id)a3 resourceRecipeID:(unsigned int)a4 trackingIdentifier:(id)a5 startBlock:(id)a6;
-- (PLIntensiveResourceTask)initWithIdentifier:(id)a3 trackingIdentifier:(id)a4 startBlock:(id)a5;
+- (PLIntensiveResourceTask)initWithAssetUUID:(id)d resourceRecipeID:(unsigned int)iD trackingIdentifier:(id)identifier startBlock:(id)block;
+- (PLIntensiveResourceTask)initWithIdentifier:(id)identifier trackingIdentifier:(id)trackingIdentifier startBlock:(id)block;
 - (PLIntensiveResourceTaskDelegate)delegate;
-- (void)finishWithResult:(id)a3;
+- (void)finishWithResult:(id)result;
 - (void)start;
-- (void)taskResponderDidCancel:(id)a3;
+- (void)taskResponderDidCancel:(id)cancel;
 @end
 
 @implementation PLIntensiveResourceTask
 
-+ (id)taskForDeferredFinalizationForAsset:(id)a3 resourceRecipe:(id)a4 options:(id)a5 preCompletionBlock:(id)a6
++ (id)taskForDeferredFinalizationForAsset:(id)asset resourceRecipe:(id)recipe options:(id)options preCompletionBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v10;
+  assetCopy = asset;
+  recipeCopy = recipe;
+  optionsCopy = options;
+  blockCopy = block;
+  v13 = recipeCopy;
   v14 = [PLIntensiveResourceTask alloc];
-  v15 = [v9 uuid];
-  v16 = [v13 recipeID];
-  v17 = [v11 taskIdentifier];
+  uuid = [assetCopy uuid];
+  recipeID = [v13 recipeID];
+  taskIdentifier = [optionsCopy taskIdentifier];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __119__PLIntensiveResourceTask_Constructors__taskForDeferredFinalizationForAsset_resourceRecipe_options_preCompletionBlock___block_invoke;
   v24[3] = &unk_1E75787A8;
   v25 = v13;
-  v26 = v9;
-  v27 = v11;
-  v28 = v12;
-  v18 = v12;
-  v19 = v11;
-  v20 = v9;
+  v26 = assetCopy;
+  v27 = optionsCopy;
+  v28 = blockCopy;
+  v18 = blockCopy;
+  v19 = optionsCopy;
+  v20 = assetCopy;
   v21 = v13;
-  v22 = [(PLIntensiveResourceTask *)v14 initWithAssetUUID:v15 resourceRecipeID:v16 trackingIdentifier:v17 startBlock:v24];
+  v22 = [(PLIntensiveResourceTask *)v14 initWithAssetUUID:uuid resourceRecipeID:recipeID trackingIdentifier:taskIdentifier startBlock:v24];
 
   return v22;
 }
@@ -78,33 +78,33 @@ void __119__PLIntensiveResourceTask_Constructors__taskForDeferredFinalizationFor
   [WeakRetained finishWithResult:v12];
 }
 
-+ (id)taskForGeneratingDeferredAdjustmentForAsset:(id)a3 trackingIdentifier:(id)a4 imageConversionClient:(id)a5 videoConversionClient:(id)a6 reason:(id)a7 clientBundleID:(id)a8 allowCancellationByService:(BOOL)a9
++ (id)taskForGeneratingDeferredAdjustmentForAsset:(id)asset trackingIdentifier:(id)identifier imageConversionClient:(id)client videoConversionClient:(id)conversionClient reason:(id)reason clientBundleID:(id)d allowCancellationByService:(BOOL)service
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a4;
+  assetCopy = asset;
+  clientCopy = client;
+  conversionClientCopy = conversionClient;
+  reasonCopy = reason;
+  dCopy = d;
+  identifierCopy = identifier;
   v20 = [PLIntensiveResourceTask alloc];
-  v21 = [v14 uuid];
-  v22 = [v14 fullSizeRenderResourceRecipeID];
+  uuid = [assetCopy uuid];
+  fullSizeRenderResourceRecipeID = [assetCopy fullSizeRenderResourceRecipeID];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __197__PLIntensiveResourceTask_Constructors__taskForGeneratingDeferredAdjustmentForAsset_trackingIdentifier_imageConversionClient_videoConversionClient_reason_clientBundleID_allowCancellationByService___block_invoke;
   v30[3] = &unk_1E7578758;
-  v31 = v14;
-  v32 = v15;
-  v33 = v16;
-  v34 = v17;
-  v36 = a9;
-  v35 = v18;
-  v23 = v18;
-  v24 = v17;
-  v25 = v16;
-  v26 = v15;
-  v27 = v14;
-  v28 = [(PLIntensiveResourceTask *)v20 initWithAssetUUID:v21 resourceRecipeID:v22 trackingIdentifier:v19 startBlock:v30];
+  v31 = assetCopy;
+  v32 = clientCopy;
+  v33 = conversionClientCopy;
+  v34 = reasonCopy;
+  serviceCopy = service;
+  v35 = dCopy;
+  v23 = dCopy;
+  v24 = reasonCopy;
+  v25 = conversionClientCopy;
+  v26 = clientCopy;
+  v27 = assetCopy;
+  v28 = [(PLIntensiveResourceTask *)v20 initWithAssetUUID:uuid resourceRecipeID:fullSizeRenderResourceRecipeID trackingIdentifier:identifierCopy startBlock:v30];
 
   return v28;
 }
@@ -147,10 +147,10 @@ void __197__PLIntensiveResourceTask_Constructors__taskForGeneratingDeferredAdjus
   return WeakRetained;
 }
 
-- (void)taskResponderDidCancel:(id)a3
+- (void)taskResponderDidCancel:(id)cancel
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  cancelCopy = cancel;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -162,7 +162,7 @@ void __197__PLIntensiveResourceTask_Constructors__taskForGeneratingDeferredAdjus
   v14 = __Block_byref_object_dispose__18;
   v15 = 0;
   v8 = MEMORY[0x1E69E9820];
-  v5 = v4;
+  v5 = cancelCopy;
   v9 = v5;
   PLSafeRunWithUnfairLock();
   if (*(v17 + 24) == 1)
@@ -171,7 +171,7 @@ void __197__PLIntensiveResourceTask_Constructors__taskForGeneratingDeferredAdjus
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v21 = self;
+      selfCopy = self;
       _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEBUG, "[RTM] %@ all responders cancelled, cancelling underlying task", buf, 0xCu);
     }
 
@@ -201,21 +201,21 @@ void __50__PLIntensiveResourceTask_taskResponderDidCancel___block_invoke(uint64_
   }
 }
 
-- (BOOL)_lock_transitionToState:(unint64_t)a3
+- (BOOL)_lock_transitionToState:(unint64_t)state
 {
   os_unfair_lock_assert_owner(&self->_lock);
   lock_state = self->_lock_state;
   if (lock_state == 1)
   {
-    if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+    if ((state & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
 LABEL_4:
-      self->_lock_state = a3;
+      self->_lock_state = state;
       return 1;
     }
   }
 
-  else if (!lock_state && a3 - 1 < 3)
+  else if (!lock_state && state - 1 < 3)
   {
     goto LABEL_4;
   }
@@ -223,10 +223,10 @@ LABEL_4:
   return 0;
 }
 
-- (void)finishWithResult:(id)a3
+- (void)finishWithResult:(id)result
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -241,14 +241,14 @@ LABEL_4:
   v15 = 3221225472;
   v16 = __44__PLIntensiveResourceTask_finishWithResult___block_invoke;
   v17 = &unk_1E7578870;
-  v18 = self;
+  selfCopy = self;
   v19 = &v21;
   v20 = &v25;
   PLSafeRunWithUnfairLock();
   if (*(v22 + 24) == 1)
   {
-    v5 = [(PLIntensiveResourceTask *)self delegate];
-    [v5 resourceTaskDidFinish:self];
+    delegate = [(PLIntensiveResourceTask *)self delegate];
+    [delegate resourceTaskDidFinish:self];
 
     v12 = 0u;
     v13 = 0u;
@@ -269,7 +269,7 @@ LABEL_4:
             objc_enumerationMutation(v6);
           }
 
-          [*(*(&v10 + 1) + 8 * v9++) callCompletionWithResult:{v4, v10}];
+          [*(*(&v10 + 1) + 8 * v9++) callCompletionWithResult:{resultCopy, v10}];
         }
 
         while (v7 != v9);
@@ -383,13 +383,13 @@ void __32__PLIntensiveResourceTask_start__block_invoke_2(uint64_t a1)
   }
 }
 
-- (BOOL)addResponder:(id)a3
+- (BOOL)addResponder:(id)responder
 {
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v5 = a3;
+  responderCopy = responder;
   PLSafeRunWithUnfairLock();
   v3 = *(v7 + 24);
 
@@ -435,29 +435,29 @@ uint64_t __40__PLIntensiveResourceTask_addResponder___block_invoke(uint64_t a1)
   return v6;
 }
 
-- (PLIntensiveResourceTask)initWithAssetUUID:(id)a3 resourceRecipeID:(unsigned int)a4 trackingIdentifier:(id)a5 startBlock:(id)a6
+- (PLIntensiveResourceTask)initWithAssetUUID:(id)d resourceRecipeID:(unsigned int)iD trackingIdentifier:(id)identifier startBlock:(id)block
 {
-  v7 = *&a4;
+  v7 = *&iD;
   v10 = MEMORY[0x1E696AEC0];
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
+  blockCopy = block;
+  identifierCopy = identifier;
+  dCopy = d;
   v14 = PLResourceRecipeIDDescription(v7, 0);
-  v15 = [v10 stringWithFormat:@"%@/%u/%@", v13, v7, v14];
+  v15 = [v10 stringWithFormat:@"%@/%u/%@", dCopy, v7, v14];
 
-  v16 = [(PLIntensiveResourceTask *)self initWithIdentifier:v15 trackingIdentifier:v12 startBlock:v11];
+  v16 = [(PLIntensiveResourceTask *)self initWithIdentifier:v15 trackingIdentifier:identifierCopy startBlock:blockCopy];
   return v16;
 }
 
-- (PLIntensiveResourceTask)initWithIdentifier:(id)a3 trackingIdentifier:(id)a4 startBlock:(id)a5
+- (PLIntensiveResourceTask)initWithIdentifier:(id)identifier trackingIdentifier:(id)trackingIdentifier startBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  identifierCopy = identifier;
+  trackingIdentifierCopy = trackingIdentifier;
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PLIntensiveResourceTask.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"startBlock"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLIntensiveResourceTask.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"startBlock"}];
   }
 
   v24.receiver = self;
@@ -471,15 +471,15 @@ uint64_t __40__PLIntensiveResourceTask_addResponder___block_invoke(uint64_t a1)
     lock_responders = v13->_lock_responders;
     v13->_lock_responders = v14;
 
-    v16 = [v9 copy];
+    v16 = [identifierCopy copy];
     identifier = v13->_identifier;
     v13->_identifier = v16;
 
-    v18 = [v10 copy];
+    v18 = [trackingIdentifierCopy copy];
     trackingIdentifier = v13->_trackingIdentifier;
     v13->_trackingIdentifier = v18;
 
-    v20 = [v11 copy];
+    v20 = [blockCopy copy];
     lock_startBlock = v13->_lock_startBlock;
     v13->_lock_startBlock = v20;
   }

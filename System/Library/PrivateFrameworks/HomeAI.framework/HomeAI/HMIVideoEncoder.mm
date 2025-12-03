@@ -1,37 +1,37 @@
 @interface HMIVideoEncoder
-- (BOOL)_initSessionWithDimensions:(id)a3 codecType:(unsigned int)a4 useHardwareAcceleration:(BOOL)a5 error:(id *)a6;
+- (BOOL)_initSessionWithDimensions:(id)dimensions codecType:(unsigned int)type useHardwareAcceleration:(BOOL)acceleration error:(id *)error;
 - (BOOL)prepare;
-- (HMIVideoEncoder)initWithDimensions:(id)a3 codecType:(unsigned int)a4 useHardwareAcceleration:(BOOL)a5 error:(id *)a6;
+- (HMIVideoEncoder)initWithDimensions:(id)dimensions codecType:(unsigned int)type useHardwareAcceleration:(BOOL)acceleration error:(id *)error;
 - (HMIVideoEncoderDataRate)dataRateLimit;
 - (HMIVideoEncoderDelegate)delegate;
 - (double)expectedDuration;
 - (double)quality;
-- (int)_getFloat64Property:(__CFString *)a3 propertyValueOut:(double *)a4;
-- (int)_getProperty:(__CFString *)a3 propertyValue:(const void *)a4;
-- (int)_getSInt32Property:(__CFString *)a3 propertyValueOut:(int *)a4;
-- (int)_setFloat64Property:(__CFString *)a3 propertyValue:(double)a4;
-- (int)_setProperty:(__CFString *)a3 propertyValue:(void *)a4;
-- (int)_setSInt32Property:(__CFString *)a3 propertyValue:(int)a4;
+- (int)_getFloat64Property:(__CFString *)property propertyValueOut:(double *)out;
+- (int)_getProperty:(__CFString *)property propertyValue:(const void *)value;
+- (int)_getSInt32Property:(__CFString *)property propertyValueOut:(int *)out;
+- (int)_setFloat64Property:(__CFString *)property propertyValue:(double)value;
+- (int)_setProperty:(__CFString *)property propertyValue:(void *)value;
+- (int)_setSInt32Property:(__CFString *)property propertyValue:(int)value;
 - (int64_t)averageBitRate;
 - (int64_t)expectedFrameRate;
 - (int64_t)maxFrameDelayCount;
 - (int64_t)maxKeyFrameIntervalDuration;
 - (void)_invalidate;
-- (void)_invalidateWithErr:(int)a3;
+- (void)_invalidateWithErr:(int)err;
 - (void)dealloc;
 - (void)flush;
-- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)setDataRateLimit:(HMIVideoEncoderDataRate)a3;
-- (void)setDelegate:(id)a3 queue:(id)a4;
-- (void)setExpectedDuration:(double)a3;
+- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)setDataRateLimit:(HMIVideoEncoderDataRate)limit;
+- (void)setDelegate:(id)delegate queue:(id)queue;
+- (void)setExpectedDuration:(double)duration;
 @end
 
 @implementation HMIVideoEncoder
 
-- (HMIVideoEncoder)initWithDimensions:(id)a3 codecType:(unsigned int)a4 useHardwareAcceleration:(BOOL)a5 error:(id *)a6
+- (HMIVideoEncoder)initWithDimensions:(id)dimensions codecType:(unsigned int)type useHardwareAcceleration:(BOOL)acceleration error:(id *)error
 {
-  v7 = a5;
-  v8 = *&a4;
+  accelerationCopy = acceleration;
+  v8 = *&type;
   v17.receiver = self;
   v17.super_class = HMIVideoEncoder;
   v10 = [(HMIVideoEncoder *)&v17 init];
@@ -45,7 +45,7 @@
   workQueue = v10->_workQueue;
   v10->_workQueue = v12;
 
-  v14 = [(HMIVideoEncoder *)v10 _initSessionWithDimensions:a3 codecType:v8 useHardwareAcceleration:v7 error:a6];
+  v14 = [(HMIVideoEncoder *)v10 _initSessionWithDimensions:dimensions codecType:v8 useHardwareAcceleration:accelerationCopy error:error];
   v15 = 0;
   if (v14)
   {
@@ -57,23 +57,23 @@ LABEL_4:
   return v15;
 }
 
-- (BOOL)_initSessionWithDimensions:(id)a3 codecType:(unsigned int)a4 useHardwareAcceleration:(BOOL)a5 error:(id *)a6
+- (BOOL)_initSessionWithDimensions:(id)dimensions codecType:(unsigned int)type useHardwareAcceleration:(BOOL)acceleration error:(id *)error
 {
-  v7 = a5;
+  accelerationCopy = acceleration;
   v30[1] = *MEMORY[0x277D85DE8];
   if ([(HMIVideoEncoder *)self session])
   {
     [HMIVideoEncoder _initSessionWithDimensions:codecType:useHardwareAcceleration:error:];
   }
 
-  v25 = a6;
+  errorCopy = error;
   v11 = *MEMORY[0x277CC4E30];
   v29 = *MEMORY[0x277CC4E30];
   v30[0] = &unk_284075120;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:&v29 count:1];
   v13 = [v12 mutableCopy];
 
-  if (v7)
+  if (accelerationCopy)
   {
     v14 = MEMORY[0x277CBEC38];
   }
@@ -84,7 +84,7 @@ LABEL_4:
   }
 
   v15 = MEMORY[0x277CE2BB0];
-  if (!v7)
+  if (!accelerationCopy)
   {
     v15 = MEMORY[0x277CE2BA8];
   }
@@ -94,13 +94,13 @@ LABEL_4:
   v28 = &unk_284075120;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
   session = 0;
-  v17 = VTCompressionSessionCreate(0, a3.var0, a3.var1, a4, v13, v16, 0, 0, 0, &session);
+  v17 = VTCompressionSessionCreate(0, dimensions.var0, dimensions.var1, type, v13, v16, 0, 0, 0, &session);
   if (!session || v17)
   {
     v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"VTCompressionSessionCreate failed, err: %d", v17];
     v21 = [MEMORY[0x277CCA9B8] hmiPrivateErrorWithCode:1023 description:v20];
-    v19 = v25;
-    if (!v25)
+    v19 = errorCopy;
+    if (!errorCopy)
     {
       goto LABEL_14;
     }
@@ -112,7 +112,7 @@ LABEL_13:
   }
 
   v18 = VTCompressionSessionPrepareToEncodeFrames(session);
-  v19 = v25;
+  v19 = errorCopy;
   if (!v18)
   {
     [(HMIVideoEncoder *)self setSession:session];
@@ -126,7 +126,7 @@ LABEL_13:
 
   v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"VTCompressionSessionPrepareToEncodeFrames failed, err: %d", v18];
   v21 = [MEMORY[0x277CCA9B8] hmiPrivateErrorWithCode:1023 description:v20];
-  if (v25)
+  if (errorCopy)
   {
     goto LABEL_13;
   }
@@ -144,14 +144,14 @@ LABEL_15:
 {
   if ([(HMIVideoEncoder *)self session])
   {
-    v3 = [(HMIVideoEncoder *)self session];
-    v4 = [(HMIVideoEncoder *)self workQueue];
+    session = [(HMIVideoEncoder *)self session];
+    workQueue = [(HMIVideoEncoder *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __26__HMIVideoEncoder_dealloc__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = v3;
-    dispatch_async(v4, block);
+    block[4] = session;
+    dispatch_async(workQueue, block);
 
     [(HMIVideoEncoder *)self setSession:0];
   }
@@ -169,18 +169,18 @@ void __26__HMIVideoEncoder_dealloc__block_invoke(uint64_t a1)
   CFRelease(v2);
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a4;
-  objc_storeWeak(&self->_delegate, a3);
+  queueCopy = queue;
+  objc_storeWeak(&self->_delegate, delegate);
   delegateQueue = self->_delegateQueue;
-  self->_delegateQueue = v6;
+  self->_delegateQueue = queueCopy;
 }
 
 - (void)_invalidate
 {
-  v3 = [(HMIVideoEncoder *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMIVideoEncoder *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if ([(HMIVideoEncoder *)self session])
   {
@@ -191,17 +191,17 @@ void __26__HMIVideoEncoder_dealloc__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_invalidateWithErr:(int)a3
+- (void)_invalidateWithErr:(int)err
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = [(HMIVideoEncoder *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  workQueue = [(HMIVideoEncoder *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if ([(HMIVideoNode *)self status]!= 4)
   {
     self->super.super._status = 4;
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -209,26 +209,26 @@ void __26__HMIVideoEncoder_dealloc__block_invoke(uint64_t a1)
       *buf = 138543618;
       v15 = v9;
       v16 = 1024;
-      v17 = a3;
+      errCopy = err;
       _os_log_impl(&dword_22D12F000, v8, OS_LOG_TYPE_ERROR, "%{public}@Invalidated with err: %d", buf, 0x12u);
     }
 
     objc_autoreleasePoolPop(v6);
-    v10 = [(HMIVideoEncoder *)v7 delegateQueue];
+    delegateQueue = [(HMIVideoEncoder *)selfCopy delegateQueue];
 
-    if (v10)
+    if (delegateQueue)
     {
-      v11 = [(HMIVideoEncoder *)v7 delegateQueue];
+      delegateQueue2 = [(HMIVideoEncoder *)selfCopy delegateQueue];
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __38__HMIVideoEncoder__invalidateWithErr___block_invoke;
       v12[3] = &unk_278754810;
-      v13 = a3;
-      v12[4] = v7;
-      dispatch_async(v11, v12);
+      errCopy2 = err;
+      v12[4] = selfCopy;
+      dispatch_async(delegateQueue2, v12);
     }
 
-    [(HMIVideoEncoder *)v7 _invalidate];
+    [(HMIVideoEncoder *)selfCopy _invalidate];
   }
 }
 
@@ -240,7 +240,7 @@ void __38__HMIVideoEncoder__invalidateWithErr___block_invoke(uint64_t a1)
   [v3 encoder:*(a1 + 32) didFailWithError:v2];
 }
 
-- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   v16 = *MEMORY[0x277D85DE8];
   if ([(HMIVideoNode *)self status]== 2)
@@ -250,30 +250,30 @@ void __38__HMIVideoEncoder__invalidateWithErr___block_invoke(uint64_t a1)
       [HMIVideoEncoder handleSampleBuffer:];
     }
 
-    HMICMSampleBufferGetMediaType(a3);
-    ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+    HMICMSampleBufferGetMediaType(buffer);
+    ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
     memset(&v15, 0, sizeof(v15));
-    CMSampleBufferGetPresentationTimeStamp(&v15, a3);
+    CMSampleBufferGetPresentationTimeStamp(&v15, buffer);
     memset(&v14, 0, sizeof(v14));
-    CMSampleBufferGetDuration(&v14, a3);
-    CFRetain(a3);
-    v6 = [(HMIVideoEncoder *)self workQueue];
+    CMSampleBufferGetDuration(&v14, buffer);
+    CFRetain(buffer);
+    workQueue = [(HMIVideoEncoder *)self workQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __38__HMIVideoEncoder_handleSampleBuffer___block_invoke;
     v11[3] = &unk_278754888;
     v11[4] = self;
-    v11[5] = a3;
+    v11[5] = buffer;
     v11[6] = ImageBuffer;
     v12 = v15;
     v13 = v14;
-    dispatch_sync(v6, v11);
+    dispatch_sync(workQueue, v11);
   }
 
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -434,13 +434,13 @@ void __38__HMIVideoEncoder_handleSampleBuffer___block_invoke_171(uint64_t a1)
 
 - (void)flush
 {
-  v3 = [(HMIVideoEncoder *)self workQueue];
+  workQueue = [(HMIVideoEncoder *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __24__HMIVideoEncoder_flush__block_invoke;
   block[3] = &unk_278752868;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(workQueue, block);
 }
 
 uint64_t __24__HMIVideoEncoder_flush__block_invoke(uint64_t a1)
@@ -502,14 +502,14 @@ uint64_t __24__HMIVideoEncoder_flush__block_invoke(uint64_t a1)
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v3 = [(HMIVideoEncoder *)self workQueue];
+  workQueue = [(HMIVideoEncoder *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __26__HMIVideoEncoder_prepare__block_invoke;
   v7[3] = &unk_2787548B0;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v3, v7);
+  dispatch_sync(workQueue, v7);
 
   v4 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -545,7 +545,7 @@ void __26__HMIVideoEncoder_prepare__block_invoke(uint64_t a1)
   }
 }
 
-- (int)_setProperty:(__CFString *)a3 propertyValue:(void *)a4
+- (int)_setProperty:(__CFString *)property propertyValue:(void *)value
 {
   v19 = *MEMORY[0x277D85DE8];
   if (![(HMIVideoEncoder *)self session])
@@ -553,11 +553,11 @@ void __26__HMIVideoEncoder_prepare__block_invoke(uint64_t a1)
     [HMIVideoEncoder handleSampleBuffer:];
   }
 
-  v7 = VTSessionSetProperty([(HMIVideoEncoder *)self session], a3, a4);
+  v7 = VTSessionSetProperty([(HMIVideoEncoder *)self session], property, value);
   if (v7)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -565,7 +565,7 @@ void __26__HMIVideoEncoder_prepare__block_invoke(uint64_t a1)
       v13 = 138543874;
       v14 = v11;
       v15 = 2112;
-      v16 = a3;
+      propertyCopy = property;
       v17 = 1024;
       v18 = v7;
       _os_log_impl(&dword_22D12F000, v10, OS_LOG_TYPE_ERROR, "%{public}@Cannot set property: %@, error: %d", &v13, 0x1Cu);
@@ -577,7 +577,7 @@ void __26__HMIVideoEncoder_prepare__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (int)_getProperty:(__CFString *)a3 propertyValue:(const void *)a4
+- (int)_getProperty:(__CFString *)property propertyValue:(const void *)value
 {
   v20 = *MEMORY[0x277D85DE8];
   if (![(HMIVideoEncoder *)self session])
@@ -585,12 +585,12 @@ void __26__HMIVideoEncoder_prepare__block_invoke(uint64_t a1)
     [HMIVideoEncoder handleSampleBuffer:];
   }
 
-  v7 = [(HMIVideoEncoder *)self session];
-  v8 = VTSessionCopyProperty(v7, a3, *MEMORY[0x277CBECE8], a4);
+  session = [(HMIVideoEncoder *)self session];
+  v8 = VTSessionCopyProperty(session, property, *MEMORY[0x277CBECE8], value);
   if (v8)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -598,7 +598,7 @@ void __26__HMIVideoEncoder_prepare__block_invoke(uint64_t a1)
       v14 = 138543874;
       v15 = v12;
       v16 = 2112;
-      v17 = a3;
+      propertyCopy = property;
       v18 = 1024;
       v19 = v8;
       _os_log_impl(&dword_22D12F000, v11, OS_LOG_TYPE_ERROR, "%{public}@Cannot copy property: %@, error: %d", &v14, 0x1Cu);
@@ -610,44 +610,44 @@ void __26__HMIVideoEncoder_prepare__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (int)_setSInt32Property:(__CFString *)a3 propertyValue:(int)a4
+- (int)_setSInt32Property:(__CFString *)property propertyValue:(int)value
 {
   SInt32 = FigCFNumberCreateSInt32();
-  LODWORD(a3) = [(HMIVideoEncoder *)self _setProperty:a3 propertyValue:SInt32];
+  LODWORD(property) = [(HMIVideoEncoder *)self _setProperty:property propertyValue:SInt32];
   CFRelease(SInt32);
-  return a3;
+  return property;
 }
 
-- (int)_getSInt32Property:(__CFString *)a3 propertyValueOut:(int *)a4
+- (int)_getSInt32Property:(__CFString *)property propertyValueOut:(int *)out
 {
   number = 0;
-  v5 = [(HMIVideoEncoder *)self _getProperty:a3 propertyValue:&number];
+  v5 = [(HMIVideoEncoder *)self _getProperty:property propertyValue:&number];
   v6 = v5;
-  if (a4 && !v5)
+  if (out && !v5)
   {
-    CFNumberGetValue(number, kCFNumberSInt32Type, a4);
+    CFNumberGetValue(number, kCFNumberSInt32Type, out);
   }
 
   CFRelease(number);
   return v6;
 }
 
-- (int)_setFloat64Property:(__CFString *)a3 propertyValue:(double)a4
+- (int)_setFloat64Property:(__CFString *)property propertyValue:(double)value
 {
   Float64 = FigCFNumberCreateFloat64();
-  LODWORD(a3) = [(HMIVideoEncoder *)self _setProperty:a3 propertyValue:Float64];
+  LODWORD(property) = [(HMIVideoEncoder *)self _setProperty:property propertyValue:Float64];
   CFRelease(Float64);
-  return a3;
+  return property;
 }
 
-- (int)_getFloat64Property:(__CFString *)a3 propertyValueOut:(double *)a4
+- (int)_getFloat64Property:(__CFString *)property propertyValueOut:(double *)out
 {
   number = 0;
-  v5 = [(HMIVideoEncoder *)self _getProperty:a3 propertyValue:&number];
+  v5 = [(HMIVideoEncoder *)self _getProperty:property propertyValue:&number];
   v6 = v5;
-  if (a4 && !v5)
+  if (out && !v5)
   {
-    CFNumberGetValue(number, kCFNumberFloatType, a4);
+    CFNumberGetValue(number, kCFNumberFloatType, out);
   }
 
   CFRelease(number);
@@ -701,10 +701,10 @@ void __26__HMIVideoEncoder_prepare__block_invoke(uint64_t a1)
   objc_exception_throw(v7);
 }
 
-- (void)setExpectedDuration:(double)a3
+- (void)setExpectedDuration:(double)duration
 {
   v4 = *MEMORY[0x277CE2540];
-  if (a3 == 0.0)
+  if (duration == 0.0)
   {
     v5 = *MEMORY[0x277CBEEE8];
   }
@@ -730,11 +730,11 @@ void __26__HMIVideoEncoder_prepare__block_invoke(uint64_t a1)
   objc_exception_throw(v7);
 }
 
-- (void)setDataRateLimit:(HMIVideoEncoderDataRate)a3
+- (void)setDataRateLimit:(HMIVideoEncoderDataRate)limit
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277CE2538];
-  if (a3.var0 && (var1 = a3.var1) != 0)
+  if (limit.var0 && (var1 = limit.var1) != 0)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithInteger:?];
     v10[0] = v6;

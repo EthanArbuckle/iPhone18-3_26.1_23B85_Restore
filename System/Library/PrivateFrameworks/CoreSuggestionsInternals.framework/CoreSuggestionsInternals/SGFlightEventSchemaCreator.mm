@@ -1,18 +1,18 @@
 @interface SGFlightEventSchemaCreator
-- (BOOL)checkCompletenessOfSchema:(id)a3;
-- (BOOL)reservationIDPresentInEventSchema:(id)a3;
-- (id)processDURawEvent:(id)a3;
+- (BOOL)checkCompletenessOfSchema:(id)schema;
+- (BOOL)reservationIDPresentInEventSchema:(id)schema;
+- (id)processDURawEvent:(id)event;
 @end
 
 @implementation SGFlightEventSchemaCreator
 
-- (BOOL)reservationIDPresentInEventSchema:(id)a3
+- (BOOL)reservationIDPresentInEventSchema:(id)schema
 {
-  v3 = [a3 objectForKeyedSubscript:@"reservationId"];
+  v3 = [schema objectForKeyedSubscript:@"reservationId"];
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEB68] null];
-    v5 = v3 != v4;
+    null = [MEMORY[0x277CBEB68] null];
+    v5 = v3 != null;
   }
 
   else
@@ -23,30 +23,30 @@
   return v5;
 }
 
-- (BOOL)checkCompletenessOfSchema:(id)a3
+- (BOOL)checkCompletenessOfSchema:(id)schema
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"reservationStatus"];
+  schemaCopy = schema;
+  v4 = [schemaCopy objectForKeyedSubscript:@"reservationStatus"];
   v30 = [v4 isEqualToString:@"http://schema.org/ReservationCancelled"];
   v5 = [v4 isEqualToString:@"http://schema.org/ReservationConfirmed"];
-  v6 = [v3 objectForKeyedSubscript:@"reservationFor"];
+  v6 = [schemaCopy objectForKeyedSubscript:@"reservationFor"];
   v7 = [v6 objectForKeyedSubscript:@"flightNumber"];
 
-  v8 = [v3 objectForKeyedSubscript:@"reservationFor"];
+  v8 = [schemaCopy objectForKeyedSubscript:@"reservationFor"];
   v9 = [v8 objectForKeyedSubscript:@"departureTime"];
 
-  v10 = [v3 objectForKeyedSubscript:@"reservationFor"];
+  v10 = [schemaCopy objectForKeyedSubscript:@"reservationFor"];
   v32 = [v10 objectForKeyedSubscript:@"arrivalTime"];
 
-  v11 = [v3 objectForKeyedSubscript:@"reservationFor"];
+  v11 = [schemaCopy objectForKeyedSubscript:@"reservationFor"];
   v12 = [v11 objectForKeyedSubscript:@"departureAirport"];
   v13 = [v12 objectForKeyedSubscript:@"iataCode"];
 
-  v14 = [v3 objectForKeyedSubscript:@"reservationFor"];
+  v14 = [schemaCopy objectForKeyedSubscript:@"reservationFor"];
   v15 = [v14 objectForKeyedSubscript:@"arrivalAirport"];
   v16 = [v15 objectForKeyedSubscript:@"iataCode"];
 
-  v17 = [v3 objectForKeyedSubscript:@"reservationId"];
+  v17 = [schemaCopy objectForKeyedSubscript:@"reservationId"];
 
   if (!v5)
   {
@@ -63,15 +63,15 @@
 
     if (v26 == 1)
     {
-      v19 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
       LOBYTE(v7) = 0;
-      if (v17 == v19 || !v18)
+      if (v17 == null || !v18)
       {
         goto LABEL_25;
       }
 
-      v20 = [MEMORY[0x277CBEB68] null];
-      LOBYTE(v7) = v18 != v20;
+      null2 = [MEMORY[0x277CBEB68] null];
+      LOBYTE(v7) = v18 != null2;
       goto LABEL_24;
     }
 
@@ -87,42 +87,42 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  v19 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
   LOBYTE(v7) = 0;
-  if (v18 == v19 || !v9)
+  if (v18 == null || !v9)
   {
     goto LABEL_25;
   }
 
-  v20 = [MEMORY[0x277CBEB68] null];
+  null2 = [MEMORY[0x277CBEB68] null];
   LOBYTE(v7) = 0;
-  if (v9 != v20 && v32)
+  if (v9 != null2 && v32)
   {
-    v21 = [MEMORY[0x277CBEB68] null];
+    null3 = [MEMORY[0x277CBEB68] null];
     LOBYTE(v7) = 0;
-    if (v32 != v21 && v13)
+    if (v32 != null3 && v13)
     {
-      v22 = v21;
-      v23 = [MEMORY[0x277CBEB68] null];
+      v22 = null3;
+      null4 = [MEMORY[0x277CBEB68] null];
       LOBYTE(v7) = 0;
-      if (v13 != v23 && v16)
+      if (v13 != null4 && v16)
       {
-        v31 = v23;
-        v24 = [MEMORY[0x277CBEB68] null];
+        v31 = null4;
+        null5 = [MEMORY[0x277CBEB68] null];
         LOBYTE(v7) = 0;
-        if (v16 != v24 && v17)
+        if (v16 != null5 && v17)
         {
-          v29 = v24;
-          v25 = [MEMORY[0x277CBEB68] null];
-          LOBYTE(v7) = v17 != v25;
+          v29 = null5;
+          null6 = [MEMORY[0x277CBEB68] null];
+          LOBYTE(v7) = v17 != null6;
 
-          v24 = v29;
+          null5 = v29;
         }
 
-        v23 = v31;
+        null4 = v31;
       }
 
-      v21 = v22;
+      null3 = v22;
     }
   }
 
@@ -135,39 +135,39 @@ LABEL_28:
   return v7;
 }
 
-- (id)processDURawEvent:(id)a3
+- (id)processDURawEvent:(id)event
 {
   v118[12] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D06628]];
-  v5 = [v3 objectForKeyedSubscript:*MEMORY[0x277D064B8]];
-  v6 = [v3 objectForKeyedSubscript:*MEMORY[0x277D066B8]];
-  v7 = [v3 objectForKeyedSubscript:*MEMORY[0x277D06620]];
-  v98 = [v3 objectForKeyedSubscript:*MEMORY[0x277D067B0]];
-  v8 = [v3 objectForKeyedSubscript:*MEMORY[0x277D06560]];
-  v97 = [v3 objectForKeyedSubscript:*MEMORY[0x277D064B0]];
-  v96 = [v3 objectForKeyedSubscript:*MEMORY[0x277D06448]];
-  v95 = [v3 objectForKeyedSubscript:*MEMORY[0x277D06558]];
-  v94 = [v3 objectForKeyedSubscript:*MEMORY[0x277D06550]];
-  v93 = [v3 objectForKeyedSubscript:*MEMORY[0x277D06570]];
-  v92 = [v3 objectForKeyedSubscript:*MEMORY[0x277D06568]];
-  v91 = [v3 objectForKeyedSubscript:*MEMORY[0x277D066C8]];
-  v90 = [v3 objectForKeyedSubscript:*MEMORY[0x277D06440]];
-  v89 = [v3 objectForKeyedSubscript:*MEMORY[0x277D06438]];
-  v88 = [v3 objectForKeyedSubscript:*MEMORY[0x277D06458]];
-  v87 = [v3 objectForKeyedSubscript:*MEMORY[0x277D06450]];
-  v86 = [v3 objectForKeyedSubscript:*MEMORY[0x277D06580]];
-  v85 = [v3 objectForKeyedSubscript:*MEMORY[0x277D06520]];
-  v9 = [v3 objectForKeyedSubscript:*MEMORY[0x277D06798]];
-  v84 = [v3 objectForKeyedSubscript:*MEMORY[0x277D06630]];
-  v10 = [v3 objectForKeyedSubscript:*MEMORY[0x277D065F8]];
+  eventCopy = event;
+  v4 = [eventCopy objectForKeyedSubscript:*MEMORY[0x277D06628]];
+  v5 = [eventCopy objectForKeyedSubscript:*MEMORY[0x277D064B8]];
+  v6 = [eventCopy objectForKeyedSubscript:*MEMORY[0x277D066B8]];
+  v7 = [eventCopy objectForKeyedSubscript:*MEMORY[0x277D06620]];
+  v98 = [eventCopy objectForKeyedSubscript:*MEMORY[0x277D067B0]];
+  v8 = [eventCopy objectForKeyedSubscript:*MEMORY[0x277D06560]];
+  v97 = [eventCopy objectForKeyedSubscript:*MEMORY[0x277D064B0]];
+  v96 = [eventCopy objectForKeyedSubscript:*MEMORY[0x277D06448]];
+  v95 = [eventCopy objectForKeyedSubscript:*MEMORY[0x277D06558]];
+  v94 = [eventCopy objectForKeyedSubscript:*MEMORY[0x277D06550]];
+  v93 = [eventCopy objectForKeyedSubscript:*MEMORY[0x277D06570]];
+  v92 = [eventCopy objectForKeyedSubscript:*MEMORY[0x277D06568]];
+  v91 = [eventCopy objectForKeyedSubscript:*MEMORY[0x277D066C8]];
+  v90 = [eventCopy objectForKeyedSubscript:*MEMORY[0x277D06440]];
+  v89 = [eventCopy objectForKeyedSubscript:*MEMORY[0x277D06438]];
+  v88 = [eventCopy objectForKeyedSubscript:*MEMORY[0x277D06458]];
+  v87 = [eventCopy objectForKeyedSubscript:*MEMORY[0x277D06450]];
+  v86 = [eventCopy objectForKeyedSubscript:*MEMORY[0x277D06580]];
+  v85 = [eventCopy objectForKeyedSubscript:*MEMORY[0x277D06520]];
+  v9 = [eventCopy objectForKeyedSubscript:*MEMORY[0x277D06798]];
+  v84 = [eventCopy objectForKeyedSubscript:*MEMORY[0x277D06630]];
+  v10 = [eventCopy objectForKeyedSubscript:*MEMORY[0x277D065F8]];
   v75 = v10;
   if (v10)
   {
     v11 = v10;
     v12 = objc_alloc(MEMORY[0x277CCACA8]);
-    v13 = [v11 capitalizedString];
-    v83 = [v12 initWithFormat:@"http://schema.org/Reservation%@", v13];
+    capitalizedString = [v11 capitalizedString];
+    v83 = [v12 initWithFormat:@"http://schema.org/Reservation%@", capitalizedString];
   }
 
   else
@@ -175,7 +175,7 @@ LABEL_28:
     v83 = 0;
   }
 
-  v14 = [v3 objectForKeyedSubscript:*MEMORY[0x277D06578]];
+  v14 = [eventCopy objectForKeyedSubscript:*MEMORY[0x277D06578]];
   v82 = v8;
   v15 = [SGEventSchemaCreator isTimePresentInDURawDateTime:v8];
   v16 = &unk_284749140;
@@ -190,204 +190,204 @@ LABEL_28:
   v118[0] = @"http://schema.org";
   v118[1] = @"http://schema.org/FlightReservation";
   v117[2] = @"reservationId";
-  v17 = v6;
+  null = v6;
   if (!v6)
   {
-    v17 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v68 = v17;
-  v118[2] = v17;
+  v68 = null;
+  v118[2] = null;
   v117[3] = @"reservationStatus";
-  v18 = v83;
+  null2 = v83;
   if (!v83)
   {
-    v18 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v67 = v18;
-  v118[3] = v18;
+  v67 = null2;
+  v118[3] = null2;
   v117[4] = @"totalPrice";
-  v19 = v9;
+  null3 = v9;
   v76 = v9;
   if (!v9)
   {
-    v19 = [MEMORY[0x277CBEB68] null];
+    null3 = [MEMORY[0x277CBEB68] null];
   }
 
-  v66 = v19;
-  v118[4] = v19;
+  v66 = null3;
+  v118[4] = null3;
   v117[5] = @"underName";
   v116[0] = @"http://schema.org/Person";
   v115[0] = @"@type";
   v115[1] = @"name";
-  v20 = v98;
+  null4 = v98;
   if (!v98)
   {
-    v20 = [MEMORY[0x277CBEB68] null];
+    null4 = [MEMORY[0x277CBEB68] null];
   }
 
-  v65 = v20;
-  v116[1] = v20;
+  v65 = null4;
+  v116[1] = null4;
   v74 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v116 forKeys:v115 count:2];
   v118[5] = v74;
   v117[6] = @"reservationFor";
   v114[0] = @"http://schema.org/Flight";
   v113[0] = @"@type";
   v113[1] = @"flightDesignator";
-  v21 = v4;
+  null5 = v4;
   if (!v4)
   {
-    v21 = [MEMORY[0x277CBEB68] null];
+    null5 = [MEMORY[0x277CBEB68] null];
   }
 
   v81 = v14;
-  v64 = v21;
-  v114[1] = v21;
+  v64 = null5;
+  v114[1] = null5;
   v113[2] = @"flightNumber";
-  v22 = v84;
+  null6 = v84;
   if (!v84)
   {
-    v22 = [MEMORY[0x277CBEB68] null];
+    null6 = [MEMORY[0x277CBEB68] null];
   }
 
-  v63 = v22;
-  v114[2] = v22;
+  v63 = null6;
+  v114[2] = null6;
   v113[3] = @"airline";
   v112[0] = @"http://schema.org/Airline";
   v111[0] = @"@type";
   v111[1] = @"iataCode";
-  v23 = v7;
+  null7 = v7;
   if (!v7)
   {
-    v23 = [MEMORY[0x277CBEB68] null];
+    null7 = [MEMORY[0x277CBEB68] null];
   }
 
-  v62 = v23;
-  v112[1] = v23;
+  v62 = null7;
+  v112[1] = null7;
   v73 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v112 forKeys:v111 count:2];
   v114[3] = v73;
   v113[4] = @"departureTime";
-  v24 = v8;
+  null8 = v8;
   if (!v8)
   {
-    v24 = [MEMORY[0x277CBEB68] null];
+    null8 = [MEMORY[0x277CBEB68] null];
   }
 
-  v61 = v24;
-  v114[4] = v24;
+  v61 = null8;
+  v114[4] = null8;
   v113[5] = @"departureTerminal";
-  v25 = v93;
+  null9 = v93;
   if (!v93)
   {
-    v25 = [MEMORY[0x277CBEB68] null];
+    null9 = [MEMORY[0x277CBEB68] null];
   }
 
   v79 = v4;
-  v60 = v25;
-  v114[5] = v25;
+  v60 = null9;
+  v114[5] = null9;
   v113[6] = @"departureGate";
-  v26 = v92;
+  null10 = v92;
   if (!v92)
   {
-    v26 = [MEMORY[0x277CBEB68] null];
+    null10 = [MEMORY[0x277CBEB68] null];
   }
 
-  v59 = v26;
-  v114[6] = v26;
+  v59 = null10;
+  v114[6] = null10;
   v113[7] = @"departureAirport";
   v110[0] = @"http://schema.org/Airport";
   v109[0] = @"@type";
   v109[1] = @"name";
-  v27 = v95;
+  null11 = v95;
   if (!v95)
   {
-    v27 = [MEMORY[0x277CBEB68] null];
+    null11 = [MEMORY[0x277CBEB68] null];
   }
 
-  v58 = v27;
-  v110[1] = v27;
+  v58 = null11;
+  v110[1] = null11;
   v109[2] = @"iataCode";
-  v28 = v94;
+  null12 = v94;
   if (!v94)
   {
-    v28 = [MEMORY[0x277CBEB68] null];
+    null12 = [MEMORY[0x277CBEB68] null];
   }
 
-  v57 = v28;
-  v110[2] = v28;
+  v57 = null12;
+  v110[2] = null12;
   v71 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v110 forKeys:v109 count:3];
   v114[7] = v71;
   v113[8] = @"boardingTime";
-  v29 = v97;
+  null13 = v97;
   if (!v97)
   {
-    v29 = [MEMORY[0x277CBEB68] null];
+    null13 = [MEMORY[0x277CBEB68] null];
   }
 
-  v56 = v29;
-  v114[8] = v29;
+  v56 = null13;
+  v114[8] = null13;
   v113[9] = @"arrivalTime";
-  v30 = v96;
+  null14 = v96;
   if (!v96)
   {
-    v30 = [MEMORY[0x277CBEB68] null];
+    null14 = [MEMORY[0x277CBEB68] null];
   }
 
-  v55 = v30;
-  v114[9] = v30;
+  v55 = null14;
+  v114[9] = null14;
   v113[10] = @"arrivalTerminal";
-  v31 = v88;
+  null15 = v88;
   if (!v88)
   {
-    v31 = [MEMORY[0x277CBEB68] null];
+    null15 = [MEMORY[0x277CBEB68] null];
   }
 
-  v54 = v31;
-  v114[10] = v31;
+  v54 = null15;
+  v114[10] = null15;
   v113[11] = @"arrivalGate";
-  v32 = v87;
+  null16 = v87;
   if (!v87)
   {
-    v32 = [MEMORY[0x277CBEB68] null];
+    null16 = [MEMORY[0x277CBEB68] null];
   }
 
-  v53 = v32;
-  v114[11] = v32;
+  v53 = null16;
+  v114[11] = null16;
   v113[12] = @"arrivalAirport";
   v108[0] = @"http://schema.org/Airport";
   v107[0] = @"@type";
   v107[1] = @"name";
-  v33 = v90;
+  null17 = v90;
   if (!v90)
   {
-    v33 = [MEMORY[0x277CBEB68] null];
+    null17 = [MEMORY[0x277CBEB68] null];
   }
 
-  v52 = v33;
-  v108[1] = v33;
+  v52 = null17;
+  v108[1] = null17;
   v107[2] = @"iataCode";
-  v34 = v89;
+  null18 = v89;
   if (!v89)
   {
-    v34 = [MEMORY[0x277CBEB68] null];
+    null18 = [MEMORY[0x277CBEB68] null];
   }
 
-  v51 = v34;
-  v108[2] = v34;
+  v51 = null18;
+  v108[2] = null18;
   v70 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v108 forKeys:v107 count:3];
   v114[12] = v70;
   v113[13] = @"duration";
-  v35 = v86;
+  null19 = v86;
   if (!v86)
   {
-    v35 = [MEMORY[0x277CBEB68] null];
+    null19 = [MEMORY[0x277CBEB68] null];
   }
 
   v77 = v7;
   v78 = v6;
-  v50 = v35;
-  v114[13] = v35;
+  v50 = null19;
+  v114[13] = null19;
   v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v114 forKeys:v113 count:14];
   v117[7] = @"reservedTicket";
   v106[0] = @"http://schema.org/Ticket";
@@ -396,16 +396,16 @@ LABEL_28:
   v103[0] = @"@type";
   v103[1] = @"seatNumber";
   v104[0] = @"http://schema.org/Seat";
-  v37 = v91;
+  null20 = v91;
   v69 = v36;
   v118[6] = v36;
   if (!v91)
   {
-    v37 = [MEMORY[0x277CBEB68] null];
+    null20 = [MEMORY[0x277CBEB68] null];
   }
 
-  v49 = v37;
-  v104[1] = v37;
+  v49 = null20;
+  v104[1] = null20;
   v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v104 forKeys:v103 count:2];
   v106[1] = v38;
   v39 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v106 forKeys:v105 count:2];
@@ -414,14 +414,14 @@ LABEL_28:
   v101[1] = @"name";
   v102[0] = @"http://schema.org/Organization";
   v101[0] = @"@type";
-  v40 = v5;
+  null21 = v5;
   v72 = v5;
   if (!v5)
   {
-    v40 = [MEMORY[0x277CBEB68] null];
+    null21 = [MEMORY[0x277CBEB68] null];
   }
 
-  v102[1] = v40;
+  v102[1] = null21;
   v41 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v102 forKeys:v101 count:2];
   v118[8] = v41;
   v117[9] = @"potentialAction";
@@ -429,25 +429,25 @@ LABEL_28:
   v99[1] = @"@context";
   v100[0] = @"CheckInAction";
   v100[1] = @"http://schema.org";
-  v42 = v85;
+  null22 = v85;
   v99[2] = @"target";
   if (!v85)
   {
-    v42 = [MEMORY[0x277CBEB68] null];
+    null22 = [MEMORY[0x277CBEB68] null];
   }
 
-  v100[2] = v42;
+  v100[2] = null22;
   v43 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v100 forKeys:v99 count:3];
   v118[9] = v43;
   v117[10] = @"DetailedEventStatus";
-  v44 = v14;
+  null23 = v14;
   if (!v14)
   {
-    v44 = [MEMORY[0x277CBEB68] null];
+    null23 = [MEMORY[0x277CBEB68] null];
   }
 
   v117[11] = @"startTimeIsUnknown";
-  v118[10] = v44;
+  v118[10] = null23;
   v118[11] = v80;
   v45 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v118 forKeys:v117 count:12];
   if (!v81)

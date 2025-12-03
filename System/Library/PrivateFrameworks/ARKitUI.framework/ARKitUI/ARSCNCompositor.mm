@@ -1,32 +1,32 @@
 @interface ARSCNCompositor
 + (id)mattingTechniqueDual;
 + (id)mattingWithDepthAndDualTechnique;
-+ (id)techniqueDictionaryWithName:(id)a3;
-- (ARSCNCompositor)initWithView:(id)a3 mode:(int64_t)a4 algorithm:(int64_t)a5;
++ (id)techniqueDictionaryWithName:(id)name;
+- (ARSCNCompositor)initWithView:(id)view mode:(int64_t)mode algorithm:(int64_t)algorithm;
 - (CGSize)currentSize;
-- (float32x2_t)orientedVerticesWithResolution:(double)a3;
+- (float32x2_t)orientedVerticesWithResolution:(double)resolution;
 - (void)dealloc;
-- (void)encodeAlphaResampleToCommandBuffer:(id)a3 resolution:(CGSize)a4 input:(id)a5 output:(id)a6;
-- (void)encodeDepthResampleToCommandBuffer:(id)a3 resolution:(CGSize)a4 input:(id)a5 output:(id)a6;
-- (void)executeOcclusionDepthStencilCallback:(id)a3;
-- (void)executeOverlayMatteCallbackDual:(id)a3;
-- (void)setCurrentSize:(CGSize)a3;
-- (void)setErosionRadius:(unint64_t)a3;
-- (void)setFilterOffset:(double)a3;
-- (void)setFilterScale:(double)a3;
-- (void)setUncertaintyRadius:(unint64_t)a3;
+- (void)encodeAlphaResampleToCommandBuffer:(id)buffer resolution:(CGSize)resolution input:(id)input output:(id)output;
+- (void)encodeDepthResampleToCommandBuffer:(id)buffer resolution:(CGSize)resolution input:(id)input output:(id)output;
+- (void)executeOcclusionDepthStencilCallback:(id)callback;
+- (void)executeOverlayMatteCallbackDual:(id)dual;
+- (void)setCurrentSize:(CGSize)size;
+- (void)setErosionRadius:(unint64_t)radius;
+- (void)setFilterOffset:(double)offset;
+- (void)setFilterScale:(double)scale;
+- (void)setUncertaintyRadius:(unint64_t)radius;
 @end
 
 @implementation ARSCNCompositor
 
-- (ARSCNCompositor)initWithView:(id)a3 mode:(int64_t)a4 algorithm:(int64_t)a5
+- (ARSCNCompositor)initWithView:(id)view mode:(int64_t)mode algorithm:(int64_t)algorithm
 {
   v84 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  viewCopy = view;
   v76.receiver = self;
   v76.super_class = ARSCNCompositor;
   v9 = [(ARSCNCompositor *)&v76 init];
-  [(ARSCNCompositor *)v9 setCompositorAlgorithm:a5];
+  [(ARSCNCompositor *)v9 setCompositorAlgorithm:algorithm];
   if (!v9)
   {
     goto LABEL_25;
@@ -38,16 +38,16 @@
   block[3] = &unk_278BCD458;
   v10 = v9;
   v74 = v10;
-  v11 = v8;
+  v11 = viewCopy;
   v75 = v11;
   dispatch_async(MEMORY[0x277D85CD0], block);
-  v10->_mode = a4;
-  v67 = [v11 session];
-  v68 = [v67 configuration];
+  v10->_mode = mode;
+  session = [v11 session];
+  configuration = [session configuration];
   compositorAlgorithm = v10->_compositorAlgorithm;
   v13 = objc_alloc(MEMORY[0x277CE52F0]);
-  v14 = [v11 device];
-  v15 = [v13 initWithDevice:v14 matteResolution:0 useSmoothing:compositorAlgorithm == 1];
+  device = [v11 device];
+  v15 = [v13 initWithDevice:device matteResolution:0 useSmoothing:compositorAlgorithm == 1];
   matteGenerator = v10->_matteGenerator;
   v10->_matteGenerator = v15;
 
@@ -79,11 +79,11 @@
   }
 
 LABEL_8:
-  v22 = [v68 videoFormat];
-  v23 = v22;
-  if (v22)
+  videoFormat = [configuration videoFormat];
+  v23 = videoFormat;
+  if (videoFormat)
   {
-    [v22 imageResolution];
+    [videoFormat imageResolution];
     v25.f64[1] = v24;
     __asm { FMOV            V1.2D, #0.25 }
 
@@ -120,9 +120,9 @@ LABEL_8:
         v78 = 2048;
         v79 = v10;
         v80 = 2048;
-        v81 = a4;
+        modeCopy2 = mode;
         v82 = 2048;
-        v83 = a5;
+        algorithmCopy2 = algorithm;
         _os_log_impl(&dword_23D3AE000, v58, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: ARSCNCompositor (%li, %li) initialization failed. Matting is not set up properly.", location, 0x2Au);
       }
     }
@@ -136,9 +136,9 @@ LABEL_8:
       v78 = 2048;
       v79 = v10;
       v80 = 2048;
-      v81 = a4;
+      modeCopy2 = mode;
       v82 = 2048;
-      v83 = a5;
+      algorithmCopy2 = algorithm;
       _os_log_impl(&dword_23D3AE000, v58, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: ARSCNCompositor (%li, %li) initialization failed. Matting is not set up properly.", location, 0x2Au);
     }
   }
@@ -166,9 +166,9 @@ LABEL_8:
     }
 
     v36 = objc_storeWeak(&v10->_view, v11);
-    v37 = [v11 device];
+    device2 = [v11 device];
     device = v10->_device;
-    v10->_device = v37;
+    v10->_device = device2;
 
     v39 = ARKitUIBundle();
     v40 = [v39 URLForResource:@"default" withExtension:@"metallib"];
@@ -187,16 +187,16 @@ LABEL_8:
     v47 = objc_alloc_init(MEMORY[0x277CD6F78]);
     [v47 setVertexFunction:v45];
     [v47 setFragmentFunction:v46];
-    v48 = [v47 colorAttachments];
-    v49 = [v48 objectAtIndexedSubscript:0];
+    colorAttachments = [v47 colorAttachments];
+    v49 = [colorAttachments objectAtIndexedSubscript:0];
     [v49 setPixelFormat:10];
 
     v50 = [(MTLDevice *)v10->_device newRenderPipelineStateWithDescriptor:v47 error:0];
     resampleML = v10->_resampleML;
     v10->_resampleML = v50;
 
-    v52 = [v47 colorAttachments];
-    v53 = [v52 objectAtIndexedSubscript:0];
+    colorAttachments2 = [v47 colorAttachments];
+    v53 = [colorAttachments2 objectAtIndexedSubscript:0];
     [v53 setPixelFormat:25];
 
     [v47 setFragmentFunction:v46];
@@ -246,10 +246,10 @@ void __47__ARSCNCompositor_initWithView_mode_algorithm___block_invoke_2(uint64_t
 - (void)dealloc
 {
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v4 = [WeakRetained technique];
+  technique = [WeakRetained technique];
   technique = self->_technique;
 
-  if (v4 == technique)
+  if (technique == technique)
   {
     v6 = objc_loadWeakRetained(&self->_view);
     [v6 setTechnique:0];
@@ -260,14 +260,14 @@ void __47__ARSCNCompositor_initWithView_mode_algorithm___block_invoke_2(uint64_t
   [(ARSCNCompositor *)&v7 dealloc];
 }
 
-- (void)setUncertaintyRadius:(unint64_t)a3
+- (void)setUncertaintyRadius:(unint64_t)radius
 {
-  if (a3 <= 1)
+  if (radius <= 1)
   {
-    a3 = 1;
+    radius = 1;
   }
 
-  self->_uncertaintyRadius = a3;
+  self->_uncertaintyRadius = radius;
   matteGenerator = self->_matteGenerator;
   if (matteGenerator)
   {
@@ -275,9 +275,9 @@ void __47__ARSCNCompositor_initWithView_mode_algorithm___block_invoke_2(uint64_t
   }
 }
 
-- (void)setErosionRadius:(unint64_t)a3
+- (void)setErosionRadius:(unint64_t)radius
 {
-  self->_erodeRadius = a3;
+  self->_erodeRadius = radius;
   matteGenerator = self->_matteGenerator;
   if (matteGenerator)
   {
@@ -285,44 +285,44 @@ void __47__ARSCNCompositor_initWithView_mode_algorithm___block_invoke_2(uint64_t
   }
 }
 
-- (void)setFilterScale:(double)a3
+- (void)setFilterScale:(double)scale
 {
-  self->_filterScale = a3;
+  self->_filterScale = scale;
   technique = self->_technique;
   v4 = [MEMORY[0x277CCABB0] numberWithDouble:?];
   [SCNTechnique setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setFilterOffset:(double)a3
+- (void)setFilterOffset:(double)offset
 {
-  self->_filterOffset = a3;
+  self->_filterOffset = offset;
   technique = self->_technique;
   v4 = [MEMORY[0x277CCABB0] numberWithDouble:?];
   [SCNTechnique setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setCurrentSize:(CGSize)a3
+- (void)setCurrentSize:(CGSize)size
 {
-  if (a3.width * a3.height > 0.0)
+  if (size.width * size.height > 0.0)
   {
-    if (a3.width <= a3.height)
+    if (size.width <= size.height)
     {
-      width = a3.width;
+      width = size.width;
     }
 
     else
     {
-      width = a3.height;
+      width = size.height;
     }
 
-    if (a3.width <= a3.height)
+    if (size.width <= size.height)
     {
-      a3.width = a3.height;
+      size.width = size.height;
     }
 
     self->_currentSize.width = width;
-    self->_currentSize.height = a3.width;
-    v5 = a3.width;
+    self->_currentSize.height = size.width;
+    v5 = size.width;
     height = self->_workingResolution.width;
     if (height <= self->_workingResolution.height)
     {
@@ -343,80 +343,80 @@ void __47__ARSCNCompositor_initWithView_mode_algorithm___block_invoke_2(uint64_t
   }
 }
 
-- (void)encodeAlphaResampleToCommandBuffer:(id)a3 resolution:(CGSize)a4 input:(id)a5 output:(id)a6
+- (void)encodeAlphaResampleToCommandBuffer:(id)buffer resolution:(CGSize)resolution input:(id)input output:(id)output
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  height = resolution.height;
+  width = resolution.width;
+  bufferCopy = buffer;
+  inputCopy = input;
+  outputCopy = output;
   [(ARSCNCompositor *)self orientedVerticesWithResolution:width, height];
   v32 = v14;
   __asm { FMOV            V0.2S, #1.0 }
 
-  v23 = [MEMORY[0x277CD6F50] renderPassDescriptor];
-  v24 = [v23 colorAttachments];
-  v25 = [v24 objectAtIndexedSubscript:0];
-  [v25 setTexture:v13];
+  renderPassDescriptor = [MEMORY[0x277CD6F50] renderPassDescriptor];
+  colorAttachments = [renderPassDescriptor colorAttachments];
+  v25 = [colorAttachments objectAtIndexedSubscript:0];
+  [v25 setTexture:outputCopy];
 
-  v26 = [v23 colorAttachments];
-  v27 = [v26 objectAtIndexedSubscript:0];
+  colorAttachments2 = [renderPassDescriptor colorAttachments];
+  v27 = [colorAttachments2 objectAtIndexedSubscript:0];
   [v27 setLoadAction:2];
 
-  v28 = [v23 colorAttachments];
-  v29 = [v28 objectAtIndexedSubscript:0];
+  colorAttachments3 = [renderPassDescriptor colorAttachments];
+  v29 = [colorAttachments3 objectAtIndexedSubscript:0];
   [v29 setStoreAction:1];
 
-  v30 = [v11 renderCommandEncoderWithDescriptor:v23];
+  v30 = [bufferCopy renderCommandEncoderWithDescriptor:renderPassDescriptor];
   [v30 setLabel:@"ML stencil resample"];
   [v30 setRenderPipelineState:self->_resampleML];
   [v30 setVertexBytes:&v32 length:32 atIndex:0];
   [v30 setVertexBytes:&v31 length:32 atIndex:1];
-  [v30 setFragmentTexture:v12 atIndex:0];
+  [v30 setFragmentTexture:inputCopy atIndex:0];
   [v30 drawPrimitives:4 vertexStart:0 vertexCount:4];
   [v30 endEncoding];
 }
 
-- (void)encodeDepthResampleToCommandBuffer:(id)a3 resolution:(CGSize)a4 input:(id)a5 output:(id)a6
+- (void)encodeDepthResampleToCommandBuffer:(id)buffer resolution:(CGSize)resolution input:(id)input output:(id)output
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  height = resolution.height;
+  width = resolution.width;
+  bufferCopy = buffer;
+  inputCopy = input;
+  outputCopy = output;
   [(ARSCNCompositor *)self orientedVerticesWithResolution:width, height];
   v32 = v14;
   __asm { FMOV            V0.2S, #1.0 }
 
-  v23 = [MEMORY[0x277CD6F50] renderPassDescriptor];
-  v24 = [v23 colorAttachments];
-  v25 = [v24 objectAtIndexedSubscript:0];
-  [v25 setTexture:v13];
+  renderPassDescriptor = [MEMORY[0x277CD6F50] renderPassDescriptor];
+  colorAttachments = [renderPassDescriptor colorAttachments];
+  v25 = [colorAttachments objectAtIndexedSubscript:0];
+  [v25 setTexture:outputCopy];
 
-  v26 = [v23 colorAttachments];
-  v27 = [v26 objectAtIndexedSubscript:0];
+  colorAttachments2 = [renderPassDescriptor colorAttachments];
+  v27 = [colorAttachments2 objectAtIndexedSubscript:0];
   [v27 setLoadAction:2];
 
-  v28 = [v23 colorAttachments];
-  v29 = [v28 objectAtIndexedSubscript:0];
+  colorAttachments3 = [renderPassDescriptor colorAttachments];
+  v29 = [colorAttachments3 objectAtIndexedSubscript:0];
   [v29 setStoreAction:1];
 
-  v30 = [v11 renderCommandEncoderWithDescriptor:v23];
+  v30 = [bufferCopy renderCommandEncoderWithDescriptor:renderPassDescriptor];
   [v30 setLabel:@"ML estimated depth resample"];
   [v30 setRenderPipelineState:self->_resampleDepthML];
   [v30 setVertexBytes:&v32 length:32 atIndex:0];
   [v30 setVertexBytes:&v31 length:32 atIndex:1];
-  [v30 setFragmentTexture:v12 atIndex:0];
+  [v30 setFragmentTexture:inputCopy atIndex:0];
   [v30 drawPrimitives:4 vertexStart:0 vertexCount:4];
   [v30 endEncoding];
 }
 
-- (float32x2_t)orientedVerticesWithResolution:(double)a3
+- (float32x2_t)orientedVerticesWithResolution:(double)resolution
 {
   v25[5] = *MEMORY[0x277D85DE8];
-  v3 = a1[25];
-  v4 = a1[26];
-  v5 = *(a1 + 18);
+  v3 = self[25];
+  v4 = self[26];
+  v5 = *(self + 18);
   if (v5 == 3)
   {
     v5 = 4;
@@ -437,7 +437,7 @@ void __47__ARSCNCompositor_initWithView_mode_algorithm___block_invoke_2(uint64_t
   v6 = v4;
 LABEL_7:
   memset(&v23, 0, sizeof(v23));
-  ARCameraImageToViewTransform(v5, 0, &v23, a2, a3, v6, v3);
+  ARCameraImageToViewTransform(v5, 0, &v23, a2, resolution, v6, v3);
   v7 = 0;
   v24[0] = 0uLL;
   v25[0] = 0;
@@ -470,38 +470,38 @@ LABEL_7:
   return vcvt_f32_f64(v24[0]);
 }
 
-- (void)executeOverlayMatteCallbackDual:(id)a3
+- (void)executeOverlayMatteCallbackDual:(id)dual
 {
-  v9 = a3;
+  dualCopy = dual;
   kdebug_trace();
-  v4 = [v9 commandBuffer];
-  v5 = [v9 outputTextureWithName:@"alpha_target"];
+  commandBuffer = [dualCopy commandBuffer];
+  v5 = [dualCopy outputTextureWithName:@"alpha_target"];
   currentFrame = self->_currentFrame;
   if (currentFrame)
   {
-    v7 = [(ARMatteGenerator *)self->_matteGenerator generateMatteFromFrame:currentFrame commandBuffer:v4];
+    v7 = [(ARMatteGenerator *)self->_matteGenerator generateMatteFromFrame:currentFrame commandBuffer:commandBuffer];
     alphaTexture = self->_alphaTexture;
     self->_alphaTexture = v7;
 
-    [(ARSCNCompositor *)self encodeAlphaResampleToCommandBuffer:v4 resolution:self->_alphaTexture input:v5 output:[(MTLTexture *)self->_alphaTexture width], [(MTLTexture *)self->_alphaTexture height]];
+    [(ARSCNCompositor *)self encodeAlphaResampleToCommandBuffer:commandBuffer resolution:self->_alphaTexture input:v5 output:[(MTLTexture *)self->_alphaTexture width], [(MTLTexture *)self->_alphaTexture height]];
     kdebug_trace();
   }
 }
 
-- (void)executeOcclusionDepthStencilCallback:(id)a3
+- (void)executeOcclusionDepthStencilCallback:(id)callback
 {
-  v4 = a3;
-  v5 = [v4 commandBuffer];
-  v6 = [v4 outputTextureWithName:@"occluderDepthStencilDilated_target"];
-  v7 = [(ARMatteGenerator *)self->_matteGenerator generateDilatedDepthFromFrame:self->_currentFrame commandBuffer:v5];
-  -[ARSCNCompositor encodeDepthResampleToCommandBuffer:resolution:input:output:](self, "encodeDepthResampleToCommandBuffer:resolution:input:output:", v5, v7, v6, [v7 width], objc_msgSend(v7, "height"));
+  callbackCopy = callback;
+  commandBuffer = [callbackCopy commandBuffer];
+  v6 = [callbackCopy outputTextureWithName:@"occluderDepthStencilDilated_target"];
+  v7 = [(ARMatteGenerator *)self->_matteGenerator generateDilatedDepthFromFrame:self->_currentFrame commandBuffer:commandBuffer];
+  -[ARSCNCompositor encodeDepthResampleToCommandBuffer:resolution:input:output:](self, "encodeDepthResampleToCommandBuffer:resolution:input:output:", commandBuffer, v7, v6, [v7 width], objc_msgSend(v7, "height"));
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v9 = [WeakRetained pointOfView];
-  v10 = [v9 camera];
-  v12 = v10;
-  if (v10)
+  pointOfView = [WeakRetained pointOfView];
+  camera = [pointOfView camera];
+  v12 = camera;
+  if (camera)
   {
-    [v10 projectionTransform];
+    [camera projectionTransform];
     v13 = v32;
     v14.i32[0] = v33.i32[0];
     v15 = v32.i32[3];
@@ -559,11 +559,11 @@ LABEL_7:
   [(SCNTechnique *)self->_technique setValue:v27 forKey:@"projection_sym"];
 }
 
-+ (id)techniqueDictionaryWithName:(id)a3
++ (id)techniqueDictionaryWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = ARKitCoreBundle();
-  v5 = [v4 URLForResource:v3 withExtension:@"json" subdirectory:@"Matting"];
+  v5 = [v4 URLForResource:nameCopy withExtension:@"json" subdirectory:@"Matting"];
 
   v6 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v5];
   v9 = 0;

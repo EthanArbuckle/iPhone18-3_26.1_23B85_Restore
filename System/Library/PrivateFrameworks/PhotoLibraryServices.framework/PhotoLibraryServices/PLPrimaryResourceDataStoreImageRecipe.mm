@@ -1,24 +1,24 @@
 @interface PLPrimaryResourceDataStoreImageRecipe
-+ (CGSize)scaleOriginalSize:(CGSize)result toLongSideTarget:(double)a4;
-+ (CGSize)scaleOriginalSize:(CGSize)result toShortSideTarget:(double)a4 maxLongSideLength:(double)a5;
-- (BOOL)_storeResourceWithType:(unsigned int)a3 version:(unsigned int)a4 asset:(id)a5 destURL:(id)a6 error:(id *)a7;
++ (CGSize)scaleOriginalSize:(CGSize)result toLongSideTarget:(double)target;
++ (CGSize)scaleOriginalSize:(CGSize)result toShortSideTarget:(double)target maxLongSideLength:(double)length;
+- (BOOL)_storeResourceWithType:(unsigned int)type version:(unsigned int)version asset:(id)asset destURL:(id)l error:(id *)error;
 - (BOOL)isMarkedFullSize;
-- (PLPrimaryResourceDataStoreImageRecipe)initWithRecipeID:(unsigned int)a3;
-- (id)_mediaConversionServiceOptionsForAsset:(id)a3 url:(id)a4 conversionServiceOptions:(id)a5 adjustmentData:(id)a6 largeAdjustmentData:(id)a7 isHighPriority:(BOOL)a8 reason:(id)a9;
-- (id)_resourceGenerationAffectsRecipesForLibraryID:(id)a3;
-- (id)chooseIngredientsFrom:(id)a3 version:(unsigned int)a4;
-- (id)colorSpaceGivenSourceColorSpace:(id)a3 inContext:(id)a4;
-- (id)expectedFileURLForVersion:(unsigned int)a3 asset:(id)a4;
-- (id)expectedSizeFromWidth:(int64_t)a3 height:(int64_t)a4;
-- (id)maxPixelCountForAssetWidth:(int64_t)a3 height:(int64_t)a4;
+- (PLPrimaryResourceDataStoreImageRecipe)initWithRecipeID:(unsigned int)d;
+- (id)_mediaConversionServiceOptionsForAsset:(id)asset url:(id)url conversionServiceOptions:(id)options adjustmentData:(id)data largeAdjustmentData:(id)adjustmentData isHighPriority:(BOOL)priority reason:(id)reason;
+- (id)_resourceGenerationAffectsRecipesForLibraryID:(id)d;
+- (id)chooseIngredientsFrom:(id)from version:(unsigned int)version;
+- (id)colorSpaceGivenSourceColorSpace:(id)space inContext:(id)context;
+- (id)expectedFileURLForVersion:(unsigned int)version asset:(id)asset;
+- (id)expectedSizeFromWidth:(int64_t)width height:(int64_t)height;
+- (id)maxPixelCountForAssetWidth:(int64_t)width height:(int64_t)height;
 - (id)supportedVersionsForLocalResourceGeneration;
-- (void)_generateAndStoreUsingMediaConversionServicesForAsset:(id)a3 version:(unsigned int)a4 conversionClient:(id)a5 videoConversionClient:(id)a6 conversionServiceOptions:(id)a7 isHighPriority:(BOOL)a8 progress:(id *)a9 reason:(id)a10 completion:(id)a11;
-- (void)generateAndStoreForAsset:(id)a3 options:(id)a4 progress:(id *)a5 completion:(id)a6;
+- (void)_generateAndStoreUsingMediaConversionServicesForAsset:(id)asset version:(unsigned int)version conversionClient:(id)client videoConversionClient:(id)conversionClient conversionServiceOptions:(id)options isHighPriority:(BOOL)priority progress:(id *)progress reason:(id)self0 completion:(id)self1;
+- (void)generateAndStoreForAsset:(id)asset options:(id)options progress:(id *)progress completion:(id)completion;
 @end
 
 @implementation PLPrimaryResourceDataStoreImageRecipe
 
-- (id)expectedSizeFromWidth:(int64_t)a3 height:(int64_t)a4
+- (id)expectedSizeFromWidth:(int64_t)width height:(int64_t)height
 {
   if ([(PLPrimaryResourceDataStoreImageRecipe *)self recipeID]== 65747)
   {
@@ -34,31 +34,31 @@
   return v4;
 }
 
-- (void)generateAndStoreForAsset:(id)a3 options:(id)a4 progress:(id *)a5 completion:(id)a6
+- (void)generateAndStoreForAsset:(id)asset options:(id)options progress:(id *)progress completion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v11 version];
-  v17 = [v11 imageConversionServiceClient];
-  v14 = [v11 videoConversionServiceClient];
-  v15 = [v11 conversionServiceOptions];
-  v16 = [v11 reason];
+  completionCopy = completion;
+  optionsCopy = options;
+  assetCopy = asset;
+  version = [optionsCopy version];
+  imageConversionServiceClient = [optionsCopy imageConversionServiceClient];
+  videoConversionServiceClient = [optionsCopy videoConversionServiceClient];
+  conversionServiceOptions = [optionsCopy conversionServiceOptions];
+  reason = [optionsCopy reason];
 
-  [(PLPrimaryResourceDataStoreImageRecipe *)self _generateAndStoreUsingMediaConversionServicesForAsset:v12 version:v13 conversionClient:v17 videoConversionClient:v14 conversionServiceOptions:v15 isHighPriority:0 progress:a5 reason:v16 completion:v10];
+  [(PLPrimaryResourceDataStoreImageRecipe *)self _generateAndStoreUsingMediaConversionServicesForAsset:assetCopy version:version conversionClient:imageConversionServiceClient videoConversionClient:videoConversionServiceClient conversionServiceOptions:conversionServiceOptions isHighPriority:0 progress:progress reason:reason completion:completionCopy];
 }
 
-- (id)expectedFileURLForVersion:(unsigned int)a3 asset:(id)a4
+- (id)expectedFileURLForVersion:(unsigned int)version asset:(id)asset
 {
-  v6 = a4;
-  v7 = v6;
+  assetCopy = asset;
+  v7 = assetCopy;
   v8 = 0;
   recipeID = self->_recipeID;
   if (recipeID <= 65748)
   {
     if (recipeID == 65737)
     {
-      v11 = [v6 pathForNonAdjustedFullsizeImageFile];
+      pathForNonAdjustedFullsizeImageFile = [assetCopy pathForNonAdjustedFullsizeImageFile];
     }
 
     else
@@ -69,27 +69,27 @@
         goto LABEL_18;
       }
 
-      if (a3 == 2)
+      if (version == 2)
       {
-        [v6 pathForAdjustedLargeThumbnailFile];
+        [assetCopy pathForAdjustedLargeThumbnailFile];
       }
 
       else
       {
-        [v6 pathForNonAdjustedLargeThumbnailFile];
+        [assetCopy pathForNonAdjustedLargeThumbnailFile];
       }
-      v11 = ;
+      pathForNonAdjustedFullsizeImageFile = ;
     }
   }
 
   else if (recipeID == 65749)
   {
-    v11 = [v6 pathForLocalVideoKeyFrame];
+    pathForNonAdjustedFullsizeImageFile = [assetCopy pathForLocalVideoKeyFrame];
   }
 
   else if (recipeID == 65938)
   {
-    v11 = [v6 pathForAdjustedFullsizeImageFile];
+    pathForNonAdjustedFullsizeImageFile = [assetCopy pathForAdjustedFullsizeImageFile];
   }
 
   else
@@ -100,13 +100,13 @@
       goto LABEL_18;
     }
 
-    v11 = [v6 pathForAlchemistImage];
+    pathForNonAdjustedFullsizeImageFile = [assetCopy pathForAlchemistImage];
   }
 
-  v8 = v11;
-  if (v11)
+  v8 = pathForNonAdjustedFullsizeImageFile;
+  if (pathForNonAdjustedFullsizeImageFile)
   {
-    v10 = [MEMORY[0x1E695DFF8] fileURLWithPath:v11 isDirectory:0];
+    v10 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathForNonAdjustedFullsizeImageFile isDirectory:0];
   }
 
   else
@@ -119,18 +119,18 @@ LABEL_18:
   return v10;
 }
 
-- (id)chooseIngredientsFrom:(id)a3 version:(unsigned int)a4
+- (id)chooseIngredientsFrom:(id)from version:(unsigned int)version
 {
-  v4 = *&a4;
+  v4 = *&version;
   v51 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PLPrimaryResourceDataStoreImageRecipe *)self supportedVersionsForLocalResourceGeneration];
+  fromCopy = from;
+  supportedVersionsForLocalResourceGeneration = [(PLPrimaryResourceDataStoreImageRecipe *)self supportedVersionsForLocalResourceGeneration];
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v4];
-  v9 = [v7 containsObject:v8];
+  v9 = [supportedVersionsForLocalResourceGeneration containsObject:v8];
 
   if (v9)
   {
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     recipeID = self->_recipeID;
     if (recipeID > 65746)
     {
@@ -138,19 +138,19 @@ LABEL_18:
       {
         if (recipeID == 65938)
         {
-          [(PLResourceRecipe *)self populateAdjustedRecipeIngredients:v10 asset:v6 version:v4];
+          [(PLResourceRecipe *)self populateAdjustedRecipeIngredients:dictionary asset:fromCopy version:v4];
         }
 
         goto LABEL_53;
       }
 
-      v14 = -[PLPrimaryResourceDataStoreImageRecipe maxPixelCountForAssetWidth:height:](self, "maxPixelCountForAssetWidth:height:", [v6 width], objc_msgSend(v6, "height"));
-      if (!v14)
+      syndicationOriginalResource2 = -[PLPrimaryResourceDataStoreImageRecipe maxPixelCountForAssetWidth:height:](self, "maxPixelCountForAssetWidth:height:", [fromCopy width], objc_msgSend(fromCopy, "height"));
+      if (!syndicationOriginalResource2)
       {
         goto LABEL_52;
       }
 
-      if ([v6 isVideo] && objc_msgSend(v6, "isVideoKeyFrameSet") && objc_msgSend(v6, "isLocalVideoKeyFrameValid"))
+      if ([fromCopy isVideo] && objc_msgSend(fromCopy, "isVideoKeyFrameSet") && objc_msgSend(fromCopy, "isLocalVideoKeyFrameValid"))
       {
         v21 = PLBackendGetLog();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -159,15 +159,15 @@ LABEL_18:
           _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_DEBUG, "Media analysis video detected, choosing local video key frame for 1K generation", buf, 2u);
         }
 
-        v22 = [v6 localVideoKeyFrameResource];
-        if (([v22 isLocallyAvailable] & 1) == 0)
+        localVideoKeyFrameResource = [fromCopy localVideoKeyFrameResource];
+        if (([localVideoKeyFrameResource isLocallyAvailable] & 1) == 0)
         {
 
-          v19 = 0;
+          localVideoKeyFrameResource2 = 0;
           goto LABEL_51;
         }
 
-        v19 = [v6 localVideoKeyFrameResource];
+        localVideoKeyFrameResource2 = [fromCopy localVideoKeyFrameResource];
       }
 
       else
@@ -179,25 +179,25 @@ LABEL_18:
           _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_DEBUG, "Choosing source image for 1K generation", buf, 2u);
         }
 
-        v24 = [v6 resourcesSortedByQualityWithOptions:1];
+        v24 = [fromCopy resourcesSortedByQualityWithOptions:1];
         v25 = MEMORY[0x1E696AE18];
         v39 = MEMORY[0x1E69E9820];
         v40 = 3221225472;
         v41 = __71__PLPrimaryResourceDataStoreImageRecipe_chooseIngredientsFrom_version___block_invoke_103;
         v42 = &unk_1E7564E70;
-        v43 = v14;
-        v44 = v6;
-        v45 = self;
+        v43 = syndicationOriginalResource2;
+        v44 = fromCopy;
+        selfCopy = self;
         v26 = [v25 predicateWithBlock:&v39];
         v27 = [v24 filteredArrayUsingPredicate:{v26, v39, v40, v41, v42}];
-        v19 = [v27 firstObject];
+        localVideoKeyFrameResource2 = [v27 firstObject];
 
-        v22 = v43;
+        localVideoKeyFrameResource = v43;
       }
 
-      if (v19)
+      if (localVideoKeyFrameResource2)
       {
-        [v10 setObject:v19 forKeyedSubscript:@"Image"];
+        [dictionary setObject:localVideoKeyFrameResource2 forKeyedSubscript:@"Image"];
       }
 
       goto LABEL_51;
@@ -205,12 +205,12 @@ LABEL_18:
 
     if (recipeID == 65737)
     {
-      v17 = [v6 isRAWPlusJPEGWithRAWOnTop];
+      isRAWPlusJPEGWithRAWOnTop = [fromCopy isRAWPlusJPEGWithRAWOnTop];
       v46[0] = MEMORY[0x1E69E9820];
       v46[1] = 3221225472;
       v46[2] = __71__PLPrimaryResourceDataStoreImageRecipe_chooseIngredientsFrom_version___block_invoke;
       v46[3] = &__block_descriptor_40_e28_B16__0__PLInternalResource_8l;
-      if (v17)
+      if (isRAWPlusJPEGWithRAWOnTop)
       {
         v18 = 4;
       }
@@ -222,10 +222,10 @@ LABEL_18:
 
       v47 = v18;
       v48 = v4;
-      v14 = [v6 firstPersistedResourceMatching:v46];
-      v19 = PLBackendGetLog();
-      v20 = os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG);
-      if (!v14)
+      syndicationOriginalResource2 = [fromCopy firstPersistedResourceMatching:v46];
+      localVideoKeyFrameResource2 = PLBackendGetLog();
+      v20 = os_log_type_enabled(localVideoKeyFrameResource2, OS_LOG_TYPE_DEBUG);
+      if (!syndicationOriginalResource2)
       {
         if (!v20)
         {
@@ -236,7 +236,7 @@ LABEL_51:
 
         *buf = 0;
         v28 = "Resource generation failed to find image for primary image recipe";
-        v29 = v19;
+        v29 = localVideoKeyFrameResource2;
         v30 = OS_LOG_TYPE_DEBUG;
         v31 = 2;
 LABEL_50:
@@ -247,53 +247,53 @@ LABEL_50:
       if (v20)
       {
         *buf = 138412290;
-        v50 = v14;
-        _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_DEBUG, "Resource generation selected image resource for primary image recipe: %@", buf, 0xCu);
+        v50 = syndicationOriginalResource2;
+        _os_log_impl(&dword_19BF1F000, localVideoKeyFrameResource2, OS_LOG_TYPE_DEBUG, "Resource generation selected image resource for primary image recipe: %@", buf, 0xCu);
       }
     }
 
     else
     {
-      if (recipeID != 65741 || [v6 bundleScope] != 3)
+      if (recipeID != 65741 || [fromCopy bundleScope] != 3)
       {
         goto LABEL_53;
       }
 
-      if ([v6 kind])
+      if ([fromCopy kind])
       {
-        if ([v6 kind] == 1)
+        if ([fromCopy kind] == 1)
         {
-          v12 = [v6 syndicationOriginalResource];
-          v13 = [v12 isLocallyAvailable];
+          syndicationOriginalResource = [fromCopy syndicationOriginalResource];
+          isLocallyAvailable = [syndicationOriginalResource isLocallyAvailable];
 
-          if (v13)
+          if (isLocallyAvailable)
           {
-            v14 = [v6 syndicationOriginalResource];
+            syndicationOriginalResource2 = [fromCopy syndicationOriginalResource];
             v15 = @"Video";
 LABEL_22:
-            [v10 setObject:v14 forKeyedSubscript:v15];
+            [dictionary setObject:syndicationOriginalResource2 forKeyedSubscript:v15];
 LABEL_52:
 
             goto LABEL_53;
           }
 
-          v14 = PLSyndicationGetLog();
-          if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+          syndicationOriginalResource2 = PLSyndicationGetLog();
+          if (!os_log_type_enabled(syndicationOriginalResource2, OS_LOG_TYPE_ERROR))
           {
             goto LABEL_52;
           }
 
-          v19 = [v6 uuid];
+          localVideoKeyFrameResource2 = [fromCopy uuid];
           *buf = 138543362;
-          v50 = v19;
+          v50 = localVideoKeyFrameResource2;
           v28 = "[resource.recipe] syndication video (%{public}@) missing local video resource for derivative generation";
           goto LABEL_49;
         }
 
 LABEL_53:
-        if ([v10 count])
+        if ([dictionary count])
         {
-          v37 = v10;
+          v37 = dictionary;
         }
 
         else
@@ -306,35 +306,35 @@ LABEL_53:
         goto LABEL_57;
       }
 
-      v32 = [v6 isPhotoIris];
-      v33 = [v6 syndicationOriginalResource];
-      v34 = [v33 isLocallyAvailable];
+      isPhotoIris = [fromCopy isPhotoIris];
+      syndicationOriginalResource3 = [fromCopy syndicationOriginalResource];
+      isLocallyAvailable2 = [syndicationOriginalResource3 isLocallyAvailable];
 
-      if (v32)
+      if (isPhotoIris)
       {
-        v35 = [v6 syndicationOriginalResource];
-        v14 = v35;
-        if (!v34)
+        syndicationOriginalResource4 = [fromCopy syndicationOriginalResource];
+        syndicationOriginalResource2 = syndicationOriginalResource4;
+        if (!isLocallyAvailable2)
         {
-          v36 = [v35 isLocallyAvailable];
+          isLocallyAvailable3 = [syndicationOriginalResource4 isLocallyAvailable];
 
-          if (v36)
+          if (isLocallyAvailable3)
           {
             goto LABEL_53;
           }
 
-          v14 = PLSyndicationGetLog();
-          if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+          syndicationOriginalResource2 = PLSyndicationGetLog();
+          if (!os_log_type_enabled(syndicationOriginalResource2, OS_LOG_TYPE_ERROR))
           {
             goto LABEL_52;
           }
 
-          v19 = [v6 uuid];
+          localVideoKeyFrameResource2 = [fromCopy uuid];
           *buf = 138543362;
-          v50 = v19;
+          v50 = localVideoKeyFrameResource2;
           v28 = "[resource.recipe] syndication live photo (%{public}@) missing local image resource for derivative generation";
 LABEL_49:
-          v29 = v14;
+          v29 = syndicationOriginalResource2;
           v30 = OS_LOG_TYPE_ERROR;
           v31 = 12;
           goto LABEL_50;
@@ -343,22 +343,22 @@ LABEL_49:
 
       else
       {
-        if (!v34)
+        if (!isLocallyAvailable2)
         {
-          v14 = PLSyndicationGetLog();
-          if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+          syndicationOriginalResource2 = PLSyndicationGetLog();
+          if (!os_log_type_enabled(syndicationOriginalResource2, OS_LOG_TYPE_ERROR))
           {
             goto LABEL_52;
           }
 
-          v19 = [v6 uuid];
+          localVideoKeyFrameResource2 = [fromCopy uuid];
           *buf = 138543362;
-          v50 = v19;
+          v50 = localVideoKeyFrameResource2;
           v28 = "[resource.recipe] syndication photo (%{public}@) missing local image resource for derivative generation";
           goto LABEL_49;
         }
 
-        v14 = [v6 syndicationOriginalResource];
+        syndicationOriginalResource2 = [fromCopy syndicationOriginalResource];
       }
     }
 
@@ -437,9 +437,9 @@ uint64_t __71__PLPrimaryResourceDataStoreImageRecipe_chooseIngredientsFrom_versi
   return MEMORY[0x1E695E0F0];
 }
 
-- (id)maxPixelCountForAssetWidth:(int64_t)a3 height:(int64_t)a4
+- (id)maxPixelCountForAssetWidth:(int64_t)width height:(int64_t)height
 {
-  v5 = 0;
+  width = 0;
   recipeID = self->_recipeID;
   if (recipeID > 65748)
   {
@@ -455,25 +455,25 @@ uint64_t __71__PLPrimaryResourceDataStoreImageRecipe_chooseIngredientsFrom_versi
   {
     case 65737:
 LABEL_14:
-      v5 = [MEMORY[0x1E696AD98] numberWithLongLong:a4 * a3];
+      width = [MEMORY[0x1E696AD98] numberWithLongLong:height * width];
       break;
     case 65741:
-      v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(MEMORY[0x1E6994B90], "maxPixelSizeForResourceType:", 4, a4)}];
+      width = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(MEMORY[0x1E6994B90], "maxPixelSizeForResourceType:", 4, height)}];
       break;
     case 65747:
-      v5 = &unk_1F0FBA900;
+      width = &unk_1F0FBA900;
       break;
   }
 
 LABEL_15:
 
-  return v5;
+  return width;
 }
 
-- (id)colorSpaceGivenSourceColorSpace:(id)a3 inContext:(id)a4
+- (id)colorSpaceGivenSourceColorSpace:(id)space inContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  spaceCopy = space;
+  contextCopy = context;
   recipeID = self->_recipeID;
   if (recipeID - 65937 <= 0xE && ((1 << (recipeID + 111)) & 0x4AD3) != 0)
   {
@@ -485,7 +485,7 @@ LABEL_15:
     if (((1 << (recipeID + 55)) & 0x1455) != 0)
     {
 LABEL_8:
-      v10 = v6;
+      v10 = spaceCopy;
 LABEL_9:
       v11 = v10;
       goto LABEL_10;
@@ -534,9 +534,9 @@ LABEL_10:
   return result;
 }
 
-- (PLPrimaryResourceDataStoreImageRecipe)initWithRecipeID:(unsigned int)a3
+- (PLPrimaryResourceDataStoreImageRecipe)initWithRecipeID:(unsigned int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v9.receiver = self;
   v9.super_class = PLPrimaryResourceDataStoreImageRecipe;
   v5 = [(PLPrimaryResourceDataStoreImageRecipe *)&v9 init];
@@ -545,8 +545,8 @@ LABEL_10:
     v6 = [objc_opt_class() classFromRecipeID:v3];
     if (v6 != objc_opt_class())
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:v5 file:@"PLPrimaryResourceDataStoreImageRecipe.m" lineNumber:489 description:@"wrong recipe class passed to recipe initializer."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v5 file:@"PLPrimaryResourceDataStoreImageRecipe.m" lineNumber:489 description:@"wrong recipe class passed to recipe initializer."];
     }
 
     v5->_recipeID = v3;
@@ -555,27 +555,27 @@ LABEL_10:
   return v5;
 }
 
-- (void)_generateAndStoreUsingMediaConversionServicesForAsset:(id)a3 version:(unsigned int)a4 conversionClient:(id)a5 videoConversionClient:(id)a6 conversionServiceOptions:(id)a7 isHighPriority:(BOOL)a8 progress:(id *)a9 reason:(id)a10 completion:(id)a11
+- (void)_generateAndStoreUsingMediaConversionServicesForAsset:(id)asset version:(unsigned int)version conversionClient:(id)client videoConversionClient:(id)conversionClient conversionServiceOptions:(id)options isHighPriority:(BOOL)priority progress:(id *)progress reason:(id)self0 completion:(id)self1
 {
-  v73 = a8;
-  v14 = *&a4;
+  priorityCopy = priority;
+  v14 = *&version;
   v112[1] = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v81 = a5;
-  v80 = a6;
-  v17 = a7;
-  v86 = a10;
-  v79 = a11;
-  v18 = [v16 assetID];
-  v84 = [v18 libraryID];
+  assetCopy = asset;
+  clientCopy = client;
+  conversionClientCopy = conversionClient;
+  optionsCopy = options;
+  reasonCopy = reason;
+  completionCopy = completion;
+  assetID = [assetCopy assetID];
+  libraryID = [assetID libraryID];
 
-  v19 = [(PLPrimaryResourceDataStoreImageRecipe *)self supportedVersionsForLocalResourceGeneration];
+  supportedVersionsForLocalResourceGeneration = [(PLPrimaryResourceDataStoreImageRecipe *)self supportedVersionsForLocalResourceGeneration];
   v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v14];
-  LODWORD(a5) = [v19 containsObject:v20];
+  LODWORD(client) = [supportedVersionsForLocalResourceGeneration containsObject:v20];
 
-  if (!a5)
+  if (!client)
   {
-    v24 = v17;
+    v24 = optionsCopy;
     v21 = 0;
     v85 = 0;
     v88 = 0;
@@ -590,11 +590,11 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v21 = [(PLPrimaryResourceDataStoreImageRecipe *)self chooseIngredientsFrom:v16 version:v14];
+  v21 = [(PLPrimaryResourceDataStoreImageRecipe *)self chooseIngredientsFrom:assetCopy version:v14];
   v22 = [v21 objectForKeyedSubscript:@"Image"];
   v89 = [v21 objectForKeyedSubscript:@"VideoComplement"];
   v23 = [v21 objectForKeyedSubscript:@"Video"];
-  if (v14 == 2 || v14 == 3 && [v16 hasAdjustments])
+  if (v14 == 2 || v14 == 3 && [assetCopy hasAdjustments])
   {
     v88 = [v21 objectForKeyedSubscript:@"Adjustment"];
     v85 = [v21 objectForKeyedSubscript:@"LargeAdjustment"];
@@ -608,32 +608,32 @@ LABEL_11:
 
   if (!(v22 | v23))
   {
-    v24 = v17;
+    v24 = optionsCopy;
     v25 = 47003;
     goto LABEL_11;
   }
 
   v78 = v21;
-  v24 = v17;
+  v24 = optionsCopy;
   v26 = 0;
   v27 = 1;
 LABEL_12:
   v28 = [(PLPrimaryResourceDataStoreImageRecipe *)self uti];
   v77 = v22;
-  v29 = [v22 dataStoreKey];
-  v30 = [v16 assetID];
-  v90 = [v29 fileURLForAssetID:v30];
+  dataStoreKey = [v22 dataStoreKey];
+  assetID2 = [assetCopy assetID];
+  v90 = [dataStoreKey fileURLForAssetID:assetID2];
 
-  v31 = [v89 dataStoreKey];
-  v32 = [v16 assetID];
-  v82 = [v31 fileURLForAssetID:v32];
+  dataStoreKey2 = [v89 dataStoreKey];
+  assetID3 = [assetCopy assetID];
+  v82 = [dataStoreKey2 fileURLForAssetID:assetID3];
 
   v76 = v23;
-  v33 = [v23 dataStoreKey];
-  v34 = [v16 assetID];
-  v35 = [v33 fileURLForAssetID:v34];
+  dataStoreKey3 = [v23 dataStoreKey];
+  assetID4 = [assetCopy assetID];
+  v35 = [dataStoreKey3 fileURLForAssetID:assetID4];
 
-  v36 = [(PLPrimaryResourceDataStoreImageRecipe *)self expectedFileURLForVersion:v14 asset:v16];
+  v36 = [(PLPrimaryResourceDataStoreImageRecipe *)self expectedFileURLForVersion:v14 asset:assetCopy];
   v75 = v28;
   v83 = v36;
   if (!v28 || !(v90 | v35) || !v36)
@@ -644,11 +644,11 @@ LABEL_12:
     v26 = v37;
   }
 
-  v38 = [v16 hasAdjustments];
+  hasAdjustments = [assetCopy hasAdjustments];
   v87 = v35;
   if (v14 == 2)
   {
-    if (v38)
+    if (hasAdjustments)
     {
       v39 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_recipeID];
       v40 = [&unk_1F0FBF208 containsObject:v39];
@@ -660,8 +660,8 @@ LABEL_12:
           v41 = [(PLResourceRecipe *)self recipeErrorWithCode:47015 version:2 underlyingError:0 debugDescription:0];
 
           v26 = v41;
-          v42 = v81;
-          if (!v81)
+          v42 = clientCopy;
+          if (!clientCopy)
           {
             goto LABEL_33;
           }
@@ -672,8 +672,8 @@ LABEL_12:
     }
   }
 
-  v42 = v81;
-  if (!v81)
+  v42 = clientCopy;
+  if (!clientCopy)
   {
 LABEL_33:
     v60 = MEMORY[0x1E696ABC0];
@@ -689,10 +689,10 @@ LABEL_33:
 
   if (v27)
   {
-    v43 = [v16 managedObjectContext];
+    managedObjectContext = [assetCopy managedObjectContext];
     v44 = v24;
-    v45 = [(PLPrimaryResourceDataStoreImageRecipe *)self _mediaConversionServiceOptionsForAsset:v16 url:v90 conversionServiceOptions:v24 adjustmentData:v88 largeAdjustmentData:v85 isHighPriority:v73 reason:v86];
-    v46 = v45;
+    v45 = [(PLPrimaryResourceDataStoreImageRecipe *)self _mediaConversionServiceOptionsForAsset:assetCopy url:v90 conversionServiceOptions:v24 adjustmentData:v88 largeAdjustmentData:v85 isHighPriority:priorityCopy reason:reasonCopy];
+    orderedSet2 = v45;
     if (!v45)
     {
       v65 = PLBackendGetLog();
@@ -706,43 +706,43 @@ LABEL_33:
       v66 = [(PLResourceRecipe *)self recipeErrorWithCode:47007 version:v14 underlyingError:0 debugDescription:0];
 
       v67 = [MEMORY[0x1E695DFD8] set];
-      v68 = [MEMORY[0x1E695DFB8] orderedSet];
-      v55 = v79;
-      (*(v79 + 2))(v79, 0, v66, v67, v68, 0);
+      orderedSet = [MEMORY[0x1E695DFB8] orderedSet];
+      v55 = completionCopy;
+      (*(completionCopy + 2))(completionCopy, 0, v66, v67, orderedSet, 0);
 
       v58 = v67;
       v26 = v66;
-      v59 = v80;
+      v59 = conversionClientCopy;
       goto LABEL_42;
     }
 
-    v71 = v43;
+    v71 = managedObjectContext;
     v47 = [v45 objectForKeyedSubscript:*MEMORY[0x1E69AE988]];
-    v48 = [v47 BOOLValue];
+    bOOLValue = [v47 BOOLValue];
 
     v49 = v90;
-    v74 = v48;
-    if (!v48 || v90)
+    v74 = bOOLValue;
+    if (!bOOLValue || v90)
     {
       if (v87)
       {
-        v43 = v71;
+        managedObjectContext = v71;
         if (!v90)
         {
           v103[0] = MEMORY[0x1E69E9820];
           v103[1] = 3221225472;
           v103[2] = __209__PLPrimaryResourceDataStoreImageRecipe__generateAndStoreUsingMediaConversionServicesForAsset_version_conversionClient_videoConversionClient_conversionServiceOptions_isHighPriority_progress_reason_completion___block_invoke;
           v103[3] = &unk_1E7564DF8;
-          v104 = v16;
-          v109 = v79;
-          v105 = self;
-          v55 = v79;
+          v104 = assetCopy;
+          v109 = completionCopy;
+          selfCopy = self;
+          v55 = completionCopy;
           v110 = v14;
           v106 = v71;
           v107 = v83;
-          v108 = v84;
-          v59 = v80;
-          [v80 extractStillImageFromVideoAtSourceURL:v87 toDestinationURL:v107 options:v46 completionHandler:v103];
+          v108 = libraryID;
+          v59 = conversionClientCopy;
+          [conversionClientCopy extractStillImageFromVideoAtSourceURL:v87 toDestinationURL:v107 options:orderedSet2 completionHandler:v103];
 
           v90 = 0;
           v58 = v104;
@@ -764,10 +764,10 @@ LABEL_29:
           [v50 setResourceURL:v82 forRole:*MEMORY[0x1E69AE8C0]];
         }
 
-        [v16 pathManager];
+        [assetCopy pathManager];
         v51 = v70 = v50;
-        v52 = [v83 pathExtension];
-        v53 = [v51 temporaryRenderContentURLForInternalRendersWithExtension:v52];
+        pathExtension = [v83 pathExtension];
+        v53 = [v51 temporaryRenderContentURLForInternalRendersWithExtension:pathExtension];
 
         v54 = objc_opt_new();
         [v54 setResourceURL:v53 forRole:v69 deleteOnDeallocation:1];
@@ -775,24 +775,24 @@ LABEL_29:
         v92[1] = 3221225472;
         v92[2] = __209__PLPrimaryResourceDataStoreImageRecipe__generateAndStoreUsingMediaConversionServicesForAsset_version_conversionClient_videoConversionClient_conversionServiceOptions_isHighPriority_progress_reason_completion___block_invoke_2;
         v92[3] = &unk_1E7564E48;
-        v93 = v43;
-        v100 = v79;
+        v93 = managedObjectContext;
+        v100 = completionCopy;
         v101 = v14;
-        v94 = self;
+        selfCopy2 = self;
         v95 = v54;
-        v55 = v79;
+        v55 = completionCopy;
         v96 = v83;
         v97 = v53;
-        v98 = v16;
-        v99 = v84;
+        v98 = assetCopy;
+        v99 = libraryID;
         v102 = v74;
         v56 = v53;
         v57 = v54;
-        v42 = v81;
-        [v81 convertImageAtSourceURLCollection:v70 toDestinationURLCollection:v57 options:v46 completionHandler:v92];
+        v42 = clientCopy;
+        [clientCopy convertImageAtSourceURLCollection:v70 toDestinationURLCollection:v57 options:orderedSet2 completionHandler:v92];
 
         v58 = v70;
-        v59 = v80;
+        v59 = conversionClientCopy;
         v44 = v72;
         goto LABEL_41;
       }
@@ -804,16 +804,16 @@ LABEL_29:
       v87 = 0;
     }
 
-    v43 = v71;
+    managedObjectContext = v71;
     goto LABEL_29;
   }
 
 LABEL_34:
-  v43 = [MEMORY[0x1E695DFD8] set];
-  v46 = [MEMORY[0x1E695DFB8] orderedSet];
-  v55 = v79;
-  (*(v79 + 2))(v79, 0, v26, v43, v46, 0);
-  v59 = v80;
+  managedObjectContext = [MEMORY[0x1E695DFD8] set];
+  orderedSet2 = [MEMORY[0x1E695DFB8] orderedSet];
+  v55 = completionCopy;
+  (*(completionCopy + 2))(completionCopy, 0, v26, managedObjectContext, orderedSet2, 0);
+  v59 = conversionClientCopy;
   v44 = v24;
   v64 = v76;
 LABEL_43:
@@ -1161,22 +1161,22 @@ void __209__PLPrimaryResourceDataStoreImageRecipe__generateAndStoreUsingMediaCon
   (*(*(a1 + 80) + 16))();
 }
 
-- (BOOL)_storeResourceWithType:(unsigned int)a3 version:(unsigned int)a4 asset:(id)a5 destURL:(id)a6 error:(id *)a7
+- (BOOL)_storeResourceWithType:(unsigned int)type version:(unsigned int)version asset:(id)asset destURL:(id)l error:(id *)error
 {
-  v9 = *&a4;
-  v10 = *&a3;
-  v12 = a5;
-  v13 = [a6 path];
-  v14 = [v12 width];
-  v15 = [v12 height];
-  LOWORD(v28) = [v12 kind];
-  v16 = [PLResourceInstaller generateValidatedExternalImageResourceOfType:v10 forFilePath:v13 requireFileToBePresent:1 version:v9 basedOnFullSizeWidth:v14 andHeight:v15 recipe:self assetKind:v28 error:0];
+  v9 = *&version;
+  v10 = *&type;
+  assetCopy = asset;
+  path = [l path];
+  width = [assetCopy width];
+  height = [assetCopy height];
+  LOWORD(v28) = [assetCopy kind];
+  v16 = [PLResourceInstaller generateValidatedExternalImageResourceOfType:v10 forFilePath:path requireFileToBePresent:1 version:v9 basedOnFullSizeWidth:width andHeight:height recipe:self assetKind:v28 error:0];
 
   if (!v16)
   {
     v19 = [(PLResourceRecipe *)self recipeErrorWithCode:47010 version:v9 underlyingError:0 debugDescription:0];
     LOBYTE(v20) = 0;
-    if (!a7)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -1184,7 +1184,7 @@ void __209__PLPrimaryResourceDataStoreImageRecipe__generateAndStoreUsingMediaCon
     goto LABEL_11;
   }
 
-  if ([v12 bundleScope] == 3)
+  if ([assetCopy bundleScope] == 3)
   {
     v17 = [(PLValidatedExternalResource *)PLSyndicationValidatedExternalResource resourceWithExternalResource:v16];
 
@@ -1197,18 +1197,18 @@ void __209__PLPrimaryResourceDataStoreImageRecipe__generateAndStoreUsingMediaCon
     v18 = 0;
   }
 
-  v21 = [v12 assetID];
-  v22 = [v21 libraryID];
-  v23 = PLDataStoreForClassIDAndLibraryID(v18, v22);
+  assetID = [assetCopy assetID];
+  libraryID = [assetID libraryID];
+  v23 = PLDataStoreForClassIDAndLibraryID(v18, libraryID);
 
   v29 = 0;
   v30 = 0;
-  v20 = [v23 storeExternalResource:v16 forAsset:v12 options:0 error:&v30 resultingResource:&v29];
+  v20 = [v23 storeExternalResource:v16 forAsset:assetCopy options:0 error:&v30 resultingResource:&v29];
   v24 = v30;
   v25 = v29;
   if (v20)
   {
-    [v12 recalculateImageRequestHints];
+    [assetCopy recalculateImageRequestHints];
     v19 = 0;
   }
 
@@ -1217,11 +1217,11 @@ void __209__PLPrimaryResourceDataStoreImageRecipe__generateAndStoreUsingMediaCon
     v19 = [(PLResourceRecipe *)self recipeErrorWithCode:47009 version:v9 underlyingError:v24 debugDescription:0];
   }
 
-  if (a7)
+  if (error)
   {
 LABEL_11:
     v26 = v19;
-    *a7 = v19;
+    *error = v19;
   }
 
 LABEL_12:
@@ -1229,48 +1229,48 @@ LABEL_12:
   return v20;
 }
 
-- (id)_mediaConversionServiceOptionsForAsset:(id)a3 url:(id)a4 conversionServiceOptions:(id)a5 adjustmentData:(id)a6 largeAdjustmentData:(id)a7 isHighPriority:(BOOL)a8 reason:(id)a9
+- (id)_mediaConversionServiceOptionsForAsset:(id)asset url:(id)url conversionServiceOptions:(id)options adjustmentData:(id)data largeAdjustmentData:(id)adjustmentData isHighPriority:(BOOL)priority reason:(id)reason
 {
-  v70 = a8;
+  priorityCopy = priority;
   v81 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v71 = a7;
+  assetCopy = asset;
+  urlCopy = url;
+  optionsCopy = options;
+  dataCopy = data;
+  adjustmentDataCopy = adjustmentData;
   v19 = MEMORY[0x1E695DF90];
-  v20 = a9;
-  v21 = [v19 dictionary];
-  v22 = v21;
-  if (v17)
+  reasonCopy = reason;
+  dictionary = [v19 dictionary];
+  v22 = dictionary;
+  if (optionsCopy)
   {
-    [v21 addEntriesFromDictionary:v17];
+    [dictionary addEntriesFromDictionary:optionsCopy];
   }
 
   [v22 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E69AE920]];
-  [v22 setObject:v20 forKeyedSubscript:*MEMORY[0x1E69AE980]];
+  [v22 setObject:reasonCopy forKeyedSubscript:*MEMORY[0x1E69AE980]];
 
-  v23 = [(PLPrimaryResourceDataStoreImageRecipe *)v15 uniformTypeIdentifier];
-  if (!v23)
+  uniformTypeIdentifier = [(PLPrimaryResourceDataStoreImageRecipe *)assetCopy uniformTypeIdentifier];
+  if (!uniformTypeIdentifier)
   {
     v24 = PLBackendGetLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v78 = v15;
+      selfCopy3 = assetCopy;
       v79 = 2112;
-      v80 = v16;
+      v80 = urlCopy;
       _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_ERROR, "Unable to determine type identifier for asset %{public}@, URL = %@", buf, 0x16u);
     }
   }
 
-  if (v16 && [(PLPrimaryResourceDataStoreImageRecipe *)v15 isRAW]&& (PLSyndicationAssetRequiresBlastDoorToAccessOriginals(v15) & 1) == 0)
+  if (urlCopy && [(PLPrimaryResourceDataStoreImageRecipe *)assetCopy isRAW]&& (PLSyndicationAssetRequiresBlastDoorToAccessOriginals(assetCopy) & 1) == 0)
   {
-    v68 = v18;
+    v68 = dataCopy;
     v25 = MEMORY[0x1E69C0708];
-    v26 = [(PLPrimaryResourceDataStoreImageRecipe *)v15 metadataFromMediaPropertiesOrOriginalResource];
+    metadataFromMediaPropertiesOrOriginalResource = [(PLPrimaryResourceDataStoreImageRecipe *)assetCopy metadataFromMediaPropertiesOrOriginalResource];
     v72 = 0;
-    v27 = [v25 hasEmbeddedJPEGSuitableForDerivativesInImageAtURL:v16 metadata:v26 error:&v72];
+    v27 = [v25 hasEmbeddedJPEGSuitableForDerivativesInImageAtURL:urlCopy metadata:metadataFromMediaPropertiesOrOriginalResource error:&v72];
     v28 = v72;
 
     if (v27)
@@ -1287,14 +1287,14 @@ LABEL_12:
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v78 = v16;
+        selfCopy3 = urlCopy;
         v79 = 2112;
         v80 = v28;
         _os_log_impl(&dword_19BF1F000, v29, OS_LOG_TYPE_ERROR, "Failed to query image properties of input URL %@. Error: %@", buf, 0x16u);
       }
     }
 
-    v18 = v68;
+    dataCopy = v68;
   }
 
   recipeID = self->_recipeID;
@@ -1310,7 +1310,7 @@ LABEL_12:
       if (recipeID == 65741)
       {
         [v22 setObject:&unk_1F0FBA8B8 forKeyedSubscript:*MEMORY[0x1E69AE930]];
-        if (v70)
+        if (priorityCopy)
         {
           v51 = 4;
         }
@@ -1323,10 +1323,10 @@ LABEL_12:
         v52 = [MEMORY[0x1E696AD98] numberWithInteger:v51];
         [v22 setObject:v52 forKeyedSubscript:*MEMORY[0x1E69AE950]];
 
-        v53 = [MEMORY[0x1E69C06E0] standardPolicy];
-        [v22 setObject:v53 forKeyedSubscript:*MEMORY[0x1E69AE968]];
+        standardPolicy = [MEMORY[0x1E69C06E0] standardPolicy];
+        [v22 setObject:standardPolicy forKeyedSubscript:*MEMORY[0x1E69AE968]];
 
-        v54 = [(PLPrimaryResourceDataStoreImageRecipe *)self maxPixelCountForAssetWidth:[(PLPrimaryResourceDataStoreImageRecipe *)v15 width] height:[(PLPrimaryResourceDataStoreImageRecipe *)v15 height]];
+        v54 = [(PLPrimaryResourceDataStoreImageRecipe *)self maxPixelCountForAssetWidth:[(PLPrimaryResourceDataStoreImageRecipe *)assetCopy width] height:[(PLPrimaryResourceDataStoreImageRecipe *)assetCopy height]];
         [v22 setObject:v54 forKeyedSubscript:*MEMORY[0x1E69AE960]];
 
         goto LABEL_30;
@@ -1338,7 +1338,7 @@ LABEL_12:
         v46 = MEMORY[0x1E695DF30];
         v47 = *MEMORY[0x1E695D930];
         NSStringFromSelector(a2);
-        v40 = v39 = v18;
+        v40 = v39 = dataCopy;
         [v46 raise:v47 format:{@"%@ not supported for generation on this platform for recipe: %@", v40, self}];
         goto LABEL_29;
       }
@@ -1347,7 +1347,7 @@ LABEL_12:
     if (recipeID == 65737)
     {
       [v22 setObject:&unk_1F0FBA8B8 forKeyedSubscript:*MEMORY[0x1E69AE930]];
-      if (v70)
+      if (priorityCopy)
       {
         v48 = 4;
       }
@@ -1360,8 +1360,8 @@ LABEL_12:
       v49 = [MEMORY[0x1E696AD98] numberWithInteger:v48];
       [v22 setObject:v49 forKeyedSubscript:*MEMORY[0x1E69AE950]];
 
-      v50 = [MEMORY[0x1E69C06D0] standardPolicy];
-      [v22 setObject:v50 forKeyedSubscript:*MEMORY[0x1E69AE968]];
+      standardPolicy2 = [MEMORY[0x1E69C06D0] standardPolicy];
+      [v22 setObject:standardPolicy2 forKeyedSubscript:*MEMORY[0x1E69AE968]];
 
       [v22 setObject:&unk_1F0FC03D8 forKeyedSubscript:*MEMORY[0x1E69AE990]];
     }
@@ -1378,9 +1378,9 @@ LABEL_12:
   {
     if (recipeID == 65938)
     {
-      v31 = [v18 adjustmentDictionary];
-      v32 = v31;
-      if (!v31)
+      adjustmentDictionary = [dataCopy adjustmentDictionary];
+      v32 = adjustmentDictionary;
+      if (!adjustmentDictionary)
       {
         v35 = 0;
         v67 = 0;
@@ -1388,7 +1388,7 @@ LABEL_12:
         goto LABEL_51;
       }
 
-      v33 = [v31 objectForKeyedSubscript:*MEMORY[0x1E69BF370]];
+      v33 = [adjustmentDictionary objectForKeyedSubscript:*MEMORY[0x1E69BF370]];
       v67 = [v32 objectForKeyedSubscript:*MEMORY[0x1E69BF388]];
       v66 = [v32 objectForKeyedSubscript:*MEMORY[0x1E69BF380]];
       if (([v66 isEqual:@"com.apple.photos"] & 1) == 0)
@@ -1397,7 +1397,7 @@ LABEL_12:
         if (os_log_type_enabled(v58, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v78 = self;
+          selfCopy3 = self;
           _os_log_impl(&dword_19BF1F000, v58, OS_LOG_TYPE_ERROR, "This adjustment data cannot be processed by Photos. Recipe: %@", buf, 0xCu);
         }
 
@@ -1420,7 +1420,7 @@ LABEL_25:
         [v22 setObject:v36 forKeyedSubscript:*MEMORY[0x1E69AE918]];
 
 LABEL_51:
-        if (v70)
+        if (priorityCopy)
         {
           v55 = 4;
         }
@@ -1433,23 +1433,23 @@ LABEL_51:
         v56 = [MEMORY[0x1E696AD98] numberWithInteger:v55];
         [v22 setObject:v56 forKeyedSubscript:*MEMORY[0x1E69AE950]];
 
-        if (![(PLPrimaryResourceDataStoreImageRecipe *)v15 kind])
+        if (![(PLPrimaryResourceDataStoreImageRecipe *)assetCopy kind])
         {
           [v22 setObject:&unk_1F0FBA8D0 forKeyedSubscript:*MEMORY[0x1E69AE990]];
-          v57 = [MEMORY[0x1E69C06C0] standardPolicy];
-          [v22 setObject:v57 forKeyedSubscript:*MEMORY[0x1E69AE968]];
+          standardPolicy3 = [MEMORY[0x1E69C06C0] standardPolicy];
+          [v22 setObject:standardPolicy3 forKeyedSubscript:*MEMORY[0x1E69AE968]];
         }
 
         goto LABEL_30;
       }
 
-      if (v71)
+      if (adjustmentDataCopy)
       {
-        v69 = v18;
+        v69 = dataCopy;
         v59 = MEMORY[0x1E695DEF0];
-        v60 = [v71 fileURL];
-        v61 = [v60 path];
-        v62 = [v59 dataWithContentsOfFile:v61];
+        fileURL = [adjustmentDataCopy fileURL];
+        path = [fileURL path];
+        v62 = [v59 dataWithContentsOfFile:path];
 
         if (v62)
         {
@@ -1463,16 +1463,16 @@ LABEL_51:
           v73[2] = *MEMORY[0x1E69AE8D8];
           v74[2] = v67;
           v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v74 forKeys:v73 count:3];
-          v18 = v69;
+          dataCopy = v69;
           goto LABEL_25;
         }
 
         v33 = PLBackendGetLog();
-        v18 = v69;
+        dataCopy = v69;
         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v78 = self;
+          selfCopy3 = self;
           v64 = "AdjustmentDataBlob could not be retrieved for recipe: %@";
           goto LABEL_68;
         }
@@ -1484,7 +1484,7 @@ LABEL_51:
         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v78 = self;
+          selfCopy3 = self;
           v64 = "Cannot retrieve any adjustment data for recipe: %@";
 LABEL_68:
           _os_log_impl(&dword_19BF1F000, v33, OS_LOG_TYPE_ERROR, v64, buf, 0xCu);
@@ -1508,18 +1508,18 @@ LABEL_28:
   v37 = MEMORY[0x1E695DF30];
   v38 = *MEMORY[0x1E695D930];
   NSStringFromSelector(a2);
-  v40 = v39 = v18;
+  v40 = v39 = dataCopy;
   [v37 raise:v38 format:{@"%@ not yet implemented for recipe: %@", v40, self}];
 LABEL_29:
 
-  v18 = v39;
+  dataCopy = v39;
 LABEL_30:
   v41 = [v22 objectForKeyedSubscript:*MEMORY[0x1E69AE988]];
-  v42 = [v41 BOOLValue];
+  bOOLValue = [v41 BOOLValue];
 
-  if (v42)
+  if (bOOLValue)
   {
-    v43 = [MEMORY[0x1E696AD98] numberWithBool:{-[PLPrimaryResourceDataStoreImageRecipe isPhoto](v15, "isPhoto")}];
+    v43 = [MEMORY[0x1E696AD98] numberWithBool:{-[PLPrimaryResourceDataStoreImageRecipe isPhoto](assetCopy, "isPhoto")}];
     [v22 setObject:v43 forKeyedSubscript:*MEMORY[0x1E69AE928]];
   }
 
@@ -1529,22 +1529,22 @@ LABEL_33:
   return v44;
 }
 
-- (id)_resourceGenerationAffectsRecipesForLibraryID:(id)a3
+- (id)_resourceGenerationAffectsRecipesForLibraryID:(id)d
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DFA0] orderedSet];
+  dCopy = d;
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
   recipeID = self->_recipeID;
   v7 = recipeID - 65937 > 0xE || ((1 << (recipeID + 111)) & 0x4AD3) == 0;
   if (!v7 || ((v8 = recipeID - 65737, v9 = v8 > 8, v10 = (1 << v8) & 0x155, !v9) ? (v11 = v10 == 0) : (v11 = 1), !v11))
   {
-    v12 = [PLResourceGenerator fileAndTableBackedThumbnailManagerRecipesForLibraryID:v4];
-    [v5 unionOrderedSet:v12];
+    v12 = [PLResourceGenerator fileAndTableBackedThumbnailManagerRecipesForLibraryID:dCopy];
+    [orderedSet unionOrderedSet:v12];
   }
 
-  return v5;
+  return orderedSet;
 }
 
-+ (CGSize)scaleOriginalSize:(CGSize)result toLongSideTarget:(double)a4
++ (CGSize)scaleOriginalSize:(CGSize)result toLongSideTarget:(double)target
 {
   if (result.width >= result.height)
   {
@@ -1556,9 +1556,9 @@ LABEL_33:
     width = result.height;
   }
 
-  if (width > a4)
+  if (width > target)
   {
-    v5 = a4 / width;
+    v5 = target / width;
     result.width = result.width * v5;
     result.height = result.height * v5;
   }
@@ -1566,7 +1566,7 @@ LABEL_33:
   return result;
 }
 
-+ (CGSize)scaleOriginalSize:(CGSize)result toShortSideTarget:(double)a4 maxLongSideLength:(double)a5
++ (CGSize)scaleOriginalSize:(CGSize)result toShortSideTarget:(double)target maxLongSideLength:(double)length
 {
   if (result.width >= result.height)
   {
@@ -1578,14 +1578,14 @@ LABEL_33:
     height = result.width;
   }
 
-  if (height > a4)
+  if (height > target)
   {
-    v6 = a4 / height;
+    v6 = target / height;
     result.width = round(result.width * v6);
     result.height = round(result.height * v6);
   }
 
-  if (a5 != 0.0)
+  if (length != 0.0)
   {
     if (result.width >= result.height)
     {
@@ -1597,9 +1597,9 @@ LABEL_33:
       width = result.height;
     }
 
-    if (width > a5)
+    if (width > length)
     {
-      v8 = a5 / width;
+      v8 = length / width;
       result.width = round(result.width * v8);
       result.height = round(result.height * v8);
     }

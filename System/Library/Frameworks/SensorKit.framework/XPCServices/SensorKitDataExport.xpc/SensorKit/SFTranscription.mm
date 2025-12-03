@@ -11,8 +11,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(SFTranscription *)self segments];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v10 objects:v16 count:16];
+  segments = [(SFTranscription *)self segments];
+  v5 = [(NSArray *)segments countByEnumeratingWithState:&v10 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -24,7 +24,7 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(segments);
         }
 
         [v3 addObject:{objc_msgSend(*(*(&v10 + 1) + 8 * v8), "sr_dictionaryRepresentation")}];
@@ -32,7 +32,7 @@
       }
 
       while (v6 != v8);
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v10 objects:v16 count:16];
+      v6 = [(NSArray *)segments countByEnumeratingWithState:&v10 objects:v16 count:16];
     }
 
     while (v6);

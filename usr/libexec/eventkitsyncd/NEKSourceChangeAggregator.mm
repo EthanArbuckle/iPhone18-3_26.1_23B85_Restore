@@ -1,14 +1,14 @@
 @interface NEKSourceChangeAggregator
-- (NEKSourceChangeAggregator)initWithNEKEventStore:(id)a3 eventChanges:(id)a4 reminderChanges:(id)a5;
+- (NEKSourceChangeAggregator)initWithNEKEventStore:(id)store eventChanges:(id)changes reminderChanges:(id)reminderChanges;
 @end
 
 @implementation NEKSourceChangeAggregator
 
-- (NEKSourceChangeAggregator)initWithNEKEventStore:(id)a3 eventChanges:(id)a4 reminderChanges:(id)a5
+- (NEKSourceChangeAggregator)initWithNEKEventStore:(id)store eventChanges:(id)changes reminderChanges:(id)reminderChanges
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  storeCopy = store;
+  changesCopy = changes;
+  reminderChangesCopy = reminderChanges;
   v62.receiver = self;
   v62.super_class = NEKSourceChangeAggregator;
   v11 = [(NEKSourceChangeAggregator *)&v62 init];
@@ -18,7 +18,7 @@
     ekEventStore = v11->_ekEventStore;
     v11->_ekEventStore = v12;
 
-    v49 = v10;
+    v49 = reminderChangesCopy;
     v14 = +[NSMutableSet set];
     v15 = +[NSMutableSet set];
     v16 = +[NSMutableSet set];
@@ -26,10 +26,10 @@
     v59[1] = 3221225472;
     v59[2] = sub_10002F2C4;
     v59[3] = &unk_1000B54D0;
-    v60 = v8;
+    v60 = storeCopy;
     v17 = v11;
     v61 = v17;
-    v48 = v8;
+    v48 = storeCopy;
     v18 = objc_retainBlock(v59);
     v57[0] = _NSConcreteStackBlock;
     v57[1] = 3221225472;
@@ -62,31 +62,31 @@
     v45 = v16;
     v44 = v22;
     v24 = objc_retainBlock(v50);
-    v25 = [v9 inserts];
+    inserts = [changesCopy inserts];
     v26 = (v18[2])(v18, v21);
-    [v25 enumerateObjectsUsingBlock:v26];
+    [inserts enumerateObjectsUsingBlock:v26];
 
-    v27 = [v9 updates];
+    updates = [changesCopy updates];
     v28 = (v18[2])(v18, v23);
-    [v27 enumerateObjectsUsingBlock:v28];
+    [updates enumerateObjectsUsingBlock:v28];
 
-    v29 = [v9 deletes];
+    deletes = [changesCopy deletes];
     v30 = (v18[2])(v18, v24);
-    [v29 enumerateObjectsUsingBlock:v30];
+    [deletes enumerateObjectsUsingBlock:v30];
 
-    v31 = [v49 inserts];
+    inserts2 = [v49 inserts];
     v32 = (v20[2])(v20, v21);
-    [v31 enumerateObjectsUsingBlock:v32];
+    [inserts2 enumerateObjectsUsingBlock:v32];
 
-    v33 = [v49 updates];
+    updates2 = [v49 updates];
     v34 = (v20[2])(v20, v23);
-    [v33 enumerateObjectsUsingBlock:v34];
+    [updates2 enumerateObjectsUsingBlock:v34];
 
-    v35 = [v49 deletes];
+    deletes2 = [v49 deletes];
     v36 = (v20[2])(v20, v24);
-    [v35 enumerateObjectsUsingBlock:v36];
+    [deletes2 enumerateObjectsUsingBlock:v36];
 
-    v10 = v49;
+    reminderChangesCopy = v49;
     v37 = [v46 copy];
     insertedSources = v19->_insertedSources;
     v19->_insertedSources = v37;
@@ -99,7 +99,7 @@
     deletedSourcesIDs = v19->_deletedSourcesIDs;
     v19->_deletedSourcesIDs = v41;
 
-    v8 = v48;
+    storeCopy = v48;
     v11 = v47;
   }
 

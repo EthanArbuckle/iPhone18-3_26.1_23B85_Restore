@@ -1,17 +1,17 @@
 @interface _UISceneOrientationSettingsExtension
-+ (void)configureSetting:(id)a3;
++ (void)configureSetting:(id)setting;
 @end
 
 @implementation _UISceneOrientationSettingsExtension
 
-+ (void)configureSetting:(id)a3
++ (void)configureSetting:(id)setting
 {
-  v3 = a3;
-  if ([v3 matchesProperty:sel_interfaceOrientationLockState])
+  settingCopy = setting;
+  if ([settingCopy matchesProperty:sel_interfaceOrientationLockState])
   {
-    [v3 setPropagating:0];
-    [v3 setDefaultValue:&unk_1EFE2FE90];
-    [v3 setDescriptionProvider:&__block_literal_global_86];
+    [settingCopy setPropagating:0];
+    [settingCopy setDefaultValue:&unk_1EFE2FE90];
+    [settingCopy setDescriptionProvider:&__block_literal_global_86];
   }
 }
 

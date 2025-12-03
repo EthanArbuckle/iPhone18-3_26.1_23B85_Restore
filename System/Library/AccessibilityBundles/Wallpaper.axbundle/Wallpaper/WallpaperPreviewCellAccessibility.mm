@@ -1,17 +1,17 @@
 @interface WallpaperPreviewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation WallpaperPreviewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WallpaperPreviewCell" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"WallpaperPreviewCell" hasInstanceVariable:@"__homeScreenThumbnailButton" withType:"UIButton"];
-  [v3 validateClass:@"WallpaperPreviewCell" hasInstanceVariable:@"__lockScreenThumbnailButton" withType:"UIButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WallpaperPreviewCell" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"WallpaperPreviewCell" hasInstanceVariable:@"__homeScreenThumbnailButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"WallpaperPreviewCell" hasInstanceVariable:@"__lockScreenThumbnailButton" withType:"UIButton"];
 }
 
 - (void)layoutSubviews

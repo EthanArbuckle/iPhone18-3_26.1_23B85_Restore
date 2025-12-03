@@ -1,35 +1,35 @@
 @interface NTKCompanionComplicationCollectionManager
-+ (id)sharedComplicationCollectionWithIdentifier:(id)a3 forDevice:(id)a4;
++ (id)sharedComplicationCollectionWithIdentifier:(id)identifier forDevice:(id)device;
 @end
 
 @implementation NTKCompanionComplicationCollectionManager
 
-+ (id)sharedComplicationCollectionWithIdentifier:(id)a3 forDevice:(id)a4
++ (id)sharedComplicationCollectionWithIdentifier:(id)identifier forDevice:(id)device
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  deviceCopy = device;
   if (sharedComplicationCollectionWithIdentifier_forDevice__onceToken != -1)
   {
     +[NTKCompanionComplicationCollectionManager sharedComplicationCollectionWithIdentifier:forDevice:];
   }
 
-  v7 = [v6 pairingID];
-  if (v7)
+  pairingID = [deviceCopy pairingID];
+  if (pairingID)
   {
     os_unfair_lock_lock(&sharedComplicationCollectionWithIdentifier_forDevice__lock);
-    v8 = [MEMORY[0x277CBBAE8] currentDevice];
-    v9 = [v8 pairingID];
-    v10 = [v7 isEqual:v9];
+    currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+    pairingID2 = [currentDevice pairingID];
+    v10 = [pairingID isEqual:pairingID2];
 
-    v11 = [sharedComplicationCollectionWithIdentifier_forDevice__collectionsByDeviceUUID objectForKey:v7];
-    if (!v11)
+    strongToWeakObjectsMapTable = [sharedComplicationCollectionWithIdentifier_forDevice__collectionsByDeviceUUID objectForKey:pairingID];
+    if (!strongToWeakObjectsMapTable)
     {
-      v11 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
-      [sharedComplicationCollectionWithIdentifier_forDevice__collectionsByDeviceUUID setObject:v11 forKey:v7];
+      strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+      [sharedComplicationCollectionWithIdentifier_forDevice__collectionsByDeviceUUID setObject:strongToWeakObjectsMapTable forKey:pairingID];
     }
 
-    if (v7 == sharedComplicationCollectionWithIdentifier_forDevice__activeDeviceUUID)
+    if (pairingID == sharedComplicationCollectionWithIdentifier_forDevice__activeDeviceUUID)
     {
       v12 = 0;
     }
@@ -42,15 +42,15 @@
     if (v12 == 1)
     {
       v22 = v10;
-      v23 = v6;
-      objc_storeStrong(&sharedComplicationCollectionWithIdentifier_forDevice__activeDeviceUUID, v7);
+      v23 = deviceCopy;
+      objc_storeStrong(&sharedComplicationCollectionWithIdentifier_forDevice__activeDeviceUUID, pairingID);
       [sharedComplicationCollectionWithIdentifier_forDevice__activeDeviceCollections removeAllObjects];
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v13 = [v11 keyEnumerator];
-      v14 = [v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      keyEnumerator = [strongToWeakObjectsMapTable keyEnumerator];
+      v14 = [keyEnumerator countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v14)
       {
         v15 = v14;
@@ -61,32 +61,32 @@
           {
             if (*v25 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(keyEnumerator);
             }
 
             v18 = *(*(&v24 + 1) + 8 * i);
-            v19 = [v11 objectForKey:v18];
+            v19 = [strongToWeakObjectsMapTable objectForKey:v18];
             [sharedComplicationCollectionWithIdentifier_forDevice__activeDeviceCollections setObject:v19 forKey:v18];
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
+          v15 = [keyEnumerator countByEnumeratingWithState:&v24 objects:v28 count:16];
         }
 
         while (v15);
       }
 
-      v6 = v23;
+      deviceCopy = v23;
       v10 = v22;
     }
 
-    v20 = [v11 objectForKey:v5];
+    v20 = [strongToWeakObjectsMapTable objectForKey:identifierCopy];
     if (!v20)
     {
-      v20 = [[NTKComplicationCollection alloc] initWithCollectionIdentifier:v5 deviceUUID:v7];
-      [v11 setObject:v20 forKey:v5];
+      v20 = [[NTKComplicationCollection alloc] initWithCollectionIdentifier:identifierCopy deviceUUID:pairingID];
+      [strongToWeakObjectsMapTable setObject:v20 forKey:identifierCopy];
       if (v10)
       {
-        [sharedComplicationCollectionWithIdentifier_forDevice__activeDeviceCollections setObject:v20 forKey:v5];
+        [sharedComplicationCollectionWithIdentifier_forDevice__activeDeviceCollections setObject:v20 forKey:identifierCopy];
       }
     }
 

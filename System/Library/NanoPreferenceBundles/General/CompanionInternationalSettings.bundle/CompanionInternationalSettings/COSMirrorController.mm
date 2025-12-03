@@ -1,5 +1,5 @@
 @interface COSMirrorController
-+ (id)mirrorControllerWithInternationalController:(id)a3;
++ (id)mirrorControllerWithInternationalController:(id)controller;
 - (BOOL)mirrorSettings;
 - (BOOL)shouldShowMirroringAsEnabled;
 - (COSInternationalController)internationalController;
@@ -8,15 +8,15 @@
 
 @implementation COSMirrorController
 
-+ (id)mirrorControllerWithInternationalController:(id)a3
++ (id)mirrorControllerWithInternationalController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v4 = objc_opt_new();
   v5 = v4;
   if (v4)
   {
-    [v4 setInternationalController:v3];
-    v6 = [v5 specifiers];
+    [v4 setInternationalController:controllerCopy];
+    specifiers = [v5 specifiers];
   }
 
   return v5;
@@ -29,22 +29,22 @@
     return 0;
   }
 
-  v3 = [(COSMirrorController *)self internationalController];
-  v4 = [v3 languageSelector];
-  v5 = [v4 appleLanguages];
+  internationalController = [(COSMirrorController *)self internationalController];
+  languageSelector = [internationalController languageSelector];
+  appleLanguages = [languageSelector appleLanguages];
 
   v6 = +[NSLocale preferredLanguages];
-  LOBYTE(v4) = [v5 isEqualToArray:v6];
+  LOBYTE(languageSelector) = [appleLanguages isEqualToArray:v6];
 
-  return (v4 & 1) != 0;
+  return (languageSelector & 1) != 0;
 }
 
 - (id)applicationBundleIdentifier
 {
   v2 = [NSBundle bundleForClass:objc_opt_class()];
-  v3 = [v2 bundleIdentifier];
+  bundleIdentifier = [v2 bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (BOOL)mirrorSettings

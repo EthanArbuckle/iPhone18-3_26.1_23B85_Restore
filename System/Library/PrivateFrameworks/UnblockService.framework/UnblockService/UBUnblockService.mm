@@ -2,10 +2,10 @@
 + (id)sharedInstance;
 - (UBUnblockService)init;
 - (id)_init;
-- (id)handleReactiveRecoveryRequest:(id)a3;
-- (int)setupAndActivate:(unint64_t)a3;
+- (id)handleReactiveRecoveryRequest:(id)request;
+- (int)setupAndActivate:(unint64_t)activate;
 - (void)dealloc;
-- (void)handleIncomingMessage:(id)a3;
+- (void)handleIncomingMessage:(id)message;
 - (void)init;
 - (void)openListenerConnection;
 @end
@@ -104,12 +104,12 @@ LABEL_16:
   xpc_connection_resume(self->_listenerConnection);
 }
 
-- (id)handleReactiveRecoveryRequest:(id)a3
+- (id)handleReactiveRecoveryRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = objc_autoreleasePoolPush();
   length = 0;
-  data = xpc_dictionary_get_data(v3, "UBStuckServicesDataKey", &length);
+  data = xpc_dictionary_get_data(requestCopy, "UBStuckServicesDataKey", &length);
   if (data)
   {
     v6 = [MEMORY[0x277CBEA90] dataWithBytes:data length:length];
@@ -133,7 +133,7 @@ LABEL_16:
     else
     {
       v40 = 0;
-      v15 = xpc_dictionary_get_data(v3, "UBStackshotDataKey", &v40);
+      v15 = xpc_dictionary_get_data(requestCopy, "UBStackshotDataKey", &v40);
       if (!v15)
       {
         v16 = *__error();
@@ -147,7 +147,7 @@ LABEL_16:
         *__error() = v16;
       }
 
-      string = xpc_dictionary_get_string(v3, "UBClientName");
+      string = xpc_dictionary_get_string(requestCopy, "UBClientName");
       v19 = objc_alloc(MEMORY[0x277CCACA8]);
       v20 = v19;
       if (string)
@@ -157,7 +157,7 @@ LABEL_16:
 
       else
       {
-        v22 = xpc_dictionary_get_remote_connection(v3);
+        v22 = xpc_dictionary_get_remote_connection(requestCopy);
         v21 = [v20 initWithFormat:@"pid [%d]", xpc_connection_get_pid(v22)];
       }
 
@@ -194,7 +194,7 @@ LABEL_16:
 
         else
         {
-          reply = xpc_dictionary_create_reply(v3);
+          reply = xpc_dictionary_create_reply(requestCopy);
           v12 = reply;
           if (reply)
           {
@@ -242,9 +242,9 @@ LABEL_16:
   return v12;
 }
 
-- (void)handleIncomingMessage:(id)a3
+- (void)handleIncomingMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_autoreleasePoolPush();
   v6 = *__error();
   v7 = _ublogt();
@@ -254,7 +254,7 @@ LABEL_16:
   }
 
   *__error() = v6;
-  if (xpc_dictionary_get_uint64(v4, "UBRequestKey") == 1)
+  if (xpc_dictionary_get_uint64(messageCopy, "UBRequestKey") == 1)
   {
     if (self->_options)
     {
@@ -270,18 +270,18 @@ LABEL_16:
 
     else
     {
-      reply = [(UBUnblockService *)self handleReactiveRecoveryRequest:v4];
+      reply = [(UBUnblockService *)self handleReactiveRecoveryRequest:messageCopy];
       if (reply)
       {
 LABEL_14:
-        v13 = xpc_dictionary_get_remote_connection(v4);
+        v13 = xpc_dictionary_get_remote_connection(messageCopy);
         xpc_connection_send_message(v13, reply);
 
         goto LABEL_15;
       }
     }
 
-    reply = xpc_dictionary_create_reply(v4);
+    reply = xpc_dictionary_create_reply(messageCopy);
     xpc_dictionary_set_int64(reply, "UBResultKey", -1);
     goto LABEL_14;
   }
@@ -372,10 +372,10 @@ LABEL_15:
   [(UBUnblockService *)&v7 dealloc];
 }
 
-- (int)setupAndActivate:(unint64_t)a3
+- (int)setupAndActivate:(unint64_t)activate
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_options = a3;
+  self->_options = activate;
   [(UBUnblockService *)self openListenerConnection];
   listenerConnection = self->_listenerConnection;
   os_unfair_lock_unlock(&self->_lock);

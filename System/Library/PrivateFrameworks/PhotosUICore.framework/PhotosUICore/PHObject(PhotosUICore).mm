@@ -8,17 +8,17 @@
 
 - (id)px_opaqueIdentifier
 {
-  v2 = [a1 objectID];
-  v3 = v2;
-  if (v2)
+  objectID = [self objectID];
+  v3 = objectID;
+  if (objectID)
   {
-    v4 = v2;
+    v4 = objectID;
   }
 
   else
   {
-    v5 = [a1 userInterfaceIdentifier];
-    v4 = [a1 _px_uniquedUserInterfaceIdentifier:v5];
+    userInterfaceIdentifier = [self userInterfaceIdentifier];
+    v4 = [self _px_uniquedUserInterfaceIdentifier:userInterfaceIdentifier];
   }
 
   return v4;

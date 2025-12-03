@@ -1,8 +1,8 @@
 @interface OADFontScheme
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OADFontScheme)init;
-- (id)fontForId:(int)a3;
+- (id)fontForId:(int)id;
 - (unint64_t)hash;
 - (void)validateFontScheme;
 @end
@@ -28,13 +28,13 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
+    v7 = equalCopy;
     if ([(OADFontCollection *)self->_majorFont isEqualToFontCollection:v7[2]])
     {
       v6 = [(OADFontCollection *)self->_minorFont isEqualToFontCollection:v7[3]];
@@ -57,45 +57,45 @@
 - (unint64_t)hash
 {
   v3 = [(NSString *)self->_name hash];
-  v4 = [(OADBaseFontCollection *)self->_majorFont latinFont];
-  v5 = [v4 hash];
-  v6 = [(OADBaseFontCollection *)self->_minorFont latinFont];
-  v7 = [v6 hash];
+  latinFont = [(OADBaseFontCollection *)self->_majorFont latinFont];
+  v5 = [latinFont hash];
+  latinFont2 = [(OADBaseFontCollection *)self->_minorFont latinFont];
+  v7 = [latinFont2 hash];
 
   return (v5 << 8) + (v3 << 16) + v7;
 }
 
 - (BOOL)isEmpty
 {
-  v3 = [(OADFontCollection *)self->_majorFont isEmpty];
-  if (v3)
+  isEmpty = [(OADFontCollection *)self->_majorFont isEmpty];
+  if (isEmpty)
   {
     minorFont = self->_minorFont;
 
-    LOBYTE(v3) = [(OADFontCollection *)minorFont isEmpty];
+    LOBYTE(isEmpty) = [(OADFontCollection *)minorFont isEmpty];
   }
 
-  return v3;
+  return isEmpty;
 }
 
-- (id)fontForId:(int)a3
+- (id)fontForId:(int)id
 {
-  if (a3 == 1)
+  if (id == 1)
   {
-    v3 = [(OADFontScheme *)self minorFont];
+    minorFont = [(OADFontScheme *)self minorFont];
   }
 
-  else if (a3)
+  else if (id)
   {
-    v3 = 0;
+    minorFont = 0;
   }
 
   else
   {
-    v3 = [(OADFontScheme *)self majorFont];
+    minorFont = [(OADFontScheme *)self majorFont];
   }
 
-  return v3;
+  return minorFont;
 }
 
 - (void)validateFontScheme
@@ -105,16 +105,16 @@
     self->_name = @"Office";
   }
 
-  v3 = [(OADBaseFontCollection *)self->_majorFont latinFont];
-  v4 = [v3 length];
+  latinFont = [(OADBaseFontCollection *)self->_majorFont latinFont];
+  v4 = [latinFont length];
 
   if (!v4)
   {
     [(OADBaseFontCollection *)self->_majorFont setLatinFont:@"Calibri"];
   }
 
-  v5 = [(OADBaseFontCollection *)self->_minorFont latinFont];
-  v6 = [v5 length];
+  latinFont2 = [(OADBaseFontCollection *)self->_minorFont latinFont];
+  v6 = [latinFont2 length];
 
   if (!v6)
   {

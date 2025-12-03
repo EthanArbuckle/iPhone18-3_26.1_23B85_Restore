@@ -1,75 +1,75 @@
 @interface TabViewCoordinator_Phone
-- (BOOL)tabBarController:(id)a3 shouldSelectViewController:(id)a4;
+- (BOOL)tabBarController:(id)controller shouldSelectViewController:(id)viewController;
 - (_TtC7SwiftUI24TabViewCoordinator_Phone)init;
-- (id)tabBarController:(id)a3 sidebar:(id)a4 contextMenuConfigurationForTab:(id)a5;
-- (unint64_t)tabBarController:(id)a3 tab:(id)a4 operationForAcceptingItemsFromDropSession:(id)a5;
-- (void)_tabElementGroup:(id)a3 didCustomizeDisplayOrder:(id)a4;
-- (void)_tabElementGroup:(id)a3 didSelectElement:(id)a4;
-- (void)_uip_tabBarController:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationTab:(id)a5;
-- (void)tabBarController:(id)a3 didSelectViewController:(id)a4;
-- (void)tabBarController:(id)a3 sidebarVisibilityWillChange:(id)a4 animator:(id)a5;
-- (void)tabBarController:(id)a3 tab:(id)a4 acceptItemsFromDropSession:(id)a5;
-- (void)tabBarController:(id)a3 visibilityDidChangeForTabs:(id)a4;
-- (void)tabBarControllerDidEndEditing:(id)a3;
+- (id)tabBarController:(id)controller sidebar:(id)sidebar contextMenuConfigurationForTab:(id)tab;
+- (unint64_t)tabBarController:(id)controller tab:(id)tab operationForAcceptingItemsFromDropSession:(id)session;
+- (void)_tabElementGroup:(id)group didCustomizeDisplayOrder:(id)order;
+- (void)_tabElementGroup:(id)group didSelectElement:(id)element;
+- (void)_uip_tabBarController:(id)controller dropSessionDidUpdate:(id)update withDestinationTab:(id)tab;
+- (void)tabBarController:(id)controller didSelectViewController:(id)viewController;
+- (void)tabBarController:(id)controller sidebarVisibilityWillChange:(id)change animator:(id)animator;
+- (void)tabBarController:(id)controller tab:(id)tab acceptItemsFromDropSession:(id)session;
+- (void)tabBarController:(id)controller visibilityDidChangeForTabs:(id)tabs;
+- (void)tabBarControllerDidEndEditing:(id)editing;
 @end
 
 @implementation TabViewCoordinator_Phone
 
-- (BOOL)tabBarController:(id)a3 shouldSelectViewController:(id)a4
+- (BOOL)tabBarController:(id)controller shouldSelectViewController:(id)viewController
 {
-  v5 = self;
-  v6 = [a3 selectedViewController];
+  selfCopy = self;
+  selectedViewController = [controller selectedViewController];
   swift_unknownObjectWeakAssign();
 
   return 1;
 }
 
-- (void)tabBarController:(id)a3 didSelectViewController:(id)a4
+- (void)tabBarController:(id)controller didSelectViewController:(id)viewController
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  TabViewCoordinator_Phone.tabBarController(_:didSelect:)(v6, v7);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  TabViewCoordinator_Phone.tabBarController(_:didSelect:)(controllerCopy, viewControllerCopy);
 }
 
-- (unint64_t)tabBarController:(id)a3 tab:(id)a4 operationForAcceptingItemsFromDropSession:(id)a5
+- (unint64_t)tabBarController:(id)controller tab:(id)tab operationForAcceptingItemsFromDropSession:(id)session
 {
   v7 = *(&self->super.super.isa + OBJC_IVAR____TtC7SwiftUI24TabViewCoordinator_Phone_tabCache);
 
-  v8 = a4;
+  tabCopy = tab;
   swift_unknownObjectRetain();
-  v9 = self;
-  v10 = specialized TabViewCoordinator_Phone.operationToAcceptDropItems(from:onto:tabCache:)(v8, v7);
+  selfCopy = self;
+  v10 = specialized TabViewCoordinator_Phone.operationToAcceptDropItems(from:onto:tabCache:)(tabCopy, v7);
 
   swift_unknownObjectRelease();
 
   return v10;
 }
 
-- (void)tabBarController:(id)a3 tab:(id)a4 acceptItemsFromDropSession:(id)a5
+- (void)tabBarController:(id)controller tab:(id)tab acceptItemsFromDropSession:(id)session
 {
   v8 = *(&self->super.super.isa + OBJC_IVAR____TtC7SwiftUI24TabViewCoordinator_Phone_tabCache);
 
-  v9 = a4;
+  tabCopy = tab;
   swift_unknownObjectRetain();
-  v10 = self;
-  TabViewCoordinator_Phone.acceptDropItems(from:onto:tabCache:)(a5, v9, v8);
+  selfCopy = self;
+  TabViewCoordinator_Phone.acceptDropItems(from:onto:tabCache:)(session, tabCopy, v8);
 
   swift_unknownObjectRelease();
 }
 
-- (void)_uip_tabBarController:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationTab:(id)a5
+- (void)_uip_tabBarController:(id)controller dropSessionDidUpdate:(id)update withDestinationTab:(id)tab
 {
-  v7 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v8 = a5;
-  v9 = self;
-  specialized TabViewCoordinator_Phone._uip_tabBarController(_:dropSessionDidUpdate:withDestinationTab:)(a5);
+  tabCopy = tab;
+  selfCopy = self;
+  specialized TabViewCoordinator_Phone._uip_tabBarController(_:dropSessionDidUpdate:withDestinationTab:)(tab);
 
   swift_unknownObjectRelease();
 }
 
-- (void)tabBarController:(id)a3 visibilityDidChangeForTabs:(id)a4
+- (void)tabBarController:(id)controller visibilityDidChangeForTabs:(id)tabs
 {
   type metadata accessor for Binding<TabViewCustomization>?(0);
   MEMORY[0x1EEE9AC00](v5 - 8);
@@ -81,28 +81,28 @@
   outlined init with copy of Binding<TabViewCustomization>?(self + v9, v7, type metadata accessor for Binding<TabViewCustomization>?);
   v10 = *(&self->super.super.isa + OBJC_IVAR____TtC7SwiftUI24TabViewCoordinator_Phone_tabCache);
 
-  v11 = self;
+  selfCopy = self;
   specialized TabViewCoordinator_Phone.updatedSidebarVisibility(for:customization:tabCache:)(v8, v7, v10);
 
   outlined destroy of Binding<TabViewCustomization>?(v7, type metadata accessor for Binding<TabViewCustomization>?);
 }
 
-- (void)tabBarControllerDidEndEditing:(id)a3
+- (void)tabBarControllerDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  TabViewCoordinator_Phone.tabBarControllerDidEndEditing(_:)(v4);
+  editingCopy = editing;
+  selfCopy = self;
+  TabViewCoordinator_Phone.tabBarControllerDidEndEditing(_:)(editingCopy);
 }
 
-- (void)_tabElementGroup:(id)a3 didSelectElement:(id)a4
+- (void)_tabElementGroup:(id)group didSelectElement:(id)element
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  specialized TabViewCoordinator_Phone._tabElementGroup(_:didSelect:)(v7);
+  groupCopy = group;
+  elementCopy = element;
+  selfCopy = self;
+  specialized TabViewCoordinator_Phone._tabElementGroup(_:didSelect:)(elementCopy);
 }
 
-- (void)_tabElementGroup:(id)a3 didCustomizeDisplayOrder:(id)a4
+- (void)_tabElementGroup:(id)group didCustomizeDisplayOrder:(id)order
 {
   type metadata accessor for Binding<TabViewCustomization>?(0);
   MEMORY[0x1EEE9AC00](v6 - 8);
@@ -113,31 +113,31 @@
   outlined init with copy of Binding<TabViewCustomization>?(self + v10, v8, type metadata accessor for Binding<TabViewCustomization>?);
   v11 = *(&self->super.super.isa + OBJC_IVAR____TtC7SwiftUI24TabViewCoordinator_Phone_tabCache);
 
-  v12 = a3;
-  v13 = self;
-  specialized TabViewCoordinator_Phone.updatedOrder(within:newOrder:customization:tabCache:)(v12, v9, v8, v11);
+  groupCopy = group;
+  selfCopy = self;
+  specialized TabViewCoordinator_Phone.updatedOrder(within:newOrder:customization:tabCache:)(groupCopy, v9, v8, v11);
 
   outlined destroy of Binding<TabViewCustomization>?(v8, type metadata accessor for Binding<TabViewCustomization>?);
 }
 
-- (void)tabBarController:(id)a3 sidebarVisibilityWillChange:(id)a4 animator:(id)a5
+- (void)tabBarController:(id)controller sidebarVisibilityWillChange:(id)change animator:(id)animator
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  changeCopy = change;
   swift_unknownObjectRetain();
-  v9 = self;
-  specialized TabViewCoordinator_Phone.tabBarController(_:sidebarVisibilityWillChange:animator:)(v8);
+  selfCopy = self;
+  specialized TabViewCoordinator_Phone.tabBarController(_:sidebarVisibilityWillChange:animator:)(changeCopy);
 
   swift_unknownObjectRelease();
 }
 
-- (id)tabBarController:(id)a3 sidebar:(id)a4 contextMenuConfigurationForTab:(id)a5
+- (id)tabBarController:(id)controller sidebar:(id)sidebar contextMenuConfigurationForTab:(id)tab
 {
   v7 = *(&self->super.super.isa + OBJC_IVAR____TtC7SwiftUI24TabViewCoordinator_Phone_tabCache);
 
-  v8 = a5;
-  v9 = self;
-  v10 = TabViewCoordinator_Phone.contextMenu(for:tabCache:)(v8, v7);
+  tabCopy = tab;
+  selfCopy = self;
+  v10 = TabViewCoordinator_Phone.contextMenu(for:tabCache:)(tabCopy, v7);
 
   return v10;
 }

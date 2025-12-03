@@ -1,22 +1,22 @@
 @interface NavigationSplitCoordinator
-- (int64_t)splitViewController:(id)a3 displayModeForExpandingToProposedDisplayMode:(int64_t)a4;
-- (void)_splitViewController:(id)a3 didChangeFromDisplayMode:(int64_t)a4 toDisplayMode:(int64_t)a5;
+- (int64_t)splitViewController:(id)controller displayModeForExpandingToProposedDisplayMode:(int64_t)mode;
+- (void)_splitViewController:(id)controller didChangeFromDisplayMode:(int64_t)mode toDisplayMode:(int64_t)displayMode;
 @end
 
 @implementation NavigationSplitCoordinator
 
-- (void)_splitViewController:(id)a3 didChangeFromDisplayMode:(int64_t)a4 toDisplayMode:(int64_t)a5
+- (void)_splitViewController:(id)controller didChangeFromDisplayMode:(int64_t)mode toDisplayMode:(int64_t)displayMode
 {
-  v6 = a3;
+  controllerCopy = controller;
 
-  specialized NavigationSplitSidebarStateMachine.splitViewController(_:didChangeTo:)(a5);
+  specialized NavigationSplitSidebarStateMachine.splitViewController(_:didChangeTo:)(displayMode);
 }
 
-- (int64_t)splitViewController:(id)a3 displayModeForExpandingToProposedDisplayMode:(int64_t)a4
+- (int64_t)splitViewController:(id)controller displayModeForExpandingToProposedDisplayMode:(int64_t)mode
 {
-  v5 = a3;
+  controllerCopy = controller;
 
-  v6 = specialized NavigationSplitCoordinator.splitViewController(_:displayModeForExpandingToProposedDisplayMode:)(a4);
+  v6 = specialized NavigationSplitCoordinator.splitViewController(_:displayModeForExpandingToProposedDisplayMode:)(mode);
 
   return v6;
 }

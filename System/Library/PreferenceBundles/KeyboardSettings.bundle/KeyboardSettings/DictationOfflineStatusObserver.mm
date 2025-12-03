@@ -1,5 +1,5 @@
 @interface DictationOfflineStatusObserver
-- (DictationOfflineStatusObserver)initWithDelegate:(id)a3;
+- (DictationOfflineStatusObserver)initWithDelegate:(id)delegate;
 - (DictationOfflineStatusObserverDelegate)delegate;
 - (void)dealloc;
 - (void)updateOfflineDictationStatus;
@@ -7,16 +7,16 @@
 
 @implementation DictationOfflineStatusObserver
 
-- (DictationOfflineStatusObserver)initWithDelegate:(id)a3
+- (DictationOfflineStatusObserver)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = DictationOfflineStatusObserver;
   v5 = [(DictationOfflineStatusObserver *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    [(DictationOfflineStatusObserver *)v5 setDelegate:v4];
+    [(DictationOfflineStatusObserver *)v5 setDelegate:delegateCopy];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     v8 = IsTrialAssetDeliveryEnabled();
     v9 = &kTrialSiriAssistantAssetNamespaceUpdate;

@@ -1,14 +1,14 @@
 @interface NEIKEv2PacketConstructor
-- (uint64_t)appendPayloadsToPacket:(unsigned int)a3 withLength:;
+- (uint64_t)appendPayloadsToPacket:(unsigned int)packet withLength:;
 @end
 
 @implementation NEIKEv2PacketConstructor
 
-- (uint64_t)appendPayloadsToPacket:(unsigned int)a3 withLength:
+- (uint64_t)appendPayloadsToPacket:(unsigned int)packet withLength:
 {
   v27 = *MEMORY[0x1E69E9840];
   v6 = a2;
-  if (a1[1] == 0x7FFFFFFFFFFFFFFFLL && !a1[2])
+  if (self[1] == 0x7FFFFFFFFFFFFFFFLL && !self[2])
   {
     v7 = ne_log_obj();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -20,36 +20,36 @@
     goto LABEL_31;
   }
 
-  v7 = objc_getProperty(a1, v5, 24, 1);
+  v7 = objc_getProperty(self, v5, 24, 1);
   v8 = [v7 count];
-  if (a3)
+  if (packet)
   {
     if (v8)
     {
       v9 = [v7 count]- 1;
-      v10 = a1[1];
+      v10 = self[1];
       if (v10 <= v9)
       {
-        v11 = a1[2];
+        v11 = self[2];
         do
         {
           v12 = [v7 objectAtIndexedSubscript:v10];
           v13 = [v12 length] - v11;
-          v14 = [v12 bytes];
-          v15 = a3;
-          if (v13 > a3)
+          bytes = [v12 bytes];
+          packetCopy = packet;
+          if (v13 > packet)
           {
-            [v6 appendBytes:v14 + v11 length:a3];
-            v16 = v11 + a3;
+            [v6 appendBytes:bytes + v11 length:packet];
+            v16 = v11 + packet;
 
             goto LABEL_15;
           }
 
-          [v6 appendBytes:v14 + v11 length:v13];
-          a3 -= v13;
+          [v6 appendBytes:bytes + v11 length:v13];
+          packet -= v13;
           ++v10;
 
-          if (v15 == v13)
+          if (packetCopy == v13)
           {
             break;
           }
@@ -58,7 +58,7 @@
         }
 
         while (v10 <= v9);
-        if (a3)
+        if (packet)
         {
           goto LABEL_24;
         }
@@ -71,8 +71,8 @@ LABEL_15:
           v17 = v10;
         }
 
-        a1[1] = v17;
-        a1[2] = v16;
+        self[1] = v17;
+        self[2] = v16;
         goto LABEL_18;
       }
 
@@ -84,7 +84,7 @@ LABEL_24:
       }
 
       v25 = 67109120;
-      v26 = a3;
+      packetCopy3 = packet;
       v22 = "Ran out of payloads with remaining length %u to write";
       goto LABEL_26;
     }
@@ -93,7 +93,7 @@ LABEL_24:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
     {
       v25 = 67109120;
-      v26 = a3;
+      packetCopy3 = packet;
       v22 = "Request to write plaintext (length %u) with empty payload vector";
 LABEL_26:
       v23 = v21;
@@ -124,7 +124,7 @@ LABEL_31:
     goto LABEL_30;
   }
 
-  *(a1 + 1) = xmmword_1BAA4E560;
+  *(self + 1) = xmmword_1BAA4E560;
 LABEL_18:
   v18 = 1;
 LABEL_19:

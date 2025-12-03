@@ -1,19 +1,19 @@
 @interface _UINavigationBarTitleRenamer
 + (id)renameServer;
-- (BOOL)_session:(id)a3 textFieldShouldEndRenamingWithTitle:(id)a4;
+- (BOOL)_session:(id)_session textFieldShouldEndRenamingWithTitle:(id)title;
 - (_UINavigationBarTitleRenamer)init;
 - (_UINavigationBarTitleRenamerDelegate)delegate;
-- (id)_session:(id)a3 textFieldWillBeginRenamingWithTitle:(id)a4 selectedRange:(_NSRange *)a5;
+- (id)_session:(id)_session textFieldWillBeginRenamingWithTitle:(id)title selectedRange:(_NSRange *)range;
 - (id)description;
-- (id)sessionWithIdentifier:(id)a3;
-- (void)_session:(id)a3 fileRenameDidEnd:(id)a4;
-- (void)_session:(id)a3 fileRenameDidFail:(id)a4;
-- (void)_sessionDidCancel:(id)a3;
-- (void)_sessionTextFieldDidEndEditing:(id)a3;
+- (id)sessionWithIdentifier:(id)identifier;
+- (void)_session:(id)_session fileRenameDidEnd:(id)end;
+- (void)_session:(id)_session fileRenameDidFail:(id)fail;
+- (void)_sessionDidCancel:(id)cancel;
+- (void)_sessionTextFieldDidEndEditing:(id)editing;
 - (void)dealloc;
-- (void)endSession:(id)a3;
-- (void)sceneWillDeactivateNotification:(id)a3;
-- (void)startSession:(id)a3;
+- (void)endSession:(id)session;
+- (void)sceneWillDeactivateNotification:(id)notification;
+- (void)startSession:(id)session;
 @end
 
 @implementation _UINavigationBarTitleRenamer
@@ -25,7 +25,7 @@
   v4[2] = __44___UINavigationBarTitleRenamer_renameServer__block_invoke;
   v4[3] = &__block_descriptor_48_e5_v8__0l;
   v4[4] = a2;
-  v4[5] = a1;
+  v4[5] = self;
   if (qword_1ED4A0000 != -1)
   {
     dispatch_once(&qword_1ED4A0000, v4);
@@ -49,8 +49,8 @@
     trackedSessions = v3->_trackedSessions;
     v3->_trackedSessions = v4;
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v3 selector:sel_sceneWillDeactivateNotification_ name:@"UISceneWillDeactivateNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_sceneWillDeactivateNotification_ name:@"UISceneWillDeactivateNotification" object:0];
   }
 
   return v3;
@@ -58,8 +58,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = _UINavigationBarTitleRenamer;
@@ -76,16 +76,16 @@
   return v6;
 }
 
-- (void)sceneWillDeactivateNotification:(id)a3
+- (void)sceneWillDeactivateNotification:(id)notification
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = [a3 object];
+  object = [notification object];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(_UINavigationBarTitleRenamer *)self trackedSessions];
-  v6 = [v5 copy];
+  trackedSessions = [(_UINavigationBarTitleRenamer *)self trackedSessions];
+  v6 = [trackedSessions copy];
 
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
@@ -102,14 +102,14 @@
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 existingRenamerContentView];
-        v13 = v12;
-        if (v12)
+        existingRenamerContentView = [v11 existingRenamerContentView];
+        v13 = existingRenamerContentView;
+        if (existingRenamerContentView)
         {
-          v14 = [v12 _window];
-          v15 = [v14 windowScene];
+          _window = [existingRenamerContentView _window];
+          windowScene = [_window windowScene];
 
-          if (v15 == v4)
+          if (windowScene == object)
           {
             [v11 cancelSession];
           }
@@ -123,124 +123,124 @@
   }
 }
 
-- (void)startSession:(id)a3
+- (void)startSession:(id)session
 {
-  v14 = a3;
+  sessionCopy = session;
   if ((*&self->_flags & 1) == 0)
   {
-    v5 = [(_UINavigationBarTitleRenamer *)self trackedSessions];
-    v6 = [v5 count];
+    trackedSessions = [(_UINavigationBarTitleRenamer *)self trackedSessions];
+    v6 = [trackedSessions count];
 
     if (v6)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      v8 = [(_UINavigationBarTitleRenamer *)self trackedSessions];
-      v9 = [v8 anyObject];
-      [v7 handleFailureInMethod:a2 object:self file:@"_UINavigationBarTitleRenamer.m" lineNumber:84 description:{@"Unable to start session. Session already in progress: %@", v9}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      trackedSessions2 = [(_UINavigationBarTitleRenamer *)self trackedSessions];
+      anyObject = [trackedSessions2 anyObject];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UINavigationBarTitleRenamer.m" lineNumber:84 description:{@"Unable to start session. Session already in progress: %@", anyObject}];
     }
   }
 
   if (*&self->_flags)
   {
-    v10 = [v14 sessionIdentifier];
-    v11 = [(_UINavigationBarTitleRenamer *)self sessionWithIdentifier:v10];
+    sessionIdentifier = [sessionCopy sessionIdentifier];
+    v11 = [(_UINavigationBarTitleRenamer *)self sessionWithIdentifier:sessionIdentifier];
 
     if (v11)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"_UINavigationBarTitleRenamer.m" lineNumber:90 description:@"Renamer is already tracking a session with this identifier."];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UINavigationBarTitleRenamer.m" lineNumber:90 description:@"Renamer is already tracking a session with this identifier."];
     }
   }
 
-  v12 = [(_UINavigationBarTitleRenamer *)self trackedSessions];
-  [v12 addObject:v14];
+  trackedSessions3 = [(_UINavigationBarTitleRenamer *)self trackedSessions];
+  [trackedSessions3 addObject:sessionCopy];
 
-  [v14 sessionDidStartInRenamer:self];
+  [sessionCopy sessionDidStartInRenamer:self];
 }
 
-- (void)endSession:(id)a3
+- (void)endSession:(id)session
 {
-  v4 = a3;
-  __ASSERT_UNTRACKED_SESSION__(self, v4);
-  [v4 sessionDidEnd];
-  v5 = [(_UINavigationBarTitleRenamer *)self trackedSessions];
-  [v5 removeObject:v4];
+  sessionCopy = session;
+  __ASSERT_UNTRACKED_SESSION__(self, sessionCopy);
+  [sessionCopy sessionDidEnd];
+  trackedSessions = [(_UINavigationBarTitleRenamer *)self trackedSessions];
+  [trackedSessions removeObject:sessionCopy];
 }
 
-- (id)sessionWithIdentifier:(id)a3
+- (id)sessionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(_UINavigationBarTitleRenamer *)self trackedSessions];
+  identifierCopy = identifier;
+  trackedSessions = [(_UINavigationBarTitleRenamer *)self trackedSessions];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __54___UINavigationBarTitleRenamer_sessionWithIdentifier___block_invoke;
   v10[3] = &unk_1E711CE10;
-  v11 = v4;
-  v6 = v4;
-  v7 = [v5 bs_filter:v10];
-  v8 = [v7 anyObject];
+  v11 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [trackedSessions bs_filter:v10];
+  anyObject = [v7 anyObject];
 
-  return v8;
+  return anyObject;
 }
 
-- (id)_session:(id)a3 textFieldWillBeginRenamingWithTitle:(id)a4 selectedRange:(_NSRange *)a5
+- (id)_session:(id)_session textFieldWillBeginRenamingWithTitle:(id)title selectedRange:(_NSRange *)range
 {
-  v8 = a4;
-  v9 = a3;
-  __ASSERT_UNTRACKED_SESSION__(self, v9);
-  v10 = [(_UINavigationBarTitleRenamer *)self delegate];
-  v11 = [v10 titleRenamer:self session:v9 willBeginRenamingWithTitle:v8 selectedRange:a5];
+  titleCopy = title;
+  _sessionCopy = _session;
+  __ASSERT_UNTRACKED_SESSION__(self, _sessionCopy);
+  delegate = [(_UINavigationBarTitleRenamer *)self delegate];
+  v11 = [delegate titleRenamer:self session:_sessionCopy willBeginRenamingWithTitle:titleCopy selectedRange:range];
 
   return v11;
 }
 
-- (BOOL)_session:(id)a3 textFieldShouldEndRenamingWithTitle:(id)a4
+- (BOOL)_session:(id)_session textFieldShouldEndRenamingWithTitle:(id)title
 {
-  v6 = a4;
-  v7 = a3;
-  __ASSERT_UNTRACKED_SESSION__(self, v7);
-  v8 = [(_UINavigationBarTitleRenamer *)self delegate];
-  LOBYTE(self) = [v8 titleRenamer:self session:v7 shouldEndRenamingWithTitle:v6];
+  titleCopy = title;
+  _sessionCopy = _session;
+  __ASSERT_UNTRACKED_SESSION__(self, _sessionCopy);
+  delegate = [(_UINavigationBarTitleRenamer *)self delegate];
+  LOBYTE(self) = [delegate titleRenamer:self session:_sessionCopy shouldEndRenamingWithTitle:titleCopy];
 
   return self;
 }
 
-- (void)_sessionTextFieldDidEndEditing:(id)a3
+- (void)_sessionTextFieldDidEndEditing:(id)editing
 {
-  v4 = a3;
-  __ASSERT_UNTRACKED_SESSION__(self, v4);
-  v6 = [(_UINavigationBarTitleRenamer *)self delegate];
-  v5 = [v4 title];
-  [v6 titleRenamer:self session:v4 didEndRenamingWithTitle:v5];
+  editingCopy = editing;
+  __ASSERT_UNTRACKED_SESSION__(self, editingCopy);
+  delegate = [(_UINavigationBarTitleRenamer *)self delegate];
+  title = [editingCopy title];
+  [delegate titleRenamer:self session:editingCopy didEndRenamingWithTitle:title];
 }
 
-- (void)_sessionDidCancel:(id)a3
+- (void)_sessionDidCancel:(id)cancel
 {
-  v4 = a3;
-  __ASSERT_UNTRACKED_SESSION__(self, v4);
-  v5 = [(_UINavigationBarTitleRenamer *)self trackedSessions];
-  [v5 removeObject:v4];
+  cancelCopy = cancel;
+  __ASSERT_UNTRACKED_SESSION__(self, cancelCopy);
+  trackedSessions = [(_UINavigationBarTitleRenamer *)self trackedSessions];
+  [trackedSessions removeObject:cancelCopy];
 
-  v6 = [(_UINavigationBarTitleRenamer *)self delegate];
-  [v6 titleRenamer:self didCancelSession:v4];
+  delegate = [(_UINavigationBarTitleRenamer *)self delegate];
+  [delegate titleRenamer:self didCancelSession:cancelCopy];
 }
 
-- (void)_session:(id)a3 fileRenameDidFail:(id)a4
+- (void)_session:(id)_session fileRenameDidFail:(id)fail
 {
-  v6 = a4;
-  v7 = a3;
-  __ASSERT_UNTRACKED_SESSION__(self, v7);
-  v8 = [(_UINavigationBarTitleRenamer *)self delegate];
-  [v8 titleRenamer:self session:v7 fileRenameDidFail:v6];
+  failCopy = fail;
+  _sessionCopy = _session;
+  __ASSERT_UNTRACKED_SESSION__(self, _sessionCopy);
+  delegate = [(_UINavigationBarTitleRenamer *)self delegate];
+  [delegate titleRenamer:self session:_sessionCopy fileRenameDidFail:failCopy];
 }
 
-- (void)_session:(id)a3 fileRenameDidEnd:(id)a4
+- (void)_session:(id)_session fileRenameDidEnd:(id)end
 {
-  v6 = a4;
-  v7 = a3;
-  __ASSERT_UNTRACKED_SESSION__(self, v7);
-  v8 = [(_UINavigationBarTitleRenamer *)self delegate];
-  [v8 titleRenamer:self session:v7 fileRenameDidEnd:v6];
+  endCopy = end;
+  _sessionCopy = _session;
+  __ASSERT_UNTRACKED_SESSION__(self, _sessionCopy);
+  delegate = [(_UINavigationBarTitleRenamer *)self delegate];
+  [delegate titleRenamer:self session:_sessionCopy fileRenameDidEnd:endCopy];
 }
 
 - (_UINavigationBarTitleRenamerDelegate)delegate

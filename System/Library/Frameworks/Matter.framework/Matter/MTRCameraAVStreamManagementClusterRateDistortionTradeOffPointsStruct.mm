@@ -1,6 +1,6 @@
 @interface MTRCameraAVStreamManagementClusterRateDistortionTradeOffPointsStruct
 - (MTRCameraAVStreamManagementClusterRateDistortionTradeOffPointsStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -28,17 +28,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCameraAVStreamManagementClusterRateDistortionTradeOffPointsStruct);
-  v5 = [(MTRCameraAVStreamManagementClusterRateDistortionTradeOffPointsStruct *)self codec];
-  [(MTRCameraAVStreamManagementClusterRateDistortionTradeOffPointsStruct *)v4 setCodec:v5];
+  codec = [(MTRCameraAVStreamManagementClusterRateDistortionTradeOffPointsStruct *)self codec];
+  [(MTRCameraAVStreamManagementClusterRateDistortionTradeOffPointsStruct *)v4 setCodec:codec];
 
-  v6 = [(MTRCameraAVStreamManagementClusterRateDistortionTradeOffPointsStruct *)self resolution];
-  [(MTRCameraAVStreamManagementClusterRateDistortionTradeOffPointsStruct *)v4 setResolution:v6];
+  resolution = [(MTRCameraAVStreamManagementClusterRateDistortionTradeOffPointsStruct *)self resolution];
+  [(MTRCameraAVStreamManagementClusterRateDistortionTradeOffPointsStruct *)v4 setResolution:resolution];
 
-  v7 = [(MTRCameraAVStreamManagementClusterRateDistortionTradeOffPointsStruct *)self minBitRate];
-  [(MTRCameraAVStreamManagementClusterRateDistortionTradeOffPointsStruct *)v4 setMinBitRate:v7];
+  minBitRate = [(MTRCameraAVStreamManagementClusterRateDistortionTradeOffPointsStruct *)self minBitRate];
+  [(MTRCameraAVStreamManagementClusterRateDistortionTradeOffPointsStruct *)v4 setMinBitRate:minBitRate];
 
   return v4;
 }

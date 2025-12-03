@@ -1,16 +1,16 @@
 @interface SRHDataCollectionController
-+ (BOOL)isMessagingApp:(id)a3;
++ (BOOL)isMessagingApp:(id)app;
 + (BOOL)isSocialMediaApp;
 + (void)initialize;
-+ (void)isMediaEventsCollectionEnabledFor:(id)a3 completionHandler:(id)a4;
-+ (void)isMediaEventsStreamAuthorizedWithCompletionHandler:(id)a3;
++ (void)isMediaEventsCollectionEnabledFor:(id)for completionHandler:(id)handler;
++ (void)isMediaEventsStreamAuthorizedWithCompletionHandler:(id)handler;
 @end
 
 @implementation SRHDataCollectionController
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_280AC73C0 = os_log_create("com.apple.SensorKit", "SRHDataCollectionController");
   }
@@ -25,22 +25,22 @@
     return 1;
   }
 
-  v4 = [MEMORY[0x277CC1E90] bundleRecordForCurrentProcess];
+  bundleRecordForCurrentProcess = [MEMORY[0x277CC1E90] bundleRecordForCurrentProcess];
 
-  return [v4 sr_isSocialNetworking];
+  return [bundleRecordForCurrentProcess sr_isSocialNetworking];
 }
 
-+ (BOOL)isMessagingApp:(id)a3
++ (BOOL)isMessagingApp:(id)app
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [objc_msgSend(v3 "infoDictionary")];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v4 = [objc_msgSend(mainBundle "infoDictionary")];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || ([v4 containsObject:@"INSendMessageIntent"] & 1) == 0)
   {
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
-    v7 = [v3 builtInPlugInsURL];
-    v8 = [v6 enumeratorAtURL:v7 includingPropertiesForKeys:MEMORY[0x277CBEBF8] options:1 errorHandler:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    builtInPlugInsURL = [mainBundle builtInPlugInsURL];
+    v8 = [defaultManager enumeratorAtURL:builtInPlugInsURL includingPropertiesForKeys:MEMORY[0x277CBEBF8] options:1 errorHandler:0];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -97,7 +97,7 @@ LABEL_6:
   return v5;
 }
 
-+ (void)isMediaEventsStreamAuthorizedWithCompletionHandler:(id)a3
++ (void)isMediaEventsStreamAuthorizedWithCompletionHandler:(id)handler
 {
   v4 = [objc_alloc(MEMORY[0x277CCAE80]) initWithServiceName:@"com.apple.SensorKit.SKMediaEventsHelper"];
   [v4 setRemoteObjectInterface:{objc_msgSend(MEMORY[0x277CCAE90], "interfaceWithProtocol:", &unk_2876FCEE0)}];
@@ -107,14 +107,14 @@ LABEL_6:
   v7[2] = __82__SRHDataCollectionController_isMediaEventsStreamAuthorizedWithCompletionHandler___block_invoke;
   v7[3] = &unk_279B97730;
   v7[4] = v4;
-  v7[5] = a3;
+  v7[5] = handler;
   v5 = [v4 remoteObjectProxyWithErrorHandler:v7];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __82__SRHDataCollectionController_isMediaEventsStreamAuthorizedWithCompletionHandler___block_invoke_36;
   v6[3] = &unk_279B97758;
   v6[4] = v4;
-  v6[5] = a3;
+  v6[5] = handler;
   [v5 authorizationRequestStatusForMediaEventsStreamWithReply:v6];
 }
 
@@ -153,26 +153,26 @@ uint64_t __82__SRHDataCollectionController_isMediaEventsStreamAuthorizedWithComp
   return (*(*(a1 + 40) + 16))();
 }
 
-+ (void)isMediaEventsCollectionEnabledFor:(id)a3 completionHandler:(id)a4
++ (void)isMediaEventsCollectionEnabledFor:(id)for completionHandler:(id)handler
 {
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __83__SRHDataCollectionController_isMediaEventsCollectionEnabledFor_completionHandler___block_invoke;
   v7[3] = &unk_279B977A8;
-  v7[4] = a3;
-  v7[5] = a4;
+  v7[4] = for;
+  v7[5] = handler;
   if (qword_280AC73C8 != -1)
   {
     dispatch_once(&qword_280AC73C8, v7);
   }
 
   v5 = atomic_load(&_MergedGlobals_0);
-  if (a4)
+  if (handler)
   {
     if (v5)
     {
       v6 = atomic_load(&_MergedGlobals_0);
-      (*(a4 + 2))(a4, (v6 >> 1) & 1);
+      (*(handler + 2))(handler, (v6 >> 1) & 1);
     }
   }
 }

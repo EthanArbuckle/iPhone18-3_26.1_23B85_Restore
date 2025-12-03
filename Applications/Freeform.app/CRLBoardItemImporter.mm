@@ -1,18 +1,18 @@
 @interface CRLBoardItemImporter
-+ (BOOL)isSupportedAnimatedImageFileType:(id)a3;
-+ (CRLBoardItemImporter)allocWithZone:(_NSZone *)a3;
-+ (Class)p_subclassForPreinsertionAssetWrapper:(id)a3;
-+ (Class)p_subclassForURL:(id)a3;
++ (BOOL)isSupportedAnimatedImageFileType:(id)type;
++ (CRLBoardItemImporter)allocWithZone:(_NSZone *)zone;
++ (Class)p_subclassForPreinsertionAssetWrapper:(id)wrapper;
++ (Class)p_subclassForURL:(id)l;
 + (NSArray)supportedFileTypes;
 + (NSArray)supportedFileUTTypes;
 + (NSArray)supportedRemoteURLSchemes;
 + (NSString)defaultPastedImageName;
 + (NSString)defaultPastedMovieName;
-+ (void)p_enumerateRegisteredSubclassesUsingBlock:(id)a3;
++ (void)p_enumerateRegisteredSubclassesUsingBlock:(id)block;
 + (void)p_registerDefaultSubclassesIfNeeded;
-+ (void)registerSubclass:(Class)a3;
-- (CRLBoardItemImporter)initWithData:(id)a3 boardItemFactory:(id)a4;
-- (CRLBoardItemImporter)initWithURL:(id)a3 boardItemFactory:(id)a4;
++ (void)registerSubclass:(Class)subclass;
+- (CRLBoardItemImporter)initWithData:(id)data boardItemFactory:(id)factory;
+- (CRLBoardItemImporter)initWithURL:(id)l boardItemFactory:(id)factory;
 - (CRLBoardItemImporterDelegate)delegate;
 - (CRLProgress)progress;
 - (NSError)error;
@@ -21,7 +21,7 @@
 - (unint64_t)embeddedDataLength;
 - (unint64_t)uploadDataLength;
 - (void)cancel;
-- (void)importBoardItemWithCompletionHandler:(id)a3;
+- (void)importBoardItemWithCompletionHandler:(id)handler;
 @end
 
 @implementation CRLBoardItemImporter
@@ -34,9 +34,9 @@
   }
 }
 
-+ (void)registerSubclass:(Class)a3
++ (void)registerSubclass:(Class)subclass
 {
-  if (a3 != a1 && ([(objc_class *)a3 isSubclassOfClass:a1]& 1) != 0)
+  if (subclass != self && ([(objc_class *)subclass isSubclassOfClass:self]& 1) != 0)
   {
     goto LABEL_16;
   }
@@ -67,28 +67,28 @@
   v7 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLBoardItemImporter.m"];
   [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:68 isFatal:0 description:"Invalid parameter not satisfying: %{public}s", "(importerSubclass != self) && [importerSubclass isSubclassOfClass:self]"];
 
-  if (a3 != a1)
+  if (subclass != self)
   {
 LABEL_16:
-    if ([(objc_class *)a3 isSubclassOfClass:a1])
+    if ([(objc_class *)subclass isSubclassOfClass:self])
     {
-      [a1 p_registerDefaultSubclassesIfNeeded];
-      [qword_101A34F78 addObject:a3];
+      [self p_registerDefaultSubclassesIfNeeded];
+      [qword_101A34F78 addObject:subclass];
     }
   }
 }
 
-+ (void)p_enumerateRegisteredSubclassesUsingBlock:(id)a3
++ (void)p_enumerateRegisteredSubclassesUsingBlock:(id)block
 {
-  v4 = a3;
-  [a1 p_registerDefaultSubclassesIfNeeded];
+  blockCopy = block;
+  [self p_registerDefaultSubclassesIfNeeded];
   v5 = qword_101A34F78;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10043C398;
   v7[3] = &unk_101862F70;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [v5 enumerateObjectsWithOptions:2 usingBlock:v7];
 }
 
@@ -100,10 +100,10 @@ LABEL_16:
   v6[2] = sub_10043C470;
   v7 = v6[3] = &unk_101862F98;
   v3 = v7;
-  [a1 p_enumerateRegisteredSubclassesUsingBlock:v6];
-  v4 = [v3 allObjects];
+  [self p_enumerateRegisteredSubclassesUsingBlock:v6];
+  allObjects = [v3 allObjects];
 
-  return v4;
+  return allObjects;
 }
 
 + (NSArray)supportedFileUTTypes
@@ -114,24 +114,24 @@ LABEL_16:
   v6[2] = sub_10043C594;
   v7 = v6[3] = &unk_101862F98;
   v3 = v7;
-  [a1 p_enumerateRegisteredSubclassesUsingBlock:v6];
-  v4 = [v3 allObjects];
+  [self p_enumerateRegisteredSubclassesUsingBlock:v6];
+  allObjects = [v3 allObjects];
 
-  return v4;
+  return allObjects;
 }
 
-+ (BOOL)isSupportedAnimatedImageFileType:(id)a3
++ (BOOL)isSupportedAnimatedImageFileType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = +[NSMutableSet set];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10043C6EC;
   v9[3] = &unk_101862F98;
   v9[4] = v5;
-  [a1 p_enumerateRegisteredSubclassesUsingBlock:v9];
-  v6 = [v5 allObjects];
-  v7 = [v4 crl_conformsToAnyUTI:v6];
+  [self p_enumerateRegisteredSubclassesUsingBlock:v9];
+  allObjects = [v5 allObjects];
+  v7 = [typeCopy crl_conformsToAnyUTI:allObjects];
 
   return v7;
 }
@@ -144,29 +144,29 @@ LABEL_16:
   v6[2] = sub_10043C810;
   v7 = v6[3] = &unk_101862F98;
   v3 = v7;
-  [a1 p_enumerateRegisteredSubclassesUsingBlock:v6];
-  v4 = [v3 allObjects];
+  [self p_enumerateRegisteredSubclassesUsingBlock:v6];
+  allObjects = [v3 allObjects];
 
-  return v4;
+  return allObjects;
 }
 
-+ (Class)p_subclassForURL:(id)a3
++ (Class)p_subclassForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2050000000;
   v20 = 0;
-  v5 = [v4 isFileURL];
-  v6 = v5;
-  if (v5)
+  isFileURL = [lCopy isFileURL];
+  v6 = isFileURL;
+  if (isFileURL)
   {
-    v7 = [v4 crl_fileTypeIdentifierHandlingFileCoordinationPromises];
+    crl_fileTypeIdentifierHandlingFileCoordinationPromises = [lCopy crl_fileTypeIdentifierHandlingFileCoordinationPromises];
   }
 
   else
   {
-    v7 = 0;
+    crl_fileTypeIdentifierHandlingFileCoordinationPromises = 0;
   }
 
   v12[0] = _NSConcreteStackBlock;
@@ -174,12 +174,12 @@ LABEL_16:
   v12[2] = sub_10043CA28;
   v12[3] = &unk_101862FC0;
   v16 = v6;
-  v8 = v7;
+  v8 = crl_fileTypeIdentifierHandlingFileCoordinationPromises;
   v13 = v8;
-  v9 = v4;
+  v9 = lCopy;
   v14 = v9;
   v15 = &v17;
-  [a1 p_enumerateRegisteredSubclassesUsingBlock:v12];
+  [self p_enumerateRegisteredSubclassesUsingBlock:v12];
   v10 = v18[3];
 
   _Block_object_dispose(&v17, 8);
@@ -187,23 +187,23 @@ LABEL_16:
   return v10;
 }
 
-+ (Class)p_subclassForPreinsertionAssetWrapper:(id)a3
++ (Class)p_subclassForPreinsertionAssetWrapper:(id)wrapper
 {
-  v4 = a3;
+  wrapperCopy = wrapper;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2050000000;
   v15 = 0;
-  v5 = [v4 type];
+  type = [wrapperCopy type];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10043CD30;
   v9[3] = &unk_101862FE8;
-  v9[4] = v5;
-  v6 = v4;
+  v9[4] = type;
+  v6 = wrapperCopy;
   v10 = v6;
   v11 = &v12;
-  [a1 p_enumerateRegisteredSubclassesUsingBlock:v9];
+  [self p_enumerateRegisteredSubclassesUsingBlock:v9];
   v7 = v13[3];
 
   _Block_object_dispose(&v12, 8);
@@ -211,27 +211,27 @@ LABEL_16:
   return v7;
 }
 
-+ (CRLBoardItemImporter)allocWithZone:(_NSZone *)a3
++ (CRLBoardItemImporter)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [CRLBoardItemImporterPlaceholder allocWithZone:a3];
+    return [CRLBoardItemImporterPlaceholder allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___CRLBoardItemImporter;
-    return objc_msgSendSuper2(&v6, "allocWithZone:", a3);
+    return objc_msgSendSuper2(&v6, "allocWithZone:", zone);
   }
 }
 
-- (CRLBoardItemImporter)initWithURL:(id)a3 boardItemFactory:(id)a4
+- (CRLBoardItemImporter)initWithURL:(id)l boardItemFactory:(id)factory
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  lCopy = l;
+  factoryCopy = factory;
+  if (!lCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -265,21 +265,21 @@ LABEL_16:
   v11 = [(CRLBoardItemImporter *)&v15 init];
   if (v11)
   {
-    v12 = [v6 copy];
+    v12 = [lCopy copy];
     URL = v11->_URL;
     v11->_URL = v12;
 
-    objc_storeStrong(&v11->_boardItemFactory, a4);
+    objc_storeStrong(&v11->_boardItemFactory, factory);
   }
 
   return v11;
 }
 
-- (CRLBoardItemImporter)initWithData:(id)a3 boardItemFactory:(id)a4
+- (CRLBoardItemImporter)initWithData:(id)data boardItemFactory:(id)factory
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  dataCopy = data;
+  factoryCopy = factory;
+  if (!dataCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -314,8 +314,8 @@ LABEL_16:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_preinsertionAsset, a3);
-    objc_storeStrong(&v13->_boardItemFactory, a4);
+    objc_storeStrong(&v12->_preinsertionAsset, data);
+    objc_storeStrong(&v13->_boardItemFactory, factory);
   }
 
   return v13;
@@ -364,9 +364,9 @@ LABEL_16:
   return [(CRLBoardItemImporter *)&v11 init];
 }
 
-- (void)importBoardItemWithCompletionHandler:(id)a3
+- (void)importBoardItemWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
   {

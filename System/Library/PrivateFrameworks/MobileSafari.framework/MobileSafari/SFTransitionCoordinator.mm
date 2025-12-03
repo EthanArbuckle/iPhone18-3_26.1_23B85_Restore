@@ -1,15 +1,15 @@
 @interface SFTransitionCoordinator
-- (SFTransitionCoordinator)initWithAnimations:(id)a3 completion:(id)a4;
-- (SFTransitionCoordinator)initWithDuration:(double)a3 delay:(double)a4 options:(unint64_t)a5 animations:(id)a6 completion:(id)a7;
+- (SFTransitionCoordinator)initWithAnimations:(id)animations completion:(id)completion;
+- (SFTransitionCoordinator)initWithDuration:(double)duration delay:(double)delay options:(unint64_t)options animations:(id)animations completion:(id)completion;
 - (UIViewSpringAnimationBehaviorDescribing)springAnimationBehavior;
-- (void)addAnimation:(uint64_t)a1;
-- (void)addAnimations:(id)a3;
-- (void)addCompletion:(id)a3;
-- (void)addKeyframeWithRelativeStartTime:(double)a3 relativeDuration:(double)a4 animations:(id)a5;
-- (void)addRetargetableAnimations:(id)a3;
+- (void)addAnimation:(uint64_t)animation;
+- (void)addAnimations:(id)animations;
+- (void)addCompletion:(id)completion;
+- (void)addKeyframeWithRelativeStartTime:(double)time relativeDuration:(double)duration animations:(id)animations;
+- (void)addRetargetableAnimations:(id)animations;
 - (void)invokeAnimations;
 - (void)invokeCompletion;
-- (void)performTransitionWithAnimation:(BOOL)a3 inContextOfContainerView:(id)a4;
+- (void)performTransitionWithAnimation:(BOOL)animation inContextOfContainerView:(id)view;
 @end
 
 @implementation SFTransitionCoordinator
@@ -91,12 +91,12 @@
   }
 }
 
-- (SFTransitionCoordinator)initWithDuration:(double)a3 delay:(double)a4 options:(unint64_t)a5 animations:(id)a6 completion:(id)a7
+- (SFTransitionCoordinator)initWithDuration:(double)duration delay:(double)delay options:(unint64_t)options animations:(id)animations completion:(id)completion
 {
-  v10 = [(SFTransitionCoordinator *)self initWithAnimations:a6 completion:a7];
+  v10 = [(SFTransitionCoordinator *)self initWithAnimations:animations completion:completion];
   if (v10)
   {
-    v11 = [[SFTransitionBasicAnimation alloc] initWithDuration:a5 delay:a3 options:a4];
+    v11 = [[SFTransitionBasicAnimation alloc] initWithDuration:options delay:duration options:delay];
     basicAnimation = v10->_basicAnimation;
     v10->_basicAnimation = v11;
 
@@ -106,27 +106,27 @@
   return v10;
 }
 
-- (SFTransitionCoordinator)initWithAnimations:(id)a3 completion:(id)a4
+- (SFTransitionCoordinator)initWithAnimations:(id)animations completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  animationsCopy = animations;
+  completionCopy = completion;
   v18.receiver = self;
   v18.super_class = SFTransitionCoordinator;
   v8 = [(SFTransitionCoordinator *)&v18 init];
   if (v8)
   {
-    if (v6)
+    if (animationsCopy)
     {
-      v9 = [[SFTransitionCoordinatorBasicAnimation alloc] initWithAnimations:v6];
+      v9 = [[SFTransitionCoordinatorBasicAnimation alloc] initWithAnimations:animationsCopy];
       v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v9, 0}];
       animations = v8->_animations;
       v8->_animations = v10;
     }
 
-    if (v7)
+    if (completionCopy)
     {
       v12 = objc_alloc(MEMORY[0x1E695DF70]);
-      v13 = _Block_copy(v7);
+      v13 = _Block_copy(completionCopy);
       v14 = [v12 initWithObjects:{v13, 0}];
       completionBlocks = v8->_completionBlocks;
       v8->_completionBlocks = v14;
@@ -138,9 +138,9 @@
   return v8;
 }
 
-- (void)performTransitionWithAnimation:(BOOL)a3 inContextOfContainerView:(id)a4
+- (void)performTransitionWithAnimation:(BOOL)animation inContextOfContainerView:(id)view
 {
-  if (a3)
+  if (animation)
   {
     v5 = dispatch_group_create();
     v6 = [(NSMutableArray *)self->_animations mutableCopy];
@@ -153,7 +153,7 @@
       v21 = v24;
       do
       {
-        v8 = [v6 firstObject];
+        firstObject = [v6 firstObject];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -175,7 +175,7 @@
         if (isKindOfClass)
         {
           v13 = MEMORY[0x1E69DD250];
-          v14 = [(SFTransitionCoordinator *)self springAnimationBehavior];
+          springAnimationBehavior = [(SFTransitionCoordinator *)self springAnimationBehavior];
           v38[0] = MEMORY[0x1E69E9820];
           v38[1] = 3221225472;
           v38[2] = __83__SFTransitionCoordinator_performTransitionWithAnimation_inContextOfContainerView___block_invoke_2;
@@ -187,7 +187,7 @@
           v36[2] = __83__SFTransitionCoordinator_performTransitionWithAnimation_inContextOfContainerView___block_invoke_3;
           v36[3] = &unk_1E721EEB0;
           v37 = v5;
-          [v13 _animateUsingSpringBehavior:v14 tracking:0 animations:v38 completion:v36];
+          [v13 _animateUsingSpringBehavior:springAnimationBehavior tracking:0 animations:v38 completion:v36];
 
           v15 = &v37;
           v16 = v39;
@@ -445,39 +445,39 @@ void __83__SFTransitionCoordinator_performTransitionWithAnimation_inContextOfCon
   return v3;
 }
 
-- (void)addCompletion:(id)a3
+- (void)addCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   completionBlocks = self->_completionBlocks;
-  aBlock = v4;
+  aBlock = completionCopy;
   if (!completionBlocks)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_completionBlocks;
     self->_completionBlocks = v6;
 
-    v4 = aBlock;
+    completionCopy = aBlock;
     completionBlocks = self->_completionBlocks;
   }
 
-  v8 = _Block_copy(v4);
+  v8 = _Block_copy(completionCopy);
   [(NSMutableArray *)completionBlocks addObject:v8];
 }
 
-- (void)addAnimation:(uint64_t)a1
+- (void)addAnimation:(uint64_t)animation
 {
   v3 = a2;
-  if (a1)
+  if (animation)
   {
-    v4 = *(a1 + 8);
+    v4 = *(animation + 8);
     v7 = v3;
     if (!v4)
     {
       v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v6 = *(a1 + 8);
-      *(a1 + 8) = v5;
+      v6 = *(animation + 8);
+      *(animation + 8) = v5;
 
-      v4 = *(a1 + 8);
+      v4 = *(animation + 8);
     }
 
     [v4 addObject:v7];
@@ -485,7 +485,7 @@ void __83__SFTransitionCoordinator_performTransitionWithAnimation_inContextOfCon
   }
 }
 
-- (void)addAnimations:(id)a3
+- (void)addAnimations:(id)animations
 {
   v4 = off_1E7218ED8;
   if (self->_overrideSpringAnimationBehavior)
@@ -494,29 +494,29 @@ void __83__SFTransitionCoordinator_performTransitionWithAnimation_inContextOfCon
   }
 
   v5 = *v4;
-  v6 = a3;
-  v7 = [(SFTransitionCoordinatorBasicAnimation *)[v5 alloc] initWithAnimations:v6];
+  animationsCopy = animations;
+  v7 = [(SFTransitionCoordinatorBasicAnimation *)[v5 alloc] initWithAnimations:animationsCopy];
 
   [(SFTransitionCoordinator *)self addAnimation:v7];
 }
 
-- (void)addKeyframeWithRelativeStartTime:(double)a3 relativeDuration:(double)a4 animations:(id)a5
+- (void)addKeyframeWithRelativeStartTime:(double)time relativeDuration:(double)duration animations:(id)animations
 {
   if (!self->_keyframeAnimationMode)
   {
     self->_keyframeAnimationMode = 1;
   }
 
-  v8 = a5;
-  v9 = [[SFTransitionCoordinatorKeyframeAnimation alloc] initWithStartTime:v8 duration:a3 animations:a4];
+  animationsCopy = animations;
+  v9 = [[SFTransitionCoordinatorKeyframeAnimation alloc] initWithStartTime:animationsCopy duration:time animations:duration];
 
   [(SFTransitionCoordinator *)self addAnimation:v9];
 }
 
-- (void)addRetargetableAnimations:(id)a3
+- (void)addRetargetableAnimations:(id)animations
 {
-  v4 = a3;
-  v5 = [(SFTransitionCoordinatorBasicAnimation *)[SFTransitionCoordinatorRetargetableAnimation alloc] initWithAnimations:v4];
+  animationsCopy = animations;
+  v5 = [(SFTransitionCoordinatorBasicAnimation *)[SFTransitionCoordinatorRetargetableAnimation alloc] initWithAnimations:animationsCopy];
 
   [(SFTransitionCoordinator *)self addAnimation:v5];
 }

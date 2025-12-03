@@ -1,7 +1,7 @@
 @interface SBSAInterfaceElementPropertyIdentity
-- (BOOL)isEqual:(id)a3;
-- (SBSAInterfaceElementPropertyIdentity)initWithAssociatedInterfaceElementIdentifier:(id)a3 andProperty:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (SBSAInterfaceElementPropertyIdentity)initWithAssociatedInterfaceElementIdentifier:(id)identifier andProperty:(id)property;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -9,20 +9,20 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_associatedInterfaceElementIdentifier];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_associatedInterfaceElementIdentifier];
   v5 = [v4 appendString:self->_interfaceElementProperty];
   v6 = [v5 hash];
 
   return v6;
 }
 
-- (SBSAInterfaceElementPropertyIdentity)initWithAssociatedInterfaceElementIdentifier:(id)a3 andProperty:(id)a4
+- (SBSAInterfaceElementPropertyIdentity)initWithAssociatedInterfaceElementIdentifier:(id)identifier andProperty:(id)property
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7 || ![v8 length])
+  identifierCopy = identifier;
+  propertyCopy = property;
+  v9 = propertyCopy;
+  if (!identifierCopy || ![propertyCopy length])
   {
     [SBSAInterfaceElementPropertyIdentity initWithAssociatedInterfaceElementIdentifier:a2 andProperty:self];
   }
@@ -32,7 +32,7 @@
   v10 = [(SBSAInterfaceElementPropertyIdentity *)&v16 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [identifierCopy copy];
     associatedInterfaceElementIdentifier = v10->_associatedInterfaceElementIdentifier;
     v10->_associatedInterfaceElementIdentifier = v11;
 
@@ -44,16 +44,16 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   associatedInterfaceElementIdentifier = self->_associatedInterfaceElementIdentifier;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __48__SBSAInterfaceElementPropertyIdentity_isEqual___block_invoke;
   v19[3] = &unk_2783ACDB8;
-  v7 = v4;
+  v7 = equalCopy;
   v20 = v7;
   v8 = [v5 appendObject:associatedInterfaceElementIdentifier counterpart:v19];
   interfaceElementProperty = self->_interfaceElementProperty;
@@ -69,7 +69,7 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   associatedInterfaceElementIdentifier = self->_associatedInterfaceElementIdentifier;

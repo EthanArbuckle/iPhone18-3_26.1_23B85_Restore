@@ -1,32 +1,32 @@
 @interface CNContactVCardParsedResultBuilder
-+ (id)contactKeyForVCardKey:(id)a3;
-+ (id)contactValueTransformForVCardKey:(id)a3;
-+ (id)labeledValuesWithValues:(id)a3 transform:(id)a4 labels:(id)a5 isPrimaries:(id)a6;
++ (id)contactKeyForVCardKey:(id)key;
++ (id)contactValueTransformForVCardKey:(id)key;
++ (id)labeledValuesWithValues:(id)values transform:(id)transform labels:(id)labels isPrimaries:(id)primaries;
 + (id)os_log;
-- (BOOL)setImageData:(id)a3 forReference:(id)a4 clipRects:(id)a5;
-- (BOOL)setPersonFlags:(int64_t)a3;
-- (BOOL)setValue:(id)a3 forProperty:(id)a4;
-- (BOOL)setValues:(id)a3 labels:(id)a4 isPrimaries:(id)a5 forProperty:(id)a6;
+- (BOOL)setImageData:(id)data forReference:(id)reference clipRects:(id)rects;
+- (BOOL)setPersonFlags:(int64_t)flags;
+- (BOOL)setValue:(id)value forProperty:(id)property;
+- (BOOL)setValues:(id)values labels:(id)labels isPrimaries:(id)primaries forProperty:(id)property;
 - (CNContactVCardParsedResultBuilder)init;
 - (id)build;
-- (id)valueForProperty:(id)a3;
+- (id)valueForProperty:(id)property;
 - (int64_t)personFlags;
-- (unint64_t)personFlagsByAddingContactType:(int64_t)a3 toFlags:(unint64_t)a4;
-- (unint64_t)personFlagsByAddingSharedPhotoDisplayPreference:(int64_t)a3 toFlags:(unint64_t)a4;
+- (unint64_t)personFlagsByAddingContactType:(int64_t)type toFlags:(unint64_t)flags;
+- (unint64_t)personFlagsByAddingSharedPhotoDisplayPreference:(int64_t)preference toFlags:(unint64_t)flags;
 @end
 
 @implementation CNContactVCardParsedResultBuilder
 
-+ (id)contactKeyForVCardKey:(id)a3
++ (id)contactKeyForVCardKey:(id)key
 {
   v3 = contactKeyForVCardKey__cn_once_token_0;
-  v4 = a3;
+  keyCopy = key;
   if (v3 != -1)
   {
     +[CNContactVCardParsedResultBuilder contactKeyForVCardKey:];
   }
 
-  v5 = [contactKeyForVCardKey__cn_once_object_0 objectForKeyedSubscript:v4];
+  v5 = [contactKeyForVCardKey__cn_once_object_0 objectForKeyedSubscript:keyCopy];
 
   return v5;
 }
@@ -132,15 +132,15 @@ void __59__CNContactVCardParsedResultBuilder_contactKeyForVCardKey___block_invok
   contactKeyForVCardKey__cn_once_object_0 = v19;
 }
 
-+ (id)contactValueTransformForVCardKey:(id)a3
++ (id)contactValueTransformForVCardKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   if (contactValueTransformForVCardKey__cn_once_token_1 != -1)
   {
     +[CNContactVCardParsedResultBuilder contactValueTransformForVCardKey:];
   }
 
-  v4 = [contactValueTransformForVCardKey__cn_once_object_1 objectForKeyedSubscript:v3];
+  v4 = [contactValueTransformForVCardKey__cn_once_object_1 objectForKeyedSubscript:keyCopy];
   if (!v4)
   {
     v4 = _Block_copy(*MEMORY[0x1E6996520]);
@@ -234,9 +234,9 @@ uint64_t __43__CNContactVCardParsedResultBuilder_os_log__block_invoke()
   return v4;
 }
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
-  if ([a3 isEqual:*MEMORY[0x1E69E4930]])
+  if ([property isEqual:*MEMORY[0x1E69E4930]])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CNContactVCardParsedResultBuilder personFlags](self, "personFlags")}];
   }
@@ -249,37 +249,37 @@ uint64_t __43__CNContactVCardParsedResultBuilder_os_log__block_invoke()
   return v4;
 }
 
-- (BOOL)setValue:(id)a3 forProperty:(id)a4
+- (BOOL)setValue:(id)value forProperty:(id)property
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() contactKeyForVCardKey:v7];
+  valueCopy = value;
+  propertyCopy = property;
+  v8 = [objc_opt_class() contactKeyForVCardKey:propertyCopy];
   v9 = MEMORY[0x1E69E4930];
-  if (v8 || ([v7 isEqual:*MEMORY[0x1E69E4930]] & 1) != 0)
+  if (v8 || ([propertyCopy isEqual:*MEMORY[0x1E69E4930]] & 1) != 0)
   {
-    if (v6)
+    if (valueCopy)
     {
       self->_empty = 0;
     }
 
-    if ([v7 isEqual:*v9])
+    if ([propertyCopy isEqual:*v9])
     {
-      -[CNContactVCardParsedResultBuilder setPersonFlags:](self, "setPersonFlags:", [v6 integerValue]);
+      -[CNContactVCardParsedResultBuilder setPersonFlags:](self, "setPersonFlags:", [valueCopy integerValue]);
     }
 
     else
     {
-      v10 = [objc_opt_class() contactValueTransformForVCardKey:v7];
+      v10 = [objc_opt_class() contactValueTransformForVCardKey:propertyCopy];
       v11 = v10;
       if (v10)
       {
-        v12 = (*(v10 + 16))(v10, v6);
+        v12 = (*(v10 + 16))(v10, valueCopy);
 
-        v6 = v12;
+        valueCopy = v12;
       }
 
-      [(CNMutableContact *)self->_contact setValue:v6 forKey:v8];
+      [(CNMutableContact *)self->_contact setValue:valueCopy forKey:v8];
     }
 
     v13 = 1;
@@ -287,14 +287,14 @@ uint64_t __43__CNContactVCardParsedResultBuilder_os_log__block_invoke()
 
   else
   {
-    v15 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412546;
-      v17 = v7;
+      v17 = propertyCopy;
       v18 = 2112;
-      v19 = v6;
-      _os_log_impl(&dword_1954A0000, v15, OS_LOG_TYPE_DEFAULT, "Not sure how to handle '%@': %@", &v16, 0x16u);
+      v19 = valueCopy;
+      _os_log_impl(&dword_1954A0000, os_log, OS_LOG_TYPE_DEFAULT, "Not sure how to handle '%@': %@", &v16, 0x16u);
     }
 
     v13 = 0;
@@ -303,88 +303,88 @@ uint64_t __43__CNContactVCardParsedResultBuilder_os_log__block_invoke()
   return v13;
 }
 
-- (BOOL)setValues:(id)a3 labels:(id)a4 isPrimaries:(id)a5 forProperty:(id)a6
+- (BOOL)setValues:(id)values labels:(id)labels isPrimaries:(id)primaries forProperty:(id)property
 {
   v23 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [objc_opt_class() contactKeyForVCardKey:v13];
+  valuesCopy = values;
+  labelsCopy = labels;
+  primariesCopy = primaries;
+  propertyCopy = property;
+  v14 = [objc_opt_class() contactKeyForVCardKey:propertyCopy];
   if (v14)
   {
-    if ([v10 count])
+    if ([valuesCopy count])
     {
       self->_empty = 0;
     }
 
-    v15 = [objc_opt_class() contactValueTransformForVCardKey:v13];
-    v16 = [objc_opt_class() labeledValuesWithValues:v10 transform:v15 labels:v11 isPrimaries:v12];
+    v15 = [objc_opt_class() contactValueTransformForVCardKey:propertyCopy];
+    v16 = [objc_opt_class() labeledValuesWithValues:valuesCopy transform:v15 labels:labelsCopy isPrimaries:primariesCopy];
     [(CNMutableContact *)self->_contact setValue:v16 forKey:v14];
   }
 
   else
   {
-    v17 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138412546;
-      v20 = v13;
+      v20 = propertyCopy;
       v21 = 2112;
-      v22 = v10;
-      _os_log_impl(&dword_1954A0000, v17, OS_LOG_TYPE_DEFAULT, "Not sure how to handle '%@': %@", &v19, 0x16u);
+      v22 = valuesCopy;
+      _os_log_impl(&dword_1954A0000, os_log, OS_LOG_TYPE_DEFAULT, "Not sure how to handle '%@': %@", &v19, 0x16u);
     }
   }
 
   return v14 != 0;
 }
 
-+ (id)labeledValuesWithValues:(id)a3 transform:(id)a4 labels:(id)a5 isPrimaries:(id)a6
++ (id)labeledValuesWithValues:(id)values transform:(id)transform labels:(id)labels isPrimaries:(id)primaries
 {
   v29 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v26 = a5;
-  v25 = a6;
-  v11 = [MEMORY[0x1E695DF70] array];
-  v12 = [MEMORY[0x1E695DF70] array];
-  if ([v9 count])
+  valuesCopy = values;
+  transformCopy = transform;
+  labelsCopy = labels;
+  primariesCopy = primaries;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  if ([valuesCopy count])
   {
     v14 = 0;
     *&v13 = 138412290;
     v24 = v13;
     do
     {
-      v15 = [v9 objectAtIndexedSubscript:{v14, v24}];
-      if (v10 && (v10[2](v10, v15), v16 = objc_claimAutoreleasedReturnValue(), v15, (v15 = v16) == 0))
+      os_log = [valuesCopy objectAtIndexedSubscript:{v14, v24}];
+      if (transformCopy && (transformCopy[2](transformCopy, os_log), v16 = objc_claimAutoreleasedReturnValue(), os_log, (os_log = v16) == 0))
       {
-        v15 = [objc_opt_class() os_log];
-        if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+        os_log = [objc_opt_class() os_log];
+        if (!os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
         {
           goto LABEL_11;
         }
 
-        v17 = [v9 objectAtIndexedSubscript:v14];
+        v17 = [valuesCopy objectAtIndexedSubscript:v14];
         *buf = v24;
         v28 = v17;
-        _os_log_debug_impl(&dword_1954A0000, v15, OS_LOG_TYPE_DEBUG, "Got nil when transforming from vcard value:%@", buf, 0xCu);
+        _os_log_debug_impl(&dword_1954A0000, os_log, OS_LOG_TYPE_DEBUG, "Got nil when transforming from vcard value:%@", buf, 0xCu);
       }
 
       else
       {
-        v17 = [v26 objectAtIndexedSubscript:v14];
-        v18 = [[CNLabeledValue alloc] initWithLabel:v17 value:v15];
-        v19 = [v25 objectAtIndexedSubscript:v14];
-        v20 = [v19 BOOLValue];
+        v17 = [labelsCopy objectAtIndexedSubscript:v14];
+        v18 = [[CNLabeledValue alloc] initWithLabel:v17 value:os_log];
+        v19 = [primariesCopy objectAtIndexedSubscript:v14];
+        bOOLValue = [v19 BOOLValue];
 
-        if (v20)
+        if (bOOLValue)
         {
-          v21 = v11;
+          v21 = array;
         }
 
         else
         {
-          v21 = v12;
+          v21 = array2;
         }
 
         [v21 addObject:v18];
@@ -394,26 +394,26 @@ LABEL_11:
       ++v14;
     }
 
-    while (v14 < [v9 count]);
+    while (v14 < [valuesCopy count]);
   }
 
-  v22 = [v11 mutableCopy];
-  [v22 addObjectsFromArray:v12];
+  v22 = [array mutableCopy];
+  [v22 addObjectsFromArray:array2];
 
   return v22;
 }
 
-- (BOOL)setImageData:(id)a3 forReference:(id)a4 clipRects:(id)a5
+- (BOOL)setImageData:(id)data forReference:(id)reference clipRects:(id)rects
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && [v8 length])
+  dataCopy = data;
+  referenceCopy = reference;
+  rectsCopy = rects;
+  if (dataCopy && [dataCopy length])
   {
     self->_empty = 0;
-    [(CNMutableContact *)self->_contact setImageData:v8];
-    v11 = [v10 firstObject];
-    v12 = [v11 objectForKeyedSubscript:@"kABImageInfoClipRectKey"];
+    [(CNMutableContact *)self->_contact setImageData:dataCopy];
+    firstObject = [rectsCopy firstObject];
+    v12 = [firstObject objectForKeyedSubscript:@"kABImageInfoClipRectKey"];
     v13 = v12;
     if (v12)
     {
@@ -425,47 +425,47 @@ LABEL_11:
   return 1;
 }
 
-- (unint64_t)personFlagsByAddingContactType:(int64_t)a3 toFlags:(unint64_t)a4
+- (unint64_t)personFlagsByAddingContactType:(int64_t)type toFlags:(unint64_t)flags
 {
-  if (a3 == 1)
+  if (type == 1)
   {
-    return (a4 & 0xFFFFFFFFFFFFFFF8) + 1;
+    return (flags & 0xFFFFFFFFFFFFFFF8) + 1;
   }
 
   else
   {
-    return a4 & 0xFFFFFFFFFFFFFFF8;
+    return flags & 0xFFFFFFFFFFFFFFF8;
   }
 }
 
-- (unint64_t)personFlagsByAddingSharedPhotoDisplayPreference:(int64_t)a3 toFlags:(unint64_t)a4
+- (unint64_t)personFlagsByAddingSharedPhotoDisplayPreference:(int64_t)preference toFlags:(unint64_t)flags
 {
-  if ((a3 - 1) >= 3)
+  if ((preference - 1) >= 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = ((a3 - 1) << 6) + 64;
+    v4 = ((preference - 1) << 6) + 64;
   }
 
-  return v4 | a4 & 0xFFFFFFFFFFFFFF3FLL;
+  return v4 | flags & 0xFFFFFFFFFFFFFF3FLL;
 }
 
-- (BOOL)setPersonFlags:(int64_t)a3
+- (BOOL)setPersonFlags:(int64_t)flags
 {
   [(CNMutableContact *)self->_contact setContactType:[(CNContactVCardParsedResultBuilder *)self contactTypeFromPersonFlags:?]];
-  [(CNMutableContact *)self->_contact setSharedPhotoDisplayPreference:[(CNContactVCardParsedResultBuilder *)self sharedPhotoDisplayPreferenceFromPersonFlags:a3]];
+  [(CNMutableContact *)self->_contact setSharedPhotoDisplayPreference:[(CNContactVCardParsedResultBuilder *)self sharedPhotoDisplayPreferenceFromPersonFlags:flags]];
   return 1;
 }
 
 - (int64_t)personFlags
 {
   v3 = [(CNContactVCardParsedResultBuilder *)self personFlagsByAddingContactType:[(CNMutableContact *)self->_contact contactType] toFlags:0];
-  v4 = [(CNMutableContact *)self->_contact sharedPhotoDisplayPreference];
+  sharedPhotoDisplayPreference = [(CNMutableContact *)self->_contact sharedPhotoDisplayPreference];
 
-  return [(CNContactVCardParsedResultBuilder *)self personFlagsByAddingSharedPhotoDisplayPreference:v4 toFlags:v3];
+  return [(CNContactVCardParsedResultBuilder *)self personFlagsByAddingSharedPhotoDisplayPreference:sharedPhotoDisplayPreference toFlags:v3];
 }
 
 @end

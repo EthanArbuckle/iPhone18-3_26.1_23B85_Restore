@@ -1,17 +1,17 @@
 @interface CUIKUndoManager
-+ (id)operationForAction:(unint64_t)a3 context:(id)a4;
++ (id)operationForAction:(unint64_t)action context:(id)context;
 - (CUIKUndoManager)init;
-- (id)objectToSaveForRevertingChangeToObject:(id)a3;
-- (id)objectToSaveForUndoingChangeToObject:(id)a3;
+- (id)objectToSaveForRevertingChangeToObject:(id)object;
+- (id)objectToSaveForUndoingChangeToObject:(id)object;
 - (void)_clearUndeletedObjects;
-- (void)_registerUndeletedObject:(id)a3 withOriginalObjectID:(id)a4;
+- (void)_registerUndeletedObject:(id)object withOriginalObjectID:(id)d;
 - (void)clearUndoOperations;
-- (void)handleUndoForOperation:(id)a3;
-- (void)objectWithSpecificIdentifierWasReverted:(id)a3;
+- (void)handleUndoForOperation:(id)operation;
+- (void)objectWithSpecificIdentifierWasReverted:(id)reverted;
 - (void)removeAllActions;
-- (void)setRevertObject:(id)a3 forSpecificIdentifier:(id)a4;
-- (void)setUndoObject:(id)a3 forSpecificIdentifier:(id)a4;
-- (void)undoOperation:(id)a3;
+- (void)setRevertObject:(id)object forSpecificIdentifier:(id)identifier;
+- (void)setUndoObject:(id)object forSpecificIdentifier:(id)identifier;
+- (void)undoOperation:(id)operation;
 @end
 
 @implementation CUIKUndoManager
@@ -30,34 +30,34 @@
   return v3;
 }
 
-- (void)handleUndoForOperation:(id)a3
+- (void)handleUndoForOperation:(id)operation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 inverseOperation];
-  if (v5)
+  operationCopy = operation;
+  inverseOperation = [operationCopy inverseOperation];
+  if (inverseOperation)
   {
     [(CUIKUndoManager *)self beginUndoGrouping];
-    [(CUIKUndoManager *)self registerUndoWithTarget:self selector:sel_undoOperation_ object:v5];
-    v18 = v5;
+    [(CUIKUndoManager *)self registerUndoWithTarget:self selector:sel_undoOperation_ object:inverseOperation];
+    v18 = inverseOperation;
     if (([(CUIKUndoManager *)self isUndoing]& 1) != 0)
     {
-      v6 = v5;
+      v6 = inverseOperation;
     }
 
     else
     {
-      v6 = v4;
+      v6 = operationCopy;
     }
 
-    v17 = [v6 actionName];
-    [(CUIKUndoManager *)self setActionName:v17];
+    actionName = [v6 actionName];
+    [(CUIKUndoManager *)self setActionName:actionName];
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = [v4 objects];
-    v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    objects = [operationCopy objects];
+    v8 = [objects countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
       v9 = v8;
@@ -69,30 +69,30 @@
         {
           if (*v20 != v11)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(objects);
           }
 
           v13 = *(*(&v19 + 1) + 8 * i);
-          v14 = [v4 originalObjects];
-          v15 = [v14 objectAtIndexedSubscript:v10];
+          originalObjects = [operationCopy originalObjects];
+          v15 = [originalObjects objectAtIndexedSubscript:v10];
 
           if ([v13 isUndeleted])
           {
-            v16 = [v15 objectID];
-            [(CUIKUndoManager *)self _registerUndeletedObject:v13 withOriginalObjectID:v16];
+            objectID = [v15 objectID];
+            [(CUIKUndoManager *)self _registerUndeletedObject:v13 withOriginalObjectID:objectID];
           }
 
           ++v10;
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v9 = [objects countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v9);
     }
 
     [(CUIKUndoManager *)self endUndoGrouping];
-    v5 = v18;
+    inverseOperation = v18;
   }
 
   else
@@ -101,21 +101,21 @@
   }
 }
 
-- (void)undoOperation:(id)a3
+- (void)undoOperation:(id)operation
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CUIKUndoManager *)self editingManagerProvider];
-  v6 = [v4 eventStore];
-  v7 = (v5)[2](v5, v6);
+  operationCopy = operation;
+  editingManagerProvider = [(CUIKUndoManager *)self editingManagerProvider];
+  eventStore = [operationCopy eventStore];
+  v7 = (editingManagerProvider)[2](editingManagerProvider, eventStore);
 
-  v8 = [v4 objects];
-  v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  objects = [operationCopy objects];
+  v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(objects, "count")}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = v8;
+  v10 = objects;
   v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v11)
   {
@@ -146,31 +146,31 @@
 
   v16 = [v7 openEditingContextWithObjects:v9 interfaceType:2];
   [v16 setUndoDelegate:self];
-  v17 = [(CUIKUndoManager *)self decisionDelegate];
-  [v16 setDecisionDelegate:v17];
+  decisionDelegate = [(CUIKUndoManager *)self decisionDelegate];
+  [v16 setDecisionDelegate:decisionDelegate];
 
-  v18 = [(CUIKUndoManager *)self commitDelegate];
-  [v16 setCommitDelegate:v18];
+  commitDelegate = [(CUIKUndoManager *)self commitDelegate];
+  [v16 setCommitDelegate:commitDelegate];
 
-  v19 = [(CUIKUndoManager *)self isUndoing];
+  isUndoing = [(CUIKUndoManager *)self isUndoing];
   v20 = +[CUIKLogSubsystem undo];
   v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG);
-  if (v19)
+  if (isUndoing)
   {
     if (v21)
     {
-      [(CUIKUndoManager *)v4 undoOperation:v20];
+      [(CUIKUndoManager *)operationCopy undoOperation:v20];
     }
   }
 
   else if (v21)
   {
-    [(CUIKUndoManager *)v4 undoOperation:v20];
+    [(CUIKUndoManager *)operationCopy undoOperation:v20];
   }
 
-  [v16 performUndoableOperation:v4];
-  v22 = [v4 error];
-  [(CUIKUndoManager *)self setLastError:v22];
+  [v16 performUndoableOperation:operationCopy];
+  error = [operationCopy error];
+  [(CUIKUndoManager *)self setLastError:error];
 
   [v7 closeEditingContext:v16];
 }
@@ -193,32 +193,32 @@
   [(CUIKUndoManager *)self _clearUndeletedObjects];
 }
 
-+ (id)operationForAction:(unint64_t)a3 context:(id)a4
++ (id)operationForAction:(unint64_t)action context:(id)context
 {
-  v5 = a4;
-  if (a3 - 1 > 4)
+  contextCopy = context;
+  if (action - 1 > 4)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [(__objc2_class *)*off_1E839A560[a3 - 1] operationForContext:v5];
+    v6 = [(__objc2_class *)*off_1E839A560[action - 1] operationForContext:contextCopy];
   }
 
   return v6;
 }
 
-- (id)objectToSaveForRevertingChangeToObject:(id)a3
+- (id)objectToSaveForRevertingChangeToObject:(id)object
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  objectCopy = object;
+  v5 = objectCopy;
+  if (objectCopy)
   {
-    v6 = v4;
-    v7 = [(CUIKUndoManager *)self specificIdentifierMapForRevert];
-    v8 = [v6 specificIdentifier];
-    v9 = [v7 objectForKeyedSubscript:v8];
+    v6 = objectCopy;
+    specificIdentifierMapForRevert = [(CUIKUndoManager *)self specificIdentifierMapForRevert];
+    specificIdentifier = [v6 specificIdentifier];
+    v9 = [specificIdentifierMapForRevert objectForKeyedSubscript:specificIdentifier];
 
     if (v9)
     {
@@ -236,16 +236,16 @@
   return v6;
 }
 
-- (id)objectToSaveForUndoingChangeToObject:(id)a3
+- (id)objectToSaveForUndoingChangeToObject:(id)object
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  objectCopy = object;
+  v5 = objectCopy;
+  if (objectCopy)
   {
-    v6 = v4;
-    v7 = [(CUIKUndoManager *)self specificIdentifierMapForUndo];
-    v8 = [v6 specificIdentifier];
-    v9 = [v7 objectForKeyedSubscript:v8];
+    v6 = objectCopy;
+    specificIdentifierMapForUndo = [(CUIKUndoManager *)self specificIdentifierMapForUndo];
+    specificIdentifier = [v6 specificIdentifier];
+    v9 = [specificIdentifierMapForUndo objectForKeyedSubscript:specificIdentifier];
 
     if (v9)
     {
@@ -254,14 +254,14 @@
       v6 = v10;
     }
 
-    v11 = [(CUIKUndoManager *)self undeletedObjectMap];
-    v12 = [v6 objectID];
-    v13 = [v11 objectForKeyedSubscript:v12];
-    v14 = [v13 undeletedObject];
+    undeletedObjectMap = [(CUIKUndoManager *)self undeletedObjectMap];
+    objectID = [v6 objectID];
+    v13 = [undeletedObjectMap objectForKeyedSubscript:objectID];
+    undeletedObject = [v13 undeletedObject];
 
-    if (v14)
+    if (undeletedObject)
     {
-      v15 = [v14 copy];
+      v15 = [undeletedObject copy];
 
       v6 = v15;
     }
@@ -275,66 +275,66 @@
   return v6;
 }
 
-- (void)setUndoObject:(id)a3 forSpecificIdentifier:(id)a4
+- (void)setUndoObject:(id)object forSpecificIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CUIKUndoManager *)self specificIdentifierMapForUndo];
+  identifierCopy = identifier;
+  objectCopy = object;
+  specificIdentifierMapForUndo = [(CUIKUndoManager *)self specificIdentifierMapForUndo];
 
-  if (!v8)
+  if (!specificIdentifierMapForUndo)
   {
     v9 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:1];
     [(CUIKUndoManager *)self setSpecificIdentifierMapForUndo:v9];
   }
 
-  v10 = [(CUIKUndoManager *)self specificIdentifierMapForUndo];
-  [v10 setObject:v7 forKeyedSubscript:v6];
+  specificIdentifierMapForUndo2 = [(CUIKUndoManager *)self specificIdentifierMapForUndo];
+  [specificIdentifierMapForUndo2 setObject:objectCopy forKeyedSubscript:identifierCopy];
 }
 
-- (void)setRevertObject:(id)a3 forSpecificIdentifier:(id)a4
+- (void)setRevertObject:(id)object forSpecificIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CUIKUndoManager *)self specificIdentifierMapForRevert];
+  identifierCopy = identifier;
+  objectCopy = object;
+  specificIdentifierMapForRevert = [(CUIKUndoManager *)self specificIdentifierMapForRevert];
 
-  if (!v8)
+  if (!specificIdentifierMapForRevert)
   {
     v9 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:1];
     [(CUIKUndoManager *)self setSpecificIdentifierMapForRevert:v9];
   }
 
-  v10 = [(CUIKUndoManager *)self specificIdentifierMapForRevert];
-  [v10 setObject:v7 forKeyedSubscript:v6];
+  specificIdentifierMapForRevert2 = [(CUIKUndoManager *)self specificIdentifierMapForRevert];
+  [specificIdentifierMapForRevert2 setObject:objectCopy forKeyedSubscript:identifierCopy];
 }
 
-- (void)objectWithSpecificIdentifierWasReverted:(id)a3
+- (void)objectWithSpecificIdentifierWasReverted:(id)reverted
 {
-  v4 = a3;
-  v5 = [(CUIKUndoManager *)self specificIdentifierMapForUndo];
-  [v5 removeObjectForKey:v4];
+  revertedCopy = reverted;
+  specificIdentifierMapForUndo = [(CUIKUndoManager *)self specificIdentifierMapForUndo];
+  [specificIdentifierMapForUndo removeObjectForKey:revertedCopy];
 
-  v6 = [(CUIKUndoManager *)self specificIdentifierMapForRevert];
-  [v6 removeObjectForKey:v4];
+  specificIdentifierMapForRevert = [(CUIKUndoManager *)self specificIdentifierMapForRevert];
+  [specificIdentifierMapForRevert removeObjectForKey:revertedCopy];
 }
 
-- (void)_registerUndeletedObject:(id)a3 withOriginalObjectID:(id)a4
+- (void)_registerUndeletedObject:(id)object withOriginalObjectID:(id)d
 {
-  v14 = a4;
-  v6 = a3;
-  v7 = [(CUIKUndoManager *)self undeletedObjectMap];
+  dCopy = d;
+  objectCopy = object;
+  undeletedObjectMap = [(CUIKUndoManager *)self undeletedObjectMap];
 
-  if (v7)
+  if (undeletedObjectMap)
   {
-    v8 = [(CUIKUndoManager *)self undeletedObjectMap];
-    v9 = [v8 objectForKeyedSubscript:v14];
+    undeletedObjectMap2 = [(CUIKUndoManager *)self undeletedObjectMap];
+    v9 = [undeletedObjectMap2 objectForKeyedSubscript:dCopy];
 
     if (v9)
     {
-      v10 = [v9 undeletedObject];
-      v11 = [v10 objectID];
+      undeletedObject = [v9 undeletedObject];
+      objectID = [undeletedObject objectID];
 
-      v12 = [(CUIKUndoManager *)self undeletedObjectMap];
-      [v12 setObject:v9 forKeyedSubscript:v11];
+      undeletedObjectMap3 = [(CUIKUndoManager *)self undeletedObjectMap];
+      [undeletedObjectMap3 setObject:v9 forKeyedSubscript:objectID];
 
       goto LABEL_6;
     }
@@ -347,11 +347,11 @@
   }
 
   v9 = objc_opt_new();
-  v11 = [(CUIKUndoManager *)self undeletedObjectMap];
-  [v11 setObject:v9 forKeyedSubscript:v14];
+  objectID = [(CUIKUndoManager *)self undeletedObjectMap];
+  [objectID setObject:v9 forKeyedSubscript:dCopy];
 LABEL_6:
 
-  [v9 setUndeletedObject:v6];
+  [v9 setUndeletedObject:objectCopy];
 }
 
 - (void)_clearUndeletedObjects

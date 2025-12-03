@@ -1,10 +1,10 @@
 @interface GTMTLTextureRenderEncoder
-- (GTMTLTextureRenderEncoder)initWithDevice:(id)a3;
+- (GTMTLTextureRenderEncoder)initWithDevice:(id)device;
 - (void)reset;
 - (void)resetCommand;
-- (void)setBounds:(CGRect)a3 contentsScale:(double)a4;
-- (void)setTransform:(CATransform3D *)a3;
-- (void)setWaitForEvent:(id)a3 value:(unint64_t)a4;
+- (void)setBounds:(CGRect)bounds contentsScale:(double)scale;
+- (void)setTransform:(CATransform3D *)transform;
+- (void)setWaitForEvent:(id)event value:(unint64_t)value;
 - (void)submitCommand;
 @end
 
@@ -17,37 +17,37 @@
   [(GTMTLTextureRenderEncoder *)self resetCommand];
 }
 
-- (void)setWaitForEvent:(id)a3 value:(unint64_t)a4
+- (void)setWaitForEvent:(id)event value:(unint64_t)value
 {
-  [(GTMTLTextureRenderEncoderCommand *)self->_currentCommand setWaitEvent:a3];
+  [(GTMTLTextureRenderEncoderCommand *)self->_currentCommand setWaitEvent:event];
   currentCommand = self->_currentCommand;
 
-  [(GTMTLTextureRenderEncoderCommand *)currentCommand setWaitEventValue:a4];
+  [(GTMTLTextureRenderEncoderCommand *)currentCommand setWaitEventValue:value];
 }
 
-- (void)setTransform:(CATransform3D *)a3
+- (void)setTransform:(CATransform3D *)transform
 {
-  v3 = *&a3->m33;
-  v7[4] = *&a3->m31;
+  v3 = *&transform->m33;
+  v7[4] = *&transform->m31;
   v7[5] = v3;
-  v4 = *&a3->m43;
-  v7[6] = *&a3->m41;
+  v4 = *&transform->m43;
+  v7[6] = *&transform->m41;
   v7[7] = v4;
-  v5 = *&a3->m13;
-  v7[0] = *&a3->m11;
+  v5 = *&transform->m13;
+  v7[0] = *&transform->m11;
   v7[1] = v5;
-  v6 = *&a3->m23;
-  v7[2] = *&a3->m21;
+  v6 = *&transform->m23;
+  v7[2] = *&transform->m21;
   v7[3] = v6;
   [(GTMTLTextureRenderEncoderCommand *)self->_currentCommand setTransform:v7];
 }
 
-- (void)setBounds:(CGRect)a3 contentsScale:(double)a4
+- (void)setBounds:(CGRect)bounds contentsScale:(double)scale
 {
-  [(GTMTLTextureRenderEncoderCommand *)self->_currentCommand setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(GTMTLTextureRenderEncoderCommand *)self->_currentCommand setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   currentCommand = self->_currentCommand;
 
-  [(GTMTLTextureRenderEncoderCommand *)currentCommand setContentsScale:a4];
+  [(GTMTLTextureRenderEncoderCommand *)currentCommand setContentsScale:scale];
 }
 
 - (void)resetCommand
@@ -68,16 +68,16 @@
   [(GTMTLTextureRenderEncoder *)self resetCommand];
 }
 
-- (GTMTLTextureRenderEncoder)initWithDevice:(id)a3
+- (GTMTLTextureRenderEncoder)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v13.receiver = self;
   v13.super_class = GTMTLTextureRenderEncoder;
   v6 = [(GTMTLTextureRenderEncoder *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     commands = v7->_commands;
     v7->_commands = v8;

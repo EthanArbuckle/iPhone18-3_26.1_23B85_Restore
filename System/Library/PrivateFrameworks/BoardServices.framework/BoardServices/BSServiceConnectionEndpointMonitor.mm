@@ -1,14 +1,14 @@
 @interface BSServiceConnectionEndpointMonitor
-+ (id)monitorForService:(id)a3;
++ (id)monitorForService:(id)service;
 - (BSServiceConnectionEndpointMonitor)init;
 - (BSServiceConnectionEndpointMonitorDelegate)delegate;
 - (NSString)description;
-- (id)endpointsForEnvironment:(id)a3;
+- (id)endpointsForEnvironment:(id)environment;
 - (void)activate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)serialCallOut_didUpdateEndpointEnvironments:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)serialCallOut_didUpdateEndpointEnvironments:(id)environments;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation BSServiceConnectionEndpointMonitor
@@ -30,7 +30,7 @@
       v26 = 2114;
       v27 = v12;
       v28 = 2048;
-      v29 = self;
+      selfCopy3 = self;
       v30 = 2114;
       v31 = @"BSServiceConnectionEndpointMonitor.m";
       v32 = 1024;
@@ -60,7 +60,7 @@
       v26 = 2114;
       v27 = v17;
       v28 = 2048;
-      v29 = self;
+      selfCopy3 = self;
       v30 = 2114;
       v31 = @"BSServiceConnectionEndpointMonitor.m";
       v32 = 1024;
@@ -106,7 +106,7 @@
       v26 = 2114;
       v27 = v22;
       v28 = 2048;
-      v29 = self;
+      selfCopy3 = self;
       v30 = 2114;
       v31 = @"BSServiceConnectionEndpointMonitor.m";
       v32 = 1024;
@@ -141,7 +141,7 @@
     v12 = 2114;
     v13 = v7;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"BSServiceConnectionEndpointMonitor.m";
     v18 = 1024;
@@ -175,7 +175,7 @@
       v13 = 2114;
       v14 = v8;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
       v18 = @"BSServiceConnectionEndpointMonitor.m";
       v19 = 1024;
@@ -199,15 +199,15 @@
   v4 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)monitorForService:(id)a3
++ (id)monitorForService:(id)service
 {
   v46 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  serviceCopy = service;
   v4 = [BSServiceConnectionEndpointMonitor alloc];
   v5 = objc_opt_self();
   v6 = [(BSRBSService *)v5 _sharedInstanceCreatingIfNecessary:?];
   v7 = v6;
-  v8 = v3;
+  v8 = serviceCopy;
   if (v4)
   {
     v9 = v7;
@@ -368,10 +368,10 @@
   return v3;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_activated)
   {
@@ -386,7 +386,7 @@
       v15 = 2114;
       v16 = v11;
       v17 = 2048;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
       v20 = @"BSServiceConnectionEndpointMonitor.m";
       v21 = 1024;
@@ -404,7 +404,7 @@
   }
 
   lock_delegate = self->_lock_delegate;
-  self->_lock_delegate = v5;
+  self->_lock_delegate = delegateCopy;
 
   v7 = *MEMORY[0x1E69E9840];
 
@@ -445,11 +445,11 @@
   }
 }
 
-- (id)endpointsForEnvironment:(id)a3
+- (id)endpointsForEnvironment:(id)environment
 {
   v44 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  environmentCopy = environment;
+  if (!environmentCopy)
   {
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"environment"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -462,7 +462,7 @@
       v34 = 2114;
       v35 = v17;
       v36 = 2048;
-      v37 = self;
+      selfCopy3 = self;
       v38 = 2114;
       v39 = @"BSServiceConnectionEndpointMonitor.m";
       v40 = 1024;
@@ -493,7 +493,7 @@
       v34 = 2114;
       v35 = v22;
       v36 = 2048;
-      v37 = self;
+      selfCopy3 = self;
       v38 = 2114;
       v39 = @"BSServiceConnectionEndpointMonitor.m";
       v40 = 1024;
@@ -523,7 +523,7 @@
       v34 = 2114;
       v35 = v27;
       v36 = 2048;
-      v37 = self;
+      selfCopy3 = self;
       v38 = 2114;
       v39 = @"BSServiceConnectionEndpointMonitor.m";
       v40 = 1024;
@@ -546,7 +546,7 @@
   v29[1] = 3221225472;
   v29[2] = __62__BSServiceConnectionEndpointMonitor_endpointsForEnvironment___block_invoke;
   v29[3] = &unk_1E75210D0;
-  v8 = v5;
+  v8 = environmentCopy;
   v30 = v8;
   v9 = v6;
   v31 = v9;
@@ -569,12 +569,12 @@ void __62__BSServiceConnectionEndpointMonitor_endpointsForEnvironment___block_in
   }
 }
 
-- (void)serialCallOut_didUpdateEndpointEnvironments:(id)a3
+- (void)serialCallOut_didUpdateEndpointEnvironments:(id)environments
 {
   v57 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v29 = v6;
-  if (!v6)
+  environmentsCopy = environments;
+  v29 = environmentsCopy;
+  if (!environmentsCopy)
   {
     v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"endpointToEnvironments", 0];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -587,7 +587,7 @@ void __62__BSServiceConnectionEndpointMonitor_endpointsForEnvironment___block_in
       v47 = 2114;
       v48 = v27;
       v49 = 2048;
-      v50 = self;
+      selfCopy = self;
       v51 = 2114;
       v52 = @"BSServiceConnectionEndpointMonitor.m";
       v53 = 1024;
@@ -604,7 +604,7 @@ void __62__BSServiceConnectionEndpointMonitor_endpointsForEnvironment___block_in
     JUMPOUT(0x19A86C884);
   }
 
-  v7 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v6, "count")}];
+  v7 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(environmentsCopy, "count")}];
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
@@ -636,7 +636,7 @@ void __62__BSServiceConnectionEndpointMonitor_endpointsForEnvironment___block_in
 
   v12 = [v7 mutableCopy];
   os_unfair_lock_lock(&self->_lock);
-  objc_storeStrong(&self->_lock_endpointToEnvironments, a3);
+  objc_storeStrong(&self->_lock_endpointToEnvironments, environments);
   v13 = self->_lock_delegate;
   v14 = self->_lock_serialCallOut_endpoints;
   objc_storeStrong(&self->_lock_serialCallOut_endpoints, v7);
@@ -748,9 +748,9 @@ LABEL_8:
   v5 = 0;
   [v3 appendString:v4 withName:0];
 LABEL_9:
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
 @end

@@ -2,52 +2,52 @@
 + (id)BlankValueString;
 + (id)_potentiallyAbsentKeys;
 + (id)listNameOverridesBySymbol;
-+ (id)localizedMagnitudeAbbreviatedStringWithString:(id)a3 fractionDigits:(unsigned int)a4;
-+ (id)postfixCharacterForMagnitude:(unsigned int)a3 unitMagnitude:(unsigned int *)a4;
-+ (id)symbolForURL:(id)a3;
-+ (id)urlForStock:(id)a3;
-+ (id)urlForStockSymbol:(id)a3;
++ (id)localizedMagnitudeAbbreviatedStringWithString:(id)string fractionDigits:(unsigned int)digits;
++ (id)postfixCharacterForMagnitude:(unsigned int)magnitude unitMagnitude:(unsigned int *)unitMagnitude;
++ (id)symbolForURL:(id)l;
++ (id)urlForStock:(id)stock;
++ (id)urlForStockSymbol:(id)symbol;
 - (BOOL)changeIsNegative;
 - (BOOL)changeIsZero;
 - (BOOL)doesMetadataNeedUpdate;
 - (BOOL)doesQuoteNeedUpdate;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isMetadataStale;
 - (BOOL)isQuoteStale;
-- (BOOL)shouldUseCompanyNameAsListName:(unint64_t)a3;
+- (BOOL)shouldUseCompanyNameAsListName:(unint64_t)name;
 - (NSString)formattedChange;
 - (NSString)formattedChangePercent;
 - (NSString)formattedPrice;
 - (NSString)marketStatusDescription;
-- (Stock)initWithDictionary:(id)a3;
+- (Stock)initWithDictionary:(id)dictionary;
 - (double)_updateInterval;
 - (id)archiveDictionary;
-- (id)chartDataForInterval:(int64_t)a3;
+- (id)chartDataForInterval:(int64_t)interval;
 - (id)description;
-- (id)formattedChangePercent:(BOOL)a3;
-- (id)formattedPriceDroppingFractionDigitsIfLengthExceeds:(unint64_t)a3;
+- (id)formattedChangePercent:(BOOL)percent;
+- (id)formattedPriceDroppingFractionDigitsIfLengthExceeds:(unint64_t)exceeds;
 - (id)listNameOverride;
-- (id)listNameWithMaxIndexNameLength:(unint64_t)a3;
+- (id)listNameWithMaxIndexNameLength:(unint64_t)length;
 - (unint64_t)hash;
 - (void)_updatePricePrecision;
 - (void)dealloc;
-- (void)populateFromDictionary:(id)a3;
-- (void)setChartData:(id)a3 forInterval:(int64_t)a4;
-- (void)updateMetadataWithDictionary:(id)a3 forTime:(double)a4;
-- (void)updateQuoteWithDictionary:(id)a3 forTime:(double)a4;
+- (void)populateFromDictionary:(id)dictionary;
+- (void)setChartData:(id)data forInterval:(int64_t)interval;
+- (void)updateMetadataWithDictionary:(id)dictionary forTime:(double)time;
+- (void)updateQuoteWithDictionary:(id)dictionary forTime:(double)time;
 @end
 
 @implementation Stock
 
-+ (id)urlForStockSymbol:(id)a3
++ (id)urlForStockSymbol:(id)symbol
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (symbol)
   {
     v8 = @"symbol";
-    v9[0] = a3;
+    v9[0] = symbol;
     v3 = MEMORY[0x277CBEAC0];
-    v4 = a3;
+    symbolCopy = symbol;
     v5 = [v3 dictionaryWithObjects:v9 forKeys:&v8 count:1];
     v6 = [StocksOpenURLHelper URLForStockComponents:v5];
   }
@@ -60,17 +60,17 @@
   return v6;
 }
 
-+ (id)urlForStock:(id)a3
++ (id)urlForStock:(id)stock
 {
-  v4 = [a3 symbol];
-  v5 = [a1 urlForStockSymbol:v4];
+  symbol = [stock symbol];
+  v5 = [self urlForStockSymbol:symbol];
 
   return v5;
 }
 
-+ (id)symbolForURL:(id)a3
++ (id)symbolForURL:(id)l
 {
-  v3 = [StocksOpenURLHelper componentDictionaryFromURL:a3];
+  v3 = [StocksOpenURLHelper componentDictionaryFromURL:l];
   v4 = [v3 objectForKey:@"symbol"];
 
   return v4;
@@ -81,9 +81,9 @@
   v2 = BlankValueString_blankValueString;
   if (!BlankValueString_blankValueString)
   {
-    v3 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%C", 8212];
+    8212 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%C", 8212];
     v4 = BlankValueString_blankValueString;
-    BlankValueString_blankValueString = v3;
+    BlankValueString_blankValueString = 8212;
 
     v2 = BlankValueString_blankValueString;
   }
@@ -91,51 +91,51 @@
   return v2;
 }
 
-+ (id)postfixCharacterForMagnitude:(unsigned int)a3 unitMagnitude:(unsigned int *)a4
++ (id)postfixCharacterForMagnitude:(unsigned int)magnitude unitMagnitude:(unsigned int *)unitMagnitude
 {
-  *a4 = 0;
-  if (a3 >= 3)
+  *unitMagnitude = 0;
+  if (magnitude >= 3)
   {
-    if (a3 >= 0xC)
+    if (magnitude >= 0xC)
     {
-      v7 = 12;
+      magnitudeCopy = 12;
     }
 
     else
     {
-      v7 = a3;
+      magnitudeCopy = magnitude;
     }
 
     v8 = [StocksBundles getBundle:1];
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"MAGNITUDE_POSTFIX_%u", v7 + 1];
+    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"MAGNITUDE_POSTFIX_%u", magnitudeCopy + 1];
     v10 = [v8 localizedStringForKey:v9 value:&stru_287C73C90 table:@"Localizable"];
 
-    v11 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v12 = [(__CFString *)v10 stringByTrimmingCharactersInSet:v11];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v12 = [(__CFString *)v10 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
     if ([(__CFString *)v10 length])
     {
       while (1)
       {
         v13 = [StocksBundles getBundle:1];
-        v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"MAGNITUDE_POSTFIX_%u", v7 + 1];
+        v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"MAGNITUDE_POSTFIX_%u", magnitudeCopy + 1];
         v15 = [v13 localizedStringForKey:v14 value:&stru_287C73C90 table:@"Localizable"];
 
-        v16 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-        v17 = [v15 stringByTrimmingCharactersInSet:v16];
+        whitespaceAndNewlineCharacterSet2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+        v17 = [v15 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet2];
 
         if (([v17 isEqualToString:v12] & 1) == 0)
         {
           break;
         }
 
-        if (--v7 <= 2)
+        if (--magnitudeCopy <= 2)
         {
           goto LABEL_13;
         }
       }
 
-      *a4 = v7 + 1;
+      *unitMagnitude = magnitudeCopy + 1;
     }
 
 LABEL_13:
@@ -151,14 +151,14 @@ LABEL_13:
   return v5;
 }
 
-+ (id)localizedMagnitudeAbbreviatedStringWithString:(id)a3 fractionDigits:(unsigned int)a4
++ (id)localizedMagnitudeAbbreviatedStringWithString:(id)string fractionDigits:(unsigned int)digits
 {
-  LODWORD(v4) = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  LODWORD(v4) = digits;
+  stringCopy = string;
+  v7 = stringCopy;
+  if (stringCopy)
   {
-    [v6 floatValue];
+    [stringCopy floatValue];
     v9 = v8;
     v10 = log10f(v8);
     v11 = v10;
@@ -170,7 +170,7 @@ LABEL_13:
     else
     {
       v22 = 0;
-      v14 = [a1 postfixCharacterForMagnitude:v10 unitMagnitude:&v22];
+      v14 = [self postfixCharacterForMagnitude:v10 unitMagnitude:&v22];
       v15 = v22;
       if (v22)
       {
@@ -217,23 +217,23 @@ LABEL_13:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(Stock *)self listName];
-  v5 = [(Stock *)self formattedPrice];
-  v6 = [v3 stringWithFormat:@"<Stock %p>: List name = %@, formatted price = %@", self, v4, v5];
+  listName = [(Stock *)self listName];
+  formattedPrice = [(Stock *)self formattedPrice];
+  v6 = [v3 stringWithFormat:@"<Stock %p>: List name = %@, formatted price = %@", self, listName, formattedPrice];
 
   return v6;
 }
 
-- (void)populateFromDictionary:(id)a3
+- (void)populateFromDictionary:(id)dictionary
 {
-  v57 = a3;
-  v4 = [v57 objectForKey:@"companyName"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:@"companyName"];
   [(Stock *)self setCompanyName:v4];
 
-  v5 = [v57 objectForKey:@"shortCompanyName"];
+  v5 = [dictionaryCopy objectForKey:@"shortCompanyName"];
   [(Stock *)self setShortCompanyName:v5];
 
-  v6 = [v57 objectForKeyedSubscript:@"exchange"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"exchange"];
   if (v6)
   {
     v7 = +[ExchangeManager sharedManager];
@@ -242,7 +242,7 @@ LABEL_13:
   }
 
   v9 = +[Stock BlankValueString];
-  v10 = [v57 objectForKey:@"open"];
+  v10 = [dictionaryCopy objectForKey:@"open"];
   v11 = v10;
   if (v10)
   {
@@ -256,7 +256,7 @@ LABEL_13:
 
   [(Stock *)self setOpen:v12];
 
-  v13 = [v57 objectForKey:@"high"];
+  v13 = [dictionaryCopy objectForKey:@"high"];
   v14 = v13;
   if (v13)
   {
@@ -270,7 +270,7 @@ LABEL_13:
 
   [(Stock *)self setHigh:v15];
 
-  v16 = [v57 objectForKey:@"low"];
+  v16 = [dictionaryCopy objectForKey:@"low"];
   v17 = v16;
   if (v16)
   {
@@ -284,7 +284,7 @@ LABEL_13:
 
   [(Stock *)self setLow:v18];
 
-  v19 = [v57 objectForKey:@"yearHigh"];
+  v19 = [dictionaryCopy objectForKey:@"yearHigh"];
   v20 = v19;
   if (v19)
   {
@@ -298,7 +298,7 @@ LABEL_13:
 
   [(Stock *)self setYearHigh:v21];
 
-  v22 = [v57 objectForKey:@"yearLow"];
+  v22 = [dictionaryCopy objectForKey:@"yearLow"];
   v23 = v22;
   if (v22)
   {
@@ -312,7 +312,7 @@ LABEL_13:
 
   [(Stock *)self setYearLow:v24];
 
-  v25 = [v57 objectForKey:@"volume"];
+  v25 = [dictionaryCopy objectForKey:@"volume"];
   v26 = v25;
   if (v25)
   {
@@ -326,7 +326,7 @@ LABEL_13:
 
   [(Stock *)self setVolume:v27];
 
-  v28 = [v57 objectForKey:@"averageVolume"];
+  v28 = [dictionaryCopy objectForKey:@"averageVolume"];
   v29 = v28;
   if (v28)
   {
@@ -340,7 +340,7 @@ LABEL_13:
 
   [(Stock *)self setAverageVolume:v30];
 
-  v31 = [v57 objectForKey:@"marketcap"];
+  v31 = [dictionaryCopy objectForKey:@"marketcap"];
   v32 = v31;
   if (v31)
   {
@@ -354,7 +354,7 @@ LABEL_13:
 
   [(Stock *)self setMarketcap:v33];
 
-  v34 = [v57 objectForKey:@"peRatio"];
+  v34 = [dictionaryCopy objectForKey:@"peRatio"];
   v35 = v34;
   if (v34)
   {
@@ -368,7 +368,7 @@ LABEL_13:
 
   [(Stock *)self setPeRatio:v36];
 
-  v37 = [v57 objectForKey:@"dividendYield"];
+  v37 = [dictionaryCopy objectForKey:@"dividendYield"];
   v38 = v37;
   if (v37)
   {
@@ -382,7 +382,7 @@ LABEL_13:
 
   [(Stock *)self setDividendYield:v39];
 
-  v40 = [v57 objectForKey:@"type"];
+  v40 = [dictionaryCopy objectForKey:@"type"];
   v41 = v40;
   if (v40)
   {
@@ -396,7 +396,7 @@ LABEL_13:
 
   [(Stock *)self setSymbolType:v42];
 
-  v43 = [v57 objectForKeyedSubscript:@"currency"];
+  v43 = [dictionaryCopy objectForKeyedSubscript:@"currency"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -409,7 +409,7 @@ LABEL_13:
   }
 
   [(Stock *)self setCurrency:v44];
-  v45 = [v57 objectForKey:@"price"];
+  v45 = [dictionaryCopy objectForKey:@"price"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -422,24 +422,24 @@ LABEL_13:
   }
 
   [(Stock *)self setPrice:v46];
-  v47 = [v57 objectForKey:@"change"];
+  v47 = [dictionaryCopy objectForKey:@"change"];
   [(Stock *)self setChange:v47];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v48 = [(NSString *)self->_change stringValue];
-    [(Stock *)self setChange:v48];
+    stringValue = [(NSString *)self->_change stringValue];
+    [(Stock *)self setChange:stringValue];
   }
 
-  v49 = [v57 objectForKey:@"infoURL"];
+  v49 = [dictionaryCopy objectForKey:@"infoURL"];
   if (v49)
   {
     v50 = [MEMORY[0x277CBEBC0] URLWithString:v49];
     [(Stock *)self setInfoURL:v50];
   }
 
-  v51 = [v57 objectForKey:@"dataSource"];
+  v51 = [dictionaryCopy objectForKey:@"dataSource"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -447,26 +447,26 @@ LABEL_13:
     [(Stock *)self setDataSource:v52];
   }
 
-  v53 = [v57 objectForKey:@"lastUpdateTime"];
+  v53 = [dictionaryCopy objectForKey:@"lastUpdateTime"];
   [v53 doubleValue];
   self->_timeQuoteLastUpdated = v54;
 
-  v55 = [v57 objectForKey:@"lastMetadataUpdateTime"];
+  v55 = [dictionaryCopy objectForKey:@"lastMetadataUpdateTime"];
   [v55 doubleValue];
   self->_timeMetadataLastUpdated = v56;
 
   [(Stock *)self _updatePricePrecision];
 }
 
-- (Stock)initWithDictionary:(id)a3
+- (Stock)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = Stock;
   v5 = [(Stock *)&v9 init];
-  if (v5 && ([v4 objectForKey:@"symbol"], v6 = objc_claimAutoreleasedReturnValue(), -[Stock setSymbol:](v5, "setSymbol:", v6), v6, v5->_symbol))
+  if (v5 && ([dictionaryCopy objectForKey:@"symbol"], v6 = objc_claimAutoreleasedReturnValue(), -[Stock setSymbol:](v5, "setSymbol:", v6), v6, v5->_symbol))
   {
-    [(Stock *)v5 populateFromDictionary:v4];
+    [(Stock *)v5 populateFromDictionary:dictionaryCopy];
     v7 = v5;
   }
 
@@ -534,8 +534,8 @@ LABEL_13:
     exchange = self->_exchange;
     if (exchange)
     {
-      v10 = [(Exchange *)exchange name];
-      [v3 setObject:v10 forKeyedSubscript:@"exchange"];
+      name = [(Exchange *)exchange name];
+      [v3 setObject:name forKeyedSubscript:@"exchange"];
     }
 
     v11 = +[Stock BlankValueString];
@@ -609,8 +609,8 @@ LABEL_13:
     infoURL = self->_infoURL;
     if (infoURL)
     {
-      v25 = [(NSURL *)infoURL absoluteString];
-      [v3 setObject:v25 forKey:@"infoURL"];
+      absoluteString = [(NSURL *)infoURL absoluteString];
+      [v3 setObject:absoluteString forKey:@"infoURL"];
     }
 
     if (self->_timeQuoteLastUpdated != 0.0)
@@ -628,23 +628,23 @@ LABEL_13:
     dataSource = self->_dataSource;
     if (dataSource)
     {
-      v29 = [(StockDataSource *)dataSource archiveDictionary];
-      [v3 setObject:v29 forKey:@"dataSource"];
+      archiveDictionary = [(StockDataSource *)dataSource archiveDictionary];
+      [v3 setObject:archiveDictionary forKey:@"dataSource"];
     }
   }
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(Stock *)self symbol];
-    v6 = [v4 symbol];
-    v7 = [v5 isEqualToString:v6];
+    symbol = [(Stock *)self symbol];
+    symbol2 = [equalCopy symbol];
+    v7 = [symbol isEqualToString:symbol2];
   }
 
   else
@@ -657,19 +657,19 @@ LABEL_13:
 
 - (unint64_t)hash
 {
-  v2 = [(Stock *)self symbol];
-  v3 = [v2 hash];
+  symbol = [(Stock *)self symbol];
+  v3 = [symbol hash];
 
   return v3;
 }
 
 - (BOOL)changeIsNegative
 {
-  v3 = [(Stock *)self change];
-  if ([v3 length])
+  change = [(Stock *)self change];
+  if ([change length])
   {
-    v4 = [(Stock *)self change];
-    v5 = [v4 characterAtIndex:0] == 45;
+    change2 = [(Stock *)self change];
+    v5 = [change2 characterAtIndex:0] == 45;
   }
 
   else
@@ -695,9 +695,9 @@ LABEL_13:
   [(Exchange *)self->_exchange streamInterval];
   if (result == 0.0)
   {
-    v4 = [(Stock *)self marketIsOpen];
+    marketIsOpen = [(Stock *)self marketIsOpen];
     result = 300.0;
-    if (v4)
+    if (marketIsOpen)
     {
       return 60.0;
     }
@@ -754,16 +754,16 @@ LABEL_13:
   return v4 >= fmax(v5, 300.0);
 }
 
-- (id)listNameWithMaxIndexNameLength:(unint64_t)a3
+- (id)listNameWithMaxIndexNameLength:(unint64_t)length
 {
-  v5 = [(Stock *)self listNameOverride];
-  v6 = v5;
-  if (!v5)
+  listNameOverride = [(Stock *)self listNameOverride];
+  v6 = listNameOverride;
+  if (!listNameOverride)
   {
     p_shortCompanyName = &self->_shortCompanyName;
     if (![(NSString *)self->_shortCompanyName length])
     {
-      if ([(Stock *)self shouldUseCompanyNameAsListName:a3])
+      if ([(Stock *)self shouldUseCompanyNameAsListName:length])
       {
         p_shortCompanyName = &self->_companyName;
       }
@@ -784,8 +784,8 @@ LABEL_13:
 
 - (id)listNameOverride
 {
-  v3 = [objc_opt_class() listNameOverridesBySymbol];
-  v4 = [v3 objectForKey:self->_symbol];
+  listNameOverridesBySymbol = [objc_opt_class() listNameOverridesBySymbol];
+  v4 = [listNameOverridesBySymbol objectForKey:self->_symbol];
 
   return v4;
 }
@@ -808,19 +808,19 @@ void __34__Stock_listNameOverridesBySymbol__block_invoke()
   listNameOverridesBySymbol_nameOverridesBySymbol = &unk_287C81048;
 }
 
-- (BOOL)shouldUseCompanyNameAsListName:(unint64_t)a3
+- (BOOL)shouldUseCompanyNameAsListName:(unint64_t)name
 {
   if (([(NSString *)self->_companyName naui_containsCJKScripts]& 1) != 0 || (v5 = [(Stock *)self isIndex]))
   {
-    LOBYTE(v5) = [(NSString *)self->_companyName length]&& [(NSString *)self->_companyName length]<= a3;
+    LOBYTE(v5) = [(NSString *)self->_companyName length]&& [(NSString *)self->_companyName length]<= name;
   }
 
   return v5;
 }
 
-- (id)chartDataForInterval:(int64_t)a3
+- (id)chartDataForInterval:(int64_t)interval
 {
-  v5 = self->_chartDataArray[a3];
+  v5 = self->_chartDataArray[interval];
   Current = CFAbsoluteTimeGetCurrent();
   [(StockChartData *)v5 expirationTime];
   if (Current >= v7)
@@ -830,7 +830,7 @@ void __34__Stock_listNameOverridesBySymbol__block_invoke()
       goto LABEL_6;
     }
 
-    [(Stock *)self setChartData:0 forInterval:a3];
+    [(Stock *)self setChartData:0 forInterval:interval];
     v8 = v5;
     v5 = 0;
   }
@@ -846,30 +846,30 @@ LABEL_6:
   return v5;
 }
 
-- (void)setChartData:(id)a3 forInterval:(int64_t)a4
+- (void)setChartData:(id)data forInterval:(int64_t)interval
 {
-  v7 = a3;
-  v8 = &self->super.isa + a4;
+  dataCopy = data;
+  v8 = &self->super.isa + interval;
   v11 = v8[1];
   v10 = (v8 + 1);
   v9 = v11;
-  if (v11 != v7)
+  if (v11 != dataCopy)
   {
-    v14 = v7;
+    v14 = dataCopy;
     v12 = v9;
     v13 = +[StockManager sharedManager];
     [v13 RemoveChartDataFromLRU:v12];
-    objc_storeStrong(v10, a3);
+    objc_storeStrong(v10, data);
     [v13 UpdateChartDataInLRU:v14];
 
-    v7 = v14;
+    dataCopy = v14;
   }
 }
 
-- (void)updateQuoteWithDictionary:(id)a3 forTime:(double)a4
+- (void)updateQuoteWithDictionary:(id)dictionary forTime:(double)time
 {
-  v24 = a3;
-  v6 = [v24 objectForKeyedSubscript:@"currency"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"currency"];
   currency = v6;
   if (!v6)
   {
@@ -878,7 +878,7 @@ LABEL_6:
 
   [(Stock *)self setCurrency:currency];
 
-  v8 = [v24 objectForKey:@"price"];
+  v8 = [dictionaryCopy objectForKey:@"price"];
   price = v8;
   if (!v8)
   {
@@ -887,7 +887,7 @@ LABEL_6:
 
   [(Stock *)self setPrice:price];
 
-  v10 = [v24 objectForKey:@"change"];
+  v10 = [dictionaryCopy objectForKey:@"change"];
   change = v10;
   if (!v10)
   {
@@ -896,7 +896,7 @@ LABEL_6:
 
   [(Stock *)self setChange:change];
 
-  v12 = [v24 objectForKey:@"type"];
+  v12 = [dictionaryCopy objectForKey:@"type"];
   symbolType = v12;
   if (!v12)
   {
@@ -905,7 +905,7 @@ LABEL_6:
 
   [(Stock *)self setSymbolType:symbolType];
 
-  v14 = [v24 objectForKeyedSubscript:@"exchange"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"exchange"];
   if (v14)
   {
     v15 = +[ExchangeManager sharedManager];
@@ -913,7 +913,7 @@ LABEL_6:
     [(Stock *)self setExchange:v16];
   }
 
-  v17 = [v24 objectForKey:@"marketcap"];
+  v17 = [dictionaryCopy objectForKey:@"marketcap"];
   v18 = v17;
   if (v17)
   {
@@ -929,7 +929,7 @@ LABEL_6:
     }
   }
 
-  v20 = [v24 objectForKey:@"dataSource"];
+  v20 = [dictionaryCopy objectForKey:@"dataSource"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -937,7 +937,7 @@ LABEL_6:
     [(Stock *)self setDataSource:v21];
   }
 
-  v22 = [v24 objectForKey:@"shortCompanyName"];
+  v22 = [dictionaryCopy objectForKey:@"shortCompanyName"];
   shortCompanyName = v22;
   if (!v22)
   {
@@ -946,15 +946,15 @@ LABEL_6:
 
   [(Stock *)self setShortCompanyName:shortCompanyName];
 
-  self->_timeQuoteLastUpdated = a4;
+  self->_timeQuoteLastUpdated = time;
   [(Stock *)self _updatePricePrecision];
 }
 
-- (void)updateMetadataWithDictionary:(id)a3 forTime:(double)a4
+- (void)updateMetadataWithDictionary:(id)dictionary forTime:(double)time
 {
   v53 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 objectForKey:@"companyName"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKey:@"companyName"];
   companyName = v7;
   if (!v7)
   {
@@ -963,7 +963,7 @@ LABEL_6:
 
   [(Stock *)self setCompanyName:companyName];
 
-  v9 = [v6 objectForKey:@"exchange"];
+  v9 = [dictionaryCopy objectForKey:@"exchange"];
   if (v9)
   {
     v10 = +[ExchangeManager sharedManager];
@@ -971,7 +971,7 @@ LABEL_6:
     [(Stock *)self setExchange:v11];
   }
 
-  v12 = [v6 objectForKeyedSubscript:@"currency"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"currency"];
   currency = v12;
   if (!v12)
   {
@@ -991,7 +991,7 @@ LABEL_6:
   {
     v17 = v16;
     v46 = v9;
-    v47 = self;
+    selfCopy = self;
     v18 = 0;
     v19 = *v49;
     do
@@ -1005,13 +1005,13 @@ LABEL_6:
         }
 
         v22 = *(*(&v48 + 1) + 8 * i);
-        v18 = [v6 objectForKey:{v22, v46, v47}];
+        v18 = [dictionaryCopy objectForKey:{v22, v46, selfCopy}];
 
         if (v18)
         {
           if (([v18 isEqualToString:@"N/A"] & 1) != 0 || (objc_msgSend(v18, "floatValue"), v23 == 0.0))
           {
-            [v6 setObject:v14 forKey:v22];
+            [dictionaryCopy setObject:v14 forKey:v22];
           }
         }
       }
@@ -1022,10 +1022,10 @@ LABEL_6:
     while (v17);
 
     v9 = v46;
-    self = v47;
+    self = selfCopy;
   }
 
-  v24 = [v6 objectForKey:@"open"];
+  v24 = [dictionaryCopy objectForKey:@"open"];
   open = v24;
   if (!v24)
   {
@@ -1034,7 +1034,7 @@ LABEL_6:
 
   [(Stock *)self setOpen:open];
 
-  v26 = [v6 objectForKey:@"high"];
+  v26 = [dictionaryCopy objectForKey:@"high"];
   high = v26;
   if (!v26)
   {
@@ -1043,7 +1043,7 @@ LABEL_6:
 
   [(Stock *)self setHigh:high];
 
-  v28 = [v6 objectForKey:@"low"];
+  v28 = [dictionaryCopy objectForKey:@"low"];
   low = v28;
   if (!v28)
   {
@@ -1052,7 +1052,7 @@ LABEL_6:
 
   [(Stock *)self setLow:low];
 
-  v30 = [v6 objectForKey:@"yearHigh"];
+  v30 = [dictionaryCopy objectForKey:@"yearHigh"];
   yearHigh = v30;
   if (!v30)
   {
@@ -1061,7 +1061,7 @@ LABEL_6:
 
   [(Stock *)self setYearHigh:yearHigh];
 
-  v32 = [v6 objectForKey:@"yearLow"];
+  v32 = [dictionaryCopy objectForKey:@"yearLow"];
   yearLow = v32;
   if (!v32)
   {
@@ -1070,7 +1070,7 @@ LABEL_6:
 
   [(Stock *)self setYearLow:yearLow];
 
-  v34 = [v6 objectForKey:@"volume"];
+  v34 = [dictionaryCopy objectForKey:@"volume"];
   volume = v34;
   if (!v34)
   {
@@ -1079,7 +1079,7 @@ LABEL_6:
 
   [(Stock *)self setVolume:volume];
 
-  v36 = [v6 objectForKey:@"averageVolume"];
+  v36 = [dictionaryCopy objectForKey:@"averageVolume"];
   averageVolume = v36;
   if (!v36)
   {
@@ -1088,7 +1088,7 @@ LABEL_6:
 
   [(Stock *)self setAverageVolume:averageVolume];
 
-  v38 = [v6 objectForKey:@"marketcap"];
+  v38 = [dictionaryCopy objectForKey:@"marketcap"];
   marketcap = v38;
   if (!v38)
   {
@@ -1097,7 +1097,7 @@ LABEL_6:
 
   [(Stock *)self setMarketcap:marketcap];
 
-  v40 = [v6 objectForKey:@"peRatio"];
+  v40 = [dictionaryCopy objectForKey:@"peRatio"];
   peRatio = v40;
   if (!v40)
   {
@@ -1106,7 +1106,7 @@ LABEL_6:
 
   [(Stock *)self setPeRatio:peRatio];
 
-  v42 = [v6 objectForKey:@"dividendYield"];
+  v42 = [dictionaryCopy objectForKey:@"dividendYield"];
   dividendYield = v42;
   if (!v42)
   {
@@ -1115,7 +1115,7 @@ LABEL_6:
 
   [(Stock *)self setDividendYield:dividendYield];
 
-  v44 = [v6 objectForKey:@"infoURL"];
+  v44 = [dictionaryCopy objectForKey:@"infoURL"];
   if (v44)
   {
     v45 = [MEMORY[0x277CBEBC0] URLWithString:v44];
@@ -1127,7 +1127,7 @@ LABEL_6:
     [(Stock *)self setInfoURL:0];
   }
 
-  self->_timeMetadataLastUpdated = a4;
+  self->_timeMetadataLastUpdated = time;
 }
 
 + (id)_potentiallyAbsentKeys
@@ -1147,8 +1147,8 @@ LABEL_6:
 
 - (void)_updatePricePrecision
 {
-  v3 = [(Stock *)self price];
-  v4 = [v3 rangeOfString:@"."];
+  price = [(Stock *)self price];
+  v4 = [price rangeOfString:@"."];
 
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1162,16 +1162,16 @@ LABEL_6:
 
   else
   {
-    v8 = [(Stock *)self price];
-    if (([v8 length] - v4) < 3)
+    price2 = [(Stock *)self price];
+    if (([price2 length] - v4) < 3)
     {
       self->_pricePrecision = 2;
     }
 
     else
     {
-      v5 = [(Stock *)self price];
-      [v5 floatValue];
+      price3 = [(Stock *)self price];
+      [price3 floatValue];
       if (v6 >= 1.0)
       {
         v7 = 2;
@@ -1191,14 +1191,14 @@ LABEL_6:
 {
   if ([(Stock *)self marketIsOpen])
   {
-    v3 = [(Stock *)self dataSource];
-    [v3 localizedSourceDescription];
+    dataSource = [(Stock *)self dataSource];
+    [dataSource localizedSourceDescription];
   }
 
   else
   {
-    v3 = [StocksBundles getBundle:1];
-    [v3 localizedStringForKey:@"Market closed" value:&stru_287C73C90 table:@"Localizable"];
+    dataSource = [StocksBundles getBundle:1];
+    [dataSource localizedStringForKey:@"Market closed" value:&stru_287C73C90 table:@"Localizable"];
   }
   v4 = ;
 
@@ -1229,9 +1229,9 @@ LABEL_6:
   return v4;
 }
 
-- (id)formattedChangePercent:(BOOL)a3
+- (id)formattedChangePercent:(BOOL)percent
 {
-  if (a3)
+  if (percent)
   {
     [(Stock *)self formattedChangePercent];
   }
@@ -1245,10 +1245,10 @@ LABEL_6:
   return v3;
 }
 
-- (id)formattedPriceDroppingFractionDigitsIfLengthExceeds:(unint64_t)a3
+- (id)formattedPriceDroppingFractionDigitsIfLengthExceeds:(unint64_t)exceeds
 {
   v5 = +[StockDataFormatter sharedDataFormatter];
-  v6 = [v5 formattedPriceForStock:self withPrecision:-[Stock pricePrecision](self droppingFractionDigitsIfLengthExceeds:{"pricePrecision"), a3}];
+  v6 = [v5 formattedPriceForStock:self withPrecision:-[Stock pricePrecision](self droppingFractionDigitsIfLengthExceeds:{"pricePrecision"), exceeds}];
 
   return v6;
 }

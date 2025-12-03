@@ -1,42 +1,42 @@
 @interface HUSceneActionEditorViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
 @end
 
 @implementation HUSceneActionEditorViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUSceneActionEditorViewController" hasInstanceMethod:@"setupCell:forItem:indexPath:" withFullSignature:{"v", "@", "@", "@", 0}];
-  [v3 validateClass:@"HUSceneActionEditorViewController" isKindOfClass:@"HUItemTableViewController"];
-  [v3 validateClass:@"HUItemTableViewController" hasInstanceMethod:@"itemManager" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUSceneActionEditorItemManager" hasInstanceMethod:@"nameAndIconItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUNameAndIconEditorCell" hasInstanceMethod:@"iconButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUNameAndIconEditorCell" hasInstanceMethod:@"textField" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUSceneActionEditorViewController" hasInstanceMethod:@"setupCell:forItem:indexPath:" withFullSignature:{"v", "@", "@", "@", 0}];
+  [validationsCopy validateClass:@"HUSceneActionEditorViewController" isKindOfClass:@"HUItemTableViewController"];
+  [validationsCopy validateClass:@"HUItemTableViewController" hasInstanceMethod:@"itemManager" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUSceneActionEditorItemManager" hasInstanceMethod:@"nameAndIconItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUNameAndIconEditorCell" hasInstanceMethod:@"iconButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUNameAndIconEditorCell" hasInstanceMethod:@"textField" withFullSignature:{"@", 0}];
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v8 = a3;
+  cellCopy = cell;
   v15.receiver = self;
   v15.super_class = HUSceneActionEditorViewControllerAccessibility;
-  v9 = a4;
-  [(HUSceneActionEditorViewControllerAccessibility *)&v15 setupCell:v8 forItem:v9 indexPath:a5];
+  itemCopy = item;
+  [(HUSceneActionEditorViewControllerAccessibility *)&v15 setupCell:cellCopy forItem:itemCopy indexPath:path];
   v10 = [(HUSceneActionEditorViewControllerAccessibility *)self safeValueForKeyPath:@"itemManager.nameAndIconItem"];
 
-  if (v10 == v9)
+  if (v10 == itemCopy)
   {
     v11 = MEMORY[0x29EDB8D80];
-    v12 = [v8 safeValueForKey:@"iconButton"];
-    v13 = [v8 safeValueForKey:@"textField"];
+    v12 = [cellCopy safeValueForKey:@"iconButton"];
+    v13 = [cellCopy safeValueForKey:@"textField"];
     v14 = [v11 axArrayByIgnoringNilElementsWithCount:{2, v12, v13, v15.receiver, v15.super_class}];
-    [v8 setAccessibilityElements:v14];
+    [cellCopy setAccessibilityElements:v14];
   }
 
   else
   {
-    [v8 setAccessibilityElements:0];
+    [cellCopy setAccessibilityElements:0];
   }
 }
 

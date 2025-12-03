@@ -1,18 +1,18 @@
 @interface Ace3RestoreInfoFirmwareCopierBackDeploy
-- (id)firmwareKeyFromBuildIdentityDict:(id)a3 deviceInfo:(id)a4;
+- (id)firmwareKeyFromBuildIdentityDict:(id)dict deviceInfo:(id)info;
 @end
 
 @implementation Ace3RestoreInfoFirmwareCopierBackDeploy
 
-- (id)firmwareKeyFromBuildIdentityDict:(id)a3 deviceInfo:(id)a4
+- (id)firmwareKeyFromBuildIdentityDict:(id)dict deviceInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  dictCopy = dict;
+  infoCopy = info;
   [(Ace3SoCRestoreInfoHelperBackDeploy *)self verboseLog:@"%s", "[Ace3RestoreInfoFirmwareCopierBackDeploy firmwareKeyFromBuildIdentityDict:deviceInfo:]"];
-  if (v7)
+  if (infoCopy)
   {
-    v8 = [v7 objectForKeyedSubscript:@"ManifestPrefix"];
-    v9 = [v6 keyWithPrefix:v8];
+    v8 = [infoCopy objectForKeyedSubscript:@"ManifestPrefix"];
+    v9 = [dictCopy keyWithPrefix:v8];
   }
 
   else

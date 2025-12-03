@@ -1,37 +1,37 @@
 @interface PKTransactionAuthenticationCollectPasscodeViewController
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (PKTransactionAuthenticationCollectPasscodeViewController)initWithPassUniqueIdentifier:(id)a3 transactionIdentifier:(id)a4 delegate:(id)a5;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (PKTransactionAuthenticationCollectPasscodeViewController)initWithPassUniqueIdentifier:(id)identifier transactionIdentifier:(id)transactionIdentifier delegate:(id)delegate;
 - (PKTransactionAuthenticationCollectPasscodeViewControllerDelegate)delegate;
 - (void)_cancelButtonPressed;
 - (void)_clearPasscodeField;
 - (void)_createPasscodeField;
-- (void)_encryptPIN:(id)a3 withCertificates:(id)a4 completion:(id)a5;
+- (void)_encryptPIN:(id)n withCertificates:(id)certificates completion:(id)completion;
 - (void)_encryptPasscodeInput;
 - (void)_footerButtonPressed;
 - (void)_passcodeInputFinished;
-- (void)_retrievePINEncryptionCertificateForPassUniqueIdentifier:(id)a3 completion:(id)a4;
-- (void)_transitionToState:(unint64_t)a3;
+- (void)_retrievePINEncryptionCertificateForPassUniqueIdentifier:(id)identifier completion:(id)completion;
+- (void)_transitionToState:(unint64_t)state;
 - (void)_updateFailureLabelVisibility;
 - (void)dealloc;
-- (void)explanationViewDidUpdateLayout:(id)a3;
-- (void)linkedApplicationDidChangeState:(id)a3;
+- (void)explanationViewDidUpdateLayout:(id)layout;
+- (void)linkedApplicationDidChangeState:(id)state;
 - (void)loadView;
-- (void)pinCodeTextFieldWasUpdated:(id)a3 isComplete:(BOOL)a4;
-- (void)preflightWithCompletion:(id)a3;
-- (void)resetWithTransactionAuthenticationFailure:(int64_t)a3 completion:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)transactionSourceIdentifier:(id)a3 didReceiveTransaction:(id)a4;
+- (void)pinCodeTextFieldWasUpdated:(id)updated isComplete:(BOOL)complete;
+- (void)preflightWithCompletion:(id)completion;
+- (void)resetWithTransactionAuthenticationFailure:(int64_t)failure completion:(id)completion;
+- (void)traitCollectionDidChange:(id)change;
+- (void)transactionSourceIdentifier:(id)identifier didReceiveTransaction:(id)transaction;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKTransactionAuthenticationCollectPasscodeViewController
 
-- (PKTransactionAuthenticationCollectPasscodeViewController)initWithPassUniqueIdentifier:(id)a3 transactionIdentifier:(id)a4 delegate:(id)a5
+- (PKTransactionAuthenticationCollectPasscodeViewController)initWithPassUniqueIdentifier:(id)identifier transactionIdentifier:(id)transactionIdentifier delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  transactionIdentifierCopy = transactionIdentifier;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = PKTransactionAuthenticationCollectPasscodeViewController;
   v12 = [(PKTransactionAuthenticationCollectPasscodeViewController *)&v20 init];
@@ -42,9 +42,9 @@
     [UIKeyboard sizeForInterfaceOrientation:1];
     *&p_keyboardSize->width = v15;
     v13->_keyboardSize.height = v16;
-    objc_storeStrong(&v13->_passUniqueIdentifier, a3);
-    objc_storeWeak(&v13->_delegate, v11);
-    objc_storeStrong(&v13->_transactionIdentifier, a4);
+    objc_storeStrong(&v13->_passUniqueIdentifier, identifier);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    objc_storeStrong(&v13->_transactionIdentifier, transactionIdentifier);
     v17 = +[PKPaymentService paymentService];
     paymentService = v13->_paymentService;
     v13->_paymentService = v17;
@@ -63,14 +63,14 @@
   [(PKTransactionAuthenticationCollectPasscodeViewController *)&v3 dealloc];
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000014C4;
   v16[3] = &unk_10000C398;
-  v4 = a3;
-  v17 = v4;
+  completionCopy = completion;
+  v17 = completionCopy;
   v5 = objc_retainBlock(v16);
   if (!self->_passUniqueIdentifier)
   {
@@ -84,9 +84,9 @@
 
   v6 = +[PKPassLibrary sharedInstance];
   v7 = [v6 passWithUniqueID:self->_passUniqueIdentifier];
-  v8 = [v7 paymentPass];
+  paymentPass = [v7 paymentPass];
   pass = self->_pass;
-  self->_pass = v8;
+  self->_pass = paymentPass;
 
   if (self->_pass)
   {
@@ -113,16 +113,16 @@ LABEL_5:
   }
 }
 
-- (void)resetWithTransactionAuthenticationFailure:(int64_t)a3 completion:(id)a4
+- (void)resetWithTransactionAuthenticationFailure:(int64_t)failure completion:(id)completion
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100001664;
   block[3] = &unk_10000C3E8;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  failureCopy = failure;
   block[4] = self;
-  v6 = v8;
+  v6 = completionCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
@@ -131,21 +131,21 @@ LABEL_5:
   v68.receiver = self;
   v68.super_class = PKTransactionAuthenticationCollectPasscodeViewController;
   [(PKTransactionAuthenticationCollectPasscodeViewController *)&v68 loadView];
-  v3 = [(PKTransactionAuthenticationCollectPasscodeViewController *)self view];
+  view = [(PKTransactionAuthenticationCollectPasscodeViewController *)self view];
   v4 = +[UIColor systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
-  v5 = [(PKPaymentPass *)self->_pass compactBankLogoDarkImage];
-  v6 = [UIImage imageWithPKImage:v5];
+  compactBankLogoDarkImage = [(PKPaymentPass *)self->_pass compactBankLogoDarkImage];
+  v6 = [UIImage imageWithPKImage:compactBankLogoDarkImage];
 
-  v7 = [(PKPaymentPass *)self->_pass compactBankLogoLightImage];
-  v8 = [UIImage imageWithPKImage:v7];
+  compactBankLogoLightImage = [(PKPaymentPass *)self->_pass compactBankLogoLightImage];
+  v8 = [UIImage imageWithPKImage:compactBankLogoLightImage];
 
   if (v8)
   {
     v9 = [UITraitCollection traitCollectionWithUserInterfaceStyle:2];
-    v10 = [v6 imageAsset];
-    [v10 registerImage:v8 withTraitCollection:v9];
+    imageAsset = [v6 imageAsset];
+    [imageAsset registerImage:v8 withTraitCollection:v9];
   }
 
   v63 = v8;
@@ -156,7 +156,7 @@ LABEL_5:
     logoImageView = self->_logoImageView;
     self->_logoImageView = v11;
 
-    [v3 addSubview:self->_logoImageView];
+    [view addSubview:self->_logoImageView];
     v13 = UIContentSizeCategoryAccessibilityMedium;
   }
 
@@ -168,8 +168,8 @@ LABEL_5:
 
     [(UILabel *)self->_titleLabel setNumberOfLines:0];
     v16 = self->_titleLabel;
-    v17 = [(PKPaymentPass *)self->_pass organizationName];
-    [(UILabel *)v16 setText:v17];
+    organizationName = [(PKPaymentPass *)self->_pass organizationName];
+    [(UILabel *)v16 setText:organizationName];
 
     [(UILabel *)self->_titleLabel setTextAlignment:1];
     v18 = self->_titleLabel;
@@ -177,16 +177,16 @@ LABEL_5:
     v19 = PKFontForDefaultDesign(UIFontTextStyleTitle1, UIContentSizeCategoryAccessibilityMedium);
     [(UILabel *)v18 setFont:v19];
 
-    [v3 addSubview:self->_titleLabel];
+    [view addSubview:self->_titleLabel];
   }
 
-  v20 = v3;
-  v21 = [(PKPaymentTransaction *)self->_transaction currencyAmount];
-  v22 = [v21 formattedStringValue];
-  v23 = [(PKPaymentTransaction *)self->_transaction merchant];
-  v24 = [v23 displayName];
-  v25 = [(PKPaymentPass *)self->_pass organizationName];
-  v26 = PKLocalizedAquamanString(@"TRANSACTION_AUTHENTICATION_PAYMENT_PIN_BODY", @"%@%@%@", v22, v24, v25);
+  v20 = view;
+  currencyAmount = [(PKPaymentTransaction *)self->_transaction currencyAmount];
+  formattedStringValue = [currencyAmount formattedStringValue];
+  merchant = [(PKPaymentTransaction *)self->_transaction merchant];
+  displayName = [merchant displayName];
+  organizationName2 = [(PKPaymentPass *)self->_pass organizationName];
+  v26 = PKLocalizedAquamanString(@"TRANSACTION_AUTHENTICATION_PAYMENT_PIN_BODY", @"%@%@%@", formattedStringValue, displayName, organizationName2);
 
   v27 = objc_alloc_init(UILabel);
   bodyTextLabel = self->_bodyTextLabel;
@@ -222,9 +222,9 @@ LABEL_5:
   [(PKLinkedApplication *)self->_linkedApplication addObserver:self];
   [(PKLinkedApplication *)self->_linkedApplication reloadApplicationStateIfNecessary];
   v39 = self->_footerButton;
-  v40 = [(PKLinkedApplication *)self->_linkedApplication state];
+  state = [(PKLinkedApplication *)self->_linkedApplication state];
   v41 = 0.0;
-  if (v40 == 1)
+  if (state == 1)
   {
     v41 = 1.0;
   }
@@ -257,8 +257,8 @@ LABEL_5:
 
   [(UILabel *)self->_failureLabel setTextAlignment:1];
   [(UILabel *)self->_failureLabel setClipsToBounds:1];
-  v52 = [(UILabel *)self->_failureLabel layer];
-  [v52 setCornerCurve:kCACornerCurveContinuous];
+  layer = [(UILabel *)self->_failureLabel layer];
+  [layer setCornerCurve:kCACornerCurveContinuous];
 
   [v20 addSubview:self->_failureLabel];
   [(PKTransactionAuthenticationCollectPasscodeViewController *)self _updateFailureLabelVisibility];
@@ -266,8 +266,8 @@ LABEL_5:
   cancelButton = self->_cancelButton;
   self->_cancelButton = v53;
 
-  v55 = [(PKTransactionAuthenticationCollectPasscodeViewController *)self navigationItem];
-  [v55 setLeftBarButtonItem:self->_cancelButton];
+  navigationItem = [(PKTransactionAuthenticationCollectPasscodeViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:self->_cancelButton];
 
   if (self->_PINFormat == 2)
   {
@@ -278,14 +278,14 @@ LABEL_5:
     self->_confirmButton = v58;
 
     [(UIBarButtonItem *)self->_confirmButton setEnabled:0];
-    v60 = [(PKTransactionAuthenticationCollectPasscodeViewController *)self navigationItem];
-    [v60 setRightBarButtonItem:self->_confirmButton];
+    navigationItem2 = [(PKTransactionAuthenticationCollectPasscodeViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:self->_confirmButton];
   }
 
   v61 = objc_alloc_init(UINavigationBarAppearance);
   [v61 configureWithTransparentBackground];
-  v62 = [(PKTransactionAuthenticationCollectPasscodeViewController *)self navigationItem];
-  [v62 setStandardAppearance:v61];
+  navigationItem3 = [(PKTransactionAuthenticationCollectPasscodeViewController *)self navigationItem];
+  [navigationItem3 setStandardAppearance:v61];
 
   objc_destroyWeak(&v66);
   objc_destroyWeak(&location);
@@ -296,7 +296,7 @@ LABEL_5:
   v52.receiver = self;
   v52.super_class = PKTransactionAuthenticationCollectPasscodeViewController;
   [(PKTransactionAuthenticationCollectPasscodeViewController *)&v52 viewWillLayoutSubviews];
-  v3 = [(PKTransactionAuthenticationCollectPasscodeViewController *)self view];
+  view = [(PKTransactionAuthenticationCollectPasscodeViewController *)self view];
   v4 = PKUIGetMinScreenWidthType();
   v5 = 44.0;
   if (v4 == 1)
@@ -314,16 +314,16 @@ LABEL_5:
     v6 = 16.0;
   }
 
-  [v3 bounds];
+  [view bounds];
   v51 = v7;
   v9 = v8 - (v6 + v6);
   PKUIGetMinScreenWidthType();
-  v10 = [(UIImageView *)self->_logoImageView superview];
+  superview = [(UIImageView *)self->_logoImageView superview];
 
-  if (v10)
+  if (superview)
   {
-    v11 = [(UIImageView *)self->_logoImageView image];
-    [v11 size];
+    image = [(UIImageView *)self->_logoImageView image];
+    [image size];
 
     PKSizeAspectFit();
     UIRectCenteredXInRect();
@@ -341,9 +341,9 @@ LABEL_5:
 
   else
   {
-    v20 = [(UILabel *)self->_titleLabel superview];
+    superview2 = [(UILabel *)self->_titleLabel superview];
 
-    if (v20)
+    if (superview2)
     {
       [(UILabel *)self->_titleLabel sizeThatFits:v9, 1.79769313e308];
       UIRectCenteredXInRect();
@@ -394,48 +394,48 @@ LABEL_5:
   v47 = v46 + 4.0;
   UIRectCenteredXInRect();
   [(UILabel *)self->_failureLabel setFrame:?];
-  v48 = [(UILabel *)self->_failureLabel layer];
-  [v48 setCornerRadius:v47 * 0.5];
+  layer = [(UILabel *)self->_failureLabel layer];
+  [layer setCornerRadius:v47 * 0.5];
 
   [(UIButton *)self->_footerButton sizeToFit];
   [(UIButton *)self->_footerButton frame];
   v49 = v51 - self->_keyboardSize.height;
-  v50 = [(UIButton *)self->_footerButton titleLabel];
-  [v50 frame];
+  titleLabel = [(UIButton *)self->_footerButton titleLabel];
+  [titleLabel frame];
 
   UIRectCenteredXInRect();
   [(UIButton *)self->_footerButton setFrame:?];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = [a3 userInterfaceStyle];
-  v5 = [(PKTransactionAuthenticationCollectPasscodeViewController *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  userInterfaceStyle = [change userInterfaceStyle];
+  traitCollection = [(PKTransactionAuthenticationCollectPasscodeViewController *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v4 != v6)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
-    v8 = [(PKTransactionAuthenticationComplexPasscodeTextField *)self->_complexPasscodeField layer];
+    layer = [(PKTransactionAuthenticationComplexPasscodeTextField *)self->_complexPasscodeField layer];
     v7 = +[UIColor labelColor];
-    [v8 setBorderColor:{objc_msgSend(v7, "CGColor")}];
+    [layer setBorderColor:{objc_msgSend(v7, "CGColor")}];
   }
 }
 
-- (void)explanationViewDidUpdateLayout:(id)a3
+- (void)explanationViewDidUpdateLayout:(id)layout
 {
-  v3 = [(PKTransactionAuthenticationCollectPasscodeViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(PKTransactionAuthenticationCollectPasscodeViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
   if (self->_PINFormat == 2)
   {
-    length = a4.length;
-    location = a4.location;
-    v9 = a5;
-    v10 = [a3 text];
-    v11 = [v10 stringByReplacingCharactersInRange:location withString:{length, v9}];
+    length = range.length;
+    location = range.location;
+    stringCopy = string;
+    text = [field text];
+    v11 = [text stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
 
     -[UIBarButtonItem setEnabled:](self->_confirmButton, "setEnabled:", [v11 length] > 5);
   }
@@ -443,10 +443,10 @@ LABEL_5:
   return 1;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = [a3 text];
-  v5 = [v4 length];
+  text = [return text];
+  v5 = [text length];
 
   if (v5 >= 6)
   {
@@ -456,17 +456,17 @@ LABEL_5:
   return v5 > 5;
 }
 
-- (void)pinCodeTextFieldWasUpdated:(id)a3 isComplete:(BOOL)a4
+- (void)pinCodeTextFieldWasUpdated:(id)updated isComplete:(BOOL)complete
 {
-  if (a4)
+  if (complete)
   {
     [(PKTransactionAuthenticationCollectPasscodeViewController *)self _passcodeInputFinished];
   }
 }
 
-- (void)linkedApplicationDidChangeState:(id)a3
+- (void)linkedApplicationDidChangeState:(id)state
 {
-  if ([a3 state] == 1)
+  if ([state state] == 1)
   {
     objc_initWeak(&location, self);
     v4[0] = _NSConcreteStackBlock;
@@ -480,15 +480,15 @@ LABEL_5:
   }
 }
 
-- (void)transactionSourceIdentifier:(id)a3 didReceiveTransaction:(id)a4
+- (void)transactionSourceIdentifier:(id)identifier didReceiveTransaction:(id)transaction
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100002864;
   v5[3] = &unk_10000C460;
   v5[4] = self;
-  v6 = a4;
-  v4 = v6;
+  transactionCopy = transaction;
+  v4 = transactionCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
@@ -502,15 +502,15 @@ LABEL_5:
     complexPasscodeField = self->_complexPasscodeField;
     self->_complexPasscodeField = v7;
 
-    v9 = [(PKTransactionAuthenticationComplexPasscodeTextField *)self->_complexPasscodeField layer];
+    layer = [(PKTransactionAuthenticationComplexPasscodeTextField *)self->_complexPasscodeField layer];
     v10 = +[UIColor labelColor];
-    [v9 setBorderColor:{objc_msgSend(v10, "CGColor")}];
+    [layer setBorderColor:{objc_msgSend(v10, "CGColor")}];
 
-    v11 = [(PKTransactionAuthenticationComplexPasscodeTextField *)self->_complexPasscodeField layer];
-    [v11 setBorderWidth:1.0];
+    layer2 = [(PKTransactionAuthenticationComplexPasscodeTextField *)self->_complexPasscodeField layer];
+    [layer2 setBorderWidth:1.0];
 
-    v12 = [(PKTransactionAuthenticationComplexPasscodeTextField *)self->_complexPasscodeField layer];
-    [v12 setCornerRadius:10.0];
+    layer3 = [(PKTransactionAuthenticationComplexPasscodeTextField *)self->_complexPasscodeField layer];
+    [layer3 setCornerRadius:10.0];
 
     [(PKTransactionAuthenticationComplexPasscodeTextField *)self->_complexPasscodeField setTextInsets:0.0, 10.0, 0.0, 10.0];
     [(PKTransactionAuthenticationComplexPasscodeTextField *)self->_complexPasscodeField setSecureTextEntry:1];
@@ -560,14 +560,14 @@ LABEL_5:
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
-    v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 passcodeViewControllerDidCancel:self];
+    presentingViewController = objc_loadWeakRetained(&self->_delegate);
+    [presentingViewController passcodeViewControllerDidCancel:self];
   }
 
   else
   {
-    v6 = [(PKTransactionAuthenticationCollectPasscodeViewController *)self presentingViewController];
-    [v6 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(PKTransactionAuthenticationCollectPasscodeViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
@@ -582,19 +582,19 @@ LABEL_5:
   objc_copyWeak(&v19, &location);
   v4 = [UIAlertAction actionWithTitle:v3 style:1 handler:v18];
 
-  v5 = [(PKPaymentPass *)self->_pass organizationName];
+  organizationName = [(PKPaymentPass *)self->_pass organizationName];
   if ([(PKLinkedApplication *)self->_linkedApplication isInstalled])
   {
     v6 = PKLocalizedAquamanString(@"TRANSACTION_AUTHENTICATION_FORGOT_PIN_ALERT_TITLE");
-    v7 = PKLocalizedAquamanString(@"TRANSACTION_AUTHENTICATION_FORGOT_PIN_ALERT_BODY", @"%@", v5);
+    v7 = PKLocalizedAquamanString(@"TRANSACTION_AUTHENTICATION_FORGOT_PIN_ALERT_BODY", @"%@", organizationName);
     v8 = PKLocalizedAquamanString(@"OPEN");
     v9 = &PKAnalyticsReportResetPaymentPINOpenButtonTag;
   }
 
   else
   {
-    v6 = PKLocalizedAquamanString(@"TRANSACTION_AUTHENTICATION_APP_REQUIRED_TITLE", @"%@", v5);
-    v7 = PKLocalizedAquamanString(@"TRANSACTION_AUTHENTICATION_FORGOT_PIN_APP_REQUIRED_ALERT_BODY", @"%@%@", v5, v5);
+    v6 = PKLocalizedAquamanString(@"TRANSACTION_AUTHENTICATION_APP_REQUIRED_TITLE", @"%@", organizationName);
+    v7 = PKLocalizedAquamanString(@"TRANSACTION_AUTHENTICATION_FORGOT_PIN_APP_REQUIRED_ALERT_BODY", @"%@%@", organizationName, organizationName);
     v8 = PKLocalizedAquamanString(@"VIEW_IN_APP_STORE");
     v9 = &PKAnalyticsReportResetPaymentPINViewInAppStoreButtonTag;
   }
@@ -607,7 +607,7 @@ LABEL_5:
   objc_copyWeak(&v17, &location);
   v11 = v10;
   v15 = v11;
-  v16 = self;
+  selfCopy = self;
   v12 = [UIAlertAction actionWithTitle:v8 style:0 handler:v14];
   v13 = [UIAlertController alertControllerWithTitle:v6 message:v7 preferredStyle:1];
   PKApplyDefaultIconToAlertController();
@@ -633,38 +633,38 @@ LABEL_5:
   dispatch_after(v3, &_dispatch_main_q, block);
 }
 
-- (void)_transitionToState:(unint64_t)a3
+- (void)_transitionToState:(unint64_t)state
 {
-  if (self->_currentState != a3)
+  if (self->_currentState != state)
   {
     v14 = v3;
-    self->_currentState = a3;
-    if (!a3 || a3 == 2)
+    self->_currentState = state;
+    if (!state || state == 2)
     {
       [(UIActivityIndicatorView *)self->_spinner stopAnimating:v6];
       [(UIBarButtonItem *)self->_confirmButton setEnabled:0];
-      v12 = [(PKTransactionAuthenticationCollectPasscodeViewController *)self navigationItem];
-      [v12 setRightBarButtonItem:self->_confirmButton];
+      navigationItem = [(PKTransactionAuthenticationCollectPasscodeViewController *)self navigationItem];
+      [navigationItem setRightBarButtonItem:self->_confirmButton];
 
-      v13 = [(PKTransactionAuthenticationCollectPasscodeViewController *)self navigationItem];
-      [v13 setLeftBarButtonItem:self->_cancelButton];
+      navigationItem2 = [(PKTransactionAuthenticationCollectPasscodeViewController *)self navigationItem];
+      [navigationItem2 setLeftBarButtonItem:self->_cancelButton];
 
       [(UIButton *)self->_footerButton setEnabled:1];
       [(UIView *)self->_passcodeField setHidden:0];
       [(UIView *)self->_passcodeField becomeFirstResponder];
     }
 
-    else if (a3 == 1)
+    else if (state == 1)
     {
       [(UIView *)self->_passcodeField setHidden:?];
       [(UIView *)self->_passcodeField resignFirstResponder];
       [(PKTransactionAuthenticationCollectPasscodeViewController *)self _clearPasscodeField];
       [(UIButton *)self->_footerButton setEnabled:0];
-      v10 = [(PKTransactionAuthenticationCollectPasscodeViewController *)self navigationItem];
-      [v10 setRightBarButtonItem:0];
+      navigationItem3 = [(PKTransactionAuthenticationCollectPasscodeViewController *)self navigationItem];
+      [navigationItem3 setRightBarButtonItem:0];
 
-      v11 = [(PKTransactionAuthenticationCollectPasscodeViewController *)self navigationItem];
-      [v11 setLeftBarButtonItem:0];
+      navigationItem4 = [(PKTransactionAuthenticationCollectPasscodeViewController *)self navigationItem];
+      [navigationItem4 setLeftBarButtonItem:0];
 
       [(UIActivityIndicatorView *)self->_spinner startAnimating];
     }
@@ -678,44 +678,44 @@ LABEL_5:
   PINFormat = self->_PINFormat;
   if (PINFormat == 2)
   {
-    v4 = [(PKTransactionAuthenticationComplexPasscodeTextField *)self->_complexPasscodeField text];
+    text = [(PKTransactionAuthenticationComplexPasscodeTextField *)self->_complexPasscodeField text];
   }
 
   else
   {
     if (PINFormat != 1)
     {
-      v6 = 0;
+      pk_zString = 0;
       goto LABEL_7;
     }
 
-    v4 = [(PKPinCodeField *)self->_simplePasscodeField pinCode];
+    text = [(PKPinCodeField *)self->_simplePasscodeField pinCode];
   }
 
-  v5 = v4;
-  v6 = [v4 pk_zString];
+  v5 = text;
+  pk_zString = [text pk_zString];
 
 LABEL_7:
-  v7 = [(PKPaymentPass *)self->_pass uniqueID];
+  uniqueID = [(PKPaymentPass *)self->_pass uniqueID];
   objc_initWeak(&location, self);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000362C;
   v9[3] = &unk_10000C528;
   objc_copyWeak(&v11, &location);
-  v8 = v6;
+  v8 = pk_zString;
   v10 = v8;
-  [(PKTransactionAuthenticationCollectPasscodeViewController *)self _retrievePINEncryptionCertificateForPassUniqueIdentifier:v7 completion:v9];
+  [(PKTransactionAuthenticationCollectPasscodeViewController *)self _retrievePINEncryptionCertificateForPassUniqueIdentifier:uniqueID completion:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (void)_retrievePINEncryptionCertificateForPassUniqueIdentifier:(id)a3 completion:(id)a4
+- (void)_retrievePINEncryptionCertificateForPassUniqueIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (completionCopy)
   {
     objc_initWeak(&location, self);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -724,8 +724,8 @@ LABEL_7:
     v9[2] = sub_1000038A8;
     v9[3] = &unk_10000C578;
     objc_copyWeak(&v12, &location);
-    v11 = v7;
-    v10 = v6;
+    v11 = completionCopy;
+    v10 = identifierCopy;
     [WeakRetained passcodeViewController:self requestSessionExchangeToken:v9];
 
     objc_destroyWeak(&v12);
@@ -733,14 +733,14 @@ LABEL_7:
   }
 }
 
-- (void)_encryptPIN:(id)a3 withCertificates:(id)a4 completion:(id)a5
+- (void)_encryptPIN:(id)n withCertificates:(id)certificates completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  nCopy = n;
+  certificatesCopy = certificates;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if ([v9 count])
+    if ([certificatesCopy count])
     {
       objc_initWeak(&location, self);
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -749,9 +749,9 @@ LABEL_7:
       v12[2] = sub_100003BE0;
       v12[3] = &unk_10000C5C8;
       objc_copyWeak(&v16, &location);
-      v15 = v10;
-      v13 = v8;
-      v14 = v9;
+      v15 = completionCopy;
+      v13 = nCopy;
+      v14 = certificatesCopy;
       [WeakRetained passcodeViewController:self requestSessionExchangeToken:v12];
 
       objc_destroyWeak(&v16);
@@ -760,7 +760,7 @@ LABEL_7:
 
     else
     {
-      (*(v10 + 2))(v10, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -771,8 +771,8 @@ LABEL_7:
   {
     v3 = PKLocalizedAquamanString(@"TRANSACTION_AUTHENTICATION_INCORRECT_PIN_ENTRY");
     [(UILabel *)self->_failureLabel setText:v3];
-    v4 = [(PKTransactionAuthenticationCollectPasscodeViewController *)self viewIfLoaded];
-    [v4 setNeedsLayout];
+    viewIfLoaded = [(PKTransactionAuthenticationCollectPasscodeViewController *)self viewIfLoaded];
+    [viewIfLoaded setNeedsLayout];
 
     v5 = 0;
   }

@@ -1,20 +1,20 @@
 @interface HAPNameResolver
 + (id)sharedWorkQueue;
-- (HAPNameResolver)initWithDeviceName:(id)a3 serviceType:(id)a4 domain:(id)a5;
+- (HAPNameResolver)initWithDeviceName:(id)name serviceType:(id)type domain:(id)domain;
 - (id)_nwCreateConnection;
 - (id)shortDescription;
 - (int64_t)resolutionState;
 - (void)_cancelTimer;
-- (void)_doCompletionWithErrorCode:(int64_t)a3 socketInfo:(id)a4 state:(int64_t)a5;
-- (void)_doCompletionWithErrorCode:(int64_t)a3 state:(int64_t)a4;
+- (void)_doCompletionWithErrorCode:(int64_t)code socketInfo:(id)info state:(int64_t)state;
+- (void)_doCompletionWithErrorCode:(int64_t)code state:(int64_t)state;
 - (void)_nwConnectionStart;
 - (void)_setStateChangedHandler;
-- (void)_startTimerWithTimeout:(double)a3;
-- (void)_updateSocketInfo:(id)a3;
+- (void)_startTimerWithTimeout:(double)timeout;
+- (void)_updateSocketInfo:(id)info;
 - (void)invalidate;
-- (void)resolveWithTimeout:(double)a3 completion:(id)a4;
-- (void)setResolutionState:(int64_t)a3;
-- (void)timerDidFire:(id)a3;
+- (void)resolveWithTimeout:(double)timeout completion:(id)completion;
+- (void)setResolutionState:(int64_t)state;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HAPNameResolver
@@ -23,23 +23,23 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HAPNameResolver *)self name];
-  v6 = [(HAPNameResolver *)self serviceType];
-  v7 = [(HAPNameResolver *)self domain];
-  v8 = [v3 stringWithFormat:@"%@ %@/%@/%@", v4, v5, v6, v7];
+  name = [(HAPNameResolver *)self name];
+  serviceType = [(HAPNameResolver *)self serviceType];
+  domain = [(HAPNameResolver *)self domain];
+  v8 = [v3 stringWithFormat:@"%@ %@/%@/%@", v4, name, serviceType, domain];
 
   return v8;
 }
 
 - (void)invalidate
 {
-  v3 = [(HAPNameResolver *)self workQueue];
+  workQueue = [(HAPNameResolver *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __29__HAPNameResolver_invalidate__block_invoke;
   block[3] = &unk_2786D6CA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __29__HAPNameResolver_invalidate__block_invoke(uint64_t a1)
@@ -85,19 +85,19 @@ LABEL_8:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resolveWithTimeout:(double)a3 completion:(id)a4
+- (void)resolveWithTimeout:(double)timeout completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(HAPNameResolver *)self workQueue];
+  completionCopy = completion;
+  workQueue = [(HAPNameResolver *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__HAPNameResolver_resolveWithTimeout_completion___block_invoke;
   block[3] = &unk_2786D43A8;
-  v11 = a3;
+  timeoutCopy = timeout;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = completionCopy;
+  v8 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __49__HAPNameResolver_resolveWithTimeout_completion___block_invoke(uint64_t a1)
@@ -181,50 +181,50 @@ void __49__HAPNameResolver_resolveWithTimeout_completion___block_invoke(uint64_t
 
 - (void)_nwConnectionStart
 {
-  v3 = [(HAPNameResolver *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HAPNameResolver *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HAPNameResolver *)self connection];
-  nw_connection_start(v4);
+  connection = [(HAPNameResolver *)self connection];
+  nw_connection_start(connection);
 }
 
 - (id)_nwCreateConnection
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(HAPNameResolver *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HAPNameResolver *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   secure_tcp = nw_parameters_create_secure_tcp(*MEMORY[0x277CD9238], &__block_literal_global_10);
   v5 = nw_interface_create_with_name();
   nw_parameters_prohibit_interface(secure_tcp, v5);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [(HAPNameResolver *)v7 shortDescription];
+    shortDescription = [(HAPNameResolver *)selfCopy shortDescription];
     v21 = 138543618;
     v22 = v9;
     v23 = 2112;
-    v24 = v10;
+    v24 = shortDescription;
     _os_log_impl(&dword_22AADC000, v8, OS_LOG_TYPE_DEBUG, "%{public}@nw_connection_create with %@", &v21, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v11 = [(HAPNameResolver *)v7 name];
-  v12 = [v11 UTF8String];
-  v13 = [(HAPNameResolver *)v7 serviceType];
-  v14 = [v13 UTF8String];
-  v15 = [(HAPNameResolver *)v7 domain];
-  bonjour_service = nw_endpoint_create_bonjour_service(v12, v14, [v15 UTF8String]);
+  name = [(HAPNameResolver *)selfCopy name];
+  uTF8String = [name UTF8String];
+  serviceType = [(HAPNameResolver *)selfCopy serviceType];
+  uTF8String2 = [serviceType UTF8String];
+  domain = [(HAPNameResolver *)selfCopy domain];
+  bonjour_service = nw_endpoint_create_bonjour_service(uTF8String, uTF8String2, [domain UTF8String]);
   v17 = nw_connection_create(bonjour_service, secure_tcp);
 
   if (v17)
   {
-    v18 = [(HAPNameResolver *)v7 workQueue];
-    nw_connection_set_queue(v17, v18);
+    workQueue2 = [(HAPNameResolver *)selfCopy workQueue];
+    nw_connection_set_queue(v17, workQueue2);
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -234,17 +234,17 @@ void __49__HAPNameResolver_resolveWithTimeout_completion___block_invoke(uint64_t
 
 - (void)_setStateChangedHandler
 {
-  v3 = [(HAPNameResolver *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HAPNameResolver *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   objc_initWeak(&location, self);
-  v4 = [(HAPNameResolver *)self connection];
+  connection = [(HAPNameResolver *)self connection];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __42__HAPNameResolver__setStateChangedHandler__block_invoke;
   v5[3] = &unk_2786D34C8;
   objc_copyWeak(&v6, &location);
-  nw_connection_set_state_changed_handler(v4, v5);
+  nw_connection_set_state_changed_handler(connection, v5);
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -549,100 +549,100 @@ LABEL_8:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateSocketInfo:(id)a3
+- (void)_updateSocketInfo:(id)info
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HAPNameResolver *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  infoCopy = info;
+  workQueue = [(HAPNameResolver *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if ([v4 ipAddressType] <= 4)
+  if ([infoCopy ipAddressType] <= 4)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = HMFGetLogIdentifier();
-      v10 = [(HAPNameResolver *)v7 name];
+      name = [(HAPNameResolver *)selfCopy name];
       v12 = 138543874;
       v13 = v9;
       v14 = 2112;
-      v15 = v10;
+      v15 = name;
       v16 = 2112;
-      v17 = v4;
+      v17 = infoCopy;
       _os_log_impl(&dword_22AADC000, v8, OS_LOG_TYPE_INFO, "%{public}@IP received address %@ %@", &v12, 0x20u);
     }
 
     objc_autoreleasePoolPop(v6);
-    [(HAPNameResolver *)v7 _cancelTimer];
-    [(HAPNameResolver *)v7 _doCompletionWithErrorCode:0 socketInfo:v4 state:2];
+    [(HAPNameResolver *)selfCopy _cancelTimer];
+    [(HAPNameResolver *)selfCopy _doCompletionWithErrorCode:0 socketInfo:infoCopy state:2];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_doCompletionWithErrorCode:(int64_t)a3 state:(int64_t)a4
+- (void)_doCompletionWithErrorCode:(int64_t)code state:(int64_t)state
 {
-  v7 = [(HAPNameResolver *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  workQueue = [(HAPNameResolver *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  [(HAPNameResolver *)self _doCompletionWithErrorCode:a3 socketInfo:0 state:a4];
+  [(HAPNameResolver *)self _doCompletionWithErrorCode:code socketInfo:0 state:state];
 }
 
-- (void)_doCompletionWithErrorCode:(int64_t)a3 socketInfo:(id)a4 state:(int64_t)a5
+- (void)_doCompletionWithErrorCode:(int64_t)code socketInfo:(id)info state:(int64_t)state
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = [(HAPNameResolver *)self workQueue];
-  dispatch_assert_queue_V2(v9);
+  infoCopy = info;
+  workQueue = [(HAPNameResolver *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   [(HAPNameResolver *)self _cancelTimer];
-  if (a3)
+  if (code)
   {
-    a3 = [MEMORY[0x277CCA9B8] errorWithDomain:@"HAPErrorDomain" code:a3 userInfo:0];
+    code = [MEMORY[0x277CCA9B8] errorWithDomain:@"HAPErrorDomain" code:code userInfo:0];
   }
 
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [(HAPNameResolver *)v11 name];
+    name = [(HAPNameResolver *)selfCopy name];
     v24 = 138543874;
     v25 = v13;
     v26 = 2112;
-    v27 = v14;
+    v27 = name;
     v28 = 2112;
-    v29 = a3;
+    codeCopy = code;
     _os_log_impl(&dword_22AADC000, v12, OS_LOG_TYPE_INFO, "%{public}@Name resolution completed for %@ error %@", &v24, 0x20u);
   }
 
   objc_autoreleasePoolPop(v10);
-  [(HAPNameResolver *)v11 setResolutionState:a5];
-  v15 = [(HAPNameResolver *)v11 connection];
+  [(HAPNameResolver *)selfCopy setResolutionState:state];
+  connection = [(HAPNameResolver *)selfCopy connection];
 
-  if (v15)
+  if (connection)
   {
-    v16 = [(HAPNameResolver *)v11 connection];
-    nw_connection_cancel(v16);
+    connection2 = [(HAPNameResolver *)selfCopy connection];
+    nw_connection_cancel(connection2);
 
-    [(HAPNameResolver *)v11 setConnection:0];
+    [(HAPNameResolver *)selfCopy setConnection:0];
   }
 
-  v17 = [(HAPNameResolver *)v11 completion];
+  completion = [(HAPNameResolver *)selfCopy completion];
 
-  if (v17)
+  if (completion)
   {
-    v18 = [(HAPNameResolver *)v11 completion];
-    (v18)[2](v18, a3, v8);
+    completion2 = [(HAPNameResolver *)selfCopy completion];
+    (completion2)[2](completion2, code, infoCopy);
   }
 
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = v11;
+    v20 = selfCopy;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
@@ -655,7 +655,7 @@ LABEL_8:
     objc_autoreleasePoolPop(v19);
   }
 
-  [(HAPNameResolver *)v11 setCompletion:0];
+  [(HAPNameResolver *)selfCopy setCompletion:0];
 
   v23 = *MEMORY[0x277D85DE8];
 }
@@ -668,90 +668,90 @@ LABEL_8:
   return resolutionState;
 }
 
-- (void)setResolutionState:(int64_t)a3
+- (void)setResolutionState:(int64_t)state
 {
   os_unfair_lock_lock_with_options();
-  self->_resolutionState = a3;
+  self->_resolutionState = state;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_startTimerWithTimeout:(double)a3
+- (void)_startTimerWithTimeout:(double)timeout
 {
-  v5 = [(HAPNameResolver *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  workQueue = [(HAPNameResolver *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:1 options:a3];
+  v6 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:1 options:timeout];
   [(HAPNameResolver *)self setTimer:v6];
 
-  v7 = [(HAPNameResolver *)self timer];
-  [v7 setDelegate:self];
+  timer = [(HAPNameResolver *)self timer];
+  [timer setDelegate:self];
 
-  v8 = [(HAPNameResolver *)self workQueue];
-  v9 = [(HAPNameResolver *)self timer];
-  [v9 setDelegateQueue:v8];
+  workQueue2 = [(HAPNameResolver *)self workQueue];
+  timer2 = [(HAPNameResolver *)self timer];
+  [timer2 setDelegateQueue:workQueue2];
 
-  v10 = [(HAPNameResolver *)self timer];
-  [v10 resume];
+  timer3 = [(HAPNameResolver *)self timer];
+  [timer3 resume];
 }
 
 - (void)_cancelTimer
 {
-  v3 = [(HAPNameResolver *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HAPNameResolver *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HAPNameResolver *)self timer];
-  [v4 cancel];
+  timer = [(HAPNameResolver *)self timer];
+  [timer cancel];
 
   [(HAPNameResolver *)self setTimer:0];
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HAPNameResolver *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  fireCopy = fire;
+  workQueue = [(HAPNameResolver *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HAPNameResolver *)self timer];
+  timer = [(HAPNameResolver *)self timer];
 
-  if (v6 == v4)
+  if (timer == fireCopy)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [(HAPNameResolver *)v8 name];
+      name = [(HAPNameResolver *)selfCopy name];
       v13 = 138543618;
       v14 = v10;
       v15 = 2112;
-      v16 = v11;
+      v16 = name;
       _os_log_impl(&dword_22AADC000, v9, OS_LOG_TYPE_INFO, "%{public}@Name resolution timed out for %@", &v13, 0x16u);
     }
 
     objc_autoreleasePoolPop(v7);
-    [(HAPNameResolver *)v8 _doCompletionWithErrorCode:24 state:3];
+    [(HAPNameResolver *)selfCopy _doCompletionWithErrorCode:24 state:3];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (HAPNameResolver)initWithDeviceName:(id)a3 serviceType:(id)a4 domain:(id)a5
+- (HAPNameResolver)initWithDeviceName:(id)name serviceType:(id)type domain:(id)domain
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  typeCopy = type;
+  domainCopy = domain;
   v17.receiver = self;
   v17.super_class = HAPNameResolver;
   v12 = [(HAPNameResolver *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_name, a3);
-    objc_storeStrong(&v13->_serviceType, a4);
-    objc_storeStrong(&v13->_domain, a5);
+    objc_storeStrong(&v12->_name, name);
+    objc_storeStrong(&v13->_serviceType, type);
+    objc_storeStrong(&v13->_domain, domain);
     v14 = +[HAPNameResolver sharedWorkQueue];
     workQueue = v13->_workQueue;
     v13->_workQueue = v14;

@@ -1,8 +1,8 @@
 @interface GKGamePolicyLibrary
 + (id)create;
-- (void)appsWith:(NSArray *)a3 completionHandler:(id)a4;
-- (void)registerInstalledGamesDidChangeHandler:(id)a3;
-- (void)warmupWithCompletionHandler:(id)a3;
+- (void)appsWith:(NSArray *)with completionHandler:(id)handler;
+- (void)registerInstalledGamesDidChangeHandler:(id)handler;
+- (void)warmupWithCompletionHandler:(id)handler;
 @end
 
 @implementation GKGamePolicyLibrary
@@ -14,35 +14,35 @@
   return v2;
 }
 
-- (void)appsWith:(NSArray *)a3 completionHandler:(id)a4
+- (void)appsWith:(NSArray *)with completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = with;
   v7[3] = v6;
   v7[4] = self;
-  v8 = a3;
-  v9 = self;
+  withCopy = with;
+  selfCopy = self;
 
   sub_10028022C(&unk_1002C9EB0, v7);
 }
 
-- (void)registerInstalledGamesDidChangeHandler:(id)a3
+- (void)registerInstalledGamesDidChangeHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_10027ADC4(sub_10027BA48, v5);
 }
 
-- (void)warmupWithCompletionHandler:(id)a3
+- (void)warmupWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(v5 + 24) = self;
-  v6 = self;
+  selfCopy = self;
 
   sub_10028022C(&unk_1002C9EA0, v5);
 }

@@ -8,20 +8,20 @@
 - (uint64_t)initWithPosterBoardRepresentation:()PRSAdditions
 {
   v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v4 extensionBundleIdentifier];
-  v7 = [v4 containerBundleIdentifier];
-  v8 = [v4 galleryOptions];
+  identifier = [v4 identifier];
+  extensionBundleIdentifier = [v4 extensionBundleIdentifier];
+  containerBundleIdentifier = [v4 containerBundleIdentifier];
+  galleryOptions = [v4 galleryOptions];
 
-  v9 = [v8 proactiveRepresentation];
-  v10 = [a1 initWithIdentifier:v5 extensionBundleIdentifier:v6 containerBundleIdentifier:v7 galleryOptions:v9];
+  proactiveRepresentation = [galleryOptions proactiveRepresentation];
+  v10 = [self initWithIdentifier:identifier extensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:containerBundleIdentifier galleryOptions:proactiveRepresentation];
 
   return v10;
 }
 
 - (PRSPosterGalleryItemPrototype)posterBoardRepresentation
 {
-  v1 = [[PRSPosterGalleryItemPrototype alloc] initWithProactiveRepresentation:a1];
+  v1 = [[PRSPosterGalleryItemPrototype alloc] initWithProactiveRepresentation:self];
 
   return v1;
 }

@@ -1,18 +1,18 @@
 @interface AWDFaceTimeCallDeclineSent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDeclineCode:(BOOL)a3;
-- (void)setHasErrorCode:(BOOL)a3;
-- (void)setHasIsVideo:(BOOL)a3;
-- (void)setHasOnLockScreen:(BOOL)a3;
-- (void)setHasSendDuration:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasDeclineCode:(BOOL)code;
+- (void)setHasErrorCode:(BOOL)code;
+- (void)setHasIsVideo:(BOOL)video;
+- (void)setHasOnLockScreen:(BOOL)screen;
+- (void)setHasSendDuration:(BOOL)duration;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDFaceTimeCallDeclineSent
@@ -25,9 +25,9 @@
   [(AWDFaceTimeCallDeclineSent *)&v3 dealloc];
 }
 
-- (void)setHasErrorCode:(BOOL)a3
+- (void)setHasErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 4;
   }
@@ -40,9 +40,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasDeclineCode:(BOOL)a3
+- (void)setHasDeclineCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 2;
   }
@@ -55,9 +55,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSendDuration:(BOOL)a3
+- (void)setHasSendDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 32;
   }
@@ -70,9 +70,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasIsVideo:(BOOL)a3
+- (void)setHasIsVideo:(BOOL)video
 {
-  if (a3)
+  if (video)
   {
     v3 = 8;
   }
@@ -85,9 +85,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasOnLockScreen:(BOOL)a3
+- (void)setHasOnLockScreen:(BOOL)screen
 {
-  if (a3)
+  if (screen)
   {
     v3 = 16;
   }
@@ -109,12 +109,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
+  v4 = dictionary;
   guid = self->_guid;
   if (guid)
   {
-    [v3 setObject:guid forKey:@"guid"];
+    [dictionary setObject:guid forKey:@"guid"];
   }
 
   has = self->_has;
@@ -191,7 +191,7 @@ LABEL_9:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_guid)
   {
@@ -279,18 +279,18 @@ LABEL_15:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_guid)
   {
-    [a3 setGuid:?];
+    [to setGuid:?];
   }
 
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 44) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 44) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -309,8 +309,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(a3 + 5) = self->_errorCode;
-  *(a3 + 44) |= 4u;
+  *(to + 5) = self->_errorCode;
+  *(to + 44) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -324,8 +324,8 @@ LABEL_6:
   }
 
 LABEL_13:
-  *(a3 + 4) = self->_declineCode;
-  *(a3 + 44) |= 2u;
+  *(to + 4) = self->_declineCode;
+  *(to + 44) |= 2u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -339,8 +339,8 @@ LABEL_7:
   }
 
 LABEL_14:
-  *(a3 + 10) = self->_sendDuration;
-  *(a3 + 44) |= 0x20u;
+  *(to + 10) = self->_sendDuration;
+  *(to + 44) |= 0x20u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -354,23 +354,23 @@ LABEL_8:
   }
 
 LABEL_15:
-  *(a3 + 8) = self->_isVideo;
-  *(a3 + 44) |= 8u;
+  *(to + 8) = self->_isVideo;
+  *(to + 44) |= 8u;
   if ((*&self->_has & 0x10) == 0)
   {
     return;
   }
 
 LABEL_9:
-  *(a3 + 9) = self->_onLockScreen;
-  *(a3 + 44) |= 0x10u;
+  *(to + 9) = self->_onLockScreen;
+  *(to + 44) |= 0x10u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  *(v5 + 24) = [(NSString *)self->_guid copyWithZone:a3];
+  *(v5 + 24) = [(NSString *)self->_guid copyWithZone:zone];
   has = self->_has;
   if (has)
   {
@@ -451,23 +451,23 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     guid = self->_guid;
-    if (!(guid | *(a3 + 3)) || (v5 = [(NSString *)guid isEqual:?]) != 0)
+    if (!(guid | *(equal + 3)) || (v5 = [(NSString *)guid isEqual:?]) != 0)
     {
       if (*&self->_has)
       {
-        if ((*(a3 + 44) & 1) == 0 || self->_timestamp != *(a3 + 1))
+        if ((*(equal + 44) & 1) == 0 || self->_timestamp != *(equal + 1))
         {
           goto LABEL_33;
         }
       }
 
-      else if (*(a3 + 44))
+      else if (*(equal + 44))
       {
 LABEL_33:
         LOBYTE(v5) = 0;
@@ -476,60 +476,60 @@ LABEL_33:
 
       if ((*&self->_has & 4) != 0)
       {
-        if ((*(a3 + 44) & 4) == 0 || self->_errorCode != *(a3 + 5))
+        if ((*(equal + 44) & 4) == 0 || self->_errorCode != *(equal + 5))
         {
           goto LABEL_33;
         }
       }
 
-      else if ((*(a3 + 44) & 4) != 0)
+      else if ((*(equal + 44) & 4) != 0)
       {
         goto LABEL_33;
       }
 
       if ((*&self->_has & 2) != 0)
       {
-        if ((*(a3 + 44) & 2) == 0 || self->_declineCode != *(a3 + 4))
+        if ((*(equal + 44) & 2) == 0 || self->_declineCode != *(equal + 4))
         {
           goto LABEL_33;
         }
       }
 
-      else if ((*(a3 + 44) & 2) != 0)
+      else if ((*(equal + 44) & 2) != 0)
       {
         goto LABEL_33;
       }
 
       if ((*&self->_has & 0x20) != 0)
       {
-        if ((*(a3 + 44) & 0x20) == 0 || self->_sendDuration != *(a3 + 10))
+        if ((*(equal + 44) & 0x20) == 0 || self->_sendDuration != *(equal + 10))
         {
           goto LABEL_33;
         }
       }
 
-      else if ((*(a3 + 44) & 0x20) != 0)
+      else if ((*(equal + 44) & 0x20) != 0)
       {
         goto LABEL_33;
       }
 
       if ((*&self->_has & 8) != 0)
       {
-        if ((*(a3 + 44) & 8) == 0 || self->_isVideo != *(a3 + 8))
+        if ((*(equal + 44) & 8) == 0 || self->_isVideo != *(equal + 8))
         {
           goto LABEL_33;
         }
       }
 
-      else if ((*(a3 + 44) & 8) != 0)
+      else if ((*(equal + 44) & 8) != 0)
       {
         goto LABEL_33;
       }
 
-      LOBYTE(v5) = (*(a3 + 44) & 0x10) == 0;
+      LOBYTE(v5) = (*(equal + 44) & 0x10) == 0;
       if ((*&self->_has & 0x10) != 0)
       {
-        if ((*(a3 + 44) & 0x10) == 0 || self->_onLockScreen != *(a3 + 9))
+        if ((*(equal + 44) & 0x10) == 0 || self->_onLockScreen != *(equal + 9))
         {
           goto LABEL_33;
         }
@@ -625,19 +625,19 @@ LABEL_7:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDFaceTimeCallDeclineSent *)self setGuid:?];
   }
 
-  v5 = *(a3 + 44);
+  v5 = *(from + 44);
   if (v5)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v5 = *(a3 + 44);
+    v5 = *(from + 44);
     if ((v5 & 4) == 0)
     {
 LABEL_5:
@@ -650,14 +650,14 @@ LABEL_5:
     }
   }
 
-  else if ((*(a3 + 44) & 4) == 0)
+  else if ((*(from + 44) & 4) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_errorCode = *(a3 + 5);
+  self->_errorCode = *(from + 5);
   *&self->_has |= 4u;
-  v5 = *(a3 + 44);
+  v5 = *(from + 44);
   if ((v5 & 2) == 0)
   {
 LABEL_6:
@@ -670,9 +670,9 @@ LABEL_6:
   }
 
 LABEL_13:
-  self->_declineCode = *(a3 + 4);
+  self->_declineCode = *(from + 4);
   *&self->_has |= 2u;
-  v5 = *(a3 + 44);
+  v5 = *(from + 44);
   if ((v5 & 0x20) == 0)
   {
 LABEL_7:
@@ -685,9 +685,9 @@ LABEL_7:
   }
 
 LABEL_14:
-  self->_sendDuration = *(a3 + 10);
+  self->_sendDuration = *(from + 10);
   *&self->_has |= 0x20u;
-  v5 = *(a3 + 44);
+  v5 = *(from + 44);
   if ((v5 & 8) == 0)
   {
 LABEL_8:
@@ -700,15 +700,15 @@ LABEL_8:
   }
 
 LABEL_15:
-  self->_isVideo = *(a3 + 8);
+  self->_isVideo = *(from + 8);
   *&self->_has |= 8u;
-  if ((*(a3 + 44) & 0x10) == 0)
+  if ((*(from + 44) & 0x10) == 0)
   {
     return;
   }
 
 LABEL_9:
-  self->_onLockScreen = *(a3 + 9);
+  self->_onLockScreen = *(from + 9);
   *&self->_has |= 0x10u;
 }
 

@@ -1,6 +1,6 @@
 @interface NewslettersStateCommandHandler
 - (_TtC7NewsUI230NewslettersStateCommandHandler)init;
-- (void)newsletterSubscriptionChangedFromSubscription:(int64_t)a3;
+- (void)newsletterSubscriptionChangedFromSubscription:(int64_t)subscription;
 @end
 
 @implementation NewslettersStateCommandHandler
@@ -12,12 +12,12 @@
   return result;
 }
 
-- (void)newsletterSubscriptionChangedFromSubscription:(int64_t)a3
+- (void)newsletterSubscriptionChangedFromSubscription:(int64_t)subscription
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
     swift_getObjectType();
-    v4 = self;
+    selfCopy = self;
     sub_219BEAB84();
     sub_219BE6FD4();
 

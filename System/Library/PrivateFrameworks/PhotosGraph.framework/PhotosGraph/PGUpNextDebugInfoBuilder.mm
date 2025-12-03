@@ -6,13 +6,13 @@
 - (NSString)debugInfo;
 - (NSString)inputDebugInfo;
 - (NSString)rootMemoryNodeUniqueIdentifier;
-- (void)addSuggestionFilteringLog:(id)a3;
-- (void)setFeatureWeightVectors:(id)a3;
-- (void)setInputDebugInfo:(id)a3;
-- (void)setMomentUUIDs:(id)a3;
-- (void)setRootMemoryIsAggregation:(BOOL)a3;
-- (void)setRootMemoryNodeUniqueIdentifier:(id)a3;
-- (void)setWantsVerboseDebugInfo:(BOOL)a3;
+- (void)addSuggestionFilteringLog:(id)log;
+- (void)setFeatureWeightVectors:(id)vectors;
+- (void)setInputDebugInfo:(id)info;
+- (void)setMomentUUIDs:(id)ds;
+- (void)setRootMemoryIsAggregation:(BOOL)aggregation;
+- (void)setRootMemoryNodeUniqueIdentifier:(id)identifier;
+- (void)setWantsVerboseDebugInfo:(BOOL)info;
 @end
 
 @implementation PGUpNextDebugInfoBuilder
@@ -24,11 +24,11 @@
   return *(self + v3);
 }
 
-- (void)setWantsVerboseDebugInfo:(BOOL)a3
+- (void)setWantsVerboseDebugInfo:(BOOL)info
 {
   v5 = OBJC_IVAR____TtC11PhotosGraph24PGUpNextDebugInfoBuilder_wantsVerboseDebugInfo;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = info;
 }
 
 - (NSString)inputDebugInfo
@@ -43,7 +43,7 @@
   return v5;
 }
 
-- (void)setInputDebugInfo:(id)a3
+- (void)setInputDebugInfo:(id)info
 {
   v4 = sub_22F740E20();
   v6 = v5;
@@ -61,11 +61,11 @@
   return *(self + v3);
 }
 
-- (void)setRootMemoryIsAggregation:(BOOL)a3
+- (void)setRootMemoryIsAggregation:(BOOL)aggregation
 {
   v5 = OBJC_IVAR____TtC11PhotosGraph24PGUpNextDebugInfoBuilder_rootMemoryIsAggregation;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = aggregation;
 }
 
 - (NSString)rootMemoryNodeUniqueIdentifier
@@ -87,9 +87,9 @@
   return v4;
 }
 
-- (void)setRootMemoryNodeUniqueIdentifier:(id)a3
+- (void)setRootMemoryNodeUniqueIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = sub_22F740E20();
     v6 = v5;
@@ -126,9 +126,9 @@
   return v4;
 }
 
-- (void)setMomentUUIDs:(id)a3
+- (void)setMomentUUIDs:(id)ds
 {
-  if (a3)
+  if (ds)
   {
     v4 = sub_22F741180();
   }
@@ -163,29 +163,29 @@
   return v4;
 }
 
-- (void)setFeatureWeightVectors:(id)a3
+- (void)setFeatureWeightVectors:(id)vectors
 {
-  v3 = a3;
-  if (a3)
+  vectorsCopy = vectors;
+  if (vectors)
   {
     sub_22F1DC8C0();
-    v3 = sub_22F741180();
+    vectorsCopy = sub_22F741180();
   }
 
   v5 = OBJC_IVAR____TtC11PhotosGraph24PGUpNextDebugInfoBuilder_featureWeightVectors;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = v3;
+  *(self + v5) = vectorsCopy;
 }
 
-- (void)addSuggestionFilteringLog:(id)a3
+- (void)addSuggestionFilteringLog:(id)log
 {
   v4 = sub_22F740E20();
   v6 = v5;
   v7 = OBJC_IVAR____TtC11PhotosGraph24PGUpNextDebugInfoBuilder_suggestionFilteringLogs;
   swift_beginAccess();
   v8 = *(self + v7);
-  v9 = self;
+  selfCopy = self;
   isUniquelyReferenced_nonNull_native = swift_isUniquelyReferenced_nonNull_native();
   *(self + v7) = v8;
   if ((isUniquelyReferenced_nonNull_native & 1) == 0)
@@ -211,7 +211,7 @@
 
 - (NSString)debugInfo
 {
-  v2 = self;
+  selfCopy = self;
   PGUpNextDebugInfoBuilder.debugInfo.getter();
 
   v3 = sub_22F740DF0();

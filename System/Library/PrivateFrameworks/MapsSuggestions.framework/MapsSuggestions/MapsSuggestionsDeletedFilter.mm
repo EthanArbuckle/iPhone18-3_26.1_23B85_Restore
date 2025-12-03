@@ -1,17 +1,17 @@
 @interface MapsSuggestionsDeletedFilter
-- (BOOL)shouldKeepEntry:(id)a3;
+- (BOOL)shouldKeepEntry:(id)entry;
 @end
 
 @implementation MapsSuggestionsDeletedFilter
 
-- (BOOL)shouldKeepEntry:(id)a3
+- (BOOL)shouldKeepEntry:(id)entry
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  entryCopy = entry;
+  v4 = entryCopy;
+  if (entryCopy)
   {
-    if ([v3 containsKey:@"MapsSuggestionsIsSuppressedKey"])
+    if ([entryCopy containsKey:@"MapsSuggestionsIsSuppressedKey"])
     {
       LODWORD(v5) = [v4 BOOLeanForKey:@"MapsSuggestionsIsSuppressedKey" is:1] ^ 1;
     }

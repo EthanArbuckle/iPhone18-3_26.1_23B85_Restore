@@ -1,6 +1,6 @@
 @interface MTRPushAVStreamTransportClusterTransportMotionTriggerTimeControlStruct
 - (MTRPushAVStreamTransportClusterTransportMotionTriggerTimeControlStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRPushAVStreamTransportClusterTransportMotionTriggerTimeControlStruct);
-  v5 = [(MTRPushAVStreamTransportClusterTransportMotionTriggerTimeControlStruct *)self initialDuration];
-  [(MTRPushAVStreamTransportClusterTransportMotionTriggerTimeControlStruct *)v4 setInitialDuration:v5];
+  initialDuration = [(MTRPushAVStreamTransportClusterTransportMotionTriggerTimeControlStruct *)self initialDuration];
+  [(MTRPushAVStreamTransportClusterTransportMotionTriggerTimeControlStruct *)v4 setInitialDuration:initialDuration];
 
-  v6 = [(MTRPushAVStreamTransportClusterTransportMotionTriggerTimeControlStruct *)self augmentationDuration];
-  [(MTRPushAVStreamTransportClusterTransportMotionTriggerTimeControlStruct *)v4 setAugmentationDuration:v6];
+  augmentationDuration = [(MTRPushAVStreamTransportClusterTransportMotionTriggerTimeControlStruct *)self augmentationDuration];
+  [(MTRPushAVStreamTransportClusterTransportMotionTriggerTimeControlStruct *)v4 setAugmentationDuration:augmentationDuration];
 
-  v7 = [(MTRPushAVStreamTransportClusterTransportMotionTriggerTimeControlStruct *)self maxDuration];
-  [(MTRPushAVStreamTransportClusterTransportMotionTriggerTimeControlStruct *)v4 setMaxDuration:v7];
+  maxDuration = [(MTRPushAVStreamTransportClusterTransportMotionTriggerTimeControlStruct *)self maxDuration];
+  [(MTRPushAVStreamTransportClusterTransportMotionTriggerTimeControlStruct *)v4 setMaxDuration:maxDuration];
 
-  v8 = [(MTRPushAVStreamTransportClusterTransportMotionTriggerTimeControlStruct *)self blindDuration];
-  [(MTRPushAVStreamTransportClusterTransportMotionTriggerTimeControlStruct *)v4 setBlindDuration:v8];
+  blindDuration = [(MTRPushAVStreamTransportClusterTransportMotionTriggerTimeControlStruct *)self blindDuration];
+  [(MTRPushAVStreamTransportClusterTransportMotionTriggerTimeControlStruct *)v4 setBlindDuration:blindDuration];
 
   return v4;
 }

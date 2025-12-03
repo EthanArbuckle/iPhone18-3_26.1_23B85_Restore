@@ -1,27 +1,27 @@
 @interface CSEmbeddingsUpdater
-- (BOOL)handleDonation:(id)a3 turboEnabled:(BOOL)a4 completionHandler:(id)a5 cancelBlock:(id)a6;
+- (BOOL)handleDonation:(id)donation turboEnabled:(BOOL)enabled completionHandler:(id)handler cancelBlock:(id)block;
 - (BOOL)isAcceptingJournals;
-- (BOOL)journalItemHasItemEmbeddingsSN:(id)a3;
-- (BOOL)journalItemHasNeedsEmbedding:(id)a3;
-- (BOOL)shouldHandleJournalItem:(id)a3 bundleID:(id)a4;
+- (BOOL)journalItemHasItemEmbeddingsSN:(id)n;
+- (BOOL)journalItemHasNeedsEmbedding:(id)embedding;
+- (BOOL)shouldHandleJournalItem:(id)item bundleID:(id)d;
 - (CSEmbeddingsUpdater)init;
 - (id)allowedBundlesFromUserDefaults;
 - (id)description;
 - (id)excludeBundleIDs;
-- (id)getEmbeddingWithCache2:(id)a3 key:(id)a4 bundleId:(id)a5;
-- (id)getEmbeddingWithCache:(id)a3 key:(id)a4 bundleId:(id)a5;
+- (id)getEmbeddingWithCache2:(id)cache2 key:(id)key bundleId:(id)id;
+- (id)getEmbeddingWithCache:(id)cache key:(id)key bundleId:(id)id;
 - (uint64_t)activityJournal;
 - (uint64_t)asyncIndexProcessors;
 - (uint64_t)defaults;
 - (uint64_t)skgProcessor;
 - (uint64_t)skgProcessorContext;
-- (void)setActivityJournal:(uint64_t)a1;
-- (void)setAsyncIndexProcessors:(uint64_t)a1;
-- (void)setDefaults:(uint64_t)a1;
-- (void)setSkgProcessor:(uint64_t)a1;
-- (void)setSkgProcessorContext:(uint64_t)a1;
-- (void)storeEmbeddingWithCache2:(id)a3 key:(id)a4 attributeSet:(id)a5 bundle:(id)a6;
-- (void)storeEmbeddingWithCache:(id)a3 key:(id)a4 attributeSet:(id)a5;
+- (void)setActivityJournal:(uint64_t)journal;
+- (void)setAsyncIndexProcessors:(uint64_t)processors;
+- (void)setDefaults:(uint64_t)defaults;
+- (void)setSkgProcessor:(uint64_t)processor;
+- (void)setSkgProcessorContext:(uint64_t)context;
+- (void)storeEmbeddingWithCache2:(id)cache2 key:(id)key attributeSet:(id)set bundle:(id)bundle;
+- (void)storeEmbeddingWithCache:(id)cache key:(id)key attributeSet:(id)set;
 @end
 
 @implementation CSEmbeddingsUpdater
@@ -55,13 +55,13 @@
   asyncIndexProcessors = self->_asyncIndexProcessors;
   self->_asyncIndexProcessors = v9;
 
-  v11 = [MEMORY[0x277D65798] sharedProcessor];
+  mEMORY[0x277D65798] = [MEMORY[0x277D65798] sharedProcessor];
   skgProcessor = self->_skgProcessor;
-  self->_skgProcessor = v11;
+  self->_skgProcessor = mEMORY[0x277D65798];
 
-  v13 = [MEMORY[0x277D657A0] sharedContext];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
   skgProcessorContext = self->_skgProcessorContext;
-  self->_skgProcessorContext = v13;
+  self->_skgProcessorContext = mEMORY[0x277D657A0];
 
   v15 = +[SKGActivityJournal sharedJournal];
   activityJournal = self->_activityJournal;
@@ -78,33 +78,33 @@
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
   v4 = objc_opt_class();
-  v5 = [(CSEmbeddingsUpdater *)self taskName];
-  v6 = [v3 initWithFormat:@"<%@:%p; %@>", v4, self, v5];
+  taskName = [(CSEmbeddingsUpdater *)self taskName];
+  v6 = [v3 initWithFormat:@"<%@:%p; %@>", v4, self, taskName];
 
   return v6;
 }
 
 - (BOOL)isAcceptingJournals
 {
-  v2 = [MEMORY[0x277D657A0] sharedContext];
-  v3 = [v2 enableEmbeddings];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  enableEmbeddings = [mEMORY[0x277D657A0] enableEmbeddings];
 
-  return v3;
+  return enableEmbeddings;
 }
 
 - (id)excludeBundleIDs
 {
-  v2 = [MEMORY[0x277D657A0] sharedContext];
-  v3 = [v2 embeddingExcludeBundles];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  embeddingExcludeBundles = [mEMORY[0x277D657A0] embeddingExcludeBundles];
 
-  return v3;
+  return embeddingExcludeBundles;
 }
 
-- (BOOL)journalItemHasNeedsEmbedding:(id)a3
+- (BOOL)journalItemHasNeedsEmbedding:(id)embedding
 {
   v8 = 0uLL;
   v9 = 0;
-  [(CSEventDonationJournalItem *)a3 attrDictObj];
+  [(CSEventDonationJournalItem *)embedding attrDictObj];
   PlistObjectForKey = _MDPlistDictionaryGetPlistObjectForKey();
   if (PlistObjectForKey)
   {
@@ -127,11 +127,11 @@
   return PlistObjectForKey;
 }
 
-- (BOOL)journalItemHasItemEmbeddingsSN:(id)a3
+- (BOOL)journalItemHasItemEmbeddingsSN:(id)n
 {
   v8 = 0uLL;
   v9 = 0;
-  [(CSEventDonationJournalItem *)a3 attrDictObj];
+  [(CSEventDonationJournalItem *)n attrDictObj];
   PlistObjectForKey = _MDPlistDictionaryGetPlistObjectForKey();
   if (PlistObjectForKey)
   {
@@ -154,12 +154,12 @@
   return PlistObjectForKey;
 }
 
-- (BOOL)shouldHandleJournalItem:(id)a3 bundleID:(id)a4
+- (BOOL)shouldHandleJournalItem:(id)item bundleID:(id)d
 {
-  v5 = a3;
-  if ([(CSEmbeddingsUpdater *)self isAcceptingJournals]&& [(CSEmbeddingsUpdater *)self journalItemHasNeedsEmbedding:v5])
+  itemCopy = item;
+  if ([(CSEmbeddingsUpdater *)self isAcceptingJournals]&& [(CSEmbeddingsUpdater *)self journalItemHasNeedsEmbedding:itemCopy])
   {
-    v6 = ![(CSEmbeddingsUpdater *)self journalItemHasItemEmbeddingsSN:v5];
+    v6 = ![(CSEmbeddingsUpdater *)self journalItemHasItemEmbeddingsSN:itemCopy];
   }
 
   else
@@ -170,31 +170,31 @@
   return v6;
 }
 
-- (void)storeEmbeddingWithCache:(id)a3 key:(id)a4 attributeSet:(id)a5
+- (void)storeEmbeddingWithCache:(id)cache key:(id)key attributeSet:(id)set
 {
-  if (a3)
+  if (cache)
   {
-    v7 = a4;
-    v8 = a3;
-    v10 = [EmbeddingCacheUtil serialize:a5];
-    v9 = [v7 UTF8String];
+    keyCopy = key;
+    cacheCopy = cache;
+    v10 = [EmbeddingCacheUtil serialize:set];
+    uTF8String = [keyCopy UTF8String];
 
-    [v8 put:v9 value:v10];
+    [cacheCopy put:uTF8String value:v10];
   }
 }
 
-- (void)storeEmbeddingWithCache2:(id)a3 key:(id)a4 attributeSet:(id)a5 bundle:(id)a6
+- (void)storeEmbeddingWithCache2:(id)cache2 key:(id)key attributeSet:(id)set bundle:(id)bundle
 {
-  if (a3)
+  if (cache2)
   {
-    v9 = a6;
-    v10 = a4;
-    v11 = a3;
-    v14 = [EmbeddingCacheUtil serialize:a5];
-    v12 = [v10 UTF8String];
+    bundleCopy = bundle;
+    keyCopy = key;
+    cache2Copy = cache2;
+    v14 = [EmbeddingCacheUtil serialize:set];
+    uTF8String = [keyCopy UTF8String];
 
-    v13 = [v9 UTF8String];
-    [v11 put:v12 value:v14 bundle:v13];
+    uTF8String2 = [bundleCopy UTF8String];
+    [cache2Copy put:uTF8String value:v14 bundle:uTF8String2];
   }
 }
 
@@ -217,14 +217,14 @@
   return v8;
 }
 
-- (id)getEmbeddingWithCache:(id)a3 key:(id)a4 bundleId:(id)a5
+- (id)getEmbeddingWithCache:(id)cache key:(id)key bundleId:(id)id
 {
   v5 = 0;
-  if (a3 && a4 && a5)
+  if (cache && key && id)
   {
-    v8 = a4;
-    v9 = a3;
-    v10 = [v9 get:{objc_msgSend(a4, "UTF8String")}];
+    keyCopy = key;
+    cacheCopy = cache;
+    v10 = [cacheCopy get:{objc_msgSend(key, "UTF8String")}];
 
     v5 = [EmbeddingCacheUtil deserialize:v10];
   }
@@ -232,18 +232,18 @@
   return v5;
 }
 
-- (id)getEmbeddingWithCache2:(id)a3 key:(id)a4 bundleId:(id)a5
+- (id)getEmbeddingWithCache2:(id)cache2 key:(id)key bundleId:(id)id
 {
   v5 = 0;
-  if (a3 && a4 && a5)
+  if (cache2 && key && id)
   {
-    v9 = a4;
-    v10 = a5;
-    v11 = a3;
-    v12 = [a4 UTF8String];
-    v13 = [v10 UTF8String];
+    keyCopy = key;
+    idCopy = id;
+    cache2Copy = cache2;
+    uTF8String = [key UTF8String];
+    uTF8String2 = [idCopy UTF8String];
 
-    v14 = [v11 get:v12 bundle:v13];
+    v14 = [cache2Copy get:uTF8String bundle:uTF8String2];
 
     v5 = [EmbeddingCacheUtil deserialize:v14];
   }
@@ -251,12 +251,12 @@
   return v5;
 }
 
-- (BOOL)handleDonation:(id)a3 turboEnabled:(BOOL)a4 completionHandler:(id)a5 cancelBlock:(id)a6
+- (BOOL)handleDonation:(id)donation turboEnabled:(BOOL)enabled completionHandler:(id)handler cancelBlock:(id)block
 {
   v154[2] = *MEMORY[0x277D85DE8];
-  v82 = a3;
-  v76 = a5;
-  v78 = a6;
+  donationCopy = donation;
+  handlerCopy = handler;
+  blockCopy = block;
   v142 = 0;
   v143 = &v142;
   v144 = 0x2020000000;
@@ -281,11 +281,11 @@
   }
 
   v14 = objc_alloc_init(CSEventFeedback);
-  [(CSEventFeedback *)v14 setIndexType:[(CSEventListenerManager *)v82 folderFd]];
+  [(CSEventFeedback *)v14 setIndexType:[(CSEventListenerManager *)donationCopy folderFd]];
   [(CSEventFeedback *)v14 start];
-  v77 = [(SKGProcessorContext *)self->_skgProcessorContext embeddingFetchAttributes];
+  embeddingFetchAttributes = [(SKGProcessorContext *)self->_skgProcessorContext embeddingFetchAttributes];
   v15 = objc_alloc(MEMORY[0x277CCACA8]);
-  v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:-[CSEventListenerManager journalMap](v82)];
+  v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:-[CSEventListenerManager journalMap](donationCopy)];
   v81 = [v15 initWithString:v16];
   v80 = v14;
 
@@ -300,15 +300,15 @@
   }
 
   [(CSEventFeedback *)v14 setBundleID:v17];
-  v79 = [(CSEmbeddingsUpdater *)self allowedBundlesFromUserDefaults];
-  if (v79 && ([v79 containsObject:v81] & 1) == 0)
+  allowedBundlesFromUserDefaults = [(CSEmbeddingsUpdater *)self allowedBundlesFromUserDefaults];
+  if (allowedBundlesFromUserDefaults && ([allowedBundlesFromUserDefaults containsObject:v81] & 1) == 0)
   {
     if (SKGLogGetCurrentLoggingLevel() >= 7)
     {
       v54 = SKGLogEmbedInit();
       if (os_log_type_enabled(v54, OS_LOG_TYPE_DEBUG))
       {
-        [CSEmbeddingsUpdater handleDonation:v81 turboEnabled:v79 completionHandler:v54 cancelBlock:?];
+        [CSEmbeddingsUpdater handleDonation:v81 turboEnabled:allowedBundlesFromUserDefaults completionHandler:v54 cancelBlock:?];
       }
     }
 
@@ -319,10 +319,10 @@
   else
   {
     v18 = objc_alloc(MEMORY[0x277CCACA8]);
-    v19 = [(CSEventListenerDonation *)v82 protectionClass];
-    v20 = [v18 initWithString:v19];
+    protectionClass = [(CSEventListenerDonation *)donationCopy protectionClass];
+    v20 = [v18 initWithString:protectionClass];
 
-    v21 = [EmbeddingCache sharedInstanceWithType:[(CSEventListenerManager *)v82 folderFd]];
+    v21 = [EmbeddingCache sharedInstanceWithType:[(CSEventListenerManager *)donationCopy folderFd]];
     v140[0] = 0;
     v140[1] = v140;
     v140[2] = 0x2020000000;
@@ -355,7 +355,7 @@
     aBlock[1] = 3221225472;
     aBlock[2] = __81__CSEmbeddingsUpdater_handleDonation_turboEnabled_completionHandler_cancelBlock___block_invoke;
     aBlock[3] = &unk_27893CB88;
-    v124 = v78;
+    v124 = blockCopy;
     v125 = v140;
     v22 = _Block_copy(aBlock);
     v113[0] = MEMORY[0x277D85DD0];
@@ -368,7 +368,7 @@
     v118 = v140;
     v24 = v81;
     v115 = v24;
-    v25 = v82;
+    v25 = donationCopy;
     v116 = v25;
     v119 = &v127;
     v120 = buf;
@@ -382,17 +382,17 @@
       v27 = SKGLogEmbedInit();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
-        v28 = [(CSEventListenerDonation *)v25 indexTypeName];
-        v29 = [(CSEventListenerManager *)v25 totalJournalSize];
-        v30 = [v25 getItemCount];
+        indexTypeName = [(CSEventListenerDonation *)v25 indexTypeName];
+        totalJournalSize = [(CSEventListenerManager *)v25 totalJournalSize];
+        getItemCount = [v25 getItemCount];
         *v146 = 138413058;
         *v147 = self;
         *&v147[8] = 2080;
-        *&v147[10] = v28;
+        *&v147[10] = indexTypeName;
         *&v147[18] = 2048;
-        v148 = v29;
+        v148 = totalJournalSize;
         v149 = 1024;
-        LODWORD(v150) = v30;
+        LODWORD(v150) = getItemCount;
         _os_log_impl(&dword_231B25000, v27, OS_LOG_TYPE_INFO, "### donation %@ %s sn:%llu total incoming %u items", v146, 0x26u);
       }
     }
@@ -403,7 +403,7 @@
     v96[3] = &unk_27893CCA0;
     v31 = v25;
     v97 = v31;
-    v98 = self;
+    selfCopy = self;
     v70 = v24;
     v99 = v70;
     v105 = &v127;
@@ -413,8 +413,8 @@
     v69 = v23;
     v100 = v69;
     v107 = v132;
-    v111 = a4;
-    v101 = v77;
+    enabledCopy = enabled;
+    v101 = embeddingFetchAttributes;
     v108 = buf;
     v33 = v26;
     v102 = v33;
@@ -436,15 +436,15 @@
         v37 = SKGLogEmbedInit();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
         {
-          v66 = [v33 hitRate];
-          v67 = [(CSEventListenerDonation *)v31 indexTypeName];
-          v68 = [v33 itemCount];
+          hitRate = [v33 hitRate];
+          indexTypeName2 = [(CSEventListenerDonation *)v31 indexTypeName];
+          itemCount = [v33 itemCount];
           *v146 = 67109634;
-          *v147 = v66;
+          *v147 = hitRate;
           *&v147[4] = 2080;
-          *&v147[6] = v67;
+          *&v147[6] = indexTypeName2;
           *&v147[14] = 1024;
-          *&v147[16] = v68;
+          *&v147[16] = itemCount;
           _os_log_debug_impl(&dword_231B25000, v37, OS_LOG_TYPE_DEBUG, "### EmbeddingCache HitRate = %u%%, (%s) Total Items = %u", v146, 0x18u);
         }
       }
@@ -452,8 +452,8 @@
       activityJournal = self->_activityJournal;
       v153[0] = &unk_2846E7638;
       v39 = MEMORY[0x277CCACA8];
-      v40 = [(CSEventListenerManager *)v31 folderFd];
-      v41 = [v39 stringWithUTF8String:getCSIndexTypeShortNameCString(v40)];
+      folderFd = [(CSEventListenerManager *)v31 folderFd];
+      v41 = [v39 stringWithUTF8String:getCSIndexTypeShortNameCString(folderFd)];
       v153[1] = &unk_2846E7650;
       v154[0] = v41;
       v42 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v33, "hitRate")}];
@@ -476,23 +476,23 @@
         v46 = SKGLogEmbedInit();
         if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
         {
-          v47 = [(CSEmbeddingsUpdater *)self taskName];
-          v48 = v47;
-          v49 = [v47 UTF8String];
-          v50 = [(CSEventListenerDonation *)v31 indexTypeName];
-          v51 = [(CSEventListenerManager *)v31 totalJournalSize];
+          taskName = [(CSEmbeddingsUpdater *)self taskName];
+          v48 = taskName;
+          uTF8String = [taskName UTF8String];
+          indexTypeName3 = [(CSEventListenerDonation *)v31 indexTypeName];
+          totalJournalSize2 = [(CSEventListenerManager *)v31 totalJournalSize];
           *v146 = 136315650;
-          *v147 = v49;
+          *v147 = uTF8String;
           *&v147[8] = 2080;
-          *&v147[10] = v50;
+          *&v147[10] = indexTypeName3;
           *&v147[18] = 2048;
-          v148 = v51;
+          v148 = totalJournalSize2;
           _os_log_impl(&dword_231B25000, v46, OS_LOG_TYPE_INFO, "### cancelling %s due to expiration request while processing type='%s' sn:'%llu'", v146, 0x20u);
         }
       }
 
       v75[2]();
-      (*(v76 + 2))(v76, 0, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
     }
 
     else
@@ -513,14 +513,14 @@
         v57 = SKGLogEmbedInit();
         if (os_log_type_enabled(v57, OS_LOG_TYPE_INFO))
         {
-          v58 = [(CSEventListenerDonation *)v31 indexTypeName];
-          v59 = [(CSEventListenerManager *)v31 totalJournalSize];
+          indexTypeName4 = [(CSEventListenerDonation *)v31 indexTypeName];
+          totalJournalSize3 = [(CSEventListenerManager *)v31 totalJournalSize];
           *v146 = 138413058;
           *v147 = self;
           *&v147[8] = 2080;
-          *&v147[10] = v58;
+          *&v147[10] = indexTypeName4;
           *&v147[18] = 2048;
-          v148 = v59;
+          v148 = totalJournalSize3;
           v149 = 2048;
           v150 = v53;
           _os_log_impl(&dword_231B25000, v57, OS_LOG_TYPE_INFO, "### donation %@ %s sn:%llu found %lu items", v146, 0x2Au);
@@ -547,7 +547,7 @@
         v94 = 32;
         v88 = v69;
         v89 = v75;
-        v90 = v76;
+        v90 = handlerCopy;
         v95 = v112;
         [v62 profileCodeWithType:v61 kind:1 block:v83];
       }
@@ -1364,11 +1364,11 @@ void __81__CSEmbeddingsUpdater_handleDonation_turboEnabled_completionHandler_can
   return result;
 }
 
-- (void)setAsyncIndexProcessors:(uint64_t)a1
+- (void)setAsyncIndexProcessors:(uint64_t)processors
 {
-  if (a1)
+  if (processors)
   {
-    objc_storeStrong((a1 + 8), a2);
+    objc_storeStrong((processors + 8), a2);
   }
 }
 
@@ -1382,11 +1382,11 @@ void __81__CSEmbeddingsUpdater_handleDonation_turboEnabled_completionHandler_can
   return result;
 }
 
-- (void)setSkgProcessor:(uint64_t)a1
+- (void)setSkgProcessor:(uint64_t)processor
 {
-  if (a1)
+  if (processor)
   {
-    objc_storeStrong((a1 + 16), a2);
+    objc_storeStrong((processor + 16), a2);
   }
 }
 
@@ -1400,11 +1400,11 @@ void __81__CSEmbeddingsUpdater_handleDonation_turboEnabled_completionHandler_can
   return result;
 }
 
-- (void)setSkgProcessorContext:(uint64_t)a1
+- (void)setSkgProcessorContext:(uint64_t)context
 {
-  if (a1)
+  if (context)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((context + 24), a2);
   }
 }
 
@@ -1418,11 +1418,11 @@ void __81__CSEmbeddingsUpdater_handleDonation_turboEnabled_completionHandler_can
   return result;
 }
 
-- (void)setActivityJournal:(uint64_t)a1
+- (void)setActivityJournal:(uint64_t)journal
 {
-  if (a1)
+  if (journal)
   {
-    objc_storeStrong((a1 + 32), a2);
+    objc_storeStrong((journal + 32), a2);
   }
 }
 
@@ -1436,11 +1436,11 @@ void __81__CSEmbeddingsUpdater_handleDonation_turboEnabled_completionHandler_can
   return result;
 }
 
-- (void)setDefaults:(uint64_t)a1
+- (void)setDefaults:(uint64_t)defaults
 {
-  if (a1)
+  if (defaults)
   {
-    objc_storeStrong((a1 + 40), a2);
+    objc_storeStrong((defaults + 40), a2);
   }
 }
 

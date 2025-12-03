@@ -1,66 +1,66 @@
 @interface PKTransformStrokesCommand
-+ (id)commandForTransforming:(id)a3 drawing:(id)a4 strokeTransform:(CGAffineTransform *)a5;
-+ (id)commandForTransforming:(id)a3 drawing:(id)a4 strokeTransforms:(id)a5;
++ (id)commandForTransforming:(id)transforming drawing:(id)drawing strokeTransform:(CGAffineTransform *)transform;
++ (id)commandForTransforming:(id)transforming drawing:(id)drawing strokeTransforms:(id)transforms;
 - (CGAffineTransform)strokeTransform;
-- (PKTransformStrokesCommand)initWithStrokes:(id)a3 drawingUUID:(id)a4 actionName:(id)a5 strokeTransform:(CGAffineTransform *)a6;
-- (PKTransformStrokesCommand)initWithStrokes:(id)a3 drawingUUID:(id)a4 actionName:(id)a5 strokeTransforms:(id)a6;
+- (PKTransformStrokesCommand)initWithStrokes:(id)strokes drawingUUID:(id)d actionName:(id)name strokeTransform:(CGAffineTransform *)transform;
+- (PKTransformStrokesCommand)initWithStrokes:(id)strokes drawingUUID:(id)d actionName:(id)name strokeTransforms:(id)transforms;
 - (id)description;
-- (id)invertedInDrawing:(id)a3;
-- (void)applyToDrawing:(id)a3;
+- (id)invertedInDrawing:(id)drawing;
+- (void)applyToDrawing:(id)drawing;
 @end
 
 @implementation PKTransformStrokesCommand
 
-+ (id)commandForTransforming:(id)a3 drawing:(id)a4 strokeTransform:(CGAffineTransform *)a5
++ (id)commandForTransforming:(id)transforming drawing:(id)drawing strokeTransform:(CGAffineTransform *)transform
 {
-  v7 = a3;
-  v8 = a4;
+  transformingCopy = transforming;
+  drawingCopy = drawing;
   v9 = _PencilKitBundle();
   v10 = [v9 localizedStringForKey:@"Transform Stroke" value:@"Transform Stroke" table:@"Localizable"];
 
   v11 = [PKTransformStrokesCommand alloc];
-  v12 = [v8 uuid];
-  v13 = *&a5->c;
-  v16[0] = *&a5->a;
+  uuid = [drawingCopy uuid];
+  v13 = *&transform->c;
+  v16[0] = *&transform->a;
   v16[1] = v13;
-  v16[2] = *&a5->tx;
-  v14 = [(PKTransformStrokesCommand *)v11 initWithStrokes:v7 drawingUUID:v12 actionName:v10 strokeTransform:v16];
+  v16[2] = *&transform->tx;
+  v14 = [(PKTransformStrokesCommand *)v11 initWithStrokes:transformingCopy drawingUUID:uuid actionName:v10 strokeTransform:v16];
 
   return v14;
 }
 
-+ (id)commandForTransforming:(id)a3 drawing:(id)a4 strokeTransforms:(id)a5
++ (id)commandForTransforming:(id)transforming drawing:(id)drawing strokeTransforms:(id)transforms
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  transformingCopy = transforming;
+  drawingCopy = drawing;
+  transformsCopy = transforms;
   v10 = _PencilKitBundle();
   v11 = [v10 localizedStringForKey:@"Transform Strokes" value:@"Transform Strokes" table:@"Localizable"];
 
   v12 = [PKTransformStrokesCommand alloc];
-  v13 = [v8 uuid];
-  v14 = [(PKTransformStrokesCommand *)v12 initWithStrokes:v7 drawingUUID:v13 actionName:v11 strokeTransforms:v9];
+  uuid = [drawingCopy uuid];
+  v14 = [(PKTransformStrokesCommand *)v12 initWithStrokes:transformingCopy drawingUUID:uuid actionName:v11 strokeTransforms:transformsCopy];
 
   return v14;
 }
 
-- (PKTransformStrokesCommand)initWithStrokes:(id)a3 drawingUUID:(id)a4 actionName:(id)a5 strokeTransform:(CGAffineTransform *)a6
+- (PKTransformStrokesCommand)initWithStrokes:(id)strokes drawingUUID:(id)d actionName:(id)name strokeTransform:(CGAffineTransform *)transform
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  strokesCopy = strokes;
+  dCopy = d;
+  nameCopy = name;
   v19.receiver = self;
   v19.super_class = PKTransformStrokesCommand;
-  v13 = [(PKUndoCommand *)&v19 initWithDrawingUUID:v11 actionName:v12];
+  v13 = [(PKUndoCommand *)&v19 initWithDrawingUUID:dCopy actionName:nameCopy];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [strokesCopy copy];
     strokes = v13->_strokes;
     v13->_strokes = v14;
 
-    v17 = *&a6->c;
-    v16 = *&a6->tx;
-    *&v13->_strokeTransform.a = *&a6->a;
+    v17 = *&transform->c;
+    v16 = *&transform->tx;
+    *&v13->_strokeTransform.a = *&transform->a;
     *&v13->_strokeTransform.c = v17;
     *&v13->_strokeTransform.tx = v16;
   }
@@ -68,35 +68,35 @@
   return v13;
 }
 
-- (PKTransformStrokesCommand)initWithStrokes:(id)a3 drawingUUID:(id)a4 actionName:(id)a5 strokeTransforms:(id)a6
+- (PKTransformStrokesCommand)initWithStrokes:(id)strokes drawingUUID:(id)d actionName:(id)name strokeTransforms:(id)transforms
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  strokesCopy = strokes;
+  dCopy = d;
+  nameCopy = name;
+  transformsCopy = transforms;
   v18.receiver = self;
   v18.super_class = PKTransformStrokesCommand;
-  v14 = [(PKUndoCommand *)&v18 initWithDrawingUUID:v11 actionName:v12];
+  v14 = [(PKUndoCommand *)&v18 initWithDrawingUUID:dCopy actionName:nameCopy];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [strokesCopy copy];
     strokes = v14->_strokes;
     v14->_strokes = v15;
 
-    objc_storeStrong(&v14->_strokeTransforms, a6);
+    objc_storeStrong(&v14->_strokeTransforms, transforms);
   }
 
   return v14;
 }
 
-- (id)invertedInDrawing:(id)a3
+- (id)invertedInDrawing:(id)drawing
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  drawingCopy = drawing;
   strokeTransforms = self->_strokeTransforms;
   if (strokeTransforms)
   {
-    v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](strokeTransforms, "count")}];
+    strokes2 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](strokeTransforms, "count")}];
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
@@ -130,7 +130,7 @@
           CGAffineTransformInvert(&v26, &v25);
           v25 = v26;
           v12 = [MEMORY[0x1E696B098] valueWithCGAffineTransform:&v25];
-          [v6 addObject:v12];
+          [strokes2 addObject:v12];
         }
 
         v8 = [(NSArray *)v7 countByEnumeratingWithState:&v21 objects:v27 count:16];
@@ -140,52 +140,52 @@
     }
 
     v13 = [PKTransformStrokesCommand alloc];
-    v14 = [(PKTransformStrokesCommand *)self strokes];
-    v15 = [(PKUndoCommand *)self drawingUUID];
-    v16 = [(PKUndoCommand *)self actionName];
-    v17 = [(PKTransformStrokesCommand *)v13 initWithStrokes:v14 drawingUUID:v15 actionName:v16 strokeTransforms:v6];
+    strokes = [(PKTransformStrokesCommand *)self strokes];
+    drawingUUID = [(PKUndoCommand *)self drawingUUID];
+    actionName = [(PKUndoCommand *)self actionName];
+    v17 = [(PKTransformStrokesCommand *)v13 initWithStrokes:strokes drawingUUID:drawingUUID actionName:actionName strokeTransforms:strokes2];
   }
 
   else
   {
     v18 = [PKTransformStrokesCommand alloc];
-    v6 = [(PKTransformStrokesCommand *)self strokes];
-    v14 = [(PKUndoCommand *)self drawingUUID];
-    v15 = [(PKUndoCommand *)self actionName];
+    strokes2 = [(PKTransformStrokesCommand *)self strokes];
+    strokes = [(PKUndoCommand *)self drawingUUID];
+    drawingUUID = [(PKUndoCommand *)self actionName];
     v19 = *&self->_strokeTransform.c;
     *&v25.a = *&self->_strokeTransform.a;
     *&v25.c = v19;
     *&v25.tx = *&self->_strokeTransform.tx;
     CGAffineTransformInvert(&v26, &v25);
-    v17 = [(PKTransformStrokesCommand *)v18 initWithStrokes:v6 drawingUUID:v14 actionName:v15 strokeTransform:&v26];
+    v17 = [(PKTransformStrokesCommand *)v18 initWithStrokes:strokes2 drawingUUID:strokes actionName:drawingUUID strokeTransform:&v26];
   }
 
   return v17;
 }
 
-- (void)applyToDrawing:(id)a3
+- (void)applyToDrawing:(id)drawing
 {
-  v4 = a3;
-  v5 = [v4 uuid];
-  v6 = [(PKUndoCommand *)self drawingUUID];
-  v7 = [v5 isEqual:v6];
+  drawingCopy = drawing;
+  uuid = [drawingCopy uuid];
+  drawingUUID = [(PKUndoCommand *)self drawingUUID];
+  v7 = [uuid isEqual:drawingUUID];
 
   if (v7)
   {
     if (self->_strokeTransforms)
     {
-      v8 = [(PKTransformStrokesCommand *)self strokes];
-      [v4 transformStrokes:v8 withTransforms:self->_strokeTransforms concat:1];
+      strokes = [(PKTransformStrokesCommand *)self strokes];
+      [drawingCopy transformStrokes:strokes withTransforms:self->_strokeTransforms concat:1];
     }
 
     else
     {
-      v8 = [(PKTransformStrokesCommand *)self strokes];
+      strokes = [(PKTransformStrokesCommand *)self strokes];
       v9 = *&self->_strokeTransform.c;
       v10[0] = *&self->_strokeTransform.a;
       v10[1] = v9;
       v10[2] = *&self->_strokeTransform.tx;
-      [v4 transformStrokes:v8 withTransform:v10 concat:1];
+      [drawingCopy transformStrokes:strokes withTransform:v10 concat:1];
     }
   }
 }
@@ -200,9 +200,9 @@
   *&transform.c = v6;
   *&transform.tx = *&self->_strokeTransform.tx;
   v7 = NSStringFromCGAffineTransform(&transform);
-  v8 = [(PKUndoCommand *)self drawingUUID];
-  v9 = [(PKTransformStrokesCommand *)self strokes];
-  v10 = [v3 stringWithFormat:@"<%@ %p transform=%@ drawing=%@ %@>", v5, self, v7, v8, v9];
+  drawingUUID = [(PKUndoCommand *)self drawingUUID];
+  strokes = [(PKTransformStrokesCommand *)self strokes];
+  v10 = [v3 stringWithFormat:@"<%@ %p transform=%@ drawing=%@ %@>", v5, self, v7, drawingUUID, strokes];
 
   return v10;
 }

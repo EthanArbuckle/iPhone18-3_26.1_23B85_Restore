@@ -1,16 +1,16 @@
 @interface HFSFileSystem
-- (void)getVolumeName:(int)a3 masterBlock:(HFSMasterDirectoryBlock *)a4 reply:(id)a5;
-- (void)loadResource:(id)a3 options:(id)a4 replyHandler:(id)a5;
-- (void)probeResource:(id)a3 replyHandler:(id)a4;
+- (void)getVolumeName:(int)name masterBlock:(HFSMasterDirectoryBlock *)block reply:(id)reply;
+- (void)loadResource:(id)resource options:(id)options replyHandler:(id)handler;
+- (void)probeResource:(id)resource replyHandler:(id)handler;
 @end
 
 @implementation HFSFileSystem
 
-- (void)getVolumeName:(int)a3 masterBlock:(HFSMasterDirectoryBlock *)a4 reply:(id)a5
+- (void)getVolumeName:(int)name masterBlock:(HFSMasterDirectoryBlock *)block reply:(id)reply
 {
-  v7 = a5;
+  replyCopy = reply;
   v8 = 0;
-  drSigWord = a4->drSigWord;
+  drSigWord = block->drSigWord;
   if (drSigWord != 11080 && drSigWord != 22600)
   {
     if (drSigWord != 17474)
@@ -20,17 +20,17 @@
       goto LABEL_14;
     }
 
-    if (a4->drEmbedSigWord != 11080)
+    if (block->drEmbedSigWord != 11080)
     {
       v12 = 0;
       v13 = 1;
       goto LABEL_14;
     }
 
-    v8 = ((bswap32(a4->drAlBlSt) >> 16) << 9) + (bswap32(a4->drEmbedExtent.startBlock) >> 16) * bswap32(a4->drAlBlkSiz);
+    v8 = ((bswap32(block->drAlBlSt) >> 16) << 9) + (bswap32(block->drEmbedExtent.startBlock) >> 16) * bswap32(block->drAlBlkSiz);
   }
 
-  NameFromHFSPlusVolumeStartingAt = hfs_GetNameFromHFSPlusVolumeStartingAt(a3, v8, v14, bswap32(*&a4->drVN[4]));
+  NameFromHFSPlusVolumeStartingAt = hfs_GetNameFromHFSPlusVolumeStartingAt(name, v8, v14, bswap32(*&block->drVN[4]));
   if (NameFromHFSPlusVolumeStartingAt == -3)
   {
     v12 = [NSString stringWithUTF8String:v14];
@@ -44,13 +44,13 @@
   }
 
 LABEL_14:
-  v7[2](v7, v13, v12);
+  replyCopy[2](replyCopy, v13, v12);
 }
 
-- (void)probeResource:(id)a3 replyHandler:(id)a4
+- (void)probeResource:(id)resource replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  resourceCopy = resource;
+  handlerCopy = handler;
   v52 = 0;
   v53 = &v52;
   v54 = 0x3032000000;
@@ -67,7 +67,7 @@ LABEL_14:
   v43 = &v42;
   v44 = 0x2020000000;
   v45 = 1;
-  v8 = [FSBlockDeviceResource dynamicCast:v6];
+  v8 = [FSBlockDeviceResource dynamicCast:resourceCopy];
   if (v8)
   {
     v9 = malloc_type_malloc(0x200uLL, 0xEEAEF00uLL);
@@ -90,9 +90,9 @@ LABEL_14:
       goto LABEL_28;
     }
 
-    v10 = [v8 blockSize];
-    v11 = v10;
-    if ((v10 - 16385) <= 0xFFFFFFFFFFFFBFFFLL)
+    blockSize = [v8 blockSize];
+    v11 = blockSize;
+    if ((blockSize - 16385) <= 0xFFFFFFFFFFFFBFFFLL)
     {
       v12 = fs_errorForPOSIXError();
       v13 = v53[5];
@@ -113,9 +113,9 @@ LABEL_14:
     }
 
     v15 = v9;
-    if (v10 >= 0x201)
+    if (blockSize >= 0x201)
     {
-      v15 = malloc_type_malloc(v10, 0xF8440A5CuLL);
+      v15 = malloc_type_malloc(blockSize, 0xF8440A5CuLL);
       if (!v15)
       {
         v33 = fs_errorForPOSIXError();
@@ -147,11 +147,11 @@ LABEL_14:
       v26 = fskit_std_log();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [v53[5] code];
+        code = [v53[5] code];
         *buf = 136315394;
         v60 = "[HFSFileSystem probeResource:replyHandler:]";
         v61 = 2048;
-        v62 = v27;
+        v62 = code;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "%s: Falied to read Master Directory Block, error (%ld)", buf, 0x16u);
       }
     }
@@ -212,10 +212,10 @@ LABEL_27:
             free(v9);
 LABEL_28:
             v30 = v47[5];
-            v31 = [v18 fs_containerIdentifier];
-            v19 = [FSProbeResult resultWithResult:v23 name:v30 containerID:v31];
+            fs_containerIdentifier = [v18 fs_containerIdentifier];
+            v19 = [FSProbeResult resultWithResult:v23 name:v30 containerID:fs_containerIdentifier];
 
-            v7[2](v7, v19, v53[5]);
+            handlerCopy[2](handlerCopy, v19, v53[5]);
             goto LABEL_29;
           }
 
@@ -264,7 +264,7 @@ LABEL_7:
   }
 
   v17 = [FSProbeResult resultWithResult:0 name:0 containerID:0];
-  v7[2](v7, v17, 0);
+  handlerCopy[2](handlerCopy, v17, 0);
 
   v18 = 0;
   v19 = 0;
@@ -276,11 +276,11 @@ LABEL_29:
   _Block_object_dispose(&v52, 8);
 }
 
-- (void)loadResource:(id)a3 options:(id)a4 replyHandler:(id)a5
+- (void)loadResource:(id)resource options:(id)options replyHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v7 = fs_errorForPOSIXError();
-  (*(a5 + 2))(v6, 0, v7);
+  (*(handler + 2))(handlerCopy, 0, v7);
 }
 
 @end

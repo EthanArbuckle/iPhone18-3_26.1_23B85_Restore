@@ -1,19 +1,19 @@
 @interface PXGSingleViewUserData
-- (PXGSingleViewUserData)initWithContentView:(id)a3;
+- (PXGSingleViewUserData)initWithContentView:(id)view;
 @end
 
 @implementation PXGSingleViewUserData
 
-- (PXGSingleViewUserData)initWithContentView:(id)a3
+- (PXGSingleViewUserData)initWithContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = PXGSingleViewUserData;
   v6 = [(PXGSingleViewUserData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contentView, a3);
+    objc_storeStrong(&v6->_contentView, view);
   }
 
   return v7;

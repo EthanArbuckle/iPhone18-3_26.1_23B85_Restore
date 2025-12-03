@@ -1,24 +1,24 @@
 @interface CRLMovieCompatibilityConverter
-+ (id)p_uniquePathForConvertingData:(id)a3 toType:(id)a4;
-+ (id)progressStringForUpgradingMoviesWithPreset:(int64_t)a3 dataCount:(unint64_t)a4 filename:(id)a5;
++ (id)p_uniquePathForConvertingData:(id)data toType:(id)type;
++ (id)progressStringForUpgradingMoviesWithPreset:(int64_t)preset dataCount:(unint64_t)count filename:(id)filename;
 + (void)initialize;
 - (CRLMovieCompatibilityConverter)init;
-- (CRLMovieCompatibilityConverter)initWithMovieData:(id)a3 auxiliaryMovieData:(id)a4 auxiliaryMovieDataFilename:(id)a5 desiredCompatibilityLevel:(int64_t)a6 initialCompatibilityLevel:(int64_t)a7 assetOwner:(id)a8;
-- (id)p_exportSessionForAsset:(id)a3 presetName:(id)a4 data:(id)a5 outputURL:(id)a6 preserveFrameDuration:(BOOL)a7;
+- (CRLMovieCompatibilityConverter)initWithMovieData:(id)data auxiliaryMovieData:(id)movieData auxiliaryMovieDataFilename:(id)filename desiredCompatibilityLevel:(int64_t)level initialCompatibilityLevel:(int64_t)compatibilityLevel assetOwner:(id)owner;
+- (id)p_exportSessionForAsset:(id)asset presetName:(id)name data:(id)data outputURL:(id)l preserveFrameDuration:(BOOL)duration;
 - (int64_t)playableOnAllDevicesPreset;
 - (void)cancel;
-- (void)convertMediaWithCompletionHandler:(id)a3;
-- (void)p_checkInitialCompatibilityLevelWithCompletionHandler:(id)a3;
-- (void)p_convertMovieData:(id)a3 fromPlayableByAVFoundationToAllDevicesWithCompletionHandler:(id)a4;
-- (void)p_convertMovieData:(id)a3 withPresetName:(id)a4 completionHandler:(id)a5;
-- (void)p_finishConvertingWithConvertedMovieData:(id)a3 error:(id)a4 completionHandler:(id)a5;
+- (void)convertMediaWithCompletionHandler:(id)handler;
+- (void)p_checkInitialCompatibilityLevelWithCompletionHandler:(id)handler;
+- (void)p_convertMovieData:(id)data fromPlayableByAVFoundationToAllDevicesWithCompletionHandler:(id)handler;
+- (void)p_convertMovieData:(id)data withPresetName:(id)name completionHandler:(id)handler;
+- (void)p_finishConvertingWithConvertedMovieData:(id)data error:(id)error completionHandler:(id)handler;
 @end
 
 @implementation CRLMovieCompatibilityConverter
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = dispatch_queue_create("com.apple.freeform.CRLMovieCompatibilityConverter", 0);
     v3 = qword_101A34F70;
@@ -26,19 +26,19 @@
   }
 }
 
-- (CRLMovieCompatibilityConverter)initWithMovieData:(id)a3 auxiliaryMovieData:(id)a4 auxiliaryMovieDataFilename:(id)a5 desiredCompatibilityLevel:(int64_t)a6 initialCompatibilityLevel:(int64_t)a7 assetOwner:(id)a8
+- (CRLMovieCompatibilityConverter)initWithMovieData:(id)data auxiliaryMovieData:(id)movieData auxiliaryMovieDataFilename:(id)filename desiredCompatibilityLevel:(int64_t)level initialCompatibilityLevel:(int64_t)compatibilityLevel assetOwner:(id)owner
 {
-  v14 = a3;
-  v40 = a4;
-  v43 = a4;
-  v15 = a5;
-  v41 = a8;
-  v42 = a8;
+  dataCopy = data;
+  movieDataCopy = movieData;
+  movieDataCopy2 = movieData;
+  filenameCopy = filename;
+  ownerCopy = owner;
+  ownerCopy2 = owner;
   v45.receiver = self;
   v45.super_class = CRLMovieCompatibilityConverter;
   v16 = [(CRLMovieCompatibilityConverter *)&v45 init];
-  v44 = a7;
-  if (a6 <= 2)
+  compatibilityLevelCopy = compatibilityLevel;
+  if (level <= 2)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -66,10 +66,10 @@
     v19 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLMovieCompatibilityConverter.m"];
     [CRLAssertionHandler handleFailureInFunction:v18 file:v19 lineNumber:68 isFatal:0 description:"Invalid parameter not satisfying: %{public}s", "desiredCompatibilityLevel >= CRLMediaCompatibilityLevelPlayableOnThisDevice"];
 
-    a7 = v44;
+    compatibilityLevel = compatibilityLevelCopy;
   }
 
-  if (a7 >= a6)
+  if (compatibilityLevel >= level)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -97,7 +97,7 @@
     v22 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLMovieCompatibilityConverter.m"];
     [CRLAssertionHandler handleFailureInFunction:v21 file:v22 lineNumber:69 isFatal:0 description:"Invalid parameter not satisfying: %{public}s", "initialCompatibilityLevel < desiredCompatibilityLevel"];
 
-    a7 = v44;
+    compatibilityLevel = compatibilityLevelCopy;
   }
 
   if (v16)
@@ -110,7 +110,7 @@
     v23 = off_1019F0290;
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
-      if (v14)
+      if (dataCopy)
       {
         v35 = objc_opt_class();
         v34 = NSStringFromClass(v35);
@@ -121,39 +121,39 @@
         v34 = @"Nil";
       }
 
-      v36 = [v14 filename];
-      v37 = [v14 assetUUID];
-      v38 = [v37 UUIDString];
+      filename = [dataCopy filename];
+      assetUUID = [dataCopy assetUUID];
+      uUIDString = [assetUUID UUIDString];
       *buf = 134219266;
       v47 = v16;
       v48 = 2114;
       v49 = v34;
       v50 = 2112;
-      v51 = v36;
+      v51 = filename;
       v52 = 2114;
-      v53 = v38;
+      v53 = uUIDString;
       v54 = 2048;
-      v55 = v44;
+      v55 = compatibilityLevelCopy;
       v56 = 2048;
-      v57 = a6;
+      levelCopy = level;
       _os_log_debug_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEBUG, "creating converter %p for data <%{public}@: filename=%@, assetUUID=%{public}@>  initialCompatLevel %li desiredCompatLevel %li", buf, 0x3Eu);
 
-      if (v14)
+      if (dataCopy)
       {
       }
 
-      a7 = v44;
+      compatibilityLevel = compatibilityLevelCopy;
     }
 
-    objc_storeStrong(&v16->mMovieData, a3);
-    objc_storeStrong(&v16->mAuxiliaryMovieData, v40);
-    v24 = [v15 copy];
+    objc_storeStrong(&v16->mMovieData, data);
+    objc_storeStrong(&v16->mAuxiliaryMovieData, movieDataCopy);
+    v24 = [filenameCopy copy];
     mAuxiliaryMovieDataFilename = v16->mAuxiliaryMovieDataFilename;
     v16->mAuxiliaryMovieDataFilename = v24;
 
-    v16->mInitialCompatibilityLevel = a7;
-    v16->mDesiredCompatibilityLevel = a6;
-    objc_storeStrong(&v16->mAssetOwner, v41);
+    v16->mInitialCompatibilityLevel = compatibilityLevel;
+    v16->mDesiredCompatibilityLevel = level;
+    objc_storeStrong(&v16->mAssetOwner, ownerCopy);
     v26 = [[NSMutableArray alloc] initWithCapacity:4];
     if (v16->mInitialCompatibilityLevel <= 2)
     {
@@ -244,18 +244,18 @@
   }
 }
 
-+ (id)progressStringForUpgradingMoviesWithPreset:(int64_t)a3 dataCount:(unint64_t)a4 filename:(id)a5
++ (id)progressStringForUpgradingMoviesWithPreset:(int64_t)preset dataCount:(unint64_t)count filename:(id)filename
 {
-  v7 = a5;
-  v8 = &stru_1018BCA28;
-  if (a3 > 2)
+  filenameCopy = filename;
+  filenameCopy = &stru_1018BCA28;
+  if (preset > 2)
   {
-    if (a3 > 4)
+    if (preset > 4)
     {
-      if (a3 == 5)
+      if (preset == 5)
       {
         v9 = +[NSBundle mainBundle];
-        if (a4 == 1)
+        if (count == 1)
         {
           v10 = @"Converting “%@” to HEVC (4K)…";
           goto LABEL_21;
@@ -266,13 +266,13 @@
 
       else
       {
-        if (a3 != 6)
+        if (preset != 6)
         {
           goto LABEL_34;
         }
 
         v9 = +[NSBundle mainBundle];
-        if (a4 == 1)
+        if (count == 1)
         {
           v10 = @"Converting “%@” to H.264 (Draft Quality / Smaller File)…";
           goto LABEL_21;
@@ -282,10 +282,10 @@
       }
     }
 
-    else if (a3 == 3)
+    else if (preset == 3)
     {
       v9 = +[NSBundle mainBundle];
-      if (a4 == 1)
+      if (count == 1)
       {
         v10 = @"Converting “%@” to H.264 (4K)…";
         goto LABEL_21;
@@ -297,12 +297,12 @@
     else
     {
       v9 = +[NSBundle mainBundle];
-      if (a4 == 1)
+      if (count == 1)
       {
         v10 = @"Converting “%@” to HEVC (1080p)…";
 LABEL_21:
         v11 = [v9 localizedStringForKey:v10 value:0 table:0];
-        v8 = [NSString localizedStringWithFormat:v11, v7];
+        filenameCopy = [NSString localizedStringWithFormat:v11, filenameCopy];
 
 LABEL_33:
         goto LABEL_34;
@@ -314,10 +314,10 @@ LABEL_33:
     goto LABEL_32;
   }
 
-  if (!a3)
+  if (!preset)
   {
     v9 = +[NSBundle mainBundle];
-    if (a4 == 1)
+    if (count == 1)
     {
       v10 = @"Converting “%@”…";
       goto LABEL_21;
@@ -327,15 +327,15 @@ LABEL_33:
     goto LABEL_32;
   }
 
-  if (a3 != 1)
+  if (preset != 1)
   {
-    if (a3 != 2)
+    if (preset != 2)
     {
       goto LABEL_34;
     }
 
     v9 = +[NSBundle mainBundle];
-    if (a4 == 1)
+    if (count == 1)
     {
       v10 = @"Converting “%@” to H.264 (1080p)…";
       goto LABEL_21;
@@ -344,7 +344,7 @@ LABEL_33:
     v12 = @"Converting %u movies to H.264 (1080p)";
 LABEL_32:
     v13 = [v9 localizedStringForKey:v12 value:0 table:0];
-    v8 = [NSString localizedStringWithFormat:v13, a4];
+    filenameCopy = [NSString localizedStringWithFormat:v13, count];
 
     goto LABEL_33;
   }
@@ -361,27 +361,27 @@ LABEL_32:
 
 LABEL_34:
 
-  return v8;
+  return filenameCopy;
 }
 
-- (void)convertMediaWithCompletionHandler:(id)a3
+- (void)convertMediaWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = qword_101A34F70;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10042C5CC;
   v7[3] = &unk_10183FC10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(v5, v7);
 }
 
-+ (id)p_uniquePathForConvertingData:(id)a3 toType:(id)a4
++ (id)p_uniquePathForConvertingData:(id)data toType:(id)type
 {
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  typeCopy = type;
   v44 = 0;
   v7 = [[CRLTemporaryDirectory alloc] initWithError:&v44];
   v8 = v44;
@@ -414,13 +414,13 @@ LABEL_34:
     [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:210 isFatal:0 description:"invalid nil value for '%{public}s'", "temporaryDirectory"];
   }
 
-  v12 = [(CRLTemporaryDirectory *)v7 path];
-  v13 = [NSURL crl_fileURLWithPath:v12];
+  path = [(CRLTemporaryDirectory *)v7 path];
+  v13 = [NSURL crl_fileURLWithPath:path];
 
   v14 = [v13 URLByAppendingPathComponent:@"MovieCompatibilityConverter.XXXXXX"];
   v46 = 0;
-  v15 = [v14 path];
-  strncpy(__dst, [v15 fileSystemRepresentation], 0x3FFuLL);
+  path2 = [v14 path];
+  strncpy(__dst, [path2 fileSystemRepresentation], 0x3FFuLL);
 
   v46 = 0;
   v16 = mkdtemp(__dst);
@@ -435,13 +435,13 @@ LABEL_34:
 
       if (v20)
       {
-        [UTType typeWithMIMEType:v6];
-        v40 = v5;
-        v21 = v41 = v6;
-        v22 = [v21 preferredFilenameExtension];
-        v23 = [v40 filename];
-        v24 = [v23 stringByDeletingPathExtension];
-        [v24 stringByAppendingPathExtension:v22];
+        [UTType typeWithMIMEType:typeCopy];
+        v40 = dataCopy;
+        v21 = v41 = typeCopy;
+        preferredFilenameExtension = [v21 preferredFilenameExtension];
+        filename = [v40 filename];
+        stringByDeletingPathExtension = [filename stringByDeletingPathExtension];
+        [stringByDeletingPathExtension stringByAppendingPathExtension:preferredFilenameExtension];
         v25 = v14;
         v26 = v13;
         v27 = v7;
@@ -454,8 +454,8 @@ LABEL_34:
         v13 = v26;
         v14 = v25;
 
-        v5 = v40;
-        v6 = v41;
+        dataCopy = v40;
+        typeCopy = v41;
       }
 
       else
@@ -466,9 +466,9 @@ LABEL_34:
 
     else
     {
-      v43 = v6;
+      v43 = typeCopy;
       +[CRLAssertionHandler _atomicIncrementAssertCount];
-      v35 = v5;
+      v35 = dataCopy;
       if (qword_101AD5A10 != -1)
       {
         sub_101370FB8();
@@ -496,15 +496,15 @@ LABEL_34:
 
       rmdir(v17);
       v30 = 0;
-      v5 = v35;
-      v6 = v43;
+      dataCopy = v35;
+      typeCopy = v43;
     }
   }
 
   else
   {
-    v42 = v6;
-    v31 = v5;
+    v42 = typeCopy;
+    v31 = dataCopy;
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
     {
@@ -532,28 +532,28 @@ LABEL_34:
     [CRLAssertionHandler handleFailureInFunction:v33 file:v34 lineNumber:230 isFatal:0 description:"mkdtemp failed"];
 
     v30 = 0;
-    v5 = v31;
-    v6 = v42;
+    dataCopy = v31;
+    typeCopy = v42;
   }
 
   return v30;
 }
 
-- (void)p_convertMovieData:(id)a3 fromPlayableByAVFoundationToAllDevicesWithCompletionHandler:(id)a4
+- (void)p_convertMovieData:(id)data fromPlayableByAVFoundationToAllDevicesWithCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRLMovieCompatibilityConverter *)self playableOnAllDevicesPreset];
-  v10 = sub_1003266C4(v8, 0, v9);
-  [(CRLMovieCompatibilityConverter *)self p_convertMovieData:v7 withPresetName:v10 completionHandler:v6];
+  handlerCopy = handler;
+  dataCopy = data;
+  playableOnAllDevicesPreset = [(CRLMovieCompatibilityConverter *)self playableOnAllDevicesPreset];
+  v10 = sub_1003266C4(playableOnAllDevicesPreset, 0, v9);
+  [(CRLMovieCompatibilityConverter *)self p_convertMovieData:dataCopy withPresetName:v10 completionHandler:handlerCopy];
 }
 
-- (void)p_convertMovieData:(id)a3 withPresetName:(id)a4 completionHandler:(id)a5
+- (void)p_convertMovieData:(id)data withPresetName:(id)name completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
+  dataCopy = data;
+  nameCopy = name;
+  handlerCopy = handler;
+  v11 = handlerCopy;
   if (!atomic_load(&self->mIsCancelled))
   {
     if (qword_101AD5CC8 != -1)
@@ -566,7 +566,7 @@ LABEL_34:
       sub_10137118C();
     }
 
-    v13 = [v8 AVAssetAndReturnError:0];
+    v13 = [dataCopy AVAssetAndReturnError:0];
     if (self->mExportSession)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -597,12 +597,12 @@ LABEL_34:
     }
 
     v17 = objc_opt_class();
-    v18 = [UTTypeQuickTimeMovie identifier];
-    v19 = [v17 p_uniquePathForConvertingData:v8 toType:v18];
+    identifier = [UTTypeQuickTimeMovie identifier];
+    v19 = [v17 p_uniquePathForConvertingData:dataCopy toType:identifier];
 
     if (v19)
     {
-      v20 = [(CRLMovieCompatibilityConverter *)self p_exportSessionForAsset:v13 presetName:v9 data:v8 outputURL:v19 preserveFrameDuration:self->mDesiredCompatibilityLevel < 4];
+      v20 = [(CRLMovieCompatibilityConverter *)self p_exportSessionForAsset:v13 presetName:nameCopy data:dataCopy outputURL:v19 preserveFrameDuration:self->mDesiredCompatibilityLevel < 4];
       mExportSession = self->mExportSession;
       self->mExportSession = v20;
 
@@ -631,8 +631,8 @@ LABEL_34:
         v30[3] = &unk_101862060;
         v30[4] = self;
         v30[5] = v19;
-        v31 = v8;
-        v32 = v9;
+        v31 = dataCopy;
+        v32 = nameCopy;
         v33 = v13;
         v34 = v11;
         v28 = v13;
@@ -641,7 +641,7 @@ LABEL_34:
         goto LABEL_23;
       }
 
-      (v11)[2](v11, v8, 0);
+      (v11)[2](v11, dataCopy, 0);
     }
 
     else
@@ -653,31 +653,31 @@ LABEL_34:
     goto LABEL_23;
   }
 
-  (*(v10 + 2))(v10, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0);
 LABEL_23:
 }
 
-- (id)p_exportSessionForAsset:(id)a3 presetName:(id)a4 data:(id)a5 outputURL:(id)a6 preserveFrameDuration:(BOOL)a7
+- (id)p_exportSessionForAsset:(id)asset presetName:(id)name data:(id)data outputURL:(id)l preserveFrameDuration:(BOOL)duration
 {
-  v7 = a7;
-  v10 = a6;
-  v11 = [AVAssetExportSession crl_exportSessionWithAsset:a3 presetName:a4 preserveFrameDuration:v7];
-  v12 = [UTTypeQuickTimeMovie identifier];
-  [v11 setOutputFileType:v12];
+  durationCopy = duration;
+  lCopy = l;
+  v11 = [AVAssetExportSession crl_exportSessionWithAsset:asset presetName:name preserveFrameDuration:durationCopy];
+  identifier = [UTTypeQuickTimeMovie identifier];
+  [v11 setOutputFileType:identifier];
 
-  [v11 setOutputURL:v10];
+  [v11 setOutputURL:lCopy];
 
   return v11;
 }
 
-- (void)p_finishConvertingWithConvertedMovieData:(id)a3 error:(id)a4 completionHandler:(id)a5
+- (void)p_finishConvertingWithConvertedMovieData:(id)data error:(id)error completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  errorCopy = error;
+  handlerCopy = handler;
   if (!atomic_load(&self->mIsCancelled))
   {
-    if (v8)
+    if (dataCopy)
     {
       if (qword_101AD5CC8 != -1)
       {
@@ -689,7 +689,7 @@ LABEL_23:
         sub_101371658();
       }
 
-      v12 = v8;
+      v12 = dataCopy;
       mConvertedMovieData = self->mConvertedMovieData;
       self->mConvertedMovieData = v12;
 LABEL_8:
@@ -699,7 +699,7 @@ LABEL_8:
 
     if (!self->mError)
     {
-      if (v9)
+      if (errorCopy)
       {
         if (qword_101AD5CC8 != -1)
         {
@@ -711,7 +711,7 @@ LABEL_8:
           sub_1013716D4();
         }
 
-        v14 = [v9 copy];
+        v14 = [errorCopy copy];
         mConvertedMovieData = self->mError;
         self->mError = v14;
       }
@@ -744,9 +744,9 @@ LABEL_8:
   }
 
 LABEL_10:
-  if (v10)
+  if (handlerCopy)
   {
-    v10[2](v10);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -779,9 +779,9 @@ LABEL_10:
   dispatch_async(qword_101A34F70, v4);
 }
 
-- (void)p_checkInitialCompatibilityLevelWithCompletionHandler:(id)a3
+- (void)p_checkInitialCompatibilityLevelWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (qword_101AD5CC8 != -1)
   {
     sub_101371834();
@@ -861,8 +861,8 @@ LABEL_10:
   v17[2] = sub_10042EC58;
   v17[3] = &unk_10183FC10;
   v17[4] = self;
-  v18 = v4;
-  v16 = v4;
+  v18 = handlerCopy;
+  v16 = handlerCopy;
   [(CRLMovieCompatibilityChecker *)v14 checkCompatibilityUpToLevel:mDesiredCompatibilityLevel completionHandler:v17];
 }
 

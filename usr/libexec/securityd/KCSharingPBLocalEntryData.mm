@@ -1,30 +1,30 @@
 @interface KCSharingPBLocalEntryData
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCSharingPBLocalEntryData
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(KCSharingPBLocalEntryData *)self setCloudKitRecord:?];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     cloudKitRecord = self->_cloudKitRecord;
-    if (cloudKitRecord | v4[2])
+    if (cloudKitRecord | equalCopy[2])
     {
       v6 = [(NSData *)cloudKitRecord isEqual:?];
     }
@@ -43,10 +43,10 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_cloudKitRecord copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_cloudKitRecord copyWithZone:zone];
   v7 = *(v5 + 2);
   *(v5 + 2) = v6;
 
@@ -54,27 +54,27 @@
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_cloudKitRecord)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
-  [(PBUnknownFields *)self->_unknownFields writeTo:v4];
+  [(PBUnknownFields *)self->_unknownFields writeTo:toCopy];
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         break;
       }
@@ -85,18 +85,18 @@
       while (1)
       {
         v21 = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v21 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v21 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v21 & 0x7F) << v6;
@@ -113,13 +113,13 @@
         }
       }
 
-      if ([a3 hasError])
+      if ([from hasError])
       {
         v8 = 0;
       }
 
 LABEL_14:
-      if (([a3 hasError] & 1) != 0 || (v8 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v8 & 7) == 4)
       {
         break;
       }
@@ -149,13 +149,13 @@ LABEL_14:
         }
       }
 
-      v19 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v19 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  LOBYTE(v18) = [a3 hasError] ^ 1;
+  LOBYTE(v18) = [from hasError] ^ 1;
   return v18;
 }
 
@@ -172,8 +172,8 @@ LABEL_14:
   unknownFields = self->_unknownFields;
   if (unknownFields)
   {
-    v7 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"Unknown Fields"];
+    dictionaryRepresentation = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"Unknown Fields"];
   }
 
   return v4;
@@ -184,8 +184,8 @@ LABEL_14:
   v7.receiver = self;
   v7.super_class = KCSharingPBLocalEntryData;
   v3 = [(KCSharingPBLocalEntryData *)&v7 description];
-  v4 = [(KCSharingPBLocalEntryData *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(KCSharingPBLocalEntryData *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }

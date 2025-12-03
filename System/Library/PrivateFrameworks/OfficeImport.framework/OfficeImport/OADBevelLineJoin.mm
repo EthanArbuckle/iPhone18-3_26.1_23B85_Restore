@@ -1,8 +1,8 @@
 @interface OADBevelLineJoin
 + (id)defaultProperties;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OADBevelLineJoin)initWithDefaults;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -27,9 +27,9 @@
   return [(OADProperties *)&v3 initWithDefaults];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [OADBevelLineJoin allocWithZone:a3];
+  v3 = [OADBevelLineJoin allocWithZone:zone];
 
   return [(OADBevelLineJoin *)v3 initWithDefaults];
 }
@@ -41,9 +41,9 @@ void __37__OADBevelLineJoin_defaultProperties__block_invoke()
   +[OADBevelLineJoin defaultProperties]::defaultProperties = v0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   v4 = objc_opt_class();
   LOBYTE(v4) = v4 == objc_opt_class();
 

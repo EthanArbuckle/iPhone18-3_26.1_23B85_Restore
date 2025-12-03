@@ -12,7 +12,7 @@
   v3 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:@"en_US_POSIX"];
   [v2 setLocale:v3];
 
-  v4 = [v2 stringFromDate:a1];
+  v4 = [v2 stringFromDate:self];
 
   return v4;
 }
@@ -36,7 +36,7 @@
   if (v8)
   {
     v9 = v8;
-    StringWithDate = CFDateFormatterCreateStringWithDate(0, v8, a1);
+    StringWithDate = CFDateFormatterCreateStringWithDate(0, v8, self);
     CFRelease(v9);
   }
 
@@ -56,7 +56,7 @@
   if (v12)
   {
     v13 = v12;
-    v14 = CFDateFormatterCreateStringWithDate(0, v12, a1);
+    v14 = CFDateFormatterCreateStringWithDate(0, v12, self);
     CFRelease(v13);
   }
 
@@ -73,19 +73,19 @@
   }
 
   v16 = v4;
-  v17 = [v16 mf_addressComment];
-  v18 = [v16 mf_uncommentedAddress];
-  v19 = v18;
+  mf_addressComment = [v16 mf_addressComment];
+  mf_uncommentedAddress = [v16 mf_uncommentedAddress];
+  v19 = mf_uncommentedAddress;
   v20 = v16;
-  if (v17)
+  if (mf_addressComment)
   {
     v20 = v16;
-    if (v18)
+    if (mf_uncommentedAddress)
     {
       v20 = v16;
-      if (([v17 isEqual:v18] & 1) == 0)
+      if (([mf_addressComment isEqual:mf_uncommentedAddress] & 1) == 0)
       {
-        v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ <%@>", v17, v19];
+        v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ <%@>", mf_addressComment, v19];
       }
     }
   }

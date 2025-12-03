@@ -1,74 +1,74 @@
 @interface SiriUIContentButton
-+ (id)buttonWithImageMask:(id)a3 style:(int64_t)a4;
-+ (id)buttonWithImageTemplate:(id)a3 style:(int64_t)a4;
++ (id)buttonWithImageMask:(id)mask style:(int64_t)style;
++ (id)buttonWithImageTemplate:(id)template style:(int64_t)style;
 + (id)buttonWithLightWeightFont;
 + (id)buttonWithMediumWeightFont;
-+ (id)buttonWithRole:(int64_t)a3;
-+ (id)eyesFreeButtonWithImageTemplate:(id)a3 style:(int64_t)a4;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (SiriUIContentButton)initWithFrame:(CGRect)a3;
++ (id)buttonWithRole:(int64_t)role;
++ (id)eyesFreeButtonWithImageTemplate:(id)template style:(int64_t)style;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (SiriUIContentButton)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)hitTestEdgeInsets;
 - (void)_updateStyling;
 - (void)_updateTintColor;
-- (void)configureRoleForConfirmationOptions:(id)a3;
-- (void)setDefaultColorForTemplate:(id)a3;
-- (void)setHighlightColorForTemplate:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setOverrideTextColor:(id)a3;
-- (void)setRole:(int64_t)a3;
-- (void)setUsePlatterStyle:(BOOL)a3;
+- (void)configureRoleForConfirmationOptions:(id)options;
+- (void)setDefaultColorForTemplate:(id)template;
+- (void)setHighlightColorForTemplate:(id)template;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setOverrideTextColor:(id)color;
+- (void)setRole:(int64_t)role;
+- (void)setUsePlatterStyle:(BOOL)style;
 @end
 
 @implementation SiriUIContentButton
 
-+ (id)buttonWithRole:(int64_t)a3
++ (id)buttonWithRole:(int64_t)role
 {
-  v4 = [a1 button];
-  [v4 setRole:a3];
+  button = [self button];
+  [button setRole:role];
 
-  return v4;
+  return button;
 }
 
 + (id)buttonWithLightWeightFont
 {
-  v2 = [a1 button];
-  v3 = [v2 titleLabel];
-  v4 = [MEMORY[0x277D74300] siriui_dynamicLightWeightBodySizeFont];
-  [v3 setFont:v4];
+  button = [self button];
+  titleLabel = [button titleLabel];
+  siriui_dynamicLightWeightBodySizeFont = [MEMORY[0x277D74300] siriui_dynamicLightWeightBodySizeFont];
+  [titleLabel setFont:siriui_dynamicLightWeightBodySizeFont];
 
-  v5 = [v2 titleLabel];
-  [v5 setTextAlignment:1];
+  titleLabel2 = [button titleLabel];
+  [titleLabel2 setTextAlignment:1];
 
-  v6 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [v2 setTitleColor:v6 forState:2];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [button setTitleColor:secondaryLabelColor forState:2];
 
-  return v2;
+  return button;
 }
 
 + (id)buttonWithMediumWeightFont
 {
-  v2 = [a1 button];
-  v3 = [v2 titleLabel];
-  v4 = [MEMORY[0x277D74300] siriui_dynamicMediumWeightBodySizeFont];
-  [v3 setFont:v4];
+  button = [self button];
+  titleLabel = [button titleLabel];
+  siriui_dynamicMediumWeightBodySizeFont = [MEMORY[0x277D74300] siriui_dynamicMediumWeightBodySizeFont];
+  [titleLabel setFont:siriui_dynamicMediumWeightBodySizeFont];
 
-  v5 = [v2 titleLabel];
-  [v5 setTextAlignment:1];
+  titleLabel2 = [button titleLabel];
+  [titleLabel2 setTextAlignment:1];
 
-  v6 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [v2 setTitleColor:v6 forState:2];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [button setTitleColor:secondaryLabelColor forState:2];
 
-  return v2;
+  return button;
 }
 
-+ (id)buttonWithImageMask:(id)a3 style:(int64_t)a4
++ (id)buttonWithImageMask:(id)mask style:(int64_t)style
 {
-  v6 = a3;
-  v7 = [a1 button];
-  v8 = [MEMORY[0x277D75348] clearColor];
-  [v7 setBackgroundColor:v8];
+  maskCopy = mask;
+  button = [self button];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [button setBackgroundColor:clearColor];
 
-  if (a4)
+  if (style)
   {
     [MEMORY[0x277D75348] siriui_maskingColor];
   }
@@ -78,10 +78,10 @@
     [MEMORY[0x277D75348] siriui_transparantButtonColor];
   }
   v9 = ;
-  v10 = [v6 _flatImageWithColor:v9];
-  [v7 setImage:v10 forState:0];
+  v10 = [maskCopy _flatImageWithColor:v9];
+  [button setImage:v10 forState:0];
 
-  if (a4)
+  if (style)
   {
     [MEMORY[0x277D75348] siriui_maskingHighlightColor];
   }
@@ -91,71 +91,71 @@
     [MEMORY[0x277D75348] siriui_transparantHighlightedButtonColor];
   }
   v11 = ;
-  v12 = [v6 _flatImageWithColor:v11];
-  [v7 setImage:v12 forState:1];
+  v12 = [maskCopy _flatImageWithColor:v11];
+  [button setImage:v12 forState:1];
 
-  return v7;
+  return button;
 }
 
-+ (id)buttonWithImageTemplate:(id)a3 style:(int64_t)a4
++ (id)buttonWithImageTemplate:(id)template style:(int64_t)style
 {
-  v6 = a3;
-  v7 = [a1 button];
-  v8 = [MEMORY[0x277D75348] clearColor];
-  [v7 setBackgroundColor:v8];
+  templateCopy = template;
+  button = [self button];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [button setBackgroundColor:clearColor];
 
-  [v7 setImage:v6 forState:0];
-  [v7 _setIsRenderingImageTemplate:1];
-  if (a4)
+  [button setImage:templateCopy forState:0];
+  [button _setIsRenderingImageTemplate:1];
+  if (style)
   {
-    v9 = [MEMORY[0x277D75348] siriui_maskingColor];
-    [v7 setDefaultColorForTemplate:v9];
+    siriui_maskingColor = [MEMORY[0x277D75348] siriui_maskingColor];
+    [button setDefaultColorForTemplate:siriui_maskingColor];
 
     [MEMORY[0x277D75348] siriui_maskingHighlightColor];
   }
 
   else
   {
-    v10 = [MEMORY[0x277D75348] siriui_transparantButtonColor];
-    [v7 setDefaultColorForTemplate:v10];
+    siriui_transparantButtonColor = [MEMORY[0x277D75348] siriui_transparantButtonColor];
+    [button setDefaultColorForTemplate:siriui_transparantButtonColor];
 
     [MEMORY[0x277D75348] siriui_transparantHighlightedButtonColor];
   }
   v11 = ;
-  [v7 setHighlightColorForTemplate:v11];
+  [button setHighlightColorForTemplate:v11];
 
-  return v7;
+  return button;
 }
 
-+ (id)eyesFreeButtonWithImageTemplate:(id)a3 style:(int64_t)a4
++ (id)eyesFreeButtonWithImageTemplate:(id)template style:(int64_t)style
 {
-  v4 = [SiriUIContentButton buttonWithImageTemplate:a3 style:a4];
+  v4 = [SiriUIContentButton buttonWithImageTemplate:template style:style];
   [v4 setContentVerticalAlignment:3];
   [v4 setContentHorizontalAlignment:3];
 
   return v4;
 }
 
-- (SiriUIContentButton)initWithFrame:(CGRect)a3
+- (SiriUIContentButton)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = SiriUIContentButton;
-  v3 = [(SiriUIContentButton *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SiriUIContentButton *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v5 = *(MEMORY[0x277D768C8] + 16);
     *&v3->_hitTestEdgeInsets.top = *MEMORY[0x277D768C8];
     *&v3->_hitTestEdgeInsets.bottom = v5;
-    v6 = [(SiriUIContentButton *)v3 titleLabel];
-    v7 = [MEMORY[0x277D75348] siriui_textColor];
-    [v6 setTextColor:v7];
+    titleLabel = [(SiriUIContentButton *)v3 titleLabel];
+    siriui_textColor = [MEMORY[0x277D75348] siriui_textColor];
+    [titleLabel setTextColor:siriui_textColor];
 
-    v8 = [(SiriUIContentButton *)v4 titleLabel];
-    [v8 setLineBreakMode:4];
+    titleLabel2 = [(SiriUIContentButton *)v4 titleLabel];
+    [titleLabel2 setLineBreakMode:4];
 
-    v9 = [MEMORY[0x277D75348] clearColor];
-    [(SiriUIContentButton *)v4 setBackgroundColor:v9];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SiriUIContentButton *)v4 setBackgroundColor:clearColor];
 
     [(SiriUIContentButton *)v4 setExclusiveTouch:1];
     [(SiriUIContentButton *)v4 setUsePlatterStyle:SiriUIIsWhitePlatterSnippetBackgroundEnabledForAllSnippets()];
@@ -164,45 +164,45 @@
   return v4;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = SiriUIContentButton;
-  [(SiriUIContentButton *)&v4 setHighlighted:a3];
+  [(SiriUIContentButton *)&v4 setHighlighted:highlighted];
   [(SiriUIContentButton *)self _updateStyling];
 }
 
-- (void)setUsePlatterStyle:(BOOL)a3
+- (void)setUsePlatterStyle:(BOOL)style
 {
-  if (self->_usePlatterStyle != a3)
+  if (self->_usePlatterStyle != style)
   {
-    self->_usePlatterStyle = a3;
+    self->_usePlatterStyle = style;
     [(SiriUIContentButton *)self _updateStyling];
   }
 }
 
-- (void)setRole:(int64_t)a3
+- (void)setRole:(int64_t)role
 {
   v17.receiver = self;
   v17.super_class = SiriUIContentButton;
   [(SiriUIContentButton *)&v17 setRole:?];
-  if (a3 <= 1)
+  if (role <= 1)
   {
-    if (a3)
+    if (role)
     {
-      if (a3 == 1)
+      if (role == 1)
       {
-        v5 = [(SiriUIContentButton *)self titleLabel];
-        v6 = [MEMORY[0x277D74300] siriUI_dynamicSubHeadlineEmphasizedSizeFont];
-        [v5 setFont:v6];
+        titleLabel = [(SiriUIContentButton *)self titleLabel];
+        siriUI_dynamicSubHeadlineEmphasizedSizeFont = [MEMORY[0x277D74300] siriUI_dynamicSubHeadlineEmphasizedSizeFont];
+        [titleLabel setFont:siriUI_dynamicSubHeadlineEmphasizedSizeFont];
 
-        v7 = [MEMORY[0x277D75348] siriui_lightTextColor];
-        [(SiriUIContentButton *)self setTitleColor:v7 forState:0];
+        siriui_lightTextColor = [MEMORY[0x277D75348] siriui_lightTextColor];
+        [(SiriUIContentButton *)self setTitleColor:siriui_lightTextColor forState:0];
 
-        v8 = [MEMORY[0x277D75348] systemBlueColor];
+        systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
 LABEL_9:
-        v15 = v8;
-        [(SiriUIContentButton *)self setBackgroundColor:v8];
+        v15 = systemBlueColor;
+        [(SiriUIContentButton *)self setBackgroundColor:systemBlueColor];
 
         goto LABEL_10;
       }
@@ -211,38 +211,38 @@ LABEL_9:
     }
 
 LABEL_8:
-    v12 = [(SiriUIContentButton *)self titleLabel];
-    v13 = [MEMORY[0x277D74300] siriUI_dynamicSubHeadlineMediumSizeFont];
-    [v12 setFont:v13];
+    titleLabel2 = [(SiriUIContentButton *)self titleLabel];
+    siriUI_dynamicSubHeadlineMediumSizeFont = [MEMORY[0x277D74300] siriUI_dynamicSubHeadlineMediumSizeFont];
+    [titleLabel2 setFont:siriUI_dynamicSubHeadlineMediumSizeFont];
 
-    v14 = [MEMORY[0x277D75348] labelColor];
-    [(SiriUIContentButton *)self setTitleColor:v14 forState:0];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(SiriUIContentButton *)self setTitleColor:labelColor forState:0];
 
-    v8 = [MEMORY[0x277D75348] tertiarySystemFillColor];
+    systemBlueColor = [MEMORY[0x277D75348] tertiarySystemFillColor];
     goto LABEL_9;
   }
 
-  if (a3 == 2)
+  if (role == 2)
   {
     goto LABEL_8;
   }
 
-  if (a3 == 3)
+  if (role == 3)
   {
-    v9 = [(SiriUIContentButton *)self titleLabel];
-    v10 = [MEMORY[0x277D74300] siriUI_dynamicSubHeadlineEmphasizedSizeFont];
-    [v9 setFont:v10];
+    titleLabel3 = [(SiriUIContentButton *)self titleLabel];
+    siriUI_dynamicSubHeadlineEmphasizedSizeFont2 = [MEMORY[0x277D74300] siriUI_dynamicSubHeadlineEmphasizedSizeFont];
+    [titleLabel3 setFont:siriUI_dynamicSubHeadlineEmphasizedSizeFont2];
 
-    v11 = [MEMORY[0x277D75348] siriui_lightTextColor];
-    [(SiriUIContentButton *)self setTitleColor:v11 forState:0];
+    siriui_lightTextColor2 = [MEMORY[0x277D75348] siriui_lightTextColor];
+    [(SiriUIContentButton *)self setTitleColor:siriui_lightTextColor2 forState:0];
 
-    v8 = [MEMORY[0x277D75348] systemRedColor];
+    systemBlueColor = [MEMORY[0x277D75348] systemRedColor];
     goto LABEL_9;
   }
 
 LABEL_10:
-  v16 = [(SiriUIContentButton *)self titleLabel];
-  [v16 setTextAlignment:1];
+  titleLabel4 = [(SiriUIContentButton *)self titleLabel];
+  [titleLabel4 setTextAlignment:1];
 }
 
 - (void)_updateStyling
@@ -251,22 +251,22 @@ LABEL_10:
   {
     if (self->_isRenderingImageTemplate)
     {
-      v5 = [(SiriUIContentButton *)self isHighlighted];
+      isHighlighted = [(SiriUIContentButton *)self isHighlighted];
       v6 = &OBJC_IVAR___SiriUIContentButton__defaultColorForTemplate;
-      if (v5)
+      if (isHighlighted)
       {
         v6 = &OBJC_IVAR___SiriUIContentButton__highlightColorForTemplate;
       }
 
       v7 = *(&self->super.super.super.super.super.isa + *v6);
-      v13 = [(SiriUIContentButton *)self imageView];
-      [v13 setTintColor:v7];
+      imageView = [(SiriUIContentButton *)self imageView];
+      [imageView setTintColor:v7];
       goto LABEL_20;
     }
 
     if ([(SiriUIContentButton *)self role]== 3)
     {
-      v8 = [MEMORY[0x277D75348] systemRedColor];
+      systemRedColor = [MEMORY[0x277D75348] systemRedColor];
     }
 
     else
@@ -281,18 +281,18 @@ LABEL_10:
         [(SiriUIContentButton *)self role];
         [MEMORY[0x277D75348] tertiarySystemFillColor];
       }
-      v8 = ;
+      systemRedColor = ;
     }
 
 LABEL_15:
-    v13 = v8;
+    imageView = systemRedColor;
     [(SiriUIContentButton *)self setBackgroundColor:?];
     goto LABEL_21;
   }
 
   if ([(SiriUIContentButton *)self role]== 3)
   {
-    v9 = [MEMORY[0x277D75348] systemRedColor];
+    systemRedColor2 = [MEMORY[0x277D75348] systemRedColor];
 LABEL_18:
     v10 = 0.75;
     goto LABEL_19;
@@ -300,7 +300,7 @@ LABEL_18:
 
   if ([(SiriUIContentButton *)self role]== 1)
   {
-    v9 = [MEMORY[0x277D75348] systemBlueColor];
+    systemRedColor2 = [MEMORY[0x277D75348] systemBlueColor];
     goto LABEL_18;
   }
 
@@ -327,30 +327,30 @@ LABEL_18:
       [(SiriUIContentButton *)self setTitleColor:v12 forState:0];
     }
 
-    v8 = [MEMORY[0x277D75348] siriui_highlightColor];
+    systemRedColor = [MEMORY[0x277D75348] siriui_highlightColor];
     goto LABEL_15;
   }
 
-  v9 = [MEMORY[0x277D75348] tertiarySystemFillColor];
+  systemRedColor2 = [MEMORY[0x277D75348] tertiarySystemFillColor];
   v10 = 0.15;
 LABEL_19:
-  v13 = v9;
-  v7 = [v9 colorWithAlphaComponent:v10];
+  imageView = systemRedColor2;
+  v7 = [systemRedColor2 colorWithAlphaComponent:v10];
   [(SiriUIContentButton *)self setBackgroundColor:v7];
 LABEL_20:
 
 LABEL_21:
 }
 
-- (void)configureRoleForConfirmationOptions:(id)a3
+- (void)configureRoleForConfirmationOptions:(id)options
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  optionsCopy = options;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v28 objects:v36 count:16];
+  v4 = [optionsCopy countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (!v4)
   {
     v7 = 0;
@@ -372,12 +372,12 @@ LABEL_21:
     {
       if (*v29 != v8)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(optionsCopy);
       }
 
       v12 = *(*(&v28 + 1) + 8 * v11);
-      v13 = [v12 type];
-      v14 = [v13 isEqualToString:v9];
+      type = [v12 type];
+      v14 = [type isEqualToString:v9];
 
       if (v14)
       {
@@ -396,25 +396,25 @@ LABEL_21:
 
         v16 = v12;
 
-        v17 = [v16 buttonRole];
-        v18 = [v17 isEqualToString:v10];
+        buttonRole = [v16 buttonRole];
+        v18 = [buttonRole isEqualToString:v10];
 
         if (v18)
         {
-          v19 = self;
+          selfCopy2 = self;
           v20 = 1;
           goto LABEL_14;
         }
 
-        v21 = [v16 buttonRole];
-        v22 = [v21 isEqualToString:v26];
+        buttonRole2 = [v16 buttonRole];
+        v22 = [buttonRole2 isEqualToString:v26];
 
         if (v22)
         {
-          v19 = self;
+          selfCopy2 = self;
           v20 = 3;
 LABEL_14:
-          [(SiriUIContentButton *)v19 setRole:v20];
+          [(SiriUIContentButton *)selfCopy2 setRole:v20];
         }
 
         else
@@ -438,7 +438,7 @@ LABEL_14:
     }
 
     while (v6 != v11);
-    v24 = [v3 countByEnumeratingWithState:&v28 objects:v36 count:16];
+    v24 = [optionsCopy countByEnumeratingWithState:&v28 objects:v36 count:16];
     v6 = v24;
   }
 
@@ -447,17 +447,17 @@ LABEL_23:
   [(SiriUIContentButton *)self _updateStyling];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   p_hitTestEdgeInsets = &self->_hitTestEdgeInsets;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_hitTestEdgeInsets.top, *MEMORY[0x277D768C8]), vceqq_f64(*&self->_hitTestEdgeInsets.bottom, *(MEMORY[0x277D768C8] + 16))))) & 1) != 0 || ![(SiriUIContentButton *)self isEnabled]|| [(SiriUIContentButton *)self isHidden])
   {
     v17.receiver = self;
     v17.super_class = SiriUIContentButton;
-    v9 = [(SiriUIContentButton *)&v17 pointInside:v7 withEvent:x, y];
+    v9 = [(SiriUIContentButton *)&v17 pointInside:eventCopy withEvent:x, y];
   }
 
   else
@@ -478,23 +478,23 @@ LABEL_23:
   return v10;
 }
 
-- (void)setOverrideTextColor:(id)a3
+- (void)setOverrideTextColor:(id)color
 {
-  objc_storeStrong(&self->_overrideTextColor, a3);
+  objc_storeStrong(&self->_overrideTextColor, color);
 
   [(SiriUIContentButton *)self _updateStyling];
 }
 
-- (void)setDefaultColorForTemplate:(id)a3
+- (void)setDefaultColorForTemplate:(id)template
 {
-  objc_storeStrong(&self->_defaultColorForTemplate, a3);
+  objc_storeStrong(&self->_defaultColorForTemplate, template);
 
   [(SiriUIContentButton *)self _updateTintColor];
 }
 
-- (void)setHighlightColorForTemplate:(id)a3
+- (void)setHighlightColorForTemplate:(id)template
 {
-  objc_storeStrong(&self->_highlightColorForTemplate, a3);
+  objc_storeStrong(&self->_highlightColorForTemplate, template);
 
   [(SiriUIContentButton *)self _updateTintColor];
 }
@@ -503,16 +503,16 @@ LABEL_23:
 {
   if (self->_isRenderingImageTemplate)
   {
-    v4 = [(SiriUIContentButton *)self isHighlighted];
-    v5 = [(SiriUIContentButton *)self imageView];
-    v7 = v5;
+    isHighlighted = [(SiriUIContentButton *)self isHighlighted];
+    imageView = [(SiriUIContentButton *)self imageView];
+    v7 = imageView;
     v6 = &OBJC_IVAR___SiriUIContentButton__defaultColorForTemplate;
-    if (v4)
+    if (isHighlighted)
     {
       v6 = &OBJC_IVAR___SiriUIContentButton__highlightColorForTemplate;
     }
 
-    [v5 setTintColor:*(&self->super.super.super.super.super.isa + *v6)];
+    [imageView setTintColor:*(&self->super.super.super.super.super.isa + *v6)];
   }
 }
 

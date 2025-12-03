@@ -1,14 +1,14 @@
 @interface OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_$5
-- (id)getWithLong:(int64_t)a3;
+- (id)getWithLong:(int64_t)long;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_$5
 
-- (id)getWithLong:(int64_t)a3
+- (id)getWithLong:(int64_t)long
 {
   v4 = self->val$data_;
-  if (!v4 || ([(OrgApacheLuceneStoreIndexInput *)v4 seekWithLong:self->val$length_ * a3], (v5 = self->val$buffer_) == 0))
+  if (!v4 || ([(OrgApacheLuceneStoreIndexInput *)v4 seekWithLong:self->val$length_ * long], (v5 = self->val$buffer_) == 0))
   {
     JreThrowNullPointerException();
   }

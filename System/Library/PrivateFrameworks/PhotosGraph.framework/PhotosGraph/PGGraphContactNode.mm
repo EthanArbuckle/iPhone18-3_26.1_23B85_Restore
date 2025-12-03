@@ -1,12 +1,12 @@
 @interface PGGraphContactNode
 + (id)filter;
-+ (id)filterWithContactIdentifiers:(id)a3;
-- (BOOL)hasProperties:(id)a3;
-- (PGGraphContactNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5;
-- (PGGraphContactNode)initWithName:(id)a3 contactIdentifier:(id)a4 birthdayDate:(id)a5 potentialBirthdayDate:(id)a6;
++ (id)filterWithContactIdentifiers:(id)identifiers;
+- (BOOL)hasProperties:(id)properties;
+- (PGGraphContactNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties;
+- (PGGraphContactNode)initWithName:(id)name contactIdentifier:(id)identifier birthdayDate:(id)date potentialBirthdayDate:(id)birthdayDate;
 - (id)description;
 - (id)propertyDictionary;
-- (void)setLocalProperties:(id)a3;
+- (void)setLocalProperties:(id)properties;
 @end
 
 @implementation PGGraphContactNode
@@ -48,11 +48,11 @@
   return v3;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (propertiesCopy && [propertiesCopy count])
   {
     v6 = [v5 objectForKeyedSubscript:@"name"];
     v7 = v6;
@@ -106,18 +106,18 @@ LABEL_11:
   return v17;
 }
 
-- (void)setLocalProperties:(id)a3
+- (void)setLocalProperties:(id)properties
 {
-  v16 = a3;
-  v4 = [v16 objectForKeyedSubscript:@"name"];
+  propertiesCopy = properties;
+  v4 = [propertiesCopy objectForKeyedSubscript:@"name"];
   name = self->_name;
   self->_name = v4;
 
-  v6 = [v16 objectForKeyedSubscript:@"cnid"];
+  v6 = [propertiesCopy objectForKeyedSubscript:@"cnid"];
   contactIdentifier = self->_contactIdentifier;
   self->_contactIdentifier = v6;
 
-  v8 = [v16 objectForKeyedSubscript:@"bday"];
+  v8 = [propertiesCopy objectForKeyedSubscript:@"bday"];
   v9 = v8;
   if (v8)
   {
@@ -136,7 +136,7 @@ LABEL_11:
   {
   }
 
-  v12 = [v16 objectForKeyedSubscript:@"pbday"];
+  v12 = [propertiesCopy objectForKeyedSubscript:@"pbday"];
   v13 = v12;
   if (v12)
   {
@@ -156,12 +156,12 @@ LABEL_11:
   }
 }
 
-- (PGGraphContactNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5
+- (PGGraphContactNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties
 {
-  v6 = a5;
-  v7 = [v6 objectForKeyedSubscript:@"name"];
-  v8 = [v6 objectForKeyedSubscript:@"cnid"];
-  v9 = [v6 objectForKeyedSubscript:@"bday"];
+  propertiesCopy = properties;
+  v7 = [propertiesCopy objectForKeyedSubscript:@"name"];
+  v8 = [propertiesCopy objectForKeyedSubscript:@"cnid"];
+  v9 = [propertiesCopy objectForKeyedSubscript:@"bday"];
   v10 = v9;
   if (v9)
   {
@@ -175,7 +175,7 @@ LABEL_11:
     v12 = 0;
   }
 
-  v13 = [v6 objectForKeyedSubscript:@"pbday"];
+  v13 = [propertiesCopy objectForKeyedSubscript:@"pbday"];
   v14 = v13;
   if (v13)
   {
@@ -194,37 +194,37 @@ LABEL_11:
   return v17;
 }
 
-- (PGGraphContactNode)initWithName:(id)a3 contactIdentifier:(id)a4 birthdayDate:(id)a5 potentialBirthdayDate:(id)a6
+- (PGGraphContactNode)initWithName:(id)name contactIdentifier:(id)identifier birthdayDate:(id)date potentialBirthdayDate:(id)birthdayDate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  nameCopy = name;
+  identifierCopy = identifier;
+  dateCopy = date;
+  birthdayDateCopy = birthdayDate;
   v18.receiver = self;
   v18.super_class = PGGraphContactNode;
   v15 = [(PGGraphNode *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_name, a3);
-    objc_storeStrong(&v16->_contactIdentifier, a4);
-    objc_storeStrong(&v16->_birthdayDate, a5);
-    objc_storeStrong(&v16->_potentialBirthdayDate, a6);
+    objc_storeStrong(&v15->_name, name);
+    objc_storeStrong(&v16->_contactIdentifier, identifier);
+    objc_storeStrong(&v16->_birthdayDate, date);
+    objc_storeStrong(&v16->_potentialBirthdayDate, birthdayDate);
   }
 
   return v16;
 }
 
-+ (id)filterWithContactIdentifiers:(id)a3
++ (id)filterWithContactIdentifiers:(id)identifiers
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 filter];
+  identifiersCopy = identifiers;
+  filter = [self filter];
   v10 = @"cnid";
-  v11[0] = v4;
+  v11[0] = identifiersCopy;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
-  v7 = [v5 filterBySettingProperties:v6];
+  v7 = [filter filterBySettingProperties:v6];
 
   v8 = *MEMORY[0x277D85DE8];
 

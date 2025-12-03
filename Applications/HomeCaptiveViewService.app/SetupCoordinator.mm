@@ -1,7 +1,7 @@
 @interface SetupCoordinator
 - (_TtC22HomeCaptiveViewService16SetupCoordinator)init;
 - (void)handleDismissal;
-- (void)handleWebNavigationWithCompletionHandler:(id)a3;
+- (void)handleWebNavigationWithCompletionHandler:(id)handler;
 - (void)proxCardFlowDidDismiss;
 - (void)proxCardFlowWillPresent;
 @end
@@ -17,23 +17,23 @@
 
 - (void)proxCardFlowDidDismiss
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000737C();
 }
 
-- (void)handleWebNavigationWithCompletionHandler:(id)a3
+- (void)handleWebNavigationWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   _Block_copy(v4);
-  v5 = self;
-  sub_1000081C8(v5, v4);
+  selfCopy = self;
+  sub_1000081C8(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
 - (void)handleDismissal
 {
-  v2 = self;
+  selfCopy = self;
   sub_100007588();
 }
 

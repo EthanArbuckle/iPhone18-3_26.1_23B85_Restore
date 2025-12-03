@@ -1,7 +1,7 @@
 @interface VTUIColorLayer
-+ (BOOL)needsDisplayForKey:(id)a3;
++ (BOOL)needsDisplayForKey:(id)key;
 - (VTUIColorLayer)init;
-- (id)actionForKey:(id)a3;
+- (id)actionForKey:(id)key;
 - (void)display;
 @end
 
@@ -22,27 +22,27 @@
     blueColor = v2->_blueColor;
     v2->_blueColor = v5;
 
-    v7 = [MEMORY[0x277D75348] labelColor];
+    labelColor = [MEMORY[0x277D75348] labelColor];
     backgroundColor = v2->_backgroundColor;
-    v2->_backgroundColor = v7;
+    v2->_backgroundColor = labelColor;
   }
 
   return v2;
 }
 
-+ (BOOL)needsDisplayForKey:(id)a3
++ (BOOL)needsDisplayForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"phase"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"phase"])
   {
     v5 = 1;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___VTUIColorLayer;
-    v5 = objc_msgSendSuper2(&v7, sel_needsDisplayForKey_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_needsDisplayForKey_, keyCopy);
   }
 
   return v5;
@@ -69,8 +69,8 @@
   v46.size.width = v8;
   v46.size.height = v10;
   CGContextClearRect(CurrentContext, v46);
-  v15 = [(VTUIColorLayer *)self presentationLayer];
-  [v15 phase];
+  presentationLayer = [(VTUIColorLayer *)self presentationLayer];
+  [presentationLayer phase];
   v17 = v16;
 
   v18 = ((v17 + -0.57) / 0.4) * 12.0;
@@ -129,8 +129,8 @@
     }
   }
 
-  v28 = [MEMORY[0x277D75C80] currentTraitCollection];
-  v29 = [v28 userInterfaceStyle];
+  currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+  userInterfaceStyle = [currentTraitCollection userInterfaceStyle];
 
   v30 = v42;
   v31 = v25 * v30;
@@ -157,7 +157,7 @@
   v49.size.height = v41;
   CGContextFillRect(CurrentContext, v49);
   v35 = 0.0;
-  if (v29 != 1)
+  if (userInterfaceStyle != 1)
   {
     v35 = v39;
   }
@@ -172,12 +172,12 @@
   UIGraphicsEndImageContext();
 }
 
-- (id)actionForKey:(id)a3
+- (id)actionForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"phase"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"phase"])
   {
-    v5 = [MEMORY[0x277CD9E10] animationWithKeyPath:v4];
+    v5 = [MEMORY[0x277CD9E10] animationWithKeyPath:keyCopy];
 
     v6 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7C8]];
     [v5 setTimingFunction:v6];
@@ -192,7 +192,7 @@
   {
     v10.receiver = self;
     v10.super_class = VTUIColorLayer;
-    v5 = [(VTUIColorLayer *)&v10 actionForKey:v4];
+    v5 = [(VTUIColorLayer *)&v10 actionForKey:keyCopy];
   }
 
   return v5;

@@ -1,34 +1,34 @@
 @interface DESJSONPredicate
-+ (BOOL)_testStrings:(id)a3 test:(id)a4 caseInsensitive:(BOOL)a5;
-+ (BOOL)evaluateAnd:(id)a3 onObj:(id)a4;
-+ (BOOL)evaluateArrayOp:(id)a3 onObj:(id)a4;
-+ (BOOL)evaluateBoolOp:(id)a3 onObj:(id)a4;
-+ (BOOL)evaluateDefOp:(id)a3 onObj:(id)a4;
-+ (BOOL)evaluateDict:(id)a3 onObj:(id)a4;
-+ (BOOL)evaluateJson:(id)a3 onJson:(id)a4;
-+ (BOOL)evaluateNumericOp:(id)a3 onObj:(id)a4;
-+ (BOOL)evaluateOr:(id)a3 onObj:(id)a4;
-+ (BOOL)evaluatePredicate:(id)a3 onObj:(id)a4;
-+ (BOOL)evaluateRegexOp:(id)a3 onObj:(id)a4;
-+ (BOOL)evaluateStringOp:(id)a3 onObj:(id)a4;
-+ (BOOL)evaluateTypeOp:(id)a3 onObj:(id)a4;
-+ (BOOL)isBoolean:(id)a3;
-+ (BOOL)isNumber:(id)a3;
-+ (BOOL)obj:(id)a3 matchesRegex:(id)a4;
-+ (id)fetchObjectAtPath:(id)a3 from:(id)a4;
-+ (id)parseJSON:(id)a3;
-+ (id)parsePath:(id)a3;
++ (BOOL)_testStrings:(id)strings test:(id)test caseInsensitive:(BOOL)insensitive;
++ (BOOL)evaluateAnd:(id)and onObj:(id)obj;
++ (BOOL)evaluateArrayOp:(id)op onObj:(id)obj;
++ (BOOL)evaluateBoolOp:(id)op onObj:(id)obj;
++ (BOOL)evaluateDefOp:(id)op onObj:(id)obj;
++ (BOOL)evaluateDict:(id)dict onObj:(id)obj;
++ (BOOL)evaluateJson:(id)json onJson:(id)onJson;
++ (BOOL)evaluateNumericOp:(id)op onObj:(id)obj;
++ (BOOL)evaluateOr:(id)or onObj:(id)obj;
++ (BOOL)evaluatePredicate:(id)predicate onObj:(id)obj;
++ (BOOL)evaluateRegexOp:(id)op onObj:(id)obj;
++ (BOOL)evaluateStringOp:(id)op onObj:(id)obj;
++ (BOOL)evaluateTypeOp:(id)op onObj:(id)obj;
++ (BOOL)isBoolean:(id)boolean;
++ (BOOL)isNumber:(id)number;
++ (BOOL)obj:(id)obj matchesRegex:(id)regex;
++ (id)fetchObjectAtPath:(id)path from:(id)from;
++ (id)parseJSON:(id)n;
++ (id)parsePath:(id)path;
 @end
 
 @implementation DESJSONPredicate
 
-+ (id)parseJSON:(id)a3
++ (id)parseJSON:(id)n
 {
-  v3 = [a3 UTF8String];
-  v4 = v3;
-  if (v3)
+  uTF8String = [n UTF8String];
+  v4 = uTF8String;
+  if (uTF8String)
   {
-    v5 = strlen(v3);
+    v5 = strlen(uTF8String);
   }
 
   else
@@ -49,16 +49,16 @@
   return v7;
 }
 
-+ (id)fetchObjectAtPath:(id)a3 from:(id)a4
++ (id)fetchObjectAtPath:(id)path from:(id)from
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  pathCopy = path;
+  fromCopy = from;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v5;
+  v7 = pathCopy;
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -67,7 +67,7 @@
     while (2)
     {
       v11 = 0;
-      v12 = v6;
+      v12 = fromCopy;
       do
       {
         if (*v21 != v10)
@@ -84,7 +84,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v6 = [v12 objectForKey:v13];
+          fromCopy = [v12 objectForKey:v13];
         }
 
         else
@@ -96,9 +96,9 @@
           }
 
           v14 = v12;
-          v15 = [v13 intValue];
+          intValue = [v13 intValue];
           v16 = [v14 count];
-          if ((v15 & 0x80000000) != 0 || v15 >= v16)
+          if ((intValue & 0x80000000) != 0 || intValue >= v16)
           {
 
 LABEL_17:
@@ -106,11 +106,11 @@ LABEL_17:
             goto LABEL_18;
           }
 
-          v6 = [v14 objectAtIndex:v15];
+          fromCopy = [v14 objectAtIndex:intValue];
         }
 
         ++v11;
-        v12 = v6;
+        v12 = fromCopy;
       }
 
       while (v9 != v11);
@@ -124,7 +124,7 @@ LABEL_17:
     }
   }
 
-  v12 = v6;
+  v12 = fromCopy;
   v17 = v12;
 LABEL_18:
 
@@ -133,21 +133,21 @@ LABEL_18:
   return v17;
 }
 
-+ (id)parsePath:(id)a3
++ (id)parsePath:(id)path
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 hasPrefix:@"/"])
+  pathCopy = path;
+  if ([pathCopy hasPrefix:@"/"])
   {
-    v4 = [v3 substringWithRange:{1, objc_msgSend(v3, "length") - 1}];
+    v4 = [pathCopy substringWithRange:{1, objc_msgSend(pathCopy, "length") - 1}];
 
-    v3 = v4;
+    pathCopy = v4;
   }
 
-  if ([v3 length])
+  if ([pathCopy length])
   {
-    v15 = v3;
-    v5 = [v3 componentsSeparatedByString:@"/"];
+    v15 = pathCopy;
+    v5 = [pathCopy componentsSeparatedByString:@"/"];
     v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v5, "count")}];
     v17 = 0u;
     v18 = 0u;
@@ -179,7 +179,7 @@ LABEL_18:
       while (v8);
     }
 
-    v3 = v15;
+    pathCopy = v15;
   }
 
   else
@@ -192,16 +192,16 @@ LABEL_18:
   return v6;
 }
 
-+ (BOOL)evaluateDefOp:(id)a3 onObj:(id)a4
++ (BOOL)evaluateDefOp:(id)op onObj:(id)obj
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKey:@"path"];
+  opCopy = op;
+  objCopy = obj;
+  v7 = [opCopy objectForKey:@"path"];
   if (v7)
   {
     v8 = [DESJSONPredicate parsePath:v7];
-    v9 = [DESJSONPredicate fetchObjectAtPath:v8 from:v6];
-    v10 = [v5 objectForKey:@"op"];
+    v9 = [DESJSONPredicate fetchObjectAtPath:v8 from:objCopy];
+    v10 = [opCopy objectForKey:@"op"];
     v11 = (v9 == 0) ^ [@"defined" isEqualToString:v10];
   }
 
@@ -213,13 +213,13 @@ LABEL_18:
   return v11;
 }
 
-+ (BOOL)evaluateStringOp:(id)a3 onObj:(id)a4
++ (BOOL)evaluateStringOp:(id)op onObj:(id)obj
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 objectForKey:@"op"];
-  v8 = [v6 objectForKey:@"path"];
-  v9 = [v6 objectForKey:@"value"];
+  objCopy = obj;
+  opCopy = op;
+  v7 = [opCopy objectForKey:@"op"];
+  v8 = [opCopy objectForKey:@"path"];
+  v9 = [opCopy objectForKey:@"value"];
 
   if (v8)
   {
@@ -227,7 +227,7 @@ LABEL_18:
     if (objc_opt_isKindOfClass())
     {
       v10 = [DESJSONPredicate parsePath:v8];
-      v11 = [DESJSONPredicate fetchObjectAtPath:v10 from:v5];
+      v11 = [DESJSONPredicate fetchObjectAtPath:v10 from:objCopy];
       if (!v11)
       {
         v13 = 0;
@@ -252,13 +252,13 @@ LABEL_21:
       {
         v15 = [v7 substringToIndex:{objc_msgSend(v7, "length") - 1}];
 
-        v16 = [v14 uppercaseString];
+        uppercaseString = [v14 uppercaseString];
 
-        v17 = [v9 uppercaseString];
+        uppercaseString2 = [v9 uppercaseString];
 
-        v9 = v17;
+        v9 = uppercaseString2;
         v7 = v15;
-        v14 = v16;
+        v14 = uppercaseString;
       }
 
       if ([@"starts" isEqualToString:v7])
@@ -300,13 +300,13 @@ LABEL_22:
   return v13;
 }
 
-+ (BOOL)evaluateRegexOp:(id)a3 onObj:(id)a4
++ (BOOL)evaluateRegexOp:(id)op onObj:(id)obj
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 objectForKey:@"op"];
-  v8 = [v6 objectForKey:@"path"];
-  v9 = [v6 objectForKey:@"value"];
+  objCopy = obj;
+  opCopy = op;
+  v7 = [opCopy objectForKey:@"op"];
+  v8 = [opCopy objectForKey:@"path"];
+  v9 = [opCopy objectForKey:@"value"];
 
   v10 = 0;
   if (v8 && v9)
@@ -315,7 +315,7 @@ LABEL_22:
     if (objc_opt_isKindOfClass())
     {
       v11 = [DESJSONPredicate parsePath:v8];
-      v12 = [DESJSONPredicate fetchObjectAtPath:v11 from:v5];
+      v12 = [DESJSONPredicate fetchObjectAtPath:v11 from:objCopy];
       if (v12)
       {
         v13 = v12;
@@ -351,13 +351,13 @@ LABEL_22:
   return v10;
 }
 
-+ (BOOL)evaluateNumericOp:(id)a3 onObj:(id)a4
++ (BOOL)evaluateNumericOp:(id)op onObj:(id)obj
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 objectForKey:@"op"];
-  v8 = [v6 objectForKey:@"path"];
-  v9 = [v6 objectForKey:@"value"];
+  objCopy = obj;
+  opCopy = op;
+  v7 = [opCopy objectForKey:@"op"];
+  v8 = [opCopy objectForKey:@"path"];
+  v9 = [opCopy objectForKey:@"value"];
 
   v10 = 0;
   if (v8 && v9)
@@ -366,7 +366,7 @@ LABEL_22:
     if (objc_opt_isKindOfClass())
     {
       v11 = [DESJSONPredicate parsePath:v8];
-      v12 = [DESJSONPredicate fetchObjectAtPath:v11 from:v5];
+      v12 = [DESJSONPredicate fetchObjectAtPath:v11 from:objCopy];
       if (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         v10 = 0;
@@ -406,30 +406,30 @@ LABEL_16:
   return v10;
 }
 
-+ (BOOL)_testStrings:(id)a3 test:(id)a4 caseInsensitive:(BOOL)a5
++ (BOOL)_testStrings:(id)strings test:(id)test caseInsensitive:(BOOL)insensitive
 {
-  if (a5)
+  if (insensitive)
   {
-    return [a3 caseInsensitiveCompare:a4] == 0;
+    return [strings caseInsensitiveCompare:test] == 0;
   }
 
-  return [a3 isEqualToString:a4];
+  return [strings isEqualToString:test];
 }
 
-+ (BOOL)evaluateArrayOp:(id)a3 onObj:(id)a4
++ (BOOL)evaluateArrayOp:(id)op onObj:(id)obj
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKey:@"path"];
-  v8 = [v5 objectForKey:@"value"];
+  opCopy = op;
+  objCopy = obj;
+  v7 = [opCopy objectForKey:@"path"];
+  v8 = [opCopy objectForKey:@"value"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v9 = [DESJSONPredicate parsePath:v7];
-    v10 = [DESJSONPredicate fetchObjectAtPath:v9 from:v6];
+    v10 = [DESJSONPredicate fetchObjectAtPath:v9 from:objCopy];
     if (v10)
     {
-      v11 = [v5 objectForKeyedSubscript:@"op"];
+      v11 = [opCopy objectForKeyedSubscript:@"op"];
       v23 = [v11 isEqualToString:@"in-"];
 
       v26 = 0u;
@@ -442,7 +442,7 @@ LABEL_16:
       {
         v14 = v13;
         v21 = v9;
-        v22 = v6;
+        v22 = objCopy;
         v15 = *v25;
         while (2)
         {
@@ -483,7 +483,7 @@ LABEL_18:
         v18 = 0;
 LABEL_19:
         v9 = v21;
-        v6 = v22;
+        objCopy = v22;
       }
 
       else
@@ -507,13 +507,13 @@ LABEL_19:
   return v18;
 }
 
-+ (BOOL)isNumber:(id)a3
++ (BOOL)isNumber:(id)number
 {
-  v3 = a3;
+  numberCopy = number;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = CFGetTypeID(v3);
+    v4 = CFGetTypeID(numberCopy);
     v5 = v4 != CFBooleanGetTypeID();
   }
 
@@ -525,13 +525,13 @@ LABEL_19:
   return v5;
 }
 
-+ (BOOL)isBoolean:(id)a3
++ (BOOL)isBoolean:(id)boolean
 {
-  v3 = a3;
+  booleanCopy = boolean;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = CFGetTypeID(v3);
+    v4 = CFGetTypeID(booleanCopy);
     v5 = v4 == CFBooleanGetTypeID();
   }
 
@@ -543,15 +543,15 @@ LABEL_19:
   return v5;
 }
 
-+ (BOOL)obj:(id)a3 matchesRegex:(id)a4
++ (BOOL)obj:(id)obj matchesRegex:(id)regex
 {
-  v5 = a3;
-  v6 = a4;
+  objCopy = obj;
+  regexCopy = regex;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
-    v8 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:v6 options:0 error:0];
+    v7 = objCopy;
+    v8 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:regexCopy options:0 error:0];
     v9 = [v8 matchesInString:v7 options:0 range:{0, objc_msgSend(v7, "length")}];
     v10 = v9;
     if (v9)
@@ -581,12 +581,12 @@ LABEL_19:
   return v11 & 1;
 }
 
-+ (BOOL)evaluateTypeOp:(id)a3 onObj:(id)a4
++ (BOOL)evaluateTypeOp:(id)op onObj:(id)obj
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 objectForKey:@"path"];
-  v8 = [v6 objectForKey:@"value"];
+  objCopy = obj;
+  opCopy = op;
+  v7 = [opCopy objectForKey:@"path"];
+  v8 = [opCopy objectForKey:@"value"];
 
   v9 = 0;
   if (v7 && v8)
@@ -595,7 +595,7 @@ LABEL_19:
     if (objc_opt_isKindOfClass())
     {
       v10 = [DESJSONPredicate parsePath:v7];
-      v11 = [DESJSONPredicate fetchObjectAtPath:v10 from:v5];
+      v11 = [DESJSONPredicate fetchObjectAtPath:v10 from:objCopy];
       if (v11)
       {
         if ([v8 isEqualToString:@"string"])
@@ -667,16 +667,16 @@ LABEL_21:
   return v9 & 1;
 }
 
-+ (BOOL)evaluateAnd:(id)a3 onObj:(id)a4
++ (BOOL)evaluateAnd:(id)and onObj:(id)obj
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  andCopy = and;
+  objCopy = obj;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = andCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -691,7 +691,7 @@ LABEL_21:
           objc_enumerationMutation(v7);
         }
 
-        if (![DESJSONPredicate evaluatePredicate:*(*(&v15 + 1) + 8 * i) onObj:v6, v15])
+        if (![DESJSONPredicate evaluatePredicate:*(*(&v15 + 1) + 8 * i) onObj:objCopy, v15])
         {
           v12 = 0;
           goto LABEL_11;
@@ -715,16 +715,16 @@ LABEL_11:
   return v12;
 }
 
-+ (BOOL)evaluateOr:(id)a3 onObj:(id)a4
++ (BOOL)evaluateOr:(id)or onObj:(id)obj
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  orCopy = or;
+  objCopy = obj;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v5;
+  v7 = orCopy;
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -738,7 +738,7 @@ LABEL_11:
           objc_enumerationMutation(v7);
         }
 
-        if ([DESJSONPredicate evaluatePredicate:*(*(&v13 + 1) + 8 * i) onObj:v6, v13])
+        if ([DESJSONPredicate evaluatePredicate:*(*(&v13 + 1) + 8 * i) onObj:objCopy, v13])
         {
           LOBYTE(v8) = 1;
           goto LABEL_11;
@@ -761,13 +761,13 @@ LABEL_11:
   return v8;
 }
 
-+ (BOOL)evaluateBoolOp:(id)a3 onObj:(id)a4
++ (BOOL)evaluateBoolOp:(id)op onObj:(id)obj
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 objectForKey:@"op"];
-  v8 = [v6 objectForKey:@"path"];
-  v9 = [v6 objectForKey:@"apply"];
+  objCopy = obj;
+  opCopy = op;
+  v7 = [opCopy objectForKey:@"op"];
+  v8 = [opCopy objectForKey:@"path"];
+  v9 = [opCopy objectForKey:@"apply"];
 
   if (v9)
   {
@@ -775,7 +775,7 @@ LABEL_11:
     if (objc_opt_isKindOfClass())
     {
       v10 = v9;
-      v11 = v5;
+      v11 = objCopy;
       if (v8)
       {
         v12 = [DESJSONPredicate parsePath:v8];
@@ -819,49 +819,49 @@ LABEL_15:
   return v15;
 }
 
-+ (BOOL)evaluateDict:(id)a3 onObj:(id)a4
++ (BOOL)evaluateDict:(id)dict onObj:(id)obj
 {
-  v5 = a3;
-  v6 = a4;
+  dictCopy = dict;
+  objCopy = obj;
   if (evaluateDict_onObj__onceToken != -1)
   {
     +[DESJSONPredicate evaluateDict:onObj:];
   }
 
-  v7 = [v5 allKeys];
-  v8 = [v7 count];
+  allKeys = [dictCopy allKeys];
+  v8 = [allKeys count];
 
   if (v8)
   {
-    v9 = [v5 objectForKey:@"op"];
+    v9 = [dictCopy objectForKey:@"op"];
     if ([evaluateDict_onObj__BOOLOps containsObject:v9])
     {
-      v10 = [DESJSONPredicate evaluateBoolOp:v5 onObj:v6];
+      v10 = [DESJSONPredicate evaluateBoolOp:dictCopy onObj:objCopy];
     }
 
     else if ([evaluateDict_onObj__defOps containsObject:v9])
     {
-      v10 = [DESJSONPredicate evaluateDefOp:v5 onObj:v6];
+      v10 = [DESJSONPredicate evaluateDefOp:dictCopy onObj:objCopy];
     }
 
     else if ([evaluateDict_onObj__stringOps containsObject:v9])
     {
-      v10 = [DESJSONPredicate evaluateStringOp:v5 onObj:v6];
+      v10 = [DESJSONPredicate evaluateStringOp:dictCopy onObj:objCopy];
     }
 
     else if ([evaluateDict_onObj__regexOps containsObject:v9])
     {
-      v10 = [DESJSONPredicate evaluateRegexOp:v5 onObj:v6];
+      v10 = [DESJSONPredicate evaluateRegexOp:dictCopy onObj:objCopy];
     }
 
     else if ([evaluateDict_onObj__numericOps containsObject:v9])
     {
-      v10 = [DESJSONPredicate evaluateNumericOp:v5 onObj:v6];
+      v10 = [DESJSONPredicate evaluateNumericOp:dictCopy onObj:objCopy];
     }
 
     else if ([evaluateDict_onObj__arrayOps containsObject:v9])
     {
-      v10 = [DESJSONPredicate evaluateArrayOp:v5 onObj:v6];
+      v10 = [DESJSONPredicate evaluateArrayOp:dictCopy onObj:objCopy];
     }
 
     else
@@ -872,7 +872,7 @@ LABEL_15:
         goto LABEL_20;
       }
 
-      v10 = [DESJSONPredicate evaluateTypeOp:v5 onObj:v6];
+      v10 = [DESJSONPredicate evaluateTypeOp:dictCopy onObj:objCopy];
     }
 
     v11 = v10;
@@ -955,23 +955,23 @@ void __39__DESJSONPredicate_evaluateDict_onObj___block_invoke()
   v28 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)evaluatePredicate:(id)a3 onObj:(id)a4
++ (BOOL)evaluatePredicate:(id)predicate onObj:(id)obj
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [DESJSONPredicate evaluateDict:v5 onObj:v6];
+  predicateCopy = predicate;
+  objCopy = obj;
+  v7 = predicateCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [DESJSONPredicate evaluateDict:predicateCopy onObj:objCopy];
 
   return v7;
 }
 
-+ (BOOL)evaluateJson:(id)a3 onJson:(id)a4
++ (BOOL)evaluateJson:(id)json onJson:(id)onJson
 {
-  v5 = a4;
-  v6 = [DESJSONPredicate parseJSON:a3];
-  v7 = [DESJSONPredicate parseJSON:v5];
+  onJsonCopy = onJson;
+  v6 = [DESJSONPredicate parseJSON:json];
+  v7 = [DESJSONPredicate parseJSON:onJsonCopy];
 
-  LOBYTE(v5) = [DESJSONPredicate evaluatePredicate:v6 onObj:v7];
-  return v5;
+  LOBYTE(onJsonCopy) = [DESJSONPredicate evaluatePredicate:v6 onObj:v7];
+  return onJsonCopy;
 }
 
 @end

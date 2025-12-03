@@ -1,28 +1,28 @@
 @interface ActivityPlus
-- (ActivityPlus)initWithTitle:(id)a3 image:(id)a4 type:(id)a5 handler:(id)a6;
+- (ActivityPlus)initWithTitle:(id)title image:(id)image type:(id)type handler:(id)handler;
 - (void)performActivity;
 @end
 
 @implementation ActivityPlus
 
-- (ActivityPlus)initWithTitle:(id)a3 image:(id)a4 type:(id)a5 handler:(id)a6
+- (ActivityPlus)initWithTitle:(id)title image:(id)image type:(id)type handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  titleCopy = title;
+  imageCopy = image;
+  typeCopy = type;
+  handlerCopy = handler;
   v21.receiver = self;
   v21.super_class = ActivityPlus;
   v14 = [(UIActivity *)&v21 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [titleCopy copy];
     activityTitle = v14->_activityTitle;
     v14->_activityTitle = v15;
 
-    objc_storeStrong(&v14->_activityImage, a4);
-    objc_storeStrong(&v14->_activityType, a5);
-    v17 = _Block_copy(v13);
+    objc_storeStrong(&v14->_activityImage, image);
+    objc_storeStrong(&v14->_activityType, type);
+    v17 = _Block_copy(handlerCopy);
     actionHandler = v14->_actionHandler;
     v14->_actionHandler = v17;
 

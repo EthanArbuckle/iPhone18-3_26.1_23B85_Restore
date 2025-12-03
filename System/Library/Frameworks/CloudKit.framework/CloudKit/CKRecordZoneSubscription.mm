@@ -1,12 +1,12 @@
 @interface CKRecordZoneSubscription
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CKRecordZoneSubscription)initWithCoder:(NSCoder *)aDecoder;
 - (CKRecordZoneSubscription)initWithZoneID:(CKRecordZoneID *)zoneID;
 - (CKRecordZoneSubscription)initWithZoneID:(CKRecordZoneID *)zoneID subscriptionID:(CKSubscriptionID)subscriptionID;
 - (id)CKPropertiesDescription;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 - (void)setRecordType:(CKRecordType)recordType;
 @end
 
@@ -43,13 +43,13 @@
   return [(CKSubscription *)&v4 initWithCoder:aDecoder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v14.receiver = self;
   v14.super_class = CKRecordZoneSubscription;
-  [(CKSubscription *)&v14 encodeWithCoder:v4];
+  [(CKSubscription *)&v14 encodeWithCoder:coderCopy];
   v8 = objc_msgSend_zoneID(self, v6, v7);
   if (!v8)
   {
@@ -59,7 +59,7 @@
   }
 
   v10 = v8;
-  objc_msgSend_encodeObject_forKey_(v4, v9, v8, @"ZoneID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, v8, @"ZoneID");
 
   objc_autoreleasePoolPop(v5);
 }
@@ -91,10 +91,10 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -103,9 +103,9 @@
   {
     v14.receiver = self;
     v14.super_class = CKRecordZoneSubscription;
-    if ([(CKSubscription *)&v14 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(CKSubscription *)&v14 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_zoneID(self, v6, v7);
       v11 = objc_msgSend_zoneID(v5, v9, v10);
 
@@ -121,11 +121,11 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = CKRecordZoneSubscription;
-  return [(CKSubscription *)&v4 copyWithZone:a3];
+  return [(CKSubscription *)&v4 copyWithZone:zone];
 }
 
 @end

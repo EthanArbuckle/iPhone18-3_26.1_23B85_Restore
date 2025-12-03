@@ -1,6 +1,6 @@
 @interface SKUIPlayButtonImageCache
-+ (id)imageCacheForStyle:(int64_t)a3;
-- (SKUIPlayButtonImageCache)initWithStyle:(int64_t)a3;
++ (id)imageCacheForStyle:(int64_t)style;
+- (SKUIPlayButtonImageCache)initWithStyle:(int64_t)style;
 - (UIImage)pauseImage;
 - (UIImage)playImage;
 - (UIImage)stopImage;
@@ -9,18 +9,18 @@
 
 @implementation SKUIPlayButtonImageCache
 
-+ (id)imageCacheForStyle:(int64_t)a3
++ (id)imageCacheForStyle:(int64_t)style
 {
   if (imageCacheForStyle__onceToken != -1)
   {
     +[SKUIPlayButtonImageCache imageCacheForStyle:];
   }
 
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:style];
   v5 = [imageCacheForStyle__sharedCaches objectForKey:v4];
   if (!v5)
   {
-    v5 = [[SKUIPlayButtonImageCache alloc] initWithStyle:a3];
+    v5 = [[SKUIPlayButtonImageCache alloc] initWithStyle:style];
     [imageCacheForStyle__sharedCaches setObject:v5 forKey:v4];
   }
 
@@ -38,7 +38,7 @@ uint64_t __47__SKUIPlayButtonImageCache_imageCacheForStyle___block_invoke()
   return [v2 setName:@"com.apple.StoreKitUI.SKUIPlayButtonImageCache.imageCacheForStyle"];
 }
 
-- (SKUIPlayButtonImageCache)initWithStyle:(int64_t)a3
+- (SKUIPlayButtonImageCache)initWithStyle:(int64_t)style
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
@@ -56,10 +56,10 @@ uint64_t __47__SKUIPlayButtonImageCache_imageCacheForStyle___block_invoke()
     bundle = v6->_bundle;
     v6->_bundle = v7;
 
-    if (a3 <= 2)
+    if (style <= 2)
     {
-      v9 = off_2781FF758[a3];
-      v10 = off_2781FF770[a3];
+      v9 = off_2781FF758[style];
+      v10 = off_2781FF770[style];
       playImageName = v6->_playImageName;
       v6->_playImageName = &v9->isa;
 

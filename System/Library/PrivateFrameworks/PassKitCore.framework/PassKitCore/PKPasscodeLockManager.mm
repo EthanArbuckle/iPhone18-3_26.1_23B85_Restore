@@ -2,10 +2,10 @@
 + (id)sharedManager;
 - (BOOL)isPasscodeSet;
 - (PKPasscodeLockManager)init;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)profileConnectionDidReceivePasscodeChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)removeObserver:(id)a3;
+- (void)profileConnectionDidReceivePasscodeChangedNotification:(id)notification userInfo:(id)info;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation PKPasscodeLockManager
@@ -36,15 +36,15 @@ void __38__PKPasscodeLockManager_sharedManager__block_invoke()
   v2 = [(PKPasscodeLockManager *)&v11 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69ADFB8] sharedConnection];
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
     profileConnection = v2->_profileConnection;
-    v2->_profileConnection = v3;
+    v2->_profileConnection = mEMORY[0x1E69ADFB8];
 
     [(MCProfileConnection *)v2->_profileConnection registerObserver:v2];
     v2->_isPasscodeSet = [(MCProfileConnection *)v2->_profileConnection isPasscodeSet];
-    v5 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+    pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
     observers = v2->_observers;
-    v2->_observers = v5;
+    v2->_observers = pk_weakObjectsHashTableUsingPointerPersonality;
 
     v2->_lock._os_unfair_lock_opaque = 0;
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -72,44 +72,44 @@ void __38__PKPasscodeLockManager_sharedManager__block_invoke()
   return isPasscodeSet;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_observers addObject:v4];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)profileConnectionDidReceivePasscodeChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceivePasscodeChangedNotification:(id)notification userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 isPasscodeSet];
+  notificationCopy = notification;
+  infoCopy = info;
+  isPasscodeSet = [notificationCopy isPasscodeSet];
   os_unfair_lock_lock(&self->_lock);
-  self->_isPasscodeSet = v8;
+  self->_isPasscodeSet = isPasscodeSet;
   if ([(NSHashTable *)self->_observers count])
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = [(NSHashTable *)self->_observers allObjects];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
     replyQueue = self->_replyQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __89__PKPasscodeLockManager_profileConnectionDidReceivePasscodeChangedNotification_userInfo___block_invoke;
     block[3] = &unk_1E79C9618;
-    v14 = v10;
-    v15 = self;
-    v16 = v8;
-    v12 = v10;
+    v14 = allObjects;
+    selfCopy = self;
+    v16 = isPasscodeSet;
+    v12 = allObjects;
     dispatch_async(replyQueue, block);
 
     objc_autoreleasePoolPop(v9);

@@ -1,8 +1,8 @@
 @interface REMCDBaseSection
 + (NSString)cdEntityName;
 + (id)propertiesThatShouldTriggerReindexing;
-- (BOOL)isConnectedToAccountObject:(id)a3;
-- (REMCDBaseSection)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (BOOL)isConnectedToAccountObject:(id)object;
+- (REMCDBaseSection)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 - (REMCDObject)parentCDObject;
 - (void)incrementSpotlightIndexCount;
 @end
@@ -18,54 +18,54 @@
 
 + (NSString)cdEntityName
 {
-  v2 = [objc_opt_self() cdEntityName];
-  if (!v2)
+  cdEntityName = [objc_opt_self() cdEntityName];
+  if (!cdEntityName)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     v3 = String._bridgeToObjectiveC()();
 
-    v2 = v3;
+    cdEntityName = v3;
   }
 
-  return v2;
+  return cdEntityName;
 }
 
-- (BOOL)isConnectedToAccountObject:(id)a3
+- (BOOL)isConnectedToAccountObject:(id)object
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = REMCDBaseSection.isConnected(toAccountObject:)(v4);
+  objectCopy = object;
+  selfCopy = self;
+  LOBYTE(self) = REMCDBaseSection.isConnected(toAccountObject:)(objectCopy);
 
   return self & 1;
 }
 
-- (REMCDBaseSection)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (REMCDBaseSection)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for REMCDBaseSection();
-  return [(REMCDBaseSection *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(REMCDBaseSection *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 - (void)incrementSpotlightIndexCount
 {
-  v4 = self;
-  if ([(REMCDBaseSection *)v4 spotlightIndexCount]== 0x7FFFFFFFFFFFFFFFLL)
+  selfCopy = self;
+  if ([(REMCDBaseSection *)selfCopy spotlightIndexCount]== 0x7FFFFFFFFFFFFFFFLL)
   {
     v2 = 0;
   }
 
   else
   {
-    v3 = [(REMCDBaseSection *)v4 spotlightIndexCount];
-    v2 = v3 + 1;
-    if (__OFADD__(v3, 1))
+    spotlightIndexCount = [(REMCDBaseSection *)selfCopy spotlightIndexCount];
+    v2 = spotlightIndexCount + 1;
+    if (__OFADD__(spotlightIndexCount, 1))
     {
       __break(1u);
       return;
     }
   }
 
-  [(REMCDBaseSection *)v4 setSpotlightIndexCount:v2];
+  [(REMCDBaseSection *)selfCopy setSpotlightIndexCount:v2];
 }
 
 + (id)propertiesThatShouldTriggerReindexing

@@ -9,7 +9,7 @@
   v4 = a3;
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
-    [v4 setChangeDelegate:a1];
+    [v4 setChangeDelegate:self];
   }
 }
 

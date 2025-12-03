@@ -1,20 +1,20 @@
 @interface SXTextTangierFlowStorage
-- (SXTextTangierFlowStorage)initWithContext:(id)a3 string:(id)a4 stylesheet:(id)a5 kind:(int)a6 flowName:(id)a7;
+- (SXTextTangierFlowStorage)initWithContext:(id)context string:(id)string stylesheet:(id)stylesheet kind:(int)kind flowName:(id)name;
 @end
 
 @implementation SXTextTangierFlowStorage
 
-- (SXTextTangierFlowStorage)initWithContext:(id)a3 string:(id)a4 stylesheet:(id)a5 kind:(int)a6 flowName:(id)a7
+- (SXTextTangierFlowStorage)initWithContext:(id)context string:(id)string stylesheet:(id)stylesheet kind:(int)kind flowName:(id)name
 {
-  v8 = *&a6;
-  v13 = a7;
+  v8 = *&kind;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = SXTextTangierFlowStorage;
-  v14 = [(TSWPStorage *)&v17 initWithContext:a3 string:a4 stylesheet:a5 kind:v8];
+  v14 = [(TSWPStorage *)&v17 initWithContext:context string:string stylesheet:stylesheet kind:v8];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_flowName, a7);
+    objc_storeStrong(&v14->_flowName, name);
   }
 
   return v15;

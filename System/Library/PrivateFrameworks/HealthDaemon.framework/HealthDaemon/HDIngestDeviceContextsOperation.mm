@@ -1,37 +1,37 @@
 @interface HDIngestDeviceContextsOperation
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (HDIngestDeviceContextsOperation)initWithAccessibilityAssertion:(id)a3 containerIdentifier:(id)a4;
-- (HDIngestDeviceContextsOperation)initWithCoder:(id)a3;
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error;
+- (HDIngestDeviceContextsOperation)initWithAccessibilityAssertion:(id)assertion containerIdentifier:(id)identifier;
+- (HDIngestDeviceContextsOperation)initWithCoder:(id)coder;
 - (id)transactionContext;
 @end
 
 @implementation HDIngestDeviceContextsOperation
 
-- (HDIngestDeviceContextsOperation)initWithAccessibilityAssertion:(id)a3 containerIdentifier:(id)a4
+- (HDIngestDeviceContextsOperation)initWithAccessibilityAssertion:(id)assertion containerIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  assertionCopy = assertion;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = HDIngestDeviceContextsOperation;
   v9 = [(HDIngestDeviceContextsOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_assertion, a3);
-    objc_storeStrong(&v10->_containerIdentifier, a4);
+    objc_storeStrong(&v9->_assertion, assertion);
+    objc_storeStrong(&v10->_containerIdentifier, identifier);
   }
 
   return v10;
 }
 
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error
 {
   v83 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v51 = a4;
-  v8 = v7;
+  profileCopy = profile;
+  transactionCopy = transaction;
+  v8 = profileCopy;
   v9 = v8;
-  v58 = self;
+  selfCopy = self;
   v53 = v8;
   if (!self)
   {
@@ -55,7 +55,7 @@ LABEL_44:
   v81 = __Block_byref_object_dispose__166;
   v82 = 0;
   v10 = dispatch_semaphore_create(0);
-  v11 = [v9 cloudSyncManager];
+  cloudSyncManager = [v9 cloudSyncManager];
   v63 = MEMORY[0x277D85DD0];
   v64 = 3221225472;
   v65 = __60__HDIngestDeviceContextsOperation__fetchRepositories_error___block_invoke;
@@ -64,7 +64,7 @@ LABEL_44:
   v69 = &v70;
   v12 = v10;
   v67 = v12;
-  [v11 cloudSyncRepositoriesForClient:0 completion:&v63];
+  [cloudSyncManager cloudSyncRepositoriesForClient:0 completion:&v63];
 
   v13 = dispatch_time(0, 15000000000);
   if (dispatch_semaphore_wait(v12, v13))
@@ -79,10 +79,10 @@ LABEL_44:
   {
     v17 = v16;
     v18 = v17;
-    if (a5)
+    if (error)
     {
       v19 = v17;
-      *a5 = v18;
+      *error = v18;
     }
 
     else
@@ -122,8 +122,8 @@ LABEL_44:
         }
 
         v23 = *(*(&v59 + 1) + 8 * v21);
-        v24 = [[HDCloudSyncCachedCloudState alloc] initWithRepository:v23 accessibilityAssertion:v58->_assertion];
-        containerIdentifier = v58->_containerIdentifier;
+        v24 = [[HDCloudSyncCachedCloudState alloc] initWithRepository:v23 accessibilityAssertion:selfCopy->_assertion];
+        containerIdentifier = selfCopy->_containerIdentifier;
         v77 = 0;
         v26 = [(HDCloudSyncCachedCloudState *)v24 contextSyncZoneForContainerID:containerIdentifier error:&v77];
         v27 = v77;
@@ -156,7 +156,7 @@ LABEL_44:
               {
                 v34 = v33;
                 v35 = [v31 count];
-                v36 = v58->_containerIdentifier;
+                v36 = selfCopy->_containerIdentifier;
                 *buf = 134218242;
                 *&buf[4] = v35;
                 *&buf[12] = 2114;
@@ -168,16 +168,16 @@ LABEL_44:
               v64 = 3221225472;
               v65 = __94__HDIngestDeviceContextsOperation__pullDeviceContextsForProfile_repository_transaction_error___block_invoke;
               v66 = &unk_27862A188;
-              v67 = v58;
+              v67 = selfCopy;
               v37 = [v31 hk_map:&v63];
-              v38 = [v23 cloudSyncShimProvider];
-              v39 = [v38 contextSyncShim];
+              cloudSyncShimProvider = [v23 cloudSyncShimProvider];
+              contextSyncShim = [cloudSyncShimProvider contextSyncShim];
               v70 = MEMORY[0x277D85DD0];
               v71 = 3221225472;
               v72 = __94__HDIngestDeviceContextsOperation__pullDeviceContextsForProfile_repository_transaction_error___block_invoke_299;
               v73 = &unk_2786130B0;
-              v74 = v58;
-              [v39 ingestRemoteDeviceContexts:v37 completion:&v70];
+              v74 = selfCopy;
+              [contextSyncShim ingestRemoteDeviceContexts:v37 completion:&v70];
 
               v41 = v22;
             }
@@ -202,9 +202,9 @@ LABEL_44:
             v42 = *MEMORY[0x277CCC328];
             if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
             {
-              v43 = v58->_containerIdentifier;
+              v43 = selfCopy->_containerIdentifier;
               *buf = 138543618;
-              *&buf[4] = v58;
+              *&buf[4] = selfCopy;
               *&buf[12] = 2114;
               *&buf[14] = v43;
               _os_log_impl(&dword_228986000, v42, OS_LOG_TYPE_DEFAULT, "%{public}@: Context sync zone not present for container identifier: %{public}@", buf, 0x16u);
@@ -238,10 +238,10 @@ LABEL_44:
       v20 = v45;
       if (v45)
       {
-        if (a5)
+        if (error)
         {
           v46 = v45;
-          *a5 = v20;
+          *error = v20;
         }
 
         else
@@ -351,10 +351,10 @@ void __94__HDIngestDeviceContextsOperation__pullDeviceContextsForProfile_reposit
   return v4;
 }
 
-- (HDIngestDeviceContextsOperation)initWithCoder:(id)a3
+- (HDIngestDeviceContextsOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ContainerIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ContainerIdentifier"];
 
   v6 = [(HDIngestDeviceContextsOperation *)self initWithAccessibilityAssertion:0 containerIdentifier:v5];
   return v6;

@@ -1,23 +1,23 @@
 @interface VSJSItemGroup
 - (int64_t)selectedItem;
-- (void)setSelectedItem:(int64_t)a3;
+- (void)setSelectedItem:(int64_t)item;
 @end
 
 @implementation VSJSItemGroup
 
-- (void)setSelectedItem:(int64_t)a3
+- (void)setSelectedItem:(int64_t)item
 {
-  self->_selectedItem = a3;
-  v4 = [(VSJSItemGroup *)self bridge];
-  [v4 setJSSelectedItem:a3];
+  self->_selectedItem = item;
+  bridge = [(VSJSItemGroup *)self bridge];
+  [bridge setJSSelectedItem:item];
 }
 
 - (int64_t)selectedItem
 {
-  v2 = [(VSJSItemGroup *)self bridge];
-  v3 = [v2 jsSelectedItem];
+  bridge = [(VSJSItemGroup *)self bridge];
+  jsSelectedItem = [bridge jsSelectedItem];
 
-  return v3;
+  return jsSelectedItem;
 }
 
 @end

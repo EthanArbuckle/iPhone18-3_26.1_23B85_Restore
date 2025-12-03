@@ -1,17 +1,17 @@
 @interface MPAssistantRemoveOutputDevicesFromGroup
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation MPAssistantRemoveOutputDevicesFromGroup
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (![(NSString *)self->_requestAceHash length])
   {
-    v5 = [(MPAssistantRemoveOutputDevicesFromGroup *)self aceId];
-    v6 = sub_233505670(@"Remove Output Devices From Group", v5);
+    aceId = [(MPAssistantRemoveOutputDevicesFromGroup *)self aceId];
+    v6 = sub_233505670(@"Remove Output Devices From Group", aceId);
     requestAceHash = self->_requestAceHash;
     self->_requestAceHash = v6;
   }
@@ -26,12 +26,12 @@
   }
 
   v10 = self->_requestAceHash;
-  v11 = [(MPAssistantRemoveOutputDevicesFromGroup *)self hashedRouteUIDs];
-  sub_2335057BC(@"Remove Output Devices From Group", v10, v11);
+  hashedRouteUIDs = [(MPAssistantRemoveOutputDevicesFromGroup *)self hashedRouteUIDs];
+  sub_2335057BC(@"Remove Output Devices From Group", v10, hashedRouteUIDs);
 
-  v12 = [MEMORY[0x277CBEB18] array];
-  v13 = [(MPAssistantRemoveOutputDevicesFromGroup *)self groupID];
-  v14 = [v13 isEqualToString:@"LOCAL_DEVICE"];
+  array = [MEMORY[0x277CBEB18] array];
+  groupID = [(MPAssistantRemoveOutputDevicesFromGroup *)self groupID];
+  v14 = [groupID isEqualToString:@"LOCAL_DEVICE"];
 
   if (v14)
   {
@@ -40,16 +40,16 @@
 
   else
   {
-    v16 = [(MPAssistantRemoveOutputDevicesFromGroup *)self groupID];
-    [v12 addObject:v16];
+    groupID2 = [(MPAssistantRemoveOutputDevicesFromGroup *)self groupID];
+    [array addObject:groupID2];
 
-    v17 = [(MPAssistantRemoveOutputDevicesFromGroup *)self hashedRouteUIDs];
-    v18 = [(MPAssistantRemoveOutputDevicesFromGroup *)self groupID];
-    v15 = [v17 containsObject:v18];
+    hashedRouteUIDs2 = [(MPAssistantRemoveOutputDevicesFromGroup *)self hashedRouteUIDs];
+    groupID3 = [(MPAssistantRemoveOutputDevicesFromGroup *)self groupID];
+    v15 = [hashedRouteUIDs2 containsObject:groupID3];
   }
 
-  v19 = [(MPAssistantRemoveOutputDevicesFromGroup *)self hashedRouteUIDs];
-  [v12 addObjectsFromArray:v19];
+  hashedRouteUIDs3 = [(MPAssistantRemoveOutputDevicesFromGroup *)self hashedRouteUIDs];
+  [array addObjectsFromArray:hashedRouteUIDs3];
 
   v20 = objc_alloc_init(MEMORY[0x277D27840]);
   v24[0] = MEMORY[0x277D85DD0];
@@ -57,12 +57,12 @@
   v24[2] = sub_2334F3518;
   v24[3] = &unk_2789DB558;
   v25 = v20;
-  v26 = self;
+  selfCopy = self;
   v28 = v15;
-  v27 = v4;
-  v21 = v4;
+  v27 = completionCopy;
+  v21 = completionCopy;
   v22 = v20;
-  [v22 decodeHashedRouteUIDs:v12 completion:v24];
+  [v22 decodeHashedRouteUIDs:array completion:v24];
 
   v23 = *MEMORY[0x277D85DE8];
 }

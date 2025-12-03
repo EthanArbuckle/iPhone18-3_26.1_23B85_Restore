@@ -1,28 +1,28 @@
 @interface HMServiceClient
 - (HMServiceClient)init;
-- (HMServiceClient)initWithCoder:(id)a3;
+- (HMServiceClient)initWithCoder:(id)coder;
 - (NSArray)invalidAudiograms;
 - (NSArray)validAudiograms;
 - (id)_ensureXPCStarted;
 - (id)description;
-- (id)fetchHearingModeDeviceRecordForIdentifier:(id)a3;
-- (id)getHearingModeDeviceRecordForIdentifier:(id)a3;
+- (id)fetchHearingModeDeviceRecordForIdentifier:(id)identifier;
+- (id)getHearingModeDeviceRecordForIdentifier:(id)identifier;
 - (void)_activate;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)_reportError:(id)a3;
-- (void)activateWithCompletion:(id)a3;
-- (void)clientHMAvailableAudiograms:(id)a3 invalidAudiograms:(id)a4 error:(id)a5;
-- (void)clientHMDeviceDiagnosticRecordFound:(id)a3;
-- (void)clientHMDeviceRecordChanged:(id)a3;
-- (void)clientHMDeviceRecordLost:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)fetchOcclusionResultForDeviceIdentifier:(id)a3 featureID:(int)a4 completion:(id)a5;
+- (void)_reportError:(id)error;
+- (void)activateWithCompletion:(id)completion;
+- (void)clientHMAvailableAudiograms:(id)audiograms invalidAudiograms:(id)invalidAudiograms error:(id)error;
+- (void)clientHMDeviceDiagnosticRecordFound:(id)found;
+- (void)clientHMDeviceRecordChanged:(id)changed;
+- (void)clientHMDeviceRecordLost:(id)lost;
+- (void)encodeWithCoder:(id)coder;
+- (void)fetchOcclusionResultForDeviceIdentifier:(id)identifier featureID:(int)d completion:(id)completion;
 - (void)invalidate;
-- (void)modifyDeviceConfig:(id)a3 identifier:(id)a4 completion:(id)a5;
-- (void)occlusionIndicationShownForDeviceAddress:(id)a3 featureID:(int)a4 type:(int)a5 action:(int)a6;
-- (void)triggerFetchAudiogramsWithCompletion:(id)a3;
-- (void)triggerOnDemandDiagnosticCheckForDeviceIdentifier:(id)a3 completion:(id)a4;
+- (void)modifyDeviceConfig:(id)config identifier:(id)identifier completion:(id)completion;
+- (void)occlusionIndicationShownForDeviceAddress:(id)address featureID:(int)d type:(int)type action:(int)action;
+- (void)triggerFetchAudiogramsWithCompletion:(id)completion;
+- (void)triggerOnDemandDiagnosticCheckForDeviceIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation HMServiceClient
@@ -75,10 +75,10 @@
       [(HMServiceClient *)self _activate];
     }
 
-    v4 = [(HMServiceClient *)self _ensureXPCStarted];
-    if (v4)
+    _ensureXPCStarted = [(HMServiceClient *)self _ensureXPCStarted];
+    if (_ensureXPCStarted)
     {
-      [(HMServiceClient *)self _reportError:v4];
+      [(HMServiceClient *)self _reportError:_ensureXPCStarted];
     }
 
     else
@@ -184,28 +184,28 @@ void __28__HMServiceClient__activate__block_invoke_2(uint64_t a1, void *a2)
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   clientID = self->_clientID;
-  v7 = v4;
+  v7 = coderCopy;
   if (clientID)
   {
-    [v4 encodeInt64:clientID forKey:@"cid"];
-    v4 = v7;
+    [coderCopy encodeInt64:clientID forKey:@"cid"];
+    coderCopy = v7;
   }
 
   internalFlags = self->_internalFlags;
   if (internalFlags)
   {
     [v7 encodeInt64:internalFlags forKey:@"inf"];
-    v4 = v7;
+    coderCopy = v7;
   }
 }
 
-- (HMServiceClient)initWithCoder:(id)a3
+- (HMServiceClient)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(HMServiceClient *)self init];
   if (v5)
   {
@@ -227,35 +227,35 @@ void __28__HMServiceClient__activate__block_invoke_2(uint64_t a1, void *a2)
 
 - (NSArray)validAudiograms
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_validAudiograms;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_validAudiograms;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSArray)invalidAudiograms
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_invalidAudiograms;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_invalidAudiograms;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__HMServiceClient_activateWithCompletion___block_invoke;
   v7[3] = &unk_2796EE5E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -447,9 +447,9 @@ void __29__HMServiceClient_invalidate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_reportError:(id)a3
+- (void)_reportError:(id)error
 {
-  v6 = a3;
+  errorCopy = error;
   if (gLogCategory_HMServiceClient <= 90 && (gLogCategory_HMServiceClient != -1 || _LogCategory_Initialize()))
   {
     [HMServiceClient _reportError:];
@@ -461,30 +461,30 @@ void __29__HMServiceClient_invalidate__block_invoke(uint64_t a1)
 
   if (v4)
   {
-    (v4)[2](v4, v6);
+    (v4)[2](v4, errorCopy);
   }
 }
 
-- (id)getHearingModeDeviceRecordForIdentifier:(id)a3
+- (id)getHearingModeDeviceRecordForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_recordMap objectForKeyedSubscript:v4];
-  objc_sync_exit(v5);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_recordMap objectForKeyedSubscript:identifierCopy];
+  objc_sync_exit(selfCopy);
 
   if (gLogCategory_HMServiceClient <= 30 && (gLogCategory_HMServiceClient != -1 || _LogCategory_Initialize()))
   {
-    clientID = v5->_clientID;
+    clientID = selfCopy->_clientID;
     LogPrintF();
   }
 
   return v6;
 }
 
-- (id)fetchHearingModeDeviceRecordForIdentifier:(id)a3
+- (id)fetchHearingModeDeviceRecordForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (_os_feature_enabled_impl())
   {
     v16 = 0;
@@ -493,8 +493,8 @@ void __29__HMServiceClient_invalidate__block_invoke(uint64_t a1)
     v19 = __Block_byref_object_copy__0;
     v20 = __Block_byref_object_dispose__0;
     v21 = 0;
-    v5 = [(HMServiceClient *)self _ensureXPCStarted];
-    if (v5)
+    _ensureXPCStarted = [(HMServiceClient *)self _ensureXPCStarted];
+    if (_ensureXPCStarted)
     {
       if (gLogCategory_HMServiceClient <= 90 && (gLogCategory_HMServiceClient != -1 || _LogCategory_Initialize()))
       {
@@ -511,7 +511,7 @@ void __29__HMServiceClient_invalidate__block_invoke(uint64_t a1)
       v14[1] = 3221225472;
       v14[2] = __61__HMServiceClient_fetchHearingModeDeviceRecordForIdentifier___block_invoke;
       v14[3] = &unk_2796EEA68;
-      v8 = v4;
+      v8 = identifierCopy;
       v15 = v8;
       v9 = [(NSXPCConnection *)xpcCnx synchronousRemoteObjectProxyWithErrorHandler:v14];
       v11[0] = MEMORY[0x277D85DD0];
@@ -564,21 +564,21 @@ void __61__HMServiceClient_fetchHearingModeDeviceRecordForIdentifier___block_inv
   }
 }
 
-- (void)fetchOcclusionResultForDeviceIdentifier:(id)a3 featureID:(int)a4 completion:(id)a5
+- (void)fetchOcclusionResultForDeviceIdentifier:(id)identifier featureID:(int)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __80__HMServiceClient_fetchOcclusionResultForDeviceIdentifier_featureID_completion___block_invoke;
   v13[3] = &unk_2796EEB08;
-  v14 = v8;
-  v15 = v9;
+  v14 = identifierCopy;
+  v15 = completionCopy;
   v13[4] = self;
-  v16 = a4;
-  v11 = v8;
-  v12 = v9;
+  dCopy = d;
+  v11 = identifierCopy;
+  v12 = completionCopy;
   dispatch_async(dispatchQueue, v13);
 }
 
@@ -644,23 +644,23 @@ void __80__HMServiceClient_fetchOcclusionResultForDeviceIdentifier_featureID_com
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)modifyDeviceConfig:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)modifyDeviceConfig:(id)config identifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configCopy = config;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __60__HMServiceClient_modifyDeviceConfig_identifier_completion___block_invoke;
   v15[3] = &unk_2796EEB30;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = configCopy;
+  v17 = identifierCopy;
+  v18 = completionCopy;
+  v12 = identifierCopy;
+  v13 = configCopy;
+  v14 = completionCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -775,20 +775,20 @@ uint64_t __60__HMServiceClient_modifyDeviceConfig_identifier_completion___block_
   return MEMORY[0x2821F96F8](v5, v3);
 }
 
-- (void)occlusionIndicationShownForDeviceAddress:(id)a3 featureID:(int)a4 type:(int)a5 action:(int)a6
+- (void)occlusionIndicationShownForDeviceAddress:(id)address featureID:(int)d type:(int)type action:(int)action
 {
-  v10 = a3;
+  addressCopy = address;
   dispatchQueue = self->_dispatchQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __82__HMServiceClient_occlusionIndicationShownForDeviceAddress_featureID_type_action___block_invoke;
   v13[3] = &unk_2796EEB58;
   v13[4] = self;
-  v14 = v10;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v12 = v10;
+  v14 = addressCopy;
+  dCopy = d;
+  typeCopy = type;
+  actionCopy = action;
+  v12 = addressCopy;
   dispatch_async(dispatchQueue, v13);
 }
 
@@ -831,17 +831,17 @@ LABEL_8:
   return MEMORY[0x2821F96F8](v4, v5);
 }
 
-- (void)triggerFetchAudiogramsWithCompletion:(id)a3
+- (void)triggerFetchAudiogramsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__HMServiceClient_triggerFetchAudiogramsWithCompletion___block_invoke;
   v7[3] = &unk_2796EE5E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -911,20 +911,20 @@ void __56__HMServiceClient_triggerFetchAudiogramsWithCompletion___block_invoke_3
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)triggerOnDemandDiagnosticCheckForDeviceIdentifier:(id)a3 completion:(id)a4
+- (void)triggerOnDemandDiagnosticCheckForDeviceIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__HMServiceClient_triggerOnDemandDiagnosticCheckForDeviceIdentifier_completion___block_invoke;
   block[3] = &unk_2796EEB80;
-  v12 = v6;
-  v13 = v7;
+  v12 = identifierCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = identifierCopy;
+  v10 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1009,79 +1009,79 @@ uint64_t __80__HMServiceClient_triggerOnDemandDiagnosticCheckForDeviceIdentifier
   return MEMORY[0x2821F96F8](v5, v3);
 }
 
-- (void)clientHMDeviceRecordChanged:(id)a3
+- (void)clientHMDeviceRecordChanged:(id)changed
 {
-  v10 = a3;
+  changedCopy = changed;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v10 bluetoothUUID];
-  if (v5)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  bluetoothUUID = [changedCopy bluetoothUUID];
+  if (bluetoothUUID)
   {
-    recordMap = v4->_recordMap;
+    recordMap = selfCopy->_recordMap;
     if (!recordMap)
     {
       v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v8 = v4->_recordMap;
-      v4->_recordMap = v7;
+      v8 = selfCopy->_recordMap;
+      selfCopy->_recordMap = v7;
 
-      recordMap = v4->_recordMap;
+      recordMap = selfCopy->_recordMap;
     }
 
-    [(NSMutableDictionary *)recordMap setObject:v10 forKeyedSubscript:v5];
+    [(NSMutableDictionary *)recordMap setObject:changedCopy forKeyedSubscript:bluetoothUUID];
 
-    objc_sync_exit(v4);
-    if (v4->_deviceRecordChangedHandler)
+    objc_sync_exit(selfCopy);
+    if (selfCopy->_deviceRecordChangedHandler)
     {
       if (gLogCategory_HMServiceClient <= 30 && (gLogCategory_HMServiceClient != -1 || _LogCategory_Initialize()))
       {
-        clientID = v4->_clientID;
+        clientID = selfCopy->_clientID;
         LogPrintF();
       }
 
-      (*(v4->_deviceRecordChangedHandler + 2))(v4->_deviceRecordChangedHandler, v10);
+      (*(selfCopy->_deviceRecordChangedHandler + 2))(selfCopy->_deviceRecordChangedHandler, changedCopy);
     }
 
     else if (gLogCategory_HMServiceClient <= 10 && (gLogCategory_HMServiceClient != -1 || _LogCategory_Initialize()))
     {
-      [HMServiceClient clientHMDeviceRecordChanged:v4];
+      [HMServiceClient clientHMDeviceRecordChanged:selfCopy];
     }
   }
 
   else
   {
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)clientHMDeviceRecordLost:(id)a3
+- (void)clientHMDeviceRecordLost:(id)lost
 {
-  v7 = a3;
+  lostCopy = lost;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 bluetoothUUID];
-  if (v5)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  bluetoothUUID = [lostCopy bluetoothUUID];
+  if (bluetoothUUID)
   {
-    [(NSMutableDictionary *)v4->_recordMap setObject:0 forKeyedSubscript:v5];
+    [(NSMutableDictionary *)selfCopy->_recordMap setObject:0 forKeyedSubscript:bluetoothUUID];
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
     if (gLogCategory_HMServiceClient <= 30 && (gLogCategory_HMServiceClient != -1 || _LogCategory_Initialize()))
     {
-      clientID = v4->_clientID;
+      clientID = selfCopy->_clientID;
       LogPrintF();
     }
   }
 
   else
   {
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)clientHMDeviceDiagnosticRecordFound:(id)a3
+- (void)clientHMDeviceDiagnosticRecordFound:(id)found
 {
-  v5 = a3;
+  foundCopy = found;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (self->_deviceDiagnosticRecordFoundHandler)
   {
@@ -1091,7 +1091,7 @@ uint64_t __80__HMServiceClient_triggerOnDemandDiagnosticCheckForDeviceIdentifier
       LogPrintF();
     }
 
-    (*(self->_deviceDiagnosticRecordFoundHandler + 2))(self->_deviceDiagnosticRecordFoundHandler, v5);
+    (*(self->_deviceDiagnosticRecordFoundHandler + 2))(self->_deviceDiagnosticRecordFoundHandler, foundCopy);
   }
 
   else if (gLogCategory_HMServiceClient <= 10 && (gLogCategory_HMServiceClient != -1 || _LogCategory_Initialize()))
@@ -1100,28 +1100,28 @@ uint64_t __80__HMServiceClient_triggerOnDemandDiagnosticCheckForDeviceIdentifier
   }
 }
 
-- (void)clientHMAvailableAudiograms:(id)a3 invalidAudiograms:(id)a4 error:(id)a5
+- (void)clientHMAvailableAudiograms:(id)audiograms invalidAudiograms:(id)invalidAudiograms error:(id)error
 {
-  v14 = a3;
-  v9 = a4;
-  v10 = a5;
+  audiogramsCopy = audiograms;
+  invalidAudiogramsCopy = invalidAudiograms;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v11 = self;
-  objc_sync_enter(v11);
-  objc_storeStrong(&v11->_validAudiograms, a3);
-  objc_storeStrong(&v11->_invalidAudiograms, a4);
-  objc_sync_exit(v11);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_validAudiograms, audiograms);
+  objc_storeStrong(&selfCopy->_invalidAudiograms, invalidAudiograms);
+  objc_sync_exit(selfCopy);
 
   if (gLogCategory_HMServiceClient <= 90 && (gLogCategory_HMServiceClient != -1 || _LogCategory_Initialize()))
   {
-    clientID = v11->_clientID;
+    clientID = selfCopy->_clientID;
     LogPrintF();
   }
 
-  audiogramsAvailableHandler = v11->_audiogramsAvailableHandler;
+  audiogramsAvailableHandler = selfCopy->_audiogramsAvailableHandler;
   if (audiogramsAvailableHandler)
   {
-    audiogramsAvailableHandler[2](audiogramsAvailableHandler, v11->_validAudiograms, v11->_invalidAudiograms, v10);
+    audiogramsAvailableHandler[2](audiogramsAvailableHandler, selfCopy->_validAudiograms, selfCopy->_invalidAudiograms, errorCopy);
   }
 }
 

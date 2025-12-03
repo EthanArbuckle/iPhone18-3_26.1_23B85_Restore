@@ -22,9 +22,9 @@
 
 - (BOOL)isOpaque
 {
-  v2 = [(SCNDelegateSource *)self delegate];
+  delegate = [(SCNDelegateSource *)self delegate];
 
-  return [v2 isOpaque];
+  return [delegate isOpaque];
 }
 
 @end

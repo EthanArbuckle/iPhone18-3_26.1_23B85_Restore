@@ -1,41 +1,41 @@
 @interface BMLocalAuthenticationDialogs
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMLocalAuthenticationDialogs)initWithDialogID:(id)a3 bundleID:(id)a4 timeSinceUpdate:(id)a5 mechanisms:(id)a6 successfulMechanism:(int)a7 failedMechanisms:(id)a8 actions:(id)a9 failingAction:(int)a10;
-- (BMLocalAuthenticationDialogs)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMLocalAuthenticationDialogs)initWithDialogID:(id)d bundleID:(id)iD timeSinceUpdate:(id)update mechanisms:(id)mechanisms successfulMechanism:(int)mechanism failedMechanisms:(id)failedMechanisms actions:(id)actions failingAction:(int)self0;
+- (BMLocalAuthenticationDialogs)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_actionsJSONArray;
 - (id)_failedMechanismsJSONArray;
 - (id)_mechanismsJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMLocalAuthenticationDialogs
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMLocalAuthenticationDialogs *)self dialogID];
-    v7 = [v5 dialogID];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    dialogID = [(BMLocalAuthenticationDialogs *)self dialogID];
+    dialogID2 = [v5 dialogID];
+    v8 = dialogID2;
+    if (dialogID == dialogID2)
     {
     }
 
     else
     {
-      v9 = [(BMLocalAuthenticationDialogs *)self dialogID];
-      v10 = [v5 dialogID];
-      v11 = [v9 isEqual:v10];
+      dialogID3 = [(BMLocalAuthenticationDialogs *)self dialogID];
+      dialogID4 = [v5 dialogID];
+      v11 = [dialogID3 isEqual:dialogID4];
 
       if (!v11)
       {
@@ -43,18 +43,18 @@
       }
     }
 
-    v13 = [(BMLocalAuthenticationDialogs *)self bundleID];
-    v14 = [v5 bundleID];
-    v15 = v14;
-    if (v13 == v14)
+    bundleID = [(BMLocalAuthenticationDialogs *)self bundleID];
+    bundleID2 = [v5 bundleID];
+    v15 = bundleID2;
+    if (bundleID == bundleID2)
     {
     }
 
     else
     {
-      v16 = [(BMLocalAuthenticationDialogs *)self bundleID];
-      v17 = [v5 bundleID];
-      v18 = [v16 isEqual:v17];
+      bundleID3 = [(BMLocalAuthenticationDialogs *)self bundleID];
+      bundleID4 = [v5 bundleID];
+      v18 = [bundleID3 isEqual:bundleID4];
 
       if (!v18)
       {
@@ -74,25 +74,25 @@
         goto LABEL_27;
       }
 
-      v19 = [(BMLocalAuthenticationDialogs *)self timeSinceUpdate];
-      if (v19 != [v5 timeSinceUpdate])
+      timeSinceUpdate = [(BMLocalAuthenticationDialogs *)self timeSinceUpdate];
+      if (timeSinceUpdate != [v5 timeSinceUpdate])
       {
         goto LABEL_27;
       }
     }
 
-    v20 = [(BMLocalAuthenticationDialogs *)self mechanisms];
-    v21 = [v5 mechanisms];
-    v22 = v21;
-    if (v20 == v21)
+    mechanisms = [(BMLocalAuthenticationDialogs *)self mechanisms];
+    mechanisms2 = [v5 mechanisms];
+    v22 = mechanisms2;
+    if (mechanisms == mechanisms2)
     {
     }
 
     else
     {
-      v23 = [(BMLocalAuthenticationDialogs *)self mechanisms];
-      v24 = [v5 mechanisms];
-      v25 = [v23 isEqual:v24];
+      mechanisms3 = [(BMLocalAuthenticationDialogs *)self mechanisms];
+      mechanisms4 = [v5 mechanisms];
+      v25 = [mechanisms3 isEqual:mechanisms4];
 
       if (!v25)
       {
@@ -100,21 +100,21 @@
       }
     }
 
-    v26 = [(BMLocalAuthenticationDialogs *)self successfulMechanism];
-    if (v26 == [v5 successfulMechanism])
+    successfulMechanism = [(BMLocalAuthenticationDialogs *)self successfulMechanism];
+    if (successfulMechanism == [v5 successfulMechanism])
     {
-      v27 = [(BMLocalAuthenticationDialogs *)self failedMechanisms];
-      v28 = [v5 failedMechanisms];
-      v29 = v28;
-      if (v27 == v28)
+      failedMechanisms = [(BMLocalAuthenticationDialogs *)self failedMechanisms];
+      failedMechanisms2 = [v5 failedMechanisms];
+      v29 = failedMechanisms2;
+      if (failedMechanisms == failedMechanisms2)
       {
       }
 
       else
       {
-        v30 = [(BMLocalAuthenticationDialogs *)self failedMechanisms];
-        v31 = [v5 failedMechanisms];
-        v32 = [v30 isEqual:v31];
+        failedMechanisms3 = [(BMLocalAuthenticationDialogs *)self failedMechanisms];
+        failedMechanisms4 = [v5 failedMechanisms];
+        v32 = [failedMechanisms3 isEqual:failedMechanisms4];
 
         if (!v32)
         {
@@ -122,18 +122,18 @@
         }
       }
 
-      v33 = [(BMLocalAuthenticationDialogs *)self actions];
-      v34 = [v5 actions];
-      v35 = v34;
-      if (v33 == v34)
+      actions = [(BMLocalAuthenticationDialogs *)self actions];
+      actions2 = [v5 actions];
+      v35 = actions2;
+      if (actions == actions2)
       {
       }
 
       else
       {
-        v36 = [(BMLocalAuthenticationDialogs *)self actions];
-        v37 = [v5 actions];
-        v38 = [v36 isEqual:v37];
+        actions3 = [(BMLocalAuthenticationDialogs *)self actions];
+        actions4 = [v5 actions];
+        v38 = [actions3 isEqual:actions4];
 
         if (!v38)
         {
@@ -141,8 +141,8 @@
         }
       }
 
-      v40 = [(BMLocalAuthenticationDialogs *)self failingAction];
-      v12 = v40 == [v5 failingAction];
+      failingAction = [(BMLocalAuthenticationDialogs *)self failingAction];
+      v12 = failingAction == [v5 failingAction];
       goto LABEL_28;
     }
 
@@ -162,8 +162,8 @@ LABEL_29:
 - (id)jsonDictionary
 {
   v30[8] = *MEMORY[0x1E69E9840];
-  v3 = [(BMLocalAuthenticationDialogs *)self dialogID];
-  v4 = [(BMLocalAuthenticationDialogs *)self bundleID];
+  dialogID = [(BMLocalAuthenticationDialogs *)self dialogID];
+  bundleID = [(BMLocalAuthenticationDialogs *)self bundleID];
   if ([(BMLocalAuthenticationDialogs *)self hasTimeSinceUpdate])
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMLocalAuthenticationDialogs timeSinceUpdate](self, "timeSinceUpdate")}];
@@ -174,93 +174,93 @@ LABEL_29:
     v5 = 0;
   }
 
-  v6 = [(BMLocalAuthenticationDialogs *)self _mechanismsJSONArray];
+  _mechanismsJSONArray = [(BMLocalAuthenticationDialogs *)self _mechanismsJSONArray];
   v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMLocalAuthenticationDialogs successfulMechanism](self, "successfulMechanism")}];
-  v8 = [(BMLocalAuthenticationDialogs *)self _failedMechanismsJSONArray];
-  v9 = [(BMLocalAuthenticationDialogs *)self _actionsJSONArray];
+  _failedMechanismsJSONArray = [(BMLocalAuthenticationDialogs *)self _failedMechanismsJSONArray];
+  _actionsJSONArray = [(BMLocalAuthenticationDialogs *)self _actionsJSONArray];
   v10 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMLocalAuthenticationDialogs failingAction](self, "failingAction")}];
   v29[0] = @"dialogID";
-  v11 = v3;
-  if (!v3)
+  null = dialogID;
+  if (!dialogID)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v11;
-  v30[0] = v11;
+  v24 = null;
+  v30[0] = null;
   v29[1] = @"bundleID";
-  v12 = v4;
-  if (!v4)
+  null2 = bundleID;
+  if (!bundleID)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23 = v12;
-  v30[1] = v12;
+  v23 = null2;
+  v30[1] = null2;
   v29[2] = @"timeSinceUpdate";
-  v13 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28 = v3;
-  v22 = v13;
-  v30[2] = v13;
+  v28 = dialogID;
+  v22 = null3;
+  v30[2] = null3;
   v29[3] = @"mechanisms";
-  v14 = v6;
-  if (!v6)
+  null4 = _mechanismsJSONArray;
+  if (!_mechanismsJSONArray)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v4;
-  v30[3] = v14;
+  v27 = bundleID;
+  v30[3] = null4;
   v29[4] = @"successfulMechanism";
-  v15 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
   v26 = v5;
-  v30[4] = v15;
+  v30[4] = null5;
   v29[5] = @"failedMechanisms";
-  v16 = v8;
-  if (!v8)
+  null6 = _failedMechanismsJSONArray;
+  if (!_failedMechanismsJSONArray)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17 = v6;
-  v30[5] = v16;
+  v17 = _mechanismsJSONArray;
+  v30[5] = null6;
   v29[6] = @"actions";
-  v18 = v9;
-  if (!v9)
+  null7 = _actionsJSONArray;
+  if (!_actionsJSONArray)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[6] = v18;
+  v30[6] = null7;
   v29[7] = @"failingAction";
-  v19 = v10;
+  null8 = v10;
   if (!v10)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[7] = v19;
+  v30[7] = null8;
   v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:8];
   if (v10)
   {
-    if (v9)
+    if (_actionsJSONArray)
     {
       goto LABEL_22;
     }
 
 LABEL_34:
 
-    if (v8)
+    if (_failedMechanismsJSONArray)
     {
       goto LABEL_23;
     }
@@ -268,13 +268,13 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  if (!v9)
+  if (!_actionsJSONArray)
   {
     goto LABEL_34;
   }
 
 LABEL_22:
-  if (v8)
+  if (_failedMechanismsJSONArray)
   {
     goto LABEL_23;
   }
@@ -334,8 +334,8 @@ LABEL_30:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMLocalAuthenticationDialogs *)self actions];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  actions = [(BMLocalAuthenticationDialogs *)self actions];
+  v5 = [actions countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -346,13 +346,13 @@ LABEL_30:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(actions);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [actions countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -371,8 +371,8 @@ LABEL_30:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMLocalAuthenticationDialogs *)self failedMechanisms];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  failedMechanisms = [(BMLocalAuthenticationDialogs *)self failedMechanisms];
+  v5 = [failedMechanisms countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -383,13 +383,13 @@ LABEL_30:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(failedMechanisms);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [failedMechanisms countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -408,8 +408,8 @@ LABEL_30:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMLocalAuthenticationDialogs *)self mechanisms];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  mechanisms = [(BMLocalAuthenticationDialogs *)self mechanisms];
+  v5 = [mechanisms countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -420,13 +420,13 @@ LABEL_30:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(mechanisms);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [mechanisms countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -437,17 +437,17 @@ LABEL_30:
   return v3;
 }
 
-- (BMLocalAuthenticationDialogs)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMLocalAuthenticationDialogs)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v179[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"dialogID"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"dialogID"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v32 = objc_alloc(MEMORY[0x1E696ABC0]);
         v33 = *MEMORY[0x1E698F240];
@@ -458,13 +458,13 @@ LABEL_30:
         v35 = v33;
         v8 = v34;
         v7 = 0;
-        v36 = 0;
-        *a4 = [v32 initWithDomain:v35 code:2 userInfo:v34];
+        selfCopy4 = 0;
+        *error = [v32 initWithDomain:v35 code:2 userInfo:v34];
         goto LABEL_133;
       }
 
       v7 = 0;
-      v36 = 0;
+      selfCopy4 = 0;
       goto LABEL_134;
     }
 
@@ -476,23 +476,23 @@ LABEL_30:
     v7 = 0;
   }
 
-  v8 = [v5 objectForKeyedSubscript:@"bundleID"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"bundleID"];
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v37 = objc_alloc(MEMORY[0x1E696ABC0]);
         v38 = v8;
         v39 = *MEMORY[0x1E698F240];
         v176 = *MEMORY[0x1E696A578];
-        v40 = self;
+        selfCopy = self;
         v41 = objc_alloc(MEMORY[0x1E696AEC0]);
         v117 = objc_opt_class();
         v42 = v41;
-        self = v40;
+        self = selfCopy;
         v12 = [v42 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", v117, @"bundleID"];
         v177 = v12;
         v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v177 forKeys:&v176 count:1];
@@ -501,13 +501,13 @@ LABEL_30:
         v45 = v39;
         v8 = v38;
         v9 = 0;
-        v36 = 0;
-        *a4 = [v44 initWithDomain:v45 code:2 userInfo:v43];
+        selfCopy4 = 0;
+        *error = [v44 initWithDomain:v45 code:2 userInfo:v43];
         goto LABEL_132;
       }
 
       v9 = 0;
-      v36 = 0;
+      selfCopy4 = 0;
       goto LABEL_133;
     }
 
@@ -519,7 +519,7 @@ LABEL_30:
     v9 = 0;
   }
 
-  v10 = [v5 objectForKeyedSubscript:@"timeSinceUpdate"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceUpdate"];
   v131 = v7;
   v132 = v10;
   v130 = v6;
@@ -528,7 +528,7 @@ LABEL_30:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v46 = objc_alloc(MEMORY[0x1E696ABC0]);
         v47 = v9;
@@ -544,13 +544,13 @@ LABEL_30:
         v8 = v48;
         v9 = v47;
         v12 = 0;
-        v36 = 0;
-        *a4 = [v50 initWithDomain:v51 code:2 userInfo:v16];
+        selfCopy4 = 0;
+        *error = [v50 initWithDomain:v51 code:2 userInfo:v16];
         goto LABEL_130;
       }
 
       v12 = 0;
-      v36 = 0;
+      selfCopy4 = 0;
       goto LABEL_132;
     }
 
@@ -564,15 +564,15 @@ LABEL_30:
     v12 = 0;
   }
 
-  v13 = [v5 objectForKeyedSubscript:@"mechanisms"];
-  v14 = [MEMORY[0x1E695DFB0] null];
-  v15 = [v13 isEqual:v14];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"mechanisms"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v15 = [v13 isEqual:null];
 
   if (v15)
   {
     v127 = v12;
     v128 = v9;
-    v126 = self;
+    selfCopy3 = self;
 
     v13 = 0;
   }
@@ -584,9 +584,9 @@ LABEL_30:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
-          v36 = 0;
+          selfCopy4 = 0;
           v8 = v129;
           v11 = v132;
           goto LABEL_131;
@@ -599,8 +599,8 @@ LABEL_30:
         v173 = v16;
         v54 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v173 forKeys:&v172 count:1];
         v57 = [v55 initWithDomain:v56 code:2 userInfo:v54];
-        v36 = 0;
-        *a4 = v57;
+        selfCopy4 = 0;
+        *error = v57;
         v8 = v129;
         goto LABEL_50;
       }
@@ -608,7 +608,7 @@ LABEL_30:
 
     v127 = v12;
     v128 = v9;
-    v126 = self;
+    selfCopy3 = self;
   }
 
   v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v13, "count")}];
@@ -638,8 +638,8 @@ LABEL_30:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v26 = a4;
-        if (a4)
+        errorCopy2 = error;
+        if (error)
         {
           v27 = objc_alloc(MEMORY[0x1E696ABC0]);
           v28 = *MEMORY[0x1E698F240];
@@ -651,12 +651,12 @@ LABEL_30:
           v31 = v28;
 LABEL_46:
           v133 = v29;
-          self = v126;
+          self = selfCopy3;
           v12 = v127;
           v9 = v128;
           v11 = v132;
-          v36 = 0;
-          *v26 = [v30 initWithDomain:v31 code:2 userInfo:?];
+          selfCopy4 = 0;
+          *errorCopy2 = [v30 initWithDomain:v31 code:2 userInfo:?];
           v54 = v13;
           v8 = v129;
 
@@ -664,10 +664,10 @@ LABEL_46:
         }
 
 LABEL_47:
-        v36 = 0;
+        selfCopy4 = 0;
         v54 = v13;
         v8 = v129;
-        self = v126;
+        self = selfCopy3;
         v12 = v127;
         v9 = v128;
 LABEL_50:
@@ -686,8 +686,8 @@ LABEL_50:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v26 = a4;
-          if (a4)
+          errorCopy2 = error;
+          if (error)
           {
             v52 = objc_alloc(MEMORY[0x1E696ABC0]);
             v53 = *MEMORY[0x1E698F240];
@@ -716,7 +716,7 @@ LABEL_50:
   while (v18);
 LABEL_29:
 
-  v24 = [v5 objectForKeyedSubscript:@"successfulMechanism"];
+  v24 = [dictionaryCopy objectForKeyedSubscript:@"successfulMechanism"];
   v124 = v24;
   if (v24)
   {
@@ -741,7 +741,7 @@ LABEL_29:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
             v101 = objc_alloc(MEMORY[0x1E696ABC0]);
             v102 = *MEMORY[0x1E698F240];
@@ -755,17 +755,17 @@ LABEL_29:
             v136 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v166 forKeys:&v165 count:1];
             v105 = [v101 initWithDomain:v102 code:2 userInfo:?];
             v54 = 0;
-            v36 = 0;
-            *a4 = v105;
-            self = v126;
+            selfCopy4 = 0;
+            *error = v105;
+            self = selfCopy3;
             v9 = v128;
             v8 = v129;
             goto LABEL_126;
           }
 
           v54 = 0;
-          v36 = 0;
-          self = v126;
+          selfCopy4 = 0;
+          self = selfCopy3;
           v12 = v127;
           v9 = v128;
           v8 = v129;
@@ -783,9 +783,9 @@ LABEL_29:
     v11 = v132;
   }
 
-  v58 = [v5 objectForKeyedSubscript:@"failedMechanisms"];
-  v59 = [MEMORY[0x1E695DFB0] null];
-  v60 = [v58 isEqual:v59];
+  v58 = [dictionaryCopy objectForKeyedSubscript:@"failedMechanisms"];
+  null2 = [MEMORY[0x1E695DFB0] null];
+  v60 = [v58 isEqual:null2];
 
   if (v60)
   {
@@ -800,10 +800,10 @@ LABEL_29:
     v134 = v58;
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
-        v36 = 0;
-        self = v126;
+        selfCopy4 = 0;
+        self = selfCopy3;
         v12 = v127;
         v8 = v129;
         v54 = v122;
@@ -816,9 +816,9 @@ LABEL_29:
       v136 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"failedMechanisms"];
       v164 = v136;
       obj = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v164 forKeys:&v163 count:1];
-      v36 = 0;
-      *a4 = [v93 initWithDomain:v94 code:2 userInfo:?];
-      self = v126;
+      selfCopy4 = 0;
+      *error = [v93 initWithDomain:v94 code:2 userInfo:?];
+      self = selfCopy3;
       v8 = v129;
       goto LABEL_106;
     }
@@ -861,8 +861,8 @@ LABEL_65:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v76 = a4;
-        if (a4)
+        errorCopy4 = error;
+        if (error)
         {
           v77 = objc_alloc(MEMORY[0x1E696ABC0]);
           v78 = *MEMORY[0x1E698F240];
@@ -875,10 +875,10 @@ LABEL_65:
         }
 
 LABEL_85:
-        v36 = 0;
+        selfCopy4 = 0;
         obj = v62;
         v8 = v129;
-        self = v126;
+        self = selfCopy3;
         v9 = v128;
 LABEL_86:
         v11 = v132;
@@ -897,8 +897,8 @@ LABEL_106:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v76 = a4;
-        if (!a4)
+        errorCopy4 = error;
+        if (!error)
         {
           goto LABEL_85;
         }
@@ -915,10 +915,10 @@ LABEL_84:
         v8 = v129;
         v11 = v132;
         v82 = [v80 initWithDomain:v78 code:2 userInfo:v79];
-        v36 = 0;
-        *v76 = v82;
+        selfCopy4 = 0;
+        *errorCopy4 = v82;
         obj = v134;
-        self = v126;
+        self = selfCopy3;
 LABEL_119:
         v54 = v122;
         goto LABEL_124;
@@ -952,9 +952,9 @@ LABEL_76:
 
 LABEL_78:
 
-  v73 = [v5 objectForKeyedSubscript:@"actions"];
-  v74 = [MEMORY[0x1E695DFB0] null];
-  v75 = [v73 isEqual:v74];
+  v73 = [dictionaryCopy objectForKeyedSubscript:@"actions"];
+  null3 = [MEMORY[0x1E695DFB0] null];
+  v75 = [v73 isEqual:null3];
 
   if (v75)
   {
@@ -970,10 +970,10 @@ LABEL_78:
     {
       obj = v73;
       v9 = v128;
-      if (!a4)
+      if (!error)
       {
-        v36 = 0;
-        self = v126;
+        selfCopy4 = 0;
+        self = selfCopy3;
         v8 = v129;
         goto LABEL_86;
       }
@@ -985,9 +985,9 @@ LABEL_78:
       v157 = v125;
       v79 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v157 forKeys:&v156 count:1];
       v110 = [v108 initWithDomain:v109 code:2 userInfo:v79];
-      v36 = 0;
-      *a4 = v110;
-      self = v126;
+      selfCopy4 = 0;
+      *error = v110;
+      self = selfCopy3;
       v8 = v129;
       goto LABEL_118;
     }
@@ -1023,8 +1023,8 @@ LABEL_89:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v95 = a4;
-        if (a4)
+        errorCopy6 = error;
+        if (error)
         {
           v96 = objc_alloc(MEMORY[0x1E696ABC0]);
           v97 = *MEMORY[0x1E698F240];
@@ -1038,12 +1038,12 @@ LABEL_114:
           v9 = v128;
           v8 = v129;
           v11 = v132;
-          *v95 = [v99 initWithDomain:v100 code:2 userInfo:v98];
+          *errorCopy6 = [v99 initWithDomain:v100 code:2 userInfo:v98];
 
-          v36 = 0;
+          selfCopy4 = 0;
           v54 = v122;
           v79 = obj;
-          self = v126;
+          self = selfCopy3;
           goto LABEL_123;
         }
 
@@ -1060,8 +1060,8 @@ LABEL_114:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v95 = a4;
-        if (a4)
+        errorCopy6 = error;
+        if (error)
         {
           v106 = objc_alloc(MEMORY[0x1E696ABC0]);
           v107 = *MEMORY[0x1E698F240];
@@ -1075,10 +1075,10 @@ LABEL_114:
         }
 
 LABEL_115:
-        v36 = 0;
+        selfCopy4 = 0;
         v79 = obj;
         v8 = v129;
-        self = v126;
+        self = selfCopy3;
         v9 = v128;
 LABEL_118:
         v11 = v132;
@@ -1110,7 +1110,7 @@ LABEL_99:
 
 LABEL_101:
 
-  v91 = [v5 objectForKeyedSubscript:@"failingAction"];
+  v91 = [dictionaryCopy objectForKeyedSubscript:@"failingAction"];
   v121 = v91;
   if (v91)
   {
@@ -1143,7 +1143,7 @@ LABEL_101:
       goto LABEL_122;
     }
 
-    if (a4)
+    if (error)
     {
       v120 = objc_alloc(MEMORY[0x1E696ABC0]);
       v114 = *MEMORY[0x1E698F240];
@@ -1151,12 +1151,12 @@ LABEL_101:
       v115 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"failingAction"];
       v150 = v115;
       v116 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v150 forKeys:&v149 count:1];
-      *a4 = [v120 initWithDomain:v114 code:2 userInfo:v116];
+      *error = [v120 initWithDomain:v114 code:2 userInfo:v116];
     }
 
     v79 = 0;
-    v36 = 0;
-    self = v126;
+    selfCopy4 = 0;
+    self = selfCopy3;
     v9 = v128;
     v11 = v132;
   }
@@ -1170,10 +1170,10 @@ LABEL_101:
 LABEL_121:
     v54 = v122;
 LABEL_122:
-    v111 = [v54 intValue];
+    intValue = [v54 intValue];
     LODWORD(v119) = [v79 intValue];
-    self = [(BMLocalAuthenticationDialogs *)v126 initWithDialogID:v131 bundleID:v9 timeSinceUpdate:v127 mechanisms:v16 successfulMechanism:v111 failedMechanisms:v136 actions:v125 failingAction:v119];
-    v36 = self;
+    self = [(BMLocalAuthenticationDialogs *)selfCopy3 initWithDialogID:v131 bundleID:v9 timeSinceUpdate:v127 mechanisms:v16 successfulMechanism:intValue failedMechanisms:v136 actions:v125 failingAction:v119];
+    selfCopy4 = self;
   }
 
 LABEL_123:
@@ -1200,22 +1200,22 @@ LABEL_133:
 LABEL_134:
 
   v112 = *MEMORY[0x1E69E9840];
-  return v36;
+  return selfCopy4;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMLocalAuthenticationDialogs *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_dialogID)
   {
     PBDataWriterWriteStringField();
@@ -1336,9 +1336,9 @@ LABEL_134:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v77.receiver = self;
   v77.super_class = BMLocalAuthenticationDialogs;
   v5 = [(BMEventBase *)&v77 init];
@@ -1354,8 +1354,8 @@ LABEL_119:
   v8 = objc_opt_new();
   while (1)
   {
-    v9 = [v4 position];
-    if (v9 >= [v4 length] || (objc_msgSend(v4, "hasError") & 1) != 0)
+    position = [fromCopy position];
+    if (position >= [fromCopy length] || (objc_msgSend(fromCopy, "hasError") & 1) != 0)
     {
       break;
     }
@@ -1366,18 +1366,18 @@ LABEL_119:
     while (1)
     {
       v78 = 0;
-      v13 = [v4 position] + 1;
-      if (v13 >= [v4 position] && (v14 = objc_msgSend(v4, "position") + 1, v14 <= objc_msgSend(v4, "length")))
+      v13 = [fromCopy position] + 1;
+      if (v13 >= [fromCopy position] && (v14 = objc_msgSend(fromCopy, "position") + 1, v14 <= objc_msgSend(fromCopy, "length")))
       {
-        v15 = [v4 data];
-        [v15 getBytes:&v78 range:{objc_msgSend(v4, "position"), 1}];
+        data = [fromCopy data];
+        [data getBytes:&v78 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v12 |= (v78 & 0x7F) << v10;
@@ -1395,9 +1395,9 @@ LABEL_119:
       }
     }
 
-    v17 = [v4 hasError] ? 0 : v12;
+    v17 = [fromCopy hasError] ? 0 : v12;
 LABEL_17:
-    if (([v4 hasError] & 1) != 0 || (v17 & 7) == 4)
+    if (([fromCopy hasError] & 1) != 0 || (v17 & 7) == 4)
     {
       break;
     }
@@ -1416,18 +1416,18 @@ LABEL_17:
           while (1)
           {
             v78 = 0;
-            v60 = [v4 position] + 1;
-            if (v60 >= [v4 position] && (v61 = objc_msgSend(v4, "position") + 1, v61 <= objc_msgSend(v4, "length")))
+            v60 = [fromCopy position] + 1;
+            if (v60 >= [fromCopy position] && (v61 = objc_msgSend(fromCopy, "position") + 1, v61 <= objc_msgSend(fromCopy, "length")))
             {
-              v62 = [v4 data];
-              [v62 getBytes:&v78 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v78 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v58 |= (v78 & 0x7F) << v56;
@@ -1444,7 +1444,7 @@ LABEL_17:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v58 > 7)
+          if (([fromCopy hasError] & 1) != 0 || v58 > 7)
           {
 LABEL_99:
             v58 = 0;
@@ -1474,18 +1474,18 @@ LABEL_121:
         while (1)
         {
           v78 = 0;
-          v39 = [v4 position] + 1;
-          if (v39 >= [v4 position] && (v40 = objc_msgSend(v4, "position") + 1, v40 <= objc_msgSend(v4, "length")))
+          v39 = [fromCopy position] + 1;
+          if (v39 >= [fromCopy position] && (v40 = objc_msgSend(fromCopy, "position") + 1, v40 <= objc_msgSend(fromCopy, "length")))
           {
-            v41 = [v4 data];
-            [v41 getBytes:&v78 range:{objc_msgSend(v4, "position"), 1}];
+            data3 = [fromCopy data];
+            [data3 getBytes:&v78 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v38 |= (v78 & 0x7F) << v36;
@@ -1502,7 +1502,7 @@ LABEL_121:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v38 > 7)
+        if (([fromCopy hasError] & 1) != 0 || v38 > 7)
         {
 LABEL_115:
           LODWORD(v38) = 0;
@@ -1519,18 +1519,18 @@ LABEL_115:
         while (1)
         {
           v78 = 0;
-          v46 = [v4 position] + 1;
-          if (v46 >= [v4 position] && (v47 = objc_msgSend(v4, "position") + 1, v47 <= objc_msgSend(v4, "length")))
+          v46 = [fromCopy position] + 1;
+          if (v46 >= [fromCopy position] && (v47 = objc_msgSend(fromCopy, "position") + 1, v47 <= objc_msgSend(fromCopy, "length")))
           {
-            v48 = [v4 data];
-            [v48 getBytes:&v78 range:{objc_msgSend(v4, "position"), 1}];
+            data4 = [fromCopy data];
+            [data4 getBytes:&v78 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v45 |= (v78 & 0x7F) << v43;
@@ -1547,7 +1547,7 @@ LABEL_115:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v45 > 5)
+        if (([fromCopy hasError] & 1) != 0 || v45 > 5)
         {
 LABEL_91:
           LODWORD(v45) = 0;
@@ -1570,18 +1570,18 @@ LABEL_91:
         while (1)
         {
           v78 = 0;
-          v25 = [v4 position] + 1;
-          if (v25 >= [v4 position] && (v26 = objc_msgSend(v4, "position") + 1, v26 <= objc_msgSend(v4, "length")))
+          v25 = [fromCopy position] + 1;
+          if (v25 >= [fromCopy position] && (v26 = objc_msgSend(fromCopy, "position") + 1, v26 <= objc_msgSend(fromCopy, "length")))
           {
-            v27 = [v4 data];
-            [v27 getBytes:&v78 range:{objc_msgSend(v4, "position"), 1}];
+            data5 = [fromCopy data];
+            [data5 getBytes:&v78 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v23 |= (v78 & 0x7F) << v21;
@@ -1598,7 +1598,7 @@ LABEL_91:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v23 > 5)
+        if (([fromCopy hasError] & 1) != 0 || v23 > 5)
         {
 LABEL_104:
           v23 = 0;
@@ -1633,18 +1633,18 @@ LABEL_112:
         while (1)
         {
           v78 = 0;
-          v33 = [v4 position] + 1;
-          if (v33 >= [v4 position] && (v34 = objc_msgSend(v4, "position") + 1, v34 <= objc_msgSend(v4, "length")))
+          v33 = [fromCopy position] + 1;
+          if (v33 >= [fromCopy position] && (v34 = objc_msgSend(fromCopy, "position") + 1, v34 <= objc_msgSend(fromCopy, "length")))
           {
-            v35 = [v4 data];
-            [v35 getBytes:&v78 range:{objc_msgSend(v4, "position"), 1}];
+            data6 = [fromCopy data];
+            [data6 getBytes:&v78 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v31 |= (v78 & 0x7F) << v29;
@@ -1661,7 +1661,7 @@ LABEL_112:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v31 > 5)
+        if (([fromCopy hasError] & 1) != 0 || v31 > 5)
         {
 LABEL_109:
           v31 = 0;
@@ -1685,18 +1685,18 @@ LABEL_109:
       while (1)
       {
         v78 = 0;
-        v52 = [v4 position] + 1;
-        if (v52 >= [v4 position] && (v53 = objc_msgSend(v4, "position") + 1, v53 <= objc_msgSend(v4, "length")))
+        v52 = [fromCopy position] + 1;
+        if (v52 >= [fromCopy position] && (v53 = objc_msgSend(fromCopy, "position") + 1, v53 <= objc_msgSend(fromCopy, "length")))
         {
-          v54 = [v4 data];
-          [v54 getBytes:&v78 range:{objc_msgSend(v4, "position"), 1}];
+          data7 = [fromCopy data];
+          [data7 getBytes:&v78 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v51 |= (v78 & 0x7F) << v49;
@@ -1714,7 +1714,7 @@ LABEL_109:
         }
       }
 
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         v55 = 0;
       }
@@ -1766,8 +1766,8 @@ LABEL_87:
   actions = v5->_actions;
   v5->_actions = v72;
 
-  v74 = [v4 hasError];
-  if ((v74 & 1) == 0)
+  hasError = [fromCopy hasError];
+  if ((hasError & 1) == 0)
   {
     goto LABEL_119;
   }
@@ -1788,8 +1788,8 @@ LABEL_120:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v4 = [(BMLocalAuthenticationDialogs *)self mechanisms];
-  v5 = [v4 countByEnumeratingWithState:&v44 objects:v50 count:16];
+  mechanisms = [(BMLocalAuthenticationDialogs *)self mechanisms];
+  v5 = [mechanisms countByEnumeratingWithState:&v44 objects:v50 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1800,7 +1800,7 @@ LABEL_120:
       {
         if (*v45 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(mechanisms);
         }
 
         v9 = *(*(&v44 + 1) + 8 * i);
@@ -1813,7 +1813,7 @@ LABEL_120:
         [v3 appendString:v10];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v44 objects:v50 count:16];
+      v6 = [mechanisms countByEnumeratingWithState:&v44 objects:v50 count:16];
     }
 
     while (v6);
@@ -1826,8 +1826,8 @@ LABEL_120:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v12 = [(BMLocalAuthenticationDialogs *)self failedMechanisms];
-  v13 = [v12 countByEnumeratingWithState:&v40 objects:v49 count:16];
+  failedMechanisms = [(BMLocalAuthenticationDialogs *)self failedMechanisms];
+  v13 = [failedMechanisms countByEnumeratingWithState:&v40 objects:v49 count:16];
   if (v13)
   {
     v14 = v13;
@@ -1838,7 +1838,7 @@ LABEL_120:
       {
         if (*v41 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(failedMechanisms);
         }
 
         v17 = *(*(&v40 + 1) + 8 * j);
@@ -1851,7 +1851,7 @@ LABEL_120:
         [v11 appendString:v18];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v40 objects:v49 count:16];
+      v14 = [failedMechanisms countByEnumeratingWithState:&v40 objects:v49 count:16];
     }
 
     while (v14);
@@ -1864,8 +1864,8 @@ LABEL_120:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v20 = [(BMLocalAuthenticationDialogs *)self actions];
-  v21 = [v20 countByEnumeratingWithState:&v36 objects:v48 count:16];
+  actions = [(BMLocalAuthenticationDialogs *)self actions];
+  v21 = [actions countByEnumeratingWithState:&v36 objects:v48 count:16];
   if (v21)
   {
     v22 = v21;
@@ -1876,7 +1876,7 @@ LABEL_120:
       {
         if (*v37 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(actions);
         }
 
         v25 = *(*(&v36 + 1) + 8 * k);
@@ -1889,7 +1889,7 @@ LABEL_120:
         [v19 appendString:v26];
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v36 objects:v48 count:16];
+      v22 = [actions countByEnumeratingWithState:&v36 objects:v48 count:16];
     }
 
     while (v22);
@@ -1897,52 +1897,52 @@ LABEL_120:
 
   [v19 appendString:@"]"];
   v27 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v28 = [(BMLocalAuthenticationDialogs *)self dialogID];
-  v29 = [(BMLocalAuthenticationDialogs *)self bundleID];
+  dialogID = [(BMLocalAuthenticationDialogs *)self dialogID];
+  bundleID = [(BMLocalAuthenticationDialogs *)self bundleID];
   v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMLocalAuthenticationDialogs timeSinceUpdate](self, "timeSinceUpdate")}];
   v31 = BMLocalAuthenticationDialogsMechanismAsString([(BMLocalAuthenticationDialogs *)self successfulMechanism]);
   v32 = BMLocalAuthenticationDialogsActionAsString([(BMLocalAuthenticationDialogs *)self failingAction]);
-  v33 = [v27 initWithFormat:@"BMLocalAuthenticationDialogs with dialogID: %@, bundleID: %@, timeSinceUpdate: %@, mechanisms: %@, successfulMechanism: %@, failedMechanisms: %@, actions: %@, failingAction: %@", v28, v29, v30, v3, v31, v11, v19, v32];
+  v33 = [v27 initWithFormat:@"BMLocalAuthenticationDialogs with dialogID: %@, bundleID: %@, timeSinceUpdate: %@, mechanisms: %@, successfulMechanism: %@, failedMechanisms: %@, actions: %@, failingAction: %@", dialogID, bundleID, v30, v3, v31, v11, v19, v32];
 
   v34 = *MEMORY[0x1E69E9840];
 
   return v33;
 }
 
-- (BMLocalAuthenticationDialogs)initWithDialogID:(id)a3 bundleID:(id)a4 timeSinceUpdate:(id)a5 mechanisms:(id)a6 successfulMechanism:(int)a7 failedMechanisms:(id)a8 actions:(id)a9 failingAction:(int)a10
+- (BMLocalAuthenticationDialogs)initWithDialogID:(id)d bundleID:(id)iD timeSinceUpdate:(id)update mechanisms:(id)mechanisms successfulMechanism:(int)mechanism failedMechanisms:(id)failedMechanisms actions:(id)actions failingAction:(int)self0
 {
-  v25 = a3;
-  v24 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  v19 = a9;
+  dCopy = d;
+  iDCopy = iD;
+  updateCopy = update;
+  mechanismsCopy = mechanisms;
+  failedMechanismsCopy = failedMechanisms;
+  actionsCopy = actions;
   v26.receiver = self;
   v26.super_class = BMLocalAuthenticationDialogs;
   v20 = [(BMEventBase *)&v26 init];
   if (v20)
   {
     v20->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v20->_dialogID, a3);
-    objc_storeStrong(&v20->_bundleID, a4);
-    if (v16)
+    objc_storeStrong(&v20->_dialogID, d);
+    objc_storeStrong(&v20->_bundleID, iD);
+    if (updateCopy)
     {
       v20->_hasTimeSinceUpdate = 1;
-      v21 = [v16 unsignedIntValue];
+      unsignedIntValue = [updateCopy unsignedIntValue];
     }
 
     else
     {
-      v21 = 0;
+      unsignedIntValue = 0;
       v20->_hasTimeSinceUpdate = 0;
     }
 
-    v20->_timeSinceUpdate = v21;
-    objc_storeStrong(&v20->_mechanisms, a6);
-    v20->_successfulMechanism = a7;
-    objc_storeStrong(&v20->_failedMechanisms, a8);
-    objc_storeStrong(&v20->_actions, a9);
-    v20->_failingAction = a10;
+    v20->_timeSinceUpdate = unsignedIntValue;
+    objc_storeStrong(&v20->_mechanisms, mechanisms);
+    v20->_successfulMechanism = mechanism;
+    objc_storeStrong(&v20->_failedMechanisms, failedMechanisms);
+    objc_storeStrong(&v20->_actions, actions);
+    v20->_failingAction = action;
   }
 
   return v20;
@@ -2027,9 +2027,9 @@ id __39__BMLocalAuthenticationDialogs_columns__block_invoke(uint64_t a1, void *a
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -2037,8 +2037,8 @@ id __39__BMLocalAuthenticationDialogs_columns__block_invoke(uint64_t a1, void *a
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMLocalAuthenticationDialogs alloc] initByReadFrom:v7];
     v4 = v8;

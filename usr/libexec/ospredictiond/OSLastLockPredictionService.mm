@@ -1,27 +1,27 @@
 @interface OSLastLockPredictionService
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)overriddenToUseTimeRestrictionFromHour:(int *)a3 toHour:(int *)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)overriddenToUseTimeRestrictionFromHour:(int *)hour toHour:(int *)toHour;
 - (BOOL)upgradePredictorIfNeeded;
 - (OSLastLockPredictionService)init;
 - (double)readOverriddenRequeryTime;
 - (id)readOverriddenModelOutput;
-- (void)activityHistoryDiagnosisWithHandler:(id)a3;
-- (void)deviceUsageDiagnosisWithHandler:(id)a3;
-- (void)fixModelOutput:(id)a3 withHandler:(id)a4;
-- (void)hasEnoughActivityHistoryWithHandler:(id)a3;
-- (void)lastLockPredictionResultAtDate:(id)a3 withTimeSinceActive:(double)a4 withHandler:(id)a5;
-- (void)lastLockPredictionResultWithHandler:(id)a3;
-- (void)modelDescriptionWithHandler:(id)a3;
-- (void)modelMetadataWithHandler:(id)a3;
-- (void)overrideRecommendedRequeryTimeTo:(double)a3 withHandler:(id)a4;
-- (void)recommendedRequeryTimeWithHandler:(id)a3;
-- (void)restoreLastLockModelWithHandler:(id)a3;
-- (void)restoreRecommendedRequeryTimeWithHandler:(id)a3;
-- (void)scheduleModelUpgradeAfterInterval:(double)a3;
-- (void)unfixModelOutputWithHandler:(id)a3;
-- (void)writeOverriddenModelOutput:(id)a3;
-- (void)writeOverriddenRequeryTime:(double)a3;
+- (void)activityHistoryDiagnosisWithHandler:(id)handler;
+- (void)deviceUsageDiagnosisWithHandler:(id)handler;
+- (void)fixModelOutput:(id)output withHandler:(id)handler;
+- (void)hasEnoughActivityHistoryWithHandler:(id)handler;
+- (void)lastLockPredictionResultAtDate:(id)date withTimeSinceActive:(double)active withHandler:(id)handler;
+- (void)lastLockPredictionResultWithHandler:(id)handler;
+- (void)modelDescriptionWithHandler:(id)handler;
+- (void)modelMetadataWithHandler:(id)handler;
+- (void)overrideRecommendedRequeryTimeTo:(double)to withHandler:(id)handler;
+- (void)recommendedRequeryTimeWithHandler:(id)handler;
+- (void)restoreLastLockModelWithHandler:(id)handler;
+- (void)restoreRecommendedRequeryTimeWithHandler:(id)handler;
+- (void)scheduleModelUpgradeAfterInterval:(double)interval;
+- (void)unfixModelOutputWithHandler:(id)handler;
+- (void)writeOverriddenModelOutput:(id)output;
+- (void)writeOverriddenRequeryTime:(double)time;
 @end
 
 @implementation OSLastLockPredictionService
@@ -138,19 +138,19 @@ LABEL_21:
   return v17;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.osintelligence.lastlock"];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.osintelligence.lastlock"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ([v6 BOOLValue] & 1) != 0)
   {
     v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL____OSLastLockPredictionProtocol_Private];
-    [v5 setExportedInterface:v7];
+    [connectionCopy setExportedInterface:v7];
 
     v8 = [[OSLastLockPredictionServiceXPCProxy alloc] initWithObserver:self];
-    [v5 setExportedObject:v8];
+    [connectionCopy setExportedObject:v8];
 
-    [v5 resume];
+    [connectionCopy resume];
     v9 = 1;
   }
 
@@ -167,31 +167,31 @@ LABEL_21:
   return v9;
 }
 
-- (void)modelDescriptionWithHandler:(id)a3
+- (void)modelDescriptionWithHandler:(id)handler
 {
-  v5 = a3;
-  v7 = [(OSLastLockPredictionService *)self predictor];
-  v6 = [v7 description];
-  (*(a3 + 2))(v5, v6);
+  handlerCopy = handler;
+  predictor = [(OSLastLockPredictionService *)self predictor];
+  v6 = [predictor description];
+  (*(handler + 2))(handlerCopy, v6);
 }
 
-- (void)modelMetadataWithHandler:(id)a3
+- (void)modelMetadataWithHandler:(id)handler
 {
-  v5 = a3;
-  v7 = [(OSLastLockPredictionService *)self predictor];
-  v6 = [v7 metadata];
-  (*(a3 + 2))(v5, v6);
+  handlerCopy = handler;
+  predictor = [(OSLastLockPredictionService *)self predictor];
+  metadata = [predictor metadata];
+  (*(handler + 2))(handlerCopy, metadata);
 }
 
-- (void)hasEnoughActivityHistoryWithHandler:(id)a3
+- (void)hasEnoughActivityHistoryWithHandler:(id)handler
 {
-  v4 = a3;
-  (*(a3 + 2))(v4, +[OSIntelligenceUtilities hasEnoughInactivityHistory]);
+  handlerCopy = handler;
+  (*(handler + 2))(handlerCopy, +[OSIntelligenceUtilities hasEnoughInactivityHistory]);
 }
 
-- (void)recommendedRequeryTimeWithHandler:(id)a3
+- (void)recommendedRequeryTimeWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (+[OSIntelligenceUtilities isInternalBuild]&& ([(OSLastLockPredictionService *)self readOverriddenRequeryTime], v6 = v5, v5 != -777.0))
   {
     v8 = qword_1000B69E0;
@@ -200,80 +200,80 @@ LABEL_21:
       sub_10005B52C(v8, v6);
     }
 
-    v4[2](v4, v6);
+    handlerCopy[2](handlerCopy, v6);
   }
 
   else
   {
-    v7 = [(OSLastLockPredictionService *)self predictor];
-    [v7 recommendedRequeryTime];
-    (v4[2])(v4);
+    predictor = [(OSLastLockPredictionService *)self predictor];
+    [predictor recommendedRequeryTime];
+    (handlerCopy[2])(handlerCopy);
   }
 }
 
-- (void)activityHistoryDiagnosisWithHandler:(id)a3
+- (void)activityHistoryDiagnosisWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[OSIntelligenceUtilities userHistoryDiagnosis];
-  (*(a3 + 2))(v4, v5);
+  (*(handler + 2))(handlerCopy, v5);
 }
 
-- (void)deviceUsageDiagnosisWithHandler:(id)a3
+- (void)deviceUsageDiagnosisWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[OSIntelligenceUtilities deviceUsageDiagnosis];
-  (*(a3 + 2))(v4, v5);
+  (*(handler + 2))(handlerCopy, v5);
 }
 
-- (void)lastLockPredictionResultWithHandler:(id)a3
+- (void)lastLockPredictionResultWithHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   if (os_log_type_enabled(qword_1000B69E0, OS_LOG_TYPE_ERROR))
   {
     sub_10005B5A8();
   }
 
   v4 = [NSError errorWithDomain:@"com.apple.osintelligence" code:5 userInfo:&off_10009CAE8];
-  v3[2](v3, 0, v4);
+  handlerCopy[2](handlerCopy, 0, v4);
 }
 
-- (void)lastLockPredictionResultAtDate:(id)a3 withTimeSinceActive:(double)a4 withHandler:(id)a5
+- (void)lastLockPredictionResultAtDate:(id)date withTimeSinceActive:(double)active withHandler:(id)handler
 {
-  v5 = a5;
+  handlerCopy = handler;
   if (os_log_type_enabled(qword_1000B69E0, OS_LOG_TYPE_ERROR))
   {
     sub_10005B5A8();
   }
 
   v6 = [NSError errorWithDomain:@"com.apple.osintelligence" code:5 userInfo:&off_10009CB10];
-  v5[2](v5, 0, v6);
+  handlerCopy[2](handlerCopy, 0, v6);
 }
 
-- (void)fixModelOutput:(id)a3 withHandler:(id)a4
+- (void)fixModelOutput:(id)output withHandler:(id)handler
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [NSString stringWithFormat:@"Fixed model output = %@", v10];
-  v8 = [(OSLastLockPredictionService *)self readOverriddenModelOutput];
-  if (v8)
+  outputCopy = output;
+  handlerCopy = handler;
+  outputCopy = [NSString stringWithFormat:@"Fixed model output = %@", outputCopy];
+  readOverriddenModelOutput = [(OSLastLockPredictionService *)self readOverriddenModelOutput];
+  if (readOverriddenModelOutput)
   {
-    v9 = [NSString stringWithFormat:@"Replaced fixed output %@ with %@", v8, v10];
+    outputCopy2 = [NSString stringWithFormat:@"Replaced fixed output %@ with %@", readOverriddenModelOutput, outputCopy];
 
-    v7 = v9;
+    outputCopy = outputCopy2;
   }
 
-  [(OSLastLockPredictionService *)self writeOverriddenModelOutput:v10];
-  v6[2](v6, v7);
+  [(OSLastLockPredictionService *)self writeOverriddenModelOutput:outputCopy];
+  handlerCopy[2](handlerCopy, outputCopy);
 }
 
-- (void)unfixModelOutputWithHandler:(id)a3
+- (void)unfixModelOutputWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(OSLastLockPredictionService *)self readOverriddenModelOutput];
-  v7 = v5;
-  if (v5)
+  handlerCopy = handler;
+  readOverriddenModelOutput = [(OSLastLockPredictionService *)self readOverriddenModelOutput];
+  v7 = readOverriddenModelOutput;
+  if (readOverriddenModelOutput)
   {
-    v6 = [NSString stringWithFormat:@"Unfixed model output (previously fixed to be %@)", v5];
+    v6 = [NSString stringWithFormat:@"Unfixed model output (previously fixed to be %@)", readOverriddenModelOutput];
   }
 
   else
@@ -282,42 +282,42 @@ LABEL_21:
   }
 
   [(OSLastLockPredictionService *)self writeOverriddenModelOutput:0];
-  v4[2](v4, v6);
+  handlerCopy[2](handlerCopy, v6);
 }
 
-- (void)overrideRecommendedRequeryTimeTo:(double)a3 withHandler:(id)a4
+- (void)overrideRecommendedRequeryTimeTo:(double)to withHandler:(id)handler
 {
-  if (a3 <= 0.0)
+  if (to <= 0.0)
   {
-    (*(a4 + 2))(a4, 0);
+    (*(handler + 2))(handler, 0);
   }
 
   else
   {
-    v6 = a4;
-    [(OSLastLockPredictionService *)self writeOverriddenRequeryTime:a3];
-    v6[2](v6, 1);
+    handlerCopy = handler;
+    [(OSLastLockPredictionService *)self writeOverriddenRequeryTime:to];
+    handlerCopy[2](handlerCopy, 1);
   }
 }
 
-- (void)restoreRecommendedRequeryTimeWithHandler:(id)a3
+- (void)restoreRecommendedRequeryTimeWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(OSLastLockPredictionService *)self writeOverriddenRequeryTime:-777.0];
-  v4[2](v4, 1);
+  handlerCopy[2](handlerCopy, 1);
 }
 
-- (void)restoreLastLockModelWithHandler:(id)a3
+- (void)restoreLastLockModelWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[OSIntelligenceDefines lastLockUserDefaults];
   [v5 removeObjectForKey:@"modelType"];
 
   v6 = +[_OSLastLockPredictor predictor];
   [(OSLastLockPredictionService *)self setPredictor:v6];
 
-  v7 = [(OSLastLockPredictionService *)self predictor];
-  v4[2](v4, v7 != 0);
+  predictor = [(OSLastLockPredictionService *)self predictor];
+  handlerCopy[2](handlerCopy, predictor != 0);
 }
 
 - (id)readOverriddenModelOutput
@@ -361,14 +361,14 @@ LABEL_21:
   return v6;
 }
 
-- (void)writeOverriddenModelOutput:(id)a3
+- (void)writeOverriddenModelOutput:(id)output
 {
-  v3 = a3;
+  outputCopy = output;
   v4 = +[OSIntelligenceDefines lastLockUserDefaults];
-  if (v3)
+  if (outputCopy)
   {
     v6 = 0;
-    v5 = [NSKeyedArchiver archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v6];
+    v5 = [NSKeyedArchiver archivedDataWithRootObject:outputCopy requiringSecureCoding:1 error:&v6];
     [v4 setObject:v5 forKey:@"overriddenModelOutput"];
   }
 
@@ -402,22 +402,22 @@ LABEL_21:
   return v5;
 }
 
-- (void)writeOverriddenRequeryTime:(double)a3
+- (void)writeOverriddenRequeryTime:(double)time
 {
   v4 = +[OSIntelligenceDefines lastLockUserDefaults];
   v5 = v4;
-  if (a3 == -777.0)
+  if (time == -777.0)
   {
     [v4 removeObjectForKey:@"overriddenRequeryTime"];
   }
 
   else
   {
-    [v4 setDouble:@"overriddenRequeryTime" forKey:a3];
+    [v4 setDouble:@"overriddenRequeryTime" forKey:time];
   }
 }
 
-- (BOOL)overriddenToUseTimeRestrictionFromHour:(int *)a3 toHour:(int *)a4
+- (BOOL)overriddenToUseTimeRestrictionFromHour:(int *)hour toHour:(int *)toHour
 {
   if (+[OSIntelligenceUtilities isInternalBuild])
   {
@@ -430,10 +430,10 @@ LABEL_21:
 
       if (v8)
       {
-        *a3 = [v6 integerForKey:@"overriddenBedtime"];
+        *hour = [v6 integerForKey:@"overriddenBedtime"];
         v9 = [v6 integerForKey:@"overriddenWakeupTime"];
-        *a4 = v9;
-        if (*a3 <= 0x17 && v9 < 0x18)
+        *toHour = v9;
+        if (*hour <= 0x17 && v9 < 0x18)
         {
           v10 = 1;
 LABEL_11:
@@ -444,7 +444,7 @@ LABEL_11:
         v11 = qword_1000B69E0;
         if (os_log_type_enabled(qword_1000B69E0, OS_LOG_TYPE_ERROR))
         {
-          sub_10005B658(a3, a4, v11);
+          sub_10005B658(hour, toHour, v11);
         }
       }
     }
@@ -456,25 +456,25 @@ LABEL_11:
   return 0;
 }
 
-- (void)scheduleModelUpgradeAfterInterval:(double)a3
+- (void)scheduleModelUpgradeAfterInterval:(double)interval
 {
-  if (a3 < 86400.0)
+  if (interval < 86400.0)
   {
-    a3 = 86400.0;
+    interval = 86400.0;
   }
 
-  if (a3 <= 604800.0)
+  if (interval <= 604800.0)
   {
-    v3 = a3;
+    intervalCopy = interval;
   }
 
   else
   {
-    v3 = 604800.0;
+    intervalCopy = 604800.0;
   }
 
   objc_initWeak(&location, self);
-  v4 = dispatch_walltime(0, 1000000000 * vcvtpd_s64_f64(v3));
+  v4 = dispatch_walltime(0, 1000000000 * vcvtpd_s64_f64(intervalCopy));
   v5 = dispatch_get_global_queue(-2, 0);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
@@ -489,20 +489,20 @@ LABEL_11:
 
 - (BOOL)upgradePredictorIfNeeded
 {
-  v3 = [(OSLastLockPredictionService *)self predictor];
-  v4 = [v3 requireEnoughHistory];
+  predictor = [(OSLastLockPredictionService *)self predictor];
+  requireEnoughHistory = [predictor requireEnoughHistory];
 
-  if (v4)
+  if (requireEnoughHistory)
   {
     v5 = qword_1000B69E0;
     v6 = 1;
     if (os_log_type_enabled(qword_1000B69E0, OS_LOG_TYPE_INFO))
     {
       v7 = v5;
-      v8 = [(OSLastLockPredictionService *)self predictor];
-      v9 = [v8 predictorType];
+      predictor2 = [(OSLastLockPredictionService *)self predictor];
+      predictorType = [predictor2 predictorType];
       v33 = 138412290;
-      v34 = v9;
+      v34 = predictorType;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Predictor type is already history-aware: %@", &v33, 0xCu);
 
       goto LABEL_4;
@@ -542,19 +542,19 @@ LABEL_11:
         goto LABEL_15;
       }
 
-      v20 = [v19 predictorType];
-      v21 = [(OSLastLockPredictionService *)self predictor];
-      v22 = [v21 predictorType];
-      v23 = [v20 isEqualToString:v22];
+      predictorType2 = [v19 predictorType];
+      predictor3 = [(OSLastLockPredictionService *)self predictor];
+      predictorType3 = [predictor3 predictorType];
+      v23 = [predictorType2 isEqualToString:predictorType3];
 
       if (!v23)
       {
         [(OSLastLockPredictionService *)self setPredictor:v7];
-        v27 = [(OSLastLockPredictionService *)self predictor];
-        v28 = [v27 requireEnoughHistory];
+        predictor4 = [(OSLastLockPredictionService *)self predictor];
+        requireEnoughHistory2 = [predictor4 requireEnoughHistory];
 
         v29 = qword_1000B69E0;
-        if (v28)
+        if (requireEnoughHistory2)
         {
           v6 = 1;
           if (!os_log_type_enabled(qword_1000B69E0, OS_LOG_TYPE_INFO))
@@ -562,12 +562,12 @@ LABEL_11:
             goto LABEL_23;
           }
 
-          v9 = v29;
-          v30 = [(OSLastLockPredictionService *)self predictor];
-          v31 = [v30 predictorType];
+          predictorType = v29;
+          predictor5 = [(OSLastLockPredictionService *)self predictor];
+          predictorType4 = [predictor5 predictorType];
           v33 = 138412290;
-          v34 = v31;
-          _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Successfully upgraded the model to: %@", &v33, 0xCu);
+          v34 = predictorType4;
+          _os_log_impl(&_mh_execute_header, predictorType, OS_LOG_TYPE_INFO, "Successfully upgraded the model to: %@", &v33, 0xCu);
 
 LABEL_4:
 LABEL_23:
@@ -588,9 +588,9 @@ LABEL_15:
         if (os_log_type_enabled(qword_1000B69E0, OS_LOG_TYPE_INFO))
         {
           v25 = v24;
-          v26 = [v7 predictorType];
+          predictorType5 = [v7 predictorType];
           v33 = 138412290;
-          v34 = v26;
+          v34 = predictorType5;
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "New predictor is nil or type remains the same as old model: %@. Upgrade aborted.", &v33, 0xCu);
         }
       }

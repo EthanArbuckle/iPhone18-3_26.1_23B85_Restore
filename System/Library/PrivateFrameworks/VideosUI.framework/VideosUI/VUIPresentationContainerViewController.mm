@@ -1,5 +1,5 @@
 @interface VUIPresentationContainerViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (void)loadView;
 - (void)viewDidLayoutSubviews;
 @end
@@ -11,22 +11,22 @@
   v7.receiver = self;
   v7.super_class = VUIPresentationContainerViewController;
   [(VUIPresentationContainerViewController *)&v7 loadView];
-  v3 = [(VUIPresentationContainerViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  view = [(VUIPresentationContainerViewController *)self view];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [view setBackgroundColor:clearColor];
 
   v5 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_tapped];
-  v6 = [(VUIPresentationContainerViewController *)self view];
-  [v6 addGestureRecognizer:v5];
+  view2 = [(VUIPresentationContainerViewController *)self view];
+  [view2 addGestureRecognizer:v5];
 
   [v5 setDelegate:self];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = [a4 view];
-  v6 = [(VUIPresentationContainerViewController *)self view];
-  LOBYTE(self) = v5 == v6;
+  view = [touch view];
+  view2 = [(VUIPresentationContainerViewController *)self view];
+  LOBYTE(self) = view == view2;
 
   return self;
 }
@@ -36,43 +36,43 @@
   v15.receiver = self;
   v15.super_class = VUIPresentationContainerViewController;
   [(VUIPresentationContainerViewController *)&v15 viewDidLayoutSubviews];
-  v3 = [(VUIPresentationContainerViewController *)self childViewControllers];
-  v4 = [v3 lastObject];
+  childViewControllers = [(VUIPresentationContainerViewController *)self childViewControllers];
+  lastObject = [childViewControllers lastObject];
 
-  v5 = [v4 view];
-  v6 = [(VUIPresentationContainerViewController *)self view];
-  [v6 bounds];
+  view = [lastObject view];
+  view2 = [(VUIPresentationContainerViewController *)self view];
+  [view2 bounds];
 
-  v7 = self;
-  [(VUIPresentationContainerViewController *)v7 preferredContentSize];
+  selfCopy = self;
+  [(VUIPresentationContainerViewController *)selfCopy preferredContentSize];
   if (*MEMORY[0x1E695F060] == v9 && *(MEMORY[0x1E695F060] + 8) == v8)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [(VUIPresentationContainerViewController *)v7 topViewController];
+      topViewController = [(VUIPresentationContainerViewController *)selfCopy topViewController];
     }
 
     else
     {
-      v12 = [(VUIPresentationContainerViewController *)v7 childViewControllers];
-      v13 = [v12 count];
+      childViewControllers2 = [(VUIPresentationContainerViewController *)selfCopy childViewControllers];
+      v13 = [childViewControllers2 count];
 
       if (!v13)
       {
         goto LABEL_11;
       }
 
-      v14 = [(VUIPresentationContainerViewController *)v7 childViewControllers];
-      v11 = [v14 lastObject];
+      childViewControllers3 = [(VUIPresentationContainerViewController *)selfCopy childViewControllers];
+      topViewController = [childViewControllers3 lastObject];
     }
 
-    [v11 preferredContentSize];
+    [topViewController preferredContentSize];
   }
 
 LABEL_11:
   UIRectCenteredIntegralRect();
-  [v5 setFrame:?];
+  [view setFrame:?];
 }
 
 @end

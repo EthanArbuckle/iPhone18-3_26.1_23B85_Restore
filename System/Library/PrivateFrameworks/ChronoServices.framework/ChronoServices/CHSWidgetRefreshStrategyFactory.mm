@@ -1,35 +1,35 @@
 @interface CHSWidgetRefreshStrategyFactory
 + (CHSWidgetRefreshStrategy)defaultStrategy;
 + (CHSWidgetRefreshStrategy)disabledStrategy;
-+ (id)rateLimitedWithPolicyIdentifier:(id)a3;
++ (id)rateLimitedWithPolicyIdentifier:(id)identifier;
 @end
 
 @implementation CHSWidgetRefreshStrategyFactory
 
 + (CHSWidgetRefreshStrategy)defaultStrategy
 {
-  v2 = [[_CHSSimpleWidgetRefreshStrategy alloc] initWithDefaultStrategy];
+  initWithDefaultStrategy = [[_CHSSimpleWidgetRefreshStrategy alloc] initWithDefaultStrategy];
 
-  return v2;
+  return initWithDefaultStrategy;
 }
 
 + (CHSWidgetRefreshStrategy)disabledStrategy
 {
-  v2 = [[_CHSSimpleWidgetRefreshStrategy alloc] initWithDisabledStrategy];
+  initWithDisabledStrategy = [[_CHSSimpleWidgetRefreshStrategy alloc] initWithDisabledStrategy];
 
-  return v2;
+  return initWithDisabledStrategy;
 }
 
-+ (id)rateLimitedWithPolicyIdentifier:(id)a3
++ (id)rateLimitedWithPolicyIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"CHSWidgetRefreshStrategy.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CHSWidgetRefreshStrategy.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
-  v6 = [[_CHSSimpleWidgetRefreshStrategy alloc] initWithRateLimitIdentifier:v5];
+  v6 = [[_CHSSimpleWidgetRefreshStrategy alloc] initWithRateLimitIdentifier:identifierCopy];
 
   return v6;
 }

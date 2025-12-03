@@ -1,32 +1,32 @@
 @interface PXStoryRelatedOverlayLayout
-- (BOOL)axGroup:(id)a3 didRequestToPerformAction:(int64_t)a4 userInfo:(id)a5;
-- (CGSize)layout:(id)a3 estimatedContentSizeForSublayoutAtIndex:(int64_t)a4 referenceSize:(CGSize)a5;
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (BOOL)axGroup:(id)group didRequestToPerformAction:(int64_t)action userInfo:(id)info;
+- (CGSize)layout:(id)layout estimatedContentSizeForSublayoutAtIndex:(int64_t)index referenceSize:(CGSize)size;
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
 - (PXStoryRelatedOverlayLayout)init;
-- (PXStoryRelatedOverlayLayout)initWithViewModel:(id)a3;
-- (UIEdgeInsets)paddingForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (PXStoryRelatedOverlayLayout)initWithViewModel:(id)model;
+- (UIEdgeInsets)paddingForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
 - (id)_firstRelatedSublayout;
-- (id)attributedStringForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (id)attributedStringForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
 - (id)axSpriteIndexes;
-- (id)hitTestResultForSpriteIndex:(unsigned int)a3;
-- (id)imageConfigurationAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (id)layout:(id)a3 createSublayoutAtIndex:(int64_t)a4;
+- (id)hitTestResultForSpriteIndex:(unsigned int)index;
+- (id)imageConfigurationAtIndex:(unsigned int)index inLayout:(id)layout;
+- (id)layout:(id)layout createSublayoutAtIndex:(int64_t)index;
 - (id)preferredFocusLayouts;
-- (id)stringAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (id)stringAttributesAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (int64_t)_offsetForRelatedIndex:(int64_t)a3;
-- (int64_t)_relatedIndexForSublayoutIndex:(int64_t)a3;
+- (id)stringAtIndex:(unsigned int)index inLayout:(id)layout;
+- (id)stringAttributesAtIndex:(unsigned int)index inLayout:(id)layout;
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
+- (int64_t)_offsetForRelatedIndex:(int64_t)index;
+- (int64_t)_relatedIndexForSublayoutIndex:(int64_t)index;
 - (int64_t)_sublayoutIndexForFirstRelated;
-- (int64_t)_sublayoutIndexForRelatedIndex:(int64_t)a3;
-- (int64_t)verticalAlignmentForStringAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (void)_arrangeSublayoutAtIndex:(int64_t)a3 frame:(CGRect)a4 zIndex:(int64_t *)a5;
+- (int64_t)_sublayoutIndexForRelatedIndex:(int64_t)index;
+- (int64_t)verticalAlignmentForStringAtIndex:(unsigned int)index inLayout:(id)layout;
+- (void)_arrangeSublayoutAtIndex:(int64_t)index frame:(CGRect)frame zIndex:(int64_t *)zIndex;
 - (void)_autoplayUpNext;
 - (void)_considerChangingToSelectedRelatedMemory;
 - (void)_createRelatedAnimationIfNeeded;
-- (void)_handleCountDownTimer:(id)a3;
-- (void)_handleCreateMemoryButton:(id)a3;
-- (void)_handleNavigationButton:(id)a3;
+- (void)_handleCountDownTimer:(id)timer;
+- (void)_handleCreateMemoryButton:(id)button;
+- (void)_handleNavigationButton:(id)button;
 - (void)_invalidateAXGroupRole;
 - (void)_invalidateContent;
 - (void)_invalidateCreateMemoryButton;
@@ -35,8 +35,8 @@
 - (void)_invalidateScrollSpritesAndSublayouts;
 - (void)_invalidateShouldCountDown;
 - (void)_invalidateSublayoutPositions;
-- (void)_navigateToRelatedMemoryAtIndex:(int64_t)a3;
-- (void)_selectRelatedMemoryAtIndex:(int64_t)a3;
+- (void)_navigateToRelatedMemoryAtIndex:(int64_t)index;
+- (void)_selectRelatedMemoryAtIndex:(int64_t)index;
 - (void)_updateCreateMemoryButton;
 - (void)_updateNavigationButton;
 - (void)_updateRelatedSpritesAndSublayouts;
@@ -45,41 +45,41 @@
 - (void)alphaDidChange;
 - (void)dealloc;
 - (void)displayScaleDidChange;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)referenceDepthDidChange;
 - (void)referenceSizeDidChange;
-- (void)scrollContentLayoutScrollOffsetDidChange:(id)a3;
-- (void)scrollLayoutWillBeginScrolling:(id)a3;
-- (void)scrollLayoutWillEndScrolling:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5 currentContentOffset:(CGPoint)a6;
-- (void)setCountDownTimer:(id)a3;
-- (void)setCountDownValue:(int64_t)a3;
-- (void)setIsRelatedOverlayScrolledIntoView:(BOOL)a3;
-- (void)setNavigationButtonDirection:(int64_t)a3;
-- (void)setShouldCountDown:(BOOL)a3;
-- (void)setWantsNavigationButton:(BOOL)a3;
-- (void)showOrHideFullRelated:(BOOL)a3;
+- (void)scrollContentLayoutScrollOffsetDidChange:(id)change;
+- (void)scrollLayoutWillBeginScrolling:(id)scrolling;
+- (void)scrollLayoutWillEndScrolling:(id)scrolling withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset currentContentOffset:(CGPoint)contentOffset;
+- (void)setCountDownTimer:(id)timer;
+- (void)setCountDownValue:(int64_t)value;
+- (void)setIsRelatedOverlayScrolledIntoView:(BOOL)view;
+- (void)setNavigationButtonDirection:(int64_t)direction;
+- (void)setShouldCountDown:(BOOL)down;
+- (void)setWantsNavigationButton:(BOOL)button;
+- (void)showOrHideFullRelated:(BOOL)related;
 - (void)update;
 @end
 
 @implementation PXStoryRelatedOverlayLayout
 
-- (void)_handleCreateMemoryButton:(id)a3
+- (void)_handleCreateMemoryButton:(id)button
 {
-  v3 = [(PXStoryRelatedOverlayLayout *)self generativeMemoryController];
-  [v3 openGenerativeMemory];
+  generativeMemoryController = [(PXStoryRelatedOverlayLayout *)self generativeMemoryController];
+  [generativeMemoryController openGenerativeMemory];
 }
 
-- (BOOL)axGroup:(id)a3 didRequestToPerformAction:(int64_t)a4 userInfo:(id)a5
+- (BOOL)axGroup:(id)group didRequestToPerformAction:(int64_t)action userInfo:(id)info
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4 == 1)
+  groupCopy = group;
+  infoCopy = info;
+  if (action == 1)
   {
     PXGAXGetElementForUserInfo();
   }
 
-  v10 = [(PXStoryRelatedOverlayLayout *)self axNextResponder];
-  v11 = [v10 axGroup:v8 didRequestToPerformAction:a4 userInfo:v9];
+  axNextResponder = [(PXStoryRelatedOverlayLayout *)self axNextResponder];
+  v11 = [axNextResponder axGroup:groupCopy didRequestToPerformAction:action userInfo:infoCopy];
 
   return v11;
 }
@@ -87,10 +87,10 @@
 - (id)preferredFocusLayouts
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PXStoryRelatedOverlayLayout *)self _firstRelatedSublayout];
-  if (v4)
+  _firstRelatedSublayout = [(PXStoryRelatedOverlayLayout *)self _firstRelatedSublayout];
+  if (_firstRelatedSublayout)
   {
-    [v3 addObject:v4];
+    [v3 addObject:_firstRelatedSublayout];
   }
 
   v5 = [v3 copy];
@@ -107,38 +107,38 @@
   return v4;
 }
 
-- (void)scrollLayoutWillEndScrolling:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5 currentContentOffset:(CGPoint)a6
+- (void)scrollLayoutWillEndScrolling:(id)scrolling withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset currentContentOffset:(CGPoint)contentOffset
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = [(PXStoryRelatedOverlayLayout *)self scrollContentLayout:a3];
-  [v10 scrollOffsetForScrollViewContentOffset:{a5->x, a5->y}];
+  y = velocity.y;
+  x = velocity.x;
+  v10 = [(PXStoryRelatedOverlayLayout *)self scrollContentLayout:scrolling];
+  [v10 scrollOffsetForScrollViewContentOffset:{offset->x, offset->y}];
   v20 = v11;
   v21 = v12;
   v19 = 0;
-  v13 = [(PXStoryRelatedOverlayLayout *)self layoutGenerator];
+  layoutGenerator = [(PXStoryRelatedOverlayLayout *)self layoutGenerator];
   [v10 scrollOffset];
-  [v13 adjustTargetScrollOffset:&v20 forVelocity:&v19 currentScrollOffset:x shouldHideContent:{y, v14, v15}];
+  [layoutGenerator adjustTargetScrollOffset:&v20 forVelocity:&v19 currentScrollOffset:x shouldHideContent:{y, v14, v15}];
 
   if (v19 == 1)
   {
-    v16 = [(PXStoryRelatedOverlayLayout *)self viewModel];
-    [v16 performChanges:&__block_literal_global_453_242082];
+    viewModel = [(PXStoryRelatedOverlayLayout *)self viewModel];
+    [viewModel performChanges:&__block_literal_global_453_242082];
   }
 
   [v10 scrollViewContentOffsetForScrollOffset:{v20, v21}];
-  a5->x = v17;
-  a5->y = v18;
+  offset->x = v17;
+  offset->y = v18;
   [(PXStoryRelatedOverlayLayout *)self setNavigationButtonScrollAnimatorTarget:v20];
 }
 
-- (void)scrollLayoutWillBeginScrolling:(id)a3
+- (void)scrollLayoutWillBeginScrolling:(id)scrolling
 {
-  v3 = [(PXStoryRelatedOverlayLayout *)self viewModel];
-  [v3 performChanges:&__block_literal_global_451_242084];
+  viewModel = [(PXStoryRelatedOverlayLayout *)self viewModel];
+  [viewModel performChanges:&__block_literal_global_451_242084];
 }
 
-- (void)scrollContentLayoutScrollOffsetDidChange:(id)a3
+- (void)scrollContentLayoutScrollOffsetDidChange:(id)change
 {
   if (!self->_shouldIgnoreContentScrollOffsetChanges)
   {
@@ -146,61 +146,61 @@
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v11 = a3;
-  if (ViewModelObservationContext_242086 == a5)
+  observableCopy = observable;
+  if (ViewModelObservationContext_242086 == context)
   {
-    if ((a4 & 0x100) != 0)
+    if ((change & 0x100) != 0)
     {
       [(PXStoryRelatedOverlayLayout *)self _invalidateRelatedSpritesAndSublayouts];
     }
 
-    if ((a4 & 0x8100) != 0)
+    if ((change & 0x8100) != 0)
     {
       [(PXStoryRelatedOverlayLayout *)self _invalidateScrollSpritesAndSublayouts];
       [(PXStoryRelatedOverlayLayout *)self _invalidateAXGroupRole];
     }
 
-    if ((a4 & 0x8000) != 0)
+    if ((change & 0x8000) != 0)
     {
       [(PXStoryRelatedOverlayLayout *)self _invalidateContent];
     }
 
-    if ((a4 & 0x20) != 0)
+    if ((change & 0x20) != 0)
     {
       [(PXStoryRelatedOverlayLayout *)self _invalidateTitleContent];
     }
 
-    if ((a4 & 0x10020) != 0)
+    if ((change & 0x10020) != 0)
     {
       [(PXStoryRelatedOverlayLayout *)self _invalidateSublayoutPositions];
     }
 
-    if ((a4 & 0x10000201) != 0)
+    if ((change & 0x10000201) != 0)
     {
       [(PXStoryRelatedOverlayLayout *)self _invalidateShouldCountDown];
     }
 
-    if ((a4 & 0x20000000000000) != 0)
+    if ((change & 0x20000000000000) != 0)
     {
       [(PXStoryRelatedOverlayLayout *)self _considerChangingToSelectedRelatedMemory];
     }
 
-    if ((a4 & 0x20000000000) != 0)
+    if ((change & 0x20000000000) != 0)
     {
       [(PXStoryRelatedOverlayLayout *)self _createRelatedAnimationIfNeeded];
     }
 
-    if ((a4 & 0x40000008000201) != 0)
+    if ((change & 0x40000008000201) != 0)
     {
       [(PXStoryRelatedOverlayLayout *)self _invalidateNavigationButton];
     }
   }
 
-  else if (CountDownAlphaAnimatorObservationContext == a5 || NavigationButtonAlphaAnimatorObservationContext == a5)
+  else if (CountDownAlphaAnimatorObservationContext == context || NavigationButtonAlphaAnimatorObservationContext == context)
   {
-    if ((a4 & 2) != 0)
+    if ((change & 2) != 0)
     {
       [(PXStoryRelatedOverlayLayout *)self _invalidateContent];
     }
@@ -208,48 +208,48 @@
 
   else
   {
-    if (NavigationButtonScrollAnimatorObservationContext != a5)
+    if (NavigationButtonScrollAnimatorObservationContext != context)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayLayout.m" lineNumber:1074 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayLayout.m" lineNumber:1074 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    if ((a4 & 6) != 0)
+    if ((change & 6) != 0)
     {
       [(PXStoryRelatedOverlayLayout *)self _invalidateSublayoutPositions];
     }
   }
 }
 
-- (int64_t)_offsetForRelatedIndex:(int64_t)a3
+- (int64_t)_offsetForRelatedIndex:(int64_t)index
 {
-  v5 = [(PXStoryRelatedOverlayLayout *)self generativeMemoryController];
-  v6 = [v5 wantsMemoryCreationCard];
+  generativeMemoryController = [(PXStoryRelatedOverlayLayout *)self generativeMemoryController];
+  wantsMemoryCreationCard = [generativeMemoryController wantsMemoryCreationCard];
 
-  if (!v6)
+  if (!wantsMemoryCreationCard)
   {
     return 0;
   }
 
-  v7 = [(PXStoryRelatedOverlayLayout *)self generativeMemoryController];
-  v8 = [v7 index] <= a3;
+  generativeMemoryController2 = [(PXStoryRelatedOverlayLayout *)self generativeMemoryController];
+  v8 = [generativeMemoryController2 index] <= index;
 
   return v8;
 }
 
 - (id)_firstRelatedSublayout
 {
-  v3 = [(PXStoryRelatedOverlayLayout *)self _sublayoutIndexForFirstRelated];
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  _sublayoutIndexForFirstRelated = [(PXStoryRelatedOverlayLayout *)self _sublayoutIndexForFirstRelated];
+  if (_sublayoutIndexForFirstRelated == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [(PXStoryRelatedOverlayLayout *)self sublayoutAtIndex:v3 loadIfNeeded:0];
+    v4 = [(PXStoryRelatedOverlayLayout *)self sublayoutAtIndex:_sublayoutIndexForFirstRelated loadIfNeeded:0];
   }
 
   return v4;
@@ -268,24 +268,24 @@
   }
 }
 
-- (int64_t)_sublayoutIndexForRelatedIndex:(int64_t)a3
+- (int64_t)_sublayoutIndexForRelatedIndex:(int64_t)index
 {
-  if (a3 < 0 || self->_relatedSublayoutIndexRange.length <= a3)
+  if (index < 0 || self->_relatedSublayoutIndexRange.length <= index)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayLayout.m" lineNumber:990 description:{@"Invalid parameter not satisfying: %@", @"relatedIndex >= 0 && relatedIndex < _relatedSublayoutIndexRange.length"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayLayout.m" lineNumber:990 description:{@"Invalid parameter not satisfying: %@", @"relatedIndex >= 0 && relatedIndex < _relatedSublayoutIndexRange.length"}];
   }
 
   location = self->_relatedSublayoutIndexRange.location;
-  return location + a3 + [(PXStoryRelatedOverlayLayout *)self _offsetForRelatedIndex:a3];
+  return location + index + [(PXStoryRelatedOverlayLayout *)self _offsetForRelatedIndex:index];
 }
 
-- (int64_t)_relatedIndexForSublayoutIndex:(int64_t)a3
+- (int64_t)_relatedIndexForSublayoutIndex:(int64_t)index
 {
   location = self->_relatedSublayoutIndexRange.location;
-  if (a3 - location < self->_relatedSublayoutIndexRange.length && a3 >= location)
+  if (index - location < self->_relatedSublayoutIndexRange.length && index >= location)
   {
-    return a3 - location;
+    return index - location;
   }
 
   else
@@ -294,63 +294,63 @@
   }
 }
 
-- (id)layout:(id)a3 createSublayoutAtIndex:(int64_t)a4
+- (id)layout:(id)layout createSublayoutAtIndex:(int64_t)index
 {
-  v7 = a3;
-  v8 = [(PXStoryRelatedOverlayLayout *)self _relatedIndexForSublayoutIndex:a4];
+  layoutCopy = layout;
+  v8 = [(PXStoryRelatedOverlayLayout *)self _relatedIndexForSublayoutIndex:index];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (self->_scrollSublayoutIndex != a4)
+    if (self->_scrollSublayoutIndex != index)
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v19 handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayLayout.m" lineNumber:973 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayLayout.m" lineNumber:973 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    v9 = [(PXStoryRelatedOverlayLayout *)self scrollLayout];
+    scrollLayout = [(PXStoryRelatedOverlayLayout *)self scrollLayout];
   }
 
   else
   {
     v10 = v8;
-    v11 = [(PXStoryRelatedOverlayLayout *)self generativeMemoryController];
-    v12 = [v11 index];
+    generativeMemoryController = [(PXStoryRelatedOverlayLayout *)self generativeMemoryController];
+    index = [generativeMemoryController index];
 
-    if (v10 == v12)
+    if (v10 == index)
     {
-      v13 = [(PXStoryRelatedOverlayLayout *)self generativeMemoryController];
-      [v13 setMemoryCardVisible:1 animated:0];
+      generativeMemoryController2 = [(PXStoryRelatedOverlayLayout *)self generativeMemoryController];
+      [generativeMemoryController2 setMemoryCardVisible:1 animated:0];
 
-      v14 = [(PXStoryRelatedOverlayLayout *)self generativeMemoryController];
-      v9 = [v14 layout];
+      generativeMemoryController3 = [(PXStoryRelatedOverlayLayout *)self generativeMemoryController];
+      scrollLayout = [generativeMemoryController3 layout];
     }
 
     else
     {
-      v15 = [(PXStoryRelatedOverlayLayout *)self viewModel];
-      v16 = [v15 relatedModels];
-      v17 = [v16 objectAtIndexedSubscript:{-[PXStoryRelatedOverlayLayout _relatedModelIndexOffsetByMemoryCreation:](self, "_relatedModelIndexOffsetByMemoryCreation:", v10)}];
+      viewModel = [(PXStoryRelatedOverlayLayout *)self viewModel];
+      relatedModels = [viewModel relatedModels];
+      v17 = [relatedModels objectAtIndexedSubscript:{-[PXStoryRelatedOverlayLayout _relatedModelIndexOffsetByMemoryCreation:](self, "_relatedModelIndexOffsetByMemoryCreation:", v10)}];
 
-      v9 = [[PXStoryLayout alloc] initWithModel:v17];
+      scrollLayout = [[PXStoryLayout alloc] initWithModel:v17];
     }
   }
 
-  return v9;
+  return scrollLayout;
 }
 
-- (CGSize)layout:(id)a3 estimatedContentSizeForSublayoutAtIndex:(int64_t)a4 referenceSize:(CGSize)a5
+- (CGSize)layout:(id)layout estimatedContentSizeForSublayoutAtIndex:(int64_t)index referenceSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v10 = a3;
-  v11 = [(PXStoryRelatedOverlayLayout *)self _relatedIndexForSublayoutIndex:a4];
+  height = size.height;
+  width = size.width;
+  layoutCopy = layout;
+  v11 = [(PXStoryRelatedOverlayLayout *)self _relatedIndexForSublayoutIndex:index];
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (self->_scrollSublayoutIndex != a4)
+    if (self->_scrollSublayoutIndex != index)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayLayout.m" lineNumber:951 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayLayout.m" lineNumber:951 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -370,39 +370,39 @@
   return result;
 }
 
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  if (self->_navigationButtonSpriteIndex == a3)
+  layoutCopy = layout;
+  if (self->_navigationButtonSpriteIndex == index)
   {
-    v8 = [(PXStoryRelatedOverlayLayout *)self navigationButtonConfiguration];
+    navigationButtonConfiguration = [(PXStoryRelatedOverlayLayout *)self navigationButtonConfiguration];
   }
 
   else
   {
-    if (self->_createButtonSpriteIndex != a3)
+    if (self->_createButtonSpriteIndex != index)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayLayout.m" lineNumber:939 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayLayout.m" lineNumber:939 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    v8 = [(PXStoryRelatedOverlayLayout *)self createButtonConfiguration];
+    navigationButtonConfiguration = [(PXStoryRelatedOverlayLayout *)self createButtonConfiguration];
   }
 
-  v9 = v8;
+  v9 = navigationButtonConfiguration;
 
   return v9;
 }
 
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  if (self->_navigationButtonSpriteIndex != a3 && self->_createButtonSpriteIndex != a3)
+  layoutCopy = layout;
+  if (self->_navigationButtonSpriteIndex != index && self->_createButtonSpriteIndex != index)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayLayout.m" lineNumber:930 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayLayout.m" lineNumber:930 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -412,26 +412,26 @@
   return v8;
 }
 
-- (id)imageConfigurationAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)imageConfigurationAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  if (self->_countDownDecorationSpriteIndex != a3)
+  layoutCopy = layout;
+  if (self->_countDownDecorationSpriteIndex != index)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayLayout.m" lineNumber:920 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayLayout.m" lineNumber:920 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v8 = v7;
-  v9 = [(PXStoryRelatedOverlayLayout *)self viewModel];
-  v10 = [v9 viewLayoutSpec];
-  v11 = [v10 upNextCountDownDecorationImageConfiguration];
+  v8 = layoutCopy;
+  viewModel = [(PXStoryRelatedOverlayLayout *)self viewModel];
+  viewLayoutSpec = [viewModel viewLayoutSpec];
+  upNextCountDownDecorationImageConfiguration = [viewLayoutSpec upNextCountDownDecorationImageConfiguration];
 
-  return v11;
+  return upNextCountDownDecorationImageConfiguration;
 }
 
-- (UIEdgeInsets)paddingForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (UIEdgeInsets)paddingForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
   v4 = *off_1E77220A0;
   v5 = *(off_1E77220A0 + 1);
@@ -444,60 +444,60 @@
   return result;
 }
 
-- (id)stringAttributesAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)stringAttributesAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  if (self->_countDownSpriteIndex != a3)
+  layoutCopy = layout;
+  if (self->_countDownSpriteIndex != index)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayLayout.m" lineNumber:906 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayLayout.m" lineNumber:906 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v8 = v7;
-  v9 = [(PXStoryRelatedOverlayLayout *)self viewModel];
-  v10 = [v9 viewLayoutSpec];
-  v11 = [v10 upNextCountDownAttributes];
+  v8 = layoutCopy;
+  viewModel = [(PXStoryRelatedOverlayLayout *)self viewModel];
+  viewLayoutSpec = [viewModel viewLayoutSpec];
+  upNextCountDownAttributes = [viewLayoutSpec upNextCountDownAttributes];
 
-  return v11;
+  return upNextCountDownAttributes;
 }
 
-- (id)stringAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)stringAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  if (self->_countDownSpriteIndex != a3)
+  layoutCopy = layout;
+  if (self->_countDownSpriteIndex != index)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayLayout.m" lineNumber:898 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayLayout.m" lineNumber:898 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v8 = v7;
-  v9 = [(PXStoryRelatedOverlayLayout *)self viewModel];
-  v10 = [v9 viewLayoutSpec];
-  v11 = [v10 upNextCountDownFormatter];
+  v8 = layoutCopy;
+  viewModel = [(PXStoryRelatedOverlayLayout *)self viewModel];
+  viewLayoutSpec = [viewModel viewLayoutSpec];
+  upNextCountDownFormatter = [viewLayoutSpec upNextCountDownFormatter];
   v12 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PXStoryRelatedOverlayLayout countDownValue](self, "countDownValue")}];
-  v13 = [v11 stringFromNumber:v12];
+  v13 = [upNextCountDownFormatter stringFromNumber:v12];
 
   return v13;
 }
 
-- (int64_t)verticalAlignmentForStringAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (int64_t)verticalAlignmentForStringAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  if (self->_titleSpriteIndex == a3)
+  layoutCopy = layout;
+  if (self->_titleSpriteIndex == index)
   {
     v8 = 1;
   }
 
   else
   {
-    if (self->_countDownSpriteIndex != a3)
+    if (self->_countDownSpriteIndex != index)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayLayout.m" lineNumber:890 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayLayout.m" lineNumber:890 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -508,30 +508,30 @@
   return v8;
 }
 
-- (id)attributedStringForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)attributedStringForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  if (self->_titleSpriteIndex == a3)
+  layoutCopy = layout;
+  if (self->_titleSpriteIndex == index)
   {
-    v8 = [(PXStoryRelatedOverlayLayout *)self viewModel];
-    v9 = [v8 viewLayoutSpec];
-    v10 = [v9 relatedAttributedTitle];
+    viewModel = [(PXStoryRelatedOverlayLayout *)self viewModel];
+    viewLayoutSpec = [viewModel viewLayoutSpec];
+    relatedAttributedTitle = [viewLayoutSpec relatedAttributedTitle];
   }
 
   else
   {
-    if (self->_countDownSpriteIndex != a3)
+    if (self->_countDownSpriteIndex != index)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayLayout.m" lineNumber:880 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayLayout.m" lineNumber:880 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    v10 = 0;
+    relatedAttributedTitle = 0;
   }
 
-  return v10;
+  return relatedAttributedTitle;
 }
 
 - (void)_invalidateAXGroupRole
@@ -550,9 +550,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 0x40) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryRelatedOverlayLayout _invalidateAXGroupRole]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:845 description:{@"invalidating %lu after it already has been updated", 64}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:845 description:{@"invalidating %lu after it already has been updated", 64}];
 
       abort();
     }
@@ -656,12 +656,12 @@ void __45__PXStoryRelatedOverlayLayout__updateContent__block_invoke(uint64_t a1)
   [(PXStoryChromeButtonConfiguration *)v8 setBackgroundStyle:2];
   [(PXStoryChromeButtonConfiguration *)v8 setTarget:self];
   [(PXStoryChromeButtonConfiguration *)v8 setAction:sel__handleCreateMemoryButton_];
-  v3 = [(PXStoryViewModel *)self->_viewModel viewLayoutSpec];
-  v4 = [v3 chromeButtonSpec];
-  [(PXStoryChromeButtonConfiguration *)v8 setSpec:v4];
+  viewLayoutSpec = [(PXStoryViewModel *)self->_viewModel viewLayoutSpec];
+  chromeButtonSpec = [viewLayoutSpec chromeButtonSpec];
+  [(PXStoryChromeButtonConfiguration *)v8 setSpec:chromeButtonSpec];
 
-  v5 = [MEMORY[0x1E69DC888] labelColor];
-  [(PXStoryChromeButtonConfiguration *)v8 setTintColor:v5];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(PXStoryChromeButtonConfiguration *)v8 setTintColor:labelColor];
 
   v6 = PXLocalizedStringFromTable(@"MemoryCreationCreateButtonTitle", @"MemoryCreationLocalizable");
   [(PXStoryChromeButtonConfiguration *)v8 setLabel:v6];
@@ -688,9 +688,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 0x80) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryRelatedOverlayLayout _invalidateCreateMemoryButton]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:694 description:{@"invalidating %lu after it already has been updated", 128}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:694 description:{@"invalidating %lu after it already has been updated", 128}];
 
       abort();
     }
@@ -728,9 +728,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 0x10) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryRelatedOverlayLayout _invalidateContent]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:682 description:{@"invalidating %lu after it already has been updated", 16}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:682 description:{@"invalidating %lu after it already has been updated", 16}];
 
       abort();
     }
@@ -757,17 +757,17 @@ LABEL_7:
 
 - (void)_updateNavigationButton
 {
-  v8 = [(PXStoryRelatedOverlayLayout *)self viewModel];
-  v3 = [v8 viewLayoutSpec];
-  [v3 canShowRelatedNavigationButton];
+  viewModel = [(PXStoryRelatedOverlayLayout *)self viewModel];
+  viewLayoutSpec = [viewModel viewLayoutSpec];
+  [viewLayoutSpec canShowRelatedNavigationButton];
   v5 = v4;
 
   if (v5 != 0.0)
   {
-    if ([v8 wantsRelatedOverlayNavigationButtonsVisible] && (objc_msgSend(v8, "isActive") & 1) != 0)
+    if ([viewModel wantsRelatedOverlayNavigationButtonsVisible] && (objc_msgSend(viewModel, "isActive") & 1) != 0)
     {
-      v6 = [v8 relatedConfigurations];
-      -[PXStoryRelatedOverlayLayout setWantsNavigationButton:](self, "setWantsNavigationButton:", [v6 count] != 0);
+      relatedConfigurations = [viewModel relatedConfigurations];
+      -[PXStoryRelatedOverlayLayout setWantsNavigationButton:](self, "setWantsNavigationButton:", [relatedConfigurations count] != 0);
     }
 
     else
@@ -775,7 +775,7 @@ LABEL_7:
       [(PXStoryRelatedOverlayLayout *)self setWantsNavigationButton:0];
     }
 
-    if ([v8 isRelatedOverlayScrolledIntoView])
+    if ([viewModel isRelatedOverlayScrolledIntoView])
     {
       v7 = 1;
     }
@@ -805,9 +805,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 0x20) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryRelatedOverlayLayout _invalidateNavigationButton]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:669 description:{@"invalidating %lu after it already has been updated", 32}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:669 description:{@"invalidating %lu after it already has been updated", 32}];
 
       abort();
     }
@@ -831,11 +831,11 @@ LABEL_5:
 
 - (void)_updateShouldCountDown
 {
-  v4 = [(PXStoryRelatedOverlayLayout *)self viewModel];
-  if ([v4 shouldCountDownToUpNext] && (objc_msgSend(v4, "isActive") & 1) != 0)
+  viewModel = [(PXStoryRelatedOverlayLayout *)self viewModel];
+  if ([viewModel shouldCountDownToUpNext] && (objc_msgSend(viewModel, "isActive") & 1) != 0)
   {
-    v3 = [v4 relatedConfigurations];
-    -[PXStoryRelatedOverlayLayout setShouldCountDown:](self, "setShouldCountDown:", [v3 count] != 0);
+    relatedConfigurations = [viewModel relatedConfigurations];
+    -[PXStoryRelatedOverlayLayout setShouldCountDown:](self, "setShouldCountDown:", [relatedConfigurations count] != 0);
   }
 
   else
@@ -860,9 +860,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 8) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryRelatedOverlayLayout _invalidateShouldCountDown]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:657 description:{@"invalidating %lu after it already has been updated", 8}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:657 description:{@"invalidating %lu after it already has been updated", 8}];
 
       abort();
     }
@@ -887,22 +887,22 @@ LABEL_7:
   [(PXStoryRelatedOverlayLayout *)self setNeedsUpdate];
 }
 
-- (void)_arrangeSublayoutAtIndex:(int64_t)a3 frame:(CGRect)a4 zIndex:(int64_t *)a5
+- (void)_arrangeSublayoutAtIndex:(int64_t)index frame:(CGRect)frame zIndex:(int64_t *)zIndex
 {
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
-    v12 = (*a5)++;
-    v13 = [(PXStoryRelatedOverlayLayout *)self numberOfSublayouts];
+    height = frame.size.height;
+    width = frame.size.width;
+    y = frame.origin.y;
+    x = frame.origin.x;
+    v12 = (*zIndex)++;
+    numberOfSublayouts = [(PXStoryRelatedOverlayLayout *)self numberOfSublayouts];
     [(PXStoryRelatedOverlayLayout *)self referenceDepth];
-    v15 = v14 / v13;
-    [(PXGAbsoluteCompositeLayout *)self setFrame:a3 forSublayoutAtIndex:x, y, width, height];
-    [(PXGAbsoluteCompositeLayout *)self setZPosition:a3 forSublayoutAtIndex:v15 * -v12];
+    v15 = v14 / numberOfSublayouts;
+    [(PXGAbsoluteCompositeLayout *)self setFrame:index forSublayoutAtIndex:x, y, width, height];
+    [(PXGAbsoluteCompositeLayout *)self setZPosition:index forSublayoutAtIndex:v15 * -v12];
 
-    [(PXGAbsoluteCompositeLayout *)self setReferenceDepth:a3 forSublayoutAtIndex:v15];
+    [(PXGAbsoluteCompositeLayout *)self setReferenceDepth:index forSublayoutAtIndex:v15];
   }
 }
 
@@ -922,9 +922,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 4) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryRelatedOverlayLayout _invalidateSublayoutPositions]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:559 description:{@"invalidating %lu after it already has been updated", 4}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:559 description:{@"invalidating %lu after it already has been updated", 4}];
 
       abort();
     }
@@ -951,11 +951,11 @@ LABEL_7:
 
 - (void)_updateScrollSpritesAndSublayouts
 {
-  v3 = [(PXStoryRelatedOverlayLayout *)self viewModel];
-  v4 = [v3 wantsRelatedOverlayScrollable];
+  viewModel = [(PXStoryRelatedOverlayLayout *)self viewModel];
+  wantsRelatedOverlayScrollable = [viewModel wantsRelatedOverlayScrollable];
 
   scrollSublayoutIndex = self->_scrollSublayoutIndex;
-  if (v4)
+  if (wantsRelatedOverlayScrollable)
   {
     if (scrollSublayoutIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -1000,9 +1000,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 2) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryRelatedOverlayLayout _invalidateScrollSpritesAndSublayouts]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:529 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:529 description:{@"invalidating %lu after it already has been updated", 2}];
 
       abort();
     }
@@ -1026,9 +1026,9 @@ LABEL_5:
 
 - (void)_updateRelatedSpritesAndSublayouts
 {
-  v3 = [(PXStoryRelatedOverlayLayout *)self viewModel];
-  v4 = [v3 relatedModels];
-  v5 = [v4 count];
+  viewModel = [(PXStoryRelatedOverlayLayout *)self viewModel];
+  relatedModels = [viewModel relatedModels];
+  v5 = [relatedModels count];
 
   relatedSelectionSpriteIndexRange = self->_relatedSelectionSpriteIndexRange;
   self->_relatedSelectionSpriteIndexRange.length = v5;
@@ -1068,9 +1068,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryRelatedOverlayLayout _invalidateRelatedSpritesAndSublayouts]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:503 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:503 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -1101,9 +1101,9 @@ LABEL_5:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryRelatedOverlayLayout update]"];
-      [v12 handleFailureInFunction:v13 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:473 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v13 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:473 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -1116,9 +1116,9 @@ LABEL_5:
       [(PXStoryRelatedOverlayLayout *)self _updateRelatedSpritesAndSublayouts];
       if (!p_updateFlags->isPerformingUpdate)
       {
-        v14 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryRelatedOverlayLayout update]"];
-        [v14 handleFailureInFunction:v15 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:477 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+        [currentHandler2 handleFailureInFunction:v15 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:477 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -1132,9 +1132,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryRelatedOverlayLayout update]"];
-      [v16 handleFailureInFunction:v17 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:480 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler3 handleFailureInFunction:v17 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:480 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v6 = p_updateFlags->needsUpdate;
@@ -1147,9 +1147,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryRelatedOverlayLayout update]"];
-      [v18 handleFailureInFunction:v19 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:483 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler4 handleFailureInFunction:v19 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:483 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v7 = p_updateFlags->needsUpdate;
@@ -1162,9 +1162,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v20 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
       v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryRelatedOverlayLayout update]"];
-      [v20 handleFailureInFunction:v21 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:486 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler5 handleFailureInFunction:v21 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:486 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v8 = p_updateFlags->needsUpdate;
@@ -1177,9 +1177,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
       v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryRelatedOverlayLayout update]"];
-      [v22 handleFailureInFunction:v23 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:489 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler6 handleFailureInFunction:v23 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:489 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v9 = p_updateFlags->needsUpdate;
@@ -1192,9 +1192,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
       v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryRelatedOverlayLayout update]"];
-      [v24 handleFailureInFunction:v25 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:492 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler7 handleFailureInFunction:v25 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:492 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v10 = p_updateFlags->needsUpdate;
@@ -1207,9 +1207,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v26 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler8 = [MEMORY[0x1E696AAA8] currentHandler];
       v27 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryRelatedOverlayLayout update]"];
-      [v26 handleFailureInFunction:v27 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:495 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler8 handleFailureInFunction:v27 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:495 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v11 = p_updateFlags->needsUpdate;
@@ -1224,9 +1224,9 @@ LABEL_5:
     p_updateFlags->isPerformingUpdate = 0;
     if (v11)
     {
-      v28 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler9 = [MEMORY[0x1E696AAA8] currentHandler];
       v29 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryRelatedOverlayLayout update]"];
-      [v28 handleFailureInFunction:v29 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:498 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler9 handleFailureInFunction:v29 file:@"PXStoryRelatedOverlayLayout.m" lineNumber:498 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -1237,15 +1237,15 @@ LABEL_5:
 
 - (void)_autoplayUpNext
 {
-  v2 = [(PXStoryRelatedOverlayLayout *)self viewModel];
-  [v2 performChanges:&__block_literal_global_414];
+  viewModel = [(PXStoryRelatedOverlayLayout *)self viewModel];
+  [viewModel performChanges:&__block_literal_global_414];
 }
 
 - (void)_considerChangingToSelectedRelatedMemory
 {
-  v3 = [(PXStoryRelatedOverlayLayout *)self viewModel];
-  v4 = [v3 viewLayoutSpec];
-  if ([v4 upNextAnimationStyle] == 2 && (objc_msgSend(v3, "isPerformingCrossfadeTransitionToRelated") & 1) == 0)
+  viewModel = [(PXStoryRelatedOverlayLayout *)self viewModel];
+  viewLayoutSpec = [viewModel viewLayoutSpec];
+  if ([viewLayoutSpec upNextAnimationStyle] == 2 && (objc_msgSend(viewModel, "isPerformingCrossfadeTransitionToRelated") & 1) == 0)
   {
     selectedIndex = self->_selectedIndex;
 
@@ -1258,7 +1258,7 @@ LABEL_5:
       v7[2] = __71__PXStoryRelatedOverlayLayout__considerChangingToSelectedRelatedMemory__block_invoke;
       v7[3] = &__block_descriptor_40_e35_v16__0___PXStoryMutableViewModel__8l;
       v7[4] = v6;
-      [v3 performChanges:v7];
+      [viewModel performChanges:v7];
     }
   }
 
@@ -1276,42 +1276,42 @@ void __71__PXStoryRelatedOverlayLayout__considerChangingToSelectedRelatedMemory_
 
 - (void)_createRelatedAnimationIfNeeded
 {
-  v13 = [(PXStoryRelatedOverlayLayout *)self viewModel];
-  v4 = [v13 viewLayoutSpec];
-  if ([v4 upNextAnimationStyle] != 1)
+  viewModel = [(PXStoryRelatedOverlayLayout *)self viewModel];
+  viewLayoutSpec = [viewModel viewLayoutSpec];
+  if ([viewLayoutSpec upNextAnimationStyle] != 1)
   {
 LABEL_9:
 
-    v6 = v13;
+    v6 = viewModel;
     goto LABEL_10;
   }
 
-  v5 = [v13 shouldSimplifyUIForAccessibility];
+  shouldSimplifyUIForAccessibility = [viewModel shouldSimplifyUIForAccessibility];
 
-  v6 = v13;
-  if ((v5 & 1) == 0)
+  v6 = viewModel;
+  if ((shouldSimplifyUIForAccessibility & 1) == 0)
   {
-    v7 = [v13 selectedRelatedIndex];
-    v6 = v13;
-    if (v7 != 0x7FFFFFFFFFFFFFFFLL)
+    selectedRelatedIndex = [viewModel selectedRelatedIndex];
+    v6 = viewModel;
+    if (selectedRelatedIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v4 = [(PXStoryRelatedOverlayLayout *)self sublayoutAtIndex:[(PXStoryRelatedOverlayLayout *)self _sublayoutIndexForRelatedIndex:?] loadIfNeeded:0];
-      if (!v4)
+      viewLayoutSpec = [(PXStoryRelatedOverlayLayout *)self sublayoutAtIndex:[(PXStoryRelatedOverlayLayout *)self _sublayoutIndexForRelatedIndex:?] loadIfNeeded:0];
+      if (!viewLayoutSpec)
       {
-        v12 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v12 handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayLayout.m" lineNumber:425 description:{@"Invalid parameter not satisfying: %@", @"sublayout != nil"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayLayout.m" lineNumber:425 description:{@"Invalid parameter not satisfying: %@", @"sublayout != nil"}];
       }
 
-      v8 = [(PXStoryRelatedOverlayLayout *)self generativeMemoryController];
-      v9 = [v8 wantsMemoryCreationCard];
+      generativeMemoryController = [(PXStoryRelatedOverlayLayout *)self generativeMemoryController];
+      wantsMemoryCreationCard = [generativeMemoryController wantsMemoryCreationCard];
 
-      if (v9)
+      if (wantsMemoryCreationCard)
       {
-        v10 = [(PXStoryRelatedOverlayLayout *)self generativeMemoryController];
-        [v10 setMemoryCardVisible:0 animated:1];
+        generativeMemoryController2 = [(PXStoryRelatedOverlayLayout *)self generativeMemoryController];
+        [generativeMemoryController2 setMemoryCardVisible:0 animated:1];
       }
 
-      v11 = PXStoryRelatedAnimationCreate(v4);
+      v11 = PXStoryRelatedAnimationCreate(viewLayoutSpec);
       goto LABEL_9;
     }
   }
@@ -1319,28 +1319,28 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)setWantsNavigationButton:(BOOL)a3
+- (void)setWantsNavigationButton:(BOOL)button
 {
-  if (self->_wantsNavigationButton != a3)
+  if (self->_wantsNavigationButton != button)
   {
     v16 = v6;
     v17 = v5;
     v18 = v3;
     v19 = v4;
-    self->_wantsNavigationButton = a3;
+    self->_wantsNavigationButton = button;
     [(PXStoryRelatedOverlayLayout *)self _invalidateContent];
-    v9 = [(PXStoryRelatedOverlayLayout *)self viewModel];
-    v10 = [v9 viewLayoutSpec];
-    [v10 relatedNavigationButtonFadeDuration];
+    viewModel = [(PXStoryRelatedOverlayLayout *)self viewModel];
+    viewLayoutSpec = [viewModel viewLayoutSpec];
+    [viewLayoutSpec relatedNavigationButtonFadeDuration];
     v12 = v11;
 
-    v13 = [(PXStoryRelatedOverlayLayout *)self navigationButtonAlphaAnimator];
+    navigationButtonAlphaAnimator = [(PXStoryRelatedOverlayLayout *)self navigationButtonAlphaAnimator];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __56__PXStoryRelatedOverlayLayout_setWantsNavigationButton___block_invoke;
     v14[3] = &__block_descriptor_33_e35_v16__0___PXMutableNumberAnimator__8l;
-    v15 = a3;
-    [v13 performChangesWithDuration:1 curve:v14 changes:v12];
+    buttonCopy = button;
+    [navigationButtonAlphaAnimator performChangesWithDuration:1 curve:v14 changes:v12];
   }
 }
 
@@ -1355,31 +1355,31 @@ uint64_t __56__PXStoryRelatedOverlayLayout_setWantsNavigationButton___block_invo
   return [a2 setValue:v2];
 }
 
-- (void)setNavigationButtonDirection:(int64_t)a3
+- (void)setNavigationButtonDirection:(int64_t)direction
 {
-  if (self->_navigationButtonDirection != a3)
+  if (self->_navigationButtonDirection != direction)
   {
-    self->_navigationButtonDirection = a3;
-    v6 = [(PXStoryRelatedOverlayLayout *)self viewModel];
-    v13 = [v6 viewLayoutSpec];
+    self->_navigationButtonDirection = direction;
+    viewModel = [(PXStoryRelatedOverlayLayout *)self viewModel];
+    viewLayoutSpec = [viewModel viewLayoutSpec];
 
     v7 = objc_alloc_init(PXStoryChromeButtonConfiguration);
     [(PXStoryChromeButtonConfiguration *)v7 setBackgroundStyle:3];
     [(PXStoryChromeButtonConfiguration *)v7 setTarget:self];
-    [v13 relatedNavigationButtonSystemImagePointSize];
+    [viewLayoutSpec relatedNavigationButtonSystemImagePointSize];
     [(PXStoryChromeButtonConfiguration *)v7 setPreferredSystemImagePointSize:?];
-    v8 = [MEMORY[0x1E69DC888] blackColor];
-    [(PXStoryChromeButtonConfiguration *)v7 setTintColor:v8];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(PXStoryChromeButtonConfiguration *)v7 setTintColor:blackColor];
 
     v9 = [MEMORY[0x1E69DC888] colorWithWhite:0.75 alpha:1.0];
     [(PXStoryChromeButtonConfiguration *)v7 setSolidBackgroundColor:v9];
 
     [(PXStoryChromeButtonConfiguration *)v7 setPreferredSystemImageWeight:*MEMORY[0x1E69DB958]];
     [(PXStoryChromeButtonConfiguration *)v7 setAction:sel__handleNavigationButton_];
-    v10 = [v13 relatedNavigationChromeButtonSpec];
-    [(PXStoryChromeButtonConfiguration *)v7 setSpec:v10];
+    relatedNavigationChromeButtonSpec = [viewLayoutSpec relatedNavigationChromeButtonSpec];
+    [(PXStoryChromeButtonConfiguration *)v7 setSpec:relatedNavigationChromeButtonSpec];
 
-    if (a3 == 1)
+    if (direction == 1)
     {
       v11 = @"chevron.left";
     }
@@ -1400,12 +1400,12 @@ uint64_t __56__PXStoryRelatedOverlayLayout_setWantsNavigationButton___block_invo
   }
 }
 
-- (void)showOrHideFullRelated:(BOOL)a3
+- (void)showOrHideFullRelated:(BOOL)related
 {
-  if (a3)
+  if (related)
   {
-    v4 = [(PXStoryRelatedOverlayLayout *)self scrollContentLayout];
-    [v4 scrollableOutsets];
+    scrollContentLayout = [(PXStoryRelatedOverlayLayout *)self scrollContentLayout];
+    [scrollContentLayout scrollableOutsets];
   }
 
   [(PXStoryRelatedOverlayLayout *)self navigationButtonScrollAnimatorTarget];
@@ -1421,36 +1421,36 @@ void __53__PXStoryRelatedOverlayLayout_showOrHideFullRelated___block_invoke_2(ui
   [v3 setValue:?];
 }
 
-- (void)_handleNavigationButton:(id)a3
+- (void)_handleNavigationButton:(id)button
 {
   v4 = [(PXStoryRelatedOverlayLayout *)self navigationButtonDirection]== 2;
 
   [(PXStoryRelatedOverlayLayout *)self showOrHideFullRelated:v4];
 }
 
-- (void)setCountDownValue:(int64_t)a3
+- (void)setCountDownValue:(int64_t)value
 {
-  if (self->_countDownValue != a3)
+  if (self->_countDownValue != value)
   {
-    self->_countDownValue = a3;
+    self->_countDownValue = value;
     [(PXStoryRelatedOverlayLayout *)self _invalidateContent];
   }
 }
 
-- (void)setCountDownTimer:(id)a3
+- (void)setCountDownTimer:(id)timer
 {
-  v5 = a3;
+  timerCopy = timer;
   countDownTimer = self->_countDownTimer;
-  if (countDownTimer != v5)
+  if (countDownTimer != timerCopy)
   {
-    v7 = v5;
+    v7 = timerCopy;
     [(NSTimer *)countDownTimer invalidate];
-    objc_storeStrong(&self->_countDownTimer, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_countDownTimer, timer);
+    timerCopy = v7;
   }
 }
 
-- (void)_handleCountDownTimer:(id)a3
+- (void)_handleCountDownTimer:(id)timer
 {
   if ([(PXStoryRelatedOverlayLayout *)self countDownValue]< 1)
   {
@@ -1462,70 +1462,70 @@ void __53__PXStoryRelatedOverlayLayout_showOrHideFullRelated___block_invoke_2(ui
   else
   {
     [(PXStoryRelatedOverlayLayout *)self setCountDownValue:[(PXStoryRelatedOverlayLayout *)self countDownValue]- 1];
-    v4 = [(PXStoryRelatedOverlayLayout *)self viewModel];
-    v10 = [v4 viewLayoutSpec];
+    viewModel = [(PXStoryRelatedOverlayLayout *)self viewModel];
+    viewLayoutSpec = [viewModel viewLayoutSpec];
 
-    v5 = [(PXStoryRelatedOverlayLayout *)self countDownValue];
-    [v10 upNextCountDownInitialVisibleValue];
-    if (v6 == v5 && [v10 upNextCountdownPlacement] == 1)
+    countDownValue = [(PXStoryRelatedOverlayLayout *)self countDownValue];
+    [viewLayoutSpec upNextCountDownInitialVisibleValue];
+    if (v6 == countDownValue && [viewLayoutSpec upNextCountdownPlacement] == 1)
     {
-      v7 = [(PXStoryRelatedOverlayLayout *)self countDownAlphaAnimator];
-      [v7 performChangesUsingDefaultSpringAnimationWithInitialVelocity:&__block_literal_global_389_242148 changes:0.0];
+      countDownAlphaAnimator = [(PXStoryRelatedOverlayLayout *)self countDownAlphaAnimator];
+      [countDownAlphaAnimator performChangesUsingDefaultSpringAnimationWithInitialVelocity:&__block_literal_global_389_242148 changes:0.0];
     }
 
-    v8 = [(PXStoryRelatedOverlayLayout *)self countDownValue];
-    [v10 upNextCountDownInitialVisibleValue];
-    if (v9 >= v8 && [v10 upNextCountdownPlacement] == 2)
+    countDownValue2 = [(PXStoryRelatedOverlayLayout *)self countDownValue];
+    [viewLayoutSpec upNextCountDownInitialVisibleValue];
+    if (v9 >= countDownValue2 && [viewLayoutSpec upNextCountdownPlacement] == 2)
     {
       [(PXStoryRelatedOverlayLayout *)self _setFirstRelatedLayoutCountdownValue:[(PXStoryRelatedOverlayLayout *)self countDownValue]];
     }
   }
 }
 
-- (void)setShouldCountDown:(BOOL)a3
+- (void)setShouldCountDown:(BOOL)down
 {
-  if (self->_shouldCountDown != a3)
+  if (self->_shouldCountDown != down)
   {
-    self->_shouldCountDown = a3;
+    self->_shouldCountDown = down;
     [(PXStoryRelatedOverlayLayout *)self _invalidateContent];
     if (self->_shouldCountDown)
     {
       v20 = [MEMORY[0x1E695DFF0] px_timerWithTimeInterval:self weakTarget:sel__handleCountDownTimer_ selector:0 userInfo:1 repeats:1.0];
-      v5 = [MEMORY[0x1E695DFD0] currentRunLoop];
-      [v5 addTimer:v20 forMode:*MEMORY[0x1E695DA28]];
+      currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+      [currentRunLoop addTimer:v20 forMode:*MEMORY[0x1E695DA28]];
 
-      v6 = [(PXStoryRelatedOverlayLayout *)self viewModel];
-      v7 = [v6 viewLayoutSpec];
+      viewModel = [(PXStoryRelatedOverlayLayout *)self viewModel];
+      viewLayoutSpec = [viewModel viewLayoutSpec];
 
-      [v7 upNextCountDownAppearDelay];
+      [viewLayoutSpec upNextCountDownAppearDelay];
       v9 = v8;
-      [v7 upNextCountDownInitialVisibleValue];
+      [viewLayoutSpec upNextCountDownInitialVisibleValue];
       [(PXStoryRelatedOverlayLayout *)self setCountDownValue:(v9 + v10)];
     }
 
     else
     {
-      v11 = [(PXStoryRelatedOverlayLayout *)self viewModel];
-      v12 = [v11 viewLayoutSpec];
-      v13 = [v12 upNextCountdownPlacement];
+      viewModel2 = [(PXStoryRelatedOverlayLayout *)self viewModel];
+      viewLayoutSpec2 = [viewModel2 viewLayoutSpec];
+      upNextCountdownPlacement = [viewLayoutSpec2 upNextCountdownPlacement];
 
-      switch(v13)
+      switch(upNextCountdownPlacement)
       {
         case 1:
-          v15 = [(PXStoryRelatedOverlayLayout *)self countDownAlphaAnimator];
-          v16 = [(PXStoryRelatedOverlayLayout *)self viewModel];
-          v17 = [v16 viewLayoutSpec];
-          [v17 upNextCountDownFadeOutDuration];
+          countDownAlphaAnimator = [(PXStoryRelatedOverlayLayout *)self countDownAlphaAnimator];
+          viewModel3 = [(PXStoryRelatedOverlayLayout *)self viewModel];
+          viewLayoutSpec3 = [viewModel3 viewLayoutSpec];
+          [viewLayoutSpec3 upNextCountDownFadeOutDuration];
           v19 = v18;
 
-          [v15 performChangesWithDuration:1 curve:&__block_literal_global_242153 changes:v19];
+          [countDownAlphaAnimator performChangesWithDuration:1 curve:&__block_literal_global_242153 changes:v19];
           break;
         case 2:
           [(PXStoryRelatedOverlayLayout *)self _setFirstRelatedLayoutCountdownValue:0x7FFFFFFFFFFFFFFFLL];
           break;
         case 0:
-          v14 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v14 handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayLayout.m" lineNumber:296 description:@"Code which should be unreachable has been reached"];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayLayout.m" lineNumber:296 description:@"Code which should be unreachable has been reached"];
 
           abort();
       }
@@ -1537,48 +1537,48 @@ void __53__PXStoryRelatedOverlayLayout_showOrHideFullRelated___block_invoke_2(ui
   }
 }
 
-- (void)setIsRelatedOverlayScrolledIntoView:(BOOL)a3
+- (void)setIsRelatedOverlayScrolledIntoView:(BOOL)view
 {
-  if (self->_isRelatedOverlayScrolledIntoView != a3)
+  if (self->_isRelatedOverlayScrolledIntoView != view)
   {
     v7[7] = v3;
     v7[8] = v4;
-    self->_isRelatedOverlayScrolledIntoView = a3;
-    v6 = [(PXStoryRelatedOverlayLayout *)self viewModel];
+    self->_isRelatedOverlayScrolledIntoView = view;
+    viewModel = [(PXStoryRelatedOverlayLayout *)self viewModel];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __67__PXStoryRelatedOverlayLayout_setIsRelatedOverlayScrolledIntoView___block_invoke;
     v7[3] = &unk_1E774B048;
     v7[4] = self;
-    [v6 performChanges:v7];
+    [viewModel performChanges:v7];
   }
 }
 
-- (void)_navigateToRelatedMemoryAtIndex:(int64_t)a3
+- (void)_navigateToRelatedMemoryAtIndex:(int64_t)index
 {
-  v6 = [(PXStoryRelatedOverlayLayout *)self generativeMemoryController];
-  v7 = [v6 index];
+  generativeMemoryController = [(PXStoryRelatedOverlayLayout *)self generativeMemoryController];
+  index = [generativeMemoryController index];
 
-  if (v7 == a3)
+  if (index == index)
   {
-    v11 = [(PXStoryRelatedOverlayLayout *)self generativeMemoryController];
-    [v11 openGenerativeMemory];
+    generativeMemoryController2 = [(PXStoryRelatedOverlayLayout *)self generativeMemoryController];
+    [generativeMemoryController2 openGenerativeMemory];
   }
 
   else
   {
-    v8 = [(PXStoryRelatedOverlayLayout *)self _relatedModelIndexOffsetByMemoryCreation:a3];
+    v8 = [(PXStoryRelatedOverlayLayout *)self _relatedModelIndexOffsetByMemoryCreation:index];
     self->_selectedIndex = v8;
-    v9 = [(PXStoryRelatedOverlayLayout *)self viewModel];
+    viewModel = [(PXStoryRelatedOverlayLayout *)self viewModel];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __63__PXStoryRelatedOverlayLayout__navigateToRelatedMemoryAtIndex___block_invoke;
     v12[3] = &unk_1E7749EF8;
     v15 = v8;
     v16 = a2;
-    v13 = v9;
-    v14 = self;
-    v10 = v9;
+    v13 = viewModel;
+    selfCopy = self;
+    v10 = viewModel;
     [v10 performChanges:v12];
   }
 }
@@ -1615,17 +1615,17 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)_selectRelatedMemoryAtIndex:(int64_t)a3
+- (void)_selectRelatedMemoryAtIndex:(int64_t)index
 {
   objc_initWeak(&location, self);
-  v5 = [(PXStoryRelatedOverlayLayout *)self viewModel];
+  viewModel = [(PXStoryRelatedOverlayLayout *)self viewModel];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59__PXStoryRelatedOverlayLayout__selectRelatedMemoryAtIndex___block_invoke;
   v6[3] = &unk_1E7749ED0;
   objc_copyWeak(v7, &location);
-  v7[1] = a3;
-  [v5 requestNavigationPermission:v6];
+  v7[1] = index;
+  [viewModel requestNavigationPermission:v6];
 
   objc_destroyWeak(v7);
   objc_destroyWeak(&location);
@@ -1641,15 +1641,15 @@ void __59__PXStoryRelatedOverlayLayout__selectRelatedMemoryAtIndex___block_invok
   }
 }
 
-- (id)hitTestResultForSpriteIndex:(unsigned int)a3
+- (id)hitTestResultForSpriteIndex:(unsigned int)index
 {
   relatedSelectionSpriteIndexRange = self->_relatedSelectionSpriteIndexRange;
-  v5 = a3 >= relatedSelectionSpriteIndexRange.location;
-  v6 = a3 - relatedSelectionSpriteIndexRange.location;
+  v5 = index >= relatedSelectionSpriteIndexRange.location;
+  v6 = index - relatedSelectionSpriteIndexRange.location;
   v7 = relatedSelectionSpriteIndexRange.length + relatedSelectionSpriteIndexRange.location;
-  if (v5 && v7 > a3)
+  if (v5 && v7 > index)
   {
-    v10 = [[PXStoryHitTestResult alloc] initWithSpriteIndex:*&a3 layout:self identifier:@"PXStoryHitTestIdentifierRelated"];
+    v10 = [[PXStoryHitTestResult alloc] initWithSpriteIndex:*&index layout:self identifier:@"PXStoryHitTestIdentifierRelated"];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __59__PXStoryRelatedOverlayLayout_hitTestResultForSpriteIndex___block_invoke;
@@ -1661,7 +1661,7 @@ void __59__PXStoryRelatedOverlayLayout__selectRelatedMemoryAtIndex___block_invok
 
   else
   {
-    v9 = [[PXStoryHitTestResult alloc] initWithSpriteIndex:*&a3 layout:self identifier:@"PXStoryHitTestIdentifierRelated"];
+    v9 = [[PXStoryHitTestResult alloc] initWithSpriteIndex:*&index layout:self identifier:@"PXStoryHitTestIdentifierRelated"];
   }
 
   return v9;
@@ -1711,21 +1711,21 @@ void __59__PXStoryRelatedOverlayLayout__selectRelatedMemoryAtIndex___block_invok
   [(PXGCompositeLayout *)&v3 dealloc];
 }
 
-- (PXStoryRelatedOverlayLayout)initWithViewModel:(id)a3
+- (PXStoryRelatedOverlayLayout)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v20.receiver = self;
   v20.super_class = PXStoryRelatedOverlayLayout;
   v6 = [(PXGAbsoluteCompositeLayout *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewModel, a3);
+    objc_storeStrong(&v6->_viewModel, model);
     [(PXStoryViewModel *)v7->_viewModel registerChangeObserver:v7 context:ViewModelObservationContext_242086];
     v8 = [PXStoryRelatedLayoutGenerator alloc];
-    v9 = [(PXStoryViewModel *)v7->_viewModel viewLayoutSpec];
-    v10 = [v9 relatedLayoutMetrics];
-    v11 = [(PXStoryRelatedLayoutGenerator *)v8 initWithMetrics:v10];
+    viewLayoutSpec = [(PXStoryViewModel *)v7->_viewModel viewLayoutSpec];
+    relatedLayoutMetrics = [viewLayoutSpec relatedLayoutMetrics];
+    v11 = [(PXStoryRelatedLayoutGenerator *)v8 initWithMetrics:relatedLayoutMetrics];
     layoutGenerator = v7->_layoutGenerator;
     v7->_layoutGenerator = v11;
 
@@ -1768,8 +1768,8 @@ void __59__PXStoryRelatedOverlayLayout__selectRelatedMemoryAtIndex___block_invok
 
 - (PXStoryRelatedOverlayLayout)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayLayout.m" lineNumber:124 description:{@"%s is not available as initializer", "-[PXStoryRelatedOverlayLayout init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayLayout.m" lineNumber:124 description:{@"%s is not available as initializer", "-[PXStoryRelatedOverlayLayout init]"}];
 
   abort();
 }

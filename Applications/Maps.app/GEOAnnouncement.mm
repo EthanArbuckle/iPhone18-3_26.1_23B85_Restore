@@ -1,16 +1,16 @@
 @interface GEOAnnouncement
-- (BOOL)showAnnouncementIfFlyoverWithHandler:(id)a3;
+- (BOOL)showAnnouncementIfFlyoverWithHandler:(id)handler;
 @end
 
 @implementation GEOAnnouncement
 
-- (BOOL)showAnnouncementIfFlyoverWithHandler:(id)a3
+- (BOOL)showAnnouncementIfFlyoverWithHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [(GEOAnnouncement *)self buttonOneAppURI];
-    v6 = [NSScanner scannerWithString:v5];
+    buttonOneAppURI = [(GEOAnnouncement *)self buttonOneAppURI];
+    v6 = [NSScanner scannerWithString:buttonOneAppURI];
 
     v7 = [v6 scanString:@"flyover:" intoString:0];
     if (v7)
@@ -32,7 +32,7 @@
           v14[2] = sub_100FF4638;
           v14[3] = &unk_101661318;
           v14[4] = self;
-          v15 = v4;
+          v15 = handlerCopy;
           v16 = v17;
           [v12 submitWithHandler:v14 networkActivity:0];
         }

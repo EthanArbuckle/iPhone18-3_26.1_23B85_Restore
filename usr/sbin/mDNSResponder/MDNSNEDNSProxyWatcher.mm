@@ -1,18 +1,18 @@
 @interface MDNSNEDNSProxyWatcher
-- (void)configurationChanged:(id)a3;
-- (void)dnsProxyStatusDidChange:(id)a3;
+- (void)configurationChanged:(id)changed;
+- (void)dnsProxyStatusDidChange:(id)change;
 @end
 
 @implementation MDNSNEDNSProxyWatcher
 
-- (void)dnsProxyStatusDidChange:(id)a3
+- (void)dnsProxyStatusDidChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
   v4 = _mdns_ne_dns_proxy_state_watch_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v10 = v3;
+    v10 = changeCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "DNS proxy status changed for manager -- address: %p", buf, 0xCu);
   }
 
@@ -21,12 +21,12 @@
   block[1] = 3221225472;
   block[2] = __49__MDNSNEDNSProxyWatcher_dnsProxyStatusDidChange___block_invoke;
   block[3] = &unk_10014FEF0;
-  v8 = v3;
-  v6 = v3;
+  v8 = changeCopy;
+  v6 = changeCopy;
   dispatch_async(v5, block);
 }
 
-- (void)configurationChanged:(id)a3
+- (void)configurationChanged:(id)changed
 {
   v3 = _mdns_ne_dns_proxy_state_watch_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))

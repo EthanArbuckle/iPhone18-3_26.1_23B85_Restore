@@ -1,36 +1,36 @@
 @interface UITableView
-- (BOOL)_hasRowAtIndexPath:(id)a3 focusable:(BOOL)a4;
-- (BOOL)canFocusRowAtIndexPath:(id)a3;
-- (BOOL)hasRowAtIndexPath:(id)a3;
-- (id)_indexPathForClosestRowToIndexPath:(id)a3 focusable:(BOOL)a4;
-- (id)_indexPathForRowAfterIndexPath:(id)a3 focusable:(BOOL)a4;
-- (id)_indexPathForRowBeforeIndexPath:(id)a3 focusable:(BOOL)a4;
-- (id)distanceFromIndexPath:(id)a3 toIndexPath:(id)a4;
+- (BOOL)_hasRowAtIndexPath:(id)path focusable:(BOOL)focusable;
+- (BOOL)canFocusRowAtIndexPath:(id)path;
+- (BOOL)hasRowAtIndexPath:(id)path;
+- (id)_indexPathForClosestRowToIndexPath:(id)path focusable:(BOOL)focusable;
+- (id)_indexPathForRowAfterIndexPath:(id)path focusable:(BOOL)focusable;
+- (id)_indexPathForRowBeforeIndexPath:(id)path focusable:(BOOL)focusable;
+- (id)distanceFromIndexPath:(id)path toIndexPath:(id)indexPath;
 - (id)indexPathForFirstFocusableRow;
 - (id)indexPathForFirstRow;
-- (id)indexPathForFirstRowInSection:(int64_t)a3;
-- (id)indexPathForFocusableRowAfterIndexPath:(id)a3;
-- (id)indexPathForFocusableRowBeforeIndexPath:(id)a3;
+- (id)indexPathForFirstRowInSection:(int64_t)section;
+- (id)indexPathForFocusableRowAfterIndexPath:(id)path;
+- (id)indexPathForFocusableRowBeforeIndexPath:(id)path;
 - (id)indexPathForLastRow;
-- (id)indexPathForLastRowInSection:(int64_t)a3;
-- (id)indexPathForRowAfterIndexPath:(id)a3;
-- (id)indexPathForRowBeforeIndexPath:(id)a3;
-- (unint64_t)numberOfRowsFromIndexPath:(id)a3 toFromIndexPath:(id)a4;
+- (id)indexPathForLastRowInSection:(int64_t)section;
+- (id)indexPathForRowAfterIndexPath:(id)path;
+- (id)indexPathForRowBeforeIndexPath:(id)path;
+- (unint64_t)numberOfRowsFromIndexPath:(id)path toFromIndexPath:(id)indexPath;
 @end
 
 @implementation UITableView
 
-- (BOOL)hasRowAtIndexPath:(id)a3
+- (BOOL)hasRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = v4;
+  pathCopy = path;
+  v5 = pathCopy;
   v8 = 0;
-  if (v4)
+  if (pathCopy)
   {
-    if (([v4 section] & 0x8000000000000000) == 0 && (objc_msgSend(v5, "row") & 0x8000000000000000) == 0)
+    if (([pathCopy section] & 0x8000000000000000) == 0 && (objc_msgSend(v5, "row") & 0x8000000000000000) == 0)
     {
-      v6 = [v5 section];
-      if (v6 < [(UITableView *)self numberOfSections])
+      section = [v5 section];
+      if (section < [(UITableView *)self numberOfSections])
       {
         v7 = [v5 row];
         if (v7 < -[UITableView numberOfRowsInSection:](self, "numberOfRowsInSection:", [v5 section]))
@@ -44,18 +44,18 @@
   return v8;
 }
 
-- (BOOL)canFocusRowAtIndexPath:(id)a3
+- (BOOL)canFocusRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  if ([(UITableView *)self hasRowAtIndexPath:v4])
+  pathCopy = path;
+  if ([(UITableView *)self hasRowAtIndexPath:pathCopy])
   {
-    v5 = [(UITableView *)self delegate];
+    delegate = [(UITableView *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(UITableView *)self delegate];
-      v8 = [v7 tableView:self canFocusRowAtIndexPath:v4];
+      delegate2 = [(UITableView *)self delegate];
+      v8 = [delegate2 tableView:self canFocusRowAtIndexPath:pathCopy];
     }
 
     else
@@ -74,8 +74,8 @@
 
 - (id)indexPathForFirstRow
 {
-  v3 = [(UITableView *)self numberOfSections];
-  if (v3 < 1)
+  numberOfSections = [(UITableView *)self numberOfSections];
+  if (numberOfSections < 1)
   {
 LABEL_5:
     v6 = 0;
@@ -83,7 +83,7 @@ LABEL_5:
 
   else
   {
-    v4 = v3;
+    v4 = numberOfSections;
     v5 = 0;
     while ([(UITableView *)self numberOfRowsInSection:v5]< 1)
     {
@@ -101,31 +101,31 @@ LABEL_5:
 
 - (id)indexPathForLastRow
 {
-  v3 = [(UITableView *)self numberOfSections];
-  if (v3)
+  numberOfSections = [(UITableView *)self numberOfSections];
+  if (numberOfSections)
   {
-    v4 = v3;
+    v4 = numberOfSections;
     while (v4-- >= 1)
     {
       v6 = [(UITableView *)self numberOfRowsInSection:v4];
       if (v6 >= 1)
       {
-        v3 = [NSIndexPath indexPathForRow:v6 - 1 inSection:v4];
+        numberOfSections = [NSIndexPath indexPathForRow:v6 - 1 inSection:v4];
         goto LABEL_7;
       }
     }
 
-    v3 = 0;
+    numberOfSections = 0;
   }
 
 LABEL_7:
 
-  return v3;
+  return numberOfSections;
 }
 
-- (id)indexPathForFirstRowInSection:(int64_t)a3
+- (id)indexPathForFirstRowInSection:(int64_t)section
 {
-  v4 = [NSIndexPath indexPathForRow:0 inSection:a3];
+  v4 = [NSIndexPath indexPathForRow:0 inSection:section];
   if (![(UITableView *)self hasRowAtIndexPath:v4])
   {
 
@@ -135,11 +135,11 @@ LABEL_7:
   return v4;
 }
 
-- (id)indexPathForLastRowInSection:(int64_t)a3
+- (id)indexPathForLastRowInSection:(int64_t)section
 {
   if ([(UITableView *)self hasRowsInSectionAtIndex:?])
   {
-    v5 = [NSIndexPath indexPathForRow:[(UITableView *)self numberOfRowsInSection:a3]- 1 inSection:a3];
+    v5 = [NSIndexPath indexPathForRow:[(UITableView *)self numberOfRowsInSection:section]- 1 inSection:section];
   }
 
   else
@@ -197,25 +197,25 @@ LABEL_9:
   return v5;
 }
 
-- (id)indexPathForRowBeforeIndexPath:(id)a3
+- (id)indexPathForRowBeforeIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ([(UITableView *)self numberOfSections])
   {
-    if (v4)
+    if (pathCopy)
     {
-      v5 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [v4 row] - 1, objc_msgSend(v4, "section"));
-      if (![(UITableView *)self hasRowAtIndexPath:v5])
+      indexPathForFirstRow = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [pathCopy row] - 1, objc_msgSend(pathCopy, "section"));
+      if (![(UITableView *)self hasRowAtIndexPath:indexPathForFirstRow])
       {
-        v6 = [v4 section] + 1;
+        v6 = [pathCopy section] + 1;
         while (--v6 >= 1)
         {
-          v7 = -[UITableView indexPathForLastRowInSection:](self, "indexPathForLastRowInSection:", [v4 section]);
+          v7 = -[UITableView indexPathForLastRowInSection:](self, "indexPathForLastRowInSection:", [pathCopy section]);
 
-          v5 = 0;
+          indexPathForFirstRow = 0;
           if (v7)
           {
-            v5 = v7;
+            indexPathForFirstRow = v7;
             break;
           }
         }
@@ -224,27 +224,27 @@ LABEL_9:
 
     else
     {
-      v5 = [(UITableView *)self indexPathForFirstRow];
+      indexPathForFirstRow = [(UITableView *)self indexPathForFirstRow];
     }
   }
 
   else
   {
-    v5 = 0;
+    indexPathForFirstRow = 0;
   }
 
-  return v5;
+  return indexPathForFirstRow;
 }
 
-- (id)indexPathForFocusableRowBeforeIndexPath:(id)a3
+- (id)indexPathForFocusableRowBeforeIndexPath:(id)path
 {
-  v4 = a3;
-  if (v4 && -[UITableView numberOfSections](self, "numberOfSections") && (v5 = [v4 section], (v5 & 0x8000000000000000) == 0))
+  pathCopy = path;
+  if (pathCopy && -[UITableView numberOfSections](self, "numberOfSections") && (v5 = [pathCopy section], (v5 & 0x8000000000000000) == 0))
   {
     v6 = v5;
-    while (v6 == [v4 section])
+    while (v6 == [pathCopy section])
     {
-      v7 = [v4 row];
+      v7 = [pathCopy row];
       v8 = v7 - 1;
       if (v7 >= 1)
       {
@@ -288,26 +288,26 @@ LABEL_16:
   return v9;
 }
 
-- (id)indexPathForRowAfterIndexPath:(id)a3
+- (id)indexPathForRowAfterIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ([(UITableView *)self numberOfSections])
   {
-    if (v4)
+    if (pathCopy)
     {
-      v5 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [v4 row] + 1, objc_msgSend(v4, "section"));
-      if (![(UITableView *)self hasRowAtIndexPath:v5])
+      indexPathForFirstRow = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [pathCopy row] + 1, objc_msgSend(pathCopy, "section"));
+      if (![(UITableView *)self hasRowAtIndexPath:indexPathForFirstRow])
       {
-        v6 = [v4 section] + 1;
+        v6 = [pathCopy section] + 1;
         while (v6 < [(UITableView *)self numberOfSections])
         {
           v7 = [(UITableView *)self indexPathForFirstRowInSection:v6];
 
-          v5 = 0;
+          indexPathForFirstRow = 0;
           ++v6;
           if (v7)
           {
-            v5 = v7;
+            indexPathForFirstRow = v7;
             break;
           }
         }
@@ -316,28 +316,28 @@ LABEL_16:
 
     else
     {
-      v5 = [(UITableView *)self indexPathForFirstRow];
+      indexPathForFirstRow = [(UITableView *)self indexPathForFirstRow];
     }
   }
 
   else
   {
-    v5 = 0;
+    indexPathForFirstRow = 0;
   }
 
-  return v5;
+  return indexPathForFirstRow;
 }
 
-- (id)indexPathForFocusableRowAfterIndexPath:(id)a3
+- (id)indexPathForFocusableRowAfterIndexPath:(id)path
 {
-  v4 = a3;
-  if (v4 && (v5 = -[UITableView numberOfSections](self, "numberOfSections"), [v4 section] < v5) && (v6 = objc_msgSend(v4, "section"), v6 < v5))
+  pathCopy = path;
+  if (pathCopy && (v5 = -[UITableView numberOfSections](self, "numberOfSections"), [pathCopy section] < v5) && (v6 = objc_msgSend(pathCopy, "section"), v6 < v5))
   {
     v7 = v6;
     while (1)
     {
       v8 = [(UITableView *)self numberOfRowsInSection:v7];
-      v9 = v7 == [v4 section] ? objc_msgSend(v4, "row") + 1 : 0;
+      v9 = v7 == [pathCopy section] ? objc_msgSend(pathCopy, "row") + 1 : 0;
       if (v9 < v8)
       {
         break;
@@ -376,26 +376,26 @@ LABEL_14:
   return v10;
 }
 
-- (id)distanceFromIndexPath:(id)a3 toIndexPath:(id)a4
+- (id)distanceFromIndexPath:(id)path toIndexPath:(id)indexPath
 {
   v5 = 0;
-  if (a3 && a4)
+  if (path && indexPath)
   {
-    v7 = a4;
-    v8 = a3;
-    v9 = [v7 section];
-    v10 = [v8 section];
-    if (v9 - v10 >= 0)
+    indexPathCopy = indexPath;
+    pathCopy = path;
+    section = [indexPathCopy section];
+    section2 = [pathCopy section];
+    if (section - section2 >= 0)
     {
-      v11 = v9 - v10;
+      v11 = section - section2;
     }
 
     else
     {
-      v11 = v10 - v9;
+      v11 = section2 - section;
     }
 
-    v12 = [(UITableView *)self numberOfRowsFromIndexPath:v8 toFromIndexPath:v7];
+    v12 = [(UITableView *)self numberOfRowsFromIndexPath:pathCopy toFromIndexPath:indexPathCopy];
 
     v5 = [NSIndexPath indexPathForRow:v12 inSection:v11];
   }
@@ -403,15 +403,15 @@ LABEL_14:
   return v5;
 }
 
-- (unint64_t)numberOfRowsFromIndexPath:(id)a3 toFromIndexPath:(id)a4
+- (unint64_t)numberOfRowsFromIndexPath:(id)path toFromIndexPath:(id)indexPath
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  v8 = indexPathCopy;
+  if (pathCopy && indexPathCopy)
   {
-    v9 = [v6 compare:v7];
-    v10 = v6;
+    v9 = [pathCopy compare:indexPathCopy];
+    v10 = pathCopy;
     v11 = v8;
     if (v9 != -1)
     {
@@ -424,13 +424,13 @@ LABEL_14:
       }
 
       v10 = v8;
-      v11 = v6;
+      v11 = pathCopy;
     }
 
     v12 = v10;
     v13 = v11;
-    v14 = [v12 section];
-    if (v14 > [v13 section])
+    section = [v12 section];
+    if (section > [v13 section])
     {
       v15 = 0;
 LABEL_24:
@@ -441,16 +441,16 @@ LABEL_24:
     v15 = 0;
     while (1)
     {
-      if ([(UITableView *)self hasRowsInSectionAtIndex:v14])
+      if ([(UITableView *)self hasRowsInSectionAtIndex:section])
       {
-        v16 = [v13 section];
-        v17 = [v12 section];
-        v18 = v17;
-        if (v14 == v16)
+        section2 = [v13 section];
+        section3 = [v12 section];
+        v18 = section3;
+        if (section == section2)
         {
           v19 = [v13 row];
           v20 = v19;
-          if (v14 != v18)
+          if (section != v18)
           {
             v15 = &v15[v19];
             goto LABEL_21;
@@ -462,9 +462,9 @@ LABEL_24:
 
         else
         {
-          if (v14 != v17)
+          if (section != section3)
           {
-            v15 = &v15[[(UITableView *)self numberOfRowsInSection:v14]];
+            v15 = &v15[[(UITableView *)self numberOfRowsInSection:section]];
             goto LABEL_21;
           }
 
@@ -477,36 +477,36 @@ LABEL_24:
       }
 
 LABEL_21:
-      if (v14++ >= [v13 section])
+      if (section++ >= [v13 section])
       {
         goto LABEL_24;
       }
     }
   }
 
-  if (v6)
+  if (pathCopy)
   {
-    v7 = v6;
+    indexPathCopy = pathCopy;
   }
 
-  v15 = [v7 row];
+  v15 = [indexPathCopy row];
 LABEL_25:
 
   return v15;
 }
 
-- (id)_indexPathForClosestRowToIndexPath:(id)a3 focusable:(BOOL)a4
+- (id)_indexPathForClosestRowToIndexPath:(id)path focusable:(BOOL)focusable
 {
-  v4 = a4;
-  v6 = a3;
-  if ([(UITableView *)self _hasRowAtIndexPath:v6 focusable:v4])
+  focusableCopy = focusable;
+  pathCopy = path;
+  if ([(UITableView *)self _hasRowAtIndexPath:pathCopy focusable:focusableCopy])
   {
-    v7 = v6;
+    v7 = pathCopy;
     goto LABEL_21;
   }
 
-  v8 = [(UITableView *)self _indexPathForRowBeforeIndexPath:v6 focusable:v4];
-  v9 = [(UITableView *)self _indexPathForRowAfterIndexPath:v6 focusable:v4];
+  v8 = [(UITableView *)self _indexPathForRowBeforeIndexPath:pathCopy focusable:focusableCopy];
+  v9 = [(UITableView *)self _indexPathForRowAfterIndexPath:pathCopy focusable:focusableCopy];
   v10 = v9;
   if (v9 | v8)
   {
@@ -530,13 +530,13 @@ LABEL_16:
 
     if (v9)
     {
-      v12 = [v9 section];
-      v13 = v12 == [v6 section];
+      section = [v9 section];
+      v13 = section == [pathCopy section];
       if (v8)
       {
 LABEL_9:
-        v14 = [v8 section];
-        v15 = v14 == [v6 section];
+        section2 = [v8 section];
+        v15 = section2 == [pathCopy section];
         goto LABEL_12;
       }
     }
@@ -554,16 +554,16 @@ LABEL_9:
 LABEL_12:
     if (v15 == v13)
     {
-      v16 = [(UITableView *)self indexPathsForVisibleRows];
-      v17 = [v16 containsObject:v10];
+      indexPathsForVisibleRows = [(UITableView *)self indexPathsForVisibleRows];
+      v17 = [indexPathsForVisibleRows containsObject:v10];
 
-      v18 = [(UITableView *)self indexPathsForVisibleRows];
-      v19 = [v18 containsObject:v8];
+      indexPathsForVisibleRows2 = [(UITableView *)self indexPathsForVisibleRows];
+      v19 = [indexPathsForVisibleRows2 containsObject:v8];
 
       if (v17 == v19)
       {
-        v22 = [(UITableView *)self distanceFromIndexPath:v6 toIndexPath:v8];
-        v23 = [(UITableView *)self distanceFromIndexPath:v6 toIndexPath:v10];
+        v22 = [(UITableView *)self distanceFromIndexPath:pathCopy toIndexPath:v8];
+        v23 = [(UITableView *)self distanceFromIndexPath:pathCopy toIndexPath:v10];
         v24 = [v23 row];
         if (v24 >= [v22 row])
         {
@@ -599,48 +599,48 @@ LABEL_21:
   return v7;
 }
 
-- (id)_indexPathForRowAfterIndexPath:(id)a3 focusable:(BOOL)a4
+- (id)_indexPathForRowAfterIndexPath:(id)path focusable:(BOOL)focusable
 {
-  if (a4)
+  if (focusable)
   {
-    [(UITableView *)self indexPathForFocusableRowAfterIndexPath:a3];
+    [(UITableView *)self indexPathForFocusableRowAfterIndexPath:path];
   }
 
   else
   {
-    [(UITableView *)self indexPathForRowAfterIndexPath:a3];
+    [(UITableView *)self indexPathForRowAfterIndexPath:path];
   }
   v4 = ;
 
   return v4;
 }
 
-- (id)_indexPathForRowBeforeIndexPath:(id)a3 focusable:(BOOL)a4
+- (id)_indexPathForRowBeforeIndexPath:(id)path focusable:(BOOL)focusable
 {
-  if (a4)
+  if (focusable)
   {
-    [(UITableView *)self indexPathForFocusableRowBeforeIndexPath:a3];
+    [(UITableView *)self indexPathForFocusableRowBeforeIndexPath:path];
   }
 
   else
   {
-    [(UITableView *)self indexPathForRowBeforeIndexPath:a3];
+    [(UITableView *)self indexPathForRowBeforeIndexPath:path];
   }
   v4 = ;
 
   return v4;
 }
 
-- (BOOL)_hasRowAtIndexPath:(id)a3 focusable:(BOOL)a4
+- (BOOL)_hasRowAtIndexPath:(id)path focusable:(BOOL)focusable
 {
-  if (a4)
+  if (focusable)
   {
-    return [(UITableView *)self canFocusRowAtIndexPath:a3];
+    return [(UITableView *)self canFocusRowAtIndexPath:path];
   }
 
   else
   {
-    return [(UITableView *)self hasRowAtIndexPath:a3];
+    return [(UITableView *)self hasRowAtIndexPath:path];
   }
 }
 

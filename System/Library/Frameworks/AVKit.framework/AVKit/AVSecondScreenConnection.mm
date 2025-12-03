@@ -1,7 +1,7 @@
 @interface AVSecondScreenConnection
 - (AVPlayerLayer)playerLayer;
 - (AVSecondScreen)connectedSecondScreen;
-- (AVSecondScreenConnection)initWithPlayer:(id)a3 playerLayer:(id)a4;
+- (AVSecondScreenConnection)initWithPlayer:(id)player playerLayer:(id)layer;
 - (AVSecondScreenDebugAssistant)debugAssistant;
 - (BOOL)_allowsNonAirPlayExternalPlayback;
 - (BOOL)_currentItemIsReadyToPlayVideoOrLoadingWhileActive;
@@ -11,18 +11,18 @@
 - (UIViewController)contentViewController;
 - (double)videoDisplayScale;
 - (void)_loadSecondScreenViewControllerIfNeeded;
-- (void)_postNotification:(id)a3 oldValue:(id)a4 newValue:(id)a5;
+- (void)_postNotification:(id)notification oldValue:(id)value newValue:(id)newValue;
 - (void)_startObservingPlayer;
 - (void)_updatePreferredDisplayCriteria;
-- (void)_updatePreferredDisplayCriteriaFromPreparedAssetIfNeeded:(id)a3;
+- (void)_updatePreferredDisplayCriteriaFromPreparedAssetIfNeeded:(id)needed;
 - (void)_updateReadyToConnect;
-- (void)connectWithScreen:(id)a3 active:(BOOL)a4;
+- (void)connectWithScreen:(id)screen active:(BOOL)active;
 - (void)dealloc;
-- (void)setActive:(BOOL)a3;
-- (void)setPlayerLayer:(id)a3;
-- (void)setPlaying:(BOOL)a3;
-- (void)setPreferredDisplayCriteria:(id)a3;
-- (void)setReadyToConnect:(BOOL)a3;
+- (void)setActive:(BOOL)active;
+- (void)setPlayerLayer:(id)layer;
+- (void)setPlaying:(BOOL)playing;
+- (void)setPreferredDisplayCriteria:(id)criteria;
+- (void)setReadyToConnect:(BOOL)connect;
 @end
 
 @implementation AVSecondScreenConnection
@@ -53,25 +53,25 @@
 - (BOOL)_currentItemIsReadyToPlayVideoOrLoadingWhileActive
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(AVSecondScreenConnection *)self player];
-  v4 = [v3 currentItem];
+  player = [(AVSecondScreenConnection *)self player];
+  currentItem = [player currentItem];
 
-  if (!v4)
+  if (!currentItem)
   {
     goto LABEL_6;
   }
 
-  v5 = [v4 status];
-  if (v5 == 2)
+  status = [currentItem status];
+  if (status == 2)
   {
     goto LABEL_6;
   }
 
-  if (v5 == 1)
+  if (status == 1)
   {
     if (![(AVSecondScreenConnection *)self isActive])
     {
-      if (([v4 hasVideo] & 1) == 0)
+      if (([currentItem hasVideo] & 1) == 0)
       {
 LABEL_6:
         v6 = 0;
@@ -92,8 +92,8 @@ LABEL_8:
   }
 
 LABEL_9:
-  v7 = [(AVSecondScreenConnection *)self preferredDisplayCriteria];
-  v6 = v7 != 0;
+  preferredDisplayCriteria = [(AVSecondScreenConnection *)self preferredDisplayCriteria];
+  v6 = preferredDisplayCriteria != 0;
 
 LABEL_10:
   v8 = _AVLog();
@@ -119,14 +119,14 @@ LABEL_10:
 
 - (BOOL)_allowsNonAirPlayExternalPlayback
 {
-  v3 = [(AVSecondScreenConnection *)self player];
-  v4 = v3 == 0;
+  player = [(AVSecondScreenConnection *)self player];
+  v4 = player == 0;
 
-  v5 = [(AVSecondScreenConnection *)self player];
-  v6 = v5;
-  if (v5)
+  player2 = [(AVSecondScreenConnection *)self player];
+  v6 = player2;
+  if (player2)
   {
-    if ([v5 allowsExternalPlayback] && objc_msgSend(v6, "usesExternalPlaybackWhileExternalScreenIsActive"))
+    if ([player2 allowsExternalPlayback] && objc_msgSend(v6, "usesExternalPlaybackWhileExternalScreenIsActive"))
     {
       if ([v6 isExternalPlaybackActive])
       {
@@ -151,23 +151,23 @@ LABEL_10:
 - (BOOL)_determineIsReadyToConnect
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(AVSecondScreenConnection *)self player];
-  if (!v3)
+  player = [(AVSecondScreenConnection *)self player];
+  if (!player)
   {
-    v6 = [(AVSecondScreenConnection *)self contentView];
-    if (v6)
+    contentView = [(AVSecondScreenConnection *)self contentView];
+    if (contentView)
     {
       v5 = 1;
       goto LABEL_10;
     }
   }
 
-  v4 = [(AVSecondScreenConnection *)self player];
-  v5 = v4 && [(AVSecondScreenConnection *)self _allowsNonAirPlayExternalPlayback]&& [(AVSecondScreenConnection *)self _currentItemIsReadyToPlayVideoOrLoadingWhileActive];
+  player2 = [(AVSecondScreenConnection *)self player];
+  v5 = player2 && [(AVSecondScreenConnection *)self _allowsNonAirPlayExternalPlayback]&& [(AVSecondScreenConnection *)self _currentItemIsReadyToPlayVideoOrLoadingWhileActive];
 
-  if (!v3)
+  if (!player)
   {
-    v6 = 0;
+    contentView = 0;
 LABEL_10:
   }
 
@@ -194,46 +194,46 @@ LABEL_10:
 
 - (void)_updateReadyToConnect
 {
-  v3 = [(AVSecondScreenConnection *)self _determineIsReadyToConnect];
+  _determineIsReadyToConnect = [(AVSecondScreenConnection *)self _determineIsReadyToConnect];
 
-  [(AVSecondScreenConnection *)self setReadyToConnect:v3];
+  [(AVSecondScreenConnection *)self setReadyToConnect:_determineIsReadyToConnect];
 }
 
-- (void)_updatePreferredDisplayCriteriaFromPreparedAssetIfNeeded:(id)a3
+- (void)_updatePreferredDisplayCriteriaFromPreparedAssetIfNeeded:(id)needed
 {
-  v11 = a3;
-  v4 = [(AVSecondScreenConnection *)self player];
+  neededCopy = needed;
+  player = [(AVSecondScreenConnection *)self player];
 
-  v5 = v11;
-  if (v4)
+  v5 = neededCopy;
+  if (player)
   {
-    if ([v11 statusOfValueForKey:@"preferredDisplayCriteria" error:0] != 2 || (objc_msgSend(v11, "preferredDisplayCriteria"), (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+    if ([neededCopy statusOfValueForKey:@"preferredDisplayCriteria" error:0] != 2 || (objc_msgSend(neededCopy, "preferredDisplayCriteria"), (v6 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v6 = [objc_alloc(MEMORY[0x1E6987F88]) initWithRefreshRate:0 videoDynamicRange:0.0];
     }
 
-    v7 = [(AVSecondScreenConnection *)self player];
-    v8 = [v7 currentItem];
-    v9 = [v8 asset];
-    v10 = [v11 isEqual:v9];
+    player2 = [(AVSecondScreenConnection *)self player];
+    currentItem = [player2 currentItem];
+    asset = [currentItem asset];
+    v10 = [neededCopy isEqual:asset];
 
     if (v10)
     {
       [(AVSecondScreenConnection *)self setPreferredDisplayCriteria:v6];
     }
 
-    v5 = v11;
+    v5 = neededCopy;
   }
 }
 
 - (void)_updatePreferredDisplayCriteria
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(AVSecondScreenConnection *)self player];
-  v4 = [v3 currentItem];
-  v5 = [v4 asset];
+  player = [(AVSecondScreenConnection *)self player];
+  currentItem = [player currentItem];
+  asset = [currentItem asset];
 
-  if (v5)
+  if (asset)
   {
     v9[0] = @"availableVideoDynamicRanges";
     v9[1] = @"preferredDisplayCriteria";
@@ -243,7 +243,7 @@ LABEL_10:
     v7[2] = __59__AVSecondScreenConnection__updatePreferredDisplayCriteria__block_invoke;
     v7[3] = &unk_1E7209FB0;
     v7[4] = self;
-    v8 = v5;
+    v8 = asset;
     [v8 loadValuesAsynchronouslyForKeys:v6 completionHandler:v7];
   }
 
@@ -279,9 +279,9 @@ void __59__AVSecondScreenConnection__updatePreferredDisplayCriteria__block_invok
 - (void)_startObservingPlayer
 {
   v16[6] = *MEMORY[0x1E69E9840];
-  v3 = [(AVSecondScreenConnection *)self player];
+  player = [(AVSecondScreenConnection *)self player];
 
-  if (v3)
+  if (player)
   {
     v4 = [[AVObservationController alloc] initWithOwner:self];
     observationController = self->_observationController;
@@ -294,17 +294,17 @@ void __59__AVSecondScreenConnection__updatePreferredDisplayCriteria__block_invok
     v16[4] = @"currentItem.hasVideo";
     v16[5] = @"usesExternalPlaybackWhileExternalScreenIsActive";
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:6];
-    v7 = [(AVSecondScreenConnection *)self observationController];
-    v8 = [(AVSecondScreenConnection *)self player];
-    v9 = [v7 startObserving:v8 keyPaths:v6 observationHandler:&__block_literal_global_26894];
+    observationController = [(AVSecondScreenConnection *)self observationController];
+    player2 = [(AVSecondScreenConnection *)self player];
+    v9 = [observationController startObserving:player2 keyPaths:v6 observationHandler:&__block_literal_global_26894];
 
-    v10 = [(AVSecondScreenConnection *)self observationController];
-    v11 = [(AVSecondScreenConnection *)self player];
-    v12 = [v10 startObserving:v11 keyPath:@"timeControlStatus" observationHandler:&__block_literal_global_45_26896];
+    observationController2 = [(AVSecondScreenConnection *)self observationController];
+    player3 = [(AVSecondScreenConnection *)self player];
+    v12 = [observationController2 startObserving:player3 keyPath:@"timeControlStatus" observationHandler:&__block_literal_global_45_26896];
 
-    v13 = [(AVSecondScreenConnection *)self observationController];
-    v14 = [(AVSecondScreenConnection *)self player];
-    v15 = [v13 startObserving:v14 keyPath:@"currentItem.asset" observationHandler:&__block_literal_global_50_26898];
+    observationController3 = [(AVSecondScreenConnection *)self observationController];
+    player4 = [(AVSecondScreenConnection *)self player];
+    v15 = [observationController3 startObserving:player4 keyPath:@"currentItem.asset" observationHandler:&__block_literal_global_50_26898];
 
     [(AVSecondScreenConnection *)self _updatePreferredDisplayCriteria];
   }
@@ -317,41 +317,41 @@ void __49__AVSecondScreenConnection__startObservingPlayer__block_invoke_2(uint64
   [v2 setPlaying:{objc_msgSend(v3, "timeControlStatus") == 2}];
 }
 
-- (void)_postNotification:(id)a3 oldValue:(id)a4 newValue:(id)a5
+- (void)_postNotification:(id)notification oldValue:(id)value newValue:(id)newValue
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  notificationCopy = notification;
+  valueCopy = value;
+  newValueCopy = newValue;
   v11 = _AVLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412802;
-    v14 = v8;
+    v14 = notificationCopy;
     v15 = 2112;
-    v16 = v9;
+    v16 = valueCopy;
     v17 = 2112;
-    v18 = v10;
+    v18 = newValueCopy;
     _os_log_impl(&dword_18B49C000, v11, OS_LOG_TYPE_DEFAULT, "%@: %@ -> %@", &v13, 0x20u);
   }
 
-  v12 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v12 postNotificationName:v8 object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:notificationCopy object:self];
 }
 
 - (void)_loadSecondScreenViewControllerIfNeeded
 {
-  v3 = [(AVSecondScreenConnection *)self secondScreenViewController];
+  secondScreenViewController = [(AVSecondScreenConnection *)self secondScreenViewController];
 
-  if (!v3)
+  if (!secondScreenViewController)
   {
     v4 = objc_alloc_init(AVSecondScreenViewController);
     [(AVSecondScreenConnection *)self setSecondScreenViewController:v4];
 
-    v6 = [(AVSecondScreenConnection *)self secondScreenViewController];
-    v5 = [(AVSecondScreenConnection *)self connectedSecondScreen];
-    [v5 sceneBounds];
-    [v6 setInitialScreenBoundsHint:?];
+    secondScreenViewController2 = [(AVSecondScreenConnection *)self secondScreenViewController];
+    connectedSecondScreen = [(AVSecondScreenConnection *)self connectedSecondScreen];
+    [connectedSecondScreen sceneBounds];
+    [secondScreenViewController2 setInitialScreenBoundsHint:?];
   }
 }
 
@@ -362,9 +362,9 @@ void __49__AVSecondScreenConnection__startObservingPlayer__block_invoke_2(uint64
     return 0.0;
   }
 
-  v3 = [(AVSecondScreenConnection *)self secondScreenViewController];
-  v4 = [v3 traitCollection];
-  [v4 displayScale];
+  secondScreenViewController = [(AVSecondScreenConnection *)self secondScreenViewController];
+  traitCollection = [secondScreenViewController traitCollection];
+  [traitCollection displayScale];
   v6 = v5;
 
   return v6;
@@ -374,8 +374,8 @@ void __49__AVSecondScreenConnection__startObservingPlayer__block_invoke_2(uint64
 {
   if ([(AVSecondScreenConnection *)self isActive])
   {
-    v3 = [(AVSecondScreenConnection *)self secondScreenViewController];
-    [v3 videoDisplaySize];
+    secondScreenViewController = [(AVSecondScreenConnection *)self secondScreenViewController];
+    [secondScreenViewController videoDisplaySize];
     v5 = v4;
     v7 = v6;
   }
@@ -393,133 +393,133 @@ void __49__AVSecondScreenConnection__startObservingPlayer__block_invoke_2(uint64
   return result;
 }
 
-- (void)connectWithScreen:(id)a3 active:(BOOL)a4
+- (void)connectWithScreen:(id)screen active:(BOOL)active
 {
-  if (a3)
+  if (screen)
   {
-    v5 = a4;
+    activeCopy = active;
     [(AVSecondScreenConnection *)self setConnectedSecondScreen:?];
 
-    [(AVSecondScreenConnection *)self setActive:v5];
+    [(AVSecondScreenConnection *)self setActive:activeCopy];
   }
 
   else
   {
-    [(AVSecondScreenConnection *)self setActive:0, a4];
+    [(AVSecondScreenConnection *)self setActive:0, active];
 
     [(AVSecondScreenConnection *)self setConnectedSecondScreen:0];
   }
 }
 
-- (void)setPlaying:(BOOL)a3
+- (void)setPlaying:(BOOL)playing
 {
-  if (self->_playing != a3)
+  if (self->_playing != playing)
   {
-    v4 = a3;
-    self->_playing = a3;
-    v7 = [MEMORY[0x1E696AD98] numberWithInt:!a3];
-    v6 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+    playingCopy = playing;
+    self->_playing = playing;
+    v7 = [MEMORY[0x1E696AD98] numberWithInt:!playing];
+    v6 = [MEMORY[0x1E696AD98] numberWithBool:playingCopy];
     [(AVSecondScreenConnection *)self _postNotification:@"AVSecondScreenConnectionPlayingDidChangeNotification" oldValue:v7 newValue:v6];
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    v3 = a3;
-    self->_active = a3;
-    v5 = [MEMORY[0x1E696AD98] numberWithInt:!a3];
-    v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+    activeCopy = active;
+    self->_active = active;
+    v5 = [MEMORY[0x1E696AD98] numberWithInt:!active];
+    v6 = [MEMORY[0x1E696AD98] numberWithBool:activeCopy];
     [(AVSecondScreenConnection *)self _postNotification:@"AVSecondScreenConnectionActiveDidChangeNotification" oldValue:v5 newValue:v6];
 
     [(AVSecondScreenConnection *)self _updateReadyToConnect];
     if ([(AVSecondScreenConnection *)self isActive])
     {
       [(AVSecondScreenConnection *)self _loadSecondScreenViewControllerIfNeeded];
-      v7 = [(AVSecondScreenConnection *)self secondScreenViewController];
-      v8 = [(AVSecondScreenConnection *)self contentView];
-      [v7 setContentView:v8];
+      secondScreenViewController = [(AVSecondScreenConnection *)self secondScreenViewController];
+      contentView = [(AVSecondScreenConnection *)self contentView];
+      [secondScreenViewController setContentView:contentView];
 
-      v9 = [(AVSecondScreenConnection *)self secondScreenViewController];
-      v10 = [(AVSecondScreenConnection *)self playerLayer];
-      [v9 setSourcePlayerLayer:v10];
+      secondScreenViewController2 = [(AVSecondScreenConnection *)self secondScreenViewController];
+      playerLayer = [(AVSecondScreenConnection *)self playerLayer];
+      [secondScreenViewController2 setSourcePlayerLayer:playerLayer];
 
-      v11 = [(AVSecondScreenConnection *)self debugAssistant];
-      v12 = [(AVSecondScreenConnection *)self secondScreenViewController];
-      [v11 setSecondScreenViewController:v12];
+      debugAssistant = [(AVSecondScreenConnection *)self debugAssistant];
+      secondScreenViewController3 = [(AVSecondScreenConnection *)self secondScreenViewController];
+      [debugAssistant setSecondScreenViewController:secondScreenViewController3];
 
-      v17 = [(AVSecondScreenConnection *)self secondScreenViewController];
-      [v17 setPlayingOnSecondScreen:1];
+      secondScreenViewController4 = [(AVSecondScreenConnection *)self secondScreenViewController];
+      [secondScreenViewController4 setPlayingOnSecondScreen:1];
     }
 
     else
     {
-      v13 = [(AVSecondScreenConnection *)self debugAssistant];
-      [v13 setSecondScreenViewController:0];
+      debugAssistant2 = [(AVSecondScreenConnection *)self debugAssistant];
+      [debugAssistant2 setSecondScreenViewController:0];
 
-      v14 = [(AVSecondScreenConnection *)self secondScreenViewController];
-      [v14 setPlayingOnSecondScreen:0];
+      secondScreenViewController5 = [(AVSecondScreenConnection *)self secondScreenViewController];
+      [secondScreenViewController5 setPlayingOnSecondScreen:0];
 
-      v15 = [(AVSecondScreenConnection *)self secondScreenViewController];
-      [v15 setSourcePlayerLayer:0];
+      secondScreenViewController6 = [(AVSecondScreenConnection *)self secondScreenViewController];
+      [secondScreenViewController6 setSourcePlayerLayer:0];
 
-      v16 = [(AVSecondScreenConnection *)self secondScreenViewController];
-      [v16 setContentView:0];
+      secondScreenViewController7 = [(AVSecondScreenConnection *)self secondScreenViewController];
+      [secondScreenViewController7 setContentView:0];
 
       [(AVSecondScreenConnection *)self setSecondScreenViewController:0];
     }
   }
 }
 
-- (void)setReadyToConnect:(BOOL)a3
+- (void)setReadyToConnect:(BOOL)connect
 {
-  if (self->_readyToConnect != a3)
+  if (self->_readyToConnect != connect)
   {
-    v4 = a3;
-    self->_readyToConnect = a3;
-    v7 = [MEMORY[0x1E696AD98] numberWithInt:!a3];
-    v6 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+    connectCopy = connect;
+    self->_readyToConnect = connect;
+    v7 = [MEMORY[0x1E696AD98] numberWithInt:!connect];
+    v6 = [MEMORY[0x1E696AD98] numberWithBool:connectCopy];
     [(AVSecondScreenConnection *)self _postNotification:@"AVSecondScreenConnectionReadyDidChangeNotification" oldValue:v7 newValue:v6];
   }
 }
 
-- (void)setPreferredDisplayCriteria:(id)a3
+- (void)setPreferredDisplayCriteria:(id)criteria
 {
-  v10 = a3;
-  v4 = [(AVDisplayCriteria *)self->_preferredDisplayCriteria isEqual:v10];
-  v5 = v10;
-  if ((v4 & 1) == 0)
+  criteriaCopy = criteria;
+  _updateReadyToConnect = [(AVDisplayCriteria *)self->_preferredDisplayCriteria isEqual:criteriaCopy];
+  v5 = criteriaCopy;
+  if ((_updateReadyToConnect & 1) == 0)
   {
     preferredDisplayCriteria = self->_preferredDisplayCriteria;
-    if (preferredDisplayCriteria != v10)
+    if (preferredDisplayCriteria != criteriaCopy)
     {
-      v7 = v10;
+      v7 = criteriaCopy;
       v8 = self->_preferredDisplayCriteria;
       self->_preferredDisplayCriteria = v7;
       v9 = preferredDisplayCriteria;
 
       [(AVSecondScreenConnection *)self _postNotification:@"AVSecondScreenConnectionPreferredDisplayCriteriaDidChangeNotification" oldValue:v9 newValue:v7];
-      v4 = [(AVSecondScreenConnection *)self _updateReadyToConnect];
-      v5 = v10;
+      _updateReadyToConnect = [(AVSecondScreenConnection *)self _updateReadyToConnect];
+      v5 = criteriaCopy;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](_updateReadyToConnect, v5);
 }
 
-- (void)setPlayerLayer:(id)a3
+- (void)setPlayerLayer:(id)layer
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  layerCopy = layer;
   WeakRetained = objc_loadWeakRetained(&self->_playerLayer);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != layerCopy)
   {
     v6 = objc_loadWeakRetained(&self->_playerLayer);
-    objc_storeWeak(&self->_playerLayer, v4);
-    v7 = [(AVSecondScreenConnection *)self secondScreenViewController];
-    [v7 setSourcePlayerLayer:v4];
+    objc_storeWeak(&self->_playerLayer, layerCopy);
+    secondScreenViewController = [(AVSecondScreenConnection *)self secondScreenViewController];
+    [secondScreenViewController setSourcePlayerLayer:layerCopy];
 
     v8 = _AVLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -529,7 +529,7 @@ void __49__AVSecondScreenConnection__startObservingPlayer__block_invoke_2(uint64
       v11 = 2112;
       v12 = v6;
       v13 = 2112;
-      v14 = v4;
+      v14 = layerCopy;
       _os_log_impl(&dword_18B49C000, v8, OS_LOG_TYPE_DEFAULT, "%s %@ -> %@", &v9, 0x20u);
     }
   }
@@ -550,34 +550,34 @@ void __49__AVSecondScreenConnection__startObservingPlayer__block_invoke_2(uint64
       debugAssistant = self->_debugAssistant;
       self->_debugAssistant = v3;
 
-      v5 = [(AVSecondScreenConnection *)self player];
+      player = [(AVSecondScreenConnection *)self player];
 
-      if (v5)
+      if (player)
       {
         v6 = self->_debugAssistant;
-        v7 = [(AVSecondScreenConnection *)self player];
+        player2 = [(AVSecondScreenConnection *)self player];
       }
 
       else
       {
-        v8 = [(AVSecondScreenConnection *)self debugInfoPlayer];
+        debugInfoPlayer = [(AVSecondScreenConnection *)self debugInfoPlayer];
 
-        if (!v8)
+        if (!debugInfoPlayer)
         {
 LABEL_10:
           v10 = self->_debugAssistant;
-          v11 = [(AVSecondScreenConnection *)self secondScreenViewController];
-          [(AVSecondScreenDebugAssistant *)v10 setSecondScreenViewController:v11];
+          secondScreenViewController = [(AVSecondScreenConnection *)self secondScreenViewController];
+          [(AVSecondScreenDebugAssistant *)v10 setSecondScreenViewController:secondScreenViewController];
 
           goto LABEL_11;
         }
 
         v6 = self->_debugAssistant;
-        v7 = [(AVSecondScreenConnection *)self debugInfoPlayer];
+        player2 = [(AVSecondScreenConnection *)self debugInfoPlayer];
       }
 
-      v9 = v7;
-      [(AVSecondScreenDebugAssistant *)v6 setPlayer:v7];
+      v9 = player2;
+      [(AVSecondScreenDebugAssistant *)v6 setPlayer:player2];
 
       goto LABEL_10;
     }
@@ -615,20 +615,20 @@ LABEL_11:
   [(AVSecondScreenConnection *)&v4 dealloc];
 }
 
-- (AVSecondScreenConnection)initWithPlayer:(id)a3 playerLayer:(id)a4
+- (AVSecondScreenConnection)initWithPlayer:(id)player playerLayer:(id)layer
 {
-  v7 = a3;
-  v8 = a4;
+  playerCopy = player;
+  layerCopy = layer;
   v9 = [(AVSecondScreenConnection *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_player, a3);
-    objc_storeWeak(&v10->_playerLayer, v8);
+    objc_storeStrong(&v9->_player, player);
+    objc_storeWeak(&v10->_playerLayer, layerCopy);
     v10->_requiresTVOutScreen = 1;
     v10->_readyToConnect = [(AVSecondScreenConnection *)v10 _determineIsReadyToConnect];
-    v11 = [(AVSecondScreenConnection *)v10 player];
-    v10->_playing = [v11 timeControlStatus] == 2;
+    player = [(AVSecondScreenConnection *)v10 player];
+    v10->_playing = [player timeControlStatus] == 2;
   }
 
   return v10;

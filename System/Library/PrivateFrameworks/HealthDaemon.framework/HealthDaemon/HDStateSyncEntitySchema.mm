@@ -1,36 +1,36 @@
 @interface HDStateSyncEntitySchema
-+ (id)schemaWithDomain:(id)a3 dataKeys:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (HDStateSyncEntitySchema)initWithCoder:(id)a3;
-- (HDStateSyncEntitySchema)initWithWithDomain:(id)a3 dataKeys:(id)a4;
-- (void)encodeWithCoder:(id)a3;
++ (id)schemaWithDomain:(id)domain dataKeys:(id)keys;
+- (BOOL)isEqual:(id)equal;
+- (HDStateSyncEntitySchema)initWithCoder:(id)coder;
+- (HDStateSyncEntitySchema)initWithWithDomain:(id)domain dataKeys:(id)keys;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDStateSyncEntitySchema
 
-+ (id)schemaWithDomain:(id)a3 dataKeys:(id)a4
++ (id)schemaWithDomain:(id)domain dataKeys:(id)keys
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[HDStateSyncEntitySchema alloc] initWithWithDomain:v6 dataKeys:v5];
+  keysCopy = keys;
+  domainCopy = domain;
+  v7 = [[HDStateSyncEntitySchema alloc] initWithWithDomain:domainCopy dataKeys:keysCopy];
 
   return v7;
 }
 
-- (HDStateSyncEntitySchema)initWithWithDomain:(id)a3 dataKeys:(id)a4
+- (HDStateSyncEntitySchema)initWithWithDomain:(id)domain dataKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  keysCopy = keys;
   v14.receiver = self;
   v14.super_class = HDStateSyncEntitySchema;
   v8 = [(HDStateSyncEntitySchema *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [domainCopy copy];
     domain = v8->_domain;
     v8->_domain = v9;
 
-    v11 = [v7 copy];
+    v11 = [keysCopy copy];
     dataKeys = v8->_dataKeys;
     v8->_dataKeys = v11;
   }
@@ -38,10 +38,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_10;
   }
@@ -53,14 +53,14 @@
   }
 
   domain = self->_domain;
-  v6 = v4->_domain;
+  v6 = equalCopy->_domain;
   if (domain != v6 && (!v6 || ![(NSString *)domain isEqualToString:?]))
   {
     goto LABEL_9;
   }
 
   dataKeys = self->_dataKeys;
-  v8 = v4->_dataKeys;
+  v8 = equalCopy->_dataKeys;
   if (dataKeys == v8)
   {
 LABEL_10:
@@ -81,29 +81,29 @@ LABEL_11:
   return v9;
 }
 
-- (HDStateSyncEntitySchema)initWithCoder:(id)a3
+- (HDStateSyncEntitySchema)initWithCoder:(id)coder
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
   v6 = MEMORY[0x277CBEB98];
   v13[0] = objc_opt_class();
   v13[1] = objc_opt_class();
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
   v8 = [v6 setWithArray:v7];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"dataKeys"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"dataKeys"];
 
   v10 = [(HDStateSyncEntitySchema *)self initWithWithDomain:v5 dataKeys:v9];
   v11 = *MEMORY[0x277D85DE8];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   domain = self->_domain;
-  v5 = a3;
-  [v5 encodeObject:domain forKey:@"domain"];
-  [v5 encodeObject:self->_dataKeys forKey:@"dataKeys"];
+  coderCopy = coder;
+  [coderCopy encodeObject:domain forKey:@"domain"];
+  [coderCopy encodeObject:self->_dataKeys forKey:@"dataKeys"];
 }
 
 @end

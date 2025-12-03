@@ -1,23 +1,23 @@
 @interface MUContactsViewModelGenerator
 + (id)symbolImageForAddressItem;
-- (MUContactsViewModelGenerator)initWithContact:(id)a3;
-- (id)headerLabelFromAddress:(id)a3;
-- (id)sectionViewsFromContentViews:(id)a3 headerLabels:(id)a4;
-- (id)viewModelForAddress:(id)a3;
+- (MUContactsViewModelGenerator)initWithContact:(id)contact;
+- (id)headerLabelFromAddress:(id)address;
+- (id)sectionViewsFromContentViews:(id)views headerLabels:(id)labels;
+- (id)viewModelForAddress:(id)address;
 @end
 
 @implementation MUContactsViewModelGenerator
 
-- (id)sectionViewsFromContentViews:(id)a3 headerLabels:(id)a4
+- (id)sectionViewsFromContentViews:(id)views headerLabels:(id)labels
 {
-  v5 = a4;
+  labelsCopy = labels;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __74__MUContactsViewModelGenerator_sectionViewsFromContentViews_headerLabels___block_invoke;
   v9[3] = &unk_1E8219CE8;
-  v10 = v5;
-  v6 = v5;
-  v7 = MUMap(a3, v9);
+  v10 = labelsCopy;
+  v6 = labelsCopy;
+  v7 = MUMap(views, v9);
 
   return v7;
 }
@@ -42,11 +42,11 @@ MUPlaceSectionView *__74__MUContactsViewModelGenerator_sectionViewsFromContentVi
   return v8;
 }
 
-- (id)headerLabelFromAddress:(id)a3
+- (id)headerLabelFromAddress:(id)address
 {
-  v3 = a3;
-  v4 = [v3 label];
-  v5 = [v4 isEqualToString:*MEMORY[0x1E695CB60]];
+  addressCopy = address;
+  label = [addressCopy label];
+  v5 = [label isEqualToString:*MEMORY[0x1E695CB60]];
 
   if (v5)
   {
@@ -55,8 +55,8 @@ MUPlaceSectionView *__74__MUContactsViewModelGenerator_sectionViewsFromContentVi
 
   else
   {
-    v7 = [v3 label];
-    v8 = [v7 isEqualToString:*MEMORY[0x1E695CBD8]];
+    label2 = [addressCopy label];
+    v8 = [label2 isEqualToString:*MEMORY[0x1E695CBD8]];
 
     if (v8)
     {
@@ -65,8 +65,8 @@ MUPlaceSectionView *__74__MUContactsViewModelGenerator_sectionViewsFromContentVi
 
     else
     {
-      v9 = [v3 label];
-      v10 = [v9 isEqualToString:*MEMORY[0x1E695CBC8]];
+      label3 = [addressCopy label];
+      v10 = [label3 isEqualToString:*MEMORY[0x1E695CBC8]];
 
       if (v10)
       {
@@ -75,13 +75,13 @@ MUPlaceSectionView *__74__MUContactsViewModelGenerator_sectionViewsFromContentVi
 
       else
       {
-        v11 = [v3 label];
+        label4 = [addressCopy label];
 
-        if (v11)
+        if (label4)
         {
           v12 = MEMORY[0x1E695CEE0];
-          v13 = [v3 label];
-          v14 = [v12 localizedStringForLabel:v13];
+          label5 = [addressCopy label];
+          v14 = [v12 localizedStringForLabel:label5];
 
           if (v14)
           {
@@ -109,13 +109,13 @@ LABEL_12:
   return v16;
 }
 
-- (id)viewModelForAddress:(id)a3
+- (id)viewModelForAddress:(id)address
 {
-  v3 = a3;
+  addressCopy = address;
   v4 = objc_alloc_init(MULabeledValueActionViewModel);
-  v5 = [v3 identifier];
-  v6 = [MEMORY[0x1E695CD58] _mapkit_sharedLocationContactIdentifer];
-  v7 = [v5 isEqualToString:v6];
+  identifier = [addressCopy identifier];
+  _mapkit_sharedLocationContactIdentifer = [MEMORY[0x1E695CD58] _mapkit_sharedLocationContactIdentifer];
+  v7 = [identifier isEqualToString:_mapkit_sharedLocationContactIdentifer];
 
   if (v7)
   {
@@ -131,8 +131,8 @@ LABEL_12:
   [(MULabeledValueActionViewModel *)v4 setTitleString:v9];
 
   v10 = MEMORY[0x1E695CF68];
-  v11 = [v3 value];
-  v12 = [v10 stringFromPostalAddress:v11 style:0];
+  value = [addressCopy value];
+  v12 = [v10 stringFromPostalAddress:value style:0];
   [(MULabeledValueActionViewModel *)v4 setValueString:v12];
 
   [(MULabeledValueActionViewModel *)v4 setAnalyticsTarget:1502];
@@ -142,16 +142,16 @@ LABEL_12:
   return v4;
 }
 
-- (MUContactsViewModelGenerator)initWithContact:(id)a3
+- (MUContactsViewModelGenerator)initWithContact:(id)contact
 {
-  v5 = a3;
+  contactCopy = contact;
   v9.receiver = self;
   v9.super_class = MUContactsViewModelGenerator;
   v6 = [(MUContactsViewModelGenerator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contact, a3);
+    objc_storeStrong(&v6->_contact, contact);
   }
 
   return v7;

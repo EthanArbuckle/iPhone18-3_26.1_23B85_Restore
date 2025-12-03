@@ -1,5 +1,5 @@
 @interface PLUtilityAssetClassification
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)boundingBox;
 - (unint64_t)hash;
 @end
@@ -25,17 +25,17 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PLUtilityAssetClassification *)self extendedSceneIdentifier];
+  extendedSceneIdentifier = [(PLUtilityAssetClassification *)self extendedSceneIdentifier];
   [(PLUtilityAssetClassification *)self confidence];
   v5 = v4;
-  v6 = v3 ^ [(PLUtilityAssetClassification *)self classificationType];
+  v6 = extendedSceneIdentifier ^ [(PLUtilityAssetClassification *)self classificationType];
   return v6 ^ [(PLUtilityAssetClassification *)self packedBoundingBox]^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v23 = 1;
   }
@@ -45,9 +45,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PLUtilityAssetClassification *)self extendedSceneIdentifier];
-      if (v6 == [(PLUtilityAssetClassification *)v5 extendedSceneIdentifier]&& ([(PLUtilityAssetClassification *)self confidence], v8 = v7, [(PLUtilityAssetClassification *)v5 confidence], v8 == v9) && (v10 = [(PLUtilityAssetClassification *)self classificationType], v10 == [(PLUtilityAssetClassification *)v5 classificationType]))
+      v5 = equalCopy;
+      extendedSceneIdentifier = [(PLUtilityAssetClassification *)self extendedSceneIdentifier];
+      if (extendedSceneIdentifier == [(PLUtilityAssetClassification *)v5 extendedSceneIdentifier]&& ([(PLUtilityAssetClassification *)self confidence], v8 = v7, [(PLUtilityAssetClassification *)v5 confidence], v8 == v9) && (v10 = [(PLUtilityAssetClassification *)self classificationType], v10 == [(PLUtilityAssetClassification *)v5 classificationType]))
       {
         [(PLUtilityAssetClassification *)self boundingBox];
         v12 = v11;

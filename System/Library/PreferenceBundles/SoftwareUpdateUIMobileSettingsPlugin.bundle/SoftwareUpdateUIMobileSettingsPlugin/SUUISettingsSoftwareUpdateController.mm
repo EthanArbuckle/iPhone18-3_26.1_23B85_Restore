@@ -1,6 +1,6 @@
 @interface SUUISettingsSoftwareUpdateController
-- (SUUISettingsSoftwareUpdateController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
+- (SUUISettingsSoftwareUpdateController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)handleURL:(id)l withCompletion:(id)completion;
 - (void)viewDidLoad;
 @end
 
@@ -13,15 +13,15 @@
   _objc_release(self);
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  a3;
-  v11 = _Block_copy(a4);
+  l;
+  v11 = _Block_copy(completion);
   self;
-  if (a3)
+  if (l)
   {
     v7 = sub_51290();
-    _objc_release(a3);
+    _objc_release(l);
     v8 = v7;
   }
 
@@ -50,15 +50,15 @@
   _objc_release(self);
 }
 
-- (SUUISettingsSoftwareUpdateController)initWithNibName:(id)a3 bundle:(id)a4
+- (SUUISettingsSoftwareUpdateController)initWithNibName:(id)name bundle:(id)bundle
 {
-  a3;
-  a4;
-  if (a3)
+  name;
+  bundle;
+  if (name)
   {
     v6 = sub_51310();
     v7 = v4;
-    _objc_release(a3);
+    _objc_release(name);
     v8 = v6;
     v9 = v7;
   }
@@ -69,7 +69,7 @@
     v9 = 0;
   }
 
-  return SUUISettingsSoftwareUpdateController.init(nibName:bundle:)(v8, v9, a4);
+  return SUUISettingsSoftwareUpdateController.init(nibName:bundle:)(v8, v9, bundle);
 }
 
 @end

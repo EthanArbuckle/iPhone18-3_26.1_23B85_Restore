@@ -1,21 +1,21 @@
 @interface AAFamilyEligibilityResponse
-- (AAFamilyEligibilityResponse)initWithHTTPResponse:(id)a3 data:(id)a4;
+- (AAFamilyEligibilityResponse)initWithHTTPResponse:(id)response data:(id)data;
 - (BOOL)eligible;
 - (int64_t)eligibilityStatus;
 @end
 
 @implementation AAFamilyEligibilityResponse
 
-- (AAFamilyEligibilityResponse)initWithHTTPResponse:(id)a3 data:(id)a4
+- (AAFamilyEligibilityResponse)initWithHTTPResponse:(id)response data:(id)data
 {
   v20.receiver = self;
   v20.super_class = AAFamilyEligibilityResponse;
-  v4 = [(AAResponse *)&v20 initWithHTTPResponse:a3 data:a4];
+  v4 = [(AAResponse *)&v20 initWithHTTPResponse:response data:data];
   v5 = v4;
   if (v4)
   {
-    v6 = [(AAResponse *)v4 responseDictionary];
-    v7 = [v6 objectForKey:@"family-meta-info"];
+    responseDictionary = [(AAResponse *)v4 responseDictionary];
+    v7 = [responseDictionary objectForKey:@"family-meta-info"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -50,20 +50,20 @@
 
 - (BOOL)eligible
 {
-  v2 = [(AAResponse *)self responseDictionary];
-  v3 = [v2 objectForKey:@"eligible"];
-  v4 = [v3 BOOLValue];
+  responseDictionary = [(AAResponse *)self responseDictionary];
+  v3 = [responseDictionary objectForKey:@"eligible"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (int64_t)eligibilityStatus
 {
-  v3 = [(AAResponse *)self responseDictionary];
-  v4 = [v3 objectForKey:@"eligible"];
+  responseDictionary = [(AAResponse *)self responseDictionary];
+  v4 = [responseDictionary objectForKey:@"eligible"];
 
-  v5 = [(AAResponse *)self responseDictionary];
-  v6 = [v5 objectForKey:@"status"];
+  responseDictionary2 = [(AAResponse *)self responseDictionary];
+  v6 = [responseDictionary2 objectForKey:@"status"];
 
   if ([v4 BOOLValue])
   {

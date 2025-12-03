@@ -1,15 +1,15 @@
 @interface TSWPTextHighlightRenderingDelegate
-- (BOOL)shouldRenderForLineDrawFlags:(unint64_t)a3;
+- (BOOL)shouldRenderForLineDrawFlags:(unint64_t)flags;
 - (CGColor)cgColor;
-- (TSWPTextHighlightRenderingDelegate)initWithHighlights:(id)a3;
+- (TSWPTextHighlightRenderingDelegate)initWithHighlights:(id)highlights;
 @end
 
 @implementation TSWPTextHighlightRenderingDelegate
 
-- (TSWPTextHighlightRenderingDelegate)initWithHighlights:(id)a3
+- (TSWPTextHighlightRenderingDelegate)initWithHighlights:(id)highlights
 {
-  v6 = a3;
-  if (!v6)
+  highlightsCopy = highlights;
+  if (!highlightsCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[TSWPTextHighlightRenderingDelegate initWithHighlights:]");
@@ -19,7 +19,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v12, v13);
   }
 
-  if (!objc_msgSend_count(v6, v4, v5))
+  if (!objc_msgSend_count(highlightsCopy, v4, v5))
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "[TSWPTextHighlightRenderingDelegate initWithHighlights:]");
@@ -34,7 +34,7 @@
   v24 = [(TSWPTextHighlightRenderingDelegate *)&v28 init];
   if (v24)
   {
-    v25 = objc_msgSend_copy(v6, v22, v23);
+    v25 = objc_msgSend_copy(highlightsCopy, v22, v23);
     highlights = v24->_highlights;
     v24->_highlights = v25;
   }
@@ -60,11 +60,11 @@
   return v8;
 }
 
-- (BOOL)shouldRenderForLineDrawFlags:(unint64_t)a3
+- (BOOL)shouldRenderForLineDrawFlags:(unint64_t)flags
 {
-  v3 = a3;
+  flagsCopy = flags;
   v35 = *MEMORY[0x277D85DE8];
-  v5 = objc_msgSend_highlights(self, a2, a3);
+  v5 = objc_msgSend_highlights(self, a2, flags);
   v8 = objc_msgSend_count(v5, v6, v7);
 
   if (!v8)
@@ -98,7 +98,7 @@
 
         v26 = *(*(&v30 + 1) + 8 * i);
         isCommentEmpty = objc_msgSend_isCommentEmpty(v26, v21, v22);
-        if ((v3 & 0x2000) != 0 && (isCommentEmpty & 1) != 0 || (v3 & 0x1000) != 0 && !objc_msgSend_isCommentEmpty(v26, v21, v22))
+        if ((flagsCopy & 0x2000) != 0 && (isCommentEmpty & 1) != 0 || (flagsCopy & 0x1000) != 0 && !objc_msgSend_isCommentEmpty(v26, v21, v22))
         {
           v28 = 1;
           goto LABEL_16;

@@ -1,21 +1,21 @@
 @interface FlowAdaptationDecoder
-- (BOOL)bindCVPixelBuffers:(__CVBuffer *)a3 correlation:(__CVBuffer *)a4 flow:(__CVBuffer *)a5 output:(__CVBuffer *)a6;
-- (BOOL)estimateFlow:(__CVBuffer *)a3 correlation:(__CVBuffer *)a4 flow:(__CVBuffer *)a5 output:(__CVBuffer *)a6 callback:(id)a7;
-- (FlowAdaptationDecoder)initWithMode:(int64_t)a3 revision:(int64_t)a4;
+- (BOOL)bindCVPixelBuffers:(__CVBuffer *)buffers correlation:(__CVBuffer *)correlation flow:(__CVBuffer *)flow output:(__CVBuffer *)output;
+- (BOOL)estimateFlow:(__CVBuffer *)flow correlation:(__CVBuffer *)correlation flow:(__CVBuffer *)a5 output:(__CVBuffer *)output callback:(id)callback;
+- (FlowAdaptationDecoder)initWithMode:(int64_t)mode revision:(int64_t)revision;
 - (void)setupNetworkModel;
 @end
 
 @implementation FlowAdaptationDecoder
 
-- (FlowAdaptationDecoder)initWithMode:(int64_t)a3 revision:(int64_t)a4
+- (FlowAdaptationDecoder)initWithMode:(int64_t)mode revision:(int64_t)revision
 {
   [(EspressoModel *)self setUsage:?];
-  [(FlowEstimate *)self setRevision:a4];
+  [(FlowEstimate *)self setRevision:revision];
   [(FlowAdaptationDecoder *)self setupNetworkModel];
   espresso_file = self->_espresso_file;
   v14.receiver = self;
   v14.super_class = FlowAdaptationDecoder;
-  v8 = [(EspressoModel *)&v14 initWithModelName:espresso_file usage:a3];
+  v8 = [(EspressoModel *)&v14 initWithModelName:espresso_file usage:mode];
   v9 = v8;
   if (v8)
   {
@@ -48,7 +48,7 @@
   }
 }
 
-- (BOOL)bindCVPixelBuffers:(__CVBuffer *)a3 correlation:(__CVBuffer *)a4 flow:(__CVBuffer *)a5 output:(__CVBuffer *)a6
+- (BOOL)bindCVPixelBuffers:(__CVBuffer *)buffers correlation:(__CVBuffer *)correlation flow:(__CVBuffer *)flow output:(__CVBuffer *)output
 {
   p_net = &self->super.super._net;
   v8 = *self->super._inputBlobs;
@@ -90,9 +90,9 @@
   return 1;
 }
 
-- (BOOL)estimateFlow:(__CVBuffer *)a3 correlation:(__CVBuffer *)a4 flow:(__CVBuffer *)a5 output:(__CVBuffer *)a6 callback:(id)a7
+- (BOOL)estimateFlow:(__CVBuffer *)flow correlation:(__CVBuffer *)correlation flow:(__CVBuffer *)a5 output:(__CVBuffer *)output callback:(id)callback
 {
-  v12 = a7;
+  callbackCopy = callback;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -102,14 +102,14 @@
   block[1] = 3221225472;
   block[2] = __71__FlowAdaptationDecoder_estimateFlow_correlation_flow_output_callback___block_invoke;
   block[3] = &unk_278FEA560;
-  v20 = a4;
+  correlationCopy = correlation;
   v21 = a5;
-  v22 = a6;
+  outputCopy = output;
   v18 = &v23;
-  v19 = a3;
+  flowCopy = flow;
   block[4] = self;
-  v17 = v12;
-  v14 = v12;
+  v17 = callbackCopy;
+  v14 = callbackCopy;
   dispatch_sync(submissionQueue, block);
   LOBYTE(a5) = *(v24 + 24);
 

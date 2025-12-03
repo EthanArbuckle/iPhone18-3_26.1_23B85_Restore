@@ -1,25 +1,25 @@
 @interface IMItem
-+ (Class)classForIMItemType:(int64_t)a3;
-+ (Class)classForMessageItemDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (Class)classForIMItemType:(int64_t)type;
++ (Class)classForMessageItemDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFromMe;
-- (BOOL)isOlderThanItem:(id)a3;
+- (BOOL)isOlderThanItem:(id)item;
 - (BOOL)unsentIsFromMeItem;
-- (IMItem)initWithCoder:(id)a3;
-- (IMItem)initWithDictionary:(id)a3;
-- (IMItem)initWithSender:(id)a3 time:(id)a4 guid:(id)a5 type:(int64_t)a6;
-- (IMItem)initWithSenderInfo:(id)a3 time:(id)a4 guid:(id)a5 messageID:(int64_t)a6 account:(id)a7 accountID:(id)a8 service:(id)a9 handle:(id)a10 roomName:(id)a11 unformattedID:(id)a12 countryCode:(id)a13 type:(int64_t)a14;
+- (IMItem)initWithCoder:(id)coder;
+- (IMItem)initWithDictionary:(id)dictionary;
+- (IMItem)initWithSender:(id)sender time:(id)time guid:(id)guid type:(int64_t)type;
+- (IMItem)initWithSenderInfo:(id)info time:(id)time guid:(id)guid messageID:(int64_t)d account:(id)account accountID:(id)iD service:(id)service handle:(id)self0 roomName:(id)self1 unformattedID:(id)self2 countryCode:(id)self3 type:(int64_t)self4;
 - (_NSRange)associatedMessageRange;
 - (id)copyDictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)pluginSessionGUID;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithIMRemoteObjectSerializedDictionary:(id)a3;
-- (void)setPersonCentricID:(id)a3;
-- (void)setSender:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithIMRemoteObjectSerializedDictionary:(id)dictionary;
+- (void)setPersonCentricID:(id)d;
+- (void)setSender:(id)sender;
 @end
 
 @implementation IMItem
@@ -96,10 +96,10 @@
 
   if ([(NSString *)self->_balloonBundleID length])
   {
-    v16 = [(IMItem *)self balloonBundleID];
-    if (v16)
+    balloonBundleID = [(IMItem *)self balloonBundleID];
+    if (balloonBundleID)
     {
-      CFDictionarySetValue(Mutable, @"balloonBundleID", v16);
+      CFDictionarySetValue(Mutable, @"balloonBundleID", balloonBundleID);
     }
   }
 
@@ -175,32 +175,32 @@
   return result;
 }
 
-+ (Class)classForIMItemType:(int64_t)a3
++ (Class)classForIMItemType:(int64_t)type
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8 = @"type";
-  v4 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithLongLong:type];
   v9[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  v6 = [a1 classForMessageItemDictionary:v5];
+  v6 = [self classForMessageItemDictionary:v5];
 
   return v6;
 }
 
-+ (Class)classForMessageItemDictionary:(id)a3
++ (Class)classForMessageItemDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"type"];
-  v5 = [v4 longLongValue];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:@"type"];
+  longLongValue = [v4 longLongValue];
 
   v6 = 0;
-  if (v5 <= 3)
+  if (longLongValue <= 3)
   {
-    if (v5 <= 1)
+    if (longLongValue <= 1)
     {
-      if (v5)
+      if (longLongValue)
       {
-        if (v5 != 1)
+        if (longLongValue != 1)
         {
           goto LABEL_11;
         }
@@ -208,12 +208,12 @@
 
       else
       {
-        [v3 objectForKey:@"associatedMessageGUID"];
+        [dictionaryCopy objectForKey:@"associatedMessageGUID"];
       }
     }
   }
 
-  else if (v5 > 8)
+  else if (longLongValue > 8)
   {
     goto LABEL_11;
   }
@@ -230,13 +230,13 @@ LABEL_11:
   v16.receiver = self;
   v16.super_class = IMItem;
   v3 = [(IMItem *)&v16 description];
-  v4 = [(IMItem *)self messageID];
-  v5 = [(IMItem *)self guid];
-  v6 = [(IMItem *)self time];
-  v7 = [(IMItem *)self cloudKitSyncState];
-  v8 = [(IMItem *)self cloudKitRecordID];
-  v9 = [(IMItem *)self destinationCallerID];
-  v10 = [(IMItem *)self sortID];
+  messageID = [(IMItem *)self messageID];
+  guid = [(IMItem *)self guid];
+  time = [(IMItem *)self time];
+  cloudKitSyncState = [(IMItem *)self cloudKitSyncState];
+  cloudKitRecordID = [(IMItem *)self cloudKitRecordID];
+  destinationCallerID = [(IMItem *)self destinationCallerID];
+  sortID = [(IMItem *)self sortID];
   if ([(IMItem *)self wasDetonated])
   {
     v11 = @"YES";
@@ -247,55 +247,55 @@ LABEL_11:
     v11 = @"NO";
   }
 
-  v12 = [(IMItem *)self service];
-  v13 = [v15 stringWithFormat:@"[%@ messageID: %lld guid: %@ time: %@ ck-sync-state: %ld ck-record-id %@ destinationCallerID: %@ sortID %lu wasDetonated: %@ service: %@]", v3, v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  service = [(IMItem *)self service];
+  v13 = [v15 stringWithFormat:@"[%@ messageID: %lld guid: %@ time: %@ ck-sync-state: %ld ck-record-id %@ destinationCallerID: %@ sortID %lu wasDetonated: %@ service: %@]", v3, messageID, guid, time, cloudKitSyncState, cloudKitRecordID, destinationCallerID, sortID, v11, service];
 
   return v13;
 }
 
-- (IMItem)initWithDictionary:(id)a3
+- (IMItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v33.receiver = self;
   v33.super_class = IMItem;
   v5 = [(IMItem *)&v33 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"senderInfo"];
+    v6 = [dictionaryCopy objectForKey:@"senderInfo"];
     [(IMItem *)v5 setSenderInfo:v6];
 
-    v7 = [v4 objectForKey:@"guid"];
+    v7 = [dictionaryCopy objectForKey:@"guid"];
     if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v8 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v7]) == 0 || (v9 = v8, objc_msgSend(v8, "UUIDString"), v10 = objc_claimAutoreleasedReturnValue(), v9, !v10))
     {
       v10 = +[IMItem stringGUID];
     }
 
     [(IMItem *)v5 setGuid:v10];
-    v11 = [v4 objectForKey:@"roomName"];
+    v11 = [dictionaryCopy objectForKey:@"roomName"];
     [(IMItem *)v5 setRoomName:v11];
 
-    v12 = [v4 objectForKey:@"handle"];
+    v12 = [dictionaryCopy objectForKey:@"handle"];
     [(IMItem *)v5 setHandle:v12];
 
-    v13 = [v4 objectForKey:@"account"];
+    v13 = [dictionaryCopy objectForKey:@"account"];
     [(IMItem *)v5 setAccount:v13];
 
-    v14 = [v4 objectForKey:@"accountID"];
+    v14 = [dictionaryCopy objectForKey:@"accountID"];
     [(IMItem *)v5 setAccountID:v14];
 
-    v15 = [v4 objectForKey:@"service"];
+    v15 = [dictionaryCopy objectForKey:@"service"];
     [(IMItem *)v5 setService:v15];
 
-    v16 = [v4 objectForKey:@"unformattedID"];
+    v16 = [dictionaryCopy objectForKey:@"unformattedID"];
     [(IMItem *)v5 setUnformattedID:v16];
 
-    v17 = [v4 objectForKey:@"countryCode"];
+    v17 = [dictionaryCopy objectForKey:@"countryCode"];
     [(IMItem *)v5 setCountryCode:v17];
 
-    v18 = [v4 objectForKey:@"balloonBundleID"];
+    v18 = [dictionaryCopy objectForKey:@"balloonBundleID"];
     [(IMItem *)v5 setBalloonBundleID:v18];
 
-    v19 = [v4 objectForKey:@"time"];
+    v19 = [dictionaryCopy objectForKey:@"time"];
     [v19 doubleValue];
     v21 = v20;
 
@@ -305,56 +305,56 @@ LABEL_11:
       [(IMItem *)v5 setTime:v22];
     }
 
-    v23 = [v4 objectForKey:@"messageID"];
+    v23 = [dictionaryCopy objectForKey:@"messageID"];
     v5->_messageID = [v23 longLongValue];
 
-    v24 = [v4 objectForKey:@"type"];
+    v24 = [dictionaryCopy objectForKey:@"type"];
     v5->_type = [v24 longLongValue];
 
-    v25 = [v4 objectForKey:@"ckSyncState"];
+    v25 = [dictionaryCopy objectForKey:@"ckSyncState"];
     -[IMItem setCloudKitSyncState:](v5, "setCloudKitSyncState:", [v25 integerValue]);
 
-    v26 = [v4 objectForKey:@"ckRecordID"];
+    v26 = [dictionaryCopy objectForKey:@"ckRecordID"];
     [(IMItem *)v5 setCloudKitRecordID:v26];
 
-    v27 = [v4 objectForKey:@"ckServerChangeTokenBlob"];
+    v27 = [dictionaryCopy objectForKey:@"ckServerChangeTokenBlob"];
     [(IMItem *)v5 setCloudKitServerChangeTokenBlob:v27];
 
-    v28 = [v4 objectForKey:@"ckRecordChangeTag"];
+    v28 = [dictionaryCopy objectForKey:@"ckRecordChangeTag"];
     [(IMItem *)v5 setCloudKitRecordChangeTag:v28];
 
-    v29 = [v4 objectForKey:@"destinationCallerID"];
+    v29 = [dictionaryCopy objectForKey:@"destinationCallerID"];
     [(IMItem *)v5 setDestinationCallerID:v29];
 
-    v30 = [v4 objectForKey:@"sortID"];
+    v30 = [dictionaryCopy objectForKey:@"sortID"];
     -[IMItem setSortID:](v5, "setSortID:", [v30 unsignedIntegerValue]);
 
-    v31 = [v4 objectForKey:@"replyToGUID"];
+    v31 = [dictionaryCopy objectForKey:@"replyToGUID"];
     [(IMItem *)v5 setReplyToGUID:v31];
   }
 
   return v5;
 }
 
-- (IMItem)initWithSender:(id)a3 time:(id)a4 guid:(id)a5 type:(int64_t)a6
+- (IMItem)initWithSender:(id)sender time:(id)time guid:(id)guid type:(int64_t)type
 {
-  if (a3)
+  if (sender)
   {
     v10 = MEMORY[0x1E695DF20];
     v11 = *MEMORY[0x1E69A6310];
-    v12 = a5;
-    v13 = a4;
-    v14 = [v10 dictionaryWithObject:a3 forKey:v11];
-    v15 = [(IMItem *)self initWithSenderInfo:v14 time:v13 guid:v12 messageID:0 account:0 accountID:0 service:0 handle:0 roomName:0 unformattedID:0 countryCode:0 type:a6];
+    guidCopy = guid;
+    timeCopy = time;
+    v14 = [v10 dictionaryWithObject:sender forKey:v11];
+    v15 = [(IMItem *)self initWithSenderInfo:v14 time:timeCopy guid:guidCopy messageID:0 account:0 accountID:0 service:0 handle:0 roomName:0 unformattedID:0 countryCode:0 type:type];
 
     v16 = v15;
   }
 
   else
   {
-    v17 = a5;
-    v18 = a4;
-    v19 = [(IMItem *)self initWithSenderInfo:0 time:v18 guid:v17 messageID:0 account:0 accountID:0 service:0 handle:0 roomName:0 unformattedID:0 countryCode:0 type:a6];
+    guidCopy2 = guid;
+    timeCopy2 = time;
+    v19 = [(IMItem *)self initWithSenderInfo:0 time:timeCopy2 guid:guidCopy2 messageID:0 account:0 accountID:0 service:0 handle:0 roomName:0 unformattedID:0 countryCode:0 type:type];
 
     v16 = v19;
   }
@@ -362,61 +362,61 @@ LABEL_11:
   return v16;
 }
 
-- (IMItem)initWithSenderInfo:(id)a3 time:(id)a4 guid:(id)a5 messageID:(int64_t)a6 account:(id)a7 accountID:(id)a8 service:(id)a9 handle:(id)a10 roomName:(id)a11 unformattedID:(id)a12 countryCode:(id)a13 type:(int64_t)a14
+- (IMItem)initWithSenderInfo:(id)info time:(id)time guid:(id)guid messageID:(int64_t)d account:(id)account accountID:(id)iD service:(id)service handle:(id)self0 roomName:(id)self1 unformattedID:(id)self2 countryCode:(id)self3 type:(int64_t)self4
 {
-  v18 = a3;
-  v39 = a4;
-  v19 = a5;
-  v20 = a7;
-  v21 = a8;
-  v22 = v20;
-  v23 = a9;
-  v24 = v21;
-  v25 = a10;
-  v26 = a11;
-  v27 = a12;
-  v28 = a13;
+  infoCopy = info;
+  timeCopy = time;
+  guidCopy = guid;
+  accountCopy = account;
+  iDCopy = iD;
+  v22 = accountCopy;
+  serviceCopy = service;
+  v24 = iDCopy;
+  handleCopy = handle;
+  nameCopy = name;
+  unformattedIDCopy = unformattedID;
+  codeCopy = code;
   v40.receiver = self;
   v40.super_class = IMItem;
   v29 = [(IMItem *)&v40 init];
   v30 = v29;
   if (v29)
   {
-    [(IMItem *)v29 setSenderInfo:v18];
-    [(IMItem *)v30 setRoomName:v26];
-    [(IMItem *)v30 setHandle:v25];
+    [(IMItem *)v29 setSenderInfo:infoCopy];
+    [(IMItem *)v30 setRoomName:nameCopy];
+    [(IMItem *)v30 setHandle:handleCopy];
     [(IMItem *)v30 setAccount:v22];
     [(IMItem *)v30 setAccountID:v24];
-    v38 = v23;
-    [(IMItem *)v30 setService:v23];
-    if (v39)
+    v38 = serviceCopy;
+    [(IMItem *)v30 setService:serviceCopy];
+    if (timeCopy)
     {
-      [(IMItem *)v30 setTime:v39];
+      [(IMItem *)v30 setTime:timeCopy];
     }
 
     else
     {
       [MEMORY[0x1E695DF00] date];
-      v32 = v31 = v18;
+      v32 = v31 = infoCopy;
       [(IMItem *)v30 setTime:v32];
 
-      v18 = v31;
+      infoCopy = v31;
     }
 
-    [(IMItem *)v30 setCountryCode:v28];
-    [(IMItem *)v30 setUnformattedID:v27];
-    if (v19)
+    [(IMItem *)v30 setCountryCode:codeCopy];
+    [(IMItem *)v30 setUnformattedID:unformattedIDCopy];
+    if (guidCopy)
     {
-      [(IMItem *)v30 setGuid:v19];
+      [(IMItem *)v30 setGuid:guidCopy];
     }
 
     else
     {
       [MEMORY[0x1E696AEC0] stringGUID];
-      v34 = v33 = v18;
+      v34 = v33 = infoCopy;
       [(IMItem *)v30 setGuid:v34];
 
-      v18 = v33;
+      infoCopy = v33;
     }
 
     [(IMItem *)v30 setCloudKitSyncState:0];
@@ -424,73 +424,73 @@ LABEL_11:
     [(IMItem *)v30 setCloudKitServerChangeTokenBlob:0];
     [(IMItem *)v30 setCloudKitRecordChangeTag:0];
     [(IMItem *)v30 setSortID:0];
-    v23 = v38;
-    v30->_messageID = a6;
-    v30->_type = a14;
+    serviceCopy = v38;
+    v30->_messageID = d;
+    v30->_type = type;
   }
 
   return v30;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(IMItem *)self senderInfo];
-  [v4 setSenderInfo:v5];
+  senderInfo = [(IMItem *)self senderInfo];
+  [v4 setSenderInfo:senderInfo];
 
-  v6 = [(IMItem *)self time];
-  [v4 setTime:v6];
+  time = [(IMItem *)self time];
+  [v4 setTime:time];
 
-  v7 = [(IMItem *)self guid];
-  [v4 setGuid:v7];
+  guid = [(IMItem *)self guid];
+  [v4 setGuid:guid];
 
-  v8 = [(IMItem *)self roomName];
-  [v4 setRoomName:v8];
+  roomName = [(IMItem *)self roomName];
+  [v4 setRoomName:roomName];
 
-  v9 = [(IMItem *)self handle];
-  [v4 setHandle:v9];
+  handle = [(IMItem *)self handle];
+  [v4 setHandle:handle];
 
-  v10 = [(IMItem *)self account];
-  [v4 setAccount:v10];
+  account = [(IMItem *)self account];
+  [v4 setAccount:account];
 
-  v11 = [(IMItem *)self accountID];
-  [v4 setAccountID:v11];
+  accountID = [(IMItem *)self accountID];
+  [v4 setAccountID:accountID];
 
-  v12 = [(IMItem *)self service];
-  [v4 setService:v12];
+  service = [(IMItem *)self service];
+  [v4 setService:service];
 
-  v13 = [(IMItem *)self destinationCallerID];
-  [v4 setDestinationCallerID:v13];
+  destinationCallerID = [(IMItem *)self destinationCallerID];
+  [v4 setDestinationCallerID:destinationCallerID];
 
-  v14 = [(IMItem *)self countryCode];
-  [v4 setCountryCode:v14];
+  countryCode = [(IMItem *)self countryCode];
+  [v4 setCountryCode:countryCode];
 
-  v15 = [(IMItem *)self unformattedID];
-  [v4 setUnformattedID:v15];
+  unformattedID = [(IMItem *)self unformattedID];
+  [v4 setUnformattedID:unformattedID];
 
   [v4 setType:{-[IMItem type](self, "type")}];
-  v16 = [(IMItem *)self context];
-  [v4 setContext:v16];
+  context = [(IMItem *)self context];
+  [v4 setContext:context];
 
-  v17 = [(IMItem *)self balloonBundleID];
-  [v4 setBalloonBundleID:v17];
+  balloonBundleID = [(IMItem *)self balloonBundleID];
+  [v4 setBalloonBundleID:balloonBundleID];
 
-  v18 = [(IMItem *)self clientSendTime];
-  [v4 setClientSendTime:v18];
+  clientSendTime = [(IMItem *)self clientSendTime];
+  [v4 setClientSendTime:clientSendTime];
 
   [v4 setSortID:{-[IMItem sortID](self, "sortID")}];
   return v4;
 }
 
-- (IMItem)initWithCoder:(id)a3
+- (IMItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v32.receiver = self;
   v32.super_class = IMItem;
   v5 = [(IMItem *)&v32 init];
   if (v5)
   {
-    v5->_type = [v4 decodeInt64ForKey:@"type"];
+    v5->_type = [coderCopy decodeInt64ForKey:@"type"];
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
@@ -498,161 +498,161 @@ LABEL_11:
     v10 = objc_opt_class();
     v11 = objc_opt_class();
     v12 = [v6 setWithObjects:{v7, v8, v9, v10, v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"senderInfo"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"senderInfo"];
     [(IMItem *)v5 setSenderInfo:v13];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"guid"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"guid"];
     [(IMItem *)v5 setGuid:v14];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"roomName"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"roomName"];
     [(IMItem *)v5 setRoomName:v15];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"handle"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"handle"];
     [(IMItem *)v5 setHandle:v16];
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"account"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"account"];
     [(IMItem *)v5 setAccount:v17];
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountID"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountID"];
     [(IMItem *)v5 setAccountID:v18];
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"service"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"service"];
     [(IMItem *)v5 setService:v19];
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"destinationCallerID"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"destinationCallerID"];
     [(IMItem *)v5 setDestinationCallerID:v20];
 
-    [v4 decodeDoubleForKey:@"time"];
+    [coderCopy decodeDoubleForKey:@"time"];
     if (v21 > 10.0)
     {
       v22 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:?];
       [(IMItem *)v5 setTime:v22];
     }
 
-    v5->_messageID = [v4 decodeInt64ForKey:@"messageID"];
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
+    v5->_messageID = [coderCopy decodeInt64ForKey:@"messageID"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
     [(IMItem *)v5 setCountryCode:v23];
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"unformattedID"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"unformattedID"];
     [(IMItem *)v5 setUnformattedID:v24];
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"balloonBundleID"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"balloonBundleID"];
     [(IMItem *)v5 setBalloonBundleID:v25];
 
-    v5->_cloudKitSyncState = [v4 decodeInt64ForKey:@"ckSyncState"];
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ckRecordID"];
+    v5->_cloudKitSyncState = [coderCopy decodeInt64ForKey:@"ckSyncState"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ckRecordID"];
     [(IMItem *)v5 setCloudKitRecordID:v26];
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ckServerChangeTokenBlob"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ckServerChangeTokenBlob"];
     [(IMItem *)v5 setCloudKitServerChangeTokenBlob:v27];
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ckRecordChangeTag"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ckRecordChangeTag"];
     [(IMItem *)v5 setCloudKitRecordChangeTag:v28];
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sortID"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sortID"];
     -[IMItem setSortID:](v5, "setSortID:", [v29 unsignedIntegerValue]);
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"replyToGUID"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"replyToGUID"];
     [(IMItem *)v5 setReplyToGUID:v30];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInt64:type forKey:@"type"];
-  v6 = [(IMItem *)self senderInfo];
-  [v5 encodeObject:v6 forKey:@"senderInfo"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:type forKey:@"type"];
+  senderInfo = [(IMItem *)self senderInfo];
+  [coderCopy encodeObject:senderInfo forKey:@"senderInfo"];
 
-  v7 = [(IMItem *)self guid];
-  [v5 encodeObject:v7 forKey:@"guid"];
+  guid = [(IMItem *)self guid];
+  [coderCopy encodeObject:guid forKey:@"guid"];
 
-  v8 = [(IMItem *)self roomName];
-  [v5 encodeObject:v8 forKey:@"roomName"];
+  roomName = [(IMItem *)self roomName];
+  [coderCopy encodeObject:roomName forKey:@"roomName"];
 
-  v9 = [(IMItem *)self handle];
-  [v5 encodeObject:v9 forKey:@"handle"];
+  handle = [(IMItem *)self handle];
+  [coderCopy encodeObject:handle forKey:@"handle"];
 
-  v10 = [(IMItem *)self account];
-  [v5 encodeObject:v10 forKey:@"account"];
+  account = [(IMItem *)self account];
+  [coderCopy encodeObject:account forKey:@"account"];
 
-  v11 = [(IMItem *)self accountID];
-  [v5 encodeObject:v11 forKey:@"accountID"];
+  accountID = [(IMItem *)self accountID];
+  [coderCopy encodeObject:accountID forKey:@"accountID"];
 
-  v12 = [(IMItem *)self service];
-  [v5 encodeObject:v12 forKey:@"service"];
+  service = [(IMItem *)self service];
+  [coderCopy encodeObject:service forKey:@"service"];
 
-  v13 = [(IMItem *)self destinationCallerID];
-  [v5 encodeObject:v13 forKey:@"destinationCallerID"];
+  destinationCallerID = [(IMItem *)self destinationCallerID];
+  [coderCopy encodeObject:destinationCallerID forKey:@"destinationCallerID"];
 
-  v14 = [(IMItem *)self time];
-  [v14 timeIntervalSinceReferenceDate];
+  time = [(IMItem *)self time];
+  [time timeIntervalSinceReferenceDate];
   v16 = v15;
 
-  [v5 encodeDouble:@"time" forKey:v16];
-  [v5 encodeInt64:self->_messageID forKey:@"messageID"];
-  v17 = [(IMItem *)self countryCode];
-  [v5 encodeObject:v17 forKey:@"countryCode"];
+  [coderCopy encodeDouble:@"time" forKey:v16];
+  [coderCopy encodeInt64:self->_messageID forKey:@"messageID"];
+  countryCode = [(IMItem *)self countryCode];
+  [coderCopy encodeObject:countryCode forKey:@"countryCode"];
 
-  v18 = [(IMItem *)self unformattedID];
-  [v5 encodeObject:v18 forKey:@"unformattedID"];
+  unformattedID = [(IMItem *)self unformattedID];
+  [coderCopy encodeObject:unformattedID forKey:@"unformattedID"];
 
-  v19 = [(IMItem *)self balloonBundleID];
-  [v5 encodeObject:v19 forKey:@"balloonBundleID"];
+  balloonBundleID = [(IMItem *)self balloonBundleID];
+  [coderCopy encodeObject:balloonBundleID forKey:@"balloonBundleID"];
 
-  [v5 encodeInt64:self->_cloudKitSyncState forKey:@"ckSyncState"];
-  v20 = [(IMItem *)self cloudKitRecordID];
-  [v5 encodeObject:v20 forKey:@"ckRecordID"];
+  [coderCopy encodeInt64:self->_cloudKitSyncState forKey:@"ckSyncState"];
+  cloudKitRecordID = [(IMItem *)self cloudKitRecordID];
+  [coderCopy encodeObject:cloudKitRecordID forKey:@"ckRecordID"];
 
-  v21 = [(IMItem *)self cloudKitServerChangeTokenBlob];
-  [v5 encodeObject:v21 forKey:@"ckServerChangeTokenBlob"];
+  cloudKitServerChangeTokenBlob = [(IMItem *)self cloudKitServerChangeTokenBlob];
+  [coderCopy encodeObject:cloudKitServerChangeTokenBlob forKey:@"ckServerChangeTokenBlob"];
 
-  v22 = [(IMItem *)self cloudKitRecordChangeTag];
-  [v5 encodeObject:v22 forKey:@"ckRecordChangeTag"];
+  cloudKitRecordChangeTag = [(IMItem *)self cloudKitRecordChangeTag];
+  [coderCopy encodeObject:cloudKitRecordChangeTag forKey:@"ckRecordChangeTag"];
 
   v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[IMItem sortID](self, "sortID")}];
-  [v5 encodeObject:v23 forKey:@"sortID"];
+  [coderCopy encodeObject:v23 forKey:@"sortID"];
 
-  v24 = [(IMItem *)self replyToGUID];
-  [v5 encodeObject:v24 forKey:@"replyToGUID"];
+  replyToGUID = [(IMItem *)self replyToGUID];
+  [coderCopy encodeObject:replyToGUID forKey:@"replyToGUID"];
 
-  v25 = [(IMItem *)self criticalMessagingAppName];
-  [v5 encodeObject:v25 forKey:@"criticalMessagingAppName"];
+  criticalMessagingAppName = [(IMItem *)self criticalMessagingAppName];
+  [coderCopy encodeObject:criticalMessagingAppName forKey:@"criticalMessagingAppName"];
 }
 
-- (void)encodeWithIMRemoteObjectSerializedDictionary:(id)a3
+- (void)encodeWithIMRemoteObjectSerializedDictionary:(id)dictionary
 {
-  v5 = a3;
-  v4 = [(IMItem *)self copyDictionaryRepresentation];
-  if (v4)
+  dictionaryCopy = dictionary;
+  copyDictionaryRepresentation = [(IMItem *)self copyDictionaryRepresentation];
+  if (copyDictionaryRepresentation)
   {
-    [v5 addEntriesFromDictionary:v4];
+    [dictionaryCopy addEntriesFromDictionary:copyDictionaryRepresentation];
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v2 = [(IMItem *)self copyDictionaryRepresentation];
+  copyDictionaryRepresentation = [(IMItem *)self copyDictionaryRepresentation];
 
-  return v2;
+  return copyDictionaryRepresentation;
 }
 
 - (BOOL)isFromMe
 {
-  v2 = [(IMItem *)self sender];
-  v3 = v2 == 0;
+  sender = [(IMItem *)self sender];
+  v3 = sender == 0;
 
   return v3;
 }
 
-- (void)setSender:(id)a3
+- (void)setSender:(id)sender
 {
-  v8 = a3;
-  v4 = [(IMItem *)self senderInfo];
-  Mutable = [v4 mutableCopy];
+  senderCopy = sender;
+  senderInfo = [(IMItem *)self senderInfo];
+  Mutable = [senderInfo mutableCopy];
 
   if (!Mutable)
   {
@@ -660,9 +660,9 @@ LABEL_11:
   }
 
   v6 = *MEMORY[0x1E69A6310];
-  if (v8)
+  if (senderCopy)
   {
-    [(__CFDictionary *)Mutable setObject:v8 forKey:v6];
+    [(__CFDictionary *)Mutable setObject:senderCopy forKey:v6];
   }
 
   else
@@ -683,11 +683,11 @@ LABEL_11:
   [(IMItem *)self setSenderInfo:v7];
 }
 
-- (void)setPersonCentricID:(id)a3
+- (void)setPersonCentricID:(id)d
 {
-  v8 = a3;
-  v4 = [(IMItem *)self senderInfo];
-  Mutable = [v4 mutableCopy];
+  dCopy = d;
+  senderInfo = [(IMItem *)self senderInfo];
+  Mutable = [senderInfo mutableCopy];
 
   if (!Mutable)
   {
@@ -695,9 +695,9 @@ LABEL_11:
   }
 
   v6 = *MEMORY[0x1E69A6350];
-  if (v8)
+  if (dCopy)
   {
-    [(__CFDictionary *)Mutable setObject:v8 forKey:v6];
+    [(__CFDictionary *)Mutable setObject:dCopy forKey:v6];
   }
 
   else
@@ -718,10 +718,10 @@ LABEL_11:
   [(IMItem *)self setSenderInfo:v7];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -731,7 +731,7 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       type = self->_type;
       if (type != [(IMItem *)v5 type]|| (messageID = self->_messageID, messageID != [(IMItem *)v5 messageID]))
       {
@@ -742,36 +742,36 @@ LABEL_63:
       }
 
       guid = self->_guid;
-      v9 = [(IMItem *)v5 guid];
-      if (guid != v9)
+      guid = [(IMItem *)v5 guid];
+      if (guid != guid)
       {
         v10 = self->_guid;
-        v11 = [(IMItem *)v5 guid];
-        if (![(NSString *)v10 isEqualToString:v11])
+        guid2 = [(IMItem *)v5 guid];
+        if (![(NSString *)v10 isEqualToString:guid2])
         {
           v12 = 0;
           goto LABEL_61;
         }
 
-        v78 = v11;
+        v78 = guid2;
       }
 
       handle = self->_handle;
-      v14 = [(IMItem *)v5 handle];
-      if (handle != v14)
+      handle = [(IMItem *)v5 handle];
+      if (handle != handle)
       {
         v15 = self->_handle;
-        v16 = [(IMItem *)v5 handle];
+        handle2 = [(IMItem *)v5 handle];
         v17 = v15;
-        v18 = v16;
-        if (![(NSString *)v17 isEqualToString:v16])
+        v18 = handle2;
+        if (![(NSString *)v17 isEqualToString:handle2])
         {
           v12 = 0;
 LABEL_59:
 
 LABEL_60:
-          v11 = v78;
-          if (guid == v9)
+          guid2 = v78;
+          if (guid == guid)
           {
 LABEL_62:
 
@@ -787,22 +787,22 @@ LABEL_61:
       }
 
       senderInfo = self->_senderInfo;
-      v20 = [(IMItem *)v5 senderInfo];
+      senderInfo = [(IMItem *)v5 senderInfo];
       v77 = senderInfo;
-      if (senderInfo != v20)
+      if (senderInfo != senderInfo)
       {
         v21 = self->_senderInfo;
-        v22 = [(IMItem *)v5 senderInfo];
+        senderInfo2 = [(IMItem *)v5 senderInfo];
         v23 = v21;
-        v24 = v22;
-        if (![(NSDictionary *)v23 isEqualToDictionary:v22])
+        v24 = senderInfo2;
+        if (![(NSDictionary *)v23 isEqualToDictionary:senderInfo2])
         {
           v12 = 0;
 LABEL_57:
 
 LABEL_58:
           v18 = v76;
-          if (handle == v14)
+          if (handle == handle)
           {
             goto LABEL_60;
           }
@@ -814,12 +814,12 @@ LABEL_58:
       }
 
       time = self->_time;
-      v26 = [(IMItem *)v5 time];
+      time = [(IMItem *)v5 time];
       v75 = time;
-      if (time != v26)
+      if (time != time)
       {
         v27 = self->_time;
-        v72 = [(IMItem *)v5 time];
+        time2 = [(IMItem *)v5 time];
         if (![(NSDate *)v27 isEqualToDate:?])
         {
           v12 = 0;
@@ -827,7 +827,7 @@ LABEL_55:
 
 LABEL_56:
           v24 = v74;
-          if (v77 == v20)
+          if (v77 == senderInfo)
           {
             goto LABEL_58;
           }
@@ -837,20 +837,20 @@ LABEL_56:
       }
 
       v28 = self->_handle;
-      v73 = [(IMItem *)v5 handle];
+      handle3 = [(IMItem *)v5 handle];
       v71 = v28;
-      if (v28 != v73)
+      if (v28 != handle3)
       {
         v29 = self->_handle;
-        v68 = [(IMItem *)v5 handle];
+        handle4 = [(IMItem *)v5 handle];
         if (![(NSString *)v29 isEqualToString:?])
         {
           v12 = 0;
-          v30 = v73;
+          v30 = handle3;
 LABEL_53:
 
 LABEL_54:
-          if (v75 == v26)
+          if (v75 == time)
           {
             goto LABEL_56;
           }
@@ -861,21 +861,21 @@ LABEL_54:
 
       roomName = self->_roomName;
       [(IMItem *)v5 roomName];
-      v70 = v69 = v26;
+      v70 = v69 = time;
       v67 = roomName;
       if (roomName != v70)
       {
         v32 = self->_roomName;
-        v65 = [(IMItem *)v5 roomName];
+        roomName = [(IMItem *)v5 roomName];
         if (![(NSString *)v32 isEqualToString:?])
         {
           v12 = 0;
-          v30 = v73;
+          v30 = handle3;
           v33 = v70;
 LABEL_51:
 
 LABEL_52:
-          v26 = v69;
+          time = v69;
           if (v71 == v30)
           {
             goto LABEL_54;
@@ -886,17 +886,17 @@ LABEL_52:
       }
 
       service = self->_service;
-      v66 = [(IMItem *)v5 service];
+      service = [(IMItem *)v5 service];
       v64 = service;
-      if (service != v66)
+      if (service != service)
       {
         v35 = self->_service;
-        v62 = [(IMItem *)v5 service];
+        service2 = [(IMItem *)v5 service];
         if (![(NSString *)v35 isEqualToString:?])
         {
           v12 = 0;
-          v30 = v73;
-          v36 = v66;
+          v30 = handle3;
+          v36 = service;
 LABEL_49:
 
 LABEL_50:
@@ -911,24 +911,24 @@ LABEL_50:
       }
 
       accountID = self->_accountID;
-      v38 = [(IMItem *)v5 accountID];
+      accountID = [(IMItem *)v5 accountID];
       v61 = accountID;
       v63 = handle;
-      if (accountID != v38)
+      if (accountID != accountID)
       {
-        v39 = v38;
+        v39 = accountID;
         v40 = self->_accountID;
-        v58 = [(IMItem *)v5 accountID];
+        accountID2 = [(IMItem *)v5 accountID];
         if (![(NSString *)v40 isEqualToString:?])
         {
           v12 = 0;
-          v30 = v73;
+          v30 = handle3;
 LABEL_47:
 
 LABEL_48:
-          v36 = v66;
+          v36 = service;
           handle = v63;
-          if (v64 == v66)
+          if (v64 == service)
           {
             goto LABEL_50;
           }
@@ -936,19 +936,19 @@ LABEL_48:
           goto LABEL_49;
         }
 
-        v38 = v39;
+        accountID = v39;
       }
 
-      v60 = v38;
+      v60 = accountID;
       account = self->_account;
-      v59 = [(IMItem *)v5 account];
+      account = [(IMItem *)v5 account];
       v57 = account;
-      if (account == v59 || (v42 = self->_account, [(IMItem *)v5 account], v56 = objc_claimAutoreleasedReturnValue(), [(NSString *)v42 isEqualToString:?]))
+      if (account == account || (v42 = self->_account, [(IMItem *)v5 account], v56 = objc_claimAutoreleasedReturnValue(), [(NSString *)v42 isEqualToString:?]))
       {
         destinationCallerID = self->_destinationCallerID;
-        v45 = [(IMItem *)v5 destinationCallerID];
-        v46 = destinationCallerID == v45;
-        v47 = v45;
+        destinationCallerID = [(IMItem *)v5 destinationCallerID];
+        v46 = destinationCallerID == destinationCallerID;
+        v47 = destinationCallerID;
         if (v46)
         {
           sortID = self->_sortID;
@@ -957,12 +957,12 @@ LABEL_48:
 
         else
         {
-          v55 = v45;
+          v55 = destinationCallerID;
           v48 = self->_destinationCallerID;
-          v49 = [(IMItem *)v5 destinationCallerID];
+          destinationCallerID2 = [(IMItem *)v5 destinationCallerID];
           v50 = v48;
-          v51 = v49;
-          if ([(NSString *)v50 isEqualToString:v49])
+          v51 = destinationCallerID2;
+          if ([(NSString *)v50 isEqualToString:destinationCallerID2])
           {
             v52 = self->_sortID;
             v12 = v52 == [(IMItem *)v5 sortID];
@@ -975,9 +975,9 @@ LABEL_48:
           }
         }
 
-        v43 = v59;
-        v30 = v73;
-        if (v57 == v59)
+        v43 = account;
+        v30 = handle3;
+        if (v57 == account)
         {
 LABEL_46:
 
@@ -994,8 +994,8 @@ LABEL_46:
       else
       {
         v12 = 0;
-        v30 = v73;
-        v43 = v59;
+        v30 = handle3;
+        v43 = account;
       }
 
       goto LABEL_46;
@@ -1003,7 +1003,7 @@ LABEL_46:
 
     v79.receiver = self;
     v79.super_class = IMItem;
-    v12 = [(IMItem *)&v79 isEqual:v4];
+    v12 = [(IMItem *)&v79 isEqual:equalCopy];
   }
 
 LABEL_64:
@@ -1011,12 +1011,12 @@ LABEL_64:
   return v12;
 }
 
-- (BOOL)isOlderThanItem:(id)a3
+- (BOOL)isOlderThanItem:(id)item
 {
-  v4 = a3;
-  v5 = [(IMItem *)self time];
-  v6 = [v4 time];
-  v7 = [v5 compare:v6];
+  itemCopy = item;
+  time = [(IMItem *)self time];
+  time2 = [itemCopy time];
+  v7 = [time compare:time2];
 
   if (v7 == 1)
   {
@@ -1030,8 +1030,8 @@ LABEL_64:
 
   else
   {
-    v9 = [v4 messageID];
-    v8 = v9 >= [(IMItem *)self messageID];
+    messageID = [itemCopy messageID];
+    v8 = messageID >= [(IMItem *)self messageID];
   }
 
   return v8;
@@ -1045,20 +1045,20 @@ LABEL_64:
     goto LABEL_4;
   }
 
-  v3 = [(IMItem *)self isFromMe];
-  if (v3)
+  isFromMe = [(IMItem *)self isFromMe];
+  if (isFromMe)
   {
     if (([(IMItem *)self isSent]& 1) != 0)
     {
 LABEL_4:
-      LOBYTE(v3) = 0;
-      return v3;
+      LOBYTE(isFromMe) = 0;
+      return isFromMe;
     }
 
-    LOBYTE(v3) = [(IMItem *)self errorCode]== 0;
+    LOBYTE(isFromMe) = [(IMItem *)self errorCode]== 0;
   }
 
-  return v3;
+  return isFromMe;
 }
 
 - (unint64_t)hash
@@ -1082,20 +1082,20 @@ LABEL_4:
 
 - (id)pluginSessionGUID
 {
-  v3 = [(IMItem *)self balloonBundleID];
-  v4 = [v3 length];
+  balloonBundleID = [(IMItem *)self balloonBundleID];
+  v4 = [balloonBundleID length];
 
   if (v4 && [(IMItem *)self isBreadcrumb])
   {
-    v5 = [(IMItem *)self associatedMessageGUID];
+    associatedMessageGUID = [(IMItem *)self associatedMessageGUID];
   }
 
   else
   {
-    v5 = [(IMItem *)self guid];
+    associatedMessageGUID = [(IMItem *)self guid];
   }
 
-  return v5;
+  return associatedMessageGUID;
 }
 
 @end

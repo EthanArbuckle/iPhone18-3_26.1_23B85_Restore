@@ -10,14 +10,14 @@
   v28 = *MEMORY[0x1E69E9840];
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v3, *MEMORY[0x1E695E0E8]);
+    (*MEMORY[0x1E695E100])(self, v3, *MEMORY[0x1E695E0E8]);
   }
 
   if ([a3 allowsKeyedCoding])
   {
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_isKindOfClass())
     {
-      v6 = [a1 count];
+      v6 = [self count];
       v7 = v6;
       if (v6 >> 60)
       {
@@ -29,7 +29,7 @@
 
       v22 = 0;
       v8 = _CFCreateArrayStorage();
-      [a1 getObjects:v8];
+      [self getObjects:v8];
       if (v8)
       {
         if (v7)
@@ -63,7 +63,7 @@
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v16 = [a1 countByEnumeratingWithState:&v24 objects:v23 count:16];
+      v16 = [self countByEnumeratingWithState:&v24 objects:v23 count:16];
       if (v16)
       {
         v17 = 0;
@@ -74,13 +74,13 @@
           {
             if (*v25 != v18)
             {
-              objc_enumerationMutation(a1);
+              objc_enumerationMutation(self);
             }
 
             [a3 encodeObject:*(*(&v24 + 1) + 8 * i) forKey:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"NS.object.%ld", v17++)}];
           }
 
-          v16 = [a1 countByEnumeratingWithState:&v24 objects:v23 count:16];
+          v16 = [self countByEnumeratingWithState:&v24 objects:v23 count:16];
         }
 
         while (v16);
@@ -90,10 +90,10 @@
 
   else
   {
-    LODWORD(v22) = [a1 count];
+    LODWORD(v22) = [self count];
     [a3 encodeValueOfObjCType:"I" at:&v22];
-    v13 = [a1 objectEnumerator];
-    for (j = [v13 nextObject]; j; j = objc_msgSend(v13, "nextObject"))
+    objectEnumerator = [self objectEnumerator];
+    for (j = [objectEnumerator nextObject]; j; j = objc_msgSend(objectEnumerator, "nextObject"))
     {
       [a3 encodeBycopyObject:j];
     }
@@ -123,7 +123,7 @@
       if (!v9)
       {
 LABEL_15:
-        v16 = [a1 initWithObjects:v12 count:{v9, v10}];
+        v16 = [self initWithObjects:v12 count:{v9, v10}];
         for (i = 8 * v9; i; i -= 8)
         {
           v18 = *&v12[i - 8];
@@ -153,10 +153,10 @@ LABEL_15:
     if (v6)
     {
 
-      return [a1 initWithArray:v6];
+      return [self initWithArray:v6];
     }
 
-    a1 = 0;
+    self = 0;
   }
 
   v19 = NSAllocateObjectArray(0x80uLL);
@@ -187,7 +187,7 @@ LABEL_25:
     v24 = [NSString stringWithFormat:@"NS.object.%ld", v21];
     if (![a3 containsValueForKey:v24])
     {
-      v16 = [a1 initWithObjects:v20 count:v21];
+      v16 = [self initWithObjects:v20 count:v21];
 LABEL_30:
       free(v20);
       return v16;
@@ -206,7 +206,7 @@ LABEL_30:
 
   free(v20);
   v28 = @"NSLocalizedDescription";
-  v29[0] = [NSString stringWithFormat:@"%@: set is too large to unarchive (%qd)", _NSMethodExceptionProem(a1, a2), v22];
+  v29[0] = [NSString stringWithFormat:@"%@: set is too large to unarchive (%qd)", _NSMethodExceptionProem(self, a2), v22];
   [a3 failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v29, &v28, 1))}];
   return 0;
 }

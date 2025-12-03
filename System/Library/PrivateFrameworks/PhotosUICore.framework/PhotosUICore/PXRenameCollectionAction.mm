@@ -1,60 +1,60 @@
 @interface PXRenameCollectionAction
-+ (id)_actionNameLocalizationKeyForCollectionType:(unint64_t)a3;
-+ (id)actionNameForCollection:(id)a3;
-+ (unint64_t)_renameTypeForCollection:(id)a3;
-- (PXRenameCollectionAction)initWithCollection:(id)a3 title:(id)a4;
++ (id)_actionNameLocalizationKeyForCollectionType:(unint64_t)type;
++ (id)actionNameForCollection:(id)collection;
++ (unint64_t)_renameTypeForCollection:(id)collection;
+- (PXRenameCollectionAction)initWithCollection:(id)collection title:(id)title;
 - (id)actionNameLocalizationKey;
-- (void)_changeTitle:(id)a3 completionHandler:(id)a4;
-- (void)performAction:(id)a3;
-- (void)performUndo:(id)a3;
+- (void)_changeTitle:(id)title completionHandler:(id)handler;
+- (void)performAction:(id)action;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXRenameCollectionAction
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
-  v4 = a3;
-  v5 = [(PXRenameCollectionAction *)self undoTitle];
-  [(PXRenameCollectionAction *)self _changeTitle:v5 completionHandler:v4];
+  undoCopy = undo;
+  undoTitle = [(PXRenameCollectionAction *)self undoTitle];
+  [(PXRenameCollectionAction *)self _changeTitle:undoTitle completionHandler:undoCopy];
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
-  v5 = [(PXRenameCollectionAction *)self redoTitle];
-  [(PXRenameCollectionAction *)self _changeTitle:v5 completionHandler:v4];
+  actionCopy = action;
+  redoTitle = [(PXRenameCollectionAction *)self redoTitle];
+  [(PXRenameCollectionAction *)self _changeTitle:redoTitle completionHandler:actionCopy];
 }
 
 - (id)actionNameLocalizationKey
 {
   v3 = objc_opt_class();
-  v4 = [(PXRenameCollectionAction *)self collectionType];
+  collectionType = [(PXRenameCollectionAction *)self collectionType];
 
-  return [v3 _actionNameLocalizationKeyForCollectionType:v4];
+  return [v3 _actionNameLocalizationKeyForCollectionType:collectionType];
 }
 
-- (void)_changeTitle:(id)a3 completionHandler:(id)a4
+- (void)_changeTitle:(id)title completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXRenameCollectionAction *)self collection];
+  titleCopy = title;
+  handlerCopy = handler;
+  collection = [(PXRenameCollectionAction *)self collection];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __59__PXRenameCollectionAction__changeTitle_completionHandler___block_invoke;
   v15[3] = &unk_1E774A1B8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v6;
+  v16 = collection;
+  v17 = titleCopy;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __59__PXRenameCollectionAction__changeTitle_completionHandler___block_invoke_2;
   v12[3] = &unk_1E774ACE8;
   v12[4] = self;
   v13 = v17;
-  v14 = v7;
-  v9 = v7;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
   v10 = v17;
-  v11 = v8;
+  v11 = collection;
   [(PXPhotosAction *)self performChanges:v15 completionHandler:v12];
 }
 
@@ -113,19 +113,19 @@ void __59__PXRenameCollectionAction__changeTitle_completionHandler___block_invok
   (*(*(a1 + 48) + 16))();
 }
 
-- (PXRenameCollectionAction)initWithCollection:(id)a3 title:(id)a4
+- (PXRenameCollectionAction)initWithCollection:(id)collection title:(id)title
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 canPerformEditOperation:7])
+  collectionCopy = collection;
+  titleCopy = title;
+  if ([collectionCopy canPerformEditOperation:7])
   {
-    v9 = [v8 copy];
-    v10 = [v7 localizedTitle];
-    v11 = v10;
-    if (v10)
+    v9 = [titleCopy copy];
+    localizedTitle = [collectionCopy localizedTitle];
+    v11 = localizedTitle;
+    if (localizedTitle)
     {
-      v12 = v10;
+      v12 = localizedTitle;
     }
 
     else
@@ -137,26 +137,26 @@ void __59__PXRenameCollectionAction__changeTitle_completionHandler___block_invok
 
     if ([v9 isEqualToString:v13])
     {
-      v19 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      v14 = [objc_opt_class() _renameTypeForCollection:v7];
+      v14 = [objc_opt_class() _renameTypeForCollection:collectionCopy];
       if (!v14)
       {
         PXAssertGetLog();
       }
 
       v15 = v14;
-      v16 = [v7 photoLibrary];
+      photoLibrary = [collectionCopy photoLibrary];
       v21.receiver = self;
       v21.super_class = PXRenameCollectionAction;
-      v17 = [(PXPhotosAction *)&v21 initWithPhotoLibrary:v16];
+      v17 = [(PXPhotosAction *)&v21 initWithPhotoLibrary:photoLibrary];
 
       if (v17)
       {
-        objc_storeStrong(&v17->_collection, a3);
+        objc_storeStrong(&v17->_collection, collection);
         v17->_collectionType = v15;
         objc_storeStrong(&v17->_redoTitle, v9);
         objc_storeStrong(&v17->_undoTitle, v12);
@@ -165,51 +165,51 @@ void __59__PXRenameCollectionAction__changeTitle_completionHandler___block_invok
       }
 
       self = v17;
-      v19 = self;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v19 = 0;
+    selfCopy = 0;
   }
 
-  return v19;
+  return selfCopy;
 }
 
-+ (id)actionNameForCollection:(id)a3
++ (id)actionNameForCollection:(id)collection
 {
-  v3 = [a1 _actionNameLocalizationKeyForCollectionType:{objc_msgSend(a1, "_renameTypeForCollection:", a3)}];
+  v3 = [self _actionNameLocalizationKeyForCollectionType:{objc_msgSend(self, "_renameTypeForCollection:", collection)}];
   v4 = PXLocalizedStringFromTable(v3, @"PhotosUICore");
 
   return v4;
 }
 
-+ (id)_actionNameLocalizationKeyForCollectionType:(unint64_t)a3
++ (id)_actionNameLocalizationKeyForCollectionType:(unint64_t)type
 {
-  if (a3 - 2 > 2)
+  if (type - 2 > 2)
   {
     return @"PXPhotosGridRenameAlbumActionMenuTitle";
   }
 
   else
   {
-    return off_1E7743BD8[a3 - 2];
+    return off_1E7743BD8[type - 2];
   }
 }
 
-+ (unint64_t)_renameTypeForCollection:(id)a3
++ (unint64_t)_renameTypeForCollection:(id)collection
 {
-  v3 = a3;
+  collectionCopy = collection;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v3 assetCollectionSubtype] == 1000000204)
+    if ([collectionCopy assetCollectionSubtype] == 1000000204)
     {
       v4 = 2;
     }
 
-    else if ([v3 assetCollectionType] == 12)
+    else if ([collectionCopy assetCollectionType] == 12)
     {
       v4 = 3;
     }

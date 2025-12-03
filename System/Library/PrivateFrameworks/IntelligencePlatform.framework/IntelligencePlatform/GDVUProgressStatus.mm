@@ -6,7 +6,7 @@
 
 - (float)fractionCompleted
 {
-  v2 = self;
+  selfCopy = self;
   v3 = GDVUProgressStatus.fractionCompleted.getter();
 
   return v3;

@@ -1,11 +1,11 @@
 @interface IDSDirectDataPathSocket
-- (BOOL)_isSendErrorFatal:(id)a3;
-- (id)initSocketWithNWConnection:(id)a3 priority:(int64_t)a4 trafficClass:(int)a5 serviceConnectorConnection:(BOOL)a6 streamSocket:(BOOL)a7;
-- (int)setSocketOptionsForSocket:(int)a3 bufferSize:(int)a4;
+- (BOOL)_isSendErrorFatal:(id)fatal;
+- (id)initSocketWithNWConnection:(id)connection priority:(int64_t)priority trafficClass:(int)class serviceConnectorConnection:(BOOL)connectorConnection streamSocket:(BOOL)socket;
+- (int)setSocketOptionsForSocket:(int)socket bufferSize:(int)size;
 - (void)readFromNWConnection;
 - (void)readMessageFromNWConnection;
 - (void)shutdownSocket;
-- (void)startSocket:(id)a3;
+- (void)startSocket:(id)socket;
 - (void)writeMessageToNWConnection;
 - (void)writeMessageToSocket;
 - (void)writeToNWConnection;
@@ -14,10 +14,10 @@
 
 @implementation IDSDirectDataPathSocket
 
-- (int)setSocketOptionsForSocket:(int)a3 bufferSize:(int)a4
+- (int)setSocketOptionsForSocket:(int)socket bufferSize:(int)size
 {
-  v15 = a4;
-  if (setsockopt(a3, 0xFFFF, 4097, &v15, 4u) < 0)
+  sizeCopy = size;
+  if (setsockopt(socket, 0xFFFF, 4097, &sizeCopy, 4u) < 0)
   {
     v7 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -45,7 +45,7 @@
     goto LABEL_21;
   }
 
-  if (setsockopt(a3, 0xFFFF, 4098, &v15, 4u) < 0)
+  if (setsockopt(socket, 0xFFFF, 4098, &sizeCopy, 4u) < 0)
   {
     v8 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -74,7 +74,7 @@
   }
 
   *v14 = 1;
-  if (setsockopt(a3, 0xFFFF, 4130, v14, 4u))
+  if (setsockopt(socket, 0xFFFF, 4130, v14, 4u))
   {
     v6 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -105,7 +105,7 @@ LABEL_21:
     return 0;
   }
 
-  v10 = fcntl(a3, 3, 0);
+  v10 = fcntl(socket, 3, 0);
   if (v10 < 0)
   {
     v12 = OSLogHandleForTransportCategory();
@@ -123,7 +123,7 @@ LABEL_21:
     goto LABEL_8;
   }
 
-  result = fcntl(a3, 4, v10 | 4u);
+  result = fcntl(socket, 4, v10 | 4u);
   if (result)
   {
     v11 = OSLogHandleForTransportCategory();
@@ -144,26 +144,26 @@ LABEL_21:
   return result;
 }
 
-- (id)initSocketWithNWConnection:(id)a3 priority:(int64_t)a4 trafficClass:(int)a5 serviceConnectorConnection:(BOOL)a6 streamSocket:(BOOL)a7
+- (id)initSocketWithNWConnection:(id)connection priority:(int64_t)priority trafficClass:(int)class serviceConnectorConnection:(BOOL)connectorConnection streamSocket:(BOOL)socket
 {
-  v13 = a3;
+  connectionCopy = connection;
   v30.receiver = self;
   v30.super_class = IDSDirectDataPathSocket;
   v14 = [(IDSDirectDataPathSocket *)&v30 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_nwConnection, a3);
+    objc_storeStrong(&v14->_nwConnection, connection);
     v15->_connectionReady = 0;
     *&v15->_socket = -1;
     *&v15->_readSourceSuspended = 257;
-    v15->_serviceConnectorConnection = a6;
+    v15->_serviceConnectorConnection = connectorConnection;
     v15->_canSendOverNWConnection = 0;
-    v15->_streamSocket = a7;
+    v15->_streamSocket = socket;
     v15->_completionSent = 0;
     v15->_lock._os_unfair_lock_opaque = 0;
     v15->_shutdownCalled = 0;
-    if (a4 == 300)
+    if (priority == 300)
     {
       v16 = QOS_CLASS_USER_INITIATED;
     }
@@ -173,7 +173,7 @@ LABEL_21:
       v16 = QOS_CLASS_DEFAULT;
     }
 
-    v15->_trafficClass = a5;
+    v15->_trafficClass = class;
     v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v18 = dispatch_queue_attr_make_with_qos_class(v17, v16, 0);
     v19 = dispatch_queue_create("IDSDaemon_directDataPathNWQueue", v18);
@@ -256,9 +256,9 @@ LABEL_21:
   }
 }
 
-- (void)startSocket:(id)a3
+- (void)startSocket:(id)socket
 {
-  v4 = a3;
+  socketCopy = socket;
   v5 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -397,7 +397,7 @@ LABEL_21:
 
       CFAbsoluteTimeGetCurrent();
       nw_connection_set_queue(self->_nwConnection, self->_priorityQueue);
-      v25 = v4;
+      v25 = socketCopy;
       nw_connection_set_event_handler();
       nw_connection_start(self->_nwConnection);
 
@@ -428,7 +428,7 @@ LABEL_21:
     {
 LABEL_33:
       self->_completionSent = 1;
-      (*(v4 + 2))(v4, 0xFFFFFFFFLL);
+      (*(socketCopy + 2))(socketCopy, 0xFFFFFFFFLL);
     }
   }
 
@@ -607,7 +607,7 @@ LABEL_34:
         if (*(v5 + 67))
         {
           v17 = _nw_content_context_default_message;
-          v18 = [*(v5 + 96) _createDispatchData];
+          _createDispatchData = [*(v5 + 96) _createDispatchData];
           v19 = [*(v5 + 96) length];
           v20 = *(v5 + 96);
           *(v5 + 96) = 0;
@@ -633,7 +633,7 @@ LABEL_34:
           completion[3] = &unk_100BDF5E8;
           completion[4] = v5;
           v32 = v19;
-          nw_connection_send(v22, v18, v17, 1, completion);
+          nw_connection_send(v22, _createDispatchData, v17, 1, completion);
         }
 
         else
@@ -788,8 +788,8 @@ LABEL_41:
 
   else if (self->_writeSourceSuspended || [(NSMutableArray *)self->_incomingNWMessages count])
   {
-    v3 = [(NSMutableArray *)self->_incomingNWMessages firstObject];
-    v4 = send(self->_socket, [v3 bytes], objc_msgSend(v3, "length"), 0);
+    firstObject = [(NSMutableArray *)self->_incomingNWMessages firstObject];
+    v4 = send(self->_socket, [firstObject bytes], objc_msgSend(firstObject, "length"), 0);
     if (v4 < 1)
     {
       if (v4)
@@ -904,16 +904,16 @@ LABEL_41:
         {
           if ([(NSMutableArray *)self->_outgoingNWMessages count])
           {
-            v6 = [(NSMutableArray *)self->_outgoingNWMessages firstObject];
+            firstObject = [(NSMutableArray *)self->_outgoingNWMessages firstObject];
             [(NSMutableArray *)self->_outgoingNWMessages removeFirstObject];
             nwConnection = self->_nwConnection;
-            v8 = [v6 _createDispatchData];
+            _createDispatchData = [firstObject _createDispatchData];
             completion[0] = _NSConcreteStackBlock;
             completion[1] = 3221225472;
             completion[2] = sub_10051C1EC;
             completion[3] = &unk_100BDF610;
             completion[4] = self;
-            nw_connection_send(nwConnection, v8, _nw_content_context_default_message, 1, completion);
+            nw_connection_send(nwConnection, _createDispatchData, _nw_content_context_default_message, 1, completion);
           }
         }
 
@@ -1039,12 +1039,12 @@ LABEL_42:
   }
 }
 
-- (BOOL)_isSendErrorFatal:(id)a3
+- (BOOL)_isSendErrorFatal:(id)fatal
 {
-  v3 = a3;
-  if (nw_error_get_error_domain(v3) == nw_error_domain_posix)
+  fatalCopy = fatal;
+  if (nw_error_get_error_domain(fatalCopy) == nw_error_domain_posix)
   {
-    error_code = nw_error_get_error_code(v3);
+    error_code = nw_error_get_error_code(fatalCopy);
     LOBYTE(v5) = 1;
     if (error_code <= 0x3D)
     {

@@ -1,20 +1,20 @@
 @interface iCloudMailAccountProvider
-- (iCloudMailAccountProvider)initWithAccountStore:(id)a3 appleAccount:(id)a4 presenter:(id)a5;
+- (iCloudMailAccountProvider)initWithAccountStore:(id)store appleAccount:(id)account presenter:(id)presenter;
 @end
 
 @implementation iCloudMailAccountProvider
 
-- (iCloudMailAccountProvider)initWithAccountStore:(id)a3 appleAccount:(id)a4 presenter:(id)a5
+- (iCloudMailAccountProvider)initWithAccountStore:(id)store appleAccount:(id)account presenter:(id)presenter
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  storeCopy = store;
+  accountCopy = account;
+  presenterCopy = presenter;
   v15.receiver = self;
   v15.super_class = iCloudMailAccountProvider;
   v11 = [(iCloudMailAccountProvider *)&v15 init];
   if (v11)
   {
-    v12 = [[iCloudMailAccountProviderSwift alloc] initWithPresenter:v10 appleAccount:v9 accountStore:v8];
+    v12 = [[iCloudMailAccountProviderSwift alloc] initWithPresenter:presenterCopy appleAccount:accountCopy accountStore:storeCopy];
     provider = v11->provider;
     v11->provider = v12;
   }

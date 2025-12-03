@@ -1,14 +1,14 @@
 @interface MessageStoreController
-- (void)messageStoreAccountInfoDidChange:(id)a3;
+- (void)messageStoreAccountInfoDidChange:(id)change;
 @end
 
 @implementation MessageStoreController
 
-- (void)messageStoreAccountInfoDidChange:(id)a3
+- (void)messageStoreAccountInfoDidChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
 
-  MessageStoreController.messageStoreAccountInfoDidChange(_:)(v3);
+  MessageStoreController.messageStoreAccountInfoDidChange(_:)(changeCopy);
 }
 
 @end

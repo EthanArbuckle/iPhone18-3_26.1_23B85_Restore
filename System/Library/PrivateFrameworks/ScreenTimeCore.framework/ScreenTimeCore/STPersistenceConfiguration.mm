@@ -1,8 +1,8 @@
 @interface STPersistenceConfiguration
 + (NSManagedObjectModel)managedObjectModel;
 + (NSURL)managedObjectModelURL;
-+ (id)persistentStoreDescriptionForConfigurationName:(id)a3 type:(id)a4;
-+ (id)persistentStoreURLForConfigurationName:(id)a3;
++ (id)persistentStoreDescriptionForConfigurationName:(id)name type:(id)type;
++ (id)persistentStoreURLForConfigurationName:(id)name;
 @end
 
 @implementation STPersistenceConfiguration
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __51__STPersistenceConfiguration_managedObjectModelURL__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (managedObjectModelURL_onceToken != -1)
   {
     dispatch_once(&managedObjectModelURL_onceToken, block);
@@ -53,18 +53,18 @@ void __48__STPersistenceConfiguration_managedObjectModel__block_invoke()
   managedObjectModel_managedObjectModel = v1;
 }
 
-+ (id)persistentStoreDescriptionForConfigurationName:(id)a3 type:(id)a4
++ (id)persistentStoreDescriptionForConfigurationName:(id)name type:(id)type
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  typeCopy = type;
   v8 = objc_opt_new();
-  [v8 setType:v7];
-  [v8 setConfiguration:v6];
+  [v8 setType:typeCopy];
+  [v8 setConfiguration:nameCopy];
   v9 = MEMORY[0x1E695E118];
   [v8 setOption:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E695D3C0]];
   [v8 setOption:v9 forKey:*MEMORY[0x1E695D428]];
-  if ([v7 isEqualToString:*MEMORY[0x1E695D528]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E695D528]])
   {
     v10 = MEMORY[0x1E695E118];
     [v8 setOption:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E695D508]];
@@ -75,9 +75,9 @@ void __48__STPersistenceConfiguration_managedObjectModel__block_invoke()
     [v8 setShouldAddStoreAsynchronously:0];
   }
 
-  else if (([v7 isEqualToString:*MEMORY[0x1E695D310]] & 1) == 0)
+  else if (([typeCopy isEqualToString:*MEMORY[0x1E695D310]] & 1) == 0)
   {
-    v11 = [a1 persistentStoreURLForConfigurationName:v6];
+    v11 = [self persistentStoreURLForConfigurationName:nameCopy];
     [v8 setURL:v11];
 
     [v8 setShouldMigrateStoreAutomatically:1];
@@ -93,11 +93,11 @@ void __48__STPersistenceConfiguration_managedObjectModel__block_invoke()
   return v8;
 }
 
-+ (id)persistentStoreURLForConfigurationName:(id)a3
++ (id)persistentStoreURLForConfigurationName:(id)name
 {
-  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"RMAdminStore", a3];
+  name = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"RMAdminStore", name];
   v4 = +[STLocations persistentStoreDirectory];
-  v5 = [v4 URLByAppendingPathComponent:v3 isDirectory:0];
+  v5 = [v4 URLByAppendingPathComponent:name isDirectory:0];
   v6 = [v5 URLByAppendingPathExtension:@"sqlite"];
 
   return v6;

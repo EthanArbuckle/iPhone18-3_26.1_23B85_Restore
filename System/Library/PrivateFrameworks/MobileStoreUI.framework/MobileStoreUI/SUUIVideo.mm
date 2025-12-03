@@ -1,23 +1,23 @@
 @interface SUUIVideo
-- (SUUIVideo)initWithVideoDictionary:(id)a3;
+- (SUUIVideo)initWithVideoDictionary:(id)dictionary;
 @end
 
 @implementation SUUIVideo
 
-- (SUUIVideo)initWithVideoDictionary:(id)a3
+- (SUUIVideo)initWithVideoDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = SUUIVideo;
   v5 = [(SUUIVideo *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"previewFrame"];
+    v6 = [dictionaryCopy objectForKey:@"previewFrame"];
     v7 = [SUUIArtworkProvidingFactory artworkProviderForStoreResponse:v6];
     artworks = v5->_artworks;
     v5->_artworks = v7;
 
-    v9 = [v4 objectForKey:@"video"];
+    v9 = [dictionaryCopy objectForKey:@"video"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())

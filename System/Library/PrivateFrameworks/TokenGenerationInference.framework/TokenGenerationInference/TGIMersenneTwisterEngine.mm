@@ -1,11 +1,11 @@
 @interface TGIMersenneTwisterEngine
-- (TGIMersenneTwisterEngine)initWithSeed:(unint64_t)a3;
+- (TGIMersenneTwisterEngine)initWithSeed:(unint64_t)seed;
 - (id).cxx_construct;
 @end
 
 @implementation TGIMersenneTwisterEngine
 
-- (TGIMersenneTwisterEngine)initWithSeed:(unint64_t)a3
+- (TGIMersenneTwisterEngine)initWithSeed:(unint64_t)seed
 {
   v9.receiver = self;
   v9.super_class = TGIMersenneTwisterEngine;
@@ -13,11 +13,11 @@
   v5 = v4;
   if (v4)
   {
-    __src[0] = a3;
+    __src[0] = seed;
     for (i = 1; i != 312; ++i)
     {
-      a3 = i + 0x5851F42D4C957F2DLL * (a3 ^ (a3 >> 62));
-      __src[i] = a3;
+      seed = i + 0x5851F42D4C957F2DLL * (seed ^ (seed >> 62));
+      __src[i] = seed;
     }
 
     __src[312] = 0;

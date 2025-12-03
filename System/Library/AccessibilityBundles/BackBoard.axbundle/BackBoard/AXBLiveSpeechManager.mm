@@ -1,6 +1,6 @@
 @interface AXBLiveSpeechManager
 + (void)initializeMonitor;
-- (void)setLiveSpeechEnabled:(BOOL)a3;
+- (void)setLiveSpeechEnabled:(BOOL)enabled;
 - (void)updateSettings;
 @end
 
@@ -31,9 +31,9 @@ void __41__AXBLiveSpeechManager_initializeMonitor__block_invoke()
   v4 = [v5 addObserverForName:v2 object:0 queue:v3 usingBlock:&__block_literal_global_285_1];
 }
 
-- (void)setLiveSpeechEnabled:(BOOL)a3
+- (void)setLiveSpeechEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v17 = *MEMORY[0x29EDCA608];
   v5 = _os_feature_enabled_impl();
   v6 = LiveSpeechLogCommon();
@@ -53,13 +53,13 @@ void __41__AXBLiveSpeechManager_initializeMonitor__block_invoke()
   {
     v8 = [MEMORY[0x29EDBA070] numberWithBool:self->_wasEverEnabled];
     *buf = 134218242;
-    v14 = v3;
+    v14 = enabledCopy;
     v15 = 2112;
     v16 = v8;
     _os_log_impl(&dword_29BBBD000, v7, OS_LOG_TYPE_DEFAULT, "LiveSpeech monitor asked to enable LiveSpeech: %ld (was ever enabled: %@)", buf, 0x16u);
   }
 
-  if (v3)
+  if (enabledCopy)
   {
     v12 = 0;
     [getLiveSpeechServicesObjcClass() startLiveSpeechAndReturnError:&v12];

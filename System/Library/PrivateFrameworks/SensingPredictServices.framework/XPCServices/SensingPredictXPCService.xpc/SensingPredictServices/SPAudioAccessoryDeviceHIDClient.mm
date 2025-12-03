@@ -1,6 +1,6 @@
 @interface SPAudioAccessoryDeviceHIDClient
 + (_TtC24SensingPredictXPCService31SPAudioAccessoryDeviceHIDClient)shared;
-- (void)ReceiveNoiseLevelWithBlock:(id)a3;
+- (void)ReceiveNoiseLevelWithBlock:(id)block;
 @end
 
 @implementation SPAudioAccessoryDeviceHIDClient
@@ -17,9 +17,9 @@
   return v3;
 }
 
-- (void)ReceiveNoiseLevelWithBlock:(id)a3
+- (void)ReceiveNoiseLevelWithBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   if (v4)
   {
     v5 = v4;
@@ -38,7 +38,7 @@
   v9 = *&self->SPHIDManagerQueue[OBJC_IVAR____TtC24SensingPredictXPCService31SPAudioAccessoryDeviceHIDClient_noiseLevelCallback];
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_100005CBC(v8);
 }
 

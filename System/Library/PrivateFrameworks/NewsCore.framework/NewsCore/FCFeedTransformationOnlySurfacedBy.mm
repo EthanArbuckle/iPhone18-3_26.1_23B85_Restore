@@ -1,30 +1,30 @@
 @interface FCFeedTransformationOnlySurfacedBy
-+ (id)transformationWithTagIDs:(id)a3 feedContextByFeedID:(id)a4;
-- (id)transformFeedItems:(id)a3;
++ (id)transformationWithTagIDs:(id)ds feedContextByFeedID:(id)d;
+- (id)transformFeedItems:(id)items;
 @end
 
 @implementation FCFeedTransformationOnlySurfacedBy
 
-+ (id)transformationWithTagIDs:(id)a3 feedContextByFeedID:(id)a4
++ (id)transformationWithTagIDs:(id)ds feedContextByFeedID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  dsCopy = ds;
   v7 = objc_opt_new();
-  [v7 setTagIDs:v6];
+  [v7 setTagIDs:dsCopy];
 
-  [v7 setFeedContextByFeedID:v5];
+  [v7 setFeedContextByFeedID:dCopy];
 
   return v7;
 }
 
-- (id)transformFeedItems:(id)a3
+- (id)transformFeedItems:(id)items
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __57__FCFeedTransformationOnlySurfacedBy_transformFeedItems___block_invoke;
   v5[3] = &unk_1E7C37898;
   v5[4] = self;
-  v3 = [a3 fc_arrayOfObjectsPassingTest:v5];
+  v3 = [items fc_arrayOfObjectsPassingTest:v5];
 
   return v3;
 }

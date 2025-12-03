@@ -1,6 +1,6 @@
 @interface ATXUrgencyTuningGlobalMetricsLogger
 - (ATXUrgencyTuningGlobalMetricsLogger)init;
-- (void)logUrgencyTuningGlobalMetricsWithXPCActivity:(id)a3;
+- (void)logUrgencyTuningGlobalMetricsWithXPCActivity:(id)activity;
 @end
 
 @implementation ATXUrgencyTuningGlobalMetricsLogger
@@ -20,15 +20,15 @@
   return v2;
 }
 
-- (void)logUrgencyTuningGlobalMetricsWithXPCActivity:(id)a3
+- (void)logUrgencyTuningGlobalMetricsWithXPCActivity:(id)activity
 {
   v43 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  activityCopy = activity;
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v5 = v4 + -86400.0;
   v6 = objc_opt_new();
   v34 = [v6 engagementStatusOfActiveAndProminentNotificationsWithUrgency:1 sinceTimestamp:v5];
-  if ([v3 didDefer])
+  if ([activityCopy didDefer])
   {
     v7 = __atxlog_handle_metrics();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -44,7 +44,7 @@
   else
   {
     v7 = [v6 totalNotificationsPerAppFromStartTime:v5 toEndTime:CFAbsoluteTimeGetCurrent()];
-    if ([v3 didDefer])
+    if ([activityCopy didDefer])
     {
       v10 = __atxlog_handle_metrics();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -83,26 +83,26 @@
 
             v15 = *(*(&v36 + 1) + 8 * i);
             v16 = [v34 objectForKeyedSubscript:{v15, v30, v31}];
-            v17 = [v16 second];
+            second = [v16 second];
 
             v18 = [v13 objectForKeyedSubscript:v15];
-            v19 = [v18 unsignedIntegerValue];
+            unsignedIntegerValue = [v18 unsignedIntegerValue];
 
-            if (v17)
+            if (second)
             {
-              v20 = [v17 first];
-              v21 = v3;
+              first = [second first];
+              v21 = activityCopy;
               v22 = v13;
-              v23 = [v20 unsignedIntegerValue];
-              v24 = [v17 second];
-              v25 = [v24 unsignedIntegerValue] + v23;
+              unsignedIntegerValue2 = [first unsignedIntegerValue];
+              v17Second = [second second];
+              v25 = [v17Second unsignedIntegerValue] + unsignedIntegerValue2;
 
-              v26 = [v17 first];
-              v27 = [v26 unsignedIntegerValue];
+              first2 = [second first];
+              unsignedIntegerValue3 = [first2 unsignedIntegerValue];
 
               v13 = v22;
-              v3 = v21;
-              v28 = v27;
+              activityCopy = v21;
+              v28 = unsignedIntegerValue3;
             }
 
             else
@@ -111,9 +111,9 @@
               v28 = 0.0;
             }
 
-            [(ATXUrgencyTuningGlobalMetricsLogger *)self logCountForNotificationWithBundleId:v15 isTimeSensitiveNotification:1 isEngagedTimeSensitiveNotification:1 count:v3 xpcActivity:v28];
-            [(ATXUrgencyTuningGlobalMetricsLogger *)self logCountForNotificationWithBundleId:v15 isTimeSensitiveNotification:1 isEngagedTimeSensitiveNotification:0 count:v3 xpcActivity:v25];
-            [(ATXUrgencyTuningGlobalMetricsLogger *)self logCountForNotificationWithBundleId:v15 isTimeSensitiveNotification:0 isEngagedTimeSensitiveNotification:0 count:v3 xpcActivity:(v19 - v25)];
+            [(ATXUrgencyTuningGlobalMetricsLogger *)self logCountForNotificationWithBundleId:v15 isTimeSensitiveNotification:1 isEngagedTimeSensitiveNotification:1 count:activityCopy xpcActivity:v28];
+            [(ATXUrgencyTuningGlobalMetricsLogger *)self logCountForNotificationWithBundleId:v15 isTimeSensitiveNotification:1 isEngagedTimeSensitiveNotification:0 count:activityCopy xpcActivity:v25];
+            [(ATXUrgencyTuningGlobalMetricsLogger *)self logCountForNotificationWithBundleId:v15 isTimeSensitiveNotification:0 isEngagedTimeSensitiveNotification:0 count:activityCopy xpcActivity:(unsignedIntegerValue - v25)];
           }
 
           v35 = [v13 countByEnumeratingWithState:&v36 objects:v40 count:16];

@@ -1,5 +1,5 @@
 @interface SUISPasteboardManager
-+ (id)collectExpiredItemsFromItems:(id)a3 expirationThresholdInSeconds:(double)a4 outputNextExpirationDate:(id *)a5;
++ (id)collectExpiredItemsFromItems:(id)items expirationThresholdInSeconds:(double)seconds outputNextExpirationDate:(id *)date;
 + (id)pasteboardExpirationManagerQueue;
 + (id)pasteboardFilter;
 + (id)shared;
@@ -8,9 +8,9 @@
 - (void)configurePasteboardHistory;
 - (void)dealloc;
 - (void)deleteContinuityPasteboardItems;
-- (void)indexCoreSpotlightItemWithAttributeSet:(id)a3;
-- (void)indexOrUpdateIfExistsCorespotlightItemAttributeSet:(id)a3;
-- (void)setChangeCount:(int64_t)a3;
+- (void)indexCoreSpotlightItemWithAttributeSet:(id)set;
+- (void)indexOrUpdateIfExistsCorespotlightItemAttributeSet:(id)set;
+- (void)setChangeCount:(int64_t)count;
 - (void)setup;
 - (void)tearDown;
 @end
@@ -36,16 +36,16 @@ uint64_t __31__SUISPasteboardManager_shared__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)indexOrUpdateIfExistsCorespotlightItemAttributeSet:(id)a3
+- (void)indexOrUpdateIfExistsCorespotlightItemAttributeSet:(id)set
 {
   v21[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 uniqueIdentifier];
-  if ([v5 length])
+  setCopy = set;
+  uniqueIdentifier = [setCopy uniqueIdentifier];
+  if ([uniqueIdentifier length])
   {
     if ([(SUISPasteboardManager *)self pasteboardHistoryItemWasCopied])
     {
-      v6 = [MEMORY[0x277CC34A8] defaultSearchableIndex];
+      defaultSearchableIndex = [MEMORY[0x277CC34A8] defaultSearchableIndex];
       v7 = *MEMORY[0x277CC31F0];
       v21[0] = *MEMORY[0x277CC2640];
       v21[1] = v7;
@@ -54,20 +54,20 @@ uint64_t __31__SUISPasteboardManager_shared__block_invoke()
       v21[3] = v8;
       v21[4] = @"_kMDItemThumbnailData";
       v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:5];
-      v20 = v5;
+      v20 = uniqueIdentifier;
       v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v20 count:1];
       v13 = MEMORY[0x277D85DD0];
       v14 = 3221225472;
       v15 = __76__SUISPasteboardManager_indexOrUpdateIfExistsCorespotlightItemAttributeSet___block_invoke;
       v16 = &unk_279D10278;
-      v17 = v4;
-      v18 = self;
-      [v6 slowFetchAttributes:v9 protectionClass:0 bundleID:@"com.apple.spotlight" identifiers:v10 options:32 completionHandler:&v13];
+      v17 = setCopy;
+      selfCopy = self;
+      [defaultSearchableIndex slowFetchAttributes:v9 protectionClass:0 bundleID:@"com.apple.spotlight" identifiers:v10 options:32 completionHandler:&v13];
     }
 
     else
     {
-      [(SUISPasteboardManager *)self indexCoreSpotlightItemWithAttributeSet:v4];
+      [(SUISPasteboardManager *)self indexCoreSpotlightItemWithAttributeSet:setCopy];
     }
 
     [(SUISPasteboardManager *)self setPasteboardHistoryItemWasCopied:0, v13, v14, v15, v16];
@@ -173,14 +173,14 @@ void __76__SUISPasteboardManager_indexOrUpdateIfExistsCorespotlightItemAttribute
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)indexCoreSpotlightItemWithAttributeSet:(id)a3
+- (void)indexCoreSpotlightItemWithAttributeSet:(id)set
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 isShared];
-  v6 = [v5 BOOLValue];
+  setCopy = set;
+  isShared = [setCopy isShared];
+  bOOLValue = [isShared BOOLValue];
   v7 = *MEMORY[0x277D65CF0];
-  if (v6)
+  if (bOOLValue)
   {
     v7 = @"com.apple.spotlight.pasteboard.continuity";
   }
@@ -188,8 +188,8 @@ void __76__SUISPasteboardManager_indexOrUpdateIfExistsCorespotlightItemAttribute
   v8 = v7;
 
   v9 = objc_alloc(MEMORY[0x277CC34B0]);
-  v10 = [v4 uniqueIdentifier];
-  v11 = [v9 initWithUniqueIdentifier:v10 domainIdentifier:v8 attributeSet:v4];
+  uniqueIdentifier = [setCopy uniqueIdentifier];
+  v11 = [v9 initWithUniqueIdentifier:uniqueIdentifier domainIdentifier:v8 attributeSet:setCopy];
 
   v12 = SUISPasteboardIndexingLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -198,11 +198,11 @@ void __76__SUISPasteboardManager_indexOrUpdateIfExistsCorespotlightItemAttribute
     _os_log_impl(&dword_26B8E8000, v12, OS_LOG_TYPE_DEFAULT, "indexing pasteboard contents", buf, 2u);
   }
 
-  v13 = [v4 lastUsedDate];
+  lastUsedDate = [setCopy lastUsedDate];
 
-  if (v13)
+  if (lastUsedDate)
   {
-    v14 = [MEMORY[0x277CC34A8] defaultSearchableIndex];
+    defaultSearchableIndex = [MEMORY[0x277CC34A8] defaultSearchableIndex];
     v21[0] = v11;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
     v18[0] = MEMORY[0x277D85DD0];
@@ -211,7 +211,7 @@ void __76__SUISPasteboardManager_indexOrUpdateIfExistsCorespotlightItemAttribute
     v18[3] = &unk_279D102A0;
     v18[4] = self;
     v19 = v11;
-    [v14 indexSearchableItems:v15 deleteSearchableItemsWithIdentifiers:0 clientState:0 protectionClass:0 forBundleID:0 options:32 completionHandler:v18];
+    [defaultSearchableIndex indexSearchableItems:v15 deleteSearchableItemsWithIdentifiers:0 clientState:0 protectionClass:0 forBundleID:0 options:32 completionHandler:v18];
   }
 
   else
@@ -312,13 +312,13 @@ uint64_t __57__SUISPasteboardManager_pasteboardExpirationManagerQueue__block_inv
 
 - (void)deleteContinuityPasteboardItems
 {
-  v2 = [MEMORY[0x277D65D50] shared];
-  v3 = [v2 isContinuityEnabled];
+  mEMORY[0x277D65D50] = [MEMORY[0x277D65D50] shared];
+  isContinuityEnabled = [mEMORY[0x277D65D50] isContinuityEnabled];
 
-  if ((v3 & 1) == 0)
+  if ((isContinuityEnabled & 1) == 0)
   {
-    v4 = [MEMORY[0x277CC34A8] defaultSearchableIndex];
-    [v4 deleteSearchableItemsWithDomainIdentifiers:&unk_287C64E90 protectionClass:0 forBundleID:0 options:32 completionHandler:&__block_literal_global_545];
+    defaultSearchableIndex = [MEMORY[0x277CC34A8] defaultSearchableIndex];
+    [defaultSearchableIndex deleteSearchableItemsWithDomainIdentifiers:&unk_287C64E90 protectionClass:0 forBundleID:0 options:32 completionHandler:&__block_literal_global_545];
   }
 }
 
@@ -337,15 +337,15 @@ void __56__SUISPasteboardManager_deleteContinuityPasteboardItems__block_invoke(u
 
 - (void)configurePasteboardHistory
 {
-  v3 = [MEMORY[0x277D65D50] shared];
-  v4 = [v3 isEnabled];
+  mEMORY[0x277D65D50] = [MEMORY[0x277D65D50] shared];
+  isEnabled = [mEMORY[0x277D65D50] isEnabled];
 
-  if (v4)
+  if (isEnabled)
   {
     [(SUISPasteboardManager *)self deleteExpiredItemsAndDispatchForNextExpiration];
-    v5 = [(SUISPasteboardManager *)self sink];
+    sink = [(SUISPasteboardManager *)self sink];
 
-    if (!v5)
+    if (!sink)
     {
 
       [(SUISPasteboardManager *)self setup];
@@ -369,14 +369,14 @@ void __56__SUISPasteboardManager_deleteContinuityPasteboardItems__block_invoke(u
 
 - (void)tearDown
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(SUISPasteboardManager *)self scheduler];
-  [v4 cancel];
+  scheduler = [(SUISPasteboardManager *)self scheduler];
+  [scheduler cancel];
 
-  v5 = [(SUISPasteboardManager *)self sink];
-  [v5 cancel];
+  sink = [(SUISPasteboardManager *)self sink];
+  [sink cancel];
 
   [(SUISPasteboardManager *)self setScheduler:0];
 
@@ -393,8 +393,8 @@ void __56__SUISPasteboardManager_deleteContinuityPasteboardItems__block_invoke(u
   [v2 setDomainIdentifiers:v3];
 
   v4 = MEMORY[0x277CBEBC0];
-  v5 = [MEMORY[0x277D65910] spotlightPasteboardCacheDirectory];
-  v6 = [v4 fileURLWithPath:v5];
+  spotlightPasteboardCacheDirectory = [MEMORY[0x277D65910] spotlightPasteboardCacheDirectory];
+  v6 = [v4 fileURLWithPath:spotlightPasteboardCacheDirectory];
   v9 = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v9 count:1];
   [v2 setFilesToDelete:v7];
@@ -403,10 +403,10 @@ void __56__SUISPasteboardManager_deleteContinuityPasteboardItems__block_invoke(u
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)collectExpiredItemsFromItems:(id)a3 expirationThresholdInSeconds:(double)a4 outputNextExpirationDate:(id *)a5
++ (id)collectExpiredItemsFromItems:(id)items expirationThresholdInSeconds:(double)seconds outputNextExpirationDate:(id *)date
 {
   v68 = *MEMORY[0x277D85DE8];
-  v6 = [a3 sortedArrayUsingComparator:&__block_literal_global_553];
+  v6 = [items sortedArrayUsingComparator:&__block_literal_global_553];
   v7 = [v6 mutableCopy];
 
   v45 = objc_opt_new();
@@ -436,10 +436,10 @@ void __56__SUISPasteboardManager_deleteContinuityPasteboardItems__block_invoke(u
 
         v50 = i;
         v13 = *(*(&v58 + 1) + 8 * i);
-        v14 = [v13 attributeSet];
-        v15 = [v14 lastUsedDate];
+        attributeSet = [v13 attributeSet];
+        lastUsedDate = [attributeSet lastUsedDate];
 
-        if (!v15)
+        if (!lastUsedDate)
         {
           v16 = SUISPasteboardIndexingLog();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -448,26 +448,26 @@ void __56__SUISPasteboardManager_deleteContinuityPasteboardItems__block_invoke(u
           }
         }
 
-        v17 = [v13 attributeSet];
-        v18 = [v17 lastUsedDate];
-        v19 = [v18 dateByAddingTimeInterval:a4];
+        attributeSet2 = [v13 attributeSet];
+        lastUsedDate2 = [attributeSet2 lastUsedDate];
+        v19 = [lastUsedDate2 dateByAddingTimeInterval:seconds];
 
         v51 = v19;
         v20 = [v9 laterDate:v19];
 
         if (v20 == v9)
         {
-          v23 = [v13 uniqueIdentifier];
-          [v45 addObject:v23];
+          uniqueIdentifier = [v13 uniqueIdentifier];
+          [v45 addObject:uniqueIdentifier];
 
           v54 = 0u;
           v55 = 0u;
           v52 = 0u;
           v53 = 0u;
-          v24 = [v13 attributeSet];
-          v25 = [v24 attachmentPaths];
+          attributeSet3 = [v13 attributeSet];
+          attachmentPaths = [attributeSet3 attachmentPaths];
 
-          v26 = [v25 countByEnumeratingWithState:&v52 objects:v66 count:16];
+          v26 = [attachmentPaths countByEnumeratingWithState:&v52 objects:v66 count:16];
           if (v26)
           {
             v27 = v26;
@@ -479,12 +479,12 @@ void __56__SUISPasteboardManager_deleteContinuityPasteboardItems__block_invoke(u
               {
                 if (*v53 != v28)
                 {
-                  objc_enumerationMutation(v25);
+                  objc_enumerationMutation(attachmentPaths);
                 }
 
                 v30 = *(*(&v52 + 1) + 8 * j);
-                v31 = [MEMORY[0x277D65910] spotlightPasteboardCacheDirectory];
-                v32 = [v30 containsString:v31];
+                spotlightPasteboardCacheDirectory = [MEMORY[0x277D65910] spotlightPasteboardCacheDirectory];
+                v32 = [v30 containsString:spotlightPasteboardCacheDirectory];
 
                 if (v32)
                 {
@@ -493,7 +493,7 @@ void __56__SUISPasteboardManager_deleteContinuityPasteboardItems__block_invoke(u
                 }
               }
 
-              v27 = [v25 countByEnumeratingWithState:&v52 objects:v66 count:16];
+              v27 = [attachmentPaths countByEnumeratingWithState:&v52 objects:v66 count:16];
             }
 
             while (v27);
@@ -510,8 +510,8 @@ void __56__SUISPasteboardManager_deleteContinuityPasteboardItems__block_invoke(u
         {
           if (v47)
           {
-            v21 = [MEMORY[0x277CBEA80] currentCalendar];
-            v22 = [v21 isDate:v47 equalToDate:v19 toUnitGranularity:64];
+            currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+            v22 = [currentCalendar isDate:v47 equalToDate:v19 toUnitGranularity:64];
 
             if ((v22 & 1) == 0)
             {
@@ -525,7 +525,7 @@ void __56__SUISPasteboardManager_deleteContinuityPasteboardItems__block_invoke(u
             v47 = v19;
           }
 
-          v25 = v11;
+          attachmentPaths = v11;
           v11 = v19;
           v34 = v50;
         }
@@ -556,10 +556,10 @@ LABEL_31:
     _os_log_impl(&dword_26B8E8000, v35, OS_LOG_TYPE_DEFAULT, "Found expired items %lu, files %lu", buf, 0x16u);
   }
 
-  if (a5)
+  if (date)
   {
     v38 = v11;
-    *a5 = v11;
+    *date = v11;
   }
 
   v39 = objc_opt_new();
@@ -584,20 +584,20 @@ uint64_t __108__SUISPasteboardManager_collectExpiredItemsFromItems_expirationThr
   return v9;
 }
 
-- (void)setChangeCount:(int64_t)a3
+- (void)setChangeCount:(int64_t)count
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = SUISPasteboardIndexingLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134218240;
-    v8 = [(SUISPasteboardManager *)self changeCount];
+    changeCount = [(SUISPasteboardManager *)self changeCount];
     v9 = 2048;
-    v10 = a3;
+    countCopy = count;
     _os_log_impl(&dword_26B8E8000, v5, OS_LOG_TYPE_DEFAULT, "updating changeCount from:%ld to %ld", &v7, 0x16u);
   }
 
-  self->_changeCount = a3;
+  self->_changeCount = count;
   v6 = *MEMORY[0x277D85DE8];
 }
 

@@ -1,6 +1,6 @@
 @interface FMRequestQueueCheck
-- (BOOL)canReplace:(id)a3;
-- (FMRequestQueueCheck)initWithProvider:(id)a3 andServerContext:(id)a4;
+- (BOOL)canReplace:(id)replace;
+- (FMRequestQueueCheck)initWithProvider:(id)provider andServerContext:(id)context;
 - (id)requestBody;
 - (id)requestUrl;
 - (void)deinitializeRequest;
@@ -16,16 +16,16 @@
   [(FMRequestQueueCheck *)self setServerContext:0];
 }
 
-- (FMRequestQueueCheck)initWithProvider:(id)a3 andServerContext:(id)a4
+- (FMRequestQueueCheck)initWithProvider:(id)provider andServerContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = FMRequestQueueCheck;
-  v7 = [(FMRequest *)&v10 initWithProvider:a3];
+  v7 = [(FMRequest *)&v10 initWithProvider:provider];
   v8 = v7;
   if (v7)
   {
-    [(FMRequestQueueCheck *)v7 setServerContext:v6];
+    [(FMRequestQueueCheck *)v7 setServerContext:contextCopy];
   }
 
   return v8;
@@ -33,8 +33,8 @@
 
 - (id)requestUrl
 {
-  v2 = [(FMRequest *)self provider];
-  v3 = [v2 formattedURLForTemplate:@"${scheme}://${hostname}/fmipservice/${service}/${dsid}/${udid}/qc"];
+  provider = [(FMRequest *)self provider];
+  v3 = [provider formattedURLForTemplate:@"${scheme}://${hostname}/fmipservice/${service}/${dsid}/${udid}/qc"];
 
   return v3;
 }
@@ -43,39 +43,39 @@
 {
   v11.receiver = self;
   v11.super_class = FMRequestQueueCheck;
-  v3 = [(FMRequest *)&v11 requestBody];
-  v4 = [(FMRequest *)self provider];
-  v5 = [v4 standardDeviceContext];
-  [v3 setObject:v5 forKeyedSubscript:@"deviceContext"];
+  requestBody = [(FMRequest *)&v11 requestBody];
+  provider = [(FMRequest *)self provider];
+  standardDeviceContext = [provider standardDeviceContext];
+  [requestBody setObject:standardDeviceContext forKeyedSubscript:@"deviceContext"];
 
-  v6 = [(FMRequest *)self provider];
-  v7 = [v6 fullDeviceInfo];
+  provider2 = [(FMRequest *)self provider];
+  fullDeviceInfo = [provider2 fullDeviceInfo];
 
-  [v3 setObject:v7 forKeyedSubscript:@"deviceInfo"];
-  v8 = [(FMRequestQueueCheck *)self serverContext];
+  [requestBody setObject:fullDeviceInfo forKeyedSubscript:@"deviceInfo"];
+  serverContext = [(FMRequestQueueCheck *)self serverContext];
 
-  if (v8)
+  if (serverContext)
   {
-    v9 = [(FMRequestQueueCheck *)self serverContext];
-    [v3 setObject:v9 forKeyedSubscript:@"serverContext"];
+    serverContext2 = [(FMRequestQueueCheck *)self serverContext];
+    [requestBody setObject:serverContext2 forKeyedSubscript:@"serverContext"];
   }
 
-  return v3;
+  return requestBody;
 }
 
-- (BOOL)canReplace:(id)a3
+- (BOOL)canReplace:(id)replace
 {
-  v4 = a3;
+  replaceCopy = replace;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = replaceCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(FMRequest *)self delegate];
-      v7 = [v5 delegate];
-      v8 = v6 == v7;
+      delegate = [(FMRequest *)self delegate];
+      delegate2 = [v5 delegate];
+      v8 = delegate == delegate2;
     }
 
     else

@@ -1,82 +1,82 @@
 @interface JSStoreFlowSegue
-- (BOOL)webViewController:(id)a3 handleDelegateAction:(id)a4 completion:(id)a5;
-- (id)dynamicViewController:(id)a3 contentViewWithDictionary:(id)a4 frame:(CGRect)a5;
-- (void)cloudServiceSetupViewControllerDidDismiss:(id)a3;
-- (void)dynamicViewController:(id)a3 didFinishCarrierLinkingWithResult:(id)a4 error:(id)a5;
-- (void)dynamicViewController:(id)a3 didFinishWithPurchaseResult:(id)a4 error:(id)a5;
-- (void)webViewController:(id)a3 handleAuthenticateRequest:(id)a4 completion:(id)a5;
-- (void)webViewController:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5;
+- (BOOL)webViewController:(id)controller handleDelegateAction:(id)action completion:(id)completion;
+- (id)dynamicViewController:(id)controller contentViewWithDictionary:(id)dictionary frame:(CGRect)frame;
+- (void)cloudServiceSetupViewControllerDidDismiss:(id)dismiss;
+- (void)dynamicViewController:(id)controller didFinishCarrierLinkingWithResult:(id)result error:(id)error;
+- (void)dynamicViewController:(id)controller didFinishWithPurchaseResult:(id)result error:(id)error;
+- (void)webViewController:(id)controller handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)webViewController:(id)controller handleDialogRequest:(id)request completion:(id)completion;
 @end
 
 @implementation JSStoreFlowSegue
 
-- (void)cloudServiceSetupViewControllerDidDismiss:(id)a3
+- (void)cloudServiceSetupViewControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
-  JSStoreFlowSegue.cloudServiceSetupViewControllerDidDismiss(_:)(v4);
+  dismissCopy = dismiss;
+  selfCopy = self;
+  JSStoreFlowSegue.cloudServiceSetupViewControllerDidDismiss(_:)(dismissCopy);
 }
 
-- (void)webViewController:(id)a3 handleAuthenticateRequest:(id)a4 completion:(id)a5
+- (void)webViewController:(id)controller handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
-  _s11MusicJSCore16JSStoreFlowSegueC0A11ApplicationE17webViewController_6handle10completionySo08AMSUIWebhI0C_So22AMSAuthenticateRequestCySo0M6ResultCSg_s5Error_pSgtctF_0(v10, v11, sub_DB118, v9);
+  controllerCopy = controller;
+  requestCopy = request;
+  selfCopy = self;
+  _s11MusicJSCore16JSStoreFlowSegueC0A11ApplicationE17webViewController_6handle10completionySo08AMSUIWebhI0C_So22AMSAuthenticateRequestCySo0M6ResultCSg_s5Error_pSgtctF_0(controllerCopy, requestCopy, sub_DB118, v9);
 }
 
-- (BOOL)webViewController:(id)a3 handleDelegateAction:(id)a4 completion:(id)a5
+- (BOOL)webViewController:(id)controller handleDelegateAction:(id)action completion:(id)completion
 {
-  v5 = _Block_copy(a5);
+  v5 = _Block_copy(completion);
   _Block_release(v5);
   return 0;
 }
 
-- (void)webViewController:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5
+- (void)webViewController:(id)controller handleDialogRequest:(id)request completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   _Block_copy(v8);
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  sub_DA844(v10, v11, v8);
+  controllerCopy = controller;
+  requestCopy = request;
+  selfCopy = self;
+  sub_DA844(requestCopy, selfCopy, v8);
   _Block_release(v8);
   _Block_release(v8);
 }
 
-- (void)dynamicViewController:(id)a3 didFinishWithPurchaseResult:(id)a4 error:(id)a5
+- (void)dynamicViewController:(id)controller didFinishWithPurchaseResult:(id)result error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_DAA6C(a4, a5);
+  controllerCopy = controller;
+  resultCopy = result;
+  selfCopy = self;
+  errorCopy = error;
+  sub_DAA6C(result, error);
 }
 
-- (id)dynamicViewController:(id)a3 contentViewWithDictionary:(id)a4 frame:(CGRect)a5
+- (id)dynamicViewController:(id)controller contentViewWithDictionary:(id)dictionary frame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_AB8FF0();
   v10 = objc_allocWithZone(type metadata accessor for UpsellArtworkGrid());
-  v11 = a4;
+  dictionaryCopy = dictionary;
   v12 = sub_3624F4(x, y, width, height);
 
   return v12;
 }
 
-- (void)dynamicViewController:(id)a3 didFinishCarrierLinkingWithResult:(id)a4 error:(id)a5
+- (void)dynamicViewController:(id)controller didFinishCarrierLinkingWithResult:(id)result error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_DAE24(a5);
+  controllerCopy = controller;
+  resultCopy = result;
+  selfCopy = self;
+  errorCopy = error;
+  sub_DAE24(error);
 }
 
 @end

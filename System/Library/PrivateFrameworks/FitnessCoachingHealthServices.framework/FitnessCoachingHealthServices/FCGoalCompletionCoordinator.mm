@@ -1,98 +1,98 @@
 @interface FCGoalCompletionCoordinator
-- (BOOL)_goalTypeAllowed:(int64_t)a3;
-- (BOOL)runDailyGoalCompletionDetectionForGoalType:(int64_t)a3 activitySummaryIndex:(int64_t)a4 previousValue:(double)a5 currentValue:(double)a6 goalValue:(double)a7 shouldAlert:(BOOL)a8 goalMetHandler:(id)a9;
-- (FCGoalCompletionCoordinator)initWithProfile:(id)a3 goalCompletionStore:(id)a4 serviceQueue:(id)a5;
-- (FCGoalCompletionCoordinator)initWithProfile:(id)a3 serviceQueue:(id)a4;
+- (BOOL)_goalTypeAllowed:(int64_t)allowed;
+- (BOOL)runDailyGoalCompletionDetectionForGoalType:(int64_t)type activitySummaryIndex:(int64_t)index previousValue:(double)value currentValue:(double)currentValue goalValue:(double)goalValue shouldAlert:(BOOL)alert goalMetHandler:(id)handler;
+- (FCGoalCompletionCoordinator)initWithProfile:(id)profile goalCompletionStore:(id)store serviceQueue:(id)queue;
+- (FCGoalCompletionCoordinator)initWithProfile:(id)profile serviceQueue:(id)queue;
 - (FCGoalCompletionCoordinatorDelegate)delegate;
-- (int64_t)_activitySummaryIndexForDate:(id)a3;
+- (int64_t)_activitySummaryIndexForDate:(id)date;
 - (void)concludeGoalDetectionRun;
-- (void)notificationPosted:(id)a3;
+- (void)notificationPosted:(id)posted;
 @end
 
 @implementation FCGoalCompletionCoordinator
 
-- (FCGoalCompletionCoordinator)initWithProfile:(id)a3 serviceQueue:(id)a4
+- (FCGoalCompletionCoordinator)initWithProfile:(id)profile serviceQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = FCGoalCompletionCoordinator;
   v8 = [(FCGoalCompletionCoordinator *)&v11 init];
   if (v8)
   {
-    v9 = [[FCGoalCompletionStore alloc] initWithProfile:v6];
-    v8 = [(FCGoalCompletionCoordinator *)v8 initWithProfile:v6 goalCompletionStore:v9 serviceQueue:v7];
+    v9 = [[FCGoalCompletionStore alloc] initWithProfile:profileCopy];
+    v8 = [(FCGoalCompletionCoordinator *)v8 initWithProfile:profileCopy goalCompletionStore:v9 serviceQueue:queueCopy];
   }
 
   return v8;
 }
 
-- (FCGoalCompletionCoordinator)initWithProfile:(id)a3 goalCompletionStore:(id)a4 serviceQueue:(id)a5
+- (FCGoalCompletionCoordinator)initWithProfile:(id)profile goalCompletionStore:(id)store serviceQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  profileCopy = profile;
+  storeCopy = store;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = FCGoalCompletionCoordinator;
   v11 = [(FCGoalCompletionCoordinator *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_goalCompletionStore, a4);
-    objc_storeWeak(&v12->_profile, v8);
-    objc_storeStrong(&v12->_serviceQueue, a5);
+    objc_storeStrong(&v11->_goalCompletionStore, store);
+    objc_storeWeak(&v12->_profile, profileCopy);
+    objc_storeStrong(&v12->_serviceQueue, queue);
   }
 
   return v12;
 }
 
-- (void)notificationPosted:(id)a3
+- (void)notificationPosted:(id)posted
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  postedCopy = posted;
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC290];
   if (os_log_type_enabled(*MEMORY[0x277CCC290], OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = postedCopy;
     _os_log_impl(&dword_24B55B000, v5, OS_LOG_TYPE_DEFAULT, "Removing goal completion types for content %@", &v10, 0xCu);
   }
 
   v6 = MEMORY[0x277CBEB98];
-  v7 = [v4 completedGoalTypes];
-  v8 = [v6 setWithArray:v7];
+  completedGoalTypes = [postedCopy completedGoalTypes];
+  v8 = [v6 setWithArray:completedGoalTypes];
 
-  -[FCGoalCompletionCoordinator notificationPostedForGoalTypes:activitySummaryIndex:](self, "notificationPostedForGoalTypes:activitySummaryIndex:", v8, [v4 activitySummaryIndex]);
+  -[FCGoalCompletionCoordinator notificationPostedForGoalTypes:activitySummaryIndex:](self, "notificationPostedForGoalTypes:activitySummaryIndex:", v8, [postedCopy activitySummaryIndex]);
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)runDailyGoalCompletionDetectionForGoalType:(int64_t)a3 activitySummaryIndex:(int64_t)a4 previousValue:(double)a5 currentValue:(double)a6 goalValue:(double)a7 shouldAlert:(BOOL)a8 goalMetHandler:(id)a9
+- (BOOL)runDailyGoalCompletionDetectionForGoalType:(int64_t)type activitySummaryIndex:(int64_t)index previousValue:(double)value currentValue:(double)currentValue goalValue:(double)goalValue shouldAlert:(BOOL)alert goalMetHandler:(id)handler
 {
-  v9 = a8;
+  alertCopy = alert;
   v42 = *MEMORY[0x277D85DE8];
-  v16 = a9;
-  if (![(FCGoalCompletionCoordinator *)self _goalTypeAllowed:a3])
+  handlerCopy = handler;
+  if (![(FCGoalCompletionCoordinator *)self _goalTypeAllowed:type])
   {
     _HKInitializeLogging();
     v21 = *MEMORY[0x277CCC290];
     if (os_log_type_enabled(*MEMORY[0x277CCC290], OS_LOG_TYPE_DEFAULT))
     {
       *v39 = 67109120;
-      *&v39[4] = a3;
+      *&v39[4] = type;
       _os_log_impl(&dword_24B55B000, v21, OS_LOG_TYPE_DEFAULT, "Goal type %d not allowed on device", v39, 8u);
     }
 
     goto LABEL_12;
   }
 
-  if (a5 >= a7)
+  if (value >= goalValue)
   {
-    [(FCGoalCompletionStore *)self->_goalCompletionStore addDailyGoalTypePreviouslyMet:a3 activitySummaryIndex:a4];
+    [(FCGoalCompletionStore *)self->_goalCompletionStore addDailyGoalTypePreviouslyMet:type activitySummaryIndex:index];
   }
 
-  v17 = v16[2](v16, a5, a7);
-  v18 = v16[2](v16, a6, a7);
+  v17 = handlerCopy[2](handlerCopy, value, goalValue);
+  v18 = handlerCopy[2](handlerCopy, currentValue, goalValue);
   v19 = v18;
   if ((v17 & 1) != 0 || !v18)
   {
@@ -108,35 +108,35 @@ LABEL_12:
     goto LABEL_30;
   }
 
-  if (a3 > 4)
+  if (type > 4)
   {
     v20 = @"Unknown";
   }
 
   else
   {
-    v20 = off_27900B3F8[a3];
+    v20 = off_27900B3F8[type];
   }
 
-  v24 = [MEMORY[0x277CCDD30] isAppleInternalInstall];
+  isAppleInternalInstall = [MEMORY[0x277CCDD30] isAppleInternalInstall];
   _HKInitializeLogging();
   v25 = MEMORY[0x277CCC290];
   v26 = *MEMORY[0x277CCC290];
   v27 = os_log_type_enabled(*MEMORY[0x277CCC290], OS_LOG_TYPE_DEFAULT);
-  if (v24)
+  if (isAppleInternalInstall)
   {
     if (v27)
     {
       *v39 = 138413314;
       *&v39[4] = v20;
       *&v39[12] = 2048;
-      *&v39[14] = a4;
+      *&v39[14] = index;
       *&v39[22] = 2048;
-      v40 = a5;
+      valueCopy = value;
       *v41 = 2048;
-      *&v41[2] = a6;
+      *&v41[2] = currentValue;
       *&v41[10] = 2048;
-      *&v41[12] = a7;
+      *&v41[12] = goalValue;
       v28 = "Goal type %@ for summary index %lld went from %f to %f; goal is %f";
       v29 = v26;
       v30 = 52;
@@ -155,7 +155,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if ([(FCGoalCompletionStore *)self->_goalCompletionStore isDailyGoalTypeMet:a3 activitySummaryIndex:a4, *v39, *&v39[16], *&v40, *v41, *&v41[16], v42])
+  if ([(FCGoalCompletionStore *)self->_goalCompletionStore isDailyGoalTypeMet:type activitySummaryIndex:index, *v39, *&v39[16], *&valueCopy, *v41, *&v41[16], v42])
   {
     _HKInitializeLogging();
     v31 = *v25;
@@ -163,24 +163,24 @@ LABEL_19:
     {
       goalCompletionStore = self->_goalCompletionStore;
       v33 = v31;
-      v34 = [(FCGoalCompletionStore *)goalCompletionStore allGoalTypesMetForActivitySummaryIndex:a4];
+      v34 = [(FCGoalCompletionStore *)goalCompletionStore allGoalTypesMetForActivitySummaryIndex:index];
       *v39 = 138543874;
       *&v39[4] = v20;
       *&v39[12] = 2048;
-      *&v39[14] = a4;
+      *&v39[14] = index;
       *&v39[22] = 2112;
-      v40 = *&v34;
+      valueCopy = *&v34;
       _os_log_impl(&dword_24B55B000, v33, OS_LOG_TYPE_DEFAULT, "Attempted to add goal type %{public}@ that was already added for activitySummaryIndex: %lld; existing set is %@", v39, 0x20u);
     }
   }
 
   else
   {
-    [(FCGoalCompletionStore *)self->_goalCompletionStore addGoalTypeToDailyGoalTypesMet:a3 activitySummaryIndex:a4];
+    [(FCGoalCompletionStore *)self->_goalCompletionStore addGoalTypeToDailyGoalTypesMet:type activitySummaryIndex:index];
     _HKInitializeLogging();
     v35 = *v25;
     v36 = os_log_type_enabled(*v25, OS_LOG_TYPE_DEFAULT);
-    if (v9)
+    if (alertCopy)
     {
       if (v36)
       {
@@ -189,7 +189,7 @@ LABEL_19:
         _os_log_impl(&dword_24B55B000, v35, OS_LOG_TYPE_DEFAULT, "Goal type %{public}@ was just met, notifying", v39, 0xCu);
       }
 
-      [(FCGoalCompletionStore *)self->_goalCompletionStore addGoalTypeToNotify:a3 activitySummaryIndex:a4];
+      [(FCGoalCompletionStore *)self->_goalCompletionStore addGoalTypeToNotify:type activitySummaryIndex:index];
     }
 
     else if (v36)
@@ -210,8 +210,8 @@ LABEL_30:
 - (void)concludeGoalDetectionRun
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [(FCGoalCompletionCoordinator *)self _activitySummaryIndexForDate:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = [(FCGoalCompletionCoordinator *)self _activitySummaryIndexForDate:date];
 
   v5 = [(FCGoalCompletionStore *)self->_goalCompletionStore goalTypesToNotifyForActivitySummaryIndex:v4];
   if ([v5 count])
@@ -227,10 +227,10 @@ LABEL_30:
     }
 
     v8 = objc_alloc(MEMORY[0x277D09CA0]);
-    v9 = [MEMORY[0x277CCAD78] UUID];
-    v10 = [v9 UUIDString];
-    v11 = [v5 allObjects];
-    v12 = [v8 initWithActivitySummaryIndex:v4 identifier:v10 completedGoalTypes:v11];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    allObjects = [v5 allObjects];
+    v12 = [v8 initWithActivitySummaryIndex:v4 identifier:uUIDString completedGoalTypes:allObjects];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained coordinator:self postGoalCompletionNotification:v12];
@@ -239,23 +239,23 @@ LABEL_30:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)_activitySummaryIndexForDate:(id)a3
+- (int64_t)_activitySummaryIndexForDate:(id)date
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
-  v5 = [v3 hk_gregorianCalendar];
-  v6 = [v5 components:*MEMORY[0x277CCE1D0] fromDate:v4];
+  dateCopy = date;
+  hk_gregorianCalendar = [v3 hk_gregorianCalendar];
+  v6 = [hk_gregorianCalendar components:*MEMORY[0x277CCE1D0] fromDate:dateCopy];
 
   v7 = _HKCacheIndexFromDateComponents();
   return v7;
 }
 
-- (BOOL)_goalTypeAllowed:(int64_t)a3
+- (BOOL)_goalTypeAllowed:(int64_t)allowed
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained daemon];
-  v6 = [v5 behavior];
-  if ([v6 isAppleWatch])
+  daemon = [WeakRetained daemon];
+  behavior = [daemon behavior];
+  if ([behavior isAppleWatch])
   {
     v7 = &unk_285E86A38;
   }
@@ -265,7 +265,7 @@ LABEL_30:
     v7 = &unk_285E86A20;
   }
 
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:allowed];
   v9 = [v7 containsObject:v8];
 
   return v9;

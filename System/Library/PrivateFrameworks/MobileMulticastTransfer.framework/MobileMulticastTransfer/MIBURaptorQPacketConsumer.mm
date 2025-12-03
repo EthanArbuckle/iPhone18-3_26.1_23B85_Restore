@@ -2,45 +2,45 @@
 - (BOOL)_assemble;
 - (BOOL)_assembleUsingSummaryReport;
 - (BOOL)_bootstrap;
-- (BOOL)_consumePacket:(id)a3 arrivalTime:(id)a4;
+- (BOOL)_consumePacket:(id)packet arrivalTime:(id)time;
 - (BOOL)assemble;
 - (BOOL)assembleUsingSummaryReport;
 - (BOOL)bootstrap;
-- (MIBURaptorQPacketConsumer)initWithEncoderSummary:(id)a3 threshold:(unint64_t)a4 outputFile:(id)a5;
-- (MIBURaptorQPacketConsumer)initWithEncoderSummaryFile:(id)a3 threshold:(unint64_t)a4 outputFile:(id)a5;
+- (MIBURaptorQPacketConsumer)initWithEncoderSummary:(id)summary threshold:(unint64_t)threshold outputFile:(id)file;
+- (MIBURaptorQPacketConsumer)initWithEncoderSummaryFile:(id)file threshold:(unint64_t)threshold outputFile:(id)outputFile;
 - (int64_t)missingCount;
 - (void)_assembleUsingSummaryReport;
 - (void)_bootstrap;
 - (void)_invalidate;
-- (void)consumePackets:(id)a3 arrivalTime:(id)a4 withCompletion:(id)a5 inQueue:(id)a6;
+- (void)consumePackets:(id)packets arrivalTime:(id)time withCompletion:(id)completion inQueue:(id)queue;
 - (void)invalidate;
 @end
 
 @implementation MIBURaptorQPacketConsumer
 
-- (MIBURaptorQPacketConsumer)initWithEncoderSummaryFile:(id)a3 threshold:(unint64_t)a4 outputFile:(id)a5
+- (MIBURaptorQPacketConsumer)initWithEncoderSummaryFile:(id)file threshold:(unint64_t)threshold outputFile:(id)outputFile
 {
-  v8 = a5;
-  v9 = [SKRaptorQEncoderSummary encoderSummaryFromFile:a3];
+  outputFileCopy = outputFile;
+  v9 = [SKRaptorQEncoderSummary encoderSummaryFromFile:file];
   if (v9)
   {
-    self = [(MIBURaptorQPacketConsumer *)self initWithEncoderSummary:v9 threshold:a4 outputFile:v8];
-    v10 = self;
+    self = [(MIBURaptorQPacketConsumer *)self initWithEncoderSummary:v9 threshold:threshold outputFile:outputFileCopy];
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (MIBURaptorQPacketConsumer)initWithEncoderSummary:(id)a3 threshold:(unint64_t)a4 outputFile:(id)a5
+- (MIBURaptorQPacketConsumer)initWithEncoderSummary:(id)summary threshold:(unint64_t)threshold outputFile:(id)file
 {
   v30 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  summaryCopy = summary;
+  fileCopy = file;
   v21.receiver = self;
   v21.super_class = MIBURaptorQPacketConsumer;
   v11 = [(MIBURaptorQPacketConsumer *)&v21 init];
@@ -55,16 +55,16 @@
     if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
-      v14 = [v9 rqBasicParameters];
-      v15 = [v9 rqExtendedParameters];
+      rqBasicParameters = [summaryCopy rqBasicParameters];
+      rqExtendedParameters = [summaryCopy rqExtendedParameters];
       *buf = 134218754;
-      v23 = v14;
+      v23 = rqBasicParameters;
       v24 = 1024;
-      v25 = v15;
+      v25 = rqExtendedParameters;
       v26 = 2048;
-      v27 = a4;
+      thresholdCopy = threshold;
       v28 = 2114;
-      v29 = v10;
+      v29 = fileCopy;
       _os_log_impl(&dword_259B04000, v13, OS_LOG_TYPE_DEFAULT, "Initialize packet consumer with basic parameters: %llu, extended parameters: %u, threshold: %lu, output file: %{public}@", buf, 0x26u);
     }
 
@@ -73,9 +73,9 @@
     queue = v11->_queue;
     v11->_queue = v17;
 
-    objc_storeStrong(&v11->_outputFile, a5);
-    v11->_threshold = a4;
-    objc_storeStrong(&v11->_encoderSummary, a3);
+    objc_storeStrong(&v11->_outputFile, file);
+    v11->_threshold = threshold;
+    objc_storeStrong(&v11->_encoderSummary, summary);
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -124,26 +124,26 @@ uint64_t __38__MIBURaptorQPacketConsumer_bootstrap__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)consumePackets:(id)a3 arrivalTime:(id)a4 withCompletion:(id)a5 inQueue:(id)a6
+- (void)consumePackets:(id)packets arrivalTime:(id)time withCompletion:(id)completion inQueue:(id)queue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  packetsCopy = packets;
+  timeCopy = time;
+  completionCopy = completion;
+  queueCopy = queue;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__MIBURaptorQPacketConsumer_consumePackets_arrivalTime_withCompletion_inQueue___block_invoke;
   block[3] = &unk_2798EBC08;
-  v20 = v10;
-  v21 = self;
-  v23 = v11;
-  v24 = v12;
-  v22 = v13;
-  v15 = v11;
-  v16 = v12;
-  v17 = v13;
-  v18 = v10;
+  v20 = packetsCopy;
+  selfCopy = self;
+  v23 = timeCopy;
+  v24 = completionCopy;
+  v22 = queueCopy;
+  v15 = timeCopy;
+  v16 = completionCopy;
+  v17 = queueCopy;
+  v18 = packetsCopy;
   dispatch_async(queue, block);
 }
 
@@ -312,12 +312,12 @@ uint64_t __55__MIBURaptorQPacketConsumer_assembleUsingSummaryReport__block_invok
 {
   buf[3] = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(NSString *)self->_outputFile stringByDeletingLastPathComponent];
-  if (![v3 fileExistsAtPath:self->_outputFile])
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  stringByDeletingLastPathComponent = [(NSString *)self->_outputFile stringByDeletingLastPathComponent];
+  if (![defaultManager fileExistsAtPath:self->_outputFile])
   {
     v7 = 0;
-    if ([v3 fileExistsAtPath:v4])
+    if ([defaultManager fileExistsAtPath:stringByDeletingLastPathComponent])
     {
       goto LABEL_4;
     }
@@ -332,12 +332,12 @@ LABEL_7:
     if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf[0]) = 138543362;
-      *(buf + 4) = v4;
+      *(buf + 4) = stringByDeletingLastPathComponent;
       _os_log_impl(&dword_259B04000, v9, OS_LOG_TYPE_DEFAULT, "Creating parent directory: %{public}@", buf, 0xCu);
     }
 
     v23 = v7;
-    v10 = [v3 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:&v23];
+    v10 = [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v23];
     v11 = v23;
 
     if ((v10 & 1) == 0)
@@ -357,7 +357,7 @@ LABEL_7:
 
   outputFile = self->_outputFile;
   v24 = 0;
-  v6 = [v3 removeItemAtPath:outputFile error:&v24];
+  v6 = [defaultManager removeItemAtPath:outputFile error:&v24];
   v7 = v24;
   if ((v6 & 1) == 0)
   {
@@ -365,7 +365,7 @@ LABEL_7:
     goto LABEL_19;
   }
 
-  if (([v3 fileExistsAtPath:v4] & 1) == 0)
+  if (([defaultManager fileExistsAtPath:stringByDeletingLastPathComponent] & 1) == 0)
   {
     goto LABEL_7;
   }
@@ -375,12 +375,12 @@ LABEL_4:
   {
 LABEL_13:
     v12 = [SKRaptorQDecoder alloc];
-    v13 = [(SKRaptorQEncoderSummary *)self->_encoderSummary rqBasicParameters];
-    v14 = [(SKRaptorQEncoderSummary *)self->_encoderSummary rqExtendedParameters];
+    rqBasicParameters = [(SKRaptorQEncoderSummary *)self->_encoderSummary rqBasicParameters];
+    rqExtendedParameters = [(SKRaptorQEncoderSummary *)self->_encoderSummary rqExtendedParameters];
     threshold = self->_threshold;
     v16 = [MEMORY[0x277CBEBC0] fileURLWithPath:self->_outputFile];
     v22 = v7;
-    v17 = [(SKRaptorQDecoder *)v12 initWithBasicParameters:v13 extendedParameters:v14 repairFactor:2 threshold:threshold outputURL:v16 error:&v22];
+    v17 = [(SKRaptorQDecoder *)v12 initWithBasicParameters:rqBasicParameters extendedParameters:rqExtendedParameters repairFactor:2 threshold:threshold outputURL:v16 error:&v22];
     v18 = v22;
 
     raptorQDecoder = self->_raptorQDecoder;
@@ -475,27 +475,27 @@ void __39__MIBURaptorQPacketConsumer__bootstrap__block_invoke_15()
   }
 }
 
-- (BOOL)_consumePacket:(id)a3 arrivalTime:(id)a4
+- (BOOL)_consumePacket:(id)packet arrivalTime:(id)time
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  packetCopy = packet;
+  timeCopy = time;
   raptorQDecoder = self->_raptorQDecoder;
   v18 = 0;
-  v9 = [(SKRaptorQDecoder *)raptorQDecoder addPacket:v6 error:&v18];
+  v9 = [(SKRaptorQDecoder *)raptorQDecoder addPacket:packetCopy error:&v18];
   v10 = v18;
   if (v9)
   {
     if (!self->_firstReceived)
     {
-      objc_storeStrong(&self->_firstReceived, a4);
+      objc_storeStrong(&self->_firstReceived, time);
     }
 
     ++self->_packetsConsumed;
-    self->_bytesConsumed += dispatch_data_get_size(v6);
+    self->_bytesConsumed += dispatch_data_get_size(packetCopy);
     if ([(SKRaptorQDecoder *)self->_raptorQDecoder sufficientSymbolsReceived])
     {
-      [v7 timeIntervalSinceDate:self->_firstReceived];
+      [timeCopy timeIntervalSinceDate:self->_firstReceived];
       v12 = v11;
       if (MIBUOnceToken != -1)
       {
@@ -754,7 +754,7 @@ void __56__MIBURaptorQPacketConsumer__assembleUsingSummaryReport__block_invoke_3
   }
 
   *a2 = 0;
-  *a1 = 0;
+  *self = 0;
 }
 
 @end

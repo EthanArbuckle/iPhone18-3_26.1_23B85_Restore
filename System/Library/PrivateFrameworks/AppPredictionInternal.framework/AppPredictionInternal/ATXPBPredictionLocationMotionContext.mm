@@ -1,23 +1,23 @@
 @interface ATXPBPredictionLocationMotionContext
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsMotionType:(id)a3;
+- (int)StringAsMotionType:(id)type;
 - (int)motionType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCanPredictClipsGivenRecentMotion:(BOOL)a3;
-- (void)setHasDistanceFromGym:(BOOL)a3;
-- (void)setHasDistanceFromHome:(BOOL)a3;
-- (void)setHasDistanceFromSchool:(BOOL)a3;
-- (void)setHasDistanceFromWork:(BOOL)a3;
-- (void)setHasGeohash:(BOOL)a3;
-- (void)setHasLargeGeohash:(BOOL)a3;
-- (void)setHasLocationEnabled:(BOOL)a3;
-- (void)setHasMotionType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCanPredictClipsGivenRecentMotion:(BOOL)motion;
+- (void)setHasDistanceFromGym:(BOOL)gym;
+- (void)setHasDistanceFromHome:(BOOL)home;
+- (void)setHasDistanceFromSchool:(BOOL)school;
+- (void)setHasDistanceFromWork:(BOOL)work;
+- (void)setHasGeohash:(BOOL)geohash;
+- (void)setHasLargeGeohash:(BOOL)geohash;
+- (void)setHasLocationEnabled:(BOOL)enabled;
+- (void)setHasMotionType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBPredictionLocationMotionContext
@@ -35,9 +35,9 @@
   }
 }
 
-- (void)setHasMotionType:(BOOL)a3
+- (void)setHasMotionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 128;
   }
@@ -50,30 +50,30 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (int)StringAsMotionType:(id)a3
+- (int)StringAsMotionType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Walking"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Walking"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Running"])
+  else if ([typeCopy isEqualToString:@"Running"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Cycling"])
+  else if ([typeCopy isEqualToString:@"Cycling"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Driving"])
+  else if ([typeCopy isEqualToString:@"Driving"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Unknown"])
+  else if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 4;
   }
@@ -86,9 +86,9 @@
   return v4;
 }
 
-- (void)setHasLocationEnabled:(BOOL)a3
+- (void)setHasLocationEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 512;
   }
@@ -101,9 +101,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasDistanceFromHome:(BOOL)a3
+- (void)setHasDistanceFromHome:(BOOL)home
 {
-  if (a3)
+  if (home)
   {
     v3 = 4;
   }
@@ -116,9 +116,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasDistanceFromWork:(BOOL)a3
+- (void)setHasDistanceFromWork:(BOOL)work
 {
-  if (a3)
+  if (work)
   {
     v3 = 16;
   }
@@ -131,9 +131,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasDistanceFromSchool:(BOOL)a3
+- (void)setHasDistanceFromSchool:(BOOL)school
 {
-  if (a3)
+  if (school)
   {
     v3 = 8;
   }
@@ -146,9 +146,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasDistanceFromGym:(BOOL)a3
+- (void)setHasDistanceFromGym:(BOOL)gym
 {
-  if (a3)
+  if (gym)
   {
     v3 = 2;
   }
@@ -161,9 +161,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasCanPredictClipsGivenRecentMotion:(BOOL)a3
+- (void)setHasCanPredictClipsGivenRecentMotion:(BOOL)motion
 {
-  if (a3)
+  if (motion)
   {
     v3 = 256;
   }
@@ -176,9 +176,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasGeohash:(BOOL)a3
+- (void)setHasGeohash:(BOOL)geohash
 {
-  if (a3)
+  if (geohash)
   {
     v3 = 32;
   }
@@ -191,9 +191,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasLargeGeohash:(BOOL)a3
+- (void)setHasLargeGeohash:(BOOL)geohash
 {
-  if (a3)
+  if (geohash)
   {
     v3 = 64;
   }
@@ -212,27 +212,27 @@
   v8.receiver = self;
   v8.super_class = ATXPBPredictionLocationMotionContext;
   v4 = [(ATXPBPredictionLocationMotionContext *)&v8 description];
-  v5 = [(ATXPBPredictionLocationMotionContext *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBPredictionLocationMotionContext *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   previousLOI = self->_previousLOI;
   if (previousLOI)
   {
-    v5 = [(ATXPBPredictionLocationOfInterest *)previousLOI dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"previousLOI"];
+    dictionaryRepresentation = [(ATXPBPredictionLocationOfInterest *)previousLOI dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"previousLOI"];
   }
 
   currentLOI = self->_currentLOI;
   if (currentLOI)
   {
-    v7 = [(ATXPBPredictionLocationOfInterest *)currentLOI dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"currentLOI"];
+    dictionaryRepresentation2 = [(ATXPBPredictionLocationOfInterest *)currentLOI dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"currentLOI"];
   }
 
   if ((*&self->_has & 0x80) != 0)
@@ -248,20 +248,20 @@
       v9 = off_27859C230[motionType];
     }
 
-    [v3 setObject:v9 forKey:@"motionType"];
+    [dictionary setObject:v9 forKey:@"motionType"];
   }
 
   currentLocation = self->_currentLocation;
   if (currentLocation)
   {
-    [v3 setObject:currentLocation forKey:@"currentLocation"];
+    [dictionary setObject:currentLocation forKey:@"currentLocation"];
   }
 
   has = self->_has;
   if ((has & 0x200) != 0)
   {
     v14 = [MEMORY[0x277CCABB0] numberWithBool:self->_locationEnabled];
-    [v3 setObject:v14 forKey:@"locationEnabled"];
+    [dictionary setObject:v14 forKey:@"locationEnabled"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -282,7 +282,7 @@ LABEL_14:
   }
 
   v15 = [MEMORY[0x277CCABB0] numberWithDouble:self->_distanceFromHome];
-  [v3 setObject:v15 forKey:@"distanceFromHome"];
+  [dictionary setObject:v15 forKey:@"distanceFromHome"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -298,7 +298,7 @@ LABEL_15:
 
 LABEL_27:
   v16 = [MEMORY[0x277CCABB0] numberWithDouble:self->_distanceFromWork];
-  [v3 setObject:v16 forKey:@"distanceFromWork"];
+  [dictionary setObject:v16 forKey:@"distanceFromWork"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -314,7 +314,7 @@ LABEL_16:
 
 LABEL_28:
   v17 = [MEMORY[0x277CCABB0] numberWithDouble:self->_distanceFromSchool];
-  [v3 setObject:v17 forKey:@"distanceFromSchool"];
+  [dictionary setObject:v17 forKey:@"distanceFromSchool"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -330,7 +330,7 @@ LABEL_17:
 
 LABEL_29:
   v18 = [MEMORY[0x277CCABB0] numberWithDouble:self->_distanceFromGym];
-  [v3 setObject:v18 forKey:@"distanceFromGym"];
+  [dictionary setObject:v18 forKey:@"distanceFromGym"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -346,7 +346,7 @@ LABEL_18:
 
 LABEL_30:
   v19 = [MEMORY[0x277CCABB0] numberWithBool:self->_canPredictClipsGivenRecentMotion];
-  [v3 setObject:v19 forKey:@"canPredictClipsGivenRecentMotion"];
+  [dictionary setObject:v19 forKey:@"canPredictClipsGivenRecentMotion"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -362,7 +362,7 @@ LABEL_19:
 
 LABEL_31:
   v20 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_geohash];
-  [v3 setObject:v20 forKey:@"geohash"];
+  [dictionary setObject:v20 forKey:@"geohash"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -378,47 +378,47 @@ LABEL_20:
 
 LABEL_32:
   v21 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_coarseGeohash];
-  [v3 setObject:v21 forKey:@"coarseGeohash"];
+  [dictionary setObject:v21 forKey:@"coarseGeohash"];
 
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_21:
     v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_largeGeohash];
-    [v3 setObject:v12 forKey:@"largeGeohash"];
+    [dictionary setObject:v12 forKey:@"largeGeohash"];
   }
 
 LABEL_22:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v16 = v4;
+  toCopy = to;
+  v16 = toCopy;
   if (self->_previousLOI)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v16;
+    toCopy = v16;
   }
 
   if (self->_currentLOI)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v16;
+    toCopy = v16;
   }
 
   if ((*&self->_has & 0x80) != 0)
   {
     motionType = self->_motionType;
     PBDataWriterWriteInt32Field();
-    v4 = v16;
+    toCopy = v16;
   }
 
   if (self->_currentLocation)
   {
     PBDataWriterWriteDataField();
-    v4 = v16;
+    toCopy = v16;
   }
 
   has = self->_has;
@@ -426,7 +426,7 @@ LABEL_22:
   {
     locationEnabled = self->_locationEnabled;
     PBDataWriterWriteBOOLField();
-    v4 = v16;
+    toCopy = v16;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -447,7 +447,7 @@ LABEL_11:
 
   distanceFromHome = self->_distanceFromHome;
   PBDataWriterWriteDoubleField();
-  v4 = v16;
+  toCopy = v16;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -463,7 +463,7 @@ LABEL_12:
 LABEL_24:
   distanceFromWork = self->_distanceFromWork;
   PBDataWriterWriteDoubleField();
-  v4 = v16;
+  toCopy = v16;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -479,7 +479,7 @@ LABEL_13:
 LABEL_25:
   distanceFromSchool = self->_distanceFromSchool;
   PBDataWriterWriteDoubleField();
-  v4 = v16;
+  toCopy = v16;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -495,7 +495,7 @@ LABEL_14:
 LABEL_26:
   distanceFromGym = self->_distanceFromGym;
   PBDataWriterWriteDoubleField();
-  v4 = v16;
+  toCopy = v16;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -511,7 +511,7 @@ LABEL_15:
 LABEL_27:
   canPredictClipsGivenRecentMotion = self->_canPredictClipsGivenRecentMotion;
   PBDataWriterWriteBOOLField();
-  v4 = v16;
+  toCopy = v16;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -527,7 +527,7 @@ LABEL_16:
 LABEL_28:
   geohash = self->_geohash;
   PBDataWriterWriteFixed64Field();
-  v4 = v16;
+  toCopy = v16;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -543,51 +543,51 @@ LABEL_17:
 LABEL_29:
   coarseGeohash = self->_coarseGeohash;
   PBDataWriterWriteFixed64Field();
-  v4 = v16;
+  toCopy = v16;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_18:
     largeGeohash = self->_largeGeohash;
     PBDataWriterWriteFixed64Field();
-    v4 = v16;
+    toCopy = v16;
   }
 
 LABEL_19:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_previousLOI)
   {
-    [v4 setPreviousLOI:?];
-    v4 = v6;
+    [toCopy setPreviousLOI:?];
+    toCopy = v6;
   }
 
   if (self->_currentLOI)
   {
     [v6 setCurrentLOI:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 0x80) != 0)
   {
-    *(v4 + 20) = self->_motionType;
-    *(v4 + 50) |= 0x80u;
+    *(toCopy + 20) = self->_motionType;
+    *(toCopy + 50) |= 0x80u;
   }
 
   if (self->_currentLocation)
   {
     [v6 setCurrentLocation:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 0x200) != 0)
   {
-    *(v4 + 97) = self->_locationEnabled;
-    *(v4 + 50) |= 0x200u;
+    *(toCopy + 97) = self->_locationEnabled;
+    *(toCopy + 50) |= 0x200u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -606,8 +606,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  *(v4 + 3) = *&self->_distanceFromHome;
-  *(v4 + 50) |= 4u;
+  *(toCopy + 3) = *&self->_distanceFromHome;
+  *(toCopy + 50) |= 4u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -621,8 +621,8 @@ LABEL_12:
   }
 
 LABEL_24:
-  *(v4 + 5) = *&self->_distanceFromWork;
-  *(v4 + 50) |= 0x10u;
+  *(toCopy + 5) = *&self->_distanceFromWork;
+  *(toCopy + 50) |= 0x10u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -636,8 +636,8 @@ LABEL_13:
   }
 
 LABEL_25:
-  *(v4 + 4) = *&self->_distanceFromSchool;
-  *(v4 + 50) |= 8u;
+  *(toCopy + 4) = *&self->_distanceFromSchool;
+  *(toCopy + 50) |= 8u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -651,8 +651,8 @@ LABEL_14:
   }
 
 LABEL_26:
-  *(v4 + 2) = *&self->_distanceFromGym;
-  *(v4 + 50) |= 2u;
+  *(toCopy + 2) = *&self->_distanceFromGym;
+  *(toCopy + 50) |= 2u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -666,8 +666,8 @@ LABEL_15:
   }
 
 LABEL_27:
-  *(v4 + 96) = self->_canPredictClipsGivenRecentMotion;
-  *(v4 + 50) |= 0x100u;
+  *(toCopy + 96) = self->_canPredictClipsGivenRecentMotion;
+  *(toCopy + 50) |= 0x100u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -681,8 +681,8 @@ LABEL_16:
   }
 
 LABEL_28:
-  *(v4 + 6) = self->_geohash;
-  *(v4 + 50) |= 0x20u;
+  *(toCopy + 6) = self->_geohash;
+  *(toCopy + 50) |= 0x20u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -696,26 +696,26 @@ LABEL_17:
   }
 
 LABEL_29:
-  *(v4 + 1) = self->_coarseGeohash;
-  *(v4 + 50) |= 1u;
+  *(toCopy + 1) = self->_coarseGeohash;
+  *(toCopy + 50) |= 1u;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_18:
-    *(v4 + 7) = self->_largeGeohash;
-    *(v4 + 50) |= 0x40u;
+    *(toCopy + 7) = self->_largeGeohash;
+    *(toCopy + 50) |= 0x40u;
   }
 
 LABEL_19:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(ATXPBPredictionLocationOfInterest *)self->_previousLOI copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(ATXPBPredictionLocationOfInterest *)self->_previousLOI copyWithZone:zone];
   v7 = *(v5 + 88);
   *(v5 + 88) = v6;
 
-  v8 = [(ATXPBPredictionLocationOfInterest *)self->_currentLOI copyWithZone:a3];
+  v8 = [(ATXPBPredictionLocationOfInterest *)self->_currentLOI copyWithZone:zone];
   v9 = *(v5 + 64);
   *(v5 + 64) = v8;
 
@@ -725,7 +725,7 @@ LABEL_19:
     *(v5 + 100) |= 0x80u;
   }
 
-  v10 = [(NSData *)self->_currentLocation copyWithZone:a3];
+  v10 = [(NSData *)self->_currentLocation copyWithZone:zone];
   v11 = *(v5 + 72);
   *(v5 + 72) = v10;
 
@@ -854,16 +854,16 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_65;
   }
 
   previousLOI = self->_previousLOI;
-  if (previousLOI | *(v4 + 11))
+  if (previousLOI | *(equalCopy + 11))
   {
     if (![(ATXPBPredictionLocationOfInterest *)previousLOI isEqual:?])
     {
@@ -872,7 +872,7 @@ LABEL_12:
   }
 
   currentLOI = self->_currentLOI;
-  if (currentLOI | *(v4 + 8))
+  if (currentLOI | *(equalCopy + 8))
   {
     if (![(ATXPBPredictionLocationOfInterest *)currentLOI isEqual:?])
     {
@@ -881,10 +881,10 @@ LABEL_12:
   }
 
   has = self->_has;
-  v8 = *(v4 + 50);
+  v8 = *(equalCopy + 50);
   if ((has & 0x80) != 0)
   {
-    if ((v8 & 0x80) == 0 || self->_motionType != *(v4 + 20))
+    if ((v8 & 0x80) == 0 || self->_motionType != *(equalCopy + 20))
     {
       goto LABEL_65;
     }
@@ -896,7 +896,7 @@ LABEL_12:
   }
 
   currentLocation = self->_currentLocation;
-  if (currentLocation | *(v4 + 9))
+  if (currentLocation | *(equalCopy + 9))
   {
     if (![(NSData *)currentLocation isEqual:?])
     {
@@ -906,37 +906,37 @@ LABEL_12:
     has = self->_has;
   }
 
-  v10 = *(v4 + 50);
+  v10 = *(equalCopy + 50);
   if ((has & 0x200) != 0)
   {
-    if ((*(v4 + 50) & 0x200) == 0)
+    if ((*(equalCopy + 50) & 0x200) == 0)
     {
       goto LABEL_65;
     }
 
-    v11 = *(v4 + 97);
+    v11 = *(equalCopy + 97);
     if (self->_locationEnabled)
     {
-      if ((*(v4 + 97) & 1) == 0)
+      if ((*(equalCopy + 97) & 1) == 0)
       {
         goto LABEL_65;
       }
     }
 
-    else if (*(v4 + 97))
+    else if (*(equalCopy + 97))
     {
       goto LABEL_65;
     }
   }
 
-  else if ((*(v4 + 50) & 0x200) != 0)
+  else if ((*(equalCopy + 50) & 0x200) != 0)
   {
     goto LABEL_65;
   }
 
   if ((has & 4) != 0)
   {
-    if ((v10 & 4) == 0 || self->_distanceFromHome != *(v4 + 3))
+    if ((v10 & 4) == 0 || self->_distanceFromHome != *(equalCopy + 3))
     {
       goto LABEL_65;
     }
@@ -949,7 +949,7 @@ LABEL_12:
 
   if ((has & 0x10) != 0)
   {
-    if ((v10 & 0x10) == 0 || self->_distanceFromWork != *(v4 + 5))
+    if ((v10 & 0x10) == 0 || self->_distanceFromWork != *(equalCopy + 5))
     {
       goto LABEL_65;
     }
@@ -962,7 +962,7 @@ LABEL_12:
 
   if ((has & 8) != 0)
   {
-    if ((v10 & 8) == 0 || self->_distanceFromSchool != *(v4 + 4))
+    if ((v10 & 8) == 0 || self->_distanceFromSchool != *(equalCopy + 4))
     {
       goto LABEL_65;
     }
@@ -975,7 +975,7 @@ LABEL_12:
 
   if ((has & 2) != 0)
   {
-    if ((v10 & 2) == 0 || self->_distanceFromGym != *(v4 + 2))
+    if ((v10 & 2) == 0 || self->_distanceFromGym != *(equalCopy + 2))
     {
       goto LABEL_65;
     }
@@ -988,7 +988,7 @@ LABEL_12:
 
   if ((has & 0x100) == 0)
   {
-    if ((*(v4 + 50) & 0x100) == 0)
+    if ((*(equalCopy + 50) & 0x100) == 0)
     {
       goto LABEL_44;
     }
@@ -998,21 +998,21 @@ LABEL_65:
     goto LABEL_66;
   }
 
-  if ((*(v4 + 50) & 0x100) == 0)
+  if ((*(equalCopy + 50) & 0x100) == 0)
   {
     goto LABEL_65;
   }
 
-  v12 = *(v4 + 96);
+  v12 = *(equalCopy + 96);
   if (self->_canPredictClipsGivenRecentMotion)
   {
-    if ((*(v4 + 96) & 1) == 0)
+    if ((*(equalCopy + 96) & 1) == 0)
     {
       goto LABEL_65;
     }
   }
 
-  else if (*(v4 + 96))
+  else if (*(equalCopy + 96))
   {
     goto LABEL_65;
   }
@@ -1020,7 +1020,7 @@ LABEL_65:
 LABEL_44:
   if ((has & 0x20) != 0)
   {
-    if ((v10 & 0x20) == 0 || self->_geohash != *(v4 + 6))
+    if ((v10 & 0x20) == 0 || self->_geohash != *(equalCopy + 6))
     {
       goto LABEL_65;
     }
@@ -1033,7 +1033,7 @@ LABEL_44:
 
   if (has)
   {
-    if ((v10 & 1) == 0 || self->_coarseGeohash != *(v4 + 1))
+    if ((v10 & 1) == 0 || self->_coarseGeohash != *(equalCopy + 1))
     {
       goto LABEL_65;
     }
@@ -1046,7 +1046,7 @@ LABEL_44:
 
   if ((has & 0x40) != 0)
   {
-    if ((v10 & 0x40) == 0 || self->_largeGeohash != *(v4 + 7))
+    if ((v10 & 0x40) == 0 || self->_largeGeohash != *(equalCopy + 7))
     {
       goto LABEL_65;
     }
@@ -1280,12 +1280,12 @@ LABEL_42:
   return v4 ^ v3 ^ v5 ^ v6 ^ v10 ^ v14 ^ v15 ^ v19 ^ v23 ^ v27 ^ v28 ^ v29 ^ v30;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   previousLOI = self->_previousLOI;
-  v6 = *(v4 + 11);
-  v10 = v4;
+  v6 = *(fromCopy + 11);
+  v10 = fromCopy;
   if (previousLOI)
   {
     if (!v6)
@@ -1306,10 +1306,10 @@ LABEL_42:
     [(ATXPBPredictionLocationMotionContext *)self setPreviousLOI:?];
   }
 
-  v4 = v10;
+  fromCopy = v10;
 LABEL_7:
   currentLOI = self->_currentLOI;
-  v8 = *(v4 + 8);
+  v8 = *(fromCopy + 8);
   if (currentLOI)
   {
     if (!v8)
@@ -1330,26 +1330,26 @@ LABEL_7:
     currentLOI = [(ATXPBPredictionLocationMotionContext *)self setCurrentLOI:?];
   }
 
-  v4 = v10;
+  fromCopy = v10;
 LABEL_13:
-  if ((*(v4 + 50) & 0x80) != 0)
+  if ((*(fromCopy + 50) & 0x80) != 0)
   {
-    self->_motionType = *(v4 + 20);
+    self->_motionType = *(fromCopy + 20);
     *&self->_has |= 0x80u;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     currentLOI = [(ATXPBPredictionLocationMotionContext *)self setCurrentLocation:?];
-    v4 = v10;
+    fromCopy = v10;
   }
 
-  v9 = *(v4 + 50);
+  v9 = *(fromCopy + 50);
   if ((v9 & 0x200) != 0)
   {
-    self->_locationEnabled = *(v4 + 97);
+    self->_locationEnabled = *(fromCopy + 97);
     *&self->_has |= 0x200u;
-    v9 = *(v4 + 50);
+    v9 = *(fromCopy + 50);
     if ((v9 & 4) == 0)
     {
 LABEL_19:
@@ -1367,9 +1367,9 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  self->_distanceFromHome = *(v4 + 3);
+  self->_distanceFromHome = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v9 = *(v4 + 50);
+  v9 = *(fromCopy + 50);
   if ((v9 & 0x10) == 0)
   {
 LABEL_20:
@@ -1382,9 +1382,9 @@ LABEL_20:
   }
 
 LABEL_32:
-  self->_distanceFromWork = *(v4 + 5);
+  self->_distanceFromWork = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  v9 = *(v4 + 50);
+  v9 = *(fromCopy + 50);
   if ((v9 & 8) == 0)
   {
 LABEL_21:
@@ -1397,9 +1397,9 @@ LABEL_21:
   }
 
 LABEL_33:
-  self->_distanceFromSchool = *(v4 + 4);
+  self->_distanceFromSchool = *(fromCopy + 4);
   *&self->_has |= 8u;
-  v9 = *(v4 + 50);
+  v9 = *(fromCopy + 50);
   if ((v9 & 2) == 0)
   {
 LABEL_22:
@@ -1412,9 +1412,9 @@ LABEL_22:
   }
 
 LABEL_34:
-  self->_distanceFromGym = *(v4 + 2);
+  self->_distanceFromGym = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v9 = *(v4 + 50);
+  v9 = *(fromCopy + 50);
   if ((v9 & 0x100) == 0)
   {
 LABEL_23:
@@ -1427,9 +1427,9 @@ LABEL_23:
   }
 
 LABEL_35:
-  self->_canPredictClipsGivenRecentMotion = *(v4 + 96);
+  self->_canPredictClipsGivenRecentMotion = *(fromCopy + 96);
   *&self->_has |= 0x100u;
-  v9 = *(v4 + 50);
+  v9 = *(fromCopy + 50);
   if ((v9 & 0x20) == 0)
   {
 LABEL_24:
@@ -1442,9 +1442,9 @@ LABEL_24:
   }
 
 LABEL_36:
-  self->_geohash = *(v4 + 6);
+  self->_geohash = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  v9 = *(v4 + 50);
+  v9 = *(fromCopy + 50);
   if ((v9 & 1) == 0)
   {
 LABEL_25:
@@ -1457,18 +1457,18 @@ LABEL_25:
   }
 
 LABEL_37:
-  self->_coarseGeohash = *(v4 + 1);
+  self->_coarseGeohash = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 50) & 0x40) != 0)
+  if ((*(fromCopy + 50) & 0x40) != 0)
   {
 LABEL_26:
-    self->_largeGeohash = *(v4 + 7);
+    self->_largeGeohash = *(fromCopy + 7);
     *&self->_has |= 0x40u;
   }
 
 LABEL_27:
 
-  MEMORY[0x2821F96F8](currentLOI, v4);
+  MEMORY[0x2821F96F8](currentLOI, fromCopy);
 }
 
 @end

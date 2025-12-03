@@ -1,17 +1,17 @@
 @interface CPSInlineCardContainerView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CPSInlineCardContainerView)initWithFrame:(CGRect)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CPSInlineCardContainerView)initWithFrame:(CGRect)frame;
 - (CPSInlineCardViewDelegate)delegate;
-- (void)tappedView:(id)a3;
+- (void)tappedView:(id)view;
 @end
 
 @implementation CPSInlineCardContainerView
 
-- (CPSInlineCardContainerView)initWithFrame:(CGRect)a3
+- (CPSInlineCardContainerView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = CPSInlineCardContainerView;
-  v3 = [(CPSInlineCardContainerView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CPSInlineCardContainerView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v3 action:sel_tappedView_];
@@ -26,17 +26,17 @@
   return v3;
 }
 
-- (void)tappedView:(id)a3
+- (void)tappedView:(id)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained didTapBackgroundView:self];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   [(UIView *)self->_contentView convertPoint:self fromView:x, y];
   v9 = v8;
   v11 = v10;
@@ -52,7 +52,7 @@
   {
     v14.receiver = self;
     v14.super_class = CPSInlineCardContainerView;
-    v12 = [(CPSInlineCardContainerView *)&v14 pointInside:v7 withEvent:x, y];
+    v12 = [(CPSInlineCardContainerView *)&v14 pointInside:eventCopy withEvent:x, y];
   }
 
   return v12;

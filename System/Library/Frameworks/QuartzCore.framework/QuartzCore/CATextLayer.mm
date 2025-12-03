@@ -1,7 +1,7 @@
 @interface CATextLayer
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3;
-+ (id)defaultValueForKey:(id)a3;
-- (BOOL)CA_validateValue:(id)a3 forKey:(id)a4;
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers;
++ (id)defaultValueForKey:(id)key;
+- (BOOL)CA_validateValue:(id)value forKey:(id)key;
 - (BOOL)allowsFontSubpixelQuantization;
 - (BOOL)isTruncated;
 - (BOOL)isWrapped;
@@ -15,15 +15,15 @@
 - (__CTLine)_createTruncationToken;
 - (__CTTypesetter)_retainTypesetter;
 - (id)_createStringDict;
-- (id)implicitAnimationForKeyPath:(id)a3;
+- (id)implicitAnimationForKeyPath:(id)path;
 - (id)string;
 - (id)truncationString;
-- (void)_applyLinesToFunction:(void *)a3 info:(void *)a4 truncated:(BOOL *)a5;
-- (void)_drawLine:(__CTLine *)a3 inContext:(CGContext *)a4 atPoint:(CGPoint)a5;
-- (void)_prepareContext:(CGContext *)a3;
+- (void)_applyLinesToFunction:(void *)function info:(void *)info truncated:(BOOL *)truncated;
+- (void)_drawLine:(__CTLine *)line inContext:(CGContext *)context atPoint:(CGPoint)point;
+- (void)_prepareContext:(CGContext *)context;
 - (void)dealloc;
-- (void)didChangeValueForKey:(id)a3;
-- (void)drawInContext:(CGContext *)a3;
+- (void)didChangeValueForKey:(id)key;
+- (void)drawInContext:(CGContext *)context;
 - (void)setAlignmentMode:(CATextLayerAlignmentMode)alignmentMode;
 - (void)setAllowsFontSubpixelQuantization:(BOOL)allowsFontSubpixelQuantization;
 - (void)setFont:(CFTypeRef)font;
@@ -31,7 +31,7 @@
 - (void)setForegroundColor:(CGColorRef)foregroundColor;
 - (void)setString:(id)string;
 - (void)setTruncationMode:(CATextLayerTruncationMode)truncationMode;
-- (void)setTruncationString:(id)a3;
+- (void)setTruncationString:(id)string;
 - (void)setWrapped:(BOOL)wrapped;
 @end
 
@@ -50,18 +50,18 @@
   state = self->_state;
   if (!state)
   {
-    v5 = [(CATextLayer *)self string];
-    state = v5;
-    if (!v5)
+    string = [(CATextLayer *)self string];
+    state = string;
+    if (!string)
     {
       return state;
     }
 
-    v6 = CFGetTypeID(v5);
+    v6 = CFGetTypeID(string);
     if (v6 == CFStringGetTypeID())
     {
-      v7 = [(CATextLayer *)self _createStringDict];
-      v8 = CFAttributedStringCreate(0, state, v7);
+      _createStringDict = [(CATextLayer *)self _createStringDict];
+      v8 = CFAttributedStringCreate(0, state, _createStringDict);
 
       self->_state = CTTypesetterCreateWithAttributedString(v8);
       CFRelease(v8);
@@ -107,23 +107,23 @@ LABEL_2:
     [CATextLayer _createStringDict]::initialized = 1;
   }
 
-  v3 = [(CATextLayer *)self font];
+  font = [(CATextLayer *)self font];
   [(CATextLayer *)self fontSize];
-  if (!v3)
+  if (!font)
   {
     return 0;
   }
 
   v5 = v4;
-  v6 = CFGetTypeID(v3);
+  v6 = CFGetTypeID(font);
   if (v6 == CGFontGetTypeID())
   {
-    CopyWithAttributes = CTFontCreateWithGraphicsFont(v3, v5, 0, 0);
+    CopyWithAttributes = CTFontCreateWithGraphicsFont(font, v5, 0, 0);
   }
 
   else if (v6 == CFStringGetTypeID())
   {
-    CopyWithAttributes = CTFontCreateWithName(v3, v5, 0);
+    CopyWithAttributes = CTFontCreateWithName(font, v5, 0);
   }
 
   else
@@ -133,23 +133,23 @@ LABEL_2:
       return 0;
     }
 
-    if (CTFontGetSize(v3) == v5)
+    if (CTFontGetSize(font) == v5)
     {
-      CopyWithAttributes = CFRetain(v3);
+      CopyWithAttributes = CFRetain(font);
     }
 
     else
     {
-      CopyWithAttributes = CTFontCreateCopyWithAttributes(v3, v5, 0, 0);
+      CopyWithAttributes = CTFontCreateCopyWithAttributes(font, v5, 0, 0);
     }
   }
 
   v8 = CopyWithAttributes;
   if (CopyWithAttributes)
   {
-    v9 = [(CATextLayer *)self foregroundColor];
+    foregroundColor = [(CATextLayer *)self foregroundColor];
     v10 = objc_alloc(MEMORY[0x1E695DF20]);
-    v11 = [v10 initWithObjectsAndKeys:{v8, *MEMORY[0x1E6965658], v9, *MEMORY[0x1E69659D8], 0}];
+    v11 = [v10 initWithObjectsAndKeys:{v8, *MEMORY[0x1E6965658], foregroundColor, *MEMORY[0x1E69659D8], 0}];
     CFRelease(v8);
     return v11;
   }
@@ -219,17 +219,17 @@ LABEL_2:
   [(CALayer *)&v4 dealloc];
 }
 
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == observers)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CATextLayer;
-  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, a3);
+  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, observers);
 }
 
 - (void)setAllowsFontSubpixelQuantization:(BOOL)allowsFontSubpixelQuantization
@@ -288,15 +288,15 @@ LABEL_2:
   CA::Layer::setter(self->super._attr.layer, 0x2B0, 3, v3);
 }
 
-- (void)_prepareContext:(CGContext *)a3
+- (void)_prepareContext:(CGContext *)context
 {
-  CGContextSetShouldSmoothFonts(a3, 0);
-  v5 = [(CATextLayer *)self allowsFontSubpixelQuantization];
+  CGContextSetShouldSmoothFonts(context, 0);
+  allowsFontSubpixelQuantization = [(CATextLayer *)self allowsFontSubpixelQuantization];
 
-  CGContextSetAllowsFontSubpixelQuantization(a3, v5);
+  CGContextSetAllowsFontSubpixelQuantization(context, allowsFontSubpixelQuantization);
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   v8 = *MEMORY[0x1E69E9840];
   if (([CATextLayer drawInContext:]::initialized & 1) == 0)
@@ -317,7 +317,7 @@ LABEL_2:
   {
 LABEL_5:
     [(objc_class *)v5 saveGraphicsState];
-    [-[CATextLayer drawInContext:]::gfxCtx setCurrentContext:{objc_msgSend(-[CATextLayer drawInContext:]::gfxCtx, "graphicsContextWithGraphicsPort:flipped:", a3, 0)}];
+    [-[CATextLayer drawInContext:]::gfxCtx setCurrentContext:{objc_msgSend(-[CATextLayer drawInContext:]::gfxCtx, "graphicsContextWithGraphicsPort:flipped:", context, 0)}];
   }
 
 LABEL_6:
@@ -329,29 +329,29 @@ LABEL_6:
     transform.a = 1.0;
     *&transform.d = xmmword_183E20F00;
     transform.ty = v6;
-    CGContextConcatCTM(a3, &transform);
+    CGContextConcatCTM(context, &transform);
   }
 
-  [(CATextLayer *)self _applyLinesToFunction:drawLine info:a3];
+  [(CATextLayer *)self _applyLinesToFunction:drawLine info:context];
   if ([CATextLayer drawInContext:]::gfxCtx)
   {
     [-[CATextLayer drawInContext:]::gfxCtx restoreGraphicsState];
   }
 }
 
-- (void)_drawLine:(__CTLine *)a3 inContext:(CGContext *)a4 atPoint:(CGPoint)a5
+- (void)_drawLine:(__CTLine *)line inContext:(CGContext *)context atPoint:(CGPoint)point
 {
-  CGContextSetTextPosition(a4, a5.x, a5.y);
+  CGContextSetTextPosition(context, point.x, point.y);
 
-  CTLineDraw(a3, a4);
+  CTLineDraw(line, context);
 }
 
-- (void)_applyLinesToFunction:(void *)a3 info:(void *)a4 truncated:(BOOL *)a5
+- (void)_applyLinesToFunction:(void *)function info:(void *)info truncated:(BOOL *)truncated
 {
   v54[1] = *MEMORY[0x1E69E9840];
-  if (a5)
+  if (truncated)
   {
-    *a5 = 0;
+    *truncated = 0;
   }
 
   v8 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
@@ -367,8 +367,8 @@ LABEL_6:
     os_unfair_lock_lock(&CA::Transaction::transaction_lock);
   }
 
-  v10 = [(CATextLayer *)self _retainTypesetter];
-  if (!v10)
+  _retainTypesetter = [(CATextLayer *)self _retainTypesetter];
+  if (!_retainTypesetter)
   {
 
     CA::Transaction::unlock(v8);
@@ -380,10 +380,10 @@ LABEL_6:
   v14 = v13;
   v47 = *(MEMORY[0x1E695EFF8] + 8);
   v48 = *MEMORY[0x1E695EFF8];
-  v51 = [(CATextLayer *)self isWrapped];
+  isWrapped = [(CATextLayer *)self isWrapped];
   v15 = [-[CATextLayer string](self "string")];
-  v16 = [(CATextLayer *)self alignmentMode];
-  if ([(__CFString *)v16 isEqual:@"natural"])
+  alignmentMode = [(CATextLayer *)self alignmentMode];
+  if ([(__CFString *)alignmentMode isEqual:@"natural"])
   {
     if (get_natural_alignment(void)::once_alignment != -1)
     {
@@ -400,7 +400,7 @@ LABEL_6:
     goto LABEL_19;
   }
 
-  v18 = CAInternAtom(v16, 0);
+  v18 = CAInternAtom(alignmentMode, 0);
   if (v18 == 91)
   {
     v50 = 0;
@@ -431,7 +431,7 @@ LABEL_19:
 
 LABEL_23:
   v19 = CAInternAtom([(CATextLayer *)self truncationMode], 0);
-  v45 = a5;
+  truncatedCopy = truncated;
   switch(v19)
   {
     case 235:
@@ -440,7 +440,7 @@ LABEL_23:
     case 681:
       truncationType = kCTLineTruncationStart;
 LABEL_30:
-      v21 = [(CATextLayer *)self _createTruncationToken];
+      _createTruncationToken = [(CATextLayer *)self _createTruncationToken];
       goto LABEL_32;
     case 517:
       v20 = 2;
@@ -449,7 +449,7 @@ LABEL_29:
       goto LABEL_30;
   }
 
-  v21 = 0;
+  _createTruncationToken = 0;
   truncationType = -1;
 LABEL_32:
   CA::Transaction::unlock(v8);
@@ -457,7 +457,7 @@ LABEL_32:
   if (v14 > 0.0 && v15 >= 1)
   {
     v22 = 0;
-    if (v51)
+    if (isWrapped)
     {
       v23 = v12;
     }
@@ -473,17 +473,17 @@ LABEL_32:
       v53 = 0.0;
       v54[0] = 0.0;
       v52 = 0.0;
-      v25 = CTTypesetterSuggestLineBreak(v10, v22, v23);
+      v25 = CTTypesetterSuggestLineBreak(_retainTypesetter, v22, v23);
       v56.location = v22;
       v56.length = v25;
-      Line = CTTypesetterCreateLine(v10, v56);
+      Line = CTTypesetterCreateLine(_retainTypesetter, v56);
       v27 = Line;
       if (!Line)
       {
         goto LABEL_68;
       }
 
-      if (v51)
+      if (isWrapped)
       {
         get_line_bounds(Line, v54, &v53, &v52);
         if (v25 + v22 < v15)
@@ -491,9 +491,9 @@ LABEL_32:
           v29 = v53;
           v28 = v54[0];
           v30 = v52;
-          v57.length = CTTypesetterSuggestLineBreak(v10, v25 + v22, v12);
+          v57.length = CTTypesetterSuggestLineBreak(_retainTypesetter, v25 + v22, v12);
           v57.location = v25 + v22;
-          v31 = CTTypesetterCreateLine(v10, v57);
+          v31 = CTTypesetterCreateLine(_retainTypesetter, v57);
           v32 = v31;
           if (!v31)
           {
@@ -503,10 +503,10 @@ LABEL_32:
           get_line_bounds(v31, v54, &v53, &v52);
           if (v28 + v24 + v29 + v30 + v54[0] + v53 + v52 > v14)
           {
-            v25 = CTTypesetterSuggestLineBreak(v10, v22, 1.0e10);
+            v25 = CTTypesetterSuggestLineBreak(_retainTypesetter, v22, 1.0e10);
             v58.location = v22;
             v58.length = v25;
-            v33 = CTTypesetterCreateLine(v10, v58);
+            v33 = CTTypesetterCreateLine(_retainTypesetter, v58);
             CFRelease(v27);
             v27 = v33;
             if (!v33)
@@ -519,24 +519,24 @@ LABEL_32:
         }
       }
 
-      if (!v21)
+      if (!_createTruncationToken)
       {
         goto LABEL_52;
       }
 
       BoundsWithOptions = CTLineGetBoundsWithOptions(v27, 0x10uLL);
       width = BoundsWithOptions.size.width;
-      v60 = CTLineGetBoundsWithOptions(v21, 0x10uLL);
+      v60 = CTLineGetBoundsWithOptions(_createTruncationToken, 0x10uLL);
       if (v60.size.width >= width)
       {
         break;
       }
 
-      TruncatedLine = CTLineCreateTruncatedLine(v27, v12, truncationType, v21);
+      TruncatedLine = CTLineCreateTruncatedLine(v27, v12, truncationType, _createTruncationToken);
       v61 = CTLineGetBoundsWithOptions(TruncatedLine, 0x10uLL);
-      if (v45)
+      if (truncatedCopy)
       {
-        *v45 = width > v61.size.width;
+        *truncatedCopy = width > v61.size.width;
       }
 
       CFRelease(v27);
@@ -563,7 +563,7 @@ LABEL_53:
         }
 
         v40 = v54[0] + v24;
-        if (a3)
+        if (function)
         {
           v38.n128_f64[0] = v14 - v40 + v47;
           v41 = floor(v38.n128_f64[0] + 0.5);
@@ -572,7 +572,7 @@ LABEL_53:
             v38.n128_f64[0] = v41;
           }
 
-          (a3)(self, a4, TruncatedLine, PenOffsetForFlush + v48, v38);
+          (function)(self, info, TruncatedLine, PenOffsetForFlush + v48, v38);
         }
 
         v43 = v52;
@@ -590,9 +590,9 @@ LABEL_53:
 
     if (v12 < width)
     {
-      if (v45)
+      if (truncatedCopy)
       {
-        *v45 = 1;
+        *truncatedCopy = 1;
       }
 
       CFRelease(v27);
@@ -605,10 +605,10 @@ LABEL_52:
   }
 
 LABEL_68:
-  CFRelease(v10);
-  if (v21)
+  CFRelease(_retainTypesetter);
+  if (_createTruncationToken)
   {
-    CFRelease(v21);
+    CFRelease(_createTruncationToken);
   }
 }
 
@@ -623,8 +623,8 @@ LABEL_68:
 - (CGSize)_preferredSize
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CATextLayer *)self isWrapped];
-  if (v3)
+  isWrapped = [(CATextLayer *)self isWrapped];
+  if (isWrapped)
   {
     [(CATextLayer *)self fontSize];
     v5 = v4;
@@ -638,7 +638,7 @@ LABEL_68:
     v7 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
     if (!v7)
     {
-      v7 = CA::Transaction::create(v3);
+      v7 = CA::Transaction::create(isWrapped);
     }
 
     v8 = *(v7 + 29);
@@ -648,10 +648,10 @@ LABEL_68:
       os_unfair_lock_lock(&CA::Transaction::transaction_lock);
     }
 
-    v9 = [(CATextLayer *)self _retainTypesetter];
+    _retainTypesetter = [(CATextLayer *)self _retainTypesetter];
     v10 = [-[CATextLayer string](self "string")];
     CA::Transaction::unlock(v7);
-    if (v9)
+    if (_retainTypesetter)
     {
       v11 = 0;
       v22 = 0.0;
@@ -659,10 +659,10 @@ LABEL_68:
       v21 = 0.0;
       do
       {
-        v12 = CTTypesetterSuggestLineBreak(v9, v11, 1.0e10);
+        v12 = CTTypesetterSuggestLineBreak(_retainTypesetter, v11, 1.0e10);
         v24.location = v11;
         v24.length = v12;
-        Line = CTTypesetterCreateLine(v9, v24);
+        Line = CTTypesetterCreateLine(_retainTypesetter, v24);
         v14 = Line;
         if (Line)
         {
@@ -683,7 +683,7 @@ LABEL_68:
       }
 
       while (v11 < v10);
-      CFRelease(v9);
+      CFRelease(_retainTypesetter);
     }
   }
 
@@ -696,14 +696,14 @@ LABEL_68:
 
 - (__CTLine)_createTruncationToken
 {
-  v3 = [(CATextLayer *)self truncationString];
-  if (!v3)
+  truncationString = [(CATextLayer *)self truncationString];
+  if (!truncationString)
   {
     return 0;
   }
 
-  v4 = v3;
-  v5 = CFGetTypeID(v3);
+  v4 = truncationString;
+  v5 = CFGetTypeID(truncationString);
   if (v5 != CFStringGetTypeID())
   {
     if (v5 != CFAttributedStringGetTypeID())
@@ -725,8 +725,8 @@ LABEL_7:
     return Line;
   }
 
-  v6 = [(CATextLayer *)self _createStringDict];
-  v7 = CFAttributedStringCreate(0, v4, v6);
+  _createStringDict = [(CATextLayer *)self _createStringDict];
+  v7 = CFAttributedStringCreate(0, v4, _createStringDict);
 
   v8 = CTTypesetterCreateWithAttributedString(v7);
   CFRelease(v7);
@@ -738,12 +738,12 @@ LABEL_7:
   return 0;
 }
 
-- (BOOL)CA_validateValue:(id)a3 forKey:(id)a4
+- (BOOL)CA_validateValue:(id)value forKey:(id)key
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3 && [a4 isEqualToString:@"font"])
+  if (value && [key isEqualToString:@"font"])
   {
-    v7 = CFGetTypeID(a3);
+    v7 = CFGetTypeID(value);
     return v7 == CGFontGetTypeID() || v7 == CFStringGetTypeID() || v7 == CTFontGetTypeID();
   }
 
@@ -751,21 +751,21 @@ LABEL_7:
   {
     v9.receiver = self;
     v9.super_class = CATextLayer;
-    return [(CALayer *)&v9 CA_validateValue:a3 forKey:a4];
+    return [(CALayer *)&v9 CA_validateValue:value forKey:key];
   }
 }
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = CAInternAtom(a3, 0);
-  if (v5 <= 500)
+  isWrapped = CAInternAtom(key, 0);
+  if (isWrapped <= 500)
   {
-    if (v5 <= 260)
+    if (isWrapped <= 260)
     {
-      if (v5 != 8)
+      if (isWrapped != 8)
       {
-        if (v5 != 18)
+        if (isWrapped != 18)
         {
           goto LABEL_23;
         }
@@ -774,9 +774,9 @@ LABEL_7:
       }
     }
 
-    else if ((v5 - 261) >= 2)
+    else if ((isWrapped - 261) >= 2)
     {
-      if (v5 != 265)
+      if (isWrapped != 265)
       {
         goto LABEL_23;
       }
@@ -785,23 +785,23 @@ LABEL_7:
     }
   }
 
-  else if (((v5 - 692) > 0x3F || ((1 << (v5 + 76)) & 0x8000000180000001) == 0) && v5 != 688 && v5 != 501)
+  else if (((isWrapped - 692) > 0x3F || ((1 << (isWrapped + 76)) & 0x8000000180000001) == 0) && isWrapped != 688 && isWrapped != 501)
   {
     goto LABEL_23;
   }
 
-  v5 = [(CATextLayer *)self isWrapped];
-  if ((v5 & 1) == 0)
+  isWrapped = [(CATextLayer *)self isWrapped];
+  if ((isWrapped & 1) == 0)
   {
     [(CALayer *)self setSizeRequisition:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
-    v5 = [[(CALayer *)self superlayer] setNeedsLayout];
+    isWrapped = [[(CALayer *)self superlayer] setNeedsLayout];
   }
 
 LABEL_16:
   v6 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (!v6)
   {
-    v6 = CA::Transaction::create(v5);
+    v6 = CA::Transaction::create(isWrapped);
   }
 
   v7 = *(v6 + 29);
@@ -827,7 +827,7 @@ LABEL_16:
 LABEL_23:
   v9.receiver = self;
   v9.super_class = CATextLayer;
-  [(CATextLayer *)&v9 didChangeValueForKey:a3];
+  [(CATextLayer *)&v9 didChangeValueForKey:key];
 }
 
 - (CATextLayer)init
@@ -838,7 +838,7 @@ LABEL_23:
   return [(CALayer *)&v3 init];
 }
 
-- (id)implicitAnimationForKeyPath:(id)a3
+- (id)implicitAnimationForKeyPath:(id)path
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -846,10 +846,10 @@ LABEL_23:
   result = [(CALayer *)&v7 implicitAnimationForKeyPath:?];
   if (!result)
   {
-    v6 = CAInternAtom(a3, 0);
+    v6 = CAInternAtom(path, 0);
     if (v6 == 265 || v6 == 262)
     {
-      return CALayerCreateImplicitAnimation(self, a3, v6);
+      return CALayerCreateImplicitAnimation(self, path, v6);
     }
 
     else
@@ -861,10 +861,10 @@ LABEL_23:
   return result;
 }
 
-+ (id)defaultValueForKey:(id)a3
++ (id)defaultValueForKey:(id)key
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = CAInternAtom(a3, 0);
+  v5 = CAInternAtom(key, 0);
   if (v5 > 264)
   {
     if (v5 > 722)
@@ -943,9 +943,9 @@ LABEL_23:
       }
 
 LABEL_24:
-      v10.receiver = a1;
+      v10.receiver = self;
       v10.super_class = &OBJC_METACLASS___CATextLayer;
-      return objc_msgSendSuper2(&v10, sel_defaultValueForKey_, a3);
+      return objc_msgSendSuper2(&v10, sel_defaultValueForKey_, key);
     }
 
     result = +[CATextLayer defaultValueForKey:]::defFont;
@@ -959,10 +959,10 @@ LABEL_24:
   return result;
 }
 
-- (void)setTruncationString:(id)a3
+- (void)setTruncationString:(id)string
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *&v3[0] = a3;
+  *&v3[0] = string;
   CA::Layer::setter(self->super._attr.layer, 0x2D4, 3, v3);
 }
 

@@ -1,6 +1,6 @@
 @interface DMDFetchRestrictionsOperation
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -23,12 +23,12 @@
   return v3;
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
   v8 = +[MCRestrictionManager sharedManager];
-  v4 = [v8 currentRestrictions];
-  v5 = [v8 defaultRestrictions];
-  v6 = [MCRestrictionManager filterRestrictionDictionary:v4 toIncludeOnlyRestrictionsThatDifferFromRestrictions:v5];
+  currentRestrictions = [v8 currentRestrictions];
+  defaultRestrictions = [v8 defaultRestrictions];
+  v6 = [MCRestrictionManager filterRestrictionDictionary:currentRestrictions toIncludeOnlyRestrictionsThatDifferFromRestrictions:defaultRestrictions];
 
   v7 = [[DMFFetchRestrictionsResultObject alloc] initWithRestrictions:v6];
   [(DMDFetchRestrictionsOperation *)self endOperationWithResultObject:v7];

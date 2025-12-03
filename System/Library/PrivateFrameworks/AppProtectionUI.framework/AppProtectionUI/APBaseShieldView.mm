@@ -1,30 +1,30 @@
 @interface APBaseShieldView
-- (APBaseShieldView)initWithApplication:(id)a3;
-- (APBaseShieldView)initWithConfig:(id)a3;
+- (APBaseShieldView)initWithApplication:(id)application;
+- (APBaseShieldView)initWithConfig:(id)config;
 - (APBaseShieldViewDelegate)delegate;
 - (id)accessibilityElements;
 - (void)dealloc;
-- (void)emergencyCallHostViewControllerDidDismiss:(id)a3;
-- (void)emergencyTapped:(id)a3;
+- (void)emergencyCallHostViewControllerDidDismiss:(id)dismiss;
+- (void)emergencyTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)setShieldStyle:(unint64_t)a3;
-- (void)unlockTapped:(id)a3;
+- (void)setShieldStyle:(unint64_t)style;
+- (void)unlockTapped:(id)tapped;
 @end
 
 @implementation APBaseShieldView
 
-- (APBaseShieldView)initWithApplication:(id)a3
+- (APBaseShieldView)initWithApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   v5 = objc_alloc(MEMORY[0x1E69635F8]);
-  v6 = [v4 bundleIdentifier];
+  bundleIdentifier = [applicationCopy bundleIdentifier];
   v16 = 0;
-  v7 = [v5 initWithBundleIdentifier:v6 allowPlaceholder:1 error:&v16];
+  v7 = [v5 initWithBundleIdentifier:bundleIdentifier allowPlaceholder:1 error:&v16];
   v8 = v16;
 
   if (v7)
   {
-    v9 = [v7 localizedName];
+    localizedName = [v7 localizedName];
   }
 
   else
@@ -32,43 +32,43 @@
     v10 = APUIDefaultFrameworkLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [APBaseShieldView initWithApplication:v4];
+      [APBaseShieldView initWithApplication:applicationCopy];
     }
 
-    v9 = [v4 bundleIdentifier];
+    localizedName = [applicationCopy bundleIdentifier];
   }
 
-  v11 = v9;
+  v11 = localizedName;
   shieldedApplication = self->_shieldedApplication;
-  self->_shieldedApplication = v4;
-  v13 = v4;
+  self->_shieldedApplication = applicationCopy;
+  v13 = applicationCopy;
 
   v14 = -[APBaseShieldView initWithLocalizedApplicationName:useHiddenStyle:needEmergencyCallButton:](self, "initWithLocalizedApplicationName:useHiddenStyle:needEmergencyCallButton:", v11, [v13 isHidden], applicationRequiresEmergencyCallButton(v13));
   return v14;
 }
 
-- (APBaseShieldView)initWithConfig:(id)a3
+- (APBaseShieldView)initWithConfig:(id)config
 {
-  v4 = a3;
-  v5 = [v4 localizedName];
-  if (v5)
+  configCopy = config;
+  localizedName = [configCopy localizedName];
+  if (localizedName)
   {
-    v6 = v5;
+    localizedName2 = localizedName;
     v7 = 0;
   }
 
   else
   {
     v8 = objc_alloc(MEMORY[0x1E69635F8]);
-    v9 = [v4 application];
-    v10 = [v9 bundleIdentifier];
+    application = [configCopy application];
+    bundleIdentifier = [application bundleIdentifier];
     v25 = 0;
-    v11 = [v8 initWithBundleIdentifier:v10 allowPlaceholder:1 error:&v25];
+    v11 = [v8 initWithBundleIdentifier:bundleIdentifier allowPlaceholder:1 error:&v25];
     v7 = v25;
 
     if (v11)
     {
-      v6 = [v11 localizedName];
+      localizedName2 = [v11 localizedName];
     }
 
     else
@@ -76,34 +76,34 @@
       v12 = APUIDefaultFrameworkLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        [APBaseShieldView initWithConfig:v4];
+        [APBaseShieldView initWithConfig:configCopy];
       }
 
-      v13 = [v4 application];
-      v6 = [v13 bundleIdentifier];
+      application2 = [configCopy application];
+      localizedName2 = [application2 bundleIdentifier];
     }
   }
 
-  v14 = [v4 application];
-  v15 = [v14 isHidden];
+  application3 = [configCopy application];
+  isHidden = [application3 isHidden];
 
-  v16 = [v4 application];
-  v17 = applicationRequiresEmergencyCallButton(v16);
+  application4 = [configCopy application];
+  v17 = applicationRequiresEmergencyCallButton(application4);
 
-  v18 = [v4 application];
+  application5 = [configCopy application];
   shieldedApplication = self->_shieldedApplication;
-  self->_shieldedApplication = v18;
+  self->_shieldedApplication = application5;
 
-  v20 = [(APBaseShieldView *)self initWithLocalizedApplicationName:v6 useHiddenStyle:v15 needEmergencyCallButton:v17];
+  v20 = [(APBaseShieldView *)self initWithLocalizedApplicationName:localizedName2 useHiddenStyle:isHidden needEmergencyCallButton:v17];
   if (v20)
   {
-    v21 = [v4 outlet];
+    outlet = [configCopy outlet];
     outlet = v20->_outlet;
-    v20->_outlet = v21;
+    v20->_outlet = outlet;
 
     [(APSystemAppOutlet *)v20->_outlet addShield:v20];
-    v23 = [v4 delegate];
-    objc_storeWeak(&v20->_delegate, v23);
+    delegate = [configCopy delegate];
+    objc_storeWeak(&v20->_delegate, delegate);
   }
 
   return v20;
@@ -212,25 +212,25 @@ id __92__APBaseShieldView_initWithLocalizedApplicationName_useHiddenStyle_needEm
   [(UIAccessibilityElement *)self->_labelsElement setAccessibilityFrameInContainerSpace:?];
 }
 
-- (void)unlockTapped:(id)a3
+- (void)unlockTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained shieldViewUnlockButtonPressed:self];
 }
 
-- (void)emergencyCallHostViewControllerDidDismiss:(id)a3
+- (void)emergencyCallHostViewControllerDidDismiss:(id)dismiss
 {
-  if (self->_emergencyVC == a3)
+  if (self->_emergencyVC == dismiss)
   {
     self->_emergencyVC = 0;
     MEMORY[0x1EEE66BB8]();
   }
 }
 
-- (void)emergencyTapped:(id)a3
+- (void)emergencyTapped:(id)tapped
 {
-  v4 = [MEMORY[0x1E698B0D8] sharedGuard];
-  [v4 abortOngoingAuthWithCompletion:&__block_literal_global_86];
+  mEMORY[0x1E698B0D8] = [MEMORY[0x1E698B0D8] sharedGuard];
+  [mEMORY[0x1E698B0D8] abortOngoingAuthWithCompletion:&__block_literal_global_86];
 
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -290,32 +290,32 @@ void __36__APBaseShieldView_emergencyTapped___block_invoke_88(uint64_t a1, void 
   }
 }
 
-- (void)setShieldStyle:(unint64_t)a3
+- (void)setShieldStyle:(unint64_t)style
 {
   v18 = *MEMORY[0x1E69E9840];
   v5 = APUIDefaultFrameworkLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(APApplication *)self->_shieldedApplication bundleIdentifier];
+    bundleIdentifier = [(APApplication *)self->_shieldedApplication bundleIdentifier];
     *buf = 134218242;
-    *&buf[4] = a3;
+    *&buf[4] = style;
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = bundleIdentifier;
     _os_log_impl(&dword_1AEA18000, v5, OS_LOG_TYPE_DEFAULT, "APBaseShieldView setShieldStyle:%lu for %@", buf, 0x16u);
   }
 
   objc_initWeak(&location, self);
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    v7 = self;
+    selfCopy = self;
     v8 = MEMORY[0x1E69DD250];
     *buf = MEMORY[0x1E69E9820];
     *&buf[8] = 3221225472;
     *&buf[16] = __performTransition_block_invoke;
     v15 = &unk_1E7A42098;
-    v16 = v7;
-    v17 = a3;
-    v9 = v7;
+    v16 = selfCopy;
+    styleCopy = style;
+    v9 = selfCopy;
     [v8 transitionWithView:v9 duration:5242880 options:buf animations:0 completion:0.2];
   }
 
@@ -326,12 +326,12 @@ void __36__APBaseShieldView_emergencyTapped___block_invoke_88(uint64_t a1, void 
     block[2] = __35__APBaseShieldView_setShieldStyle___block_invoke;
     block[3] = &unk_1E7A42070;
     objc_copyWeak(v12, &location);
-    v12[1] = a3;
+    v12[1] = style;
     dispatch_sync(MEMORY[0x1E69E96A0], block);
     objc_destroyWeak(v12);
   }
 
-  self->_shieldStyle = a3;
+  self->_shieldStyle = style;
   objc_destroyWeak(&location);
   v10 = *MEMORY[0x1E69E9840];
 }

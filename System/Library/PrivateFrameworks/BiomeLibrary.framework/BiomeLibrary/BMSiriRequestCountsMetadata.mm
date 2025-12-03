@@ -1,42 +1,42 @@
 @interface BMSiriRequestCountsMetadata
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriRequestCountsMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMSiriRequestCountsMetadata)initWithSchedule:(int)a3 aggregationWindowStartTimestamp:(id)a4 odmId:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriRequestCountsMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMSiriRequestCountsMetadata)initWithSchedule:(int)schedule aggregationWindowStartTimestamp:(id)timestamp odmId:(id)id;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)aggregationWindowStartTimestamp;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriRequestCountsMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriRequestCountsMetadata *)self schedule];
-    if (v6 == [v5 schedule])
+    v5 = equalCopy;
+    schedule = [(BMSiriRequestCountsMetadata *)self schedule];
+    if (schedule == [v5 schedule])
     {
-      v7 = [(BMSiriRequestCountsMetadata *)self aggregationWindowStartTimestamp];
-      v8 = [v5 aggregationWindowStartTimestamp];
-      v9 = v8;
-      if (v7 == v8)
+      aggregationWindowStartTimestamp = [(BMSiriRequestCountsMetadata *)self aggregationWindowStartTimestamp];
+      aggregationWindowStartTimestamp2 = [v5 aggregationWindowStartTimestamp];
+      v9 = aggregationWindowStartTimestamp2;
+      if (aggregationWindowStartTimestamp == aggregationWindowStartTimestamp2)
       {
       }
 
       else
       {
-        v10 = [(BMSiriRequestCountsMetadata *)self aggregationWindowStartTimestamp];
-        v11 = [v5 aggregationWindowStartTimestamp];
-        v12 = [v10 isEqual:v11];
+        aggregationWindowStartTimestamp3 = [(BMSiriRequestCountsMetadata *)self aggregationWindowStartTimestamp];
+        aggregationWindowStartTimestamp4 = [v5 aggregationWindowStartTimestamp];
+        v12 = [aggregationWindowStartTimestamp3 isEqual:aggregationWindowStartTimestamp4];
 
         if (!v12)
         {
@@ -44,18 +44,18 @@
         }
       }
 
-      v14 = [(BMSiriRequestCountsMetadata *)self odmId];
-      v15 = [v5 odmId];
-      if (v14 == v15)
+      odmId = [(BMSiriRequestCountsMetadata *)self odmId];
+      odmId2 = [v5 odmId];
+      if (odmId == odmId2)
       {
         v13 = 1;
       }
 
       else
       {
-        v16 = [(BMSiriRequestCountsMetadata *)self odmId];
-        v17 = [v5 odmId];
-        v13 = [v16 isEqual:v17];
+        odmId3 = [(BMSiriRequestCountsMetadata *)self odmId];
+        odmId4 = [v5 odmId];
+        v13 = [odmId3 isEqual:odmId4];
       }
 
       goto LABEL_12;
@@ -95,12 +95,12 @@ LABEL_13:
 {
   v16[3] = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSiriRequestCountsMetadata schedule](self, "schedule")}];
-  v4 = [(BMSiriRequestCountsMetadata *)self aggregationWindowStartTimestamp];
-  if (v4)
+  aggregationWindowStartTimestamp = [(BMSiriRequestCountsMetadata *)self aggregationWindowStartTimestamp];
+  if (aggregationWindowStartTimestamp)
   {
     v5 = MEMORY[0x1E696AD98];
-    v6 = [(BMSiriRequestCountsMetadata *)self aggregationWindowStartTimestamp];
-    [v6 timeIntervalSince1970];
+    aggregationWindowStartTimestamp2 = [(BMSiriRequestCountsMetadata *)self aggregationWindowStartTimestamp];
+    [aggregationWindowStartTimestamp2 timeIntervalSince1970];
     v7 = [v5 numberWithDouble:?];
   }
 
@@ -109,33 +109,33 @@ LABEL_13:
     v7 = 0;
   }
 
-  v8 = [(BMSiriRequestCountsMetadata *)self odmId];
+  odmId = [(BMSiriRequestCountsMetadata *)self odmId];
   v15[0] = @"schedule";
-  v9 = v3;
+  null = v3;
   if (!v3)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[0] = v9;
+  v16[0] = null;
   v15[1] = @"aggregationWindowStartTimestamp";
-  v10 = v7;
+  null2 = v7;
   if (!v7)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[1] = v10;
+  v16[1] = null2;
   v15[2] = @"odmId";
-  v11 = v8;
-  if (!v8)
+  null3 = odmId;
+  if (!odmId)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[2] = v11;
+  v16[2] = null3;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:3];
-  if (v8)
+  if (odmId)
   {
     if (v7)
     {
@@ -171,16 +171,16 @@ LABEL_13:
   return v12;
 }
 
-- (BMSiriRequestCountsMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriRequestCountsMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"schedule"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"schedule"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_9:
-    v10 = [v6 objectForKeyedSubscript:@"aggregationWindowStartTimestamp"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"aggregationWindowStartTimestamp"];
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -209,10 +209,10 @@ LABEL_9:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v11 = 0;
-            v21 = 0;
+            selfCopy = 0;
             goto LABEL_22;
           }
 
@@ -224,8 +224,8 @@ LABEL_9:
           v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
           v29 = [v32 initWithDomain:v28 code:2 userInfo:v19];
           v11 = 0;
-          v21 = 0;
-          *a4 = v29;
+          selfCopy = 0;
+          *error = v29;
           goto LABEL_21;
         }
 
@@ -241,13 +241,13 @@ LABEL_9:
     }
 
 LABEL_17:
-    v19 = [v6 objectForKeyedSubscript:@"odmId"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"odmId"];
     if (v19 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v31 = objc_alloc(MEMORY[0x1E696ABC0]);
           v30 = *MEMORY[0x1E698F240];
@@ -255,11 +255,11 @@ LABEL_17:
           v24 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"odmId"];
           v34 = v24;
           v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
-          *a4 = [v31 initWithDomain:v30 code:2 userInfo:v25];
+          *error = [v31 initWithDomain:v30 code:2 userInfo:v25];
         }
 
         v20 = 0;
-        v21 = 0;
+        selfCopy = 0;
         goto LABEL_21;
       }
 
@@ -272,7 +272,7 @@ LABEL_17:
     }
 
     self = -[BMSiriRequestCountsMetadata initWithSchedule:aggregationWindowStartTimestamp:odmId:](self, "initWithSchedule:aggregationWindowStartTimestamp:odmId:", [v8 intValue], v11, v20);
-    v21 = self;
+    selfCopy = self;
 LABEL_21:
 
     goto LABEL_22;
@@ -294,10 +294,10 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
-    v21 = 0;
+    selfCopy = 0;
     goto LABEL_23;
   }
 
@@ -308,29 +308,29 @@ LABEL_8:
   v38[0] = v11;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:&v37 count:1];
   v8 = 0;
-  v21 = 0;
-  *a4 = [v26 initWithDomain:v27 code:2 userInfo:v10];
+  selfCopy = 0;
+  *error = [v26 initWithDomain:v27 code:2 userInfo:v10];
 LABEL_22:
 
 LABEL_23:
   v22 = *MEMORY[0x1E69E9840];
-  return v21;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMSiriRequestCountsMetadata *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   schedule = self->_schedule;
-  v8 = v4;
+  v8 = toCopy;
   PBDataWriterWriteUint32Field();
   if (self->_hasRaw_aggregationWindowStartTimestamp)
   {
@@ -346,9 +346,9 @@ LABEL_23:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v31.receiver = self;
   v31.super_class = BMSiriRequestCountsMetadata;
   v5 = [(BMEventBase *)&v31 init];
@@ -357,12 +357,12 @@ LABEL_23:
     goto LABEL_45;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -373,18 +373,18 @@ LABEL_23:
       while (1)
       {
         LOBYTE(v32) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v32 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v32 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v32) & 0x7F) << v7;
@@ -401,9 +401,9 @@ LABEL_23:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -420,18 +420,18 @@ LABEL_16:
       {
         v5->_hasRaw_aggregationWindowStartTimestamp = 1;
         v32 = 0.0;
-        v23 = [v4 position] + 8;
-        if (v23 >= [v4 position] && (v24 = objc_msgSend(v4, "position") + 8, v24 <= objc_msgSend(v4, "length")))
+        v23 = [fromCopy position] + 8;
+        if (v23 >= [fromCopy position] && (v24 = objc_msgSend(fromCopy, "position") + 8, v24 <= objc_msgSend(fromCopy, "length")))
         {
-          v27 = [v4 data];
-          [v27 getBytes:&v32 range:{objc_msgSend(v4, "position"), 8}];
+          data2 = [fromCopy data];
+          [data2 getBytes:&v32 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v5->_raw_aggregationWindowStartTimestamp = v32;
@@ -445,18 +445,18 @@ LABEL_16:
         while (1)
         {
           LOBYTE(v32) = 0;
-          v19 = [v4 position] + 1;
-          if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+          v19 = [fromCopy position] + 1;
+          if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
           {
-            v21 = [v4 data];
-            [v21 getBytes:&v32 range:{objc_msgSend(v4, "position"), 1}];
+            data3 = [fromCopy data];
+            [data3 getBytes:&v32 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v18 |= (LOBYTE(v32) & 0x7F) << v16;
@@ -472,7 +472,7 @@ LABEL_16:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v18 > 3)
+        if (([fromCopy hasError] & 1) != 0 || v18 > 3)
         {
 LABEL_38:
           LODWORD(v18) = 0;
@@ -486,13 +486,13 @@ LABEL_38:
         goto LABEL_44;
       }
 
-      v28 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v28 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_44:
     v29 = 0;
@@ -511,28 +511,28 @@ LABEL_45:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = BMSiriRequestCountsMetadataScheduleAsString([(BMSiriRequestCountsMetadata *)self schedule]);
-  v5 = [(BMSiriRequestCountsMetadata *)self aggregationWindowStartTimestamp];
-  v6 = [(BMSiriRequestCountsMetadata *)self odmId];
-  v7 = [v3 initWithFormat:@"BMSiriRequestCountsMetadata with schedule: %@, aggregationWindowStartTimestamp: %@, odmId: %@", v4, v5, v6];
+  aggregationWindowStartTimestamp = [(BMSiriRequestCountsMetadata *)self aggregationWindowStartTimestamp];
+  odmId = [(BMSiriRequestCountsMetadata *)self odmId];
+  v7 = [v3 initWithFormat:@"BMSiriRequestCountsMetadata with schedule: %@, aggregationWindowStartTimestamp: %@, odmId: %@", v4, aggregationWindowStartTimestamp, odmId];
 
   return v7;
 }
 
-- (BMSiriRequestCountsMetadata)initWithSchedule:(int)a3 aggregationWindowStartTimestamp:(id)a4 odmId:(id)a5
+- (BMSiriRequestCountsMetadata)initWithSchedule:(int)schedule aggregationWindowStartTimestamp:(id)timestamp odmId:(id)id
 {
-  v8 = a4;
-  v9 = a5;
+  timestampCopy = timestamp;
+  idCopy = id;
   v13.receiver = self;
   v13.super_class = BMSiriRequestCountsMetadata;
   v10 = [(BMEventBase *)&v13 init];
   if (v10)
   {
     v10->_dataVersion = [objc_opt_class() latestDataVersion];
-    v10->_schedule = a3;
-    if (v8)
+    v10->_schedule = schedule;
+    if (timestampCopy)
     {
       v10->_hasRaw_aggregationWindowStartTimestamp = 1;
-      [v8 timeIntervalSince1970];
+      [timestampCopy timeIntervalSince1970];
     }
 
     else
@@ -542,7 +542,7 @@ LABEL_45:
     }
 
     v10->_raw_aggregationWindowStartTimestamp = v11;
-    objc_storeStrong(&v10->_odmId, a5);
+    objc_storeStrong(&v10->_odmId, id);
   }
 
   return v10;
@@ -579,9 +579,9 @@ LABEL_45:
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -589,8 +589,8 @@ LABEL_45:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriRequestCountsMetadata alloc] initByReadFrom:v7];
     v4 = v8;

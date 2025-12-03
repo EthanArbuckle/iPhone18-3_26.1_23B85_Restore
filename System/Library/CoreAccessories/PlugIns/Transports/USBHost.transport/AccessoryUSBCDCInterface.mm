@@ -1,12 +1,12 @@
 @interface AccessoryUSBCDCInterface
-+ (unint64_t)getRegistryEntryIDFromService:(unsigned int)a3;
++ (unint64_t)getRegistryEntryIDFromService:(unsigned int)service;
 - (AccessoryUSBCDCInterface)init;
 - (BOOL)openCDCInterface;
 - (id)description;
-- (int)writeData:(id)a3;
+- (int)writeData:(id)data;
 - (uint64_t)openCDCInterface;
-- (void)_handleReadDataCallback:(int)a3 revent:(unint64_t)a4 t_look:(unint64_t)a5;
-- (void)_poll:(unsigned int)a3 txCommitted:(unsigned int)a4;
+- (void)_handleReadDataCallback:(int)callback revent:(unint64_t)revent t_look:(unint64_t)t_look;
+- (void)_poll:(unsigned int)_poll txCommitted:(unsigned int)committed;
 - (void)closeCDCInterface;
 - (void)dealloc;
 - (void)openCDCInterface;
@@ -477,17 +477,17 @@ LABEL_76:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (int)writeData:(id)a3
+- (int)writeData:(id)data
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   arena = self->arena;
   v6 = -1 << arena->var9;
   var3 = arena->var3;
   v8 = (arena->var4 + ~var3) & ~v6;
-  if (v8 >= [v4 length])
+  if (v8 >= [dataCopy length])
   {
-    v8 = [v4 length];
+    v8 = [dataCopy length];
   }
 
   if (gLogObjects)
@@ -519,21 +519,21 @@ LABEL_76:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *&buf[4] = v4;
+    *&buf[4] = dataCopy;
     _os_log_impl(&dword_2336F5000, v11, OS_LOG_TYPE_DEFAULT, "CDC Data to write = %@", buf, 0xCu);
   }
 
   if (v8)
   {
     v12 = ~v6;
-    v30 = v4;
-    v13 = [v4 bytes];
+    v30 = dataCopy;
+    bytes = [dataCopy bytes];
     v14 = 0;
     v15 = MEMORY[0x277D86220];
     do
     {
       v16 = (var3 + v14) & v12;
-      self->txBuf[self->arena->var7 + v16] = *(v13 + v14);
+      self->txBuf[self->arena->var7 + v16] = *(bytes + v14);
       v17 = gLogObjects;
       v18 = gNumLogObjects;
       if (gLogObjects)
@@ -569,7 +569,7 @@ LABEL_76:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
         v22 = self->txBuf[self->arena->var7 + v16];
-        v23 = *(v13 + v14);
+        v23 = *(bytes + v14);
         *buf = 67109632;
         *&buf[4] = v22;
         *&buf[8] = 1024;
@@ -589,7 +589,7 @@ LABEL_76:
     if (v24)
     {
       v25 = v24;
-      v4 = v30;
+      dataCopy = v30;
       if (gLogObjects && gNumLogObjects >= 1)
       {
         v26 = *gLogObjects;
@@ -618,7 +618,7 @@ LABEL_76:
 
     else
     {
-      v4 = v30;
+      dataCopy = v30;
     }
   }
 
@@ -626,7 +626,7 @@ LABEL_76:
   return v8;
 }
 
-- (void)_poll:(unsigned int)a3 txCommitted:(unsigned int)a4
+- (void)_poll:(unsigned int)_poll txCommitted:(unsigned int)committed
 {
   v27 = *MEMORY[0x277D85DE8];
   reference[0] = 0;
@@ -637,9 +637,9 @@ LABEL_76:
   v21 = 0u;
   v22 = 0u;
   reference[1] = _asyncCallback;
-  v20 = self;
-  input[0] = a3;
-  input[1] = a4;
+  selfCopy = self;
+  input[0] = _poll;
+  input[1] = committed;
   input[2] = 1;
   v16 = 0u;
   v17 = 0u;
@@ -680,7 +680,7 @@ LABEL_76:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleReadDataCallback:(int)a3 revent:(unint64_t)a4 t_look:(unint64_t)a5
+- (void)_handleReadDataCallback:(int)callback revent:(unint64_t)revent t_look:(unint64_t)t_look
 {
   v28 = *MEMORY[0x277D85DE8];
   if (gLogObjects)
@@ -769,12 +769,12 @@ LABEL_76:
       _os_log_impl(&dword_2336F5000, v22, OS_LOG_TYPE_DEFAULT, "receivedData %@", buf, 0xCu);
     }
 
-    v23 = [(AccessoryUSBCDCInterface *)self dataInHandler];
+    dataInHandler = [(AccessoryUSBCDCInterface *)self dataInHandler];
 
-    if (v23)
+    if (dataInHandler)
     {
-      v24 = [(AccessoryUSBCDCInterface *)self dataInHandler];
-      (v24)[2](v24, self, v19);
+      dataInHandler2 = [(AccessoryUSBCDCInterface *)self dataInHandler];
+      (dataInHandler2)[2](dataInHandler2, self, v19);
     }
   }
 
@@ -782,10 +782,10 @@ LABEL_76:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-+ (unint64_t)getRegistryEntryIDFromService:(unsigned int)a3
++ (unint64_t)getRegistryEntryIDFromService:(unsigned int)service
 {
   entryID = 0;
-  if (IORegistryEntryGetRegistryEntryID(a3, &entryID))
+  if (IORegistryEntryGetRegistryEntryID(service, &entryID))
   {
     return 0;
   }
@@ -799,7 +799,7 @@ LABEL_76:
 - (void)openCDCInterface
 {
   v5 = *MEMORY[0x277D85DE8];
-  v2 = *(a1 + 24);
+  v2 = *(self + 24);
   v4[0] = 67109120;
   v4[1] = v2;
   _os_log_debug_impl(&dword_2336F5000, a2, OS_LOG_TYPE_DEBUG, "_cdcDataService = %d", v4, 8u);
@@ -846,7 +846,7 @@ LABEL_76:
     _os_log_impl(&dword_2336F5000, v11, OS_LOG_TYPE_DEFAULT, "Failed to create CDC interface", v14, 2u);
   }
 
-  result = [a1 closeCDCInterface];
+  result = [self closeCDCInterface];
   v13 = *MEMORY[0x277D85DE8];
   return result;
 }

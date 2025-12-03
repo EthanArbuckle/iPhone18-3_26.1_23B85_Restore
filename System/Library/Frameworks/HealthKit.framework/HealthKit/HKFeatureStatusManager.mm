@@ -1,93 +1,93 @@
 @interface HKFeatureStatusManager
-+ (id)childFeatureStatusManagerWithFeatureAvailabilityProviding:(id)a3 featureAvailabilityDataSource:(id)a4 contextConstraint:(id)a5;
++ (id)childFeatureStatusManagerWithFeatureAvailabilityProviding:(id)providing featureAvailabilityDataSource:(id)source contextConstraint:(id)constraint;
 - (HKFeatureAvailabilityRequirementEvaluationDataSource)dataSource;
 - (HKFeatureAvailabilityRequirementEvaluationDataSource)weakDataSource;
-- (HKFeatureStatus)_queue_featureStatusWithEvaluationContext:(void *)a3 requirements:(void *)a4 overrides:(void *)a5 error:;
-- (HKFeatureStatusManager)initWithFeatureAvailabilityProviding:(id)a3 featureAvailabilityDataSource:(id)a4;
-- (HKFeatureStatusManager)initWithFeatureAvailabilityProviding:(id)a3 featureAvailabilityDataSource:(id)a4 contextConstraint:(id)a5;
-- (HKFeatureStatusManager)initWithFeatureAvailabilityProviding:(id)a3 healthDataSource:(id)a4 countryCodeSource:(int64_t)a5;
-- (HKFeatureStatusManager)initWithFeatureAvailabilityProviding:(id)a3 healthDataSource:(id)a4 currentCountryCode:(id)a5;
-- (HKFeatureStatusManager)initWithFeatureIdentifier:(id)a3 healthStore:(id)a4 cachingDefaults:(id)a5;
-- (HKFeatureStatusManager)initWithFeatureIdentifier:(id)a3 healthStore:(id)a4 contextConstraint:(id)a5;
-- (HKFeatureStatusManager)initWithFeatureIdentifier:(id)a3 healthStore:(id)a4 countryCodeSource:(int64_t)a5;
-- (HKFeatureStatusManager)initWithFeatureIdentifier:(id)a3 healthStore:(id)a4 currentCountryCode:(id)a5;
+- (HKFeatureStatus)_queue_featureStatusWithEvaluationContext:(void *)context requirements:(void *)requirements overrides:(void *)overrides error:;
+- (HKFeatureStatusManager)initWithFeatureAvailabilityProviding:(id)providing featureAvailabilityDataSource:(id)source;
+- (HKFeatureStatusManager)initWithFeatureAvailabilityProviding:(id)providing featureAvailabilityDataSource:(id)source contextConstraint:(id)constraint;
+- (HKFeatureStatusManager)initWithFeatureAvailabilityProviding:(id)providing healthDataSource:(id)source countryCodeSource:(int64_t)codeSource;
+- (HKFeatureStatusManager)initWithFeatureAvailabilityProviding:(id)providing healthDataSource:(id)source currentCountryCode:(id)code;
+- (HKFeatureStatusManager)initWithFeatureIdentifier:(id)identifier healthStore:(id)store cachingDefaults:(id)defaults;
+- (HKFeatureStatusManager)initWithFeatureIdentifier:(id)identifier healthStore:(id)store contextConstraint:(id)constraint;
+- (HKFeatureStatusManager)initWithFeatureIdentifier:(id)identifier healthStore:(id)store countryCodeSource:(int64_t)source;
+- (HKFeatureStatusManager)initWithFeatureIdentifier:(id)identifier healthStore:(id)store currentCountryCode:(id)code;
 - (NSString)description;
-- (id)_queue_updateFeatureStatusWithRequestDrivenByObservation:(void *)a3 error:;
+- (id)_queue_updateFeatureStatusWithRequestDrivenByObservation:(void *)observation error:;
 - (id)_requirementSatisfactionOverrides;
-- (id)featureStatusWithError:(id *)a3;
+- (id)featureStatusWithError:(id *)error;
 - (void)__unregisterForFeatureStatusChanges;
-- (void)_notifyObserversWithFeatureStatus:(uint64_t)a1;
+- (void)_notifyObserversWithFeatureStatus:(uint64_t)status;
 - (void)_queue_attemptFeatureStatusUpdateDrivenByObservation;
 - (void)_queue_registerForFeatureStatusChanges;
 - (void)_queue_unregisterForFeatureStatusChanges;
-- (void)_registerForRequirementSatisfactionOverrideChangesForRequirements:(id *)a1;
-- (void)_updateOverriddenSatisfactionOfRequirement:(void *)a3 overriddenSatisfaction:;
-- (void)_updateSatisfactionOfRequirement:(char)a3 isSatisfied:;
+- (void)_registerForRequirementSatisfactionOverrideChangesForRequirements:(id *)requirements;
+- (void)_updateOverriddenSatisfactionOfRequirement:(void *)requirement overriddenSatisfaction:;
+- (void)_updateSatisfactionOfRequirement:(char)requirement isSatisfied:;
 - (void)dataSource;
 - (void)dealloc;
-- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)a3;
-- (void)featureAvailabilityProvidingDidUpdateSettings:(id)a3;
-- (void)registerObserver:(id)a3 queue:(id)a4;
-- (void)unregisterObserver:(id)a3;
+- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)completion;
+- (void)featureAvailabilityProvidingDidUpdateSettings:(id)settings;
+- (void)registerObserver:(id)observer queue:(id)queue;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation HKFeatureStatusManager
 
-- (HKFeatureStatusManager)initWithFeatureIdentifier:(id)a3 healthStore:(id)a4 currentCountryCode:(id)a5
+- (HKFeatureStatusManager)initWithFeatureIdentifier:(id)identifier healthStore:(id)store currentCountryCode:(id)code
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [v9 featureAvailabilityProvidingForFeatureIdentifier:a3];
-  v11 = [[HKFixedCurrentCountryCodeProvider alloc] initWithCountryCode:v8];
+  codeCopy = code;
+  storeCopy = store;
+  v10 = [storeCopy featureAvailabilityProvidingForFeatureIdentifier:identifier];
+  v11 = [[HKFixedCurrentCountryCodeProvider alloc] initWithCountryCode:codeCopy];
 
-  v12 = [HKFeatureAvailabilityRequirementEvaluationDataSource dataSourceWithHealthDataSource:v9 currentCountryCodeProvider:v11];
+  v12 = [HKFeatureAvailabilityRequirementEvaluationDataSource dataSourceWithHealthDataSource:storeCopy currentCountryCodeProvider:v11];
 
   v13 = [(HKFeatureStatusManager *)self initWithFeatureAvailabilityProviding:v10 featureAvailabilityDataSource:v12];
   return v13;
 }
 
-- (HKFeatureStatusManager)initWithFeatureIdentifier:(id)a3 healthStore:(id)a4 countryCodeSource:(int64_t)a5
+- (HKFeatureStatusManager)initWithFeatureIdentifier:(id)identifier healthStore:(id)store countryCodeSource:(int64_t)source
 {
-  v8 = a4;
-  v9 = [v8 featureAvailabilityProvidingForFeatureIdentifier:a3];
-  v10 = [(HKFeatureStatusManager *)self initWithFeatureAvailabilityProviding:v9 healthDataSource:v8 countryCodeSource:a5];
+  storeCopy = store;
+  v9 = [storeCopy featureAvailabilityProvidingForFeatureIdentifier:identifier];
+  v10 = [(HKFeatureStatusManager *)self initWithFeatureAvailabilityProviding:v9 healthDataSource:storeCopy countryCodeSource:source];
 
   return v10;
 }
 
-- (HKFeatureStatusManager)initWithFeatureIdentifier:(id)a3 healthStore:(id)a4 cachingDefaults:(id)a5
+- (HKFeatureStatusManager)initWithFeatureIdentifier:(id)identifier healthStore:(id)store cachingDefaults:(id)defaults
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [v9 featureAvailabilityProvidingForFeatureIdentifier:a3];
+  defaultsCopy = defaults;
+  storeCopy = store;
+  v10 = [storeCopy featureAvailabilityProvidingForFeatureIdentifier:identifier];
   v11 = [[HKFixedCurrentCountryCodeProvider alloc] initWithCountryCode:0];
-  v12 = [[HKFeatureOnboardingRecordInaccessibilityCache alloc] initWithCachingDefaults:v8];
+  v12 = [[HKFeatureOnboardingRecordInaccessibilityCache alloc] initWithCachingDefaults:defaultsCopy];
 
-  v13 = [HKFeatureAvailabilityRequirementEvaluationDataSource dataSourceWithHealthDataSource:v9 currentCountryCodeProvider:v11 onboardingRecordFallbackProvider:v12];
+  v13 = [HKFeatureAvailabilityRequirementEvaluationDataSource dataSourceWithHealthDataSource:storeCopy currentCountryCodeProvider:v11 onboardingRecordFallbackProvider:v12];
 
   v14 = [(HKFeatureStatusManager *)self initWithFeatureAvailabilityProviding:v10 featureAvailabilityDataSource:v13];
   return v14;
 }
 
-- (HKFeatureStatusManager)initWithFeatureAvailabilityProviding:(id)a3 healthDataSource:(id)a4 currentCountryCode:(id)a5
+- (HKFeatureStatusManager)initWithFeatureAvailabilityProviding:(id)providing healthDataSource:(id)source currentCountryCode:(id)code
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[HKFixedCurrentCountryCodeProvider alloc] initWithCountryCode:v8];
+  codeCopy = code;
+  sourceCopy = source;
+  providingCopy = providing;
+  v11 = [[HKFixedCurrentCountryCodeProvider alloc] initWithCountryCode:codeCopy];
 
-  v12 = [HKFeatureAvailabilityRequirementEvaluationDataSource dataSourceWithHealthDataSource:v9 currentCountryCodeProvider:v11];
+  v12 = [HKFeatureAvailabilityRequirementEvaluationDataSource dataSourceWithHealthDataSource:sourceCopy currentCountryCodeProvider:v11];
 
-  v13 = [(HKFeatureStatusManager *)self initWithFeatureAvailabilityProviding:v10 featureAvailabilityDataSource:v12];
+  v13 = [(HKFeatureStatusManager *)self initWithFeatureAvailabilityProviding:providingCopy featureAvailabilityDataSource:v12];
   return v13;
 }
 
-- (HKFeatureStatusManager)initWithFeatureAvailabilityProviding:(id)a3 healthDataSource:(id)a4 countryCodeSource:(int64_t)a5
+- (HKFeatureStatusManager)initWithFeatureAvailabilityProviding:(id)providing healthDataSource:(id)source countryCodeSource:(int64_t)codeSource
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (a5 == 1)
+  providingCopy = providing;
+  sourceCopy = source;
+  v11 = sourceCopy;
+  if (codeSource == 1)
   {
     v13 = HKPreferredRegulatoryDomainProvider();
     v14 = [HKFeatureAvailabilityRequirementEvaluationDataSource dataSourceWithHealthDataSource:v11 currentCountryCodeProvider:v13];
@@ -95,7 +95,7 @@
 
   else
   {
-    if (a5)
+    if (codeSource)
     {
 LABEL_9:
       [HKFeatureStatusManager initWithFeatureAvailabilityProviding:a2 healthDataSource:self countryCodeSource:?];
@@ -103,11 +103,11 @@ LABEL_9:
       goto LABEL_8;
     }
 
-    v12 = [v10 sharedRequirementEvaluationDataSource];
-    v13 = v12;
-    if (v12)
+    sharedRequirementEvaluationDataSource = [sourceCopy sharedRequirementEvaluationDataSource];
+    v13 = sharedRequirementEvaluationDataSource;
+    if (sharedRequirementEvaluationDataSource)
     {
-      v14 = v12;
+      v14 = sharedRequirementEvaluationDataSource;
       v13 = v14;
     }
 
@@ -125,46 +125,46 @@ LABEL_9:
   }
 
 LABEL_8:
-  v16 = [(HKFeatureStatusManager *)self initWithFeatureAvailabilityProviding:v9 featureAvailabilityDataSource:v15];
+  v16 = [(HKFeatureStatusManager *)self initWithFeatureAvailabilityProviding:providingCopy featureAvailabilityDataSource:v15];
 
   return v16;
 }
 
-- (HKFeatureStatusManager)initWithFeatureAvailabilityProviding:(id)a3 featureAvailabilityDataSource:(id)a4
+- (HKFeatureStatusManager)initWithFeatureAvailabilityProviding:(id)providing featureAvailabilityDataSource:(id)source
 {
-  v6 = a4;
-  v7 = a3;
+  sourceCopy = source;
+  providingCopy = providing;
   v8 = +[HKFeatureAvailabilityContextConstraint allContexts];
-  v9 = [(HKFeatureStatusManager *)self initWithFeatureAvailabilityProviding:v7 featureAvailabilityDataSource:v6 contextConstraint:v8];
+  v9 = [(HKFeatureStatusManager *)self initWithFeatureAvailabilityProviding:providingCopy featureAvailabilityDataSource:sourceCopy contextConstraint:v8];
 
   return v9;
 }
 
-- (HKFeatureStatusManager)initWithFeatureIdentifier:(id)a3 healthStore:(id)a4 contextConstraint:(id)a5
+- (HKFeatureStatusManager)initWithFeatureIdentifier:(id)identifier healthStore:(id)store contextConstraint:(id)constraint
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [v9 featureAvailabilityProvidingForFeatureIdentifier:a3];
-  v11 = [HKFeatureAvailabilityRequirementEvaluationDataSource dataSourceWithHealthDataSource:v9];
+  constraintCopy = constraint;
+  storeCopy = store;
+  v10 = [storeCopy featureAvailabilityProvidingForFeatureIdentifier:identifier];
+  v11 = [HKFeatureAvailabilityRequirementEvaluationDataSource dataSourceWithHealthDataSource:storeCopy];
 
-  v12 = [(HKFeatureStatusManager *)self initWithFeatureAvailabilityProviding:v10 featureAvailabilityDataSource:v11 contextConstraint:v8];
+  v12 = [(HKFeatureStatusManager *)self initWithFeatureAvailabilityProviding:v10 featureAvailabilityDataSource:v11 contextConstraint:constraintCopy];
   return v12;
 }
 
-- (HKFeatureStatusManager)initWithFeatureAvailabilityProviding:(id)a3 featureAvailabilityDataSource:(id)a4 contextConstraint:(id)a5
+- (HKFeatureStatusManager)initWithFeatureAvailabilityProviding:(id)providing featureAvailabilityDataSource:(id)source contextConstraint:(id)constraint
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providingCopy = providing;
+  sourceCopy = source;
+  constraintCopy = constraint;
   v31.receiver = self;
   v31.super_class = HKFeatureStatusManager;
   v12 = [(HKFeatureStatusManager *)&v31 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_featureAvailabilityProviding, a3);
-    objc_storeStrong(&v13->_strongDataSource, a4);
-    objc_storeStrong(&v13->_contextConstraint, a5);
+    objc_storeStrong(&v12->_featureAvailabilityProviding, providing);
+    objc_storeStrong(&v13->_strongDataSource, source);
+    objc_storeStrong(&v13->_contextConstraint, constraint);
     v14 = [HKObserverSet alloc];
     v15 = [(HKFeatureStatusManager *)v13 description];
     v16 = HKLogInfrastructure();
@@ -172,13 +172,13 @@ LABEL_8:
     observers = v13->_observers;
     v13->_observers = v17;
 
-    v19 = [v9 featureIdentifier];
-    v20 = HKCreateSerialDispatchQueue(v13, v19);
+    featureIdentifier = [providingCopy featureIdentifier];
+    v20 = HKCreateSerialDispatchQueue(v13, featureIdentifier);
     queue = v13->_queue;
     v13->_queue = v20;
 
-    v22 = [v10 featureAvailabilityProvidingDataSource];
-    [v22 setKnownFeatureAvailabilityProviding:v13->_featureAvailabilityProviding];
+    featureAvailabilityProvidingDataSource = [sourceCopy featureAvailabilityProvidingDataSource];
+    [featureAvailabilityProvidingDataSource setKnownFeatureAvailabilityProviding:v13->_featureAvailabilityProviding];
 
     objc_initWeak(&location, v13);
     v23 = [_HKDelayedOperation alloc];
@@ -223,17 +223,17 @@ void __111__HKFeatureStatusManager_initWithFeatureAvailabilityProviding_featureA
   }
 }
 
-+ (id)childFeatureStatusManagerWithFeatureAvailabilityProviding:(id)a3 featureAvailabilityDataSource:(id)a4 contextConstraint:(id)a5
++ (id)childFeatureStatusManagerWithFeatureAvailabilityProviding:(id)providing featureAvailabilityDataSource:(id)source contextConstraint:(id)constraint
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithFeatureAvailabilityProviding:v10 featureAvailabilityDataSource:v9 contextConstraint:v8];
+  constraintCopy = constraint;
+  sourceCopy = source;
+  providingCopy = providing;
+  v11 = [[self alloc] initWithFeatureAvailabilityProviding:providingCopy featureAvailabilityDataSource:sourceCopy contextConstraint:constraintCopy];
 
   v12 = *(v11 + 32);
   *(v11 + 32) = 0;
 
-  objc_storeWeak((v11 + 24), v9);
+  objc_storeWeak((v11 + 24), sourceCopy);
 
   return v11;
 }
@@ -274,7 +274,7 @@ void __111__HKFeatureStatusManager_initWithFeatureAvailabilityProviding_featureA
   return v5;
 }
 
-- (id)featureStatusWithError:(id *)a3
+- (id)featureStatusWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -309,10 +309,10 @@ void __111__HKFeatureStatusManager_initWithFeatureAvailabilityProviding_featureA
     v8 = v7;
     if (v7)
     {
-      if (a3)
+      if (error)
       {
         v9 = v7;
-        *a3 = v8;
+        *error = v8;
       }
 
       else
@@ -360,10 +360,10 @@ void __49__HKFeatureStatusManager_featureStatusWithError___block_invoke(void *a1
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_queue_updateFeatureStatusWithRequestDrivenByObservation:(void *)a3 error:
+- (id)_queue_updateFeatureStatusWithRequestDrivenByObservation:(void *)observation error:
 {
   v40 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v35 = 0;
     v36[0] = &v35;
@@ -371,8 +371,8 @@ void __49__HKFeatureStatusManager_featureStatusWithError___block_invoke(void *a1
     v36[2] = __Block_byref_object_copy__1;
     v36[3] = __Block_byref_object_dispose__1;
     v37 = 0;
-    v7 = (a1 + 80);
-    v6 = *(a1 + 80);
+    v7 = (self + 80);
+    v6 = *(self + 80);
     if (v6)
     {
       v8 = v6;
@@ -380,7 +380,7 @@ void __49__HKFeatureStatusManager_featureStatusWithError___block_invoke(void *a1
 
     else
     {
-      v9 = *(a1 + 16);
+      v9 = *(self + 16);
       obj = 0;
       v8 = [v9 featureAvailabilityRequirementsWithError:&obj];
       objc_storeStrong(&v37, obj);
@@ -390,18 +390,18 @@ void __49__HKFeatureStatusManager_featureStatusWithError___block_invoke(void *a1
 
     if (v10)
     {
-      v11 = [(HKFeatureStatusManager *)a1 _requirementSatisfactionOverrides];
-      v12 = [a1 dataSource];
+      _requirementSatisfactionOverrides = [(HKFeatureStatusManager *)self _requirementSatisfactionOverrides];
+      dataSource = [self dataSource];
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __89__HKFeatureStatusManager__queue_updateFeatureStatusWithRequestDrivenByObservation_error___block_invoke;
       v29[3] = &unk_1E7378360;
       v33 = &v35;
       v30 = v10;
-      v31 = a1;
-      v13 = v11;
+      selfCopy = self;
+      v13 = _requirementSatisfactionOverrides;
       v32 = v13;
-      v14 = [v12 performLocalEvaluation:v29];
+      v14 = [dataSource performLocalEvaluation:v29];
 
       if (v14)
       {
@@ -410,7 +410,7 @@ void __49__HKFeatureStatusManager_featureStatusWithError___block_invoke(void *a1
           objc_storeStrong(v7, v10);
         }
 
-        v15 = *(a1 + 72);
+        v15 = *(self + 72);
         if (v15)
         {
           a2 = 0;
@@ -434,18 +434,18 @@ void __49__HKFeatureStatusManager_featureStatusWithError___block_invoke(void *a1
             if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
             {
               *buf = 138543362;
-              v39 = a1;
+              selfCopy2 = self;
               _os_log_impl(&dword_19197B000, v25, OS_LOG_TYPE_INFO, "[%{public}@] Feature status did change", buf, 0xCu);
             }
           }
 
-          objc_storeStrong((a1 + 72), v14);
-          [*(a1 + 64) execute];
+          objc_storeStrong((self + 72), v14);
+          [*(self + 64) execute];
         }
 
         else
         {
-          objc_storeStrong((a1 + 72), v14);
+          objc_storeStrong((self + 72), v14);
         }
 
         v26 = v14;
@@ -457,10 +457,10 @@ void __49__HKFeatureStatusManager_featureStatusWithError___block_invoke(void *a1
         v21 = v20;
         if (v20)
         {
-          if (a3)
+          if (observation)
           {
             v22 = v20;
-            *a3 = v21;
+            *observation = v21;
           }
 
           else
@@ -477,18 +477,18 @@ void __49__HKFeatureStatusManager_featureStatusWithError___block_invoke(void *a1
     v17 = HKLogInfrastructure();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      [(HKFeatureStatusManager *)a1 _queue_updateFeatureStatusWithRequestDrivenByObservation:v36 error:v17];
+      [(HKFeatureStatusManager *)self _queue_updateFeatureStatusWithRequestDrivenByObservation:v36 error:v17];
     }
 
     v18 = *(v36[0] + 40);
     v13 = v18;
     if (v18)
     {
-      if (a3)
+      if (observation)
       {
         v19 = v18;
         v14 = 0;
-        *a3 = v13;
+        *observation = v13;
 LABEL_33:
 
         _Block_object_dispose(&v35, 8);
@@ -531,10 +531,10 @@ id __89__HKFeatureStatusManager__queue_updateFeatureStatusWithRequestDrivenByObs
   return v8;
 }
 
-- (void)registerObserver:(id)a3 queue:(id)a4
+- (void)registerObserver:(id)observer queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  queueCopy = queue;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -545,7 +545,7 @@ id __89__HKFeatureStatusManager__queue_updateFeatureStatusWithRequestDrivenByObs
   v11[2] = __49__HKFeatureStatusManager_registerObserver_queue___block_invoke;
   v11[3] = &unk_1E7378388;
   v11[4] = &v12;
-  [(HKObserverSet *)observers registerObserver:v6 queue:v7 runIfFirstObserver:v11];
+  [(HKObserverSet *)observers registerObserver:observerCopy queue:queueCopy runIfFirstObserver:v11];
   if (*(v13 + 24) == 1)
   {
     queue = self->_queue;
@@ -560,9 +560,9 @@ id __89__HKFeatureStatusManager__queue_updateFeatureStatusWithRequestDrivenByObs
   _Block_object_dispose(&v12, 8);
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -573,7 +573,7 @@ id __89__HKFeatureStatusManager__queue_updateFeatureStatusWithRequestDrivenByObs
   v8[2] = __45__HKFeatureStatusManager_unregisterObserver___block_invoke;
   v8[3] = &unk_1E7378388;
   v8[4] = &v9;
-  [(HKObserverSet *)observers unregisterObserver:v4 runIfLastObserver:v8];
+  [(HKObserverSet *)observers unregisterObserver:observerCopy runIfLastObserver:v8];
   if (*(v10 + 24) == 1)
   {
     queue = self->_queue;
@@ -623,13 +623,13 @@ void __92__HKFeatureStatusManager__registerForRequirementSatisfactionOverrideCha
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(HKFeatureAvailabilityProviding *)self->_featureAvailabilityProviding featureIdentifier];
-  v6 = [v3 stringWithFormat:@"<%@:%@:%p>", v4, v5, self];
+  featureIdentifier = [(HKFeatureAvailabilityProviding *)self->_featureAvailabilityProviding featureIdentifier];
+  v6 = [v3 stringWithFormat:@"<%@:%@:%p>", v4, featureIdentifier, self];
 
   return v6;
 }
 
-- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)a3
+- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)completion
 {
   v10 = *MEMORY[0x1E69E9840];
   _HKInitializeLogging();
@@ -642,7 +642,7 @@ void __92__HKFeatureStatusManager__registerForRequirementSatisfactionOverrideCha
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v8 = 138543362;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&dword_19197B000, v6, OS_LOG_TYPE_INFO, "[%{public}@] Updating feature status for onboarding completion update", &v8, 0xCu);
     }
   }
@@ -748,11 +748,11 @@ LABEL_19:
   return WeakRetained;
 }
 
-- (void)_notifyObserversWithFeatureStatus:(uint64_t)a1
+- (void)_notifyObserversWithFeatureStatus:(uint64_t)status
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a2;
-  if (a1)
+  if (status)
   {
     _HKInitializeLogging();
     v5 = HKLogInfrastructure();
@@ -764,22 +764,22 @@ LABEL_19:
       if (OUTLINED_FUNCTION_6(v7))
       {
         v8 = MEMORY[0x1E696AD98];
-        v9 = [*(a1 + 48) allObservers];
-        v10 = [v8 numberWithUnsignedInteger:{objc_msgSend(v9, "count")}];
+        allObservers = [*(status + 48) allObservers];
+        v10 = [v8 numberWithUnsignedInteger:{objc_msgSend(allObservers, "count")}];
         *buf = 138543618;
-        v16 = a1;
+        statusCopy = status;
         v17 = 2114;
         v18 = v10;
         _os_log_impl(&dword_19197B000, v2, OS_LOG_TYPE_INFO, "[%{public}@] Notifying %{public}@ observers for feature status update", buf, 0x16u);
       }
     }
 
-    v11 = *(a1 + 48);
+    v11 = *(status + 48);
     OUTLINED_FUNCTION_0_2();
     v13[1] = 3221225472;
     v13[2] = __60__HKFeatureStatusManager__notifyObserversWithFeatureStatus___block_invoke;
     v13[3] = &unk_1E73783D8;
-    v13[4] = a1;
+    v13[4] = status;
     v14 = v4;
     [v11 notifyObservers:v13];
   }
@@ -790,27 +790,27 @@ LABEL_19:
 - (void)__unregisterForFeatureStatusChanges
 {
   v36 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    [*(a1 + 16) unregisterObserver:a1];
-    WeakRetained = objc_loadWeakRetained((a1 + 24));
+    [*(self + 16) unregisterObserver:self];
+    WeakRetained = objc_loadWeakRetained((self + 24));
     v3 = WeakRetained;
     if (!WeakRetained)
     {
-      v3 = *(a1 + 32);
+      v3 = *(self + 32);
     }
 
     v4 = v3;
 
-    v5 = *(a1 + 80);
+    v5 = *(self + 80);
     if (v5 && v4)
     {
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v6 = [(HKFeatureAvailabilityRequirementSet *)v5 allRequirements];
-      v7 = [v6 countByEnumeratingWithState:&v28 objects:v35 count:16];
+      allRequirements = [(HKFeatureAvailabilityRequirementSet *)v5 allRequirements];
+      v7 = [allRequirements countByEnumeratingWithState:&v28 objects:v35 count:16];
       if (v7)
       {
         v8 = v7;
@@ -821,16 +821,16 @@ LABEL_19:
           {
             if (*v29 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(allRequirements);
             }
 
             v11 = *(*(&v28 + 1) + 8 * i);
-            v12 = [v4 requirementSatisfactionOverridesDataSource];
-            v13 = [*(a1 + 16) featureIdentifier];
-            [v12 unregisterObserver:a1 forFeature:v13 requirement:v11];
+            requirementSatisfactionOverridesDataSource = [v4 requirementSatisfactionOverridesDataSource];
+            featureIdentifier = [*(self + 16) featureIdentifier];
+            [requirementSatisfactionOverridesDataSource unregisterObserver:self forFeature:featureIdentifier requirement:v11];
           }
 
-          v8 = [v6 countByEnumeratingWithState:&v28 objects:v35 count:16];
+          v8 = [allRequirements countByEnumeratingWithState:&v28 objects:v35 count:16];
         }
 
         while (v8);
@@ -840,8 +840,8 @@ LABEL_19:
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v14 = [(HKFeatureAvailabilityRequirementSet *)*(a1 + 80) allObservableRequirements];
-      v15 = [v14 countByEnumeratingWithState:&v24 objects:v34 count:16];
+      allObservableRequirements = [(HKFeatureAvailabilityRequirementSet *)*(self + 80) allObservableRequirements];
+      v15 = [allObservableRequirements countByEnumeratingWithState:&v24 objects:v34 count:16];
       if (v15)
       {
         v16 = v15;
@@ -852,24 +852,24 @@ LABEL_19:
           {
             if (*v25 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(allObservableRequirements);
             }
 
-            [*(*(&v24 + 1) + 8 * j) unregisterObserver:a1 fromDataSource:{v4, v24}];
+            [*(*(&v24 + 1) + 8 * j) unregisterObserver:self fromDataSource:{v4, v24}];
           }
 
-          v16 = [v14 countByEnumeratingWithState:&v24 objects:v34 count:16];
+          v16 = [allObservableRequirements countByEnumeratingWithState:&v24 objects:v34 count:16];
         }
 
         while (v16);
       }
 
-      WeakRetained = [a1 dataSource];
-      v19 = [WeakRetained healthDataRequirementDataSource];
-      [v19 unregisterObserver:a1];
+      WeakRetained = [self dataSource];
+      healthDataRequirementDataSource = [WeakRetained healthDataRequirementDataSource];
+      [healthDataRequirementDataSource unregisterObserver:self];
     }
 
-    *(a1 + 8) = 0;
+    *(self + 8) = 0;
     _HKInitializeLogging();
     v20 = HKLogInfrastructure();
     v21 = OUTLINED_FUNCTION_6(v20);
@@ -880,7 +880,7 @@ LABEL_19:
       if (OUTLINED_FUNCTION_6(v22))
       {
         *buf = 138543362;
-        v33 = a1;
+        selfCopy = self;
         _os_log_impl(&dword_19197B000, WeakRetained, OS_LOG_TYPE_INFO, "[%{public}@] Unregistered for feature status changes", buf, 0xCu);
       }
     }
@@ -891,39 +891,39 @@ LABEL_19:
 
 - (id)_requirementSatisfactionOverrides
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 dataSource];
-    v3 = [v1[2] featureIdentifier];
-    v1 = [v2 requirementSatisfactionOverridesForFeatureWithIdentifier:v3];
+    dataSource = [self dataSource];
+    featureIdentifier = [selfCopy[2] featureIdentifier];
+    selfCopy = [dataSource requirementSatisfactionOverridesForFeatureWithIdentifier:featureIdentifier];
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (HKFeatureStatus)_queue_featureStatusWithEvaluationContext:(void *)a3 requirements:(void *)a4 overrides:(void *)a5 error:
+- (HKFeatureStatus)_queue_featureStatusWithEvaluationContext:(void *)context requirements:(void *)requirements overrides:(void *)overrides error:
 {
   v31 = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  if (a1)
+  contextCopy = context;
+  requirementsCopy = requirements;
+  if (self)
   {
-    v12 = [(NSDictionary *)a1->_requirementsEvaluationByContext featureIdentifier];
+    featureIdentifier = [(NSDictionary *)self->_requirementsEvaluationByContext featureIdentifier];
     v28 = 0;
-    v13 = [v9 onboardingRecordForFeatureWithIdentifier:v12 error:&v28];
+    v13 = [v9 onboardingRecordForFeatureWithIdentifier:featureIdentifier error:&v28];
     v14 = v28;
 
     if (v13)
     {
       v27 = v14;
-      v15 = [(HKFeatureAvailabilityRequirementSet *)v10 evaluationByContextWithDataSource:v9 overrides:v11 error:&v27];
+      v15 = [(HKFeatureAvailabilityRequirementSet *)contextCopy evaluationByContextWithDataSource:v9 overrides:requirementsCopy error:&v27];
       v16 = v27;
 
       if (v15)
       {
-        a1 = [[HKFeatureStatus alloc] initWithOnboardingRecord:v13 requirementsEvaluationByContext:v15];
+        self = [[HKFeatureStatus alloc] initWithOnboardingRecord:v13 requirementsEvaluationByContext:v15];
       }
 
       else
@@ -941,10 +941,10 @@ LABEL_19:
         v16 = v21;
         if (v21)
         {
-          if (a5)
+          if (overrides)
           {
             v22 = v21;
-            *a5 = v16;
+            *overrides = v16;
           }
 
           else
@@ -953,7 +953,7 @@ LABEL_19:
           }
         }
 
-        a1 = 0;
+        self = 0;
       }
 
       goto LABEL_20;
@@ -972,11 +972,11 @@ LABEL_19:
     v15 = v18;
     if (v18)
     {
-      if (a5)
+      if (overrides)
       {
         v19 = v18;
-        a1 = 0;
-        *a5 = v15;
+        self = 0;
+        *overrides = v15;
 LABEL_17:
         v16 = v15;
 LABEL_20:
@@ -987,7 +987,7 @@ LABEL_20:
       _HKLogDroppedError(v18);
     }
 
-    a1 = 0;
+    self = 0;
     goto LABEL_17;
   }
 
@@ -995,16 +995,16 @@ LABEL_21:
 
   v23 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return self;
 }
 
 - (void)_queue_registerForFeatureStatusChanges
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    [*(a1 + 16) registerObserver:a1 queue:*(a1 + 56)];
-    v2 = *(a1 + 80);
+    [*(self + 16) registerObserver:self queue:*(self + 56)];
+    v2 = *(self + 80);
     if (v2)
     {
       v3 = v2;
@@ -1013,7 +1013,7 @@ LABEL_21:
 
     else
     {
-      v5 = *(a1 + 16);
+      v5 = *(self + 16);
       v23 = 0;
       v3 = [v5 featureAvailabilityRequirementsWithError:&v23];
       v4 = v23;
@@ -1023,18 +1023,18 @@ LABEL_21:
 
     if (v6)
     {
-      if (!*(a1 + 80))
+      if (!*(self + 80))
       {
-        objc_storeStrong((a1 + 80), v6);
+        objc_storeStrong((self + 80), v6);
       }
 
-      [(HKFeatureStatusManager *)a1 _registerForRequirementSatisfactionOverrideChangesForRequirements:v6];
+      [(HKFeatureStatusManager *)self _registerForRequirementSatisfactionOverrideChangesForRequirements:v6];
       v21 = 0u;
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v9 = [(HKFeatureAvailabilityRequirementSet *)v6 allObservableRequirements];
-      v10 = [v9 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      allObservableRequirements = [(HKFeatureAvailabilityRequirementSet *)v6 allObservableRequirements];
+      v10 = [allObservableRequirements countByEnumeratingWithState:&v19 objects:v24 count:16];
       if (v10)
       {
         v11 = v10;
@@ -1045,30 +1045,30 @@ LABEL_21:
           {
             if (*v20 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(allObservableRequirements);
             }
 
             v14 = *(*(&v19 + 1) + 8 * i);
-            v15 = [a1 dataSource];
-            [v14 registerObserver:a1 forDataSource:v15];
+            dataSource = [self dataSource];
+            [v14 registerObserver:self forDataSource:dataSource];
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v19 objects:v24 count:16];
+          v11 = [allObservableRequirements countByEnumeratingWithState:&v19 objects:v24 count:16];
         }
 
         while (v11);
       }
 
-      v7 = [a1 dataSource];
-      v16 = [v7 healthDataRequirementDataSource];
-      [v16 registerObserver:a1 forRequirementSet:v6 queue:0];
+      dataSource2 = [self dataSource];
+      healthDataRequirementDataSource = [dataSource2 healthDataRequirementDataSource];
+      [healthDataRequirementDataSource registerObserver:self forRequirementSet:v6 queue:0];
 
-      *(a1 + 8) = 1;
+      *(self + 8) = 1;
       _HKInitializeLogging();
       v17 = HKLogInfrastructure();
-      LODWORD(v16) = OUTLINED_FUNCTION_7(v17);
+      LODWORD(healthDataRequirementDataSource) = OUTLINED_FUNCTION_7(v17);
 
-      if (!v16)
+      if (!healthDataRequirementDataSource)
       {
         goto LABEL_9;
       }
@@ -1077,22 +1077,22 @@ LABEL_21:
       if (OUTLINED_FUNCTION_7(v18))
       {
         *buf = 138543362;
-        v26 = a1;
-        _os_log_impl(&dword_19197B000, v7, OS_LOG_TYPE_INFO, "[%{public}@] Registered for feature status changes", buf, 0xCu);
+        selfCopy2 = self;
+        _os_log_impl(&dword_19197B000, dataSource2, OS_LOG_TYPE_INFO, "[%{public}@] Registered for feature status changes", buf, 0xCu);
       }
     }
 
     else
     {
       _HKInitializeLogging();
-      v7 = HKLogInfrastructure();
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
+      dataSource2 = HKLogInfrastructure();
+      if (os_log_type_enabled(dataSource2, OS_LOG_TYPE_FAULT))
       {
         *buf = 138543618;
-        v26 = a1;
+        selfCopy2 = self;
         v27 = 2114;
         v28 = v4;
-        _os_log_fault_impl(&dword_19197B000, v7, OS_LOG_TYPE_FAULT, "[%{public}@]: Error determining feature requirements during registration: %{public}@", buf, 0x16u);
+        _os_log_fault_impl(&dword_19197B000, dataSource2, OS_LOG_TYPE_FAULT, "[%{public}@]: Error determining feature requirements during registration: %{public}@", buf, 0x16u);
       }
     }
 
@@ -1104,18 +1104,18 @@ LABEL_9:
 
 - (void)_queue_unregisterForFeatureStatusChanges
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 56));
+    dispatch_assert_queue_V2(*(self + 56));
 
-    [(HKFeatureStatusManager *)a1 __unregisterForFeatureStatusChanges];
+    [(HKFeatureStatusManager *)self __unregisterForFeatureStatusChanges];
   }
 }
 
-- (void)_registerForRequirementSatisfactionOverrideChangesForRequirements:(id *)a1
+- (void)_registerForRequirementSatisfactionOverrideChangesForRequirements:(id *)requirements
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (requirements)
   {
     v16 = 0u;
     v17 = 0u;
@@ -1138,15 +1138,15 @@ LABEL_9:
           }
 
           v7 = *(*(&v14 + 1) + 8 * v6);
-          v8 = [a1 dataSource];
-          v9 = [v8 requirementSatisfactionOverridesDataSource];
-          v10 = [a1[2] featureIdentifier];
+          dataSource = [requirements dataSource];
+          requirementSatisfactionOverridesDataSource = [dataSource requirementSatisfactionOverridesDataSource];
+          featureIdentifier = [requirements[2] featureIdentifier];
           v13[0] = MEMORY[0x1E69E9820];
           v13[1] = 3221225472;
           v13[2] = __92__HKFeatureStatusManager__registerForRequirementSatisfactionOverrideChangesForRequirements___block_invoke;
           v13[3] = &unk_1E73783B0;
           v13[4] = v7;
-          [v9 registerObserver:a1 forFeature:v10 requirement:v7 newValueHandler:v13];
+          [requirementSatisfactionOverridesDataSource registerObserver:requirements forFeature:featureIdentifier requirement:v7 newValueHandler:v13];
 
           ++v6;
         }
@@ -1162,17 +1162,17 @@ LABEL_9:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateOverriddenSatisfactionOfRequirement:(void *)a3 overriddenSatisfaction:
+- (void)_updateOverriddenSatisfactionOfRequirement:(void *)requirement overriddenSatisfaction:
 {
   v23 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  requirementCopy = requirement;
+  if (self)
   {
-    v7 = [objc_opt_class() requirementIdentifier];
-    if (v6)
+    requirementIdentifier = [objc_opt_class() requirementIdentifier];
+    if (requirementCopy)
     {
-      v10 = [v6 BOOLValue];
+      bOOLValue = [requirementCopy BOOLValue];
       _HKInitializeLogging();
       v11 = HKLogInfrastructure();
       v12 = os_log_type_enabled(v11, OS_LOG_TYPE_INFO);
@@ -1184,32 +1184,32 @@ LABEL_9:
         {
           v14 = @"is NOT";
           *buf = 138543874;
-          v18 = a1;
+          selfCopy = self;
           v19 = 2114;
-          if (v10)
+          if (bOOLValue)
           {
             v14 = @"is";
           }
 
-          v20 = v7;
+          v20 = requirementIdentifier;
           v21 = 2114;
           v22 = v14;
           _os_log_impl(&dword_19197B000, v13, OS_LOG_TYPE_INFO, "[%{public}@] Override: %{public}@ %{public}@ satisfied; updating feature status", buf, 0x20u);
         }
       }
 
-      [(HKFeatureStatusManager *)a1 _updateSatisfactionOfRequirement:v5 isSatisfied:v10];
+      [(HKFeatureStatusManager *)self _updateSatisfactionOfRequirement:v5 isSatisfied:bOOLValue];
     }
 
     else
     {
-      v8 = *(a1 + 56);
+      v8 = *(self + 56);
       OUTLINED_FUNCTION_0_2();
       v15[1] = 3221225472;
       v15[2] = __92__HKFeatureStatusManager__updateOverriddenSatisfactionOfRequirement_overriddenSatisfaction___block_invoke;
       v15[3] = &unk_1E7378400;
-      v15[4] = a1;
-      v16 = v7;
+      v15[4] = self;
+      v16 = requirementIdentifier;
       dispatch_sync(v8, v15);
     }
   }
@@ -1220,10 +1220,10 @@ LABEL_9:
 - (void)_queue_attemptFeatureStatusUpdateDrivenByObservation
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v7 = 0;
-    v2 = [(HKFeatureStatusManager *)a1 _queue_updateFeatureStatusWithRequestDrivenByObservation:&v7 error:?];
+    v2 = [(HKFeatureStatusManager *)self _queue_updateFeatureStatusWithRequestDrivenByObservation:&v7 error:?];
     v3 = v7;
     if (!v2)
     {
@@ -1232,7 +1232,7 @@ LABEL_9:
       if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
       {
         v8 = 138543618;
-        v9 = a1;
+        selfCopy = self;
         v10 = 2114;
         v11 = v3;
         OUTLINED_FUNCTION_5(&dword_19197B000, v4, v5, "[%{public}@]: Error attempting to update feature status: %{public}@", &v8);
@@ -1243,7 +1243,7 @@ LABEL_9:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)featureAvailabilityProvidingDidUpdateSettings:(id)a3
+- (void)featureAvailabilityProvidingDidUpdateSettings:(id)settings
 {
   v14 = *MEMORY[0x1E69E9840];
   _HKInitializeLogging();
@@ -1264,22 +1264,22 @@ LABEL_9:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateSatisfactionOfRequirement:(char)a3 isSatisfied:
+- (void)_updateSatisfactionOfRequirement:(char)requirement isSatisfied:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = [objc_opt_class() requirementIdentifier];
-    v7 = *(a1 + 56);
+    requirementIdentifier = [objc_opt_class() requirementIdentifier];
+    v7 = *(self + 56);
     OUTLINED_FUNCTION_0_2();
     v10[1] = 3221225472;
     v10[2] = __71__HKFeatureStatusManager__updateSatisfactionOfRequirement_isSatisfied___block_invoke;
     v10[3] = &unk_1E7378428;
-    v10[4] = a1;
+    v10[4] = self;
     v11 = v8;
-    v13 = a3;
+    requirementCopy = requirement;
     v12 = v5;
-    v9 = v6;
+    v9 = requirementIdentifier;
     dispatch_sync(v7, v10);
   }
 }
@@ -1327,8 +1327,8 @@ void __111__HKFeatureStatusManager_initWithFeatureAvailabilityProviding_featureA
 
 - (void)dataSource
 {
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v8 handleFailureInMethod:a1 object:a2 file:@"HKFeatureStatusManager.m" lineNumber:238 description:{@"No data source for %@ has been retained!", a2}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"HKFeatureStatusManager.m" lineNumber:238 description:{@"No data source for %@ has been retained!", a2}];
 
   *a4 = *a3;
 }

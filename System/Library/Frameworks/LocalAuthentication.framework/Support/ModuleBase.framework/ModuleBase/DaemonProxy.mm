@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (NSXPCConnection)connection;
 - (id)agentProxy;
-- (void)agentProxyWrapper:(id)a3 didFailToObtainRemoteProxyWithError:(id)a4;
+- (void)agentProxyWrapper:(id)wrapper didFailToObtainRemoteProxyWithError:(id)error;
 - (void)reset;
 @end
 
@@ -40,8 +40,8 @@ uint64_t __29__DaemonProxy_sharedInstance__block_invoke()
     [(NSXPCConnection *)self->_connection setRemoteObjectInterface:v6];
 
     v7 = self->_connection;
-    v8 = [MEMORY[0x277CD47C8] queue];
-    [(NSXPCConnection *)v7 _setQueue:v8];
+    queue = [MEMORY[0x277CD47C8] queue];
+    [(NSXPCConnection *)v7 _setQueue:queue];
 
     objc_initWeak(&location, self);
     v12[0] = MEMORY[0x277D85DD0];
@@ -142,15 +142,15 @@ id __25__DaemonProxy_agentProxy__block_invoke(uint64_t a1)
   self->_connection = 0;
 }
 
-- (void)agentProxyWrapper:(id)a3 didFailToObtainRemoteProxyWithError:(id)a4
+- (void)agentProxyWrapper:(id)wrapper didFailToObtainRemoteProxyWithError:(id)error
 {
-  v6 = a4;
-  if (self->_agentProxy == a3)
+  errorCopy = error;
+  if (self->_agentProxy == wrapper)
   {
     v7 = LACLogServer();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [DaemonProxy agentProxyWrapper:v6 didFailToObtainRemoteProxyWithError:v7];
+      [DaemonProxy agentProxyWrapper:errorCopy didFailToObtainRemoteProxyWithError:v7];
     }
 
     [(DaemonProxy *)self reset];

@@ -1,126 +1,126 @@
 @interface AVTAvatarAttributeEditorSectionColorController
-+ (BOOL)updateCollectionViewLayout:(id)a3 containerSize:(CGSize)a4 environment:(id)a5 forExtended:(BOOL)a6 withSlider:(BOOL)a7 numberOfItems:(int64_t)a8;
-+ (CGPoint)clampedContentOffsetForOffset:(CGPoint)a3 collectionView:(id)a4;
-+ (CGSize)cellSizeFittingWidth:(double)a3 environment:(id)a4;
-+ (double)edgeLengthFittingWidth:(double)a3 environment:(id)a4;
++ (BOOL)updateCollectionViewLayout:(id)layout containerSize:(CGSize)size environment:(id)environment forExtended:(BOOL)extended withSlider:(BOOL)slider numberOfItems:(int64_t)items;
++ (CGPoint)clampedContentOffsetForOffset:(CGPoint)offset collectionView:(id)view;
++ (CGSize)cellSizeFittingWidth:(double)width environment:(id)environment;
++ (double)edgeLengthFittingWidth:(double)width environment:(id)environment;
 - (AVTAvatarAttributeEditorControllerSubSelectionDelegate)delegate;
-- (AVTAvatarAttributeEditorSectionColorController)initWithDataSource:(id)a3 showsHeader:(BOOL)a4 environment:(id)a5;
-- (AVTAvatarAttributeEditorSectionColorController)initWithEnvironment:(id)a3 showsHeader:(BOOL)a4;
-- (BOOL)evaluateDisplayCondition:(id)a3;
-- (CGSize)sizeForFocusingItemAtIndex:(int64_t)a3 fittingSize:(CGSize)a4;
-- (CGSize)sizeForItemAtIndex:(int64_t)a3 fittingSize:(CGSize)a4;
+- (AVTAvatarAttributeEditorSectionColorController)initWithDataSource:(id)source showsHeader:(BOOL)header environment:(id)environment;
+- (AVTAvatarAttributeEditorSectionColorController)initWithEnvironment:(id)environment showsHeader:(BOOL)header;
+- (BOOL)evaluateDisplayCondition:(id)condition;
+- (CGSize)sizeForFocusingItemAtIndex:(int64_t)index fittingSize:(CGSize)size;
+- (CGSize)sizeForItemAtIndex:(int64_t)index fittingSize:(CGSize)size;
 - (UICollectionViewFlowLayout)collectionViewLayout;
-- (UIEdgeInsets)edgeInsetsFittingSize:(CGSize)a3;
+- (UIEdgeInsets)edgeInsetsFittingSize:(CGSize)size;
 - (UIView)sectionView;
 - (double)currentRelativeContentOffsetX;
-- (double)heightForCollectionViewFittingWidth:(double)a3;
-- (double)heightForSectionHeaderFittingWidth:(double)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (double)heightForCollectionViewFittingWidth:(double)width;
+- (double)heightForSectionHeaderFittingWidth:(double)width;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (int64_t)selectedIndex;
-- (void)attributeEditorSectionController:(id)a3 didDeleteSectionItems:(id)a4;
-- (void)attributeEditorSectionController:(id)a3 didSelectSectionItem:(id)a4;
-- (void)attributeEditorSectionController:(id)a3 didUpdateSectionItem:(id)a4;
-- (void)attributeEditorSectionControllerNeedsLayoutUpdate:(id)a3;
-- (void)cell:(id)a3 willDisplayAtIndex:(int64_t)a4;
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didUnhighlightItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)colorDataSource:(id)a3 didChangeDisplayMode:(int64_t)a4 previousDisplayMode:(int64_t)a5;
-- (void)colorDataSource:(id)a3 didDeselectItemAtIndex:(int64_t)a4 shouldReloadModel:(BOOL)a5;
-- (void)colorDataSource:(id)a3 didSelectItemAtIndex:(int64_t)a4 shouldReloadModel:(BOOL)a5;
-- (void)colorSliderDidFinishChangingVariation:(double)a3 forItem:(id)a4;
-- (void)colorSliderVariationChanged:(double)a3 forItem:(id)a4;
+- (void)attributeEditorSectionController:(id)controller didDeleteSectionItems:(id)items;
+- (void)attributeEditorSectionController:(id)controller didSelectSectionItem:(id)item;
+- (void)attributeEditorSectionController:(id)controller didUpdateSectionItem:(id)item;
+- (void)attributeEditorSectionControllerNeedsLayoutUpdate:(id)update;
+- (void)cell:(id)cell willDisplayAtIndex:(int64_t)index;
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didUnhighlightItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)colorDataSource:(id)source didChangeDisplayMode:(int64_t)mode previousDisplayMode:(int64_t)displayMode;
+- (void)colorDataSource:(id)source didDeselectItemAtIndex:(int64_t)index shouldReloadModel:(BOOL)model;
+- (void)colorDataSource:(id)source didSelectItemAtIndex:(int64_t)index shouldReloadModel:(BOOL)model;
+- (void)colorSliderDidFinishChangingVariation:(double)variation forItem:(id)item;
+- (void)colorSliderVariationChanged:(double)changed forItem:(id)item;
 - (void)createCollectionView;
 - (void)createSliderContainerView;
-- (void)hideSliderAnimated:(BOOL)a3;
-- (void)invalidateLayoutForNewContainerSize:(CGSize)a3;
-- (void)layoutSubviewsForIndex:(int64_t)a3;
+- (void)hideSliderAnimated:(BOOL)animated;
+- (void)invalidateLayoutForNewContainerSize:(CGSize)size;
+- (void)layoutSubviewsForIndex:(int64_t)index;
 - (void)reloadData;
 - (void)resetToDefaultState;
 - (void)scrollCollectionViewToOrigin;
 - (void)scrollCollectionViewToSelectedColor;
-- (void)setCurrentRelativeContentOffsetX:(double)a3;
-- (void)setSelectedState:(BOOL)a3 animated:(BOOL)a4 forCellAtIndexPath:(id)a5;
-- (void)showSliderAnimated:(BOOL)a3;
-- (void)updateCell:(id)a3 forItemAtIndex:(int64_t)a4;
-- (void)updateCellLayer:(id)a3 withColorItem:(id)a4 withColorPreset:(id)a5;
-- (void)updateCollectionViewLayoutWithContainerSize:(CGSize)a3;
-- (void)updateSectionItem:(id)a3 withVariation:(double)a4;
-- (void)updateSliderForSectionItemIfNeeded:(id)a3;
-- (void)updateWithSection:(id)a3;
-- (void)willDisplayViewForIndex:(int64_t)a3;
+- (void)setCurrentRelativeContentOffsetX:(double)x;
+- (void)setSelectedState:(BOOL)state animated:(BOOL)animated forCellAtIndexPath:(id)path;
+- (void)showSliderAnimated:(BOOL)animated;
+- (void)updateCell:(id)cell forItemAtIndex:(int64_t)index;
+- (void)updateCellLayer:(id)layer withColorItem:(id)item withColorPreset:(id)preset;
+- (void)updateCollectionViewLayoutWithContainerSize:(CGSize)size;
+- (void)updateSectionItem:(id)item withVariation:(double)variation;
+- (void)updateSliderForSectionItemIfNeeded:(id)needed;
+- (void)updateWithSection:(id)section;
+- (void)willDisplayViewForIndex:(int64_t)index;
 @end
 
 @implementation AVTAvatarAttributeEditorSectionColorController
 
-+ (double)edgeLengthFittingWidth:(double)a3 environment:(id)a4
++ (double)edgeLengthFittingWidth:(double)width environment:(id)environment
 {
-  v5 = a4;
-  v6 = [v5 deviceIsPad];
+  environmentCopy = environment;
+  deviceIsPad = [environmentCopy deviceIsPad];
   v7 = 400.0;
-  if (a3 <= 400.0 || (v7 = 12.0, (v6 & 1) == 0))
+  if (width <= 400.0 || (v7 = 12.0, (deviceIsPad & 1) == 0))
   {
-    v8 = [v5 deviceIsMac];
+    deviceIsMac = [environmentCopy deviceIsMac];
     v7 = 6.0;
-    if (((a3 > 300.0) & v8) != 0)
+    if (((width > 300.0) & deviceIsMac) != 0)
     {
       v7 = 10.0;
     }
   }
 
-  v9 = floor((a3 + -24.0 + (v7 + -1.0) * -0.0) / v7);
+  v9 = floor((width + -24.0 + (v7 + -1.0) * -0.0) / v7);
 
   return v9;
 }
 
-+ (CGSize)cellSizeFittingWidth:(double)a3 environment:(id)a4
++ (CGSize)cellSizeFittingWidth:(double)width environment:(id)environment
 {
-  [a1 edgeLengthFittingWidth:a4 environment:a3];
+  [self edgeLengthFittingWidth:environment environment:width];
   v5 = v4;
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-+ (BOOL)updateCollectionViewLayout:(id)a3 containerSize:(CGSize)a4 environment:(id)a5 forExtended:(BOOL)a6 withSlider:(BOOL)a7 numberOfItems:(int64_t)a8
++ (BOOL)updateCollectionViewLayout:(id)layout containerSize:(CGSize)size environment:(id)environment forExtended:(BOOL)extended withSlider:(BOOL)slider numberOfItems:(int64_t)items
 {
-  v8 = a6;
-  width = a4.width;
-  v11 = a3;
-  v12 = a5;
-  [v11 setMinimumInteritemSpacing:0.0];
-  [objc_opt_class() cellSizeFittingWidth:v12 environment:width];
+  extendedCopy = extended;
+  width = size.width;
+  layoutCopy = layout;
+  environmentCopy = environment;
+  [layoutCopy setMinimumInteritemSpacing:0.0];
+  [objc_opt_class() cellSizeFittingWidth:environmentCopy environment:width];
   v14 = v13;
   v16 = v15;
 
-  [v11 setItemSize:{v14, v16}];
-  v17 = !v8;
-  [v11 setMinimumLineSpacing:0.0];
-  v18 = [v11 scrollDirection];
-  if (v18 != v17)
+  [layoutCopy setItemSize:{v14, v16}];
+  v17 = !extendedCopy;
+  [layoutCopy setMinimumLineSpacing:0.0];
+  scrollDirection = [layoutCopy scrollDirection];
+  if (scrollDirection != v17)
   {
-    [v11 setScrollDirection:v17];
+    [layoutCopy setScrollDirection:v17];
   }
 
-  [v11 setSectionInset:{12.0, 0.0, 12.0, 0.0}];
+  [layoutCopy setSectionInset:{12.0, 0.0, 12.0, 0.0}];
 
-  return v18 != v17;
+  return scrollDirection != v17;
 }
 
-+ (CGPoint)clampedContentOffsetForOffset:(CGPoint)a3 collectionView:(id)a4
++ (CGPoint)clampedContentOffsetForOffset:(CGPoint)offset collectionView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = a4;
-  [v6 contentSize];
+  y = offset.y;
+  x = offset.x;
+  viewCopy = view;
+  [viewCopy contentSize];
   v8 = v7;
-  [v6 contentInset];
+  [viewCopy contentInset];
   v10 = v8 + v9;
-  [v6 bounds];
+  [viewCopy bounds];
   v11 = v10 - CGRectGetWidth(v18);
-  [v6 contentInset];
+  [viewCopy contentInset];
   v13 = v12;
 
   v14 = -v13;
@@ -145,20 +145,20 @@
   return result;
 }
 
-- (AVTAvatarAttributeEditorSectionColorController)initWithEnvironment:(id)a3 showsHeader:(BOOL)a4
+- (AVTAvatarAttributeEditorSectionColorController)initWithEnvironment:(id)environment showsHeader:(BOOL)header
 {
-  v4 = a4;
-  v6 = a3;
+  headerCopy = header;
+  environmentCopy = environment;
   v7 = objc_alloc_init(AVTAvatarAttributeEditorSectionColorDataSource);
-  v8 = [(AVTAvatarAttributeEditorSectionColorController *)self initWithDataSource:v7 showsHeader:v4 environment:v6];
+  v8 = [(AVTAvatarAttributeEditorSectionColorController *)self initWithDataSource:v7 showsHeader:headerCopy environment:environmentCopy];
 
   return v8;
 }
 
-- (AVTAvatarAttributeEditorSectionColorController)initWithDataSource:(id)a3 showsHeader:(BOOL)a4 environment:(id)a5
+- (AVTAvatarAttributeEditorSectionColorController)initWithDataSource:(id)source showsHeader:(BOOL)header environment:(id)environment
 {
-  v9 = a3;
-  v10 = a5;
+  sourceCopy = source;
+  environmentCopy = environment;
   v14.receiver = self;
   v14.super_class = AVTAvatarAttributeEditorSectionColorController;
   v11 = [(AVTAvatarAttributeEditorSectionColorController *)&v14 init];
@@ -166,10 +166,10 @@
   if (v11)
   {
     v11->_needsScrollToSelected = 1;
-    objc_storeStrong(&v11->_dataSource, a3);
+    objc_storeStrong(&v11->_dataSource, source);
     [(AVTAvatarAttributeEditorSectionColorDataSource *)v12->_dataSource setDelegate:v12];
-    objc_storeStrong(&v12->_environment, a5);
-    v12->_showsHeader = a4;
+    objc_storeStrong(&v12->_environment, environment);
+    v12->_showsHeader = header;
   }
 
   return v12;
@@ -177,29 +177,29 @@
 
 - (UIView)sectionView
 {
-  v3 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
+  containerView = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
 
-  if (!v3)
+  if (!containerView)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD250]);
     v5 = [v4 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     [(AVTAvatarAttributeEditorSectionColorController *)self setContainerView:v5];
 
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    v7 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
-    [v7 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    containerView2 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
+    [containerView2 setBackgroundColor:clearColor];
   }
 
-  v8 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  collectionView = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
 
-  if (!v8)
+  if (!collectionView)
   {
     [(AVTAvatarAttributeEditorSectionColorController *)self createCollectionView];
   }
 
-  v9 = [(AVTAvatarAttributeEditorSectionColorController *)self sliderContainerView];
+  sliderContainerView = [(AVTAvatarAttributeEditorSectionColorController *)self sliderContainerView];
 
-  if (!v9)
+  if (!sliderContainerView)
   {
     [(AVTAvatarAttributeEditorSectionColorController *)self createSliderContainerView];
   }
@@ -209,13 +209,13 @@
 
 - (int64_t)selectedIndex
 {
-  v2 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
-  v3 = [v2 selectedItemIndex];
+  dataSource = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
+  selectedItemIndex = [dataSource selectedItemIndex];
 
-  return v3;
+  return selectedItemIndex;
 }
 
-- (UIEdgeInsets)edgeInsetsFittingSize:(CGSize)a3
+- (UIEdgeInsets)edgeInsetsFittingSize:(CGSize)size
 {
   v3 = *MEMORY[0x1E69DDCE0];
   v4 = *(MEMORY[0x1E69DDCE0] + 8);
@@ -230,57 +230,57 @@
 
 - (double)currentRelativeContentOffsetX
 {
-  v3 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-  [v3 contentOffset];
+  collectionView = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  [collectionView contentOffset];
   v5 = v4;
-  v6 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-  [v6 contentInset];
+  collectionView2 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  [collectionView2 contentInset];
   v8 = v5 + v7;
 
   return v8;
 }
 
-- (void)setCurrentRelativeContentOffsetX:(double)a3
+- (void)setCurrentRelativeContentOffsetX:(double)x
 {
-  v5 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-  [v5 contentSize];
+  collectionView = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  [collectionView contentSize];
   v7 = v6;
-  v8 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-  [v8 bounds];
+  collectionView2 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  [collectionView2 bounds];
   Width = CGRectGetWidth(v30);
-  v10 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-  [v10 contentInset];
+  collectionView3 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  [collectionView3 contentInset];
   v12 = v11;
-  v13 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-  [v13 contentInset];
+  collectionView4 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  [collectionView4 contentInset];
   v15 = Width - (v12 + v14);
 
-  v16 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-  [v16 contentInset];
+  collectionView5 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  [collectionView5 contentInset];
   v18 = v17;
 
-  v19 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-  [v19 contentOffset];
+  collectionView6 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  [collectionView6 contentOffset];
   v21 = v20;
 
   if (v7 <= v15)
   {
-    v23 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-    [v23 contentInset];
+    collectionView7 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+    [collectionView7 contentInset];
     v25 = -v27;
   }
 
   else
   {
     v22 = objc_opt_class();
-    v23 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-    [v22 clampedContentOffsetForOffset:v23 collectionView:{a3 - v18, v21}];
+    collectionView7 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+    [v22 clampedContentOffsetForOffset:collectionView7 collectionView:{x - v18, v21}];
     v25 = v24;
     v21 = v26;
   }
 
-  v28 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-  [v28 setContentOffset:{v25, v21}];
+  collectionView8 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  [collectionView8 setContentOffset:{v25, v21}];
 }
 
 - (void)createCollectionView
@@ -288,76 +288,76 @@
   if ([(AVTAvatarAttributeEditorSectionColorController *)self showsHeader])
   {
     v3 = [AVTAttributeEditorSectionHeaderView alloc];
-    v4 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
-    [v4 bounds];
+    containerView = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
+    [containerView bounds];
     v5 = [(AVTAttributeEditorSectionHeaderView *)v3 initWithFrame:0.0, 0.0, CGRectGetWidth(v47), 40.0];
     [(AVTAvatarAttributeEditorSectionColorController *)self setHeaderView:v5];
 
-    v6 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
-    v7 = [v6 colorSection];
-    v8 = [v7 localizedName];
-    v9 = [(AVTAvatarAttributeEditorSectionColorController *)self headerView];
-    [v9 setDisplayString:v8];
+    dataSource = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
+    colorSection = [dataSource colorSection];
+    localizedName = [colorSection localizedName];
+    headerView = [(AVTAvatarAttributeEditorSectionColorController *)self headerView];
+    [headerView setDisplayString:localizedName];
 
-    v10 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
-    v11 = [(AVTAvatarAttributeEditorSectionColorController *)self headerView];
-    [v10 addSubview:v11];
+    containerView2 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
+    headerView2 = [(AVTAvatarAttributeEditorSectionColorController *)self headerView];
+    [containerView2 addSubview:headerView2];
 
-    v12 = [(AVTAvatarAttributeEditorSectionColorController *)self headerView];
-    [v12 setAutoresizingMask:34];
+    headerView3 = [(AVTAvatarAttributeEditorSectionColorController *)self headerView];
+    [headerView3 setAutoresizingMask:34];
   }
 
   v13 = objc_alloc(MEMORY[0x1E69DC7F0]);
-  v14 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
-  [v14 bounds];
+  containerView3 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
+  [containerView3 bounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionViewLayout];
-  v24 = [v13 initWithFrame:v23 collectionViewLayout:{v16, v18, v20, v22}];
+  collectionViewLayout = [(AVTAvatarAttributeEditorSectionColorController *)self collectionViewLayout];
+  v24 = [v13 initWithFrame:collectionViewLayout collectionViewLayout:{v16, v18, v20, v22}];
   [(AVTAvatarAttributeEditorSectionColorController *)self setCollectionView:v24];
 
-  v25 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-  [v25 setDataSource:self];
+  collectionView = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  [collectionView setDataSource:self];
 
-  v26 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-  [v26 setDelegate:self];
+  collectionView2 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  [collectionView2 setDelegate:self];
 
-  v27 = [MEMORY[0x1E69DC888] clearColor];
-  v28 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-  [v28 setBackgroundColor:v27];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  collectionView3 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  [collectionView3 setBackgroundColor:clearColor];
 
-  v29 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-  [v29 setShowsHorizontalScrollIndicator:0];
+  collectionView4 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  [collectionView4 setShowsHorizontalScrollIndicator:0];
 
-  v30 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-  [v30 setAutoresizingMask:2];
+  collectionView5 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  [collectionView5 setAutoresizingMask:2];
 
-  v31 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-  [v31 _setAutomaticContentOffsetAdjustmentEnabled:0];
+  collectionView6 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  [collectionView6 _setAutomaticContentOffsetAdjustmentEnabled:0];
 
-  v32 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  collectionView7 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
   v33 = objc_opt_class();
   v34 = objc_opt_class();
   v35 = NSStringFromClass(v34);
-  [v32 registerClass:v33 forCellWithReuseIdentifier:v35];
+  [collectionView7 registerClass:v33 forCellWithReuseIdentifier:v35];
 
-  v36 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  collectionView8 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
   v37 = objc_opt_class();
   v38 = objc_opt_class();
   v39 = NSStringFromClass(v38);
-  [v36 registerClass:v37 forCellWithReuseIdentifier:v39];
+  [collectionView8 registerClass:v37 forCellWithReuseIdentifier:v39];
 
-  v40 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  collectionView9 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
   v41 = objc_opt_class();
   v42 = objc_opt_class();
   v43 = NSStringFromClass(v42);
-  [v40 registerClass:v41 forCellWithReuseIdentifier:v43];
+  [collectionView9 registerClass:v41 forCellWithReuseIdentifier:v43];
 
-  v45 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
-  v44 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-  [v45 addSubview:v44];
+  containerView4 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
+  collectionView10 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  [containerView4 addSubview:collectionView10];
 }
 
 - (UICollectionViewFlowLayout)collectionViewLayout
@@ -377,32 +377,32 @@
 
 - (void)createSliderContainerView
 {
-  v3 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
-  [v3 bounds];
+  containerView = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
+  [containerView bounds];
   v5 = v4;
 
   v6 = [AVTAvatarColorSliderContainerView alloc];
-  v7 = [(AVTAvatarAttributeEditorSectionColorController *)self environment];
-  v8 = -[AVTAvatarColorSliderContainerView initWithFrame:userInterfaceLayoutDirection:](v6, "initWithFrame:userInterfaceLayoutDirection:", [v7 userInterfaceLayoutDirection], 0.0, 0.0, v5, 45.0);
+  environment = [(AVTAvatarAttributeEditorSectionColorController *)self environment];
+  v8 = -[AVTAvatarColorSliderContainerView initWithFrame:userInterfaceLayoutDirection:](v6, "initWithFrame:userInterfaceLayoutDirection:", [environment userInterfaceLayoutDirection], 0.0, 0.0, v5, 45.0);
   [(AVTAvatarAttributeEditorSectionColorController *)self setSliderContainerView:v8];
 
-  v9 = [(AVTAvatarAttributeEditorSectionColorController *)self sliderContainerView];
-  [v9 setDelegate:self];
+  sliderContainerView = [(AVTAvatarAttributeEditorSectionColorController *)self sliderContainerView];
+  [sliderContainerView setDelegate:self];
 
-  v10 = [(AVTAvatarAttributeEditorSectionColorController *)self sliderContainerView];
-  [v10 setAutoresizingMask:10];
+  sliderContainerView2 = [(AVTAvatarAttributeEditorSectionColorController *)self sliderContainerView];
+  [sliderContainerView2 setAutoresizingMask:10];
 
-  v11 = [(AVTAvatarAttributeEditorSectionColorController *)self sliderContainerView];
-  [v11 setAlpha:0.0];
+  sliderContainerView3 = [(AVTAvatarAttributeEditorSectionColorController *)self sliderContainerView];
+  [sliderContainerView3 setAlpha:0.0];
 
-  v13 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
-  v12 = [(AVTAvatarAttributeEditorSectionColorController *)self sliderContainerView];
-  [v13 addSubview:v12];
+  containerView2 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
+  sliderContainerView4 = [(AVTAvatarAttributeEditorSectionColorController *)self sliderContainerView];
+  [containerView2 addSubview:sliderContainerView4];
 }
 
-- (void)showSliderAnimated:(BOOL)a3
+- (void)showSliderAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __69__AVTAvatarAttributeEditorSectionColorController_showSliderAnimated___block_invoke;
@@ -416,22 +416,22 @@
   v15[4] = self;
   v5 = MEMORY[0x1BFB0DE80](v15);
   v6 = v5;
-  if (v3)
+  if (animatedCopy)
   {
-    v7 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
-    [v7 bounds];
+    containerView = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
+    [containerView bounds];
     Height = CGRectGetHeight(v17);
-    v9 = [(AVTAvatarAttributeEditorSectionColorController *)self sliderContainerView];
-    [v9 frame];
+    sliderContainerView = [(AVTAvatarAttributeEditorSectionColorController *)self sliderContainerView];
+    [sliderContainerView frame];
     v10 = Height - CGRectGetMinY(v18) + -6.0;
 
     CGAffineTransformMakeTranslation(&v14, 0.0, v10 + -20.0);
-    v11 = [(AVTAvatarAttributeEditorSectionColorController *)self sliderContainerView];
+    sliderContainerView2 = [(AVTAvatarAttributeEditorSectionColorController *)self sliderContainerView];
     v13 = v14;
-    [v11 setTransform:&v13];
+    [sliderContainerView2 setTransform:&v13];
 
-    v12 = [(AVTAvatarAttributeEditorSectionColorController *)self sliderContainerView];
-    [v12 setAlpha:0.0];
+    sliderContainerView3 = [(AVTAvatarAttributeEditorSectionColorController *)self sliderContainerView];
+    [sliderContainerView3 setAlpha:0.0];
 
     [(AVTAvatarAttributeEditorSectionColorController *)self animateWithSpringAnimations:v6 completion:0];
   }
@@ -462,9 +462,9 @@ void __69__AVTAvatarAttributeEditorSectionColorController_showSliderAnimated___b
   [v3 setTransform:v5];
 }
 
-- (void)hideSliderAnimated:(BOOL)a3
+- (void)hideSliderAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __69__AVTAvatarAttributeEditorSectionColorController_hideSliderAnimated___block_invoke;
@@ -472,13 +472,13 @@ void __69__AVTAvatarAttributeEditorSectionColorController_showSliderAnimated___b
   v12[4] = self;
   v5 = MEMORY[0x1BFB0DE80](v12, a2);
   v6 = v5;
-  if (v3)
+  if (animatedCopy)
   {
-    v7 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
-    [v7 bounds];
+    containerView = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
+    [containerView bounds];
     Height = CGRectGetHeight(v13);
-    v9 = [(AVTAvatarAttributeEditorSectionColorController *)self sliderContainerView];
-    [v9 frame];
+    sliderContainerView = [(AVTAvatarAttributeEditorSectionColorController *)self sliderContainerView];
+    [sliderContainerView frame];
     v10 = Height - CGRectGetMinY(v14) + -6.0;
 
     v11[0] = MEMORY[0x1E69E9820];
@@ -535,24 +535,24 @@ void __69__AVTAvatarAttributeEditorSectionColorController_hideSliderAnimated___b
   [v5 setTransform:&v6];
 }
 
-- (void)updateCollectionViewLayoutWithContainerSize:(CGSize)a3
+- (void)updateCollectionViewLayoutWithContainerSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
+  height = size.height;
+  width = size.width;
+  containerView = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
 
-  if (v6)
+  if (containerView)
   {
     [(AVTAvatarAttributeEditorSectionColorController *)self layoutSubviewsForIndex:0];
     v7 = objc_opt_class();
-    v8 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionViewLayout];
-    v9 = [(AVTAvatarAttributeEditorSectionColorController *)self environment];
-    v10 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
-    v11 = [v10 isShowingExtended];
-    v12 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
-    v13 = [v12 isShowingSlider];
-    v14 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
-    LODWORD(v7) = [v7 updateCollectionViewLayout:v8 containerSize:v9 environment:v11 forExtended:v13 withSlider:objc_msgSend(v14 numberOfItems:{"numberOfItemsInSection:", 0), width, height}];
+    collectionViewLayout = [(AVTAvatarAttributeEditorSectionColorController *)self collectionViewLayout];
+    environment = [(AVTAvatarAttributeEditorSectionColorController *)self environment];
+    dataSource = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
+    isShowingExtended = [dataSource isShowingExtended];
+    dataSource2 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
+    isShowingSlider = [dataSource2 isShowingSlider];
+    dataSource3 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
+    LODWORD(v7) = [v7 updateCollectionViewLayout:collectionViewLayout containerSize:environment environment:isShowingExtended forExtended:isShowingSlider withSlider:objc_msgSend(dataSource3 numberOfItems:{"numberOfItemsInSection:", 0), width, height}];
 
     if (v7)
     {
@@ -566,116 +566,116 @@ void __69__AVTAvatarAttributeEditorSectionColorController_hideSliderAnimated___b
 {
   if ([(AVTAvatarAttributeEditorSectionColorController *)self selectedIndex]!= 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = [(AVTAvatarAttributeEditorSectionColorController *)self selectedIndex];
-    v4 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-    v5 = [v4 numberOfItemsInSection:0];
+    selectedIndex = [(AVTAvatarAttributeEditorSectionColorController *)self selectedIndex];
+    collectionView = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+    v5 = [collectionView numberOfItemsInSection:0];
 
-    if (v3 < v5)
+    if (selectedIndex < v5)
     {
       v7 = [MEMORY[0x1E696AC88] indexPathForItem:-[AVTAvatarAttributeEditorSectionColorController selectedIndex](self inSection:{"selectedIndex"), 0}];
-      v6 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-      [v6 scrollToItemAtIndexPath:v7 atScrollPosition:16 animated:0];
+      collectionView2 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+      [collectionView2 scrollToItemAtIndexPath:v7 atScrollPosition:16 animated:0];
     }
   }
 }
 
 - (void)scrollCollectionViewToOrigin
 {
-  v6 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-  [v6 contentInset];
+  collectionView = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  [collectionView contentInset];
   v4 = -v3;
-  v5 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-  [v5 setContentOffset:{v4, 0.0}];
+  collectionView2 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  [collectionView2 setContentOffset:{v4, 0.0}];
 }
 
 - (void)reloadData
 {
-  v3 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
+  containerView = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
 
-  if (v3)
+  if (containerView)
   {
     v4 = objc_opt_class();
-    v5 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionViewLayout];
-    v6 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
-    [v6 bounds];
+    collectionViewLayout = [(AVTAvatarAttributeEditorSectionColorController *)self collectionViewLayout];
+    containerView2 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
+    [containerView2 bounds];
     v8 = v7;
     v10 = v9;
-    v11 = [(AVTAvatarAttributeEditorSectionColorController *)self environment];
-    v12 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
-    v13 = [v12 isShowingExtended];
-    v14 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
-    v15 = [v14 isShowingSlider];
-    v16 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
-    [v4 updateCollectionViewLayout:v5 containerSize:v11 environment:v13 forExtended:v15 withSlider:objc_msgSend(v16 numberOfItems:{"numberOfItemsInSection:", 0), v8, v10}];
+    environment = [(AVTAvatarAttributeEditorSectionColorController *)self environment];
+    dataSource = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
+    isShowingExtended = [dataSource isShowingExtended];
+    dataSource2 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
+    isShowingSlider = [dataSource2 isShowingSlider];
+    dataSource3 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
+    [v4 updateCollectionViewLayout:collectionViewLayout containerSize:environment environment:isShowingExtended forExtended:isShowingSlider withSlider:objc_msgSend(dataSource3 numberOfItems:{"numberOfItemsInSection:", 0), v8, v10}];
 
-    v17 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-    [v17 reloadData];
+    collectionView = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+    [collectionView reloadData];
 
-    v18 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-    [v18 layoutIfNeeded];
+    collectionView2 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+    [collectionView2 layoutIfNeeded];
   }
 }
 
-- (void)updateWithSection:(id)a3
+- (void)updateWithSection:(id)section
 {
-  v14 = a3;
-  v5 = [v14 identifier];
-  v6 = [(AVTAvatarAttributeEditorSection *)self->_section identifier];
-  v7 = [v5 isEqualToString:v6];
+  sectionCopy = section;
+  identifier = [sectionCopy identifier];
+  identifier2 = [(AVTAvatarAttributeEditorSection *)self->_section identifier];
+  v7 = [identifier isEqualToString:identifier2];
 
   if ((v7 & 1) == 0)
   {
     self->_needsScrollToSelected = 1;
   }
 
-  objc_storeStrong(&self->_section, a3);
+  objc_storeStrong(&self->_section, section);
   [(AVTAvatarAttributeEditorSectionColorController *)self setDontAnimateSelection:1];
-  v8 = [(AVTAvatarAttributeEditorSectionColorController *)self selectedIndex];
-  v9 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
-  [v9 setColorSection:v14];
+  selectedIndex = [(AVTAvatarAttributeEditorSectionColorController *)self selectedIndex];
+  dataSource = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
+  [dataSource setColorSection:sectionCopy];
 
-  if (v8 == [(AVTAvatarAttributeEditorSectionColorController *)self selectedIndex])
+  if (selectedIndex == [(AVTAvatarAttributeEditorSectionColorController *)self selectedIndex])
   {
-    v10 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
-    v11 = [v10 sectionItemAtIndex:{-[AVTAvatarAttributeEditorSectionColorController selectedIndex](self, "selectedIndex")}];
+    dataSource2 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
+    v11 = [dataSource2 sectionItemAtIndex:{-[AVTAvatarAttributeEditorSectionColorController selectedIndex](self, "selectedIndex")}];
 
     [(AVTAvatarAttributeEditorSectionColorController *)self updateSliderForSectionItemIfNeeded:v11];
   }
 
   [(AVTAvatarAttributeEditorSectionColorController *)self setDontAnimateSelection:0];
-  v12 = [v14 localizedName];
-  v13 = [(AVTAvatarAttributeEditorSectionColorController *)self headerView];
-  [v13 setDisplayString:v12];
+  localizedName = [sectionCopy localizedName];
+  headerView = [(AVTAvatarAttributeEditorSectionColorController *)self headerView];
+  [headerView setDisplayString:localizedName];
 }
 
-- (void)updateSliderForSectionItemIfNeeded:(id)a3
+- (void)updateSliderForSectionItemIfNeeded:(id)needed
 {
-  v15 = a3;
-  v4 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
-  v5 = [v4 isShowingSlider];
+  neededCopy = needed;
+  dataSource = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
+  isShowingSlider = [dataSource isShowingSlider];
 
-  v6 = [v15 color];
-  v7 = [v6 canShowSlider];
+  color = [neededCopy color];
+  canShowSlider = [color canShowSlider];
 
-  if (v7)
+  if (canShowSlider)
   {
-    v8 = [(AVTAvatarAttributeEditorSectionColorController *)self sliderContainerView];
-    [v8 setSectionItem:v15 animated:v5];
+    sliderContainerView = [(AVTAvatarAttributeEditorSectionColorController *)self sliderContainerView];
+    [sliderContainerView setSectionItem:neededCopy animated:isShowingSlider];
 
-    v9 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
-    v10 = [v9 colorSection];
-    v11 = [v10 colorVariationStore];
-    v12 = [v15 color];
-    v13 = [v11 colorPresetFromColor:v12];
+    dataSource2 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
+    colorSection = [dataSource2 colorSection];
+    colorVariationStore = [colorSection colorVariationStore];
+    color2 = [neededCopy color];
+    v13 = [colorVariationStore colorPresetFromColor:color2];
 
-    v14 = [(AVTAvatarAttributeEditorSectionColorController *)self sliderContainerView];
-    [v14 updateSliderWithColorPreset:v13 animated:v5];
+    sliderContainerView2 = [(AVTAvatarAttributeEditorSectionColorController *)self sliderContainerView];
+    [sliderContainerView2 updateSliderWithColorPreset:v13 animated:isShowingSlider];
   }
 }
 
-- (void)willDisplayViewForIndex:(int64_t)a3
+- (void)willDisplayViewForIndex:(int64_t)index
 {
-  [(AVTAvatarAttributeEditorSectionColorController *)self layoutSubviewsForIndex:a3];
+  [(AVTAvatarAttributeEditorSectionColorController *)self layoutSubviewsForIndex:index];
   [(AVTAvatarAttributeEditorSectionColorController *)self reloadData];
   if ([(AVTAvatarAttributeEditorSectionColorController *)self needsScrollToSelected])
   {
@@ -685,20 +685,20 @@ void __69__AVTAvatarAttributeEditorSectionColorController_hideSliderAnimated___b
   }
 }
 
-- (void)layoutSubviewsForIndex:(int64_t)a3
+- (void)layoutSubviewsForIndex:(int64_t)index
 {
-  v4 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
-  [v4 bounds];
+  containerView = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
+  [containerView bounds];
   Width = CGRectGetWidth(v37);
 
   [(AVTAvatarAttributeEditorSectionColorController *)self heightForSectionHeaderFittingWidth:Width];
   v7 = v6;
-  v8 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
-  [v8 bounds];
+  containerView2 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
+  [containerView2 bounds];
   v9 = CGRectGetWidth(v38);
 
-  v10 = [(AVTAvatarAttributeEditorSectionColorController *)self headerView];
-  [v10 setFrame:{0.0, 0.0, v9, v7}];
+  headerView = [(AVTAvatarAttributeEditorSectionColorController *)self headerView];
+  [headerView setFrame:{0.0, 0.0, v9, v7}];
 
   [(AVTAvatarAttributeEditorSectionColorController *)self heightForCollectionViewFittingWidth:Width];
   v12 = v11;
@@ -707,14 +707,14 @@ void __69__AVTAvatarAttributeEditorSectionColorController_hideSliderAnimated___b
   v39.size.width = v9;
   v39.size.height = v7;
   MaxY = CGRectGetMaxY(v39);
-  v14 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-  [v14 setFrame:{0.0, MaxY, Width, v12}];
+  collectionView = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  [collectionView setFrame:{0.0, MaxY, Width, v12}];
 
-  v15 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-  [v15 setContentInset:{0.0, 12.0, 0.0, 12.0}];
+  collectionView2 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  [collectionView2 setContentInset:{0.0, 12.0, 0.0, 12.0}];
 
-  v16 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-  [v16 contentOffset];
+  collectionView3 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  [collectionView3 contentOffset];
   v18 = v17;
 
   if (v18 == 0.0)
@@ -722,51 +722,51 @@ void __69__AVTAvatarAttributeEditorSectionColorController_hideSliderAnimated___b
     [(AVTAvatarAttributeEditorSectionColorController *)self scrollCollectionViewToOrigin];
   }
 
-  v19 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-  [v19 layoutIfNeeded];
+  collectionView4 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  [collectionView4 layoutIfNeeded];
 
-  v20 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
-  v21 = [v20 isShowingSlider];
+  dataSource = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
+  isShowingSlider = [dataSource isShowingSlider];
 
-  if (v21)
+  if (isShowingSlider)
   {
     v22 = objc_opt_class();
-    v23 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
-    [v23 bounds];
+    containerView3 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
+    [containerView3 bounds];
     v25 = v24;
-    v26 = [(AVTAvatarAttributeEditorSectionColorController *)self environment];
-    [v22 edgeLengthFittingWidth:v26 environment:v25];
+    environment = [(AVTAvatarAttributeEditorSectionColorController *)self environment];
+    [v22 edgeLengthFittingWidth:environment environment:v25];
     v28 = v27;
 
-    v29 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
-    [v29 bounds];
+    containerView4 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
+    [containerView4 bounds];
     v31 = v30 - v28 + -12.0;
-    v32 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
-    [v32 bounds];
+    containerView5 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
+    [containerView5 bounds];
     v34 = v33;
 
-    v35 = [(AVTAvatarAttributeEditorSectionColorController *)self sliderContainerView];
-    [v35 setFrame:{0.0, v31, v34, v28}];
+    sliderContainerView = [(AVTAvatarAttributeEditorSectionColorController *)self sliderContainerView];
+    [sliderContainerView setFrame:{0.0, v31, v34, v28}];
   }
 }
 
-- (double)heightForSectionHeaderFittingWidth:(double)a3
+- (double)heightForSectionHeaderFittingWidth:(double)width
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v5 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
-  v6 = [v5 colorSection];
+  dataSource = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
+  colorSection = [dataSource colorSection];
 
   v7 = 0.0;
-  if (-[AVTAvatarAttributeEditorSectionColorController showsHeader](self, "showsHeader") && [v6 shouldDisplayTitle])
+  if (-[AVTAvatarAttributeEditorSectionColorController showsHeader](self, "showsHeader") && [colorSection shouldDisplayTitle])
   {
     v8 = +[AVTUIFontRepository attributeTitleFont];
-    v9 = [v6 localizedName];
+    localizedName = [colorSection localizedName];
     [v8 lineHeight];
     v11 = v10 + v10;
     v20 = *MEMORY[0x1E69DB648];
     v21[0] = v8;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-    [v9 boundingRectWithSize:1 options:v12 attributes:0 context:{a3 + -40.0, v11}];
+    [localizedName boundingRectWithSize:1 options:v12 attributes:0 context:{width + -40.0, v11}];
     v14 = v13;
 
     v15 = +[AVTUIFontRepository attributeTitleFont];
@@ -785,55 +785,55 @@ void __69__AVTAvatarAttributeEditorSectionColorController_hideSliderAnimated___b
   return v7;
 }
 
-- (double)heightForCollectionViewFittingWidth:(double)a3
+- (double)heightForCollectionViewFittingWidth:(double)width
 {
   v5 = objc_opt_class();
-  v6 = [(AVTAvatarAttributeEditorSectionColorController *)self environment];
-  [v5 edgeLengthFittingWidth:v6 environment:a3];
+  environment = [(AVTAvatarAttributeEditorSectionColorController *)self environment];
+  [v5 edgeLengthFittingWidth:environment environment:width];
   v8 = v7;
 
-  v9 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
-  LODWORD(v6) = [v9 isShowingExtended];
+  dataSource = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
+  LODWORD(environment) = [dataSource isShowingExtended];
 
-  if (v6)
+  if (environment)
   {
-    v10 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
-    v11 = [v10 colorSection];
-    v12 = [v11 extendedItems];
-    v13 = [v12 count];
+    dataSource2 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
+    colorSection = [dataSource2 colorSection];
+    extendedItems = [colorSection extendedItems];
+    v13 = [extendedItems count];
 
-    v8 = (v8 + 0.0) * ceil(v13 / floor((a3 + -24.0) / (v8 + 0.0)));
+    v8 = (v8 + 0.0) * ceil(v13 / floor((width + -24.0) / (v8 + 0.0)));
   }
 
   return v8 + 24.0;
 }
 
-- (CGSize)sizeForItemAtIndex:(int64_t)a3 fittingSize:(CGSize)a4
+- (CGSize)sizeForItemAtIndex:(int64_t)index fittingSize:(CGSize)size
 {
-  width = a4.width;
-  [(AVTAvatarAttributeEditorSectionColorController *)self heightForCollectionViewFittingWidth:a3, a4.width, a4.height];
+  width = size.width;
+  [(AVTAvatarAttributeEditorSectionColorController *)self heightForCollectionViewFittingWidth:index, size.width, size.height];
   v7 = v6;
   if ([(AVTAvatarAttributeEditorSectionColorController *)self showsHeader])
   {
-    v8 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
-    v9 = [v8 colorSection];
-    v10 = [v9 shouldDisplayTitle];
+    dataSource = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
+    colorSection = [dataSource colorSection];
+    shouldDisplayTitle = [colorSection shouldDisplayTitle];
 
-    if (v10)
+    if (shouldDisplayTitle)
     {
       [(AVTAvatarAttributeEditorSectionColorController *)self heightForSectionHeaderFittingWidth:width];
       v7 = v7 + v11;
     }
   }
 
-  v12 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
-  v13 = [v12 isShowingSlider];
+  dataSource2 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
+  isShowingSlider = [dataSource2 isShowingSlider];
 
-  if (v13)
+  if (isShowingSlider)
   {
     v14 = objc_opt_class();
-    v15 = [(AVTAvatarAttributeEditorSectionColorController *)self environment];
-    [v14 edgeLengthFittingWidth:v15 environment:width];
+    environment = [(AVTAvatarAttributeEditorSectionColorController *)self environment];
+    [v14 edgeLengthFittingWidth:environment environment:width];
     v17 = v16;
 
     v7 = v7 + v17 + 6.0;
@@ -846,11 +846,11 @@ void __69__AVTAvatarAttributeEditorSectionColorController_hideSliderAnimated___b
   return result;
 }
 
-- (void)cell:(id)a3 willDisplayAtIndex:(int64_t)a4
+- (void)cell:(id)cell willDisplayAtIndex:(int64_t)index
 {
-  [a3 layoutIfNeeded];
+  [cell layoutIfNeeded];
 
-  [(AVTAvatarAttributeEditorSectionColorController *)self willDisplayViewForIndex:a4];
+  [(AVTAvatarAttributeEditorSectionColorController *)self willDisplayViewForIndex:index];
 }
 
 - (void)resetToDefaultState
@@ -873,45 +873,45 @@ uint64_t __69__AVTAvatarAttributeEditorSectionColorController_resetToDefaultStat
   return [v3 scrollCollectionViewToSelectedColor];
 }
 
-- (void)invalidateLayoutForNewContainerSize:(CGSize)a3
+- (void)invalidateLayoutForNewContainerSize:(CGSize)size
 {
-  [(AVTAvatarAttributeEditorSectionColorController *)self updateCollectionViewLayoutWithContainerSize:a3.width, a3.height];
-  v5 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-  v4 = [v5 collectionViewLayout];
-  [v4 invalidateLayout];
+  [(AVTAvatarAttributeEditorSectionColorController *)self updateCollectionViewLayoutWithContainerSize:size.width, size.height];
+  collectionView = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
-- (void)updateCell:(id)a3 forItemAtIndex:(int64_t)a4
+- (void)updateCell:(id)cell forItemAtIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [(AVTAvatarAttributeEditorSectionColorController *)self viewForIndex:a4];
-  [v6 setAttributeView:v7];
+  cellCopy = cell;
+  v7 = [(AVTAvatarAttributeEditorSectionColorController *)self viewForIndex:index];
+  [cellCopy setAttributeView:v7];
 }
 
-- (BOOL)evaluateDisplayCondition:(id)a3
+- (BOOL)evaluateDisplayCondition:(id)condition
 {
-  if ([a3 value])
+  if ([condition value])
   {
     return 0;
   }
 
-  v5 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
-  v6 = [v5 isShowingSlider];
+  dataSource = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
+  isShowingSlider = [dataSource isShowingSlider];
 
-  return v6;
+  return isShowingSlider;
 }
 
-- (CGSize)sizeForFocusingItemAtIndex:(int64_t)a3 fittingSize:(CGSize)a4
+- (CGSize)sizeForFocusingItemAtIndex:(int64_t)index fittingSize:(CGSize)size
 {
-  width = a4.width;
+  width = size.width;
   v6 = objc_opt_class();
-  v7 = [(AVTAvatarAttributeEditorSectionColorController *)self environment];
-  [v6 cellSizeFittingWidth:v7 environment:width];
+  environment = [(AVTAvatarAttributeEditorSectionColorController *)self environment];
+  [v6 cellSizeFittingWidth:environment environment:width];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
-  LODWORD(v6) = [v12 isShowingSlider];
+  dataSource = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
+  LODWORD(v6) = [dataSource isShowingSlider];
 
   if (v6)
   {
@@ -929,21 +929,21 @@ uint64_t __69__AVTAvatarAttributeEditorSectionColorController_resetToDefaultStat
   return result;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v5 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
-  v6 = [v5 numberOfItemsInSection:a4];
+  dataSource = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
+  v6 = [dataSource numberOfItemsInSection:section];
 
   return v6;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
-  v9 = [v8 indexPathOfExtendedIcon];
-  v10 = [v6 isEqual:v9];
+  pathCopy = path;
+  viewCopy = view;
+  dataSource = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
+  indexPathOfExtendedIcon = [dataSource indexPathOfExtendedIcon];
+  v10 = [pathCopy isEqual:indexPathOfExtendedIcon];
 
   if ((v10 & 1) == 0)
   {
@@ -952,17 +952,17 @@ uint64_t __69__AVTAvatarAttributeEditorSectionColorController_resetToDefaultStat
 
   v11 = objc_opt_class();
   v32 = NSStringFromClass(v11);
-  v12 = [v7 dequeueReusableCellWithReuseIdentifier:? forIndexPath:?];
+  v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:? forIndexPath:?];
 
-  v13 = [v12 valueView];
-  v14 = v13;
+  valueView = [v12 valueView];
+  v14 = valueView;
   if (v10)
   {
-    if (!v13)
+    if (!valueView)
     {
       v15 = [AVTColorWheelView alloc];
-      v16 = [v12 contentView];
-      [v16 bounds];
+      contentView = [v12 contentView];
+      [contentView bounds];
       v14 = [(AVTColorWheelView *)v15 initWithFrame:?];
     }
 
@@ -973,41 +973,41 @@ uint64_t __69__AVTAvatarAttributeEditorSectionColorController_resetToDefaultStat
     }
 
     v14 = v14;
-    v17 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
-    v18 = [v17 colorSection];
-    v19 = [v18 primaryItems];
-    v20 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
-    v21 = [v20 colorSection];
-    v22 = [v21 extendedItems];
-    [(AVTColorWheelView *)v14 updateWithPrimaryItems:v19 extendedItems:v22];
+    dataSource2 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
+    colorSection = [dataSource2 colorSection];
+    primaryItems = [colorSection primaryItems];
+    dataSource3 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
+    colorSection2 = [dataSource3 colorSection];
+    extendedItems = [colorSection2 extendedItems];
+    [(AVTColorWheelView *)v14 updateWithPrimaryItems:primaryItems extendedItems:extendedItems];
 
     goto LABEL_13;
   }
 
-  if (!v13)
+  if (!valueView)
   {
     v23 = [AVTAttributeValueView alloc];
-    v24 = [v12 contentView];
-    [v24 bounds];
+    contentView2 = [v12 contentView];
+    [contentView2 bounds];
     v14 = [(AVTAttributeValueView *)v23 initWithFrame:?];
   }
 
-  v25 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
-  v17 = [v25 sectionItemAtIndex:{objc_msgSend(v6, "item")}];
+  dataSource4 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
+  dataSource2 = [dataSource4 sectionItemAtIndex:{objc_msgSend(pathCopy, "item")}];
 
-  v26 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
-  v27 = [v26 colorSection];
-  v28 = [v27 colorVariationStore];
-  v29 = [v17 color];
-  v18 = [v28 colorPresetFromColor:v29];
+  dataSource5 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
+  colorSection3 = [dataSource5 colorSection];
+  colorVariationStore = [colorSection3 colorVariationStore];
+  color = [dataSource2 color];
+  colorSection = [colorVariationStore colorPresetFromColor:color];
 
-  v30 = [(AVTAttributeValueView *)v14 imageLayer];
-  [(AVTAvatarAttributeEditorSectionColorController *)self updateCellLayer:v30 withColorItem:v17 withColorPreset:v18];
+  imageLayer = [(AVTAttributeValueView *)v14 imageLayer];
+  [(AVTAvatarAttributeEditorSectionColorController *)self updateCellLayer:imageLayer withColorItem:dataSource2 withColorPreset:colorSection];
 
   if (AVTUIEditorShowAssetsName_once())
   {
-    v19 = [v17 localizedName];
-    [v12 setLabelString:v19];
+    primaryItems = [dataSource2 localizedName];
+    [v12 setLabelString:primaryItems];
 LABEL_13:
   }
 
@@ -1017,74 +1017,74 @@ LABEL_13:
   return v12;
 }
 
-- (void)updateCellLayer:(id)a3 withColorItem:(id)a4 withColorPreset:(id)a5
+- (void)updateCellLayer:(id)layer withColorItem:(id)item withColorPreset:(id)preset
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v11 = [v8 layerContentProvider];
-  v10 = [v8 skinColor];
+  presetCopy = preset;
+  itemCopy = item;
+  layerCopy = layer;
+  layerContentProvider = [itemCopy layerContentProvider];
+  skinColor = [itemCopy skinColor];
 
-  v11[2](v11, v7, v10, v9);
+  layerContentProvider[2](layerContentProvider, presetCopy, skinColor, layerCopy);
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = [a5 item];
-  v9 = v8 == [(AVTAvatarAttributeEditorSectionColorController *)self selectedIndex];
-  v11 = v7;
+  cellCopy = cell;
+  item = [path item];
+  v9 = item == [(AVTAvatarAttributeEditorSectionColorController *)self selectedIndex];
+  v11 = cellCopy;
   [v11 layoutIfNeeded];
-  v10 = [v11 valueView];
+  valueView = [v11 valueView];
 
-  [v10 updateSelectedState:v9 animated:0];
+  [valueView updateSelectedState:v9 animated:0];
 }
 
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-  v8 = [v6 cellForItemAtIndexPath:v5];
+  pathCopy = path;
+  collectionView = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  v8 = [collectionView cellForItemAtIndexPath:pathCopy];
 
-  v7 = [v8 valueView];
-  [v7 updateHighlightedState:1 animated:1 completionBlock:0];
+  valueView = [v8 valueView];
+  [valueView updateHighlightedState:1 animated:1 completionBlock:0];
 }
 
-- (void)collectionView:(id)a3 didUnhighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didUnhighlightItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-  v8 = [v6 cellForItemAtIndexPath:v5];
+  pathCopy = path;
+  collectionView = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  v8 = [collectionView cellForItemAtIndexPath:pathCopy];
 
-  v7 = [v8 valueView];
-  [v7 updateHighlightedState:0 animated:1 completionBlock:0];
+  valueView = [v8 valueView];
+  [valueView updateHighlightedState:0 animated:1 completionBlock:0];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
-  [v6 selectSectionItemAtIndexPath:v5];
+  pathCopy = path;
+  dataSource = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
+  [dataSource selectSectionItemAtIndexPath:pathCopy];
 }
 
-- (void)colorDataSource:(id)a3 didDeselectItemAtIndex:(int64_t)a4 shouldReloadModel:(BOOL)a5
+- (void)colorDataSource:(id)source didDeselectItemAtIndex:(int64_t)index shouldReloadModel:(BOOL)model
 {
-  v6 = [MEMORY[0x1E696AC88] indexPathForItem:a4 inSection:{0, a5}];
+  v6 = [MEMORY[0x1E696AC88] indexPathForItem:index inSection:{0, model}];
   [(AVTAvatarAttributeEditorSectionColorController *)self setSelectedState:0 animated:[(AVTAvatarAttributeEditorSectionColorController *)self dontAnimateSelection]^ 1 forCellAtIndexPath:v6];
 }
 
-- (void)colorDataSource:(id)a3 didSelectItemAtIndex:(int64_t)a4 shouldReloadModel:(BOOL)a5
+- (void)colorDataSource:(id)source didSelectItemAtIndex:(int64_t)index shouldReloadModel:(BOOL)model
 {
-  v5 = a5;
-  v8 = [MEMORY[0x1E696AC88] indexPathForItem:a4 inSection:0];
+  modelCopy = model;
+  v8 = [MEMORY[0x1E696AC88] indexPathForItem:index inSection:0];
   [(AVTAvatarAttributeEditorSectionColorController *)self setSelectedState:1 animated:[(AVTAvatarAttributeEditorSectionColorController *)self dontAnimateSelection]^ 1 forCellAtIndexPath:v8];
-  v9 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
-  v10 = [v9 sectionItemAtIndex:a4];
+  dataSource = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
+  v10 = [dataSource sectionItemAtIndex:index];
 
   if (v10)
   {
     [(AVTAvatarAttributeEditorSectionColorController *)self updateSliderForSectionItemIfNeeded:v10];
-    if (v5)
+    if (modelCopy)
     {
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
@@ -1103,21 +1103,21 @@ void __105__AVTAvatarAttributeEditorSectionColorController_colorDataSource_didSe
   [v2 attributeEditorSectionController:*(a1 + 32) didSelectSectionItem:*(a1 + 40)];
 }
 
-- (void)colorDataSource:(id)a3 didChangeDisplayMode:(int64_t)a4 previousDisplayMode:(int64_t)a5
+- (void)colorDataSource:(id)source didChangeDisplayMode:(int64_t)mode previousDisplayMode:(int64_t)displayMode
 {
-  v17 = a3;
-  v8 = a4 & 0xFFFFFFFFFFFFFFFDLL;
-  v9 = (a4 & 0xFFFFFFFFFFFFFFFDLL) == 1;
-  v10 = ((a4 & 0xFFFFFFFFFFFFFFFELL) == 2) ^ ((a5 & 0xFFFFFFFFFFFFFFFELL) == 2);
-  if (v9 == ((a5 & 0xFFFFFFFFFFFFFFFDLL) == 1))
+  sourceCopy = source;
+  v8 = mode & 0xFFFFFFFFFFFFFFFDLL;
+  v9 = (mode & 0xFFFFFFFFFFFFFFFDLL) == 1;
+  v10 = ((mode & 0xFFFFFFFFFFFFFFFELL) == 2) ^ ((displayMode & 0xFFFFFFFFFFFFFFFELL) == 2);
+  if (v9 == ((displayMode & 0xFFFFFFFFFFFFFFFDLL) == 1))
   {
     if ((v10 & 1) == 0)
     {
       goto LABEL_9;
     }
 
-    v11 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
-    [v11 bounds];
+    containerView = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
+    [containerView bounds];
     [(AVTAvatarAttributeEditorSectionColorController *)self updateCollectionViewLayoutWithContainerSize:v12, v13];
   }
 
@@ -1133,8 +1133,8 @@ void __105__AVTAvatarAttributeEditorSectionColorController_colorDataSource_didSe
       [(AVTAvatarAttributeEditorSectionColorController *)self hideSliderAnimated:1];
     }
 
-    v14 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
-    [v14 bounds];
+    containerView2 = [(AVTAvatarAttributeEditorSectionColorController *)self containerView];
+    [containerView2 bounds];
     [(AVTAvatarAttributeEditorSectionColorController *)self updateCollectionViewLayoutWithContainerSize:v15, v16];
 
     if ((v10 & 1) == 0)
@@ -1147,86 +1147,86 @@ void __105__AVTAvatarAttributeEditorSectionColorController_colorDataSource_didSe
 LABEL_9:
 }
 
-- (void)setSelectedState:(BOOL)a3 animated:(BOOL)a4 forCellAtIndexPath:(id)a5
+- (void)setSelectedState:(BOOL)state animated:(BOOL)animated forCellAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  v9 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-  v11 = [v9 cellForItemAtIndexPath:v8];
+  animatedCopy = animated;
+  stateCopy = state;
+  pathCopy = path;
+  collectionView = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  v11 = [collectionView cellForItemAtIndexPath:pathCopy];
 
-  v10 = [v11 valueView];
-  [v10 updateSelectedState:v6 animated:v5];
+  valueView = [v11 valueView];
+  [valueView updateSelectedState:stateCopy animated:animatedCopy];
 }
 
-- (void)colorSliderVariationChanged:(double)a3 forItem:(id)a4
+- (void)colorSliderVariationChanged:(double)changed forItem:(id)item
 {
-  v6 = a4;
-  [(AVTAvatarAttributeEditorSectionColorController *)self updateSectionItem:v6 withVariation:a3];
-  v7 = [(AVTAvatarAttributeEditorSectionColorController *)self delegate];
-  [v7 attributeEditorSectionController:self didUpdateSectionItem:v6];
+  itemCopy = item;
+  [(AVTAvatarAttributeEditorSectionColorController *)self updateSectionItem:itemCopy withVariation:changed];
+  delegate = [(AVTAvatarAttributeEditorSectionColorController *)self delegate];
+  [delegate attributeEditorSectionController:self didUpdateSectionItem:itemCopy];
 }
 
-- (void)colorSliderDidFinishChangingVariation:(double)a3 forItem:(id)a4
+- (void)colorSliderDidFinishChangingVariation:(double)variation forItem:(id)item
 {
-  v6 = a4;
-  [(AVTAvatarAttributeEditorSectionColorController *)self updateSectionItem:v6 withVariation:a3];
-  v7 = [(AVTAvatarAttributeEditorSectionColorController *)self delegate];
-  [v7 attributeEditorSectionController:self didSelectSectionItem:v6];
+  itemCopy = item;
+  [(AVTAvatarAttributeEditorSectionColorController *)self updateSectionItem:itemCopy withVariation:variation];
+  delegate = [(AVTAvatarAttributeEditorSectionColorController *)self delegate];
+  [delegate attributeEditorSectionController:self didSelectSectionItem:itemCopy];
 }
 
-- (void)updateSectionItem:(id)a3 withVariation:(double)a4
+- (void)updateSectionItem:(id)item withVariation:(double)variation
 {
   v6 = MEMORY[0x1E696AC88];
-  v7 = a3;
+  itemCopy = item;
   v21 = [v6 indexPathForItem:-[AVTAvatarAttributeEditorSectionColorController selectedIndex](self inSection:{"selectedIndex"), 0}];
-  v8 = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
-  v9 = [v8 cellForItemAtIndexPath:v21];
+  collectionView = [(AVTAvatarAttributeEditorSectionColorController *)self collectionView];
+  v9 = [collectionView cellForItemAtIndexPath:v21];
 
-  v10 = [v7 color];
-  v11 = [v10 baseColorPreset];
-  *&v12 = a4;
-  v13 = [v11 colorPresetWithVariation:v12];
+  color = [itemCopy color];
+  baseColorPreset = [color baseColorPreset];
+  *&v12 = variation;
+  v13 = [baseColorPreset colorPresetWithVariation:v12];
 
-  v14 = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
-  v15 = [v14 colorSection];
-  v16 = [v15 colorVariationStore];
-  v17 = [v7 color];
-  [v16 saveColorPreset:v13 forColor:v17];
+  dataSource = [(AVTAvatarAttributeEditorSectionColorController *)self dataSource];
+  colorSection = [dataSource colorSection];
+  colorVariationStore = [colorSection colorVariationStore];
+  color2 = [itemCopy color];
+  [colorVariationStore saveColorPreset:v13 forColor:color2];
 
-  v18 = [v9 valueView];
-  v19 = [v18 imageLayer];
-  [(AVTAvatarAttributeEditorSectionColorController *)self updateCellLayer:v19 withColorItem:v7 withColorPreset:v13];
+  valueView = [v9 valueView];
+  imageLayer = [valueView imageLayer];
+  [(AVTAvatarAttributeEditorSectionColorController *)self updateCellLayer:imageLayer withColorItem:itemCopy withColorPreset:v13];
 
-  v20 = [(AVTAvatarAttributeEditorSectionColorController *)self sliderContainerView];
-  [v20 updateSliderWithColorPreset:v13 animated:0];
+  sliderContainerView = [(AVTAvatarAttributeEditorSectionColorController *)self sliderContainerView];
+  [sliderContainerView updateSliderWithColorPreset:v13 animated:0];
 }
 
-- (void)attributeEditorSectionController:(id)a3 didSelectSectionItem:(id)a4
+- (void)attributeEditorSectionController:(id)controller didSelectSectionItem:(id)item
 {
-  v5 = a4;
-  v6 = [(AVTAvatarAttributeEditorSectionColorController *)self delegate];
-  [v6 attributeEditorSectionController:self didSelectSectionItem:v5];
+  itemCopy = item;
+  delegate = [(AVTAvatarAttributeEditorSectionColorController *)self delegate];
+  [delegate attributeEditorSectionController:self didSelectSectionItem:itemCopy];
 }
 
-- (void)attributeEditorSectionController:(id)a3 didUpdateSectionItem:(id)a4
+- (void)attributeEditorSectionController:(id)controller didUpdateSectionItem:(id)item
 {
-  v5 = a4;
-  v6 = [(AVTAvatarAttributeEditorSectionColorController *)self delegate];
-  [v6 attributeEditorSectionController:self didUpdateSectionItem:v5];
+  itemCopy = item;
+  delegate = [(AVTAvatarAttributeEditorSectionColorController *)self delegate];
+  [delegate attributeEditorSectionController:self didUpdateSectionItem:itemCopy];
 }
 
-- (void)attributeEditorSectionController:(id)a3 didDeleteSectionItems:(id)a4
+- (void)attributeEditorSectionController:(id)controller didDeleteSectionItems:(id)items
 {
-  v5 = a4;
-  v6 = [(AVTAvatarAttributeEditorSectionColorController *)self delegate];
-  [v6 attributeEditorSectionController:self didDeleteSectionItems:v5];
+  itemsCopy = items;
+  delegate = [(AVTAvatarAttributeEditorSectionColorController *)self delegate];
+  [delegate attributeEditorSectionController:self didDeleteSectionItems:itemsCopy];
 }
 
-- (void)attributeEditorSectionControllerNeedsLayoutUpdate:(id)a3
+- (void)attributeEditorSectionControllerNeedsLayoutUpdate:(id)update
 {
-  v4 = [(AVTAvatarAttributeEditorSectionColorController *)self delegate];
-  [v4 attributeEditorSectionControllerNeedsLayoutUpdate:self];
+  delegate = [(AVTAvatarAttributeEditorSectionColorController *)self delegate];
+  [delegate attributeEditorSectionControllerNeedsLayoutUpdate:self];
 
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;

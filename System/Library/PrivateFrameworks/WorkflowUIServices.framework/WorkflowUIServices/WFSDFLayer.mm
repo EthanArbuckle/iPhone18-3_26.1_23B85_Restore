@@ -1,16 +1,16 @@
 @interface WFSDFLayer
 - (CGRect)frame;
-- (_TtC18WorkflowUIServices10WFSDFLayer)initWithLayer:(id)a3;
+- (_TtC18WorkflowUIServices10WFSDFLayer)initWithLayer:(id)layer;
 - (double)cornerRadius;
-- (void)setCornerRadius:(double)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setCornerRadius:(double)radius;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation WFSDFLayer
 
 - (CGRect)frame
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C8346A84();
   v4 = v3;
   v6 = v5;
@@ -28,28 +28,28 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  v3 = self;
+  selfCopy = self;
   sub_1C8346B30();
 }
 
 - (double)cornerRadius
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C8346C10();
   v4 = v3;
 
   return v4;
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  v4 = self;
-  sub_1C8346C9C(a3);
+  selfCopy = self;
+  sub_1C8346C9C(radius);
 }
 
-- (_TtC18WorkflowUIServices10WFSDFLayer)initWithLayer:(id)a3
+- (_TtC18WorkflowUIServices10WFSDFLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_1C840D35C();

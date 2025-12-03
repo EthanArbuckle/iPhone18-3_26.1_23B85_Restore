@@ -1,17 +1,17 @@
 @interface MapsThemeCollectionViewCell
-- (MapsThemeCollectionViewCell)initWithFrame:(CGRect)a3;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (MapsThemeCollectionViewCell)initWithFrame:(CGRect)frame;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)didMoveToWindow;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MapsThemeCollectionViewCell
 
-- (MapsThemeCollectionViewCell)initWithFrame:(CGRect)a3
+- (MapsThemeCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = MapsThemeCollectionViewCell;
-  v3 = [(MapsThemeCollectionViewCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MapsThemeCollectionViewCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];
@@ -24,26 +24,26 @@
   return v3;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = MapsThemeCollectionViewCell;
-  [(MapsThemeCollectionViewCell *)&v9 traitCollectionDidChange:v5];
-  if (v5 && (v6 = [v5 userInterfaceStyle], -[MapsThemeCollectionViewCell traitCollection](self, "traitCollection"), v3 = objc_claimAutoreleasedReturnValue(), v6 == objc_msgSend(v3, "userInterfaceStyle")))
+  [(MapsThemeCollectionViewCell *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy && (v6 = [changeCopy userInterfaceStyle], -[MapsThemeCollectionViewCell traitCollection](self, "traitCollection"), v3 = objc_claimAutoreleasedReturnValue(), v6 == objc_msgSend(v3, "userInterfaceStyle")))
   {
   }
 
   else
   {
-    v7 = [(MapsThemeCollectionViewCell *)self traitCollection];
-    v8 = [v7 userInterfaceStyle];
+    traitCollection = [(MapsThemeCollectionViewCell *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v5)
+    if (changeCopy)
     {
     }
 
-    if (v8)
+    if (userInterfaceStyle)
     {
       [(MapsThemeCollectionViewCell *)self updateTheme];
     }
@@ -55,31 +55,31 @@
   v4.receiver = self;
   v4.super_class = MapsThemeCollectionViewCell;
   [(MapsThemeCollectionViewCell *)&v4 didMoveToWindow];
-  v3 = [(MapsThemeCollectionViewCell *)self window];
+  window = [(MapsThemeCollectionViewCell *)self window];
 
-  if (v3)
+  if (window)
   {
     [(MapsThemeCollectionViewCell *)self updateTheme];
   }
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   if ([objc_opt_class() _maps_overridePreferredLayoutAttributesWithCompressedSize])
   {
-    v5 = [v4 copy];
+    v5 = [attributesCopy copy];
     [v5 frame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(MapsThemeCollectionViewCell *)self contentView];
+    contentView = [(MapsThemeCollectionViewCell *)self contentView];
     v19.origin.x = v7;
     v19.origin.y = v9;
     v19.size.width = v11;
     v19.size.height = v13;
-    [v14 _maps_compressedSizeForWidth:0 withBlock:CGRectGetWidth(v19)];
+    [contentView _maps_compressedSizeForWidth:0 withBlock:CGRectGetWidth(v19)];
     v16 = v15;
 
     [v5 setFrame:{v7, v9, v11, v16}];
@@ -87,7 +87,7 @@
 
   else
   {
-    v5 = v4;
+    v5 = attributesCopy;
   }
 
   return v5;

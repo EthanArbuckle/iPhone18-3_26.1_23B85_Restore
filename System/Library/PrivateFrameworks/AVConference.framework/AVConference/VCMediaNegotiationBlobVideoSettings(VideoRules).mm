@@ -88,7 +88,7 @@
     }
   }
 
-  *a1 = 0;
+  *self = 0;
 }
 
 - (void)newScreenConfigurationWithCameraConfiguration:()VideoRules .cold.1()

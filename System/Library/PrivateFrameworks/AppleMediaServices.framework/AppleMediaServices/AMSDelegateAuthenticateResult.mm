@@ -1,22 +1,22 @@
 @interface AMSDelegateAuthenticateResult
-- (AMSDelegateAuthenticateResult)initWithCoder:(id)a3;
-- (AMSDelegateAuthenticateResult)initWithServerResponse:(id)a3;
+- (AMSDelegateAuthenticateResult)initWithCoder:(id)coder;
+- (AMSDelegateAuthenticateResult)initWithServerResponse:(id)response;
 - (NSString)token;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSDelegateAuthenticateResult
 
-- (AMSDelegateAuthenticateResult)initWithServerResponse:(id)a3
+- (AMSDelegateAuthenticateResult)initWithServerResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   v9.receiver = self;
   v9.super_class = AMSDelegateAuthenticateResult;
   v6 = [(AMSDelegateAuthenticateResult *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serverResponse, a3);
+    objc_storeStrong(&v6->_serverResponse, response);
   }
 
   return v7;
@@ -24,8 +24,8 @@
 
 - (NSString)token
 {
-  v2 = [(AMSDelegateAuthenticateResult *)self serverResponse];
-  v3 = [v2 objectForKeyedSubscript:@"delegateAuthToken"];
+  serverResponse = [(AMSDelegateAuthenticateResult *)self serverResponse];
+  v3 = [serverResponse objectForKeyedSubscript:@"delegateAuthToken"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -41,28 +41,28 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   request = self->_request;
-  v5 = a3;
-  [v5 encodeObject:request forKey:@"rq"];
-  [v5 encodeObject:self->_serverResponse forKey:@"sr"];
+  coderCopy = coder;
+  [coderCopy encodeObject:request forKey:@"rq"];
+  [coderCopy encodeObject:self->_serverResponse forKey:@"sr"];
 }
 
-- (AMSDelegateAuthenticateResult)initWithCoder:(id)a3
+- (AMSDelegateAuthenticateResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = AMSDelegateAuthenticateResult;
   v5 = [(AMSDelegateAuthenticateResult *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rq"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rq"];
     request = v5->_request;
     v5->_request = v6;
 
     v8 = objc_opt_class();
-    v9 = [v4 decodeDictionaryWithKeysOfClass:v8 objectsOfClass:objc_opt_class() forKey:@"sr"];
+    v9 = [coderCopy decodeDictionaryWithKeysOfClass:v8 objectsOfClass:objc_opt_class() forKey:@"sr"];
     serverResponse = v5->_serverResponse;
     v5->_serverResponse = v9;
   }

@@ -1,14 +1,14 @@
 @interface NRParametersPhoneCallRelay
-- (NRParametersPhoneCallRelay)initWithLocalPort:(id)a3;
+- (NRParametersPhoneCallRelay)initWithLocalPort:(id)port;
 @end
 
 @implementation NRParametersPhoneCallRelay
 
-- (NRParametersPhoneCallRelay)initWithLocalPort:(id)a3
+- (NRParametersPhoneCallRelay)initWithLocalPort:(id)port
 {
   v86 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  portCopy = port;
+  if (portCopy)
   {
     v5 = *MEMORY[0x277CD9230];
     legacy_tcp_socket = nw_parameters_create_legacy_tcp_socket();
@@ -22,12 +22,12 @@
       if ((sNRCopyLogToStdErr & 1) != 0 || os_log_type_enabled(nrCopyLogObj_sNRLogObj_2810, OS_LOG_TYPE_FAULT))
       {
         _NRLogWithArgs(nrCopyLogObj_sNRLogObj_2810, 17, "nw_parameters_create_legacy_tcp_socket failed", v6, v7, v8, v9, v10, v84);
-        v30 = 0;
+        selfCopy2 = 0;
       }
 
       else
       {
-        v30 = 0;
+        selfCopy2 = 0;
       }
 
       goto LABEL_20;
@@ -39,7 +39,7 @@
     nw_protocol_stack_set_transport_protocol(v12, v13);
 
     nw_parameters_set_data_mode();
-    host = nw_endpoint_create_host("::", [v4 UTF8String]);
+    host = nw_endpoint_create_host("::", [portCopy UTF8String]);
     MEMORY[0x25F873D60](legacy_tcp_socket, host);
     v15 = xpc_string_create("com.apple.networkrelay");
     if (v15)
@@ -69,7 +69,7 @@
             if (v23)
             {
               [(NRParameters *)v23 setServiceClass:3];
-              v29 = self;
+              selfCopy = self;
             }
 
             else
@@ -85,7 +85,7 @@
               }
             }
 
-            v30 = self;
+            selfCopy2 = self;
 LABEL_20:
 
             goto LABEL_21;
@@ -214,7 +214,7 @@ LABEL_37:
 
     if (!v38)
     {
-      v30 = 0;
+      selfCopy2 = 0;
       goto LABEL_21;
     }
   }
@@ -222,11 +222,11 @@ LABEL_37:
   v39 = nrCopyLogObj_2805();
   _NRLogWithArgs(v39, 17, "%s called with null localPortString", v40, v41, v42, v43, v44, "[NRParametersPhoneCallRelay initWithLocalPort:]");
 
-  v30 = 0;
+  selfCopy2 = 0;
 LABEL_21:
 
   v31 = *MEMORY[0x277D85DE8];
-  return v30;
+  return selfCopy2;
 }
 
 @end

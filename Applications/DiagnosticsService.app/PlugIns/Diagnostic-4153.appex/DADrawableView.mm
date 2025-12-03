@@ -1,27 +1,27 @@
 @interface DADrawableView
-- (DADrawableView)initWithFrame:(CGRect)a3 rectangleFillColor:(id)a4 rectangleEdgeColor:(id)a5;
+- (DADrawableView)initWithFrame:(CGRect)frame rectangleFillColor:(id)color rectangleEdgeColor:(id)edgeColor;
 - (void)endDrawing;
-- (void)updateDrawing:(CGRect)a3;
+- (void)updateDrawing:(CGRect)drawing;
 @end
 
 @implementation DADrawableView
 
-- (DADrawableView)initWithFrame:(CGRect)a3 rectangleFillColor:(id)a4 rectangleEdgeColor:(id)a5
+- (DADrawableView)initWithFrame:(CGRect)frame rectangleFillColor:(id)color rectangleEdgeColor:(id)edgeColor
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a4;
-  v13 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  colorCopy = color;
+  edgeColorCopy = edgeColor;
   v18.receiver = self;
   v18.super_class = DADrawableView;
-  v14 = [(DADrawableView *)&v18 initWithFrame:x, y, width, height];
-  v15 = v14;
-  if (v14)
+  height = [(DADrawableView *)&v18 initWithFrame:x, y, width, height];
+  v15 = height;
+  if (height)
   {
-    objc_storeStrong(&v14->_rectangleFillColor, a4);
-    objc_storeStrong(&v15->_rectangleEdgeColor, a5);
+    objc_storeStrong(&height->_rectangleFillColor, color);
+    objc_storeStrong(&v15->_rectangleEdgeColor, edgeColor);
     v15->_isDrawing = 0;
     v16 = +[UIColor clearColor];
     [(DADrawableView *)v15 setBackgroundColor:v16];
@@ -30,47 +30,47 @@
   return v15;
 }
 
-- (void)updateDrawing:(CGRect)a3
+- (void)updateDrawing:(CGRect)drawing
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = drawing.size.height;
+  width = drawing.size.width;
+  y = drawing.origin.y;
+  x = drawing.origin.x;
   if ([(DADrawableView *)self isDrawing])
   {
-    v19 = [(DADrawableView *)self shapeView];
-    [v19 setFrame:{x, y, width, height}];
+    shapeView = [(DADrawableView *)self shapeView];
+    [shapeView setFrame:{x, y, width, height}];
   }
 
   else
   {
     [(DADrawableView *)self setIsDrawing:1];
-    v8 = [(DADrawableView *)self shapeView];
+    shapeView2 = [(DADrawableView *)self shapeView];
 
-    if (!v8)
+    if (!shapeView2)
     {
       v9 = objc_opt_new();
       [(DADrawableView *)self setShapeView:v9];
 
-      v10 = [(DADrawableView *)self rectangleEdgeColor];
-      v11 = [v10 CGColor];
-      v12 = [(DADrawableView *)self shapeView];
-      v13 = [v12 layer];
-      [v13 setBorderColor:v11];
+      rectangleEdgeColor = [(DADrawableView *)self rectangleEdgeColor];
+      cGColor = [rectangleEdgeColor CGColor];
+      shapeView3 = [(DADrawableView *)self shapeView];
+      layer = [shapeView3 layer];
+      [layer setBorderColor:cGColor];
 
-      v14 = [(DADrawableView *)self shapeView];
-      v15 = [v14 layer];
-      [v15 setBorderWidth:4.0];
+      shapeView4 = [(DADrawableView *)self shapeView];
+      layer2 = [shapeView4 layer];
+      [layer2 setBorderWidth:4.0];
 
-      v16 = [(DADrawableView *)self rectangleFillColor];
-      v17 = [(DADrawableView *)self shapeView];
-      [v17 setBackgroundColor:v16];
+      rectangleFillColor = [(DADrawableView *)self rectangleFillColor];
+      shapeView5 = [(DADrawableView *)self shapeView];
+      [shapeView5 setBackgroundColor:rectangleFillColor];
     }
 
-    v18 = [(DADrawableView *)self shapeView];
-    [v18 setFrame:{x, y, width, height}];
+    shapeView6 = [(DADrawableView *)self shapeView];
+    [shapeView6 setFrame:{x, y, width, height}];
 
-    v19 = [(DADrawableView *)self shapeView];
+    shapeView = [(DADrawableView *)self shapeView];
     [(DADrawableView *)self addSubview:?];
   }
 }
@@ -79,14 +79,14 @@
 {
   if ([(DADrawableView *)self isDrawing])
   {
-    v3 = [(DADrawableView *)self shapeView];
-    [v3 removeFromSuperview];
+    shapeView = [(DADrawableView *)self shapeView];
+    [shapeView removeFromSuperview];
 
     y = CGRectZero.origin.y;
     width = CGRectZero.size.width;
     height = CGRectZero.size.height;
-    v7 = [(DADrawableView *)self shapeView];
-    [v7 setFrame:{CGRectZero.origin.x, y, width, height}];
+    shapeView2 = [(DADrawableView *)self shapeView];
+    [shapeView2 setFrame:{CGRectZero.origin.x, y, width, height}];
 
     [(DADrawableView *)self setIsDrawing:0];
   }

@@ -1,21 +1,21 @@
 @interface SUUILockupViewElement
 - (BOOL)containsElementGroups;
 - (BOOL)isEnabled;
-- (SUUILockupViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SUUILockupViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SUUILockupViewElement
 
-- (SUUILockupViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUILockupViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v16.receiver = self;
   v16.super_class = SUUILockupViewElement;
-  v9 = [(SUUIViewElement *)&v16 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v16 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"disabled"];
+    v10 = [elementCopy getAttribute:@"disabled"];
     if ([v10 length])
     {
       v11 = [v10 BOOLValue] ^ 1;
@@ -27,14 +27,14 @@
     }
 
     v9->_enabled = v11;
-    v12 = [v8 getAttribute:@"selectable"];
+    v12 = [elementCopy getAttribute:@"selectable"];
     if ([v12 length])
     {
-      v13 = [v12 lowercaseString];
-      v9->_selectable = [v13 isEqualToString:@"true"];
+      lowercaseString = [v12 lowercaseString];
+      v9->_selectable = [lowercaseString isEqualToString:@"true"];
     }
 
-    v14 = [v8 getAttribute:@"type"];
+    v14 = [elementCopy getAttribute:@"type"];
     v9->_lockupViewType = SUUILockupViewTypeForString(v14);
   }
 
@@ -49,17 +49,17 @@
   return v3;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v8.receiver = self;
   v8.super_class = SUUILockupViewElement;
-  v5 = [(SUUIViewElement *)&v8 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v8 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    self->_enabled = v4->_enabled;
-    self->_lockupViewType = [(SUUILockupViewElement *)v4 lockupViewType];
+    self->_enabled = elementCopy->_enabled;
+    self->_lockupViewType = [(SUUILockupViewElement *)elementCopy lockupViewType];
   }
 
   return v6;

@@ -1,13 +1,13 @@
 @interface FIUIStateMachineExporter
-+ (void)exportWithName:(id)a3 graphDescription:(id)a4;
++ (void)exportWithName:(id)name graphDescription:(id)description;
 @end
 
 @implementation FIUIStateMachineExporter
 
-+ (void)exportWithName:(id)a3 graphDescription:(id)a4
++ (void)exportWithName:(id)name graphDescription:(id)description
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  descriptionCopy = description;
   if ([MEMORY[0x1E696C608] isAppleInternalInstall])
   {
     v7 = dispatch_get_global_queue(17, 0);
@@ -15,8 +15,8 @@
     v8[1] = 3221225472;
     v8[2] = __60__FIUIStateMachineExporter_exportWithName_graphDescription___block_invoke;
     v8[3] = &unk_1E878BFB8;
-    v9 = v5;
-    v10 = v6;
+    v9 = nameCopy;
+    v10 = descriptionCopy;
     dispatch_async(v7, v8);
   }
 }

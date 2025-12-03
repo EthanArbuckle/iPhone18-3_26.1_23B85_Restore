@@ -1,21 +1,21 @@
 @interface SBPIPAnalytics
-- (id)assistantForUUID:(id)a3;
-- (void)pictureInPictureAnalyticsSourceWithUUID:(id)a3 didBecomePossible:(BOOL)a4;
-- (void)pictureInPictureDidActivateAnalyticsSessionWithUUID:(id)a3 analyticsSourceUUID:(id)a4 automatically:(BOOL)a5;
-- (void)pictureInPictureDidChangeStashStateForAnalyticsSessionWithUUID:(id)a3 stashed:(BOOL)a4;
-- (void)pictureInPictureDidCreateAnalyticsSessionWithUUID:(id)a3 bundleIdentifier:(id)a4 contentType:(int64_t)a5;
-- (void)pictureInPictureDidCreateAnalyticsSourceWithUUID:(id)a3 bundleIdentifier:(id)a4 contentType:(int64_t)a5;
-- (void)pictureInPictureDidDeactivateAnalyticsSessionWithUUID:(id)a3 analyticsSourceUUID:(id)a4 appStoppedSession:(BOOL)a5 restoredFullScreen:(BOOL)a6;
-- (void)pictureInPictureDidDestroyAnalyticsSessionWithUUID:(id)a3;
-- (void)pictureInPictureDidDestroyAnalyticsSourceWithUUID:(id)a3;
+- (id)assistantForUUID:(id)d;
+- (void)pictureInPictureAnalyticsSourceWithUUID:(id)d didBecomePossible:(BOOL)possible;
+- (void)pictureInPictureDidActivateAnalyticsSessionWithUUID:(id)d analyticsSourceUUID:(id)iD automatically:(BOOL)automatically;
+- (void)pictureInPictureDidChangeStashStateForAnalyticsSessionWithUUID:(id)d stashed:(BOOL)stashed;
+- (void)pictureInPictureDidCreateAnalyticsSessionWithUUID:(id)d bundleIdentifier:(id)identifier contentType:(int64_t)type;
+- (void)pictureInPictureDidCreateAnalyticsSourceWithUUID:(id)d bundleIdentifier:(id)identifier contentType:(int64_t)type;
+- (void)pictureInPictureDidDeactivateAnalyticsSessionWithUUID:(id)d analyticsSourceUUID:(id)iD appStoppedSession:(BOOL)session restoredFullScreen:(BOOL)screen;
+- (void)pictureInPictureDidDestroyAnalyticsSessionWithUUID:(id)d;
+- (void)pictureInPictureDidDestroyAnalyticsSourceWithUUID:(id)d;
 @end
 
 @implementation SBPIPAnalytics
 
-- (id)assistantForUUID:(id)a3
+- (id)assistantForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_analyticsSourceAssistants objectForKeyedSubscript:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_analyticsSourceAssistants objectForKeyedSubscript:dCopy];
   v6 = v5;
   if (v5)
   {
@@ -24,7 +24,7 @@
 
   else
   {
-    v7 = [(NSMutableDictionary *)self->_analyticsSessionAssistants objectForKeyedSubscript:v4];
+    v7 = [(NSMutableDictionary *)self->_analyticsSessionAssistants objectForKeyedSubscript:dCopy];
   }
 
   v8 = v7;
@@ -32,10 +32,10 @@
   return v8;
 }
 
-- (void)pictureInPictureDidCreateAnalyticsSourceWithUUID:(id)a3 bundleIdentifier:(id)a4 contentType:(int64_t)a5
+- (void)pictureInPictureDidCreateAnalyticsSourceWithUUID:(id)d bundleIdentifier:(id)identifier contentType:(int64_t)type
 {
-  v8 = a4;
-  v9 = a3;
+  identifierCopy = identifier;
+  dCopy = d;
   v10 = SBLogPIP();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -51,10 +51,10 @@
 
   v20 = [SBPIPAnalyticsSourceSummaryAssistant alloc];
   v21 = +[SBDefaults localDefaults];
-  v22 = [v21 pipDefaults];
-  v23 = -[SBPIPAnalyticsSourceSummaryAssistant initWithBundleIdentifier:contentType:isAutoPIPEnabled:invalidationBlock:](v20, "initWithBundleIdentifier:contentType:isAutoPIPEnabled:invalidationBlock:", v8, a5, [v22 allowAutoPIP], &__block_literal_global_243);
+  pipDefaults = [v21 pipDefaults];
+  v23 = -[SBPIPAnalyticsSourceSummaryAssistant initWithBundleIdentifier:contentType:isAutoPIPEnabled:invalidationBlock:](v20, "initWithBundleIdentifier:contentType:isAutoPIPEnabled:invalidationBlock:", identifierCopy, type, [pipDefaults allowAutoPIP], &__block_literal_global_243);
 
-  [(NSMutableDictionary *)self->_analyticsSourceAssistants setObject:v23 forKeyedSubscript:v9];
+  [(NSMutableDictionary *)self->_analyticsSourceAssistants setObject:v23 forKeyedSubscript:dCopy];
 }
 
 void __96__SBPIPAnalytics_pictureInPictureDidCreateAnalyticsSourceWithUUID_bundleIdentifier_contentType___block_invoke(uint64_t a1, void *a2)
@@ -64,40 +64,40 @@ void __96__SBPIPAnalytics_pictureInPictureDidCreateAnalyticsSourceWithUUID_bundl
   AnalyticsSendEventLazy();
 }
 
-- (void)pictureInPictureDidDestroyAnalyticsSourceWithUUID:(id)a3
+- (void)pictureInPictureDidDestroyAnalyticsSourceWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = SBLogPIP();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [(SBPIPAnalytics *)v5 pictureInPictureDidDestroyAnalyticsSourceWithUUID:v6, v7, v8, v9, v10, v11, v12];
   }
 
-  v13 = [(NSMutableDictionary *)self->_analyticsSourceAssistants objectForKeyedSubscript:v4];
+  v13 = [(NSMutableDictionary *)self->_analyticsSourceAssistants objectForKeyedSubscript:dCopy];
   [v13 noteBecameInactiveAtTime:CFAbsoluteTimeGetCurrent()];
 
-  v14 = [(NSMutableDictionary *)self->_analyticsSourceAssistants objectForKeyedSubscript:v4];
+  v14 = [(NSMutableDictionary *)self->_analyticsSourceAssistants objectForKeyedSubscript:dCopy];
   [v14 notePIPBecameProhibitedAtTime:CFAbsoluteTimeGetCurrent()];
 
-  v15 = [(NSMutableDictionary *)self->_analyticsSourceAssistants objectForKeyedSubscript:v4];
+  v15 = [(NSMutableDictionary *)self->_analyticsSourceAssistants objectForKeyedSubscript:dCopy];
   [v15 invalidate];
 
-  [(NSMutableDictionary *)self->_analyticsSourceAssistants setObject:0 forKeyedSubscript:v4];
+  [(NSMutableDictionary *)self->_analyticsSourceAssistants setObject:0 forKeyedSubscript:dCopy];
 }
 
-- (void)pictureInPictureAnalyticsSourceWithUUID:(id)a3 didBecomePossible:(BOOL)a4
+- (void)pictureInPictureAnalyticsSourceWithUUID:(id)d didBecomePossible:(BOOL)possible
 {
-  v4 = a4;
-  v6 = a3;
+  possibleCopy = possible;
+  dCopy = d;
   v7 = SBLogPIP();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [(SBPIPAnalytics *)v7 pictureInPictureAnalyticsSourceWithUUID:v8 didBecomePossible:v9, v10, v11, v12, v13, v14];
   }
 
-  v15 = [(NSMutableDictionary *)self->_analyticsSourceAssistants objectForKeyedSubscript:v6];
+  v15 = [(NSMutableDictionary *)self->_analyticsSourceAssistants objectForKeyedSubscript:dCopy];
   Current = CFAbsoluteTimeGetCurrent();
-  if (v4)
+  if (possibleCopy)
   {
     [v15 notePIPBecamePossibleAtTime:Current];
   }
@@ -108,10 +108,10 @@ void __96__SBPIPAnalytics_pictureInPictureDidCreateAnalyticsSourceWithUUID_bundl
   }
 }
 
-- (void)pictureInPictureDidCreateAnalyticsSessionWithUUID:(id)a3 bundleIdentifier:(id)a4 contentType:(int64_t)a5
+- (void)pictureInPictureDidCreateAnalyticsSessionWithUUID:(id)d bundleIdentifier:(id)identifier contentType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  identifierCopy = identifier;
   if (!self->_analyticsSessionAssistants)
   {
     v10 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:1];
@@ -127,9 +127,9 @@ void __96__SBPIPAnalytics_pictureInPictureDidCreateAnalyticsSourceWithUUID_bundl
 
   v20 = [SBPIPAnalyticsSessionSummaryAssistant alloc];
   v21 = +[SBDefaults localDefaults];
-  v22 = [v21 pipDefaults];
-  v23 = -[SBPIPAnalyticsSessionSummaryAssistant initWithBundleIdentifier:contentType:isAutoPIPEnabled:invalidationBlock:](v20, "initWithBundleIdentifier:contentType:isAutoPIPEnabled:invalidationBlock:", v9, a5, [v22 allowAutoPIP], &__block_literal_global_6_1);
-  [(NSMutableDictionary *)self->_analyticsSessionAssistants setObject:v23 forKeyedSubscript:v8];
+  pipDefaults = [v21 pipDefaults];
+  v23 = -[SBPIPAnalyticsSessionSummaryAssistant initWithBundleIdentifier:contentType:isAutoPIPEnabled:invalidationBlock:](v20, "initWithBundleIdentifier:contentType:isAutoPIPEnabled:invalidationBlock:", identifierCopy, type, [pipDefaults allowAutoPIP], &__block_literal_global_6_1);
+  [(NSMutableDictionary *)self->_analyticsSessionAssistants setObject:v23 forKeyedSubscript:dCopy];
 }
 
 void __97__SBPIPAnalytics_pictureInPictureDidCreateAnalyticsSessionWithUUID_bundleIdentifier_contentType___block_invoke(uint64_t a1, void *a2)
@@ -139,92 +139,92 @@ void __97__SBPIPAnalytics_pictureInPictureDidCreateAnalyticsSessionWithUUID_bund
   AnalyticsSendEventLazy();
 }
 
-- (void)pictureInPictureDidDestroyAnalyticsSessionWithUUID:(id)a3
+- (void)pictureInPictureDidDestroyAnalyticsSessionWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = SBLogPIP();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [(SBPIPAnalytics *)v5 pictureInPictureDidDestroyAnalyticsSessionWithUUID:v6, v7, v8, v9, v10, v11, v12];
   }
 
-  v13 = [(NSMutableDictionary *)self->_analyticsSessionAssistants objectForKeyedSubscript:v4];
+  v13 = [(NSMutableDictionary *)self->_analyticsSessionAssistants objectForKeyedSubscript:dCopy];
   [v13 noteBecameInactiveAtTime:CFAbsoluteTimeGetCurrent()];
 
-  v14 = [(NSMutableDictionary *)self->_analyticsSessionAssistants objectForKeyedSubscript:v4];
+  v14 = [(NSMutableDictionary *)self->_analyticsSessionAssistants objectForKeyedSubscript:dCopy];
   [v14 invalidate];
 
-  [(NSMutableDictionary *)self->_analyticsSessionAssistants setObject:0 forKeyedSubscript:v4];
+  [(NSMutableDictionary *)self->_analyticsSessionAssistants setObject:0 forKeyedSubscript:dCopy];
 }
 
-- (void)pictureInPictureDidActivateAnalyticsSessionWithUUID:(id)a3 analyticsSourceUUID:(id)a4 automatically:(BOOL)a5
+- (void)pictureInPictureDidActivateAnalyticsSessionWithUUID:(id)d analyticsSourceUUID:(id)iD automatically:(BOOL)automatically
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
+  automaticallyCopy = automatically;
+  iDCopy = iD;
+  dCopy = d;
   v10 = SBLogPIP();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     [(SBPIPAnalytics *)v10 pictureInPictureDidActivateAnalyticsSessionWithUUID:v11 analyticsSourceUUID:v12 automatically:v13, v14, v15, v16, v17];
   }
 
-  v18 = [(NSMutableDictionary *)self->_analyticsSessionAssistants objectForKeyedSubscript:v9];
+  v18 = [(NSMutableDictionary *)self->_analyticsSessionAssistants objectForKeyedSubscript:dCopy];
   [v18 noteBecameActiveAtTime:CFAbsoluteTimeGetCurrent()];
 
-  v19 = [(NSMutableDictionary *)self->_analyticsSessionAssistants objectForKeyedSubscript:v9];
+  v19 = [(NSMutableDictionary *)self->_analyticsSessionAssistants objectForKeyedSubscript:dCopy];
 
-  [v19 noteStartedAutomatically:v5];
-  v20 = [(NSMutableDictionary *)self->_analyticsSourceAssistants objectForKeyedSubscript:v8];
+  [v19 noteStartedAutomatically:automaticallyCopy];
+  v20 = [(NSMutableDictionary *)self->_analyticsSourceAssistants objectForKeyedSubscript:iDCopy];
 
   [v20 noteBecameActiveAtTime:CFAbsoluteTimeGetCurrent()];
 }
 
-- (void)pictureInPictureDidDeactivateAnalyticsSessionWithUUID:(id)a3 analyticsSourceUUID:(id)a4 appStoppedSession:(BOOL)a5 restoredFullScreen:(BOOL)a6
+- (void)pictureInPictureDidDeactivateAnalyticsSessionWithUUID:(id)d analyticsSourceUUID:(id)iD appStoppedSession:(BOOL)session restoredFullScreen:(BOOL)screen
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a4;
-  v11 = a3;
+  screenCopy = screen;
+  sessionCopy = session;
+  iDCopy = iD;
+  dCopy = d;
   v12 = SBLogPIP();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     [(SBPIPAnalytics *)v12 pictureInPictureDidDeactivateAnalyticsSessionWithUUID:v13 analyticsSourceUUID:v14 appStoppedSession:v15 restoredFullScreen:v16, v17, v18, v19];
   }
 
-  v20 = [(NSMutableDictionary *)self->_analyticsSessionAssistants objectForKeyedSubscript:v11];
+  v20 = [(NSMutableDictionary *)self->_analyticsSessionAssistants objectForKeyedSubscript:dCopy];
   [v20 noteBecameInactiveAtTime:CFAbsoluteTimeGetCurrent()];
 
-  v21 = [(NSMutableDictionary *)self->_analyticsSessionAssistants objectForKeyedSubscript:v11];
+  v21 = [(NSMutableDictionary *)self->_analyticsSessionAssistants objectForKeyedSubscript:dCopy];
   [v21 noteBecameUnstashedAtTime:CFAbsoluteTimeGetCurrent()];
 
-  v22 = [(NSMutableDictionary *)self->_analyticsSessionAssistants objectForKeyedSubscript:v11];
-  [v22 noteAppStoppedSession:v7];
+  v22 = [(NSMutableDictionary *)self->_analyticsSessionAssistants objectForKeyedSubscript:dCopy];
+  [v22 noteAppStoppedSession:sessionCopy];
 
-  v23 = [(NSMutableDictionary *)self->_analyticsSessionAssistants objectForKeyedSubscript:v11];
-  [v23 noteRestoredFullScreen:v6];
+  v23 = [(NSMutableDictionary *)self->_analyticsSessionAssistants objectForKeyedSubscript:dCopy];
+  [v23 noteRestoredFullScreen:screenCopy];
 
-  v24 = [(NSMutableDictionary *)self->_analyticsSessionAssistants objectForKeyedSubscript:v11];
+  v24 = [(NSMutableDictionary *)self->_analyticsSessionAssistants objectForKeyedSubscript:dCopy];
   [v24 invalidate];
 
-  [(NSMutableDictionary *)self->_analyticsSessionAssistants setObject:0 forKeyedSubscript:v11];
-  v25 = [(NSMutableDictionary *)self->_analyticsSourceAssistants objectForKeyedSubscript:v10];
+  [(NSMutableDictionary *)self->_analyticsSessionAssistants setObject:0 forKeyedSubscript:dCopy];
+  v25 = [(NSMutableDictionary *)self->_analyticsSourceAssistants objectForKeyedSubscript:iDCopy];
 
   [v25 noteBecameInactiveAtTime:CFAbsoluteTimeGetCurrent()];
 }
 
-- (void)pictureInPictureDidChangeStashStateForAnalyticsSessionWithUUID:(id)a3 stashed:(BOOL)a4
+- (void)pictureInPictureDidChangeStashStateForAnalyticsSessionWithUUID:(id)d stashed:(BOOL)stashed
 {
-  v4 = a4;
-  v6 = a3;
+  stashedCopy = stashed;
+  dCopy = d;
   v7 = SBLogPIP();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [(SBPIPAnalytics *)v7 pictureInPictureDidChangeStashStateForAnalyticsSessionWithUUID:v8 stashed:v9, v10, v11, v12, v13, v14];
   }
 
-  v15 = [(NSMutableDictionary *)self->_analyticsSessionAssistants objectForKeyedSubscript:v6];
+  v15 = [(NSMutableDictionary *)self->_analyticsSessionAssistants objectForKeyedSubscript:dCopy];
   Current = CFAbsoluteTimeGetCurrent();
-  if (v4)
+  if (stashedCopy)
   {
     [v15 noteBecameStashedAtTime:Current];
   }

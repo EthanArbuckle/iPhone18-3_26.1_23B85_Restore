@@ -1,31 +1,31 @@
 @interface CARInputDeviceTouchpad
-+ (CGSize)physicalSizeForTouchpadWithDigitizerProperties:(id)a3;
-- (BOOL)_characterRecognitionSupportedForServiceClient:(__IOHIDServiceClient *)a3;
-- (CARInputDeviceTouchpad)initWithServiceClient:(__IOHIDServiceClient *)a3 UUID:(id)a4 settings:(id)a5 delegate:(id)a6;
++ (CGSize)physicalSizeForTouchpadWithDigitizerProperties:(id)properties;
+- (BOOL)_characterRecognitionSupportedForServiceClient:(__IOHIDServiceClient *)client;
+- (CARInputDeviceTouchpad)initWithServiceClient:(__IOHIDServiceClient *)client UUID:(id)d settings:(id)settings delegate:(id)delegate;
 - (CARInputDeviceTouchpadDelegate)delegate;
-- (CGSize)_physicalSizeForTouchpadServiceClient:(__IOHIDServiceClient *)a3;
+- (CGSize)_physicalSizeForTouchpadServiceClient:(__IOHIDServiceClient *)client;
 - (CGSize)physicalSize;
-- (id)_initWithSupportedHapticTypes:(unint64_t)a3 physicalSize:(CGSize)a4 characterRecognitionSupported:(BOOL)a5 senderID:(unint64_t)a6 UUID:(id)a7;
+- (id)_initWithSupportedHapticTypes:(unint64_t)types physicalSize:(CGSize)size characterRecognitionSupported:(BOOL)supported senderID:(unint64_t)d UUID:(id)iD;
 - (id)description;
-- (void)_setDelegate:(id)a3;
-- (void)performFeedbackOfType:(unint64_t)a3;
-- (void)updateSettingsWithSettings:(id)a3;
+- (void)_setDelegate:(id)delegate;
+- (void)performFeedbackOfType:(unint64_t)type;
+- (void)updateSettingsWithSettings:(id)settings;
 @end
 
 @implementation CARInputDeviceTouchpad
 
-- (CARInputDeviceTouchpad)initWithServiceClient:(__IOHIDServiceClient *)a3 UUID:(id)a4 settings:(id)a5 delegate:(id)a6
+- (CARInputDeviceTouchpad)initWithServiceClient:(__IOHIDServiceClient *)client UUID:(id)d settings:(id)settings delegate:(id)delegate
 {
-  v10 = a5;
-  v11 = a6;
+  settingsCopy = settings;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = CARInputDeviceTouchpad;
-  v12 = [(CARInputDevice *)&v22 initWithServiceClient:a3 UUID:a4];
+  v12 = [(CARInputDevice *)&v22 initWithServiceClient:client UUID:d];
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_delegate, v11);
-    v14 = [v10 objectForKey:@"touchpadSensitivity"];
+    objc_storeWeak(&v12->_delegate, delegateCopy);
+    v14 = [settingsCopy objectForKey:@"touchpadSensitivity"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v16 = 0.5;
@@ -36,11 +36,11 @@
     }
 
     v13->_sensitivity = v16;
-    [(CARInputDeviceTouchpad *)v13 _physicalSizeForTouchpadServiceClient:a3];
+    [(CARInputDeviceTouchpad *)v13 _physicalSizeForTouchpadServiceClient:client];
     v13->_physicalSize.width = v18;
     v13->_physicalSize.height = v19;
-    v13->_characterRecognitionSupported = [(CARInputDeviceTouchpad *)v13 _characterRecognitionSupportedForServiceClient:a3];
-    v20 = [v10 objectForKey:@"supportedHapticFeedbackTypes"];
+    v13->_characterRecognitionSupported = [(CARInputDeviceTouchpad *)v13 _characterRecognitionSupportedForServiceClient:client];
+    v20 = [settingsCopy objectForKey:@"supportedHapticFeedbackTypes"];
     v13->_supportedFeedbackTypes = [v20 unsignedIntegerValue];
   }
 
@@ -51,8 +51,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CARInputDevice *)self senderID];
-  v6 = [(CARInputDevice *)self UUID];
+  senderID = [(CARInputDevice *)self senderID];
+  uUID = [(CARInputDevice *)self UUID];
   [(CARInputDeviceTouchpad *)self physicalSize];
   v8 = v7;
   [(CARInputDeviceTouchpad *)self physicalSize];
@@ -68,14 +68,14 @@
   }
 
   [(CARInputDeviceTouchpad *)self sensitivity];
-  v13 = [v3 stringWithFormat:@"<%@: %p, senderID: %llu, UUID: %@, width: %.2f cm, height: %.2f cm, characterRecognition: %@, sensitivity: %.2f", v4, self, v5, v6, v8, v10, v11, v12];
+  v13 = [v3 stringWithFormat:@"<%@: %p, senderID: %llu, UUID: %@, width: %.2f cm, height: %.2f cm, characterRecognition: %@, sensitivity: %.2f", v4, self, senderID, uUID, v8, v10, v11, v12];
 
   return v13;
 }
 
-- (void)updateSettingsWithSettings:(id)a3
+- (void)updateSettingsWithSettings:(id)settings
 {
-  v4 = [a3 objectForKey:@"touchpadSensitivity"];
+  v4 = [settings objectForKey:@"touchpadSensitivity"];
   if (v4)
   {
     v6 = v4;
@@ -85,22 +85,22 @@
   }
 }
 
-- (void)performFeedbackOfType:(unint64_t)a3
+- (void)performFeedbackOfType:(unint64_t)type
 {
-  if (([(CARInputDeviceTouchpad *)self supportedFeedbackTypes]& a3) != 0)
+  if (([(CARInputDeviceTouchpad *)self supportedFeedbackTypes]& type) != 0)
   {
-    v6 = [(CARInputDeviceTouchpad *)self delegate];
+    delegate = [(CARInputDeviceTouchpad *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [(CARInputDevice *)self UUID];
-      [v6 performHapticType:a3 deviceUUID:v5];
+      uUID = [(CARInputDevice *)self UUID];
+      [delegate performHapticType:type deviceUUID:uUID];
     }
   }
 }
 
-- (CGSize)_physicalSizeForTouchpadServiceClient:(__IOHIDServiceClient *)a3
+- (CGSize)_physicalSizeForTouchpadServiceClient:(__IOHIDServiceClient *)client
 {
-  v3 = IOHIDServiceClientCopyProperty(a3, @"Digitizer");
+  v3 = IOHIDServiceClientCopyProperty(client, @"Digitizer");
   [CARInputDeviceTouchpad physicalSizeForTouchpadWithDigitizerProperties:v3];
   v5 = v4;
   v7 = v6;
@@ -112,12 +112,12 @@
   return result;
 }
 
-+ (CGSize)physicalSizeForTouchpadWithDigitizerProperties:(id)a3
++ (CGSize)physicalSizeForTouchpadWithDigitizerProperties:(id)properties
 {
   v48 = *MEMORY[0x1E69E9840];
-  v41 = [a3 objectForKey:@"Transducers"];
-  v40 = [v41 firstObject];
-  v3 = [v40 objectForKey:@"Elements"];
+  v41 = [properties objectForKey:@"Transducers"];
+  firstObject = [v41 firstObject];
+  v3 = [firstObject objectForKey:@"Elements"];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
@@ -144,27 +144,27 @@
 
         v12 = *(*(&v43 + 1) + 8 * v11);
         v13 = [v12 objectForKey:v7];
-        v14 = [v13 integerValue];
+        integerValue = [v13 integerValue];
 
-        if ((v14 & 0xFFFFFFFFFFFFFFFELL) == 0x30)
+        if ((integerValue & 0xFFFFFFFFFFFFFFFELL) == 0x30)
         {
           v15 = [v12 objectForKey:v8];
-          v16 = [v15 unsignedIntegerValue];
+          unsignedIntegerValue = [v15 unsignedIntegerValue];
 
-          if ((v16 & 0xFFF0) == 0x10)
+          if ((unsignedIntegerValue & 0xFFF0) == 0x10)
           {
             v17 = v6;
             v18 = v7;
             v19 = v3;
             v20 = v8;
-            v21 = v16 & 0xF;
+            v21 = unsignedIntegerValue & 0xF;
             v22 = [v12 objectForKey:@"UnitExponent"];
-            v23 = [v22 integerValue];
+            integerValue2 = [v22 integerValue];
 
-            v24 = v23 | 0xF0;
-            if ((v23 & 8) == 0)
+            v24 = integerValue2 | 0xF0;
+            if ((integerValue2 & 8) == 0)
             {
-              v24 = v23;
+              v24 = integerValue2;
             }
 
             v25 = v24;
@@ -187,7 +187,7 @@
               v32 = v32 * 2.54;
             }
 
-            if (v14 == 48)
+            if (integerValue == 48)
             {
               v10 = v32;
             }
@@ -244,39 +244,39 @@
   return result;
 }
 
-- (BOOL)_characterRecognitionSupportedForServiceClient:(__IOHIDServiceClient *)a3
+- (BOOL)_characterRecognitionSupportedForServiceClient:(__IOHIDServiceClient *)client
 {
-  v3 = IOHIDServiceClientCopyProperty(a3, @"Unicode");
+  v3 = IOHIDServiceClientCopyProperty(client, @"Unicode");
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)_initWithSupportedHapticTypes:(unint64_t)a3 physicalSize:(CGSize)a4 characterRecognitionSupported:(BOOL)a5 senderID:(unint64_t)a6 UUID:(id)a7
+- (id)_initWithSupportedHapticTypes:(unint64_t)types physicalSize:(CGSize)size characterRecognitionSupported:(BOOL)supported senderID:(unint64_t)d UUID:(id)iD
 {
-  height = a4.height;
-  width = a4.width;
-  v13 = a7;
+  height = size.height;
+  width = size.width;
+  iDCopy = iD;
   v17.receiver = self;
   v17.super_class = CARInputDeviceTouchpad;
   v14 = [(CARInputDeviceTouchpad *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    [(CARInputDevice *)v14 _setUUID:v13];
-    [(CARInputDevice *)v15 _setSenderID:a6];
+    [(CARInputDevice *)v14 _setUUID:iDCopy];
+    [(CARInputDevice *)v15 _setSenderID:d];
     v15->_physicalSize.width = width;
     v15->_physicalSize.height = height;
-    v15->_characterRecognitionSupported = a5;
-    v15->_supportedFeedbackTypes = a3;
+    v15->_characterRecognitionSupported = supported;
+    v15->_supportedFeedbackTypes = types;
   }
 
   return v15;
 }
 
-- (void)_setDelegate:(id)a3
+- (void)_setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;

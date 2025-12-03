@@ -1,23 +1,23 @@
 @interface AGXG18PFamilyCommandBuffer_mtlnext
-- (AGXG18PFamilyCommandBuffer_mtlnext)initWithDevice:(id)a3;
+- (AGXG18PFamilyCommandBuffer_mtlnext)initWithDevice:(id)device;
 - (id).cxx_construct;
 - (id)computeCommandEncoder;
 - (id)machineLearningCommandEncoder;
-- (id)renderCommandEncoderWithDescriptor:(id)a3 options:(unint64_t)a4;
-- (id)sampledComputeCommandEncoder:(id *)a3 capacity:(unint64_t)a4;
-- (id)sampledRenderCommandEncoderWithDescriptor:(id)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5;
+- (id)renderCommandEncoderWithDescriptor:(id)descriptor options:(unint64_t)options;
+- (id)sampledComputeCommandEncoder:(id *)encoder capacity:(unint64_t)capacity;
+- (id)sampledRenderCommandEncoderWithDescriptor:(id)descriptor programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity;
 - (void)allocateInternalSparseMappingEncoder;
-- (void)beginCommandBufferWithAllocator:(id)a3 options:(id)a4;
-- (void)closeKernelCommands:(unint64_t)a3 kernelCommand:(void *)a4;
+- (void)beginCommandBufferWithAllocator:(id)allocator options:(id)options;
+- (void)closeKernelCommands:(unint64_t)commands kernelCommand:(void *)command;
 - (void)commitEncoder;
 - (void)dealloc;
-- (void)encodeSyncComputeWithBackFacingBarrierSrcMask:(unsigned int)a3 BackFacingBarrierDstMask:(unsigned int)a4 FrontFacingBarrierSrcMask:(unsigned int)a5 FrontFacingBarrierDstMask:(unsigned int)a6;
+- (void)encodeSyncComputeWithBackFacingBarrierSrcMask:(unsigned int)mask BackFacingBarrierDstMask:(unsigned int)dstMask FrontFacingBarrierSrcMask:(unsigned int)srcMask FrontFacingBarrierDstMask:(unsigned int)barrierDstMask;
 - (void)endCommandBuffer;
 - (void)endCommandBufferInternal;
-- (void)fillCommandBufferArgs:(IOGPUCommandQueueCommandBufferArgs *)a3;
+- (void)fillCommandBufferArgs:(IOGPUCommandQueueCommandBufferArgs *)args;
 - (void)releaseMergeableRender;
-- (void)reserveKernelCommandBufferSpace:(unint64_t)a3;
-- (void)writeTimestampIntoHeap:(id)a3 atIndex:(unint64_t)a4;
+- (void)reserveKernelCommandBufferSpace:(unint64_t)space;
+- (void)writeTimestampIntoHeap:(id)heap atIndex:(unint64_t)index;
 @end
 
 @implementation AGXG18PFamilyCommandBuffer_mtlnext
@@ -31,52 +31,52 @@
   return self;
 }
 
-- (void)encodeSyncComputeWithBackFacingBarrierSrcMask:(unsigned int)a3 BackFacingBarrierDstMask:(unsigned int)a4 FrontFacingBarrierSrcMask:(unsigned int)a5 FrontFacingBarrierDstMask:(unsigned int)a6
+- (void)encodeSyncComputeWithBackFacingBarrierSrcMask:(unsigned int)mask BackFacingBarrierDstMask:(unsigned int)dstMask FrontFacingBarrierSrcMask:(unsigned int)srcMask FrontFacingBarrierDstMask:(unsigned int)barrierDstMask
 {
-  v6 = *&a6;
-  v7 = *&a5;
-  v8 = *&a4;
-  v9 = *&a3;
-  v10 = [(AGXG18PFamilyCommandBuffer_mtlnext *)self computeCommandEncoder];
-  [v10 encodeSyncComputeWithBackFacingBarrierSrcMask:v9 BackFacingBarrierDstMask:v8 FrontFacingBarrierSrcMask:v7 FrontFacingBarrierDstMask:v6];
+  v6 = *&barrierDstMask;
+  v7 = *&srcMask;
+  v8 = *&dstMask;
+  v9 = *&mask;
+  computeCommandEncoder = [(AGXG18PFamilyCommandBuffer_mtlnext *)self computeCommandEncoder];
+  [computeCommandEncoder encodeSyncComputeWithBackFacingBarrierSrcMask:v9 BackFacingBarrierDstMask:v8 FrontFacingBarrierSrcMask:v7 FrontFacingBarrierDstMask:v6];
 
-  [v10 endEncoding];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)closeKernelCommands:(unint64_t)a3 kernelCommand:(void *)a4
+- (void)closeKernelCommands:(unint64_t)commands kernelCommand:(void *)command
 {
   IOGPUMetalCommandBufferStorageBeginKernelCommands();
 
   IOGPUMetalCommandBufferStorageEndKernelCommands();
 }
 
-- (void)reserveKernelCommandBufferSpace:(unint64_t)a3
+- (void)reserveKernelCommandBufferSpace:(unint64_t)space
 {
   v5 = *MEMORY[0x29EDC55D8];
   v6 = *(&self->super.super.super.super.isa + v5);
   result = *(v6 + 48);
   v8 = *(v6 + 56);
   v9 = result;
-  if (v8 - result < a3)
+  if (v8 - result < space)
   {
-    [(IOGPUMetal4CommandBuffer *)self growKernelCommandBuffer:a3];
+    [(IOGPUMetal4CommandBuffer *)self growKernelCommandBuffer:space];
     [(IOGPUMetal4CommandBuffer *)self getCurrentKernelCommandBufferPointer:&v9 end:&v8];
     result = v9;
     v6 = *(&self->super.super.super.super.isa + v5);
   }
 
-  *(v6 + 48) = result + a3;
+  *(v6 + 48) = result + space;
   return result;
 }
 
-- (void)writeTimestampIntoHeap:(id)a3 atIndex:(unint64_t)a4
+- (void)writeTimestampIntoHeap:(id)heap atIndex:(unint64_t)index
 {
-  if (HIDWORD(a4) || self->_mergeable_render.__ptr_)
+  if (HIDWORD(index) || self->_mergeable_render.__ptr_)
   {
     return;
   }
 
-  v4 = a4;
+  indexCopy = index;
   *(self->_impl + 20) = 1;
   [(IOGPUMetal4CommandBuffer *)self protectionOptions];
   [(_MTL4CommandBuffer *)self device];
@@ -190,14 +190,14 @@ LABEL_14:
     v18 = 5816;
   }
 
-  block.i64[0] = a3;
-  block.i32[2] = v4;
+  block.i64[0] = heap;
+  block.i32[2] = indexCopy;
   std::vector<AGX::AGXTimestampEntry>::push_back[abi:nn200100](&v17[v18], &block);
   *(*(v8->_impl + 291) + 593) = 1;
   [(AGXG18PFamilyComputeContext_mtlnext *)v8 endEncoding];
 }
 
-- (id)sampledComputeCommandEncoder:(id *)a3 capacity:(unint64_t)a4
+- (id)sampledComputeCommandEncoder:(id *)encoder capacity:(unint64_t)capacity
 {
   v7 = *([(_MTL4CommandBuffer *)self device]+ 848);
   if ((*(v7 + 16624) & 1) == 0 && !*(v7 + 16616))
@@ -206,12 +206,12 @@ LABEL_14:
   }
 
   v8 = [AGXG18PFamilySampledComputeContext_mtlnext alloc];
-  v9 = [(AGXG18PFamilySampledComputeContext_mtlnext *)v8 initWithCommandBuffer:self allocator:*(&self->super.super.super.super.isa + *MEMORY[0x29EDBB748]) programInfoBuffer:a3 capacity:a4];
+  v9 = [(AGXG18PFamilySampledComputeContext_mtlnext *)v8 initWithCommandBuffer:self allocator:*(&self->super.super.super.super.isa + *MEMORY[0x29EDBB748]) programInfoBuffer:encoder capacity:capacity];
 
   return v9;
 }
 
-- (id)sampledRenderCommandEncoderWithDescriptor:(id)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5
+- (id)sampledRenderCommandEncoderWithDescriptor:(id)descriptor programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity
 {
   v9 = *([(_MTL4CommandBuffer *)self device]+ 848);
   if ((*(v9 + 16624) & 1) == 0 && !*(v9 + 16616))
@@ -220,7 +220,7 @@ LABEL_14:
   }
 
   v10 = [AGXG18PFamilySampledRenderContext_mtlnext alloc];
-  v11 = [(AGXG18PFamilySampledRenderContext_mtlnext *)v10 initWithCommandBuffer:self allocator:*(&self->super.super.super.super.isa + *MEMORY[0x29EDBB748]) descriptor:a3 options:0 programInfoBuffer:a4 capacity:a5];
+  v11 = [(AGXG18PFamilySampledRenderContext_mtlnext *)v10 initWithCommandBuffer:self allocator:*(&self->super.super.super.super.isa + *MEMORY[0x29EDBB748]) descriptor:descriptor options:0 programInfoBuffer:buffer capacity:capacity];
 
   return v11;
 }
@@ -332,10 +332,10 @@ LABEL_10:
 LABEL_8:
 }
 
-- (id)renderCommandEncoderWithDescriptor:(id)a3 options:(unint64_t)a4
+- (id)renderCommandEncoderWithDescriptor:(id)descriptor options:(unint64_t)options
 {
   v7 = [AGXG18PFamilyRenderContext_mtlnext alloc];
-  v8 = [(AGXG18PFamilyRenderContext_mtlnext *)v7 initWithCommandBuffer:self allocator:*(&self->super.super.super.super.isa + *MEMORY[0x29EDBB748]) descriptor:a3 options:a4 enableStateLoaderProgramTracking:0];
+  v8 = [(AGXG18PFamilyRenderContext_mtlnext *)v7 initWithCommandBuffer:self allocator:*(&self->super.super.super.super.isa + *MEMORY[0x29EDBB748]) descriptor:descriptor options:options enableStateLoaderProgramTracking:0];
   v9 = v8;
   if (!v8 || !v8->_mergeable)
   {
@@ -464,10 +464,10 @@ LABEL_28:
   return [(AGXG18PFamilyCommandBuffer_mtlnext *)v23 renderCommandEncoderWithDescriptor:v24, v25];
 }
 
-- (void)fillCommandBufferArgs:(IOGPUCommandQueueCommandBufferArgs *)a3
+- (void)fillCommandBufferArgs:(IOGPUCommandQueueCommandBufferArgs *)args
 {
-  *&a3[1].var2 = 0;
-  a3[1].var0 = 0;
+  *&args[1].var2 = 0;
+  args[1].var0 = 0;
   v3.receiver = self;
   v3.super_class = AGXG18PFamilyCommandBuffer_mtlnext;
   [(IOGPUMetal4CommandBuffer *)&v3 fillCommandBufferArgs:?];
@@ -487,13 +487,13 @@ LABEL_28:
   [(IOGPUMetal4CommandBuffer *)&v2 endCommandBuffer];
 }
 
-- (void)beginCommandBufferWithAllocator:(id)a3 options:(id)a4
+- (void)beginCommandBufferWithAllocator:(id)allocator options:(id)options
 {
-  self->_options = a4;
+  self->_options = options;
   v6.receiver = self;
   v6.super_class = AGXG18PFamilyCommandBuffer_mtlnext;
   [IOGPUMetal4CommandBuffer beginCommandBufferWithAllocator:sel_beginCommandBufferWithAllocator_options_ options:?];
-  [a3 alertCommandBufferActivityStart];
+  [allocator alertCommandBufferActivityStart];
   if (*(self->_device_impl + 1060))
   {
     [(IOGPUMetal4CommandBuffer *)self useInternalResidencySet:?];
@@ -502,11 +502,11 @@ LABEL_28:
 
 - (void)dealloc
 {
-  v3 = [(_MTL4CommandBuffer *)self device];
+  device = [(_MTL4CommandBuffer *)self device];
   impl = self->_impl;
   if (impl)
   {
-    v5 = *(v3 + 106);
+    v5 = *(device + 106);
     v6 = impl[64];
     v7 = impl[65];
     *(impl + 32) = 0u;
@@ -569,7 +569,7 @@ LABEL_28:
   [(IOGPUMetal4CommandBuffer *)&v17 dealloc];
 }
 
-- (AGXG18PFamilyCommandBuffer_mtlnext)initWithDevice:(id)a3
+- (AGXG18PFamilyCommandBuffer_mtlnext)initWithDevice:(id)device
 {
   v12.receiver = self;
   v12.super_class = AGXG18PFamilyCommandBuffer_mtlnext;
@@ -577,7 +577,7 @@ LABEL_28:
   v5 = v4;
   if (v4)
   {
-    v6 = *(a3 + 106);
+    v6 = *(device + 106);
     if (*(v6 + 15712) <= 0x23FuLL)
     {
       v4->_impl = 0;
@@ -611,7 +611,7 @@ LABEL_28:
       if (v9)
       {
 LABEL_8:
-        v10 = *(a3 + 106);
+        v10 = *(device + 106);
         *v9 = 1;
         *(v9 + 1) = 0;
         *(v9 + 4) = 1;

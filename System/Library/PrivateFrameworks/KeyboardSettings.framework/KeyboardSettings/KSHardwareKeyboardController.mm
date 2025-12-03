@@ -3,27 +3,27 @@
 - (BOOL)isTrackingBrightnessSlider;
 - (BOOL)shouldShowGlobeKeyPreference;
 - (KSHardwareKeyboardController)init;
-- (id)capsLockSwitchSpecifiersFromModes:(id)a3;
-- (id)getBrightness:(id)a3;
+- (id)capsLockSwitchSpecifiersFromModes:(id)modes;
+- (id)getBrightness:(id)brightness;
 - (id)getCurrentKeyboardType;
 - (id)globeAsEmojiSpecifiers;
-- (id)globeKeyPreference:(id)a3;
+- (id)globeKeyPreference:(id)preference;
 - (id)keyboardBrightnessSpecifiers;
 - (id)keyboardTypeRemapSpecifiers;
 - (id)modifierRemapSpecifiers;
 - (id)newSpecifiers;
-- (id)readPreferenceControllerValue:(id)a3;
-- (id)readRomanCapsLockPreferenceValue:(id)a3;
+- (id)readPreferenceControllerValue:(id)value;
+- (id)readRomanCapsLockPreferenceValue:(id)value;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)appWillEnterForeground:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)appWillEnterForeground:(id)foreground;
 - (void)dealloc;
 - (void)hardwareKeyboardAvailabilityChanged;
-- (void)setBrightness:(id)a3 specifier:(id)a4;
-- (void)setPreferenceControllerValue:(id)a3 forSpecifier:(id)a4;
-- (void)setRomanCapsLockPreferenceValue:(id)a3 forSpecifier:(id)a4;
-- (void)tableView:(id)a3 willDisplayFooterView:(id)a4 forSection:(int64_t)a5;
-- (void)toggledGlobeKey:(id)a3 specifier:(id)a4;
+- (void)setBrightness:(id)brightness specifier:(id)specifier;
+- (void)setPreferenceControllerValue:(id)value forSpecifier:(id)specifier;
+- (void)setRomanCapsLockPreferenceValue:(id)value forSpecifier:(id)specifier;
+- (void)tableView:(id)view willDisplayFooterView:(id)footerView forSection:(int64_t)section;
+- (void)toggledGlobeKey:(id)key specifier:(id)specifier;
 @end
 
 @implementation KSHardwareKeyboardController
@@ -73,10 +73,10 @@ id __71__KSHardwareKeyboardController_IOHIDKeyboardLanguageToCapsLockKeyLabel__b
     v9[3] = &unk_2797F9F90;
     v9[4] = v2;
     [(KeyboardBrightnessClient *)v4 registerNotificationForKeys:&unk_2867A4BA8 keyboardID:v5 block:v9];
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v2 selector:sel_appWillResignActive_ name:*MEMORY[0x277D76768] object:0];
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v2 selector:sel_appWillEnterForeground_ name:*MEMORY[0x277D76758] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_appWillResignActive_ name:*MEMORY[0x277D76768] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_appWillEnterForeground_ name:*MEMORY[0x277D76758] object:0];
   }
 
   return v2;
@@ -122,10 +122,10 @@ uint64_t __36__KSHardwareKeyboardController_init__block_invoke_2(uint64_t a1)
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, [MEMORY[0x277CCACA8] stringWithUTF8String:*MEMORY[0x277D0EEA0]], 0);
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D76758] object:0];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x277D76768] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76758] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D76768] object:0];
   [(KeyboardBrightnessClient *)self->_keyboardBrightnessClient unregisterKeyboardNotificationBlock];
 
   v6.receiver = self;
@@ -139,9 +139,9 @@ uint64_t __36__KSHardwareKeyboardController_init__block_invoke_2(uint64_t a1)
   result = *(&self->super.super.super.super.super.isa + v3);
   if (!result)
   {
-    v5 = [(KSHardwareKeyboardController *)self title];
+    title = [(KSHardwareKeyboardController *)self title];
     *(&self->super.super.super.super.super.isa + v3) = [(KSHardwareKeyboardController *)self newSpecifiers];
-    [(KSHardwareKeyboardController *)self setTitle:v5];
+    [(KSHardwareKeyboardController *)self setTitle:title];
     return *(&self->super.super.super.super.super.isa + v3);
   }
 
@@ -153,10 +153,10 @@ uint64_t __36__KSHardwareKeyboardController_init__block_invoke_2(uint64_t a1)
   v51 = *MEMORY[0x277D85DE8];
   v3 = [objc_msgSend(MEMORY[0x277D75688] "sharedInputModeController")];
   v35 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v3, "count")}];
-  v4 = self;
+  selfCopy = self;
   v31 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
   v5 = [MEMORY[0x277CBEB58] set];
-  v6 = [MEMORY[0x277D75688] sharedInputModeController];
+  mEMORY[0x277D75688] = [MEMORY[0x277D75688] sharedInputModeController];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
@@ -179,7 +179,7 @@ uint64_t __36__KSHardwareKeyboardController_init__block_invoke_2(uint64_t a1)
           objc_enumerationMutation(v3);
         }
 
-        if ([v6 identifierIsValidSystemInputMode:*(*(&v44 + 1) + 8 * i)])
+        if ([mEMORY[0x277D75688] identifierIsValidSystemInputMode:*(*(&v44 + 1) + 8 * i)])
         {
           NormalizedIdentifier = TIInputModeGetNormalizedIdentifier();
           if (![v5 member:NormalizedIdentifier])
@@ -187,7 +187,7 @@ uint64_t __36__KSHardwareKeyboardController_init__block_invoke_2(uint64_t a1)
             [v5 addObject:NormalizedIdentifier];
             if ([UIKeyboardGetSupportedHardwareKeyboardsForInputMode() count])
             {
-              v14 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:v4 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+              v14 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:selfCopy set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
               [v14 setProperty:NormalizedIdentifier forKey:v32];
               [v14 setProperty:objc_opt_class() forKey:v10];
               v15 = v14;
@@ -212,13 +212,13 @@ uint64_t __36__KSHardwareKeyboardController_init__block_invoke_2(uint64_t a1)
   v16 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"HWKeyboardSettings"];
   [v16 setProperty:objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8] forKey:{"bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"PERIOD_SHORTCUT_DESCRIPTION_HWKB", &stru_28679E3A8, @"Keyboard", *MEMORY[0x277D3FF88]}];
   [v35 addObject:v16];
-  v33 = v4;
-  v17 = [(KSHardwareKeyboardController *)v4 separateHWKeyboardSpecifiers];
+  v33 = selfCopy;
+  separateHWKeyboardSpecifiers = [(KSHardwareKeyboardController *)selfCopy separateHWKeyboardSpecifiers];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v18 = [v17 countByEnumeratingWithState:&v40 objects:v49 count:16];
+  v18 = [separateHWKeyboardSpecifiers countByEnumeratingWithState:&v40 objects:v49 count:16];
   if (v18)
   {
     v19 = v18;
@@ -229,20 +229,20 @@ uint64_t __36__KSHardwareKeyboardController_init__block_invoke_2(uint64_t a1)
       {
         if (*v41 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(separateHWKeyboardSpecifiers);
         }
 
         [*(*(&v40 + 1) + 8 * j) setName:{objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", objc_msgSend(*(*(&v40 + 1) + 8 * j), "name"), &stru_28679E3A8, @"Keyboard"}];
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v40 objects:v49 count:16];
+      v19 = [separateHWKeyboardSpecifiers countByEnumeratingWithState:&v40 objects:v49 count:16];
     }
 
     while (v19);
   }
 
   v22 = v35;
-  [v35 addObjectsFromArray:v17];
+  [v35 addObjectsFromArray:separateHWKeyboardSpecifiers];
   if ([v31 count])
   {
     v23 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"LIVE_CONVERSION"];
@@ -297,15 +297,15 @@ uint64_t __36__KSHardwareKeyboardController_init__block_invoke_2(uint64_t a1)
   return v22;
 }
 
-- (id)capsLockSwitchSpecifiersFromModes:(id)a3
+- (id)capsLockSwitchSpecifiersFromModes:(id)modes
 {
   v49 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v43 objects:v48 count:16];
+  v6 = [modes countByEnumeratingWithState:&v43 objects:v48 count:16];
   if (v6)
   {
     v7 = v6;
@@ -319,7 +319,7 @@ uint64_t __36__KSHardwareKeyboardController_init__block_invoke_2(uint64_t a1)
       {
         if (*v44 != v11)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(modes);
         }
 
         v13 = *(*(&v43 + 1) + 8 * i);
@@ -335,7 +335,7 @@ uint64_t __36__KSHardwareKeyboardController_init__block_invoke_2(uint64_t a1)
         }
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v43 objects:v48 count:16];
+      v7 = [modes countByEnumeratingWithState:&v43 objects:v48 count:16];
     }
 
     while (v7);
@@ -406,7 +406,7 @@ uint64_t __36__KSHardwareKeyboardController_init__block_invoke_2(uint64_t a1)
         {
 LABEL_35:
           [v38 setProperty:v26 forKey:*MEMORY[0x277D3FF88]];
-          [v5 addObject:v38];
+          [array addObject:v38];
           v29 = [(KSHardwareKeyboardController *)self loadSpecifiersFromPlistName:@"Preferences_HWCapsLock" target:self];
           v39 = 0u;
           v40 = 0u;
@@ -435,7 +435,7 @@ LABEL_35:
             while (v31);
           }
 
-          [v5 addObjectsFromArray:v29];
+          [array addObjectsFromArray:v29];
           goto LABEL_43;
         }
 
@@ -459,35 +459,35 @@ LABEL_35:
 
 LABEL_43:
   v34 = *MEMORY[0x277D85DE8];
-  return v5;
+  return array;
 }
 
-- (void)appWillEnterForeground:(id)a3
+- (void)appWillEnterForeground:(id)foreground
 {
   [(KSHardwareKeyboardController *)self reloadSpecifiers];
 
   [(KSHardwareKeyboardController *)self suspendIdleDimming:1];
 }
 
-- (id)readPreferenceControllerValue:(id)a3
+- (id)readPreferenceControllerValue:(id)value
 {
-  v3 = [a3 propertyForKey:*MEMORY[0x277D3FFF0]];
-  v4 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v3 = [value propertyForKey:*MEMORY[0x277D3FFF0]];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
 
-  return [v4 valueForPreferenceKey:v3];
+  return [mEMORY[0x277D6F470] valueForPreferenceKey:v3];
 }
 
-- (void)setPreferenceControllerValue:(id)a3 forSpecifier:(id)a4
+- (void)setPreferenceControllerValue:(id)value forSpecifier:(id)specifier
 {
-  v5 = [a4 propertyForKey:*MEMORY[0x277D3FFF0]];
-  v6 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v5 = [specifier propertyForKey:*MEMORY[0x277D3FFF0]];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
 
-  [v6 setValue:a3 forPreferenceKey:v5];
+  [mEMORY[0x277D6F470] setValue:value forPreferenceKey:v5];
 }
 
-- (id)readRomanCapsLockPreferenceValue:(id)a3
+- (id)readRomanCapsLockPreferenceValue:(id)value
 {
-  if (([objc_msgSend(a3 propertyForKey:{*MEMORY[0x277D3FFF0]), "isEqualToString:", @"HWKeyboardCapsLockRomanSwitch"}] & 1) == 0)
+  if (([objc_msgSend(value propertyForKey:{*MEMORY[0x277D3FFF0]), "isEqualToString:", @"HWKeyboardCapsLockRomanSwitch"}] & 1) == 0)
   {
     [KSHardwareKeyboardController readRomanCapsLockPreferenceValue:];
   }
@@ -498,27 +498,27 @@ LABEL_43:
   return [v3 numberWithBool:v4];
 }
 
-- (void)setRomanCapsLockPreferenceValue:(id)a3 forSpecifier:(id)a4
+- (void)setRomanCapsLockPreferenceValue:(id)value forSpecifier:(id)specifier
 {
-  if (([objc_msgSend(a4 propertyForKey:{*MEMORY[0x277D3FFF0]), "isEqualToString:", @"HWKeyboardCapsLockRomanSwitch"}] & 1) == 0)
+  if (([objc_msgSend(specifier propertyForKey:{*MEMORY[0x277D3FFF0]), "isEqualToString:", @"HWKeyboardCapsLockRomanSwitch"}] & 1) == 0)
   {
     [KSHardwareKeyboardController setRomanCapsLockPreferenceValue:forSpecifier:];
   }
 
-  v5 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
   v6 = *MEMORY[0x277D6F640];
 
-  [v5 setValue:a3 forPreferenceKey:v6];
+  [mEMORY[0x277D6F470] setValue:value forPreferenceKey:v6];
 }
 
 - (id)keyboardBrightnessSpecifiers
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([-[KeyboardBrightnessClient copyKeyboardBacklightIDs](self->_keyboardBrightnessClient "copyKeyboardBacklightIDs")])
   {
     v4 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"Keyboard Brightness Group" name:{objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"Keyboard Brightness", &stru_28679E3A8, @"Keyboard"}];
     [v4 setProperty:objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8] forKey:{"bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"KEYBOARD_BRIGHTNESS_DESCRIPTION", &stru_28679E3A8, @"Keyboard", *MEMORY[0x277D3FF88]}];
-    [v3 addObject:v4];
+    [array addObject:v4];
     v5 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8] target:"bundleForClass:" set:objc_opt_class()) get:"localizedStringForKey:value:table:" detail:@"Keyboard Brightness" cell:&stru_28679E3A8 edit:{@"Keyboard", self, sel_setBrightness_specifier_, sel_getBrightness_, 0, 5, 0}];
     [v5 setObject:@"Keyboard Brightness" forKeyedSubscript:*MEMORY[0x277D3FFB8]];
     v6 = [MEMORY[0x277D755B8] systemImageNamed:@"light.min"];
@@ -532,19 +532,19 @@ LABEL_43:
     [v5 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D400C0]];
     v10 = [MEMORY[0x277CCABB0] numberWithInt:{-[KeyboardBrightnessClient isBacklightSaturatedOnKeyboard:](self->_keyboardBrightnessClient, "isBacklightSaturatedOnKeyboard:", *MEMORY[0x277CFD3C8]) ^ 1}];
     [v5 setObject:v10 forKeyedSubscript:*MEMORY[0x277D3FF38]];
-    [v3 addObject:v5];
+    [array addObject:v5];
   }
 
-  return v3;
+  return array;
 }
 
-- (void)setBrightness:(id)a3 specifier:(id)a4
+- (void)setBrightness:(id)brightness specifier:(id)specifier
 {
-  v6 = [(KSHardwareKeyboardController *)self isTrackingBrightnessSlider:a3];
+  v6 = [(KSHardwareKeyboardController *)self isTrackingBrightnessSlider:brightness];
   keyboardBrightnessClient = self->_keyboardBrightnessClient;
   v8 = objc_opt_respondsToSelector();
   v9 = self->_keyboardBrightnessClient;
-  [a3 floatValue];
+  [brightness floatValue];
   if (v8)
   {
     v10 = *MEMORY[0x277CFD3C8];
@@ -560,7 +560,7 @@ LABEL_43:
   }
 }
 
-- (id)getBrightness:(id)a3
+- (id)getBrightness:(id)brightness
 {
   [(KeyboardBrightnessClient *)self->_keyboardBrightnessClient brightnessForKeyboard:*MEMORY[0x277CFD3C8]];
   *&v3 = fminf(*&v3, 1.0);
@@ -589,42 +589,42 @@ LABEL_43:
 
 - (id)globeAsEmojiSpecifiers
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"Globe as Emoji group"];
-  [v3 addObject:v4];
+  [array addObject:v4];
   v5 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:objc_msgSend(MEMORY[0x277CCACA8] target:"stringWithFormat:" set:objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8] get:"bundleForClass:" detail:objc_opt_class()) cell:"localizedStringForKey:value:table:" edit:{@"GLOBE_AS_EMOJI_KEY", &stru_28679E3A8, @"Keyboard", @"<globe>", self, sel_toggledGlobeKey_specifier_, sel_globeKeyPreference_, 0, 6, 0}];
   [v5 setProperty:*MEMORY[0x277D6F648] forKey:*MEMORY[0x277D3FFB8]];
   [v4 setProperty:objc_msgSend(MEMORY[0x277CCACA8] forKey:{"stringWithFormat:", objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"GLOBE_AS_EMOJI_KEY_FOOTER", &stru_28679E3A8, @"Keyboard", @"<globe>", *MEMORY[0x277D3FF88]}];
-  [v3 addObject:v5];
-  return v3;
+  [array addObject:v5];
+  return array;
 }
 
-- (id)globeKeyPreference:(id)a3
+- (id)globeKeyPreference:(id)preference
 {
-  v4 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v5 = [v4 valueForPreferenceKey:*MEMORY[0x277D6F648]];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v5 = [mEMORY[0x277D6F470] valueForPreferenceKey:*MEMORY[0x277D6F648]];
   if (v5)
   {
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = [(KSHardwareKeyboardController *)self defaultValueForGlobeAsEmojiKey];
+    bOOLValue = [(KSHardwareKeyboardController *)self defaultValueForGlobeAsEmojiKey];
   }
 
-  v7 = v6;
+  v7 = bOOLValue;
   v8 = MEMORY[0x277CCABB0];
 
   return [v8 numberWithBool:v7];
 }
 
-- (void)toggledGlobeKey:(id)a3 specifier:(id)a4
+- (void)toggledGlobeKey:(id)key specifier:(id)specifier
 {
-  v5 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
   v6 = *MEMORY[0x277D6F648];
 
-  [v5 setValue:a3 forPreferenceKey:v6];
+  [mEMORY[0x277D6F470] setValue:key forPreferenceKey:v6];
 }
 
 - (BOOL)shouldShowGlobeKeyPreference
@@ -634,44 +634,44 @@ LABEL_43:
     return 0;
   }
 
-  v2 = [MEMORY[0x277D75688] sharedInputModeController];
+  mEMORY[0x277D75688] = [MEMORY[0x277D75688] sharedInputModeController];
 
-  return [v2 containsEmojiInputMode];
+  return [mEMORY[0x277D75688] containsEmojiInputMode];
 }
 
 - (id)modifierRemapSpecifiers
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  [v3 addObject:{objc_msgSend(MEMORY[0x277D3FAD8], "groupSpecifierWithID:", @"Modifier Keys"}];
+  array = [MEMORY[0x277CBEB18] array];
+  [array addObject:{objc_msgSend(MEMORY[0x277D3FAD8], "groupSpecifierWithID:", @"Modifier Keys"}];
   v4 = MEMORY[0x277D3FAD8];
   v5 = [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"MODIFIER_KEYS", &stru_28679E3A8, @"Keyboard"}];
-  [v3 addObject:{objc_msgSend(v4, "preferenceSpecifierNamed:target:set:get:detail:cell:edit:", v5, self, 0, 0, objc_opt_class(), 2, 0)}];
-  return v3;
+  [array addObject:{objc_msgSend(v4, "preferenceSpecifierNamed:target:set:get:detail:cell:edit:", v5, self, 0, 0, objc_opt_class(), 2, 0)}];
+  return array;
 }
 
 - (id)keyboardTypeRemapSpecifiers
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"Keyboard Type"];
-  [v3 addObject:v4];
+  [array addObject:v4];
   v5 = MEMORY[0x277D3FAD8];
   v6 = [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"Keyboard Type", &stru_28679E3A8, @"Keyboard"}];
   v7 = [v5 preferenceSpecifierNamed:v6 target:self set:0 get:sel_getCurrentKeyboardType detail:objc_opt_class() cell:2 edit:0];
   [v4 setProperty:objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8] forKey:{"bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"KEYBOARD_TYPE_FOOTER_TEXT", &stru_28679E3A8, @"Keyboard", *MEMORY[0x277D3FF88]}];
-  [v3 addObject:v7];
-  return v3;
+  [array addObject:v7];
+  return array;
 }
 
 - (id)getCurrentKeyboardType
 {
   DeviceProperties = BKSHIDKeyboardGetDeviceProperties();
-  v3 = [DeviceProperties standardType];
+  standardType = [DeviceProperties standardType];
   result = &stru_28679E3A8;
-  if (v3 <= 0)
+  if (standardType <= 0)
   {
-    if (v3 != -1)
+    if (standardType != -1)
     {
-      if (v3)
+      if (standardType)
       {
         return result;
       }
@@ -687,12 +687,12 @@ LABEL_43:
     return @"JIS";
   }
 
-  if (v3 == 1)
+  if (standardType == 1)
   {
     return @"ISO";
   }
 
-  if (v3 == 2)
+  if (standardType == 2)
   {
     return @"JIS";
   }
@@ -716,9 +716,9 @@ LABEL_43:
 
     if (![(KSHardwareKeyboardController *)self specifierForID:@"Keyboard Type"]&& ((BKSHIDKeyboardWantsStandardTypeOverride() & 1) != 0 || CFPreferencesGetAppBooleanValue(@"KeyboardTypeCustomization", @"com.apple.keyboard.preferences", 0)))
     {
-      v3 = [(KSHardwareKeyboardController *)self keyboardTypeRemapSpecifiers];
+      keyboardTypeRemapSpecifiers = [(KSHardwareKeyboardController *)self keyboardTypeRemapSpecifiers];
 
-      [(KSHardwareKeyboardController *)self addSpecifiersFromArray:v3 animated:1];
+      [(KSHardwareKeyboardController *)self addSpecifiersFromArray:keyboardTypeRemapSpecifiers animated:1];
     }
   }
 
@@ -731,22 +731,22 @@ LABEL_43:
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v16.receiver = self;
   v16.super_class = KSHardwareKeyboardController;
-  v6 = [(KSHardwareKeyboardController *)&v16 tableView:a3 cellForRowAtIndexPath:?];
-  v7 = [(KSHardwareKeyboardController *)self specifierAtIndexPath:a4];
+  v6 = [(KSHardwareKeyboardController *)&v16 tableView:view cellForRowAtIndexPath:?];
+  v7 = [(KSHardwareKeyboardController *)self specifierAtIndexPath:path];
   v8 = [v7 propertyForKey:*MEMORY[0x277D3FFB8]];
   if ([v8 isEqualToString:*MEMORY[0x277D6F648]])
   {
-    v9 = [v7 name];
-    v10 = [v9 rangeOfString:@"<globe>"];
+    name = [v7 name];
+    v10 = [name rangeOfString:@"<globe>"];
     if (v10 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v12 = v10;
       v13 = v11;
-      v14 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v9];
+      v14 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:name];
       [v14 replaceCharactersInRange:v12 withAttributedString:{v13, +[KSKeyboardListController attributedStringForSymbolName:](KSKeyboardListController, "attributedStringForSymbolName:", @"globe"}];
       [objc_msgSend(v6 "titleLabel")];
     }
@@ -755,19 +755,19 @@ LABEL_43:
   return v6;
 }
 
-- (void)tableView:(id)a3 willDisplayFooterView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayFooterView:(id)footerView forSection:(int64_t)section
 {
-  v6 = [objc_msgSend(a4 textLabel];
-  v7 = [v6 rangeOfString:@"<globe>"];
-  if (v6)
+  textLabel = [objc_msgSend(footerView textLabel];
+  v7 = [textLabel rangeOfString:@"<globe>"];
+  if (textLabel)
   {
     v9 = v7;
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v10 = v8;
-      v11 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v6];
+      v11 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:textLabel];
       [v11 replaceCharactersInRange:v9 withAttributedString:{v10, +[KSKeyboardListController attributedStringForSymbolName:](KSKeyboardListController, "attributedStringForSymbolName:", @"globe"}];
-      [objc_msgSend(a4 "textLabel")];
+      [objc_msgSend(footerView "textLabel")];
     }
   }
 }

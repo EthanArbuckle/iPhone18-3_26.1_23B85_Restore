@@ -1,6 +1,6 @@
 @interface VFXMTLShadableKey
 - (void)dealloc;
-- (void)setPipeline:(id)a3;
+- (void)setPipeline:(id)pipeline;
 @end
 
 @implementation VFXMTLShadableKey
@@ -12,13 +12,13 @@
   [(VFXMTLShadableKey *)&v3 dealloc];
 }
 
-- (void)setPipeline:(id)a3
+- (void)setPipeline:(id)pipeline
 {
   pipeline = self->_pipeline;
-  if (pipeline != a3)
+  if (pipeline != pipeline)
   {
 
-    self->_pipeline = a3;
+    self->_pipeline = pipeline;
   }
 }
 

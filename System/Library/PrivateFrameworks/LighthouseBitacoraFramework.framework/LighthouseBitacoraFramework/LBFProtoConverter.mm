@@ -1,51 +1,51 @@
 @interface LBFProtoConverter
-+ (id)createBitacoraBmltIdentifiers:(id)a3;
-+ (id)createBitacoraExperimentIdentifiers:(id)a3;
-+ (id)createLighthousePluginEventStatus:(id)a3;
-+ (id)createLighthousePluginProto:(id)a3;
-+ (id)createLighthousePluginProtoData:(id)a3;
-+ (id)createMLRuntimeProto:(id)a3;
-+ (id)createMLRuntimeProtoData:(id)a3;
-+ (id)createMLRuntimeScheduleStatus:(id)a3;
-+ (id)createMLRuntimeTaskEvent:(id)a3;
-+ (id)createTrialIdentifiers:(id)a3;
-+ (id)createTrialdProto:(id)a3;
-+ (id)createTrialdProtoData:(id)a3;
-+ (id)deserializeLighthousePluginProto:(id)a3;
-+ (id)deserializeMLRuntimeProto:(id)a3;
-+ (id)deserializeTrialdProto:(id)a3;
++ (id)createBitacoraBmltIdentifiers:(id)identifiers;
++ (id)createBitacoraExperimentIdentifiers:(id)identifiers;
++ (id)createLighthousePluginEventStatus:(id)status;
++ (id)createLighthousePluginProto:(id)proto;
++ (id)createLighthousePluginProtoData:(id)data;
++ (id)createMLRuntimeProto:(id)proto;
++ (id)createMLRuntimeProtoData:(id)data;
++ (id)createMLRuntimeScheduleStatus:(id)status;
++ (id)createMLRuntimeTaskEvent:(id)event;
++ (id)createTrialIdentifiers:(id)identifiers;
++ (id)createTrialdProto:(id)proto;
++ (id)createTrialdProtoData:(id)data;
++ (id)deserializeLighthousePluginProto:(id)proto;
++ (id)deserializeMLRuntimeProto:(id)proto;
++ (id)deserializeTrialdProto:(id)proto;
 @end
 
 @implementation LBFProtoConverter
 
-+ (id)createBitacoraExperimentIdentifiers:(id)a3
++ (id)createBitacoraExperimentIdentifiers:(id)identifiers
 {
-  v3 = a3;
+  identifiersCopy = identifiers;
   v4 = objc_alloc_init(LIGHTHOUSE_BITACORA_PROTOExperimentIdentifiers);
-  v8 = objc_msgSend_objectForKey_(v3, v5, @"trialTreatmentID", v6, v7);
+  v8 = objc_msgSend_objectForKey_(identifiersCopy, v5, @"trialTreatmentID", v6, v7);
   objc_msgSend_setTrialTreatmentID_(v4, v9, v8, v10, v11);
 
   v12 = objc_alloc(MEMORY[0x277CCACA8]);
-  v16 = objc_msgSend_objectForKey_(v3, v13, @"trialDeploymentID", v14, v15);
+  v16 = objc_msgSend_objectForKey_(identifiersCopy, v13, @"trialDeploymentID", v14, v15);
   v20 = objc_msgSend_initWithFormat_(v12, v17, @"%@", v18, v19, v16);
   objc_msgSend_setTrialDeploymentID_(v4, v21, v20, v22, v23);
 
-  v27 = objc_msgSend_objectForKey_(v3, v24, @"trialExperimentID", v25, v26);
+  v27 = objc_msgSend_objectForKey_(identifiersCopy, v24, @"trialExperimentID", v25, v26);
 
   objc_msgSend_setTrialExperimentID_(v4, v28, v27, v29, v30);
 
   return v4;
 }
 
-+ (id)createBitacoraBmltIdentifiers:(id)a3
++ (id)createBitacoraBmltIdentifiers:(id)identifiers
 {
-  v3 = a3;
+  identifiersCopy = identifiers;
   v4 = objc_alloc_init(LIGHTHOUSE_BITACORA_PROTOBMLTIdentifiers);
-  v8 = objc_msgSend_objectForKey_(v3, v5, @"trialTaskID", v6, v7);
+  v8 = objc_msgSend_objectForKey_(identifiersCopy, v5, @"trialTaskID", v6, v7);
   objc_msgSend_setTrialTaskID_(v4, v9, v8, v10, v11);
 
   v12 = objc_alloc(MEMORY[0x277CCACA8]);
-  v16 = objc_msgSend_objectForKey_(v3, v13, @"trialDeploymentID", v14, v15);
+  v16 = objc_msgSend_objectForKey_(identifiersCopy, v13, @"trialDeploymentID", v14, v15);
 
   v20 = objc_msgSend_initWithFormat_(v12, v17, @"%@", v18, v19, v16);
   objc_msgSend_setTrialDeploymentID_(v4, v21, v20, v22, v23);
@@ -53,11 +53,11 @@
   return v4;
 }
 
-+ (id)createTrialIdentifiers:(id)a3
++ (id)createTrialIdentifiers:(id)identifiers
 {
-  v3 = a3;
+  identifiersCopy = identifiers;
   v4 = objc_alloc_init(LIGHTHOUSE_BITACORA_PROTOLighthouseLedgerTrialIdentifiers);
-  v11 = objc_msgSend_objectForKey_(v3, v5, @"experimentIdentifiers", v6, v7);
+  v11 = objc_msgSend_objectForKey_(identifiersCopy, v5, @"experimentIdentifiers", v6, v7);
   if (v11)
   {
     objc_opt_class();
@@ -88,7 +88,7 @@
   }
 
 LABEL_5:
-  v20 = objc_msgSend_objectForKey_(v3, v8, @"bmltIdentifiers", v9, v10);
+  v20 = objc_msgSend_objectForKey_(identifiersCopy, v8, @"bmltIdentifiers", v9, v10);
   if (v20)
   {
     objc_opt_class();
@@ -127,17 +127,17 @@ LABEL_21:
   return v29;
 }
 
-+ (id)createMLRuntimeTaskEvent:(id)a3
++ (id)createMLRuntimeTaskEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = objc_alloc_init(LIGHTHOUSE_BITACORA_PROTOTaskEvent);
-  v8 = objc_msgSend_valueForKey_(v3, v5, @"succeeded", v6, v7);
+  v8 = objc_msgSend_valueForKey_(eventCopy, v5, @"succeeded", v6, v7);
   v13 = v8;
   if (v8)
   {
     v14 = objc_msgSend_BOOLValue(v8, v9, v10, v11, v12);
     objc_msgSend_setSucceeded_(v4, v15, v14, v16, v17);
-    v24 = objc_msgSend_valueForKey_(v3, v18, @"errorDomain", v19, v20);
+    v24 = objc_msgSend_valueForKey_(eventCopy, v18, @"errorDomain", v19, v20);
     if (v24)
     {
       objc_opt_class();
@@ -162,7 +162,7 @@ LABEL_21:
       }
     }
 
-    v29 = objc_msgSend_valueForKey_(v3, v21, @"errorCode", v22, v23);
+    v29 = objc_msgSend_valueForKey_(eventCopy, v21, @"errorCode", v22, v23);
     if (v29)
     {
       objc_opt_class();
@@ -206,11 +206,11 @@ LABEL_16:
   return v28;
 }
 
-+ (id)createMLRuntimeScheduleStatus:(id)a3
++ (id)createMLRuntimeScheduleStatus:(id)status
 {
-  v3 = a3;
+  statusCopy = status;
   v4 = objc_alloc_init(LIGHTHOUSE_BITACORA_PROTOScheduleStatus);
-  v8 = objc_msgSend_valueForKey_(v3, v5, @"scheduled", v6, v7);
+  v8 = objc_msgSend_valueForKey_(statusCopy, v5, @"scheduled", v6, v7);
   v13 = v8;
   if (v8)
   {
@@ -232,11 +232,11 @@ LABEL_16:
   return v18;
 }
 
-+ (id)createMLRuntimeProto:(id)a3
++ (id)createMLRuntimeProto:(id)proto
 {
-  v3 = a3;
+  protoCopy = proto;
   v4 = objc_alloc_init(LIGHTHOUSE_BITACORA_PROTOLighthouseLedgerMlruntimedEvent);
-  v8 = objc_msgSend_objectForKey_(v3, v5, @"trialIdentifiers", v6, v7);
+  v8 = objc_msgSend_objectForKey_(protoCopy, v5, @"trialIdentifiers", v6, v7);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -253,11 +253,11 @@ LABEL_16:
     }
 
     objc_msgSend_setTrialIdentifiers_(v4, v12, v15, v13, v14);
-    v19 = objc_msgSend_objectForKey_(v3, v16, @"timestamp", v17, v18);
+    v19 = objc_msgSend_objectForKey_(protoCopy, v16, @"timestamp", v17, v18);
     objc_msgSend_doubleValue(v19, v20, v21, v22, v23);
     objc_msgSend_setTimestamp_(v4, v24, v25, v26, v27);
 
-    v34 = objc_msgSend_objectForKey_(v3, v28, @"activityScheduled", v29, v30);
+    v34 = objc_msgSend_objectForKey_(protoCopy, v28, @"activityScheduled", v29, v30);
     if (v34)
     {
       objc_opt_class();
@@ -276,7 +276,7 @@ LABEL_16:
       objc_msgSend_setActivityScheduleStatus_(v4, v39, v38, v40, v41);
     }
 
-    v45 = objc_msgSend_objectForKey_(v3, v31, @"taskScheduled", v32, v33);
+    v45 = objc_msgSend_objectForKey_(protoCopy, v31, @"taskScheduled", v32, v33);
     if (v45)
     {
       objc_opt_class();
@@ -295,7 +295,7 @@ LABEL_16:
       objc_msgSend_setTaskScheduled_(v4, v50, v49, v51, v52);
     }
 
-    v56 = objc_msgSend_objectForKey_(v3, v42, @"taskFetched", v43, v44);
+    v56 = objc_msgSend_objectForKey_(protoCopy, v42, @"taskFetched", v43, v44);
     if (v56)
     {
       objc_opt_class();
@@ -314,7 +314,7 @@ LABEL_16:
       objc_msgSend_setTaskFetched_(v4, v61, v60, v62, v63);
     }
 
-    v64 = objc_msgSend_objectForKey_(v3, v53, @"taskCompleted", v54, v55);
+    v64 = objc_msgSend_objectForKey_(protoCopy, v53, @"taskCompleted", v54, v55);
     if (v64)
     {
       objc_opt_class();
@@ -356,11 +356,11 @@ LABEL_39:
   return v72;
 }
 
-+ (id)createMLRuntimeProtoData:(id)a3
++ (id)createMLRuntimeProtoData:(id)data
 {
-  v6 = objc_msgSend_createMLRuntimeProto_(LBFProtoConverter, a2, a3, v3, v4);
+  v6 = objc_msgSend_createMLRuntimeProto_(LBFProtoConverter, a2, data, v3, v4);
   v11 = v6;
-  if (a3)
+  if (data)
   {
     v12 = objc_msgSend_data(v6, v7, v8, v9, v10);
   }
@@ -379,26 +379,26 @@ LABEL_39:
   return v12;
 }
 
-+ (id)deserializeMLRuntimeProto:(id)a3
++ (id)deserializeMLRuntimeProto:(id)proto
 {
-  v3 = a3;
+  protoCopy = proto;
   v4 = [LIGHTHOUSE_BITACORA_PROTOLighthouseLedgerMlruntimedEvent alloc];
-  v8 = objc_msgSend_initWithData_(v4, v5, v3, v6, v7);
+  v8 = objc_msgSend_initWithData_(v4, v5, protoCopy, v6, v7);
 
   return v8;
 }
 
-+ (id)createLighthousePluginEventStatus:(id)a3
++ (id)createLighthousePluginEventStatus:(id)status
 {
-  v3 = a3;
+  statusCopy = status;
   v4 = objc_alloc_init(LIGHTHOUSE_BITACORA_PROTOEventStatus);
-  v8 = objc_msgSend_valueForKey_(v3, v5, @"succeeded", v6, v7);
+  v8 = objc_msgSend_valueForKey_(statusCopy, v5, @"succeeded", v6, v7);
   v13 = v8;
   if (v8)
   {
     v14 = objc_msgSend_BOOLValue(v8, v9, v10, v11, v12);
     objc_msgSend_setSucceeded_(v4, v15, v14, v16, v17);
-    v24 = objc_msgSend_valueForKey_(v3, v18, @"errorDomain", v19, v20);
+    v24 = objc_msgSend_valueForKey_(statusCopy, v18, @"errorDomain", v19, v20);
     if (v24)
     {
       objc_opt_class();
@@ -423,7 +423,7 @@ LABEL_39:
       }
     }
 
-    v29 = objc_msgSend_valueForKey_(v3, v21, @"errorCode", v22, v23);
+    v29 = objc_msgSend_valueForKey_(statusCopy, v21, @"errorCode", v22, v23);
     if (v29)
     {
       objc_opt_class();
@@ -467,11 +467,11 @@ LABEL_16:
   return v28;
 }
 
-+ (id)createLighthousePluginProto:(id)a3
++ (id)createLighthousePluginProto:(id)proto
 {
-  v3 = a3;
+  protoCopy = proto;
   v4 = objc_alloc_init(LIGHTHOUSE_BITACORA_PROTOLighthouseLedgerLighthousePluginEvent);
-  v8 = objc_msgSend_objectForKey_(v3, v5, @"trialIdentifiers", v6, v7);
+  v8 = objc_msgSend_objectForKey_(protoCopy, v5, @"trialIdentifiers", v6, v7);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -485,11 +485,11 @@ LABEL_29:
     }
 
     objc_msgSend_setTrialIdentifiers_(v4, v12, v15, v13, v14);
-    v19 = objc_msgSend_objectForKey_(v3, v16, @"timestamp", v17, v18);
+    v19 = objc_msgSend_objectForKey_(protoCopy, v16, @"timestamp", v17, v18);
     objc_msgSend_doubleValue(v19, v20, v21, v22, v23);
     objc_msgSend_setTimestamp_(v4, v24, v25, v26, v27);
 
-    v34 = objc_msgSend_objectForKey_(v3, v28, @"performTaskStatus", v29, v30);
+    v34 = objc_msgSend_objectForKey_(protoCopy, v28, @"performTaskStatus", v29, v30);
     if (v34)
     {
       objc_opt_class();
@@ -508,7 +508,7 @@ LABEL_29:
       objc_msgSend_setPerformTaskStatus_(v4, v39, v38, v40, v41);
     }
 
-    v45 = objc_msgSend_objectForKey_(v3, v31, @"performTrialTaskStatus", v32, v33);
+    v45 = objc_msgSend_objectForKey_(protoCopy, v31, @"performTrialTaskStatus", v32, v33);
     if (v45)
     {
       objc_opt_class();
@@ -527,7 +527,7 @@ LABEL_29:
       objc_msgSend_setPerformTrialTaskStatus_(v4, v50, v49, v51, v52);
     }
 
-    v53 = objc_msgSend_objectForKey_(v3, v42, @"stop", v43, v44);
+    v53 = objc_msgSend_objectForKey_(protoCopy, v42, @"stop", v43, v44);
     if (v53)
     {
       objc_opt_class();
@@ -566,11 +566,11 @@ LABEL_30:
   return v61;
 }
 
-+ (id)createLighthousePluginProtoData:(id)a3
++ (id)createLighthousePluginProtoData:(id)data
 {
-  v6 = objc_msgSend_createLighthousePluginProto_(LBFProtoConverter, a2, a3, v3, v4);
+  v6 = objc_msgSend_createLighthousePluginProto_(LBFProtoConverter, a2, data, v3, v4);
   v11 = v6;
-  if (a3)
+  if (data)
   {
     v12 = objc_msgSend_data(v6, v7, v8, v9, v10);
   }
@@ -589,20 +589,20 @@ LABEL_30:
   return v12;
 }
 
-+ (id)deserializeLighthousePluginProto:(id)a3
++ (id)deserializeLighthousePluginProto:(id)proto
 {
-  v3 = a3;
+  protoCopy = proto;
   v4 = [LIGHTHOUSE_BITACORA_PROTOLighthouseLedgerLighthousePluginEvent alloc];
-  v8 = objc_msgSend_initWithData_(v4, v5, v3, v6, v7);
+  v8 = objc_msgSend_initWithData_(v4, v5, protoCopy, v6, v7);
 
   return v8;
 }
 
-+ (id)createTrialdProto:(id)a3
++ (id)createTrialdProto:(id)proto
 {
-  v3 = a3;
+  protoCopy = proto;
   v4 = objc_alloc_init(LIGHTHOUSE_BITACORA_PROTOLighthouseLedgerTrialdEvent);
-  v8 = objc_msgSend_objectForKey_(v3, v5, @"trialIdentifiers", v6, v7);
+  v8 = objc_msgSend_objectForKey_(protoCopy, v5, @"trialIdentifiers", v6, v7);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -616,11 +616,11 @@ LABEL_31:
     }
 
     objc_msgSend_setTrialIdentifiers_(v4, v12, v15, v13, v14);
-    v19 = objc_msgSend_objectForKey_(v3, v16, @"timestamp", v17, v18);
+    v19 = objc_msgSend_objectForKey_(protoCopy, v16, @"timestamp", v17, v18);
     objc_msgSend_doubleValue(v19, v20, v21, v22, v23);
     objc_msgSend_setTimestamp_(v4, v24, v25, v26, v27);
 
-    v31 = objc_msgSend_objectForKey_(v3, v28, @"eventType", v29, v30);
+    v31 = objc_msgSend_objectForKey_(protoCopy, v28, @"eventType", v29, v30);
     if (v31)
     {
       objc_opt_class();
@@ -661,7 +661,7 @@ LABEL_31:
       sub_255F0BDE8();
     }
 
-    v49 = objc_msgSend_objectForKey_(v3, v45, @"eventSucceeded", v46, v47);
+    v49 = objc_msgSend_objectForKey_(protoCopy, v45, @"eventSucceeded", v46, v47);
     if (v49)
     {
       objc_opt_class();
@@ -698,11 +698,11 @@ LABEL_32:
   return v48;
 }
 
-+ (id)createTrialdProtoData:(id)a3
++ (id)createTrialdProtoData:(id)data
 {
-  v6 = objc_msgSend_createTrialdProto_(LBFProtoConverter, a2, a3, v3, v4);
+  v6 = objc_msgSend_createTrialdProto_(LBFProtoConverter, a2, data, v3, v4);
   v11 = v6;
-  if (a3)
+  if (data)
   {
     v12 = objc_msgSend_data(v6, v7, v8, v9, v10);
   }
@@ -721,11 +721,11 @@ LABEL_32:
   return v12;
 }
 
-+ (id)deserializeTrialdProto:(id)a3
++ (id)deserializeTrialdProto:(id)proto
 {
-  v3 = a3;
+  protoCopy = proto;
   v4 = [LIGHTHOUSE_BITACORA_PROTOLighthouseLedgerTrialdEvent alloc];
-  v8 = objc_msgSend_initWithData_(v4, v5, v3, v6, v7);
+  v8 = objc_msgSend_initWithData_(v4, v5, protoCopy, v6, v7);
 
   return v8;
 }

@@ -1,39 +1,39 @@
 @interface SGM2SelfIdModelScore
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)key;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsModel:(id)a3;
-- (int)StringAsSupervision:(id)a3;
+- (int)StringAsModel:(id)model;
+- (int)StringAsSupervision:(id)supervision;
 - (int)model;
 - (int)supervision;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasResult:(BOOL)a3;
-- (void)setHasSupervision:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasResult:(BOOL)result;
+- (void)setHasSupervision:(BOOL)supervision;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SGM2SelfIdModelScore
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(SGM2SelfIdModelScore *)self setKey:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if (v5)
   {
-    self->_model = *(v4 + 4);
+    self->_model = *(fromCopy + 4);
     *&self->_has |= 1u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
     if ((v5 & 4) == 0)
     {
 LABEL_5:
@@ -46,17 +46,17 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 28) & 4) == 0)
+  else if ((*(fromCopy + 28) & 4) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_result = *(v4 + 24);
+  self->_result = *(fromCopy + 24);
   *&self->_has |= 4u;
-  if ((*(v4 + 28) & 2) != 0)
+  if ((*(fromCopy + 28) & 2) != 0)
   {
 LABEL_6:
-    self->_supervision = *(v4 + 5);
+    self->_supervision = *(fromCopy + 5);
     *&self->_has |= 2u;
   }
 
@@ -104,16 +104,16 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   key = self->_key;
-  if (key | *(v4 + 1))
+  if (key | *(equalCopy + 1))
   {
     if (![(NSString *)key isEqual:?])
     {
@@ -123,20 +123,20 @@ LABEL_4:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_model != *(v4 + 4))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_model != *(equalCopy + 4))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_16;
   }
 
   if ((*&self->_has & 4) == 0)
   {
-    if ((*(v4 + 28) & 4) == 0)
+    if ((*(equalCopy + 28) & 4) == 0)
     {
       goto LABEL_11;
     }
@@ -146,30 +146,30 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if ((*(v4 + 28) & 4) == 0)
+  if ((*(equalCopy + 28) & 4) == 0)
   {
     goto LABEL_16;
   }
 
-  v8 = *(v4 + 24);
+  v8 = *(equalCopy + 24);
   if (self->_result)
   {
-    if ((*(v4 + 24) & 1) == 0)
+    if ((*(equalCopy + 24) & 1) == 0)
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
     goto LABEL_16;
   }
 
 LABEL_11:
-  v6 = (*(v4 + 28) & 2) == 0;
+  v6 = (*(equalCopy + 28) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_supervision != *(v4 + 5))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_supervision != *(equalCopy + 5))
     {
       goto LABEL_16;
     }
@@ -182,10 +182,10 @@ LABEL_17:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -227,21 +227,21 @@ LABEL_4:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_key)
   {
-    v6 = v4;
-    [v4 setKey:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setKey:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 4) = self->_model;
-    *(v4 + 28) |= 1u;
+    *(toCopy + 4) = self->_model;
+    *(toCopy + 28) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -260,26 +260,26 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 24) = self->_result;
-  *(v4 + 28) |= 4u;
+  *(toCopy + 24) = self->_result;
+  *(toCopy + 28) |= 4u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_6:
-    *(v4 + 5) = self->_supervision;
-    *(v4 + 28) |= 2u;
+    *(toCopy + 5) = self->_supervision;
+    *(toCopy + 28) |= 2u;
   }
 
 LABEL_7:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -287,7 +287,7 @@ LABEL_7:
   {
     model = self->_model;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -308,13 +308,13 @@ LABEL_5:
 
   result = self->_result;
   PBDataWriterWriteBOOLField();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_6:
     supervision = self->_supervision;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_7:
@@ -322,12 +322,12 @@ LABEL_7:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   has = self->_has;
@@ -400,36 +400,36 @@ LABEL_16:
   v8.receiver = self;
   v8.super_class = SGM2SelfIdModelScore;
   v4 = [(SGM2SelfIdModelScore *)&v8 description];
-  v5 = [(SGM2SelfIdModelScore *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SGM2SelfIdModelScore *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsSupervision:(id)a3
+- (int)StringAsSupervision:(id)supervision
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMSelfIdSupervisionTypeNone"])
+  supervisionCopy = supervision;
+  if ([supervisionCopy isEqualToString:@"SGMSelfIdSupervisionTypeNone"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMSelfIdSupervisionTypeContact"])
+  else if ([supervisionCopy isEqualToString:@"SGMSelfIdSupervisionTypeContact"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMSelfIdSupervisionTypeAppleContact"])
+  else if ([supervisionCopy isEqualToString:@"SGMSelfIdSupervisionTypeAppleContact"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SGMSelfIdSupervisionTypePreviousModel"])
+  else if ([supervisionCopy isEqualToString:@"SGMSelfIdSupervisionTypePreviousModel"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SGMSelfIdSupervisionTypeRegex"])
+  else if ([supervisionCopy isEqualToString:@"SGMSelfIdSupervisionTypeRegex"])
   {
     v4 = 4;
   }
@@ -442,9 +442,9 @@ LABEL_16:
   return v4;
 }
 
-- (void)setHasSupervision:(BOOL)a3
+- (void)setHasSupervision:(BOOL)supervision
 {
-  if (a3)
+  if (supervision)
   {
     v3 = 2;
   }
@@ -470,9 +470,9 @@ LABEL_16:
   }
 }
 
-- (void)setHasResult:(BOOL)a3
+- (void)setHasResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 4;
   }
@@ -485,25 +485,25 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsModel:(id)a3
+- (int)StringAsModel:(id)model
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMSelfIdModelTypeRegex"])
+  modelCopy = model;
+  if ([modelCopy isEqualToString:@"SGMSelfIdModelTypeRegex"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMSelfIdModelTypeLogistic"])
+  else if ([modelCopy isEqualToString:@"SGMSelfIdModelTypeLogistic"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMSelfIdModelTypeLinear"])
+  else if ([modelCopy isEqualToString:@"SGMSelfIdModelTypeLinear"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SGMSelfIdModelTypeCoreNLP"])
+  else if ([modelCopy isEqualToString:@"SGMSelfIdModelTypeCoreNLP"])
   {
     v4 = 3;
   }

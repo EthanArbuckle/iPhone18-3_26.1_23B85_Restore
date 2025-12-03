@@ -1,6 +1,6 @@
 @interface MBPeerFileOpRequest
 - (MBPeerFileOpRequest)init;
-- (MBPeerFileOpRequest)initWithDictionary:(id)a3 error:(id *)a4;
+- (MBPeerFileOpRequest)initWithDictionary:(id)dictionary error:(id *)error;
 - (id)dictionaryRepresentation;
 @end
 
@@ -21,18 +21,18 @@
   return v3;
 }
 
-- (MBPeerFileOpRequest)initWithDictionary:(id)a3 error:(id *)a4
+- (MBPeerFileOpRequest)initWithDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = MBPeerFileOpRequest;
   v7 = [(MBPeerFileOpRequest *)&v12 init];
-  if (v7 && ([v6 objectForKeyedSubscript:@"MBRelativePaths"], v8 = objc_claimAutoreleasedReturnValue(), relativePaths = v7->_relativePaths, v7->_relativePaths = v8, relativePaths, !v7->_relativePaths))
+  if (v7 && ([dictionaryCopy objectForKeyedSubscript:@"MBRelativePaths"], v8 = objc_claimAutoreleasedReturnValue(), relativePaths = v7->_relativePaths, v7->_relativePaths = v8, relativePaths, !v7->_relativePaths))
   {
-    if (a4)
+    if (error)
     {
-      [MBError errorWithCode:11 format:@"Failed to decode response. Missing property in dictionary %@", v6];
-      *a4 = v10 = 0;
+      [MBError errorWithCode:11 format:@"Failed to decode response. Missing property in dictionary %@", dictionaryCopy];
+      *error = v10 = 0;
     }
 
     else
@@ -52,8 +52,8 @@
 - (id)dictionaryRepresentation
 {
   v5 = @"MBRelativePaths";
-  v2 = [(MBPeerFileOpRequest *)self relativePaths];
-  v6 = v2;
+  relativePaths = [(MBPeerFileOpRequest *)self relativePaths];
+  v6 = relativePaths;
   v3 = [NSDictionary dictionaryWithObjects:&v6 forKeys:&v5 count:1];
 
   return v3;

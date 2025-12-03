@@ -1,10 +1,10 @@
 @interface ADAudioRoute
-- (ADAudioRoute)initWithAudioDeviceID:(unsigned int)a3;
+- (ADAudioRoute)initWithAudioDeviceID:(unsigned int)d;
 @end
 
 @implementation ADAudioRoute
 
-- (ADAudioRoute)initWithAudioDeviceID:(unsigned int)a3
+- (ADAudioRoute)initWithAudioDeviceID:(unsigned int)d
 {
   v21.receiver = self;
   v21.super_class = ADAudioRoute;
@@ -25,7 +25,7 @@
   v24 = sub_10008CACC;
   v25 = &unk_10050FC98;
   v26 = &v27;
-  sub_10008CB4C(a3, 0x676C6F626C6D6F64, 0, &v22);
+  sub_10008CB4C(d, 0x676C6F626C6D6F64, 0, &v22);
   v5 = *(v28 + 40);
   _Block_object_dispose(&v27, 8);
 
@@ -43,7 +43,7 @@
   v24 = sub_10008CC94;
   v25 = &unk_10050FC98;
   v26 = &v27;
-  sub_10008CB4C(a3, 0x676C6F6275696420, 0, &v22);
+  sub_10008CB4C(d, 0x676C6F6275696420, 0, &v22);
   v7 = *(v28 + 40);
   _Block_object_dispose(&v27, 8);
 
@@ -60,12 +60,12 @@
   v29 = sub_10008CD14;
   v30 = &unk_10050FCC0;
   v31 = &v22;
-  sub_10008CD24(a3, 0x676C6F627472616ELL, 0, &v27);
+  sub_10008CD24(d, 0x676C6F627472616ELL, 0, &v27);
   v10 = *(v23 + 24);
   _Block_object_dispose(&v22, 8);
   v12 = v10 == 1651275109 || v10 == 1651271009;
   v4->_isBluetooth = v12;
-  if (sub_10008CE5C(a3))
+  if (sub_10008CE5C(d))
   {
     v22 = 0;
     v23 = &v22;
@@ -76,7 +76,7 @@
     v29 = sub_10008CF2C;
     v30 = &unk_10050FCC0;
     v31 = &v22;
-    sub_10008CD24(a3, 0x696E707473737263, 0, &v27);
+    sub_10008CD24(d, 0x696E707473737263, 0, &v27);
     v13 = *(v23 + 24);
     _Block_object_dispose(&v22, 8);
     if (v10 <= 1651275108)
@@ -132,7 +132,7 @@ LABEL_25:
   }
 
 LABEL_26:
-  if (sub_10008BFF8(a3))
+  if (sub_10008BFF8(d))
   {
     v22 = 0;
     v23 = &v22;
@@ -143,7 +143,7 @@ LABEL_26:
     v29 = sub_10008CF3C;
     v30 = &unk_10050FCC0;
     v31 = &v22;
-    sub_10008CD24(a3, 0x6F75747073737263, 0, &v27);
+    sub_10008CD24(d, 0x6F75747073737263, 0, &v27);
     v16 = *(v23 + 24);
     _Block_object_dispose(&v22, 8);
     if (v10 == 1651275109)
@@ -157,7 +157,7 @@ LABEL_26:
       v29 = sub_10008CF4C;
       v30 = &unk_10050FC48;
       v31 = &v22;
-      sub_10008BDCC(a3, 0x6F75747064636832, 0, &v27);
+      sub_10008BDCC(d, 0x6F75747064636832, 0, &v27);
       v17 = *(v23 + 24);
       _Block_object_dispose(&v22, 8);
       if (v17)

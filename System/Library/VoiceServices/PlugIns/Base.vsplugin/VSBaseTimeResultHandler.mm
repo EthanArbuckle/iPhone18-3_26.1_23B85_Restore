@@ -1,10 +1,10 @@
 @interface VSBaseTimeResultHandler
-- (id)actionForRecognitionResult:(id)a3;
+- (id)actionForRecognitionResult:(id)result;
 @end
 
 @implementation VSBaseTimeResultHandler
 
-- (id)actionForRecognitionResult:(id)a3
+- (id)actionForRecognitionResult:(id)result
 {
   v3 = +[NSDate date];
   v4 = objc_alloc_init(NSDateFormatter);

@@ -1,31 +1,31 @@
 @interface SUManagerServerClient
-- (BOOL)hasEntitlement:(id)a3;
+- (BOOL)hasEntitlement:(id)entitlement;
 - (SUManagerClientInterface)proxy;
-- (SUManagerServerClient)initWithConnection:(id)a3;
+- (SUManagerServerClient)initWithConnection:(id)connection;
 - (id)description;
-- (void)_applicationStateChanged:(unsigned __int8)a3 isVisible:(BOOL)a4;
+- (void)_applicationStateChanged:(unsigned __int8)changed isVisible:(BOOL)visible;
 - (void)_evaluateForegroundness;
 - (void)_evaluateMessagability;
-- (void)_logForDebugging:(id)a3;
+- (void)_logForDebugging:(id)debugging;
 - (void)dealloc;
 - (void)invalidate;
 - (void)monitorClientStateIfNecessary;
-- (void)setType:(int)a3;
+- (void)setType:(int)type;
 - (void)wakeupIfNecessary;
 @end
 
 @implementation SUManagerServerClient
 
-- (SUManagerServerClient)initWithConnection:(id)a3
+- (SUManagerServerClient)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v43.receiver = self;
   v43.super_class = SUManagerServerClient;
   v6 = [(SUManagerServerClient *)&v43 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     v41 = 0u;
     v42 = 0u;
     connection = v7->_connection;
@@ -57,20 +57,20 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v21 = [v12 bundle];
-    v22 = [v21 identifier];
+    bundle = [v12 bundle];
+    identifier = [bundle identifier];
 
-    if (v22)
+    if (identifier)
     {
       identifier = [v12 bundle];
-      v24 = [identifier identifier];
+      identifier2 = [identifier identifier];
     }
 
     else
     {
-      v25 = [v12 identity];
+      identity = [v12 identity];
 
-      if (!v25)
+      if (!identity)
       {
         identifier = v7->_identifier;
         v7->_identifier = @"unknown";
@@ -79,15 +79,15 @@ LABEL_16:
 
       v26 = MEMORY[0x277CCACA8];
       identifier = [v12 identity];
-      v24 = [v26 stringWithFormat:@"%@", identifier];
+      identifier2 = [v26 stringWithFormat:@"%@", identifier];
     }
 
     v27 = v7->_identifier;
-    v7->_identifier = v24;
+    v7->_identifier = identifier2;
 
 LABEL_12:
-    v28 = [v12 currentState];
-    v7->_taskState = [v28 taskState];
+    currentState = [v12 currentState];
+    v7->_taskState = [currentState taskState];
 
     v7->_isApplication = [v12 isApplication];
     procMonitor = v7->_procMonitor;
@@ -96,9 +96,9 @@ LABEL_12:
     if (v7->_isApplication)
     {
       v7->_isMessagable = [SUManagerServerClient _isStateMessagable:v7->_taskState];
-      v37 = [v12 currentState];
-      v38 = [v37 endowmentNamespaces];
-      v7->_isVisible = [v38 containsObject:@"com.apple.frontboard.visibility"];
+      currentState2 = [v12 currentState];
+      endowmentNamespaces = [currentState2 endowmentNamespaces];
+      v7->_isVisible = [endowmentNamespaces containsObject:@"com.apple.frontboard.visibility"];
     }
 
     else
@@ -119,12 +119,12 @@ LABEL_17:
 
 - (void)monitorClientStateIfNecessary
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_isApplication)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_isApplication)
   {
     v3 = MEMORY[0x277D46F48];
-    v4 = [MEMORY[0x277CCABB0] numberWithInt:v2->_pid];
+    v4 = [MEMORY[0x277CCABB0] numberWithInt:selfCopy->_pid];
     v29 = 0;
     v5 = [v3 handleForIdentifier:v4 error:&v29];
     v6 = v29;
@@ -147,25 +147,25 @@ LABEL_17:
       v26[2] = __54__SUManagerServerClient_monitorClientStateIfNecessary__block_invoke;
       v26[3] = &unk_279CABB98;
       v27 = v5;
-      v28 = v2;
+      v28 = selfCopy;
       v24 = [v23 monitorWithConfiguration:v26];
-      procMonitor = v2->_procMonitor;
-      v2->_procMonitor = v24;
+      procMonitor = selfCopy->_procMonitor;
+      selfCopy->_procMonitor = v24;
     }
 
     else
     {
-      SULogError(@"[SUManagerServerClient monitorClientStateIfNecessary] Failed to get the process handle for pid:%d error: %@", v7, v8, v9, v10, v11, v12, v13, v2->_pid);
+      SULogError(@"[SUManagerServerClient monitorClientStateIfNecessary] Failed to get the process handle for pid:%d error: %@", v7, v8, v9, v10, v11, v12, v13, selfCopy->_pid);
     }
   }
 
   else
   {
-    v15 = [(SUManagerServerClient *)v2 shortDescription];
-    SULogInfo(@"[SUManagerServerClient monitorClientStateIfNecessary] %@ is not an application", v16, v17, v18, v19, v20, v21, v22, v15);
+    shortDescription = [(SUManagerServerClient *)selfCopy shortDescription];
+    SULogInfo(@"[SUManagerServerClient monitorClientStateIfNecessary] %@ is not an application", v16, v17, v18, v19, v20, v21, v22, shortDescription);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 void __54__SUManagerServerClient_monitorClientStateIfNecessary__block_invoke(uint64_t a1, void *a2)
@@ -239,21 +239,21 @@ void __54__SUManagerServerClient_monitorClientStateIfNecessary__block_invoke_2(u
 
 - (SUManagerClientInterface)proxy
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSXPCConnection *)v2->_connection remoteObjectProxy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  remoteObjectProxy = [(NSXPCConnection *)selfCopy->_connection remoteObjectProxy];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return remoteObjectProxy;
 }
 
-- (void)setType:(int)a3
+- (void)setType:(int)type
 {
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_type != a3)
+  if (obj->_type != type)
   {
-    obj->_type = a3;
+    obj->_type = type;
     [(SUManagerServerClient *)obj _evaluateForegroundness];
   }
 
@@ -262,14 +262,14 @@ void __54__SUManagerServerClient_monitorClientStateIfNecessary__block_invoke_2(u
 
 - (void)wakeupIfNecessary
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_isApplication && !v2->_isMessagable)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_isApplication && !selfCopy->_isMessagable)
   {
-    v3 = [(SUManagerServerClient *)v2 shortDescription];
-    SULogDebug(@"Trying to waking up %@...", v4, v5, v6, v7, v8, v9, v10, v3);
+    shortDescription = [(SUManagerServerClient *)selfCopy shortDescription];
+    SULogDebug(@"Trying to waking up %@...", v4, v5, v6, v7, v8, v9, v10, shortDescription);
 
-    pid = v2->_pid;
+    pid = selfCopy->_pid;
     v12 = SBSProcessAssertionCreateForPID();
     if (v12)
     {
@@ -285,49 +285,49 @@ void __54__SUManagerServerClient_monitorClientStateIfNecessary__block_invoke_2(u
 
     else
     {
-      v15 = [(SUManagerServerClient *)v2 shortDescription];
-      SULogError(@"Unable to wakeup %@", v16, v17, v18, v19, v20, v21, v22, v15);
+      shortDescription2 = [(SUManagerServerClient *)selfCopy shortDescription];
+      SULogError(@"Unable to wakeup %@", v16, v17, v18, v19, v20, v21, v22, shortDescription2);
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)hasEntitlement:(id)a3
+- (BOOL)hasEntitlement:(id)entitlement
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSXPCConnection *)v5->_connection valueForEntitlement:v4];
+  entitlementCopy = entitlement;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSXPCConnection *)selfCopy->_connection valueForEntitlement:entitlementCopy];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  objc_sync_exit(v5);
-  return v7;
+  objc_sync_exit(selfCopy);
+  return bOOLValue;
 }
 
 - (void)_evaluateMessagability
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(SUManagerServerClient *)obj isMessagable];
+  isMessagable = [(SUManagerServerClient *)obj isMessagable];
   v3 = [SUManagerServerClient _isStateMessagable:obj->_taskState];
-  if (v2 != v3)
+  if (isMessagable != v3)
   {
     obj->_isMessagable = v3;
-    v4 = [(SUManagerServerClient *)obj shortDescription];
+    shortDescription = [(SUManagerServerClient *)obj shortDescription];
     obj->_isMessagable;
-    SULogDebug(@"%@ - messagability changed: isMessagable? %@", v5, v6, v7, v8, v9, v10, v11, v4);
+    SULogDebug(@"%@ - messagability changed: isMessagable? %@", v5, v6, v7, v8, v9, v10, v11, shortDescription);
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 postNotificationName:@"SUClientMessagabilityChangedNotification" object:obj];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SUClientMessagabilityChangedNotification" object:obj];
   }
 
   objc_sync_exit(obj);
@@ -337,11 +337,11 @@ void __54__SUManagerServerClient_monitorClientStateIfNecessary__block_invoke_2(u
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(SUManagerServerClient *)obj isForeground];
+  isForeground = [(SUManagerServerClient *)obj isForeground];
   if (![SUManagerServerClient _isStateForeground:obj->_taskState visible:obj->_isVisible])
   {
     v3 = obj;
-    if ((v2 & 1) == 0)
+    if ((isForeground & 1) == 0)
     {
       goto LABEL_7;
     }
@@ -352,16 +352,16 @@ void __54__SUManagerServerClient_monitorClientStateIfNecessary__block_invoke_2(u
 
   v3 = obj;
   v4 = obj->_type == 1;
-  if (v2 != v4)
+  if (isForeground != v4)
   {
 LABEL_6:
     v3->_isForeground = v4;
-    v5 = [(SUManagerServerClient *)v3 shortDescription];
+    shortDescription = [(SUManagerServerClient *)v3 shortDescription];
     obj->_isMessagable;
-    SULogDebug(@"%@ - foregroundness changed: isForeground? %@", v6, v7, v8, v9, v10, v11, v12, v5);
+    SULogDebug(@"%@ - foregroundness changed: isForeground? %@", v6, v7, v8, v9, v10, v11, v12, shortDescription);
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 postNotificationName:@"SUClientForegroundnessChangedNotification" object:obj];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SUClientForegroundnessChangedNotification" object:obj];
 
     v3 = obj;
   }
@@ -370,40 +370,40 @@ LABEL_7:
   objc_sync_exit(v3);
 }
 
-- (void)_applicationStateChanged:(unsigned __int8)a3 isVisible:(BOOL)a4
+- (void)_applicationStateChanged:(unsigned __int8)changed isVisible:(BOOL)visible
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_taskState = a3;
-  obj->_isVisible = a4;
+  obj->_taskState = changed;
+  obj->_isVisible = visible;
   [(SUManagerServerClient *)obj _evaluateMessagability];
   [(SUManagerServerClient *)obj _evaluateForegroundness];
   [(SUManagerServerClient *)obj _logForDebugging:@"SUManagerServerClient _applicationStateChanged"];
   objc_sync_exit(obj);
 }
 
-- (void)_logForDebugging:(id)a3
+- (void)_logForDebugging:(id)debugging
 {
-  v4 = a3;
-  v17 = [(SUManagerServerClient *)self shortDescription];
+  debuggingCopy = debugging;
+  shortDescription = [(SUManagerServerClient *)self shortDescription];
   isMessagable = self->_isMessagable;
   isVisible = self->_isVisible;
   taskState = self->_taskState;
   isApplication = self->_isApplication;
   isForeground = self->_isForeground;
   pid = self->_pid;
-  SULogDebug(@"[%@] %@ foreground:%d _pid:%d  _taskState:%u _isApplication:%d _isMessagable:%d _isVisible:%d", v17, v5, v6, v7, v8, v9, v10, v4);
+  SULogDebug(@"[%@] %@ foreground:%d _pid:%d  _taskState:%u _isApplication:%d _isMessagable:%d _isVisible:%d", shortDescription, v5, v6, v7, v8, v9, v10, debuggingCopy);
 }
 
 - (id)description
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = MEMORY[0x277CCACA8];
-  v4 = SUStringFromClientType([(SUManagerServerClient *)v2 type]);
-  v5 = [(SUManagerServerClient *)v2 pid];
-  v6 = [(SUManagerServerClient *)v2 identifier];
-  if ([(SUManagerServerClient *)v2 isApplication])
+  v4 = SUStringFromClientType([(SUManagerServerClient *)selfCopy type]);
+  v5 = [(SUManagerServerClient *)selfCopy pid];
+  identifier = [(SUManagerServerClient *)selfCopy identifier];
+  if ([(SUManagerServerClient *)selfCopy isApplication])
   {
     v7 = @"Y";
   }
@@ -413,7 +413,7 @@ LABEL_7:
     v7 = @"N";
   }
 
-  if ([(SUManagerServerClient *)v2 isMessagable])
+  if ([(SUManagerServerClient *)selfCopy isMessagable])
   {
     v8 = @"Y";
   }
@@ -423,9 +423,9 @@ LABEL_7:
     v8 = @"N";
   }
 
-  v9 = [(SUManagerServerClient *)v2 isForeground];
-  v10 = [(SUManagerServerClient *)v2 isExclusiveClient];
-  if (v9)
+  isForeground = [(SUManagerServerClient *)selfCopy isForeground];
+  isExclusiveClient = [(SUManagerServerClient *)selfCopy isExclusiveClient];
+  if (isForeground)
   {
     v11 = @"Y";
   }
@@ -435,7 +435,7 @@ LABEL_7:
     v11 = @"N";
   }
 
-  if (v10)
+  if (isExclusiveClient)
   {
     v12 = @"Y";
   }
@@ -445,9 +445,9 @@ LABEL_7:
     v12 = @"N";
   }
 
-  v13 = [v3 stringWithFormat:@"SUManagerServerClient <%p>:\n\ttype: %@\n\tpid: %d\n\tidentifier: %@\n\tapplication? %@\n\tmessagable? %@\n\tforeground? %@\n\tisExclusiveClient? %@", v2, v4, v5, v6, v7, v8, v11, v12];
+  v13 = [v3 stringWithFormat:@"SUManagerServerClient <%p>:\n\ttype: %@\n\tpid: %d\n\tidentifier: %@\n\tapplication? %@\n\tmessagable? %@\n\tforeground? %@\n\tisExclusiveClient? %@", selfCopy, v4, v5, identifier, v7, v8, v11, v12];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v13;
 }

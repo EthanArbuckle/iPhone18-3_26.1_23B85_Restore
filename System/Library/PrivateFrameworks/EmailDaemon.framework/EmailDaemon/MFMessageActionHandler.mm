@@ -1,23 +1,23 @@
 @interface MFMessageActionHandler
-- (MFMessageActionHandler)initWithActionHandler:(id)a3;
+- (MFMessageActionHandler)initWithActionHandler:(id)handler;
 - (NSArray)messageActionProviderIDs;
 - (NSArray)messageActionProviders;
 - (NSArray)requiredHeaders;
-- (id)ruleForMessage:(id)a3 usingMessageActionProvider:(id)a4;
+- (id)ruleForMessage:(id)message usingMessageActionProvider:(id)provider;
 @end
 
 @implementation MFMessageActionHandler
 
-- (MFMessageActionHandler)initWithActionHandler:(id)a3
+- (MFMessageActionHandler)initWithActionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v11.receiver = self;
   v11.super_class = MFMessageActionHandler;
   v6 = [(MFMessageActionHandler *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_actionHandler, a3);
+    objc_storeStrong(&v6->_actionHandler, handler);
     v8 = objc_alloc_init(MFMailMessageMEMessageTransformer);
     transformer = v7->_transformer;
     v7->_transformer = v8;
@@ -28,35 +28,35 @@
 
 - (NSArray)messageActionProviders
 {
-  v2 = [(MFMessageActionHandler *)self actionHandler];
-  v3 = [v2 messageActionProviders];
+  actionHandler = [(MFMessageActionHandler *)self actionHandler];
+  messageActionProviders = [actionHandler messageActionProviders];
 
-  return v3;
+  return messageActionProviders;
 }
 
 - (NSArray)messageActionProviderIDs
 {
-  v2 = [(MFMessageActionHandler *)self actionHandler];
-  v3 = [v2 messageActionProviders];
-  v4 = [v3 ef_map:&stru_100158E78];
+  actionHandler = [(MFMessageActionHandler *)self actionHandler];
+  messageActionProviders = [actionHandler messageActionProviders];
+  v4 = [messageActionProviders ef_map:&stru_100158E78];
 
   return v4;
 }
 
 - (NSArray)requiredHeaders
 {
-  v2 = [(MFMessageActionHandler *)self actionHandler];
-  v3 = [v2 requiredHeaders];
+  actionHandler = [(MFMessageActionHandler *)self actionHandler];
+  requiredHeaders = [actionHandler requiredHeaders];
 
-  return v3;
+  return requiredHeaders;
 }
 
-- (id)ruleForMessage:(id)a3 usingMessageActionProvider:(id)a4
+- (id)ruleForMessage:(id)message usingMessageActionProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MFMessageActionHandler *)self transformer];
-  v9 = [v8 messageForMailMessage:v6];
+  messageCopy = message;
+  providerCopy = provider;
+  transformer = [(MFMessageActionHandler *)self transformer];
+  v9 = [transformer messageForMailMessage:messageCopy];
 
   if (!v9)
   {
@@ -64,17 +64,17 @@
     goto LABEL_9;
   }
 
-  v10 = [(MFMessageActionHandler *)self actionHandler];
-  v11 = [v10 actionDecisionForMessage:v9 usingMessageActionProvider:v7];
+  actionHandler = [(MFMessageActionHandler *)self actionHandler];
+  v11 = [actionHandler actionDecisionForMessage:v9 usingMessageActionProvider:providerCopy];
 
-  v12 = [v11 actions];
-  v13 = [v12 count];
+  actions = [v11 actions];
+  v13 = [actions count];
 
   if (v13)
   {
     v14 = [MFMessageActionRule alloc];
-    v15 = [v11 actions];
-    v16 = [(MFMessageActionRule *)v14 initWithMessageActions:v15];
+    actions2 = [v11 actions];
+    v16 = [(MFMessageActionRule *)v14 initWithMessageActions:actions2];
   }
 
   else
@@ -85,7 +85,7 @@
       goto LABEL_8;
     }
 
-    v15 = [v9 rawData];
+    actions2 = [v9 rawData];
     v16 = 0;
   }
 

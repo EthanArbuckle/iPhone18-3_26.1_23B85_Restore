@@ -4,38 +4,38 @@
 - (id)_imaxDeleteButton;
 - (id)_imaxRightArrowButton;
 - (id)_imaxShareButton;
-- (void)_axEnumerateButtonsUsingBlock:(id)a3;
+- (void)_axEnumerateButtonsUsingBlock:(id)block;
 - (void)dealloc;
 - (void)didShow;
 - (void)p_updateAppearance;
 - (void)releaseOutlets;
-- (void)showColorControlsMenu:(id)a3;
+- (void)showColorControlsMenu:(id)menu;
 - (void)viewDidLoad;
 @end
 
 @implementation AEHighlightColorEditorControllerAccessibility
 
-- (void)_axEnumerateButtonsUsingBlock:(id)a3
+- (void)_axEnumerateButtonsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(AEHighlightColorEditorControllerAccessibility *)self _imaxColorControls];
-  v6 = [(AEHighlightColorEditorControllerAccessibility *)self _imaxAddNoteButton];
-  v7 = [(AEHighlightColorEditorControllerAccessibility *)self _imaxDeleteButton];
-  v8 = [(AEHighlightColorEditorControllerAccessibility *)self _imaxShareButton];
-  v9 = [(AEHighlightColorEditorControllerAccessibility *)self _imaxRightArrowButton];
+  blockCopy = block;
+  _imaxColorControls = [(AEHighlightColorEditorControllerAccessibility *)self _imaxColorControls];
+  _imaxAddNoteButton = [(AEHighlightColorEditorControllerAccessibility *)self _imaxAddNoteButton];
+  _imaxDeleteButton = [(AEHighlightColorEditorControllerAccessibility *)self _imaxDeleteButton];
+  _imaxShareButton = [(AEHighlightColorEditorControllerAccessibility *)self _imaxShareButton];
+  _imaxRightArrowButton = [(AEHighlightColorEditorControllerAccessibility *)self _imaxRightArrowButton];
   v33 = 0;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v25 = v9;
-    v26 = v8;
-    v27 = v7;
-    v28 = v6;
+    v25 = _imaxRightArrowButton;
+    v26 = _imaxShareButton;
+    v27 = _imaxDeleteButton;
+    v28 = _imaxAddNoteButton;
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v10 = v5;
+    v10 = _imaxColorControls;
     v11 = [v10 countByEnumeratingWithState:&v29 objects:v35 count:16];
     if (v11)
     {
@@ -52,7 +52,7 @@ LABEL_4:
 
         v15 = *(*(&v29 + 1) + 8 * v14);
         v16 = [v15 imaxValueForKey:{@"tag", v25, v26, v27, v28, v29}];
-        v4[2](v4, v15, [v16 unsignedIntegerValue], &v33);
+        blockCopy[2](blockCopy, v15, [v16 unsignedIntegerValue], &v33);
 
         if (v33)
         {
@@ -72,19 +72,19 @@ LABEL_4:
       }
     }
 
-    v7 = v27;
-    v6 = v28;
-    v9 = v25;
-    v8 = v26;
+    _imaxDeleteButton = v27;
+    _imaxAddNoteButton = v28;
+    _imaxRightArrowButton = v25;
+    _imaxShareButton = v26;
   }
 
-  v17 = v6;
+  v17 = _imaxAddNoteButton;
   v34[0] = v17;
-  v18 = v7;
+  v18 = _imaxDeleteButton;
   v34[1] = v18;
-  v19 = v8;
+  v19 = _imaxShareButton;
   v34[2] = v19;
-  v20 = v9;
+  v20 = _imaxRightArrowButton;
   v34[3] = v20;
   if ((v33 & 1) == 0)
   {
@@ -95,7 +95,7 @@ LABEL_4:
       v23 = v34[v22];
       if (v23)
       {
-        v4[2](v4, v23, 0, &v33);
+        blockCopy[2](blockCopy, v23, 0, &v33);
         v21 = v33;
       }
 
@@ -131,11 +131,11 @@ LABEL_4:
   [(AEHighlightColorEditorControllerAccessibility *)&v3 releaseOutlets];
 }
 
-- (void)showColorControlsMenu:(id)a3
+- (void)showColorControlsMenu:(id)menu
 {
   v8.receiver = self;
   v8.super_class = AEHighlightColorEditorControllerAccessibility;
-  [(AEHighlightColorEditorControllerAccessibility *)&v8 showColorControlsMenu:a3];
+  [(AEHighlightColorEditorControllerAccessibility *)&v8 showColorControlsMenu:menu];
   v4 = [(AEHighlightColorEditorControllerAccessibility *)self imaxValueForKey:@"colorControls"];
   v5 = [v4 imaxValueForKey:@"subviews"];
 
@@ -195,28 +195,28 @@ LABEL_4:
   }
 
   v13 = IMAXLocString(v12);
-  v14 = [(AEHighlightColorEditorControllerAccessibility *)self _imaxAddNoteButton];
-  [v14 setAccessibilityLabel:v13];
+  _imaxAddNoteButton = [(AEHighlightColorEditorControllerAccessibility *)self _imaxAddNoteButton];
+  [_imaxAddNoteButton setAccessibilityLabel:v13];
 
   v15 = IMAccessibilityTraitMenuItem;
-  v16 = [(AEHighlightColorEditorControllerAccessibility *)self _imaxAddNoteButton];
-  [v16 setAccessibilityTraits:v15];
+  _imaxAddNoteButton2 = [(AEHighlightColorEditorControllerAccessibility *)self _imaxAddNoteButton];
+  [_imaxAddNoteButton2 setAccessibilityTraits:v15];
 
   v17 = IMAXLocString(@"delete.annotation");
-  v18 = [(AEHighlightColorEditorControllerAccessibility *)self _imaxDeleteButton];
-  [v18 setAccessibilityLabel:v17];
+  _imaxDeleteButton = [(AEHighlightColorEditorControllerAccessibility *)self _imaxDeleteButton];
+  [_imaxDeleteButton setAccessibilityLabel:v17];
 
   v19 = IMAccessibilityTraitMenuItem;
-  v20 = [(AEHighlightColorEditorControllerAccessibility *)self _imaxDeleteButton];
-  [v20 setAccessibilityTraits:v19];
+  _imaxDeleteButton2 = [(AEHighlightColorEditorControllerAccessibility *)self _imaxDeleteButton];
+  [_imaxDeleteButton2 setAccessibilityTraits:v19];
 
   v21 = IMAXLocString(@"show.next.items.menu.button");
-  v22 = [(AEHighlightColorEditorControllerAccessibility *)self _imaxRightArrowButton];
-  [v22 setAccessibilityLabel:v21];
+  _imaxRightArrowButton = [(AEHighlightColorEditorControllerAccessibility *)self _imaxRightArrowButton];
+  [_imaxRightArrowButton setAccessibilityLabel:v21];
 
   v23 = IMAccessibilityTraitMenuItem;
-  v24 = [(AEHighlightColorEditorControllerAccessibility *)self _imaxRightArrowButton];
-  [v24 setAccessibilityTraits:v23];
+  _imaxRightArrowButton2 = [(AEHighlightColorEditorControllerAccessibility *)self _imaxRightArrowButton];
+  [_imaxRightArrowButton2 setAccessibilityTraits:v23];
 }
 
 - (void)didShow

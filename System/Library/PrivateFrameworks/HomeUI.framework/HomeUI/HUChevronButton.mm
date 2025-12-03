@@ -1,16 +1,16 @@
 @interface HUChevronButton
-- (HUChevronButton)initWithFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (HUChevronButton)initWithFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation HUChevronButton
 
-- (HUChevronButton)initWithFrame:(CGRect)a3
+- (HUChevronButton)initWithFrame:(CGRect)frame
 {
   v59[2] = *MEMORY[0x277D85DE8];
   v58.receiver = self;
   v58.super_class = HUChevronButton;
-  v3 = [(HUChevronButton *)&v58 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUChevronButton *)&v58 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D756B8]);
@@ -21,111 +21,111 @@
     v9 = [v4 initWithFrame:{*MEMORY[0x277CBF3A0], v6, v7, v8}];
     [(HUChevronButton *)v3 setTitleLabel:v9];
 
-    v10 = [(HUChevronButton *)v3 titleLabel];
-    [v10 setUserInteractionEnabled:0];
+    titleLabel = [(HUChevronButton *)v3 titleLabel];
+    [titleLabel setUserInteractionEnabled:0];
 
-    v11 = [(HUChevronButton *)v3 titleLabel];
-    [v11 _setTextColorFollowsTintColor:1];
+    titleLabel2 = [(HUChevronButton *)v3 titleLabel];
+    [titleLabel2 _setTextColorFollowsTintColor:1];
 
-    v12 = [(HUChevronButton *)v3 titleLabel];
-    [v12 setAdjustsFontSizeToFitWidth:1];
+    titleLabel3 = [(HUChevronButton *)v3 titleLabel];
+    [titleLabel3 setAdjustsFontSizeToFitWidth:1];
 
-    v13 = [(HUChevronButton *)v3 titleLabel];
-    [v13 setMinimumScaleFactor:0.7];
+    titleLabel4 = [(HUChevronButton *)v3 titleLabel];
+    [titleLabel4 setMinimumScaleFactor:0.7];
 
-    v14 = [(HUChevronButton *)v3 titleLabel];
-    [v14 setBaselineAdjustment:1];
+    titleLabel5 = [(HUChevronButton *)v3 titleLabel];
+    [titleLabel5 setBaselineAdjustment:1];
 
-    v15 = [MEMORY[0x277D75348] systemWhiteColor];
-    v16 = [(HUChevronButton *)v3 titleLabel];
-    [v16 setTintColor:v15];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    titleLabel6 = [(HUChevronButton *)v3 titleLabel];
+    [titleLabel6 setTintColor:systemWhiteColor];
 
     v17 = [objc_alloc(MEMORY[0x277D755E8]) initWithFrame:{v5, v6, v7, v8}];
     [(HUChevronButton *)v3 setChevronImageView:v17];
 
-    v18 = [(HUChevronButton *)v3 chevronImageView];
-    [v18 setUserInteractionEnabled:0];
+    chevronImageView = [(HUChevronButton *)v3 chevronImageView];
+    [chevronImageView setUserInteractionEnabled:0];
 
     v19 = [MEMORY[0x277D755B8] imageNamed:@"edit-chevron"];
     v20 = [v19 imageWithRenderingMode:2];
-    v21 = [(HUChevronButton *)v3 chevronImageView];
-    [v21 setImage:v20];
+    chevronImageView2 = [(HUChevronButton *)v3 chevronImageView];
+    [chevronImageView2 setImage:v20];
 
-    v22 = [(HUChevronButton *)v3 chevronImageView];
+    chevronImageView3 = [(HUChevronButton *)v3 chevronImageView];
     LODWORD(v23) = 1144766464;
-    [v22 setContentCompressionResistancePriority:0 forAxis:v23];
+    [chevronImageView3 setContentCompressionResistancePriority:0 forAxis:v23];
 
-    v24 = [MEMORY[0x277D75348] systemWhiteColor];
-    v25 = [(HUChevronButton *)v3 chevronImageView];
-    [v25 setTintColor:v24];
+    systemWhiteColor2 = [MEMORY[0x277D75348] systemWhiteColor];
+    chevronImageView4 = [(HUChevronButton *)v3 chevronImageView];
+    [chevronImageView4 setTintColor:systemWhiteColor2];
 
     v26 = objc_alloc(MEMORY[0x277D75A68]);
-    v27 = [(HUChevronButton *)v3 titleLabel];
-    v59[0] = v27;
-    v28 = [(HUChevronButton *)v3 chevronImageView];
-    v59[1] = v28;
+    titleLabel7 = [(HUChevronButton *)v3 titleLabel];
+    v59[0] = titleLabel7;
+    chevronImageView5 = [(HUChevronButton *)v3 chevronImageView];
+    v59[1] = chevronImageView5;
     v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v59 count:2];
     v30 = [v26 initWithArrangedSubviews:v29];
     [(HUChevronButton *)v3 setContainerView:v30];
 
-    v31 = [(HUChevronButton *)v3 containerView];
-    [v31 setUserInteractionEnabled:0];
+    containerView = [(HUChevronButton *)v3 containerView];
+    [containerView setUserInteractionEnabled:0];
 
-    v32 = [(HUChevronButton *)v3 containerView];
-    [v32 setTranslatesAutoresizingMaskIntoConstraints:0];
+    containerView2 = [(HUChevronButton *)v3 containerView];
+    [containerView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v33 = [(HUChevronButton *)v3 containerView];
-    [v33 setAlignment:3];
+    containerView3 = [(HUChevronButton *)v3 containerView];
+    [containerView3 setAlignment:3];
 
-    v34 = [(HUChevronButton *)v3 containerView];
-    [v34 setSpacing:4.0];
+    containerView4 = [(HUChevronButton *)v3 containerView];
+    [containerView4 setSpacing:4.0];
 
-    v35 = [(HUChevronButton *)v3 containerView];
-    [(HUChevronButton *)v3 addSubview:v35];
+    containerView5 = [(HUChevronButton *)v3 containerView];
+    [(HUChevronButton *)v3 addSubview:containerView5];
 
-    v36 = [MEMORY[0x277CBEB18] array];
-    v37 = [(HUChevronButton *)v3 containerView];
-    v38 = [v37 topAnchor];
-    v39 = [(HUChevronButton *)v3 topAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39 constant:6.0];
-    [v36 addObject:v40];
+    array = [MEMORY[0x277CBEB18] array];
+    containerView6 = [(HUChevronButton *)v3 containerView];
+    topAnchor = [containerView6 topAnchor];
+    topAnchor2 = [(HUChevronButton *)v3 topAnchor];
+    v40 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:6.0];
+    [array addObject:v40];
 
-    v41 = [(HUChevronButton *)v3 containerView];
-    v42 = [v41 bottomAnchor];
-    v43 = [(HUChevronButton *)v3 bottomAnchor];
-    v44 = [v42 constraintEqualToAnchor:v43 constant:-6.0];
-    [v36 addObject:v44];
+    containerView7 = [(HUChevronButton *)v3 containerView];
+    bottomAnchor = [containerView7 bottomAnchor];
+    bottomAnchor2 = [(HUChevronButton *)v3 bottomAnchor];
+    v44 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-6.0];
+    [array addObject:v44];
 
-    v45 = [(HUChevronButton *)v3 containerView];
-    v46 = [v45 centerXAnchor];
-    v47 = [(HUChevronButton *)v3 centerXAnchor];
-    v48 = [v46 constraintEqualToAnchor:v47];
-    [v36 addObject:v48];
+    containerView8 = [(HUChevronButton *)v3 containerView];
+    centerXAnchor = [containerView8 centerXAnchor];
+    centerXAnchor2 = [(HUChevronButton *)v3 centerXAnchor];
+    v48 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+    [array addObject:v48];
 
-    v49 = [(HUChevronButton *)v3 containerView];
-    v50 = [v49 leadingAnchor];
-    v51 = [(HUChevronButton *)v3 leadingAnchor];
-    v52 = [v50 constraintGreaterThanOrEqualToAnchor:v51];
-    [v36 addObject:v52];
+    containerView9 = [(HUChevronButton *)v3 containerView];
+    leadingAnchor = [containerView9 leadingAnchor];
+    leadingAnchor2 = [(HUChevronButton *)v3 leadingAnchor];
+    v52 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
+    [array addObject:v52];
 
-    v53 = [(HUChevronButton *)v3 containerView];
-    v54 = [v53 trailingAnchor];
-    v55 = [(HUChevronButton *)v3 trailingAnchor];
-    v56 = [v54 constraintLessThanOrEqualToAnchor:v55];
-    [v36 addObject:v56];
+    containerView10 = [(HUChevronButton *)v3 containerView];
+    trailingAnchor = [containerView10 trailingAnchor];
+    trailingAnchor2 = [(HUChevronButton *)v3 trailingAnchor];
+    v56 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
+    [array addObject:v56];
 
-    [MEMORY[0x277CCAAD0] activateConstraints:v36];
+    [MEMORY[0x277CCAAD0] activateConstraints:array];
   }
 
   return v3;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v10.receiver = self;
   v10.super_class = HUChevronButton;
   [(HUChevronButton *)&v10 setHighlighted:?];
-  if (a3)
+  if (highlighted)
   {
     [(HUChevronButton *)self tintColor];
   }

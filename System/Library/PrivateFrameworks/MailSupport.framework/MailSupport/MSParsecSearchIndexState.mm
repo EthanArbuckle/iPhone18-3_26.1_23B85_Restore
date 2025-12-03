@@ -1,19 +1,19 @@
 @interface MSParsecSearchIndexState
-+ (id)indexStateForMessagesIndexed:(id)a3 messageBodiesIndexed:(id)a4 indexableMessages:(id)a5 percentUnindexedBodiesInFrecent:(id)a6 attachmentsIndexed:(id)a7 indexableAttachments:(id)a8;
-- (MSParsecSearchIndexState)initWithPercentMessagesIndexed:(int64_t)a3 percentMessageBodiesIndexed:(int64_t)a4 percentUnindexedBodiesInFrecent:(int64_t)a5 percentAttachmentsIndexed:(int64_t)a6 totalMessageCount:(int64_t)a7 indexedMessageCount:(int64_t)a8 indexType:(int64_t)a9;
++ (id)indexStateForMessagesIndexed:(id)indexed messageBodiesIndexed:(id)bodiesIndexed indexableMessages:(id)messages percentUnindexedBodiesInFrecent:(id)frecent attachmentsIndexed:(id)attachmentsIndexed indexableAttachments:(id)attachments;
+- (MSParsecSearchIndexState)initWithPercentMessagesIndexed:(int64_t)indexed percentMessageBodiesIndexed:(int64_t)bodiesIndexed percentUnindexedBodiesInFrecent:(int64_t)frecent percentAttachmentsIndexed:(int64_t)attachmentsIndexed totalMessageCount:(int64_t)count indexedMessageCount:(int64_t)messageCount indexType:(int64_t)type;
 @end
 
 @implementation MSParsecSearchIndexState
 
-+ (id)indexStateForMessagesIndexed:(id)a3 messageBodiesIndexed:(id)a4 indexableMessages:(id)a5 percentUnindexedBodiesInFrecent:(id)a6 attachmentsIndexed:(id)a7 indexableAttachments:(id)a8
++ (id)indexStateForMessagesIndexed:(id)indexed messageBodiesIndexed:(id)bodiesIndexed indexableMessages:(id)messages percentUnindexedBodiesInFrecent:(id)frecent attachmentsIndexed:(id)attachmentsIndexed indexableAttachments:(id)attachments
 {
-  v14 = a3;
-  v35 = a4;
-  v15 = a5;
-  v16 = a6;
-  v34 = a7;
-  v17 = a8;
-  [v15 doubleValue];
+  indexedCopy = indexed;
+  bodiesIndexedCopy = bodiesIndexed;
+  messagesCopy = messages;
+  frecentCopy = frecent;
+  attachmentsIndexedCopy = attachmentsIndexed;
+  attachmentsCopy = attachments;
+  [messagesCopy doubleValue];
   v19 = v18;
   if (v18 <= 0.0)
   {
@@ -24,14 +24,14 @@
   else
   {
     v20 = MEMORY[0x277D07198];
-    [v14 doubleValue];
+    [indexedCopy doubleValue];
     v22 = [v20 bucketedNumber:(v21 / v19 * 100.0) leadingDigits:2];
     v23 = MEMORY[0x277D07198];
-    [v35 doubleValue];
+    [bodiesIndexedCopy doubleValue];
     v25 = [v23 bucketedNumber:(v24 / v19 * 100.0) leadingDigits:2];
   }
 
-  [v17 doubleValue];
+  [attachmentsCopy doubleValue];
   v27 = v26;
   if (v26 <= 0.0)
   {
@@ -41,30 +41,30 @@
   else
   {
     v28 = MEMORY[0x277D07198];
-    [v34 doubleValue];
+    [attachmentsIndexedCopy doubleValue];
     v30 = [v28 bucketedNumber:(v29 / v27 * 100.0) leadingDigits:2];
   }
 
-  v31 = [MEMORY[0x277D07198] roundedInteger:objc_msgSend(v15 placeValueDigits:{"integerValue"), 2}];
-  v32 = [[a1 alloc] initWithPercentMessagesIndexed:v22 percentMessageBodiesIndexed:v25 percentUnindexedBodiesInFrecent:objc_msgSend(v16 percentAttachmentsIndexed:"integerValue") totalMessageCount:v30 indexedMessageCount:v31 indexType:{objc_msgSend(MEMORY[0x277D07198], "roundedInteger:placeValueDigits:", objc_msgSend(v14, "integerValue"), 2), 0}];
+  v31 = [MEMORY[0x277D07198] roundedInteger:objc_msgSend(messagesCopy placeValueDigits:{"integerValue"), 2}];
+  v32 = [[self alloc] initWithPercentMessagesIndexed:v22 percentMessageBodiesIndexed:v25 percentUnindexedBodiesInFrecent:objc_msgSend(frecentCopy percentAttachmentsIndexed:"integerValue") totalMessageCount:v30 indexedMessageCount:v31 indexType:{objc_msgSend(MEMORY[0x277D07198], "roundedInteger:placeValueDigits:", objc_msgSend(indexedCopy, "integerValue"), 2), 0}];
 
   return v32;
 }
 
-- (MSParsecSearchIndexState)initWithPercentMessagesIndexed:(int64_t)a3 percentMessageBodiesIndexed:(int64_t)a4 percentUnindexedBodiesInFrecent:(int64_t)a5 percentAttachmentsIndexed:(int64_t)a6 totalMessageCount:(int64_t)a7 indexedMessageCount:(int64_t)a8 indexType:(int64_t)a9
+- (MSParsecSearchIndexState)initWithPercentMessagesIndexed:(int64_t)indexed percentMessageBodiesIndexed:(int64_t)bodiesIndexed percentUnindexedBodiesInFrecent:(int64_t)frecent percentAttachmentsIndexed:(int64_t)attachmentsIndexed totalMessageCount:(int64_t)count indexedMessageCount:(int64_t)messageCount indexType:(int64_t)type
 {
   v16.receiver = self;
   v16.super_class = MSParsecSearchIndexState;
   result = [(MSParsecSearchIndexState *)&v16 init];
   if (result)
   {
-    result->_percentMessageBodiesIndexed = a4;
-    result->_percentUnindexedBodiesInFrecent = a5;
-    result->_percentAttachmentsIndexed = a6;
-    result->_totalMessageCount = a7;
-    result->_indexedMessageCount = a8;
-    result->_indexType = a9;
-    result->_percentMessagesIndexed = a3;
+    result->_percentMessageBodiesIndexed = bodiesIndexed;
+    result->_percentUnindexedBodiesInFrecent = frecent;
+    result->_percentAttachmentsIndexed = attachmentsIndexed;
+    result->_totalMessageCount = count;
+    result->_indexedMessageCount = messageCount;
+    result->_indexType = type;
+    result->_percentMessagesIndexed = indexed;
   }
 
   return result;

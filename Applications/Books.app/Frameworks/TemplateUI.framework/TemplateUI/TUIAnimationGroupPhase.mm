@@ -1,11 +1,11 @@
 @interface TUIAnimationGroupPhase
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation TUIAnimationGroupPhase
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[TUIAnimationGroupPhase allocWithZone:?]];
   if (v4)

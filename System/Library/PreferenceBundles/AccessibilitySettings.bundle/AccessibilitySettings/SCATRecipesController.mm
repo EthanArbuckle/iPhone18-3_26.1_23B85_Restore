@@ -1,20 +1,20 @@
 @interface SCATRecipesController
-- (id)_launchToRecipeSummary:(id)a3;
-- (id)setName:(id)a3 forItem:(id)a4;
+- (id)_launchToRecipeSummary:(id)summary;
+- (id)setName:(id)name forItem:(id)item;
 - (id)specifiers;
 - (void)didSaveItems;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SCATRecipesController
 
-- (id)setName:(id)a3 forItem:(id)a4
+- (id)setName:(id)name forItem:(id)item
 {
-  v5 = a4;
-  [v5 setName:a3];
+  itemCopy = item;
+  [itemCopy setName:name];
 
-  return v5;
+  return itemCopy;
 }
 
 - (void)didSaveItems
@@ -23,17 +23,17 @@
   v8.super_class = SCATRecipesController;
   [(AXNamedItemsListController *)&v8 didSaveItems];
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 switchControlRecipes];
-  v5 = [v4 count];
+  switchControlRecipes = [v3 switchControlRecipes];
+  v5 = [switchControlRecipes count];
 
   if (!v5)
   {
-    v6 = [(SCATRecipesController *)self launchToRecipeSpecifiers];
+    launchToRecipeSpecifiers = [(SCATRecipesController *)self launchToRecipeSpecifiers];
 
-    if (v6)
+    if (launchToRecipeSpecifiers)
     {
-      v7 = [(SCATRecipesController *)self launchToRecipeSpecifiers];
-      [(SCATRecipesController *)self removeContiguousSpecifiers:v7 animated:1];
+      launchToRecipeSpecifiers2 = [(SCATRecipesController *)self launchToRecipeSpecifiers];
+      [(SCATRecipesController *)self removeContiguousSpecifiers:launchToRecipeSpecifiers2 animated:1];
     }
   }
 }
@@ -44,8 +44,8 @@
   v4 = *&self->super.AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(AXNamedItemsListController *)self namedItemSpecifiers];
-    v6 = [v5 mutableCopy];
+    namedItemSpecifiers = [(AXNamedItemsListController *)self namedItemSpecifiers];
+    v6 = [namedItemSpecifiers mutableCopy];
 
     v7 = AXParameterizedLocalizedString();
     v8 = [PSSpecifier groupSpecifierWithName:v7];
@@ -62,8 +62,8 @@
     [v11 setProperty:@"CreateNewRecipe" forKey:PSIDKey];
     [v6 addObject:v11];
     v12 = +[AXSettings sharedInstance];
-    v13 = [v12 switchControlRecipes];
-    v14 = [v13 count];
+    switchControlRecipes = [v12 switchControlRecipes];
+    v14 = [switchControlRecipes count];
 
     if (v14)
     {
@@ -77,8 +77,8 @@
       v18 = [NSArray arrayWithObjects:v22 count:2];
       [(SCATRecipesController *)self setLaunchToRecipeSpecifiers:v18];
 
-      v19 = [(SCATRecipesController *)self launchToRecipeSpecifiers];
-      [v6 addObjectsFromArray:v19];
+      launchToRecipeSpecifiers = [(SCATRecipesController *)self launchToRecipeSpecifiers];
+      [v6 addObjectsFromArray:launchToRecipeSpecifiers];
     }
 
     else
@@ -95,21 +95,21 @@
   return v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SCATRecipesController;
-  [(AXNamedItemsListController *)&v4 viewWillAppear:a3];
+  [(AXNamedItemsListController *)&v4 viewWillAppear:appear];
   [(SCATRecipesController *)self reloadSpecifiers];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SCATRecipesController *)self specifierForIndexPath:v7];
-  v9 = [v8 identifier];
-  v10 = [v9 isEqualToString:@"CreateNewRecipe"];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(SCATRecipesController *)self specifierForIndexPath:pathCopy];
+  identifier = [v8 identifier];
+  v10 = [identifier isEqualToString:@"CreateNewRecipe"];
 
   if ([(AXNamedItemsListController *)self isNamedItemSpecifier:v8]|| v10)
   {
@@ -127,8 +127,8 @@
     v13 = v12;
     [(SCATRecipeEditController *)v11 setRecipe:v12];
 
-    v14 = [(SCATRecipeEditController *)v11 title];
-    v15 = [PSSpecifier preferenceSpecifierNamed:v14 target:self set:0 get:0 detail:0 cell:-1 edit:0];
+    title = [(SCATRecipeEditController *)v11 title];
+    v15 = [PSSpecifier preferenceSpecifierNamed:title target:self set:0 get:0 detail:0 cell:-1 edit:0];
 
     [(SCATRecipesController *)self showController:v11 withSpecifier:v15];
   }
@@ -137,15 +137,15 @@
   {
     v16.receiver = self;
     v16.super_class = SCATRecipesController;
-    [(AXNamedItemsListController *)&v16 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(AXNamedItemsListController *)&v16 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 }
 
-- (id)_launchToRecipeSummary:(id)a3
+- (id)_launchToRecipeSummary:(id)summary
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 switchControlLaunchRecipeUUID];
-  if (!v4)
+  switchControlLaunchRecipeUUID = [v3 switchControlLaunchRecipeUUID];
+  if (!switchControlLaunchRecipeUUID)
   {
     goto LABEL_13;
   }
@@ -154,14 +154,14 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v3 switchControlRecipes];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  switchControlRecipes = [v3 switchControlRecipes];
+  v6 = [switchControlRecipes countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (!v6)
   {
 LABEL_10:
 
 LABEL_13:
-    v14 = AXParameterizedLocalizedString();
+    name = AXParameterizedLocalizedString();
     goto LABEL_14;
   }
 
@@ -173,12 +173,12 @@ LABEL_4:
   {
     if (*v17 != v8)
     {
-      objc_enumerationMutation(v5);
+      objc_enumerationMutation(switchControlRecipes);
     }
 
     v10 = *(*(&v16 + 1) + 8 * v9);
-    v11 = [v10 uuid];
-    v12 = [v11 isEqual:v4];
+    uuid = [v10 uuid];
+    v12 = [uuid isEqual:switchControlLaunchRecipeUUID];
 
     if (v12)
     {
@@ -187,7 +187,7 @@ LABEL_4:
 
     if (v7 == ++v9)
     {
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [switchControlRecipes countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         goto LABEL_4;
@@ -204,11 +204,11 @@ LABEL_4:
     goto LABEL_13;
   }
 
-  v14 = [v13 name];
+  name = [v13 name];
 
 LABEL_14:
 
-  return v14;
+  return name;
 }
 
 @end

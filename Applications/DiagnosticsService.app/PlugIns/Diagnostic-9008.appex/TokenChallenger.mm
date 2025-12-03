@@ -1,36 +1,36 @@
 @interface TokenChallenger
-- (TokenChallenger)initWithToken:(id)a3 components:(id)a4 fdrTypes:(id)a5 endpoint:(id)a6 signer:(id)a7;
-- (id)baseURL:(id)a3;
+- (TokenChallenger)initWithToken:(id)token components:(id)components fdrTypes:(id)types endpoint:(id)endpoint signer:(id)signer;
+- (id)baseURL:(id)l;
 - (id)description;
 - (id)localizedComponents;
 - (id)localizedComponentsMap;
-- (int64_t)_sanityCheckBuddyMLResponse:(id)a3 data:(id)a4;
-- (int64_t)constructChallengeRequestDataWithToken:(id)a3 data:(id *)a4;
-- (void)_requestBuddyML:(id)a3 session:(id)a4 completion:(id)a5;
-- (void)fetchPasswordWithCompletion:(id)a3;
+- (int64_t)_sanityCheckBuddyMLResponse:(id)response data:(id)data;
+- (int64_t)constructChallengeRequestDataWithToken:(id)token data:(id *)data;
+- (void)_requestBuddyML:(id)l session:(id)session completion:(id)completion;
+- (void)fetchPasswordWithCompletion:(id)completion;
 @end
 
 @implementation TokenChallenger
 
-- (TokenChallenger)initWithToken:(id)a3 components:(id)a4 fdrTypes:(id)a5 endpoint:(id)a6 signer:(id)a7
+- (TokenChallenger)initWithToken:(id)token components:(id)components fdrTypes:(id)types endpoint:(id)endpoint signer:(id)signer
 {
-  v22 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  tokenCopy = token;
+  componentsCopy = components;
+  typesCopy = types;
+  endpointCopy = endpoint;
+  signerCopy = signer;
   v23.receiver = self;
   v23.super_class = TokenChallenger;
   v17 = [(TokenChallenger *)&v23 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_token, a3);
-    objc_storeStrong(&v18->_signer, a7);
-    objc_storeStrong(&v18->_endpoint, a6);
-    objc_storeStrong(&v18->_components, a4);
-    objc_storeStrong(&v18->_fdrTypes, a5);
-    v19 = [(TokenChallenger *)v18 baseURL:v15];
+    objc_storeStrong(&v17->_token, token);
+    objc_storeStrong(&v18->_signer, signer);
+    objc_storeStrong(&v18->_endpoint, endpoint);
+    objc_storeStrong(&v18->_components, components);
+    objc_storeStrong(&v18->_fdrTypes, types);
+    v19 = [(TokenChallenger *)v18 baseURL:endpointCopy];
     endpointBaseURL = v18->_endpointBaseURL;
     v18->_endpointBaseURL = v19;
 
@@ -40,21 +40,21 @@
   return v18;
 }
 
-- (void)fetchPasswordWithCompletion:(id)a3
+- (void)fetchPasswordWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = handleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(TokenChallenger *)self token];
+    token = [(TokenChallenger *)self token];
     *buf = 138412290;
-    v20 = v6;
+    v20 = token;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Fetching password UI with token: %@", buf, 0xCu);
   }
 
-  v7 = [(TokenChallenger *)self token];
+  token2 = [(TokenChallenger *)self token];
   v18 = 0;
-  v8 = [(TokenChallenger *)self constructChallengeRequestDataWithToken:v7 data:&v18];
+  v8 = [(TokenChallenger *)self constructChallengeRequestDataWithToken:token2 data:&v18];
   v9 = v18;
 
   if (v8)
@@ -65,23 +65,23 @@
       sub_10000CE8C();
     }
 
-    v4[2](v4, 0, v8);
+    completionCopy[2](completionCopy, 0, v8);
   }
 
   else
   {
-    v11 = [(TokenChallenger *)self endpoint];
-    v12 = [NSMutableURLRequest requestWithURL:v11];
+    endpoint = [(TokenChallenger *)self endpoint];
+    v12 = [NSMutableURLRequest requestWithURL:endpoint];
 
     [v12 setHTTPMethod:@"POST"];
     [v12 setHTTPBody:v9];
     [v12 setValue:@"application/x-plist" forHTTPHeaderField:@"Content-Type"];
     v13 = +[NSLocale preferredLanguages];
-    v14 = [v13 firstObject];
-    v15 = v14;
-    if (v14)
+    firstObject = [v13 firstObject];
+    v15 = firstObject;
+    if (firstObject)
     {
-      v16 = v14;
+      v16 = firstObject;
     }
 
     else
@@ -92,18 +92,18 @@
     [v12 setValue:v16 forHTTPHeaderField:@"Accept-Language"];
 
     v17 = +[NSURLSession sharedSession];
-    [(TokenChallenger *)self _requestBuddyML:v12 session:v17 completion:v4];
+    [(TokenChallenger *)self _requestBuddyML:v12 session:v17 completion:completionCopy];
   }
 }
 
-- (int64_t)constructChallengeRequestDataWithToken:(id)a3 data:(id *)a4
+- (int64_t)constructChallengeRequestDataWithToken:(id)token data:(id *)data
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  tokenCopy = token;
+  v7 = tokenCopy;
+  if (tokenCopy)
   {
     v29 = @"Token";
-    v30 = v6;
+    v30 = tokenCopy;
     v8 = [NSDictionary dictionaryWithObjects:&v30 forKeys:&v29 count:1];
     v26 = 0;
     v9 = [NSPropertyListSerialization dataWithPropertyList:v8 format:100 options:0 error:&v26];
@@ -132,23 +132,23 @@
 
     else
     {
-      v15 = [(TokenChallenger *)self signer];
-      v16 = [v15 baaCert];
+      signer = [(TokenChallenger *)self signer];
+      baaCert = [signer baaCert];
 
-      if (v16)
+      if (baaCert)
       {
-        v17 = [(TokenChallenger *)self signer];
-        v13 = [v17 signData:v9];
+        signer2 = [(TokenChallenger *)self signer];
+        v13 = [signer2 signData:v9];
 
         if (v13)
         {
           v28[0] = v9;
           v27[0] = @"Payload";
           v27[1] = @"RKCertification";
-          v18 = [(TokenChallenger *)self signer];
-          v19 = [v18 baaCert];
+          signer3 = [(TokenChallenger *)self signer];
+          baaCert2 = [signer3 baaCert];
           v27[2] = @"RKSignature";
-          v28[1] = v19;
+          v28[1] = baaCert2;
           v28[2] = v13;
           v20 = [NSDictionary dictionaryWithObjects:v28 forKeys:v27 count:3];
 
@@ -166,11 +166,11 @@
             v14 = -108;
           }
 
-          else if (a4)
+          else if (data)
           {
             v23 = v21;
             v14 = 0;
-            *a4 = v21;
+            *data = v21;
           }
 
           else
@@ -217,16 +217,16 @@
 - (id)localizedComponents
 {
   v3 = +[NSMutableArray array];
-  v4 = [(TokenChallenger *)self components];
+  components = [(TokenChallenger *)self components];
 
-  if (v4)
+  if (components)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(TokenChallenger *)self components];
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    components2 = [(TokenChallenger *)self components];
+    v6 = [components2 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -237,14 +237,14 @@
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(components2);
           }
 
           v10 = [CRDeviceMap getComponentNameWithSPC:*(*(&v12 + 1) + 8 * i)];
           [v3 addObject:v10];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [components2 countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v7);
@@ -257,33 +257,33 @@
 - (id)localizedComponentsMap
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(TokenChallenger *)self components];
-  v5 = [v4 count];
-  v6 = [(TokenChallenger *)self fdrTypes];
-  v7 = [v6 count];
+  components = [(TokenChallenger *)self components];
+  v5 = [components count];
+  fdrTypes = [(TokenChallenger *)self fdrTypes];
+  v7 = [fdrTypes count];
 
   if (v5 == v7)
   {
-    v8 = [(TokenChallenger *)self fdrTypes];
-    v9 = [v8 count];
+    fdrTypes2 = [(TokenChallenger *)self fdrTypes];
+    v9 = [fdrTypes2 count];
 
     if (v9)
     {
       v10 = 0;
       do
       {
-        v11 = [(TokenChallenger *)self fdrTypes];
-        v12 = [v11 objectAtIndexedSubscript:v10];
+        fdrTypes3 = [(TokenChallenger *)self fdrTypes];
+        v12 = [fdrTypes3 objectAtIndexedSubscript:v10];
 
-        v13 = [(TokenChallenger *)self components];
-        v14 = [v13 objectAtIndexedSubscript:v10];
+        components2 = [(TokenChallenger *)self components];
+        v14 = [components2 objectAtIndexedSubscript:v10];
 
         v15 = [CRDeviceMap getComponentNameWithSPC:v14];
         [v3 setObject:v15 forKeyedSubscript:v12];
 
         ++v10;
-        v16 = [(TokenChallenger *)self fdrTypes];
-        v17 = [v16 count];
+        fdrTypes4 = [(TokenChallenger *)self fdrTypes];
+        v17 = [fdrTypes4 count];
       }
 
       while (v10 < v17);
@@ -302,8 +302,8 @@
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v19 = [(TokenChallenger *)self fdrTypes];
-    v20 = [v19 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    fdrTypes5 = [(TokenChallenger *)self fdrTypes];
+    v20 = [fdrTypes5 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v20)
     {
       v21 = v20;
@@ -314,13 +314,13 @@
         {
           if (*v26 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(fdrTypes5);
           }
 
           [v3 setObject:*(*(&v25 + 1) + 8 * i) forKeyedSubscript:*(*(&v25 + 1) + 8 * i)];
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v21 = [fdrTypes5 countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v21);
@@ -330,15 +330,15 @@
   return v3;
 }
 
-- (void)_requestBuddyML:(id)a3 session:(id)a4 completion:(id)a5
+- (void)_requestBuddyML:(id)l session:(id)session completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  sessionCopy = session;
+  completionCopy = completion;
   v11 = handleForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 URL];
+    v12 = [lCopy URL];
     *buf = 138543362;
     v29 = v12;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Request URL: %{public}@", buf, 0xCu);
@@ -347,22 +347,22 @@
   v13 = handleForCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v8 allHTTPHeaderFields];
+    allHTTPHeaderFields = [lCopy allHTTPHeaderFields];
     *buf = 138543362;
-    v29 = v14;
+    v29 = allHTTPHeaderFields;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Request Headers: %{public}@", buf, 0xCu);
   }
 
-  v15 = [v8 HTTPBody];
+  hTTPBody = [lCopy HTTPBody];
 
-  if (v15)
+  if (hTTPBody)
   {
     v16 = handleForCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v17 = [NSString alloc];
-      v18 = [v8 HTTPBody];
-      v19 = [v17 initWithData:v18 encoding:4];
+      hTTPBody2 = [lCopy HTTPBody];
+      v19 = [v17 initWithData:hTTPBody2 encoding:4];
       *buf = 138477827;
       v29 = v19;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Request Body: %{private}@", buf, 0xCu);
@@ -373,19 +373,19 @@
   v23 = 3221225472;
   v24 = sub_100005500;
   v25 = &unk_100018920;
-  v26 = self;
-  v27 = v10;
-  v20 = v10;
-  v21 = [v9 dataTaskWithRequest:v8 completionHandler:&v22];
+  selfCopy = self;
+  v27 = completionCopy;
+  v20 = completionCopy;
+  v21 = [sessionCopy dataTaskWithRequest:lCopy completionHandler:&v22];
   [v21 resume];
 }
 
-- (int64_t)_sanityCheckBuddyMLResponse:(id)a3 data:(id)a4
+- (int64_t)_sanityCheckBuddyMLResponse:(id)response data:(id)data
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  responseCopy = response;
+  dataCopy = data;
+  v7 = dataCopy;
+  if (!responseCopy)
   {
     v13 = handleForCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -396,7 +396,7 @@
     goto LABEL_10;
   }
 
-  if (!v6)
+  if (!dataCopy)
   {
     v13 = handleForCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -411,15 +411,15 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v8 = [v5 MIMEType];
-  v9 = [v8 isEqualToString:@"application/x-buddyml"];
+  mIMEType = [responseCopy MIMEType];
+  v9 = [mIMEType isEqualToString:@"application/x-buddyml"];
 
   if ((v9 & 1) == 0)
   {
     v13 = handleForCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      sub_10000D19C(v5, v13);
+      sub_10000D19C(responseCopy, v13);
     }
 
     v12 = -307;
@@ -447,51 +447,51 @@ LABEL_18:
   return v12;
 }
 
-- (id)baseURL:(id)a3
+- (id)baseURL:(id)l
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  lCopy = l;
+  v4 = lCopy;
+  if (!lCopy)
   {
     goto LABEL_5;
   }
 
-  v5 = [v3 scheme];
-  if (!v5)
+  scheme = [lCopy scheme];
+  if (!scheme)
   {
     goto LABEL_6;
   }
 
-  v6 = [v4 host];
+  host = [v4 host];
 
-  if (v6)
+  if (host)
   {
     v7 = [NSURLComponents componentsWithURL:v4 resolvingAgainstBaseURL:0];
     [v7 setPath:&stru_100018C40];
     [v7 setQuery:0];
     [v7 setFragment:0];
-    v5 = [v7 URL];
+    scheme = [v7 URL];
   }
 
   else
   {
 LABEL_5:
-    v5 = 0;
+    scheme = 0;
   }
 
 LABEL_6:
 
-  return v5;
+  return scheme;
 }
 
 - (id)description
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(TokenChallenger *)self token];
-  v6 = [(TokenChallenger *)self localizedComponentsMap];
-  v7 = [v6 allKeys];
-  v8 = [NSString stringWithFormat:@"<%@: token = %@, components = %@>", v4, v5, v7];
+  token = [(TokenChallenger *)self token];
+  localizedComponentsMap = [(TokenChallenger *)self localizedComponentsMap];
+  allKeys = [localizedComponentsMap allKeys];
+  v8 = [NSString stringWithFormat:@"<%@: token = %@, components = %@>", v4, token, allKeys];
 
   return v8;
 }

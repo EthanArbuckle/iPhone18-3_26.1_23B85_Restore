@@ -1,6 +1,6 @@
 @interface ASAuthorizationPublicKeyCredentialPRFAssertionInput
 - (ASAuthorizationPublicKeyCredentialPRFAssertionInput)init;
-- (ASAuthorizationPublicKeyCredentialPRFAssertionInput)initWithInputValues:(id)a3 perCredentialInputValues:(id)a4;
+- (ASAuthorizationPublicKeyCredentialPRFAssertionInput)initWithInputValues:(id)values perCredentialInputValues:(id)inputValues;
 - (NSDictionary)perCredentialInputValues;
 @end
 
@@ -24,9 +24,9 @@
   return v2;
 }
 
-- (ASAuthorizationPublicKeyCredentialPRFAssertionInput)initWithInputValues:(id)a3 perCredentialInputValues:(id)a4
+- (ASAuthorizationPublicKeyCredentialPRFAssertionInput)initWithInputValues:(id)values perCredentialInputValues:(id)inputValues
 {
-  if (a4)
+  if (inputValues)
   {
     type metadata accessor for ASAuthorizationPublicKeyCredentialPRFAssertionInputValues(self);
     sub_1B1D10564();
@@ -38,11 +38,11 @@
     v6 = 0;
   }
 
-  *(self + OBJC_IVAR___ASAuthorizationPublicKeyCredentialPRFAssertionInput_inputValues) = a3;
+  *(self + OBJC_IVAR___ASAuthorizationPublicKeyCredentialPRFAssertionInput_inputValues) = values;
   *(self + OBJC_IVAR___ASAuthorizationPublicKeyCredentialPRFAssertionInput_perCredentialInputValues) = v6;
   v9.receiver = self;
   v9.super_class = ASAuthorizationPublicKeyCredentialPRFAssertionInput;
-  v7 = a3;
+  valuesCopy = values;
   return [(ASAuthorizationPublicKeyCredentialPRFAssertionInput *)&v9 init];
 }
 

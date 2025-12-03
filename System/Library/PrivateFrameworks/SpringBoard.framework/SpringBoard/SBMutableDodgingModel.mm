@@ -1,84 +1,84 @@
 @interface SBMutableDodgingModel
-- (void)addIdentifier:(id)a3 atIndex:(unint64_t)a4 center:(CGPoint)a5 size:(CGSize)a6;
-- (void)removeIdentifier:(id)a3;
-- (void)setCenter:(CGPoint)a3 forIdentifier:(id)a4;
-- (void)setIndex:(unint64_t)a3 forIdentifier:(id)a4;
-- (void)setReferenceBounds:(CGRect)a3;
-- (void)setSize:(CGSize)a3 forIdentifier:(id)a4;
+- (void)addIdentifier:(id)identifier atIndex:(unint64_t)index center:(CGPoint)center size:(CGSize)size;
+- (void)removeIdentifier:(id)identifier;
+- (void)setCenter:(CGPoint)center forIdentifier:(id)identifier;
+- (void)setIndex:(unint64_t)index forIdentifier:(id)identifier;
+- (void)setReferenceBounds:(CGRect)bounds;
+- (void)setSize:(CGSize)size forIdentifier:(id)identifier;
 @end
 
 @implementation SBMutableDodgingModel
 
-- (void)setIndex:(unint64_t)a3 forIdentifier:(id)a4
+- (void)setIndex:(unint64_t)index forIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(SBDodgingModel *)self identifiers];
-  [v7 removeObject:v6];
-  [v7 insertObject:v6 atIndex:a3];
+  identifierCopy = identifier;
+  identifiers = [(SBDodgingModel *)self identifiers];
+  [identifiers removeObject:identifierCopy];
+  [identifiers insertObject:identifierCopy atIndex:index];
 }
 
-- (void)removeIdentifier:(id)a3
+- (void)removeIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBDodgingModel *)self identifiers];
-  [v5 removeObject:v4];
+  identifierCopy = identifier;
+  identifiers = [(SBDodgingModel *)self identifiers];
+  [identifiers removeObject:identifierCopy];
 
-  v6 = [(SBDodgingModel *)self centersForIdentifiers];
-  [v6 removeObjectForKey:v4];
+  centersForIdentifiers = [(SBDodgingModel *)self centersForIdentifiers];
+  [centersForIdentifiers removeObjectForKey:identifierCopy];
 
-  v7 = [(SBDodgingModel *)self sizesForIdentifiers];
-  [v7 removeObjectForKey:v4];
+  sizesForIdentifiers = [(SBDodgingModel *)self sizesForIdentifiers];
+  [sizesForIdentifiers removeObjectForKey:identifierCopy];
 }
 
-- (void)addIdentifier:(id)a3 atIndex:(unint64_t)a4 center:(CGPoint)a5 size:(CGSize)a6
+- (void)addIdentifier:(id)identifier atIndex:(unint64_t)index center:(CGPoint)center size:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
-  y = a5.y;
-  x = a5.x;
-  v13 = a3;
-  v12 = [(SBDodgingModel *)self identifiers];
-  [v12 insertObject:v13 atIndex:a4];
+  height = size.height;
+  width = size.width;
+  y = center.y;
+  x = center.x;
+  identifierCopy = identifier;
+  identifiers = [(SBDodgingModel *)self identifiers];
+  [identifiers insertObject:identifierCopy atIndex:index];
 
-  [(SBMutableDodgingModel *)self setCenter:v13 forIdentifier:x, y];
-  [(SBMutableDodgingModel *)self setSize:v13 forIdentifier:width, height];
+  [(SBMutableDodgingModel *)self setCenter:identifierCopy forIdentifier:x, y];
+  [(SBMutableDodgingModel *)self setSize:identifierCopy forIdentifier:width, height];
 }
 
-- (void)setCenter:(CGPoint)a3 forIdentifier:(id)a4
+- (void)setCenter:(CGPoint)center forIdentifier:(id)identifier
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   v12[1] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [(SBDodgingModel *)self centersForIdentifiers];
-  v11 = v7;
+  identifierCopy = identifier;
+  centersForIdentifiers = [(SBDodgingModel *)self centersForIdentifiers];
+  v11 = identifierCopy;
   v9 = [MEMORY[0x277CCAE60] valueWithCGPoint:{x, y}];
   v12[0] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
-  [v8 addEntriesFromDictionary:v10];
+  [centersForIdentifiers addEntriesFromDictionary:v10];
 }
 
-- (void)setSize:(CGSize)a3 forIdentifier:(id)a4
+- (void)setSize:(CGSize)size forIdentifier:(id)identifier
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v12[1] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [(SBDodgingModel *)self sizesForIdentifiers];
-  v11 = v7;
+  identifierCopy = identifier;
+  sizesForIdentifiers = [(SBDodgingModel *)self sizesForIdentifiers];
+  v11 = identifierCopy;
   v9 = [MEMORY[0x277CCAE60] valueWithCGSize:{width, height}];
   v12[0] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
-  [v8 addEntriesFromDictionary:v10];
+  [sizesForIdentifiers addEntriesFromDictionary:v10];
 }
 
-- (void)setReferenceBounds:(CGRect)a3
+- (void)setReferenceBounds:(CGRect)bounds
 {
   v3.receiver = self;
   v3.super_class = SBMutableDodgingModel;
-  [(SBDodgingModel *)&v3 setReferenceBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SBDodgingModel *)&v3 setReferenceBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
 }
 
 @end

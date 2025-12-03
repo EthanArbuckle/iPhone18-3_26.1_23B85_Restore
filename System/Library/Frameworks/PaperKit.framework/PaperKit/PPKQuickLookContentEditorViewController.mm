@@ -1,46 +1,46 @@
 @interface PPKQuickLookContentEditorViewController
-+ (CGSize)_suggestedContentSizeForImageSource:(CGImageSource *)a3;
-+ (CGSize)_suggestedContentSizeForPDF:(id)a3;
-+ (CGSize)suggestedContentSizeForData:(id)a3;
-+ (CGSize)suggestedContentSizeForURL:(id)a3;
-- (BOOL)acceptSingleTouch:(id)a3;
++ (CGSize)_suggestedContentSizeForImageSource:(CGImageSource *)source;
++ (CGSize)_suggestedContentSizeForPDF:(id)f;
++ (CGSize)suggestedContentSizeForData:(id)data;
++ (CGSize)suggestedContentSizeForURL:(id)l;
+- (BOOL)acceptSingleTouch:(id)touch;
 - (BOOL)canEncryptDocument;
 - (BOOL)documentIsLocked;
 - (BOOL)hasResultsForVisualSearch;
 - (BOOL)isBannerVisible;
 - (BOOL)isInteractionActive;
 - (BOOL)isVisualSearchEnabled;
-- (BOOL)shouldAllowEditingContents:(id)a3;
+- (BOOL)shouldAllowEditingContents:(id)contents;
 - (BOOL)shouldEnterVisualSearchAfterNextAnalysis;
 - (BOOL)shouldHighlightTextAndDDAfterNextAnalysis;
 - (BOOL)shouldUpliftSubjectAfterNextAnalysis;
 - (id)filledInfoButtonGlyphName;
 - (id)findInteraction;
 - (id)infoButtonGlyphName;
-- (void)find:(id)a3;
-- (void)findNext:(id)a3;
-- (void)findPrevious:(id)a3;
+- (void)find:(id)find;
+- (void)findNext:(id)next;
+- (void)findPrevious:(id)previous;
 - (void)flattenImageForAnalysis;
 - (void)hideBanner;
 - (void)infoButtonTapped;
-- (void)markupContainerViewController:(id)a3 contentFrameDidChange:(CGRect)a4;
-- (void)markupContainerViewController:(id)a3 detectedFormInContent:(BOOL)a4 withAutofill:(BOOL)a5;
-- (void)markupContainerViewController:(id)a3 didDismissViewControllerWithAnimation:(BOOL)a4;
-- (void)markupContainerViewController:(id)a3 openFormFilling:(BOOL)a4;
-- (void)markupContainerViewController:(id)a3 thumbnailViewDidCollapse:(BOOL)a4;
-- (void)markupContainerViewController:(id)a3 updateChromeWithAnimation:(BOOL)a4;
-- (void)markupContainerViewController:(id)a3 willPresentViewControllerWithAnimation:(BOOL)a4;
-- (void)markupContainerViewControllerActiveAnalysisInteractionTypesDidChange:(id)a3;
-- (void)markupContainerViewControllerAvailableAnalysisResultTypesDidChange:(id)a3;
-- (void)markupContainerViewControllerDidChangeContent:(id)a3 enablingMarkup:(BOOL)a4;
-- (void)setShouldEnterVisualSearchAfterNextAnalysis:(BOOL)a3;
-- (void)setShouldHighlightTextAndDDAfterNextAnalysis:(BOOL)a3;
-- (void)setShouldUpliftSubjectAfterNextAnalysis:(BOOL)a3;
+- (void)markupContainerViewController:(id)controller contentFrameDidChange:(CGRect)change;
+- (void)markupContainerViewController:(id)controller detectedFormInContent:(BOOL)content withAutofill:(BOOL)autofill;
+- (void)markupContainerViewController:(id)controller didDismissViewControllerWithAnimation:(BOOL)animation;
+- (void)markupContainerViewController:(id)controller openFormFilling:(BOOL)filling;
+- (void)markupContainerViewController:(id)controller thumbnailViewDidCollapse:(BOOL)collapse;
+- (void)markupContainerViewController:(id)controller updateChromeWithAnimation:(BOOL)animation;
+- (void)markupContainerViewController:(id)controller willPresentViewControllerWithAnimation:(BOOL)animation;
+- (void)markupContainerViewControllerActiveAnalysisInteractionTypesDidChange:(id)change;
+- (void)markupContainerViewControllerAvailableAnalysisResultTypesDidChange:(id)change;
+- (void)markupContainerViewControllerDidChangeContent:(id)content enablingMarkup:(BOOL)markup;
+- (void)setShouldEnterVisualSearchAfterNextAnalysis:(BOOL)analysis;
+- (void)setShouldHighlightTextAndDDAfterNextAnalysis:(BOOL)analysis;
+- (void)setShouldUpliftSubjectAfterNextAnalysis:(BOOL)analysis;
 - (void)setupAndStartImageAnalysisIfNeeded;
-- (void)shouldHideMarkupOverlays:(BOOL)a3 animated:(BOOL)a4;
-- (void)showBannerWithConfiguration:(id)a3;
+- (void)shouldHideMarkupOverlays:(BOOL)overlays animated:(BOOL)animated;
+- (void)showBannerWithConfiguration:(id)configuration;
 - (void)stopImageAnalysis;
-- (void)updateForFullScreen:(BOOL)a3 animated:(BOOL)a4;
+- (void)updateForFullScreen:(BOOL)screen animated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
@@ -51,42 +51,42 @@
   v4.receiver = self;
   v4.super_class = PPKQuickLookContentEditorViewController;
   [(PPKMarkupViewController *)&v4 viewDidLoad];
-  v3 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v3 setFindInteractionEnabled:1];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC setFindInteractionEnabled:1];
 }
 
-- (BOOL)acceptSingleTouch:(id)a3
+- (BOOL)acceptSingleTouch:(id)touch
 {
-  v4 = a3;
-  v5 = [(PPKMarkupViewController *)self markupContainerVC];
-  v6 = [v5 acceptSingleTouch:v4];
+  touchCopy = touch;
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  v6 = [markupContainerVC acceptSingleTouch:touchCopy];
 
   return v6;
 }
 
-+ (CGSize)suggestedContentSizeForURL:(id)a3
++ (CGSize)suggestedContentSizeForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = *MEMORY[0x1E695F060];
   v6 = *(MEMORY[0x1E695F060] + 8);
-  if (v4)
+  if (lCopy)
   {
-    v7 = [(PPKMarkupViewController *)PPKQuickLookContentEditorViewController _contentTypeForURL:v4];
+    v7 = [(PPKMarkupViewController *)PPKQuickLookContentEditorViewController _contentTypeForURL:lCopy];
     if ([v7 conformsToType:*MEMORY[0x1E6982F10]])
     {
-      v8 = [objc_alloc(MEMORY[0x1E6978028]) initWithURL:v4];
-      [a1 _suggestedContentSizeForPDF:v8];
+      v8 = [objc_alloc(MEMORY[0x1E6978028]) initWithURL:lCopy];
+      [self _suggestedContentSizeForPDF:v8];
       v5 = v9;
       v6 = v10;
     }
 
     else if ([v7 conformsToType:*MEMORY[0x1E6982E30]])
     {
-      v11 = CGImageSourceCreateWithURL(v4, 0);
+      v11 = CGImageSourceCreateWithURL(lCopy, 0);
       if (v11)
       {
         v12 = v11;
-        [a1 _suggestedContentSizeForImageSource:v11];
+        [self _suggestedContentSizeForImageSource:v11];
         v5 = v13;
         v6 = v14;
         CFRelease(v12);
@@ -101,29 +101,29 @@
   return result;
 }
 
-+ (CGSize)suggestedContentSizeForData:(id)a3
++ (CGSize)suggestedContentSizeForData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = *MEMORY[0x1E695F060];
   v6 = *(MEMORY[0x1E695F060] + 8);
-  if (v4)
+  if (dataCopy)
   {
-    v7 = [(PPKMarkupViewController *)PPKQuickLookContentEditorViewController _contentTypeForData:v4];
+    v7 = [(PPKMarkupViewController *)PPKQuickLookContentEditorViewController _contentTypeForData:dataCopy];
     if ([v7 conformsToType:*MEMORY[0x1E6982F10]])
     {
-      v8 = [objc_alloc(MEMORY[0x1E6978028]) initWithData:v4];
-      [a1 _suggestedContentSizeForPDF:v8];
+      v8 = [objc_alloc(MEMORY[0x1E6978028]) initWithData:dataCopy];
+      [self _suggestedContentSizeForPDF:v8];
       v5 = v9;
       v6 = v10;
     }
 
     else if ([v7 conformsToType:*MEMORY[0x1E6982E30]])
     {
-      v11 = CGImageSourceCreateWithData(v4, 0);
+      v11 = CGImageSourceCreateWithData(dataCopy, 0);
       if (v11)
       {
         v12 = v11;
-        [a1 _suggestedContentSizeForImageSource:v11];
+        [self _suggestedContentSizeForImageSource:v11];
         v5 = v13;
         v6 = v14;
         CFRelease(v12);
@@ -140,159 +140,159 @@
 
 - (BOOL)documentIsLocked
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  v3 = [v2 documentIsLocked];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  documentIsLocked = [markupContainerVC documentIsLocked];
 
-  return v3;
+  return documentIsLocked;
 }
 
 - (BOOL)canEncryptDocument
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  v3 = [v2 canEncryptDocument];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  canEncryptDocument = [markupContainerVC canEncryptDocument];
 
-  return v3;
+  return canEncryptDocument;
 }
 
-- (void)updateForFullScreen:(BOOL)a3 animated:(BOOL)a4
+- (void)updateForFullScreen:(BOOL)screen animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v6 updateForFullscreen:v5 animated:v4];
+  animatedCopy = animated;
+  screenCopy = screen;
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC updateForFullscreen:screenCopy animated:animatedCopy];
 }
 
-- (void)shouldHideMarkupOverlays:(BOOL)a3 animated:(BOOL)a4
+- (void)shouldHideMarkupOverlays:(BOOL)overlays animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v6 setShouldHideMarkupOverlays:v5 animated:v4];
+  animatedCopy = animated;
+  overlaysCopy = overlays;
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC setShouldHideMarkupOverlays:overlaysCopy animated:animatedCopy];
 }
 
 - (BOOL)shouldHighlightTextAndDDAfterNextAnalysis
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  v3 = [v2 shouldHighlightTextAndODAfterNextAnalysis];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  shouldHighlightTextAndODAfterNextAnalysis = [markupContainerVC shouldHighlightTextAndODAfterNextAnalysis];
 
-  return v3;
+  return shouldHighlightTextAndODAfterNextAnalysis;
 }
 
-- (void)setShouldHighlightTextAndDDAfterNextAnalysis:(BOOL)a3
+- (void)setShouldHighlightTextAndDDAfterNextAnalysis:(BOOL)analysis
 {
-  v3 = a3;
-  v4 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v4 setShouldHighlightTextAndODAfterNextAnalysis:v3];
+  analysisCopy = analysis;
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC setShouldHighlightTextAndODAfterNextAnalysis:analysisCopy];
 }
 
 - (BOOL)shouldEnterVisualSearchAfterNextAnalysis
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  v3 = [v2 shouldEnterVisualSearchAfterNextAnalysis];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  shouldEnterVisualSearchAfterNextAnalysis = [markupContainerVC shouldEnterVisualSearchAfterNextAnalysis];
 
-  return v3;
+  return shouldEnterVisualSearchAfterNextAnalysis;
 }
 
-- (void)setShouldEnterVisualSearchAfterNextAnalysis:(BOOL)a3
+- (void)setShouldEnterVisualSearchAfterNextAnalysis:(BOOL)analysis
 {
-  v3 = a3;
-  v4 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v4 setShouldEnterVisualSearchAfterNextAnalysis:v3];
+  analysisCopy = analysis;
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC setShouldEnterVisualSearchAfterNextAnalysis:analysisCopy];
 }
 
 - (BOOL)shouldUpliftSubjectAfterNextAnalysis
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  v3 = [v2 shouldUpliftSubjectAfterNextAnalysis];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  shouldUpliftSubjectAfterNextAnalysis = [markupContainerVC shouldUpliftSubjectAfterNextAnalysis];
 
-  return v3;
+  return shouldUpliftSubjectAfterNextAnalysis;
 }
 
-- (void)setShouldUpliftSubjectAfterNextAnalysis:(BOOL)a3
+- (void)setShouldUpliftSubjectAfterNextAnalysis:(BOOL)analysis
 {
-  v3 = a3;
-  v4 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v4 setShouldUpliftSubjectAfterNextAnalysis:v3];
+  analysisCopy = analysis;
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC setShouldUpliftSubjectAfterNextAnalysis:analysisCopy];
 }
 
 - (void)infoButtonTapped
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v2 infoButtonTapped];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC infoButtonTapped];
 }
 
 - (void)setupAndStartImageAnalysisIfNeeded
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v2 setupAndStartImageAnalysisIfNeeded];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC setupAndStartImageAnalysisIfNeeded];
 }
 
 - (void)stopImageAnalysis
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v2 stopImageAnalysis];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC stopImageAnalysis];
 }
 
 - (void)flattenImageForAnalysis
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v2 flattenImageForAnalysis];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC flattenImageForAnalysis];
 }
 
 - (BOOL)isInteractionActive
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  v3 = [v2 isInteractionActive];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  isInteractionActive = [markupContainerVC isInteractionActive];
 
-  return v3;
+  return isInteractionActive;
 }
 
 - (BOOL)hasResultsForVisualSearch
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  v3 = [v2 hasResultsForVisualSearch];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  hasResultsForVisualSearch = [markupContainerVC hasResultsForVisualSearch];
 
-  return v3;
+  return hasResultsForVisualSearch;
 }
 
 - (BOOL)isVisualSearchEnabled
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  v3 = [v2 isVisualSearchEnabled];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  isVisualSearchEnabled = [markupContainerVC isVisualSearchEnabled];
 
-  return v3;
+  return isVisualSearchEnabled;
 }
 
 - (id)infoButtonGlyphName
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  v3 = [v2 infoButtonGlyphName];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  infoButtonGlyphName = [markupContainerVC infoButtonGlyphName];
 
-  return v3;
+  return infoButtonGlyphName;
 }
 
 - (id)filledInfoButtonGlyphName
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  v3 = [v2 filledInfoButtonGlyphName];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  filledInfoButtonGlyphName = [markupContainerVC filledInfoButtonGlyphName];
 
-  return v3;
+  return filledInfoButtonGlyphName;
 }
 
-- (void)markupContainerViewController:(id)a3 updateChromeWithAnimation:(BOOL)a4
+- (void)markupContainerViewController:(id)controller updateChromeWithAnimation:(BOOL)animation
 {
-  v4 = a4;
-  v6 = [(PPKMarkupViewController *)self delegate];
+  animationCopy = animation;
+  delegate = [(PPKMarkupViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 editor:self needsToUpdateChromeWithAnimation:v4];
+    [delegate editor:self needsToUpdateChromeWithAnimation:animationCopy];
   }
 }
 
-- (void)markupContainerViewController:(id)a3 willPresentViewControllerWithAnimation:(BOOL)a4
+- (void)markupContainerViewController:(id)controller willPresentViewControllerWithAnimation:(BOOL)animation
 {
-  v4 = a4;
-  v6 = [(PPKMarkupViewController *)self delegate];
+  animationCopy = animation;
+  delegate = [(PPKMarkupViewController *)self delegate];
   if ([(PPKMarkupViewController *)self annotationEditingEnabled])
   {
     [(PPKQuickLookContentEditorViewController *)self setNeedsToRestoreAnnotationEditingMode:1];
@@ -301,17 +301,17 @@
 
   if (objc_opt_respondsToSelector())
   {
-    [v6 editor:self willPresentViewControllerWithAnimation:v4];
+    [delegate editor:self willPresentViewControllerWithAnimation:animationCopy];
   }
 }
 
-- (void)markupContainerViewController:(id)a3 didDismissViewControllerWithAnimation:(BOOL)a4
+- (void)markupContainerViewController:(id)controller didDismissViewControllerWithAnimation:(BOOL)animation
 {
-  v4 = a4;
-  v6 = [(PPKMarkupViewController *)self delegate];
+  animationCopy = animation;
+  delegate = [(PPKMarkupViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 editor:self didDismissViewControllerWithAnimation:v4];
+    [delegate editor:self didDismissViewControllerWithAnimation:animationCopy];
   }
 
   if ([(PPKQuickLookContentEditorViewController *)self needsToRestoreAnnotationEditingMode])
@@ -321,45 +321,45 @@
   }
 }
 
-- (void)markupContainerViewControllerActiveAnalysisInteractionTypesDidChange:(id)a3
+- (void)markupContainerViewControllerActiveAnalysisInteractionTypesDidChange:(id)change
 {
-  v4 = [(PPKMarkupViewController *)self delegate];
+  delegate = [(PPKMarkupViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 editor:self needsToUpdateChromeWithAnimation:1];
+    [delegate editor:self needsToUpdateChromeWithAnimation:1];
   }
 }
 
-- (void)markupContainerViewControllerAvailableAnalysisResultTypesDidChange:(id)a3
+- (void)markupContainerViewControllerAvailableAnalysisResultTypesDidChange:(id)change
 {
-  v4 = [(PPKMarkupViewController *)self delegate];
+  delegate = [(PPKMarkupViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 editor:self needsToUpdateChromeWithAnimation:1];
+    [delegate editor:self needsToUpdateChromeWithAnimation:1];
   }
 }
 
-- (void)markupContainerViewController:(id)a3 thumbnailViewDidCollapse:(BOOL)a4
+- (void)markupContainerViewController:(id)controller thumbnailViewDidCollapse:(BOOL)collapse
 {
-  v4 = a4;
-  v6 = [(PPKMarkupViewController *)self delegate];
-  v7 = v6;
-  if (v6)
+  collapseCopy = collapse;
+  delegate = [(PPKMarkupViewController *)self delegate];
+  v7 = delegate;
+  if (delegate)
   {
-    v9 = v6;
+    v9 = delegate;
     v8 = objc_opt_respondsToSelector();
     v7 = v9;
     if (v8)
     {
-      [v9 editor:self needsScreenEdgePanGestureRecognition:!v4];
+      [v9 editor:self needsScreenEdgePanGestureRecognition:!collapseCopy];
       v7 = v9;
     }
   }
 }
 
-+ (CGSize)_suggestedContentSizeForImageSource:(CGImageSource *)a3
++ (CGSize)_suggestedContentSizeForImageSource:(CGImageSource *)source
 {
-  ImageAtIndex = CGImageSourceCreateImageAtIndex(a3, 0, 0);
+  ImageAtIndex = CGImageSourceCreateImageAtIndex(source, 0, 0);
   if (ImageAtIndex)
   {
     v4 = ImageAtIndex;
@@ -382,13 +382,13 @@
   return result;
 }
 
-+ (CGSize)_suggestedContentSizeForPDF:(id)a3
++ (CGSize)_suggestedContentSizeForPDF:(id)f
 {
-  v3 = a3;
-  v4 = v3;
+  fCopy = f;
+  v4 = fCopy;
   width = *MEMORY[0x1E695F060];
   height = *(MEMORY[0x1E695F060] + 8);
-  if (v3 && [v3 pageCount])
+  if (fCopy && [fCopy pageCount])
   {
     v7 = [v4 pageAtIndex:0];
     BoxRect = CGPDFPageGetBoxRect([v7 pageRef], kCGPDFMediaBox);
@@ -403,53 +403,53 @@
   return result;
 }
 
-- (void)markupContainerViewControllerDidChangeContent:(id)a3 enablingMarkup:(BOOL)a4
+- (void)markupContainerViewControllerDidChangeContent:(id)content enablingMarkup:(BOOL)markup
 {
-  v4 = a4;
-  v6 = [(PPKMarkupViewController *)self delegate];
-  v7 = v6;
-  if (v6)
+  markupCopy = markup;
+  delegate = [(PPKMarkupViewController *)self delegate];
+  v7 = delegate;
+  if (delegate)
   {
-    v9 = v6;
+    v9 = delegate;
     v8 = objc_opt_respondsToSelector();
     v7 = v9;
     if (v8)
     {
-      [v9 editorDidChangeContent:self enablingMarkup:v4];
+      [v9 editorDidChangeContent:self enablingMarkup:markupCopy];
       v7 = v9;
     }
   }
 }
 
-- (void)markupContainerViewController:(id)a3 openFormFilling:(BOOL)a4
+- (void)markupContainerViewController:(id)controller openFormFilling:(BOOL)filling
 {
-  v4 = a4;
-  v6 = [(PPKMarkupViewController *)self delegate];
-  v7 = v6;
-  if (v6)
+  fillingCopy = filling;
+  delegate = [(PPKMarkupViewController *)self delegate];
+  v7 = delegate;
+  if (delegate)
   {
-    v9 = v6;
+    v9 = delegate;
     v8 = objc_opt_respondsToSelector();
     v7 = v9;
     if (v8)
     {
-      [v9 editorDidChangeContent:self enablingFormFilling:v4];
+      [v9 editorDidChangeContent:self enablingFormFilling:fillingCopy];
       v7 = v9;
     }
   }
 }
 
-- (void)markupContainerViewController:(id)a3 contentFrameDidChange:(CGRect)a4
+- (void)markupContainerViewController:(id)controller contentFrameDidChange:(CGRect)change
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = [(PPKMarkupViewController *)self delegate];
-  v10 = v9;
-  if (v9)
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
+  delegate = [(PPKMarkupViewController *)self delegate];
+  v10 = delegate;
+  if (delegate)
   {
-    v12 = v9;
+    v12 = delegate;
     v11 = objc_opt_respondsToSelector();
     v10 = v12;
     if (v11)
@@ -460,18 +460,18 @@
   }
 }
 
-- (void)markupContainerViewController:(id)a3 detectedFormInContent:(BOOL)a4 withAutofill:(BOOL)a5
+- (void)markupContainerViewController:(id)controller detectedFormInContent:(BOOL)content withAutofill:(BOOL)autofill
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = [(PPKMarkupViewController *)self delegate];
-  v9 = v8;
-  if (v8)
+  autofillCopy = autofill;
+  contentCopy = content;
+  delegate = [(PPKMarkupViewController *)self delegate];
+  v9 = delegate;
+  if (delegate)
   {
-    v11 = v8;
+    v11 = delegate;
     if (objc_opt_respondsToSelector())
     {
-      [v11 editor:self detectedFormInContent:v6 withAutofill:v5];
+      [v11 editor:self detectedFormInContent:contentCopy withAutofill:autofillCopy];
     }
 
     else
@@ -483,7 +483,7 @@
         goto LABEL_7;
       }
 
-      [v11 editor:self detectedFormInContent:v6];
+      [v11 editor:self detectedFormInContent:contentCopy];
     }
 
     v9 = v11;
@@ -492,16 +492,16 @@
 LABEL_7:
 }
 
-- (BOOL)shouldAllowEditingContents:(id)a3
+- (BOOL)shouldAllowEditingContents:(id)contents
 {
   v9.receiver = self;
   v9.super_class = PPKQuickLookContentEditorViewController;
-  v4 = [(PPKMarkupViewController *)&v9 shouldAllowEditingContents:a3];
-  v5 = [(PPKMarkupViewController *)self delegate];
-  v6 = v5;
+  v4 = [(PPKMarkupViewController *)&v9 shouldAllowEditingContents:contents];
+  delegate = [(PPKMarkupViewController *)self delegate];
+  v6 = delegate;
   if (v4)
   {
-    v7 = v5 == 0;
+    v7 = delegate == 0;
   }
 
   else
@@ -525,54 +525,54 @@ LABEL_7:
   return v4;
 }
 
-- (void)showBannerWithConfiguration:(id)a3
+- (void)showBannerWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v5 showBannerViewWith:v4];
+  configurationCopy = configuration;
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC showBannerViewWith:configurationCopy];
 }
 
 - (void)hideBanner
 {
-  v3 = [(PPKMarkupViewController *)self markupContainerVC];
-  v2 = [v3 bannerView];
-  [v2 removeFromSuperview];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  bannerView = [markupContainerVC bannerView];
+  [bannerView removeFromSuperview];
 }
 
 - (BOOL)isBannerVisible
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  v3 = [v2 bannerView];
-  v4 = [v3 window];
-  v5 = v4 != 0;
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  bannerView = [markupContainerVC bannerView];
+  window = [bannerView window];
+  v5 = window != 0;
 
   return v5;
 }
 
 - (id)findInteraction
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  v3 = [v2 findInteraction];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  findInteraction = [markupContainerVC findInteraction];
 
-  return v3;
+  return findInteraction;
 }
 
-- (void)find:(id)a3
+- (void)find:(id)find
 {
-  v3 = [(PPKQuickLookContentEditorViewController *)self findInteraction];
-  [v3 presentFindNavigatorShowingReplace:0];
+  findInteraction = [(PPKQuickLookContentEditorViewController *)self findInteraction];
+  [findInteraction presentFindNavigatorShowingReplace:0];
 }
 
-- (void)findNext:(id)a3
+- (void)findNext:(id)next
 {
-  v3 = [(PPKQuickLookContentEditorViewController *)self findInteraction];
-  [v3 findNext];
+  findInteraction = [(PPKQuickLookContentEditorViewController *)self findInteraction];
+  [findInteraction findNext];
 }
 
-- (void)findPrevious:(id)a3
+- (void)findPrevious:(id)previous
 {
-  v3 = [(PPKQuickLookContentEditorViewController *)self findInteraction];
-  [v3 findPrevious];
+  findInteraction = [(PPKQuickLookContentEditorViewController *)self findInteraction];
+  [findInteraction findPrevious];
 }
 
 @end

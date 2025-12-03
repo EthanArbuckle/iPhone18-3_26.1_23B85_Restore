@@ -1,26 +1,26 @@
 @interface SRGuideDetailSectionHeaderCollectionViewCell
-+ (CGSize)sizeThatFits:(CGSize)a3 text:(id)a4;
-+ (double)_leadingHorizontalOffsetWithLayoutMargins:(UIEdgeInsets)a3;
-+ (double)_trailingHorizontalOffsetWithLayoutMargins:(UIEdgeInsets)a3;
++ (CGSize)sizeThatFits:(CGSize)fits text:(id)text;
++ (double)_leadingHorizontalOffsetWithLayoutMargins:(UIEdgeInsets)margins;
++ (double)_trailingHorizontalOffsetWithLayoutMargins:(UIEdgeInsets)margins;
 + (id)_font;
-- (SRGuideDetailSectionHeaderCollectionViewCell)initWithFrame:(CGRect)a3;
+- (SRGuideDetailSectionHeaderCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation SRGuideDetailSectionHeaderCollectionViewCell
 
-+ (CGSize)sizeThatFits:(CGSize)a3 text:(id)a4
++ (CGSize)sizeThatFits:(CGSize)fits text:(id)text
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [a1 _font];
+  height = fits.height;
+  width = fits.width;
+  textCopy = text;
+  _font = [self _font];
   v22[0] = xmmword_10018B8F0;
   v22[1] = unk_10018B900;
   v22[2] = xmmword_10018B910;
   v23 = qword_10018B920;
-  [SiriUITextContainerView sizeThatFits:v7 text:v8 font:v22 textContainerStyle:width, height];
+  [SiriUITextContainerView sizeThatFits:textCopy text:_font font:v22 textContainerStyle:width, height];
   v10 = v9;
   v12 = v11;
 
@@ -28,9 +28,9 @@
   v14 = SiriUIPlatterStyle[32];
   v15 = SiriUIPlatterStyle[33];
   v16 = SiriUIPlatterStyle[34];
-  [a1 _leadingHorizontalOffsetWithLayoutMargins:{v13, v14, v15, v16}];
+  [self _leadingHorizontalOffsetWithLayoutMargins:{v13, v14, v15, v16}];
   v18 = v10 - v17;
-  [a1 _trailingHorizontalOffsetWithLayoutMargins:{v13, v14, v15, v16}];
+  [self _trailingHorizontalOffsetWithLayoutMargins:{v13, v14, v15, v16}];
   v20 = v18 - v19;
   v21 = SiriUIPlatterStyle[26];
   if (v12 >= v21)
@@ -43,11 +43,11 @@
   return result;
 }
 
-- (SRGuideDetailSectionHeaderCollectionViewCell)initWithFrame:(CGRect)a3
+- (SRGuideDetailSectionHeaderCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v17.receiver = self;
   v17.super_class = SRGuideDetailSectionHeaderCollectionViewCell;
-  v3 = [(SRGuideDetailSectionHeaderCollectionViewCell *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SRGuideDetailSectionHeaderCollectionViewCell *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = *&UIEdgeInsetsZero.bottom;
@@ -59,8 +59,8 @@
 
     [(SiriUITextContainerView *)v3->_textContainerView setTextAlignment:SiriLanguageTextAlignmentLeft()];
     v7 = v3->_textContainerView;
-    v8 = [objc_opt_class() _font];
-    [(SiriUITextContainerView *)v7 setFont:v8];
+    _font = [objc_opt_class() _font];
+    [(SiriUITextContainerView *)v7 setFont:_font];
 
     v9 = v3->_textContainerView;
     v15[0] = xmmword_10018B8F0;
@@ -72,8 +72,8 @@
     v11 = +[UIColor siriui_lightTextColor];
     [(SiriUITextContainerView *)v10 setTextColor:v11];
 
-    v12 = [(SRGuideDetailSectionHeaderCollectionViewCell *)v3 contentView];
-    [v12 addSubview:v3->_textContainerView];
+    contentView = [(SRGuideDetailSectionHeaderCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_textContainerView];
 
     [(SRGuideDetailSectionHeaderCollectionViewCell *)v3 setKeylineType:3];
     v13 = +[UIColor siriui_lightKeylineColor];
@@ -115,18 +115,18 @@
 + (id)_font
 {
   v2 = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle3];
-  v3 = [v2 fontDescriptor];
-  v4 = [v3 fontDescriptorWithSymbolicTraits:2];
+  fontDescriptor = [v2 fontDescriptor];
+  v4 = [fontDescriptor fontDescriptorWithSymbolicTraits:2];
 
   v5 = [UIFont fontWithDescriptor:v4 size:0.0];
 
   return v5;
 }
 
-+ (double)_leadingHorizontalOffsetWithLayoutMargins:(UIEdgeInsets)a3
++ (double)_leadingHorizontalOffsetWithLayoutMargins:(UIEdgeInsets)margins
 {
-  right = a3.right;
-  left = a3.left;
+  right = margins.right;
+  left = margins.left;
   if (SiriUISystemLanguageIsRTL())
   {
     return left;
@@ -138,10 +138,10 @@
   }
 }
 
-+ (double)_trailingHorizontalOffsetWithLayoutMargins:(UIEdgeInsets)a3
++ (double)_trailingHorizontalOffsetWithLayoutMargins:(UIEdgeInsets)margins
 {
-  right = a3.right;
-  left = a3.left;
+  right = margins.right;
+  left = margins.left;
   if (SiriUISystemLanguageIsRTL())
   {
     return right;

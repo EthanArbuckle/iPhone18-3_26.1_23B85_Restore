@@ -1,7 +1,7 @@
 @interface SMTrialManager
 - (SMTrialManager)init;
-- (double)doubleValueForFactor:(id)a3;
-- (id)levelForFactor:(id)a3;
+- (double)doubleValueForFactor:(id)factor;
+- (id)levelForFactor:(id)factor;
 - (void)refresh;
 @end
 
@@ -18,9 +18,9 @@
     namespaceName = v2->_namespaceName;
     v2->_namespaceName = @"LOMO_CHECK_IN";
 
-    v5 = [MEMORY[0x277D73660] client];
+    client = [MEMORY[0x277D73660] client];
     trialClient = v3->_trialClient;
-    v3->_trialClient = v5;
+    v3->_trialClient = client;
   }
 
   return v3;
@@ -28,17 +28,17 @@
 
 - (void)refresh
 {
-  v2 = [(SMTrialManager *)self trialClient];
-  [v2 refresh];
+  trialClient = [(SMTrialManager *)self trialClient];
+  [trialClient refresh];
 }
 
-- (id)levelForFactor:(id)a3
+- (id)levelForFactor:(id)factor
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(SMTrialManager *)self trialClient];
-  v7 = [(SMTrialManager *)self namespaceName];
-  v8 = [v6 levelForFactor:v5 withNamespaceName:v7];
+  factorCopy = factor;
+  trialClient = [(SMTrialManager *)self trialClient];
+  namespaceName = [(SMTrialManager *)self namespaceName];
+  v8 = [trialClient levelForFactor:factorCopy withNamespaceName:namespaceName];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
@@ -53,7 +53,7 @@
       v17 = 2114;
       v18 = v14;
       v19 = 2114;
-      v20 = v5;
+      v20 = factorCopy;
       v21 = 2114;
       v22 = v8;
       _os_log_debug_impl(&dword_26455D000, v9, OS_LOG_TYPE_DEBUG, "%{public}@, %{public}@, factor, %{public}@, level, %{public}@", &v15, 0x2Au);
@@ -65,9 +65,9 @@
   return v8;
 }
 
-- (double)doubleValueForFactor:(id)a3
+- (double)doubleValueForFactor:(id)factor
 {
-  v3 = [(SMTrialManager *)self levelForFactor:a3];
+  v3 = [(SMTrialManager *)self levelForFactor:factor];
   [v3 doubleValue];
   v5 = v4;
 

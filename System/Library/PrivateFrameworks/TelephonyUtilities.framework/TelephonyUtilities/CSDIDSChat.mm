@@ -6,7 +6,7 @@
 - (BOOL)isSendingVideo;
 - (CGSize)localLandscapeAspectRatio;
 - (CGSize)localPortraitAspectRatio;
-- (CSDIDSChat)initWithSession:(id)a3 remoteHandle:(id)a4 wantsVideo:(BOOL)a5;
+- (CSDIDSChat)initWithSession:(id)session remoteHandle:(id)handle wantsVideo:(BOOL)video;
 - (CSDIDSChatDelegate)delegate;
 - (CXCallFailureContext)failureContext;
 - (NSDate)dateConnected;
@@ -23,40 +23,40 @@
 - (int64_t)videoStreamToken;
 - (unint64_t)initialLinkType;
 - (void)_setDateEndedIfNecessary;
-- (void)_setLocalAspectRatiosForVideoAspectRatioDescriptor:(id)a3;
-- (void)answerWithVideoAspectRatioDescriptor:(id)a3;
+- (void)_setLocalAspectRatiosForVideoAspectRatioDescriptor:(id)descriptor;
+- (void)answerWithVideoAspectRatioDescriptor:(id)descriptor;
 - (void)cancelInvitationWithAnsweredElsewhere;
 - (void)cancelInvitationWithDeclinedElsewhere;
 - (void)cancelInvitationWithLocalHangup;
 - (void)cancelOrDeclineInvitation;
-- (void)conference:(id)a3 changedBytesOfDataUsed:(int64_t)a4;
-- (void)conference:(id)a3 didReceiveData:(id)a4 forCallID:(int64_t)a5;
-- (void)conference:(id)a3 endedWithReason:(int64_t)a4 error:(id)a5;
-- (void)conference:(id)a3 inputFrequencyLevelChangedTo:(id)a4;
-- (void)conference:(id)a3 inputLevelChangedTo:(float)a4;
-- (void)conference:(id)a3 outputFrequencyLevelChangedTo:(id)a4;
-- (void)conference:(id)a3 outputLevelChangedTo:(float)a4;
-- (void)conference:(id)a3 remoteMediaStalled:(BOOL)a4;
-- (void)conferenceFinishedPreparing:(id)a3;
-- (void)conferenceStarted:(id)a3;
+- (void)conference:(id)conference changedBytesOfDataUsed:(int64_t)used;
+- (void)conference:(id)conference didReceiveData:(id)data forCallID:(int64_t)d;
+- (void)conference:(id)conference endedWithReason:(int64_t)reason error:(id)error;
+- (void)conference:(id)conference inputFrequencyLevelChangedTo:(id)to;
+- (void)conference:(id)conference inputLevelChangedTo:(float)to;
+- (void)conference:(id)conference outputFrequencyLevelChangedTo:(id)to;
+- (void)conference:(id)conference outputLevelChangedTo:(float)to;
+- (void)conference:(id)conference remoteMediaStalled:(BOOL)stalled;
+- (void)conferenceFinishedPreparing:(id)preparing;
+- (void)conferenceStarted:(id)started;
 - (void)end;
-- (void)mutedChangedForConference:(id)a3;
+- (void)mutedChangedForConference:(id)conference;
 - (void)prepareConference;
-- (void)receivedFirstRemoteFrameForConference:(id)a3;
-- (void)remoteVideoPausedForConference:(id)a3;
-- (void)sendDataUnreliably:(id)a3;
-- (void)sendingAudioChangedForConference:(id)a3;
-- (void)session:(id)a3 endedWithReason:(int)a4;
-- (void)session:(id)a3 receivedData:(id)a4;
-- (void)session:(id)a3 receivedInvitationAcceptWithData:(id)a4;
-- (void)session:(id)a3 receivedInvitationCancelWithData:(id)a4;
-- (void)session:(id)a3 receivedInvitationDeclineWithData:(id)a4;
-- (void)sessionStarted:(id)a3;
-- (void)setRelaying:(BOOL)a3;
-- (void)setRemoteVideoPresentationSize:(CGSize)a3;
-- (void)setRemoteVideoPresentationState:(int)a3;
-- (void)startConnectionWithTransport:(id)a3;
-- (void)startWithVideoAspectRatioDescriptor:(id)a3 inviteCompletion:(id)a4;
+- (void)receivedFirstRemoteFrameForConference:(id)conference;
+- (void)remoteVideoPausedForConference:(id)conference;
+- (void)sendDataUnreliably:(id)unreliably;
+- (void)sendingAudioChangedForConference:(id)conference;
+- (void)session:(id)session endedWithReason:(int)reason;
+- (void)session:(id)session receivedData:(id)data;
+- (void)session:(id)session receivedInvitationAcceptWithData:(id)data;
+- (void)session:(id)session receivedInvitationCancelWithData:(id)data;
+- (void)session:(id)session receivedInvitationDeclineWithData:(id)data;
+- (void)sessionStarted:(id)started;
+- (void)setRelaying:(BOOL)relaying;
+- (void)setRemoteVideoPresentationSize:(CGSize)size;
+- (void)setRemoteVideoPresentationState:(int)state;
+- (void)startConnectionWithTransport:(id)transport;
+- (void)startWithVideoAspectRatioDescriptor:(id)descriptor inviteCompletion:(id)completion;
 @end
 
 @implementation CSDIDSChat
@@ -73,27 +73,27 @@
   return v3;
 }
 
-- (CSDIDSChat)initWithSession:(id)a3 remoteHandle:(id)a4 wantsVideo:(BOOL)a5
+- (CSDIDSChat)initWithSession:(id)session remoteHandle:(id)handle wantsVideo:(BOOL)video
 {
-  v9 = a3;
-  v10 = a4;
+  sessionCopy = session;
+  handleCopy = handle;
   v20.receiver = self;
   v20.super_class = CSDIDSChat;
   v11 = [(CSDIDSChat *)&v20 init];
   if (v11)
   {
     v12 = +[TUCallCenter sharedInstance];
-    v13 = [v12 queue];
-    dispatch_assert_queue_V2(v13);
+    queue = [v12 queue];
+    dispatch_assert_queue_V2(queue);
 
-    objc_storeStrong(&v11->_session, a3);
+    objc_storeStrong(&v11->_session, session);
     [(CSDIDSDualSession *)v11->_session setDelegate:v11];
     v14 = +[NSUUID UUID];
     UUID = v11->_UUID;
     v11->_UUID = v14;
 
-    objc_storeStrong(&v11->_handle, a4);
-    v11->_video = a5;
+    objc_storeStrong(&v11->_handle, handle);
+    v11->_video = video;
     v16 = [RTCReporting newHierarchyTokenFromParentToken:0];
     reportingHierarchyToken = v11->_reportingHierarchyToken;
     v11->_reportingHierarchyToken = v16;
@@ -107,72 +107,72 @@
 
 - (NSString)sessionUUID
 {
-  v2 = [(CSDIDSChat *)self session];
-  v3 = [v2 UUID];
+  session = [(CSDIDSChat *)self session];
+  uUID = [session UUID];
 
-  return v3;
+  return uUID;
 }
 
 - (int64_t)videoStreamToken
 {
-  v2 = [(CSDIDSChat *)self conference];
-  v3 = [v2 callID];
+  conference = [(CSDIDSChat *)self conference];
+  callID = [conference callID];
 
-  return v3;
+  return callID;
 }
 
 - (int64_t)inputAudioPowerSpectrumToken
 {
-  v2 = [(CSDIDSChat *)self conference];
-  v3 = [v2 inputAudioPowerSpectrumToken];
+  conference = [(CSDIDSChat *)self conference];
+  inputAudioPowerSpectrumToken = [conference inputAudioPowerSpectrumToken];
 
-  return v3;
+  return inputAudioPowerSpectrumToken;
 }
 
 - (int64_t)outputAudioPowerSpectrumToken
 {
-  v2 = [(CSDIDSChat *)self conference];
-  v3 = [v2 outputAudioPowerSpectrumToken];
+  conference = [(CSDIDSChat *)self conference];
+  outputAudioPowerSpectrumToken = [conference outputAudioPowerSpectrumToken];
 
-  return v3;
+  return outputAudioPowerSpectrumToken;
 }
 
 - (int64_t)spatialAudioSourceIdentifier
 {
-  v2 = [(CSDIDSChat *)self conference];
-  v3 = [v2 callID];
+  conference = [(CSDIDSChat *)self conference];
+  callID = [conference callID];
 
-  return v3;
+  return callID;
 }
 
 - (NSDate)dateStartedConnecting
 {
-  v2 = [(CSDIDSChat *)self conference];
-  v3 = [v2 dateStartedConnecting];
+  conference = [(CSDIDSChat *)self conference];
+  dateStartedConnecting = [conference dateStartedConnecting];
 
-  return v3;
+  return dateStartedConnecting;
 }
 
 - (NSDate)dateConnected
 {
   if ([(CSDIDSChat *)self isVideo])
   {
-    v3 = [(CSDIDSChat *)self dateReceivedFirstRemoteFrame];
+    dateReceivedFirstRemoteFrame = [(CSDIDSChat *)self dateReceivedFirstRemoteFrame];
   }
 
   else
   {
-    v4 = [(CSDIDSChat *)self conference];
-    v3 = [v4 dateConnected];
+    conference = [(CSDIDSChat *)self conference];
+    dateReceivedFirstRemoteFrame = [conference dateConnected];
   }
 
-  return v3;
+  return dateReceivedFirstRemoteFrame;
 }
 
 - (BOOL)isConnected
 {
-  v2 = [(CSDIDSChat *)self session];
-  v3 = [v2 state] == 3;
+  session = [(CSDIDSChat *)self session];
+  v3 = [session state] == 3;
 
   return v3;
 }
@@ -181,8 +181,8 @@
 {
   if ([(CSDIDSChat *)self hasSentInvitation])
   {
-    v3 = [(CSDIDSChat *)self invitedPushTokens];
-    v4 = [v3 count];
+    invitedPushTokens = [(CSDIDSChat *)self invitedPushTokens];
+    v4 = [invitedPushTokens count];
 
     if (!v4)
     {
@@ -197,7 +197,7 @@ LABEL_27:
       }
 
       v18 = 138412290;
-      v19 = self;
+      selfCopy = self;
       v9 = "Setting disconnected reason to call failed because invitation was sent but no push tokens were available to receive the invitation for call %@";
       v10 = v8;
       v11 = 12;
@@ -207,21 +207,21 @@ LABEL_20:
     }
   }
 
-  v5 = [(CSDIDSChat *)self session];
-  v6 = [v5 endedReason];
+  session = [(CSDIDSChat *)self session];
+  endedReason = [session endedReason];
 
   v7 = -1;
-  if (v6 > 2)
+  if (endedReason > 2)
   {
-    if ((v6 - 5) >= 2)
+    if ((endedReason - 5) >= 2)
     {
-      if (v6 == 3)
+      if (endedReason == 3)
       {
         v8 = sub_100004778();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
           v18 = 134217984;
-          v19 = 3;
+          selfCopy = 3;
           _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Using call ended reason declined elsewhere because CSDIDSDualSession ended reason is %ld", &v18, 0xCu);
         }
 
@@ -229,13 +229,13 @@ LABEL_20:
         goto LABEL_27;
       }
 
-      if (v6 == 4)
+      if (endedReason == 4)
       {
         v8 = sub_100004778();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
           v18 = 134217984;
-          v19 = 4;
+          selfCopy = 4;
           _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Using call ended reason unanswered because CSDIDSDualSession ended reason is %ld", &v18, 0xCu);
         }
 
@@ -253,30 +253,30 @@ LABEL_20:
     }
 
     v18 = 134218242;
-    v19 = v6;
+    selfCopy = endedReason;
     v20 = 2112;
-    v21 = self;
+    selfCopy2 = self;
     v9 = "Setting disconnected reason to call failed because CSDIDSDualSession ended reason is %ld for call %@";
     v10 = v8;
     v11 = 22;
     goto LABEL_20;
   }
 
-  switch(v6)
+  switch(endedReason)
   {
     case 0:
       goto LABEL_22;
     case 1:
-      v12 = [(CSDIDSChat *)self conference];
-      v13 = [v12 dateStartedConnecting];
+      conference = [(CSDIDSChat *)self conference];
+      dateStartedConnecting = [conference dateStartedConnecting];
 
-      if (!v13)
+      if (!dateStartedConnecting)
       {
         v8 = sub_100004778();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
           v18 = 134217984;
-          v19 = 1;
+          selfCopy = 1;
           _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Using call ended reason remote ended because CSDIDSDualSession ended reason is %ld", &v18, 0xCu);
         }
 
@@ -284,30 +284,30 @@ LABEL_20:
       }
 
 LABEL_22:
-      v14 = [(CSDIDSChat *)self conference];
+      conference2 = [(CSDIDSChat *)self conference];
 
-      if (!v14)
+      if (!conference2)
       {
         return -1;
       }
 
-      v15 = [(CSDIDSChat *)self conference];
-      v16 = [v15 endedReason];
+      conference3 = [(CSDIDSChat *)self conference];
+      endedReason2 = [conference3 endedReason];
 
-      if ((v16 - 3) < 5)
+      if ((endedReason2 - 3) < 5)
       {
         goto LABEL_24;
       }
 
-      if (v16 != 2)
+      if (endedReason2 != 2)
       {
-        if (v16 == 1)
+        if (endedReason2 == 1)
         {
 LABEL_24:
           v8 = sub_100004778();
           if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
           {
-            sub_100474098(self, v16, v8);
+            sub_100474098(self, endedReason2, v8);
           }
 
           goto LABEL_26;
@@ -321,7 +321,7 @@ LABEL_24:
       {
         v18 = 134217984;
         v7 = 2;
-        v19 = 2;
+        selfCopy = 2;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Using call ended reason remote ended because CSDAVConference ended reason is %ld", &v18, 0xCu);
         goto LABEL_27;
       }
@@ -334,7 +334,7 @@ LABEL_39:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 134217984;
-        v19 = 2;
+        selfCopy = 2;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Using call ended reason answered elsewhere because CSDIDSDualSession ended reason is %ld", &v18, 0xCu);
       }
 
@@ -349,126 +349,126 @@ LABEL_39:
 {
   if ([(CSDIDSChat *)self hasSentInvitation])
   {
-    v3 = [(CSDIDSChat *)self invitedPushTokens];
-    v4 = [v3 count];
+    invitedPushTokens = [(CSDIDSChat *)self invitedPushTokens];
+    v4 = [invitedPushTokens count];
 
     if (!v4)
     {
       v11 = objc_alloc_init(CXCallFailureContext);
-      v7 = v11;
+      conference = v11;
       v12 = 1;
       goto LABEL_11;
     }
   }
 
-  v5 = [(CSDIDSChat *)self session];
-  v6 = [v5 endedReason];
+  session = [(CSDIDSChat *)self session];
+  endedReason = [session endedReason];
 
-  if (v6 == 6)
+  if (endedReason == 6)
   {
-    v7 = objc_alloc_init(CXCallFailureContext);
-    [v7 setFailureReason:0];
-    v8 = [(CSDIDSChat *)self session];
-    [v7 setProviderErrorCode:{objc_msgSend(v8, "underlyingErrorCode")}];
+    conference = objc_alloc_init(CXCallFailureContext);
+    [conference setFailureReason:0];
+    session2 = [(CSDIDSChat *)self session];
+    [conference setProviderErrorCode:{objc_msgSend(session2, "underlyingErrorCode")}];
 
     goto LABEL_12;
   }
 
-  v7 = [(CSDIDSChat *)self conference];
+  conference = [(CSDIDSChat *)self conference];
 
-  if (v7)
+  if (conference)
   {
-    v9 = [(CSDIDSChat *)self conference];
-    v10 = [v9 endedReason];
+    conference2 = [(CSDIDSChat *)self conference];
+    endedReason2 = [conference2 endedReason];
 
-    if (v10 == 6)
+    if (endedReason2 == 6)
     {
       v11 = objc_alloc_init(CXCallFailureContext);
-      v7 = v11;
+      conference = v11;
       v12 = 5;
       goto LABEL_11;
     }
 
-    if (v10 == 7)
+    if (endedReason2 == 7)
     {
       v11 = objc_alloc_init(CXCallFailureContext);
-      v7 = v11;
+      conference = v11;
       v12 = 4;
 LABEL_11:
       [v11 setFailureReason:v12];
       goto LABEL_12;
     }
 
-    v7 = 0;
+    conference = 0;
   }
 
 LABEL_12:
 
-  return v7;
+  return conference;
 }
 
 - (NSString)crossDeviceIdentifier
 {
-  v2 = [(CSDIDSChat *)self session];
-  v3 = [v2 UUID];
+  session = [(CSDIDSChat *)self session];
+  uUID = [session UUID];
 
-  return v3;
+  return uUID;
 }
 
 - (NSString)remoteFromID
 {
-  v2 = [(CSDIDSChat *)self session];
-  v3 = [v2 remoteFromID];
+  session = [(CSDIDSChat *)self session];
+  remoteFromID = [session remoteFromID];
 
-  return v3;
+  return remoteFromID;
 }
 
 - (unint64_t)initialLinkType
 {
-  v2 = [(CSDIDSChat *)self session];
-  v3 = [v2 initialLinkType];
+  session = [(CSDIDSChat *)self session];
+  initialLinkType = [session initialLinkType];
 
-  return v3;
+  return initialLinkType;
 }
 
 - (void)_setDateEndedIfNecessary
 {
-  v3 = [(CSDIDSChat *)self dateEnded];
+  dateEnded = [(CSDIDSChat *)self dateEnded];
 
-  if (v3)
+  if (dateEnded)
   {
     return;
   }
 
   if ([(CSDIDSChat *)self hasSentInvitation])
   {
-    v4 = [(CSDIDSChat *)self invitedPushTokens];
-    v5 = [v4 count];
+    invitedPushTokens = [(CSDIDSChat *)self invitedPushTokens];
+    v5 = [invitedPushTokens count];
 
     if (!v5)
     {
 LABEL_9:
-      v9 = +[NSDate date];
-      [(CSDIDSChat *)self setDateEnded:v9];
+      conference3 = +[NSDate date];
+      [(CSDIDSChat *)self setDateEnded:conference3];
       goto LABEL_10;
     }
   }
 
-  v6 = [(CSDIDSChat *)self conference];
+  conference = [(CSDIDSChat *)self conference];
 
-  if (!v6)
+  if (!conference)
   {
-    v11 = [(CSDIDSChat *)self session];
+    session = [(CSDIDSChat *)self session];
 
-    if (!v11)
+    if (!session)
     {
       goto LABEL_11;
     }
 
-    v12 = [(CSDIDSChat *)self session];
-    v13 = [v12 state];
+    session2 = [(CSDIDSChat *)self session];
+    state = [session2 state];
 
-    if (v13 != 5)
+    if (state != 5)
     {
       goto LABEL_11;
     }
@@ -476,38 +476,38 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v7 = [(CSDIDSChat *)self conference];
-  v8 = [v7 state];
+  conference2 = [(CSDIDSChat *)self conference];
+  state2 = [conference2 state];
 
-  if (v8 != 7)
+  if (state2 != 7)
   {
     goto LABEL_11;
   }
 
-  v9 = [(CSDIDSChat *)self conference];
-  v10 = [v9 dateEnded];
-  [(CSDIDSChat *)self setDateEnded:v10];
+  conference3 = [(CSDIDSChat *)self conference];
+  dateEnded2 = [conference3 dateEnded];
+  [(CSDIDSChat *)self setDateEnded:dateEnded2];
 
 LABEL_10:
 LABEL_11:
-  v17 = [(CSDIDSChat *)self delegate];
-  v14 = [(CSDIDSChat *)self dateEnded];
-  if (v14)
+  delegate = [(CSDIDSChat *)self delegate];
+  dateEnded3 = [(CSDIDSChat *)self dateEnded];
+  if (dateEnded3)
   {
-    v15 = v14;
+    v15 = dateEnded3;
     v16 = objc_opt_respondsToSelector();
 
     if (v16)
     {
-      [v17 chatEnded:self];
+      [delegate chatEnded:self];
     }
   }
 }
 
-- (void)_setLocalAspectRatiosForVideoAspectRatioDescriptor:(id)a3
+- (void)_setLocalAspectRatiosForVideoAspectRatioDescriptor:(id)descriptor
 {
-  v4 = [(CSDIDSChat *)self delegate];
-  [v4 localPortraitAspectRatioForChat:self];
+  delegate = [(CSDIDSChat *)self delegate];
+  [delegate localPortraitAspectRatioForChat:self];
   v6 = v5;
   v8 = v7;
 
@@ -565,10 +565,10 @@ LABEL_11:
   }
 }
 
-- (void)startWithVideoAspectRatioDescriptor:(id)a3 inviteCompletion:(id)a4
+- (void)startWithVideoAspectRatioDescriptor:(id)descriptor inviteCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  descriptorCopy = descriptor;
   v8 = sub_100004778();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -576,24 +576,24 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "", v9, 2u);
   }
 
-  [(CSDIDSChat *)self _setLocalAspectRatiosForVideoAspectRatioDescriptor:v7];
-  [(CSDIDSChat *)self setInviteCompletion:v6];
+  [(CSDIDSChat *)self _setLocalAspectRatiosForVideoAspectRatioDescriptor:descriptorCopy];
+  [(CSDIDSChat *)self setInviteCompletion:completionCopy];
 
   [(CSDIDSChat *)self prepareConference];
 }
 
-- (void)answerWithVideoAspectRatioDescriptor:(id)a3
+- (void)answerWithVideoAspectRatioDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = descriptorCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "videoAspectRatioDescriptor: %@", &v7, 0xCu);
   }
 
-  [(CSDIDSChat *)self _setLocalAspectRatiosForVideoAspectRatioDescriptor:v4];
+  [(CSDIDSChat *)self _setLocalAspectRatiosForVideoAspectRatioDescriptor:descriptorCopy];
   v6 = +[NSUUID UUID];
   [(CSDIDSChat *)self setUpgradeSessionUUID:v6];
 
@@ -602,12 +602,12 @@ LABEL_11:
 
 - (void)cancelOrDeclineInvitation
 {
-  v3 = [(CSDIDSChat *)self session];
-  v4 = [v3 isInitiator];
+  session = [(CSDIDSChat *)self session];
+  isInitiator = [session isInitiator];
 
   v5 = sub_100004778();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (isInitiator)
   {
     if (v6)
     {
@@ -615,8 +615,8 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Canceling session", buf, 2u);
     }
 
-    v7 = [(CSDIDSChat *)self session];
-    [v7 cancelInvitationWithReason:0];
+    session2 = [(CSDIDSChat *)self session];
+    [session2 cancelInvitationWithReason:0];
   }
 
   else
@@ -627,8 +627,8 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Declining session", v8, 2u);
     }
 
-    v7 = [(CSDIDSChat *)self session];
-    [v7 declineInvitation];
+    session2 = [(CSDIDSChat *)self session];
+    [session2 declineInvitation];
   }
 }
 
@@ -638,29 +638,29 @@ LABEL_11:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "end self: %@", &v15, 0xCu);
   }
 
-  v4 = [(CSDIDSChat *)self dateEnded];
+  dateEnded = [(CSDIDSChat *)self dateEnded];
 
-  if (!v4)
+  if (!dateEnded)
   {
-    v5 = [(CSDIDSChat *)self conference];
-    if (v5)
+    conference = [(CSDIDSChat *)self conference];
+    if (conference)
     {
-      v6 = v5;
-      v7 = [(CSDIDSChat *)self conference];
-      if ([v7 state] <= 3)
+      v6 = conference;
+      conference2 = [(CSDIDSChat *)self conference];
+      if ([conference2 state] <= 3)
       {
       }
 
       else
       {
-        v8 = [(CSDIDSChat *)self conference];
-        v9 = [v8 state];
+        conference3 = [(CSDIDSChat *)self conference];
+        state = [conference3 state];
 
-        if (v9 <= 5)
+        if (state <= 5)
         {
           v10 = sub_100004778();
           if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -669,17 +669,17 @@ LABEL_11:
             _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Stopping conference", &v15, 2u);
           }
 
-          v11 = [(CSDIDSChat *)self conference];
-          [v11 stop];
+          conference4 = [(CSDIDSChat *)self conference];
+          [conference4 stop];
           goto LABEL_16;
         }
       }
     }
 
-    v12 = [(CSDIDSChat *)self session];
-    v13 = [v12 state];
+    session = [(CSDIDSChat *)self session];
+    state2 = [session state];
 
-    if (v13 == 1)
+    if (state2 == 1)
     {
       [(CSDIDSChat *)self cancelOrDeclineInvitation];
 LABEL_17:
@@ -694,8 +694,8 @@ LABEL_17:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Ending session", &v15, 2u);
     }
 
-    v11 = [(CSDIDSChat *)self session];
-    [v11 end];
+    conference4 = [(CSDIDSChat *)self session];
+    [conference4 end];
 LABEL_16:
 
     goto LABEL_17;
@@ -708,15 +708,15 @@ LABEL_16:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "for call %@", &v6, 0xCu);
   }
 
-  v4 = [(CSDIDSChat *)self session];
-  [v4 cancelInvitationWithReason:1];
+  session = [(CSDIDSChat *)self session];
+  [session cancelInvitationWithReason:1];
 
-  v5 = [(CSDIDSChat *)self conference];
-  [v5 cancel];
+  conference = [(CSDIDSChat *)self conference];
+  [conference cancel];
 }
 
 - (void)cancelInvitationWithDeclinedElsewhere
@@ -725,15 +725,15 @@ LABEL_16:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "for call %@", &v6, 0xCu);
   }
 
-  v4 = [(CSDIDSChat *)self session];
-  [v4 cancelInvitationWithReason:2];
+  session = [(CSDIDSChat *)self session];
+  [session cancelInvitationWithReason:2];
 
-  v5 = [(CSDIDSChat *)self conference];
-  [v5 cancel];
+  conference = [(CSDIDSChat *)self conference];
+  [conference cancel];
 }
 
 - (void)cancelInvitationWithLocalHangup
@@ -742,248 +742,248 @@ LABEL_16:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "for call %@", &v6, 0xCu);
   }
 
-  v4 = [(CSDIDSChat *)self session];
-  [v4 cancelInvitationWithReason:0];
+  session = [(CSDIDSChat *)self session];
+  [session cancelInvitationWithReason:0];
 
-  v5 = [(CSDIDSChat *)self conference];
-  [v5 cancel];
+  conference = [(CSDIDSChat *)self conference];
+  [conference cancel];
 }
 
-- (void)sendDataUnreliably:(id)a3
+- (void)sendDataUnreliably:(id)unreliably
 {
-  v4 = a3;
-  v5 = [(CSDIDSChat *)self conference];
-  [v5 sendData:v4];
+  unreliablyCopy = unreliably;
+  conference = [(CSDIDSChat *)self conference];
+  [conference sendData:unreliablyCopy];
 }
 
 - (BOOL)isSendingAudio
 {
-  v2 = [(CSDIDSChat *)self conference];
-  v3 = [v2 isSendingAudio];
+  conference = [(CSDIDSChat *)self conference];
+  isSendingAudio = [conference isSendingAudio];
 
-  return v3;
+  return isSendingAudio;
 }
 
 - (BOOL)isSendingAudioData
 {
-  v2 = [(CSDIDSChat *)self conference];
-  v3 = [v2 isSendingAudioData];
+  conference = [(CSDIDSChat *)self conference];
+  isSendingAudioData = [conference isSendingAudioData];
 
-  return v3;
+  return isSendingAudioData;
 }
 
 - (BOOL)isSendingVideo
 {
-  v2 = [(CSDIDSChat *)self conference];
-  v3 = [v2 isSendingVideo];
+  conference = [(CSDIDSChat *)self conference];
+  isSendingVideo = [conference isSendingVideo];
 
-  return v3;
+  return isSendingVideo;
 }
 
-- (void)setRelaying:(BOOL)a3
+- (void)setRelaying:(BOOL)relaying
 {
-  if (self->_relaying != a3)
+  if (self->_relaying != relaying)
   {
-    v3 = a3;
+    relayingCopy = relaying;
     v5 = sub_100004778();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8[0] = 67109634;
       v8[1] = [(CSDIDSChat *)self isRelaying];
       v9 = 1024;
-      v10 = v3;
+      v10 = relayingCopy;
       v11 = 2112;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Setting relaying from %d to %d for chat %@", v8, 0x18u);
     }
 
-    self->_relaying = v3;
-    v6 = [(CSDIDSChat *)self deviceRole];
-    v7 = [(CSDIDSChat *)self conference];
-    [v7 setDeviceRole:v6];
+    self->_relaying = relayingCopy;
+    deviceRole = [(CSDIDSChat *)self deviceRole];
+    conference = [(CSDIDSChat *)self conference];
+    [conference setDeviceRole:deviceRole];
   }
 }
 
-- (void)startConnectionWithTransport:(id)a3
+- (void)startConnectionWithTransport:(id)transport
 {
-  v4 = a3;
+  transportCopy = transport;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = transportCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "transport: %@", &v11, 0xCu);
   }
 
-  v6 = [(CSDIDSChat *)self conference];
-  v7 = [(CSDIDSChat *)self remoteFromID];
-  v8 = [(CSDIDSChat *)self crossDeviceIdentifier];
-  [v6 setRemoteIDSDestinationURI:v7 crossDeviceIdentifier:v8];
+  conference = [(CSDIDSChat *)self conference];
+  remoteFromID = [(CSDIDSChat *)self remoteFromID];
+  crossDeviceIdentifier = [(CSDIDSChat *)self crossDeviceIdentifier];
+  [conference setRemoteIDSDestinationURI:remoteFromID crossDeviceIdentifier:crossDeviceIdentifier];
 
-  v9 = [(CSDIDSChat *)self conference];
-  [v9 startConnectionWithTransport:v4];
+  conference2 = [(CSDIDSChat *)self conference];
+  [conference2 startConnectionWithTransport:transportCopy];
 
-  v10 = [(CSDIDSChat *)self delegate];
+  delegate = [(CSDIDSChat *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v10 chatStartedConnecting:self];
+    [delegate chatStartedConnecting:self];
   }
 }
 
 - (void)prepareConference
 {
-  v3 = [(CSDIDSChat *)self conferenceCreationBlock];
-  v4 = v3[2]();
+  conferenceCreationBlock = [(CSDIDSChat *)self conferenceCreationBlock];
+  v4 = conferenceCreationBlock[2]();
   [(CSDIDSChat *)self setConference:v4];
 
-  v5 = [(CSDIDSChat *)self conference];
-  [v5 setDelegate:self];
+  conference = [(CSDIDSChat *)self conference];
+  [conference setDelegate:self];
 
   v6 = +[TUCallCenter sharedInstance];
-  v7 = [v6 queue];
-  v8 = [(CSDIDSChat *)self conference];
-  [v8 setDelegateQueue:v7];
+  queue = [v6 queue];
+  conference2 = [(CSDIDSChat *)self conference];
+  [conference2 setDelegateQueue:queue];
 
   v14 = objc_alloc_init(CSDAVConferenceConfiguration);
   [(CSDAVConferenceConfiguration *)v14 setRequiresInviteDictionary:1];
   [(CSDAVConferenceConfiguration *)v14 setCaller:[(CSDIDSChat *)self isOutgoing]];
-  v9 = [(CSDIDSChat *)self capabilities];
-  [(CSDAVConferenceConfiguration *)v14 setCapabilities:v9];
+  capabilities = [(CSDIDSChat *)self capabilities];
+  [(CSDAVConferenceConfiguration *)v14 setCapabilities:capabilities];
 
-  v10 = [objc_opt_class() faceTimeAppUUID];
-  [(CSDAVConferenceConfiguration *)v14 setClientUUID:v10];
+  faceTimeAppUUID = [objc_opt_class() faceTimeAppUUID];
+  [(CSDAVConferenceConfiguration *)v14 setClientUUID:faceTimeAppUUID];
 
-  v11 = [(CSDIDSChat *)self reportingHierarchyToken];
-  [(CSDAVConferenceConfiguration *)v14 setReportingHierarchyToken:v11];
+  reportingHierarchyToken = [(CSDIDSChat *)self reportingHierarchyToken];
+  [(CSDAVConferenceConfiguration *)v14 setReportingHierarchyToken:reportingHierarchyToken];
 
-  v12 = [(CSDIDSChat *)self remoteInviteDictionary];
-  [(CSDAVConferenceConfiguration *)v14 setRemoteInviteDictionary:v12];
+  remoteInviteDictionary = [(CSDIDSChat *)self remoteInviteDictionary];
+  [(CSDAVConferenceConfiguration *)v14 setRemoteInviteDictionary:remoteInviteDictionary];
 
   [(CSDIDSChat *)self localPortraitAspectRatio];
   [(CSDAVConferenceConfiguration *)v14 setLocalPortraitAspectRatio:?];
   [(CSDIDSChat *)self localLandscapeAspectRatio];
   [(CSDAVConferenceConfiguration *)v14 setLocalLandscapeAspectRatio:?];
-  v13 = [(CSDIDSChat *)self conference];
-  [v13 prepareWithConfiguration:v14];
+  conference3 = [(CSDIDSChat *)self conference];
+  [conference3 prepareWithConfiguration:v14];
 }
 
-- (void)setRemoteVideoPresentationSize:(CGSize)a3
+- (void)setRemoteVideoPresentationSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(CSDIDSChat *)self conference];
-  [v5 setRemoteVideoPresentationSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  conference = [(CSDIDSChat *)self conference];
+  [conference setRemoteVideoPresentationSize:{width, height}];
 }
 
-- (void)setRemoteVideoPresentationState:(int)a3
+- (void)setRemoteVideoPresentationState:(int)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     v3 = 2;
   }
 
   else
   {
-    v3 = a3 == 1;
+    v3 = state == 1;
   }
 
-  v4 = [(CSDIDSChat *)self conference];
-  [v4 setRemoteVideoPresentationState:v3];
+  conference = [(CSDIDSChat *)self conference];
+  [conference setRemoteVideoPresentationState:v3];
 }
 
-- (void)sessionStarted:(id)a3
+- (void)sessionStarted:(id)started
 {
-  v4 = a3;
+  startedCopy = started;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v4;
+    selfCopy = startedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "sessionStarted: %@", &v13, 0xCu);
   }
 
-  v6 = [(CSDIDSChat *)self delegate];
-  v7 = [v6 isMediaAllowedForChat:self];
+  delegate = [(CSDIDSChat *)self delegate];
+  v7 = [delegate isMediaAllowedForChat:self];
 
   if (v7)
   {
-    v8 = [(CSDIDSChat *)self conference];
-    v9 = [v8 remoteInviteDictionary];
+    conference = [(CSDIDSChat *)self conference];
+    remoteInviteDictionary = [conference remoteInviteDictionary];
 
-    if (v9)
+    if (remoteInviteDictionary)
     {
-      v10 = [(CSDIDSChat *)v4 transport];
-      [(CSDIDSChat *)self startConnectionWithTransport:v10];
+      transport = [(CSDIDSChat *)startedCopy transport];
+      [(CSDIDSChat *)self startConnectionWithTransport:transport];
     }
 
     else
     {
-      v10 = sub_100004778();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      transport = sub_100004778();
+      if (os_log_type_enabled(transport, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(CSDIDSChat *)self conference];
-        v12 = [v11 state];
+        conference2 = [(CSDIDSChat *)self conference];
+        state = [conference2 state];
         v13 = 67109120;
-        LODWORD(v14) = v12;
-        _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Not starting connection because conference state is %d", &v13, 8u);
+        LODWORD(selfCopy) = state;
+        _os_log_impl(&_mh_execute_header, transport, OS_LOG_TYPE_DEFAULT, "Not starting connection because conference state is %d", &v13, 8u);
       }
     }
   }
 
   else
   {
-    v10 = sub_100004778();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    transport = sub_100004778();
+    if (os_log_type_enabled(transport, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = self;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[WARN] Not starting connection because the chat is not allowed to start media: %@", &v13, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&_mh_execute_header, transport, OS_LOG_TYPE_DEFAULT, "[WARN] Not starting connection because the chat is not allowed to start media: %@", &v13, 0xCu);
     }
   }
 }
 
-- (void)session:(id)a3 endedWithReason:(int)a4
+- (void)session:(id)session endedWithReason:(int)reason
 {
-  v6 = a3;
+  sessionCopy = session;
   v7 = sub_100004778();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = v6;
+    v10 = sessionCopy;
     v11 = 1024;
-    v12 = a4;
+    reasonCopy = reason;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "session %@ endedWithReason %d", &v9, 0x12u);
   }
 
-  v8 = [(CSDIDSChat *)self conference];
-  [v8 stop];
+  conference = [(CSDIDSChat *)self conference];
+  [conference stop];
 
   [(CSDIDSChat *)self _handlePushTokensInvited:&__NSArray0__struct didSendInvitation:0 didCancelInvitation:1];
   [(CSDIDSChat *)self _setDateEndedIfNecessary];
 }
 
-- (void)session:(id)a3 receivedInvitationAcceptWithData:(id)a4
+- (void)session:(id)session receivedInvitationAcceptWithData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[CSDMessagingCallMessage alloc] initWithData:v7];
+  sessionCopy = session;
+  dataCopy = data;
+  v8 = [[CSDMessagingCallMessage alloc] initWithData:dataCopy];
 
   v9 = sub_100004778();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *v43 = v6;
+    *v43 = sessionCopy;
     *&v43[8] = 2112;
     v44 = v8;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "session %@ receivedInvitationAcceptWithData %@", buf, 0x16u);
   }
 
-  v10 = [(CSDIDSChat *)self delegate];
-  v11 = [v10 isMediaAllowedForChat:self];
+  delegate = [(CSDIDSChat *)self delegate];
+  v11 = [delegate isMediaAllowedForChat:self];
 
   if ((v11 & 1) == 0)
   {
@@ -1018,36 +1018,36 @@ LABEL_26:
     goto LABEL_25;
   }
 
-  v12 = [v6 remoteFromID];
-  v13 = [v12 length];
+  remoteFromID = [sessionCopy remoteFromID];
+  v13 = [remoteFromID length];
 
   if (v13)
   {
-    v14 = [v6 remoteFromID];
+    remoteFromID2 = [sessionCopy remoteFromID];
     v41 = 0;
-    v15 = [v14 _stripPotentialTokenURIWithToken:&v41];
+    v15 = [remoteFromID2 _stripPotentialTokenURIWithToken:&v41];
     v16 = v41;
 
     if (![v16 length])
     {
-      v29 = sub_100004778();
-      if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+      transport = sub_100004778();
+      if (os_log_type_enabled(transport, OS_LOG_TYPE_ERROR))
       {
-        sub_100474210(v29);
+        sub_100474210(transport);
       }
 
       goto LABEL_33;
     }
 
-    v17 = [(CSDIDSChat *)self invitedPushTokens];
-    v18 = [v17 containsObject:v16];
+    invitedPushTokens = [(CSDIDSChat *)self invitedPushTokens];
+    v18 = [invitedPushTokens containsObject:v16];
 
     if ((v18 & 1) == 0)
     {
-      v29 = sub_100004778();
-      if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+      transport = sub_100004778();
+      if (os_log_type_enabled(transport, OS_LOG_TYPE_ERROR))
       {
-        sub_100474134(v29);
+        sub_100474134(transport);
       }
 
       goto LABEL_33;
@@ -1055,11 +1055,11 @@ LABEL_26:
 
     if (!v8)
     {
-      v29 = sub_100004778();
-      if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+      transport = sub_100004778();
+      if (os_log_type_enabled(transport, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "[WARN] Ignoring incoming accept since accompanying message was nil", buf, 2u);
+        _os_log_impl(&_mh_execute_header, transport, OS_LOG_TYPE_DEFAULT, "[WARN] Ignoring incoming accept since accompanying message was nil", buf, 2u);
       }
 
       goto LABEL_33;
@@ -1067,39 +1067,39 @@ LABEL_26:
 
     if ([(CSDMessagingCallMessage *)v8 type]!= 1)
     {
-      v29 = sub_100004778();
-      if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+      transport = sub_100004778();
+      if (os_log_type_enabled(transport, OS_LOG_TYPE_DEFAULT))
       {
-        v33 = [(CSDMessagingCallMessage *)v8 type];
-        if (v33 >= 3)
+        type = [(CSDMessagingCallMessage *)v8 type];
+        if (type >= 3)
         {
-          v34 = [NSString stringWithFormat:@"(unknown: %i)", v33];
+          v34 = [NSString stringWithFormat:@"(unknown: %i)", type];
         }
 
         else
         {
-          v34 = off_10061B138[v33];
+          v34 = off_10061B138[type];
         }
 
         *buf = 138412290;
         *v43 = v34;
-        _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "[WARN] Ignoring incoming message since message with type=%@ was not invite.", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, transport, OS_LOG_TYPE_DEFAULT, "[WARN] Ignoring incoming message since message with type=%@ was not invite.", buf, 0xCu);
       }
 
       goto LABEL_33;
     }
 
-    v19 = [(CSDMessagingCallMessage *)v8 inviteData];
-    v20 = [v19 faceTimeInviteDictionary];
-    v21 = [(CSDIDSChat *)self conference];
-    [v21 setRemoteInviteDictionary:v20];
+    inviteData = [(CSDMessagingCallMessage *)v8 inviteData];
+    faceTimeInviteDictionary = [inviteData faceTimeInviteDictionary];
+    conference = [(CSDIDSChat *)self conference];
+    [conference setRemoteInviteDictionary:faceTimeInviteDictionary];
 
     [(CSDIDSChat *)self setRemoteMomentsAvailable:[(CSDMessagingCallMessage *)v8 isMomentsAvailable]];
     if ([(CSDMessagingCallMessage *)v8 hasProtoUpgradeSessionUUID]&& ([(CSDIDSChat *)self upgradeSessionUUID], v22 = objc_claimAutoreleasedReturnValue(), v22, !v22))
     {
       v39 = [NSUUID alloc];
-      v40 = [(CSDMessagingCallMessage *)v8 protoUpgradeSessionUUID];
-      v23 = [v39 initWithUUIDString:v40];
+      protoUpgradeSessionUUID = [(CSDMessagingCallMessage *)v8 protoUpgradeSessionUUID];
+      v23 = [v39 initWithUUIDString:protoUpgradeSessionUUID];
 
       if (v23)
       {
@@ -1110,38 +1110,38 @@ LABEL_15:
         {
           if ([(CSDIDSChat *)self isVideo])
           {
-            v25 = [(CSDIDSChat *)self isVideo];
-            v26 = [(CSDMessagingCallMessage *)v8 protoWantsVideo];
+            isVideo = [(CSDIDSChat *)self isVideo];
+            protoWantsVideo = [(CSDMessagingCallMessage *)v8 protoWantsVideo];
             [(CSDIDSChat *)self setVideo:[(CSDMessagingCallMessage *)v8 protoWantsVideo]];
-            if (v25 != v26)
+            if (isVideo != protoWantsVideo)
             {
-              v27 = [(CSDIDSChat *)self conference];
-              v28 = [(CSDIDSChat *)self capabilities];
-              [v27 updateCapabilities:v28];
+              conference2 = [(CSDIDSChat *)self conference];
+              capabilities = [(CSDIDSChat *)self capabilities];
+              [conference2 updateCapabilities:capabilities];
             }
           }
         }
 
-        if ([v6 state] == 3)
+        if ([sessionCopy state] == 3)
         {
-          v29 = [v6 transport];
-          [(CSDIDSChat *)self startConnectionWithTransport:v29];
+          transport = [sessionCopy transport];
+          [(CSDIDSChat *)self startConnectionWithTransport:transport];
         }
 
         else
         {
-          v29 = sub_100004778();
-          if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+          transport = sub_100004778();
+          if (os_log_type_enabled(transport, OS_LOG_TYPE_DEFAULT))
           {
-            v35 = [(CSDIDSChat *)self session];
-            v36 = [v35 state];
-            v37 = [(CSDIDSChat *)self conference];
-            v38 = [v37 state];
+            session = [(CSDIDSChat *)self session];
+            state = [session state];
+            conference3 = [(CSDIDSChat *)self conference];
+            state2 = [conference3 state];
             *buf = 67109376;
-            *v43 = v36;
+            *v43 = state;
             *&v43[4] = 1024;
-            *&v43[6] = v38;
-            _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Not starting connecting because session state is %d and conference state is %d", buf, 0xEu);
+            *&v43[6] = state2;
+            _os_log_impl(&_mh_execute_header, transport, OS_LOG_TYPE_DEFAULT, "Not starting connecting because session state is %d and conference state is %d", buf, 0xEu);
           }
         }
 
@@ -1150,10 +1150,10 @@ LABEL_33:
         goto LABEL_34;
       }
 
-      v24 = sub_100004778();
-      if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+      upgradeSessionUUID = sub_100004778();
+      if (os_log_type_enabled(upgradeSessionUUID, OS_LOG_TYPE_ERROR))
       {
-        sub_100474178(v8, v24);
+        sub_100474178(v8, upgradeSessionUUID);
       }
     }
 
@@ -1165,11 +1165,11 @@ LABEL_33:
         goto LABEL_15;
       }
 
-      v24 = [(CSDIDSChat *)self upgradeSessionUUID];
+      upgradeSessionUUID = [(CSDIDSChat *)self upgradeSessionUUID];
       *buf = 138412546;
       *v43 = v8;
       *&v43[8] = 2112;
-      v44 = v24;
+      v44 = upgradeSessionUUID;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "[WARN] Not setting upgradeSessionUUID for message: %@ self.upgradeSessionUUID: %@", buf, 0x16u);
     }
 
@@ -1189,57 +1189,57 @@ LABEL_33:
 LABEL_34:
 }
 
-- (void)session:(id)a3 receivedInvitationDeclineWithData:(id)a4
+- (void)session:(id)session receivedInvitationDeclineWithData:(id)data
 {
-  v5 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  dataCopy = data;
   v7 = sub_100004778();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
-    v9 = v5;
+    v9 = sessionCopy;
     v10 = 2112;
-    v11 = v6;
+    v11 = dataCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "session %@ receivedInvitationDeclineWithData %@", &v8, 0x16u);
   }
 }
 
-- (void)session:(id)a3 receivedInvitationCancelWithData:(id)a4
+- (void)session:(id)session receivedInvitationCancelWithData:(id)data
 {
-  v5 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  dataCopy = data;
   v7 = sub_100004778();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
-    v9 = v5;
+    v9 = sessionCopy;
     v10 = 2112;
-    v11 = v6;
+    v11 = dataCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "session %@ receivedInvitationCancelWithData %@", &v8, 0x16u);
   }
 }
 
-- (void)session:(id)a3 receivedData:(id)a4
+- (void)session:(id)session receivedData:(id)data
 {
-  v5 = a3;
+  sessionCopy = session;
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"non-nil";
-    if (!a4)
+    if (!data)
     {
       v7 = @"nil";
     }
 
     v8 = 138412546;
-    v9 = v5;
+    v9 = sessionCopy;
     v10 = 2112;
     v11 = v7;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "session %@ receivedData (data is %@)", &v8, 0x16u);
   }
 }
 
-- (void)conferenceFinishedPreparing:(id)a3
+- (void)conferenceFinishedPreparing:(id)preparing
 {
   v4 = sub_100004778();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1248,40 +1248,40 @@ LABEL_34:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "", &v25, 2u);
   }
 
-  v5 = [(CSDIDSChat *)self delegate];
-  v6 = [objc_opt_class() faceTimeAppUUID];
-  v7 = [(CSDIDSChat *)self session];
-  [v7 setClientUUID:v6];
+  delegate = [(CSDIDSChat *)self delegate];
+  faceTimeAppUUID = [objc_opt_class() faceTimeAppUUID];
+  session = [(CSDIDSChat *)self session];
+  [session setClientUUID:faceTimeAppUUID];
 
-  v8 = [v5 isWiFiAllowedForChat:self];
-  v9 = [(CSDIDSChat *)self session];
-  [v9 setWiFiAllowed:v8];
+  v8 = [delegate isWiFiAllowedForChat:self];
+  session2 = [(CSDIDSChat *)self session];
+  [session2 setWiFiAllowed:v8];
 
-  v10 = [v5 isCellularDataAllowedForChat:self];
-  v11 = [(CSDIDSChat *)self session];
-  [v11 setCellularDataAllowed:v10];
+  v10 = [delegate isCellularDataAllowedForChat:self];
+  session3 = [(CSDIDSChat *)self session];
+  [session3 setCellularDataAllowed:v10];
 
-  v12 = [v5 isCellularDataPreferredForChat:self];
-  v13 = [(CSDIDSChat *)self session];
-  [v13 setCellularDataPreferred:v12];
+  v12 = [delegate isCellularDataPreferredForChat:self];
+  session4 = [(CSDIDSChat *)self session];
+  [session4 setCellularDataPreferred:v12];
 
   v14 = objc_alloc_init(CSDMessagingCallMessage);
   [(CSDMessagingCallMessage *)v14 addProtocolVersion];
   [(CSDMessagingCallMessage *)v14 setType:1];
   v15 = [CSDMessagingAVConferenceInviteData alloc];
-  v16 = [(CSDIDSChat *)self conference];
-  v17 = [v16 localInviteDictionary];
-  v18 = [(CSDMessagingAVConferenceInviteData *)v15 initWithFaceTimeInviteDictionary:v17];
+  conference = [(CSDIDSChat *)self conference];
+  localInviteDictionary = [conference localInviteDictionary];
+  v18 = [(CSDMessagingAVConferenceInviteData *)v15 initWithFaceTimeInviteDictionary:localInviteDictionary];
   [(CSDMessagingCallMessage *)v14 setInviteData:v18];
 
   [(CSDMessagingCallMessage *)v14 setShouldSuppressInCallUI:[(CSDIDSChat *)self shouldSuppressInCallUI]];
-  v19 = [(CSDIDSChat *)self upgradeSessionUUID];
-  v20 = [v19 UUIDString];
-  [(CSDMessagingCallMessage *)v14 setProtoUpgradeSessionUUID:v20];
+  upgradeSessionUUID = [(CSDIDSChat *)self upgradeSessionUUID];
+  uUIDString = [upgradeSessionUUID UUIDString];
+  [(CSDMessagingCallMessage *)v14 setProtoUpgradeSessionUUID:uUIDString];
 
   if (objc_opt_respondsToSelector())
   {
-    -[CSDMessagingCallMessage setMomentsAvailable:](v14, "setMomentsAvailable:", [v5 isMomentsAvailableForChat:self]);
+    -[CSDMessagingCallMessage setMomentsAvailable:](v14, "setMomentsAvailable:", [delegate isMomentsAvailableForChat:self]);
   }
 
   [(CSDMessagingCallMessage *)v14 setProtoWantsVideo:[(CSDIDSChat *)self isVideo]];
@@ -1293,21 +1293,21 @@ LABEL_34:
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "message: %@", &v25, 0xCu);
   }
 
-  v22 = [(CSDIDSChat *)self isOutgoing];
-  v23 = [(CSDIDSChat *)self session];
-  v24 = [(CSDMessagingCallMessage *)v14 data];
-  if (v22)
+  isOutgoing = [(CSDIDSChat *)self isOutgoing];
+  session5 = [(CSDIDSChat *)self session];
+  data = [(CSDMessagingCallMessage *)v14 data];
+  if (isOutgoing)
   {
-    [v23 sendInvitationWithData:v24];
+    [session5 sendInvitationWithData:data];
   }
 
   else
   {
-    [v23 acceptInvitationWithData:v24];
+    [session5 acceptInvitationWithData:data];
   }
 }
 
-- (void)conferenceStarted:(id)a3
+- (void)conferenceStarted:(id)started
 {
   v4 = sub_100004778();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1320,42 +1320,42 @@ LABEL_34:
   {
     v5 = dispatch_time(0, 3000000000);
     v6 = +[TUCallCenter sharedInstance];
-    v7 = [v6 queue];
+    queue = [v6 queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000DB6E0;
     block[3] = &unk_100619D38;
     block[4] = self;
-    dispatch_after(v5, v7, block);
+    dispatch_after(v5, queue, block);
   }
 
   else
   {
-    v8 = [(CSDIDSChat *)self delegate];
+    delegate = [(CSDIDSChat *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v8 chatConnected:self];
+      [delegate chatConnected:self];
     }
   }
 }
 
-- (void)conference:(id)a3 endedWithReason:(int64_t)a4 error:(id)a5
+- (void)conference:(id)conference endedWithReason:(int64_t)reason error:(id)error
 {
-  v7 = a5;
+  errorCopy = error;
   v8 = sub_100004778();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 134218242;
-    v12 = a4;
+    reasonCopy = reason;
     v13 = 2112;
-    v14 = v7;
+    v14 = errorCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "reason=%ld error=%@", &v11, 0x16u);
   }
 
-  v9 = [(CSDIDSChat *)self session];
-  v10 = [v9 state];
+  session = [(CSDIDSChat *)self session];
+  state = [session state];
 
-  if (v10 == 1)
+  if (state == 1)
   {
     [(CSDIDSChat *)self cancelOrDeclineInvitation];
   }
@@ -1363,7 +1363,7 @@ LABEL_34:
   [(CSDIDSChat *)self _setDateEndedIfNecessary];
 }
 
-- (void)mutedChangedForConference:(id)a3
+- (void)mutedChangedForConference:(id)conference
 {
   v3 = sub_100004778();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -1373,7 +1373,7 @@ LABEL_34:
   }
 }
 
-- (void)sendingAudioChangedForConference:(id)a3
+- (void)sendingAudioChangedForConference:(id)conference
 {
   v3 = sub_100004778();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -1383,7 +1383,7 @@ LABEL_34:
   }
 }
 
-- (void)receivedFirstRemoteFrameForConference:(id)a3
+- (void)receivedFirstRemoteFrameForConference:(id)conference
 {
   v4 = sub_100004778();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1392,22 +1392,22 @@ LABEL_34:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "", v8, 2u);
   }
 
-  v5 = [(CSDIDSChat *)self dateReceivedFirstRemoteFrame];
+  dateReceivedFirstRemoteFrame = [(CSDIDSChat *)self dateReceivedFirstRemoteFrame];
 
-  if (!v5)
+  if (!dateReceivedFirstRemoteFrame)
   {
     v6 = +[NSDate date];
     [(CSDIDSChat *)self setDateReceivedFirstRemoteFrame:v6];
 
-    v7 = [(CSDIDSChat *)self delegate];
+    delegate = [(CSDIDSChat *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v7 chatConnected:self];
+      [delegate chatConnected:self];
     }
   }
 }
 
-- (void)remoteVideoPausedForConference:(id)a3
+- (void)remoteVideoPausedForConference:(id)conference
 {
   v3 = sub_100004778();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -1417,79 +1417,79 @@ LABEL_34:
   }
 }
 
-- (void)conference:(id)a3 remoteMediaStalled:(BOOL)a4
+- (void)conference:(id)conference remoteMediaStalled:(BOOL)stalled
 {
-  if (a4)
+  if (stalled)
   {
     v5 = sub_100004778();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Remote media stalled for chat: %@. Reconnecting IDS session.", &v7, 0xCu);
     }
 
-    v6 = [(CSDIDSChat *)self session];
-    [v6 reconnectSession];
+    session = [(CSDIDSChat *)self session];
+    [session reconnectSession];
   }
 }
 
-- (void)conference:(id)a3 inputFrequencyLevelChangedTo:(id)a4
+- (void)conference:(id)conference inputFrequencyLevelChangedTo:(id)to
 {
-  v6 = a4;
-  v5 = [(CSDIDSChat *)self delegate];
+  toCopy = to;
+  delegate = [(CSDIDSChat *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 chat:self inputFrequencyLevelChangedTo:v6];
+    [delegate chat:self inputFrequencyLevelChangedTo:toCopy];
   }
 }
 
-- (void)conference:(id)a3 outputFrequencyLevelChangedTo:(id)a4
+- (void)conference:(id)conference outputFrequencyLevelChangedTo:(id)to
 {
-  v6 = a4;
-  v5 = [(CSDIDSChat *)self delegate];
+  toCopy = to;
+  delegate = [(CSDIDSChat *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 chat:self outputFrequencyLevelChangedTo:v6];
+    [delegate chat:self outputFrequencyLevelChangedTo:toCopy];
   }
 }
 
-- (void)conference:(id)a3 inputLevelChangedTo:(float)a4
+- (void)conference:(id)conference inputLevelChangedTo:(float)to
 {
-  v7 = [(CSDIDSChat *)self delegate];
+  delegate = [(CSDIDSChat *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    *&v6 = a4;
-    [v7 chat:self inputLevelChangedTo:v6];
+    *&v6 = to;
+    [delegate chat:self inputLevelChangedTo:v6];
   }
 }
 
-- (void)conference:(id)a3 outputLevelChangedTo:(float)a4
+- (void)conference:(id)conference outputLevelChangedTo:(float)to
 {
-  v7 = [(CSDIDSChat *)self delegate];
+  delegate = [(CSDIDSChat *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    *&v6 = a4;
-    [v7 chat:self outputLevelChangedTo:v6];
+    *&v6 = to;
+    [delegate chat:self outputLevelChangedTo:v6];
   }
 }
 
-- (void)conference:(id)a3 changedBytesOfDataUsed:(int64_t)a4
+- (void)conference:(id)conference changedBytesOfDataUsed:(int64_t)used
 {
-  v6 = [(CSDIDSChat *)self delegate];
+  delegate = [(CSDIDSChat *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 chat:self changedBytesOfDataUsed:a4];
+    [delegate chat:self changedBytesOfDataUsed:used];
   }
 }
 
-- (void)conference:(id)a3 didReceiveData:(id)a4 forCallID:(int64_t)a5
+- (void)conference:(id)conference didReceiveData:(id)data forCallID:(int64_t)d
 {
-  v7 = a4;
-  v6 = [(CSDIDSChat *)self delegate];
+  dataCopy = data;
+  delegate = [(CSDIDSChat *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 chat:self receivedData:v7];
+    [delegate chat:self receivedData:dataCopy];
   }
 }
 

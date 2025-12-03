@@ -1,16 +1,16 @@
 @interface WFOpenAppPosterBoardMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFOpenAppPosterBoardMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  if (WFCompareBundleVersions(a4, @"1177.1"))
+  migrationCopy = migration;
+  if (WFCompareBundleVersions(version, @"1177.1"))
   {
-    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.openapp", v5);
+    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.openapp", migrationCopy);
   }
 
   else
@@ -23,13 +23,13 @@
 
 - (void)migrateWorkflow
 {
-  v3 = [(WFWorkflowMigration *)self actions];
+  actions = [(WFWorkflowMigration *)self actions];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __48__WFOpenAppPosterBoardMigration_migrateWorkflow__block_invoke;
   v4[3] = &unk_1E837F7F8;
   v4[4] = self;
-  [v3 enumerateObjectsUsingBlock:v4];
+  [actions enumerateObjectsUsingBlock:v4];
 
   [(WFWorkflowMigration *)self finish];
 }

@@ -1,15 +1,15 @@
 @interface AAFAnalyticsEvent
-+ (id)analyticsEventWithName:(id)a3 eventCategory:(id)a4 followupAnalyticsData:(id)a5 altDSID:(id)a6;
-+ (id)analyticsEventWithName:(id)a3 eventCategory:(id)a4 initData:(id)a5 altDSID:(id)a6;
-- (AAFAnalyticsEvent)initWithCoder:(id)a3;
-- (AAFAnalyticsEvent)initWithEventName:(id)a3 eventCategory:(id)a4 initData:(id)a5 altDSID:(id)a6;
++ (id)analyticsEventWithName:(id)name eventCategory:(id)category followupAnalyticsData:(id)data altDSID:(id)d;
++ (id)analyticsEventWithName:(id)name eventCategory:(id)category initData:(id)data altDSID:(id)d;
+- (AAFAnalyticsEvent)initWithCoder:(id)coder;
+- (AAFAnalyticsEvent)initWithEventName:(id)name eventCategory:(id)category initData:(id)data altDSID:(id)d;
 - (id)debugDescription;
-- (void)_populateUnderlyingErrorsStartingWithRootError:(id)a3 maxDepth:(unsigned int)a4;
-- (void)_updateAnalyticsEventWithFollowupAnalyticsInfo:(id)a3;
+- (void)_populateUnderlyingErrorsStartingWithRootError:(id)error maxDepth:(unsigned int)depth;
+- (void)_updateAnalyticsEventWithFollowupAnalyticsInfo:(id)info;
 - (void)completeEvent;
-- (void)encodeWithCoder:(id)a3;
-- (void)populateUnderlyingErrorsStartingWithRootError:(id)a3;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)populateUnderlyingErrorsStartingWithRootError:(id)error;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
 @end
 
 @implementation AAFAnalyticsEvent
@@ -17,9 +17,9 @@
 - (void)completeEvent
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [a1 eventName];
+  eventName = [self eventName];
   v5 = 138412290;
-  v6 = v3;
+  v6 = eventName;
   _os_log_error_impl(&dword_1C8644000, a2, OS_LOG_TYPE_ERROR, "Already reported event %@", &v5, 0xCu);
 
   v4 = *MEMORY[0x1E69E9840];
@@ -27,49 +27,49 @@
 
 - (id)debugDescription
 {
-  v3 = [(AAFAnalyticsEvent *)self topLevelError];
+  topLevelError = [(AAFAnalyticsEvent *)self topLevelError];
 
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
-  v6 = [(AAFAnalyticsEvent *)self eventName];
-  if (v3)
+  eventName = [(AAFAnalyticsEvent *)self eventName];
+  if (topLevelError)
   {
-    v7 = [(AAFAnalyticsEvent *)self topLevelError];
-    v8 = [(AAFAnalyticsEvent *)self reportData];
-    v9 = [(AAFAnalyticsEvent *)self eventCategory];
-    v10 = [(AAFAnalyticsEvent *)self altDSID];
-    v11 = [v4 stringWithFormat:@"<%@: %p> EventName: [%@], EventError: [%@], ReportData: %@, EventCategory: [%@], EventAltDSID: [%{sensitive}@]", v5, self, v6, v7, v8, v9, v10];
+    topLevelError2 = [(AAFAnalyticsEvent *)self topLevelError];
+    reportData = [(AAFAnalyticsEvent *)self reportData];
+    eventCategory = [(AAFAnalyticsEvent *)self eventCategory];
+    altDSID = [(AAFAnalyticsEvent *)self altDSID];
+    v11 = [v4 stringWithFormat:@"<%@: %p> EventName: [%@], EventError: [%@], ReportData: %@, EventCategory: [%@], EventAltDSID: [%{sensitive}@]", v5, self, eventName, topLevelError2, reportData, eventCategory, altDSID];
   }
 
   else
   {
-    v7 = [(AAFAnalyticsEvent *)self reportData];
-    v8 = [(AAFAnalyticsEvent *)self eventCategory];
-    v9 = [(AAFAnalyticsEvent *)self altDSID];
-    v11 = [v4 stringWithFormat:@"<%@: %p> EventName: [%@], ReportData: %@, EventCategory: [%@], EventAltDSID: [%{sensitive}@]", v5, self, v6, v7, v8, v9];
+    topLevelError2 = [(AAFAnalyticsEvent *)self reportData];
+    reportData = [(AAFAnalyticsEvent *)self eventCategory];
+    eventCategory = [(AAFAnalyticsEvent *)self altDSID];
+    v11 = [v4 stringWithFormat:@"<%@: %p> EventName: [%@], ReportData: %@, EventCategory: [%@], EventAltDSID: [%{sensitive}@]", v5, self, eventName, topLevelError2, reportData, eventCategory];
   }
 
   return v11;
 }
 
-- (AAFAnalyticsEvent)initWithEventName:(id)a3 eventCategory:(id)a4 initData:(id)a5 altDSID:(id)a6
+- (AAFAnalyticsEvent)initWithEventName:(id)name eventCategory:(id)category initData:(id)data altDSID:(id)d
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  nameCopy = name;
+  categoryCopy = category;
+  dataCopy = data;
+  dCopy = d;
   v23.receiver = self;
   v23.super_class = AAFAnalyticsEvent;
   v15 = [(AAFAnalyticsEvent *)&v23 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_eventName, a3);
-    objc_storeStrong(&v16->_eventCategory, a4);
-    objc_storeStrong(&v16->_altDSID, a6);
-    if (v13)
+    objc_storeStrong(&v15->_eventName, name);
+    objc_storeStrong(&v16->_eventCategory, category);
+    objc_storeStrong(&v16->_altDSID, d);
+    if (dataCopy)
     {
-      v17 = v13;
+      v17 = dataCopy;
     }
 
     else
@@ -96,15 +96,15 @@
   return v16;
 }
 
-+ (id)analyticsEventWithName:(id)a3 eventCategory:(id)a4 initData:(id)a5 altDSID:(id)a6
++ (id)analyticsEventWithName:(id)name eventCategory:(id)category initData:(id)data altDSID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10)
+  nameCopy = name;
+  categoryCopy = category;
+  dataCopy = data;
+  dCopy = d;
+  if (nameCopy)
   {
-    v14 = [[a1 alloc] initWithEventName:v10 eventCategory:v11 initData:v12 altDSID:v13];
+    v14 = [[self alloc] initWithEventName:nameCopy eventCategory:categoryCopy initData:dataCopy altDSID:dCopy];
   }
 
   else
@@ -121,16 +121,16 @@
   return v14;
 }
 
-+ (id)analyticsEventWithName:(id)a3 eventCategory:(id)a4 followupAnalyticsData:(id)a5 altDSID:(id)a6
++ (id)analyticsEventWithName:(id)name eventCategory:(id)category followupAnalyticsData:(id)data altDSID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10 && v12)
+  nameCopy = name;
+  categoryCopy = category;
+  dataCopy = data;
+  dCopy = d;
+  if (nameCopy && dataCopy)
   {
-    v14 = [[a1 alloc] initWithEventName:v10 eventCategory:v11 initData:0 altDSID:v13];
-    [v14 _updateAnalyticsEventWithFollowupAnalyticsInfo:v12];
+    v14 = [[self alloc] initWithEventName:nameCopy eventCategory:categoryCopy initData:0 altDSID:dCopy];
+    [v14 _updateAnalyticsEventWithFollowupAnalyticsInfo:dataCopy];
   }
 
   else
@@ -147,14 +147,14 @@
   return v14;
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  objectCopy = object;
+  subscriptCopy = subscript;
+  if (subscriptCopy)
   {
     v8 = [(NSDictionary *)self->_reportData mutableCopy];
-    [v8 setObject:v6 forKeyedSubscript:v7];
+    [v8 setObject:objectCopy forKeyedSubscript:subscriptCopy];
     v9 = [v8 copy];
     reportData = self->_reportData;
     self->_reportData = v9;
@@ -170,24 +170,24 @@
   }
 }
 
-- (void)_populateUnderlyingErrorsStartingWithRootError:(id)a3 maxDepth:(unsigned int)a4
+- (void)_populateUnderlyingErrorsStartingWithRootError:(id)error maxDepth:(unsigned int)depth
 {
-  v21 = a3;
-  [(AAFAnalyticsEvent *)self setTopLevelError:v21];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v21, "code")}];
+  errorCopy = error;
+  [(AAFAnalyticsEvent *)self setTopLevelError:errorCopy];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
   [(AAFAnalyticsEvent *)self setObject:v6 forKeyedSubscript:@"errorCode"];
 
-  v7 = [v21 domain];
-  [(AAFAnalyticsEvent *)self setObject:v7 forKeyedSubscript:@"errorDomain"];
+  domain = [errorCopy domain];
+  [(AAFAnalyticsEvent *)self setObject:domain forKeyedSubscript:@"errorDomain"];
 
-  v8 = [v21 userInfo];
+  userInfo = [errorCopy userInfo];
   v23 = *MEMORY[0x1E696AA08];
-  v9 = [v8 objectForKeyedSubscript:?];
+  v9 = [userInfo objectForKeyedSubscript:?];
 
-  v22 = a4;
+  depthCopy = depth;
   if (v9)
   {
-    v10 = a4 == 0;
+    v10 = depth == 0;
   }
 
   else
@@ -212,11 +212,11 @@
       v16 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v9, "code")}];
       [(AAFAnalyticsEvent *)self setObject:v16 forKeyedSubscript:v14];
 
-      v17 = [v13 domain];
-      [(AAFAnalyticsEvent *)self setObject:v17 forKeyedSubscript:v15];
+      domain2 = [v13 domain];
+      [(AAFAnalyticsEvent *)self setObject:domain2 forKeyedSubscript:v15];
 
-      v18 = [v13 userInfo];
-      v9 = [v18 objectForKeyedSubscript:v23];
+      userInfo2 = [v13 userInfo];
+      v9 = [userInfo2 objectForKeyedSubscript:v23];
 
       if (!v9)
       {
@@ -227,69 +227,69 @@
       ++v12;
     }
 
-    while (v19 <= v22);
+    while (v19 <= depthCopy);
   }
 
   v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v11];
   [(AAFAnalyticsEvent *)self setObject:v20 forKeyedSubscript:@"numberOfUnderlyingErrors"];
 }
 
-- (void)populateUnderlyingErrorsStartingWithRootError:(id)a3
+- (void)populateUnderlyingErrorsStartingWithRootError:(id)error
 {
-  if (a3)
+  if (error)
   {
-    [(AAFAnalyticsEvent *)self _populateUnderlyingErrorsStartingWithRootError:a3 maxDepth:AAFNumberofUnderlyingError];
+    [(AAFAnalyticsEvent *)self _populateUnderlyingErrorsStartingWithRootError:error maxDepth:AAFNumberofUnderlyingError];
   }
 }
 
-- (void)_updateAnalyticsEventWithFollowupAnalyticsInfo:(id)a3
+- (void)_updateAnalyticsEventWithFollowupAnalyticsInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 flowID];
-  [(AAFAnalyticsEvent *)self setObject:v5 forKeyedSubscript:@"flowID"];
+  infoCopy = info;
+  flowID = [infoCopy flowID];
+  [(AAFAnalyticsEvent *)self setObject:flowID forKeyedSubscript:@"flowID"];
 
-  v6 = [v4 cfuType];
-  [(AAFAnalyticsEvent *)self setObject:v6 forKeyedSubscript:@"cfuType"];
+  cfuType = [infoCopy cfuType];
+  [(AAFAnalyticsEvent *)self setObject:cfuType forKeyedSubscript:@"cfuType"];
 
-  v7 = [v4 hasProxiedDevice];
-  [(AAFAnalyticsEvent *)self setObject:v7 forKeyedSubscript:@"hasProxiedDevice"];
+  hasProxiedDevice = [infoCopy hasProxiedDevice];
+  [(AAFAnalyticsEvent *)self setObject:hasProxiedDevice forKeyedSubscript:@"hasProxiedDevice"];
 
-  v8 = [v4 proxiedBundleID];
-  [(AAFAnalyticsEvent *)self setObject:v8 forKeyedSubscript:@"proxiedBundleId"];
+  proxiedBundleID = [infoCopy proxiedBundleID];
+  [(AAFAnalyticsEvent *)self setObject:proxiedBundleID forKeyedSubscript:@"proxiedBundleId"];
 
-  v9 = [v4 didSucceed];
-  [(AAFAnalyticsEvent *)self setObject:v9 forKeyedSubscript:@"didSucceed"];
+  didSucceed = [infoCopy didSucceed];
+  [(AAFAnalyticsEvent *)self setObject:didSucceed forKeyedSubscript:@"didSucceed"];
 
-  v10 = [v4 client];
+  client = [infoCopy client];
 
-  [(AAFAnalyticsEvent *)self setObject:v10 forKeyedSubscript:@"processName"];
+  [(AAFAnalyticsEvent *)self setObject:client forKeyedSubscript:@"processName"];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   eventName = self->_eventName;
-  v5 = a3;
-  [v5 encodeObject:eventName forKey:@"_eventName"];
-  [v5 encodeObject:self->_eventCategory forKey:@"_eventCategory"];
-  [v5 encodeObject:self->_reportData forKey:@"_reportData"];
-  [v5 encodeDouble:@"_eventCreationTime" forKey:self->_eventCreationTime];
-  [v5 encodeObject:self->_clientName forKey:@"_clientName"];
-  [v5 encodeObject:self->_clientBundleId forKey:@"_clientBundleId"];
-  [v5 encodeObject:self->_clientType forKey:@"_clientType"];
-  [v5 encodeObject:self->_altDSID forKey:@"_altDSID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:eventName forKey:@"_eventName"];
+  [coderCopy encodeObject:self->_eventCategory forKey:@"_eventCategory"];
+  [coderCopy encodeObject:self->_reportData forKey:@"_reportData"];
+  [coderCopy encodeDouble:@"_eventCreationTime" forKey:self->_eventCreationTime];
+  [coderCopy encodeObject:self->_clientName forKey:@"_clientName"];
+  [coderCopy encodeObject:self->_clientBundleId forKey:@"_clientBundleId"];
+  [coderCopy encodeObject:self->_clientType forKey:@"_clientType"];
+  [coderCopy encodeObject:self->_altDSID forKey:@"_altDSID"];
 }
 
-- (AAFAnalyticsEvent)initWithCoder:(id)a3
+- (AAFAnalyticsEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AAFAnalyticsEvent *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_eventName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_eventName"];
     eventName = v5->_eventName;
     v5->_eventName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_eventCategory"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_eventCategory"];
     eventCategory = v5->_eventCategory;
     v5->_eventCategory = v8;
 
@@ -300,25 +300,25 @@
     v14 = objc_opt_class();
     v15 = objc_opt_class();
     v16 = [v10 setWithObjects:{v11, v12, v13, v14, v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"_reportData"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"_reportData"];
     reportData = v5->_reportData;
     v5->_reportData = v17;
 
-    [v4 decodeDoubleForKey:@"_eventCreationTime"];
+    [coderCopy decodeDoubleForKey:@"_eventCreationTime"];
     v5->_eventCreationTime = v19;
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_clientName"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_clientName"];
     clientName = v5->_clientName;
     v5->_clientName = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_clientBundleId"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_clientBundleId"];
     clientBundleId = v5->_clientBundleId;
     v5->_clientBundleId = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_clientType"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_clientType"];
     clientType = v5->_clientType;
     v5->_clientType = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_altDSID"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_altDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v26;
   }

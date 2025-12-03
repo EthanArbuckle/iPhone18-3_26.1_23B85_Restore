@@ -1,22 +1,22 @@
 @interface SWCItemCell
-- (SWCItemCell)initWithDictionary:(id)a3;
+- (SWCItemCell)initWithDictionary:(id)dictionary;
 - (void)layoutSubviews;
-- (void)setShowSeparator:(BOOL)a3;
-- (void)setShowTopSeparator:(BOOL)a3;
+- (void)setShowSeparator:(BOOL)separator;
+- (void)setShowTopSeparator:(BOOL)separator;
 @end
 
 @implementation SWCItemCell
 
-- (void)setShowTopSeparator:(BOOL)a3
+- (void)setShowTopSeparator:(BOOL)separator
 {
-  if (self->_showTopSeparator == a3)
+  if (self->_showTopSeparator == separator)
   {
     return;
   }
 
-  self->_showTopSeparator = a3;
+  self->_showTopSeparator = separator;
   topLine = self->_topLine;
-  if (a3)
+  if (separator)
   {
     if (!topLine)
     {
@@ -27,8 +27,8 @@
       v7 = +[UIColor separatorColor];
       [(UIView *)self->_topLine setBackgroundColor:v7];
 
-      v8 = [(SWCItemCell *)self backgroundView];
-      [v8 addSubview:self->_topLine];
+      backgroundView = [(SWCItemCell *)self backgroundView];
+      [backgroundView addSubview:self->_topLine];
     }
 
     if (!self->_topLineSelected)
@@ -40,9 +40,9 @@
       v11 = +[UIColor separatorColor];
       [(UIView *)self->_topLineSelected setBackgroundColor:v11];
 
-      v15 = [(SWCItemCell *)self selectedBackgroundView];
-      [(UIView *)v15 addSubview:self->_topLineSelected];
-      v12 = v15;
+      selectedBackgroundView = [(SWCItemCell *)self selectedBackgroundView];
+      [(UIView *)selectedBackgroundView addSubview:self->_topLineSelected];
+      v12 = selectedBackgroundView;
 LABEL_11:
     }
   }
@@ -67,16 +67,16 @@ LABEL_11:
   }
 }
 
-- (void)setShowSeparator:(BOOL)a3
+- (void)setShowSeparator:(BOOL)separator
 {
-  if (self->_showSeparator == a3)
+  if (self->_showSeparator == separator)
   {
     return;
   }
 
-  self->_showSeparator = a3;
+  self->_showSeparator = separator;
   bottomLine = self->_bottomLine;
-  if (a3)
+  if (separator)
   {
     if (!bottomLine)
     {
@@ -87,8 +87,8 @@ LABEL_11:
       v7 = +[UIColor separatorColor];
       [(UIView *)self->_bottomLine setBackgroundColor:v7];
 
-      v8 = [(SWCItemCell *)self backgroundView];
-      [v8 addSubview:self->_bottomLine];
+      backgroundView = [(SWCItemCell *)self backgroundView];
+      [backgroundView addSubview:self->_bottomLine];
     }
 
     if (!self->_bottomLineSelected)
@@ -100,9 +100,9 @@ LABEL_11:
       v11 = +[UIColor separatorColor];
       [(UIView *)self->_bottomLineSelected setBackgroundColor:v11];
 
-      v15 = [(SWCItemCell *)self selectedBackgroundView];
-      [(UIView *)v15 addSubview:self->_bottomLineSelected];
-      v12 = v15;
+      selectedBackgroundView = [(SWCItemCell *)self selectedBackgroundView];
+      [(UIView *)selectedBackgroundView addSubview:self->_bottomLineSelected];
+      v12 = selectedBackgroundView;
 LABEL_11:
     }
   }
@@ -176,79 +176,79 @@ LABEL_11:
   }
 
   isTicked = self->_isTicked;
-  v20 = [(SWCItemCell *)self imageView];
-  [v20 setHidden:!isTicked];
+  imageView = [(SWCItemCell *)self imageView];
+  [imageView setHidden:!isTicked];
 
   v21.receiver = self;
   v21.super_class = SWCItemCell;
   [(SWCItemCell *)&v21 layoutSubviews];
 }
 
-- (SWCItemCell)initWithDictionary:(id)a3
+- (SWCItemCell)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v32.receiver = self;
   v32.super_class = SWCItemCell;
   v6 = [(SWCItemCell *)&v32 initWithStyle:3 reuseIdentifier:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dict, a3);
+    objc_storeStrong(&v6->_dict, dictionary);
     [(SWCItemCell *)v7 setSelectionStyle:0];
     v8 = +[UIColor systemBackgroundColor];
     [(SWCItemCell *)v7 setBackgroundColor:v8];
 
     v9 = +[UIColor labelColor];
-    v10 = [(SWCItemCell *)v7 textLabel];
-    [v10 setTextColor:v9];
+    textLabel = [(SWCItemCell *)v7 textLabel];
+    [textLabel setTextColor:v9];
 
-    v11 = [(SWCItemCell *)v7 textLabel];
-    [v11 setTextAlignment:0];
+    textLabel2 = [(SWCItemCell *)v7 textLabel];
+    [textLabel2 setTextAlignment:0];
 
-    v12 = [(SWCItemCell *)v7 textLabel];
-    [v12 setAdjustsFontSizeToFitWidth:1];
+    textLabel3 = [(SWCItemCell *)v7 textLabel];
+    [textLabel3 setAdjustsFontSizeToFitWidth:1];
 
-    v13 = [(SWCItemCell *)v7 textLabel];
-    [v13 setBaselineAdjustment:1];
+    textLabel4 = [(SWCItemCell *)v7 textLabel];
+    [textLabel4 setBaselineAdjustment:1];
 
-    v14 = [v5 objectForKey:@"acct"];
+    v14 = [dictionaryCopy objectForKey:@"acct"];
     v15 = v14;
     if (!v14)
     {
-      v10 = +[NSBundle mainBundle];
-      v15 = [v10 localizedStringForKey:@"--" value:&stru_100008400 table:0];
+      textLabel = +[NSBundle mainBundle];
+      v15 = [textLabel localizedStringForKey:@"--" value:&stru_100008400 table:0];
     }
 
-    v16 = [(SWCItemCell *)v7 textLabel];
-    [v16 setText:v15];
+    textLabel5 = [(SWCItemCell *)v7 textLabel];
+    [textLabel5 setText:v15];
 
     if (!v14)
     {
     }
 
     v17 = +[UIColor secondaryLabelColor];
-    v18 = [(SWCItemCell *)v7 detailTextLabel];
-    [v18 setTextColor:v17];
+    detailTextLabel = [(SWCItemCell *)v7 detailTextLabel];
+    [detailTextLabel setTextColor:v17];
 
-    v19 = [(SWCItemCell *)v7 detailTextLabel];
-    [v19 setTextAlignment:0];
+    detailTextLabel2 = [(SWCItemCell *)v7 detailTextLabel];
+    [detailTextLabel2 setTextAlignment:0];
 
-    v20 = [(SWCItemCell *)v7 detailTextLabel];
-    [v20 setAdjustsFontSizeToFitWidth:1];
+    detailTextLabel3 = [(SWCItemCell *)v7 detailTextLabel];
+    [detailTextLabel3 setAdjustsFontSizeToFitWidth:1];
 
-    v21 = [(SWCItemCell *)v7 detailTextLabel];
-    [v21 setBaselineAdjustment:1];
+    detailTextLabel4 = [(SWCItemCell *)v7 detailTextLabel];
+    [detailTextLabel4 setBaselineAdjustment:1];
 
-    v22 = [v5 objectForKey:@"srvr"];
+    v22 = [dictionaryCopy objectForKey:@"srvr"];
     v23 = v22;
     if (!v22)
     {
-      v18 = +[NSBundle mainBundle];
-      v23 = [v18 localizedStringForKey:@"--" value:&stru_100008400 table:0];
+      detailTextLabel = +[NSBundle mainBundle];
+      v23 = [detailTextLabel localizedStringForKey:@"--" value:&stru_100008400 table:0];
     }
 
-    v24 = [(SWCItemCell *)v7 detailTextLabel];
-    [v24 setText:v23];
+    detailTextLabel5 = [(SWCItemCell *)v7 detailTextLabel];
+    [detailTextLabel5 setText:v23];
 
     if (!v22)
     {
@@ -258,15 +258,15 @@ LABEL_11:
     [(SWCItemCell *)v7 setBackgroundView:v25];
 
     v26 = +[UIColor systemBackgroundColor];
-    v27 = [(SWCItemCell *)v7 backgroundView];
-    [v27 setBackgroundColor:v26];
+    backgroundView = [(SWCItemCell *)v7 backgroundView];
+    [backgroundView setBackgroundColor:v26];
 
     v28 = [UIImage systemImageNamed:@"checkmark"];
-    v29 = [(SWCItemCell *)v7 imageView];
-    [v29 setImage:v28];
+    imageView = [(SWCItemCell *)v7 imageView];
+    [imageView setImage:v28];
 
-    v30 = [(SWCItemCell *)v7 imageView];
-    [v30 setHidden:1];
+    imageView2 = [(SWCItemCell *)v7 imageView];
+    [imageView2 setHidden:1];
   }
 
   return v7;

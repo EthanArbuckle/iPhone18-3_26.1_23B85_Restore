@@ -1,50 +1,50 @@
 @interface _SFPBDrillDownMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (_SFPBCardMetadata)cardOnlyMetadata;
 - (_SFPBCardSearchMetadata)cardSearchMetadata;
-- (_SFPBDrillDownMetadata)initWithDictionary:(id)a3;
-- (_SFPBDrillDownMetadata)initWithFacade:(id)a3;
-- (_SFPBDrillDownMetadata)initWithJSON:(id)a3;
+- (_SFPBDrillDownMetadata)initWithDictionary:(id)dictionary;
+- (_SFPBDrillDownMetadata)initWithFacade:(id)facade;
+- (_SFPBDrillDownMetadata)initWithJSON:(id)n;
 - (_SFPBEntitySearchMetadata)entitySearchMetadata;
 - (_SFPBEntitySearchMetadata)entitySearchOnlyMetadata;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCardDomains:(id)a3;
-- (void)addCardIdentifiers:(id)a3;
-- (void)setCardDomains:(id)a3;
-- (void)setCardIdentifier:(id)a3;
-- (void)setCardIdentifiers:(id)a3;
-- (void)setCardOnlyMetadata:(id)a3;
-- (void)setCardSearchMetadata:(id)a3;
-- (void)setDebugParams:(id)a3;
-- (void)setEntitySearchMetadata:(id)a3;
-- (void)setEntitySearchOnlyMetadata:(id)a3;
-- (void)setParams:(id)a3;
-- (void)setQtype:(id)a3;
-- (void)setViewConfigName:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCardDomains:(id)domains;
+- (void)addCardIdentifiers:(id)identifiers;
+- (void)setCardDomains:(id)domains;
+- (void)setCardIdentifier:(id)identifier;
+- (void)setCardIdentifiers:(id)identifiers;
+- (void)setCardOnlyMetadata:(id)metadata;
+- (void)setCardSearchMetadata:(id)metadata;
+- (void)setDebugParams:(id)params;
+- (void)setEntitySearchMetadata:(id)metadata;
+- (void)setEntitySearchOnlyMetadata:(id)metadata;
+- (void)setParams:(id)params;
+- (void)setQtype:(id)qtype;
+- (void)setViewConfigName:(id)name;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBDrillDownMetadata
 
-- (_SFPBDrillDownMetadata)initWithFacade:(id)a3
+- (_SFPBDrillDownMetadata)initWithFacade:(id)facade
 {
   v59 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBDrillDownMetadata *)self init];
   if (v5)
   {
-    v6 = [v4 cardIdentifier];
+    cardIdentifier = [facadeCopy cardIdentifier];
 
-    if (v6)
+    if (cardIdentifier)
     {
-      v7 = [v4 cardIdentifier];
-      [(_SFPBDrillDownMetadata *)v5 setCardIdentifier:v7];
+      cardIdentifier2 = [facadeCopy cardIdentifier];
+      [(_SFPBDrillDownMetadata *)v5 setCardIdentifier:cardIdentifier2];
     }
 
-    v8 = [v4 cardIdentifiers];
-    if (v8)
+    cardIdentifiers = [facadeCopy cardIdentifiers];
+    if (cardIdentifiers)
     {
       v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -58,8 +58,8 @@
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v10 = [v4 cardIdentifiers];
-    v11 = [v10 countByEnumeratingWithState:&v53 objects:v58 count:16];
+    cardIdentifiers2 = [facadeCopy cardIdentifiers];
+    v11 = [cardIdentifiers2 countByEnumeratingWithState:&v53 objects:v58 count:16];
     if (v11)
     {
       v12 = v11;
@@ -70,7 +70,7 @@
         {
           if (*v54 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(cardIdentifiers2);
           }
 
           if (*(*(&v53 + 1) + 8 * i))
@@ -79,15 +79,15 @@
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v53 objects:v58 count:16];
+        v12 = [cardIdentifiers2 countByEnumeratingWithState:&v53 objects:v58 count:16];
       }
 
       while (v12);
     }
 
     [(_SFPBDrillDownMetadata *)v5 setCardIdentifiers:v9];
-    v15 = [v4 cardDomains];
-    if (v15)
+    cardDomains = [facadeCopy cardDomains];
+    if (cardDomains)
     {
       v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -101,8 +101,8 @@
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v17 = [v4 cardDomains];
-    v18 = [v17 countByEnumeratingWithState:&v49 objects:v57 count:16];
+    cardDomains2 = [facadeCopy cardDomains];
+    v18 = [cardDomains2 countByEnumeratingWithState:&v49 objects:v57 count:16];
     if (v18)
     {
       v19 = v18;
@@ -113,7 +113,7 @@
         {
           if (*v50 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(cardDomains2);
           }
 
           if (*(*(&v49 + 1) + 8 * j))
@@ -122,95 +122,95 @@
           }
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v49 objects:v57 count:16];
+        v19 = [cardDomains2 countByEnumeratingWithState:&v49 objects:v57 count:16];
       }
 
       while (v19);
     }
 
     [(_SFPBDrillDownMetadata *)v5 setCardDomains:v16];
-    v22 = [v4 qtype];
+    qtype = [facadeCopy qtype];
 
-    if (v22)
+    if (qtype)
     {
-      v23 = [v4 qtype];
-      [(_SFPBDrillDownMetadata *)v5 setQtype:v23];
+      qtype2 = [facadeCopy qtype];
+      [(_SFPBDrillDownMetadata *)v5 setQtype:qtype2];
     }
 
-    v24 = [v4 viewConfigName];
+    viewConfigName = [facadeCopy viewConfigName];
 
-    if (v24)
+    if (viewConfigName)
     {
-      v25 = [v4 viewConfigName];
-      [(_SFPBDrillDownMetadata *)v5 setViewConfigName:v25];
+      viewConfigName2 = [facadeCopy viewConfigName];
+      [(_SFPBDrillDownMetadata *)v5 setViewConfigName:viewConfigName2];
     }
 
-    if ([v4 hasCardOnlyMetadata])
+    if ([facadeCopy hasCardOnlyMetadata])
     {
-      v26 = [v4 cardOnlyMetadata];
+      cardOnlyMetadata = [facadeCopy cardOnlyMetadata];
 
-      if (v26)
+      if (cardOnlyMetadata)
       {
         v27 = [_SFPBCardMetadata alloc];
-        v28 = [v4 cardOnlyMetadata];
-        v29 = [(_SFPBCardMetadata *)v27 initWithFacade:v28];
+        cardOnlyMetadata2 = [facadeCopy cardOnlyMetadata];
+        v29 = [(_SFPBCardMetadata *)v27 initWithFacade:cardOnlyMetadata2];
         [(_SFPBDrillDownMetadata *)v5 setCardOnlyMetadata:v29];
       }
     }
 
-    if ([v4 hasEntitySearchOnlyMetadata])
+    if ([facadeCopy hasEntitySearchOnlyMetadata])
     {
-      v30 = [v4 entitySearchOnlyMetadata];
+      entitySearchOnlyMetadata = [facadeCopy entitySearchOnlyMetadata];
 
-      if (v30)
+      if (entitySearchOnlyMetadata)
       {
         v31 = [_SFPBEntitySearchMetadata alloc];
-        v32 = [v4 entitySearchOnlyMetadata];
-        v33 = [(_SFPBEntitySearchMetadata *)v31 initWithFacade:v32];
+        entitySearchOnlyMetadata2 = [facadeCopy entitySearchOnlyMetadata];
+        v33 = [(_SFPBEntitySearchMetadata *)v31 initWithFacade:entitySearchOnlyMetadata2];
         [(_SFPBDrillDownMetadata *)v5 setEntitySearchOnlyMetadata:v33];
       }
     }
 
-    if ([v4 hasCardSearchMetadata])
+    if ([facadeCopy hasCardSearchMetadata])
     {
-      v34 = [v4 cardSearchMetadata];
+      cardSearchMetadata = [facadeCopy cardSearchMetadata];
 
-      if (v34)
+      if (cardSearchMetadata)
       {
         v35 = [_SFPBCardSearchMetadata alloc];
-        v36 = [v4 cardSearchMetadata];
-        v37 = [(_SFPBCardSearchMetadata *)v35 initWithFacade:v36];
+        cardSearchMetadata2 = [facadeCopy cardSearchMetadata];
+        v37 = [(_SFPBCardSearchMetadata *)v35 initWithFacade:cardSearchMetadata2];
         [(_SFPBDrillDownMetadata *)v5 setCardSearchMetadata:v37];
       }
     }
 
-    if ([v4 hasEntitySearchMetadata])
+    if ([facadeCopy hasEntitySearchMetadata])
     {
-      v38 = [v4 entitySearchMetadata];
+      entitySearchMetadata = [facadeCopy entitySearchMetadata];
 
-      if (v38)
+      if (entitySearchMetadata)
       {
         v39 = [_SFPBEntitySearchMetadata alloc];
-        v40 = [v4 entitySearchMetadata];
-        v41 = [(_SFPBEntitySearchMetadata *)v39 initWithFacade:v40];
+        entitySearchMetadata2 = [facadeCopy entitySearchMetadata];
+        v41 = [(_SFPBEntitySearchMetadata *)v39 initWithFacade:entitySearchMetadata2];
         [(_SFPBDrillDownMetadata *)v5 setEntitySearchMetadata:v41];
       }
     }
 
-    v42 = [v4 debugParams];
+    debugParams = [facadeCopy debugParams];
 
-    if (v42)
+    if (debugParams)
     {
-      v43 = [v4 debugParams];
-      [(_SFPBDrillDownMetadata *)v5 setDebugParams:v43];
+      debugParams2 = [facadeCopy debugParams];
+      [(_SFPBDrillDownMetadata *)v5 setDebugParams:debugParams2];
     }
 
-    v44 = [v4 params];
+    params = [facadeCopy params];
 
-    if (v44)
+    if (params)
     {
-      v45 = [v4 params];
-      [(_SFPBDrillDownMetadata *)v5 setParams:v45];
+      params2 = [facadeCopy params];
+      [(_SFPBDrillDownMetadata *)v5 setParams:params2];
     }
 
     v46 = v5;
@@ -220,16 +220,16 @@
   return v5;
 }
 
-- (_SFPBDrillDownMetadata)initWithDictionary:(id)a3
+- (_SFPBDrillDownMetadata)initWithDictionary:(id)dictionary
 {
   v58 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v55.receiver = self;
   v55.super_class = _SFPBDrillDownMetadata;
   v5 = [(_SFPBDrillDownMetadata *)&v55 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"cardIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"cardIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -238,7 +238,7 @@
     }
 
     v46 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"cardIdentifiers"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"cardIdentifiers"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -281,7 +281,7 @@
       }
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"cardDomains"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"cardDomains"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -324,7 +324,7 @@
       }
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"qtype"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"qtype"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -332,7 +332,7 @@
       [(_SFPBDrillDownMetadata *)v5 setQtype:v25];
     }
 
-    v26 = [v4 objectForKeyedSubscript:{@"viewConfigName", v24}];
+    v26 = [dictionaryCopy objectForKeyedSubscript:{@"viewConfigName", v24}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -341,7 +341,7 @@
     }
 
     v44 = v16;
-    v28 = [v4 objectForKeyedSubscript:@"cardOnlyMetadata"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"cardOnlyMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -350,7 +350,7 @@
     }
 
     v45 = v8;
-    v30 = [v4 objectForKeyedSubscript:@"entitySearchOnlyMetadata"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"entitySearchOnlyMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -358,7 +358,7 @@
       [(_SFPBDrillDownMetadata *)v5 setEntitySearchOnlyMetadata:v31];
     }
 
-    v32 = [v4 objectForKeyedSubscript:@"cardSearchMetadata"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"cardSearchMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -366,7 +366,7 @@
       [(_SFPBDrillDownMetadata *)v5 setCardSearchMetadata:v33];
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"entitySearchMetadata"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"entitySearchMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -374,7 +374,7 @@
       [(_SFPBDrillDownMetadata *)v5 setEntitySearchMetadata:v35];
     }
 
-    v36 = [v4 objectForKeyedSubscript:@"debugParams"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"debugParams"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -382,7 +382,7 @@
       [(_SFPBDrillDownMetadata *)v5 setDebugParams:v37];
     }
 
-    v38 = [v4 objectForKeyedSubscript:@"params"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"params"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -397,30 +397,30 @@
   return v5;
 }
 
-- (_SFPBDrillDownMetadata)initWithJSON:(id)a3
+- (_SFPBDrillDownMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBDrillDownMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBDrillDownMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBDrillDownMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -433,121 +433,121 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_cardDomains)
   {
-    v4 = [(_SFPBDrillDownMetadata *)self cardDomains];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"cardDomains"];
+    cardDomains = [(_SFPBDrillDownMetadata *)self cardDomains];
+    v5 = [cardDomains copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"cardDomains"];
   }
 
   if (self->_cardIdentifier)
   {
-    v6 = [(_SFPBDrillDownMetadata *)self cardIdentifier];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"cardIdentifier"];
+    cardIdentifier = [(_SFPBDrillDownMetadata *)self cardIdentifier];
+    v7 = [cardIdentifier copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"cardIdentifier"];
   }
 
   if (self->_cardIdentifiers)
   {
-    v8 = [(_SFPBDrillDownMetadata *)self cardIdentifiers];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"cardIdentifiers"];
+    cardIdentifiers = [(_SFPBDrillDownMetadata *)self cardIdentifiers];
+    v9 = [cardIdentifiers copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"cardIdentifiers"];
   }
 
   if (self->_cardOnlyMetadata)
   {
-    v10 = [(_SFPBDrillDownMetadata *)self cardOnlyMetadata];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    cardOnlyMetadata = [(_SFPBDrillDownMetadata *)self cardOnlyMetadata];
+    dictionaryRepresentation = [cardOnlyMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"cardOnlyMetadata"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"cardOnlyMetadata"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"cardOnlyMetadata"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"cardOnlyMetadata"];
     }
   }
 
   if (self->_cardSearchMetadata)
   {
-    v13 = [(_SFPBDrillDownMetadata *)self cardSearchMetadata];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    cardSearchMetadata = [(_SFPBDrillDownMetadata *)self cardSearchMetadata];
+    dictionaryRepresentation2 = [cardSearchMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"cardSearchMetadata"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"cardSearchMetadata"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"cardSearchMetadata"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"cardSearchMetadata"];
     }
   }
 
   if (self->_debugParams)
   {
-    v16 = [(_SFPBDrillDownMetadata *)self debugParams];
-    v17 = [v16 copy];
-    [v3 setObject:v17 forKeyedSubscript:@"debugParams"];
+    debugParams = [(_SFPBDrillDownMetadata *)self debugParams];
+    v17 = [debugParams copy];
+    [dictionary setObject:v17 forKeyedSubscript:@"debugParams"];
   }
 
   if (self->_entitySearchMetadata)
   {
-    v18 = [(_SFPBDrillDownMetadata *)self entitySearchMetadata];
-    v19 = [v18 dictionaryRepresentation];
-    if (v19)
+    entitySearchMetadata = [(_SFPBDrillDownMetadata *)self entitySearchMetadata];
+    dictionaryRepresentation3 = [entitySearchMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v19 forKeyedSubscript:@"entitySearchMetadata"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"entitySearchMetadata"];
     }
 
     else
     {
-      v20 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v20 forKeyedSubscript:@"entitySearchMetadata"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"entitySearchMetadata"];
     }
   }
 
   if (self->_entitySearchOnlyMetadata)
   {
-    v21 = [(_SFPBDrillDownMetadata *)self entitySearchOnlyMetadata];
-    v22 = [v21 dictionaryRepresentation];
-    if (v22)
+    entitySearchOnlyMetadata = [(_SFPBDrillDownMetadata *)self entitySearchOnlyMetadata];
+    dictionaryRepresentation4 = [entitySearchOnlyMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v22 forKeyedSubscript:@"entitySearchOnlyMetadata"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"entitySearchOnlyMetadata"];
     }
 
     else
     {
-      v23 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v23 forKeyedSubscript:@"entitySearchOnlyMetadata"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"entitySearchOnlyMetadata"];
     }
   }
 
   if (self->_params)
   {
-    v24 = [(_SFPBDrillDownMetadata *)self params];
-    v25 = [v24 copy];
-    [v3 setObject:v25 forKeyedSubscript:@"params"];
+    params = [(_SFPBDrillDownMetadata *)self params];
+    v25 = [params copy];
+    [dictionary setObject:v25 forKeyedSubscript:@"params"];
   }
 
   if (self->_qtype)
   {
-    v26 = [(_SFPBDrillDownMetadata *)self qtype];
-    v27 = [v26 copy];
-    [v3 setObject:v27 forKeyedSubscript:@"qtype"];
+    qtype = [(_SFPBDrillDownMetadata *)self qtype];
+    v27 = [qtype copy];
+    [dictionary setObject:v27 forKeyedSubscript:@"qtype"];
   }
 
   if (self->_viewConfigName)
   {
-    v28 = [(_SFPBDrillDownMetadata *)self viewConfigName];
-    v29 = [v28 copy];
-    [v3 setObject:v29 forKeyedSubscript:@"viewConfigName"];
+    viewConfigName = [(_SFPBDrillDownMetadata *)self viewConfigName];
+    v29 = [viewConfigName copy];
+    [dictionary setObject:v29 forKeyedSubscript:@"viewConfigName"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -565,28 +565,28 @@
   return v9 ^ v12 ^ [(NSString *)self->_params hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_57;
   }
 
-  v5 = [(_SFPBDrillDownMetadata *)self cardIdentifier];
-  v6 = [v4 cardIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  cardIdentifier = [(_SFPBDrillDownMetadata *)self cardIdentifier];
+  cardIdentifier2 = [equalCopy cardIdentifier];
+  if ((cardIdentifier != 0) == (cardIdentifier2 == 0))
   {
     goto LABEL_56;
   }
 
-  v7 = [(_SFPBDrillDownMetadata *)self cardIdentifier];
-  if (v7)
+  cardIdentifier3 = [(_SFPBDrillDownMetadata *)self cardIdentifier];
+  if (cardIdentifier3)
   {
-    v8 = v7;
-    v9 = [(_SFPBDrillDownMetadata *)self cardIdentifier];
-    v10 = [v4 cardIdentifier];
-    v11 = [v9 isEqual:v10];
+    v8 = cardIdentifier3;
+    cardIdentifier4 = [(_SFPBDrillDownMetadata *)self cardIdentifier];
+    cardIdentifier5 = [equalCopy cardIdentifier];
+    v11 = [cardIdentifier4 isEqual:cardIdentifier5];
 
     if (!v11)
     {
@@ -598,20 +598,20 @@
   {
   }
 
-  v5 = [(_SFPBDrillDownMetadata *)self cardIdentifiers];
-  v6 = [v4 cardIdentifiers];
-  if ((v5 != 0) == (v6 == 0))
+  cardIdentifier = [(_SFPBDrillDownMetadata *)self cardIdentifiers];
+  cardIdentifier2 = [equalCopy cardIdentifiers];
+  if ((cardIdentifier != 0) == (cardIdentifier2 == 0))
   {
     goto LABEL_56;
   }
 
-  v12 = [(_SFPBDrillDownMetadata *)self cardIdentifiers];
-  if (v12)
+  cardIdentifiers = [(_SFPBDrillDownMetadata *)self cardIdentifiers];
+  if (cardIdentifiers)
   {
-    v13 = v12;
-    v14 = [(_SFPBDrillDownMetadata *)self cardIdentifiers];
-    v15 = [v4 cardIdentifiers];
-    v16 = [v14 isEqual:v15];
+    v13 = cardIdentifiers;
+    cardIdentifiers2 = [(_SFPBDrillDownMetadata *)self cardIdentifiers];
+    cardIdentifiers3 = [equalCopy cardIdentifiers];
+    v16 = [cardIdentifiers2 isEqual:cardIdentifiers3];
 
     if (!v16)
     {
@@ -623,20 +623,20 @@
   {
   }
 
-  v5 = [(_SFPBDrillDownMetadata *)self cardDomains];
-  v6 = [v4 cardDomains];
-  if ((v5 != 0) == (v6 == 0))
+  cardIdentifier = [(_SFPBDrillDownMetadata *)self cardDomains];
+  cardIdentifier2 = [equalCopy cardDomains];
+  if ((cardIdentifier != 0) == (cardIdentifier2 == 0))
   {
     goto LABEL_56;
   }
 
-  v17 = [(_SFPBDrillDownMetadata *)self cardDomains];
-  if (v17)
+  cardDomains = [(_SFPBDrillDownMetadata *)self cardDomains];
+  if (cardDomains)
   {
-    v18 = v17;
-    v19 = [(_SFPBDrillDownMetadata *)self cardDomains];
-    v20 = [v4 cardDomains];
-    v21 = [v19 isEqual:v20];
+    v18 = cardDomains;
+    cardDomains2 = [(_SFPBDrillDownMetadata *)self cardDomains];
+    cardDomains3 = [equalCopy cardDomains];
+    v21 = [cardDomains2 isEqual:cardDomains3];
 
     if (!v21)
     {
@@ -648,20 +648,20 @@
   {
   }
 
-  v5 = [(_SFPBDrillDownMetadata *)self qtype];
-  v6 = [v4 qtype];
-  if ((v5 != 0) == (v6 == 0))
+  cardIdentifier = [(_SFPBDrillDownMetadata *)self qtype];
+  cardIdentifier2 = [equalCopy qtype];
+  if ((cardIdentifier != 0) == (cardIdentifier2 == 0))
   {
     goto LABEL_56;
   }
 
-  v22 = [(_SFPBDrillDownMetadata *)self qtype];
-  if (v22)
+  qtype = [(_SFPBDrillDownMetadata *)self qtype];
+  if (qtype)
   {
-    v23 = v22;
-    v24 = [(_SFPBDrillDownMetadata *)self qtype];
-    v25 = [v4 qtype];
-    v26 = [v24 isEqual:v25];
+    v23 = qtype;
+    qtype2 = [(_SFPBDrillDownMetadata *)self qtype];
+    qtype3 = [equalCopy qtype];
+    v26 = [qtype2 isEqual:qtype3];
 
     if (!v26)
     {
@@ -673,20 +673,20 @@
   {
   }
 
-  v5 = [(_SFPBDrillDownMetadata *)self viewConfigName];
-  v6 = [v4 viewConfigName];
-  if ((v5 != 0) == (v6 == 0))
+  cardIdentifier = [(_SFPBDrillDownMetadata *)self viewConfigName];
+  cardIdentifier2 = [equalCopy viewConfigName];
+  if ((cardIdentifier != 0) == (cardIdentifier2 == 0))
   {
     goto LABEL_56;
   }
 
-  v27 = [(_SFPBDrillDownMetadata *)self viewConfigName];
-  if (v27)
+  viewConfigName = [(_SFPBDrillDownMetadata *)self viewConfigName];
+  if (viewConfigName)
   {
-    v28 = v27;
-    v29 = [(_SFPBDrillDownMetadata *)self viewConfigName];
-    v30 = [v4 viewConfigName];
-    v31 = [v29 isEqual:v30];
+    v28 = viewConfigName;
+    viewConfigName2 = [(_SFPBDrillDownMetadata *)self viewConfigName];
+    viewConfigName3 = [equalCopy viewConfigName];
+    v31 = [viewConfigName2 isEqual:viewConfigName3];
 
     if (!v31)
     {
@@ -698,20 +698,20 @@
   {
   }
 
-  v5 = [(_SFPBDrillDownMetadata *)self cardOnlyMetadata];
-  v6 = [v4 cardOnlyMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  cardIdentifier = [(_SFPBDrillDownMetadata *)self cardOnlyMetadata];
+  cardIdentifier2 = [equalCopy cardOnlyMetadata];
+  if ((cardIdentifier != 0) == (cardIdentifier2 == 0))
   {
     goto LABEL_56;
   }
 
-  v32 = [(_SFPBDrillDownMetadata *)self cardOnlyMetadata];
-  if (v32)
+  cardOnlyMetadata = [(_SFPBDrillDownMetadata *)self cardOnlyMetadata];
+  if (cardOnlyMetadata)
   {
-    v33 = v32;
-    v34 = [(_SFPBDrillDownMetadata *)self cardOnlyMetadata];
-    v35 = [v4 cardOnlyMetadata];
-    v36 = [v34 isEqual:v35];
+    v33 = cardOnlyMetadata;
+    cardOnlyMetadata2 = [(_SFPBDrillDownMetadata *)self cardOnlyMetadata];
+    cardOnlyMetadata3 = [equalCopy cardOnlyMetadata];
+    v36 = [cardOnlyMetadata2 isEqual:cardOnlyMetadata3];
 
     if (!v36)
     {
@@ -723,20 +723,20 @@
   {
   }
 
-  v5 = [(_SFPBDrillDownMetadata *)self entitySearchOnlyMetadata];
-  v6 = [v4 entitySearchOnlyMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  cardIdentifier = [(_SFPBDrillDownMetadata *)self entitySearchOnlyMetadata];
+  cardIdentifier2 = [equalCopy entitySearchOnlyMetadata];
+  if ((cardIdentifier != 0) == (cardIdentifier2 == 0))
   {
     goto LABEL_56;
   }
 
-  v37 = [(_SFPBDrillDownMetadata *)self entitySearchOnlyMetadata];
-  if (v37)
+  entitySearchOnlyMetadata = [(_SFPBDrillDownMetadata *)self entitySearchOnlyMetadata];
+  if (entitySearchOnlyMetadata)
   {
-    v38 = v37;
-    v39 = [(_SFPBDrillDownMetadata *)self entitySearchOnlyMetadata];
-    v40 = [v4 entitySearchOnlyMetadata];
-    v41 = [v39 isEqual:v40];
+    v38 = entitySearchOnlyMetadata;
+    entitySearchOnlyMetadata2 = [(_SFPBDrillDownMetadata *)self entitySearchOnlyMetadata];
+    entitySearchOnlyMetadata3 = [equalCopy entitySearchOnlyMetadata];
+    v41 = [entitySearchOnlyMetadata2 isEqual:entitySearchOnlyMetadata3];
 
     if (!v41)
     {
@@ -748,20 +748,20 @@
   {
   }
 
-  v5 = [(_SFPBDrillDownMetadata *)self cardSearchMetadata];
-  v6 = [v4 cardSearchMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  cardIdentifier = [(_SFPBDrillDownMetadata *)self cardSearchMetadata];
+  cardIdentifier2 = [equalCopy cardSearchMetadata];
+  if ((cardIdentifier != 0) == (cardIdentifier2 == 0))
   {
     goto LABEL_56;
   }
 
-  v42 = [(_SFPBDrillDownMetadata *)self cardSearchMetadata];
-  if (v42)
+  cardSearchMetadata = [(_SFPBDrillDownMetadata *)self cardSearchMetadata];
+  if (cardSearchMetadata)
   {
-    v43 = v42;
-    v44 = [(_SFPBDrillDownMetadata *)self cardSearchMetadata];
-    v45 = [v4 cardSearchMetadata];
-    v46 = [v44 isEqual:v45];
+    v43 = cardSearchMetadata;
+    cardSearchMetadata2 = [(_SFPBDrillDownMetadata *)self cardSearchMetadata];
+    cardSearchMetadata3 = [equalCopy cardSearchMetadata];
+    v46 = [cardSearchMetadata2 isEqual:cardSearchMetadata3];
 
     if (!v46)
     {
@@ -773,20 +773,20 @@
   {
   }
 
-  v5 = [(_SFPBDrillDownMetadata *)self entitySearchMetadata];
-  v6 = [v4 entitySearchMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  cardIdentifier = [(_SFPBDrillDownMetadata *)self entitySearchMetadata];
+  cardIdentifier2 = [equalCopy entitySearchMetadata];
+  if ((cardIdentifier != 0) == (cardIdentifier2 == 0))
   {
     goto LABEL_56;
   }
 
-  v47 = [(_SFPBDrillDownMetadata *)self entitySearchMetadata];
-  if (v47)
+  entitySearchMetadata = [(_SFPBDrillDownMetadata *)self entitySearchMetadata];
+  if (entitySearchMetadata)
   {
-    v48 = v47;
-    v49 = [(_SFPBDrillDownMetadata *)self entitySearchMetadata];
-    v50 = [v4 entitySearchMetadata];
-    v51 = [v49 isEqual:v50];
+    v48 = entitySearchMetadata;
+    entitySearchMetadata2 = [(_SFPBDrillDownMetadata *)self entitySearchMetadata];
+    entitySearchMetadata3 = [equalCopy entitySearchMetadata];
+    v51 = [entitySearchMetadata2 isEqual:entitySearchMetadata3];
 
     if (!v51)
     {
@@ -798,20 +798,20 @@
   {
   }
 
-  v5 = [(_SFPBDrillDownMetadata *)self debugParams];
-  v6 = [v4 debugParams];
-  if ((v5 != 0) == (v6 == 0))
+  cardIdentifier = [(_SFPBDrillDownMetadata *)self debugParams];
+  cardIdentifier2 = [equalCopy debugParams];
+  if ((cardIdentifier != 0) == (cardIdentifier2 == 0))
   {
     goto LABEL_56;
   }
 
-  v52 = [(_SFPBDrillDownMetadata *)self debugParams];
-  if (v52)
+  debugParams = [(_SFPBDrillDownMetadata *)self debugParams];
+  if (debugParams)
   {
-    v53 = v52;
-    v54 = [(_SFPBDrillDownMetadata *)self debugParams];
-    v55 = [v4 debugParams];
-    v56 = [v54 isEqual:v55];
+    v53 = debugParams;
+    debugParams2 = [(_SFPBDrillDownMetadata *)self debugParams];
+    debugParams3 = [equalCopy debugParams];
+    v56 = [debugParams2 isEqual:debugParams3];
 
     if (!v56)
     {
@@ -823,12 +823,12 @@
   {
   }
 
-  v5 = [(_SFPBDrillDownMetadata *)self params];
-  v6 = [v4 params];
-  if ((v5 != 0) != (v6 == 0))
+  cardIdentifier = [(_SFPBDrillDownMetadata *)self params];
+  cardIdentifier2 = [equalCopy params];
+  if ((cardIdentifier != 0) != (cardIdentifier2 == 0))
   {
-    v57 = [(_SFPBDrillDownMetadata *)self params];
-    if (!v57)
+    params = [(_SFPBDrillDownMetadata *)self params];
+    if (!params)
     {
 
 LABEL_60:
@@ -836,10 +836,10 @@ LABEL_60:
       goto LABEL_58;
     }
 
-    v58 = v57;
-    v59 = [(_SFPBDrillDownMetadata *)self params];
-    v60 = [v4 params];
-    v61 = [v59 isEqual:v60];
+    v58 = params;
+    params2 = [(_SFPBDrillDownMetadata *)self params];
+    params3 = [equalCopy params];
+    v61 = [params2 isEqual:params3];
 
     if (v61)
     {
@@ -859,22 +859,22 @@ LABEL_58:
   return v62;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBDrillDownMetadata *)self cardIdentifier];
-  if (v5)
+  toCopy = to;
+  cardIdentifier = [(_SFPBDrillDownMetadata *)self cardIdentifier];
+  if (cardIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBDrillDownMetadata *)self cardIdentifiers];
+  cardIdentifiers = [(_SFPBDrillDownMetadata *)self cardIdentifiers];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  v7 = [cardIdentifiers countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v7)
   {
     v8 = v7;
@@ -886,7 +886,7 @@ LABEL_58:
       {
         if (*v32 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(cardIdentifiers);
         }
 
         v11 = *(*(&v31 + 1) + 8 * v10);
@@ -895,18 +895,18 @@ LABEL_58:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      v8 = [cardIdentifiers countByEnumeratingWithState:&v31 objects:v36 count:16];
     }
 
     while (v8);
   }
 
-  v12 = [(_SFPBDrillDownMetadata *)self cardDomains];
+  cardDomains = [(_SFPBDrillDownMetadata *)self cardDomains];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v13 = [v12 countByEnumeratingWithState:&v27 objects:v35 count:16];
+  v13 = [cardDomains countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v13)
   {
     v14 = v13;
@@ -918,7 +918,7 @@ LABEL_58:
       {
         if (*v28 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(cardDomains);
         }
 
         v17 = *(*(&v27 + 1) + 8 * v16);
@@ -927,56 +927,56 @@ LABEL_58:
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v27 objects:v35 count:16];
+      v14 = [cardDomains countByEnumeratingWithState:&v27 objects:v35 count:16];
     }
 
     while (v14);
   }
 
-  v18 = [(_SFPBDrillDownMetadata *)self qtype];
-  if (v18)
+  qtype = [(_SFPBDrillDownMetadata *)self qtype];
+  if (qtype)
   {
     PBDataWriterWriteStringField();
   }
 
-  v19 = [(_SFPBDrillDownMetadata *)self viewConfigName];
-  if (v19)
+  viewConfigName = [(_SFPBDrillDownMetadata *)self viewConfigName];
+  if (viewConfigName)
   {
     PBDataWriterWriteStringField();
   }
 
-  v20 = [(_SFPBDrillDownMetadata *)self cardOnlyMetadata];
-  if (v20)
+  cardOnlyMetadata = [(_SFPBDrillDownMetadata *)self cardOnlyMetadata];
+  if (cardOnlyMetadata)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v21 = [(_SFPBDrillDownMetadata *)self entitySearchOnlyMetadata];
-  if (v21)
+  entitySearchOnlyMetadata = [(_SFPBDrillDownMetadata *)self entitySearchOnlyMetadata];
+  if (entitySearchOnlyMetadata)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(_SFPBDrillDownMetadata *)self cardSearchMetadata];
-  if (v22)
+  cardSearchMetadata = [(_SFPBDrillDownMetadata *)self cardSearchMetadata];
+  if (cardSearchMetadata)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v23 = [(_SFPBDrillDownMetadata *)self entitySearchMetadata];
-  if (v23)
+  entitySearchMetadata = [(_SFPBDrillDownMetadata *)self entitySearchMetadata];
+  if (entitySearchMetadata)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(_SFPBDrillDownMetadata *)self debugParams];
-  if (v24)
+  debugParams = [(_SFPBDrillDownMetadata *)self debugParams];
+  if (debugParams)
   {
     PBDataWriterWriteStringField();
   }
 
-  v25 = [(_SFPBDrillDownMetadata *)self params];
-  if (v25)
+  params = [(_SFPBDrillDownMetadata *)self params];
+  if (params)
   {
     PBDataWriterWriteStringField();
   }
@@ -984,18 +984,18 @@ LABEL_58:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setParams:(id)a3
+- (void)setParams:(id)params
 {
-  v4 = [a3 copy];
+  v4 = [params copy];
   params = self->_params;
   self->_params = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setDebugParams:(id)a3
+- (void)setDebugParams:(id)params
 {
-  v4 = [a3 copy];
+  v4 = [params copy];
   debugParams = self->_debugParams;
   self->_debugParams = v4;
 
@@ -1017,9 +1017,9 @@ LABEL_58:
   return v3;
 }
 
-- (void)setEntitySearchMetadata:(id)a3
+- (void)setEntitySearchMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   cardOnlyMetadata = self->_cardOnlyMetadata;
   self->_cardOnlyMetadata = 0;
 
@@ -1029,9 +1029,9 @@ LABEL_58:
   cardSearchMetadata = self->_cardSearchMetadata;
   self->_cardSearchMetadata = 0;
 
-  self->_whichMetadata = 4 * (v4 != 0);
+  self->_whichMetadata = 4 * (metadataCopy != 0);
   entitySearchMetadata = self->_entitySearchMetadata;
-  self->_entitySearchMetadata = v4;
+  self->_entitySearchMetadata = metadataCopy;
 }
 
 - (_SFPBCardSearchMetadata)cardSearchMetadata
@@ -1049,9 +1049,9 @@ LABEL_58:
   return v3;
 }
 
-- (void)setCardSearchMetadata:(id)a3
+- (void)setCardSearchMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   cardOnlyMetadata = self->_cardOnlyMetadata;
   self->_cardOnlyMetadata = 0;
 
@@ -1062,14 +1062,14 @@ LABEL_58:
   self->_entitySearchMetadata = 0;
 
   v8 = 3;
-  if (!v4)
+  if (!metadataCopy)
   {
     v8 = 0;
   }
 
   self->_whichMetadata = v8;
   cardSearchMetadata = self->_cardSearchMetadata;
-  self->_cardSearchMetadata = v4;
+  self->_cardSearchMetadata = metadataCopy;
 }
 
 - (_SFPBEntitySearchMetadata)entitySearchOnlyMetadata
@@ -1087,9 +1087,9 @@ LABEL_58:
   return v3;
 }
 
-- (void)setEntitySearchOnlyMetadata:(id)a3
+- (void)setEntitySearchOnlyMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   cardOnlyMetadata = self->_cardOnlyMetadata;
   self->_cardOnlyMetadata = 0;
 
@@ -1099,9 +1099,9 @@ LABEL_58:
   entitySearchMetadata = self->_entitySearchMetadata;
   self->_entitySearchMetadata = 0;
 
-  self->_whichMetadata = 2 * (v4 != 0);
+  self->_whichMetadata = 2 * (metadataCopy != 0);
   entitySearchOnlyMetadata = self->_entitySearchOnlyMetadata;
-  self->_entitySearchOnlyMetadata = v4;
+  self->_entitySearchOnlyMetadata = metadataCopy;
 }
 
 - (_SFPBCardMetadata)cardOnlyMetadata
@@ -1119,9 +1119,9 @@ LABEL_58:
   return v3;
 }
 
-- (void)setCardOnlyMetadata:(id)a3
+- (void)setCardOnlyMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   entitySearchOnlyMetadata = self->_entitySearchOnlyMetadata;
   self->_entitySearchOnlyMetadata = 0;
 
@@ -1131,86 +1131,86 @@ LABEL_58:
   entitySearchMetadata = self->_entitySearchMetadata;
   self->_entitySearchMetadata = 0;
 
-  self->_whichMetadata = v4 != 0;
+  self->_whichMetadata = metadataCopy != 0;
   cardOnlyMetadata = self->_cardOnlyMetadata;
-  self->_cardOnlyMetadata = v4;
+  self->_cardOnlyMetadata = metadataCopy;
 }
 
-- (void)setViewConfigName:(id)a3
+- (void)setViewConfigName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   viewConfigName = self->_viewConfigName;
   self->_viewConfigName = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setQtype:(id)a3
+- (void)setQtype:(id)qtype
 {
-  v4 = [a3 copy];
+  v4 = [qtype copy];
   qtype = self->_qtype;
   self->_qtype = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addCardDomains:(id)a3
+- (void)addCardDomains:(id)domains
 {
-  v4 = a3;
+  domainsCopy = domains;
   cardDomains = self->_cardDomains;
-  v8 = v4;
+  v8 = domainsCopy;
   if (!cardDomains)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_cardDomains;
-    self->_cardDomains = v6;
+    self->_cardDomains = array;
 
-    v4 = v8;
+    domainsCopy = v8;
     cardDomains = self->_cardDomains;
   }
 
-  [(NSArray *)cardDomains addObject:v4];
+  [(NSArray *)cardDomains addObject:domainsCopy];
 }
 
-- (void)setCardDomains:(id)a3
+- (void)setCardDomains:(id)domains
 {
-  v4 = [a3 copy];
+  v4 = [domains copy];
   cardDomains = self->_cardDomains;
   self->_cardDomains = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addCardIdentifiers:(id)a3
+- (void)addCardIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   cardIdentifiers = self->_cardIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!cardIdentifiers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_cardIdentifiers;
-    self->_cardIdentifiers = v6;
+    self->_cardIdentifiers = array;
 
-    v4 = v8;
+    identifiersCopy = v8;
     cardIdentifiers = self->_cardIdentifiers;
   }
 
-  [(NSArray *)cardIdentifiers addObject:v4];
+  [(NSArray *)cardIdentifiers addObject:identifiersCopy];
 }
 
-- (void)setCardIdentifiers:(id)a3
+- (void)setCardIdentifiers:(id)identifiers
 {
-  v4 = [a3 copy];
+  v4 = [identifiers copy];
   cardIdentifiers = self->_cardIdentifiers;
   self->_cardIdentifiers = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setCardIdentifier:(id)a3
+- (void)setCardIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   cardIdentifier = self->_cardIdentifier;
   self->_cardIdentifier = v4;
 

@@ -1,16 +1,16 @@
 @interface CNUIContactStoreSaveDelegate
-- (BOOL)saveRequest:(id)a3 shouldProceedAfterError:(id)a4;
+- (BOOL)saveRequest:(id)request shouldProceedAfterError:(id)error;
 @end
 
 @implementation CNUIContactStoreSaveDelegate
 
-- (BOOL)saveRequest:(id)a3 shouldProceedAfterError:(id)a4
+- (BOOL)saveRequest:(id)request shouldProceedAfterError:(id)error
 {
-  v4 = a4;
-  if ([v4 code] == 1015)
+  errorCopy = error;
+  if ([errorCopy code] == 1015)
   {
-    v5 = [v4 domain];
-    v6 = [v5 isEqualToString:*MEMORY[0x1E695C448]];
+    domain = [errorCopy domain];
+    v6 = [domain isEqualToString:*MEMORY[0x1E695C448]];
   }
 
   else

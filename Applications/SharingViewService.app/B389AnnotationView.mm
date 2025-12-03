@@ -1,7 +1,7 @@
 @interface B389AnnotationView
 + (Class)calloutViewClass;
-- (_TtC18SharingViewServiceP33_A90FF226C003DA47E3B07A4439E9D09718B389AnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
-- (_TtC18SharingViewServiceP33_A90FF226C003DA47E3B07A4439E9D09718B389AnnotationView)initWithCoder:(id)a3;
+- (_TtC18SharingViewServiceP33_A90FF226C003DA47E3B07A4439E9D09718B389AnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
+- (_TtC18SharingViewServiceP33_A90FF226C003DA47E3B07A4439E9D09718B389AnnotationView)initWithCoder:(id)coder;
 - (id)_balloonImage;
 @end
 
@@ -14,9 +14,9 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC18SharingViewServiceP33_A90FF226C003DA47E3B07A4439E9D09718B389AnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (_TtC18SharingViewServiceP33_A90FF226C003DA47E3B07A4439E9D09718B389AnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     *&self->_MKPuckAnnotationView_opaque[OBJC_IVAR____TtC18SharingViewServiceP33_A90FF226C003DA47E3B07A4439E9D09718B389AnnotationView_calloutInnerDiameter] = 0x404C000000000000;
@@ -33,19 +33,19 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for B389AnnotationView();
-  v7 = [(B389AnnotationView *)&v9 initWithAnnotation:a3 reuseIdentifier:v6];
+  v7 = [(B389AnnotationView *)&v9 initWithAnnotation:annotation reuseIdentifier:v6];
 
   swift_unknownObjectRelease();
   return v7;
 }
 
-- (_TtC18SharingViewServiceP33_A90FF226C003DA47E3B07A4439E9D09718B389AnnotationView)initWithCoder:(id)a3
+- (_TtC18SharingViewServiceP33_A90FF226C003DA47E3B07A4439E9D09718B389AnnotationView)initWithCoder:(id)coder
 {
   *&self->_MKPuckAnnotationView_opaque[OBJC_IVAR____TtC18SharingViewServiceP33_A90FF226C003DA47E3B07A4439E9D09718B389AnnotationView_calloutInnerDiameter] = 0x404C000000000000;
   v7.receiver = self;
   v7.super_class = type metadata accessor for B389AnnotationView();
-  v4 = a3;
-  v5 = [(B389AnnotationView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(B389AnnotationView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {
@@ -56,8 +56,8 @@
 
 - (id)_balloonImage
 {
-  v2 = self;
-  if ([(B389AnnotationView *)v2 annotation])
+  selfCopy = self;
+  if ([(B389AnnotationView *)selfCopy annotation])
   {
     type metadata accessor for B389MapAnnotation();
     v3 = swift_dynamicCastClass();

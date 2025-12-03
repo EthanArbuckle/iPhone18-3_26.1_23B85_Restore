@@ -1,48 +1,48 @@
 @interface SBDeviceApplicationMomentsUIViewProvider
-- (BOOL)handledStatusBarTap:(id)a3 type:(int64_t)a4;
+- (BOOL)handledStatusBarTap:(id)tap type:(int64_t)type;
 - (id)acquireSystemUIScenePresentingAssertion;
-- (id)dismissScene:(id)a3;
-- (id)presentScene:(id)a3 viewControllerBuilderBlock:(id)a4;
+- (id)dismissScene:(id)scene;
+- (id)presentScene:(id)scene viewControllerBuilderBlock:(id)block;
 @end
 
 @implementation SBDeviceApplicationMomentsUIViewProvider
 
 - (id)acquireSystemUIScenePresentingAssertion
 {
-  v3 = [SBApp systemUIScenesCoordinator];
-  v4 = [v3 momentsUISceneController];
-  v5 = [v4 addPresenter:self];
+  systemUIScenesCoordinator = [SBApp systemUIScenesCoordinator];
+  momentsUISceneController = [systemUIScenesCoordinator momentsUISceneController];
+  v5 = [momentsUISceneController addPresenter:self];
 
   return v5;
 }
 
-- (id)presentScene:(id)a3 viewControllerBuilderBlock:(id)a4
+- (id)presentScene:(id)scene viewControllerBuilderBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  objc_storeWeak(&self->_presentedScene, v7);
+  blockCopy = block;
+  sceneCopy = scene;
+  objc_storeWeak(&self->_presentedScene, sceneCopy);
   v10.receiver = self;
   v10.super_class = SBDeviceApplicationMomentsUIViewProvider;
-  v8 = [(SBDeviceApplicationSystemUISceneAbstractViewProvider *)&v10 presentScene:v7 viewControllerBuilderBlock:v6];
+  v8 = [(SBDeviceApplicationSystemUISceneAbstractViewProvider *)&v10 presentScene:sceneCopy viewControllerBuilderBlock:blockCopy];
 
   return v8;
 }
 
-- (id)dismissScene:(id)a3
+- (id)dismissScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   objc_storeWeak(&self->_presentedScene, 0);
   v7.receiver = self;
   v7.super_class = SBDeviceApplicationMomentsUIViewProvider;
-  v5 = [(SBDeviceApplicationSystemUISceneAbstractViewProvider *)&v7 dismissScene:v4];
+  v5 = [(SBDeviceApplicationSystemUISceneAbstractViewProvider *)&v7 dismissScene:sceneCopy];
 
   return v5;
 }
 
-- (BOOL)handledStatusBarTap:(id)a3 type:(int64_t)a4
+- (BOOL)handledStatusBarTap:(id)tap type:(int64_t)type
 {
-  v6 = a3;
-  if (a4 || ![(SBDeviceApplicationSystemUISceneAbstractViewProvider *)self isActive])
+  tapCopy = tap;
+  if (type || ![(SBDeviceApplicationSystemUISceneAbstractViewProvider *)self isActive])
   {
     LOBYTE(WeakRetained) = 0;
   }
@@ -52,9 +52,9 @@
     WeakRetained = objc_loadWeakRetained(&self->_presentedScene);
     if (WeakRetained)
     {
-      v8 = [(SBDeviceApplicationSceneOverlayViewProvider *)self overlayViewController];
-      v9 = [v8 view];
-      [v6 locationInView:v9];
+      overlayViewController = [(SBDeviceApplicationSceneOverlayViewProvider *)self overlayViewController];
+      view = [overlayViewController view];
+      [tapCopy locationInView:view];
       v11 = v10;
 
       v12 = [objc_alloc(MEMORY[0x277D75AB0]) initWithType:0 xPosition:v11];

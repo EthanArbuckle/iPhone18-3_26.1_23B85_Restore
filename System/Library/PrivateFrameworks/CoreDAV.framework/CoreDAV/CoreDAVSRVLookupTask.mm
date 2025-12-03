@@ -1,18 +1,18 @@
 @interface CoreDAVSRVLookupTask
-- (CoreDAVSRVLookupTask)initWithServiceString:(id)a3;
+- (CoreDAVSRVLookupTask)initWithServiceString:(id)string;
 - (id)description;
-- (void)_runOnCallbackThread:(id)a3;
-- (void)finishCoreDAVTaskWithError:(id)a3;
-- (void)handleResolvedEndPoints:(id)a3;
+- (void)_runOnCallbackThread:(id)thread;
+- (void)finishCoreDAVTaskWithError:(id)error;
+- (void)handleResolvedEndPoints:(id)points;
 - (void)performCoreDAVTask;
 @end
 
 @implementation CoreDAVSRVLookupTask
 
-- (CoreDAVSRVLookupTask)initWithServiceString:(id)a3
+- (CoreDAVSRVLookupTask)initWithServiceString:(id)string
 {
-  v5 = a3;
-  if (!v5 || (v6 = v5, ![v5 length]))
+  stringCopy = string;
+  if (!stringCopy || (v6 = stringCopy, ![stringCopy length]))
   {
     v11 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"Non-nil and non-zero length 'serviceSting' required." userInfo:0];
     objc_exception_throw(v11);
@@ -24,7 +24,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_serviceString, a3);
+    objc_storeStrong(&v7->_serviceString, string);
     fetchedRecords = v8->_fetchedRecords;
     v8->_fetchedRecords = 0;
   }
@@ -40,11 +40,11 @@
   v4 = [(CoreDAVTask *)&v8 description];
   [v3 appendFormat:@"[%@ ", v4];
 
-  v5 = [(CoreDAVSRVLookupTask *)self serviceString];
-  [v3 appendFormat:@"|  Service string: [%@]", v5];
+  serviceString = [(CoreDAVSRVLookupTask *)self serviceString];
+  [v3 appendFormat:@"|  Service string: [%@]", serviceString];
 
-  v6 = [(CoreDAVSRVLookupTask *)self fetchedRecords];
-  [v3 appendFormat:@"| Number of SRV records: [%lu]", objc_msgSend(v6, "count")];
+  fetchedRecords = [(CoreDAVSRVLookupTask *)self fetchedRecords];
+  [v3 appendFormat:@"| Number of SRV records: [%lu]", objc_msgSend(fetchedRecords, "count")];
 
   [v3 appendFormat:@"]"];
 
@@ -70,8 +70,8 @@
     self->_timeoutTimer = 0;
   }
 
-  v7 = [(CoreDAVSRVLookupTask *)self serviceString];
-  [v7 UTF8String];
+  serviceString = [(CoreDAVSRVLookupTask *)self serviceString];
+  [serviceString UTF8String];
   srv = nw_endpoint_create_srv();
 
   v9 = MEMORY[0x245D68950]();
@@ -85,14 +85,14 @@
   v31 = 3221225472;
   v32 = __42__CoreDAVSRVLookupTask_performCoreDAVTask__block_invoke_2;
   v33 = &unk_278E30F18;
-  v34 = self;
+  selfCopy = self;
   nw_resolver_set_cancel_handler();
   v14 = self->_resolver;
   v25 = MEMORY[0x277D85DD0];
   v26 = 3221225472;
   v27 = __42__CoreDAVSRVLookupTask_performCoreDAVTask__block_invoke_2_20;
   v28 = &unk_278E310E0;
-  v29 = self;
+  selfCopy2 = self;
   nw_resolver_set_update_handler();
   [(CoreDAVTask *)self timeoutInterval];
   v19 = MEMORY[0x277D85DD0];
@@ -105,7 +105,7 @@
   }
 
   v24 = v15;
-  v23 = self;
+  selfCopy3 = self;
   v16 = [MEMORY[0x277CBEBB8] timerWithTimeInterval:0 repeats:&v19 block:?];
   v17 = self->_timeoutTimer;
   self->_timeoutTimer = v16;
@@ -179,11 +179,11 @@ void __42__CoreDAVSRVLookupTask_performCoreDAVTask__block_invoke_4(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finishCoreDAVTaskWithError:(id)a3
+- (void)finishCoreDAVTaskWithError:(id)error
 {
   v8.receiver = self;
   v8.super_class = CoreDAVSRVLookupTask;
-  [(CoreDAVTask *)&v8 finishCoreDAVTaskWithError:a3];
+  [(CoreDAVTask *)&v8 finishCoreDAVTaskWithError:error];
   if (self->_resolver)
   {
     nw_resolver_set_cancel_handler();
@@ -202,19 +202,19 @@ void __42__CoreDAVSRVLookupTask_performCoreDAVTask__block_invoke_4(uint64_t a1)
   }
 }
 
-- (void)_runOnCallbackThread:(id)a3
+- (void)_runOnCallbackThread:(id)thread
 {
-  v4 = a3;
-  v6 = [(CoreDAVTask *)self taskManager];
-  v5 = [v6 workRunLoop];
-  [v5 performBlock:v4];
+  threadCopy = thread;
+  taskManager = [(CoreDAVTask *)self taskManager];
+  workRunLoop = [taskManager workRunLoop];
+  [workRunLoop performBlock:threadCopy];
 }
 
-- (void)handleResolvedEndPoints:(id)a3
+- (void)handleResolvedEndPoints:(id)points
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4 || (count = nw_array_get_count()) == 0)
+  pointsCopy = points;
+  if (!pointsCopy || (count = nw_array_get_count()) == 0)
   {
     if (self->_resolver)
     {

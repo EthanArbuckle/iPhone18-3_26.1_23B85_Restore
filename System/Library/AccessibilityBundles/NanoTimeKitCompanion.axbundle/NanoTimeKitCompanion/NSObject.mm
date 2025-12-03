@@ -1,23 +1,23 @@
 @interface NSObject
-- (id)_accessibilityWorldClockStringFromLabel:(id)a3;
+- (id)_accessibilityWorldClockStringFromLabel:(id)label;
 @end
 
 @implementation NSObject
 
-- (id)_accessibilityWorldClockStringFromLabel:(id)a3
+- (id)_accessibilityWorldClockStringFromLabel:(id)label
 {
-  v4 = a3;
-  v5 = [self _accessibilityWorldClockCityName];
-  v6 = [v5 length];
+  labelCopy = label;
+  _accessibilityWorldClockCityName = [self _accessibilityWorldClockCityName];
+  v6 = [_accessibilityWorldClockCityName length];
   v7 = [AXAttributedString alloc];
   if (v6)
   {
-    v8 = [self _accessibilityWorldClockCityName];
-    v9 = [v7 initWithString:v8];
+    _accessibilityWorldClockCityName2 = [self _accessibilityWorldClockCityName];
+    v9 = [v7 initWithString:_accessibilityWorldClockCityName2];
 
     v10 = [AXAttributedString alloc];
-    v11 = [v4 accessibilityLabel];
-    v12 = [v10 initWithString:v11];
+    accessibilityLabel = [labelCopy accessibilityLabel];
+    v12 = [v10 initWithString:accessibilityLabel];
 
     [v12 setAttribute:&__kCFBooleanTrue forKey:UIAccessibilityTokenClockTime];
     [v9 appendAXAttributedString:v12];

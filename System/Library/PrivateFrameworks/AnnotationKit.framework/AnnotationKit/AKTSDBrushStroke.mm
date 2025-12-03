@@ -1,46 +1,46 @@
 @interface AKTSDBrushStroke
-+ (AKTSDBrushStroke)strokeWithName:(id)a3 color:(id)a4 width:(double)a5;
-+ (AKTSDBrushStroke)strokeWithType:(int64_t)a3 color:(id)a4 width:(double)a5;
++ (AKTSDBrushStroke)strokeWithName:(id)name color:(id)color width:(double)width;
++ (AKTSDBrushStroke)strokeWithType:(int64_t)type color:(id)color width:(double)width;
 + (id)cacheDirectory;
-+ (void)loadBrush:(id)a3;
-+ (void)loadLineEndsForBrush:(id)a3 inSVGDoc:(_xmlDoc *)a4;
-+ (void)loadSectionsForBrush:(id)a3 inSVGDoc:(_xmlDoc *)a4;
-- (AKTSDBrushStroke)initWithName:(id)a3 color:(id)a4 width:(double)a5 join:(int)a6 miterLimit:(double)a7;
-- (id)brushBoundsForId:(id)a3;
-- (id)brushPathsForId:(id)a3;
++ (void)loadBrush:(id)brush;
++ (void)loadLineEndsForBrush:(id)brush inSVGDoc:(_xmlDoc *)doc;
++ (void)loadSectionsForBrush:(id)brush inSVGDoc:(_xmlDoc *)doc;
+- (AKTSDBrushStroke)initWithName:(id)name color:(id)color width:(double)width join:(int)join miterLimit:(double)limit;
+- (id)brushBoundsForId:(id)id;
+- (id)brushPathsForId:(id)id;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)strokeLineEnd:(id)a3;
-- (void)brushPath:(id)a3 inContext:(CGContext *)a4;
-- (void)brushPath:(id)a3 withScaling:(id)a4 inElementRange:(_NSRange)a5 into:(id)a6 sectionIndex:(unint64_t *)a7 viewScale:(double)a8;
-- (void)brushSection:(id)a3 sectionIndex:(unint64_t)a4 ontoPath:(id)a5 withScaling:(id)a6 inElementRange:(_NSRange)a7 into:(id)a8 viewScale:(double)a9;
-- (void)paintLineEnd:(id)a3 atPoint:(CGPoint)a4 atAngle:(double)a5 withScale:(double)a6 inContext:(CGContext *)a7;
-- (void)paintLineEnd:(id)a3 atPoint:(CGPoint)a4 atAngle:(double)a5 withScale:(double)a6 inContext:(CGContext *)a7 useFastDrawing:(BOOL)a8;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)strokeLineEnd:(id)end;
+- (void)brushPath:(id)path inContext:(CGContext *)context;
+- (void)brushPath:(id)path withScaling:(id)scaling inElementRange:(_NSRange)range into:(id)into sectionIndex:(unint64_t *)index viewScale:(double)scale;
+- (void)brushSection:(id)section sectionIndex:(unint64_t)index ontoPath:(id)path withScaling:(id)scaling inElementRange:(_NSRange)range into:(id)into viewScale:(double)scale;
+- (void)paintLineEnd:(id)end atPoint:(CGPoint)point atAngle:(double)angle withScale:(double)scale inContext:(CGContext *)context;
+- (void)paintLineEnd:(id)end atPoint:(CGPoint)point atAngle:(double)angle withScale:(double)scale inContext:(CGContext *)context useFastDrawing:(BOOL)drawing;
 @end
 
 @implementation AKTSDBrushStroke
 
-+ (AKTSDBrushStroke)strokeWithName:(id)a3 color:(id)a4 width:(double)a5
++ (AKTSDBrushStroke)strokeWithName:(id)name color:(id)color width:(double)width
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [objc_alloc(objc_opt_class()) initWithName:v7 color:v8 width:0 join:a5 miterLimit:10.0];
+  nameCopy = name;
+  colorCopy = color;
+  v9 = [objc_alloc(objc_opt_class()) initWithName:nameCopy color:colorCopy width:0 join:width miterLimit:10.0];
 
   return v9;
 }
 
-+ (AKTSDBrushStroke)strokeWithType:(int64_t)a3 color:(id)a4 width:(double)a5
++ (AKTSDBrushStroke)strokeWithType:(int64_t)type color:(id)color width:(double)width
 {
-  v7 = a4;
-  if (a3 <= 1)
+  colorCopy = color;
+  if (type <= 1)
   {
     v11 = 0;
-    if (!a3)
+    if (!type)
     {
       goto LABEL_14;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       v10 = @"Chalk2";
     }
@@ -55,17 +55,17 @@
   {
     v8 = @"Feathered Brush";
     v9 = @"Dry Brush";
-    if (a3 != 4)
+    if (type != 4)
     {
       v9 = 0;
     }
 
-    if (a3 != 3)
+    if (type != 3)
     {
       v8 = v9;
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       v10 = @"Pen";
     }
@@ -76,44 +76,44 @@
     }
   }
 
-  v11 = [objc_alloc(objc_opt_class()) initWithName:v10 color:v7 width:0 join:a5 miterLimit:10.0];
+  v11 = [objc_alloc(objc_opt_class()) initWithName:v10 color:colorCopy width:0 join:width miterLimit:10.0];
 LABEL_14:
 
   return v11;
 }
 
-- (AKTSDBrushStroke)initWithName:(id)a3 color:(id)a4 width:(double)a5 join:(int)a6 miterLimit:(double)a7
+- (AKTSDBrushStroke)initWithName:(id)name color:(id)color width:(double)width join:(int)join miterLimit:(double)limit
 {
-  v12 = a3;
-  v13 = a4;
+  nameCopy = name;
+  colorCopy = color;
   v18.receiver = self;
   v18.super_class = AKTSDBrushStroke;
   v14 = [(AKTSDBrushStroke *)&v18 init];
   if (v14)
   {
-    v15 = [v12 copy];
+    v15 = [nameCopy copy];
     strokeName = v14->_strokeName;
     v14->_strokeName = v15;
 
-    objc_storeStrong(&v14->_color, a4);
-    v14->_join = a6;
-    v14->_width = a5;
-    v14->_miterLimit = a7;
+    objc_storeStrong(&v14->_color, color);
+    v14->_join = join;
+    v14->_width = width;
+    v14->_miterLimit = limit;
   }
 
   return v14;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [AKTSDMutableBrushStroke alloc];
-  v5 = [(AKTSDBrushStroke *)self strokeName];
-  v6 = [(AKTSDBrushStroke *)self color];
+  strokeName = [(AKTSDBrushStroke *)self strokeName];
+  color = [(AKTSDBrushStroke *)self color];
   [(AKTSDBrushStroke *)self width];
   v8 = v7;
-  v9 = [(AKTSDBrushStroke *)self join];
+  join = [(AKTSDBrushStroke *)self join];
   [(AKTSDBrushStroke *)self miterLimit];
-  v11 = [(AKTSDBrushStroke *)v4 initWithName:v5 color:v6 width:v9 join:v8 miterLimit:v10];
+  v11 = [(AKTSDBrushStroke *)v4 initWithName:strokeName color:color width:join join:v8 miterLimit:v10];
 
   return v11;
 }
@@ -121,35 +121,35 @@ LABEL_14:
 + (id)cacheDirectory
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  v4 = [v3 stringByAppendingPathComponent:@"Brushes"];
+  v4 = [lastObject stringByAppendingPathComponent:@"Brushes"];
 
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  [v5 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:0];
 
   return v4;
 }
 
-+ (void)loadBrush:(id)a3
++ (void)loadBrush:(id)brush
 {
-  v3 = a3;
+  brushCopy = brush;
   v4 = sub_23F454DFC();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23F454E40;
   block[3] = &unk_278C7BD50;
-  v7 = v3;
-  v5 = v3;
+  v7 = brushCopy;
+  v5 = brushCopy;
   dispatch_sync(v4, block);
 }
 
-+ (void)loadLineEndsForBrush:(id)a3 inSVGDoc:(_xmlDoc *)a4
++ (void)loadLineEndsForBrush:(id)brush inSVGDoc:(_xmlDoc *)doc
 {
   v65 = *MEMORY[0x277D85DE8];
-  v50 = a3;
-  v54 = a4;
-  sub_23F455328(a4, @"//svg:path['_wrap'=substring(@id,string-length(@id)-4)]");
+  brushCopy = brush;
+  docCopy = doc;
+  sub_23F455328(doc, @"//svg:path['_wrap'=substring(@id,string-length(@id)-4)]");
   v62 = 0u;
   v63 = 0u;
   v60 = 0u;
@@ -174,17 +174,17 @@ LABEL_14:
         v10 = [v9 substringToIndex:{objc_msgSend(v9, "length") - 5}];
 
         v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"//svg:path[@id='%@_end']", v10];
-        v57 = sub_23F455328(v54, v11);
+        v57 = sub_23F455328(docCopy, v11);
 
-        v12 = [v57 lastObject];
-        v13 = [v12 objectForKey:@"nodeAttributes"];
+        lastObject = [v57 lastObject];
+        v13 = [lastObject objectForKey:@"nodeAttributes"];
 
         v56 = [v13 objectForKey:@"d"];
         v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"//svg:rect[@id='%@_end_bounds']", v10];
-        v15 = sub_23F455328(v54, v14);
+        v15 = sub_23F455328(docCopy, v14);
 
-        v16 = [v15 lastObject];
-        v17 = [v16 objectForKey:@"nodeAttributes"];
+        lastObject2 = [v15 lastObject];
+        v17 = [lastObject2 objectForKey:@"nodeAttributes"];
 
         v18 = [v17 objectForKey:@"x"];
         [v18 floatValue];
@@ -204,7 +204,7 @@ LABEL_14:
 
         v30 = [v10 stringByReplacingOccurrencesOfString:@"_" withString:@" "];
 
-        v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", v50, v30];
+        v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", brushCopy, v30];
 
         v53 = v26;
         v32 = v20;
@@ -256,8 +256,8 @@ LABEL_14:
         v67.size.width = v53;
         v67.size.height = v33;
         MidY = CGRectGetMidY(v67);
-        v47 = [AKTSDLineEnd lineEndWithPath:v44 wrapPath:Mutable endPoint:1 isFilled:v31 identifier:tx + c * MidY + v55 * MaxX, ty + d * MidY + b * MaxX];
-        [qword_27E39B660 setObject:v47 forKey:v31];
+        maxX = [AKTSDLineEnd lineEndWithPath:v44 wrapPath:Mutable endPoint:1 isFilled:v31 identifier:tx + c * MidY + v55 * MaxX, ty + d * MidY + b * MaxX];
+        [qword_27E39B660 setObject:maxX forKey:v31];
         CGPathRelease(v43);
         CGPathRelease(v44);
         CGPathRelease(v41);
@@ -271,27 +271,27 @@ LABEL_14:
   }
 }
 
-+ (void)loadSectionsForBrush:(id)a3 inSVGDoc:(_xmlDoc *)a4
++ (void)loadSectionsForBrush:(id)brush inSVGDoc:(_xmlDoc *)doc
 {
   v54 = *MEMORY[0x277D85DE8];
-  v37 = a3;
-  v4 = [qword_27E39B670 objectForKey:?];
-  if (!v4)
+  brushCopy = brush;
+  dictionary = [qword_27E39B670 objectForKey:?];
+  if (!dictionary)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
-    [qword_27E39B670 setObject:v4 forKey:v37];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [qword_27E39B670 setObject:dictionary forKey:brushCopy];
   }
 
-  v43 = v4;
-  v5 = [qword_27E39B678 objectForKey:v37];
-  if (!v5)
+  v43 = dictionary;
+  dictionary2 = [qword_27E39B678 objectForKey:brushCopy];
+  if (!dictionary2)
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
-    [qword_27E39B678 setObject:v5 forKey:v37];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    [qword_27E39B678 setObject:dictionary2 forKey:brushCopy];
   }
 
-  v42 = v5;
-  sub_23F455328(a4, @"//svg:path['_section'=substring(@id,string-length(@id)-7)]");
+  v42 = dictionary2;
+  sub_23F455328(doc, @"//svg:path['_section'=substring(@id,string-length(@id)-7)]");
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
@@ -314,10 +314,10 @@ LABEL_14:
         v44 = [v8 objectForKey:@"d"];
         v9 = [v8 objectForKey:@"id"];
         v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"//svg:rect[@id='%@_bounds']", v9];
-        v45 = sub_23F455328(a4, v10);
+        v45 = sub_23F455328(doc, v10);
 
-        v11 = [v45 lastObject];
-        v12 = [v11 objectForKey:@"nodeAttributes"];
+        lastObject = [v45 lastObject];
+        v12 = [lastObject objectForKey:@"nodeAttributes"];
 
         v13 = [v12 objectForKey:@"x"];
         [v13 floatValue];
@@ -358,23 +358,23 @@ LABEL_14:
         [v26 transformUsingAffineTransform:&v47];
         v32 = [v9 substringToIndex:{objc_msgSend(v9, "rangeOfString:", @"_"}];
         v33 = v26;
-        v34 = [v43 objectForKey:v32];
-        if (!v34)
+        array = [v43 objectForKey:v32];
+        if (!array)
         {
-          v34 = [MEMORY[0x277CBEB18] array];
-          [v43 setObject:v34 forKey:v32];
+          array = [MEMORY[0x277CBEB18] array];
+          [v43 setObject:array forKey:v32];
         }
 
-        v35 = [v42 objectForKey:v32];
-        if (!v35)
+        array2 = [v42 objectForKey:v32];
+        if (!array2)
         {
-          v35 = [MEMORY[0x277CBEB18] array];
-          [v42 setObject:v35 forKey:v32];
+          array2 = [MEMORY[0x277CBEB18] array];
+          [v42 setObject:array2 forKey:v32];
         }
 
-        [v34 addObject:v33];
+        [array addObject:v33];
         v36 = [MEMORY[0x277CCAE60] valueWithCGRect:{v27, v28, v29, v30}];
-        [v35 addObject:v36];
+        [array2 addObject:v36];
 
         CGPathRelease(v25);
       }
@@ -386,11 +386,11 @@ LABEL_14:
   }
 }
 
-- (id)brushPathsForId:(id)a3
+- (id)brushPathsForId:(id)id
 {
-  v4 = a3;
-  v5 = [(AKTSDBrushStroke *)self strokeName];
-  [AKTSDBrushStroke loadBrush:v5];
+  idCopy = id;
+  strokeName = [(AKTSDBrushStroke *)self strokeName];
+  [AKTSDBrushStroke loadBrush:strokeName];
 
   v13 = 0;
   v14 = &v13;
@@ -403,9 +403,9 @@ LABEL_14:
   v10[1] = 3221225472;
   v10[2] = sub_23F4563A8;
   v10[3] = &unk_278C7BD78;
-  v11 = v4;
+  v11 = idCopy;
   v12 = &v13;
-  v7 = v4;
+  v7 = idCopy;
   dispatch_sync(v6, v10);
 
   v8 = v14[5];
@@ -414,11 +414,11 @@ LABEL_14:
   return v8;
 }
 
-- (id)brushBoundsForId:(id)a3
+- (id)brushBoundsForId:(id)id
 {
-  v4 = a3;
-  v5 = [(AKTSDBrushStroke *)self strokeName];
-  [AKTSDBrushStroke loadBrush:v5];
+  idCopy = id;
+  strokeName = [(AKTSDBrushStroke *)self strokeName];
+  [AKTSDBrushStroke loadBrush:strokeName];
 
   v13 = 0;
   v14 = &v13;
@@ -431,9 +431,9 @@ LABEL_14:
   v10[1] = 3221225472;
   v10[2] = sub_23F456564;
   v10[3] = &unk_278C7BD78;
-  v11 = v4;
+  v11 = idCopy;
   v12 = &v13;
-  v7 = v4;
+  v7 = idCopy;
   dispatch_sync(v6, v10);
 
   v8 = v14[5];
@@ -442,39 +442,39 @@ LABEL_14:
   return v8;
 }
 
-- (id)strokeLineEnd:(id)a3
+- (id)strokeLineEnd:(id)end
 {
-  v4 = a3;
-  if ([v4 isNone])
+  endCopy = end;
+  if ([endCopy isNone])
   {
-    v5 = v4;
+    v5 = endCopy;
   }
 
   else
   {
-    v6 = [v4 identifier];
-    v7 = [(AKTSDBrushStroke *)self strokeName];
-    v8 = [v6 hasPrefix:v7];
+    identifier = [endCopy identifier];
+    strokeName = [(AKTSDBrushStroke *)self strokeName];
+    v8 = [identifier hasPrefix:strokeName];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [v6 rangeOfString:@":"];
+      v9 = [identifier rangeOfString:@":"];
       if (v9 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v11 = [v6 substringFromIndex:v9 + v10];
+        v11 = [identifier substringFromIndex:v9 + v10];
 
-        v6 = v11;
+        identifier = v11;
       }
 
       v12 = MEMORY[0x277CCACA8];
-      v13 = [(AKTSDBrushStroke *)self strokeName];
-      v14 = [v12 stringWithFormat:@"%@:%@", v13, v6];
+      strokeName2 = [(AKTSDBrushStroke *)self strokeName];
+      v14 = [v12 stringWithFormat:@"%@:%@", strokeName2, identifier];
 
-      v6 = v14;
+      identifier = v14;
     }
 
-    v15 = [(AKTSDBrushStroke *)self strokeName];
-    [AKTSDBrushStroke loadBrush:v15];
+    strokeName3 = [(AKTSDBrushStroke *)self strokeName];
+    [AKTSDBrushStroke loadBrush:strokeName3];
 
     v22 = 0;
     v23 = &v22;
@@ -487,9 +487,9 @@ LABEL_14:
     block[1] = 3221225472;
     block[2] = sub_23F45680C;
     block[3] = &unk_278C7BD78;
-    v20 = v6;
+    v20 = identifier;
     v21 = &v22;
-    v17 = v6;
+    v17 = identifier;
     dispatch_sync(v16, block);
 
     v5 = v23[5];
@@ -499,54 +499,54 @@ LABEL_14:
   return v5;
 }
 
-- (void)paintLineEnd:(id)a3 atPoint:(CGPoint)a4 atAngle:(double)a5 withScale:(double)a6 inContext:(CGContext *)a7
+- (void)paintLineEnd:(id)end atPoint:(CGPoint)point atAngle:(double)angle withScale:(double)scale inContext:(CGContext *)context
 {
-  y = a4.y;
-  x = a4.x;
-  v13 = a3;
-  CGContextSaveGState(a7);
+  y = point.y;
+  x = point.x;
+  endCopy = end;
+  CGContextSaveGState(context);
   memset(&v20, 0, sizeof(v20));
   CGAffineTransformMakeTranslation(&v20, x, y);
   v18 = v20;
-  CGAffineTransformScale(&transform, &v18, a6, a6);
+  CGAffineTransformScale(&transform, &v18, scale, scale);
   v20 = transform;
   v18 = transform;
-  CGAffineTransformRotate(&transform, &v18, a5);
+  CGAffineTransformRotate(&transform, &v18, angle);
   v20 = transform;
-  [v13 endPoint];
+  [endCopy endPoint];
   v15 = v14;
-  [v13 endPoint];
+  [endCopy endPoint];
   CGAffineTransformTranslate(&transform, &v18, -v15, -v16);
   v20 = transform;
-  CGContextConcatCTM(a7, &transform);
-  CGContextAddPath(a7, [v13 path]);
-  if ([v13 isFilled])
+  CGContextConcatCTM(context, &transform);
+  CGContextAddPath(context, [endCopy path]);
+  if ([endCopy isFilled])
   {
-    CGContextFillPath(a7);
+    CGContextFillPath(context);
   }
 
   else
   {
     [(AKTSDBrushStroke *)self width];
-    CGContextSetLineWidth(a7, v17 / a6);
-    CGContextSetLineJoin(a7, [v13 lineJoin]);
-    CGContextStrokePath(a7);
+    CGContextSetLineWidth(context, v17 / scale);
+    CGContextSetLineJoin(context, [endCopy lineJoin]);
+    CGContextStrokePath(context);
   }
 
-  CGContextRestoreGState(a7);
+  CGContextRestoreGState(context);
 }
 
-- (void)paintLineEnd:(id)a3 atPoint:(CGPoint)a4 atAngle:(double)a5 withScale:(double)a6 inContext:(CGContext *)a7 useFastDrawing:(BOOL)a8
+- (void)paintLineEnd:(id)end atPoint:(CGPoint)point atAngle:(double)angle withScale:(double)scale inContext:(CGContext *)context useFastDrawing:(BOOL)drawing
 {
-  v8 = a8;
-  y = a4.y;
-  x = a4.x;
-  v15 = a3;
-  v23 = v15;
-  if (v8)
+  drawingCopy = drawing;
+  y = point.y;
+  x = point.x;
+  endCopy = end;
+  v23 = endCopy;
+  if (drawingCopy)
   {
-    v16 = [v15 identifier];
-    v17 = [v16 rangeOfString:@":"];
+    identifier = [endCopy identifier];
+    v17 = [identifier rangeOfString:@":"];
     if (v17 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v19 = v23;
@@ -554,24 +554,24 @@ LABEL_14:
 
     else
     {
-      v21 = [v16 substringFromIndex:v17 + v18];
+      v21 = [identifier substringFromIndex:v17 + v18];
 
       v22 = [AKTSDLineEnd lineEndWithIdentifier:v21];
 
-      v16 = v21;
+      identifier = v21;
       v19 = v22;
     }
 
     v24 = v19;
-    [(AKTSDBrushStroke *)self paintLineEnd:x atPoint:y atAngle:a5 withScale:a6 inContext:?];
+    [(AKTSDBrushStroke *)self paintLineEnd:x atPoint:y atAngle:angle withScale:scale inContext:?];
   }
 
   else
   {
-    v20 = [(AKTSDBrushStroke *)self strokeLineEnd:v15];
+    v20 = [(AKTSDBrushStroke *)self strokeLineEnd:endCopy];
 
     v24 = v20;
-    [(AKTSDBrushStroke *)self paintLineEnd:v20 atPoint:a7 atAngle:x withScale:y inContext:a5, a6];
+    [(AKTSDBrushStroke *)self paintLineEnd:v20 atPoint:context atAngle:x withScale:y inContext:angle, scale];
   }
 }
 
@@ -580,66 +580,66 @@ LABEL_14:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(AKTSDBrushStroke *)self strokeName];
+  strokeName = [(AKTSDBrushStroke *)self strokeName];
   [(AKTSDBrushStroke *)self width];
-  v8 = [v3 stringWithFormat:@"<%@ %p strokeName='%@' width=%f>", v5, self, v6, v7];
+  v8 = [v3 stringWithFormat:@"<%@ %p strokeName='%@' width=%f>", v5, self, strokeName, v7];
 
   return v8;
 }
 
-- (void)brushSection:(id)a3 sectionIndex:(unint64_t)a4 ontoPath:(id)a5 withScaling:(id)a6 inElementRange:(_NSRange)a7 into:(id)a8 viewScale:(double)a9
+- (void)brushSection:(id)section sectionIndex:(unint64_t)index ontoPath:(id)path withScaling:(id)scaling inElementRange:(_NSRange)range into:(id)into viewScale:(double)scale
 {
-  length = a7.length;
-  location = a7.location;
-  var1 = a6.var1;
-  var0 = a6.var0;
-  v25 = a3;
-  v17 = a5;
-  v18 = a8;
-  v19 = [(AKTSDBrushStroke *)self strokeName];
-  v20 = [(AKTSDBrushStroke *)self brushPathsForId:v19];
+  length = range.length;
+  location = range.location;
+  var1 = scaling.var1;
+  var0 = scaling.var0;
+  sectionCopy = section;
+  pathCopy = path;
+  intoCopy = into;
+  strokeName = [(AKTSDBrushStroke *)self strokeName];
+  v20 = [(AKTSDBrushStroke *)self brushPathsForId:strokeName];
 
-  v21 = [v20 objectForKeyedSubscript:v25];
-  v22 = [v21 objectAtIndexedSubscript:a4];
+  v21 = [v20 objectForKeyedSubscript:sectionCopy];
+  v22 = [v21 objectAtIndexedSubscript:index];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v17 lineWidth];
+    [pathCopy lineWidth];
     v24 = [v22 objectAtIndexedSubscript:v23 < 15.0];
 
     v22 = v24;
   }
 
-  [v22 recursiveSubdivideOntoPath:v17 withScaling:location inElementRange:length into:{v18, var0, var1}];
+  [v22 recursiveSubdivideOntoPath:pathCopy withScaling:location inElementRange:length into:{intoCopy, var0, var1}];
 }
 
-- (void)brushPath:(id)a3 withScaling:(id)a4 inElementRange:(_NSRange)a5 into:(id)a6 sectionIndex:(unint64_t *)a7 viewScale:(double)a8
+- (void)brushPath:(id)path withScaling:(id)scaling inElementRange:(_NSRange)range into:(id)into sectionIndex:(unint64_t *)index viewScale:(double)scale
 {
-  length = a5.length;
-  location = a5.location;
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v88 = a3;
-  v16 = a6;
-  if ([v88 elementCount] >= 2)
+  length = range.length;
+  location = range.location;
+  var1 = scaling.var1;
+  var0 = scaling.var0;
+  pathCopy = path;
+  intoCopy = into;
+  if ([pathCopy elementCount] >= 2)
   {
-    [v88 lineWidth];
+    [pathCopy lineWidth];
     v18 = v17;
-    v19 = [(AKTSDBrushStroke *)self strokeName];
-    v86 = [(AKTSDBrushStroke *)self brushPathsForId:v19];
+    strokeName = [(AKTSDBrushStroke *)self strokeName];
+    v86 = [(AKTSDBrushStroke *)self brushPathsForId:strokeName];
 
-    v20 = [(AKTSDBrushStroke *)self strokeName];
+    strokeName2 = [(AKTSDBrushStroke *)self strokeName];
     v87 = length;
-    v85 = [(AKTSDBrushStroke *)self brushBoundsForId:v20];
+    v85 = [(AKTSDBrushStroke *)self brushBoundsForId:strokeName2];
 
     v21 = [v86 objectForKey:@"middle"];
     v83 = 0.0;
     if ([v21 count] >= 2)
     {
       v22 = [v85 objectForKeyedSubscript:@"middle"];
-      v23 = [v22 lastObject];
-      [v23 CGRectValue];
+      lastObject = [v22 lastObject];
+      [lastObject CGRectValue];
       v25 = v24;
       v27 = v26;
 
@@ -653,12 +653,12 @@ LABEL_14:
       {
         v84 = v28;
         v29 = [v28 count];
-        [v88 length];
+        [pathCopy length];
         v31 = v30;
         v32 = [v85 objectForKeyedSubscript:@"small"];
-        v33 = [v32 lastObject];
-        v34 = v16;
-        [v33 CGRectValue];
+        lastObject2 = [v32 lastObject];
+        v34 = intoCopy;
+        [lastObject2 CGRectValue];
         v36 = v35;
         v38 = v37;
 
@@ -668,29 +668,29 @@ LABEL_14:
         {
           v41 = 0;
           v42 = 1.0 / v39;
-          v43 = *a7;
+          v43 = *index;
           do
           {
-            [(AKTSDBrushStroke *)self brushSection:@"small" sectionIndex:v43 % v29 ontoPath:v88 withScaling:location inElementRange:v87 into:v34 viewScale:var0 + v42 * v41 * var1, var1 * v42, a8];
-            v44 = 1664525 * *a7 + 1013904223;
-            if (v44 % v29 == *a7 % v29)
+            [(AKTSDBrushStroke *)self brushSection:@"small" sectionIndex:v43 % v29 ontoPath:pathCopy withScaling:location inElementRange:v87 into:v34 viewScale:var0 + v42 * v41 * var1, var1 * v42, scale];
+            v44 = 1664525 * *index + 1013904223;
+            if (v44 % v29 == *index % v29)
             {
               v43 = v44 + 1;
             }
 
             else
             {
-              v43 = 1664525 * *a7 + 1013904223;
+              v43 = 1664525 * *index + 1013904223;
             }
 
-            *a7 = v43;
+            *index = v43;
             ++v41;
           }
 
           while (v40 != v41);
         }
 
-        v16 = v34;
+        intoCopy = v34;
         v45 = v84;
         goto LABEL_40;
       }
@@ -702,19 +702,19 @@ LABEL_14:
     {
       v82 = v21;
       v47 = [v85 objectForKeyedSubscript:@"start"];
-      v48 = [v47 lastObject];
-      [v48 CGRectValue];
+      lastObject3 = [v47 lastObject];
+      [lastObject3 CGRectValue];
       v50 = v49;
       v52 = v51;
 
       v53 = [v85 objectForKeyedSubscript:@"end"];
-      v54 = [v53 lastObject];
-      [v54 CGRectValue];
+      lastObject4 = [v53 lastObject];
+      [lastObject4 CGRectValue];
       v56 = v55;
       v58 = v57;
       v81 = v18;
 
-      [v88 length];
+      [pathCopy length];
       v60 = v50 / v52;
       v61 = v56 / v58;
       v62 = var1 * v59;
@@ -730,14 +730,14 @@ LABEL_14:
         v65 = v60 / v63;
       }
 
-      [(AKTSDBrushStroke *)self brushSection:@"start" sectionIndex:0 ontoPath:v88 withScaling:location inElementRange:length into:v16 viewScale:var0 + var1 * 0.0, var1 * v65, a8];
+      [(AKTSDBrushStroke *)self brushSection:@"start" sectionIndex:0 ontoPath:pathCopy withScaling:location inElementRange:length into:intoCopy viewScale:var0 + var1 * 0.0, var1 * v65, scale];
       v66 = v61 / v63;
       if (v81 * v61 / v62 <= v61 / v63)
       {
         v66 = v81 * v61 / v62;
       }
 
-      [(AKTSDBrushStroke *)self brushSection:@"end" sectionIndex:0 ontoPath:v88 withScaling:location inElementRange:length into:v16 viewScale:var0 + (1.0 - v66) * var1, var1 * v66, a8];
+      [(AKTSDBrushStroke *)self brushSection:@"end" sectionIndex:0 ontoPath:pathCopy withScaling:location inElementRange:length into:intoCopy viewScale:var0 + (1.0 - v66) * var1, var1 * v66, scale];
       v67 = [v21 count];
       v68 = ((v62 - v63 * v81) / (v81 * v83) + 1.0);
       v69 = (1.0 - v81 * v63 / v62) / v68;
@@ -745,30 +745,30 @@ LABEL_14:
       {
         if (v68 >= 1)
         {
-          v70 = v16;
+          v70 = intoCopy;
           v71 = 0;
-          v72 = *a7;
+          v72 = *index;
           do
           {
-            [(AKTSDBrushStroke *)self brushSection:@"middle" sectionIndex:v72 % v67 ontoPath:v88 withScaling:location inElementRange:v87 into:v70 viewScale:var0 + (v64 + v71 * v69) * var1, var1 * v69, a8];
-            v73 = 1664525 * *a7 + 1013904223;
-            if (v73 % v67 == *a7 % v67)
+            [(AKTSDBrushStroke *)self brushSection:@"middle" sectionIndex:v72 % v67 ontoPath:pathCopy withScaling:location inElementRange:v87 into:v70 viewScale:var0 + (v64 + v71 * v69) * var1, var1 * v69, scale];
+            v73 = 1664525 * *index + 1013904223;
+            if (v73 % v67 == *index % v67)
             {
               v72 = v73 + 1;
             }
 
             else
             {
-              v72 = 1664525 * *a7 + 1013904223;
+              v72 = 1664525 * *index + 1013904223;
             }
 
-            *a7 = v72;
+            *index = v72;
             ++v71;
           }
 
           while (v68 != v71);
           v45 = 0;
-          v16 = v70;
+          intoCopy = v70;
           goto LABEL_37;
         }
 
@@ -790,7 +790,7 @@ LABEL_40:
       v21 = v82;
       do
       {
-        [(AKTSDBrushStroke *)self brushSection:@"middle" sectionIndex:0 ontoPath:v88 withScaling:location inElementRange:length into:v16 viewScale:var0 + (v64 + v80++ * v69) * var1, var1 * v69, a8];
+        [(AKTSDBrushStroke *)self brushSection:@"middle" sectionIndex:0 ontoPath:pathCopy withScaling:location inElementRange:length into:intoCopy viewScale:var0 + (v64 + v80++ * v69) * var1, var1 * v69, scale];
       }
 
       while (v68 != v80);
@@ -798,27 +798,27 @@ LABEL_40:
 
     else if (v83 <= 0.0)
     {
-      [(AKTSDBrushStroke *)self brushSection:@"middle" sectionIndex:0 ontoPath:v88 withScaling:location inElementRange:length into:v16 viewScale:var0, var1, a8];
+      [(AKTSDBrushStroke *)self brushSection:@"middle" sectionIndex:0 ontoPath:pathCopy withScaling:location inElementRange:length into:intoCopy viewScale:var0, var1, scale];
     }
 
     else
     {
-      [v88 length];
+      [pathCopy length];
       v75 = var1 * v74 / (v18 * v83);
       v76 = v75;
       if (v75 >= 1)
       {
-        v77 = v16;
+        v77 = intoCopy;
         v78 = 0;
         v79 = 1.0 / v75;
         do
         {
-          [(AKTSDBrushStroke *)self brushSection:@"middle" sectionIndex:0 ontoPath:v88 withScaling:location inElementRange:v87 into:v77 viewScale:var0 + v79 * v78++ * var1, var1 * v79, a8];
+          [(AKTSDBrushStroke *)self brushSection:@"middle" sectionIndex:0 ontoPath:pathCopy withScaling:location inElementRange:v87 into:v77 viewScale:var0 + v79 * v78++ * var1, var1 * v79, scale];
         }
 
         while (v76 != v78);
         v45 = 0;
-        v16 = v77;
+        intoCopy = v77;
         goto LABEL_40;
       }
     }
@@ -830,27 +830,27 @@ LABEL_40:
 LABEL_41:
 }
 
-- (void)brushPath:(id)a3 inContext:(CGContext *)a4
+- (void)brushPath:(id)path inContext:(CGContext *)context
 {
   v60 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(AKTSDBrushStroke *)self strokeName];
-  [AKTSDBrushStroke loadBrush:v7];
+  pathCopy = path;
+  strokeName = [(AKTSDBrushStroke *)self strokeName];
+  [AKTSDBrushStroke loadBrush:strokeName];
 
   [(AKTSDBrushStroke *)self width];
-  [v6 setLineWidth:?];
+  [pathCopy setLineWidth:?];
   [(AKTSDBrushStroke *)self miterLimit];
-  [v6 setMiterLimit:?];
+  [pathCopy setMiterLimit:?];
   memset(&v54, 0, sizeof(v54));
-  CGContextGetCTM(&v54, a4);
+  CGContextGetCTM(&v54, context);
   a = v54.a;
   b = v54.b;
   v10 = +[AKTSDBezierPath bezierPath];
-  [v6 lineWidth];
+  [pathCopy lineWidth];
   [v10 setLineWidth:?];
   [v10 setWindingRule:0];
   v53 = 0;
-  [v6 length];
+  [pathCopy length];
   v12 = v11;
   v49 = 0;
   v50 = &v49;
@@ -868,9 +868,9 @@ LABEL_41:
   v14 = *MEMORY[0x277CBF348];
   v15 = *(MEMORY[0x277CBF348] + 8);
   v47 = *MEMORY[0x277CBF348];
-  v16 = [v6 elementCount];
+  elementCount = [pathCopy elementCount];
   v46 = sqrt(b * b + a * a);
-  if (v16 >= 1)
+  if (elementCount >= 1)
   {
     v17 = 0;
     v18 = 0;
@@ -880,8 +880,8 @@ LABEL_41:
     while (1)
     {
       v21 = v20;
-      v22 = [v6 elementAtIndex:v18 associatedPoints:{&v56, *&v45}];
-      [v6 lengthOfElement:v18];
+      v22 = [pathCopy elementAtIndex:v18 associatedPoints:{&v56, *&v45}];
+      [pathCopy lengthOfElement:v18];
       v20 = v20 + v23 / v12;
       switch(v22)
       {
@@ -914,7 +914,7 @@ LABEL_41:
 
             else
             {
-              [(AKTSDBrushStroke *)self brushPath:v6 withScaling:v17 inElementRange:v18 - v17 into:v10 sectionIndex:&v53 viewScale:v19, v21 - v19, v46];
+              [(AKTSDBrushStroke *)self brushPath:pathCopy withScaling:v17 inElementRange:v18 - v17 into:v10 sectionIndex:&v53 viewScale:v19, v21 - v19, v46];
               v17 = v18 - 1;
             }
 
@@ -929,7 +929,7 @@ LABEL_41:
         case 0:
           if ((v18 - v17) >= 1)
           {
-            [(AKTSDBrushStroke *)self brushPath:v6 withScaling:v17 inElementRange:v19 into:v20 - v19 sectionIndex:v46 viewScale:?];
+            [(AKTSDBrushStroke *)self brushPath:pathCopy withScaling:v17 inElementRange:v19 into:v20 - v19 sectionIndex:v46 viewScale:?];
             v19 = v20;
             v17 = v18;
           }
@@ -959,14 +959,14 @@ LABEL_41:
         goto LABEL_22;
       }
 
-      [(AKTSDBrushStroke *)self brushPath:v6 withScaling:v17 inElementRange:v18 - v17 into:v10 sectionIndex:&v53 viewScale:v19, v21 - v19, v46];
+      [(AKTSDBrushStroke *)self brushPath:pathCopy withScaling:v17 inElementRange:v18 - v17 into:v10 sectionIndex:&v53 viewScale:v19, v21 - v19, v46];
       v17 = v18 - 1;
 LABEL_23:
       v55 = v56;
       v14 = v37;
       v19 = v21;
 LABEL_34:
-      if (v16 == ++v18)
+      if (elementCount == ++v18)
       {
         goto LABEL_39;
       }
@@ -978,22 +978,22 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v16 = 0;
+  elementCount = 0;
   v17 = 0;
   v20 = 0.0;
   v19 = 0.0;
 LABEL_39:
-  if ((v16 + ~v17) >= 1)
+  if ((elementCount + ~v17) >= 1)
   {
-    [(AKTSDBrushStroke *)self brushPath:v6 withScaling:v17 inElementRange:v19 into:v20 - v19 sectionIndex:v46 viewScale:?];
+    [(AKTSDBrushStroke *)self brushPath:pathCopy withScaling:v17 inElementRange:v19 into:v20 - v19 sectionIndex:v46 viewScale:?];
   }
 
-  CGContextAddPath(a4, [v10 CGPath]);
-  v43 = [(AKTSDBrushStroke *)self color];
-  v44 = v43;
-  CGContextSetFillColorWithColor(a4, [v43 CGColor]);
+  CGContextAddPath(context, [v10 CGPath]);
+  color = [(AKTSDBrushStroke *)self color];
+  v44 = color;
+  CGContextSetFillColorWithColor(context, [color CGColor]);
 
-  CGContextFillPath(a4);
+  CGContextFillPath(context);
   _Block_object_dispose(&v49, 8);
 }
 

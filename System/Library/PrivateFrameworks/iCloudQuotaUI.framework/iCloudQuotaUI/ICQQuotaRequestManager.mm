@@ -2,13 +2,13 @@
 + (id)noAccountError;
 + (id)sharedManager;
 - (ICQQuotaRequestManager)init;
-- (id)_sendSynchronousAARequest:(id)a3;
-- (id)appDetailsForBundleIDs:(id)a3 error:(id *)a4;
-- (id)quotaInfoDetailed:(BOOL)a3 error:(id *)a4;
+- (id)_sendSynchronousAARequest:(id)request;
+- (id)appDetailsForBundleIDs:(id)ds error:(id *)error;
+- (id)quotaInfoDetailed:(BOOL)detailed error:(id *)error;
 - (void)clearCachedAppDetails;
 - (void)clearCachedQuotaInfo;
-- (void)getAppDetailsForBundleIDs:(id)a3 handler:(id)a4;
-- (void)getQuotaInfoDetailed:(BOOL)a3 handler:(id)a4;
+- (void)getAppDetailsForBundleIDs:(id)ds handler:(id)handler;
+- (void)getQuotaInfoDetailed:(BOOL)detailed handler:(id)handler;
 - (void)noteQuotaInfoChanged;
 @end
 
@@ -86,13 +86,13 @@ void __46__ICQQuotaRequestManager_clearCachedQuotaInfo__block_invoke(uint64_t a1
 - (void)noteQuotaInfoChanged
 {
   [(ICQQuotaRequestManager *)self clearCachedQuotaInfo];
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"QuotaInformationChanged" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"QuotaInformationChanged" object:0];
 }
 
-- (id)_sendSynchronousAARequest:(id)a3
+- (id)_sendSynchronousAARequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -108,7 +108,7 @@ void __46__ICQQuotaRequestManager_clearCachedQuotaInfo__block_invoke(uint64_t a1
   v17 = &v18;
   v7 = v5;
   v16 = v7;
-  v8 = [v6 initWithRequest:v4 handler:&v12];
+  v8 = [v6 initWithRequest:requestCopy handler:&v12];
   [(NSOperationQueue *)self->_requestQueue addOperation:v8, v12, v13, v14, v15];
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   v9 = v19[5];
@@ -131,7 +131,7 @@ void __52__ICQQuotaRequestManager__sendSynchronousAARequest___block_invoke(uint6
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)quotaInfoDetailed:(BOOL)a3 error:(id *)a4
+- (id)quotaInfoDetailed:(BOOL)detailed error:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -150,17 +150,17 @@ void __52__ICQQuotaRequestManager__sendSynchronousAARequest___block_invoke(uint6
   v9[1] = 3221225472;
   v9[2] = __50__ICQQuotaRequestManager_quotaInfoDetailed_error___block_invoke;
   v9[3] = &unk_27A65B798;
-  v10 = a3;
+  detailedCopy = detailed;
   v9[4] = self;
   v9[5] = &v11;
   v9[6] = &v17;
   dispatch_sync(quota_info_queue, v9);
-  if (a4)
+  if (error)
   {
     v6 = v12[5];
     if (v6)
     {
-      *a4 = v6;
+      *error = v6;
     }
   }
 
@@ -219,18 +219,18 @@ void __50__ICQQuotaRequestManager_quotaInfoDetailed_error___block_invoke(uint64_
   objc_storeStrong(v14, v3);
 }
 
-- (void)getQuotaInfoDetailed:(BOOL)a3 handler:(id)a4
+- (void)getQuotaInfoDetailed:(BOOL)detailed handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__ICQQuotaRequestManager_getQuotaInfoDetailed_handler___block_invoke;
   block[3] = &unk_27A65B7E8;
-  v11 = a3;
+  detailedCopy = detailed;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(v7, block);
 }
 
@@ -262,19 +262,19 @@ void __55__ICQQuotaRequestManager_getQuotaInfoDetailed_handler___block_invoke(ui
   objc_sync_exit(obj);
 }
 
-- (id)appDetailsForBundleIDs:(id)a3 error:(id *)a4
+- (id)appDetailsForBundleIDs:(id)ds error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dsCopy = ds;
   v27 = self->_appDetailsCache;
   objc_sync_enter(v27);
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [v6 mutableCopy];
+  array = [MEMORY[0x277CBEB18] array];
+  v8 = [dsCopy mutableCopy];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v6;
+  obj = dsCopy;
   v9 = [obj countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v9)
   {
@@ -293,7 +293,7 @@ void __55__ICQQuotaRequestManager_getQuotaInfoDetailed_handler___block_invoke(ui
         if (v13)
         {
           [v8 removeObject:v12];
-          [v7 addObject:v13];
+          [array addObject:v13];
         }
       }
 
@@ -308,30 +308,30 @@ void __55__ICQQuotaRequestManager_getQuotaInfoDetailed_handler___block_invoke(ui
     goto LABEL_26;
   }
 
-  v26 = [MEMORY[0x277CB8F48] defaultStore];
-  v25 = [v26 aa_primaryAppleAccount];
-  if (!v25)
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+  if (!aa_primaryAppleAccount)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [objc_opt_class() noAccountError];
+      *error = [objc_opt_class() noAccountError];
     }
 
     goto LABEL_26;
   }
 
-  v24 = [(ICQQuotaRequestManager *)self quotaInfoDetailed:0 error:a4];
+  v24 = [(ICQQuotaRequestManager *)self quotaInfoDetailed:0 error:error];
   if (v24)
   {
-    v14 = [[ICQQuotaAppDetailsRequest alloc] initWithAccount:v25 accountStore:v26 bundleIDs:v8 quotaInfo:v24];
+    v14 = [[ICQQuotaAppDetailsRequest alloc] initWithAccount:aa_primaryAppleAccount accountStore:defaultStore bundleIDs:v8 quotaInfo:v24];
     [(ICQQuotaRequestManager *)self _sendSynchronousAARequest:v14];
     v23 = v14;
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v28 = v31 = 0u;
-    v15 = [(ICQQuotaAppDetailsResponse *)v28 apps];
-    v16 = [v15 countByEnumeratingWithState:&v30 objects:v38 count:16];
+    apps = [(ICQQuotaAppDetailsResponse *)v28 apps];
+    v16 = [apps countByEnumeratingWithState:&v30 objects:v38 count:16];
     if (v16)
     {
       v17 = *v31;
@@ -341,16 +341,16 @@ void __55__ICQQuotaRequestManager_getQuotaInfoDetailed_handler___block_invoke(ui
         {
           if (*v31 != v17)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(apps);
           }
 
           v19 = *(*(&v30 + 1) + 8 * j);
           appDetailsCache = self->_appDetailsCache;
-          v21 = [v19 bundleID];
-          [(NSMutableDictionary *)appDetailsCache setObject:v19 forKey:v21];
+          bundleID = [v19 bundleID];
+          [(NSMutableDictionary *)appDetailsCache setObject:v19 forKey:bundleID];
         }
 
-        v16 = [v15 countByEnumeratingWithState:&v30 objects:v38 count:16];
+        v16 = [apps countByEnumeratingWithState:&v30 objects:v38 count:16];
       }
 
       while (v16);
@@ -368,27 +368,27 @@ LABEL_26:
     v28 = objc_alloc_init(ICQQuotaAppDetailsResponse);
   }
 
-  [(ICQQuotaAppDetailsResponse *)v28 addApps:v7];
+  [(ICQQuotaAppDetailsResponse *)v28 addApps:array];
 
   objc_sync_exit(v27);
 
   return v28;
 }
 
-- (void)getAppDetailsForBundleIDs:(id)a3 handler:(id)a4
+- (void)getAppDetailsForBundleIDs:(id)ds handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v8 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__ICQQuotaRequestManager_getAppDetailsForBundleIDs_handler___block_invoke;
   block[3] = &unk_27A65B060;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dsCopy;
   dispatch_async(v8, block);
 }
 

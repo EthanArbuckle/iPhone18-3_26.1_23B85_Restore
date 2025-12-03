@@ -1,16 +1,16 @@
 @interface _UIHitTestContext
-+ (id)contextWithPoint:(CGPoint)a3 radius:(double)a4;
-+ (id)contextWithPoint:(CGPoint)a3 radius:(double)a4 event:(id)a5;
++ (id)contextWithPoint:(CGPoint)point radius:(double)radius;
++ (id)contextWithPoint:(CGPoint)point radius:(double)radius event:(id)event;
 - (CGPoint)point;
-- (_UIHitTestContext)initWithPoint:(CGPoint)a3 radius:(double)a4 event:(id)a5;
+- (_UIHitTestContext)initWithPoint:(CGPoint)point radius:(double)radius event:(id)event;
 @end
 
 @implementation _UIHitTestContext
 
-- (_UIHitTestContext)initWithPoint:(CGPoint)a3 radius:(double)a4 event:(id)a5
+- (_UIHitTestContext)initWithPoint:(CGPoint)point radius:(double)radius event:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v12.receiver = self;
   v12.super_class = _UIHitTestContext;
   v9 = [(_UIHitTestContext *)&v12 init];
@@ -19,23 +19,23 @@
   {
     v9->_point.x = x;
     v9->_point.y = y;
-    v9->_radius = a4;
-    objc_storeStrong(&v9->_event, a5);
+    v9->_radius = radius;
+    objc_storeStrong(&v9->_event, event);
   }
 
   return v10;
 }
 
-+ (id)contextWithPoint:(CGPoint)a3 radius:(double)a4
++ (id)contextWithPoint:(CGPoint)point radius:(double)radius
 {
-  v4 = [[a1 alloc] initWithPoint:0 radius:a3.x event:{a3.y, a4}];
+  v4 = [[self alloc] initWithPoint:0 radius:point.x event:{point.y, radius}];
 
   return v4;
 }
 
-+ (id)contextWithPoint:(CGPoint)a3 radius:(double)a4 event:(id)a5
++ (id)contextWithPoint:(CGPoint)point radius:(double)radius event:(id)event
 {
-  v5 = [[a1 alloc] initWithPoint:a5 radius:a3.x event:{a3.y, a4}];
+  v5 = [[self alloc] initWithPoint:event radius:point.x event:{point.y, radius}];
 
   return v5;
 }

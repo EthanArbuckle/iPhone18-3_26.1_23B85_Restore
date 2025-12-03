@@ -1,13 +1,13 @@
 @interface CLTileSyncSyChange
 - (void)dealloc;
-- (void)setChangeType:(int64_t)a3;
+- (void)setChangeType:(int64_t)type;
 @end
 
 @implementation CLTileSyncSyChange
 
-- (void)setChangeType:(int64_t)a3
+- (void)setChangeType:(int64_t)type
 {
-  if (a3 != 1)
+  if (type != 1)
   {
     if (qword_1025D4630 != -1)
     {
@@ -18,7 +18,7 @@
     if (os_log_type_enabled(qword_1025D4638, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 134349056;
-      v6 = a3;
+      typeCopy = type;
       _os_log_impl(dword_100000000, v4, OS_LOG_TYPE_DEFAULT, "@GtsSync, Unexpected change type, %{public}ld, set, #CloneMe", &v5, 0xCu);
     }
 

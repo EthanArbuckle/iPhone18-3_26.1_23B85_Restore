@@ -2,8 +2,8 @@
 + (id)canonicalKeyToValueIdentifierToNumericValueMap;
 + (id)canonicalNameToNativeKeyName;
 + (id)nativeKeyNameToCanonicalKeyName;
-+ (id)valueIdentifierToValueMapFromCanonicalKey:(id)a3;
-+ (id)valueToValueIdentifierMapFromCanonicalKey:(id)a3;
++ (id)valueIdentifierToValueMapFromCanonicalKey:(id)key;
++ (id)valueToValueIdentifierMapFromCanonicalKey:(id)key;
 @end
 
 @implementation IPiOSABNamePreferenceInfoProvider
@@ -44,7 +44,7 @@ void __68__IPiOSABNamePreferenceInfoProvider_nativeKeyNameToCanonicalKeyName__bl
   block[1] = 3221225472;
   block[2] = __65__IPiOSABNamePreferenceInfoProvider_canonicalNameToNativeKeyName__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (canonicalNameToNativeKeyName_onceToken != -1)
   {
     dispatch_once(&canonicalNameToNativeKeyName_onceToken, block);
@@ -63,24 +63,24 @@ void __65__IPiOSABNamePreferenceInfoProvider_canonicalNameToNativeKeyName__block
   canonicalNameToNativeKeyName_sMapping = v1;
 }
 
-+ (id)valueIdentifierToValueMapFromCanonicalKey:(id)a3
++ (id)valueIdentifierToValueMapFromCanonicalKey:(id)key
 {
-  v4 = a3;
-  v5 = [a1 canonicalKeyToValueIdentifierToNumericValueMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  canonicalKeyToValueIdentifierToNumericValueMap = [self canonicalKeyToValueIdentifierToNumericValueMap];
+  v6 = [canonicalKeyToValueIdentifierToNumericValueMap objectForKeyedSubscript:keyCopy];
 
   return v6;
 }
 
-+ (id)valueToValueIdentifierMapFromCanonicalKey:(id)a3
++ (id)valueToValueIdentifierMapFromCanonicalKey:(id)key
 {
-  v4 = a3;
-  v5 = [a1 canonicalKeyToValueIdentifierToNumericValueMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  canonicalKeyToValueIdentifierToNumericValueMap = [self canonicalKeyToValueIdentifierToNumericValueMap];
+  v6 = [canonicalKeyToValueIdentifierToNumericValueMap objectForKeyedSubscript:keyCopy];
 
-  v7 = [v6 invertedDictionary];
+  invertedDictionary = [v6 invertedDictionary];
 
-  return v7;
+  return invertedDictionary;
 }
 
 + (id)canonicalKeyToValueIdentifierToNumericValueMap

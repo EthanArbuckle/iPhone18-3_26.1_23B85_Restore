@@ -1,10 +1,10 @@
 @interface CVACameraCalibration
 + (id)classes;
-+ (id)withData:(id)a3;
-- (CVACameraCalibration)initWithCoder:(id)a3;
++ (id)withData:(id)data;
+- (CVACameraCalibration)initWithCoder:(id)coder;
 - (id)debugDescription;
 - (id)dictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CVACameraCalibration
@@ -25,11 +25,11 @@
   return v3;
 }
 
-+ (id)withData:(id)a3
++ (id)withData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[CVACameraCalibration classes];
-  v5 = [CVAMetadataWrapper decodeNSCoderObject:v3 classes:v4];
+  v5 = [CVAMetadataWrapper decodeNSCoderObject:dataCopy classes:v4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -47,57 +47,57 @@
   return v6;
 }
 
-- (CVACameraCalibration)initWithCoder:(id)a3
+- (CVACameraCalibration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = CVACameraCalibration;
   v5 = [(CVACameraCalibration *)&v29 init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = [v4 decodeObjectForKey:@"id"];
+    v7 = [coderCopy decodeObjectForKey:@"id"];
     metadataID = v5->_metadataID;
     v5->_metadataID = v7;
 
-    v5->_imageWidth = [v4 decodeIntForKey:@"w"];
-    v5->_imageHeight = [v4 decodeIntForKey:@"h"];
-    [v4 decodeDoubleForKey:@"px"];
+    v5->_imageWidth = [coderCopy decodeIntForKey:@"w"];
+    v5->_imageHeight = [coderCopy decodeIntForKey:@"h"];
+    [coderCopy decodeDoubleForKey:@"px"];
     v5->_principalPointX = v9;
-    [v4 decodeDoubleForKey:@"py"];
+    [coderCopy decodeDoubleForKey:@"py"];
     v5->_principalPointY = v10;
-    [v4 decodeDoubleForKey:@"fx"];
+    [coderCopy decodeDoubleForKey:@"fx"];
     v5->_focalLengthX = v11;
-    [v4 decodeDoubleForKey:@"fy"];
+    [coderCopy decodeDoubleForKey:@"fy"];
     v5->_focalLengthY = v12;
-    v5->_lensDistortionModel = [v4 decodeIntegerForKey:@"dm"];
-    v13 = [v4 decodeObjectForKey:@"rd"];
+    v5->_lensDistortionModel = [coderCopy decodeIntegerForKey:@"dm"];
+    v13 = [coderCopy decodeObjectForKey:@"rd"];
     radialDistortion = v5->_radialDistortion;
     v5->_radialDistortion = v13;
 
-    v15 = [v4 decodeObjectForKey:@"td"];
+    v15 = [coderCopy decodeObjectForKey:@"td"];
     tangentialDistortion = v5->_tangentialDistortion;
     v5->_tangentialDistortion = v15;
 
-    v17 = [v4 decodeObjectForKey:@"lo"];
+    v17 = [coderCopy decodeObjectForKey:@"lo"];
     lensOffset = v5->_lensOffset;
     v5->_lensOffset = v17;
 
-    v19 = [v4 decodeObjectForKey:@"co"];
+    v19 = [coderCopy decodeObjectForKey:@"co"];
     chipOffset = v5->_chipOffset;
     v5->_chipOffset = v19;
 
-    [v4 decodeDoubleForKey:@"tc"];
+    [coderCopy decodeDoubleForKey:@"tc"];
     v5->_timestampCorrection = v21;
-    v22 = [v4 decodeObjectForKey:@"rt"];
+    v22 = [coderCopy decodeObjectForKey:@"rt"];
     readoutTime = v5->_readoutTime;
     v5->_readoutTime = v22;
 
-    v24 = [v4 decodeObjectForKey:@"r"];
+    v24 = [coderCopy decodeObjectForKey:@"r"];
     cameraToIMURotation = v5->_cameraToIMURotation;
     v5->_cameraToIMURotation = v24;
 
-    v26 = [v4 decodeObjectForKey:@"t"];
+    v26 = [coderCopy decodeObjectForKey:@"t"];
     cameraToIMUTranslation = v5->_cameraToIMUTranslation;
     v5->_cameraToIMUTranslation = v26;
 
@@ -107,26 +107,26 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
-  [v5 encodeObject:self->_metadataID forKey:@"id"];
-  [v5 encodeInteger:self->_imageWidth forKey:@"w"];
-  [v5 encodeInteger:self->_imageHeight forKey:@"h"];
-  [v5 encodeDouble:@"px" forKey:self->_principalPointX];
-  [v5 encodeDouble:@"py" forKey:self->_principalPointY];
-  [v5 encodeDouble:@"fx" forKey:self->_focalLengthX];
-  [v5 encodeDouble:@"fy" forKey:self->_focalLengthY];
-  [v5 encodeInteger:self->_lensDistortionModel forKey:@"dm"];
-  [v5 encodeObject:self->_radialDistortion forKey:@"rd"];
-  [v5 encodeObject:self->_tangentialDistortion forKey:@"td"];
-  [v5 encodeObject:self->_lensOffset forKey:@"lo"];
-  [v5 encodeObject:self->_chipOffset forKey:@"co"];
-  [v5 encodeDouble:@"tc" forKey:self->_timestampCorrection];
-  [v5 encodeObject:self->_readoutTime forKey:@"rt"];
-  [v5 encodeObject:self->_cameraToIMURotation forKey:@"r"];
-  [v5 encodeObject:self->_cameraToIMUTranslation forKey:@"t"];
+  [coderCopy encodeObject:self->_metadataID forKey:@"id"];
+  [coderCopy encodeInteger:self->_imageWidth forKey:@"w"];
+  [coderCopy encodeInteger:self->_imageHeight forKey:@"h"];
+  [coderCopy encodeDouble:@"px" forKey:self->_principalPointX];
+  [coderCopy encodeDouble:@"py" forKey:self->_principalPointY];
+  [coderCopy encodeDouble:@"fx" forKey:self->_focalLengthX];
+  [coderCopy encodeDouble:@"fy" forKey:self->_focalLengthY];
+  [coderCopy encodeInteger:self->_lensDistortionModel forKey:@"dm"];
+  [coderCopy encodeObject:self->_radialDistortion forKey:@"rd"];
+  [coderCopy encodeObject:self->_tangentialDistortion forKey:@"td"];
+  [coderCopy encodeObject:self->_lensOffset forKey:@"lo"];
+  [coderCopy encodeObject:self->_chipOffset forKey:@"co"];
+  [coderCopy encodeDouble:@"tc" forKey:self->_timestampCorrection];
+  [coderCopy encodeObject:self->_readoutTime forKey:@"rt"];
+  [coderCopy encodeObject:self->_cameraToIMURotation forKey:@"r"];
+  [coderCopy encodeObject:self->_cameraToIMUTranslation forKey:@"t"];
   objc_autoreleasePoolPop(v4);
 }
 
@@ -197,8 +197,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CVACameraCalibration *)self dictionary];
-  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, v5];
+  dictionary = [(CVACameraCalibration *)self dictionary];
+  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, dictionary];
 
   return v6;
 }

@@ -13,69 +13,69 @@
 - (int64_t)glassInterfaceStyle;
 - (int64_t)textAlignment;
 - (void)dealloc;
-- (void)setAnimatesChanges:(BOOL)a3;
-- (void)setAttributedText:(id)a3;
-- (void)setFont:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setGlassInterfaceStyle:(int64_t)a3;
-- (void)setMinimumScaleFactor:(double)a3;
-- (void)setText:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)setTextColor:(id)a3;
-- (void)setUsesGlassMaterial:(BOOL)a3;
-- (void)setView:(id)a3;
-- (void)setVisible:(BOOL)a3;
+- (void)setAnimatesChanges:(BOOL)changes;
+- (void)setAttributedText:(id)text;
+- (void)setFont:(id)font;
+- (void)setFrame:(CGRect)frame;
+- (void)setGlassInterfaceStyle:(int64_t)style;
+- (void)setMinimumScaleFactor:(double)factor;
+- (void)setText:(id)text;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)setTextColor:(id)color;
+- (void)setUsesGlassMaterial:(BOOL)material;
+- (void)setView:(id)view;
+- (void)setVisible:(BOOL)visible;
 @end
 
 @implementation CSTitleElementViewAdapter
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v5 = objc_allocWithZone(MEMORY[0x1E696AAB0]);
-  v7 = self;
-  v6 = [v5 initWithString_];
-  (*((*MEMORY[0x1E69E7D40] & v7->super.isa) + 0xF8))(v6);
+  selfCopy = self;
+  initWithString_ = [v5 initWithString_];
+  (*((*MEMORY[0x1E69E7D40] & selfCopy->super.isa) + 0xF8))(initWithString_);
 }
 
-- (void)setVisible:(BOOL)a3
+- (void)setVisible:(BOOL)visible
 {
   v5 = OBJC_IVAR___CSTitleElementViewAdapter_visible;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
-  v6 = self;
-  sub_1A2D69568(a3);
+  *(&self->super.isa + v5) = visible;
+  selfCopy = self;
+  sub_1A2D69568(visible);
 }
 
 - (id)view
 {
-  v2 = [(CSTitleElementViewAdapter *)self viewController];
-  v3 = [v2 view];
+  viewController = [(CSTitleElementViewAdapter *)self viewController];
+  view = [viewController view];
 
-  return v3;
+  return view;
 }
 
 - (int64_t)textAlignment
 {
   v2 = *(**(&self->super.isa + OBJC_IVAR___CSTitleElementViewAdapter_coordinator) + 328);
-  v3 = self;
+  selfCopy = self;
 
   v5 = v2(v4);
 
   return v5;
 }
 
-- (void)setMinimumScaleFactor:(double)a3
+- (void)setMinimumScaleFactor:(double)factor
 {
   v4 = *(**(&self->super.isa + OBJC_IVAR___CSTitleElementViewAdapter_coordinator) + 384);
-  v6 = self;
+  selfCopy = self;
 
-  v4(v5, a3);
+  v4(v5, factor);
 }
 
 - (UIFont)font
 {
   v2 = *(**(&self->super.isa + OBJC_IVAR___CSTitleElementViewAdapter_coordinator) + 280);
-  v3 = self;
+  selfCopy = self;
 
   v5 = v2(v4);
 
@@ -85,35 +85,35 @@
 - (NSString)text
 {
   v2 = *(**(&self->super.isa + OBJC_IVAR___CSTitleElementViewAdapter_coordinator) + 152);
-  v3 = self;
+  selfCopy = self;
 
   v5 = v2(v4);
 
-  v6 = [v5 string];
+  string = [v5 string];
 
-  if (!v6)
+  if (!string)
   {
     sub_1A2D9FB80();
-    v6 = sub_1A2D9FB70();
+    string = sub_1A2D9FB70();
   }
 
-  return v6;
+  return string;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0x78);
-  v10 = self;
+  selfCopy = self;
   v8 = v7();
-  v9 = [v8 view];
+  view = [v8 view];
 
-  if (v9)
+  if (view)
   {
-    [v9 setFrame_];
+    [view setFrame_];
   }
 
   else
@@ -122,86 +122,86 @@
   }
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  v4 = a3;
-  v5 = [(CSTitleElementViewAdapter *)self viewController];
-  [v5 setView:v4];
+  viewCopy = view;
+  viewController = [(CSTitleElementViewAdapter *)self viewController];
+  [viewController setView:viewCopy];
 }
 
 - (BOOL)animatesChanges
 {
   v2 = *(**(&self->super.isa + OBJC_IVAR___CSTitleElementViewAdapter_coordinator) + 424);
-  v3 = self;
+  selfCopy = self;
 
   LOBYTE(v2) = v2(v4);
 
   return v2 & 1;
 }
 
-- (void)setAnimatesChanges:(BOOL)a3
+- (void)setAnimatesChanges:(BOOL)changes
 {
-  v3 = a3;
+  changesCopy = changes;
   v4 = *(**(&self->super.isa + OBJC_IVAR___CSTitleElementViewAdapter_coordinator) + 432);
-  v5 = self;
+  selfCopy = self;
 
-  v4(v3);
+  v4(changesCopy);
 }
 
 - (NSAttributedString)attributedText
 {
   v2 = *(**(&self->super.isa + OBJC_IVAR___CSTitleElementViewAdapter_coordinator) + 152);
-  v3 = self;
+  selfCopy = self;
 
   v5 = v2(v4);
 
   return v5;
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
   v5 = objc_opt_self();
-  v6 = a3;
-  v7 = self;
-  sub_1A2D86A70(v6, [v5 areAnimationsEnabled]);
+  textCopy = text;
+  selfCopy = self;
+  sub_1A2D86A70(textCopy, [v5 areAnimationsEnabled]);
 }
 
 - (UIColor)textColor
 {
   v2 = *(**(&self->super.isa + OBJC_IVAR___CSTitleElementViewAdapter_coordinator) + 232);
-  v3 = self;
+  selfCopy = self;
 
   v5 = v2(v4);
 
   return v5;
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_1A2D87AC0(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_1A2D87AC0(color);
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v5 = a3;
-  v4 = self;
-  sub_1A2D8D85C(v5);
+  fontCopy = font;
+  selfCopy = self;
+  sub_1A2D8D85C(fontCopy);
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
   v4 = *(**(&self->super.isa + OBJC_IVAR___CSTitleElementViewAdapter_coordinator) + 336);
-  v5 = self;
+  selfCopy = self;
 
-  v4(a3);
+  v4(alignment);
 }
 
 - (double)minimumScaleFactor
 {
   v2 = *(**(&self->super.isa + OBJC_IVAR___CSTitleElementViewAdapter_coordinator) + 376);
-  v3 = self;
+  selfCopy = self;
 
   v5 = v2(v4);
 
@@ -211,13 +211,13 @@
 - (CGRect)frame
 {
   v2 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0x78);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
-  v5 = [v4 view];
+  view = [v4 view];
 
-  if (v5)
+  if (view)
   {
-    [v5 frame];
+    [view frame];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -251,44 +251,44 @@
 - (BOOL)usesGlassMaterial
 {
   v2 = *(**(&self->super.isa + OBJC_IVAR___CSTitleElementViewAdapter_coordinator) + 472);
-  v3 = self;
+  selfCopy = self;
 
   LOBYTE(v2) = v2(v4);
 
   return v2 & 1;
 }
 
-- (void)setUsesGlassMaterial:(BOOL)a3
+- (void)setUsesGlassMaterial:(BOOL)material
 {
-  v3 = a3;
+  materialCopy = material;
   v4 = *(**(&self->super.isa + OBJC_IVAR___CSTitleElementViewAdapter_coordinator) + 480);
-  v5 = self;
+  selfCopy = self;
 
-  v4(v3);
+  v4(materialCopy);
 }
 
 - (int64_t)glassInterfaceStyle
 {
   v2 = *(**(&self->super.isa + OBJC_IVAR___CSTitleElementViewAdapter_coordinator) + 528);
-  v3 = self;
+  selfCopy = self;
 
   v5 = v2(v4);
 
   return v5;
 }
 
-- (void)setGlassInterfaceStyle:(int64_t)a3
+- (void)setGlassInterfaceStyle:(int64_t)style
 {
   v4 = *(**(&self->super.isa + OBJC_IVAR___CSTitleElementViewAdapter_coordinator) + 536);
-  v5 = self;
+  selfCopy = self;
 
-  v4(a3);
+  v4(style);
 }
 
 - (void)dealloc
 {
   v3 = *(&self->super.isa + OBJC_IVAR___CSTitleElementViewAdapter_stateCaptureHandle);
-  v4 = self;
+  selfCopy = self;
   if (v3)
   {
     [v3 invalidate];

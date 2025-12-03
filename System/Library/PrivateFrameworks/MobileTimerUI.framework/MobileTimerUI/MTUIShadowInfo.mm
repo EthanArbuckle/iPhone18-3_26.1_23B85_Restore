@@ -1,25 +1,25 @@
 @interface MTUIShadowInfo
 - (CGSize)offset;
-- (MTUIShadowInfo)initWithColor:(id)a3 radius:(double)a4 offset:(CGSize)a5 scale:(double)a6;
+- (MTUIShadowInfo)initWithColor:(id)color radius:(double)radius offset:(CGSize)offset scale:(double)scale;
 @end
 
 @implementation MTUIShadowInfo
 
-- (MTUIShadowInfo)initWithColor:(id)a3 radius:(double)a4 offset:(CGSize)a5 scale:(double)a6
+- (MTUIShadowInfo)initWithColor:(id)color radius:(double)radius offset:(CGSize)offset scale:(double)scale
 {
-  height = a5.height;
-  width = a5.width;
-  v11 = a3;
+  height = offset.height;
+  width = offset.width;
+  colorCopy = color;
   v15.receiver = self;
   v15.super_class = MTUIShadowInfo;
   v12 = [(MTUIShadowInfo *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    [(MTUIShadowInfo *)v12 setColor:v11];
-    [(MTUIShadowInfo *)v13 setRadius:a4];
+    [(MTUIShadowInfo *)v12 setColor:colorCopy];
+    [(MTUIShadowInfo *)v13 setRadius:radius];
     [(MTUIShadowInfo *)v13 setOffset:width, height];
-    [(MTUIShadowInfo *)v13 setScale:a6];
+    [(MTUIShadowInfo *)v13 setScale:scale];
   }
 
   return v13;

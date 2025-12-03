@@ -1,64 +1,64 @@
 @interface ABPersonLinker
-+ (void)startAutoLinkingNewPeopleInAddressBook:(void *)a3 inProcess:(BOOL)a4;
-- (ABPersonLinker)initWithAddressBook:(void *)a3;
-- (BOOL)linkRecentlyAddedPeopleWithLimit:(int64_t)a3;
-- (BOOL)shouldLinkPerson:(void *)a3 toPeopleInDatabase:(id)a4 andNewlyAddedPeople:(id)a5 inInitialLinking:(BOOL)a6;
-- (id)copyArrayOfAllPeopleWithROWIDGreatThan:(int)a3 withLimit:(int64_t)a4;
-- (id)otherPeopleInArray:(id)a3 matchingPerson:(void *)a4;
-- (id)otherPeopleInDatabaseMatchingPerson:(void *)a3 notIncludingPeople:(id)a4;
-- (id)suggestedPeopleToLinkWithPerson:(void *)a3 isInitialLinking:(BOOL)a4;
-- (void)addPerson:(void *)a3 toDictionary:(id)a4 withProperty:(int)a5;
++ (void)startAutoLinkingNewPeopleInAddressBook:(void *)book inProcess:(BOOL)process;
+- (ABPersonLinker)initWithAddressBook:(void *)book;
+- (BOOL)linkRecentlyAddedPeopleWithLimit:(int64_t)limit;
+- (BOOL)shouldLinkPerson:(void *)person toPeopleInDatabase:(id)database andNewlyAddedPeople:(id)people inInitialLinking:(BOOL)linking;
+- (id)copyArrayOfAllPeopleWithROWIDGreatThan:(int)than withLimit:(int64_t)limit;
+- (id)otherPeopleInArray:(id)array matchingPerson:(void *)person;
+- (id)otherPeopleInDatabaseMatchingPerson:(void *)person notIncludingPeople:(id)people;
+- (id)suggestedPeopleToLinkWithPerson:(void *)person isInitialLinking:(BOOL)linking;
+- (void)addPerson:(void *)person toDictionary:(id)dictionary withProperty:(int)property;
 - (void)dealloc;
-- (void)linkNewlyAddedPerson:(void *)a3;
-- (void)makeLinksForAddedPeople:(id)a3 inInitialLinking:(BOOL)a4 countingOuterIterations:(unint64_t *)a5 detectedLinkCount:(unint64_t *)a6;
-- (void)presortPeople:(id)a3;
+- (void)linkNewlyAddedPerson:(void *)person;
+- (void)makeLinksForAddedPeople:(id)people inInitialLinking:(BOOL)linking countingOuterIterations:(unint64_t *)iterations detectedLinkCount:(unint64_t *)count;
+- (void)presortPeople:(id)people;
 - (void)removeAllLinks;
 @end
 
 @implementation ABPersonLinker
 
-+ (void)startAutoLinkingNewPeopleInAddressBook:(void *)a3 inProcess:(BOOL)a4
++ (void)startAutoLinkingNewPeopleInAddressBook:(void *)book inProcess:(BOOL)process
 {
-  v4 = a4;
+  processCopy = process;
   v13 = *MEMORY[0x1E69E9840];
   v6 = objc_autoreleasePoolPush();
   v7 = ABOSLogGeneral();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = a3;
+    bookCopy = book;
     v11 = 1024;
-    v12 = v4;
+    v12 = processCopy;
     _os_log_impl(&dword_1B7EFB000, v7, OS_LOG_TYPE_DEFAULT, "[ABPersonLinker] startAutoLinkingNewPeopleInAddressBook:%@ inProcess:%i", &v9, 0x12u);
   }
 
-  if (v4)
+  if (processCopy)
   {
-    v8 = [[ABPersonLinker alloc] initWithAddressBook:a3];
+    v8 = [[ABPersonLinker alloc] initWithAddressBook:book];
     [(ABPersonLinker *)v8 linkRecentlyAddedPeople];
   }
 
   else
   {
-    ABStartDatabaseDoctor(a3);
+    ABStartDatabaseDoctor(book);
   }
 
   objc_autoreleasePoolPop(v6);
 }
 
-- (ABPersonLinker)initWithAddressBook:(void *)a3
+- (ABPersonLinker)initWithAddressBook:(void *)book
 {
   v6.receiver = self;
   v6.super_class = ABPersonLinker;
   v4 = [(ABPersonLinker *)&v6 init];
   if (v4)
   {
-    if (a3)
+    if (book)
     {
-      CFRetain(a3);
+      CFRetain(book);
     }
 
-    v4->_addressBook = a3;
+    v4->_addressBook = book;
   }
 
   return v4;
@@ -77,14 +77,14 @@
   [(ABPersonLinker *)&v4 dealloc];
 }
 
-- (id)otherPeopleInDatabaseMatchingPerson:(void *)a3 notIncludingPeople:(id)a4
+- (id)otherPeopleInDatabaseMatchingPerson:(void *)person notIncludingPeople:(id)people
 {
   v46 = *MEMORY[0x1E69E9840];
   if (self->_peopleByOrganization && self->_peopleByFirstName && self->_peopleByLastName)
   {
-    if (ABRecordGetIntValue(a3, kABPersonKindProperty) == 1)
+    if (ABRecordGetIntValue(person, kABPersonKindProperty) == 1)
     {
-      v8 = [ABRecordCopyValue(a3 kABPersonOrganizationProperty)];
+      v8 = [ABRecordCopyValue(person kABPersonOrganizationProperty)];
       if (v8)
       {
         v9 = v8;
@@ -100,8 +100,8 @@
 
     else
     {
-      v31 = [ABRecordCopyValue(a3 kABPersonFirstNameProperty)];
-      v32 = [ABRecordCopyValue(a3 kABPersonLastNameProperty)];
+      v31 = [ABRecordCopyValue(person kABPersonFirstNameProperty)];
+      v32 = [ABRecordCopyValue(person kABPersonLastNameProperty)];
       if (v31)
       {
         v33 = v31;
@@ -138,8 +138,8 @@
       }
     }
 
-    [v10 minusSet:{objc_msgSend(MEMORY[0x1E695DFD8], "setWithArray:", a4)}];
-    [v10 removeObject:a3];
+    [v10 minusSet:{objc_msgSend(MEMORY[0x1E695DFD8], "setWithArray:", people)}];
+    [v10 removeObject:person];
     v40 = [objc_msgSend(v10 "allObjects")];
 
     return v40;
@@ -147,8 +147,8 @@
 
   else
   {
-    RecordID = ABRecordGetRecordID(a3);
-    if (RecordID == -1 && ![a4 count])
+    RecordID = ABRecordGetRecordID(person);
+    if (RecordID == -1 && ![people count])
     {
       v12 = 0;
     }
@@ -160,7 +160,7 @@
       v42 = 0u;
       v43 = 0u;
       v44 = 0u;
-      v13 = [a4 countByEnumeratingWithState:&v41 objects:v45 count:16];
+      v13 = [people countByEnumeratingWithState:&v41 objects:v45 count:16];
       if (v13)
       {
         v14 = v13;
@@ -171,7 +171,7 @@
           {
             if (*v42 != v15)
             {
-              objc_enumerationMutation(a4);
+              objc_enumerationMutation(people);
             }
 
             v17 = ABRecordGetRecordID(*(*(&v41 + 1) + 8 * i));
@@ -181,14 +181,14 @@
             }
           }
 
-          v14 = [a4 countByEnumeratingWithState:&v41 objects:v45 count:16];
+          v14 = [people countByEnumeratingWithState:&v41 objects:v45 count:16];
         }
 
         while (v14);
       }
     }
 
-    IntValue = ABRecordGetIntValue(a3, kABPersonKindProperty);
+    IntValue = ABRecordGetIntValue(person, kABPersonKindProperty);
     if (IntValue)
     {
       if (IntValue != 1)
@@ -196,7 +196,7 @@
         [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
       }
 
-      v27 = ABRecordCopyValue(a3, kABPersonOrganizationProperty);
+      v27 = ABRecordCopyValue(person, kABPersonOrganizationProperty);
       if (v27)
       {
         v28 = v27;
@@ -224,8 +224,8 @@
 
     else
     {
-      v19 = ABRecordCopyValue(a3, kABPersonFirstNameProperty);
-      v20 = ABRecordCopyValue(a3, kABPersonLastNameProperty);
+      v19 = ABRecordCopyValue(person, kABPersonFirstNameProperty);
+      v20 = ABRecordCopyValue(person, kABPersonLastNameProperty);
       if (v19 | v20 && ((v21 = [MEMORY[0x1E696AD60] string], objc_msgSend(v21, "appendString:", @"WHERE "), objc_msgSend(v21, "appendString:", @"First"), !v19) ? (v22 = @" IS NULL AND ") : (v22 = @" LIKE ? AND "), (objc_msgSend(v21, "appendString:", v22), objc_msgSend(v21, "appendString:", @"Last"), !v20) ? (v23 = @" IS NULL AND ") : (v23 = @" LIKE ? AND "), objc_msgSend(v21, "appendString:", v23), objc_msgSend(v21, "appendFormat:", @"%@ = %@", @"Kind", @"0"), (v24 = CPRecordStoreCreateSelectStatement()) != 0))
       {
         v25 = v24;
@@ -298,23 +298,23 @@ void *__73__ABPersonLinker_otherPeopleInDatabaseMatchingPerson_notIncludingPeopl
   return result;
 }
 
-- (id)otherPeopleInArray:(id)a3 matchingPerson:(void *)a4
+- (id)otherPeopleInArray:(id)array matchingPerson:(void *)person
 {
   v43 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!array)
   {
     return 0;
   }
 
   v32 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (ABRecordGetIntValue(a4, kABPersonKindProperty))
+  if (ABRecordGetIntValue(person, kABPersonKindProperty))
   {
-    if (ABRecordGetIntValue(a4, kABPersonKindProperty) != 1)
+    if (ABRecordGetIntValue(person, kABPersonKindProperty) != 1)
     {
       [ABPersonLinker otherPeopleInArray:a2 matchingPerson:self];
     }
 
-    v8 = ABRecordCopyValue(a4, kABPersonOrganizationProperty);
+    v8 = ABRecordCopyValue(person, kABPersonOrganizationProperty);
     if (v8)
     {
       v9 = v8;
@@ -322,7 +322,7 @@ void *__73__ABPersonLinker_otherPeopleInDatabaseMatchingPerson_notIncludingPeopl
       v36 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v10 = [a3 countByEnumeratingWithState:&v33 objects:v41 count:16];
+      v10 = [array countByEnumeratingWithState:&v33 objects:v41 count:16];
       if (v10)
       {
         v11 = v10;
@@ -333,11 +333,11 @@ void *__73__ABPersonLinker_otherPeopleInDatabaseMatchingPerson_notIncludingPeopl
           {
             if (*v34 != v12)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(array);
             }
 
             v14 = *(*(&v33 + 1) + 8 * i);
-            if (v14 != a4 && ABRecordGetIntValue(*(*(&v33 + 1) + 8 * i), kABPersonKindProperty) == 1)
+            if (v14 != person && ABRecordGetIntValue(*(*(&v33 + 1) + 8 * i), kABPersonKindProperty) == 1)
             {
               v15 = ABRecordCopyValue(v14, kABPersonOrganizationProperty);
               v16 = v15;
@@ -351,7 +351,7 @@ void *__73__ABPersonLinker_otherPeopleInDatabaseMatchingPerson_notIncludingPeopl
             }
           }
 
-          v11 = [a3 countByEnumeratingWithState:&v33 objects:v41 count:16];
+          v11 = [array countByEnumeratingWithState:&v33 objects:v41 count:16];
         }
 
         while (v11);
@@ -361,8 +361,8 @@ void *__73__ABPersonLinker_otherPeopleInDatabaseMatchingPerson_notIncludingPeopl
 
   else
   {
-    v18 = ABRecordCopyValue(a4, kABPersonFirstNameProperty);
-    v19 = ABRecordCopyValue(a4, kABPersonLastNameProperty);
+    v18 = ABRecordCopyValue(person, kABPersonFirstNameProperty);
+    v19 = ABRecordCopyValue(person, kABPersonLastNameProperty);
     v30 = v19;
     v31 = v18;
     if (v18)
@@ -381,7 +381,7 @@ void *__73__ABPersonLinker_otherPeopleInDatabaseMatchingPerson_notIncludingPeopl
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v21 = [a3 countByEnumeratingWithState:&v37 objects:v42 count:16];
+      v21 = [array countByEnumeratingWithState:&v37 objects:v42 count:16];
       if (v21)
       {
         v22 = v21;
@@ -392,11 +392,11 @@ void *__73__ABPersonLinker_otherPeopleInDatabaseMatchingPerson_notIncludingPeopl
           {
             if (*v38 != v23)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(array);
             }
 
             v25 = *(*(&v37 + 1) + 8 * j);
-            if (v25 != a4 && !ABRecordGetIntValue(*(*(&v37 + 1) + 8 * j), kABPersonKindProperty))
+            if (v25 != person && !ABRecordGetIntValue(*(*(&v37 + 1) + 8 * j), kABPersonKindProperty))
             {
               v26 = ABRecordCopyValue(v25, kABPersonFirstNameProperty);
               v27 = ABRecordCopyValue(v25, kABPersonLastNameProperty);
@@ -418,7 +418,7 @@ void *__73__ABPersonLinker_otherPeopleInDatabaseMatchingPerson_notIncludingPeopl
             }
           }
 
-          v22 = [a3 countByEnumeratingWithState:&v37 objects:v42 count:16];
+          v22 = [array countByEnumeratingWithState:&v37 objects:v42 count:16];
         }
 
         while (v22);
@@ -429,13 +429,13 @@ void *__73__ABPersonLinker_otherPeopleInDatabaseMatchingPerson_notIncludingPeopl
   return v32;
 }
 
-- (BOOL)shouldLinkPerson:(void *)a3 toPeopleInDatabase:(id)a4 andNewlyAddedPeople:(id)a5 inInitialLinking:(BOOL)a6
+- (BOOL)shouldLinkPerson:(void *)person toPeopleInDatabase:(id)database andNewlyAddedPeople:(id)people inInitialLinking:(BOOL)linking
 {
   v58 = *MEMORY[0x1E69E9840];
-  IntValue = ABRecordGetIntValue(a3, kABPersonKindProperty);
-  v10 = [a4 count];
-  v11 = [a5 count] + v10;
-  v12 = ABPersonCopySource(a3);
+  IntValue = ABRecordGetIntValue(person, kABPersonKindProperty);
+  v10 = [database count];
+  v11 = [people count] + v10;
+  v12 = ABPersonCopySource(person);
   v13 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:v11];
   v14 = v13;
   if (v12)
@@ -444,25 +444,25 @@ void *__73__ABPersonLinker_otherPeopleInDatabaseMatchingPerson_notIncludingPeopl
     CFRelease(v12);
   }
 
-  v42 = ABRecordCopyValue(a3, kABPersonMiddleNameProperty);
+  v42 = ABRecordCopyValue(person, kABPersonMiddleNameProperty);
   if (v11)
   {
     v15 = 0;
     while (1)
     {
-      if (v15 >= [a4 count])
+      if (v15 >= [database count])
       {
-        v17 = v15 - [a4 count];
-        v16 = a5;
+        v17 = v15 - [database count];
+        databaseCopy = people;
       }
 
       else
       {
-        v16 = a4;
+        databaseCopy = database;
         v17 = v15;
       }
 
-      v18 = [v16 objectAtIndex:v17];
+      v18 = [databaseCopy objectAtIndex:v17];
       v19 = ABPersonCopySource(v18);
       if (!v19)
       {
@@ -514,14 +514,14 @@ LABEL_16:
 
   v21 = 1;
 LABEL_22:
-  if (v21 && !a6)
+  if (v21 && !linking)
   {
-    v23 = ABRecordGetIntValue(a3, kABPersonLinkProperty);
+    v23 = ABRecordGetIntValue(person, kABPersonLinkProperty);
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v24 = [a5 countByEnumeratingWithState:&v51 objects:v57 count:16];
+    v24 = [people countByEnumeratingWithState:&v51 objects:v57 count:16];
     if (v24)
     {
       v25 = v24;
@@ -532,7 +532,7 @@ LABEL_22:
         {
           if (*v52 != v26)
           {
-            objc_enumerationMutation(a5);
+            objc_enumerationMutation(people);
           }
 
           v28 = ABRecordGetIntValue(*(*(&v51 + 1) + 8 * i), kABPersonLinkProperty);
@@ -555,7 +555,7 @@ LABEL_22:
           }
         }
 
-        v25 = [a5 countByEnumeratingWithState:&v51 objects:v57 count:16];
+        v25 = [people countByEnumeratingWithState:&v51 objects:v57 count:16];
       }
 
       while (v25);
@@ -563,13 +563,13 @@ LABEL_22:
 
     if (v23 == -1)
     {
-      if ([a4 count] >= 2)
+      if ([database count] >= 2)
       {
         v49 = 0u;
         v50 = 0u;
         v47 = 0u;
         v48 = 0u;
-        v35 = [a4 countByEnumeratingWithState:&v47 objects:v56 count:16];
+        v35 = [database countByEnumeratingWithState:&v47 objects:v56 count:16];
         if (v35)
         {
           v36 = v35;
@@ -581,7 +581,7 @@ LABEL_52:
           {
             if (*v48 != v37)
             {
-              objc_enumerationMutation(a4);
+              objc_enumerationMutation(database);
             }
 
             v40 = ABRecordGetIntValue(*(*(&v47 + 1) + 8 * v39), kABPersonLinkProperty);
@@ -602,7 +602,7 @@ LABEL_52:
 
             if (v36 == ++v39)
             {
-              v36 = [a4 countByEnumeratingWithState:&v47 objects:v56 count:16];
+              v36 = [database countByEnumeratingWithState:&v47 objects:v56 count:16];
               LOBYTE(v21) = 1;
               if (v36)
               {
@@ -622,7 +622,7 @@ LABEL_52:
       v46 = 0u;
       v43 = 0u;
       v44 = 0u;
-      v30 = [a4 countByEnumeratingWithState:&v43 objects:v55 count:16];
+      v30 = [database countByEnumeratingWithState:&v43 objects:v55 count:16];
       if (v30)
       {
         v31 = v30;
@@ -633,7 +633,7 @@ LABEL_39:
         {
           if (*v44 != v32)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(database);
           }
 
           if (ABRecordGetIntValue(*(*(&v43 + 1) + 8 * v33), kABPersonLinkProperty) != v23)
@@ -643,7 +643,7 @@ LABEL_39:
 
           if (v31 == ++v33)
           {
-            v31 = [a4 countByEnumeratingWithState:&v43 objects:v55 count:16];
+            v31 = [database countByEnumeratingWithState:&v43 objects:v55 count:16];
             LOBYTE(v21) = 1;
             if (v31)
             {
@@ -668,11 +668,11 @@ LABEL_48:
   return v21;
 }
 
-- (id)suggestedPeopleToLinkWithPerson:(void *)a3 isInitialLinking:(BOOL)a4
+- (id)suggestedPeopleToLinkWithPerson:(void *)person isInitialLinking:(BOOL)linking
 {
-  v4 = a4;
-  v7 = [(ABPersonLinker *)self otherPeopleInDatabaseMatchingPerson:a3 notIncludingPeople:0];
-  if ([(ABPersonLinker *)self shouldLinkPerson:a3 toPeopleInDatabase:v7 andNewlyAddedPeople:0 inInitialLinking:v4])
+  linkingCopy = linking;
+  v7 = [(ABPersonLinker *)self otherPeopleInDatabaseMatchingPerson:person notIncludingPeople:0];
+  if ([(ABPersonLinker *)self shouldLinkPerson:person toPeopleInDatabase:v7 andNewlyAddedPeople:0 inInitialLinking:linkingCopy])
   {
     return v7;
   }
@@ -683,9 +683,9 @@ LABEL_48:
   }
 }
 
-- (void)addPerson:(void *)a3 toDictionary:(id)a4 withProperty:(int)a5
+- (void)addPerson:(void *)person toDictionary:(id)dictionary withProperty:(int)property
 {
-  v7 = [ABRecordCopyValue(a3 a5)];
+  v7 = [ABRecordCopyValue(person property)];
   if (v7)
   {
     v8 = v7;
@@ -696,17 +696,17 @@ LABEL_48:
     v8 = &stru_1F2FE2718;
   }
 
-  v9 = [a4 objectForKey:v8];
+  v9 = [dictionary objectForKey:v8];
   if (!v9)
   {
     v9 = objc_opt_new();
-    [a4 setObject:v9 forKey:v8];
+    [dictionary setObject:v9 forKey:v8];
   }
 
-  [v9 addObject:a3];
+  [v9 addObject:person];
 }
 
-- (void)presortPeople:(id)a3
+- (void)presortPeople:(id)people
 {
   v23 = *MEMORY[0x1E69E9840];
   peopleByLastName = self->_peopleByLastName;
@@ -733,7 +733,7 @@ LABEL_48:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v8 = [people countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -744,7 +744,7 @@ LABEL_48:
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(people);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
@@ -761,56 +761,56 @@ LABEL_48:
         [(ABPersonLinker *)self addPerson:v12 toDictionary:*p_peopleByOrganization withProperty:v15, p_peopleByLastName];
       }
 
-      v9 = [a3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [people countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)makeLinksForAddedPeople:(id)a3 inInitialLinking:(BOOL)a4 countingOuterIterations:(unint64_t *)a5 detectedLinkCount:(unint64_t *)a6
+- (void)makeLinksForAddedPeople:(id)people inInitialLinking:(BOOL)linking countingOuterIterations:(unint64_t *)iterations detectedLinkCount:(unint64_t *)count
 {
-  v7 = self;
+  selfCopy = self;
   v78 = *MEMORY[0x1E69E9840];
-  v60 = a4;
-  if (a4)
+  linkingCopy = linking;
+  if (linking)
   {
     [(ABPersonLinker *)self removeAllLinks];
   }
 
-  if (a3)
+  if (people)
   {
-    v8 = a3;
+    peopleCopy = people;
   }
 
   else
   {
-    v8 = ABAddressBookCopyArrayOfAllPeople(v7->_addressBook);
-    [(ABPersonLinker *)v7 presortPeople:v8];
+    peopleCopy = ABAddressBookCopyArrayOfAllPeople(selfCopy->_addressBook);
+    [(ABPersonLinker *)selfCopy presortPeople:peopleCopy];
   }
 
   if (ABDiagnosticsEnabled())
   {
-    [a3 count];
-    [(__CFArray *)v8 count];
-    _ABLog2(7, "[ABPersonLinker makeLinksForAddedPeople:inInitialLinking:countingOuterIterations:detectedLinkCount:]", 464, 0, @"[ABPersonLinker] (%@) makeLinksForAddedPeople %ld inInitialLinking %i peopleToLink %ld", v9, v10, v11, v7);
+    [people count];
+    [(__CFArray *)peopleCopy count];
+    _ABLog2(7, "[ABPersonLinker makeLinksForAddedPeople:inInitialLinking:countingOuterIterations:detectedLinkCount:]", 464, 0, @"[ABPersonLinker] (%@) makeLinksForAddedPeople %ld inInitialLinking %i peopleToLink %ld", v9, v10, v11, selfCopy);
   }
 
-  v12 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{-[__CFArray count](v8, "count")}];
+  v12 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{-[__CFArray count](peopleCopy, "count")}];
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
-  v13 = [(__CFArray *)v8 countByEnumeratingWithState:&v71 objects:v77 count:16];
+  v13 = [(__CFArray *)peopleCopy countByEnumeratingWithState:&v71 objects:v77 count:16];
   if (v13)
   {
     v14 = v13;
     v61 = 0;
-    v57 = v7;
+    v57 = selfCopy;
     v58 = 0;
     v15 = *v72;
-    v56 = v8;
-    v59 = a3;
+    v56 = peopleCopy;
+    peopleCopy2 = people;
     do
     {
       v16 = 0;
@@ -819,7 +819,7 @@ LABEL_48:
       {
         if (*v72 != v15)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(peopleCopy);
         }
 
         v17 = *(*(&v71 + 1) + 8 * v16);
@@ -828,8 +828,8 @@ LABEL_48:
           v18 = objc_alloc_init(MEMORY[0x1E696AAC8]);
           if (ABRecordGetIntValue(v17, kABPersonLinkProperty) == -1)
           {
-            v23 = [(ABPersonLinker *)v7 otherPeopleInArray:a3 matchingPerson:v17];
-            v24 = [(ABPersonLinker *)v7 otherPeopleInDatabaseMatchingPerson:v17 notIncludingPeople:v23];
+            v23 = [(ABPersonLinker *)selfCopy otherPeopleInArray:people matchingPerson:v17];
+            v24 = [(ABPersonLinker *)selfCopy otherPeopleInDatabaseMatchingPerson:v17 notIncludingPeople:v23];
             if (ABDiagnosticsEnabled())
             {
               v25 = ABPersonCopyCompositeName(v17);
@@ -838,13 +838,13 @@ LABEL_48:
                 ABRecordGetRecordID(v17);
                 [v24 count];
                 [v23 count];
-                v8 = v56;
-                v7 = v57;
+                peopleCopy = v56;
+                selfCopy = v57;
                 _ABLog2(7, "[ABPersonLinker makeLinksForAddedPeople:inInitialLinking:countingOuterIterations:detectedLinkCount:]", 480, 0, @"[ABPersonLinker] (%@) person %i %@, otherPeopleinDatabase %ld, otherNewlyAddedPeople %ld", v26, v27, v28, v57);
               }
             }
 
-            if ([(ABPersonLinker *)v7 shouldLinkPerson:v17 toPeopleInDatabase:v24 andNewlyAddedPeople:v23 inInitialLinking:v60])
+            if ([(ABPersonLinker *)selfCopy shouldLinkPerson:v17 toPeopleInDatabase:v24 andNewlyAddedPeople:v23 inInitialLinking:linkingCopy])
             {
               if ([v24 count] || objc_msgSend(v23, "count"))
               {
@@ -853,7 +853,7 @@ LABEL_48:
 
               if ([v24 count])
               {
-                if (v60)
+                if (linkingCopy)
                 {
                   v69 = 0u;
                   v70 = 0u;
@@ -916,14 +916,14 @@ LABEL_48:
                 while (v34);
               }
 
-              v8 = v56;
-              v7 = v57;
+              peopleCopy = v56;
+              selfCopy = v57;
             }
 
             [v12 addObjectsFromArray:v24];
             [v12 addObjectsFromArray:v23];
             ++v61;
-            a3 = v59;
+            people = peopleCopy2;
           }
 
           else
@@ -932,7 +932,7 @@ LABEL_48:
             if (ABDiagnosticsEnabled())
             {
               ABRecordGetRecordID(v17);
-              _ABLog2(7, "[ABPersonLinker makeLinksForAddedPeople:inInitialLinking:countingOuterIterations:detectedLinkCount:]", 517, 0, @"[ABPersonLinker] (%@) person %i %@, personLinkId %i", v20, v21, v22, v7);
+              _ABLog2(7, "[ABPersonLinker makeLinksForAddedPeople:inInitialLinking:countingOuterIterations:detectedLinkCount:]", 517, 0, @"[ABPersonLinker] (%@) person %i %@, personLinkId %i", v20, v21, v22, selfCopy);
             }
           }
 
@@ -943,7 +943,7 @@ LABEL_48:
       }
 
       while (v16 != v14);
-      v14 = [(__CFArray *)v8 countByEnumeratingWithState:&v71 objects:v77 count:16];
+      v14 = [(__CFArray *)peopleCopy countByEnumeratingWithState:&v71 objects:v77 count:16];
     }
 
     while (v14);
@@ -955,47 +955,47 @@ LABEL_48:
     v58 = 0;
   }
 
-  if (a5)
+  if (iterations)
   {
-    *a5 = v61;
+    *iterations = v61;
   }
 
-  if (v60)
+  if (linkingCopy)
   {
-    ABAddressBookSetIntegerProperty(v7->_addressBook, @"PersonLinkerVersion", 9, v37, v38, v39, v40, v41, v52);
-    v42 = [(__CFArray *)v8 lastObject];
-    if (v42)
+    ABAddressBookSetIntegerProperty(selfCopy->_addressBook, @"PersonLinkerVersion", 9, v37, v38, v39, v40, v41, v52);
+    lastObject = [(__CFArray *)peopleCopy lastObject];
+    if (lastObject)
     {
-      RecordID = ABRecordGetRecordID(v42);
-      ABAddressBookSetIntegerProperty(v7->_addressBook, @"PersonLinkerLastProcessedPerson", RecordID, v44, v45, v46, v47, v48, v53);
-      ABAddressBookSave(v7->_addressBook, 0);
+      RecordID = ABRecordGetRecordID(lastObject);
+      ABAddressBookSetIntegerProperty(selfCopy->_addressBook, @"PersonLinkerLastProcessedPerson", RecordID, v44, v45, v46, v47, v48, v53);
+      ABAddressBookSave(selfCopy->_addressBook, 0);
     }
   }
 
-  if (a6)
+  if (count)
   {
-    *a6 = v58;
+    *count = v58;
   }
 
-  peopleByFirstName = v7->_peopleByFirstName;
+  peopleByFirstName = selfCopy->_peopleByFirstName;
   if (peopleByFirstName)
   {
 
-    v7->_peopleByFirstName = 0;
+    selfCopy->_peopleByFirstName = 0;
   }
 
-  peopleByLastName = v7->_peopleByLastName;
+  peopleByLastName = selfCopy->_peopleByLastName;
   if (peopleByLastName)
   {
 
-    v7->_peopleByLastName = 0;
+    selfCopy->_peopleByLastName = 0;
   }
 
-  peopleByOrganization = v7->_peopleByOrganization;
+  peopleByOrganization = selfCopy->_peopleByOrganization;
   if (peopleByOrganization)
   {
 
-    v7->_peopleByOrganization = 0;
+    selfCopy->_peopleByOrganization = 0;
   }
 }
 
@@ -1039,7 +1039,7 @@ LABEL_48:
   }
 }
 
-- (id)copyArrayOfAllPeopleWithROWIDGreatThan:(int)a3 withLimit:(int64_t)a4
+- (id)copyArrayOfAllPeopleWithROWIDGreatThan:(int)than withLimit:(int64_t)limit
 {
   addressBook = self->_addressBook;
   if (!addressBook)
@@ -1075,7 +1075,7 @@ sqlite3_stmt *__67__ABPersonLinker_copyArrayOfAllPeopleWithROWIDGreatThan_withLi
   return result;
 }
 
-- (BOOL)linkRecentlyAddedPeopleWithLimit:(int64_t)a3
+- (BOOL)linkRecentlyAddedPeopleWithLimit:(int64_t)limit
 {
   IntegerProperty = ABAddressBookGetIntegerProperty(self->_addressBook);
   if (IntegerProperty)
@@ -1088,7 +1088,7 @@ sqlite3_stmt *__67__ABPersonLinker_copyArrayOfAllPeopleWithROWIDGreatThan_withLi
     v6 = 0xFFFFFFFFLL;
   }
 
-  v7 = [(ABPersonLinker *)self copyArrayOfAllPeopleWithROWIDGreatThan:v6 withLimit:a3];
+  v7 = [(ABPersonLinker *)self copyArrayOfAllPeopleWithROWIDGreatThan:v6 withLimit:limit];
   v8 = [v7 count];
   if (ABDiagnosticsEnabled())
   {
@@ -1108,21 +1108,21 @@ sqlite3_stmt *__67__ABPersonLinker_copyArrayOfAllPeopleWithROWIDGreatThan_withLi
     }
   }
 
-  return v8 == a3;
+  return v8 == limit;
 }
 
-- (void)linkNewlyAddedPerson:(void *)a3
+- (void)linkNewlyAddedPerson:(void *)person
 {
   if (ABDiagnosticsEnabled())
   {
-    v5 = ABPersonCopyCompositeName(a3);
+    v5 = ABPersonCopyCompositeName(person);
     if (ABDiagnosticsEnabled())
     {
       _ABLog2(7, "[ABPersonLinker linkNewlyAddedPerson:]", 627, 0, @"[ABPersonLinker] (%@) link newly added person %@", v6, v7, v8, self);
     }
   }
 
-  v9 = [MEMORY[0x1E695DEC8] arrayWithObject:a3];
+  v9 = [MEMORY[0x1E695DEC8] arrayWithObject:person];
 
   [(ABPersonLinker *)self makeLinksForAddedPeople:v9 inInitialLinking:0 countingOuterIterations:0 detectedLinkCount:0];
 }

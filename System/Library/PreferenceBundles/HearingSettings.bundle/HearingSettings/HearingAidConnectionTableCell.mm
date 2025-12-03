@@ -1,40 +1,40 @@
 @interface HearingAidConnectionTableCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (HearingAidConnectionTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (HearingAidConnectionTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)accessibilityHint;
 - (id)detailString;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 - (void)updateTextColor;
 @end
 
 @implementation HearingAidConnectionTableCell
 
-- (HearingAidConnectionTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HearingAidConnectionTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v12.receiver = self;
   v12.super_class = HearingAidConnectionTableCell;
-  v4 = [(HearingAidConnectionTableCell *)&v12 initWithStyle:3 reuseIdentifier:a4];
+  v4 = [(HearingAidConnectionTableCell *)&v12 initWithStyle:3 reuseIdentifier:identifier];
   if (v4)
   {
     v5 = +[NSNotificationCenter defaultCenter];
     [v5 addObserver:v4 selector:"updateAvailability" name:HUNearbyDevicesDidChangeNotification object:0];
 
-    v6 = [(HearingAidConnectionTableCell *)v4 titleLabel];
-    [v6 setNumberOfLines:0];
+    titleLabel = [(HearingAidConnectionTableCell *)v4 titleLabel];
+    [titleLabel setNumberOfLines:0];
 
-    v7 = [(HearingAidConnectionTableCell *)v4 valueLabel];
-    [v7 setNumberOfLines:0];
+    valueLabel = [(HearingAidConnectionTableCell *)v4 valueLabel];
+    [valueLabel setNumberOfLines:0];
 
     v8 = objc_alloc_init(UILabel);
     availabilityLabel = v4->_availabilityLabel;
     v4->_availabilityLabel = v8;
 
     [(UILabel *)v4->_availabilityLabel setNumberOfLines:0];
-    v10 = [(HearingAidConnectionTableCell *)v4 contentView];
-    [v10 addSubview:v4->_availabilityLabel];
+    contentView = [(HearingAidConnectionTableCell *)v4 contentView];
+    [contentView addSubview:v4->_availabilityLabel];
   }
 
   return v4;
@@ -45,54 +45,54 @@
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 removeObserver:self];
 
-  v4 = [(HearingAidConnectionTableCell *)self availabilityLabel];
-  [v4 removeFromSuperview];
+  availabilityLabel = [(HearingAidConnectionTableCell *)self availabilityLabel];
+  [availabilityLabel removeFromSuperview];
 
   v5.receiver = self;
   v5.super_class = HearingAidConnectionTableCell;
   [(HearingAidConnectionTableCell *)&v5 dealloc];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v27.receiver = self;
   v27.super_class = HearingAidConnectionTableCell;
-  v4 = a3;
-  [(HearingAidConnectionTableCell *)&v27 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 userInfo];
+  specifierCopy = specifier;
+  [(HearingAidConnectionTableCell *)&v27 refreshCellContentsWithSpecifier:specifierCopy];
+  userInfo = [specifierCopy userInfo];
 
-  [(HearingAidConnectionTableCell *)self setDevice:v5];
+  [(HearingAidConnectionTableCell *)self setDevice:userInfo];
   v6 = HCLogHearingAids();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(HearingAidConnectionTableCell *)self device];
-    v8 = [v7 name];
-    v9 = [(HearingAidConnectionTableCell *)self device];
-    v10 = [v9 isPaired];
-    v11 = [(HearingAidConnectionTableCell *)self device];
-    v12 = [v11 isConnected];
+    device = [(HearingAidConnectionTableCell *)self device];
+    name = [device name];
+    device2 = [(HearingAidConnectionTableCell *)self device];
+    isPaired = [device2 isPaired];
+    device3 = [(HearingAidConnectionTableCell *)self device];
+    isConnected = [device3 isConnected];
     *buf = 138412802;
-    v29 = v8;
+    v29 = name;
     v30 = 1024;
-    v31 = v10;
+    v31 = isPaired;
     v32 = 1024;
-    v33 = v12;
+    v33 = isConnected;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Connection Cell refresh name: %@ paired: %d, connected %d", buf, 0x18u);
   }
 
-  v13 = [(HearingAidConnectionTableCell *)self titleLabel];
-  v14 = [(AXRemoteHearingAidDevice *)self->_device name];
-  [v13 setText:v14];
+  titleLabel = [(HearingAidConnectionTableCell *)self titleLabel];
+  name2 = [(AXRemoteHearingAidDevice *)self->_device name];
+  [titleLabel setText:name2];
 
-  v15 = [(HearingAidConnectionTableCell *)self titleLabel];
-  v16 = [v15 text];
-  if (v16)
+  titleLabel2 = [(HearingAidConnectionTableCell *)self titleLabel];
+  text = [titleLabel2 text];
+  if (text)
   {
-    v17 = v16;
-    v18 = [(HearingAidConnectionTableCell *)self titleLabel];
-    v19 = [v18 text];
+    v17 = text;
+    titleLabel3 = [(HearingAidConnectionTableCell *)self titleLabel];
+    text2 = [titleLabel3 text];
     v20 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-    v21 = [v19 stringByTrimmingCharactersInSet:v20];
+    v21 = [text2 stringByTrimmingCharactersInSet:v20];
     v22 = [v21 isEqualToString:&stru_49868];
 
     if (!v22)
@@ -105,14 +105,14 @@
   {
   }
 
-  v23 = [(HearingAidConnectionTableCell *)self titleLabel];
+  titleLabel4 = [(HearingAidConnectionTableCell *)self titleLabel];
   v24 = hearingSettingsLocString(@"HearingAidFallbackName", @"HearingAidSettings");
-  [v23 setText:v24];
+  [titleLabel4 setText:v24];
 
 LABEL_8:
-  v25 = [(HearingAidConnectionTableCell *)self valueLabel];
-  v26 = [(HearingAidConnectionTableCell *)self detailString];
-  [v25 setText:v26];
+  valueLabel = [(HearingAidConnectionTableCell *)self valueLabel];
+  detailString = [(HearingAidConnectionTableCell *)self detailString];
+  [valueLabel setText:detailString];
 
   [(HearingAidConnectionTableCell *)self setAccessoryType:1];
   [(HearingAidConnectionTableCell *)self updateAvailability];
@@ -123,9 +123,9 @@ LABEL_8:
   v4.receiver = self;
   v4.super_class = HearingAidConnectionTableCell;
   [(HearingAidConnectionTableCell *)&v4 prepareForReuse];
-  v3 = [(HearingAidConnectionTableCell *)self device];
+  device = [(HearingAidConnectionTableCell *)self device];
 
-  if (v3)
+  if (device)
   {
     [(HearingAidConnectionTableCell *)self setDevice:0];
   }
@@ -139,24 +139,24 @@ LABEL_8:
     goto LABEL_17;
   }
 
-  v3 = [(AXRemoteHearingAidDevice *)self->_device manufacturer];
-  v4 = [v3 copy];
+  manufacturer = [(AXRemoteHearingAidDevice *)self->_device manufacturer];
+  v4 = [manufacturer copy];
 
-  v5 = [(AXRemoteHearingAidDevice *)self->_device model];
-  v6 = [v5 copy];
+  model = [(AXRemoteHearingAidDevice *)self->_device model];
+  v6 = [model copy];
 
   v7 = hearingLocString();
-  v8 = [v4 firstObject];
-  v9 = [v6 firstObject];
+  firstObject = [v4 firstObject];
+  firstObject2 = [v6 firstObject];
   v10 = hearingLocString();
-  v31 = [NSString stringWithFormat:v7, v8, v9, v10];
+  v31 = [NSString stringWithFormat:v7, firstObject, firstObject2, v10];
 
   v11 = hearingLocString();
   v12 = v4;
-  v13 = [v4 lastObject];
-  v14 = [v6 lastObject];
+  lastObject = [v4 lastObject];
+  lastObject2 = [v6 lastObject];
   v15 = hearingLocString();
-  v16 = [NSString stringWithFormat:v11, v13, v14, v15];
+  v16 = [NSString stringWithFormat:v11, lastObject, lastObject2, v15];
 
   if (![(AXRemoteHearingAidDevice *)self->_device leftAvailable]|| ![(AXRemoteHearingAidDevice *)self->_device rightAvailable])
   {
@@ -173,17 +173,17 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v17 = [v12 firstObject];
-  v18 = [v12 lastObject];
-  if (([v17 isEqualToString:v18] & 1) == 0)
+  firstObject3 = [v12 firstObject];
+  lastObject3 = [v12 lastObject];
+  if (([firstObject3 isEqualToString:lastObject3] & 1) == 0)
   {
 
     goto LABEL_14;
   }
 
-  v19 = [v6 firstObject];
-  v20 = [v6 lastObject];
-  v21 = [v19 isEqualToString:v20];
+  firstObject4 = [v6 firstObject];
+  lastObject4 = [v6 lastObject];
+  v21 = [firstObject4 isEqualToString:lastObject4];
 
   if (!v21)
   {
@@ -194,10 +194,10 @@ LABEL_14:
   }
 
   v22 = hearingLocString();
-  v23 = [v12 firstObject];
-  v24 = [v6 firstObject];
+  firstObject5 = [v12 firstObject];
+  firstObject6 = [v6 firstObject];
   v25 = hearingLocString();
-  v26 = [NSString stringWithFormat:v22, v23, v24, v25];
+  v26 = [NSString stringWithFormat:v22, firstObject5, firstObject6, v25];
 
 LABEL_11:
   v27 = v31;
@@ -217,9 +217,9 @@ LABEL_17:
     v3 = +[UIColor tableCellBlueTextColor];
 
     v4 = +[AXHAServer sharedInstance];
-    v5 = [v4 hearingAidReachable];
+    hearingAidReachable = [v4 hearingAidReachable];
 
-    if (v5)
+    if (hearingAidReachable)
     {
       v9 = v3;
     }
@@ -230,14 +230,14 @@ LABEL_17:
     }
   }
 
-  v6 = [(HearingAidConnectionTableCell *)self titleLabel];
-  [v6 setTextColor:v9];
+  titleLabel = [(HearingAidConnectionTableCell *)self titleLabel];
+  [titleLabel setTextColor:v9];
 
-  v7 = [(HearingAidConnectionTableCell *)self valueLabel];
-  [v7 setTextColor:v9];
+  valueLabel = [(HearingAidConnectionTableCell *)self valueLabel];
+  [valueLabel setTextColor:v9];
 
-  v8 = [(HearingAidConnectionTableCell *)self availabilityLabel];
-  [v8 setTextColor:v9];
+  availabilityLabel = [(HearingAidConnectionTableCell *)self availabilityLabel];
+  [availabilityLabel setTextColor:v9];
 }
 
 - (void)layoutSubviews
@@ -245,24 +245,24 @@ LABEL_17:
   v78.receiver = self;
   v78.super_class = HearingAidConnectionTableCell;
   [(HearingAidConnectionTableCell *)&v78 layoutSubviews];
-  v3 = [(HearingAidConnectionTableCell *)self titleLabel];
-  v4 = [v3 font];
-  [v4 pointSize];
+  titleLabel = [(HearingAidConnectionTableCell *)self titleLabel];
+  font = [titleLabel font];
+  [font pointSize];
   v6 = [UIFont systemFontOfSize:v5 * 0.8];
-  v7 = [(HearingAidConnectionTableCell *)self valueLabel];
-  [v7 setFont:v6];
+  valueLabel = [(HearingAidConnectionTableCell *)self valueLabel];
+  [valueLabel setFont:v6];
 
-  v8 = [(HearingAidConnectionTableCell *)self valueLabel];
-  v9 = [v8 font];
-  v10 = [(HearingAidConnectionTableCell *)self availabilityLabel];
-  [v10 setFont:v9];
+  valueLabel2 = [(HearingAidConnectionTableCell *)self valueLabel];
+  font2 = [valueLabel2 font];
+  availabilityLabel = [(HearingAidConnectionTableCell *)self availabilityLabel];
+  [availabilityLabel setFont:font2];
 
-  v11 = [(HearingAidConnectionTableCell *)self traitCollection];
-  v12 = [v11 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v12);
+  traitCollection = [(HearingAidConnectionTableCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-  v14 = [(HearingAidConnectionTableCell *)self contentView];
-  [v14 bounds];
+  contentView = [(HearingAidConnectionTableCell *)self contentView];
+  [contentView bounds];
   v16 = v15;
   v73 = v17;
 
@@ -280,29 +280,29 @@ LABEL_17:
     v22 = v21 / 3.0;
   }
 
-  v23 = [(HearingAidConnectionTableCell *)self availabilityLabel];
-  [v23 sizeThatFits:{v22, 1.79769313e308}];
+  availabilityLabel2 = [(HearingAidConnectionTableCell *)self availabilityLabel];
+  [availabilityLabel2 sizeThatFits:{v22, 1.79769313e308}];
   v25 = v24;
   v76 = v26;
 
   v77 = v25;
   v27 = v21 - v25;
-  v28 = [(HearingAidConnectionTableCell *)self traitCollection];
-  v29 = [v28 preferredContentSizeCategory];
-  v30 = UIContentSizeCategoryIsAccessibilityCategory(v29);
+  traitCollection2 = [(HearingAidConnectionTableCell *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection2 preferredContentSizeCategory];
+  v30 = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory2);
 
   if (v30)
   {
     v27 = v21;
   }
 
-  v31 = [(HearingAidConnectionTableCell *)self titleLabel];
-  [v31 sizeThatFits:{v27, 1.79769313e308}];
+  titleLabel2 = [(HearingAidConnectionTableCell *)self titleLabel];
+  [titleLabel2 sizeThatFits:{v27, 1.79769313e308}];
   v33 = v32;
   v35 = v34;
 
-  v36 = [(HearingAidConnectionTableCell *)self valueLabel];
-  [v36 sizeThatFits:{v27, 1.79769313e308}];
+  valueLabel3 = [(HearingAidConnectionTableCell *)self valueLabel];
+  [valueLabel3 sizeThatFits:{v27, 1.79769313e308}];
   v38 = v37;
   v40 = v39;
 
@@ -342,21 +342,21 @@ LABEL_17:
       v44 = v43;
     }
 
-    v45 = [(HearingAidConnectionTableCell *)self availabilityLabel];
-    [v45 sizeThatFits:{v44, 1.79769313e308}];
+    availabilityLabel3 = [(HearingAidConnectionTableCell *)self availabilityLabel];
+    [availabilityLabel3 sizeThatFits:{v44, 1.79769313e308}];
     v76 = v47;
     v77 = v46;
   }
 
-  v48 = [(HearingAidConnectionTableCell *)self titleLabel];
-  [v48 frame];
+  titleLabel3 = [(HearingAidConnectionTableCell *)self titleLabel];
+  [titleLabel3 frame];
   v50 = v49;
 
-  v51 = [(HearingAidConnectionTableCell *)self valueLabel];
-  [v51 frame];
+  valueLabel4 = [(HearingAidConnectionTableCell *)self valueLabel];
+  [valueLabel4 frame];
 
-  v52 = [(HearingAidConnectionTableCell *)self availabilityLabel];
-  [v52 frame];
+  availabilityLabel4 = [(HearingAidConnectionTableCell *)self availabilityLabel];
+  [availabilityLabel4 frame];
 
   if (IsAccessibilityCategory)
   {
@@ -412,14 +412,14 @@ LABEL_17:
     v64 = *&v58;
   }
 
-  v66 = [(HearingAidConnectionTableCell *)self titleLabel];
-  [v66 setFrame:{v54, v62, v75, v35}];
+  titleLabel4 = [(HearingAidConnectionTableCell *)self titleLabel];
+  [titleLabel4 setFrame:{v54, v62, v75, v35}];
 
-  v67 = [(HearingAidConnectionTableCell *)self valueLabel];
-  [v67 setFrame:{v50, v63, v74, v60}];
+  valueLabel5 = [(HearingAidConnectionTableCell *)self valueLabel];
+  [valueLabel5 setFrame:{v50, v63, v74, v60}];
 
-  v68 = [(HearingAidConnectionTableCell *)self availabilityLabel];
-  [v68 setFrame:{v71, v64, v77, v59}];
+  availabilityLabel5 = [(HearingAidConnectionTableCell *)self availabilityLabel];
+  [availabilityLabel5 setFrame:{v71, v64, v77, v59}];
 
   if ([(HearingAidConnectionTableCell *)self _shouldReverseLayoutDirection])
   {
@@ -444,27 +444,27 @@ LABEL_17:
     }
   }
 
-  v70 = [(HearingAidConnectionTableCell *)self availabilityLabel];
-  [v70 setTextAlignment:v69];
+  availabilityLabel6 = [(HearingAidConnectionTableCell *)self availabilityLabel];
+  [availabilityLabel6 setTextAlignment:v69];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v59.receiver = self;
   v59.super_class = HearingAidConnectionTableCell;
-  [(HearingAidConnectionTableCell *)&v59 sizeThatFits:a3.width, a3.height];
+  [(HearingAidConnectionTableCell *)&v59 sizeThatFits:fits.width, fits.height];
   v5 = v4;
   v7 = v6;
-  v8 = [(HearingAidConnectionTableCell *)self contentView];
+  contentView = [(HearingAidConnectionTableCell *)self contentView];
   v58 = v5;
-  [v8 sizeThatFits:{v5, v7}];
+  [contentView sizeThatFits:{v5, v7}];
   v10 = v9;
 
   [(HearingAidConnectionTableCell *)self layoutMargins];
   v12 = v11 * -0.5;
-  v13 = [(HearingAidConnectionTableCell *)self traitCollection];
-  v14 = [v13 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v14);
+  traitCollection = [(HearingAidConnectionTableCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   [(HearingAidConnectionTableCell *)self layoutMargins];
   v17 = v10 - v16 + v12;
@@ -478,20 +478,20 @@ LABEL_17:
     v18 = v17 / 3.0;
   }
 
-  v19 = [(HearingAidConnectionTableCell *)self titleLabel];
-  v20 = [v19 font];
-  [v20 pointSize];
+  titleLabel = [(HearingAidConnectionTableCell *)self titleLabel];
+  font = [titleLabel font];
+  [font pointSize];
   v22 = [UIFont systemFontOfSize:v21 * 0.8];
-  v23 = [(HearingAidConnectionTableCell *)self valueLabel];
-  [v23 setFont:v22];
+  valueLabel = [(HearingAidConnectionTableCell *)self valueLabel];
+  [valueLabel setFont:v22];
 
-  v24 = [(HearingAidConnectionTableCell *)self valueLabel];
-  v25 = [v24 font];
-  v26 = [(HearingAidConnectionTableCell *)self availabilityLabel];
-  [v26 setFont:v25];
+  valueLabel2 = [(HearingAidConnectionTableCell *)self valueLabel];
+  font2 = [valueLabel2 font];
+  availabilityLabel = [(HearingAidConnectionTableCell *)self availabilityLabel];
+  [availabilityLabel setFont:font2];
 
-  v27 = [(HearingAidConnectionTableCell *)self availabilityLabel];
-  [v27 sizeThatFits:{v18, 1.79769313e308}];
+  availabilityLabel2 = [(HearingAidConnectionTableCell *)self availabilityLabel];
+  [availabilityLabel2 sizeThatFits:{v18, 1.79769313e308}];
   v29 = v28;
   v31 = v17 - v30;
   if (IsAccessibilityCategory)
@@ -504,13 +504,13 @@ LABEL_17:
     v32 = v31;
   }
 
-  v33 = [(HearingAidConnectionTableCell *)self titleLabel];
-  [v33 sizeThatFits:{v32, 1.79769313e308}];
+  titleLabel2 = [(HearingAidConnectionTableCell *)self titleLabel];
+  [titleLabel2 sizeThatFits:{v32, 1.79769313e308}];
   v35 = v34;
   v37 = v36;
 
-  v38 = [(HearingAidConnectionTableCell *)self valueLabel];
-  [v38 sizeThatFits:{v32, 1.79769313e308}];
+  valueLabel3 = [(HearingAidConnectionTableCell *)self valueLabel];
+  [valueLabel3 sizeThatFits:{v32, 1.79769313e308}];
   v40 = v39;
   v42 = v41;
 
@@ -542,8 +542,8 @@ LABEL_17:
       v45 = v44;
     }
 
-    v46 = [(HearingAidConnectionTableCell *)self availabilityLabel];
-    [v46 sizeThatFits:{v45, 1.79769313e308}];
+    availabilityLabel3 = [(HearingAidConnectionTableCell *)self availabilityLabel];
+    [availabilityLabel3 sizeThatFits:{v45, 1.79769313e308}];
     v29 = v47;
   }
 
@@ -591,8 +591,8 @@ LABEL_17:
 
 - (id)accessibilityHint
 {
-  v2 = [(HearingAidConnectionTableCell *)self device];
-  if ([v2 isConnected])
+  device = [(HearingAidConnectionTableCell *)self device];
+  if ([device isConnected])
   {
     v3 = @"ConnectionCellHintConnected";
   }

@@ -1,50 +1,50 @@
 @interface SESDesignatedKey
-+ (id)fromDictionary:(id)a3;
-+ (id)withAID:(id)a3 slotNumber:(int64_t)a4 keyIdentifier:(id)a5 assetACL:(id)a6 assetACLAttestation:(id)a7 operationApprovalVersion:(int64_t)a8 designation:(int64_t)a9;
++ (id)fromDictionary:(id)dictionary;
++ (id)withAID:(id)d slotNumber:(int64_t)number keyIdentifier:(id)identifier assetACL:(id)l assetACLAttestation:(id)attestation operationApprovalVersion:(int64_t)version designation:(int64_t)designation;
 - (id)asDictionary;
 @end
 
 @implementation SESDesignatedKey
 
-+ (id)withAID:(id)a3 slotNumber:(int64_t)a4 keyIdentifier:(id)a5 assetACL:(id)a6 assetACLAttestation:(id)a7 operationApprovalVersion:(int64_t)a8 designation:(int64_t)a9
++ (id)withAID:(id)d slotNumber:(int64_t)number keyIdentifier:(id)identifier assetACL:(id)l assetACLAttestation:(id)attestation operationApprovalVersion:(int64_t)version designation:(int64_t)designation
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  dCopy = d;
+  identifierCopy = identifier;
+  lCopy = l;
+  attestationCopy = attestation;
   v18 = objc_opt_new();
   v19 = v18[3];
-  v18[3] = v14;
-  v20 = v14;
+  v18[3] = dCopy;
+  v20 = dCopy;
 
-  v18[4] = a4;
+  v18[4] = number;
   v21 = v18[2];
-  v18[2] = v15;
-  v22 = v15;
+  v18[2] = identifierCopy;
+  v22 = identifierCopy;
 
   v23 = v18[5];
-  v18[5] = v16;
-  v24 = v16;
+  v18[5] = lCopy;
+  v24 = lCopy;
 
   v25 = v18[6];
-  v18[6] = v17;
+  v18[6] = attestationCopy;
 
-  v18[7] = a8;
-  v18[1] = a9;
+  v18[7] = version;
+  v18[1] = designation;
 
   return v18;
 }
 
-+ (id)fromDictionary:(id)a3
++ (id)fromDictionary:(id)dictionary
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_opt_new();
-  v5 = [v3 objectForKeyedSubscript:@"AID"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"AID"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v3 objectForKeyedSubscript:@"slotNumber"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"slotNumber"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -62,7 +62,7 @@
       goto LABEL_34;
     }
 
-    v7 = [v3 objectForKeyedSubscript:@"keyIdentifier"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"keyIdentifier"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -80,7 +80,7 @@
       goto LABEL_33;
     }
 
-    v8 = [v3 objectForKeyedSubscript:@"assetACL"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"assetACL"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -98,7 +98,7 @@
       goto LABEL_32;
     }
 
-    v9 = [v3 objectForKeyedSubscript:@"assetACLAttestation"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"assetACLAttestation"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -116,11 +116,11 @@
       goto LABEL_31;
     }
 
-    v10 = [v3 objectForKeyedSubscript:@"oaVersion"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"oaVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v3 objectForKeyedSubscript:@"designation"];
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"designation"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {

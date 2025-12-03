@@ -1,11 +1,11 @@
 @interface HMDAccessoryDiagnosticsMetric
 + (id)logCategory;
-- (HMDAccessoryDiagnosticsMetric)initWithAccessory:(id)a3;
+- (HMDAccessoryDiagnosticsMetric)initWithAccessory:(id)accessory;
 - (HMDHAPAccessory)accessory;
 - (id)collectMetric;
 - (id)logIdentifier;
 - (void)reset;
-- (void)submitMetric:(id)a3;
+- (void)submitMetric:(id)metric;
 @end
 
 @implementation HMDAccessoryDiagnosticsMetric
@@ -19,22 +19,22 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDAccessoryDiagnosticsMetric *)self accessory];
+  accessory = [(HMDAccessoryDiagnosticsMetric *)self accessory];
   v3 = MEMORY[0x277CCACA8];
-  v4 = [v2 name];
-  v5 = [v2 identifier];
-  v6 = [v3 stringWithFormat:@"%@ : %@", v4, v5];
+  name = [accessory name];
+  identifier = [accessory identifier];
+  v6 = [v3 stringWithFormat:@"%@ : %@", name, identifier];
 
   return v6;
 }
 
 - (void)reset
 {
-  v2 = [(HMDAccessoryDiagnosticsMetric *)self accessory];
+  accessory = [(HMDAccessoryDiagnosticsMetric *)self accessory];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = accessory;
   }
 
   else
@@ -47,38 +47,38 @@
   [v4 resetAccessoryDiagnosticCounters];
 }
 
-- (void)submitMetric:(id)a3
+- (void)submitMetric:(id)metric
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessoryDiagnosticsMetric *)self accessory];
-  if (v4)
+  metricCopy = metric;
+  accessory = [(HMDAccessoryDiagnosticsMetric *)self accessory];
+  if (metricCopy)
   {
-    v6 = [[HMDAccessoryDiagnosticMetricEvent alloc] initWithAccessory:v5 diagnostics:v4];
+    v6 = [[HMDAccessoryDiagnosticMetricEvent alloc] initWithAccessory:accessory diagnostics:metricCopy];
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [v5 name];
-      v12 = [v5 identifier];
-      v13 = [(HMDAccessoryDiagnosticMetricEvent *)v6 coreAnalyticsEventDictionary];
+      name = [accessory name];
+      identifier = [accessory identifier];
+      coreAnalyticsEventDictionary = [(HMDAccessoryDiagnosticMetricEvent *)v6 coreAnalyticsEventDictionary];
       v17 = 138544130;
       v18 = v10;
       v19 = 2114;
-      v20 = v11;
+      v20 = name;
       v21 = 2114;
-      v22 = v12;
+      v22 = identifier;
       v23 = 2114;
-      v24 = v13;
+      v24 = coreAnalyticsEventDictionary;
       _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_INFO, "%{public}@Submitting AccessoryDiagnosticMetric for accessory: %{public}@/%{public}@ - %{public}@", &v17, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v7);
-    v14 = [v5 home];
-    v15 = [v14 logEventSubmitter];
-    [v15 submitLogEvent:v6];
+    home = [accessory home];
+    logEventSubmitter = [home logEventSubmitter];
+    [logEventSubmitter submitLogEvent:v6];
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -86,22 +86,22 @@
 
 - (id)collectMetric
 {
-  v2 = [(HMDAccessoryDiagnosticsMetric *)self accessory];
-  v3 = [v2 accessoryDiagnosticCounters];
+  accessory = [(HMDAccessoryDiagnosticsMetric *)self accessory];
+  accessoryDiagnosticCounters = [accessory accessoryDiagnosticCounters];
 
-  return v3;
+  return accessoryDiagnosticCounters;
 }
 
-- (HMDAccessoryDiagnosticsMetric)initWithAccessory:(id)a3
+- (HMDAccessoryDiagnosticsMetric)initWithAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v8.receiver = self;
   v8.super_class = HMDAccessoryDiagnosticsMetric;
   v5 = [(HMDAccessoryDiagnosticsMetric *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_accessory, v4);
+    objc_storeWeak(&v5->_accessory, accessoryCopy);
   }
 
   return v6;

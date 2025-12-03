@@ -1,39 +1,39 @@
 @interface SFSpeechSynthesisServerVoiceConfig
-+ (id)getTtsServerEndpointByCluster:(id)a3 withServiceType:(id)a4;
-- (SFSpeechSynthesisServerVoiceConfig)initWithUrl:(id)a3 useBlazar:(BOOL)a4 enableAuthentication:(BOOL)a5;
++ (id)getTtsServerEndpointByCluster:(id)cluster withServiceType:(id)type;
+- (SFSpeechSynthesisServerVoiceConfig)initWithUrl:(id)url useBlazar:(BOOL)blazar enableAuthentication:(BOOL)authentication;
 @end
 
 @implementation SFSpeechSynthesisServerVoiceConfig
 
-- (SFSpeechSynthesisServerVoiceConfig)initWithUrl:(id)a3 useBlazar:(BOOL)a4 enableAuthentication:(BOOL)a5
+- (SFSpeechSynthesisServerVoiceConfig)initWithUrl:(id)url useBlazar:(BOOL)blazar enableAuthentication:(BOOL)authentication
 {
-  v9 = a3;
+  urlCopy = url;
   v13.receiver = self;
   v13.super_class = SFSpeechSynthesisServerVoiceConfig;
   v10 = [(SFSpeechSynthesisServerVoiceConfig *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_ospreyEndpointUrl, a3);
-    v11->_useBlazar = a4;
-    v11->_enableAuthentication = a5;
+    objc_storeStrong(&v10->_ospreyEndpointUrl, url);
+    v11->_useBlazar = blazar;
+    v11->_enableAuthentication = authentication;
   }
 
   return v11;
 }
 
-+ (id)getTtsServerEndpointByCluster:(id)a3 withServiceType:(id)a4
++ (id)getTtsServerEndpointByCluster:(id)cluster withServiceType:(id)type
 {
   v52 = *MEMORY[0x277D85DE8];
-  v35 = a3;
-  v36 = a4;
+  clusterCopy = cluster;
+  typeCopy = type;
   v5 = SFSSGetLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    *&buf[4] = v35;
+    *&buf[4] = clusterCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v36;
+    *&buf[14] = typeCopy;
     _os_log_impl(&dword_269079000, v5, OS_LOG_TYPE_INFO, "GetTtsServerEndpoint, cluster=%@, serverType=%@", buf, 0x16u);
   }
 
@@ -46,14 +46,14 @@
   v6 = dispatch_semaphore_create(0);
   v37 = objc_alloc_init(MEMORY[0x277CCAB70]);
   v7 = MEMORY[0x277CBEBC0];
-  v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"https://tts-service-tts-tts-proxy-server-dev.usmsc04.app.apple.com/proxy/get_all_tts_service?cluster=%@&service=%@", v35, v36];
-  v9 = [v7 URLWithString:v8];
+  typeCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"https://tts-service-tts-tts-proxy-server-dev.usmsc04.app.apple.com/proxy/get_all_tts_service?cluster=%@&service=%@", clusterCopy, typeCopy];
+  v9 = [v7 URLWithString:typeCopy];
   [v37 setURL:v9];
 
   [v37 setHTTPMethod:@"GET"];
   v10 = MEMORY[0x277CCAD30];
-  v11 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-  v34 = [v10 sessionWithConfiguration:v11];
+  defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+  v34 = [v10 sessionWithConfiguration:defaultSessionConfiguration];
 
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;

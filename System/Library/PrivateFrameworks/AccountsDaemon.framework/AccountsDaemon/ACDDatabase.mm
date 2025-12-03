@@ -1,19 +1,19 @@
 @interface ACDDatabase
 - (ACDDatabase)init;
-- (ACDDatabase)initWithDatabaseURL:(id)a3;
-- (ACDDatabase)initWithDatabaseURL:(id)a3 storeOptions:(id)a4;
-- (BOOL)_performBackupToURL:(id)a3 unverifiedBackupURL:(id)a4 error:(id *)a5;
-- (BOOL)_persistentStoreCoodinator_resetPersistentStoreCoordinatorWithError:(id *)a3;
-- (BOOL)_shouldResetPersistentStoreAfterError:(id)a3;
-- (BOOL)performBackupReturningError:(id *)a3;
-- (BOOL)resetReturningError:(id *)a3;
-- (BOOL)restoreFromBackupReturningError:(id *)a3;
+- (ACDDatabase)initWithDatabaseURL:(id)l;
+- (ACDDatabase)initWithDatabaseURL:(id)l storeOptions:(id)options;
+- (BOOL)_performBackupToURL:(id)l unverifiedBackupURL:(id)rL error:(id *)error;
+- (BOOL)_persistentStoreCoodinator_resetPersistentStoreCoordinatorWithError:(id *)error;
+- (BOOL)_shouldResetPersistentStoreAfterError:(id)error;
+- (BOOL)performBackupReturningError:(id *)error;
+- (BOOL)resetReturningError:(id *)error;
+- (BOOL)restoreFromBackupReturningError:(id *)error;
 - (NSString)description;
-- (id)_addPersistentStoreWithType:(id)a3 configuration:(id)a4 URL:(id)a5 options:(id)a6 error:(id *)a7;
+- (id)_addPersistentStoreWithType:(id)type configuration:(id)configuration URL:(id)l options:(id)options error:(id *)error;
 - (id)_backupURL;
 - (id)_unverifiedBackupURL;
 - (id)createConnection;
-- (void)databaseConnection:(id)a3 encounteredUnrecoverableError:(id)a4;
+- (void)databaseConnection:(id)connection encounteredUnrecoverableError:(id)error;
 @end
 
 @implementation ACDDatabase
@@ -33,7 +33,7 @@
   return 0;
 }
 
-- (ACDDatabase)initWithDatabaseURL:(id)a3
+- (ACDDatabase)initWithDatabaseURL:(id)l
 {
   v12[3] = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277CBE1D8];
@@ -44,24 +44,24 @@
   v11[2] = *MEMORY[0x277CBE240];
   v12[2] = *MEMORY[0x277CCA1B8];
   v5 = MEMORY[0x277CBEAC0];
-  v6 = a3;
+  lCopy = l;
   v7 = [v5 dictionaryWithObjects:v12 forKeys:v11 count:3];
-  v8 = [(ACDDatabase *)self initWithDatabaseURL:v6 storeOptions:v7];
+  v8 = [(ACDDatabase *)self initWithDatabaseURL:lCopy storeOptions:v7];
 
   v9 = *MEMORY[0x277D85DE8];
   return v8;
 }
 
-- (ACDDatabase)initWithDatabaseURL:(id)a3 storeOptions:(id)a4
+- (ACDDatabase)initWithDatabaseURL:(id)l storeOptions:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  lCopy = l;
+  optionsCopy = options;
+  if (!lCopy)
   {
     [ACDDatabase initWithDatabaseURL:storeOptions:];
   }
 
-  if (([v7 isFileURL] & 1) == 0)
+  if (([lCopy isFileURL] & 1) == 0)
   {
     [ACDDatabase initWithDatabaseURL:storeOptions:];
   }
@@ -72,8 +72,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_databaseURL, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_databaseURL, l);
+    v11 = [optionsCopy copy];
     storeOptions = v10->_storeOptions;
     v10->_storeOptions = v11;
 
@@ -85,7 +85,7 @@
     v16 = *MEMORY[0x277CBE2E8];
     v17 = v10->_storeOptions;
     v35 = 0;
-    v18 = [(ACDDatabase *)v10 _addPersistentStoreWithType:v16 configuration:0 URL:v7 options:v17 error:&v35];
+    v18 = [(ACDDatabase *)v10 _addPersistentStoreWithType:v16 configuration:0 URL:lCopy options:v17 error:&v35];
     v19 = v35;
     v20 = _ACDLogSystem();
     v21 = v20;
@@ -127,8 +127,8 @@ LABEL_16:
         else
         {
           v32 = 0;
-          v26 = [(ACDDatabase *)v10 createConnection];
-          v27 = [[ACDDatabaseInitializer alloc] initWithDatabaseConnection:v26];
+          createConnection = [(ACDDatabase *)v10 createConnection];
+          v27 = [[ACDDatabaseInitializer alloc] initWithDatabaseConnection:createConnection];
           v28 = [(ACDDatabaseInitializer *)v27 updateDefaultContentIfNecessary:&v32];
 
           v29 = v32;
@@ -189,62 +189,62 @@ void __48__ACDDatabase_initWithDatabaseURL_storeOptions___block_invoke(uint64_t 
 
 - (id)_backupURL
 {
-  v3 = [(ACDDatabase *)self databaseURL];
-  v4 = [v3 lastPathComponent];
+  databaseURL = [(ACDDatabase *)self databaseURL];
+  lastPathComponent = [databaseURL lastPathComponent];
 
-  v5 = [(ACDDatabase *)self databaseURL];
-  v6 = [v5 URLByDeletingLastPathComponent];
-  v7 = [v6 URLByAppendingPathComponent:@"VerifiedBackup" isDirectory:1];
+  databaseURL2 = [(ACDDatabase *)self databaseURL];
+  uRLByDeletingLastPathComponent = [databaseURL2 URLByDeletingLastPathComponent];
+  v7 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:@"VerifiedBackup" isDirectory:1];
 
-  v8 = [v7 URLByAppendingPathComponent:v4 isDirectory:0];
+  v8 = [v7 URLByAppendingPathComponent:lastPathComponent isDirectory:0];
 
   return v8;
 }
 
 - (id)_unverifiedBackupURL
 {
-  v3 = [(ACDDatabase *)self databaseURL];
-  v4 = [v3 lastPathComponent];
+  databaseURL = [(ACDDatabase *)self databaseURL];
+  lastPathComponent = [databaseURL lastPathComponent];
 
-  v5 = [(ACDDatabase *)self databaseURL];
-  v6 = [v5 URLByDeletingLastPathComponent];
-  v7 = [v6 URLByAppendingPathComponent:@"UnverifiedBackup" isDirectory:1];
+  databaseURL2 = [(ACDDatabase *)self databaseURL];
+  uRLByDeletingLastPathComponent = [databaseURL2 URLByDeletingLastPathComponent];
+  v7 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:@"UnverifiedBackup" isDirectory:1];
 
-  v8 = [v7 URLByAppendingPathComponent:v4 isDirectory:0];
+  v8 = [v7 URLByAppendingPathComponent:lastPathComponent isDirectory:0];
 
   return v8;
 }
 
-- (BOOL)performBackupReturningError:(id *)a3
+- (BOOL)performBackupReturningError:(id *)error
 {
-  v5 = [(ACDDatabase *)self _backupURL];
-  v6 = [(ACDDatabase *)self _unverifiedBackupURL];
-  v7 = [v5 URLByDeletingLastPathComponent];
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
+  _backupURL = [(ACDDatabase *)self _backupURL];
+  _unverifiedBackupURL = [(ACDDatabase *)self _unverifiedBackupURL];
+  uRLByDeletingLastPathComponent = [_backupURL URLByDeletingLastPathComponent];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v21 = 0;
-  v9 = [v8 createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:0 error:&v21];
+  v9 = [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v21];
   v10 = v21;
 
   if (v9)
   {
-    v11 = [v6 URLByDeletingLastPathComponent];
-    v12 = [MEMORY[0x277CCAA00] defaultManager];
+    uRLByDeletingLastPathComponent2 = [_unverifiedBackupURL URLByDeletingLastPathComponent];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v20 = v10;
-    v13 = [v12 createDirectoryAtURL:v11 withIntermediateDirectories:1 attributes:0 error:&v20];
+    v13 = [defaultManager2 createDirectoryAtURL:uRLByDeletingLastPathComponent2 withIntermediateDirectories:1 attributes:0 error:&v20];
     v14 = v20;
 
     if (v13)
     {
-      v15 = [(ACDDatabase *)self _performBackupToURL:v5 unverifiedBackupURL:v6 error:a3];
-      v16 = [MEMORY[0x277CCAA00] defaultManager];
-      [v16 removeItemAtURL:v11 error:0];
+      v15 = [(ACDDatabase *)self _performBackupToURL:_backupURL unverifiedBackupURL:_unverifiedBackupURL error:error];
+      defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+      [defaultManager3 removeItemAtURL:uRLByDeletingLastPathComponent2 error:0];
     }
 
-    else if (a3)
+    else if (error)
     {
       v18 = v14;
       v15 = 0;
-      *a3 = v14;
+      *error = v14;
     }
 
     else
@@ -255,11 +255,11 @@ void __48__ACDDatabase_initWithDatabaseURL_storeOptions___block_invoke(uint64_t 
 
   else
   {
-    if (a3)
+    if (error)
     {
       v17 = v10;
       v15 = 0;
-      *a3 = v10;
+      *error = v10;
     }
 
     else
@@ -273,12 +273,12 @@ void __48__ACDDatabase_initWithDatabaseURL_storeOptions___block_invoke(uint64_t 
   return v15;
 }
 
-- (BOOL)restoreFromBackupReturningError:(id *)a3
+- (BOOL)restoreFromBackupReturningError:(id *)error
 {
-  v5 = [(ACDDatabase *)self _backupURL];
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v5 path];
-  v8 = [v6 fileExistsAtPath:v7];
+  _backupURL = [(ACDDatabase *)self _backupURL];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [_backupURL path];
+  v8 = [defaultManager fileExistsAtPath:path];
 
   if (v8)
   {
@@ -299,12 +299,12 @@ void __48__ACDDatabase_initWithDatabaseURL_storeOptions___block_invoke(uint64_t 
     v13[3] = &unk_27848C130;
     v15 = &v23;
     v13[4] = self;
-    v14 = v5;
+    v14 = _backupURL;
     v16 = &v17;
     [(NSPersistentStoreCoordinator *)persistentStoreCoordinator performBlockAndWait:v13];
-    if (a3)
+    if (error)
     {
-      *a3 = v18[5];
+      *error = v18[5];
     }
 
     v10 = *(v24 + 24);
@@ -354,7 +354,7 @@ void __47__ACDDatabase_restoreFromBackupReturningError___block_invoke(void *a1)
   }
 }
 
-- (BOOL)resetReturningError:(id *)a3
+- (BOOL)resetReturningError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -375,9 +375,9 @@ void __47__ACDDatabase_restoreFromBackupReturningError___block_invoke(void *a1)
   v7[5] = &v14;
   v7[6] = &v8;
   [(NSPersistentStoreCoordinator *)persistentStoreCoordinator performBlockAndWait:v7];
-  if (a3)
+  if (error)
   {
-    *a3 = v9[5];
+    *error = v9[5];
   }
 
   v5 = *(v15 + 24);
@@ -397,24 +397,24 @@ void __35__ACDDatabase_resetReturningError___block_invoke(void *a1)
   *(*(a1[5] + 8) + 24) = v4;
 }
 
-- (id)_addPersistentStoreWithType:(id)a3 configuration:(id)a4 URL:(id)a5 options:(id)a6 error:(id *)a7
+- (id)_addPersistentStoreWithType:(id)type configuration:(id)configuration URL:(id)l options:(id)options error:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [(NSPersistentStoreCoordinator *)self->_persistentStoreCoordinator addPersistentStoreWithType:v12 configuration:v13 URL:v14 options:v15 error:a7];
+  typeCopy = type;
+  configurationCopy = configuration;
+  lCopy = l;
+  optionsCopy = options;
+  v16 = [(NSPersistentStoreCoordinator *)self->_persistentStoreCoordinator addPersistentStoreWithType:typeCopy configuration:configurationCopy URL:lCopy options:optionsCopy error:error];
 
   v17 = *MEMORY[0x277D85DE8];
 
   return v16;
 }
 
-- (BOOL)_shouldResetPersistentStoreAfterError:(id)a3
+- (BOOL)_shouldResetPersistentStoreAfterError:(id)error
 {
-  v4 = a3;
-  if ([v4 code] == 134100)
+  errorCopy = error;
+  if ([errorCopy code] == 134100)
   {
     v5 = _ACDLogSystem();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -445,7 +445,7 @@ void __35__ACDDatabase_resetReturningError___block_invoke(void *a1)
     }
   }
 
-  if (![v4 ac_isUnrecoverableDatabaseError])
+  if (![errorCopy ac_isUnrecoverableDatabaseError])
   {
     v10 = 0;
     goto LABEL_21;
@@ -484,14 +484,14 @@ LABEL_21:
   return v10;
 }
 
-- (BOOL)_performBackupToURL:(id)a3 unverifiedBackupURL:(id)a4 error:(id *)a5
+- (BOOL)_performBackupToURL:(id)l unverifiedBackupURL:(id)rL error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  lCopy = l;
+  rLCopy = rL;
+  v10 = rLCopy;
+  if (lCopy)
   {
-    if (v9)
+    if (rLCopy)
     {
       goto LABEL_3;
     }
@@ -531,7 +531,7 @@ LABEL_3:
   [(NSPersistentStoreCoordinator *)persistentStoreCoordinator performBlockAndWait:v23];
   if ((v34[3] & 1) == 0)
   {
-    if (a5)
+    if (error)
     {
       v14 = v28[5];
       goto LABEL_9;
@@ -546,12 +546,12 @@ LABEL_10:
   v13 = _sqlite3_integrity_check();
   if (v13)
   {
-    if (a5)
+    if (error)
     {
       v14 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CB8DC0] code:v13 userInfo:0];
 LABEL_9:
       v15 = 0;
-      *a5 = v14;
+      *error = v14;
       goto LABEL_15;
     }
 
@@ -565,14 +565,14 @@ LABEL_9:
   v18[3] = &unk_27848C180;
   v21 = &v33;
   v18[4] = self;
-  v19 = v8;
+  v19 = lCopy;
   v20 = v12;
   v22 = &v27;
   [(NSPersistentStoreCoordinator *)v16 performBlockAndWait:v18];
   v15 = *(v34 + 24);
-  if (a5 && (v34[3] & 1) == 0)
+  if (error && (v34[3] & 1) == 0)
   {
-    *a5 = v28[5];
+    *error = v28[5];
   }
 
 LABEL_15:
@@ -612,7 +612,7 @@ void __61__ACDDatabase__performBackupToURL_unverifiedBackupURL_error___block_inv
   *(*(a1[7] + 8) + 24) = v9;
 }
 
-- (BOOL)_persistentStoreCoodinator_resetPersistentStoreCoordinatorWithError:(id *)a3
+- (BOOL)_persistentStoreCoodinator_resetPersistentStoreCoordinatorWithError:(id *)error
 {
   databaseURL = self->_databaseURL;
   v6 = *MEMORY[0x277CBE2E8];
@@ -632,7 +632,7 @@ void __61__ACDDatabase__performBackupToURL_unverifiedBackupURL_error___block_inv
 
     v16 = v14 != 0;
     v11 = v15;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -641,11 +641,11 @@ void __61__ACDDatabase__performBackupToURL_unverifiedBackupURL_error___block_inv
   }
 
   v16 = 0;
-  if (a3)
+  if (error)
   {
 LABEL_5:
     v17 = v11;
-    *a3 = v11;
+    *error = v11;
   }
 
 LABEL_6:
@@ -658,20 +658,20 @@ LABEL_6:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ACDDatabase *)self databaseURL];
-  v7 = [v3 stringWithFormat:@"<%@: %p { %@ }>", v5, self, v6];
+  databaseURL = [(ACDDatabase *)self databaseURL];
+  v7 = [v3 stringWithFormat:@"<%@: %p { %@ }>", v5, self, databaseURL];
 
   return v7;
 }
 
-- (void)databaseConnection:(id)a3 encounteredUnrecoverableError:(id)a4
+- (void)databaseConnection:(id)connection encounteredUnrecoverableError:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  connectionCopy = connection;
+  errorCopy = error;
+  v9 = errorCopy;
+  if (connectionCopy)
   {
-    if (v8)
+    if (errorCopy)
     {
       goto LABEL_3;
     }
@@ -679,8 +679,8 @@ LABEL_6:
 
   else
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"ACDDatabase.m" lineNumber:371 description:{@"Invalid parameter not satisfying: %@", @"databaseConnection"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ACDDatabase.m" lineNumber:371 description:{@"Invalid parameter not satisfying: %@", @"databaseConnection"}];
 
     if (v9)
     {
@@ -688,8 +688,8 @@ LABEL_6:
     }
   }
 
-  v13 = [MEMORY[0x277CCA890] currentHandler];
-  [v13 handleFailureInMethod:a2 object:self file:@"ACDDatabase.m" lineNumber:372 description:{@"Invalid parameter not satisfying: %@", @"error"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"ACDDatabase.m" lineNumber:372 description:{@"Invalid parameter not satisfying: %@", @"error"}];
 
 LABEL_3:
   persistentStoreCoordinator = self->_persistentStoreCoordinator;

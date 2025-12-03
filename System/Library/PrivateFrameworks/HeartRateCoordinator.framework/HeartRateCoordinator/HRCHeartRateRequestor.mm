@@ -1,34 +1,34 @@
 @interface HRCHeartRateRequestor
 - (BOOL)opportunisticUpdatesEnabled;
-- (BOOL)requestStreamingMode:(unint64_t)a3 withError:(id *)a4;
+- (BOOL)requestStreamingMode:(unint64_t)mode withError:(id *)error;
 - (HRCHeartRateOutputDelegate)delegate;
-- (HRCHeartRateRequestor)initWithDelegate:(id)a3 onQueue:(id)a4;
-- (HRCHeartRateRequestor)initWithDelegate:(id)a3 onQueue:(id)a4 connectionHelper:(id)a5;
+- (HRCHeartRateRequestor)initWithDelegate:(id)delegate onQueue:(id)queue;
+- (HRCHeartRateRequestor)initWithDelegate:(id)delegate onQueue:(id)queue connectionHelper:(id)helper;
 - (void)dealloc;
-- (void)handleHeartRateData:(id)a3;
+- (void)handleHeartRateData:(id)data;
 - (void)reassessServerConnection;
-- (void)refreshRequiredWithCompletionHandler:(id)a3;
-- (void)setOpportunisticUpdatesEnabled:(BOOL)a3;
-- (void)setUserWorkoutActivitySession:(unint64_t)a3 isIndoor:(int64_t)a4;
+- (void)refreshRequiredWithCompletionHandler:(id)handler;
+- (void)setOpportunisticUpdatesEnabled:(BOOL)enabled;
+- (void)setUserWorkoutActivitySession:(unint64_t)session isIndoor:(int64_t)indoor;
 @end
 
 @implementation HRCHeartRateRequestor
 
-- (HRCHeartRateRequestor)initWithDelegate:(id)a3 onQueue:(id)a4
+- (HRCHeartRateRequestor)initWithDelegate:(id)delegate onQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v8 = objc_opt_new();
-  v9 = [(HRCHeartRateRequestor *)self initWithDelegate:v6 onQueue:v7 connectionHelper:v8];
+  v9 = [(HRCHeartRateRequestor *)self initWithDelegate:delegateCopy onQueue:queueCopy connectionHelper:v8];
 
   return v9;
 }
 
-- (HRCHeartRateRequestor)initWithDelegate:(id)a3 onQueue:(id)a4 connectionHelper:(id)a5
+- (HRCHeartRateRequestor)initWithDelegate:(id)delegate onQueue:(id)queue connectionHelper:(id)helper
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  helperCopy = helper;
   v11 = hws_get_framework_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -39,9 +39,9 @@
   v17.receiver = self;
   v17.super_class = HRCHeartRateRequestor;
   v12 = [(HRCHeartRateRequestor *)&v17 init];
-  objc_storeWeak(&v12->_delegate, v8);
-  objc_storeStrong(&v12->_clientQueue, a4);
-  objc_storeStrong(&v12->_connectionHelper, a5);
+  objc_storeWeak(&v12->_delegate, delegateCopy);
+  objc_storeStrong(&v12->_clientQueue, queue);
+  objc_storeStrong(&v12->_connectionHelper, helper);
   v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v14 = dispatch_queue_create("com.apple.heartratecoordinator.heartraterequestor", v13);
   primaryQueue = v12->_primaryQueue;
@@ -67,9 +67,9 @@
   [(HRCHeartRateRequestor *)&v4 dealloc];
 }
 
-- (BOOL)requestStreamingMode:(unint64_t)a3 withError:(id *)a4
+- (BOOL)requestStreamingMode:(unint64_t)mode withError:(id *)error
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
     v8 = hws_get_framework_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -77,25 +77,25 @@
       [HRCHeartRateRequestor requestStreamingMode:v8 withError:?];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"com.apple.heartratecoordinator" code:200 userInfo:&unk_2864678D0];
+      *error = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"com.apple.heartratecoordinator" code:200 userInfo:&unk_2864678D0];
     }
   }
 
   else
   {
-    v6 = [(HRCHeartRateRequestor *)self primaryQueue:a3];
+    v6 = [(HRCHeartRateRequestor *)self primaryQueue:mode];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __56__HRCHeartRateRequestor_requestStreamingMode_withError___block_invoke;
     v10[3] = &unk_2796FA778;
     v10[4] = self;
-    v10[5] = a3;
+    v10[5] = mode;
     dispatch_sync(v6, v10);
   }
 
-  return a3 != 1;
+  return mode != 1;
 }
 
 void __56__HRCHeartRateRequestor_requestStreamingMode_withError___block_invoke(uint64_t a1)
@@ -128,54 +128,54 @@ void __56__HRCHeartRateRequestor_requestStreamingMode_withError___block_invoke(u
 
 - (void)reassessServerConnection
 {
-  v7 = [(HRCHeartRateRequestor *)self primaryQueue];
-  dispatch_assert_queue_V2(v7);
+  primaryQueue = [(HRCHeartRateRequestor *)self primaryQueue];
+  dispatch_assert_queue_V2(primaryQueue);
 
   if ([(HRCHeartRateRequestor *)self requestedStreamingMode]|| self->_opportunisticUpdatesEnabled || [(HRCHeartRateRequestor *)self activityType])
   {
-    v8 = [(HRCHeartRateRequestor *)self connectionHelper];
-    v3 = [v8 connected];
+    connectionHelper = [(HRCHeartRateRequestor *)self connectionHelper];
+    connected = [connectionHelper connected];
 
-    if (v3)
+    if (connected)
     {
       return;
     }
 
-    v9 = [(HRCHeartRateRequestor *)self connectionHelper];
-    [v9 connect];
+    connectionHelper2 = [(HRCHeartRateRequestor *)self connectionHelper];
+    [connectionHelper2 connect];
 
-    v10 = [(HRCHeartRateRequestor *)self connectionHelper];
-    v4 = [MEMORY[0x277CCAC38] processInfo];
-    v5 = [v4 processName];
-    [v10 updateProcessName:v5];
+    connectionHelper3 = [(HRCHeartRateRequestor *)self connectionHelper];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
+    [connectionHelper3 updateProcessName:processName];
   }
 
   else
   {
-    v11 = [(HRCHeartRateRequestor *)self connectionHelper];
-    v6 = [v11 connected];
+    connectionHelper4 = [(HRCHeartRateRequestor *)self connectionHelper];
+    connected2 = [connectionHelper4 connected];
 
-    if (!v6)
+    if (!connected2)
     {
       return;
     }
 
-    v10 = [(HRCHeartRateRequestor *)self connectionHelper];
-    [v10 invalidateConnection];
+    connectionHelper3 = [(HRCHeartRateRequestor *)self connectionHelper];
+    [connectionHelper3 invalidateConnection];
   }
 }
 
-- (void)setUserWorkoutActivitySession:(unint64_t)a3 isIndoor:(int64_t)a4
+- (void)setUserWorkoutActivitySession:(unint64_t)session isIndoor:(int64_t)indoor
 {
-  v7 = [(HRCHeartRateRequestor *)self primaryQueue];
+  primaryQueue = [(HRCHeartRateRequestor *)self primaryQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__HRCHeartRateRequestor_setUserWorkoutActivitySession_isIndoor___block_invoke;
   block[3] = &unk_2796FA7A0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
-  dispatch_sync(v7, block);
+  block[5] = session;
+  block[6] = indoor;
+  dispatch_sync(primaryQueue, block);
 }
 
 void __64__HRCHeartRateRequestor_setUserWorkoutActivitySession_isIndoor___block_invoke(uint64_t a1)
@@ -205,9 +205,9 @@ void __64__HRCHeartRateRequestor_setUserWorkoutActivitySession_isIndoor___block_
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setOpportunisticUpdatesEnabled:(BOOL)a3
+- (void)setOpportunisticUpdatesEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = hws_get_framework_log();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
@@ -218,14 +218,14 @@ void __64__HRCHeartRateRequestor_setUserWorkoutActivitySession_isIndoor___block_
 
   else
   {
-    v5 = [(HRCHeartRateRequestor *)self primaryQueue];
+    primaryQueue = [(HRCHeartRateRequestor *)self primaryQueue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __56__HRCHeartRateRequestor_setOpportunisticUpdatesEnabled___block_invoke;
     v6[3] = &unk_2796FA7C8;
     v6[4] = self;
     v7 = 0;
-    dispatch_sync(v5, v6);
+    dispatch_sync(primaryQueue, v6);
   }
 }
 
@@ -256,37 +256,37 @@ void __56__HRCHeartRateRequestor_setOpportunisticUpdatesEnabled___block_invoke(u
 
 - (BOOL)opportunisticUpdatesEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(HRCHeartRateRequestor *)self primaryQueue];
+  primaryQueue = [(HRCHeartRateRequestor *)self primaryQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __52__HRCHeartRateRequestor_opportunisticUpdatesEnabled__block_invoke;
   v5[3] = &unk_2796FA7F0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(primaryQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)refreshRequiredWithCompletionHandler:(id)a3
+- (void)refreshRequiredWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HRCHeartRateRequestor *)self primaryQueue];
+  handlerCopy = handler;
+  primaryQueue = [(HRCHeartRateRequestor *)self primaryQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__HRCHeartRateRequestor_refreshRequiredWithCompletionHandler___block_invoke;
   v7[3] = &unk_2796FA818;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(primaryQueue, v7);
 }
 
 void __62__HRCHeartRateRequestor_refreshRequiredWithCompletionHandler___block_invoke(uint64_t a1)
@@ -297,9 +297,9 @@ void __62__HRCHeartRateRequestor_refreshRequiredWithCompletionHandler___block_in
   (*(v2 + 16))(v2, v3, [*(a1 + 32) requestedStreamingMode], *(*(a1 + 32) + 16), objc_msgSend(*(a1 + 32), "activityType"), objc_msgSend(*(a1 + 32), "locationType"));
 }
 
-- (void)handleHeartRateData:(id)a3
+- (void)handleHeartRateData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = hws_get_framework_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -312,9 +312,9 @@ void __62__HRCHeartRateRequestor_refreshRequiredWithCompletionHandler___block_in
   v8[1] = 3221225472;
   v8[2] = __45__HRCHeartRateRequestor_handleHeartRateData___block_invoke;
   v8[3] = &unk_2796FA840;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = dataCopy;
+  selfCopy = self;
+  v7 = dataCopy;
   dispatch_async(clientQueue, v8);
 }
 

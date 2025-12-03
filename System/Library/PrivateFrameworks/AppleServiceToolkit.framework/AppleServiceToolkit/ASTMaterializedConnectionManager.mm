@@ -1,26 +1,26 @@
 @interface ASTMaterializedConnectionManager
 - (ASTConnectionManagerDelegate)delegate;
-- (ASTMaterializedConnectionManager)initWithSOCKSProxyServer:(id)a3 port:(id)a4;
-- (BOOL)isValidUUID:(id)a3;
+- (ASTMaterializedConnectionManager)initWithSOCKSProxyServer:(id)server port:(id)port;
+- (BOOL)isValidUUID:(id)d;
 - (void)cancelAllTestResults;
-- (void)connection:(id)a3 connectionStateChanged:(int64_t)a4;
-- (void)connection:(id)a3 didSendBodyData:(int64_t)a4 totalBytesSent:(int64_t)a5 totalBytesExpected:(int64_t)a6;
+- (void)connection:(id)connection connectionStateChanged:(int64_t)changed;
+- (void)connection:(id)connection didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpected:(int64_t)expected;
 - (void)dealloc;
-- (void)postSealableFile:(id)a3 fileSequence:(id)a4 totalFiles:(id)a5 testId:(id)a6 dataId:(id)a7 allowsCellularAccess:(BOOL)a8 completion:(id)a9;
+- (void)postSealableFile:(id)file fileSequence:(id)sequence totalFiles:(id)files testId:(id)id dataId:(id)dataId allowsCellularAccess:(BOOL)access completion:(id)completion;
 @end
 
 @implementation ASTMaterializedConnectionManager
 
-- (ASTMaterializedConnectionManager)initWithSOCKSProxyServer:(id)a3 port:(id)a4
+- (ASTMaterializedConnectionManager)initWithSOCKSProxyServer:(id)server port:(id)port
 {
-  v6 = a3;
-  v7 = a4;
+  serverCopy = server;
+  portCopy = port;
   v12.receiver = self;
   v12.super_class = ASTMaterializedConnectionManager;
   v8 = [(ASTMaterializedConnectionManager *)&v12 init];
   if (v8)
   {
-    v9 = [[ASTNetworking alloc] initWithSOCKSProxyServer:v6 port:v7];
+    v9 = [[ASTNetworking alloc] initWithSOCKSProxyServer:serverCopy port:portCopy];
     networking = v8->_networking;
     v8->_networking = v9;
   }
@@ -360,56 +360,56 @@ void __83__ASTMaterializedConnectionManager_postTestResult_allowsCellularAccess_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)postSealableFile:(id)a3 fileSequence:(id)a4 totalFiles:(id)a5 testId:(id)a6 dataId:(id)a7 allowsCellularAccess:(BOOL)a8 completion:(id)a9
+- (void)postSealableFile:(id)file fileSequence:(id)sequence totalFiles:(id)files testId:(id)id dataId:(id)dataId allowsCellularAccess:(BOOL)access completion:(id)completion
 {
-  v35 = a8;
+  accessCopy = access;
   v44 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v36 = a9;
+  fileCopy = file;
+  completionCopy = completion;
   v15 = MEMORY[0x277CCAA00];
-  v34 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = [v15 defaultManager];
-  v20 = [v14 fileURL];
-  v21 = [v20 path];
-  v22 = [v19 attributesOfItemAtPath:v21 error:0];
-  v23 = [v22 fileSize];
+  dataIdCopy = dataId;
+  idCopy = id;
+  filesCopy = files;
+  sequenceCopy = sequence;
+  defaultManager = [v15 defaultManager];
+  fileURL = [fileCopy fileURL];
+  path = [fileURL path];
+  v22 = [defaultManager attributesOfItemAtPath:path error:0];
+  fileSize = [v22 fileSize];
 
   v24 = ASTLogHandleForCategory(1);
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
-    v25 = [v14 fileURL];
-    v26 = [v25 path];
+    fileURL2 = [fileCopy fileURL];
+    path2 = [fileURL2 path];
     *buf = 138412546;
-    v41 = v26;
+    v41 = path2;
     v42 = 2048;
-    v43 = v23;
+    v43 = fileSize;
     _os_log_impl(&dword_240F3C000, v24, OS_LOG_TYPE_DEFAULT, "[File Upload] > File: %@, File Size: %llu bytes", buf, 0x16u);
   }
 
-  v27 = [[ASTConnectionTestResultBinary alloc] initWithSealableFile:v14 fileSequence:v18 totalFiles:v17 testId:v16 dataId:v34];
-  v28 = [(ASTMaterializedConnectionManager *)self identity];
-  [(ASTMaterializedConnection *)v27 setIdentity:v28];
+  v27 = [[ASTConnectionTestResultBinary alloc] initWithSealableFile:fileCopy fileSequence:sequenceCopy totalFiles:filesCopy testId:idCopy dataId:dataIdCopy];
+  identity = [(ASTMaterializedConnectionManager *)self identity];
+  [(ASTMaterializedConnection *)v27 setIdentity:identity];
 
-  v29 = [(ASTMaterializedConnectionManager *)self sessionId];
-  [(ASTMaterializedConnection *)v27 setSessionId:v29];
+  sessionId = [(ASTMaterializedConnectionManager *)self sessionId];
+  [(ASTMaterializedConnection *)v27 setSessionId:sessionId];
 
-  [(ASTMaterializedConnection *)v27 setAllowsCellularAccess:v35];
+  [(ASTMaterializedConnection *)v27 setAllowsCellularAccess:accessCopy];
   [(ASTMaterializedConnection *)v27 setDelegate:self];
   [(ASTMaterializedConnection *)v27 setRetryOnNetworkDisconnected:1];
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __123__ASTMaterializedConnectionManager_postSealableFile_fileSequence_totalFiles_testId_dataId_allowsCellularAccess_completion___block_invoke;
   v37[3] = &unk_278CBD360;
-  v38 = v14;
-  v39 = v36;
-  v30 = v36;
-  v31 = v14;
+  v38 = fileCopy;
+  v39 = completionCopy;
+  v30 = completionCopy;
+  v31 = fileCopy;
   [(ASTMaterializedConnection *)v27 setDidReceiveResponse:v37];
-  v32 = [(ASTMaterializedConnectionManager *)self networking];
-  [v32 addConnection:v27];
+  networking = [(ASTMaterializedConnectionManager *)self networking];
+  [networking addConnection:v27];
 
   v33 = *MEMORY[0x277D85DE8];
 }
@@ -455,11 +455,11 @@ void __123__ASTMaterializedConnectionManager_postSealableFile_fileSequence_total
 
 - (void)cancelAllTestResults
 {
-  v3 = [(ASTMaterializedConnectionManager *)self networking];
-  [v3 cancelConnectionsOfClass:objc_opt_class()];
+  networking = [(ASTMaterializedConnectionManager *)self networking];
+  [networking cancelConnectionsOfClass:objc_opt_class()];
 
-  v4 = [(ASTMaterializedConnectionManager *)self networking];
-  [v4 cancelConnectionsOfClass:objc_opt_class()];
+  networking2 = [(ASTMaterializedConnectionManager *)self networking];
+  [networking2 cancelConnectionsOfClass:objc_opt_class()];
 }
 
 void __128__ASTMaterializedConnectionManager_requestSessionArchiveWithSessionID_withPayloadSigner_allowsCellularAccess_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -751,57 +751,57 @@ LABEL_7:
 LABEL_11:
 }
 
-- (void)connection:(id)a3 connectionStateChanged:(int64_t)a4
+- (void)connection:(id)connection connectionStateChanged:(int64_t)changed
 {
-  v11 = a3;
-  if ([v11 conformsToProtocol:&unk_2852DAEB8])
+  connectionCopy = connection;
+  if ([connectionCopy conformsToProtocol:&unk_2852DAEB8])
   {
-    v6 = [v11 testId];
-    if (a4 == 1)
+    testId = [connectionCopy testId];
+    if (changed == 1)
     {
-      v7 = [v11 request];
-      v8 = [v7 allowsCellularAccess];
+      request = [connectionCopy request];
+      allowsCellularAccess = [request allowsCellularAccess];
 
-      v9 = [(ASTMaterializedConnectionManager *)self delegate];
-      [v9 connectionManager:self pausedSendingResultForTest:v6 reason:v8 == 0];
+      delegate = [(ASTMaterializedConnectionManager *)self delegate];
+      [delegate connectionManager:self pausedSendingResultForTest:testId reason:allowsCellularAccess == 0];
     }
 
     else
     {
-      v9 = [(ASTMaterializedConnectionManager *)self delegate];
-      [v9 connectionManager:self resumedSendingResultForTest:v6];
+      delegate = [(ASTMaterializedConnectionManager *)self delegate];
+      [delegate connectionManager:self resumedSendingResultForTest:testId];
     }
   }
 
   else
   {
-    v10 = [(ASTMaterializedConnectionManager *)self delegate];
-    v6 = v10;
-    if (a4 == 1)
+    delegate2 = [(ASTMaterializedConnectionManager *)self delegate];
+    testId = delegate2;
+    if (changed == 1)
     {
-      [v10 connectionManagerRequestPaused:self];
+      [delegate2 connectionManagerRequestPaused:self];
     }
 
     else
     {
-      [v10 connectionManagerRequestResumed:self];
+      [delegate2 connectionManagerRequestResumed:self];
     }
   }
 }
 
-- (void)connection:(id)a3 didSendBodyData:(int64_t)a4 totalBytesSent:(int64_t)a5 totalBytesExpected:(int64_t)a6
+- (void)connection:(id)connection didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpected:(int64_t)expected
 {
   v24 = *MEMORY[0x277D85DE8];
   v9 = ASTLogHandleForCategory(1);
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (a6 < 1)
+  if (expected < 1)
   {
     if (v10)
     {
       v16 = 134218240;
-      v17 = a4;
+      dataCopy2 = data;
       v18 = 2048;
-      v19 = a5;
+      sentCopy2 = sent;
       v12 = "bytes sent: %lld, total bytes sent: %lld";
       v13 = v9;
       v14 = 22;
@@ -811,13 +811,13 @@ LABEL_11:
 
   else if (v10)
   {
-    v11 = a5 / a6;
+    v11 = sent / expected;
     v16 = 134218752;
-    v17 = a4;
+    dataCopy2 = data;
     v18 = 2048;
-    v19 = a5;
+    sentCopy2 = sent;
     v20 = 2048;
-    v21 = a6;
+    expectedCopy = expected;
     v22 = 2048;
     v23 = (v11 * 100.0);
     v12 = "bytes sent: %lld, total bytes sent: %lld, expected: %lld, complete: %0.1f%%";
@@ -832,19 +832,19 @@ LABEL_6:
 
 - (void)dealloc
 {
-  v3 = [(ASTMaterializedConnectionManager *)self networking];
-  [v3 invalidate];
+  networking = [(ASTMaterializedConnectionManager *)self networking];
+  [networking invalidate];
 
   v4.receiver = self;
   v4.super_class = ASTMaterializedConnectionManager;
   [(ASTMaterializedConnectionManager *)&v4 dealloc];
 }
 
-- (BOOL)isValidUUID:(id)a3
+- (BOOL)isValidUUID:(id)d
 {
   v3 = MEMORY[0x277CCAD78];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithUUIDString:v4];
+  dCopy = d;
+  v5 = [[v3 alloc] initWithUUIDString:dCopy];
 
   return v5 != 0;
 }

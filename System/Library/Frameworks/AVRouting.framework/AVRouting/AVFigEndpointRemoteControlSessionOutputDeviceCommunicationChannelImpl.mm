@@ -1,10 +1,10 @@
 @interface AVFigEndpointRemoteControlSessionOutputDeviceCommunicationChannelImpl
-- (AVFigEndpointRemoteControlSessionOutputDeviceCommunicationChannelImpl)initWithRemoteControlSession:(OpaqueFigEndpointRemoteControlSession *)a3;
+- (AVFigEndpointRemoteControlSessionOutputDeviceCommunicationChannelImpl)initWithRemoteControlSession:(OpaqueFigEndpointRemoteControlSession *)session;
 - (void)_didCloseCommunicationChannel;
-- (void)_didReceiveData:(id)a3;
+- (void)_didReceiveData:(id)data;
 - (void)close;
 - (void)dealloc;
-- (void)sendData:(id)a3 completionHandler:(id)a4;
+- (void)sendData:(id)data completionHandler:(id)handler;
 @end
 
 @implementation AVFigEndpointRemoteControlSessionOutputDeviceCommunicationChannelImpl
@@ -23,7 +23,7 @@
   [(AVFigEndpointRemoteControlSessionOutputDeviceCommunicationChannelImpl *)&v4 dealloc];
 }
 
-- (void)_didReceiveData:(id)a3
+- (void)_didReceiveData:(id)data
 {
   v9 = *MEMORY[0x1E69E9840];
   if (dword_1ED6F6B68)
@@ -33,7 +33,7 @@
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  [(AVOutputDeviceCommunicationChannel *)[(AVFigEndpointRemoteControlSessionOutputDeviceCommunicationChannelImpl *)self parentChannel:v7] communicationChannelImpl:self didReceiveData:a3];
+  [(AVOutputDeviceCommunicationChannel *)[(AVFigEndpointRemoteControlSessionOutputDeviceCommunicationChannelImpl *)self parentChannel:v7] communicationChannelImpl:self didReceiveData:data];
   v6 = *MEMORY[0x1E69E9840];
 }
 
@@ -51,10 +51,10 @@
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendData:(id)a3 completionHandler:(id)a4
+- (void)sendData:(id)data completionHandler:(id)handler
 {
   v11 = *MEMORY[0x1E69E9840];
-  v6 = [a4 copy];
+  v6 = [handler copy];
   if (dword_1ED6F6B68)
   {
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -66,7 +66,7 @@
   v9 = *(*(CMBaseObjectGetVTable() + 16) + 8);
   if (v9)
   {
-    v9(remoteControlSession, a3, AVFigEndpointRemoteControlSessionOutputDeviceCommunicationChannelImplSendDataCompletion, v6);
+    v9(remoteControlSession, data, AVFigEndpointRemoteControlSessionOutputDeviceCommunicationChannelImplSendDataCompletion, v6);
   }
 
   v10 = *MEMORY[0x1E69E9840];
@@ -94,7 +94,7 @@
   }
 }
 
-- (AVFigEndpointRemoteControlSessionOutputDeviceCommunicationChannelImpl)initWithRemoteControlSession:(OpaqueFigEndpointRemoteControlSession *)a3
+- (AVFigEndpointRemoteControlSessionOutputDeviceCommunicationChannelImpl)initWithRemoteControlSession:(OpaqueFigEndpointRemoteControlSession *)session
 {
   v10.receiver = self;
   v10.super_class = AVFigEndpointRemoteControlSessionOutputDeviceCommunicationChannelImpl;
@@ -105,35 +105,35 @@
     goto LABEL_8;
   }
 
-  if (!a3)
+  if (!session)
   {
     v4->_remoteControlSession = 0;
     goto LABEL_10;
   }
 
-  a3 = CFRetain(a3);
-  v5->_remoteControlSession = a3;
-  if (a3)
+  session = CFRetain(session);
+  v5->_remoteControlSession = session;
+  if (session)
   {
     VTable = CMBaseObjectGetVTable();
     v7 = *(*(VTable + 16) + 16);
     if (v7)
     {
       v8 = *(VTable + 16) + 16;
-      if (!v7(a3, AVFigEndpointRemoteControlSessionOutputDeviceCommunicationChannelImplHandleEvent, v5))
+      if (!v7(session, AVFigEndpointRemoteControlSessionOutputDeviceCommunicationChannelImplHandleEvent, v5))
       {
-        a3 = v5;
+        session = v5;
         goto LABEL_10;
       }
     }
 
 LABEL_8:
-    a3 = 0;
+    session = 0;
   }
 
 LABEL_10:
 
-  return a3;
+  return session;
 }
 
 @end

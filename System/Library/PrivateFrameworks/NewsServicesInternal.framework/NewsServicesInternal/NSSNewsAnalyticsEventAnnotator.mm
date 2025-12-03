@@ -1,39 +1,39 @@
 @interface NSSNewsAnalyticsEventAnnotator
-- (NSSNewsAnalyticsEventAnnotator)initWithSessionManager:(id)a3 userIDProvider:(id)a4;
+- (NSSNewsAnalyticsEventAnnotator)initWithSessionManager:(id)manager userIDProvider:(id)provider;
 - (NSSNewsAnalyticsSessionManager)sessionManager;
-- (void)annotateEvent:(id)a3 withOptions:(unint64_t)a4;
+- (void)annotateEvent:(id)event withOptions:(unint64_t)options;
 @end
 
 @implementation NSSNewsAnalyticsEventAnnotator
 
-- (NSSNewsAnalyticsEventAnnotator)initWithSessionManager:(id)a3 userIDProvider:(id)a4
+- (NSSNewsAnalyticsEventAnnotator)initWithSessionManager:(id)manager userIDProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  providerCopy = provider;
   v11.receiver = self;
   v11.super_class = NSSNewsAnalyticsEventAnnotator;
   v8 = [(NSSNewsAnalyticsEventAnnotator *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_sessionManager, v6);
-    objc_storeStrong(&v9->_userIDProvider, a4);
+    objc_storeWeak(&v8->_sessionManager, managerCopy);
+    objc_storeStrong(&v9->_userIDProvider, provider);
   }
 
   return v9;
 }
 
-- (void)annotateEvent:(id)a3 withOptions:(unint64_t)a4
+- (void)annotateEvent:(id)event withOptions:(unint64_t)options
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  optionsCopy = options;
+  eventCopy = event;
+  if (!eventCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NSSNewsAnalyticsEventAnnotator annotateEvent:withOptions:];
-    if ((v4 & 1) == 0)
+    if ((optionsCopy & 1) == 0)
     {
 LABEL_4:
-      if ((v4 & 2) == 0)
+      if ((optionsCopy & 2) == 0)
       {
         goto LABEL_5;
       }
@@ -42,18 +42,18 @@ LABEL_4:
     }
   }
 
-  else if ((v4 & 1) == 0)
+  else if ((optionsCopy & 1) == 0)
   {
     goto LABEL_4;
   }
 
   v10 = NSSNTPBAnalyticsUserStorefrontIdValue();
-  [v6 setUserStorefrontId:v10];
+  [eventCopy setUserStorefrontId:v10];
 
-  if ((v4 & 2) == 0)
+  if ((optionsCopy & 2) == 0)
   {
 LABEL_5:
-    if ((v4 & 4) == 0)
+    if ((optionsCopy & 4) == 0)
     {
       goto LABEL_6;
     }
@@ -62,11 +62,11 @@ LABEL_5:
   }
 
 LABEL_13:
-  [v6 setReachabilityStatus:NSSNTPBAnalyticsReachabilityStatusValue()];
-  if ((v4 & 4) == 0)
+  [eventCopy setReachabilityStatus:NSSNTPBAnalyticsReachabilityStatusValue()];
+  if ((optionsCopy & 4) == 0)
   {
 LABEL_6:
-    if ((v4 & 8) == 0)
+    if ((optionsCopy & 8) == 0)
     {
       goto LABEL_7;
     }
@@ -75,22 +75,22 @@ LABEL_6:
   }
 
 LABEL_14:
-  [v6 setCellularRadioAccessTechnology:NSSNTPBAnalyticsCellularRadioAccessTechnologyValue()];
-  if ((v4 & 8) == 0)
+  [eventCopy setCellularRadioAccessTechnology:NSSNTPBAnalyticsCellularRadioAccessTechnologyValue()];
+  if ((optionsCopy & 8) == 0)
   {
 LABEL_7:
-    if ((v4 & 0x10) == 0)
+    if ((optionsCopy & 0x10) == 0)
     {
       goto LABEL_8;
     }
 
 LABEL_16:
-    v13 = [(NSSNewsAnalyticsEventAnnotator *)self sessionManager];
-    v14 = [v13 currentSession];
-    v15 = [v14 sessionId];
-    [v6 setSessionId:v15];
+    sessionManager = [(NSSNewsAnalyticsEventAnnotator *)self sessionManager];
+    currentSession = [sessionManager currentSession];
+    sessionId = [currentSession sessionId];
+    [eventCopy setSessionId:sessionId];
 
-    if ((v4 & 0x20) == 0)
+    if ((optionsCopy & 0x20) == 0)
     {
       goto LABEL_10;
     }
@@ -99,23 +99,23 @@ LABEL_16:
   }
 
 LABEL_15:
-  v11 = [(NSSNewsAnalyticsEventAnnotator *)self userIDProvider];
-  v12 = [v11 userID];
-  [v6 setUserId:v12];
+  userIDProvider = [(NSSNewsAnalyticsEventAnnotator *)self userIDProvider];
+  userID = [userIDProvider userID];
+  [eventCopy setUserId:userID];
 
-  if ((v4 & 0x10) != 0)
+  if ((optionsCopy & 0x10) != 0)
   {
     goto LABEL_16;
   }
 
 LABEL_8:
-  if ((v4 & 0x20) != 0)
+  if ((optionsCopy & 0x20) != 0)
   {
 LABEL_9:
-    v7 = [(NSSNewsAnalyticsEventAnnotator *)self sessionManager];
-    v8 = [v7 currentSession];
-    v9 = [v8 widgetSessionId];
-    [v6 setWidgetSessionId:v9];
+    sessionManager2 = [(NSSNewsAnalyticsEventAnnotator *)self sessionManager];
+    currentSession2 = [sessionManager2 currentSession];
+    widgetSessionId = [currentSession2 widgetSessionId];
+    [eventCopy setWidgetSessionId:widgetSessionId];
   }
 
 LABEL_10:

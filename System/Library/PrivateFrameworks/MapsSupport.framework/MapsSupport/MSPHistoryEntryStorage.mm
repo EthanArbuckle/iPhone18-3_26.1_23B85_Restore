@@ -1,17 +1,17 @@
 @interface MSPHistoryEntryStorage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsSearchType:(id)a3;
+- (int)StringAsSearchType:(id)type;
 - (int)searchType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSearchType:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasTracksRAPRecordingOnly:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSearchType:(BOOL)type;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasTracksRAPRecordingOnly:(BOOL)only;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MSPHistoryEntryStorage
@@ -29,9 +29,9 @@
   }
 }
 
-- (void)setHasSearchType:(BOOL)a3
+- (void)setHasSearchType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -44,30 +44,30 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsSearchType:(id)a3
+- (int)StringAsSearchType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"QUERY_SEARCH"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"QUERY_SEARCH"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"DIRECTIONS_SEARCH"])
+  else if ([typeCopy isEqualToString:@"DIRECTIONS_SEARCH"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"PLACE_DISPLAY"])
+  else if ([typeCopy isEqualToString:@"PLACE_DISPLAY"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"TRANSIT_LINE_ITEM"])
+  else if ([typeCopy isEqualToString:@"TRANSIT_LINE_ITEM"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"RIDESHARING_TRIP"])
+  else if ([typeCopy isEqualToString:@"RIDESHARING_TRIP"])
   {
     v4 = 5;
   }
@@ -80,9 +80,9 @@
   return v4;
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -95,9 +95,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasTracksRAPRecordingOnly:(BOOL)a3
+- (void)setHasTracksRAPRecordingOnly:(BOOL)only
 {
-  if (a3)
+  if (only)
   {
     v3 = 8;
   }
@@ -116,15 +116,15 @@
   v8.receiver = self;
   v8.super_class = MSPHistoryEntryStorage;
   v4 = [(MSPHistoryEntryStorage *)&v8 description];
-  v5 = [(MSPHistoryEntryStorage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MSPHistoryEntryStorage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 4) != 0)
   {
     v4 = self->_searchType - 1;
@@ -138,20 +138,20 @@
       v5 = off_279867D58[v4];
     }
 
-    [v3 setObject:v5 forKey:@"searchType"];
+    [dictionary setObject:v5 forKey:@"searchType"];
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x277CCABB0] numberWithDouble:self->_timestamp];
-    [v3 setObject:v8 forKey:@"timestamp"];
+    [dictionary setObject:v8 forKey:@"timestamp"];
 
     has = self->_has;
   }
@@ -159,63 +159,63 @@
   if (has)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithDouble:self->_position];
-    [v3 setObject:v9 forKey:@"position"];
+    [dictionary setObject:v9 forKey:@"position"];
   }
 
   querySearch = self->_querySearch;
   if (querySearch)
   {
-    v11 = [(MSPQuerySearch *)querySearch dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"querySearch"];
+    dictionaryRepresentation = [(MSPQuerySearch *)querySearch dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"querySearch"];
   }
 
   directionsSearch = self->_directionsSearch;
   if (directionsSearch)
   {
-    v13 = [(MSPDirectionsSearch *)directionsSearch dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"directionsSearch"];
+    dictionaryRepresentation2 = [(MSPDirectionsSearch *)directionsSearch dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"directionsSearch"];
   }
 
   placeDisplay = self->_placeDisplay;
   if (placeDisplay)
   {
-    v15 = [(MSPPlaceDisplay *)placeDisplay dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"placeDisplay"];
+    dictionaryRepresentation3 = [(MSPPlaceDisplay *)placeDisplay dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"placeDisplay"];
   }
 
   transitLineItem = self->_transitLineItem;
   if (transitLineItem)
   {
-    v17 = [(MSPTransitStorageLineItem *)transitLineItem dictionaryRepresentation];
-    [v3 setObject:v17 forKey:@"transitLineItem"];
+    dictionaryRepresentation4 = [(MSPTransitStorageLineItem *)transitLineItem dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"transitLineItem"];
   }
 
   ridesharingTrip = self->_ridesharingTrip;
   if (ridesharingTrip)
   {
-    v19 = [(MSPRidesharingTrip *)ridesharingTrip dictionaryRepresentation];
-    [v3 setObject:v19 forKey:@"ridesharingTrip"];
+    dictionaryRepresentation5 = [(MSPRidesharingTrip *)ridesharingTrip dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"ridesharingTrip"];
   }
 
   if ((*&self->_has & 8) != 0)
   {
     v20 = [MEMORY[0x277CCABB0] numberWithBool:self->_tracksRAPRecordingOnly];
-    [v3 setObject:v20 forKey:@"tracksRAPRecordingOnly"];
+    [dictionary setObject:v20 forKey:@"tracksRAPRecordingOnly"];
   }
 
   unknownFields = self->_unknownFields;
   if (unknownFields)
   {
-    v22 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
-    [v3 setObject:v22 forKey:@"Unknown Fields"];
+    dictionaryRepresentation6 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"Unknown Fields"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
     searchType = self->_searchType;
@@ -272,79 +272,79 @@
     PBDataWriterWriteBOOLField();
   }
 
-  [(PBUnknownFields *)self->_unknownFields writeTo:v9];
+  [(PBUnknownFields *)self->_unknownFields writeTo:toCopy];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
-    v4[18] = self->_searchType;
-    *(v4 + 92) |= 4u;
+    toCopy[18] = self->_searchType;
+    *(toCopy + 92) |= 4u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_identifier)
   {
-    [v4 setIdentifier:?];
-    v4 = v6;
+    [toCopy setIdentifier:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 3) = *&self->_timestamp;
-    *(v4 + 92) |= 2u;
+    *(toCopy + 3) = *&self->_timestamp;
+    *(toCopy + 92) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 2) = *&self->_position;
-    *(v4 + 92) |= 1u;
+    *(toCopy + 2) = *&self->_position;
+    *(toCopy + 92) |= 1u;
   }
 
   if (self->_querySearch)
   {
     [v6 setQuerySearch:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_directionsSearch)
   {
     [v6 setDirectionsSearch:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_placeDisplay)
   {
     [v6 setPlaceDisplay:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_transitLineItem)
   {
     [v6 setTransitLineItem:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_ridesharingTrip)
   {
     [v6 setRidesharingTrip:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(v4 + 88) = self->_tracksRAPRecordingOnly;
-    *(v4 + 92) |= 8u;
+    *(toCopy + 88) = self->_tracksRAPRecordingOnly;
+    *(toCopy + 92) |= 8u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -352,7 +352,7 @@
     *(v5 + 92) |= 4u;
   }
 
-  v7 = [(NSString *)self->_identifier copyWithZone:a3];
+  v7 = [(NSString *)self->_identifier copyWithZone:zone];
   v8 = *(v6 + 40);
   *(v6 + 40) = v7;
 
@@ -370,23 +370,23 @@
     *(v6 + 92) |= 1u;
   }
 
-  v10 = [(MSPQuerySearch *)self->_querySearch copyWithZone:a3];
+  v10 = [(MSPQuerySearch *)self->_querySearch copyWithZone:zone];
   v11 = *(v6 + 56);
   *(v6 + 56) = v10;
 
-  v12 = [(MSPDirectionsSearch *)self->_directionsSearch copyWithZone:a3];
+  v12 = [(MSPDirectionsSearch *)self->_directionsSearch copyWithZone:zone];
   v13 = *(v6 + 32);
   *(v6 + 32) = v12;
 
-  v14 = [(MSPPlaceDisplay *)self->_placeDisplay copyWithZone:a3];
+  v14 = [(MSPPlaceDisplay *)self->_placeDisplay copyWithZone:zone];
   v15 = *(v6 + 48);
   *(v6 + 48) = v14;
 
-  v16 = [(MSPTransitStorageLineItem *)self->_transitLineItem copyWithZone:a3];
+  v16 = [(MSPTransitStorageLineItem *)self->_transitLineItem copyWithZone:zone];
   v17 = *(v6 + 80);
   *(v6 + 80) = v16;
 
-  v18 = [(MSPRidesharingTrip *)self->_ridesharingTrip copyWithZone:a3];
+  v18 = [(MSPRidesharingTrip *)self->_ridesharingTrip copyWithZone:zone];
   v19 = *(v6 + 64);
   *(v6 + 64) = v18;
 
@@ -400,31 +400,31 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_32;
   }
 
   has = self->_has;
-  v6 = *(v4 + 92);
+  v6 = *(equalCopy + 92);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 92) & 4) == 0 || self->_searchType != *(v4 + 18))
+    if ((*(equalCopy + 92) & 4) == 0 || self->_searchType != *(equalCopy + 18))
     {
       goto LABEL_32;
     }
   }
 
-  else if ((*(v4 + 92) & 4) != 0)
+  else if ((*(equalCopy + 92) & 4) != 0)
   {
     goto LABEL_32;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 5))
+  if (identifier | *(equalCopy + 5))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -434,41 +434,41 @@
     has = self->_has;
   }
 
-  v8 = *(v4 + 92);
+  v8 = *(equalCopy + 92);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 92) & 2) == 0 || self->_timestamp != *(v4 + 3))
+    if ((*(equalCopy + 92) & 2) == 0 || self->_timestamp != *(equalCopy + 3))
     {
       goto LABEL_32;
     }
   }
 
-  else if ((*(v4 + 92) & 2) != 0)
+  else if ((*(equalCopy + 92) & 2) != 0)
   {
     goto LABEL_32;
   }
 
   if (has)
   {
-    if ((*(v4 + 92) & 1) == 0 || self->_position != *(v4 + 2))
+    if ((*(equalCopy + 92) & 1) == 0 || self->_position != *(equalCopy + 2))
     {
       goto LABEL_32;
     }
   }
 
-  else if (*(v4 + 92))
+  else if (*(equalCopy + 92))
   {
     goto LABEL_32;
   }
 
   querySearch = self->_querySearch;
-  if (querySearch | *(v4 + 7) && ![(MSPQuerySearch *)querySearch isEqual:?])
+  if (querySearch | *(equalCopy + 7) && ![(MSPQuerySearch *)querySearch isEqual:?])
   {
     goto LABEL_32;
   }
 
   directionsSearch = self->_directionsSearch;
-  if (directionsSearch | *(v4 + 4))
+  if (directionsSearch | *(equalCopy + 4))
   {
     if (![(MSPDirectionsSearch *)directionsSearch isEqual:?])
     {
@@ -477,7 +477,7 @@
   }
 
   placeDisplay = self->_placeDisplay;
-  if (placeDisplay | *(v4 + 6))
+  if (placeDisplay | *(equalCopy + 6))
   {
     if (![(MSPPlaceDisplay *)placeDisplay isEqual:?])
     {
@@ -486,7 +486,7 @@
   }
 
   transitLineItem = self->_transitLineItem;
-  if (transitLineItem | *(v4 + 10))
+  if (transitLineItem | *(equalCopy + 10))
   {
     if (![(MSPTransitStorageLineItem *)transitLineItem isEqual:?])
     {
@@ -495,7 +495,7 @@
   }
 
   ridesharingTrip = self->_ridesharingTrip;
-  if (ridesharingTrip | *(v4 + 8))
+  if (ridesharingTrip | *(equalCopy + 8))
   {
     if (![(MSPRidesharingTrip *)ridesharingTrip isEqual:?])
     {
@@ -503,20 +503,20 @@
     }
   }
 
-  v14 = (*(v4 + 92) & 8) == 0;
+  v14 = (*(equalCopy + 92) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 92) & 8) != 0)
+    if ((*(equalCopy + 92) & 8) != 0)
     {
       if (self->_tracksRAPRecordingOnly)
       {
-        if ((*(v4 + 88) & 1) == 0)
+        if ((*(equalCopy + 88) & 1) == 0)
         {
           goto LABEL_32;
         }
       }
 
-      else if (*(v4 + 88))
+      else if (*(equalCopy + 88))
       {
         goto LABEL_32;
       }
@@ -632,18 +632,18 @@ LABEL_33:
   return v3 ^ v21 ^ v6 ^ v10 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((v4[23] & 4) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[23] & 4) != 0)
   {
-    self->_searchType = v4[18];
+    self->_searchType = fromCopy[18];
     *&self->_has |= 4u;
   }
 
-  v17 = v4;
-  if (*(v4 + 5))
+  v17 = fromCopy;
+  if (*(fromCopy + 5))
   {
     [(MSPHistoryEntryStorage *)self setIdentifier:?];
     v5 = v17;

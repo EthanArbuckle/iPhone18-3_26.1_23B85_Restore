@@ -1,9 +1,9 @@
 @interface Collation
 - (Collation)init;
 - (__CFDictionary)package;
-- (id)getValidPaths:(id)a3 forLabels:(id)a4;
-- (id)initForUser:(unsigned int)a3;
-- (id)mountPointOfBundleID:(id)a3;
+- (id)getValidPaths:(id)paths forLabels:(id)labels;
+- (id)initForUser:(unsigned int)user;
+- (id)mountPointOfBundleID:(id)d;
 - (void)package;
 @end
 
@@ -16,7 +16,7 @@
   return [(Collation *)self initForUser:v3];
 }
 
-- (id)initForUser:(unsigned int)a3
+- (id)initForUser:(unsigned int)user
 {
   v26.receiver = self;
   v26.super_class = Collation;
@@ -37,34 +37,34 @@ LABEL_6:
   v6 = collation_interface_request_endpoint_for_user();
   [(Collation *)v3 setEndpoint:v6];
 
-  v7 = [(Collation *)v3 endpoint];
+  endpoint = [(Collation *)v3 endpoint];
 
-  if (v7)
+  if (endpoint)
   {
-    v8 = [(Collation *)v3 endpoint];
-    v9 = xpc_connection_create_from_endpoint(v8);
+    endpoint2 = [(Collation *)v3 endpoint];
+    v9 = xpc_connection_create_from_endpoint(endpoint2);
     [(Collation *)v3 setClient_con:v9];
 
-    v10 = [(Collation *)v3 client_con];
+    client_con = [(Collation *)v3 client_con];
     handler[0] = MEMORY[0x29EDCA5F8];
     handler[1] = 3221225472;
     handler[2] = __25__Collation_initForUser___block_invoke;
     handler[3] = &unk_29EEA7910;
     v11 = v3;
     v25 = v11;
-    xpc_connection_set_event_handler(v10, handler);
+    xpc_connection_set_event_handler(client_con, handler);
 
-    v12 = [(Collation *)v11 client_con];
+    client_con2 = [(Collation *)v11 client_con];
     v13 = [(Collation *)v11 dq];
-    xpc_connection_set_target_queue(v12, v13);
+    xpc_connection_set_target_queue(client_con2, v13);
 
-    v14 = [(Collation *)v11 client_con];
-    xpc_connection_activate(v14);
+    client_con3 = [(Collation *)v11 client_con];
+    xpc_connection_activate(client_con3);
 
     empty = xpc_dictionary_create_empty();
     xpc_dictionary_set_string(empty, "command", "package");
-    v16 = [(Collation *)v11 client_con];
-    v17 = xpc_connection_send_message_with_reply_sync(v16, empty);
+    client_con4 = [(Collation *)v11 client_con];
+    v17 = xpc_connection_send_message_with_reply_sync(client_con4, empty);
 
     if (v17)
     {
@@ -130,8 +130,8 @@ void __25__Collation_initForUser___block_invoke(uint64_t a1, void *a2)
 - (__CFDictionary)package
 {
   v9 = *MEMORY[0x29EDCA608];
-  v2 = [(Collation *)self ccore];
-  v3 = [v2 packToXPC];
+  ccore = [(Collation *)self ccore];
+  packToXPC = [ccore packToXPC];
   v4 = _CFXPCCreateCFObjectFromXPCObject();
 
   if (!v4)
@@ -143,21 +143,21 @@ void __25__Collation_initForUser___block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (id)mountPointOfBundleID:(id)a3
+- (id)mountPointOfBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(Collation *)self ccore];
-  v6 = [v5 mountPointOfBundleID:v4];
+  dCopy = d;
+  ccore = [(Collation *)self ccore];
+  v6 = [ccore mountPointOfBundleID:dCopy];
 
   return v6;
 }
 
-- (id)getValidPaths:(id)a3 forLabels:(id)a4
+- (id)getValidPaths:(id)paths forLabels:(id)labels
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(Collation *)self ccore];
-  v9 = [v8 getValidPaths:v7 forBundleID:v6];
+  labelsCopy = labels;
+  pathsCopy = paths;
+  ccore = [(Collation *)self ccore];
+  v9 = [ccore getValidPaths:pathsCopy forBundleID:labelsCopy];
 
   return v9;
 }
@@ -180,7 +180,7 @@ void __25__Collation_initForUser___block_invoke_cold_2()
 
 - (void)package
 {
-  *a1 = 0;
+  *self = 0;
   a2[3] = 0u;
   a2[4] = 0u;
   a2[1] = 0u;
@@ -188,7 +188,7 @@ void __25__Collation_initForUser___block_invoke_cold_2()
   *a2 = 0u;
   os_log_type_enabled(MEMORY[0x29EDCA988], OS_LOG_TYPE_ERROR);
   _os_log_send_and_compose_impl();
-  v3 = *a1;
+  v3 = *self;
   _os_crash_msg();
   __break(1u);
 }

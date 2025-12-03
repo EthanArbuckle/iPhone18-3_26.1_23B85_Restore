@@ -6,29 +6,29 @@
 - (BOOL)requireInexpensiveNetworking;
 - (BOOL)shouldRegisterForPeriodicSyncActivities;
 - (BOOL)shouldRestrictSyncInSleepFocus;
-- (HDCloudSyncPlatformConfiguration)initWithPrimaryProfile:(id)a3 behavior:(id)a4;
+- (HDCloudSyncPlatformConfiguration)initWithPrimaryProfile:(id)profile behavior:(id)behavior;
 - (double)cellularSyncThreshold;
 - (double)liteSyncThreshold;
-- (int64_t)_baseIntervalForAppleWatchAllowingLiteSync:(BOOL)a3 tinker:(BOOL)a4;
-- (int64_t)_baseIntervalForiPhoneAllowingLiteSync:(BOOL)a3;
+- (int64_t)_baseIntervalForAppleWatchAllowingLiteSync:(BOOL)sync tinker:(BOOL)tinker;
+- (int64_t)_baseIntervalForiPhoneAllowingLiteSync:(BOOL)sync;
 - (int64_t)baseIntervalForPeriodicSyncActivity;
 - (int64_t)priorityForPeriodicSyncTask;
 @end
 
 @implementation HDCloudSyncPlatformConfiguration
 
-- (HDCloudSyncPlatformConfiguration)initWithPrimaryProfile:(id)a3 behavior:(id)a4
+- (HDCloudSyncPlatformConfiguration)initWithPrimaryProfile:(id)profile behavior:(id)behavior
 {
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  behaviorCopy = behavior;
   v11.receiver = self;
   v11.super_class = HDCloudSyncPlatformConfiguration;
   v8 = [(HDCloudSyncPlatformConfiguration *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_profile, v6);
-    objc_storeStrong(&v9->_behavior, a4);
+    objc_storeWeak(&v8->_profile, profileCopy);
+    objc_storeStrong(&v9->_behavior, behavior);
     v9->_lock._os_unfair_lock_opaque = 0;
     v9->_allowLiteSync = 0;
   }
@@ -63,14 +63,14 @@
 
 - (int64_t)baseIntervalForPeriodicSyncActivity
 {
-  v3 = [(HDCloudSyncPlatformConfiguration *)self isConfiguredForLiteSync];
-  v4 = [(_HKBehavior *)self->_behavior isAppleWatch];
+  isConfiguredForLiteSync = [(HDCloudSyncPlatformConfiguration *)self isConfiguredForLiteSync];
+  isAppleWatch = [(_HKBehavior *)self->_behavior isAppleWatch];
   behavior = self->_behavior;
-  if (v4)
+  if (isAppleWatch)
   {
-    v6 = [(_HKBehavior *)behavior tinkerModeEnabled];
+    tinkerModeEnabled = [(_HKBehavior *)behavior tinkerModeEnabled];
 
-    return [(HDCloudSyncPlatformConfiguration *)self _baseIntervalForAppleWatchAllowingLiteSync:v3 tinker:v6];
+    return [(HDCloudSyncPlatformConfiguration *)self _baseIntervalForAppleWatchAllowingLiteSync:isConfiguredForLiteSync tinker:tinkerModeEnabled];
   }
 
   else if ([(_HKBehavior *)behavior isRealityDevice])
@@ -82,7 +82,7 @@
   else
   {
 
-    return [(HDCloudSyncPlatformConfiguration *)self _baseIntervalForiPhoneAllowingLiteSync:v3];
+    return [(HDCloudSyncPlatformConfiguration *)self _baseIntervalForiPhoneAllowingLiteSync:isConfiguredForLiteSync];
   }
 }
 
@@ -98,16 +98,16 @@
   return [(_HKBehavior *)behavior tinkerModeEnabled];
 }
 
-- (int64_t)_baseIntervalForAppleWatchAllowingLiteSync:(BOOL)a3 tinker:(BOOL)a4
+- (int64_t)_baseIntervalForAppleWatchAllowingLiteSync:(BOOL)sync tinker:(BOOL)tinker
 {
   v4 = MEMORY[0x277D862B8];
   v5 = MEMORY[0x277D862A0];
-  if (!a3)
+  if (!sync)
   {
     v5 = MEMORY[0x277D86298];
   }
 
-  if (!a4)
+  if (!tinker)
   {
     v4 = v5;
   }
@@ -115,10 +115,10 @@
   return *v4;
 }
 
-- (int64_t)_baseIntervalForiPhoneAllowingLiteSync:(BOOL)a3
+- (int64_t)_baseIntervalForiPhoneAllowingLiteSync:(BOOL)sync
 {
   v3 = MEMORY[0x277D862B0];
-  if (!a3)
+  if (!sync)
   {
     v3 = MEMORY[0x277D862B8];
   }
@@ -134,8 +134,8 @@
     goto LABEL_10;
   }
 
-  v3 = [(_HKBehavior *)self->_behavior tinkerModeEnabled];
-  if (v3)
+  tinkerModeEnabled = [(_HKBehavior *)self->_behavior tinkerModeEnabled];
+  if (tinkerModeEnabled)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
     v14 = 0;
@@ -151,7 +151,7 @@
 LABEL_9:
 
 LABEL_10:
-        LOBYTE(v3) = 1;
+        LOBYTE(tinkerModeEnabled) = 1;
         goto LABEL_11;
       }
 
@@ -171,7 +171,7 @@ LABEL_10:
       {
         if (v10 & 1 | ((v5 & 1) == 0))
         {
-          LOBYTE(v3) = 0;
+          LOBYTE(tinkerModeEnabled) = 0;
           goto LABEL_11;
         }
 
@@ -196,14 +196,14 @@ LABEL_10:
 
 LABEL_11:
   v11 = *MEMORY[0x277D85DE8];
-  return v3;
+  return tinkerModeEnabled;
 }
 
 - (double)cellularSyncThreshold
 {
-  v2 = [(_HKBehavior *)self->_behavior tinkerModeEnabled];
+  tinkerModeEnabled = [(_HKBehavior *)self->_behavior tinkerModeEnabled];
   result = 259200.0;
-  if (v2)
+  if (tinkerModeEnabled)
   {
     return 172800.0;
   }
@@ -218,9 +218,9 @@ LABEL_11:
     return 3600.0;
   }
 
-  v3 = [(_HKBehavior *)self->_behavior isRealityDevice];
+  isRealityDevice = [(_HKBehavior *)self->_behavior isRealityDevice];
   result = 1800.0;
-  if (v3)
+  if (isRealityDevice)
   {
     return 14400.0;
   }
@@ -235,8 +235,8 @@ LABEL_11:
   v31 = &v30;
   v32 = 0x2020000000;
   allowLiteSync = self->_allowLiteSync;
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 integerForKey:*MEMORY[0x277CCE2B0]];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults integerForKey:*MEMORY[0x277CCE2B0]];
 
   if (v4 != 2)
   {
@@ -256,14 +256,14 @@ LABEL_11:
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v9 = [WeakRetained deviceContextManager];
+    deviceContextManager = [WeakRetained deviceContextManager];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __59__HDCloudSyncPlatformConfiguration_isConfiguredForLiteSync__block_invoke;
     v28[3] = &unk_27861D3E0;
     v28[4] = &v30;
     v29 = 0;
-    v10 = [v9 enumerateAllEntriesWithError:&v29 handler:v28];
+    v10 = [deviceContextManager enumerateAllEntriesWithError:&v29 handler:v28];
     v11 = v29;
 
     if ((v10 & 1) == 0)
@@ -273,7 +273,7 @@ LABEL_11:
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v35 = self;
+        selfCopy3 = self;
         v36 = 2114;
         v37 = v11;
         _os_log_impl(&dword_228986000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: Failed to query database for device context objects %{public}@.", buf, 0x16u);
@@ -293,7 +293,7 @@ LABEL_11:
     {
       if (v17)
       {
-        v20 = [v17 BOOLValue];
+        bOOLValue = [v17 BOOLValue];
         goto LABEL_18;
       }
     }
@@ -305,18 +305,18 @@ LABEL_11:
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v35 = self;
+        selfCopy3 = self;
         v36 = 2114;
         v37 = v18;
         _os_log_error_impl(&dword_228986000, v19, OS_LOG_TYPE_ERROR, "%{public}@: Could not read lite synced on watch key %{public}@.", buf, 0x16u);
       }
     }
 
-    v20 = 0;
+    bOOLValue = 0;
 LABEL_18:
-    if ((v31[3] & 1) != 0 || ([(_HKBehavior *)self->_behavior isAppleWatch]& v20) == 1)
+    if ((v31[3] & 1) != 0 || ([(_HKBehavior *)self->_behavior isAppleWatch]& bOOLValue) == 1)
     {
-      if (v20 & 1 | (([(_HKBehavior *)self->_behavior isAppleWatch]& 1) == 0))
+      if (bOOLValue & 1 | (([(_HKBehavior *)self->_behavior isAppleWatch]& 1) == 0))
       {
         v6 = 1;
       }
@@ -334,7 +334,7 @@ LABEL_18:
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
           {
             *buf = 138543618;
-            v35 = self;
+            selfCopy3 = self;
             v36 = 2114;
             v37 = v22;
             _os_log_error_impl(&dword_228986000, v23, OS_LOG_TYPE_ERROR, "%{public}@: Failed to set lite synced on watch flag %{public}@.", buf, 0x16u);
@@ -390,24 +390,24 @@ uint64_t __59__HDCloudSyncPlatformConfiguration_isConfiguredForLiteSync__block_i
 
 - (BOOL)shouldRestrictSyncInSleepFocus
 {
-  v3 = [(_HKBehavior *)self->_behavior isAppleWatch];
-  if (v3)
+  isAppleWatch = [(_HKBehavior *)self->_behavior isAppleWatch];
+  if (isAppleWatch)
   {
-    LOBYTE(v3) = ([(_HKBehavior *)self->_behavior tinkerModeEnabled]& 1) == 0 && self->_isSleepFocusOn != 0;
+    LOBYTE(isAppleWatch) = ([(_HKBehavior *)self->_behavior tinkerModeEnabled]& 1) == 0 && self->_isSleepFocusOn != 0;
   }
 
-  return v3;
+  return isAppleWatch;
 }
 
 - (BOOL)participateInCoordinatedSync
 {
-  v3 = [(_HKBehavior *)self->_behavior isAppleWatch];
-  if (v3)
+  isAppleWatch = [(_HKBehavior *)self->_behavior isAppleWatch];
+  if (isAppleWatch)
   {
-    LOBYTE(v3) = [(_HKBehavior *)self->_behavior tinkerModeEnabled]^ 1;
+    LOBYTE(isAppleWatch) = [(_HKBehavior *)self->_behavior tinkerModeEnabled]^ 1;
   }
 
-  return v3;
+  return isAppleWatch;
 }
 
 - (BOOL)_isSleepFocusOn
@@ -422,9 +422,9 @@ uint64_t __59__HDCloudSyncPlatformConfiguration_isConfiguredForLiteSync__block_i
   else
   {
     v6 = objc_alloc_init(HDBiomeInterface);
-    v7 = [(HDBiomeInterface *)v6 sleepFocusOn];
+    sleepFocusOn = [(HDBiomeInterface *)v6 sleepFocusOn];
 
-    return v7;
+    return sleepFocusOn;
   }
 }
 

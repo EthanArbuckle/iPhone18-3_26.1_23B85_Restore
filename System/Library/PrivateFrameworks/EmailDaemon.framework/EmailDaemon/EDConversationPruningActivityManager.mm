@@ -1,6 +1,6 @@
 @interface EDConversationPruningActivityManager
 + (OS_os_log)log;
-+ (void)scheduleWithConversationManager:(id)a3;
++ (void)scheduleWithConversationManager:(id)manager;
 @end
 
 @implementation EDConversationPruningActivityManager
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __43__EDConversationPruningActivityManager_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_31 != -1)
   {
     dispatch_once(&log_onceToken_31, block);
@@ -30,9 +30,9 @@ void __43__EDConversationPruningActivityManager_log__block_invoke(uint64_t a1)
   log_log_31 = v1;
 }
 
-+ (void)scheduleWithConversationManager:(id)a3
++ (void)scheduleWithConversationManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v4 = +[EDConversationPruningActivityManager log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -44,7 +44,7 @@ void __43__EDConversationPruningActivityManager_log__block_invoke(uint64_t a1)
   aBlock[1] = 3221225472;
   aBlock[2] = __72__EDConversationPruningActivityManager_scheduleWithConversationManager___block_invoke_2;
   aBlock[3] = &unk_1E8251BE0;
-  v5 = v3;
+  v5 = managerCopy;
   v8 = v5;
   v6 = _Block_copy(aBlock);
   ef_xpc_activity_register();

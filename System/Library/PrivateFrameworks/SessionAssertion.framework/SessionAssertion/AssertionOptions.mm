@@ -1,13 +1,13 @@
 @interface AssertionOptions
 - (_TtC16SessionAssertion16AssertionOptions)init;
-- (_TtC16SessionAssertion16AssertionOptions)initWithInvalidateOnSessionRequest:(BOOL)a3;
+- (_TtC16SessionAssertion16AssertionOptions)initWithInvalidateOnSessionRequest:(BOOL)request;
 @end
 
 @implementation AssertionOptions
 
-- (_TtC16SessionAssertion16AssertionOptions)initWithInvalidateOnSessionRequest:(BOOL)a3
+- (_TtC16SessionAssertion16AssertionOptions)initWithInvalidateOnSessionRequest:(BOOL)request
 {
-  *(&self->super.isa + OBJC_IVAR____TtC16SessionAssertion16AssertionOptions_invalidateOnSessionRequest) = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC16SessionAssertion16AssertionOptions_invalidateOnSessionRequest) = request;
   v4.receiver = self;
   v4.super_class = type metadata accessor for AssertionOptions();
   return [(AssertionOptions *)&v4 init];

@@ -1,22 +1,22 @@
 @interface SPUILegibilitySceneSettings
 - (_UILegibilitySettings)legibilitySettings;
-- (id)keyDescriptionForSetting:(int64_t)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(int64_t)a5;
+- (id)keyDescriptionForSetting:(int64_t)setting;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(int64_t)setting;
 @end
 
 @implementation SPUILegibilitySceneSettings
 
 - (_UILegibilitySettings)legibilitySettings
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2000];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2000];
 
   return v3;
 }
 
-- (id)keyDescriptionForSetting:(int64_t)a3
+- (id)keyDescriptionForSetting:(int64_t)setting
 {
-  if (a3 == 2000)
+  if (setting == 2000)
   {
     v5 = @"legibilitySettings";
   }
@@ -33,9 +33,9 @@
   return v5;
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(int64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(int64_t)setting
 {
-  if (a5 == 2000)
+  if (setting == 2000)
   {
     v7 = 0;
   }
@@ -46,7 +46,7 @@
     v11 = v6;
     v9.receiver = self;
     v9.super_class = SPUILegibilitySceneSettings;
-    v7 = [(FBSSettings *)&v9 valueDescriptionForFlag:a3 object:a4 ofSetting:?];
+    v7 = [(FBSSettings *)&v9 valueDescriptionForFlag:flag object:object ofSetting:?];
   }
 
   return v7;

@@ -1,20 +1,20 @@
 @interface CAMChromeViewController
 - (CAMChromeViewController)init;
-- (CAMChromeViewController)initWithConfigurator:(id)a3;
+- (CAMChromeViewController)initWithConfigurator:(id)configurator;
 - (CGRect)shutterButtonFrame;
 - (UIView)imageWellSourceView;
 - (_TtC8CameraUI17ChromeSwiftUIView)view;
 - (double)imageWellCornerRadius;
-- (void)observeShutterButtonFrameWithHandler:(id)a3;
-- (void)setView:(id)a3;
+- (void)observeShutterButtonFrameWithHandler:(id)handler;
+- (void)setView:(id)view;
 @end
 
 @implementation CAMChromeViewController
 
-- (CAMChromeViewController)initWithConfigurator:(id)a3
+- (CAMChromeViewController)initWithConfigurator:(id)configurator
 {
   *(&self->super.isa + OBJC_IVAR___CAMChromeViewController____lazy_storage___view) = 0;
-  *(&self->super.isa + OBJC_IVAR___CAMChromeViewController_viewModel) = *(a3 + OBJC_IVAR___CAMChromeConfigurator_viewModel);
+  *(&self->super.isa + OBJC_IVAR___CAMChromeViewController_viewModel) = *(configurator + OBJC_IVAR___CAMChromeConfigurator_viewModel);
   v4.receiver = self;
   v4.super_class = type metadata accessor for ChromeViewController();
   sub_1A3A2EA60();
@@ -38,22 +38,22 @@
 
 - (_TtC8CameraUI17ChromeSwiftUIView)view
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A3A1A860();
 
   return v3;
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
   v4 = *(&self->super.isa + OBJC_IVAR___CAMChromeViewController____lazy_storage___view);
-  *(&self->super.isa + OBJC_IVAR___CAMChromeViewController____lazy_storage___view) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___CAMChromeViewController____lazy_storage___view) = view;
+  viewCopy = view;
 }
 
 - (UIView)imageWellSourceView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A3A1AC04();
 
   return v3;
@@ -61,7 +61,7 @@
 
 - (CGRect)shutterButtonFrame
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A3A1AD60();
   v5 = v4;
   v7 = v6;
@@ -78,11 +78,11 @@
   return result;
 }
 
-- (void)observeShutterButtonFrameWithHandler:(id)a3
+- (void)observeShutterButtonFrameWithHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   *(swift_allocObject() + 16) = v4;
-  v5 = self;
+  selfCopy = self;
   sub_1A3A2F060();
 }
 

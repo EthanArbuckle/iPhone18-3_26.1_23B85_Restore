@@ -1,24 +1,24 @@
 @interface EKEventReportJunkView
-- (EKEventReportJunkView)initWithViewController:(id)a3;
+- (EKEventReportJunkView)initWithViewController:(id)controller;
 - (void)reportButtonTapped;
 - (void)updateConstraints;
 @end
 
 @implementation EKEventReportJunkView
 
-- (EKEventReportJunkView)initWithViewController:(id)a3
+- (EKEventReportJunkView)initWithViewController:(id)controller
 {
   v90[12] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  controllerCopy = controller;
   v89.receiver = self;
   v89.super_class = EKEventReportJunkView;
   v6 = [(EKEventReportJunkView *)&v89 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_controller, a3);
-    v8 = [MEMORY[0x1E69DC888] clearColor];
-    [(EKEventReportJunkView *)v7 setBackgroundColor:v8];
+    objc_storeStrong(&v6->_controller, controller);
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(EKEventReportJunkView *)v7 setBackgroundColor:clearColor];
 
     v9 = objc_alloc_init(MEMORY[0x1E69DD250]);
     containerView = v7->_containerView;
@@ -33,11 +33,11 @@
 
     [(UIVisualEffectView *)v7->_effectView setTranslatesAutoresizingMaskIntoConstraints:0];
     v13 = EKUITableViewCellCornerRadius();
-    v14 = [(UIVisualEffectView *)v7->_effectView layer];
-    [v14 setCornerRadius:v13];
+    layer = [(UIVisualEffectView *)v7->_effectView layer];
+    [layer setCornerRadius:v13];
 
-    v15 = [(UIVisualEffectView *)v7->_effectView layer];
-    [v15 setMasksToBounds:1];
+    layer2 = [(UIVisualEffectView *)v7->_effectView layer];
+    [layer2 setMasksToBounds:1];
 
     [(UIView *)v7->_containerView addSubview:v7->_effectView];
     EKWeakLinkClass();
@@ -54,8 +54,8 @@
 
     [(SGBannerProtocol *)v19 setAccessoryType:1];
     [(SGBannerProtocol *)v19 setActionButtonType:0];
-    v22 = [MEMORY[0x1E69DC888] clearColor];
-    [(SGBannerProtocol *)v19 setBackgroundColor:v22];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(SGBannerProtocol *)v19 setBackgroundColor:clearColor2];
 
     LODWORD(v23) = 1148846080;
     [(SGBannerProtocol *)v19 setContentCompressionResistancePriority:1 forAxis:v23];
@@ -77,85 +77,85 @@
     v85[1] = 3221225472;
     v85[2] = __48__EKEventReportJunkView_initWithViewController___block_invoke_2;
     v85[3] = &unk_1E843F458;
-    v86 = v5;
+    v86 = controllerCopy;
     v79 = [v16 actionWithTitle:&stru_1F4EF6790 handler:v85];
     [(SGBannerProtocol *)v19 setDismissAction:v79];
     [(UIView *)v7->_containerView addSubview:v19];
-    v27 = [(UIView *)v7->_containerView leadingAnchor];
-    v28 = [(EKEventReportJunkView *)v26 layoutMarginsGuide];
-    v29 = [v28 leadingAnchor];
-    v30 = [v27 constraintEqualToAnchor:v29 constant:8.0];
+    leadingAnchor = [(UIView *)v7->_containerView leadingAnchor];
+    layoutMarginsGuide = [(EKEventReportJunkView *)v26 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v30 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:8.0];
     containerLeadingConstraint = v26->_containerLeadingConstraint;
     v26->_containerLeadingConstraint = v30;
 
-    v32 = [(UIView *)v7->_containerView trailingAnchor];
-    v33 = [(EKEventReportJunkView *)v26 layoutMarginsGuide];
-    v34 = [v33 trailingAnchor];
-    v35 = [v32 constraintEqualToAnchor:v34 constant:-8.0];
-    v84 = v5;
+    trailingAnchor = [(UIView *)v7->_containerView trailingAnchor];
+    layoutMarginsGuide2 = [(EKEventReportJunkView *)v26 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-8.0];
+    v84 = controllerCopy;
     containerTrailingConstraint = v26->_containerTrailingConstraint;
     v26->_containerTrailingConstraint = v35;
 
-    v37 = [(UIView *)v7->_containerView widthAnchor];
-    v38 = [v37 constraintLessThanOrEqualToConstant:400.0];
+    widthAnchor = [(UIView *)v7->_containerView widthAnchor];
+    v38 = [widthAnchor constraintLessThanOrEqualToConstant:400.0];
     containerWidthConstraint = v26->_containerWidthConstraint;
     v26->_containerWidthConstraint = v38;
 
-    v40 = [(UIView *)v7->_containerView centerXAnchor];
-    v41 = [(EKEventReportJunkView *)v26 centerXAnchor];
-    v42 = [v40 constraintEqualToAnchor:v41];
+    centerXAnchor = [(UIView *)v7->_containerView centerXAnchor];
+    centerXAnchor2 = [(EKEventReportJunkView *)v26 centerXAnchor];
+    v42 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     centerXConstraint = v26->_centerXConstraint;
     v26->_centerXConstraint = v42;
 
     v65 = MEMORY[0x1E696ACD8];
     v90[0] = v26->_containerLeadingConstraint;
     v90[1] = v26->_containerTrailingConstraint;
-    v77 = [(UIView *)v7->_containerView topAnchor];
-    v78 = [(EKEventReportJunkView *)v26 layoutMarginsGuide];
-    v76 = [v78 topAnchor];
-    v75 = [v77 constraintEqualToAnchor:v76];
+    topAnchor = [(UIView *)v7->_containerView topAnchor];
+    layoutMarginsGuide3 = [(EKEventReportJunkView *)v26 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide3 topAnchor];
+    v75 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v90[2] = v75;
-    v73 = [(UIView *)v7->_containerView bottomAnchor];
-    v74 = [(EKEventReportJunkView *)v26 layoutMarginsGuide];
-    v72 = [v74 bottomAnchor];
-    v71 = [v73 constraintEqualToAnchor:v72];
+    bottomAnchor = [(UIView *)v7->_containerView bottomAnchor];
+    layoutMarginsGuide4 = [(EKEventReportJunkView *)v26 layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide4 bottomAnchor];
+    v71 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v90[3] = v71;
-    v70 = [(UIVisualEffectView *)v7->_effectView leadingAnchor];
-    v69 = [(UIView *)v7->_containerView leadingAnchor];
-    v68 = [v70 constraintEqualToAnchor:v69];
+    leadingAnchor3 = [(UIVisualEffectView *)v7->_effectView leadingAnchor];
+    leadingAnchor4 = [(UIView *)v7->_containerView leadingAnchor];
+    v68 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v90[4] = v68;
-    v67 = [(UIVisualEffectView *)v7->_effectView trailingAnchor];
-    v66 = [(UIView *)v7->_containerView trailingAnchor];
-    v64 = [v67 constraintEqualToAnchor:v66];
+    trailingAnchor3 = [(UIVisualEffectView *)v7->_effectView trailingAnchor];
+    trailingAnchor4 = [(UIView *)v7->_containerView trailingAnchor];
+    v64 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v90[5] = v64;
-    v63 = [(UIVisualEffectView *)v7->_effectView topAnchor];
-    v62 = [(UIView *)v7->_containerView topAnchor];
-    v61 = [v63 constraintEqualToAnchor:v62];
+    topAnchor3 = [(UIVisualEffectView *)v7->_effectView topAnchor];
+    topAnchor4 = [(UIView *)v7->_containerView topAnchor];
+    v61 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v90[6] = v61;
-    v60 = [(UIVisualEffectView *)v7->_effectView bottomAnchor];
-    v59 = [(UIView *)v7->_containerView bottomAnchor];
-    v58 = [v60 constraintEqualToAnchor:v59];
+    bottomAnchor3 = [(UIVisualEffectView *)v7->_effectView bottomAnchor];
+    bottomAnchor4 = [(UIView *)v7->_containerView bottomAnchor];
+    v58 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v90[7] = v58;
-    v57 = [(SGBannerProtocol *)v7->_bannerView leadingAnchor];
-    v56 = [(UIView *)v7->_containerView leadingAnchor];
-    v55 = [v57 constraintEqualToAnchor:v56];
+    leadingAnchor5 = [(SGBannerProtocol *)v7->_bannerView leadingAnchor];
+    leadingAnchor6 = [(UIView *)v7->_containerView leadingAnchor];
+    v55 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v90[8] = v55;
-    v54 = [(SGBannerProtocol *)v7->_bannerView trailingAnchor];
-    v44 = [(UIView *)v7->_containerView trailingAnchor];
-    v45 = [v54 constraintEqualToAnchor:v44];
+    trailingAnchor5 = [(SGBannerProtocol *)v7->_bannerView trailingAnchor];
+    trailingAnchor6 = [(UIView *)v7->_containerView trailingAnchor];
+    v45 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     v90[9] = v45;
-    v46 = [(SGBannerProtocol *)v7->_bannerView topAnchor];
-    v47 = [(UIView *)v7->_containerView topAnchor];
-    v48 = [v46 constraintEqualToAnchor:v47];
+    topAnchor5 = [(SGBannerProtocol *)v7->_bannerView topAnchor];
+    topAnchor6 = [(UIView *)v7->_containerView topAnchor];
+    v48 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
     v90[10] = v48;
-    v49 = [(SGBannerProtocol *)v7->_bannerView bottomAnchor];
-    v50 = [(UIView *)v7->_containerView bottomAnchor];
-    v51 = [v49 constraintEqualToAnchor:v50];
+    bottomAnchor5 = [(SGBannerProtocol *)v7->_bannerView bottomAnchor];
+    bottomAnchor6 = [(UIView *)v7->_containerView bottomAnchor];
+    v51 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
     v90[11] = v51;
     v52 = [MEMORY[0x1E695DEC8] arrayWithObjects:v90 count:12];
     [v65 activateConstraints:v52];
 
-    v5 = v84;
+    controllerCopy = v84;
   }
 
   return v7;
@@ -167,8 +167,8 @@
   v12.receiver = self;
   v12.super_class = EKEventReportJunkView;
   [(EKEventReportJunkView *)&v12 updateConstraints];
-  v3 = [(EKEventViewController *)self->_controller view];
-  [v3 frame];
+  view = [(EKEventViewController *)self->_controller view];
+  [view frame];
   v5 = v4;
 
   if (v5 > 400.0)
@@ -191,17 +191,17 @@
 
 - (void)reportButtonTapped
 {
-  v3 = [(EKEventReportJunkView *)self isLargeDayView];
-  v4 = [(EKEventViewController *)self->_controller event];
-  v5 = v4;
-  if (v3)
+  isLargeDayView = [(EKEventReportJunkView *)self isLargeDayView];
+  event = [(EKEventViewController *)self->_controller event];
+  v5 = event;
+  if (isLargeDayView)
   {
-    PresentJunkAlertDialogForEvent(v4, self->_controller);
+    PresentJunkAlertDialogForEvent(event, self->_controller);
   }
 
   else
   {
-    PresentJunkAlertControllerForEvent(v4, self->_bannerView, self->_controller, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24));
+    PresentJunkAlertControllerForEvent(event, self->_bannerView, self->_controller, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24));
   }
 }
 

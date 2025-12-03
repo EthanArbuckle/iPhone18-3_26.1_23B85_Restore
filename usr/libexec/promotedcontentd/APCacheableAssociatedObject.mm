@@ -1,33 +1,33 @@
 @interface APCacheableAssociatedObject
-- (APCacheableAssociatedObject)initWithCoder:(id)a3;
-- (APCacheableAssociatedObject)initWithMaster:(id)a3;
+- (APCacheableAssociatedObject)initWithCoder:(id)coder;
+- (APCacheableAssociatedObject)initWithMaster:(id)master;
 - (APCacheableMasterObject)masterObject;
 - (BOOL)save;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)remove;
 @end
 
 @implementation APCacheableAssociatedObject
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = APCacheableAssociatedObject;
-  v4 = a3;
-  [(APCacheableBaseObject *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(APCacheableBaseObject *)&v6 encodeWithCoder:coderCopy];
   v5 = [(APCacheableAssociatedObject *)self masterId:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"_master_id"];
+  [coderCopy encodeObject:v5 forKey:@"_master_id"];
 }
 
-- (APCacheableAssociatedObject)initWithCoder:(id)a3
+- (APCacheableAssociatedObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = APCacheableAssociatedObject;
-  v5 = [(APCacheableSynchronizedObject *)&v9 initWithCoder:v4];
+  v5 = [(APCacheableSynchronizedObject *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_master_id"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_master_id"];
     masterId = v5->_masterId;
     v5->_masterId = v6;
   }
@@ -35,22 +35,22 @@
   return v5;
 }
 
-- (APCacheableAssociatedObject)initWithMaster:(id)a3
+- (APCacheableAssociatedObject)initWithMaster:(id)master
 {
-  v4 = a3;
-  if (!v4)
+  masterCopy = master;
+  if (!masterCopy)
   {
     v5 = [NSString stringWithFormat:@"%@ master cannot be nil", objc_opt_class()];
     APSimulateCrash();
   }
 
-  v6 = [v4 persistentStore];
-  v7 = [(APCacheableObject *)self initInPersistentStore:v6];
+  persistentStore = [masterCopy persistentStore];
+  v7 = [(APCacheableObject *)self initInPersistentStore:persistentStore];
 
   if (v7)
   {
-    v8 = [v4 identifier];
-    v9 = [v8 copy];
+    identifier = [masterCopy identifier];
+    v9 = [identifier copy];
     masterId = v7->_masterId;
     v7->_masterId = v9;
 
@@ -65,26 +65,26 @@
   WeakRetained = objc_loadWeakRetained(&self->_masterObject);
   if (!WeakRetained)
   {
-    v4 = [(APCacheableAssociatedObject *)self masterId];
-    v5 = [v4 length];
+    masterId = [(APCacheableAssociatedObject *)self masterId];
+    v5 = [masterId length];
 
     if (v5)
     {
-      v6 = [(APCacheableAssociatedObject *)self masterId];
-      v7 = [(APCacheableObject *)self persistentStore];
-      WeakRetained = [(APCacheableObject *)APCacheableMasterObject findCacheableObjectForId:v6 inPersistentStore:v7];
+      masterId2 = [(APCacheableAssociatedObject *)self masterId];
+      persistentStore = [(APCacheableObject *)self persistentStore];
+      WeakRetained = [(APCacheableObject *)APCacheableMasterObject findCacheableObjectForId:masterId2 inPersistentStore:persistentStore];
 
       if (!WeakRetained)
       {
         v8 = APLogForCategory();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
         {
-          v9 = [(APCacheableAssociatedObject *)self masterId];
-          v10 = [(APCacheableBaseObject *)self identifier];
+          masterId3 = [(APCacheableAssociatedObject *)self masterId];
+          identifier = [(APCacheableBaseObject *)self identifier];
           v12 = 138478083;
-          v13 = v9;
+          v13 = masterId3;
           v14 = 2113;
-          v15 = v10;
+          v15 = identifier;
           _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Unable to reconstitute master object with id: '%{private}@' for associated object: '%{private}@'. Data consistency is broken.", &v12, 0x16u);
         }
       }
@@ -103,15 +103,15 @@
 
 - (BOOL)save
 {
-  v3 = [(APCacheableAssociatedObject *)self masterObject];
-  if (!v3)
+  masterObject = [(APCacheableAssociatedObject *)self masterObject];
+  if (!masterObject)
   {
     v4 = APLogForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      v5 = [(APCacheableBaseObject *)self identifier];
+      identifier = [(APCacheableBaseObject *)self identifier];
       v10 = 138477827;
-      v11 = v5;
+      v11 = identifier;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_ERROR, "Master object is not available while saving '%{private}@'.", &v10, 0xCu);
     }
 
@@ -122,11 +122,11 @@
   if (![(APCacheableAssociatedObject *)self isNewObject])
   {
     [(APCacheableSynchronizedObject *)self unlockObject];
-    [v3 touch];
+    [masterObject touch];
     goto LABEL_9;
   }
 
-  if (([v3 addAssociatedObject:self] & 1) == 0)
+  if (([masterObject addAssociatedObject:self] & 1) == 0)
   {
     [(APCacheableSynchronizedObject *)self unlockObject];
 LABEL_11:
@@ -134,13 +134,13 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  [v3 save];
+  [masterObject save];
   [(APCacheableAssociatedObject *)self setIsNewObject:0];
   [(APCacheableSynchronizedObject *)self unlockObject];
 LABEL_9:
-  v6 = [(APCacheableObject *)self persistentStore];
-  v7 = [(APCacheableObject *)self fileName];
-  [v6 setObject:self forKey:v7];
+  persistentStore = [(APCacheableObject *)self persistentStore];
+  fileName = [(APCacheableObject *)self fileName];
+  [persistentStore setObject:self forKey:fileName];
 
   v8 = 1;
 LABEL_12:
@@ -150,11 +150,11 @@ LABEL_12:
 
 - (void)remove
 {
-  v3 = [(APCacheableAssociatedObject *)self masterObject];
-  v4 = v3;
-  if (v3)
+  masterObject = [(APCacheableAssociatedObject *)self masterObject];
+  v4 = masterObject;
+  if (masterObject)
   {
-    [v3 removeAssociatedObject:self];
+    [masterObject removeAssociatedObject:self];
     [v4 save];
   }
 
@@ -163,16 +163,16 @@ LABEL_12:
     v5 = APLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [(APCacheableBaseObject *)self identifier];
+      identifier = [(APCacheableBaseObject *)self identifier];
       v9 = 138477827;
-      v10 = v6;
+      v10 = identifier;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Master object is not available while removing '%{private}@'.", &v9, 0xCu);
     }
   }
 
-  v7 = [(APCacheableObject *)self persistentStore];
-  v8 = [(APCacheableObject *)self fileName];
-  [v7 removeObjectForKey:v8];
+  persistentStore = [(APCacheableObject *)self persistentStore];
+  fileName = [(APCacheableObject *)self fileName];
+  [persistentStore removeObjectForKey:fileName];
 }
 
 @end

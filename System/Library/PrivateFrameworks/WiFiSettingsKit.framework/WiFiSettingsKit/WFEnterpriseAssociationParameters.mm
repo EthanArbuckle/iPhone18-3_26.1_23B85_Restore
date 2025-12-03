@@ -11,8 +11,8 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@ : %p", v5, self];
 
-  v7 = [(WFEnterpriseAssociationParameters *)self username];
-  if (v7)
+  username = [(WFEnterpriseAssociationParameters *)self username];
+  if (username)
   {
     v8 = @"<redacted>";
   }
@@ -24,8 +24,8 @@
 
   [v6 appendFormat:@" username: %@", v8];
 
-  v9 = [(WFEnterpriseAssociationParameters *)self password];
-  if (v9)
+  password = [(WFEnterpriseAssociationParameters *)self password];
+  if (password)
   {
     v10 = @"<redacted>";
   }
@@ -37,8 +37,8 @@
 
   [v6 appendFormat:@" password: %@", v10];
 
-  v11 = [(WFEnterpriseAssociationParameters *)self certificateChain];
-  if (v11)
+  certificateChain = [(WFEnterpriseAssociationParameters *)self certificateChain];
+  if (certificateChain)
   {
     v12 = @"<redacted>";
   }
@@ -50,8 +50,8 @@
 
   [v6 appendFormat:@" certificateChain: %@", v12];
 
-  v13 = [(WFEnterpriseAssociationParameters *)self eapTypes];
-  [v6 appendFormat:@" eapTypes: %@", v13];
+  eapTypes = [(WFEnterpriseAssociationParameters *)self eapTypes];
+  [v6 appendFormat:@" eapTypes: %@", eapTypes];
 
   [v6 appendString:@">"];
 

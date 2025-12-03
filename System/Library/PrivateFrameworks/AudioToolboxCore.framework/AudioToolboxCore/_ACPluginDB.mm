@@ -1,10 +1,10 @@
 @interface _ACPluginDB
 + (id)path;
-- (AudioComponentVector)postInit:(SEL)a3;
+- (AudioComponentVector)postInit:(SEL)init;
 - (_ACPluginDB)init;
-- (_ACPluginDB)initWithCoder:(id)a3;
+- (_ACPluginDB)initWithCoder:(id)coder;
 - (id).cxx_construct;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _ACPluginDB
@@ -25,7 +25,7 @@
   return self;
 }
 
-- (AudioComponentVector)postInit:(SEL)a3
+- (AudioComponentVector)postInit:(SEL)init
 {
   v56 = *MEMORY[0x1E69E9840];
   v7 = dispatch_queue_create("AudioComponentPluginScanner", 0);
@@ -83,8 +83,8 @@
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v17 = [(NSMutableDictionary *)self->mSearchDirectories allKeys];
-  v18 = [v17 countByEnumeratingWithState:&v42 objects:v48 count:16];
+  allKeys = [(NSMutableDictionary *)self->mSearchDirectories allKeys];
+  v18 = [allKeys countByEnumeratingWithState:&v42 objects:v48 count:16];
   if (v18)
   {
     v19 = *v43;
@@ -94,7 +94,7 @@
       {
         if (*v43 != v19)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(allKeys);
         }
 
         v21 = *(*(&v42 + 1) + 8 * i);
@@ -110,7 +110,7 @@
         }
       }
 
-      v18 = [v17 countByEnumeratingWithState:&v42 objects:v48 count:16];
+      v18 = [allKeys countByEnumeratingWithState:&v42 objects:v48 count:16];
     }
 
     while (v18);
@@ -179,22 +179,22 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt32:3 forKey:@"version"];
-  [v4 encodeObject:self->mSearchDirectories forKey:@"directories"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:3 forKey:@"version"];
+  [coderCopy encodeObject:self->mSearchDirectories forKey:@"directories"];
 }
 
-- (_ACPluginDB)initWithCoder:(id)a3
+- (_ACPluginDB)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 decodeInt32ForKey:@"version"] == 3)
+  coderCopy = coder;
+  if ([coderCopy decodeInt32ForKey:@"version"] == 3)
   {
     v5 = MEMORY[0x1E695DFD8];
     v6 = objc_opt_class();
     v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"directories"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"directories"];
     mSearchDirectories = self->mSearchDirectories;
     self->mSearchDirectories = v8;
   }
@@ -204,9 +204,9 @@
     self = [(_ACPluginDB *)self init];
   }
 
-  v10 = self;
+  selfCopy = self;
 
-  return v10;
+  return selfCopy;
 }
 
 - (_ACPluginDB)init

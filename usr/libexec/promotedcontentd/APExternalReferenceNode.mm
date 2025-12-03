@@ -1,41 +1,41 @@
 @interface APExternalReferenceNode
 - (APExpressionNodeProtocol)parent;
-- (APExternalReferenceNode)initWithIdentifier:(id)a3;
-- (BOOL)evaluateUsingLibrary:(id)a3 error:(id *)a4;
+- (APExternalReferenceNode)initWithIdentifier:(id)identifier;
+- (BOOL)evaluateUsingLibrary:(id)library error:(id *)error;
 @end
 
 @implementation APExternalReferenceNode
 
-- (APExternalReferenceNode)initWithIdentifier:(id)a3
+- (APExternalReferenceNode)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = APExternalReferenceNode;
   v6 = [(APExternalReferenceNode *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
   }
 
   return v7;
 }
 
-- (BOOL)evaluateUsingLibrary:(id)a3 error:(id *)a4
+- (BOOL)evaluateUsingLibrary:(id)library error:(id *)error
 {
-  v6 = a3;
-  v7 = [(APExternalReferenceNode *)self identifier];
-  v8 = [v6 referenceFromIdentifier:v7 error:a4];
+  libraryCopy = library;
+  identifier = [(APExternalReferenceNode *)self identifier];
+  v8 = [libraryCopy referenceFromIdentifier:identifier error:error];
 
   if (v8)
   {
-    v9 = [v8 evaluateUsingLibrary:v6 error:a4];
+    v9 = [v8 evaluateUsingLibrary:libraryCopy error:error];
   }
 
   else
   {
-    v10 = [(APExternalReferenceNode *)self identifier];
-    v11 = [NSString stringWithFormat:@"Unable to resolve node with identifier '%@'", v10];
+    identifier2 = [(APExternalReferenceNode *)self identifier];
+    v11 = [NSString stringWithFormat:@"Unable to resolve node with identifier '%@'", identifier2];
 
     v12 = APLogForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -45,12 +45,12 @@
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%{public}@", buf, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
       v15 = NSLocalizedDescriptionKey;
       v16 = v11;
       v13 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-      *a4 = [NSError errorWithDomain:@"com.apple.ap.targetingexpressions" code:-1131 userInfo:v13];
+      *error = [NSError errorWithDomain:@"com.apple.ap.targetingexpressions" code:-1131 userInfo:v13];
     }
 
     v9 = 0;

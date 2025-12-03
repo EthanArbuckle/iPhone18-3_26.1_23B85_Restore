@@ -1,17 +1,17 @@
 @interface RemotePairing
 - (_TtC15DSRemotePairing13RemotePairing)init;
-- (id)getPairedDevicesWithCompletion:(id)a3;
+- (id)getPairedDevicesWithCompletion:(id)completion;
 - (id)removeAllPairedDevices;
-- (void)removeSelectedDevices:(id)a3 invokingCompletionHandlerOn:(id)a4 completion:(id)a5;
+- (void)removeSelectedDevices:(id)devices invokingCompletionHandlerOn:(id)on completion:(id)completion;
 @end
 
 @implementation RemotePairing
 
-- (id)getPairedDevicesWithCompletion:(id)a3
+- (id)getPairedDevicesWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   _Block_copy(v4);
-  v5 = self;
+  selfCopy = self;
   sub_230CF4DDC(v4);
   _Block_release(v4);
   _Block_release(v4);
@@ -31,16 +31,16 @@
   return 0;
 }
 
-- (void)removeSelectedDevices:(id)a3 invokingCompletionHandlerOn:(id)a4 completion:(id)a5
+- (void)removeSelectedDevices:(id)devices invokingCompletionHandlerOn:(id)on completion:(id)completion
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(completion);
   sub_230CF5B40();
   v8 = sub_230CF5ED4();
   v9 = swift_allocObject();
   *(v9 + 16) = v7;
-  v10 = a4;
-  v11 = self;
-  _s15DSRemotePairing06RemoteB0C21removeSelectedDevices_27invokingCompletionHandlerOn10completionySaySo16DSPairedComputerCG_So17OS_dispatch_queueCSgys5Error_pSgctF_0(v8, a4, sub_230CF5B8C, v9);
+  onCopy = on;
+  selfCopy = self;
+  _s15DSRemotePairing06RemoteB0C21removeSelectedDevices_27invokingCompletionHandlerOn10completionySaySo16DSPairedComputerCG_So17OS_dispatch_queueCSgys5Error_pSgctF_0(v8, on, sub_230CF5B8C, v9);
 }
 
 - (_TtC15DSRemotePairing13RemotePairing)init

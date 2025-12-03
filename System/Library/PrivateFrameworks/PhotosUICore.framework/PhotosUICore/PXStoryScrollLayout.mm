@@ -1,10 +1,10 @@
 @interface PXStoryScrollLayout
 - (PXStoryScrollLayout)init;
-- (PXStoryScrollLayout)initWithModel:(id)a3;
+- (PXStoryScrollLayout)initWithModel:(id)model;
 - (int64_t)scrollPositionComparedToEnd;
-- (void)_invalidateContentScrollPositionWithReason:(unint64_t)a3;
+- (void)_invalidateContentScrollPositionWithReason:(unint64_t)reason;
 - (void)_invalidateContentView;
-- (void)_invalidatePostUpdateEntities:(unint64_t)a3;
+- (void)_invalidatePostUpdateEntities:(unint64_t)entities;
 - (void)_invalidateScrollDecelerationRate;
 - (void)_invalidateScrollViewZPosition;
 - (void)_invalidateWantsScrollView;
@@ -18,33 +18,33 @@
 - (void)contentLayoutDidChange;
 - (void)didUpdate;
 - (void)isScrollingDidChange;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)referenceSizeDidChange;
-- (void)scrollLayoutDidScroll:(id)a3;
-- (void)scrollLayoutWillBeginScrolling:(id)a3;
-- (void)scrollLayoutWillEndScrolling:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5 currentContentOffset:(CGPoint)a6;
+- (void)scrollLayoutDidScroll:(id)scroll;
+- (void)scrollLayoutWillBeginScrolling:(id)scrolling;
+- (void)scrollLayoutWillEndScrolling:(id)scrolling withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset currentContentOffset:(CGPoint)contentOffset;
 - (void)update;
 - (void)willUpdate;
 @end
 
 @implementation PXStoryScrollLayout
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v8 = a3;
-  if (ModelObservationContext_160593 == a5)
+  observableCopy = observable;
+  if (ModelObservationContext_160593 == context)
   {
-    if ((a4 & 0x10000) != 0)
+    if ((change & 0x10000) != 0)
     {
       [(PXStoryScrollLayout *)self _invalidateContentView];
     }
 
-    if ((a4 & 0x10004) != 0)
+    if ((change & 0x10004) != 0)
     {
-      v9 = [(PXStoryScrollLayout *)self model];
-      v10 = [v9 changesOrigins];
-      v11 = [(PXStoryScrollLayout *)self modelChangeOrigin];
-      v12 = [v10 containsObject:v11];
+      model = [(PXStoryScrollLayout *)self model];
+      changesOrigins = [model changesOrigins];
+      modelChangeOrigin = [(PXStoryScrollLayout *)self modelChangeOrigin];
+      v12 = [changesOrigins containsObject:modelChangeOrigin];
 
       if ((v12 & 1) == 0)
       {
@@ -52,26 +52,26 @@
       }
     }
 
-    if ((a4 & 0x2000) != 0)
+    if ((change & 0x2000) != 0)
     {
       [(PXStoryScrollLayout *)self _invalidateScrollDecelerationRate];
     }
 
-    if ((a4 & 0x8000000) != 0)
+    if ((change & 0x8000000) != 0)
     {
       [(PXStoryScrollLayout *)self _invalidateWantsScrollView];
     }
   }
 
-  else if (StyleManagerObservationContext_160594 == a5)
+  else if (StyleManagerObservationContext_160594 == context)
   {
-    if ((a4 & 0x100) != 0)
+    if ((change & 0x100) != 0)
     {
-      v13 = [(PXStoryScrollLayout *)self model];
-      v14 = [v13 styleManager];
-      v15 = [v14 changesOrigin];
+      model2 = [(PXStoryScrollLayout *)self model];
+      styleManager = [model2 styleManager];
+      changesOrigin = [styleManager changesOrigin];
 
-      if ((v15 & 4) != 0)
+      if ((changesOrigin & 4) != 0)
       {
         [(PXStoryScrollLayout *)self _invalidateContentScrollPositionWithReason:0];
       }
@@ -82,25 +82,25 @@
   {
     v16.receiver = self;
     v16.super_class = PXStoryScrollLayout;
-    [(PXStoryScrollLayout *)&v16 observable:v8 didChange:a4 context:a5];
+    [(PXStoryScrollLayout *)&v16 observable:observableCopy didChange:change context:context];
   }
 }
 
-- (void)scrollLayoutWillEndScrolling:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5 currentContentOffset:(CGPoint)a6
+- (void)scrollLayoutWillEndScrolling:(id)scrolling withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset currentContentOffset:(CGPoint)contentOffset
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = [(PXStoryScrollLayout *)self targetContentOffsetAdjuster:a3];
-  [v10 adjustScrollTargetContentOffset:a5 withVelocity:{x, y}];
+  y = velocity.y;
+  x = velocity.x;
+  v10 = [(PXStoryScrollLayout *)self targetContentOffsetAdjuster:scrolling];
+  [v10 adjustScrollTargetContentOffset:offset withVelocity:{x, y}];
 
   if ([(PXStoryScrollLayout *)self scrollBeganAtTimelineEnd]&& x > 0.0 && [(PXStoryScrollLayout *)self scrollPositionComparedToEnd]!= -1)
   {
-    v11 = [(PXStoryScrollLayout *)self model];
-    [v11 performChanges:&__block_literal_global_160597];
+    model = [(PXStoryScrollLayout *)self model];
+    [model performChanges:&__block_literal_global_160597];
   }
 }
 
-- (void)scrollLayoutDidScroll:(id)a3
+- (void)scrollLayoutDidScroll:(id)scroll
 {
   if ([(PXStoryScrollLayout *)self isScrolling])
   {
@@ -109,7 +109,7 @@
   }
 }
 
-- (void)scrollLayoutWillBeginScrolling:(id)a3
+- (void)scrollLayoutWillBeginScrolling:(id)scrolling
 {
   v4 = [(PXStoryScrollLayout *)self scrollPositionComparedToEnd]== 0;
 
@@ -118,14 +118,14 @@
 
 - (void)_updateModelScrollPosition
 {
-  v3 = [(PXStoryScrollLayout *)self contentLayout];
-  v4 = [(PXStoryScrollLayout *)self model];
+  contentLayout = [(PXStoryScrollLayout *)self contentLayout];
+  model = [(PXStoryScrollLayout *)self model];
   v7 = MEMORY[0x1E69E9820];
-  v8 = v3;
-  v9 = self;
-  v5 = v3;
+  v8 = contentLayout;
+  selfCopy = self;
+  v5 = contentLayout;
   v6 = [(PXStoryScrollLayout *)self modelChangeOrigin:v7];
-  [v4 performChanges:&v7 origin:v6];
+  [model performChanges:&v7 origin:v6];
 }
 
 void __49__PXStoryScrollLayout__updateModelScrollPosition__block_invoke(uint64_t a1, void *a2)
@@ -183,14 +183,14 @@ void __49__PXStoryScrollLayout__updateModelScrollPosition__block_invoke_2(uint64
 
 - (void)_updateModelIsScrolling
 {
-  v3 = [(PXStoryScrollLayout *)self model];
+  model = [(PXStoryScrollLayout *)self model];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __46__PXStoryScrollLayout__updateModelIsScrolling__block_invoke;
   v5[3] = &unk_1E77485B0;
   v5[4] = self;
-  v4 = [(PXStoryScrollLayout *)self modelChangeOrigin];
-  [v3 performChanges:v5 origin:v4];
+  modelChangeOrigin = [(PXStoryScrollLayout *)self modelChangeOrigin];
+  [model performChanges:v5 origin:modelChangeOrigin];
 }
 
 void __46__PXStoryScrollLayout__updateModelIsScrolling__block_invoke(uint64_t a1, void *a2)
@@ -200,25 +200,25 @@ void __46__PXStoryScrollLayout__updateModelIsScrolling__block_invoke(uint64_t a1
   [v3 setIsScrolling:{objc_msgSend(v2, "isScrolling")}];
 }
 
-- (void)_invalidatePostUpdateEntities:(unint64_t)a3
+- (void)_invalidatePostUpdateEntities:(unint64_t)entities
 {
   p_postUpdateFlags = &self->_postUpdateFlags;
   needsUpdate = self->_postUpdateFlags.needsUpdate;
-  if (!a3 || needsUpdate)
+  if (!entities || needsUpdate)
   {
     if (!self->_postUpdateFlags.isPerformingUpdate)
     {
 LABEL_11:
-      p_postUpdateFlags->needsUpdate = needsUpdate | a3;
+      p_postUpdateFlags->needsUpdate = needsUpdate | entities;
       return;
     }
 
 LABEL_10:
-    if ((self->_postUpdateFlags.updated & a3) != 0)
+    if ((self->_postUpdateFlags.updated & entities) != 0)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrollLayout _invalidatePostUpdateEntities:]"];
-      [v8 handleFailureInFunction:v9 file:@"PXStoryScrollLayout.m" lineNumber:254 description:{@"invalidating %lu after it already has been updated", a3}];
+      [currentHandler handleFailureInFunction:v9 file:@"PXStoryScrollLayout.m" lineNumber:254 description:{@"invalidating %lu after it already has been updated", entities}];
 
       abort();
     }
@@ -232,7 +232,7 @@ LABEL_10:
   }
 
   willPerformUpdate = self->_postUpdateFlags.willPerformUpdate;
-  p_postUpdateFlags->needsUpdate = a3;
+  p_postUpdateFlags->needsUpdate = entities;
   if (!willPerformUpdate && !self->_isUpdating)
   {
 
@@ -242,8 +242,8 @@ LABEL_10:
 
 - (void)_updateWantsScrollView
 {
-  v3 = [(PXStoryScrollLayout *)self model];
-  -[PXStoryScrollLayout setWantsScrollView:](self, "setWantsScrollView:", [v3 allowsScrolling]);
+  model = [(PXStoryScrollLayout *)self model];
+  -[PXStoryScrollLayout setWantsScrollView:](self, "setWantsScrollView:", [model allowsScrolling]);
 }
 
 - (void)_invalidateWantsScrollView
@@ -262,9 +262,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 0x10) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrollLayout _invalidateWantsScrollView]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryScrollLayout.m" lineNumber:246 description:{@"invalidating %lu after it already has been updated", 16}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryScrollLayout.m" lineNumber:246 description:{@"invalidating %lu after it already has been updated", 16}];
 
       abort();
     }
@@ -311,9 +311,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 8) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrollLayout _invalidateScrollViewZPosition]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryScrollLayout.m" lineNumber:238 description:{@"invalidating %lu after it already has been updated", 8}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryScrollLayout.m" lineNumber:238 description:{@"invalidating %lu after it already has been updated", 8}];
 
       abort();
     }
@@ -337,9 +337,9 @@ LABEL_5:
 
 - (void)_updateScrollDecelerationRate
 {
-  v4 = [(PXStoryScrollLayout *)self model];
-  v3 = [v4 layoutSpec];
-  -[PXStoryScrollLayout setScrollDecelerationRate:](self, "setScrollDecelerationRate:", [v3 scrollDecelerationRate]);
+  model = [(PXStoryScrollLayout *)self model];
+  layoutSpec = [model layoutSpec];
+  -[PXStoryScrollLayout setScrollDecelerationRate:](self, "setScrollDecelerationRate:", [layoutSpec scrollDecelerationRate]);
 }
 
 - (void)_invalidateScrollDecelerationRate
@@ -358,9 +358,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 2) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrollLayout _invalidateScrollDecelerationRate]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryScrollLayout.m" lineNumber:230 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryScrollLayout.m" lineNumber:230 description:{@"invalidating %lu after it already has been updated", 2}];
 
       abort();
     }
@@ -384,24 +384,24 @@ LABEL_5:
 
 - (void)_updateContentScrollPosition
 {
-  v3 = [(PXStoryScrollLayout *)self model];
-  v4 = [v3 viewMode];
+  model = [(PXStoryScrollLayout *)self model];
+  viewMode = [model viewMode];
 
-  if (v4 != 3)
+  if (viewMode != 3)
   {
-    v5 = [(PXStoryScrollLayout *)self contentLayout];
-    v6 = [(PXStoryScrollLayout *)self pagedScrollContentLayout];
+    contentLayout = [(PXStoryScrollLayout *)self contentLayout];
+    pagedScrollContentLayout = [(PXStoryScrollLayout *)self pagedScrollContentLayout];
 
-    if (v5 == v6)
+    if (contentLayout == pagedScrollContentLayout)
     {
       if (!self->_scrollPositionUpdateReason)
       {
-        v8 = [(PXStoryScrollLayout *)self pagedScrollContentLayout];
-        v13 = [(PXStoryScrollLayout *)self model];
-        v9 = v13;
-        if (v13)
+        pagedScrollContentLayout2 = [(PXStoryScrollLayout *)self pagedScrollContentLayout];
+        model2 = [(PXStoryScrollLayout *)self model];
+        model3 = model2;
+        if (model2)
         {
-          [v13 currentScrollPosition];
+          [model2 currentScrollPosition];
         }
 
         else
@@ -409,24 +409,24 @@ LABEL_5:
           memset(v15, 0, sizeof(v15));
         }
 
-        v10 = [v8 createAnchorForScrollingToPosition:v15];
-        v14 = [v10 autoInvalidate];
+        styleManager = [pagedScrollContentLayout2 createAnchorForScrollingToPosition:v15];
+        autoInvalidate = [styleManager autoInvalidate];
         goto LABEL_10;
       }
     }
 
     else
     {
-      v7 = [(PXStoryScrollLayout *)self styleScrollContentLayout];
+      styleScrollContentLayout = [(PXStoryScrollLayout *)self styleScrollContentLayout];
 
-      if (v5 == v7)
+      if (contentLayout == styleScrollContentLayout)
       {
-        v8 = [(PXStoryScrollLayout *)self styleScrollContentLayout];
-        v9 = [(PXStoryScrollLayout *)self model];
-        v10 = [v9 styleManager];
-        [v10 selectionFocus];
-        v11 = [v8 createAnchorForScrollingToStyleFocus:?];
-        v12 = [v11 autoInvalidate];
+        pagedScrollContentLayout2 = [(PXStoryScrollLayout *)self styleScrollContentLayout];
+        model3 = [(PXStoryScrollLayout *)self model];
+        styleManager = [model3 styleManager];
+        [styleManager selectionFocus];
+        v11 = [pagedScrollContentLayout2 createAnchorForScrollingToStyleFocus:?];
+        autoInvalidate2 = [v11 autoInvalidate];
 
 LABEL_10:
       }
@@ -434,10 +434,10 @@ LABEL_10:
   }
 }
 
-- (void)_invalidateContentScrollPositionWithReason:(unint64_t)a3
+- (void)_invalidateContentScrollPositionWithReason:(unint64_t)reason
 {
   [(PXStoryScrollLayout *)self stopScrolling];
-  self->_scrollPositionUpdateReason = a3;
+  self->_scrollPositionUpdateReason = reason;
   p_updateFlags = &self->_updateFlags;
   needsUpdate = self->_updateFlags.needsUpdate;
   if (needsUpdate)
@@ -452,9 +452,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrollLayout _invalidateContentScrollPositionWithReason:]"];
-      [v8 handleFailureInFunction:v9 file:@"PXStoryScrollLayout.m" lineNumber:211 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v9 file:@"PXStoryScrollLayout.m" lineNumber:211 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -478,43 +478,43 @@ LABEL_5:
 
 - (void)_updateContentView
 {
-  v4 = [(PXStoryScrollLayout *)self model];
-  v5 = [v4 viewMode];
+  model = [(PXStoryScrollLayout *)self model];
+  viewMode = [model viewMode];
 
-  v6 = 0;
-  if (v5 > 3)
+  styleScrollContentLayout = 0;
+  if (viewMode > 3)
   {
-    if (v5 == 4)
+    if (viewMode == 4)
     {
-      v6 = [(PXStoryScrollLayout *)self styleScrollContentLayout];
+      styleScrollContentLayout = [(PXStoryScrollLayout *)self styleScrollContentLayout];
       goto LABEL_10;
     }
 
-    if (v5 != 5)
+    if (viewMode != 5)
     {
       goto LABEL_10;
     }
 
 LABEL_8:
-    v6 = [(PXStoryScrollLayout *)self pagedScrollContentLayout];
+    styleScrollContentLayout = [(PXStoryScrollLayout *)self pagedScrollContentLayout];
     goto LABEL_10;
   }
 
-  if (v5 == 1 || v5 == 3)
+  if (viewMode == 1 || viewMode == 3)
   {
     goto LABEL_8;
   }
 
-  if (!v5)
+  if (!viewMode)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXStoryScrollLayout.m" lineNumber:185 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryScrollLayout.m" lineNumber:185 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
 LABEL_10:
-  v8 = v6;
+  v8 = styleScrollContentLayout;
   [(PXStoryScrollLayout *)self setShowsVerticalScrollIndicator:0];
   [(PXStoryScrollLayout *)self setContentLayout:v8];
 }
@@ -535,9 +535,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 4) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrollLayout _invalidateContentView]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryScrollLayout.m" lineNumber:177 description:{@"invalidating %lu after it already has been updated", 4}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryScrollLayout.m" lineNumber:177 description:{@"invalidating %lu after it already has been updated", 4}];
 
       abort();
     }
@@ -566,16 +566,16 @@ LABEL_5:
   [(PXStoryScrollLayout *)&v7 didUpdate];
   if (self->_updateFlags.willPerformUpdate)
   {
-    v3 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrollLayout didUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXStoryScrollLayout.m" lineNumber:172 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXStoryScrollLayout.m" lineNumber:172 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
   }
 
   if (self->_postUpdateFlags.willPerformUpdate)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrollLayout didUpdate]"];
-    [v5 handleFailureInFunction:v6 file:@"PXStoryScrollLayout.m" lineNumber:173 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.willPerformUpdate"}];
+    [currentHandler2 handleFailureInFunction:v6 file:@"PXStoryScrollLayout.m" lineNumber:173 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.willPerformUpdate"}];
   }
 }
 
@@ -590,9 +590,9 @@ LABEL_5:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrollLayout update]"];
-      [v13 handleFailureInFunction:v14 file:@"PXStoryScrollLayout.m" lineNumber:138 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v14 file:@"PXStoryScrollLayout.m" lineNumber:138 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -605,9 +605,9 @@ LABEL_5:
       [(PXStoryScrollLayout *)self _updateContentView];
       if (!p_updateFlags->isPerformingUpdate)
       {
-        v15 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrollLayout update]"];
-        [v15 handleFailureInFunction:v16 file:@"PXStoryScrollLayout.m" lineNumber:142 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+        [currentHandler2 handleFailureInFunction:v16 file:@"PXStoryScrollLayout.m" lineNumber:142 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -621,9 +621,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrollLayout update]"];
-      [v17 handleFailureInFunction:v18 file:@"PXStoryScrollLayout.m" lineNumber:145 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler3 handleFailureInFunction:v18 file:@"PXStoryScrollLayout.m" lineNumber:145 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v7 = p_updateFlags->needsUpdate;
@@ -636,9 +636,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrollLayout update]"];
-      [v19 handleFailureInFunction:v20 file:@"PXStoryScrollLayout.m" lineNumber:148 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler4 handleFailureInFunction:v20 file:@"PXStoryScrollLayout.m" lineNumber:148 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v8 = p_updateFlags->needsUpdate;
@@ -651,9 +651,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
       v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrollLayout update]"];
-      [v21 handleFailureInFunction:v22 file:@"PXStoryScrollLayout.m" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler5 handleFailureInFunction:v22 file:@"PXStoryScrollLayout.m" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v9 = p_updateFlags->needsUpdate;
@@ -668,9 +668,9 @@ LABEL_5:
     p_updateFlags->isPerformingUpdate = 0;
     if (v9)
     {
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
       v24 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrollLayout update]"];
-      [v23 handleFailureInFunction:v24 file:@"PXStoryScrollLayout.m" lineNumber:154 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler6 handleFailureInFunction:v24 file:@"PXStoryScrollLayout.m" lineNumber:154 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -684,9 +684,9 @@ LABEL_5:
   {
     if (self->_postUpdateFlags.isPerformingUpdate)
     {
-      v25 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
       v26 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrollLayout update]"];
-      [v25 handleFailureInFunction:v26 file:@"PXStoryScrollLayout.m" lineNumber:158 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
+      [currentHandler7 handleFailureInFunction:v26 file:@"PXStoryScrollLayout.m" lineNumber:158 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
 
       v11 = p_postUpdateFlags->needsUpdate;
     }
@@ -699,9 +699,9 @@ LABEL_5:
       [(PXStoryScrollLayout *)self _updateModelIsScrolling];
       if (!self->_postUpdateFlags.isPerformingUpdate)
       {
-        v27 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler8 = [MEMORY[0x1E696AAA8] currentHandler];
         v28 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrollLayout update]"];
-        [v27 handleFailureInFunction:v28 file:@"PXStoryScrollLayout.m" lineNumber:162 description:{@"Invalid parameter not satisfying: %@", @"_postUpdateFlags.isPerformingUpdate"}];
+        [currentHandler8 handleFailureInFunction:v28 file:@"PXStoryScrollLayout.m" lineNumber:162 description:{@"Invalid parameter not satisfying: %@", @"_postUpdateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -717,9 +717,9 @@ LABEL_5:
     self->_postUpdateFlags.isPerformingUpdate = 0;
     if (v12)
     {
-      v29 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler9 = [MEMORY[0x1E696AAA8] currentHandler];
       v30 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrollLayout update]"];
-      [v29 handleFailureInFunction:v30 file:@"PXStoryScrollLayout.m" lineNumber:165 description:{@"still needing to update %lu after update pass", p_postUpdateFlags->needsUpdate}];
+      [currentHandler9 handleFailureInFunction:v30 file:@"PXStoryScrollLayout.m" lineNumber:165 description:{@"still needing to update %lu after update pass", p_postUpdateFlags->needsUpdate}];
     }
   }
 
@@ -734,32 +734,32 @@ LABEL_5:
   self->_updateFlags.willPerformUpdate = 1;
   if (self->_updateFlags.isPerformingUpdate)
   {
-    v3 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrollLayout willUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXStoryScrollLayout.m" lineNumber:130 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXStoryScrollLayout.m" lineNumber:130 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
   }
 
   self->_postUpdateFlags.willPerformUpdate = 1;
   if (self->_postUpdateFlags.isPerformingUpdate)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrollLayout willUpdate]"];
-    [v5 handleFailureInFunction:v6 file:@"PXStoryScrollLayout.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
+    [currentHandler2 handleFailureInFunction:v6 file:@"PXStoryScrollLayout.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
   }
 }
 
 - (int64_t)scrollPositionComparedToEnd
 {
-  v3 = [(PXStoryScrollLayout *)self model];
-  if ([v3 viewMode] != 1)
+  model = [(PXStoryScrollLayout *)self model];
+  if ([model viewMode] != 1)
   {
     v9 = -1;
     goto LABEL_18;
   }
 
-  v4 = [(PXStoryScrollLayout *)self pagedScrollContentLayout];
-  v5 = v4;
-  if (!v4)
+  pagedScrollContentLayout = [(PXStoryScrollLayout *)self pagedScrollContentLayout];
+  v5 = pagedScrollContentLayout;
+  if (!pagedScrollContentLayout)
   {
     v16 = 0;
     v6 = 0.0;
@@ -767,7 +767,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  [v4 presentedScrollPosition];
+  [pagedScrollContentLayout presentedScrollPosition];
   v6 = v17;
   if (v17 <= 0.5)
   {
@@ -782,14 +782,14 @@ LABEL_7:
   v8 = v16;
 LABEL_8:
 
-  v10 = [v3 timeline];
-  v11 = v10;
+  timeline = [model timeline];
+  v11 = timeline;
   if (v6 > 0.5)
   {
     v7 = v8;
   }
 
-  if (v7 == [v10 lastSegmentIdentifier])
+  if (v7 == [timeline lastSegmentIdentifier])
   {
     v12 = 1.0 - v6;
     if (v6 <= 0.5)
@@ -832,13 +832,13 @@ LABEL_18:
   v6.super_class = PXStoryScrollLayout;
   [(PXStoryScrollLayout *)&v6 contentLayoutDidChange];
   [(PXStoryScrollLayout *)self _invalidateScrollDecelerationRate];
-  v3 = [(PXStoryScrollLayout *)self contentLayout];
+  contentLayout = [(PXStoryScrollLayout *)self contentLayout];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PXStoryScrollLayout *)self contentLayout];
-    [(PXStoryScrollLayout *)self setTargetContentOffsetAdjuster:v5];
+    contentLayout2 = [(PXStoryScrollLayout *)self contentLayout];
+    [(PXStoryScrollLayout *)self setTargetContentOffsetAdjuster:contentLayout2];
   }
 
   else
@@ -863,19 +863,19 @@ LABEL_18:
   [(PXStoryScrollLayout *)self _invalidateModelIsScrolling];
 }
 
-- (PXStoryScrollLayout)initWithModel:(id)a3
+- (PXStoryScrollLayout)initWithModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v19.receiver = self;
   v19.super_class = PXStoryScrollLayout;
   v6 = [(PXStoryScrollLayout *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_model, a3);
+    objc_storeStrong(&v6->_model, model);
     [(PXStoryModel *)v7->_model registerChangeObserver:v7 context:ModelObservationContext_160593];
-    v8 = [(PXStoryModel *)v7->_model styleManager];
-    [v8 registerChangeObserver:v7 context:StyleManagerObservationContext_160594];
+    styleManager = [(PXStoryModel *)v7->_model styleManager];
+    [styleManager registerChangeObserver:v7 context:StyleManagerObservationContext_160594];
 
     v9 = [[PXStoryPagedScrollContentLayout alloc] initWithModel:v7->_model];
     pagedScrollContentLayout = v7->_pagedScrollContentLayout;
@@ -906,8 +906,8 @@ LABEL_18:
 
 - (PXStoryScrollLayout)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryScrollLayout.m" lineNumber:61 description:{@"%s is not available as initializer", "-[PXStoryScrollLayout init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryScrollLayout.m" lineNumber:61 description:{@"%s is not available as initializer", "-[PXStoryScrollLayout init]"}];
 
   abort();
 }

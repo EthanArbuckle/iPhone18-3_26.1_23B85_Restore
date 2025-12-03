@@ -1,28 +1,28 @@
 @interface SWInteraction
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SWInteraction)initWithType:(unint64_t)a3;
+- (SWInteraction)initWithType:(unint64_t)type;
 @end
 
 @implementation SWInteraction
 
-- (SWInteraction)initWithType:(unint64_t)a3
+- (SWInteraction)initWithType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = SWInteraction;
   result = [(SWInteraction *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -32,8 +32,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(SWInteraction *)self type];
-      v6 = v5 == [(SWInteraction *)v4 type];
+      type = [(SWInteraction *)self type];
+      v6 = type == [(SWInteraction *)equalCopy type];
     }
 
     else

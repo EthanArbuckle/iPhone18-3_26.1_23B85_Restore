@@ -20,16 +20,16 @@
   {
     v26 = OBJC_IVAR___PSListController__specifiers;
     v4 = objc_alloc_init(NSMutableArray);
-    v5 = [(TonesUsageBundleDetailController *)self specifier];
-    v6 = [v5 propertyForKey:@"USAGE_BUNDLE_APP"];
+    specifier = [(TonesUsageBundleDetailController *)self specifier];
+    v6 = [specifier propertyForKey:@"USAGE_BUNDLE_APP"];
 
-    v7 = [v6 name];
-    v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:0 set:0 get:0 detail:0 cell:0 edit:0];
+    name = [v6 name];
+    v8 = [PSSpecifier preferenceSpecifierNamed:name target:0 set:0 get:0 detail:0 cell:0 edit:0];
 
     [v8 setProperty:@"PSUsageSizeHeader" forKey:PSHeaderCellClassGroupKey];
-    v28 = self;
-    v9 = [(TonesUsageBundleDetailController *)self specifier];
-    v10 = [v9 propertyForKey:@"TOTAL_SIZE"];
+    selfCopy = self;
+    specifier2 = [(TonesUsageBundleDetailController *)self specifier];
+    v10 = [specifier2 propertyForKey:@"TOTAL_SIZE"];
     [v8 setProperty:v10 forKey:@"SIZE"];
 
     v11 = v4;
@@ -58,12 +58,12 @@
           }
 
           v18 = *(*(&v29 + 1) + 8 * i);
-          v19 = [v18 name];
-          v20 = [PSSpecifier preferenceSpecifierNamed:v19 target:v28 set:0 get:"sizeForSpecifier:" detail:0 cell:4 edit:0];
+          name2 = [v18 name];
+          v20 = [PSSpecifier preferenceSpecifierNamed:name2 target:selfCopy set:0 get:"sizeForSpecifier:" detail:0 cell:4 edit:0];
 
           [v20 setProperty:v18 forKey:@"USAGE_BUNDLE_CATEGORY"];
-          v21 = [v18 name];
-          [v20 setProperty:v21 forKey:v15];
+          name3 = [v18 name];
+          [v20 setProperty:name3 forKey:v15];
 
           [v20 setProperty:objc_opt_class() forKey:v16];
           [v11 addObject:v20];
@@ -75,10 +75,10 @@
       while (v13);
     }
 
-    v22 = *&v28->PSUsageBundleDetailController_opaque[v26];
-    *&v28->PSUsageBundleDetailController_opaque[v26] = v11;
+    v22 = *&selfCopy->PSUsageBundleDetailController_opaque[v26];
+    *&selfCopy->PSUsageBundleDetailController_opaque[v26] = v11;
 
-    v3 = *&v28->PSUsageBundleDetailController_opaque[v26];
+    v3 = *&selfCopy->PSUsageBundleDetailController_opaque[v26];
   }
 
   return v3;

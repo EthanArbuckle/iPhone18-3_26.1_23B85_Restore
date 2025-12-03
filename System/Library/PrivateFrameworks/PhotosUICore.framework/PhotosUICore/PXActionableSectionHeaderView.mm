@@ -5,127 +5,127 @@
 - (CGRect)clippingRect;
 - (NSString)primaryText;
 - (NSString)secondaryText;
-- (PXActionableSectionHeaderView)initWithFrame:(CGRect)a3;
+- (PXActionableSectionHeaderView)initWithFrame:(CGRect)frame;
 - (PXActionableSectionHeaderViewDelegate)delegate;
 - (PXSimpleIndexPath)sectionIndexPath;
 - (UIControl)currentActionButton;
 - (UIEdgeInsets)contentInsets;
 - (double)baselineToBottomSpacing;
-- (double)heightForSizeClass:(int64_t)a3 width:(double)a4 safeAreaInsets:(UIEdgeInsets)a5;
+- (double)heightForSizeClass:(int64_t)class width:(double)width safeAreaInsets:(UIEdgeInsets)insets;
 - (id)_backdropButtonForegroundColor;
 - (id)traitCollection;
 - (int64_t)layoutMode;
-- (int64_t)layoutModeForHorizontalSizeClass:(int64_t)a3;
-- (void)_actionButtonPressed:(id)a3;
-- (void)_contentSizeCategoryDidChangeNotification:(id)a3;
-- (void)_updateActionButtonAnimated:(BOOL)a3;
+- (int64_t)layoutModeForHorizontalSizeClass:(int64_t)class;
+- (void)_actionButtonPressed:(id)pressed;
+- (void)_contentSizeCategoryDidChangeNotification:(id)notification;
+- (void)_updateActionButtonAnimated:(BOOL)animated;
 - (void)_updateActionButtonConfiguration;
-- (void)_updateActionButtonEnabledAnimated:(BOOL)a3;
+- (void)_updateActionButtonEnabledAnimated:(BOOL)animated;
 - (void)_updateBackdropActionButton;
 - (void)_updateBackdropViewGroupName;
-- (void)_updateBackgroundAnimated:(BOOL)a3;
+- (void)_updateBackgroundAnimated:(BOOL)animated;
 - (void)_updateFilterButton;
 - (void)_updateLabelColors;
 - (void)_updateLabelFonts;
 - (void)_updateLabelLineNumbers;
-- (void)_updateSecondaryButtonAnimated:(BOOL)a3;
+- (void)_updateSecondaryButtonAnimated:(BOOL)animated;
 - (void)_updateSpacerLabelHiddenState;
 - (void)_updateSystemActionButton;
 - (void)_updateWithCurrentTraits;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)performChangesToGroupedBackgroundPropertiesAnimated:(BOOL)a3 withBlock:(id)a4;
-- (void)setAccessibilityIdentifierWithValue:(id)a3;
-- (void)setActionButtonEnabled:(BOOL)a3 animated:(BOOL)a4;
-- (void)setActionText:(id)a3;
-- (void)setAvoidsTintedButtonsAtHighSpeed:(BOOL)a3;
-- (void)setBackdropButtonSpec:(id)a3;
-- (void)setBackdropViewGroupName:(id)a3;
-- (void)setBackgroundImage:(id)a3;
-- (void)setBackgroundImageAlpha:(double)a3;
-- (void)setBackgroundImageOverhang:(double)a3;
-- (void)setBackgroundStyle:(unint64_t)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setButtonStyle:(unint64_t)a3;
-- (void)setClippingRect:(CGRect)a3;
-- (void)setContentInsets:(UIEdgeInsets)a3;
-- (void)setDelegate:(id)a3;
-- (void)setFilterButtonControllerFactory:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setPreferredUserInterfaceStyle:(int64_t)a3;
-- (void)setPrimaryText:(id)a3;
-- (void)setSecondarySymbolName:(id)a3;
-- (void)setSecondaryText:(id)a3;
-- (void)setSectionIndexPath:(PXSimpleIndexPath *)a3;
-- (void)setSelfSizingTraits:(id)a3;
-- (void)setShowsActionButton:(BOOL)a3 animated:(BOOL)a4;
-- (void)setShowsSecondaryButton:(BOOL)a3 animated:(BOOL)a4;
-- (void)setShowsTopSeparator:(BOOL)a3;
-- (void)setSpeedRegime:(int64_t)a3;
-- (void)setSupportsMultipleLinesInCompactLayout:(BOOL)a3;
-- (void)setUserData:(id)a3;
-- (void)setWantsBackground:(BOOL)a3 animated:(BOOL)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)performChangesToGroupedBackgroundPropertiesAnimated:(BOOL)animated withBlock:(id)block;
+- (void)setAccessibilityIdentifierWithValue:(id)value;
+- (void)setActionButtonEnabled:(BOOL)enabled animated:(BOOL)animated;
+- (void)setActionText:(id)text;
+- (void)setAvoidsTintedButtonsAtHighSpeed:(BOOL)speed;
+- (void)setBackdropButtonSpec:(id)spec;
+- (void)setBackdropViewGroupName:(id)name;
+- (void)setBackgroundImage:(id)image;
+- (void)setBackgroundImageAlpha:(double)alpha;
+- (void)setBackgroundImageOverhang:(double)overhang;
+- (void)setBackgroundStyle:(unint64_t)style;
+- (void)setBounds:(CGRect)bounds;
+- (void)setButtonStyle:(unint64_t)style;
+- (void)setClippingRect:(CGRect)rect;
+- (void)setContentInsets:(UIEdgeInsets)insets;
+- (void)setDelegate:(id)delegate;
+- (void)setFilterButtonControllerFactory:(id)factory;
+- (void)setFrame:(CGRect)frame;
+- (void)setPreferredUserInterfaceStyle:(int64_t)style;
+- (void)setPrimaryText:(id)text;
+- (void)setSecondarySymbolName:(id)name;
+- (void)setSecondaryText:(id)text;
+- (void)setSectionIndexPath:(PXSimpleIndexPath *)path;
+- (void)setSelfSizingTraits:(id)traits;
+- (void)setShowsActionButton:(BOOL)button animated:(BOOL)animated;
+- (void)setShowsSecondaryButton:(BOOL)button animated:(BOOL)animated;
+- (void)setShowsTopSeparator:(BOOL)separator;
+- (void)setSpeedRegime:(int64_t)regime;
+- (void)setSupportsMultipleLinesInCompactLayout:(BOOL)layout;
+- (void)setUserData:(id)data;
+- (void)setWantsBackground:(BOOL)background animated:(BOOL)animated;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateSecondaryLabel;
 @end
 
 @implementation PXActionableSectionHeaderView
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
-  v5 = a3;
-  if (v5)
+  dataCopy = data;
+  if (dataCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v19 = objc_opt_class();
       v20 = NSStringFromClass(v19);
-      v21 = [v5 px_descriptionForAssertionMessage];
-      [v18 handleFailureInMethod:a2 object:self file:@"PXActionableSectionHeaderLayoutProvider+iOS.m" lineNumber:534 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"userData", v20, v21}];
+      px_descriptionForAssertionMessage = [dataCopy px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXActionableSectionHeaderLayoutProvider+iOS.m" lineNumber:534 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"userData", v20, px_descriptionForAssertionMessage}];
     }
   }
 
   v6 = objc_getAssociatedObject(self, UserDataAssociationKey);
-  if (v6 != v5)
+  if (v6 != dataCopy)
   {
-    objc_setAssociatedObject(self, UserDataAssociationKey, v5, 3);
-    -[PXActionableSectionHeaderView setBackgroundStyle:](self, "setBackgroundStyle:", [v5 backgroundStyle]);
-    -[PXActionableSectionHeaderView setButtonStyle:](self, "setButtonStyle:", [v5 buttonStyle]);
-    v7 = [v5 primaryText];
-    [(PXActionableSectionHeaderView *)self setPrimaryText:v7];
+    objc_setAssociatedObject(self, UserDataAssociationKey, dataCopy, 3);
+    -[PXActionableSectionHeaderView setBackgroundStyle:](self, "setBackgroundStyle:", [dataCopy backgroundStyle]);
+    -[PXActionableSectionHeaderView setButtonStyle:](self, "setButtonStyle:", [dataCopy buttonStyle]);
+    primaryText = [dataCopy primaryText];
+    [(PXActionableSectionHeaderView *)self setPrimaryText:primaryText];
 
-    v8 = [v5 secondaryText];
-    [(PXActionableSectionHeaderView *)self setSecondaryText:v8];
+    secondaryText = [dataCopy secondaryText];
+    [(PXActionableSectionHeaderView *)self setSecondaryText:secondaryText];
 
-    [v5 edgeInsets];
+    [dataCopy edgeInsets];
     [(PXActionableSectionHeaderView *)self setContentInsets:?];
-    v9 = [v5 weakLayout];
-    [(PXActionableSectionHeaderView *)self setDelegate:v9];
-    v10 = [v5 actionText];
-    [(PXActionableSectionHeaderView *)self setActionText:v10];
+    weakLayout = [dataCopy weakLayout];
+    [(PXActionableSectionHeaderView *)self setDelegate:weakLayout];
+    actionText = [dataCopy actionText];
+    [(PXActionableSectionHeaderView *)self setActionText:actionText];
 
-    v11 = [v5 backdropViewGroupName];
-    [(PXActionableSectionHeaderView *)self setBackdropViewGroupName:v11];
+    backdropViewGroupName = [dataCopy backdropViewGroupName];
+    [(PXActionableSectionHeaderView *)self setBackdropViewGroupName:backdropViewGroupName];
 
-    v12 = [v5 gradientImage];
-    [(PXActionableSectionHeaderView *)self setBackgroundImage:v12];
+    gradientImage = [dataCopy gradientImage];
+    [(PXActionableSectionHeaderView *)self setBackgroundImage:gradientImage];
 
-    [v5 gradientAlpha];
+    [dataCopy gradientAlpha];
     [(PXActionableSectionHeaderView *)self setBackgroundImageAlpha:?];
-    [v5 gradientOverhang];
+    [dataCopy gradientOverhang];
     [(PXActionableSectionHeaderView *)self setBackgroundImageOverhang:?];
-    v13 = [v5 buttonSpec];
-    [(PXActionableSectionHeaderView *)self setBackdropButtonSpec:v13];
+    buttonSpec = [dataCopy buttonSpec];
+    [(PXActionableSectionHeaderView *)self setBackdropButtonSpec:buttonSpec];
 
-    v14 = [v5 filterButtonControllerFactory];
-    [(PXActionableSectionHeaderView *)self setFilterButtonControllerFactory:v14];
+    filterButtonControllerFactory = [dataCopy filterButtonControllerFactory];
+    [(PXActionableSectionHeaderView *)self setFilterButtonControllerFactory:filterButtonControllerFactory];
 
-    if (v5)
+    if (dataCopy)
     {
-      [v5 sectionIndexPath];
+      [dataCopy sectionIndexPath];
     }
 
     else
@@ -137,21 +137,21 @@
     v24[0] = v25;
     v24[1] = v26;
     [(PXActionableSectionHeaderView *)self setSectionIndexPath:v24];
-    -[PXActionableSectionHeaderView setAvoidsTintedButtonsAtHighSpeed:](self, "setAvoidsTintedButtonsAtHighSpeed:", [v5 avoidsTintedButtonsAtHighSpeeds]);
-    -[PXActionableSectionHeaderView setSupportsMultipleLinesInCompactLayout:](self, "setSupportsMultipleLinesInCompactLayout:", [v5 supportsMultipleLinesInCompactLayout]);
-    -[PXActionableSectionHeaderView setPreferredUserInterfaceStyle:](self, "setPreferredUserInterfaceStyle:", [v5 preferredUserInterfaceStyle]);
-    v15 = [v9 scrollSpeedRegime];
+    -[PXActionableSectionHeaderView setAvoidsTintedButtonsAtHighSpeed:](self, "setAvoidsTintedButtonsAtHighSpeed:", [dataCopy avoidsTintedButtonsAtHighSpeeds]);
+    -[PXActionableSectionHeaderView setSupportsMultipleLinesInCompactLayout:](self, "setSupportsMultipleLinesInCompactLayout:", [dataCopy supportsMultipleLinesInCompactLayout]);
+    -[PXActionableSectionHeaderView setPreferredUserInterfaceStyle:](self, "setPreferredUserInterfaceStyle:", [dataCopy preferredUserInterfaceStyle]);
+    scrollSpeedRegime = [weakLayout scrollSpeedRegime];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __62__PXActionableSectionHeaderView_PXGReusableView__setUserData___block_invoke;
     v22[3] = &unk_1E774C620;
-    v16 = v15 < 2;
+    v16 = scrollSpeedRegime < 2;
     v22[4] = self;
-    v23 = v9;
-    v17 = v9;
+    v23 = weakLayout;
+    v17 = weakLayout;
     [(PXActionableSectionHeaderView *)self performChangesToGroupedBackgroundPropertiesAnimated:v16 withBlock:v22];
-    -[PXActionableSectionHeaderView setShowsActionButton:animated:](self, "setShowsActionButton:animated:", [v5 showsActionButton], v16);
-    -[PXActionableSectionHeaderView setShowsSecondaryButton:animated:](self, "setShowsSecondaryButton:animated:", [v5 showsSecondaryButton], v16);
+    -[PXActionableSectionHeaderView setShowsActionButton:animated:](self, "setShowsActionButton:animated:", [dataCopy showsActionButton], v16);
+    -[PXActionableSectionHeaderView setShowsSecondaryButton:animated:](self, "setShowsSecondaryButton:animated:", [dataCopy showsSecondaryButton], v16);
   }
 }
 
@@ -177,12 +177,12 @@ uint64_t __62__PXActionableSectionHeaderView_PXGReusableView__setUserData___bloc
   return result;
 }
 
-- (void)setClippingRect:(CGRect)a3
+- (void)setClippingRect:(CGRect)rect
 {
-  if (!CGRectEqualToRect(a3, *MEMORY[0x1E695F040]))
+  if (!CGRectEqualToRect(rect, *MEMORY[0x1E695F040]))
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PXActionableSectionHeaderLayoutProvider+iOS.m" lineNumber:526 description:@"Clipping isn't supported"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXActionableSectionHeaderLayoutProvider+iOS.m" lineNumber:526 description:@"Clipping isn't supported"];
   }
 }
 
@@ -199,10 +199,10 @@ uint64_t __62__PXActionableSectionHeaderView_PXGReusableView__setUserData___bloc
   return result;
 }
 
-- (void)setSectionIndexPath:(PXSimpleIndexPath *)a3
+- (void)setSectionIndexPath:(PXSimpleIndexPath *)path
 {
-  v3 = *&a3->item;
-  *&self->_sectionIndexPath.dataSourceIdentifier = *&a3->dataSourceIdentifier;
+  v3 = *&path->item;
+  *&self->_sectionIndexPath.dataSourceIdentifier = *&path->dataSourceIdentifier;
   *&self->_sectionIndexPath.item = v3;
 }
 
@@ -221,18 +221,18 @@ uint64_t __62__PXActionableSectionHeaderView_PXGReusableView__setUserData___bloc
   return WeakRetained;
 }
 
-- (int64_t)layoutModeForHorizontalSizeClass:(int64_t)a3
+- (int64_t)layoutModeForHorizontalSizeClass:(int64_t)class
 {
-  v4 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-  return ((a3 == 1) | IsAccessibilityCategory) & 1;
+  return ((class == 1) | IsAccessibilityCategory) & 1;
 }
 
 - (int64_t)layoutMode
 {
-  v3 = [(PXActionableSectionHeaderView *)self traitCollection];
-  v4 = -[PXActionableSectionHeaderView layoutModeForHorizontalSizeClass:](self, "layoutModeForHorizontalSizeClass:", [v3 horizontalSizeClass]);
+  traitCollection = [(PXActionableSectionHeaderView *)self traitCollection];
+  v4 = -[PXActionableSectionHeaderView layoutModeForHorizontalSizeClass:](self, "layoutModeForHorizontalSizeClass:", [traitCollection horizontalSizeClass]);
 
   return v4;
 }
@@ -241,25 +241,25 @@ uint64_t __62__PXActionableSectionHeaderView_PXGReusableView__setUserData___bloc
 {
   if (self->_inLayoutTransition || ![(PXActionableSectionHeaderView *)self wantsBackground])
   {
-    v3 = 0;
+    backdropViewGroupName = 0;
   }
 
   else
   {
-    v3 = [(PXActionableSectionHeaderView *)self backdropViewGroupName];
+    backdropViewGroupName = [(PXActionableSectionHeaderView *)self backdropViewGroupName];
   }
 
-  v4 = v3;
-  [(UIVisualEffectView *)self->_visualEffectView _setGroupName:v3];
+  v4 = backdropViewGroupName;
+  [(UIVisualEffectView *)self->_visualEffectView _setGroupName:backdropViewGroupName];
 }
 
-- (void)_updateBackgroundAnimated:(BOOL)a3
+- (void)_updateBackgroundAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(PXActionableSectionHeaderView *)self backgroundStyle])
   {
     v5 = 528;
-    if (v3)
+    if (animatedCopy)
     {
       visualEffectView = self->_visualEffectView;
       v34[0] = MEMORY[0x1E69E9820];
@@ -309,9 +309,9 @@ uint64_t __62__PXActionableSectionHeaderView_PXGReusableView__setUserData___bloc
       }
     }
 
-    v13 = [(UIVisualEffectView *)self->_visualEffectView superview];
+    superview = [(UIVisualEffectView *)self->_visualEffectView superview];
 
-    if (v13 != self)
+    if (superview != self)
     {
       v36[0] = MEMORY[0x1E69E9820];
       v36[1] = 3221225472;
@@ -321,7 +321,7 @@ uint64_t __62__PXActionableSectionHeaderView_PXGReusableView__setUserData___bloc
       [MEMORY[0x1E69DD250] performWithoutAnimation:v36];
     }
 
-    if (v3)
+    if (animatedCopy)
     {
       v14 = self->_visualEffectView;
       v35[0] = MEMORY[0x1E69E9820];
@@ -349,7 +349,7 @@ LABEL_23:
     }
 
     self->_hasBackgroundView = 0;
-    if (v3)
+    if (animatedCopy)
     {
       v18 = MEMORY[0x1E69DD250];
       v31[0] = MEMORY[0x1E69E9820];
@@ -398,9 +398,9 @@ LABEL_26:
       backgroundImageView = self->_backgroundImageView;
     }
 
-    v27 = [(UIImageView *)backgroundImageView superview];
+    superview2 = [(UIImageView *)backgroundImageView superview];
 
-    if (v27 != self)
+    if (superview2 != self)
     {
       v33[0] = MEMORY[0x1E69E9820];
       v33[1] = 3221225472;
@@ -410,14 +410,14 @@ LABEL_26:
       [MEMORY[0x1E69DD250] performWithoutAnimation:v33];
     }
 
-    v28 = [(UIImageView *)self->_backgroundImageView isHidden];
+    isHidden = [(UIImageView *)self->_backgroundImageView isHidden];
     [(UIImageView *)self->_backgroundImageView setHidden:0];
-    v29 = [(PXActionableSectionHeaderView *)self backgroundImage];
-    [(UIImageView *)self->_backgroundImageView setImage:v29];
+    backgroundImage = [(PXActionableSectionHeaderView *)self backgroundImage];
+    [(UIImageView *)self->_backgroundImageView setImage:backgroundImage];
 
-    if (v3)
+    if (animatedCopy)
     {
-      if (v28)
+      if (isHidden)
       {
         [(UIImageView *)self->_backgroundImageView setAlpha:0.0];
       }
@@ -438,10 +438,10 @@ LABEL_26:
   }
 
 LABEL_28:
-  v21 = [(PXActionableSectionHeaderView *)self backgroundStyle];
-  if (v21 != 1)
+  backgroundStyle = [(PXActionableSectionHeaderView *)self backgroundStyle];
+  if (backgroundStyle != 1)
   {
-    if (v21)
+    if (backgroundStyle)
     {
       return;
     }
@@ -492,24 +492,24 @@ uint64_t __59__PXActionableSectionHeaderView__updateBackgroundAnimated___block_i
 
 - (void)_updateSpacerLabelHiddenState
 {
-  v3 = [(PXActionableSectionHeaderView *)self primaryText];
-  v6 = !v3 || (v4 = v3, [(PXActionableSectionHeaderView *)self secondaryText], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, !v5) || [(PXActionableSectionHeaderView *)self layoutMode]== 1;
-  v7 = [(PXActionableSectionHeaderView *)self spacerLabel];
-  [v7 setHidden:v6];
+  primaryText = [(PXActionableSectionHeaderView *)self primaryText];
+  v6 = !primaryText || (v4 = primaryText, [(PXActionableSectionHeaderView *)self secondaryText], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, !v5) || [(PXActionableSectionHeaderView *)self layoutMode]== 1;
+  spacerLabel = [(PXActionableSectionHeaderView *)self spacerLabel];
+  [spacerLabel setHidden:v6];
 
   [(PXActionableSectionHeaderView *)self setNeedsLayout];
 }
 
 - (void)_updateLabelColors
 {
-  v3 = [MEMORY[0x1E69DC888] labelColor];
-  [(UILabel *)self->_primaryLabel setTextColor:v3];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(UILabel *)self->_primaryLabel setTextColor:labelColor];
 
-  v4 = [MEMORY[0x1E69DC888] systemGrayColor];
-  [(UILabel *)self->_spacerLabel setTextColor:v4];
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  [(UILabel *)self->_spacerLabel setTextColor:systemGrayColor];
 
-  v5 = [MEMORY[0x1E69DC888] systemGrayColor];
-  [(UILabel *)self->_secondaryLabel setTextColor:v5];
+  systemGrayColor2 = [MEMORY[0x1E69DC888] systemGrayColor];
+  [(UILabel *)self->_secondaryLabel setTextColor:systemGrayColor2];
 }
 
 - (void)_updateLabelLineNumbers
@@ -532,24 +532,24 @@ uint64_t __59__PXActionableSectionHeaderView__updateBackgroundAnimated___block_i
     v3 = 1;
   }
 
-  v4 = [(PXActionableSectionHeaderView *)self primaryLabel];
-  v5 = [v4 numberOfLines];
+  primaryLabel = [(PXActionableSectionHeaderView *)self primaryLabel];
+  numberOfLines = [primaryLabel numberOfLines];
 
-  if (v3 != v5)
+  if (v3 != numberOfLines)
   {
-    v6 = [(PXActionableSectionHeaderView *)self primaryLabel];
-    [v6 setNumberOfLines:v3];
+    primaryLabel2 = [(PXActionableSectionHeaderView *)self primaryLabel];
+    [primaryLabel2 setNumberOfLines:v3];
 
     [(PXActionableSectionHeaderView *)self setNeedsLayout];
   }
 
-  v7 = [(PXActionableSectionHeaderView *)self secondaryLabel];
-  v8 = [v7 numberOfLines];
+  secondaryLabel = [(PXActionableSectionHeaderView *)self secondaryLabel];
+  numberOfLines2 = [secondaryLabel numberOfLines];
 
-  if (v3 != v8)
+  if (v3 != numberOfLines2)
   {
-    v9 = [(PXActionableSectionHeaderView *)self secondaryLabel];
-    [v9 setNumberOfLines:v3];
+    secondaryLabel2 = [(PXActionableSectionHeaderView *)self secondaryLabel];
+    [secondaryLabel2 setNumberOfLines:v3];
 
     [(PXActionableSectionHeaderView *)self setNeedsLayout];
   }
@@ -557,15 +557,15 @@ uint64_t __59__PXActionableSectionHeaderView__updateBackgroundAnimated___block_i
 
 - (void)_updateLabelFonts
 {
-  v3 = [(PXActionableSectionHeaderView *)self primaryLabel];
+  primaryLabel = [(PXActionableSectionHeaderView *)self primaryLabel];
   v4 = MEMORY[0x1A590C430](5, 0x8000, 7);
-  [v3 setFont:v4];
+  [primaryLabel setFont:v4];
 
-  v5 = [(PXActionableSectionHeaderView *)self secondaryLabel];
-  _PXConfigureHeaderSubtitleLabel(v5);
+  secondaryLabel = [(PXActionableSectionHeaderView *)self secondaryLabel];
+  _PXConfigureHeaderSubtitleLabel(secondaryLabel);
 
-  v6 = [(PXActionableSectionHeaderView *)self spacerLabel];
-  _PXConfigureHeaderSubtitleLabel(v6);
+  spacerLabel = [(PXActionableSectionHeaderView *)self spacerLabel];
+  _PXConfigureHeaderSubtitleLabel(spacerLabel);
 
   [(PXActionableSectionHeaderView *)self _updateSystemActionButton];
 
@@ -579,17 +579,17 @@ uint64_t __59__PXActionableSectionHeaderView__updateBackgroundAnimated___block_i
   [(PXActionableSectionHeaderView *)self _updateSpacerLabelHiddenState];
 }
 
-- (void)_actionButtonPressed:(id)a3
+- (void)_actionButtonPressed:(id)pressed
 {
-  v5 = a3;
+  pressedCopy = pressed;
   if ([(PXActionableSectionHeaderView *)self actionButtonEnabled]&& (*&self->_delegateFlags & 1) != 0)
   {
-    v4 = [(PXActionableSectionHeaderView *)self delegate];
-    [v4 headerViewDidPressActionButton:v5 inHeaderView:self];
+    delegate = [(PXActionableSectionHeaderView *)self delegate];
+    [delegate headerViewDidPressActionButton:pressedCopy inHeaderView:self];
   }
 }
 
-- (void)_contentSizeCategoryDidChangeNotification:(id)a3
+- (void)_contentSizeCategoryDidChangeNotification:(id)notification
 {
   [(PXActionableSectionHeaderView *)self _updateLabelFonts];
   [(PXActionableSectionHeaderView *)self _updateLabelLineNumbers];
@@ -627,8 +627,8 @@ uint64_t __59__PXActionableSectionHeaderView__updateBackgroundAnimated___block_i
   v232 = v25;
   [(PXActionableSectionHeaderView *)self backgroundImageOverhang];
   v230 = v27;
-  v28 = [(PXActionableSectionHeaderView *)self _wantsActionButton];
-  v29 = [(PXActionableSectionHeaderView *)self _wantsSecondaryButton];
+  _wantsActionButton = [(PXActionableSectionHeaderView *)self _wantsActionButton];
+  _wantsSecondaryButton = [(PXActionableSectionHeaderView *)self _wantsSecondaryButton];
   v242 = v14;
   v235 = v16;
   v274 = v18;
@@ -636,20 +636,20 @@ uint64_t __59__PXActionableSectionHeaderView__updateBackgroundAnimated___block_i
   if ([(PXActionableSectionHeaderView *)self layoutMode]!= 1)
   {
     v48 = v21;
-    if (v28 || v29)
+    if (_wantsActionButton || _wantsSecondaryButton)
     {
       v49 = v16;
       v50 = v22;
       v272 = v48;
       v287 = v20;
       x = v19;
-      if (v28)
+      if (_wantsActionButton)
       {
-        v52 = [(PXActionableSectionHeaderView *)self currentActionButton];
-        [v52 sizeToFit];
+        currentActionButton = [(PXActionableSectionHeaderView *)self currentActionButton];
+        [currentActionButton sizeToFit];
 
-        v53 = [(PXActionableSectionHeaderView *)self currentActionButton];
-        [v53 frame];
+        currentActionButton2 = [(PXActionableSectionHeaderView *)self currentActionButton];
+        [currentActionButton2 frame];
         v281 = v20;
 
         UIRectCenteredYInRect();
@@ -679,14 +679,14 @@ uint64_t __59__PXActionableSectionHeaderView__updateBackgroundAnimated___block_i
       }
 
       v291 = v50;
-      if (v29)
+      if (_wantsSecondaryButton)
       {
         v282 = v49;
-        v61 = [(PXActionableSectionHeaderView *)self currentSecondaryButton];
-        [v61 sizeToFit];
+        currentSecondaryButton = [(PXActionableSectionHeaderView *)self currentSecondaryButton];
+        [currentSecondaryButton sizeToFit];
 
-        v62 = [(PXActionableSectionHeaderView *)self currentSecondaryButton];
-        [v62 frame];
+        currentSecondaryButton2 = [(PXActionableSectionHeaderView *)self currentSecondaryButton];
+        [currentSecondaryButton2 frame];
 
         v63 = v274;
         UIRectCenteredYInRect();
@@ -705,7 +705,7 @@ uint64_t __59__PXActionableSectionHeaderView__updateBackgroundAnimated___block_i
         v303.size.width = v69;
         v303.size.height = v71;
         v74 = v73 - CGRectGetWidth(v303);
-        if (v28)
+        if (_wantsActionButton)
         {
           v304.origin.x = v74;
           v304.origin.y = v72;
@@ -727,47 +727,47 @@ uint64_t __59__PXActionableSectionHeaderView__updateBackgroundAnimated___block_i
         v14 = v242;
         v12 = rect;
 LABEL_23:
-        v115 = [(PXActionableSectionHeaderView *)self primaryLabel];
-        [v115 sizeToFit];
+        primaryLabel = [(PXActionableSectionHeaderView *)self primaryLabel];
+        [primaryLabel sizeToFit];
 
-        v116 = [(PXActionableSectionHeaderView *)self spacerLabel];
-        [v116 sizeToFit];
+        spacerLabel = [(PXActionableSectionHeaderView *)self spacerLabel];
+        [spacerLabel sizeToFit];
 
-        v117 = [(PXActionableSectionHeaderView *)self secondaryLabel];
-        [v117 sizeToFit];
+        secondaryLabel = [(PXActionableSectionHeaderView *)self secondaryLabel];
+        [secondaryLabel sizeToFit];
 
-        v118 = [(PXActionableSectionHeaderView *)self primaryLabel];
-        [v118 frame];
+        primaryLabel2 = [(PXActionableSectionHeaderView *)self primaryLabel];
+        [primaryLabel2 frame];
         UIRectCenteredYInRect();
         v251 = v119;
         v268 = v120;
         v278 = v121;
 
-        v122 = [(PXActionableSectionHeaderView *)self spacerLabel];
-        [v122 frame];
+        spacerLabel2 = [(PXActionableSectionHeaderView *)self spacerLabel];
+        [spacerLabel2 frame];
         UIRectCenteredYInRect();
         v283 = v123;
         v255 = v125;
         v258 = v124;
 
-        v126 = [(PXActionableSectionHeaderView *)self secondaryLabel];
-        [v126 frame];
+        secondaryLabel2 = [(PXActionableSectionHeaderView *)self secondaryLabel];
+        [secondaryLabel2 frame];
         UIRectCenteredYInRect();
         v262 = v127;
         v129 = v128;
         rect_16a = v130;
 
-        v131 = [(PXActionableSectionHeaderView *)self primaryLabel];
-        [v131 frame];
+        primaryLabel3 = [(PXActionableSectionHeaderView *)self primaryLabel];
+        [primaryLabel3 frame];
         v132 = v14;
         Width = CGRectGetWidth(v313);
 
-        v134 = [(PXActionableSectionHeaderView *)self spacerLabel];
-        [v134 frame];
+        spacerLabel3 = [(PXActionableSectionHeaderView *)self spacerLabel];
+        [spacerLabel3 frame];
         v135 = CGRectGetWidth(v314) + 16.0;
 
-        v136 = [(PXActionableSectionHeaderView *)self secondaryLabel];
-        [v136 frame];
+        secondaryLabel3 = [(PXActionableSectionHeaderView *)self secondaryLabel];
+        [secondaryLabel3 frame];
         v137 = CGRectGetWidth(v315);
 
         v316.origin.x = v12;
@@ -865,10 +865,10 @@ LABEL_31:
     goto LABEL_23;
   }
 
-  if (!v28 && !v29)
+  if (!_wantsActionButton && !_wantsSecondaryButton)
   {
-    v75 = [(PXActionableSectionHeaderView *)self primaryLabel];
-    [v75 sizeThatFits:{v16, v18}];
+    primaryLabel4 = [(PXActionableSectionHeaderView *)self primaryLabel];
+    [primaryLabel4 sizeThatFits:{v16, v18}];
     v77 = v76;
     v276 = v76;
 
@@ -877,8 +877,8 @@ LABEL_31:
     v306.size.width = v16;
     v306.size.height = v77;
     MaxY = CGRectGetMaxY(v306);
-    v78 = [(PXActionableSectionHeaderView *)self secondaryLabel];
-    [v78 sizeThatFits:{v16, v274}];
+    secondaryLabel4 = [(PXActionableSectionHeaderView *)self secondaryLabel];
+    [secondaryLabel4 sizeThatFits:{v16, v274}];
     v80 = v79;
 
     v81 = v12;
@@ -904,8 +904,8 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  v30 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v30);
+  preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   v280 = v20;
   v254 = v22;
@@ -913,8 +913,8 @@ LABEL_31:
   rect_16 = v19;
   if (IsAccessibilityCategory)
   {
-    v32 = [(PXActionableSectionHeaderView *)self primaryLabel];
-    [v32 sizeThatFits:{v16, v18}];
+    primaryLabel5 = [(PXActionableSectionHeaderView *)self primaryLabel];
+    [primaryLabel5 sizeThatFits:{v16, v18}];
     v34 = v33;
 
     v35 = v14;
@@ -927,13 +927,13 @@ LABEL_31:
     v37 = v36;
     v275 = v34;
     rect_24 = v36;
-    if (v28)
+    if (_wantsActionButton)
     {
-      v38 = [(PXActionableSectionHeaderView *)self currentActionButton];
-      [v38 sizeToFit];
+      currentActionButton3 = [(PXActionableSectionHeaderView *)self currentActionButton];
+      [currentActionButton3 sizeToFit];
 
-      v39 = [(PXActionableSectionHeaderView *)self currentActionButton];
-      [v39 frame];
+      currentActionButton4 = [(PXActionableSectionHeaderView *)self currentActionButton];
+      [currentActionButton4 frame];
       v41 = v40;
       v286 = v42;
 
@@ -948,7 +948,7 @@ LABEL_31:
       v298.size.height = v34;
       v44 = CGRectGetMaxY(v298);
       v45 = v44 + 8.0;
-      if (v29)
+      if (_wantsSecondaryButton)
       {
         v272 = v41;
         v46 = v286;
@@ -956,11 +956,11 @@ LABEL_31:
         v47 = MinX;
 LABEL_45:
         v201 = v46;
-        v202 = [(PXActionableSectionHeaderView *)self currentSecondaryButton];
-        [v202 sizeToFit];
+        currentSecondaryButton3 = [(PXActionableSectionHeaderView *)self currentSecondaryButton];
+        [currentSecondaryButton3 sizeToFit];
 
-        v203 = [(PXActionableSectionHeaderView *)self currentSecondaryButton];
-        [v203 frame];
+        currentSecondaryButton4 = [(PXActionableSectionHeaderView *)self currentSecondaryButton];
+        [currentSecondaryButton4 frame];
         v205 = v204;
         v207 = v206;
 
@@ -971,7 +971,7 @@ LABEL_45:
         MinX = CGRectGetMinX(v326);
         v209 = v242;
         v208 = rect;
-        if (v28)
+        if (_wantsActionButton)
         {
           v208 = v47;
           v209 = v45;
@@ -1014,7 +1014,7 @@ LABEL_45:
       v240 = v22;
       v200 = v280;
       v236 = rect_16;
-      if (v29)
+      if (_wantsSecondaryButton)
       {
         goto LABEL_45;
       }
@@ -1033,8 +1033,8 @@ LABEL_50:
     v327.size.width = v235;
     v327.size.height = v274;
     v267 = CGRectGetMinX(v327);
-    v214 = [(PXActionableSectionHeaderView *)self secondaryLabel];
-    [v214 sizeThatFits:{v235, v274}];
+    secondaryLabel5 = [(PXActionableSectionHeaderView *)self secondaryLabel];
+    [secondaryLabel5 sizeThatFits:{v235, v274}];
     v216 = v215;
 
     v328.origin.x = v260;
@@ -1058,13 +1058,13 @@ LABEL_50:
   v272 = v21;
   v287 = v20;
   v92 = v19;
-  if (v28)
+  if (_wantsActionButton)
   {
-    v93 = [(PXActionableSectionHeaderView *)self currentActionButton];
-    [v93 sizeToFit];
+    currentActionButton5 = [(PXActionableSectionHeaderView *)self currentActionButton];
+    [currentActionButton5 sizeToFit];
 
-    v94 = [(PXActionableSectionHeaderView *)self currentActionButton];
-    [v94 frame];
+    currentActionButton6 = [(PXActionableSectionHeaderView *)self currentActionButton];
+    [currentActionButton6 frame];
 
     UIRectCenteredYInRect();
     v96 = v95;
@@ -1094,14 +1094,14 @@ LABEL_50:
   }
 
   v291 = v91;
-  if (v29)
+  if (_wantsSecondaryButton)
   {
     v277 = v16;
-    v103 = [(PXActionableSectionHeaderView *)self currentSecondaryButton];
-    [v103 sizeToFit];
+    currentSecondaryButton5 = [(PXActionableSectionHeaderView *)self currentSecondaryButton];
+    [currentSecondaryButton5 sizeToFit];
 
-    v104 = [(PXActionableSectionHeaderView *)self currentSecondaryButton];
-    [v104 frame];
+    currentSecondaryButton6 = [(PXActionableSectionHeaderView *)self currentSecondaryButton];
+    [currentSecondaryButton6 frame];
 
     UIRectCenteredYInRect();
     v106 = v105;
@@ -1118,7 +1118,7 @@ LABEL_50:
     v311.size.width = v110;
     v311.size.height = v112;
     v114 = v113 - CGRectGetWidth(v311);
-    if (v28)
+    if (_wantsActionButton)
     {
       v312.origin.x = v114;
       v312.origin.y = v108;
@@ -1148,8 +1148,8 @@ LABEL_50:
 
   v270 = v92;
   v217 = v16 + -8.0;
-  v218 = [(PXActionableSectionHeaderView *)self primaryLabel];
-  [v218 sizeThatFits:{v16 + -8.0, v18}];
+  primaryLabel6 = [(PXActionableSectionHeaderView *)self primaryLabel];
+  [primaryLabel6 sizeThatFits:{v16 + -8.0, v18}];
   v220 = v219;
 
   v330.origin.x = rect;
@@ -1167,8 +1167,8 @@ LABEL_50:
   v332.size.width = v221;
   v332.size.height = v220;
   v264 = CGRectGetMaxY(v332);
-  v222 = [(PXActionableSectionHeaderView *)self secondaryLabel];
-  [v222 sizeThatFits:{v217, v18}];
+  secondaryLabel6 = [(PXActionableSectionHeaderView *)self secondaryLabel];
+  [secondaryLabel6 sizeThatFits:{v217, v18}];
   v224 = v223;
 
   v333.origin.x = rect;
@@ -1280,8 +1280,8 @@ LABEL_32:
   v285 = v158;
   if (MEMORY[0x1A590D320]())
   {
-    v173 = [(PXActionableSectionHeaderView *)self primaryLabel];
-    [v173 intrinsicContentSize];
+    primaryLabel7 = [(PXActionableSectionHeaderView *)self primaryLabel];
+    [primaryLabel7 intrinsicContentSize];
     v175 = v174;
     v177 = v176;
 
@@ -1318,29 +1318,29 @@ LABEL_32:
     v183 = v266;
   }
 
-  v192 = [(PXActionableSectionHeaderView *)self visualEffectView];
-  [v192 setFrame:{v178, v179, v180, v182}];
+  visualEffectView = [(PXActionableSectionHeaderView *)self visualEffectView];
+  [visualEffectView setFrame:{v178, v179, v180, v182}];
 
-  v193 = [(PXActionableSectionHeaderView *)self backgroundImageView];
-  [v193 setFrame:{v234, v233, v232, v230 + v231}];
+  backgroundImageView = [(PXActionableSectionHeaderView *)self backgroundImageView];
+  [backgroundImageView setFrame:{v234, v233, v232, v230 + v231}];
 
-  v194 = [(PXActionableSectionHeaderView *)self primaryLabel];
-  [v194 setFrame:{v241, v285, v279, v239}];
+  primaryLabel8 = [(PXActionableSectionHeaderView *)self primaryLabel];
+  [primaryLabel8 setFrame:{v241, v285, v279, v239}];
 
-  v195 = [(PXActionableSectionHeaderView *)self spacerLabel];
-  [v195 setFrame:{rect_16b, v228, rect_24a, v252}];
+  spacerLabel4 = [(PXActionableSectionHeaderView *)self spacerLabel];
+  [spacerLabel4 setFrame:{rect_16b, v228, rect_24a, v252}];
 
-  v196 = [(PXActionableSectionHeaderView *)self secondaryLabel];
-  [v196 setFrame:{v256, v259, v237, v263}];
+  secondaryLabel7 = [(PXActionableSectionHeaderView *)self secondaryLabel];
+  [secondaryLabel7 setFrame:{v256, v259, v237, v263}];
 
-  v197 = [(PXActionableSectionHeaderView *)self currentActionButton];
-  [v197 setFrame:{v183, v187, v271, v269}];
+  currentActionButton7 = [(PXActionableSectionHeaderView *)self currentActionButton];
+  [currentActionButton7 setFrame:{v183, v187, v271, v269}];
 
-  v198 = [(PXActionableSectionHeaderView *)self currentSecondaryButton];
-  [v198 setFrame:{v273, v156, v290, v294}];
+  currentSecondaryButton7 = [(PXActionableSectionHeaderView *)self currentSecondaryButton];
+  [currentSecondaryButton7 setFrame:{v273, v156, v290, v294}];
 }
 
-- (double)heightForSizeClass:(int64_t)a3 width:(double)a4 safeAreaInsets:(UIEdgeInsets)a5
+- (double)heightForSizeClass:(int64_t)class width:(double)width safeAreaInsets:(UIEdgeInsets)insets
 {
   v8 = [MEMORY[0x1E69DD1B8] traitCollectionWithHorizontalSizeClass:?];
   [(PXActionableSectionHeaderView *)self setSelfSizingTraits:v8];
@@ -1348,30 +1348,30 @@ LABEL_32:
   [(PXActionableSectionHeaderView *)self contentInsets];
   UIEdgeInsetsMax();
   v9 = *(MEMORY[0x1E695F060] + 8);
-  v12 = a4 - v10 - v11;
-  if ([(PXActionableSectionHeaderView *)self layoutModeForHorizontalSizeClass:a3]== 1)
+  v12 = width - v10 - v11;
+  if ([(PXActionableSectionHeaderView *)self layoutModeForHorizontalSizeClass:class]== 1)
   {
     if ([(PXActionableSectionHeaderView *)self _wantsActionButton]|| [(PXActionableSectionHeaderView *)self _wantsSecondaryButton])
     {
-      v13 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v13);
+      preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
       if (IsAccessibilityCategory)
       {
-        v15 = [(PXActionableSectionHeaderView *)self primaryLabel];
-        [v15 sizeThatFits:{v12, v9}];
+        primaryLabel = [(PXActionableSectionHeaderView *)self primaryLabel];
+        [primaryLabel sizeThatFits:{v12, v9}];
         v17 = v16;
 
-        v18 = [(PXActionableSectionHeaderView *)self currentActionButton];
-        [v18 sizeThatFits:{v12, v9}];
+        currentActionButton = [(PXActionableSectionHeaderView *)self currentActionButton];
+        [currentActionButton sizeThatFits:{v12, v9}];
         v20 = v19;
 
-        v21 = [(PXActionableSectionHeaderView *)self currentSecondaryButton];
-        [v21 sizeThatFits:{v12, v9}];
+        currentSecondaryButton = [(PXActionableSectionHeaderView *)self currentSecondaryButton];
+        [currentSecondaryButton sizeThatFits:{v12, v9}];
         v23 = v22;
 
-        v24 = [(PXActionableSectionHeaderView *)self secondaryLabel];
-        [v24 sizeThatFits:{v12, v9}];
+        secondaryLabel = [(PXActionableSectionHeaderView *)self secondaryLabel];
+        [secondaryLabel sizeThatFits:{v12, v9}];
         v26 = v25;
 
         if ([(PXActionableSectionHeaderView *)self _wantsActionButton])
@@ -1384,9 +1384,9 @@ LABEL_32:
           v27 = 0.0;
         }
 
-        v28 = [(PXActionableSectionHeaderView *)self _wantsSecondaryButton];
+        _wantsSecondaryButton = [(PXActionableSectionHeaderView *)self _wantsSecondaryButton];
         v29 = v27 + 8.0;
-        if (!v28)
+        if (!_wantsSecondaryButton)
         {
           v29 = v27;
         }
@@ -1396,23 +1396,23 @@ LABEL_32:
 
       else
       {
-        v45 = [(PXActionableSectionHeaderView *)self currentActionButton];
-        [v45 sizeThatFits:{v12, v9}];
+        currentActionButton2 = [(PXActionableSectionHeaderView *)self currentActionButton];
+        [currentActionButton2 sizeThatFits:{v12, v9}];
         v47 = v46;
         v49 = v48;
 
-        v50 = [(PXActionableSectionHeaderView *)self currentSecondaryButton];
-        [v50 sizeThatFits:{v12, v9}];
+        currentSecondaryButton2 = [(PXActionableSectionHeaderView *)self currentSecondaryButton];
+        [currentSecondaryButton2 sizeThatFits:{v12, v9}];
         v52 = v51;
         v54 = v53;
 
         v55 = v12 - (v47 + v52 + 8.0);
-        v56 = [(PXActionableSectionHeaderView *)self primaryLabel];
-        [v56 sizeThatFits:{v55, v9}];
+        primaryLabel2 = [(PXActionableSectionHeaderView *)self primaryLabel];
+        [primaryLabel2 sizeThatFits:{v55, v9}];
         v58 = v57;
 
-        v59 = [(PXActionableSectionHeaderView *)self secondaryLabel];
-        [v59 sizeThatFits:{v55, v9}];
+        secondaryLabel2 = [(PXActionableSectionHeaderView *)self secondaryLabel];
+        [secondaryLabel2 sizeThatFits:{v55, v9}];
         v61 = v60;
 
         if (v61 <= 0.0)
@@ -1429,12 +1429,12 @@ LABEL_32:
 
     else
     {
-      v62 = [(PXActionableSectionHeaderView *)self primaryLabel];
-      [v62 sizeThatFits:{v12, v9}];
+      primaryLabel3 = [(PXActionableSectionHeaderView *)self primaryLabel];
+      [primaryLabel3 sizeThatFits:{v12, v9}];
       v64 = v63;
 
-      v65 = [(PXActionableSectionHeaderView *)self secondaryLabel];
-      [v65 sizeThatFits:{v12, v9}];
+      secondaryLabel3 = [(PXActionableSectionHeaderView *)self secondaryLabel];
+      [secondaryLabel3 sizeThatFits:{v12, v9}];
       v67 = v66;
 
       v30 = v64 + v67;
@@ -1443,20 +1443,20 @@ LABEL_32:
 
   else
   {
-    v31 = [(PXActionableSectionHeaderView *)self primaryLabel];
-    [v31 sizeThatFits:{v12, v9}];
+    primaryLabel4 = [(PXActionableSectionHeaderView *)self primaryLabel];
+    [primaryLabel4 sizeThatFits:{v12, v9}];
     v33 = v32;
 
-    v34 = [(PXActionableSectionHeaderView *)self secondaryLabel];
-    [v34 sizeThatFits:{v12, v9}];
+    secondaryLabel4 = [(PXActionableSectionHeaderView *)self secondaryLabel];
+    [secondaryLabel4 sizeThatFits:{v12, v9}];
     v36 = v35;
 
-    v37 = [(PXActionableSectionHeaderView *)self currentActionButton];
-    [v37 sizeThatFits:{v12, v9}];
+    currentActionButton3 = [(PXActionableSectionHeaderView *)self currentActionButton];
+    [currentActionButton3 sizeThatFits:{v12, v9}];
     v39 = v38;
 
-    v40 = [(PXActionableSectionHeaderView *)self currentSecondaryButton];
-    [v40 sizeThatFits:{v12, v9}];
+    currentSecondaryButton3 = [(PXActionableSectionHeaderView *)self currentSecondaryButton];
+    [currentSecondaryButton3 sizeThatFits:{v12, v9}];
     v42 = v41;
 
     v30 = fmax(v33, fmax(v36, fmax(v39, v42)));
@@ -1471,27 +1471,27 @@ LABEL_32:
 {
   if ([(PXActionableSectionHeaderView *)self layoutMode]== 1 && ([(PXActionableSectionHeaderView *)self secondaryText], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = v3;
-    v5 = [(UILabel *)self->_secondaryLabel font];
-    [v5 descender];
+    font2 = v3;
+    font = [(UILabel *)self->_secondaryLabel font];
+    [font descender];
     v7 = v6;
   }
 
   else
   {
-    v4 = [(UILabel *)self->_primaryLabel font];
-    [v4 descender];
+    font2 = [(UILabel *)self->_primaryLabel font];
+    [font2 descender];
     v7 = v8;
   }
 
   return 8.0 - v7;
 }
 
-- (void)setPreferredUserInterfaceStyle:(int64_t)a3
+- (void)setPreferredUserInterfaceStyle:(int64_t)style
 {
-  if (self->_preferredUserInterfaceStyle != a3)
+  if (self->_preferredUserInterfaceStyle != style)
   {
-    self->_preferredUserInterfaceStyle = a3;
+    self->_preferredUserInterfaceStyle = style;
     [(PXActionableSectionHeaderView *)self _updateBackgroundAnimated:0];
     [(PXActionableSectionHeaderView *)self _updateLabelColors];
     [(PXActionableSectionHeaderView *)self _updateBackdropActionButton];
@@ -1500,37 +1500,37 @@ LABEL_32:
   }
 }
 
-- (void)setSupportsMultipleLinesInCompactLayout:(BOOL)a3
+- (void)setSupportsMultipleLinesInCompactLayout:(BOOL)layout
 {
-  if (self->_supportsMultipleLinesInCompactLayout != a3)
+  if (self->_supportsMultipleLinesInCompactLayout != layout)
   {
-    self->_supportsMultipleLinesInCompactLayout = a3;
+    self->_supportsMultipleLinesInCompactLayout = layout;
     [(PXActionableSectionHeaderView *)self _updateLabelLineNumbers];
   }
 }
 
-- (void)setContentInsets:(UIEdgeInsets)a3
+- (void)setContentInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInsets.top, v3), vceqq_f64(*&self->_contentInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInsets = a3;
+    self->_contentInsets = insets;
     [(PXActionableSectionHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setBackdropViewGroupName:(id)a3
+- (void)setBackdropViewGroupName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   backdropViewGroupName = self->_backdropViewGroupName;
-  if (backdropViewGroupName != v4)
+  if (backdropViewGroupName != nameCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)backdropViewGroupName isEqualToString:v4];
-    v4 = v9;
+    v9 = nameCopy;
+    v6 = [(NSString *)backdropViewGroupName isEqualToString:nameCopy];
+    nameCopy = v9;
     if (!v6)
     {
       v7 = [(NSString *)v9 copy];
@@ -1538,68 +1538,68 @@ LABEL_32:
       self->_backdropViewGroupName = v7;
 
       [(PXActionableSectionHeaderView *)self _updateBackdropViewGroupName];
-      v4 = v9;
+      nameCopy = v9;
     }
   }
 }
 
-- (void)setBackgroundImageOverhang:(double)a3
+- (void)setBackgroundImageOverhang:(double)overhang
 {
-  if (self->_backgroundImageOverhang != a3)
+  if (self->_backgroundImageOverhang != overhang)
   {
-    self->_backgroundImageOverhang = a3;
+    self->_backgroundImageOverhang = overhang;
     [(PXActionableSectionHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setBackgroundImageAlpha:(double)a3
+- (void)setBackgroundImageAlpha:(double)alpha
 {
-  if (self->_backgroundImageAlpha != a3)
+  if (self->_backgroundImageAlpha != alpha)
   {
-    if (a3 < 0.0 || a3 > 1.0)
+    if (alpha < 0.0 || alpha > 1.0)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"PXActionableSectionHeaderView.m" lineNumber:614 description:{@"Invalid alpha %lf", *&a3}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXActionableSectionHeaderView.m" lineNumber:614 description:{@"Invalid alpha %lf", *&alpha}];
     }
 
-    self->_backgroundImageAlpha = a3;
+    self->_backgroundImageAlpha = alpha;
 
     [(PXActionableSectionHeaderView *)self _updateBackgroundAnimated:0];
   }
 }
 
-- (void)setBackgroundImage:(id)a3
+- (void)setBackgroundImage:(id)image
 {
-  v5 = a3;
-  if (self->_backgroundImage != v5)
+  imageCopy = image;
+  if (self->_backgroundImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_backgroundImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_backgroundImage, image);
     [(PXActionableSectionHeaderView *)self _updateBackgroundAnimated:0];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)performChangesToGroupedBackgroundPropertiesAnimated:(BOOL)a3 withBlock:(id)a4
+- (void)performChangesToGroupedBackgroundPropertiesAnimated:(BOOL)animated withBlock:(id)block
 {
-  v4 = a3;
-  v7 = a4;
-  v9 = v7;
+  animatedCopy = animated;
+  blockCopy = block;
+  v9 = blockCopy;
   if (self->_isModifyingGroupedBackgroundProperties)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXActionableSectionHeaderView.m" lineNumber:589 description:@"Modifying grouped background properties recursively not allowed"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXActionableSectionHeaderView.m" lineNumber:589 description:@"Modifying grouped background properties recursively not allowed"];
 
-    v7 = v9;
+    blockCopy = v9;
   }
 
   self->_isModifyingGroupedBackgroundProperties = 1;
   self->_wantsGroupedBackgroundPropertiesUpdate = 0;
-  (*(v7 + 2))();
+  (*(blockCopy + 2))();
   self->_isModifyingGroupedBackgroundProperties = 0;
   if (self->_wantsGroupedBackgroundPropertiesUpdate)
   {
-    [(PXActionableSectionHeaderView *)self _updateBackgroundAnimated:v4];
+    [(PXActionableSectionHeaderView *)self _updateBackgroundAnimated:animatedCopy];
     [(PXActionableSectionHeaderView *)self _updateLabelColors];
     [(PXActionableSectionHeaderView *)self _updateBackdropActionButton];
     [(PXActionableSectionHeaderView *)self _updateFilterButton];
@@ -1608,17 +1608,17 @@ LABEL_32:
 
 - (id)_backdropButtonForegroundColor
 {
-  v3 = [(PXActionableSectionHeaderView *)self _wantsOverBackgroundBehavior];
-  v4 = [(PXActionableSectionHeaderView *)self traitCollection];
-  if ([v4 userInterfaceStyle] == 2)
+  _wantsOverBackgroundBehavior = [(PXActionableSectionHeaderView *)self _wantsOverBackgroundBehavior];
+  traitCollection = [(PXActionableSectionHeaderView *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] == 2)
   {
   }
 
   else
   {
-    v5 = [(PXActionableSectionHeaderView *)self preferredUserInterfaceStyle];
+    preferredUserInterfaceStyle = [(PXActionableSectionHeaderView *)self preferredUserInterfaceStyle];
 
-    v6 = v5 == 2 || v3;
+    v6 = preferredUserInterfaceStyle == 2 || _wantsOverBackgroundBehavior;
     if (v6 != 1)
     {
       goto LABEL_9;
@@ -1627,15 +1627,15 @@ LABEL_32:
 
   if ([(PXActionableSectionHeaderView *)self backgroundStyle]== 1)
   {
-    v7 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
     goto LABEL_10;
   }
 
 LABEL_9:
-  v7 = [(PXActionableSectionHeaderView *)self tintColor];
+  whiteColor = [(PXActionableSectionHeaderView *)self tintColor];
 LABEL_10:
 
-  return v7;
+  return whiteColor;
 }
 
 - (BOOL)_wantsOverBackgroundBehavior
@@ -1653,22 +1653,22 @@ LABEL_10:
   }
 }
 
-- (void)setAvoidsTintedButtonsAtHighSpeed:(BOOL)a3
+- (void)setAvoidsTintedButtonsAtHighSpeed:(BOOL)speed
 {
-  if (self->_avoidsTintedButtonsAtHighSpeed != a3)
+  if (self->_avoidsTintedButtonsAtHighSpeed != speed)
   {
-    self->_avoidsTintedButtonsAtHighSpeed = a3;
+    self->_avoidsTintedButtonsAtHighSpeed = speed;
     [(PXActionableSectionHeaderView *)self _updateBackdropActionButton];
 
     [(PXActionableSectionHeaderView *)self _updateFilterButton];
   }
 }
 
-- (void)setSpeedRegime:(int64_t)a3
+- (void)setSpeedRegime:(int64_t)regime
 {
-  if (self->_speedRegime != a3)
+  if (self->_speedRegime != regime)
   {
-    self->_speedRegime = a3;
+    self->_speedRegime = regime;
     if (self->_isModifyingGroupedBackgroundProperties)
     {
       self->_wantsGroupedBackgroundPropertiesUpdate = 1;
@@ -1684,11 +1684,11 @@ LABEL_10:
   }
 }
 
-- (void)setWantsBackground:(BOOL)a3 animated:(BOOL)a4
+- (void)setWantsBackground:(BOOL)background animated:(BOOL)animated
 {
-  if (self->_wantsBackground != a3)
+  if (self->_wantsBackground != background)
   {
-    self->_wantsBackground = a3;
+    self->_wantsBackground = background;
     if (self->_isModifyingGroupedBackgroundProperties)
     {
       self->_wantsGroupedBackgroundPropertiesUpdate = 1;
@@ -1696,7 +1696,7 @@ LABEL_10:
 
     else
     {
-      [(PXActionableSectionHeaderView *)self _updateBackgroundAnimated:a4];
+      [(PXActionableSectionHeaderView *)self _updateBackgroundAnimated:animated];
       [(PXActionableSectionHeaderView *)self _updateLabelColors];
       [(PXActionableSectionHeaderView *)self _updateBackdropActionButton];
 
@@ -1705,11 +1705,11 @@ LABEL_10:
   }
 }
 
-- (void)setBackgroundStyle:(unint64_t)a3
+- (void)setBackgroundStyle:(unint64_t)style
 {
-  if (self->_backgroundStyle != a3)
+  if (self->_backgroundStyle != style)
   {
-    self->_backgroundStyle = a3;
+    self->_backgroundStyle = style;
     [(PXActionableSectionHeaderView *)self _updateBackgroundAnimated:0];
     [(PXActionableSectionHeaderView *)self _updateLabelColors];
     [(PXActionableSectionHeaderView *)self _updateBackdropActionButton];
@@ -1720,13 +1720,13 @@ LABEL_10:
 
 - (void)_updateFilterButton
 {
-  v3 = [(PXActionableSectionHeaderView *)self _backdropButtonForegroundColor];
-  v4 = [(PXActionableSectionHeaderView *)self filterButtonController];
-  [v4 setForegroundColor:v3];
+  _backdropButtonForegroundColor = [(PXActionableSectionHeaderView *)self _backdropButtonForegroundColor];
+  filterButtonController = [(PXActionableSectionHeaderView *)self filterButtonController];
+  [filterButtonController setForegroundColor:_backdropButtonForegroundColor];
 
-  v6 = [(PXActionableSectionHeaderView *)self _backdropButtonBackgroundColor];
-  v5 = [(PXActionableSectionHeaderView *)self filterButtonController];
-  [v5 setBackgroundColor:v6];
+  _backdropButtonBackgroundColor = [(PXActionableSectionHeaderView *)self _backdropButtonBackgroundColor];
+  filterButtonController2 = [(PXActionableSectionHeaderView *)self filterButtonController];
+  [filterButtonController2 setBackgroundColor:_backdropButtonBackgroundColor];
 }
 
 - (void)_updateSystemActionButton
@@ -1736,55 +1736,55 @@ LABEL_10:
   v16 = *MEMORY[0x1E69DB648];
   v17[0] = v3;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-  v5 = [(PXActionableSectionHeaderView *)self actionText];
-  v6 = v5;
+  actionText = [(PXActionableSectionHeaderView *)self actionText];
+  v6 = actionText;
   v7 = &stru_1F1741150;
-  if (v5)
+  if (actionText)
   {
-    v7 = v5;
+    v7 = actionText;
   }
 
   v8 = v7;
 
   v9 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v8 attributes:v4];
   v10 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v4];
-  v11 = [MEMORY[0x1E69DC888] lightGrayColor];
-  [v10 setObject:v11 forKeyedSubscript:*MEMORY[0x1E69DB650]];
+  lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
+  [v10 setObject:lightGrayColor forKeyedSubscript:*MEMORY[0x1E69DB650]];
 
   v12 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v8 attributes:v10];
-  v13 = [(PXActionableSectionHeaderView *)self systemActionButton];
-  [v13 setImage:0 forState:0];
-  [v13 setImage:0 forState:2];
-  [v13 setAttributedTitle:v9 forState:0];
-  [v13 setAttributedTitle:v12 forState:2];
-  v14 = [v13 titleLabel];
-  v15 = [v14 layer];
-  [v15 removeAllAnimations];
+  systemActionButton = [(PXActionableSectionHeaderView *)self systemActionButton];
+  [systemActionButton setImage:0 forState:0];
+  [systemActionButton setImage:0 forState:2];
+  [systemActionButton setAttributedTitle:v9 forState:0];
+  [systemActionButton setAttributedTitle:v12 forState:2];
+  titleLabel = [systemActionButton titleLabel];
+  layer = [titleLabel layer];
+  [layer removeAllAnimations];
 
-  [v13 sizeToFit];
-  [v13 layoutIfNeeded];
+  [systemActionButton sizeToFit];
+  [systemActionButton layoutIfNeeded];
   [(PXActionableSectionHeaderView *)self setNeedsLayout];
 }
 
 - (void)_updateBackdropActionButton
 {
-  v3 = [(PXActionableSectionHeaderView *)self actionText];
-  if (!v3)
+  actionText = [(PXActionableSectionHeaderView *)self actionText];
+  if (!actionText)
   {
     return;
   }
 
-  v4 = v3;
-  v5 = [(PXActionableSectionHeaderView *)self backdropButtonSpec];
+  v4 = actionText;
+  backdropButtonSpec = [(PXActionableSectionHeaderView *)self backdropButtonSpec];
 
-  if (!v5)
+  if (!backdropButtonSpec)
   {
     return;
   }
 
-  v6 = [(PXActionableSectionHeaderView *)self actionText];
-  v7 = [(PXActionableSectionHeaderView *)self backdropButtonSpec];
-  v17 = [PXCuratedLibraryOverlayButtonConfiguration configurationWithTitle:v6 spec:v7];
+  actionText2 = [(PXActionableSectionHeaderView *)self actionText];
+  backdropButtonSpec2 = [(PXActionableSectionHeaderView *)self backdropButtonSpec];
+  v17 = [PXCuratedLibraryOverlayButtonConfiguration configurationWithTitle:actionText2 spec:backdropButtonSpec2];
 
   if ([(PXActionableSectionHeaderView *)self actionButtonEnabled])
   {
@@ -1799,17 +1799,17 @@ LABEL_10:
   [v17 setActionHandler:v8];
   if ([(PXActionableSectionHeaderView *)self actionButtonEnabled])
   {
-    v9 = [(PXActionableSectionHeaderView *)self _wantsOverBackgroundBehavior];
-    v10 = [(PXActionableSectionHeaderView *)self traitCollection];
-    if ([v10 userInterfaceStyle] == 2)
+    _wantsOverBackgroundBehavior = [(PXActionableSectionHeaderView *)self _wantsOverBackgroundBehavior];
+    traitCollection = [(PXActionableSectionHeaderView *)self traitCollection];
+    if ([traitCollection userInterfaceStyle] == 2)
     {
     }
 
     else
     {
-      v12 = [(PXActionableSectionHeaderView *)self preferredUserInterfaceStyle];
+      preferredUserInterfaceStyle = [(PXActionableSectionHeaderView *)self preferredUserInterfaceStyle];
 
-      v13 = v12 == 2 || v9;
+      v13 = preferredUserInterfaceStyle == 2 || _wantsOverBackgroundBehavior;
       if (v13 != 1)
       {
         v11 = 14;
@@ -1835,40 +1835,40 @@ LABEL_10:
 
 LABEL_19:
   [v17 setStyle:v11];
-  v14 = [(PXActionableSectionHeaderView *)self _backdropButtonForegroundColor];
-  [v17 setTintColor:v14];
+  _backdropButtonForegroundColor = [(PXActionableSectionHeaderView *)self _backdropButtonForegroundColor];
+  [v17 setTintColor:_backdropButtonForegroundColor];
 
-  v15 = [(PXActionableSectionHeaderView *)self _backdropButtonBackgroundColor];
-  [v17 setBackgroundColor:v15];
+  _backdropButtonBackgroundColor = [(PXActionableSectionHeaderView *)self _backdropButtonBackgroundColor];
+  [v17 setBackgroundColor:_backdropButtonBackgroundColor];
 
-  v16 = [(PXActionableSectionHeaderView *)self backdropActionButton];
-  [v16 setUserData:v17];
+  backdropActionButton = [(PXActionableSectionHeaderView *)self backdropActionButton];
+  [backdropActionButton setUserData:v17];
 }
 
 - (void)_updateActionButtonConfiguration
 {
-  v3 = [(PXActionableSectionHeaderView *)self buttonStyle];
-  if (v3 == 1)
+  buttonStyle = [(PXActionableSectionHeaderView *)self buttonStyle];
+  if (buttonStyle == 1)
   {
     [(PXActionableSectionHeaderView *)self _updateBackdropActionButton];
 
     [(PXActionableSectionHeaderView *)self _updateFilterButton];
   }
 
-  else if (!v3)
+  else if (!buttonStyle)
   {
 
     [(PXActionableSectionHeaderView *)self _updateSystemActionButton];
   }
 }
 
-- (void)_updateSecondaryButtonAnimated:(BOOL)a3
+- (void)_updateSecondaryButtonAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PXActionableSectionHeaderView *)self filterButtonControllerFactory];
+  animatedCopy = animated;
+  filterButtonControllerFactory = [(PXActionableSectionHeaderView *)self filterButtonControllerFactory];
 
   currentSecondaryButton = self->_currentSecondaryButton;
-  if (v5)
+  if (filterButtonControllerFactory)
   {
     if (!currentSecondaryButton)
     {
@@ -1876,14 +1876,14 @@ LABEL_19:
       filterButtonController = self->_filterButtonController;
       self->_filterButtonController = v7;
 
-      v9 = [(PXContentFilterToggleButtonController *)self->_filterButtonController button];
+      button = [(PXContentFilterToggleButtonController *)self->_filterButtonController button];
       v10 = self->_currentSecondaryButton;
-      self->_currentSecondaryButton = v9;
+      self->_currentSecondaryButton = button;
 
       [(PXActionableSectionHeaderView *)self addSubview:self->_currentSecondaryButton];
     }
 
-    if (v3)
+    if (animatedCopy)
     {
       goto LABEL_5;
     }
@@ -1898,7 +1898,7 @@ LABEL_19:
     v12 = self->_filterButtonController;
     self->_filterButtonController = 0;
 
-    if (v3)
+    if (animatedCopy)
     {
 LABEL_5:
       v15[0] = MEMORY[0x1E69E9820];
@@ -1921,8 +1921,8 @@ LABEL_5:
     v13 = 0.0;
   }
 
-  v14 = [(PXActionableSectionHeaderView *)self currentSecondaryButton];
-  [v14 setAlpha:v13];
+  currentSecondaryButton = [(PXActionableSectionHeaderView *)self currentSecondaryButton];
+  [currentSecondaryButton setAlpha:v13];
 
 LABEL_11:
   [(PXActionableSectionHeaderView *)self setNeedsLayout];
@@ -1944,11 +1944,11 @@ void __64__PXActionableSectionHeaderView__updateSecondaryButtonAnimated___block_
   [v3 setAlpha:v2];
 }
 
-- (void)_updateActionButtonAnimated:(BOOL)a3
+- (void)_updateActionButtonAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PXActionableSectionHeaderView *)self buttonStyle];
-  if (v5 == 1)
+  animatedCopy = animated;
+  buttonStyle = [(PXActionableSectionHeaderView *)self buttonStyle];
+  if (buttonStyle == 1)
   {
     p_backdropActionButton = &self->_backdropActionButton;
     if (self->_backdropActionButton)
@@ -1968,7 +1968,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v5)
+  if (buttonStyle)
   {
     goto LABEL_11;
   }
@@ -1993,21 +1993,21 @@ LABEL_10:
   *(&self->super.super.super.super.isa + v12) = 0;
 
 LABEL_11:
-  v14 = [(PXActionableSectionHeaderView *)self showsActionButton];
-  if (v3)
+  showsActionButton = [(PXActionableSectionHeaderView *)self showsActionButton];
+  if (animatedCopy)
   {
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __61__PXActionableSectionHeaderView__updateActionButtonAnimated___block_invoke;
     v18[3] = &unk_1E7749428;
     v18[4] = self;
-    v19 = v14;
+    v19 = showsActionButton;
     [MEMORY[0x1E69DD250] animateWithDuration:196608 delay:v18 options:0 animations:0.3 completion:0.0];
   }
 
   else
   {
-    if (v14)
+    if (showsActionButton)
     {
       v15 = 1.0;
     }
@@ -2017,11 +2017,11 @@ LABEL_11:
       v15 = 0.0;
     }
 
-    v16 = [(PXActionableSectionHeaderView *)self systemActionButton];
-    [v16 setAlpha:v15];
+    systemActionButton = [(PXActionableSectionHeaderView *)self systemActionButton];
+    [systemActionButton setAlpha:v15];
 
-    v17 = [(PXActionableSectionHeaderView *)self backdropActionButton];
-    [v17 setAlpha:v15];
+    backdropActionButton = [(PXActionableSectionHeaderView *)self backdropActionButton];
+    [backdropActionButton setAlpha:v15];
   }
 
   [(PXActionableSectionHeaderView *)self setNeedsLayout];
@@ -2056,24 +2056,24 @@ void __61__PXActionableSectionHeaderView__updateActionButtonAnimated___block_inv
   [v5 setAlpha:v4];
 }
 
-- (void)setShowsTopSeparator:(BOOL)a3
+- (void)setShowsTopSeparator:(BOOL)separator
 {
-  if (self->_showsTopSeparator != a3)
+  if (self->_showsTopSeparator != separator)
   {
-    self->_showsTopSeparator = a3;
+    self->_showsTopSeparator = separator;
     [(PXActionableSectionHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setActionText:(id)a3
+- (void)setActionText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   actionText = self->_actionText;
-  if (actionText != v4)
+  if (actionText != textCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)actionText isEqualToString:v4];
-    v4 = v9;
+    v9 = textCopy;
+    v6 = [(NSString *)actionText isEqualToString:textCopy];
+    textCopy = v9;
     if (!v6)
     {
       v7 = [(NSString *)v9 copy];
@@ -2082,29 +2082,29 @@ void __61__PXActionableSectionHeaderView__updateActionButtonAnimated___block_inv
 
       [(PXActionableSectionHeaderView *)self _updateActionButtonAnimated:0];
       [(PXActionableSectionHeaderView *)self _updateActionButtonConfiguration];
-      v4 = v9;
+      textCopy = v9;
     }
   }
 }
 
-- (void)_updateActionButtonEnabledAnimated:(BOOL)a3
+- (void)_updateActionButtonEnabledAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PXActionableSectionHeaderView *)self buttonStyle];
-  if (v5 == 1)
+  animatedCopy = animated;
+  buttonStyle = [(PXActionableSectionHeaderView *)self buttonStyle];
+  if (buttonStyle == 1)
   {
     [(PXActionableSectionHeaderView *)self _updateBackdropActionButton];
 
     [(PXActionableSectionHeaderView *)self _updateFilterButton];
   }
 
-  else if (!v5)
+  else if (!buttonStyle)
   {
-    v6 = [(PXActionableSectionHeaderView *)self actionButtonEnabled];
-    v7 = [(PXActionableSectionHeaderView *)self systemActionButton];
-    [v7 setEnabled:v6];
+    actionButtonEnabled = [(PXActionableSectionHeaderView *)self actionButtonEnabled];
+    systemActionButton = [(PXActionableSectionHeaderView *)self systemActionButton];
+    [systemActionButton setEnabled:actionButtonEnabled];
 
-    if (v3)
+    if (animatedCopy)
     {
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
@@ -2126,8 +2126,8 @@ void __61__PXActionableSectionHeaderView__updateActionButtonAnimated___block_inv
         v8 = 0.6;
       }
 
-      v9 = [(PXActionableSectionHeaderView *)self systemActionButton];
-      [v9 setAlpha:v8];
+      systemActionButton2 = [(PXActionableSectionHeaderView *)self systemActionButton];
+      [systemActionButton2 setAlpha:v8];
     }
   }
 }
@@ -2148,67 +2148,67 @@ void __68__PXActionableSectionHeaderView__updateActionButtonEnabledAnimated___bl
   [v3 setAlpha:v2];
 }
 
-- (void)setActionButtonEnabled:(BOOL)a3 animated:(BOOL)a4
+- (void)setActionButtonEnabled:(BOOL)enabled animated:(BOOL)animated
 {
-  if (self->_actionButtonEnabled != a3)
+  if (self->_actionButtonEnabled != enabled)
   {
-    self->_actionButtonEnabled = a3;
-    [(PXActionableSectionHeaderView *)self _updateActionButtonEnabledAnimated:a4];
+    self->_actionButtonEnabled = enabled;
+    [(PXActionableSectionHeaderView *)self _updateActionButtonEnabledAnimated:animated];
   }
 }
 
 - (BOOL)_wantsSecondaryButton
 {
-  v2 = [(PXActionableSectionHeaderView *)self currentSecondaryButton];
-  v3 = v2 != 0;
+  currentSecondaryButton = [(PXActionableSectionHeaderView *)self currentSecondaryButton];
+  v3 = currentSecondaryButton != 0;
 
   return v3;
 }
 
 - (BOOL)_wantsActionButton
 {
-  v2 = [(PXActionableSectionHeaderView *)self actionText];
-  v3 = [v2 length] != 0;
+  actionText = [(PXActionableSectionHeaderView *)self actionText];
+  v3 = [actionText length] != 0;
 
   return v3;
 }
 
-- (void)setShowsSecondaryButton:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowsSecondaryButton:(BOOL)button animated:(BOOL)animated
 {
-  if (self->_showsSecondaryButton != a3)
+  if (self->_showsSecondaryButton != button)
   {
-    self->_showsSecondaryButton = a3;
-    [(PXActionableSectionHeaderView *)self _updateSecondaryButtonAnimated:a4];
+    self->_showsSecondaryButton = button;
+    [(PXActionableSectionHeaderView *)self _updateSecondaryButtonAnimated:animated];
   }
 }
 
-- (void)setShowsActionButton:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowsActionButton:(BOOL)button animated:(BOOL)animated
 {
-  if (self->_showsActionButton != a3)
+  if (self->_showsActionButton != button)
   {
-    self->_showsActionButton = a3;
-    [(PXActionableSectionHeaderView *)self _updateActionButtonAnimated:a4];
+    self->_showsActionButton = button;
+    [(PXActionableSectionHeaderView *)self _updateActionButtonAnimated:animated];
   }
 }
 
-- (void)setBackdropButtonSpec:(id)a3
+- (void)setBackdropButtonSpec:(id)spec
 {
-  v5 = a3;
-  if (self->_backdropButtonSpec != v5)
+  specCopy = spec;
+  if (self->_backdropButtonSpec != specCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_backdropButtonSpec, a3);
+    v6 = specCopy;
+    objc_storeStrong(&self->_backdropButtonSpec, spec);
     [(PXActionableSectionHeaderView *)self _updateBackdropActionButton];
     [(PXActionableSectionHeaderView *)self _updateFilterButton];
-    v5 = v6;
+    specCopy = v6;
   }
 }
 
-- (void)setFilterButtonControllerFactory:(id)a3
+- (void)setFilterButtonControllerFactory:(id)factory
 {
-  if (self->_filterButtonControllerFactory != a3)
+  if (self->_filterButtonControllerFactory != factory)
   {
-    v4 = [a3 copy];
+    v4 = [factory copy];
     filterButtonControllerFactory = self->_filterButtonControllerFactory;
     self->_filterButtonControllerFactory = v4;
 
@@ -2218,11 +2218,11 @@ void __68__PXActionableSectionHeaderView__updateActionButtonEnabledAnimated___bl
   }
 }
 
-- (void)setButtonStyle:(unint64_t)a3
+- (void)setButtonStyle:(unint64_t)style
 {
-  if (self->_buttonStyle != a3)
+  if (self->_buttonStyle != style)
   {
-    self->_buttonStyle = a3;
+    self->_buttonStyle = style;
     [(PXActionableSectionHeaderView *)self _updateActionButtonAnimated:0];
 
     [(PXActionableSectionHeaderView *)self _updateActionButtonConfiguration];
@@ -2231,25 +2231,25 @@ void __68__PXActionableSectionHeaderView__updateActionButtonEnabledAnimated___bl
 
 - (UIControl)currentActionButton
 {
-  v3 = [(PXActionableSectionHeaderView *)self buttonStyle];
-  if (v3 == 1)
+  buttonStyle = [(PXActionableSectionHeaderView *)self buttonStyle];
+  if (buttonStyle == 1)
   {
-    v3 = [(PXActionableSectionHeaderView *)self backdropActionButton];
+    buttonStyle = [(PXActionableSectionHeaderView *)self backdropActionButton];
   }
 
-  else if (!v3)
+  else if (!buttonStyle)
   {
-    v3 = [(PXActionableSectionHeaderView *)self systemActionButton];
+    buttonStyle = [(PXActionableSectionHeaderView *)self systemActionButton];
   }
 
-  return v3;
+  return buttonStyle;
 }
 
-- (void)setAccessibilityIdentifierWithValue:(id)a3
+- (void)setAccessibilityIdentifierWithValue:(id)value
 {
-  if (a3)
+  if (value)
   {
-    v4 = [a3 stringByReplacingOccurrencesOfString:@" " withString:@"_"];
+    v4 = [value stringByReplacingOccurrencesOfString:@" " withString:@"_"];
     v5 = [@"section_header" stringByAppendingString:@"_"];
     v6 = [v5 stringByAppendingString:v4];
   }
@@ -2264,24 +2264,24 @@ void __68__PXActionableSectionHeaderView__updateActionButtonEnabledAnimated___bl
 
 - (NSString)secondaryText
 {
-  v2 = [(PXActionableSectionHeaderView *)self secondaryLabel];
-  v3 = [v2 text];
+  secondaryLabel = [(PXActionableSectionHeaderView *)self secondaryLabel];
+  text = [secondaryLabel text];
 
-  return v3;
+  return text;
 }
 
 - (void)updateSecondaryLabel
 {
   v18 = objc_alloc_init(MEMORY[0x1E696AD40]);
-  v3 = [(PXActionableSectionHeaderView *)self secondarySymbolName];
-  v4 = [v3 length];
+  secondarySymbolName = [(PXActionableSectionHeaderView *)self secondarySymbolName];
+  v4 = [secondarySymbolName length];
 
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
     v6 = MEMORY[0x1E69DCAB8];
-    v7 = [(PXActionableSectionHeaderView *)self secondarySymbolName];
-    v8 = [v6 systemImageNamed:v7];
+    secondarySymbolName2 = [(PXActionableSectionHeaderView *)self secondarySymbolName];
+    v8 = [v6 systemImageNamed:secondarySymbolName2];
     v9 = [v8 imageWithRenderingMode:2];
     [v5 setImage:v9];
 
@@ -2291,64 +2291,64 @@ void __68__PXActionableSectionHeaderView__updateActionButtonEnabledAnimated___bl
     [v18 appendAttributedString:v11];
   }
 
-  v12 = [(PXActionableSectionHeaderView *)self secondaryText];
-  v13 = [v12 length];
+  secondaryText = [(PXActionableSectionHeaderView *)self secondaryText];
+  v13 = [secondaryText length];
 
   if (v13)
   {
     v14 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v15 = [(PXActionableSectionHeaderView *)self secondaryText];
-    v16 = [v14 initWithString:v15];
+    secondaryText2 = [(PXActionableSectionHeaderView *)self secondaryText];
+    v16 = [v14 initWithString:secondaryText2];
     [v18 appendAttributedString:v16];
   }
 
-  v17 = [(PXActionableSectionHeaderView *)self secondaryLabel];
-  [v17 setAttributedText:v18];
+  secondaryLabel = [(PXActionableSectionHeaderView *)self secondaryLabel];
+  [secondaryLabel setAttributedText:v18];
 
   [(PXActionableSectionHeaderView *)self _updateSpacerLabelHiddenState];
   [(PXActionableSectionHeaderView *)self setNeedsLayout];
 }
 
-- (void)setSecondaryText:(id)a3
+- (void)setSecondaryText:(id)text
 {
-  v9 = a3;
-  v4 = [(PXActionableSectionHeaderView *)self secondaryLabel];
-  v5 = [v4 text];
-  v6 = v5;
-  if (v5 == v9)
+  textCopy = text;
+  secondaryLabel = [(PXActionableSectionHeaderView *)self secondaryLabel];
+  text = [secondaryLabel text];
+  v6 = text;
+  if (text == textCopy)
   {
   }
 
   else
   {
-    v7 = [v5 isEqualToString:v9];
+    v7 = [text isEqualToString:textCopy];
 
     if ((v7 & 1) == 0)
     {
-      v8 = [(PXActionableSectionHeaderView *)self secondaryLabel];
-      [v8 setText:v9];
+      secondaryLabel2 = [(PXActionableSectionHeaderView *)self secondaryLabel];
+      [secondaryLabel2 setText:textCopy];
 
       [(PXActionableSectionHeaderView *)self updateSecondaryLabel];
     }
   }
 }
 
-- (void)setSecondarySymbolName:(id)a3
+- (void)setSecondarySymbolName:(id)name
 {
-  v8 = a3;
-  v5 = [(PXActionableSectionHeaderView *)self secondarySymbolName];
-  v6 = v5;
-  if (v5 == v8)
+  nameCopy = name;
+  secondarySymbolName = [(PXActionableSectionHeaderView *)self secondarySymbolName];
+  v6 = secondarySymbolName;
+  if (secondarySymbolName == nameCopy)
   {
   }
 
   else
   {
-    v7 = [v5 isEqualToString:?];
+    v7 = [secondarySymbolName isEqualToString:?];
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_secondarySymbolName, a3);
+      objc_storeStrong(&self->_secondarySymbolName, name);
       [(PXActionableSectionHeaderView *)self updateSecondaryLabel];
     }
   }
@@ -2356,26 +2356,26 @@ void __68__PXActionableSectionHeaderView__updateActionButtonEnabledAnimated___bl
 
 - (NSString)primaryText
 {
-  v2 = [(PXActionableSectionHeaderView *)self primaryLabel];
-  v3 = [v2 text];
+  primaryLabel = [(PXActionableSectionHeaderView *)self primaryLabel];
+  text = [primaryLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setPrimaryText:(id)a3
+- (void)setPrimaryText:(id)text
 {
-  v5 = a3;
-  v4 = [(PXActionableSectionHeaderView *)self primaryLabel];
-  [v4 setText:v5];
+  textCopy = text;
+  primaryLabel = [(PXActionableSectionHeaderView *)self primaryLabel];
+  [primaryLabel setText:textCopy];
 
   [(PXActionableSectionHeaderView *)self _updateSpacerLabelHiddenState];
   [(PXActionableSectionHeaderView *)self setNeedsLayout];
-  [(PXActionableSectionHeaderView *)self setAccessibilityIdentifierWithValue:v5];
+  [(PXActionableSectionHeaderView *)self setAccessibilityIdentifierWithValue:textCopy];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -2385,43 +2385,43 @@ void __68__PXActionableSectionHeaderView__updateActionButtonEnabledAnimated___bl
   }
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v5.receiver = self;
   v5.super_class = PXActionableSectionHeaderView;
-  [(PXActionableSectionHeaderView *)&v5 applyLayoutAttributes:v4];
+  [(PXActionableSectionHeaderView *)&v5 applyLayoutAttributes:attributesCopy];
   if (objc_opt_respondsToSelector())
   {
-    -[PXActionableSectionHeaderView setWantsBackground:](self, "setWantsBackground:", [v4 floating]);
+    -[PXActionableSectionHeaderView setWantsBackground:](self, "setWantsBackground:", [attributesCopy floating]);
   }
 }
 
-- (void)setSelfSizingTraits:(id)a3
+- (void)setSelfSizingTraits:(id)traits
 {
-  v5 = a3;
-  if (self->_selfSizingTraits != v5)
+  traitsCopy = traits;
+  if (self->_selfSizingTraits != traitsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_selfSizingTraits, a3);
+    v6 = traitsCopy;
+    objc_storeStrong(&self->_selfSizingTraits, traits);
     [(PXActionableSectionHeaderView *)self _updateWithCurrentTraits];
-    v5 = v6;
+    traitsCopy = v6;
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = PXActionableSectionHeaderView;
-  v4 = a3;
-  [(PXActionableSectionHeaderView *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(PXActionableSectionHeaderView *)&v8 traitCollectionDidChange:changeCopy];
   [(PXActionableSectionHeaderView *)self _updateWithCurrentTraits:v8.receiver];
-  v5 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
 
-  v6 = [(PXActionableSectionHeaderView *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  traitCollection = [(PXActionableSectionHeaderView *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(PXActionableSectionHeaderView *)self _updateLabelColors];
     [(PXActionableSectionHeaderView *)self _updateBackdropActionButton];
@@ -2431,56 +2431,56 @@ void __68__PXActionableSectionHeaderView__updateActionButtonEnabledAnimated___bl
 
 - (id)traitCollection
 {
-  v3 = [(PXActionableSectionHeaderView *)self selfSizingTraits];
-  v4 = v3;
-  if (v3)
+  selfSizingTraits = [(PXActionableSectionHeaderView *)self selfSizingTraits];
+  v4 = selfSizingTraits;
+  if (selfSizingTraits)
   {
-    v5 = v3;
+    traitCollection = selfSizingTraits;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = PXActionableSectionHeaderView;
-    v5 = [(PXActionableSectionHeaderView *)&v8 traitCollection];
+    traitCollection = [(PXActionableSectionHeaderView *)&v8 traitCollection];
   }
 
-  v6 = v5;
+  v6 = traitCollection;
 
   return v6;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = PXActionableSectionHeaderView;
-  [(PXActionableSectionHeaderView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PXActionableSectionHeaderView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(PXActionableSectionHeaderView *)self _updateClipping];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = PXActionableSectionHeaderView;
-  [(PXActionableSectionHeaderView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PXActionableSectionHeaderView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(PXActionableSectionHeaderView *)self _updateClipping];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
 
   v4.receiver = self;
   v4.super_class = PXActionableSectionHeaderView;
   [(PXActionableSectionHeaderView *)&v4 dealloc];
 }
 
-- (PXActionableSectionHeaderView)initWithFrame:(CGRect)a3
+- (PXActionableSectionHeaderView)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = PXActionableSectionHeaderView;
-  v3 = [(PXActionableSectionHeaderView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXActionableSectionHeaderView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -2507,8 +2507,8 @@ void __68__PXActionableSectionHeaderView__updateActionButtonEnabledAnimated___bl
     [(PXActionableSectionHeaderView *)v3 addSubview:v3->_secondaryLabel];
     v3->_backgroundStyle = 0;
     [(PXActionableSectionHeaderView *)v3 _updateBackgroundAnimated:0];
-    v10 = [MEMORY[0x1E69DC888] clearColor];
-    [(PXActionableSectionHeaderView *)v3 setBackgroundColor:v10];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(PXActionableSectionHeaderView *)v3 setBackgroundColor:clearColor];
 
     [(PXActionableSectionHeaderView *)v3 setOpaque:0];
     [(PXActionableSectionHeaderView *)v3 _updateLabelFonts];
@@ -2521,8 +2521,8 @@ void __68__PXActionableSectionHeaderView__updateActionButtonEnabledAnimated___bl
     [(PXActionableSectionHeaderView *)v3 _updateSecondaryButtonAnimated:0];
     [(PXActionableSectionHeaderView *)v3 _updateFilterButton];
     [(PXActionableSectionHeaderView *)v3 setAccessibilityIdentifierWithValue:0];
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v3 selector:sel__contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v3;

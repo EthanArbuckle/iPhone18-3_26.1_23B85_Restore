@@ -10,7 +10,7 @@
   if (result)
   {
 
-    return [a1 _openGate];
+    return [self _openGate];
   }
 
   return result;

@@ -1,9 +1,9 @@
 @interface _UILongPressClickInteractionDriver
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
 - (BOOL)hasExceededAllowableMovement;
-- (CGPoint)locationInCoordinateSpace:(id)a3;
+- (CGPoint)locationInCoordinateSpace:(id)space;
 - (NSString)description;
 - (UIView)view;
 - (_UIClickInteractionDriverDelegate)delegate;
@@ -15,14 +15,14 @@
 - (double)touchDuration;
 - (unint64_t)inputPrecision;
 - (void)_asyncGestureBegan;
-- (void)_handleGestureRecognizer:(id)a3;
-- (void)_notifyDelegateOfUpdatedClickDownProgress:(double)a3 forceAdjustedClickDownDuration:(double)a4;
+- (void)_handleGestureRecognizer:(id)recognizer;
+- (void)_notifyDelegateOfUpdatedClickDownProgress:(double)progress forceAdjustedClickDownDuration:(double)duration;
 - (void)_updateForActiveGestureRecognizer;
-- (void)_updateTimeoutDebugUI:(double)a3;
+- (void)_updateTimeoutDebugUI:(double)i;
 - (void)cancelInteraction;
-- (void)setAllowableMovement:(double)a3;
-- (void)setDelegate:(id)a3;
-- (void)setView:(id)a3;
+- (void)setAllowableMovement:(double)movement;
+- (void)setDelegate:(id)delegate;
+- (void)setView:(id)view;
 @end
 
 @implementation _UILongPressClickInteractionDriver
@@ -61,9 +61,9 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -75,16 +75,16 @@
   }
 }
 
-- (void)setAllowableMovement:(double)a3
+- (void)setAllowableMovement:(double)movement
 {
-  v4 = [(_UILongPressClickInteractionDriver *)self gestureRecognizer];
-  [v4 setAllowableMovement:a3];
+  gestureRecognizer = [(_UILongPressClickInteractionDriver *)self gestureRecognizer];
+  [gestureRecognizer setAllowableMovement:movement];
 }
 
 - (double)allowableMovement
 {
-  v2 = [(_UILongPressClickInteractionDriver *)self gestureRecognizer];
-  [v2 allowableMovement];
+  gestureRecognizer = [(_UILongPressClickInteractionDriver *)self gestureRecognizer];
+  [gestureRecognizer allowableMovement];
   v4 = v3;
 
   return v4;
@@ -92,15 +92,15 @@
 
 - (NSString)description
 {
-  v3 = [(_UILongPressClickInteractionDriver *)self behavior];
-  if (v3 > 2)
+  behavior = [(_UILongPressClickInteractionDriver *)self behavior];
+  if (behavior > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = off_1E71024F0[v3];
+    v4 = off_1E71024F0[behavior];
   }
 
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@: %p; behavior = %@>", objc_opt_class(), self, v4];
@@ -116,8 +116,8 @@
 
 - (double)touchDuration
 {
-  v2 = [(_UILongPressClickInteractionDriver *)self gestureRecognizer];
-  [v2 touchDuration];
+  gestureRecognizer = [(_UILongPressClickInteractionDriver *)self gestureRecognizer];
+  [gestureRecognizer touchDuration];
   v4 = v3;
 
   return v4;
@@ -125,30 +125,30 @@
 
 - (BOOL)hasExceededAllowableMovement
 {
-  v2 = [(_UILongPressClickInteractionDriver *)self gestureRecognizer];
-  v3 = [v2 hasExceededAllowableMovement];
+  gestureRecognizer = [(_UILongPressClickInteractionDriver *)self gestureRecognizer];
+  hasExceededAllowableMovement = [gestureRecognizer hasExceededAllowableMovement];
 
-  return v3;
+  return hasExceededAllowableMovement;
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_view);
 
   v5 = obj;
   if (WeakRetained != obj)
   {
-    v6 = [(_UILongPressClickInteractionDriver *)self gestureRecognizer];
-    v7 = [v6 view];
-    [v7 removeGestureRecognizer:v6];
+    gestureRecognizer = [(_UILongPressClickInteractionDriver *)self gestureRecognizer];
+    view = [gestureRecognizer view];
+    [view removeGestureRecognizer:gestureRecognizer];
 
     v8 = objc_storeWeak(&self->_view, obj);
     if (obj)
     {
       self->_currentState = 1;
       v9 = objc_loadWeakRetained(&self->_view);
-      [v9 addGestureRecognizer:v6];
+      [v9 addGestureRecognizer:gestureRecognizer];
     }
 
     v5 = obj;
@@ -157,25 +157,25 @@
 
 - (void)cancelInteraction
 {
-  v3 = [(_UILongPressClickInteractionDriver *)self gestureRecognizer];
-  [v3 setEnabled:0];
+  gestureRecognizer = [(_UILongPressClickInteractionDriver *)self gestureRecognizer];
+  [gestureRecognizer setEnabled:0];
 
-  v4 = [(_UILongPressClickInteractionDriver *)self gestureRecognizer];
-  [v4 setEnabled:1];
+  gestureRecognizer2 = [(_UILongPressClickInteractionDriver *)self gestureRecognizer];
+  [gestureRecognizer2 setEnabled:1];
 }
 
-- (CGPoint)locationInCoordinateSpace:(id)a3
+- (CGPoint)locationInCoordinateSpace:(id)space
 {
-  v4 = a3;
-  v5 = [(_UILongPressClickInteractionDriver *)self view];
-  if (v5)
+  spaceCopy = space;
+  view = [(_UILongPressClickInteractionDriver *)self view];
+  if (view)
   {
-    v6 = [(_UILongPressClickInteractionDriver *)self gestureRecognizer];
-    [v6 locationInView:v5];
+    gestureRecognizer = [(_UILongPressClickInteractionDriver *)self gestureRecognizer];
+    [gestureRecognizer locationInView:view];
     v8 = v7;
     v10 = v9;
 
-    [v5 convertPoint:v4 toCoordinateSpace:{v8, v10}];
+    [view convertPoint:spaceCopy toCoordinateSpace:{v8, v10}];
     v12 = v11;
     v14 = v13;
   }
@@ -195,10 +195,10 @@
 
 - (unint64_t)inputPrecision
 {
-  v2 = [(_UILongPressClickInteractionDriver *)self gestureRecognizer];
-  if (v2)
+  gestureRecognizer = [(_UILongPressClickInteractionDriver *)self gestureRecognizer];
+  if (gestureRecognizer)
   {
-    v3 = v2[24];
+    v3 = gestureRecognizer[24];
   }
 
   else
@@ -239,9 +239,9 @@
       +[UIDevice currentDevice];
     }
     v11 = ;
-    v12 = [v11 userInterfaceIdiom];
+    userInterfaceIdiom = [v11 userInterfaceIdiom];
 
-    if (v12 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v13 = _UIInternalPreferenceUsesDefault_1(&unk_1ED48AB80, @"LongPressClickInteractionDriverClickDownDurationPad");
       result = *&qword_1ED48AB88;
@@ -318,32 +318,32 @@ LABEL_11:
   return result;
 }
 
-- (void)_handleGestureRecognizer:(id)a3
+- (void)_handleGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   currentState = self->_currentState;
-  v6 = [(_UILongPressClickInteractionDriver *)self gestureRecognizer];
-  v7 = [v6 state];
+  gestureRecognizer = [(_UILongPressClickInteractionDriver *)self gestureRecognizer];
+  state = [gestureRecognizer state];
 
-  if ((v7 - 4) >= 2)
+  if ((state - 4) >= 2)
   {
-    if (v7 == 1)
+    if (state == 1)
     {
       objc_initWeak(&location, self);
-      v8 = [(_UILongPressClickInteractionDriver *)self delegate];
+      delegate = [(_UILongPressClickInteractionDriver *)self delegate];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __63___UILongPressClickInteractionDriver__handleGestureRecognizer___block_invoke;
       v9[3] = &unk_1E71024D0;
       objc_copyWeak(&v10, &location);
-      [v8 clickDriver:self shouldBegin:v9];
+      [delegate clickDriver:self shouldBegin:v9];
 
       objc_destroyWeak(&v10);
       objc_destroyWeak(&location);
       goto LABEL_9;
     }
 
-    if (v7 != 3)
+    if (state != 3)
     {
       [(_UILongPressClickInteractionDriver *)self _updateForActiveGestureRecognizer];
       goto LABEL_9;
@@ -370,18 +370,18 @@ LABEL_9:
 
 - (void)_updateForActiveGestureRecognizer
 {
-  v3 = [(_UILongPressClickInteractionDriver *)self gestureRecognizer];
-  v4 = v3;
+  gestureRecognizer = [(_UILongPressClickInteractionDriver *)self gestureRecognizer];
+  v4 = gestureRecognizer;
   currentState = self->_currentState;
   if (currentState == 1)
   {
     goto LABEL_37;
   }
 
-  v37 = v3;
-  v6 = [v3 state];
+  v37 = gestureRecognizer;
+  state = [gestureRecognizer state];
   v4 = v37;
-  if (v6 != 2)
+  if (state != 2)
   {
     goto LABEL_37;
   }
@@ -390,11 +390,11 @@ LABEL_9:
   v8 = v7;
   [v37 touchForce];
   v10 = v9;
-  v11 = [v37 _allActiveTouches];
-  v12 = [v11 anyObject];
-  v13 = [v12 _isPointerTouch];
+  _allActiveTouches = [v37 _allActiveTouches];
+  anyObject = [_allActiveTouches anyObject];
+  _isPointerTouch = [anyObject _isPointerTouch];
 
-  if (!v13)
+  if (!_isPointerTouch)
   {
     v19 = _UIInternalPreferenceUsesDefault_1(&unk_1ED48AC20, @"ClickAutoTriggerForceThreshold");
     v20 = *&qword_1ED48AC28;
@@ -489,8 +489,8 @@ LABEL_23:
   v32 = v31;
   [(_UILongPressClickInteractionDriver *)self forceMultiplier];
   v34 = v33;
-  v35 = [(_UILongPressClickInteractionDriver *)self clicksUpAutomaticallyAfterTimeout];
-  if (currentState == 3 && v35 && v8 > v32 / v34)
+  clicksUpAutomaticallyAfterTimeout = [(_UILongPressClickInteractionDriver *)self clicksUpAutomaticallyAfterTimeout];
+  if (currentState == 3 && clicksUpAutomaticallyAfterTimeout && v8 > v32 / v34)
   {
     handleEvent(stateMachineSpec_0, self->_currentState, 2, self, &self->_currentState);
     [(_UILongPressClickInteractionDriver *)self _updateTimeoutDebugUI:v8];
@@ -512,19 +512,19 @@ LABEL_36:
 LABEL_37:
 }
 
-- (void)_notifyDelegateOfUpdatedClickDownProgress:(double)a3 forceAdjustedClickDownDuration:(double)a4
+- (void)_notifyDelegateOfUpdatedClickDownProgress:(double)progress forceAdjustedClickDownDuration:(double)duration
 {
   if (self->_delegateImplements.didUpdateHighlightProgress)
   {
     if ([(_UILongPressClickInteractionDriver *)self clicksUpAutomaticallyAfterTimeout])
     {
-      v8 = [(_UILongPressClickInteractionDriver *)self gestureRecognizer];
-      [v8 minimumDurationRequired];
+      gestureRecognizer = [(_UILongPressClickInteractionDriver *)self gestureRecognizer];
+      [gestureRecognizer minimumDurationRequired];
       v10 = v9;
 
-      v11 = a3 + -1.0;
-      v12 = fmax(fmin((a3 - v10 / a4) / (1.0 - v10 / a4), 1.0), 0.0);
-      if (a3 + -1.0 < 0.0)
+      v11 = progress + -1.0;
+      v12 = fmax(fmin((progress - v10 / duration) / (1.0 - v10 / duration), 1.0), 0.0);
+      if (progress + -1.0 < 0.0)
       {
         v11 = 0.0;
       }
@@ -534,28 +534,28 @@ LABEL_37:
 
     else
     {
-      v13 = fmax(fmin(a3 / (pow(1.0 - a3, 3.4000001) + a3), 1.0), 0.0);
+      v13 = fmax(fmin(progress / (pow(1.0 - progress, 3.4000001) + progress), 1.0), 0.0);
     }
 
-    v14 = [(_UILongPressClickInteractionDriver *)self delegate];
-    [v14 clickDriver:self didUpdateHighlightProgress:v13];
+    delegate = [(_UILongPressClickInteractionDriver *)self delegate];
+    [delegate clickDriver:self didUpdateHighlightProgress:v13];
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  v8 = touchCopy;
   behavior = self->_behavior;
   if (behavior == 2)
   {
-    LOBYTE(v10) = [v7 _originatesFromPointerEvent];
+    LOBYTE(v10) = [touchCopy _originatesFromPointerEvent];
   }
 
   else if (behavior == 1)
   {
-    v10 = [v7 _originatesFromPointerEvent] ^ 1;
+    v10 = [touchCopy _originatesFromPointerEvent] ^ 1;
   }
 
   else
@@ -566,33 +566,33 @@ LABEL_37:
   return v10;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UILongPressClickInteractionDriver *)self gestureRecognizer];
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  gestureRecognizer = [(_UILongPressClickInteractionDriver *)self gestureRecognizer];
 
-  if (v8 != v6)
+  if (gestureRecognizer != recognizerCopy)
   {
     goto LABEL_2;
   }
 
-  v10 = [v7 name];
-  v11 = [v6 name];
-  v12 = [v10 isEqualToString:v11];
+  name = [gestureRecognizerCopy name];
+  name2 = [recognizerCopy name];
+  v12 = [name isEqualToString:name2];
 
   if (v12)
   {
-    v13 = [v6 view];
-    v14 = [v7 view];
-    if (v13 == v14)
+    view = [recognizerCopy view];
+    view2 = [gestureRecognizerCopy view];
+    if (view == view2)
     {
       v9 = 1;
     }
 
     else
     {
-      v9 = [v13 isDescendantOfView:v14];
+      v9 = [view isDescendantOfView:view2];
     }
 
     goto LABEL_10;
@@ -600,8 +600,8 @@ LABEL_37:
 
   if (self->_delegateImplements.shouldDelayGesture)
   {
-    v13 = [(_UILongPressClickInteractionDriver *)self delegate];
-    v9 = [v13 clickDriver:self shouldDelayGestureRecognizer:v7];
+    view = [(_UILongPressClickInteractionDriver *)self delegate];
+    v9 = [view clickDriver:self shouldDelayGestureRecognizer:gestureRecognizerCopy];
 LABEL_10:
 
     goto LABEL_11;
@@ -614,27 +614,27 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UILongPressClickInteractionDriver *)self gestureRecognizer];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  gestureRecognizer = [(_UILongPressClickInteractionDriver *)self gestureRecognizer];
 
-  if (v8 != v7)
+  if (gestureRecognizer != recognizerCopy)
   {
 LABEL_2:
     v9 = 0;
     goto LABEL_3;
   }
 
-  v11 = [v6 _isGestureType:2];
+  v11 = [gestureRecognizerCopy _isGestureType:2];
   v9 = 1;
-  if (([v6 _isGestureType:4] & 1) == 0 && (v11 & 1) == 0)
+  if (([gestureRecognizerCopy _isGestureType:4] & 1) == 0 && (v11 & 1) == 0)
   {
     if (self->_delegateImplements.shouldBeDelayedByGesture)
     {
-      v12 = [(_UILongPressClickInteractionDriver *)self delegate];
-      v9 = [v12 clickDriver:self shouldBeDelayedByGestureRecognizer:v6];
+      delegate = [(_UILongPressClickInteractionDriver *)self delegate];
+      v9 = [delegate clickDriver:self shouldBeDelayedByGestureRecognizer:gestureRecognizerCopy];
 
       goto LABEL_3;
     }
@@ -647,12 +647,12 @@ LABEL_3:
   return v9;
 }
 
-- (void)_updateTimeoutDebugUI:(double)a3
+- (void)_updateTimeoutDebugUI:(double)i
 {
   v5 = +[_UIPointerSettingsDomain rootSettings];
-  v6 = [v5 showMenuPressDuration];
+  showMenuPressDuration = [v5 showMenuPressDuration];
 
-  if (v6)
+  if (showMenuPressDuration)
   {
     if (!_updateTimeoutDebugUI____triggerTime)
     {
@@ -669,29 +669,29 @@ LABEL_3:
       v10 = [off_1E70ECC18 monospacedDigitSystemFontOfSize:40.0 weight:*off_1E70ECD20];
       [_updateTimeoutDebugUI____triggerTime setFont:v10];
 
-      v11 = [_updateTimeoutDebugUI____triggerTime layer];
-      [v11 setCornerRadius:13.0];
+      layer = [_updateTimeoutDebugUI____triggerTime layer];
+      [layer setCornerRadius:13.0];
 
       v12 = *MEMORY[0x1E69796E8];
-      v13 = [_updateTimeoutDebugUI____triggerTime layer];
-      [v13 setCornerCurve:v12];
+      layer2 = [_updateTimeoutDebugUI____triggerTime layer];
+      [layer2 setCornerCurve:v12];
 
       v14 = +[UIColor whiteColor];
-      v15 = [v14 CGColor];
-      v16 = [_updateTimeoutDebugUI____triggerTime layer];
-      [v16 setBorderColor:v15];
+      cGColor = [v14 CGColor];
+      layer3 = [_updateTimeoutDebugUI____triggerTime layer];
+      [layer3 setBorderColor:cGColor];
 
-      v17 = [_updateTimeoutDebugUI____triggerTime layer];
-      [v17 setBorderWidth:2.0];
+      layer4 = [_updateTimeoutDebugUI____triggerTime layer];
+      [layer4 setBorderWidth:2.0];
 
       [_updateTimeoutDebugUI____triggerTime setClipsToBounds:1];
-      v18 = [(_UILongPressClickInteractionDriver *)self view];
-      v19 = [v18 window];
-      [v19 addSubview:_updateTimeoutDebugUI____triggerTime];
+      view = [(_UILongPressClickInteractionDriver *)self view];
+      window = [view window];
+      [window addSubview:_updateTimeoutDebugUI____triggerTime];
     }
 
     v20 = "P";
-    LODWORD(v20) = llround(a3 * 1000.0);
+    LODWORD(v20) = llround(i * 1000.0);
     v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ims", v20];
     [_updateTimeoutDebugUI____triggerTime setText:v21];
 

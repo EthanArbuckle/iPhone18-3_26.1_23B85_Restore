@@ -1,35 +1,35 @@
 @interface AAUIInviteLinkMetadataProvider
-- (AAUIInviteLinkMetadataProvider)initWithContext:(id)a3;
+- (AAUIInviteLinkMetadataProvider)initWithContext:(id)context;
 - (id)_defaultBackgroundImage;
-- (id)_lpImageWithImage:(id)a3;
-- (void)loadMetadataWithImage:(id)a3 completion:(id)a4;
+- (id)_lpImageWithImage:(id)image;
+- (void)loadMetadataWithImage:(id)image completion:(id)completion;
 @end
 
 @implementation AAUIInviteLinkMetadataProvider
 
-- (AAUIInviteLinkMetadataProvider)initWithContext:(id)a3
+- (AAUIInviteLinkMetadataProvider)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = AAUIInviteLinkMetadataProvider;
   v6 = [(AAUIInviteLinkMetadataProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v7;
 }
 
-- (void)loadMetadataWithImage:(id)a3 completion:(id)a4
+- (void)loadMetadataWithImage:(id)image completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
+  imageCopy = image;
+  completionCopy = completion;
   v7 = [[AAUIInviteLinkMetadata alloc] initWithContext:self->_context];
-  if (v9)
+  if (imageCopy)
   {
-    [(AAUIInviteLinkMetadataProvider *)self _lpImageWithImage:v9];
+    [(AAUIInviteLinkMetadataProvider *)self _lpImageWithImage:imageCopy];
   }
 
   else
@@ -39,14 +39,14 @@
   v8 = ;
   [(AAUIInviteLinkMetadata *)v7 setImage:v8];
 
-  v6[2](v6, v7, 0);
+  completionCopy[2](completionCopy, v7, 0);
 }
 
-- (id)_lpImageWithImage:(id)a3
+- (id)_lpImageWithImage:(id)image
 {
   v3 = MEMORY[0x1E696EC68];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithPlatformImage:v4];
+  imageCopy = image;
+  v5 = [[v3 alloc] initWithPlatformImage:imageCopy];
 
   return v5;
 }

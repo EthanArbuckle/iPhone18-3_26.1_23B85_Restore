@@ -4,17 +4,17 @@
 + (id)defaultInexpensivePathEvaluator;
 + (id)defaultPathEvaluator;
 + (id)defaultUnconstrainedPathEvaluator;
-+ (id)nwParametersForActivity:(id)a3;
-- (BOOL)isNetworkPathAvailableForActivity:(id)a3;
-- (BOOL)isUnconstrainedPathAvailableForActivity:(id)a3;
-- (BOOL)requiresNetworkPathMonitoring:(id)a3;
++ (id)nwParametersForActivity:(id)activity;
+- (BOOL)isNetworkPathAvailableForActivity:(id)activity;
+- (BOOL)isUnconstrainedPathAvailableForActivity:(id)activity;
+- (BOOL)requiresNetworkPathMonitoring:(id)monitoring;
 - (_DASNetworkEvaluationMonitor)init;
-- (id)evaluationGroupForActivity:(id)a3;
-- (id)evaluationGroupForParameters:(id)a3 endpoint:(id)a4;
-- (id)setupNetworkMonitoringWithNetworkParameters:(id)a3 endpoint:(id)a4 withActivity:(id)a5;
-- (void)registerForNetworkEvaluationWithCallback:(id)a3;
-- (void)startMonitoringActivity:(id)a3 withNetworkParameters:(id)a4 withEndpoint:(id)a5;
-- (void)stopMonitoringActivity:(id)a3;
+- (id)evaluationGroupForActivity:(id)activity;
+- (id)evaluationGroupForParameters:(id)parameters endpoint:(id)endpoint;
+- (id)setupNetworkMonitoringWithNetworkParameters:(id)parameters endpoint:(id)endpoint withActivity:(id)activity;
+- (void)registerForNetworkEvaluationWithCallback:(id)callback;
+- (void)startMonitoringActivity:(id)activity withNetworkParameters:(id)parameters withEndpoint:(id)endpoint;
+- (void)stopMonitoringActivity:(id)activity;
 @end
 
 @implementation _DASNetworkEvaluationMonitor
@@ -69,11 +69,11 @@
 
 + (BOOL)inexpensivePathAvailable
 {
-  v2 = [objc_opt_class() defaultInexpensivePathEvaluator];
-  v3 = [v2 path];
-  v4 = [v3 status];
+  defaultInexpensivePathEvaluator = [objc_opt_class() defaultInexpensivePathEvaluator];
+  path = [defaultInexpensivePathEvaluator path];
+  status = [path status];
 
-  return v4 != 2;
+  return status != 2;
 }
 
 - (_DASNetworkEvaluationMonitor)init
@@ -103,15 +103,15 @@
   return v2;
 }
 
-+ (id)nwParametersForActivity:(id)a3
++ (id)nwParametersForActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:kNWParametersKey];
+  activityCopy = activity;
+  userInfo = [activityCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:kNWParametersKey];
 
   if (!v5)
   {
-    if ([v3 requiresInexpensiveNetworking])
+    if ([activityCopy requiresInexpensiveNetworking])
     {
       if (qword_10020B898 != -1)
       {
@@ -137,30 +137,30 @@
   return v5;
 }
 
-- (void)registerForNetworkEvaluationWithCallback:(id)a3
+- (void)registerForNetworkEvaluationWithCallback:(id)callback
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(callback);
   callback = self->_callback;
   self->_callback = v4;
 
   _objc_release_x1(v4, callback);
 }
 
-- (BOOL)requiresNetworkPathMonitoring:(id)a3
+- (BOOL)requiresNetworkPathMonitoring:(id)monitoring
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKeyedSubscript:kNWEndpointKey];
+  userInfo = [monitoring userInfo];
+  v4 = [userInfo objectForKeyedSubscript:kNWEndpointKey];
   v5 = v4 != 0;
 
   return v5;
 }
 
-- (void)startMonitoringActivity:(id)a3 withNetworkParameters:(id)a4 withEndpoint:(id)a5
+- (void)startMonitoringActivity:(id)activity withNetworkParameters:(id)parameters withEndpoint:(id)endpoint
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(_DASNetworkEvaluationMonitor *)self evaluationGroupForParameters:v9 endpoint:v10];
+  activityCopy = activity;
+  parametersCopy = parameters;
+  endpointCopy = endpoint;
+  v11 = [(_DASNetworkEvaluationMonitor *)self evaluationGroupForParameters:parametersCopy endpoint:endpointCopy];
   if (v11)
   {
     v12 = v11;
@@ -172,16 +172,16 @@
 
   else
   {
-    v12 = [(_DASNetworkEvaluationMonitor *)self setupNetworkMonitoringWithNetworkParameters:v9 endpoint:v10 withActivity:v8];
+    v12 = [(_DASNetworkEvaluationMonitor *)self setupNetworkMonitoringWithNetworkParameters:parametersCopy endpoint:endpointCopy withActivity:activityCopy];
   }
 
-  [v12 startMonitoringForActivity:v8];
+  [v12 startMonitoringForActivity:activityCopy];
 }
 
-- (id)evaluationGroupForParameters:(id)a3 endpoint:(id)a4
+- (id)evaluationGroupForParameters:(id)parameters endpoint:(id)endpoint
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  endpointCopy = endpoint;
   os_unfair_recursive_lock_lock_with_options();
   v16 = 0u;
   v17 = 0u;
@@ -202,7 +202,7 @@
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
-        if ([v12 isMonitoringWithParameters:v6 endpoint:{v7, v14}])
+        if ([v12 isMonitoringWithParameters:parametersCopy endpoint:{endpointCopy, v14}])
         {
           v9 = v12;
           goto LABEL_11;
@@ -226,12 +226,12 @@ LABEL_11:
   return v9;
 }
 
-- (id)setupNetworkMonitoringWithNetworkParameters:(id)a3 endpoint:(id)a4 withActivity:(id)a5
+- (id)setupNetworkMonitoringWithNetworkParameters:(id)parameters endpoint:(id)endpoint withActivity:(id)activity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[_DASNetworkMonitorEvaluationGroup alloc] initWithEndpoint:v9 parameters:v8 activity:v10 callback:self->_callback onQueue:self->_callbackQueue];
+  parametersCopy = parameters;
+  endpointCopy = endpoint;
+  activityCopy = activity;
+  v11 = [[_DASNetworkMonitorEvaluationGroup alloc] initWithEndpoint:endpointCopy parameters:parametersCopy activity:activityCopy callback:self->_callback onQueue:self->_callbackQueue];
   if (v11)
   {
     os_unfair_recursive_lock_lock_with_options();
@@ -246,11 +246,11 @@ LABEL_11:
     if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
     {
       v15 = 138412802;
-      v16 = v10;
+      v16 = activityCopy;
       v17 = 2112;
-      v18 = v8;
+      v18 = parametersCopy;
       v19 = 2112;
-      v20 = v9;
+      v20 = endpointCopy;
       _os_log_error_impl(&_mh_execute_header, log, OS_LOG_TYPE_ERROR, "Unable to instantiate evaluationGroup for %@ (%@, %@", &v15, 0x20u);
     }
   }
@@ -258,14 +258,14 @@ LABEL_11:
   return v11;
 }
 
-- (void)stopMonitoringActivity:(id)a3
+- (void)stopMonitoringActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(_DASNetworkEvaluationMonitor *)self evaluationGroupForActivity:v4];
+  activityCopy = activity;
+  v5 = [(_DASNetworkEvaluationMonitor *)self evaluationGroupForActivity:activityCopy];
   if (v5)
   {
     os_unfair_recursive_lock_lock_with_options();
-    if ([v5 stopMonitoringForActivity:v4])
+    if ([v5 stopMonitoringForActivity:activityCopy])
     {
       [(NSMutableArray *)self->_networkEvaluationGroups removeObject:v5];
     }
@@ -279,9 +279,9 @@ LABEL_11:
   }
 }
 
-- (id)evaluationGroupForActivity:(id)a3
+- (id)evaluationGroupForActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   os_unfair_recursive_lock_lock_with_options();
   v13 = 0u;
   v14 = 0u;
@@ -302,7 +302,7 @@ LABEL_11:
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        if ([v9 isMonitoringActivity:{v4, v11}])
+        if ([v9 isMonitoringActivity:{activityCopy, v11}])
         {
           v6 = v9;
           goto LABEL_11;
@@ -326,30 +326,30 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)isNetworkPathAvailableForActivity:(id)a3
+- (BOOL)isNetworkPathAvailableForActivity:(id)activity
 {
-  v4 = a3;
-  if ([(_DASNetworkEvaluationMonitor *)self requiresNetworkPathMonitoring:v4])
+  activityCopy = activity;
+  if ([(_DASNetworkEvaluationMonitor *)self requiresNetworkPathMonitoring:activityCopy])
   {
-    v5 = [(_DASNetworkEvaluationMonitor *)self evaluationGroupForActivity:v4];
+    v5 = [(_DASNetworkEvaluationMonitor *)self evaluationGroupForActivity:activityCopy];
 
     if (v5)
     {
-      v6 = [v5 isNetworkPathAvailable];
+      isNetworkPathAvailable = [v5 isNetworkPathAvailable];
     }
 
     else
     {
-      v6 = 1;
+      isNetworkPathAvailable = 1;
     }
   }
 
   else
   {
-    v7 = [v4 requiresInexpensiveNetworking];
+    requiresInexpensiveNetworking = [activityCopy requiresInexpensiveNetworking];
 
     v8 = objc_opt_class();
-    if (v7)
+    if (requiresInexpensiveNetworking)
     {
       [v8 defaultInexpensivePathEvaluator];
     }
@@ -359,49 +359,49 @@ LABEL_11:
       [v8 defaultPathEvaluator];
     }
     v9 = ;
-    v10 = [v9 path];
-    v11 = [v10 status];
+    path = [v9 path];
+    status = [path status];
 
-    return v11 != 2;
+    return status != 2;
   }
 
-  return v6;
+  return isNetworkPathAvailable;
 }
 
-- (BOOL)isUnconstrainedPathAvailableForActivity:(id)a3
+- (BOOL)isUnconstrainedPathAvailableForActivity:(id)activity
 {
-  v4 = a3;
-  if (![(_DASNetworkEvaluationMonitor *)self requiresNetworkPathMonitoring:v4])
+  activityCopy = activity;
+  if (![(_DASNetworkEvaluationMonitor *)self requiresNetworkPathMonitoring:activityCopy])
   {
     evaluator_for_endpoint = [objc_opt_class() defaultUnconstrainedPathEvaluator];
-    v12 = [evaluator_for_endpoint path];
-    v13 = [v12 status]== 2;
+    path = [evaluator_for_endpoint path];
+    v13 = [path status]== 2;
     goto LABEL_11;
   }
 
-  v5 = [v4 startDate];
+  startDate = [activityCopy startDate];
 
-  if (v5)
+  if (startDate)
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKeyedSubscript:kNWEndpointKey];
+    userInfo = [activityCopy userInfo];
+    v7 = [userInfo objectForKeyedSubscript:kNWEndpointKey];
 
-    v8 = [_DASNetworkEvaluationMonitor nwParametersForActivity:v4];
-    v9 = [v7 copyCEndpoint];
-    v10 = [v8 copyCParameters];
+    v8 = [_DASNetworkEvaluationMonitor nwParametersForActivity:activityCopy];
+    copyCEndpoint = [v7 copyCEndpoint];
+    copyCParameters = [v8 copyCParameters];
     evaluator_for_endpoint = nw_path_create_evaluator_for_endpoint();
   }
 
   else
   {
-    v7 = [(_DASNetworkEvaluationMonitor *)self evaluationGroupForActivity:v4];
+    v7 = [(_DASNetworkEvaluationMonitor *)self evaluationGroupForActivity:activityCopy];
     evaluator_for_endpoint = [v7 evaluator];
   }
 
   if (evaluator_for_endpoint)
   {
-    v12 = nw_path_evaluator_copy_path();
-    if (nw_path_is_constrained(v12))
+    path = nw_path_evaluator_copy_path();
+    if (nw_path_is_constrained(path))
     {
       v14 = 0;
 LABEL_14:
@@ -409,7 +409,7 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v13 = nw_path_get_status(v12) == nw_path_status_unsatisfied;
+    v13 = nw_path_get_status(path) == nw_path_status_unsatisfied;
 LABEL_11:
     v14 = !v13;
     goto LABEL_14;

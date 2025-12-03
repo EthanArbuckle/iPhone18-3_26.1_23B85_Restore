@@ -1,46 +1,46 @@
 @interface FPMaterializedSetEnumerator
-- (FPMaterializedSetEnumerator)initWithManager:(id)a3;
-- (void)currentSyncAnchorWithCompletionHandler:(id)a3;
-- (void)enumerateChangesForObserver:(id)a3 fromSyncAnchor:(id)a4;
-- (void)enumerateItemsForObserver:(id)a3 startingAtPage:(id)a4;
+- (FPMaterializedSetEnumerator)initWithManager:(id)manager;
+- (void)currentSyncAnchorWithCompletionHandler:(id)handler;
+- (void)enumerateChangesForObserver:(id)observer fromSyncAnchor:(id)anchor;
+- (void)enumerateItemsForObserver:(id)observer startingAtPage:(id)page;
 @end
 
 @implementation FPMaterializedSetEnumerator
 
-- (FPMaterializedSetEnumerator)initWithManager:(id)a3
+- (FPMaterializedSetEnumerator)initWithManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = FPMaterializedSetEnumerator;
   v6 = [(FPMaterializedSetEnumerator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_manager, a3);
+    objc_storeStrong(&v6->_manager, manager);
   }
 
   return v7;
 }
 
-- (void)enumerateItemsForObserver:(id)a3 startingAtPage:(id)a4
+- (void)enumerateItemsForObserver:(id)observer startingAtPage:(id)page
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v7 isEqualToData:&_NSFileProviderInitialPageSortedByName] & 1) != 0 || objc_msgSend(v7, "isEqualToData:", &_NSFileProviderInitialPageSortedByDate))
+  observerCopy = observer;
+  pageCopy = page;
+  if (([pageCopy isEqualToData:&_NSFileProviderInitialPageSortedByName] & 1) != 0 || objc_msgSend(pageCopy, "isEqualToData:", &_NSFileProviderInitialPageSortedByDate))
   {
     v8 = objc_opt_new();
 
-    v7 = v8;
+    pageCopy = v8;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v6 suggestedPageSize];
+    suggestedPageSize = [observerCopy suggestedPageSize];
   }
 
   else
   {
-    v9 = 200;
+    suggestedPageSize = 200;
   }
 
   manager = self->_manager;
@@ -48,12 +48,12 @@
   v13[1] = 3221225472;
   v13[2] = __72__FPMaterializedSetEnumerator_enumerateItemsForObserver_startingAtPage___block_invoke;
   v13[3] = &unk_1E793E668;
-  v14 = v7;
-  v15 = self;
-  v16 = v6;
-  v17 = v9;
-  v11 = v6;
-  v12 = v7;
+  v14 = pageCopy;
+  selfCopy = self;
+  v16 = observerCopy;
+  v17 = suggestedPageSize;
+  v11 = observerCopy;
+  v12 = pageCopy;
   [(NSFileProviderManager *)manager domainServicerWithCompletionHandler:v13];
 }
 
@@ -113,18 +113,18 @@ id __72__FPMaterializedSetEnumerator_enumerateItemsForObserver_startingAtPage___
   return v2;
 }
 
-- (void)enumerateChangesForObserver:(id)a3 fromSyncAnchor:(id)a4
+- (void)enumerateChangesForObserver:(id)observer fromSyncAnchor:(id)anchor
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  anchorCopy = anchor;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v6 suggestedBatchSize];
+    suggestedBatchSize = [observerCopy suggestedBatchSize];
   }
 
   else
   {
-    v8 = 200;
+    suggestedBatchSize = 200;
   }
 
   manager = self->_manager;
@@ -132,12 +132,12 @@ id __72__FPMaterializedSetEnumerator_enumerateItemsForObserver_startingAtPage___
   v12[1] = 3221225472;
   v12[2] = __74__FPMaterializedSetEnumerator_enumerateChangesForObserver_fromSyncAnchor___block_invoke;
   v12[3] = &unk_1E793E668;
-  v13 = v7;
-  v14 = self;
-  v15 = v6;
-  v16 = v8;
-  v10 = v6;
-  v11 = v7;
+  v13 = anchorCopy;
+  selfCopy = self;
+  v15 = observerCopy;
+  v16 = suggestedBatchSize;
+  v10 = observerCopy;
+  v11 = anchorCopy;
   [(NSFileProviderManager *)manager domainServicerWithCompletionHandler:v12];
 }
 
@@ -195,17 +195,17 @@ id __74__FPMaterializedSetEnumerator_enumerateChangesForObserver_fromSyncAnchor_
   return v2;
 }
 
-- (void)currentSyncAnchorWithCompletionHandler:(id)a3
+- (void)currentSyncAnchorWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   manager = self->_manager;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__FPMaterializedSetEnumerator_currentSyncAnchorWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E793E690;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(NSFileProviderManager *)manager domainServicerWithCompletionHandler:v7];
 }
 

@@ -1,28 +1,28 @@
 @interface _PGPictureInPictureConnectionExportedObject
-- (_PGPictureInPictureConnectionExportedObject)initWithPictureInPictureProxy:(id)a3;
+- (_PGPictureInPictureConnectionExportedObject)initWithPictureInPictureProxy:(id)proxy;
 - (void)actionButtonTapped;
-- (void)beginTwoStagePictureInPictureStopByRestoringUserInterfaceWithCompletionHandler:(id)a3;
+- (void)beginTwoStagePictureInPictureStopByRestoringUserInterfaceWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)endTwoStagePictureInPictureStopWithCompletionBlock:(id)a3;
-- (void)handleCommand:(id)a3;
+- (void)endTwoStagePictureInPictureStopWithCompletionBlock:(id)block;
+- (void)handleCommand:(id)command;
 - (void)hostedWindowSizeChangeBegan;
 - (void)hostedWindowSizeChangeEnded;
-- (void)pagingSkipByNumberOfPages:(int64_t)a3;
-- (void)pictureInPictureCancelRequestedAnimated:(BOOL)a3 withCompletionHandler:(id)a4;
+- (void)pagingSkipByNumberOfPages:(int64_t)pages;
+- (void)pictureInPictureCancelRequestedAnimated:(BOOL)animated withCompletionHandler:(id)handler;
 - (void)pictureInPictureInvalidated;
-- (void)pictureInPictureStartRequestedAnimated:(BOOL)a3 withCompletionHandler:(id)a4;
-- (void)pictureInPictureStopRequestedAnimated:(BOOL)a3 withCompletionHandler:(id)a4;
-- (void)setResourcesUsageReductionReasons:(unint64_t)a3;
-- (void)setStashedOrUnderLock:(BOOL)a3;
-- (void)updateHostedWindowSize:(CGSize)a3 animationType:(int64_t)a4 initialSpringVelocity:(double)a5 synchronizationFence:(id)a6;
-- (void)updatePictureInPicturePossible:(BOOL)a3;
+- (void)pictureInPictureStartRequestedAnimated:(BOOL)animated withCompletionHandler:(id)handler;
+- (void)pictureInPictureStopRequestedAnimated:(BOOL)animated withCompletionHandler:(id)handler;
+- (void)setResourcesUsageReductionReasons:(unint64_t)reasons;
+- (void)setStashedOrUnderLock:(BOOL)lock;
+- (void)updateHostedWindowSize:(CGSize)size animationType:(int64_t)type initialSpringVelocity:(double)velocity synchronizationFence:(id)fence;
+- (void)updatePictureInPicturePossible:(BOOL)possible;
 @end
 
 @implementation _PGPictureInPictureConnectionExportedObject
 
-- (_PGPictureInPictureConnectionExportedObject)initWithPictureInPictureProxy:(id)a3
+- (_PGPictureInPictureConnectionExportedObject)initWithPictureInPictureProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   v5 = PGLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -35,7 +35,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_pictureInPictureProxy, v4);
+    objc_storeWeak(&v6->_pictureInPictureProxy, proxyCopy);
   }
 
   return v7;
@@ -54,49 +54,49 @@
   [(_PGPictureInPictureConnectionExportedObject *)&v4 dealloc];
 }
 
-- (void)pictureInPictureStartRequestedAnimated:(BOOL)a3 withCompletionHandler:(id)a4
+- (void)pictureInPictureStartRequestedAnimated:(BOOL)animated withCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_pictureInPictureProxy);
-  [WeakRetained pictureInPictureStartRequestedAnimated:v4 withCompletionHandler:v6];
+  [WeakRetained pictureInPictureStartRequestedAnimated:animatedCopy withCompletionHandler:handlerCopy];
 }
 
-- (void)pictureInPictureStopRequestedAnimated:(BOOL)a3 withCompletionHandler:(id)a4
+- (void)pictureInPictureStopRequestedAnimated:(BOOL)animated withCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_pictureInPictureProxy);
-  [WeakRetained pictureInPictureStopRequestedAnimated:v4 withCompletionHandler:v6];
+  [WeakRetained pictureInPictureStopRequestedAnimated:animatedCopy withCompletionHandler:handlerCopy];
 }
 
-- (void)beginTwoStagePictureInPictureStopByRestoringUserInterfaceWithCompletionHandler:(id)a3
+- (void)beginTwoStagePictureInPictureStopByRestoringUserInterfaceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_pictureInPictureProxy);
-  [WeakRetained beginTwoStagePictureInPictureStopByRestoringUserInterfaceWithCompletionHandler:v4];
+  [WeakRetained beginTwoStagePictureInPictureStopByRestoringUserInterfaceWithCompletionHandler:handlerCopy];
 }
 
-- (void)endTwoStagePictureInPictureStopWithCompletionBlock:(id)a3
+- (void)endTwoStagePictureInPictureStopWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_pictureInPictureProxy);
-  [WeakRetained endTwoStagePictureInPictureStopWithCompletionBlock:v4];
+  [WeakRetained endTwoStagePictureInPictureStopWithCompletionBlock:blockCopy];
 }
 
-- (void)pictureInPictureCancelRequestedAnimated:(BOOL)a3 withCompletionHandler:(id)a4
+- (void)pictureInPictureCancelRequestedAnimated:(BOOL)animated withCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_pictureInPictureProxy);
-  [WeakRetained pictureInPictureCancelRequestedAnimated:v4 withCompletionHandler:v6];
+  [WeakRetained pictureInPictureCancelRequestedAnimated:animatedCopy withCompletionHandler:handlerCopy];
 }
 
-- (void)updatePictureInPicturePossible:(BOOL)a3
+- (void)updatePictureInPicturePossible:(BOOL)possible
 {
-  v3 = a3;
+  possibleCopy = possible;
   WeakRetained = objc_loadWeakRetained(&self->_pictureInPictureProxy);
-  [WeakRetained updatePictureInPicturePossible:v3];
+  [WeakRetained updatePictureInPicturePossible:possibleCopy];
 }
 
 - (void)pictureInPictureInvalidated
@@ -105,19 +105,19 @@
   [WeakRetained pictureInPictureInvalidated];
 }
 
-- (void)pagingSkipByNumberOfPages:(int64_t)a3
+- (void)pagingSkipByNumberOfPages:(int64_t)pages
 {
   WeakRetained = objc_loadWeakRetained(&self->_pictureInPictureProxy);
-  [WeakRetained pagingSkipByNumberOfPages:a3];
+  [WeakRetained pagingSkipByNumberOfPages:pages];
 }
 
-- (void)updateHostedWindowSize:(CGSize)a3 animationType:(int64_t)a4 initialSpringVelocity:(double)a5 synchronizationFence:(id)a6
+- (void)updateHostedWindowSize:(CGSize)size animationType:(int64_t)type initialSpringVelocity:(double)velocity synchronizationFence:(id)fence
 {
-  height = a3.height;
-  width = a3.width;
-  v11 = a6;
+  height = size.height;
+  width = size.width;
+  fenceCopy = fence;
   WeakRetained = objc_loadWeakRetained(&self->_pictureInPictureProxy);
-  [WeakRetained updateHostedWindowSize:a4 animationType:v11 initialSpringVelocity:width synchronizationFence:{height, a5}];
+  [WeakRetained updateHostedWindowSize:type animationType:fenceCopy initialSpringVelocity:width synchronizationFence:{height, velocity}];
 }
 
 - (void)hostedWindowSizeChangeBegan
@@ -138,24 +138,24 @@
   [WeakRetained actionButtonTapped];
 }
 
-- (void)setStashedOrUnderLock:(BOOL)a3
+- (void)setStashedOrUnderLock:(BOOL)lock
 {
-  v3 = a3;
+  lockCopy = lock;
   WeakRetained = objc_loadWeakRetained(&self->_pictureInPictureProxy);
-  [WeakRetained setStashedOrUnderLock:v3];
+  [WeakRetained setStashedOrUnderLock:lockCopy];
 }
 
-- (void)setResourcesUsageReductionReasons:(unint64_t)a3
+- (void)setResourcesUsageReductionReasons:(unint64_t)reasons
 {
   WeakRetained = objc_loadWeakRetained(&self->_pictureInPictureProxy);
-  [WeakRetained setResourcesUsageReductionReasons:a3];
+  [WeakRetained setResourcesUsageReductionReasons:reasons];
 }
 
-- (void)handleCommand:(id)a3
+- (void)handleCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   WeakRetained = objc_loadWeakRetained(&self->_pictureInPictureProxy);
-  [WeakRetained handleCommand:v4];
+  [WeakRetained handleCommand:commandCopy];
 }
 
 @end

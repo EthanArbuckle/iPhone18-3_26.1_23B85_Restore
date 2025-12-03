@@ -1,26 +1,26 @@
 @interface PKToolPickerCustomItemConfiguration
-- (PKToolConfiguration)_toolConfigurationWithCustomToolItem:(uint64_t)a1;
-- (PKToolPickerCustomItemConfiguration)initWithIdentifier:(id)a3 name:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKToolConfiguration)_toolConfigurationWithCustomToolItem:(uint64_t)item;
+- (PKToolPickerCustomItemConfiguration)initWithIdentifier:(id)identifier name:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation PKToolPickerCustomItemConfiguration
 
-- (PKToolPickerCustomItemConfiguration)initWithIdentifier:(id)a3 name:(id)a4
+- (PKToolPickerCustomItemConfiguration)initWithIdentifier:(id)identifier name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = PKToolPickerCustomItemConfiguration;
   v8 = [(PKToolPickerCustomItemConfiguration *)&v18 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v11;
 
@@ -29,9 +29,9 @@
     widthVariants = v8->_widthVariants;
     v8->_widthVariants = v13;
 
-    v15 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
     defaultColor = v8->_defaultColor;
-    v8->_defaultColor = v15;
+    v8->_defaultColor = blackColor;
 
     *&v8->_allowsColorSelection = 0;
     v8->_toolAttributeControls = 3;
@@ -40,23 +40,23 @@
   return v8;
 }
 
-- (PKToolConfiguration)_toolConfigurationWithCustomToolItem:(uint64_t)a1
+- (PKToolConfiguration)_toolConfigurationWithCustomToolItem:(uint64_t)item
 {
   v3 = a2;
-  if (a1)
+  if (item)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCAB8]);
     v5 = objc_alloc_init(MEMORY[0x1E69DC728]);
-    v6 = [[PKToolConfiguration alloc] initWithLocalizedName:*(a1 + 24) baseImage:v4 shadowPath:v5];
-    v7 = [*(a1 + 56) count];
+    v6 = [[PKToolConfiguration alloc] initWithLocalizedName:*(item + 24) baseImage:v4 shadowPath:v5];
+    v7 = [*(item + 56) count];
     if (v7 >= 2)
     {
-      [(PKToolConfiguration *)v6 setStrokeWeightsToButtonImages:*(a1 + 56)];
+      [(PKToolConfiguration *)v6 setStrokeWeightsToButtonImages:*(item + 56)];
     }
 
-    if (*(a1 + 8) == 1)
+    if (*(item + 8) == 1)
     {
-      v8 = *(a1 + 64);
+      v8 = *(item + 64);
       v9 = v6;
       v10 = 1;
       v11 = 1;
@@ -73,17 +73,17 @@
     [(PKToolConfiguration *)v9 setSupportsColor:v10 andOpacity:v11 defaultColor:v8];
     if (v6)
     {
-      v12 = *(a1 + 72);
+      v12 = *(item + 72);
       v6->_wantsStrokeWeightControl = v12 & 1;
       v6->_wantsTopLevelOpacityControl = (v12 & 2) != 0;
-      v6->_supportsLassoToolEditingView = *(a1 + 9);
+      v6->_supportsLassoToolEditingView = *(item + 9);
     }
 
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, item);
     objc_initWeak(&from, v3);
-    v13 = [a1 imageProvider];
+    imageProvider = [item imageProvider];
 
-    if (v13)
+    if (imageProvider)
     {
       newValue[0] = MEMORY[0x1E69E9820];
       newValue[1] = 3221225472;
@@ -101,9 +101,9 @@
       objc_destroyWeak(&v21);
     }
 
-    v15 = [a1 viewControllerProvider];
+    viewControllerProvider = [item viewControllerProvider];
 
-    if (v15)
+    if (viewControllerProvider)
     {
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
@@ -179,9 +179,9 @@ id __76__PKToolPickerCustomItemConfiguration__toolConfigurationWithCustomToolIte
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithIdentifier:name:", self->_identifier, self->_name}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithIdentifier:name:", self->_identifier, self->_name}];
   v5 = [self->_imageProvider copy];
   [v4 setImageProvider:v5];
 
@@ -201,8 +201,8 @@ id __76__PKToolPickerCustomItemConfiguration__toolConfigurationWithCustomToolIte
 
 - (unint64_t)hash
 {
-  v2 = [(PKToolPickerCustomItemConfiguration *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(PKToolPickerCustomItemConfiguration *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }

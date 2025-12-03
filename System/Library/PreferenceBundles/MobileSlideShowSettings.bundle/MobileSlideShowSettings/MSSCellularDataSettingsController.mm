@@ -5,9 +5,9 @@
 - (id)paneTitleLocalizedResource;
 - (id)pathComponentsLocalizedResource;
 - (id)specifiers;
-- (id)unlimitedUpdatesForSpecifier:(id)a3;
+- (id)unlimitedUpdatesForSpecifier:(id)specifier;
 - (void)_validateUnlimitedUpdatesSpecifiers;
-- (void)setUnlimitedUpdates:(id)a3 forSpecifier:(id)a4;
+- (void)setUnlimitedUpdates:(id)updates forSpecifier:(id)specifier;
 @end
 
 @implementation MSSCellularDataSettingsController
@@ -38,14 +38,14 @@
   _Block_object_dispose(v7, 8);
 }
 
-- (void)setUnlimitedUpdates:(id)a3 forSpecifier:(id)a4
+- (void)setUnlimitedUpdates:(id)updates forSpecifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [updates BOOLValue];
 
-  _PLCPLSetAllowsUnlimitedSyncOverCellular(v4);
+  _PLCPLSetAllowsUnlimitedSyncOverCellular(bOOLValue);
 }
 
-- (id)unlimitedUpdatesForSpecifier:(id)a3
+- (id)unlimitedUpdatesForSpecifier:(id)specifier
 {
   v3 = PLCPLAllowsUnlimitedSyncOverCellular();
 
@@ -69,8 +69,8 @@
 {
   v3 = +[MSSSettingsUtilities photosMainPaneLocalizedResource];
   v7[0] = v3;
-  v4 = [(MSSCellularDataSettingsController *)self paneTitleLocalizedResource];
-  v7[1] = v4;
+  paneTitleLocalizedResource = [(MSSCellularDataSettingsController *)self paneTitleLocalizedResource];
+  v7[1] = paneTitleLocalizedResource;
   v5 = [NSArray arrayWithObjects:v7 count:2];
 
   return v5;
@@ -87,11 +87,11 @@
 - (id)paneTitleLocalizedResource
 {
   v3 = [_NSLocalizedStringResource alloc];
-  v4 = [(MSSCellularDataSettingsController *)self _labelForCellularData];
+  _labelForCellularData = [(MSSCellularDataSettingsController *)self _labelForCellularData];
   v5 = +[NSLocale currentLocale];
   v6 = [NSBundle bundleForClass:objc_opt_class()];
-  v7 = [v6 bundleURL];
-  v8 = [v3 initWithKey:v4 table:@"Photos" locale:v5 bundleURL:v7];
+  bundleURL = [v6 bundleURL];
+  v8 = [v3 initWithKey:_labelForCellularData table:@"Photos" locale:v5 bundleURL:bundleURL];
 
   return v8;
 }
@@ -140,7 +140,7 @@
     v33[2] = sub_160E8;
     v33[3] = &unk_2D1F0;
     v34 = v12;
-    v35 = self;
+    selfCopy = self;
     v36 = v13;
     v29 = v13;
     v30 = v12;

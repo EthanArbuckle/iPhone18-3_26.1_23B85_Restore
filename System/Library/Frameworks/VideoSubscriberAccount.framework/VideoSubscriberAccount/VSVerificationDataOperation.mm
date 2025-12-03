@@ -1,8 +1,8 @@
 @interface VSVerificationDataOperation
 - (VSVerificationDataOperation)init;
-- (void)_finishWithData:(id)a3;
-- (void)_finishWithError:(id)a3;
-- (void)_finishWithResult:(int)a3 bytes:(char *)a4 length:(unsigned int)a5;
+- (void)_finishWithData:(id)data;
+- (void)_finishWithError:(id)error;
+- (void)_finishWithResult:(int)result bytes:(char *)bytes length:(unsigned int)length;
 - (void)executionDidBegin;
 @end
 
@@ -27,43 +27,43 @@
   return v2;
 }
 
-- (void)_finishWithData:(id)a3
+- (void)_finishWithData:(id)data
 {
-  v4 = [VSFailable failableWithObject:a3];
+  v4 = [VSFailable failableWithObject:data];
   v5 = [VSOptional optionalWithObject:v4];
   [(VSVerificationDataOperation *)self setResult:v5];
 
   [(VSAsyncOperation *)self finishExecutionIfPossible];
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = VSErrorLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(VSVerificationDataOperation *)v4 _finishWithError:v5];
+    [(VSVerificationDataOperation *)errorCopy _finishWithError:v5];
   }
 
-  v6 = [VSFailable failableWithError:v4];
+  v6 = [VSFailable failableWithError:errorCopy];
   v7 = [VSOptional optionalWithObject:v6];
   [(VSVerificationDataOperation *)self setResult:v7];
 
   [(VSAsyncOperation *)self finishExecutionIfPossible];
 }
 
-- (void)_finishWithResult:(int)a3 bytes:(char *)a4 length:(unsigned int)a5
+- (void)_finishWithResult:(int)result bytes:(char *)bytes length:(unsigned int)length
 {
-  if (a3 || !a5)
+  if (result || !length)
   {
-    v7 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:a3 userInfo:0];
+    v7 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:result userInfo:0];
     [(VSVerificationDataOperation *)self _finishWithError:?];
   }
 
   else
   {
-    v7 = [MEMORY[0x277CBEA90] dataWithBytes:a4 length:a5];
-    jEHf8Xzsv8K(a4);
+    v7 = [MEMORY[0x277CBEA90] dataWithBytes:bytes length:length];
+    jEHf8Xzsv8K(bytes);
     [(VSVerificationDataOperation *)self _finishWithData:v7];
   }
 }
@@ -75,13 +75,13 @@
   pggRSNuJfiTW0g(&v8, &v7);
   if (v3 == -45061 || v3 == -45065)
   {
-    v5 = [(VSVerificationDataOperation *)self provisioningController];
+    provisioningController = [(VSVerificationDataOperation *)self provisioningController];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __48__VSVerificationDataOperation_executionDidBegin__block_invoke;
     v6[3] = &unk_278B74B88;
     v6[4] = self;
-    [v5 provisionWithCompletion:v6];
+    [provisioningController provisionWithCompletion:v6];
   }
 
   else

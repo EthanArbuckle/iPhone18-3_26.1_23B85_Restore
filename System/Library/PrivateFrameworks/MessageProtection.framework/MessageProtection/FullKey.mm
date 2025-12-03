@@ -1,9 +1,9 @@
 @interface FullKey
-+ (id)generateNewKeyWithAccess:(id)a3 forceNoSEP:(BOOL)a4 error:(id *)a5;
-- (FullKey)initWithCTKTokenOID:(id)a3 error:(id *)a4;
-- (FullKey)initWithKey:(id)a3 error:(id *)a4;
-- (FullKey)initWithKeychainTag:(id)a3 error:(id *)a4;
-- (FullKey)initWithProtobufferData:(id)a3 error:(id *)a4;
++ (id)generateNewKeyWithAccess:(id)access forceNoSEP:(BOOL)p error:(id *)error;
+- (FullKey)initWithCTKTokenOID:(id)d error:(id *)error;
+- (FullKey)initWithKey:(id)key error:(id *)error;
+- (FullKey)initWithKeychainTag:(id)tag error:(id *)error;
+- (FullKey)initWithProtobufferData:(id)data error:(id *)error;
 - (id)description;
 - (id)keyIdentifier;
 - (id)protobuffer;
@@ -11,30 +11,30 @@
 
 @implementation FullKey
 
-+ (id)generateNewKeyWithAccess:(id)a3 forceNoSEP:(BOOL)a4 error:(id *)a5
++ (id)generateNewKeyWithAccess:(id)access forceNoSEP:(BOOL)p error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [a1 alloc];
-  if (v6)
+  pCopy = p;
+  accessCopy = access;
+  v9 = [self alloc];
+  if (pCopy)
   {
     +[CoreCryptoP256Private generate];
   }
 
   else
   {
-    [SecKeyP256Private generateWithAccessControl:v8];
+    [SecKeyP256Private generateWithAccessControl:accessCopy];
   }
   v10 = ;
-  v11 = [v9 initWithKey:v10 error:a5];
+  v11 = [v9 initWithKey:v10 error:error];
 
   return v11;
 }
 
-- (FullKey)initWithKey:(id)a3 error:(id *)a4
+- (FullKey)initWithKey:(id)key error:(id *)error
 {
-  v7 = a3;
-  if (v7)
+  keyCopy = key;
+  if (keyCopy)
   {
     v15.receiver = self;
     v15.super_class = FullKey;
@@ -42,7 +42,7 @@
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_key, a3);
+      objc_storeStrong(&v8->_key, key);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -70,7 +70,7 @@
     v10 = MEMORY[0x277CCACA8];
     v11 = [0 description];
     v12 = [v10 stringWithFormat:@"Failed to initialize a full key: %@", v11];
-    MPLogAndAssignError(4, a4, v12);
+    MPLogAndAssignError(4, error, v12);
 
     v9 = 0;
   }
@@ -78,32 +78,32 @@
   return v9;
 }
 
-- (FullKey)initWithProtobufferData:(id)a3 error:(id *)a4
+- (FullKey)initWithProtobufferData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 keystore];
-  if (v7 != 4)
+  dataCopy = data;
+  keystore = [dataCopy keystore];
+  if (keystore != 4)
   {
-    if (v7 == 3)
+    if (keystore == 3)
     {
-      keychainTag = [v6 keychainTag];
-      v9 = [(FullKey *)self initWithKeychainTag:keychainTag error:a4];
+      keychainTag = [dataCopy keychainTag];
+      v9 = [(FullKey *)self initWithKeychainTag:keychainTag error:error];
       goto LABEL_4;
     }
 
     v13 = MessageProtectionLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
     {
-      [FullKey initWithProtobufferData:v6 error:v13];
+      [FullKey initWithProtobufferData:dataCopy error:v13];
     }
 
 LABEL_13:
 
-    v10 = 0;
+    selfCopy = 0;
     goto LABEL_14;
   }
 
-  if (([v6 hasKeyData] & 1) == 0)
+  if (([dataCopy hasKeyData] & 1) == 0)
   {
     v13 = MessageProtectionLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -114,36 +114,36 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v11 = [v6 keyData];
-  v9 = [(FullKey *)self initWithCTKTokenOID:v11 error:a4];
+  keyData = [dataCopy keyData];
+  v9 = [(FullKey *)self initWithCTKTokenOID:keyData error:error];
 
-  if (![v6 hasKeychainTag])
+  if (![dataCopy hasKeychainTag])
   {
     goto LABEL_5;
   }
 
-  v12 = [v6 keychainTag];
+  keychainTag = [dataCopy keychainTag];
   keychainTag = v9->_keychainTag;
-  v9->_keychainTag = v12;
+  v9->_keychainTag = keychainTag;
 LABEL_4:
 
 LABEL_5:
   self = v9;
-  v10 = self;
+  selfCopy = self;
 LABEL_14:
 
-  return v10;
+  return selfCopy;
 }
 
-- (FullKey)initWithCTKTokenOID:(id)a3 error:(id *)a4
+- (FullKey)initWithCTKTokenOID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = FullKey;
   v7 = [(FullKey *)&v11 init];
   if (v7)
   {
-    v8 = [[SecKeyP256Private alloc] initWithData:v6 error:a4];
+    v8 = [[SecKeyP256Private alloc] initWithData:dCopy error:error];
     key = v7->_key;
     v7->_key = v8;
 
@@ -153,10 +153,10 @@ LABEL_14:
   return v7;
 }
 
-- (FullKey)initWithKeychainTag:(id)a3 error:(id *)a4
+- (FullKey)initWithKeychainTag:(id)tag error:(id *)error
 {
   v27[4] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  tagCopy = tag;
   v8 = *MEMORY[0x277CDC238];
   v9 = *MEMORY[0x277CDC120];
   v26[0] = *MEMORY[0x277CDC228];
@@ -166,22 +166,22 @@ LABEL_14:
   v10 = *MEMORY[0x277CDC558];
   v26[2] = *MEMORY[0x277CDBF20];
   v26[3] = v10;
-  v27[2] = v7;
+  v27[2] = tagCopy;
   v27[3] = MEMORY[0x277CBEC38];
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:4];
   result = 0;
   v12 = SecItemCopyMatching(v11, &result);
   if (v12)
   {
-    MPLogAndAssignError(v12, a4, @"Failed to initiate a full key from the passed serialization.");
-    v13 = 0;
+    MPLogAndAssignError(v12, error, @"Failed to initiate a full key from the passed serialization.");
+    selfCopy = 0;
   }
 
   else
   {
     v14 = objc_alloc(MEMORY[0x277CBEA90]);
     v15 = [v14 initWithData:result];
-    v16 = [[SecKeyP256Private alloc] initWithData:v15 error:a4];
+    v16 = [[SecKeyP256Private alloc] initWithData:v15 error:error];
     if (v16)
     {
       v24.receiver = self;
@@ -192,26 +192,26 @@ LABEL_14:
       {
         objc_storeStrong(&v17->_key, v16);
         v18->_keyStore = 3;
-        objc_storeStrong(&v18->_keychainTag, a3);
+        objc_storeStrong(&v18->_keychainTag, tag);
       }
 
       self = v18;
-      v13 = self;
+      selfCopy = self;
     }
 
     else
     {
       v19 = MEMORY[0x277CCACA8];
-      v20 = [*a4 description];
+      v20 = [*error description];
       v21 = [v19 stringWithFormat:@"We failed to initialize a key with error: %@", v20];
-      MPLogAndAssignError(406, a4, v21);
+      MPLogAndAssignError(406, error, v21);
 
-      v13 = 0;
+      selfCopy = 0;
     }
   }
 
   v22 = *MEMORY[0x277D85DE8];
-  return v13;
+  return selfCopy;
 }
 
 - (id)keyIdentifier
@@ -225,9 +225,9 @@ LABEL_14:
   else
   {
     v4 = [(FullKey *)self key];
-    v5 = [v4 publicKey];
-    v6 = [v5 dataRepresentation];
-    v3 = [v6 base64EncodedStringWithOptions:0];
+    publicKey = [v4 publicKey];
+    dataRepresentation = [publicKey dataRepresentation];
+    v3 = [dataRepresentation base64EncodedStringWithOptions:0];
   }
 
   return v3;
@@ -237,9 +237,9 @@ LABEL_14:
 {
   v2 = MEMORY[0x277CCACA8];
   v3 = [(FullKey *)self key];
-  v4 = [v3 publicKey];
-  v5 = [v4 dataRepresentation];
-  v6 = [v2 stringWithFormat:@"FullKey with public data representation: %@", v5];
+  publicKey = [v3 publicKey];
+  dataRepresentation = [publicKey dataRepresentation];
+  v6 = [v2 stringWithFormat:@"FullKey with public data representation: %@", dataRepresentation];
 
   return v6;
 }
@@ -247,12 +247,12 @@ LABEL_14:
 - (id)protobuffer
 {
   v3 = objc_alloc_init(NGMPBP256Key);
-  v4 = [(FullKey *)self keychainTag];
-  [(NGMPBP256Key *)v3 setKeychainTag:v4];
+  keychainTag = [(FullKey *)self keychainTag];
+  [(NGMPBP256Key *)v3 setKeychainTag:keychainTag];
 
   v5 = [(FullKey *)self key];
-  v6 = [v5 keychainData];
-  [(NGMPBP256Key *)v3 setKeyData:v6];
+  keychainData = [v5 keychainData];
+  [(NGMPBP256Key *)v3 setKeyData:keychainData];
 
   [(NGMPBP256Key *)v3 setKeystore:4];
 

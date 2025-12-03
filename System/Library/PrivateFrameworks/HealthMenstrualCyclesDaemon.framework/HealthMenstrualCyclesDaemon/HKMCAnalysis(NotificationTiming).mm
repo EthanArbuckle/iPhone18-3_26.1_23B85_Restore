@@ -12,18 +12,18 @@
 
 - (id)_hdmc_firstPeriodStartProjection
 {
-  v2 = [a1 menstruationProjections];
-  v3 = [v2 firstObject];
+  menstruationProjections = [self menstruationProjections];
+  firstObject = [menstruationProjections firstObject];
 
-  if (!v3)
+  if (!firstObject)
   {
     goto LABEL_4;
   }
 
-  if ([v3 isPartiallyLogged])
+  if ([firstObject isPartiallyLogged])
   {
-    v4 = [a1 menstruationProjections];
-    v5 = [v4 count];
+    menstruationProjections2 = [self menstruationProjections];
+    v5 = [menstruationProjections2 count];
 
     if (v5 < 2)
     {
@@ -32,14 +32,14 @@ LABEL_4:
       goto LABEL_7;
     }
 
-    v7 = [a1 menstruationProjections];
-    v8 = [v7 objectAtIndexedSubscript:1];
+    menstruationProjections3 = [self menstruationProjections];
+    v8 = [menstruationProjections3 objectAtIndexedSubscript:1];
 
-    v3 = v8;
+    firstObject = v8;
   }
 
-  v6 = v3;
-  v3 = v6;
+  v6 = firstObject;
+  firstObject = v6;
 LABEL_7:
 
   return v6;
@@ -47,14 +47,14 @@ LABEL_7:
 
 - (HDMCNotification)hdmc_beforePeriodStartNotification
 {
-  v1 = [a1 _hdmc_firstPeriodStartProjection];
-  v2 = v1;
-  if (v1)
+  _hdmc_firstPeriodStartProjection = [self _hdmc_firstPeriodStartProjection];
+  v2 = _hdmc_firstPeriodStartProjection;
+  if (_hdmc_firstPeriodStartProjection)
   {
-    v3 = [v1 startDayRange];
+    startDayRange = [_hdmc_firstPeriodStartProjection startDayRange];
     v4 = [HDMCNotification alloc];
     v5 = HKMCNotificationCategoryBeforePeriodStartForDays();
-    v6 = [(HDMCNotification *)v4 initWithFireOnDayIndex:v3 - 1 category:v5];
+    v6 = [(HDMCNotification *)v4 initWithFireOnDayIndex:startDayRange - 1 category:v5];
   }
 
   else
@@ -67,13 +67,13 @@ LABEL_7:
 
 - (HDMCNotification)hdmc_afterPeriodStartNotification
 {
-  v1 = [a1 _hdmc_firstPeriodStartProjection];
-  v2 = v1;
-  if (v1)
+  _hdmc_firstPeriodStartProjection = [self _hdmc_firstPeriodStartProjection];
+  v2 = _hdmc_firstPeriodStartProjection;
+  if (_hdmc_firstPeriodStartProjection)
   {
-    v3 = [v1 mostLikelyDays];
+    mostLikelyDays = [_hdmc_firstPeriodStartProjection mostLikelyDays];
     v4 = [HDMCNotification alloc];
-    v5 = [(HDMCNotification *)v4 initWithFireOnDayIndex:v3 + 4 category:*MEMORY[0x277D118D0]];
+    v5 = [(HDMCNotification *)v4 initWithFireOnDayIndex:mostLikelyDays + 4 category:*MEMORY[0x277D118D0]];
   }
 
   else
@@ -86,32 +86,32 @@ LABEL_7:
 
 - (HDMCNotification)hdmc_afterPeriodEndNotification
 {
-  v2 = [a1 menstruationProjections];
-  v3 = [v2 firstObject];
+  menstruationProjections = [self menstruationProjections];
+  firstObject = [menstruationProjections firstObject];
 
-  if (!v3)
+  if (!firstObject)
   {
     goto LABEL_6;
   }
 
-  if ([v3 isPartiallyLogged])
+  if ([firstObject isPartiallyLogged])
   {
-    v4 = [a1 statistics];
-    v5 = [v4 cycleLengthMedian];
-    if (v5)
+    statistics = [self statistics];
+    cycleLengthMedian = [statistics cycleLengthMedian];
+    if (cycleLengthMedian)
     {
-      v6 = v5;
-      v7 = [a1 lastMenstrualFlowDayIndex];
+      v6 = cycleLengthMedian;
+      lastMenstrualFlowDayIndex = [self lastMenstrualFlowDayIndex];
 
-      if (v7)
+      if (lastMenstrualFlowDayIndex)
       {
-        v8 = [a1 lastMenstrualFlowDayIndex];
-        v9 = [v8 integerValue];
-        v10 = v9 - [v3 mostLikelyDays] + 1;
+        lastMenstrualFlowDayIndex2 = [self lastMenstrualFlowDayIndex];
+        integerValue = [lastMenstrualFlowDayIndex2 integerValue];
+        v10 = integerValue - [firstObject mostLikelyDays] + 1;
 
-        v11 = [a1 statistics];
-        v12 = [v11 menstruationLengthMedian];
-        v13 = [v12 integerValue] - 1;
+        statistics2 = [self statistics];
+        menstruationLengthMedian = [statistics2 menstruationLengthMedian];
+        v13 = [menstruationLengthMedian integerValue] - 1;
 
         if (v10 >= v13)
         {
@@ -127,15 +127,15 @@ LABEL_6:
     }
   }
 
-  v15 = [v3 isPartiallyLogged];
+  isPartiallyLogged = [firstObject isPartiallyLogged];
   v16 = MEMORY[0x277D118C8];
-  if (!v15)
+  if (!isPartiallyLogged)
   {
     v16 = MEMORY[0x277D118D8];
   }
 
   v17 = *v16;
-  v14 = -[HDMCNotification initWithFireOnDayIndex:category:]([HDMCNotification alloc], "initWithFireOnDayIndex:category:", [v3 dayIndexFromEndWithCoefficient:2.2], v17);
+  v14 = -[HDMCNotification initWithFireOnDayIndex:category:]([HDMCNotification alloc], "initWithFireOnDayIndex:category:", [firstObject dayIndexFromEndWithCoefficient:2.2], v17);
 
 LABEL_11:
 
@@ -144,14 +144,14 @@ LABEL_11:
 
 - (HDMCNotification)hdmc_beforeFertileWindowStartNotification
 {
-  v1 = [a1 fertileWindowProjections];
-  v2 = [v1 firstObject];
+  fertileWindowProjections = [self fertileWindowProjections];
+  firstObject = [fertileWindowProjections firstObject];
 
-  if (v2)
+  if (firstObject)
   {
     v3 = [HDMCNotification alloc];
-    v4 = [v2 allDays];
-    v5 = [(HDMCNotification *)v3 initWithFireOnDayIndex:v4 - 3 category:*MEMORY[0x277D118E0]];
+    allDays = [firstObject allDays];
+    v5 = [(HDMCNotification *)v3 initWithFireOnDayIndex:allDays - 3 category:*MEMORY[0x277D118E0]];
   }
 
   else
@@ -168,17 +168,17 @@ LABEL_11:
   v8 = a3;
   v9 = a4;
   v10 = a5;
-  v11 = [a1 fertileWindowProjections];
-  v12 = [v11 firstObject];
+  fertileWindowProjections = [self fertileWindowProjections];
+  firstObject = [fertileWindowProjections firstObject];
 
-  if (!v12 || ![v12 daysOffsetFromCalendarMethod] || objc_msgSend(v12, "daysOffsetFromCalendarMethod") && objc_msgSend(v12, "predictionPrimarySource") != 2)
+  if (!firstObject || ![firstObject daysOffsetFromCalendarMethod] || objc_msgSend(firstObject, "daysOffsetFromCalendarMethod") && objc_msgSend(firstObject, "predictionPrimarySource") != 2)
   {
     v29 = 0;
     goto LABEL_21;
   }
 
-  v13 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-  v14 = [v13 hkmc_nextDateAfterDate:v8 matchingHourComponents:v10];
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  v14 = [hk_gregorianCalendar hkmc_nextDateAfterDate:v8 matchingHourComponents:v10];
   if (!v14)
   {
     _HKInitializeLogging();
@@ -195,8 +195,8 @@ LABEL_11:
     v14 = v8;
   }
 
-  v18 = [v14 hk_dayIndexWithCalendar:v13];
-  if (v9 && v18 - [v9 hk_dayIndexWithCalendar:v13] <= 9)
+  v18 = [v14 hk_dayIndexWithCalendar:hk_gregorianCalendar];
+  if (v9 && v18 - [v9 hk_dayIndexWithCalendar:hk_gregorianCalendar] <= 9)
   {
     _HKInitializeLogging();
     v31 = *MEMORY[0x277CCC2E8];
@@ -217,9 +217,9 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v19 = [v12 allDays];
-  [v12 allDays];
-  v21 = v19 + v20 - 1;
+  allDays = [firstObject allDays];
+  [firstObject allDays];
+  v21 = allDays + v20 - 1;
   v22 = v21 - v18;
   if ((v21 - v18) >= 4)
   {
@@ -247,7 +247,7 @@ LABEL_18:
   }
 
   v30 = [HDMCNotification alloc];
-  v29 = -[HDMCNotification initWithFireOnDayIndex:category:fertileWindowEndDayIndex:daysShifted:](v30, "initWithFireOnDayIndex:category:fertileWindowEndDayIndex:daysShifted:", v18, *MEMORY[0x277D118F8], v21, [v12 daysOffsetFromCalendarMethod]);
+  v29 = -[HDMCNotification initWithFireOnDayIndex:category:fertileWindowEndDayIndex:daysShifted:](v30, "initWithFireOnDayIndex:category:fertileWindowEndDayIndex:daysShifted:", v18, *MEMORY[0x277D118F8], v21, [firstObject daysOffsetFromCalendarMethod]);
 LABEL_20:
 
 LABEL_21:
@@ -260,12 +260,12 @@ LABEL_21:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 menstruationProjections];
-  v9 = [v8 firstObject];
+  menstruationProjections = [self menstruationProjections];
+  firstObject = [menstruationProjections firstObject];
 
-  if (v9)
+  if (firstObject)
   {
-    v10 = [v9 startDayRange] - 1;
+    v10 = [firstObject startDayRange] - 1;
     v11 = [v6 hk_dayIndexWithCalendar:v7] < v10;
   }
 

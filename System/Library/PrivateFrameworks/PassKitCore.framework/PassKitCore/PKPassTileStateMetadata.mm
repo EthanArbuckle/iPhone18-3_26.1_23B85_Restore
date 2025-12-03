@@ -1,21 +1,21 @@
 @interface PKPassTileStateMetadata
-+ (id)_createForType:(int64_t)a3 dictionary:(id)a4;
-+ (id)_createWithType:(int64_t)a3;
-- (PKPassTileStateMetadata)initWithCoder:(id)a3;
++ (id)_createForType:(int64_t)type dictionary:(id)dictionary;
++ (id)_createWithType:(int64_t)type;
+- (PKPassTileStateMetadata)initWithCoder:(id)coder;
 - (PKPassTileStateMetadataVehicleFunction)metadataTypeVehicleFunction;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassTileStateMetadata
 
-+ (id)_createForType:(int64_t)a3 dictionary:(id)a4
++ (id)_createForType:(int64_t)type dictionary:(id)dictionary
 {
-  v5 = a4;
-  if (v5)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    v6 = [PKPassTileStateMetadata _createWithType:a3];
+    v6 = [PKPassTileStateMetadata _createWithType:type];
     v7 = v6;
-    if (v6 && [v6 _setUpWithDictionary:v5])
+    if (v6 && [v6 _setUpWithDictionary:dictionaryCopy])
     {
       v8 = v7;
     }
@@ -34,11 +34,11 @@
   return v8;
 }
 
-+ (id)_createWithType:(int64_t)a3
++ (id)_createWithType:(int64_t)type
 {
-  if ((a3 - 2) >= 3 && a3 != 0)
+  if ((type - 2) >= 3 && type != 0)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v5 = [PKPassTileStateMetadataVehicleFunction alloc];
       v6 = v5;
@@ -71,11 +71,11 @@ LABEL_13:
   return 0;
 }
 
-- (PKPassTileStateMetadata)initWithCoder:(id)a3
+- (PKPassTileStateMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12 = 0;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
   v6 = PKPassTileTypeFromString(v5, &v12);
 
   if (v6)
@@ -98,21 +98,21 @@ LABEL_13:
     }
 
     self = v8;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
     v10 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PKPassTileStateMetadata" code:0 userInfo:0];
-    [v4 failWithError:v10];
+    [coderCopy failWithError:v10];
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
   if (type > 4)
@@ -125,7 +125,7 @@ LABEL_13:
     v5 = off_1E79D94C8[type];
   }
 
-  [a3 encodeObject:v5 forKey:@"type"];
+  [coder encodeObject:v5 forKey:@"type"];
 }
 
 - (PKPassTileStateMetadataVehicleFunction)metadataTypeVehicleFunction

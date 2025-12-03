@@ -4,42 +4,42 @@
 - (BOOL)_shouldUseViewServiceToPresentTVRemote;
 - (BOOL)lockScreenPresentsOverrideRoutePicker;
 - (BOOL)shouldDisplayPlatter;
-- (BOOL)shouldEnableSyncingForSlider:(id)a3;
+- (BOOL)shouldEnableSyncingForSlider:(id)slider;
 - (BOOL)shouldShowTVRemoteButton;
-- (BOOL)slider:(id)a3 shouldCancelSnapWithTouch:(id)a4;
-- (BOOL)slider:(id)a3 syncStateWillChangeFromState:(int64_t)a4 toState:(int64_t)a5;
+- (BOOL)slider:(id)slider shouldCancelSnapWithTouch:(id)touch;
+- (BOOL)slider:(id)slider syncStateWillChangeFromState:(int64_t)state toState:(int64_t)toState;
 - (CGSize)lastKnownSize;
-- (MRPlatterViewController)initWithActiveRouteType:(int64_t)a3;
-- (MRPlatterViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (MRPlatterViewController)initWithRouteUID:(id)a3;
-- (MRPlatterViewController)initWithStyle:(int64_t)a3;
+- (MRPlatterViewController)initWithActiveRouteType:(int64_t)type;
+- (MRPlatterViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (MRPlatterViewController)initWithRouteUID:(id)d;
+- (MRPlatterViewController)initWithStyle:(int64_t)style;
 - (MRPlatterViewControllerDelegate)delegate;
 - (MediaControlsLanguageOptionsViewController)languageOptionsViewController;
 - (NSString)description;
 - (NSString)routeName;
 - (SFShareAudioViewController)shareAudioViewController;
-- (UIEdgeInsets)contentInsetsForRoutingViewController:(id)a3;
+- (UIEdgeInsets)contentInsetsForRoutingViewController:(id)controller;
 - (UIView)effectiveFooterView;
 - (UIView)effectiveHeaderView;
 - (id)_route;
 - (id)_stateDumpObject;
 - (id)_tvAirplayIdentifier;
 - (id)_tvMediaRemoteIdentifier;
-- (int64_t)lockScreenInternalRoutePickerOverrideWithDefaultStyle:(int64_t)a3;
+- (int64_t)lockScreenInternalRoutePickerOverrideWithDefaultStyle:(int64_t)style;
 - (uint64_t)_showShareAudioViewController;
 - (void)_dismissShareAudioViewController;
-- (void)_platterViewControllerReceivedInteraction:(id)a3;
+- (void)_platterViewControllerReceivedInteraction:(id)interaction;
 - (void)_presentRoutingViewControllerFromCoverSheet;
 - (void)_prewarmTVRemoteIfNeeded;
-- (void)_routingCornerViewReceivedTap:(id)a3;
-- (void)_setContinuousCornerRadius:(double)a3;
-- (void)_setRoutingPickerVisible:(BOOL)a3 animated:(BOOL)a4;
+- (void)_routingCornerViewReceivedTap:(id)tap;
+- (void)_setContinuousCornerRadius:(double)radius;
+- (void)_setRoutingPickerVisible:(BOOL)visible animated:(BOOL)animated;
 - (void)_showPlaceholderArtwork;
 - (void)_showShareAudioViewController;
 - (void)_updateConfiguration;
-- (void)_updateControlCenterMetadata:(id)a3 sectionMetadata:(id)a4;
+- (void)_updateControlCenterMetadata:(id)metadata sectionMetadata:(id)sectionMetadata;
 - (void)_updateHeaderUI;
-- (void)_updateOnScreenForStyle:(int64_t)a3;
+- (void)_updateOnScreenForStyle:(int64_t)style;
 - (void)_updatePlaceholderArtwork;
 - (void)_updateRouteNameLabel;
 - (void)_updateRoutingCornerView;
@@ -47,49 +47,49 @@
 - (void)_updateSecondaryStringFormat;
 - (void)_updateStyle;
 - (void)dealloc;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)endpointController:(id)a3 didLoadNewResponse:(id)a4;
-- (void)endpointControllerDidUpdateRoutingAvailability:(id)a3;
-- (void)endpointControllerRouteDidUpdate:(id)a3;
-- (void)footerViewButtonPressed:(id)a3;
-- (void)headerViewButtonPressed:(id)a3;
-- (void)headerViewLaunchNowPlayingAppButtonPressed:(id)a3;
-- (void)layoutMonitor:(id)a3 didUpdateDisplayLayout:(id)a4 withContext:(id)a5;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)endpointController:(id)controller didLoadNewResponse:(id)response;
+- (void)endpointControllerDidUpdateRoutingAvailability:(id)availability;
+- (void)endpointControllerRouteDidUpdate:(id)update;
+- (void)footerViewButtonPressed:(id)pressed;
+- (void)headerViewButtonPressed:(id)pressed;
+- (void)headerViewLaunchNowPlayingAppButtonPressed:(id)pressed;
+- (void)layoutMonitor:(id)monitor didUpdateDisplayLayout:(id)layout withContext:(id)context;
 - (void)loadView;
-- (void)presentRatingActionSheet:(id)a3 sourceView:(id)a4;
+- (void)presentRatingActionSheet:(id)sheet sourceView:(id)view;
 - (void)presentTVRemote;
-- (void)routingViewController:(id)a3 didPickRoute:(id)a4;
-- (void)routingViewController:(id)a3 didSelectRoutingViewItem:(id)a4;
-- (void)routingViewController:(id)a3 willDisplayCell:(id)a4;
-- (void)routingViewController:(id)a3 willDisplayHeaderView:(id)a4;
-- (void)setAllowsNowPlayingAppLaunch:(BOOL)a3;
-- (void)setArtworkCatalog:(id)a3;
-- (void)setBackgroundView:(id)a3;
-- (void)setDisplayElements:(id)a3;
-- (void)setEndpointController:(id)a3;
-- (void)setLabel:(id)a3;
-- (void)setOnScreen:(BOOL)a3;
-- (void)setPlaceholderString:(id)a3;
-- (void)setRoutingCornerViewTappedBlock:(id)a3;
-- (void)setRoutingViewController:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setSelectedMode:(int64_t)a3 animated:(BOOL)a4;
-- (void)setStyle:(int64_t)a3;
-- (void)setSupportedModes:(unint64_t)a3;
-- (void)setTransitioning:(BOOL)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)routingViewController:(id)controller didPickRoute:(id)route;
+- (void)routingViewController:(id)controller didSelectRoutingViewItem:(id)item;
+- (void)routingViewController:(id)controller willDisplayCell:(id)cell;
+- (void)routingViewController:(id)controller willDisplayHeaderView:(id)view;
+- (void)setAllowsNowPlayingAppLaunch:(BOOL)launch;
+- (void)setArtworkCatalog:(id)catalog;
+- (void)setBackgroundView:(id)view;
+- (void)setDisplayElements:(id)elements;
+- (void)setEndpointController:(id)controller;
+- (void)setLabel:(id)label;
+- (void)setOnScreen:(BOOL)screen;
+- (void)setPlaceholderString:(id)string;
+- (void)setRoutingCornerViewTappedBlock:(id)block;
+- (void)setRoutingViewController:(id)controller;
+- (void)setSelected:(BOOL)selected;
+- (void)setSelectedMode:(int64_t)mode animated:(BOOL)animated;
+- (void)setStyle:(int64_t)style;
+- (void)setSupportedModes:(unint64_t)modes;
+- (void)setTransitioning:(BOOL)transitioning;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willTransitionToSize:(CGSize)a3 withCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willTransitionToSize:(CGSize)size withCoordinator:(id)coordinator;
 @end
 
 @implementation MRPlatterViewController
 
-- (MRPlatterViewController)initWithStyle:(int64_t)a3
+- (MRPlatterViewController)initWithStyle:(int64_t)style
 {
   v51.receiver = self;
   v51.super_class = MRPlatterViewController;
@@ -121,11 +121,11 @@
     transitioningDelegate = v4->_transitioningDelegate;
     v4->_transitioningDelegate = v18;
 
-    v4->_style = a3;
+    v4->_style = style;
     explicitString = v4->_explicitString;
     v4->_explicitString = &stru_1F1445548;
 
-    if (a3 == 3)
+    if (style == 3)
     {
       v21 = [[MediaControlsVolumeSlider alloc] initWithFrame:0 style:v7, v6, v9, v8];
     }
@@ -171,34 +171,34 @@
     *(&v4->super.super.super.isa + v29) = v27;
 
 LABEL_8:
-    v31 = [(MediaControlsHeaderView *)v4->_nowPlayingHeaderView routingButton];
-    [v31 addTarget:v4 action:sel_headerViewButtonPressed_ forControlEvents:64];
+    routingButton = [(MediaControlsHeaderView *)v4->_nowPlayingHeaderView routingButton];
+    [routingButton addTarget:v4 action:sel_headerViewButtonPressed_ forControlEvents:64];
 
-    v32 = [(MediaControlsHeaderView *)v4->_nowPlayingHeaderView launchNowPlayingAppButton];
-    [v32 addTarget:v4 action:sel_headerViewLaunchNowPlayingAppButtonPressed_ forControlEvents:64];
+    launchNowPlayingAppButton = [(MediaControlsHeaderView *)v4->_nowPlayingHeaderView launchNowPlayingAppButton];
+    [launchNowPlayingAppButton addTarget:v4 action:sel_headerViewLaunchNowPlayingAppButtonPressed_ forControlEvents:64];
 
     [(MRMediaControlsVideoPickerFooterView *)v4->_videoPickerFooterView addTarget:v4 action:sel_footerViewButtonPressed_ forControlEvents:64];
     v33 = v4->_style == 3;
-    v34 = [(MediaControlsHeaderView *)v4->_nowPlayingHeaderView routingButton];
-    [v34 setUserInterfaceStyleSwitchingEnabled:v33];
+    routingButton2 = [(MediaControlsHeaderView *)v4->_nowPlayingHeaderView routingButton];
+    [routingButton2 setUserInterfaceStyleSwitchingEnabled:v33];
 
-    v35 = [(MRPlatterViewController *)v4 parentContainerView];
-    v36 = [v35 transportStackView];
-    [v36 setActionsDelegate:v4];
+    parentContainerView = [(MRPlatterViewController *)v4 parentContainerView];
+    transportStackView = [parentContainerView transportStackView];
+    [transportStackView setActionsDelegate:v4];
 
-    v37 = [MEMORY[0x1E696AAE8] mediaControlsBundle];
-    v38 = [v37 localizedStringForKey:@"MEDIA_CONTROLS_PLATTER_PLACEHOLDER" value:&stru_1F1445548 table:@"MediaControls"];
+    mediaControlsBundle = [MEMORY[0x1E696AAE8] mediaControlsBundle];
+    v38 = [mediaControlsBundle localizedStringForKey:@"MEDIA_CONTROLS_PLATTER_PLACEHOLDER" value:&stru_1F1445548 table:@"MediaControls"];
     [(MRPlatterViewController *)v4 setPlaceholderString:v38];
 
-    v39 = [MEMORY[0x1E699FAF8] configurationForDefaultMainDisplayMonitor];
+    configurationForDefaultMainDisplayMonitor = [MEMORY[0x1E699FAF8] configurationForDefaultMainDisplayMonitor];
     objc_initWeak(&location, v4);
     v48[0] = MEMORY[0x1E69E9820];
     v48[1] = 3221225472;
     v48[2] = __41__MRPlatterViewController_initWithStyle___block_invoke;
     v48[3] = &unk_1E7665A98;
     objc_copyWeak(&v49, &location);
-    [v39 setTransitionHandler:v48];
-    v40 = [MEMORY[0x1E699FAE0] monitorWithConfiguration:v39];
+    [configurationForDefaultMainDisplayMonitor setTransitionHandler:v48];
+    v40 = [MEMORY[0x1E699FAE0] monitorWithConfiguration:configurationForDefaultMainDisplayMonitor];
     displayMonitor = v4->_displayMonitor;
     v4->_displayMonitor = v40;
 
@@ -258,13 +258,13 @@ id __41__MRPlatterViewController_initWithStyle___block_invoke_2(uint64_t a1, uin
   return v2;
 }
 
-- (MRPlatterViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (MRPlatterViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v4 = [(MRPlatterViewController *)self initWithStyle:0, a4];
-  v5 = v4;
-  if (v4)
+  bundle = [(MRPlatterViewController *)self initWithStyle:0, bundle];
+  v5 = bundle;
+  if (bundle)
   {
-    [(MRPlatterViewController *)v4 setAllowsNowPlayingAppLaunch:1];
+    [(MRPlatterViewController *)bundle setAllowsNowPlayingAppLaunch:1];
     CCUIExpandedModuleContinuousCornerRadius();
     [(MRPlatterViewController *)v5 _setContinuousCornerRadius:?];
   }
@@ -272,32 +272,32 @@ id __41__MRPlatterViewController_initWithStyle___block_invoke_2(uint64_t a1, uin
   return v5;
 }
 
-- (MRPlatterViewController)initWithRouteUID:(id)a3
+- (MRPlatterViewController)initWithRouteUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [(MRPlatterViewController *)self initWithNibName:0 bundle:0];
   if (v5)
   {
-    v6 = [[MediaControlsStandaloneEndpointController alloc] initWithRouteUID:v4];
+    v6 = [[MediaControlsStandaloneEndpointController alloc] initWithRouteUID:dCopy];
     [(MRPlatterViewController *)v5 setEndpointController:v6];
 
-    v7 = [(MRPlatterViewController *)v5 endpointController];
-    [v7 setAllowsAutomaticResponseLoading:1];
+    endpointController = [(MRPlatterViewController *)v5 endpointController];
+    [endpointController setAllowsAutomaticResponseLoading:1];
   }
 
   return v5;
 }
 
-- (MRPlatterViewController)initWithActiveRouteType:(int64_t)a3
+- (MRPlatterViewController)initWithActiveRouteType:(int64_t)type
 {
   v4 = [(MRPlatterViewController *)self initWithNibName:0 bundle:0];
   if (v4)
   {
-    v5 = [[MediaControlsActiveEndpointController alloc] initWithActiveEndpointType:a3 == 1];
+    v5 = [[MediaControlsActiveEndpointController alloc] initWithActiveEndpointType:type == 1];
     [(MRPlatterViewController *)v4 setEndpointController:v5];
 
-    v6 = [(MRPlatterViewController *)v4 endpointController];
-    [v6 setAllowsAutomaticResponseLoading:1];
+    endpointController = [(MRPlatterViewController *)v4 endpointController];
+    [endpointController setAllowsAutomaticResponseLoading:1];
   }
 
   return v4;
@@ -305,12 +305,12 @@ id __41__MRPlatterViewController_initWithStyle___block_invoke_2(uint64_t a1, uin
 
 - (void)dealloc
 {
-  v3 = [(MRPlatterViewController *)self endpointController];
-  v4 = [v3 proxyDelegate];
-  [v4 endObserving];
+  endpointController = [(MRPlatterViewController *)self endpointController];
+  proxyDelegate = [endpointController proxyDelegate];
+  [proxyDelegate endObserving];
 
-  v5 = [(MRPlatterViewController *)self displayMonitor];
-  [v5 invalidate];
+  displayMonitor = [(MRPlatterViewController *)self displayMonitor];
+  [displayMonitor invalidate];
 
   v6.receiver = self;
   v6.super_class = MRPlatterViewController;
@@ -321,46 +321,46 @@ id __41__MRPlatterViewController_initWithStyle___block_invoke_2(uint64_t a1, uin
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MRPlatterViewController *)self endpointController];
-  v6 = [v5 route];
-  v7 = [v3 stringWithFormat:@"<%@: %p route: %@", v4, self, v6];
+  endpointController = [(MRPlatterViewController *)self endpointController];
+  route = [endpointController route];
+  v7 = [v3 stringWithFormat:@"<%@: %p route: %@", v4, self, route];
 
   return v7;
 }
 
 - (NSString)routeName
 {
-  v3 = [(MRPlatterViewController *)self nowPlayingHeaderView];
+  nowPlayingHeaderView = [(MRPlatterViewController *)self nowPlayingHeaderView];
 
-  if (v3)
+  if (nowPlayingHeaderView)
   {
-    v4 = [(MRPlatterViewController *)self nowPlayingHeaderView];
-    v5 = [v4 routeLabel];
-    v6 = [v5 text];
+    nowPlayingHeaderView2 = [(MRPlatterViewController *)self nowPlayingHeaderView];
+    routeLabel = [nowPlayingHeaderView2 routeLabel];
+    text = [routeLabel text];
   }
 
   else
   {
-    v6 = 0;
+    text = 0;
   }
 
-  return v6;
+  return text;
 }
 
-- (void)setAllowsNowPlayingAppLaunch:(BOOL)a3
+- (void)setAllowsNowPlayingAppLaunch:(BOOL)launch
 {
-  if (self->_allowsNowPlayingAppLaunch != a3)
+  if (self->_allowsNowPlayingAppLaunch != launch)
   {
-    self->_allowsNowPlayingAppLaunch = a3;
+    self->_allowsNowPlayingAppLaunch = launch;
     [(MRPlatterViewController *)self _updateStyle];
   }
 }
 
 - (BOOL)shouldDisplayPlatter
 {
-  v2 = [(MRPlatterViewController *)self endpointController];
-  v3 = [v2 route];
-  v4 = v3 != 0;
+  endpointController = [(MRPlatterViewController *)self endpointController];
+  route = [endpointController route];
+  v4 = route != 0;
 
   return v4;
 }
@@ -376,45 +376,45 @@ id __41__MRPlatterViewController_initWithStyle___block_invoke_2(uint64_t a1, uin
   v20.receiver = self;
   v20.super_class = MRPlatterViewController;
   [(MRPlatterViewController *)&v20 viewDidLoad];
-  v3 = [(MRPlatterViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] labelColor];
-  [v3 setTintColor:v4];
+  view = [(MRPlatterViewController *)self view];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [view setTintColor:labelColor];
 
-  v5 = [(MRPlatterViewController *)self view];
-  [v5 setAutoresizingMask:0];
+  view2 = [(MRPlatterViewController *)self view];
+  [view2 setAutoresizingMask:0];
 
-  v6 = [(MRPlatterViewController *)self backgroundView];
+  backgroundView = [(MRPlatterViewController *)self backgroundView];
 
-  if (v6)
+  if (backgroundView)
   {
-    v7 = [(MRPlatterViewController *)self view];
-    [v7 addSubview:self->_backgroundView];
+    view3 = [(MRPlatterViewController *)self view];
+    [view3 addSubview:self->_backgroundView];
   }
 
-  v8 = [(MRPlatterViewController *)self view];
-  [v8 addSubview:self->_contentView];
+  view4 = [(MRPlatterViewController *)self view];
+  [view4 addSubview:self->_contentView];
 
   [(UIView *)self->_contentView addSubview:self->_parentContainerView];
   contentView = self->_contentView;
-  v10 = [(MRPlatterViewController *)self effectiveFooterView];
-  [(UIView *)contentView addSubview:v10];
+  effectiveFooterView = [(MRPlatterViewController *)self effectiveFooterView];
+  [(UIView *)contentView addSubview:effectiveFooterView];
 
   v11 = self->_contentView;
-  v12 = [(MRPlatterViewController *)self effectiveHeaderView];
-  [(UIView *)v11 addSubview:v12];
+  effectiveHeaderView = [(MRPlatterViewController *)self effectiveHeaderView];
+  [(UIView *)v11 addSubview:effectiveHeaderView];
 
   [(UIView *)self->_contentView addSubview:self->_routingCornerView];
   v13 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__routingCornerViewReceivedTap_];
   [v13 setCancelsTouchesInView:0];
-  v14 = [(MRPlatterViewController *)self routingCornerView];
-  [v14 addGestureRecognizer:v13];
+  routingCornerView = [(MRPlatterViewController *)self routingCornerView];
+  [routingCornerView addGestureRecognizer:v13];
 
   if ([(MRPlatterViewController *)self style]== 3)
   {
     v15 = [[MediaControlsInteractionRecognizer alloc] initWithTarget:self action:sel__platterViewControllerReceivedInteraction_];
     [(MediaControlsInteractionRecognizer *)v15 setCancelsTouchesInView:0];
-    v16 = [(MRPlatterViewController *)self view];
-    [v16 addGestureRecognizer:v15];
+    view5 = [(MRPlatterViewController *)self view];
+    [view5 addGestureRecognizer:v15];
 
     [(MediaControlsInteractionRecognizer *)v15 setDelegate:self];
   }
@@ -423,9 +423,9 @@ id __41__MRPlatterViewController_initWithStyle___block_invoke_2(uint64_t a1, uin
   routingViewController = self->_routingViewController;
   if (routingViewController)
   {
-    v18 = [(MPAVRoutingViewController *)routingViewController view];
-    v19 = [(MRPlatterViewController *)self parentContainerView];
-    [v19 setRoutingView:v18];
+    view6 = [(MPAVRoutingViewController *)routingViewController view];
+    parentContainerView = [(MRPlatterViewController *)self parentContainerView];
+    [parentContainerView setRoutingView:view6];
   }
 }
 
@@ -434,11 +434,11 @@ id __41__MRPlatterViewController_initWithStyle___block_invoke_2(uint64_t a1, uin
   v117.receiver = self;
   v117.super_class = MRPlatterViewController;
   [(MRPlatterViewController *)&v117 viewDidLayoutSubviews];
-  v3 = [(MRPlatterViewController *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(MRPlatterViewController *)self traitCollection];
+  [traitCollection displayScale];
 
-  v4 = [(MRPlatterViewController *)self view];
-  [v4 bounds];
+  view = [(MRPlatterViewController *)self view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -446,8 +446,8 @@ id __41__MRPlatterViewController_initWithStyle___block_invoke_2(uint64_t a1, uin
 
   [(UIView *)self->_backgroundView setFrame:v6, v8, v10, v12];
   [(UIView *)self->_contentView setFrame:v6, v8, v10, v12];
-  v13 = [(SFShareAudioViewController *)self->_shareAudioViewController view];
-  [v13 setFrame:{v6, v8, v10, v12}];
+  view2 = [(SFShareAudioViewController *)self->_shareAudioViewController view];
+  [view2 setFrame:{v6, v8, v10, v12}];
 
   UIRoundToScale();
   UIRoundToScale();
@@ -455,24 +455,24 @@ id __41__MRPlatterViewController_initWithStyle___block_invoke_2(uint64_t a1, uin
   UIRectInset();
   UIRectInset();
   UIRectIntegralWithScale();
-  v15 = [(MRPlatterViewController *)self view];
-  [v15 bounds];
+  view3 = [(MRPlatterViewController *)self view];
+  [view3 bounds];
   MPRectByApplyingUserInterfaceLayoutDirectionInRect();
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  v24 = [(MRPlatterViewController *)self routingCornerView];
-  [v24 setFrame:{v17, v19, v21, v23}];
+  routingCornerView = [(MRPlatterViewController *)self routingCornerView];
+  [routingCornerView setFrame:{v17, v19, v21, v23}];
 
-  v25 = [MEMORY[0x1E69DC668] sharedApplication];
-  v26 = [v25 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v26 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     CGAffineTransformMakeScale(&v116, -1.0, 1.0);
-    v27 = [(MRPlatterViewController *)self routingCornerView];
-    v28 = v27;
+    routingCornerView2 = [(MRPlatterViewController *)self routingCornerView];
+    v28 = routingCornerView2;
     v113 = *&v116.a;
     v114 = *&v116.c;
     v29 = *&v116.tx;
@@ -480,8 +480,8 @@ id __41__MRPlatterViewController_initWithStyle___block_invoke_2(uint64_t a1, uin
 
   else
   {
-    v27 = [(MRPlatterViewController *)self routingCornerView];
-    v28 = v27;
+    routingCornerView2 = [(MRPlatterViewController *)self routingCornerView];
+    v28 = routingCornerView2;
     v30 = *(MEMORY[0x1E695EFD0] + 16);
     v113 = *MEMORY[0x1E695EFD0];
     v114 = v30;
@@ -489,7 +489,7 @@ id __41__MRPlatterViewController_initWithStyle___block_invoke_2(uint64_t a1, uin
   }
 
   v115 = v29;
-  [v27 setTransform:&v113];
+  [routingCornerView2 setTransform:&v113];
 
   style = self->_style;
   if (style > 2)
@@ -510,16 +510,16 @@ LABEL_10:
       v54 = v56;
     }
 
-    v57 = [(MRPlatterViewController *)self effectiveHeaderView];
-    [v57 sizeThatFits:{v52, v54}];
+    effectiveHeaderView = [(MRPlatterViewController *)self effectiveHeaderView];
+    [effectiveHeaderView sizeThatFits:{v52, v54}];
 
     UIRectIntegralWithScale();
     v59 = v58;
     v61 = v60;
     v63 = v62;
     v65 = v64;
-    v66 = [(MRPlatterViewController *)self effectiveHeaderView];
-    [v66 setFrame:{v59, v61, v63, v65}];
+    effectiveHeaderView2 = [(MRPlatterViewController *)self effectiveHeaderView];
+    [effectiveHeaderView2 setFrame:{v59, v61, v63, v65}];
 
     v67 = self->_style;
     if (v67 != 3 && v67 != 5)
@@ -532,8 +532,8 @@ LABEL_10:
     v71 = v70;
     v73 = v72;
     v75 = v74;
-    v76 = [(MRPlatterViewController *)self effectiveFooterView];
-    [v76 sizeThatFits:{v73, v75}];
+    effectiveFooterView = [(MRPlatterViewController *)self effectiveFooterView];
+    [effectiveFooterView sizeThatFits:{v73, v75}];
 
     v120.origin.x = v69;
     v120.origin.y = v71;
@@ -555,8 +555,8 @@ LABEL_10:
     v80 = v79;
     v82 = v81;
     v84 = v83;
-    v85 = [(MRPlatterViewController *)self effectiveFooterView];
-    [v85 setFrame:{v78, v80, v82, v84}];
+    effectiveFooterView2 = [(MRPlatterViewController *)self effectiveFooterView];
+    [effectiveFooterView2 setFrame:{v78, v80, v82, v84}];
 
     UIRectInset();
     UIRectIntegralWithScale();
@@ -564,8 +564,8 @@ LABEL_10:
     v89 = v88;
     v91 = v90;
     v93 = v92;
-    v45 = [(MRPlatterViewController *)self parentContainerView];
-    v46 = v45;
+    parentContainerView = [(MRPlatterViewController *)self parentContainerView];
+    view4 = parentContainerView;
     v47 = v87;
     v48 = v89;
     v49 = v91;
@@ -580,19 +580,19 @@ LABEL_10:
     case 1:
       v95 = (v12 + v112 * -2.0) / 3.0;
       v96 = [MEMORY[0x1E69DCA40] metricsForTextStyle:*MEMORY[0x1E69DDCF8]];
-      v97 = [(MRPlatterViewController *)self traitCollection];
-      [v96 scaledValueForValue:v97 compatibleWithTraitCollection:20.0];
+      traitCollection2 = [(MRPlatterViewController *)self traitCollection];
+      [v96 scaledValueForValue:traitCollection2 compatibleWithTraitCollection:20.0];
       v99 = v98 * -0.5;
 
-      v100 = [(MRPlatterViewController *)self effectiveHeaderView];
-      [v100 sizeThatFits:{v10, v12}];
+      effectiveHeaderView3 = [(MRPlatterViewController *)self effectiveHeaderView];
+      [effectiveHeaderView3 sizeThatFits:{v10, v12}];
       v102 = v101;
 
-      v103 = [(MRPlatterViewController *)self effectiveHeaderView];
-      [v103 setFrame:{0.0, v95 + 25.0 + v99, v10, v102}];
+      effectiveHeaderView4 = [(MRPlatterViewController *)self effectiveHeaderView];
+      [effectiveHeaderView4 setFrame:{0.0, v95 + 25.0 + v99, v10, v102}];
 
-      v104 = [(MRPlatterViewController *)self parentContainerView];
-      [v104 setFrame:{0.0, v112 + v95 * 2.0, v10, 50.0}];
+      parentContainerView2 = [(MRPlatterViewController *)self parentContainerView];
+      [parentContainerView2 setFrame:{0.0, v112 + v95 * 2.0, v10, 50.0}];
 
       v123.origin.x = v6;
       v123.origin.y = v8;
@@ -605,116 +605,116 @@ LABEL_10:
       [v107 sizeThatFits:{width, height}];
       v109 = v108;
 
-      v46 = [(MRPlatterViewController *)self view];
-      [v46 bounds];
+      view4 = [(MRPlatterViewController *)self view];
+      [view4 bounds];
       v110 = CGRectGetMaxY(v125) - v109;
-      v111 = [(MRPlatterViewController *)self effectiveFooterView];
-      [v111 setFrame:{0.0, v110, width, v109}];
+      effectiveFooterView3 = [(MRPlatterViewController *)self effectiveFooterView];
+      [effectiveFooterView3 setFrame:{0.0, v110, width, v109}];
 
       goto LABEL_17;
     case 2:
-      v32 = [(MRPlatterViewController *)self effectiveHeaderView];
-      [v32 sizeThatFits:{v10, v12}];
+      effectiveHeaderView5 = [(MRPlatterViewController *)self effectiveHeaderView];
+      [effectiveHeaderView5 sizeThatFits:{v10, v12}];
 
       UIRectCenteredIntegralRect();
       v34 = v33;
       v36 = v35;
       v38 = v37;
       v40 = v39;
-      v41 = [(MRPlatterViewController *)self effectiveHeaderView];
-      [v41 setFrame:{v34, v36, v38, v40}];
+      effectiveHeaderView6 = [(MRPlatterViewController *)self effectiveHeaderView];
+      [effectiveHeaderView6 setFrame:{v34, v36, v38, v40}];
 
       v118.origin.x = v6;
       v118.origin.y = v8;
       v118.size.width = v10;
       v118.size.height = v12;
       MidY = CGRectGetMidY(v118);
-      v43 = [(MRPlatterViewController *)self parentContainerView];
-      [v43 setFrame:{v6, MidY, v10, 50.0}];
+      parentContainerView3 = [(MRPlatterViewController *)self parentContainerView];
+      [parentContainerView3 setFrame:{v6, MidY, v10, 50.0}];
 
       v119.origin.y = v8 + 0.0;
       v119.origin.x = v6 + 24.0;
       v119.size.width = v10 - (24.0 + 24.0);
       v119.size.height = v12;
       MaxY = CGRectGetMaxY(v119);
-      v45 = [(MRPlatterViewController *)self effectiveFooterView];
-      v46 = v45;
+      parentContainerView = [(MRPlatterViewController *)self effectiveFooterView];
+      view4 = parentContainerView;
       v47 = v6 + 24.0;
       v48 = MaxY;
       v49 = v10 - (24.0 + 24.0);
       v50 = 50.0;
 LABEL_16:
-      [v45 setFrame:{v47, v48, v49, v50}];
+      [parentContainerView setFrame:{v47, v48, v49, v50}];
 LABEL_17:
 
       break;
   }
 
 LABEL_18:
-  v94 = [(MRPlatterViewController *)self view];
-  [v94 sendSubviewToBack:self->_backgroundView];
+  view5 = [(MRPlatterViewController *)self view];
+  [view5 sendSubviewToBack:self->_backgroundView];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = MRPlatterViewController;
   [(MRPlatterViewController *)&v5 viewWillAppear:?];
   [(MRPlatterViewController *)self setOnScreen:1];
-  [(MPAVRoutingViewController *)self->_routingViewController beginAppearanceTransition:1 animated:v3];
+  [(MPAVRoutingViewController *)self->_routingViewController beginAppearanceTransition:1 animated:appearCopy];
   [(MRPlatterViewController *)self _updateHeaderUI];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MRPlatterViewController;
-  [(MRPlatterViewController *)&v4 viewDidAppear:a3];
+  [(MRPlatterViewController *)&v4 viewDidAppear:appear];
   [(MPAVRoutingViewController *)self->_routingViewController endAppearanceTransition];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = MRPlatterViewController;
   [(MRPlatterViewController *)&v5 didMoveToParentViewController:?];
   [(MRPlatterViewController *)self _updateHeaderUI];
-  if (!a3)
+  if (!controller)
   {
     [(MRPlatterViewController *)self setOnScreen:0];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = MRPlatterViewController;
   [(MRPlatterViewController *)&v6 viewWillDisappear:?];
-  [(MPAVRoutingViewController *)self->_routingViewController beginAppearanceTransition:0 animated:v3];
-  v5 = [(MRPlatterViewController *)self languageOptionsViewController];
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  [(MPAVRoutingViewController *)self->_routingViewController beginAppearanceTransition:0 animated:disappearCopy];
+  languageOptionsViewController = [(MRPlatterViewController *)self languageOptionsViewController];
+  [languageOptionsViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = MRPlatterViewController;
-  [(MRPlatterViewController *)&v4 viewDidDisappear:a3];
+  [(MRPlatterViewController *)&v4 viewDidDisappear:disappear];
   [(MRPlatterViewController *)self setOnScreen:0];
   [(MPAVRoutingViewController *)self->_routingViewController endAppearanceTransition];
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   backgroundView = self->_backgroundView;
-  if (backgroundView != v5)
+  if (backgroundView != viewCopy)
   {
-    v13 = v5;
+    v13 = viewCopy;
     v7 = backgroundView;
-    objc_storeStrong(&self->_backgroundView, a3);
+    objc_storeStrong(&self->_backgroundView, view);
     [(UIView *)self->_backgroundView _setContinuousCornerRadius:self->__continuousCornerRadius];
     if (objc_opt_respondsToSelector())
     {
@@ -726,44 +726,44 @@ LABEL_18:
     {
       if (v13)
       {
-        v9 = [(MRPlatterViewController *)self view];
-        [v9 insertSubview:v13 atIndex:0];
+        view = [(MRPlatterViewController *)self view];
+        [view insertSubview:v13 atIndex:0];
 
-        v10 = [(MRPlatterViewController *)self view];
-        [v10 setNeedsLayout];
+        view2 = [(MRPlatterViewController *)self view];
+        [view2 setNeedsLayout];
       }
 
       else
       {
-        v11 = [(UIView *)v7 superview];
-        v12 = [(MRPlatterViewController *)self view];
+        superview = [(UIView *)v7 superview];
+        view3 = [(MRPlatterViewController *)self view];
 
-        if (v11 == v12)
+        if (superview == view3)
         {
           [(UIView *)v7 removeFromSuperview];
         }
       }
     }
 
-    v5 = v13;
+    viewCopy = v13;
   }
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
-  if (self->__continuousCornerRadius != a3)
+  if (self->__continuousCornerRadius != radius)
   {
-    self->__continuousCornerRadius = a3;
-    v4 = [(MRPlatterViewController *)self backgroundView];
-    [v4 _setContinuousCornerRadius:self->__continuousCornerRadius];
+    self->__continuousCornerRadius = radius;
+    backgroundView = [(MRPlatterViewController *)self backgroundView];
+    [backgroundView _setContinuousCornerRadius:self->__continuousCornerRadius];
   }
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(MRPlatterViewController *)self _updateSecondaryStringFormat];
     [(MRPlatterViewController *)self _updateStyle];
     if (self->_style)
@@ -777,55 +777,55 @@ LABEL_18:
   }
 }
 
-- (void)setEndpointController:(id)a3
+- (void)setEndpointController:(id)controller
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(MediaControlsEndpointController *)self->_endpointController delegate];
+  controllerCopy = controller;
+  delegate = [(MediaControlsEndpointController *)self->_endpointController delegate];
 
-  if (v6 == self)
+  if (delegate == self)
   {
     [(MediaControlsEndpointController *)self->_endpointController setDelegate:0];
   }
 
-  [(MediaControlsEndpointController *)v5 setDelegate:self];
-  v7 = [(MRPlatterViewController *)self label];
-  [(MediaControlsEndpointController *)v5 setLabel:v7];
+  [(MediaControlsEndpointController *)controllerCopy setDelegate:self];
+  label = [(MRPlatterViewController *)self label];
+  [(MediaControlsEndpointController *)controllerCopy setLabel:label];
 
   v8 = MCLogCategoryRouting();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138543618;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
-    v18 = v5;
+    v18 = controllerCopy;
     _os_log_impl(&dword_1A20FC000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ changing to endpoint controller: %{public}@", &v15, 0x16u);
   }
 
-  if (self->_endpointController != v5)
+  if (self->_endpointController != controllerCopy)
   {
-    objc_storeStrong(&self->_endpointController, a3);
-    v9 = [(MRPlatterViewController *)self volumeContainerView];
-    v10 = [v9 volumeSlider];
+    objc_storeStrong(&self->_endpointController, controller);
+    volumeContainerView = [(MRPlatterViewController *)self volumeContainerView];
+    volumeSlider = [volumeContainerView volumeSlider];
 
-    if (v10)
+    if (volumeSlider)
     {
-      v11 = [(MediaControlsEndpointController *)v5 route];
+      route = [(MediaControlsEndpointController *)controllerCopy route];
 
-      if (v11)
+      if (route)
       {
-        v12 = [(MediaControlsEndpointController *)v5 route];
-        v13 = [(MRPlatterViewController *)self volumeContainerView];
-        v14 = [v13 volumeSlider];
-        [v14 setGroupRoute:v12];
+        route2 = [(MediaControlsEndpointController *)controllerCopy route];
+        volumeContainerView2 = [(MRPlatterViewController *)self volumeContainerView];
+        volumeSlider2 = [volumeContainerView2 volumeSlider];
+        [volumeSlider2 setGroupRoute:route2];
       }
 
       else
       {
-        v12 = [objc_alloc(MEMORY[0x1E6970A20]) initWithGroupRoute:0 outputDeviceRoute:0];
-        v13 = [(MRPlatterViewController *)self volumeContainerView];
-        v14 = [v13 volumeSlider];
-        [v14 setVolumeDataSource:v12];
+        route2 = [objc_alloc(MEMORY[0x1E6970A20]) initWithGroupRoute:0 outputDeviceRoute:0];
+        volumeContainerView2 = [(MRPlatterViewController *)self volumeContainerView];
+        volumeSlider2 = [volumeContainerView2 volumeSlider];
+        [volumeSlider2 setVolumeDataSource:route2];
       }
     }
 
@@ -833,30 +833,30 @@ LABEL_18:
   }
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v6 = a3;
+  labelCopy = label;
   if (([(NSString *)self->_label isEqual:?]& 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [labelCopy copy];
     label = self->_label;
     self->_label = v4;
 
-    [(MediaControlsEndpointController *)self->_endpointController setLabel:v6];
+    [(MediaControlsEndpointController *)self->_endpointController setLabel:labelCopy];
   }
 }
 
-- (void)setPlaceholderString:(id)a3
+- (void)setPlaceholderString:(id)string
 {
-  v5 = a3;
-  if (self->_placeholderString != v5)
+  stringCopy = string;
+  if (self->_placeholderString != stringCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_placeholderString, a3);
-    v6 = [(MRPlatterViewController *)self nowPlayingHeaderView];
-    [v6 setPlaceholderString:v7];
+    v7 = stringCopy;
+    objc_storeStrong(&self->_placeholderString, string);
+    nowPlayingHeaderView = [(MRPlatterViewController *)self nowPlayingHeaderView];
+    [nowPlayingHeaderView setPlaceholderString:v7];
 
-    v5 = v7;
+    stringCopy = v7;
   }
 }
 
@@ -867,21 +867,21 @@ LABEL_18:
   {
     if (style == 5)
     {
-      v3 = [(MRPlatterViewController *)self videoPickerFooterView];
+      videoPickerFooterView = [(MRPlatterViewController *)self videoPickerFooterView];
     }
 
     else
     {
-      v3 = 0;
+      videoPickerFooterView = 0;
     }
   }
 
   else
   {
-    v3 = [(MRPlatterViewController *)self volumeContainerView];
+    videoPickerFooterView = [(MRPlatterViewController *)self volumeContainerView];
   }
 
-  return v3;
+  return videoPickerFooterView;
 }
 
 - (UIView)effectiveHeaderView
@@ -891,44 +891,44 @@ LABEL_18:
   {
     if (style == 5)
     {
-      v3 = [(MRPlatterViewController *)self videoPickerHeaderView];
+      videoPickerHeaderView = [(MRPlatterViewController *)self videoPickerHeaderView];
     }
 
     else
     {
-      v3 = 0;
+      videoPickerHeaderView = 0;
     }
   }
 
   else
   {
-    v3 = [(MRPlatterViewController *)self nowPlayingHeaderView];
+    videoPickerHeaderView = [(MRPlatterViewController *)self nowPlayingHeaderView];
   }
 
-  return v3;
+  return videoPickerHeaderView;
 }
 
 - (id)_route
 {
-  v2 = [(MRPlatterViewController *)self endpointController];
-  v3 = [v2 route];
+  endpointController = [(MRPlatterViewController *)self endpointController];
+  route = [endpointController route];
 
-  return v3;
+  return route;
 }
 
 - (void)_updateStyle
 {
   style = self->_style;
-  v4 = [(MRPlatterViewController *)self nowPlayingHeaderView];
-  [v4 setStyle:style];
+  nowPlayingHeaderView = [(MRPlatterViewController *)self nowPlayingHeaderView];
+  [nowPlayingHeaderView setStyle:style];
 
   v5 = self->_style;
-  v6 = [(MRPlatterViewController *)self parentContainerView];
-  [v6 setStyle:v5];
+  parentContainerView = [(MRPlatterViewController *)self parentContainerView];
+  [parentContainerView setStyle:v5];
 
   v7 = self->_style;
-  v8 = [(MRPlatterViewController *)self volumeContainerView];
-  [v8 setStyle:v7];
+  volumeContainerView = [(MRPlatterViewController *)self volumeContainerView];
+  [volumeContainerView setStyle:v7];
 
   if ((self->_style - 1) >= 2)
   {
@@ -940,9 +940,9 @@ LABEL_18:
     v9 = 1;
   }
 
-  v10 = [(MRPlatterViewController *)self nowPlayingHeaderView];
-  v11 = [v10 launchNowPlayingAppButton];
-  [v11 setHidden:v9];
+  nowPlayingHeaderView2 = [(MRPlatterViewController *)self nowPlayingHeaderView];
+  launchNowPlayingAppButton = [nowPlayingHeaderView2 launchNowPlayingAppButton];
+  [launchNowPlayingAppButton setHidden:v9];
 
   v12 = self->_style;
   if (v12 > 2)
@@ -954,19 +954,19 @@ LABEL_18:
         goto LABEL_21;
       }
 
-      v25 = [(MRPlatterViewController *)self routingCornerView];
-      [v25 setAlpha:0.0];
+      routingCornerView = [(MRPlatterViewController *)self routingCornerView];
+      [routingCornerView setAlpha:0.0];
 
-      v26 = [(MRPlatterViewController *)self parentContainerView];
+      parentContainerView2 = [(MRPlatterViewController *)self parentContainerView];
       v14 = 1.0;
-      [v26 setAlpha:1.0];
+      [parentContainerView2 setAlpha:1.0];
 
-      v27 = [(MRPlatterViewController *)self effectiveFooterView];
-      [v27 setAlpha:1.0];
+      effectiveFooterView = [(MRPlatterViewController *)self effectiveFooterView];
+      [effectiveFooterView setAlpha:1.0];
 
-      v22 = [(MRPlatterViewController *)self parentContainerView];
-      v23 = [v22 topDividerView];
-      v24 = v23;
+      parentContainerView3 = [(MRPlatterViewController *)self parentContainerView];
+      topDividerView = [parentContainerView3 topDividerView];
+      v24 = topDividerView;
       v28 = 1.0;
       goto LABEL_19;
     }
@@ -976,14 +976,14 @@ LABEL_18:
   {
     if (v12 == 1)
     {
-      v29 = [(MRPlatterViewController *)self routingCornerView];
-      [v29 setAlpha:1.0];
+      routingCornerView2 = [(MRPlatterViewController *)self routingCornerView];
+      [routingCornerView2 setAlpha:1.0];
 
-      v30 = [(MRPlatterViewController *)self parentContainerView];
-      [v30 setAlpha:1.0];
+      parentContainerView4 = [(MRPlatterViewController *)self parentContainerView];
+      [parentContainerView4 setAlpha:1.0];
 
-      v16 = [(MRPlatterViewController *)self effectiveFooterView];
-      v17 = v16;
+      effectiveFooterView2 = [(MRPlatterViewController *)self effectiveFooterView];
+      v17 = effectiveFooterView2;
       v14 = 0.0;
     }
 
@@ -994,43 +994,43 @@ LABEL_18:
         goto LABEL_21;
       }
 
-      v13 = [(MRPlatterViewController *)self routingCornerView];
+      routingCornerView3 = [(MRPlatterViewController *)self routingCornerView];
       v14 = 0.0;
-      [v13 setAlpha:0.0];
+      [routingCornerView3 setAlpha:0.0];
 
-      v15 = [(MRPlatterViewController *)self parentContainerView];
-      [v15 setAlpha:0.0];
+      parentContainerView5 = [(MRPlatterViewController *)self parentContainerView];
+      [parentContainerView5 setAlpha:0.0];
 
-      v16 = [(MRPlatterViewController *)self effectiveFooterView];
-      v17 = v16;
+      effectiveFooterView2 = [(MRPlatterViewController *)self effectiveFooterView];
+      v17 = effectiveFooterView2;
     }
 
-    [v16 setAlpha:0.0];
+    [effectiveFooterView2 setAlpha:0.0];
 
-    v22 = [(MRPlatterViewController *)self parentContainerView];
-    v23 = [v22 topDividerView];
-    v24 = v23;
+    parentContainerView3 = [(MRPlatterViewController *)self parentContainerView];
+    topDividerView = [parentContainerView3 topDividerView];
+    v24 = topDividerView;
     v28 = 0.0;
     goto LABEL_19;
   }
 
-  v18 = [(MRPlatterViewController *)self routingCornerView];
+  routingCornerView4 = [(MRPlatterViewController *)self routingCornerView];
   v14 = 0.0;
-  [v18 setAlpha:0.0];
+  [routingCornerView4 setAlpha:0.0];
 
-  v19 = [(MRPlatterViewController *)self parentContainerView];
-  [v19 setAlpha:1.0];
+  parentContainerView6 = [(MRPlatterViewController *)self parentContainerView];
+  [parentContainerView6 setAlpha:1.0];
 
-  v20 = [(MRPlatterViewController *)self effectiveFooterView];
-  [v20 setAlpha:1.0];
+  effectiveFooterView3 = [(MRPlatterViewController *)self effectiveFooterView];
+  [effectiveFooterView3 setAlpha:1.0];
 
-  v21 = [(MRPlatterViewController *)self _canToggleRoutingPicker];
-  v22 = [(MRPlatterViewController *)self parentContainerView];
-  v23 = [v22 topDividerView];
-  v24 = v23;
-  if (v21)
+  _canToggleRoutingPicker = [(MRPlatterViewController *)self _canToggleRoutingPicker];
+  parentContainerView3 = [(MRPlatterViewController *)self parentContainerView];
+  topDividerView = [parentContainerView3 topDividerView];
+  v24 = topDividerView;
+  if (_canToggleRoutingPicker)
   {
-    [v23 setAlpha:1.0];
+    [topDividerView setAlpha:1.0];
 
     if ([(MRPlatterViewController *)self selectedMode]== 1)
     {
@@ -1047,12 +1047,12 @@ LABEL_18:
 
   v28 = 0.0;
 LABEL_19:
-  [v23 setAlpha:v28];
+  [topDividerView setAlpha:v28];
 
 LABEL_20:
-  v31 = [(MRPlatterViewController *)self parentContainerView];
-  v32 = [v31 bottomDividerView];
-  [v32 setAlpha:v14];
+  parentContainerView7 = [(MRPlatterViewController *)self parentContainerView];
+  bottomDividerView = [parentContainerView7 bottomDividerView];
+  [bottomDividerView setAlpha:v14];
 
 LABEL_21:
   [(MRPlatterViewController *)self _updateOnScreenForStyle:self->_style];
@@ -1061,14 +1061,14 @@ LABEL_21:
     [(MRPlatterViewController *)self _dismissShareAudioViewController];
   }
 
-  v33 = [(MRPlatterViewController *)self view];
-  [v33 setNeedsLayout];
+  view = [(MRPlatterViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (id)_tvMediaRemoteIdentifier
 {
-  v2 = [(MRPlatterViewController *)self _route];
-  if ((([v2 isAppleTVRoute] & 1) != 0 || objc_msgSend(v2, "containsDeviceWithSubtype:", 18)) && (objc_msgSend(v2, "endpoint"), MRAVEndpointGetExternalDevice()))
+  _route = [(MRPlatterViewController *)self _route];
+  if ((([_route isAppleTVRoute] & 1) != 0 || objc_msgSend(_route, "containsDeviceWithSubtype:", 18)) && (objc_msgSend(_route, "endpoint"), MRAVEndpointGetExternalDevice()))
   {
     v3 = MRExternalDeviceCopyUniqueIdentifier();
   }
@@ -1083,21 +1083,21 @@ LABEL_21:
 
 - (id)_tvAirplayIdentifier
 {
-  v2 = [(MRPlatterViewController *)self _route];
-  v3 = [v2 endpointWrapper];
-  [v3 unwrappedValue];
+  _route = [(MRPlatterViewController *)self _route];
+  endpointWrapper = [_route endpointWrapper];
+  [endpointWrapper unwrappedValue];
   v4 = MRAVEndpointCopyOutputDevices();
 
   [v4 firstObject];
-  if (([v2 isAppleTVRoute] & 1) != 0 || objc_msgSend(v2, "isTVRoute") && MRAVOutputDeviceIsAddedToHomeKit())
+  if (([_route isAppleTVRoute] & 1) != 0 || objc_msgSend(_route, "isTVRoute") && MRAVOutputDeviceIsAddedToHomeKit())
   {
-    v5 = [v2 groupLeaderAirplayIdentifier];
+    groupLeaderAirplayIdentifier = [_route groupLeaderAirplayIdentifier];
 LABEL_3:
-    v6 = v5;
+    v6 = groupLeaderAirplayIdentifier;
     goto LABEL_11;
   }
 
-  if ([v2 isDeviceRoute] && objc_msgSend(v2, "isAirPlayingToDevice"))
+  if ([_route isDeviceRoute] && objc_msgSend(_route, "isAirPlayingToDevice"))
   {
     v7 = [v4 count];
     if (MRAVOutputDeviceGetSubtype() == 13)
@@ -1126,7 +1126,7 @@ LABEL_3:
       goto LABEL_11;
     }
 
-    v5 = MRAVOutputDeviceCopyUniqueIdentifier();
+    groupLeaderAirplayIdentifier = MRAVOutputDeviceCopyUniqueIdentifier();
     goto LABEL_3;
   }
 
@@ -1140,18 +1140,18 @@ LABEL_11:
 {
   if ([(MRPlatterViewController *)self shouldShowTVRemoteButton]&& [(MRPlatterViewController *)self _shouldUseViewServiceToPresentTVRemote])
   {
-    v3 = [MEMORY[0x1E69D6100] sharedInstance];
-    [v3 prewarm];
+    mEMORY[0x1E69D6100] = [MEMORY[0x1E69D6100] sharedInstance];
+    [mEMORY[0x1E69D6100] prewarm];
   }
 }
 
 - (BOOL)_shouldUseViewServiceToPresentTVRemote
 {
-  v3 = [(MRPlatterViewController *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v3 shouldPresentUsingViewServicePlatterViewController:self] & 1) == 0)
+  delegate = [(MRPlatterViewController *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([delegate shouldPresentUsingViewServicePlatterViewController:self] & 1) == 0)
   {
-    v5 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v5 userInterfaceIdiom])
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice userInterfaceIdiom])
     {
       LOBYTE(v4) = 0;
     }
@@ -1170,38 +1170,38 @@ LABEL_11:
   return v4;
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v6 = a3;
-  if (self->_visualStylingProvider != v6)
+  providerCopy = provider;
+  if (self->_visualStylingProvider != providerCopy)
   {
-    v17 = v6;
-    objc_storeStrong(&self->_visualStylingProvider, a3);
+    v17 = providerCopy;
+    objc_storeStrong(&self->_visualStylingProvider, provider);
     [(MediaControlsHeaderView *)self->_nowPlayingHeaderView setVisualStylingProvider:self->_visualStylingProvider];
     visualStylingProvider = self->_visualStylingProvider;
-    v8 = [(MediaControlsParentContainerView *)self->_parentContainerView timeControl];
-    [v8 setVisualStylingProvider:visualStylingProvider];
+    timeControl = [(MediaControlsParentContainerView *)self->_parentContainerView timeControl];
+    [timeControl setVisualStylingProvider:visualStylingProvider];
 
     v9 = self->_visualStylingProvider;
-    v10 = [(MediaControlsParentContainerView *)self->_parentContainerView transportStackView];
-    [v10 setVisualStylingProvider:v9];
+    transportStackView = [(MediaControlsParentContainerView *)self->_parentContainerView transportStackView];
+    [transportStackView setVisualStylingProvider:v9];
 
     v11 = self->_visualStylingProvider;
-    v12 = [(MediaControlsParentContainerView *)self->_parentContainerView topDividerView];
-    [v12 setVisualStylingProvider:v11];
+    topDividerView = [(MediaControlsParentContainerView *)self->_parentContainerView topDividerView];
+    [topDividerView setVisualStylingProvider:v11];
 
     v13 = self->_visualStylingProvider;
-    v14 = [(MediaControlsParentContainerView *)self->_parentContainerView bottomDividerView];
-    [v14 setVisualStylingProvider:v13];
+    bottomDividerView = [(MediaControlsParentContainerView *)self->_parentContainerView bottomDividerView];
+    [bottomDividerView setVisualStylingProvider:v13];
 
     [(MediaControlsVolumeContainerView *)self->_volumeContainerView setVisualStylingProvider:self->_visualStylingProvider];
     [(MRMediaControlsVideoPickerHeaderView *)self->_videoPickerHeaderView setVisualStylingProvider:self->_visualStylingProvider];
     [(MRMediaControlsVideoPickerFooterView *)self->_videoPickerFooterView setVisualStylingProvider:self->_visualStylingProvider];
-    v15 = [(MRPlatterViewController *)self routingViewController];
-    v16 = [v15 _tableView];
-    [v16 reloadData];
+    routingViewController = [(MRPlatterViewController *)self routingViewController];
+    _tableView = [routingViewController _tableView];
+    [_tableView reloadData];
 
-    v6 = v17;
+    providerCopy = v17;
   }
 }
 
@@ -1210,17 +1210,17 @@ LABEL_11:
   shareAudioViewController = self->_shareAudioViewController;
   if (!shareAudioViewController)
   {
-    v4 = [MEMORY[0x1E69CDFD0] instantiateViewController];
-    [v4 setFlags:1];
+    instantiateViewController = [MEMORY[0x1E69CDFD0] instantiateViewController];
+    [instantiateViewController setFlags:1];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __51__MRPlatterViewController_shareAudioViewController__block_invoke;
     v8[3] = &unk_1E7663DA8;
     v8[4] = self;
-    [v4 setCompletion:v8];
+    [instantiateViewController setCompletion:v8];
     v5 = self->_shareAudioViewController;
-    self->_shareAudioViewController = v4;
-    v6 = v4;
+    self->_shareAudioViewController = instantiateViewController;
+    v6 = instantiateViewController;
 
     shareAudioViewController = self->_shareAudioViewController;
   }
@@ -1274,9 +1274,9 @@ void __51__MRPlatterViewController_shareAudioViewController__block_invoke(uint64
   _Block_object_dispose(&v7, 8);
   if (!v3)
   {
-    v4 = [MRPlatterViewController _showShareAudioViewController];
+    _showShareAudioViewController = [MRPlatterViewController _showShareAudioViewController];
     _Block_object_dispose(&v7, 8);
-    _Unwind_Resume(v4);
+    _Unwind_Resume(_showShareAudioViewController);
   }
 
   v3(v2);
@@ -1368,7 +1368,7 @@ uint64_t __56__MRPlatterViewController__showShareAudioViewController__block_invo
     v10[2] = __59__MRPlatterViewController__dismissShareAudioViewController__block_invoke;
     v10[3] = &unk_1E76639D0;
     v11 = v4;
-    v12 = self;
+    selfCopy = self;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __59__MRPlatterViewController__dismissShareAudioViewController__block_invoke_2;
@@ -1400,28 +1400,28 @@ uint64_t __59__MRPlatterViewController__dismissShareAudioViewController__block_i
   return [v3 removeFromParentViewController];
 }
 
-- (void)setTransitioning:(BOOL)a3
+- (void)setTransitioning:(BOOL)transitioning
 {
-  if (self->_transitioning == a3)
+  if (self->_transitioning == transitioning)
   {
     return;
   }
 
-  v3 = a3;
-  self->_transitioning = a3;
-  v5 = [(MRPlatterViewController *)self nowPlayingHeaderView];
-  [v5 setTransitioning:v3];
+  transitioningCopy = transitioning;
+  self->_transitioning = transitioning;
+  nowPlayingHeaderView = [(MRPlatterViewController *)self nowPlayingHeaderView];
+  [nowPlayingHeaderView setTransitioning:transitioningCopy];
 
   style = self->_style;
   if (style == 2)
   {
     v9 = !self->_transitioning;
-    v10 = [(MRPlatterViewController *)self routingCornerView];
-    [v10 setHidden:v9];
+    routingCornerView = [(MRPlatterViewController *)self routingCornerView];
+    [routingCornerView setHidden:v9];
 
     v11 = !self->_transitioning;
-    v12 = [(MRPlatterViewController *)self parentContainerView];
-    [v12 setHidden:v11];
+    parentContainerView = [(MRPlatterViewController *)self parentContainerView];
+    [parentContainerView setHidden:v11];
   }
 
   else
@@ -1429,89 +1429,89 @@ uint64_t __59__MRPlatterViewController__dismissShareAudioViewController__block_i
     if (style != 1)
     {
       v14 = !self->_transitioning;
-      v15 = [(MRPlatterViewController *)self routingCornerView];
-      [v15 setHidden:v14];
+      routingCornerView2 = [(MRPlatterViewController *)self routingCornerView];
+      [routingCornerView2 setHidden:v14];
 
-      v16 = [(MRPlatterViewController *)self parentContainerView];
-      [v16 setHidden:0];
+      parentContainerView2 = [(MRPlatterViewController *)self parentContainerView];
+      [parentContainerView2 setHidden:0];
 
       v13 = 0;
       goto LABEL_8;
     }
 
-    v7 = [(MRPlatterViewController *)self routingCornerView];
-    [v7 setHidden:0];
+    routingCornerView3 = [(MRPlatterViewController *)self routingCornerView];
+    [routingCornerView3 setHidden:0];
 
-    v8 = [(MRPlatterViewController *)self parentContainerView];
-    [v8 setHidden:0];
+    parentContainerView3 = [(MRPlatterViewController *)self parentContainerView];
+    [parentContainerView3 setHidden:0];
   }
 
   v13 = !self->_transitioning;
 LABEL_8:
-  v17 = [(MRPlatterViewController *)self effectiveFooterView];
-  [v17 setHidden:v13];
+  effectiveFooterView = [(MRPlatterViewController *)self effectiveFooterView];
+  [effectiveFooterView setHidden:v13];
 }
 
-- (void)setDisplayElements:(id)a3
+- (void)setDisplayElements:(id)elements
 {
-  v8 = a3;
+  elementsCopy = elements;
   if (![(NSArray *)self->_displayElements isEqualToArray:?])
   {
-    v4 = [v8 copy];
+    v4 = [elementsCopy copy];
     displayElements = self->_displayElements;
     self->_displayElements = v4;
 
-    v6 = [(MRPlatterViewController *)self isDeviceUnlocked];
-    v7 = [(MRPlatterViewController *)self endpointController];
-    [v7 setDeviceUnlocked:v6];
+    isDeviceUnlocked = [(MRPlatterViewController *)self isDeviceUnlocked];
+    endpointController = [(MRPlatterViewController *)self endpointController];
+    [endpointController setDeviceUnlocked:isDeviceUnlocked];
   }
 }
 
-- (void)setOnScreen:(BOOL)a3
+- (void)setOnScreen:(BOOL)screen
 {
-  if (self->_onScreen != a3)
+  if (self->_onScreen != screen)
   {
-    v4 = a3;
-    self->_onScreen = a3;
-    v6 = [(MRPlatterViewController *)self endpointController];
-    [v6 setOnScreen:v4];
+    screenCopy = screen;
+    self->_onScreen = screen;
+    endpointController = [(MRPlatterViewController *)self endpointController];
+    [endpointController setOnScreen:screenCopy];
 
-    v7 = [(MRPlatterViewController *)self endpointController];
-    v8 = [v7 proxyDelegate];
+    endpointController2 = [(MRPlatterViewController *)self endpointController];
+    proxyDelegate = [endpointController2 proxyDelegate];
 
-    if (v4)
+    if (screenCopy)
     {
-      [v8 beginObserving];
+      [proxyDelegate beginObserving];
     }
 
     else
     {
-      [v8 endObserving];
+      [proxyDelegate endObserving];
     }
 
     [(MRPlatterViewController *)self _updateOnScreenForStyle:self->_style];
   }
 }
 
-- (void)_updateOnScreenForStyle:(int64_t)a3
+- (void)_updateOnScreenForStyle:(int64_t)style
 {
-  v4 = (a3 < 5) & (0x19u >> a3);
-  v5 = [(MRPlatterViewController *)self isOnScreen];
-  v6 = [(MRPlatterViewController *)self volumeContainerView];
-  [v6 setOnScreen:v4 & v5];
+  v4 = (style < 5) & (0x19u >> style);
+  isOnScreen = [(MRPlatterViewController *)self isOnScreen];
+  volumeContainerView = [(MRPlatterViewController *)self volumeContainerView];
+  [volumeContainerView setOnScreen:v4 & isOnScreen];
 
-  v7 = [(MRPlatterViewController *)self isOnScreen];
-  v8 = [(MRPlatterViewController *)self nowPlayingHeaderView];
-  [v8 setMarqueeEnabled:v7];
+  isOnScreen2 = [(MRPlatterViewController *)self isOnScreen];
+  nowPlayingHeaderView = [(MRPlatterViewController *)self nowPlayingHeaderView];
+  [nowPlayingHeaderView setMarqueeEnabled:isOnScreen2];
 }
 
-- (void)setSupportedModes:(unint64_t)a3
+- (void)setSupportedModes:(unint64_t)modes
 {
-  if (self->_supportedModes != a3)
+  if (self->_supportedModes != modes)
   {
-    self->_supportedModes = a3;
-    v5 = [(MRPlatterViewController *)self supportedModes];
-    v6 = v5 & (1 << [(MRPlatterViewController *)self selectedMode]);
+    self->_supportedModes = modes;
+    supportedModes = [(MRPlatterViewController *)self supportedModes];
+    v6 = supportedModes & (1 << [(MRPlatterViewController *)self selectedMode]);
     if (v6 != 1 << [(MRPlatterViewController *)self selectedMode])
     {
       v7 = 0;
@@ -1541,28 +1541,28 @@ LABEL_8:
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    self->_selected = a3;
+    self->_selected = selected;
   }
 }
 
-- (void)setSelectedMode:(int64_t)a3 animated:(BOOL)a4
+- (void)setSelectedMode:(int64_t)mode animated:(BOOL)animated
 {
-  v4 = a4;
-  if (((1 << a3) & ~[(MRPlatterViewController *)self supportedModes]) == 0)
+  animatedCopy = animated;
+  if (((1 << mode) & ~[(MRPlatterViewController *)self supportedModes]) == 0)
   {
-    v7 = [(MRPlatterViewController *)self parentContainerView];
-    [v7 setSelectedMode:a3 animated:v4];
+    parentContainerView = [(MRPlatterViewController *)self parentContainerView];
+    [parentContainerView setSelectedMode:mode animated:animatedCopy];
 
-    if (self->_selectedMode != a3)
+    if (self->_selectedMode != mode)
     {
-      self->_selectedMode = a3;
+      self->_selectedMode = mode;
       [(MRPlatterViewController *)self _updateConfiguration];
-      v8 = [(MRPlatterViewController *)self view];
-      [v8 setNeedsLayout];
+      view = [(MRPlatterViewController *)self view];
+      [view setNeedsLayout];
     }
   }
 }
@@ -1588,48 +1588,48 @@ LABEL_8:
     v3 = 0;
   }
 
-  v5 = [(MRPlatterViewController *)self nowPlayingHeaderView];
-  [v5 setButtonType:v3];
+  nowPlayingHeaderView = [(MRPlatterViewController *)self nowPlayingHeaderView];
+  [nowPlayingHeaderView setButtonType:v3];
 }
 
-- (void)endpointController:(id)a3 didLoadNewResponse:(id)a4
+- (void)endpointController:(id)controller didLoadNewResponse:(id)response
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  responseCopy = response;
+  controllerCopy = controller;
   v8 = MCLogCategoryDefault();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 tracklist];
-    v10 = [v9 playingItem];
+    tracklist = [responseCopy tracklist];
+    playingItem = [tracklist playingItem];
     v19 = 138412546;
-    v20 = v6;
+    v20 = responseCopy;
     v21 = 2112;
-    v22 = v10;
+    v22 = playingItem;
     _os_log_impl(&dword_1A20FC000, v8, OS_LOG_TYPE_DEFAULT, "[MRPlatterViewController] didLoadNewResponse %@. PlayingItem: %@.", &v19, 0x16u);
   }
 
-  v11 = [v7 representedBundleID];
+  representedBundleID = [controllerCopy representedBundleID];
 
-  v12 = [(MPAVRoutingViewController *)self->_routingViewController _routingController];
-  [v12 setRepresentedBundleID:v11];
+  _routingController = [(MPAVRoutingViewController *)self->_routingViewController _routingController];
+  [_routingController setRepresentedBundleID:representedBundleID];
 
-  v13 = [(MRPlatterViewController *)self endpointController];
-  v14 = [v13 response];
-  v15 = [v14 tracklist];
-  v16 = [v15 playingItem];
-  v17 = [v16 languageOptionGroups];
+  endpointController = [(MRPlatterViewController *)self endpointController];
+  response = [endpointController response];
+  tracklist2 = [response tracklist];
+  playingItem2 = [tracklist2 playingItem];
+  languageOptionGroups = [playingItem2 languageOptionGroups];
 
-  if ([v17 count])
+  if ([languageOptionGroups count])
   {
     WeakRetained = objc_loadWeakRetained(&self->_languageOptionsViewController);
-    [WeakRetained setLanguageOptionGroups:v17];
+    [WeakRetained setLanguageOptionGroups:languageOptionGroups];
   }
 
   [(MRPlatterViewController *)self _updateHeaderUI];
 }
 
-- (void)endpointControllerDidUpdateRoutingAvailability:(id)a3
+- (void)endpointControllerDidUpdateRoutingAvailability:(id)availability
 {
   [(MRPlatterViewController *)self _updateRoutingCornerView];
   [(MRPlatterViewController *)self _updateRoutingIndicators];
@@ -1637,30 +1637,30 @@ LABEL_8:
   [(MRPlatterViewController *)self _updateRouteNameLabel];
 }
 
-- (void)endpointControllerRouteDidUpdate:(id)a3
+- (void)endpointControllerRouteDidUpdate:(id)update
 {
-  v12 = a3;
-  v4 = [(MRPlatterViewController *)self volumeContainerView];
-  v5 = [v4 volumeSlider];
+  updateCopy = update;
+  volumeContainerView = [(MRPlatterViewController *)self volumeContainerView];
+  volumeSlider = [volumeContainerView volumeSlider];
 
-  if (v5)
+  if (volumeSlider)
   {
-    v6 = [v12 route];
-    v7 = [(MRPlatterViewController *)self volumeContainerView];
-    v8 = [v7 volumeSlider];
-    [v8 setGroupRoute:v6];
+    route = [updateCopy route];
+    volumeContainerView2 = [(MRPlatterViewController *)self volumeContainerView];
+    volumeSlider2 = [volumeContainerView2 volumeSlider];
+    [volumeSlider2 setGroupRoute:route];
   }
 
   [(MRPlatterViewController *)self _updateRouteNameLabel];
-  v9 = [(MRPlatterViewController *)self parentContainerView];
-  v10 = [v9 transportStackView];
-  [v10 updateOnRouteChange];
+  parentContainerView = [(MRPlatterViewController *)self parentContainerView];
+  transportStackView = [parentContainerView transportStackView];
+  [transportStackView updateOnRouteChange];
 
   [(MRPlatterViewController *)self _prewarmTVRemoteIfNeeded];
-  v11 = [(MRPlatterViewController *)self delegate];
+  delegate = [(MRPlatterViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v11 platterViewController:self shouldDisplayPlatterDidChange:{-[MRPlatterViewController shouldDisplayPlatter](self, "shouldDisplayPlatter")}];
+    [delegate platterViewController:self shouldDisplayPlatterDidChange:{-[MRPlatterViewController shouldDisplayPlatter](self, "shouldDisplayPlatter")}];
   }
 }
 
@@ -1671,42 +1671,42 @@ LABEL_8:
     return;
   }
 
-  v3 = [(MRPlatterViewController *)self endpointController];
-  v51 = [v3 response];
+  endpointController = [(MRPlatterViewController *)self endpointController];
+  response = [endpointController response];
 
-  v4 = [(MRPlatterViewController *)self parentContainerView];
-  v5 = [v4 containerView];
-  [v5 setResponse:v51];
+  parentContainerView = [(MRPlatterViewController *)self parentContainerView];
+  containerView = [parentContainerView containerView];
+  [containerView setResponse:response];
 
-  if (!v51)
+  if (!response)
   {
     goto LABEL_13;
   }
 
-  v6 = [(MediaControlsEndpointController *)self->_endpointController isDeviceSystemRoute];
-  v7 = [v51 tracklist];
-  v8 = [v7 playingItemIndexPath];
+  isDeviceSystemRoute = [(MediaControlsEndpointController *)self->_endpointController isDeviceSystemRoute];
+  tracklist = [response tracklist];
+  playingItemIndexPath = [tracklist playingItemIndexPath];
 
-  if (!v6 || v8 != 0)
+  if (!isDeviceSystemRoute || playingItemIndexPath != 0)
   {
-    if (v8)
+    if (playingItemIndexPath)
     {
-      v10 = [v51 tracklist];
-      v11 = [v10 items];
-      v12 = [v11 firstSection];
-      v13 = [v12 metadataObject];
+      tracklist2 = [response tracklist];
+      items = [tracklist2 items];
+      firstSection = [items firstSection];
+      metadataObject = [firstSection metadataObject];
 
-      v14 = [v51 tracklist];
-      v15 = [v14 items];
-      v16 = [v51 tracklist];
-      v17 = [v16 playingItemIndexPath];
-      v18 = [v15 itemAtIndexPath:v17];
+      tracklist3 = [response tracklist];
+      items2 = [tracklist3 items];
+      tracklist4 = [response tracklist];
+      playingItemIndexPath2 = [tracklist4 playingItemIndexPath];
+      v18 = [items2 itemAtIndexPath:playingItemIndexPath2];
 
-      v19 = [v18 explicitBadge];
-      v20 = v19;
-      if (v19)
+      explicitBadge = [v18 explicitBadge];
+      v20 = explicitBadge;
+      if (explicitBadge)
       {
-        v21 = v19;
+        v21 = explicitBadge;
       }
 
       else
@@ -1717,35 +1717,35 @@ LABEL_8:
       v22 = [@" " stringByAppendingString:v21];
       [(MRPlatterViewController *)self setExplicitString:v22];
 
-      v23 = [v18 metadataObject];
-      [(MRPlatterViewController *)self _updateControlCenterMetadata:v23 sectionMetadata:v13];
+      metadataObject2 = [v18 metadataObject];
+      [(MRPlatterViewController *)self _updateControlCenterMetadata:metadataObject2 sectionMetadata:metadataObject];
 
       goto LABEL_39;
     }
 
 LABEL_13:
-    v24 = [(MRPlatterViewController *)self endpointController];
-    v25 = [v24 configuration];
+    endpointController2 = [(MRPlatterViewController *)self endpointController];
+    configuration = [endpointController2 configuration];
 
-    v26 = [(MRPlatterViewController *)self endpointController];
-    v27 = [v26 state];
+    endpointController3 = [(MRPlatterViewController *)self endpointController];
+    state = [endpointController3 state];
 
-    if ((v27 - 1) >= 2)
+    if ((state - 1) >= 2)
     {
-      if (v27 == -1)
+      if (state == -1)
       {
-        if (!v25 || self->_style == 3)
+        if (!configuration || self->_style == 3)
         {
-          v13 = &stru_1F1445548;
+          metadataObject = &stru_1F1445548;
 LABEL_29:
-          v41 = [(MRPlatterViewController *)self endpointController];
+          endpointController4 = [(MRPlatterViewController *)self endpointController];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
-            v43 = [(MRPlatterViewController *)self endpointController];
-            v44 = [v43 isEndpointDiscovered] ^ 1;
+            endpointController5 = [(MRPlatterViewController *)self endpointController];
+            v44 = [endpointController5 isEndpointDiscovered] ^ 1;
           }
 
           else
@@ -1753,13 +1753,13 @@ LABEL_29:
             v44 = 0;
           }
 
-          v45 = [(MRPlatterViewController *)self nowPlayingHeaderView];
-          [v45 setPrimaryString:v13];
+          nowPlayingHeaderView = [(MRPlatterViewController *)self nowPlayingHeaderView];
+          [nowPlayingHeaderView setPrimaryString:metadataObject];
 
           if (v44)
           {
-            v45 = [(MRPlatterViewController *)self placeholderString];
-            v46 = v45 != 0;
+            nowPlayingHeaderView = [(MRPlatterViewController *)self placeholderString];
+            v46 = nowPlayingHeaderView != 0;
           }
 
           else
@@ -1767,15 +1767,15 @@ LABEL_29:
             v46 = 0;
           }
 
-          v47 = [(MRPlatterViewController *)self nowPlayingHeaderView];
-          [v47 setShowPlaceholderString:v46];
+          nowPlayingHeaderView2 = [(MRPlatterViewController *)self nowPlayingHeaderView];
+          [nowPlayingHeaderView2 setShowPlaceholderString:v46];
 
           if (v44)
           {
           }
 
-          v38 = [(MRPlatterViewController *)self nowPlayingHeaderView];
-          v39 = v38;
+          nowPlayingHeaderView3 = [(MRPlatterViewController *)self nowPlayingHeaderView];
+          v39 = nowPlayingHeaderView3;
           goto LABEL_38;
         }
 
@@ -1793,18 +1793,18 @@ LABEL_29:
       v28 = @"ROUTE_CONNECTING_TITLE";
     }
 
-    v40 = [MEMORY[0x1E696AAE8] mediaControlsBundle];
-    v13 = [v40 localizedStringForKey:v28 value:&stru_1F1445548 table:@"MediaControls"];
+    mediaControlsBundle = [MEMORY[0x1E696AAE8] mediaControlsBundle];
+    metadataObject = [mediaControlsBundle localizedStringForKey:v28 value:&stru_1F1445548 table:@"MediaControls"];
 
     goto LABEL_29;
   }
 
-  v29 = [(MRPlatterViewController *)self endpointController];
-  v30 = [v29 representedBundleID];
-  v31 = v30;
-  if (v30)
+  endpointController6 = [(MRPlatterViewController *)self endpointController];
+  representedBundleID = [endpointController6 representedBundleID];
+  v31 = representedBundleID;
+  if (representedBundleID)
   {
-    v32 = v30;
+    v32 = representedBundleID;
   }
 
   else
@@ -1812,14 +1812,14 @@ LABEL_29:
     v32 = MRMediaRemoteCopyLocalDeviceSystemMediaApplicationDisplayID();
   }
 
-  v13 = v32;
+  metadataObject = v32;
 
-  v33 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:v13];
-  v34 = [v33 localizedName];
-  v35 = v34;
-  if (v34)
+  v33 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:metadataObject];
+  localizedName = [v33 localizedName];
+  v35 = localizedName;
+  if (localizedName)
   {
-    v36 = v34;
+    v36 = localizedName;
   }
 
   else
@@ -1827,22 +1827,22 @@ LABEL_29:
     v36 = &stru_1F1445548;
   }
 
-  v37 = [(MRPlatterViewController *)self nowPlayingHeaderView];
-  [v37 setPrimaryString:v36];
+  nowPlayingHeaderView4 = [(MRPlatterViewController *)self nowPlayingHeaderView];
+  [nowPlayingHeaderView4 setPrimaryString:v36];
 
-  v38 = [(MRPlatterViewController *)self nowPlayingHeaderView];
-  v39 = v38;
+  nowPlayingHeaderView3 = [(MRPlatterViewController *)self nowPlayingHeaderView];
+  v39 = nowPlayingHeaderView3;
 LABEL_38:
-  [v38 setSecondaryString:&stru_1F1445548];
+  [nowPlayingHeaderView3 setSecondaryString:&stru_1F1445548];
 
-  v48 = [(MRPlatterViewController *)self secondaryStringComponents];
-  [v48 removeAllObjects];
+  secondaryStringComponents = [(MRPlatterViewController *)self secondaryStringComponents];
+  [secondaryStringComponents removeAllObjects];
 
   [(MRPlatterViewController *)self _updateSecondaryStringFormat];
   [(MRPlatterViewController *)self setArtworkCatalog:0];
-  v49 = [(MRPlatterViewController *)self nowPlayingHeaderView];
-  v50 = [v49 artworkView];
-  [v50 clearArtworkCatalogs];
+  nowPlayingHeaderView5 = [(MRPlatterViewController *)self nowPlayingHeaderView];
+  artworkView = [nowPlayingHeaderView5 artworkView];
+  [artworkView clearArtworkCatalogs];
 
   [(MRPlatterViewController *)self _updatePlaceholderArtwork];
 LABEL_39:
@@ -1852,189 +1852,189 @@ LABEL_39:
   [(MRPlatterViewController *)self _updateRoutingIndicators];
 }
 
-- (void)_updateControlCenterMetadata:(id)a3 sectionMetadata:(id)a4
+- (void)_updateControlCenterMetadata:(id)metadata sectionMetadata:(id)sectionMetadata
 {
-  v36 = a4;
-  v8 = [a3 song];
-  if ([v36 type] == 13)
+  sectionMetadataCopy = sectionMetadata;
+  song = [metadata song];
+  if ([sectionMetadataCopy type] == 13)
   {
-    v9 = [v36 radioStation];
+    radioStation = [sectionMetadataCopy radioStation];
   }
 
   else
   {
-    v9 = 0;
+    radioStation = 0;
   }
 
-  v10 = [v8 isExplicitSong];
-  v11 = [v8 title];
-  if (v10)
+  isExplicitSong = [song isExplicitSong];
+  title = [song title];
+  if (isExplicitSong)
   {
-    v10 = [(MRPlatterViewController *)self explicitString];
-    v4 = [v11 stringByAppendingString:v10];
+    isExplicitSong = [(MRPlatterViewController *)self explicitString];
+    bundleID = [title stringByAppendingString:isExplicitSong];
 
-    v11 = v4;
+    title = bundleID;
   }
 
-  v12 = v11;
-  if (!v11)
+  localizedName = title;
+  if (!title)
   {
     v13 = MEMORY[0x1E69635E0];
-    v10 = [(MRPlatterViewController *)self endpointController];
-    v4 = [v10 bundleID];
-    v5 = [v13 applicationProxyForIdentifier:v4];
-    v12 = [v5 localizedName];
+    isExplicitSong = [(MRPlatterViewController *)self endpointController];
+    bundleID = [isExplicitSong bundleID];
+    v5 = [v13 applicationProxyForIdentifier:bundleID];
+    localizedName = [v5 localizedName];
   }
 
-  v14 = [(MRPlatterViewController *)self nowPlayingHeaderView];
-  [v14 setPrimaryString:v12];
+  nowPlayingHeaderView = [(MRPlatterViewController *)self nowPlayingHeaderView];
+  [nowPlayingHeaderView setPrimaryString:localizedName];
 
-  if (!v11)
+  if (!title)
   {
   }
 
-  v15 = [(MRPlatterViewController *)self secondaryStringComponents];
-  [v15 removeAllObjects];
+  secondaryStringComponents = [(MRPlatterViewController *)self secondaryStringComponents];
+  [secondaryStringComponents removeAllObjects];
 
-  if ([v8 shouldShowComposer])
+  if ([song shouldShowComposer])
   {
-    v16 = [v8 composer];
-    v17 = [v16 name];
+    composer = [song composer];
+    name = [composer name];
 
-    if ([v17 length])
+    if ([name length])
     {
       v18 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v19 = [MEMORY[0x1E696AAE8] mediaControlsBundle];
-      v20 = [v19 localizedStringForKey:@"COMPOSED_BY_TITLE_%@" value:&stru_1F1445548 table:@"MediaControls"];
-      v21 = [v18 initWithFormat:v20, v17];
+      mediaControlsBundle = [MEMORY[0x1E696AAE8] mediaControlsBundle];
+      v20 = [mediaControlsBundle localizedStringForKey:@"COMPOSED_BY_TITLE_%@" value:&stru_1F1445548 table:@"MediaControls"];
+      v21 = [v18 initWithFormat:v20, name];
 
-      v22 = [(MRPlatterViewController *)self secondaryStringComponents];
-      [v22 addObject:v21];
+      secondaryStringComponents2 = [(MRPlatterViewController *)self secondaryStringComponents];
+      [secondaryStringComponents2 addObject:v21];
     }
   }
 
-  v23 = [v8 artist];
-  v24 = [v23 name];
+  artist = [song artist];
+  name2 = [artist name];
 
-  if ([v24 length])
+  if ([name2 length])
   {
-    v25 = [(MRPlatterViewController *)self secondaryStringComponents];
-    [v25 addObject:v24];
+    secondaryStringComponents3 = [(MRPlatterViewController *)self secondaryStringComponents];
+    [secondaryStringComponents3 addObject:name2];
   }
 
-  v26 = [v8 album];
-  v27 = [v26 title];
+  album = [song album];
+  title2 = [album title];
 
-  if ([v27 length])
+  if ([title2 length])
   {
-    v28 = [(MRPlatterViewController *)self secondaryStringComponents];
-    [v28 addObject:v27];
+    secondaryStringComponents4 = [(MRPlatterViewController *)self secondaryStringComponents];
+    [secondaryStringComponents4 addObject:title2];
   }
 
-  v29 = [v9 attributionLabel];
-  if ([v29 length])
+  attributionLabel = [radioStation attributionLabel];
+  if ([attributionLabel length])
   {
-    v30 = [(MRPlatterViewController *)self secondaryStringComponents];
-    [v30 addObject:v29];
+    secondaryStringComponents5 = [(MRPlatterViewController *)self secondaryStringComponents];
+    [secondaryStringComponents5 addObject:attributionLabel];
   }
 
-  v31 = [(MRPlatterViewController *)self secondaryStringComponents];
-  v32 = [v31 componentsJoinedByString:@" — "];
-  v33 = [(MRPlatterViewController *)self nowPlayingHeaderView];
-  [v33 setSecondaryString:v32];
+  secondaryStringComponents6 = [(MRPlatterViewController *)self secondaryStringComponents];
+  v32 = [secondaryStringComponents6 componentsJoinedByString:@" — "];
+  nowPlayingHeaderView2 = [(MRPlatterViewController *)self nowPlayingHeaderView];
+  [nowPlayingHeaderView2 setSecondaryString:v32];
 
-  v34 = [v8 artworkCatalog];
-  [(MRPlatterViewController *)self setArtworkCatalog:v34];
+  artworkCatalog = [song artworkCatalog];
+  [(MRPlatterViewController *)self setArtworkCatalog:artworkCatalog];
 
   [(MRPlatterViewController *)self _updateSecondaryStringFormat];
-  v35 = [(MRPlatterViewController *)self view];
-  [v35 setNeedsLayout];
+  view = [(MRPlatterViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (void)_updateRouteNameLabel
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [(MediaControlsEndpointController *)self->_endpointController route];
-  v4 = [(MRPlatterViewController *)self nowPlayingHeaderView];
-  v5 = [v4 routeLabel];
-  [v5 setRoute:v3];
+  route = [(MediaControlsEndpointController *)self->_endpointController route];
+  nowPlayingHeaderView = [(MRPlatterViewController *)self nowPlayingHeaderView];
+  routeLabel = [nowPlayingHeaderView routeLabel];
+  [routeLabel setRoute:route];
 
-  v6 = [(MRPlatterViewController *)self endpointController];
-  v7 = [v6 response];
-  v8 = [v7 playerPath];
-  v9 = [v8 bundleID];
-  if ([v9 isEqualToString:@"com.apple.duetexpertd"])
+  endpointController = [(MRPlatterViewController *)self endpointController];
+  response = [endpointController response];
+  playerPath = [response playerPath];
+  bundleID = [playerPath bundleID];
+  if ([bundleID isEqualToString:@"com.apple.duetexpertd"])
   {
     v10 = 1;
   }
 
   else
   {
-    v11 = [(MRPlatterViewController *)self endpointController];
-    v12 = [v11 response];
-    v13 = [v12 playerPath];
-    v14 = [v13 bundleID];
-    v10 = [v14 isEqualToString:@"duetexpertd"];
+    endpointController2 = [(MRPlatterViewController *)self endpointController];
+    response2 = [endpointController2 response];
+    playerPath2 = [response2 playerPath];
+    bundleID2 = [playerPath2 bundleID];
+    v10 = [bundleID2 isEqualToString:@"duetexpertd"];
   }
 
-  v15 = [(MRPlatterViewController *)self endpointController];
-  v16 = [v15 response];
-  v17 = [v16 playerPath];
-  v18 = [v17 playerID];
-  v19 = [v18 isEqualToString:@"MagicalMomentsPlayer"];
+  endpointController3 = [(MRPlatterViewController *)self endpointController];
+  response3 = [endpointController3 response];
+  playerPath3 = [response3 playerPath];
+  playerID = [playerPath3 playerID];
+  v19 = [playerID isEqualToString:@"MagicalMomentsPlayer"];
 
   if (v19)
   {
     v20 = MCLogCategoryDefault();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [(MRPlatterViewController *)self endpointController];
-      v22 = [v21 response];
-      v23 = [v22 playerPath];
-      v24 = [v23 bundleID];
+      endpointController4 = [(MRPlatterViewController *)self endpointController];
+      response4 = [endpointController4 response];
+      playerPath4 = [response4 playerPath];
+      bundleID3 = [playerPath4 bundleID];
       v28 = 138412290;
-      v29 = v24;
+      v29 = bundleID3;
       _os_log_impl(&dword_1A20FC000, v20, OS_LOG_TYPE_DEFAULT, "MRPlatterViewController displaying MagicalMomentsPlayer suggestion for bundleID=%@", &v28, 0xCu);
     }
   }
 
-  v25 = [(MRPlatterViewController *)self nowPlayingHeaderView];
-  v26 = [v25 routeLabel];
-  [v26 setDisplayAsSiriSuggestion:v10 & v19];
+  nowPlayingHeaderView2 = [(MRPlatterViewController *)self nowPlayingHeaderView];
+  routeLabel2 = [nowPlayingHeaderView2 routeLabel];
+  [routeLabel2 setDisplayAsSiriSuggestion:v10 & v19];
 
-  v27 = [(MRPlatterViewController *)self view];
-  [v27 setNeedsLayout];
+  view = [(MRPlatterViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)setArtworkCatalog:(id)a3
+- (void)setArtworkCatalog:(id)catalog
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  catalogCopy = catalog;
   artworkCatalog = self->_artworkCatalog;
-  if (!v5)
+  if (!catalogCopy)
   {
     self->_artworkCatalog = 0;
 
-    v10 = [(MRPlatterViewController *)self nowPlayingHeaderView];
-    v11 = [v10 artworkView];
-    [v11 setImage:0];
+    nowPlayingHeaderView = [(MRPlatterViewController *)self nowPlayingHeaderView];
+    artworkView = [nowPlayingHeaderView artworkView];
+    [artworkView setImage:0];
 
     [(MRPlatterViewController *)self _updatePlaceholderArtwork];
-    v12 = [(MRPlatterViewController *)self effectiveHeaderView];
-    [v12 setNeedsLayout];
+    effectiveHeaderView = [(MRPlatterViewController *)self effectiveHeaderView];
+    [effectiveHeaderView setNeedsLayout];
 
     goto LABEL_11;
   }
 
-  if (![(MPArtworkCatalog *)artworkCatalog isArtworkVisuallyIdenticalToCatalog:v5])
+  if (![(MPArtworkCatalog *)artworkCatalog isArtworkVisuallyIdenticalToCatalog:catalogCopy])
   {
     self->_failedArtworkRetryCount = 0;
 LABEL_10:
     self->_failedToLoadArtwork = 0;
-    objc_storeStrong(&self->_artworkCatalog, a3);
+    objc_storeStrong(&self->_artworkCatalog, catalog);
     [(MPArtworkCatalog *)self->_artworkCatalog setFittingSize:60.0, 60.0];
-    v13 = [(MRPlatterViewController *)self traitCollection];
-    [v13 displayScale];
+    traitCollection = [(MRPlatterViewController *)self traitCollection];
+    [traitCollection displayScale];
     [(MPArtworkCatalog *)self->_artworkCatalog setDestinationScale:?];
 
     objc_initWeak(buf, self);
@@ -2050,14 +2050,14 @@ LABEL_10:
 
     [(MPArtworkCatalog *)self->_artworkCatalog setCacheIdentifier:@"MediaControlsHeaderView" forRequestingContext:self];
     v17 = self->_artworkCatalog;
-    v18 = [(MRPlatterViewController *)self nowPlayingHeaderView];
-    v19 = [v18 artworkView];
+    nowPlayingHeaderView2 = [(MRPlatterViewController *)self nowPlayingHeaderView];
+    artworkView2 = [nowPlayingHeaderView2 artworkView];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __45__MRPlatterViewController_setArtworkCatalog___block_invoke_133;
     v22[3] = &unk_1E7665B10;
     objc_copyWeak(&v23, buf);
-    [(MPArtworkCatalog *)v17 setDestination:v19 configurationBlock:v22];
+    [(MPArtworkCatalog *)v17 setDestination:artworkView2 configurationBlock:v22];
 
     objc_destroyWeak(&v23);
     objc_destroyWeak(&v25);
@@ -2156,30 +2156,30 @@ void __45__MRPlatterViewController_setArtworkCatalog___block_invoke_133(uint64_t
 
 - (void)_showPlaceholderArtwork
 {
-  v3 = [(MRPlatterViewController *)self nowPlayingHeaderView];
-  v4 = [v3 artworkView];
-  [v4 setImage:0];
+  nowPlayingHeaderView = [(MRPlatterViewController *)self nowPlayingHeaderView];
+  artworkView = [nowPlayingHeaderView artworkView];
+  [artworkView setImage:0];
 
   [(MRPlatterViewController *)self _updatePlaceholderArtwork];
 }
 
 - (void)_updatePlaceholderArtwork
 {
-  v3 = [(MRPlatterViewController *)self nowPlayingHeaderView];
-  v4 = [v3 artworkView];
-  v5 = [v4 image];
+  nowPlayingHeaderView = [(MRPlatterViewController *)self nowPlayingHeaderView];
+  artworkView = [nowPlayingHeaderView artworkView];
+  image = [artworkView image];
 
-  if (v5)
+  if (image)
   {
     return;
   }
 
-  v6 = [(MRPlatterViewController *)self endpointController];
-  v7 = [v6 representedBundleID];
-  v8 = v7;
-  if (v7)
+  endpointController = [(MRPlatterViewController *)self endpointController];
+  representedBundleID = [endpointController representedBundleID];
+  v8 = representedBundleID;
+  if (representedBundleID)
   {
-    v9 = v7;
+    v9 = representedBundleID;
   }
 
   else
@@ -2189,61 +2189,61 @@ void __45__MRPlatterViewController_setArtworkCatalog___block_invoke_133(uint64_t
 
   v35 = v9;
 
-  v10 = [(MRPlatterViewController *)self endpointController];
-  v11 = [v10 playerPath];
-  if (!v11)
+  endpointController2 = [(MRPlatterViewController *)self endpointController];
+  playerPath = [endpointController2 playerPath];
+  if (!playerPath)
   {
     goto LABEL_12;
   }
 
-  v12 = v11;
-  v13 = [(MRPlatterViewController *)self _route];
-  if (!v13)
+  v12 = playerPath;
+  _route = [(MRPlatterViewController *)self _route];
+  if (!_route)
   {
 
 LABEL_12:
 LABEL_13:
-    v23 = [(MRPlatterViewController *)self _route];
+    _route2 = [(MRPlatterViewController *)self _route];
 
-    v24 = [(MRPlatterViewController *)self placeholderDeviceIdentifier];
+    placeholderDeviceIdentifier = [(MRPlatterViewController *)self placeholderDeviceIdentifier];
 
     v25 = MEMORY[0x1E6970490];
-    if (!v24 || v23)
+    if (!placeholderDeviceIdentifier || _route2)
     {
-      v26 = [(MRPlatterViewController *)self _route];
-      v27 = [v25 _iconImageForRoute:v26];
+      _route3 = [(MRPlatterViewController *)self _route];
+      v27 = [v25 _iconImageForRoute:_route3];
     }
 
     else
     {
-      v26 = [(MRPlatterViewController *)self placeholderDeviceIdentifier];
-      v27 = [v25 _iconImageForIdentifier:v26];
+      _route3 = [(MRPlatterViewController *)self placeholderDeviceIdentifier];
+      v27 = [v25 _iconImageForIdentifier:_route3];
     }
 
-    v28 = v27;
+    _currentDeviceRoutingIconImage = v27;
 
     goto LABEL_18;
   }
 
-  v14 = v13;
-  v15 = [(MediaControlsEndpointController *)self->_endpointController isDeviceSystemRoute];
+  v14 = _route;
+  isDeviceSystemRoute = [(MediaControlsEndpointController *)self->_endpointController isDeviceSystemRoute];
 
-  if (!v15)
+  if (!isDeviceSystemRoute)
   {
     goto LABEL_13;
   }
 
   v16 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:v35];
-  v17 = [v16 localizedName];
+  localizedName = [v16 localizedName];
 
-  if (v17)
+  if (localizedName)
   {
-    v18 = [(MRPlatterViewController *)self traitCollection];
-    [v18 displayScale];
+    traitCollection = [(MRPlatterViewController *)self traitCollection];
+    [traitCollection displayScale];
     if (v19 == 0.0)
     {
-      v20 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v20 scale];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen scale];
       v22 = v21;
     }
 
@@ -2252,61 +2252,61 @@ LABEL_13:
       v22 = v19;
     }
 
-    v28 = [MEMORY[0x1E69DCAB8] _applicationIconImageForBundleIdentifier:v35 format:0 scale:v22];
+    _currentDeviceRoutingIconImage = [MEMORY[0x1E69DCAB8] _applicationIconImageForBundleIdentifier:v35 format:0 scale:v22];
     v29 = 0;
     goto LABEL_19;
   }
 
-  v28 = [MEMORY[0x1E6970490] _currentDeviceRoutingIconImage];
+  _currentDeviceRoutingIconImage = [MEMORY[0x1E6970490] _currentDeviceRoutingIconImage];
 LABEL_18:
   v29 = 1;
 LABEL_19:
-  v30 = [(MRPlatterViewController *)self nowPlayingHeaderView];
-  v31 = [v30 placeholderArtworkView];
-  [v31 setImage:v28];
+  nowPlayingHeaderView2 = [(MRPlatterViewController *)self nowPlayingHeaderView];
+  placeholderArtworkView = [nowPlayingHeaderView2 placeholderArtworkView];
+  [placeholderArtworkView setImage:_currentDeviceRoutingIconImage];
 
-  v32 = [(MRPlatterViewController *)self nowPlayingHeaderView];
-  [v32 setScalePlaceholderImage:v29];
+  nowPlayingHeaderView3 = [(MRPlatterViewController *)self nowPlayingHeaderView];
+  [nowPlayingHeaderView3 setScalePlaceholderImage:v29];
 
-  v33 = [(MRPlatterViewController *)self nowPlayingHeaderView];
-  [v33 updateArtworkStyle];
+  nowPlayingHeaderView4 = [(MRPlatterViewController *)self nowPlayingHeaderView];
+  [nowPlayingHeaderView4 updateArtworkStyle];
 
-  v34 = [(MRPlatterViewController *)self effectiveHeaderView];
-  [v34 setNeedsLayout];
+  effectiveHeaderView = [(MRPlatterViewController *)self effectiveHeaderView];
+  [effectiveHeaderView setNeedsLayout];
 }
 
 - (void)_updateSecondaryStringFormat
 {
   style = self->_style;
-  v4 = [(MRPlatterViewController *)self secondaryStringComponents];
-  v7 = v4;
+  secondaryStringComponents = [(MRPlatterViewController *)self secondaryStringComponents];
+  v7 = secondaryStringComponents;
   if (style == 1)
   {
-    [v4 firstObject];
+    [secondaryStringComponents firstObject];
   }
 
   else
   {
-    [v4 componentsJoinedByString:@" — "];
+    [secondaryStringComponents componentsJoinedByString:@" — "];
   }
   v5 = ;
-  v6 = [(MRPlatterViewController *)self nowPlayingHeaderView];
-  [v6 setSecondaryString:v5];
+  nowPlayingHeaderView = [(MRPlatterViewController *)self nowPlayingHeaderView];
+  [nowPlayingHeaderView setSecondaryString:v5];
 }
 
-- (void)footerViewButtonPressed:(id)a3
+- (void)footerViewButtonPressed:(id)pressed
 {
-  v4 = [(MRPlatterViewController *)self delegate];
-  v5 = v4;
+  delegate = [(MRPlatterViewController *)self delegate];
+  v5 = delegate;
   if (self->_style == 5)
   {
-    v8 = v4;
+    v8 = delegate;
     v6 = objc_opt_respondsToSelector();
     v5 = v8;
     if (v6)
     {
-      v7 = [(MPAVRoutingViewController *)self->_routingViewController _routingController];
-      [v7 unpickTVRoutes];
+      _routingController = [(MPAVRoutingViewController *)self->_routingViewController _routingController];
+      [_routingController unpickTVRoutes];
 
       [v8 dismissPlatterViewController:self completion:0];
       v5 = v8;
@@ -2314,7 +2314,7 @@ LABEL_19:
   }
 }
 
-- (void)headerViewButtonPressed:(id)a3
+- (void)headerViewButtonPressed:(id)pressed
 {
   if ([(MRPlatterViewController *)self selectedMode]!= 1 || ([(MRPlatterViewController *)self supportedModes]& 1) != 0)
   {
@@ -2334,10 +2334,10 @@ LABEL_19:
 
   else
   {
-    v5 = [(MRPlatterViewController *)self delegate];
+    delegate = [(MRPlatterViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v5 dismissPlatterViewController:self completion:0];
+      [delegate dismissPlatterViewController:self completion:0];
     }
   }
 }
@@ -2357,17 +2357,17 @@ LABEL_19:
   return 0;
 }
 
-- (void)_setRoutingPickerVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)_setRoutingPickerVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(MRPlatterViewController *)self delegate];
+  animatedCopy = animated;
+  delegate = [(MRPlatterViewController *)self delegate];
   v8 = 0.0;
-  if (v4)
+  if (animatedCopy)
   {
     v8 = 0.25;
     if (objc_opt_respondsToSelector())
     {
-      [v7 platterViewController:self willToggleRoutingPicker:{-[MRPlatterViewController selectedMode](self, "selectedMode") != 1}];
+      [delegate platterViewController:self willToggleRoutingPicker:{-[MRPlatterViewController selectedMode](self, "selectedMode") != 1}];
     }
   }
 
@@ -2375,13 +2375,13 @@ LABEL_19:
   v9[1] = 3221225472;
   v9[2] = __61__MRPlatterViewController__setRoutingPickerVisible_animated___block_invoke;
   v9[3] = &unk_1E76656C8;
-  v10 = a3;
+  visibleCopy = visible;
   v9[4] = self;
-  v11 = v4;
+  v11 = animatedCopy;
   [MEMORY[0x1E69DD250] animateWithDuration:v9 animations:v8];
   if (objc_opt_respondsToSelector())
   {
-    [v7 platterViewController:self didToggleRoutingPicker:{-[MRPlatterViewController selectedMode](self, "selectedMode") == 1}];
+    [delegate platterViewController:self didToggleRoutingPicker:{-[MRPlatterViewController selectedMode](self, "selectedMode") == 1}];
   }
 }
 
@@ -2409,9 +2409,9 @@ uint64_t __61__MRPlatterViewController__setRoutingPickerVisible_animated___block
 - (void)_presentRoutingViewControllerFromCoverSheet
 {
   v3 = objc_alloc_init(MEMORY[0x1E69705B8]);
-  v4 = [MEMORY[0x1E696AAE8] mainBundle];
-  v5 = [v4 bundleIdentifier];
-  [v3 setPresentingAppBundleID:v5];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  [v3 setPresentingAppBundleID:bundleIdentifier];
 
   [v3 setSurface:2];
   if (MRAVOutputContextGetSharedAudioPresentationContext())
@@ -2458,12 +2458,12 @@ void __70__MRPlatterViewController__presentRoutingViewControllerFromCoverSheet__
   *(v1 + 1176) = 0;
 }
 
-- (void)headerViewLaunchNowPlayingAppButtonPressed:(id)a3
+- (void)headerViewLaunchNowPlayingAppButtonPressed:(id)pressed
 {
-  v4 = [(MRPlatterViewController *)self delegate];
-  v5 = [(MRPlatterViewController *)self endpointController];
-  v6 = [v5 configuration];
-  if ([v6 allowsNowPlayingApplicationLaunch])
+  delegate = [(MRPlatterViewController *)self delegate];
+  endpointController = [(MRPlatterViewController *)self endpointController];
+  configuration = [endpointController configuration];
+  if ([configuration allowsNowPlayingApplicationLaunch])
   {
 
 LABEL_4:
@@ -2475,10 +2475,10 @@ LABEL_4:
       v11[3] = &unk_1E7663898;
       v11[4] = self;
       v8 = v11;
-      v9 = v4;
-      v10 = self;
+      v9 = delegate;
+      selfCopy2 = self;
 LABEL_9:
-      [v9 dismissPlatterViewController:v10 completion:v8];
+      [v9 dismissPlatterViewController:selfCopy2 completion:v8];
       goto LABEL_10;
     }
 
@@ -2486,17 +2486,17 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v7 = [(MRPlatterViewController *)self allowsNowPlayingAppLaunch];
+  allowsNowPlayingAppLaunch = [(MRPlatterViewController *)self allowsNowPlayingAppLaunch];
 
-  if (v7)
+  if (allowsNowPlayingAppLaunch)
   {
     goto LABEL_4;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = v4;
-    v10 = self;
+    v9 = delegate;
+    selfCopy2 = self;
     v8 = 0;
     goto LABEL_9;
   }
@@ -2504,18 +2504,18 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)willTransitionToSize:(CGSize)a3 withCoordinator:(id)a4
+- (void)willTransitionToSize:(CGSize)size withCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   style = self->_style;
   if (style <= 4 && style != 3 && (self->_lastKnownSize.width != width || self->_lastKnownSize.height != height))
   {
     self->_lastKnownSize.width = width;
     self->_lastKnownSize.height = height;
-    v11 = [(MRPlatterViewController *)self view];
-    [v11 setClipsToBounds:1];
+    view = [(MRPlatterViewController *)self view];
+    [view setClipsToBounds:1];
 
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -2529,7 +2529,7 @@ LABEL_10:
     v12[2] = __64__MRPlatterViewController_willTransitionToSize_withCoordinator___block_invoke_2;
     v12[3] = &unk_1E7663898;
     v12[4] = self;
-    [v7 animateAlongsideTransition:v13 completion:v12];
+    [coordinatorCopy animateAlongsideTransition:v13 completion:v12];
   }
 }
 
@@ -2575,141 +2575,141 @@ void __64__MRPlatterViewController_willTransitionToSize_withCoordinator___block_
   [v3 setClipsToBounds:0];
 }
 
-- (void)presentRatingActionSheet:(id)a3 sourceView:(id)a4
+- (void)presentRatingActionSheet:(id)sheet sourceView:(id)view
 {
   v92 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 likeCommand];
-  v8 = [v7 value];
+  sheetCopy = sheet;
+  viewCopy = view;
+  likeCommand = [sheetCopy likeCommand];
+  value = [likeCommand value];
 
-  v9 = [v5 dislikeCommand];
-  v10 = [v9 value];
+  dislikeCommand = [sheetCopy dislikeCommand];
+  value2 = [dislikeCommand value];
 
-  v11 = [v5 wishlistCommand];
-  v74 = [v11 value];
+  wishlistCommand = [sheetCopy wishlistCommand];
+  value3 = [wishlistCommand value];
 
   v12 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:0 preferredStyle:0];
   v13 = [MEMORY[0x1E69DC888] colorWithDynamicProvider:&__block_literal_global_34];
-  v14 = [v12 view];
-  [v14 setTintColor:v13];
+  view = [v12 view];
+  [view setTintColor:v13];
 
-  v15 = [v5 likeCommand];
+  likeCommand2 = [sheetCopy likeCommand];
 
-  if (v15)
+  if (likeCommand2)
   {
-    v73 = v10;
-    v16 = v6;
-    v17 = [v5 likeCommand];
-    v18 = [v17 localizedTitle];
-    v19 = v18;
-    if (v18)
+    v73 = value2;
+    v16 = viewCopy;
+    likeCommand3 = [sheetCopy likeCommand];
+    localizedTitle = [likeCommand3 localizedTitle];
+    v19 = localizedTitle;
+    if (localizedTitle)
     {
-      v20 = v18;
+      v20 = localizedTitle;
     }
 
     else
     {
-      v21 = [MEMORY[0x1E696AAE8] mediaControlsBundle];
-      v20 = [v21 localizedStringForKey:@"LIKE_TRACK_DEFAULT_TITLE" value:&stru_1F1445548 table:@"MediaControls"];
+      mediaControlsBundle = [MEMORY[0x1E696AAE8] mediaControlsBundle];
+      v20 = [mediaControlsBundle localizedStringForKey:@"LIKE_TRACK_DEFAULT_TITLE" value:&stru_1F1445548 table:@"MediaControls"];
     }
 
     v22 = MEMORY[0x1E69DCAB8];
-    v23 = [MEMORY[0x1E696AAE8] mediaControlsBundle];
-    v24 = [v22 imageNamed:@"CC-Action-Star" inBundle:v23];
+    mediaControlsBundle2 = [MEMORY[0x1E696AAE8] mediaControlsBundle];
+    v24 = [v22 imageNamed:@"CC-Action-Star" inBundle:mediaControlsBundle2];
 
     v25 = MEMORY[0x1E69DC648];
     v88[0] = MEMORY[0x1E69E9820];
     v88[1] = 3221225472;
     v88[2] = __63__MRPlatterViewController_presentRatingActionSheet_sourceView___block_invoke_2;
     v88[3] = &unk_1E7665B80;
-    v89 = v5;
-    v90 = v8;
+    v89 = sheetCopy;
+    v90 = value;
     v26 = [v25 _actionWithTitle:v20 image:v24 style:0 handler:v88 shouldDismissHandler:&__block_literal_global_160];
-    [v26 _setChecked:v8];
+    [v26 _setChecked:value];
     [v12 addAction:v26];
 
-    v6 = v16;
-    v10 = v73;
+    viewCopy = v16;
+    value2 = v73;
   }
 
-  v27 = [v5 dislikeCommand];
+  dislikeCommand2 = [sheetCopy dislikeCommand];
 
-  if (v27)
+  if (dislikeCommand2)
   {
-    v28 = [v5 dislikeCommand];
-    v29 = [v28 localizedTitle];
-    v30 = v29;
-    if (v29)
+    dislikeCommand3 = [sheetCopy dislikeCommand];
+    localizedTitle2 = [dislikeCommand3 localizedTitle];
+    v30 = localizedTitle2;
+    if (localizedTitle2)
     {
-      v31 = v29;
+      v31 = localizedTitle2;
     }
 
     else
     {
-      v32 = [MEMORY[0x1E696AAE8] mediaControlsBundle];
-      v31 = [v32 localizedStringForKey:@"DISLIKE_TRACK_DEFAULT_TITLE" value:&stru_1F1445548 table:@"MediaControls"];
+      mediaControlsBundle3 = [MEMORY[0x1E696AAE8] mediaControlsBundle];
+      v31 = [mediaControlsBundle3 localizedStringForKey:@"DISLIKE_TRACK_DEFAULT_TITLE" value:&stru_1F1445548 table:@"MediaControls"];
     }
 
     v33 = MEMORY[0x1E69DCAB8];
-    v34 = [MEMORY[0x1E696AAE8] mediaControlsBundle];
-    v35 = [v33 imageNamed:@"CC-Action-X" inBundle:v34];
+    mediaControlsBundle4 = [MEMORY[0x1E696AAE8] mediaControlsBundle];
+    v35 = [v33 imageNamed:@"CC-Action-X" inBundle:mediaControlsBundle4];
 
     v36 = MEMORY[0x1E69DC648];
     v85[0] = MEMORY[0x1E69E9820];
     v85[1] = 3221225472;
     v85[2] = __63__MRPlatterViewController_presentRatingActionSheet_sourceView___block_invoke_4;
     v85[3] = &unk_1E7665B80;
-    v86 = v5;
-    v87 = v10;
+    v86 = sheetCopy;
+    v87 = value2;
     v37 = [v36 _actionWithTitle:v31 image:v35 style:0 handler:v85 shouldDismissHandler:&__block_literal_global_168];
-    [v37 _setChecked:v10];
+    [v37 _setChecked:value2];
     [v12 addAction:v37];
   }
 
-  v38 = [v5 wishlistCommand];
+  wishlistCommand2 = [sheetCopy wishlistCommand];
 
-  if (v38)
+  if (wishlistCommand2)
   {
-    v39 = [v5 likeCommand];
-    if (v39)
+    likeCommand4 = [sheetCopy likeCommand];
+    if (likeCommand4)
     {
     }
 
     else
     {
-      v40 = [v5 dislikeCommand];
+      dislikeCommand4 = [sheetCopy dislikeCommand];
 
-      if (!v40)
+      if (!dislikeCommand4)
       {
 LABEL_16:
-        v41 = [v5 wishlistCommand];
-        v42 = [v41 localizedTitle];
-        v43 = v42;
-        if (v42)
+        wishlistCommand3 = [sheetCopy wishlistCommand];
+        localizedTitle3 = [wishlistCommand3 localizedTitle];
+        v43 = localizedTitle3;
+        if (localizedTitle3)
         {
-          v44 = v42;
+          v44 = localizedTitle3;
         }
 
         else
         {
-          v45 = [MEMORY[0x1E696AAE8] mediaControlsBundle];
-          v44 = [v45 localizedStringForKey:@"BOOKMARK_TRACK_DEFAULT_TITLE" value:&stru_1F1445548 table:@"MediaControls"];
+          mediaControlsBundle5 = [MEMORY[0x1E696AAE8] mediaControlsBundle];
+          v44 = [mediaControlsBundle5 localizedStringForKey:@"BOOKMARK_TRACK_DEFAULT_TITLE" value:&stru_1F1445548 table:@"MediaControls"];
         }
 
         v46 = MEMORY[0x1E69DCAB8];
-        v47 = [MEMORY[0x1E696AAE8] mediaControlsBundle];
-        v48 = [v46 imageNamed:@"CC-Action-Plus" inBundle:v47];
+        mediaControlsBundle6 = [MEMORY[0x1E696AAE8] mediaControlsBundle];
+        v48 = [v46 imageNamed:@"CC-Action-Plus" inBundle:mediaControlsBundle6];
 
         v49 = MEMORY[0x1E69DC648];
         v82[0] = MEMORY[0x1E69E9820];
         v82[1] = 3221225472;
         v82[2] = __63__MRPlatterViewController_presentRatingActionSheet_sourceView___block_invoke_6;
         v82[3] = &unk_1E7665B80;
-        v83 = v5;
-        v84 = v74;
+        v83 = sheetCopy;
+        v84 = value3;
         v50 = [v49 _actionWithTitle:v44 image:v48 style:0 handler:v82 shouldDismissHandler:&__block_literal_global_176];
-        [v50 _setChecked:v74];
+        [v50 _setChecked:value3];
         [v12 addAction:v50];
 
         goto LABEL_20;
@@ -2725,8 +2725,8 @@ LABEL_20:
   v81 = 0u;
   v78 = 0u;
   v79 = 0u;
-  v51 = [v12 actions];
-  v52 = [v51 countByEnumeratingWithState:&v78 objects:v91 count:16];
+  actions = [v12 actions];
+  v52 = [actions countByEnumeratingWithState:&v78 objects:v91 count:16];
   if (v52)
   {
     v53 = v52;
@@ -2737,25 +2737,25 @@ LABEL_20:
       {
         if (*v79 != v54)
         {
-          objc_enumerationMutation(v51);
+          objc_enumerationMutation(actions);
         }
 
         v56 = *(*(&v78 + 1) + 8 * i);
-        v57 = [MEMORY[0x1E69DC888] labelColor];
-        [v56 _setTitleTextColor:v57];
+        labelColor = [MEMORY[0x1E69DC888] labelColor];
+        [v56 _setTitleTextColor:labelColor];
 
         [v56 _setTitleTextAlignment:4];
       }
 
-      v53 = [v51 countByEnumeratingWithState:&v78 objects:v91 count:16];
+      v53 = [actions countByEnumeratingWithState:&v78 objects:v91 count:16];
     }
 
     while (v53);
   }
 
   v58 = MEMORY[0x1E69DC648];
-  v59 = [MEMORY[0x1E696AAE8] mediaControlsBundle];
-  v60 = [v59 localizedStringForKey:@"CANCEL" value:&stru_1F1445548 table:@"MediaControls"];
+  mediaControlsBundle7 = [MEMORY[0x1E696AAE8] mediaControlsBundle];
+  v60 = [mediaControlsBundle7 localizedStringForKey:@"CANCEL" value:&stru_1F1445548 table:@"MediaControls"];
   v76[0] = MEMORY[0x1E69E9820];
   v76[1] = 3221225472;
   v76[2] = __63__MRPlatterViewController_presentRatingActionSheet_sourceView___block_invoke_8;
@@ -2765,16 +2765,16 @@ LABEL_20:
   v62 = [v58 actionWithTitle:v60 style:1 handler:v76];
 
   [v61 addAction:v62];
-  v63 = [v61 popoverPresentationController];
-  [v63 setSourceView:v6];
+  popoverPresentationController = [v61 popoverPresentationController];
+  [popoverPresentationController setSourceView:viewCopy];
 
-  [v6 bounds];
+  [viewCopy bounds];
   v65 = v64;
   v67 = v66;
   v69 = v68;
   v71 = v70;
-  v72 = [v61 popoverPresentationController];
-  [v72 setSourceRect:{v65, v67, v69, v71}];
+  popoverPresentationController2 = [v61 popoverPresentationController];
+  [popoverPresentationController2 setSourceRect:{v65, v67, v69, v71}];
 
   [(MRPlatterViewController *)self presentViewController:v61 animated:1 completion:0];
 }
@@ -2846,16 +2846,16 @@ void __63__MRPlatterViewController_presentRatingActionSheet_sourceView___block_i
 
 - (BOOL)shouldShowTVRemoteButton
 {
-  v3 = [(MRPlatterViewController *)self _tvMediaRemoteIdentifier];
-  if (v3)
+  _tvMediaRemoteIdentifier = [(MRPlatterViewController *)self _tvMediaRemoteIdentifier];
+  if (_tvMediaRemoteIdentifier)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(MRPlatterViewController *)self _tvAirplayIdentifier];
-    v4 = v5 != 0;
+    _tvAirplayIdentifier = [(MRPlatterViewController *)self _tvAirplayIdentifier];
+    v4 = _tvAirplayIdentifier != 0;
   }
 
   return v4;
@@ -2863,22 +2863,22 @@ void __63__MRPlatterViewController_presentRatingActionSheet_sourceView___block_i
 
 - (void)presentTVRemote
 {
-  v35 = [(MRPlatterViewController *)self _tvMediaRemoteIdentifier];
-  if (v35)
+  _tvMediaRemoteIdentifier = [(MRPlatterViewController *)self _tvMediaRemoteIdentifier];
+  if (_tvMediaRemoteIdentifier)
   {
     v3 = 0;
   }
 
   else
   {
-    v35 = [(MRPlatterViewController *)self _tvAirplayIdentifier];
+    _tvMediaRemoteIdentifier = [(MRPlatterViewController *)self _tvAirplayIdentifier];
     v3 = 1;
   }
 
-  v4 = [(MRPlatterViewController *)self _route];
-  v5 = [v4 isTVRoute];
+  _route = [(MRPlatterViewController *)self _route];
+  isTVRoute = [_route isTVRoute];
 
-  if (v5)
+  if (isTVRoute)
   {
     v6 = 2;
   }
@@ -2895,10 +2895,10 @@ void __63__MRPlatterViewController_presentRatingActionSheet_sourceView___block_i
 
   else
   {
-    v8 = [MEMORY[0x1E696AAE8] mainBundle];
-    v9 = [v8 bundleIdentifier];
-    v10 = [v9 lowercaseString];
-    v11 = [v10 isEqualToString:@"com.apple.siri"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    lowercaseString = [bundleIdentifier lowercaseString];
+    v11 = [lowercaseString isEqualToString:@"com.apple.siri"];
 
     if (v11)
     {
@@ -2907,10 +2907,10 @@ void __63__MRPlatterViewController_presentRatingActionSheet_sourceView___block_i
 
     else
     {
-      v12 = [MEMORY[0x1E696AAE8] mainBundle];
-      v13 = [v12 bundleIdentifier];
-      v14 = [v13 lowercaseString];
-      v15 = [v14 isEqualToString:@"com.apple.home"];
+      mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier2 = [mainBundle2 bundleIdentifier];
+      lowercaseString2 = [bundleIdentifier2 lowercaseString];
+      v15 = [lowercaseString2 isEqualToString:@"com.apple.home"];
 
       if (v15)
       {
@@ -2924,82 +2924,82 @@ void __63__MRPlatterViewController_presentRatingActionSheet_sourceView___block_i
     }
   }
 
-  if (v35)
+  if (_tvMediaRemoteIdentifier)
   {
     if ([(MRPlatterViewController *)self _shouldUseViewServiceToPresentTVRemote])
     {
-      WeakRetained = [objc_alloc(MEMORY[0x1E69D60F8]) initWithDeviceIdentifier:v35 identifierType:v3 deviceType:v6 launchContext:v7 launchMethod:0];
-      v17 = [MEMORY[0x1E69D6100] sharedInstance];
-      [v17 presentWithContext:WeakRetained];
+      WeakRetained = [objc_alloc(MEMORY[0x1E69D60F8]) initWithDeviceIdentifier:_tvMediaRemoteIdentifier identifierType:v3 deviceType:v6 launchContext:v7 launchMethod:0];
+      mEMORY[0x1E69D6100] = [MEMORY[0x1E69D6100] sharedInstance];
+      [mEMORY[0x1E69D6100] presentWithContext:WeakRetained];
     }
 
     else
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v17 = objc_alloc_init(MEMORY[0x1E69D60F0]);
-      [v17 configureWithDeviceIdentifier:v35 identifierType:v3 deviceType:v6 launchContext:5];
-      v18 = [v17 view];
-      [v18 setClipsToBounds:1];
+      mEMORY[0x1E69D6100] = objc_alloc_init(MEMORY[0x1E69D60F0]);
+      [mEMORY[0x1E69D6100] configureWithDeviceIdentifier:_tvMediaRemoteIdentifier identifierType:v3 deviceType:v6 launchContext:5];
+      view = [mEMORY[0x1E69D6100] view];
+      [view setClipsToBounds:1];
 
-      [v17 setModalPresentationStyle:4];
-      [v17 setTransitioningDelegate:self->_transitioningDelegate];
-      v19 = [v17 presentationController];
+      [mEMORY[0x1E69D6100] setModalPresentationStyle:4];
+      [mEMORY[0x1E69D6100] setTransitioningDelegate:self->_transitioningDelegate];
+      presentationController = [mEMORY[0x1E69D6100] presentationController];
       if (objc_opt_respondsToSelector())
       {
-        v20 = [WeakRetained platterViewController:self presentingViewForPresentedViewController:v17];
-        [v19 setPresentingView:v20];
+        v20 = [WeakRetained platterViewController:self presentingViewForPresentedViewController:mEMORY[0x1E69D6100]];
+        [presentationController setPresentingView:v20];
       }
 
-      v21 = [(MRPlatterViewController *)self view];
-      v22 = [v21 superview];
-      v23 = [(MRPlatterViewController *)self view];
-      [v23 center];
+      view2 = [(MRPlatterViewController *)self view];
+      superview = [view2 superview];
+      view3 = [(MRPlatterViewController *)self view];
+      [view3 center];
       v25 = v24;
       v27 = v26;
-      v28 = [(MRPlatterViewController *)self view];
-      v29 = [v28 window];
-      [v22 convertPoint:v29 toView:{v25, v27}];
-      [v19 setSourcePoint:?];
+      view4 = [(MRPlatterViewController *)self view];
+      window = [view4 window];
+      [superview convertPoint:window toView:{v25, v27}];
+      [presentationController setSourcePoint:?];
 
-      v30 = [(MRPlatterViewController *)self traitCollection];
-      v31 = [v30 userInterfaceIdiom];
+      traitCollection = [(MRPlatterViewController *)self traitCollection];
+      userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-      if (v31 == 1)
+      if (userInterfaceIdiom == 1)
       {
         CCUIExpandedModuleEdgeInsets();
-        [v19 setEdgeInsets:?];
+        [presentationController setEdgeInsets:?];
         CCUIExpandedModuleContinuousCornerRadius();
         v33 = v32;
-        v34 = [v17 view];
-        [v34 _setContinuousCornerRadius:v33];
+        view5 = [mEMORY[0x1E69D6100] view];
+        [view5 _setContinuousCornerRadius:v33];
       }
 
-      [(MRPlatterViewController *)self presentViewController:v17 animated:1 completion:0];
+      [(MRPlatterViewController *)self presentViewController:mEMORY[0x1E69D6100] animated:1 completion:0];
     }
   }
 }
 
-- (void)_platterViewControllerReceivedInteraction:(id)a3
+- (void)_platterViewControllerReceivedInteraction:(id)interaction
 {
-  v7 = a3;
-  v4 = [(MRPlatterViewController *)self delegate];
+  interactionCopy = interaction;
+  delegate = [(MRPlatterViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 platterViewController:self didReceiveInteractionEvent:v7];
+    [delegate platterViewController:self didReceiveInteractionEvent:interactionCopy];
   }
 
-  v5 = self;
-  v6 = [(MRPlatterViewController *)v5 delegate];
+  selfCopy = self;
+  delegate2 = [(MRPlatterViewController *)selfCopy delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 mediaControlsPanelViewController:v5 didReceiveInteractionEvent:v7];
+    [delegate2 mediaControlsPanelViewController:selfCopy didReceiveInteractionEvent:interactionCopy];
   }
 }
 
-- (void)routingViewController:(id)a3 didSelectRoutingViewItem:(id)a4
+- (void)routingViewController:(id)controller didSelectRoutingViewItem:(id)item
 {
-  v5 = [a4 actionIdentifier];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E696F8A8]];
+  actionIdentifier = [item actionIdentifier];
+  v6 = [actionIdentifier isEqualToString:*MEMORY[0x1E696F8A8]];
 
   if (v6)
   {
@@ -3008,17 +3008,17 @@ void __63__MRPlatterViewController_presentRatingActionSheet_sourceView___block_i
   }
 }
 
-- (void)routingViewController:(id)a3 didPickRoute:(id)a4
+- (void)routingViewController:(id)controller didPickRoute:(id)route
 {
-  v6 = a4;
+  routeCopy = route;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained platterViewController:self didPickRoute:v6];
+    [WeakRetained platterViewController:self didPickRoute:routeCopy];
   }
 }
 
-- (UIEdgeInsets)contentInsetsForRoutingViewController:(id)a3
+- (UIEdgeInsets)contentInsetsForRoutingViewController:(id)controller
 {
   v3 = 10.0;
   v4 = 0.0;
@@ -3031,18 +3031,18 @@ void __63__MRPlatterViewController_presentRatingActionSheet_sourceView___block_i
   return result;
 }
 
-- (void)routingViewController:(id)a3 willDisplayCell:(id)a4
+- (void)routingViewController:(id)controller willDisplayCell:(id)cell
 {
   visualStylingProvider = self->_visualStylingProvider;
-  v6 = a4;
+  cellCopy = cell;
   v19 = [(MTVisualStylingProvider *)visualStylingProvider _visualStylingForStyle:0];
   v7 = [(MTVisualStylingProvider *)self->_visualStylingProvider _visualStylingForStyle:1];
   v8 = [(MTVisualStylingProvider *)self->_visualStylingProvider _visualStylingForStyle:3];
   v9 = [(MTVisualStylingProvider *)self->_visualStylingProvider _visualStylingForStyle:5];
-  v10 = [v6 isEnabled];
-  v11 = [v6 titleView];
-  v12 = v10 == 0;
-  if (v10)
+  isEnabled = [cellCopy isEnabled];
+  titleView = [cellCopy titleView];
+  v12 = isEnabled == 0;
+  if (isEnabled)
   {
     v13 = v19;
   }
@@ -3062,46 +3062,46 @@ void __63__MRPlatterViewController_presentRatingActionSheet_sourceView___block_i
     v14 = v7;
   }
 
-  [v11 mt_replaceVisualStyling:v13];
+  [titleView mt_replaceVisualStyling:v13];
 
-  v15 = [v6 subtitleView];
-  [v15 mt_replaceVisualStyling:v14];
+  subtitleView = [cellCopy subtitleView];
+  [subtitleView mt_replaceVisualStyling:v14];
 
-  v16 = [v6 iconView];
-  [v16 mt_replaceVisualStyling:v13];
+  iconView = [cellCopy iconView];
+  [iconView mt_replaceVisualStyling:v13];
 
-  v17 = [v6 separatorView];
-  [v17 mt_replaceVisualStyling:v9];
+  separatorView = [cellCopy separatorView];
+  [separatorView mt_replaceVisualStyling:v9];
 
-  v18 = [v6 volumeSlider];
+  volumeSlider = [cellCopy volumeSlider];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v18 setMinimumTrackVisualProvider:self->_visualStylingProvider];
-    [v18 setMaximumTrackVisualProvider:self->_visualStylingProvider];
+    [volumeSlider setMinimumTrackVisualProvider:self->_visualStylingProvider];
+    [volumeSlider setMaximumTrackVisualProvider:self->_visualStylingProvider];
   }
 }
 
-- (void)routingViewController:(id)a3 willDisplayHeaderView:(id)a4
+- (void)routingViewController:(id)controller willDisplayHeaderView:(id)view
 {
   visualStylingProvider = self->_visualStylingProvider;
-  v5 = a4;
+  viewCopy = view;
   v7 = [(MTVisualStylingProvider *)visualStylingProvider _visualStylingForStyle:0];
-  v6 = [v5 textLabel];
+  textLabel = [viewCopy textLabel];
 
-  [v6 mt_replaceVisualStyling:v7];
+  [textLabel mt_replaceVisualStyling:v7];
 }
 
-- (void)setRoutingViewController:(id)a3
+- (void)setRoutingViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   routingViewController = self->_routingViewController;
-  if (routingViewController != v5)
+  if (routingViewController != controllerCopy)
   {
-    v10 = v5;
+    v10 = controllerCopy;
     v7 = routingViewController;
-    objc_storeStrong(&self->_routingViewController, a3);
+    objc_storeStrong(&self->_routingViewController, controller);
     [(MPAVRoutingViewController *)self->_routingViewController setDelegate:self];
     [(MPAVRoutingViewController *)self->_routingViewController setThemeDelegate:self];
     [(MPAVRoutingViewController *)self->_routingViewController setGroupSliderCoordinator:self->_groupSliderCoordinator];
@@ -3113,9 +3113,9 @@ void __63__MRPlatterViewController_presentRatingActionSheet_sourceView___block_i
       }
 
       [(MPAVRoutingViewController *)v7 beginAppearanceTransition:0 animated:0];
-      v8 = [(MPAVRoutingViewController *)self->_routingViewController view];
-      v9 = [(MRPlatterViewController *)self parentContainerView];
-      [v9 setRoutingView:v8];
+      view = [(MPAVRoutingViewController *)self->_routingViewController view];
+      parentContainerView = [(MRPlatterViewController *)self parentContainerView];
+      [parentContainerView setRoutingView:view];
 
       if ([(MRPlatterViewController *)self isOnScreen])
       {
@@ -3125,24 +3125,24 @@ void __63__MRPlatterViewController_presentRatingActionSheet_sourceView___block_i
       [(MPAVRoutingViewController *)v7 endAppearanceTransition];
     }
 
-    v5 = v10;
+    controllerCopy = v10;
   }
 }
 
-- (BOOL)shouldEnableSyncingForSlider:(id)a3
+- (BOOL)shouldEnableSyncingForSlider:(id)slider
 {
-  v4 = [(MPVolumeGroupSliderCoordinator *)self->_groupSliderCoordinator individualVolumeSliders];
-  v5 = [v4 count] >= 2 && -[MRPlatterViewController selectedMode](self, "selectedMode") == 1;
+  individualVolumeSliders = [(MPVolumeGroupSliderCoordinator *)self->_groupSliderCoordinator individualVolumeSliders];
+  v5 = [individualVolumeSliders count] >= 2 && -[MRPlatterViewController selectedMode](self, "selectedMode") == 1;
 
   return v5;
 }
 
-- (BOOL)slider:(id)a3 syncStateWillChangeFromState:(int64_t)a4 toState:(int64_t)a5
+- (BOOL)slider:(id)slider syncStateWillChangeFromState:(int64_t)state toState:(int64_t)toState
 {
-  v8 = a3;
-  if (a5 == 4)
+  sliderCopy = slider;
+  if (toState == 4)
   {
-    if (a4 == 2)
+    if (state == 2)
     {
       groupSliderCoordinator = self->_groupSliderCoordinator;
       LOBYTE(self) = 1;
@@ -3155,7 +3155,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (a5 != 1)
+  if (toState != 1)
   {
     goto LABEL_6;
   }
@@ -3166,18 +3166,18 @@ LABEL_7:
   return self;
 }
 
-- (BOOL)slider:(id)a3 shouldCancelSnapWithTouch:(id)a4
+- (BOOL)slider:(id)slider shouldCancelSnapWithTouch:(id)touch
 {
-  v5 = a4;
-  v6 = [(MRPlatterViewController *)self view];
-  [v5 locationInView:v6];
+  touchCopy = touch;
+  view = [(MRPlatterViewController *)self view];
+  [touchCopy locationInView:view];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(MRPlatterViewController *)self view];
-  LOBYTE(v5) = [v11 pointInside:0 withEvent:{v8, v10}];
+  view2 = [(MRPlatterViewController *)self view];
+  LOBYTE(touchCopy) = [view2 pointInside:0 withEvent:{v8, v10}];
 
-  return v5 ^ 1;
+  return touchCopy ^ 1;
 }
 
 - (void)_updateRoutingCornerView
@@ -3192,8 +3192,8 @@ LABEL_7:
     v3 = [(MediaControlsEndpointController *)self->_endpointController isDeviceSystemRoute]^ 1;
   }
 
-  v4 = [(MRPlatterViewController *)self routingCornerView];
-  [v4 setRouting:v3];
+  routingCornerView = [(MRPlatterViewController *)self routingCornerView];
+  [routingCornerView setRouting:v3];
 
   if ([(MediaControlsEndpointController *)self->_endpointController isRoutingToWireless])
   {
@@ -3205,8 +3205,8 @@ LABEL_7:
     v5 = [(MediaControlsEndpointController *)self->_endpointController isDeviceSystemRoute]^ 1;
   }
 
-  v6 = [(MRPlatterViewController *)self nowPlayingHeaderView];
-  [v6 setRouting:v5];
+  nowPlayingHeaderView = [(MRPlatterViewController *)self nowPlayingHeaderView];
+  [nowPlayingHeaderView setRouting:v5];
 
   if ([(MediaControlsEndpointController *)self->_endpointController hasAvailableRoutes])
   {
@@ -3218,15 +3218,15 @@ LABEL_7:
     v7 = [(MediaControlsEndpointController *)self->_endpointController isDeviceSystemRoute]^ 1;
   }
 
-  v8 = [(MRPlatterViewController *)self routingCornerView];
-  [v8 setRoutesAvailable:v7];
+  routingCornerView2 = [(MRPlatterViewController *)self routingCornerView];
+  [routingCornerView2 setRoutesAvailable:v7];
 }
 
-- (void)setRoutingCornerViewTappedBlock:(id)a3
+- (void)setRoutingCornerViewTappedBlock:(id)block
 {
-  if (self->_expandModuleBlock != a3)
+  if (self->_expandModuleBlock != block)
   {
-    v4 = _Block_copy(a3);
+    v4 = _Block_copy(block);
     expandModuleBlock = self->_expandModuleBlock;
     self->_expandModuleBlock = v4;
 
@@ -3236,31 +3236,31 @@ LABEL_7:
 
 - (void)_updateRoutingIndicators
 {
-  v3 = [(MRPlatterViewController *)self endpointController];
-  v4 = [v3 bundleID];
-  if (v4)
+  endpointController = [(MRPlatterViewController *)self endpointController];
+  bundleID = [endpointController bundleID];
+  if (bundleID)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(MRPlatterViewController *)self endpointController];
-    v7 = [v6 representedBundleID];
-    v5 = v7 != 0;
+    endpointController2 = [(MRPlatterViewController *)self endpointController];
+    representedBundleID = [endpointController2 representedBundleID];
+    v5 = representedBundleID != 0;
   }
 
-  v8 = [(MRPlatterViewController *)self endpointController];
-  v9 = [v8 route];
+  endpointController3 = [(MRPlatterViewController *)self endpointController];
+  route = [endpointController3 route];
 
-  if (([v9 isAppleTVRoute] & 1) != 0 || (objc_msgSend(v9, "isTVRoute") & 1) != 0 || objc_msgSend(v9, "containsDeviceWithSubtype:", 18))
+  if (([route isAppleTVRoute] & 1) != 0 || (objc_msgSend(route, "isTVRoute") & 1) != 0 || objc_msgSend(route, "containsDeviceWithSubtype:", 18))
   {
-    v10 = [(MRPlatterViewController *)self routingCornerView];
-    [v10 setDeviceType:2];
+    routingCornerView = [(MRPlatterViewController *)self routingCornerView];
+    [routingCornerView setDeviceType:2];
 
-    v11 = [(MRPlatterViewController *)self nowPlayingHeaderView];
-    v12 = [v11 routingButton];
-    v13 = v12;
+    nowPlayingHeaderView = [(MRPlatterViewController *)self nowPlayingHeaderView];
+    routingButton = [nowPlayingHeaderView routingButton];
+    v13 = routingButton;
     v14 = 2;
   }
 
@@ -3268,27 +3268,27 @@ LABEL_7:
   {
     if (v5)
     {
-      v15 = [(MRPlatterViewController *)self endpointController];
+      endpointController4 = [(MRPlatterViewController *)self endpointController];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __51__MRPlatterViewController__updateRoutingIndicators__block_invoke;
       v17[3] = &unk_1E7664FE8;
       v17[4] = self;
-      [v15 representsLongFormVideoContentWithCompletion:v17];
+      [endpointController4 representsLongFormVideoContentWithCompletion:v17];
 
       goto LABEL_9;
     }
 
-    v16 = [(MRPlatterViewController *)self routingCornerView];
-    [v16 setDeviceType:1];
+    routingCornerView2 = [(MRPlatterViewController *)self routingCornerView];
+    [routingCornerView2 setDeviceType:1];
 
-    v11 = [(MRPlatterViewController *)self nowPlayingHeaderView];
-    v12 = [v11 routingButton];
-    v13 = v12;
+    nowPlayingHeaderView = [(MRPlatterViewController *)self nowPlayingHeaderView];
+    routingButton = [nowPlayingHeaderView routingButton];
+    v13 = routingButton;
     v14 = 1;
   }
 
-  [v12 setDeviceType:v14];
+  [routingButton setDeviceType:v14];
 
 LABEL_9:
 }
@@ -3314,12 +3314,12 @@ void __51__MRPlatterViewController__updateRoutingIndicators__block_invoke(uint64
   [v7 setDeviceType:v6];
 }
 
-- (void)_routingCornerViewReceivedTap:(id)a3
+- (void)_routingCornerViewReceivedTap:(id)tap
 {
   expandModuleBlock = self->_expandModuleBlock;
   if (expandModuleBlock)
   {
-    expandModuleBlock[2](expandModuleBlock, a2, a3);
+    expandModuleBlock[2](expandModuleBlock, a2, tap);
     v5 = dispatch_time(0, 480000000);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -3343,16 +3343,16 @@ uint64_t __57__MRPlatterViewController__routingCornerViewReceivedTap___block_inv
   return result;
 }
 
-- (void)layoutMonitor:(id)a3 didUpdateDisplayLayout:(id)a4 withContext:(id)a5
+- (void)layoutMonitor:(id)monitor didUpdateDisplayLayout:(id)layout withContext:(id)context
 {
-  v6 = a4;
+  layoutCopy = layout;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __76__MRPlatterViewController_layoutMonitor_didUpdateDisplayLayout_withContext___block_invoke;
   v8[3] = &unk_1E76639D0;
-  v9 = v6;
-  v10 = self;
-  v7 = v6;
+  v9 = layoutCopy;
+  selfCopy = self;
+  v7 = layoutCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v8);
 }
 
@@ -3411,7 +3411,7 @@ void __76__MRPlatterViewController_layoutMonitor_didUpdateDisplayLayout_withCont
   return v4 ^ 1;
 }
 
-- (int64_t)lockScreenInternalRoutePickerOverrideWithDefaultStyle:(int64_t)a3
+- (int64_t)lockScreenInternalRoutePickerOverrideWithDefaultStyle:(int64_t)style
 {
   v4 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.Music"];
   v5 = [v4 stringForKey:@"LockScreenRoutingStyleOverride"];
@@ -3419,51 +3419,51 @@ void __76__MRPlatterViewController_layoutMonitor_didUpdateDisplayLayout_withCont
   {
     if ([v5 isEqualToString:@"ControlCenter"])
     {
-      a3 = 0;
+      style = 0;
     }
 
     else if ([v5 isEqualToString:@"SingleSelect"])
     {
-      a3 = 1;
+      style = 1;
     }
 
     else if ([v5 isEqualToString:@"MultiSelect"])
     {
-      a3 = 2;
+      style = 2;
     }
 
     else if ([v5 isEqualToString:@"SharedQueue"])
     {
-      a3 = 3;
+      style = 3;
     }
 
     else if ([v5 isEqualToString:@"VideoPicker"])
     {
-      a3 = 4;
+      style = 4;
     }
 
     else if ([v5 isEqualToString:@"LocalTransportControls"])
     {
-      a3 = 5;
+      style = 5;
     }
 
     else if ([v5 isEqualToString:@"AirPlayBluePill"])
     {
-      a3 = 6;
+      style = 6;
     }
 
     else if ([v5 isEqualToString:@"MediumConfidenceVideoPicker"])
     {
-      a3 = 7;
+      style = 7;
     }
 
     else if ([v5 isEqualToString:@"UpNextControls"])
     {
-      a3 = 8;
+      style = 8;
     }
   }
 
-  return a3;
+  return style;
 }
 
 - (id)_stateDumpObject
@@ -3476,11 +3476,11 @@ void __76__MRPlatterViewController_layoutMonitor_didUpdateDisplayLayout_withCont
   v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[MRPlatterViewController isOnScreen](self, "isOnScreen")}];
   v20[1] = v4;
   v19[2] = @"route";
-  v5 = [(MRPlatterViewController *)self route];
-  v6 = v5;
-  if (v5)
+  route = [(MRPlatterViewController *)self route];
+  v6 = route;
+  if (route)
   {
-    v7 = v5;
+    v7 = route;
   }
 
   else
@@ -3490,11 +3490,11 @@ void __76__MRPlatterViewController_layoutMonitor_didUpdateDisplayLayout_withCont
 
   v20[2] = v7;
   v19[3] = @"name";
-  v8 = [(MRPlatterViewController *)self routeName];
-  v9 = v8;
-  if (v8)
+  routeName = [(MRPlatterViewController *)self routeName];
+  v9 = routeName;
+  if (routeName)
   {
-    v10 = v8;
+    v10 = routeName;
   }
 
   else
@@ -3504,11 +3504,11 @@ void __76__MRPlatterViewController_layoutMonitor_didUpdateDisplayLayout_withCont
 
   v20[3] = v10;
   v19[4] = @"routingViewController";
-  v11 = [(MRPlatterViewController *)self routingViewController];
-  v12 = v11;
-  if (v11)
+  routingViewController = [(MRPlatterViewController *)self routingViewController];
+  v12 = routingViewController;
+  if (routingViewController)
   {
-    v13 = v11;
+    v13 = routingViewController;
   }
 
   else
@@ -3518,11 +3518,11 @@ void __76__MRPlatterViewController_layoutMonitor_didUpdateDisplayLayout_withCont
 
   v20[4] = v13;
   v19[5] = @"endpointController";
-  v14 = [(MRPlatterViewController *)self endpointController];
-  v15 = v14;
-  if (v14)
+  endpointController = [(MRPlatterViewController *)self endpointController];
+  v15 = endpointController;
+  if (endpointController)
   {
-    v16 = v14;
+    v16 = endpointController;
   }
 
   else

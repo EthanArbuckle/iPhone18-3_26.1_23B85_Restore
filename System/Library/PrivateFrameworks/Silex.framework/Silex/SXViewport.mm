@@ -1,51 +1,51 @@
 @interface SXViewport
 - (BOOL)isPopulated;
-- (CGPoint)convertPoint:(CGPoint)a3 fromView:(id)a4;
-- (CGPoint)convertPoint:(CGPoint)a3 toView:(id)a4;
-- (CGPoint)convertPointToViewportCoordinateSpace:(CGPoint)a3 fromView:(id)a4;
+- (CGPoint)convertPoint:(CGPoint)point fromView:(id)view;
+- (CGPoint)convertPoint:(CGPoint)point toView:(id)view;
+- (CGPoint)convertPointToViewportCoordinateSpace:(CGPoint)space fromView:(id)view;
 - (CGRect)bounds;
 - (CGRect)contentFrame;
-- (CGRect)convertRect:(CGRect)a3 fromView:(id)a4;
-- (CGRect)convertRect:(CGRect)a3 toView:(id)a4;
-- (CGRect)convertRectToViewportCoordinateSpace:(CGRect)a3 fromView:(id)a4;
+- (CGRect)convertRect:(CGRect)rect fromView:(id)view;
+- (CGRect)convertRect:(CGRect)rect toView:(id)view;
+- (CGRect)convertRectToViewportCoordinateSpace:(CGRect)space fromView:(id)view;
 - (CGRect)dynamicBounds;
 - (CGSize)documentSize;
-- (SXViewport)initWithView:(id)a3;
+- (SXViewport)initWithView:(id)view;
 - (UIScrollView)view;
-- (id)debugDescriptionForViewport:(id)a3;
-- (id)stringForAppearState:(unint64_t)a3;
-- (id)stringFroInterfaceOrientation:(int64_t)a3;
-- (void)addViewportChangeListener:(id)a3 forOptions:(unint64_t)a4;
-- (void)appearStateChangedFromState:(unint64_t)a3;
+- (id)debugDescriptionForViewport:(id)viewport;
+- (id)stringForAppearState:(unint64_t)state;
+- (id)stringFroInterfaceOrientation:(int64_t)orientation;
+- (void)addViewportChangeListener:(id)listener forOptions:(unint64_t)options;
+- (void)appearStateChangedFromState:(unint64_t)state;
 - (void)beginUpdates;
-- (void)boundsDidChangeFromBounds:(CGRect)a3;
-- (void)contentFrameDidChangeFromFrame:(CGRect)a3;
-- (void)documentSizeDidChangeFromSize:(CGSize)a3;
-- (void)dynamicBoundsDidChangeFromBounds:(CGRect)a3;
+- (void)boundsDidChangeFromBounds:(CGRect)bounds;
+- (void)contentFrameDidChangeFromFrame:(CGRect)frame;
+- (void)documentSizeDidChangeFromSize:(CGSize)size;
+- (void)dynamicBoundsDidChangeFromBounds:(CGRect)bounds;
 - (void)endUpdates;
-- (void)interfaceOrientationChangedFromOrientation:(int64_t)a3;
-- (void)removeViewportChangeListener:(id)a3 forOptions:(unint64_t)a4;
+- (void)interfaceOrientationChangedFromOrientation:(int64_t)orientation;
+- (void)removeViewportChangeListener:(id)listener forOptions:(unint64_t)options;
 - (void)reset;
-- (void)setAppearState:(unint64_t)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setContentFrame:(CGRect)a3;
-- (void)setDocumentSize:(CGSize)a3;
-- (void)setDynamicBounds:(CGRect)a3;
-- (void)setInterfaceOrientation:(int64_t)a3;
+- (void)setAppearState:(unint64_t)state;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContentFrame:(CGRect)frame;
+- (void)setDocumentSize:(CGSize)size;
+- (void)setDynamicBounds:(CGRect)bounds;
+- (void)setInterfaceOrientation:(int64_t)orientation;
 @end
 
 @implementation SXViewport
 
-- (SXViewport)initWithView:(id)a3
+- (SXViewport)initWithView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v20.receiver = self;
   v20.super_class = SXViewport;
   v5 = [(SXViewport *)&v20 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_view, v4);
+    objc_storeWeak(&v5->_view, viewCopy);
     v7 = [MEMORY[0x1E696AC70] hashTableWithOptions:5];
     dynamicBoundsListeners = v6->_dynamicBoundsListeners;
     v6->_dynamicBoundsListeners = v7;
@@ -74,25 +74,25 @@
   return v6;
 }
 
-- (void)addViewportChangeListener:(id)a3 forOptions:(unint64_t)a4
+- (void)addViewportChangeListener:(id)listener forOptions:(unint64_t)options
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6)
+  optionsCopy = options;
+  listenerCopy = listener;
+  if (!listenerCopy)
   {
     goto LABEL_10;
   }
 
-  v13 = v6;
-  if ((v4 & 2) != 0)
+  v13 = listenerCopy;
+  if ((optionsCopy & 2) != 0)
   {
-    v9 = [(SXViewport *)self dynamicBoundsListeners];
-    [v9 addObject:v13];
+    dynamicBoundsListeners = [(SXViewport *)self dynamicBoundsListeners];
+    [dynamicBoundsListeners addObject:v13];
 
-    if ((v4 & 4) == 0)
+    if ((optionsCopy & 4) == 0)
     {
 LABEL_4:
-      if ((v4 & 8) == 0)
+      if ((optionsCopy & 8) == 0)
       {
         goto LABEL_5;
       }
@@ -101,18 +101,18 @@ LABEL_4:
     }
   }
 
-  else if ((v4 & 4) == 0)
+  else if ((optionsCopy & 4) == 0)
   {
     goto LABEL_4;
   }
 
-  v10 = [(SXViewport *)self boundsListeners];
-  [v10 addObject:v13];
+  boundsListeners = [(SXViewport *)self boundsListeners];
+  [boundsListeners addObject:v13];
 
-  if ((v4 & 8) == 0)
+  if ((optionsCopy & 8) == 0)
   {
 LABEL_5:
-    if ((v4 & 0x10) == 0)
+    if ((optionsCopy & 0x10) == 0)
     {
       goto LABEL_6;
     }
@@ -121,13 +121,13 @@ LABEL_5:
   }
 
 LABEL_15:
-  v11 = [(SXViewport *)self appearStateListeners];
-  [v11 addObject:v13];
+  appearStateListeners = [(SXViewport *)self appearStateListeners];
+  [appearStateListeners addObject:v13];
 
-  if ((v4 & 0x10) == 0)
+  if ((optionsCopy & 0x10) == 0)
   {
 LABEL_6:
-    if ((v4 & 0x20) == 0)
+    if ((optionsCopy & 0x20) == 0)
     {
       goto LABEL_8;
     }
@@ -136,48 +136,48 @@ LABEL_6:
   }
 
 LABEL_16:
-  v12 = [(SXViewport *)self documentSizeListeners];
-  [v12 addObject:v13];
+  documentSizeListeners = [(SXViewport *)self documentSizeListeners];
+  [documentSizeListeners addObject:v13];
 
-  if ((v4 & 0x20) != 0)
+  if ((optionsCopy & 0x20) != 0)
   {
 LABEL_7:
-    v7 = [(SXViewport *)self contentFrameListeners];
-    [v7 addObject:v13];
+    contentFrameListeners = [(SXViewport *)self contentFrameListeners];
+    [contentFrameListeners addObject:v13];
   }
 
 LABEL_8:
-  v6 = v13;
-  if ((v4 & 0x40) != 0)
+  listenerCopy = v13;
+  if ((optionsCopy & 0x40) != 0)
   {
-    v8 = [(SXViewport *)self interfaceOrientationListeners];
-    [v8 addObject:v13];
+    interfaceOrientationListeners = [(SXViewport *)self interfaceOrientationListeners];
+    [interfaceOrientationListeners addObject:v13];
 
-    v6 = v13;
+    listenerCopy = v13;
   }
 
 LABEL_10:
 }
 
-- (void)removeViewportChangeListener:(id)a3 forOptions:(unint64_t)a4
+- (void)removeViewportChangeListener:(id)listener forOptions:(unint64_t)options
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6)
+  optionsCopy = options;
+  listenerCopy = listener;
+  if (!listenerCopy)
   {
     goto LABEL_10;
   }
 
-  v13 = v6;
-  if ((v4 & 2) != 0)
+  v13 = listenerCopy;
+  if ((optionsCopy & 2) != 0)
   {
-    v9 = [(SXViewport *)self dynamicBoundsListeners];
-    [v9 removeObject:v13];
+    dynamicBoundsListeners = [(SXViewport *)self dynamicBoundsListeners];
+    [dynamicBoundsListeners removeObject:v13];
 
-    if ((v4 & 4) == 0)
+    if ((optionsCopy & 4) == 0)
     {
 LABEL_4:
-      if ((v4 & 8) == 0)
+      if ((optionsCopy & 8) == 0)
       {
         goto LABEL_5;
       }
@@ -186,18 +186,18 @@ LABEL_4:
     }
   }
 
-  else if ((v4 & 4) == 0)
+  else if ((optionsCopy & 4) == 0)
   {
     goto LABEL_4;
   }
 
-  v10 = [(SXViewport *)self boundsListeners];
-  [v10 removeObject:v13];
+  boundsListeners = [(SXViewport *)self boundsListeners];
+  [boundsListeners removeObject:v13];
 
-  if ((v4 & 8) == 0)
+  if ((optionsCopy & 8) == 0)
   {
 LABEL_5:
-    if ((v4 & 0x10) == 0)
+    if ((optionsCopy & 0x10) == 0)
     {
       goto LABEL_6;
     }
@@ -206,13 +206,13 @@ LABEL_5:
   }
 
 LABEL_15:
-  v11 = [(SXViewport *)self appearStateListeners];
-  [v11 removeObject:v13];
+  appearStateListeners = [(SXViewport *)self appearStateListeners];
+  [appearStateListeners removeObject:v13];
 
-  if ((v4 & 0x10) == 0)
+  if ((optionsCopy & 0x10) == 0)
   {
 LABEL_6:
-    if ((v4 & 0x20) == 0)
+    if ((optionsCopy & 0x20) == 0)
     {
       goto LABEL_8;
     }
@@ -221,24 +221,24 @@ LABEL_6:
   }
 
 LABEL_16:
-  v12 = [(SXViewport *)self documentSizeListeners];
-  [v12 removeObject:v13];
+  documentSizeListeners = [(SXViewport *)self documentSizeListeners];
+  [documentSizeListeners removeObject:v13];
 
-  if ((v4 & 0x20) != 0)
+  if ((optionsCopy & 0x20) != 0)
   {
 LABEL_7:
-    v7 = [(SXViewport *)self contentFrameListeners];
-    [v7 removeObject:v13];
+    contentFrameListeners = [(SXViewport *)self contentFrameListeners];
+    [contentFrameListeners removeObject:v13];
   }
 
 LABEL_8:
-  v6 = v13;
-  if ((v4 & 0x40) != 0)
+  listenerCopy = v13;
+  if ((optionsCopy & 0x40) != 0)
   {
-    v8 = [(SXViewport *)self interfaceOrientationListeners];
-    [v8 removeObject:v13];
+    interfaceOrientationListeners = [(SXViewport *)self interfaceOrientationListeners];
+    [interfaceOrientationListeners removeObject:v13];
 
-    v6 = v13;
+    listenerCopy = v13;
   }
 
 LABEL_10:
@@ -246,41 +246,41 @@ LABEL_10:
 
 - (void)beginUpdates
 {
-  v3 = [(SXViewport *)self viewportBeforeUpdates];
+  viewportBeforeUpdates = [(SXViewport *)self viewportBeforeUpdates];
 
-  if (!v3)
+  if (!viewportBeforeUpdates)
   {
     v4 = [SXViewport alloc];
-    v5 = [(SXViewport *)self view];
-    v6 = [(SXViewport *)v4 initWithView:v5];
+    view = [(SXViewport *)self view];
+    v6 = [(SXViewport *)v4 initWithView:view];
     [(SXViewport *)self setViewportBeforeUpdates:v6];
   }
 
-  v7 = [(SXViewport *)self viewportBeforeUpdates];
+  viewportBeforeUpdates2 = [(SXViewport *)self viewportBeforeUpdates];
   [(SXViewport *)self dynamicBounds];
-  [v7 setDynamicBounds:?];
+  [viewportBeforeUpdates2 setDynamicBounds:?];
 
-  v8 = [(SXViewport *)self viewportBeforeUpdates];
+  viewportBeforeUpdates3 = [(SXViewport *)self viewportBeforeUpdates];
   [(SXViewport *)self bounds];
-  [v8 setBounds:?];
+  [viewportBeforeUpdates3 setBounds:?];
 
-  v9 = [(SXViewport *)self viewportBeforeUpdates];
+  viewportBeforeUpdates4 = [(SXViewport *)self viewportBeforeUpdates];
   [(SXViewport *)self documentSize];
-  [v9 setDocumentSize:?];
+  [viewportBeforeUpdates4 setDocumentSize:?];
 
-  v10 = [(SXViewport *)self viewportBeforeUpdates];
-  [v10 setAppearState:{-[SXViewport appearState](self, "appearState")}];
+  viewportBeforeUpdates5 = [(SXViewport *)self viewportBeforeUpdates];
+  [viewportBeforeUpdates5 setAppearState:{-[SXViewport appearState](self, "appearState")}];
 
-  v11 = [(SXViewport *)self viewportBeforeUpdates];
-  [v11 setInterfaceOrientation:{-[SXViewport interfaceOrientation](self, "interfaceOrientation")}];
+  viewportBeforeUpdates6 = [(SXViewport *)self viewportBeforeUpdates];
+  [viewportBeforeUpdates6 setInterfaceOrientation:{-[SXViewport interfaceOrientation](self, "interfaceOrientation")}];
 
   [(SXViewport *)self setGroupChanges:1];
 }
 
 - (void)endUpdates
 {
-  v3 = [(SXViewport *)self viewportBeforeUpdates];
-  [v3 dynamicBounds];
+  viewportBeforeUpdates = [(SXViewport *)self viewportBeforeUpdates];
+  [viewportBeforeUpdates dynamicBounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -298,13 +298,13 @@ LABEL_10:
 
   if (!v16)
   {
-    v17 = [(SXViewport *)self viewportBeforeUpdates];
-    [v17 dynamicBounds];
+    viewportBeforeUpdates2 = [(SXViewport *)self viewportBeforeUpdates];
+    [viewportBeforeUpdates2 dynamicBounds];
     [(SXViewport *)self dynamicBoundsDidChangeFromBounds:?];
   }
 
-  v18 = [(SXViewport *)self viewportBeforeUpdates];
-  [v18 bounds];
+  viewportBeforeUpdates3 = [(SXViewport *)self viewportBeforeUpdates];
+  [viewportBeforeUpdates3 bounds];
   v20 = v19;
   v22 = v21;
   v24 = v23;
@@ -322,23 +322,23 @@ LABEL_10:
 
   if (!v31)
   {
-    v32 = [(SXViewport *)self viewportBeforeUpdates];
-    [v32 bounds];
+    viewportBeforeUpdates4 = [(SXViewport *)self viewportBeforeUpdates];
+    [viewportBeforeUpdates4 bounds];
     [(SXViewport *)self boundsDidChangeFromBounds:?];
   }
 
-  v33 = [(SXViewport *)self viewportBeforeUpdates];
-  v34 = [v33 appearState];
-  v35 = [(SXViewport *)self appearState];
+  viewportBeforeUpdates5 = [(SXViewport *)self viewportBeforeUpdates];
+  appearState = [viewportBeforeUpdates5 appearState];
+  appearState2 = [(SXViewport *)self appearState];
 
-  if (v34 != v35)
+  if (appearState != appearState2)
   {
-    v36 = [(SXViewport *)self viewportBeforeUpdates];
-    -[SXViewport appearStateChangedFromState:](self, "appearStateChangedFromState:", [v36 appearState]);
+    viewportBeforeUpdates6 = [(SXViewport *)self viewportBeforeUpdates];
+    -[SXViewport appearStateChangedFromState:](self, "appearStateChangedFromState:", [viewportBeforeUpdates6 appearState]);
   }
 
-  v37 = [(SXViewport *)self viewportBeforeUpdates];
-  [v37 documentSize];
+  viewportBeforeUpdates7 = [(SXViewport *)self viewportBeforeUpdates];
+  [viewportBeforeUpdates7 documentSize];
   v39 = v38;
   v41 = v40;
   [(SXViewport *)self documentSize];
@@ -347,37 +347,37 @@ LABEL_10:
 
   if (v39 != v43 || v41 != v45)
   {
-    v46 = [(SXViewport *)self viewportBeforeUpdates];
-    [v46 documentSize];
+    viewportBeforeUpdates8 = [(SXViewport *)self viewportBeforeUpdates];
+    [viewportBeforeUpdates8 documentSize];
     [(SXViewport *)self documentSizeDidChangeFromSize:?];
   }
 
-  v47 = [(SXViewport *)self viewportBeforeUpdates];
-  v48 = [v47 interfaceOrientation];
-  v49 = [(SXViewport *)self interfaceOrientation];
+  viewportBeforeUpdates9 = [(SXViewport *)self viewportBeforeUpdates];
+  interfaceOrientation = [viewportBeforeUpdates9 interfaceOrientation];
+  interfaceOrientation2 = [(SXViewport *)self interfaceOrientation];
 
-  if (v48 != v49)
+  if (interfaceOrientation != interfaceOrientation2)
   {
-    v50 = [(SXViewport *)self viewportBeforeUpdates];
-    -[SXViewport interfaceOrientationChangedFromOrientation:](self, "interfaceOrientationChangedFromOrientation:", [v50 interfaceOrientation]);
+    viewportBeforeUpdates10 = [(SXViewport *)self viewportBeforeUpdates];
+    -[SXViewport interfaceOrientationChangedFromOrientation:](self, "interfaceOrientationChangedFromOrientation:", [viewportBeforeUpdates10 interfaceOrientation]);
   }
 
   [(SXViewport *)self setGroupChanges:0];
 }
 
-- (void)dynamicBoundsDidChangeFromBounds:(CGRect)a3
+- (void)dynamicBoundsDidChangeFromBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(SXViewport *)self dynamicBoundsListeners];
-  v9 = [v8 copy];
+  dynamicBoundsListeners = [(SXViewport *)self dynamicBoundsListeners];
+  v9 = [dynamicBoundsListeners copy];
 
   v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
@@ -405,19 +405,19 @@ LABEL_10:
   }
 }
 
-- (void)boundsDidChangeFromBounds:(CGRect)a3
+- (void)boundsDidChangeFromBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(SXViewport *)self boundsListeners];
-  v9 = [v8 copy];
+  boundsListeners = [(SXViewport *)self boundsListeners];
+  v9 = [boundsListeners copy];
 
   v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
@@ -445,15 +445,15 @@ LABEL_10:
   }
 }
 
-- (void)appearStateChangedFromState:(unint64_t)a3
+- (void)appearStateChangedFromState:(unint64_t)state
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(SXViewport *)self appearStateListeners];
-  v6 = [v5 copy];
+  appearStateListeners = [(SXViewport *)self appearStateListeners];
+  v6 = [appearStateListeners copy];
 
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
@@ -470,7 +470,7 @@ LABEL_10:
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) viewport:self appearStateChangedFromState:a3];
+        [*(*(&v11 + 1) + 8 * v10++) viewport:self appearStateChangedFromState:state];
       }
 
       while (v8 != v10);
@@ -481,17 +481,17 @@ LABEL_10:
   }
 }
 
-- (void)documentSizeDidChangeFromSize:(CGSize)a3
+- (void)documentSizeDidChangeFromSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(SXViewport *)self documentSizeListeners];
-  v7 = [v6 copy];
+  documentSizeListeners = [(SXViewport *)self documentSizeListeners];
+  v7 = [documentSizeListeners copy];
 
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
@@ -519,19 +519,19 @@ LABEL_10:
   }
 }
 
-- (void)contentFrameDidChangeFromFrame:(CGRect)a3
+- (void)contentFrameDidChangeFromFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(SXViewport *)self contentFrameListeners];
-  v9 = [v8 copy];
+  contentFrameListeners = [(SXViewport *)self contentFrameListeners];
+  v9 = [contentFrameListeners copy];
 
   v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
@@ -559,15 +559,15 @@ LABEL_10:
   }
 }
 
-- (void)interfaceOrientationChangedFromOrientation:(int64_t)a3
+- (void)interfaceOrientationChangedFromOrientation:(int64_t)orientation
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(SXViewport *)self interfaceOrientationListeners];
-  v6 = [v5 copy];
+  interfaceOrientationListeners = [(SXViewport *)self interfaceOrientationListeners];
+  v6 = [interfaceOrientationListeners copy];
 
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
@@ -584,7 +584,7 @@ LABEL_10:
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) viewport:self interfaceOrientationChangedFromOrientation:a3];
+        [*(*(&v11 + 1) + 8 * v10++) viewport:self interfaceOrientationChangedFromOrientation:orientation];
       }
 
       while (v8 != v10);
@@ -595,12 +595,12 @@ LABEL_10:
   }
 }
 
-- (void)setDynamicBounds:(CGRect)a3
+- (void)setDynamicBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(SXViewport *)self dynamicBounds];
   v14.origin.x = x;
   v14.origin.y = y;
@@ -624,12 +624,12 @@ LABEL_10:
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(SXViewport *)self bounds];
   v14.origin.x = x;
   v14.origin.y = y;
@@ -653,12 +653,12 @@ LABEL_10:
   }
 }
 
-- (void)setAppearState:(unint64_t)a3
+- (void)setAppearState:(unint64_t)state
 {
-  if ([(SXViewport *)self appearState]!= a3)
+  if ([(SXViewport *)self appearState]!= state)
   {
     appearState = self->_appearState;
-    self->_appearState = a3;
+    self->_appearState = state;
     if (![(SXViewport *)self groupChanges])
     {
 
@@ -667,10 +667,10 @@ LABEL_10:
   }
 }
 
-- (void)setDocumentSize:(CGSize)a3
+- (void)setDocumentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(SXViewport *)self documentSize];
   if (v7 != width || v6 != height)
   {
@@ -686,12 +686,12 @@ LABEL_10:
   }
 }
 
-- (void)setContentFrame:(CGRect)a3
+- (void)setContentFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(SXViewport *)self contentFrame];
   v14.origin.x = x;
   v14.origin.y = y;
@@ -715,12 +715,12 @@ LABEL_10:
   }
 }
 
-- (void)setInterfaceOrientation:(int64_t)a3
+- (void)setInterfaceOrientation:(int64_t)orientation
 {
   interfaceOrientation = self->_interfaceOrientation;
-  if (interfaceOrientation != a3)
+  if (interfaceOrientation != orientation)
   {
-    self->_interfaceOrientation = a3;
+    self->_interfaceOrientation = orientation;
     if (![(SXViewport *)self groupChanges])
     {
 
@@ -773,13 +773,13 @@ LABEL_10:
   [(SXViewport *)self setDocumentSize:v7, v8];
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 toView:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point toView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(SXViewport *)self view];
-  [v8 convertPoint:v7 toView:{x, y}];
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  view = [(SXViewport *)self view];
+  [view convertPoint:viewCopy toView:{x, y}];
   v10 = v9;
   v12 = v11;
 
@@ -790,13 +790,13 @@ LABEL_10:
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromView:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point fromView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(SXViewport *)self view];
-  [v8 convertPoint:v7 fromView:{x, y}];
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  view = [(SXViewport *)self view];
+  [view convertPoint:viewCopy fromView:{x, y}];
   v10 = v9;
   v12 = v11;
 
@@ -807,15 +807,15 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 toView:(id)a4
+- (CGRect)convertRect:(CGRect)rect toView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [(SXViewport *)self view];
-  [v10 convertRect:v9 toView:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  view = [(SXViewport *)self view];
+  [view convertRect:viewCopy toView:{x, y, width, height}];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -832,15 +832,15 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 fromView:(id)a4
+- (CGRect)convertRect:(CGRect)rect fromView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [(SXViewport *)self view];
-  [v10 convertRect:v9 fromView:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  view = [(SXViewport *)self view];
+  [view convertRect:viewCopy fromView:{x, y, width, height}];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -857,16 +857,16 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)convertRectToViewportCoordinateSpace:(CGRect)a3 fromView:(id)a4
+- (CGRect)convertRectToViewportCoordinateSpace:(CGRect)space fromView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [(SXViewport *)self view];
-  v11 = [v10 superview];
-  [v11 convertRect:v9 fromView:{x, y, width, height}];
+  height = space.size.height;
+  width = space.size.width;
+  y = space.origin.y;
+  x = space.origin.x;
+  viewCopy = view;
+  view = [(SXViewport *)self view];
+  superview = [view superview];
+  [superview convertRect:viewCopy fromView:{x, y, width, height}];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -883,14 +883,14 @@ LABEL_10:
   return result;
 }
 
-- (CGPoint)convertPointToViewportCoordinateSpace:(CGPoint)a3 fromView:(id)a4
+- (CGPoint)convertPointToViewportCoordinateSpace:(CGPoint)space fromView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(SXViewport *)self view];
-  v9 = [v8 superview];
-  [v9 convertPoint:v7 fromView:{x, y}];
+  y = space.y;
+  x = space.x;
+  viewCopy = view;
+  view = [(SXViewport *)self view];
+  superview = [view superview];
+  [superview convertPoint:viewCopy fromView:{x, y}];
   v11 = v10;
   v13 = v12;
 
@@ -901,47 +901,47 @@ LABEL_10:
   return result;
 }
 
-- (id)stringFroInterfaceOrientation:(int64_t)a3
+- (id)stringFroInterfaceOrientation:(int64_t)orientation
 {
-  if (a3 > 4)
+  if (orientation > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_1E84FF9C8[a3];
+    return off_1E84FF9C8[orientation];
   }
 }
 
-- (id)stringForAppearState:(unint64_t)a3
+- (id)stringForAppearState:(unint64_t)state
 {
-  if (a3 > 3)
+  if (state > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_1E84FF9F0[a3];
+    return off_1E84FF9F0[state];
   }
 }
 
-- (id)debugDescriptionForViewport:(id)a3
+- (id)debugDescriptionForViewport:(id)viewport
 {
-  v4 = a3;
-  [v4 dynamicBounds];
+  viewportCopy = viewport;
+  [viewportCopy dynamicBounds];
   v5 = NSStringFromCGRect(v16);
-  [v4 bounds];
+  [viewportCopy bounds];
   v6 = NSStringFromCGRect(v17);
-  v7 = -[SXViewport stringForAppearState:](self, "stringForAppearState:", [v4 appearState]);
-  [v4 documentSize];
+  v7 = -[SXViewport stringForAppearState:](self, "stringForAppearState:", [viewportCopy appearState]);
+  [viewportCopy documentSize];
   v8 = NSStringFromCGSize(v15);
-  [v4 contentFrame];
+  [viewportCopy contentFrame];
   v9 = NSStringFromCGRect(v18);
-  v10 = [v4 interfaceOrientation];
+  interfaceOrientation = [viewportCopy interfaceOrientation];
 
-  v11 = [(SXViewport *)self stringFroInterfaceOrientation:v10];
+  v11 = [(SXViewport *)self stringFroInterfaceOrientation:interfaceOrientation];
   v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@: %p dynamicBounds: %@; bounds: %@; appearState: %@; documentSize: %@; contentFrame: %@; interfaceOrientation: %@", objc_opt_class(), self, v5, v6, v7, v8, v9, v11];;
 
   return v12;

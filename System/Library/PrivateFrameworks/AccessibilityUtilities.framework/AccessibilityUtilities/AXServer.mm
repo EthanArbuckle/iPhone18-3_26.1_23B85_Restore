@@ -3,28 +3,28 @@
 - (AXServer)init;
 - (BOOL)_connectIfNecessary;
 - (BOOL)_connectServerIfNecessary;
-- (BOOL)sendSimpleMessage:(id)a3 enqueueError:(id *)a4;
-- (BOOL)sendSimpleMessageWithResult:(id)a3;
+- (BOOL)sendSimpleMessage:(id)message enqueueError:(id *)error;
+- (BOOL)sendSimpleMessageWithResult:(id)result;
 - (NSString)serverIdentifier;
-- (id)_handleActionResult:(id)a3;
-- (id)_sendMessage:(id)a3 error:(id *)a4;
+- (id)_handleActionResult:(id)result;
+- (id)_sendMessage:(id)message error:(id *)error;
 - (id)_serviceName;
-- (id)sendSimpleMessageWithObjectResult:(id)a3;
+- (id)sendSimpleMessageWithObjectResult:(id)result;
 - (void)_connectIfNecessary;
 - (void)_connectServerIfNecessary;
 - (void)_didConnectToServer;
-- (void)_ensureAssertionsHaveBeenProcessedWithCompletion:(id)a3;
+- (void)_ensureAssertionsHaveBeenProcessedWithCompletion:(id)completion;
 - (void)_initializeAssertionBookkeeping;
 - (void)_processAssertionBacklog;
-- (void)_registerActionHandler:(id)a3 withIdentifierCallback:(id)a4 retryInterval:(double)a5 registrationMessageKey:(int)a6;
-- (void)_removeActionHandler:(id)a3 registrationMessageKey:(int)a4;
-- (void)acquireAssertionWithType:(id)a3 identifier:(id)a4;
+- (void)_registerActionHandler:(id)handler withIdentifierCallback:(id)callback retryInterval:(double)interval registrationMessageKey:(int)key;
+- (void)_removeActionHandler:(id)handler registrationMessageKey:(int)key;
+- (void)acquireAssertionWithType:(id)type identifier:(id)identifier;
 - (void)dealloc;
-- (void)relinquishAssertionWithType:(id)a3 identifier:(id)a4;
-- (void)sendAsynchronousMessage:(id)a3 replyOnQueue:(id)a4 BOOLResultHandler:(id)a5;
-- (void)sendAsynchronousMessage:(id)a3 replyOnQueue:(id)a4 handler:(id)a5;
-- (void)sendAsynchronousMessage:(id)a3 replyOnQueue:(id)a4 objectResultHandler:(id)a5;
-- (void)setClient:(id)a3;
+- (void)relinquishAssertionWithType:(id)type identifier:(id)identifier;
+- (void)sendAsynchronousMessage:(id)message replyOnQueue:(id)queue BOOLResultHandler:(id)handler;
+- (void)sendAsynchronousMessage:(id)message replyOnQueue:(id)queue handler:(id)handler;
+- (void)sendAsynchronousMessage:(id)message replyOnQueue:(id)queue objectResultHandler:(id)handler;
+- (void)setClient:(id)client;
 @end
 
 @implementation AXServer
@@ -51,8 +51,8 @@
 - (void)dealloc
 {
   [(AXServer *)self _willClearServer];
-  v3 = [(AXServer *)self client];
-  [v3 setPortDeathHandler:0];
+  client = [(AXServer *)self client];
+  [client setPortDeathHandler:0];
 
   v4.receiver = self;
   v4.super_class = AXServer;
@@ -65,9 +65,9 @@
   if (!serverIdentifier)
   {
     v4 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v5 = [v4 initWithFormat:@"%@-%d-%d", @"com.apple.accessibility.AXSystemReplyServer", getpid(), serverIdentifier_count];
+    serverIdentifier_count = [v4 initWithFormat:@"%@-%d-%d", @"com.apple.accessibility.AXSystemReplyServer", getpid(), serverIdentifier_count];
     v6 = self->_serverIdentifier;
-    self->_serverIdentifier = v5;
+    self->_serverIdentifier = serverIdentifier_count;
 
     ++serverIdentifier_count;
     serverIdentifier = self->_serverIdentifier;
@@ -76,35 +76,35 @@
   return serverIdentifier;
 }
 
-- (BOOL)sendSimpleMessage:(id)a3 enqueueError:(id *)a4
+- (BOOL)sendSimpleMessage:(id)message enqueueError:(id *)error
 {
-  v6 = a3;
+  messageCopy = message;
   [(AXServer *)self _connectIfNecessary];
-  v7 = [(AXServer *)self client];
-  LOBYTE(a4) = [v7 sendSimpleMessage:v6 withError:a4];
+  client = [(AXServer *)self client];
+  LOBYTE(error) = [client sendSimpleMessage:messageCopy withError:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)sendSimpleMessageWithResult:(id)a3
+- (BOOL)sendSimpleMessageWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   objc_opt_class();
-  v5 = [(AXServer *)self sendSimpleMessageWithObjectResult:v4];
+  v5 = [(AXServer *)self sendSimpleMessageWithObjectResult:resultCopy];
   v6 = __UIAccessibilityCastAsClass();
 
-  v7 = [v6 BOOLValue];
-  return v7;
+  bOOLValue = [v6 BOOLValue];
+  return bOOLValue;
 }
 
-- (id)sendSimpleMessageWithObjectResult:(id)a3
+- (id)sendSimpleMessageWithObjectResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   if ([(AXServer *)self _connectIfNecessary])
   {
-    v5 = [(AXServer *)self client];
+    client = [(AXServer *)self client];
     v12 = 0;
-    v6 = [v5 sendMessage:v4 withError:&v12];
+    v6 = [client sendMessage:resultCopy withError:&v12];
     v7 = v12;
 
     if (v7)
@@ -112,12 +112,12 @@
       v8 = AXLogIPC();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        [(AXServer *)v4 sendSimpleMessageWithObjectResult:v7];
+        [(AXServer *)resultCopy sendSimpleMessageWithObjectResult:v7];
       }
     }
 
-    v9 = [v6 payload];
-    v10 = [v9 objectForKey:@"result"];
+    payload = [v6 payload];
+    v10 = [payload objectForKey:@"result"];
   }
 
   else
@@ -128,14 +128,14 @@
   return v10;
 }
 
-- (id)_sendMessage:(id)a3 error:(id *)a4
+- (id)_sendMessage:(id)message error:(id *)error
 {
-  if (a3)
+  if (message)
   {
-    v6 = a3;
+    messageCopy = message;
     [(AXServer *)self _connectIfNecessary];
-    v7 = [(AXServer *)self client];
-    v8 = [v7 sendMessage:v6 withError:a4];
+    client = [(AXServer *)self client];
+    v8 = [client sendMessage:messageCopy withError:error];
   }
 
   else
@@ -146,16 +146,16 @@
   return v8;
 }
 
-- (void)sendAsynchronousMessage:(id)a3 replyOnQueue:(id)a4 BOOLResultHandler:(id)a5
+- (void)sendAsynchronousMessage:(id)message replyOnQueue:(id)queue BOOLResultHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __67__AXServer_sendAsynchronousMessage_replyOnQueue_BOOLResultHandler___block_invoke;
   v10[3] = &unk_1E71EA3B8;
-  v11 = v8;
-  v9 = v8;
-  [(AXServer *)self sendAsynchronousMessage:a3 replyOnQueue:a4 objectResultHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [(AXServer *)self sendAsynchronousMessage:message replyOnQueue:queue objectResultHandler:v10];
 }
 
 uint64_t __67__AXServer_sendAsynchronousMessage_replyOnQueue_BOOLResultHandler___block_invoke(uint64_t a1, void *a2)
@@ -167,19 +167,19 @@ uint64_t __67__AXServer_sendAsynchronousMessage_replyOnQueue_BOOLResultHandler__
   return v4(v2, v3);
 }
 
-- (void)sendAsynchronousMessage:(id)a3 replyOnQueue:(id)a4 objectResultHandler:(id)a5
+- (void)sendAsynchronousMessage:(id)message replyOnQueue:(id)queue objectResultHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  messageCopy = message;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __69__AXServer_sendAsynchronousMessage_replyOnQueue_objectResultHandler___block_invoke;
   v12[3] = &unk_1E71EA7C8;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
-  [(AXServer *)self sendAsynchronousMessage:v11 replyOnQueue:a4 handler:v12];
+  v13 = messageCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = messageCopy;
+  [(AXServer *)self sendAsynchronousMessage:v11 replyOnQueue:queue handler:v12];
 }
 
 void __69__AXServer_sendAsynchronousMessage_replyOnQueue_objectResultHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -205,16 +205,16 @@ void __69__AXServer_sendAsynchronousMessage_replyOnQueue_objectResultHandler___b
   }
 }
 
-- (void)sendAsynchronousMessage:(id)a3 replyOnQueue:(id)a4 handler:(id)a5
+- (void)sendAsynchronousMessage:(id)message replyOnQueue:(id)queue handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  if (v8)
+  messageCopy = message;
+  handlerCopy = handler;
+  queueCopy = queue;
+  if (messageCopy)
   {
     [(AXServer *)self _connectIfNecessary];
-    v11 = [(AXServer *)self client];
-    [v11 sendAsyncMessage:v8 replyOnQueue:v10 replyHandler:v9];
+    client = [(AXServer *)self client];
+    [client sendAsyncMessage:messageCopy replyOnQueue:queueCopy replyHandler:handlerCopy];
   }
 
   else
@@ -224,22 +224,22 @@ void __69__AXServer_sendAsynchronousMessage_replyOnQueue_objectResultHandler___b
     block[1] = 3221225472;
     block[2] = __57__AXServer_sendAsynchronousMessage_replyOnQueue_handler___block_invoke;
     block[3] = &unk_1E71EA2F0;
-    v13 = v9;
-    dispatch_async(v10, block);
+    v13 = handlerCopy;
+    dispatch_async(queueCopy, block);
   }
 }
 
 - (void)_processAssertionBacklog
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = [a2 type];
-  v7 = [a2 identifier];
+  type = [a2 type];
+  identifier = [a2 identifier];
   v8 = 138412802;
-  v9 = a1;
+  selfCopy = self;
   v10 = 2112;
-  v11 = v6;
+  v11 = type;
   v12 = 2112;
-  v13 = v7;
+  v13 = identifier;
   _os_log_error_impl(&dword_18B15E000, a3, OS_LOG_TYPE_ERROR, "Timed out trying to %@ assertion with type: %@ identifier: error: %@. will retry.", &v8, 0x20u);
 }
 
@@ -251,43 +251,43 @@ void __36__AXServer__processAssertionBacklog__block_invoke(uint64_t a1)
 
 - (void)_initializeAssertionBookkeeping
 {
-  v3 = [(AXServer *)self assertionWorkBacklog];
+  assertionWorkBacklog = [(AXServer *)self assertionWorkBacklog];
 
-  if (!v3)
+  if (!assertionWorkBacklog)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
-    [(AXServer *)self setAssertionWorkBacklog:v4];
+    array = [MEMORY[0x1E695DF70] array];
+    [(AXServer *)self setAssertionWorkBacklog:array];
   }
 
-  v5 = [(AXServer *)self assertionRetryTimer];
+  assertionRetryTimer = [(AXServer *)self assertionRetryTimer];
 
-  if (!v5)
+  if (!assertionRetryTimer)
   {
     v6 = objc_alloc(MEMORY[0x1E6988780]);
-    v7 = [(AXServer *)self assertionWorkQueue];
-    v8 = [v6 initWithTargetSerialQueue:v7];
+    assertionWorkQueue = [(AXServer *)self assertionWorkQueue];
+    v8 = [v6 initWithTargetSerialQueue:assertionWorkQueue];
 
     [v8 setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
     [(AXServer *)self setAssertionRetryTimer:v8];
   }
 }
 
-- (void)acquireAssertionWithType:(id)a3 identifier:(id)a4
+- (void)acquireAssertionWithType:(id)type identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  identifierCopy = identifier;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __48__AXServer_acquireAssertionWithType_identifier___block_invoke;
   aBlock[3] = &unk_1E71EA7F0;
   aBlock[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = typeCopy;
+  v14 = identifierCopy;
+  v8 = identifierCopy;
+  v9 = typeCopy;
   v10 = _Block_copy(aBlock);
-  v11 = [(AXServer *)self assertionWorkQueue];
-  dispatch_async(v11, v10);
+  assertionWorkQueue = [(AXServer *)self assertionWorkQueue];
+  dispatch_async(assertionWorkQueue, v10);
 }
 
 void __48__AXServer_acquireAssertionWithType_identifier___block_invoke(uint64_t a1)
@@ -300,22 +300,22 @@ void __48__AXServer_acquireAssertionWithType_identifier___block_invoke(uint64_t 
   [*(a1 + 32) _processAssertionBacklog];
 }
 
-- (void)relinquishAssertionWithType:(id)a3 identifier:(id)a4
+- (void)relinquishAssertionWithType:(id)type identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  identifierCopy = identifier;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __51__AXServer_relinquishAssertionWithType_identifier___block_invoke;
   aBlock[3] = &unk_1E71EA7F0;
   aBlock[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = typeCopy;
+  v14 = identifierCopy;
+  v8 = identifierCopy;
+  v9 = typeCopy;
   v10 = _Block_copy(aBlock);
-  v11 = [(AXServer *)self assertionWorkQueue];
-  dispatch_async(v11, v10);
+  assertionWorkQueue = [(AXServer *)self assertionWorkQueue];
+  dispatch_async(assertionWorkQueue, v10);
 }
 
 void __51__AXServer_relinquishAssertionWithType_identifier___block_invoke(uint64_t a1)
@@ -330,12 +330,12 @@ void __51__AXServer_relinquishAssertionWithType_identifier___block_invoke(uint64
 
 - (void)_didConnectToServer
 {
-  v3 = [(AXServer *)self _actionResultKey];
-  if (v3)
+  _actionResultKey = [(AXServer *)self _actionResultKey];
+  if (_actionResultKey)
   {
-    v4 = v3;
-    v5 = [(AXServer *)self server];
-    [v5 setHandlerWithTarget:self selector:sel__handleActionResult_ forKey:v4];
+    v4 = _actionResultKey;
+    server = [(AXServer *)self server];
+    [server setHandlerWithTarget:self selector:sel__handleActionResult_ forKey:v4];
   }
 }
 
@@ -378,17 +378,17 @@ void __18__AXServer_client__block_invoke(uint64_t a1)
   objc_storeStrong(v9, v2);
 }
 
-- (void)setClient:(id)a3
+- (void)setClient:(id)client
 {
-  v4 = a3;
-  v3 = v4;
+  clientCopy = client;
+  v3 = clientCopy;
   AX_PERFORM_WITH_LOCK();
 }
 
 - (BOOL)_connectIfNecessary
 {
-  v3 = [(AXServer *)self client];
-  if ([v3 isConnected])
+  client = [(AXServer *)self client];
+  if ([client isConnected])
   {
     v4 = 1;
   }
@@ -396,7 +396,7 @@ void __18__AXServer_client__block_invoke(uint64_t a1)
   else
   {
     v15 = 0;
-    [v3 connectWithError:&v15];
+    [client connectWithError:&v15];
     v5 = v15;
     v4 = v5 == 0;
     if (v5)
@@ -410,18 +410,18 @@ void __18__AXServer_client__block_invoke(uint64_t a1)
 
     else
     {
-      v7 = [(AXServer *)self serverIdentifier];
-      [v3 setClientIdentifier:v7];
+      serverIdentifier = [(AXServer *)self serverIdentifier];
+      [client setClientIdentifier:serverIdentifier];
 
       objc_initWeak(&location, self);
-      v8 = objc_initWeak(&from, v3);
+      v8 = objc_initWeak(&from, client);
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __31__AXServer__connectIfNecessary__block_invoke;
       v10[3] = &unk_1E71EA840;
       objc_copyWeak(&v11, &location);
       objc_copyWeak(&v12, &from);
-      [v3 setPortDeathHandler:v10];
+      [client setPortDeathHandler:v10];
 
       objc_destroyWeak(&v12);
       objc_destroyWeak(&v11);
@@ -451,24 +451,24 @@ void __31__AXServer__connectIfNecessary__block_invoke(uint64_t a1)
 
 - (BOOL)_connectServerIfNecessary
 {
-  v3 = [(AXServer *)self server];
-  v4 = [v3 isRunning];
+  server = [(AXServer *)self server];
+  isRunning = [server isRunning];
 
-  if ((v4 & 1) == 0)
+  if ((isRunning & 1) == 0)
   {
-    v6 = [(AXServer *)self server];
+    server2 = [(AXServer *)self server];
 
-    if (v6)
+    if (server2)
     {
 LABEL_4:
-      v7 = [(AXServer *)self server];
-      v8 = [v7 isRunning];
+      server3 = [(AXServer *)self server];
+      isRunning2 = [server3 isRunning];
 
-      if ((v8 & 1) == 0)
+      if ((isRunning2 & 1) == 0)
       {
-        v9 = [(AXServer *)self server];
+        server4 = [(AXServer *)self server];
         v21 = 0;
-        v10 = [v9 startServerWithError:&v21];
+        v10 = [server4 startServerWithError:&v21];
         v11 = v21;
 
         if (!v10 || v11)
@@ -486,19 +486,19 @@ LABEL_4:
         }
       }
 
-      v13 = [(AXServer *)self server];
-      v5 = [v13 isRunning];
+      server5 = [(AXServer *)self server];
+      isRunning3 = [server5 isRunning];
       goto LABEL_22;
     }
 
-    v12 = [(AXServer *)self client];
-    v13 = v12;
-    if (v12)
+    client = [(AXServer *)self client];
+    server5 = client;
+    if (client)
     {
-      v14 = [v12 clientCallbackPort];
-      if (v14)
+      clientCallbackPort = [client clientCallbackPort];
+      if (clientCallbackPort)
       {
-        v15 = -[AXIPCServer initWithPort:serviceRunLoopSource:]([AXIPCServer alloc], "initWithPort:serviceRunLoopSource:", v14, [v13 clientCallbackSource]);
+        v15 = -[AXIPCServer initWithPort:serviceRunLoopSource:]([AXIPCServer alloc], "initWithPort:serviceRunLoopSource:", clientCallbackPort, [server5 clientCallbackSource]);
         [(AXServer *)self setServer:v15];
 
         goto LABEL_4;
@@ -527,54 +527,54 @@ LABEL_20:
       }
     }
 
-    v5 = 0;
+    isRunning3 = 0;
 LABEL_22:
 
-    return v5;
+    return isRunning3;
   }
 
   return 1;
 }
 
-- (void)_ensureAssertionsHaveBeenProcessedWithCompletion:(id)a3
+- (void)_ensureAssertionsHaveBeenProcessedWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(AXServer *)self assertionWorkQueue];
-  dispatch_async(v5, v4);
+  completionCopy = completion;
+  assertionWorkQueue = [(AXServer *)self assertionWorkQueue];
+  dispatch_async(assertionWorkQueue, completionCopy);
 }
 
-- (void)_registerActionHandler:(id)a3 withIdentifierCallback:(id)a4 retryInterval:(double)a5 registrationMessageKey:(int)a6
+- (void)_registerActionHandler:(id)handler withIdentifierCallback:(id)callback retryInterval:(double)interval registrationMessageKey:(int)key
 {
-  v6 = *&a6;
-  v10 = a3;
-  v11 = a4;
+  v6 = *&key;
+  handlerCopy = handler;
+  callbackCopy = callback;
   if ([(AXServer *)self _connectIfNecessary])
   {
     [(AXServer *)self _connectServerIfNecessary];
-    v12 = [MEMORY[0x1E696AFB0] UUID];
-    v13 = [v12 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
     v14 = objc_opt_new();
-    [v14 setIdentifier:v13];
-    [v14 setHandler:v10];
+    [v14 setIdentifier:uUIDString];
+    [v14 setHandler:handlerCopy];
     v15 = [[AXIPCMessage alloc] initWithKey:v6 payload:&unk_1EFE973A8];
-    v16 = [(AXServer *)self client];
+    client = [(AXServer *)self client];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __95__AXServer__registerActionHandler_withIdentifierCallback_retryInterval_registrationMessageKey___block_invoke_2;
     v21[3] = &unk_1E71EA890;
     v21[4] = self;
     v22 = v14;
-    v23 = v13;
-    v24 = v11;
-    v25 = v10;
-    v26 = a5;
+    v23 = uUIDString;
+    v24 = callbackCopy;
+    v25 = handlerCopy;
+    intervalCopy = interval;
     v27 = v6;
-    v17 = v11;
-    v18 = v10;
-    v19 = v13;
+    v17 = callbackCopy;
+    v18 = handlerCopy;
+    v19 = uUIDString;
     v20 = v14;
-    [v16 sendAsyncMessage:v15 withReplyHandler:v21];
+    [client sendAsyncMessage:v15 withReplyHandler:v21];
   }
 
   else
@@ -583,13 +583,13 @@ LABEL_22:
     v29 = 3221225472;
     v30 = __95__AXServer__registerActionHandler_withIdentifierCallback_retryInterval_registrationMessageKey___block_invoke;
     v31 = &unk_1E71EA868;
-    v32 = self;
-    v33 = v10;
-    v34 = v11;
-    v35 = a5;
+    selfCopy = self;
+    v33 = handlerCopy;
+    v34 = callbackCopy;
+    intervalCopy2 = interval;
     v36 = v6;
-    v20 = v11;
-    v15 = v10;
+    v20 = callbackCopy;
+    v15 = handlerCopy;
     AXPerformBlockOnMainThreadAfterDelay();
   }
 }
@@ -631,24 +631,24 @@ void __95__AXServer__registerActionHandler_withIdentifierCallback_retryInterval_
   [v2 addObject:*(a1 + 40)];
 }
 
-- (void)_removeActionHandler:(id)a3 registrationMessageKey:(int)a4
+- (void)_removeActionHandler:(id)handler registrationMessageKey:(int)key
 {
-  v4 = *&a4;
-  v6 = a3;
-  if (v6)
+  v4 = *&key;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     [(AXServer *)self _connectIfNecessary];
     v10 = 0;
     v11 = &v10;
     v12 = 0x2020000000;
     v13 = 0;
-    v9 = v6;
+    v9 = handlerCopy;
     AX_PERFORM_WITH_LOCK();
     if ((v11[3] & 1) == 0)
     {
       v7 = [[AXIPCMessage alloc] initWithKey:v4 payload:&unk_1EFE973D0];
-      v8 = [(AXServer *)self client];
-      [v8 sendSimpleMessage:v7];
+      client = [(AXServer *)self client];
+      [client sendSimpleMessage:v7];
     }
 
     _Block_object_dispose(&v10, 8);
@@ -679,15 +679,15 @@ uint64_t __56__AXServer__removeActionHandler_registrationMessageKey___block_invo
   return v4;
 }
 
-- (id)_handleActionResult:(id)a3
+- (id)_handleActionResult:(id)result
 {
-  v3 = [a3 payload];
-  v4 = [v3 objectForKey:@"type"];
+  payload = [result payload];
+  v4 = [payload objectForKey:@"type"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v4 integerValue];
-    v7 = [v3 objectForKey:@"payload"];
+    v7 = [payload objectForKey:@"payload"];
     v5 = v7;
     AX_PERFORM_WITH_LOCK();
   }
@@ -767,9 +767,9 @@ void __69__AXServer_sendAsynchronousMessage_replyOnQueue_objectResultHandler___b
 - (void)_connectIfNecessary
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = [a1 ax_nonRedundantDescription];
+  ax_nonRedundantDescription = [self ax_nonRedundantDescription];
   v4 = 138543362;
-  v5 = v3;
+  v5 = ax_nonRedundantDescription;
   _os_log_debug_impl(&dword_18B15E000, a2, OS_LOG_TYPE_DEBUG, "AX SystemApp: Error: %{public}@", &v4, 0xCu);
 }
 
@@ -777,7 +777,7 @@ void __69__AXServer_sendAsynchronousMessage_replyOnQueue_objectResultHandler___b
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_18B15E000, a2, OS_LOG_TYPE_ERROR, "failed to start ipc server due to: %@", &v2, 0xCu);
 }
 

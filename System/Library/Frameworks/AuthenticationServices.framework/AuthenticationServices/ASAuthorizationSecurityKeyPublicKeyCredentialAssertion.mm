@@ -1,66 +1,66 @@
 @interface ASAuthorizationSecurityKeyPublicKeyCredentialAssertion
-- (ASAuthorizationSecurityKeyPublicKeyCredentialAssertion)initWithCoder:(id)a3;
-- (ASAuthorizationSecurityKeyPublicKeyCredentialAssertion)initWithCoreCredential:(id)a3;
-- (id)_initWithBaseCredential:(id)a3 userID:(id)a4 signature:(id)a5 rawAuthenticatorData:(id)a6 appID:(BOOL)a7;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ASAuthorizationSecurityKeyPublicKeyCredentialAssertion)initWithCoder:(id)coder;
+- (ASAuthorizationSecurityKeyPublicKeyCredentialAssertion)initWithCoreCredential:(id)credential;
+- (id)_initWithBaseCredential:(id)credential userID:(id)d signature:(id)signature rawAuthenticatorData:(id)data appID:(BOOL)iD;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASAuthorizationSecurityKeyPublicKeyCredentialAssertion
 
-- (id)_initWithBaseCredential:(id)a3 userID:(id)a4 signature:(id)a5 rawAuthenticatorData:(id)a6 appID:(BOOL)a7
+- (id)_initWithBaseCredential:(id)credential userID:(id)d signature:(id)signature rawAuthenticatorData:(id)data appID:(BOOL)iD
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  credentialCopy = credential;
+  dCopy = d;
+  signatureCopy = signature;
+  dataCopy = data;
   v27.receiver = self;
   v27.super_class = ASAuthorizationSecurityKeyPublicKeyCredentialAssertion;
   v16 = [(ASAuthorizationSecurityKeyPublicKeyCredentialAssertion *)&v27 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [credentialCopy copy];
     baseCredential = v16->_baseCredential;
     v16->_baseCredential = v17;
 
-    v19 = [v15 copy];
+    v19 = [dataCopy copy];
     rawAuthenticatorData = v16->_rawAuthenticatorData;
     v16->_rawAuthenticatorData = v19;
 
-    v21 = [v13 copy];
+    v21 = [dCopy copy];
     userID = v16->_userID;
     v16->_userID = v21;
 
-    v23 = [v14 copy];
+    v23 = [signatureCopy copy];
     signature = v16->_signature;
     v16->_signature = v23;
 
-    v16->_appID = a7;
+    v16->_appID = iD;
     v25 = v16;
   }
 
   return v16;
 }
 
-- (ASAuthorizationSecurityKeyPublicKeyCredentialAssertion)initWithCoreCredential:(id)a3
+- (ASAuthorizationSecurityKeyPublicKeyCredentialAssertion)initWithCoreCredential:(id)credential
 {
-  v4 = a3;
+  credentialCopy = credential;
   v5 = [ASPublicKeyCredentialBase alloc];
-  v6 = [v4 credentialID];
-  v7 = [v4 rawClientDataJSON];
-  v8 = [v4 attachment];
-  v9 = [(ASPublicKeyCredentialBase *)v5 initWithCredentialID:v6 rawClientDataJSON:v7 attachment:[ASAuthorizationPublicKeyCredentialConstants publicAttachmentFromInternal:v8]];
+  credentialID = [credentialCopy credentialID];
+  rawClientDataJSON = [credentialCopy rawClientDataJSON];
+  attachment = [credentialCopy attachment];
+  v9 = [(ASPublicKeyCredentialBase *)v5 initWithCredentialID:credentialID rawClientDataJSON:rawClientDataJSON attachment:[ASAuthorizationPublicKeyCredentialConstants publicAttachmentFromInternal:attachment]];
 
-  v10 = [v4 userHandle];
-  v11 = [v4 signature];
-  v12 = [v4 authenticatorData];
-  v13 = [v4 appID];
+  userHandle = [credentialCopy userHandle];
+  signature = [credentialCopy signature];
+  authenticatorData = [credentialCopy authenticatorData];
+  appID = [credentialCopy appID];
 
-  v14 = [(ASAuthorizationSecurityKeyPublicKeyCredentialAssertion *)self _initWithBaseCredential:v9 userID:v10 signature:v11 rawAuthenticatorData:v12 appID:v13];
+  v14 = [(ASAuthorizationSecurityKeyPublicKeyCredentialAssertion *)self _initWithBaseCredential:v9 userID:userHandle signature:signature rawAuthenticatorData:authenticatorData appID:appID];
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   baseCredential = self->_baseCredential;
@@ -72,28 +72,28 @@
   return [v4 _initWithBaseCredential:baseCredential userID:userID signature:signature rawAuthenticatorData:rawAuthenticatorData appID:appID];
 }
 
-- (ASAuthorizationSecurityKeyPublicKeyCredentialAssertion)initWithCoder:(id)a3
+- (ASAuthorizationSecurityKeyPublicKeyCredentialAssertion)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"baseCredential"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userID"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rawAuthenticatorData"];
-  v9 = [v4 decodeBoolForKey:@"appID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"baseCredential"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userID"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rawAuthenticatorData"];
+  v9 = [coderCopy decodeBoolForKey:@"appID"];
 
   v10 = [(ASAuthorizationSecurityKeyPublicKeyCredentialAssertion *)self _initWithBaseCredential:v5 userID:v6 signature:v7 rawAuthenticatorData:v8 appID:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   baseCredential = self->_baseCredential;
-  v5 = a3;
-  [v5 encodeObject:baseCredential forKey:@"baseCredential"];
-  [v5 encodeObject:self->_rawAuthenticatorData forKey:@"rawAuthenticatorData"];
-  [v5 encodeObject:self->_userID forKey:@"userID"];
-  [v5 encodeObject:self->_signature forKey:@"signature"];
-  [v5 encodeBool:self->_appID forKey:@"appID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:baseCredential forKey:@"baseCredential"];
+  [coderCopy encodeObject:self->_rawAuthenticatorData forKey:@"rawAuthenticatorData"];
+  [coderCopy encodeObject:self->_userID forKey:@"userID"];
+  [coderCopy encodeObject:self->_signature forKey:@"signature"];
+  [coderCopy encodeBool:self->_appID forKey:@"appID"];
 }
 
 @end

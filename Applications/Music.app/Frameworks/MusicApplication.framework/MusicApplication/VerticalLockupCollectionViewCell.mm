@@ -3,11 +3,11 @@
 - (CGRect)frame;
 - (void)clearArtworkCatalogs;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation VerticalLockupCollectionViewCell
@@ -22,13 +22,13 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  selfCopy = self;
   VerticalLockupCollectionViewCell.frame.setter(x, y, width, height);
 }
 
@@ -42,19 +42,19 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  selfCopy = self;
   VerticalLockupCollectionViewCell.bounds.setter(x, y, width, height);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   VerticalLockupCollectionViewCell.layoutSubviews()();
 }
 
@@ -62,52 +62,52 @@
 {
   v2 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC16MusicApplication32VerticalLockupCollectionViewCell_artworkComponent);
   v3 = v2[14];
-  v4 = self;
+  selfCopy = self;
   [v3 clearArtworkCatalogs];
   *(v2 + OBJC_IVAR____TtCE16MusicApplicationV11MusicCoreUI7Artwork9Component_representationsUpdatedFromConfigurationBlock) = 0;
   v2[25] = 0;
   v2[26] = 0;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   VerticalLockupCollectionViewCell.traitCollectionDidChange(_:)(v9);
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5 = type metadata accessor for VerticalLockupCollectionViewCell();
   v9.receiver = self;
   v9.super_class = v5;
-  v6 = self;
-  v7 = [(VerticalLockupCollectionViewCell *)&v9 isHighlighted];
-  v8.receiver = v6;
+  selfCopy = self;
+  isHighlighted = [(VerticalLockupCollectionViewCell *)&v9 isHighlighted];
+  v8.receiver = selfCopy;
   v8.super_class = v5;
-  [(VerticalLockupCollectionViewCell *)&v8 setHighlighted:v3];
-  if (v7 != [(VerticalLockupCollectionViewCell *)v6 isHighlighted])
+  [(VerticalLockupCollectionViewCell *)&v8 setHighlighted:highlightedCopy];
+  if (isHighlighted != [(VerticalLockupCollectionViewCell *)selfCopy isHighlighted])
   {
     sub_35D1B8();
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v5 = type metadata accessor for VerticalLockupCollectionViewCell();
   v9.receiver = self;
   v9.super_class = v5;
-  v6 = self;
-  v7 = [(VerticalLockupCollectionViewCell *)&v9 isSelected];
-  v8.receiver = v6;
+  selfCopy = self;
+  isSelected = [(VerticalLockupCollectionViewCell *)&v9 isSelected];
+  v8.receiver = selfCopy;
   v8.super_class = v5;
-  [(VerticalLockupCollectionViewCell *)&v8 setSelected:v3];
-  if (v7 != [(VerticalLockupCollectionViewCell *)v6 isSelected])
+  [(VerticalLockupCollectionViewCell *)&v8 setSelected:selectedCopy];
+  if (isSelected != [(VerticalLockupCollectionViewCell *)selfCopy isSelected])
   {
     sub_35D1B8();
     sub_35CF64();

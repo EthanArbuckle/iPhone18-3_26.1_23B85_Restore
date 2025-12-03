@@ -1,98 +1,98 @@
 @interface SDXPCConnection
-- (SDXPCConnection)initWithServer:(id)a3 xpcConnection:(id)a4;
-- (int)_entitled:(id)a3 state:(BOOL *)a4 label:(id)a5;
-- (int)_entitledService:(id)a3 state:(BOOL *)a4;
-- (void)_getInteractionsFromDBPerPeopleSuggestion:(id)a3 completion:(id)a4;
-- (void)_getPeopleInfo:(id)a3 completion:(id)a4;
-- (void)_getPeopleSuggestions:(id)a3 completion:(id)a4;
+- (SDXPCConnection)initWithServer:(id)server xpcConnection:(id)connection;
+- (int)_entitled:(id)_entitled state:(BOOL *)state label:(id)label;
+- (int)_entitledService:(id)service state:(BOOL *)state;
+- (void)_getInteractionsFromDBPerPeopleSuggestion:(id)suggestion completion:(id)completion;
+- (void)_getPeopleInfo:(id)info completion:(id)completion;
+- (void)_getPeopleSuggestions:(id)suggestions completion:(id)completion;
 - (void)_handlePairedWatchWristStateChanged;
 - (void)_invalidateAssertions;
-- (void)accountForAppleID:(id)a3 withCompletion:(id)a4;
-- (void)activateAssertionWithIdentifier:(id)a3;
-- (void)activityStateWithCompletion:(id)a3;
-- (void)altDSIDLookupWithEmails:(id)a3 phoneNumbers:(id)a4 completion:(id)a5;
-- (void)appleIDInfoWithCompletion:(id)a3;
-- (void)autoFillHelperActivate:(id)a3 completion:(id)a4;
-- (void)autoFillHelperDidPickUsername:(id)a3 password:(id)a4 error:(id)a5;
-- (void)autoFillHelperTryPIN:(id)a3;
-- (void)autoFillHelperUserNotificationDidActivate:(id)a3;
-- (void)autoFillHelperUserNotificationDidDismiss:(id)a3;
-- (void)b389NFCPromptDidRequestPresentationWithConfiguration:(id)a3 responseHandler:(id)a4;
-- (void)b389NFCPromptUpdateConfiguration:(id)a3;
+- (void)accountForAppleID:(id)d withCompletion:(id)completion;
+- (void)activateAssertionWithIdentifier:(id)identifier;
+- (void)activityStateWithCompletion:(id)completion;
+- (void)altDSIDLookupWithEmails:(id)emails phoneNumbers:(id)numbers completion:(id)completion;
+- (void)appleIDInfoWithCompletion:(id)completion;
+- (void)autoFillHelperActivate:(id)activate completion:(id)completion;
+- (void)autoFillHelperDidPickUsername:(id)username password:(id)password error:(id)error;
+- (void)autoFillHelperTryPIN:(id)n;
+- (void)autoFillHelperUserNotificationDidActivate:(id)activate;
+- (void)autoFillHelperUserNotificationDidDismiss:(id)dismiss;
+- (void)b389NFCPromptDidRequestPresentationWithConfiguration:(id)configuration responseHandler:(id)handler;
+- (void)b389NFCPromptUpdateConfiguration:(id)configuration;
 - (void)beginMonitoringPairedWatchWristState;
 - (void)bluetoothUserInteraction;
-- (void)broadwayPresentCardWithCode:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)clearXPCHelperImageCacheWithCompletion:(id)a3;
+- (void)broadwayPresentCardWithCode:(id)code options:(id)options completion:(id)completion;
+- (void)clearXPCHelperImageCacheWithCompletion:(id)completion;
 - (void)connectionInvalidated;
-- (void)contactHandlesForShortHashData:(id)a3 completion:(id)a4;
-- (void)contactIDForEmailHash:(id)a3 phoneHash:(id)a4 completion:(id)a5;
+- (void)contactHandlesForShortHashData:(id)data completion:(id)completion;
+- (void)contactIDForEmailHash:(id)hash phoneHash:(id)phoneHash completion:(id)completion;
 - (void)coordinatedAlertsRequestCancel;
 - (void)coordinatedAlertsRequestFinish;
-- (void)coordinatedAlertsRequestStart:(id)a3 completion:(id)a4;
-- (void)deviceDiscoveryActivate:(id)a3 completion:(id)a4;
-- (void)deviceDiscoveryFastScanCancel:(id)a3;
-- (void)deviceDiscoveryFastScanTrigger:(id)a3;
-- (void)deviceDiscoveryTriggerEnhancedDiscovery:(id)a3;
-- (void)deviceDiscoveryUpdate:(id)a3;
-- (void)diagnosticBLEModeWithCompletion:(id)a3;
-- (void)diagnosticControl:(id)a3 completion:(id)a4;
-- (void)diagnosticLogControl:(id)a3 completion:(id)a4;
-- (void)diagnosticMock:(id)a3 device:(id)a4 completion:(id)a5;
-- (void)diagnosticMockStart:(id)a3;
-- (void)diagnosticMockStop:(id)a3;
-- (void)diagnosticShow:(id)a3 completion:(id)a4;
-- (void)diagnosticUnlockTestClientWithDevice:(id)a3;
+- (void)coordinatedAlertsRequestStart:(id)start completion:(id)completion;
+- (void)deviceDiscoveryActivate:(id)activate completion:(id)completion;
+- (void)deviceDiscoveryFastScanCancel:(id)cancel;
+- (void)deviceDiscoveryFastScanTrigger:(id)trigger;
+- (void)deviceDiscoveryTriggerEnhancedDiscovery:(id)discovery;
+- (void)deviceDiscoveryUpdate:(id)update;
+- (void)diagnosticBLEModeWithCompletion:(id)completion;
+- (void)diagnosticControl:(id)control completion:(id)completion;
+- (void)diagnosticLogControl:(id)control completion:(id)completion;
+- (void)diagnosticMock:(id)mock device:(id)device completion:(id)completion;
+- (void)diagnosticMockStart:(id)start;
+- (void)diagnosticMockStop:(id)stop;
+- (void)diagnosticShow:(id)show completion:(id)completion;
+- (void)diagnosticUnlockTestClientWithDevice:(id)device;
 - (void)diagnosticUnlockTestServer;
 - (void)dismissCurrentB389NFCPrompt;
-- (void)displayNameForEmailHash:(id)a3 phoneHash:(id)a4 completion:(id)a5;
-- (void)displayStringForContactIdentifier:(id)a3 deviceIdentifier:(id)a4 completion:(id)a5;
-- (void)findContact:(id)a3 skipIfContactBlocked:(BOOL)a4 completion:(id)a5;
-- (void)getDeviceAssets:(id)a3 completion:(id)a4;
-- (void)getPairedWatchWristStateWithCompletionHandler:(id)a3;
-- (void)getPeopleSuggestions:(id)a3 completion:(id)a4;
-- (void)getProblemFlagsWithCompletionHandler:(id)a3;
-- (void)hashManagerControl:(id)a3 completion:(id)a4;
-- (void)myAccountWithCompletion:(id)a3;
-- (void)nfcTagReaderUIActivateWithEndpoint:(id)a3 params:(id)a4 completion:(id)a5;
-- (void)openSetupURL:(id)a3 completion:(id)a4;
-- (void)personInfoWithEmailOrPhone:(id)a3 completion:(id)a4;
+- (void)displayNameForEmailHash:(id)hash phoneHash:(id)phoneHash completion:(id)completion;
+- (void)displayStringForContactIdentifier:(id)identifier deviceIdentifier:(id)deviceIdentifier completion:(id)completion;
+- (void)findContact:(id)contact skipIfContactBlocked:(BOOL)blocked completion:(id)completion;
+- (void)getDeviceAssets:(id)assets completion:(id)completion;
+- (void)getPairedWatchWristStateWithCompletionHandler:(id)handler;
+- (void)getPeopleSuggestions:(id)suggestions completion:(id)completion;
+- (void)getProblemFlagsWithCompletionHandler:(id)handler;
+- (void)hashManagerControl:(id)control completion:(id)completion;
+- (void)myAccountWithCompletion:(id)completion;
+- (void)nfcTagReaderUIActivateWithEndpoint:(id)endpoint params:(id)params completion:(id)completion;
+- (void)openSetupURL:(id)l completion:(id)completion;
+- (void)personInfoWithEmailOrPhone:(id)phone completion:(id)completion;
 - (void)preheatXPCConnection;
-- (void)preventExitForLocaleReason:(id)a3;
-- (void)proximityClientActivate:(id)a3 completion:(id)a4;
-- (void)proximityClientDismissContentForDevice:(id)a3 completion:(id)a4;
+- (void)preventExitForLocaleReason:(id)reason;
+- (void)proximityClientActivate:(id)activate completion:(id)completion;
+- (void)proximityClientDismissContentForDevice:(id)device completion:(id)completion;
 - (void)proximityClientRequestScannerTimerReset;
-- (void)proximityClientStopSuppressingDevice:(id)a3 completion:(id)a4;
-- (void)proximityClientSuppressDevice:(id)a3 completion:(id)a4;
-- (void)proximityClientUpdate:(id)a3;
-- (void)proximityClientUpdateContent:(id)a3 forDevice:(id)a4 completion:(id)a5;
-- (void)reenableProxCardType:(unsigned __int8)a3 completion:(id)a4;
-- (void)remoteInteractionSessionActivate:(id)a3 completion:(id)a4;
-- (void)remoteInteractionSessionSendPayload:(id)a3;
-- (void)requestWithInfo:(id)a3 completion:(id)a4;
-- (void)retriggerProximityPairing:(id)a3;
-- (void)retriggerProximitySetup:(id)a3;
-- (void)serviceActivate:(id)a3 completion:(id)a4;
-- (void)servicePeerDisconnected:(id)a3 error:(id)a4;
-- (void)serviceSendEvent:(id)a3;
-- (void)serviceSendRequest:(id)a3;
-- (void)serviceSendResponse:(id)a3;
-- (void)serviceUpdate:(id)a3;
-- (void)sessionActivate:(id)a3 completion:(id)a4;
-- (void)sessionSendEvent:(id)a3;
-- (void)sessionSendRequest:(id)a3;
-- (void)sessionSendResponse:(id)a3;
-- (void)setupDevice:(id)a3 homeIdentifier:(id)a4 completion:(id)a5;
-- (void)shareAudioSessionActivate:(id)a3 completion:(id)a4;
+- (void)proximityClientStopSuppressingDevice:(id)device completion:(id)completion;
+- (void)proximityClientSuppressDevice:(id)device completion:(id)completion;
+- (void)proximityClientUpdate:(id)update;
+- (void)proximityClientUpdateContent:(id)content forDevice:(id)device completion:(id)completion;
+- (void)reenableProxCardType:(unsigned __int8)type completion:(id)completion;
+- (void)remoteInteractionSessionActivate:(id)activate completion:(id)completion;
+- (void)remoteInteractionSessionSendPayload:(id)payload;
+- (void)requestWithInfo:(id)info completion:(id)completion;
+- (void)retriggerProximityPairing:(id)pairing;
+- (void)retriggerProximitySetup:(id)setup;
+- (void)serviceActivate:(id)activate completion:(id)completion;
+- (void)servicePeerDisconnected:(id)disconnected error:(id)error;
+- (void)serviceSendEvent:(id)event;
+- (void)serviceSendRequest:(id)request;
+- (void)serviceSendResponse:(id)response;
+- (void)serviceUpdate:(id)update;
+- (void)sessionActivate:(id)activate completion:(id)completion;
+- (void)sessionSendEvent:(id)event;
+- (void)sessionSendRequest:(id)request;
+- (void)sessionSendResponse:(id)response;
+- (void)setupDevice:(id)device homeIdentifier:(id)identifier completion:(id)completion;
+- (void)shareAudioSessionActivate:(id)activate completion:(id)completion;
 - (void)shareAudioUserConfirmed;
-- (void)showDevicePickerWithInfo:(id)a3 completion:(id)a4;
-- (void)startProxCardTransactionWithOptions:(unint64_t)a3 completion:(id)a4;
-- (void)statusInfoWithCompletion:(id)a3;
-- (void)subCredentialPresentCardWithParams:(id)a3 completion:(id)a4;
-- (void)testContinuityKeyboardBegin:(BOOL)a3;
-- (void)triggerHomeKitDeviceDetectedWithURL:(id)a3 completion:(id)a4;
-- (void)triggerProximityAutoFillDetectedWithURL:(id)a3 completion:(id)a4;
-- (void)userNotificationPresent:(id)a3;
-- (void)wifiPasswordSharingAvailabilityWithCompletion:(id)a3;
+- (void)showDevicePickerWithInfo:(id)info completion:(id)completion;
+- (void)startProxCardTransactionWithOptions:(unint64_t)options completion:(id)completion;
+- (void)statusInfoWithCompletion:(id)completion;
+- (void)subCredentialPresentCardWithParams:(id)params completion:(id)completion;
+- (void)testContinuityKeyboardBegin:(BOOL)begin;
+- (void)triggerHomeKitDeviceDetectedWithURL:(id)l completion:(id)completion;
+- (void)triggerProximityAutoFillDetectedWithURL:(id)l completion:(id)completion;
+- (void)userNotificationPresent:(id)present;
+- (void)wifiPasswordSharingAvailabilityWithCompletion:(id)completion;
 @end
 
 @implementation SDXPCConnection
@@ -280,8 +280,8 @@ LABEL_19:
   service = self->_service;
   if (service)
   {
-    v12 = [(SFService *)service identifier];
-    v13 = [v12 isEqualToString:SFServiceIdentifierPasswordSharing];
+    identifier = [(SFService *)service identifier];
+    v13 = [identifier isEqualToString:SFServiceIdentifierPasswordSharing];
 
     if (v13)
     {
@@ -314,28 +314,28 @@ LABEL_19:
   }
 }
 
-- (SDXPCConnection)initWithServer:(id)a3 xpcConnection:(id)a4
+- (SDXPCConnection)initWithServer:(id)server xpcConnection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  serverCopy = server;
+  connectionCopy = connection;
   v12.receiver = self;
   v12.super_class = SDXPCConnection;
   v9 = [(SDXPCConnection *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_server, a3);
-    objc_storeStrong(&v10->_xpcCnx, a4);
+    objc_storeStrong(&v9->_server, server);
+    objc_storeStrong(&v10->_xpcCnx, connection);
   }
 
   return v10;
 }
 
-- (int)_entitled:(id)a3 state:(BOOL *)a4 label:(id)a5
+- (int)_entitled:(id)_entitled state:(BOOL *)state label:(id)label
 {
-  v8 = a3;
-  v9 = a5;
-  if (*a4 || (-[NSXPCConnection cuValueForEntitlementNoCache:](self->_xpcCnx, "cuValueForEntitlementNoCache:", v8), v10 = objc_claimAutoreleasedReturnValue(), *a4 = [v10 isEqual:&__kCFBooleanTrue], v10, *a4))
+  _entitledCopy = _entitled;
+  labelCopy = label;
+  if (*state || (-[NSXPCConnection cuValueForEntitlementNoCache:](self->_xpcCnx, "cuValueForEntitlementNoCache:", _entitledCopy), v10 = objc_claimAutoreleasedReturnValue(), *state = [v10 isEqual:&__kCFBooleanTrue], v10, *state))
   {
     v11 = 0;
   }
@@ -353,11 +353,11 @@ LABEL_19:
   return v11;
 }
 
-- (void)autoFillHelperDidPickUsername:(id)a3 password:(id)a4 error:(id)a5
+- (void)autoFillHelperDidPickUsername:(id)username password:(id)password error:(id)error
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  usernameCopy = username;
+  passwordCopy = password;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if (dword_100971A10 <= 30 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
   {
@@ -365,15 +365,15 @@ LABEL_19:
   }
 
   afsHelper = self->_afsHelper;
-  if (!afsHelper || [(SDAutoFillAgent *)self->_server->_autoFillAgent helper:afsHelper didPickUsername:v11 password:v8 error:v9])
+  if (!afsHelper || [(SDAutoFillAgent *)self->_server->_autoFillAgent helper:afsHelper didPickUsername:usernameCopy password:passwordCopy error:errorCopy])
   {
     sub_100192B28();
   }
 }
 
-- (void)autoFillHelperTryPIN:(id)a3
+- (void)autoFillHelperTryPIN:(id)n
 {
-  v7 = a3;
+  nCopy = n;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if (dword_100971A10 <= 30 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
   {
@@ -381,16 +381,16 @@ LABEL_19:
   }
 
   afsHelper = self->_afsHelper;
-  if (!afsHelper || (v5 = [(SDAutoFillAgent *)self->_server->_autoFillAgent helper:afsHelper tryPIN:v7], v6 = v7, v5))
+  if (!afsHelper || (v5 = [(SDAutoFillAgent *)self->_server->_autoFillAgent helper:afsHelper tryPIN:nCopy], v6 = nCopy, v5))
   {
     sub_100192BF0();
-    v6 = v7;
+    v6 = nCopy;
   }
 }
 
-- (void)autoFillHelperUserNotificationDidActivate:(id)a3
+- (void)autoFillHelperUserNotificationDidActivate:(id)activate
 {
-  v7 = a3;
+  activateCopy = activate;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if (dword_100971A10 <= 30 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
   {
@@ -398,16 +398,16 @@ LABEL_19:
   }
 
   afsHelper = self->_afsHelper;
-  if (!afsHelper || (v5 = [(SDAutoFillAgent *)self->_server->_autoFillAgent helper:afsHelper userNotificationDidActivate:v7], v6 = v7, v5))
+  if (!afsHelper || (v5 = [(SDAutoFillAgent *)self->_server->_autoFillAgent helper:afsHelper userNotificationDidActivate:activateCopy], v6 = activateCopy, v5))
   {
     sub_100192CB8();
-    v6 = v7;
+    v6 = activateCopy;
   }
 }
 
-- (void)autoFillHelperUserNotificationDidDismiss:(id)a3
+- (void)autoFillHelperUserNotificationDidDismiss:(id)dismiss
 {
-  v7 = a3;
+  dismissCopy = dismiss;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if (dword_100971A10 <= 30 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
   {
@@ -415,27 +415,27 @@ LABEL_19:
   }
 
   afsHelper = self->_afsHelper;
-  if (!afsHelper || (v5 = [(SDAutoFillAgent *)self->_server->_autoFillAgent helper:afsHelper userNotificationDidDismiss:v7], v6 = v7, v5))
+  if (!afsHelper || (v5 = [(SDAutoFillAgent *)self->_server->_autoFillAgent helper:afsHelper userNotificationDidDismiss:dismissCopy], v6 = dismissCopy, v5))
   {
     sub_100192D80();
-    v6 = v7;
+    v6 = dismissCopy;
   }
 }
 
-- (void)activateAssertionWithIdentifier:(id)a3
+- (void)activateAssertionWithIdentifier:(id)identifier
 {
-  v20 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   v4 = [(SDXPCConnection *)self _entitled:@"com.apple.sharing.Client" state:&self->_entitledClient label:@"ActivateAssertion"];
-  v5 = v20;
+  v5 = identifierCopy;
   if (!v4)
   {
-    v6 = v20;
+    v6 = identifierCopy;
     if (!v6)
     {
 LABEL_25:
 
-      v5 = v20;
+      v5 = identifierCopy;
       goto LABEL_26;
     }
 
@@ -549,24 +549,24 @@ LABEL_22:
 LABEL_26:
 }
 
-- (void)activityStateWithCompletion:(id)a3
+- (void)activityStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if ([(SDXPCConnection *)self _entitled:@"com.apple.sharing.Client" state:&self->_entitledClient label:@"ActivityState"])
   {
-    sub_100192EC0(v4);
+    sub_100192EC0(completionCopy);
   }
 
   else
   {
-    [(SDNearbyAgent *)self->_server->_nearbyAgent activityStateWithCompletion:v4];
+    [(SDNearbyAgent *)self->_server->_nearbyAgent activityStateWithCompletion:completionCopy];
   }
 }
 
-- (void)appleIDInfoWithCompletion:(id)a3
+- (void)appleIDInfoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[SDStatusMonitor sharedMonitor];
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   v6 = [(SDXPCConnection *)self _entitled:@"com.apple.sharing.Client" state:&self->_entitledClient label:@"AppleIDInfo"];
@@ -578,8 +578,8 @@ LABEL_26:
 
   else
   {
-    v7 = [v5 myAppleID];
-    if (!v7)
+    myAppleID = [v5 myAppleID];
+    if (!myAppleID)
     {
       if (dword_100971A10 > 60)
       {
@@ -614,18 +614,18 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v8 = v7;
-    v9 = [v5 myAppleIDValidationRecord];
-    v10 = v9;
-    if (v9)
+    v8 = myAppleID;
+    myAppleIDValidationRecord = [v5 myAppleIDValidationRecord];
+    v10 = myAppleIDValidationRecord;
+    if (myAppleIDValidationRecord)
     {
-      v11 = [v9 objectForKeyedSubscript:@"AppleIDAccountValidationRecordData"];
+      v11 = [myAppleIDValidationRecord objectForKeyedSubscript:@"AppleIDAccountValidationRecordData"];
       if (v11)
       {
         v12 = v11;
-        if (v4)
+        if (completionCopy)
         {
-          v4[2](v4, v8, v11, 0);
+          completionCopy[2](completionCopy, v8, v11, 0);
         }
 
         goto LABEL_7;
@@ -643,7 +643,7 @@ LABEL_20:
   }
 
 LABEL_21:
-  if (v4)
+  if (completionCopy)
   {
     v13 = v6;
     v19 = NSLocalizedDescriptionKey;
@@ -658,30 +658,30 @@ LABEL_21:
     v20 = v16;
     v17 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
     v18 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v13 userInfo:v17];
-    (v4)[2](v4, 0, 0, v18);
+    (completionCopy)[2](completionCopy, 0, 0, v18);
   }
 
   v12 = 0;
 LABEL_7:
 }
 
-- (void)clearXPCHelperImageCacheWithCompletion:(id)a3
+- (void)clearXPCHelperImageCacheWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   [_TtC16DaemoniOSLibrary21SDXPCHelperImageCache clearCacheWithSync:1];
-  v3[2](v3, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)contactHandlesForShortHashData:(id)a3 completion:(id)a4
+- (void)contactHandlesForShortHashData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   v8 = +[SDStatusMonitor sharedMonitor];
   v9 = [(SDXPCConnection *)self _entitled:@"com.apple.sharing.Client" state:&self->_entitledClient label:@"ContactHandlesForHashes"];
   if (v9)
   {
-    if (v7)
+    if (completionCopy)
     {
       v11 = v9;
       v17 = NSLocalizedDescriptionKey;
@@ -696,7 +696,7 @@ LABEL_7:
       v18 = v14;
       v15 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
       v16 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v11 userInfo:v15];
-      v7[2](v7, 0, v16);
+      completionCopy[2](completionCopy, 0, v16);
     }
 
     v10 = 0;
@@ -704,19 +704,19 @@ LABEL_7:
 
   else
   {
-    v10 = [v8 contactHandlesForShortHashes:v6];
-    if (v7)
+    v10 = [v8 contactHandlesForShortHashes:dataCopy];
+    if (completionCopy)
     {
-      (v7)[2](v7, v10, 0);
+      (completionCopy)[2](completionCopy, v10, 0);
     }
   }
 }
 
-- (void)contactIDForEmailHash:(id)a3 phoneHash:(id)a4 completion:(id)a5
+- (void)contactIDForEmailHash:(id)hash phoneHash:(id)phoneHash completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  hashCopy = hash;
+  phoneHashCopy = phoneHash;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   v11 = +[SDStatusMonitor sharedMonitor];
   v12 = [(SDXPCConnection *)self _entitled:@"com.apple.sharing.Client" state:&self->_entitledClient label:@"ContactIDForHashes"];
@@ -724,8 +724,8 @@ LABEL_7:
   {
     v13 = 0;
     v15 = 0;
-    v16 = 0;
-    if (!v10)
+    identifier = 0;
+    if (!completionCopy)
     {
       goto LABEL_13;
     }
@@ -733,23 +733,23 @@ LABEL_7:
 LABEL_7:
     if (!v12)
     {
-      (*(v10 + 2))(v10, v16, 0);
+      (*(completionCopy + 2))(completionCopy, identifier, 0);
       goto LABEL_13;
     }
 
-    v23 = v10 + 16;
-    v24 = v9;
-    v25 = v8;
+    v23 = completionCopy + 16;
+    v24 = phoneHashCopy;
+    v25 = hashCopy;
     goto LABEL_9;
   }
 
-  v13 = [v11 contactsForEmailHash:v8 phoneHash:v9];
+  v13 = [v11 contactsForEmailHash:hashCopy phoneHash:phoneHashCopy];
   v14 = [v11 contactWithPreferredIdentifierForContacts:v13];
   if (v14)
   {
     v15 = v14;
-    v16 = [v14 identifier];
-    if (v16)
+    identifier = [v14 identifier];
+    if (identifier)
     {
       v12 = 0;
     }
@@ -759,7 +759,7 @@ LABEL_7:
       v12 = -6742;
     }
 
-    if (!v10)
+    if (!completionCopy)
     {
       goto LABEL_13;
     }
@@ -767,18 +767,18 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  if (!v10)
+  if (!completionCopy)
   {
-    v16 = 0;
+    identifier = 0;
     v15 = 0;
     goto LABEL_13;
   }
 
-  v24 = v9;
-  v25 = v8;
+  v24 = phoneHashCopy;
+  v25 = hashCopy;
   v15 = 0;
-  v16 = 0;
-  v23 = v10 + 16;
+  identifier = 0;
+  v23 = completionCopy + 16;
   v12 = -6727;
 LABEL_9:
   v17 = v12;
@@ -794,18 +794,18 @@ LABEL_9:
   v27 = v20;
   v21 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1, v23];
   v22 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v17 userInfo:v21];
-  (*(v10 + 2))(v10, v16, v22);
+  (*(completionCopy + 2))(completionCopy, identifier, v22);
 
-  v9 = v24;
-  v8 = v25;
+  phoneHashCopy = v24;
+  hashCopy = v25;
 LABEL_13:
 }
 
-- (void)displayNameForEmailHash:(id)a3 phoneHash:(id)a4 completion:(id)a5
+- (void)displayNameForEmailHash:(id)hash phoneHash:(id)phoneHash completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  hashCopy = hash;
+  phoneHashCopy = phoneHash;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   v11 = +[SDStatusMonitor sharedMonitor];
   v12 = [(SDXPCConnection *)self _entitled:@"com.apple.sharing.Client" state:&self->_entitledClient label:@"DisplayNameForHashes"];
@@ -814,7 +814,7 @@ LABEL_13:
     v13 = 0;
     v16 = 0;
     v15 = 0;
-    if (!v10)
+    if (!completionCopy)
     {
       goto LABEL_5;
     }
@@ -822,11 +822,11 @@ LABEL_13:
     goto LABEL_10;
   }
 
-  v13 = [v11 contactsForEmailHash:v8 phoneHash:v9];
+  v13 = [v11 contactsForEmailHash:hashCopy phoneHash:phoneHashCopy];
   v14 = [v11 contactWithPreferredIdentifierForContacts:v13];
   if (!v14)
   {
-    if (!v10)
+    if (!completionCopy)
     {
 LABEL_13:
       v16 = 0;
@@ -849,30 +849,30 @@ LABEL_10:
     v24 = v20;
     v21 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
     v22 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v17 userInfo:v21];
-    v10[2](v10, 0, v22);
+    completionCopy[2](completionCopy, 0, v22);
 
     goto LABEL_13;
   }
 
   v15 = v14;
   v16 = [CNContactFormatter stringFromContact:v14 style:0];
-  if (v10)
+  if (completionCopy)
   {
-    (v10)[2](v10, v16, 0);
+    (completionCopy)[2](completionCopy, v16, 0);
   }
 
 LABEL_5:
 }
 
-- (void)findContact:(id)a3 skipIfContactBlocked:(BOOL)a4 completion:(id)a5
+- (void)findContact:(id)contact skipIfContactBlocked:(BOOL)blocked completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  contactCopy = contact;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if ([(SDXPCConnection *)self _entitled:@"com.apple.sharing.Client" state:&self->_entitledClient label:@"FindContact"])
   {
     v10 = NSErrorWithOSStatusF();
-    v9[2](v9, 0, v10);
+    completionCopy[2](completionCopy, 0, v10);
   }
 
   else
@@ -892,16 +892,16 @@ LABEL_5:
     block[1] = 3221225472;
     block[2] = sub_100187834;
     block[3] = &unk_1008D21C8;
-    v16 = v8;
-    v18 = a4;
-    v17 = v9;
+    v16 = contactCopy;
+    blockedCopy = blocked;
+    v17 = completionCopy;
     dispatch_async(contactsQueue, block);
   }
 }
 
-- (void)getDeviceAssets:(id)a3 completion:(id)a4
+- (void)getDeviceAssets:(id)assets completion:(id)completion
 {
-  v6 = a3;
+  assetsCopy = assets;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -913,11 +913,11 @@ LABEL_5:
   v29[2] = sub_10018844C;
   v29[3] = &unk_1008D21F0;
   v31 = &v32;
-  v7 = a4;
-  v30 = v7;
+  completionCopy = completion;
+  v30 = completionCopy;
   v8 = objc_retainBlock(v29);
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
-  if (-[SDXPCConnection _entitled:state:label:](self, "_entitled:state:label:", @"com.apple.sharing.Session", &self->_entitledClient, @"GetDeviceAssets") || (v9 = arc4random(), v10 = [v6 bluetoothProductID], !v10))
+  if (-[SDXPCConnection _entitled:state:label:](self, "_entitled:state:label:", @"com.apple.sharing.Session", &self->_entitledClient, @"GetDeviceAssets") || (v9 = arc4random(), v10 = [assetsCopy bluetoothProductID], !v10))
   {
     v12 = NSErrorF();
     v13 = v33[5];
@@ -926,18 +926,18 @@ LABEL_5:
 
   else
   {
-    v11 = [v6 colorCode];
+    colorCode = [assetsCopy colorCode];
     if (dword_100971A10 <= 30 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
     {
       v21 = v10;
-      v22 = v11;
+      v22 = colorCode;
       v20 = v9;
       LogPrintF();
     }
 
     if ([_TtC16DaemoniOSLibrary19SDProductKitWrapper isSupported:v20])
     {
-      [v6 timeoutSeconds];
+      [assetsCopy timeoutSeconds];
       v15 = v14;
       v26[0] = _NSConcreteStackBlock;
       v26[1] = 3221225472;
@@ -945,13 +945,13 @@ LABEL_5:
       v26[3] = &unk_1008D2240;
       v26[4] = self;
       v28 = v9;
-      v27 = v7;
-      [_TtC16DaemoniOSLibrary19SDProductKitWrapper fetchAssetBundleWithProductID:v10 color:v11 model:0 timeout:v26 completionHandler:v15];
+      v27 = completionCopy;
+      [_TtC16DaemoniOSLibrary19SDProductKitWrapper fetchAssetBundleWithProductID:v10 color:colorCode model:0 timeout:v26 completionHandler:v15];
     }
 
     else
     {
-      v16 = [[SFDeviceAssetQuery alloc] initWithBluetoothProductIdentifier:v10 color:v11];
+      v16 = [[SFDeviceAssetQuery alloc] initWithBluetoothProductIdentifier:v10 color:colorCode];
       v17 = objc_alloc_init(SFDeviceAssetManager);
       [v17 setDispatchQueue:self->_server->_dispatchQueue];
       v18 = [SFDeviceAssetRequestConfiguration alloc];
@@ -960,9 +960,9 @@ LABEL_5:
       v23[2] = sub_100188784;
       v23[3] = &unk_1008D2268;
       v25 = v9;
-      v24 = v7;
+      v24 = completionCopy;
       v19 = [v18 initWithQueryResultHandler:v23];
-      [v6 timeoutSeconds];
+      [assetsCopy timeoutSeconds];
       [v19 setTimeout:?];
       [v17 activate];
       [v17 getAssetBundleForDeviceQuery:v16 withRequestConfiguration:v19];
@@ -974,16 +974,16 @@ LABEL_5:
   _Block_object_dispose(&v32, 8);
 }
 
-- (void)getPeopleSuggestions:(id)a3 completion:(id)a4
+- (void)getPeopleSuggestions:(id)suggestions completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  suggestionsCopy = suggestions;
+  completionCopy = completion;
   v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v9 = dispatch_queue_create("SharingGetPeopleSuggestions", v8);
 
-  v10 = [v6 contactIDs];
+  contactIDs = [suggestionsCopy contactIDs];
 
-  if (v10)
+  if (contactIDs)
   {
     v11 = v16;
     v16[0] = _NSConcreteStackBlock;
@@ -995,7 +995,7 @@ LABEL_5:
   {
     if (dword_100971A10 <= 30 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
     {
-      sub_100192FC8(v6);
+      sub_100192FC8(suggestionsCopy);
     }
 
     v11 = v15;
@@ -1007,18 +1007,18 @@ LABEL_5:
   v11[2] = v12;
   v11[3] = &unk_1008CE730;
   v11[4] = self;
-  v11[5] = v6;
-  v11[6] = v7;
-  v13 = v7;
-  v14 = v6;
+  v11[5] = suggestionsCopy;
+  v11[6] = completionCopy;
+  v13 = completionCopy;
+  v14 = suggestionsCopy;
   dispatch_async(v9, v11);
 }
 
-- (void)_getPeopleInfo:(id)a3 completion:(id)a4
+- (void)_getPeopleInfo:(id)info completion:(id)completion
 {
-  v38 = a4;
-  v5 = [a3 contactIDs];
-  v6 = [v5 count];
+  completionCopy = completion;
+  contactIDs = [info contactIDs];
+  v6 = [contactIDs count];
   if (dword_100971A10 <= 30 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
   {
     sub_10019303C();
@@ -1043,7 +1043,7 @@ LABEL_5:
   v59[2] = CNContactPhoneNumbersKey;
   v7 = [NSArray arrayWithObjects:v59 count:3];
   v8 = objc_alloc_init(CNContactStore);
-  v9 = [CNContact predicateForContactsWithIdentifiers:v5];
+  v9 = [CNContact predicateForContactsWithIdentifiers:contactIDs];
   v56 = 0;
   v10 = [v8 unifiedContactsMatchingPredicate:v9 keysToFetch:v7 error:&v56];
   v11 = v56;
@@ -1060,7 +1060,7 @@ LABEL_13:
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  obj = v5;
+  obj = contactIDs;
   v45 = [obj countByEnumeratingWithState:&v52 objects:v58 count:16];
   if (v45)
   {
@@ -1101,8 +1101,8 @@ LABEL_20:
             }
 
             v22 = *(*(&v48 + 1) + 8 * v21);
-            v23 = [v22 identifier];
-            v24 = [v23 isEqual:v16];
+            identifier = [v22 identifier];
+            v24 = [identifier isEqual:v16];
 
             if (v24)
             {
@@ -1141,11 +1141,11 @@ LABEL_20:
           }
 
           v29 = v47;
-          v30 = [v25 emailAddresses];
-          v31 = &v14[[v30 count]];
+          emailAddresses = [v25 emailAddresses];
+          v31 = &v14[[emailAddresses count]];
 
-          v32 = [v25 phoneNumbers];
-          v14 = [v32 count] + v31;
+          phoneNumbers = [v25 phoneNumbers];
+          v14 = [phoneNumbers count] + v31;
         }
 
         else
@@ -1185,24 +1185,24 @@ LABEL_31:
     LogPrintF();
   }
 
-  v38[2](v38, v42, 0);
+  completionCopy[2](completionCopy, v42, 0);
 }
 
-- (void)_getPeopleSuggestions:(id)a3 completion:(id)a4
+- (void)_getPeopleSuggestions:(id)suggestions completion:(id)completion
 {
-  v5 = a3;
-  v31 = a4;
+  suggestionsCopy = suggestions;
+  completionCopy = completion;
   v6 = objc_alloc_init(_PSSuggesterConfiguration);
-  if ([v5 excludeBackfills])
+  if ([suggestionsCopy excludeBackfills])
   {
     [v6 setExcludeBackfillSuggestions:1];
   }
 
-  v32 = v5;
-  v7 = [v5 maxPeople];
-  if (v7)
+  v32 = suggestionsCopy;
+  maxPeople = [suggestionsCopy maxPeople];
+  if (maxPeople)
   {
-    v8 = 2 * v7;
+    v8 = 2 * maxPeople;
   }
 
   else
@@ -1241,8 +1241,8 @@ LABEL_31:
         v38 = 0u;
         v39 = 0u;
         v40 = 0u;
-        v16 = [v15 recipients];
-        v17 = [v16 countByEnumeratingWithState:&v37 objects:v45 count:16];
+        recipients = [v15 recipients];
+        v17 = [recipients countByEnumeratingWithState:&v37 objects:v45 count:16];
         if (v17)
         {
           v18 = v17;
@@ -1253,16 +1253,16 @@ LABEL_31:
             {
               if (*v38 != v19)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(recipients);
               }
 
-              v21 = [*(*(&v37 + 1) + 8 * j) identifier];
-              if (([v11 containsObject:v21] & 1) == 0)
+              identifier = [*(*(&v37 + 1) + 8 * j) identifier];
+              if (([v11 containsObject:identifier] & 1) == 0)
               {
-                [v11 addObject:v21];
-                if (v7)
+                [v11 addObject:identifier];
+                if (maxPeople)
                 {
-                  if ([v11 count] >= v7)
+                  if ([v11 count] >= maxPeople)
                   {
 
                     goto LABEL_23;
@@ -1271,7 +1271,7 @@ LABEL_31:
               }
             }
 
-            v18 = [v16 countByEnumeratingWithState:&v37 objects:v45 count:16];
+            v18 = [recipients countByEnumeratingWithState:&v37 objects:v45 count:16];
             if (v18)
             {
               continue;
@@ -1297,7 +1297,7 @@ LABEL_23:
 
   if ([v11 count])
   {
-    v23 = v31;
+    v23 = completionCopy;
     v22 = v32;
     v25 = v28;
     v24 = v29;
@@ -1306,18 +1306,18 @@ LABEL_23:
       sub_100193128();
     }
 
-    v26 = [v11 allObjects];
+    allObjects = [v11 allObjects];
     v35[0] = _NSConcreteStackBlock;
     v35[1] = 3221225472;
     v35[2] = sub_100189458;
     v35[3] = &unk_1008D2290;
-    v36 = v31;
-    [(SDXPCConnection *)self _getInteractionsFromDBPerPeopleSuggestion:v26 completion:v35];
+    v36 = completionCopy;
+    [(SDXPCConnection *)self _getInteractionsFromDBPerPeopleSuggestion:allObjects completion:v35];
   }
 
   else
   {
-    v23 = v31;
+    v23 = completionCopy;
     v22 = v32;
     v25 = v28;
     v24 = v29;
@@ -1326,14 +1326,14 @@ LABEL_23:
       sub_10019315C();
     }
 
-    (*(v31 + 2))(v31, &__NSArray0__struct, 0);
+    (*(completionCopy + 2))(completionCopy, &__NSArray0__struct, 0);
   }
 }
 
-- (void)_getInteractionsFromDBPerPeopleSuggestion:(id)a3 completion:(id)a4
+- (void)_getInteractionsFromDBPerPeopleSuggestion:(id)suggestion completion:(id)completion
 {
-  v5 = a3;
-  v65 = a4;
+  suggestionCopy = suggestion;
+  completionCopy = completion;
   v6 = +[_CDInteractionStore defaultDatabaseDirectory];
   v7 = [_CDInteractionStore storeWithDirectory:v6 readOnly:1];
 
@@ -1341,7 +1341,7 @@ LABEL_23:
   v8 = objc_alloc_init(NSMutableArray);
   v9 = [NSPredicate predicateWithFormat:@"direction == %i", 1];
   v10 = [NSPredicate predicateWithFormat:@"sender.personId != nil"];
-  v11 = [NSPredicate predicateWithFormat:@"ANY recipients.personId IN %@", v5];
+  suggestionCopy = [NSPredicate predicateWithFormat:@"ANY recipients.personId IN %@", suggestionCopy];
   v12 = +[NSDate date];
   v13 = [v12 dateByAddingTimeInterval:28800.0];
   v14 = [NSPredicate predicateWithFormat:@"endDate < %@", v13];
@@ -1350,8 +1350,8 @@ LABEL_23:
   [v8 addObject:v9];
   v61 = v10;
   [v8 addObject:v10];
-  v60 = v11;
-  [v8 addObject:v11];
+  v60 = suggestionCopy;
+  [v8 addObject:suggestionCopy];
   v59 = v14;
   [v8 addObject:v14];
   v63 = v8;
@@ -1391,8 +1391,8 @@ LABEL_23:
         v84 = 0u;
         v85 = 0u;
         v86 = 0u;
-        v21 = [v20 recipients];
-        v22 = [v21 countByEnumeratingWithState:&v83 objects:v94 count:16];
+        recipients = [v20 recipients];
+        v22 = [recipients countByEnumeratingWithState:&v83 objects:v94 count:16];
         if (v22)
         {
           v23 = v22;
@@ -1403,29 +1403,29 @@ LABEL_23:
             {
               if (*v84 != v24)
               {
-                objc_enumerationMutation(v21);
+                objc_enumerationMutation(recipients);
               }
 
               v26 = *(*(&v83 + 1) + 8 * i);
-              v27 = [v26 personId];
-              v28 = [v5 containsObject:v27];
+              personId = [v26 personId];
+              v28 = [suggestionCopy containsObject:personId];
 
               if (v28)
               {
-                v29 = [v20 sender];
-                v30 = v29;
-                if (v29)
+                sender = [v20 sender];
+                v30 = sender;
+                if (sender)
                 {
-                  v31 = [v29 identifier];
-                  if (v31)
+                  identifier = [sender identifier];
+                  if (identifier)
                   {
-                    [v18 setObject:v31 forKey:v26];
+                    [v18 setObject:identifier forKey:v26];
                   }
                 }
               }
             }
 
-            v23 = [v21 countByEnumeratingWithState:&v83 objects:v94 count:16];
+            v23 = [recipients countByEnumeratingWithState:&v83 objects:v94 count:16];
           }
 
           while (v23);
@@ -1473,14 +1473,14 @@ LABEL_23:
         }
 
         v38 = *(*(&v79 + 1) + 8 * v37);
-        v39 = [v38 identifier];
-        v40 = [v38 type];
-        if (v40 == 3)
+        identifier2 = [v38 identifier];
+        type = [v38 type];
+        if (type == 3)
         {
-          [v39 rangeOfString:@"@"];
+          [identifier2 rangeOfString:@"@"];
           if (!v42)
           {
-            v41 = v39;
+            v41 = identifier2;
             goto LABEL_32;
           }
 
@@ -1489,12 +1489,12 @@ LABEL_31:
           goto LABEL_32;
         }
 
-        if (v40 == 2)
+        if (type == 2)
         {
           goto LABEL_31;
         }
 
-        if (v40 != 1)
+        if (type != 1)
         {
           v43 = 0;
           goto LABEL_34;
@@ -1504,25 +1504,25 @@ LABEL_31:
 LABEL_32:
         v43 = v41;
 LABEL_34:
-        v44 = [v38 personId];
+        personId2 = [v38 personId];
         v45 = [v33 objectForKeyedSubscript:v38];
         v46 = v45;
         if (v43)
         {
-          if (v44 && v45 != 0)
+          if (personId2 && v45 != 0)
           {
             if (dword_100971A10 <= 40 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
             {
               v54 = v43;
               v55 = v46;
-              v53 = v44;
+              v53 = personId2;
               LogPrintF();
             }
 
             v48 = objc_alloc_init(SFPeopleSuggesterResult);
-            [v48 setContactID:v44];
+            [v48 setContactID:personId2];
             v78 = 0;
-            v49 = [v32 unifiedContactWithIdentifier:v44 keysToFetch:v73 error:&v78];
+            v49 = [v32 unifiedContactWithIdentifier:personId2 keysToFetch:v73 error:&v78];
             if (!v49 || v78)
             {
               [v48 setFlags:{2, v53, v54, v55}];
@@ -1580,16 +1580,16 @@ LABEL_56:
     LogPrintF();
   }
 
-  v65[2](v65, v36, 0);
+  completionCopy[2](completionCopy, v36, 0);
 }
 
-- (void)getPairedWatchWristStateWithCompletionHandler:(id)a3
+- (void)getPairedWatchWristStateWithCompletionHandler:(id)handler
 {
   dispatchQueue = self->_server->_dispatchQueue;
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(dispatchQueue);
   v5 = +[SDStatusMonitor sharedMonitor];
-  v4[2](v4, [v5 pairedWatchWristState]);
+  handlerCopy[2](handlerCopy, [v5 pairedWatchWristState]);
 }
 
 - (void)beginMonitoringPairedWatchWristState
@@ -1608,40 +1608,40 @@ LABEL_56:
 {
   v4 = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxyWithErrorHandler:&stru_1008D22B0];
   v2 = +[SDStatusMonitor sharedMonitor];
-  v3 = [v2 pairedWatchWristState];
+  pairedWatchWristState = [v2 pairedWatchWristState];
 
-  [v4 pairedWatchWristStateChanged:v3];
+  [v4 pairedWatchWristStateChanged:pairedWatchWristState];
 }
 
-- (void)getProblemFlagsWithCompletionHandler:(id)a3
+- (void)getProblemFlagsWithCompletionHandler:(id)handler
 {
-  v6 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
-  v4 = [(SDSetupAgent *)self->_server->_setupAgent problemFlags];
-  v5 = v6;
-  if (v6)
+  problemFlags = [(SDSetupAgent *)self->_server->_setupAgent problemFlags];
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v6 + 2))(v6, v4, 0);
-    v5 = v6;
+    (*(handlerCopy + 2))(handlerCopy, problemFlags, 0);
+    v5 = handlerCopy;
   }
 }
 
-- (void)openSetupURL:(id)a3 completion:(id)a4
+- (void)openSetupURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if ([(SDXPCConnection *)self _entitled:@"com.apple.sharing.Client" state:&self->_entitledClient label:@"OpenSetupURL"])
   {
-    sub_100193274(v7);
+    sub_100193274(completionCopy);
   }
 
   else
   {
-    [(SDSetupAgent *)self->_server->_setupAgent openSetupURL:v6];
-    if (v7)
+    [(SDSetupAgent *)self->_server->_setupAgent openSetupURL:lCopy];
+    if (completionCopy)
     {
-      v7[2](v7, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }
@@ -1654,105 +1654,105 @@ LABEL_56:
   }
 }
 
-- (void)requestWithInfo:(id)a3 completion:(id)a4
+- (void)requestWithInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if ([(SDXPCConnection *)self _entitled:@"com.apple.sharing.Client" state:&self->_entitledClient label:@"AppleIDAuth"])
   {
-    sub_100193350(v7);
+    sub_100193350(completionCopy);
   }
 
   else
   {
-    [(SDAppleIDAgent *)self->_server->_appleIDAgent requestWithInfo:v6 completion:v7];
+    [(SDAppleIDAgent *)self->_server->_appleIDAgent requestWithInfo:infoCopy completion:completionCopy];
   }
 }
 
-- (void)retriggerProximityPairing:(id)a3
+- (void)retriggerProximityPairing:(id)pairing
 {
-  v4 = a3;
+  pairingCopy = pairing;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if ([(SDXPCConnection *)self _entitled:@"com.apple.sharing.Client" state:&self->_entitledClient label:@"RetriggerProximityPairing"])
   {
-    sub_100193274(v4);
+    sub_100193274(pairingCopy);
   }
 
   else
   {
-    [(SDProximityPairingAgent *)self->_server->_ppAgent retriggerProximityPairing:v4];
+    [(SDProximityPairingAgent *)self->_server->_ppAgent retriggerProximityPairing:pairingCopy];
   }
 }
 
-- (void)retriggerProximitySetup:(id)a3
+- (void)retriggerProximitySetup:(id)setup
 {
-  v4 = a3;
+  setupCopy = setup;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if ([(SDXPCConnection *)self _entitled:@"com.apple.sharing.Client" state:&self->_entitledClient label:@"RetriggerProximitySetup"])
   {
-    sub_100193274(v4);
+    sub_100193274(setupCopy);
   }
 
   else
   {
-    [(SDSetupAgent *)self->_server->_setupAgent retriggerProximitySetup:v4];
+    [(SDSetupAgent *)self->_server->_setupAgent retriggerProximitySetup:setupCopy];
   }
 }
 
-- (void)setupDevice:(id)a3 homeIdentifier:(id)a4 completion:(id)a5
+- (void)setupDevice:(id)device homeIdentifier:(id)identifier completion:(id)completion
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
+  deviceCopy = device;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if ([(SDXPCConnection *)self _entitled:@"com.apple.sharing.Client" state:&self->_entitledClient label:@"SetupDevice"])
   {
     v11 = NSErrorWithOSStatusF();
     v10 = v11;
-    if (v9 && v11)
+    if (completionCopy && v11)
     {
-      v9[2](v9, v11);
+      completionCopy[2](completionCopy, v11);
     }
   }
 
   else
   {
-    [(SDSetupAgent *)self->_server->_setupAgent setupDevice:v12 homeIdentifier:v8 completion:v9];
+    [(SDSetupAgent *)self->_server->_setupAgent setupDevice:deviceCopy homeIdentifier:identifierCopy completion:completionCopy];
     v10 = 0;
   }
 }
 
-- (void)showDevicePickerWithInfo:(id)a3 completion:(id)a4
+- (void)showDevicePickerWithInfo:(id)info completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if ([(SDXPCConnection *)self _entitled:@"com.apple.sharing.Client" state:&self->_entitledClient label:@"ShowDevicePicker"])
   {
     v8 = NSErrorWithOSStatusF();
     v7 = v8;
-    if (v6 && v8)
+    if (completionCopy && v8)
     {
-      v6[2](v6, v8);
+      completionCopy[2](completionCopy, v8);
     }
   }
 
   else
   {
-    [(SDSetupAgent *)self->_server->_setupAgent showDevicePickerWithInfo:v9 completion:v6];
+    [(SDSetupAgent *)self->_server->_setupAgent showDevicePickerWithInfo:infoCopy completion:completionCopy];
     v7 = 0;
   }
 }
 
-- (void)statusInfoWithCompletion:(id)a3
+- (void)statusInfoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   v5 = [(SDXPCConnection *)self _entitled:@"com.apple.sharing.Client" state:&self->_entitledClient label:@"AppleIDAuth"];
   if (v5)
   {
-    if (v4)
+    if (completionCopy)
     {
       v7 = v5;
       sub_100186CC8();
@@ -1769,29 +1769,29 @@ LABEL_56:
       v15 = v11;
       v12 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
       v13 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v8 userInfo:v12];
-      v4[2](v4, 0, v13);
+      completionCopy[2](completionCopy, 0, v13);
     }
 
-    v6 = 0;
+    statusInfo = 0;
   }
 
   else
   {
-    v6 = [(SDAppleIDAgent *)self->_server->_appleIDAgent statusInfo];
-    if (v4)
+    statusInfo = [(SDAppleIDAgent *)self->_server->_appleIDAgent statusInfo];
+    if (completionCopy)
     {
       sub_100186CC8();
-      (v4)[2](v4, v6, 0);
+      (completionCopy)[2](completionCopy, statusInfo, 0);
     }
   }
 }
 
-- (void)testContinuityKeyboardBegin:(BOOL)a3
+- (void)testContinuityKeyboardBegin:(BOOL)begin
 {
-  v3 = a3;
+  beginCopy = begin;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   riAgent = self->_server->_riAgent;
-  if (v3)
+  if (beginCopy)
   {
 
     [(SDRemoteInteractionAgent *)riAgent handleInputDidBeginWithFlags:0 sessionInfo:0];
@@ -1804,52 +1804,52 @@ LABEL_56:
   }
 }
 
-- (void)triggerHomeKitDeviceDetectedWithURL:(id)a3 completion:(id)a4
+- (void)triggerHomeKitDeviceDetectedWithURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if ([(SDXPCConnection *)self _entitled:@"com.apple.sharing.Client" state:&self->_entitledClient label:@"TriggerHomeKitDeviceDetected"])
   {
-    sub_100193274(v7);
+    sub_100193274(completionCopy);
   }
 
   else
   {
-    [(SDSetupAgent *)self->_server->_setupAgent triggerHomeKitDeviceDetectedWithURL:v6 completion:v7];
+    [(SDSetupAgent *)self->_server->_setupAgent triggerHomeKitDeviceDetectedWithURL:lCopy completion:completionCopy];
   }
 }
 
-- (void)triggerProximityAutoFillDetectedWithURL:(id)a3 completion:(id)a4
+- (void)triggerProximityAutoFillDetectedWithURL:(id)l completion:(id)completion
 {
-  v7 = a3;
-  v6 = a4;
+  lCopy = l;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if (dword_100971A10 <= 30 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
   {
     sub_100193428();
   }
 
-  [(SDAutoFillAgent *)self->_server->_autoFillAgent triggerProximityAutoFillDetectedWithURL:v7 completion:v6];
+  [(SDAutoFillAgent *)self->_server->_autoFillAgent triggerProximityAutoFillDetectedWithURL:lCopy completion:completionCopy];
 }
 
-- (void)wifiPasswordSharingAvailabilityWithCompletion:(id)a3
+- (void)wifiPasswordSharingAvailabilityWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if ([(SDXPCConnection *)self _entitled:@"com.apple.sharing.Services" state:&self->_entitledClient label:@"WiFiPasswordSharingAvailability"])
   {
-    sub_100193444(v4);
+    sub_100193444(completionCopy);
     goto LABEL_7;
   }
 
   v5 = +[SDStatusMonitor sharedMonitor];
-  v6 = [v5 wifiPasswordSharingAvailability];
+  wifiPasswordSharingAvailability = [v5 wifiPasswordSharingAvailability];
 
   if (dword_100971A10 <= 30 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
   {
     sub_100193508();
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_7;
     }
@@ -1857,19 +1857,19 @@ LABEL_56:
     goto LABEL_6;
   }
 
-  if (v4)
+  if (completionCopy)
   {
 LABEL_6:
-    v4[2](v4, v6, 0);
+    completionCopy[2](completionCopy, wifiPasswordSharingAvailability, 0);
   }
 
 LABEL_7:
 }
 
-- (void)startProxCardTransactionWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)startProxCardTransactionWithOptions:(unint64_t)options completion:(id)completion
 {
-  v4 = a3;
-  v13 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if (gSDProxCardsSuppressed == 1)
   {
@@ -1893,7 +1893,7 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  if ((v4 & 4) != 0)
+  if ((optionsCopy & 4) != 0)
   {
     v6 = 509955;
   }
@@ -1903,33 +1903,33 @@ LABEL_31:
     v6 = 509963;
   }
 
-  if ((v4 & 0x10) != 0)
+  if ((optionsCopy & 0x10) != 0)
   {
     v6 &= 0x7C809u;
   }
 
-  if ((v4 & 8) != 0)
+  if ((optionsCopy & 8) != 0)
   {
     v6 &= 0x7880Bu;
   }
 
   v7 = v6 & 0x7C80A;
-  if ((v4 & 1) == 0)
+  if ((optionsCopy & 1) == 0)
   {
     v7 = v6;
   }
 
-  if ((v4 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
     v7 &= ~0x20000u;
   }
 
-  if ((v4 & 0x20) != 0)
+  if ((optionsCopy & 0x20) != 0)
   {
     v7 &= 0x6C80Bu;
   }
 
-  if ((v4 & 0x40) != 0)
+  if ((optionsCopy & 0x40) != 0)
   {
     v8 = v7 & 0xFFFFF7FF;
   }
@@ -1955,11 +1955,11 @@ LABEL_31:
   [(SDXPCConnection *)self activateAssertionWithIdentifier:@"com.apple.sharing.PreventProxCards"];
   v11 = 1;
 LABEL_32:
-  v12 = v13;
-  if (v13)
+  v12 = completionCopy;
+  if (completionCopy)
   {
-    (*(v13 + 2))(v13, v11);
-    v12 = v13;
+    (*(completionCopy + 2))(completionCopy, v11);
+    v12 = completionCopy;
   }
 }
 
@@ -1996,10 +1996,10 @@ LABEL_32:
   }
 }
 
-- (void)deviceDiscoveryActivate:(id)a3 completion:(id)a4
+- (void)deviceDiscoveryActivate:(id)activate completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  activateCopy = activate;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if (dword_100971A10 <= 30 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
   {
@@ -2008,7 +2008,7 @@ LABEL_32:
 
   if ([(SDXPCConnection *)self _entitled:@"com.apple.sharing.DeviceDiscovery" state:&self->_entitledDeviceDiscovery label:@"DeviceDiscoveryActivate"])
   {
-    sub_100193274(v8);
+    sub_100193274(completionCopy);
   }
 
   else
@@ -2020,39 +2020,39 @@ LABEL_32:
       v12[2] = sub_10018B168;
       v12[3] = &unk_1008CE7A0;
       v12[4] = self;
-      [v7 setDeviceFoundHandler:v12];
+      [activateCopy setDeviceFoundHandler:v12];
       v11[0] = _NSConcreteStackBlock;
       v11[1] = 3221225472;
       v11[2] = sub_10018B1E8;
       v11[3] = &unk_1008CE7A0;
       v11[4] = self;
-      [v7 setDeviceLostHandler:v11];
+      [activateCopy setDeviceLostHandler:v11];
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_10018B268;
       v10[3] = &unk_1008CE7C8;
       v10[4] = self;
-      [v7 setDeviceChangedHandler:v10];
+      [activateCopy setDeviceChangedHandler:v10];
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
       v9[2] = sub_10018B2F0;
       v9[3] = &unk_1008CEA50;
       v9[4] = self;
-      [v7 setScanStateChangedHandler:v9];
-      objc_storeStrong(&self->_ddRequest, a3);
-      [(SDNearbyAgent *)self->_server->_nearbyAgent deviceDiscoveryRequestStart:v7];
+      [activateCopy setScanStateChangedHandler:v9];
+      objc_storeStrong(&self->_ddRequest, activate);
+      [(SDNearbyAgent *)self->_server->_nearbyAgent deviceDiscoveryRequestStart:activateCopy];
     }
 
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }
 
-- (void)deviceDiscoveryUpdate:(id)a3
+- (void)deviceDiscoveryUpdate:(id)update
 {
-  v24 = a3;
+  updateCopy = update;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if (dword_100971A10 <= 30 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
   {
@@ -2061,94 +2061,94 @@ LABEL_32:
 
   if (self->_ddRequest)
   {
-    v4 = [v24 changeFlags];
-    if (v4 != [(SFDeviceDiscovery *)self->_ddRequest changeFlags])
+    changeFlags = [updateCopy changeFlags];
+    if (changeFlags != [(SFDeviceDiscovery *)self->_ddRequest changeFlags])
     {
-      -[SFDeviceDiscovery setChangeFlags:](self->_ddRequest, "setChangeFlags:", [v24 changeFlags]);
+      -[SFDeviceDiscovery setChangeFlags:](self->_ddRequest, "setChangeFlags:", [updateCopy changeFlags]);
     }
 
-    v5 = [v24 discoveryFlags];
-    if (v5 != [(SFDeviceDiscovery *)self->_ddRequest discoveryFlags])
+    discoveryFlags = [updateCopy discoveryFlags];
+    if (discoveryFlags != [(SFDeviceDiscovery *)self->_ddRequest discoveryFlags])
     {
-      -[SFDeviceDiscovery setDiscoveryFlags:](self->_ddRequest, "setDiscoveryFlags:", [v24 discoveryFlags]);
+      -[SFDeviceDiscovery setDiscoveryFlags:](self->_ddRequest, "setDiscoveryFlags:", [updateCopy discoveryFlags]);
     }
 
-    v6 = [(SFDeviceDiscovery *)self->_ddRequest deviceFilter];
-    v7 = [v24 deviceFilter];
-    v8 = v6;
-    v9 = v7;
+    deviceFilter = [(SFDeviceDiscovery *)self->_ddRequest deviceFilter];
+    deviceFilter2 = [updateCopy deviceFilter];
+    deviceFilter3 = deviceFilter;
+    v9 = deviceFilter2;
     v10 = v9;
-    if (v8 == v9)
+    if (deviceFilter3 == v9)
     {
     }
 
     else
     {
-      if ((v8 != 0) == (v9 == 0))
+      if ((deviceFilter3 != 0) == (v9 == 0))
       {
       }
 
       else
       {
-        v11 = [v8 isEqual:v9];
+        v11 = [deviceFilter3 isEqual:v9];
 
         if (v11)
         {
 LABEL_17:
-          v12 = [v24 fastScanMode];
-          if (v12 != [(SFDeviceDiscovery *)self->_ddRequest fastScanMode])
+          fastScanMode = [updateCopy fastScanMode];
+          if (fastScanMode != [(SFDeviceDiscovery *)self->_ddRequest fastScanMode])
           {
-            -[SFDeviceDiscovery setFastScanMode:](self->_ddRequest, "setFastScanMode:", [v24 fastScanMode]);
+            -[SFDeviceDiscovery setFastScanMode:](self->_ddRequest, "setFastScanMode:", [updateCopy fastScanMode]);
           }
 
-          v13 = [v24 overrideScreenOff];
-          if (v13 != [(SFDeviceDiscovery *)self->_ddRequest overrideScreenOff])
+          overrideScreenOff = [updateCopy overrideScreenOff];
+          if (overrideScreenOff != [(SFDeviceDiscovery *)self->_ddRequest overrideScreenOff])
           {
-            -[SFDeviceDiscovery setOverrideScreenOff:](self->_ddRequest, "setOverrideScreenOff:", [v24 overrideScreenOff]);
+            -[SFDeviceDiscovery setOverrideScreenOff:](self->_ddRequest, "setOverrideScreenOff:", [updateCopy overrideScreenOff]);
           }
 
-          v14 = [v24 overrideScreenOffRescanInterval];
-          if (v14 != [(SFDeviceDiscovery *)self->_ddRequest overrideScreenOffRescanInterval])
+          overrideScreenOffRescanInterval = [updateCopy overrideScreenOffRescanInterval];
+          if (overrideScreenOffRescanInterval != [(SFDeviceDiscovery *)self->_ddRequest overrideScreenOffRescanInterval])
           {
-            -[SFDeviceDiscovery setOverrideScreenOffRescanInterval:](self->_ddRequest, "setOverrideScreenOffRescanInterval:", [v24 overrideScreenOffRescanInterval]);
+            -[SFDeviceDiscovery setOverrideScreenOffRescanInterval:](self->_ddRequest, "setOverrideScreenOffRescanInterval:", [updateCopy overrideScreenOffRescanInterval]);
           }
 
-          v15 = [v24 rssiThreshold];
-          if (v15 != [(SFDeviceDiscovery *)self->_ddRequest rssiThreshold])
+          rssiThreshold = [updateCopy rssiThreshold];
+          if (rssiThreshold != [(SFDeviceDiscovery *)self->_ddRequest rssiThreshold])
           {
-            -[SFDeviceDiscovery setRssiThreshold:](self->_ddRequest, "setRssiThreshold:", [v24 rssiThreshold]);
+            -[SFDeviceDiscovery setRssiThreshold:](self->_ddRequest, "setRssiThreshold:", [updateCopy rssiThreshold]);
           }
 
-          v16 = [v24 scanRate];
-          if (v16 != [(SFDeviceDiscovery *)self->_ddRequest scanRate])
+          scanRate = [updateCopy scanRate];
+          if (scanRate != [(SFDeviceDiscovery *)self->_ddRequest scanRate])
           {
-            -[SFDeviceDiscovery setScanRate:](self->_ddRequest, "setScanRate:", [v24 scanRate]);
+            -[SFDeviceDiscovery setScanRate:](self->_ddRequest, "setScanRate:", [updateCopy scanRate]);
           }
 
-          v17 = [v24 trackPeers];
-          if (v17 != [(SFDeviceDiscovery *)self->_ddRequest trackPeers])
+          trackPeers = [updateCopy trackPeers];
+          if (trackPeers != [(SFDeviceDiscovery *)self->_ddRequest trackPeers])
           {
-            -[SFDeviceDiscovery setTrackPeers:](self->_ddRequest, "setTrackPeers:", [v24 trackPeers]);
+            -[SFDeviceDiscovery setTrackPeers:](self->_ddRequest, "setTrackPeers:", [updateCopy trackPeers]);
           }
 
-          v18 = [(SFDeviceDiscovery *)self->_ddRequest useCases];
-          v19 = [v24 useCases];
-          v20 = v18;
-          v21 = v19;
+          useCases = [(SFDeviceDiscovery *)self->_ddRequest useCases];
+          useCases2 = [updateCopy useCases];
+          useCases3 = useCases;
+          v21 = useCases2;
           v22 = v21;
-          if (v20 == v21)
+          if (useCases3 == v21)
           {
           }
 
           else
           {
-            if ((v20 != 0) == (v21 == 0))
+            if ((useCases3 != 0) == (v21 == 0))
             {
             }
 
             else
             {
-              v23 = [v20 isEqual:v21];
+              v23 = [useCases3 isEqual:v21];
 
               if (v23)
               {
@@ -2156,8 +2156,8 @@ LABEL_17:
               }
             }
 
-            v20 = [v24 useCases];
-            [(SFDeviceDiscovery *)self->_ddRequest setUseCases:v20];
+            useCases3 = [updateCopy useCases];
+            [(SFDeviceDiscovery *)self->_ddRequest setUseCases:useCases3];
           }
 
 LABEL_37:
@@ -2166,8 +2166,8 @@ LABEL_37:
         }
       }
 
-      v8 = [v24 deviceFilter];
-      [(SFDeviceDiscovery *)self->_ddRequest setDeviceFilter:v8];
+      deviceFilter3 = [updateCopy deviceFilter];
+      [(SFDeviceDiscovery *)self->_ddRequest setDeviceFilter:deviceFilter3];
     }
 
     goto LABEL_17;
@@ -2177,42 +2177,42 @@ LABEL_37:
 LABEL_38:
 }
 
-- (void)deviceDiscoveryFastScanTrigger:(id)a3
+- (void)deviceDiscoveryFastScanTrigger:(id)trigger
 {
-  v5 = a3;
+  triggerCopy = trigger;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   ddRequest = self->_ddRequest;
   if (ddRequest)
   {
-    [(SDNearbyAgent *)self->_server->_nearbyAgent deviceDiscoveryFastScanTrigger:ddRequest reason:v5];
+    [(SDNearbyAgent *)self->_server->_nearbyAgent deviceDiscoveryFastScanTrigger:ddRequest reason:triggerCopy];
   }
 }
 
-- (void)deviceDiscoveryFastScanCancel:(id)a3
+- (void)deviceDiscoveryFastScanCancel:(id)cancel
 {
-  v5 = a3;
+  cancelCopy = cancel;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   ddRequest = self->_ddRequest;
   if (ddRequest)
   {
-    [(SDNearbyAgent *)self->_server->_nearbyAgent deviceDiscoveryFastScanCancel:ddRequest reason:v5];
+    [(SDNearbyAgent *)self->_server->_nearbyAgent deviceDiscoveryFastScanCancel:ddRequest reason:cancelCopy];
   }
 }
 
-- (void)deviceDiscoveryTriggerEnhancedDiscovery:(id)a3
+- (void)deviceDiscoveryTriggerEnhancedDiscovery:(id)discovery
 {
-  v5 = a3;
+  discoveryCopy = discovery;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   ddRequest = self->_ddRequest;
   if (ddRequest)
   {
-    [(SDNearbyAgent *)self->_server->_nearbyAgent deviceDiscoveryTriggerEnhancedDiscovery:ddRequest reason:v5];
+    [(SDNearbyAgent *)self->_server->_nearbyAgent deviceDiscoveryTriggerEnhancedDiscovery:ddRequest reason:discoveryCopy];
   }
 }
 
-- (void)diagnosticBLEModeWithCompletion:(id)a3
+- (void)diagnosticBLEModeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if (dword_100971A10 <= 30 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
   {
@@ -2228,14 +2228,14 @@ LABEL_38:
   {
     [(SDNearbyAgent *)self->_server->_nearbyAgent diagnosticBLEModeStart:self];
     self->_diagnosticBLEModeStarted = 1;
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)diagnosticControl:(id)a3 completion:(id)a4
+- (void)diagnosticControl:(id)control completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controlCopy = control;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if (dword_100971A10 <= 30 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
   {
@@ -2248,205 +2248,205 @@ LABEL_38:
     goto LABEL_40;
   }
 
-  if (![v6 hasPrefix:@"afui"])
+  if (![controlCopy hasPrefix:@"afui"])
   {
-    if ([v6 hasPrefix:@"afremote"])
+    if ([controlCopy hasPrefix:@"afremote"])
     {
       autoFillAgent = self->_server->_autoFillAgent;
-      v11 = [v6 substringFromIndex:8];
+      v11 = [controlCopy substringFromIndex:8];
       [(SDAutoFillAgent *)autoFillAgent testRemote:v11];
       goto LABEL_14;
     }
 
-    if ([v6 hasPrefix:@"afservice"])
+    if ([controlCopy hasPrefix:@"afservice"])
     {
       v13 = self->_server->_autoFillAgent;
-      v11 = [v6 substringFromIndex:9];
+      v11 = [controlCopy substringFromIndex:9];
       [(SDAutoFillAgent *)v13 testService:v11];
       goto LABEL_14;
     }
 
-    if ([v6 hasPrefix:@"afkc"])
+    if ([controlCopy hasPrefix:@"afkc"])
     {
       v14 = self->_server->_autoFillAgent;
-      v11 = [v6 substringFromIndex:4];
+      v11 = [controlCopy substringFromIndex:4];
       [(SDAutoFillAgent *)v14 testKeychain:v11];
       goto LABEL_14;
     }
 
-    if ([v6 caseInsensitiveCompare:@"au1"])
+    if ([controlCopy caseInsensitiveCompare:@"au1"])
     {
-      if ([v6 caseInsensitiveCompare:@"au0"])
+      if ([controlCopy caseInsensitiveCompare:@"au0"])
       {
-        if (sscanf([v6 UTF8String], "auua-%X-%X", &v40 + 4, &v40) == 2)
+        if (sscanf([controlCopy UTF8String], "auua-%X-%X", &v40 + 4, &v40) == 2)
         {
           [(SDNearbyAgent *)self->_server->_nearbyAgent unlockUpdateAdvertising:HIDWORD(v40) mask:v40];
           goto LABEL_15;
         }
 
-        if ([v6 hasPrefix:@"choui"])
+        if ([controlCopy hasPrefix:@"choui"])
         {
           proxHandoffAgent = self->_server->_proxHandoffAgent;
-          v9 = v6;
+          v9 = controlCopy;
           v10 = 5;
           goto LABEL_7;
         }
 
-        if ([v6 hasPrefix:@"isui"])
+        if ([controlCopy hasPrefix:@"isui"])
         {
           setupAgent = self->_server->_setupAgent;
-          v11 = [v6 substringFromIndex:4];
+          v11 = [controlCopy substringFromIndex:4];
           [(SDSetupAgent *)setupAgent testSetupUIiOS:v11];
           goto LABEL_14;
         }
 
-        if ([v6 hasPrefix:@"kbpost"])
+        if ([controlCopy hasPrefix:@"kbpost"])
         {
           riAgent = self->_server->_riAgent;
-          v11 = [v6 substringFromIndex:6];
+          v11 = [controlCopy substringFromIndex:6];
           [(SDRemoteInteractionAgent *)riAgent testKeyboardPost:v11];
           goto LABEL_14;
         }
 
-        if (![v6 caseInsensitiveCompare:@"kbpostdelay"])
+        if (![controlCopy caseInsensitiveCompare:@"kbpostdelay"])
         {
           [(SDRemoteInteractionAgent *)self->_server->_riAgent testKeyboardPostWithDelay];
           goto LABEL_15;
         }
 
-        if (![v6 caseInsensitiveCompare:@"kbpostupdate"])
+        if (![controlCopy caseInsensitiveCompare:@"kbpostupdate"])
         {
           [(SDRemoteInteractionAgent *)self->_server->_riAgent testKeyboardPostThenUpdate];
           goto LABEL_15;
         }
 
-        if (![v6 caseInsensitiveCompare:@"kbremove"])
+        if (![controlCopy caseInsensitiveCompare:@"kbremove"])
         {
           [(SDRemoteInteractionAgent *)self->_server->_riAgent testKeyboardRemove];
           goto LABEL_15;
         }
 
-        if (![v6 caseInsensitiveCompare:@"kbremovedelay"])
+        if (![controlCopy caseInsensitiveCompare:@"kbremovedelay"])
         {
           [(SDRemoteInteractionAgent *)self->_server->_riAgent testKeyboardRemoveWithDelay];
           goto LABEL_15;
         }
 
-        if (![v6 caseInsensitiveCompare:@"kbupdate"])
+        if (![controlCopy caseInsensitiveCompare:@"kbupdate"])
         {
           [(SDRemoteInteractionAgent *)self->_server->_riAgent testKeyboardUpdate];
           goto LABEL_15;
         }
 
-        if (![v6 caseInsensitiveCompare:@"kbupdatedelay"])
+        if (![controlCopy caseInsensitiveCompare:@"kbupdatedelay"])
         {
           [(SDRemoteInteractionAgent *)self->_server->_riAgent testKeyboardUpdateWithDelay];
           goto LABEL_15;
         }
 
-        if ([v6 hasPrefix:@"ppair"])
+        if ([controlCopy hasPrefix:@"ppair"])
         {
           ppAgent = self->_server->_ppAgent;
-          v11 = [v6 substringFromIndex:5];
+          v11 = [controlCopy substringFromIndex:5];
           [(SDProximityPairingAgent *)ppAgent testPairingUI:v11];
           goto LABEL_14;
         }
 
-        if ([v6 hasPrefix:@"pstat"])
+        if ([controlCopy hasPrefix:@"pstat"])
         {
           v20 = self->_server->_ppAgent;
-          v11 = [v6 substringFromIndex:5];
+          v11 = [controlCopy substringFromIndex:5];
           [(SDProximityPairingAgent *)v20 testStatusUI:v11];
           goto LABEL_14;
         }
 
-        if ([v6 hasPrefix:@"mismatch"])
+        if ([controlCopy hasPrefix:@"mismatch"])
         {
-          [(SDProximityPairingAgent *)self->_server->_ppAgent testStatusUI:v6];
+          [(SDProximityPairingAgent *)self->_server->_ppAgent testStatusUI:controlCopy];
           goto LABEL_15;
         }
 
-        if (![v6 caseInsensitiveCompare:@"btpipe"])
+        if (![controlCopy caseInsensitiveCompare:@"btpipe"])
         {
-          v21 = [(SDNearbyAgent *)self->_server->_nearbyAgent sharedNearbyPipe];
+          sharedNearbyPipe = [(SDNearbyAgent *)self->_server->_nearbyAgent sharedNearbyPipe];
           goto LABEL_15;
         }
 
-        if (![v6 caseInsensitiveCompare:@"metrics"])
+        if (![controlCopy caseInsensitiveCompare:@"metrics"])
         {
           SFMetricsLog();
           goto LABEL_15;
         }
 
-        if (![v6 caseInsensitiveCompare:@"pping"])
+        if (![controlCopy caseInsensitiveCompare:@"pping"])
         {
           [(SDNearbyAgent *)self->_server->_nearbyAgent testPipePing];
           goto LABEL_15;
         }
 
-        if (sscanf([v6 UTF8String], "hotspot=%X", &v40 + 4) == 1)
+        if (sscanf([controlCopy UTF8String], "hotspot=%X", &v40 + 4) == 1)
         {
           [(SDNearbyAgent *)self->_server->_nearbyAgent setHotspotInfo:HIDWORD(v40)];
           goto LABEL_15;
         }
 
-        if ([v6 hasPrefix:@"atvui"])
+        if ([controlCopy hasPrefix:@"atvui"])
         {
           v22 = self->_server->_setupAgent;
-          v11 = [v6 substringFromIndex:5];
+          v11 = [controlCopy substringFromIndex:5];
           [(SDSetupAgent *)v22 testUIAppleTVSetup:v11];
           goto LABEL_14;
         }
 
-        if (([v6 hasPrefix:@"b238ui"] & 1) != 0 || objc_msgSend(v6, "hasPrefix:", @"homepodui"))
+        if (([controlCopy hasPrefix:@"b238ui"] & 1) != 0 || objc_msgSend(controlCopy, "hasPrefix:", @"homepodui"))
         {
           v23 = self->_server->_setupAgent;
-          v11 = [v6 substringFromIndex:6];
+          v11 = [controlCopy substringFromIndex:6];
           [(SDSetupAgent *)v23 testSetupUIB238:v11];
           goto LABEL_14;
         }
 
-        if ([v6 hasPrefix:@"hkui"])
+        if ([controlCopy hasPrefix:@"hkui"])
         {
           v24 = self->_server->_setupAgent;
-          v11 = [v6 substringFromIndex:4];
+          v11 = [controlCopy substringFromIndex:4];
           [(SDSetupAgent *)v24 testHomeKitDeviceDetected:v11];
           goto LABEL_14;
         }
 
-        if ([v6 hasPrefix:@"nfcui"])
+        if ([controlCopy hasPrefix:@"nfcui"])
         {
           v25 = self->_server->_setupAgent;
-          v11 = [v6 substringFromIndex:5];
+          v11 = [controlCopy substringFromIndex:5];
           [(SDSetupAgent *)v25 testNFCUI:v11];
           goto LABEL_14;
         }
 
-        if ([v6 hasPrefix:@"ppui"])
+        if ([controlCopy hasPrefix:@"ppui"])
         {
           v26 = self->_server->_setupAgent;
-          v11 = [v6 substringFromIndex:4];
+          v11 = [controlCopy substringFromIndex:4];
           [(SDSetupAgent *)v26 testPairUI:v11];
           goto LABEL_14;
         }
 
-        if ([v6 hasPrefix:@"pinshow"])
+        if ([controlCopy hasPrefix:@"pinshow"])
         {
           v27 = self->_server->_setupAgent;
-          v11 = [v6 substringFromIndex:7];
+          v11 = [controlCopy substringFromIndex:7];
           [(SDSetupAgent *)v27 testPINShow:v11];
           goto LABEL_14;
         }
 
-        if (![v6 caseInsensitiveCompare:@"pinhide"])
+        if (![controlCopy caseInsensitiveCompare:@"pinhide"])
         {
           [(SDSetupAgent *)self->_server->_setupAgent testPINHide];
           goto LABEL_15;
         }
 
-        if ([v6 hasPrefix:@"dpick"])
+        if ([controlCopy hasPrefix:@"dpick"])
         {
-          v11 = [v6 substringFromIndex:5];
+          v11 = [controlCopy substringFromIndex:5];
           v28 = self->_server->_setupAgent;
           v41 = @"debugParams";
           v42 = v11;
@@ -2456,86 +2456,86 @@ LABEL_38:
           goto LABEL_14;
         }
 
-        if ([v6 hasPrefix:@"pwui"])
+        if ([controlCopy hasPrefix:@"pwui"])
         {
           v30 = self->_server->_setupAgent;
-          v11 = [v6 substringFromIndex:4];
+          v11 = [controlCopy substringFromIndex:4];
           [(SDSetupAgent *)v30 testSetupUIPasswordSharing:v11];
           goto LABEL_14;
         }
 
-        if ([v6 hasPrefix:@"rpui"])
+        if ([controlCopy hasPrefix:@"rpui"])
         {
           v31 = self->_server->_setupAgent;
-          v11 = [v6 substringFromIndex:4];
+          v11 = [controlCopy substringFromIndex:4];
           [(SDSetupAgent *)v31 testRepairUI:v11];
           goto LABEL_14;
         }
 
-        if ([v6 hasPrefix:@"ShareAudioUI"])
+        if ([controlCopy hasPrefix:@"ShareAudioUI"])
         {
           v32 = self->_server->_setupAgent;
-          v11 = [v6 substringFromIndex:12];
+          v11 = [controlCopy substringFromIndex:12];
           [(SDSetupAgent *)v32 testUIShareAudio:v11];
           goto LABEL_14;
         }
 
-        if ([v6 hasPrefix:@"siriN"])
+        if ([controlCopy hasPrefix:@"siriN"])
         {
           [(SDProximityPairingAgent *)self->_server->_ppAgent promptForSiriNotificationsForDevice:0];
           goto LABEL_15;
         }
 
-        if ([v6 hasPrefix:@"TVLatencyUI"])
+        if ([controlCopy hasPrefix:@"TVLatencyUI"])
         {
           v33 = self->_server->_setupAgent;
-          v11 = [v6 substringFromIndex:11];
+          v11 = [controlCopy substringFromIndex:11];
           [(SDSetupAgent *)v33 testUITVLatencySetup:v11];
           goto LABEL_14;
         }
 
-        if ([v6 hasPrefix:@"TVColorCalibrator"])
+        if ([controlCopy hasPrefix:@"TVColorCalibrator"])
         {
           v34 = self->_server->_setupAgent;
-          v11 = [v6 substringFromIndex:17];
+          v11 = [controlCopy substringFromIndex:17];
           [(SDSetupAgent *)v34 testUITVLatencyColorimeterSetup:v11];
           goto LABEL_14;
         }
 
-        if ([v6 hasPrefix:@"whaui"])
+        if ([controlCopy hasPrefix:@"whaui"])
         {
           v35 = self->_server->_setupAgent;
-          v11 = [v6 substringFromIndex:5];
+          v11 = [controlCopy substringFromIndex:5];
           [(SDSetupAgent *)v35 testSetupUIWHA:v11];
           goto LABEL_14;
         }
 
-        if ([v6 hasPrefix:@"wsui"])
+        if ([controlCopy hasPrefix:@"wsui"])
         {
           v36 = self->_server->_setupAgent;
-          v11 = [v6 substringFromIndex:4];
+          v11 = [controlCopy substringFromIndex:4];
           [(SDSetupAgent *)v36 testSetupUIWatch:v11];
           goto LABEL_14;
         }
 
-        if ([v6 hasPrefix:@"testProxCardKit"])
+        if ([controlCopy hasPrefix:@"testProxCardKit"])
         {
           v37 = self->_server->_setupAgent;
-          v11 = [v6 substringFromIndex:8];
+          v11 = [controlCopy substringFromIndex:8];
           [(SDSetupAgent *)v37 testProxCardKit:v11];
           goto LABEL_14;
         }
 
-        if ([v6 hasPrefix:@"unpost"])
+        if ([controlCopy hasPrefix:@"unpost"])
         {
           v38 = +[SDNotificationManager sharedManager];
-          v39 = [v6 substringFromIndex:6];
+          v39 = [controlCopy substringFromIndex:6];
           [v38 testPost:v39];
 
           goto LABEL_15;
         }
 
-        if ([v6 hasPrefix:@"familyHSNotification"])
+        if ([controlCopy hasPrefix:@"familyHSNotification"])
         {
           [(SDHotspotAgent *)self->_server->_hotspotAgent testNotification];
           goto LABEL_15;
@@ -2566,7 +2566,7 @@ LABEL_40:
   }
 
   proxHandoffAgent = self->_server->_autoFillAgent;
-  v9 = v6;
+  v9 = controlCopy;
   v10 = 4;
 LABEL_7:
   v11 = [v9 substringFromIndex:v10];
@@ -2574,40 +2574,40 @@ LABEL_7:
 LABEL_14:
 
 LABEL_15:
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 LABEL_16:
 }
 
-- (void)diagnosticMock:(id)a3 device:(id)a4 completion:(id)a5
+- (void)diagnosticMock:(id)mock device:(id)device completion:(id)completion
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v10 caseInsensitiveCompare:@"change"])
+  mockCopy = mock;
+  deviceCopy = device;
+  completionCopy = completion;
+  if ([mockCopy caseInsensitiveCompare:@"change"])
   {
-    if (![v10 caseInsensitiveCompare:@"found"])
+    if (![mockCopy caseInsensitiveCompare:@"found"])
     {
-      [(SDNearbyAgent *)self->_server->_nearbyAgent diagnosticMockFound:v8];
+      [(SDNearbyAgent *)self->_server->_nearbyAgent diagnosticMockFound:deviceCopy];
       goto LABEL_12;
     }
 
-    if ([v10 caseInsensitiveCompare:@"lost"])
+    if ([mockCopy caseInsensitiveCompare:@"lost"])
     {
       if (dword_100971A10 <= 50 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
       {
         sub_1001938A4();
-        if (!v9)
+        if (!completionCopy)
         {
           goto LABEL_14;
         }
 
 LABEL_13:
-        v9[2](v9, 0);
+        completionCopy[2](completionCopy, 0);
         goto LABEL_14;
       }
 
 LABEL_12:
-      if (!v9)
+      if (!completionCopy)
       {
         goto LABEL_14;
       }
@@ -2615,8 +2615,8 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    [(SDNearbyAgent *)self->_server->_nearbyAgent diagnosticMockLost:v8];
-    if (v9)
+    [(SDNearbyAgent *)self->_server->_nearbyAgent diagnosticMockLost:deviceCopy];
+    if (completionCopy)
     {
       goto LABEL_13;
     }
@@ -2624,8 +2624,8 @@ LABEL_12:
 
   else
   {
-    [(SDNearbyAgent *)self->_server->_nearbyAgent diagnosticMockChanged:v8];
-    if (v9)
+    [(SDNearbyAgent *)self->_server->_nearbyAgent diagnosticMockChanged:deviceCopy];
+    if (completionCopy)
     {
       goto LABEL_13;
     }
@@ -2634,49 +2634,49 @@ LABEL_12:
 LABEL_14:
 }
 
-- (void)diagnosticMockStart:(id)a3
+- (void)diagnosticMockStart:(id)start
 {
-  v5 = a3;
+  startCopy = start;
   if (dword_100971A10 <= 50 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
   {
     sub_1001938E4();
   }
 
   [(SDNearbyAgent *)self->_server->_nearbyAgent diagnosticBLEModeStart:self];
-  v4 = v5;
-  if (v5)
+  v4 = startCopy;
+  if (startCopy)
   {
-    (*(v5 + 2))(v5, 0);
-    v4 = v5;
+    (*(startCopy + 2))(startCopy, 0);
+    v4 = startCopy;
   }
 }
 
-- (void)diagnosticMockStop:(id)a3
+- (void)diagnosticMockStop:(id)stop
 {
-  v5 = a3;
+  stopCopy = stop;
   if (dword_100971A10 <= 50 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
   {
     sub_100193900();
   }
 
   [(SDNearbyAgent *)self->_server->_nearbyAgent diagnosticBLEModeStop:self];
-  v4 = v5;
-  if (v5)
+  v4 = stopCopy;
+  if (stopCopy)
   {
-    (*(v5 + 2))(v5, 0);
-    v4 = v5;
+    (*(stopCopy + 2))(stopCopy, 0);
+    v4 = stopCopy;
   }
 }
 
-- (void)diagnosticShow:(id)a3 completion:(id)a4
+- (void)diagnosticShow:(id)show completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  showCopy = show;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if ([(SDXPCConnection *)self _entitled:@"com.apple.sharing.Diagnostics" state:&self->_entitledDiagnostics label:@"DiagnosticShow"])
   {
     v11 = 0;
-    if (!v7)
+    if (!completionCopy)
     {
       goto LABEL_16;
     }
@@ -2684,7 +2684,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if ([v6 isEqual:@"ids"])
+  if ([showCopy isEqual:@"ids"])
   {
     nearbyAgent = self->_server->_nearbyAgent;
     v67 = 0;
@@ -2695,10 +2695,10 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v6 isEqual:@"prox"])
+  if ([showCopy isEqual:@"prox"])
   {
     v66[18] = 0;
-    v10 = [(SDNearbyAgent *)self->_server->_nearbyAgent bleProximityInfo];
+    bleProximityInfo = [(SDNearbyAgent *)self->_server->_nearbyAgent bleProximityInfo];
     NSAppendPrintF();
 LABEL_10:
     v9 = 0;
@@ -2706,23 +2706,23 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ([v6 isEqual:@"autofill"])
+  if ([showCopy isEqual:@"autofill"])
   {
     v66[17] = 0;
-    v10 = [(SDAutoFillAgent *)self->_server->_autoFillAgent description];
+    bleProximityInfo = [(SDAutoFillAgent *)self->_server->_autoFillAgent description];
     NSAppendPrintF();
     goto LABEL_10;
   }
 
-  if ([v6 isEqual:@"handoff"])
+  if ([showCopy isEqual:@"handoff"])
   {
     v66[16] = 0;
-    v10 = [(SDProxHandoffAgent *)self->_server->_proxHandoffAgent description];
+    bleProximityInfo = [(SDProxHandoffAgent *)self->_server->_proxHandoffAgent description];
     NSAppendPrintF();
     goto LABEL_10;
   }
 
-  v13 = [v6 isEqual:@"ss"];
+  v13 = [showCopy isEqual:@"ss"];
   v14 = [(SDNearbyAgent *)self->_server->_nearbyAgent description];
   v15 = v14;
   if (v14)
@@ -2746,12 +2746,12 @@ LABEL_10:
     }
   }
 
-  v17 = [(SDAppleIDAgent *)self->_server->_appleIDAgent detailedDescription];
+  detailedDescription = [(SDAppleIDAgent *)self->_server->_appleIDAgent detailedDescription];
 
-  if (v17)
+  if (detailedDescription)
   {
     v66[14] = v16;
-    v55 = v17;
+    v55 = detailedDescription;
     NSAppendPrintF();
     v18 = v16;
 
@@ -2759,12 +2759,12 @@ LABEL_10:
   }
 
   v19 = +[_TtC16DaemoniOSLibrary27SDAirDropContactHashManager shared];
-  v20 = [v19 detailedDescription];
+  detailedDescription2 = [v19 detailedDescription];
 
-  if (v20)
+  if (detailedDescription2)
   {
     v66[13] = v16;
-    v56 = v20;
+    v56 = detailedDescription2;
     NSAppendPrintF();
     v21 = v16;
 
@@ -2837,12 +2837,12 @@ LABEL_28:
     }
 
     v33 = +[SDAutoUnlockAKSManager sharedManager];
-    v34 = [v33 state];
+    state = [v33 state];
 
-    if (v34)
+    if (state)
     {
       v66[7] = v16;
-      v60 = v34;
+      v60 = state;
       NSAppendPrintF();
       v35 = v16;
 
@@ -2850,12 +2850,12 @@ LABEL_28:
     }
 
     v36 = +[SDAutoUnlockSessionManager sharedManager];
-    v37 = [v36 state];
+    state2 = [v36 state];
 
-    if (v37)
+    if (state2)
     {
       v66[6] = v16;
-      v61 = v37;
+      v61 = state2;
       NSAppendPrintF();
       v38 = v16;
 
@@ -2863,12 +2863,12 @@ LABEL_28:
     }
 
     v39 = +[SDAutoUnlockTransport sharedTransport];
-    v40 = [v39 state];
+    state3 = [v39 state];
 
-    if (v40)
+    if (state3)
     {
       v66[5] = v16;
-      v62 = v40;
+      v62 = state3;
       NSAppendPrintF();
       v41 = v16;
 
@@ -2876,12 +2876,12 @@ LABEL_28:
     }
 
     v42 = +[SDDeviceAssetMonitor sharedAssetMonitor];
-    v43 = [v42 state];
+    state4 = [v42 state];
 
-    if (v43)
+    if (state4)
     {
       v66[4] = v16;
-      v63 = v43;
+      v63 = state4;
       NSAppendPrintF();
       v44 = v16;
 
@@ -2932,7 +2932,7 @@ LABEL_28:
   [(SDXPCServer *)server stateAppendXPCConnections:v66, v64];
   v9 = v66[0];
 
-  if ([v6 isEqual:@"all"])
+  if ([showCopy isEqual:@"all"])
   {
     NSAppendPrintF();
     v52 = v9;
@@ -2940,14 +2940,14 @@ LABEL_28:
     NSAppendPrintF();
     v53 = v52;
 
-    v65 = [(SDNearbyAgent *)self->_server->_nearbyAgent bleProximityInfo];
+    bleProximityInfo2 = [(SDNearbyAgent *)self->_server->_nearbyAgent bleProximityInfo];
     NSAppendPrintF();
     v9 = v53;
   }
 
   if (!v9)
   {
-    if (!v7)
+    if (!completionCopy)
     {
       goto LABEL_16;
     }
@@ -2956,17 +2956,17 @@ LABEL_28:
   }
 
 LABEL_12:
-  if (v7)
+  if (completionCopy)
   {
     if (v9)
     {
-      v7[2](v7, v9);
+      completionCopy[2](completionCopy, v9);
       goto LABEL_17;
     }
 
 LABEL_15:
     v12 = NSPrintF();
-    v7[2](v7, v12);
+    completionCopy[2](completionCopy, v12);
 
 LABEL_16:
     v9 = 0;
@@ -2975,9 +2975,9 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)diagnosticUnlockTestClientWithDevice:(id)a3
+- (void)diagnosticUnlockTestClientWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if ([(SDXPCConnection *)self _entitled:@"com.apple.sharing.Diagnostics" state:&self->_entitledDiagnostics label:@"DiagnosticUnlockTestClientWithDevice"])
   {
@@ -2986,7 +2986,7 @@ LABEL_17:
 
   else
   {
-    [(SDNearbyAgent *)self->_server->_nearbyAgent unlockStartTestClientWithDevice:v4];
+    [(SDNearbyAgent *)self->_server->_nearbyAgent unlockStartTestClientWithDevice:deviceCopy];
     self->_unlockTestClientStarted = 1;
   }
 }
@@ -3007,11 +3007,11 @@ LABEL_17:
   }
 }
 
-- (void)nfcTagReaderUIActivateWithEndpoint:(id)a3 params:(id)a4 completion:(id)a5
+- (void)nfcTagReaderUIActivateWithEndpoint:(id)endpoint params:(id)params completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  endpointCopy = endpoint;
+  paramsCopy = params;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if (dword_100971A10 <= 30 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
   {
@@ -3025,14 +3025,14 @@ LABEL_17:
 
   else
   {
-    [(SDSetupAgent *)self->_server->_setupAgent nfcTagReaderUIActivateWithEndpoint:v8 params:v9 completion:v10];
+    [(SDSetupAgent *)self->_server->_setupAgent nfcTagReaderUIActivateWithEndpoint:endpointCopy params:paramsCopy completion:completionCopy];
   }
 }
 
-- (void)b389NFCPromptDidRequestPresentationWithConfiguration:(id)a3 responseHandler:(id)a4
+- (void)b389NFCPromptDidRequestPresentationWithConfiguration:(id)configuration responseHandler:(id)handler
 {
-  v10 = a3;
-  v6 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if (dword_100971A10 <= 30 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
   {
@@ -3049,32 +3049,32 @@ LABEL_17:
       if (dword_100971A10 <= 60 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
       {
         sub_100193BE8();
-        if (!v6)
+        if (!handlerCopy)
         {
           goto LABEL_11;
         }
       }
 
-      else if (!v6)
+      else if (!handlerCopy)
       {
 LABEL_11:
 
         goto LABEL_13;
       }
 
-      v6[2](v6, v9, 0, -1.0);
+      handlerCopy[2](handlerCopy, v9, 0, -1.0);
       goto LABEL_11;
     }
   }
 
   v9 = +[_TtC16DaemoniOSLibrary16SDB389SetupAgent shared];
-  [v9 showNFCPromptWithConfig:v10 responseHandler:v6];
+  [v9 showNFCPromptWithConfig:configurationCopy responseHandler:handlerCopy];
 LABEL_13:
 }
 
-- (void)b389NFCPromptUpdateConfiguration:(id)a3
+- (void)b389NFCPromptUpdateConfiguration:(id)configuration
 {
-  v7 = a3;
+  configurationCopy = configuration;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if (dword_100971A10 <= 30 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
   {
@@ -3094,7 +3094,7 @@ LABEL_13:
   else
   {
     v6 = +[_TtC16DaemoniOSLibrary16SDB389SetupAgent shared];
-    [v6 updateNFCPromptConfig:v7 responseHandler:0];
+    [v6 updateNFCPromptConfig:configurationCopy responseHandler:0];
   }
 }
 
@@ -3128,9 +3128,9 @@ LABEL_13:
   }
 }
 
-- (void)proximityClientUpdate:(id)a3
+- (void)proximityClientUpdate:(id)update
 {
-  v5 = a3;
+  updateCopy = update;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if (dword_100971A10 <= 30 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
   {
@@ -3139,10 +3139,10 @@ LABEL_13:
 
   if (self->_proxClient)
   {
-    v4 = [v5 shouldAdvertise];
-    if (v4 != [(SFProximityClient *)self->_proxClient shouldAdvertise])
+    shouldAdvertise = [updateCopy shouldAdvertise];
+    if (shouldAdvertise != [(SFProximityClient *)self->_proxClient shouldAdvertise])
     {
-      -[SFProximityClient setShouldAdvertise:](self->_proxClient, "setShouldAdvertise:", [v5 shouldAdvertise]);
+      -[SFProximityClient setShouldAdvertise:](self->_proxClient, "setShouldAdvertise:", [updateCopy shouldAdvertise]);
     }
 
     [(SDProxHandoffAgent *)self->_server->_proxHandoffAgent proximityClientUpdate:self->_proxClient];
@@ -3154,10 +3154,10 @@ LABEL_13:
   }
 }
 
-- (void)proximityClientDismissContentForDevice:(id)a3 completion:(id)a4
+- (void)proximityClientDismissContentForDevice:(id)device completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   v8 = [(SDXPCConnection *)self _entitled:@"com.apple.sharing.ProximityClient" state:&self->_entitledProximityClient label:@"ProximityClientDismissContent"];
   if (!v8)
@@ -3165,7 +3165,7 @@ LABEL_13:
     proxClient = self->_proxClient;
     if (!proxClient)
     {
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_10;
       }
@@ -3174,17 +3174,17 @@ LABEL_13:
       goto LABEL_6;
     }
 
-    v8 = [(SDProxHandoffAgent *)self->_server->_proxHandoffAgent proximityClient:proxClient dismissContentForDevice:v6];
+    v8 = [(SDProxHandoffAgent *)self->_server->_proxHandoffAgent proximityClient:proxClient dismissContentForDevice:deviceCopy];
   }
 
-  if (!v7)
+  if (!completionCopy)
   {
     goto LABEL_10;
   }
 
   if (!v8)
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_10;
   }
 
@@ -3202,15 +3202,15 @@ LABEL_6:
   v17 = v13;
   v14 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
   v15 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v10 userInfo:v14];
-  (v7)[2](v7, v15);
+  (completionCopy)[2](completionCopy, v15);
 
 LABEL_10:
 }
 
-- (void)proximityClientSuppressDevice:(id)a3 completion:(id)a4
+- (void)proximityClientSuppressDevice:(id)device completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   v8 = [(SDXPCConnection *)self _entitled:@"com.apple.sharing.ProximityClient" state:&self->_entitledProximityClient label:@"ProximityClientSuppressDevice"];
   if (!v8)
@@ -3218,7 +3218,7 @@ LABEL_10:
     proxClient = self->_proxClient;
     if (!proxClient)
     {
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_10;
       }
@@ -3227,17 +3227,17 @@ LABEL_10:
       goto LABEL_6;
     }
 
-    v8 = [(SDProxHandoffAgent *)self->_server->_proxHandoffAgent proximityClient:proxClient suppressDevice:v6];
+    v8 = [(SDProxHandoffAgent *)self->_server->_proxHandoffAgent proximityClient:proxClient suppressDevice:deviceCopy];
   }
 
-  if (!v7)
+  if (!completionCopy)
   {
     goto LABEL_10;
   }
 
   if (!v8)
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_10;
   }
 
@@ -3255,15 +3255,15 @@ LABEL_6:
   v17 = v13;
   v14 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
   v15 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v10 userInfo:v14];
-  (v7)[2](v7, v15);
+  (completionCopy)[2](completionCopy, v15);
 
 LABEL_10:
 }
 
-- (void)proximityClientStopSuppressingDevice:(id)a3 completion:(id)a4
+- (void)proximityClientStopSuppressingDevice:(id)device completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   v8 = [(SDXPCConnection *)self _entitled:@"com.apple.sharing.ProximityClient" state:&self->_entitledProximityClient label:@"ProximityClientStopSuppressingDevice"];
   if (!v8)
@@ -3271,7 +3271,7 @@ LABEL_10:
     proxClient = self->_proxClient;
     if (!proxClient)
     {
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_10;
       }
@@ -3280,17 +3280,17 @@ LABEL_10:
       goto LABEL_6;
     }
 
-    v8 = [(SDProxHandoffAgent *)self->_server->_proxHandoffAgent proximityClient:proxClient stopSuppressingDevice:v6];
+    v8 = [(SDProxHandoffAgent *)self->_server->_proxHandoffAgent proximityClient:proxClient stopSuppressingDevice:deviceCopy];
   }
 
-  if (!v7)
+  if (!completionCopy)
   {
     goto LABEL_10;
   }
 
   if (!v8)
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_10;
   }
 
@@ -3308,16 +3308,16 @@ LABEL_6:
   v17 = v13;
   v14 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
   v15 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v10 userInfo:v14];
-  (v7)[2](v7, v15);
+  (completionCopy)[2](completionCopy, v15);
 
 LABEL_10:
 }
 
-- (void)proximityClientUpdateContent:(id)a3 forDevice:(id)a4 completion:(id)a5
+- (void)proximityClientUpdateContent:(id)content forDevice:(id)device completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contentCopy = content;
+  deviceCopy = device;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   v11 = [(SDXPCConnection *)self _entitled:@"com.apple.sharing.ProximityClient" state:&self->_entitledProximityClient label:@"ProximityClientUpdateContent"];
   if (!v11)
@@ -3325,7 +3325,7 @@ LABEL_10:
     proxClient = self->_proxClient;
     if (!proxClient)
     {
-      if (!v10)
+      if (!completionCopy)
       {
         goto LABEL_10;
       }
@@ -3334,17 +3334,17 @@ LABEL_10:
       goto LABEL_6;
     }
 
-    v11 = [(SDProxHandoffAgent *)self->_server->_proxHandoffAgent proximityClient:proxClient updateContent:v8 forDevice:v9];
+    v11 = [(SDProxHandoffAgent *)self->_server->_proxHandoffAgent proximityClient:proxClient updateContent:contentCopy forDevice:deviceCopy];
   }
 
-  if (!v10)
+  if (!completionCopy)
   {
     goto LABEL_10;
   }
 
   if (!v11)
   {
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_10;
   }
 
@@ -3362,7 +3362,7 @@ LABEL_6:
   v20 = v16;
   v17 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
   v18 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v13 userInfo:v17];
-  (v10)[2](v10, v18);
+  (completionCopy)[2](completionCopy, v18);
 
 LABEL_10:
 }
@@ -3389,9 +3389,9 @@ LABEL_7:
   [(SDProxHandoffAgent *)proxHandoffAgent proximityClientRequestScannerTimerReset:?];
 }
 
-- (void)remoteInteractionSessionSendPayload:(id)a3
+- (void)remoteInteractionSessionSendPayload:(id)payload
 {
-  v5 = a3;
+  payloadCopy = payload;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if (dword_100971A10 <= 30 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
   {
@@ -3401,7 +3401,7 @@ LABEL_7:
   riSession = self->_riSession;
   if (riSession)
   {
-    [(SFRemoteInteractionSession *)riSession sendPayload:v5];
+    [(SFRemoteInteractionSession *)riSession sendPayload:payloadCopy];
   }
 
   else
@@ -3410,9 +3410,9 @@ LABEL_7:
   }
 }
 
-- (void)serviceUpdate:(id)a3
+- (void)serviceUpdate:(id)update
 {
-  v5 = a3;
+  updateCopy = update;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if (dword_100971A10 <= 30 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
   {
@@ -3422,7 +3422,7 @@ LABEL_7:
   service = self->_service;
   if (service)
   {
-    [(SFService *)service updateWithService:v5];
+    [(SFService *)service updateWithService:updateCopy];
     [(SDNearbyAgent *)self->_server->_nearbyAgent update];
   }
 
@@ -3432,10 +3432,10 @@ LABEL_7:
   }
 }
 
-- (void)servicePeerDisconnected:(id)a3 error:(id)a4
+- (void)servicePeerDisconnected:(id)disconnected error:(id)error
 {
-  v8 = a3;
-  v6 = a4;
+  disconnectedCopy = disconnected;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if (dword_100971A10 <= 10 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
   {
@@ -3445,7 +3445,7 @@ LABEL_7:
   service = self->_service;
   if (service)
   {
-    [(SFService *)service servicePeerDisconnected:v8 error:v6];
+    [(SFService *)service servicePeerDisconnected:disconnectedCopy error:errorCopy];
   }
 
   else
@@ -3454,9 +3454,9 @@ LABEL_7:
   }
 }
 
-- (void)serviceSendEvent:(id)a3
+- (void)serviceSendEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if (dword_100971A10 <= 10 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
   {
@@ -3465,7 +3465,7 @@ LABEL_7:
 
   if (self->_service)
   {
-    [(SDNearbyAgent *)self->_server->_nearbyAgent serviceSendEvent:v4 service:?];
+    [(SDNearbyAgent *)self->_server->_nearbyAgent serviceSendEvent:eventCopy service:?];
   }
 
   else
@@ -3474,9 +3474,9 @@ LABEL_7:
   }
 }
 
-- (void)serviceSendRequest:(id)a3
+- (void)serviceSendRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if (dword_100971A10 <= 10 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
   {
@@ -3485,7 +3485,7 @@ LABEL_7:
 
   if (self->_service)
   {
-    [(SDNearbyAgent *)self->_server->_nearbyAgent serviceSendRequest:v4 service:?];
+    [(SDNearbyAgent *)self->_server->_nearbyAgent serviceSendRequest:requestCopy service:?];
   }
 
   else
@@ -3494,9 +3494,9 @@ LABEL_7:
   }
 }
 
-- (void)serviceSendResponse:(id)a3
+- (void)serviceSendResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if (dword_100971A10 <= 10 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
   {
@@ -3505,7 +3505,7 @@ LABEL_7:
 
   if (self->_service)
   {
-    [(SDNearbyAgent *)self->_server->_nearbyAgent serviceSendResponse:v4 service:?];
+    [(SDNearbyAgent *)self->_server->_nearbyAgent serviceSendResponse:responseCopy service:?];
   }
 
   else
@@ -3514,9 +3514,9 @@ LABEL_7:
   }
 }
 
-- (void)sessionSendEvent:(id)a3
+- (void)sessionSendEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if (dword_100971A10 <= 10 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
   {
@@ -3525,8 +3525,8 @@ LABEL_7:
 
   if (self->_session)
   {
-    [v4 setSession:?];
-    [(SDNearbyAgent *)self->_server->_nearbyAgent sessionSendEvent:v4 session:self->_session];
+    [eventCopy setSession:?];
+    [(SDNearbyAgent *)self->_server->_nearbyAgent sessionSendEvent:eventCopy session:self->_session];
   }
 
   else
@@ -3535,9 +3535,9 @@ LABEL_7:
   }
 }
 
-- (void)sessionSendRequest:(id)a3
+- (void)sessionSendRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if (dword_100971A10 <= 10 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
   {
@@ -3546,8 +3546,8 @@ LABEL_7:
 
   if (self->_session)
   {
-    [v4 setSession:?];
-    [(SDNearbyAgent *)self->_server->_nearbyAgent sessionSendRequest:v4 session:self->_session];
+    [requestCopy setSession:?];
+    [(SDNearbyAgent *)self->_server->_nearbyAgent sessionSendRequest:requestCopy session:self->_session];
   }
 
   else
@@ -3556,9 +3556,9 @@ LABEL_7:
   }
 }
 
-- (void)sessionSendResponse:(id)a3
+- (void)sessionSendResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if (dword_100971A10 <= 10 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
   {
@@ -3567,8 +3567,8 @@ LABEL_7:
 
   if (self->_session)
   {
-    [v4 setSession:?];
-    [(SDNearbyAgent *)self->_server->_nearbyAgent sessionSendResponse:v4 session:self->_session];
+    [responseCopy setSession:?];
+    [(SDNearbyAgent *)self->_server->_nearbyAgent sessionSendResponse:responseCopy session:self->_session];
   }
 
   else
@@ -3577,9 +3577,9 @@ LABEL_7:
   }
 }
 
-- (void)shareAudioSessionActivate:(id)a3 completion:(id)a4
+- (void)shareAudioSessionActivate:(id)activate completion:(id)completion
 {
-  v6 = a3;
+  activateCopy = activate;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -3591,8 +3591,8 @@ LABEL_7:
   v14[2] = sub_10018F824;
   v14[3] = &unk_1008D21F0;
   v16 = &v17;
-  v7 = a4;
-  v15 = v7;
+  completionCopy = completion;
+  v15 = completionCopy;
   v8 = objc_retainBlock(v14);
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if (dword_100971A10 <= 30 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
@@ -3624,7 +3624,7 @@ LABEL_7:
     v13[5] = self;
     [(SFShareAudioSessionDaemon *)v9 setProgressHandler:v13];
     [(SFShareAudioSessionDaemon *)v9 activate];
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   (v8[2])(v8);
@@ -3680,13 +3680,13 @@ LABEL_7:
   _Block_object_dispose(&v11, 8);
 }
 
-- (void)userNotificationPresent:(id)a3
+- (void)userNotificationPresent:(id)present
 {
-  v3 = a3;
-  v4 = v3;
+  presentCopy = present;
+  v4 = presentCopy;
   if (dword_100971A10 <= 50)
   {
-    v6 = v3;
+    v6 = presentCopy;
     if (dword_100971A10 != -1 || (v5 = _LogCategory_Initialize(), v4 = v6, v5))
     {
       sub_1001948F4();
@@ -3695,7 +3695,7 @@ LABEL_7:
   }
 }
 
-- (int)_entitledService:(id)a3 state:(BOOL *)a4
+- (int)_entitledService:(id)service state:(BOOL *)state
 {
   sub_10019014C();
   v7 = v6;
@@ -3729,7 +3729,7 @@ LABEL_7:
   return v9;
 }
 
-- (void)autoFillHelperActivate:(id)a3 completion:(id)a4
+- (void)autoFillHelperActivate:(id)activate completion:(id)completion
 {
   sub_1001900A0();
   v8 = v5;
@@ -3802,7 +3802,7 @@ LABEL_10:
   }
 }
 
-- (void)accountForAppleID:(id)a3 withCompletion:(id)a4
+- (void)accountForAppleID:(id)d withCompletion:(id)completion
 {
   sub_1001901A4();
   sub_10019014C();
@@ -3835,10 +3835,10 @@ LABEL_10:
   sub_10019018C();
 }
 
-- (void)subCredentialPresentCardWithParams:(id)a3 completion:(id)a4
+- (void)subCredentialPresentCardWithParams:(id)params completion:(id)completion
 {
-  v11 = a3;
-  v6 = a4;
+  paramsCopy = params;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if (![(SDXPCConnection *)self _entitled:@"com.apple.sharing.Client" state:&self->_entitledClient label:@"subCredentialPresentCard"])
   {
@@ -3848,10 +3848,10 @@ LABEL_10:
     }
 
     v7 = +[SDSubCredentialAgent sharedAgent];
-    [v7 uiPresentWithParamsDirect:v11 completion:v6];
+    [v7 uiPresentWithParamsDirect:paramsCopy completion:completionCopy];
   }
 
-  if (v6)
+  if (completionCopy)
   {
     v8 = NSErrorWithOSStatusF();
     v9 = sub_10002FC98();
@@ -3859,11 +3859,11 @@ LABEL_10:
   }
 }
 
-- (void)broadwayPresentCardWithCode:(id)a3 options:(id)a4 completion:(id)a5
+- (void)broadwayPresentCardWithCode:(id)code options:(id)options completion:(id)completion
 {
-  v15 = a3;
-  v7 = a4;
-  v8 = a5;
+  codeCopy = code;
+  optionsCopy = options;
+  completionCopy = completion;
   sub_100035138();
   if (!sub_1001900F8(v9, v10, @"com.apple.sharing.Client"))
   {
@@ -3873,10 +3873,10 @@ LABEL_10:
     }
 
     v11 = +[SDBroadwayAgent sharedAgent];
-    [v11 preparePresentationWithBroadwayActivationCode:v15 testInfo:v7];
+    [v11 preparePresentationWithBroadwayActivationCode:codeCopy testInfo:optionsCopy];
   }
 
-  if (a5)
+  if (completion)
   {
     v12 = NSErrorWithOSStatusF();
     v13 = sub_10018FEE0();
@@ -3884,20 +3884,20 @@ LABEL_10:
   }
 }
 
-- (void)displayStringForContactIdentifier:(id)a3 deviceIdentifier:(id)a4 completion:(id)a5
+- (void)displayStringForContactIdentifier:(id)identifier deviceIdentifier:(id)deviceIdentifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  deviceIdentifierCopy = deviceIdentifier;
+  completionCopy = completion;
   v11 = +[SDStatusMonitor sharedMonitor];
-  v12 = [v11 meCard];
+  meCard = [v11 meCard];
 
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   v13 = [(SDXPCConnection *)self _entitled:@"com.apple.sharing.Client" state:&self->_entitledClient label:@"DisplayNameForHashes"];
   if (v13)
   {
     v22 = 0;
-    if (!v10)
+    if (!completionCopy)
     {
       goto LABEL_19;
     }
@@ -3905,30 +3905,30 @@ LABEL_10:
     goto LABEL_16;
   }
 
-  v14 = [v12 identifier];
-  v15 = [v8 isEqual:v14];
+  identifier = [meCard identifier];
+  v15 = [identifierCopy isEqual:identifier];
 
   if (v15)
   {
-    v16 = [(SDNearbyAgent *)self->_server->_nearbyAgent idsDeviceForBluetoothDeviceID:v9 conflictDetected:0];
+    v16 = [(SDNearbyAgent *)self->_server->_nearbyAgent idsDeviceForBluetoothDeviceID:deviceIdentifierCopy conflictDetected:0];
     v17 = v16;
     if (v16)
     {
-      v18 = [v16 name];
+      name = [v16 name];
     }
 
     else
     {
       if (dword_100971A10 <= 60 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
       {
-        v34 = v9;
+        v34 = deviceIdentifierCopy;
         LogPrintF();
       }
 
-      v18 = [CNContactFormatter stringFromContact:v12 style:0, v34];
+      name = [CNContactFormatter stringFromContact:meCard style:0, v34];
     }
 
-    v22 = v18;
+    v22 = name;
   }
 
   else
@@ -3938,7 +3938,7 @@ LABEL_10:
     v38 = v19;
     v20 = [NSArray arrayWithObjects:&v38 count:1];
 
-    v21 = [v17 unifiedContactWithIdentifier:v8 keysToFetch:v20 error:0];
+    v21 = [v17 unifiedContactWithIdentifier:identifierCopy keysToFetch:v20 error:0];
     v22 = [CNContactFormatter stringFromContact:v21 style:0];
   }
 
@@ -3952,28 +3952,28 @@ LABEL_10:
     v13 = -6727;
   }
 
-  if (v10)
+  if (completionCopy)
   {
 LABEL_16:
     if (v13)
     {
       v23 = v13;
-      v35 = v8;
+      v35 = identifierCopy;
       v36 = NSLocalizedDescriptionKey;
       v24 = [NSString stringWithUTF8String:sub_100190078()];
       sub_10018FED4();
       v37 = v25;
       [NSDictionary dictionaryWithObjects:&v37 forKeys:&v36 count:1];
-      v26 = v12;
-      v28 = v27 = v9;
+      v26 = meCard;
+      v28 = v27 = deviceIdentifierCopy;
       v29 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v23 userInfo:v28];
       v30 = sub_100190158();
       v31(v30);
 
-      v9 = v27;
-      v12 = v26;
+      deviceIdentifierCopy = v27;
+      meCard = v26;
 
-      v8 = v35;
+      identifierCopy = v35;
     }
 
     else
@@ -3986,11 +3986,11 @@ LABEL_16:
 LABEL_19:
 }
 
-- (void)myAccountWithCompletion:(id)a3
+- (void)myAccountWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
-  if (v4)
+  if (completionCopy)
   {
     if ([(SDXPCConnection *)self _entitled:@"com.apple.sharing.Client" state:&self->_entitledClient label:@"AppleIDAuth"]|| ([(SDAppleIDAgent *)self->_server->_appleIDAgent myAccount], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
     {
@@ -4014,12 +4014,12 @@ LABEL_19:
   }
 }
 
-- (void)hashManagerControl:(id)a3 completion:(id)a4
+- (void)hashManagerControl:(id)control completion:(id)completion
 {
-  v31 = a3;
-  v6 = a4;
+  controlCopy = control;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
-  if (v6)
+  if (completionCopy)
   {
     if (sub_1001900F8(v7, v8, @"com.apple.sharing.Client"))
     {
@@ -4030,7 +4030,7 @@ LABEL_19:
 
     else
     {
-      v9 = [v31 objectForKeyedSubscript:@"cmd"];
+      v9 = [controlCopy objectForKeyedSubscript:@"cmd"];
       v10 = v9;
       if (v9)
       {
@@ -4061,11 +4061,11 @@ LABEL_19:
 
           if (v17 && (+[SDAirDropContactHashManager shared](_TtC16DaemoniOSLibrary27SDAirDropContactHashManager, "shared"), v20 = objc_claimAutoreleasedReturnValue(), v21 = [v20 dumpDBAtFileURL:v17], v20, (v21 & 1) != 0))
           {
-            v22 = [v17 path];
-            v23 = v22;
-            if (v22)
+            path = [v17 path];
+            v23 = path;
+            if (path)
             {
-              v24 = v22;
+              v24 = path;
             }
 
             else
@@ -4080,11 +4080,11 @@ LABEL_19:
             if (v25 && v19)
             {
               [(SDAirDropService_objc *)v25 dumpDBWithUrl:v19];
-              v26 = [v19 path];
-              v27 = v26;
-              if (v26)
+              path2 = [v19 path];
+              v27 = path2;
+              if (path2)
               {
-                v28 = v26;
+                v28 = path2;
               }
 
               else
@@ -4118,7 +4118,7 @@ LABEL_22:
   }
 }
 
-- (void)personInfoWithEmailOrPhone:(id)a3 completion:(id)a4
+- (void)personInfoWithEmailOrPhone:(id)phone completion:(id)completion
 {
   sub_1001901A4();
   sub_10019014C();
@@ -4154,7 +4154,7 @@ LABEL_22:
   sub_10019018C();
 }
 
-- (void)altDSIDLookupWithEmails:(id)a3 phoneNumbers:(id)a4 completion:(id)a5
+- (void)altDSIDLookupWithEmails:(id)emails phoneNumbers:(id)numbers completion:(id)completion
 {
   sub_1001901A4();
   v6 = v5;
@@ -4192,9 +4192,9 @@ LABEL_22:
   sub_10019018C();
 }
 
-- (void)preventExitForLocaleReason:(id)a3
+- (void)preventExitForLocaleReason:(id)reason
 {
-  v9 = a3;
+  reasonCopy = reason;
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if ([(SDXPCConnection *)self _entitled:@"com.apple.sharing.Client" state:&self->_entitledClient label:@"PreventExitForLocale"])
   {
@@ -4212,15 +4212,15 @@ LABEL_22:
       [v5 removePreventExitForLocaleReason:?];
     }
 
-    objc_storeStrong(p_preventExitForLocaleReason, a3);
-    if (v9)
+    objc_storeStrong(p_preventExitForLocaleReason, reason);
+    if (reasonCopy)
     {
-      [v6 addPreventExitForLocaleReason:v9];
+      [v6 addPreventExitForLocaleReason:reasonCopy];
     }
   }
 }
 
-- (void)reenableProxCardType:(unsigned __int8)a3 completion:(id)a4
+- (void)reenableProxCardType:(unsigned __int8)type completion:(id)completion
 {
   sub_1001901A4();
   v5 = v4;
@@ -4281,22 +4281,22 @@ LABEL_17:
   sub_10019018C();
 }
 
-- (void)coordinatedAlertsRequestStart:(id)a3 completion:(id)a4
+- (void)coordinatedAlertsRequestStart:(id)start completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  startCopy = start;
+  completionCopy = completion;
   sub_100035138();
   if (dword_100971A10 <= 30 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
   {
-    v9 = [v7 type];
-    if (v9 > 6)
+    type = [startCopy type];
+    if (type > 6)
     {
       v10 = "?";
     }
 
     else
     {
-      v10 = off_1008D2758[v9];
+      v10 = off_1008D2758[type];
     }
 
     v18 = @"CoordinatedAlertStart";
@@ -4318,17 +4318,17 @@ LABEL_17:
 
     else
     {
-      [v7 setCompletionHandler:a4];
+      [startCopy setCompletionHandler:completion];
       v11 = +[NSXPCConnection currentConnection];
-      [v7 setXpcConnection:v11];
+      [startCopy setXpcConnection:v11];
 
-      objc_storeStrong(&self->_caRequest, a3);
-      [(SDNearbyAgent *)self->_server->_nearbyAgent coordinatedAlertRequestStart:v7];
+      objc_storeStrong(&self->_caRequest, start);
+      [(SDNearbyAgent *)self->_server->_nearbyAgent coordinatedAlertRequestStart:startCopy];
       v20 = 0;
     }
   }
 
-  if (a4 && v20)
+  if (completion && v20)
   {
     v21 = NSLocalizedDescriptionKey;
     sub_100190078();
@@ -4358,7 +4358,7 @@ LABEL_17:
   }
 }
 
-- (void)diagnosticLogControl:(id)a3 completion:(id)a4
+- (void)diagnosticLogControl:(id)control completion:(id)completion
 {
   sub_10019014C();
   v7 = v6;
@@ -4381,7 +4381,7 @@ LABEL_17:
   }
 }
 
-- (void)proximityClientActivate:(id)a3 completion:(id)a4
+- (void)proximityClientActivate:(id)activate completion:(id)completion
 {
   sub_1001900A0();
   v8 = v5;
@@ -4496,7 +4496,7 @@ LABEL_12:
   }
 }
 
-- (void)remoteInteractionSessionActivate:(id)a3 completion:(id)a4
+- (void)remoteInteractionSessionActivate:(id)activate completion:(id)completion
 {
   sub_1001900A0();
   v8 = v5;
@@ -4571,25 +4571,25 @@ LABEL_10:
   }
 }
 
-- (void)serviceActivate:(id)a3 completion:(id)a4
+- (void)serviceActivate:(id)activate completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 identifier];
+  activateCopy = activate;
+  completionCopy = completion;
+  identifier = [activateCopy identifier];
   dispatch_assert_queue_V2(self->_server->_dispatchQueue);
   if (dword_100971A10 <= 30 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
   {
-    v23 = v7;
+    v23 = activateCopy;
     LogPrintF();
   }
 
-  if (!v9)
+  if (!identifier)
   {
     v15 = -6705;
     goto LABEL_20;
   }
 
-  v47 = [(SDXPCConnection *)self _entitledService:v9 state:&self->_entitledService];
+  v47 = [(SDXPCConnection *)self _entitledService:identifier state:&self->_entitledService];
   if (!v47)
   {
     if (self->_service)
@@ -4600,8 +4600,8 @@ LABEL_10:
 
     if (CFPrefs_GetInt64())
     {
-      v10 = [v7 identifier];
-      v11 = [v10 isEqual:SFServiceIdentifierDeviceDiagnostics];
+      identifier2 = [activateCopy identifier];
+      v11 = [identifier2 isEqual:SFServiceIdentifierDeviceDiagnostics];
 
       if (v11)
       {
@@ -4613,7 +4613,7 @@ LABEL_10:
         v15 = -71165;
 LABEL_20:
         v47 = v15;
-        if (!v8)
+        if (!completionCopy)
         {
           goto LABEL_24;
         }
@@ -4622,51 +4622,51 @@ LABEL_20:
       }
     }
 
-    [v7 setDispatchQueue:{self->_server->_dispatchQueue, v23}];
+    [activateCopy setDispatchQueue:{self->_server->_dispatchQueue, v23}];
     v46[0] = _NSConcreteStackBlock;
     v46[1] = 3221225472;
     v46[2] = sub_10018E6E8;
     v46[3] = &unk_1008CDF90;
     v46[4] = self;
-    [v7 setErrorHandler:v46];
+    [activateCopy setErrorHandler:v46];
     v45[0] = _NSConcreteStackBlock;
     v45[1] = 3221225472;
     v45[2] = sub_10018E768;
     v45[3] = &unk_1008D1388;
     v45[4] = self;
-    [v7 setEventMessageHandler:v45];
+    [activateCopy setEventMessageHandler:v45];
     sub_10018FFD8();
     v42 = sub_10018E814;
     v43 = &unk_1008D2348;
-    v44 = self;
-    [v7 setPeerDisconnectedHandler:v41];
+    selfCopy = self;
+    [activateCopy setPeerDisconnectedHandler:v41];
     sub_10018FFB0();
     v38 = sub_10018E8B8;
     v39 = &unk_1008D2370;
-    v40 = self;
-    [v7 setReceivedFramePeerHandler:v37];
+    selfCopy2 = self;
+    [activateCopy setReceivedFramePeerHandler:v37];
     sub_10018FE68();
     v33 = 3221225472;
     v34 = sub_10018E95C;
     v35 = &unk_1008CEA00;
-    v36 = self;
-    [v7 setRequestMessageHandler:v32];
+    selfCopy3 = self;
+    [activateCopy setRequestMessageHandler:v32];
     sub_100021EC8();
     v29 = sub_10018EA08;
     v30 = &unk_1008D2398;
-    v31 = self;
-    [v7 setResponseMessageInternalHandler:v28];
+    selfCopy4 = self;
+    [activateCopy setResponseMessageInternalHandler:v28];
     sub_100035DD4();
     v25 = sub_10018EAB4;
     v26 = &unk_1008D2370;
-    v27 = self;
-    [v7 setSendFramePeerHandler:v24];
-    v47 = [(SDNearbyAgent *)self->_server->_nearbyAgent serviceStart:v7];
+    selfCopy5 = self;
+    [activateCopy setSendFramePeerHandler:v24];
+    v47 = [(SDNearbyAgent *)self->_server->_nearbyAgent serviceStart:activateCopy];
     if (!v47)
     {
-      objc_storeStrong(&self->_service, a3);
-      v12 = [(SFService *)self->_service identifier];
-      v13 = [v12 isEqualToString:SFServiceIdentifierPasswordSharing];
+      objc_storeStrong(&self->_service, activate);
+      identifier3 = [(SFService *)self->_service identifier];
+      v13 = [identifier3 isEqualToString:SFServiceIdentifierPasswordSharing];
 
       if (v13)
       {
@@ -4676,7 +4676,7 @@ LABEL_20:
     }
   }
 
-  if (!v8)
+  if (!completionCopy)
   {
     goto LABEL_24;
   }
@@ -4692,7 +4692,7 @@ LABEL_21:
     v49 = v18;
     v19 = [NSDictionary dictionaryWithObjects:&v49 forKeys:&v48 count:1];
     v20 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v16 userInfo:v19];
-    v8[2](v8, v20);
+    completionCopy[2](completionCopy, v20);
   }
 
   else
@@ -4704,10 +4704,10 @@ LABEL_21:
 LABEL_24:
 }
 
-- (void)sessionActivate:(id)a3 completion:(id)a4
+- (void)sessionActivate:(id)activate completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  activateCopy = activate;
+  completionCopy = completion;
   sub_100035138();
   if (dword_100971A10 <= 30 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
   {
@@ -4725,50 +4725,50 @@ LABEL_24:
 
     else
     {
-      v11 = [v8 serviceUUID];
+      serviceUUID = [activateCopy serviceUUID];
 
-      if (v11)
+      if (serviceUUID)
       {
-        [v8 setDispatchQueue:self->_server->_dispatchQueue];
+        [activateCopy setDispatchQueue:self->_server->_dispatchQueue];
         sub_10019001C();
         v46 = 3221225472;
         v47 = sub_10018EF00;
         v48 = &unk_1008CEA50;
-        v49 = self;
-        [v8 setBluetoothStateChangedHandler:v45];
+        selfCopy = self;
+        [activateCopy setBluetoothStateChangedHandler:v45];
         sub_10018FF10();
         v42 = sub_10018EF6C;
         v43 = &unk_1008CDF90;
-        v44 = self;
-        [v8 setErrorHandler:v41];
+        selfCopy2 = self;
+        [activateCopy setErrorHandler:v41];
         sub_10018FFD8();
         v38 = sub_10018EFEC;
         v39 = &unk_1008D1388;
-        v40 = self;
-        [v8 setEventMessageHandler:v37];
+        selfCopy3 = self;
+        [activateCopy setEventMessageHandler:v37];
         sub_10018FFB0();
         v34 = sub_10018F06C;
         v35 = &unk_1008D23C0;
-        v36 = self;
-        [v8 setReceivedFrameHandler:v33];
+        selfCopy4 = self;
+        [activateCopy setReceivedFrameHandler:v33];
         sub_10018FE68();
         v29 = 3221225472;
         v30 = sub_10018F0F4;
         v31 = &unk_1008CEA00;
-        v32 = self;
-        [v8 setRequestMessageHandler:v28];
+        selfCopy5 = self;
+        [activateCopy setRequestMessageHandler:v28];
         sub_100021EC8();
         v25 = sub_10018F174;
         v26 = &unk_1008D2398;
-        v27 = self;
-        [v8 setResponseMessageInternalHandler:v24];
+        selfCopy6 = self;
+        [activateCopy setResponseMessageInternalHandler:v24];
         sub_100035DD4();
         v21 = sub_10018F1F4;
         v22 = &unk_1008D23C0;
-        v23 = self;
-        [v8 setSendFrameHandler:v20];
-        objc_storeStrong(&self->_session, a3);
-        v10 = [(SDNearbyAgent *)self->_server->_nearbyAgent sessionStart:v8];
+        selfCopy7 = self;
+        [activateCopy setSendFrameHandler:v20];
+        objc_storeStrong(&self->_session, activate);
+        v10 = [(SDNearbyAgent *)self->_server->_nearbyAgent sessionStart:activateCopy];
       }
 
       else
@@ -4778,7 +4778,7 @@ LABEL_24:
     }
   }
 
-  if (a4)
+  if (completion)
   {
     if (v10)
     {

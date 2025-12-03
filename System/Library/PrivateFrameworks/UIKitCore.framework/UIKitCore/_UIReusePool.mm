@@ -1,8 +1,8 @@
 @interface _UIReusePool
 + (void)initialize;
-- (_UIReusePool)initWithPolicy:(unint64_t)a3;
+- (_UIReusePool)initWithPolicy:(unint64_t)policy;
 - (id)reusableObject;
-- (void)addObject:(id)a3;
+- (void)addObject:(id)object;
 - (void)drainPool;
 @end
 
@@ -32,10 +32,10 @@
 
 + (void)initialize
 {
-  v11.receiver = a1;
+  v11.receiver = self;
   v11.super_class = &OBJC_METACLASS____UIReusePool;
   objc_msgSendSuper2(&v11, sel_initialize);
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = dispatch_queue_create("com.apple.UIKit._UIReusePool.memoryPressureResponse", 0);
     v4 = qword_1ED49A2C8;
@@ -54,17 +54,17 @@
 
     dispatch_source_set_event_handler(qword_1ED49A2C0, &__block_literal_global_3_2);
     dispatch_resume(qword_1ED49A2C0);
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:a1 selector:sel___applicationDidEnterBackground_ name:@"UIApplicationDidEnterBackgroundNotification" object:UIApp];
-    [v10 addObserver:a1 selector:sel___applicationWillEnterForeground_ name:@"UIApplicationWillEnterForegroundNotification" object:UIApp];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel___applicationDidEnterBackground_ name:@"UIApplicationDidEnterBackgroundNotification" object:UIApp];
+    [defaultCenter addObserver:self selector:sel___applicationWillEnterForeground_ name:@"UIApplicationWillEnterForegroundNotification" object:UIApp];
     if ([UIApp applicationState] == 2)
     {
-      [a1 __applicationDidEnterBackground:0];
+      [self __applicationDidEnterBackground:0];
     }
   }
 }
 
-- (_UIReusePool)initWithPolicy:(unint64_t)a3
+- (_UIReusePool)initWithPolicy:(unint64_t)policy
 {
   v14.receiver = self;
   v14.super_class = _UIReusePool;
@@ -80,7 +80,7 @@
     reuseSetAccessQueue = v4->_reuseSetAccessQueue;
     v4->_reuseSetAccessQueue = v8;
 
-    v4->_purgePolicy = a3;
+    v4->_purgePolicy = policy;
     v10 = v4;
     if (qword_1ED49A2D8 != -1)
     {
@@ -100,10 +100,10 @@
   return v4;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
-  v5 = v4;
+  objectCopy = object;
+  v5 = objectCopy;
   purgePolicy = self->_purgePolicy;
   if (purgePolicy)
   {
@@ -134,7 +134,7 @@ LABEL_7:
     v10[2] = __26___UIReusePool_addObject___block_invoke;
     v10[3] = &unk_1E70F35B8;
     v10[4] = self;
-    v11 = v4;
+    v11 = objectCopy;
     dispatch_sync(reuseSetAccessQueue, v10);
   }
 

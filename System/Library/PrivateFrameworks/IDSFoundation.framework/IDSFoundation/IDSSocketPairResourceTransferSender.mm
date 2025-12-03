@@ -1,6 +1,6 @@
 @interface IDSSocketPairResourceTransferSender
-- (BOOL)readNextBytes:(id *)a3 byteOffset:(unint64_t *)a4;
-- (IDSSocketPairResourceTransferSender)initWithResourceAtPath:(id)a3 metadata:(id)a4 sequenceNumber:(unsigned int)a5 streamID:(unsigned __int16)a6 expectsPeerResponse:(BOOL)a7 wantsAppAck:(BOOL)a8 compressPayload:(BOOL)a9 compressed:(BOOL)a10 didWakeHint:(BOOL)a11 peerResponseIdentifier:(id)a12 messageUUID:(id)a13 expiryDate:(id)a14;
+- (BOOL)readNextBytes:(id *)bytes byteOffset:(unint64_t *)offset;
+- (IDSSocketPairResourceTransferSender)initWithResourceAtPath:(id)path metadata:(id)metadata sequenceNumber:(unsigned int)number streamID:(unsigned __int16)d expectsPeerResponse:(BOOL)response wantsAppAck:(BOOL)ack compressPayload:(BOOL)payload compressed:(BOOL)self0 didWakeHint:(BOOL)self1 peerResponseIdentifier:(id)self2 messageUUID:(id)self3 expiryDate:(id)self4;
 - (id)description;
 - (id)nextMessage;
 - (id)nextMessage_old;
@@ -12,17 +12,17 @@
 
 @implementation IDSSocketPairResourceTransferSender
 
-- (IDSSocketPairResourceTransferSender)initWithResourceAtPath:(id)a3 metadata:(id)a4 sequenceNumber:(unsigned int)a5 streamID:(unsigned __int16)a6 expectsPeerResponse:(BOOL)a7 wantsAppAck:(BOOL)a8 compressPayload:(BOOL)a9 compressed:(BOOL)a10 didWakeHint:(BOOL)a11 peerResponseIdentifier:(id)a12 messageUUID:(id)a13 expiryDate:(id)a14
+- (IDSSocketPairResourceTransferSender)initWithResourceAtPath:(id)path metadata:(id)metadata sequenceNumber:(unsigned int)number streamID:(unsigned __int16)d expectsPeerResponse:(BOOL)response wantsAppAck:(BOOL)ack compressPayload:(BOOL)payload compressed:(BOOL)self0 didWakeHint:(BOOL)self1 peerResponseIdentifier:(id)self2 messageUUID:(id)self3 expiryDate:(id)self4
 {
-  v37 = a7;
-  v38 = a8;
-  v36 = a6;
+  responseCopy = response;
+  ackCopy = ack;
+  dCopy = d;
   v63 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v39 = a4;
-  v40 = a12;
-  v18 = a13;
-  v19 = a14;
+  pathCopy = path;
+  metadataCopy = metadata;
+  identifierCopy = identifier;
+  iDCopy = iD;
+  dateCopy = date;
   v42.receiver = self;
   v42.super_class = IDSSocketPairResourceTransferSender;
   v20 = [(IDSSocketPairResourceTransferSender *)&v42 init];
@@ -32,10 +32,10 @@
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138414594;
-      v44 = v17;
+      v44 = pathCopy;
       v45 = 2112;
-      v46 = v39;
-      if (v37)
+      v46 = metadataCopy;
+      if (responseCopy)
       {
         v22 = @"YES";
       }
@@ -46,7 +46,7 @@
       }
 
       v47 = 2048;
-      if (v38)
+      if (ackCopy)
       {
         v23 = @"YES";
       }
@@ -56,9 +56,9 @@
         v23 = @"NO";
       }
 
-      v48 = a5;
+      numberCopy = number;
       v49 = 1024;
-      if (a10)
+      if (compressed)
       {
         v24 = @"YES";
       }
@@ -68,7 +68,7 @@
         v24 = @"NO";
       }
 
-      v50 = v36;
+      v50 = dCopy;
       v51 = 2112;
       v52 = v22;
       v53 = 2112;
@@ -76,11 +76,11 @@
       v55 = 2112;
       v56 = v24;
       v57 = 2112;
-      v58 = v40;
+      v58 = identifierCopy;
       v59 = 2112;
-      v60 = v18;
+      v60 = iDCopy;
       v61 = 2112;
-      v62 = v19;
+      v62 = dateCopy;
       _os_log_impl(&dword_1A7AD9000, v21, OS_LOG_TYPE_DEFAULT, "IDSSocketPairResourceTransferSender: created with path %@  metadata %@ sequenceNumber %lu streamID %u expectsPeerResponse %@ wantsAppAck %@ compressed %@ peerResponseIdentifier %@ messageUUID %@ expiryDate %@", buf, 0x62u);
     }
 
@@ -97,11 +97,11 @@
       }
     }
 
-    objc_storeStrong(&v20->_resourcePath, a3);
-    objc_storeStrong(&v20->_metadata, a4);
-    v25 = [MEMORY[0x1E696AC08] defaultManager];
+    objc_storeStrong(&v20->_resourcePath, path);
+    objc_storeStrong(&v20->_metadata, metadata);
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v41 = 0;
-    v26 = [v25 attributesOfItemAtPath:v17 error:&v41];
+    v26 = [defaultManager attributesOfItemAtPath:pathCopy error:&v41];
     v34 = v41;
     resourceAttributes = v20->_resourceAttributes;
     v20->_resourceAttributes = v26;
@@ -109,28 +109,28 @@
     v28 = v20->_resourceAttributes;
     if (v28)
     {
-      v29 = [(NSDictionary *)v28 fileSize];
-      v20->_totalBytes = v29;
-      if (!v29)
+      fileSize = [(NSDictionary *)v28 fileSize];
+      v20->_totalBytes = fileSize;
+      if (!fileSize)
       {
         goto LABEL_35;
       }
 
-      if (!HIBYTE(v29))
+      if (!HIBYTE(fileSize))
       {
 LABEL_36:
-        v20->_sequenceNumber = a5;
-        v20->_streamID = v36;
-        v20->_expectsPeerResponse = v37;
-        v20->_wantsAppAck = v38;
-        v20->_compressPayload = a9;
-        v20->_compressed = a10;
-        v20->_didWakeHint = a11;
-        objc_storeStrong(&v20->_peerResponseIdentifier, a12);
-        objc_storeStrong(&v20->_messageUUID, a13);
+        v20->_sequenceNumber = number;
+        v20->_streamID = dCopy;
+        v20->_expectsPeerResponse = responseCopy;
+        v20->_wantsAppAck = ackCopy;
+        v20->_compressPayload = payload;
+        v20->_compressed = compressed;
+        v20->_didWakeHint = hint;
+        objc_storeStrong(&v20->_peerResponseIdentifier, identifier);
+        objc_storeStrong(&v20->_messageUUID, iD);
         v20->_maxChunkSize = 4000;
         v20->_fileDescriptor = -1;
-        objc_storeStrong(&v20->_expiryDate, a14);
+        objc_storeStrong(&v20->_expiryDate, date);
 
         goto LABEL_37;
       }
@@ -288,7 +288,7 @@ LABEL_37:
   self->_done = 1;
 }
 
-- (BOOL)readNextBytes:(id *)a3 byteOffset:(unint64_t *)a4
+- (BOOL)readNextBytes:(id *)bytes byteOffset:(unint64_t *)offset
 {
   v38 = *MEMORY[0x1E69E9840];
   if (self->_done)
@@ -465,9 +465,9 @@ LABEL_63:
     }
 
     v19 = v18;
-    *a3 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:v17 length:v14 freeWhenDone:1];
+    *bytes = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:v17 length:v14 freeWhenDone:1];
     v20 = self->_nextByte;
-    *a4 = v20;
+    *offset = v20;
     v21 = v20 + v19;
     self->_nextByte = v21;
     if (v21 == self->_totalBytes)
@@ -568,11 +568,11 @@ LABEL_63:
       goto LABEL_54;
     }
 
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     if (self->_totalBytes)
     {
-      v9 = [(IDSSocketPairResourceTransferSender *)self readNextBytes];
-      if (!v9)
+      readNextBytes = [(IDSSocketPairResourceTransferSender *)self readNextBytes];
+      if (!readNextBytes)
       {
         [(IDSSocketPairResourceTransferSender *)self closeFileAndMarkDone];
         goto LABEL_53;
@@ -581,13 +581,13 @@ LABEL_63:
 
     else
     {
-      v9 = 0;
+      readNextBytes = 0;
     }
 
     v12 = self->_resourcePath;
     if (v12)
     {
-      CFDictionarySetValue(v8, @"ids-message-resource-transfer-url", v12);
+      CFDictionarySetValue(dictionary, @"ids-message-resource-transfer-url", v12);
     }
 
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -598,18 +598,18 @@ LABEL_63:
     metadata = self->_metadata;
     if (metadata)
     {
-      CFDictionarySetValue(v8, @"ids-message-resource-transfer-metadata", metadata);
+      CFDictionarySetValue(dictionary, @"ids-message-resource-transfer-metadata", metadata);
     }
 
-    if (v9)
+    if (readNextBytes)
     {
-      CFDictionarySetValue(v8, @"ids-message-resource-transfer-data", v9);
+      CFDictionarySetValue(dictionary, @"ids-message-resource-transfer-data", readNextBytes);
     }
 
     v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_totalBytes];
     if (v14)
     {
-      CFDictionarySetValue(v8, @"ids-message-resource-transfer-total-bytes", v14);
+      CFDictionarySetValue(dictionary, @"ids-message-resource-transfer-total-bytes", v14);
     }
 
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -622,11 +622,11 @@ LABEL_63:
     v16 = [v15 numberWithDouble:?];
     if (v16)
     {
-      CFDictionarySetValue(v8, @"ids-message-resource-transfer-expiry-date", v16);
+      CFDictionarySetValue(dictionary, @"ids-message-resource-transfer-expiry-date", v16);
     }
 
-    v3 = JWEncodeDictionary();
-    if (v3)
+    readNextBytes2 = JWEncodeDictionary();
+    if (readNextBytes2)
     {
       self->_sentFirstMessage = 1;
 
@@ -665,8 +665,8 @@ LABEL_54:
     goto LABEL_55;
   }
 
-  v3 = [(IDSSocketPairResourceTransferSender *)self readNextBytes];
-  if (!v3)
+  readNextBytes2 = [(IDSSocketPairResourceTransferSender *)self readNextBytes];
+  if (!readNextBytes2)
   {
     v4 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -697,22 +697,22 @@ LABEL_54:
   }
 
 LABEL_42:
-  v17 = [v3 _CUTCopyGzippedData];
-  v18 = [v17 length];
-  v19 = [v3 length];
+  _CUTCopyGzippedData = [readNextBytes2 _CUTCopyGzippedData];
+  v18 = [_CUTCopyGzippedData length];
+  v19 = [readNextBytes2 length];
   if (v18 < v19)
   {
-    v20 = v17;
+    v20 = _CUTCopyGzippedData;
 
-    v3 = v20;
+    readNextBytes2 = v20;
   }
 
-  v21 = [(IDSSocketPairDataMessage *)[IDSSocketPairResourceTransferMessage alloc] initWithSequenceNumber:self->_sequenceNumber streamID:self->_streamID expectsPeerResponse:self->_expectsPeerResponse wantsAppAck:self->_wantsAppAck compressed:v18 < v19 didWakeHint:self->_didWakeHint peerResponseIdentifier:self->_peerResponseIdentifier messageUUID:self->_messageUUID data:v3 expiryDate:0];
-  v22 = [(IDSSocketPairMessage *)self topic];
-  [(IDSSocketPairMessage *)v21 setTopic:v22];
+  v21 = [(IDSSocketPairDataMessage *)[IDSSocketPairResourceTransferMessage alloc] initWithSequenceNumber:self->_sequenceNumber streamID:self->_streamID expectsPeerResponse:self->_expectsPeerResponse wantsAppAck:self->_wantsAppAck compressed:v18 < v19 didWakeHint:self->_didWakeHint peerResponseIdentifier:self->_peerResponseIdentifier messageUUID:self->_messageUUID data:readNextBytes2 expiryDate:0];
+  topic = [(IDSSocketPairMessage *)self topic];
+  [(IDSSocketPairMessage *)v21 setTopic:topic];
 
-  v23 = [(IDSSocketPairMessage *)self context];
-  [(IDSSocketPairMessage *)v21 setContext:v23];
+  context = [(IDSSocketPairMessage *)self context];
+  [(IDSSocketPairMessage *)v21 setContext:context];
 
 LABEL_55:
 
@@ -724,11 +724,11 @@ LABEL_55:
   v38 = *MEMORY[0x1E69E9840];
   if (!self->_resumeResourceTransfers)
   {
-    v6 = [(IDSSocketPairResourceTransferSender *)self nextMessage_old];
+    nextMessage_old = [(IDSSocketPairResourceTransferSender *)self nextMessage_old];
     goto LABEL_61;
   }
 
-  v3 = [MEMORY[0x1E695DF88] data];
+  data = [MEMORY[0x1E695DF88] data];
   if (!self->_sentFirstMessage)
   {
     fileDescriptor = self->_fileDescriptor;
@@ -768,7 +768,7 @@ LABEL_55:
       goto LABEL_59;
     }
 
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v35 = 0;
     if (self->_totalBytes)
     {
@@ -792,7 +792,7 @@ LABEL_58:
     v16 = self->_resourcePath;
     if (v16)
     {
-      CFDictionarySetValue(v9, @"ids-message-resource-transfer-url", v16);
+      CFDictionarySetValue(dictionary, @"ids-message-resource-transfer-url", v16);
     }
 
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -803,18 +803,18 @@ LABEL_58:
     metadata = self->_metadata;
     if (metadata)
     {
-      CFDictionarySetValue(v9, @"ids-message-resource-transfer-metadata", metadata);
+      CFDictionarySetValue(dictionary, @"ids-message-resource-transfer-metadata", metadata);
     }
 
     if (v11)
     {
-      CFDictionarySetValue(v9, @"ids-message-resource-transfer-data", v11);
+      CFDictionarySetValue(dictionary, @"ids-message-resource-transfer-data", v11);
     }
 
     v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_totalBytes];
     if (v18)
     {
-      CFDictionarySetValue(v9, @"ids-message-resource-transfer-total-bytes", v18);
+      CFDictionarySetValue(dictionary, @"ids-message-resource-transfer-total-bytes", v18);
     }
 
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -827,14 +827,14 @@ LABEL_58:
     v20 = [v19 numberWithDouble:?];
     if (v20)
     {
-      CFDictionarySetValue(v9, @"ids-message-resource-transfer-expiry-date", v20);
+      CFDictionarySetValue(dictionary, @"ids-message-resource-transfer-expiry-date", v20);
     }
 
     v5 = JWEncodeDictionary();
     if (v5)
     {
       buf[0] = 1;
-      [v3 appendBytes:buf length:1];
+      [data appendBytes:buf length:1];
       self->_sentFirstMessage = 1;
 
       goto LABEL_45;
@@ -881,18 +881,18 @@ LABEL_58:
     BYTE2(v37) = BYTE1(v35);
     BYTE3(v37) = v35;
     buf[0] = 0;
-    [v3 appendBytes:buf length:8];
+    [data appendBytes:buf length:8];
 LABEL_45:
     if (self->_compressPayload)
     {
-      v21 = [v5 _CUTCopyGzippedData];
-      v22 = [v21 length];
+      _CUTCopyGzippedData = [v5 _CUTCopyGzippedData];
+      v22 = [_CUTCopyGzippedData length];
       v23 = [v5 length];
       v24 = v22 >= v23;
       v25 = v22 < v23;
       if (!v24)
       {
-        v26 = v21;
+        v26 = _CUTCopyGzippedData;
 
         v5 = v26;
       }
@@ -903,15 +903,15 @@ LABEL_45:
       v25 = 0;
     }
 
-    [v3 appendData:v5];
-    v6 = [(IDSSocketPairDataMessage *)[IDSSocketPairResourceTransferMessage alloc] initWithSequenceNumber:self->_sequenceNumber streamID:self->_streamID expectsPeerResponse:self->_expectsPeerResponse wantsAppAck:self->_wantsAppAck compressed:v25 didWakeHint:self->_didWakeHint peerResponseIdentifier:self->_peerResponseIdentifier messageUUID:self->_messageUUID data:v3 expiryDate:0];
-    v27 = [(IDSSocketPairMessage *)self topic];
-    [(IDSSocketPairMessage *)v6 setTopic:v27];
+    [data appendData:v5];
+    nextMessage_old = [(IDSSocketPairDataMessage *)[IDSSocketPairResourceTransferMessage alloc] initWithSequenceNumber:self->_sequenceNumber streamID:self->_streamID expectsPeerResponse:self->_expectsPeerResponse wantsAppAck:self->_wantsAppAck compressed:v25 didWakeHint:self->_didWakeHint peerResponseIdentifier:self->_peerResponseIdentifier messageUUID:self->_messageUUID data:data expiryDate:0];
+    topic = [(IDSSocketPairMessage *)self topic];
+    [(IDSSocketPairMessage *)nextMessage_old setTopic:topic];
 
-    [(IDSSocketPairDataMessage *)v6 setStreamID:self->_streamID];
-    [(IDSSocketPairMessage *)v6 setUseDynamicServiceName:[(IDSSocketPairMessage *)self useDynamicServiceName]];
-    v28 = [(IDSSocketPairMessage *)self context];
-    [(IDSSocketPairMessage *)v6 setContext:v28];
+    [(IDSSocketPairDataMessage *)nextMessage_old setStreamID:self->_streamID];
+    [(IDSSocketPairMessage *)nextMessage_old setUseDynamicServiceName:[(IDSSocketPairMessage *)self useDynamicServiceName]];
+    context = [(IDSSocketPairMessage *)self context];
+    [(IDSSocketPairMessage *)nextMessage_old setContext:context];
 
     goto LABEL_60;
   }
@@ -943,12 +943,12 @@ LABEL_45:
   [(IDSSocketPairResourceTransferSender *)self closeFileAndMarkDone];
 
 LABEL_59:
-  v6 = 0;
+  nextMessage_old = 0;
 LABEL_60:
 
 LABEL_61:
 
-  return v6;
+  return nextMessage_old;
 }
 
 - (void)reset

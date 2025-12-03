@@ -1,12 +1,12 @@
 @interface WLASearchPlayableContentFromWatchList
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation WLASearchPlayableContentFromWatchList
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   NSLog(@"WLASearchPlayableContentFromWatchList: Received search playable content request.");
   +[NSDate date];
   v34[0] = _NSConcreteStackBlock;
@@ -14,41 +14,41 @@
   v34[2] = __63__WLASearchPlayableContentFromWatchList_performWithCompletion___block_invoke;
   v5 = v34[3] = &unk_8350;
   v35 = v5;
-  v6 = v4;
+  v6 = completionCopy;
   v36 = v6;
   v7 = objc_retainBlock(v34);
   if (![(WLASearchPlayableContentFromWatchList *)self onlyReturnNextItem])
   {
     NSLog(@"WLASearchPlayableContentFromWatchList: Generic search.");
     v8 = objc_alloc_init(NSMutableDictionary);
-    v10 = [(WLASearchPlayableContentFromWatchList *)self canonicalId];
-    v11 = [v10 length];
+    canonicalId = [(WLASearchPlayableContentFromWatchList *)self canonicalId];
+    v11 = [canonicalId length];
 
     if (v11)
     {
-      v12 = [(WLASearchPlayableContentFromWatchList *)self canonicalId];
-      [v8 setObject:v12 forKey:WLKSiriSearchRequestOptionCanonicalID];
+      canonicalId2 = [(WLASearchPlayableContentFromWatchList *)self canonicalId];
+      [v8 setObject:canonicalId2 forKey:WLKSiriSearchRequestOptionCanonicalID];
     }
 
-    v13 = [(WLASearchPlayableContentFromWatchList *)self title];
-    v14 = [v13 length];
+    title = [(WLASearchPlayableContentFromWatchList *)self title];
+    v14 = [title length];
 
     if (v14)
     {
-      v15 = [(WLASearchPlayableContentFromWatchList *)self title];
-      [v8 setObject:v15 forKey:WLKSiriSearchRequestOptionTitle];
+      title2 = [(WLASearchPlayableContentFromWatchList *)self title];
+      [v8 setObject:title2 forKey:WLKSiriSearchRequestOptionTitle];
 
-      v16 = [(WLASearchPlayableContentFromWatchList *)self siriLocale];
+      siriLocale = [(WLASearchPlayableContentFromWatchList *)self siriLocale];
 
-      if (v16)
+      if (siriLocale)
       {
-        v17 = [(WLASearchPlayableContentFromWatchList *)self siriLocale];
-        [v8 setObject:v17 forKey:@"locale"];
+        siriLocale2 = [(WLASearchPlayableContentFromWatchList *)self siriLocale];
+        [v8 setObject:siriLocale2 forKey:@"locale"];
       }
     }
 
-    v18 = [(WLASearchPlayableContentFromWatchList *)self contentType];
-    v19 = [v18 isEqualToString:SAVCSContentTypeMovieValue];
+    contentType = [(WLASearchPlayableContentFromWatchList *)self contentType];
+    v19 = [contentType isEqualToString:SAVCSContentTypeMovieValue];
 
     if (v19)
     {
@@ -57,8 +57,8 @@
 
     else
     {
-      v21 = [(WLASearchPlayableContentFromWatchList *)self contentType];
-      v22 = [v21 isEqualToString:SAVCSContentTypeShowValue];
+      contentType2 = [(WLASearchPlayableContentFromWatchList *)self contentType];
+      v22 = [contentType2 isEqualToString:SAVCSContentTypeShowValue];
 
       if (v22)
       {
@@ -67,8 +67,8 @@
 
       else
       {
-        v23 = [(WLASearchPlayableContentFromWatchList *)self contentType];
-        v24 = [v23 isEqualToString:SAVCSContentTypeEpisodeValue];
+        contentType3 = [(WLASearchPlayableContentFromWatchList *)self contentType];
+        v24 = [contentType3 isEqualToString:SAVCSContentTypeEpisodeValue];
 
         if (v24)
         {
@@ -77,8 +77,8 @@
 
         else
         {
-          v25 = [(WLASearchPlayableContentFromWatchList *)self contentType];
-          v26 = [v25 isEqualToString:SAVCSContentTypeSeasonValue];
+          contentType4 = [(WLASearchPlayableContentFromWatchList *)self contentType];
+          v26 = [contentType4 isEqualToString:SAVCSContentTypeSeasonValue];
 
           if (!v26)
           {

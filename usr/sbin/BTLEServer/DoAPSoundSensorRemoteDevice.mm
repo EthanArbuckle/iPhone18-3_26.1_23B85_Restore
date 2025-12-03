@@ -1,32 +1,32 @@
 @interface DoAPSoundSensorRemoteDevice
-- (DoAPSoundSensorRemoteDevice)initWithCodecs:(id)a3 streamID:(unsigned __int16)a4;
+- (DoAPSoundSensorRemoteDevice)initWithCodecs:(id)codecs streamID:(unsigned __int16)d;
 - (int)startStreaming;
 - (void)activateSoundSensorClient;
 - (void)cancelSoundSensorClient;
 - (void)clearState;
-- (void)handleAudioData:(char *)a3 dataLength:(int64_t)a4;
-- (void)handleEventIndicator:(unsigned __int8)a3 eventValue:(char *)a4;
+- (void)handleAudioData:(char *)data dataLength:(int64_t)length;
+- (void)handleEventIndicator:(unsigned __int8)indicator eventValue:(char *)value;
 - (void)handleStartStreaming;
-- (void)handleStopStreaming:(unsigned __int8)a3;
+- (void)handleStopStreaming:(unsigned __int8)streaming;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation DoAPSoundSensorRemoteDevice
 
-- (DoAPSoundSensorRemoteDevice)initWithCodecs:(id)a3 streamID:(unsigned __int16)a4
+- (DoAPSoundSensorRemoteDevice)initWithCodecs:(id)codecs streamID:(unsigned __int16)d
 {
-  v4 = a4;
-  v7 = a3;
-  if (v4 == 2)
+  dCopy = d;
+  codecsCopy = codecs;
+  if (dCopy == 2)
   {
     v23.receiver = self;
     v23.super_class = DoAPSoundSensorRemoteDevice;
-    v8 = [(DoAPDevice *)&v23 initWithCodecs:v7 streamID:2];
+    v8 = [(DoAPDevice *)&v23 initWithCodecs:codecsCopy streamID:2];
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_codecs, a3);
+      objc_storeStrong(&v8->_codecs, codecs);
       v9->_vtEvent = 0;
       v9->_vtSource = 0;
       v10 = objc_alloc_init(NSMutableArray);
@@ -45,9 +45,9 @@
 
         if (v9->_doapAudioStart)
         {
-          v16 = [(DoAPDevice *)v9 allocQueue];
+          allocQueue = [(DoAPDevice *)v9 allocQueue];
           queue = v9->_queue;
-          v9->_queue = v16;
+          v9->_queue = allocQueue;
 
           v18 = v9->_queue;
           if (v18)
@@ -70,14 +70,14 @@
 
 LABEL_11:
     self = v9;
-    v19 = self;
+    selfCopy = self;
     goto LABEL_12;
   }
 
-  v19 = 0;
+  selfCopy = 0;
 LABEL_12:
 
-  return v19;
+  return selfCopy;
 }
 
 - (void)stop
@@ -89,23 +89,23 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Stop DoAPSoundSensorRemoteDevice - Destroy DoAPAudioRelay", buf, 2u);
   }
 
-  v4 = [(DoAPSoundSensorRemoteDevice *)self doapAudioStart];
-  dispatch_semaphore_signal(v4);
+  doapAudioStart = [(DoAPSoundSensorRemoteDevice *)self doapAudioStart];
+  dispatch_semaphore_signal(doapAudioStart);
 
-  v5 = [(DoAPSoundSensorRemoteDevice *)self doapAudioStop];
+  doapAudioStop = [(DoAPSoundSensorRemoteDevice *)self doapAudioStop];
 
-  if (v5)
+  if (doapAudioStop)
   {
-    v6 = [(DoAPSoundSensorRemoteDevice *)self doapAudioStop];
-    dispatch_semaphore_signal(v6);
+    doapAudioStop2 = [(DoAPSoundSensorRemoteDevice *)self doapAudioStop];
+    dispatch_semaphore_signal(doapAudioStop2);
   }
 
-  v7 = [(DoAPSoundSensorRemoteDevice *)self doapAudioRelay];
+  doapAudioRelay = [(DoAPSoundSensorRemoteDevice *)self doapAudioRelay];
 
-  if (v7)
+  if (doapAudioRelay)
   {
-    v8 = [(DoAPSoundSensorRemoteDevice *)self doapAudioRelay];
-    [v8 invalidate];
+    doapAudioRelay2 = [(DoAPSoundSensorRemoteDevice *)self doapAudioRelay];
+    [doapAudioRelay2 invalidate];
 
     [(DoAPSoundSensorRemoteDevice *)self setDoapAudioRelay:0];
   }
@@ -138,8 +138,8 @@ LABEL_12:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v4 = [(DoAPSoundSensorRemoteDevice *)self codecs];
-  v5 = [v4 countByEnumeratingWithState:&v31 objects:v38 count:16];
+  codecs = [(DoAPSoundSensorRemoteDevice *)self codecs];
+  v5 = [codecs countByEnumeratingWithState:&v31 objects:v38 count:16];
   if (v5)
   {
     v6 = v5;
@@ -150,7 +150,7 @@ LABEL_12:
       {
         if (*v32 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(codecs);
         }
 
         v9 = *(*(&v31 + 1) + 8 * i);
@@ -159,18 +159,18 @@ LABEL_12:
           [*(*(&v31 + 1) + 8 * i) codec];
           if (v28 == 7)
           {
-            v10 = [(DoAPDevice *)self peripheral];
-            v11 = [v10 identifier];
-            v12 = [v11 UUIDString];
-            v13 = [NSString stringWithFormat:@"%@_%@", v12, @"DoAP Sound Sensor"];
+            peripheral = [(DoAPDevice *)self peripheral];
+            identifier = [peripheral identifier];
+            uUIDString = [identifier UUIDString];
+            v13 = [NSString stringWithFormat:@"%@_%@", uUIDString, @"DoAP Sound Sensor"];
 
             v14 = +[DoAPAudioRelayHub instance];
             [v9 codec];
             v15 = [v14 relayWithIdentifier:v13 deviceType:4 properties:0 codecType:v27];
             [(DoAPSoundSensorRemoteDevice *)self setDoapAudioRelay:v15];
 
-            v16 = [(DoAPSoundSensorRemoteDevice *)self doapAudioRelay];
-            [v16 setDelegate:self];
+            doapAudioRelay = [(DoAPSoundSensorRemoteDevice *)self doapAudioRelay];
+            [doapAudioRelay setDelegate:self];
 
             v17 = qword_1000DDBC8;
             if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
@@ -212,7 +212,7 @@ LABEL_12:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v31 objects:v38 count:16];
+      v6 = [codecs countByEnumeratingWithState:&v31 objects:v38 count:16];
       if (v6)
       {
         continue;
@@ -232,8 +232,8 @@ LABEL_12:
 {
   v5.receiver = self;
   v5.super_class = DoAPSoundSensorRemoteDevice;
-  v3 = [(DoAPDevice *)&v5 startStreaming];
-  if (v3)
+  startStreaming = [(DoAPDevice *)&v5 startStreaming];
+  if (startStreaming)
   {
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
@@ -247,37 +247,37 @@ LABEL_12:
     self->_vtSource = 3;
   }
 
-  return v3;
+  return startStreaming;
 }
 
 - (void)clearState
 {
   if ([(DoAPDevice *)self state]== 5)
   {
-    v3 = [(DoAPSoundSensorRemoteDevice *)self doapAudioStart];
-    dispatch_semaphore_signal(v3);
+    doapAudioStart = [(DoAPSoundSensorRemoteDevice *)self doapAudioStart];
+    dispatch_semaphore_signal(doapAudioStart);
   }
 
-  v4 = [(DoAPSoundSensorRemoteDevice *)self doapAudioStop];
+  doapAudioStop = [(DoAPSoundSensorRemoteDevice *)self doapAudioStop];
 
-  if (v4)
+  if (doapAudioStop)
   {
-    v5 = [(DoAPSoundSensorRemoteDevice *)self doapAudioStop];
-    dispatch_semaphore_signal(v5);
+    doapAudioStop2 = [(DoAPSoundSensorRemoteDevice *)self doapAudioStop];
+    dispatch_semaphore_signal(doapAudioStop2);
 
     [(DoAPSoundSensorRemoteDevice *)self setDoapAudioStop:0];
   }
 
-  v6 = [(DoAPSoundSensorRemoteDevice *)self audioBuffer];
+  audioBuffer = [(DoAPSoundSensorRemoteDevice *)self audioBuffer];
 
-  if (v6)
+  if (audioBuffer)
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    v8 = [(DoAPSoundSensorRemoteDevice *)v7 audioBuffer];
-    [v8 removeAllObjects];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    audioBuffer2 = [(DoAPSoundSensorRemoteDevice *)selfCopy audioBuffer];
+    [audioBuffer2 removeAllObjects];
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 
   obj = self;
@@ -293,11 +293,11 @@ LABEL_12:
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(DoAPDevice *)self peripheral];
-    v6 = [v5 identifier];
-    v7 = [v6 UUIDString];
+    peripheral = [(DoAPDevice *)self peripheral];
+    identifier = [peripheral identifier];
+    uUIDString = [identifier UUIDString];
     v8 = 138477827;
-    v9 = v7;
+    v9 = uUIDString;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "DoAPSoundSensor - activateSoundSensorClient: ** TBD ** for ID %{private}@", &v8, 0xCu);
   }
 
@@ -310,11 +310,11 @@ LABEL_12:
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(DoAPDevice *)self peripheral];
-    v6 = [v5 identifier];
-    v7 = [v6 UUIDString];
+    peripheral = [(DoAPDevice *)self peripheral];
+    identifier = [peripheral identifier];
+    uUIDString = [identifier UUIDString];
     v8 = 138412290;
-    v9 = v7;
+    v9 = uUIDString;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "DoAPSoundSensor - cancelSoundSensorClient - id %@", &v8, 0xCu);
   }
 }
@@ -329,40 +329,40 @@ LABEL_12:
   }
 }
 
-- (void)handleStopStreaming:(unsigned __int8)a3
+- (void)handleStopStreaming:(unsigned __int8)streaming
 {
-  v3 = a3;
+  streamingCopy = streaming;
   v5 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = v3;
+    v7[1] = streamingCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "DoAPSoundSensorRemoteDevice Received StopStreaming with error code%d", v7, 8u);
   }
 
   if ([(DoAPDevice *)self state]== 5)
   {
-    v6 = [(DoAPSoundSensorRemoteDevice *)self doapAudioRelay];
-    [v6 cancelStream];
+    doapAudioRelay = [(DoAPSoundSensorRemoteDevice *)self doapAudioRelay];
+    [doapAudioRelay cancelStream];
   }
 
   [(DoAPSoundSensorRemoteDevice *)self clearState];
 }
 
-- (void)handleAudioData:(char *)a3 dataLength:(int64_t)a4
+- (void)handleAudioData:(char *)data dataLength:(int64_t)length
 {
-  if ([(DoAPDevice *)self state]<= 6 && a3 && a4 >= 1)
+  if ([(DoAPDevice *)self state]<= 6 && data && length >= 1)
   {
     v7 = +[NSDate date];
     [(DoAPSoundSensorRemoteDevice *)self setLastAudioDate:v7];
 
-    v8 = [NSData dataWithBytes:a3 length:a4];
+    v8 = [NSData dataWithBytes:data length:length];
     if ([(DoAPDevice *)self state]== 5)
     {
-      v9 = [(DoAPSoundSensorRemoteDevice *)self doapAudioRelay];
-      v10 = [v9 isHubConnected];
+      doapAudioRelay = [(DoAPSoundSensorRemoteDevice *)self doapAudioRelay];
+      isHubConnected = [doapAudioRelay isHubConnected];
 
-      if (!v10)
+      if (!isHubConnected)
       {
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
         {
@@ -372,18 +372,18 @@ LABEL_12:
         goto LABEL_15;
       }
 
-      v11 = [(DoAPSoundSensorRemoteDevice *)self doapAudioRelay];
-      [(DoAPSoundSensorRemoteDevice *)v11 sendAudioFrame:v8];
+      selfCopy = [(DoAPSoundSensorRemoteDevice *)self doapAudioRelay];
+      [(DoAPSoundSensorRemoteDevice *)selfCopy sendAudioFrame:v8];
     }
 
     else
     {
       if (!self->_vtEvent && !self->_vtSource)
       {
-        v14 = [(DoAPDevice *)self state];
+        state = [(DoAPDevice *)self state];
         v15 = qword_1000DDBC8;
         v16 = os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT);
-        if (v14 == 2)
+        if (state == 2)
         {
           if (v16)
           {
@@ -410,28 +410,28 @@ LABEL_12:
         goto LABEL_15;
       }
 
-      v11 = self;
-      objc_sync_enter(v11);
-      v12 = [(DoAPSoundSensorRemoteDevice *)v11 audioBuffer];
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      audioBuffer = [(DoAPSoundSensorRemoteDevice *)selfCopy audioBuffer];
 
-      if (v12)
+      if (audioBuffer)
       {
-        v13 = [(DoAPSoundSensorRemoteDevice *)v11 audioBuffer];
-        [v13 addObject:v8];
+        audioBuffer2 = [(DoAPSoundSensorRemoteDevice *)selfCopy audioBuffer];
+        [audioBuffer2 addObject:v8];
       }
 
-      objc_sync_exit(v11);
+      objc_sync_exit(selfCopy);
     }
 
 LABEL_15:
   }
 }
 
-- (void)handleEventIndicator:(unsigned __int8)a3 eventValue:(char *)a4
+- (void)handleEventIndicator:(unsigned __int8)indicator eventValue:(char *)value
 {
-  if ((a3 - 3) >= 3 && a3 != 1)
+  if ((indicator - 3) >= 3 && indicator != 1)
   {
-    if (a3 == 2)
+    if (indicator == 2)
     {
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
       {

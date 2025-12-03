@@ -1,7 +1,7 @@
 @interface CSCoverSheetTransitionSettings
 + (id)settingsControllerModule;
 - (double)trackingWallpaperParallaxFactor;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (void)setDefaultValues;
@@ -53,13 +53,13 @@
   [(CSCoverSheetTransitionSettings *)self setFadePanelWallpaperEnd:1.0];
   [(CSCoverSheetTransitionSettings *)self setScaleWallpaper:0];
   [(CSCoverSheetTransitionSettings *)self setWallpaperScale:1.4];
-  v3 = [(CSCoverSheetTransitionSettings *)self wallpaperScaleSettings];
-  [v3 setDefaultValues];
-  [v3 setBehaviorType:1];
-  [v3 setDampingRatio:1.0];
-  [v3 setResponse:0.75];
+  wallpaperScaleSettings = [(CSCoverSheetTransitionSettings *)self wallpaperScaleSettings];
+  [wallpaperScaleSettings setDefaultValues];
+  [wallpaperScaleSettings setBehaviorType:1];
+  [wallpaperScaleSettings setDampingRatio:1.0];
+  [wallpaperScaleSettings setResponse:0.75];
   v5 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v3 setFrameRateRange:1114125 highFrameRateReason:{*&v5.minimum, *&v5.maximum, *&v5.preferred}];
+  [wallpaperScaleSettings setFrameRateRange:1114125 highFrameRateReason:{*&v5.minimum, *&v5.maximum, *&v5.preferred}];
   [(CSCoverSheetTransitionSettings *)self setFadesCoverSheetContent:0];
   [(CSCoverSheetTransitionSettings *)self setAlwaysFadesCoverSheetContent:0];
   [(CSCoverSheetTransitionSettings *)self setFadesCoverSheetContentStart:0.0];
@@ -356,70 +356,70 @@ uint64_t __58__CSCoverSheetTransitionSettings_settingsControllerModule__block_in
 
 - (id)succinctDescription
 {
-  v2 = [(CSCoverSheetTransitionSettings *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CSCoverSheetTransitionSettings *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendBool:self->_iconsFlyIn withName:@"iconsFlyIn"];
-  v5 = [(CSCoverSheetTransitionSettings *)self blursPanel];
-  v6 = [v3 appendBool:v5 withName:@"blursPanel"];
-  if (v5)
+  blursPanel = [(CSCoverSheetTransitionSettings *)self blursPanel];
+  v6 = [v3 appendBool:blursPanel withName:@"blursPanel"];
+  if (blursPanel)
   {
-    v7 = [v3 activeMultilinePrefix];
+    activeMultilinePrefix = [v3 activeMultilinePrefix];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __60__CSCoverSheetTransitionSettings_succinctDescriptionBuilder__block_invoke;
     v32[3] = &unk_27838B838;
     v33 = v3;
-    v34 = self;
-    [v33 appendBodySectionWithName:@"Blur Settings" multilinePrefix:v7 block:v32];
+    selfCopy = self;
+    [v33 appendBodySectionWithName:@"Blur Settings" multilinePrefix:activeMultilinePrefix block:v32];
   }
 
-  v8 = [(CSCoverSheetTransitionSettings *)self fadesContent];
-  v9 = [v3 appendBool:v8 withName:@"fadesContent"];
-  if (v8)
+  fadesContent = [(CSCoverSheetTransitionSettings *)self fadesContent];
+  v9 = [v3 appendBool:fadesContent withName:@"fadesContent"];
+  if (fadesContent)
   {
-    v10 = [v3 activeMultilinePrefix];
+    activeMultilinePrefix2 = [v3 activeMultilinePrefix];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __60__CSCoverSheetTransitionSettings_succinctDescriptionBuilder__block_invoke_2;
     v29[3] = &unk_27838B838;
     v30 = v3;
-    v31 = self;
-    [v30 appendBodySectionWithName:@"Fade Settings" multilinePrefix:v10 block:v29];
+    selfCopy2 = self;
+    [v30 appendBodySectionWithName:@"Fade Settings" multilinePrefix:activeMultilinePrefix2 block:v29];
   }
 
-  v11 = [(CSCoverSheetTransitionSettings *)self darkensContent];
-  v12 = [v3 appendBool:v11 withName:@"darkensContent"];
-  if (v11)
+  darkensContent = [(CSCoverSheetTransitionSettings *)self darkensContent];
+  v12 = [v3 appendBool:darkensContent withName:@"darkensContent"];
+  if (darkensContent)
   {
-    v13 = [v3 activeMultilinePrefix];
+    activeMultilinePrefix3 = [v3 activeMultilinePrefix];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __60__CSCoverSheetTransitionSettings_succinctDescriptionBuilder__block_invoke_3;
     v26[3] = &unk_27838B838;
     v27 = v3;
-    v28 = self;
-    [v27 appendBodySectionWithName:@"Darken Settings" multilinePrefix:v13 block:v26];
+    selfCopy3 = self;
+    [v27 appendBodySectionWithName:@"Darken Settings" multilinePrefix:activeMultilinePrefix3 block:v26];
   }
 
-  v14 = [(CSCoverSheetTransitionSettings *)self panelWallpaper];
-  v15 = [v3 appendBool:v14 withName:@"panelWallpaper"];
-  if (v14)
+  panelWallpaper = [(CSCoverSheetTransitionSettings *)self panelWallpaper];
+  v15 = [v3 appendBool:panelWallpaper withName:@"panelWallpaper"];
+  if (panelWallpaper)
   {
-    v16 = [v3 activeMultilinePrefix];
+    activeMultilinePrefix4 = [v3 activeMultilinePrefix];
     v20 = MEMORY[0x277D85DD0];
     v21 = 3221225472;
     v22 = __60__CSCoverSheetTransitionSettings_succinctDescriptionBuilder__block_invoke_4;
     v23 = &unk_27838B838;
-    v24 = self;
+    selfCopy4 = self;
     v25 = v3;
-    [v25 appendBodySectionWithName:@"Panel Wallpaper Settings" multilinePrefix:v16 block:&v20];
+    [v25 appendBodySectionWithName:@"Panel Wallpaper Settings" multilinePrefix:activeMultilinePrefix4 block:&v20];
   }
 
   else
@@ -427,7 +427,7 @@ uint64_t __58__CSCoverSheetTransitionSettings_settingsControllerModule__block_in
     v17 = [v3 appendBool:-[CSCoverSheetTransitionSettings revealWallpaper](self withName:{"revealWallpaper"), @"revealWallpaper"}];
   }
 
-  v18 = [v3 appendBool:-[CSCoverSheetTransitionSettings iconsFlyIn](self withName:{"iconsFlyIn", v20, v21, v22, v23, v24), @"iconsFlyIn"}];
+  v18 = [v3 appendBool:-[CSCoverSheetTransitionSettings iconsFlyIn](self withName:{"iconsFlyIn", v20, v21, v22, v23, selfCopy4), @"iconsFlyIn"}];
 
   return v3;
 }
@@ -514,12 +514,12 @@ id __60__CSCoverSheetTransitionSettings_succinctDescriptionBuilder__block_invoke
   return [v4 appendFloat:@"fadePanelWallpaperEnd" withName:?];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CSCoverSheetTransitionSettings *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CSCoverSheetTransitionSettings *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

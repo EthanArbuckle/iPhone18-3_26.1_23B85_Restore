@@ -1,57 +1,57 @@
 @interface NUPurgeableStoragePool
 + (void)initialize;
-+ (void)purge:(BOOL)a3;
++ (void)purge:(BOOL)purge;
 + (void)reapAllPurged;
 + (void)reapAllVolatile;
 - (NUPurgeableStoragePool)init;
-- (NUPurgeableStoragePool)initWithStorageClass:(Class)a3;
+- (NUPurgeableStoragePool)initWithStorageClass:(Class)class;
 - (NUStoragePoolStats)stats;
-- (id)_allocateStorageWithSize:(id)a3 format:(id)a4;
+- (id)_allocateStorageWithSize:(id)size format:(id)format;
 - (id)_popOldestNonPurgeableStorage;
-- (id)_storageFromPoolWithSize:(id)a3 format:(id)a4 exactMatch:(BOOL)a5;
+- (id)_storageFromPoolWithSize:(id)size format:(id)format exactMatch:(BOOL)match;
 - (id)debugDescription;
-- (id)newStorageWithMinimumSize:(id)a3 format:(id)a4;
-- (id)newStorageWithSize:(id)a3 format:(id)a4 exactMatch:(BOOL)a5;
+- (id)newStorageWithMinimumSize:(id)size format:(id)format;
+- (id)newStorageWithSize:(id)size format:(id)format exactMatch:(BOOL)match;
 - (id)reapPurged;
 - (id)reapVolatile;
 - (void)_enforcePurgableLimit;
-- (void)_migrateAllNonPurgeableStorageIfNoRecentActivity:(unint64_t)a3;
+- (void)_migrateAllNonPurgeableStorageIfNoRecentActivity:(unint64_t)activity;
 - (void)_migrateOldestNonPurgeableStorageToPurgeable;
-- (void)_migrateStorageToPurgeable:(id)a3;
-- (void)_migrationTimer:(unint64_t)a3;
+- (void)_migrateStorageToPurgeable:(id)purgeable;
+- (void)_migrationTimer:(unint64_t)timer;
 - (void)_reapPurged;
 - (void)_reapVolatile;
 - (void)_reclaimSharedStorages;
 - (void)_resetNonPurgeableStorageMigrationTimer;
-- (void)_returnNonPurgeableStorage:(id)a3;
-- (void)_returnPurgedStorage:(id)a3;
-- (void)_returnStorage:(id)a3;
-- (void)_returnVolatileStorage:(id)a3;
+- (void)_returnNonPurgeableStorage:(id)storage;
+- (void)_returnPurgedStorage:(id)storage;
+- (void)_returnStorage:(id)storage;
+- (void)_returnVolatileStorage:(id)storage;
 - (void)_scheduleMigrationTimer;
 - (void)migrateAllNonPurgeableStorage;
-- (void)purge:(BOOL)a3;
-- (void)returnStorage:(id)a3;
+- (void)purge:(BOOL)purge;
+- (void)returnStorage:(id)storage;
 @end
 
 @implementation NUPurgeableStoragePool
 
 - (id)debugDescription
 {
-  v3 = [(NUPurgeableStoragePool *)self reapPurged];
+  reapPurged = [(NUPurgeableStoragePool *)self reapPurged];
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
-  v6 = [(NUPurgeableStoragePool *)self storageClass];
-  v7 = [v3 description];
-  v8 = [v4 stringWithFormat:@"%@<%@>:%p stats:\n%@", v5, v6, self, v7];
+  storageClass = [(NUPurgeableStoragePool *)self storageClass];
+  v7 = [reapPurged description];
+  v8 = [v4 stringWithFormat:@"%@<%@>:%p stats:\n%@", v5, storageClass, self, v7];
 
   return v8;
 }
 
-- (void)_migrateStorageToPurgeable:(id)a3
+- (void)_migrateStorageToPurgeable:(id)purgeable
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  purgeableCopy = purgeable;
+  if (!purgeableCopy)
   {
     v9 = NUAssertLogger_1594();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -72,8 +72,8 @@
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = v16;
         v30 = 2114;
@@ -84,8 +84,8 @@
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -94,9 +94,9 @@
     _NUAssertFailHandler("[NUPurgeableStoragePool _migrateStorageToPurgeable:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUPurgeableStoragePool.m", 652, @"Invalid parameter not satisfying: %s", v21, v22, v23, v24, "storage != nil");
   }
 
-  v5 = v4;
-  [v4 makePurgeable];
-  v6 = [v5 sizeInBytes];
+  v5 = purgeableCopy;
+  [purgeableCopy makePurgeable];
+  sizeInBytes = [v5 sizeInBytes];
   stateQueue = self->_stateQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -104,7 +104,7 @@
   block[3] = &unk_1E810B750;
   block[4] = self;
   v26 = v5;
-  v27 = v6;
+  v27 = sizeInBytes;
   v8 = v5;
   dispatch_sync(stateQueue, block);
 }
@@ -141,9 +141,9 @@ uint64_t __53__NUPurgeableStoragePool__migrateStorageToPurgeable___block_invoke(
 
 - (void)_migrateOldestNonPurgeableStorageToPurgeable
 {
-  v3 = [(NUPurgeableStoragePool *)self _popOldestNonPurgeableStorage];
-  v4 = v3;
-  if (v3)
+  _popOldestNonPurgeableStorage = [(NUPurgeableStoragePool *)self _popOldestNonPurgeableStorage];
+  v4 = _popOldestNonPurgeableStorage;
+  if (_popOldestNonPurgeableStorage)
   {
     migrationQueue = self->_migrationQueue;
     v6[0] = MEMORY[0x1E69E9820];
@@ -151,12 +151,12 @@ uint64_t __53__NUPurgeableStoragePool__migrateStorageToPurgeable___block_invoke(
     v6[2] = __70__NUPurgeableStoragePool__migrateOldestNonPurgeableStorageToPurgeable__block_invoke;
     v6[3] = &unk_1E810B958;
     v6[4] = self;
-    v7 = v3;
+    v7 = _popOldestNonPurgeableStorage;
     dispatch_async(migrationQueue, v6);
   }
 }
 
-- (void)_migrateAllNonPurgeableStorageIfNoRecentActivity:(unint64_t)a3
+- (void)_migrateAllNonPurgeableStorageIfNoRecentActivity:(unint64_t)activity
 {
   v5 = 0;
   v9 = 0;
@@ -176,7 +176,7 @@ uint64_t __53__NUPurgeableStoragePool__migrateStorageToPurgeable___block_invoke(
     block[2] = __75__NUPurgeableStoragePool__migrateAllNonPurgeableStorageIfNoRecentActivity___block_invoke;
     block[3] = &unk_1E810B3E8;
     block[5] = &v9;
-    block[6] = a3;
+    block[6] = activity;
     block[4] = self;
     dispatch_sync(stateQueue, block);
     if (v10[5])
@@ -231,10 +231,10 @@ void *__75__NUPurgeableStoragePool__migrateAllNonPurgeableStorageIfNoRecentActiv
   _Block_object_dispose(v7, 8);
 }
 
-- (void)_migrationTimer:(unint64_t)a3
+- (void)_migrationTimer:(unint64_t)timer
 {
   self->_migrationTimerScheduled = 0;
-  if (self->_nonPurgeableActivityCounter == a3)
+  if (self->_nonPurgeableActivityCounter == timer)
   {
     [(NUPurgeableStoragePool *)self _reclaimSharedStorages];
     migrationQueue = self->_migrationQueue;
@@ -243,7 +243,7 @@ void *__75__NUPurgeableStoragePool__migrateAllNonPurgeableStorageIfNoRecentActiv
     v6[2] = __42__NUPurgeableStoragePool__migrationTimer___block_invoke;
     v6[3] = &unk_1E810B078;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = timer;
     dispatch_async(migrationQueue, v6);
   }
 
@@ -278,8 +278,8 @@ void *__75__NUPurgeableStoragePool__migrateAllNonPurgeableStorageIfNoRecentActiv
         v13 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v14 = MEMORY[0x1E696AF00];
         v15 = v13;
-        v16 = [v14 callStackSymbols];
-        v17 = [v16 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v14 callStackSymbols];
+        v17 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v24 = v13;
         v25 = 2114;
@@ -290,8 +290,8 @@ void *__75__NUPurgeableStoragePool__migrateAllNonPurgeableStorageIfNoRecentActiv
 
     else if (v10)
     {
-      v11 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v12 = [v11 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v12 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v24 = v12;
       _os_log_error_impl(&dword_1C0184000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -383,8 +383,8 @@ LABEL_11:
           v19 = MEMORY[0x1E696AF00];
           v28 = specific;
           log = v13;
-          v20 = [v19 callStackSymbols];
-          v21 = [v20 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v19 callStackSymbols];
+          v21 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v30 = specific;
           v31 = 2114;
@@ -417,8 +417,8 @@ LABEL_22:
     {
       v24 = MEMORY[0x1E696AF00];
       v22 = v23;
-      v25 = [v24 callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v24 callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v26;
       _os_log_error_impl(&dword_1C0184000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -535,13 +535,13 @@ uint64_t __36__NUPurgeableStoragePool_reapPurged__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)purge:(BOOL)a3
+- (void)purge:(BOOL)purge
 {
-  v3 = a3;
+  purgeCopy = purge;
   [(NUPurgeableStoragePool *)self migrateAllNonPurgeableStorage];
-  if (v3)
+  if (purgeCopy)
   {
-    v5 = [(NUPurgeableStoragePool *)self reapVolatile];
+    reapVolatile = [(NUPurgeableStoragePool *)self reapVolatile];
   }
 }
 
@@ -574,46 +574,46 @@ uint64_t __31__NUPurgeableStoragePool_stats__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_returnNonPurgeableStorage:(id)a3
+- (void)_returnNonPurgeableStorage:(id)storage
 {
-  v5 = a3;
+  storageCopy = storage;
   [(NSMutableArray *)self->_nonPurgeableList addObject:?];
   if ([(NSMutableArray *)self->_nonPurgeableList count]> self->_nonPurgeableLimit)
   {
     [(NUPurgeableStoragePool *)self _migrateOldestNonPurgeableStorageToPurgeable];
   }
 
-  v4 = [v5 sizeInBytes];
+  sizeInBytes = [storageCopy sizeInBytes];
   [(NUStoragePoolStats *)self->_stats setUsedCount:[(NUStoragePoolStats *)self->_stats usedCount]- 1];
-  [(NUStoragePoolStats *)self->_stats setUsedBytes:[(NUStoragePoolStats *)self->_stats usedBytes]- v4];
+  [(NUStoragePoolStats *)self->_stats setUsedBytes:[(NUStoragePoolStats *)self->_stats usedBytes]- sizeInBytes];
   [(NUStoragePoolStats *)self->_stats setNonPurgeableCount:[(NUStoragePoolStats *)self->_stats nonPurgeableCount]+ 1];
-  [(NUStoragePoolStats *)self->_stats setNonPurgeableBytes:[(NUStoragePoolStats *)self->_stats nonPurgeableBytes]+ v4];
+  [(NUStoragePoolStats *)self->_stats setNonPurgeableBytes:[(NUStoragePoolStats *)self->_stats nonPurgeableBytes]+ sizeInBytes];
   [(NUPurgeableStoragePool *)self _resetNonPurgeableStorageMigrationTimer];
 }
 
-- (void)_returnPurgedStorage:(id)a3
+- (void)_returnPurgedStorage:(id)storage
 {
-  v4 = [a3 sizeInBytes];
+  sizeInBytes = [storage sizeInBytes];
   [(NUStoragePoolStats *)self->_stats setUsedCount:[(NUStoragePoolStats *)self->_stats usedCount]- 1];
-  [(NUStoragePoolStats *)self->_stats setUsedBytes:[(NUStoragePoolStats *)self->_stats usedBytes]- v4];
+  [(NUStoragePoolStats *)self->_stats setUsedBytes:[(NUStoragePoolStats *)self->_stats usedBytes]- sizeInBytes];
   [(NUStoragePoolStats *)self->_stats setPurgedCount:[(NUStoragePoolStats *)self->_stats purgedCount]+ 1];
   stats = self->_stats;
-  v6 = [(NUStoragePoolStats *)stats purgedBytes]+ v4;
+  v6 = [(NUStoragePoolStats *)stats purgedBytes]+ sizeInBytes;
 
   [(NUStoragePoolStats *)stats setPurgedBytes:v6];
 }
 
-- (void)_returnVolatileStorage:(id)a3
+- (void)_returnVolatileStorage:(id)storage
 {
   volatileList = self->_volatileList;
-  v5 = a3;
-  [(NSMutableArray *)volatileList addObject:v5];
-  v6 = [v5 sizeInBytes];
+  storageCopy = storage;
+  [(NSMutableArray *)volatileList addObject:storageCopy];
+  sizeInBytes = [storageCopy sizeInBytes];
 
   [(NUStoragePoolStats *)self->_stats setUsedCount:[(NUStoragePoolStats *)self->_stats usedCount]- 1];
-  [(NUStoragePoolStats *)self->_stats setUsedBytes:[(NUStoragePoolStats *)self->_stats usedBytes]- v6];
+  [(NUStoragePoolStats *)self->_stats setUsedBytes:[(NUStoragePoolStats *)self->_stats usedBytes]- sizeInBytes];
   [(NUStoragePoolStats *)self->_stats setVolatileCount:[(NUStoragePoolStats *)self->_stats volatileCount]+ 1];
-  [(NUStoragePoolStats *)self->_stats setVolatileBytes:[(NUStoragePoolStats *)self->_stats volatileBytes]+ v6];
+  [(NUStoragePoolStats *)self->_stats setVolatileBytes:[(NUStoragePoolStats *)self->_stats volatileBytes]+ sizeInBytes];
 
   [(NUPurgeableStoragePool *)self _enforcePurgableLimit];
 }
@@ -622,18 +622,18 @@ uint64_t __31__NUPurgeableStoragePool_stats__block_invoke(uint64_t a1)
 {
   for (i = self->_volatileList; [(NSMutableArray *)i count]> self->_purgeableLimit; i = self->_volatileList)
   {
-    v4 = [(NSMutableArray *)self->_volatileList firstObject];
+    firstObject = [(NSMutableArray *)self->_volatileList firstObject];
     [(NSMutableArray *)self->_volatileList removeObjectAtIndex:0];
     [(NUStoragePoolStats *)self->_stats setVolatileCount:[(NUStoragePoolStats *)self->_stats volatileCount]- 1];
-    -[NUStoragePoolStats setVolatileBytes:](self->_stats, "setVolatileBytes:", -[NUStoragePoolStats volatileBytes](self->_stats, "volatileBytes") - [v4 sizeInBytes]);
+    -[NUStoragePoolStats setVolatileBytes:](self->_stats, "setVolatileBytes:", -[NUStoragePoolStats volatileBytes](self->_stats, "volatileBytes") - [firstObject sizeInBytes]);
     [(NUStoragePoolStats *)self->_stats setDiscardedCount:[(NUStoragePoolStats *)self->_stats discardedCount]+ 1];
   }
 }
 
-- (void)returnStorage:(id)a3
+- (void)returnStorage:(id)storage
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storageCopy = storage;
   if (objc_opt_class() != self->_storageClass)
   {
     v7 = NUAssertLogger_1594();
@@ -655,8 +655,8 @@ uint64_t __31__NUPurgeableStoragePool_stats__block_invoke(uint64_t a1)
         v14 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v15 = MEMORY[0x1E696AF00];
         v16 = v14;
-        v17 = [v15 callStackSymbols];
-        v18 = [v17 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v15 callStackSymbols];
+        v18 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = v14;
         v28 = 2114;
@@ -667,8 +667,8 @@ uint64_t __31__NUPurgeableStoragePool_stats__block_invoke(uint64_t a1)
 
     else if (v11)
     {
-      v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v13 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v13;
       _os_log_error_impl(&dword_1C0184000, v10, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -682,9 +682,9 @@ uint64_t __31__NUPurgeableStoragePool_stats__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __40__NUPurgeableStoragePool_returnStorage___block_invoke;
   block[3] = &unk_1E810B958;
-  v24 = v4;
-  v25 = self;
-  v6 = v4;
+  v24 = storageCopy;
+  selfCopy = self;
+  v6 = storageCopy;
   dispatch_sync(stateQueue, block);
 }
 
@@ -724,39 +724,39 @@ LABEL_5:
   }
 }
 
-- (void)_returnStorage:(id)a3
+- (void)_returnStorage:(id)storage
 {
-  v4 = a3;
-  [v4 invalidate];
-  if ([v4 isPurgeable])
+  storageCopy = storage;
+  [storageCopy invalidate];
+  if ([storageCopy isPurgeable])
   {
-    if ([v4 isPurged])
+    if ([storageCopy isPurged])
     {
-      [(NUPurgeableStoragePool *)self _returnPurgedStorage:v4];
+      [(NUPurgeableStoragePool *)self _returnPurgedStorage:storageCopy];
     }
 
     else
     {
-      [(NUPurgeableStoragePool *)self _returnVolatileStorage:v4];
+      [(NUPurgeableStoragePool *)self _returnVolatileStorage:storageCopy];
     }
   }
 
   else
   {
-    [(NUPurgeableStoragePool *)self _returnNonPurgeableStorage:v4];
+    [(NUPurgeableStoragePool *)self _returnNonPurgeableStorage:storageCopy];
   }
 }
 
-- (id)_storageFromPoolWithSize:(id)a3 format:(id)a4 exactMatch:(BOOL)a5
+- (id)_storageFromPoolWithSize:(id)size format:(id)format exactMatch:(BOOL)match
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = size.var1;
+  var0 = size.var0;
   v141 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  formatCopy = format;
   [(NUPurgeableStoragePool *)self _reclaimSharedStorages];
   v9 = [(NSMutableArray *)self->_nonPurgeableList count];
-  v121 = v8;
-  v117 = self;
+  v121 = formatCopy;
+  selfCopy = self;
   if (!v9)
   {
     goto LABEL_49;
@@ -822,8 +822,8 @@ LABEL_15:
               v28 = MEMORY[0x1E696AF00];
               v120 = specific;
               loga = v22;
-              v29 = [v28 callStackSymbols];
-              v30 = [v29 componentsJoinedByString:@"\n"];
+              callStackSymbols = [v28 callStackSymbols];
+              v30 = [callStackSymbols componentsJoinedByString:@"\n"];
               *buf = 138543618;
               v137 = specific;
               v138 = 2114;
@@ -854,8 +854,8 @@ LABEL_30:
         {
           v37 = MEMORY[0x1E696AF00];
           v31 = v32;
-          v38 = [v37 callStackSymbols];
-          v39 = [v38 componentsJoinedByString:@"\n"];
+          callStackSymbols2 = [v37 callStackSymbols];
+          v39 = [callStackSymbols2 componentsJoinedByString:@"\n"];
           *buf = 138543362;
           v137 = v39;
           _os_log_error_impl(&dword_1C0184000, v31, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -869,12 +869,12 @@ LABEL_20:
 
       if ([v16 size] == var0 && v33 == var1)
       {
-        v35 = [v16 format];
-        v36 = [v121 isEqualToPixelFormat:v35];
+        format = [v16 format];
+        v36 = [v121 isEqualToPixelFormat:format];
 
         if (v36)
         {
-          self = v117;
+          self = selfCopy;
           if (![v16 isPurgeable])
           {
             goto LABEL_48;
@@ -911,15 +911,15 @@ LABEL_41:
                 v52 = MEMORY[0x1E696AF00];
                 v53 = v51;
                 v54 = v46;
-                v55 = [v52 callStackSymbols];
-                v56 = [v55 componentsJoinedByString:@"\n"];
+                callStackSymbols3 = [v52 callStackSymbols];
+                v56 = [callStackSymbols3 componentsJoinedByString:@"\n"];
                 *buf = 138543618;
                 v137 = v51;
                 v138 = 2114;
                 v139 = v56;
                 _os_log_error_impl(&dword_1C0184000, v54, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
 
-                self = v117;
+                self = selfCopy;
               }
 
 LABEL_47:
@@ -932,7 +932,7 @@ LABEL_48:
               [(NUStoragePoolStats *)self->_stats setReusedNonPurgeableCount:[(NUStoragePoolStats *)self->_stats reusedNonPurgeableCount]+ 1];
               [(NUPurgeableStoragePool *)self _resetNonPurgeableStorageMigrationTimer];
 
-              v8 = v121;
+              formatCopy = v121;
               if (v58)
               {
                 goto LABEL_102;
@@ -957,8 +957,8 @@ LABEL_48:
           {
             v107 = MEMORY[0x1E696AF00];
             v108 = v57;
-            v109 = [v107 callStackSymbols];
-            v110 = [v109 componentsJoinedByString:@"\n"];
+            callStackSymbols4 = [v107 callStackSymbols];
+            v110 = [callStackSymbols4 componentsJoinedByString:@"\n"];
             *buf = 138543362;
             v137 = v110;
             _os_log_error_impl(&dword_1C0184000, v108, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -986,8 +986,8 @@ LABEL_48:
 
 LABEL_32:
 
-  v8 = v121;
-  self = v117;
+  formatCopy = v121;
+  self = selfCopy;
 LABEL_49:
   v58 = [(NSMutableArray *)self->_volatileList count];
   if (!v58)
@@ -1066,13 +1066,13 @@ LABEL_67:
         {
           v84 = MEMORY[0x1E696AF00];
           v85 = v78;
-          v86 = [v84 callStackSymbols];
-          v87 = [v86 componentsJoinedByString:@"\n"];
+          callStackSymbols5 = [v84 callStackSymbols];
+          v87 = [callStackSymbols5 componentsJoinedByString:@"\n"];
           *buf = 138543362;
           v137 = v87;
           _os_log_error_impl(&dword_1C0184000, v85, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
 
-          v8 = v121;
+          formatCopy = v121;
         }
 
         goto LABEL_69;
@@ -1091,15 +1091,15 @@ LABEL_63:
         v75 = MEMORY[0x1E696AF00];
         v116 = v74;
         v115 = v69;
-        v76 = [v75 callStackSymbols];
-        v77 = [v76 componentsJoinedByString:@"\n"];
+        callStackSymbols6 = [v75 callStackSymbols];
+        v77 = [callStackSymbols6 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v137 = v74;
         v138 = 2114;
         v139 = v77;
         _os_log_error_impl(&dword_1C0184000, v115, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
 
-        v8 = v121;
+        formatCopy = v121;
       }
 
 LABEL_69:
@@ -1108,14 +1108,14 @@ LABEL_70:
       --v58;
       if ([v63 size] == var0 && v79 == var1)
       {
-        v81 = [v63 format];
-        v82 = [v8 isEqualToPixelFormat:v81];
+        format2 = [v63 format];
+        v82 = [formatCopy isEqualToPixelFormat:format2];
 
         if (v82)
         {
-          v83 = [v63 makeNonPurgeable];
+          makeNonPurgeable = [v63 makeNonPurgeable];
           [log addIndex:v58];
-          if (!v83)
+          if (!makeNonPurgeable)
           {
             v123 += [v63 sizeInBytes];
             ++v124;
@@ -1123,12 +1123,12 @@ LABEL_70:
           }
 
           v58 = v63;
-          self = v117;
-          [(NUStoragePoolStats *)v117->_stats setVolatileCount:[(NUStoragePoolStats *)v117->_stats volatileCount]- 1];
+          self = selfCopy;
+          [(NUStoragePoolStats *)selfCopy->_stats setVolatileCount:[(NUStoragePoolStats *)selfCopy->_stats volatileCount]- 1];
           v59 = log;
           v60 = v123;
           v88 = v124;
-          if ([(NUStoragePoolStats *)v117->_stats volatileCount]< 0)
+          if ([(NUStoragePoolStats *)selfCopy->_stats volatileCount]< 0)
           {
             if (_NULogOnceToken != -1)
             {
@@ -1161,8 +1161,8 @@ LABEL_90:
                   v100 = MEMORY[0x1E696AF00];
                   v101 = v99;
                   v102 = v94;
-                  v103 = [v100 callStackSymbols];
-                  v104 = [v103 componentsJoinedByString:@"\n"];
+                  callStackSymbols7 = [v100 callStackSymbols];
+                  v104 = [callStackSymbols7 componentsJoinedByString:@"\n"];
                   *buf = 138543618;
                   v137 = v99;
                   v138 = 2114;
@@ -1193,8 +1193,8 @@ LABEL_90:
             {
               v111 = MEMORY[0x1E696AF00];
               v102 = v105;
-              v112 = [v111 callStackSymbols];
-              v113 = [v112 componentsJoinedByString:@"\n"];
+              callStackSymbols8 = [v111 callStackSymbols];
+              v113 = [callStackSymbols8 componentsJoinedByString:@"\n"];
               *buf = 138543362;
               v137 = v113;
               _os_log_error_impl(&dword_1C0184000, v102, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1206,8 +1206,8 @@ LABEL_95:
             _NUAssertContinueHandler("[NUPurgeableStoragePool _storageFromPoolWithSize:format:exactMatch:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUPurgeableStoragePool.m", 211, @"volatileCount count should not be negative", v95, v96, v97, v98, v114);
           }
 
-          -[NUStoragePoolStats setVolatileBytes:](v117->_stats, "setVolatileBytes:", -[NUStoragePoolStats volatileBytes](v117->_stats, "volatileBytes") - [v58 sizeInBytes]);
-          [(NUStoragePoolStats *)v117->_stats setReusedVolatileCount:[(NUStoragePoolStats *)v117->_stats reusedVolatileCount]+ 1];
+          -[NUStoragePoolStats setVolatileBytes:](selfCopy->_stats, "setVolatileBytes:", -[NUStoragePoolStats volatileBytes](selfCopy->_stats, "volatileBytes") - [v58 sizeInBytes]);
+          [(NUStoragePoolStats *)selfCopy->_stats setReusedVolatileCount:[(NUStoragePoolStats *)selfCopy->_stats reusedVolatileCount]+ 1];
           goto LABEL_97;
         }
       }
@@ -1231,7 +1231,7 @@ LABEL_78:
   }
 
   v58 = 0;
-  self = v117;
+  self = selfCopy;
   v59 = log;
   v60 = v123;
   v88 = v124;
@@ -1311,13 +1311,13 @@ LABEL_16:
   }
 }
 
-- (id)_allocateStorageWithSize:(id)a3 format:(id)a4
+- (id)_allocateStorageWithSize:(id)size format:(id)format
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = size.var1;
+  var0 = size.var0;
   v16 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [objc_alloc(self->_storageClass) initWithSize:var0 format:{var1, v7}];
+  formatCopy = format;
+  v8 = [objc_alloc(self->_storageClass) initWithSize:var0 format:{var1, formatCopy}];
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_138);
@@ -1331,19 +1331,19 @@ LABEL_16:
     v12 = 1024;
     v13 = var1;
     v14 = 2112;
-    v15 = v7;
+    v15 = formatCopy;
     _os_log_debug_impl(&dword_1C0184000, v9, OS_LOG_TYPE_DEBUG, "Allocating new storage of size: %dx%d, format: %@", v11, 0x18u);
   }
 
   return v8;
 }
 
-- (id)newStorageWithSize:(id)a3 format:(id)a4 exactMatch:(BOOL)a5
+- (id)newStorageWithSize:(id)size format:(id)format exactMatch:(BOOL)match
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = size.var1;
+  var0 = size.var0;
   v55 = *MEMORY[0x1E69E9840];
-  v9 = a4;
+  formatCopy = format;
   v45 = 0;
   v46 = &v45;
   v47 = 0x3032000000;
@@ -1369,8 +1369,8 @@ LABEL_16:
       if (v18)
       {
         v27 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v28 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v29 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v52 = v27;
         v53 = 2114;
@@ -1381,8 +1381,8 @@ LABEL_16:
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v52 = v20;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1395,7 +1395,7 @@ LABEL_21:
     _NUAssertFailHandler("[NUPurgeableStoragePool newStorageWithSize:format:exactMatch:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUPurgeableStoragePool.m", v31, @"Invalid parameter not satisfying: %s", v35, v36, v37, v38, v30);
   }
 
-  if (!v9)
+  if (!formatCopy)
   {
     v21 = NUAssertLogger_1594();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -1414,8 +1414,8 @@ LABEL_21:
       if (v24)
       {
         v32 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v33 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v34 = [v33 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v34 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v52 = v32;
         v53 = 2114;
@@ -1426,8 +1426,8 @@ LABEL_21:
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v52 = v26;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1447,9 +1447,9 @@ LABEL_21:
   v42 = var0;
   v43 = var1;
   block[4] = self;
-  v40 = v9;
-  v44 = a5;
-  v11 = v9;
+  v40 = formatCopy;
+  matchCopy = match;
+  v11 = formatCopy;
   dispatch_sync(stateQueue, block);
   v12 = v46[5];
 
@@ -1484,21 +1484,21 @@ uint64_t __63__NUPurgeableStoragePool_newStorageWithSize_format_exactMatch___blo
   return [v9 setRequestCount:v10];
 }
 
-- (id)newStorageWithMinimumSize:(id)a3 format:(id)a4
+- (id)newStorageWithMinimumSize:(id)size format:(id)format
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v7 = a4;
+  var1 = size.var1;
+  var0 = size.var0;
+  formatCopy = format;
   v8 = NUPixelSizeAlignToGrid(var0, var1, 256, 256, 0);
-  v10 = [(NUPurgeableStoragePool *)self newStorageWithSize:v8 format:v9 exactMatch:v7, 0];
+  v10 = [(NUPurgeableStoragePool *)self newStorageWithSize:v8 format:v9 exactMatch:formatCopy, 0];
 
   return v10;
 }
 
-- (NUPurgeableStoragePool)initWithStorageClass:(Class)a3
+- (NUPurgeableStoragePool)initWithStorageClass:(Class)class
 {
   v43 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!class)
   {
     v22 = NUAssertLogger_1594();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -1519,8 +1519,8 @@ uint64_t __63__NUPurgeableStoragePool_newStorageWithSize_format_exactMatch___blo
         v29 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v30 = MEMORY[0x1E696AF00];
         v31 = v29;
-        v32 = [v30 callStackSymbols];
-        v33 = [v32 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v30 callStackSymbols];
+        v33 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v40 = v29;
         v41 = 2114;
@@ -1531,8 +1531,8 @@ uint64_t __63__NUPurgeableStoragePool_newStorageWithSize_format_exactMatch___blo
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v28 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v40 = v28;
       _os_log_error_impl(&dword_1C0184000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1566,7 +1566,7 @@ uint64_t __63__NUPurgeableStoragePool_newStorageWithSize_format_exactMatch___blo
   sharedStoragesToBeReclaimedList = v4->_sharedStoragesToBeReclaimedList;
   v4->_sharedStoragesToBeReclaimedList = v15;
 
-  objc_storeStrong(&v4->_storageClass, a3);
+  objc_storeStrong(&v4->_storageClass, class);
   v17 = objc_alloc_init(NUStoragePoolStats);
   stats = v4->_stats;
   v4->_stats = v17;
@@ -1630,8 +1630,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1647,8 +1647,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;
@@ -1664,9 +1664,9 @@ LABEL_14:
   _NUAssertFailHandler("[NUPurgeableStoragePool init]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUPurgeableStoragePool.m", 41, @"Initializer not available: [%@ %@], use designated initializer instead.", v25, v26, v27, v28, v24);
 }
 
-+ (void)purge:(BOOL)a3
++ (void)purge:(BOOL)purge
 {
-  v3 = a3;
+  purgeCopy = purge;
   v14 = *MEMORY[0x1E69E9840];
   v4 = s_pools;
   objc_sync_enter(v4);
@@ -1689,7 +1689,7 @@ LABEL_14:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) purge:{v3, v9}];
+        [*(*(&v9 + 1) + 8 * v8++) purge:{purgeCopy, v9}];
       }
 
       while (v6 != v8);
@@ -1729,7 +1729,7 @@ LABEL_14:
         v7 = *(*(&v9 + 1) + 8 * v6);
         if (v7)
         {
-          v8 = [v7 reapVolatile];
+          reapVolatile = [v7 reapVolatile];
         }
 
         ++v6;
@@ -1772,7 +1772,7 @@ LABEL_14:
         v7 = *(*(&v9 + 1) + 8 * v6);
         if (v7)
         {
-          v8 = [v7 reapPurged];
+          reapPurged = [v7 reapPurged];
         }
 
         ++v6;

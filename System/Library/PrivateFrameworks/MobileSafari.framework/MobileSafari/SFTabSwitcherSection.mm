@@ -3,12 +3,12 @@
 - (NSString)title;
 - (NSUUID)identifier;
 - (int64_t)hash;
-- (void)setIsPinned:(BOOL)a3;
+- (void)setIsPinned:(BOOL)pinned;
 @end
 
 @implementation SFTabSwitcherSection
 
-- (void)setIsPinned:(BOOL)a3
+- (void)setIsPinned:(BOOL)pinned
 {
   v5 = _s7SectionVMa_0();
   v6 = v5 - 8;
@@ -18,9 +18,9 @@
   v10 = OBJC_IVAR____TtC12MobileSafari28SFTabSwitcherSectionInternal_wrapped;
   swift_beginAccess();
   sub_18B8162EC(v9 + v10, v8, _s7SectionVMa_0);
-  v8[*(v6 + 32)] = a3;
+  v8[*(v6 + 32)] = pinned;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   v12 = v9;
   sub_18B81FC54(v8, v9 + v10, _s7SectionVMa_0);
   swift_endAccess();
@@ -28,7 +28,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SFTabSwitcherSection.hash.getter();
 
   return v3;

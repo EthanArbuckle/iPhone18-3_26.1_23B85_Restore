@@ -1,27 +1,27 @@
 @interface MNTraceSelectStatement
-- (double)doubleValue:(id)a3;
-- (id)dataValue:(id)a3;
-- (id)initForTrace:(id)a3 statement:(id)a4 outError:(id *)a5;
-- (id)objectValue:(id)a3 ofClass:(Class)a4;
-- (id)objectsValue:(id)a3 ofClasses:(id)a4;
-- (id)stringValue:(id)a3;
-- (int64_t)intValue:(id)a3;
+- (double)doubleValue:(id)value;
+- (id)dataValue:(id)value;
+- (id)initForTrace:(id)trace statement:(id)statement outError:(id *)error;
+- (id)objectValue:(id)value ofClass:(Class)class;
+- (id)objectsValue:(id)value ofClasses:(id)classes;
+- (id)stringValue:(id)value;
+- (int64_t)intValue:(id)value;
 @end
 
 @implementation MNTraceSelectStatement
 
-- (id)initForTrace:(id)a3 statement:(id)a4 outError:(id *)a5
+- (id)initForTrace:(id)trace statement:(id)statement outError:(id *)error
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (int64_t)intValue:(id)a3
+- (int64_t)intValue:(id)value
 {
   v4 = sub_1D32770C0();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   v9 = MNTraceSelectStatement.intValue(_:)(v8);
@@ -29,11 +29,11 @@
   return v9;
 }
 
-- (double)doubleValue:(id)a3
+- (double)doubleValue:(id)value
 {
   v4 = sub_1D32770C0();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   v9 = MNTraceSelectStatement.doubleValue(_:)(v8);
@@ -41,11 +41,11 @@
   return v9;
 }
 
-- (id)stringValue:(id)a3
+- (id)stringValue:(id)value
 {
   v4 = sub_1D32770C0();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   object = MNTraceSelectStatement.stringValue(_:)(v8).value._object;
@@ -63,11 +63,11 @@
   return v10;
 }
 
-- (id)dataValue:(id)a3
+- (id)dataValue:(id)value
 {
   v4 = sub_1D32770C0();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = MNTraceSelectStatement.dataValue(_:)(v4, v6);
   v10 = v9;
 
@@ -86,23 +86,23 @@
   return v11;
 }
 
-- (id)objectValue:(id)a3 ofClass:(Class)a4
+- (id)objectValue:(id)value ofClass:(Class)class
 {
   sub_1D32770C0();
   swift_getObjCClassMetadata();
-  v5 = self;
+  selfCopy = self;
   v6 = MNTraceSelectStatement.objectValue<A>(_:of:)();
 
   return v6;
 }
 
-- (id)objectsValue:(id)a3 ofClasses:(id)a4
+- (id)objectsValue:(id)value ofClasses:(id)classes
 {
   v5 = sub_1D32770C0();
   v7 = v6;
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC75C398, &qword_1D328AE98);
   v8 = sub_1D32771A0();
-  v9 = self;
+  selfCopy = self;
   v10._countAndFlagsBits = v5;
   v10._object = v7;
   v11 = MNTraceSelectStatement.objectsValue(_:of:)(v10, v8);

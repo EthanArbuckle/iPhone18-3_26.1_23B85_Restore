@@ -1,46 +1,46 @@
 @interface HDWorkoutZonesAssociationSyncEntity
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7;
-+ (id)decodeSyncObjectWithData:(id)a3;
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7;
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error;
++ (id)decodeSyncObjectWithData:(id)data;
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error;
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error;
 @end
 
 @implementation HDWorkoutZonesAssociationSyncEntity
 
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error
 {
-  end = a4.end;
-  start = a4.start;
-  v12 = a3;
-  v13 = a5;
-  v23 = a6;
-  v14 = [MEMORY[0x277CBEB18] array];
+  end = range.end;
+  start = range.start;
+  sessionCopy = session;
+  profileCopy = profile;
+  handlerCopy = handler;
+  array = [MEMORY[0x277CBEB18] array];
   v15 = +[HDWorkoutZonesAssociationEntity propertyForSyncIdentity];
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
   v35 = -1;
-  v16 = [v13 database];
+  database = [profileCopy database];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __114__HDWorkoutZonesAssociationSyncEntity_generateSyncObjectsForSession_syncAnchorRange_profile_messageHandler_error___block_invoke;
   v24[3] = &unk_27861D100;
   v17 = v15;
   v25 = v17;
-  v18 = v12;
+  v18 = sessionCopy;
   v30 = start;
   v31 = end;
   v26 = v18;
   v29 = &v32;
-  v19 = v13;
+  v19 = profileCopy;
   v27 = v19;
-  v20 = v14;
+  v20 = array;
   v28 = v20;
-  LODWORD(v13) = [(HDHealthEntity *)HDWorkoutZonesAssociationEntity performReadTransactionWithHealthDatabase:v16 error:a7 block:v24];
+  LODWORD(profileCopy) = [(HDHealthEntity *)HDWorkoutZonesAssociationEntity performReadTransactionWithHealthDatabase:database error:error block:v24];
 
-  if (v13)
+  if (profileCopy)
   {
-    v21 = [v23 sendCodableChange:v20 resultAnchor:v33[3] sequence:0 done:1 error:a7];
+    v21 = [handlerCopy sendCodableChange:v20 resultAnchor:v33[3] sequence:0 done:1 error:error];
   }
 
   else
@@ -124,35 +124,35 @@ BOOL __114__HDWorkoutZonesAssociationSyncEntity_generateSyncObjectsForSession_sy
   return v17;
 }
 
-+ (id)decodeSyncObjectWithData:(id)a3
++ (id)decodeSyncObjectWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[HDCodableWorkoutZonesAssociation alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[HDCodableWorkoutZonesAssociation alloc] initWithData:dataCopy];
 
   return v4;
 }
 
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error
 {
-  v9 = a3;
-  v10 = [a5 database];
-  v11 = [(HDHealthEntity *)HDWorkoutZonesAssociationEntity nextSyncAnchorWithStartAnchor:a4 predicate:0 session:v9 healthDatabase:v10 error:a6];
+  sessionCopy = session;
+  database = [profile database];
+  v11 = [(HDHealthEntity *)HDWorkoutZonesAssociationEntity nextSyncAnchorWithStartAnchor:anchor predicate:0 session:sessionCopy healthDatabase:database error:error];
 
   return v11;
 }
 
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
+  objectsCopy = objects;
+  profileCopy = profile;
+  storeCopy = store;
   v13 = [HDInsertWorkoutZonesAssociationOperation alloc];
-  v14 = [v12 syncProvenance];
+  syncProvenance = [storeCopy syncProvenance];
 
-  v15 = [(HDInsertWorkoutZonesAssociationOperation *)v13 initWithCodableWorkoutZoneAssociations:v10 syncProvenance:v14];
-  LODWORD(a7) = [(HDJournalableOperation *)v15 performOrJournalWithProfile:v11 error:a7];
+  v15 = [(HDInsertWorkoutZonesAssociationOperation *)v13 initWithCodableWorkoutZoneAssociations:objectsCopy syncProvenance:syncProvenance];
+  LODWORD(error) = [(HDJournalableOperation *)v15 performOrJournalWithProfile:profileCopy error:error];
 
-  return a7 ^ 1;
+  return error ^ 1;
 }
 
 @end

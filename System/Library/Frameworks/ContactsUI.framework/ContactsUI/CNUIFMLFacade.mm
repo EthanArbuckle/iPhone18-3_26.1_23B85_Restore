@@ -1,23 +1,23 @@
 @interface CNUIFMLFacade
-- (CNUIFMLFacade)initWithFMLSession:(id)a3;
-- (void)fetchFriendHandlesWithCompletionHandler:(id)a3;
+- (CNUIFMLFacade)initWithFMLSession:(id)session;
+- (void)fetchFriendHandlesWithCompletionHandler:(id)handler;
 @end
 
 @implementation CNUIFMLFacade
 
-- (void)fetchFriendHandlesWithCompletionHandler:(id)a3
+- (void)fetchFriendHandlesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CNUIFMLFacade *)self findMyLocateSession];
+  handlerCopy = handler;
+  findMyLocateSession = [(CNUIFMLFacade *)self findMyLocateSession];
   v6 = dispatch_get_global_queue(21, 0);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __57__CNUIFMLFacade_fetchFriendHandlesWithCompletionHandler___block_invoke;
   v9[3] = &unk_1E74E6DD0;
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
+  v10 = findMyLocateSession;
+  v11 = handlerCopy;
+  v7 = handlerCopy;
+  v8 = findMyLocateSession;
   dispatch_async(v6, v9);
 }
 
@@ -66,17 +66,17 @@ uint64_t __57__CNUIFMLFacade_fetchFriendHandlesWithCompletionHandler___block_inv
   return result;
 }
 
-- (CNUIFMLFacade)initWithFMLSession:(id)a3
+- (CNUIFMLFacade)initWithFMLSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v9.receiver = self;
   v9.super_class = CNUIFMLFacade;
   v5 = [(CNUIFMLFacade *)&v9 init];
   if (v5)
   {
-    if (v4)
+    if (sessionCopy)
     {
-      v6 = v4;
+      v6 = sessionCopy;
     }
 
     else

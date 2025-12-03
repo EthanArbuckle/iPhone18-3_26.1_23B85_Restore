@@ -1,49 +1,49 @@
 @interface AUAudioUnit_XPC
 - ($115C4C562B26FF47E01F9F4EA65B5887)remoteProcessAuditToken;
-- (BOOL)allocateRenderResourcesAndReturnError:(id *)a3;
-- (BOOL)deleteUserPreset:(id)a3 error:(id *)a4;
+- (BOOL)allocateRenderResourcesAndReturnError:(id *)error;
+- (BOOL)deleteUserPreset:(id)preset error:(id *)error;
 - (BOOL)isLocalCachingDisabled;
 - (BOOL)providesUserInterface;
-- (BOOL)saveUserPreset:(id)a3 error:(id *)a4;
+- (BOOL)saveUserPreset:(id)preset error:(id *)error;
 - (id).cxx_construct;
-- (id)_getBus:(unsigned int)a3 scope:(unsigned int)a4 error:(id *)a5;
+- (id)_getBus:(unsigned int)bus scope:(unsigned int)scope error:(id *)error;
 - (id)_getInvalidationNotificationInfo;
-- (id)_getValueForKey:(id)a3;
-- (id)_getValueForProperty:(id)a3 error:(id *)a4;
+- (id)_getValueForKey:(id)key;
+- (id)_getValueForProperty:(id)property error:(id *)error;
 - (id)audioUnitInstanceUUID;
 - (id)inputBusses;
 - (id)internalRenderBlock;
-- (id)messageChannelFor:(id)a3;
+- (id)messageChannelFor:(id)for;
 - (id)outputBusses;
 - (id)parameterTree;
-- (id)parametersForOverviewWithCount:(int64_t)a3;
-- (id)presetStateFor:(id)a3 error:(id *)a4;
+- (id)parametersForOverviewWithCount:(int64_t)count;
+- (id)presetStateFor:(id)for error:(id *)error;
 - (id)speechVoices;
-- (id)supportedViewConfigurations:(id)a3;
+- (id)supportedViewConfigurations:(id)configurations;
 - (id)userPresets;
-- (id)valueForUndefinedKey:(id)a3;
-- (void)_doOpen:(id)a3 completion:(id)a4;
+- (id)valueForUndefinedKey:(id)key;
+- (void)_doOpen:(id)open completion:(id)completion;
 - (void)_invalidatePipePoolAndUser;
 - (void)_parameterTreeChanged;
-- (void)_setState:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (void)_setValue:(id)a3 forProperty:(id)a4 error:(id *)a5;
-- (void)addObserver:(id)a3 forKeyPath:(id)a4 options:(unint64_t)a5 context:(void *)a6;
+- (void)_setState:(id)state forKey:(id)key error:(id *)error;
+- (void)_setValue:(id)value forProperty:(id)property error:(id *)error;
+- (void)addObserver:(id)observer forKeyPath:(id)path options:(unint64_t)options context:(void *)context;
 - (void)cancelSpeechRequest;
 - (void)dealloc;
-- (void)didCrash:(id)a3;
+- (void)didCrash:(id)crash;
 - (void)didInvalidate;
 - (void)internalDeallocateRenderResources;
 - (void)invalidateAllParameters;
-- (void)propertiesChanged:(id)a3;
+- (void)propertiesChanged:(id)changed;
 - (void)remoteReset;
-- (void)removeObserver:(id)a3 forKeyPath:(id)a4;
-- (void)removeObserver:(id)a3 forKeyPath:(id)a4 context:(void *)a5;
+- (void)removeObserver:(id)observer forKeyPath:(id)path;
+- (void)removeObserver:(id)observer forKeyPath:(id)path context:(void *)context;
 - (void)reset;
-- (void)selectViewConfiguration:(id)a3;
-- (void)setMusicalContextBlock:(id)a3;
-- (void)setTransportStateBlock:(id)a3;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
-- (void)synthesizeSpeechRequest:(id)a3;
+- (void)selectViewConfiguration:(id)configuration;
+- (void)setMusicalContextBlock:(id)block;
+- (void)setTransportStateBlock:(id)block;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
+- (void)synthesizeSpeechRequest:(id)request;
 @end
 
 @implementation AUAudioUnit_XPC
@@ -161,10 +161,10 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)synthesizeSpeechRequest:(id)a3
+- (void)synthesizeSpeechRequest:(id)request
 {
   v11[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   [(AUAudioUnit *)self componentDescription];
   if (v10 == 1635087216)
   {
@@ -176,7 +176,7 @@
     _ZNSt3__110__function12__value_funcIFvP7NSErrorONS_5tupleIJEEEEED2B8ne200100Ev(v9);
     v6 = caulk::xpc::message<objc_object  {objcproto22AUAudioUnitXPCProtocol}* {__strong}>::async_proxy(&v10);
     v7 = caulk::xpc::message<objc_object  {objcproto22AUAudioUnitXPCProtocol}* {__strong}>::reply(&v10);
-    [v6 synthesizeSpeechRequest:v4 reply:v7];
+    [v6 synthesizeSpeechRequest:requestCopy reply:v7];
 
     _ZNSt3__110__function12__value_funcIFvP7NSErrorONS_5tupleIJEEEEED2B8ne200100Ev(v11);
   }
@@ -184,10 +184,10 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)messageChannelFor:(id)a3
+- (id)messageChannelFor:(id)for
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  forCopy = for;
   v5 = *(self + 72);
   *aBlock = &unk_1F032CCB8;
   *&aBlock[8] = &v20;
@@ -218,7 +218,7 @@
   v10 = _Block_copy(aBlock);
   std::__function::__value_func<void ()(NSError *,std::tuple<NSXPCListenerEndpoint * {__strong}> &&)>::~__value_func[abi:ne200100](v25);
   std::__function::__value_func<void ()(NSError *,std::tuple<NSXPCListenerEndpoint * {__strong}> &&)>::~__value_func[abi:ne200100](v26);
-  [v8 getCustomMessageChannelFor:v4 reply:v10];
+  [v8 getCustomMessageChannelFor:forCopy reply:v10];
 
   v11 = v23;
   v12 = v11;
@@ -371,10 +371,10 @@ LABEL_14:
   return v11;
 }
 
-- (id)presetStateFor:(id)a3 error:(id *)a4
+- (id)presetStateFor:(id)for error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  forCopy = for;
   if ([(AUAudioUnit *)self supportsUserPresets])
   {
     v7 = *(self + 72);
@@ -407,114 +407,114 @@ LABEL_14:
     v12 = _Block_copy(&aBlock);
     std::__function::__value_func<void ()(NSError *,std::tuple<NSDictionary<NSString *,objc_object *> * {__strong}> &&)>::~__value_func[abi:ne200100](v25);
     std::__function::__value_func<void ()(NSError *,std::tuple<NSDictionary<NSString *,objc_object *> * {__strong}> &&)>::~__value_func[abi:ne200100](v26);
-    [v10 presetStateFor:v6 reply:v12];
+    [v10 presetStateFor:forCopy reply:v12];
 
-    if (a4)
+    if (error)
     {
-      *a4 = v19;
+      *error = v19;
     }
 
     v13 = v20;
     if (v19)
     {
-      a4 = 0;
+      error = 0;
     }
 
     else
     {
-      a4 = v20;
+      error = v20;
     }
 
     std::__function::__value_func<void ()(NSError *,std::tuple<NSDictionary<NSString *,objc_object *> * {__strong}> &&)>::~__value_func[abi:ne200100](v18);
   }
 
-  else if (a4)
+  else if (error)
   {
     v14 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-10850 userInfo:0];
-    *a4 = v14;
+    *error = v14;
 
-    a4 = 0;
+    error = 0;
   }
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)deleteUserPreset:(id)a3 error:(id *)a4
+- (BOOL)deleteUserPreset:(id)preset error:(id *)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  presetCopy = preset;
   if ([(AUAudioUnit *)self supportsUserPresets])
   {
     caulk::xpc::sync_message<objc_object  {objcproto22AUAudioUnitXPCProtocol}* {__strong}>::sync_message(&v12, *(self + 72));
     v7 = caulk::xpc::message<objc_object  {objcproto22AUAudioUnitXPCProtocol}* {__strong}>::sync_proxy(&v12);
     v8 = caulk::xpc::message<objc_object  {objcproto22AUAudioUnitXPCProtocol}* {__strong}>::reply(&v12);
-    [v7 deleteUserPreset:v6 reply:v8];
+    [v7 deleteUserPreset:presetCopy reply:v8];
 
-    if (a4)
+    if (error)
     {
-      *a4 = v14;
+      *error = v14;
     }
 
-    LOBYTE(a4) = v14 == 0;
+    LOBYTE(error) = v14 == 0;
 
     _ZNSt3__110__function12__value_funcIFvP7NSErrorONS_5tupleIJEEEEED2B8ne200100Ev(&v13);
   }
 
-  else if (a4)
+  else if (error)
   {
     v9 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-10850 userInfo:0];
-    *a4 = v9;
+    *error = v9;
 
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
   }
 
   v10 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
-- (BOOL)saveUserPreset:(id)a3 error:(id *)a4
+- (BOOL)saveUserPreset:(id)preset error:(id *)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  presetCopy = preset;
   if ([(AUAudioUnit *)self supportsUserPresets])
   {
     caulk::xpc::sync_message<objc_object  {objcproto22AUAudioUnitXPCProtocol}* {__strong}>::sync_message(&v13, *(self + 72));
     v7 = caulk::xpc::message<objc_object  {objcproto22AUAudioUnitXPCProtocol}* {__strong}>::sync_proxy(&v13);
-    v8 = [(AUAudioUnit *)self fullStateForDocument];
+    fullStateForDocument = [(AUAudioUnit *)self fullStateForDocument];
     v9 = caulk::xpc::message<objc_object  {objcproto22AUAudioUnitXPCProtocol}* {__strong}>::reply(&v13);
-    [v7 saveUserPreset:v6 state:v8 reply:v9];
+    [v7 saveUserPreset:presetCopy state:fullStateForDocument reply:v9];
 
-    if (a4)
+    if (error)
     {
-      *a4 = v15;
+      *error = v15;
     }
 
-    LOBYTE(a4) = v15 == 0;
+    LOBYTE(error) = v15 == 0;
 
     _ZNSt3__110__function12__value_funcIFvP7NSErrorONS_5tupleIJEEEEED2B8ne200100Ev(&v14);
   }
 
-  else if (a4)
+  else if (error)
   {
     v10 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-10850 userInfo:0];
-    *a4 = v10;
+    *error = v10;
 
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
   }
 
   v11 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
-- (void)_setState:(id)a3 forKey:(id)a4 error:(id *)a5
+- (void)_setState:(id)state forKey:(id)key error:(id *)error
 {
-  v10 = a3;
-  v8 = a4;
+  stateCopy = state;
+  keyCopy = key;
   [(AUAudioUnit_XPC *)self invalidateAllParameters];
-  v9 = [AUAudioUnitProperty propertyWithKey:v8];
-  [(AUAudioUnit_XPC *)self _setValue:v10 forProperty:v9 error:a5];
+  v9 = [AUAudioUnitProperty propertyWithKey:keyCopy];
+  [(AUAudioUnit_XPC *)self _setValue:stateCopy forProperty:v9 error:error];
 }
 
 - (void)invalidateAllParameters
@@ -527,15 +527,15 @@ LABEL_14:
   v2 = *(self + 119);
   if (v2)
   {
-    v3 = [v2 allParameters];
+    allParameters = [v2 allParameters];
   }
 
   else
   {
-    v3 = MEMORY[0x1E695E0F0];
+    allParameters = MEMORY[0x1E695E0F0];
   }
 
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [allParameters countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -545,13 +545,13 @@ LABEL_14:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allParameters);
         }
 
         [*(*(&v8 + 1) + 8 * i) setLocalValueStale:{1, v8}];
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [allParameters countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -562,16 +562,16 @@ LABEL_14:
 
 - (BOOL)providesUserInterface
 {
-  v2 = [(AUAudioUnit *)self cachedViewController];
-  v3 = v2 != 0;
+  cachedViewController = [(AUAudioUnit *)self cachedViewController];
+  v3 = cachedViewController != 0;
 
   return v3;
 }
 
-- (void)selectViewConfiguration:(id)a3
+- (void)selectViewConfiguration:(id)configuration
 {
   v11[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = *(self + 72);
   v9[0] = &unk_1F033F978;
   v9[1] = &__block_literal_global_207;
@@ -580,16 +580,16 @@ LABEL_14:
   _ZNSt3__110__function12__value_funcIFvP7NSErrorONS_5tupleIJEEEEED2B8ne200100Ev(v9);
   v6 = caulk::xpc::message<objc_object  {objcproto22AUAudioUnitXPCProtocol}* {__strong}>::async_proxy(&v10);
   v7 = caulk::xpc::message<objc_object  {objcproto22AUAudioUnitXPCProtocol}* {__strong}>::reply(&v10);
-  [v6 selectViewConfiguration:v4 reply:v7];
+  [v6 selectViewConfiguration:configurationCopy reply:v7];
 
   _ZNSt3__110__function12__value_funcIFvP7NSErrorONS_5tupleIJEEEEED2B8ne200100Ev(v11);
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)supportedViewConfigurations:(id)a3
+- (id)supportedViewConfigurations:(id)configurations
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationsCopy = configurations;
   v5 = *(self + 72);
   aBlock = &unk_1F032CA18;
   v19 = &v14;
@@ -620,7 +620,7 @@ LABEL_14:
   v10 = _Block_copy(&aBlock);
   std::__function::__value_func<void ()(NSError *,std::tuple<NSIndexSet * {__strong}> &&)>::~__value_func[abi:ne200100](v22);
   std::__function::__value_func<void ()(NSError *,std::tuple<NSIndexSet * {__strong}> &&)>::~__value_func[abi:ne200100](v23);
-  [v8 supportedViewConfigurations:v4 reply:v10];
+  [v8 supportedViewConfigurations:configurationsCopy reply:v10];
 
   v11 = v17;
   std::__function::__value_func<void ()(NSError *,std::tuple<NSIndexSet * {__strong}> &&)>::~__value_func[abi:ne200100](v15);
@@ -630,7 +630,7 @@ LABEL_14:
   return v11;
 }
 
-- (id)parametersForOverviewWithCount:(int64_t)a3
+- (id)parametersForOverviewWithCount:(int64_t)count
 {
   v23 = *MEMORY[0x1E69E9840];
   v4 = *(self + 72);
@@ -663,7 +663,7 @@ LABEL_14:
   v9 = _Block_copy(&aBlock);
   std::__function::__value_func<void ()(NSError *,std::tuple<NSArray<NSNumber *> * {__strong}> &&)>::~__value_func[abi:ne200100](v21);
   std::__function::__value_func<void ()(NSError *,std::tuple<NSArray<NSNumber *> * {__strong}> &&)>::~__value_func[abi:ne200100](v22);
-  [v7 parametersForOverviewWithCount:a3 reply:v9];
+  [v7 parametersForOverviewWithCount:count reply:v9];
 
   v10 = v16;
   std::__function::__value_func<void ()(NSError *,std::tuple<NSArray<NSNumber *> * {__strong}> &&)>::~__value_func[abi:ne200100](v14);
@@ -775,16 +775,16 @@ LABEL_7:
   return v3;
 }
 
-- (void)propertiesChanged:(id)a3
+- (void)propertiesChanged:(id)changed
 {
   v20 = *MEMORY[0x1E69E9840];
-  v13 = a3;
+  changedCopy = changed;
   std::recursive_mutex::lock((self + 584));
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = v13;
+  v4 = changedCopy;
   v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
@@ -856,20 +856,20 @@ LABEL_7:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_getBus:(unsigned int)a3 scope:(unsigned int)a4 error:(id *)a5
+- (id)_getBus:(unsigned int)bus scope:(unsigned int)scope error:(id *)error
 {
-  if (a4 == 1)
+  if (scope == 1)
   {
     v7 = &OBJC_IVAR___AUAudioUnit_XPC__inputBusses;
 LABEL_5:
     v8 = *(self + *v7);
-    if ([v8 count] > a3)
+    if ([v8 count] > bus)
     {
       v9 = [v8 objectAtIndexedSubscript:?];
       goto LABEL_13;
     }
 
-    if (a5)
+    if (error)
     {
       v10 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-10877 userInfo:0];
       goto LABEL_11;
@@ -878,19 +878,19 @@ LABEL_5:
     goto LABEL_12;
   }
 
-  if (a4 == 2)
+  if (scope == 2)
   {
     v7 = &OBJC_IVAR___AUAudioUnit_XPC__outputBusses;
     goto LABEL_5;
   }
 
   v8 = 0;
-  if (a5)
+  if (error)
   {
     v10 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-10866 userInfo:0];
 LABEL_11:
     v9 = 0;
-    *a5 = v10;
+    *error = v10;
     goto LABEL_13;
   }
 
@@ -901,17 +901,17 @@ LABEL_13:
   return v9;
 }
 
-- (void)removeObserver:(id)a3 forKeyPath:(id)a4
+- (void)removeObserver:(id)observer forKeyPath:(id)path
 {
   v15[4] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = AUAudioUnit_XPC;
-  [(AUAudioUnit_XPC *)&v12 removeObserver:a3 forKeyPath:v6];
+  [(AUAudioUnit_XPC *)&v12 removeObserver:observer forKeyPath:pathCopy];
   if ((*(self + 742) & 1) == 0)
   {
     std::recursive_mutex::lock((self + 584));
-    v7 = [AUAudioUnitProperty propertyWithKey:v6];
+    v7 = [AUAudioUnitProperty propertyWithKey:pathCopy];
     v8 = *(self + 72);
     v13[0] = &unk_1F033F978;
     v13[1] = &__block_literal_global_192;
@@ -929,16 +929,16 @@ LABEL_13:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObserver:(id)a3 forKeyPath:(id)a4 context:(void *)a5
+- (void)removeObserver:(id)observer forKeyPath:(id)path context:(void *)context
 {
   v17[4] = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  pathCopy = path;
   *(self + 742) = 1;
   v14.receiver = self;
   v14.super_class = AUAudioUnit_XPC;
-  [(AUAudioUnit_XPC *)&v14 removeObserver:a3 forKeyPath:v8 context:a5];
+  [(AUAudioUnit_XPC *)&v14 removeObserver:observer forKeyPath:pathCopy context:context];
   std::recursive_mutex::lock((self + 584));
-  v9 = [AUAudioUnitProperty propertyWithKey:v8];
+  v9 = [AUAudioUnitProperty propertyWithKey:pathCopy];
   v10 = *(self + 72);
   v15[0] = &unk_1F033F978;
   v15[1] = &__block_literal_global_190;
@@ -947,7 +947,7 @@ LABEL_13:
   _ZNSt3__110__function12__value_funcIFvP7NSErrorONS_5tupleIJEEEEED2B8ne200100Ev(v15);
   v11 = caulk::xpc::message<objc_object  {objcproto22AUAudioUnitXPCProtocol}* {__strong}>::async_proxy(&v16);
   v12 = caulk::xpc::message<objc_object  {objcproto22AUAudioUnitXPCProtocol}* {__strong}>::reply(&v16);
-  [v11 removePropertyObserver:v9 context:a5 reply:v12];
+  [v11 removePropertyObserver:v9 context:context reply:v12];
 
   *(self + 742) = 0;
   _ZNSt3__110__function12__value_funcIFvP7NSErrorONS_5tupleIJEEEEED2B8ne200100Ev(v17);
@@ -956,15 +956,15 @@ LABEL_13:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addObserver:(id)a3 forKeyPath:(id)a4 options:(unint64_t)a5 context:(void *)a6
+- (void)addObserver:(id)observer forKeyPath:(id)path options:(unint64_t)options context:(void *)context
 {
   v19[4] = *MEMORY[0x1E69E9840];
-  v10 = a4;
+  pathCopy = path;
   v16.receiver = self;
   v16.super_class = AUAudioUnit_XPC;
-  [(AUAudioUnit_XPC *)&v16 addObserver:a3 forKeyPath:v10 options:a5 context:a6];
+  [(AUAudioUnit_XPC *)&v16 addObserver:observer forKeyPath:pathCopy options:options context:context];
   std::recursive_mutex::lock((self + 584));
-  v11 = [AUAudioUnitProperty propertyWithKey:v10];
+  v11 = [AUAudioUnitProperty propertyWithKey:pathCopy];
   v12 = *(self + 72);
   v17[0] = &unk_1F033F978;
   v17[1] = &__block_literal_global_188;
@@ -973,7 +973,7 @@ LABEL_13:
   _ZNSt3__110__function12__value_funcIFvP7NSErrorONS_5tupleIJEEEEED2B8ne200100Ev(v17);
   v13 = caulk::xpc::message<objc_object  {objcproto22AUAudioUnitXPCProtocol}* {__strong}>::async_proxy(&v18);
   v14 = caulk::xpc::message<objc_object  {objcproto22AUAudioUnitXPCProtocol}* {__strong}>::reply(&v18);
-  [v13 addPropertyObserver:v11 context:a6 reply:v14];
+  [v13 addPropertyObserver:v11 context:context reply:v14];
 
   _ZNSt3__110__function12__value_funcIFvP7NSErrorONS_5tupleIJEEEEED2B8ne200100Ev(v19);
   std::recursive_mutex::unlock((self + 584));
@@ -981,15 +981,15 @@ LABEL_13:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   caulk::xpc::sync_message<objc_object  {objcproto22AUAudioUnitXPCProtocol}* {__strong},NSArray * {__strong}>::sync_message(&v13, *(self + 72));
   v8 = caulk::xpc::message<objc_object  {objcproto22AUAudioUnitXPCProtocol}* {__strong},NSArray * {__strong}>::sync_proxy(&v13);
   v9 = caulk::xpc::message<objc_object  {objcproto22AUAudioUnitXPCProtocol}* {__strong},NSArray * {__strong}>::reply(&v13);
-  [v8 setValue:v6 forKey:v7 reply:v9];
+  [v8 setValue:valueCopy forKey:keyCopy reply:v9];
 
   v10 = v15;
   if (v10)
@@ -1007,14 +1007,14 @@ LABEL_13:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   v11[6] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   caulk::xpc::sync_message<objc_object  {objcproto22AUAudioUnitXPCProtocol}* {__strong},objc_object * {__strong}>::sync_message(&v10, *(self + 72));
   v5 = caulk::xpc::message<objc_object  {objcproto22AUAudioUnitXPCProtocol}* {__strong},objc_object * {__strong}>::sync_proxy(&v10);
   v6 = caulk::xpc::message<objc_object  {objcproto22AUAudioUnitXPCProtocol}* {__strong},objc_object * {__strong}>::reply(&v10);
-  [v5 valueForKey:v4 reply:v6];
+  [v5 valueForKey:keyCopy reply:v6];
 
   v7 = v11[5];
   std::__function::__value_func<void ()(NSError *,std::tuple<objc_object * {__strong}> &&)>::~__value_func[abi:ne200100](v11);
@@ -1024,15 +1024,15 @@ LABEL_13:
   return v7;
 }
 
-- (void)_setValue:(id)a3 forProperty:(id)a4 error:(id *)a5
+- (void)_setValue:(id)value forProperty:(id)property error:(id *)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  valueCopy = value;
+  propertyCopy = property;
   caulk::xpc::sync_message<objc_object  {objcproto22AUAudioUnitXPCProtocol}* {__strong},NSArray * {__strong}>::sync_message(&v14, *(self + 72));
   v10 = caulk::xpc::message<objc_object  {objcproto22AUAudioUnitXPCProtocol}* {__strong},NSArray * {__strong}>::sync_proxy(&v14);
   v11 = caulk::xpc::message<objc_object  {objcproto22AUAudioUnitXPCProtocol}* {__strong},NSArray * {__strong}>::reply(&v14);
-  [v10 setValue:v8 forProperty:v9 propagateError:a5 != 0 reply:v11];
+  [v10 setValue:valueCopy forProperty:propertyCopy propagateError:error != 0 reply:v11];
 
   v12 = v17;
   if (v12)
@@ -1040,40 +1040,40 @@ LABEL_13:
     [(AUAudioUnit_XPC *)self propertiesChanged:v12];
   }
 
-  if (a5 && v16)
+  if (error && v16)
   {
-    *a5 = v16;
+    *error = v16;
   }
 
   std::__function::__value_func<void ()(NSError *,std::tuple<NSArray * {__strong}> &&)>::~__value_func[abi:ne200100](&v15);
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_getValueForKey:(id)a3
+- (id)_getValueForKey:(id)key
 {
-  v4 = [AUAudioUnitProperty propertyWithKey:a3];
+  v4 = [AUAudioUnitProperty propertyWithKey:key];
   v5 = [(AUAudioUnit_XPC *)self _getValueForProperty:v4 error:0];
 
   return v5;
 }
 
-- (id)_getValueForProperty:(id)a3 error:(id *)a4
+- (id)_getValueForProperty:(id)property error:(id *)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  propertyCopy = property;
   caulk::xpc::sync_message<objc_object  {objcproto22AUAudioUnitXPCProtocol}* {__strong},objc_object * {__strong}>::sync_message(&v14, *(self + 72));
   v7 = caulk::xpc::message<objc_object  {objcproto22AUAudioUnitXPCProtocol}* {__strong},objc_object * {__strong}>::sync_proxy(&v14);
   v8 = caulk::xpc::message<objc_object  {objcproto22AUAudioUnitXPCProtocol}* {__strong},objc_object * {__strong}>::reply(&v14);
-  [v7 valueForProperty:v6 propagateError:a4 != 0 reply:v8];
+  [v7 valueForProperty:propertyCopy propagateError:error != 0 reply:v8];
 
   v9 = v17;
   v10 = v9;
-  if (a4)
+  if (error)
   {
     v10 = v9;
     if (v16)
     {
-      *a4 = v16;
+      *error = v16;
       v10 = v17;
     }
   }
@@ -1164,7 +1164,7 @@ LABEL_10:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)allocateRenderResourcesAndReturnError:(id *)a3
+- (BOOL)allocateRenderResourcesAndReturnError:(id *)error
 {
   v136 = *MEMORY[0x1E69E9840];
   if ([(AUAudioUnit *)self renderResourcesAllocated])
@@ -1173,14 +1173,14 @@ LABEL_10:
     goto LABEL_9;
   }
 
-  v6 = [(AUAudioUnit *)self musicalContextBlock];
-  v7 = [(AUAudioUnit *)self transportStateBlock];
-  v8 = [(AUAudioUnit *)self MIDIOutputEventBlock];
-  v111 = a3;
-  v9 = [(AUAudioUnit *)self MIDIOutputEventListBlock];
-  v10 = v7 != 0;
-  v11 = v6 != 0;
-  v12 = v9 != 0;
+  musicalContextBlock = [(AUAudioUnit *)self musicalContextBlock];
+  transportStateBlock = [(AUAudioUnit *)self transportStateBlock];
+  mIDIOutputEventBlock = [(AUAudioUnit *)self MIDIOutputEventBlock];
+  errorCopy = error;
+  mIDIOutputEventListBlock = [(AUAudioUnit *)self MIDIOutputEventListBlock];
+  v10 = transportStateBlock != 0;
+  v11 = musicalContextBlock != 0;
+  v12 = mIDIOutputEventListBlock != 0;
 
   v13 = *(self + 72);
   aBlock = &unk_1F032C628;
@@ -1213,7 +1213,7 @@ LABEL_10:
   v17 = _Block_copy(&aBlock);
   std::__function::__value_func<void ()(NSError *,std::tuple<unsigned long,unsigned long,unsigned long,NSData * {__strong},BOOL,unsigned int> &&)>::~__value_func[abi:ne200100](&v125 + 8);
   std::__function::__value_func<void ()(NSError *,std::tuple<unsigned long,unsigned long,unsigned long,NSData * {__strong},BOOL,unsigned int> &&)>::~__value_func[abi:ne200100](&v117);
-  [v16 initialize:(v11 || 2 * v10) | (4 * (v8 != 0)) | (8 * v12) reply:v17];
+  [v16 initialize:(v11 || 2 * v10) | (4 * (mIDIOutputEventBlock != 0)) | (8 * v12) reply:v17];
 
   v18 = DWORD2(v133);
   v19 = *v134;
@@ -1224,10 +1224,10 @@ LABEL_10:
   if (v23)
   {
     v24 = v23;
-    if (a3)
+    if (error)
     {
       v25 = v23;
-      *a3 = v24;
+      *error = v24;
     }
 
     [(AUAudioUnit *)self setRenderResourcesAllocated:0];
@@ -1241,10 +1241,10 @@ LABEL_10:
   std::__function::__value_func<void ()(NSError *,std::tuple<unsigned long,unsigned long,unsigned long,NSData * {__strong},BOOL,unsigned int> &&)>::~__value_func[abi:ne200100](&v131[8]);
   if (v20 <= 0)
   {
-    if (a3)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-10875 userInfo:0];
-      *a3 = v5 = 0;
+      *error = v5 = 0;
       goto LABEL_8;
     }
 
@@ -1255,7 +1255,7 @@ LABEL_7:
 
   v113.receiver = self;
   v113.super_class = AUAudioUnit_XPC;
-  if (![(AUAudioUnit *)&v113 allocateRenderResourcesAndReturnError:a3])
+  if (![(AUAudioUnit *)&v113 allocateRenderResourcesAndReturnError:error])
   {
     goto LABEL_7;
   }
@@ -1269,7 +1269,7 @@ LABEL_7:
     std::allocator<AudioStreamBasicDescription>::allocate_at_least[abi:ne200100](v29 / 0x28);
   }
 
-  v30 = [(AUAudioUnit *)self MIDIOutputBufferSizeHint];
+  mIDIOutputBufferSizeHint = [(AUAudioUnit *)self MIDIOutputBufferSizeHint];
   v31 = v21;
   LOBYTE(aBlock) = 1;
   v124 = 0u;
@@ -1279,7 +1279,7 @@ LABEL_7:
   v127 = v32;
   v128 = 0.0;
   v129 = v18;
-  v130 = v30;
+  v130 = mIDIOutputBufferSizeHint;
   v33 = AUOOPRenderingClient::NeverTimesOut(v32);
   if ((v33 & 1) == 0)
   {
@@ -1292,7 +1292,7 @@ LABEL_7:
     std::terminate();
   }
 
-  v34 = [v32 bytes];
+  bytes = [v32 bytes];
   v35 = 40 * ([v32 length] / 0x28uLL);
   if (!v35)
   {
@@ -1302,7 +1302,7 @@ LABEL_7:
   }
 
   v38 = 0;
-  v39 = (v34 + 16);
+  v39 = (bytes + 16);
   v40 = 0.0;
   do
   {
@@ -1543,12 +1543,12 @@ LABEL_88:
   }
 
   v62 = *(self + 72);
-  v63 = [(AUAudioUnit *)self musicalContextBlock];
-  v107 = [(AUAudioUnit *)self transportStateBlock];
-  v104 = [(AUAudioUnit *)self MIDIOutputEventBlock];
-  v101 = [(AUAudioUnit *)self MIDIOutputEventListBlock];
-  v100 = [(AUAudioUnit *)self isRenderingOffline];
-  v99 = v63;
+  musicalContextBlock2 = [(AUAudioUnit *)self musicalContextBlock];
+  transportStateBlock2 = [(AUAudioUnit *)self transportStateBlock];
+  mIDIOutputEventBlock2 = [(AUAudioUnit *)self MIDIOutputEventBlock];
+  mIDIOutputEventListBlock2 = [(AUAudioUnit *)self MIDIOutputEventListBlock];
+  isRenderingOffline = [(AUAudioUnit *)self isRenderingOffline];
+  v99 = musicalContextBlock2;
   [(AUAudioUnit *)self componentDescription];
   v98 = *v131 == 1635085673;
   v64 = *(self + 107);
@@ -1656,9 +1656,9 @@ LABEL_110:
         if (!*(v82 + 8) && (atomic_exchange(v82, 1u) & 1) == 0)
         {
           *(v82 + 24) = pthread_self();
-          v83 = [*(v75 + 64) bytes];
+          bytes2 = [*(v75 + 64) bytes];
           v84 = [*(v75 + 64) length];
-          v114 = v83;
+          v114 = bytes2;
           v115 = 0xCCCCCCCCCCCCCCCDLL * ((40 * (v84 / 0x28)) >> 3);
           v116 = *(v75 + 80);
           v77;
@@ -1691,11 +1691,11 @@ LABEL_110:
 
   *&v131[16] = v108;
   *&v131[24] = v99;
-  v132 = v107;
-  *&v133 = v104;
-  *(&v133 + 1) = v101;
+  v132 = transportStateBlock2;
+  *&v133 = mIDIOutputEventBlock2;
+  *(&v133 + 1) = mIDIOutputEventListBlock2;
   *v134 = v110;
-  v134[4] = v100;
+  v134[4] = isRenderingOffline;
   v134[5] = v98;
   *&v134[6] = v112;
   v134[8] = 0;
@@ -1705,11 +1705,11 @@ LABEL_110:
   *&v118 = self;
   *(&v118 + 1) = v108;
   *&v119 = v99;
-  *(&v119 + 1) = v107;
-  *v120 = v104;
-  *&v120[8] = v101;
+  *(&v119 + 1) = transportStateBlock2;
+  *v120 = mIDIOutputEventBlock2;
+  *&v120[8] = mIDIOutputEventListBlock2;
   *&v120[16] = v110;
-  v120[20] = v100;
+  v120[20] = isRenderingOffline;
   v120[21] = v98;
   *&v120[22] = v112;
   v121 = 0;
@@ -1775,10 +1775,10 @@ LABEL_135:
     }
   }
 
-  if (v111)
+  if (errorCopy)
   {
     v97 = v91;
-    *v111 = v91;
+    *errorCopy = v91;
   }
 
   [(AUAudioUnit *)self deallocateRenderResources];
@@ -1803,33 +1803,33 @@ LABEL_9:
   return v5 & 1;
 }
 
-- (void)setTransportStateBlock:(id)a3
+- (void)setTransportStateBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8.receiver = self;
   v8.super_class = AUAudioUnit_XPC;
-  [(AUAudioUnit *)&v8 setTransportStateBlock:v4];
+  [(AUAudioUnit *)&v8 setTransportStateBlock:blockCopy];
   v5 = self + 872;
   if (*(self + 944) == 1)
   {
-    v6 = [(AUAudioUnit *)self musicalContextBlock];
-    v7 = [(AUAudioUnit *)self transportStateBlock];
-    auoop::RenderPipeUser::setV3HostCallbacks(v5, v6, v7);
+    musicalContextBlock = [(AUAudioUnit *)self musicalContextBlock];
+    transportStateBlock = [(AUAudioUnit *)self transportStateBlock];
+    auoop::RenderPipeUser::setV3HostCallbacks(v5, musicalContextBlock, transportStateBlock);
   }
 }
 
-- (void)setMusicalContextBlock:(id)a3
+- (void)setMusicalContextBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8.receiver = self;
   v8.super_class = AUAudioUnit_XPC;
-  [(AUAudioUnit *)&v8 setMusicalContextBlock:v4];
+  [(AUAudioUnit *)&v8 setMusicalContextBlock:blockCopy];
   v5 = self + 872;
   if (*(self + 944) == 1)
   {
-    v6 = [(AUAudioUnit *)self musicalContextBlock];
-    v7 = [(AUAudioUnit *)self transportStateBlock];
-    auoop::RenderPipeUser::setV3HostCallbacks(v5, v6, v7);
+    musicalContextBlock = [(AUAudioUnit *)self musicalContextBlock];
+    transportStateBlock = [(AUAudioUnit *)self transportStateBlock];
+    auoop::RenderPipeUser::setV3HostCallbacks(v5, musicalContextBlock, transportStateBlock);
   }
 }
 
@@ -1901,19 +1901,19 @@ LABEL_9:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didCrash:(id)a3
+- (void)didCrash:(id)crash
 {
   v39 = *MEMORY[0x1E69E9840];
-  v22 = a3;
+  crashCopy = crash;
   [(AUAudioUnit_XPC *)self _invalidatePipePoolAndUser];
   val = self;
-  v4 = [(AUAudioUnit_XPC *)self _getInvalidationNotificationInfo];
-  v5 = [v4 mutableCopy];
+  _getInvalidationNotificationInfo = [(AUAudioUnit_XPC *)self _getInvalidationNotificationInfo];
+  v5 = [_getInvalidationNotificationInfo mutableCopy];
 
   v21 = v5;
-  if (v22)
+  if (crashCopy)
   {
-    v6 = [v22 valueForKey:@"Path"];
+    v6 = [crashCopy valueForKey:@"Path"];
     v18 = v6;
     if (v6)
     {
@@ -2000,7 +2000,7 @@ LABEL_9:
 - (void)didInvalidate
 {
   [(AUAudioUnit_XPC *)self _invalidatePipePoolAndUser];
-  v3 = [(AUAudioUnit_XPC *)self _getInvalidationNotificationInfo];
+  _getInvalidationNotificationInfo = [(AUAudioUnit_XPC *)self _getInvalidationNotificationInfo];
   objc_initWeak(&location, self);
   v4 = dispatch_time(0, 0);
   v5 = dispatch_get_global_queue(0, 0);
@@ -2009,8 +2009,8 @@ LABEL_9:
   block[2] = __32__AUAudioUnit_XPC_didInvalidate__block_invoke;
   block[3] = &unk_1F032C220;
   objc_copyWeak(&v9, &location);
-  v8 = v3;
-  v6 = v3;
+  v8 = _getInvalidationNotificationInfo;
+  v6 = _getInvalidationNotificationInfo;
   dispatch_after(v4, v5, block);
 
   objc_destroyWeak(&v9);
@@ -2031,8 +2031,8 @@ LABEL_9:
   v13[2] = v5;
   v12[3] = @"Host PID";
   v6 = MEMORY[0x1E696AD98];
-  v7 = [MEMORY[0x1E696AE30] processInfo];
-  v8 = [v6 numberWithInt:{objc_msgSend(v7, "processIdentifier")}];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  v8 = [v6 numberWithInt:{objc_msgSend(processInfo, "processIdentifier")}];
   v13[3] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:4];
 
@@ -2063,12 +2063,12 @@ LABEL_9:
   objc_destroyWeak(&location);
 }
 
-- (void)_doOpen:(id)a3 completion:(id)a4
+- (void)_doOpen:(id)open completion:(id)completion
 {
   v81 = *MEMORY[0x1E69E9840];
-  v53 = a3;
-  v54 = a4;
-  objc_storeStrong(self + 72, a3);
+  openCopy = open;
+  completionCopy = completion;
+  objc_storeStrong(self + 72, open);
   objc_initWeak(&location, self);
   v7 = *(self + 72);
   aBlock = &unk_1F032C538;
@@ -2096,7 +2096,7 @@ LABEL_9:
   std::__function::__value_func<void ()(NSError *,std::tuple<BOOL,BOOL,NSArray * {__strong},NSArray * {__strong},BOOL,BOOL,int,unsigned long,unsigned long> &&)>::~__value_func[abi:ne200100](v79);
   std::__function::__value_func<void ()(NSError *,std::tuple<BOOL,BOOL,NSArray * {__strong},NSArray * {__strong},BOOL,BOOL,int,unsigned long,unsigned long> &&)>::~__value_func[abi:ne200100](v80);
   [(AUAudioUnit *)self componentDescription];
-  v11 = [(AUAudioUnit_XPC *)self auInstanceUUID];
+  auInstanceUUID = [(AUAudioUnit_XPC *)self auInstanceUUID];
   std::__function::__value_func<void ()(NSError *,std::tuple<BOOL,BOOL,NSArray * {__strong},NSArray * {__strong},BOOL,BOOL,int,unsigned long,unsigned long> &&)>::__value_func[abi:ne200100](v80, v68);
   aBlock = MEMORY[0x1E69E9820];
   v76 = 3321888768;
@@ -2106,12 +2106,12 @@ LABEL_9:
   v12 = _Block_copy(&aBlock);
   std::__function::__value_func<void ()(NSError *,std::tuple<BOOL,BOOL,NSArray * {__strong},NSArray * {__strong},BOOL,BOOL,int,unsigned long,unsigned long> &&)>::~__value_func[abi:ne200100](v79);
   std::__function::__value_func<void ()(NSError *,std::tuple<BOOL,BOOL,NSArray * {__strong},NSArray * {__strong},BOOL,BOOL,int,unsigned long,unsigned long> &&)>::~__value_func[abi:ne200100](v80);
-  [v10 open:v63 instanceUUID:v11 reply:v12];
+  [v10 open:v63 instanceUUID:auInstanceUUID reply:v12];
 
   v13 = v69;
   if (v13)
   {
-    v54[2](v54, v13);
+    completionCopy[2](completionCopy, v13);
     goto LABEL_62;
   }
 
@@ -2346,7 +2346,7 @@ LABEL_58:
   os_unfair_lock_unlock(&auoop::RenderPipePoolManager::instance(void)::global);
   v49 = CADeprecated::TSingleton<AURegistrationServerConnection>::instance();
   AURegistrationServerConnection::RegisterExtensionProcess(v49);
-  v54[2](v54, 0);
+  completionCopy[2](completionCopy, 0);
 
   v13 = 0;
 LABEL_62:

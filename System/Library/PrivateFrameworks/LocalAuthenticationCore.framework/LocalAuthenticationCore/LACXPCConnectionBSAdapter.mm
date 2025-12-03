@@ -1,28 +1,28 @@
 @interface LACXPCConnectionBSAdapter
-- (LACXPCConnectionBSAdapter)initWithEndpoint:(id)a3;
+- (LACXPCConnectionBSAdapter)initWithEndpoint:(id)endpoint;
 @end
 
 @implementation LACXPCConnectionBSAdapter
 
-- (LACXPCConnectionBSAdapter)initWithEndpoint:(id)a3
+- (LACXPCConnectionBSAdapter)initWithEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [v4 endpoint];
+  endpointCopy = endpoint;
+  selfCopy = [endpointCopy endpoint];
 
-  if (v5)
+  if (selfCopy)
   {
     v6 = MEMORY[0x1E698F488];
-    v7 = [v4 endpoint];
-    v8 = [v6 NSXPCConnectionWithEndpoint:v7 configurator:&__block_literal_global_14];
+    endpoint = [endpointCopy endpoint];
+    v8 = [v6 NSXPCConnectionWithEndpoint:endpoint configurator:&__block_literal_global_14];
 
     v10.receiver = self;
     v10.super_class = LACXPCConnectionBSAdapter;
     self = [(LACXPCConnectionDefaultAdapter *)&v10 initWithConnection:v8];
 
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 void __46__LACXPCConnectionBSAdapter_initWithEndpoint___block_invoke(uint64_t a1, void *a2)

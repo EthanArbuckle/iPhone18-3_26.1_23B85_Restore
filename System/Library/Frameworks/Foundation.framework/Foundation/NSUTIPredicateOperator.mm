@@ -1,16 +1,16 @@
 @interface NSUTIPredicateOperator
-- (BOOL)performPrimitiveOperationUsingObject:(id)a3 andObject:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initForVariant:(unint64_t)a3;
+- (BOOL)performPrimitiveOperationUsingObject:(id)object andObject:(id)andObject;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initForVariant:(unint64_t)variant;
 - (id)predicateFormat;
 @end
 
 @implementation NSUTIPredicateOperator
 
-- (id)initForVariant:(unint64_t)a3
+- (id)initForVariant:(unint64_t)variant
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  if (a3 >= 2)
+  if (variant >= 2)
   {
     v5 = MEMORY[0x1E695DF30];
     v6 = *MEMORY[0x1E695D940];
@@ -19,7 +19,7 @@
     objc_exception_throw([v5 exceptionWithName:v6 reason:@"Unsupported variant" userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v9, &v8, 1)}]);
   }
 
-  if (a3)
+  if (variant)
   {
     v3 = 1101;
   }
@@ -34,12 +34,12 @@
   return [(NSPredicateOperator *)&v7 initWithOperatorType:v3 modifier:0];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(NSUTIPredicateOperator *)self variant];
+  variant = [(NSUTIPredicateOperator *)self variant];
 
-  return [v4 initForVariant:v5];
+  return [v4 initForVariant:variant];
 }
 
 - (id)predicateFormat
@@ -55,11 +55,11 @@
   }
 }
 
-- (BOOL)performPrimitiveOperationUsingObject:(id)a3 andObject:(id)a4
+- (BOOL)performPrimitiveOperationUsingObject:(id)object andObject:(id)andObject
 {
   result = 0;
   v18[2] = *MEMORY[0x1E69E9840];
-  if (a3 && a4)
+  if (object && andObject)
   {
     if (_NSIsNSString() && (_NSIsNSString() & 1) != 0)
     {
@@ -77,28 +77,28 @@
           v10 = *MEMORY[0x1E695D930];
           v15[0] = @"lhs";
           v15[1] = @"rhs";
-          v16[0] = a3;
-          v16[1] = a4;
+          v16[0] = object;
+          v16[1] = andObject;
           v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:2];
           v12 = @"Unable to load UTTypeEqual";
           goto LABEL_14;
         }
 
-        return v8(a3, a4) != 0;
+        return v8(object, andObject) != 0;
       }
 
       v8 = qword_1ED43F600;
       if (qword_1ED43F600)
       {
-        return v8(a3, a4) != 0;
+        return v8(object, andObject) != 0;
       }
 
       v9 = MEMORY[0x1E695DF30];
       v10 = *MEMORY[0x1E695D930];
       v13[0] = @"lhs";
       v13[1] = @"rhs";
-      v14[0] = a3;
-      v14[1] = a4;
+      v14[0] = object;
+      v14[1] = andObject;
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
       v12 = @"Unable to load UTTypeConformsTo";
     }
@@ -109,8 +109,8 @@
       v10 = *MEMORY[0x1E695D940];
       v17[0] = @"lhs";
       v17[1] = @"rhs";
-      v18[0] = a3;
-      v18[1] = a4;
+      v18[0] = object;
+      v18[1] = andObject;
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
       v12 = @"Unsupported variant";
     }

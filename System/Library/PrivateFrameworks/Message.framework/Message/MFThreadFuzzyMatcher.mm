@@ -1,19 +1,19 @@
 @interface MFThreadFuzzyMatcher
-- (id)matchMessageReferenceContext:(id)a3 withCandidateMessageReferenceContexts:(id)a4;
+- (id)matchMessageReferenceContext:(id)context withCandidateMessageReferenceContexts:(id)contexts;
 @end
 
 @implementation MFThreadFuzzyMatcher
 
-- (id)matchMessageReferenceContext:(id)a3 withCandidateMessageReferenceContexts:(id)a4
+- (id)matchMessageReferenceContext:(id)context withCandidateMessageReferenceContexts:(id)contexts
 {
-  v5 = a3;
+  contextCopy = context;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __91__MFThreadFuzzyMatcher_matchMessageReferenceContext_withCandidateMessageReferenceContexts___block_invoke;
   v17[3] = &unk_1E7AA7978;
-  v6 = v5;
+  v6 = contextCopy;
   v18 = v6;
-  v7 = [a4 ef_filter:v17];
+  v7 = [contexts ef_filter:v17];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __91__MFThreadFuzzyMatcher_matchMessageReferenceContext_withCandidateMessageReferenceContexts___block_invoke_2;
@@ -21,9 +21,9 @@
   v8 = v6;
   v16 = v8;
   v9 = [v7 sortedArrayUsingComparator:&v12];
-  v10 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
-  return v10;
+  return firstObject;
 }
 
 uint64_t __91__MFThreadFuzzyMatcher_matchMessageReferenceContext_withCandidateMessageReferenceContexts___block_invoke(uint64_t a1, void *a2)

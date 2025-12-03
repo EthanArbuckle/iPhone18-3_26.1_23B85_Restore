@@ -1,39 +1,39 @@
 @interface UICollectionViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
 - (UICollectionView)collectionView;
 - (UICollectionViewController)initWithCoder:(NSCoder *)coder;
 - (UICollectionViewController)initWithCollectionViewLayout:(UICollectionViewLayout *)layout;
 - (UICollectionViewController)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil;
-- (id)_animatorForOperation:(int64_t)a3 fromViewController:(id)a4 toViewController:(id)a5;
-- (id)_newCollectionViewWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
+- (id)_animatorForOperation:(int64_t)operation fromViewController:(id)controller toViewController:(id)viewController;
+- (id)_newCollectionViewWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
 - (id)_shim_contentScrollView;
 - (id)_wrappingView;
-- (id)contentScrollViewForEdge:(unint64_t)a3;
+- (id)contentScrollViewForEdge:(unint64_t)edge;
 - (id)dataSource;
-- (id)previewViewControllerForLocation:(CGPoint)a3 inSourceView:(id)a4;
-- (id)previewingContext:(id)a3 viewControllerForLocation:(CGPoint)a4;
-- (void)__viewDidAppear:(BOOL)a3;
-- (void)__viewWillAppear:(BOOL)a3;
+- (id)previewViewControllerForLocation:(CGPoint)location inSourceView:(id)view;
+- (id)previewingContext:(id)context viewControllerForLocation:(CGPoint)location;
+- (void)__viewDidAppear:(BOOL)appear;
+- (void)__viewWillAppear:(BOOL)appear;
 - (void)_clearSharedView;
-- (void)_handleReorderingGesture:(id)a3;
+- (void)_handleReorderingGesture:(id)gesture;
 - (void)_installReorderingGestureIfNecessary;
 - (void)_setNeedsUpdateContentUnavailableConfiguration;
-- (void)_setUseLayoutToLayoutNavigationTransitions:(BOOL)a3 withCheck:(BOOL)a4;
-- (void)_updateCollectionViewLayoutAndDelegate:(id)a3;
-- (void)collectionView:(id)a3 didBeginMultipleSelectionInteractionAtIndexPath:(id)a4;
+- (void)_setUseLayoutToLayoutNavigationTransitions:(BOOL)transitions withCheck:(BOOL)check;
+- (void)_updateCollectionViewLayoutAndDelegate:(id)delegate;
+- (void)collectionView:(id)view didBeginMultipleSelectionInteractionAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)loadView;
-- (void)previewingContext:(id)a3 commitViewController:(id)a4;
+- (void)previewingContext:(id)context commitViewController:(id)controller;
 - (void)setCollectionView:(UICollectionView *)collectionView;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 - (void)setInstallsStandardGestureForInteractiveMovement:(BOOL)installsStandardGestureForInteractiveMovement;
-- (void)setView:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)setView:(id)view;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillUnload;
-- (void)willPresentPreviewViewController:(id)a3 forLocation:(CGPoint)a4 inSourceView:(id)a5;
+- (void)willPresentPreviewViewController:(id)controller forLocation:(CGPoint)location inSourceView:(id)view;
 @end
 
 @implementation UICollectionViewController
@@ -48,15 +48,15 @@
 
 - (id)_wrappingView
 {
-  v3 = [(UIViewController *)self _existingView];
-  if (!v3)
+  _existingView = [(UIViewController *)self _existingView];
+  if (!_existingView)
   {
     if (dyld_program_sdk_at_least())
     {
-      v4 = [(UIViewController *)self _window];
-      if ([UIApp _appAdoptsUISceneLifecycle] && (v4 || dyld_program_sdk_at_least()))
+      _window = [(UIViewController *)self _window];
+      if ([UIApp _appAdoptsUISceneLifecycle] && (_window || dyld_program_sdk_at_least()))
       {
-        [v4 _referenceFrameFromSceneUsingScreenBounds:1];
+        [_window _referenceFrameFromSceneUsingScreenBounds:1];
         v6 = v5;
         v8 = v7;
         v10 = v9;
@@ -65,8 +65,8 @@
 
       else
       {
-        v18 = [(UIViewController *)self _screen];
-        [v18 _applicationFrameForInterfaceOrientation:objc_msgSend(UIApp usingStatusbarHeight:"_defaultSceneInterfaceOrientationReturningUnknownForNilScene:" ignoreStatusBar:{0), 1, 0.0}];
+        _screen = [(UIViewController *)self _screen];
+        [_screen _applicationFrameForInterfaceOrientation:objc_msgSend(UIApp usingStatusbarHeight:"_defaultSceneInterfaceOrientationReturningUnknownForNilScene:" ignoreStatusBar:{0), 1, 0.0}];
         v6 = v19;
         v8 = v20;
         v10 = v21;
@@ -79,61 +79,61 @@
     else
     {
       v13 = [UICollectionViewControllerWrapperView alloc];
-      v4 = [(UIViewController *)self _screen];
-      [v4 _applicationFrame];
+      _window = [(UIViewController *)self _screen];
+      [_window _applicationFrame];
       v6 = v14;
       v8 = v15;
       v10 = v16;
       v12 = v17;
     }
 
-    v3 = [(UIView *)v13 initWithFrame:v6, v8, v10, v12];
+    _existingView = [(UIView *)v13 initWithFrame:v6, v8, v10, v12];
 
-    [(UIView *)v3 setAutoresizingMask:18];
+    [(UIView *)_existingView setAutoresizingMask:18];
   }
 
-  return v3;
+  return _existingView;
 }
 
 - (void)loadView
 {
-  v3 = [(UICollectionViewController *)self _wrappingView];
-  v4 = [(UIViewController *)self _usesSharedView];
-  v5 = [(UIViewController *)self nibName];
-  v6 = v5;
-  if (!v4)
+  _wrappingView = [(UICollectionViewController *)self _wrappingView];
+  _usesSharedView = [(UIViewController *)self _usesSharedView];
+  nibName = [(UIViewController *)self nibName];
+  v6 = nibName;
+  if (!_usesSharedView)
   {
-    if (v5)
+    if (nibName)
     {
       v47.receiver = self;
       v47.super_class = UICollectionViewController;
       [(UIViewController *)&v47 loadView];
-      v11 = [(UIViewController *)self view];
+      view = [(UIViewController *)self view];
       collectionView = self->_collectionView;
-      self->_collectionView = v11;
+      self->_collectionView = view;
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v13 = [(UIViewController *)self storyboardIdentifier];
-        if (v13)
+        storyboardIdentifier = [(UIViewController *)self storyboardIdentifier];
+        if (storyboardIdentifier)
         {
-          v14 = [(UIViewController *)self storyboard];
-          v15 = [v14 name];
-          v16 = v15;
-          if (v15)
+          storyboard = [(UIViewController *)self storyboard];
+          name = [storyboard name];
+          v16 = name;
+          if (name)
           {
-            v17 = v15;
+            v17 = name;
           }
 
           else
           {
-            v17 = [v14 description];
+            v17 = [storyboard description];
           }
 
           v27 = v17;
 
-          [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"%s instantiated view controller with identifier %@ from storyboard %@, but didn't get a UICollectionView.", "-[UICollectionViewController loadView]", v13, v27}];
+          [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"%s instantiated view controller with identifier %@ from storyboard %@, but didn't get a UICollectionView.", "-[UICollectionViewController loadView]", storyboardIdentifier, v27}];
         }
 
         else
@@ -142,25 +142,25 @@
         }
       }
 
-      v28 = [(UIScrollView *)self->_collectionView delegate];
+      delegate = [(UIScrollView *)self->_collectionView delegate];
 
-      if (!v28)
+      if (!delegate)
       {
         [(UICollectionView *)self->_collectionView setDelegate:self];
       }
 
-      v29 = [(UICollectionView *)self->_collectionView dataSource];
+      dataSource = [(UICollectionView *)self->_collectionView dataSource];
 
-      if (!v29)
+      if (!dataSource)
       {
         [(UICollectionView *)self->_collectionView setDataSource:self];
       }
 
       if (!self->_layout)
       {
-        v30 = [(UICollectionView *)self->_collectionView collectionViewLayout];
+        collectionViewLayout = [(UICollectionView *)self->_collectionView collectionViewLayout];
         layout = self->_layout;
-        self->_layout = v30;
+        self->_layout = collectionViewLayout;
       }
 
       goto LABEL_31;
@@ -168,17 +168,17 @@
 
     if ([UIApp _appAdoptsUISceneLifecycle])
     {
-      v18 = [(UIViewController *)self _window];
-      if (!v18)
+      _window = [(UIViewController *)self _window];
+      if (!_window)
       {
-        v32 = [objc_opt_self() mainScreen];
-        [v32 _mainSceneFrame];
+        mainScreen = [objc_opt_self() mainScreen];
+        [mainScreen _mainSceneFrame];
         v34 = v33;
         v36 = v35;
         v38 = v37;
         v40 = v39;
 
-        v19 = 0;
+        _screen = 0;
 LABEL_30:
 
         v45 = [(UICollectionViewController *)self _newCollectionViewWithFrame:self->_layout collectionViewLayout:v34, v36, v38, v40];
@@ -189,40 +189,40 @@ LABEL_30:
         [(UICollectionView *)self->_collectionView setDelegate:self];
         [(UICollectionView *)self->_collectionView setDataSource:self];
 LABEL_31:
-        [(UICollectionViewController *)self setView:v3];
-        [v3 bounds];
+        [(UICollectionViewController *)self setView:_wrappingView];
+        [_wrappingView bounds];
         [(UICollectionView *)self->_collectionView setFrame:?];
-        [v3 addSubview:self->_collectionView];
+        [_wrappingView addSubview:self->_collectionView];
 
         goto LABEL_32;
       }
 
-      v19 = v18;
-      v20 = __UIStatusBarManagerForWindow(v18);
-      v21 = [v20 isStatusBarHidden];
+      _screen = _window;
+      v20 = __UIStatusBarManagerForWindow(_window);
+      isStatusBarHidden = [v20 isStatusBarHidden];
 
-      if (v21)
+      if (isStatusBarHidden)
       {
         v22 = 1;
       }
 
       else
       {
-        v41 = __UIStatusBarManagerForWindow(v19);
-        v42 = [v19 windowScene];
-        [v41 defaultStatusBarHeightInOrientation:{objc_msgSend(v42, "_interfaceOrientation")}];
+        v41 = __UIStatusBarManagerForWindow(_screen);
+        windowScene = [_screen windowScene];
+        [v41 defaultStatusBarHeightInOrientation:{objc_msgSend(windowScene, "_interfaceOrientation")}];
         v44 = v43;
 
         v22 = v44 == 0.0;
       }
 
-      [v19 _referenceFrameFromSceneUsingScreenBounds:v22];
+      [_screen _referenceFrameFromSceneUsingScreenBounds:v22];
     }
 
     else
     {
-      v19 = [(UIViewController *)self _screen];
-      [v19 _applicationFrame];
+      _screen = [(UIViewController *)self _screen];
+      [_screen _applicationFrame];
     }
 
     v34 = v23;
@@ -232,7 +232,7 @@ LABEL_31:
     goto LABEL_30;
   }
 
-  if (v5)
+  if (nibName)
   {
     v7 = self->_layout;
 
@@ -241,14 +241,14 @@ LABEL_31:
       v48.receiver = self;
       v48.super_class = UICollectionViewController;
       [(UIViewController *)&v48 loadView];
-      v8 = [(UIViewController *)self view];
-      v9 = [v8 collectionViewLayout];
+      view2 = [(UIViewController *)self view];
+      collectionViewLayout2 = [view2 collectionViewLayout];
       v10 = self->_layout;
-      self->_layout = v9;
+      self->_layout = collectionViewLayout2;
     }
   }
 
-  [(UICollectionViewController *)self setView:v3];
+  [(UICollectionViewController *)self setView:_wrappingView];
 LABEL_32:
 }
 
@@ -269,22 +269,22 @@ LABEL_32:
 {
   if ((*&self->_collectionViewControllerFlags & 4) != 0 && !self->_reorderingGesture)
   {
-    v3 = [(UIView *)self->_collectionView window];
-    if (v3)
+    window = [(UIView *)self->_collectionView window];
+    if (window)
     {
-      v4 = v3;
-      v5 = [(UICollectionView *)self->_collectionView _dataSourceSupportsReordering];
+      v4 = window;
+      _dataSourceSupportsReordering = [(UICollectionView *)self->_collectionView _dataSourceSupportsReordering];
 
-      if (v5)
+      if (_dataSourceSupportsReordering)
       {
         v6 = [[_UICollectionViewLegacyReorderingGestureRecognizer alloc] initWithTarget:self action:sel__handleReorderingGesture_];
         reorderingGesture = self->_reorderingGesture;
         self->_reorderingGesture = &v6->super;
 
-        v8 = [(UIViewController *)self traitCollection];
-        v9 = [v8 userInterfaceIdiom];
+        traitCollection = [(UIViewController *)self traitCollection];
+        userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-        if (v9 == 6)
+        if (userInterfaceIdiom == 6)
         {
           [(UIGestureRecognizer *)self->_reorderingGesture _setKeepTouchesOnContinuation:0];
         }
@@ -303,8 +303,8 @@ LABEL_32:
 {
   if (self->_keyboardSupport)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 removeObserver:self->_keyboardSupport];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self->_keyboardSupport];
   }
 
   v4.receiver = self;
@@ -371,29 +371,29 @@ LABEL_32:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = UICollectionViewController;
-  [(UIViewController *)&v6 encodeWithCoder:v4];
+  [(UIViewController *)&v6 encodeWithCoder:coderCopy];
   collectionViewControllerFlags = self->_collectionViewControllerFlags;
   if ((collectionViewControllerFlags & 1) == 0)
   {
-    [v4 encodeBool:0 forKey:@"UIClearsSelectionOnViewWillAppear"];
+    [coderCopy encodeBool:0 forKey:@"UIClearsSelectionOnViewWillAppear"];
     collectionViewControllerFlags = self->_collectionViewControllerFlags;
   }
 
   if ((collectionViewControllerFlags & 4) == 0)
   {
-    [v4 encodeBool:0 forKey:@"UIInstallsStandardReorderingGesture"];
+    [coderCopy encodeBool:0 forKey:@"UIInstallsStandardReorderingGesture"];
   }
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  v4 = a3;
-  if (!v4)
+  viewCopy = view;
+  if (!viewCopy)
   {
     collectionView = self->_collectionView;
     self->_collectionView = 0;
@@ -401,14 +401,14 @@ LABEL_32:
 
   v6.receiver = self;
   v6.super_class = UICollectionViewController;
-  [(UIViewController *)&v6 setView:v4];
+  [(UIViewController *)&v6 setView:viewCopy];
 }
 
 - (void)_clearSharedView
 {
-  v3 = [(UIViewController *)self navigationController];
+  navigationController = [(UIViewController *)self navigationController];
 
-  if (!v3)
+  if (!navigationController)
   {
     [(UIViewController *)self _setUsesSharedView:0];
 
@@ -421,33 +421,33 @@ LABEL_32:
   v5.receiver = self;
   v5.super_class = UICollectionViewController;
   [(UIViewController *)&v5 viewWillUnload];
-  v3 = [(UICollectionViewController *)self collectionView];
-  v4 = [v3 collectionViewLayout];
+  collectionView = [(UICollectionViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
 
-  if (v4 != self->_layout)
+  if (collectionViewLayout != self->_layout)
   {
-    objc_storeStrong(&self->_layout, v4);
+    objc_storeStrong(&self->_layout, collectionViewLayout);
   }
 }
 
-- (void)_updateCollectionViewLayoutAndDelegate:(id)a3
+- (void)_updateCollectionViewLayoutAndDelegate:(id)delegate
 {
-  v13 = a3;
-  v4 = [(UIViewController *)self transitionCoordinator];
-  v5 = v4;
-  if (v4)
+  delegateCopy = delegate;
+  transitionCoordinator = [(UIViewController *)self transitionCoordinator];
+  v5 = transitionCoordinator;
+  if (transitionCoordinator)
   {
-    v6 = [v4 viewControllerForKey:@"UITransitionContextFromViewController"];
-    v7 = self;
-    v8 = [v6 _uiCollectionView];
-    v9 = [(UICollectionViewController *)v7 _uiCollectionView];
+    v6 = [transitionCoordinator viewControllerForKey:@"UITransitionContextFromViewController"];
+    selfCopy = self;
+    _uiCollectionView = [v6 _uiCollectionView];
+    _uiCollectionView2 = [(UICollectionViewController *)selfCopy _uiCollectionView];
 
-    if (v8 != v9)
+    if (_uiCollectionView != _uiCollectionView2)
     {
       goto LABEL_3;
     }
 
-    if ([(UIViewController *)v7 _usesSharedView])
+    if ([(UIViewController *)selfCopy _usesSharedView])
     {
 
       goto LABEL_8;
@@ -455,10 +455,10 @@ LABEL_32:
 
     if ([v6 _usesSharedView])
     {
-      v11 = [v6 navigationController];
-      v12 = [v11 lastOperation];
+      navigationController = [v6 navigationController];
+      lastOperation = [navigationController lastOperation];
 
-      if (v12 != 1)
+      if (lastOperation != 1)
       {
         goto LABEL_8;
       }
@@ -470,67 +470,67 @@ LABEL_3:
     }
   }
 
-  [v13 setCollectionViewLayout:self->_layout];
-  v10 = [v13 delegate];
+  [delegateCopy setCollectionViewLayout:self->_layout];
+  delegate = [delegateCopy delegate];
 
-  if (!v10)
+  if (!delegate)
   {
-    [v13 setDelegate:self];
+    [delegateCopy setDelegate:self];
   }
 
 LABEL_8:
 }
 
-- (void)__viewWillAppear:(BOOL)a3
+- (void)__viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v9.receiver = self;
   v9.super_class = UICollectionViewController;
   [(UIViewController *)&v9 __viewWillAppear:?];
-  v5 = [(UICollectionViewController *)self collectionView];
-  v6 = [(UIViewController *)self _existingView];
-  if ([v6 isMemberOfClass:objc_opt_class()] && -[UICollectionViewController useLayoutToLayoutNavigationTransitions](self, "useLayoutToLayoutNavigationTransitions"))
+  collectionView = [(UICollectionViewController *)self collectionView];
+  _existingView = [(UIViewController *)self _existingView];
+  if ([_existingView isMemberOfClass:objc_opt_class()] && -[UICollectionViewController useLayoutToLayoutNavigationTransitions](self, "useLayoutToLayoutNavigationTransitions"))
   {
-    [(UICollectionViewController *)self _updateCollectionViewLayoutAndDelegate:v5];
+    [(UICollectionViewController *)self _updateCollectionViewLayoutAndDelegate:collectionView];
   }
 
-  if ([v5 numberOfSections])
+  if ([collectionView numberOfSections])
   {
-    if ((*&self->_collectionViewControllerFlags & 1) != 0 && ([v5 allowsMultipleSelection] & 1) == 0 && (*&self->_collectionViewControllerFlags & 2) == 0)
+    if ((*&self->_collectionViewControllerFlags & 1) != 0 && ([collectionView allowsMultipleSelection] & 1) == 0 && (*&self->_collectionViewControllerFlags & 2) == 0)
     {
       if (dyld_program_sdk_at_least())
       {
-        v7 = [v5 indexPathsForSelectedItems];
-        v8 = [(UIViewController *)self transitionCoordinator];
-        [v5 _deselectItemsAtIndexPaths:v7 animated:v3 transitionCoordinator:v8];
+        indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+        transitionCoordinator = [(UIViewController *)self transitionCoordinator];
+        [collectionView _deselectItemsAtIndexPaths:indexPathsForSelectedItems animated:appearCopy transitionCoordinator:transitionCoordinator];
       }
 
       else
       {
-        [v5 _deselectAllAnimated:1 notifyDelegate:0];
+        [collectionView _deselectAllAnimated:1 notifyDelegate:0];
       }
     }
   }
 
   else
   {
-    [v5 reloadData];
+    [collectionView reloadData];
   }
 }
 
-- (void)__viewDidAppear:(BOOL)a3
+- (void)__viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = UICollectionViewController;
-  [(UIViewController *)&v4 __viewDidAppear:a3];
+  [(UIViewController *)&v4 __viewDidAppear:appear];
   [(UICollectionViewController *)self _installReorderingGestureIfNecessary];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = UICollectionViewController;
-  [(UIViewController *)&v11 viewWillAppear:a3];
+  [(UIViewController *)&v11 viewWillAppear:appear];
   if (dyld_program_sdk_at_least())
   {
     keyboardSupport = self->_keyboardSupport;
@@ -545,13 +545,13 @@ LABEL_8:
 
     if (![(UIAutoRespondingScrollViewControllerKeyboardSupport *)keyboardSupport registeredForNotifications])
     {
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
-      v8 = [(UIViewController *)self _screen];
-      [v7 addObserver:self->_keyboardSupport selector:sel__keyboardWillShow_ name:@"UIKeyboardPrivateWillShowNotification" object:v8];
-      [v7 addObserver:self->_keyboardSupport selector:sel__keyboardWillHide_ name:@"UIKeyboardPrivateWillHideNotification" object:v8];
-      [v7 addObserver:self->_keyboardSupport selector:sel__keyboardDidShow_ name:@"UIKeyboardPrivateDidShowNotification" object:v8];
-      [v7 addObserver:self->_keyboardSupport selector:sel__keyboardDidHide_ name:@"UIKeyboardPrivateDidHideNotification" object:v8];
-      [v7 addObserver:self->_keyboardSupport selector:sel__keyboardDidChangeFrame_ name:@"UIKeyboardPrivateDidChangeFrameNotification" object:v8];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      _screen = [(UIViewController *)self _screen];
+      [defaultCenter addObserver:self->_keyboardSupport selector:sel__keyboardWillShow_ name:@"UIKeyboardPrivateWillShowNotification" object:_screen];
+      [defaultCenter addObserver:self->_keyboardSupport selector:sel__keyboardWillHide_ name:@"UIKeyboardPrivateWillHideNotification" object:_screen];
+      [defaultCenter addObserver:self->_keyboardSupport selector:sel__keyboardDidShow_ name:@"UIKeyboardPrivateDidShowNotification" object:_screen];
+      [defaultCenter addObserver:self->_keyboardSupport selector:sel__keyboardDidHide_ name:@"UIKeyboardPrivateDidHideNotification" object:_screen];
+      [defaultCenter addObserver:self->_keyboardSupport selector:sel__keyboardDidChangeFrame_ name:@"UIKeyboardPrivateDidChangeFrameNotification" object:_screen];
       [(UIAutoRespondingScrollViewControllerKeyboardSupport *)self->_keyboardSupport setRegisteredForNotifications:1];
     }
 
@@ -566,21 +566,21 @@ LABEL_8:
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = UICollectionViewController;
-  [(UIViewController *)&v4 viewDidAppear:a3];
+  [(UIViewController *)&v4 viewDidAppear:appear];
   [(UICollectionViewController *)self _installReorderingGestureIfNecessary];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (self->_keyboardSupport)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 removeObserver:self->_keyboardSupport];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self->_keyboardSupport];
 
     [(UIAutoRespondingScrollViewControllerKeyboardSupport *)self->_keyboardSupport setViewIsDisappearing:1];
     [(UIAutoRespondingScrollViewControllerKeyboardSupport *)self->_keyboardSupport setRegisteredForNotifications:0];
@@ -588,51 +588,51 @@ LABEL_8:
 
   v6.receiver = self;
   v6.super_class = UICollectionViewController;
-  [(UIViewController *)&v6 viewWillDisappear:v3];
+  [(UIViewController *)&v6 viewWillDisappear:disappearCopy];
 }
 
 - (id)_shim_contentScrollView
 {
   if ((_UIBarsApplyChromelessEverywhere() & 1) != 0 || _UIViewControllerUseContentScrollViewAPI())
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UICollectionViewController.m" lineNumber:430 description:@"Unexpected code path for compatibility code only"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UICollectionViewController.m" lineNumber:430 description:@"Unexpected code path for compatibility code only"];
   }
 
-  v4 = [(UIViewController *)self _existingView];
-  if (v4)
+  _existingView = [(UIViewController *)self _existingView];
+  if (_existingView)
   {
-    v5 = [(UICollectionViewController *)self collectionView];
+    collectionView = [(UICollectionViewController *)self collectionView];
   }
 
   else
   {
-    v5 = 0;
+    collectionView = 0;
   }
 
-  return v5;
+  return collectionView;
 }
 
-- (id)contentScrollViewForEdge:(unint64_t)a3
+- (id)contentScrollViewForEdge:(unint64_t)edge
 {
   v7.receiver = self;
   v7.super_class = UICollectionViewController;
-  v4 = [(UIViewController *)&v7 contentScrollViewForEdge:a3];
-  if (!v4)
+  collectionView = [(UIViewController *)&v7 contentScrollViewForEdge:edge];
+  if (!collectionView)
   {
-    v5 = [(UIViewController *)self _existingView];
-    if (v5)
+    _existingView = [(UIViewController *)self _existingView];
+    if (_existingView)
     {
-      v4 = [(UICollectionViewController *)self collectionView];
+      collectionView = [(UICollectionViewController *)self collectionView];
     }
 
     else
     {
-      v4 = 0;
+      collectionView = 0;
     }
   }
 
-  return v4;
+  return collectionView;
 }
 
 - (void)setCollectionView:(UICollectionView *)collectionView
@@ -642,38 +642,38 @@ LABEL_8:
   if (v6 != v5)
   {
     v12 = v5;
-    v7 = [(UICollectionView *)v6 dataSource];
+    dataSource = [(UICollectionView *)v6 dataSource];
 
-    if (v7 == self)
+    if (dataSource == self)
     {
       [(UICollectionView *)self->_collectionView setDataSource:0];
     }
 
-    v8 = [(UIScrollView *)self->_collectionView delegate];
+    delegate = [(UIScrollView *)self->_collectionView delegate];
 
-    if (v8 == self)
+    if (delegate == self)
     {
       [(UICollectionView *)self->_collectionView setDelegate:0];
     }
 
     [(UIScrollView *)self->_collectionView removeFromSuperview];
     [(UIView *)v12 setAutoresizingMask:18];
-    v9 = [(UICollectionViewController *)self _wrappingView];
-    [(UICollectionViewController *)self setView:v9];
-    [v9 bounds];
+    _wrappingView = [(UICollectionViewController *)self _wrappingView];
+    [(UICollectionViewController *)self setView:_wrappingView];
+    [_wrappingView bounds];
     [(UICollectionView *)v12 setFrame:?];
-    [v9 addSubview:v12];
+    [_wrappingView addSubview:v12];
     objc_storeStrong(&self->_collectionView, collectionView);
-    v10 = [(UICollectionView *)v12 dataSource];
+    dataSource2 = [(UICollectionView *)v12 dataSource];
 
-    if (!v10)
+    if (!dataSource2)
     {
       [(UICollectionView *)v12 setDataSource:self];
     }
 
-    v11 = [(UIScrollView *)v12 delegate];
+    delegate2 = [(UIScrollView *)v12 delegate];
 
-    if (!v11)
+    if (!delegate2)
     {
       [(UICollectionView *)v12 setDelegate:self];
     }
@@ -686,47 +686,47 @@ LABEL_8:
 {
   if (dyld_program_sdk_at_least() && (-[UICollectionViewController collectionView](self, "collectionView"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 _isConnectedToDiffableDataSource], v3, (v4 & 1) != 0))
   {
-    v5 = [(UICollectionViewController *)self collectionView];
-    v6 = [v5 dataSource];
+    collectionView = [(UICollectionViewController *)self collectionView];
+    selfCopy = [collectionView dataSource];
   }
 
   else
   {
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)collectionView:(id)a3 didBeginMultipleSelectionInteractionAtIndexPath:(id)a4
+- (void)collectionView:(id)view didBeginMultipleSelectionInteractionAtIndexPath:(id)path
 {
-  v5 = a3;
-  if (dyld_program_sdk_at_least() && [v5 isEditing])
+  viewCopy = view;
+  if (dyld_program_sdk_at_least() && [viewCopy isEditing])
   {
     [(UICollectionViewController *)self setEditing:1 animated:1];
   }
 }
 
-- (id)_newCollectionViewWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (id)_newCollectionViewWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
-  v9 = [[UICollectionView alloc] initWithFrame:v8 collectionViewLayout:x, y, width, height];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layoutCopy = layout;
+  height = [[UICollectionView alloc] initWithFrame:layoutCopy collectionViewLayout:x, y, width, height];
 
-  return v9;
+  return height;
 }
 
-- (id)_animatorForOperation:(int64_t)a3 fromViewController:(id)a4 toViewController:(id)a5
+- (id)_animatorForOperation:(int64_t)operation fromViewController:(id)controller toViewController:(id)viewController
 {
-  v8 = a4;
-  v9 = a5;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v8 collectionView], v10 = objc_claimAutoreleasedReturnValue(), collectionView = self->_collectionView, v10, v10 == collectionView))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([controllerCopy collectionView], v10 = objc_claimAutoreleasedReturnValue(), collectionView = self->_collectionView, v10, v10 == collectionView))
   {
-    v12 = [_UICollectionViewControllerLayoutToLayoutTransition transitionForOperation:a3 fromViewController:v8 toViewController:v9];
+    v12 = [_UICollectionViewControllerLayoutToLayoutTransition transitionForOperation:operation fromViewController:controllerCopy toViewController:viewControllerCopy];
   }
 
   else
@@ -737,26 +737,26 @@ LABEL_8:
   return v12;
 }
 
-- (void)_setUseLayoutToLayoutNavigationTransitions:(BOOL)a3 withCheck:(BOOL)a4
+- (void)_setUseLayoutToLayoutNavigationTransitions:(BOOL)transitions withCheck:(BOOL)check
 {
-  v4 = a3;
-  if (!a4)
+  transitionsCopy = transitions;
+  if (!check)
   {
     [(UICollectionViewController *)self useLayoutToLayoutNavigationTransitions];
     goto LABEL_9;
   }
 
-  v6 = [(UIViewController *)self parentViewController];
-  if (v6)
+  parentViewController = [(UIViewController *)self parentViewController];
+  if (parentViewController)
   {
   }
 
   else
   {
-    v7 = [(UIViewController *)self _existingView];
-    v8 = [v7 window];
+    _existingView = [(UIViewController *)self _existingView];
+    window = [_existingView window];
 
-    if (!v8)
+    if (!window)
     {
       goto LABEL_7;
     }
@@ -764,14 +764,14 @@ LABEL_8:
 
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Attempt to change the layout to layout transitions property of %@ which is a child view controller or in the window hierarchy", self}];
 LABEL_7:
-  if ([(UICollectionViewController *)self useLayoutToLayoutNavigationTransitions]!= v4)
+  if ([(UICollectionViewController *)self useLayoutToLayoutNavigationTransitions]!= transitionsCopy)
   {
     [(UICollectionViewController *)self setView:0];
   }
 
 LABEL_9:
-  [(UIViewController *)self _setUsesSharedView:v4];
-  if (v4)
+  [(UIViewController *)self _setUsesSharedView:transitionsCopy];
+  if (transitionsCopy)
   {
     v9 = 2;
   }
@@ -784,19 +784,19 @@ LABEL_9:
   *&self->_collectionViewControllerFlags = *&self->_collectionViewControllerFlags & 0xFD | v9;
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(UICollectionViewController *)self collectionView];
-  v8 = [v7 canBeEdited];
+  animatedCopy = animated;
+  editingCopy = editing;
+  collectionView = [(UICollectionViewController *)self collectionView];
+  canBeEdited = [collectionView canBeEdited];
 
-  if (v8)
+  if (canBeEdited)
   {
-    if (v4)
+    if (animatedCopy)
     {
-      v9 = [(UICollectionViewController *)self collectionView];
-      [v9 setEditing:v5];
+      collectionView2 = [(UICollectionViewController *)self collectionView];
+      [collectionView2 setEditing:editingCopy];
     }
 
     else
@@ -806,14 +806,14 @@ LABEL_9:
       v11[2] = __50__UICollectionViewController_setEditing_animated___block_invoke;
       v11[3] = &unk_1E70F35E0;
       v11[4] = self;
-      v12 = v5;
+      v12 = editingCopy;
       [UIView performWithoutAnimation:v11];
     }
   }
 
   v10.receiver = self;
   v10.super_class = UICollectionViewController;
-  [(UIViewController *)&v10 setEditing:v5 animated:v4];
+  [(UIViewController *)&v10 setEditing:editingCopy animated:animatedCopy];
 }
 
 void __50__UICollectionViewController_setEditing_animated___block_invoke(uint64_t a1)
@@ -822,15 +822,15 @@ void __50__UICollectionViewController_setEditing_animated___block_invoke(uint64_
   [v2 setEditing:*(a1 + 40)];
 }
 
-- (id)previewingContext:(id)a3 viewControllerForLocation:(CGPoint)a4
+- (id)previewingContext:(id)context viewControllerForLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3;
+  y = location.y;
+  x = location.x;
+  contextCopy = context;
   if ([(UICollectionViewController *)self _shouldRespondToPreviewingMethods])
   {
-    v9 = [v8 sourceView];
-    v10 = [(UICollectionViewController *)self previewViewControllerForLocation:v9 inSourceView:x, y];
+    sourceView = [contextCopy sourceView];
+    v10 = [(UICollectionViewController *)self previewViewControllerForLocation:sourceView inSourceView:x, y];
   }
 
   else
@@ -842,12 +842,12 @@ void __50__UICollectionViewController_setEditing_animated___block_invoke(uint64_
   return v10;
 }
 
-- (void)previewingContext:(id)a3 commitViewController:(id)a4
+- (void)previewingContext:(id)context commitViewController:(id)controller
 {
-  v8 = a4;
+  controllerCopy = controller;
   if ([(UICollectionViewController *)self _shouldRespondToPreviewingMethods])
   {
-    v6 = v8;
+    v6 = controllerCopy;
     v7 = v6;
     if (objc_opt_respondsToSelector())
     {
@@ -876,16 +876,16 @@ void __50__UICollectionViewController_setEditing_animated___block_invoke(uint64_
   }
 }
 
-- (id)previewViewControllerForLocation:(CGPoint)a3 inSourceView:(id)a4
+- (id)previewViewControllerForLocation:(CGPoint)location inSourceView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = location.y;
+  x = location.x;
+  viewCopy = view;
   if ([(UICollectionViewController *)self _shouldRespondToPreviewingMethods])
   {
-    v8 = [(UICollectionViewController *)self collectionView];
-    [v8 convertPoint:v7 fromView:{x, y}];
-    v9 = [v8 indexPathForItemAtPoint:?];
+    collectionView = [(UICollectionViewController *)self collectionView];
+    [collectionView convertPoint:viewCopy fromView:{x, y}];
+    v9 = [collectionView indexPathForItemAtPoint:?];
     v10 = [(UICollectionViewController *)self previewViewControllerForItemAtIndexPath:v9];
   }
 
@@ -897,23 +897,23 @@ void __50__UICollectionViewController_setEditing_animated___block_invoke(uint64_
   return v10;
 }
 
-- (void)willPresentPreviewViewController:(id)a3 forLocation:(CGPoint)a4 inSourceView:(id)a5
+- (void)willPresentPreviewViewController:(id)controller forLocation:(CGPoint)location inSourceView:(id)view
 {
-  y = a4.y;
-  x = a4.x;
-  v14 = a3;
-  v9 = a5;
+  y = location.y;
+  x = location.x;
+  controllerCopy = controller;
+  viewCopy = view;
   if ([(UICollectionViewController *)self _shouldRespondToPreviewingMethods])
   {
-    v10 = [(UICollectionViewController *)self collectionView];
-    [v10 convertPoint:v9 fromView:{x, y}];
-    v11 = [v10 indexPathForItemAtPoint:?];
-    v12 = [v10 cellForItemAtIndexPath:v11];
-    v13 = [v14 presentationController];
-    [v13 setSourceView:v12];
+    collectionView = [(UICollectionViewController *)self collectionView];
+    [collectionView convertPoint:viewCopy fromView:{x, y}];
+    v11 = [collectionView indexPathForItemAtPoint:?];
+    v12 = [collectionView cellForItemAtIndexPath:v11];
+    presentationController = [controllerCopy presentationController];
+    [presentationController setSourceView:v12];
     [v12 bounds];
-    [v13 setSourceRect:?];
-    [(UICollectionViewController *)self willPresentPreviewViewController:v14 forItemAtIndexPath:v11];
+    [presentationController setSourceRect:?];
+    [(UICollectionViewController *)self willPresentPreviewViewController:controllerCopy forItemAtIndexPath:v11];
   }
 }
 
@@ -944,38 +944,38 @@ void __50__UICollectionViewController_setEditing_animated___block_invoke(uint64_
   }
 }
 
-- (void)_handleReorderingGesture:(id)a3
+- (void)_handleReorderingGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   v5 = self->_collectionView;
-  v6 = [v4 state];
-  if (v6 > 2)
+  state = [gestureCopy state];
+  if (state > 2)
   {
-    if (v6 == 3)
+    if (state == 3)
     {
       [(UICollectionView *)v5 endInteractiveMovement];
     }
 
-    else if (v6 == 4)
+    else if (state == 4)
     {
       [(UICollectionView *)v5 cancelInteractiveMovement];
     }
   }
 
-  else if (v6 == 1)
+  else if (state == 1)
   {
-    [v4 startPoint];
+    [gestureCopy startPoint];
     v7 = [(UICollectionView *)v5 indexPathForItemAtPoint:?];
     if (v7)
     {
       [(UICollectionView *)v5 beginInteractiveMovementForItemAtIndexPath:v7];
-      v8 = [(UICollectionView *)v5 contextMenuInteraction];
-      v9 = [v8 _hasVisibleMenu];
+      contextMenuInteraction = [(UICollectionView *)v5 contextMenuInteraction];
+      _hasVisibleMenu = [contextMenuInteraction _hasVisibleMenu];
 
-      if (v9)
+      if (_hasVisibleMenu)
       {
-        v10 = [(UICollectionView *)v5 contextMenuInteraction];
-        [v10 dismissMenu];
+        contextMenuInteraction2 = [(UICollectionView *)v5 contextMenuInteraction];
+        [contextMenuInteraction2 dismissMenu];
       }
 
       else
@@ -990,18 +990,18 @@ void __50__UICollectionViewController_setEditing_animated___block_invoke(uint64_
     }
   }
 
-  else if (v6 == 2)
+  else if (state == 2)
   {
     if ([(UICollectionView *)v5 _isReordering])
     {
-      [v4 locationInView:v5];
+      [gestureCopy locationInView:v5];
       [(UICollectionView *)v5 updateInteractiveMovementTargetPosition:?];
     }
 
     else
     {
-      [v4 setEnabled:0];
-      [v4 setEnabled:1];
+      [gestureCopy setEnabled:0];
+      [gestureCopy setEnabled:1];
     }
   }
 }
@@ -1050,27 +1050,27 @@ void __55__UICollectionViewController__handleReorderingGesture___block_invoke(ui
 LABEL_11:
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  if (self->_reorderingGesture == a3 && ([(UICollectionView *)self->_collectionView contextMenuInteraction], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
+  gestureRecognizerCopy = gestureRecognizer;
+  if (self->_reorderingGesture == recognizer && ([(UICollectionView *)self->_collectionView contextMenuInteraction], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
   {
-    v10 = [(UICollectionView *)self->_collectionView contextMenuInteraction];
-    v11 = [v10 _gestureRecognizerForBeginningDragRelationships];
+    contextMenuInteraction = [(UICollectionView *)self->_collectionView contextMenuInteraction];
+    _gestureRecognizerForBeginningDragRelationships = [contextMenuInteraction _gestureRecognizerForBeginningDragRelationships];
 
-    if (v11 == v6)
+    if (_gestureRecognizerForBeginningDragRelationships == gestureRecognizerCopy)
     {
       v7 = 1;
     }
 
     else
     {
-      v12 = [(UIViewController *)self traitCollection];
-      if ([v12 userInterfaceIdiom] == 6)
+      traitCollection = [(UIViewController *)self traitCollection];
+      if ([traitCollection userInterfaceIdiom] == 6)
       {
-        v13 = [(UICollectionView *)self->_collectionView contextMenuInteraction];
-        v14 = [v13 gestureRecognizerForFailureRelationships];
-        v7 = v14 == v6;
+        contextMenuInteraction2 = [(UICollectionView *)self->_collectionView contextMenuInteraction];
+        gestureRecognizerForFailureRelationships = [contextMenuInteraction2 gestureRecognizerForFailureRelationships];
+        v7 = gestureRecognizerForFailureRelationships == gestureRecognizerCopy;
       }
 
       else

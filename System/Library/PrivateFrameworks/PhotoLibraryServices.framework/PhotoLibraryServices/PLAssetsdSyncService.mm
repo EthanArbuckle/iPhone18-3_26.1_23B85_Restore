@@ -1,32 +1,32 @@
 @interface PLAssetsdSyncService
-- (PLAssetsdSyncService)initWithLibraryServicesManager:(id)a3;
+- (PLAssetsdSyncService)initWithLibraryServicesManager:(id)manager;
 - (id)_fileRestoreExclusionPaths;
-- (id)_readRestoreAlbumMetadataForAlbum:(id)a3;
-- (void)_addAsset:(id)a3 toAlbumsForUUID:(id)a4 inLibrary:(id)a5;
+- (id)_readRestoreAlbumMetadataForAlbum:(id)album;
+- (void)_addAsset:(id)asset toAlbumsForUUID:(id)d inLibrary:(id)library;
 - (void)_cleanupAlbumMetadataAsideFilesAfterRestore;
-- (void)_finalizeOTARestoreEndedAndRecreateAlbums:(BOOL)a3;
-- (void)_linkPathsAside:(id)a3;
-- (void)_recoverAsideFiles:(id)a3;
-- (void)_updatePendingCountForMissingAsset:(id)a3 inLibrary:(id)a4;
-- (void)_updateRestoredAssetWithUUID:(id)a3 paths:(id)a4 fixAddedDate:(BOOL)a5;
-- (void)finalizeOTARestoreRecreatingAlbums:(BOOL)a3;
-- (void)updateRestoredAssetWithUUID:(id)a3 paths:(id)a4 fixAddedDate:(BOOL)a5;
+- (void)_finalizeOTARestoreEndedAndRecreateAlbums:(BOOL)albums;
+- (void)_linkPathsAside:(id)aside;
+- (void)_recoverAsideFiles:(id)files;
+- (void)_updatePendingCountForMissingAsset:(id)asset inLibrary:(id)library;
+- (void)_updateRestoredAssetWithUUID:(id)d paths:(id)paths fixAddedDate:(BOOL)date;
+- (void)finalizeOTARestoreRecreatingAlbums:(BOOL)albums;
+- (void)updateRestoredAssetWithUUID:(id)d paths:(id)paths fixAddedDate:(BOOL)date;
 @end
 
 @implementation PLAssetsdSyncService
 
-- (void)_addAsset:(id)a3 toAlbumsForUUID:(id)a4 inLibrary:(id)a5
+- (void)_addAsset:(id)asset toAlbumsForUUID:(id)d inLibrary:(id)library
 {
   v80 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v66 = a4;
-  v9 = a5;
+  assetCopy = asset;
+  dCopy = d;
+  libraryCopy = library;
   v10 = MEMORY[0x1E695DF90];
-  v62 = self;
-  v11 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v12 = [v11 pathManager];
-  v13 = [v12 pathToAssetsToAlbumsMapping];
-  v14 = [v10 dictionaryWithContentsOfFile:v13];
+  selfCopy = self;
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  pathManager = [libraryServicesManager pathManager];
+  pathToAssetsToAlbumsMapping = [pathManager pathToAssetsToAlbumsMapping];
+  v14 = [v10 dictionaryWithContentsOfFile:pathToAssetsToAlbumsMapping];
 
   if (!v14)
   {
@@ -57,7 +57,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v15 = [v14 objectForKey:v66];
+  v15 = [v14 objectForKey:dCopy];
   if (v15)
   {
     goto LABEL_13;
@@ -67,7 +67,7 @@ LABEL_10:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v76 = v66;
+    v76 = dCopy;
     v17 = "Error: did not find the list of albums asset %@ is associated with";
     v18 = v16;
     v19 = 12;
@@ -79,21 +79,21 @@ LABEL_12:
 
   v15 = 0;
 LABEL_13:
-  v20 = [v8 pathForOriginalFile];
-  v21 = [v20 stringByDeletingLastPathComponent];
+  pathForOriginalFile = [assetCopy pathForOriginalFile];
+  stringByDeletingLastPathComponent = [pathForOriginalFile stringByDeletingLastPathComponent];
 
-  v22 = [MEMORY[0x1E695DFF8] fileURLWithPath:v21 isDirectory:1];
+  v22 = [MEMORY[0x1E695DFF8] fileURLWithPath:stringByDeletingLastPathComponent isDirectory:1];
   v74 = 0;
   [PLModelMigrator shouldImportAssetsFromDCIMSubDirectoryAtURL:v22 assetsKind:&v74];
   if (v74 == 1)
   {
-    v23 = [v9 allImportedPhotosAlbumCreateIfNeeded:0];
+    v23 = [libraryCopy allImportedPhotosAlbumCreateIfNeeded:0];
     if (v23)
     {
       v24 = v23;
 LABEL_17:
-      v26 = [v24 mutableAssets];
-      [v26 addObject:v8];
+      mutableAssets = [v24 mutableAssets];
+      [mutableAssets addObject:assetCopy];
 
       goto LABEL_18;
     }
@@ -102,7 +102,7 @@ LABEL_17:
     v72[1] = 3221225472;
     v72[2] = __60__PLAssetsdSyncService__addAsset_toAlbumsForUUID_inLibrary___block_invoke;
     v72[3] = &unk_1E75781E8;
-    v25 = v9;
+    v25 = libraryCopy;
     v73 = v25;
     [v25 performTransactionAndWait:v72];
     v24 = [v25 allImportedPhotosAlbumCreateIfNeeded:0];
@@ -114,9 +114,9 @@ LABEL_17:
   }
 
 LABEL_18:
-  if (+[PLAvalanche shouldOnlyShowAvalanchePicks](PLAvalanche, "shouldOnlyShowAvalanchePicks") && [v8 isPartOfBurst] && (objc_msgSend(v8, "avalanchePickTypeIsVisible") & 1) == 0)
+  if (+[PLAvalanche shouldOnlyShowAvalanchePicks](PLAvalanche, "shouldOnlyShowAvalanchePicks") && [assetCopy isPartOfBurst] && (objc_msgSend(assetCopy, "avalanchePickTypeIsVisible") & 1) == 0)
   {
-    [v8 setVisibilityState:2];
+    [assetCopy setVisibilityState:2];
 
     v15 = 0;
   }
@@ -124,7 +124,7 @@ LABEL_18:
   if ([v15 count])
   {
     v56 = v22;
-    v57 = v21;
+    v57 = stringByDeletingLastPathComponent;
     v58 = v15;
     v59 = v14;
     v70 = 0u;
@@ -137,9 +137,9 @@ LABEL_18:
     {
       v28 = v27;
       v29 = *v69;
-      v64 = v8;
+      v64 = assetCopy;
       v60 = *v69;
-      v61 = v9;
+      v61 = libraryCopy;
       do
       {
         v30 = 0;
@@ -152,17 +152,17 @@ LABEL_18:
           }
 
           v31 = *(*(&v68 + 1) + 8 * v30);
-          v32 = [v9 albumWithUuid:{v31, v56, v57, v58, v59}];
+          v32 = [libraryCopy albumWithUuid:{v31, v56, v57, v58, v59}];
           v33 = v32;
           if (v32)
           {
             if ([v32 kindValue] == 1000)
             {
-              v34 = [v33 mutableAssets];
-              v35 = [v34 count];
+              mutableAssets2 = [v33 mutableAssets];
+              v35 = [mutableAssets2 count];
 
-              v36 = [v33 mutableAssets];
-              v37 = [v36 indexOfObject:v8 inSortedRange:0 options:v35 usingComparator:{1024, &__block_literal_global_81_57788}];
+              mutableAssets3 = [v33 mutableAssets];
+              v37 = [mutableAssets3 indexOfObject:assetCopy inSortedRange:0 options:v35 usingComparator:{1024, &__block_literal_global_81_57788}];
 
               if (v37 == 0x7FFFFFFFFFFFFFFFLL)
               {
@@ -174,20 +174,20 @@ LABEL_18:
                 v38 = v37;
               }
 
-              v39 = [v33 mutableAssets];
-              [v39 insertObject:v8 atIndex:v38];
+              mutableAssets4 = [v33 mutableAssets];
+              [mutableAssets4 insertObject:assetCopy atIndex:v38];
 
               [v33 reducePendingItemsCountBy:1];
             }
 
             else
             {
-              v67 = [(PLAssetsdSyncService *)v62 _readRestoreAlbumMetadataForAlbum:v31];
-              v42 = [v67 assetUUIDs];
-              v43 = [v42 count];
+              v67 = [(PLAssetsdSyncService *)selfCopy _readRestoreAlbumMetadataForAlbum:v31];
+              assetUUIDs = [v67 assetUUIDs];
+              v43 = [assetUUIDs count];
 
-              v44 = [v33 mutableAssets];
-              v45 = [v44 count];
+              mutableAssets5 = [v33 mutableAssets];
+              v45 = [mutableAssets5 count];
 
               if (v43)
               {
@@ -201,19 +201,19 @@ LABEL_18:
                     goto LABEL_47;
                   }
 
-                  v48 = [v67 assetUUIDs];
-                  v49 = [v48 objectAtIndex:v47 - 1];
+                  assetUUIDs2 = [v67 assetUUIDs];
+                  v49 = [assetUUIDs2 objectAtIndex:v47 - 1];
 
-                  v50 = [v33 mutableAssets];
-                  v51 = [v50 objectAtIndex:v46];
-                  v52 = [v51 uuid];
+                  mutableAssets6 = [v33 mutableAssets];
+                  v51 = [mutableAssets6 objectAtIndex:v46];
+                  uuid = [v51 uuid];
 
-                  if ([v49 isEqual:v66])
+                  if ([v49 isEqual:dCopy])
                   {
                     break;
                   }
 
-                  v53 = [v49 isEqual:v52];
+                  v53 = [v49 isEqual:uuid];
 
                   if (v47 < v43)
                   {
@@ -229,7 +229,7 @@ LABEL_18:
                 }
 
 LABEL_47:
-                v8 = v64;
+                assetCopy = v64;
               }
 
               else
@@ -237,16 +237,16 @@ LABEL_47:
                 v46 = v45;
               }
 
-              v54 = [v33 mutableAssets];
-              [v54 insertObject:v8 atIndex:v46];
+              mutableAssets7 = [v33 mutableAssets];
+              [mutableAssets7 insertObject:assetCopy atIndex:v46];
 
               [v33 reducePendingItemsCountBy:1];
 LABEL_49:
 
               v28 = v63;
-              v8 = v64;
+              assetCopy = v64;
               v29 = v60;
-              v9 = v61;
+              libraryCopy = v61;
             }
           }
 
@@ -255,11 +255,11 @@ LABEL_49:
             v40 = PLMigrationGetLog();
             if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
             {
-              v41 = [v8 uuid];
+              uuid2 = [assetCopy uuid];
               *buf = 138412546;
               v76 = v31;
               v77 = 2112;
-              v78 = v41;
+              v78 = uuid2;
               _os_log_impl(&dword_19BF1F000, v40, OS_LOG_TYPE_ERROR, "Error: Failed  to find the album %@, which asset %@ supposedly belongs to", buf, 0x16u);
             }
           }
@@ -277,11 +277,11 @@ LABEL_49:
     v15 = v58;
     v14 = v59;
     v22 = v56;
-    v21 = v57;
+    stringByDeletingLastPathComponent = v57;
   }
 
-  v55 = [v9 otaRestoreProgressAlbum];
-  [v55 reducePendingItemsCountBy:1];
+  otaRestoreProgressAlbum = [libraryCopy otaRestoreProgressAlbum];
+  [otaRestoreProgressAlbum reducePendingItemsCountBy:1];
 }
 
 uint64_t __60__PLAssetsdSyncService__addAsset_toAlbumsForUUID_inLibrary___block_invoke_78(uint64_t a1, void *a2, void *a3)
@@ -294,22 +294,22 @@ uint64_t __60__PLAssetsdSyncService__addAsset_toAlbumsForUUID_inLibrary___block_
   return v7;
 }
 
-- (id)_readRestoreAlbumMetadataForAlbum:(id)a3
+- (id)_readRestoreAlbumMetadataForAlbum:(id)album
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [a3 stringByAppendingPathExtension:@"albummetadata"];
+  v4 = [album stringByAppendingPathExtension:@"albummetadata"];
   v5 = [v4 stringByAppendingPathExtension:@"aside"];
 
   v6 = MEMORY[0x1E695DFF8];
-  v7 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v8 = [v7 pathManager];
-  v9 = [v8 privateDirectoryWithSubType:4 createIfNeeded:0 error:0];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  pathManager = [libraryServicesManager pathManager];
+  v9 = [pathManager privateDirectoryWithSubType:4 createIfNeeded:0 error:0];
   v10 = [v6 fileURLWithPath:v9 isDirectory:1];
 
   v11 = [v10 URLByAppendingPathComponent:v5 isDirectory:0];
-  v12 = [MEMORY[0x1E696AC08] defaultManager];
-  v13 = [v11 path];
-  LOBYTE(v9) = [v12 fileExistsAtPath:v13];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v11 path];
+  LOBYTE(v9) = [defaultManager fileExistsAtPath:path];
 
   if (v9)
   {
@@ -334,33 +334,33 @@ uint64_t __60__PLAssetsdSyncService__addAsset_toAlbumsForUUID_inLibrary___block_
 
 - (id)_fileRestoreExclusionPaths
 {
-  v2 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v3 = [v2 pathManager];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  pathManager = [libraryServicesManager pathManager];
 
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [v3 photoDirectoryWithType:9];
+  array = [MEMORY[0x1E695DF70] array];
+  v5 = [pathManager photoDirectoryWithType:9];
   if (v5)
   {
-    [v4 addObject:v5];
+    [array addObject:v5];
   }
 
-  v6 = [v3 photoDirectoryWithType:10];
+  v6 = [pathManager photoDirectoryWithType:10];
 
   if (v6)
   {
-    [v4 addObject:v6];
+    [array addObject:v6];
   }
 
-  return v4;
+  return array;
 }
 
 - (void)_cleanupAlbumMetadataAsideFilesAfterRestore
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v5 = [v4 pathManager];
-  v6 = [v5 privateDirectoryWithSubType:4 createIfNeeded:1 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  pathManager = [libraryServicesManager pathManager];
+  v6 = [pathManager privateDirectoryWithSubType:4 createIfNeeded:1 error:0];
 
   if (v6)
   {
@@ -369,7 +369,7 @@ uint64_t __60__PLAssetsdSyncService__addAsset_toAlbumsForUUID_inLibrary___block_
     v8 = *MEMORY[0x1E695DC30];
     v9 = [MEMORY[0x1E695DEC8] arrayWithObject:*MEMORY[0x1E695DC30]];
     v23 = v7;
-    v10 = [v3 enumeratorAtURL:v7 includingPropertiesForKeys:v9 options:0 errorHandler:&__block_literal_global_57802];
+    v10 = [defaultManager enumeratorAtURL:v7 includingPropertiesForKeys:v9 options:0 errorHandler:&__block_literal_global_57802];
 
     v28 = 0u;
     v29 = 0u;
@@ -398,11 +398,11 @@ uint64_t __60__PLAssetsdSyncService__addAsset_toAlbumsForUUID_inLibrary___block_
           v19 = v18;
           if (v17 && [v18 length])
           {
-            v20 = [v16 pathExtension];
-            v21 = v20;
-            if (v20 && [v20 isEqualToString:@"aside"])
+            pathExtension = [v16 pathExtension];
+            v21 = pathExtension;
+            if (pathExtension && [pathExtension isEqualToString:@"aside"])
             {
-              [v3 removeItemAtURL:v16 error:0];
+              [defaultManager removeItemAtURL:v16 error:0];
             }
           }
 
@@ -450,16 +450,16 @@ uint64_t __67__PLAssetsdSyncService__cleanupAlbumMetadataAsideFilesAfterRestore_
   return 1;
 }
 
-- (void)_recoverAsideFiles:(id)a3
+- (void)_recoverAsideFiles:(id)files
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  filesCopy = files;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v3;
+  obj = filesCopy;
   v5 = [obj countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v5)
   {
@@ -482,13 +482,13 @@ uint64_t __67__PLAssetsdSyncService__cleanupAlbumMetadataAsideFilesAfterRestore_
         v12 = *(*(&v20 + 1) + 8 * v10);
         v13 = [v12 stringByAppendingPathExtension:{@"aside", v17}];
         v19 = v11;
-        v14 = [v4 moveItemAtPath:v13 toPath:v12 error:&v19];
+        v14 = [defaultManager moveItemAtPath:v13 toPath:v12 error:&v19];
         v8 = v19;
 
         if ((v14 & 1) == 0)
         {
           v15 = [v12 stringByAppendingPathExtension:@"aside"];
-          [v4 removeItemAtPath:v15 error:0];
+          [defaultManager removeItemAtPath:v15 error:0];
 
           v16 = PLMigrationGetLog();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -513,16 +513,16 @@ uint64_t __67__PLAssetsdSyncService__cleanupAlbumMetadataAsideFilesAfterRestore_
   }
 }
 
-- (void)_linkPathsAside:(id)a3
+- (void)_linkPathsAside:(id)aside
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  asideCopy = aside;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v3;
+  obj = asideCopy;
   v5 = [obj countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v5)
   {
@@ -545,7 +545,7 @@ uint64_t __67__PLAssetsdSyncService__cleanupAlbumMetadataAsideFilesAfterRestore_
         v12 = *(*(&v19 + 1) + 8 * v10);
         v13 = [v12 stringByAppendingPathExtension:{@"aside", v16}];
         v18 = v11;
-        v14 = [v4 linkItemAtPath:v12 toPath:v13 error:&v18];
+        v14 = [defaultManager linkItemAtPath:v12 toPath:v13 error:&v18];
         v8 = v18;
 
         if ((v14 & 1) == 0)
@@ -573,15 +573,15 @@ uint64_t __67__PLAssetsdSyncService__cleanupAlbumMetadataAsideFilesAfterRestore_
   }
 }
 
-- (void)_updatePendingCountForMissingAsset:(id)a3 inLibrary:(id)a4
+- (void)_updatePendingCountForMissingAsset:(id)asset inLibrary:(id)library
 {
   v37 = *MEMORY[0x1E69E9840];
-  v27 = a3;
-  v5 = a4;
+  assetCopy = asset;
+  libraryCopy = library;
   v6 = MEMORY[0x1E695DF90];
-  v7 = [v5 pathManager];
-  v8 = [v7 pathToAssetsToAlbumsMapping];
-  v9 = [v6 dictionaryWithContentsOfFile:v8];
+  pathManager = [libraryCopy pathManager];
+  pathToAssetsToAlbumsMapping = [pathManager pathToAssetsToAlbumsMapping];
+  v9 = [v6 dictionaryWithContentsOfFile:pathToAssetsToAlbumsMapping];
 
   if (!v9)
   {
@@ -612,7 +612,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v10 = [v9 objectForKey:v27];
+  v10 = [v9 objectForKey:assetCopy];
   if (v10)
   {
     goto LABEL_13;
@@ -622,7 +622,7 @@ LABEL_10:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v33 = v27;
+    v33 = assetCopy;
     v12 = "Error: did not find the list of albums asset %@ is associated with";
     v13 = v11;
     v14 = 12;
@@ -658,7 +658,7 @@ LABEL_13:
           }
 
           v20 = *(*(&v28 + 1) + 8 * i);
-          v21 = [v5 albumWithUuid:{v20, v25, v26}];
+          v21 = [libraryCopy albumWithUuid:{v20, v25, v26}];
           v22 = v21;
           if (v21)
           {
@@ -673,7 +673,7 @@ LABEL_13:
               *buf = 138412546;
               v33 = v20;
               v34 = 2112;
-              v35 = v27;
+              v35 = assetCopy;
               _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_ERROR, "Error: Failed  to find the album %@, which asset %@ supposedly belongs to", buf, 0x16u);
             }
           }
@@ -689,20 +689,20 @@ LABEL_13:
     v9 = v26;
   }
 
-  v24 = [v5 otaRestoreProgressAlbum];
-  [v24 reducePendingItemsCountBy:1];
+  otaRestoreProgressAlbum = [libraryCopy otaRestoreProgressAlbum];
+  [otaRestoreProgressAlbum reducePendingItemsCountBy:1];
 }
 
-- (void)_updateRestoredAssetWithUUID:(id)a3 paths:(id)a4 fixAddedDate:(BOOL)a5
+- (void)_updateRestoredAssetWithUUID:(id)d paths:(id)paths fixAddedDate:(BOOL)date
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  pathsCopy = paths;
   [MEMORY[0x1E69BF360] transaction:"-[PLAssetsdSyncService _updateRestoredAssetWithUUID:paths:fixAddedDate:]"];
-  v11 = v6;
-  v13 = v12 = v7;
+  v11 = dCopy;
+  v13 = v12 = pathsCopy;
   v8 = v13;
-  v9 = v7;
-  v10 = v6;
+  v9 = pathsCopy;
+  v10 = dCopy;
   pl_dispatch_group_async();
   pl_dispatch_group_notify();
 }
@@ -1443,15 +1443,15 @@ void __72__PLAssetsdSyncService__updateRestoredAssetWithUUID_paths_fixAddedDate_
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_finalizeOTARestoreEndedAndRecreateAlbums:(BOOL)a3
+- (void)_finalizeOTARestoreEndedAndRecreateAlbums:(BOOL)albums
 {
-  v3 = a3;
+  albumsCopy = albums;
   v10 = *MEMORY[0x1E69E9840];
   v4 = PLMigrationGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = @"NO";
-    if (v3)
+    if (albumsCopy)
     {
       v5 = @"YES";
     }
@@ -1532,23 +1532,23 @@ uint64_t __66__PLAssetsdSyncService__finalizeOTARestoreEndedAndRecreateAlbums___
   return [v2 stillAlive];
 }
 
-- (void)finalizeOTARestoreRecreatingAlbums:(BOOL)a3
+- (void)finalizeOTARestoreRecreatingAlbums:(BOOL)albums
 {
-  v3 = a3;
+  albumsCopy = albums;
   v15 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   *sel = 0u;
   v9 = 0u;
-  v5 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v9) = v5;
-  if (v5)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v9) = enabled;
+  if (enabled)
   {
     *(&v9 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: finalizeOTARestoreRecreatingAlbums:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v9 + 1), (&v11 + 8));
   }
 
-  [(PLAssetsdSyncService *)self _finalizeOTARestoreEndedAndRecreateAlbums:v3, v9];
+  [(PLAssetsdSyncService *)self _finalizeOTARestoreEndedAndRecreateAlbums:albumsCopy, v9];
   if (v10 == 1)
   {
     os_activity_scope_leave((&v11 + 8));
@@ -1568,25 +1568,25 @@ uint64_t __66__PLAssetsdSyncService__finalizeOTARestoreEndedAndRecreateAlbums___
   }
 }
 
-- (void)updateRestoredAssetWithUUID:(id)a3 paths:(id)a4 fixAddedDate:(BOOL)a5
+- (void)updateRestoredAssetWithUUID:(id)d paths:(id)paths fixAddedDate:(BOOL)date
 {
-  v5 = a5;
+  dateCopy = date;
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  pathsCopy = paths;
   v16 = 0u;
   *sel = 0u;
   v14 = 0u;
-  v10 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v14) = v10;
-  if (v10)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v14) = enabled;
+  if (enabled)
   {
     *(&v14 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: updateRestoredAssetWithUUID:paths:fixAddedDate:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v14 + 1), (&v16 + 8));
   }
 
-  [(PLAssetsdSyncService *)self _updateRestoredAssetWithUUID:v8 paths:v9 fixAddedDate:v5, v14];
+  [(PLAssetsdSyncService *)self _updateRestoredAssetWithUUID:dCopy paths:pathsCopy fixAddedDate:dateCopy, v14];
   if (v15 == 1)
   {
     os_activity_scope_leave((&v16 + 8));
@@ -1606,12 +1606,12 @@ uint64_t __66__PLAssetsdSyncService__finalizeOTARestoreEndedAndRecreateAlbums___
   }
 }
 
-- (PLAssetsdSyncService)initWithLibraryServicesManager:(id)a3
+- (PLAssetsdSyncService)initWithLibraryServicesManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = PLAssetsdSyncService;
-  v5 = [(PLAbstractLibraryServicesManagerService *)&v11 initWithLibraryServicesManager:v4];
+  v5 = [(PLAbstractLibraryServicesManagerService *)&v11 initWithLibraryServicesManager:managerCopy];
   if (v5)
   {
     v6 = dispatch_queue_create("com.apple.private.photos.service.sync", 0);
@@ -1622,7 +1622,7 @@ uint64_t __66__PLAssetsdSyncService__finalizeOTARestoreEndedAndRecreateAlbums___
     updateGroup = v5->_updateGroup;
     v5->_updateGroup = v8;
 
-    objc_storeWeak(&v5->_libraryServicesManager, v4);
+    objc_storeWeak(&v5->_libraryServicesManager, managerCopy);
   }
 
   return v5;

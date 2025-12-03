@@ -1,17 +1,17 @@
 @interface tmb16d8e8edc0f89afd1f7fe25529ab7fa
-- (id)initProduct:(id)a3;
+- (id)initProduct:(id)product;
 - (int)computeMaxCGTemp;
-- (void)updateAllThermalLoad:(BOOL)a3;
+- (void)updateAllThermalLoad:(BOOL)load;
 - (void)updateCoreAnalyticsInfo;
 @end
 
 @implementation tmb16d8e8edc0f89afd1f7fe25529ab7fa
 
-- (id)initProduct:(id)a3
+- (id)initProduct:(id)product
 {
   v6.receiver = self;
   v6.super_class = tmb16d8e8edc0f89afd1f7fe25529ab7fa;
-  v3 = [(CommonProduct *)&v6 initProduct:a3];
+  v3 = [(CommonProduct *)&v6 initProduct:product];
   v4 = v3;
   if (v3)
   {
@@ -21,10 +21,10 @@
   return v4;
 }
 
-- (void)updateAllThermalLoad:(BOOL)a3
+- (void)updateAllThermalLoad:(BOOL)load
 {
-  v3 = a3;
-  v45 = [(tmb16d8e8edc0f89afd1f7fe25529ab7fa *)self gasGaugeBatteryTemperature];
+  loadCopy = load;
+  gasGaugeBatteryTemperature = [(tmb16d8e8edc0f89afd1f7fe25529ab7fa *)self gasGaugeBatteryTemperature];
   v6 = HIDWORD(qword_1000AB824);
   v5 = qword_1000AB82C;
   v7 = HIDWORD(qword_1000AB82C);
@@ -42,7 +42,7 @@
     v10 = 4294967196;
   }
 
-  if (v3)
+  if (loadCopy)
   {
     [(tmb16d8e8edc0f89afd1f7fe25529ab7fa *)self resetVTFilterState];
   }
@@ -73,8 +73,8 @@
   sub_10000533C(51, (v5 * 0.55 + -33.0 + v7 * 0.11 + v8 * 0.33));
   sub_10000533C(49, (v5 * 0.57 + -30.0 + v7 * 0.09 + v8 * 0.33));
   sub_10000533C(55, (v6 * 0.11 + -54.0 + v7 * 0.24 + v8 * 0.63));
-  sub_10000533C(56, (v45 * 1.27 + -108.08 + v5 * -0.23));
-  sub_10000533C(53, (v45 * -0.79 + 199.0 + v5 * 0.6 + v8 * 1.14 + self->_filteredTempRearCameraDie * 0.06));
+  sub_10000533C(56, (gasGaugeBatteryTemperature * 1.27 + -108.08 + v5 * -0.23));
+  sub_10000533C(53, (gasGaugeBatteryTemperature * -0.79 + 199.0 + v5 * 0.6 + v8 * 1.14 + self->_filteredTempRearCameraDie * 0.06));
   sub_10000533C(52, (v5 * 0.26 + -87.0 + v7 * 0.51 + v8 * 0.23));
   sub_10000533C(54, (v6 * -0.02 + 61.0 + v8 * 1.03 + self->_filteredBacklightCurrentLI2 * 7.56));
   sub_10000533C(50, v10);

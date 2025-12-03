@@ -1,14 +1,14 @@
 @interface STSegmentItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation STSegmentItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STSegmentItem" hasInstanceVariable:@"_titleText" withType:"NSString"];
-  [v3 validateClass:@"STSegmentItem" hasInstanceVariable:@"_detailText" withType:"NSString"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STSegmentItem" hasInstanceVariable:@"_titleText" withType:"NSString"];
+  [validationsCopy validateClass:@"STSegmentItem" hasInstanceVariable:@"_detailText" withType:"NSString"];
 }
 
 @end

@@ -1,26 +1,26 @@
 @interface TPSWiFiCallingBundleController
 - (BOOL)isHidden;
-- (TPSWiFiCallingBundleController)initWithParentListController:(id)a3;
-- (id)capabilityState:(id)a3;
+- (TPSWiFiCallingBundleController)initWithParentListController:(id)controller;
+- (id)capabilityState:(id)state;
 - (id)specifiers;
 - (id)supportedSubscriptions;
-- (void)handleTPSWiFiCallingControllerSubscriptionCapabilitiesChangedNotification:(id)a3;
+- (void)handleTPSWiFiCallingControllerSubscriptionCapabilitiesChangedNotification:(id)notification;
 @end
 
 @implementation TPSWiFiCallingBundleController
 
-- (TPSWiFiCallingBundleController)initWithParentListController:(id)a3
+- (TPSWiFiCallingBundleController)initWithParentListController:(id)controller
 {
   v10.receiver = self;
   v10.super_class = TPSWiFiCallingBundleController;
-  v3 = [(TPSWiFiCallingBundleController *)&v10 initWithParentListController:a3];
+  v3 = [(TPSWiFiCallingBundleController *)&v10 initWithParentListController:controller];
   v4 = v3;
   if (v3)
   {
-    v5 = [(TPSWiFiCallingBundleController *)v3 subscriptionContext];
-    if (v5)
+    subscriptionContext = [(TPSWiFiCallingBundleController *)v3 subscriptionContext];
+    if (subscriptionContext)
     {
-      v6 = [[TPSWiFiCallingController alloc] initWithSubscriptionContext:v5];
+      v6 = [[TPSWiFiCallingController alloc] initWithSubscriptionContext:subscriptionContext];
       callingController = v4->_callingController;
       v4->_callingController = v6;
 
@@ -43,14 +43,14 @@
 
     v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:self set:0 get:"capabilityState:" detail:objc_opt_class() cell:2 edit:0];
     [v7 setIdentifier:@"WIFI_CALLING_TELEPHONY_SETTINGS"];
-    v8 = [(TPSWiFiCallingBundleController *)self callingController];
+    callingController = [(TPSWiFiCallingBundleController *)self callingController];
 
-    if (v8)
+    if (callingController)
     {
-      v9 = [(TPSWiFiCallingBundleController *)self callingController];
+      callingController2 = [(TPSWiFiCallingBundleController *)self callingController];
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
-      [v7 setProperty:v9 forKey:v11];
+      [v7 setProperty:callingController2 forKey:v11];
     }
 
     [v4 addObject:v7];
@@ -79,12 +79,12 @@
   }
 }
 
-- (id)capabilityState:(id)a3
+- (id)capabilityState:(id)state
 {
-  v3 = [(TPSWiFiCallingBundleController *)self callingController];
-  v4 = [v3 isWiFiCallingEnabled];
+  callingController = [(TPSWiFiCallingBundleController *)self callingController];
+  isWiFiCallingEnabled = [callingController isWiFiCallingEnabled];
 
-  if (v4)
+  if (isWiFiCallingEnabled)
   {
     v5 = @"ON";
   }
@@ -104,16 +104,16 @@
   supportedSubscriptions = self->_supportedSubscriptions;
   if (!supportedSubscriptions)
   {
-    v23 = self;
+    selfCopy = self;
     v35.receiver = self;
     v35.super_class = TPSWiFiCallingBundleController;
-    v4 = [(TPSWiFiCallingBundleController *)&v35 subscriptions];
-    v5 = +[NSMutableOrderedSet orderedSetWithCapacity:](NSMutableOrderedSet, "orderedSetWithCapacity:", [v4 count]);
+    subscriptions = [(TPSWiFiCallingBundleController *)&v35 subscriptions];
+    v5 = +[NSMutableOrderedSet orderedSetWithCapacity:](NSMutableOrderedSet, "orderedSetWithCapacity:", [subscriptions count]);
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    obj = v4;
+    obj = subscriptions;
     v6 = [obj countByEnumeratingWithState:&v31 objects:v37 count:16];
     if (v6)
     {
@@ -154,13 +154,13 @@
                   }
 
                   v16 = *(*(&v27 + 1) + 8 * i);
-                  v17 = [v16 senderIdentityUUID];
-                  v18 = [v10 uuid];
-                  if ([v17 isEqual:v18])
+                  senderIdentityUUID = [v16 senderIdentityUUID];
+                  uuid = [v10 uuid];
+                  if ([senderIdentityUUID isEqual:uuid])
                   {
-                    v19 = [v16 supportsWiFiCalling];
+                    supportsWiFiCalling = [v16 supportsWiFiCalling];
 
-                    if (v19)
+                    if (supportsWiFiCalling)
                     {
                       [v5 addObject:v10];
                     }
@@ -192,31 +192,31 @@
     }
 
     v20 = [v5 copy];
-    v21 = v23->_supportedSubscriptions;
-    v23->_supportedSubscriptions = v20;
+    v21 = selfCopy->_supportedSubscriptions;
+    selfCopy->_supportedSubscriptions = v20;
 
-    supportedSubscriptions = v23->_supportedSubscriptions;
+    supportedSubscriptions = selfCopy->_supportedSubscriptions;
   }
 
   return supportedSubscriptions;
 }
 
-- (void)handleTPSWiFiCallingControllerSubscriptionCapabilitiesChangedNotification:(id)a3
+- (void)handleTPSWiFiCallingControllerSubscriptionCapabilitiesChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = TPSWiFiCallingLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
     v9 = objc_opt_class();
     v10 = 2112;
-    v11 = v4;
+    v11 = notificationCopy;
     v6 = v9;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@.", &v8, 0x16u);
   }
 
-  v7 = [(TPSWiFiCallingBundleController *)self parentListController];
-  [v7 reloadSpecifierID:@"WIFI_CALLING_TELEPHONY_SETTINGS"];
+  parentListController = [(TPSWiFiCallingBundleController *)self parentListController];
+  [parentListController reloadSpecifierID:@"WIFI_CALLING_TELEPHONY_SETTINGS"];
 }
 
 @end

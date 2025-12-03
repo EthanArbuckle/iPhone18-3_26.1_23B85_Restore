@@ -1,22 +1,22 @@
 @interface HUMediaSourceListViewController
 - (HUMediaSourceListDelegate)delegate;
-- (id)errorAlertControllerForResolveError:(id)a3;
-- (id)initForMediaProfileContainers:(id)a3 forTarget:(unint64_t)a4;
+- (id)errorAlertControllerForResolveError:(id)error;
+- (id)initForMediaProfileContainers:(id)containers forTarget:(unint64_t)target;
 - (void)dismissViewController;
 - (void)mediaPickerDidCancel;
-- (void)mediaPickerDidPickPlaybackArchive:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)mediaPickerDidPickPlaybackArchive:(id)archive;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HUMediaSourceListViewController
 
-- (id)initForMediaProfileContainers:(id)a3 forTarget:(unint64_t)a4
+- (id)initForMediaProfileContainers:(id)containers forTarget:(unint64_t)target
 {
-  v6 = a3;
-  v7 = [[HUMediaSourceListItemManager alloc] initForMediaProfileContainers:v6 delegate:self forTarget:a4];
+  containersCopy = containers;
+  v7 = [[HUMediaSourceListItemManager alloc] initForMediaProfileContainers:containersCopy delegate:self forTarget:target];
 
   v19.receiver = self;
   v19.super_class = HUMediaSourceListViewController;
@@ -24,77 +24,77 @@
   if (v8)
   {
     v9 = HFLocalizedString();
-    v10 = [(HUMediaSourceListViewController *)v8 navigationItem];
-    [v10 setTitle:v9];
+    navigationItem = [(HUMediaSourceListViewController *)v8 navigationItem];
+    [navigationItem setTitle:v9];
 
     v11 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:v8 action:sel_dismissViewController];
-    v12 = [(HUMediaSourceListViewController *)v8 navigationItem];
-    [v12 setLeftBarButtonItem:v11];
+    navigationItem2 = [(HUMediaSourceListViewController *)v8 navigationItem];
+    [navigationItem2 setLeftBarButtonItem:v11];
 
-    v13 = [(HUMediaSourceListViewController *)v8 tableView];
-    [v13 setSectionHeaderTopPadding:0.0];
+    tableView = [(HUMediaSourceListViewController *)v8 tableView];
+    [tableView setSectionHeaderTopPadding:0.0];
 
-    v14 = [(HUMediaSourceListViewController *)v8 tableView];
-    v15 = [v14 separatorColor];
+    tableView2 = [(HUMediaSourceListViewController *)v8 tableView];
+    separatorColor = [tableView2 separatorColor];
 
     v16 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{0.0, 0.0, 0.0, 0.5}];
-    [v16 setBackgroundColor:v15];
-    v17 = [(HUMediaSourceListViewController *)v8 tableView];
-    [v17 setTableHeaderView:v16];
+    [v16 setBackgroundColor:separatorColor];
+    tableView3 = [(HUMediaSourceListViewController *)v8 tableView];
+    [tableView3 setTableHeaderView:v16];
   }
 
   return v8;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = HUMediaSourceListViewController;
-  [(HUItemTableViewController *)&v6 viewWillAppear:a3];
-  v4 = [(HUMediaSourceListViewController *)self navigationController];
-  v5 = [v4 navigationBar];
-  [v5 setPrefersLargeTitles:1];
+  [(HUItemTableViewController *)&v6 viewWillAppear:appear];
+  navigationController = [(HUMediaSourceListViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setPrefersLargeTitles:1];
 }
 
 - (void)dismissViewController
 {
-  v2 = [(HUMediaSourceListViewController *)self navigationController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(HUMediaSourceListViewController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v6 = a3;
-  [v6 setIconDisplayStyle:1];
-  v5 = [v6 contentMetrics];
-  [v5 setIconSize:{32.0, 32.0}];
+  cellCopy = cell;
+  [cellCopy setIconDisplayStyle:1];
+  contentMetrics = [cellCopy contentMetrics];
+  [contentMetrics setIconSize:{32.0, 32.0}];
 
-  [v6 setHideDescriptionIcon:1];
-  [v6 setSeparatorInsetLinesUpWithText:1];
+  [cellCopy setHideDescriptionIcon:1];
+  [cellCopy setSeparatorInsetLinesUpWithText:1];
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
+  animatedCopy = animated;
+  cellCopy = cell;
   v11.receiver = self;
   v11.super_class = HUMediaSourceListViewController;
-  [(HUItemTableViewController *)&v11 updateCell:v10 forItem:a4 indexPath:a5 animated:v6];
-  [v10 updateUIWithAnimation:v6];
+  [(HUItemTableViewController *)&v11 updateCell:cellCopy forItem:item indexPath:path animated:animatedCopy];
+  [cellCopy updateUIWithAnimation:animatedCopy];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v38 = *MEMORY[0x277D85DE8];
   v35.receiver = self;
   v35.super_class = HUMediaSourceListViewController;
-  v6 = a4;
-  v7 = a3;
-  [(HUItemTableViewController *)&v35 tableView:v7 didSelectRowAtIndexPath:v6];
-  [v7 deselectRowAtIndexPath:v6 animated:{1, v35.receiver, v35.super_class}];
+  pathCopy = path;
+  viewCopy = view;
+  [(HUItemTableViewController *)&v35 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:{1, v35.receiver, v35.super_class}];
 
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v6];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:pathCopy];
 
   objc_opt_class();
   v10 = v9;
@@ -114,32 +114,32 @@
   {
     if ([v12 success])
     {
-      v13 = [v12 pickerViewController];
-      if (v13)
+      pickerViewController = [v12 pickerViewController];
+      if (pickerViewController)
       {
-        v14 = v13;
+        v14 = pickerViewController;
         [v12 setDelegate:self];
         if ([v12 continuousPicker])
         {
-          v15 = [(HUMediaSourceListViewController *)self view];
-          [v15 frame];
+          view = [(HUMediaSourceListViewController *)self view];
+          [view frame];
           v17 = v16;
           v19 = v18;
           v21 = v20;
           v23 = v22;
-          v24 = [v14 view];
-          [v24 setFrame:{v17, v19, v21, v23}];
+          view2 = [v14 view];
+          [view2 setFrame:{v17, v19, v21, v23}];
 
-          v25 = [(HUMediaSourceListViewController *)self navigationController];
-          [v25 pushViewController:v14 animated:1];
+          navigationController = [(HUMediaSourceListViewController *)self navigationController];
+          [navigationController pushViewController:v14 animated:1];
 
 LABEL_24:
           goto LABEL_25;
         }
 
         [v14 setModalPresentationStyle:2];
-        v31 = [(HUMediaSourceListViewController *)self view];
-        [v31 frame];
+        view3 = [(HUMediaSourceListViewController *)self view];
+        [view3 frame];
         [v14 setPreferredContentSize:{v32, v33}];
 
 LABEL_18:
@@ -155,8 +155,8 @@ LABEL_18:
         _os_log_impl(&dword_20CEB6000, v28, OS_LOG_TYPE_DEFAULT, "Media source %@ resolved successfully, but no picker view controller", buf, 0xCu);
       }
 
-      v29 = [v12 resolveError];
-      v30 = [(HUMediaSourceListViewController *)self errorAlertControllerForResolveError:v29];
+      resolveError = [v12 resolveError];
+      v30 = [(HUMediaSourceListViewController *)self errorAlertControllerForResolveError:resolveError];
 
       if (v30)
       {
@@ -177,8 +177,8 @@ LABEL_18:
 
     else
     {
-      v26 = [v12 resolveError];
-      v14 = [(HUMediaSourceListViewController *)self errorAlertControllerForResolveError:v26];
+      resolveError2 = [v12 resolveError];
+      v14 = [(HUMediaSourceListViewController *)self errorAlertControllerForResolveError:resolveError2];
 
       if (v14)
       {
@@ -201,22 +201,22 @@ LABEL_18:
 LABEL_25:
 }
 
-- (id)errorAlertControllerForResolveError:(id)a3
+- (id)errorAlertControllerForResolveError:(id)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  errorCopy = error;
+  if (errorCopy)
   {
     v4 = HFLogForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v26 = v3;
+      v26 = errorCopy;
       _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "Media source failed to resolve, show alert view controller for parameters %@", buf, 0xCu);
     }
 
     objc_opt_class();
-    v5 = [v3 objectForKeyedSubscript:@"HUMediaPickerUnavailablePromptActionTitleKey"];
+    v5 = [errorCopy objectForKeyedSubscript:@"HUMediaPickerUnavailablePromptActionTitleKey"];
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
@@ -229,7 +229,7 @@ LABEL_25:
 
     v7 = v6;
 
-    v8 = [v3 objectForKeyedSubscript:@"HUMediaPickerUnavailablePromptMessageKey"];
+    v8 = [errorCopy objectForKeyedSubscript:@"HUMediaPickerUnavailablePromptMessageKey"];
     if (!(v7 | v8))
     {
       v7 = _HULocalizedStringWithDefaultValue(@"HUUnknownError", @"HUUnknownError", 1);
@@ -244,7 +244,7 @@ LABEL_25:
     [v10 addAction:v13];
 
     objc_opt_class();
-    v14 = [v3 objectForKeyedSubscript:@"HUMediaPickerUnavailablePromptActionTitleKey"];
+    v14 = [errorCopy objectForKeyedSubscript:@"HUMediaPickerUnavailablePromptActionTitleKey"];
     if (objc_opt_isKindOfClass())
     {
       v15 = v14;
@@ -258,7 +258,7 @@ LABEL_25:
     v16 = v15;
 
     objc_opt_class();
-    v17 = [v3 objectForKeyedSubscript:@"HUMediaPickerUnavailablePromptActionURLKey"];
+    v17 = [errorCopy objectForKeyedSubscript:@"HUMediaPickerUnavailablePromptActionURLKey"];
     if (objc_opt_isKindOfClass())
     {
       v18 = v17;
@@ -298,23 +298,23 @@ void __71__HUMediaSourceListViewController_errorAlertControllerForResolveError__
   v2 = [v3 openURL:*(a1 + 32)];
 }
 
-- (void)mediaPickerDidPickPlaybackArchive:(id)a3
+- (void)mediaPickerDidPickPlaybackArchive:(id)archive
 {
-  v4 = a3;
+  archiveCopy = archive;
   [(HUMediaSourceListViewController *)self presentedViewController];
 
-  v5 = [(HUMediaSourceListViewController *)self delegate];
-  [v5 mediaPickerDidPickPlaybackArchive:v4];
+  delegate = [(HUMediaSourceListViewController *)self delegate];
+  [delegate mediaPickerDidPickPlaybackArchive:archiveCopy];
 }
 
 - (void)mediaPickerDidCancel
 {
-  v3 = [(HUMediaSourceListViewController *)self presentedViewController];
+  presentedViewController = [(HUMediaSourceListViewController *)self presentedViewController];
 
-  if (v3)
+  if (presentedViewController)
   {
-    v4 = [(HUMediaSourceListViewController *)self presentedViewController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    presentedViewController2 = [(HUMediaSourceListViewController *)self presentedViewController];
+    [presentedViewController2 dismissViewControllerAnimated:1 completion:0];
   }
 }
 

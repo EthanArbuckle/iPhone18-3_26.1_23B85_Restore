@@ -1,6 +1,6 @@
 @interface MFPowerController
 + (MFPowerController)sharedInstance;
-+ (void)powerlog:(id)a3 eventData:(id)a4;
++ (void)powerlog:(id)powerlog eventData:(id)data;
 - (BOOL)isBatterySaverModeEnabled;
 - (EFObservable)batteryLevelObservable;
 - (EFObservable)lowPowerModeObservable;
@@ -9,24 +9,24 @@
 - (id)batteryLevelStateChangeNotificationObservable;
 - (id)copyDiagnosticInformation;
 - (id)powerObservable;
-- (void)_applicationForegroundStateChanged:(BOOL)a3;
-- (void)_applicationForegroundStateChanged_nts:(BOOL)a3;
+- (void)_applicationForegroundStateChanged:(BOOL)changed;
+- (void)_applicationForegroundStateChanged_nts:(BOOL)changed_nts;
 - (void)_batteryInformationChanged;
 - (void)_gameModeInformationChanged;
-- (void)_lowPowerModeChangedNotification:(id)a3;
+- (void)_lowPowerModeChangedNotification:(id)notification;
 - (void)_registerForBatteryLevelChanges;
 - (void)_registerForGameModeChanges;
 - (void)_releasePowerAssertion_nts;
 - (void)_releaseTaskAssertion_nts;
 - (void)_retainPowerAssertion_nts;
 - (void)_retainTaskAssertion_nts;
-- (void)_setPluggedIn:(unsigned int)a3;
-- (void)_setupAssertionTimer:(double)a3;
+- (void)_setPluggedIn:(unsigned int)in;
+- (void)_setupAssertionTimer:(double)timer;
 - (void)_unregisterForBatteryLevelChanges;
 - (void)_unregisterForGameModeChanges;
 - (void)dealloc;
-- (void)releaseAssertionWithIdentifier:(id)a3;
-- (void)retainAssertionWithIdentifier:(id)a3;
+- (void)releaseAssertionWithIdentifier:(id)identifier;
+- (void)retainAssertionWithIdentifier:(id)identifier;
 - (void)startListeningForBatterySaverNotifications;
 @end
 
@@ -96,7 +96,7 @@ void __25__MFPowerController_init__block_invoke_16(uint64_t a1, void *a2)
     [v9 _registerForGameModeChanges];
     objc_initWeak(&location, v9);
     v12 = +[MFAppStateMonitor sharedInstance];
-    v13 = [v12 appIsVisibleObservable];
+    appIsVisibleObservable = [v12 appIsVisibleObservable];
     v14 = MEMORY[0x1E699B838];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
@@ -104,12 +104,12 @@ void __25__MFPowerController_init__block_invoke_16(uint64_t a1, void *a2)
     v20[3] = &unk_1E7AA4AF0;
     objc_copyWeak(&v21, &location);
     v15 = [v14 observerWithResultBlock:v20];
-    v16 = [v13 subscribe:v15];
+    v16 = [appIsVisibleObservable subscribe:v15];
     v17 = *(v9 + 6);
     *(v9 + 6) = v16;
 
-    v18 = [MEMORY[0x1E69AD6C0] sharedController];
-    [v18 addDiagnosticsGenerator:v9];
+    mEMORY[0x1E69AD6C0] = [MEMORY[0x1E69AD6C0] sharedController];
+    [mEMORY[0x1E69AD6C0] addDiagnosticsGenerator:v9];
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
@@ -173,14 +173,14 @@ void __35__MFPowerController_sharedInstance__block_invoke()
   [(MFPowerController *)&v4 dealloc];
 }
 
-- (void)_setPluggedIn:(unsigned int)a3
+- (void)_setPluggedIn:(unsigned int)in
 {
   v12 = *MEMORY[0x1E69E9840];
   pluggedIn = self->_pluggedIn;
-  if (pluggedIn != a3)
+  if (pluggedIn != in)
   {
     v5 = self->_pluggedIn;
-    atomic_compare_exchange_strong(&self->_pluggedIn, &v5, a3);
+    atomic_compare_exchange_strong(&self->_pluggedIn, &v5, in);
     if (v5 == pluggedIn)
     {
       v6 = MFPowerLog();
@@ -214,18 +214,18 @@ void __35__MFPowerController_sharedInstance__block_invoke()
         [(MFPowerController *)self _retainPowerAssertion_nts];
       }
 
-      v8 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v8 postNotificationName:@"MFPowerStateDidChange" object:self];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"MFPowerStateDidChange" object:self];
     }
   }
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)powerlog:(id)a3 eventData:(id)a4
++ (void)powerlog:(id)powerlog eventData:(id)data
 {
-  v5 = a3;
-  v6 = a4;
+  powerlogCopy = powerlog;
+  dataCopy = data;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -242,7 +242,7 @@ void __35__MFPowerController_sharedInstance__block_invoke()
   _Block_object_dispose(&v14, 8);
   if (v7)
   {
-    if (!v7(12, v5))
+    if (!v7(12, powerlogCopy))
     {
 LABEL_9:
 
@@ -265,20 +265,20 @@ LABEL_9:
     _Block_object_dispose(&v14, 8);
     if (v9)
     {
-      v9(12, v5, v6, MEMORY[0x1E695E0F0]);
+      v9(12, powerlogCopy, dataCopy, MEMORY[0x1E695E0F0]);
       goto LABEL_9;
     }
 
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void soft_PLLogRegisteredEvent(PLClientID, CFStringRef, CFDictionaryRef, CFArrayRef)"}];
-    [v11 handleFailureInFunction:v13 file:@"MFPowerController.m" lineNumber:40 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v13 file:@"MFPowerController.m" lineNumber:40 description:{@"%s", dlerror()}];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"BOOL soft_PLShouldLogRegisteredEvent(PLClientID, CFStringRef)"}];
-    [v11 handleFailureInFunction:v12 file:@"MFPowerController.m" lineNumber:39 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v12 file:@"MFPowerController.m" lineNumber:39 description:{@"%s", dlerror()}];
   }
 
   __break(1u);
@@ -293,20 +293,20 @@ LABEL_9:
     _os_log_impl(&dword_1B0389000, v3, OS_LOG_TYPE_DEFAULT, "Listening for low-power mode notifications", v5, 2u);
   }
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel__lowPowerModeChangedNotification_ name:*MEMORY[0x1E696A7D8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__lowPowerModeChangedNotification_ name:*MEMORY[0x1E696A7D8] object:0];
 }
 
-- (void)_lowPowerModeChangedNotification:(id)a3
+- (void)_lowPowerModeChangedNotification:(id)notification
 {
   v11 = *MEMORY[0x1E69E9840];
   v3 = MFPowerLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [MEMORY[0x1E696AE30] processInfo];
-    v5 = [v4 isLowPowerModeEnabled];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    isLowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
     v6 = @"OFF";
-    if (v5)
+    if (isLowPowerModeEnabled)
     {
       v6 = @"ON";
     }
@@ -316,21 +316,21 @@ LABEL_9:
     _os_log_impl(&dword_1B0389000, v3, OS_LOG_TYPE_DEFAULT, "Low-power mode changed to %@", &v9, 0xCu);
   }
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 postNotificationName:@"MFBatterySaverModeDidChange" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MFBatterySaverModeDidChange" object:0];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
 - (BOOL)isBatterySaverModeEnabled
 {
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  v3 = [v2 isLowPowerModeEnabled];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  isLowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
 
-  return v3;
+  return isLowPowerModeEnabled;
 }
 
-- (void)_setupAssertionTimer:(double)a3
+- (void)_setupAssertionTimer:(double)timer
 {
   v16 = *MEMORY[0x1E69E9840];
   if (sPowerAssertionTimer)
@@ -347,13 +347,13 @@ LABEL_9:
     sPowerAssertionTimer = 0;
   }
 
-  if (a3 > 0.0)
+  if (timer > 0.0)
   {
     v7 = MFPowerLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v15 = a3;
+      timerCopy = timer;
       _os_log_impl(&dword_1B0389000, v7, OS_LOG_TYPE_DEFAULT, "#Assertions [*] schedule %d sec power assertion timer", buf, 8u);
     }
 
@@ -404,14 +404,14 @@ uint64_t __42__MFPowerController__setupAssertionTimer___block_invoke_41()
   v11 = *MEMORY[0x1E69E9840];
   if (sPowerAssertion)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"MFPowerController.m" lineNumber:260 description:@"assertion IS NOT NULL"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MFPowerController.m" lineNumber:260 description:@"assertion IS NOT NULL"];
   }
 
   if (sPowerAssertionTimer)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MFPowerController.m" lineNumber:261 description:@"assertion timer IS NOT nil"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"MFPowerController.m" lineNumber:261 description:@"assertion timer IS NOT nil"];
   }
 
   v4 = MFPowerLog();
@@ -446,14 +446,14 @@ uint64_t __42__MFPowerController__setupAssertionTimer___block_invoke_41()
   v10 = *MEMORY[0x1E69E9840];
   if (!sPowerAssertion)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"MFPowerController.m" lineNumber:274 description:@"assertion IS NULL"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MFPowerController.m" lineNumber:274 description:@"assertion IS NULL"];
   }
 
   if (!sPowerAssertionTimer)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"MFPowerController.m" lineNumber:275 description:@"assertion timer IS nil"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"MFPowerController.m" lineNumber:275 description:@"assertion timer IS nil"];
   }
 
   v4 = MFPowerLog();
@@ -474,14 +474,14 @@ uint64_t __42__MFPowerController__setupAssertionTimer___block_invoke_41()
 {
   v13 = *MEMORY[0x1E69E9840];
   v4 = MFUserAgent();
-  v5 = [v4 isMobileMail];
+  isMobileMail = [v4 isMobileMail];
 
-  if (v5)
+  if (isMobileMail)
   {
     if (sTaskAssertion)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"MFPowerController.m" lineNumber:292 description:@"task assertion IS NOT NULL"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MFPowerController.m" lineNumber:292 description:@"task assertion IS NOT NULL"];
     }
 
     v6 = MFPowerLog();
@@ -505,8 +505,8 @@ uint64_t __42__MFPowerController__setupAssertionTimer___block_invoke_41()
   v10 = *MEMORY[0x1E69E9840];
   if (!sTaskAssertion)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"MFPowerController.m" lineNumber:299 description:@"task assertion IS NULL"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MFPowerController.m" lineNumber:299 description:@"task assertion IS NULL"];
   }
 
   v2 = MFPowerLog();
@@ -523,17 +523,17 @@ uint64_t __42__MFPowerController__setupAssertionTimer___block_invoke_41()
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)retainAssertionWithIdentifier:(id)a3
+- (void)retainAssertionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__MFPowerController_retainAssertionWithIdentifier___block_invoke;
   v7[3] = &unk_1E7AA26E0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = identifierCopy;
+  selfCopy = self;
+  v6 = identifierCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -577,15 +577,15 @@ void __51__MFPowerController_retainAssertionWithIdentifier___block_invoke(uint64
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)releaseAssertionWithIdentifier:(id)a3
+- (void)releaseAssertionWithIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = MFPowerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = identifierCopy;
     _os_log_impl(&dword_1B0389000, v5, OS_LOG_TYPE_DEFAULT, "#Assertions [-] %@", buf, 0xCu);
   }
 
@@ -595,8 +595,8 @@ void __51__MFPowerController_retainAssertionWithIdentifier___block_invoke(uint64
   v9[2] = __52__MFPowerController_releaseAssertionWithIdentifier___block_invoke;
   v9[3] = &unk_1E7AA26E0;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = identifierCopy;
+  v7 = identifierCopy;
   dispatch_sync(queue, v9);
 
   v8 = *MEMORY[0x1E69E9840];
@@ -631,12 +631,12 @@ void __52__MFPowerController_releaseAssertionWithIdentifier___block_invoke(uint6
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_applicationForegroundStateChanged_nts:(BOOL)a3
+- (void)_applicationForegroundStateChanged_nts:(BOOL)changed_nts
 {
-  if (self->_isForeground != a3)
+  if (self->_isForeground != changed_nts)
   {
-    self->_isForeground = a3;
-    if (a3)
+    self->_isForeground = changed_nts;
+    if (changed_nts)
     {
       if (sPowerAssertion)
       {
@@ -653,7 +653,7 @@ void __52__MFPowerController_releaseAssertionWithIdentifier___block_invoke(uint6
   }
 }
 
-- (void)_applicationForegroundStateChanged:(BOOL)a3
+- (void)_applicationForegroundStateChanged:(BOOL)changed
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -661,7 +661,7 @@ void __52__MFPowerController_releaseAssertionWithIdentifier___block_invoke(uint6
   v4[2] = __56__MFPowerController__applicationForegroundStateChanged___block_invoke;
   v4[3] = &unk_1E7AA25E8;
   v4[4] = self;
-  v5 = a3;
+  changedCopy = changed;
   dispatch_async(queue, v4);
 }
 
@@ -683,10 +683,10 @@ id __36__MFPowerController_powerObservable__block_invoke(uint64_t a1, void *a2)
 - (EFObservable)pluggedInObservable
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MFPowerController *)self powerObservable];
+  powerObservable = [(MFPowerController *)self powerObservable];
   v9[0] = self;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
-  v5 = [v3 startWith:v4];
+  v5 = [powerObservable startWith:v4];
   v6 = [v5 map:&__block_literal_global_83];
 
   v7 = *MEMORY[0x1E69E9840];
@@ -747,10 +747,10 @@ id __66__MFPowerController_batteryLevelStateChangeNotificationObservable__block_
 - (EFObservable)batteryLevelObservable
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MFPowerController *)self batteryLevelStateChangeNotificationObservable];
+  batteryLevelStateChangeNotificationObservable = [(MFPowerController *)self batteryLevelStateChangeNotificationObservable];
   v9[0] = self;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
-  v5 = [v3 startWith:v4];
+  v5 = [batteryLevelStateChangeNotificationObservable startWith:v4];
   v6 = [v5 map:&__block_literal_global_89];
 
   v7 = *MEMORY[0x1E69E9840];
@@ -805,20 +805,20 @@ id __43__MFPowerController_batteryLevelObservable__block_invoke(uint64_t a1, voi
     if (v8)
     {
       v10 = [v8 objectForKeyedSubscript:@"Current Capacity"];
-      v11 = [v10 integerValue];
+      integerValue = [v10 integerValue];
 
       v12 = [v9 objectForKeyedSubscript:@"MaxCapacity"];
-      v13 = [v12 integerValue];
+      integerValue2 = [v12 integerValue];
 
       v14 = 100;
-      if (v13)
+      if (integerValue2)
       {
-        v14 = v13;
+        v14 = integerValue2;
       }
 
-      self->_batteryLevel = v11 / v14;
-      v15 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v15 postNotificationName:@"MFBatteryLevelDidChange" object:self];
+      self->_batteryLevel = integerValue / v14;
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"MFBatteryLevelDidChange" object:self];
 
       v16 = MFPowerLog();
       if (!os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -874,7 +874,7 @@ LABEL_23:
 {
   v4 = *MEMORY[0x1E69E9840];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_error_impl(&dword_1B0389000, a2, OS_LOG_TYPE_ERROR, "#BatteryLevel Could not register for battery change notification due to status (%d)", v3, 8u);
   v2 = *MEMORY[0x1E69E9840];
 }
@@ -947,7 +947,7 @@ LABEL_12:
 {
   v4 = *MEMORY[0x1E69E9840];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_error_impl(&dword_1B0389000, a2, OS_LOG_TYPE_ERROR, "Could not register for game mode change notification due to status (%d)", v3, 8u);
   v2 = *MEMORY[0x1E69E9840];
 }
@@ -978,10 +978,10 @@ LABEL_12:
   }
 
   [v3 appendFormat:@"  charging: %@\n", v4];
-  v5 = [MEMORY[0x1E696AE30] processInfo];
-  v6 = [v5 isLowPowerModeEnabled];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  isLowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
   v7 = @"OFF";
-  if (v6)
+  if (isLowPowerModeEnabled)
   {
     v7 = @"ON";
   }

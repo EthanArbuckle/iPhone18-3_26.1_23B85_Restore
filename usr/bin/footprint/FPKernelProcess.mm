@@ -1,16 +1,16 @@
 @interface FPKernelProcess
-- (FPKernelProcess)initWithBsdInfo:(proc_bsdinfo *)a3;
+- (FPKernelProcess)initWithBsdInfo:(proc_bsdinfo *)info;
 - (id)auxData;
-- (void)gatherData:(unint64_t)a3 extendedInfoProvider:(id)a4;
+- (void)gatherData:(unint64_t)data extendedInfoProvider:(id)provider;
 @end
 
 @implementation FPKernelProcess
 
-- (FPKernelProcess)initWithBsdInfo:(proc_bsdinfo *)a3
+- (FPKernelProcess)initWithBsdInfo:(proc_bsdinfo *)info
 {
   v10.receiver = self;
   v10.super_class = FPKernelProcess;
-  v3 = [(FPProcess *)&v10 initWithBsdInfo:a3];
+  v3 = [(FPProcess *)&v10 initWithBsdInfo:info];
   v4 = v3;
   if (v3)
   {
@@ -29,7 +29,7 @@
   return v4;
 }
 
-- (void)gatherData:(unint64_t)a3 extendedInfoProvider:(id)a4
+- (void)gatherData:(unint64_t)data extendedInfoProvider:(id)provider
 {
   names = 0;
   info = 0;
@@ -42,16 +42,16 @@
   {
     v7 = v6;
     v8 = __stderrp;
-    v9 = [(FPProcess *)self displayString];
-    v10 = self;
-    v11 = [v9 UTF8String];
+    displayString = [(FPProcess *)self displayString];
+    selfCopy = self;
+    uTF8String = [displayString UTF8String];
     v12 = mach_error_string(v7);
-    fprintf(v8, "%s: mach_memory_info: %s\n", v11, v12);
+    fprintf(v8, "%s: mach_memory_info: %s\n", uTF8String, v12);
 
-    v13 = [(FPProcess *)v10 displayString];
-    v14 = [NSString stringWithFormat:@"%@: %s", v13, mach_error_string(v7)];
+    displayString2 = [(FPProcess *)selfCopy displayString];
+    v14 = [NSString stringWithFormat:@"%@: %s", displayString2, mach_error_string(v7)];
 
-    [(NSMutableArray *)v10->super._errors addObject:v14];
+    [(NSMutableArray *)selfCopy->super._errors addObject:v14];
     goto LABEL_66;
   }
 
@@ -60,7 +60,7 @@
   v17 = info;
   v18 = infoCnt[1];
   v19 = v15;
-  v95 = self;
+  selfCopy2 = self;
   if (self && v18)
   {
     p_mzi_collectable = &v17->mzi_collectable;
@@ -84,9 +84,9 @@
         [(FPMemoryRegion *)v22 setName:v26];
       }
 
-      v27 = [(FPMemoryRegion *)v22 name];
+      name = [(FPMemoryRegion *)v22 name];
 
-      if (!v27)
+      if (!name)
       {
         [(FPMemoryRegion *)v22 setName:@"unknown"];
       }
@@ -119,10 +119,10 @@
   {
     v31 = v30;
     v32 = __stderrp;
-    v33 = [(FPProcess *)v95 displayString];
-    v34 = [v33 UTF8String];
+    displayString3 = [(FPProcess *)selfCopy2 displayString];
+    uTF8String2 = [displayString3 UTF8String];
     v35 = mach_error_string(v31);
-    fprintf(v32, "%s: vm_deallocate: %s\n", v34, v35);
+    fprintf(v32, "%s: vm_deallocate: %s\n", uTF8String2, v35);
   }
 
   v36 = memory_info;
@@ -130,8 +130,8 @@
   v92 = names;
   v91 = infoCnt[1];
   v93 = v19;
-  p_isa = &v95->super.super.isa;
-  if (v95)
+  p_isa = &selfCopy2->super.super.isa;
+  if (selfCopy2)
   {
     objc_opt_self();
     CSSymbolicatorGetFlagsForNListOnlyData();
@@ -147,8 +147,8 @@
     v104 = 0u;
     v105 = 0u;
     v106 = 0u;
-    v43 = [v40 objectEnumerator];
-    v44 = [v43 countByEnumeratingWithState:&v103 objects:v107 count:16];
+    objectEnumerator = [v40 objectEnumerator];
+    v44 = [objectEnumerator countByEnumeratingWithState:&v103 objects:v107 count:16];
     if (v44)
     {
       v45 = v44;
@@ -159,7 +159,7 @@
         {
           if (*v104 != v46)
           {
-            objc_enumerationMutation(v43);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           v48 = *(*(&v103 + 1) + 8 * i);
@@ -167,14 +167,14 @@
           [v41 setObject:v48 forKeyedSubscript:v49];
         }
 
-        v45 = [v43 countByEnumeratingWithState:&v103 objects:v107 count:16];
+        v45 = [objectEnumerator countByEnumeratingWithState:&v103 objects:v107 count:16];
       }
 
       while (v45);
     }
 
     v50 = v94;
-    p_isa = &v95->super.super.isa;
+    p_isa = &selfCopy2->super.super.isa;
     if (v94)
     {
       v51 = 0;
@@ -301,10 +301,10 @@ LABEL_46:
         }
 
         v50 = v94;
-        p_isa = &v95->super.super.isa;
+        p_isa = &selfCopy2->super.super.isa;
         if (flags == 3 && v36->site == 10)
         {
-          v95->_bootCarveoutSize = v56;
+          selfCopy2->_bootCarveoutSize = v56;
         }
 
         goto LABEL_32;
@@ -327,11 +327,11 @@ LABEL_58:
   {
     v70 = v69;
     v71 = __stderrp;
-    v72 = [p_isa displayString];
-    v73 = [v72 UTF8String];
+    displayString4 = [p_isa displayString];
+    uTF8String3 = [displayString4 UTF8String];
     v74 = mach_error_string(v70);
-    v89 = v73;
-    p_isa = &v95->super.super.isa;
+    v89 = uTF8String3;
+    p_isa = &selfCopy2->super.super.isa;
     fprintf(v71, "%s: vm_deallocate: %s\n", v89, v74);
   }
 
@@ -340,11 +340,11 @@ LABEL_58:
   {
     v76 = v75;
     v77 = __stderrp;
-    v78 = [p_isa displayString];
-    v79 = [v78 UTF8String];
+    displayString5 = [p_isa displayString];
+    uTF8String4 = [displayString5 UTF8String];
     v80 = mach_error_string(v76);
-    v90 = v79;
-    p_isa = &v95->super.super.isa;
+    v90 = uTF8String4;
+    p_isa = &selfCopy2->super.super.isa;
     fprintf(v77, "%s: vm_deallocate: %s\n", v90, v80);
   }
 

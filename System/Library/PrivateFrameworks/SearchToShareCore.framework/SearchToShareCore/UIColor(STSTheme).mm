@@ -12,7 +12,7 @@
     v8 = 0;
     if ([v5 scanHexInt:&v8])
     {
-      v6 = [MEMORY[0x277D75348] colorWithRed:BYTE2(v8) / 255.0 green:BYTE1(v8) / 255.0 blue:v8 / 255.0 alpha:a1];
+      v6 = [MEMORY[0x277D75348] colorWithRed:BYTE2(v8) / 255.0 green:BYTE1(v8) / 255.0 blue:v8 / 255.0 alpha:self];
     }
 
     else

@@ -1,14 +1,14 @@
 @interface FSResourceManager
 - (FSResourceManager)init;
-- (id)getResource:(id)a3;
+- (id)getResource:(id)resource;
 - (id)getResources;
-- (id)getTaskUUIDs:(id)a3;
-- (int)getResourceState:(id)a3;
-- (void)addResource:(id)a3;
-- (void)addTaskUUID:(id)a3 resource:(id)a4;
-- (void)removeResource:(id)a3;
-- (void)removeTaskUUID:(id)a3;
-- (void)updateResource:(id)a3;
+- (id)getTaskUUIDs:(id)ds;
+- (int)getResourceState:(id)state;
+- (void)addResource:(id)resource;
+- (void)addTaskUUID:(id)d resource:(id)resource;
+- (void)removeResource:(id)resource;
+- (void)removeTaskUUID:(id)d;
+- (void)updateResource:(id)resource;
 @end
 
 @implementation FSResourceManager
@@ -32,26 +32,26 @@
   return v2;
 }
 
-- (void)removeResource:(id)a3
+- (void)removeResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   v5 = fskit_std_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [FSResourceManager removeResource:v4];
+    [FSResourceManager removeResource:resourceCopy];
   }
 
-  v6 = [v4 getResourceID];
-  if (v6)
+  getResourceID = [resourceCopy getResourceID];
+  if (getResourceID)
   {
-    [(NSMutableDictionary *)self->_resourceTasks removeObjectForKey:v6];
-    [(NSMutableDictionary *)self->_resources removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_resourceTasks removeObjectForKey:getResourceID];
+    [(NSMutableDictionary *)self->_resources removeObjectForKey:getResourceID];
   }
 }
 
-- (void)removeTaskUUID:(id)a3
+- (void)removeTaskUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = self->_resourceTasks;
   objc_sync_enter(v5);
   resourceTasks = self->_resourceTasks;
@@ -59,7 +59,7 @@
   v8[1] = 3221225472;
   v8[2] = __36__FSResourceManager_removeTaskUUID___block_invoke;
   v8[3] = &unk_278FED4B0;
-  v7 = v4;
+  v7 = dCopy;
   v9 = v7;
   [(NSMutableDictionary *)resourceTasks enumerateKeysAndObjectsUsingBlock:v8];
 
@@ -85,10 +85,10 @@ void __36__FSResourceManager_removeTaskUUID___block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (id)getResource:(id)a3
+- (id)getResource:(id)resource
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_resources objectForKey:v4];
+  resourceCopy = resource;
+  v5 = [(NSMutableDictionary *)self->_resources objectForKey:resourceCopy];
   v6 = fskit_std_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
   if (v5)
@@ -107,10 +107,10 @@ void __36__FSResourceManager_removeTaskUUID___block_invoke(uint64_t a1, void *a2
   return v5;
 }
 
-- (int)getResourceState:(id)a3
+- (int)getResourceState:(id)state
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_resources objectForKey:v4];
+  stateCopy = state;
+  v5 = [(NSMutableDictionary *)self->_resources objectForKey:stateCopy];
   v6 = fskit_std_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
   if (v5)
@@ -120,7 +120,7 @@ void __36__FSResourceManager_removeTaskUUID___block_invoke(uint64_t a1, void *a2
       [FSResourceManager getResourceState:];
     }
 
-    v8 = [v5 state];
+    state = [v5 state];
   }
 
   else
@@ -130,10 +130,10 @@ void __36__FSResourceManager_removeTaskUUID___block_invoke(uint64_t a1, void *a2
       [FSResourceManager getResourceState:];
     }
 
-    v8 = 0;
+    state = 0;
   }
 
-  return v8;
+  return state;
 }
 
 - (id)getResources
@@ -143,57 +143,57 @@ void __36__FSResourceManager_removeTaskUUID___block_invoke(uint64_t a1, void *a2
   return v2;
 }
 
-- (void)addResource:(id)a3
+- (void)addResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   v5 = fskit_std_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [FSResourceManager addResource:v4];
+    [FSResourceManager addResource:resourceCopy];
   }
 
   resources = self->_resources;
-  v7 = [v4 getResourceID];
-  v8 = [(NSMutableDictionary *)resources objectForKey:v7];
+  getResourceID = [resourceCopy getResourceID];
+  v8 = [(NSMutableDictionary *)resources objectForKey:getResourceID];
 
   if (v8)
   {
-    v9 = fskit_std_log();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    getResourceID2 = fskit_std_log();
+    if (os_log_type_enabled(getResourceID2, OS_LOG_TYPE_DEBUG))
     {
-      [FSResourceManager addResource:v4];
+      [FSResourceManager addResource:resourceCopy];
     }
   }
 
   else
   {
     v10 = self->_resources;
-    v9 = [v4 getResourceID];
-    [(NSMutableDictionary *)v10 setObject:v4 forKey:v9];
+    getResourceID2 = [resourceCopy getResourceID];
+    [(NSMutableDictionary *)v10 setObject:resourceCopy forKey:getResourceID2];
   }
 }
 
-- (void)updateResource:(id)a3
+- (void)updateResource:(id)resource
 {
-  v4 = a3;
-  v5 = [v4 getResourceID];
+  resourceCopy = resource;
+  getResourceID = [resourceCopy getResourceID];
   v6 = fskit_std_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
-  if (v5)
+  if (getResourceID)
   {
     if (v7)
     {
-      [FSResourceManager updateResource:v4];
+      [FSResourceManager updateResource:resourceCopy];
     }
 
     resources = self->_resources;
-    v9 = [v4 getResourceID];
-    [(NSMutableDictionary *)resources setObject:v4 forKey:v9];
+    getResourceID2 = [resourceCopy getResourceID];
+    [(NSMutableDictionary *)resources setObject:resourceCopy forKey:getResourceID2];
 
     v6 = fskit_std_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      [FSResourceManager updateResource:v4];
+      [FSResourceManager updateResource:resourceCopy];
     }
   }
 
@@ -203,40 +203,40 @@ void __36__FSResourceManager_removeTaskUUID___block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)addTaskUUID:(id)a3 resource:(id)a4
+- (void)addTaskUUID:(id)d resource:(id)resource
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  resourceCopy = resource;
   v8 = fskit_std_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [FSResourceManager addTaskUUID:v7 resource:?];
+    [FSResourceManager addTaskUUID:resourceCopy resource:?];
   }
 
   resourceTasks = self->_resourceTasks;
-  v10 = [v7 getResourceID];
-  v11 = [(NSMutableDictionary *)resourceTasks objectForKey:v10];
+  getResourceID = [resourceCopy getResourceID];
+  v11 = [(NSMutableDictionary *)resourceTasks objectForKey:getResourceID];
 
   if (!v11)
   {
     v12 = self->_resourceTasks;
     v13 = objc_opt_new();
-    v14 = [v7 getResourceID];
-    [(NSMutableDictionary *)v12 setObject:v13 forKey:v14];
+    getResourceID2 = [resourceCopy getResourceID];
+    [(NSMutableDictionary *)v12 setObject:v13 forKey:getResourceID2];
 
     v15 = self->_resourceTasks;
-    v16 = [v7 getResourceID];
-    v11 = [(NSMutableDictionary *)v15 objectForKey:v16];
+    getResourceID3 = [resourceCopy getResourceID];
+    v11 = [(NSMutableDictionary *)v15 objectForKey:getResourceID3];
   }
 
-  [v11 addObject:v6];
+  [v11 addObject:dCopy];
 }
 
-- (id)getTaskUUIDs:(id)a3
+- (id)getTaskUUIDs:(id)ds
 {
   resourceTasks = self->_resourceTasks;
-  v4 = [a3 getResourceID];
-  v5 = [(NSMutableDictionary *)resourceTasks objectForKey:v4];
+  getResourceID = [ds getResourceID];
+  v5 = [(NSMutableDictionary *)resourceTasks objectForKey:getResourceID];
 
   return v5;
 }

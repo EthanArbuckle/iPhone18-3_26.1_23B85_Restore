@@ -1,13 +1,13 @@
 @interface AXSSMotionTrackingState
 - (AXSSMotionTrackingState)init;
-- (AXSSMotionTrackingState)initWithCoder:(id)a3;
+- (AXSSMotionTrackingState)initWithCoder:(id)coder;
 - (BOOL)hasFace;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)lookAtPoint;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)debugStringForTrackingType:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)debugStringForTrackingType:(unint64_t)type;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXSSMotionTrackingState
@@ -30,36 +30,36 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(AXSSMotionTrackingState);
-  v5 = [(AXSSMotionTrackingState *)self error];
-  [(AXSSMotionTrackingState *)v4 setError:v5];
+  error = [(AXSSMotionTrackingState *)self error];
+  [(AXSSMotionTrackingState *)v4 setError:error];
 
-  v6 = [(AXSSMotionTrackingState *)self expressions];
-  [(AXSSMotionTrackingState *)v4 setExpressions:v6];
+  expressions = [(AXSSMotionTrackingState *)self expressions];
+  [(AXSSMotionTrackingState *)v4 setExpressions:expressions];
 
   [(AXSSMotionTrackingState *)self lookAtPoint];
   [(AXSSMotionTrackingState *)v4 setLookAtPoint:?];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(AXSSMotionTrackingState *)self error];
-    v6 = [v4 error];
-    v7 = [v5 isEqual:v6];
+    error = [(AXSSMotionTrackingState *)self error];
+    error2 = [equalCopy error];
+    v7 = [error isEqual:error2];
     if (v7)
     {
       goto LABEL_3;
     }
 
-    v17 = [(AXSSMotionTrackingState *)self error];
-    if (v17)
+    error3 = [(AXSSMotionTrackingState *)self error];
+    if (error3)
     {
       v16 = 0;
 LABEL_14:
@@ -68,18 +68,18 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v18 = [v4 error];
-    if (!v18)
+    error4 = [equalCopy error];
+    if (!error4)
     {
 LABEL_3:
-      v8 = [(AXSSMotionTrackingState *)self expressions];
-      v9 = [v4 expressions];
-      if ([v8 isEqual:v9])
+      expressions = [(AXSSMotionTrackingState *)self expressions];
+      expressions2 = [equalCopy expressions];
+      if ([expressions isEqual:expressions2])
       {
         [(AXSSMotionTrackingState *)self lookAtPoint];
         v11 = v10;
         v13 = v12;
-        [v4 lookAtPoint];
+        [equalCopy lookAtPoint];
         v21.x = v14;
         v21.y = v15;
         v20.x = v11;
@@ -97,7 +97,7 @@ LABEL_3:
         goto LABEL_15;
       }
 
-      v18 = 0;
+      error4 = 0;
     }
 
     else
@@ -105,7 +105,7 @@ LABEL_3:
       v16 = 0;
     }
 
-    v17 = 0;
+    error3 = 0;
     goto LABEL_14;
   }
 
@@ -131,41 +131,41 @@ LABEL_16:
   v4 = [(AXSSMotionTrackingState *)&v10 description];
   [(AXSSMotionTrackingState *)self lookAtPoint];
   v5 = NSStringFromPoint(v12);
-  v6 = [(AXSSMotionTrackingState *)self expressions];
-  v7 = [(AXSSMotionTrackingState *)self error];
-  v8 = [v3 stringWithFormat:@"%@ <point: %@ expressions: %@ error: %@>", v4, v5, v6, v7];
+  expressions = [(AXSSMotionTrackingState *)self expressions];
+  error = [(AXSSMotionTrackingState *)self error];
+  v8 = [v3 stringWithFormat:@"%@ <point: %@ expressions: %@ error: %@>", v4, v5, expressions, error];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(AXSSMotionTrackingState *)self lookAtPoint];
   v6 = v5;
   v8 = v7;
   v9 = NSStringFromSelector(sel_lookAtPoint);
-  [v4 encodePoint:v9 forKey:{v6, v8}];
+  [coderCopy encodePoint:v9 forKey:{v6, v8}];
 
-  v10 = [(AXSSMotionTrackingState *)self error];
+  error = [(AXSSMotionTrackingState *)self error];
   v11 = NSStringFromSelector(sel_error);
-  [v4 encodeObject:v10 forKey:v11];
+  [coderCopy encodeObject:error forKey:v11];
 
-  v13 = [(AXSSMotionTrackingState *)self expressions];
+  expressions = [(AXSSMotionTrackingState *)self expressions];
   v12 = NSStringFromSelector(sel_expressions);
-  [v4 encodeObject:v13 forKey:v12];
+  [coderCopy encodeObject:expressions forKey:v12];
 }
 
-- (AXSSMotionTrackingState)initWithCoder:(id)a3
+- (AXSSMotionTrackingState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = AXSSMotionTrackingState;
   v5 = [(AXSSMotionTrackingState *)&v20 init];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_lookAtPoint);
-    [v4 decodePointForKey:v6];
+    [coderCopy decodePointForKey:v6];
     [(AXSSMotionTrackingState *)v5 setLookAtPoint:?];
 
     v7 = MEMORY[0x1E695DFD8];
@@ -174,29 +174,29 @@ LABEL_16:
     v10 = objc_opt_class();
     v11 = [v7 setWithObjects:{v8, v9, v10, objc_opt_class(), 0}];
     v12 = NSStringFromSelector(sel_error);
-    v13 = [v4 decodeObjectOfClasses:v11 forKey:v12];
+    v13 = [coderCopy decodeObjectOfClasses:v11 forKey:v12];
     [(AXSSMotionTrackingState *)v5 setError:v13];
 
     v14 = MEMORY[0x1E695DFD8];
     v15 = objc_opt_class();
     v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
     v17 = NSStringFromSelector(sel_expressions);
-    v18 = [v4 decodeObjectOfClasses:v16 forKey:v17];
+    v18 = [coderCopy decodeObjectOfClasses:v16 forKey:v17];
     [(AXSSMotionTrackingState *)v5 setExpressions:v18];
   }
 
   return v5;
 }
 
-- (id)debugStringForTrackingType:(unint64_t)a3
+- (id)debugStringForTrackingType:(unint64_t)type
 {
-  v5 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   [(AXSSMotionTrackingState *)self lookAtPoint];
   v27.x = 1.79769313e308;
   v27.y = 1.79769313e308;
   if (NSEqualPoints(v26, v27))
   {
-    [v5 appendString:@"No position\n"];
+    [string appendString:@"No position\n"];
   }
 
   else
@@ -204,51 +204,51 @@ LABEL_16:
     [(AXSSMotionTrackingState *)self lookAtPoint];
     v7 = v6;
     [(AXSSMotionTrackingState *)self lookAtPoint];
-    [v5 appendFormat:@"Position: %0.1f %0.1f\n", v7, v8];
+    [string appendFormat:@"Position: %0.1f %0.1f\n", v7, v8];
   }
 
-  v9 = [(AXSSMotionTrackingState *)self error];
+  error = [(AXSSMotionTrackingState *)self error];
 
-  if (v9)
+  if (error)
   {
-    v10 = [(AXSSMotionTrackingState *)self error];
-    v11 = AXSSHumanReadableDescriptionForMotionTrackingErrorCodeAndTrackingType([v10 code], a3);
-    [v5 appendFormat:@"Error: %@\n", v11];
+    error2 = [(AXSSMotionTrackingState *)self error];
+    v11 = AXSSHumanReadableDescriptionForMotionTrackingErrorCodeAndTrackingType([error2 code], type);
+    [string appendFormat:@"Error: %@\n", v11];
   }
 
   else
   {
-    [v5 appendString:@"No error\n"];
+    [string appendString:@"No error\n"];
   }
 
-  v12 = [(AXSSMotionTrackingState *)self expressions];
-  v13 = [v12 count];
+  expressions = [(AXSSMotionTrackingState *)self expressions];
+  v13 = [expressions count];
 
   if (v13)
   {
-    v14 = [MEMORY[0x1E695DF70] array];
-    v15 = [(AXSSMotionTrackingState *)self expressions];
+    array = [MEMORY[0x1E695DF70] array];
+    expressions2 = [(AXSSMotionTrackingState *)self expressions];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __54__AXSSMotionTrackingState_debugStringForTrackingType___block_invoke;
     v23[3] = &unk_1E81353E0;
-    v16 = v14;
+    v16 = array;
     v24 = v16;
-    [v15 enumerateObjectsUsingBlock:v23];
+    [expressions2 enumerateObjectsUsingBlock:v23];
 
     if ([v16 count])
     {
       v17 = [v16 componentsJoinedByString:{@", "}];
-      [v5 appendFormat:@"Expressions: %@\n", v17];
+      [string appendFormat:@"Expressions: %@\n", v17];
 
       goto LABEL_12;
     }
   }
 
-  [v5 appendString:@"No expressions\n"];
+  [string appendString:@"No expressions\n"];
 LABEL_12:
-  v18 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v19 = [v5 stringByTrimmingCharactersInSet:v18];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v19 = [string stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   v20 = [v19 mutableCopy];
 
   v21 = [v20 copy];

@@ -1,24 +1,24 @@
 @interface PVRenderRequest
 - (CGSize)outputSize;
-- (PVRenderRequest)initWithOutputs:(id)a3 atTime:(id *)a4 outputSize:(CGSize)a5;
+- (PVRenderRequest)initWithOutputs:(id)outputs atTime:(id *)time outputSize:(CGSize)size;
 @end
 
 @implementation PVRenderRequest
 
-- (PVRenderRequest)initWithOutputs:(id)a3 atTime:(id *)a4 outputSize:(CGSize)a5
+- (PVRenderRequest)initWithOutputs:(id)outputs atTime:(id *)time outputSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v10 = a3;
+  height = size.height;
+  width = size.width;
+  outputsCopy = outputs;
   v16.receiver = self;
   v16.super_class = PVRenderRequest;
   v11 = [(PVRenderRequest *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_outputNodes, a3);
-    v13 = *&a4->var0;
-    v12->_time.epoch = a4->var3;
+    objc_storeStrong(&v11->_outputNodes, outputs);
+    v13 = *&time->var0;
+    v12->_time.epoch = time->var3;
     *&v12->_time.value = v13;
     v12->_outputSize.width = width;
     v12->_outputSize.height = height;

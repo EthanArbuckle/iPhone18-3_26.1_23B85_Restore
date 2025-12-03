@@ -1,79 +1,79 @@
 @interface _INPBSendMessageAttachment
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)phAssetId;
 - (_INPBFileDataAttachment)audioMessageFile;
 - (_INPBFileDataAttachment)file;
-- (_INPBSendMessageAttachment)initWithCoder:(id)a3;
+- (_INPBSendMessageAttachment)initWithCoder:(id)coder;
 - (_INPBURLValue)audioMessageFileURL;
 - (_INPBURLValue)fileURL;
 - (_INPBURLValue)sharedLink;
 - (_INPBURLValue)speechDataURL;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAudioMessageFile:(id)a3;
-- (void)setAudioMessageFileURL:(id)a3;
-- (void)setCurrentLocation:(BOOL)a3;
-- (void)setFile:(id)a3;
-- (void)setFileURL:(id)a3;
-- (void)setPhAssetId:(id)a3;
-- (void)setSharedLink:(id)a3;
-- (void)setSpeechDataURL:(id)a3;
-- (void)setTypeIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAudioMessageFile:(id)file;
+- (void)setAudioMessageFileURL:(id)l;
+- (void)setCurrentLocation:(BOOL)location;
+- (void)setFile:(id)file;
+- (void)setFileURL:(id)l;
+- (void)setPhAssetId:(id)id;
+- (void)setSharedLink:(id)link;
+- (void)setSpeechDataURL:(id)l;
+- (void)setTypeIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSendMessageAttachment
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBSendMessageAttachment *)self audioMessageFile];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"audioMessageFile"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  audioMessageFile = [(_INPBSendMessageAttachment *)self audioMessageFile];
+  dictionaryRepresentation = [audioMessageFile dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"audioMessageFile"];
 
-  v6 = [(_INPBSendMessageAttachment *)self audioMessageFileURL];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"audioMessageFileURL"];
+  audioMessageFileURL = [(_INPBSendMessageAttachment *)self audioMessageFileURL];
+  dictionaryRepresentation2 = [audioMessageFileURL dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"audioMessageFileURL"];
 
   if ([(_INPBSendMessageAttachment *)self hasCurrentLocation])
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBSendMessageAttachment currentLocation](self, "currentLocation")}];
-    [v3 setObject:v8 forKeyedSubscript:@"currentLocation"];
+    [dictionary setObject:v8 forKeyedSubscript:@"currentLocation"];
   }
 
-  v9 = [(_INPBSendMessageAttachment *)self file];
-  v10 = [v9 dictionaryRepresentation];
-  [v3 setObject:v10 forKeyedSubscript:@"file"];
+  file = [(_INPBSendMessageAttachment *)self file];
+  dictionaryRepresentation3 = [file dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"file"];
 
-  v11 = [(_INPBSendMessageAttachment *)self fileURL];
-  v12 = [v11 dictionaryRepresentation];
-  [v3 setObject:v12 forKeyedSubscript:@"fileURL"];
+  fileURL = [(_INPBSendMessageAttachment *)self fileURL];
+  dictionaryRepresentation4 = [fileURL dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"fileURL"];
 
   if (self->_phAssetId)
   {
-    v13 = [(_INPBSendMessageAttachment *)self phAssetId];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"phAssetId"];
+    phAssetId = [(_INPBSendMessageAttachment *)self phAssetId];
+    v14 = [phAssetId copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"phAssetId"];
   }
 
-  v15 = [(_INPBSendMessageAttachment *)self sharedLink];
-  v16 = [v15 dictionaryRepresentation];
-  [v3 setObject:v16 forKeyedSubscript:@"sharedLink"];
+  sharedLink = [(_INPBSendMessageAttachment *)self sharedLink];
+  dictionaryRepresentation5 = [sharedLink dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"sharedLink"];
 
-  v17 = [(_INPBSendMessageAttachment *)self speechDataURL];
-  v18 = [v17 dictionaryRepresentation];
-  [v3 setObject:v18 forKeyedSubscript:@"speechDataURL"];
+  speechDataURL = [(_INPBSendMessageAttachment *)self speechDataURL];
+  dictionaryRepresentation6 = [speechDataURL dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"speechDataURL"];
 
   if (self->_typeIdentifier)
   {
-    v19 = [(_INPBSendMessageAttachment *)self typeIdentifier];
-    v20 = [v19 copy];
-    [v3 setObject:v20 forKeyedSubscript:@"typeIdentifier"];
+    typeIdentifier = [(_INPBSendMessageAttachment *)self typeIdentifier];
+    v20 = [typeIdentifier copy];
+    [dictionary setObject:v20 forKeyedSubscript:@"typeIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -98,28 +98,28 @@
   return v9 ^ v10 ^ [(NSString *)self->_typeIdentifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_46;
   }
 
-  v5 = [(_INPBSendMessageAttachment *)self audioMessageFile];
-  v6 = [v4 audioMessageFile];
-  if ((v5 != 0) == (v6 == 0))
+  audioMessageFile = [(_INPBSendMessageAttachment *)self audioMessageFile];
+  audioMessageFile2 = [equalCopy audioMessageFile];
+  if ((audioMessageFile != 0) == (audioMessageFile2 == 0))
   {
     goto LABEL_45;
   }
 
-  v7 = [(_INPBSendMessageAttachment *)self audioMessageFile];
-  if (v7)
+  audioMessageFile3 = [(_INPBSendMessageAttachment *)self audioMessageFile];
+  if (audioMessageFile3)
   {
-    v8 = v7;
-    v9 = [(_INPBSendMessageAttachment *)self audioMessageFile];
-    v10 = [v4 audioMessageFile];
-    v11 = [v9 isEqual:v10];
+    v8 = audioMessageFile3;
+    audioMessageFile4 = [(_INPBSendMessageAttachment *)self audioMessageFile];
+    audioMessageFile5 = [equalCopy audioMessageFile];
+    v11 = [audioMessageFile4 isEqual:audioMessageFile5];
 
     if (!v11)
     {
@@ -131,20 +131,20 @@
   {
   }
 
-  v5 = [(_INPBSendMessageAttachment *)self audioMessageFileURL];
-  v6 = [v4 audioMessageFileURL];
-  if ((v5 != 0) == (v6 == 0))
+  audioMessageFile = [(_INPBSendMessageAttachment *)self audioMessageFileURL];
+  audioMessageFile2 = [equalCopy audioMessageFileURL];
+  if ((audioMessageFile != 0) == (audioMessageFile2 == 0))
   {
     goto LABEL_45;
   }
 
-  v12 = [(_INPBSendMessageAttachment *)self audioMessageFileURL];
-  if (v12)
+  audioMessageFileURL = [(_INPBSendMessageAttachment *)self audioMessageFileURL];
+  if (audioMessageFileURL)
   {
-    v13 = v12;
-    v14 = [(_INPBSendMessageAttachment *)self audioMessageFileURL];
-    v15 = [v4 audioMessageFileURL];
-    v16 = [v14 isEqual:v15];
+    v13 = audioMessageFileURL;
+    audioMessageFileURL2 = [(_INPBSendMessageAttachment *)self audioMessageFileURL];
+    audioMessageFileURL3 = [equalCopy audioMessageFileURL];
+    v16 = [audioMessageFileURL2 isEqual:audioMessageFileURL3];
 
     if (!v16)
     {
@@ -156,38 +156,38 @@
   {
   }
 
-  v17 = [(_INPBSendMessageAttachment *)self hasCurrentLocation];
-  if (v17 != [v4 hasCurrentLocation])
+  hasCurrentLocation = [(_INPBSendMessageAttachment *)self hasCurrentLocation];
+  if (hasCurrentLocation != [equalCopy hasCurrentLocation])
   {
     goto LABEL_46;
   }
 
   if ([(_INPBSendMessageAttachment *)self hasCurrentLocation])
   {
-    if ([v4 hasCurrentLocation])
+    if ([equalCopy hasCurrentLocation])
     {
       currentLocation = self->_currentLocation;
-      if (currentLocation != [v4 currentLocation])
+      if (currentLocation != [equalCopy currentLocation])
       {
         goto LABEL_46;
       }
     }
   }
 
-  v5 = [(_INPBSendMessageAttachment *)self file];
-  v6 = [v4 file];
-  if ((v5 != 0) == (v6 == 0))
+  audioMessageFile = [(_INPBSendMessageAttachment *)self file];
+  audioMessageFile2 = [equalCopy file];
+  if ((audioMessageFile != 0) == (audioMessageFile2 == 0))
   {
     goto LABEL_45;
   }
 
-  v19 = [(_INPBSendMessageAttachment *)self file];
-  if (v19)
+  file = [(_INPBSendMessageAttachment *)self file];
+  if (file)
   {
-    v20 = v19;
-    v21 = [(_INPBSendMessageAttachment *)self file];
-    v22 = [v4 file];
-    v23 = [v21 isEqual:v22];
+    v20 = file;
+    file2 = [(_INPBSendMessageAttachment *)self file];
+    file3 = [equalCopy file];
+    v23 = [file2 isEqual:file3];
 
     if (!v23)
     {
@@ -199,20 +199,20 @@
   {
   }
 
-  v5 = [(_INPBSendMessageAttachment *)self fileURL];
-  v6 = [v4 fileURL];
-  if ((v5 != 0) == (v6 == 0))
+  audioMessageFile = [(_INPBSendMessageAttachment *)self fileURL];
+  audioMessageFile2 = [equalCopy fileURL];
+  if ((audioMessageFile != 0) == (audioMessageFile2 == 0))
   {
     goto LABEL_45;
   }
 
-  v24 = [(_INPBSendMessageAttachment *)self fileURL];
-  if (v24)
+  fileURL = [(_INPBSendMessageAttachment *)self fileURL];
+  if (fileURL)
   {
-    v25 = v24;
-    v26 = [(_INPBSendMessageAttachment *)self fileURL];
-    v27 = [v4 fileURL];
-    v28 = [v26 isEqual:v27];
+    v25 = fileURL;
+    fileURL2 = [(_INPBSendMessageAttachment *)self fileURL];
+    fileURL3 = [equalCopy fileURL];
+    v28 = [fileURL2 isEqual:fileURL3];
 
     if (!v28)
     {
@@ -224,20 +224,20 @@
   {
   }
 
-  v5 = [(_INPBSendMessageAttachment *)self phAssetId];
-  v6 = [v4 phAssetId];
-  if ((v5 != 0) == (v6 == 0))
+  audioMessageFile = [(_INPBSendMessageAttachment *)self phAssetId];
+  audioMessageFile2 = [equalCopy phAssetId];
+  if ((audioMessageFile != 0) == (audioMessageFile2 == 0))
   {
     goto LABEL_45;
   }
 
-  v29 = [(_INPBSendMessageAttachment *)self phAssetId];
-  if (v29)
+  phAssetId = [(_INPBSendMessageAttachment *)self phAssetId];
+  if (phAssetId)
   {
-    v30 = v29;
-    v31 = [(_INPBSendMessageAttachment *)self phAssetId];
-    v32 = [v4 phAssetId];
-    v33 = [v31 isEqual:v32];
+    v30 = phAssetId;
+    phAssetId2 = [(_INPBSendMessageAttachment *)self phAssetId];
+    phAssetId3 = [equalCopy phAssetId];
+    v33 = [phAssetId2 isEqual:phAssetId3];
 
     if (!v33)
     {
@@ -249,20 +249,20 @@
   {
   }
 
-  v5 = [(_INPBSendMessageAttachment *)self sharedLink];
-  v6 = [v4 sharedLink];
-  if ((v5 != 0) == (v6 == 0))
+  audioMessageFile = [(_INPBSendMessageAttachment *)self sharedLink];
+  audioMessageFile2 = [equalCopy sharedLink];
+  if ((audioMessageFile != 0) == (audioMessageFile2 == 0))
   {
     goto LABEL_45;
   }
 
-  v34 = [(_INPBSendMessageAttachment *)self sharedLink];
-  if (v34)
+  sharedLink = [(_INPBSendMessageAttachment *)self sharedLink];
+  if (sharedLink)
   {
-    v35 = v34;
-    v36 = [(_INPBSendMessageAttachment *)self sharedLink];
-    v37 = [v4 sharedLink];
-    v38 = [v36 isEqual:v37];
+    v35 = sharedLink;
+    sharedLink2 = [(_INPBSendMessageAttachment *)self sharedLink];
+    sharedLink3 = [equalCopy sharedLink];
+    v38 = [sharedLink2 isEqual:sharedLink3];
 
     if (!v38)
     {
@@ -274,20 +274,20 @@
   {
   }
 
-  v5 = [(_INPBSendMessageAttachment *)self speechDataURL];
-  v6 = [v4 speechDataURL];
-  if ((v5 != 0) == (v6 == 0))
+  audioMessageFile = [(_INPBSendMessageAttachment *)self speechDataURL];
+  audioMessageFile2 = [equalCopy speechDataURL];
+  if ((audioMessageFile != 0) == (audioMessageFile2 == 0))
   {
     goto LABEL_45;
   }
 
-  v39 = [(_INPBSendMessageAttachment *)self speechDataURL];
-  if (v39)
+  speechDataURL = [(_INPBSendMessageAttachment *)self speechDataURL];
+  if (speechDataURL)
   {
-    v40 = v39;
-    v41 = [(_INPBSendMessageAttachment *)self speechDataURL];
-    v42 = [v4 speechDataURL];
-    v43 = [v41 isEqual:v42];
+    v40 = speechDataURL;
+    speechDataURL2 = [(_INPBSendMessageAttachment *)self speechDataURL];
+    speechDataURL3 = [equalCopy speechDataURL];
+    v43 = [speechDataURL2 isEqual:speechDataURL3];
 
     if (!v43)
     {
@@ -299,12 +299,12 @@
   {
   }
 
-  v5 = [(_INPBSendMessageAttachment *)self typeIdentifier];
-  v6 = [v4 typeIdentifier];
-  if ((v5 != 0) != (v6 == 0))
+  audioMessageFile = [(_INPBSendMessageAttachment *)self typeIdentifier];
+  audioMessageFile2 = [equalCopy typeIdentifier];
+  if ((audioMessageFile != 0) != (audioMessageFile2 == 0))
   {
-    v44 = [(_INPBSendMessageAttachment *)self typeIdentifier];
-    if (!v44)
+    typeIdentifier = [(_INPBSendMessageAttachment *)self typeIdentifier];
+    if (!typeIdentifier)
     {
 
 LABEL_49:
@@ -312,10 +312,10 @@ LABEL_49:
       goto LABEL_47;
     }
 
-    v45 = v44;
-    v46 = [(_INPBSendMessageAttachment *)self typeIdentifier];
-    v47 = [v4 typeIdentifier];
-    v48 = [v46 isEqual:v47];
+    v45 = typeIdentifier;
+    typeIdentifier2 = [(_INPBSendMessageAttachment *)self typeIdentifier];
+    typeIdentifier3 = [equalCopy typeIdentifier];
+    v48 = [typeIdentifier2 isEqual:typeIdentifier3];
 
     if (v48)
     {
@@ -335,13 +335,13 @@ LABEL_47:
   return v49;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSendMessageAttachment allocWithZone:](_INPBSendMessageAttachment init];
-  v6 = [(_INPBFileDataAttachment *)self->_audioMessageFile copyWithZone:a3];
+  v6 = [(_INPBFileDataAttachment *)self->_audioMessageFile copyWithZone:zone];
   [(_INPBSendMessageAttachment *)v5 setAudioMessageFile:v6];
 
-  v7 = [(_INPBURLValue *)self->_audioMessageFileURL copyWithZone:a3];
+  v7 = [(_INPBURLValue *)self->_audioMessageFileURL copyWithZone:zone];
   [(_INPBSendMessageAttachment *)v5 setAudioMessageFileURL:v7];
 
   if ([(_INPBSendMessageAttachment *)self hasCurrentLocation])
@@ -349,67 +349,67 @@ LABEL_47:
     [(_INPBSendMessageAttachment *)v5 setCurrentLocation:[(_INPBSendMessageAttachment *)self currentLocation]];
   }
 
-  v8 = [(_INPBFileDataAttachment *)self->_file copyWithZone:a3];
+  v8 = [(_INPBFileDataAttachment *)self->_file copyWithZone:zone];
   [(_INPBSendMessageAttachment *)v5 setFile:v8];
 
-  v9 = [(_INPBURLValue *)self->_fileURL copyWithZone:a3];
+  v9 = [(_INPBURLValue *)self->_fileURL copyWithZone:zone];
   [(_INPBSendMessageAttachment *)v5 setFileURL:v9];
 
-  v10 = [(NSString *)self->_phAssetId copyWithZone:a3];
+  v10 = [(NSString *)self->_phAssetId copyWithZone:zone];
   [(_INPBSendMessageAttachment *)v5 setPhAssetId:v10];
 
-  v11 = [(_INPBURLValue *)self->_sharedLink copyWithZone:a3];
+  v11 = [(_INPBURLValue *)self->_sharedLink copyWithZone:zone];
   [(_INPBSendMessageAttachment *)v5 setSharedLink:v11];
 
-  v12 = [(_INPBURLValue *)self->_speechDataURL copyWithZone:a3];
+  v12 = [(_INPBURLValue *)self->_speechDataURL copyWithZone:zone];
   [(_INPBSendMessageAttachment *)v5 setSpeechDataURL:v12];
 
-  v13 = [(NSString *)self->_typeIdentifier copyWithZone:a3];
+  v13 = [(NSString *)self->_typeIdentifier copyWithZone:zone];
   [(_INPBSendMessageAttachment *)v5 setTypeIdentifier:v13];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSendMessageAttachment *)self data];
+  coderCopy = coder;
+  data = [(_INPBSendMessageAttachment *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSendMessageAttachment)initWithCoder:(id)a3
+- (_INPBSendMessageAttachment)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSendMessageAttachment *)self initWithData:v6];
+    self = [(_INPBSendMessageAttachment *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v22 = a3;
-  v4 = [(_INPBSendMessageAttachment *)self audioMessageFile];
+  toCopy = to;
+  audioMessageFile = [(_INPBSendMessageAttachment *)self audioMessageFile];
 
-  if (v4)
+  if (audioMessageFile)
   {
-    v5 = [(_INPBSendMessageAttachment *)self audioMessageFile];
+    audioMessageFile2 = [(_INPBSendMessageAttachment *)self audioMessageFile];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBSendMessageAttachment *)self audioMessageFileURL];
+  audioMessageFileURL = [(_INPBSendMessageAttachment *)self audioMessageFileURL];
 
-  if (v6)
+  if (audioMessageFileURL)
   {
-    v7 = [(_INPBSendMessageAttachment *)self audioMessageFileURL];
+    audioMessageFileURL2 = [(_INPBSendMessageAttachment *)self audioMessageFileURL];
     PBDataWriterWriteSubmessage();
   }
 
@@ -419,60 +419,60 @@ LABEL_47:
     PBDataWriterWriteBOOLField();
   }
 
-  v9 = [(_INPBSendMessageAttachment *)self file];
+  file = [(_INPBSendMessageAttachment *)self file];
 
-  if (v9)
+  if (file)
   {
-    v10 = [(_INPBSendMessageAttachment *)self file];
+    file2 = [(_INPBSendMessageAttachment *)self file];
     PBDataWriterWriteSubmessage();
   }
 
-  v11 = [(_INPBSendMessageAttachment *)self fileURL];
+  fileURL = [(_INPBSendMessageAttachment *)self fileURL];
 
-  if (v11)
+  if (fileURL)
   {
-    v12 = [(_INPBSendMessageAttachment *)self fileURL];
+    fileURL2 = [(_INPBSendMessageAttachment *)self fileURL];
     PBDataWriterWriteSubmessage();
   }
 
-  v13 = [(_INPBSendMessageAttachment *)self phAssetId];
+  phAssetId = [(_INPBSendMessageAttachment *)self phAssetId];
 
-  if (v13)
+  if (phAssetId)
   {
     phAssetId = self->_phAssetId;
     PBDataWriterWriteStringField();
   }
 
-  v15 = [(_INPBSendMessageAttachment *)self sharedLink];
+  sharedLink = [(_INPBSendMessageAttachment *)self sharedLink];
 
-  if (v15)
+  if (sharedLink)
   {
-    v16 = [(_INPBSendMessageAttachment *)self sharedLink];
+    sharedLink2 = [(_INPBSendMessageAttachment *)self sharedLink];
     PBDataWriterWriteSubmessage();
   }
 
-  v17 = [(_INPBSendMessageAttachment *)self speechDataURL];
+  speechDataURL = [(_INPBSendMessageAttachment *)self speechDataURL];
 
-  if (v17)
+  if (speechDataURL)
   {
-    v18 = [(_INPBSendMessageAttachment *)self speechDataURL];
+    speechDataURL2 = [(_INPBSendMessageAttachment *)self speechDataURL];
     PBDataWriterWriteSubmessage();
   }
 
-  v19 = [(_INPBSendMessageAttachment *)self typeIdentifier];
+  typeIdentifier = [(_INPBSendMessageAttachment *)self typeIdentifier];
 
-  v20 = v22;
-  if (v19)
+  v20 = toCopy;
+  if (typeIdentifier)
   {
     typeIdentifier = self->_typeIdentifier;
     PBDataWriterWriteStringField();
-    v20 = v22;
+    v20 = toCopy;
   }
 }
 
-- (void)setTypeIdentifier:(id)a3
+- (void)setTypeIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   typeIdentifier = self->_typeIdentifier;
   self->_typeIdentifier = v4;
 
@@ -494,9 +494,9 @@ LABEL_47:
   return v3;
 }
 
-- (void)setSpeechDataURL:(id)a3
+- (void)setSpeechDataURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   file = self->_file;
   self->_file = 0;
 
@@ -516,9 +516,9 @@ LABEL_47:
   phAssetId = self->_phAssetId;
   self->_phAssetId = 0;
 
-  self->_whichDatasource = 4 * (v4 != 0);
+  self->_whichDatasource = 4 * (lCopy != 0);
   speechDataURL = self->_speechDataURL;
-  self->_speechDataURL = v4;
+  self->_speechDataURL = lCopy;
 }
 
 - (_INPBURLValue)sharedLink
@@ -536,9 +536,9 @@ LABEL_47:
   return v3;
 }
 
-- (void)setSharedLink:(id)a3
+- (void)setSharedLink:(id)link
 {
-  v4 = a3;
+  linkCopy = link;
   file = self->_file;
   self->_file = 0;
 
@@ -559,14 +559,14 @@ LABEL_47:
   self->_phAssetId = 0;
 
   v11 = 7;
-  if (!v4)
+  if (!linkCopy)
   {
     v11 = 0;
   }
 
   self->_whichDatasource = v11;
   sharedLink = self->_sharedLink;
-  self->_sharedLink = v4;
+  self->_sharedLink = linkCopy;
 }
 
 - (NSString)phAssetId
@@ -584,11 +584,11 @@ LABEL_47:
   return v3;
 }
 
-- (void)setPhAssetId:(id)a3
+- (void)setPhAssetId:(id)id
 {
   file = self->_file;
   self->_file = 0;
-  v12 = a3;
+  idCopy = id;
 
   fileURL = self->_fileURL;
   self->_fileURL = 0;
@@ -606,8 +606,8 @@ LABEL_47:
   sharedLink = self->_sharedLink;
   self->_sharedLink = 0;
 
-  self->_whichDatasource = 8 * (v12 != 0);
-  v10 = [v12 copy];
+  self->_whichDatasource = 8 * (idCopy != 0);
+  v10 = [idCopy copy];
   phAssetId = self->_phAssetId;
   self->_phAssetId = v10;
 }
@@ -627,9 +627,9 @@ LABEL_47:
   return v3;
 }
 
-- (void)setFileURL:(id)a3
+- (void)setFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   file = self->_file;
   self->_file = 0;
 
@@ -649,9 +649,9 @@ LABEL_47:
   phAssetId = self->_phAssetId;
   self->_phAssetId = 0;
 
-  self->_whichDatasource = 2 * (v4 != 0);
+  self->_whichDatasource = 2 * (lCopy != 0);
   fileURL = self->_fileURL;
-  self->_fileURL = v4;
+  self->_fileURL = lCopy;
 }
 
 - (_INPBFileDataAttachment)file
@@ -669,9 +669,9 @@ LABEL_47:
   return v3;
 }
 
-- (void)setFile:(id)a3
+- (void)setFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   fileURL = self->_fileURL;
   self->_fileURL = 0;
 
@@ -691,12 +691,12 @@ LABEL_47:
   phAssetId = self->_phAssetId;
   self->_phAssetId = 0;
 
-  self->_whichDatasource = v4 != 0;
+  self->_whichDatasource = fileCopy != 0;
   file = self->_file;
-  self->_file = v4;
+  self->_file = fileCopy;
 }
 
-- (void)setCurrentLocation:(BOOL)a3
+- (void)setCurrentLocation:(BOOL)location
 {
   file = self->_file;
   self->_file = 0;
@@ -720,7 +720,7 @@ LABEL_47:
   self->_phAssetId = 0;
 
   self->_whichDatasource = 3;
-  self->_currentLocation = a3;
+  self->_currentLocation = location;
 }
 
 - (_INPBURLValue)audioMessageFileURL
@@ -738,9 +738,9 @@ LABEL_47:
   return v3;
 }
 
-- (void)setAudioMessageFileURL:(id)a3
+- (void)setAudioMessageFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   file = self->_file;
   self->_file = 0;
 
@@ -761,14 +761,14 @@ LABEL_47:
   self->_phAssetId = 0;
 
   v11 = 6;
-  if (!v4)
+  if (!lCopy)
   {
     v11 = 0;
   }
 
   self->_whichDatasource = v11;
   audioMessageFileURL = self->_audioMessageFileURL;
-  self->_audioMessageFileURL = v4;
+  self->_audioMessageFileURL = lCopy;
 }
 
 - (_INPBFileDataAttachment)audioMessageFile
@@ -786,9 +786,9 @@ LABEL_47:
   return v3;
 }
 
-- (void)setAudioMessageFile:(id)a3
+- (void)setAudioMessageFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   file = self->_file;
   self->_file = 0;
 
@@ -809,14 +809,14 @@ LABEL_47:
   self->_phAssetId = 0;
 
   v11 = 5;
-  if (!v4)
+  if (!fileCopy)
   {
     v11 = 0;
   }
 
   self->_whichDatasource = v11;
   audioMessageFile = self->_audioMessageFile;
-  self->_audioMessageFile = v4;
+  self->_audioMessageFile = fileCopy;
 }
 
 @end

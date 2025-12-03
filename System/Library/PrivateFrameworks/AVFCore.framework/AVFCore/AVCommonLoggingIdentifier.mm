@@ -1,5 +1,5 @@
 @interface AVCommonLoggingIdentifier
-- (AVCommonLoggingIdentifier)initWithIdentifierSuffix:(id)a3 prefixlength:(unsigned __int8)a4;
+- (AVCommonLoggingIdentifier)initWithIdentifierSuffix:(id)suffix prefixlength:(unsigned __int8)prefixlength;
 - (id)makeDerivedIdentifier;
 - (void)dealloc;
 @end
@@ -22,7 +22,7 @@
   [(AVCommonLoggingIdentifier *)&v3 dealloc];
 }
 
-- (AVCommonLoggingIdentifier)initWithIdentifierSuffix:(id)a3 prefixlength:(unsigned __int8)a4
+- (AVCommonLoggingIdentifier)initWithIdentifierSuffix:(id)suffix prefixlength:(unsigned __int8)prefixlength
 {
   v8.receiver = self;
   v8.super_class = AVCommonLoggingIdentifier;
@@ -31,7 +31,7 @@
   if (v5)
   {
     v5->_derivedIdentifierCounter = 0;
-    v5->_identifierName = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@/%@", a3, FigCFStringCreateLoggingIdentifierOfLength()];
+    v5->_identifierName = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@/%@", suffix, FigCFStringCreateLoggingIdentifierOfLength()];
   }
 
   return v6;

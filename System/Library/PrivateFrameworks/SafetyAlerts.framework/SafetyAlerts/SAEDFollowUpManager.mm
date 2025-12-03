@@ -1,11 +1,11 @@
 @interface SAEDFollowUpManager
 + (id)sharedInstance;
-- (BOOL)BOOLForDefaultsKey:(id)a3 defaultValue:(BOOL)a4;
+- (BOOL)BOOLForDefaultsKey:(id)key defaultValue:(BOOL)value;
 - (BOOL)_isIgneousEnabled;
-- (BOOL)_shouldDeferFollowUpForSAReason:(unint64_t)a3;
-- (BOOL)_shouldRetractFollowUpForSAReason:(unint64_t)a3;
+- (BOOL)_shouldDeferFollowUpForSAReason:(unint64_t)reason;
+- (BOOL)_shouldRetractFollowUpForSAReason:(unint64_t)reason;
 - (BOOL)currentLocationInCoveredRegion;
-- (BOOL)hasNumberOverrideForDefaultsKey:(id)a3;
+- (BOOL)hasNumberOverrideForDefaultsKey:(id)key;
 - (BOOL)hasValidCurrentLocationInCoveredRegion;
 - (BOOL)hasValidLocationServicesEnabled;
 - (BOOL)hasValidUptakeCoefficient;
@@ -15,27 +15,27 @@
 - (NSUserDefaults)userDefaults;
 - (SAEDFollowUpManager)init;
 - (float)uptakeCoefficient;
-- (id)numberOverrideForDefaultsKey:(id)a3 defaultValue:(id)a4;
-- (id)stringForDefaultsKey:(id)a3 defaultValue:(id)a4;
+- (id)numberOverrideForDefaultsKey:(id)key defaultValue:(id)value;
+- (id)stringForDefaultsKey:(id)key defaultValue:(id)value;
 - (unint64_t)_ctSuppressEDFollowUpReason;
 - (unint64_t)_saSuppressEDFollowUpReason;
-- (unint64_t)uintForDefaultsKey:(id)a3 defaultValue:(unint64_t)a4;
+- (unint64_t)uintForDefaultsKey:(id)key defaultValue:(unint64_t)value;
 - (void)_addNotificationObservers;
 - (void)_evaluateFollowUpStateAsync;
 - (void)_evaluateFollowUpState_LOCKED;
-- (void)_onCellConfigChanged:(id)a3;
+- (void)_onCellConfigChanged:(id)changed;
 - (void)_postFollowUp;
 - (void)_removeNotificationObservers;
 - (void)_retractFollowUp;
 - (void)dealloc;
 - (void)noteUserViewedEDSettings;
-- (void)setCtSuppressEDFollowUpReason:(unint64_t)a3;
-- (void)setCurrentLocationInCoveredRegion:(BOOL)a3;
-- (void)setFollowUpState:(unint64_t)a3;
-- (void)setLocationServicesEnabled:(BOOL)a3;
-- (void)setSAEWEnabledState:(BOOL)a3;
-- (void)setSaSuppressEDFollowUpReason:(unint64_t)a3;
-- (void)setUptakeCoefficient:(float)a3;
+- (void)setCtSuppressEDFollowUpReason:(unint64_t)reason;
+- (void)setCurrentLocationInCoveredRegion:(BOOL)region;
+- (void)setFollowUpState:(unint64_t)state;
+- (void)setLocationServicesEnabled:(BOOL)enabled;
+- (void)setSAEWEnabledState:(BOOL)state;
+- (void)setSaSuppressEDFollowUpReason:(unint64_t)reason;
+- (void)setUptakeCoefficient:(float)coefficient;
 - (void)start;
 @end
 
@@ -47,7 +47,7 @@
   block[1] = 3221225472;
   block[2] = __37__SAEDFollowUpManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280D68EF8 != -1)
   {
     dispatch_once(&qword_280D68EF8, block);
@@ -96,8 +96,8 @@ uint64_t __37__SAEDFollowUpManager_sharedInstance__block_invoke(uint64_t a1)
       }
     }
 
-    v8 = [(SAEDFollowUpManager *)v3 userDefaults];
-    [v8 removeObjectForKey:@"saEnabledStateDefaultsWrite"];
+    userDefaults = [(SAEDFollowUpManager *)v3 userDefaults];
+    [userDefaults removeObjectForKey:@"saEnabledStateDefaultsWrite"];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -126,9 +126,9 @@ uint64_t __37__SAEDFollowUpManager_sharedInstance__block_invoke(uint64_t a1)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSAEWEnabledState:(BOOL)a3
+- (void)setSAEWEnabledState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v11 = *MEMORY[0x277D85DE8];
   v4 = SALogObjectGeneral;
   if (os_log_type_enabled(SALogObjectGeneral, OS_LOG_TYPE_DEFAULT))
@@ -138,7 +138,7 @@ uint64_t __37__SAEDFollowUpManager_sharedInstance__block_invoke(uint64_t a1)
     v7 = 2082;
     v8 = "";
     v9 = 1025;
-    v10 = v3;
+    v10 = stateCopy;
     _os_log_impl(&dword_264550000, v4, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAEDFollowUp,setSAEWEnabledState, state:%{private}hhd}", v6, 0x18u);
   }
 
@@ -204,8 +204,8 @@ void __50__SAEDFollowUpManager__evaluateFollowUpStateAsync__block_invoke(uint64_
 {
   v37[4] = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_evaluationQueue);
-  v3 = [(SAEDFollowUpManager *)self followUpState];
-  if (v3 >= 0x64)
+  followUpState = [(SAEDFollowUpManager *)self followUpState];
+  if (followUpState >= 0x64)
   {
     v4 = SALogObjectGeneral;
     if (os_log_type_enabled(SALogObjectGeneral, OS_LOG_TYPE_DEFAULT))
@@ -215,14 +215,14 @@ void __50__SAEDFollowUpManager__evaluateFollowUpStateAsync__block_invoke(uint64_
       v28 = 2082;
       v29 = "";
       v30 = 2050;
-      v31 = v3;
+      v31 = followUpState;
       _os_log_impl(&dword_264550000, v4, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAEDFollowUp,_evaluateFollowUpState_LOCKED,followUpState >= SAFollowUpStateRetracted, followUpState:%{public}lu}", buf, 0x1Cu);
     }
 
     v37[0] = @"NOP";
     v36[0] = @"action";
     v36[1] = @"startingFollowUpState";
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v3];
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:followUpState];
     v37[1] = v5;
     v36[2] = @"ctSuppressEDFollowUpReason";
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SAEDFollowUpManager ctSuppressEDFollowUpReason](self, "ctSuppressEDFollowUpReason")}];
@@ -240,9 +240,9 @@ void __50__SAEDFollowUpManager__evaluateFollowUpStateAsync__block_invoke(uint64_
     goto LABEL_38;
   }
 
-  v9 = [(SAEDFollowUpManager *)self _ctSuppressEDFollowUpReason];
-  v10 = [(SAEDFollowUpManager *)self _shouldPostFollowUpForCTReason:v9];
-  v11 = [(SAEDFollowUpManager *)self _saSuppressEDFollowUpReason];
+  _ctSuppressEDFollowUpReason = [(SAEDFollowUpManager *)self _ctSuppressEDFollowUpReason];
+  v10 = [(SAEDFollowUpManager *)self _shouldPostFollowUpForCTReason:_ctSuppressEDFollowUpReason];
+  _saSuppressEDFollowUpReason = [(SAEDFollowUpManager *)self _saSuppressEDFollowUpReason];
   v12 = SALogObjectGeneral;
   if (os_log_type_enabled(SALogObjectGeneral, OS_LOG_TYPE_DEFAULT))
   {
@@ -251,20 +251,20 @@ void __50__SAEDFollowUpManager__evaluateFollowUpStateAsync__block_invoke(uint64_
     v28 = 2082;
     v29 = "";
     v30 = 2050;
-    v31 = v3;
+    v31 = followUpState;
     v32 = 2050;
-    v33 = v9;
+    v33 = _ctSuppressEDFollowUpReason;
     v34 = 2050;
-    v35 = v11;
+    v35 = _saSuppressEDFollowUpReason;
     _os_log_impl(&dword_264550000, v12, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAEDFollowUp,_evaluateFollowUpState_LOCKED, followUpState:%{public}lu, ctSuppressEDFollowUpReason:%{public}lu, saSuppressEDFollowUpReason:%{public}lu}", buf, 0x30u);
   }
 
   v23 = MEMORY[0x277D85DD0];
-  v24 = v11;
+  v24 = _saSuppressEDFollowUpReason;
   AnalyticsSendEventLazy();
-  if (v3 <= 48)
+  if (followUpState <= 48)
   {
-    if (v3 && v3 != 10)
+    if (followUpState && followUpState != 10)
     {
 LABEL_16:
       v14 = SALogObjectWarning;
@@ -275,17 +275,17 @@ LABEL_16:
         v28 = 2082;
         v29 = "";
         v30 = 2050;
-        v31 = v3;
+        v31 = followUpState;
         _os_log_impl(&dword_264550000, v14, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#SAEDFollowUp,_evaluateFollowUpState_LOCKED,unexpected followUpState, followUpState:%{public}lu}", buf, 0x1Cu);
       }
     }
   }
 
-  else if (v3 != 49)
+  else if (followUpState != 49)
   {
-    if (v3 == 50)
+    if (followUpState == 50)
     {
-      v18 = [(SAEDFollowUpManager *)self _shouldRetractFollowUpForSAReason:v11, v23, 3221225472, __52__SAEDFollowUpManager__evaluateFollowUpState_LOCKED__block_invoke_47, &__block_descriptor_56_e19___NSDictionary_8__0l, 50, v9, v11]| ~v10;
+      v18 = [(SAEDFollowUpManager *)self _shouldRetractFollowUpForSAReason:_saSuppressEDFollowUpReason, v23, 3221225472, __52__SAEDFollowUpManager__evaluateFollowUpState_LOCKED__block_invoke_47, &__block_descriptor_56_e19___NSDictionary_8__0l, 50, _ctSuppressEDFollowUpReason, _saSuppressEDFollowUpReason]| ~v10;
       v19 = SALogObjectGeneral;
       v20 = os_log_type_enabled(SALogObjectGeneral, OS_LOG_TYPE_DEFAULT);
       if (v18)
@@ -299,8 +299,8 @@ LABEL_16:
           _os_log_impl(&dword_264550000, v19, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAEDFollowUp,_evaluateFollowUpState_LOCKED,posted,retracting FollowUp}", buf, 0x12u);
         }
 
-        [(SAEDFollowUpManager *)self setCtSuppressEDFollowUpReason:v9];
-        [(SAEDFollowUpManager *)self setSaSuppressEDFollowUpReason:v11];
+        [(SAEDFollowUpManager *)self setCtSuppressEDFollowUpReason:_ctSuppressEDFollowUpReason];
+        [(SAEDFollowUpManager *)self setSaSuppressEDFollowUpReason:_saSuppressEDFollowUpReason];
         [(SAEDFollowUpManager *)self _retractFollowUp];
         [(SAEDFollowUpManager *)self _removeNotificationObservers];
       }
@@ -316,14 +316,14 @@ LABEL_16:
           _os_log_impl(&dword_264550000, v19, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAEDFollowUp,_evaluateFollowUpState_LOCKED,posted,leaving posted}", buf, 0x12u);
         }
 
-        [(SAEDFollowUpManager *)self setCtSuppressEDFollowUpReason:v9];
-        [(SAEDFollowUpManager *)self setSaSuppressEDFollowUpReason:v11];
+        [(SAEDFollowUpManager *)self setCtSuppressEDFollowUpReason:_ctSuppressEDFollowUpReason];
+        [(SAEDFollowUpManager *)self setSaSuppressEDFollowUpReason:_saSuppressEDFollowUpReason];
       }
 
       goto LABEL_38;
     }
 
-    if (v3 == 99)
+    if (followUpState == 99)
     {
       v13 = SALogObjectGeneral;
       if (os_log_type_enabled(SALogObjectGeneral, OS_LOG_TYPE_DEFAULT))
@@ -343,7 +343,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if ((v10 & [(SAEDFollowUpManager *)self _shouldPostFollowUpForSAReason:v11, v23, 3221225472, __52__SAEDFollowUpManager__evaluateFollowUpState_LOCKED__block_invoke_47, &__block_descriptor_56_e19___NSDictionary_8__0l, v3, v9, v11]) == 1)
+  if ((v10 & [(SAEDFollowUpManager *)self _shouldPostFollowUpForSAReason:_saSuppressEDFollowUpReason, v23, 3221225472, __52__SAEDFollowUpManager__evaluateFollowUpState_LOCKED__block_invoke_47, &__block_descriptor_56_e19___NSDictionary_8__0l, followUpState, _ctSuppressEDFollowUpReason, _saSuppressEDFollowUpReason]) == 1)
   {
     v15 = SALogObjectGeneral;
     if (os_log_type_enabled(SALogObjectGeneral, OS_LOG_TYPE_DEFAULT))
@@ -355,17 +355,17 @@ LABEL_16:
       _os_log_impl(&dword_264550000, v15, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAEDFollowUp,_evaluateFollowUpState_LOCKED,posting FollowUp}", buf, 0x12u);
     }
 
-    [(SAEDFollowUpManager *)self setCtSuppressEDFollowUpReason:v9];
-    [(SAEDFollowUpManager *)self setSaSuppressEDFollowUpReason:v11];
+    [(SAEDFollowUpManager *)self setCtSuppressEDFollowUpReason:_ctSuppressEDFollowUpReason];
+    [(SAEDFollowUpManager *)self setSaSuppressEDFollowUpReason:_saSuppressEDFollowUpReason];
     [(SAEDFollowUpManager *)self _postFollowUp];
     goto LABEL_38;
   }
 
   if (v10)
   {
-    v16 = [(SAEDFollowUpManager *)self _shouldDeferFollowUpForSAReason:v11];
-    [(SAEDFollowUpManager *)self setCtSuppressEDFollowUpReason:v9];
-    [(SAEDFollowUpManager *)self setSaSuppressEDFollowUpReason:v11];
+    v16 = [(SAEDFollowUpManager *)self _shouldDeferFollowUpForSAReason:_saSuppressEDFollowUpReason];
+    [(SAEDFollowUpManager *)self setCtSuppressEDFollowUpReason:_ctSuppressEDFollowUpReason];
+    [(SAEDFollowUpManager *)self setSaSuppressEDFollowUpReason:_saSuppressEDFollowUpReason];
     if (v16)
     {
       v17 = SALogObjectGeneral;
@@ -385,8 +385,8 @@ LABEL_16:
 
   else
   {
-    [(SAEDFollowUpManager *)self setCtSuppressEDFollowUpReason:v9];
-    [(SAEDFollowUpManager *)self setSaSuppressEDFollowUpReason:v11];
+    [(SAEDFollowUpManager *)self setCtSuppressEDFollowUpReason:_ctSuppressEDFollowUpReason];
+    [(SAEDFollowUpManager *)self setSaSuppressEDFollowUpReason:_saSuppressEDFollowUpReason];
   }
 
   v21 = SALogObjectGeneral;
@@ -425,10 +425,10 @@ id __52__SAEDFollowUpManager__evaluateFollowUpState_LOCKED__block_invoke_47(void
   return v5;
 }
 
-- (BOOL)_shouldRetractFollowUpForSAReason:(unint64_t)a3
+- (BOOL)_shouldRetractFollowUpForSAReason:(unint64_t)reason
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a3 == 10000)
+  if (reason == 10000)
   {
 LABEL_4:
     v4 = SALogObjectWarning;
@@ -439,16 +439,16 @@ LABEL_4:
       v8 = 2082;
       v9 = "";
       v10 = 2050;
-      v11 = a3;
+      reasonCopy = reason;
       _os_log_impl(&dword_264550000, v4, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#SAEDFollowUp,_shouldRetractFollowUpForSAReason,very unexpected reason, saSuppressEDFollowUpReason:%{public}lu}", v7, 0x1Cu);
     }
 
     goto LABEL_6;
   }
 
-  if (a3 != 30000)
+  if (reason != 30000)
   {
-    if (a3 != 20000)
+    if (reason != 20000)
     {
       result = 0;
       goto LABEL_8;
@@ -464,12 +464,12 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)_shouldDeferFollowUpForSAReason:(unint64_t)a3
+- (BOOL)_shouldDeferFollowUpForSAReason:(unint64_t)reason
 {
   result = 1;
-  if (a3 <= 7999)
+  if (reason <= 7999)
   {
-    if (a3 == 1000 || a3 == 2000)
+    if (reason == 1000 || reason == 2000)
     {
       return result;
     }
@@ -477,7 +477,7 @@ LABEL_8:
     return 0;
   }
 
-  if (a3 != 8000 && a3 != 9000)
+  if (reason != 8000 && reason != 9000)
   {
     return 0;
   }
@@ -504,21 +504,21 @@ uint64_t __35__SAEDFollowUpManager_userDefaults__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)hasNumberOverrideForDefaultsKey:(id)a3
+- (BOOL)hasNumberOverrideForDefaultsKey:(id)key
 {
-  v4 = a3;
-  if (*(SAPlatformInfo::instance(v4) + 9) != 1)
+  keyCopy = key;
+  if (*(SAPlatformInfo::instance(keyCopy) + 9) != 1)
   {
     goto LABEL_4;
   }
 
-  v5 = [(SAEDFollowUpManager *)self userDefaults];
-  v6 = [v5 objectForKey:v4];
+  userDefaults = [(SAEDFollowUpManager *)self userDefaults];
+  v6 = [userDefaults objectForKey:keyCopy];
 
   objc_opt_class();
-  LOBYTE(v5) = objc_opt_isKindOfClass();
+  LOBYTE(userDefaults) = objc_opt_isKindOfClass();
 
-  if (v5)
+  if (userDefaults)
   {
     v7 = 1;
   }
@@ -532,25 +532,25 @@ LABEL_4:
   return v7;
 }
 
-- (id)numberOverrideForDefaultsKey:(id)a3 defaultValue:(id)a4
+- (id)numberOverrideForDefaultsKey:(id)key defaultValue:(id)value
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (*(SAPlatformInfo::instance(v7) + 9) != 1)
+  keyCopy = key;
+  valueCopy = value;
+  if (*(SAPlatformInfo::instance(valueCopy) + 9) != 1)
   {
     goto LABEL_6;
   }
 
-  v8 = [(SAEDFollowUpManager *)self userDefaults];
-  v9 = [v8 objectForKey:v6];
+  userDefaults = [(SAEDFollowUpManager *)self userDefaults];
+  v9 = [userDefaults objectForKey:keyCopy];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 
 LABEL_6:
-    v9 = v7;
+    v9 = valueCopy;
     goto LABEL_7;
   }
 
@@ -562,11 +562,11 @@ LABEL_6:
     v14 = 2082;
     v15 = "";
     v16 = 2114;
-    v17 = v6;
+    v17 = keyCopy;
     v18 = 2114;
     v19 = v9;
     v20 = 2114;
-    v21 = v7;
+    v21 = valueCopy;
     _os_log_impl(&dword_264550000, v10, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAEDFollowUp,numberOverrideForDefaultsKey,#overriding, key:%{public, location:escape_only}@, overrideNumber:%{public, location:escape_only}@, defaultValue:%{public, location:escape_only}@}", v13, 0x30u);
   }
 
@@ -577,42 +577,42 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)BOOLForDefaultsKey:(id)a3 defaultValue:(BOOL)a4
+- (BOOL)BOOLForDefaultsKey:(id)key defaultValue:(BOOL)value
 {
-  v6 = a3;
-  v7 = [(SAEDFollowUpManager *)self userDefaults];
-  v8 = [v7 objectForKey:v6];
+  keyCopy = key;
+  userDefaults = [(SAEDFollowUpManager *)self userDefaults];
+  v8 = [userDefaults objectForKey:keyCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a4 = [v8 BOOLValue];
+    value = [v8 BOOLValue];
   }
 
-  return a4;
+  return value;
 }
 
-- (unint64_t)uintForDefaultsKey:(id)a3 defaultValue:(unint64_t)a4
+- (unint64_t)uintForDefaultsKey:(id)key defaultValue:(unint64_t)value
 {
-  v6 = a3;
-  v7 = [(SAEDFollowUpManager *)self userDefaults];
-  v8 = [v7 objectForKey:v6];
+  keyCopy = key;
+  userDefaults = [(SAEDFollowUpManager *)self userDefaults];
+  v8 = [userDefaults objectForKey:keyCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a4 = [v8 unsignedIntegerValue];
+    value = [v8 unsignedIntegerValue];
   }
 
-  return a4;
+  return value;
 }
 
-- (id)stringForDefaultsKey:(id)a3 defaultValue:(id)a4
+- (id)stringForDefaultsKey:(id)key defaultValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SAEDFollowUpManager *)self userDefaults];
-  v9 = [v8 objectForKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  userDefaults = [(SAEDFollowUpManager *)self userDefaults];
+  v9 = [userDefaults objectForKey:keyCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -622,7 +622,7 @@ LABEL_7:
 
   else
   {
-    v10 = v7;
+    v10 = valueCopy;
   }
 
   v11 = v10;
@@ -630,23 +630,23 @@ LABEL_7:
   return v10;
 }
 
-- (void)setFollowUpState:(unint64_t)a3
+- (void)setFollowUpState:(unint64_t)state
 {
   v16[5] = *MEMORY[0x277D85DE8];
-  v5 = [(SAEDFollowUpManager *)self followUpState];
-  v6 = [(SAEDFollowUpManager *)self userDefaults];
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v6 setObject:v7 forKey:@"enhancedDelivery.followUp.state"];
+  followUpState = [(SAEDFollowUpManager *)self followUpState];
+  userDefaults = [(SAEDFollowUpManager *)self userDefaults];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
+  [userDefaults setObject:v7 forKey:@"enhancedDelivery.followUp.state"];
 
-  if (v5 != a3)
+  if (followUpState != state)
   {
     v16[0] = @"SetFollowupState";
     v15[0] = @"action";
     v15[1] = @"startingFollowUpState";
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v5];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:followUpState];
     v16[1] = v8;
     v15[2] = @"newFollowUpState";
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
     v16[2] = v9;
     v15[3] = @"ctSuppressEDFollowUpReason";
     v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SAEDFollowUpManager ctSuppressEDFollowUpReason](self, "ctSuppressEDFollowUpReason")}];
@@ -663,24 +663,24 @@ LABEL_7:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCtSuppressEDFollowUpReason:(unint64_t)a3
+- (void)setCtSuppressEDFollowUpReason:(unint64_t)reason
 {
-  v5 = [(SAEDFollowUpManager *)self userDefaults];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forKey:@"enhancedDelivery.followUp.ctSuppressionReason"];
+  userDefaults = [(SAEDFollowUpManager *)self userDefaults];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:reason];
+  [userDefaults setObject:v4 forKey:@"enhancedDelivery.followUp.ctSuppressionReason"];
 }
 
-- (void)setSaSuppressEDFollowUpReason:(unint64_t)a3
+- (void)setSaSuppressEDFollowUpReason:(unint64_t)reason
 {
-  v5 = [(SAEDFollowUpManager *)self userDefaults];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forKey:@"enhancedDelivery.followUp.saSuppressionReason"];
+  userDefaults = [(SAEDFollowUpManager *)self userDefaults];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:reason];
+  [userDefaults setObject:v4 forKey:@"enhancedDelivery.followUp.saSuppressionReason"];
 }
 
 - (BOOL)userViewedEDSettings
 {
-  v2 = [(SAEDFollowUpManager *)self userDefaults];
-  v3 = [v2 objectForKey:@"enhancedDelivery.followUp.settingsViewedDate"];
+  userDefaults = [(SAEDFollowUpManager *)self userDefaults];
+  v3 = [userDefaults objectForKey:@"enhancedDelivery.followUp.settingsViewedDate"];
   v4 = v3 != 0;
 
   return v4;
@@ -828,7 +828,7 @@ uint64_t __36__SAEDFollowUpManager__postFollowUp__block_invoke_3(uint64_t a1)
   v6 = v4;
   v10 = v6;
   v11 = v5;
-  v12 = self;
+  selfCopy = self;
   v7 = v5;
   [v6 countOfPendingFollowUpItemsWithCompletion:v9];
 
@@ -1000,24 +1000,24 @@ uint64_t __39__SAEDFollowUpManager__retractFollowUp__block_invoke_3(uint64_t a1)
   }
 
   v8 = [0 objectForKeyedSubscript:@"EmergencyAlertsPref"];
-  v9 = [v8 BOOLValue];
+  bOOLValue = [v8 BOOLValue];
 
   v10 = [0 objectForKeyedSubscript:@"EnhancedDeliveryAvailability"];
-  v11 = [v10 BOOLValue];
+  bOOLValue2 = [v10 BOOLValue];
 
   v12 = [0 objectForKeyedSubscript:@"EnhancedDeliveryPref"];
-  v13 = [v12 BOOLValue];
+  bOOLValue3 = [v12 BOOLValue];
 
   if (*(SAPlatformInfo::instance(v14) + 9) == 1)
   {
-    LODWORD(v9) = [(SAEDFollowUpManager *)self BOOLOverrideForDefaultsKey:@"enhancedDelivery.followUp.override.emergencyAlertsEnabled" defaultValue:v9];
-    LOBYTE(v11) = [(SAEDFollowUpManager *)self BOOLOverrideForDefaultsKey:@"enhancedDelivery.followUp.override.enhancedDeliveryAvailable" defaultValue:v11];
-    LOBYTE(v13) = [(SAEDFollowUpManager *)self BOOLOverrideForDefaultsKey:@"enhancedDelivery.followUp.override.enhancedDeliveryPrefEnabled" defaultValue:v13];
+    LODWORD(bOOLValue) = [(SAEDFollowUpManager *)self BOOLOverrideForDefaultsKey:@"enhancedDelivery.followUp.override.emergencyAlertsEnabled" defaultValue:bOOLValue];
+    LOBYTE(bOOLValue2) = [(SAEDFollowUpManager *)self BOOLOverrideForDefaultsKey:@"enhancedDelivery.followUp.override.enhancedDeliveryAvailable" defaultValue:bOOLValue2];
+    LOBYTE(bOOLValue3) = [(SAEDFollowUpManager *)self BOOLOverrideForDefaultsKey:@"enhancedDelivery.followUp.override.enhancedDeliveryPrefEnabled" defaultValue:bOOLValue3];
   }
 
-  if (v9 && (v11 & 1) != 0)
+  if (bOOLValue && (bOOLValue2 & 1) != 0)
   {
-    if (v13)
+    if (bOOLValue3)
     {
       v15 = 1000300;
     }
@@ -1031,7 +1031,7 @@ uint64_t __39__SAEDFollowUpManager__retractFollowUp__block_invoke_3(uint64_t a1)
   else
   {
     v16 = 100;
-    if (v9)
+    if (bOOLValue)
     {
       v16 = 200;
     }
@@ -1088,9 +1088,9 @@ uint64_t __39__SAEDFollowUpManager__retractFollowUp__block_invoke_3(uint64_t a1)
   return 9000;
 }
 
-- (void)setCurrentLocationInCoveredRegion:(BOOL)a3
+- (void)setCurrentLocationInCoveredRegion:(BOOL)region
 {
-  self->_currentLocationInCoveredRegion = a3;
+  self->_currentLocationInCoveredRegion = region;
   if (!self->_currentLocationInCoveredRegion_Valid)
   {
     self->_currentLocationInCoveredRegion_Valid = 1;
@@ -1101,12 +1101,12 @@ uint64_t __39__SAEDFollowUpManager__retractFollowUp__block_invoke_3(uint64_t a1)
 - (BOOL)currentLocationInCoveredRegion
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(SAEDFollowUpManager *)self hasValidCurrentLocationInCoveredRegion];
-  if (!v3)
+  hasValidCurrentLocationInCoveredRegion = [(SAEDFollowUpManager *)self hasValidCurrentLocationInCoveredRegion];
+  if (!hasValidCurrentLocationInCoveredRegion)
   {
     v4 = SALogObjectWarning;
-    v3 = os_log_type_enabled(SALogObjectWarning, OS_LOG_TYPE_ERROR);
-    if (v3)
+    hasValidCurrentLocationInCoveredRegion = os_log_type_enabled(SALogObjectWarning, OS_LOG_TYPE_ERROR);
+    if (hasValidCurrentLocationInCoveredRegion)
     {
       v8[0] = 68289026;
       v8[1] = 0;
@@ -1117,7 +1117,7 @@ uint64_t __39__SAEDFollowUpManager__retractFollowUp__block_invoke_3(uint64_t a1)
   }
 
   currentLocationInCoveredRegion = self->_currentLocationInCoveredRegion;
-  if (*(SAPlatformInfo::instance(v3) + 9) == 1)
+  if (*(SAPlatformInfo::instance(hasValidCurrentLocationInCoveredRegion) + 9) == 1)
   {
     LOBYTE(currentLocationInCoveredRegion) = [(SAEDFollowUpManager *)self BOOLOverrideForDefaultsKey:@"enhancedDelivery.followUp.override.currentLocationInCoveredRegion" defaultValue:currentLocationInCoveredRegion];
   }
@@ -1141,9 +1141,9 @@ uint64_t __39__SAEDFollowUpManager__retractFollowUp__block_invoke_3(uint64_t a1)
   return [(SAEDFollowUpManager *)self hasNumberOverrideForDefaultsKey:@"enhancedDelivery.followUp.override.currentLocationInCoveredRegion"];
 }
 
-- (void)setLocationServicesEnabled:(BOOL)a3
+- (void)setLocationServicesEnabled:(BOOL)enabled
 {
-  self->_locationServicesEnabled = a3;
+  self->_locationServicesEnabled = enabled;
   if (!self->_locationServicesEnabled_Valid)
   {
     self->_locationServicesEnabled_Valid = 1;
@@ -1154,12 +1154,12 @@ uint64_t __39__SAEDFollowUpManager__retractFollowUp__block_invoke_3(uint64_t a1)
 - (BOOL)locationServicesEnabled
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(SAEDFollowUpManager *)self hasValidLocationServicesEnabled];
-  if (!v3)
+  hasValidLocationServicesEnabled = [(SAEDFollowUpManager *)self hasValidLocationServicesEnabled];
+  if (!hasValidLocationServicesEnabled)
   {
     v4 = SALogObjectWarning;
-    v3 = os_log_type_enabled(SALogObjectWarning, OS_LOG_TYPE_ERROR);
-    if (v3)
+    hasValidLocationServicesEnabled = os_log_type_enabled(SALogObjectWarning, OS_LOG_TYPE_ERROR);
+    if (hasValidLocationServicesEnabled)
     {
       v8[0] = 68289026;
       v8[1] = 0;
@@ -1170,7 +1170,7 @@ uint64_t __39__SAEDFollowUpManager__retractFollowUp__block_invoke_3(uint64_t a1)
   }
 
   locationServicesEnabled = self->_locationServicesEnabled;
-  if (*(SAPlatformInfo::instance(v3) + 9) == 1)
+  if (*(SAPlatformInfo::instance(hasValidLocationServicesEnabled) + 9) == 1)
   {
     LOBYTE(locationServicesEnabled) = [(SAEDFollowUpManager *)self BOOLOverrideForDefaultsKey:@"enhancedDelivery.followUp.override.locationServicesEnabled" defaultValue:locationServicesEnabled];
   }
@@ -1194,9 +1194,9 @@ uint64_t __39__SAEDFollowUpManager__retractFollowUp__block_invoke_3(uint64_t a1)
   return [(SAEDFollowUpManager *)self hasNumberOverrideForDefaultsKey:@"enhancedDelivery.followUp.override.locationServicesEnabled"];
 }
 
-- (void)setUptakeCoefficient:(float)a3
+- (void)setUptakeCoefficient:(float)coefficient
 {
-  self->_uptakeCoefficient = a3;
+  self->_uptakeCoefficient = coefficient;
   if (!self->_uptakeCoefficient_Valid)
   {
     self->_uptakeCoefficient_Valid = 1;
@@ -1207,12 +1207,12 @@ uint64_t __39__SAEDFollowUpManager__retractFollowUp__block_invoke_3(uint64_t a1)
 - (float)uptakeCoefficient
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(SAEDFollowUpManager *)self hasValidUptakeCoefficient];
-  if (!v3)
+  hasValidUptakeCoefficient = [(SAEDFollowUpManager *)self hasValidUptakeCoefficient];
+  if (!hasValidUptakeCoefficient)
   {
     v4 = SALogObjectWarning;
-    v3 = os_log_type_enabled(SALogObjectWarning, OS_LOG_TYPE_ERROR);
-    if (v3)
+    hasValidUptakeCoefficient = os_log_type_enabled(SALogObjectWarning, OS_LOG_TYPE_ERROR);
+    if (hasValidUptakeCoefficient)
     {
       v12[0] = 68289026;
       v12[1] = 0;
@@ -1223,7 +1223,7 @@ uint64_t __39__SAEDFollowUpManager__retractFollowUp__block_invoke_3(uint64_t a1)
   }
 
   uptakeCoefficient = self->_uptakeCoefficient;
-  if (*(SAPlatformInfo::instance(v3) + 9) == 1)
+  if (*(SAPlatformInfo::instance(hasValidUptakeCoefficient) + 9) == 1)
   {
     *&v6 = uptakeCoefficient;
     v7 = [MEMORY[0x277CCABB0] numberWithFloat:v6];
@@ -1256,10 +1256,10 @@ uint64_t __39__SAEDFollowUpManager__retractFollowUp__block_invoke_3(uint64_t a1)
   v24 = *MEMORY[0x277D85DE8];
   [(SAEDFollowUpManager *)self uptakeCoefficient];
   v4 = v3;
-  v5 = [(SAEDFollowUpManager *)self userDefaults];
+  userDefaults = [(SAEDFollowUpManager *)self userDefaults];
   *&v6 = v4;
   v7 = [MEMORY[0x277CCABB0] numberWithFloat:v6];
-  [v5 setObject:v7 forKey:@"enhancedDelivery.followUp.lastTestedUptakeCoefficient"];
+  [userDefaults setObject:v7 forKey:@"enhancedDelivery.followUp.lastTestedUptakeCoefficient"];
 
   v8 = v4 * 1000000.0;
   v9 = arc4random_uniform(0xF4240u);
@@ -1286,7 +1286,7 @@ uint64_t __39__SAEDFollowUpManager__retractFollowUp__block_invoke_3(uint64_t a1)
   return result;
 }
 
-- (void)_onCellConfigChanged:(id)a3
+- (void)_onCellConfigChanged:(id)changed
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = SALogObjectGeneral;
@@ -1316,8 +1316,8 @@ uint64_t __39__SAEDFollowUpManager__retractFollowUp__block_invoke_3(uint64_t a1)
     _os_log_impl(&dword_264550000, v3, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAEDFollowUp,_addNotificationObservers}", v6, 0x12u);
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel__onCellConfigChanged_ name:*MEMORY[0x277CC4110] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__onCellConfigChanged_ name:*MEMORY[0x277CC4110] object:0];
 
   v5 = *MEMORY[0x277D85DE8];
 }
@@ -1335,8 +1335,8 @@ uint64_t __39__SAEDFollowUpManager__retractFollowUp__block_invoke_3(uint64_t a1)
     _os_log_impl(&dword_264550000, v3, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAEDFollowUp,_removeNotificationObservers}", v6, 0x12u);
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277CC4110] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CC4110] object:0];
 
   v5 = *MEMORY[0x277D85DE8];
 }

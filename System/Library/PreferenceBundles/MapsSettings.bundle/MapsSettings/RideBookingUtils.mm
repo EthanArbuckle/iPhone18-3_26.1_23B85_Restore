@@ -50,11 +50,11 @@
     {
       v6 = basename("/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Ride Booking/Utils/RideBookingUtils.m");
       v7 = [NSString alloc];
-      v8 = [v7 initWithFormat:@"RideBookingIsEnabled: %d", byte_96CE9];
+      byte_96CE9 = [v7 initWithFormat:@"RideBookingIsEnabled: %d", byte_96CE9];
       *buf = 136315394;
       v11 = v6;
       v12 = 2112;
-      v13 = v8;
+      v13 = byte_96CE9;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "{RBInfo}{%s}: %@", buf, 0x16u);
     }
   }

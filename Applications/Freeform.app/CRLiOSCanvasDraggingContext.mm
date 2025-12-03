@@ -1,26 +1,26 @@
 @interface CRLiOSCanvasDraggingContext
 - (BOOL)draggingWantsForcedUpdate;
 - (CRLiOSCanvasDraggingContext)init;
-- (CRLiOSCanvasDraggingContext)initWithSourceObject:(id)a3;
+- (CRLiOSCanvasDraggingContext)initWithSourceObject:(id)object;
 - (id)modelContainer;
 - (id)sourceObject;
-- (void)draggingEnteredWithOperation:(unint64_t)a3 targetInteractiveCanvasController:(id)a4;
+- (void)draggingEnteredWithOperation:(unint64_t)operation targetInteractiveCanvasController:(id)controller;
 - (void)draggingExited;
-- (void)draggingUpdatedWithOperation:(unint64_t)a3 targetInteractiveCanvasController:(id)a4;
+- (void)draggingUpdatedWithOperation:(unint64_t)operation targetInteractiveCanvasController:(id)controller;
 @end
 
 @implementation CRLiOSCanvasDraggingContext
 
-- (CRLiOSCanvasDraggingContext)initWithSourceObject:(id)a3
+- (CRLiOSCanvasDraggingContext)initWithSourceObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8.receiver = self;
   v8.super_class = CRLiOSCanvasDraggingContext;
   v5 = [(CRLiOSCanvasDraggingContext *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_sourceObject, v4);
+    objc_storeWeak(&v5->_sourceObject, objectCopy);
   }
 
   return v6;
@@ -76,20 +76,20 @@
   objc_exception_throw(v10);
 }
 
-- (void)draggingEnteredWithOperation:(unint64_t)a3 targetInteractiveCanvasController:(id)a4
+- (void)draggingEnteredWithOperation:(unint64_t)operation targetInteractiveCanvasController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_sourceObject);
   v13 = sub_1003035DC(WeakRetained, 1, v7, v8, v9, v10, v11, v12, &OBJC_PROTOCOL___CRLDragOperationCallback);
-  [v13 draggingEnteredWithOperation:a3 targetInteractiveCanvasController:v6];
+  [v13 draggingEnteredWithOperation:operation targetInteractiveCanvasController:controllerCopy];
 }
 
-- (void)draggingUpdatedWithOperation:(unint64_t)a3 targetInteractiveCanvasController:(id)a4
+- (void)draggingUpdatedWithOperation:(unint64_t)operation targetInteractiveCanvasController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_sourceObject);
   v13 = sub_1003035DC(WeakRetained, 1, v7, v8, v9, v10, v11, v12, &OBJC_PROTOCOL___CRLDragOperationCallback);
-  [v13 draggingUpdatedWithOperation:a3 targetInteractiveCanvasController:v6];
+  [v13 draggingUpdatedWithOperation:operation targetInteractiveCanvasController:controllerCopy];
 }
 
 - (void)draggingExited
@@ -103,9 +103,9 @@
 {
   WeakRetained = objc_loadWeakRetained(&self->_sourceObject);
   v9 = sub_1003035DC(WeakRetained, 1, v3, v4, v5, v6, v7, v8, &OBJC_PROTOCOL___CRLDragOperationCallback);
-  v10 = [v9 draggingWantsForcedUpdate];
+  draggingWantsForcedUpdate = [v9 draggingWantsForcedUpdate];
 
-  return v10;
+  return draggingWantsForcedUpdate;
 }
 
 - (id)modelContainer

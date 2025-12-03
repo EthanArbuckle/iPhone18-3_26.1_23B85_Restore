@@ -8,13 +8,13 @@
 - (id)_wp_arrayByRemovingTrackingInformationFromURLs
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [a1 mutableCopy];
+  v2 = [self mutableCopy];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = 0;
@@ -26,7 +26,7 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 = *(*(&v13 + 1) + 8 * v7);
@@ -35,10 +35,10 @@
         {
           if (v8)
           {
-            v9 = [v8 _wp_urlByRemovingTrackingInformation];
-            if (v9)
+            _wp_urlByRemovingTrackingInformation = [v8 _wp_urlByRemovingTrackingInformation];
+            if (_wp_urlByRemovingTrackingInformation)
             {
-              [v2 setObject:v9 atIndexedSubscript:v5];
+              [v2 setObject:_wp_urlByRemovingTrackingInformation atIndexedSubscript:v5];
             }
 
             goto LABEL_15;
@@ -49,7 +49,7 @@
         {
         }
 
-        v9 = v8;
+        _wp_urlByRemovingTrackingInformation = v8;
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
@@ -59,10 +59,10 @@ LABEL_15:
           goto LABEL_16;
         }
 
-        if (v9)
+        if (_wp_urlByRemovingTrackingInformation)
         {
-          [v9 _wp_removeTrackingInformationFromURLRepresentation];
-          v8 = v9;
+          [_wp_urlByRemovingTrackingInformation _wp_removeTrackingInformationFromURLRepresentation];
+          v8 = _wp_urlByRemovingTrackingInformation;
         }
 
         else
@@ -77,7 +77,7 @@ LABEL_16:
       }
 
       while (v4 != v7);
-      v10 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       v4 = v10;
     }
 
@@ -93,14 +93,14 @@ LABEL_16:
 {
   v32 = *MEMORY[0x277D85DE8];
   v18 = a3;
-  v19 = [a1 mutableCopy];
+  v19 = [self mutableCopy];
   v4 = dispatch_group_create();
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v6)
   {
     v7 = 0;
@@ -112,7 +112,7 @@ LABEL_16:
       {
         if (*v28 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         v10 = *(*(&v27 + 1) + 8 * v9);
@@ -170,7 +170,7 @@ LABEL_15:
       }
 
       while (v6 != v9);
-      v14 = [v5 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v14 = [selfCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
       v6 = v14;
     }
 

@@ -1,21 +1,21 @@
 @interface TPSOperationQueue
-- (void)addOperationWithAsyncBlock:(id)a3;
-- (void)setCompletionBlock:(id)a3;
+- (void)addOperationWithAsyncBlock:(id)block;
+- (void)setCompletionBlock:(id)block;
 @end
 
 @implementation TPSOperationQueue
 
-- (void)setCompletionBlock:(id)a3
+- (void)setCompletionBlock:(id)block
 {
-  v8 = a3;
-  v4 = [(TPSOperationQueueCountObserver *)self->_observer completionBlock];
+  blockCopy = block;
+  completionBlock = [(TPSOperationQueueCountObserver *)self->_observer completionBlock];
 
-  if (v4)
+  if (completionBlock)
   {
     [(TPSOperationQueue *)self removeObserver:self->_observer forKeyPath:@"operationCount"];
   }
 
-  if (v8)
+  if (blockCopy)
   {
     observer = self->_observer;
     if (!observer)
@@ -30,15 +30,15 @@
     [(TPSOperationQueue *)self addObserver:observer forKeyPath:@"operationCount" options:1 context:0];
   }
 
-  [(TPSOperationQueueCountObserver *)self->_observer setCompletionBlock:v8];
+  [(TPSOperationQueueCountObserver *)self->_observer setCompletionBlock:blockCopy];
 }
 
-- (void)addOperationWithAsyncBlock:(id)a3
+- (void)addOperationWithAsyncBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    v4 = a3;
-    v5 = [[TPSAsyncBlockOperation alloc] initWithAsyncBlock:v4];
+    blockCopy = block;
+    v5 = [[TPSAsyncBlockOperation alloc] initWithAsyncBlock:blockCopy];
 
     [(TPSOperationQueue *)self addOperation:v5];
   }

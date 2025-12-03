@@ -16,15 +16,15 @@
   [(LPiTunesMediaSoftwareMetadata *)v3 setPlatform:self->_platform];
   if ([(NSNumber *)self->_hasMessagesExtension BOOLValue])
   {
-    v4 = [(NSNumber *)self->_isHiddenFromSpringboard BOOLValue];
+    bOOLValue = [(NSNumber *)self->_isHiddenFromSpringboard BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  [(LPiTunesMediaSoftwareMetadata *)v3 setIsMessagesOnlyApp:v4];
+  [(LPiTunesMediaSoftwareMetadata *)v3 setIsMessagesOnlyApp:bOOLValue];
   if (self->_screenshots)
   {
     [(LPiTunesMediaSoftwareMetadata *)v3 setScreenshots:MEMORY[0x1E695E0F0]];
@@ -44,8 +44,8 @@
 
   if ([(NSArray *)self->_screenshots count])
   {
-    v5 = [(NSArray *)self->_screenshots firstObject];
-    [v4 addObject:v5];
+    firstObject = [(NSArray *)self->_screenshots firstObject];
+    [v4 addObject:firstObject];
   }
 
   if (self->_previewVideo)

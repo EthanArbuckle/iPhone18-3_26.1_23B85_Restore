@@ -1,8 +1,8 @@
 @interface LargeDayNavigationViewCell
-+ (double)heightRequiredWithSizeClass:(int64_t)a3 usesMultiDayStyle:(BOOL)a4;
++ (double)heightRequiredWithSizeClass:(int64_t)class usesMultiDayStyle:(BOOL)style;
 - (CGRect)circleFrame;
 - (CGRect)contentFrame;
-- (LargeDayNavigationViewCell)initWithFrame:(CGRect)a3;
+- (LargeDayNavigationViewCell)initWithFrame:(CGRect)frame;
 - (double)baselineOffsetFromTop;
 - (double)yCenterForDayNumbers;
 - (id)badgeColor;
@@ -13,29 +13,29 @@
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 - (void)pulseToday;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBadgeColor:(id)a3;
-- (void)setBadgeLocale:(id)a3;
-- (void)setBadgeType:(int64_t)a3;
-- (void)setCircled:(BOOL)a3 animated:(BOOL)a4;
-- (void)setDate:(id)a3 forceStringUpdate:(BOOL)a4;
-- (void)setDelegate:(id)a3;
-- (void)setIsToday:(BOOL)a3;
-- (void)setIsWeekend:(BOOL)a3;
-- (void)setLabelElementsVisible:(BOOL)a3;
-- (void)setOverlayShowsMonth:(BOOL)a3 animated:(BOOL)a4;
+- (void)setBackgroundColor:(id)color;
+- (void)setBadgeColor:(id)color;
+- (void)setBadgeLocale:(id)locale;
+- (void)setBadgeType:(int64_t)type;
+- (void)setCircled:(BOOL)circled animated:(BOOL)animated;
+- (void)setDate:(id)date forceStringUpdate:(BOOL)update;
+- (void)setDelegate:(id)delegate;
+- (void)setIsToday:(BOOL)today;
+- (void)setIsWeekend:(BOOL)weekend;
+- (void)setLabelElementsVisible:(BOOL)visible;
+- (void)setOverlayShowsMonth:(BOOL)month animated:(BOOL)animated;
 - (void)stopPulsing;
-- (void)touchUpOccurred:(id)a3;
+- (void)touchUpOccurred:(id)occurred;
 - (void)updateOverlay;
 @end
 
 @implementation LargeDayNavigationViewCell
 
-- (LargeDayNavigationViewCell)initWithFrame:(CGRect)a3
+- (LargeDayNavigationViewCell)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = LargeDayNavigationViewCell;
-  v3 = [(DayNavigationViewCell *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DayNavigationViewCell *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -58,26 +58,26 @@
   return v4;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = LargeDayNavigationViewCell;
-  [(DayNavigationViewCell *)&v21 setDelegate:v4];
-  if (v4)
+  [(DayNavigationViewCell *)&v21 setDelegate:delegateCopy];
+  if (delegateCopy)
   {
-    v5 = [v4 dayNavigationCellShouldEnableSpringLoading];
+    dayNavigationCellShouldEnableSpringLoading = [delegateCopy dayNavigationCellShouldEnableSpringLoading];
     p_springLoadInteraction = &self->_springLoadInteraction;
     springLoadInteraction = self->_springLoadInteraction;
-    if (v5 == (springLoadInteraction != 0))
+    if (dayNavigationCellShouldEnableSpringLoading == (springLoadInteraction != 0))
     {
       goto LABEL_8;
     }
 
-    if (v5)
+    if (dayNavigationCellShouldEnableSpringLoading)
     {
-      v8 = [(DayNavigationViewCell *)self delegate];
-      objc_initWeak(&location, v8);
+      delegate = [(DayNavigationViewCell *)self delegate];
+      objc_initWeak(&location, delegate);
 
       objc_initWeak(&from, self);
       v9 = [UISpringLoadedInteraction alloc];
@@ -145,8 +145,8 @@ LABEL_8:
     dayNumber = self->_dayNumber;
     self->_dayNumber = v3;
 
-    v5 = [(LargeDayNavigationViewCell *)self backgroundColor];
-    [(TappableDayNumber *)self->_dayNumber setBackgroundColor:v5];
+    backgroundColor = [(LargeDayNavigationViewCell *)self backgroundColor];
+    [(TappableDayNumber *)self->_dayNumber setBackgroundColor:backgroundColor];
 
     [(TappableDayNumber *)self->_dayNumber setIsToday:[(DayNavigationViewCell *)self isToday]];
     [(TappableDayNumber *)self->_dayNumber setUserInteractionEnabled:0];
@@ -184,8 +184,8 @@ LABEL_8:
       v6 = self->_overlayLabel;
       self->_overlayLabel = v5;
 
-      v7 = [objc_opt_class() _overlayFont];
-      [(UILabel *)self->_overlayLabel setFont:v7];
+      _overlayFont = [objc_opt_class() _overlayFont];
+      [(UILabel *)self->_overlayLabel setFont:_overlayFont];
 
       [(LargeDayNavigationViewCell *)self addSubview:self->_overlayLabel];
     }
@@ -205,7 +205,7 @@ LABEL_8:
   if (self->_hasOverlay)
   {
     v25 = CUIKGetOverlayCalendar();
-    v10 = [(DayNavigationViewCell *)self date];
+    date = [(DayNavigationViewCell *)self date];
     if (!v25)
     {
       [(UILabel *)self->_overlayLabel setText:0];
@@ -216,14 +216,14 @@ LABEL_28:
       return;
     }
 
-    v11 = [v25 components:3221225496 fromDate:v10];
+    v11 = [v25 components:3221225496 fromDate:date];
     v12 = [v11 day];
-    v13 = [v11 isRepeatedDay];
+    isRepeatedDay = [v11 isRepeatedDay];
     v14 = v25;
     v15 = 1.0;
     if (v12 == 1)
     {
-      v16 = v13;
+      v16 = isRepeatedDay;
       if ([v11 month] == 1)
       {
         if ([v11 isLeapMonth])
@@ -239,7 +239,7 @@ LABEL_28:
 
       if (((self->_overlayShowsMonth | v16) & 1) == 0)
       {
-        v17 = [CUIKDateStrings monthStringForDate:v10 inCalendar:v25];
+        v17 = [CUIKDateStrings monthStringForDate:date inCalendar:v25];
 LABEL_19:
         v18 = v17;
         [(UILabel *)self->_overlayLabel setText:v17];
@@ -287,45 +287,45 @@ LABEL_19:
       v14 = v25;
     }
 
-    v17 = [CUIKDateStrings overlayDayNumberStringForDate:v10 inCalendar:v14];
+    v17 = [CUIKDateStrings overlayDayNumberStringForDate:date inCalendar:v14];
     goto LABEL_19;
   }
 }
 
-+ (double)heightRequiredWithSizeClass:(int64_t)a3 usesMultiDayStyle:(BOOL)a4
++ (double)heightRequiredWithSizeClass:(int64_t)class usesMultiDayStyle:(BOOL)style
 {
-  v4 = a4;
+  styleCopy = style;
   v7 = CUIKGetOverlayCalendar();
 
   v8 = +[CUIKPreferences sharedPreferences];
-  v9 = [v8 showWeekNumbers];
+  showWeekNumbers = [v8 showWeekNumbers];
 
   v10 = EKUIUsesRoundedRectsInsteadOfCircles();
-  if (v4)
+  if (styleCopy)
   {
-    v11 = [objc_opt_class() _normalFont];
-    v12 = [a1 _overlayFont];
-    [v11 pointSize];
+    _normalFont = [objc_opt_class() _normalFont];
+    _overlayFont = [self _overlayFont];
+    [_normalFont pointSize];
     v14 = v13 + 32.0;
     if (v7)
     {
-      [v12 pointSize];
+      [_overlayFont pointSize];
       v14 = v14 + v15;
     }
 
     return v14;
   }
 
-  if (a3 != 2)
+  if (class != 2)
   {
     v17 = v7 != 0;
-    v18 = [objc_opt_class() _normalFont];
-    v19 = [a1 _overlayFont];
-    [v18 pointSize];
+    _normalFont2 = [objc_opt_class() _normalFont];
+    _overlayFont2 = [self _overlayFont];
+    [_normalFont2 pointSize];
     v14 = v20 + 32.0;
-    if ((v17 | v9))
+    if ((v17 | showWeekNumbers))
     {
-      [v19 pointSize];
+      [_overlayFont2 pointSize];
       v14 = v14 + v21;
     }
 
@@ -361,14 +361,14 @@ LABEL_19:
   return result;
 }
 
-- (void)setOverlayShowsMonth:(BOOL)a3 animated:(BOOL)a4
+- (void)setOverlayShowsMonth:(BOOL)month animated:(BOOL)animated
 {
-  if (self->_overlayShowsMonth == a3)
+  if (self->_overlayShowsMonth == month)
   {
     return;
   }
 
-  self->_overlayShowsMonth = a3;
+  self->_overlayShowsMonth = month;
   if (!self->_overlayLabel)
   {
 LABEL_18:
@@ -376,24 +376,24 @@ LABEL_18:
     return;
   }
 
-  v6 = a4;
+  animatedCopy = animated;
   v19 = CUIKGetOverlayCalendar();
-  v7 = [(DayNavigationViewCell *)self date];
-  v8 = [v19 components:24 fromDate:v7];
+  date = [(DayNavigationViewCell *)self date];
+  v8 = [v19 components:24 fromDate:date];
 
   v9 = [v8 day];
   if (v19)
   {
-    v10 = [(DayNavigationViewCell *)self date];
+    date2 = [(DayNavigationViewCell *)self date];
     v11 = CUIKGetOverlayCalendar();
-    if (v9 != 1 || a3)
+    if (v9 != 1 || month)
     {
-      v12 = [CUIKDateStrings overlayDayNumberStringForDate:v10 inCalendar:v11];
+      v12 = [CUIKDateStrings overlayDayNumberStringForDate:date2 inCalendar:v11];
     }
 
     else
     {
-      v12 = [CUIKDateStrings monthStringForDate:v10 inCalendar:v11];
+      v12 = [CUIKDateStrings monthStringForDate:date2 inCalendar:v11];
     }
 
     v13 = v12;
@@ -404,8 +404,8 @@ LABEL_18:
     v13 = 0;
   }
 
-  v14 = [(UILabel *)self->_overlayLabel text];
-  v15 = [v13 isEqualToString:v14];
+  text = [(UILabel *)self->_overlayLabel text];
+  v15 = [v13 isEqualToString:text];
 
   if ((v15 & 1) == 0)
   {
@@ -418,7 +418,7 @@ LABEL_18:
     v23 = v16;
     v17 = objc_retainBlock(v22);
     v18 = v17;
-    if (v6)
+    if (animatedCopy)
     {
       v20[0] = _NSConcreteStackBlock;
       v20[1] = 3221225472;
@@ -437,21 +437,21 @@ LABEL_18:
   }
 }
 
-- (void)setIsToday:(BOOL)a3
+- (void)setIsToday:(BOOL)today
 {
   v4.receiver = self;
   v4.super_class = LargeDayNavigationViewCell;
-  [(DayNavigationViewCell *)&v4 setIsToday:a3];
+  [(DayNavigationViewCell *)&v4 setIsToday:today];
   [(TappableDayNumber *)self->_dayNumber setIsToday:[(DayNavigationViewCell *)self isToday]];
   [(LargeDayNavigationViewCell *)self _updateDisplayedStrings];
   [(LargeDayNavigationViewCell *)self setNeedsLayout];
 }
 
-- (void)setIsWeekend:(BOOL)a3
+- (void)setIsWeekend:(BOOL)weekend
 {
   v6.receiver = self;
   v6.super_class = LargeDayNavigationViewCell;
-  [(DayNavigationViewCell *)&v6 setIsWeekend:a3];
+  [(DayNavigationViewCell *)&v6 setIsWeekend:weekend];
   [(TappableDayNumber *)self->_dayNumber setIsWeekend:[(DayNavigationViewCell *)self isWeekend]];
   if ([(DayNavigationViewCell *)self isWeekend])
   {
@@ -481,41 +481,41 @@ LABEL_18:
   [(LargeDayNavigationViewCell *)self setNeedsLayout];
 }
 
-- (void)setCircled:(BOOL)a3 animated:(BOOL)a4
+- (void)setCircled:(BOOL)circled animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(DayNavigationViewCell *)self circled]!= a3)
+  animatedCopy = animated;
+  circledCopy = circled;
+  if ([(DayNavigationViewCell *)self circled]!= circled)
   {
     v7.receiver = self;
     v7.super_class = LargeDayNavigationViewCell;
-    [(DayNavigationViewCell *)&v7 setCircled:v5];
-    [(TappableDayNumber *)self->_dayNumber setCircled:v5 animated:v4];
+    [(DayNavigationViewCell *)&v7 setCircled:circledCopy];
+    [(TappableDayNumber *)self->_dayNumber setCircled:circledCopy animated:animatedCopy];
     [(LargeDayNavigationViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setDate:(id)a3 forceStringUpdate:(BOOL)a4
+- (void)setDate:(id)date forceStringUpdate:(BOOL)update
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(DayNavigationViewCell *)self date];
-  v8 = [v6 isEqualToDate:v7];
+  updateCopy = update;
+  dateCopy = date;
+  date = [(DayNavigationViewCell *)self date];
+  v8 = [dateCopy isEqualToDate:date];
 
-  if (!v8 || v4)
+  if (!v8 || updateCopy)
   {
     v15.receiver = self;
     v15.super_class = LargeDayNavigationViewCell;
-    [(DayNavigationViewCell *)&v15 setDate:v6];
-    v9 = [objc_opt_class() leftStringForDate:v6];
+    [(DayNavigationViewCell *)&v15 setDate:dateCopy];
+    v9 = [objc_opt_class() leftStringForDate:dateCopy];
     leftString = self->_leftString;
     self->_leftString = v9;
 
-    v11 = [objc_opt_class() centerStringForDate:v6];
+    v11 = [objc_opt_class() centerStringForDate:dateCopy];
     centerString = self->_centerString;
     self->_centerString = v11;
 
-    v13 = [objc_opt_class() rightStringForDate:v6];
+    v13 = [objc_opt_class() rightStringForDate:dateCopy];
     rightString = self->_rightString;
     self->_rightString = v13;
 
@@ -524,17 +524,17 @@ LABEL_18:
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v7.receiver = self;
   v7.super_class = LargeDayNavigationViewCell;
-  [(LargeDayNavigationViewCell *)&v7 setBackgroundColor:v4];
-  [(TappableDayNumber *)self->_dayNumber setBackgroundColor:v4];
-  [(UILabel *)self->_leftLabel setBackgroundColor:v4];
-  [(UILabel *)self->_rightLabel setBackgroundColor:v4];
+  [(LargeDayNavigationViewCell *)&v7 setBackgroundColor:colorCopy];
+  [(TappableDayNumber *)self->_dayNumber setBackgroundColor:colorCopy];
+  [(UILabel *)self->_leftLabel setBackgroundColor:colorCopy];
+  [(UILabel *)self->_rightLabel setBackgroundColor:colorCopy];
   v5 = +[UIColor clearColor];
-  if ([v4 isEqual:v5])
+  if ([colorCopy isEqual:v5])
   {
     v6 = +[UIColor systemBackgroundColor];
     [(UIImageView *)self->_dayBadge setBackgroundColor:v6];
@@ -542,7 +542,7 @@ LABEL_18:
 
   else
   {
-    [(UIImageView *)self->_dayBadge setBackgroundColor:v4];
+    [(UIImageView *)self->_dayBadge setBackgroundColor:colorCopy];
   }
 }
 
@@ -555,11 +555,11 @@ LABEL_18:
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [(LargeDayNavigationViewCell *)self superview];
-    v12 = [v11 superview];
+    superview = [(LargeDayNavigationViewCell *)self superview];
+    v11Superview = [superview superview];
 
-    v13 = [(TappableDayNumber *)self->_dayNumber superview];
-    [v12 convertRect:v13 fromView:{v4, v6, v8, v10}];
+    superview2 = [(TappableDayNumber *)self->_dayNumber superview];
+    [v11Superview convertRect:superview2 fromView:{v4, v6, v8, v10}];
     v15 = v14;
     v17 = v16;
     v19 = v18;
@@ -582,10 +582,10 @@ LABEL_18:
     }
 
     [(EKUITodayCirclePulseView *)self->_pulseView setString:self->_centerString];
-    v24 = [objc_opt_class() _boldFont];
-    [(EKUITodayCirclePulseView *)self->_pulseView setFont:v24];
+    _boldFont = [objc_opt_class() _boldFont];
+    [(EKUITodayCirclePulseView *)self->_pulseView setFont:_boldFont];
 
-    v25 = [(LargeDayNavigationViewCell *)self traitCollection];
+    traitCollection = [(LargeDayNavigationViewCell *)self traitCollection];
     v26 = EKUIUsesRoundedRectsInsteadOfCircles();
 
     if (v26)
@@ -615,7 +615,7 @@ LABEL_18:
     }
 
     [(EKUITodayCirclePulseView *)self->_pulseView layoutIfNeeded];
-    [v12 addSubview:self->_pulseView];
+    [v11Superview addSubview:self->_pulseView];
     [(TappableDayNumber *)self->_dayNumber setHidden:1];
     v30 = self->_pulseView;
     v31[0] = _NSConcreteStackBlock;
@@ -645,8 +645,8 @@ LABEL_18:
   [(TappableDayNumber *)self->_dayNumber frame];
   v6 = v5;
   v8 = v7;
-  v9 = [(TappableDayNumber *)self->_dayNumber superview];
-  [(LargeDayNavigationViewCell *)self convertPoint:v9 fromView:v6, v8];
+  superview = [(TappableDayNumber *)self->_dayNumber superview];
+  [(LargeDayNavigationViewCell *)self convertPoint:superview fromView:v6, v8];
   v11 = v10;
 
   return v4 + v11;
@@ -676,9 +676,9 @@ LABEL_18:
   v20.size.width = width;
   v20.size.height = height;
   MaxY = CGRectGetMaxY(v20);
-  v11 = [(UILabel *)self->_leftLabel superview];
+  superview = [(UILabel *)self->_leftLabel superview];
 
-  if (v11)
+  if (superview)
   {
     [(UILabel *)self->_leftLabel frame];
     MinX = fmin(MinX, CGRectGetMinX(v21));
@@ -690,9 +690,9 @@ LABEL_18:
     MaxY = fmax(MaxY, CGRectGetMaxY(v24));
   }
 
-  v12 = [(UILabel *)self->_rightLabel superview];
+  superview2 = [(UILabel *)self->_rightLabel superview];
 
-  if (v12)
+  if (superview2)
   {
     [(UILabel *)self->_rightLabel frame];
     MinX = fmin(MinX, CGRectGetMinX(v25));
@@ -715,15 +715,15 @@ LABEL_18:
   return result;
 }
 
-- (void)setLabelElementsVisible:(BOOL)a3
+- (void)setLabelElementsVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v5.receiver = self;
   v5.super_class = LargeDayNavigationViewCell;
   [(DayNavigationViewCell *)&v5 setLabelElementsVisible:?];
-  [(TappableDayNumber *)self->_dayNumber setHidden:!v3];
-  [(UILabel *)self->_leftLabel setHidden:!v3];
-  [(UILabel *)self->_rightLabel setHidden:!v3];
+  [(TappableDayNumber *)self->_dayNumber setHidden:!visibleCopy];
+  [(UILabel *)self->_leftLabel setHidden:!visibleCopy];
+  [(UILabel *)self->_rightLabel setHidden:!visibleCopy];
 }
 
 - (id)preferredPointerShape
@@ -736,9 +736,9 @@ LABEL_18:
 
 - (void)layoutSubviews
 {
-  v3 = [(LargeDayNavigationViewCell *)self usesRoundedRectInsteadOfCircle];
+  usesRoundedRectInsteadOfCircle = [(LargeDayNavigationViewCell *)self usesRoundedRectInsteadOfCircle];
   dayNumber = self->_dayNumber;
-  if (v3)
+  if (usesRoundedRectInsteadOfCircle)
   {
     [(TappableDayNumber *)dayNumber numberFrame];
     x = v39.origin.x;
@@ -813,9 +813,9 @@ LABEL_18:
   [(TappableDayNumber *)self->_dayNumber frame];
   CGRectGetMinY(v47);
   [(TappableDayNumber *)self->_dayNumber firstLineBaselineOffsetFromBoundsTop];
-  v26 = [(TappableDayNumber *)self->_dayNumber circled];
+  circled = [(TappableDayNumber *)self->_dayNumber circled];
   v27 = objc_opt_class();
-  if (v26)
+  if (circled)
   {
     [v27 interTextSpacingCircled];
   }
@@ -904,8 +904,8 @@ LABEL_18:
     [v36 badgeFrameFromDayNumberFrame:self->_rightLabel != 0 isRightToLeft:?];
     CalRoundRectToScreenScale();
     [(UIImageView *)self->_dayBadge setFrame:?];
-    v37 = [(UIImageView *)self->_dayBadge layer];
-    [v37 setCornerRadius:v35];
+    layer = [(UIImageView *)self->_dayBadge layer];
+    [layer setCornerRadius:v35];
   }
 }
 
@@ -918,8 +918,8 @@ LABEL_18:
     leftLabel = self->_leftLabel;
     self->_leftLabel = v3;
 
-    v5 = [(LargeDayNavigationViewCell *)self backgroundColor];
-    [(UILabel *)self->_leftLabel setBackgroundColor:v5];
+    backgroundColor = [(LargeDayNavigationViewCell *)self backgroundColor];
+    [(UILabel *)self->_leftLabel setBackgroundColor:backgroundColor];
 
     if ([(DayNavigationViewCell *)self isWeekend])
     {
@@ -953,8 +953,8 @@ LABEL_18:
     rightLabel = self->_rightLabel;
     self->_rightLabel = v8;
 
-    v10 = [(LargeDayNavigationViewCell *)self backgroundColor];
-    [(UILabel *)self->_rightLabel setBackgroundColor:v10];
+    backgroundColor2 = [(LargeDayNavigationViewCell *)self backgroundColor];
+    [(UILabel *)self->_rightLabel setBackgroundColor:backgroundColor2];
 
     if ([(DayNavigationViewCell *)self isWeekend])
     {
@@ -983,13 +983,13 @@ LABEL_18:
   }
 
   [(UILabel *)self->_leftLabel setText:self->_leftString];
-  v13 = [objc_opt_class() _normalFont];
-  [(UILabel *)self->_leftLabel setFont:v13];
+  _normalFont = [objc_opt_class() _normalFont];
+  [(UILabel *)self->_leftLabel setFont:_normalFont];
 
   [(UILabel *)self->_leftLabel sizeToFit];
   [(UILabel *)self->_rightLabel setText:self->_rightString];
-  v14 = [objc_opt_class() _normalFont];
-  [(UILabel *)self->_rightLabel setFont:v14];
+  _normalFont2 = [objc_opt_class() _normalFont];
+  [(UILabel *)self->_rightLabel setFont:_normalFont2];
 
   [(UILabel *)self->_rightLabel sizeToFit];
 
@@ -1004,12 +1004,12 @@ LABEL_18:
   return result;
 }
 
-- (void)setBadgeType:(int64_t)a3
+- (void)setBadgeType:(int64_t)type
 {
   badgeType = self->_badgeType;
-  if (badgeType != a3)
+  if (badgeType != type)
   {
-    self->_badgeType = a3;
+    self->_badgeType = type;
     [(LargeDayNavigationViewCell *)self _updateBadge];
     if (!badgeType)
     {
@@ -1035,63 +1035,63 @@ LABEL_18:
   return v3;
 }
 
-- (void)setBadgeColor:(id)a3
+- (void)setBadgeColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   badgeColor = self->_badgeColor;
-  if (v5 | badgeColor)
+  if (colorCopy | badgeColor)
   {
-    v7 = v5;
-    badgeColor = [(UIColor *)badgeColor isEqual:v5];
-    v5 = v7;
+    v7 = colorCopy;
+    badgeColor = [(UIColor *)badgeColor isEqual:colorCopy];
+    colorCopy = v7;
     if ((badgeColor & 1) == 0)
     {
-      objc_storeStrong(&self->_badgeColor, a3);
+      objc_storeStrong(&self->_badgeColor, color);
       badgeColor = [(LargeDayNavigationViewCell *)self _updateBadge];
-      v5 = v7;
+      colorCopy = v7;
     }
   }
 
-  _objc_release_x1(badgeColor, v5);
+  _objc_release_x1(badgeColor, colorCopy);
 }
 
-- (void)setBadgeLocale:(id)a3
+- (void)setBadgeLocale:(id)locale
 {
-  v5 = a3;
+  localeCopy = locale;
   badgeLocale = self->_badgeLocale;
-  if (v5 | badgeLocale)
+  if (localeCopy | badgeLocale)
   {
-    v7 = v5;
-    badgeLocale = [(NSString *)badgeLocale isEqual:v5];
-    v5 = v7;
+    v7 = localeCopy;
+    badgeLocale = [(NSString *)badgeLocale isEqual:localeCopy];
+    localeCopy = v7;
     if ((badgeLocale & 1) == 0)
     {
-      objc_storeStrong(&self->_badgeLocale, a3);
+      objc_storeStrong(&self->_badgeLocale, locale);
       badgeLocale = [(LargeDayNavigationViewCell *)self _updateBadge];
-      v5 = v7;
+      localeCopy = v7;
     }
   }
 
-  _objc_release_x1(badgeLocale, v5);
+  _objc_release_x1(badgeLocale, localeCopy);
 }
 
 - (void)_updateBadge
 {
-  v3 = [(LargeDayNavigationViewCell *)self badgeColor];
+  badgeColor = [(LargeDayNavigationViewCell *)self badgeColor];
 
-  if (!v3)
+  if (!badgeColor)
   {
     goto LABEL_10;
   }
 
-  v4 = [(LargeDayNavigationViewCell *)self traitCollection];
-  [v4 userInterfaceStyle];
+  traitCollection = [(LargeDayNavigationViewCell *)self traitCollection];
+  [traitCollection userInterfaceStyle];
 
   badgeType = self->_badgeType;
   if (badgeType == 3)
   {
     [objc_opt_class() badgeDiameter];
-    v6 = [(LargeDayNavigationViewCell *)self badgeColor];
+    badgeColor2 = [(LargeDayNavigationViewCell *)self badgeColor];
     v7 = BadgeImageForAlternateWorkday();
   }
 
@@ -1103,7 +1103,7 @@ LABEL_18:
     }
 
     [objc_opt_class() badgeDiameter];
-    v6 = [(LargeDayNavigationViewCell *)self badgeColor];
+    badgeColor2 = [(LargeDayNavigationViewCell *)self badgeColor];
     v7 = BadgeImageForHoliday();
   }
 
@@ -1123,15 +1123,15 @@ LABEL_10:
   [(UIImageView *)dayBadge setHidden:1];
 }
 
-- (void)touchUpOccurred:(id)a3
+- (void)touchUpOccurred:(id)occurred
 {
   [(TappableDayNumber *)self->_dayNumber setPressed:0];
-  v4 = [(DayNavigationViewCell *)self delegate];
+  delegate = [(DayNavigationViewCell *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(DayNavigationViewCell *)self delegate];
-    [v5 dayNavigationCellTouchUpOccurred:self];
+    delegate2 = [(DayNavigationViewCell *)self delegate];
+    [delegate2 dayNavigationCellTouchUpOccurred:self];
   }
 }
 

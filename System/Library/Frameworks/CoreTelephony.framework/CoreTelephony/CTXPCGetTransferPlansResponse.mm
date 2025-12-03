@@ -8,8 +8,8 @@
 
 - (CTRemoteDeviceList)devices
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"devices"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"devices"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -26,18 +26,18 @@
 
 - (BOOL)isFlexPolicyOn
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"isFlexPolicyOn"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"isFlexPolicyOn"];
   v4 = CTThrowingCastIfClass<NSNumber>(v3);
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 + (id)allowedClassesForArguments
 {
   v8[2] = *MEMORY[0x1E69E9840];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CTXPCGetTransferPlansResponse;
   v2 = objc_msgSendSuper2(&v7, sel_allowedClassesForArguments);
   v8[0] = objc_opt_class();

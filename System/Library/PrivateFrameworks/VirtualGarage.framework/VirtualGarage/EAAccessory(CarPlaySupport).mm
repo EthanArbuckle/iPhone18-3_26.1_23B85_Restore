@@ -6,12 +6,12 @@
 
 - (uint64_t)_vg_supportsCarPlay
 {
-  if ([a1 supportsCarPlay] & 1) != 0 || (objc_msgSend(a1, "supportsWirelessCarPlay"))
+  if ([self supportsCarPlay] & 1) != 0 || (objc_msgSend(self, "supportsWirelessCarPlay"))
   {
     return 1;
   }
 
-  return [a1 supportsUSBCarPlay];
+  return [self supportsUSBCarPlay];
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_DrawAssetPersonEdges
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_DrawAssetPersonEdges
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v119[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v80 = 0;
   v81 = &v80;
   v82 = 0x2020000000;
@@ -18,9 +18,9 @@
   v77 = __Block_byref_object_copy__1060;
   v78 = __Block_byref_object_dispose__1061;
   v79 = 0;
-  v7 = [(PLModelMigrationActionBackground *)self resumeMarker];
-  v8 = v6;
-  v9 = v7;
+  resumeMarker = [(PLModelMigrationActionBackground *)self resumeMarker];
+  v8 = contextCopy;
+  v9 = resumeMarker;
   if (v9)
   {
     v10 = [MEMORY[0x1E695DFF8] URLWithString:v9];
@@ -31,8 +31,8 @@
     v10 = 0;
   }
 
-  v11 = [v8 persistentStoreCoordinator];
-  v12 = [v11 managedObjectIDForURIRepresentation:v10];
+  persistentStoreCoordinator = [v8 persistentStoreCoordinator];
+  v12 = [persistentStoreCoordinator managedObjectIDForURIRepresentation:v10];
 
   v13 = +[PLManagedAsset fetchRequest];
   v14 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"objectID" ascending:1];
@@ -89,17 +89,17 @@
 
     if (v25)
     {
-      v26 = [(PLModelMigrationActionBackground *)self logger];
-      v27 = v26 == 0;
+      logger = [(PLModelMigrationActionBackground *)self logger];
+      v27 = logger == 0;
 
       if (v27)
       {
         v42 = PLMigrationGetLog();
         if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
         {
-          v43 = [v69[5] totalUnitCount];
+          totalUnitCount = [v69[5] totalUnitCount];
           *buf = 134217984;
-          *&buf[4] = v43;
+          *&buf[4] = totalUnitCount;
           _os_log_impl(&dword_19BF1F000, v42, OS_LOG_TYPE_DEFAULT, "Drew asset person edges for %lld assets.", buf, 0xCu);
         }
       }
@@ -139,9 +139,9 @@
         memset(buf, 0, sizeof(buf));
         v28 = PLMigrationGetLog();
         os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT);
-        v29 = [v69[5] totalUnitCount];
+        totalUnitCount2 = [v69[5] totalUnitCount];
         v84 = 134217984;
-        v85 = v29;
+        v85 = totalUnitCount2;
         LODWORD(v55) = 12;
         v30 = _os_log_send_and_compose_impl();
 
@@ -155,8 +155,8 @@
       }
     }
 
-    v44 = [(PLModelMigrationActionBackground *)self databaseContext];
-    v45 = [v44 newShortLivedLibraryWithName:"-[PLModelMigrationAction_DrawAssetPersonEdges performActionWithManagedObjectContext:error:]"];
+    databaseContext = [(PLModelMigrationActionBackground *)self databaseContext];
+    v45 = [databaseContext newShortLivedLibraryWithName:"-[PLModelMigrationAction_DrawAssetPersonEdges performActionWithManagedObjectContext:error:]"];
 
     v56[0] = MEMORY[0x1E69E9820];
     v56[1] = 3221225472;
@@ -164,7 +164,7 @@
     v56[3] = &unk_1E7578848;
     v46 = v45;
     v57 = v46;
-    v58 = self;
+    selfCopy = self;
     [v46 performTransactionAndWait:v56];
   }
 
@@ -176,8 +176,8 @@
 
     if (v33)
     {
-      v34 = [(PLModelMigrationActionBackground *)self logger];
-      v35 = v34 == 0;
+      logger2 = [(PLModelMigrationActionBackground *)self logger];
+      v35 = logger2 == 0;
 
       if (v35)
       {
@@ -259,10 +259,10 @@
   [(PLModelMigrationActionBackground *)self finalizeProgress];
   v47 = v81[3];
   v48 = v75[5];
-  if (v47 != 1 && a4)
+  if (v47 != 1 && error)
   {
     v48 = v48;
-    *a4 = v48;
+    *error = v48;
   }
 
   v49 = v81[3];

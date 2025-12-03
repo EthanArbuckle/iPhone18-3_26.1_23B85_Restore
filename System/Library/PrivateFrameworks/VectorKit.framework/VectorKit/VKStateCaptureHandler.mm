@@ -1,8 +1,8 @@
 @interface VKStateCaptureHandler
-+ (os_state_data_s)stateDataForDictionary:(id)a3 title:(id)a4;
-- (VKStateCaptureHandler)initWithQueue:(id)a3 withName:(id)a4 withCallback:(function<NSString *)(;
++ (os_state_data_s)stateDataForDictionary:(id)dictionary title:(id)title;
+- (VKStateCaptureHandler)initWithQueue:(id)queue withName:(id)name withCallback:(function<NSString *)(;
 - (os_state_data_s)_stateCapture;
-- (void)_registerHandlerforStateCapture:(id)a3;
+- (void)_registerHandlerforStateCapture:(id)capture;
 - (void)_unregisterHandlerforStateCapture;
 - (void)dealloc;
 @end
@@ -64,10 +64,10 @@
   }
 }
 
-- (void)_registerHandlerforStateCapture:(id)a3
+- (void)_registerHandlerforStateCapture:(id)capture
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  captureCopy = capture;
   v5 = GEOGetVectorKitStateCaptureLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -133,11 +133,11 @@ uint64_t __57__VKStateCaptureHandler__registerHandlerforStateCapture___block_inv
   [(VKStateCaptureHandler *)&v5 dealloc];
 }
 
-- (VKStateCaptureHandler)initWithQueue:(id)a3 withName:(id)a4 withCallback:(function<NSString *)(
+- (VKStateCaptureHandler)initWithQueue:(id)queue withName:(id)name withCallback:(function<NSString *)(
 {
   v21[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  queueCopy = queue;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = VKStateCaptureHandler;
   v10 = [(VKStateCaptureHandler *)&v18 init];
@@ -148,7 +148,7 @@ uint64_t __57__VKStateCaptureHandler__registerHandlerforStateCapture___block_inv
     goto LABEL_19;
   }
 
-  objc_storeStrong(&v10->_name, a4);
+  objc_storeStrong(&v10->_name, name);
   if (!v11->_name)
   {
     v11->_name = @"VK State Snapshot";
@@ -215,21 +215,21 @@ LABEL_9:
   }
 
   std::__function::__value_func<NSString * ()(void)>::~__value_func[abi:nn200100](v19);
-  [(VKStateCaptureHandler *)v12 _registerHandlerforStateCapture:v8];
+  [(VKStateCaptureHandler *)v12 _registerHandlerforStateCapture:queueCopy];
 LABEL_19:
 
   return v12;
 }
 
-+ (os_state_data_s)stateDataForDictionary:(id)a3 title:(id)a4
++ (os_state_data_s)stateDataForDictionary:(id)dictionary title:(id)title
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  dictionaryCopy = dictionary;
+  titleCopy = title;
+  if (dictionaryCopy)
   {
     v22 = 0;
-    v7 = [MEMORY[0x1E696AE40] dataWithPropertyList:v5 format:200 options:0 error:&v22];
+    v7 = [MEMORY[0x1E696AE40] dataWithPropertyList:dictionaryCopy format:200 options:0 error:&v22];
     v8 = v22;
     if (v8)
     {
@@ -255,12 +255,12 @@ LABEL_5:
       {
         v15->var0 = 1;
         v15->var1.var1 = v14;
-        v16 = [v6 dataUsingEncoding:4];
+        v16 = [titleCopy dataUsingEncoding:4];
         v9 = v16;
         if (v16)
         {
           v17 = v16;
-          v18 = [v9 bytes];
+          bytes = [v9 bytes];
           if ([v9 length]> 0x3E)
           {
             v19 = 63;
@@ -271,7 +271,7 @@ LABEL_5:
             v19 = [v9 length];
           }
 
-          memcpy(v13->var3, v18, v19);
+          memcpy(v13->var3, bytes, v19);
         }
 
         v20 = v7;

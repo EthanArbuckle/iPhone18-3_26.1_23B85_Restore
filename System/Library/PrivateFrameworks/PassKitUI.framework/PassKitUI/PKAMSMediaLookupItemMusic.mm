@@ -1,90 +1,90 @@
 @interface PKAMSMediaLookupItemMusic
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMusicItem:(id)a3;
-- (PKAMSMediaLookupItemMusic)initWithCoder:(id)a3;
-- (PKAMSMediaLookupItemMusic)initWithType:(unint64_t)a3 artwork:(id)a4 animatedArtworkURL:(id)a5 displayName:(id)a6 itemDescription:(id)a7 musicURL:(id)a8 appleCurated:(BOOL)a9;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMusicItem:(id)item;
+- (PKAMSMediaLookupItemMusic)initWithCoder:(id)coder;
+- (PKAMSMediaLookupItemMusic)initWithType:(unint64_t)type artwork:(id)artwork animatedArtworkURL:(id)l displayName:(id)name itemDescription:(id)description musicURL:(id)rL appleCurated:(BOOL)curated;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAMSMediaLookupItemMusic
 
-- (PKAMSMediaLookupItemMusic)initWithType:(unint64_t)a3 artwork:(id)a4 animatedArtworkURL:(id)a5 displayName:(id)a6 itemDescription:(id)a7 musicURL:(id)a8 appleCurated:(BOOL)a9
+- (PKAMSMediaLookupItemMusic)initWithType:(unint64_t)type artwork:(id)artwork animatedArtworkURL:(id)l displayName:(id)name itemDescription:(id)description musicURL:(id)rL appleCurated:(BOOL)curated
 {
-  v22 = a4;
-  v21 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (a3 <= 2)
+  artworkCopy = artwork;
+  lCopy = l;
+  nameCopy = name;
+  descriptionCopy = description;
+  rLCopy = rL;
+  if (type <= 2)
   {
-    v19 = [(PKAMSMediaLookupItem *)self _initWithType:a3];
-    objc_storeStrong(v19 + 3, a4);
-    objc_storeStrong(v19 + 4, a5);
-    objc_storeStrong(v19 + 5, a6);
-    objc_storeStrong(v19 + 6, a7);
-    objc_storeStrong(v19 + 7, a8);
-    *(v19 + 16) = a9;
+    v19 = [(PKAMSMediaLookupItem *)self _initWithType:type];
+    objc_storeStrong(v19 + 3, artwork);
+    objc_storeStrong(v19 + 4, l);
+    objc_storeStrong(v19 + 5, name);
+    objc_storeStrong(v19 + 6, description);
+    objc_storeStrong(v19 + 7, rL);
+    *(v19 + 16) = curated;
     self = v19;
   }
 
   return self;
 }
 
-- (PKAMSMediaLookupItemMusic)initWithCoder:(id)a3
+- (PKAMSMediaLookupItemMusic)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = PKAMSMediaLookupItemMusic;
-  v5 = [(PKAMSMediaLookupItem *)&v17 initWithCoder:v4];
+  v5 = [(PKAMSMediaLookupItem *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"artwork"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"artwork"];
     artwork = v5->_artwork;
     v5->_artwork = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"animatedArtworkURL"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"animatedArtworkURL"];
     animatedArtworkURL = v5->_animatedArtworkURL;
     v5->_animatedArtworkURL = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"itemDescription"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"itemDescription"];
     itemDescription = v5->_itemDescription;
     v5->_itemDescription = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"musicURL"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"musicURL"];
     musicURL = v5->_musicURL;
     v5->_musicURL = v14;
 
-    v5->_appleCurated = [v4 decodeBoolForKey:@"appleCurated"];
+    v5->_appleCurated = [coderCopy decodeBoolForKey:@"appleCurated"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKAMSMediaLookupItemMusic;
-  v4 = a3;
-  [(PKAMSMediaLookupItem *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_artwork forKey:{@"artwork", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_animatedArtworkURL forKey:@"animatedArtworkURL"];
-  [v4 encodeObject:self->_displayName forKey:@"displayName"];
-  [v4 encodeObject:self->_itemDescription forKey:@"itemDescription"];
-  [v4 encodeObject:self->_musicURL forKey:@"musicURL"];
-  [v4 encodeBool:self->_appleCurated forKey:@"appleCurated"];
+  coderCopy = coder;
+  [(PKAMSMediaLookupItem *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_artwork forKey:{@"artwork", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_animatedArtworkURL forKey:@"animatedArtworkURL"];
+  [coderCopy encodeObject:self->_displayName forKey:@"displayName"];
+  [coderCopy encodeObject:self->_itemDescription forKey:@"itemDescription"];
+  [coderCopy encodeObject:self->_musicURL forKey:@"musicURL"];
+  [coderCopy encodeBool:self->_appleCurated forKey:@"appleCurated"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = PKAMSMediaLookupItemMusic;
-  v4 = [(PKAMSMediaLookupItem *)&v6 copyWithZone:a3];
+  v4 = [(PKAMSMediaLookupItem *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 3, self->_artwork);
   objc_storeStrong(v4 + 4, self->_animatedArtworkURL);
   objc_storeStrong(v4 + 5, self->_displayName);
@@ -94,34 +94,34 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAMSMediaLookupItemMusic *)self isEqualToMusicItem:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAMSMediaLookupItemMusic *)self isEqualToMusicItem:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToMusicItem:(id)a3
+- (BOOL)isEqualToMusicItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v16.receiver = self;
   v16.super_class = PKAMSMediaLookupItemMusic;
-  if (![(PKAMSMediaLookupItem *)&v16 isEqualToItem:v4]|| !PKEqualObjects() || !PKEqualObjects())
+  if (![(PKAMSMediaLookupItem *)&v16 isEqualToItem:itemCopy]|| !PKEqualObjects() || !PKEqualObjects())
   {
     goto LABEL_21;
   }
 
-  v5 = v4[5];
+  v5 = itemCopy[5];
   v6 = self->_displayName;
   v7 = v5;
   v8 = v7;
@@ -154,7 +154,7 @@
     }
   }
 
-  v11 = v4[6];
+  v11 = itemCopy[6];
   v6 = self->_itemDescription;
   v12 = v11;
   v8 = v12;
@@ -186,7 +186,7 @@ LABEL_19:
     goto LABEL_21;
   }
 
-  v14 = self->_appleCurated == *(v4 + 16);
+  v14 = self->_appleCurated == *(itemCopy + 16);
 LABEL_22:
 
   return v14;
@@ -194,19 +194,19 @@ LABEL_22:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v8.receiver = self;
   v8.super_class = PKAMSMediaLookupItemMusic;
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PKAMSMediaLookupItem hash](&v8, sel_hash)}];
-  [v3 safelyAddObject:v4];
+  [array safelyAddObject:v4];
 
-  [v3 safelyAddObject:self->_artwork];
-  [v3 safelyAddObject:self->_animatedArtworkURL];
-  [v3 safelyAddObject:self->_displayName];
-  [v3 safelyAddObject:self->_itemDescription];
-  [v3 safelyAddObject:self->_musicURL];
+  [array safelyAddObject:self->_artwork];
+  [array safelyAddObject:self->_animatedArtworkURL];
+  [array safelyAddObject:self->_displayName];
+  [array safelyAddObject:self->_itemDescription];
+  [array safelyAddObject:self->_musicURL];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:self->_appleCurated];
-  [v3 safelyAddObject:v5];
+  [array safelyAddObject:v5];
 
   v6 = PKCombinedHash();
   return v6;

@@ -1,12 +1,12 @@
 @interface HANanoSettings
 + (id)sharedInstance;
 - (HANanoSettings)init;
-- (id)_valueForPreferenceKey:(id)a3;
+- (id)_valueForPreferenceKey:(id)key;
 - (id)currentLocale;
 - (id)nanoDomainAccessor;
 - (void)dealloc;
-- (void)pairedWatchDidChange:(id)a3;
-- (void)setValue:(id)a3 forPreferenceKey:(id)a4;
+- (void)pairedWatchDidChange:(id)change;
+- (void)setValue:(id)value forPreferenceKey:(id)key;
 @end
 
 @implementation HANanoSettings
@@ -46,11 +46,11 @@ uint64_t __32__HANanoSettings_sharedInstance__block_invoke()
     globalDomainAccessor = v2->_globalDomainAccessor;
     v2->_globalDomainAccessor = v6;
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v2 selector:sel_pairedWatchDidChange_ name:*MEMORY[0x1E69B3688] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_pairedWatchDidChange_ name:*MEMORY[0x1E69B3688] object:0];
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v2 selector:sel_pairedWatchDidChange_ name:*MEMORY[0x1E69B3660] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_pairedWatchDidChange_ name:*MEMORY[0x1E69B3660] object:0];
   }
 
   return v2;
@@ -58,15 +58,15 @@ uint64_t __32__HANanoSettings_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = HANanoSettings;
   [(HUHearingAidSettings *)&v4 dealloc];
 }
 
-- (void)pairedWatchDidChange:(id)a3
+- (void)pairedWatchDidChange:(id)change
 {
   domainAccessor = self->_domainAccessor;
   self->_domainAccessor = 0;
@@ -91,27 +91,27 @@ uint64_t __32__HANanoSettings_sharedInstance__block_invoke()
 
 - (id)currentLocale
 {
-  v3 = [(NPSDomainAccessor *)self->_globalDomainAccessor synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_globalDomainAccessor synchronize];
   globalDomainAccessor = self->_globalDomainAccessor;
 
   return [(NPSDomainAccessor *)globalDomainAccessor objectForKey:@"AppleLocale"];
 }
 
-- (void)setValue:(id)a3 forPreferenceKey:(id)a4
+- (void)setValue:(id)value forPreferenceKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HANanoSettings *)self domainAccessorQueue];
+  valueCopy = value;
+  keyCopy = key;
+  domainAccessorQueue = [(HANanoSettings *)self domainAccessorQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __44__HANanoSettings_setValue_forPreferenceKey___block_invoke;
   block[3] = &unk_1E85CA468;
-  v12 = v7;
-  v13 = v6;
-  v14 = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = keyCopy;
+  v13 = valueCopy;
+  selfCopy = self;
+  v9 = valueCopy;
+  v10 = keyCopy;
+  dispatch_async(domainAccessorQueue, block);
 }
 
 void __44__HANanoSettings_setValue_forPreferenceKey___block_invoke(uint64_t a1)
@@ -152,25 +152,25 @@ void __44__HANanoSettings_setValue_forPreferenceKey___block_invoke(uint64_t a1)
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_valueForPreferenceKey:(id)a3
+- (id)_valueForPreferenceKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__2;
   v16 = __Block_byref_object_dispose__2;
   v17 = 0;
-  v5 = [(HANanoSettings *)self domainAccessorQueue];
+  domainAccessorQueue = [(HANanoSettings *)self domainAccessorQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__HANanoSettings__valueForPreferenceKey___block_invoke;
   block[3] = &unk_1E85CB970;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = keyCopy;
+  dispatch_sync(domainAccessorQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);

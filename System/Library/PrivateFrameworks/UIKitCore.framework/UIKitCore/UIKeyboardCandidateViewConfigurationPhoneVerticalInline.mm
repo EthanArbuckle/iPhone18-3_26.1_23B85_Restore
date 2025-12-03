@@ -10,42 +10,42 @@
 {
   v11.receiver = self;
   v11.super_class = UIKeyboardCandidateViewConfigurationPhoneVerticalInline;
-  v2 = [(UIKeyboardCandidateViewConfigurationPhoneInline *)&v11 initialState];
-  v3 = [v2 style];
-  [v3 setGridPadding:{0.0, 0.0, 0.0, 0.0}];
+  initialState = [(UIKeyboardCandidateViewConfigurationPhoneInline *)&v11 initialState];
+  style = [initialState style];
+  [style setGridPadding:{0.0, 0.0, 0.0, 0.0}];
 
-  v4 = [v2 style];
-  [v4 setScrollDisabled:0];
+  style2 = [initialState style];
+  [style2 setScrollDisabled:0];
 
-  v5 = [v2 style];
-  [v5 setHighlightedRowBackgroundColor:0];
+  style3 = [initialState style];
+  [style3 setHighlightedRowBackgroundColor:0];
 
-  v6 = [v2 style];
-  [v6 setCellTextAlignment:0];
+  style4 = [initialState style];
+  [style4 setCellTextAlignment:0];
 
-  v7 = [v2 style];
-  [v7 setColumnsCount:1];
+  style5 = [initialState style];
+  [style5 setColumnsCount:1];
 
-  v8 = [v2 style];
-  [v8 setLayoutOrientation:1];
+  style6 = [initialState style];
+  [style6 setLayoutOrientation:1];
 
-  v9 = [v2 style];
-  [v9 setFillGridWithLines:0];
+  style7 = [initialState style];
+  [style7 setFillGridWithLines:0];
 
-  [v2 setSortControlPosition:2];
-  [v2 setArrowButtonPosition:0];
+  [initialState setSortControlPosition:2];
+  [initialState setArrowButtonPosition:0];
 
-  return v2;
+  return initialState;
 }
 
 - (id)extendedState
 {
   v4.receiver = self;
   v4.super_class = UIKeyboardCandidateViewConfigurationPhoneVerticalInline;
-  v2 = [(UIKeyboardCandidateViewConfigurationPhoneInline *)&v4 extendedState];
-  [v2 setAdditionalHeight:0.0];
+  extendedState = [(UIKeyboardCandidateViewConfigurationPhoneInline *)&v4 extendedState];
+  [extendedState setAdditionalHeight:0.0];
 
-  return v2;
+  return extendedState;
 }
 
 - (CGSize)preferredInlineFloatingViewSize

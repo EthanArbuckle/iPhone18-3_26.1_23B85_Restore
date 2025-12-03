@@ -29,8 +29,8 @@
     [(SCATMenuLabel *)v3 setTextAlignment:1];
     LODWORD(v6) = 0.25;
     [(SCATMenuLabel *)v3 _setHyphenationFactor:v6];
-    v7 = [objc_opt_class() titleFont];
-    [(SCATMenuLabel *)v3 setFont:v7];
+    titleFont = [objc_opt_class() titleFont];
+    [(SCATMenuLabel *)v3 setFont:titleFont];
 
     v8 = +[UIColor whiteColor];
     [(SCATMenuLabel *)v3 setTextColor:v8];
@@ -58,10 +58,10 @@
 
 - (void)didUpdateScatMenuItemStyle
 {
-  v3 = [(SCATMenuLabel *)self scatMenuItemStyle];
-  if (v3 <= 4)
+  scatMenuItemStyle = [(SCATMenuLabel *)self scatMenuItemStyle];
+  if (scatMenuItemStyle <= 4)
   {
-    if (((1 << v3) & 0x15) != 0)
+    if (((1 << scatMenuItemStyle) & 0x15) != 0)
     {
       [(SCATMenuLabel *)self setAlpha:1.0];
 

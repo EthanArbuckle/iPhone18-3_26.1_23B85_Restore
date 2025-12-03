@@ -7,8 +7,8 @@
 
 - (CGSize)preferredContentSize
 {
-  v2 = [(BFFFinishSetupModalNavigationController *)self topViewController];
-  [v2 preferredContentSize];
+  topViewController = [(BFFFinishSetupModalNavigationController *)self topViewController];
+  [topViewController preferredContentSize];
   v4 = v3;
   v6 = v5;
 

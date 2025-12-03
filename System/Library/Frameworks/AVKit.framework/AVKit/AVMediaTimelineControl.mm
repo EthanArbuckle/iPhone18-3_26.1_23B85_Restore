@@ -1,19 +1,19 @@
 @interface AVMediaTimelineControl
-- (AVMediaTimelineControl)initWithSource:(id)a3;
+- (AVMediaTimelineControl)initWithSource:(id)source;
 - (AVMediaTimelineControlConfiguration)configuration;
 - (AVMediaTimelineControlDelegate)delegate;
 - (AVMediaTimelineControlSource)source;
-- (CGRect)_frameForTimeRangeMark:(id)a3;
+- (CGRect)_frameForTimeRangeMark:(id)mark;
 - (CGSize)intrinsicContentSize;
 - (double)_maskingLayerFrame;
 - (double)_updateContainerLayersFrames;
 - (float)totalValue;
 - (id)_timelineViewSlider;
-- (id)_uiProxyForTimeRangeMark:(id)a3;
+- (id)_uiProxyForTimeRangeMark:(id)mark;
 - (void)_handleDisplayLink;
 - (void)_invalidateDisplayLink;
 - (void)_setupObservationsIfNeeded;
-- (void)_timelineSliderDidChangeValue:(id)a3;
+- (void)_timelineSliderDidChangeValue:(id)value;
 - (void)_updateConfiguration;
 - (void)_updateDisplayLinkPausedStateIfNeeded;
 - (void)_updateDisplayLinkRefreshRateIfNeeded;
@@ -21,29 +21,29 @@
 - (void)_updateLabelsIfNeeded;
 - (void)_updateMaskedTimeRangeLayerPathIfNeeded;
 - (void)_updateSliderPulsingStateIfNeeded;
-- (void)_updateSliderTintStateToState:(void *)a3 duration:(double)a4 completionHandler:;
+- (void)_updateSliderTintStateToState:(void *)state duration:(double)duration completionHandler:;
 - (void)_updateTimeRangeMarksIfNeeded;
 - (void)_updateTimeRangeMarksLayerFramesIfNeeded;
 - (void)_updateTimelineSliderEmphasisStateIfNeeded;
 - (void)_updateTimelineSliderEnabledStateIfNeeded;
-- (void)_updateTimelineViewValuesWithForceUpdate:(uint64_t)a1;
+- (void)_updateTimelineViewValuesWithForceUpdate:(uint64_t)update;
 - (void)_updateVariableScrubbingOffSetScalarIfNeeded;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setAlpha:(double)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFineScrubbingStyle:(unint64_t)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setSource:(id)a3;
-- (void)setTotalValue:(float)a3;
-- (void)setUsesCurrentValueLabelWhileScrubbing:(BOOL)a3;
-- (void)slider:(id)a3 didChangeScrubbingRate:(unint64_t)a4;
-- (void)slider:(id)a3 didExtendWithInsets:(UIEdgeInsets)a4;
-- (void)sliderDidBeginTracking:(id)a3;
-- (void)sliderDidEndTracking:(id)a3;
-- (void)sliderWillEndTracking:(id)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setConfiguration:(id)configuration;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFineScrubbingStyle:(unint64_t)style;
+- (void)setHidden:(BOOL)hidden;
+- (void)setSource:(id)source;
+- (void)setTotalValue:(float)value;
+- (void)setUsesCurrentValueLabelWhileScrubbing:(BOOL)scrubbing;
+- (void)slider:(id)slider didChangeScrubbingRate:(unint64_t)rate;
+- (void)slider:(id)slider didExtendWithInsets:(UIEdgeInsets)insets;
+- (void)sliderDidBeginTracking:(id)tracking;
+- (void)sliderDidEndTracking:(id)tracking;
+- (void)sliderWillEndTracking:(id)tracking;
 @end
 
 @implementation AVMediaTimelineControl
@@ -62,39 +62,39 @@
   return WeakRetained;
 }
 
-- (void)slider:(id)a3 didChangeScrubbingRate:(unint64_t)a4
+- (void)slider:(id)slider didChangeScrubbingRate:(unint64_t)rate
 {
-  v7 = [(AVMediaTimelineControl *)self delegate];
+  delegate = [(AVMediaTimelineControl *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    if (a4 - 1 > 2)
+    if (rate - 1 > 2)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = qword_18B6EC638[a4 - 1];
+      v6 = qword_18B6EC638[rate - 1];
     }
 
-    [v7 mediaTimelineControl:self didChangeScrubbingRate:v6];
+    [delegate mediaTimelineControl:self didChangeScrubbingRate:v6];
   }
 }
 
-- (void)slider:(id)a3 didExtendWithInsets:(UIEdgeInsets)a4
+- (void)slider:(id)slider didExtendWithInsets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  self->_sliderEdgeInsets = a4;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  self->_sliderEdgeInsets = insets;
   [(AVMediaTimelineControl *)self _updateContainerLayersFrames];
   [(AVMediaTimelineControl *)self _updateTimeRangeMarksLayerFramesIfNeeded];
   [(AVMediaTimelineControl *)self _updateMaskedTimeRangeLayerPathIfNeeded];
-  v9 = [(AVMediaTimelineControl *)self delegate];
+  delegate = [(AVMediaTimelineControl *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v9 mediaTimelineControl:self didExtendWithInsets:{top, left, bottom, right}];
+    [delegate mediaTimelineControl:self didExtendWithInsets:{top, left, bottom, right}];
   }
 }
 
@@ -105,8 +105,8 @@
     v1 = result;
     if (*(result + 61))
     {
-      v2 = [(AVMediaTimelineControl *)result _timelineViewSlider];
-      [v2 frame];
+      _timelineViewSlider = [(AVMediaTimelineControl *)result _timelineViewSlider];
+      [_timelineViewSlider frame];
       v4 = v3;
       v6 = v5;
       v8 = v7;
@@ -144,37 +144,37 @@
 
 - (id)_timelineViewSlider
 {
-  if (a1)
+  if (self)
   {
-    v1 = [a1 timelineView];
-    v2 = [v1 fluidSlider];
+    timelineView = [self timelineView];
+    fluidSlider = [timelineView fluidSlider];
   }
 
   else
   {
-    v2 = 0;
+    fluidSlider = 0;
   }
 
-  return v2;
+  return fluidSlider;
 }
 
-- (void)sliderDidEndTracking:(id)a3
+- (void)sliderDidEndTracking:(id)tracking
 {
   self->_isDecelerating = 0;
-  v4 = [(AVMediaTimelineControl *)self delegate];
+  delegate = [(AVMediaTimelineControl *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 mediaTimelineControlDidEndDecelerating:self];
+    [delegate mediaTimelineControlDidEndDecelerating:self];
   }
 }
 
-- (void)sliderWillEndTracking:(id)a3
+- (void)sliderWillEndTracking:(id)tracking
 {
   self->_isDecelerating = 1;
-  v11 = [(AVMediaTimelineControl *)self delegate];
+  delegate = [(AVMediaTimelineControl *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v11 mediaTimelineControlDidEndChanging:self];
+    [delegate mediaTimelineControlDidEndChanging:self];
   }
 
   [(AVMediaTimelineControl *)self _updateTimelineSliderEmphasisStateIfNeeded];
@@ -185,13 +185,13 @@
     [(NSTimer *)inSyncWithSourceValuesTimer invalidate];
   }
 
-  v5 = [(AVMediaTimelineControl *)self source];
-  if ([v5 isPlaying])
+  source = [(AVMediaTimelineControl *)self source];
+  if ([source isPlaying])
   {
-    v6 = [(AVMediaTimelineControl *)self source];
-    v7 = [v6 isLoading];
+    source2 = [(AVMediaTimelineControl *)self source];
+    isLoading = [source2 isLoading];
 
-    if ((v7 & 1) == 0)
+    if ((isLoading & 1) == 0)
     {
       self->_shouldUpdateTimelineValuesAccordingToSource = 0;
       goto LABEL_10;
@@ -220,32 +220,32 @@ LABEL_10:
 
 - (void)_updateTimelineSliderEmphasisStateIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 timelineView];
-    v3 = [(AVMediaTimelineControl *)a1 _timelineViewSlider];
-    v4 = [v3 isTracking];
-    if (v4 != [v2 isEmphasized])
+    timelineView = [self timelineView];
+    _timelineViewSlider = [(AVMediaTimelineControl *)self _timelineViewSlider];
+    isTracking = [_timelineViewSlider isTracking];
+    if (isTracking != [timelineView isEmphasized])
     {
-      v5 = [a1 configuration];
-      v6 = [v5 labelsConfiguration];
-      v7 = [v6 labelsStyle];
+      configuration = [self configuration];
+      labelsConfiguration = [configuration labelsConfiguration];
+      labelsStyle = [labelsConfiguration labelsStyle];
 
-      objc_initWeak(&location, a1);
-      if (v7 != 2 || (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*(a1 + 504), *MEMORY[0x1E69DDCE0]), vceqq_f64(*(a1 + 520), *(MEMORY[0x1E69DDCE0] + 16))))) & 1) != 0)
+      objc_initWeak(&location, self);
+      if (labelsStyle != 2 || (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*(self + 504), *MEMORY[0x1E69DDCE0]), vceqq_f64(*(self + 520), *(MEMORY[0x1E69DDCE0] + 16))))) & 1) != 0)
       {
-        [v2 prepareForDeemphasisIfNeeded];
-        [v2 setEmphasized:v4];
-        v10 = *(a1 + 424);
+        [timelineView prepareForDeemphasisIfNeeded];
+        [timelineView setEmphasized:isTracking];
+        v10 = *(self + 424);
         v11 = 1.0;
-        if (v10 && [v10 isRunning] && objc_msgSend(*(a1 + 424), "isInterruptible"))
+        if (v10 && [v10 isRunning] && objc_msgSend(*(self + 424), "isInterruptible"))
         {
-          [*(a1 + 424) fractionComplete];
+          [*(self + 424) fractionComplete];
           v11 = v12;
-          [*(a1 + 424) stopAnimation:1];
-          [*(a1 + 424) finishAnimationAtPosition:2];
-          v13 = *(a1 + 424);
-          *(a1 + 424) = 0;
+          [*(self + 424) stopAnimation:1];
+          [*(self + 424) finishAnimationAtPosition:2];
+          v13 = *(self + 424);
+          *(self + 424) = 0;
         }
 
         v14 = objc_alloc(MEMORY[0x1E69DD278]);
@@ -262,19 +262,19 @@ LABEL_10:
         v25[3] = &unk_1E720A0B8;
         v9 = &v26;
         objc_copyWeak(&v26, &location);
-        v27 = v4;
+        v27 = isTracking;
         v17 = [v14 initWithDuration:3 curve:v25 animations:v16];
-        v18 = *(a1 + 424);
-        *(a1 + 424) = v17;
+        v18 = *(self + 424);
+        *(self + 424) = v17;
 
-        v19 = *(a1 + 424);
+        v19 = *(self + 424);
         v20 = MEMORY[0x1E69E9820];
         v21 = 3221225472;
         v22 = __68__AVMediaTimelineControl__updateTimelineSliderEmphasisStateIfNeeded__block_invoke_4;
         v23 = &unk_1E7209618;
         objc_copyWeak(&v24, &location);
         [v19 addCompletion:&v20];
-        [*(a1 + 424) startAnimation];
+        [*(self + 424) startAnimation];
         objc_destroyWeak(&v24);
       }
 
@@ -287,8 +287,8 @@ LABEL_10:
         v30[3] = &unk_1E7208D90;
         v9 = &v32;
         objc_copyWeak(&v32, &location);
-        v31 = v2;
-        v33 = v4;
+        v31 = timelineView;
+        v33 = isTracking;
         v28[0] = MEMORY[0x1E69E9820];
         v28[1] = 3221225472;
         v28[2] = __68__AVMediaTimelineControl__updateTimelineSliderEmphasisStateIfNeeded__block_invoke_2;
@@ -373,56 +373,56 @@ void __68__AVMediaTimelineControl__updateTimelineSliderEmphasisStateIfNeeded__bl
   if (result)
   {
     v1 = result;
-    v2 = [result configuration];
-    v3 = [v2 labelsConfiguration];
-    v4 = [v1 timelineView];
-    if ([v3 labelsStyle] == 2)
+    configuration = [result configuration];
+    labelsConfiguration = [configuration labelsConfiguration];
+    timelineView = [v1 timelineView];
+    if ([labelsConfiguration labelsStyle] == 2)
     {
-      [v4 setLeadingTimeText:0];
-      [v4 setTrailingTimeText:0];
+      [timelineView setLeadingTimeText:0];
+      [timelineView setTrailingTimeText:0];
     }
 
     else
     {
-      [v4 setLabelPosition:{objc_msgSend(v3, "labelsStyle") != 0}];
-      v5 = [v3 textFont];
-      [v4 setLabelsFont:v5];
+      [timelineView setLabelPosition:{objc_msgSend(labelsConfiguration, "labelsStyle") != 0}];
+      textFont = [labelsConfiguration textFont];
+      [timelineView setLabelsFont:textFont];
 
-      v6 = [v3 textColor];
-      [v4 setLabelsTextColor:v6];
+      textColor = [labelsConfiguration textColor];
+      [timelineView setLabelsTextColor:textColor];
 
-      v7 = [v3 textCompositingFilter];
-      [v4 setLabelsCompositingFilter:v7];
+      textCompositingFilter = [labelsConfiguration textCompositingFilter];
+      [timelineView setLabelsCompositingFilter:textCompositingFilter];
 
-      v8 = [v3 textFont];
-      if (!v8)
+      textFont2 = [labelsConfiguration textFont];
+      if (!textFont2)
       {
-        v8 = +[AVMediaTimelineControlLabelsConfiguration _defaultFont];
+        textFont2 = +[AVMediaTimelineControlLabelsConfiguration _defaultFont];
       }
 
-      [v4 setLabelsFont:v8];
-      v9 = [v3 textColor];
-      if (!v9)
+      [timelineView setLabelsFont:textFont2];
+      textColor2 = [labelsConfiguration textColor];
+      if (!textColor2)
       {
-        v9 = +[AVMediaTimelineControlLabelsConfiguration _defaultTextColor];
+        textColor2 = +[AVMediaTimelineControlLabelsConfiguration _defaultTextColor];
       }
 
-      [v4 setLabelsTextColor:v9];
-      [v3 extendedDynamicRangeGain];
-      [v4 setLabelsExtendedDynamicRangeGain:?];
+      [timelineView setLabelsTextColor:textColor2];
+      [labelsConfiguration extendedDynamicRangeGain];
+      [timelineView setLabelsExtendedDynamicRangeGain:?];
     }
 
-    v10 = [v1 configuration];
-    v11 = [(AVMediaTimelineControl *)v1 _timelineViewSlider];
-    v12 = [v10 currentValueVisualEffect];
-    v13 = [v10 maxValueVisualEffect];
-    [v11 setFilledBarVisualEffect:v12];
-    [v11 setUnfilledBarVisualEffect:v13];
+    configuration2 = [v1 configuration];
+    _timelineViewSlider = [(AVMediaTimelineControl *)v1 _timelineViewSlider];
+    currentValueVisualEffect = [configuration2 currentValueVisualEffect];
+    maxValueVisualEffect = [configuration2 maxValueVisualEffect];
+    [_timelineViewSlider setFilledBarVisualEffect:currentValueVisualEffect];
+    [_timelineViewSlider setUnfilledBarVisualEffect:maxValueVisualEffect];
 
-    v14 = [v1 configuration];
-    v15 = [v1 timelineView];
-    [v14 extendedDynamicRangeGain];
-    [v15 setSliderExtendedDynamicRangeGain:?];
+    configuration3 = [v1 configuration];
+    timelineView2 = [v1 timelineView];
+    [configuration3 extendedDynamicRangeGain];
+    [timelineView2 setSliderExtendedDynamicRangeGain:?];
 
     return [v1 _updateDisplayLinkRefreshRateIfNeeded];
   }
@@ -430,14 +430,14 @@ void __68__AVMediaTimelineControl__updateTimelineSliderEmphasisStateIfNeeded__bl
   return result;
 }
 
-- (void)sliderDidBeginTracking:(id)a3
+- (void)sliderDidBeginTracking:(id)tracking
 {
   self->_isDecelerating = 0;
   [(AVMediaTimelineControl *)self _updateVariableScrubbingOffSetScalarIfNeeded];
-  v5 = [(AVMediaTimelineControl *)self delegate];
+  delegate = [(AVMediaTimelineControl *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 mediaTimelineControlWillBeginChanging:self];
+    [delegate mediaTimelineControlWillBeginChanging:self];
   }
 
   inSyncWithSourceValuesTimer = self->_inSyncWithSourceValuesTimer;
@@ -453,19 +453,19 @@ void __68__AVMediaTimelineControl__updateTimelineSliderEmphasisStateIfNeeded__bl
 
 - (void)_updateVariableScrubbingOffSetScalarIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 window];
-    if (v2)
+    window = [self window];
+    if (window)
     {
-      v14 = v2;
-      v3 = [(AVMediaTimelineControl *)a1 _timelineViewSlider];
-      [v3 frame];
+      v14 = window;
+      _timelineViewSlider = [(AVMediaTimelineControl *)self _timelineViewSlider];
+      [_timelineViewSlider frame];
       v5 = v4 * 0.5;
-      [v3 frame];
-      [a1 convertPoint:v14 toView:{v5, v6 * 0.5}];
+      [_timelineViewSlider frame];
+      [self convertPoint:v14 toView:{v5, v6 * 0.5}];
       v8 = v7;
-      if ([a1 fineScrubbingStyle] == 2)
+      if ([self fineScrubbingStyle] == 2)
       {
         [v14 bounds];
         v8 = v9 - v8;
@@ -476,34 +476,34 @@ void __68__AVMediaTimelineControl__updateTimelineSliderEmphasisStateIfNeeded__bl
       v12 = fabsf(v11 + -0.9);
       if (v11 > 0.9 || v12 < 0.00000011921)
       {
-        [v3 setVariableSpeedScrubbingOffsetMultiplier:v10 * 0.6];
+        [_timelineViewSlider setVariableSpeedScrubbingOffsetMultiplier:v10 * 0.6];
       }
 
-      v2 = v14;
+      window = v14;
     }
   }
 }
 
-- (id)_uiProxyForTimeRangeMark:(id)a3
+- (id)_uiProxyForTimeRangeMark:(id)mark
 {
-  v4 = a3;
-  v5 = [v4 markUIProvider];
-  v6 = [(AVMediaTimelineControl *)self source];
-  v7 = [v5 uiProxyForTimeRangeMark:v4 withSource:v6];
+  markCopy = mark;
+  markUIProvider = [markCopy markUIProvider];
+  source = [(AVMediaTimelineControl *)self source];
+  v7 = [markUIProvider uiProxyForTimeRangeMark:markCopy withSource:source];
 
   return v7;
 }
 
-- (CGRect)_frameForTimeRangeMark:(id)a3
+- (CGRect)_frameForTimeRangeMark:(id)mark
 {
-  v4 = a3;
-  v5 = [v4 markUIProvider];
-  v6 = [(AVMediaTimelineControl *)self source];
-  v7 = [v5 uiProxyForTimeRangeMark:v4 withSource:v6];
+  markCopy = mark;
+  markUIProvider = [markCopy markUIProvider];
+  source = [(AVMediaTimelineControl *)self source];
+  v7 = [markUIProvider uiProxyForTimeRangeMark:markCopy withSource:source];
 
   if ([v7 isMasked])
   {
-    v8 = [(AVMediaTimelineControl *)self _maskingLayerFrame];
+    _maskingLayerFrame = [(AVMediaTimelineControl *)self _maskingLayerFrame];
   }
 
   else
@@ -511,12 +511,12 @@ void __68__AVMediaTimelineControl__updateTimelineSliderEmphasisStateIfNeeded__bl
     [(CAShapeLayer *)self->_timeRangeMarksContainerLayer frame];
   }
 
-  v12 = v8;
+  v12 = _maskingLayerFrame;
   v13 = v9;
   v14 = v10;
   v15 = v11;
-  v16 = [(AVMediaTimelineControl *)self _timelineViewSlider];
-  [v16 frame];
+  _timelineViewSlider = [(AVMediaTimelineControl *)self _timelineViewSlider];
+  [_timelineViewSlider frame];
   v18 = v17;
 
   if (self->_totalValueSet)
@@ -533,7 +533,7 @@ void __68__AVMediaTimelineControl__updateTimelineSliderEmphasisStateIfNeeded__bl
   }
 
   v23 = v20;
-  [v4 startValue];
+  [markCopy startValue];
   v25 = v24;
   v26 = objc_loadWeakRetained(&self->_source);
   [v26 minValue];
@@ -542,8 +542,8 @@ void __68__AVMediaTimelineControl__updateTimelineSliderEmphasisStateIfNeeded__bl
   [v29 minValue];
   v31 = v28 / (v23 - v30);
 
-  v32 = [v4 markUIProvider];
-  [v32 timeRangeMark:v4 sizeInFrame:{v12, v13, v14, v15}];
+  markUIProvider2 = [markCopy markUIProvider];
+  [markUIProvider2 timeRangeMark:markCopy sizeInFrame:{v12, v13, v14, v15}];
   v34 = v33;
   v36 = v35;
 
@@ -554,9 +554,9 @@ void __68__AVMediaTimelineControl__updateTimelineSliderEmphasisStateIfNeeded__bl
     v37 = v37 + left - fabs(self->_sliderEdgeInsets.right) + (v14 - v18) * -0.5;
   }
 
-  [v4 startValue];
+  [markCopy startValue];
   v40 = v39;
-  [v4 endValue];
+  [markCopy endValue];
   if (vabds_f32(v40, v41) >= 0.00000011921)
   {
     v42 = v37;
@@ -580,35 +580,35 @@ void __68__AVMediaTimelineControl__updateTimelineSliderEmphasisStateIfNeeded__bl
 
 - (double)_maskingLayerFrame
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  [*(a1 + 424) isRunning];
-  v2 = [(AVMediaTimelineControl *)a1 _timelineViewSlider];
-  [v2 frame];
+  [*(self + 424) isRunning];
+  _timelineViewSlider = [(AVMediaTimelineControl *)self _timelineViewSlider];
+  [_timelineViewSlider frame];
 
-  return *(a1 + 512);
+  return *(self + 512);
 }
 
-- (void)_timelineSliderDidChangeValue:(id)a3
+- (void)_timelineSliderDidChangeValue:(id)value
 {
-  v4 = [(AVMediaTimelineControl *)self _timelineViewSlider];
-  [v4 value];
+  _timelineViewSlider = [(AVMediaTimelineControl *)self _timelineViewSlider];
+  [_timelineViewSlider value];
   v6 = v5;
 
   if (self)
   {
     if (self->_lastFeedbackValue != -3.4028e38)
     {
-      v7 = [(AVMediaTimelineControl *)self source];
-      [v7 minValue];
+      source = [(AVMediaTimelineControl *)self source];
+      [source minValue];
       v9 = v8;
-      [v7 maxValue];
+      [source maxValue];
       v11 = v10;
-      v12 = [(AVMediaTimelineControl *)self _timelineViewSlider];
-      [v12 value];
+      _timelineViewSlider2 = [(AVMediaTimelineControl *)self _timelineViewSlider];
+      [_timelineViewSlider2 value];
       v14 = v13;
 
       lastFeedbackValue = self->_lastFeedbackValue;
@@ -621,16 +621,16 @@ void __68__AVMediaTimelineControl__updateTimelineSliderEmphasisStateIfNeeded__bl
       }
     }
 
-    v22 = [(AVMediaTimelineControl *)self _timelineViewSlider];
-    v23 = [(AVMediaTimelineControl *)self timelineView];
-    v24 = [v23 fluidSlider];
+    _timelineViewSlider3 = [(AVMediaTimelineControl *)self _timelineViewSlider];
+    timelineView = [(AVMediaTimelineControl *)self timelineView];
+    fluidSlider = [timelineView fluidSlider];
 
     v25 = [(NSArray *)self->_timeRangeMarks count];
-    if (v22)
+    if (_timelineViewSlider3)
     {
-      if (v25 && v24 == 0)
+      if (v25 && fluidSlider == 0)
       {
-        [v22 value];
+        [_timelineViewSlider3 value];
         v28 = v27;
         if ([(NSArray *)self->_timeRangeMarks count])
         {
@@ -662,11 +662,11 @@ LABEL_27:
   }
 
   self->_lastUpdatedTime = v6;
-  v33 = [(AVMediaTimelineControl *)self delegate];
+  delegate = [(AVMediaTimelineControl *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     *&v32 = v6;
-    [v33 mediaTimelineControl:self didChangeValue:v32];
+    [delegate mediaTimelineControl:self didChangeValue:v32];
   }
 
   [(AVMediaTimelineControl *)self _updateLabelsIfNeeded];
@@ -674,49 +674,49 @@ LABEL_27:
 
 - (void)_updateLabelsIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 timelineView];
-    if (v2)
+    timelineView = [self timelineView];
+    if (timelineView)
     {
-      v18 = v2;
-      v3 = [a1 configuration];
-      v4 = [v3 labelsConfiguration];
-      if ([v4 labelsStyle] != 2)
+      v18 = timelineView;
+      configuration = [self configuration];
+      labelsConfiguration = [configuration labelsConfiguration];
+      if ([labelsConfiguration labelsStyle] != 2)
       {
-        v5 = [a1 source];
-        v6 = [v5 currentValueText];
-        v7 = [(AVMediaTimelineControl *)a1 _timelineViewSlider];
-        v8 = [v7 isTracking];
+        source = [self source];
+        currentValueText = [source currentValueText];
+        _timelineViewSlider = [(AVMediaTimelineControl *)self _timelineViewSlider];
+        isTracking = [_timelineViewSlider isTracking];
 
-        v9 = [a1 source];
-        v10 = [v9 isLoading];
+        source2 = [self source];
+        isLoading = [source2 isLoading];
 
-        if (*(a1 + 551) & 1) == 0 && ((v8 | v10))
+        if (*(self + 551) & 1) == 0 && ((isTracking | isLoading))
         {
-          v11 = *(a1 + 456);
+          v11 = *(self + 456);
           if (!v11)
           {
             v12 = objc_alloc_init(MEMORY[0x1E6988158]);
-            v13 = *(a1 + 456);
-            *(a1 + 456) = v12;
+            v13 = *(self + 456);
+            *(self + 456) = v12;
 
-            v11 = *(a1 + 456);
+            v11 = *(self + 456);
           }
 
-          v14 = [(AVMediaTimelineControl *)a1 _timelineViewSlider];
-          [v14 value];
+          _timelineViewSlider2 = [(AVMediaTimelineControl *)self _timelineViewSlider];
+          [_timelineViewSlider2 value];
           v16 = [v11 stringFromSeconds:v15];
 
-          v6 = v16;
+          currentValueText = v16;
         }
 
-        [v18 setLeadingTimeText:v6];
-        v17 = [v5 maxValueText];
-        [v18 setTrailingTimeText:v17];
+        [v18 setLeadingTimeText:currentValueText];
+        maxValueText = [source maxValueText];
+        [v18 setTrailingTimeText:maxValueText];
       }
 
-      v2 = v18;
+      timelineView = v18;
     }
   }
 }
@@ -731,34 +731,34 @@ LABEL_27:
   self->_shouldSkipNextDisplayLinkUpdate = 0;
 }
 
-- (void)_updateTimelineViewValuesWithForceUpdate:(uint64_t)a1
+- (void)_updateTimelineViewValuesWithForceUpdate:(uint64_t)update
 {
-  if (a1 && (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*(a1 + 504), *MEMORY[0x1E69DDCE0]), vceqq_f64(*(a1 + 520), *(MEMORY[0x1E69DDCE0] + 16))))) & 1) != 0)
+  if (update && (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*(update + 504), *MEMORY[0x1E69DDCE0]), vceqq_f64(*(update + 520), *(MEMORY[0x1E69DDCE0] + 16))))) & 1) != 0)
   {
     v3 = a2;
     if (a2)
     {
-      *(a1 + 548) = 1;
+      *(update + 548) = 1;
     }
 
-    v28 = [(AVMediaTimelineControl *)a1 _timelineViewSlider];
-    v4 = [v28 isTracking];
-    v5 = *(a1 + 448);
-    v6 = [a1 source];
-    v7 = [v6 isLoading];
-    v8 = [v6 isPlaying];
-    [v6 minValue];
+    _timelineViewSlider = [(AVMediaTimelineControl *)update _timelineViewSlider];
+    isTracking = [_timelineViewSlider isTracking];
+    v5 = *(update + 448);
+    source = [update source];
+    isLoading = [source isLoading];
+    isPlaying = [source isPlaying];
+    [source minValue];
     v10 = v9;
-    [v28 minimumValue];
+    [_timelineViewSlider minimumValue];
     v12 = vabds_f32(v10, v11);
-    [v6 maxValue];
+    [source maxValue];
     v14 = v13;
-    [v28 maximumValue];
+    [_timelineViewSlider maximumValue];
     v16 = vabds_f32(v14, v15);
-    [v6 currentValue];
+    [source currentValue];
     v18 = v17;
-    v19 = *(a1 + 464);
-    v20 = *(a1 + 544);
+    v19 = *(update + 464);
+    v20 = *(update + 544);
     v21 = vabds_f32(v18, v19 + v20);
     if (v18 > (v19 + v20) || v21 < 0.00000011921)
     {
@@ -773,72 +773,72 @@ LABEL_27:
       v26 = v18 < v24 || v25 < 0.00000011921;
       if (!v26 && (v3 & 1) == 0 && v12 < 0.00000011921 && v16 < 0.00000011921)
       {
-        v23 = v7 | v8 ^ 1;
+        v23 = isLoading | isPlaying ^ 1;
       }
     }
 
-    if (!((v28 == 0) | v4 & 1) && (v5 & 1) == 0 && (v23 & 1) == 0)
+    if (!((_timelineViewSlider == 0) | isTracking & 1) && (v5 & 1) == 0 && (v23 & 1) == 0)
     {
-      [v6 minValue];
+      [source minValue];
       if (v12 >= 0.00000011921)
       {
-        [v6 minValue];
-        [v28 setMinimumValue:?];
+        [source minValue];
+        [_timelineViewSlider setMinimumValue:?];
       }
 
-      [v6 maxValue];
+      [source maxValue];
       HIDWORD(v27) = 872415232;
       if (v16 >= 0.00000011921)
       {
-        [v6 maxValue];
-        [v28 setMaximumValue:?];
+        [source maxValue];
+        [_timelineViewSlider setMaximumValue:?];
       }
 
       *&v27 = v18;
-      [v28 setValue:v27];
-      *(a1 + 464) = v18;
+      [_timelineViewSlider setValue:v27];
+      *(update + 464) = v18;
     }
 
-    [(AVMediaTimelineControl *)a1 _updateLabelsIfNeeded];
+    [(AVMediaTimelineControl *)update _updateLabelsIfNeeded];
   }
 }
 
-- (void)setUsesCurrentValueLabelWhileScrubbing:(BOOL)a3
+- (void)setUsesCurrentValueLabelWhileScrubbing:(BOOL)scrubbing
 {
-  if (self->_usesCurrentValueLabelWhileScrubbing != a3)
+  if (self->_usesCurrentValueLabelWhileScrubbing != scrubbing)
   {
-    self->_usesCurrentValueLabelWhileScrubbing = a3;
+    self->_usesCurrentValueLabelWhileScrubbing = scrubbing;
     [(AVMediaTimelineControl *)self _updateLabelsIfNeeded];
   }
 }
 
 - (float)totalValue
 {
-  v2 = [(AVMediaTimelineControl *)self timelineView];
-  v3 = [v2 slider];
-  [v3 totalValue];
+  timelineView = [(AVMediaTimelineControl *)self timelineView];
+  slider = [timelineView slider];
+  [slider totalValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setTotalValue:(float)a3
+- (void)setTotalValue:(float)value
 {
   [(AVMediaTimelineControl *)self totalValue];
-  if (v5 != a3)
+  if (v5 != value)
   {
-    v6 = [(AVMediaTimelineControl *)self timelineView];
-    v7 = [v6 slider];
-    *&v8 = a3;
-    [v7 setTotalValue:v8];
+    timelineView = [(AVMediaTimelineControl *)self timelineView];
+    slider = [timelineView slider];
+    *&v8 = value;
+    [slider setTotalValue:v8];
 
     self->_totalValueSet = 1;
   }
 }
 
-- (void)setSource:(id)a3
+- (void)setSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_source);
 
   if (WeakRetained != obj)
@@ -863,26 +863,26 @@ LABEL_27:
 - (void)_setupObservationsIfNeeded
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if (!*(a1 + 440))
+    if (!*(self + 440))
     {
-      v2 = [[AVObservationController alloc] initWithOwner:a1];
-      v3 = *(a1 + 440);
-      *(a1 + 440) = v2;
+      v2 = [[AVObservationController alloc] initWithOwner:self];
+      v3 = *(self + 440);
+      *(self + 440) = v2;
     }
 
-    if ((*(a1 + 536) & 1) == 0)
+    if ((*(self + 536) & 1) == 0)
     {
-      *(a1 + 536) = 1;
-      v4 = *(a1 + 440);
+      *(self + 536) = 1;
+      v4 = *(self + 440);
       v9[0] = @"source.loading";
       v9[1] = @"source.playing";
       v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
-      v6 = [v4 startObserving:a1 keyPaths:v5 observationHandler:&__block_literal_global_20611];
+      v6 = [v4 startObserving:self keyPaths:v5 observationHandler:&__block_literal_global_20611];
 
-      v7 = [*(a1 + 440) startObserving:a1 keyPath:@"source.timeRangeMarks" observationHandler:&__block_literal_global_31];
-      v8 = [*(a1 + 440) startObserving:a1 keyPath:@"source.currentValue" observationHandler:&__block_literal_global_37_20614];
+      v7 = [*(self + 440) startObserving:self keyPath:@"source.timeRangeMarks" observationHandler:&__block_literal_global_31];
+      v8 = [*(self + 440) startObserving:self keyPath:@"source.currentValue" observationHandler:&__block_literal_global_37_20614];
     }
   }
 }
@@ -894,39 +894,39 @@ void __52__AVMediaTimelineControl__setupObservationsIfNeeded__block_invoke(uint6
   [v2 _updateSliderPulsingStateIfNeeded];
 }
 
-- (void)setFineScrubbingStyle:(unint64_t)a3
+- (void)setFineScrubbingStyle:(unint64_t)style
 {
-  if (self->_fineScrubbingStyle != a3)
+  if (self->_fineScrubbingStyle != style)
   {
-    self->_fineScrubbingStyle = a3;
+    self->_fineScrubbingStyle = style;
     [(AVMediaTimelineControl *)self _updateFineScrubbingStyleIfNeeded];
   }
 }
 
 - (void)_updateFineScrubbingStyleIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    v2 = [(AVMediaTimelineControl *)a1 _timelineViewSlider];
-    [v2 setFineScrubbingStyle:{objc_msgSend(a1, "fineScrubbingStyle") & 3}];
+    _timelineViewSlider = [(AVMediaTimelineControl *)self _timelineViewSlider];
+    [_timelineViewSlider setFineScrubbingStyle:{objc_msgSend(self, "fineScrubbingStyle") & 3}];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(AVMediaTimelineControl *)self _updateTimelineSliderEnabledStateIfNeeded];
   }
 }
 
 - (void)_updateTimelineSliderEnabledStateIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 timelineView];
-    [v2 setEnabled:a1[553]];
+    timelineView = [self timelineView];
+    [timelineView setEnabled:self[553]];
   }
 }
 
@@ -937,11 +937,11 @@ void __52__AVMediaTimelineControl__setupObservationsIfNeeded__block_invoke(uint6
   return v2;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  if (self->_configuration != a3)
+  if (self->_configuration != configuration)
   {
-    v4 = [a3 copy];
+    v4 = [configuration copy];
     configuration = self->_configuration;
     self->_configuration = v4;
 
@@ -975,15 +975,15 @@ void __52__AVMediaTimelineControl__setupObservationsIfNeeded__block_invoke(uint6
       {
         v8 = [(NSArray *)self->_nonMaskedTimeRangeMarks objectAtIndex:v3];
         v9 = [(AVMediaTimelineControl *)self _uiProxyForTimeRangeMark:v8];
-        v10 = [v9 backgroundColor];
-        v11 = [v10 CGColor];
+        backgroundColor = [v9 backgroundColor];
+        cGColor = [backgroundColor CGColor];
 
         [v9 cornerRadius];
         v13 = v12;
         if ([(NSArray *)self->_timeRangeMarkLayers count]> v3)
         {
           v14 = [(NSArray *)self->_timeRangeMarkLayers objectAtIndex:v3];
-          [v14 setBackgroundColor:v11];
+          [v14 setBackgroundColor:cGColor];
           [v14 setCornerRadius:v13];
           [v14 setMasksToBounds:1];
           [(AVMediaTimelineControl *)self _frameForTimeRangeMark:v8];
@@ -1014,17 +1014,17 @@ void __52__AVMediaTimelineControl__setupObservationsIfNeeded__block_invoke(uint6
 {
   timeRangeMarks = self->_timeRangeMarks;
   WeakRetained = objc_loadWeakRetained(&self->_source);
-  v5 = [WeakRetained timeRangeMarks];
+  timeRangeMarks = [WeakRetained timeRangeMarks];
 
-  if (timeRangeMarks == v5)
+  if (timeRangeMarks == timeRangeMarks)
   {
     return;
   }
 
   v6 = objc_loadWeakRetained(&self->_source);
-  v7 = [v6 timeRangeMarks];
+  timeRangeMarks2 = [v6 timeRangeMarks];
   v8 = self->_timeRangeMarks;
-  self->_timeRangeMarks = v7;
+  self->_timeRangeMarks = timeRangeMarks2;
 
   v9 = objc_alloc(MEMORY[0x1E695DF70]);
   v10 = MEMORY[0x1E695E0F0];
@@ -1037,7 +1037,7 @@ void __52__AVMediaTimelineControl__setupObservationsIfNeeded__block_invoke(uint6
   nonMaskedTimeRangeMarks = self->_nonMaskedTimeRangeMarks;
   self->_nonMaskedTimeRangeMarks = v13;
 
-  v49 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v16 = self->_timeRangeMarks;
   if (v16)
   {
@@ -1058,7 +1058,7 @@ LABEL_5:
         v20 = MEMORY[0x1E696AD98];
         [v18 startValue];
         v21 = [v20 numberWithFloat:?];
-        [v49 addObject:v21];
+        [array addObject:v21];
 
         if ([v19 isMasked])
         {
@@ -1081,8 +1081,8 @@ LABEL_5:
     }
   }
 
-  v48 = [(AVMediaTimelineControl *)self _timelineViewSlider];
-  [v48 setSnappingValues:v49];
+  _timelineViewSlider = [(AVMediaTimelineControl *)self _timelineViewSlider];
+  [_timelineViewSlider setSnappingValues:array];
   v25 = [(NSArray *)*p_nonMaskedTimeRangeMarks count];
   if (!self->_timeRangeMarksContainerLayer && v25)
   {
@@ -1090,15 +1090,15 @@ LABEL_5:
     timeRangeMarksContainerLayer = self->_timeRangeMarksContainerLayer;
     self->_timeRangeMarksContainerLayer = v26;
 
-    v28 = [(AVMediaTimelineControl *)self layer];
-    [v28 addSublayer:self->_timeRangeMarksContainerLayer];
+    layer = [(AVMediaTimelineControl *)self layer];
+    [layer addSublayer:self->_timeRangeMarksContainerLayer];
   }
 
   v29 = [(NSArray *)self->_maskedTimeRangeMarks count];
   if (!self->_timeRangeMarksMaskingContainerLayer && v29)
   {
-    v30 = [(AVMediaTimelineControl *)self _timelineViewSlider];
-    if (v30)
+    _timelineViewSlider2 = [(AVMediaTimelineControl *)self _timelineViewSlider];
+    if (_timelineViewSlider2)
     {
       v31 = objc_alloc_init(MEMORY[0x1E69794A0]);
       timeRangeMarksMaskingContainerLayer = self->_timeRangeMarksMaskingContainerLayer;
@@ -1106,14 +1106,14 @@ LABEL_5:
 
       [(CAShapeLayer *)self->_timeRangeMarksMaskingContainerLayer setFillRule:*MEMORY[0x1E69797F8]];
       v33 = self->_timeRangeMarksMaskingContainerLayer;
-      v34 = [MEMORY[0x1E69DC888] whiteColor];
-      -[CAShapeLayer setFillColor:](v33, "setFillColor:", [v34 CGColor]);
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      -[CAShapeLayer setFillColor:](v33, "setFillColor:", [whiteColor CGColor]);
 
-      v35 = [(AVMediaTimelineControl *)self layer];
-      [v35 addSublayer:self->_timeRangeMarksMaskingContainerLayer];
+      layer2 = [(AVMediaTimelineControl *)self layer];
+      [layer2 addSublayer:self->_timeRangeMarksMaskingContainerLayer];
 
-      v36 = [v30 layer];
-      [v36 setMask:self->_timeRangeMarksMaskingContainerLayer];
+      layer3 = [_timelineViewSlider2 layer];
+      [layer3 setMask:self->_timeRangeMarksMaskingContainerLayer];
     }
   }
 
@@ -1144,8 +1144,8 @@ LABEL_5:
         v41 = [(NSArray *)*p_nonMaskedTimeRangeMarks objectAtIndex:v40];
         v42 = [(AVMediaTimelineControl *)self _uiProxyForTimeRangeMark:v41];
         v43 = objc_alloc_init(MEMORY[0x1E69794A0]);
-        v44 = [v42 backgroundColor];
-        [v43 setBackgroundColor:{objc_msgSend(v44, "CGColor")}];
+        backgroundColor = [v42 backgroundColor];
+        [v43 setBackgroundColor:{objc_msgSend(backgroundColor, "CGColor")}];
 
         [v42 cornerRadius];
         [v43 setCornerRadius:v45];
@@ -1168,15 +1168,15 @@ LABEL_5:
 
 - (void)_updateSliderPulsingStateIfNeeded
 {
-  v3 = [(AVMediaTimelineControl *)self _timelineViewSlider];
-  if (v3)
+  _timelineViewSlider = [(AVMediaTimelineControl *)self _timelineViewSlider];
+  if (_timelineViewSlider)
   {
-    v4 = [(AVMediaTimelineControl *)self source];
-    v5 = [v4 isLoading];
+    source = [(AVMediaTimelineControl *)self source];
+    isLoading = [source isLoading];
 
-    if (v5)
+    if (isLoading)
     {
-      v6 = 2 * (([v3 tintState] - 1) > 1);
+      v6 = 2 * (([_timelineViewSlider tintState] - 1) > 1);
       objc_initWeak(&location, self);
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
@@ -1201,21 +1201,21 @@ void __59__AVMediaTimelineControl__updateSliderPulsingStateIfNeeded__block_invok
   [WeakRetained _updateSliderPulsingStateIfNeeded];
 }
 
-- (void)_updateSliderTintStateToState:(void *)a3 duration:(double)a4 completionHandler:
+- (void)_updateSliderTintStateToState:(void *)state duration:(double)duration completionHandler:
 {
-  v7 = a3;
-  if (a1)
+  stateCopy = state;
+  if (self)
   {
-    v8 = [(AVMediaTimelineControl *)a1 _timelineViewSlider];
-    if (v8)
+    _timelineViewSlider = [(AVMediaTimelineControl *)self _timelineViewSlider];
+    if (_timelineViewSlider)
     {
-      v9 = a1[54];
-      if (v9 && [v9 isRunning] && objc_msgSend(a1[54], "isInterruptible"))
+      v9 = self[54];
+      if (v9 && [v9 isRunning] && objc_msgSend(self[54], "isInterruptible"))
       {
-        [a1[54] stopAnimation:1];
-        [a1[54] finishAnimationAtPosition:2];
-        v10 = a1[54];
-        a1[54] = 0;
+        [self[54] stopAnimation:1];
+        [self[54] finishAnimationAtPosition:2];
+        v10 = self[54];
+        self[54] = 0;
       }
 
       v11 = objc_alloc(MEMORY[0x1E69DD278]);
@@ -1223,29 +1223,29 @@ void __59__AVMediaTimelineControl__updateSliderPulsingStateIfNeeded__block_invok
       v19[1] = 3221225472;
       v19[2] = __83__AVMediaTimelineControl__updateSliderTintStateToState_duration_completionHandler___block_invoke;
       v19[3] = &unk_1E7209A60;
-      v20 = v8;
+      v20 = _timelineViewSlider;
       v21 = a2;
-      v12 = [v11 initWithDuration:3 curve:v19 animations:a4];
-      v13 = a1[54];
-      a1[54] = v12;
+      v12 = [v11 initWithDuration:3 curve:v19 animations:duration];
+      v13 = self[54];
+      self[54] = v12;
 
-      if (v7)
+      if (stateCopy)
       {
-        objc_initWeak(&location, a1);
-        v14 = a1[54];
+        objc_initWeak(&location, self);
+        v14 = self[54];
         v15[0] = MEMORY[0x1E69E9820];
         v15[1] = 3221225472;
         v15[2] = __83__AVMediaTimelineControl__updateSliderTintStateToState_duration_completionHandler___block_invoke_2;
         v15[3] = &unk_1E7208A30;
         objc_copyWeak(&v17, &location);
-        v16 = v7;
+        v16 = stateCopy;
         [v14 addCompletion:v15];
 
         objc_destroyWeak(&v17);
         objc_destroyWeak(&location);
       }
 
-      [a1[54] startAnimation];
+      [self[54] startAnimation];
     }
   }
 }
@@ -1316,18 +1316,18 @@ void __83__AVMediaTimelineControl__updateSliderTintStateToState_duration_complet
 {
   if (self->_displayLink)
   {
-    v3 = [(AVMediaTimelineControl *)self window];
-    v4 = [v3 windowScene];
-    v5 = [v4 screen];
-    [v5 scale];
+    window = [(AVMediaTimelineControl *)self window];
+    windowScene = [window windowScene];
+    screen = [windowScene screen];
+    [screen scale];
     v7 = v6;
 
-    v8 = [(AVMediaTimelineControl *)self source];
-    [v8 maxValue];
+    source = [(AVMediaTimelineControl *)self source];
+    [source maxValue];
     v10 = v9;
 
-    v11 = [(AVMediaTimelineControl *)self _timelineViewSlider];
-    [v11 frame];
+    _timelineViewSlider = [(AVMediaTimelineControl *)self _timelineViewSlider];
+    [_timelineViewSlider frame];
     v13 = v7 * v12;
 
     v14 = v13;
@@ -1379,36 +1379,36 @@ void __83__AVMediaTimelineControl__updateSliderTintStateToState_duration_complet
       v3 = v4 == 0.0;
     }
 
-    v5 = [(AVMediaTimelineControl *)self source];
-    v6 = [v5 isLoading];
+    source = [(AVMediaTimelineControl *)self source];
+    isLoading = [source isLoading];
 
-    v7 = [(AVMediaTimelineControl *)self source];
-    v8 = [v7 isPlaying];
+    source2 = [(AVMediaTimelineControl *)self source];
+    isPlaying = [source2 isPlaying];
 
-    v10 = [(AVMediaTimelineControl *)self _timelineViewSlider];
+    _timelineViewSlider = [(AVMediaTimelineControl *)self _timelineViewSlider];
     LOBYTE(v9) = 1;
-    if (!v3 && (v6 & 1) == 0)
+    if (!v3 && (isLoading & 1) == 0)
     {
-      v9 = [v10 isTracking] | v8 ^ 1;
+      v9 = [_timelineViewSlider isTracking] | isPlaying ^ 1;
     }
 
     [(CADisplayLink *)self->_displayLink setPaused:v9 & 1];
   }
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   v4.receiver = self;
   v4.super_class = AVMediaTimelineControl;
-  [(AVMediaTimelineControl *)&v4 setAlpha:a3];
+  [(AVMediaTimelineControl *)&v4 setAlpha:alpha];
   [(AVMediaTimelineControl *)self _updateDisplayLinkPausedStateIfNeeded];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v4.receiver = self;
   v4.super_class = AVMediaTimelineControl;
-  [(AVMediaTimelineControl *)&v4 setHidden:a3];
+  [(AVMediaTimelineControl *)&v4 setHidden:hidden];
   [(AVMediaTimelineControl *)self _updateDisplayLinkPausedStateIfNeeded];
 }
 
@@ -1425,9 +1425,9 @@ void __83__AVMediaTimelineControl__updateSliderTintStateToState_duration_complet
   v4.receiver = self;
   v4.super_class = AVMediaTimelineControl;
   [(AVMediaTimelineControl *)&v4 layoutSubviews];
-  v3 = [(AVMediaTimelineControl *)self timelineView];
+  timelineView = [(AVMediaTimelineControl *)self timelineView];
   [(AVMediaTimelineControl *)self bounds];
-  [v3 setFrame:?];
+  [timelineView setFrame:?];
 
   [(AVMediaTimelineControl *)self _updateContainerLayersFrames];
   [(AVMediaTimelineControl *)self _updateTimeRangeMarksLayerFramesIfNeeded];
@@ -1440,9 +1440,9 @@ void __83__AVMediaTimelineControl__updateSliderTintStateToState_duration_complet
   v16.receiver = self;
   v16.super_class = AVMediaTimelineControl;
   [(AVMediaTimelineControl *)&v16 didMoveToWindow];
-  v3 = [(AVMediaTimelineControl *)self window];
+  window = [(AVMediaTimelineControl *)self window];
 
-  if (v3)
+  if (window)
   {
     [(AVMediaTimelineControl *)self _setupObservationsIfNeeded];
     if (self)
@@ -1454,8 +1454,8 @@ void __83__AVMediaTimelineControl__updateSliderTintStateToState_duration_complet
         self->_displayLink = v4;
 
         v6 = self->_displayLink;
-        v7 = [MEMORY[0x1E695DFD0] currentRunLoop];
-        [(CADisplayLink *)v6 addToRunLoop:v7 forMode:*MEMORY[0x1E695DA28]];
+        currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+        [(CADisplayLink *)v6 addToRunLoop:currentRunLoop forMode:*MEMORY[0x1E695DA28]];
 
         [(AVMediaTimelineControl *)self _updateDisplayLinkPausedStateIfNeeded];
       }
@@ -1466,9 +1466,9 @@ void __83__AVMediaTimelineControl__updateSliderTintStateToState_duration_complet
         v8 = [[AVMobileChromelessTimelineView alloc] initWithUsingFluidSlider:1];
         [(AVMobileChromelessTimelineView *)v8 setAutoresizingMask:0];
         [(AVMobileChromelessTimelineView *)v8 setDelegate:self];
-        v9 = [(AVMobileChromelessTimelineView *)v8 slider];
+        slider = [(AVMobileChromelessTimelineView *)v8 slider];
         LODWORD(v10) = 1120403456;
-        [v9 setTotalValue:v10];
+        [slider setTotalValue:v10];
 
         [(AVMediaTimelineControl *)self setTimelineView:v8];
         [(AVMediaTimelineControl *)self _updateTimelineSliderEnabledStateIfNeeded];
@@ -1476,16 +1476,16 @@ void __83__AVMediaTimelineControl__updateSliderTintStateToState_duration_complet
         [(AVMediaTimelineControl *)self _updateTimelineViewValuesWithForceUpdate:?];
       }
 
-      v11 = [(AVMediaTimelineControl *)self timelineView];
-      v12 = [v11 slider];
-      v13 = v12;
-      if (v12)
+      timelineView = [(AVMediaTimelineControl *)self timelineView];
+      slider2 = [timelineView slider];
+      v13 = slider2;
+      if (slider2)
       {
-        [v12 addTarget:self action:sel__timelineSliderDidChangeValue_ forControlEvents:4096];
+        [slider2 addTarget:self action:sel__timelineSliderDidChangeValue_ forControlEvents:4096];
         [v13 addTarget:self action:sel__timelineSliderDidChangeValue_ forControlEvents:448];
         [v13 setDelegate:self];
-        v14 = [v11 fluidSlider];
-        [v14 setDirectionalHitRectInsets:{-8.0, 0.0, -8.0, 0.0}];
+        fluidSlider = [timelineView fluidSlider];
+        [fluidSlider setDirectionalHitRectInsets:{-8.0, 0.0, -8.0, 0.0}];
       }
     }
 
@@ -1520,11 +1520,11 @@ void __83__AVMediaTimelineControl__updateSliderTintStateToState_duration_complet
 
 - (void)_invalidateDisplayLink
 {
-  if (a1)
+  if (self)
   {
-    [*(a1 + 408) invalidate];
-    v2 = *(a1 + 408);
-    *(a1 + 408) = 0;
+    [*(self + 408) invalidate];
+    v2 = *(self + 408);
+    *(self + 408) = 0;
   }
 }
 
@@ -1551,9 +1551,9 @@ void __83__AVMediaTimelineControl__updateSliderTintStateToState_duration_complet
   [(AVMediaTimelineControl *)&v6 dealloc];
 }
 
-- (AVMediaTimelineControl)initWithSource:(id)a3
+- (AVMediaTimelineControl)initWithSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v21.receiver = self;
   v21.super_class = AVMediaTimelineControl;
   v5 = [(AVMediaTimelineControl *)&v21 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -1563,10 +1563,10 @@ void __83__AVMediaTimelineControl__updateSliderTintStateToState_duration_complet
     v7 = *(v5 + 70);
     *(v5 + 70) = v6;
 
-    objc_storeWeak(v5 + 72, v4);
+    objc_storeWeak(v5 + 72, sourceCopy);
     v5[553] = 1;
     v5[448] = 0;
-    [v4 currentValue];
+    [sourceCopy currentValue];
     *(v5 + 116) = v8;
     v9 = objc_alloc_init(MEMORY[0x1E69DCF40]);
     v10 = *(v5 + 59);

@@ -1,12 +1,12 @@
 @interface FCCXPCActivityScheduler
 - (FCCXPCActivityScheduler)init;
-- (FCCXPCActivityScheduler)initWithDateProvider:(id)a3 dispatchQueue:(id)a4;
+- (FCCXPCActivityScheduler)initWithDateProvider:(id)provider dispatchQueue:(id)queue;
 - (FCCXPCActivitySchedulerDelegate)delegate;
-- (id)_stringForXPCActivityState:(int64_t)a3;
-- (void)_checkInActivity:(id)a3 name:(id)a4 scheduledDate:(id)a5;
-- (void)_runActivity:(id)a3 name:(id)a4;
-- (void)cancelActivityWithName:(id)a3;
-- (void)scheduleActivityWithName:(id)a3 scheduledDate:(id)a4;
+- (id)_stringForXPCActivityState:(int64_t)state;
+- (void)_checkInActivity:(id)activity name:(id)name scheduledDate:(id)date;
+- (void)_runActivity:(id)activity name:(id)name;
+- (void)cancelActivityWithName:(id)name;
+- (void)scheduleActivityWithName:(id)name scheduledDate:(id)date;
 @end
 
 @implementation FCCXPCActivityScheduler
@@ -19,39 +19,39 @@
   return v4;
 }
 
-- (FCCXPCActivityScheduler)initWithDateProvider:(id)a3 dispatchQueue:(id)a4
+- (FCCXPCActivityScheduler)initWithDateProvider:(id)provider dispatchQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = FCCXPCActivityScheduler;
   v9 = [(FCCXPCActivityScheduler *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dateProvider, a3);
-    objc_storeStrong(&v10->_dispatchQueue, a4);
+    objc_storeStrong(&v9->_dateProvider, provider);
+    objc_storeStrong(&v10->_dispatchQueue, queue);
   }
 
   return v10;
 }
 
-- (void)scheduleActivityWithName:(id)a3 scheduledDate:(id)a4
+- (void)scheduleActivityWithName:(id)name scheduledDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 UTF8String];
+  nameCopy = name;
+  dateCopy = date;
+  uTF8String = [nameCopy UTF8String];
   v9 = *MEMORY[0x277D86238];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __66__FCCXPCActivityScheduler_scheduleActivityWithName_scheduledDate___block_invoke;
   handler[3] = &unk_27900A0D8;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
-  xpc_activity_register(v8, v9, handler);
+  v13 = nameCopy;
+  selfCopy = self;
+  v15 = dateCopy;
+  v10 = dateCopy;
+  v11 = nameCopy;
+  xpc_activity_register(uTF8String, v9, handler);
 }
 
 void __66__FCCXPCActivityScheduler_scheduleActivityWithName_scheduledDate___block_invoke(void *a1, void *a2)
@@ -89,22 +89,22 @@ void __66__FCCXPCActivityScheduler_scheduleActivityWithName_scheduledDate___bloc
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelActivityWithName:(id)a3
+- (void)cancelActivityWithName:(id)name
 {
-  v3 = [a3 UTF8String];
+  uTF8String = [name UTF8String];
 
-  xpc_activity_unregister(v3);
+  xpc_activity_unregister(uTF8String);
 }
 
-- (void)_checkInActivity:(id)a3 name:(id)a4 scheduledDate:(id)a5
+- (void)_checkInActivity:(id)activity name:(id)name scheduledDate:(id)date
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  activityCopy = activity;
+  nameCopy = name;
   dateProvider = self->_dateProvider;
-  v11 = a5;
-  v12 = [(FCCDateProvider *)dateProvider coachingDate];
-  [v11 timeIntervalSinceDate:v12];
+  dateCopy = date;
+  coachingDate = [(FCCDateProvider *)dateProvider coachingDate];
+  [dateCopy timeIntervalSinceDate:coachingDate];
   v14 = v13;
 
   v15 = xpc_dictionary_create(0, 0, 0);
@@ -113,7 +113,7 @@ void __66__FCCXPCActivityScheduler_scheduleActivityWithName_scheduledDate___bloc
   xpc_dictionary_set_BOOL(v15, *MEMORY[0x277D86370], 1);
   xpc_dictionary_set_int64(v15, *MEMORY[0x277D86250], v14 & ~(v14 >> 63));
   xpc_dictionary_set_string(v15, *MEMORY[0x277D86340], *MEMORY[0x277D86350]);
-  v16 = xpc_activity_copy_criteria(v8);
+  v16 = xpc_activity_copy_criteria(activityCopy);
   v17 = v16;
   if (!v16 || !xpc_equal(v16, v15))
   {
@@ -122,27 +122,27 @@ void __66__FCCXPCActivityScheduler_scheduleActivityWithName_scheduledDate___bloc
     if (os_log_type_enabled(*MEMORY[0x277CCC290], OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138412290;
-      v21 = v9;
+      v21 = nameCopy;
       _os_log_impl(&dword_24B53B000, v18, OS_LOG_TYPE_DEFAULT, "Updated criteria for xpc activity: %@", &v20, 0xCu);
     }
 
-    xpc_activity_set_criteria(v8, v15);
+    xpc_activity_set_criteria(activityCopy, v15);
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_runActivity:(id)a3 name:(id)a4
+- (void)_runActivity:(id)activity name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  if (!xpc_activity_set_state(v6, 4))
+  activityCopy = activity;
+  nameCopy = name;
+  if (!xpc_activity_set_state(activityCopy, 4))
   {
     _HKInitializeLogging();
     v8 = *MEMORY[0x277CCC290];
     if (os_log_type_enabled(*MEMORY[0x277CCC290], OS_LOG_TYPE_ERROR))
     {
-      [FCCXPCActivityScheduler _runActivity:v7 name:v8];
+      [FCCXPCActivityScheduler _runActivity:nameCopy name:v8];
     }
   }
 
@@ -151,11 +151,11 @@ void __66__FCCXPCActivityScheduler_scheduleActivityWithName_scheduledDate___bloc
   block[1] = 3221225472;
   block[2] = __45__FCCXPCActivityScheduler__runActivity_name___block_invoke;
   block[3] = &unk_27900A128;
-  v13 = v7;
-  v14 = self;
-  v15 = v6;
-  v10 = v6;
-  v11 = v7;
+  v13 = nameCopy;
+  selfCopy = self;
+  v15 = activityCopy;
+  v10 = activityCopy;
+  v11 = nameCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -213,16 +213,16 @@ void __45__FCCXPCActivityScheduler__runActivity_name___block_invoke_293(uint64_t
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_stringForXPCActivityState:(int64_t)a3
+- (id)_stringForXPCActivityState:(int64_t)state
 {
-  if (a3 > 5)
+  if (state > 5)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_27900A148[a3];
+    return off_27900A148[state];
   }
 }
 

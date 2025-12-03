@@ -2,26 +2,26 @@
 - (BOOL)_buttonsShouldUseSeparateLine;
 - (BOOL)update;
 - (ConferenceCellDelegate)delegate;
-- (EKEventDetailConferenceCell)initWithEvent:(id)a3 editable:(BOOL)a4;
+- (EKEventDetailConferenceCell)initWithEvent:(id)event editable:(BOOL)editable;
 - (double)_separatorHeight;
 - (id)_buttonConfigForCurrentTime;
 - (id)_defaultListConfiguration;
 - (void)_createConstraints;
 - (void)_createViews;
 - (void)_openURL;
-- (void)_share:(id)a3;
-- (void)_updateActionButtonWithType:(unint64_t)a3;
+- (void)_share:(id)_share;
+- (void)_updateActionButtonWithType:(unint64_t)type;
 - (void)tintColorDidChange;
-- (void)updateListConfigWithImage:(id)a3 title:(id)a4 subtitle:(id)a5;
+- (void)updateListConfigWithImage:(id)image title:(id)title subtitle:(id)subtitle;
 @end
 
 @implementation EKEventDetailConferenceCell
 
-- (EKEventDetailConferenceCell)initWithEvent:(id)a3 editable:(BOOL)a4
+- (EKEventDetailConferenceCell)initWithEvent:(id)event editable:(BOOL)editable
 {
   v9.receiver = self;
   v9.super_class = EKEventDetailConferenceCell;
-  v4 = [(EKEventDetailCell *)&v9 initWithEvent:a3 editable:a4 style:0];
+  v4 = [(EKEventDetailCell *)&v9 initWithEvent:event editable:editable style:0];
   v5 = v4;
   if (v4)
   {
@@ -51,12 +51,12 @@
 {
   v3 = EKUICurrentWindowWidthWithViewHierarchy(self);
   v4 = EKUIWidthForWindowSizeParadigm(16);
-  v5 = [(EKEventDetailConferenceCell *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = UIContentSizeCategoryCompareToCategory(v6, *MEMORY[0x1E69DDC60]);
+  traitCollection = [(EKEventDetailConferenceCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v7 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC60]);
 
-  v8 = [(EKEventDetailConferenceCell *)self traitCollection];
-  v9 = EKUIUsesLargeTextLayout(v8) || v3 < v4 && v7 != NSOrderedAscending;
+  traitCollection2 = [(EKEventDetailConferenceCell *)self traitCollection];
+  v9 = EKUIUsesLargeTextLayout(traitCollection2) || v3 < v4 && v7 != NSOrderedAscending;
 
   return v9;
 }
@@ -71,8 +71,8 @@
 
   else
   {
-    v4 = [(EKEventDetailConferenceCell *)self traitCollection];
-    v5 = EKUIUsesLargeTextLayout(v4);
+    traitCollection = [(EKEventDetailConferenceCell *)self traitCollection];
+    v5 = EKUIUsesLargeTextLayout(traitCollection);
 
     if (v5)
     {
@@ -89,53 +89,53 @@
 
 - (id)_defaultListConfiguration
 {
-  v3 = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
-  v4 = [MEMORY[0x1E69DC888] systemGray2Color];
-  v5 = [v3 imageProperties];
-  [v5 setTintColor:v4];
+  subtitleCellConfiguration = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
+  systemGray2Color = [MEMORY[0x1E69DC888] systemGray2Color];
+  imageProperties = [subtitleCellConfiguration imageProperties];
+  [imageProperties setTintColor:systemGray2Color];
 
-  [v3 setImageToTextPadding:12.0];
+  [subtitleCellConfiguration setImageToTextPadding:12.0];
   v6 = [MEMORY[0x1E69DCAD8] configurationWithScale:3];
-  v7 = [v3 imageProperties];
-  [v7 setPreferredSymbolConfiguration:v6];
+  imageProperties2 = [subtitleCellConfiguration imageProperties];
+  [imageProperties2 setPreferredSymbolConfiguration:v6];
 
-  v8 = [v3 imageProperties];
-  [v8 setReservedLayoutSize:{24.0, 24.0}];
+  imageProperties3 = [subtitleCellConfiguration imageProperties];
+  [imageProperties3 setReservedLayoutSize:{24.0, 24.0}];
 
-  v9 = [v3 imageProperties];
-  [v9 setMaximumSize:{24.0, 24.0}];
+  imageProperties4 = [subtitleCellConfiguration imageProperties];
+  [imageProperties4 setMaximumSize:{24.0, 24.0}];
 
-  v10 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v11 = [v3 secondaryTextProperties];
-  [v11 setColor:v10];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  secondaryTextProperties = [subtitleCellConfiguration secondaryTextProperties];
+  [secondaryTextProperties setColor:secondaryLabelColor];
 
-  v12 = [v3 imageProperties];
-  [v12 setCornerRadius:7.0];
+  imageProperties5 = [subtitleCellConfiguration imageProperties];
+  [imageProperties5 setCornerRadius:7.0];
 
-  [v3 setDirectionalLayoutMargins:{10.0, 16.0, 10.0, 0.0}];
+  [subtitleCellConfiguration setDirectionalLayoutMargins:{10.0, 16.0, 10.0, 0.0}];
   if (![(EKEventDetailConferenceCell *)self _buttonsShouldUseSeparateLine])
   {
-    v13 = [v3 textProperties];
-    [v13 setNumberOfLines:1];
+    textProperties = [subtitleCellConfiguration textProperties];
+    [textProperties setNumberOfLines:1];
 
-    v14 = [v3 secondaryTextProperties];
-    [v14 setNumberOfLines:1];
+    secondaryTextProperties2 = [subtitleCellConfiguration secondaryTextProperties];
+    [secondaryTextProperties2 setNumberOfLines:1];
   }
 
-  return v3;
+  return subtitleCellConfiguration;
 }
 
 - (void)_createViews
 {
   v3 = objc_alloc(MEMORY[0x1E69DCC30]);
-  v4 = [(EKEventDetailConferenceCell *)self _defaultListConfiguration];
-  v5 = [v3 initWithConfiguration:v4];
+  _defaultListConfiguration = [(EKEventDetailConferenceCell *)self _defaultListConfiguration];
+  v5 = [v3 initWithConfiguration:_defaultListConfiguration];
   listView = self->_listView;
   self->_listView = v5;
 
   [(UIListContentView *)self->_listView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [(EKEventDetailConferenceCell *)self contentView];
-  [v7 addSubview:self->_listView];
+  contentView = [(EKEventDetailConferenceCell *)self contentView];
+  [contentView addSubview:self->_listView];
 
   v8 = [MEMORY[0x1E69DC738] buttonWithType:1];
   openURLButton = self->_openURLButton;
@@ -152,25 +152,25 @@
   LODWORD(v13) = 1148846080;
   [(UIButton *)self->_openURLButton setContentCompressionResistancePriority:1 forAxis:v13];
   [(UIButton *)self->_openURLButton addTarget:self action:sel__openURL forControlEvents:64];
-  v14 = [(EKEventDetailConferenceCell *)self contentView];
-  [v14 addSubview:self->_openURLButton];
+  contentView2 = [(EKEventDetailConferenceCell *)self contentView];
+  [contentView2 addSubview:self->_openURLButton];
 
   v32 = [MEMORY[0x1E69DCAD8] configurationWithWeight:5];
-  v15 = [MEMORY[0x1E69DC740] grayButtonConfiguration];
-  [v15 setCornerStyle:4];
+  grayButtonConfiguration = [MEMORY[0x1E69DC740] grayButtonConfiguration];
+  [grayButtonConfiguration setCornerStyle:4];
   v16 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"square.and.arrow.up" withConfiguration:v32];
-  [v15 setImage:v16];
+  [grayButtonConfiguration setImage:v16];
 
-  [v15 setContentInsets:{3.0, 3.0, 4.0, 3.0}];
+  [grayButtonConfiguration setContentInsets:{3.0, 3.0, 4.0, 3.0}];
   v17 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDCF8] scale:1];
-  [v15 setPreferredSymbolConfigurationForImage:v17];
+  [grayButtonConfiguration setPreferredSymbolConfigurationForImage:v17];
 
-  [v15 setButtonSize:1];
+  [grayButtonConfiguration setButtonSize:1];
   v18 = [MEMORY[0x1E69DC738] buttonWithType:1];
   shareButton = self->_shareButton;
   self->_shareButton = v18;
 
-  [(UIButton *)self->_shareButton setConfiguration:v15];
+  [(UIButton *)self->_shareButton setConfiguration:grayButtonConfiguration];
   [(UIButton *)self->_shareButton setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(v20) = 1148846080;
   [(UIButton *)self->_shareButton setContentHuggingPriority:0 forAxis:v20];
@@ -179,8 +179,8 @@
   LODWORD(v22) = 1148846080;
   [(UIButton *)self->_shareButton setContentCompressionResistancePriority:0 forAxis:v22];
   [(UIButton *)self->_shareButton addTarget:self action:sel__share_ forControlEvents:64];
-  v23 = [(EKEventDetailConferenceCell *)self contentView];
-  [v23 addSubview:self->_shareButton];
+  contentView3 = [(EKEventDetailConferenceCell *)self contentView];
+  [contentView3 addSubview:self->_shareButton];
 
   v24 = objc_opt_new();
   topSeparator = self->_topSeparator;
@@ -198,8 +198,8 @@
   v26 = ;
   [(UIView *)self->_topSeparator setBackgroundColor:v26];
 
-  v27 = [(EKEventDetailConferenceCell *)self contentView];
-  [v27 addSubview:self->_topSeparator];
+  contentView4 = [(EKEventDetailConferenceCell *)self contentView];
+  [contentView4 addSubview:self->_topSeparator];
 
   v28 = objc_opt_new();
   bottomSeparator = self->_bottomSeparator;
@@ -217,8 +217,8 @@
   v30 = ;
   [(UIView *)self->_bottomSeparator setBackgroundColor:v30];
 
-  v31 = [(EKEventDetailConferenceCell *)self contentView];
-  [v31 addSubview:self->_bottomSeparator];
+  contentView5 = [(EKEventDetailConferenceCell *)self contentView];
+  [contentView5 addSubview:self->_bottomSeparator];
 
   [(EKEventDetailConferenceCell *)self _createConstraints];
 }
@@ -227,72 +227,72 @@
 {
   v105[15] = *MEMORY[0x1E69E9840];
   [MEMORY[0x1E696ACD8] deactivateConstraints:self->_constraints];
-  v102 = [MEMORY[0x1E695DF70] array];
-  v100 = [(UIView *)self->_topSeparator heightAnchor];
+  array = [MEMORY[0x1E695DF70] array];
+  heightAnchor = [(UIView *)self->_topSeparator heightAnchor];
   [(EKEventDetailConferenceCell *)self _separatorHeight];
-  v98 = [v100 constraintEqualToConstant:?];
+  v98 = [heightAnchor constraintEqualToConstant:?];
   v105[0] = v98;
-  v94 = [(UIView *)self->_topSeparator topAnchor];
-  v96 = [(EKEventDetailConferenceCell *)self contentView];
-  v91 = [v96 topAnchor];
-  v89 = [v94 constraintEqualToAnchor:v91];
+  topAnchor = [(UIView *)self->_topSeparator topAnchor];
+  contentView = [(EKEventDetailConferenceCell *)self contentView];
+  topAnchor2 = [contentView topAnchor];
+  v89 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v105[1] = v89;
-  v85 = [(UIView *)self->_topSeparator leadingAnchor];
-  v87 = [(EKEventDetailConferenceCell *)self contentView];
-  v83 = [v87 layoutMarginsGuide];
-  v81 = [v83 leadingAnchor];
-  v79 = [v85 constraintEqualToAnchor:v81];
+  leadingAnchor = [(UIView *)self->_topSeparator leadingAnchor];
+  contentView2 = [(EKEventDetailConferenceCell *)self contentView];
+  layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v79 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v105[2] = v79;
-  v75 = [(UIView *)self->_topSeparator trailingAnchor];
-  v77 = [(EKEventDetailConferenceCell *)self contentView];
-  v73 = [v77 trailingAnchor];
-  v71 = [v75 constraintEqualToAnchor:v73];
+  trailingAnchor = [(UIView *)self->_topSeparator trailingAnchor];
+  contentView3 = [(EKEventDetailConferenceCell *)self contentView];
+  trailingAnchor2 = [contentView3 trailingAnchor];
+  v71 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v105[3] = v71;
-  v69 = [(UIView *)self->_bottomSeparator heightAnchor];
+  heightAnchor2 = [(UIView *)self->_bottomSeparator heightAnchor];
   [(EKEventDetailConferenceCell *)self _separatorHeight];
-  v67 = [v69 constraintEqualToConstant:?];
+  v67 = [heightAnchor2 constraintEqualToConstant:?];
   v105[4] = v67;
-  v64 = [(UIView *)self->_bottomSeparator bottomAnchor];
-  v65 = [(EKEventDetailConferenceCell *)self contentView];
-  v63 = [v65 bottomAnchor];
-  v62 = [v64 constraintEqualToAnchor:v63];
+  bottomAnchor = [(UIView *)self->_bottomSeparator bottomAnchor];
+  contentView4 = [(EKEventDetailConferenceCell *)self contentView];
+  bottomAnchor2 = [contentView4 bottomAnchor];
+  v62 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v105[5] = v62;
-  v60 = [(UIView *)self->_bottomSeparator leadingAnchor];
-  v61 = [(EKEventDetailConferenceCell *)self contentView];
-  v59 = [v61 layoutMarginsGuide];
-  v58 = [v59 leadingAnchor];
-  v57 = [v60 constraintEqualToAnchor:v58];
+  leadingAnchor3 = [(UIView *)self->_bottomSeparator leadingAnchor];
+  contentView5 = [(EKEventDetailConferenceCell *)self contentView];
+  layoutMarginsGuide2 = [contentView5 layoutMarginsGuide];
+  leadingAnchor4 = [layoutMarginsGuide2 leadingAnchor];
+  v57 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v105[6] = v57;
-  v55 = [(UIView *)self->_bottomSeparator trailingAnchor];
-  v56 = [(EKEventDetailConferenceCell *)self contentView];
-  v54 = [v56 trailingAnchor];
-  v53 = [v55 constraintEqualToAnchor:v54];
+  trailingAnchor3 = [(UIView *)self->_bottomSeparator trailingAnchor];
+  contentView6 = [(EKEventDetailConferenceCell *)self contentView];
+  trailingAnchor4 = [contentView6 trailingAnchor];
+  v53 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v105[7] = v53;
-  v51 = [(UIListContentView *)self->_listView leadingAnchor];
-  v52 = [(EKEventDetailConferenceCell *)self contentView];
-  v50 = [v52 leadingAnchor];
-  v49 = [v51 constraintEqualToAnchor:v50];
+  leadingAnchor5 = [(UIListContentView *)self->_listView leadingAnchor];
+  contentView7 = [(EKEventDetailConferenceCell *)self contentView];
+  leadingAnchor6 = [contentView7 leadingAnchor];
+  v49 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v105[8] = v49;
-  v47 = [(UIListContentView *)self->_listView topAnchor];
-  v48 = [(EKEventDetailConferenceCell *)self contentView];
-  v46 = [v48 topAnchor];
-  v45 = [v47 constraintEqualToAnchor:v46];
+  topAnchor3 = [(UIListContentView *)self->_listView topAnchor];
+  contentView8 = [(EKEventDetailConferenceCell *)self contentView];
+  topAnchor4 = [contentView8 topAnchor];
+  v45 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v105[9] = v45;
-  v44 = [(UIButton *)self->_shareButton topAnchor];
-  v43 = [(UIButton *)self->_openURLButton topAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43];
+  topAnchor5 = [(UIButton *)self->_shareButton topAnchor];
+  topAnchor6 = [(UIButton *)self->_openURLButton topAnchor];
+  v42 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v105[10] = v42;
-  v41 = [(UIButton *)self->_shareButton bottomAnchor];
-  v40 = [(UIButton *)self->_openURLButton bottomAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  bottomAnchor3 = [(UIButton *)self->_shareButton bottomAnchor];
+  bottomAnchor4 = [(UIButton *)self->_openURLButton bottomAnchor];
+  v39 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v105[11] = v39;
-  v3 = [(UIButton *)self->_shareButton leadingAnchor];
-  v4 = [(UIButton *)self->_openURLButton trailingAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4 constant:12.0];
+  leadingAnchor7 = [(UIButton *)self->_shareButton leadingAnchor];
+  trailingAnchor5 = [(UIButton *)self->_openURLButton trailingAnchor];
+  v5 = [leadingAnchor7 constraintEqualToAnchor:trailingAnchor5 constant:12.0];
   v105[12] = v5;
-  v6 = [(UIButton *)self->_shareButton widthAnchor];
-  v7 = [(UIButton *)self->_shareButton heightAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  widthAnchor = [(UIButton *)self->_shareButton widthAnchor];
+  heightAnchor3 = [(UIButton *)self->_shareButton heightAnchor];
+  v8 = [widthAnchor constraintEqualToAnchor:heightAnchor3];
   v105[13] = v8;
   openURLButton = self->_openURLButton;
   v10 = MEMORY[0x1E696ACD8];
@@ -302,95 +302,95 @@
   v13 = [v10 constraintWithItem:openURLButton attribute:7 relatedBy:1 toItem:0 attribute:0 multiplier:1.0 constant:v12];
   v105[14] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v105 count:15];
-  [(NSArray *)v102 addObjectsFromArray:v14];
+  [(NSArray *)array addObjectsFromArray:v14];
 
   if ([(EKEventDetailConferenceCell *)self _buttonsShouldUseSeparateLine])
   {
-    v15 = [(UIButton *)self->_openURLButton leadingAnchor];
-    v16 = [(EKEventDetailConferenceCell *)self contentView];
-    v17 = [v16 layoutMarginsGuide];
-    v18 = [v17 leadingAnchor];
-    v95 = v15;
-    v19 = [v15 constraintEqualToAnchor:v18];
+    leadingAnchor8 = [(UIButton *)self->_openURLButton leadingAnchor];
+    contentView9 = [(EKEventDetailConferenceCell *)self contentView];
+    layoutMarginsGuide3 = [contentView9 layoutMarginsGuide];
+    leadingAnchor9 = [layoutMarginsGuide3 leadingAnchor];
+    trailingAnchor8 = leadingAnchor8;
+    v19 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9];
     v104[0] = v19;
-    v20 = [(UIListContentView *)self->_listView trailingAnchor];
-    v21 = [(EKEventDetailConferenceCell *)self contentView];
-    v101 = [v21 trailingAnchor];
-    v99 = [v20 constraintEqualToAnchor:?];
+    trailingAnchor6 = [(UIListContentView *)self->_listView trailingAnchor];
+    contentView10 = [(EKEventDetailConferenceCell *)self contentView];
+    trailingAnchor7 = [contentView10 trailingAnchor];
+    v99 = [trailingAnchor6 constraintEqualToAnchor:?];
     v104[1] = v99;
-    v22 = [(UIButton *)self->_openURLButton topAnchor];
-    v23 = [(UIListContentView *)self->_listView bottomAnchor];
+    topAnchor7 = [(UIButton *)self->_openURLButton topAnchor];
+    bottomAnchor5 = [(UIListContentView *)self->_listView bottomAnchor];
     v93 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v38];
     [v93 _scaledValueForValue:10.0];
-    v97 = v23;
-    v24 = [v22 constraintEqualToAnchor:v23 constant:?];
+    leadingAnchor10 = bottomAnchor5;
+    v24 = [topAnchor7 constraintEqualToAnchor:bottomAnchor5 constant:?];
     v104[2] = v24;
-    v25 = [(UIButton *)self->_openURLButton bottomAnchor];
-    v90 = [(EKEventDetailConferenceCell *)self contentView];
-    v88 = [v90 layoutMarginsGuide];
-    [v88 bottomAnchor];
-    v86 = v92 = v25;
-    v84 = [v25 constraintLessThanOrEqualToAnchor:?];
+    bottomAnchor6 = [(UIButton *)self->_openURLButton bottomAnchor];
+    contentView11 = [(EKEventDetailConferenceCell *)self contentView];
+    layoutMarginsGuide4 = [contentView11 layoutMarginsGuide];
+    [layoutMarginsGuide4 bottomAnchor];
+    v86 = contentView14 = bottomAnchor6;
+    v84 = [bottomAnchor6 constraintLessThanOrEqualToAnchor:?];
     v104[3] = v84;
-    v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v104 count:4];
-    [(NSArray *)v102 addObjectsFromArray:v26];
+    contentView15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v104 count:4];
+    [(NSArray *)array addObjectsFromArray:contentView15];
   }
 
   else
   {
-    v95 = [(UIButton *)self->_shareButton trailingAnchor];
-    v82 = [(EKEventDetailConferenceCell *)self contentView];
-    v80 = [v82 layoutMarginsGuide];
-    v78 = [v80 trailingAnchor];
-    v76 = [v95 constraintEqualToAnchor:v78];
+    trailingAnchor8 = [(UIButton *)self->_shareButton trailingAnchor];
+    contentView12 = [(EKEventDetailConferenceCell *)self contentView];
+    layoutMarginsGuide5 = [contentView12 layoutMarginsGuide];
+    trailingAnchor9 = [layoutMarginsGuide5 trailingAnchor];
+    v76 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9];
     v103[0] = v76;
-    v74 = [(UIListContentView *)self->_listView bottomAnchor];
-    v72 = [(EKEventDetailConferenceCell *)self contentView];
-    v101 = [v72 bottomAnchor];
-    v99 = [v74 constraintEqualToAnchor:?];
+    bottomAnchor7 = [(UIListContentView *)self->_listView bottomAnchor];
+    contentView13 = [(EKEventDetailConferenceCell *)self contentView];
+    trailingAnchor7 = [contentView13 bottomAnchor];
+    v99 = [bottomAnchor7 constraintEqualToAnchor:?];
     v103[1] = v99;
-    v70 = [(UIListContentView *)self->_listView trailingAnchor];
-    v97 = [(UIButton *)self->_openURLButton leadingAnchor];
-    v93 = [v70 constraintEqualToAnchor:?];
+    trailingAnchor10 = [(UIListContentView *)self->_listView trailingAnchor];
+    leadingAnchor10 = [(UIButton *)self->_openURLButton leadingAnchor];
+    v93 = [trailingAnchor10 constraintEqualToAnchor:?];
     v103[2] = v93;
-    v68 = [(UIButton *)self->_openURLButton centerYAnchor];
-    v92 = [(EKEventDetailConferenceCell *)self contentView];
-    v90 = [v92 layoutMarginsGuide];
-    v88 = [v90 centerYAnchor];
-    v86 = [v68 constraintEqualToAnchor:?];
+    centerYAnchor = [(UIButton *)self->_openURLButton centerYAnchor];
+    contentView14 = [(EKEventDetailConferenceCell *)self contentView];
+    contentView11 = [contentView14 layoutMarginsGuide];
+    layoutMarginsGuide4 = [contentView11 centerYAnchor];
+    v86 = [centerYAnchor constraintEqualToAnchor:?];
     v103[3] = v86;
-    v27 = [(UIButton *)self->_openURLButton topAnchor];
-    v26 = [(EKEventDetailConferenceCell *)self contentView];
-    v66 = [v26 layoutMarginsGuide];
-    v28 = [v66 topAnchor];
-    v84 = v27;
-    v29 = [v27 constraintGreaterThanOrEqualToAnchor:v28];
+    topAnchor8 = [(UIButton *)self->_openURLButton topAnchor];
+    contentView15 = [(EKEventDetailConferenceCell *)self contentView];
+    layoutMarginsGuide6 = [contentView15 layoutMarginsGuide];
+    topAnchor9 = [layoutMarginsGuide6 topAnchor];
+    v84 = topAnchor8;
+    v29 = [topAnchor8 constraintGreaterThanOrEqualToAnchor:topAnchor9];
     v103[4] = v29;
-    v30 = [(UIButton *)self->_openURLButton topAnchor];
-    v31 = [(EKEventDetailConferenceCell *)self contentView];
-    v32 = [v31 layoutMarginsGuide];
-    v33 = [v32 bottomAnchor];
-    v34 = [v30 constraintLessThanOrEqualToAnchor:v33];
+    topAnchor10 = [(UIButton *)self->_openURLButton topAnchor];
+    contentView16 = [(EKEventDetailConferenceCell *)self contentView];
+    layoutMarginsGuide7 = [contentView16 layoutMarginsGuide];
+    bottomAnchor8 = [layoutMarginsGuide7 bottomAnchor];
+    v34 = [topAnchor10 constraintLessThanOrEqualToAnchor:bottomAnchor8];
     v103[5] = v34;
     v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v103 count:6];
-    [(NSArray *)v102 addObjectsFromArray:v35];
+    [(NSArray *)array addObjectsFromArray:v35];
 
-    v21 = v72;
-    v22 = v70;
+    contentView10 = contentView13;
+    topAnchor7 = trailingAnchor10;
 
-    v20 = v74;
+    trailingAnchor6 = bottomAnchor7;
     v19 = v76;
 
-    v18 = v78;
-    v17 = v80;
+    leadingAnchor9 = trailingAnchor9;
+    layoutMarginsGuide3 = layoutMarginsGuide5;
 
-    v16 = v82;
-    v24 = v68;
+    contentView9 = contentView12;
+    v24 = centerYAnchor;
   }
 
   constraints = self->_constraints;
-  self->_constraints = v102;
-  v37 = v102;
+  self->_constraints = array;
+  v37 = array;
 
   [MEMORY[0x1E696ACD8] activateConstraints:self->_constraints];
 }
@@ -398,31 +398,31 @@
 - (BOOL)update
 {
   [(EKEventDetailConferenceCell *)self _createConstraints];
-  v3 = [(EKEvent *)self->super._event virtualConference];
-  v4 = [v3 joinMethods];
-  v5 = [v4 firstObject];
+  virtualConference = [(EKEvent *)self->super._event virtualConference];
+  joinMethods = [virtualConference joinMethods];
+  firstObject = [joinMethods firstObject];
 
-  v6 = [(EKEvent *)self->super._event conferenceURLForDisplay];
-  v7 = v6;
-  if (v5)
+  conferenceURLForDisplay = [(EKEvent *)self->super._event conferenceURLForDisplay];
+  v7 = conferenceURLForDisplay;
+  if (firstObject)
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __37__EKEventDetailConferenceCell_update__block_invoke;
     v13[3] = &unk_1E843EEB0;
     v13[4] = self;
-    [MEMORY[0x1E69933C0] displayDetailsForJoinMethod:v5 completionHandler:v13];
+    [MEMORY[0x1E69933C0] displayDetailsForJoinMethod:firstObject completionHandler:v13];
   }
 
-  else if (v6)
+  else if (conferenceURLForDisplay)
   {
     v8 = MEMORY[0x1E69933C0];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __37__EKEventDetailConferenceCell_update__block_invoke_3;
     v10[3] = &unk_1E843EF00;
-    v11 = v6;
-    v12 = self;
+    v11 = conferenceURLForDisplay;
+    selfCopy = self;
     [v8 displayDetailsForURL:v11 completionHandler:v10];
   }
 
@@ -483,47 +483,47 @@ void __37__EKEventDetailConferenceCell_update__block_invoke_4(uint64_t a1)
   [*(a1 + 48) _updateActionButtonWithType:?];
 }
 
-- (void)updateListConfigWithImage:(id)a3 title:(id)a4 subtitle:(id)a5
+- (void)updateListConfigWithImage:(id)image title:(id)title subtitle:(id)subtitle
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(UIListContentView *)self->_listView configuration];
-  v11 = [v10 secondaryText];
+  imageCopy = image;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  configuration = [(UIListContentView *)self->_listView configuration];
+  secondaryText = [configuration secondaryText];
 
-  v12 = [(UIListContentView *)self->_listView configuration];
-  v13 = [v12 text];
-  if (![v8 isEqualToString:v13])
+  configuration2 = [(UIListContentView *)self->_listView configuration];
+  text = [configuration2 text];
+  if (![titleCopy isEqualToString:text])
   {
 
     goto LABEL_6;
   }
 
-  if ((v9 != 0) != (v11 == 0))
+  if ((subtitleCopy != 0) != (secondaryText == 0))
   {
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v14 = [(UIListContentView *)self->_listView configuration];
-  v15 = [v14 secondaryText];
-  v16 = [v9 isEqualToString:v15];
+  configuration3 = [(UIListContentView *)self->_listView configuration];
+  secondaryText2 = [configuration3 secondaryText];
+  v16 = [subtitleCopy isEqualToString:secondaryText2];
 
   if ((v16 & 1) == 0)
   {
 LABEL_6:
-    v12 = [(EKEventDetailConferenceCell *)self _defaultListConfiguration];
-    [v12 setImage:v17];
-    [v12 setText:v8];
-    if (v9)
+    configuration2 = [(EKEventDetailConferenceCell *)self _defaultListConfiguration];
+    [configuration2 setImage:imageCopy];
+    [configuration2 setText:titleCopy];
+    if (subtitleCopy)
     {
-      [v12 setSecondaryText:v9];
+      [configuration2 setSecondaryText:subtitleCopy];
     }
 
-    [(UIListContentView *)self->_listView setConfiguration:v12];
-    v13 = [(EKEventDetailConferenceCell *)self delegate];
-    [v13 conferenceCellUpdated:self];
+    [(UIListContentView *)self->_listView setConfiguration:configuration2];
+    text = [(EKEventDetailConferenceCell *)self delegate];
+    [text conferenceCellUpdated:self];
     goto LABEL_9;
   }
 
@@ -534,42 +534,42 @@ LABEL_10:
 {
   v3 = [MEMORY[0x1E695DF00] now];
   v4 = CUIKCalendar();
-  v5 = [(EKEvent *)self->super._event startDate];
-  v6 = [v4 dateByAddingUnit:64 value:-15 toDate:v5 options:0];
+  startDate = [(EKEvent *)self->super._event startDate];
+  v6 = [v4 dateByAddingUnit:64 value:-15 toDate:startDate options:0];
 
-  v7 = [(EKEvent *)self->super._event endDateUnadjustedForLegacyClients];
-  v8 = [objc_alloc(MEMORY[0x1E6992F70]) initWithStartDate:v6 endDate:v7];
+  endDateUnadjustedForLegacyClients = [(EKEvent *)self->super._event endDateUnadjustedForLegacyClients];
+  v8 = [objc_alloc(MEMORY[0x1E6992F70]) initWithStartDate:v6 endDate:endDateUnadjustedForLegacyClients];
   if ([v8 containsDate:v3])
   {
-    v9 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
-    v10 = [MEMORY[0x1E69DC888] systemGreenColor];
-    [v9 setBaseBackgroundColor:v10];
+    filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+    systemGreenColor = [MEMORY[0x1E69DC888] systemGreenColor];
+    [filledButtonConfiguration setBaseBackgroundColor:systemGreenColor];
 
-    v11 = [MEMORY[0x1E69DC888] systemWhiteColor];
-    [v9 setBaseForegroundColor:v11];
+    systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+    [filledButtonConfiguration setBaseForegroundColor:systemWhiteColor];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E69DC740] grayButtonConfiguration];
+    filledButtonConfiguration = [MEMORY[0x1E69DC740] grayButtonConfiguration];
   }
 
-  return v9;
+  return filledButtonConfiguration;
 }
 
-- (void)_updateActionButtonWithType:(unint64_t)a3
+- (void)_updateActionButtonWithType:(unint64_t)type
 {
-  v19 = [(EKEventDetailConferenceCell *)self _buttonConfigForCurrentTime];
-  v5 = [(EKEvent *)self->super._event virtualConference];
-  v6 = [v5 joinMethods];
-  v7 = [v6 firstObject];
-  if (!v7)
+  _buttonConfigForCurrentTime = [(EKEventDetailConferenceCell *)self _buttonConfigForCurrentTime];
+  virtualConference = [(EKEvent *)self->super._event virtualConference];
+  joinMethods = [virtualConference joinMethods];
+  firstObject = [joinMethods firstObject];
+  if (!firstObject)
   {
 
 LABEL_5:
-    if (a3 > 1)
+    if (type > 1)
     {
-      if (a3 == 2)
+      if (type == 2)
       {
         v17 = EventKitUIBundle();
         v13 = v17;
@@ -578,7 +578,7 @@ LABEL_5:
 
       else
       {
-        if (a3 != 3)
+        if (type != 3)
         {
           goto LABEL_17;
         }
@@ -591,14 +591,14 @@ LABEL_5:
 
     else
     {
-      if (a3)
+      if (type)
       {
-        if (a3 != 1)
+        if (type != 1)
         {
           goto LABEL_17;
         }
 
-        v11 = [MEMORY[0x1E69DC740] grayButtonConfiguration];
+        grayButtonConfiguration = [MEMORY[0x1E69DC740] grayButtonConfiguration];
 
         v12 = EventKitUIBundle();
         v13 = v12;
@@ -613,20 +613,20 @@ LABEL_5:
     }
 
     v16 = [v17 localizedStringForKey:v18 value:&stru_1F4EF6790 table:0];
-    [v19 setTitle:v16];
+    [_buttonConfigForCurrentTime setTitle:v16];
     goto LABEL_16;
   }
 
-  v8 = v7;
-  v9 = [(EKEvent *)self->super._event virtualConference];
-  v10 = [v9 urlWithAllowedScheme];
+  v8 = firstObject;
+  virtualConference2 = [(EKEvent *)self->super._event virtualConference];
+  urlWithAllowedScheme = [virtualConference2 urlWithAllowedScheme];
 
-  if (v10)
+  if (urlWithAllowedScheme)
   {
     goto LABEL_5;
   }
 
-  v11 = [MEMORY[0x1E69DC740] grayButtonConfiguration];
+  grayButtonConfiguration = [MEMORY[0x1E69DC740] grayButtonConfiguration];
 
   v12 = EventKitUIBundle();
   v13 = v12;
@@ -634,14 +634,14 @@ LABEL_5:
   v15 = @"Open";
 LABEL_9:
   v16 = [v12 localizedStringForKey:v14 value:v15 table:0];
-  [v11 setTitle:v16];
-  v19 = v11;
+  [grayButtonConfiguration setTitle:v16];
+  _buttonConfigForCurrentTime = grayButtonConfiguration;
 LABEL_16:
 
 LABEL_17:
-  [v19 setButtonSize:1];
-  [v19 setCornerStyle:4];
-  [(UIButton *)self->_openURLButton setConfiguration:v19];
+  [_buttonConfigForCurrentTime setButtonSize:1];
+  [_buttonConfigForCurrentTime setCornerStyle:4];
+  [(UIButton *)self->_openURLButton setConfiguration:_buttonConfigForCurrentTime];
 }
 
 - (void)tintColorDidChange
@@ -654,31 +654,31 @@ LABEL_17:
 
 - (void)_openURL
 {
-  v3 = [(EKEvent *)self->super._event virtualConference];
-  v4 = [v3 joinMethods];
-  v5 = [v4 firstObject];
+  virtualConference = [(EKEvent *)self->super._event virtualConference];
+  joinMethods = [virtualConference joinMethods];
+  firstObject = [joinMethods firstObject];
 
-  if (!v5)
+  if (!firstObject)
   {
-    v6 = [(EKEvent *)self->super._event conferenceURLForDisplay];
+    conferenceURLForDisplay = [(EKEvent *)self->super._event conferenceURLForDisplay];
     goto LABEL_7;
   }
 
-  v6 = [v5 URL];
-  v7 = [(EKEvent *)self->super._event virtualConference];
-  v8 = [v7 urlWithAllowedScheme];
+  conferenceURLForDisplay = [firstObject URL];
+  virtualConference2 = [(EKEvent *)self->super._event virtualConference];
+  urlWithAllowedScheme = [virtualConference2 urlWithAllowedScheme];
 
-  if (v8)
+  if (urlWithAllowedScheme)
   {
 LABEL_7:
-    v28 = [MEMORY[0x1E6963608] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __39__EKEventDetailConferenceCell__openURL__block_invoke_2_72;
     v29[3] = &unk_1E843EF28;
-    v20 = v6;
+    v20 = conferenceURLForDisplay;
     v30 = v20;
-    [v28 openURL:v20 configuration:0 completionHandler:v29];
+    [defaultWorkspace openURL:v20 configuration:0 completionHandler:v29];
 
     v13 = v30;
     goto LABEL_8;
@@ -687,8 +687,8 @@ LABEL_7:
   v9 = MEMORY[0x1E696AEC0];
   v10 = EventKitUIBundle();
   v11 = [v10 localizedStringForKey:@"Open “%@”?" value:&stru_1F4EF6790 table:0];
-  v12 = [v6 absoluteString];
-  v13 = [v9 localizedStringWithFormat:v11, v12];
+  absoluteString = [conferenceURLForDisplay absoluteString];
+  v13 = [v9 localizedStringWithFormat:v11, absoluteString];
 
   v14 = EventKitUIBundle();
   v15 = [v14 localizedStringForKey:@"The format of this link is not recognized. iOS cannot verify that it is free from malware." value:&stru_1F4EF6790 table:0];
@@ -701,7 +701,7 @@ LABEL_7:
   v31[1] = 3221225472;
   v31[2] = __39__EKEventDetailConferenceCell__openURL__block_invoke;
   v31[3] = &unk_1E843EB98;
-  v20 = v6;
+  v20 = conferenceURLForDisplay;
   v32 = v20;
   v21 = [v17 actionWithTitle:v19 style:2 handler:v31];
   [v16 addAction:v21];
@@ -712,12 +712,12 @@ LABEL_7:
   v25 = [v22 actionWithTitle:v24 style:1 handler:&__block_literal_global_2];
   [v16 addAction:v25];
 
-  v26 = [(EKEventDetailConferenceCell *)self delegate];
-  v27 = [v26 owningViewController];
+  delegate = [(EKEventDetailConferenceCell *)self delegate];
+  owningViewController = [delegate owningViewController];
 
-  if (v27)
+  if (owningViewController)
   {
-    [v27 presentViewController:v16 animated:1 completion:0];
+    [owningViewController presentViewController:v16 animated:1 completion:0];
   }
 
 LABEL_8:
@@ -775,47 +775,47 @@ void __39__EKEventDetailConferenceCell__openURL__block_invoke_2_72(uint64_t a1, 
   }
 }
 
-- (void)_share:(id)a3
+- (void)_share:(id)_share
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EKEvent *)self->super._event virtualConference];
+  _shareCopy = _share;
+  virtualConference = [(EKEvent *)self->super._event virtualConference];
 
   event = self->super._event;
-  if (v5)
+  if (virtualConference)
   {
-    v7 = [(EKEvent *)event virtualConference];
-    v8 = [v7 joinMethods];
-    v9 = [v8 firstObject];
+    virtualConference2 = [(EKEvent *)event virtualConference];
+    joinMethods = [virtualConference2 joinMethods];
+    firstObject = [joinMethods firstObject];
 
-    v10 = [v9 URL];
+    conferenceURLForDisplay = [firstObject URL];
   }
 
   else
   {
-    v10 = [(EKEvent *)event conferenceURLForDisplay];
+    conferenceURLForDisplay = [(EKEvent *)event conferenceURLForDisplay];
   }
 
-  v11 = [(EKEventDetailConferenceCell *)self delegate];
-  v12 = [v11 conferenceCellShouldPresentShareSheet:self];
+  delegate = [(EKEventDetailConferenceCell *)self delegate];
+  v12 = [delegate conferenceCellShouldPresentShareSheet:self];
 
-  v13 = [(EKEventDetailConferenceCell *)self delegate];
-  v14 = v13;
+  delegate2 = [(EKEventDetailConferenceCell *)self delegate];
+  v14 = delegate2;
   if (!v12)
   {
-    v22 = v10;
+    v22 = conferenceURLForDisplay;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
-    [v14 conferenceCell:self requestPresentShareSheetWithActivityItems:v18 withPopoverSourceView:v4];
-    v15 = v14;
+    [v14 conferenceCell:self requestPresentShareSheetWithActivityItems:v18 withPopoverSourceView:_shareCopy];
+    owningViewController = v14;
     goto LABEL_8;
   }
 
-  v15 = [v13 owningViewController];
+  owningViewController = [delegate2 owningViewController];
 
-  if (v15)
+  if (owningViewController)
   {
     v16 = objc_alloc(MEMORY[0x1E69CD9F8]);
-    v24[0] = v10;
+    v24[0] = conferenceURLForDisplay;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
     v18 = [v16 initWithActivityItems:v17 applicationActivities:0];
 
@@ -823,13 +823,13 @@ void __39__EKEventDetailConferenceCell__openURL__block_invoke_2_72(uint64_t a1, 
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v23 count:1];
     [v18 setExcludedActivityTypes:v19];
 
-    v20 = [(EKEvent *)self->super._event calendar];
-    [v18 setIsContentManaged:{objc_msgSend(v20, "isManaged")}];
+    calendar = [(EKEvent *)self->super._event calendar];
+    [v18 setIsContentManaged:{objc_msgSend(calendar, "isManaged")}];
 
-    v21 = [v18 popoverPresentationController];
-    [v21 setSourceView:v4];
+    popoverPresentationController = [v18 popoverPresentationController];
+    [popoverPresentationController setSourceView:_shareCopy];
 
-    [v15 presentViewController:v18 animated:1 completion:0];
+    [owningViewController presentViewController:v18 animated:1 completion:0];
 LABEL_8:
   }
 }

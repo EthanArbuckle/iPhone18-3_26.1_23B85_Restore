@@ -1,7 +1,7 @@
 @interface PSGNameMentionsHandler
 + (id)sharedInstance;
-- (id)getNameMentionsTriggerForContext:(id)a3 recipientNames:(id)a4 availableApps:(id)a5 localeIdentifier:(id)a6 explanationSet:(id)a7;
-- (id)getPredictedItemsForTrigger:(id)a3 recipientNames:(id)a4 bundleIdentifier:(id)a5 maxItems:(unint64_t)a6;
+- (id)getNameMentionsTriggerForContext:(id)context recipientNames:(id)names availableApps:(id)apps localeIdentifier:(id)identifier explanationSet:(id)set;
+- (id)getPredictedItemsForTrigger:(id)trigger recipientNames:(id)names bundleIdentifier:(id)identifier maxItems:(unint64_t)items;
 @end
 
 @implementation PSGNameMentionsHandler
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __40__PSGNameMentionsHandler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken2_398 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken2_398, block);
@@ -34,30 +34,30 @@ void __40__PSGNameMentionsHandler_sharedInstance__block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)getPredictedItemsForTrigger:(id)a3 recipientNames:(id)a4 bundleIdentifier:(id)a5 maxItems:(unint64_t)a6
+- (id)getPredictedItemsForTrigger:(id)trigger recipientNames:(id)names bundleIdentifier:(id)identifier maxItems:(unint64_t)items
 {
   v52 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v41 = a5;
-  v10 = [v8 triggerAttributes];
-  v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277D23050]];
+  triggerCopy = trigger;
+  namesCopy = names;
+  identifierCopy = identifier;
+  triggerAttributes = [triggerCopy triggerAttributes];
+  v11 = [triggerAttributes objectForKeyedSubscript:*MEMORY[0x277D23050]];
   if ([v11 isEqualToString:@"NameMentions"])
   {
-    v12 = [v10 objectForKeyedSubscript:@"NamePrefix"];
+    v12 = [triggerAttributes objectForKeyedSubscript:@"NamePrefix"];
     v13 = v12;
     if (v12)
     {
       v35 = v11;
-      v36 = v10;
-      v38 = v8;
+      v36 = triggerAttributes;
+      v38 = triggerCopy;
       v34 = v12;
-      v14 = [v12 lowercaseString];
+      lowercaseString = [v12 lowercaseString];
       v15 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"self" ascending:1];
       v49 = v15;
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v49 count:1];
-      v37 = v9;
-      v17 = [v9 sortedArrayUsingDescriptors:v16];
+      v37 = namesCopy;
+      v17 = [namesCopy sortedArrayUsingDescriptors:v16];
 
       v18 = objc_opt_new();
       v42 = 0u;
@@ -91,20 +91,20 @@ void __40__PSGNameMentionsHandler_sharedInstance__block_invoke(uint64_t a1)
               }
             }
 
-            else if (!-[NSObject length](v14, "length") || ([v24 lowercaseString], v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "hasPrefix:", v14), v26, v27))
+            else if (!-[NSObject length](lowercaseString, "length") || ([v24 lowercaseString], v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "hasPrefix:", lowercaseString), v26, v27))
             {
               v46[0] = @"name";
               v46[1] = @"bundleID";
               v47[0] = v24;
               v47[1] = @"com.apple.messages.mentions";
               v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:v46 count:2];
-              v29 = [[PSGOperationalPredictedItem alloc] initWithItemIdentifier:@"NameMentions" value:v24 bundleIdentifier:v41 operationData:v28];
+              v29 = [[PSGOperationalPredictedItem alloc] initWithItemIdentifier:@"NameMentions" value:v24 bundleIdentifier:identifierCopy operationData:v28];
               [v18 addObject:v29];
               v30 = v24;
 
               v31 = [v18 count];
               v21 = v30;
-              if (v31 == a6)
+              if (v31 == items)
               {
                 goto LABEL_26;
               }
@@ -125,21 +125,21 @@ void __40__PSGNameMentionsHandler_sharedInstance__block_invoke(uint64_t a1)
 
 LABEL_26:
 
-      v9 = v37;
-      v8 = v38;
+      namesCopy = v37;
+      triggerCopy = v38;
       v11 = v35;
-      v10 = v36;
+      triggerAttributes = v36;
       v13 = v34;
     }
 
     else
     {
-      v14 = psg_default_log_handle();
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
+      lowercaseString = psg_default_log_handle();
+      if (os_log_type_enabled(lowercaseString, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        v51 = v8;
-        _os_log_fault_impl(&dword_260D18000, v14, OS_LOG_TYPE_FAULT, "[PSGNameMentionsHandler] Name prefix not set in (%@)", buf, 0xCu);
+        v51 = triggerCopy;
+        _os_log_fault_impl(&dword_260D18000, lowercaseString, OS_LOG_TYPE_FAULT, "[PSGNameMentionsHandler] Name prefix not set in (%@)", buf, 0xCu);
       }
 
       v18 = 0;
@@ -152,7 +152,7 @@ LABEL_26:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
-      v51 = v8;
+      v51 = triggerCopy;
       _os_log_fault_impl(&dword_260D18000, v13, OS_LOG_TYPE_FAULT, "[PSGNameMentionsHandler] Unexpected trigger (%@) passed into PSGNameMentionsHandler", buf, 0xCu);
     }
 
@@ -164,20 +164,20 @@ LABEL_26:
   return v18;
 }
 
-- (id)getNameMentionsTriggerForContext:(id)a3 recipientNames:(id)a4 availableApps:(id)a5 localeIdentifier:(id)a6 explanationSet:(id)a7
+- (id)getNameMentionsTriggerForContext:(id)context recipientNames:(id)names availableApps:(id)apps localeIdentifier:(id)identifier explanationSet:(id)set
 {
   v55 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  contextCopy = context;
+  namesCopy = names;
+  appsCopy = apps;
+  identifierCopy = identifier;
+  setCopy = set;
   if (getNameMentionsTriggerForContext_recipientNames_availableApps_localeIdentifier_explanationSet__once != -1)
   {
     dispatch_once(&getNameMentionsTriggerForContext_recipientNames_availableApps_localeIdentifier_explanationSet__once, &__block_literal_global_421);
   }
 
-  if (![v12 count])
+  if (![namesCopy count])
   {
     v34 = psg_default_log_handle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_FAULT))
@@ -189,7 +189,7 @@ LABEL_26:
     goto LABEL_34;
   }
 
-  if (([v13 containsObject:@"com.apple.messages.mentions"] & 1) == 0)
+  if (([appsCopy containsObject:@"com.apple.messages.mentions"] & 1) == 0)
   {
     v35 = psg_default_log_handle();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -198,7 +198,7 @@ LABEL_26:
       _os_log_error_impl(&dword_260D18000, v35, OS_LOG_TYPE_ERROR, "[PSGNameMentionsHandler] Mini-app for recipientNames not available", buf, 2u);
     }
 
-    [v15 pushInternalExplanationCode:2];
+    [setCopy pushInternalExplanationCode:2];
     goto LABEL_35;
   }
 
@@ -206,7 +206,7 @@ LABEL_26:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v16 = v12;
+  v16 = namesCopy;
   v17 = [v16 countByEnumeratingWithState:&v44 objects:v54 count:16];
   if (!v17)
   {
@@ -255,9 +255,9 @@ LABEL_35:
     goto LABEL_32;
   }
 
-  v23 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v14];
-  v24 = [v11 length];
-  v25 = [v11 length];
+  v23 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:identifierCopy];
+  v24 = [contextCopy length];
+  v25 = [contextCopy length];
   if (v24 <= v19)
   {
     v26 = 0;
@@ -278,7 +278,7 @@ LABEL_35:
     v27 = v25;
   }
 
-  v28 = [v11 rangeOfString:@"@" options:4 range:v26 locale:{v27, v23}];
+  v28 = [contextCopy rangeOfString:@"@" options:4 range:v26 locale:{v27, v23}];
   v29 = v28;
   v31 = v30;
   if (v28)
@@ -296,7 +296,7 @@ LABEL_35:
       goto LABEL_56;
     }
 
-    v32 = [v11 substringWithRange:{v28 - 1, 1}];
+    v32 = [contextCopy substringWithRange:{v28 - 1, 1}];
     if ([v32 rangeOfCharacterFromSet:getNameMentionsTriggerForContext_recipientNames_availableApps_localeIdentifier_explanationSet__bannedPredictionCharacterSet]!= 0x7FFFFFFFFFFFFFFFLL)
     {
       v42 = psg_default_log_handle();
@@ -312,7 +312,7 @@ LABEL_35:
     }
   }
 
-  v32 = [v11 substringFromIndex:v29 + v31];
+  v32 = [contextCopy substringFromIndex:v29 + v31];
   if ([v32 length]> v19)
   {
     v38 = psg_default_log_handle();
@@ -334,8 +334,8 @@ LABEL_54:
   if ([v32 length])
   {
     v38 = [v32 substringToIndex:1];
-    v40 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v41 = [v38 rangeOfCharacterFromSet:v40];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v41 = [v38 rangeOfCharacterFromSet:whitespaceCharacterSet];
 
     if (v41 != 0x7FFFFFFFFFFFFFFFLL)
     {

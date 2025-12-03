@@ -3,7 +3,7 @@
 - (NSString)rawString;
 - (NSString)type;
 - (NSString)typeNamespace;
-- (OSLogMessagePlaceholder)initWithPlaceholderStruct:(os_log_fmt_cspec_s *)a3;
+- (OSLogMessagePlaceholder)initWithPlaceholderStruct:(os_log_fmt_cspec_s *)struct;
 - (void)dealloc;
 @end
 
@@ -141,9 +141,9 @@ LABEL_15:
   return result;
 }
 
-- (OSLogMessagePlaceholder)initWithPlaceholderStruct:(os_log_fmt_cspec_s *)a3
+- (OSLogMessagePlaceholder)initWithPlaceholderStruct:(os_log_fmt_cspec_s *)struct
 {
-  if (!a3)
+  if (!struct)
   {
     return 0;
   }
@@ -153,7 +153,7 @@ LABEL_15:
   result = [(OSLogMessagePlaceholder *)&v5 init];
   if (result)
   {
-    result->_placeholder = a3;
+    result->_placeholder = struct;
   }
 
   return result;

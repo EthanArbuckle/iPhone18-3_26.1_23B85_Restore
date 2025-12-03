@@ -1,7 +1,7 @@
 @interface HKStateMachineState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKStateMachineState)init;
-- (HKStateMachineState)initWithIndex:(int64_t)a3 label:(id)a4;
+- (HKStateMachineState)initWithIndex:(int64_t)index label:(id)label;
 @end
 
 @implementation HKStateMachineState
@@ -16,17 +16,17 @@
   return 0;
 }
 
-- (HKStateMachineState)initWithIndex:(int64_t)a3 label:(id)a4
+- (HKStateMachineState)initWithIndex:(int64_t)index label:(id)label
 {
-  v6 = a4;
+  labelCopy = label;
   v12.receiver = self;
   v12.super_class = HKStateMachineState;
   v7 = [(HKStateMachineState *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_index = a3;
-    v9 = [v6 copy];
+    v7->_index = index;
+    v9 = [labelCopy copy];
     label = v8->_label;
     v8->_label = v9;
   }
@@ -34,11 +34,11 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_index == v4[1] && [(NSString *)self->_label isEqualToString:v4[2]];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_index == equalCopy[1] && [(NSString *)self->_label isEqualToString:equalCopy[2]];
 
   return v5;
 }

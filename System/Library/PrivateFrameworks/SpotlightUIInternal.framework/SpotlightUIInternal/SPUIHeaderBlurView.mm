@@ -1,9 +1,9 @@
 @interface SPUIHeaderBlurView
 - (SPUIHeaderBlurView)init;
-- (void)_setContinuousCornerRadius:(double)a3;
-- (void)setKeyboardIsUp:(BOOL)a3;
-- (void)setTintColor:(id)a3;
-- (void)setUseInPlaceFilteredBlur:(BOOL)a3;
+- (void)_setContinuousCornerRadius:(double)radius;
+- (void)setKeyboardIsUp:(BOOL)up;
+- (void)setTintColor:(id)color;
+- (void)setUseInPlaceFilteredBlur:(BOOL)blur;
 - (void)updateEffect;
 @end
 
@@ -18,20 +18,20 @@
   {
     if ([MEMORY[0x277D65D28] bottomSearchFieldEnabled])
     {
-      v3 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v3 addObserver:v2 selector:sel_keyboardWillShow name:*MEMORY[0x277D76C60] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v2 selector:sel_keyboardWillShow name:*MEMORY[0x277D76C60] object:0];
 
-      v4 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v4 addObserver:v2 selector:sel_keyboardWillHide name:*MEMORY[0x277D76C50] object:0];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 addObserver:v2 selector:sel_keyboardWillHide name:*MEMORY[0x277D76C50] object:0];
 
-      v5 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v5 addObserver:v2 selector:sel_updateEffect name:*MEMORY[0x277D764C8] object:0];
+      defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter3 addObserver:v2 selector:sel_updateEffect name:*MEMORY[0x277D764C8] object:0];
 
       [(SPUIHeaderBlurView *)v2 setKeyboardIsUp:1];
       if (_UISolariumEnabled())
       {
-        v6 = [(SPUIHeaderBlurView *)v2 contentView];
-        [SPUIViewUtilities setGlassForView:v6 style:1];
+        contentView = [(SPUIHeaderBlurView *)v2 contentView];
+        [SPUIViewUtilities setGlassForView:contentView style:1];
       }
     }
 
@@ -40,8 +40,8 @@
       [(SPUIHeaderBlurView *)v2 updateEffect];
     }
 
-    v7 = [(SPUIHeaderBlurView *)v2 contentView];
-    [v7 setAlpha:1.0];
+    contentView2 = [(SPUIHeaderBlurView *)v2 contentView];
+    [contentView2 setAlpha:1.0];
   }
 
   return v2;
@@ -55,13 +55,13 @@
     if (UIAccessibilityIsReduceTransparencyEnabled())
     {
       v4 = MEMORY[0x277D75358];
-      v5 = [MEMORY[0x277D75348] darkGrayColor];
-      v6 = [v4 colorEffectColor:v5];
+      darkGrayColor = [MEMORY[0x277D75348] darkGrayColor];
+      v6 = [v4 colorEffectColor:darkGrayColor];
       v22[0] = v6;
       v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
       [(SPUIHeaderBlurView *)self setBackgroundEffects:v7];
 
-      v8 = self;
+      selfCopy2 = self;
       v9 = 0;
     }
 
@@ -96,10 +96,10 @@ LABEL_11:
       [(SPUIHeaderBlurView *)self setBackgroundEffects:v18];
 
       v9 = @"SPUIHeaderBlurView";
-      v8 = self;
+      selfCopy2 = self;
     }
 
-    [(SPUIHeaderBlurView *)v8 _setGroupName:v9];
+    [(SPUIHeaderBlurView *)selfCopy2 _setGroupName:v9];
     goto LABEL_11;
   }
 
@@ -109,39 +109,39 @@ LABEL_11:
   [(SPUIHeaderBlurView *)self _setGroupName:0];
 }
 
-- (void)setKeyboardIsUp:(BOOL)a3
+- (void)setKeyboardIsUp:(BOOL)up
 {
-  if (self->_keyboardIsUp != a3)
+  if (self->_keyboardIsUp != up)
   {
-    self->_keyboardIsUp = a3;
+    self->_keyboardIsUp = up;
     [(SPUIHeaderBlurView *)self updateEffect];
   }
 }
 
-- (void)setUseInPlaceFilteredBlur:(BOOL)a3
+- (void)setUseInPlaceFilteredBlur:(BOOL)blur
 {
-  if (self->_useInPlaceFilteredBlur != a3)
+  if (self->_useInPlaceFilteredBlur != blur)
   {
-    self->_useInPlaceFilteredBlur = a3;
+    self->_useInPlaceFilteredBlur = blur;
     [(SPUIHeaderBlurView *)self updateEffect];
   }
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v4.receiver = self;
   v4.super_class = SPUIHeaderBlurView;
-  [(SPUIHeaderBlurView *)&v4 setTintColor:a3];
+  [(SPUIHeaderBlurView *)&v4 setTintColor:color];
   [(SPUIHeaderBlurView *)self updateEffect];
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   v6.receiver = self;
   v6.super_class = SPUIHeaderBlurView;
   [(SPUIHeaderBlurView *)&v6 _setContinuousCornerRadius:?];
-  v5 = [(SPUIHeaderBlurView *)self contentView];
-  [v5 _setContinuousCornerRadius:a3];
+  contentView = [(SPUIHeaderBlurView *)self contentView];
+  [contentView _setContinuousCornerRadius:radius];
 }
 
 @end

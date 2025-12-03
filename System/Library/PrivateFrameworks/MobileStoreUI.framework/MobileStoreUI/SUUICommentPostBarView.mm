@@ -1,36 +1,36 @@
 @interface SUUICommentPostBarView
 - (BOOL)resignFirstResponder;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
 - (CGSize)sizeThatFits:(CGSize)result;
 - (SUUICommentDelegate)delegate;
-- (SUUICommentPostBarView)initWithFrame:(CGRect)a3;
+- (SUUICommentPostBarView)initWithFrame:(CGRect)frame;
 - (id)_asLabel;
 - (id)_asNameButton;
-- (void)_changeCommenter:(id)a3;
-- (void)_post:(id)a3;
+- (void)_changeCommenter:(id)commenter;
+- (void)_post:(id)_post;
 - (void)_postComment;
 - (void)layoutSubviews;
-- (void)setAsText:(id)a3;
-- (void)setCommenter:(id)a3;
-- (void)setPostButtonVisible:(BOOL)a3;
+- (void)setAsText:(id)text;
+- (void)setCommenter:(id)commenter;
+- (void)setPostButtonVisible:(BOOL)visible;
 - (void)tintColorDidChange;
 @end
 
 @implementation SUUICommentPostBarView
 
-- (SUUICommentPostBarView)initWithFrame:(CGRect)a3
+- (SUUICommentPostBarView)initWithFrame:(CGRect)frame
 {
   v30.receiver = self;
   v30.super_class = SUUICommentPostBarView;
-  v3 = [(SUUICommentPostBarView *)&v30 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUICommentPostBarView *)&v30 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x277D75348] colorWithWhite:0.97254902 alpha:1.0];
     [(SUUICommentPostBarView *)v3 setBackgroundColor:v4];
 
     v5 = [MEMORY[0x277D75348] colorWithRed:0.835294118 green:0.839215686 blue:0.850980392 alpha:1.0];
-    v6 = [MEMORY[0x277D759A0] mainScreen];
-    [v6 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v8 = 1.0 / v7;
 
     [(SUUICommentPostBarView *)v3 bounds];
@@ -48,31 +48,31 @@
     v3->_postTextField = v16;
 
     [(SUUICommentPostBarTextField *)v3->_postTextField setDelegate:v3];
-    v18 = [(SUUICommentPostBarTextField *)v3->_postTextField layer];
-    [v18 setBorderWidth:1.0];
+    layer = [(SUUICommentPostBarTextField *)v3->_postTextField layer];
+    [layer setBorderWidth:1.0];
 
-    v19 = [(SUUICommentPostBarTextField *)v3->_postTextField layer];
-    [v19 setCornerRadius:5.0];
+    layer2 = [(SUUICommentPostBarTextField *)v3->_postTextField layer];
+    [layer2 setCornerRadius:5.0];
 
-    v20 = [(SUUICommentPostBarTextField *)v3->_postTextField layer];
-    [v20 setBorderColor:{objc_msgSend(v5, "CGColor")}];
+    layer3 = [(SUUICommentPostBarTextField *)v3->_postTextField layer];
+    [layer3 setBorderColor:{objc_msgSend(v5, "CGColor")}];
 
     [(SUUICommentPostBarView *)v3 addSubview:v3->_postTextField];
     v21 = [objc_alloc(MEMORY[0x277D75220]) initWithFrame:{v12, v13, v14, v15}];
     postButton = v3->_postButton;
     v3->_postButton = v21;
 
-    v23 = [(UIButton *)v3->_postButton titleLabel];
+    titleLabel = [(UIButton *)v3->_postButton titleLabel];
     v24 = [MEMORY[0x277D74300] boldSystemFontOfSize:16.0];
-    [v23 setFont:v24];
+    [titleLabel setFont:v24];
 
     v25 = v3->_postButton;
-    v26 = [(SUUICommentPostBarView *)v3 tintColor];
-    [(UIButton *)v25 setTitleColor:v26 forState:0];
+    tintColor = [(SUUICommentPostBarView *)v3 tintColor];
+    [(UIButton *)v25 setTitleColor:tintColor forState:0];
 
     v27 = v3->_postButton;
-    v28 = [MEMORY[0x277D75348] grayColor];
-    [(UIButton *)v27 setTitleColor:v28 forState:2];
+    grayColor = [MEMORY[0x277D75348] grayColor];
+    [(UIButton *)v27 setTitleColor:grayColor forState:2];
 
     [(UIButton *)v3->_postButton addTarget:v3 action:sel__post_ forControlEvents:64];
     [(UIButton *)v3->_postButton setEnabled:0];
@@ -82,97 +82,97 @@
   return v3;
 }
 
-- (void)_post:(id)a3
+- (void)_post:(id)_post
 {
   [(SUUICommentPostBarView *)self _postComment];
 
   [(SUUICommentPostBarView *)self resignFirstResponder];
 }
 
-- (void)_changeCommenter:(id)a3
+- (void)_changeCommenter:(id)commenter
 {
-  v9 = a3;
-  v4 = [(SUUICommentPostBarView *)self delegate];
-  if (v4)
+  commenterCopy = commenter;
+  delegate = [(SUUICommentPostBarView *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
-    v6 = [(SUUICommentPostBarView *)self delegate];
-    v7 = [v6 conformsToProtocol:&unk_286BE7088];
+    v5 = delegate;
+    delegate2 = [(SUUICommentPostBarView *)self delegate];
+    v7 = [delegate2 conformsToProtocol:&unk_286BE7088];
 
     if (v7)
     {
-      v8 = [(SUUICommentPostBarView *)self delegate];
-      [v8 commentPostBarView:self changeCommenter:v9];
+      delegate3 = [(SUUICommentPostBarView *)self delegate];
+      [delegate3 commentPostBarView:self changeCommenter:commenterCopy];
     }
   }
 }
 
-- (void)setAsText:(id)a3
+- (void)setAsText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   asText = self->_asText;
-  v7 = v5;
-  v9 = v5;
-  if (asText != v5)
+  v7 = textCopy;
+  v9 = textCopy;
+  if (asText != textCopy)
   {
-    asText = [(NSString *)asText isEqual:v5];
+    asText = [(NSString *)asText isEqual:textCopy];
     if ((asText & 1) == 0)
     {
-      objc_storeStrong(&self->_asText, a3);
+      objc_storeStrong(&self->_asText, text);
     }
 
     v7 = self->_asText;
-    v5 = v9;
+    textCopy = v9;
   }
 
   if (v7)
   {
-    v8 = [(SUUICommentPostBarView *)self _asLabel];
-    [v8 setText:self->_asText];
+    _asLabel = [(SUUICommentPostBarView *)self _asLabel];
+    [_asLabel setText:self->_asText];
 
-    v5 = v9;
+    textCopy = v9;
   }
 
-  MEMORY[0x2821F96F8](asText, v5);
+  MEMORY[0x2821F96F8](asText, textCopy);
 }
 
-- (void)setCommenter:(id)a3
+- (void)setCommenter:(id)commenter
 {
-  v5 = a3;
+  commenterCopy = commenter;
   commenter = self->_commenter;
-  if (commenter != v5)
+  if (commenter != commenterCopy)
   {
-    v8 = v5;
-    commenter = [commenter isEqual:v5];
-    v5 = v8;
+    v8 = commenterCopy;
+    commenter = [commenter isEqual:commenterCopy];
+    commenterCopy = v8;
     if ((commenter & 1) == 0)
     {
-      objc_storeStrong(&self->_commenter, a3);
-      v7 = [(SUUICommentPostBarView *)self _asNameButton];
-      [v7 setTitle:self->_commenter forState:0];
+      objc_storeStrong(&self->_commenter, commenter);
+      _asNameButton = [(SUUICommentPostBarView *)self _asNameButton];
+      [_asNameButton setTitle:self->_commenter forState:0];
 
       commenter = [(SUUICommentPostBarView *)self setNeedsLayout];
-      v5 = v8;
+      commenterCopy = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](commenter, v5);
+  MEMORY[0x2821F96F8](commenter, commenterCopy);
 }
 
-- (void)setPostButtonVisible:(BOOL)a3
+- (void)setPostButtonVisible:(BOOL)visible
 {
-  [(UIButton *)self->_postButton setHidden:!a3];
+  [(UIButton *)self->_postButton setHidden:!visible];
 
   [(SUUICommentPostBarView *)self setNeedsLayout];
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  v11 = [v10 isEqualToString:@"\n"];
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  stringCopy = string;
+  v11 = [stringCopy isEqualToString:@"\n"];
   if (v11)
   {
     [(SUUICommentPostBarView *)self _postComment];
@@ -180,8 +180,8 @@
 
   else
   {
-    v12 = [v9 text];
-    v13 = [v12 stringByReplacingCharactersInRange:location withString:{length, v10}];
+    text = [fieldCopy text];
+    v13 = [text stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
 
     -[UIButton setEnabled:](self->_postButton, "setEnabled:", [v13 length] != 0);
   }
@@ -197,20 +197,20 @@
   if (self->_commenter)
   {
     v3 = [MEMORY[0x277D75D18] userInterfaceLayoutDirectionForSemanticContentAttribute:{-[SUUICommentPostBarView semanticContentAttribute](self, "semanticContentAttribute")}];
-    v4 = [(SUUICommentPostBarView *)self _asLabel];
-    [v4 setHidden:0];
+    _asLabel = [(SUUICommentPostBarView *)self _asLabel];
+    [_asLabel setHidden:0];
 
-    v5 = [(SUUICommentPostBarView *)self _asNameButton];
-    [v5 setHidden:0];
+    _asNameButton = [(SUUICommentPostBarView *)self _asNameButton];
+    [_asNameButton setHidden:0];
 
-    v6 = [(SUUICommentPostBarView *)self _asLabel];
-    [v6 frame];
+    _asLabel2 = [(SUUICommentPostBarView *)self _asLabel];
+    [_asLabel2 frame];
     v8 = v7;
     v10 = v9;
 
-    v11 = [(SUUICommentPostBarView *)self _asLabel];
+    _asLabel3 = [(SUUICommentPostBarView *)self _asLabel];
     [(SUUICommentPostBarView *)self bounds];
-    [v11 sizeThatFits:{v12, v13}];
+    [_asLabel3 sizeThatFits:{v12, v13}];
     v15 = v14;
     v17 = v16;
 
@@ -232,11 +232,11 @@
 
     v24 = (30.0 - v17) * 0.5;
     v25 = ceilf(v24) + 2.0;
-    v26 = [(SUUICommentPostBarView *)self _asLabel];
-    [v26 setFrame:{v19, v25, v15, v17}];
+    _asLabel4 = [(SUUICommentPostBarView *)self _asLabel];
+    [_asLabel4 setFrame:{v19, v25, v15, v17}];
 
-    v27 = [(SUUICommentPostBarView *)self _asNameButton];
-    [v27 frame];
+    _asNameButton2 = [(SUUICommentPostBarView *)self _asNameButton];
+    [_asNameButton2 frame];
     v29 = v28;
     v31 = v30;
 
@@ -288,18 +288,18 @@
     v22 = 30.0;
     v46 = (30.0 - v37) * 0.5;
     v47 = ceilf(v46) + 2.0;
-    v21 = [(SUUICommentPostBarView *)self _asNameButton];
-    [v21 setFrame:{v45, v47, v35, v37}];
+    _asNameButton3 = [(SUUICommentPostBarView *)self _asNameButton];
+    [_asNameButton3 setFrame:{v45, v47, v35, v37}];
     v23 = 40.0;
   }
 
   else
   {
-    v20 = [(SUUICommentPostBarView *)self _asLabel];
-    [v20 setHidden:1];
+    _asLabel5 = [(SUUICommentPostBarView *)self _asLabel];
+    [_asLabel5 setHidden:1];
 
-    v21 = [(SUUICommentPostBarView *)self _asNameButton];
-    [v21 setHidden:1];
+    _asNameButton3 = [(SUUICommentPostBarView *)self _asNameButton];
+    [_asNameButton3 setHidden:1];
     v22 = 1.0;
     v23 = 45.0;
   }
@@ -364,15 +364,15 @@
   asNameButton = self->_asNameButton;
   if (asNameButton)
   {
-    v4 = [(SUUICommentPostBarView *)self tintColor];
-    [(UIButton *)asNameButton setTintColor:v4];
+    tintColor = [(SUUICommentPostBarView *)self tintColor];
+    [(UIButton *)asNameButton setTintColor:tintColor];
   }
 
   postButton = self->_postButton;
   if (postButton)
   {
-    v6 = [(SUUICommentPostBarView *)self tintColor];
-    [(UIButton *)postButton setTitleColor:v6 forState:0];
+    tintColor2 = [(SUUICommentPostBarView *)self tintColor];
+    [(UIButton *)postButton setTitleColor:tintColor2 forState:0];
   }
 }
 
@@ -386,13 +386,13 @@
     v6 = self->_asNameButton;
     self->_asNameButton = v5;
 
-    v7 = [(UIButton *)self->_asNameButton titleLabel];
+    titleLabel = [(UIButton *)self->_asNameButton titleLabel];
     v8 = [MEMORY[0x277D74300] systemFontOfSize:15.0];
-    [v7 setFont:v8];
+    [titleLabel setFont:v8];
 
     v9 = self->_asNameButton;
-    v10 = [(SUUICommentPostBarView *)self tintColor];
-    [(UIButton *)v9 setTitleColor:v10 forState:0];
+    tintColor = [(SUUICommentPostBarView *)self tintColor];
+    [(UIButton *)v9 setTitleColor:tintColor forState:0];
 
     [(UIButton *)self->_asNameButton addTarget:self action:sel__changeCommenter_ forControlEvents:64];
     [(SUUICommentPostBarView *)self addSubview:self->_asNameButton];
@@ -430,20 +430,20 @@
 
 - (void)_postComment
 {
-  v8 = [(SUUICommentPostBarTextField *)self->_postTextField text];
-  if ([v8 length])
+  text = [(SUUICommentPostBarTextField *)self->_postTextField text];
+  if ([text length])
   {
-    v3 = [(SUUICommentPostBarView *)self delegate];
-    if (v3)
+    delegate = [(SUUICommentPostBarView *)self delegate];
+    if (delegate)
     {
-      v4 = v3;
-      v5 = [(SUUICommentPostBarView *)self delegate];
-      v6 = [v5 conformsToProtocol:&unk_286BE7088];
+      v4 = delegate;
+      delegate2 = [(SUUICommentPostBarView *)self delegate];
+      v6 = [delegate2 conformsToProtocol:&unk_286BE7088];
 
       if (v6)
       {
-        v7 = [(SUUICommentPostBarView *)self delegate];
-        [v7 commentPostBarView:self text:v8 as:self->_commenter];
+        delegate3 = [(SUUICommentPostBarView *)self delegate];
+        [delegate3 commentPostBarView:self text:text as:self->_commenter];
       }
     }
   }

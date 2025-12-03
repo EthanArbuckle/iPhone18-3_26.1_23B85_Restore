@@ -9,24 +9,24 @@
   v2 = +[CSHangUpEnabledMonitor sharedInstance];
   if ([v2 isEnabled])
   {
-    v3 = 1;
+    isEnabled = 1;
   }
 
   else
   {
     v4 = +[CSSiriInCallEnabledMonitor sharedInstance];
-    v3 = [v4 isEnabled];
+    isEnabled = [v4 isEnabled];
   }
 
   v5 = +[CSUtils supportHangUp];
   v6 = +[CSPhoneCallStateMonitorFactory phoneCallStateMonitor];
-  v7 = [v6 phoneCallState];
+  phoneCallState = [v6 phoneCallState];
 
   v8 = +[CSPhoneCallStateMonitorFactory phoneCallStateMonitor];
-  v9 = [v8 firstPartyCall];
+  firstPartyCall = [v8 firstPartyCall];
 
   v10 = +[CSBluetoothWirelessSplitterMonitor sharedInstance];
-  v11 = [v10 splitterState];
+  splitterState = [v10 splitterState];
 
   v12 = +[CSUtils fetchHypotheticalRouteType];
   if (v12 == 1)
@@ -53,12 +53,12 @@
     v24 = 136315394;
     v25 = "+[CSVoiceTriggerEnabledPolicyHelper siriInCallPolicy]";
     v26 = 1024;
-    v27 = v3;
+    v27 = isEnabled;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%s Hang up toggle: %d", &v24, 0x12u);
   }
 
-  v16 = v7 - 5;
-  if ((v5 & v3 & 1) == 0 && v16 >= 0xFFFFFFFFFFFFFFFELL)
+  v16 = phoneCallState - 5;
+  if ((v5 & isEnabled & 1) == 0 && v16 >= 0xFFFFFFFFFFFFFFFELL)
   {
     v17 = CSLogContextFacilityCoreSpeech;
     v18 = os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT);
@@ -78,12 +78,12 @@
     goto LABEL_20;
   }
 
-  if ((v16 < 0xFFFFFFFFFFFFFFFELL) | v9 & 1)
+  if ((v16 < 0xFFFFFFFFFFFFFFFELL) | firstPartyCall & 1)
   {
     if (v16 < 0xFFFFFFFFFFFFFFFELL)
     {
 LABEL_20:
-      if (v7 == 2 && ((v11 - 2) < 3 || !(v14 | v13)))
+      if (phoneCallState == 2 && ((splitterState - 2) < 3 || !(v14 | v13)))
       {
         v22 = CSLogContextFacilityCoreSpeech;
         v18 = os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT);
@@ -99,7 +99,7 @@ LABEL_20:
         v28 = 1024;
         v29 = v13;
         v30 = 1024;
-        v31 = (v11 - 2) < 3;
+        v31 = (splitterState - 2) < 3;
         v19 = "%s VoiceTrigger cannot be turned on because we are in a ringtone and hsPhoneCallCapableHeadsetConnected: %d builtInState: %d isInSplitterMode: %d";
         v20 = v22;
         v21 = 30;

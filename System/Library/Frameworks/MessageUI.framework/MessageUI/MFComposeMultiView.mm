@@ -1,5 +1,5 @@
 @interface MFComposeMultiView
-- (MFComposeMultiView)initWithFrame:(CGRect)a3;
+- (MFComposeMultiView)initWithFrame:(CGRect)frame;
 - (MFComposeMultiViewDelegate)scribbleDelegate;
 - (id)_accountDescriptionAttributedString;
 - (id)accountLabel;
@@ -7,24 +7,24 @@
 - (id)imageSizeLabel;
 - (id)labelColor;
 - (id)placeholderImageSizeLabel;
-- (void)_scribbleInteraction:(id)a3 focusElement:(id)a4 initialFocusSelectionReferencePoint:(CGPoint)a5 completion:(id)a6;
-- (void)_scribbleInteraction:(id)a3 requestElementsInRect:(CGRect)a4 completion:(id)a5;
+- (void)_scribbleInteraction:(id)interaction focusElement:(id)element initialFocusSelectionReferencePoint:(CGPoint)point completion:(id)completion;
+- (void)_scribbleInteraction:(id)interaction requestElementsInRect:(CGRect)rect completion:(id)completion;
 - (void)layoutSubviews;
 - (void)refreshPreferredContentSize;
-- (void)setAccountAutoselected:(BOOL)a3;
-- (void)setAccountDescription:(id)a3;
-- (void)setAccountHasUnsafeDomain:(BOOL)a3;
-- (void)setImageSizeDescription:(id)a3;
-- (void)showLoadingState:(BOOL)a3;
+- (void)setAccountAutoselected:(BOOL)autoselected;
+- (void)setAccountDescription:(id)description;
+- (void)setAccountHasUnsafeDomain:(BOOL)domain;
+- (void)setImageSizeDescription:(id)description;
+- (void)showLoadingState:(BOOL)state;
 @end
 
 @implementation MFComposeMultiView
 
-- (MFComposeMultiView)initWithFrame:(CGRect)a3
+- (MFComposeMultiView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = MFComposeMultiView;
-  v3 = [(MFComposeMultiView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFComposeMultiView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -50,36 +50,36 @@
 
     [(MFComposeMultiView *)self bounds];
     [(MFActivityIndicatorLabel *)self->_accountLabel setFrame:?];
-    v6 = [objc_opt_class() defaultFont];
-    v7 = [(MFActivityIndicatorLabel *)self->_accountLabel textLabel];
-    [v7 setFont:v6];
+    defaultFont = [objc_opt_class() defaultFont];
+    textLabel = [(MFActivityIndicatorLabel *)self->_accountLabel textLabel];
+    [textLabel setFont:defaultFont];
 
-    v8 = [(MFComposeMultiView *)self labelColor];
-    v9 = [(MFActivityIndicatorLabel *)self->_accountLabel textLabel];
-    [v9 setTextColor:v8];
+    labelColor = [(MFComposeMultiView *)self labelColor];
+    textLabel2 = [(MFActivityIndicatorLabel *)self->_accountLabel textLabel];
+    [textLabel2 setTextColor:labelColor];
 
     [(MFActivityIndicatorLabel *)self->_accountLabel sizeToFit];
-    v10 = [MEMORY[0x1E69DC668] sharedApplication];
-    v11 = [v10 userInterfaceLayoutDirection];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-    if (v11 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
-      v12 = [(MFActivityIndicatorLabel *)self->_accountLabel textLabel];
-      [v12 setTextAlignment:2];
+      textLabel3 = [(MFActivityIndicatorLabel *)self->_accountLabel textLabel];
+      [textLabel3 setTextAlignment:2];
     }
 
     [(MFComposeMultiView *)self addSubview:self->_accountLabel];
     v13 = MEMORY[0x1E696ACD8];
-    v24 = [(MFComposeMultiView *)self labelView];
-    v23 = [v24 trailingAnchor];
-    v22 = [(MFActivityIndicatorLabel *)self->_accountLabel leadingAnchor];
-    v14 = [v23 constraintEqualToAnchor:6.0 constant:?];
+    labelView = [(MFComposeMultiView *)self labelView];
+    trailingAnchor = [labelView trailingAnchor];
+    leadingAnchor = [(MFActivityIndicatorLabel *)self->_accountLabel leadingAnchor];
+    v14 = [trailingAnchor constraintEqualToAnchor:6.0 constant:?];
     v25[0] = v14;
-    v15 = [(MFActivityIndicatorLabel *)self->_accountLabel textLabel];
-    v16 = [v15 firstBaselineAnchor];
-    v17 = [(MFComposeMultiView *)self labelView];
-    v18 = [v17 firstBaselineAnchor];
-    v19 = [v16 constraintEqualToAnchor:v18];
+    textLabel4 = [(MFActivityIndicatorLabel *)self->_accountLabel textLabel];
+    firstBaselineAnchor = [textLabel4 firstBaselineAnchor];
+    labelView2 = [(MFComposeMultiView *)self labelView];
+    firstBaselineAnchor2 = [labelView2 firstBaselineAnchor];
+    v19 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
     v25[1] = v19;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:2];
     [v13 activateConstraints:v20];
@@ -101,12 +101,12 @@
     self->_imageSizeLabel = v5;
 
     v7 = self->_imageSizeLabel;
-    v8 = [objc_opt_class() defaultFont];
-    [(UILabel *)v7 setFont:v8];
+    defaultFont = [objc_opt_class() defaultFont];
+    [(UILabel *)v7 setFont:defaultFont];
 
     v9 = self->_imageSizeLabel;
-    v10 = [(MFComposeMultiView *)self labelColor];
-    [(UILabel *)v9 setTextColor:v10];
+    labelColor = [(MFComposeMultiView *)self labelColor];
+    [(UILabel *)v9 setTextColor:labelColor];
 
     [(UILabel *)self->_imageSizeLabel setAlpha:0.0];
     [(UILabel *)self->_imageSizeLabel sizeToFit];
@@ -129,12 +129,12 @@
     self->_placeholderImageSizeLabel = v5;
 
     v7 = self->_placeholderImageSizeLabel;
-    v8 = [objc_opt_class() defaultFont];
-    [(UILabel *)v7 setFont:v8];
+    defaultFont = [objc_opt_class() defaultFont];
+    [(UILabel *)v7 setFont:defaultFont];
 
     v9 = self->_placeholderImageSizeLabel;
-    v10 = [(MFComposeMultiView *)self labelColor];
-    [(UILabel *)v9 setTextColor:v10];
+    labelColor = [(MFComposeMultiView *)self labelColor];
+    [(UILabel *)v9 setTextColor:labelColor];
 
     v11 = self->_placeholderImageSizeLabel;
     v12 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -209,54 +209,54 @@
   return v3;
 }
 
-- (void)setAccountHasUnsafeDomain:(BOOL)a3
+- (void)setAccountHasUnsafeDomain:(BOOL)domain
 {
-  if (self->_accountHasUnsafeDomain != a3)
+  if (self->_accountHasUnsafeDomain != domain)
   {
-    self->_accountHasUnsafeDomain = a3;
-    v6 = [(MFComposeMultiView *)self accountLabel];
-    v4 = [v6 textLabel];
-    v5 = [(MFComposeMultiView *)self _accountDescriptionAttributedString];
-    [v4 setAttributedText:v5];
+    self->_accountHasUnsafeDomain = domain;
+    accountLabel = [(MFComposeMultiView *)self accountLabel];
+    textLabel = [accountLabel textLabel];
+    _accountDescriptionAttributedString = [(MFComposeMultiView *)self _accountDescriptionAttributedString];
+    [textLabel setAttributedText:_accountDescriptionAttributedString];
   }
 }
 
-- (void)setAccountDescription:(id)a3
+- (void)setAccountDescription:(id)description
 {
-  v5 = a3;
-  if (self->_accountDescription != v5)
+  descriptionCopy = description;
+  if (self->_accountDescription != descriptionCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_accountDescription, a3);
-    v6 = [(MFComposeMultiView *)self accountLabel];
-    v7 = [v6 textLabel];
-    v8 = [(MFComposeMultiView *)self _accountDescriptionAttributedString];
-    [v7 setAttributedText:v8];
+    v9 = descriptionCopy;
+    objc_storeStrong(&self->_accountDescription, description);
+    accountLabel = [(MFComposeMultiView *)self accountLabel];
+    textLabel = [accountLabel textLabel];
+    _accountDescriptionAttributedString = [(MFComposeMultiView *)self _accountDescriptionAttributedString];
+    [textLabel setAttributedText:_accountDescriptionAttributedString];
 
-    v5 = v9;
+    descriptionCopy = v9;
   }
 }
 
-- (void)setImageSizeDescription:(id)a3
+- (void)setImageSizeDescription:(id)description
 {
-  v5 = a3;
-  v4 = [(MFComposeMultiView *)self imageSizeLabel];
-  [v4 setText:v5];
+  descriptionCopy = description;
+  imageSizeLabel = [(MFComposeMultiView *)self imageSizeLabel];
+  [imageSizeLabel setText:descriptionCopy];
 }
 
-- (void)showLoadingState:(BOOL)a3
+- (void)showLoadingState:(BOOL)state
 {
-  v3 = a3;
-  v4 = [(MFComposeMultiView *)self accountLabel];
-  v5 = v4;
-  if (v3)
+  stateCopy = state;
+  accountLabel = [(MFComposeMultiView *)self accountLabel];
+  v5 = accountLabel;
+  if (stateCopy)
   {
-    [v4 startAnimating];
+    [accountLabel startAnimating];
   }
 
   else
   {
-    [v4 stopAnimating];
+    [accountLabel stopAnimating];
   }
 }
 
@@ -265,20 +265,20 @@
   v61.receiver = self;
   v61.super_class = MFComposeMultiView;
   [(MFComposeMultiView *)&v61 layoutSubviews];
-  v3 = [(MFComposeMultiView *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(MFComposeMultiView *)self effectiveUserInterfaceLayoutDirection];
   [(MFActivityIndicatorLabel *)self->_accountLabel sizeToFit];
   [(MFActivityIndicatorLabel *)self->_accountLabel frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(MFComposeMultiView *)self labelView];
-  [v12 frame];
+  labelView = [(MFComposeMultiView *)self labelView];
+  [labelView frame];
   v14 = v13;
   v16 = v15;
 
   v17 = v16 + v14 + 6.0;
-  if (v3 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v17 = v5;
     v18 = v14 + -6.0;
@@ -294,14 +294,14 @@
   {
     if (self->_imageSizeShown)
     {
-      v19 = [(UILabel *)self->_imageSizeLabel text];
+      text = [(UILabel *)self->_imageSizeLabel text];
 
-      v20 = [(MFComposeMultiView *)self imageSizeHeaderLabelView];
-      [v20 setAlpha:1.0];
+      imageSizeHeaderLabelView = [(MFComposeMultiView *)self imageSizeHeaderLabelView];
+      [imageSizeHeaderLabelView setAlpha:1.0];
 
-      v21 = [(MFComposeMultiView *)self imageSizeLabel];
-      v22 = v21;
-      if (v19)
+      imageSizeLabel = [(MFComposeMultiView *)self imageSizeLabel];
+      v22 = imageSizeLabel;
+      if (text)
       {
         v23 = 1.0;
       }
@@ -311,28 +311,28 @@
         v23 = 0.0;
       }
 
-      [v21 setAlpha:v23];
+      [imageSizeLabel setAlpha:v23];
 
-      v24 = [(MFComposeMultiView *)self placeholderImageSizeLabel];
-      v25 = v24;
+      placeholderImageSizeLabel = [(MFComposeMultiView *)self placeholderImageSizeLabel];
+      v25 = placeholderImageSizeLabel;
       v26 = 1.0;
-      if (v19)
+      if (text)
       {
         v26 = 0.0;
       }
 
-      [v24 setAlpha:v26];
+      [placeholderImageSizeLabel setAlpha:v26];
 
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __36__MFComposeMultiView_layoutSubviews__block_invoke;
       aBlock[3] = &unk_1E806CE18;
-      v60 = v3 == 1;
+      v60 = effectiveUserInterfaceLayoutDirection == 1;
       aBlock[4] = self;
       v27 = _Block_copy(aBlock);
       [(UILabel *)self->_imageSizeLabel sizeToFit];
-      v28 = [(MFComposeMultiView *)self labelView];
-      [v28 frame];
+      labelView2 = [(MFComposeMultiView *)self labelView];
+      [labelView2 frame];
       v30 = v29;
       v32 = v31;
 
@@ -355,7 +355,7 @@
       [(CNComposeHeaderLabelView *)self->_imageSizeHeaderLabelView frame];
       v48 = v47;
       v50 = v49;
-      if (v19)
+      if (text)
       {
         v51 = v37;
       }
@@ -366,9 +366,9 @@
         v51 = v46;
       }
 
-      if (v3 == 1)
+      if (effectiveUserInterfaceLayoutDirection == 1)
       {
-        if (v19)
+        if (text)
         {
           v52 = v58;
         }
@@ -378,7 +378,7 @@
           v52 = v43;
         }
 
-        if (v19)
+        if (text)
         {
           v53 = v57;
         }
@@ -434,24 +434,24 @@ double __36__MFComposeMultiView_layoutSubviews__block_invoke(uint64_t a1, double
   v8.receiver = self;
   v8.super_class = MFComposeMultiView;
   [(MFComposeMultiView *)&v8 refreshPreferredContentSize];
-  v3 = [objc_opt_class() defaultFont];
+  defaultFont = [objc_opt_class() defaultFont];
   accountLabel = self->_accountLabel;
   if (accountLabel)
   {
-    v5 = [(MFActivityIndicatorLabel *)accountLabel textLabel];
-    [v5 setFont:v3];
+    textLabel = [(MFActivityIndicatorLabel *)accountLabel textLabel];
+    [textLabel setFont:defaultFont];
   }
 
   imageSizeLabel = self->_imageSizeLabel;
   if (imageSizeLabel)
   {
-    [(UILabel *)imageSizeLabel setFont:v3];
+    [(UILabel *)imageSizeLabel setFont:defaultFont];
   }
 
   placeholderImageSizeLabel = self->_placeholderImageSizeLabel;
   if (placeholderImageSizeLabel)
   {
-    [(UILabel *)placeholderImageSizeLabel setFont:v3];
+    [(UILabel *)placeholderImageSizeLabel setFont:defaultFont];
   }
 
   [(MFComposeMultiView *)self setNeedsLayout];
@@ -464,56 +464,56 @@ double __36__MFComposeMultiView_layoutSubviews__block_invoke(uint64_t a1, double
     v2 = labelColor_autoselectedColor;
     if (!labelColor_autoselectedColor)
     {
-      v3 = [MEMORY[0x1E69DC888] mailSenderAddressPickerColorNormalTextColor];
+      mailSenderAddressPickerColorNormalTextColor = [MEMORY[0x1E69DC888] mailSenderAddressPickerColorNormalTextColor];
       v4 = labelColor_autoselectedColor;
-      labelColor_autoselectedColor = v3;
+      labelColor_autoselectedColor = mailSenderAddressPickerColorNormalTextColor;
 
       v2 = labelColor_autoselectedColor;
     }
 
-    v5 = v2;
+    labelColor = v2;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = MFComposeMultiView;
-    v5 = [(MFComposeMultiView *)&v7 labelColor];
+    labelColor = [(MFComposeMultiView *)&v7 labelColor];
   }
 
-  return v5;
+  return labelColor;
 }
 
-- (void)setAccountAutoselected:(BOOL)a3
+- (void)setAccountAutoselected:(BOOL)autoselected
 {
-  if (self->_accountAutoselected != a3)
+  if (self->_accountAutoselected != autoselected)
   {
-    self->_accountAutoselected = a3;
-    v5 = [(MFActivityIndicatorLabel *)self->_accountLabel textLabel];
-    v4 = [(MFComposeMultiView *)self labelColor];
-    [v5 setTextColor:v4];
+    self->_accountAutoselected = autoselected;
+    textLabel = [(MFActivityIndicatorLabel *)self->_accountLabel textLabel];
+    labelColor = [(MFComposeMultiView *)self labelColor];
+    [textLabel setTextColor:labelColor];
   }
 }
 
-- (void)_scribbleInteraction:(id)a3 requestElementsInRect:(CGRect)a4 completion:(id)a5
+- (void)_scribbleInteraction:(id)interaction requestElementsInRect:(CGRect)rect completion:(id)completion
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v6 = a5;
-  v7 = [(MFComposeMultiView *)self label];
-  v9[0] = v7;
+  completionCopy = completion;
+  label = [(MFComposeMultiView *)self label];
+  v9[0] = label;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
-  v6[2](v6, v8, 0x7FFFFFFFFFFFFFFFLL);
+  completionCopy[2](completionCopy, v8, 0x7FFFFFFFFFFFFFFFLL);
 }
 
-- (void)_scribbleInteraction:(id)a3 focusElement:(id)a4 initialFocusSelectionReferencePoint:(CGPoint)a5 completion:(id)a6
+- (void)_scribbleInteraction:(id)interaction focusElement:(id)element initialFocusSelectionReferencePoint:(CGPoint)point completion:(id)completion
 {
-  v10 = a6;
-  v7 = [(MFComposeMultiView *)self scribbleDelegate];
-  v8 = [v7 recipientTextViewForComposeMultiView:self];
+  completionCopy = completion;
+  scribbleDelegate = [(MFComposeMultiView *)self scribbleDelegate];
+  v8 = [scribbleDelegate recipientTextViewForComposeMultiView:self];
 
   [v8 becomeFirstResponder];
-  v9 = [v8 textView];
-  v10[2](v10, v9);
+  textView = [v8 textView];
+  completionCopy[2](completionCopy, textView);
 }
 
 - (MFComposeMultiViewDelegate)scribbleDelegate

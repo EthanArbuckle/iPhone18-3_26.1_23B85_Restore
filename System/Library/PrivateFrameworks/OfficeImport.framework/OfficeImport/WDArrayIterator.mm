@@ -1,20 +1,20 @@
 @interface WDArrayIterator
-- (WDArrayIterator)initWithArray:(id)a3;
+- (WDArrayIterator)initWithArray:(id)array;
 - (id)next;
 @end
 
 @implementation WDArrayIterator
 
-- (WDArrayIterator)initWithArray:(id)a3
+- (WDArrayIterator)initWithArray:(id)array
 {
-  v5 = a3;
+  arrayCopy = array;
   v9.receiver = self;
   v9.super_class = WDArrayIterator;
   v6 = [(WDArrayIterator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mArray, a3);
+    objc_storeStrong(&v6->mArray, array);
     v7->mNextIndex = 0;
   }
 

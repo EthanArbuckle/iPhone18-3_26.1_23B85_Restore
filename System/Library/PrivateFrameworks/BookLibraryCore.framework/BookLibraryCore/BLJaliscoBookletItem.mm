@@ -1,43 +1,43 @@
 @interface BLJaliscoBookletItem
-+ (id)arrayWithServerBookletItems:(id)a3;
-+ (id)itemWithServerBookletItem:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)arrayWithServerBookletItems:(id)items;
++ (id)itemWithServerBookletItem:(id)item;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation BLJaliscoBookletItem
 
-+ (id)itemWithServerBookletItem:(id)a3
++ (id)itemWithServerBookletItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = objc_opt_new();
-  v5 = [v3 title];
-  [v4 setTitle:v5];
+  title = [itemCopy title];
+  [v4 setTitle:title];
 
-  v6 = [v3 storeDownloadParameters];
-  [v4 setStoreDownloadParameters:v6];
+  storeDownloadParameters = [itemCopy storeDownloadParameters];
+  [v4 setStoreDownloadParameters:storeDownloadParameters];
 
-  v7 = [v3 storeID];
-  [v4 setStoreID:v7];
+  storeID = [itemCopy storeID];
+  [v4 setStoreID:storeID];
 
-  v8 = [v3 size];
+  v8 = [itemCopy size];
 
   [v4 setSize:v8];
 
   return v4;
 }
 
-+ (id)arrayWithServerBookletItems:(id)a3
++ (id)arrayWithServerBookletItems:(id)items
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemsCopy = items;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -67,23 +67,23 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(BLJaliscoBookletItem *)self title];
-  v6 = [v4 title];
-  if ([v5 isEqual:v6])
+  equalCopy = equal;
+  title = [(BLJaliscoBookletItem *)self title];
+  title2 = [equalCopy title];
+  if ([title isEqual:title2])
   {
-    v7 = [(BLJaliscoBookletItem *)self storeDownloadParameters];
-    v8 = [v4 storeDownloadParameters];
-    if ([v7 isEqual:v8])
+    storeDownloadParameters = [(BLJaliscoBookletItem *)self storeDownloadParameters];
+    storeDownloadParameters2 = [equalCopy storeDownloadParameters];
+    if ([storeDownloadParameters isEqual:storeDownloadParameters2])
     {
-      v9 = [(BLJaliscoBookletItem *)self storeID];
-      v10 = [v4 storeID];
-      if ([v9 isEqual:v10])
+      storeID = [(BLJaliscoBookletItem *)self storeID];
+      storeID2 = [equalCopy storeID];
+      if ([storeID isEqual:storeID2])
       {
         v11 = [(BLJaliscoBookletItem *)self size];
-        v12 = [v4 size];
+        v12 = [equalCopy size];
         v13 = [v11 isEqual:v12];
       }
 
@@ -109,12 +109,12 @@
 
 - (unint64_t)hash
 {
-  v3 = [(BLJaliscoBookletItem *)self title];
-  v4 = [v3 hash];
-  v5 = [(BLJaliscoBookletItem *)self storeDownloadParameters];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(BLJaliscoBookletItem *)self storeID];
-  v8 = [v7 hash];
+  title = [(BLJaliscoBookletItem *)self title];
+  v4 = [title hash];
+  storeDownloadParameters = [(BLJaliscoBookletItem *)self storeDownloadParameters];
+  v6 = [storeDownloadParameters hash] ^ v4;
+  storeID = [(BLJaliscoBookletItem *)self storeID];
+  v8 = [storeID hash];
   v9 = [(BLJaliscoBookletItem *)self size];
   v10 = v8 ^ [v9 hash];
 
@@ -126,11 +126,11 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(BLJaliscoBookletItem *)self title];
-  v7 = [(BLJaliscoBookletItem *)self storeDownloadParameters];
-  v8 = [(BLJaliscoBookletItem *)self storeID];
+  title = [(BLJaliscoBookletItem *)self title];
+  storeDownloadParameters = [(BLJaliscoBookletItem *)self storeDownloadParameters];
+  storeID = [(BLJaliscoBookletItem *)self storeID];
   v9 = [(BLJaliscoBookletItem *)self size];
-  v10 = [v3 stringWithFormat:@"<%@:%p name=%@ redownloadParameters=%@ storeID=%@ size=%@>", v5, self, v6, v7, v8, v9];
+  v10 = [v3 stringWithFormat:@"<%@:%p name=%@ redownloadParameters=%@ storeID=%@ size=%@>", v5, self, title, storeDownloadParameters, storeID, v9];
 
   return v10;
 }

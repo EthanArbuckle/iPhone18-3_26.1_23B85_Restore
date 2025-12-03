@@ -1,79 +1,79 @@
 @interface AXShotflowDetector
-+ (id)cpuDetectorWithModelPath:(id)a3 configuration:(id)a4 version:(int)a5;
-+ (id)gpuDetectorWithModelPath:(id)a3 configuration:(id)a4 preferredMetalDeviceID:(int)a5 version:(int)a6 modelType:(int64_t)a7;
-- (AXShotflowDetector)initWithNetwork:(id)a3 nmsThreshold:(float)a4 filterThreshold:(id)a5;
-- (id)detect:(id)a3;
-- (id)enforceSquareFaces:(id)a3 withHeight:(float)a4 andWidth:(float)a5;
-- (id)filterBoxes:(id)a3;
-- (id)mergeBoxes:(id)a3;
-- (id)mergeHeadsBoxes:(id)a3;
-- (id)nmsBoxes:(id)a3;
-- (id)overlappingLowMergeCountSuppression:(id)a3;
-- (id)overlappingSmallFacesSuppression:(id)a3;
-- (id)processBoxes:(id)a3 withHeight:(float)a4 andWidth:(float)a5;
-- (id)smartMergeBoxes:(id)a3;
++ (id)cpuDetectorWithModelPath:(id)path configuration:(id)configuration version:(int)version;
++ (id)gpuDetectorWithModelPath:(id)path configuration:(id)configuration preferredMetalDeviceID:(int)d version:(int)version modelType:(int64_t)type;
+- (AXShotflowDetector)initWithNetwork:(id)network nmsThreshold:(float)threshold filterThreshold:(id)filterThreshold;
+- (id)detect:(id)detect;
+- (id)enforceSquareFaces:(id)faces withHeight:(float)height andWidth:(float)width;
+- (id)filterBoxes:(id)boxes;
+- (id)mergeBoxes:(id)boxes;
+- (id)mergeHeadsBoxes:(id)boxes;
+- (id)nmsBoxes:(id)boxes;
+- (id)overlappingLowMergeCountSuppression:(id)suppression;
+- (id)overlappingSmallFacesSuppression:(id)suppression;
+- (id)processBoxes:(id)boxes withHeight:(float)height andWidth:(float)width;
+- (id)smartMergeBoxes:(id)boxes;
 @end
 
 @implementation AXShotflowDetector
 
-+ (id)cpuDetectorWithModelPath:(id)a3 configuration:(id)a4 version:(int)a5
++ (id)cpuDetectorWithModelPath:(id)path configuration:(id)configuration version:(int)version
 {
-  v5 = *&a5;
-  v8 = a4;
-  v9 = [AXShotflowNetwork cpuNetworkWithModelPath:a3 configuration:v8 version:v5 modelType:1];
-  v10 = [a1 alloc];
-  v11 = [v8 nmsThreshold];
-  [v11 floatValue];
+  v5 = *&version;
+  configurationCopy = configuration;
+  v9 = [AXShotflowNetwork cpuNetworkWithModelPath:path configuration:configurationCopy version:v5 modelType:1];
+  v10 = [self alloc];
+  nmsThreshold = [configurationCopy nmsThreshold];
+  [nmsThreshold floatValue];
   v13 = v12;
-  v14 = [v8 filterThresholds];
+  filterThresholds = [configurationCopy filterThresholds];
   LODWORD(v15) = v13;
-  v16 = [v10 initWithNetwork:v9 nmsThreshold:v14 filterThreshold:v15];
+  v16 = [v10 initWithNetwork:v9 nmsThreshold:filterThresholds filterThreshold:v15];
 
   return v16;
 }
 
-+ (id)gpuDetectorWithModelPath:(id)a3 configuration:(id)a4 preferredMetalDeviceID:(int)a5 version:(int)a6 modelType:(int64_t)a7
++ (id)gpuDetectorWithModelPath:(id)path configuration:(id)configuration preferredMetalDeviceID:(int)d version:(int)version modelType:(int64_t)type
 {
-  v8 = *&a6;
-  v9 = *&a5;
-  v12 = a4;
-  v13 = [AXShotflowNetwork gpuNetworkWithModelPath:a3 configuration:v12 preferredMetalDeviceID:v9 version:v8 modelType:a7];
-  v14 = [a1 alloc];
-  v15 = [v12 nmsThreshold];
-  [v15 floatValue];
+  v8 = *&version;
+  v9 = *&d;
+  configurationCopy = configuration;
+  v13 = [AXShotflowNetwork gpuNetworkWithModelPath:path configuration:configurationCopy preferredMetalDeviceID:v9 version:v8 modelType:type];
+  v14 = [self alloc];
+  nmsThreshold = [configurationCopy nmsThreshold];
+  [nmsThreshold floatValue];
   v17 = v16;
-  v18 = [v12 filterThresholds];
+  filterThresholds = [configurationCopy filterThresholds];
   LODWORD(v19) = v17;
-  v20 = [v14 initWithNetwork:v13 nmsThreshold:v18 filterThreshold:v19];
+  v20 = [v14 initWithNetwork:v13 nmsThreshold:filterThresholds filterThreshold:v19];
 
   return v20;
 }
 
-- (AXShotflowDetector)initWithNetwork:(id)a3 nmsThreshold:(float)a4 filterThreshold:(id)a5
+- (AXShotflowDetector)initWithNetwork:(id)network nmsThreshold:(float)threshold filterThreshold:(id)filterThreshold
 {
-  v9 = a3;
-  v10 = a5;
+  networkCopy = network;
+  filterThresholdCopy = filterThreshold;
   v14.receiver = self;
   v14.super_class = AXShotflowDetector;
   v11 = [(AXShotflowDetector *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_network, a3);
-    v12->_nmsThreshold = a4;
+    objc_storeStrong(&v11->_network, network);
+    v12->_nmsThreshold = threshold;
     *&v12->_mergeHeadsThreshold = xmmword_1AE4516E0;
     v12->_olmcsMergeCountDelta = 5;
     *&v12->_smartThreshold = 0x3F8000003F19999ALL;
-    objc_storeStrong(&v12->_filterThreshold, a5);
+    objc_storeStrong(&v12->_filterThreshold, filterThreshold);
   }
 
   return v12;
 }
 
-- (id)nmsBoxes:(id)a3
+- (id)nmsBoxes:(id)boxes
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v24 = a3;
+  boxesCopy = boxes;
   v23 = [(NSArray *)self->_filterThreshold count];
   [(AXShotflowDetector *)self nmsThreshold];
   v5 = v4;
@@ -91,7 +91,7 @@
       v25 = v6;
       v29[4] = v6;
       v7 = [MEMORY[0x1E696AE18] predicateWithBlock:v29];
-      v26 = [v24 filteredArrayUsingPredicate:v7];
+      v26 = [boxesCopy filteredArrayUsingPredicate:v7];
 
       v8 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"confidence" ascending:0];
       v30[0] = v8;
@@ -157,14 +157,14 @@
   return v27;
 }
 
-- (id)overlappingSmallFacesSuppression:(id)a3
+- (id)overlappingSmallFacesSuppression:(id)suppression
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v21 = a3;
+  suppressionCopy = suppression;
   v4 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"confidence" ascending:0];
   v23[0] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
-  v6 = [v21 sortedArrayUsingDescriptors:v5];
+  v6 = [suppressionCopy sortedArrayUsingDescriptors:v5];
 
   v7 = [v6 count];
   std::vector<BOOL>::vector(&__p, v7);
@@ -224,10 +224,10 @@
   return v12;
 }
 
-- (id)mergeHeadsBoxes:(id)a3
+- (id)mergeHeadsBoxes:(id)boxes
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v28 = a3;
+  boxesCopy = boxes;
   [(AXShotflowDetector *)self mergeHeadsThreshold];
   v5 = v4;
   v29 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -237,7 +237,7 @@
   v32[3] = &__block_descriptor_40_e45_B24__0__AXElementDetection_8__NSDictionary_16l;
   v32[4] = 2;
   v6 = [MEMORY[0x1E696AE18] predicateWithBlock:v32];
-  v27 = [v28 filteredArrayUsingPredicate:v6];
+  v27 = [boxesCopy filteredArrayUsingPredicate:v6];
 
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
@@ -245,7 +245,7 @@
   v31[3] = &__block_descriptor_40_e45_B24__0__AXElementDetection_8__NSDictionary_16l;
   v31[4] = 1;
   v7 = [MEMORY[0x1E696AE18] predicateWithBlock:v31];
-  v8 = [v28 filteredArrayUsingPredicate:v7];
+  v8 = [boxesCopy filteredArrayUsingPredicate:v7];
 
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
@@ -253,7 +253,7 @@
   v30[3] = &__block_descriptor_40_e45_B24__0__AXElementDetection_8__NSDictionary_16l;
   v30[4] = 2;
   v9 = [MEMORY[0x1E696AE18] predicateWithBlock:v30];
-  v10 = [v28 filteredArrayUsingPredicate:v9];
+  v10 = [boxesCopy filteredArrayUsingPredicate:v9];
 
   v11 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"confidence" ascending:0];
   v33[0] = v11;
@@ -314,20 +314,20 @@ LABEL_12:
   return v29;
 }
 
-- (id)overlappingLowMergeCountSuppression:(id)a3
+- (id)overlappingLowMergeCountSuppression:(id)suppression
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v18 = a3;
+  suppressionCopy = suppression;
   v4 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"mergesCount" ascending:0];
   v21[0] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
-  v6 = [v18 sortedArrayUsingDescriptors:v5];
+  v6 = [suppressionCopy sortedArrayUsingDescriptors:v5];
 
   v7 = [v6 count];
   std::vector<BOOL>::vector(&__p, v7);
   [(AXShotflowDetector *)self olmcsThreshold];
   v9 = v8;
-  v10 = [(AXShotflowDetector *)self olmcsMergeCountDelta];
+  olmcsMergeCountDelta = [(AXShotflowDetector *)self olmcsMergeCountDelta];
   v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if (v7)
   {
@@ -357,7 +357,7 @@ LABEL_12:
               {
                 v15 = [v6 objectAtIndexedSubscript:v14];
                 LODWORD(v16) = v9;
-                if ([v12 isOverlappingLowMergeDet:v15 withOverlapThreshold:v10 withMergeCountDelta:v16])
+                if ([v12 isOverlappingLowMergeDet:v15 withOverlapThreshold:olmcsMergeCountDelta withMergeCountDelta:v16])
                 {
                   *(__p + (v14 >> 6)) |= 1 << v14;
                 }
@@ -383,20 +383,20 @@ LABEL_12:
   return v19;
 }
 
-- (id)mergeBoxes:(id)a3
+- (id)mergeBoxes:(id)boxes
 {
   v68[1] = *MEMORY[0x1E69E9840];
-  v60 = a3;
+  boxesCopy = boxes;
   v4 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"confidence" ascending:0];
   v68[0] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v68 count:1];
-  v66 = [v60 sortedArrayUsingDescriptors:v5];
+  v66 = [boxesCopy sortedArrayUsingDescriptors:v5];
 
   v6 = [v66 count];
   std::vector<BOOL>::vector(&__p, v6);
   [(AXShotflowDetector *)self nmsThreshold];
   v65 = v7;
-  v61 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (v6)
   {
     v8 = 0;
@@ -477,14 +477,14 @@ LABEL_12:
         v50 = v49;
         [v10 confidence];
         v52 = v51;
-        v53 = [v10 scale];
-        v54 = [v10 hasLabel];
-        v55 = [v10 label];
-        v56 = [v10 labelName];
+        scale = [v10 scale];
+        hasLabel = [v10 hasLabel];
+        label = [v10 label];
+        labelName = [v10 labelName];
         LODWORD(v59) = v52;
-        v57 = [(AXElementDetection *)v42 initWithBox:v53 defaultBox:v22 confidence:v54 scale:v55 mergesCount:v56 hasLabel:(v41 / v13) label:(v17 / v13) labelName:(v62 / v13), (v64 / v13), v44, v46, v48, v50, v59];
+        v57 = [(AXElementDetection *)v42 initWithBox:scale defaultBox:v22 confidence:hasLabel scale:label mergesCount:labelName hasLabel:(v41 / v13) label:(v17 / v13) labelName:(v62 / v13), (v64 / v13), v44, v46, v48, v50, v59];
 
-        [v61 addObject:v57];
+        [array addObject:v57];
       }
     }
 
@@ -496,17 +496,17 @@ LABEL_12:
     operator delete(__p);
   }
 
-  return v61;
+  return array;
 }
 
-- (id)smartMergeBoxes:(id)a3
+- (id)smartMergeBoxes:(id)boxes
 {
   v176[1] = *MEMORY[0x1E69E9840];
-  v161 = a3;
+  boxesCopy = boxes;
   v4 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"smartDistance" ascending:1];
   v176[0] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v176 count:1];
-  v173 = [v161 sortedArrayUsingDescriptors:v5];
+  v173 = [boxesCopy sortedArrayUsingDescriptors:v5];
 
   v6 = [v173 count];
   std::vector<BOOL>::vector(&__p, v6);
@@ -514,7 +514,7 @@ LABEL_12:
   v170 = v7;
   [(AXShotflowDetector *)self smartDistanceFactor];
   v169 = v8;
-  v162 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (v6)
   {
     v9 = 0;
@@ -795,14 +795,14 @@ LABEL_12:
         v151 = v150;
         [v11 confidence];
         v153 = v152;
-        v154 = [v11 scale];
-        v155 = [v11 hasLabel];
-        v156 = [v11 label];
-        v157 = [v11 labelName];
+        scale = [v11 scale];
+        hasLabel = [v11 hasLabel];
+        label = [v11 label];
+        labelName = [v11 labelName];
         LODWORD(v160) = v153;
-        v158 = [(AXElementDetection *)v143 initWithBox:v154 defaultBox:v26 confidence:v155 scale:v156 mergesCount:v157 hasLabel:(v163 / v167) label:(v164 / v167) labelName:(v166 / v167), (v165 / v167), v145, v147, v149, v151, v160];
+        v160 = [(AXElementDetection *)v143 initWithBox:scale defaultBox:v26 confidence:hasLabel scale:label mergesCount:labelName hasLabel:(v163 / v167) label:(v164 / v167) labelName:(v166 / v167), (v165 / v167), v145, v147, v149, v151, v160];
 
-        [v162 addObject:v158];
+        [array addObject:v160];
       }
     }
 
@@ -814,12 +814,12 @@ LABEL_12:
     operator delete(__p);
   }
 
-  return v162;
+  return array;
 }
 
-- (id)filterBoxes:(id)a3
+- (id)filterBoxes:(id)boxes
 {
-  v4 = a3;
+  boxesCopy = boxes;
   if ([(AXShotflowNetwork *)self->_network modelType]== 1 || [(AXShotflowNetwork *)self->_network modelType]== 2)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -837,7 +837,7 @@ LABEL_12:
         v16 = v9;
         v15[4] = i;
         v10 = [MEMORY[0x1E696AE18] predicateWithBlock:v15];
-        v11 = [v4 filteredArrayUsingPredicate:v10];
+        v11 = [boxesCopy filteredArrayUsingPredicate:v10];
 
         for (j = 0; j < [v11 count]; ++j)
         {
@@ -865,10 +865,10 @@ BOOL __34__AXShotflowDetector_filterBoxes___block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (id)enforceSquareFaces:(id)a3 withHeight:(float)a4 andWidth:(float)a5
+- (id)enforceSquareFaces:(id)faces withHeight:(float)height andWidth:(float)width
 {
   v56 = *MEMORY[0x1E69E9840];
-  v45 = a3;
+  facesCopy = faces;
   if ([(AXShotflowNetwork *)self->_network version]== 6 || [(AXShotflowNetwork *)self->_network version]>= 9)
   {
     v50 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -876,7 +876,7 @@ BOOL __34__AXShotflowDetector_filterBoxes___block_invoke(uint64_t a1, void *a2)
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    obj = v45;
+    obj = facesCopy;
     v6 = [obj countByEnumeratingWithState:&v51 objects:v55 count:16];
     if (v6)
     {
@@ -907,22 +907,22 @@ BOOL __34__AXShotflowDetector_filterBoxes___block_invoke(uint64_t a1, void *a2)
             v25 = v24;
             [v9 confidence];
             v27 = v26;
-            v28 = [v9 scale];
-            v29 = [v9 mergesCount];
-            v30 = [v9 hasLabel];
-            v31 = [v9 label];
-            v32 = [v9 labelName];
+            scale = [v9 scale];
+            mergesCount = [v9 mergesCount];
+            hasLabel = [v9 hasLabel];
+            label = [v9 label];
+            labelName = [v9 labelName];
             v33 = v11;
             v34 = v13;
-            v35 = ((v34 * a4) + (v33 * a5)) * 0.5;
-            v36 = v35 / a5;
-            v37 = v35 / a4;
+            v35 = ((v34 * height) + (v33 * width)) * 0.5;
+            v36 = v35 / width;
+            v37 = v35 / height;
             v38 = v15;
             v39 = v36;
             v40 = v38 + v36 * -0.5;
             v41 = v17;
             LODWORD(v44) = v27;
-            v42 = [(AXElementDetection *)v18 initWithBox:v28 defaultBox:v29 confidence:v30 scale:v31 mergesCount:v32 hasLabel:v40 label:(v41 - (v37 * 0.5)) labelName:v39, v37, v21, v23, v49, v25, v44];
+            v42 = [(AXElementDetection *)v18 initWithBox:scale defaultBox:mergesCount confidence:hasLabel scale:label mergesCount:labelName hasLabel:v40 label:(v41 - (v37 * 0.5)) labelName:v39, v37, v21, v23, v49, v25, v44];
 
             [v50 addObject:v42];
           }
@@ -942,29 +942,29 @@ BOOL __34__AXShotflowDetector_filterBoxes___block_invoke(uint64_t a1, void *a2)
 
   else
   {
-    v50 = v45;
+    v50 = facesCopy;
   }
 
   return v50;
 }
 
-- (id)detect:(id)a3
+- (id)detect:(id)detect
 {
-  v3 = [(AXShotflowNetwork *)self->_network processCIImage:a3];
+  v3 = [(AXShotflowNetwork *)self->_network processCIImage:detect];
 
   return v3;
 }
 
-- (id)processBoxes:(id)a3 withHeight:(float)a4 andWidth:(float)a5
+- (id)processBoxes:(id)boxes withHeight:(float)height andWidth:(float)width
 {
-  v8 = a3;
+  boxesCopy = boxes;
   v9 = objc_autoreleasePoolPush();
-  v10 = [(AXShotflowDetector *)self nmsBoxes:v8];
+  v10 = [(AXShotflowDetector *)self nmsBoxes:boxesCopy];
 
   v11 = [(AXShotflowDetector *)self filterBoxes:v10];
 
-  *&v12 = a4;
-  *&v13 = a5;
+  *&v12 = height;
+  *&v13 = width;
   v14 = [(AXShotflowDetector *)self enforceSquareFaces:v11 withHeight:v12 andWidth:v13];
 
   v15 = [(AXShotflowDetector *)self mergeHeadsBoxes:v14];

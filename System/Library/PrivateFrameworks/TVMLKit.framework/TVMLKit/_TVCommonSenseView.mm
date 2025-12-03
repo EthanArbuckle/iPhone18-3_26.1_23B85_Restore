@@ -1,18 +1,18 @@
 @interface _TVCommonSenseView
-- (_TVCommonSenseView)initWithFrame:(CGRect)a3;
+- (_TVCommonSenseView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setFooterView:(id)a3;
-- (void)setHeaderView:(id)a3;
-- (void)setInfoViews:(id)a3;
+- (void)setFooterView:(id)view;
+- (void)setHeaderView:(id)view;
+- (void)setInfoViews:(id)views;
 @end
 
 @implementation _TVCommonSenseView
 
-- (_TVCommonSenseView)initWithFrame:(CGRect)a3
+- (_TVCommonSenseView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = _TVCommonSenseView;
-  v3 = [(_TVCommonSenseView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_TVCommonSenseView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D75D18]);
@@ -62,8 +62,8 @@
   memset(&rect[1], 0, 32);
   v63 = 0u;
   v64 = 0u;
-  v20 = [(_TVCommonSenseView *)self infoViews];
-  v21 = [v20 countByEnumeratingWithState:&rect[1] objects:v66 count:16];
+  infoViews = [(_TVCommonSenseView *)self infoViews];
+  v21 = [infoViews countByEnumeratingWithState:&rect[1] objects:v66 count:16];
   if (v21)
   {
     v22 = v21;
@@ -75,7 +75,7 @@
       {
         if (*rect[3] != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(infoViews);
         }
 
         v26 = *(rect[2] + 8 * i);
@@ -106,7 +106,7 @@
         MaxY = CGRectGetMaxY(v69);
       }
 
-      v22 = [v20 countByEnumeratingWithState:&rect[1] objects:v66 count:16];
+      v22 = [infoViews countByEnumeratingWithState:&rect[1] objects:v66 count:16];
     }
 
     while (v22);
@@ -164,40 +164,40 @@
   [(UIView *)containerView setFrame:?];
 }
 
-- (void)setHeaderView:(id)a3
+- (void)setHeaderView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   headerView = self->_headerView;
-  if (headerView != v5)
+  if (headerView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     if (headerView)
     {
       [(UIView *)headerView removeFromSuperview];
       v7 = self->_headerView;
       self->_headerView = 0;
 
-      v5 = v8;
+      viewCopy = v8;
     }
 
-    if (v5)
+    if (viewCopy)
     {
-      objc_storeStrong(&self->_headerView, a3);
+      objc_storeStrong(&self->_headerView, view);
       [(UIView *)self->_containerView addSubview:self->_headerView];
     }
 
     headerView = [(_TVCommonSenseView *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](headerView, v5);
+  MEMORY[0x2821F96F8](headerView, viewCopy);
 }
 
-- (void)setInfoViews:(id)a3
+- (void)setInfoViews:(id)views
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (([v5 isEqual:self->_infoViews] & 1) == 0)
+  viewsCopy = views;
+  if (([viewsCopy isEqual:self->_infoViews] & 1) == 0)
   {
     if ([(NSArray *)self->_infoViews count])
     {
@@ -232,7 +232,7 @@
       }
     }
 
-    objc_storeStrong(&self->_infoViews, a3);
+    objc_storeStrong(&self->_infoViews, views);
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
@@ -267,33 +267,33 @@
   }
 }
 
-- (void)setFooterView:(id)a3
+- (void)setFooterView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   footerView = self->_footerView;
-  if (footerView != v5)
+  if (footerView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     if (footerView)
     {
       [(_TVCommonSenseFooterView *)footerView removeFromSuperview];
       v7 = self->_footerView;
       self->_footerView = 0;
 
-      v5 = v8;
+      viewCopy = v8;
     }
 
-    if (v5)
+    if (viewCopy)
     {
-      objc_storeStrong(&self->_footerView, a3);
+      objc_storeStrong(&self->_footerView, view);
       [(UIView *)self->_containerView addSubview:self->_footerView];
     }
 
     footerView = [(_TVCommonSenseView *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](footerView, v5);
+  MEMORY[0x2821F96F8](footerView, viewCopy);
 }
 
 @end

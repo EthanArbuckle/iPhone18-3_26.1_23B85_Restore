@@ -1,5 +1,5 @@
 @interface SNProcessingContext
-- (SNProcessingContext)initWithGraph:(id)a3 sharedProcessingGraph:(id)a4 error:(id *)a5;
+- (SNProcessingContext)initWithGraph:(id)graph sharedProcessingGraph:(id)processingGraph error:(id *)error;
 - (id).cxx_construct;
 - (shared_ptr<SoundAnalysis::ProcessingContext>)processingContext;
 @end
@@ -21,10 +21,10 @@
   return result;
 }
 
-- (SNProcessingContext)initWithGraph:(id)a3 sharedProcessingGraph:(id)a4 error:(id *)a5
+- (SNProcessingContext)initWithGraph:(id)graph sharedProcessingGraph:(id)processingGraph error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  graphCopy = graph;
+  processingGraphCopy = processingGraph;
   v27.receiver = self;
   v27.super_class = SNProcessingContext;
   v10 = [(SNProcessingContext *)&v27 init];
@@ -43,9 +43,9 @@
     v15[2] = sub_1C9A4E3EC;
     v15[3] = &unk_1E8346C40;
     v18 = &v19;
-    v16 = v8;
-    v17 = v9;
-    if (sub_1C9A74388(SNDSPGraphUtilities, v15, a5))
+    v16 = graphCopy;
+    v17 = processingGraphCopy;
+    if (sub_1C9A74388(SNDSPGraphUtilities, v15, error))
     {
       v12 = v20[6];
       v11 = v20[7];

@@ -1,8 +1,8 @@
 @interface PXRearrangeBookmarksAction
 - (PXFastEnumeration)movedObjects;
-- (PXRearrangeBookmarksAction)initWithCollectionList:(id)a3 movedObjects:(id)a4 targetObject:(id)a5;
-- (PXRearrangeBookmarksAction)initWithPhotoLibrary:(id)a3;
-- (void)performAction:(id)a3;
+- (PXRearrangeBookmarksAction)initWithCollectionList:(id)list movedObjects:(id)objects targetObject:(id)object;
+- (PXRearrangeBookmarksAction)initWithPhotoLibrary:(id)library;
+- (void)performAction:(id)action;
 @end
 
 @implementation PXRearrangeBookmarksAction
@@ -14,22 +14,22 @@
   return v2;
 }
 
-- (PXRearrangeBookmarksAction)initWithCollectionList:(id)a3 movedObjects:(id)a4 targetObject:(id)a5
+- (PXRearrangeBookmarksAction)initWithCollectionList:(id)list movedObjects:(id)objects targetObject:(id)object
 {
-  v7 = a3;
+  listCopy = list;
   swift_unknownObjectRetain();
-  v8 = a5;
-  return PXRearrangeBookmarksAction.init(collectionList:movedObjects:targetObject:)(v7, a4, a5);
+  objectCopy = object;
+  return PXRearrangeBookmarksAction.init(collectionList:movedObjects:targetObject:)(listCopy, objects, object);
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(action);
   _Block_copy(v4);
   sub_1A3E7A614(self);
 }
 
-- (PXRearrangeBookmarksAction)initWithPhotoLibrary:(id)a3
+- (PXRearrangeBookmarksAction)initWithPhotoLibrary:(id)library
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

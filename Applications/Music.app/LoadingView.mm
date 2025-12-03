@@ -1,7 +1,7 @@
 @interface LoadingView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC11MusicCoreUI11LoadingView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC11MusicCoreUI11LoadingView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -9,13 +9,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   LoadingView.layoutSubviews()();
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LoadingView.sizeThatFits(_:)(0.0, 0.0);
   v5 = v4;
 
@@ -26,11 +26,11 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = LoadingView.sizeThatFits(_:)(width, height);
   v8 = v7;
 
@@ -41,7 +41,7 @@
   return result;
 }
 
-- (_TtC11MusicCoreUI11LoadingView)initWithFrame:(CGRect)a3
+- (_TtC11MusicCoreUI11LoadingView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

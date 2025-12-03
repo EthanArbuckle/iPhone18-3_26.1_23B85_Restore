@@ -1,20 +1,20 @@
 @interface Receiver
-- (Receiver)initWithWrappedObject:(id)a3;
+- (Receiver)initWithWrappedObject:(id)object;
 - (id)wrappedObject;
 @end
 
 @implementation Receiver
 
-- (Receiver)initWithWrappedObject:(id)a3
+- (Receiver)initWithWrappedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8.receiver = self;
   v8.super_class = Receiver;
   v5 = [(Receiver *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_wrappedObject, v4);
+    objc_storeWeak(&v5->_wrappedObject, objectCopy);
   }
 
   return v6;

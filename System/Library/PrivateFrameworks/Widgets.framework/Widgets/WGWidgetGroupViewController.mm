@@ -1,59 +1,59 @@
 @interface WGWidgetGroupViewController
-- (BOOL)isWidgetExtensionVisible:(id)a3;
-- (BOOL)scrollViewShouldScrollToTop:(id)a3;
-- (CGSize)widgetListViewController:(id)a3 sizeForInterfaceOrientation:(int64_t)a4;
+- (BOOL)isWidgetExtensionVisible:(id)visible;
+- (BOOL)scrollViewShouldScrollToTop:(id)top;
+- (CGSize)widgetListViewController:(id)controller sizeForInterfaceOrientation:(int64_t)orientation;
 - (UIEdgeInsets)contentOccludingInset;
-- (UIEdgeInsets)widgetListViewController:(id)a3 contentOccludingInsetsForInterfaceOrientation:(int64_t)a4;
-- (WGWidgetGroupViewController)initWithWidgetDiscoveryController:(id)a3 listSettings:(WGWidgetListSettings)a4;
+- (UIEdgeInsets)widgetListViewController:(id)controller contentOccludingInsetsForInterfaceOrientation:(int64_t)orientation;
+- (WGWidgetGroupViewController)initWithWidgetDiscoveryController:(id)controller listSettings:(WGWidgetListSettings)settings;
 - (WGWidgetGroupViewControllerDelegate)delegate;
 - (WGWidgetListSettings)listSettings;
-- (id)_scrollViewForListViewController:(id)a3;
+- (id)_scrollViewForListViewController:(id)controller;
 - (int64_t)_activeLayoutMode;
-- (int64_t)_layoutModeForSize:(CGSize)a3;
+- (int64_t)_layoutModeForSize:(CGSize)size;
 - (void)_loadWidgetListViewController;
-- (void)editViewDidDisappear:(id)a3;
-- (void)editViewWillDisappear:(id)a3;
-- (void)majorListViewControllerDidChangeHeaderVisibility:(id)a3;
-- (void)makeVisibleWidgetWithIdentifier:(id)a3 completion:(id)a4;
-- (void)presentEditViewWithCompletion:(id)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewDidScrollToTop:(id)a3;
-- (void)scrollViewWillBeginDecelerating:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setShouldBlurContent:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)editViewDidDisappear:(id)disappear;
+- (void)editViewWillDisappear:(id)disappear;
+- (void)majorListViewControllerDidChangeHeaderVisibility:(id)visibility;
+- (void)makeVisibleWidgetWithIdentifier:(id)identifier completion:(id)completion;
+- (void)presentEditViewWithCompletion:(id)completion;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewDidScrollToTop:(id)top;
+- (void)scrollViewWillBeginDecelerating:(id)decelerating;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setShouldBlurContent:(BOOL)content;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation WGWidgetGroupViewController
 
-- (WGWidgetGroupViewController)initWithWidgetDiscoveryController:(id)a3 listSettings:(WGWidgetListSettings)a4
+- (WGWidgetGroupViewController)initWithWidgetDiscoveryController:(id)controller listSettings:(WGWidgetListSettings)settings
 {
-  v4 = *&a4.useFavorites;
-  carouselEdges = a4.carouselEdges;
-  v8 = a3;
+  v4 = *&settings.useFavorites;
+  carouselEdges = settings.carouselEdges;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = WGWidgetGroupViewController;
   v9 = [(WGWidgetGroupViewController *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_discoveryController, a3);
+    objc_storeStrong(&v9->_discoveryController, controller);
     [(WGWidgetDiscoveryController *)v10->_discoveryController addDiscoveryObserver:v10];
     [(WGWidgetDiscoveryController *)v10->_discoveryController setDebuggingHandler:v10];
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v10 selector:sel_editViewWillAppear_ name:@"WGWidgetListEditViewControllerWillAppear" object:0];
-    [v11 addObserver:v10 selector:sel_editViewDidAppear_ name:@"WGWidgetListEditViewControllerDidAppear" object:0];
-    [v11 addObserver:v10 selector:sel_editViewWillDisappear_ name:@"WGWidgetListEditViewControllerWillDisappear" object:0];
-    [v11 addObserver:v10 selector:sel_editViewDidDisappear_ name:@"WGWidgetListEditViewControllerDidDisappear" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel_editViewWillAppear_ name:@"WGWidgetListEditViewControllerWillAppear" object:0];
+    [defaultCenter addObserver:v10 selector:sel_editViewDidAppear_ name:@"WGWidgetListEditViewControllerDidAppear" object:0];
+    [defaultCenter addObserver:v10 selector:sel_editViewWillDisappear_ name:@"WGWidgetListEditViewControllerWillDisappear" object:0];
+    [defaultCenter addObserver:v10 selector:sel_editViewDidDisappear_ name:@"WGWidgetListEditViewControllerDidDisappear" object:0];
     v10->_listSettings.carouselEdges = carouselEdges;
     *&v10->_listSettings.useFavorites = v4;
   }
@@ -61,36 +61,36 @@
   return v10;
 }
 
-- (id)_scrollViewForListViewController:(id)a3
+- (id)_scrollViewForListViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [(WGWidgetGroupViewController *)self loadViewIfNeeded];
-  [v4 loadViewIfNeeded];
-  v5 = [v4 widgetListView];
+  [controllerCopy loadViewIfNeeded];
+  widgetListView = [controllerCopy widgetListView];
 
-  return v5;
+  return widgetListView;
 }
 
-- (void)setShouldBlurContent:(BOOL)a3
+- (void)setShouldBlurContent:(BOOL)content
 {
-  if (self->_shouldBlurContent != a3)
+  if (self->_shouldBlurContent != content)
   {
-    self->_shouldBlurContent = a3;
+    self->_shouldBlurContent = content;
     [(WGMajorListViewController *)self->_majorColumnListViewController setShouldBlurContent:?];
   }
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
   majorColumnListViewController = self->_majorColumnListViewController;
-  v5 = a3;
-  v6 = [(WGMajorListViewController *)majorColumnListViewController footerView];
-  [v6 setLegibilitySettings:v5];
+  settingsCopy = settings;
+  footerView = [(WGMajorListViewController *)majorColumnListViewController footerView];
+  [footerView setLegibilitySettings:settingsCopy];
 
   debugLabel = self->_debugLabel;
-  v8 = [v5 primaryColor];
+  primaryColor = [settingsCopy primaryColor];
 
-  [(UILabel *)debugLabel setTextColor:v8];
+  [(UILabel *)debugLabel setTextColor:primaryColor];
 }
 
 - (void)viewDidLoad
@@ -98,74 +98,74 @@
   v5.receiver = self;
   v5.super_class = WGWidgetGroupViewController;
   [(WGWidgetGroupViewController *)&v5 viewDidLoad];
-  v3 = [(WGWidgetGroupViewController *)self view];
+  view = [(WGWidgetGroupViewController *)self view];
   [(WGWidgetGroupViewController *)self _loadWidgetListViewController];
-  v4 = [(WGCarouselListViewController *)self->_majorColumnListViewController view];
-  [v3 bounds];
-  [v4 setFrame:?];
-  [v4 setAutoresizingMask:18];
-  [v3 addSubview:v4];
-  [(WGCarouselListViewController *)self->_majorColumnListViewController setContainerView:v3];
+  view2 = [(WGCarouselListViewController *)self->_majorColumnListViewController view];
+  [view bounds];
+  [view2 setFrame:?];
+  [view2 setAutoresizingMask:18];
+  [view addSubview:view2];
+  [(WGCarouselListViewController *)self->_majorColumnListViewController setContainerView:view];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v10.receiver = self;
   v10.super_class = WGWidgetGroupViewController;
   [(WGWidgetGroupViewController *)&v10 viewWillAppear:?];
-  v5 = [(WGCarouselListViewController *)self->_majorColumnListViewController view];
-  v6 = [v5 superview];
+  view = [(WGCarouselListViewController *)self->_majorColumnListViewController view];
+  superview = [view superview];
 
-  if (!v6)
+  if (!superview)
   {
-    v7 = [(WGWidgetGroupViewController *)self view];
-    [v7 addSubview:v5];
+    view2 = [(WGWidgetGroupViewController *)self view];
+    [view2 addSubview:view];
 
     majorColumnListViewController = self->_majorColumnListViewController;
-    v9 = [(WGWidgetGroupViewController *)self view];
-    [(WGCarouselListViewController *)majorColumnListViewController setContainerView:v9];
+    view3 = [(WGWidgetGroupViewController *)self view];
+    [(WGCarouselListViewController *)majorColumnListViewController setContainerView:view3];
   }
 
-  [(UIViewController *)self->_majorColumnListViewController wg_beginAppearanceTransitionIfNecessary:1 animated:v3];
+  [(UIViewController *)self->_majorColumnListViewController wg_beginAppearanceTransitionIfNecessary:1 animated:appearCopy];
   [(UILabel *)self->_debugLabel setText:@"Appearing"];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = WGWidgetGroupViewController;
-  [(WGWidgetGroupViewController *)&v8 viewDidAppear:a3];
+  [(WGWidgetGroupViewController *)&v8 viewDidAppear:appear];
   v4 = +[WGWidgetEventTracker sharedInstance];
-  v5 = [(WGWidgetGroupViewController *)self location];
-  v6 = [(WGWidgetDiscoveryController *)self->_discoveryController enabledWidgetIdentifiersForAllGroups];
-  v7 = [(WGWidgetDiscoveryController *)self->_discoveryController disabledWidgetIdentifiers];
-  [v4 widgetListDidAppearAtLocation:v5 withEnabledWidgets:v6 disabledWidgets:v7];
+  location = [(WGWidgetGroupViewController *)self location];
+  enabledWidgetIdentifiersForAllGroups = [(WGWidgetDiscoveryController *)self->_discoveryController enabledWidgetIdentifiersForAllGroups];
+  disabledWidgetIdentifiers = [(WGWidgetDiscoveryController *)self->_discoveryController disabledWidgetIdentifiers];
+  [v4 widgetListDidAppearAtLocation:location withEnabledWidgets:enabledWidgetIdentifiersForAllGroups disabledWidgets:disabledWidgetIdentifiers];
 
   [(UIViewController *)self->_majorColumnListViewController wg_endAppearanceTransitionIfNecessary];
   [(UILabel *)self->_debugLabel setText:@"Appeared"];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = WGWidgetGroupViewController;
   [(WGWidgetGroupViewController *)&v5 viewWillDisappear:?];
-  [(UIViewController *)self->_majorColumnListViewController wg_beginAppearanceTransitionIfNecessary:0 animated:v3];
+  [(UIViewController *)self->_majorColumnListViewController wg_beginAppearanceTransitionIfNecessary:0 animated:disappearCopy];
   [(UILabel *)self->_debugLabel setText:@"Disappearing"];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = WGWidgetGroupViewController;
-  [(WGWidgetGroupViewController *)&v7 viewDidDisappear:a3];
+  [(WGWidgetGroupViewController *)&v7 viewDidDisappear:disappear];
   [(UIViewController *)self->_majorColumnListViewController wg_endAppearanceTransitionIfNecessary];
-  v4 = [(WGCarouselListViewController *)self->_majorColumnListViewController presentedViewController];
-  v5 = [(WGWidgetDiscoveryController *)self->_discoveryController presentedEditViewController];
+  presentedViewController = [(WGCarouselListViewController *)self->_majorColumnListViewController presentedViewController];
+  presentedEditViewController = [(WGWidgetDiscoveryController *)self->_discoveryController presentedEditViewController];
 
-  if (v4 == v5)
+  if (presentedViewController == presentedEditViewController)
   {
     [(WGWidgetDiscoveryController *)self->_discoveryController dismissWidgetListEditViewControllerAnimated:0 completion:0];
   }
@@ -176,10 +176,10 @@
   [(UILabel *)self->_debugLabel setText:@"Disappeared"];
 }
 
-- (int64_t)_layoutModeForSize:(CGSize)a3
+- (int64_t)_layoutModeForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = objc_opt_class();
 
   return [v5 layoutModeForSize:{width, height}];
@@ -187,16 +187,16 @@
 
 - (int64_t)_activeLayoutMode
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   if (![(WGWidgetGroupViewController *)self isViewLoaded])
   {
-    return 2 * ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1);
+    return 2 * ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1);
   }
 
-  v5 = [(WGWidgetGroupViewController *)self view];
-  [v5 bounds];
+  view = [(WGWidgetGroupViewController *)self view];
+  [view bounds];
   v8 = [(WGWidgetGroupViewController *)self _layoutModeForSize:v6, v7];
 
   return v8;
@@ -217,7 +217,7 @@
   [(WGCarouselListViewController *)v5 didMoveToParentViewController:self];
 }
 
-- (void)editViewWillDisappear:(id)a3
+- (void)editViewWillDisappear:(id)disappear
 {
   if ([(UIViewController *)self wg_isAppearingOrAppeared])
   {
@@ -227,7 +227,7 @@
   }
 }
 
-- (void)editViewDidDisappear:(id)a3
+- (void)editViewDidDisappear:(id)disappear
 {
   if ([(WGWidgetGroupViewController *)self _appearState]== 2)
   {
@@ -237,86 +237,86 @@
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v5 = a3;
+  scrollCopy = scroll;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained performSelector:sel_scrollViewDidScroll_ withObject:v5];
+    [WeakRetained performSelector:sel_scrollViewDidScroll_ withObject:scrollCopy];
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v5 = a3;
+  draggingCopy = dragging;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained performSelector:sel_scrollViewWillBeginDragging_ withObject:v5];
+    [WeakRetained performSelector:sel_scrollViewWillBeginDragging_ withObject:draggingCopy];
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = a3;
+  y = velocity.y;
+  x = velocity.x;
+  draggingCopy = dragging;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained scrollViewWillEndDragging:v10 withVelocity:a5 targetContentOffset:{x, y}];
+    [WeakRetained scrollViewWillEndDragging:draggingCopy withVelocity:offset targetContentOffset:{x, y}];
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v4 = a4;
-  v7 = a3;
+  decelerateCopy = decelerate;
+  draggingCopy = dragging;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained scrollViewDidEndDragging:v7 willDecelerate:v4];
+    [WeakRetained scrollViewDidEndDragging:draggingCopy willDecelerate:decelerateCopy];
   }
 }
 
-- (void)scrollViewWillBeginDecelerating:(id)a3
+- (void)scrollViewWillBeginDecelerating:(id)decelerating
 {
-  v5 = a3;
+  deceleratingCopy = decelerating;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained performSelector:sel_scrollViewWillBeginDecelerating_ withObject:v5];
+    [WeakRetained performSelector:sel_scrollViewWillBeginDecelerating_ withObject:deceleratingCopy];
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v5 = a3;
+  deceleratingCopy = decelerating;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained performSelector:sel_scrollViewDidEndDecelerating_ withObject:v5];
+    [WeakRetained performSelector:sel_scrollViewDidEndDecelerating_ withObject:deceleratingCopy];
   }
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v5 = a3;
+  animationCopy = animation;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained performSelector:sel_scrollViewDidEndScrollingAnimation_ withObject:v5];
+    [WeakRetained performSelector:sel_scrollViewDidEndScrollingAnimation_ withObject:animationCopy];
   }
 }
 
-- (BOOL)scrollViewShouldScrollToTop:(id)a3
+- (BOOL)scrollViewShouldScrollToTop:(id)top
 {
-  v4 = a3;
+  topCopy = top;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v6 = [WeakRetained scrollViewShouldScrollToTop:v4];
+    v6 = [WeakRetained scrollViewShouldScrollToTop:topCopy];
   }
 
   else
@@ -327,32 +327,32 @@
   return v6;
 }
 
-- (void)scrollViewDidScrollToTop:(id)a3
+- (void)scrollViewDidScrollToTop:(id)top
 {
-  v5 = a3;
+  topCopy = top;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained performSelector:sel_scrollViewDidScrollToTop_ withObject:v5];
+    [WeakRetained performSelector:sel_scrollViewDidScrollToTop_ withObject:topCopy];
   }
 }
 
-- (void)majorListViewControllerDidChangeHeaderVisibility:(id)a3
+- (void)majorListViewControllerDidChangeHeaderVisibility:(id)visibility
 {
-  v4 = [(WGWidgetGroupViewController *)self delegate];
+  delegate = [(WGWidgetGroupViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 widgetGroupViewControllerDidChangeHeaderVisibility:self];
+    [delegate widgetGroupViewControllerDidChangeHeaderVisibility:self];
   }
 }
 
-- (CGSize)widgetListViewController:(id)a3 sizeForInterfaceOrientation:(int64_t)a4
+- (CGSize)widgetListViewController:(id)controller sizeForInterfaceOrientation:(int64_t)orientation
 {
-  v6 = [a3 viewIfLoaded];
-  v7 = [v6 window];
-  if (v7)
+  viewIfLoaded = [controller viewIfLoaded];
+  window = [viewIfLoaded window];
+  if (window)
   {
-    [v6 bounds];
+    [viewIfLoaded bounds];
     v9 = v8;
     v11 = v10;
   }
@@ -366,7 +366,7 @@
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained widgetGroupViewController:self sizeForInterfaceOrientation:a4];
+    [WeakRetained widgetGroupViewController:self sizeForInterfaceOrientation:orientation];
     v9 = v13;
     v11 = v14;
   }
@@ -378,7 +378,7 @@
   return result;
 }
 
-- (UIEdgeInsets)widgetListViewController:(id)a3 contentOccludingInsetsForInterfaceOrientation:(int64_t)a4
+- (UIEdgeInsets)widgetListViewController:(id)controller contentOccludingInsetsForInterfaceOrientation:(int64_t)orientation
 {
   [(WGWidgetGroupViewController *)self contentOccludingInset];
   v7 = v6;
@@ -388,7 +388,7 @@
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained widgetGroupViewController:self contentOccludingInsetsForInterfaceOrientation:a4];
+    [WeakRetained widgetGroupViewController:self contentOccludingInsetsForInterfaceOrientation:orientation];
     v7 = v15;
     v9 = v16;
     v11 = v17;
@@ -406,12 +406,12 @@
   return result;
 }
 
-- (BOOL)isWidgetExtensionVisible:(id)a3
+- (BOOL)isWidgetExtensionVisible:(id)visible
 {
-  v4 = a3;
+  visibleCopy = visible;
   if ([(WGWidgetGroupViewController *)self _appearState])
   {
-    v5 = [(WGWidgetListViewController *)self->_majorColumnListViewController isWidgetExtensionVisible:v4];
+    v5 = [(WGWidgetListViewController *)self->_majorColumnListViewController isWidgetExtensionVisible:visibleCopy];
   }
 
   else
@@ -454,42 +454,42 @@
   return result;
 }
 
-- (void)makeVisibleWidgetWithIdentifier:(id)a3 completion:(id)a4
+- (void)makeVisibleWidgetWithIdentifier:(id)identifier completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
-  if ([v9 length])
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if ([identifierCopy length])
   {
     v7 = self->_majorColumnListViewController;
     v8 = v7;
     if (v7)
     {
-      [(WGWidgetListViewController *)v7 makeVisibleWidgetWithIdentifier:v9 completion:v6];
+      [(WGWidgetListViewController *)v7 makeVisibleWidgetWithIdentifier:identifierCopy completion:completionCopy];
     }
 
-    else if (v6)
+    else if (completionCopy)
     {
-      v6[2](v6, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)presentEditViewWithCompletion:(id)a3
+- (void)presentEditViewWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   discoveryController = self->_discoveryController;
   majorColumnListViewController = self->_majorColumnListViewController;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __70__WGWidgetGroupViewController_PPTTest__presentEditViewWithCompletion___block_invoke;
   v8[3] = &unk_279ED11F0;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [(WGWidgetDiscoveryController *)discoveryController presentWidgetListEditViewControllerFromViewController:majorColumnListViewController animated:1 completion:v8];
 }
 

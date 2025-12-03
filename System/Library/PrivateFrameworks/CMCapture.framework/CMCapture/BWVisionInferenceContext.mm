@@ -1,6 +1,6 @@
 @interface BWVisionInferenceContext
 + (double)processingTimeoutInSeconds;
-- (BWVisionInferenceContext)initWithScheduler:(id)a3;
+- (BWVisionInferenceContext)initWithScheduler:(id)scheduler;
 - (int)prepareForInference;
 - (void)dealloc;
 @end
@@ -14,11 +14,11 @@
     return 30.0;
   }
 
-  [a1 defaultTimeoutInSeconds];
+  [self defaultTimeoutInSeconds];
   return result;
 }
 
-- (BWVisionInferenceContext)initWithScheduler:(id)a3
+- (BWVisionInferenceContext)initWithScheduler:(id)scheduler
 {
   v7.receiver = self;
   v7.super_class = BWVisionInferenceContext;
@@ -28,7 +28,7 @@
     [objc_opt_class() processingTimeoutInSeconds];
     BWVNSetRequestConcurrentTasksProcessingTimeout((v5 * 1000000000.0));
     BWVNSetRequiresHighQoS(0);
-    BWVNSetTargetDispatchQueue([a3 transientInferenceQueue]);
+    BWVNSetTargetDispatchQueue([scheduler transientInferenceQueue]);
   }
 
   return v4;

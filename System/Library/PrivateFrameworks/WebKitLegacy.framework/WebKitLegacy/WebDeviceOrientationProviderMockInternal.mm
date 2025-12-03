@@ -1,7 +1,7 @@
 @interface WebDeviceOrientationProviderMockInternal
 - (WebDeviceOrientationProviderMockInternal)init;
 - (id)lastOrientation;
-- (void)setOrientation:(id)a3;
+- (void)setOrientation:(id)orientation;
 @end
 
 @implementation WebDeviceOrientationProviderMockInternal
@@ -36,11 +36,11 @@
   return v3;
 }
 
-- (void)setOrientation:(id)a3
+- (void)setOrientation:(id)orientation
 {
-  if (a3)
+  if (orientation)
   {
-    v3 = *(*(a3 + 1) + 8);
+    v3 = *(*(orientation + 1) + 8);
     if (v3)
     {
       ++*v3;

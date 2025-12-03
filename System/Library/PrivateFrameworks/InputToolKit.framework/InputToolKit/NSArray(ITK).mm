@@ -47,10 +47,10 @@
 
 - (id)itk_randomObject
 {
-  v2 = [a1 count];
+  v2 = [self count];
   if (v2)
   {
-    v2 = [a1 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(a1, "count"))}];
+    v2 = [self objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(self, "count"))}];
   }
 
   return v2;
@@ -58,7 +58,7 @@
 
 - (id)itk_randomizedArray
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   [v1 itk_randomize];
   v2 = [v1 copy];
 
@@ -68,7 +68,7 @@
 - (id)itk_generateAllPermutations
 {
   v2 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v3 = [a1 mutableCopy];
+  v3 = [self mutableCopy];
   [objc_opt_class() heapsAlgorithm:v3 k:objc_msgSend(v3 result:{"count"), v2}];
   v4 = [v2 copy];
 
@@ -90,7 +90,7 @@
     v10 = 0;
     do
     {
-      [a1 heapsAlgorithm:v12 k:a4 - 1 result:v8];
+      [self heapsAlgorithm:v12 k:a4 - 1 result:v8];
       if (a4)
       {
         v11 = 0;
@@ -111,7 +111,7 @@
 
 - (id)itk_objectPassingTest:()ITK
 {
-  v2 = [a1 indexOfObjectPassingTest:?];
+  v2 = [self indexOfObjectPassingTest:?];
   if (v2 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = 0;
@@ -119,7 +119,7 @@
 
   else
   {
-    v3 = [a1 objectAtIndex:v2];
+    v3 = [self objectAtIndex:v2];
   }
 
   return v3;
@@ -134,8 +134,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -148,7 +148,7 @@ LABEL_3:
     {
       if (*v14 != v10)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(selfCopy);
       }
 
       v9 += v4[2](v4, *(*(&v13 + 1) + 8 * v11), v8, &v17);
@@ -160,7 +160,7 @@ LABEL_3:
       ++v8;
       if (v7 == ++v11)
       {
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v18 count:16];
+        v7 = [selfCopy countByEnumeratingWithState:&v13 objects:v18 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -182,18 +182,18 @@ LABEL_3:
 - (id)itk_arrayFromReplacingObject:()ITK withObject:
 {
   v6 = a4;
-  v7 = a1;
-  v8 = [v7 indexOfObject:a3];
+  selfCopy = self;
+  v8 = [selfCopy indexOfObject:a3];
   if (v6)
   {
     v9 = v8;
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v10 = [v7 mutableCopy];
+      v10 = [selfCopy mutableCopy];
       [v10 replaceObjectAtIndex:v9 withObject:v6];
       v11 = [v10 copy];
 
-      v7 = v11;
+      selfCopy = v11;
     }
   }
 
@@ -202,12 +202,12 @@ LABEL_3:
     [ITKAssert handleFailedAssertWithCondition:"newObject" functionName:"[NSArray(ITK) itk_arrayFromReplacingObject:withObject:]" simulateCrash:0 showAlert:0 format:@"itk_arrayFromReplacingObject, Trying to replace an object with nil."];
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (BOOL)itk_containsObjectPassingTest:()ITK
 {
-  v1 = [a1 itk_objectPassingTest:?];
+  v1 = [self itk_objectPassingTest:?];
   v2 = v1 != 0;
 
   return v2;
@@ -215,8 +215,8 @@ LABEL_3:
 
 - (id)itk_objectsPassingTest:()ITK
 {
-  v2 = [a1 indexesOfObjectsPassingTest:?];
-  v3 = [a1 objectsAtIndexes:v2];
+  v2 = [self indexesOfObjectsPassingTest:?];
+  v3 = [self objectsAtIndexes:v2];
 
   return v3;
 }
@@ -228,17 +228,17 @@ LABEL_3:
   v5[2] = __35__NSArray_ITK__itk_objectsOfClass___block_invoke;
   v5[3] = &__block_descriptor_40_e15_B32__0_8Q16_B24lu32l8;
   v5[4] = a3;
-  v3 = [a1 itk_objectsPassingTest:v5];
+  v3 = [self itk_objectsPassingTest:v5];
 
   return v3;
 }
 
 - (id)itk_firstObjectOfClass:()ITK
 {
-  v1 = [a1 itk_objectsOfClass:?];
-  v2 = [v1 firstObject];
+  v1 = [self itk_objectsOfClass:?];
+  firstObject = [v1 firstObject];
 
-  return v2;
+  return firstObject;
 }
 
 - (id)itk_safeObjectAtIndex:()ITK
@@ -250,14 +250,14 @@ LABEL_3:
 
   else
   {
-    if ([a1 count] <= a3)
+    if ([self count] <= a3)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = [a1 objectAtIndexedSubscript:a3];
+      v6 = [self objectAtIndexedSubscript:a3];
     }
   }
 
@@ -273,7 +273,7 @@ LABEL_3:
   v8[3] = &unk_2797AF238;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 itk_objectsPassingTest:v8];
+  v6 = [self itk_objectsPassingTest:v8];
 
   return v6;
 }
@@ -281,13 +281,13 @@ LABEL_3:
 - (id)itk_arrayByGroupingIntoArraysWithMaxCount:()ITK
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -299,7 +299,7 @@ LABEL_3:
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
@@ -308,14 +308,14 @@ LABEL_3:
         {
           v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:a3];
 
-          [v5 addObject:v14];
+          [array addObject:v14];
           v9 = v14;
         }
 
         [v9 addObject:v12];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -326,21 +326,21 @@ LABEL_3:
     v9 = 0;
   }
 
-  return v5;
+  return array;
 }
 
 - (unint64_t)itk_indexOfSortedObject:()ITK insertionIndex:usingComparator:
 {
   v8 = a3;
   v9 = a5;
-  v10 = [a1 indexOfObject:v8 inSortedRange:0 options:objc_msgSend(a1 usingComparator:{"count"), 1280, v9}];
+  v10 = [self indexOfObject:v8 inSortedRange:0 options:objc_msgSend(self usingComparator:{"count"), 1280, v9}];
 
   if (a4)
   {
     *a4 = v10;
   }
 
-  if (v10 >= [a1 count] || (objc_msgSend(a1, "objectAtIndexedSubscript:", v10), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqual:", v8), v11, (v12 & 1) == 0))
+  if (v10 >= [self count] || (objc_msgSend(self, "objectAtIndexedSubscript:", v10), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqual:", v8), v11, (v12 & 1) == 0))
   {
     v10 = 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -350,7 +350,7 @@ LABEL_3:
 
 - (id)itk_objectBefore:()ITK wrap:
 {
-  v6 = [a1 indexOfObject:?];
+  v6 = [self indexOfObject:?];
   v7 = 0;
   if (v6)
   {
@@ -364,7 +364,7 @@ LABEL_3:
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL && v8)
   {
-    v7 = [a1 objectAtIndexedSubscript:{(v6 + objc_msgSend(a1, "count") - 1) % objc_msgSend(a1, "count")}];
+    v7 = [self objectAtIndexedSubscript:{(v6 + objc_msgSend(self, "count") - 1) % objc_msgSend(self, "count")}];
   }
 
   return v7;
@@ -372,15 +372,15 @@ LABEL_3:
 
 - (id)itk_objectAfter:()ITK wrap:
 {
-  v6 = [a1 indexOfObject:?];
-  if (v6 == 0x7FFFFFFFFFFFFFFFLL || (v8 = v6, (a4 & 1) == 0) && v6 == [a1 count] - 1)
+  v6 = [self indexOfObject:?];
+  if (v6 == 0x7FFFFFFFFFFFFFFFLL || (v8 = v6, (a4 & 1) == 0) && v6 == [self count] - 1)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [a1 objectAtIndexedSubscript:{(v8 + 1) % objc_msgSend(a1, "count")}];
+    v7 = [self objectAtIndexedSubscript:{(v8 + 1) % objc_msgSend(self, "count")}];
   }
 
   return v7;
@@ -388,11 +388,11 @@ LABEL_3:
 
 - (id)itk_arrayByAddingNonNilObject:()ITK
 {
-  v4 = a1;
-  v5 = v4;
+  selfCopy = self;
+  v5 = selfCopy;
   if (a3)
   {
-    v6 = [v4 arrayByAddingObject:a3];
+    v6 = [selfCopy arrayByAddingObject:a3];
 
     v5 = v6;
   }
@@ -402,11 +402,11 @@ LABEL_3:
 
 - (id)itk_arrayByAddingObjectsFromNonNilArray:()ITK
 {
-  v4 = a1;
-  v5 = v4;
+  selfCopy = self;
+  v5 = selfCopy;
   if (a3)
   {
-    v6 = [v4 arrayByAddingObjectsFromArray:a3];
+    v6 = [selfCopy arrayByAddingObjectsFromArray:a3];
 
     v5 = v6;
   }
@@ -418,11 +418,11 @@ LABEL_3:
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 count];
+  v5 = [self count];
   if (v5 == 1)
   {
-    v6 = [a1 firstObject];
-    v7 = v4[2](v4, v6, 0, 1);
+    firstObject = [self firstObject];
+    v7 = v4[2](v4, firstObject, 0, 1);
 
     if (v7)
     {
@@ -439,7 +439,7 @@ LABEL_3:
   else
   {
     v9 = v5;
-    v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+    v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(self, "count")}];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __31__NSArray_ITK__itk_compactMap___block_invoke;
@@ -448,7 +448,7 @@ LABEL_3:
     v15 = v9;
     v13 = v10;
     v7 = v10;
-    [a1 enumerateObjectsUsingBlock:v12];
+    [self enumerateObjectsUsingBlock:v12];
     v8 = [v7 copy];
   }
 
@@ -459,11 +459,11 @@ LABEL_3:
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 count];
+  v5 = [self count];
   if (v5 == 1)
   {
-    v6 = [a1 firstObject];
-    v7 = v4[2](v4, v6, 0, 1);
+    firstObject = [self firstObject];
+    v7 = v4[2](v4, firstObject, 0, 1);
     v16[0] = v7;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
   }
@@ -471,7 +471,7 @@ LABEL_3:
   else
   {
     v9 = v5;
-    v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+    v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(self, "count")}];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __24__NSArray_ITK__itk_map___block_invoke;
@@ -479,9 +479,9 @@ LABEL_3:
     v14 = v4;
     v15 = v9;
     v13 = v10;
-    v6 = v10;
-    [a1 enumerateObjectsUsingBlock:v12];
-    v8 = [v6 copy];
+    firstObject = v10;
+    [self enumerateObjectsUsingBlock:v12];
+    v8 = [firstObject copy];
 
     v7 = v14;
   }
@@ -492,17 +492,17 @@ LABEL_3:
 - (id)itk_flatMap:()ITK
 {
   v4 = a3;
-  v5 = [a1 count];
+  v5 = [self count];
   if (v5 == 1)
   {
-    v6 = [a1 firstObject];
-    v7 = v4[2](v4, v6, 0, 1);
+    firstObject = [self firstObject];
+    v7 = v4[2](v4, firstObject, 0, 1);
   }
 
   else
   {
     v8 = v5;
-    v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+    v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(self, "count")}];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __28__NSArray_ITK__itk_flatMap___block_invoke;
@@ -510,9 +510,9 @@ LABEL_3:
     v13 = v4;
     v14 = v8;
     v12 = v9;
-    v6 = v9;
-    [a1 enumerateObjectsUsingBlock:v11];
-    v7 = [v6 copy];
+    firstObject = v9;
+    [self enumerateObjectsUsingBlock:v11];
+    v7 = [firstObject copy];
   }
 
   return v7;

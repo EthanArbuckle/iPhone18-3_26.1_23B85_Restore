@@ -1,10 +1,10 @@
 @interface HMUserListRemoteViewController
-+ (id)requestViewControllerWithConnectionHandler:(id)a3;
++ (id)requestViewControllerWithConnectionHandler:(id)handler;
 - (HMUserManagementRemoteHost)delegate;
-- (void)userManagementDidFinishWithError:(id)a3;
+- (void)userManagementDidFinishWithError:(id)error;
 - (void)userManagementDidLoad;
 - (void)viewDidLoad;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation HMUserListRemoteViewController
@@ -16,17 +16,17 @@
   return WeakRetained;
 }
 
-- (void)userManagementDidFinishWithError:(id)a3
+- (void)userManagementDidFinishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(HMUserListRemoteViewController *)self delegate];
-  [v5 userManagementDidFinishWithError:v4];
+  errorCopy = error;
+  delegate = [(HMUserListRemoteViewController *)self delegate];
+  [delegate userManagementDidFinishWithError:errorCopy];
 }
 
 - (void)userManagementDidLoad
 {
-  v2 = [(HMUserListRemoteViewController *)self delegate];
-  [v2 userManagementDidLoad];
+  delegate = [(HMUserListRemoteViewController *)self delegate];
+  [delegate userManagementDidLoad];
 }
 
 - (void)viewDidLoad
@@ -34,22 +34,22 @@
   v5.receiver = self;
   v5.super_class = HMUserListRemoteViewController;
   [(HMUserListRemoteViewController *)&v5 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  v4 = [(HMUserListRemoteViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  view = [(HMUserListRemoteViewController *)self view];
+  [view setBackgroundColor:clearColor];
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
   v5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"HMErrorDomain" code:79 userInfo:0];
-  v4 = [(HMUserListRemoteViewController *)self delegate];
-  [v4 userManagementDidFinishWithError:v5];
+  delegate = [(HMUserListRemoteViewController *)self delegate];
+  [delegate userManagementDidFinishWithError:v5];
 }
 
-+ (id)requestViewControllerWithConnectionHandler:(id)a3
++ (id)requestViewControllerWithConnectionHandler:(id)handler
 {
-  v3 = a3;
-  v4 = [objc_opt_class() requestViewController:@"HSUserListNavigationViewController" fromServiceWithBundleIdentifier:@"com.apple.Home.HomeUIService" connectionHandler:v3];
+  handlerCopy = handler;
+  v4 = [objc_opt_class() requestViewController:@"HSUserListNavigationViewController" fromServiceWithBundleIdentifier:@"com.apple.Home.HomeUIService" connectionHandler:handlerCopy];
 
   return v4;
 }

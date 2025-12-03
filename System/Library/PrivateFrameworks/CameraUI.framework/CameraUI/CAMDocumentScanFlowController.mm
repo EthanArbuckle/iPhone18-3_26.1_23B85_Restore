@@ -1,15 +1,15 @@
 @interface CAMDocumentScanFlowController
-+ (id)nameForDocumentWithDate:(id)a3;
++ (id)nameForDocumentWithDate:(id)date;
 - (CAMDocumentScanFlowController)init;
 - (CAMDocumentScanFlowControllerDelegate)documentFlowDelegate;
 - (id)_pdfConversionQueue;
-- (int64_t)numberOfPreviewItemsInPreviewController:(id)a3;
-- (void)_asyncConvertToPDFAndWrite:(id)a3 completionHandler:(id)a4;
-- (void)_handlePDFResults:(id)a3;
-- (void)documentCameraViewController:(id)a3 didFailWithError:(id)a4;
-- (void)documentCameraViewController:(id)a3 didFinishWithScan:(id)a4;
-- (void)documentCameraViewControllerDidCancel:(id)a3;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
+- (int64_t)numberOfPreviewItemsInPreviewController:(id)controller;
+- (void)_asyncConvertToPDFAndWrite:(id)write completionHandler:(id)handler;
+- (void)_handlePDFResults:(id)results;
+- (void)documentCameraViewController:(id)controller didFailWithError:(id)error;
+- (void)documentCameraViewController:(id)controller didFinishWithScan:(id)scan;
+- (void)documentCameraViewControllerDidCancel:(id)cancel;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
 @end
 
 @implementation CAMDocumentScanFlowController
@@ -32,17 +32,17 @@
   return v4;
 }
 
-- (void)documentCameraViewController:(id)a3 didFinishWithScan:(id)a4
+- (void)documentCameraViewController:(id)controller didFinishWithScan:(id)scan
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  scanCopy = scan;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __80__CAMDocumentScanFlowController_documentCameraViewController_didFinishWithScan___block_invoke;
   v8[3] = &unk_1E76FAB28;
   objc_copyWeak(&v9, &location);
-  [(CAMDocumentScanFlowController *)self _asyncConvertToPDFAndWrite:v7 completionHandler:v8];
+  [(CAMDocumentScanFlowController *)self _asyncConvertToPDFAndWrite:scanCopy completionHandler:v8];
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
@@ -54,13 +54,13 @@ void __80__CAMDocumentScanFlowController_documentCameraViewController_didFinishW
   [WeakRetained _handlePDFResults:v3];
 }
 
-- (void)_handlePDFResults:(id)a3
+- (void)_handlePDFResults:(id)results
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  resultsCopy = results;
+  if (resultsCopy)
   {
-    [(CAMDocumentScanFlowController *)self set_url:v4];
+    [(CAMDocumentScanFlowController *)self set_url:resultsCopy];
     v32 = 0;
     v33 = &v32;
     v34 = 0x2050000000;
@@ -79,11 +79,11 @@ void __80__CAMDocumentScanFlowController_documentCameraViewController_didFinishW
 
     v6 = v5;
     _Block_object_dispose(&v32, 8);
-    v7 = objc_alloc_init(v5);
-    [v7 setModalPresentationStyle:0];
-    [v7 setModalTransitionStyle:2];
-    [v7 setDataSource:self];
-    [v7 setDelegate:self];
+    documentFlowDelegate = objc_alloc_init(v5);
+    [documentFlowDelegate setModalPresentationStyle:0];
+    [documentFlowDelegate setModalTransitionStyle:2];
+    [documentFlowDelegate setDataSource:self];
+    [documentFlowDelegate setDelegate:self];
     v27 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"trash"];
     v28 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"square.and.arrow.down"];
     v8 = MEMORY[0x1E69DC628];
@@ -116,16 +116,16 @@ void __80__CAMDocumentScanFlowController_documentCameraViewController_didFinishW
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:2];
     v18 = [v16 menuWithChildren:v17];
 
-    v19 = [v7 navigationItem];
-    [v19 setHidesBackButton:1];
+    navigationItem = [documentFlowDelegate navigationItem];
+    [navigationItem setHidesBackButton:1];
 
     v20 = objc_alloc(MEMORY[0x1E69DC708]);
     v21 = CAMLocalizedFrameworkString(@"DOCUMENT_SCANNING_DONE", 0);
     v22 = [v20 initWithTitle:v21 menu:v18];
-    v23 = [v7 navigationItem];
-    [v23 setLeftBarButtonItem:v22];
+    navigationItem2 = [documentFlowDelegate navigationItem];
+    [navigationItem2 setLeftBarButtonItem:v22];
 
-    v36 = v7;
+    v36 = documentFlowDelegate;
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v36 count:1];
     [(CAMDocumentScanFlowController *)self setViewControllers:v24 animated:1];
   }
@@ -138,8 +138,8 @@ void __80__CAMDocumentScanFlowController_documentCameraViewController_didFinishW
       [CAMDocumentScanFlowController _handlePDFResults:v25];
     }
 
-    v7 = [(CAMDocumentScanFlowController *)self documentFlowDelegate];
-    [v7 documentScanFlowControllerDidFail:self withError:0];
+    documentFlowDelegate = [(CAMDocumentScanFlowController *)self documentFlowDelegate];
+    [documentFlowDelegate documentScanFlowControllerDidFail:self withError:0];
   }
 }
 
@@ -162,30 +162,30 @@ void __51__CAMDocumentScanFlowController__handlePDFResults___block_invoke_2(uint
   [v2 documentScanFlowControllerDidFinish:*(a1 + 32)];
 }
 
-- (void)documentCameraViewControllerDidCancel:(id)a3
+- (void)documentCameraViewControllerDidCancel:(id)cancel
 {
-  v4 = [(CAMDocumentScanFlowController *)self documentFlowDelegate];
-  [v4 documentScanFlowControllerDidCancel:self];
+  documentFlowDelegate = [(CAMDocumentScanFlowController *)self documentFlowDelegate];
+  [documentFlowDelegate documentScanFlowControllerDidCancel:self];
 }
 
-- (void)documentCameraViewController:(id)a3 didFailWithError:(id)a4
+- (void)documentCameraViewController:(id)controller didFailWithError:(id)error
 {
-  v5 = a4;
-  v6 = [(CAMDocumentScanFlowController *)self documentFlowDelegate];
-  [v6 documentScanFlowControllerDidFail:self withError:v5];
+  errorCopy = error;
+  documentFlowDelegate = [(CAMDocumentScanFlowController *)self documentFlowDelegate];
+  [documentFlowDelegate documentScanFlowControllerDidFail:self withError:errorCopy];
 }
 
-- (int64_t)numberOfPreviewItemsInPreviewController:(id)a3
+- (int64_t)numberOfPreviewItemsInPreviewController:(id)controller
 {
-  v3 = [(CAMDocumentScanFlowController *)self _url];
-  v4 = v3 != 0;
+  _url = [(CAMDocumentScanFlowController *)self _url];
+  v4 = _url != 0;
 
   return v4;
 }
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
-  v5 = [(CAMDocumentScanFlowController *)self documentFlowDelegate:a3];
+  v5 = [(CAMDocumentScanFlowController *)self documentFlowDelegate:picker];
   [v5 documentScanFlowControllerDidFinish:self];
 }
 
@@ -211,26 +211,26 @@ void __52__CAMDocumentScanFlowController__pdfConversionQueue__block_invoke()
   _pdfConversionQueue__conversionQueue = v1;
 }
 
-- (void)_asyncConvertToPDFAndWrite:(id)a3 completionHandler:(id)a4
+- (void)_asyncConvertToPDFAndWrite:(id)write completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  writeCopy = write;
+  handlerCopy = handler;
   v8 = objc_opt_class();
   v9 = [MEMORY[0x1E695DF00] now];
   v10 = [v8 nameForDocumentWithDate:v9];
 
-  v11 = [(CAMDocumentScanFlowController *)self _pdfConversionQueue];
+  _pdfConversionQueue = [(CAMDocumentScanFlowController *)self _pdfConversionQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__CAMDocumentScanFlowController__asyncConvertToPDFAndWrite_completionHandler___block_invoke;
   block[3] = &unk_1E76FABA0;
-  v16 = v6;
+  v16 = writeCopy;
   v17 = v10;
-  v18 = v7;
-  v12 = v7;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
   v13 = v10;
-  v14 = v6;
-  dispatch_async(v11, block);
+  v14 = writeCopy;
+  dispatch_async(_pdfConversionQueue, block);
 }
 
 void __78__CAMDocumentScanFlowController__asyncConvertToPDFAndWrite_completionHandler___block_invoke(uint64_t a1)
@@ -259,15 +259,15 @@ void __78__CAMDocumentScanFlowController__asyncConvertToPDFAndWrite_completionHa
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-+ (id)nameForDocumentWithDate:(id)a3
++ (id)nameForDocumentWithDate:(id)date
 {
   v3 = MEMORY[0x1E696AB78];
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_alloc_init(v3);
   [v5 setDateStyle:1];
   [v5 setTimeStyle:0];
-  v6 = [v5 stringFromDate:v4];
-  v7 = [MEMORY[0x1E696AB78] localizedStringFromDate:v4 dateStyle:0 timeStyle:2];
+  v6 = [v5 stringFromDate:dateCopy];
+  v7 = [MEMORY[0x1E696AB78] localizedStringFromDate:dateCopy dateStyle:0 timeStyle:2];
 
   v8 = CAMLocalizedFrameworkString(@"DOCUMENT_SCANNING_FILENAME", @"Document Scanning component of the file name");
   v9 = CAMLocalizedFrameworkString(@"DOCUMENT_SCANNING_FILENAME_FORMAT_STRING", @"General format string for the file name. English format is DOCUMENT_SCANNING_FILENAME DATE at TIME");

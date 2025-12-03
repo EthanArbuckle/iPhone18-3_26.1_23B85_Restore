@@ -1,7 +1,7 @@
 @interface _GCBluetoothDeviceDisconnectionRequest
 - (_GCBluetoothDeviceDisconnectionRequest)init;
-- (_GCBluetoothDeviceDisconnectionRequest)initWithDeviceIdentifier:(id)a3;
-- (void)performRequest:(id)a3;
+- (_GCBluetoothDeviceDisconnectionRequest)initWithDeviceIdentifier:(id)identifier;
+- (void)performRequest:(id)request;
 @end
 
 @implementation _GCBluetoothDeviceDisconnectionRequest
@@ -13,36 +13,36 @@
   return 0;
 }
 
-- (_GCBluetoothDeviceDisconnectionRequest)initWithDeviceIdentifier:(id)a3
+- (_GCBluetoothDeviceDisconnectionRequest)initWithDeviceIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (v5)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v9.receiver = self;
     v9.super_class = _GCBluetoothDeviceDisconnectionRequest;
     v6 = [(_GCBluetoothDeviceDisconnectionRequest *)&v9 init];
-    objc_storeStrong(&v6->_deviceIdentifier, a3);
+    objc_storeStrong(&v6->_deviceIdentifier, identifier);
     self = v6;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)performRequest:(id)a3
+- (void)performRequest:(id)request
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_GCBluetoothDeviceDisconnectionRequest *)self queue];
-  v6 = v5;
-  if (v5)
+  requestCopy = request;
+  queue = [(_GCBluetoothDeviceDisconnectionRequest *)self queue];
+  v6 = queue;
+  if (queue)
   {
-    v7 = v5;
+    v7 = queue;
   }
 
   else
@@ -52,7 +52,7 @@
 
   v8 = v7;
 
-  v9 = [(_GCBluetoothDeviceIdentifier *)self->_deviceIdentifier btAddress];
+  btAddress = [(_GCBluetoothDeviceIdentifier *)self->_deviceIdentifier btAddress];
   v10 = _gc_log_bluetooth();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -71,12 +71,12 @@
   v18[3] = &unk_1E841A398;
   v19 = v11;
   v20 = v8;
-  v21 = v9;
-  v22 = v4;
-  v12 = v9;
+  v21 = btAddress;
+  v22 = requestCopy;
+  v12 = btAddress;
   v13 = v8;
   v14 = v11;
-  v15 = v4;
+  v15 = requestCopy;
   [v14 activateWithCompletion:v18];
 
   v16 = *MEMORY[0x1E69E9840];

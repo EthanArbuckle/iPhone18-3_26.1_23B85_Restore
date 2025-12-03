@@ -1,19 +1,19 @@
 @interface ARQuickLookPreviewItemTemp
-- (ARQuickLookPreviewItemTemp)initWithFileAtURL:(id)a3;
+- (ARQuickLookPreviewItemTemp)initWithFileAtURL:(id)l;
 @end
 
 @implementation ARQuickLookPreviewItemTemp
 
-- (ARQuickLookPreviewItemTemp)initWithFileAtURL:(id)a3
+- (ARQuickLookPreviewItemTemp)initWithFileAtURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = ARQuickLookPreviewItemTemp;
-  v6 = [(ARQuickLookPreviewItem *)&v9 initWithFileAtURL:v5];
+  v6 = [(ARQuickLookPreviewItem *)&v9 initWithFileAtURL:lCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_myPreviewURL, a3);
+    objc_storeStrong(&v6->_myPreviewURL, l);
   }
 
   return v7;

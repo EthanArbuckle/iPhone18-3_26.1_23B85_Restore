@@ -1,43 +1,43 @@
 @interface MBDomainManager
-+ (id)_readDomainsFromPlist:(id)a3 accountType:(int64_t)a4 volumeMountPoint:(id)a5 error:(id *)a6;
-- (BOOL)containsDomainName:(id)a3;
-- (BOOL)isSystemDomainName:(id)a3;
-- (MBDomainManager)initWithPersona:(id)a3;
-- (MBDomainManager)initWithSystemDomains:(id)a3;
++ (id)_readDomainsFromPlist:(id)plist accountType:(int64_t)type volumeMountPoint:(id)point error:(id *)error;
+- (BOOL)containsDomainName:(id)name;
+- (BOOL)isSystemDomainName:(id)name;
+- (MBDomainManager)initWithPersona:(id)persona;
+- (MBDomainManager)initWithSystemDomains:(id)domains;
 - (MBDomainManagerDelegate)delegate;
-- (id)_initWithAccountType:(int64_t)a3 volumeMountPoint:(id)a4 plistPath:(id)a5 error:(id *)a6;
-- (id)_initWithSystemDomains:(id)a3 versions:(id)a4;
+- (id)_initWithAccountType:(int64_t)type volumeMountPoint:(id)point plistPath:(id)path error:(id *)error;
+- (id)_initWithSystemDomains:(id)domains versions:(id)versions;
 - (id)allDomains;
-- (id)domainForName:(id)a3;
-- (id)domainForPath:(id)a3 relativePath:(id *)a4;
-- (id)initForTestingWithDomains:(id)a3;
-- (id)initForTestingWithPersona:(id)a3 systemDomainsPlistAtPath:(id)a4;
-- (id)redirectDomain:(id)a3 forRelativePath:(id)a4;
-- (void)_removeDomainsNotMatchingRegex:(id)a3;
-- (void)addDomain:(id)a3;
-- (void)addDomainsToBackUpToDriveWithAppManager:(id)a3;
-- (void)addDomainsToBackUpToiCloudWithAppManager:(id)a3 manager:(id)a4 format:(int64_t)a5 account:(id)a6;
-- (void)removeDomains:(id)a3;
+- (id)domainForName:(id)name;
+- (id)domainForPath:(id)path relativePath:(id *)relativePath;
+- (id)initForTestingWithDomains:(id)domains;
+- (id)initForTestingWithPersona:(id)persona systemDomainsPlistAtPath:(id)path;
+- (id)redirectDomain:(id)domain forRelativePath:(id)path;
+- (void)_removeDomainsNotMatchingRegex:(id)regex;
+- (void)addDomain:(id)domain;
+- (void)addDomainsToBackUpToDriveWithAppManager:(id)manager;
+- (void)addDomainsToBackUpToiCloudWithAppManager:(id)manager manager:(id)a4 format:(int64_t)format account:(id)account;
+- (void)removeDomains:(id)domains;
 @end
 
 @implementation MBDomainManager
 
-- (id)_initWithSystemDomains:(id)a3 versions:(id)a4
+- (id)_initWithSystemDomains:(id)domains versions:(id)versions
 {
-  v6 = a3;
-  v7 = a4;
+  domainsCopy = domains;
+  versionsCopy = versions;
   v27.receiver = self;
   v27.super_class = MBDomainManager;
   v8 = [(MBDomainManager *)&v27 init];
   if (v8)
   {
-    v22 = v7;
+    v22 = versionsCopy;
     v9 = objc_opt_new();
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v10 = v6;
+    v10 = domainsCopy;
     v11 = [v10 countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v11)
     {
@@ -53,8 +53,8 @@
           }
 
           v15 = *(*(&v23 + 1) + 8 * i);
-          v16 = [v15 name];
-          [(NSMutableDictionary *)v9 setObject:v15 forKeyedSubscript:v16];
+          name = [v15 name];
+          [(NSMutableDictionary *)v9 setObject:v15 forKeyedSubscript:name];
         }
 
         v12 = [v10 countByEnumeratingWithState:&v23 objects:v28 count:16];
@@ -71,25 +71,25 @@
     v8->_domainsByName = v9;
     v20 = v9;
 
-    objc_storeStrong(&v8->_systemDomainsVersions, a4);
-    v7 = v22;
+    objc_storeStrong(&v8->_systemDomainsVersions, versions);
+    versionsCopy = v22;
   }
 
   return v8;
 }
 
-- (MBDomainManager)initWithSystemDomains:(id)a3
+- (MBDomainManager)initWithSystemDomains:(id)domains
 {
-  v4 = a3;
+  domainsCopy = domains;
   v5 = objc_opt_new();
-  v6 = [(MBDomainManager *)self _initWithSystemDomains:v4 versions:v5];
+  v6 = [(MBDomainManager *)self _initWithSystemDomains:domainsCopy versions:v5];
 
   return v6;
 }
 
-- (id)initForTestingWithDomains:(id)a3
+- (id)initForTestingWithDomains:(id)domains
 {
-  v4 = a3;
+  domainsCopy = domains;
   v5 = objc_opt_new();
   v6 = [(MBDomainManager *)self _initWithSystemDomains:&__NSArray0__struct versions:v5];
 
@@ -99,7 +99,7 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = v4;
+    v7 = domainsCopy;
     v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
@@ -116,8 +116,8 @@
 
           v12 = *(*(&v16 + 1) + 8 * i);
           v13 = v6[3];
-          v14 = [v12 name];
-          [v13 setObject:v12 forKeyedSubscript:v14];
+          name = [v12 name];
+          [v13 setObject:v12 forKeyedSubscript:name];
         }
 
         v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -130,16 +130,16 @@
   return v6;
 }
 
-+ (id)_readDomainsFromPlist:(id)a3 accountType:(int64_t)a4 volumeMountPoint:(id)a5 error:(id *)a6
++ (id)_readDomainsFromPlist:(id)plist accountType:(int64_t)type volumeMountPoint:(id)point error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
+  plistCopy = plist;
+  pointCopy = point;
   v11 = 0;
-  if (a4 <= 1)
+  if (type <= 1)
   {
-    if (a4 != 1)
+    if (type != 1)
     {
-      if (!a4)
+      if (!type)
       {
         sub_1000A0AB0();
       }
@@ -152,19 +152,19 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
     v11 = @"DataSeparatedDomains";
     goto LABEL_9;
   }
 
-  if (a4 == 3)
+  if (type == 3)
   {
     goto LABEL_6;
   }
 
 LABEL_9:
-  v12 = [v9 objectForKeyedSubscript:v11];
+  v12 = [plistCopy objectForKeyedSubscript:v11];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -191,7 +191,7 @@ LABEL_9:
 
           v19 = *(*(&v25 + 1) + 8 * i);
           v20 = [v14 objectForKeyedSubscript:v19];
-          v21 = [MBDomain nonContainerizedDomainWithName:v19 plist:v20 accountType:a4 volumeMountPoint:v10];
+          v21 = [MBDomain nonContainerizedDomainWithName:v19 plist:v20 accountType:type volumeMountPoint:pointCopy];
           if (v21)
           {
             [v13 addObject:v21];
@@ -220,10 +220,10 @@ LABEL_9:
       _MBLog();
     }
 
-    if (a6)
+    if (error)
     {
       [MBError errorWithCode:1 format:@"%@ value is not a dictionary", v11];
-      *a6 = v13 = 0;
+      *error = v13 = 0;
     }
 
     else
@@ -235,16 +235,16 @@ LABEL_9:
   return v13;
 }
 
-- (id)_initWithAccountType:(int64_t)a3 volumeMountPoint:(id)a4 plistPath:(id)a5 error:(id *)a6
+- (id)_initWithAccountType:(int64_t)type volumeMountPoint:(id)point plistPath:(id)path error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
-  if (!a6)
+  pointCopy = point;
+  pathCopy = path;
+  if (!error)
   {
     sub_1000A0ADC();
   }
 
-  v12 = v11;
+  v12 = pathCopy;
   v13 = objc_autoreleasePoolPush();
   v14 = MBGetDefaultLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -252,7 +252,7 @@ LABEL_9:
     *buf = 138543618;
     v35 = v12;
     v36 = 2048;
-    v37 = a3;
+    typeCopy = type;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Loading system domains from %{public}@ %ld", buf, 0x16u);
     _MBLog();
   }
@@ -270,7 +270,7 @@ LABEL_9:
     [MBDomain doubleFromStringValueForKey:@"MaxSupportedVersion" plist:v16];
     v23 = v22;
     v32 = v17;
-    v24 = [objc_opt_class() _readDomainsFromPlist:v16 accountType:a3 volumeMountPoint:v10 error:&v32];
+    v24 = [objc_opt_class() _readDomainsFromPlist:v16 accountType:type volumeMountPoint:pointCopy error:&v32];
     v25 = v17;
     v17 = v32;
   }
@@ -284,7 +284,7 @@ LABEL_9:
       *buf = 138543618;
       v35 = v12;
       v36 = 2114;
-      v37 = v17;
+      typeCopy = v17;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "Failed to load the system domains plist at %{public}@: %{public}@", buf, 0x16u);
       _MBLog();
     }
@@ -304,14 +304,14 @@ LABEL_9:
       *buf = 138543618;
       v35 = v12;
       v36 = 2114;
-      v37 = v17;
+      typeCopy = v17;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "Failed to load the system domains at %{public}@: %{public}@", buf, 0x16u);
       _MBLog();
     }
 
     v30 = v17;
-    v29 = 0;
-    *a6 = v17;
+    selfCopy = 0;
+    *error = v17;
   }
 
   else
@@ -321,7 +321,7 @@ LABEL_9:
       *buf = 138544386;
       v35 = v12;
       v36 = 2048;
-      v37 = *&v21;
+      typeCopy = *&v21;
       v38 = 2048;
       v39 = v19;
       v40 = 2048;
@@ -335,20 +335,20 @@ LABEL_9:
     v28 = [[MBSystemDomainsVersions alloc] initWithVersion:v21 minSupportedVersion:v19 maxSupportedVersion:v23];
     self = [(MBDomainManager *)self _initWithSystemDomains:v24 versions:v28];
 
-    v29 = self;
+    selfCopy = self;
   }
 
-  return v29;
+  return selfCopy;
 }
 
-- (MBDomainManager)initWithPersona:(id)a3
+- (MBDomainManager)initWithPersona:(id)persona
 {
-  v4 = a3;
+  personaCopy = persona;
   v5 = sub_100091778();
-  v6 = [v4 accountType];
-  v7 = [v4 volumeMountPoint];
+  accountType = [personaCopy accountType];
+  volumeMountPoint = [personaCopy volumeMountPoint];
   v11 = 0;
-  v8 = [(MBDomainManager *)self _initWithAccountType:v6 volumeMountPoint:v7 plistPath:v5 error:&v11];
+  v8 = [(MBDomainManager *)self _initWithAccountType:accountType volumeMountPoint:volumeMountPoint plistPath:v5 error:&v11];
   v9 = v11;
 
   if (!v8)
@@ -364,58 +364,58 @@ LABEL_9:
   return v8;
 }
 
-- (id)initForTestingWithPersona:(id)a3 systemDomainsPlistAtPath:(id)a4
+- (id)initForTestingWithPersona:(id)persona systemDomainsPlistAtPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 accountType];
-  v9 = [v6 volumeMountPoint];
+  personaCopy = persona;
+  pathCopy = path;
+  accountType = [personaCopy accountType];
+  volumeMountPoint = [personaCopy volumeMountPoint];
   v13 = 0;
-  v10 = [(MBDomainManager *)self _initWithAccountType:v8 volumeMountPoint:v9 plistPath:v7 error:&v13];
+  v10 = [(MBDomainManager *)self _initWithAccountType:accountType volumeMountPoint:volumeMountPoint plistPath:pathCopy error:&v13];
   v11 = v13;
 
   if (!v10)
   {
-    objc_exception_throw([[MBException alloc] initWithCode:11 format:{@"Failed to load system domains from %@: %@", v7, v11}]);
+    objc_exception_throw([[MBException alloc] initWithCode:11 format:{@"Failed to load system domains from %@: %@", pathCopy, v11}]);
   }
 
   return v10;
 }
 
-- (BOOL)isSystemDomainName:(id)a3
+- (BOOL)isSystemDomainName:(id)name
 {
-  v4 = a3;
-  v5 = [(MBDomainManager *)self systemDomainsByName];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  systemDomainsByName = [(MBDomainManager *)self systemDomainsByName];
+  v6 = [systemDomainsByName objectForKeyedSubscript:nameCopy];
 
   return v6 != 0;
 }
 
 - (id)allDomains
 {
-  v2 = [(NSMutableDictionary *)self->_domainsByName allValues];
-  v3 = [v2 sortedArrayUsingSelector:"compare:"];
+  allValues = [(NSMutableDictionary *)self->_domainsByName allValues];
+  v3 = [allValues sortedArrayUsingSelector:"compare:"];
 
   return v3;
 }
 
-- (BOOL)containsDomainName:(id)a3
+- (BOOL)containsDomainName:(id)name
 {
-  v3 = [(NSMutableDictionary *)self->_domainsByName objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_domainsByName objectForKeyedSubscript:name];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)domainForName:(id)a3
+- (id)domainForName:(id)name
 {
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
     sub_1000A0B08(a2, self);
   }
 
-  v6 = [(NSMutableDictionary *)self->_domainsByName objectForKeyedSubscript:v5];
+  v6 = [(NSMutableDictionary *)self->_domainsByName objectForKeyedSubscript:nameCopy];
   if (v6)
   {
     v7 = v6;
@@ -423,19 +423,19 @@ LABEL_9:
 
   else
   {
-    v8 = [MBDomain containerIDWithName:v5];
+    v8 = [MBDomain containerIDWithName:nameCopy];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v10 = WeakRetained;
     if (WeakRetained)
     {
-      v11 = [WeakRetained domainForName:v5 containerID:v8 domainManager:self];
+      v11 = [WeakRetained domainForName:nameCopy containerID:v8 domainManager:self];
     }
 
     else
     {
       if (!v8)
       {
-        objc_exception_throw([[MBException alloc] initWithCode:11 format:{@"Unknown domain: %@", v5}]);
+        objc_exception_throw([[MBException alloc] initWithCode:11 format:{@"Unknown domain: %@", nameCopy}]);
       }
 
       v12 = MBGetDefaultLog();
@@ -448,32 +448,32 @@ LABEL_9:
         _MBLog();
       }
 
-      v11 = [MBDomain uninstalledDomainWithName:v5];
+      v11 = [MBDomain uninstalledDomainWithName:nameCopy];
     }
 
     v13 = v11;
-    [(NSMutableDictionary *)self->_domainsByName setObject:v11 forKeyedSubscript:v5, v15];
+    [(NSMutableDictionary *)self->_domainsByName setObject:v11 forKeyedSubscript:nameCopy, v15];
     v7 = v13;
   }
 
   return v7;
 }
 
-- (id)domainForPath:(id)a3 relativePath:(id *)a4
+- (id)domainForPath:(id)path relativePath:(id *)relativePath
 {
-  v6 = a3;
+  pathCopy = path;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v7 = [(NSMutableDictionary *)self->_domainsByName objectEnumerator];
-  v8 = [v7 countByEnumeratingWithState:&v35 objects:v45 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_domainsByName objectEnumerator];
+  v8 = [objectEnumerator countByEnumeratingWithState:&v35 objects:v45 count:16];
   if (v8)
   {
     v9 = v8;
     v10 = *v36;
-    v33 = v7;
-    v34 = v6;
+    v33 = objectEnumerator;
+    v34 = pathCopy;
     v31 = *v36;
     while (2)
     {
@@ -483,43 +483,43 @@ LABEL_9:
       {
         if (*v36 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v12 = *(*(&v35 + 1) + 8 * v11);
-        v13 = [v12 rootPath];
-        v14 = [v13 mb_stringByAppendingSlash];
-        v15 = [v6 hasPrefix:v14];
+        rootPath = [v12 rootPath];
+        mb_stringByAppendingSlash = [rootPath mb_stringByAppendingSlash];
+        v15 = [pathCopy hasPrefix:mb_stringByAppendingSlash];
 
         if (v15)
         {
-          v16 = [v12 rootPath];
-          v17 = [v6 substringFromIndex:{objc_msgSend(v16, "length") + 1}];
+          rootPath2 = [v12 rootPath];
+          v17 = [pathCopy substringFromIndex:{objc_msgSend(rootPath2, "length") + 1}];
 
-          v18 = [v17 pathComponents];
-          if ([v18 count])
+          pathComponents = [v17 pathComponents];
+          if ([pathComponents count])
           {
             v19 = 1;
             while (1)
             {
-              v20 = [v18 subarrayWithRange:{0, v19}];
+              v20 = [pathComponents subarrayWithRange:{0, v19}];
               v21 = [NSString pathWithComponents:v20];
 
-              v22 = [v12 relativePathsToRestore];
-              if ([v22 containsObject:v21])
+              relativePathsToRestore = [v12 relativePathsToRestore];
+              if ([relativePathsToRestore containsObject:v21])
               {
                 break;
               }
 
-              v23 = [v12 relativePathsToRestoreOnlyFromService];
-              v24 = [v23 containsObject:v21];
+              relativePathsToRestoreOnlyFromService = [v12 relativePathsToRestoreOnlyFromService];
+              v24 = [relativePathsToRestoreOnlyFromService containsObject:v21];
 
               if (v24)
               {
                 goto LABEL_18;
               }
 
-              if (++v19 > [v18 count])
+              if (++v19 > [pathComponents count])
               {
                 goto LABEL_12;
               }
@@ -527,38 +527,38 @@ LABEL_9:
 
 LABEL_18:
             v26 = MBGetDefaultLog();
-            v6 = v34;
+            pathCopy = v34;
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
             {
-              v27 = [v12 name];
+              name = [v12 name];
               *buf = 138412802;
               v40 = v34;
               v41 = 2112;
-              v42 = v27;
+              v42 = name;
               v43 = 2112;
               v44 = v17;
               _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEBUG, "Domain for path %@: domain=%@, relativePath=%@", buf, 0x20u);
 
-              v30 = [v12 name];
+              name2 = [v12 name];
               _MBLog();
             }
 
-            if (a4)
+            if (relativePath)
             {
               v28 = v17;
-              *a4 = v17;
+              *relativePath = v17;
             }
 
             v25 = v12;
 
-            v7 = v33;
+            objectEnumerator = v33;
             goto LABEL_23;
           }
 
 LABEL_12:
 
-          v7 = v33;
-          v6 = v34;
+          objectEnumerator = v33;
+          pathCopy = v34;
           v10 = v31;
           v9 = v32;
         }
@@ -567,7 +567,7 @@ LABEL_12:
       }
 
       while (v11 != v9);
-      v9 = [v7 countByEnumeratingWithState:&v35 objects:v45 count:16];
+      v9 = [objectEnumerator countByEnumeratingWithState:&v35 objects:v45 count:16];
       v25 = 0;
       if (v9)
       {
@@ -588,16 +588,16 @@ LABEL_23:
   return v25;
 }
 
-- (id)redirectDomain:(id)a3 forRelativePath:(id)a4
+- (id)redirectDomain:(id)domain forRelativePath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  domainCopy = domain;
+  pathCopy = path;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = [v7 relativePathDomainRedirects];
-  v10 = [v9 countByEnumeratingWithState:&v22 objects:v32 count:16];
+  relativePathDomainRedirects = [domainCopy relativePathDomainRedirects];
+  v10 = [relativePathDomainRedirects countByEnumeratingWithState:&v22 objects:v32 count:16];
   if (v10)
   {
     v11 = v10;
@@ -608,28 +608,28 @@ LABEL_23:
       {
         if (*v23 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(relativePathDomainRedirects);
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
-        if ([v8 hasPrefix:v14])
+        if ([pathCopy hasPrefix:v14])
         {
-          v16 = [v7 relativePathDomainRedirects];
-          v17 = [v16 objectForKeyedSubscript:v14];
+          relativePathDomainRedirects2 = [domainCopy relativePathDomainRedirects];
+          v17 = [relativePathDomainRedirects2 objectForKeyedSubscript:v14];
 
           v18 = MBGetDefaultLog();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
           {
-            v19 = [v7 name];
+            name = [domainCopy name];
             *buf = 138412802;
-            v27 = v19;
+            v27 = name;
             v28 = 2112;
             v29 = v17;
             v30 = 2112;
-            v31 = v8;
+            v31 = pathCopy;
             _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Redirecting from %@ to %@: %@", buf, 0x20u);
 
-            v21 = [v7 name];
+            name2 = [domainCopy name];
             _MBLog();
           }
 
@@ -643,7 +643,7 @@ LABEL_23:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v22 objects:v32 count:16];
+      v11 = [relativePathDomainRedirects countByEnumeratingWithState:&v22 objects:v32 count:16];
       if (v11)
       {
         continue;
@@ -653,34 +653,34 @@ LABEL_23:
     }
   }
 
-  v15 = v7;
+  v15 = domainCopy;
 LABEL_15:
 
   return v15;
 }
 
-- (void)addDomain:(id)a3
+- (void)addDomain:(id)domain
 {
-  v7 = a3;
-  v5 = [v7 name];
-  v6 = [(NSMutableDictionary *)self->_domainsByName objectForKeyedSubscript:v5];
+  domainCopy = domain;
+  name = [domainCopy name];
+  v6 = [(NSMutableDictionary *)self->_domainsByName objectForKeyedSubscript:name];
 
   if (v6)
   {
-    sub_1000A0BF0(a2, self, v5);
+    sub_1000A0BF0(a2, self, name);
   }
 
-  [(NSMutableDictionary *)self->_domainsByName setObject:v7 forKeyedSubscript:v5];
+  [(NSMutableDictionary *)self->_domainsByName setObject:domainCopy forKeyedSubscript:name];
 }
 
-- (void)removeDomains:(id)a3
+- (void)removeDomains:(id)domains
 {
-  v4 = a3;
+  domainsCopy = domains;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [domainsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -692,7 +692,7 @@ LABEL_15:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(domainsCopy);
         }
 
         [(NSMutableDictionary *)self->_domainsByName setObject:0 forKeyedSubscript:*(*(&v9 + 1) + 8 * v8)];
@@ -700,30 +700,30 @@ LABEL_15:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [domainsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_removeDomainsNotMatchingRegex:(id)a3
+- (void)_removeDomainsNotMatchingRegex:(id)regex
 {
-  v4 = a3;
-  if ([v4 length])
+  regexCopy = regex;
+  if ([regexCopy length])
   {
     v5 = MBGetDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v23 = v4;
+      v23 = regexCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Removing domains not matching regex (%@)", buf, 0xCu);
-      v15 = v4;
+      v15 = regexCopy;
       _MBLog();
     }
 
     v21 = 0;
-    v6 = [[NSRegularExpression alloc] initWithPattern:v4 options:0 error:&v21];
+    v6 = [[NSRegularExpression alloc] initWithPattern:regexCopy options:0 error:&v21];
     v7 = v21;
     if (v7)
     {
@@ -767,10 +767,10 @@ LABEL_15:
                 *buf = 138412546;
                 v23 = v13;
                 v24 = 2112;
-                v25 = v4;
+                v25 = regexCopy;
                 _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Removing domain %@ not matching regex (%@)", buf, 0x16u);
                 v15 = v13;
-                v16 = v4;
+                v16 = regexCopy;
                 _MBLog();
               }
 
@@ -788,21 +788,21 @@ LABEL_15:
   }
 }
 
-- (void)addDomainsToBackUpToiCloudWithAppManager:(id)a3 manager:(id)a4 format:(int64_t)a5 account:(id)a6
+- (void)addDomainsToBackUpToiCloudWithAppManager:(id)manager manager:(id)a4 format:(int64_t)format account:(id)account
 {
-  v9 = a3;
+  managerCopy = manager;
   v10 = a4;
-  v11 = a6;
-  v75 = [v11 persona];
-  v71 = v11;
+  accountCopy = account;
+  persona = [accountCopy persona];
+  v71 = accountCopy;
   v72 = v10;
-  v74 = [v10 allRestrictedDomainNames:v9 account:v11];
+  v74 = [v10 allRestrictedDomainNames:managerCopy account:accountCopy];
   v101 = 0u;
   v102 = 0u;
   v103 = 0u;
   v104 = 0u;
-  v73 = v9;
-  obj = [v9 allApps];
+  v73 = managerCopy;
+  obj = [managerCopy allApps];
   v80 = [obj countByEnumeratingWithState:&v101 objects:v113 count:16];
   if (v80)
   {
@@ -822,8 +822,8 @@ LABEL_15:
         v99 = 0u;
         v100 = 0u;
         v82 = v13;
-        v14 = [v13 containers];
-        v15 = [v14 countByEnumeratingWithState:&v97 objects:v112 count:16];
+        containers = [v13 containers];
+        v15 = [containers countByEnumeratingWithState:&v97 objects:v112 count:16];
         if (v15)
         {
           v16 = v15;
@@ -834,24 +834,24 @@ LABEL_15:
             {
               if (*v98 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(containers);
               }
 
               v19 = *(*(&v97 + 1) + 8 * j);
               v20 = objc_autoreleasePoolPush();
-              v21 = [v19 domain];
-              v22 = [v21 name];
-              v23 = [(MBDomainManager *)self containsDomainName:v22];
+              domain = [v19 domain];
+              name = [domain name];
+              v23 = [(MBDomainManager *)self containsDomainName:name];
 
               if ((v23 & 1) == 0)
               {
-                [(MBDomainManager *)self addDomain:v21];
+                [(MBDomainManager *)self addDomain:domain];
               }
 
               objc_autoreleasePoolPop(v20);
             }
 
-            v16 = [v14 countByEnumeratingWithState:&v97 objects:v112 count:16];
+            v16 = [containers countByEnumeratingWithState:&v97 objects:v112 count:16];
           }
 
           while (v16);
@@ -861,10 +861,10 @@ LABEL_15:
         if (([v82 isSystemApp] & 1) == 0)
         {
           context = objc_autoreleasePoolPush();
-          v25 = [v75 appPlaceholderArchiveDirectory];
-          v26 = [v75 personaIdentifier];
-          v27 = [v82 bundleID];
-          v28 = [MBDomain placeholderNameWithAppID:v27];
+          appPlaceholderArchiveDirectory = [persona appPlaceholderArchiveDirectory];
+          personaIdentifier = [persona personaIdentifier];
+          bundleID = [v82 bundleID];
+          v28 = [MBDomain placeholderNameWithAppID:bundleID];
 
           v29 = [v74 containsObject:v28];
           if (v29)
@@ -875,7 +875,7 @@ LABEL_15:
               *buf = 138412290;
               v109 = v28;
               _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Not creating placeholder for restricted domain: %@", buf, 0xCu);
-              v67 = v28;
+              identifier2 = v28;
               _MBLog();
             }
 
@@ -885,12 +885,12 @@ LABEL_15:
           else
           {
             v96 = 0;
-            v30 = [v82 archivePlaceholderDomainWithPersonaIdentifier:v26 intoDirectory:v25 error:&v96];
+            v30 = [v82 archivePlaceholderDomainWithPersonaIdentifier:personaIdentifier intoDirectory:appPlaceholderArchiveDirectory error:&v96];
             v31 = v96;
             if (v30 && MBSnapshotFormatContainsManifests())
             {
-              v32 = [v30 name];
-              v33 = [(MBDomainManager *)self containsDomainName:v32];
+              name2 = [v30 name];
+              v33 = [(MBDomainManager *)self containsDomainName:name2];
 
               if ((v33 & 1) == 0)
               {
@@ -917,14 +917,14 @@ LABEL_15:
             v35 = MBGetDefaultLog();
             if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
             {
-              v36 = [v24 identifier];
+              identifier = [v24 identifier];
               *buf = 138412546;
-              v109 = v36;
+              v109 = identifier;
               v110 = 2112;
               v111 = v31;
               _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_ERROR, "Placeholder: Failed to archive placeholder for: %@ %@", buf, 0x16u);
 
-              v67 = [v24 identifier];
+              identifier2 = [v24 identifier];
               v70 = v31;
               _MBLog();
             }
@@ -942,8 +942,8 @@ LABEL_15:
   v95 = 0u;
   v92 = 0u;
   v93 = 0u;
-  v79 = [v73 allPlugins];
-  v83 = [v79 countByEnumeratingWithState:&v92 objects:v107 count:16];
+  allPlugins = [v73 allPlugins];
+  v83 = [allPlugins countByEnumeratingWithState:&v92 objects:v107 count:16];
   if (v83)
   {
     v81 = *v93;
@@ -953,58 +953,58 @@ LABEL_15:
       {
         if (*v93 != v81)
         {
-          objc_enumerationMutation(v79);
+          objc_enumerationMutation(allPlugins);
         }
 
         v38 = *(*(&v92 + 1) + 8 * k);
         v39 = objc_autoreleasePoolPush();
-        v40 = [v38 domain];
-        v41 = [v40 name];
-        v42 = [(MBDomainManager *)self containsDomainName:v41];
+        domain2 = [v38 domain];
+        name3 = [domain2 name];
+        v42 = [(MBDomainManager *)self containsDomainName:name3];
 
         if ((v42 & 1) == 0)
         {
-          [(MBDomainManager *)self addDomain:v40];
+          [(MBDomainManager *)self addDomain:domain2];
         }
 
         v90 = 0u;
         v91 = 0u;
         v88 = 0u;
         v89 = 0u;
-        v43 = [v38 allAppGroupContainers];
-        v44 = [v43 countByEnumeratingWithState:&v88 objects:v106 count:16];
+        allAppGroupContainers = [v38 allAppGroupContainers];
+        v44 = [allAppGroupContainers countByEnumeratingWithState:&v88 objects:v106 count:16];
         if (v44)
         {
           v45 = v44;
-          v46 = 0;
+          domain3 = 0;
           v47 = *v89;
           do
           {
             v48 = 0;
-            v49 = v46;
+            v49 = domain3;
             do
             {
               if (*v89 != v47)
               {
-                objc_enumerationMutation(v43);
+                objc_enumerationMutation(allAppGroupContainers);
               }
 
-              v46 = [*(*(&v88 + 1) + 8 * v48) domain];
+              domain3 = [*(*(&v88 + 1) + 8 * v48) domain];
 
-              v50 = [v46 name];
-              v51 = [(MBDomainManager *)self containsDomainName:v50];
+              name4 = [domain3 name];
+              v51 = [(MBDomainManager *)self containsDomainName:name4];
 
               if ((v51 & 1) == 0)
               {
-                [(MBDomainManager *)self addDomain:v46];
+                [(MBDomainManager *)self addDomain:domain3];
               }
 
               v48 = v48 + 1;
-              v49 = v46;
+              v49 = domain3;
             }
 
             while (v45 != v48);
-            v45 = [v43 countByEnumeratingWithState:&v88 objects:v106 count:16];
+            v45 = [allAppGroupContainers countByEnumeratingWithState:&v88 objects:v106 count:16];
           }
 
           while (v45);
@@ -1013,20 +1013,20 @@ LABEL_15:
         objc_autoreleasePoolPop(v39);
       }
 
-      v83 = [v79 countByEnumeratingWithState:&v92 objects:v107 count:16];
+      v83 = [allPlugins countByEnumeratingWithState:&v92 objects:v107 count:16];
     }
 
     while (v83);
   }
 
-  if ([v75 isPersonalPersona])
+  if ([persona isPersonalPersona])
   {
     v86 = 0u;
     v87 = 0u;
     v84 = 0u;
     v85 = 0u;
-    v52 = [v73 allSystemContainers];
-    v53 = [v52 countByEnumeratingWithState:&v84 objects:v105 count:16];
+    allSystemContainers = [v73 allSystemContainers];
+    v53 = [allSystemContainers countByEnumeratingWithState:&v84 objects:v105 count:16];
     if (v53)
     {
       v54 = v53;
@@ -1037,27 +1037,27 @@ LABEL_15:
         {
           if (*v85 != v55)
           {
-            objc_enumerationMutation(v52);
+            objc_enumerationMutation(allSystemContainers);
           }
 
-          v57 = [*(*(&v84 + 1) + 8 * m) domain];
-          v58 = [v57 name];
-          v59 = [(MBDomainManager *)self containsDomainName:v58];
+          domain4 = [*(*(&v84 + 1) + 8 * m) domain];
+          name5 = [domain4 name];
+          v59 = [(MBDomainManager *)self containsDomainName:name5];
 
           if ((v59 & 1) == 0)
           {
-            [(MBDomainManager *)self addDomain:v57];
+            [(MBDomainManager *)self addDomain:domain4];
           }
         }
 
-        v54 = [v52 countByEnumeratingWithState:&v84 objects:v105 count:16];
+        v54 = [allSystemContainers countByEnumeratingWithState:&v84 objects:v105 count:16];
       }
 
       while (v54);
     }
   }
 
-  v60 = [v73 allDisabledDomainNamesForPersona:{v75, v67}];
+  v60 = [v73 allDisabledDomainNamesForPersona:{persona, identifier2}];
   [(MBDomainManager *)self removeDomains:v60];
   v61 = MBGetDefaultLog();
   if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
@@ -1087,14 +1087,14 @@ LABEL_15:
   if (MBIsInternalInstall())
   {
     v65 = +[MBBehaviorOptions sharedOptions];
-    v66 = [v65 domainsToBackUpRegex];
-    [(MBDomainManager *)self _removeDomainsNotMatchingRegex:v66];
+    domainsToBackUpRegex = [v65 domainsToBackUpRegex];
+    [(MBDomainManager *)self _removeDomainsNotMatchingRegex:domainsToBackUpRegex];
   }
 }
 
-- (void)addDomainsToBackUpToDriveWithAppManager:(id)a3
+- (void)addDomainsToBackUpToDriveWithAppManager:(id)manager
 {
-  v28 = a3;
+  managerCopy = manager;
   v4 = MBGetDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -1103,13 +1103,13 @@ LABEL_15:
     _MBLog();
   }
 
-  v5 = [v28 allRestrictedDomainNames];
+  allRestrictedDomainNames = [managerCopy allRestrictedDomainNames];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v6 = [v28 allContainers];
-  v7 = [v6 countByEnumeratingWithState:&v33 objects:v40 count:16];
+  allContainers = [managerCopy allContainers];
+  v7 = [allContainers countByEnumeratingWithState:&v33 objects:v40 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1120,37 +1120,37 @@ LABEL_15:
       {
         if (*v34 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allContainers);
         }
 
         v11 = *(*(&v33 + 1) + 8 * i);
-        v12 = [v11 domain];
-        v13 = [v12 name];
-        v14 = [v5 containsObject:v13];
+        domain = [v11 domain];
+        name = [domain name];
+        v14 = [allRestrictedDomainNames containsObject:name];
 
         if (v14)
         {
-          v15 = MBGetDefaultLog();
-          if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
+          domain2 = MBGetDefaultLog();
+          if (os_log_type_enabled(domain2, OS_LOG_TYPE_INFO))
           {
-            v16 = [v11 identifier];
+            identifier = [v11 identifier];
             *buf = 138412290;
-            v39 = v16;
-            _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Not backing up restricted app: %@", buf, 0xCu);
+            v39 = identifier;
+            _os_log_impl(&_mh_execute_header, domain2, OS_LOG_TYPE_INFO, "Not backing up restricted app: %@", buf, 0xCu);
 
-            v27 = [v11 identifier];
+            identifier2 = [v11 identifier];
             _MBLog();
           }
         }
 
         else
         {
-          v15 = [v11 domain];
-          [(MBDomainManager *)self addDomain:v15];
+          domain2 = [v11 domain];
+          [(MBDomainManager *)self addDomain:domain2];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v33 objects:v40 count:16];
+      v8 = [allContainers countByEnumeratingWithState:&v33 objects:v40 count:16];
     }
 
     while (v8);
@@ -1160,8 +1160,8 @@ LABEL_15:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v17 = [v28 allSystemContainers];
-  v18 = [v17 countByEnumeratingWithState:&v29 objects:v37 count:16];
+  allSystemContainers = [managerCopy allSystemContainers];
+  v18 = [allSystemContainers countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v18)
   {
     v19 = v18;
@@ -1172,20 +1172,20 @@ LABEL_15:
       {
         if (*v30 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(allSystemContainers);
         }
 
-        v22 = [*(*(&v29 + 1) + 8 * j) domain];
-        v23 = [v22 name];
-        v24 = [(MBDomainManager *)self containsDomainName:v23];
+        domain3 = [*(*(&v29 + 1) + 8 * j) domain];
+        name2 = [domain3 name];
+        v24 = [(MBDomainManager *)self containsDomainName:name2];
 
         if ((v24 & 1) == 0)
         {
-          [(MBDomainManager *)self addDomain:v22];
+          [(MBDomainManager *)self addDomain:domain3];
         }
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v29 objects:v37 count:16];
+      v19 = [allSystemContainers countByEnumeratingWithState:&v29 objects:v37 count:16];
     }
 
     while (v19);
@@ -1194,8 +1194,8 @@ LABEL_15:
   if (MBIsInternalInstall())
   {
     v25 = +[MBBehaviorOptions sharedOptions];
-    v26 = [v25 domainsToBackUpRegex];
-    [(MBDomainManager *)self _removeDomainsNotMatchingRegex:v26];
+    domainsToBackUpRegex = [v25 domainsToBackUpRegex];
+    [(MBDomainManager *)self _removeDomainsNotMatchingRegex:domainsToBackUpRegex];
   }
 }
 

@@ -1,19 +1,19 @@
 @interface GDFactObjectEntityReference
-- (GDFactObjectEntityReference)initWithEntityIdentifier:(id)a3;
+- (GDFactObjectEntityReference)initWithEntityIdentifier:(id)identifier;
 @end
 
 @implementation GDFactObjectEntityReference
 
-- (GDFactObjectEntityReference)initWithEntityIdentifier:(id)a3
+- (GDFactObjectEntityReference)initWithEntityIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = GDFactObjectEntityReference;
   v6 = [(GDFactObjectEntityReference *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_entityIdentifier, a3);
+    objc_storeStrong(&v6->_entityIdentifier, identifier);
   }
 
   return v7;

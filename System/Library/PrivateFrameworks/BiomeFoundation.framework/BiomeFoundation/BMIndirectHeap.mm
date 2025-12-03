@@ -1,9 +1,9 @@
 @interface BMIndirectHeap
-- (BMIndirectHeap)initWithHeapSize:(unint64_t)a3 isAscending:(id)a4;
+- (BMIndirectHeap)initWithHeapSize:(unint64_t)size isAscending:(id)ascending;
 - (id)description;
 - (unint64_t)pop;
 - (unint64_t)top;
-- (void)add:(unint64_t)a3;
+- (void)add:(unint64_t)add;
 - (void)dealloc;
 @end
 
@@ -122,10 +122,10 @@ LABEL_9:
   [(BMIndirectHeap *)&v4 dealloc];
 }
 
-- (BMIndirectHeap)initWithHeapSize:(unint64_t)a3 isAscending:(id)a4
+- (BMIndirectHeap)initWithHeapSize:(unint64_t)size isAscending:(id)ascending
 {
-  v7 = a4;
-  if (a3 >= 0x1FFFFFFFFFFFFFFFLL)
+  ascendingCopy = ascending;
+  if (size >= 0x1FFFFFFFFFFFFFFFLL)
   {
     [BMIndirectHeap initWithHeapSize:a2 isAscending:self];
   }
@@ -136,10 +136,10 @@ LABEL_9:
   v9 = v8;
   if (v8)
   {
-    v8->_size = a3;
-    v8->_array = malloc_type_malloc(8 * a3, 0x100004000313F17uLL);
+    v8->_size = size;
+    v8->_array = malloc_type_malloc(8 * size, 0x100004000313F17uLL);
     v9->_count = 0;
-    v10 = MEMORY[0x1AC5AD7D0](v7);
+    v10 = MEMORY[0x1AC5AD7D0](ascendingCopy);
     isAscending = v9->_isAscending;
     v9->_isAscending = v10;
   }
@@ -175,7 +175,7 @@ LABEL_9:
   return v7;
 }
 
-- (void)add:(unint64_t)a3
+- (void)add:(unint64_t)add
 {
   count = self->_count;
   if (count >= self->_size)
@@ -208,7 +208,7 @@ LABEL_9:
   {
     self->_count = count + 1;
     array = self->_array;
-    array[count] = a3;
+    array[count] = add;
     if (count)
     {
       do

@@ -1,17 +1,17 @@
 @interface CommerceDialogHandler
 - (_TtC11AppStoreKit21CommerceDialogHandler)init;
-- (void)handleEngagementRequest:(id)a3 resultHandler:(id)a4;
+- (void)handleEngagementRequest:(id)request resultHandler:(id)handler;
 @end
 
 @implementation CommerceDialogHandler
 
-- (void)handleEngagementRequest:(id)a3 resultHandler:(id)a4
+- (void)handleEngagementRequest:(id)request resultHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_1E167E90C(v7, v8, v6);
+  requestCopy = request;
+  selfCopy = self;
+  sub_1E167E90C(requestCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }

@@ -1,36 +1,36 @@
 @interface VCScreenCapture
-- (VCScreenCapture)initWithCaptureServer:(id)a3 protocolFunctions:(const tagVCVideoCaptureServerProtocolRealtimeInstanceVTable *)a4 sourceConfig:(id)a5;
+- (VCScreenCapture)initWithCaptureServer:(id)server protocolFunctions:(const tagVCVideoCaptureServerProtocolRealtimeInstanceVTable *)functions sourceConfig:(id)config;
 - (int)_startCapture;
-- (int)frameCount:(BOOL)a3;
-- (int)setFrameRate:(int)a3;
-- (int)stop:(BOOL)a3;
-- (int)updateScreenCapture:(id)a3;
-- (opaqueCMSampleBuffer)newIdleBlackFrameWithAttributes:(id *)a3;
+- (int)frameCount:(BOOL)count;
+- (int)setFrameRate:(int)rate;
+- (int)stop:(BOOL)stop;
+- (int)updateScreenCapture:(id)capture;
+- (opaqueCMSampleBuffer)newIdleBlackFrameWithAttributes:(id *)attributes;
 - (uint64_t)_startCapture;
 - (void)_startCapture;
 - (void)dealloc;
 - (void)screenCaptureSourceConfigCannedCapture;
-- (void)screenCaptureSourceProcessEventString:(id)a3;
-- (void)screenCaptureSourceShouldClearScreen:(BOOL)a3;
-- (void)setPauseCapture:(BOOL)a3;
+- (void)screenCaptureSourceProcessEventString:(id)string;
+- (void)screenCaptureSourceShouldClearScreen:(BOOL)screen;
+- (void)setPauseCapture:(BOOL)capture;
 - (void)startClearScreenProc;
 - (void)stopClearScreenProc;
 @end
 
 @implementation VCScreenCapture
 
-- (VCScreenCapture)initWithCaptureServer:(id)a3 protocolFunctions:(const tagVCVideoCaptureServerProtocolRealtimeInstanceVTable *)a4 sourceConfig:(id)a5
+- (VCScreenCapture)initWithCaptureServer:(id)server protocolFunctions:(const tagVCVideoCaptureServerProtocolRealtimeInstanceVTable *)functions sourceConfig:(id)config
 {
   v98[1] = *MEMORY[0x1E69E9840];
-  v84 = [objc_msgSend(a5 objectForKeyedSubscript:{@"VideoWidth", "intValue"}];
-  v83 = [objc_msgSend(a5 objectForKeyedSubscript:{@"VideoHeight", "intValue"}];
-  v8 = [objc_msgSend(a5 "objectForKeyedSubscript:"intValue"")];
-  v80 = [objc_msgSend(a5 objectForKeyedSubscript:{@"ShouldSendBlackFramesOnClearScreen", "BOOLValue"}];
-  v79 = [objc_msgSend(a5 objectForKeyedSubscript:{@"ResolutionScaling", "intValue"}];
-  v81 = [objc_msgSend(a5 objectForKeyedSubscript:{@"EnableIdleFrameAdjustments", "BOOLValue"}];
-  if ([a5 objectForKeyedSubscript:@"CaptureSourceID"])
+  v84 = [objc_msgSend(config objectForKeyedSubscript:{@"VideoWidth", "intValue"}];
+  v83 = [objc_msgSend(config objectForKeyedSubscript:{@"VideoHeight", "intValue"}];
+  v8 = [objc_msgSend(config "objectForKeyedSubscript:"intValue"")];
+  v80 = [objc_msgSend(config objectForKeyedSubscript:{@"ShouldSendBlackFramesOnClearScreen", "BOOLValue"}];
+  v79 = [objc_msgSend(config objectForKeyedSubscript:{@"ResolutionScaling", "intValue"}];
+  v81 = [objc_msgSend(config objectForKeyedSubscript:{@"EnableIdleFrameAdjustments", "BOOLValue"}];
+  if ([config objectForKeyedSubscript:@"CaptureSourceID"])
   {
-    v9 = [objc_msgSend(a5 objectForKeyedSubscript:{@"CaptureSourceID", "integerValue"}];
+    v9 = [objc_msgSend(config objectForKeyedSubscript:{@"CaptureSourceID", "integerValue"}];
   }
 
   else
@@ -60,7 +60,7 @@
     }
   }
 
-  if (!a3 || !v84 || !v83 || !v8)
+  if (!server || !v84 || !v83 || !v8)
   {
 
     return 0;
@@ -68,17 +68,17 @@
 
   if (v9)
   {
-    v12 = 0;
+    serverCopy = 0;
   }
 
   else
   {
-    v12 = a3;
+    serverCopy = server;
   }
 
   v85.receiver = self;
   v85.super_class = VCScreenCapture;
-  v13 = [(VCVideoCapture *)&v85 initWithCaptureServer:v12 protocolFunctions:a4];
+  v13 = [(VCVideoCapture *)&v85 initWithCaptureServer:serverCopy protocolFunctions:functions];
   v14 = v13;
   if (v13)
   {
@@ -92,14 +92,14 @@
     *(v13 + 116) = v84;
     *(v13 + 117) = v83;
     *(v13 + 79) = v8;
-    v16 = [objc_msgSend(a5 objectForKeyedSubscript:{@"VideoWidth", "intValue"}];
-    v17 = [objc_msgSend(a5 objectForKeyedSubscript:{@"VideoHeight", "intValue"}];
+    v16 = [objc_msgSend(config objectForKeyedSubscript:{@"VideoWidth", "intValue"}];
+    v17 = [objc_msgSend(config objectForKeyedSubscript:{@"VideoHeight", "intValue"}];
     v99.width = v16;
     v99.height = v17;
     DictionaryRepresentation = CGSizeCreateDictionaryRepresentation(v99);
     v19 = objc_alloc_init(MEMORY[0x1E695DF90]);
     [v19 setObject:DictionaryRepresentation forKeyedSubscript:*MEMORY[0x1E6973EB0]];
-    v20 = [a5 objectForKeyedSubscript:@"ScreenCaptureUUID"];
+    v20 = [config objectForKeyedSubscript:@"ScreenCaptureUUID"];
     if (v20 == [MEMORY[0x1E695DFB0] null])
     {
       v21 = 0;
@@ -107,19 +107,19 @@
 
     else
     {
-      v21 = [a5 objectForKeyedSubscript:@"ScreenCaptureUUID"];
+      v21 = [config objectForKeyedSubscript:@"ScreenCaptureUUID"];
     }
 
     [v19 setObject:v21 forKeyedSubscript:*MEMORY[0x1E6973EB8]];
-    v22 = [a5 objectForKeyedSubscript:@"RemoteDeviceName"];
+    v22 = [config objectForKeyedSubscript:@"RemoteDeviceName"];
     if (([v22 isEqual:{objc_msgSend(MEMORY[0x1E695DFB0], "null")}] & 1) == 0)
     {
-      v23 = [a5 objectForKeyedSubscript:@"RemoteDeviceName"];
+      v23 = [config objectForKeyedSubscript:@"RemoteDeviceName"];
       [v19 setObject:v23 forKeyedSubscript:*MEMORY[0x1E6973EA8]];
     }
 
     CFRelease(DictionaryRepresentation);
-    v24 = [objc_msgSend(a5 objectForKeyedSubscript:{@"HDRMode", "intValue"}];
+    v24 = [objc_msgSend(config objectForKeyedSubscript:{@"HDRMode", "intValue"}];
     v25 = v24;
     v26 = MEMORY[0x1E6973EF0];
     v27 = MEMORY[0x1E6973DF0];
@@ -143,18 +143,18 @@
     v98[0] = v30;
     v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v98 forKeys:&v97 count:1];
     v33 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v34 = [a5 objectForKeyedSubscript:@"FrameRate"];
+    v34 = [config objectForKeyedSubscript:@"FrameRate"];
     [v33 setObject:v34 forKeyedSubscript:*MEMORY[0x1E6973ED0]];
-    v35 = [a5 objectForKeyedSubscript:@"FrameRate"];
+    v35 = [config objectForKeyedSubscript:@"FrameRate"];
     [v33 setObject:v35 forKeyedSubscript:*MEMORY[0x1E6973E20]];
-    v36 = [a5 objectForKeyedSubscript:@"PixelFormat"];
+    v36 = [config objectForKeyedSubscript:@"PixelFormat"];
     [v33 setObject:v36 forKeyedSubscript:*MEMORY[0x1E6973E28]];
     [v33 setObject:&unk_1F5798CE8 forKeyedSubscript:*MEMORY[0x1E6973E80]];
     [v33 setObject:v31 forKeyedSubscript:*MEMORY[0x1E6973E90]];
     [v33 setObject:&unk_1F5798D00 forKeyedSubscript:*MEMORY[0x1E6973E48]];
-    v37 = [a5 objectForKeyedSubscript:@"ShouldSupressDRMContent"];
+    v37 = [config objectForKeyedSubscript:@"ShouldSupressDRMContent"];
     [v33 setObject:v37 forKeyedSubscript:*MEMORY[0x1E6973E88]];
-    v38 = [a5 objectForKeyedSubscript:@"ScreenCaptureUUID"];
+    v38 = [config objectForKeyedSubscript:@"ScreenCaptureUUID"];
     if (v38 == [MEMORY[0x1E695DFB0] null])
     {
       v39 = 0;
@@ -162,12 +162,12 @@
 
     else
     {
-      v39 = [a5 objectForKeyedSubscript:@"ScreenCaptureUUID"];
+      v39 = [config objectForKeyedSubscript:@"ScreenCaptureUUID"];
     }
 
     [v33 setObject:v39 forKeyedSubscript:*MEMORY[0x1E6973E78]];
     v40 = objc_opt_new();
-    v41 = [a5 objectForKeyedSubscript:@"PdProtectionOptions"];
+    v41 = [config objectForKeyedSubscript:@"PdProtectionOptions"];
     [v40 setObject:v41 forKeyedSubscript:*MEMORY[0x1E6973EA0]];
     [v33 setObject:v40 forKeyedSubscript:*MEMORY[0x1E6973E70]];
 
@@ -176,13 +176,13 @@
       [v33 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E6973E38]];
     }
 
-    if ([objc_msgSend(a5 objectForKeyedSubscript:{@"ClientPid", "intValue"}])
+    if ([objc_msgSend(config objectForKeyedSubscript:{@"ClientPid", "intValue"}])
     {
-      v42 = [a5 objectForKeyedSubscript:@"ClientPid"];
+      v42 = [config objectForKeyedSubscript:@"ClientPid"];
       [v33 setObject:v42 forKeyedSubscript:*MEMORY[0x1E6973E18]];
     }
 
-    v43 = [a5 objectForKeyedSubscript:@"ClientBundleID"];
+    v43 = [config objectForKeyedSubscript:@"ClientBundleID"];
     if (v43)
     {
       v44 = v43;
@@ -192,7 +192,7 @@
       }
     }
 
-    v45 = [objc_msgSend(a5 objectForKeyedSubscript:{@"ScreenCaptureConfigurationDisplayMode", "intValue"}];
+    v45 = [objc_msgSend(config objectForKeyedSubscript:{@"ScreenCaptureConfigurationDisplayMode", "intValue"}];
     v46 = MEMORY[0x1E6973E58];
     if (v45 <= 2)
     {
@@ -201,7 +201,7 @@
       [v33 setObject:v47 forKeyedSubscript:*v46];
     }
 
-    v48 = [objc_msgSend(a5 objectForKeyedSubscript:{@"HasPrivateCaptureEntitlement", "BOOLValue"}];
+    v48 = [objc_msgSend(config objectForKeyedSubscript:{@"HasPrivateCaptureEntitlement", "BOOLValue"}];
     v49 = [+[GKSConnectivitySettings getStorebagValueForStorebagKey:userDefaultKey:defaultValue:isDoubleType:](GKSConnectivitySettings getStorebagValueForStorebagKey:@"vc-screen-capture-private-content-capture-disabled" userDefaultKey:@"screenCaptureDisablePrivateContentCapture" defaultValue:&unk_1F5798D18 isDoubleType:{0), "BOOLValue"}];
     v50 = MEMORY[0x1E6986650];
     if (v48)
@@ -236,7 +236,7 @@
       }
     }
 
-    v55 = [a5 objectForKeyedSubscript:@"ScreenVirtualDisplayLabel"];
+    v55 = [config objectForKeyedSubscript:@"ScreenVirtualDisplayLabel"];
     if (v55)
     {
       v56 = v55;
@@ -258,7 +258,7 @@
       }
     }
 
-    v64 = [a5 objectForKeyedSubscript:@"AllowRemoteControlLayers"];
+    v64 = [config objectForKeyedSubscript:@"AllowRemoteControlLayers"];
     [v33 setObject:v64 forKeyedSubscript:*MEMORY[0x1E6973E08]];
     if (v25)
     {
@@ -470,9 +470,9 @@ LABEL_11:
   return v8;
 }
 
-- (int)stop:(BOOL)a3
+- (int)stop:(BOOL)stop
 {
-  v3 = a3;
+  stopCopy = stop;
   v18 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -487,7 +487,7 @@ LABEL_11:
       v14 = 1024;
       v15 = 994;
       v16 = 1024;
-      v17 = v3;
+      v17 = stopCopy;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "VCScreenCapture [%s] %s:%d shouldClosePreview=%d", &v10, 0x22u);
     }
   }
@@ -516,7 +516,7 @@ LABEL_11:
   return 0;
 }
 
-- (int)updateScreenCapture:(id)a3
+- (int)updateScreenCapture:(id)capture
 {
   v23 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -569,7 +569,7 @@ LABEL_11:
         v19 = 2112;
         v20 = v4;
         v21 = 2048;
-        v22 = self;
+        selfCopy = self;
         v7 = "VCScreenCapture [%s] %s:%d %@(%p) Update is not supported";
         v8 = v11;
         v9 = 48;
@@ -581,13 +581,13 @@ LABEL_11:
   return 0;
 }
 
-- (void)setPauseCapture:(BOOL)a3
+- (void)setPauseCapture:(BOOL)capture
 {
   screenCapture = self->_screenCapture;
   if (screenCapture)
   {
     [(VCScreenCaptureSource *)screenCapture pauseScreenCapture:?];
-    self->_capturePaused = a3;
+    self->_capturePaused = capture;
   }
 }
 
@@ -603,7 +603,7 @@ LABEL_11:
 - (void)stopClearScreenProc
 {
   v30 = *MEMORY[0x1E69E9840];
-  v19 = self;
+  selfCopy = self;
   pthread_mutex_lock(&self->_clearScreenLock);
   if (self->_clearScreenProc && self->_isClearScreenThreadRunning)
   {
@@ -667,7 +667,7 @@ LABEL_11:
       v26 = 2112;
       v27 = v3;
       v28 = 2048;
-      v29 = self;
+      selfCopy2 = self;
       v6 = "VCScreenCapture [%s] %s:%d %@(%p) Signal condition clearScreenChanged";
       v7 = v10;
       v8 = 48;
@@ -679,9 +679,9 @@ LABEL_14:
   }
 
   pthread_mutex_unlock(&self->_clearScreenLock);
-  pthread_join(self->_clearScreenProc, &v19);
-  *(v19 + 31) = 0;
-  if (objc_opt_class() == v19)
+  pthread_join(self->_clearScreenProc, &selfCopy);
+  *(selfCopy + 31) = 0;
+  if (objc_opt_class() == selfCopy)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -708,7 +708,7 @@ LABEL_25:
   {
     if (objc_opt_respondsToSelector())
     {
-      v11 = [v19 performSelector:sel_logPrefix];
+      v11 = [selfCopy performSelector:sel_logPrefix];
     }
 
     else
@@ -731,7 +731,7 @@ LABEL_25:
         v26 = 2112;
         v27 = v11;
         v28 = 2048;
-        v29 = v19;
+        selfCopy2 = selfCopy;
         v14 = "VCScreenCapture [%s] %s:%d %@(%p) Stopped clearScreenProc";
         v15 = v18;
         v16 = 48;
@@ -741,10 +741,10 @@ LABEL_25:
   }
 }
 
-- (int)frameCount:(BOOL)a3
+- (int)frameCount:(BOOL)count
 {
   currentTransform = self->_currentTransform;
-  if (a3)
+  if (count)
   {
     self->_currentTransform = 0;
   }
@@ -752,32 +752,32 @@ LABEL_25:
   return currentTransform;
 }
 
-- (void)screenCaptureSourceShouldClearScreen:(BOOL)a3
+- (void)screenCaptureSourceShouldClearScreen:(BOOL)screen
 {
-  v3 = a3;
+  screenCopy = screen;
   pthread_mutex_lock(&self->_clearScreenLock);
-  _VCScreenCapture_UpdateShouldClearScreen(self, v3);
+  _VCScreenCapture_UpdateShouldClearScreen(self, screenCopy);
 
   pthread_mutex_unlock(&self->_clearScreenLock);
 }
 
-- (void)screenCaptureSourceProcessEventString:(id)a3
+- (void)screenCaptureSourceProcessEventString:(id)string
 {
-  v4 = [(VCVideoCapture *)self captureServer];
+  captureServer = [(VCVideoCapture *)self captureServer];
 
-  [(VCVideoCaptureServer *)v4 handleCaptureEvent:a3];
+  [(VCVideoCaptureServer *)captureServer handleCaptureEvent:string];
 }
 
 - (void)screenCaptureSourceConfigCannedCapture
 {
   [(VCCannedVideoCaptureSource *)[(VCVideoCapture *)self cannedScreenCaptureSource] setWidth:LODWORD(self->_rotationBufferPool) height:HIDWORD(self->_rotationBufferPool)];
-  v3 = [(VCVideoCapture *)self cannedScreenCaptureSource];
+  cannedScreenCaptureSource = [(VCVideoCapture *)self cannedScreenCaptureSource];
   captureFramerate = self->_captureFramerate;
 
-  [(VCCannedVideoCaptureSource *)v3 setFrameRate:captureFramerate];
+  [(VCCannedVideoCaptureSource *)cannedScreenCaptureSource setFrameRate:captureFramerate];
 }
 
-- (opaqueCMSampleBuffer)newIdleBlackFrameWithAttributes:(id *)a3
+- (opaqueCMSampleBuffer)newIdleBlackFrameWithAttributes:(id *)attributes
 {
   v73 = *MEMORY[0x1E69E9840];
   memcpy(__dst, MEMORY[0x1E6960CF0], sizeof(__dst));
@@ -1080,7 +1080,7 @@ LABEL_55:
     if (PixelFormatType == 875704422)
     {
       v34 = v27;
-      v35 = a3;
+      attributesCopy2 = attributes;
       v36 = 0;
       goto LABEL_46;
     }
@@ -1103,7 +1103,7 @@ LABEL_55:
   }
 
   v34 = v27;
-  v35 = a3;
+  attributesCopy2 = attributes;
   v36 = 16;
 LABEL_46:
   v37 = OUTLINED_FUNCTION_12_2();
@@ -1118,7 +1118,7 @@ LABEL_46:
   v48 = CVPixelBufferGetHeightOfPlane(v29, 1uLL);
   memset(v40, 128, v48 * v47);
   self->_blackFrame = v28;
-  a3 = v35;
+  attributes = attributesCopy2;
   v27 = v34;
 LABEL_47:
   v49 = OUTLINED_FUNCTION_12_2();
@@ -1139,12 +1139,12 @@ LABEL_49:
   blackFrame = self->_blackFrame;
   buf = __dst[1];
   CMSampleBufferSetOutputPresentationTimeStamp(blackFrame, &buf);
-  return _VCScreenCapture_CreateFrameInternal(self, self->_blackFrame, self->_previousCompleteFrameTransform, 1, a3);
+  return _VCScreenCapture_CreateFrameInternal(self, self->_blackFrame, self->_previousCompleteFrameTransform, 1, attributes);
 }
 
-- (int)setFrameRate:(int)a3
+- (int)setFrameRate:(int)rate
 {
-  v3 = *&a3;
+  v3 = *&rate;
   v36 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->_screenCaptureLock);
   v5 = objc_opt_class();
@@ -1179,7 +1179,7 @@ LABEL_49:
     v29 = 2112;
     *v30 = v7;
     *&v30[8] = 2048;
-    v31 = self;
+    selfCopy = self;
     v32 = v17;
     v33 = v18;
     v34 = v17;
@@ -1274,7 +1274,7 @@ LABEL_12:
     }
   }
 
-  return a1 >> 31;
+  return self >> 31;
 }
 
 - (void)_startCapture
@@ -1291,7 +1291,7 @@ LABEL_12:
     }
   }
 
-  *a1 = -2146893820;
+  *self = -2146893820;
 }
 
 @end

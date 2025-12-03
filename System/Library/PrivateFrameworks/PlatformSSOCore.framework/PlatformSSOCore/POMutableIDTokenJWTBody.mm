@@ -1,116 +1,116 @@
 @interface POMutableIDTokenJWTBody
-- (void)addCustomClaims:(id)a3;
-- (void)setAud:(id)a3;
-- (void)setAudArray:(id)a3;
-- (void)setAzp:(id)a3;
-- (void)setExp:(id)a3;
-- (void)setGroups:(id)a3;
-- (void)setIat:(id)a3;
-- (void)setIss:(id)a3;
-- (void)setName:(id)a3;
-- (void)setNbf:(id)a3;
-- (void)setNonce:(id)a3;
-- (void)setPreferred_username:(id)a3;
-- (void)setSub:(id)a3;
+- (void)addCustomClaims:(id)claims;
+- (void)setAud:(id)aud;
+- (void)setAudArray:(id)array;
+- (void)setAzp:(id)azp;
+- (void)setExp:(id)exp;
+- (void)setGroups:(id)groups;
+- (void)setIat:(id)iat;
+- (void)setIss:(id)iss;
+- (void)setName:(id)name;
+- (void)setNbf:(id)nbf;
+- (void)setNonce:(id)nonce;
+- (void)setPreferred_username:(id)preferred_username;
+- (void)setSub:(id)sub;
 @end
 
 @implementation POMutableIDTokenJWTBody
 
-- (void)setAud:(id)a3
+- (void)setAud:(id)aud
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"aud"];
+  audCopy = aud;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:audCopy forKeyedSubscript:@"aud"];
 }
 
-- (void)setAudArray:(id)a3
+- (void)setAudArray:(id)array
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"aud"];
+  arrayCopy = array;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:arrayCopy forKeyedSubscript:@"aud"];
 }
 
-- (void)setAzp:(id)a3
+- (void)setAzp:(id)azp
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"azp"];
+  azpCopy = azp;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:azpCopy forKeyedSubscript:@"azp"];
 }
 
-- (void)setIss:(id)a3
+- (void)setIss:(id)iss
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"iss"];
+  issCopy = iss;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:issCopy forKeyedSubscript:@"iss"];
 }
 
-- (void)setSub:(id)a3
+- (void)setSub:(id)sub
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"sub"];
+  subCopy = sub;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:subCopy forKeyedSubscript:@"sub"];
 }
 
-- (void)setIat:(id)a3
+- (void)setIat:(id)iat
 {
   v4 = MEMORY[0x277CCABB0];
-  [a3 timeIntervalSince1970];
+  [iat timeIntervalSince1970];
   v7 = [v4 numberWithDouble:floor(v5)];
-  v6 = [(_POJWTBodyBase *)self data];
-  [v6 setObject:v7 forKeyedSubscript:@"iat"];
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:v7 forKeyedSubscript:@"iat"];
 }
 
-- (void)setExp:(id)a3
+- (void)setExp:(id)exp
 {
   v4 = MEMORY[0x277CCABB0];
-  [a3 timeIntervalSince1970];
+  [exp timeIntervalSince1970];
   v7 = [v4 numberWithDouble:floor(v5)];
-  v6 = [(_POJWTBodyBase *)self data];
-  [v6 setObject:v7 forKeyedSubscript:@"exp"];
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:v7 forKeyedSubscript:@"exp"];
 }
 
-- (void)setNbf:(id)a3
+- (void)setNbf:(id)nbf
 {
   v4 = MEMORY[0x277CCABB0];
-  [a3 timeIntervalSince1970];
+  [nbf timeIntervalSince1970];
   v7 = [v4 numberWithDouble:floor(v5)];
-  v6 = [(_POJWTBodyBase *)self data];
-  [v6 setObject:v7 forKeyedSubscript:@"nbf"];
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:v7 forKeyedSubscript:@"nbf"];
 }
 
-- (void)setNonce:(id)a3
+- (void)setNonce:(id)nonce
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"nonce"];
+  nonceCopy = nonce;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:nonceCopy forKeyedSubscript:@"nonce"];
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"name"];
+  nameCopy = name;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:nameCopy forKeyedSubscript:@"name"];
 }
 
-- (void)setPreferred_username:(id)a3
+- (void)setPreferred_username:(id)preferred_username
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"preferred_username"];
+  preferred_usernameCopy = preferred_username;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:preferred_usernameCopy forKeyedSubscript:@"preferred_username"];
 }
 
-- (void)setGroups:(id)a3
+- (void)setGroups:(id)groups
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"groups"];
+  groupsCopy = groups;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:groupsCopy forKeyedSubscript:@"groups"];
 }
 
-- (void)addCustomClaims:(id)a3
+- (void)addCustomClaims:(id)claims
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 addEntriesFromDictionary:v4];
+  claimsCopy = claims;
+  data = [(_POJWTBodyBase *)self data];
+  [data addEntriesFromDictionary:claimsCopy];
 }
 
 @end

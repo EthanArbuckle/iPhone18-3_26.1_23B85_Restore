@@ -4,18 +4,18 @@
 - (NSDictionary)analyticsDescription;
 - (NSDictionary)vehicleAccessoryInfoKeys;
 - (NSString)description;
-- (id)initFromBluetoothIdentifier:(id)a3 service:(id)a4 identificationMessage:(id)a5;
-- (void)_handleStartSessionMessage:(id)a3;
-- (void)sendCarPlayAvailability:(id)a3;
+- (id)initFromBluetoothIdentifier:(id)identifier service:(id)service identificationMessage:(id)message;
+- (void)_handleStartSessionMessage:(id)message;
+- (void)sendCarPlayAvailability:(id)availability;
 @end
 
 @implementation CARCarPlayServiceVehicle
 
-- (id)initFromBluetoothIdentifier:(id)a3 service:(id)a4 identificationMessage:(id)a5
+- (id)initFromBluetoothIdentifier:(id)identifier service:(id)service identificationMessage:(id)message
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  serviceCopy = service;
+  messageCopy = message;
   v26.receiver = self;
   v26.super_class = CARCarPlayServiceVehicle;
   v11 = [(CARCarPlayServiceVehicle *)&v26 init];
@@ -23,37 +23,37 @@
   if (v11)
   {
     v11->_transportType = 4;
-    v13 = [v8 UUIDString];
+    uUIDString = [identifierCopy UUIDString];
     bluetoothAddress = v12->_bluetoothAddress;
-    v12->_bluetoothAddress = v13;
+    v12->_bluetoothAddress = uUIDString;
 
-    objc_storeWeak(&v12->_service, v9);
-    v15 = [v10 displayName];
+    objc_storeWeak(&v12->_service, serviceCopy);
+    displayName = [messageCopy displayName];
     vehicleName = v12->_vehicleName;
-    v12->_vehicleName = v15;
+    v12->_vehicleName = displayName;
 
-    v17 = [v10 modelName];
+    modelName = [messageCopy modelName];
     vehicleModelName = v12->_vehicleModelName;
-    v12->_vehicleModelName = v17;
+    v12->_vehicleModelName = modelName;
 
-    v19 = [v10 PPID];
+    pPID = [messageCopy PPID];
     PPID = v12->_PPID;
-    v12->_PPID = v19;
+    v12->_PPID = pPID;
 
-    v21 = [v10 accessoryProtocols];
+    accessoryProtocols = [messageCopy accessoryProtocols];
     accessoryProtocols = v12->_accessoryProtocols;
-    v12->_accessoryProtocols = v21;
+    v12->_accessoryProtocols = accessoryProtocols;
 
-    v23 = [v10 authenticationSerialNumber];
+    authenticationSerialNumber = [messageCopy authenticationSerialNumber];
     certificateSerialNumber = v12->_certificateSerialNumber;
-    v12->_certificateSerialNumber = v23;
+    v12->_certificateSerialNumber = authenticationSerialNumber;
 
-    v12->_supportsUSBCarPlay = [v10 supportsWiredCarPlay];
+    v12->_supportsUSBCarPlay = [messageCopy supportsWiredCarPlay];
     *&v12->_supportsWirelessCarPlay = 257;
-    v12->_supportsWiredBluetoothPairing = [v10 supportsWiredToWirelessPairing];
+    v12->_supportsWiredBluetoothPairing = [messageCopy supportsWiredToWirelessPairing];
     v12->_supportsCarPlayConnectionRequest = 1;
-    v12->_supportsEnhancedIntegration = [v10 supportsEnhancedIntegration];
-    v12->_supportsThemeAssets = [v10 supportsThemeAssets];
+    v12->_supportsEnhancedIntegration = [messageCopy supportsEnhancedIntegration];
+    v12->_supportsThemeAssets = [messageCopy supportsThemeAssets];
   }
 
   return v12;
@@ -64,23 +64,23 @@
   v18.receiver = self;
   v18.super_class = CARCarPlayServiceVehicle;
   v17 = [(CARCarPlayServiceVehicle *)&v18 description];
-  v3 = [(CARCarPlayServiceVehicle *)self transportType];
-  if ((v3 - 1) > 3)
+  transportType = [(CARCarPlayServiceVehicle *)self transportType];
+  if ((transportType - 1) > 3)
   {
     v4 = @"unknown";
   }
 
   else
   {
-    v4 = *(&off_1000DF6E8 + v3 - 1);
+    v4 = *(&off_1000DF6E8 + transportType - 1);
   }
 
   v16 = v4;
-  v15 = [(CARCarPlayServiceVehicle *)self bluetoothAddress];
-  v5 = [(CARCarPlayServiceVehicle *)self vehicleName];
-  v6 = [(CARCarPlayServiceVehicle *)self vehicleModelName];
-  v7 = [(CARCarPlayServiceVehicle *)self PPID];
-  v8 = [(CARCarPlayServiceVehicle *)self certificateSerialNumber];
+  bluetoothAddress = [(CARCarPlayServiceVehicle *)self bluetoothAddress];
+  vehicleName = [(CARCarPlayServiceVehicle *)self vehicleName];
+  vehicleModelName = [(CARCarPlayServiceVehicle *)self vehicleModelName];
+  pPID = [(CARCarPlayServiceVehicle *)self PPID];
+  certificateSerialNumber = [(CARCarPlayServiceVehicle *)self certificateSerialNumber];
   if ([(CARCarPlayServiceVehicle *)self supportsUSBCarPlay])
   {
     v9 = @"YES";
@@ -121,7 +121,7 @@
     v12 = @"NO";
   }
 
-  v13 = [NSString stringWithFormat:@"%@ {transport: %@ btID: %@, name: %@, model: %@, PPID: %@, authSerial: %@, wired: %@, oob: %@, enhancedIntegration: %@, assets: %@}", v17, v16, v15, v5, v6, v7, v8, v9, v10, v11, v12];
+  v13 = [NSString stringWithFormat:@"%@ {transport: %@ btID: %@, name: %@, model: %@, PPID: %@, authSerial: %@, wired: %@, oob: %@, enhancedIntegration: %@, assets: %@}", v17, v16, bluetoothAddress, vehicleName, vehicleModelName, pPID, certificateSerialNumber, v9, v10, v11, v12];
 
   return v13;
 }
@@ -129,20 +129,20 @@
 - (NSDictionary)analyticsDescription
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(CARCarPlayServiceVehicle *)self vehicleName];
+  vehicleName = [(CARCarPlayServiceVehicle *)self vehicleName];
 
-  if (v4)
+  if (vehicleName)
   {
-    v5 = [(CARCarPlayServiceVehicle *)self vehicleName];
-    [v3 setObject:v5 forKeyedSubscript:@"name"];
+    vehicleName2 = [(CARCarPlayServiceVehicle *)self vehicleName];
+    [v3 setObject:vehicleName2 forKeyedSubscript:@"name"];
   }
 
-  v6 = [(CARCarPlayServiceVehicle *)self vehicleModelName];
+  vehicleModelName = [(CARCarPlayServiceVehicle *)self vehicleModelName];
 
-  if (v6)
+  if (vehicleModelName)
   {
-    v7 = [(CARCarPlayServiceVehicle *)self vehicleModelName];
-    [v3 setObject:v7 forKeyedSubscript:@"modelName"];
+    vehicleModelName2 = [(CARCarPlayServiceVehicle *)self vehicleModelName];
+    [v3 setObject:vehicleModelName2 forKeyedSubscript:@"modelName"];
   }
 
   v8 = [v3 copy];
@@ -153,28 +153,28 @@
 - (NSDictionary)vehicleAccessoryInfoKeys
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(CARCarPlayServiceVehicle *)self vehicleName];
+  vehicleName = [(CARCarPlayServiceVehicle *)self vehicleName];
 
-  if (v4)
+  if (vehicleName)
   {
-    v5 = [(CARCarPlayServiceVehicle *)self vehicleName];
-    [v3 setObject:v5 forKey:@"name"];
+    vehicleName2 = [(CARCarPlayServiceVehicle *)self vehicleName];
+    [v3 setObject:vehicleName2 forKey:@"name"];
   }
 
-  v6 = [(CARCarPlayServiceVehicle *)self vehicleModelName];
+  vehicleModelName = [(CARCarPlayServiceVehicle *)self vehicleModelName];
 
-  if (v6)
+  if (vehicleModelName)
   {
-    v7 = [(CARCarPlayServiceVehicle *)self vehicleModelName];
-    [v3 setObject:v7 forKey:@"modelName"];
+    vehicleModelName2 = [(CARCarPlayServiceVehicle *)self vehicleModelName];
+    [v3 setObject:vehicleModelName2 forKey:@"modelName"];
   }
 
-  v8 = [(CARCarPlayServiceVehicle *)self PPID];
+  pPID = [(CARCarPlayServiceVehicle *)self PPID];
 
-  if (v8)
+  if (pPID)
   {
-    v9 = [(CARCarPlayServiceVehicle *)self PPID];
-    [v3 setObject:v9 forKey:@"ppid"];
+    pPID2 = [(CARCarPlayServiceVehicle *)self PPID];
+    [v3 setObject:pPID2 forKey:@"ppid"];
   }
 
   v10 = [v3 copy];
@@ -182,21 +182,21 @@
   return v10;
 }
 
-- (void)sendCarPlayAvailability:(id)a3
+- (void)sendCarPlayAvailability:(id)availability
 {
-  v4 = a3;
-  if (v4)
+  availabilityCopy = availability;
+  if (availabilityCopy)
   {
-    v5 = [(CARCarPlayServiceVehicle *)self service];
-    if (v5)
+    service = [(CARCarPlayServiceVehicle *)self service];
+    if (service)
     {
       v6 = sub_100002A68(2uLL);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v8 = 138412546;
-        v9 = v4;
+        v9 = availabilityCopy;
         v10 = 2112;
-        v11 = v5;
+        v11 = service;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "sending CarPlayAvailability: %@ using service: %@", &v8, 0x16u);
       }
 
@@ -207,18 +207,18 @@
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v7, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "SentCarPlayAvailability", "", &v8, 2u);
       }
 
-      [v5 sendMessage:v4];
+      [service sendMessage:availabilityCopy];
     }
   }
 }
 
-- (void)_handleStartSessionMessage:(id)a3
+- (void)_handleStartSessionMessage:(id)message
 {
-  v5 = a3;
-  v4 = [(CARCarPlayServiceVehicle *)self delegate];
-  if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
+  messageCopy = message;
+  delegate = [(CARCarPlayServiceVehicle *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v4 serviceVehicle:self receivedStartSessionMessage:v5];
+    [delegate serviceVehicle:self receivedStartSessionMessage:messageCopy];
   }
 }
 

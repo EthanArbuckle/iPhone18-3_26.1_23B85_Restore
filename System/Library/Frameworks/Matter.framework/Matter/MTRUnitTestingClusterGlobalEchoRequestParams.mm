@@ -1,8 +1,8 @@
 @interface MTRUnitTestingClusterGlobalEchoRequestParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRUnitTestingClusterGlobalEchoRequestParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -32,20 +32,20 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRUnitTestingClusterGlobalEchoRequestParams);
-  v5 = [(MTRUnitTestingClusterGlobalEchoRequestParams *)self field1];
-  [(MTRUnitTestingClusterGlobalEchoRequestParams *)v4 setField1:v5];
+  field1 = [(MTRUnitTestingClusterGlobalEchoRequestParams *)self field1];
+  [(MTRUnitTestingClusterGlobalEchoRequestParams *)v4 setField1:field1];
 
-  v6 = [(MTRUnitTestingClusterGlobalEchoRequestParams *)self field2];
-  [(MTRUnitTestingClusterGlobalEchoRequestParams *)v4 setField2:v6];
+  field2 = [(MTRUnitTestingClusterGlobalEchoRequestParams *)self field2];
+  [(MTRUnitTestingClusterGlobalEchoRequestParams *)v4 setField2:field2];
 
-  v7 = [(MTRUnitTestingClusterGlobalEchoRequestParams *)self timedInvokeTimeoutMs];
-  [(MTRUnitTestingClusterGlobalEchoRequestParams *)v4 setTimedInvokeTimeoutMs:v7];
+  timedInvokeTimeoutMs = [(MTRUnitTestingClusterGlobalEchoRequestParams *)self timedInvokeTimeoutMs];
+  [(MTRUnitTestingClusterGlobalEchoRequestParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v8 = [(MTRUnitTestingClusterGlobalEchoRequestParams *)self serverSideProcessingTimeout];
-  [(MTRUnitTestingClusterGlobalEchoRequestParams *)v4 setServerSideProcessingTimeout:v8];
+  serverSideProcessingTimeout = [(MTRUnitTestingClusterGlobalEchoRequestParams *)self serverSideProcessingTimeout];
+  [(MTRUnitTestingClusterGlobalEchoRequestParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -60,54 +60,54 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v36 = 0;
   v37 = 0;
   v34 = 0uLL;
-  LOBYTE(v35) = 0;
-  v39 = 0;
+  LOBYTE(unsignedIntValue) = 0;
+  unsignedCharValue = 0;
   v33[0] = 0;
   v33[1] = 0;
   v32 = v33;
-  v5 = [(MTRUnitTestingClusterGlobalEchoRequestParams *)self field1];
-  v6 = [v5 name];
-  sub_238DB9BD8(v26, [v6 UTF8String], objc_msgSend(v6, "lengthOfBytesUsingEncoding:", 4));
+  field1 = [(MTRUnitTestingClusterGlobalEchoRequestParams *)self field1];
+  name = [field1 name];
+  sub_238DB9BD8(v26, [name UTF8String], objc_msgSend(name, "lengthOfBytesUsingEncoding:", 4));
 
   v34 = v26[0];
-  v7 = [(MTRUnitTestingClusterGlobalEchoRequestParams *)self field1];
-  v8 = [v7 myBitmap];
+  field12 = [(MTRUnitTestingClusterGlobalEchoRequestParams *)self field1];
+  myBitmap = [field12 myBitmap];
 
-  if (v8)
+  if (myBitmap)
   {
-    v35 = 0;
+    unsignedIntValue = 0;
     v36 = 1;
-    v9 = [(MTRUnitTestingClusterGlobalEchoRequestParams *)self field1];
-    v10 = [v9 myBitmap];
-    v35 = [v10 unsignedIntValue];
+    field13 = [(MTRUnitTestingClusterGlobalEchoRequestParams *)self field1];
+    myBitmap2 = [field13 myBitmap];
+    unsignedIntValue = [myBitmap2 unsignedIntValue];
   }
 
-  v11 = [(MTRUnitTestingClusterGlobalEchoRequestParams *)self field1];
-  v12 = [v11 myEnum];
+  field14 = [(MTRUnitTestingClusterGlobalEchoRequestParams *)self field1];
+  myEnum = [field14 myEnum];
 
-  if (v12)
+  if (myEnum)
   {
     v37 = 1;
     v38 = 0;
-    v13 = [(MTRUnitTestingClusterGlobalEchoRequestParams *)self field1];
-    v14 = [v13 myEnum];
+    field15 = [(MTRUnitTestingClusterGlobalEchoRequestParams *)self field1];
+    myEnum2 = [field15 myEnum];
 
-    if (v14)
+    if (myEnum2)
     {
       v38 = 256;
-      v15 = [(MTRUnitTestingClusterGlobalEchoRequestParams *)self field1];
-      v16 = [v15 myEnum];
-      LOBYTE(v38) = [v16 unsignedCharValue];
+      field16 = [(MTRUnitTestingClusterGlobalEchoRequestParams *)self field1];
+      myEnum3 = [field16 myEnum];
+      LOBYTE(v38) = [myEnum3 unsignedCharValue];
     }
   }
 
-  v17 = [(MTRUnitTestingClusterGlobalEchoRequestParams *)self field2];
-  v39 = [v17 unsignedCharValue];
+  field2 = [(MTRUnitTestingClusterGlobalEchoRequestParams *)self field2];
+  unsignedCharValue = [field2 unsignedCharValue];
 
   sub_2393D9C18(0x62FuLL, 0, &v31);
   if (v31)
@@ -128,8 +128,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v31);
-      v18 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v31);
+      v18 = sub_2393C7114(reader, 21, 256);
       v21 = v25;
       v20 = v18;
     }
@@ -157,19 +157,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRUnitTestingClusterGlobalEchoRequestParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -180,7 +180,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0xBFAF00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

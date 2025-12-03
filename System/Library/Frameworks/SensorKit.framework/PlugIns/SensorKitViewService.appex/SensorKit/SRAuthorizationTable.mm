@@ -15,7 +15,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_100015F40 = os_log_create("com.apple.SensorKit", "AuthorizationTable");
   }
@@ -39,9 +39,9 @@
   }
 
   [v3 setTitle:+[NSString srui_localizedStringForCode:](NSString forState:{"srui_localizedStringForCode:", v4), 0}];
-  v5 = [(SRAuthorizationTable *)self migrationMode];
+  migrationMode = [(SRAuthorizationTable *)self migrationMode];
   v6 = &selRef_showMigrationReceipt;
-  if (!v5)
+  if (!migrationMode)
   {
     v6 = &selRef_showAuthFlowPerCategory;
   }
@@ -69,7 +69,7 @@
   [(UIButton *)v3 setNumberOfLines:0];
   if ([(SRAuthorizationTable *)self migrationMode])
   {
-    v4 = self;
+    selfCopy2 = self;
     v5 = [NSString srui_localizedStringForCode:89];
   }
 
@@ -100,7 +100,7 @@
       }
     }
 
-    v4 = self;
+    selfCopy2 = self;
   }
 
   [(UIButton *)v3 setText:v5];
@@ -109,8 +109,8 @@
   v33 = v3;
   [v9 addObject:v3];
   v10 = +[NSMutableArray array];
-  v11 = v4;
-  if ([(SRAuthorizationTable *)v4 migrationMode])
+  v11 = selfCopy2;
+  if ([(SRAuthorizationTable *)selfCopy2 migrationMode])
   {
     v12 = 0;
     v36 = UIAccessibilityTraitLink;
@@ -122,7 +122,7 @@
     [(UILabel *)[(UIButton *)v12 titleLabel] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
     [(UILabel *)[(UIButton *)v12 titleLabel] setTextAlignment:4];
     [(UIButton *)v12 setTitle:[NSString forState:"srui_localizedStringForCode:" srui_localizedStringForCode:?], 0];
-    [(UIButton *)v12 addTarget:v4 action:"showSensorKitPrivacyPage" forControlEvents:64];
+    [(UIButton *)v12 addTarget:selfCopy2 action:"showSensorKitPrivacyPage" forControlEvents:64];
     v36 = UIAccessibilityTraitLink;
     [(UIButton *)v12 setAccessibilityTraits:?];
     [(UILabel *)[(UIButton *)v12 titleLabel] setLineBreakMode:0];
@@ -186,9 +186,9 @@
 
   v19 = [[UIStackView alloc] initWithArrangedSubviews:v9];
   [v19 setAxis:1];
-  v20 = [(SRAuthorizationTable *)v11 migrationMode];
+  migrationMode = [(SRAuthorizationTable *)v11 migrationMode];
   v21 = v33;
-  if ((v20 & 1) == 0)
+  if ((migrationMode & 1) == 0)
   {
     [v19 setCustomSpacing:v33 afterView:6.0];
     v21 = v12;
@@ -255,13 +255,13 @@
 
 - (void)openPrivacy
 {
-  v3 = [(NSBundle *)[(SRAuthorizationTable *)self appBundle] sk_privacyURL];
-  if (v3)
+  sk_privacyURL = [(NSBundle *)[(SRAuthorizationTable *)self appBundle] sk_privacyURL];
+  if (sk_privacyURL)
   {
-    v4 = v3;
-    v5 = [(SRAuthorizationTable *)self delegate];
+    v4 = sk_privacyURL;
+    delegate = [(SRAuthorizationTable *)self delegate];
 
-    [(SRAuthorizationTableDelegate *)v5 authorizationTable:self openURL:v4];
+    [(SRAuthorizationTableDelegate *)delegate authorizationTable:self openURL:v4];
   }
 }
 
@@ -340,17 +340,17 @@
 
 - (void)cancelPrompt
 {
-  v3 = [(SRAuthorizationTable *)self delegate];
-  [(SRAuthorizationTableDelegate *)v3 authorizationTable:self foundIssueWithApp:[NSError errorWithDomain:SRErrorDomain code:8196 userInfo:0]];
+  delegate = [(SRAuthorizationTable *)self delegate];
+  [(SRAuthorizationTableDelegate *)delegate authorizationTable:self foundIssueWithApp:[NSError errorWithDomain:SRErrorDomain code:8196 userInfo:0]];
 
-  [(SRAuthorizationTableDelegate *)v3 authorizationTableCompletedPromptSuccessfully:self];
+  [(SRAuthorizationTableDelegate *)delegate authorizationTableCompletedPromptSuccessfully:self];
 }
 
 - (void)completePrompt
 {
-  v3 = [(SRAuthorizationTable *)self delegate];
+  delegate = [(SRAuthorizationTable *)self delegate];
 
-  [(SRAuthorizationTableDelegate *)v3 authorizationTableCompletedPromptSuccessfully:self];
+  [(SRAuthorizationTableDelegate *)delegate authorizationTableCompletedPromptSuccessfully:self];
 }
 
 - (void)showSensorKitPrivacyPage

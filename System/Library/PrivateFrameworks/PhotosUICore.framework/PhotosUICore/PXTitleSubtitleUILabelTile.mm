@@ -1,59 +1,59 @@
 @interface PXTitleSubtitleUILabelTile
 - (PXTitleSubtitleUILabelTile)init;
 - (UIView)view;
-- (void)_setAnimationCount:(int64_t)a3;
+- (void)_setAnimationCount:(int64_t)count;
 - (void)_updateLabelTitleAndSubtitle;
 - (void)becomeReusable;
-- (void)didAnimateToGeometry:(PXTileGeometry *)a3 toUserData:(id)a4 withOptions:(id)a5;
-- (void)didApplyGeometry:(PXTileGeometry *)a3 withUserData:(id)a4;
-- (void)performBatchUpdates:(id)a3;
+- (void)didAnimateToGeometry:(PXTileGeometry *)geometry toUserData:(id)data withOptions:(id)options;
+- (void)didApplyGeometry:(PXTileGeometry *)geometry withUserData:(id)data;
+- (void)performBatchUpdates:(id)updates;
 - (void)prepareForReuse;
-- (void)setRendersTextAsynchronously:(BOOL)a3;
-- (void)willAnimateToGeometry:(PXTileGeometry *)a3 toUserData:(id)a4 withOptions:(id)a5;
+- (void)setRendersTextAsynchronously:(BOOL)asynchronously;
+- (void)willAnimateToGeometry:(PXTileGeometry *)geometry toUserData:(id)data withOptions:(id)options;
 @end
 
 @implementation PXTitleSubtitleUILabelTile
 
-- (void)didAnimateToGeometry:(PXTileGeometry *)a3 toUserData:(id)a4 withOptions:(id)a5
+- (void)didAnimateToGeometry:(PXTileGeometry *)geometry toUserData:(id)data withOptions:(id)options
 {
-  v6 = [(PXTitleSubtitleUILabelTile *)self _animationCount:a3]- 1;
+  v6 = [(PXTitleSubtitleUILabelTile *)self _animationCount:geometry]- 1;
 
   [(PXTitleSubtitleUILabelTile *)self _setAnimationCount:v6];
 }
 
-- (void)willAnimateToGeometry:(PXTileGeometry *)a3 toUserData:(id)a4 withOptions:(id)a5
+- (void)willAnimateToGeometry:(PXTileGeometry *)geometry toUserData:(id)data withOptions:(id)options
 {
-  v6 = [(PXTitleSubtitleUILabelTile *)self _animationCount:a3]+ 1;
+  v6 = [(PXTitleSubtitleUILabelTile *)self _animationCount:geometry]+ 1;
 
   [(PXTitleSubtitleUILabelTile *)self _setAnimationCount:v6];
 }
 
 - (void)prepareForReuse
 {
-  v2 = [(PXTitleSubtitleUILabelTile *)self view];
-  [v2 setHidden:0];
+  view = [(PXTitleSubtitleUILabelTile *)self view];
+  [view setHidden:0];
 }
 
 - (void)becomeReusable
 {
   [(PXTitleSubtitleUILabelTile *)self setTitle:0];
   [(PXTitleSubtitleUILabelTile *)self setSubtitle:0];
-  v3 = [(PXTitleSubtitleUILabelTile *)self view];
-  [v3 setHidden:1];
+  view = [(PXTitleSubtitleUILabelTile *)self view];
+  [view setHidden:1];
 }
 
-- (void)didApplyGeometry:(PXTileGeometry *)a3 withUserData:(id)a4
+- (void)didApplyGeometry:(PXTileGeometry *)geometry withUserData:(id)data
 {
   view = self->_view;
   label = self->_label;
-  v7 = a4;
+  dataCopy = data;
   [(UIView *)view bounds];
   [(PXTitleSubtitleUILabel *)label setFrame:?];
-  v8 = [v7 viewSpec];
+  viewSpec = [dataCopy viewSpec];
 
-  [(PXTitleSubtitleUILabel *)self->_label setSpec:v8];
+  [(PXTitleSubtitleUILabel *)self->_label setSpec:viewSpec];
   labelSpec = self->_labelSpec;
-  self->_labelSpec = v8;
+  self->_labelSpec = viewSpec;
 
   [(PXTitleSubtitleUILabelTile *)self _updateLabelTitleAndSubtitle];
 }
@@ -81,35 +81,35 @@
   return view;
 }
 
-- (void)_setAnimationCount:(int64_t)a3
+- (void)_setAnimationCount:(int64_t)count
 {
-  if (self->__animationCount != a3)
+  if (self->__animationCount != count)
   {
-    self->__animationCount = a3;
-    [(PXTitleSubtitleUILabel *)self->_label setShouldRasterizeTextLayer:a3 > 0];
+    self->__animationCount = count;
+    [(PXTitleSubtitleUILabel *)self->_label setShouldRasterizeTextLayer:count > 0];
   }
 }
 
 - (void)_updateLabelTitleAndSubtitle
 {
-  v4 = [(PXTitleSubtitleUILabelTile *)self title];
-  v3 = [(PXTitleSubtitleUILabelTile *)self subtitle];
-  [(PXTitleSubtitleUILabel *)self->_label setTitleText:v4];
-  [(PXTitleSubtitleUILabel *)self->_label setSubtitleText:v3];
+  title = [(PXTitleSubtitleUILabelTile *)self title];
+  subtitle = [(PXTitleSubtitleUILabelTile *)self subtitle];
+  [(PXTitleSubtitleUILabel *)self->_label setTitleText:title];
+  [(PXTitleSubtitleUILabel *)self->_label setSubtitleText:subtitle];
 }
 
-- (void)setRendersTextAsynchronously:(BOOL)a3
+- (void)setRendersTextAsynchronously:(BOOL)asynchronously
 {
-  if (self->_rendersTextAsynchronously != a3)
+  if (self->_rendersTextAsynchronously != asynchronously)
   {
-    self->_rendersTextAsynchronously = a3;
+    self->_rendersTextAsynchronously = asynchronously;
     [(PXTitleSubtitleUILabel *)self->_label setRendersTextAsynchronously:?];
   }
 }
 
-- (void)performBatchUpdates:(id)a3
+- (void)performBatchUpdates:(id)updates
 {
-  (*(a3 + 2))(a3, a2);
+  (*(updates + 2))(updates, a2);
 
   [(PXTitleSubtitleUILabelTile *)self _updateLabelTitleAndSubtitle];
 }

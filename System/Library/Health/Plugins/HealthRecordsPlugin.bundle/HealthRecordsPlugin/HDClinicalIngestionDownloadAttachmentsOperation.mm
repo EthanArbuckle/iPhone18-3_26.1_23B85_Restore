@@ -17,15 +17,15 @@
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ Starting MedicalDownloadableAttachment Pipeline", buf, 0xCu);
   }
 
-  v6 = [(HDClinicalIngestionOperation *)self profileExtension];
-  v7 = [v6 downloadableAttachmentManager];
+  profileExtension = [(HDClinicalIngestionOperation *)self profileExtension];
+  downloadableAttachmentManager = [profileExtension downloadableAttachmentManager];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_7C640;
   v8[3] = &unk_1078C8;
   v8[4] = self;
-  [v7 runMedicalDownloadableAttachmentPipelineWithCompletion:v8];
+  [downloadableAttachmentManager runMedicalDownloadableAttachmentPipelineWithCompletion:v8];
 }
 
 @end

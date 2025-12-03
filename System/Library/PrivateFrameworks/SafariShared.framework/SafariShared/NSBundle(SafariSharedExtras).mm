@@ -10,7 +10,7 @@
   v2 = safari_safariSharedBundle_bundle;
   if (!safari_safariSharedBundle_bundle)
   {
-    v3 = [a1 bundleForClass:objc_opt_class()];
+    v3 = [self bundleForClass:objc_opt_class()];
     v4 = safari_safariSharedBundle_bundle;
     safari_safariSharedBundle_bundle = v3;
 

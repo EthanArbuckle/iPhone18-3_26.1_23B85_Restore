@@ -1,8 +1,8 @@
 @interface CNUIUserActionContext
-+ (id)contextWithExtensionContext:(id)a3;
++ (id)contextWithExtensionContext:(id)context;
 + (id)makeDefaultContext;
 - (CNUIUserActionContext)init;
-- (CNUIUserActionContext)initWithContactStore:(id)a3 applicationWorkspace:(id)a4;
+- (CNUIUserActionContext)initWithContactStore:(id)store applicationWorkspace:(id)workspace;
 @end
 
 @implementation CNUIUserActionContext
@@ -40,14 +40,14 @@
   return v2;
 }
 
-- (CNUIUserActionContext)initWithContactStore:(id)a3 applicationWorkspace:(id)a4
+- (CNUIUserActionContext)initWithContactStore:(id)store applicationWorkspace:(id)workspace
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  workspaceCopy = workspace;
   v8 = [(CNUIUserActionContext *)self init];
   if (v8)
   {
-    v9 = [[_CNUIUserActionCurator alloc] initWithContactStore:v6 applicationWorkspace:v7];
+    v9 = [[_CNUIUserActionCurator alloc] initWithContactStore:storeCopy applicationWorkspace:workspaceCopy];
     actionCurator = v8->_actionCurator;
     v8->_actionCurator = v9;
 
@@ -57,11 +57,11 @@
   return v8;
 }
 
-+ (id)contextWithExtensionContext:(id)a3
++ (id)contextWithExtensionContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = objc_alloc_init(CNUIUserActionContext);
-  v5 = [[CNUIUserActionExtensionURLOpener alloc] initWithExtensionContext:v3];
+  v5 = [[CNUIUserActionExtensionURLOpener alloc] initWithExtensionContext:contextCopy];
 
   [(CNUIUserActionContext *)v4 setUrlOpener:v5];
   v6 = objc_alloc_init(_CNUIUserActionUserActivityOpener);

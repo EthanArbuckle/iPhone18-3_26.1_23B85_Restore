@@ -1,20 +1,20 @@
 @interface HFMediaServiceManager
 + (id)sharedManager;
-- (BOOL)_isReadRequestInFlightForHome:(id)a3;
-- (BOOL)isRefreshNeededForHome:(id)a3;
+- (BOOL)_isReadRequestInFlightForHome:(id)home;
+- (BOOL)isRefreshNeededForHome:(id)home;
 - (HFMediaServiceManager)init;
-- (id)_defaultMediaServiceForHome:(id)a3;
-- (id)_fetchDefaultMediaServiceForHome:(id)a3;
-- (id)_mediaServicesForHome:(id)a3;
-- (id)defaultMediaServiceForHome:(id)a3;
-- (id)fetchMediaServicesForHome:(id)a3;
-- (id)mediaServicesForHome:(id)a3;
-- (id)removeMediaService:(id)a3 forHome:(id)a4;
-- (id)updateDefaultMediaService:(id)a3 forHome:(id)a4;
-- (id)updateProperty:(id)a3 forHome:(id)a4 withOptions:(id)a5;
-- (void)_dispatchMessageToObserversWithBlock:(id)a3;
-- (void)addMediaServiceManagerObserver:(id)a3;
-- (void)removeMediaServiceManagerObserver:(id)a3;
+- (id)_defaultMediaServiceForHome:(id)home;
+- (id)_fetchDefaultMediaServiceForHome:(id)home;
+- (id)_mediaServicesForHome:(id)home;
+- (id)defaultMediaServiceForHome:(id)home;
+- (id)fetchMediaServicesForHome:(id)home;
+- (id)mediaServicesForHome:(id)home;
+- (id)removeMediaService:(id)service forHome:(id)home;
+- (id)updateDefaultMediaService:(id)service forHome:(id)home;
+- (id)updateProperty:(id)property forHome:(id)home withOptions:(id)options;
+- (void)_dispatchMessageToObserversWithBlock:(id)block;
+- (void)addMediaServiceManagerObserver:(id)observer;
+- (void)removeMediaServiceManagerObserver:(id)observer;
 - (void)warmup;
 @end
 
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = __38__HFMediaServiceManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280E03DF0 != -1)
   {
     dispatch_once(&qword_280E03DF0, block);
@@ -67,9 +67,9 @@ void __38__HFMediaServiceManager_sharedManager__block_invoke(uint64_t a1)
     homeIdentifierToRefreshNeededMapping = v2->_homeIdentifierToRefreshNeededMapping;
     v2->_homeIdentifierToRefreshNeededMapping = v9;
 
-    v11 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v11;
+    v2->_observers = weakObjectsHashTable;
   }
 
   return v2;
@@ -78,14 +78,14 @@ void __38__HFMediaServiceManager_sharedManager__block_invoke(uint64_t a1)
 - (void)warmup
 {
   v3 = +[HFHomeKitDispatcher sharedDispatcher];
-  v4 = [v3 homeFuture];
+  homeFuture = [v3 homeFuture];
 
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __31__HFMediaServiceManager_warmup__block_invoke;
   v6[3] = &unk_277E01608;
   v6[4] = self;
-  v5 = [v4 addSuccessBlock:v6];
+  v5 = [homeFuture addSuccessBlock:v6];
 }
 
 void __31__HFMediaServiceManager_warmup__block_invoke(uint64_t a1, void *a2)
@@ -97,32 +97,32 @@ void __31__HFMediaServiceManager_warmup__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)addMediaServiceManagerObserver:(id)a3
+- (void)addMediaServiceManagerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFMediaServiceManager *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(HFMediaServiceManager *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeMediaServiceManagerObserver:(id)a3
+- (void)removeMediaServiceManagerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFMediaServiceManager *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(HFMediaServiceManager *)self observers];
+  [observers removeObject:observerCopy];
 }
 
-- (id)defaultMediaServiceForHome:(id)a3
+- (id)defaultMediaServiceForHome:(id)home
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFMediaServiceManager *)self _defaultMediaServiceForHome:v4];
+  homeCopy = home;
+  v5 = [(HFMediaServiceManager *)self _defaultMediaServiceForHome:homeCopy];
   v6 = HFLogForCategory(0xCuLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
     v10 = v5;
     v11 = 2112;
-    v12 = v4;
+    v12 = homeCopy;
     _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "Found cached default media service %@ for home %@", &v9, 0x16u);
   }
 
@@ -131,18 +131,18 @@ void __31__HFMediaServiceManager_warmup__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (id)mediaServicesForHome:(id)a3
+- (id)mediaServicesForHome:(id)home
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFMediaServiceManager *)self _mediaServicesForHome:v4];
+  homeCopy = home;
+  v5 = [(HFMediaServiceManager *)self _mediaServicesForHome:homeCopy];
   v6 = HFLogForCategory(0xCuLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
     v10 = v5;
     v11 = 2112;
-    v12 = v4;
+    v12 = homeCopy;
     _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "Found cached media services %@ for home %@", &v9, 0x16u);
   }
 
@@ -151,10 +151,10 @@ void __31__HFMediaServiceManager_warmup__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (id)fetchMediaServicesForHome:(id)a3
+- (id)fetchMediaServicesForHome:(id)home
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  homeCopy = home;
   v6 = HFLogForCategory(0xCuLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -162,13 +162,13 @@ void __31__HFMediaServiceManager_warmup__block_invoke(uint64_t a1, void *a2)
     *buf = 138412546;
     v33 = v7;
     v34 = 2112;
-    v35 = v5;
+    v35 = homeCopy;
     _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "%@ Fetching media services for home %@", buf, 0x16u);
   }
 
-  if (v5)
+  if (homeCopy)
   {
-    v8 = [(HFMediaServiceManager *)self _isReadRequestInFlightForHome:v5];
+    v8 = [(HFMediaServiceManager *)self _isReadRequestInFlightForHome:homeCopy];
     v9 = HFLogForCategory(0xCuLL);
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
     if (v8)
@@ -182,7 +182,7 @@ void __31__HFMediaServiceManager_warmup__block_invoke(uint64_t a1, void *a2)
       }
 
       v12 = MEMORY[0x277D2C900];
-      v13 = [(HFMediaServiceManager *)self _mediaServicesForHome:v5];
+      v13 = [(HFMediaServiceManager *)self _mediaServicesForHome:homeCopy];
       v14 = [v12 futureWithResult:v13];
     }
 
@@ -194,14 +194,14 @@ void __31__HFMediaServiceManager_warmup__block_invoke(uint64_t a1, void *a2)
         *buf = 138412546;
         v33 = v18;
         v34 = 2112;
-        v35 = v5;
+        v35 = homeCopy;
         _os_log_impl(&dword_20D9BF000, v9, OS_LOG_TYPE_DEFAULT, "%@ Will fetch media services for home %@ from MediaServiceConfigurationClass", buf, 0x16u);
       }
 
-      v19 = [(HFMediaServiceManager *)self homeIdentifierToReadRequestInFlightMapping];
-      v20 = [v5 uniqueIdentifier];
-      v21 = [v20 UUIDString];
-      [v19 na_safeSetObject:MEMORY[0x277CBEC38] forKey:v21];
+      homeIdentifierToReadRequestInFlightMapping = [(HFMediaServiceManager *)self homeIdentifierToReadRequestInFlightMapping];
+      uniqueIdentifier = [homeCopy uniqueIdentifier];
+      uUIDString = [uniqueIdentifier UUIDString];
+      [homeIdentifierToReadRequestInFlightMapping na_safeSetObject:MEMORY[0x277CBEC38] forKey:uUIDString];
 
       objc_initWeak(buf, self);
       v22 = MEMORY[0x277D2C900];
@@ -210,12 +210,12 @@ void __31__HFMediaServiceManager_warmup__block_invoke(uint64_t a1, void *a2)
       v29[2] = __51__HFMediaServiceManager_fetchMediaServicesForHome___block_invoke;
       v29[3] = &unk_277DF5B20;
       objc_copyWeak(v31, buf);
-      v30 = v5;
+      v30 = homeCopy;
       v31[1] = a2;
-      v23 = [MEMORY[0x277D2C938] globalAsyncScheduler];
-      v24 = [v22 futureWithBlock:v29 scheduler:v23];
-      v25 = [MEMORY[0x277D2C938] mainThreadScheduler];
-      v14 = [v24 reschedule:v25];
+      globalAsyncScheduler = [MEMORY[0x277D2C938] globalAsyncScheduler];
+      v24 = [v22 futureWithBlock:v29 scheduler:globalAsyncScheduler];
+      mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+      v14 = [v24 reschedule:mainThreadScheduler];
 
       objc_destroyWeak(v31);
       objc_destroyWeak(buf);
@@ -374,18 +374,18 @@ void __51__HFMediaServiceManager_fetchMediaServicesForHome___block_invoke_7(uint
   }
 }
 
-- (id)removeMediaService:(id)a3 forHome:(id)a4
+- (id)removeMediaService:(id)service forHome:(id)home
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  homeCopy = home;
   v8 = HFLogForCategory(0xCuLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v24 = v6;
+    v24 = serviceCopy;
     v25 = 2112;
-    v26 = v7;
+    v26 = homeCopy;
     _os_log_impl(&dword_20D9BF000, v8, OS_LOG_TYPE_DEFAULT, "Removing media service %@ for home %@", buf, 0x16u);
   }
 
@@ -394,16 +394,16 @@ void __51__HFMediaServiceManager_fetchMediaServicesForHome___block_invoke_7(uint
   v19[1] = 3221225472;
   v19[2] = __52__HFMediaServiceManager_removeMediaService_forHome___block_invoke;
   v19[3] = &unk_277DFEAA8;
-  v20 = v6;
-  v21 = v7;
-  v22 = self;
+  v20 = serviceCopy;
+  v21 = homeCopy;
+  selfCopy = self;
   v10 = MEMORY[0x277D2C938];
-  v11 = v7;
-  v12 = v6;
-  v13 = [v10 globalAsyncScheduler];
-  v14 = [v9 futureWithBlock:v19 scheduler:v13];
-  v15 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v16 = [v14 reschedule:v15];
+  v11 = homeCopy;
+  v12 = serviceCopy;
+  globalAsyncScheduler = [v10 globalAsyncScheduler];
+  v14 = [v9 futureWithBlock:v19 scheduler:globalAsyncScheduler];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v16 = [v14 reschedule:mainThreadScheduler];
 
   v17 = *MEMORY[0x277D85DE8];
 
@@ -487,18 +487,18 @@ void __52__HFMediaServiceManager_removeMediaService_forHome___block_invoke_15(ui
   }
 }
 
-- (id)updateDefaultMediaService:(id)a3 forHome:(id)a4
+- (id)updateDefaultMediaService:(id)service forHome:(id)home
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  homeCopy = home;
   v8 = HFLogForCategory(0xCuLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v24 = v6;
+    v24 = serviceCopy;
     v25 = 2112;
-    v26 = v7;
+    v26 = homeCopy;
     _os_log_impl(&dword_20D9BF000, v8, OS_LOG_TYPE_DEFAULT, "Updating default media service to %@ for home %@", buf, 0x16u);
   }
 
@@ -507,16 +507,16 @@ void __52__HFMediaServiceManager_removeMediaService_forHome___block_invoke_15(ui
   v19[1] = 3221225472;
   v19[2] = __59__HFMediaServiceManager_updateDefaultMediaService_forHome___block_invoke;
   v19[3] = &unk_277DFEAA8;
-  v20 = v6;
-  v21 = v7;
-  v22 = self;
+  v20 = serviceCopy;
+  v21 = homeCopy;
+  selfCopy = self;
   v10 = MEMORY[0x277D2C938];
-  v11 = v7;
-  v12 = v6;
-  v13 = [v10 globalAsyncScheduler];
-  v14 = [v9 futureWithBlock:v19 scheduler:v13];
-  v15 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v16 = [v14 reschedule:v15];
+  v11 = homeCopy;
+  v12 = serviceCopy;
+  globalAsyncScheduler = [v10 globalAsyncScheduler];
+  v14 = [v9 futureWithBlock:v19 scheduler:globalAsyncScheduler];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v16 = [v14 reschedule:mainThreadScheduler];
 
   v17 = *MEMORY[0x277D85DE8];
 
@@ -600,38 +600,38 @@ void __59__HFMediaServiceManager_updateDefaultMediaService_forHome___block_invok
   }
 }
 
-- (id)updateProperty:(id)a3 forHome:(id)a4 withOptions:(id)a5
+- (id)updateProperty:(id)property forHome:(id)home withOptions:(id)options
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  propertyCopy = property;
+  homeCopy = home;
+  optionsCopy = options;
   v11 = HFLogForCategory(0xCuLL);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v29 = v10;
+    v29 = optionsCopy;
     v30 = 2112;
-    v31 = v8;
+    v31 = propertyCopy;
     v32 = 2112;
-    v33 = v9;
+    v33 = homeCopy;
     _os_log_impl(&dword_20D9BF000, v11, OS_LOG_TYPE_DEFAULT, "Updating properties %@ for media service %@ for home %@", buf, 0x20u);
   }
 
   v12 = MEMORY[0x277D2C900];
   v23 = MEMORY[0x277D85DD0];
-  v24 = v8;
-  v25 = v9;
-  v26 = v10;
-  v27 = self;
+  v24 = propertyCopy;
+  v25 = homeCopy;
+  v26 = optionsCopy;
+  selfCopy = self;
   v13 = MEMORY[0x277D2C938];
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
-  v17 = [v13 globalAsyncScheduler];
-  v18 = [v12 futureWithBlock:&v23 scheduler:v17];
-  v19 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v20 = [v18 reschedule:v19];
+  v14 = optionsCopy;
+  v15 = homeCopy;
+  v16 = propertyCopy;
+  globalAsyncScheduler = [v13 globalAsyncScheduler];
+  v18 = [v12 futureWithBlock:&v23 scheduler:globalAsyncScheduler];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v20 = [v18 reschedule:mainThreadScheduler];
 
   v21 = *MEMORY[0x277D85DE8];
 
@@ -719,15 +719,15 @@ void __60__HFMediaServiceManager_updateProperty_forHome_withOptions___block_invo
   }
 }
 
-- (id)_fetchDefaultMediaServiceForHome:(id)a3
+- (id)_fetchDefaultMediaServiceForHome:(id)home
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   v5 = HFLogForCategory(0xCuLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v4;
+    v16 = homeCopy;
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "Fetching default media service for home %@", buf, 0xCu);
   }
 
@@ -735,10 +735,10 @@ void __60__HFMediaServiceManager_updateProperty_forHome_withOptions___block_invo
   v6 = MEMORY[0x277D2C900];
   v12 = MEMORY[0x277D85DD0];
   objc_copyWeak(&v14, buf);
-  v7 = v4;
+  v7 = homeCopy;
   v13 = v7;
-  v8 = [MEMORY[0x277D2C938] globalAsyncScheduler];
-  v9 = [v6 futureWithBlock:&v12 scheduler:v8];
+  globalAsyncScheduler = [MEMORY[0x277D2C938] globalAsyncScheduler];
+  v9 = [v6 futureWithBlock:&v12 scheduler:globalAsyncScheduler];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(buf);
@@ -809,68 +809,68 @@ void __58__HFMediaServiceManager__fetchDefaultMediaServiceForHome___block_invoke
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_mediaServicesForHome:(id)a3
+- (id)_mediaServicesForHome:(id)home
 {
-  v4 = a3;
-  v5 = [(HFMediaServiceManager *)self homeIdentifierToMediaServicesMapping];
-  v6 = [v4 uniqueIdentifier];
+  homeCopy = home;
+  homeIdentifierToMediaServicesMapping = [(HFMediaServiceManager *)self homeIdentifierToMediaServicesMapping];
+  uniqueIdentifier = [homeCopy uniqueIdentifier];
 
-  v7 = [v6 UUIDString];
-  v8 = [v5 objectForKey:v7];
+  uUIDString = [uniqueIdentifier UUIDString];
+  v8 = [homeIdentifierToMediaServicesMapping objectForKey:uUIDString];
 
   return v8;
 }
 
-- (id)_defaultMediaServiceForHome:(id)a3
+- (id)_defaultMediaServiceForHome:(id)home
 {
-  v4 = a3;
-  v5 = [(HFMediaServiceManager *)self homeIdentifierToDefaultServiceMapping];
-  v6 = [v4 uniqueIdentifier];
+  homeCopy = home;
+  homeIdentifierToDefaultServiceMapping = [(HFMediaServiceManager *)self homeIdentifierToDefaultServiceMapping];
+  uniqueIdentifier = [homeCopy uniqueIdentifier];
 
-  v7 = [v6 UUIDString];
-  v8 = [v5 objectForKey:v7];
+  uUIDString = [uniqueIdentifier UUIDString];
+  v8 = [homeIdentifierToDefaultServiceMapping objectForKey:uUIDString];
 
   return v8;
 }
 
-- (BOOL)_isReadRequestInFlightForHome:(id)a3
+- (BOOL)_isReadRequestInFlightForHome:(id)home
 {
-  v4 = a3;
-  v5 = [(HFMediaServiceManager *)self homeIdentifierToReadRequestInFlightMapping];
-  v6 = [v4 uniqueIdentifier];
+  homeCopy = home;
+  homeIdentifierToReadRequestInFlightMapping = [(HFMediaServiceManager *)self homeIdentifierToReadRequestInFlightMapping];
+  uniqueIdentifier = [homeCopy uniqueIdentifier];
 
-  v7 = [v6 UUIDString];
-  v8 = [v5 na_objectForKey:v7 withDefaultValue:&__block_literal_global_236];
-  v9 = [v8 BOOLValue];
+  uUIDString = [uniqueIdentifier UUIDString];
+  v8 = [homeIdentifierToReadRequestInFlightMapping na_objectForKey:uUIDString withDefaultValue:&__block_literal_global_236];
+  bOOLValue = [v8 BOOLValue];
 
-  return v9;
+  return bOOLValue;
 }
 
-- (BOOL)isRefreshNeededForHome:(id)a3
+- (BOOL)isRefreshNeededForHome:(id)home
 {
-  v4 = a3;
-  v5 = [(HFMediaServiceManager *)self homeIdentifierToRefreshNeededMapping];
-  v6 = [v4 uniqueIdentifier];
+  homeCopy = home;
+  homeIdentifierToRefreshNeededMapping = [(HFMediaServiceManager *)self homeIdentifierToRefreshNeededMapping];
+  uniqueIdentifier = [homeCopy uniqueIdentifier];
 
-  v7 = [v6 UUIDString];
-  v8 = [v5 na_objectForKey:v7 withDefaultValue:&__block_literal_global_27_16];
-  v9 = [v8 BOOLValue];
+  uUIDString = [uniqueIdentifier UUIDString];
+  v8 = [homeIdentifierToRefreshNeededMapping na_objectForKey:uUIDString withDefaultValue:&__block_literal_global_27_16];
+  bOOLValue = [v8 BOOLValue];
 
-  return v9;
+  return bOOLValue;
 }
 
-- (void)_dispatchMessageToObserversWithBlock:(id)a3
+- (void)_dispatchMessageToObserversWithBlock:(id)block
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(HFMediaServiceManager *)self observers];
-  v6 = [v5 allObjects];
+  observers = [(HFMediaServiceManager *)self observers];
+  allObjects = [observers allObjects];
 
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v7 = [allObjects countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -883,7 +883,7 @@ void __58__HFMediaServiceManager__fetchDefaultMediaServiceForHome___block_invoke
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allObjects);
         }
 
         v12 = *(*(&v17 + 1) + 8 * v11);
@@ -891,7 +891,7 @@ void __58__HFMediaServiceManager__fetchDefaultMediaServiceForHome___block_invoke
         v15[1] = 3221225472;
         v15[2] = __62__HFMediaServiceManager__dispatchMessageToObserversWithBlock___block_invoke;
         v15[3] = &unk_277DF2AD8;
-        v13 = v4;
+        v13 = blockCopy;
         v15[4] = v12;
         v16 = v13;
         dispatch_async(v10, v15);
@@ -900,7 +900,7 @@ void __58__HFMediaServiceManager__fetchDefaultMediaServiceForHome___block_invoke
       }
 
       while (v8 != v11);
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [allObjects countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);

@@ -1,8 +1,8 @@
 @interface TSPCopyArchiver
 - (TSPProxyObjectMapping)proxyObjectMapping;
 - (int64_t)targetType;
-- (void)setStrongLazyReference:(id)a3 message:(void *)a4;
-- (void)setStrongReference:(id)a3 message:(void *)a4;
+- (void)setStrongLazyReference:(id)reference message:(void *)message;
+- (void)setStrongReference:(id)reference message:(void *)message;
 @end
 
 @implementation TSPCopyArchiver
@@ -28,22 +28,22 @@
   objc_exception_throw(v18);
 }
 
-- (void)setStrongReference:(id)a3 message:(void *)a4
+- (void)setStrongReference:(id)reference message:(void *)message
 {
-  v6 = a3;
+  referenceCopy = reference;
   WeakRetained = objc_loadWeakRetained(&self->_proxyObjectMapping);
-  v9 = objc_msgSend_proxyForReferencedObject_(WeakRetained, v8, v6);
+  v9 = objc_msgSend_proxyForReferencedObject_(WeakRetained, v8, referenceCopy);
 
   if (v9)
   {
     v18.receiver = self;
     v18.super_class = TSPCopyArchiver;
-    [(TSPArchiverBase *)&v18 setStrongReference:v9 message:a4];
+    [(TSPArchiverBase *)&v18 setStrongReference:v9 message:message];
   }
 
   else
   {
-    if (!v6)
+    if (!referenceCopy)
     {
       v11 = MEMORY[0x277D81150];
       v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSPCopyArchiver setStrongReference:message:]");
@@ -53,25 +53,25 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v16, v17);
     }
 
-    *(a4 + 4) |= 1u;
-    *(a4 + 3) = 0;
+    *(message + 4) |= 1u;
+    *(message + 3) = 0;
   }
 }
 
-- (void)setStrongLazyReference:(id)a3 message:(void *)a4
+- (void)setStrongLazyReference:(id)reference message:(void *)message
 {
-  v6 = a3;
-  v10 = objc_msgSend_objectIfLoaded(v6, v7, v8);
+  referenceCopy = reference;
+  v10 = objc_msgSend_objectIfLoaded(referenceCopy, v7, v8);
   if (v10)
   {
-    objc_msgSend_setStrongReference_message_(self, v9, v10, a4);
+    objc_msgSend_setStrongReference_message_(self, v9, v10, message);
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = TSPCopyArchiver;
-    [(TSPArchiverBase *)&v11 setStrongLazyReference:v6 message:a4];
+    [(TSPArchiverBase *)&v11 setStrongLazyReference:referenceCopy message:message];
   }
 }
 

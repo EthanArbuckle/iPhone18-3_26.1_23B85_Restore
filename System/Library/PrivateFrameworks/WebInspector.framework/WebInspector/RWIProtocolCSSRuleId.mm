@@ -1,16 +1,16 @@
 @interface RWIProtocolCSSRuleId
 - (NSString)styleSheetId;
 - (int)ordinal;
-- (void)setStyleSheetId:(id)a3;
+- (void)setStyleSheetId:(id)id;
 @end
 
 @implementation RWIProtocolCSSRuleId
 
-- (void)setStyleSheetId:(id)a3
+- (void)setStyleSheetId:(id)id
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSRuleId;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"styleSheetId"];
+  [(RWIProtocolJSONObject *)&v3 setString:id forKey:@"styleSheetId"];
 }
 
 - (NSString)styleSheetId

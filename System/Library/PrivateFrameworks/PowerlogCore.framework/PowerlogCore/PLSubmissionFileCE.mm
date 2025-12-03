@@ -1,6 +1,6 @@
 @interface PLSubmissionFileCE
 - (BOOL)copyAndPrepareLog;
-- (BOOL)performCopyTablesToDB:(id)a3;
+- (BOOL)performCopyTablesToDB:(id)b;
 - (id)getCESQLFile;
 - (void)copyAndPrepareLog;
 - (void)getCESQLFile;
@@ -12,17 +12,17 @@
 - (BOOL)copyAndPrepareLog
 {
   v50[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PLSubmissionFile *)self filePath];
-  v4 = [v3 stringByReplacingOccurrencesOfString:@".ce.anon" withString:&stru_1F539D228];
+  filePath = [(PLSubmissionFile *)self filePath];
+  v4 = [filePath stringByReplacingOccurrencesOfString:@".ce.anon" withString:&stru_1F539D228];
 
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v5 fileExistsAtPath:v4];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v6 = [defaultManager fileExistsAtPath:v4];
 
   if (!v6)
   {
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v48 = 0;
-    v10 = [v9 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:&v48];
+    v10 = [defaultManager2 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:&v48];
     v7 = v48;
 
     if ((v10 & 1) == 0)
@@ -37,15 +37,15 @@
       goto LABEL_36;
     }
 
-    v11 = [(PLSubmissionFileCE *)self getCESQLFile];
-    v12 = [v4 stringByAppendingPathComponent:v11];
+    getCESQLFile = [(PLSubmissionFileCE *)self getCESQLFile];
+    v12 = [v4 stringByAppendingPathComponent:getCESQLFile];
 
     v13 = [v12 stringByAppendingFormat:@".gz"];
     v14 = +[PPSCoreStorage sharedSQLStorage];
-    v15 = [v14 CESQLConnection];
+    cESQLConnection = [v14 CESQLConnection];
 
-    v46 = v15;
-    if ([v15 copyDatabaseToPath:v12 fromDate:0 toDate:0 withTableFilters:0 vacuumDB:0])
+    v46 = cESQLConnection;
+    if ([cESQLConnection copyDatabaseToPath:v12 fromDate:0 toDate:0 withTableFilters:0 vacuumDB:0])
     {
       if (_os_feature_enabled_impl() && ![(PLSubmissionFileCE *)self performCopyTablesToDB:v12])
       {
@@ -65,34 +65,34 @@
         }
       }
 
-      v18 = [MEMORY[0x1E696AC08] defaultManager];
-      [v18 removeItemAtPath:v12 error:0];
+      defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+      [defaultManager3 removeItemAtPath:v12 error:0];
 
-      v19 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager4 = [MEMORY[0x1E696AC08] defaultManager];
       v20 = [v12 stringByAppendingString:@"-wal"];
-      [v19 removeItemAtPath:v20 error:0];
+      [defaultManager4 removeItemAtPath:v20 error:0];
 
-      v21 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager5 = [MEMORY[0x1E696AC08] defaultManager];
       v22 = [v12 stringByAppendingString:@"-shm"];
-      [v21 removeItemAtPath:v22 error:0];
+      [defaultManager5 removeItemAtPath:v22 error:0];
     }
 
     else
     {
-      v21 = PLLogSubmission();
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+      defaultManager5 = PLLogSubmission();
+      if (os_log_type_enabled(defaultManager5, OS_LOG_TYPE_ERROR))
       {
         [PLSubmissionFileCE copyAndPrepareLog];
       }
     }
 
     v23 = [v4 stringByAppendingPathComponent:@"tag.json"];
-    v24 = [MEMORY[0x1E695DF70] array];
-    v25 = [v13 lastPathComponent];
-    [v24 addObject:v25];
+    array = [MEMORY[0x1E695DF70] array];
+    lastPathComponent = [v13 lastPathComponent];
+    [array addObject:lastPathComponent];
 
     v49 = @"LogFiles";
-    v50[0] = v24;
+    v50[0] = array;
     v44 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v50 forKeys:&v49 count:1];
     if (![(PLSubmissionFile *)self createTagFileWithPath:v23 withInfo:?])
     {
@@ -110,13 +110,13 @@
 
     if (v29)
     {
-      v42 = v24;
+      v42 = array;
       v43 = v13;
-      v30 = [MEMORY[0x1E696AC08] defaultManager];
-      v31 = [v29 path];
-      v32 = [(PLSubmissionFile *)self filePath];
+      defaultManager6 = [MEMORY[0x1E696AC08] defaultManager];
+      path = [v29 path];
+      filePath2 = [(PLSubmissionFile *)self filePath];
       v47 = v7;
-      v33 = [v30 moveItemAtPath:v31 toPath:v32 error:&v47];
+      v33 = [defaultManager6 moveItemAtPath:path toPath:filePath2 error:&v47];
       v34 = v47;
 
       if (v33)
@@ -125,7 +125,7 @@
         v8 = 1;
         v35 = v45;
         v7 = v34;
-        v24 = v42;
+        array = v42;
         v13 = v43;
 LABEL_35:
 
@@ -140,11 +140,11 @@ LABEL_36:
         [PLSubmissionFileCE copyAndPrepareLog];
       }
 
-      v37 = [MEMORY[0x1E696AC08] defaultManager];
-      v38 = [v29 path];
-      [v37 removeItemAtPath:v38 error:0];
+      defaultManager7 = [MEMORY[0x1E696AC08] defaultManager];
+      path2 = [v29 path];
+      [defaultManager7 removeItemAtPath:path2 error:0];
 
-      v24 = v42;
+      array = v42;
       v13 = v43;
     }
 
@@ -174,21 +174,21 @@ LABEL_37:
 
 - (id)getCESQLFile
 {
-  v3 = [(PLSubmissionFile *)self taskingConfig];
-  v4 = [v3 startDate];
-  v5 = [v4 convertFromMonotonicToSystem];
+  taskingConfig = [(PLSubmissionFile *)self taskingConfig];
+  startDate = [taskingConfig startDate];
+  convertFromMonotonicToSystem = [startDate convertFromMonotonicToSystem];
 
-  v6 = [(PLSubmissionFile *)self taskingConfig];
-  v7 = [v6 endDate];
-  v8 = [v7 convertFromMonotonicToSystem];
+  taskingConfig2 = [(PLSubmissionFile *)self taskingConfig];
+  endDate = [taskingConfig2 endDate];
+  convertFromMonotonicToSystem2 = [endDate convertFromMonotonicToSystem];
 
-  v9 = [MEMORY[0x1E695DF00] filenameDateStringWithStartDate:v5 endDate:v8];
+  v9 = [MEMORY[0x1E695DF00] filenameDateStringWithStartDate:convertFromMonotonicToSystem endDate:convertFromMonotonicToSystem2];
   if (![v9 length])
   {
-    v10 = [(PLSubmissionFile *)self taskingConfig];
-    v11 = [v10 tagUUID];
+    taskingConfig3 = [(PLSubmissionFile *)self taskingConfig];
+    tagUUID = [taskingConfig3 tagUUID];
 
-    v9 = v11;
+    v9 = tagUUID;
   }
 
   v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cleanenergy_%@.CESQL", v9];
@@ -201,27 +201,27 @@ LABEL_37:
   return v12;
 }
 
-- (BOOL)performCopyTablesToDB:(id)a3
+- (BOOL)performCopyTablesToDB:(id)b
 {
-  v4 = a3;
-  v5 = [(PLSubmissionFileCE *)self tablesToMigrateForCE];
-  v6 = [[PLSQLiteConnection alloc] initWithFilePath:v4];
+  bCopy = b;
+  tablesToMigrateForCE = [(PLSubmissionFileCE *)self tablesToMigrateForCE];
+  v6 = [[PLSQLiteConnection alloc] initWithFilePath:bCopy];
 
   v7 = +[PowerlogCore sharedCore];
-  v8 = [v7 storage];
-  v9 = [v8 connection];
+  storage = [v7 storage];
+  connection = [storage connection];
 
-  v10 = [v9 filePath];
-  v11 = [v10 lastPathComponent];
-  v12 = [v11 stringByDeletingPathExtension];
+  filePath = [connection filePath];
+  lastPathComponent = [filePath lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-  v13 = [v9 filePath];
-  v14 = [(PLSQLiteConnection *)v6 attachDB:v13 withName:v12];
+  filePath2 = [connection filePath];
+  v14 = [(PLSQLiteConnection *)v6 attachDB:filePath2 withName:stringByDeletingPathExtension];
 
   if (v14)
   {
-    v15 = [MEMORY[0x1E696AFB0] UUID];
-    v16 = [v15 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
     v17 = PLLogSubmission();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -233,20 +233,20 @@ LABEL_37:
     v24 = 3221225472;
     v25 = __44__PLSubmissionFileCE_performCopyTablesToDB___block_invoke;
     v26 = &unk_1E851A040;
-    v27 = self;
-    v18 = v16;
+    selfCopy = self;
+    v18 = uUIDString;
     v28 = v18;
     v19 = v6;
     v29 = v19;
-    v30 = v9;
-    [v5 enumerateObjectsUsingBlock:&v23];
+    v30 = connection;
+    [tablesToMigrateForCE enumerateObjectsUsingBlock:&v23];
     v20 = PLLogSubmission();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
       [PLSubmissionFileCE performCopyTablesToDB:];
     }
 
-    if (![(PLSQLiteConnection *)v19 detachDB:v12, v23, v24, v25, v26, v27])
+    if (![(PLSQLiteConnection *)v19 detachDB:stringByDeletingPathExtension, v23, v24, v25, v26, selfCopy])
     {
       v21 = PLLogSubmission();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -263,7 +263,7 @@ LABEL_37:
     v18 = PLLogSubmission();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      [(PLSubmissionFileCE *)v9 performCopyTablesToDB:v12, v18];
+      [(PLSubmissionFileCE *)connection performCopyTablesToDB:stringByDeletingPathExtension, v18];
     }
   }
 

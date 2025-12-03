@@ -1,39 +1,39 @@
 @interface CKVocabularySearchResult
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSearchResult:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSearchResult:(id)result;
 - (CKVocabularySearchResult)init;
-- (CKVocabularySearchResult)initWithCoder:(id)a3;
-- (CKVocabularySearchResult)initWithVocabularyItem:(id)a3 originAppId:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CKVocabularySearchResult)initWithCoder:(id)coder;
+- (CKVocabularySearchResult)initWithVocabularyItem:(id)item originAppId:(id)id;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKVocabularySearchResult
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(CKVocabularyItem *)self->_vocabularyItem copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(CKVocabularyItem *)self->_vocabularyItem copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_originAppId copyWithZone:a3];
+  v8 = [(NSString *)self->_originAppId copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqualToSearchResult:(id)a3
+- (BOOL)isEqualToSearchResult:(id)result
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (vocabularyItem = self->_vocabularyItem, [v4 vocabularyItem], v7 = objc_claimAutoreleasedReturnValue(), LODWORD(vocabularyItem) = -[CKVocabularyItem isEqual:](vocabularyItem, "isEqual:", v7), v7, vocabularyItem))
+  resultCopy = result;
+  v5 = resultCopy;
+  if (resultCopy && (vocabularyItem = self->_vocabularyItem, [resultCopy vocabularyItem], v7 = objc_claimAutoreleasedReturnValue(), LODWORD(vocabularyItem) = -[CKVocabularyItem isEqual:](vocabularyItem, "isEqual:", v7), v7, vocabularyItem))
   {
     originAppId = self->_originAppId;
-    v9 = [v5 originAppId];
-    v10 = [(NSString *)originAppId isEqual:v9];
+    originAppId = [v5 originAppId];
+    v10 = [(NSString *)originAppId isEqual:originAppId];
   }
 
   else
@@ -44,29 +44,29 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CKVocabularySearchResult *)self isEqualToSearchResult:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CKVocabularySearchResult *)self isEqualToSearchResult:v5];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   vocabularyItem = self->_vocabularyItem;
-  v5 = a3;
-  [v5 encodeObject:vocabularyItem forKey:@"item"];
-  [v5 encodeObject:self->_originAppId forKey:@"appId"];
+  coderCopy = coder;
+  [coderCopy encodeObject:vocabularyItem forKey:@"item"];
+  [coderCopy encodeObject:self->_originAppId forKey:@"appId"];
 }
 
 - (id)description
@@ -85,19 +85,19 @@
   objc_exception_throw(v2);
 }
 
-- (CKVocabularySearchResult)initWithCoder:(id)a3
+- (CKVocabularySearchResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CKVocabularySearchResult;
   v5 = [(CKVocabularySearchResult *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"item"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"item"];
     vocabularyItem = v5->_vocabularyItem;
     v5->_vocabularyItem = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appId"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appId"];
     originAppId = v5->_originAppId;
     v5->_originAppId = v8;
   }
@@ -105,14 +105,14 @@
   return v5;
 }
 
-- (CKVocabularySearchResult)initWithVocabularyItem:(id)a3 originAppId:(id)a4
+- (CKVocabularySearchResult)initWithVocabularyItem:(id)item originAppId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  idCopy = id;
   v15.receiver = self;
   v15.super_class = CKVocabularySearchResult;
   v8 = [(CKVocabularySearchResult *)&v15 init];
-  if (!v8 || (v9 = [v6 copy], vocabularyItem = v8->_vocabularyItem, v8->_vocabularyItem = v9, vocabularyItem, v8->_vocabularyItem) && (v11 = objc_msgSend(v7, "copy"), originAppId = v8->_originAppId, v8->_originAppId = v11, originAppId, v8->_originAppId))
+  if (!v8 || (v9 = [itemCopy copy], vocabularyItem = v8->_vocabularyItem, v8->_vocabularyItem = v9, vocabularyItem, v8->_vocabularyItem) && (v11 = objc_msgSend(idCopy, "copy"), originAppId = v8->_originAppId, v8->_originAppId = v11, originAppId, v8->_originAppId))
   {
     v13 = v8;
   }

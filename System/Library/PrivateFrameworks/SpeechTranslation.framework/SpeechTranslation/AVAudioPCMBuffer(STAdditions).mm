@@ -11,14 +11,14 @@
 - (id)st_serializeWithBufferAllocator:()STAdditions
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v5 = [a1 format];
-  v6 = [a1 _st_serializeBufferWithAllocator:a3 format:v5];
+  format = [self format];
+  v6 = [self _st_serializeBufferWithAllocator:a3 format:format];
   v7 = v6;
   if (v6)
   {
     v18[0] = @"AVAudioPCMBufferFormat";
     v18[1] = @"AVAudioPCMBufferData";
-    v19[0] = v5;
+    v19[0] = format;
     v19[1] = v6;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:2];
     v17 = 0;
@@ -89,7 +89,7 @@
     goto LABEL_11;
   }
 
-  if (![a1 _st_deserializedInstanceIsValid:v12])
+  if (![self _st_deserializedInstanceIsValid:v12])
   {
 LABEL_11:
     v19 = 0;
@@ -98,11 +98,11 @@ LABEL_11:
 
   v14 = [v12 objectForKeyedSubscript:@"AVAudioPCMBufferFormat"];
   v15 = [v12 objectForKeyedSubscript:@"AVAudioPCMBufferData"];
-  v16 = [a1 _st_createAudioBufferListWithAllocator:a4 serializedData:v15 description:{objc_msgSend(v14, "streamDescription")}];
+  v16 = [self _st_createAudioBufferListWithAllocator:a4 serializedData:v15 description:{objc_msgSend(v14, "streamDescription")}];
   if (v16)
   {
     v17 = v16;
-    v18 = [a1 alloc];
+    v18 = [self alloc];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __72__AVAudioPCMBuffer_STAdditions__st_deserializeData_withBufferAllocator___block_invoke;
@@ -188,9 +188,9 @@ LABEL_14:
 {
   v36 = *MEMORY[0x277D85DE8];
   v6 = a4;
-  v7 = [a1 audioBufferList];
-  v8 = v7;
-  v9 = *v7;
+  audioBufferList = [self audioBufferList];
+  v8 = audioBufferList;
+  v9 = *audioBufferList;
   if (!v9)
   {
     goto LABEL_11;
@@ -200,7 +200,7 @@ LABEL_14:
   v11 = 3;
   do
   {
-    v10 += v7[v11];
+    v10 += audioBufferList[v11];
     v11 += 4;
     --v9;
   }
@@ -216,7 +216,7 @@ LABEL_11:
       v28 = v20;
       v29 = STAudioUtilitiesFormatToString([v6 streamDescription]);
       v30 = 138544130;
-      v31 = a1;
+      selfCopy2 = self;
       v32 = 2048;
       *v33 = 0;
       *&v33[8] = 1024;
@@ -239,11 +239,11 @@ LABEL_11:
       v25 = v23;
       v26 = STAudioUtilitiesFormatToString([v6 streamDescription]);
       v30 = 134219010;
-      v31 = v10;
+      selfCopy2 = v10;
       v32 = 2114;
       *v33 = a3;
       *&v33[8] = 2114;
-      *&v33[10] = a1;
+      *&v33[10] = self;
       *&v33[18] = 1024;
       *&v33[20] = v24;
       v34 = 2114;
@@ -278,7 +278,7 @@ LABEL_13:
     v18 = v16;
     v19 = STAudioUtilitiesFormatToString([v6 streamDescription]);
     v30 = 138544386;
-    v31 = a1;
+    selfCopy2 = self;
     v32 = 1024;
     *v33 = v17;
     *&v33[4] = 2048;

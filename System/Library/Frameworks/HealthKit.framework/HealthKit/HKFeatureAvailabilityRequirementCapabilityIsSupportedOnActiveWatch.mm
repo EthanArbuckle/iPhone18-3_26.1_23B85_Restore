@@ -1,26 +1,26 @@
 @interface HKFeatureAvailabilityRequirementCapabilityIsSupportedOnActiveWatch
-- (BOOL)isEqual:(id)a3;
-- (HKFeatureAvailabilityRequirementCapabilityIsSupportedOnActiveWatch)initWithCoder:(id)a3;
-- (HKFeatureAvailabilityRequirementCapabilityIsSupportedOnActiveWatch)initWithFeatureIdentifier:(id)a3 supportedOnLocalDevice:(BOOL)a4;
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (HKFeatureAvailabilityRequirementCapabilityIsSupportedOnActiveWatch)initWithCoder:(id)coder;
+- (HKFeatureAvailabilityRequirementCapabilityIsSupportedOnActiveWatch)initWithFeatureIdentifier:(id)identifier supportedOnLocalDevice:(BOOL)device;
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error;
 - (id)requiredEntitlements;
 - (id)requirementDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)registerObserver:(id)a3 forDataSource:(id)a4;
-- (void)unregisterObserver:(id)a3 fromDataSource:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)registerObserver:(id)observer forDataSource:(id)source;
+- (void)unregisterObserver:(id)observer fromDataSource:(id)source;
 @end
 
 @implementation HKFeatureAvailabilityRequirementCapabilityIsSupportedOnActiveWatch
 
-- (HKFeatureAvailabilityRequirementCapabilityIsSupportedOnActiveWatch)initWithFeatureIdentifier:(id)a3 supportedOnLocalDevice:(BOOL)a4
+- (HKFeatureAvailabilityRequirementCapabilityIsSupportedOnActiveWatch)initWithFeatureIdentifier:(id)identifier supportedOnLocalDevice:(BOOL)device
 {
   v6.receiver = self;
   v6.super_class = HKFeatureAvailabilityRequirementCapabilityIsSupportedOnActiveWatch;
-  result = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)&v6 initWithFeatureIdentifier:a3];
+  result = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)&v6 initWithFeatureIdentifier:identifier];
   if (result)
   {
-    result->_supportedOnLocalDevice = a4;
+    result->_supportedOnLocalDevice = device;
   }
 
   return result;
@@ -29,18 +29,18 @@
 - (id)requirementDescription
 {
   v3 = +[_HKBehavior sharedBehavior];
-  v4 = [v3 isAppleWatch];
+  isAppleWatch = [v3 isAppleWatch];
 
   v5 = MEMORY[0x1E696AEC0];
-  if (v4)
+  if (isAppleWatch)
   {
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"The Mobile Gestalt capability must be supported"];
   }
 
   else
   {
-    v7 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)self featureIdentifier];
-    v6 = [v5 stringWithFormat:@"The paired device capability for %@ must be supported", v7];
+    featureIdentifier = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)self featureIdentifier];
+    v6 = [v5 stringWithFormat:@"The paired device capability for %@ must be supported", featureIdentifier];
   }
 
   return v6;
@@ -50,17 +50,17 @@
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v3 = +[_HKBehavior sharedBehavior];
-  v4 = [v3 isAppleWatch];
+  isAppleWatch = [v3 isAppleWatch];
 
-  if (v4)
+  if (isAppleWatch)
   {
     v5 = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v6 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)self featureIdentifier];
-    v7 = [HKFeatureAvailabilityRequirementEntitlement featureAvailabilityReadEntitlementForFeatureIdentifier:v6];
+    featureIdentifier = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)self featureIdentifier];
+    v7 = [HKFeatureAvailabilityRequirementEntitlement featureAvailabilityReadEntitlementForFeatureIdentifier:featureIdentifier];
     v10[0] = v7;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   }
@@ -70,13 +70,13 @@
   return v5;
 }
 
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 behavior];
-  v8 = [v7 isAppleWatch];
+  sourceCopy = source;
+  behavior = [sourceCopy behavior];
+  isAppleWatch = [behavior isAppleWatch];
 
-  if (v8)
+  if (isAppleWatch)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:self->_supportedOnLocalDevice];
   }
@@ -85,7 +85,7 @@
   {
     v12.receiver = self;
     v12.super_class = HKFeatureAvailabilityRequirementCapabilityIsSupportedOnActiveWatch;
-    v9 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)&v12 isSatisfiedWithDataSource:v6 error:a4];
+    v9 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)&v12 isSatisfiedWithDataSource:sourceCopy error:error];
   }
 
   v10 = v9;
@@ -93,42 +93,42 @@
   return v10;
 }
 
-- (void)registerObserver:(id)a3 forDataSource:(id)a4
+- (void)registerObserver:(id)observer forDataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 behavior];
-  v9 = [v8 isAppleWatch];
+  observerCopy = observer;
+  sourceCopy = source;
+  behavior = [sourceCopy behavior];
+  isAppleWatch = [behavior isAppleWatch];
 
-  if ((v9 & 1) == 0)
+  if ((isAppleWatch & 1) == 0)
   {
     v10.receiver = self;
     v10.super_class = HKFeatureAvailabilityRequirementCapabilityIsSupportedOnActiveWatch;
-    [(_HKFeatureAvailabilityRequirementCapabilityIsSupportedOnActiveRemoteDevice *)&v10 registerObserver:v6 forDataSource:v7];
+    [(_HKFeatureAvailabilityRequirementCapabilityIsSupportedOnActiveRemoteDevice *)&v10 registerObserver:observerCopy forDataSource:sourceCopy];
   }
 }
 
-- (void)unregisterObserver:(id)a3 fromDataSource:(id)a4
+- (void)unregisterObserver:(id)observer fromDataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 behavior];
-  v9 = [v8 isAppleWatch];
+  observerCopy = observer;
+  sourceCopy = source;
+  behavior = [sourceCopy behavior];
+  isAppleWatch = [behavior isAppleWatch];
 
-  if ((v9 & 1) == 0)
+  if ((isAppleWatch & 1) == 0)
   {
     v10.receiver = self;
     v10.super_class = HKFeatureAvailabilityRequirementCapabilityIsSupportedOnActiveWatch;
-    [(_HKFeatureAvailabilityRequirementCapabilityIsSupportedOnActiveRemoteDevice *)&v10 unregisterObserver:v6 fromDataSource:v7];
+    [(_HKFeatureAvailabilityRequirementCapabilityIsSupportedOnActiveRemoteDevice *)&v10 unregisterObserver:observerCopy fromDataSource:sourceCopy];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = HKFeatureAvailabilityRequirementCapabilityIsSupportedOnActiveWatch;
-  v5 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)&v7 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_supportedOnLocalDevice == v4[16];
+  v5 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)&v7 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_supportedOnLocalDevice == equalCopy[16];
 
   return v5;
 }
@@ -140,24 +140,24 @@
   return [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)&v3 hash]^ self->_supportedOnLocalDevice;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKFeatureAvailabilityRequirementCapabilityIsSupportedOnActiveWatch;
-  v4 = a3;
-  [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:self->_supportedOnLocalDevice forKey:{@"supportedOnLocalDevice", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:self->_supportedOnLocalDevice forKey:{@"supportedOnLocalDevice", v5.receiver, v5.super_class}];
 }
 
-- (HKFeatureAvailabilityRequirementCapabilityIsSupportedOnActiveWatch)initWithCoder:(id)a3
+- (HKFeatureAvailabilityRequirementCapabilityIsSupportedOnActiveWatch)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = HKFeatureAvailabilityRequirementCapabilityIsSupportedOnActiveWatch;
-  v5 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)&v7 initWithCoder:v4];
+  v5 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_supportedOnLocalDevice = [v4 decodeBoolForKey:@"supportedOnLocalDevice"];
+    v5->_supportedOnLocalDevice = [coderCopy decodeBoolForKey:@"supportedOnLocalDevice"];
   }
 
   return v5;

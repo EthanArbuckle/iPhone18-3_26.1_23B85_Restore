@@ -1,9 +1,9 @@
 @interface CTPrivateNetworkCapabilities
 - (CTPrivateNetworkCapabilities)init;
-- (CTPrivateNetworkCapabilities)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CTPrivateNetworkCapabilities)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTPrivateNetworkCapabilities
@@ -27,9 +27,9 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setIsPrivateNetworkSIM:{-[CTPrivateNetworkCapabilities isPrivateNetworkSIM](self, "isPrivateNetworkSIM")}];
   [v4 setIsPrivateNetworkPreferredOverWifi:{-[CTPrivateNetworkCapabilities isPrivateNetworkPreferredOverWifi](self, "isPrivateNetworkPreferredOverWifi")}];
   [v4 setIsPrivateNetworkModeEnabled:{-[CTPrivateNetworkCapabilities isPrivateNetworkModeEnabled](self, "isPrivateNetworkModeEnabled")}];
@@ -37,27 +37,27 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[CTPrivateNetworkCapabilities isPrivateNetworkSIM](self forKey:{"isPrivateNetworkSIM"), @"isPrivateNetworkSIM"}];
-  [v4 encodeBool:-[CTPrivateNetworkCapabilities isPrivateNetworkPreferredOverWifi](self forKey:{"isPrivateNetworkPreferredOverWifi"), @"isPrivateNetworkPreferredOverWifi"}];
-  [v4 encodeBool:-[CTPrivateNetworkCapabilities isPrivateNetworkModeEnabled](self forKey:{"isPrivateNetworkModeEnabled"), @"isPrivateNetworkModeEnabled"}];
-  [v4 encodeBool:-[CTPrivateNetworkCapabilities hideDataRoaming](self forKey:{"hideDataRoaming"), @"hideDataRoaming"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[CTPrivateNetworkCapabilities isPrivateNetworkSIM](self forKey:{"isPrivateNetworkSIM"), @"isPrivateNetworkSIM"}];
+  [coderCopy encodeBool:-[CTPrivateNetworkCapabilities isPrivateNetworkPreferredOverWifi](self forKey:{"isPrivateNetworkPreferredOverWifi"), @"isPrivateNetworkPreferredOverWifi"}];
+  [coderCopy encodeBool:-[CTPrivateNetworkCapabilities isPrivateNetworkModeEnabled](self forKey:{"isPrivateNetworkModeEnabled"), @"isPrivateNetworkModeEnabled"}];
+  [coderCopy encodeBool:-[CTPrivateNetworkCapabilities hideDataRoaming](self forKey:{"hideDataRoaming"), @"hideDataRoaming"}];
 }
 
-- (CTPrivateNetworkCapabilities)initWithCoder:(id)a3
+- (CTPrivateNetworkCapabilities)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = CTPrivateNetworkCapabilities;
   v5 = [(CTPrivateNetworkCapabilities *)&v7 init];
   if (v5)
   {
-    v5->_isPrivateNetworkSIM = [v4 decodeBoolForKey:@"isPrivateNetworkSIM"];
-    v5->_isPrivateNetworkPreferredOverWifi = [v4 decodeBoolForKey:@"isPrivateNetworkPreferredOverWifi"];
-    v5->_isPrivateNetworkModeEnabled = [v4 decodeBoolForKey:@"isPrivateNetworkModeEnabled"];
-    v5->_hideDataRoaming = [v4 decodeBoolForKey:@"hideDataRoaming"];
+    v5->_isPrivateNetworkSIM = [coderCopy decodeBoolForKey:@"isPrivateNetworkSIM"];
+    v5->_isPrivateNetworkPreferredOverWifi = [coderCopy decodeBoolForKey:@"isPrivateNetworkPreferredOverWifi"];
+    v5->_isPrivateNetworkModeEnabled = [coderCopy decodeBoolForKey:@"isPrivateNetworkModeEnabled"];
+    v5->_hideDataRoaming = [coderCopy decodeBoolForKey:@"hideDataRoaming"];
   }
 
   return v5;

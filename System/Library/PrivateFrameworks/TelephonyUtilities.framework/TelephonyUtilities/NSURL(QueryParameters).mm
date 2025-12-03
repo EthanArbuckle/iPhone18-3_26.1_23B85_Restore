@@ -9,17 +9,17 @@
 - (id)tuQueryParameters
 {
   v32 = *MEMORY[0x1E69E9840];
-  v2 = [a1 query];
-  v3 = v2;
-  if (!v2 || [v2 isEqual:&stru_1F098C218])
+  query = [self query];
+  v3 = query;
+  if (!query || [query isEqual:&stru_1F098C218])
   {
     v4 = MEMORY[0x1E696AF20];
-    v5 = [a1 absoluteString];
-    v6 = [v4 componentsWithString:v5];
-    v7 = [v6 query];
+    absoluteString = [self absoluteString];
+    v6 = [v4 componentsWithString:absoluteString];
+    query2 = [v6 query];
 
-    v3 = v7;
-    if (!v7)
+    v3 = query2;
+    if (!query2)
     {
       goto LABEL_5;
     }
@@ -27,7 +27,7 @@
 
   if (([v3 isEqual:&stru_1F098C218] & 1) == 0)
   {
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v10 = [v3 componentsSeparatedByString:@"&"];
     v25 = 0u;
     v26 = 0u;
@@ -52,14 +52,14 @@
           if ([v16 count] == 2)
           {
             v17 = [v16 objectAtIndexedSubscript:0];
-            v18 = [v17 stringByRemovingPercentEncoding];
+            stringByRemovingPercentEncoding = [v17 stringByRemovingPercentEncoding];
 
             v19 = [v16 objectAtIndexedSubscript:1];
-            v20 = [v19 stringByRemovingPercentEncoding];
+            stringByRemovingPercentEncoding2 = [v19 stringByRemovingPercentEncoding];
 
-            if (v18)
+            if (stringByRemovingPercentEncoding)
             {
-              v21 = v20 == 0;
+              v21 = stringByRemovingPercentEncoding2 == 0;
             }
 
             else
@@ -69,13 +69,13 @@
 
             if (!v21)
             {
-              [v9 setObject:v20 forKeyedSubscript:v18];
+              [dictionary setObject:stringByRemovingPercentEncoding2 forKeyedSubscript:stringByRemovingPercentEncoding];
             }
           }
 
           else if ([v16 count] == 1)
           {
-            [v9 setObject:@"1" forKeyedSubscript:v15];
+            [dictionary setObject:@"1" forKeyedSubscript:v15];
           }
 
           else
@@ -96,7 +96,7 @@
       while (v12);
     }
 
-    v8 = [v9 copy];
+    v8 = [dictionary copy];
   }
 
   else
@@ -115,13 +115,13 @@ LABEL_5:
   v6 = MEMORY[0x1E696AF20];
   v7 = a4;
   v8 = a3;
-  v9 = [[v6 alloc] initWithURL:a1 resolvingAgainstBaseURL:0];
-  v10 = [v9 queryItems];
-  v11 = v10;
+  v9 = [[v6 alloc] initWithURL:self resolvingAgainstBaseURL:0];
+  queryItems = [v9 queryItems];
+  v11 = queryItems;
   v12 = MEMORY[0x1E695E0F0];
-  if (v10)
+  if (queryItems)
   {
-    v12 = v10;
+    v12 = queryItems;
   }
 
   v13 = v12;
@@ -138,8 +138,8 @@ LABEL_5:
 - (id)URLByDeletingQueryParameterWithKey:()QueryParameters
 {
   v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:a1 resolvingAgainstBaseURL:0];
-  v6 = [v5 queryItems];
+  v5 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:self resolvingAgainstBaseURL:0];
+  queryItems = [v5 queryItems];
   v7 = MEMORY[0x1E696AE18];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -148,7 +148,7 @@ LABEL_5:
   v14 = v4;
   v8 = v4;
   v9 = [v7 predicateWithBlock:v13];
-  v10 = [v6 filteredArrayUsingPredicate:v9];
+  v10 = [queryItems filteredArrayUsingPredicate:v9];
   [v5 setQueryItems:v10];
 
   v11 = [v5 URL];

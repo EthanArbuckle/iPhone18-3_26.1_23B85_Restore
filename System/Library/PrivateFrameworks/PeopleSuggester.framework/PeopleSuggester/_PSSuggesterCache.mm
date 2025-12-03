@@ -1,9 +1,9 @@
 @interface _PSSuggesterCache
-+ (id)defaultServiceWithMaxSuggestionCount:(id)a3;
-- (_PSSuggesterCache)initWithMaxSuggestionCount:(id)a3;
++ (id)defaultServiceWithMaxSuggestionCount:(id)count;
+- (_PSSuggesterCache)initWithMaxSuggestionCount:(id)count;
 - (id)description;
 - (id)getCachedContext;
-- (id)getCachedSuggestionsAndSessionID:(id *)a3;
+- (id)getCachedSuggestionsAndSessionID:(id *)d;
 - (void)_refetch;
 - (void)backgroundRefetch;
 - (void)performInitialFetchIfNeeded;
@@ -12,9 +12,9 @@
 
 @implementation _PSSuggesterCache
 
-- (_PSSuggesterCache)initWithMaxSuggestionCount:(id)a3
+- (_PSSuggesterCache)initWithMaxSuggestionCount:(id)count
 {
-  v4 = a3;
+  countCopy = count;
   v31.receiver = self;
   v31.super_class = _PSSuggesterCache;
   v5 = [(_PSSuggesterCache *)&v31 init];
@@ -37,13 +37,13 @@
     *(v5 + 7) = 0;
     *(v5 + 8) = 0;
     v13 = +[_PSSuggesterConfiguration defaultConfiguration];
-    [v13 setMaximumNumberOfSuggestions:{objc_msgSend(v4, "integerValue")}];
+    [v13 setMaximumNumberOfSuggestions:{objc_msgSend(countCopy, "integerValue")}];
     v14 = [[_PSSuggester alloc] initWithDaemonUsingConfiguration:v13];
     v15 = *(v5 + 3);
     *(v5 + 3) = v14;
 
-    v16 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v16 addObserver:v5 selector:sel_backgroundRefetch name:@"_CDInteractionStoreRecordedShareSheetInteractionNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel_backgroundRefetch name:@"_CDInteractionStoreRecordedShareSheetInteractionNotification" object:0];
 
     v17 = +[_PSConfig defaultConfig];
     v18 = objc_opt_class();
@@ -72,16 +72,16 @@
   return v5;
 }
 
-+ (id)defaultServiceWithMaxSuggestionCount:(id)a3
++ (id)defaultServiceWithMaxSuggestionCount:(id)count
 {
-  v3 = a3;
+  countCopy = count;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58___PSSuggesterCache_defaultServiceWithMaxSuggestionCount___block_invoke;
   block[3] = &unk_1E7C24268;
-  v10 = v3;
+  v10 = countCopy;
   v4 = defaultServiceWithMaxSuggestionCount___pasOnceToken9;
-  v5 = v3;
+  v5 = countCopy;
   if (v4 != -1)
   {
     dispatch_once(&defaultServiceWithMaxSuggestionCount___pasOnceToken9, block);
@@ -156,10 +156,10 @@
 {
   v22 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->_refetchLock);
-  v3 = [MEMORY[0x1E69C5D08] isClassCLocked];
+  isClassCLocked = [MEMORY[0x1E69C5D08] isClassCLocked];
   v4 = +[_PSLogging generalChannel];
   v5 = os_log_type_enabled(&v4->super, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (isClassCLocked)
   {
     if (v5)
     {
@@ -178,9 +178,9 @@
 
     v4 = objc_alloc_init(_PSPredictionContext);
     [(_PSPredictionContext *)v4 setIsFallbackFetch:1];
-    v6 = [MEMORY[0x1E696AFB0] UUID];
-    v7 = [v6 UUIDString];
-    [(_PSPredictionContext *)v4 setSessionID:v7];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    [(_PSPredictionContext *)v4 setSessionID:uUIDString];
 
     v8 = [(_PSSuggester *)self->_suggester suggestInteractionsFromContext:v4];
     os_unfair_lock_lock(&self->_lock);
@@ -188,9 +188,9 @@
     v9 = +[_PSLogging generalChannel];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(_PSPredictionContext *)v4 sessionID];
+      sessionID = [(_PSPredictionContext *)v4 sessionID];
       v18 = 138412547;
-      v19 = v10;
+      v19 = sessionID;
       v20 = 2113;
       v21 = v8;
       _os_log_impl(&dword_1B5ED1000, v9, OS_LOG_TYPE_DEFAULT, "_PSSuggesterCache: fetched suggestions with sessionID %@: %{private}@", &v18, 0x16u);
@@ -200,9 +200,9 @@
     cachedPeopleSuggestions = self->_cachedPeopleSuggestions;
     self->_cachedPeopleSuggestions = v11;
 
-    v13 = [(_PSPredictionContext *)v4 sessionID];
+    sessionID2 = [(_PSPredictionContext *)v4 sessionID];
     cachedSessionID = self->_cachedSessionID;
-    self->_cachedSessionID = v13;
+    self->_cachedSessionID = sessionID2;
 
     ++self->_fetches;
     v15 = +[_PSLogging generalChannel];
@@ -220,13 +220,13 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)getCachedSuggestionsAndSessionID:(id *)a3
+- (id)getCachedSuggestionsAndSessionID:(id *)d
 {
   os_unfair_lock_lock(&self->_lock);
   v5 = self->_cachedPeopleSuggestions;
-  if (a3)
+  if (d)
   {
-    objc_storeStrong(a3, self->_cachedSessionID);
+    objc_storeStrong(d, self->_cachedSessionID);
   }
 
   os_unfair_lock_unlock(&self->_lock);

@@ -1,132 +1,132 @@
 @interface _SFPBCoreSpotlightRankingSignals
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBCoreSpotlightRankingSignals)initWithDictionary:(id)a3;
-- (_SFPBCoreSpotlightRankingSignals)initWithFacade:(id)a3;
-- (_SFPBCoreSpotlightRankingSignals)initWithJSON:(id)a3;
+- (_SFPBCoreSpotlightRankingSignals)initWithDictionary:(id)dictionary;
+- (_SFPBCoreSpotlightRankingSignals)initWithFacade:(id)facade;
+- (_SFPBCoreSpotlightRankingSignals)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBCoreSpotlightRankingSignals
 
-- (_SFPBCoreSpotlightRankingSignals)initWithFacade:(id)a3
+- (_SFPBCoreSpotlightRankingSignals)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBCoreSpotlightRankingSignals *)self init];
   if (v5)
   {
-    v6 = [v4 topicalityScore];
+    topicalityScore = [facadeCopy topicalityScore];
 
-    if (v6)
+    if (topicalityScore)
     {
-      v7 = [v4 topicalityScore];
-      [v7 floatValue];
+      topicalityScore2 = [facadeCopy topicalityScore];
+      [topicalityScore2 floatValue];
       [(_SFPBCoreSpotlightRankingSignals *)v5 setTopicalityScore:?];
     }
 
-    v8 = [v4 freshness];
+    freshness = [facadeCopy freshness];
 
-    if (v8)
+    if (freshness)
     {
-      v9 = [v4 freshness];
-      [v9 floatValue];
+      freshness2 = [facadeCopy freshness];
+      [freshness2 floatValue];
       [(_SFPBCoreSpotlightRankingSignals *)v5 setFreshness:?];
     }
 
-    v10 = [v4 engagementScore];
+    engagementScore = [facadeCopy engagementScore];
 
-    if (v10)
+    if (engagementScore)
     {
-      v11 = [v4 engagementScore];
-      [v11 floatValue];
+      engagementScore2 = [facadeCopy engagementScore];
+      [engagementScore2 floatValue];
       [(_SFPBCoreSpotlightRankingSignals *)v5 setEngagementScore:?];
     }
 
-    v12 = [v4 predictedLikelihoodOfEngagement];
+    predictedLikelihoodOfEngagement = [facadeCopy predictedLikelihoodOfEngagement];
 
-    if (v12)
+    if (predictedLikelihoodOfEngagement)
     {
-      v13 = [v4 predictedLikelihoodOfEngagement];
-      [v13 floatValue];
+      predictedLikelihoodOfEngagement2 = [facadeCopy predictedLikelihoodOfEngagement];
+      [predictedLikelihoodOfEngagement2 floatValue];
       [(_SFPBCoreSpotlightRankingSignals *)v5 setPredictedLikelihoodOfEngagement:?];
     }
 
-    if ([v4 hasWasNominatedAsTopHit])
+    if ([facadeCopy hasWasNominatedAsTopHit])
     {
-      -[_SFPBCoreSpotlightRankingSignals setWasNominatedAsTopHit:](v5, "setWasNominatedAsTopHit:", [v4 wasNominatedAsTopHit]);
+      -[_SFPBCoreSpotlightRankingSignals setWasNominatedAsTopHit:](v5, "setWasNominatedAsTopHit:", [facadeCopy wasNominatedAsTopHit]);
     }
 
-    v14 = [v4 sodiumL2Score];
+    sodiumL2Score = [facadeCopy sodiumL2Score];
 
-    if (v14)
+    if (sodiumL2Score)
     {
-      v15 = [v4 sodiumL2Score];
-      [v15 floatValue];
+      sodiumL2Score2 = [facadeCopy sodiumL2Score];
+      [sodiumL2Score2 floatValue];
       [(_SFPBCoreSpotlightRankingSignals *)v5 setSodiumL2Score:?];
     }
 
-    if ([v4 hasIsExactMatchOfLaunchString])
+    if ([facadeCopy hasIsExactMatchOfLaunchString])
     {
-      -[_SFPBCoreSpotlightRankingSignals setIsExactMatchOfLaunchString:](v5, "setIsExactMatchOfLaunchString:", [v4 isExactMatchOfLaunchString]);
+      -[_SFPBCoreSpotlightRankingSignals setIsExactMatchOfLaunchString:](v5, "setIsExactMatchOfLaunchString:", [facadeCopy isExactMatchOfLaunchString]);
     }
 
-    if ([v4 hasWasEngagedInSpotlight])
+    if ([facadeCopy hasWasEngagedInSpotlight])
     {
-      -[_SFPBCoreSpotlightRankingSignals setWasEngagedInSpotlight:](v5, "setWasEngagedInSpotlight:", [v4 wasEngagedInSpotlight]);
+      -[_SFPBCoreSpotlightRankingSignals setWasEngagedInSpotlight:](v5, "setWasEngagedInSpotlight:", [facadeCopy wasEngagedInSpotlight]);
     }
 
-    if ([v4 hasResultQueryRecency])
+    if ([facadeCopy hasResultQueryRecency])
     {
-      -[_SFPBCoreSpotlightRankingSignals setResultQueryRecency:](v5, "setResultQueryRecency:", [v4 resultQueryRecency]);
+      -[_SFPBCoreSpotlightRankingSignals setResultQueryRecency:](v5, "setResultQueryRecency:", [facadeCopy resultQueryRecency]);
     }
 
-    v16 = [v4 pommesL2Score];
+    pommesL2Score = [facadeCopy pommesL2Score];
 
-    if (v16)
+    if (pommesL2Score)
     {
-      v17 = [v4 pommesL2Score];
-      [v17 floatValue];
+      pommesL2Score2 = [facadeCopy pommesL2Score];
+      [pommesL2Score2 floatValue];
       [(_SFPBCoreSpotlightRankingSignals *)v5 setPommesL2Score:?];
     }
 
-    if ([v4 hasIsSemanticMatch])
+    if ([facadeCopy hasIsSemanticMatch])
     {
-      -[_SFPBCoreSpotlightRankingSignals setIsSemanticMatch:](v5, "setIsSemanticMatch:", [v4 isSemanticMatch]);
+      -[_SFPBCoreSpotlightRankingSignals setIsSemanticMatch:](v5, "setIsSemanticMatch:", [facadeCopy isSemanticMatch]);
     }
 
-    v18 = [v4 semanticScore];
+    semanticScore = [facadeCopy semanticScore];
 
-    if (v18)
+    if (semanticScore)
     {
-      v19 = [v4 semanticScore];
-      [v19 floatValue];
+      semanticScore2 = [facadeCopy semanticScore];
+      [semanticScore2 floatValue];
       [(_SFPBCoreSpotlightRankingSignals *)v5 setSemanticScore:?];
     }
 
-    if ([v4 hasIsSyntacticMatch])
+    if ([facadeCopy hasIsSyntacticMatch])
     {
-      -[_SFPBCoreSpotlightRankingSignals setIsSyntacticMatch:](v5, "setIsSyntacticMatch:", [v4 isSyntacticMatch]);
+      -[_SFPBCoreSpotlightRankingSignals setIsSyntacticMatch:](v5, "setIsSyntacticMatch:", [facadeCopy isSyntacticMatch]);
     }
 
-    v20 = [v4 syntacticScore];
+    syntacticScore = [facadeCopy syntacticScore];
 
-    if (v20)
+    if (syntacticScore)
     {
-      v21 = [v4 syntacticScore];
-      [v21 floatValue];
+      syntacticScore2 = [facadeCopy syntacticScore];
+      [syntacticScore2 floatValue];
       [(_SFPBCoreSpotlightRankingSignals *)v5 setSyntacticScore:?];
     }
 
-    if ([v4 hasEmbeddingStatus])
+    if ([facadeCopy hasEmbeddingStatus])
     {
-      -[_SFPBCoreSpotlightRankingSignals setEmbeddingStatus:](v5, "setEmbeddingStatus:", [v4 embeddingStatus]);
+      -[_SFPBCoreSpotlightRankingSignals setEmbeddingStatus:](v5, "setEmbeddingStatus:", [facadeCopy embeddingStatus]);
     }
 
-    if ([v4 hasItemAgeInDays])
+    if ([facadeCopy hasItemAgeInDays])
     {
-      -[_SFPBCoreSpotlightRankingSignals setItemAgeInDays:](v5, "setItemAgeInDays:", [v4 itemAgeInDays]);
+      -[_SFPBCoreSpotlightRankingSignals setItemAgeInDays:](v5, "setItemAgeInDays:", [facadeCopy itemAgeInDays]);
     }
 
     v22 = v5;
@@ -135,15 +135,15 @@
   return v5;
 }
 
-- (_SFPBCoreSpotlightRankingSignals)initWithDictionary:(id)a3
+- (_SFPBCoreSpotlightRankingSignals)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v36.receiver = self;
   v36.super_class = _SFPBCoreSpotlightRankingSignals;
   v5 = [(_SFPBCoreSpotlightRankingSignals *)&v36 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"topicalityScore"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"topicalityScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -151,7 +151,7 @@
       [(_SFPBCoreSpotlightRankingSignals *)v5 setTopicalityScore:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"freshness"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"freshness"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -159,7 +159,7 @@
       [(_SFPBCoreSpotlightRankingSignals *)v5 setFreshness:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"engagementScore"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"engagementScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -167,7 +167,7 @@
       [(_SFPBCoreSpotlightRankingSignals *)v5 setEngagementScore:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"predictedLikelihoodOfEngagement"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"predictedLikelihoodOfEngagement"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -176,7 +176,7 @@
     }
 
     v32 = v8;
-    v10 = [v4 objectForKeyedSubscript:@"wasNominatedAsTopHit"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"wasNominatedAsTopHit"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -184,7 +184,7 @@
     }
 
     v11 = v7;
-    v12 = [v4 objectForKeyedSubscript:@"sodiumL2Score"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"sodiumL2Score"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -193,14 +193,14 @@
     }
 
     v13 = v6;
-    v14 = [v4 objectForKeyedSubscript:@"isExactMatchOfLaunchString"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"isExactMatchOfLaunchString"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBCoreSpotlightRankingSignals setIsExactMatchOfLaunchString:](v5, "setIsExactMatchOfLaunchString:", [v14 BOOLValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"wasEngagedInSpotlight"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"wasEngagedInSpotlight"];
     objc_opt_class();
     v35 = v15;
     if (objc_opt_isKindOfClass())
@@ -209,7 +209,7 @@
     }
 
     v34 = v13;
-    v16 = [v4 objectForKeyedSubscript:@"resultQueryRecency"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"resultQueryRecency"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -217,7 +217,7 @@
     }
 
     v33 = v11;
-    v17 = [v4 objectForKeyedSubscript:@"pommesL2Score"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"pommesL2Score"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -226,7 +226,7 @@
     }
 
     v27 = v17;
-    v18 = [v4 objectForKeyedSubscript:@"isSemanticMatch"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"isSemanticMatch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -234,7 +234,7 @@
     }
 
     v31 = v9;
-    v19 = [v4 objectForKeyedSubscript:@"semanticScore"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"semanticScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -243,7 +243,7 @@
     }
 
     v30 = v10;
-    v20 = [v4 objectForKeyedSubscript:@"isSyntacticMatch"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"isSyntacticMatch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -252,7 +252,7 @@
 
     v28 = v16;
     v29 = v12;
-    v21 = [v4 objectForKeyedSubscript:@"syntacticScore"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"syntacticScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -261,14 +261,14 @@
     }
 
     v22 = v14;
-    v23 = [v4 objectForKeyedSubscript:@"embeddingStatus"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"embeddingStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBCoreSpotlightRankingSignals setEmbeddingStatus:](v5, "setEmbeddingStatus:", [v23 intValue]);
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"itemAgeInDays"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"itemAgeInDays"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -281,30 +281,30 @@
   return v5;
 }
 
-- (_SFPBCoreSpotlightRankingSignals)initWithJSON:(id)a3
+- (_SFPBCoreSpotlightRankingSignals)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBCoreSpotlightRankingSignals *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBCoreSpotlightRankingSignals *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBCoreSpotlightRankingSignals *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -317,21 +317,21 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_embeddingStatus)
   {
-    v4 = [(_SFPBCoreSpotlightRankingSignals *)self embeddingStatus];
-    if (v4 >= 3)
+    embeddingStatus = [(_SFPBCoreSpotlightRankingSignals *)self embeddingStatus];
+    if (embeddingStatus >= 3)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", embeddingStatus];
     }
 
     else
     {
-      v5 = off_1E7ACE548[v4];
+      v5 = off_1E7ACE548[embeddingStatus];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"embeddingStatus"];
+    [dictionary setObject:v5 forKeyedSubscript:@"embeddingStatus"];
   }
 
   if (self->_engagementScore != 0.0)
@@ -339,7 +339,7 @@
     v6 = MEMORY[0x1E696AD98];
     [(_SFPBCoreSpotlightRankingSignals *)self engagementScore];
     v7 = [v6 numberWithFloat:?];
-    [v3 setObject:v7 forKeyedSubscript:@"engagementScore"];
+    [dictionary setObject:v7 forKeyedSubscript:@"engagementScore"];
   }
 
   if (self->_freshness != 0.0)
@@ -347,31 +347,31 @@
     v8 = MEMORY[0x1E696AD98];
     [(_SFPBCoreSpotlightRankingSignals *)self freshness];
     v9 = [v8 numberWithFloat:?];
-    [v3 setObject:v9 forKeyedSubscript:@"freshness"];
+    [dictionary setObject:v9 forKeyedSubscript:@"freshness"];
   }
 
   if (self->_isExactMatchOfLaunchString)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBCoreSpotlightRankingSignals isExactMatchOfLaunchString](self, "isExactMatchOfLaunchString")}];
-    [v3 setObject:v10 forKeyedSubscript:@"isExactMatchOfLaunchString"];
+    [dictionary setObject:v10 forKeyedSubscript:@"isExactMatchOfLaunchString"];
   }
 
   if (self->_isSemanticMatch)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBCoreSpotlightRankingSignals isSemanticMatch](self, "isSemanticMatch")}];
-    [v3 setObject:v11 forKeyedSubscript:@"isSemanticMatch"];
+    [dictionary setObject:v11 forKeyedSubscript:@"isSemanticMatch"];
   }
 
   if (self->_isSyntacticMatch)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBCoreSpotlightRankingSignals isSyntacticMatch](self, "isSyntacticMatch")}];
-    [v3 setObject:v12 forKeyedSubscript:@"isSyntacticMatch"];
+    [dictionary setObject:v12 forKeyedSubscript:@"isSyntacticMatch"];
   }
 
   if (self->_itemAgeInDays)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[_SFPBCoreSpotlightRankingSignals itemAgeInDays](self, "itemAgeInDays")}];
-    [v3 setObject:v13 forKeyedSubscript:@"itemAgeInDays"];
+    [dictionary setObject:v13 forKeyedSubscript:@"itemAgeInDays"];
   }
 
   if (self->_pommesL2Score != 0.0)
@@ -379,7 +379,7 @@
     v14 = MEMORY[0x1E696AD98];
     [(_SFPBCoreSpotlightRankingSignals *)self pommesL2Score];
     v15 = [v14 numberWithFloat:?];
-    [v3 setObject:v15 forKeyedSubscript:@"pommesL2Score"];
+    [dictionary setObject:v15 forKeyedSubscript:@"pommesL2Score"];
   }
 
   if (self->_predictedLikelihoodOfEngagement != 0.0)
@@ -387,23 +387,23 @@
     v16 = MEMORY[0x1E696AD98];
     [(_SFPBCoreSpotlightRankingSignals *)self predictedLikelihoodOfEngagement];
     v17 = [v16 numberWithFloat:?];
-    [v3 setObject:v17 forKeyedSubscript:@"predictedLikelihoodOfEngagement"];
+    [dictionary setObject:v17 forKeyedSubscript:@"predictedLikelihoodOfEngagement"];
   }
 
   if (self->_resultQueryRecency)
   {
-    v18 = [(_SFPBCoreSpotlightRankingSignals *)self resultQueryRecency];
-    if (v18 >= 9)
+    resultQueryRecency = [(_SFPBCoreSpotlightRankingSignals *)self resultQueryRecency];
+    if (resultQueryRecency >= 9)
     {
-      v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v18];
+      v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", resultQueryRecency];
     }
 
     else
     {
-      v19 = off_1E7ACE500[v18];
+      v19 = off_1E7ACE500[resultQueryRecency];
     }
 
-    [v3 setObject:v19 forKeyedSubscript:@"resultQueryRecency"];
+    [dictionary setObject:v19 forKeyedSubscript:@"resultQueryRecency"];
   }
 
   if (self->_semanticScore != 0.0)
@@ -411,7 +411,7 @@
     v20 = MEMORY[0x1E696AD98];
     [(_SFPBCoreSpotlightRankingSignals *)self semanticScore];
     v21 = [v20 numberWithFloat:?];
-    [v3 setObject:v21 forKeyedSubscript:@"semanticScore"];
+    [dictionary setObject:v21 forKeyedSubscript:@"semanticScore"];
   }
 
   if (self->_sodiumL2Score != 0.0)
@@ -419,7 +419,7 @@
     v22 = MEMORY[0x1E696AD98];
     [(_SFPBCoreSpotlightRankingSignals *)self sodiumL2Score];
     v23 = [v22 numberWithFloat:?];
-    [v3 setObject:v23 forKeyedSubscript:@"sodiumL2Score"];
+    [dictionary setObject:v23 forKeyedSubscript:@"sodiumL2Score"];
   }
 
   if (self->_syntacticScore != 0.0)
@@ -427,7 +427,7 @@
     v24 = MEMORY[0x1E696AD98];
     [(_SFPBCoreSpotlightRankingSignals *)self syntacticScore];
     v25 = [v24 numberWithFloat:?];
-    [v3 setObject:v25 forKeyedSubscript:@"syntacticScore"];
+    [dictionary setObject:v25 forKeyedSubscript:@"syntacticScore"];
   }
 
   if (self->_topicalityScore != 0.0)
@@ -435,22 +435,22 @@
     v26 = MEMORY[0x1E696AD98];
     [(_SFPBCoreSpotlightRankingSignals *)self topicalityScore];
     v27 = [v26 numberWithFloat:?];
-    [v3 setObject:v27 forKeyedSubscript:@"topicalityScore"];
+    [dictionary setObject:v27 forKeyedSubscript:@"topicalityScore"];
   }
 
   if (self->_wasEngagedInSpotlight)
   {
     v28 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBCoreSpotlightRankingSignals wasEngagedInSpotlight](self, "wasEngagedInSpotlight")}];
-    [v3 setObject:v28 forKeyedSubscript:@"wasEngagedInSpotlight"];
+    [dictionary setObject:v28 forKeyedSubscript:@"wasEngagedInSpotlight"];
   }
 
   if (self->_wasNominatedAsTopHit)
   {
     v29 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBCoreSpotlightRankingSignals wasNominatedAsTopHit](self, "wasNominatedAsTopHit")}];
-    [v3 setObject:v29 forKeyedSubscript:@"wasNominatedAsTopHit"];
+    [dictionary setObject:v29 forKeyedSubscript:@"wasNominatedAsTopHit"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -795,85 +795,85 @@
   return v15 ^ v9 ^ v21 ^ v27 ^ v33 ^ v56 ^ v55 ^ v54 ^ v39 ^ (2654435761 * self->_resultQueryRecency) ^ v53 ^ v45 ^ v52 ^ v51 ^ (2654435761 * self->_embeddingStatus) ^ (2654435761 * self->_itemAgeInDays);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   topicalityScore = self->_topicalityScore;
-  [v4 topicalityScore];
+  [equalCopy topicalityScore];
   if (topicalityScore != v6)
   {
     goto LABEL_18;
   }
 
   freshness = self->_freshness;
-  [v4 freshness];
+  [equalCopy freshness];
   if (freshness != v8)
   {
     goto LABEL_18;
   }
 
   engagementScore = self->_engagementScore;
-  [v4 engagementScore];
+  [equalCopy engagementScore];
   if (engagementScore != v10)
   {
     goto LABEL_18;
   }
 
   predictedLikelihoodOfEngagement = self->_predictedLikelihoodOfEngagement;
-  [v4 predictedLikelihoodOfEngagement];
+  [equalCopy predictedLikelihoodOfEngagement];
   if (predictedLikelihoodOfEngagement != v12)
   {
     goto LABEL_18;
   }
 
   wasNominatedAsTopHit = self->_wasNominatedAsTopHit;
-  if (wasNominatedAsTopHit != [v4 wasNominatedAsTopHit])
+  if (wasNominatedAsTopHit != [equalCopy wasNominatedAsTopHit])
   {
     goto LABEL_18;
   }
 
   sodiumL2Score = self->_sodiumL2Score;
-  [v4 sodiumL2Score];
+  [equalCopy sodiumL2Score];
   if (sodiumL2Score != v15)
   {
     goto LABEL_18;
   }
 
   isExactMatchOfLaunchString = self->_isExactMatchOfLaunchString;
-  if (isExactMatchOfLaunchString != [v4 isExactMatchOfLaunchString])
+  if (isExactMatchOfLaunchString != [equalCopy isExactMatchOfLaunchString])
   {
     goto LABEL_18;
   }
 
   wasEngagedInSpotlight = self->_wasEngagedInSpotlight;
-  if (wasEngagedInSpotlight != [v4 wasEngagedInSpotlight])
+  if (wasEngagedInSpotlight != [equalCopy wasEngagedInSpotlight])
   {
     goto LABEL_18;
   }
 
   resultQueryRecency = self->_resultQueryRecency;
-  if (resultQueryRecency != [v4 resultQueryRecency])
+  if (resultQueryRecency != [equalCopy resultQueryRecency])
   {
     goto LABEL_18;
   }
 
   pommesL2Score = self->_pommesL2Score;
-  [v4 pommesL2Score];
+  [equalCopy pommesL2Score];
   if (pommesL2Score != v20)
   {
     goto LABEL_18;
   }
 
   isSemanticMatch = self->_isSemanticMatch;
-  if (isSemanticMatch == [v4 isSemanticMatch] && (semanticScore = self->_semanticScore, objc_msgSend(v4, "semanticScore"), semanticScore == v23) && (isSyntacticMatch = self->_isSyntacticMatch, isSyntacticMatch == objc_msgSend(v4, "isSyntacticMatch")) && (syntacticScore = self->_syntacticScore, objc_msgSend(v4, "syntacticScore"), syntacticScore == v26) && (embeddingStatus = self->_embeddingStatus, embeddingStatus == objc_msgSend(v4, "embeddingStatus")))
+  if (isSemanticMatch == [equalCopy isSemanticMatch] && (semanticScore = self->_semanticScore, objc_msgSend(equalCopy, "semanticScore"), semanticScore == v23) && (isSyntacticMatch = self->_isSyntacticMatch, isSyntacticMatch == objc_msgSend(equalCopy, "isSyntacticMatch")) && (syntacticScore = self->_syntacticScore, objc_msgSend(equalCopy, "syntacticScore"), syntacticScore == v26) && (embeddingStatus = self->_embeddingStatus, embeddingStatus == objc_msgSend(equalCopy, "embeddingStatus")))
   {
     itemAgeInDays = self->_itemAgeInDays;
-    v29 = itemAgeInDays == [v4 itemAgeInDays];
+    v29 = itemAgeInDays == [equalCopy itemAgeInDays];
   }
 
   else
@@ -885,9 +885,9 @@ LABEL_18:
   return v29;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v14 = a3;
+  toCopy = to;
   [(_SFPBCoreSpotlightRankingSignals *)self topicalityScore];
   if (v4 != 0.0)
   {
@@ -971,12 +971,12 @@ LABEL_18:
     PBDataWriterWriteInt32Field();
   }
 
-  v12 = [(_SFPBCoreSpotlightRankingSignals *)self itemAgeInDays];
-  v13 = v14;
-  if (v12)
+  itemAgeInDays = [(_SFPBCoreSpotlightRankingSignals *)self itemAgeInDays];
+  v13 = toCopy;
+  if (itemAgeInDays)
   {
     PBDataWriterWriteUint32Field();
-    v13 = v14;
+    v13 = toCopy;
   }
 }
 

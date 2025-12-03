@@ -1,23 +1,23 @@
 @interface UMLManager
 + (id)sharedManager;
-- (BOOL)addNewUser:(id)a3 toUserManifest:(id)a4 saveToPath:(id)a5;
-- (BOOL)createUserLayoutForUserwithUserID:(int)a3 withAKSSetup:(BOOL)a4 onUserVolumePath:(id)a5 fromSystemVolumePath:(id)a6 withError:(id *)a7;
+- (BOOL)addNewUser:(id)user toUserManifest:(id)manifest saveToPath:(id)path;
+- (BOOL)createUserLayoutForUserwithUserID:(int)d withAKSSetup:(BOOL)setup onUserVolumePath:(id)path fromSystemVolumePath:(id)volumePath withError:(id *)error;
 - (BOOL)inDeviceRecoveryEnvironment;
-- (BOOL)mountSystemDataVolumeAt:(id)a3 withError:(id *)a4;
-- (BOOL)refreshPrimaryUserOnSharedDataVolumePath:(id)a3 withBootstrapToken:(id)a4 withError:(id *)a5;
-- (BOOL)removeAnUser:(id)a3 fromUserManifest:(id)a4 saveToPath:(id)a5;
-- (BOOL)saveManifest:(id)a3 toPath:(id)a4;
-- (BOOL)unMountVolumeAt:(id)a3 withError:(id *)a4;
-- (BOOL)unmountSystemDataVolumeAt:(id)a3 withError:(id *)a4;
-- (BOOL)unmountUserDataVolumeOnSystemDataAt:(id)a3 withError:(id *)a4;
-- (BOOL)updatePrimaryUser:(id)a3 onSharedDataVolumePath:(id)a4 withDiskNode:(id)a5 withVolumeuuid:(id)a6 withVolumeName:(id)a7 withError:(id *)a8;
-- (BOOL)updateUser:(id)a3 inManifest:(id)a4 withDiskNode:(id)a5 volumeUUID:(id)a6 volumeName:(id)a7 withSharedDataVolumePath:(id)a8 withError:(id *)a9;
-- (id)createPrimaryUserOnSharedDataVolumePath:(id)a3 withError:(id *)a4;
-- (id)keybagOpaqueDataOnSharedDataVolumePath:(id)a3 withError:(id *)a4;
-- (id)loadManifestFromSharedDataVolumePath:(id)a3;
-- (id)primaryUserOnSharedDataVolumePath:(id)a3 withError:(id *)a4;
-- (id)readUserFromManifest:(id)a3 forUserUid:(unsigned int)a4 withError:(id *)a5;
-- (id)readUserManifestOnSharedDataVolumePath:(id)a3 withError:(id *)a4;
+- (BOOL)mountSystemDataVolumeAt:(id)at withError:(id *)error;
+- (BOOL)refreshPrimaryUserOnSharedDataVolumePath:(id)path withBootstrapToken:(id)token withError:(id *)error;
+- (BOOL)removeAnUser:(id)user fromUserManifest:(id)manifest saveToPath:(id)path;
+- (BOOL)saveManifest:(id)manifest toPath:(id)path;
+- (BOOL)unMountVolumeAt:(id)at withError:(id *)error;
+- (BOOL)unmountSystemDataVolumeAt:(id)at withError:(id *)error;
+- (BOOL)unmountUserDataVolumeOnSystemDataAt:(id)at withError:(id *)error;
+- (BOOL)updatePrimaryUser:(id)user onSharedDataVolumePath:(id)path withDiskNode:(id)node withVolumeuuid:(id)volumeuuid withVolumeName:(id)name withError:(id *)error;
+- (BOOL)updateUser:(id)user inManifest:(id)manifest withDiskNode:(id)node volumeUUID:(id)d volumeName:(id)name withSharedDataVolumePath:(id)path withError:(id *)error;
+- (id)createPrimaryUserOnSharedDataVolumePath:(id)path withError:(id *)error;
+- (id)keybagOpaqueDataOnSharedDataVolumePath:(id)path withError:(id *)error;
+- (id)loadManifestFromSharedDataVolumePath:(id)path;
+- (id)primaryUserOnSharedDataVolumePath:(id)path withError:(id *)error;
+- (id)readUserFromManifest:(id)manifest forUserUid:(unsigned int)uid withError:(id *)error;
+- (id)readUserManifestOnSharedDataVolumePath:(id)path withError:(id *)error;
 @end
 
 @implementation UMLManager
@@ -34,9 +34,9 @@
   return v3;
 }
 
-- (id)createPrimaryUserOnSharedDataVolumePath:(id)a3 withError:(id *)a4
+- (id)createPrimaryUserOnSharedDataVolumePath:(id)path withError:(id *)error
 {
-  v5 = a3;
+  pathCopy = path;
   v6 = objc_opt_new();
   v7 = [MEMORY[0x277CCABB0] numberWithInt:501];
   [v6 setValue:v7 forKey:@"MKBUserSessionID"];
@@ -51,13 +51,13 @@
   [v6 setValue:@"mobile" forKey:@"MKBUserSessionName"];
   [v6 setValue:@"mobile" forKey:@"MKBUserSessionDisplayName"];
   [v6 setValue:@"en_US" forKey:@"MKBUserSessionLanguage"];
-  v9 = [MEMORY[0x277CCAD78] UUID];
-  v10 = [v9 UUIDString];
-  [v6 setValue:v10 forKey:@"MKBUserSessionUUID"];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  [v6 setValue:uUIDString forKey:@"MKBUserSessionUUID"];
 
-  v11 = [MEMORY[0x277CCAD78] UUID];
-  v12 = [v11 UUIDString];
-  [v6 setValue:v12 forKey:@"MKBUserSessionAlternateUUID"];
+  uUID2 = [MEMORY[0x277CCAD78] UUID];
+  uUIDString2 = [uUID2 UUIDString];
+  [v6 setValue:uUIDString2 forKey:@"MKBUserSessionAlternateUUID"];
 
   v13 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:1.0];
   v14 = [v13 description];
@@ -94,10 +94,10 @@
     v23 = qword_2810B88B0;
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
-      v24 = self;
+      selfCopy = self;
       v25 = v13;
-      v26 = v11;
-      v27 = v5;
+      v26 = uUID2;
+      v27 = pathCopy;
       v57 = 0;
       v28 = sub_22EE69AE8();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -129,14 +129,14 @@
       }
 
       free(v31);
-      v5 = v27;
-      v11 = v26;
+      pathCopy = v27;
+      uUID2 = v26;
       v13 = v25;
-      self = v24;
+      self = selfCopy;
     }
 
-    v37 = [v22 userManifestDictionary];
-    if (v37)
+    userManifestDictionary = [v22 userManifestDictionary];
+    if (userManifestDictionary)
     {
       if (self)
       {
@@ -148,7 +148,7 @@
         manifest = 0;
       }
 
-      if ([(UMLManager *)self addNewUser:v6 toUserManifest:manifest saveToPath:v5, v53, v54])
+      if ([(UMLManager *)self addNewUser:v6 toUserManifest:manifest saveToPath:pathCopy, v53, v54])
       {
         if (qword_2810B88B8 != -1)
         {
@@ -204,9 +204,9 @@ LABEL_58:
       {
 LABEL_55:
 
-        if (a4)
+        if (error)
         {
-          *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:5 userInfo:0];
+          *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:5 userInfo:0];
         }
 
         v39 = v22;
@@ -214,7 +214,7 @@ LABEL_55:
         goto LABEL_58;
       }
 
-      v45 = v5;
+      v45 = pathCopy;
       v57 = 0;
       v48 = sub_22EE69AE8();
       if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
@@ -255,7 +255,7 @@ LABEL_51:
         goto LABEL_55;
       }
 
-      v45 = v5;
+      v45 = pathCopy;
       v57 = 0;
       v46 = sub_22EE69AE8();
       if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
@@ -278,7 +278,7 @@ LABEL_51:
     v51 = 0;
 LABEL_54:
     free(v51);
-    v5 = v45;
+    pathCopy = v45;
     goto LABEL_55;
   }
 
@@ -322,20 +322,20 @@ LABEL_54:
   }
 
   [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:0];
-  *a4 = v22 = 0;
+  *error = v22 = 0;
 LABEL_62:
 
   return v22;
 }
 
-- (BOOL)updatePrimaryUser:(id)a3 onSharedDataVolumePath:(id)a4 withDiskNode:(id)a5 withVolumeuuid:(id)a6 withVolumeName:(id)a7 withError:(id *)a8
+- (BOOL)updatePrimaryUser:(id)user onSharedDataVolumePath:(id)path withDiskNode:(id)node withVolumeuuid:(id)volumeuuid withVolumeName:(id)name withError:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  if (v14 && v16 && v17)
+  userCopy = user;
+  pathCopy = path;
+  nodeCopy = node;
+  volumeuuidCopy = volumeuuid;
+  nameCopy = name;
+  if (userCopy && nodeCopy && volumeuuidCopy)
   {
     if (qword_2810B88B8 != -1)
     {
@@ -385,7 +385,7 @@ LABEL_62:
       manifest = 0;
     }
 
-    LOBYTE(a8) = [(UMLManager *)self updateUser:v14 inManifest:manifest withDiskNode:v16 volumeUUID:v17 volumeName:v18 withSharedDataVolumePath:v15 withError:a8, v31];
+    LOBYTE(error) = [(UMLManager *)self updateUser:userCopy inManifest:manifest withDiskNode:nodeCopy volumeUUID:volumeuuidCopy volumeName:nameCopy withSharedDataVolumePath:pathCopy withError:error, v31];
   }
 
   else
@@ -427,23 +427,23 @@ LABEL_62:
       free(v28);
     }
 
-    if (a8)
+    if (error)
     {
-      *a8 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:0];
 
-      LOBYTE(a8) = 0;
-      v14 = 0;
+      LOBYTE(error) = 0;
+      userCopy = 0;
     }
   }
 
-  return a8;
+  return error;
 }
 
-- (BOOL)refreshPrimaryUserOnSharedDataVolumePath:(id)a3 withBootstrapToken:(id)a4 withError:(id *)a5
+- (BOOL)refreshPrimaryUserOnSharedDataVolumePath:(id)path withBootstrapToken:(id)token withError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(UMLManager *)self primaryUserOnSharedDataVolumePath:v8 withError:a5];
+  pathCopy = path;
+  tokenCopy = token;
+  v10 = [(UMLManager *)self primaryUserOnSharedDataVolumePath:pathCopy withError:error];
   if (v10)
   {
     if (qword_2810B88B8 != -1)
@@ -502,7 +502,7 @@ LABEL_62:
 
     v24 = se;
     v25 = sub_22EE770F0(v24);
-    v26 = [v25 loadIdentity:v16 intoSession:999 error:a5];
+    v26 = [v25 loadIdentity:v16 intoSession:999 error:error];
 
     if ((v26 & 1) == 0)
     {
@@ -511,12 +511,12 @@ LABEL_62:
         sub_22EE785F4();
       }
 
-      v32 = qword_2810B88B0;
-      if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
+      userUUID = qword_2810B88B0;
+      if (os_log_type_enabled(userUUID, OS_LOG_TYPE_ERROR))
       {
         v167 = 0;
         v33 = sub_22EE69AE8();
-        if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(userUUID, OS_LOG_TYPE_ERROR))
         {
           v34 = v33;
         }
@@ -588,8 +588,8 @@ LABEL_62:
       free(v31);
     }
 
-    v32 = [v10 userUUID];
-    if (v32)
+    userUUID = [v10 userUUID];
+    if (userUUID)
     {
       if (qword_2810B88B8 != -1)
       {
@@ -645,7 +645,7 @@ LABEL_62:
       v50 = sub_22EE770F0(v49);
       v51 = [v50 isIdentityLoadedIntoSession:501];
 
-      if (!v51 || (!self ? (v52 = 0) : (v52 = self->_se), v53 = v52, sub_22EE770F0(v53), v54 = objc_claimAutoreleasedReturnValue(), v55 = [v54 unloadIdentityFromSession:501 error:a5], v54, v53, (v55 & 1) != 0))
+      if (!v51 || (!self ? (v52 = 0) : (v52 = self->_se), v53 = v52, sub_22EE770F0(v53), v54 = objc_claimAutoreleasedReturnValue(), v55 = [v54 unloadIdentityFromSession:501 error:error], v54, v53, (v55 & 1) != 0))
       {
         if (qword_2810B88B8 != -1)
         {
@@ -687,11 +687,11 @@ LABEL_62:
           free(v60);
         }
 
-        v163 = a5;
+        errorCopy = error;
         v66 = v16;
 
-        v165 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v32];
-        v67 = v32;
+        v165 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:userUUID];
+        v67 = userUUID;
         if (self)
         {
           v68 = self->_se;
@@ -716,7 +716,7 @@ LABEL_62:
             sub_22EE785F4();
           }
 
-          v32 = v67;
+          userUUID = v67;
           v73 = qword_2810B88B0;
           v16 = v66;
           if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
@@ -734,7 +734,7 @@ LABEL_62:
               v75 = v74 & 0xFFFFFFFE;
             }
 
-            a5 = v163;
+            error = errorCopy;
             if (v75)
             {
               goto LABEL_117;
@@ -743,14 +743,14 @@ LABEL_62:
             goto LABEL_133;
           }
 
-          a5 = v163;
+          error = errorCopy;
         }
 
         else
         {
           if ([v72 code] != -536870160)
           {
-            v32 = v67;
+            userUUID = v67;
             if (qword_2810B88B8 != -1)
             {
               sub_22EE785F4();
@@ -758,7 +758,7 @@ LABEL_62:
 
             v16 = v66;
             v79 = qword_2810B88B0;
-            a5 = v163;
+            error = errorCopy;
             if (os_log_type_enabled(v79, OS_LOG_TYPE_ERROR))
             {
               v167 = 0;
@@ -791,7 +791,7 @@ LABEL_62:
               free(v83);
             }
 
-            if (!v163)
+            if (!errorCopy)
             {
               goto LABEL_265;
             }
@@ -800,7 +800,7 @@ LABEL_62:
             goto LABEL_201;
           }
 
-          v32 = v67;
+          userUUID = v67;
           if (qword_2810B88B8 != -1)
           {
             sub_22EE785F4();
@@ -808,7 +808,7 @@ LABEL_62:
 
           v16 = v66;
           v73 = qword_2810B88B0;
-          a5 = v163;
+          error = errorCopy;
           if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
           {
             v167 = 0;
@@ -857,7 +857,7 @@ LABEL_134:
 
         v85 = v84;
         v86 = sub_22EE770F0(v85);
-        v87 = [v86 createIdentityWithUUID:v165 passcode:0 existingSession:999 existingSessionPasscode:v9 isACMCredential:0 error:a5];
+        v87 = [v86 createIdentityWithUUID:v165 passcode:0 existingSession:999 existingSessionPasscode:tokenCopy isACMCredential:0 error:error];
 
         if (v87)
         {
@@ -913,7 +913,7 @@ LABEL_134:
 
           v99 = v98;
           v100 = sub_22EE770F0(v99);
-          v101 = [v100 loadIdentity:v165 intoSession:501 error:a5];
+          v101 = [v100 loadIdentity:v165 intoSession:501 error:error];
 
           if (v101)
           {
@@ -972,7 +972,7 @@ LABEL_134:
 
               v127 = v126;
               v128 = sub_22EE770F0(v127);
-              v129 = [v128 unloadIdentityFromSession:501 error:a5];
+              v129 = [v128 unloadIdentityFromSession:501 error:error];
 
               if ((v129 & 1) == 0)
               {
@@ -1071,7 +1071,7 @@ LABEL_134:
 
             v136 = v135;
             v137 = sub_22EE770F0(v136);
-            v138 = [v137 unloadIdentityFromSession:501 error:a5];
+            v138 = [v137 unloadIdentityFromSession:501 error:error];
 
             if ((v138 & 1) == 0)
             {
@@ -1127,7 +1127,7 @@ LABEL_134:
 
             v145 = v144;
             v146 = sub_22EE770F0(v145);
-            v147 = [v146 deleteIdentity:v165 error:a5];
+            v147 = [v146 deleteIdentity:v165 error:error];
 
             if (v147)
             {
@@ -1225,7 +1225,7 @@ LABEL_260:
 
             v119 = v118;
             v120 = sub_22EE770F0(v119);
-            v121 = [v120 deleteIdentity:v165 error:a5];
+            v121 = [v120 deleteIdentity:v165 error:error];
 
             if (v121)
             {
@@ -1310,7 +1310,7 @@ LABEL_263:
           free(v97);
         }
 
-        if (!a5)
+        if (!error)
         {
           goto LABEL_265;
         }
@@ -1318,7 +1318,7 @@ LABEL_263:
         v117 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:5 userInfo:0];
 LABEL_201:
         v37 = 0;
-        *a5 = v117;
+        *error = v117;
 LABEL_266:
 
 LABEL_267:
@@ -1334,7 +1334,7 @@ LABEL_267:
 
         v152 = v151;
         v153 = sub_22EE770F0(v152);
-        v154 = [v153 unloadIdentityFromSession:999 error:a5];
+        v154 = [v153 unloadIdentityFromSession:999 error:error];
 
         if (v154)
         {
@@ -1496,10 +1496,10 @@ LABEL_290:
         free(v47);
       }
 
-      if (a5)
+      if (error)
       {
         [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:5 userInfo:0];
-        *a5 = v37 = 0;
+        *error = v37 = 0;
         goto LABEL_267;
       }
     }
@@ -1552,12 +1552,12 @@ LABEL_291:
   return v37;
 }
 
-- (id)primaryUserOnSharedDataVolumePath:(id)a3 withError:(id *)a4
+- (id)primaryUserOnSharedDataVolumePath:(id)path withError:(id *)error
 {
-  v6 = [(UMLManager *)self readUserManifestOnSharedDataVolumePath:a3 withError:?];
+  v6 = [(UMLManager *)self readUserManifestOnSharedDataVolumePath:path withError:?];
   if (v6)
   {
-    v7 = [(UMLManager *)self readUserFromManifest:v6 forUserUid:501 withError:a4];
+    v7 = [(UMLManager *)self readUserFromManifest:v6 forUserUid:501 withError:error];
     if (v7)
     {
       goto LABEL_31;
@@ -1604,7 +1604,7 @@ LABEL_291:
       free(v12);
     }
 
-    if (a4)
+    if (error)
     {
       v18 = 3;
       goto LABEL_29;
@@ -1654,12 +1654,12 @@ LABEL_291:
       free(v17);
     }
 
-    if (a4)
+    if (error)
     {
       v18 = 2;
 LABEL_29:
       [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:v18 userInfo:{0, v20, v21}];
-      *a4 = v7 = 0;
+      *error = v7 = 0;
       goto LABEL_31;
     }
   }
@@ -1670,10 +1670,10 @@ LABEL_31:
   return v7;
 }
 
-- (BOOL)mountSystemDataVolumeAt:(id)a3 withError:(id *)a4
+- (BOOL)mountSystemDataVolumeAt:(id)at withError:(id *)error
 {
   v89 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  atCopy = at;
   if (![(UMLManager *)self inDeviceRecoveryEnvironment])
   {
     v20 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:45 userInfo:0];
@@ -1717,7 +1717,7 @@ LABEL_31:
       free(v25);
     }
 
-    if (a4)
+    if (error)
     {
       v36 = v20;
       v37 = 0;
@@ -1725,7 +1725,7 @@ LABEL_31:
       v9 = 0;
       v7 = 0;
       v38 = 0;
-      *a4 = v20;
+      *error = v20;
       goto LABEL_108;
     }
 
@@ -1781,7 +1781,7 @@ LABEL_107:
       free(v30);
     }
 
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:2 userInfo:0];
       v37 = 0;
@@ -1789,7 +1789,7 @@ LABEL_107:
       v9 = 0;
       v20 = 0;
       v7 = 0;
-      *a4 = v38 = 0;
+      *error = v38 = 0;
       goto LABEL_108;
     }
 
@@ -1801,7 +1801,7 @@ LABEL_107:
   }
 
   v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:v88];
-  if (![(UMLManager *)self mountVolumeAtPath:v6 fromDevice:v7 forUserUID:0 userGID:0 withMode:493 withError:a4])
+  if (![(UMLManager *)self mountVolumeAtPath:atCopy fromDevice:v7 forUserUID:0 userGID:0 withMode:493 withError:error])
   {
     if (qword_2810B88B8 != -1)
     {
@@ -1839,7 +1839,7 @@ LABEL_103:
     goto LABEL_104;
   }
 
-  v8 = [(UMLManager *)self primaryUserOnSharedDataVolumePath:v6 withError:a4];
+  v8 = [(UMLManager *)self primaryUserOnSharedDataVolumePath:atCopy withError:error];
   if (!v8)
   {
     if (qword_2810B88B8 != -1)
@@ -1883,12 +1883,12 @@ LABEL_103:
       free(v43);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:2 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:2 userInfo:0];
     }
 
-    if ([(UMLManager *)self unMountVolumeAt:v6 withError:a4, v84, v85])
+    if ([(UMLManager *)self unMountVolumeAt:atCopy withError:error, v84, v85])
     {
       goto LABEL_105;
     }
@@ -1942,8 +1942,8 @@ LABEL_44:
   }
 
   v9 = v8;
-  v10 = [v8 userUUID];
-  if (!v10)
+  userUUID = [v8 userUUID];
+  if (!userUUID)
   {
     if (qword_2810B88B8 != -1)
     {
@@ -1986,12 +1986,12 @@ LABEL_44:
       free(v48);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:2 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:2 userInfo:0];
     }
 
-    if (![(UMLManager *)self unMountVolumeAt:v6 withError:a4, v84, v85])
+    if (![(UMLManager *)self unMountVolumeAt:atCopy withError:error, v84, v85])
     {
       if (qword_2810B88B8 != -1)
       {
@@ -2038,7 +2038,7 @@ LABEL_44:
     goto LABEL_106;
   }
 
-  v11 = v10;
+  v11 = userUUID;
   if (self)
   {
     se = self->_se;
@@ -2095,12 +2095,12 @@ LABEL_44:
       free(v19);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:16 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:16 userInfo:0];
     }
 
-    if ([(UMLManager *)self unMountVolumeAt:v6 withError:a4, v84, v85])
+    if ([(UMLManager *)self unMountVolumeAt:atCopy withError:error, v84, v85])
     {
       goto LABEL_167;
     }
@@ -2185,12 +2185,12 @@ LABEL_167:
       free(v57);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:2 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:2 userInfo:0];
     }
 
-    if ([(UMLManager *)self unMountVolumeAt:v6 withError:a4, v84, v85])
+    if ([(UMLManager *)self unMountVolumeAt:atCopy withError:error, v84, v85])
     {
       goto LABEL_167;
     }
@@ -2251,7 +2251,7 @@ LABEL_165:
   }
 
   v51 = sub_22EE770F0(v50);
-  v52 = [v51 loadIdentity:v37 intoSession:501 error:a4];
+  v52 = [v51 loadIdentity:v37 intoSession:501 error:error];
 
   if ((v52 & 1) == 0)
   {
@@ -2294,7 +2294,7 @@ LABEL_165:
       free(v66);
     }
 
-    if (![(UMLManager *)self unMountVolumeAt:v6 withError:a4])
+    if (![(UMLManager *)self unMountVolumeAt:atCopy withError:error])
     {
       if (qword_2810B88B8 != -1)
       {
@@ -2347,14 +2347,14 @@ LABEL_108:
   return v38;
 }
 
-- (BOOL)unmountUserDataVolumeOnSystemDataAt:(id)a3 withError:(id *)a4
+- (BOOL)unmountUserDataVolumeOnSystemDataAt:(id)at withError:(id *)error
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  atCopy = at;
   if ([(UMLManager *)self inDeviceRecoveryEnvironment])
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/mobile", v6];
-    if ([(UMLManager *)self unMountVolumeAt:v7 withError:a4])
+    atCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/mobile", atCopy];
+    if ([(UMLManager *)self unMountVolumeAt:atCopy withError:error])
     {
       if (self)
       {
@@ -2429,7 +2429,7 @@ LABEL_108:
         }
 
         v13 = sub_22EE770F0(v12);
-        v14 = [v13 unmapVolume:v11 error:a4];
+        v14 = [v13 unmapVolume:v11 error:error];
 
         if (v14)
         {
@@ -2479,7 +2479,7 @@ LABEL_90:
             free(v20);
           }
 
-          if (a4)
+          if (error)
           {
             v48 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:2 userInfo:0];
             goto LABEL_89;
@@ -2568,13 +2568,13 @@ LABEL_65:
         free(v42);
       }
 
-      if (a4)
+      if (error)
       {
         v48 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:2 userInfo:0];
         v11 = 0;
 LABEL_89:
         v15 = 0;
-        *a4 = v48;
+        *error = v48;
         goto LABEL_90;
       }
     }
@@ -2664,11 +2664,11 @@ LABEL_89:
     free(v26);
   }
 
-  if (a4)
+  if (error)
   {
     v37 = v21;
     v15 = 0;
-    *a4 = v21;
+    *error = v21;
   }
 
   else
@@ -2682,23 +2682,23 @@ LABEL_91:
   return v15;
 }
 
-- (id)keybagOpaqueDataOnSharedDataVolumePath:(id)a3 withError:(id *)a4
+- (id)keybagOpaqueDataOnSharedDataVolumePath:(id)path withError:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  pathCopy = path;
   if ([(UMLManager *)self inDeviceRecoveryEnvironment])
   {
-    v7 = [(UMLManager *)self primaryUserOnSharedDataVolumePath:v6 withError:a4];
+    v7 = [(UMLManager *)self primaryUserOnSharedDataVolumePath:pathCopy withError:error];
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 keybagOpaqueData];
+      keybagOpaqueData = [v7 keybagOpaqueData];
 
-      if (v9)
+      if (keybagOpaqueData)
       {
         v10 = MEMORY[0x277CBEA90];
-        v11 = [v8 keybagOpaqueData];
-        v12 = [v10 dataWithData:v11];
+        keybagOpaqueData2 = [v8 keybagOpaqueData];
+        v12 = [v10 dataWithData:keybagOpaqueData2];
 
         if (qword_2810B88B8 != -1)
         {
@@ -2783,9 +2783,9 @@ LABEL_91:
 
     else
     {
-      if (a4)
+      if (error)
       {
-        v18 = *a4;
+        v18 = *error;
       }
 
       else
@@ -2876,12 +2876,12 @@ LABEL_57:
     free(v23);
   }
 
-  if (a4)
+  if (error)
   {
     v28 = v18;
     v8 = 0;
     v29 = 0;
-    *a4 = v18;
+    *error = v18;
   }
 
   else
@@ -2897,16 +2897,16 @@ LABEL_58:
   return v29;
 }
 
-- (BOOL)createUserLayoutForUserwithUserID:(int)a3 withAKSSetup:(BOOL)a4 onUserVolumePath:(id)a5 fromSystemVolumePath:(id)a6 withError:(id *)a7
+- (BOOL)createUserLayoutForUserwithUserID:(int)d withAKSSetup:(BOOL)setup onUserVolumePath:(id)path fromSystemVolumePath:(id)volumePath withError:(id *)error
 {
-  v9 = a4;
+  setupCopy = setup;
   v68 = *MEMORY[0x277D85DE8];
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (v11 && v12)
+  pathCopy = path;
+  volumePathCopy = volumePath;
+  v13 = volumePathCopy;
+  if (pathCopy && volumePathCopy)
   {
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/System/Library/Templates/User/", v12];
+    volumePathCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/System/Library/Templates/User/", volumePathCopy];
     if (qword_2810B88B8 != -1)
     {
       sub_22EE785E0();
@@ -2930,9 +2930,9 @@ LABEL_58:
       if (v17)
       {
         *v64 = 138412546;
-        *&v64[4] = v14;
+        *&v64[4] = volumePathCopy;
         v65 = 2112;
-        v66 = v11;
+        v66 = pathCopy;
         v18 = _os_log_send_and_compose_impl();
         v19 = v18;
         if (v18)
@@ -2965,10 +2965,10 @@ LABEL_58:
     v62[1] = 3221225472;
     v62[2] = sub_22EE6DF5C;
     v62[3] = &unk_278870048;
-    v63 = a3;
+    dCopy = d;
     v62[4] = self;
-    v29 = v14;
-    v30 = [v28 clonePath:v14 toPath:v11 error:a7 handler:v62];
+    v29 = volumePathCopy;
+    v30 = [v28 clonePath:volumePathCopy toPath:pathCopy error:error handler:v62];
 
     if (v30)
     {
@@ -2998,7 +2998,7 @@ LABEL_58:
           *v64 = 138543618;
           *&v64[4] = v29;
           v65 = 2114;
-          v66 = v11;
+          v66 = pathCopy;
           v35 = _os_log_send_and_compose_impl();
           v36 = v35;
           if (v35)
@@ -3015,7 +3015,7 @@ LABEL_58:
         free(v36);
       }
 
-      if (!v9)
+      if (!setupCopy)
       {
         if (qword_2810B88B8 != -1)
         {
@@ -3078,7 +3078,7 @@ LABEL_99:
         if (v44)
         {
           LODWORD(v67) = 67109120;
-          HIDWORD(v67) = a3;
+          HIDWORD(v67) = d;
           v45 = _os_log_send_and_compose_impl();
           v46 = v45;
           if (v45)
@@ -3107,7 +3107,7 @@ LABEL_99:
 
       v50 = v49;
       v51 = sub_22EE770F0(v50);
-      v52 = [v51 bootstrapVolumeWithMountPoint:v11 user:a3 error:a7];
+      v52 = [v51 bootstrapVolumeWithMountPoint:pathCopy user:d error:error];
 
       if (v52)
       {
@@ -3223,7 +3223,7 @@ LABEL_100:
         *v64 = 138543618;
         *&v64[4] = v29;
         v65 = 2114;
-        v66 = v11;
+        v66 = pathCopy;
         v40 = _os_log_send_and_compose_impl();
         v41 = v40;
         if (v40)
@@ -3285,10 +3285,10 @@ LABEL_72:
     free(v24);
   }
 
-  if (a7)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:0];
-    *a7 = v25 = 0;
+    *error = v25 = 0;
   }
 
   else
@@ -3302,21 +3302,21 @@ LABEL_101:
   return v25;
 }
 
-- (id)readUserManifestOnSharedDataVolumePath:(id)a3 withError:(id *)a4
+- (id)readUserManifestOnSharedDataVolumePath:(id)path withError:(id *)error
 {
-  v5 = [(UMLManager *)self loadManifestFromSharedDataVolumePath:a3];
+  v5 = [(UMLManager *)self loadManifestFromSharedDataVolumePath:path];
   v6 = v5;
-  if (a4 && !v5)
+  if (error && !v5)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:5 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:5 userInfo:0];
   }
 
   return v6;
 }
 
-- (id)loadManifestFromSharedDataVolumePath:(id)a3
+- (id)loadManifestFromSharedDataVolumePath:(id)path
 {
-  if (!a3)
+  if (!path)
   {
     v15 = 0;
     goto LABEL_30;
@@ -3430,15 +3430,15 @@ LABEL_30:
   return v15;
 }
 
-- (id)readUserFromManifest:(id)a3 forUserUid:(unsigned int)a4 withError:(id *)a5
+- (id)readUserFromManifest:(id)manifest forUserUid:(unsigned int)uid withError:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = [a3 users];
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v28 count:16];
+  users = [manifest users];
+  v7 = [users countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v7)
   {
     v8 = v7;
@@ -3449,13 +3449,13 @@ LABEL_30:
       {
         if (*v23 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(users);
         }
 
         v11 = *(*(&v22 + 1) + 8 * i);
         v12 = [v11 objectForKeyedSubscript:@"MKBUserSessionID"];
         v13 = v12;
-        if (v12 && [v12 intValue] == a4)
+        if (v12 && [v12 intValue] == uid)
         {
           if (qword_2810B88B8 != -1)
           {
@@ -3479,7 +3479,7 @@ LABEL_30:
             if (v17)
             {
               v26 = 67109120;
-              v27 = a4;
+              uidCopy = uid;
               v18 = _os_log_send_and_compose_impl();
               v19 = v18;
               if (v18)
@@ -3502,7 +3502,7 @@ LABEL_30:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v22 objects:v28 count:16];
+      v8 = [users countByEnumeratingWithState:&v22 objects:v28 count:16];
       if (v8)
       {
         continue;
@@ -3520,25 +3520,25 @@ LABEL_23:
   return v14;
 }
 
-- (BOOL)addNewUser:(id)a3 toUserManifest:(id)a4 saveToPath:(id)a5
+- (BOOL)addNewUser:(id)user toUserManifest:(id)manifest saveToPath:(id)path
 {
   v45 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  userCopy = user;
+  manifestCopy = manifest;
+  pathCopy = path;
+  if (userCopy)
   {
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v11 = [v9 users];
-    v12 = [v11 countByEnumeratingWithState:&v40 objects:v44 count:16];
+    users = [manifestCopy users];
+    v12 = [users countByEnumeratingWithState:&v40 objects:v44 count:16];
     if (v12)
     {
       v13 = v12;
-      v36 = self;
-      v37 = v9;
+      selfCopy = self;
+      v37 = manifestCopy;
       LODWORD(self) = 0;
       v14 = 0;
       v15 = *v41;
@@ -3550,11 +3550,11 @@ LABEL_23:
         {
           if (*v41 != v15)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(users);
           }
 
           v17 = [*(*(&v40 + 1) + 8 * v16) objectForKeyedSubscript:{@"MKBUserSessionID", v34, v35}];
-          v18 = [v8 objectForKeyedSubscript:@"MKBUserSessionID"];
+          v18 = [userCopy objectForKeyedSubscript:@"MKBUserSessionID"];
 
           if (v17 == v18)
           {
@@ -3599,8 +3599,8 @@ LABEL_23:
               free(v23);
             }
 
-            v24 = [v37 users];
-            [v24 replaceObjectAtIndex:self withObject:v8];
+            users2 = [v37 users];
+            [users2 replaceObjectAtIndex:self withObject:userCopy];
 
             v14 = 1;
           }
@@ -3610,13 +3610,13 @@ LABEL_23:
         }
 
         while (v13 != v16);
-        v13 = [v11 countByEnumeratingWithState:&v40 objects:v44 count:16];
+        v13 = [users countByEnumeratingWithState:&v40 objects:v44 count:16];
       }
 
       while (v13);
 
-      self = v36;
-      v9 = v37;
+      self = selfCopy;
+      manifestCopy = v37;
       if (v14)
       {
         goto LABEL_38;
@@ -3668,11 +3668,11 @@ LABEL_23:
       free(v30);
     }
 
-    v31 = [v9 users];
-    [v31 addObject:v8];
+    users3 = [manifestCopy users];
+    [users3 addObject:userCopy];
 
 LABEL_38:
-    v25 = [(UMLManager *)self saveManifest:v9 toPath:v10, v34, v35];
+    v25 = [(UMLManager *)self saveManifest:manifestCopy toPath:pathCopy, v34, v35];
     goto LABEL_39;
   }
 
@@ -3683,27 +3683,27 @@ LABEL_39:
   return v25;
 }
 
-- (BOOL)removeAnUser:(id)a3 fromUserManifest:(id)a4 saveToPath:(id)a5
+- (BOOL)removeAnUser:(id)user fromUserManifest:(id)manifest saveToPath:(id)path
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && ([v8 userManifestDictionary], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+  userCopy = user;
+  manifestCopy = manifest;
+  pathCopy = path;
+  if (userCopy && ([userCopy userManifestDictionary], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v12 = v11;
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v13 = [v9 users];
-    v14 = [v13 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    users = [manifestCopy users];
+    v14 = [users countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v14)
     {
       v15 = v14;
-      v25 = self;
-      v26 = v10;
-      v27 = v9;
+      selfCopy = self;
+      v26 = pathCopy;
+      v27 = manifestCopy;
       v16 = *v29;
       while (2)
       {
@@ -3711,7 +3711,7 @@ LABEL_39:
         {
           if (*v29 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(users);
           }
 
           v18 = *(*(&v28 + 1) + 8 * i);
@@ -3720,17 +3720,17 @@ LABEL_39:
 
           if (v19 == v20)
           {
-            v9 = v27;
-            v22 = [v27 users];
-            [v22 removeObject:v18];
+            manifestCopy = v27;
+            users2 = [v27 users];
+            [users2 removeObject:v18];
 
-            v10 = v26;
-            v21 = [(UMLManager *)v25 saveManifest:v27 toPath:v26];
+            pathCopy = v26;
+            v21 = [(UMLManager *)selfCopy saveManifest:v27 toPath:v26];
             goto LABEL_15;
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v28 objects:v32 count:16];
+        v15 = [users countByEnumeratingWithState:&v28 objects:v32 count:16];
         if (v15)
         {
           continue;
@@ -3740,8 +3740,8 @@ LABEL_39:
       }
 
       v21 = 0;
-      v10 = v26;
-      v9 = v27;
+      pathCopy = v26;
+      manifestCopy = v27;
     }
 
     else
@@ -3761,20 +3761,20 @@ LABEL_15:
   return v21;
 }
 
-- (BOOL)updateUser:(id)a3 inManifest:(id)a4 withDiskNode:(id)a5 volumeUUID:(id)a6 volumeName:(id)a7 withSharedDataVolumePath:(id)a8 withError:(id *)a9
+- (BOOL)updateUser:(id)user inManifest:(id)manifest withDiskNode:(id)node volumeUUID:(id)d volumeName:(id)name withSharedDataVolumePath:(id)path withError:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  v52 = v14;
-  v19 = [v14 userManifestDictionary];
-  v20 = v19;
-  if (v19)
+  userCopy = user;
+  manifestCopy = manifest;
+  nodeCopy = node;
+  dCopy = d;
+  pathCopy = path;
+  v52 = userCopy;
+  userManifestDictionary = [userCopy userManifestDictionary];
+  v20 = userManifestDictionary;
+  if (userManifestDictionary)
   {
-    [v19 setValue:v16 forKey:@"MKBUserSessionVolumeDeviceNode"];
-    [v20 setValue:v17 forKey:@"MKBUserSessionVolumeUUID"];
+    [userManifestDictionary setValue:nodeCopy forKey:@"MKBUserSessionVolumeDeviceNode"];
+    [v20 setValue:dCopy forKey:@"MKBUserSessionVolumeUUID"];
     if (qword_2810B88B8 != -1)
     {
       sub_22EE785E0();
@@ -3783,9 +3783,9 @@ LABEL_15:
     v21 = qword_2810B88B0;
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      v22 = v17;
-      v23 = v16;
-      v24 = v15;
+      v22 = dCopy;
+      v23 = nodeCopy;
+      v24 = manifestCopy;
       v54 = 0;
       v25 = sub_22EE69AE8();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -3817,16 +3817,16 @@ LABEL_15:
       }
 
       free(v28);
-      v15 = v24;
-      v16 = v23;
-      v17 = v22;
+      manifestCopy = v24;
+      nodeCopy = v23;
+      dCopy = v22;
     }
 
-    if ([(UMLManager *)self addNewUser:v20 toUserManifest:v15 saveToPath:v18])
+    if ([(UMLManager *)self addNewUser:v20 toUserManifest:manifestCopy saveToPath:pathCopy])
     {
       v34 = v52;
-      [v52 setDiskNode:v16];
-      [v52 setVolumeUUID:v17];
+      [v52 setDiskNode:nodeCopy];
+      [v52 setVolumeUUID:dCopy];
       if (qword_2810B88B8 != -1)
       {
         sub_22EE785F4();
@@ -3911,7 +3911,7 @@ LABEL_15:
       free(v44);
     }
 
-    if (a9)
+    if (error)
     {
       v45 = MEMORY[0x277CCA9B8];
       v46 = *MEMORY[0x277CCA5B8];
@@ -3966,7 +3966,7 @@ LABEL_54:
     free(v33);
   }
 
-  if (!a9)
+  if (!error)
   {
     goto LABEL_54;
   }
@@ -3976,7 +3976,7 @@ LABEL_54:
   v47 = 22;
 LABEL_52:
   [v45 errorWithDomain:v46 code:v47 userInfo:{0, v50, v51}];
-  *a9 = v48 = 0;
+  *error = v48 = 0;
   v35 = v52;
   v34 = 0;
 LABEL_53:
@@ -3985,15 +3985,15 @@ LABEL_55:
   return v48;
 }
 
-- (BOOL)saveManifest:(id)a3 toPath:(id)a4
+- (BOOL)saveManifest:(id)manifest toPath:(id)path
 {
   v62[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  manifestCopy = manifest;
+  pathCopy = path;
+  if (pathCopy)
   {
-    v8 = [MEMORY[0x277CCAB68] stringWithString:v7];
-    v9 = [MEMORY[0x277CCAB68] stringWithString:v7];
+    v8 = [MEMORY[0x277CCAB68] stringWithString:pathCopy];
+    v9 = [MEMORY[0x277CCAB68] stringWithString:pathCopy];
     [v8 appendString:@"/keybags/usersession.kb"];
     [v9 appendString:@"/keybags"];
     if (self)
@@ -4072,12 +4072,12 @@ LABEL_55:
           sub_22EE785F4();
         }
 
-        v27 = qword_2810B88B0;
-        if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+        dataValue = qword_2810B88B0;
+        if (os_log_type_enabled(dataValue, OS_LOG_TYPE_ERROR))
         {
           v62[0] = 0;
           v28 = sub_22EE69AE8();
-          if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(dataValue, OS_LOG_TYPE_ERROR))
           {
             v29 = v28;
           }
@@ -4152,8 +4152,8 @@ LABEL_55:
       }
     }
 
-    v27 = [v6 dataValue];
-    if (v27)
+    dataValue = [manifestCopy dataValue];
+    if (dataValue)
     {
       if (qword_2810B88B8 != -1)
       {
@@ -4207,7 +4207,7 @@ LABEL_55:
       v43 = v42;
       v44 = sub_22EE7710C(v43);
       v61 = 0;
-      v45 = [v44 atomicallyWriteData:v27 toPath:v8 error:&v61];
+      v45 = [v44 atomicallyWriteData:dataValue toPath:v8 error:&v61];
       v37 = v61;
 
       if (v45)
@@ -4352,10 +4352,10 @@ LABEL_97:
   return v18;
 }
 
-- (BOOL)unMountVolumeAt:(id)a3 withError:(id *)a4
+- (BOOL)unMountVolumeAt:(id)at withError:(id *)error
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = sub_22EE71964([a3 UTF8String], 0x80000);
+  v5 = sub_22EE71964([at UTF8String], 0x80000);
   if (v5)
   {
     v6 = *__error();
@@ -4393,9 +4393,9 @@ LABEL_97:
       free(v10);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:v6 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:v6 userInfo:0];
     }
   }
 
@@ -4636,9 +4636,9 @@ LABEL_58:
   return v5;
 }
 
-- (BOOL)unmountSystemDataVolumeAt:(id)a3 withError:(id *)a4
+- (BOOL)unmountSystemDataVolumeAt:(id)at withError:(id *)error
 {
-  v6 = a3;
+  atCopy = at;
   if (self)
   {
     se = self->_se;
@@ -4656,7 +4656,7 @@ LABEL_58:
   {
     v10 = self ? self->_se : 0;
     v11 = sub_22EE770F0(v10);
-    v12 = [v11 unloadIdentityFromSession:501 error:a4];
+    v12 = [v11 unloadIdentityFromSession:501 error:error];
 
     if ((v12 & 1) == 0)
     {
@@ -4689,12 +4689,12 @@ LABEL_58:
         free(v21);
       }
 
-      if (a4)
+      if (error)
       {
         v22 = *MEMORY[0x277CCA5B8];
         sub_22EE70444();
         [v23 errorWithDomain:? code:? userInfo:?];
-        *a4 = v13 = 0;
+        *error = v13 = 0;
         goto LABEL_32;
       }
 
@@ -4702,7 +4702,7 @@ LABEL_58:
     }
   }
 
-  if (![(UMLManager *)self unMountVolumeAt:v6 withError:a4])
+  if (![(UMLManager *)self unMountVolumeAt:atCopy withError:error])
   {
     if (qword_2810B88B8 != -1)
     {

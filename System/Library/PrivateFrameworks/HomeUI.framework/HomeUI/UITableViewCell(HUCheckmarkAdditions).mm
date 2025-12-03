@@ -23,20 +23,20 @@
   {
     v4 = MEMORY[0x277D755B8];
     v5 = a3;
-    v6 = [v4 hu_cellCheckmarkImage];
-    [v5 setImage:v6];
+    hu_cellCheckmarkImage = [v4 hu_cellCheckmarkImage];
+    [v5 setImage:hu_cellCheckmarkImage];
 
-    v8 = [MEMORY[0x277D755B8] hu_cellCheckmarkImage];
+    hu_cellCheckmarkImage2 = [MEMORY[0x277D755B8] hu_cellCheckmarkImage];
     [v5 setHighlightedImage:?];
   }
 
   else
   {
-    v8 = a3;
-    v7 = [objc_opt_class() hu_emptyCheckmarkPlaceholderImage];
-    [v8 setImage:v7];
+    hu_cellCheckmarkImage2 = a3;
+    hu_emptyCheckmarkPlaceholderImage = [objc_opt_class() hu_emptyCheckmarkPlaceholderImage];
+    [hu_cellCheckmarkImage2 setImage:hu_emptyCheckmarkPlaceholderImage];
 
-    [v8 setHighlightedImage:0];
+    [hu_cellCheckmarkImage2 setHighlightedImage:0];
   }
 }
 

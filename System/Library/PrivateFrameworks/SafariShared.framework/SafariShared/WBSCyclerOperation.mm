@@ -1,11 +1,11 @@
 @interface WBSCyclerOperation
-- (WBSCyclerOperation)initWithMaximumNumberOfAttempts:(unint64_t)a3 backoffRatio:(float)a4;
-- (void)executeWithResultHandler:(id)a3;
+- (WBSCyclerOperation)initWithMaximumNumberOfAttempts:(unint64_t)attempts backoffRatio:(float)ratio;
+- (void)executeWithResultHandler:(id)handler;
 @end
 
 @implementation WBSCyclerOperation
 
-- (WBSCyclerOperation)initWithMaximumNumberOfAttempts:(unint64_t)a3 backoffRatio:(float)a4
+- (WBSCyclerOperation)initWithMaximumNumberOfAttempts:(unint64_t)attempts backoffRatio:(float)ratio
 {
   v10.receiver = self;
   v10.super_class = WBSCyclerOperation;
@@ -13,24 +13,24 @@
   v7 = v6;
   if (v6)
   {
-    v6->_numberOfRemainingAttempts = a3;
-    v6->_backoffRatio = a4;
+    v6->_numberOfRemainingAttempts = attempts;
+    v6->_backoffRatio = ratio;
     v8 = v6;
   }
 
   return v7;
 }
 
-- (void)executeWithResultHandler:(id)a3
+- (void)executeWithResultHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__WBSCyclerOperation_executeWithResultHandler___block_invoke;
   v6[3] = &unk_1E7FB81B8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 

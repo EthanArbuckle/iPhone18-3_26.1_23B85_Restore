@@ -1,16 +1,16 @@
 @interface CLSRegionItemCacheUpdater
-- (BOOL)createCacheForRegions:(id)a3 progressBlock:(id)a4 error:(id *)a5;
-- (CLSRegionItemCacheUpdater)initWithQueryPerformers:(id)a3;
+- (BOOL)createCacheForRegions:(id)regions progressBlock:(id)block error:(id *)error;
+- (CLSRegionItemCacheUpdater)initWithQueryPerformers:(id)performers;
 @end
 
 @implementation CLSRegionItemCacheUpdater
 
-- (BOOL)createCacheForRegions:(id)a3 progressBlock:(id)a4 error:(id *)a5
+- (BOOL)createCacheForRegions:(id)regions progressBlock:(id)block error:(id *)error
 {
-  v50 = a5;
+  errorCopy = error;
   v112 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  regionsCopy = regions;
+  blockCopy = block;
   Current = CFAbsoluteTimeGetCurrent();
   v9 = dispatch_group_create();
   v10 = dispatch_semaphore_create(1);
@@ -34,7 +34,7 @@
   v94[1] = v94;
   v94[2] = 0x2020000000;
   v95 = 0;
-  v13 = [v6 count];
+  v13 = [regionsCopy count];
   v14 = [(NSArray *)self->_queryPerformers count];
   v15 = objc_opt_new();
   v16 = (v14 * v13);
@@ -47,24 +47,24 @@
   v90 = &v102;
   v51 = v10;
   v85 = v51;
-  v86 = self;
+  selfCopy = self;
   v53 = v15;
   v87 = v53;
   v52 = v11;
   v88 = v52;
-  v56 = v7;
+  v56 = blockCopy;
   v89 = v56;
   v91 = v94;
   v93 = v16;
   v92 = &v96;
   v57 = _Block_copy(aBlock);
-  v17 = [MEMORY[0x277CBEB18] array];
-  v18 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v81 = 0u;
   v82 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v19 = v6;
+  v19 = regionsCopy;
   v20 = [v19 countByEnumeratingWithState:&v79 objects:v111 count:16];
   if (v20)
   {
@@ -83,12 +83,12 @@
         [v23 clsHorizontalAccuracy];
         if ([v24 horizontalAccuracyIsCoarse:?])
         {
-          v25 = v18;
+          v25 = array2;
         }
 
         else
         {
-          v25 = v17;
+          v25 = array;
         }
 
         [v25 addObject:v23];
@@ -119,7 +119,7 @@
         }
 
         v29 = *(*(&v75 + 1) + 8 * j);
-        v30 = [objc_opt_class() numberOfRegionsPerBatch];
+        numberOfRegionsPerBatch = [objc_opt_class() numberOfRegionsPerBatch];
         [v29 setLoggingConnection:self->_loggingConnection];
         v31 = v29;
         objc_sync_enter(v31);
@@ -146,16 +146,16 @@
         v33 = v32;
         v65 = v33;
         v66 = v31;
-        v71 = v30;
+        v71 = numberOfRegionsPerBatch;
         v67 = v57;
         v69 = &v102;
         v68 = v56;
         v70 = v94;
         v72 = v16;
         v34 = _Block_copy(v64);
-        v34[2](v34, v17, @"precise");
+        v34[2](v34, array, @"precise");
         v35 = atomic_load(v103 + 24);
-        if (v35 & 1) != 0 || (v34[2](v34, v18, @"coarse"), v36 = atomic_load(v103 + 24), (v36))
+        if (v35 & 1) != 0 || (v34[2](v34, array2, @"coarse"), v36 = atomic_load(v103 + 24), (v36))
         {
 
           goto LABEL_24;
@@ -185,9 +185,9 @@ LABEL_24:
     objc_sync_exit(v38);
 
     [v39 enumerateObjectsUsingBlock:&__block_literal_global_1038];
-    if (v50)
+    if (errorCopy)
     {
-      *v50 = v97[5];
+      *errorCopy = v97[5];
     }
   }
 
@@ -218,9 +218,9 @@ LABEL_24:
     while (v41);
   }
 
-  v44 = [(CLSRegionItemCacheUpdater *)self loggingConnection];
+  loggingConnection = [(CLSRegionItemCacheUpdater *)self loggingConnection];
 
-  if (v44)
+  if (loggingConnection)
   {
     queryPerformers = self->_queryPerformers;
     v59[0] = MEMORY[0x277D85DD0];
@@ -232,12 +232,12 @@ LABEL_24:
   }
 
   v46 = CFAbsoluteTimeGetCurrent();
-  v47 = [(CLSRegionItemCacheUpdater *)self loggingConnection];
-  if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
+  loggingConnection2 = [(CLSRegionItemCacheUpdater *)self loggingConnection];
+  if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 134217984;
     *(&buf + 4) = v46 - Current;
-    _os_log_impl(&dword_22F907000, v47, OS_LOG_TYPE_INFO, "[GEO] Location Cache Creation took %.2f s", &buf, 0xCu);
+    _os_log_impl(&dword_22F907000, loggingConnection2, OS_LOG_TYPE_INFO, "[GEO] Location Cache Creation took %.2f s", &buf, 0xCu);
   }
 
   v48 = v97[5] == 0;
@@ -599,16 +599,16 @@ void __71__CLSRegionItemCacheUpdater_createCacheForRegions_progressBlock_error__
   dispatch_group_leave(*(a1 + 64));
 }
 
-- (CLSRegionItemCacheUpdater)initWithQueryPerformers:(id)a3
+- (CLSRegionItemCacheUpdater)initWithQueryPerformers:(id)performers
 {
-  v5 = a3;
+  performersCopy = performers;
   v11.receiver = self;
   v11.super_class = CLSRegionItemCacheUpdater;
   v6 = [(CLSRegionItemCacheUpdater *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queryPerformers, a3);
+    objc_storeStrong(&v6->_queryPerformers, performers);
     v7->_simulatesTimeout = 0;
     v7->_timeoutInterval = 20.0;
     v7->_numberOfRetries = 0;

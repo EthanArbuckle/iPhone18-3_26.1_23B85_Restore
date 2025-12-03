@@ -2,22 +2,22 @@
 - (BOOL)hasPresentableData;
 - (UIEdgeInsets)separatorInset;
 - (UIViewController)owningViewController;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndex:(int64_t)a4;
-- (id)_dequeueNoValueCellInTableView:(id)a3 withTitle:(id)a4 disabled:(BOOL)a5;
-- (id)initInEditMode:(BOOL)a3;
-- (id)tableView:(id)a3 cellForRowAtIndex:(int64_t)a4;
+- (double)tableView:(id)view estimatedHeightForRowAtIndex:(int64_t)index;
+- (id)_dequeueNoValueCellInTableView:(id)view withTitle:(id)title disabled:(BOOL)disabled;
+- (id)initInEditMode:(BOOL)mode;
+- (id)tableView:(id)view cellForRowAtIndex:(int64_t)index;
 @end
 
 @implementation HKEmergencyCardTableItem
 
-- (id)initInEditMode:(BOOL)a3
+- (id)initInEditMode:(BOOL)mode
 {
   v5.receiver = self;
   v5.super_class = HKEmergencyCardTableItem;
   result = [(HKEmergencyCardTableItem *)&v5 init];
   if (result)
   {
-    *(result + 9) = a3;
+    *(result + 9) = mode;
   }
 
   return result;
@@ -41,7 +41,7 @@
   return result;
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndex:(int64_t)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndex:(int64_t)index
 {
   if (HKUIApplicationIsUsingAccessibilityContentSizeCategory() && [(HKEmergencyCardTableItem *)self isInEditMode])
   {
@@ -54,12 +54,12 @@
   }
 }
 
-- (id)_dequeueNoValueCellInTableView:(id)a3 withTitle:(id)a4 disabled:(BOOL)a5
+- (id)_dequeueNoValueCellInTableView:(id)view withTitle:(id)title disabled:(BOOL)disabled
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:0x1F4311540];
-  v8 = [v7 addValueLabel];
-  [v8 setText:v6];
+  titleCopy = title;
+  v7 = [view dequeueReusableCellWithIdentifier:0x1F4311540];
+  addValueLabel = [v7 addValueLabel];
+  [addValueLabel setText:titleCopy];
 
   return v7;
 }
@@ -75,13 +75,13 @@
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
-  v3 = [(HKEmergencyCardTableItem *)self data];
-  v4 = v3 != 0;
+  data = [(HKEmergencyCardTableItem *)self data];
+  v4 = data != 0;
 
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndex:(int64_t)a4
+- (id)tableView:(id)view cellForRowAtIndex:(int64_t)index
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

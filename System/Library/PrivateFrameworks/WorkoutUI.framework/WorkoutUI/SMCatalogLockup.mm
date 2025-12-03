@@ -11,7 +11,7 @@
 
 - (SMArtwork)artwork
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CatalogLockupBridge.artwork.getter();
 
   return v3;
@@ -19,7 +19,7 @@
 
 - (NSNumber)mediaTypeRawValue
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CatalogLockupBridge.mediaTypeRawValue.getter();
 
   return v3;
@@ -27,7 +27,7 @@
 
 - (int64_t)assetLoadStatus
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CatalogLockupBridge.assetLoadStatus.getter();
 
   return v3;
@@ -35,7 +35,7 @@
 
 - (int64_t)bundleReason
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CatalogLockupBridge.bundleReason.getter();
 
   return v3;
@@ -43,7 +43,7 @@
 
 - (NSString)recencyTag
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CatalogLockup.recencyTag.getter();
   v5 = v4;
 

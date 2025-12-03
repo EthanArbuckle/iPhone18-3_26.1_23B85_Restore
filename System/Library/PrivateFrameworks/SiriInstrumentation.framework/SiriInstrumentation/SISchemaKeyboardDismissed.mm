@@ -1,32 +1,32 @@
 @interface SISchemaKeyboardDismissed
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaKeyboardDismissed)initWithDictionary:(id)a3;
-- (SISchemaKeyboardDismissed)initWithJSON:(id)a3;
+- (SISchemaKeyboardDismissed)initWithDictionary:(id)dictionary;
+- (SISchemaKeyboardDismissed)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasEditDistance:(BOOL)a3;
-- (void)setHasEmojiUsed:(BOOL)a3;
-- (void)setHasKeyboardLocale:(BOOL)a3;
-- (void)setHasLengthInChars:(BOOL)a3;
-- (void)setHasLengthInWords:(BOOL)a3;
-- (void)setHasNumCharsAdded:(BOOL)a3;
-- (void)setHasNumCharsDeleted:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasEditDistance:(BOOL)distance;
+- (void)setHasEmojiUsed:(BOOL)used;
+- (void)setHasKeyboardLocale:(BOOL)locale;
+- (void)setHasLengthInChars:(BOOL)chars;
+- (void)setHasLengthInWords:(BOOL)words;
+- (void)setHasNumCharsAdded:(BOOL)added;
+- (void)setHasNumCharsDeleted:(BOOL)deleted;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaKeyboardDismissed
 
-- (SISchemaKeyboardDismissed)initWithDictionary:(id)a3
+- (SISchemaKeyboardDismissed)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = SISchemaKeyboardDismissed;
   v5 = [(SISchemaKeyboardDismissed *)&v17 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"keyboardUsed"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"keyboardUsed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -34,49 +34,49 @@
     }
 
     v16 = v6;
-    v7 = [v4 objectForKeyedSubscript:@"lengthInWords"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"lengthInWords"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaKeyboardDismissed setLengthInWords:](v5, "setLengthInWords:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"lengthInChars"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"lengthInChars"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaKeyboardDismissed setLengthInChars:](v5, "setLengthInChars:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"numCharsAdded"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"numCharsAdded"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaKeyboardDismissed setNumCharsAdded:](v5, "setNumCharsAdded:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"numCharsDeleted"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"numCharsDeleted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaKeyboardDismissed setNumCharsDeleted:](v5, "setNumCharsDeleted:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"editDistance"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"editDistance"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaKeyboardDismissed setEditDistance:](v5, "setEditDistance:", [v11 intValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"emojiUsed"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"emojiUsed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaKeyboardDismissed setEmojiUsed:](v5, "setEmojiUsed:", [v12 BOOLValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"keyboardLocale"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"keyboardLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,30 +89,30 @@
   return v5;
 }
 
-- (SISchemaKeyboardDismissed)initWithJSON:(id)a3
+- (SISchemaKeyboardDismissed)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaKeyboardDismissed *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaKeyboardDismissed *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaKeyboardDismissed *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -125,12 +125,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x20) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[SISchemaKeyboardDismissed editDistance](self, "editDistance")}];
-    [v3 setObject:v7 forKeyedSubscript:@"editDistance"];
+    [dictionary setObject:v7 forKeyedSubscript:@"editDistance"];
 
     has = self->_has;
     if ((has & 0x40) == 0)
@@ -151,7 +151,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaKeyboardDismissed emojiUsed](self, "emojiUsed")}];
-  [v3 setObject:v8 forKeyedSubscript:@"emojiUsed"];
+  [dictionary setObject:v8 forKeyedSubscript:@"emojiUsed"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -177,7 +177,7 @@ LABEL_15:
     v10 = off_1E78E5F28[v9];
   }
 
-  [v3 setObject:v10 forKeyedSubscript:@"keyboardLocale"];
+  [dictionary setObject:v10 forKeyedSubscript:@"keyboardLocale"];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -192,7 +192,7 @@ LABEL_5:
 
 LABEL_19:
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaKeyboardDismissed keyboardUsed](self, "keyboardUsed")}];
-  [v3 setObject:v11 forKeyedSubscript:@"keyboardUsed"];
+  [dictionary setObject:v11 forKeyedSubscript:@"keyboardUsed"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -208,7 +208,7 @@ LABEL_6:
 
 LABEL_20:
   v12 = [MEMORY[0x1E696AD98] numberWithInt:{-[SISchemaKeyboardDismissed lengthInChars](self, "lengthInChars")}];
-  [v3 setObject:v12 forKeyedSubscript:@"lengthInChars"];
+  [dictionary setObject:v12 forKeyedSubscript:@"lengthInChars"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -224,7 +224,7 @@ LABEL_7:
 
 LABEL_21:
   v13 = [MEMORY[0x1E696AD98] numberWithInt:{-[SISchemaKeyboardDismissed lengthInWords](self, "lengthInWords")}];
-  [v3 setObject:v13 forKeyedSubscript:@"lengthInWords"];
+  [dictionary setObject:v13 forKeyedSubscript:@"lengthInWords"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -240,19 +240,19 @@ LABEL_8:
 
 LABEL_22:
   v14 = [MEMORY[0x1E696AD98] numberWithInt:{-[SISchemaKeyboardDismissed numCharsAdded](self, "numCharsAdded")}];
-  [v3 setObject:v14 forKeyedSubscript:@"numCharsAdded"];
+  [dictionary setObject:v14 forKeyedSubscript:@"numCharsAdded"];
 
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_9:
     v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[SISchemaKeyboardDismissed numCharsDeleted](self, "numCharsDeleted")}];
-    [v3 setObject:v5 forKeyedSubscript:@"numCharsDeleted"];
+    [dictionary setObject:v5 forKeyedSubscript:@"numCharsDeleted"];
   }
 
 LABEL_10:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -365,16 +365,16 @@ LABEL_9:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_34;
   }
 
   has = self->_has;
-  v6 = v4[40];
+  v6 = equalCopy[40];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_34;
@@ -383,13 +383,13 @@ LABEL_9:
   if (*&has)
   {
     keyboardUsed = self->_keyboardUsed;
-    if (keyboardUsed != [v4 keyboardUsed])
+    if (keyboardUsed != [equalCopy keyboardUsed])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -401,13 +401,13 @@ LABEL_9:
   if (v8)
   {
     lengthInWords = self->_lengthInWords;
-    if (lengthInWords != [v4 lengthInWords])
+    if (lengthInWords != [equalCopy lengthInWords])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -419,13 +419,13 @@ LABEL_9:
   if (v10)
   {
     lengthInChars = self->_lengthInChars;
-    if (lengthInChars != [v4 lengthInChars])
+    if (lengthInChars != [equalCopy lengthInChars])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -437,13 +437,13 @@ LABEL_9:
   if (v12)
   {
     numCharsAdded = self->_numCharsAdded;
-    if (numCharsAdded != [v4 numCharsAdded])
+    if (numCharsAdded != [equalCopy numCharsAdded])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v14 = (*&has >> 4) & 1;
@@ -455,13 +455,13 @@ LABEL_9:
   if (v14)
   {
     numCharsDeleted = self->_numCharsDeleted;
-    if (numCharsDeleted != [v4 numCharsDeleted])
+    if (numCharsDeleted != [equalCopy numCharsDeleted])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v16 = (*&has >> 5) & 1;
@@ -473,13 +473,13 @@ LABEL_9:
   if (v16)
   {
     editDistance = self->_editDistance;
-    if (editDistance != [v4 editDistance])
+    if (editDistance != [equalCopy editDistance])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v18 = (*&has >> 6) & 1;
@@ -491,10 +491,10 @@ LABEL_9:
   if (v18)
   {
     emojiUsed = self->_emojiUsed;
-    if (emojiUsed == [v4 emojiUsed])
+    if (emojiUsed == [equalCopy emojiUsed])
     {
       has = self->_has;
-      v6 = v4[40];
+      v6 = equalCopy[40];
       goto LABEL_30;
     }
 
@@ -512,7 +512,7 @@ LABEL_30:
   if ((*&has & 0x80) != 0)
   {
     keyboardLocale = self->_keyboardLocale;
-    if (keyboardLocale != [v4 keyboardLocale])
+    if (keyboardLocale != [equalCopy keyboardLocale])
     {
       goto LABEL_34;
     }
@@ -524,9 +524,9 @@ LABEL_35:
   return v21;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -630,9 +630,9 @@ LABEL_19:
 LABEL_9:
 }
 
-- (void)setHasKeyboardLocale:(BOOL)a3
+- (void)setHasKeyboardLocale:(BOOL)locale
 {
-  if (a3)
+  if (locale)
   {
     v3 = 0x80;
   }
@@ -645,9 +645,9 @@ LABEL_9:
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasEmojiUsed:(BOOL)a3
+- (void)setHasEmojiUsed:(BOOL)used
 {
-  if (a3)
+  if (used)
   {
     v3 = 64;
   }
@@ -660,9 +660,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasEditDistance:(BOOL)a3
+- (void)setHasEditDistance:(BOOL)distance
 {
-  if (a3)
+  if (distance)
   {
     v3 = 32;
   }
@@ -675,9 +675,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasNumCharsDeleted:(BOOL)a3
+- (void)setHasNumCharsDeleted:(BOOL)deleted
 {
-  if (a3)
+  if (deleted)
   {
     v3 = 16;
   }
@@ -690,9 +690,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasNumCharsAdded:(BOOL)a3
+- (void)setHasNumCharsAdded:(BOOL)added
 {
-  if (a3)
+  if (added)
   {
     v3 = 8;
   }
@@ -705,9 +705,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasLengthInChars:(BOOL)a3
+- (void)setHasLengthInChars:(BOOL)chars
 {
-  if (a3)
+  if (chars)
   {
     v3 = 4;
   }
@@ -720,9 +720,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasLengthInWords:(BOOL)a3
+- (void)setHasLengthInWords:(BOOL)words
 {
-  if (a3)
+  if (words)
   {
     v3 = 2;
   }

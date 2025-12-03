@@ -1,11 +1,11 @@
 @interface WFDictateTextActionView
 - (UITextView)textView;
 - (WFDictateTextActionStopButton)stopButton;
-- (WFDictateTextActionView)initWithFrame:(CGRect)a3 padded:(BOOL)a4;
+- (WFDictateTextActionView)initWithFrame:(CGRect)frame padded:(BOOL)padded;
 - (WFDictateTextActionViewDelegate)delegate;
 - (void)dealloc;
 - (void)stopButtonTapped;
-- (void)updateWithTranscription:(id)a3;
+- (void)updateWithTranscription:(id)transcription;
 @end
 
 @implementation WFDictateTextActionView
@@ -31,50 +31,50 @@
   return WeakRetained;
 }
 
-- (void)updateWithTranscription:(id)a3
+- (void)updateWithTranscription:(id)transcription
 {
-  v4 = a3;
-  v5 = [(WFDictateTextActionView *)self textView];
-  [v5 setText:v4];
+  transcriptionCopy = transcription;
+  textView = [(WFDictateTextActionView *)self textView];
+  [textView setText:transcriptionCopy];
 
-  v7 = [(WFDictateTextActionView *)self textView];
-  v6 = [v4 length];
+  textView2 = [(WFDictateTextActionView *)self textView];
+  v6 = [transcriptionCopy length];
 
-  [v7 scrollRangeToVisible:{v6, 0}];
+  [textView2 scrollRangeToVisible:{v6, 0}];
 }
 
 - (void)stopButtonTapped
 {
-  v3 = [(WFDictateTextActionView *)self stopButton];
-  [v3 setEnabled:0];
+  stopButton = [(WFDictateTextActionView *)self stopButton];
+  [stopButton setEnabled:0];
 
-  v4 = [(WFDictateTextActionView *)self delegate];
+  delegate = [(WFDictateTextActionView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(WFDictateTextActionView *)self delegate];
-    [v6 dictateTextActionViewDidTapStopButton:self];
+    delegate2 = [(WFDictateTextActionView *)self delegate];
+    [delegate2 dictateTextActionViewDidTapStopButton:self];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CB8210] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CB8210] object:0];
 
   v4.receiver = self;
   v4.super_class = WFDictateTextActionView;
   [(WFDictateTextActionView *)&v4 dealloc];
 }
 
-- (WFDictateTextActionView)initWithFrame:(CGRect)a3 padded:(BOOL)a4
+- (WFDictateTextActionView)initWithFrame:(CGRect)frame padded:(BOOL)padded
 {
-  v4 = a4;
+  paddedCopy = padded;
   v31[1] = *MEMORY[0x277D85DE8];
   v29.receiver = self;
   v29.super_class = WFDictateTextActionView;
-  v5 = [(WFDictateTextActionView *)&v29 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(WFDictateTextActionView *)&v29 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x277D75C40]);
@@ -82,8 +82,8 @@
     v7 = objc_alloc(MEMORY[0x277CCA898]);
     v8 = WFLocalizedString(@"Now listening…");
     v30 = *MEMORY[0x277D740C0];
-    v9 = [MEMORY[0x277D75348] placeholderTextColor];
-    v31[0] = v9;
+    placeholderTextColor = [MEMORY[0x277D75348] placeholderTextColor];
+    v31[0] = placeholderTextColor;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:&v30 count:1];
     v11 = [v7 initWithString:v8 attributes:v10];
     [v6 setAttributedPlaceholder:v11];
@@ -91,11 +91,11 @@
     v12 = [MEMORY[0x277D74300] systemFontOfSize:18.0];
     [v6 setFont:v12];
 
-    v13 = [MEMORY[0x277D75348] labelColor];
-    [v6 setTextColor:v13];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [v6 setTextColor:labelColor];
 
-    v14 = [MEMORY[0x277D75348] clearColor];
-    [v6 setBackgroundColor:v14];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v6 setBackgroundColor:clearColor];
 
     [v6 setTextContainerInset:{8.0, 8.0, 8.0, 8.0}];
     [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -107,8 +107,8 @@
     [v15 setRecording:1 animated:0];
     [(WFDictateTextActionView *)v5 addSubview:v15];
     [(WFDictateTextActionView *)v5 setStopButton:v15];
-    v16 = !v4;
-    if (v4)
+    v16 = !paddedCopy;
+    if (paddedCopy)
     {
       v17 = @"H:|-8-[textView]-8-|";
     }

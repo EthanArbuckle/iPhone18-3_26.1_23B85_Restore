@@ -1,36 +1,36 @@
 @interface ATResponse
-- (ATResponse)initWithCoder:(id)a3;
+- (ATResponse)initWithCoder:(id)coder;
 - (id)additionalDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATResponse
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ATResponse;
-  v4 = a3;
-  [(ATMessage *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(ATMessage *)&v6 encodeWithCoder:coderCopy];
   v5 = [(NSError *)self->_error msv_errorByRemovingUnsafeUserInfo:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"error"];
+  [coderCopy encodeObject:v5 forKey:@"error"];
 
-  [v4 encodeBool:self->_partial forKey:@"isPartial"];
+  [coderCopy encodeBool:self->_partial forKey:@"isPartial"];
 }
 
-- (ATResponse)initWithCoder:(id)a3
+- (ATResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ATResponse;
-  v5 = [(ATMessage *)&v9 initWithCoder:v4];
+  v5 = [(ATMessage *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
     error = v5->_error;
     v5->_error = v6;
 
-    v5->_partial = [v4 decodeBoolForKey:@"isPartial"];
+    v5->_partial = [coderCopy decodeBoolForKey:@"isPartial"];
   }
 
   return v5;
@@ -39,8 +39,8 @@
 - (id)additionalDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(ATResponse *)self error];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  error = [(ATResponse *)self error];
+  v4 = [v2 stringWithFormat:@"%@", error];
 
   return v4;
 }

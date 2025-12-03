@@ -1,18 +1,18 @@
 @interface RoutePlanningRouteStepsOutlineSection
-- (BOOL)shouldHighlightItemAtIndexPath:(id)a3;
-- (BOOL)shouldSelectItemAtIndexPath:(id)a3;
-- (NSDirectionalEdgeInsets)_separatorInsetsForIndexPath:(id)a3;
+- (BOOL)shouldHighlightItemAtIndexPath:(id)path;
+- (BOOL)shouldSelectItemAtIndexPath:(id)path;
+- (NSDirectionalEdgeInsets)_separatorInsetsForIndexPath:(id)path;
 - (TransitDirectionsStepsListDelegate)stepsListDelegate;
-- (id)cellForItemAtIndexPath:(id)a3;
-- (id)layoutSectionAtIndex:(int64_t)a3 layoutEnvironment:(id)a4;
-- (id)listLayoutSectionConfigurationAtIndex:(int64_t)a3 layoutEnvironment:(id)a4;
-- (void)_configureCell:(id)a3 forIndexPath:(id)a4;
-- (void)didHighlightItemAtIndexPath:(id)a3;
-- (void)didSelectItemAtIndexPath:(id)a3;
-- (void)didUnhighlightItemAtIndexPath:(id)a3;
-- (void)setCurrentRoute:(BOOL)a3;
-- (void)setRoute:(id)a3;
-- (void)setStepsListDelegate:(id)a3;
+- (id)cellForItemAtIndexPath:(id)path;
+- (id)layoutSectionAtIndex:(int64_t)index layoutEnvironment:(id)environment;
+- (id)listLayoutSectionConfigurationAtIndex:(int64_t)index layoutEnvironment:(id)environment;
+- (void)_configureCell:(id)cell forIndexPath:(id)path;
+- (void)didHighlightItemAtIndexPath:(id)path;
+- (void)didSelectItemAtIndexPath:(id)path;
+- (void)didUnhighlightItemAtIndexPath:(id)path;
+- (void)setCurrentRoute:(BOOL)route;
+- (void)setRoute:(id)route;
+- (void)setStepsListDelegate:(id)delegate;
 @end
 
 @implementation RoutePlanningRouteStepsOutlineSection
@@ -24,28 +24,28 @@
   return WeakRetained;
 }
 
-- (void)didSelectItemAtIndexPath:(id)a3
+- (void)didSelectItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if (objc_opt_respondsToSelector())
   {
-    [(DirectionsStepsListDataSource *)self->_stepsListDataSource collectionView:self->super._collectionView didSelectItemAtIndexPath:v4];
+    [(DirectionsStepsListDataSource *)self->_stepsListDataSource collectionView:self->super._collectionView didSelectItemAtIndexPath:pathCopy];
   }
 }
 
-- (BOOL)shouldSelectItemAtIndexPath:(id)a3
+- (BOOL)shouldSelectItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(DirectionsStepsListDataSource *)self->_stepsListDataSource collectionView:self->super._collectionView shouldSelectItemAtIndexPath:v4];
+    v5 = [(DirectionsStepsListDataSource *)self->_stepsListDataSource collectionView:self->super._collectionView shouldSelectItemAtIndexPath:pathCopy];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = RoutePlanningRouteStepsOutlineSection;
-    v5 = [(RoutePlanningOutlineSection *)&v8 shouldSelectItemAtIndexPath:v4];
+    v5 = [(RoutePlanningOutlineSection *)&v8 shouldSelectItemAtIndexPath:pathCopy];
   }
 
   v6 = v5;
@@ -53,37 +53,37 @@
   return v6;
 }
 
-- (void)didUnhighlightItemAtIndexPath:(id)a3
+- (void)didUnhighlightItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if (objc_opt_respondsToSelector())
   {
-    [(DirectionsStepsListDataSource *)self->_stepsListDataSource collectionView:self->super._collectionView didUnhighlightItemAtIndexPath:v4];
+    [(DirectionsStepsListDataSource *)self->_stepsListDataSource collectionView:self->super._collectionView didUnhighlightItemAtIndexPath:pathCopy];
   }
 }
 
-- (void)didHighlightItemAtIndexPath:(id)a3
+- (void)didHighlightItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if (objc_opt_respondsToSelector())
   {
-    [(DirectionsStepsListDataSource *)self->_stepsListDataSource collectionView:self->super._collectionView didHighlightItemAtIndexPath:v4];
+    [(DirectionsStepsListDataSource *)self->_stepsListDataSource collectionView:self->super._collectionView didHighlightItemAtIndexPath:pathCopy];
   }
 }
 
-- (BOOL)shouldHighlightItemAtIndexPath:(id)a3
+- (BOOL)shouldHighlightItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(DirectionsStepsListDataSource *)self->_stepsListDataSource collectionView:self->super._collectionView shouldHighlightItemAtIndexPath:v4];
+    v5 = [(DirectionsStepsListDataSource *)self->_stepsListDataSource collectionView:self->super._collectionView shouldHighlightItemAtIndexPath:pathCopy];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = RoutePlanningRouteStepsOutlineSection;
-    v5 = [(RoutePlanningOutlineSection *)&v8 shouldHighlightItemAtIndexPath:v4];
+    v5 = [(RoutePlanningOutlineSection *)&v8 shouldHighlightItemAtIndexPath:pathCopy];
   }
 
   v6 = v5;
@@ -91,16 +91,16 @@
   return v6;
 }
 
-- (void)_configureCell:(id)a3 forIndexPath:(id)a4
+- (void)_configureCell:(id)cell forIndexPath:(id)path
 {
-  v10 = a3;
-  v6 = a4;
+  cellCopy = cell;
+  pathCopy = path;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v10;
-    v8 = [v6 item];
-    if (v8 == -[RoutePlanningRouteStepsOutlineSection numberOfItemsInSection:](self, "numberOfItemsInSection:", [v6 section]) - 1)
+    v7 = cellCopy;
+    item = [pathCopy item];
+    if (item == -[RoutePlanningRouteStepsOutlineSection numberOfItemsInSection:](self, "numberOfItemsInSection:", [pathCopy section]) - 1)
     {
       v9 = 4;
     }
@@ -113,23 +113,23 @@
     [v7 _setBackgroundViewConfigurationGrouping:v9];
   }
 
-  [v10 setMaps_suppressBackgroundColors:{-[RoutePlanningRouteStepsOutlineSection isCurrentRoute](self, "isCurrentRoute") ^ 1}];
+  [cellCopy setMaps_suppressBackgroundColors:{-[RoutePlanningRouteStepsOutlineSection isCurrentRoute](self, "isCurrentRoute") ^ 1}];
 }
 
-- (id)cellForItemAtIndexPath:(id)a3
+- (id)cellForItemAtIndexPath:(id)path
 {
   stepsListDataSource = self->_stepsListDataSource;
   collectionView = self->super._collectionView;
-  v6 = a3;
-  v7 = [(DirectionsStepsListDataSource *)stepsListDataSource collectionView:collectionView cellForItemAtIndexPath:v6];
-  [(RoutePlanningRouteStepsOutlineSection *)self _configureCell:v7 forIndexPath:v6];
+  pathCopy = path;
+  v7 = [(DirectionsStepsListDataSource *)stepsListDataSource collectionView:collectionView cellForItemAtIndexPath:pathCopy];
+  [(RoutePlanningRouteStepsOutlineSection *)self _configureCell:v7 forIndexPath:pathCopy];
 
   return v7;
 }
 
-- (void)setStepsListDelegate:(id)a3
+- (void)setStepsListDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_stepsListDelegate);
 
   if (WeakRetained != obj)
@@ -139,21 +139,21 @@
   }
 }
 
-- (void)setCurrentRoute:(BOOL)a3
+- (void)setCurrentRoute:(BOOL)route
 {
-  if (self->_currentRoute != a3)
+  if (self->_currentRoute != route)
   {
-    v3 = a3;
-    self->_currentRoute = a3;
-    v5 = [(RoutePlanningOutlineSection *)self host];
-    v6 = [v5 sectionIndexForOutlineSection:self];
+    routeCopy = route;
+    self->_currentRoute = route;
+    host = [(RoutePlanningOutlineSection *)self host];
+    v6 = [host sectionIndexForOutlineSection:self];
 
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [(UICollectionView *)self->super._collectionView indexPathsForVisibleItems];
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    indexPathsForVisibleItems = [(UICollectionView *)self->super._collectionView indexPathsForVisibleItems];
+    v8 = [indexPathsForVisibleItems countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
       v9 = v8;
@@ -164,18 +164,18 @@
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(indexPathsForVisibleItems);
           }
 
           v12 = *(*(&v14 + 1) + 8 * i);
           if ([v12 section] == v6)
           {
             v13 = [(UICollectionView *)self->super._collectionView cellForItemAtIndexPath:v12];
-            [v13 setMaps_suppressBackgroundColors:!v3];
+            [v13 setMaps_suppressBackgroundColors:!routeCopy];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [indexPathsForVisibleItems countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v9);
@@ -183,20 +183,20 @@
   }
 }
 
-- (void)setRoute:(id)a3
+- (void)setRoute:(id)route
 {
-  v5 = a3;
+  routeCopy = route;
   route = self->_route;
-  v7 = v5;
-  v8 = route;
-  if (v7 | v8)
+  v7 = routeCopy;
+  routeCopy2 = route;
+  if (v7 | routeCopy2)
   {
-    v9 = v8;
-    v10 = [v7 isEqual:v8];
+    v9 = routeCopy2;
+    v10 = [v7 isEqual:routeCopy2];
 
     if ((v10 & 1) == 0)
     {
-      objc_storeStrong(&self->_route, a3);
+      objc_storeStrong(&self->_route, route);
       stepsListDataSource = self->_stepsListDataSource;
       if (stepsListDataSource)
       {
@@ -207,9 +207,9 @@
 
       if (v7)
       {
-        v13 = [v7 transportType];
+        transportType = [v7 transportType];
         v14 = off_1015F6670;
-        if (v13 != 1)
+        if (transportType != 1)
         {
           v14 = off_1015F6228;
         }
@@ -220,8 +220,8 @@
 
         [(DirectionsStepsListDataSource *)self->_stepsListDataSource setAllowStepSelection:1];
         [(DirectionsStepsListDataSource *)self->_stepsListDataSource setFlattenToSingleSection:1];
-        v17 = [(RoutePlanningRouteStepsOutlineSection *)self stepsListDelegate];
-        [(DirectionsStepsListDataSource *)self->_stepsListDataSource setDelegate:v17];
+        stepsListDelegate = [(RoutePlanningRouteStepsOutlineSection *)self stepsListDelegate];
+        [(DirectionsStepsListDataSource *)self->_stepsListDataSource setDelegate:stepsListDelegate];
 
         [(DirectionsStepsListDataSource *)self->_stepsListDataSource setOptions:15];
         [(DirectionsStepsListDataSource *)self->_stepsListDataSource setRoute:v7];
@@ -242,16 +242,16 @@
 
       else
       {
-        v19 = [(RoutePlanningOutlineSection *)self host];
-        [v19 outlineSectionRequiresReload:self];
+        host = [(RoutePlanningOutlineSection *)self host];
+        [host outlineSectionRequiresReload:self];
       }
     }
   }
 }
 
-- (NSDirectionalEdgeInsets)_separatorInsetsForIndexPath:(id)a3
+- (NSDirectionalEdgeInsets)_separatorInsetsForIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = _UICollectionViewListLayoutSectionAutomaticDimension;
   *&v19 = _UICollectionViewListLayoutSectionAutomaticDimension;
   *(&v19 + 1) = _UICollectionViewListLayoutSectionAutomaticDimension;
@@ -270,7 +270,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (([(DirectionsStepsListDataSource *)self->_stepsListDataSource shouldShowSeparatorForItemAtIndexPath:v4 insets:&v19]& 1) == 0)
+      if (([(DirectionsStepsListDataSource *)self->_stepsListDataSource shouldShowSeparatorForItemAtIndexPath:pathCopy insets:&v19]& 1) == 0)
       {
         v9 = *&_UICollectionViewListSectionSeparatorInsetHidden[2];
         v19 = *_UICollectionViewListSectionSeparatorInsetHidden;
@@ -285,8 +285,8 @@
 
     else
     {
-      v10 = [v4 row];
-      if (v10 >= (-[DirectionsStepsListDataSource collectionView:numberOfItemsInSection:](self->_stepsListDataSource, "collectionView:numberOfItemsInSection:", self->super._collectionView, [v4 section]) - 1))
+      v10 = [pathCopy row];
+      if (v10 >= (-[DirectionsStepsListDataSource collectionView:numberOfItemsInSection:](self->_stepsListDataSource, "collectionView:numberOfItemsInSection:", self->super._collectionView, [pathCopy section]) - 1))
       {
         v6 = v5;
       }
@@ -295,8 +295,8 @@
       {
         objc_opt_class();
         objc_opt_isKindOfClass();
-        v11 = [(UICollectionView *)self->super._collectionView traitCollection];
-        +[DirectionsStepTableViewCell cellMetricsForIdiom:](DirectionsStepTableViewCell, "cellMetricsForIdiom:", [v11 userInterfaceIdiom]);
+        traitCollection = [(UICollectionView *)self->super._collectionView traitCollection];
+        +[DirectionsStepTableViewCell cellMetricsForIdiom:](DirectionsStepTableViewCell, "cellMetricsForIdiom:", [traitCollection userInterfaceIdiom]);
         v6 = v18 + v16 + v17;
       }
 
@@ -316,12 +316,12 @@
   return result;
 }
 
-- (id)listLayoutSectionConfigurationAtIndex:(int64_t)a3 layoutEnvironment:(id)a4
+- (id)listLayoutSectionConfigurationAtIndex:(int64_t)index layoutEnvironment:(id)environment
 {
-  v6 = a4;
+  environmentCopy = environment;
   v13.receiver = self;
   v13.super_class = RoutePlanningRouteStepsOutlineSection;
-  v7 = [(RoutePlanningOutlineSection *)&v13 listLayoutSectionConfigurationAtIndex:a3 layoutEnvironment:v6];
+  v7 = [(RoutePlanningOutlineSection *)&v13 listLayoutSectionConfigurationAtIndex:index layoutEnvironment:environmentCopy];
   v8 = _UICollectionViewListLayoutSectionAutomaticDimension;
   [v7 setEstimatedRowHeight:_UICollectionViewListLayoutSectionAutomaticDimension];
   [v7 setRowHeight:v8];
@@ -339,11 +339,11 @@
   return v7;
 }
 
-- (id)layoutSectionAtIndex:(int64_t)a3 layoutEnvironment:(id)a4
+- (id)layoutSectionAtIndex:(int64_t)index layoutEnvironment:(id)environment
 {
   v6.receiver = self;
   v6.super_class = RoutePlanningRouteStepsOutlineSection;
-  v4 = [(RoutePlanningOutlineSection *)&v6 layoutSectionAtIndex:a3 layoutEnvironment:a4];
+  v4 = [(RoutePlanningOutlineSection *)&v6 layoutSectionAtIndex:index layoutEnvironment:environment];
   [v4 setContentInsets:{0.0, 10.0, 0.0, 10.0}];
 
   return v4;

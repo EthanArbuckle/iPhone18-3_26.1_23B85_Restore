@@ -1,16 +1,16 @@
 @interface SBMutableLockScreenPluginPresentation
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SBMutableLockScreenPluginPresentation
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SBLockScreenPluginPresentation);
   [(SBLockScreenPluginPresentation *)self suggestedContentInsets];
   [(SBLockScreenPluginPresentation *)v4 setSuggestedContentInsets:?];
-  v5 = [(SBLockScreenPluginPresentation *)self legibilitySettings];
-  [(SBLockScreenPluginPresentation *)v4 setLegibilitySettings:v5];
+  legibilitySettings = [(SBLockScreenPluginPresentation *)self legibilitySettings];
+  [(SBLockScreenPluginPresentation *)v4 setLegibilitySettings:legibilitySettings];
 
   return v4;
 }

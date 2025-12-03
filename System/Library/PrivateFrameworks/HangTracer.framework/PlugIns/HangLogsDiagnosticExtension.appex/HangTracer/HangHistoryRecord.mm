@@ -1,13 +1,13 @@
 @interface HangHistoryRecord
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation HangHistoryRecord
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  [v4 hangDuration];
+  compareCopy = compare;
+  [compareCopy hangDuration];
   v6 = v5;
   [(HangHistoryRecord *)self hangDuration];
   if (v6 == v7)
@@ -17,7 +17,7 @@
 
   else
   {
-    [v4 hangDuration];
+    [compareCopy hangDuration];
     v10 = v9;
     [(HangHistoryRecord *)self hangDuration];
     if (v10 < v11)

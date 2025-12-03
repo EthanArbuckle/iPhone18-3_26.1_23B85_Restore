@@ -1,9 +1,9 @@
 @interface WriterReorderQ
 - (WriterReorderQ)init;
 - (id)clearQueuedFrameSet;
-- (id)getReorderedFrameSet:(id)a3;
+- (id)getReorderedFrameSet:(id)set;
 - (void)clearQueuedFrameSet;
-- (void)setLastReorderedTime:(id *)a3;
+- (void)setLastReorderedTime:(id *)time;
 @end
 
 @implementation WriterReorderQ
@@ -27,15 +27,15 @@
   return v3;
 }
 
-- (id)getReorderedFrameSet:(id)a3
+- (id)getReorderedFrameSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   memset(&v25, 0, sizeof(v25));
-  v5 = [v4 colorSampleBuffer];
-  v6 = v5;
-  if (v5)
+  colorSampleBuffer = [setCopy colorSampleBuffer];
+  v6 = colorSampleBuffer;
+  if (colorSampleBuffer)
   {
-    [v5 presentationTimeStamp];
+    [colorSampleBuffer presentationTimeStamp];
   }
 
   else
@@ -52,17 +52,17 @@
     }
   }
 
-  v8 = [(WriterReorderQ *)self frameSet];
+  frameSet = [(WriterReorderQ *)self frameSet];
 
-  if (v8)
+  if (frameSet)
   {
     memset(&v24, 0, sizeof(v24));
-    v9 = [(WriterReorderQ *)self frameSet];
-    v10 = [v9 colorSampleBuffer];
-    v11 = v10;
-    if (v10)
+    frameSet2 = [(WriterReorderQ *)self frameSet];
+    colorSampleBuffer2 = [frameSet2 colorSampleBuffer];
+    v11 = colorSampleBuffer2;
+    if (colorSampleBuffer2)
     {
-      [v10 presentationTimeStamp];
+      [colorSampleBuffer2 presentationTimeStamp];
     }
 
     else
@@ -82,7 +82,7 @@
         [WriterReorderQ getReorderedFrameSet:?];
       }
 
-      v16 = v4;
+      frameSet3 = setCopy;
     }
 
     else
@@ -92,16 +92,16 @@
         [WriterReorderQ getReorderedFrameSet:?];
       }
 
-      v16 = [(WriterReorderQ *)self frameSet];
-      [(WriterReorderQ *)self setFrameSet:v4];
+      frameSet3 = [(WriterReorderQ *)self frameSet];
+      [(WriterReorderQ *)self setFrameSet:setCopy];
     }
 
     memset(&time1, 0, sizeof(time1));
-    v17 = [v16 colorSampleBuffer];
-    v18 = v17;
-    if (v17)
+    colorSampleBuffer3 = [frameSet3 colorSampleBuffer];
+    v18 = colorSampleBuffer3;
+    if (colorSampleBuffer3)
     {
-      [v17 presentationTimeStamp];
+      [colorSampleBuffer3 presentationTimeStamp];
     }
 
     else
@@ -133,13 +133,13 @@
       [WriterReorderQ getReorderedFrameSet:?];
     }
 
-    [(WriterReorderQ *)self setFrameSet:v4];
+    [(WriterReorderQ *)self setFrameSet:setCopy];
   }
 
-  v16 = 0;
+  frameSet3 = 0;
 LABEL_31:
 
-  return v16;
+  return frameSet3;
 }
 
 - (id)clearQueuedFrameSet
@@ -150,16 +150,16 @@ LABEL_31:
     [(WriterReorderQ *)self clearQueuedFrameSet];
   }
 
-  v4 = [(WriterReorderQ *)self frameSet];
+  frameSet = [(WriterReorderQ *)self frameSet];
   [(WriterReorderQ *)self setFrameSet:0];
 
-  return v4;
+  return frameSet;
 }
 
-- (void)setLastReorderedTime:(id *)a3
+- (void)setLastReorderedTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_lastReorderedTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_lastReorderedTime.epoch = time->var3;
   *&self->_lastReorderedTime.value = v3;
 }
 
@@ -190,12 +190,12 @@ LABEL_31:
 - (void)clearQueuedFrameSet
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = [a1 frameSet];
-  v4 = [v3 colorSampleBuffer];
-  v5 = v4;
-  if (v4)
+  frameSet = [self frameSet];
+  colorSampleBuffer = [frameSet colorSampleBuffer];
+  v5 = colorSampleBuffer;
+  if (colorSampleBuffer)
   {
-    [v4 presentationTimeStamp];
+    [colorSampleBuffer presentationTimeStamp];
   }
 
   else

@@ -1,39 +1,39 @@
 @interface TRIRecurrentScheduleFetchRollbacksTask
-+ (id)parseFromData:(id)a3;
-+ (id)taskWithAttribution:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)parseFromData:(id)data;
++ (id)taskWithAttribution:(id)attribution;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)tags;
-- (TRIRecurrentScheduleFetchRollbacksTask)initWithCoder:(id)a3;
-- (TRIRecurrentScheduleFetchRollbacksTask)initWithTaskAttribution:(id)a3 isRepeatedInstance:(BOOL)a4;
+- (TRIRecurrentScheduleFetchRollbacksTask)initWithCoder:(id)coder;
+- (TRIRecurrentScheduleFetchRollbacksTask)initWithTaskAttribution:(id)attribution isRepeatedInstance:(BOOL)instance;
 - (id)_asPersistedTask;
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4;
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue;
 - (id)serialize;
 - (unint64_t)hash;
 - (unint64_t)requiredCapabilities;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRIRecurrentScheduleFetchRollbacksTask
 
-+ (id)taskWithAttribution:(id)a3
++ (id)taskWithAttribution:(id)attribution
 {
-  v3 = a3;
-  v4 = [[TRIRecurrentScheduleFetchRollbacksTask alloc] initWithTaskAttribution:v3 isRepeatedInstance:0];
+  attributionCopy = attribution;
+  v4 = [[TRIRecurrentScheduleFetchRollbacksTask alloc] initWithTaskAttribution:attributionCopy isRepeatedInstance:0];
 
   return v4;
 }
 
-- (TRIRecurrentScheduleFetchRollbacksTask)initWithTaskAttribution:(id)a3 isRepeatedInstance:(BOOL)a4
+- (TRIRecurrentScheduleFetchRollbacksTask)initWithTaskAttribution:(id)attribution isRepeatedInstance:(BOOL)instance
 {
-  v7 = a3;
+  attributionCopy = attribution;
   v11.receiver = self;
   v11.super_class = TRIRecurrentScheduleFetchRollbacksTask;
   v8 = [(TRIRecurrentScheduleFetchRollbacksTask *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_taskAttribution, a3);
-    v9->_isRepeatedInstance = a4;
+    objc_storeStrong(&v8->_taskAttribution, attribution);
+    v9->_isRepeatedInstance = instance;
   }
 
   return v9;
@@ -44,11 +44,11 @@
   v3 = objc_alloc(MEMORY[0x277CBEB18]);
   v9.receiver = self;
   v9.super_class = TRIRecurrentScheduleFetchRollbacksTask;
-  v4 = [(TRIBaseTask *)&v9 tags];
-  v5 = v4;
-  if (v4)
+  tags = [(TRIBaseTask *)&v9 tags];
+  v5 = tags;
+  if (tags)
   {
-    v6 = v4;
+    v6 = tags;
   }
 
   else
@@ -64,7 +64,7 @@
   return v7;
 }
 
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue
 {
   v4 = TRILogCategory_Server();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -78,10 +78,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -90,17 +90,17 @@
   {
     v14.receiver = self;
     v14.super_class = TRIRecurrentScheduleFetchRollbacksTask;
-    if ([(TRIBaseTask *)&v14 isEqual:v4])
+    if ([(TRIBaseTask *)&v14 isEqual:equalCopy])
     {
       taskAttribution = self->_taskAttribution;
-      v6 = v4;
-      v7 = [(TRITaskAttributing *)taskAttribution asPersistedTaskAttribution];
-      v8 = [v7 data];
+      v6 = equalCopy;
+      asPersistedTaskAttribution = [(TRITaskAttributing *)taskAttribution asPersistedTaskAttribution];
+      data = [asPersistedTaskAttribution data];
       v9 = v6->_taskAttribution;
 
-      v10 = [(TRITaskAttributing *)v9 asPersistedTaskAttribution];
-      v11 = [v10 data];
-      v12 = [v8 isEqual:v11];
+      asPersistedTaskAttribution2 = [(TRITaskAttributing *)v9 asPersistedTaskAttribution];
+      data2 = [asPersistedTaskAttribution2 data];
+      v12 = [data isEqual:data2];
     }
 
     else
@@ -118,8 +118,8 @@
   v8.super_class = TRIRecurrentScheduleFetchRollbacksTask;
   v3 = 37 * [(TRIBaseTask *)&v8 hash];
   v4 = v3 + [(TRITaskAttributing *)self->_taskAttribution triCloudKitContainer];
-  v5 = [(TRITaskAttributing *)self->_taskAttribution teamIdentifier];
-  v6 = [v5 hash] + 37 * v4;
+  teamIdentifier = [(TRITaskAttributing *)self->_taskAttribution teamIdentifier];
+  v6 = [teamIdentifier hash] + 37 * v4;
 
   return v6;
 }
@@ -127,8 +127,8 @@
 - (id)_asPersistedTask
 {
   v3 = objc_opt_new();
-  v4 = [(TRITaskAttributing *)self->_taskAttribution asPersistedTaskAttribution];
-  [v3 setTaskAttribution:v4];
+  asPersistedTaskAttribution = [(TRITaskAttributing *)self->_taskAttribution asPersistedTaskAttribution];
+  [v3 setTaskAttribution:asPersistedTaskAttribution];
 
   [v3 setIsRepeatedInstance:self->_isRepeatedInstance];
 
@@ -137,25 +137,25 @@
 
 - (id)serialize
 {
-  v4 = [(TRIRecurrentScheduleFetchRollbacksTask *)self _asPersistedTask];
-  v5 = [v4 data];
+  _asPersistedTask = [(TRIRecurrentScheduleFetchRollbacksTask *)self _asPersistedTask];
+  data = [_asPersistedTask data];
 
-  if (!v5)
+  if (!data)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [v7 handleFailureInMethod:a2 object:self file:@"TRIRecurrentScheduleFetchRollbacksTask.m" lineNumber:113 description:{@"Unexpected failure to serialize %@", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRecurrentScheduleFetchRollbacksTask.m" lineNumber:113 description:{@"Unexpected failure to serialize %@", v9}];
   }
 
-  return v5;
+  return data;
 }
 
-+ (id)parseFromData:(id)a3
++ (id)parseFromData:(id)data
 {
   v18 = *MEMORY[0x277D85DE8];
   v15 = 0;
-  v3 = [(TRIPBMessage *)TRIRecurrentScheduleFetchRollbacksPersistedTask parseFromData:a3 error:&v15];
+  v3 = [(TRIPBMessage *)TRIRecurrentScheduleFetchRollbacksPersistedTask parseFromData:data error:&v15];
   v4 = v15;
   if (!v3)
   {
@@ -205,8 +205,8 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v5 = [v3 taskAttribution];
-  v6 = [TRITaskAttributionInternalInsecure taskAttributionFromPersistedTask:v5];
+  taskAttribution = [v3 taskAttribution];
+  v6 = [TRITaskAttributionInternalInsecure taskAttributionFromPersistedTask:taskAttribution];
 
   if (v6)
   {
@@ -233,21 +233,21 @@ LABEL_17:
 
 - (unint64_t)requiredCapabilities
 {
-  v2 = [(TRITaskAttributing *)self->_taskAttribution networkOptions];
-  v3 = [v2 requiredCapability];
+  networkOptions = [(TRITaskAttributing *)self->_taskAttribution networkOptions];
+  requiredCapability = [networkOptions requiredCapability];
 
-  return v3;
+  return requiredCapability;
 }
 
-- (TRIRecurrentScheduleFetchRollbacksTask)initWithCoder:(id)a3
+- (TRIRecurrentScheduleFetchRollbacksTask)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TRIRecurrentScheduleFetchRollbacksTask;
   v5 = [(TRIRecurrentScheduleFetchRollbacksTask *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
     if (v6)
     {
       v7 = [objc_opt_class() parseFromData:v6];
@@ -267,18 +267,18 @@ LABEL_17:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIRecurrentScheduleFetchRollbacksTask.m" lineNumber:146 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRecurrentScheduleFetchRollbacksTask.m" lineNumber:146 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
   }
 
-  v5 = [(TRIRecurrentScheduleFetchRollbacksTask *)self serialize];
-  [v7 encodeObject:v5 forKey:@"pb"];
+  serialize = [(TRIRecurrentScheduleFetchRollbacksTask *)self serialize];
+  [coderCopy encodeObject:serialize forKey:@"pb"];
 }
 
 @end

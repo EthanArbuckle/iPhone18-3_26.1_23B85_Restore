@@ -1,13 +1,13 @@
 @interface AIHeaderViewController
-- (_TtC12NewsArticles22AIHeaderViewController)initWithCoder:(id)a3;
-- (_TtC12NewsArticles22AIHeaderViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)sectionItemHeightForSize:(CGSize)a3 traitCollection:(id)a4;
+- (_TtC12NewsArticles22AIHeaderViewController)initWithCoder:(id)coder;
+- (_TtC12NewsArticles22AIHeaderViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)sectionItemHeightForSize:(CGSize)size traitCollection:(id)collection;
 - (void)viewDidLoad;
 @end
 
 @implementation AIHeaderViewController
 
-- (_TtC12NewsArticles22AIHeaderViewController)initWithCoder:(id)a3
+- (_TtC12NewsArticles22AIHeaderViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC12NewsArticles22AIHeaderViewController_label;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x1E69DCC10]) init];
@@ -27,11 +27,11 @@
   v5.super_class = swift_getObjectType();
   v2 = v5.receiver;
   [(AIHeaderViewController *)&v5 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    [v3 addSubview_];
+    v4 = view;
+    [view addSubview_];
   }
 
   else
@@ -40,18 +40,18 @@
   }
 }
 
-- (double)sectionItemHeightForSize:(CGSize)a3 traitCollection:(id)a4
+- (double)sectionItemHeightForSize:(CGSize)size traitCollection:(id)collection
 {
-  width = a3.width;
-  v6 = a4;
-  v7 = self;
+  width = size.width;
+  collectionCopy = collection;
+  selfCopy = self;
   sub_1D79D8370(width);
   v9 = v8;
 
   return v9;
 }
 
-- (_TtC12NewsArticles22AIHeaderViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12NewsArticles22AIHeaderViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

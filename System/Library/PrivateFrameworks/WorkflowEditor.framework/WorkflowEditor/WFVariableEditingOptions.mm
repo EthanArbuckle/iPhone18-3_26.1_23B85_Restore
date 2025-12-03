@@ -1,21 +1,21 @@
 @interface WFVariableEditingOptions
-- (BOOL)isEqual:(id)a3;
-- (WFVariableEditingOptions)initWithAnchor:(id)a3 resultType:(unint64_t)a4 onChange:(id)a5 onFinish:(id)a6;
-- (void)finishEditingReturningToKeyboard:(BOOL)a3;
-- (void)variableDidChange:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (WFVariableEditingOptions)initWithAnchor:(id)anchor resultType:(unint64_t)type onChange:(id)change onFinish:(id)finish;
+- (void)finishEditingReturningToKeyboard:(BOOL)keyboard;
+- (void)variableDidChange:(id)change;
 @end
 
 @implementation WFVariableEditingOptions
 
-- (void)finishEditingReturningToKeyboard:(BOOL)a3
+- (void)finishEditingReturningToKeyboard:(BOOL)keyboard
 {
-  v3 = a3;
-  v5 = [(WFVariableEditingOptions *)self onFinish];
+  keyboardCopy = keyboard;
+  onFinish = [(WFVariableEditingOptions *)self onFinish];
 
-  if (v5)
+  if (onFinish)
   {
-    v6 = [(WFVariableEditingOptions *)self onFinish];
-    v6[2](v6, v3);
+    onFinish2 = [(WFVariableEditingOptions *)self onFinish];
+    onFinish2[2](onFinish2, keyboardCopy);
   }
 
   [(WFVariableEditingOptions *)self setOnChange:0];
@@ -23,30 +23,30 @@
   [(WFVariableEditingOptions *)self setOnFinish:0];
 }
 
-- (void)variableDidChange:(id)a3
+- (void)variableDidChange:(id)change
 {
-  v6 = a3;
-  v4 = [(WFVariableEditingOptions *)self onChange];
+  changeCopy = change;
+  onChange = [(WFVariableEditingOptions *)self onChange];
 
-  if (v4)
+  if (onChange)
   {
-    v5 = [(WFVariableEditingOptions *)self onChange];
-    (v5)[2](v5, v6);
+    onChange2 = [(WFVariableEditingOptions *)self onChange];
+    (onChange2)[2](onChange2, changeCopy);
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WFVariableEditingOptions *)self anchor];
-      v6 = [v4 anchor];
-      v7 = v5;
-      v8 = v6;
+      anchor = [(WFVariableEditingOptions *)self anchor];
+      anchor2 = [equalCopy anchor];
+      v7 = anchor;
+      v8 = anchor2;
       v9 = v8;
       if (v7 == v8)
       {
@@ -70,8 +70,8 @@ LABEL_12:
         }
       }
 
-      v12 = [(WFVariableEditingOptions *)self resultType];
-      v11 = v12 == [v4 resultType];
+      resultType = [(WFVariableEditingOptions *)self resultType];
+      v11 = resultType == [equalCopy resultType];
 LABEL_13:
 
       goto LABEL_14;
@@ -84,23 +84,23 @@ LABEL_14:
   return v11;
 }
 
-- (WFVariableEditingOptions)initWithAnchor:(id)a3 resultType:(unint64_t)a4 onChange:(id)a5 onFinish:(id)a6
+- (WFVariableEditingOptions)initWithAnchor:(id)anchor resultType:(unint64_t)type onChange:(id)change onFinish:(id)finish
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  if (v12)
+  anchorCopy = anchor;
+  changeCopy = change;
+  finishCopy = finish;
+  if (anchorCopy)
   {
-    if (v13)
+    if (changeCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"WFVariableEditingOptions.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"onChange"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFVariableEditingOptions.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"onChange"}];
 
-    if (v14)
+    if (finishCopy)
     {
       goto LABEL_4;
     }
@@ -108,23 +108,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v23 = [MEMORY[0x277CCA890] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"WFVariableEditingOptions.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"anchor"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFVariableEditingOptions.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"anchor"}];
 
-  if (!v13)
+  if (!changeCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v14)
+  if (finishCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v25 = [MEMORY[0x277CCA890] currentHandler];
-  [v25 handleFailureInMethod:a2 object:self file:@"WFVariableEditingOptions.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"onFinish"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"WFVariableEditingOptions.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"onFinish"}];
 
 LABEL_4:
   v26.receiver = self;
@@ -133,13 +133,13 @@ LABEL_4:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_anchor, a3);
-    v16->_resultType = a4;
-    v17 = [v13 copy];
+    objc_storeStrong(&v15->_anchor, anchor);
+    v16->_resultType = type;
+    v17 = [changeCopy copy];
     onChange = v16->_onChange;
     v16->_onChange = v17;
 
-    v19 = [v14 copy];
+    v19 = [finishCopy copy];
     onFinish = v16->_onFinish;
     v16->_onFinish = v19;
 

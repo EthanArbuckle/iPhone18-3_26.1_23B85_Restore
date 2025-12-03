@@ -1,19 +1,19 @@
 @interface CRKFetchChaptersRequest
-- (BOOL)isValidWithError:(id *)a3;
-- (CRKFetchChaptersRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isValidWithError:(id *)error;
+- (CRKFetchChaptersRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRKFetchChaptersRequest
 
-- (BOOL)isValidWithError:(id *)a3
+- (BOOL)isValidWithError:(id *)error
 {
-  v5 = [(CRKFetchChaptersRequest *)self path];
-  v6 = [v5 length];
+  path = [(CRKFetchChaptersRequest *)self path];
+  v6 = [path length];
 
   if (!v6)
   {
-    if (!a3)
+    if (!error)
     {
       return 0;
     }
@@ -23,16 +23,16 @@ LABEL_11:
     v13 = CRKErrorWithCodeAndUserInfo(2, v12);
     v14 = v13;
     result = 0;
-    *a3 = v13;
+    *error = v13;
     return result;
   }
 
-  v7 = [(CRKFetchChaptersRequest *)self identifierType];
-  v8 = [v7 length];
+  identifierType = [(CRKFetchChaptersRequest *)self identifierType];
+  v8 = [identifierType length];
 
   if (!v8)
   {
-    if (!a3)
+    if (!error)
     {
       return 0;
     }
@@ -41,15 +41,15 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v9 = [(CRKFetchChaptersRequest *)self identifier];
-  v10 = [v9 length];
+  identifier = [(CRKFetchChaptersRequest *)self identifier];
+  v10 = [identifier length];
 
   if (v10)
   {
     return 1;
   }
 
-  if (a3)
+  if (error)
   {
     v12 = &unk_285672630;
     goto LABEL_11;
@@ -58,26 +58,26 @@ LABEL_11:
   return 0;
 }
 
-- (CRKFetchChaptersRequest)initWithCoder:(id)a3
+- (CRKFetchChaptersRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = CRKFetchChaptersRequest;
-  v5 = [(CATTaskRequest *)&v16 initWithCoder:v4];
+  v5 = [(CATTaskRequest *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"path"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"path"];
     path = v5->_path;
     v5->_path = v7;
 
     v9 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"identifierType"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"identifierType"];
     identifierType = v5->_identifierType;
     v5->_identifierType = v10;
 
     v12 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"identifier"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v13;
   }
@@ -85,20 +85,20 @@ LABEL_11:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = CRKFetchChaptersRequest;
-  v4 = a3;
-  [(CATTaskRequest *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskRequest *)&v8 encodeWithCoder:coderCopy];
   v5 = [(CRKFetchChaptersRequest *)self path:v8.receiver];
-  [v4 encodeObject:v5 forKey:@"path"];
+  [coderCopy encodeObject:v5 forKey:@"path"];
 
-  v6 = [(CRKFetchChaptersRequest *)self identifierType];
-  [v4 encodeObject:v6 forKey:@"identifierType"];
+  identifierType = [(CRKFetchChaptersRequest *)self identifierType];
+  [coderCopy encodeObject:identifierType forKey:@"identifierType"];
 
-  v7 = [(CRKFetchChaptersRequest *)self identifier];
-  [v4 encodeObject:v7 forKey:@"identifier"];
+  identifier = [(CRKFetchChaptersRequest *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 }
 
 @end

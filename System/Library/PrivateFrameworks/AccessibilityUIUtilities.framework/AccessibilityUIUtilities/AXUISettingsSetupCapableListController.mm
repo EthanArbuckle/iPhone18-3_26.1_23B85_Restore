@@ -1,16 +1,16 @@
 @interface AXUISettingsSetupCapableListController
 - (AXUISettingsSetupCapableListController)init;
-- (AXUISettingsSetupCapableListController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
+- (AXUISettingsSetupCapableListController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
 - (int64_t)tableViewStyle;
 - (void)dealloc;
-- (void)filterBuddy:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)filterBuddy:(id)buddy;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)reload;
-- (void)setAllSpecifiersUnsearchable:(id)a3;
-- (void)showController:(id)a3 animate:(BOOL)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setAllSpecifiersUnsearchable:(id)unsearchable;
+- (void)showController:(id)controller animate:(BOOL)animate;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -38,11 +38,11 @@
   [(AXUISettingsSetupCapableListController *)&v3 dealloc];
 }
 
-- (AXUISettingsSetupCapableListController)initWithNibName:(id)a3 bundle:(id)a4
+- (AXUISettingsSetupCapableListController)initWithNibName:(id)name bundle:(id)bundle
 {
   v6.receiver = self;
   v6.super_class = AXUISettingsSetupCapableListController;
-  v4 = [(AXUISettingsSetupCapableListController *)&v6 initWithNibName:a3 bundle:a4];
+  v4 = [(AXUISettingsSetupCapableListController *)&v6 initWithNibName:name bundle:bundle];
   if (v4)
   {
     [(AXUISettingsSetupCapableListController *)v4 setInSetup:AXProcessIsSetup()];
@@ -59,17 +59,17 @@
   if (self->_inSetup)
   {
     v3 = sharedBFFStyle();
-    v4 = [v3 backgroundColor];
-    v5 = [(AXUISettingsSetupCapableListController *)self view];
-    [v5 setBackgroundColor:v4];
+    backgroundColor = [v3 backgroundColor];
+    view = [(AXUISettingsSetupCapableListController *)self view];
+    [view setBackgroundColor:backgroundColor];
 
     v6 = sharedBFFStyle();
-    v7 = [v6 backgroundColor];
-    [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x1E69C57C0]) setBackgroundColor:v7];
+    backgroundColor2 = [v6 backgroundColor];
+    [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x1E69C57C0]) setBackgroundColor:backgroundColor2];
 
-    v8 = [(AXUISettingsSetupCapableListController *)self view];
-    v9 = [v8 layer];
-    [v9 setMasksToBounds:1];
+    view2 = [(AXUISettingsSetupCapableListController *)self view];
+    layer = [view2 layer];
+    [layer setMasksToBounds:1];
 
     [(AXUISettingsSetupCapableListController *)self setExtendedLayoutIncludesOpaqueBars:1];
     [(AXUISettingsSetupCapableListController *)self setEdgesForExtendedLayout:1];
@@ -118,10 +118,10 @@
   [(AXUISettingsSetupCapableListController *)&v10 reload];
 }
 
-- (void)filterBuddy:(id)a3
+- (void)filterBuddy:(id)buddy
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  buddyCopy = buddy;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if ([(AXUISettingsSetupCapableListController *)self inSetup])
   {
@@ -129,7 +129,7 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v4;
+    v6 = buddyCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -146,9 +146,9 @@
 
           v11 = *(*(&v14 + 1) + 8 * i);
           v12 = [v11 propertyForKey:{@"inBuddySetup", v14}];
-          v13 = [v12 BOOLValue];
+          bOOLValue = [v12 BOOLValue];
 
-          if ((v13 & 1) == 0)
+          if ((bOOLValue & 1) == 0)
           {
             [v5 addObject:v11];
           }
@@ -164,15 +164,15 @@
   }
 }
 
-- (void)setAllSpecifiersUnsearchable:(id)a3
+- (void)setAllSpecifiersUnsearchable:(id)unsearchable
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  unsearchableCopy = unsearchable;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [unsearchableCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -186,47 +186,47 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(unsearchableCopy);
         }
 
         [*(*(&v10 + 1) + 8 * v9++) setProperty:v8 forKey:v7];
       }
 
       while (v5 != v9);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [unsearchableCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ((AXUISettingsHandleWelcomeControllerTableViewUpdate(self, v10, v11) & 1) == 0)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ((AXUISettingsHandleWelcomeControllerTableViewUpdate(self, pathCopy, objectCopy) & 1) == 0)
   {
     v13.receiver = self;
     v13.super_class = AXUISettingsSetupCapableListController;
-    [(AXUISettingsSetupCapableListController *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(AXUISettingsSetupCapableListController *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if ([(AXUISettingsSetupCapableListController *)self isEditing])
   {
     v11.receiver = self;
     v11.super_class = AXUISettingsSetupCapableListController;
-    v8 = [(PSEditableListController *)&v11 tableView:v6 willSelectRowAtIndexPath:v7];
+    v8 = [(PSEditableListController *)&v11 tableView:viewCopy willSelectRowAtIndexPath:pathCopy];
   }
 
   else
   {
-    v8 = v7;
+    v8 = pathCopy;
   }
 
   v9 = v8;
@@ -234,11 +234,11 @@
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AXUISettingsSetupCapableListController *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(AXUISettingsSetupCapableListController *)self indexForIndexPath:pathCopy];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = v8;
@@ -261,20 +261,20 @@ LABEL_22:
 LABEL_19:
           if ([v10 controllerLoadAction])
           {
-            v20 = [v6 indexPathForSelectedRow];
-            [v6 deselectRowAtIndexPath:v20 animated:1];
+            indexPathForSelectedRow = [viewCopy indexPathForSelectedRow];
+            [viewCopy deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
             goto LABEL_21;
           }
 
           goto LABEL_22;
         }
 
-        v12 = [MEMORY[0x1E695DFB0] null];
-        if (v11 != v12)
+        null = [MEMORY[0x1E695DFB0] null];
+        if (v11 != null)
         {
-          v13 = [(AXUISettingsSetupCapableListController *)self navigationController];
-          v14 = [v13 topViewController];
-          if (v14 == self)
+          navigationController = [(AXUISettingsSetupCapableListController *)self navigationController];
+          topViewController = [navigationController topViewController];
+          if (topViewController == self)
           {
             v18 = [v11 conformsToProtocol:&unk_1F40A2850];
 
@@ -286,11 +286,11 @@ LABEL_19:
             goto LABEL_16;
           }
 
-          v22 = v13;
-          v15 = [(AXUISettingsSetupCapableListController *)self navigationController];
-          v16 = [v15 topViewController];
-          v17 = [v16 childViewControllers];
-          if ([v17 containsObject:self])
+          v22 = navigationController;
+          navigationController2 = [(AXUISettingsSetupCapableListController *)self navigationController];
+          topViewController2 = [navigationController2 topViewController];
+          childViewControllers = [topViewController2 childViewControllers];
+          if ([childViewControllers containsObject:self])
           {
             v21 = [v11 conformsToProtocol:&unk_1F40A2850];
 
@@ -300,10 +300,10 @@ LABEL_19:
             }
 
 LABEL_16:
-            v19 = [v10 name];
-            v20 = AXUISettingsCreatePreferencesController(v11, v19);
+            name = [v10 name];
+            indexPathForSelectedRow = AXUISettingsCreatePreferencesController(v11, name);
 
-            [(AXUISettingsSetupCapableListController *)self showController:v20];
+            [(AXUISettingsSetupCapableListController *)self showController:indexPathForSelectedRow];
 LABEL_21:
 
             goto LABEL_13;
@@ -319,19 +319,19 @@ LABEL_21:
 LABEL_12:
   v23.receiver = self;
   v23.super_class = AXUISettingsSetupCapableListController;
-  [(AXUISettingsSetupCapableListController *)&v23 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(AXUISettingsSetupCapableListController *)&v23 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 LABEL_13:
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if ([(PSEditableListController *)self editable])
   {
     v10.receiver = self;
     v10.super_class = AXUISettingsSetupCapableListController;
-    v8 = [(PSEditableListController *)&v10 tableView:v6 editingStyleForRowAtIndexPath:v7];
+    v8 = [(PSEditableListController *)&v10 tableView:viewCopy editingStyleForRowAtIndexPath:pathCopy];
   }
 
   else
@@ -342,15 +342,15 @@ LABEL_13:
   return v8;
 }
 
-- (void)showController:(id)a3 animate:(BOOL)a4
+- (void)showController:(id)controller animate:(BOOL)animate
 {
-  v4 = a4;
-  v6 = a3;
-  if (![v6 conformsToProtocol:&unk_1F40A2850] || (v7 = v6, objc_msgSend(v7, "setSetupMode:", -[AXUISettingsSetupCapableListController inSetup](self, "inSetup")), v8 = objc_msgSend(v7, "presentWithController:", self), v7, (v8 & 1) == 0))
+  animateCopy = animate;
+  controllerCopy = controller;
+  if (![controllerCopy conformsToProtocol:&unk_1F40A2850] || (v7 = controllerCopy, objc_msgSend(v7, "setSetupMode:", -[AXUISettingsSetupCapableListController inSetup](self, "inSetup")), v8 = objc_msgSend(v7, "presentWithController:", self), v7, (v8 & 1) == 0))
   {
     v9.receiver = self;
     v9.super_class = AXUISettingsSetupCapableListController;
-    [(AXUISettingsSetupCapableListController *)&v9 showController:v6 animate:v4];
+    [(AXUISettingsSetupCapableListController *)&v9 showController:controllerCopy animate:animateCopy];
   }
 }
 
@@ -361,8 +361,8 @@ LABEL_13:
   [(AXUISettingsSetupCapableListController *)&v12 viewDidLayoutSubviews];
   if ([(AXUISettingsSetupCapableListController *)self inSetup])
   {
-    v3 = [(AXUISettingsSetupCapableListController *)self view];
-    [v3 bounds];
+    view = [(AXUISettingsSetupCapableListController *)self view];
+    [view bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;

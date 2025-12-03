@@ -1,15 +1,15 @@
 @interface MagazineSectionsViewController
-- (_TtC7NewsUI230MagazineSectionsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC7NewsUI230MagazineSectionsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)didReceiveMemoryWarning;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation MagazineSectionsViewController
 
-- (_TtC7NewsUI230MagazineSectionsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7NewsUI230MagazineSectionsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -18,27 +18,27 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_218E51750();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_218E5221C();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_218E52450(a3);
+  selfCopy = self;
+  sub_218E52450(appear);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_218E5252C(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_218E5252C(change);
 }
 
 - (void)didReceiveMemoryWarning

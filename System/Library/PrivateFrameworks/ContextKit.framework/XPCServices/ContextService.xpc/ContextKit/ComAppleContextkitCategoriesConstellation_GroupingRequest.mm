@@ -2,28 +2,28 @@
 - (JavaUtilHashMap)getNewsTopicToContentItems;
 - (id)groupingResults;
 - (id)overallCategories;
-- (void)addTopicGroup:(id)a3;
+- (void)addTopicGroup:(id)group;
 - (void)dealloc;
 @end
 
 @implementation ComAppleContextkitCategoriesConstellation_GroupingRequest
 
-- (void)addTopicGroup:(id)a3
+- (void)addTopicGroup:(id)group
 {
   v5 = objc_autoreleasePoolPush();
   topicGroups = self->topicGroups_;
-  if (!topicGroups || (v7 = [(JavaUtilList *)topicGroups size], [(JavaUtilList *)self->topicGroups_ addWithId:a3], v37 = 0u, v38 = 0u, v39 = 0u, v40 = 0u, !a3))
+  if (!topicGroups || (v7 = [(JavaUtilList *)topicGroups size], [(JavaUtilList *)self->topicGroups_ addWithId:group], v37 = 0u, v38 = 0u, v39 = 0u, v40 = 0u, !group))
   {
 LABEL_38:
     JreThrowNullPointerException();
   }
 
-  v31 = [a3 countByEnumeratingWithState:&v37 objects:v42 count:16];
+  v31 = [group countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v31)
   {
     v32 = *v38;
     v29 = v5;
-    obj = a3;
+    obj = group;
     do
     {
       for (i = 0; i != v31; i = i + 1)
@@ -47,14 +47,14 @@ LABEL_38:
           v36 = 0u;
           v33 = 0u;
           v34 = 0u;
-          v12 = [v11 entrySet];
-          if (!v12)
+          entrySet = [v11 entrySet];
+          if (!entrySet)
           {
             goto LABEL_38;
           }
 
-          v13 = v12;
-          v14 = [v12 countByEnumeratingWithState:&v33 objects:v41 count:16];
+          v13 = entrySet;
+          v14 = [entrySet countByEnumeratingWithState:&v33 objects:v41 count:16];
           if (v14)
           {
             v15 = v14;
@@ -74,15 +74,15 @@ LABEL_38:
                   goto LABEL_38;
                 }
 
-                v19 = [*(*(&v33 + 1) + 8 * j) getKey];
-                v20 = [v18 getValue];
-                if (!v20)
+                getKey = [*(*(&v33 + 1) + 8 * j) getKey];
+                getValue = [v18 getValue];
+                if (!getValue)
                 {
                   goto LABEL_38;
                 }
 
-                v21 = v20;
-                if ([v20 intValue] <= self->nMaxTopicDistance_)
+                v21 = getValue;
+                if ([getValue intValue] <= self->nMaxTopicDistance_)
                 {
                   newsTopicQids = self->newsTopicQids_;
                   if (!newsTopicQids)
@@ -90,7 +90,7 @@ LABEL_38:
                     goto LABEL_38;
                   }
 
-                  if ([(JavaUtilSet *)newsTopicQids containsWithId:v19])
+                  if ([(JavaUtilSet *)newsTopicQids containsWithId:getKey])
                   {
                     newsTopicToContentItems = self->newsTopicToContentItems_;
                     if (!newsTopicToContentItems)
@@ -98,12 +98,12 @@ LABEL_38:
                       goto LABEL_38;
                     }
 
-                    if (([(JavaUtilMap *)newsTopicToContentItems containsKeyWithId:v19]& 1) == 0)
+                    if (([(JavaUtilMap *)newsTopicToContentItems containsKeyWithId:getKey]& 1) == 0)
                     {
-                      [(JavaUtilMap *)self->newsTopicToContentItems_ putWithId:v19 withId:new_JavaUtilArrayList_init()];
+                      [(JavaUtilMap *)self->newsTopicToContentItems_ putWithId:getKey withId:new_JavaUtilArrayList_init()];
                     }
 
-                    v24 = [(JavaUtilMap *)self->newsTopicToContentItems_ getWithId:v19, v29];
+                    v24 = [(JavaUtilMap *)self->newsTopicToContentItems_ getWithId:getKey, v29];
                     if (!v24)
                     {
                       goto LABEL_38;
@@ -111,7 +111,7 @@ LABEL_38:
 
                     if (([v24 containsWithId:JavaLangInteger_valueOfWithInt_(v7)] & 1) == 0)
                     {
-                      v25 = [(JavaUtilMap *)self->newsTopicToContentItems_ getWithId:v19];
+                      v25 = [(JavaUtilMap *)self->newsTopicToContentItems_ getWithId:getKey];
                       if (!v25)
                       {
                         goto LABEL_38;
@@ -126,22 +126,22 @@ LABEL_38:
                       goto LABEL_38;
                     }
 
-                    if (![(JavaUtilMap *)minTopicDistance containsKeyWithId:v19])
+                    if (![(JavaUtilMap *)minTopicDistance containsKeyWithId:getKey])
                     {
                       goto LABEL_32;
                     }
 
-                    v27 = [(JavaUtilMap *)self->minTopicDistance_ getWithId:v19];
+                    v27 = [(JavaUtilMap *)self->minTopicDistance_ getWithId:getKey];
                     if (!v27)
                     {
                       goto LABEL_38;
                     }
 
-                    v28 = [v27 intValue];
-                    if (v28 > [v21 intValue])
+                    intValue = [v27 intValue];
+                    if (intValue > [v21 intValue])
                     {
 LABEL_32:
-                      [(JavaUtilMap *)self->minTopicDistance_ putWithId:v19 withId:v21];
+                      [(JavaUtilMap *)self->minTopicDistance_ putWithId:getKey withId:v21];
                     }
                   }
                 }
@@ -194,7 +194,7 @@ LABEL_4:
   }
 
   v8 = v7;
-  v9 = [v7 getKey];
+  getKey = [v7 getKey];
   v10 = new_JavaUtilArrayList_initWithJavaUtilCollection_([v8 getValue]);
   if (![(JavaUtilArrayList *)v10 size])
   {
@@ -229,7 +229,7 @@ LABEL_9:
       objc_enumerationMutation(desiredLanguages);
     }
 
-    v21 = sub_1000C27CC(self, v9, *(*(&v44 + 1) + 8 * v20), v13, v14, v15, v16, v17);
+    v21 = sub_1000C27CC(self, getKey, *(*(&v44 + 1) + 8 * v20), v13, v14, v15, v16, v17);
     if (v21)
     {
       break;
@@ -259,7 +259,7 @@ LABEL_35:
     }
   }
 
-  v22 = new_ComAppleContextkitCategoriesConstellation_NewsCategory_initWithNSString_withNSString_(v21, v9);
+  v22 = new_ComAppleContextkitCategoriesConstellation_NewsCategory_initWithNSString_withNSString_(v21, getKey);
   [(JavaUtilHashMap *)v6 putWithId:v22 withId:v10];
   if ([(JavaUtilArrayList *)v5 removeWithId:v8])
   {
@@ -309,13 +309,13 @@ LABEL_35:
                     goto LABEL_39;
                   }
 
-                  v33 = [v32 getValue];
-                  if (!v33)
+                  getValue = [v32 getValue];
+                  if (!getValue)
                   {
                     goto LABEL_39;
                   }
 
-                  [v33 removeWithId:v27];
+                  [getValue removeWithId:v27];
                 }
 
                 v29 = [(JavaUtilArrayList *)v5 countByEnumeratingWithState:&v36 objects:v48 count:16];
@@ -346,7 +346,7 @@ LABEL_35:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = *(a1 + 24);
+  v3 = *(self + 24);
   if (!v3 || (v4 = [v3 entrySet]) == 0)
   {
 LABEL_12:
@@ -422,7 +422,7 @@ LABEL_22:
     }
 
     v8 = v7;
-    v9 = [v7 getKey];
+    getKey = [v7 getKey];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -433,7 +433,7 @@ LABEL_22:
       goto LABEL_22;
     }
 
-    v11 = v9;
+    v11 = getKey;
     v12 = [(JavaUtilList *)self->desiredLanguages_ countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v12)
     {

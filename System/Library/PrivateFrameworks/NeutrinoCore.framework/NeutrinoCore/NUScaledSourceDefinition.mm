@@ -2,17 +2,17 @@
 - ($0AC6E346AE4835514AAA8AC86D8F4844)fullSize;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)scale;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)sourceSize;
-- (NUScaledSourceDefinition)initWithSourceDefinition:(id)a3 sourceSize:(id)a4 fullSize:(id)a5;
-- (id)sourceContainerNodeWithIdentifier:(id)a3 error:(id *)a4;
+- (NUScaledSourceDefinition)initWithSourceDefinition:(id)definition sourceSize:(id)size fullSize:(id)fullSize;
+- (id)sourceContainerNodeWithIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation NUScaledSourceDefinition
 
-- (id)sourceContainerNodeWithIdentifier:(id)a3 error:(id *)a4
+- (id)sourceContainerNodeWithIdentifier:(id)identifier error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!a4)
+  identifierCopy = identifier;
+  if (!error)
   {
     v23 = NUAssertLogger_8665();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -33,8 +33,8 @@
         v30 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v31 = MEMORY[0x1E696AF00];
         v32 = v30;
-        v33 = [v31 callStackSymbols];
-        v34 = [v33 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v31 callStackSymbols];
+        v34 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v30;
         v43 = 2114;
@@ -45,8 +45,8 @@
 
     else if (v27)
     {
-      v28 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v29 = [v28 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v29 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v42 = v29;
       _os_log_error_impl(&dword_1C0184000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -55,15 +55,15 @@
     _NUAssertFailHandler("[NUScaledSourceDefinition(NodeProvider) sourceContainerNodeWithIdentifier:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode.m", 475, @"Invalid parameter not satisfying: %s", v35, v36, v37, v38, "error != NULL");
   }
 
-  v7 = v6;
+  v7 = identifierCopy;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v9 = objc_alloc(MEMORY[0x1E695F658]);
-  v10 = [MEMORY[0x1E695F610] whiteColor];
-  v11 = [v9 initWithColor:v10];
+  whiteColor = [MEMORY[0x1E695F610] whiteColor];
+  v11 = [v9 initWithColor:whiteColor];
 
-  v12 = [(NUScaledSourceDefinition *)self fullSize];
+  fullSize = [(NUScaledSourceDefinition *)self fullSize];
   [(NUScaledSourceDefinition *)self fullSize];
-  v14 = [v11 imageByCroppingToRect:{0.0, 0.0, v12, v13}];
+  v14 = [v11 imageByCroppingToRect:{0.0, 0.0, fullSize, v13}];
 
   v15 = [[NUCIImageSourceDefinition alloc] initWithCIImage:v14 orientation:1];
   v40 = 0;
@@ -71,9 +71,9 @@
   v17 = v40;
   if (v16)
   {
-    v18 = [(NUScaledSourceDefinition *)self source];
+    source = [(NUScaledSourceDefinition *)self source];
     v39 = 0;
-    v19 = [v18 generateSourceNodeWithIdentifier:v7 error:&v39];
+    v19 = [source generateSourceNodeWithIdentifier:v7 error:&v39];
     v20 = v39;
 
     if (v19)
@@ -86,14 +86,14 @@
     else
     {
       [NUError errorWithCode:1 reason:@"Failed to generate source node" object:v7 underlyingError:v20];
-      *a4 = v21 = 0;
+      *error = v21 = 0;
     }
   }
 
   else
   {
     [NUError errorWithCode:1 reason:@"Failed to generate dummy full size source node" object:v7 underlyingError:v17];
-    *a4 = v21 = 0;
+    *error = v21 = 0;
     v20 = v17;
   }
 
@@ -133,18 +133,18 @@
   return result;
 }
 
-- (NUScaledSourceDefinition)initWithSourceDefinition:(id)a3 sourceSize:(id)a4 fullSize:(id)a5
+- (NUScaledSourceDefinition)initWithSourceDefinition:(id)definition sourceSize:(id)size fullSize:(id)fullSize
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v7 = a4.var1;
-  v8 = a4.var0;
-  v10 = a3;
+  var1 = fullSize.var1;
+  var0 = fullSize.var0;
+  v7 = size.var1;
+  v8 = size.var0;
+  definitionCopy = definition;
   v14.receiver = self;
   v14.super_class = NUScaledSourceDefinition;
   v11 = [(NUSingleSourceDefinition *)&v14 init];
   source = v11->_source;
-  v11->_source = v10;
+  v11->_source = definitionCopy;
 
   v11->_sourceSize.width = v8;
   v11->_sourceSize.height = v7;

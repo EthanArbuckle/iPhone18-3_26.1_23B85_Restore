@@ -1,27 +1,27 @@
 @interface APLogSubscriptionEventRequester
-- (APLogSubscriptionEventRequester)initWithMetric:(id)a3 bundleID:(id)a4;
+- (APLogSubscriptionEventRequester)initWithMetric:(id)metric bundleID:(id)d;
 - (id)protoBuffer;
-- (void)addParameter:(id)a3 value:(id)a4 parameters:(id)a5;
+- (void)addParameter:(id)parameter value:(id)value parameters:(id)parameters;
 @end
 
 @implementation APLogSubscriptionEventRequester
 
-- (APLogSubscriptionEventRequester)initWithMetric:(id)a3 bundleID:(id)a4
+- (APLogSubscriptionEventRequester)initWithMetric:(id)metric bundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  metricCopy = metric;
+  dCopy = d;
   v8 = +[NSUUID UUID];
   v9 = +[APIDAccountProvider privateUserAccount];
-  v10 = [(APServerRequester *)self initWithBundleID:v7 requestIdentifier:v8 contextIdentifier:0 contentIdentifier:0 idAccount:v9];
+  v10 = [(APServerRequester *)self initWithBundleID:dCopy requestIdentifier:v8 contextIdentifier:0 contentIdentifier:0 idAccount:v9];
 
   if (v10)
   {
-    v11 = metricPropertyValue(v6, 0x24);
+    v11 = metricPropertyValue(metricCopy, 0x24);
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if (isKindOfClass)
     {
-      v13 = metricPropertyValue(v6, 0x24);
+      v13 = metricPropertyValue(metricCopy, 0x24);
     }
 
     else
@@ -34,12 +34,12 @@
     {
     }
 
-    v14 = metricPropertyValue(v6, 0x23);
+    v14 = metricPropertyValue(metricCopy, 0x23);
     objc_opt_class();
     v15 = objc_opt_isKindOfClass();
     if (v15)
     {
-      v16 = metricPropertyValue(v6, 0x23);
+      v16 = metricPropertyValue(metricCopy, 0x23);
     }
 
     else
@@ -52,12 +52,12 @@
     {
     }
 
-    v17 = metricPropertyValue(v6, 0x25);
+    v17 = metricPropertyValue(metricCopy, 0x25);
     objc_opt_class();
-    v30 = v7;
+    v30 = dCopy;
     if (objc_opt_isKindOfClass())
     {
-      v18 = metricPropertyValue(v6, 0x25);
+      v18 = metricPropertyValue(metricCopy, 0x25);
       v10->_subscriptionType = [v18 intValue];
     }
 
@@ -95,8 +95,8 @@
           }
 
           v26 = *(*(&v31 + 1) + 8 * v25);
-          v27 = [v6 internalProperties];
-          v28 = [v27 objectForKeyedSubscript:v26];
+          internalProperties = [metricCopy internalProperties];
+          v28 = [internalProperties objectForKeyedSubscript:v26];
 
           if (v28)
           {
@@ -113,24 +113,24 @@
       while (v23);
     }
 
-    v7 = v30;
+    dCopy = v30;
   }
 
   return v10;
 }
 
-- (void)addParameter:(id)a3 value:(id)a4 parameters:(id)a5
+- (void)addParameter:(id)parameter value:(id)value parameters:(id)parameters
 {
-  if (a3 && a4)
+  if (parameter && value)
   {
-    v7 = a5;
-    v8 = a4;
-    v9 = a3;
+    parametersCopy = parameters;
+    valueCopy = value;
+    parameterCopy = parameter;
     v10 = objc_alloc_init(APPBParameter);
-    [(APPBParameter *)v10 setKey:v9];
+    [(APPBParameter *)v10 setKey:parameterCopy];
 
-    [(APPBParameter *)v10 setValue:v8];
-    [v7 addObject:v10];
+    [(APPBParameter *)v10 setValue:valueCopy];
+    [parametersCopy addObject:v10];
   }
 }
 
@@ -138,31 +138,31 @@
 {
   v3 = objc_alloc_init(APPBLogSubscriptionEventRequest);
   v4 = +[APEncryptedIDProvider provider];
-  v5 = [(APServerRequester *)self idAccount];
-  v6 = [v4 encryptedIDsForIDAccountPrivate:v5];
+  idAccount = [(APServerRequester *)self idAccount];
+  v6 = [v4 encryptedIDsForIDAccountPrivate:idAccount];
 
-  v7 = [v6 anonymousDemandID];
-  [(APPBLogSubscriptionEventRequest *)v3 setAnonymousDemandiAdID:v7];
+  anonymousDemandID = [v6 anonymousDemandID];
+  [(APPBLogSubscriptionEventRequest *)v3 setAnonymousDemandiAdID:anonymousDemandID];
 
-  v8 = [v6 contentID];
-  [(APPBLogSubscriptionEventRequest *)v3 setContentiAdID:v8];
+  contentID = [v6 contentID];
+  [(APPBLogSubscriptionEventRequest *)v3 setContentiAdID:contentID];
 
   [(APPBLogSubscriptionEventRequest *)v3 setEvent:[(APLogSubscriptionEventRequester *)self subscriptionType]];
   v9 = +[NSDate date];
   [v9 timeIntervalSince1970];
   [(APPBLogSubscriptionEventRequest *)v3 setEventTime:?];
 
-  v10 = [v6 iAdID];
-  [(APPBLogSubscriptionEventRequest *)v3 setIAdID:v10];
+  iAdID = [v6 iAdID];
+  [(APPBLogSubscriptionEventRequest *)v3 setIAdID:iAdID];
 
-  v11 = [(APLogSubscriptionEventRequester *)self qToken];
-  [(APPBLogSubscriptionEventRequest *)v3 setQToken:v11];
+  qToken = [(APLogSubscriptionEventRequester *)self qToken];
+  [(APPBLogSubscriptionEventRequest *)v3 setQToken:qToken];
 
-  v12 = [(APLogSubscriptionEventRequester *)self subscriptionSourceID];
-  [(APPBLogSubscriptionEventRequest *)v3 setSubscriptionSourceID:v12];
+  subscriptionSourceID = [(APLogSubscriptionEventRequester *)self subscriptionSourceID];
+  [(APPBLogSubscriptionEventRequest *)v3 setSubscriptionSourceID:subscriptionSourceID];
 
-  v13 = [(APLogSubscriptionEventRequester *)self parameters];
-  [(APPBLogSubscriptionEventRequest *)v3 setInfos:v13];
+  parameters = [(APLogSubscriptionEventRequester *)self parameters];
+  [(APPBLogSubscriptionEventRequest *)v3 setInfos:parameters];
 
   return v3;
 }

@@ -1,55 +1,55 @@
 @interface CTCarrierSignupPlan
-- (BOOL)isEqual:(id)a3;
-- (CTCarrierSignupPlan)initWithCoder:(id)a3;
-- (CTCarrierSignupPlan)initWithName:(id)a3 url:(id)a4 type:(id)a5;
-- (CTCarrierSignupPlan)initWithName:(id)a3 url:(id)a4 type:(id)a5 option:(int64_t)a6 identifiers:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (CTCarrierSignupPlan)initWithCoder:(id)coder;
+- (CTCarrierSignupPlan)initWithName:(id)name url:(id)url type:(id)type;
+- (CTCarrierSignupPlan)initWithName:(id)name url:(id)url type:(id)type option:(int64_t)option identifiers:(id)identifiers;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTCarrierSignupPlan
 
-- (CTCarrierSignupPlan)initWithName:(id)a3 url:(id)a4 type:(id)a5
+- (CTCarrierSignupPlan)initWithName:(id)name url:(id)url type:(id)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  urlCopy = url;
+  typeCopy = type;
   v15.receiver = self;
   v15.super_class = CTCarrierSignupPlan;
   v11 = [(CTCarrierSignupPlan *)&v15 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v12;
 
-    objc_storeStrong(&v11->_url, a4);
-    objc_storeStrong(&v11->_type, a5);
+    objc_storeStrong(&v11->_url, url);
+    objc_storeStrong(&v11->_type, type);
     v11->_option = 0;
   }
 
   return v11;
 }
 
-- (CTCarrierSignupPlan)initWithName:(id)a3 url:(id)a4 type:(id)a5 option:(int64_t)a6 identifiers:(id)a7
+- (CTCarrierSignupPlan)initWithName:(id)name url:(id)url type:(id)type option:(int64_t)option identifiers:(id)identifiers
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  nameCopy = name;
+  urlCopy = url;
+  typeCopy = type;
+  identifiersCopy = identifiers;
   v20.receiver = self;
   v20.super_class = CTCarrierSignupPlan;
   v16 = [(CTCarrierSignupPlan *)&v20 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [nameCopy copy];
     name = v16->_name;
     v16->_name = v17;
 
-    objc_storeStrong(&v16->_url, a4);
-    objc_storeStrong(&v16->_type, a5);
-    v16->_option = a6;
-    objc_storeStrong(&v16->_identifiers, a7);
+    objc_storeStrong(&v16->_url, url);
+    objc_storeStrong(&v16->_type, type);
+    v16->_option = option;
+    objc_storeStrong(&v16->_identifiers, identifiers);
   }
 
   return v16;
@@ -68,43 +68,43 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v31.receiver = self;
   v31.super_class = CTCarrierSignupPlan;
-  if ([(CTPlan *)&v31 isEqual:v4])
+  if ([(CTPlan *)&v31 isEqual:equalCopy])
   {
-    v5 = [(CTCarrierSignupPlan *)self name];
-    v6 = [v4 name];
-    if (v5 != v6)
+    name = [(CTCarrierSignupPlan *)self name];
+    name2 = [equalCopy name];
+    if (name != name2)
     {
-      v7 = [(CTCarrierSignupPlan *)self name];
-      v8 = [v4 name];
-      v30 = v7;
-      if (![v7 isEqual:v8])
+      name3 = [(CTCarrierSignupPlan *)self name];
+      name4 = [equalCopy name];
+      v30 = name3;
+      if (![name3 isEqual:name4])
       {
         v9 = 0;
         goto LABEL_25;
       }
 
-      v29 = v8;
+      v29 = name4;
     }
 
     v10 = [(CTCarrierSignupPlan *)self url];
-    v11 = [v4 url];
+    v11 = [equalCopy url];
     if (v10 != v11)
     {
       v12 = [(CTCarrierSignupPlan *)self url];
-      v13 = [v4 url];
+      v13 = [equalCopy url];
       if (![v12 isEqual:v13])
       {
         v9 = 0;
 LABEL_23:
 
 LABEL_24:
-        v8 = v29;
-        if (v5 == v6)
+        name4 = v29;
+        if (name == name2)
         {
 LABEL_26:
 
@@ -120,29 +120,29 @@ LABEL_25:
       v28 = v12;
     }
 
-    v14 = [(CTCarrierSignupPlan *)self type];
-    v15 = [v4 type];
-    if (v14 != v15)
+    type = [(CTCarrierSignupPlan *)self type];
+    type2 = [equalCopy type];
+    if (type != type2)
     {
-      v16 = [(CTCarrierSignupPlan *)self type];
-      v26 = [v4 type];
-      if (![v16 isEqual:?])
+      type3 = [(CTCarrierSignupPlan *)self type];
+      type4 = [equalCopy type];
+      if (![type3 isEqual:?])
       {
         v9 = 0;
         goto LABEL_21;
       }
 
-      v25 = v16;
+      v25 = type3;
     }
 
-    v17 = [(CTCarrierSignupPlan *)self option];
-    if (v17 == [v4 option])
+    option = [(CTCarrierSignupPlan *)self option];
+    if (option == [equalCopy option])
     {
-      v18 = [(CTCarrierSignupPlan *)self identifiers];
-      v19 = [v4 identifiers];
-      v20 = v19;
-      v24 = v18;
-      if (v18 == v19)
+      identifiers = [(CTCarrierSignupPlan *)self identifiers];
+      identifiers2 = [equalCopy identifiers];
+      v20 = identifiers2;
+      v24 = identifiers;
+      if (identifiers == identifiers2)
       {
 
         v9 = 1;
@@ -150,9 +150,9 @@ LABEL_25:
 
       else
       {
-        v23 = [(CTCarrierSignupPlan *)self identifiers];
-        v21 = [v4 identifiers];
-        v9 = [v23 isEqual:v21];
+        identifiers3 = [(CTCarrierSignupPlan *)self identifiers];
+        identifiers4 = [equalCopy identifiers];
+        v9 = [identifiers3 isEqual:identifiers4];
       }
     }
 
@@ -161,8 +161,8 @@ LABEL_25:
       v9 = 0;
     }
 
-    v16 = v25;
-    if (v14 == v15)
+    type3 = v25;
+    if (type == type2)
     {
 LABEL_22:
 
@@ -187,31 +187,31 @@ LABEL_27:
   return v9;
 }
 
-- (CTCarrierSignupPlan)initWithCoder:(id)a3
+- (CTCarrierSignupPlan)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = CTCarrierSignupPlan;
-  v5 = [(CTPlan *)&v18 initWithCoder:v4];
+  v5 = [(CTPlan *)&v18 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
     url = v5->_url;
     v5->_url = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     type = v5->_type;
     v5->_type = v10;
 
-    v5->_option = [v4 decodeIntegerForKey:@"option"];
+    v5->_option = [coderCopy decodeIntegerForKey:@"option"];
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"planID"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"planID"];
     identifiers = v5->_identifiers;
     v5->_identifiers = v15;
   }
@@ -219,17 +219,17 @@ LABEL_27:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CTCarrierSignupPlan;
-  v4 = a3;
-  [(CTPlan *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_name forKey:{@"name", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_url forKey:@"url"];
-  [v4 encodeObject:self->_type forKey:@"type"];
-  [v4 encodeInteger:self->_option forKey:@"option"];
-  [v4 encodeObject:self->_identifiers forKey:@"planID"];
+  coderCopy = coder;
+  [(CTPlan *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_name forKey:{@"name", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_url forKey:@"url"];
+  [coderCopy encodeObject:self->_type forKey:@"type"];
+  [coderCopy encodeInteger:self->_option forKey:@"option"];
+  [coderCopy encodeObject:self->_identifiers forKey:@"planID"];
 }
 
 @end

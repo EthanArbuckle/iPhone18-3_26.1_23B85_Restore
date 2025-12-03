@@ -1,10 +1,10 @@
 @interface BCULayerRenderer
-- (BCULayerRenderer)initWithSuspended:(BOOL)a3;
-- (id)newOperationWithPriority:(float)a3 renderLayer:(id)a4 completion:(id)a5;
-- (id)newOperationWithPriority:(float)a3 waitForCPUSynchronization:(BOOL)a4 logKey:(id)a5 renderLayer:(id)a6 completion:(id)a7;
-- (void)_disconnectLayer:(id)a3;
+- (BCULayerRenderer)initWithSuspended:(BOOL)suspended;
+- (id)newOperationWithPriority:(float)priority renderLayer:(id)layer completion:(id)completion;
+- (id)newOperationWithPriority:(float)priority waitForCPUSynchronization:(BOOL)synchronization logKey:(id)key renderLayer:(id)layer completion:(id)completion;
+- (void)_disconnectLayer:(id)layer;
 - (void)_processOperations;
-- (void)_startOperation:(id)a3;
+- (void)_startOperation:(id)operation;
 - (void)resume;
 - (void)suspend;
 @end
@@ -42,9 +42,9 @@
   dispatch_async(renderQueue, block);
 }
 
-- (BCULayerRenderer)initWithSuspended:(BOOL)a3
+- (BCULayerRenderer)initWithSuspended:(BOOL)suspended
 {
-  v3 = a3;
+  suspendedCopy = suspended;
   v18.receiver = self;
   v18.super_class = BCULayerRenderer;
   v4 = [(BCULayerRenderer *)&v18 init];
@@ -69,7 +69,7 @@
     v16 = *(v4 + 4);
     *(v4 + 4) = v15;
 
-    if (v3)
+    if (suspendedCopy)
     {
       *(v4 + 64) = 1;
       dispatch_suspend(*(v4 + 2));
@@ -98,35 +98,35 @@
   os_unfair_lock_unlock(&unk_2810D5150);
 }
 
-- (id)newOperationWithPriority:(float)a3 waitForCPUSynchronization:(BOOL)a4 logKey:(id)a5 renderLayer:(id)a6 completion:(id)a7
+- (id)newOperationWithPriority:(float)priority waitForCPUSynchronization:(BOOL)synchronization logKey:(id)key renderLayer:(id)layer completion:(id)completion
 {
-  v9 = a4;
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
+  synchronizationCopy = synchronization;
+  completionCopy = completion;
+  layerCopy = layer;
+  keyCopy = key;
   v15 = [_BCULayerRendererOperation alloc];
-  *&v16 = a3;
-  v18 = objc_msgSend_initWithRenderer_priority_waitForCPUSynchronization_logKey_layerBlock_completion_(v15, v17, self, v9, v14, v13, v12, v16);
+  *&v16 = priority;
+  v18 = objc_msgSend_initWithRenderer_priority_waitForCPUSynchronization_logKey_layerBlock_completion_(v15, v17, self, synchronizationCopy, keyCopy, layerCopy, completionCopy, v16);
 
   return v18;
 }
 
-- (id)newOperationWithPriority:(float)a3 renderLayer:(id)a4 completion:(id)a5
+- (id)newOperationWithPriority:(float)priority renderLayer:(id)layer completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
+  completionCopy = completion;
+  layerCopy = layer;
   v10 = [_BCULayerRendererOperation alloc];
-  *&v11 = a3;
-  v13 = objc_msgSend_initWithRenderer_priority_waitForCPUSynchronization_logKey_layerBlock_completion_(v10, v12, self, 0, 0, v9, v8, v11);
+  *&v11 = priority;
+  v13 = objc_msgSend_initWithRenderer_priority_waitForCPUSynchronization_logKey_layerBlock_completion_(v10, v12, self, 0, 0, layerCopy, completionCopy, v11);
 
   return v13;
 }
 
-- (void)_startOperation:(id)a3
+- (void)_startOperation:(id)operation
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  operationCopy = operation;
+  v5 = operationCopy;
+  if (operationCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -139,7 +139,7 @@
     block[3] = &unk_278D13F20;
     block[4] = self;
     v11 = &v12;
-    v10 = v4;
+    v10 = operationCopy;
     dispatch_sync(accessQueue, block);
     if (*(v13 + 24) == 1)
     {
@@ -150,15 +150,15 @@
   }
 }
 
-- (void)_disconnectLayer:(id)a3
+- (void)_disconnectLayer:(id)layer
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  layerCopy = layer;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = objc_msgSend_sublayers(v4, v5, v6, 0);
+  v7 = objc_msgSend_sublayers(layerCopy, v5, v6, 0);
   v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v16, v20, 16);
   if (v9)
   {
@@ -184,8 +184,8 @@
     while (v11);
   }
 
-  objc_msgSend_setSublayers_(v4, v14, 0);
-  objc_msgSend_setMask_(v4, v15, 0);
+  objc_msgSend_setSublayers_(layerCopy, v14, 0);
+  objc_msgSend_setMask_(layerCopy, v15, 0);
 }
 
 @end

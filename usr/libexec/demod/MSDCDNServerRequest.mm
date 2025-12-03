@@ -13,8 +13,8 @@
     return 0;
   }
 
-  v3 = [(MSDCDNServerRequest *)self downloadCredentials];
-  v4 = v3 != 0;
+  downloadCredentials = [(MSDCDNServerRequest *)self downloadCredentials];
+  v4 = downloadCredentials != 0;
 
   return v4;
 }

@@ -1,33 +1,33 @@
 @interface SiriUIPlatterSectionHeaderCollectionViewCell
-+ (CGSize)sizeThatFits:(CGSize)a3 text:(id)a4;
-- (SiriUIPlatterSectionHeaderCollectionViewCell)initWithFrame:(CGRect)a3;
++ (CGSize)sizeThatFits:(CGSize)fits text:(id)text;
+- (SiriUIPlatterSectionHeaderCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation SiriUIPlatterSectionHeaderCollectionViewCell
 
-+ (CGSize)sizeThatFits:(CGSize)a3 text:(id)a4
++ (CGSize)sizeThatFits:(CGSize)fits text:(id)text
 {
-  [SiriUIPlatterSectionHeaderView sizeThatFits:a4 text:a3.width, a3.height];
+  [SiriUIPlatterSectionHeaderView sizeThatFits:text text:fits.width, fits.height];
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (SiriUIPlatterSectionHeaderCollectionViewCell)initWithFrame:(CGRect)a3
+- (SiriUIPlatterSectionHeaderCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = SiriUIPlatterSectionHeaderCollectionViewCell;
-  v3 = [(SiriUIContentCollectionViewCell *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SiriUIContentCollectionViewCell *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [(SiriUITextContainerView *)[SiriUIPlatterSectionHeaderView alloc] initWithText:0];
     headerView = v3->_headerView;
     v3->_headerView = v4;
 
-    v6 = [(SiriUIPlatterSectionHeaderCollectionViewCell *)v3 contentView];
-    [v6 addSubview:v3->_headerView];
+    contentView = [(SiriUIPlatterSectionHeaderCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_headerView];
 
     [(SiriUIContentCollectionViewCell *)v3 setKeylineType:0];
   }

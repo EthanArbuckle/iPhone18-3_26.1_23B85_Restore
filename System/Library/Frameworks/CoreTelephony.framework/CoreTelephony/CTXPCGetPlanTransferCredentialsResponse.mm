@@ -1,20 +1,20 @@
 @interface CTXPCGetPlanTransferCredentialsResponse
 + (id)allowedClassesForArguments;
-- (CTXPCGetPlanTransferCredentialsResponse)initWithInfo:(id)a3;
+- (CTXPCGetPlanTransferCredentialsResponse)initWithInfo:(id)info;
 - (NSString)info;
 @end
 
 @implementation CTXPCGetPlanTransferCredentialsResponse
 
-- (CTXPCGetPlanTransferCredentialsResponse)initWithInfo:(id)a3
+- (CTXPCGetPlanTransferCredentialsResponse)initWithInfo:(id)info
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  infoCopy = info;
+  v5 = infoCopy;
+  if (infoCopy)
   {
     v12 = @"info";
-    v13[0] = v4;
+    v13[0] = infoCopy;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     v10.receiver = self;
     v10.super_class = CTXPCGetPlanTransferCredentialsResponse;
@@ -34,8 +34,8 @@
 
 - (NSString)info
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"info"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"info"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -52,7 +52,7 @@
 
 + (id)allowedClassesForArguments
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CTXPCGetPlanTransferCredentialsResponse;
   v2 = objc_msgSendSuper2(&v5, sel_allowedClassesForArguments);
   v3 = [v2 setByAddingObject:objc_opt_class()];

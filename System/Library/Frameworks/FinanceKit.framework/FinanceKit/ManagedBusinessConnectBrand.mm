@@ -1,20 +1,20 @@
 @interface ManagedBusinessConnectBrand
-- (_TtC10FinanceKit27ManagedBusinessConnectBrand)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (_TtC10FinanceKit27ManagedBusinessConnectBrand)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 - (void)willSave;
 @end
 
 @implementation ManagedBusinessConnectBrand
 
-- (_TtC10FinanceKit27ManagedBusinessConnectBrand)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (_TtC10FinanceKit27ManagedBusinessConnectBrand)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  return [(ManagedBusinessConnectBrand *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(ManagedBusinessConnectBrand *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 - (void)willSave
 {
-  v2 = self;
+  selfCopy = self;
   ManagedBusinessConnectBrand.willSave()();
 }
 

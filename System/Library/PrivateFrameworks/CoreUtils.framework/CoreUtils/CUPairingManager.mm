@@ -1,35 +1,35 @@
 @interface CUPairingManager
-+ (id)copySystemPairingIdentifierWithFlags:(unsigned int)a3 error:(id *)a4;
++ (id)copySystemPairingIdentifierWithFlags:(unsigned int)flags error:(id *)error;
 - (CUPairingManager)init;
 - (int)_ensureXPCStarted;
-- (void)_deletePairingIdentityWithOptions:(unint64_t)a3 completion:(id)a4;
-- (void)_findPairedPeer:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)_getPairedPeersWithOptions:(unint64_t)a3 completion:(id)a4;
-- (void)_getPairingIdentityWithOptions:(unint64_t)a3 tryCount:(unsigned int)a4 completion:(id)a5;
+- (void)_deletePairingIdentityWithOptions:(unint64_t)options completion:(id)completion;
+- (void)_findPairedPeer:(id)peer options:(unint64_t)options completion:(id)completion;
+- (void)_getPairedPeersWithOptions:(unint64_t)options completion:(id)completion;
+- (void)_getPairingIdentityWithOptions:(unint64_t)options tryCount:(unsigned int)count completion:(id)completion;
 - (void)_interrupted;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)_removePairedPeer:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)_savePairedPeer:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)_showWithCompletion:(id)a3;
-- (void)_startMonitoringWithOptions:(unint64_t)a3;
+- (void)_removePairedPeer:(id)peer options:(unint64_t)options completion:(id)completion;
+- (void)_savePairedPeer:(id)peer options:(unint64_t)options completion:(id)completion;
+- (void)_showWithCompletion:(id)completion;
+- (void)_startMonitoringWithOptions:(unint64_t)options;
 - (void)dealloc;
-- (void)deletePairingIdentityWithOptions:(unint64_t)a3 completion:(id)a4;
-- (void)findPairedPeer:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)getPairedPeersWithGroupID:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)getPairedPeersWithOptions:(unint64_t)a3 completion:(id)a4;
-- (void)getPairingIdentityWithOptions:(unint64_t)a3 completion:(id)a4;
+- (void)deletePairingIdentityWithOptions:(unint64_t)options completion:(id)completion;
+- (void)findPairedPeer:(id)peer options:(unint64_t)options completion:(id)completion;
+- (void)getPairedPeersWithGroupID:(id)d options:(unint64_t)options completion:(id)completion;
+- (void)getPairedPeersWithOptions:(unint64_t)options completion:(id)completion;
+- (void)getPairingIdentityWithOptions:(unint64_t)options completion:(id)completion;
 - (void)invalidate;
-- (void)pairedPeerAdded:(id)a3 options:(unint64_t)a4;
-- (void)pairedPeerChanged:(id)a3 options:(unint64_t)a4;
-- (void)pairedPeerRemoved:(id)a3 options:(unint64_t)a4;
-- (void)pairingIdentityCreated:(id)a3 options:(unint64_t)a4;
-- (void)pairingIdentityDeletedWithOptions:(unint64_t)a3;
-- (void)removePairedPeer:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)savePairedPeer:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)showWithCompletion:(id)a3;
-- (void)startMonitoringWithOptions:(unint64_t)a3;
-- (void)updatePairedPeersWithGroupID:(id)a3 groupInfo:(id)a4 options:(unint64_t)a5 completion:(id)a6;
+- (void)pairedPeerAdded:(id)added options:(unint64_t)options;
+- (void)pairedPeerChanged:(id)changed options:(unint64_t)options;
+- (void)pairedPeerRemoved:(id)removed options:(unint64_t)options;
+- (void)pairingIdentityCreated:(id)created options:(unint64_t)options;
+- (void)pairingIdentityDeletedWithOptions:(unint64_t)options;
+- (void)removePairedPeer:(id)peer options:(unint64_t)options completion:(id)completion;
+- (void)savePairedPeer:(id)peer options:(unint64_t)options completion:(id)completion;
+- (void)showWithCompletion:(id)completion;
+- (void)startMonitoringWithOptions:(unint64_t)options;
+- (void)updatePairedPeersWithGroupID:(id)d groupInfo:(id)info options:(unint64_t)options completion:(id)completion;
 @end
 
 @implementation CUPairingManager
@@ -85,75 +85,75 @@
   [(CUPairingManager *)&v16 dealloc];
 }
 
-- (void)pairedPeerChanged:(id)a3 options:(unint64_t)a4
+- (void)pairedPeerChanged:(id)changed options:(unint64_t)options
 {
-  v13 = a3;
+  changedCopy = changed;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (gLogCategory_CUPairingManager <= 30 && (gLogCategory_CUPairingManager != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingManager, 0x1Eu)))
   {
-    v6 = [v13 identifier];
-    LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager pairedPeerChanged:options:]", 0x1Eu, "PairedPeerChanged %@, %#{flags}\n", v7, v8, v9, v10, v6);
+    identifier = [changedCopy identifier];
+    LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager pairedPeerChanged:options:]", 0x1Eu, "PairedPeerChanged %@, %#{flags}\n", v7, v8, v9, v10, identifier);
   }
 
   pairedPeerChangedHandler = self->_pairedPeerChangedHandler;
-  v12 = v13;
+  v12 = changedCopy;
   if (pairedPeerChangedHandler)
   {
-    pairedPeerChangedHandler = pairedPeerChangedHandler[2](pairedPeerChangedHandler, v13, a4);
-    v12 = v13;
+    pairedPeerChangedHandler = pairedPeerChangedHandler[2](pairedPeerChangedHandler, changedCopy, options);
+    v12 = changedCopy;
   }
 
   MEMORY[0x1EEE66BB8](pairedPeerChangedHandler, v12);
 }
 
-- (void)pairedPeerRemoved:(id)a3 options:(unint64_t)a4
+- (void)pairedPeerRemoved:(id)removed options:(unint64_t)options
 {
-  v13 = a3;
+  removedCopy = removed;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (gLogCategory_CUPairingManager <= 30 && (gLogCategory_CUPairingManager != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingManager, 0x1Eu)))
   {
-    v6 = [v13 identifier];
-    LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager pairedPeerRemoved:options:]", 0x1Eu, "PairedPeerRemoved %@, %#{flags}\n", v7, v8, v9, v10, v6);
+    identifier = [removedCopy identifier];
+    LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager pairedPeerRemoved:options:]", 0x1Eu, "PairedPeerRemoved %@, %#{flags}\n", v7, v8, v9, v10, identifier);
   }
 
   pairedPeerRemovedHandler = self->_pairedPeerRemovedHandler;
-  v12 = v13;
+  v12 = removedCopy;
   if (pairedPeerRemovedHandler)
   {
-    pairedPeerRemovedHandler = pairedPeerRemovedHandler[2](pairedPeerRemovedHandler, v13, a4);
-    v12 = v13;
+    pairedPeerRemovedHandler = pairedPeerRemovedHandler[2](pairedPeerRemovedHandler, removedCopy, options);
+    v12 = removedCopy;
   }
 
   MEMORY[0x1EEE66BB8](pairedPeerRemovedHandler, v12);
 }
 
-- (void)pairedPeerAdded:(id)a3 options:(unint64_t)a4
+- (void)pairedPeerAdded:(id)added options:(unint64_t)options
 {
-  v13 = a3;
+  addedCopy = added;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (gLogCategory_CUPairingManager <= 30 && (gLogCategory_CUPairingManager != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingManager, 0x1Eu)))
   {
-    v6 = [v13 identifier];
-    LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager pairedPeerAdded:options:]", 0x1Eu, "PairedPeerAdded %@, %#{flags}\n", v7, v8, v9, v10, v6);
+    identifier = [addedCopy identifier];
+    LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager pairedPeerAdded:options:]", 0x1Eu, "PairedPeerAdded %@, %#{flags}\n", v7, v8, v9, v10, identifier);
   }
 
   pairedPeerAddedHandler = self->_pairedPeerAddedHandler;
-  v12 = v13;
+  v12 = addedCopy;
   if (pairedPeerAddedHandler)
   {
-    pairedPeerAddedHandler = pairedPeerAddedHandler[2](pairedPeerAddedHandler, v13, a4);
-    v12 = v13;
+    pairedPeerAddedHandler = pairedPeerAddedHandler[2](pairedPeerAddedHandler, addedCopy, options);
+    v12 = addedCopy;
   }
 
   MEMORY[0x1EEE66BB8](pairedPeerAddedHandler, v12);
 }
 
-- (void)pairingIdentityDeletedWithOptions:(unint64_t)a3
+- (void)pairingIdentityDeletedWithOptions:(unint64_t)options
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (gLogCategory_CUPairingManager <= 30 && (gLogCategory_CUPairingManager != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingManager, 0x1Eu)))
   {
-    LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager pairingIdentityDeletedWithOptions:]", 0x1Eu, "PairingIdentityDeleted %#{flags}\n", v5, v6, v7, v8, a3);
+    LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager pairingIdentityDeletedWithOptions:]", 0x1Eu, "PairingIdentityDeleted %#{flags}\n", v5, v6, v7, v8, options);
   }
 
   identityDeletedHandler = self->_identityDeletedHandler;
@@ -165,53 +165,53 @@
   }
 }
 
-- (void)pairingIdentityCreated:(id)a3 options:(unint64_t)a4
+- (void)pairingIdentityCreated:(id)created options:(unint64_t)options
 {
-  v13 = a3;
+  createdCopy = created;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (gLogCategory_CUPairingManager <= 30 && (gLogCategory_CUPairingManager != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingManager, 0x1Eu)))
   {
-    v6 = [v13 identifier];
-    LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager pairingIdentityCreated:options:]", 0x1Eu, "PairingIdentityCreated %@, %#{flags}\n", v7, v8, v9, v10, v6);
+    identifier = [createdCopy identifier];
+    LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager pairingIdentityCreated:options:]", 0x1Eu, "PairingIdentityCreated %@, %#{flags}\n", v7, v8, v9, v10, identifier);
   }
 
   identityCreatedHandler = self->_identityCreatedHandler;
-  v12 = v13;
+  v12 = createdCopy;
   if (identityCreatedHandler)
   {
-    identityCreatedHandler = identityCreatedHandler[2](identityCreatedHandler, v13, a4);
-    v12 = v13;
+    identityCreatedHandler = identityCreatedHandler[2](identityCreatedHandler, createdCopy, options);
+    v12 = createdCopy;
   }
 
   MEMORY[0x1EEE66BB8](identityCreatedHandler, v12);
 }
 
-- (void)_startMonitoringWithOptions:(unint64_t)a3
+- (void)_startMonitoringWithOptions:(unint64_t)options
 {
   if (gLogCategory_CUPairingManager <= 30 && (gLogCategory_CUPairingManager != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingManager, 0x1Eu)))
   {
-    LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _startMonitoringWithOptions:]", 0x1Eu, "StartMonitoring %#{flags}\n", v3, v4, v5, v6, a3);
+    LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _startMonitoringWithOptions:]", 0x1Eu, "StartMonitoring %#{flags}\n", v3, v4, v5, v6, options);
   }
 
   if ([(CUPairingManager *)self _ensureXPCStarted])
   {
     if (gLogCategory_CUPairingManager <= 60 && (gLogCategory_CUPairingManager != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingManager, 0x3Cu)))
     {
-      LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _startMonitoringWithOptions:]", 0x3Cu, "### StartMonitoring %#{flags} failed: %#m\n", v9, v10, v11, v12, a3);
+      LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _startMonitoringWithOptions:]", 0x3Cu, "### StartMonitoring %#{flags} failed: %#m\n", v9, v10, v11, v12, options);
     }
   }
 
   else
   {
-    v13 = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
-    [v13 startMonitoringWithOptions:a3];
+    remoteObjectProxy = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
+    [remoteObjectProxy startMonitoringWithOptions:options];
 
     self->_monitoring = 1;
-    self->_monitorOptions = a3;
+    self->_monitorOptions = options;
   }
 }
 
-- (void)startMonitoringWithOptions:(unint64_t)a3
+- (void)startMonitoringWithOptions:(unint64_t)options
 {
   v5 = _os_activity_create(&dword_191EAF000, "CoreUtils/CUPairingManager/startMonitoringWithOptions", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
@@ -223,26 +223,26 @@
   v7[2] = __47__CUPairingManager_startMonitoringWithOptions___block_invoke;
   v7[3] = &unk_1E73A4340;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = options;
   dispatch_async(dispatchQueue, v7);
   os_activity_scope_leave(&state);
 }
 
-- (void)updatePairedPeersWithGroupID:(id)a3 groupInfo:(id)a4 options:(unint64_t)a5 completion:(id)a6
+- (void)updatePairedPeersWithGroupID:(id)d groupInfo:(id)info options:(unint64_t)options completion:(id)completion
 {
-  v10 = a4;
-  v11 = a6;
+  infoCopy = info;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __78__CUPairingManager_updatePairedPeersWithGroupID_groupInfo_options_completion___block_invoke;
   v14[3] = &unk_1E73A3988;
-  v15 = v10;
-  v16 = self;
-  v17 = v11;
-  v18 = a5;
-  v12 = v10;
-  v13 = v11;
-  [(CUPairingManager *)self getPairedPeersWithGroupID:a3 options:a5 completion:v14];
+  v15 = infoCopy;
+  selfCopy = self;
+  v17 = completionCopy;
+  optionsCopy = options;
+  v12 = infoCopy;
+  v13 = completionCopy;
+  [(CUPairingManager *)self getPairedPeersWithGroupID:d options:options completion:v14];
 }
 
 void __78__CUPairingManager_updatePairedPeersWithGroupID_groupInfo_options_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -347,19 +347,19 @@ void __78__CUPairingManager_updatePairedPeersWithGroupID_groupInfo_options_compl
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)_showWithCompletion:(id)a3
+- (void)_showWithCompletion:(id)completion
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  completionCopy = completion;
   if (gLogCategory_CUPairingManager <= 30 && (gLogCategory_CUPairingManager != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingManager, 0x1Eu)))
   {
     LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _showWithCompletion:]", 0x1Eu, "Show\n", v4, v5, v6, v7, v26);
   }
 
-  v9 = [(CUPairingManager *)self _ensureXPCStarted];
-  if (v9)
+  _ensureXPCStarted = [(CUPairingManager *)self _ensureXPCStarted];
+  if (_ensureXPCStarted)
   {
-    v18 = v9;
+    v18 = _ensureXPCStarted;
     if (gLogCategory_CUPairingManager <= 60 && (gLogCategory_CUPairingManager != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingManager, 0x3Cu)))
     {
       LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _showWithCompletion:]", 0x3Cu, "### Show failed: %#m\n", v10, v11, v12, v13, v18);
@@ -380,7 +380,7 @@ void __78__CUPairingManager_updatePairedPeersWithGroupID_groupInfo_options_compl
     v30[0] = v23;
     v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
     v25 = [v19 errorWithDomain:v20 code:v21 userInfo:v24];
-    v8[2](v8, 0, v25);
+    completionCopy[2](completionCopy, 0, v25);
   }
 
   else
@@ -390,7 +390,7 @@ void __78__CUPairingManager_updatePairedPeersWithGroupID_groupInfo_options_compl
     v27[1] = 3221225472;
     v27[2] = __40__CUPairingManager__showWithCompletion___block_invoke;
     v27[3] = &unk_1E73A38E8;
-    v15 = v8;
+    v15 = completionCopy;
     v28 = v15;
     v16 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v27];
     [v16 showWithCompletion:v15];
@@ -399,9 +399,9 @@ void __78__CUPairingManager_updatePairedPeersWithGroupID_groupInfo_options_compl
   }
 }
 
-- (void)showWithCompletion:(id)a3
+- (void)showWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _os_activity_create(&dword_191EAF000, "CoreUtils/CUPairingManager/showWithCompletion", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -412,32 +412,32 @@ void __78__CUPairingManager_updatePairedPeersWithGroupID_groupInfo_options_compl
   v8[2] = __39__CUPairingManager_showWithCompletion___block_invoke;
   v8[3] = &unk_1E73A49A0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(dispatchQueue, v8);
 
   os_activity_scope_leave(&state);
 }
 
-- (void)_removePairedPeer:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)_removePairedPeer:(id)peer options:(unint64_t)options completion:(id)completion
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  peerCopy = peer;
+  completionCopy = completion;
   if (gLogCategory_CUPairingManager <= 30 && (gLogCategory_CUPairingManager != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingManager, 0x1Eu)))
   {
-    v10 = [v8 identifier];
-    LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _removePairedPeer:options:completion:]", 0x1Eu, "RemovePairedPeer %@, %#{flags}\n", v11, v12, v13, v14, v10);
+    identifier = [peerCopy identifier];
+    LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _removePairedPeer:options:completion:]", 0x1Eu, "RemovePairedPeer %@, %#{flags}\n", v11, v12, v13, v14, identifier);
   }
 
-  v15 = [(CUPairingManager *)self _ensureXPCStarted];
-  if (v15)
+  _ensureXPCStarted = [(CUPairingManager *)self _ensureXPCStarted];
+  if (_ensureXPCStarted)
   {
-    v20 = v15;
+    v20 = _ensureXPCStarted;
     if (gLogCategory_CUPairingManager <= 60 && (gLogCategory_CUPairingManager != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingManager, 0x3Cu)))
     {
-      v21 = [v8 identifier];
-      LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _removePairedPeer:options:completion:]", 0x3Cu, "### RemovePairedPeer %@, %#{flags} failed: %#m\n", v22, v23, v24, v25, v21);
+      identifier2 = [peerCopy identifier];
+      LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _removePairedPeer:options:completion:]", 0x3Cu, "### RemovePairedPeer %@, %#{flags} failed: %#m\n", v22, v23, v24, v25, identifier2);
     }
 
     v26 = MEMORY[0x1E696ABC0];
@@ -455,7 +455,7 @@ void __78__CUPairingManager_updatePairedPeersWithGroupID_groupInfo_options_compl
     v36[0] = v30;
     v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:&v35 count:1];
     v32 = [v26 errorWithDomain:v27 code:v28 userInfo:v31];
-    v9[2](v9, v32);
+    completionCopy[2](completionCopy, v32);
   }
 
   else
@@ -465,19 +465,19 @@ void __78__CUPairingManager_updatePairedPeersWithGroupID_groupInfo_options_compl
     v33[1] = 3221225472;
     v33[2] = __57__CUPairingManager__removePairedPeer_options_completion___block_invoke;
     v33[3] = &unk_1E73A38E8;
-    v17 = v9;
+    v17 = completionCopy;
     v34 = v17;
     v18 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v33];
-    [v18 removePairedPeer:v8 options:a4 completion:v17];
+    [v18 removePairedPeer:peerCopy options:options completion:v17];
 
     v19 = v34;
   }
 }
 
-- (void)removePairedPeer:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)removePairedPeer:(id)peer options:(unint64_t)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  peerCopy = peer;
+  completionCopy = completion;
   v10 = _os_activity_create(&dword_191EAF000, "CoreUtils/CUPairingManager/removePairedPeer", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -488,35 +488,35 @@ void __78__CUPairingManager_updatePairedPeersWithGroupID_groupInfo_options_compl
   v14[2] = __56__CUPairingManager_removePairedPeer_options_completion___block_invoke;
   v14[3] = &unk_1E73A3938;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = a4;
-  v12 = v9;
-  v13 = v8;
+  v15 = peerCopy;
+  v16 = completionCopy;
+  optionsCopy = options;
+  v12 = completionCopy;
+  v13 = peerCopy;
   dispatch_async(dispatchQueue, v14);
 
   os_activity_scope_leave(&state);
 }
 
-- (void)_savePairedPeer:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)_savePairedPeer:(id)peer options:(unint64_t)options completion:(id)completion
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  peerCopy = peer;
+  completionCopy = completion;
   if (gLogCategory_CUPairingManager <= 30 && (gLogCategory_CUPairingManager != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingManager, 0x1Eu)))
   {
-    v10 = [v8 identifier];
-    LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _savePairedPeer:options:completion:]", 0x1Eu, "SavePairedPeer %@, %#{flags}\n", v11, v12, v13, v14, v10);
+    identifier = [peerCopy identifier];
+    LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _savePairedPeer:options:completion:]", 0x1Eu, "SavePairedPeer %@, %#{flags}\n", v11, v12, v13, v14, identifier);
   }
 
-  v15 = [(CUPairingManager *)self _ensureXPCStarted];
-  if (v15)
+  _ensureXPCStarted = [(CUPairingManager *)self _ensureXPCStarted];
+  if (_ensureXPCStarted)
   {
-    v20 = v15;
+    v20 = _ensureXPCStarted;
     if (gLogCategory_CUPairingManager <= 60 && (gLogCategory_CUPairingManager != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingManager, 0x3Cu)))
     {
-      v21 = [v8 identifier];
-      LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _savePairedPeer:options:completion:]", 0x3Cu, "### SavePairedPeer %@, %#{flags} failed: %#m\n", v22, v23, v24, v25, v21);
+      identifier2 = [peerCopy identifier];
+      LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _savePairedPeer:options:completion:]", 0x3Cu, "### SavePairedPeer %@, %#{flags} failed: %#m\n", v22, v23, v24, v25, identifier2);
     }
 
     v26 = MEMORY[0x1E696ABC0];
@@ -534,7 +534,7 @@ void __78__CUPairingManager_updatePairedPeersWithGroupID_groupInfo_options_compl
     v36[0] = v30;
     v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:&v35 count:1];
     v32 = [v26 errorWithDomain:v27 code:v28 userInfo:v31];
-    v9[2](v9, v32);
+    completionCopy[2](completionCopy, v32);
   }
 
   else
@@ -544,19 +544,19 @@ void __78__CUPairingManager_updatePairedPeersWithGroupID_groupInfo_options_compl
     v33[1] = 3221225472;
     v33[2] = __55__CUPairingManager__savePairedPeer_options_completion___block_invoke;
     v33[3] = &unk_1E73A38E8;
-    v17 = v9;
+    v17 = completionCopy;
     v34 = v17;
     v18 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v33];
-    [v18 savePairedPeer:v8 options:a4 completion:v17];
+    [v18 savePairedPeer:peerCopy options:options completion:v17];
 
     v19 = v34;
   }
 }
 
-- (void)savePairedPeer:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)savePairedPeer:(id)peer options:(unint64_t)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  peerCopy = peer;
+  completionCopy = completion;
   v10 = _os_activity_create(&dword_191EAF000, "CoreUtils/CUPairingManager/savePairedPeer", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -567,34 +567,34 @@ void __78__CUPairingManager_updatePairedPeersWithGroupID_groupInfo_options_compl
   v14[2] = __54__CUPairingManager_savePairedPeer_options_completion___block_invoke;
   v14[3] = &unk_1E73A3938;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = a4;
-  v12 = v9;
-  v13 = v8;
+  v15 = peerCopy;
+  v16 = completionCopy;
+  optionsCopy = options;
+  v12 = completionCopy;
+  v13 = peerCopy;
   dispatch_async(dispatchQueue, v14);
 
   os_activity_scope_leave(&state);
 }
 
-- (void)_findPairedPeer:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)_findPairedPeer:(id)peer options:(unint64_t)options completion:(id)completion
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  peerCopy = peer;
+  completionCopy = completion;
   if (gLogCategory_CUPairingManager <= 30 && (gLogCategory_CUPairingManager != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingManager, 0x1Eu)))
   {
-    v10 = [v8 identifier];
-    LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _findPairedPeer:options:completion:]", 0x1Eu, "FindPairedPeer %@, %#{flags}\n", v11, v12, v13, v14, v10);
+    identifier = [peerCopy identifier];
+    LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _findPairedPeer:options:completion:]", 0x1Eu, "FindPairedPeer %@, %#{flags}\n", v11, v12, v13, v14, identifier);
   }
 
-  v15 = [(CUPairingManager *)self _ensureXPCStarted];
-  if (v15)
+  _ensureXPCStarted = [(CUPairingManager *)self _ensureXPCStarted];
+  if (_ensureXPCStarted)
   {
-    v24 = v15;
+    v24 = _ensureXPCStarted;
     if (gLogCategory_CUPairingManager <= 60 && (gLogCategory_CUPairingManager != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingManager, 0x3Cu)))
     {
-      LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _findPairedPeer:options:completion:]", 0x3Cu, "### FindPairedPeer %#{flags} failed: %#m\n", v16, v17, v18, v19, a4);
+      LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _findPairedPeer:options:completion:]", 0x3Cu, "### FindPairedPeer %#{flags} failed: %#m\n", v16, v17, v18, v19, options);
     }
 
     v25 = MEMORY[0x1E696ABC0];
@@ -612,7 +612,7 @@ void __78__CUPairingManager_updatePairedPeersWithGroupID_groupInfo_options_compl
     v35[0] = v29;
     v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:&v34 count:1];
     v31 = [v25 errorWithDomain:v26 code:v27 userInfo:v30];
-    v9[2](v9, 0, v31);
+    completionCopy[2](completionCopy, 0, v31);
   }
 
   else
@@ -622,19 +622,19 @@ void __78__CUPairingManager_updatePairedPeersWithGroupID_groupInfo_options_compl
     v32[1] = 3221225472;
     v32[2] = __55__CUPairingManager__findPairedPeer_options_completion___block_invoke;
     v32[3] = &unk_1E73A38E8;
-    v21 = v9;
+    v21 = completionCopy;
     v33 = v21;
     v22 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v32];
-    [v22 findPairedPeer:v8 options:a4 completion:v21];
+    [v22 findPairedPeer:peerCopy options:options completion:v21];
 
     v23 = v33;
   }
 }
 
-- (void)findPairedPeer:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)findPairedPeer:(id)peer options:(unint64_t)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  peerCopy = peer;
+  completionCopy = completion;
   v10 = _os_activity_create(&dword_191EAF000, "CoreUtils/CUPairingManager/findPairedPeer", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -645,32 +645,32 @@ void __78__CUPairingManager_updatePairedPeersWithGroupID_groupInfo_options_compl
   v14[2] = __54__CUPairingManager_findPairedPeer_options_completion___block_invoke;
   v14[3] = &unk_1E73A3938;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = a4;
-  v12 = v9;
-  v13 = v8;
+  v15 = peerCopy;
+  v16 = completionCopy;
+  optionsCopy = options;
+  v12 = completionCopy;
+  v13 = peerCopy;
   dispatch_async(dispatchQueue, v14);
 
   os_activity_scope_leave(&state);
 }
 
-- (void)_getPairedPeersWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)_getPairedPeersWithOptions:(unint64_t)options completion:(id)completion
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
+  completionCopy = completion;
   if (gLogCategory_CUPairingManager <= 30 && (gLogCategory_CUPairingManager != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingManager, 0x1Eu)))
   {
-    LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _getPairedPeersWithOptions:completion:]", 0x1Eu, "GetPairedPeers %#{flags}\n", v6, v7, v8, v9, a3);
+    LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _getPairedPeersWithOptions:completion:]", 0x1Eu, "GetPairedPeers %#{flags}\n", v6, v7, v8, v9, options);
   }
 
-  v11 = [(CUPairingManager *)self _ensureXPCStarted];
-  if (v11)
+  _ensureXPCStarted = [(CUPairingManager *)self _ensureXPCStarted];
+  if (_ensureXPCStarted)
   {
-    v20 = v11;
+    v20 = _ensureXPCStarted;
     if (gLogCategory_CUPairingManager <= 60 && (gLogCategory_CUPairingManager != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingManager, 0x3Cu)))
     {
-      LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _getPairedPeersWithOptions:completion:]", 0x3Cu, "### GetPairedPeers %#{flags} failed: %#m\n", v12, v13, v14, v15, a3);
+      LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _getPairedPeersWithOptions:completion:]", 0x3Cu, "### GetPairedPeers %#{flags} failed: %#m\n", v12, v13, v14, v15, options);
     }
 
     v21 = MEMORY[0x1E696ABC0];
@@ -688,7 +688,7 @@ void __78__CUPairingManager_updatePairedPeersWithGroupID_groupInfo_options_compl
     v31[0] = v25;
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
     v27 = [v21 errorWithDomain:v22 code:v23 userInfo:v26];
-    v10[2](v10, 0, v27);
+    completionCopy[2](completionCopy, 0, v27);
   }
 
   else
@@ -698,18 +698,18 @@ void __78__CUPairingManager_updatePairedPeersWithGroupID_groupInfo_options_compl
     v28[1] = 3221225472;
     v28[2] = __58__CUPairingManager__getPairedPeersWithOptions_completion___block_invoke;
     v28[3] = &unk_1E73A38E8;
-    v17 = v10;
+    v17 = completionCopy;
     v29 = v17;
     v18 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v28];
-    [v18 getPairedPeersWithOptions:a3 completion:v17];
+    [v18 getPairedPeersWithOptions:options completion:v17];
 
     v19 = v29;
   }
 }
 
-- (void)getPairedPeersWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)getPairedPeersWithOptions:(unint64_t)options completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = _os_activity_create(&dword_191EAF000, "CoreUtils/CUPairingManager/getPairedPeersWithOptions", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -719,28 +719,28 @@ void __78__CUPairingManager_updatePairedPeersWithGroupID_groupInfo_options_compl
   block[1] = 3221225472;
   block[2] = __57__CUPairingManager_getPairedPeersWithOptions_completion___block_invoke;
   block[3] = &unk_1E73A4BB0;
-  v11 = v6;
-  v12 = a3;
+  v11 = completionCopy;
+  optionsCopy = options;
   block[4] = self;
-  v9 = v6;
+  v9 = completionCopy;
   dispatch_async(dispatchQueue, block);
 
   os_activity_scope_leave(&state);
 }
 
-- (void)getPairedPeersWithGroupID:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)getPairedPeersWithGroupID:(id)d options:(unint64_t)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __65__CUPairingManager_getPairedPeersWithGroupID_options_completion___block_invoke;
   v12[3] = &unk_1E73A3910;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
-  [(CUPairingManager *)self getPairedPeersWithOptions:a4 completion:v12];
+  v13 = dCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = dCopy;
+  [(CUPairingManager *)self getPairedPeersWithOptions:options completion:v12];
 }
 
 void __65__CUPairingManager_getPairedPeersWithGroupID_options_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -827,22 +827,22 @@ LABEL_18:
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_deletePairingIdentityWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)_deletePairingIdentityWithOptions:(unint64_t)options completion:(id)completion
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
+  completionCopy = completion;
   if (gLogCategory_CUPairingManager <= 30 && (gLogCategory_CUPairingManager != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingManager, 0x1Eu)))
   {
-    LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _deletePairingIdentityWithOptions:completion:]", 0x1Eu, "DeletePairingIdentity %#{flags}\n", v6, v7, v8, v9, a3);
+    LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _deletePairingIdentityWithOptions:completion:]", 0x1Eu, "DeletePairingIdentity %#{flags}\n", v6, v7, v8, v9, options);
   }
 
-  v11 = [(CUPairingManager *)self _ensureXPCStarted];
-  if (v11)
+  _ensureXPCStarted = [(CUPairingManager *)self _ensureXPCStarted];
+  if (_ensureXPCStarted)
   {
-    v20 = v11;
+    v20 = _ensureXPCStarted;
     if (gLogCategory_CUPairingManager <= 60 && (gLogCategory_CUPairingManager != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingManager, 0x3Cu)))
     {
-      LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _deletePairingIdentityWithOptions:completion:]", 0x3Cu, "### DeletePairingIdentity %#{flags} failed: %#m\n", v12, v13, v14, v15, a3);
+      LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _deletePairingIdentityWithOptions:completion:]", 0x3Cu, "### DeletePairingIdentity %#{flags} failed: %#m\n", v12, v13, v14, v15, options);
     }
 
     v21 = MEMORY[0x1E696ABC0];
@@ -860,7 +860,7 @@ LABEL_18:
     v31[0] = v25;
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
     v27 = [v21 errorWithDomain:v22 code:v23 userInfo:v26];
-    v10[2](v10, v27);
+    completionCopy[2](completionCopy, v27);
   }
 
   else
@@ -870,18 +870,18 @@ LABEL_18:
     v28[1] = 3221225472;
     v28[2] = __65__CUPairingManager__deletePairingIdentityWithOptions_completion___block_invoke;
     v28[3] = &unk_1E73A38E8;
-    v17 = v10;
+    v17 = completionCopy;
     v29 = v17;
     v18 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v28];
-    [v18 deletePairingIdentityWithOptions:a3 completion:v17];
+    [v18 deletePairingIdentityWithOptions:options completion:v17];
 
     v19 = v29;
   }
 }
 
-- (void)deletePairingIdentityWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)deletePairingIdentityWithOptions:(unint64_t)options completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = _os_activity_create(&dword_191EAF000, "CoreUtils/CUPairingManager/deletePairingIdentityWithOptions", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -891,31 +891,31 @@ LABEL_18:
   block[1] = 3221225472;
   block[2] = __64__CUPairingManager_deletePairingIdentityWithOptions_completion___block_invoke;
   block[3] = &unk_1E73A4BB0;
-  v11 = v6;
-  v12 = a3;
+  v11 = completionCopy;
+  optionsCopy = options;
   block[4] = self;
-  v9 = v6;
+  v9 = completionCopy;
   dispatch_async(dispatchQueue, block);
 
   os_activity_scope_leave(&state);
 }
 
-- (void)_getPairingIdentityWithOptions:(unint64_t)a3 tryCount:(unsigned int)a4 completion:(id)a5
+- (void)_getPairingIdentityWithOptions:(unint64_t)options tryCount:(unsigned int)count completion:(id)completion
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v12 = a5;
+  completionCopy = completion;
   if (gLogCategory_CUPairingManager <= 30 && (gLogCategory_CUPairingManager != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingManager, 0x1Eu)))
   {
-    LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _getPairingIdentityWithOptions:tryCount:completion:]", 0x1Eu, "GetPairingIdentity %#{flags}\n", v8, v9, v10, v11, a3);
+    LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _getPairingIdentityWithOptions:tryCount:completion:]", 0x1Eu, "GetPairingIdentity %#{flags}\n", v8, v9, v10, v11, options);
   }
 
-  v13 = [(CUPairingManager *)self _ensureXPCStarted];
-  if (v13)
+  _ensureXPCStarted = [(CUPairingManager *)self _ensureXPCStarted];
+  if (_ensureXPCStarted)
   {
-    v21 = v13;
+    v21 = _ensureXPCStarted;
     if (gLogCategory_CUPairingManager <= 60 && (gLogCategory_CUPairingManager != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingManager, 0x3Cu)))
     {
-      LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _getPairingIdentityWithOptions:tryCount:completion:]", 0x3Cu, "### GetPairingIdentity %#{flags} failed: %#m\n", v14, v15, v16, v17, a3);
+      LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _getPairingIdentityWithOptions:tryCount:completion:]", 0x3Cu, "### GetPairingIdentity %#{flags} failed: %#m\n", v14, v15, v16, v17, options);
     }
 
     v22 = MEMORY[0x1E696ABC0];
@@ -933,7 +933,7 @@ LABEL_18:
     v35[0] = v27;
     v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:&v34 count:1];
     v29 = [v22 errorWithDomain:v23 code:v24 userInfo:v28];
-    v12[2](v12, 0, v29);
+    completionCopy[2](completionCopy, 0, v29);
   }
 
   else
@@ -943,13 +943,13 @@ LABEL_18:
     v30[1] = 3221225472;
     v30[2] = __71__CUPairingManager__getPairingIdentityWithOptions_tryCount_completion___block_invoke;
     v30[3] = &unk_1E73A38C0;
-    v33 = a4;
+    countCopy = count;
     v30[4] = self;
-    v32 = a3;
-    v19 = v12;
+    optionsCopy = options;
+    v19 = completionCopy;
     v31 = v19;
     v20 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v30];
-    [v20 getPairingIdentityWithOptions:a3 completion:v19];
+    [v20 getPairingIdentityWithOptions:options completion:v19];
   }
 }
 
@@ -976,9 +976,9 @@ void __71__CUPairingManager__getPairingIdentityWithOptions_tryCount_completion__
   }
 }
 
-- (void)getPairingIdentityWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)getPairingIdentityWithOptions:(unint64_t)options completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = _os_activity_create(&dword_191EAF000, "CoreUtils/CUPairingManager/getPairingIdentityWithOptions", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -988,10 +988,10 @@ void __71__CUPairingManager__getPairingIdentityWithOptions_tryCount_completion__
   block[1] = 3221225472;
   block[2] = __61__CUPairingManager_getPairingIdentityWithOptions_completion___block_invoke;
   block[3] = &unk_1E73A4BB0;
-  v11 = v6;
-  v12 = a3;
+  v11 = completionCopy;
+  optionsCopy = options;
   block[4] = self;
-  v9 = v6;
+  v9 = completionCopy;
   dispatch_async(dispatchQueue, block);
 
   os_activity_scope_leave(&state);
@@ -1099,8 +1099,8 @@ void __71__CUPairingManager__getPairingIdentityWithOptions_tryCount_completion__
       LogPrintF(&gLogCategory_CUPairingManager, "[CUPairingManager _interrupted]", 0x32u, "Restarting monitor after interruption\n", v7, v8, v9, v10, v14);
     }
 
-    v11 = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
-    [v11 startMonitoringWithOptions:self->_monitorOptions];
+    remoteObjectProxy = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
+    [remoteObjectProxy startMonitoringWithOptions:self->_monitorOptions];
   }
 
   interruptionHandler = self->_interruptionHandler;
@@ -1167,27 +1167,27 @@ void __71__CUPairingManager__getPairingIdentityWithOptions_tryCount_completion__
   return 0;
 }
 
-+ (id)copySystemPairingIdentifierWithFlags:(unsigned int)a3 error:(id *)a4
++ (id)copySystemPairingIdentifierWithFlags:(unsigned int)flags error:(id *)error
 {
   if (gLogCategory_CUPairingManager <= 30 && (gLogCategory_CUPairingManager != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingManager, 0x1Eu)))
   {
     LogPrintF(&gLogCategory_CUPairingManager, "+[CUPairingManager copySystemPairingIdentifierWithFlags:error:]", 0x1Eu, "CopySystemPairingIdentifier: trying direct", v4, v5, v6, v7, v45);
   }
 
-  v10 = [[CUPairingDaemon alloc] initStandalone];
+  initStandalone = [[CUPairingDaemon alloc] initStandalone];
   v48 = -6700;
-  v11 = [v10 copyIdentityWithOptions:4 error:&v48];
-  v12 = [v11 identifier];
-  v13 = [v12 UUIDString];
+  v11 = [initStandalone copyIdentityWithOptions:4 error:&v48];
+  identifier = [v11 identifier];
+  uUIDString = [identifier UUIDString];
 
-  if (v13)
+  if (uUIDString)
   {
     if (gLogCategory_CUPairingManager <= 30 && (gLogCategory_CUPairingManager != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingManager, 0x1Eu)))
     {
-      LogPrintF(&gLogCategory_CUPairingManager, "+[CUPairingManager copySystemPairingIdentifierWithFlags:error:]", 0x1Eu, "CopySystemPairingIdentifier: direct: %@", v17, v18, v19, v20, v13);
+      LogPrintF(&gLogCategory_CUPairingManager, "+[CUPairingManager copySystemPairingIdentifierWithFlags:error:]", 0x1Eu, "CopySystemPairingIdentifier: direct: %@", v17, v18, v19, v20, uUIDString);
     }
 
-    v26 = v13;
+    v26 = uUIDString;
 LABEL_14:
     v27 = v26;
     goto LABEL_15;
@@ -1204,7 +1204,7 @@ LABEL_14:
   v36 = v47;
   if (v47)
   {
-    v47[25] = a3 | 0xC;
+    v47[25] = flags | 0xC;
     v46 = 0;
     v48 = PairingSessionCopyIdentity(v36, 1, &v46, 0, 0);
     if (v46)
@@ -1237,7 +1237,7 @@ LABEL_14:
     LogPrintF(&gLogCategory_CUPairingManager, "+[CUPairingManager copySystemPairingIdentifierWithFlags:error:]", 0x5Au, "### CopySystemPairingIdentifier failed: error=%@", v40, v41, v42, v43, v39);
   }
 
-  if (a4)
+  if (error)
   {
     if (v48)
     {
@@ -1250,7 +1250,7 @@ LABEL_14:
     }
 
     NSErrorF_safe(*MEMORY[0x1E696A768], v44, "CopySystemPairingIdentifier failed", v31, v32, v33, v34, v35, v45);
-    *a4 = v27 = 0;
+    *error = v27 = 0;
   }
 
   else

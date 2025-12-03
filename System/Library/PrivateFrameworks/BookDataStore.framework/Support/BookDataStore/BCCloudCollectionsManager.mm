@@ -1,15 +1,15 @@
 @interface BCCloudCollectionsManager
 + (id)sharedManager;
 + (id)sharedService;
-+ (void)deleteCloudDataWithCompletion:(id)a3;
++ (void)deleteCloudDataWithCompletion:(id)completion;
 - (NSManagedObjectModel)objectModel;
 - (id)collectionDetailManagerInstance;
 - (id)collectionMemberManagerInstance;
 - (id)initService;
-- (void)dataSource:(id)a3 storeDidReset:(id)a4;
-- (void)dissociateCloudDataFromSyncWithCompletion:(id)a3;
-- (void)hasSaltChangedWithCompletion:(id)a3;
-- (void)saltUpdatedWithSaltVersionIdentifier:(id)a3;
+- (void)dataSource:(id)source storeDidReset:(id)reset;
+- (void)dissociateCloudDataFromSyncWithCompletion:(id)completion;
+- (void)hasSaltChangedWithCompletion:(id)completion;
+- (void)saltUpdatedWithSaltVersionIdentifier:(id)identifier;
 @end
 
 @implementation BCCloudCollectionsManager
@@ -49,8 +49,8 @@
 
     v4 = +[BCCloudKitController sharedInstance];
     v5 = [BCCloudDataSource alloc];
-    v6 = [(BCCloudCollectionsManager *)v2 objectModel];
-    v7 = [(BCCloudDataSource *)v5 initWithManagedObjectModel:v6 nameOnDisk:@"BCCloudCollections" delegate:v2];
+    objectModel = [(BCCloudCollectionsManager *)v2 objectModel];
+    v7 = [(BCCloudDataSource *)v5 initWithManagedObjectModel:objectModel nameOnDisk:@"BCCloudCollections" delegate:v2];
     collectionDataSource = v2->_collectionDataSource;
     v2->_collectionDataSource = v7;
 
@@ -63,8 +63,8 @@
     v2->_collectionMemberManager = v11;
 
     v13 = [BCCloudChangeTokenController alloc];
-    v14 = [(BCCloudDataSource *)v2->_collectionDataSource managedObjectContext];
-    v15 = [(BCCloudChangeTokenController *)v13 initWithMOC:v14 zoneName:@"CollectionZone" cloudKitController:v4];
+    managedObjectContext = [(BCCloudDataSource *)v2->_collectionDataSource managedObjectContext];
+    v15 = [(BCCloudChangeTokenController *)v13 initWithMOC:managedObjectContext zoneName:@"CollectionZone" cloudKitController:v4];
     changeTokenController = v2->_changeTokenController;
     v2->_changeTokenController = v15;
 
@@ -101,7 +101,7 @@
 - (id)collectionDetailManagerInstance
 {
   objc_opt_class();
-  v3 = [(BCCloudCollectionsManager *)self collectionDetailManager];
+  collectionDetailManager = [(BCCloudCollectionsManager *)self collectionDetailManager];
   v4 = BUDynamicCast();
 
   return v4;
@@ -110,20 +110,20 @@
 - (id)collectionMemberManagerInstance
 {
   objc_opt_class();
-  v3 = [(BCCloudCollectionsManager *)self collectionMemberManager];
+  collectionMemberManager = [(BCCloudCollectionsManager *)self collectionMemberManager];
   v4 = BUDynamicCast();
 
   return v4;
 }
 
-- (void)dataSource:(id)a3 storeDidReset:(id)a4
+- (void)dataSource:(id)source storeDidReset:(id)reset
 {
-  v4 = a4;
+  resetCopy = reset;
   v5 = sub_100002660();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v4;
+    v9 = resetCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "BCCloudCollectionsManager dataSource:storeDidReset:%{public}@", &v8, 0xCu);
   }
 
@@ -132,22 +132,22 @@
   [v7 resetChangeToken:v6];
 }
 
-- (void)saltUpdatedWithSaltVersionIdentifier:(id)a3
+- (void)saltUpdatedWithSaltVersionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BCCloudCollectionsManager *)self saltVersionIdentifierManager];
-  [v5 handleSaltVersionIdentifierChange:v4 completion:&stru_100241F60];
+  identifierCopy = identifier;
+  saltVersionIdentifierManager = [(BCCloudCollectionsManager *)self saltVersionIdentifierManager];
+  [saltVersionIdentifierManager handleSaltVersionIdentifierChange:identifierCopy completion:&stru_100241F60];
 }
 
-- (void)hasSaltChangedWithCompletion:(id)a3
+- (void)hasSaltChangedWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [(BCCloudCollectionsManager *)self collectionDetailManagerInstance];
-  [v5 bds_addObjectIfNotNil:v6];
+  collectionDetailManagerInstance = [(BCCloudCollectionsManager *)self collectionDetailManagerInstance];
+  [v5 bds_addObjectIfNotNil:collectionDetailManagerInstance];
 
-  v7 = [(BCCloudCollectionsManager *)self collectionMemberManagerInstance];
-  [v5 bds_addObjectIfNotNil:v7];
+  collectionMemberManagerInstance = [(BCCloudCollectionsManager *)self collectionMemberManagerInstance];
+  [v5 bds_addObjectIfNotNil:collectionMemberManagerInstance];
 
   v8 = sub_10000DC08();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -157,12 +157,12 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "BCCloudCollectionsManager hasSaltChangedWithCompletion %@", &v9, 0xCu);
   }
 
-  [v5 bds_chainUntilNoErrorCompletionSelectorCallsForSelector:"hasSaltChangedWithCompletion:" completion:v4];
+  [v5 bds_chainUntilNoErrorCompletionSelectorCallsForSelector:"hasSaltChangedWithCompletion:" completion:completionCopy];
 }
 
-- (void)dissociateCloudDataFromSyncWithCompletion:(id)a3
+- (void)dissociateCloudDataFromSyncWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_10000DC08();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -170,23 +170,23 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "BCCloudCollectionsManager dissociateCloudDataFromSyncWithCompletion", v10, 2u);
   }
 
-  v6 = [(BCCloudCollectionsManager *)self collectionDetailManagerInstance];
-  v11[0] = v6;
-  v7 = [(BCCloudCollectionsManager *)self collectionMemberManagerInstance];
+  collectionDetailManagerInstance = [(BCCloudCollectionsManager *)self collectionDetailManagerInstance];
+  v11[0] = collectionDetailManagerInstance;
+  collectionMemberManagerInstance = [(BCCloudCollectionsManager *)self collectionMemberManagerInstance];
   changeTokenController = self->_changeTokenController;
-  v11[1] = v7;
+  v11[1] = collectionMemberManagerInstance;
   v11[2] = changeTokenController;
   v9 = [NSArray arrayWithObjects:v11 count:3];
-  [v9 bds_chainSuccessAndErrorCompletionSelectorCallsForSelector:"dissociateCloudDataFromSyncWithCompletion:" completion:v4];
+  [v9 bds_chainSuccessAndErrorCompletionSelectorCallsForSelector:"dissociateCloudDataFromSyncWithCompletion:" completion:completionCopy];
 }
 
-+ (void)deleteCloudDataWithCompletion:(id)a3
++ (void)deleteCloudDataWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[BULogUtilities shared];
-  v5 = [v4 verboseLoggingEnabled];
+  verboseLoggingEnabled = [v4 verboseLoggingEnabled];
 
-  if (v5)
+  if (verboseLoggingEnabled)
   {
     v6 = sub_10000DB80();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -196,7 +196,7 @@
     }
   }
 
-  [BCCloudDataSource deleteCloudDataWithCompletion:v3];
+  [BCCloudDataSource deleteCloudDataWithCompletion:completionCopy];
 }
 
 @end

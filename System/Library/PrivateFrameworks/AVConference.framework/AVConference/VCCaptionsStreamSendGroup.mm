@@ -1,29 +1,29 @@
 @interface VCCaptionsStreamSendGroup
-- (BOOL)setDeviceRole:(int)a3 operatingMode:(int)a4;
-- (VCCaptionsStreamSendGroup)initWithConfig:(id)a3;
+- (BOOL)setDeviceRole:(int)role operatingMode:(int)mode;
+- (VCCaptionsStreamSendGroup)initWithConfig:(id)config;
 - (id)activeStreamKeys;
 - (id)willStart;
-- (void)collectAndLogChannelMetrics:(id *)a3;
+- (void)collectAndLogChannelMetrics:(id *)metrics;
 - (void)dealloc;
-- (void)didConfigureCaptionsWithError:(id)a3;
-- (void)didDisableCaptions:(BOOL)a3 error:(id)a4;
-- (void)didEnableCaptions:(BOOL)a3 error:(id)a4;
-- (void)didStartCaptioningWithReason:(unsigned __int8)a3 streamToken:(int64_t)a4;
+- (void)didConfigureCaptionsWithError:(id)error;
+- (void)didDisableCaptions:(BOOL)captions error:(id)error;
+- (void)didEnableCaptions:(BOOL)captions error:(id)error;
+- (void)didStartCaptioningWithReason:(unsigned __int8)reason streamToken:(int64_t)token;
 - (void)didStop;
-- (void)didStopCaptioningWithReason:(unsigned __int8)a3 streamToken:(int64_t)a4;
-- (void)didUpdateCaptions:(id)a3;
-- (void)dispatchedUpdateActiveMediaStreamIDs:(id)a3 withTargetBitrate:(unsigned int)a4 mediaBitrates:(id)a5 rateChangeCounter:(unsigned int)a6;
-- (void)onVideoFrame:(opaqueCMSampleBuffer *)a3 frameTime:(id *)a4 attribute:(id *)a5;
-- (void)registerCaptionsEventDelegate:(id)a3;
-- (void)reportCaptionsUsage:(unsigned __int8)a3;
-- (void)setReportingAgent:(opaqueRTCReporting *)a3;
-- (void)transmitTranscription:(id)a3;
-- (void)updateCaptionsConfig:(id)a3;
+- (void)didStopCaptioningWithReason:(unsigned __int8)reason streamToken:(int64_t)token;
+- (void)didUpdateCaptions:(id)captions;
+- (void)dispatchedUpdateActiveMediaStreamIDs:(id)ds withTargetBitrate:(unsigned int)bitrate mediaBitrates:(id)bitrates rateChangeCounter:(unsigned int)counter;
+- (void)onVideoFrame:(opaqueCMSampleBuffer *)frame frameTime:(id *)time attribute:(id *)attribute;
+- (void)registerCaptionsEventDelegate:(id)delegate;
+- (void)reportCaptionsUsage:(unsigned __int8)usage;
+- (void)setReportingAgent:(opaqueRTCReporting *)agent;
+- (void)transmitTranscription:(id)transcription;
+- (void)updateCaptionsConfig:(id)config;
 @end
 
 @implementation VCCaptionsStreamSendGroup
 
-- (VCCaptionsStreamSendGroup)initWithConfig:(id)a3
+- (VCCaptionsStreamSendGroup)initWithConfig:(id)config
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -31,7 +31,7 @@
   v4 = [(VCMediaStreamSendGroup *)&v9 initWithConfig:?];
   if (v4)
   {
-    v4->_common = [[VCAudioStreamGroupCommon alloc] initWithConfig:a3 audioCallback:VCCaptionsStreamSendGroup_PushAudioSamples context:v4 audioDirection:2 stateQueue:v4->super.super._stateQueue];
+    v4->_common = [[VCAudioStreamGroupCommon alloc] initWithConfig:config audioCallback:VCCaptionsStreamSendGroup_PushAudioSamples context:v4 audioDirection:2 stateQueue:v4->super.super._stateQueue];
     [(VCObject *)v4->_common setLogPrefix:[(VCObject *)v4 logPrefix]];
     if (v4->_common)
     {
@@ -123,21 +123,21 @@
   [(VCMediaStreamSendGroup *)&v3 didStop];
 }
 
-- (void)dispatchedUpdateActiveMediaStreamIDs:(id)a3 withTargetBitrate:(unsigned int)a4 mediaBitrates:(id)a5 rateChangeCounter:(unsigned int)a6
+- (void)dispatchedUpdateActiveMediaStreamIDs:(id)ds withTargetBitrate:(unsigned int)bitrate mediaBitrates:(id)bitrates rateChangeCounter:(unsigned int)counter
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  -[VCMediaStreamSendGroup setIsSuspended:](self, "setIsSuspended:", [a3 count] == 0);
-  if ([a3 count])
+  -[VCMediaStreamSendGroup setIsSuspended:](self, "setIsSuspended:", [ds count] == 0);
+  if ([ds count])
   {
-    v9 = [a3 firstObject];
+    firstObject = [ds firstObject];
 
-    self->_activeCaptionsStreamID = v9;
-    v10 = [(NSDictionary *)self->super.super._streamIDToMediaStreamMap objectForKeyedSubscript:v9];
+    self->_activeCaptionsStreamID = firstObject;
+    v10 = [(NSDictionary *)self->super.super._streamIDToMediaStreamMap objectForKeyedSubscript:firstObject];
     if (v10)
     {
       v11 = v10;
-      [v10 setTargetEncoderBitrate:{objc_msgSend(objc_msgSend(a5, "firstObject"), "unsignedIntValue")}];
-      v29[0] = v9;
+      [v10 setTargetEncoderBitrate:{objc_msgSend(objc_msgSend(bitrates, "firstObject"), "unsignedIntValue")}];
+      v29[0] = firstObject;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
       [v11 setStreamIDs:v12 repairStreamIDs:MEMORY[0x1E695E0F0]];
     }
@@ -181,9 +181,9 @@
           v23 = 2112;
           v24 = v13;
           v25 = 2048;
-          v26 = self;
+          selfCopy = self;
           v27 = 2112;
-          v28 = v9;
+          v28 = firstObject;
           _os_log_error_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) not found captions stream with stream ID %@", &v17, 0x3Au);
         }
       }
@@ -204,10 +204,10 @@
   return result;
 }
 
-- (BOOL)setDeviceRole:(int)a3 operatingMode:(int)a4
+- (BOOL)setDeviceRole:(int)role operatingMode:(int)mode
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&mode;
+  v5 = *&role;
   v16 = *MEMORY[0x1E69E9840];
   v12 = 0;
   v13 = &v12;
@@ -220,8 +220,8 @@
   v9[3] = &unk_1E85F3930;
   v9[4] = self;
   v9[5] = &v12;
-  v10 = a3;
-  v11 = a4;
+  roleCopy = role;
+  modeCopy = mode;
   dispatch_sync(stateQueue, v9);
   [(VCAudioStreamGroupCommon *)self->_common configureAudioIOWithDeviceRole:v5 operatingMode:v4];
   LOBYTE(v4) = *(v13 + 24);
@@ -236,17 +236,17 @@ uint64_t __57__VCCaptionsStreamSendGroup_setDeviceRole_operatingMode___block_inv
   return result;
 }
 
-- (void)collectAndLogChannelMetrics:(id *)a3
+- (void)collectAndLogChannelMetrics:(id *)metrics
 {
   if (self->_activeCaptionsStreamID)
   {
     v4 = [(NSDictionary *)self->super.super._streamIDToMediaStreamMap objectForKeyedSubscript:?];
 
-    [v4 collectTxChannelMetrics:a3];
+    [v4 collectTxChannelMetrics:metrics];
   }
 }
 
-- (void)setReportingAgent:(opaqueRTCReporting *)a3
+- (void)setReportingAgent:(opaqueRTCReporting *)agent
 {
   block[6] = *MEMORY[0x1E69E9840];
   stateQueue = self->super.super._stateQueue;
@@ -255,7 +255,7 @@ uint64_t __57__VCCaptionsStreamSendGroup_setDeviceRole_operatingMode___block_inv
   block[2] = __47__VCCaptionsStreamSendGroup_setReportingAgent___block_invoke;
   block[3] = &unk_1E85F40E0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = agent;
   dispatch_sync(stateQueue, block);
 }
 
@@ -269,16 +269,16 @@ uint64_t __47__VCCaptionsStreamSendGroup_setReportingAgent___block_invoke(uint64
   return [*(*(a1 + 32) + 744) setReportingAgent:*(a1 + 40)];
 }
 
-- (void)registerCaptionsEventDelegate:(id)a3
+- (void)registerCaptionsEventDelegate:(id)delegate
 {
-  if ([a3 conformsToProtocol:&unk_1F57B5080])
+  if ([delegate conformsToProtocol:&unk_1F57B5080])
   {
 
-    objc_storeWeak(&self->_captionsDelegate, a3);
+    objc_storeWeak(&self->_captionsDelegate, delegate);
   }
 }
 
-- (void)updateCaptionsConfig:(id)a3
+- (void)updateCaptionsConfig:(id)config
 {
   block[6] = *MEMORY[0x1E69E9840];
   stateQueue = self->super.super._stateQueue;
@@ -287,7 +287,7 @@ uint64_t __47__VCCaptionsStreamSendGroup_setReportingAgent___block_invoke(uint64
   block[2] = __50__VCCaptionsStreamSendGroup_updateCaptionsConfig___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = config;
   dispatch_async(stateQueue, block);
 }
 
@@ -300,7 +300,7 @@ uint64_t __50__VCCaptionsStreamSendGroup_updateCaptionsConfig___block_invoke(uin
   return [v3 updateConfig:v2];
 }
 
-- (void)didConfigureCaptionsWithError:(id)a3
+- (void)didConfigureCaptionsWithError:(id)error
 {
   block[6] = *MEMORY[0x1E69E9840];
   global_queue = dispatch_get_global_queue(0, 0);
@@ -309,7 +309,7 @@ uint64_t __50__VCCaptionsStreamSendGroup_updateCaptionsConfig___block_invoke(uin
   block[2] = __59__VCCaptionsStreamSendGroup_didConfigureCaptionsWithError___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = error;
   dispatch_async(global_queue, block);
 }
 
@@ -323,7 +323,7 @@ uint64_t __59__VCCaptionsStreamSendGroup_didConfigureCaptionsWithError___block_i
   return [v3 streamToken:v4 didConfigureCaptionsWithError:v5];
 }
 
-- (void)didDisableCaptions:(BOOL)a3 error:(id)a4
+- (void)didDisableCaptions:(BOOL)captions error:(id)error
 {
   v10 = *MEMORY[0x1E69E9840];
   global_queue = dispatch_get_global_queue(0, 0);
@@ -331,9 +331,9 @@ uint64_t __59__VCCaptionsStreamSendGroup_didConfigureCaptionsWithError___block_i
   v8[1] = 3221225472;
   v8[2] = __54__VCCaptionsStreamSendGroup_didDisableCaptions_error___block_invoke;
   v8[3] = &unk_1E85F37C8;
-  v9 = a3;
+  captionsCopy = captions;
   v8[4] = self;
-  v8[5] = a4;
+  v8[5] = error;
   dispatch_async(global_queue, v8);
 }
 
@@ -348,7 +348,7 @@ uint64_t __54__VCCaptionsStreamSendGroup_didDisableCaptions_error___block_invoke
   return [v3 streamToken:v4 didDisableCaptions:v5 error:v6];
 }
 
-- (void)didEnableCaptions:(BOOL)a3 error:(id)a4
+- (void)didEnableCaptions:(BOOL)captions error:(id)error
 {
   v10 = *MEMORY[0x1E69E9840];
   global_queue = dispatch_get_global_queue(0, 0);
@@ -356,9 +356,9 @@ uint64_t __54__VCCaptionsStreamSendGroup_didDisableCaptions_error___block_invoke
   v8[1] = 3221225472;
   v8[2] = __53__VCCaptionsStreamSendGroup_didEnableCaptions_error___block_invoke;
   v8[3] = &unk_1E85F37C8;
-  v9 = a3;
+  captionsCopy = captions;
   v8[4] = self;
-  v8[5] = a4;
+  v8[5] = error;
   dispatch_async(global_queue, v8);
 }
 
@@ -373,7 +373,7 @@ uint64_t __53__VCCaptionsStreamSendGroup_didEnableCaptions_error___block_invoke(
   return [v3 streamToken:v4 didEnableCaptions:v5 error:v6];
 }
 
-- (void)didStartCaptioningWithReason:(unsigned __int8)a3 streamToken:(int64_t)a4
+- (void)didStartCaptioningWithReason:(unsigned __int8)reason streamToken:(int64_t)token
 {
   v10 = *MEMORY[0x1E69E9840];
   global_queue = dispatch_get_global_queue(0, 0);
@@ -382,12 +382,12 @@ uint64_t __53__VCCaptionsStreamSendGroup_didEnableCaptions_error___block_invoke(
   v8[2] = __70__VCCaptionsStreamSendGroup_didStartCaptioningWithReason_streamToken___block_invoke;
   v8[3] = &unk_1E85F4180;
   v8[4] = self;
-  v8[5] = a4;
-  v9 = a3;
+  v8[5] = token;
+  reasonCopy = reason;
   dispatch_async(global_queue, v8);
 }
 
-- (void)didStopCaptioningWithReason:(unsigned __int8)a3 streamToken:(int64_t)a4
+- (void)didStopCaptioningWithReason:(unsigned __int8)reason streamToken:(int64_t)token
 {
   v10 = *MEMORY[0x1E69E9840];
   global_queue = dispatch_get_global_queue(0, 0);
@@ -396,12 +396,12 @@ uint64_t __53__VCCaptionsStreamSendGroup_didEnableCaptions_error___block_invoke(
   v8[2] = __69__VCCaptionsStreamSendGroup_didStopCaptioningWithReason_streamToken___block_invoke;
   v8[3] = &unk_1E85F4180;
   v8[4] = self;
-  v8[5] = a4;
-  v9 = a3;
+  v8[5] = token;
+  reasonCopy = reason;
   dispatch_async(global_queue, v8);
 }
 
-- (void)didUpdateCaptions:(id)a3
+- (void)didUpdateCaptions:(id)captions
 {
   block[6] = *MEMORY[0x1E69E9840];
   global_queue = dispatch_get_global_queue(0, 0);
@@ -410,9 +410,9 @@ uint64_t __53__VCCaptionsStreamSendGroup_didEnableCaptions_error___block_invoke(
   block[2] = __47__VCCaptionsStreamSendGroup_didUpdateCaptions___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = captions;
   dispatch_async(global_queue, block);
-  [(VCCaptionsStreamSendGroup *)self transmitTranscription:a3];
+  [(VCCaptionsStreamSendGroup *)self transmitTranscription:captions];
 }
 
 uint64_t __47__VCCaptionsStreamSendGroup_didUpdateCaptions___block_invoke(uint64_t a1)
@@ -425,12 +425,12 @@ uint64_t __47__VCCaptionsStreamSendGroup_didUpdateCaptions___block_invoke(uint64
   return [v3 streamToken:v4 didUpdateCaptions:v5];
 }
 
-- (void)transmitTranscription:(id)a3
+- (void)transmitTranscription:(id)transcription
 {
   v20 = *MEMORY[0x1E69E9840];
   v18 = 1280;
   memset(__b, 170, sizeof(__b));
-  VCCaptionsEncoder_Encode(self->_captionsEncoder, a3, __b, &v18);
+  VCCaptionsEncoder_Encode(self->_captionsEncoder, transcription, __b, &v18);
   memset(&v17, 170, sizeof(v17));
   HostTimeClock = CMClockGetHostTimeClock();
   CMClockGetTime(&v17, HostTimeClock);
@@ -470,17 +470,17 @@ uint64_t __47__VCCaptionsStreamSendGroup_didUpdateCaptions___block_invoke(uint64
   }
 }
 
-- (void)onVideoFrame:(opaqueCMSampleBuffer *)a3 frameTime:(id *)a4 attribute:(id *)a5
+- (void)onVideoFrame:(opaqueCMSampleBuffer *)frame frameTime:(id *)time attribute:(id *)attribute
 {
   v25 = *MEMORY[0x1E69E9840];
   v9 = [(NSDictionary *)self->super.super._streamIDToMediaStreamMap objectForKeyedSubscript:self->_activeCaptionsStreamID];
   if (v9)
   {
-    *buf = *&a4->var0;
-    *&buf[16] = a4->var3;
-    v15 = *&a5->var0;
-    v16 = *&a5->var6;
-    [v9 onVideoFrame:a3 frameTime:buf attribute:&v15];
+    *buf = *&time->var0;
+    *&buf[16] = time->var3;
+    v15 = *&attribute->var0;
+    v16 = *&attribute->var6;
+    [v9 onVideoFrame:frame frameTime:buf attribute:&v15];
   }
 
   else if (objc_opt_class() == self)
@@ -523,7 +523,7 @@ uint64_t __47__VCCaptionsStreamSendGroup_didUpdateCaptions___block_invoke(uint64
         v19 = 2112;
         v20 = v10;
         v21 = 2048;
-        v22 = self;
+        selfCopy = self;
         v23 = 2112;
         v24 = activeCaptionsStreamID;
         _os_log_error_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) not found captions stream with stream ID %@", buf, 0x3Au);
@@ -532,13 +532,13 @@ uint64_t __47__VCCaptionsStreamSendGroup_didUpdateCaptions___block_invoke(uint64
   }
 }
 
-- (void)reportCaptionsUsage:(unsigned __int8)a3
+- (void)reportCaptionsUsage:(unsigned __int8)usage
 {
-  v3 = a3;
+  usageCopy = usage;
   v5[1] = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->super.super._stateQueue);
   v4 = @"ACSU";
-  v5[0] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:v3];
+  v5[0] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:usageCopy];
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
   reportingGenericEvent();
 }

@@ -1,33 +1,33 @@
 @interface NRPBDeviceCollectionHistory
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (uint64_t)addHistory:(uint64_t)a1;
+- (uint64_t)addHistory:(uint64_t)history;
 - (unint64_t)hash;
-- (void)setHistorys:(uint64_t)a1;
-- (void)setSwitchRecords:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)setHistorys:(uint64_t)historys;
+- (void)setSwitchRecords:(uint64_t)records;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NRPBDeviceCollectionHistory
 
-- (uint64_t)addHistory:(uint64_t)a1
+- (uint64_t)addHistory:(uint64_t)history
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (history)
   {
-    v5 = *(a1 + 16);
+    v5 = *(history + 16);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 16);
-      *(a1 + 16) = v6;
+      v7 = *(history + 16);
+      *(history + 16) = v6;
 
-      v5 = *(a1 + 16);
+      v5 = *(history + 16);
     }
 
     v3 = [v5 addObject:v9];
@@ -43,8 +43,8 @@
   v8.receiver = self;
   v8.super_class = NRPBDeviceCollectionHistory;
   v4 = [(NRPBDeviceCollectionHistory *)&v8 description];
-  v5 = [(NRPBDeviceCollectionHistory *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NRPBDeviceCollectionHistory *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -52,11 +52,11 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_startIndex];
-    [v3 setObject:v4 forKey:@"startIndex"];
+    [dictionary setObject:v4 forKey:@"startIndex"];
   }
 
   if ([(NSMutableArray *)self->_historys count])
@@ -81,8 +81,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -91,31 +91,31 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"history"];
+    [dictionary setObject:v5 forKey:@"history"];
   }
 
   switchRecords = self->_switchRecords;
   if (switchRecords)
   {
-    v13 = [(NRPBSwitchRecordCollection *)switchRecords dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"switchRecords"];
+    dictionaryRepresentation2 = [(NRPBSwitchRecordCollection *)switchRecords dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"switchRecords"];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     while (1)
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -124,18 +124,18 @@
       while (1)
       {
         LOBYTE(v25) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v25 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v25 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v25 & 0x7F) << v6;
@@ -153,11 +153,11 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v14 = v13 >> 3;
@@ -172,7 +172,7 @@ LABEL_15:
         [(NRPBDeviceCollectionHistory *)self addHistory:v22];
         v25 = 0;
         v26 = 0;
-        if (!PBReaderPlaceMark() || !NRPBDeviceCollectionHistoryEntryReadFrom(v22, a3))
+        if (!PBReaderPlaceMark() || !NRPBDeviceCollectionHistoryEntryReadFrom(v22, from))
         {
           goto LABEL_43;
         }
@@ -192,18 +192,18 @@ LABEL_34:
         while (1)
         {
           LOBYTE(v25) = 0;
-          v18 = [a3 position] + 1;
-          if (v18 >= [a3 position] && (v19 = objc_msgSend(a3, "position") + 1, v19 <= objc_msgSend(a3, "length")))
+          v18 = [from position] + 1;
+          if (v18 >= [from position] && (v19 = objc_msgSend(from, "position") + 1, v19 <= objc_msgSend(from, "length")))
           {
-            v20 = [a3 data];
-            [v20 getBytes:&v25 range:{objc_msgSend(a3, "position"), 1}];
+            data2 = [from data];
+            [data2 getBytes:&v25 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v17 |= (v25 & 0x7F) << v15;
@@ -221,7 +221,7 @@ LABEL_34:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v21 = 0;
         }
@@ -241,10 +241,10 @@ LABEL_40:
       }
 
 LABEL_41:
-      v23 = [a3 position];
-      if (v23 >= [a3 length])
+      position2 = [from position];
+      if (position2 >= [from length])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
     }
 
@@ -252,7 +252,7 @@ LABEL_41:
     objc_storeStrong(&self->_switchRecords, v22);
     v25 = 0;
     v26 = 0;
-    if (!PBReaderPlaceMark() || !NRPBSwitchRecordCollectionReadFrom(v22, a3))
+    if (!PBReaderPlaceMark() || !NRPBSwitchRecordCollectionReadFrom(v22, from))
     {
 LABEL_43:
 
@@ -262,13 +262,13 @@ LABEL_43:
     goto LABEL_34;
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     startIndex = self->_startIndex;
@@ -315,18 +315,18 @@ LABEL_43:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSwitchRecords:(uint64_t)a1
+- (void)setSwitchRecords:(uint64_t)records
 {
-  if (a1)
+  if (records)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((records + 24), a2);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -354,7 +354,7 @@ LABEL_43:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v17 + 1) + 8 * v11) copyWithZone:{a3, v17}];
+        v12 = [*(*(&v17 + 1) + 8 * v11) copyWithZone:{zone, v17}];
         [(NRPBDeviceCollectionHistory *)v6 addHistory:v12];
 
         ++v11;
@@ -367,7 +367,7 @@ LABEL_43:
     while (v9);
   }
 
-  v13 = [(NRPBSwitchRecordCollection *)self->_switchRecords copyWithZone:a3];
+  v13 = [(NRPBSwitchRecordCollection *)self->_switchRecords copyWithZone:zone];
   v14 = v6[3];
   v6[3] = v13;
 
@@ -375,24 +375,24 @@ LABEL_43:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
-  v5 = *(v4 + 32);
+  v5 = *(equalCopy + 32);
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_startIndex != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_startIndex != *(equalCopy + 1))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_11:
     v8 = 0;
@@ -400,13 +400,13 @@ LABEL_11:
   }
 
   historys = self->_historys;
-  if (historys | *(v4 + 2) && ![(NSMutableArray *)historys isEqual:?])
+  if (historys | *(equalCopy + 2) && ![(NSMutableArray *)historys isEqual:?])
   {
     goto LABEL_11;
   }
 
   switchRecords = self->_switchRecords;
-  if (switchRecords | *(v4 + 3))
+  if (switchRecords | *(equalCopy + 3))
   {
     v8 = [(NRPBSwitchRecordCollection *)switchRecords isEqual:?];
   }
@@ -437,11 +437,11 @@ LABEL_12:
   return v4 ^ [(NRPBSwitchRecordCollection *)self->_switchRecords hash];
 }
 
-- (void)setHistorys:(uint64_t)a1
+- (void)setHistorys:(uint64_t)historys
 {
-  if (a1)
+  if (historys)
   {
-    objc_storeStrong((a1 + 16), a2);
+    objc_storeStrong((historys + 16), a2);
   }
 }
 

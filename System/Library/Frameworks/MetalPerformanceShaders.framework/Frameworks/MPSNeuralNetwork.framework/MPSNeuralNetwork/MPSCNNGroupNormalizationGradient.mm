@@ -1,17 +1,17 @@
 @interface MPSCNNGroupNormalizationGradient
-- (MPSCNNGroupNormalizationGradient)initWithCoder:(id)a3 device:(id)a4;
-- (MPSCNNGroupNormalizationGradient)initWithDevice:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (MPSCNNGroupNormalizationGradient)initWithCoder:(id)coder device:(id)device;
+- (MPSCNNGroupNormalizationGradient)initWithDevice:(id)device;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSCNNGroupNormalizationGradient
 
-- (MPSCNNGroupNormalizationGradient)initWithDevice:(id)a3
+- (MPSCNNGroupNormalizationGradient)initWithDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = MPSCNNGroupNormalizationGradient;
-  result = [(MPSCNNGradientKernel *)&v4 initWithDevice:a3];
+  result = [(MPSCNNGradientKernel *)&v4 initWithDevice:device];
   if (result)
   {
     result->super.super._encode = sub_239D18618;
@@ -22,11 +22,11 @@
   return result;
 }
 
-- (MPSCNNGroupNormalizationGradient)initWithCoder:(id)a3 device:(id)a4
+- (MPSCNNGroupNormalizationGradient)initWithCoder:(id)coder device:(id)device
 {
   v7.receiver = self;
   v7.super_class = MPSCNNGroupNormalizationGradient;
-  result = [(MPSCNNGradientKernel *)&v7 initWithCoder:a3 device:a4];
+  result = [(MPSCNNGradientKernel *)&v7 initWithCoder:coder device:device];
   if (result)
   {
     if (*(&result->super.super.super.super.isa + *MEMORY[0x277CD7358] + 2) << 16 == 0x10000)
@@ -52,19 +52,19 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v3.receiver = self;
   v3.super_class = MPSCNNGroupNormalizationGradient;
-  [(MPSCNNGradientKernel *)&v3 encodeWithCoder:a3];
+  [(MPSCNNGradientKernel *)&v3 encodeWithCoder:coder];
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v5.receiver = self;
   v5.super_class = MPSCNNGroupNormalizationGradient;
-  result = [(MPSCNNGradientKernel *)&v5 copyWithZone:a3 device:a4];
+  result = [(MPSCNNGradientKernel *)&v5 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 47) = sub_239D18618;

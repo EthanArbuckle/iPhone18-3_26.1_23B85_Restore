@@ -1,17 +1,17 @@
 @interface IMDSafetyMonitorNotificationContext
-- (BOOL)canPopulateUserInfoForMessageBalloonBundleID:(id)a3;
+- (BOOL)canPopulateUserInfoForMessageBalloonBundleID:(id)d;
 - (id)notificationCategories;
-- (void)populateUserInfoForNotificationContent:(id)a3 messageBalloonBundleID:(id)a4 payloadData:(id)a5 chatIdentifier:(id)a6 isUrgentMessageTrigger:(BOOL *)a7 shouldSuppressNotification:(BOOL *)a8;
+- (void)populateUserInfoForNotificationContent:(id)content messageBalloonBundleID:(id)d payloadData:(id)data chatIdentifier:(id)identifier isUrgentMessageTrigger:(BOOL *)trigger shouldSuppressNotification:(BOOL *)notification;
 @end
 
 @implementation IMDSafetyMonitorNotificationContext
 
-- (BOOL)canPopulateUserInfoForMessageBalloonBundleID:(id)a3
+- (BOOL)canPopulateUserInfoForMessageBalloonBundleID:(id)d
 {
   v3 = *MEMORY[0x1E69A6930];
-  v4 = a3;
+  dCopy = d;
   v5 = IMBalloonExtensionIDWithSuffix();
-  isEqualToString = objc_msgSend_isEqualToString_(v4, v6, v5);
+  isEqualToString = objc_msgSend_isEqualToString_(dCopy, v6, v5);
 
   return isEqualToString;
 }
@@ -37,30 +37,30 @@
   return v7;
 }
 
-- (void)populateUserInfoForNotificationContent:(id)a3 messageBalloonBundleID:(id)a4 payloadData:(id)a5 chatIdentifier:(id)a6 isUrgentMessageTrigger:(BOOL *)a7 shouldSuppressNotification:(BOOL *)a8
+- (void)populateUserInfoForNotificationContent:(id)content messageBalloonBundleID:(id)d payloadData:(id)data chatIdentifier:(id)identifier isUrgentMessageTrigger:(BOOL *)trigger shouldSuppressNotification:(BOOL *)notification
 {
   v43 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  if (objc_msgSend_canPopulateUserInfoForMessageBalloonBundleID_(self, v18, v15))
+  contentCopy = content;
+  dCopy = d;
+  dataCopy = data;
+  identifierCopy = identifier;
+  if (objc_msgSend_canPopulateUserInfoForMessageBalloonBundleID_(self, v18, dCopy))
   {
     v19 = IMDictionaryFromPayloadData();
     v22 = IMSanitizedURLForIMExtensionPayloadURLKey();
     if (v22)
     {
       v23 = objc_msgSend_sharedCoordinator(MEMORY[0x1E69A8218], v20, v21);
-      v25 = objc_msgSend_notificationContentForInitiator_messageURL_content_(v23, v24, v17, v22, v14);
+      v25 = objc_msgSend_notificationContentForInitiator_messageURL_content_(v23, v24, identifierCopy, v22, contentCopy);
 
       if (v25 != 2)
       {
         if (v25 == 1)
         {
-          *a7 = 1;
+          *trigger = 1;
         }
 
-        v28 = objc_msgSend_userInfo(v14, v26, v27);
+        v28 = objc_msgSend_userInfo(contentCopy, v26, v27);
         Mutable = objc_msgSend_mutableCopy(v28, v29, v30);
 
         if (!Mutable)
@@ -72,7 +72,7 @@
         objc_msgSend_setObject_forKey_(Mutable, v35, v34, *MEMORY[0x1E69A7820]);
 
         objc_msgSend_setObject_forKey_(Mutable, v36, MEMORY[0x1E695E118], *MEMORY[0x1E69A7830]);
-        objc_msgSend_setUserInfo_(v14, v37, Mutable);
+        objc_msgSend_setUserInfo_(contentCopy, v37, Mutable);
 
 LABEL_18:
         goto LABEL_19;
@@ -100,7 +100,7 @@ LABEL_18:
       }
     }
 
-    *a8 = 1;
+    *notification = 1;
     goto LABEL_18;
   }
 

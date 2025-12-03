@@ -1,9 +1,9 @@
 @interface _DASMotionStatePolicy
 + (id)initializeTriggers;
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
+- (BOOL)appliesToActivity:(id)activity;
 - (_DASMotionStatePolicy)init;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 @end
 
 @implementation _DASMotionStatePolicy
@@ -53,7 +53,7 @@
   block[1] = 3221225472;
   block[2] = sub_100063CB0;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B330 != -1)
   {
     dispatch_once(&qword_10020B330, block);
@@ -64,52 +64,52 @@
   return v2;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 motionState];
-  if (v4 != _DASMotionStateAny)
+  activityCopy = activity;
+  motionState = [activityCopy motionState];
+  if (motionState != _DASMotionStateAny)
   {
 LABEL_7:
-    v6 = 1;
+    requiresSignificantUserInactivity = 1;
     goto LABEL_8;
   }
 
-  v5 = [v3 schedulingPriority];
-  if (v5 < _DASSchedulingPriorityUserInitiated && ([v3 requestsImmediateRuntime] & 1) == 0)
+  schedulingPriority = [activityCopy schedulingPriority];
+  if (schedulingPriority < _DASSchedulingPriorityUserInitiated && ([activityCopy requestsImmediateRuntime] & 1) == 0)
   {
-    if (([v3 requiresNetwork] & 1) == 0 && (objc_msgSend(v3, "isIntensive") & 1) == 0)
+    if (([activityCopy requiresNetwork] & 1) == 0 && (objc_msgSend(activityCopy, "isIntensive") & 1) == 0)
     {
-      v6 = [v3 requiresSignificantUserInactivity];
+      requiresSignificantUserInactivity = [activityCopy requiresSignificantUserInactivity];
       goto LABEL_8;
     }
 
     goto LABEL_7;
   }
 
-  v6 = 0;
+  requiresSignificantUserInactivity = 0;
 LABEL_8:
 
-  return v6;
+  return requiresSignificantUserInactivity;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v5 = a3;
-  v6 = a4;
+  activityCopy = activity;
+  stateCopy = state;
   v7 = +[_CDContextQueries keyPathForMotionState];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  v8 = [stateCopy objectForKeyedSubscript:v7];
 
-  v9 = [v8 integerValue];
+  integerValue = [v8 integerValue];
   v10 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:@"Motion State Policy"];
-  v11 = [NSNumber numberWithInteger:v9];
+  v11 = [NSNumber numberWithInteger:integerValue];
   v12 = [NSPredicate predicateWithFormat:@"motionState = %@", v11];
   [(_DASPolicyResponseRationale *)v10 addRationaleWithCondition:v12];
 
-  v13 = [v5 motionState];
-  if (v13 != _DASMotionStateAny)
+  motionState = [activityCopy motionState];
+  if (motionState != _DASMotionStateAny)
   {
-    if (v9 == [v5 motionState])
+    if (integerValue == [activityCopy motionState])
     {
       v21 = 0;
     }
@@ -123,18 +123,18 @@ LABEL_8:
     goto LABEL_15;
   }
 
-  if (v9 == v13 || v9 == _DASMotionStateStationary)
+  if (integerValue == motionState || integerValue == _DASMotionStateStationary)
   {
     goto LABEL_14;
   }
 
-  v14 = [v5 startBefore];
-  [v14 timeIntervalSinceNow];
+  startBefore = [activityCopy startBefore];
+  [startBefore timeIntervalSinceNow];
   v16 = v15;
 
-  if (v16 <= 0.0 || ([v5 isIntensive] & 1) == 0 && !objc_msgSend(v5, "requiresSignificantUserInactivity"))
+  if (v16 <= 0.0 || ([activityCopy isIntensive] & 1) == 0 && !objc_msgSend(activityCopy, "requiresSignificantUserInactivity"))
   {
-    if ([v5 requiresNetwork])
+    if ([activityCopy requiresNetwork])
     {
       v22 = [NSPredicate predicateWithFormat:@"requiresNetwork == YES"];
       [(_DASPolicyResponseRationale *)v10 addRationaleWithCondition:v22];
@@ -149,8 +149,8 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v17 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v5 requiresSignificantUserInactivity]);
-  v18 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v5 isIntensive]);
+  v17 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [activityCopy requiresSignificantUserInactivity]);
+  v18 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [activityCopy isIntensive]);
   v19 = [NSPredicate predicateWithFormat:@"requiresSignificantUserInactivity == %@ AND isIntensive == %@", v17, v18];
   [(_DASPolicyResponseRationale *)v10 addRationaleWithCondition:v19];
 

@@ -1,20 +1,20 @@
 @interface DDTimeZoneConversionAction
-+ (BOOL)actionAvailableForResult:(__DDResult *)a3;
-+ (id)timeZoneFromResult:(__DDResult *)a3 date:(id *)a4;
-- (DDTimeZoneConversionAction)initWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5;
++ (BOOL)actionAvailableForResult:(__DDResult *)result;
++ (id)timeZoneFromResult:(__DDResult *)result date:(id *)date;
+- (DDTimeZoneConversionAction)initWithURL:(id)l result:(__DDResult *)result context:(id)context;
 - (id)_titleWithValue;
 - (id)localizedName;
 @end
 
 @implementation DDTimeZoneConversionAction
 
-+ (id)timeZoneFromResult:(__DDResult *)a3 date:(id *)a4
++ (id)timeZoneFromResult:(__DDResult *)result date:(id *)date
 {
   if (DDResultCopyExtractedDateFromReferenceDate())
   {
-    if (a4)
+    if (date)
     {
-      *a4 = 0;
+      *date = 0;
     }
 
     v5 = 0;
@@ -22,9 +22,9 @@
 
   else if (DDResultCopyExtractedStartDateEndDate())
   {
-    if (a4)
+    if (date)
     {
-      *a4 = 0;
+      *date = 0;
     }
 
     v6 = 0;
@@ -40,12 +40,12 @@
   return v5;
 }
 
-+ (BOOL)actionAvailableForResult:(__DDResult *)a3
++ (BOOL)actionAvailableForResult:(__DDResult *)result
 {
-  v5 = [MEMORY[0x277CBEBB0] localTimeZone];
-  v6 = [a1 timeZoneFromResult:a3 date:0];
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+  v6 = [self timeZoneFromResult:result date:0];
   v7 = v6;
-  if (v5)
+  if (localTimeZone)
   {
     v8 = v6 == 0;
   }
@@ -62,21 +62,21 @@
 
   else
   {
-    v9 = [v5 isEqualToTimeZone:v6] ^ 1;
+    v9 = [localTimeZone isEqualToTimeZone:v6] ^ 1;
   }
 
   return v9;
 }
 
-- (DDTimeZoneConversionAction)initWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5
+- (DDTimeZoneConversionAction)initWithURL:(id)l result:(__DDResult *)result context:(id)context
 {
   v13.receiver = self;
   v13.super_class = DDTimeZoneConversionAction;
-  v6 = [(DDConversionAction *)&v13 initWithURL:a3 result:a4 context:a5];
+  v6 = [(DDConversionAction *)&v13 initWithURL:l result:result context:context];
   if (v6)
   {
     v12 = 0;
-    v7 = [DDTimeZoneConversionAction timeZoneFromResult:a4 date:&v12];
+    v7 = [DDTimeZoneConversionAction timeZoneFromResult:result date:&v12];
     v8 = v12;
     tz = v6->_tz;
     v6->_tz = v7;
@@ -102,18 +102,18 @@
 {
   if ([(DDAction *)self calloutFlavor])
   {
-    v3 = [(DDTimeZoneConversionAction *)self _titleWithValue];
+    _titleWithValue = [(DDTimeZoneConversionAction *)self _titleWithValue];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEBB0] localTimeZone];
-    v6 = [v5 localizedName:4 locale:0];
+    localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+    v6 = [localTimeZone localizedName:4 locale:0];
 
-    v3 = v6;
+    _titleWithValue = v6;
   }
 
-  return v3;
+  return _titleWithValue;
 }
 
 @end

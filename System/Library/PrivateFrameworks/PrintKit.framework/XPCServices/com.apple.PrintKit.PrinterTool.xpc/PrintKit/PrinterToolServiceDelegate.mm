@@ -1,19 +1,19 @@
 @interface PrinterToolServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation PrinterToolServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v5 = getPrintdRPCProtocolInterface();
-  [v4 setExportedInterface:v5];
+  [connectionCopy setExportedInterface:v5];
 
-  v6 = [[PrintdRPCService alloc] initWithXPCConnection:v4];
-  [v4 setExportedObject:v6];
+  v6 = [[PrintdRPCService alloc] initWithXPCConnection:connectionCopy];
+  [connectionCopy setExportedObject:v6];
 
-  [v4 activate];
+  [connectionCopy activate];
   return 1;
 }
 

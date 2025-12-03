@@ -1,7 +1,7 @@
 @interface IKDOMEventDispatcher
 + (id)sharedInstance;
-- (BOOL)_runPhase:(int64_t)a3 event:(id)a4 nodeEn:(id)a5;
-- (BOOL)dispatchEvent:(id)a3;
+- (BOOL)_runPhase:(int64_t)phase event:(id)event nodeEn:(id)en;
+- (BOOL)dispatchEvent:(id)event;
 @end
 
 @implementation IKDOMEventDispatcher
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __38__IKDOMEventDispatcher_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -30,88 +30,88 @@ uint64_t __38__IKDOMEventDispatcher_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)dispatchEvent:(id)a3
+- (BOOL)dispatchEvent:(id)event
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 setInUse:1];
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [v4 target];
-  v7 = [v6 parentNode];
+  eventCopy = event;
+  [eventCopy setInUse:1];
+  array = [MEMORY[0x277CBEB18] array];
+  target = [eventCopy target];
+  parentNode = [target parentNode];
 
-  if (v7)
+  if (parentNode)
   {
     do
     {
-      [v5 insertObject:v7 atIndex:0];
-      v8 = [v7 parentNode];
+      [array insertObject:parentNode atIndex:0];
+      v7ParentNode = [parentNode parentNode];
 
-      v7 = v8;
+      parentNode = v7ParentNode;
     }
 
-    while (v8);
+    while (v7ParentNode);
   }
 
-  v9 = [v5 objectEnumerator];
-  v10 = [(IKDOMEventDispatcher *)self _runPhase:1 event:v4 nodeEn:v9];
+  objectEnumerator = [array objectEnumerator];
+  v10 = [(IKDOMEventDispatcher *)self _runPhase:1 event:eventCopy nodeEn:objectEnumerator];
 
-  if (([v4 isPropagationStopped] & 1) == 0)
+  if (([eventCopy isPropagationStopped] & 1) == 0)
   {
-    v11 = [v4 target];
-    v17[0] = v11;
+    target2 = [eventCopy target];
+    v17[0] = target2;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
 
-    v13 = [v12 objectEnumerator];
-    v10 |= [(IKDOMEventDispatcher *)self _runPhase:2 event:v4 nodeEn:v13];
+    objectEnumerator2 = [v12 objectEnumerator];
+    v10 |= [(IKDOMEventDispatcher *)self _runPhase:2 event:eventCopy nodeEn:objectEnumerator2];
   }
 
-  if (([v4 isPropagationStopped] & 1) == 0 && objc_msgSend(v4, "bubbles"))
+  if (([eventCopy isPropagationStopped] & 1) == 0 && objc_msgSend(eventCopy, "bubbles"))
   {
-    v14 = [v5 reverseObjectEnumerator];
-    LOBYTE(v10) = [(IKDOMEventDispatcher *)self _runPhase:3 event:v4 nodeEn:v14]| v10;
+    reverseObjectEnumerator = [array reverseObjectEnumerator];
+    LOBYTE(v10) = [(IKDOMEventDispatcher *)self _runPhase:3 event:eventCopy nodeEn:reverseObjectEnumerator]| v10;
   }
 
-  [v4 setInUse:0];
+  [eventCopy setInUse:0];
 
   v15 = *MEMORY[0x277D85DE8];
   return v10 & 1;
 }
 
-- (BOOL)_runPhase:(int64_t)a3 event:(id)a4 nodeEn:(id)a5
+- (BOOL)_runPhase:(int64_t)phase event:(id)event nodeEn:(id)en
 {
-  v7 = a4;
-  v8 = a5;
+  eventCopy = event;
+  enCopy = en;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v9 = [v8 nextObject];
-  if (v9)
+  nextObject = [enCopy nextObject];
+  if (nextObject)
   {
     do
     {
-      if ([v7 isPropagationStopped])
+      if ([eventCopy isPropagationStopped])
       {
         break;
       }
 
-      [v7 updateDispatchStateWithCurrentTarget:v9 phase:a3];
-      v10 = [v7 type];
-      v11 = [v7 xmlAttribute];
+      [eventCopy updateDispatchStateWithCurrentTarget:nextObject phase:phase];
+      type = [eventCopy type];
+      xmlAttribute = [eventCopy xmlAttribute];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __47__IKDOMEventDispatcher__runPhase_event_nodeEn___block_invoke;
       v15[3] = &unk_2797993B8;
       v17 = &v18;
-      v16 = v7;
-      [v9 enumerateEventListernersForType:v10 xmlAttribute:v11 phase:a3 usingBlock:v15];
+      v16 = eventCopy;
+      [nextObject enumerateEventListernersForType:type xmlAttribute:xmlAttribute phase:phase usingBlock:v15];
 
-      v12 = [v8 nextObject];
+      nextObject2 = [enCopy nextObject];
 
-      v9 = v12;
+      nextObject = nextObject2;
     }
 
-    while (v12);
+    while (nextObject2);
   }
 
   v13 = *(v19 + 24);

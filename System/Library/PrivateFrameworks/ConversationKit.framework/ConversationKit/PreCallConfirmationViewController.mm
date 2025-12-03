@@ -1,31 +1,31 @@
 @interface PreCallConfirmationViewController
-- (_TtC15ConversationKit33PreCallConfirmationViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15ConversationKit33PreCallConfirmationViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PreCallConfirmationViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   PreCallConfirmationViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  PreCallConfirmationViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  PreCallConfirmationViewController.viewWillAppear(_:)(appear);
 }
 
-- (_TtC15ConversationKit33PreCallConfirmationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ConversationKit33PreCallConfirmationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   PreCallConfirmationViewController.init(nibName:bundle:)();
 }
 

@@ -1,10 +1,10 @@
 @interface GKCompositeBehavior
 + (GKCompositeBehavior)behaviorWithBehaviors:(NSArray *)behaviors;
 + (GKCompositeBehavior)behaviorWithBehaviors:(NSArray *)behaviors andWeights:(NSArray *)weights;
-- (GKCompositeBehavior)initWithBehaviors:(id)a3;
-- (GKCompositeBehavior)initWithBehaviors:(id)a3 andWeights:(id)a4;
+- (GKCompositeBehavior)initWithBehaviors:(id)behaviors;
+- (GKCompositeBehavior)initWithBehaviors:(id)behaviors andWeights:(id)weights;
 - (NSNumber)objectForKeyedSubscript:(GKBehavior *)behavior;
-- (__n128)getTotalForce:(uint64_t)a3 agent:(void *)a4;
+- (__n128)getTotalForce:(uint64_t)force agent:(void *)agent;
 - (float)weightForBehavior:(GKBehavior *)behavior;
 - (void)removeAllBehaviors;
 - (void)removeBehavior:(GKBehavior *)behavior;
@@ -14,33 +14,33 @@
 
 @implementation GKCompositeBehavior
 
-- (__n128)getTotalForce:(uint64_t)a3 agent:(void *)a4
+- (__n128)getTotalForce:(uint64_t)force agent:(void *)agent
 {
-  v6 = a4;
-  v16.receiver = a1;
+  agentCopy = agent;
+  v16.receiver = self;
   v16.super_class = GKCompositeBehavior;
-  objc_msgSendSuper2(&v16, sel_getTotalForce_agent_, v6, a2);
+  objc_msgSendSuper2(&v16, sel_getTotalForce_agent_, agentCopy, a2);
   v14 = v7;
-  if ([a1 behaviorCount] >= 1)
+  if ([self behaviorCount] >= 1)
   {
     v8 = 0;
     do
     {
-      v9 = [a1[3] objectAtIndex:{v8, *&v14}];
-      v10 = [a1[4] objectAtIndex:v8];
+      v9 = [self[3] objectAtIndex:{v8, *&v14}];
+      v10 = [self[4] objectAtIndex:v8];
       [v10 floatValue];
       v15 = v11;
 
       if (v9)
       {
-        [v9 getTotalForce:v6 agent:a2];
+        [v9 getTotalForce:agentCopy agent:a2];
         v14 = vmlaq_n_f32(v14, v12, v15);
       }
 
       ++v8;
     }
 
-    while ([a1 behaviorCount] > v8);
+    while ([self behaviorCount] > v8);
   }
 
   return v14;
@@ -49,20 +49,20 @@
 + (GKCompositeBehavior)behaviorWithBehaviors:(NSArray *)behaviors
 {
   v4 = behaviors;
-  v5 = [[a1 alloc] initWithBehaviors:v4];
+  v5 = [[self alloc] initWithBehaviors:v4];
 
   return v5;
 }
 
-- (GKCompositeBehavior)initWithBehaviors:(id)a3
+- (GKCompositeBehavior)initWithBehaviors:(id)behaviors
 {
-  v4 = a3;
+  behaviorsCopy = behaviors;
   v15.receiver = self;
   v15.super_class = GKCompositeBehavior;
   v5 = [(GKBehavior *)&v15 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB18] arrayWithArray:v4];
+    v6 = [MEMORY[0x277CBEB18] arrayWithArray:behaviorsCopy];
     subBehaviors = v5->_subBehaviors;
     v5->_subBehaviors = v6;
 
@@ -94,27 +94,27 @@
 {
   v6 = weights;
   v7 = behaviors;
-  v8 = [[a1 alloc] initWithBehaviors:v7 andWeights:v6];
+  v8 = [[self alloc] initWithBehaviors:v7 andWeights:v6];
 
   return v8;
 }
 
-- (GKCompositeBehavior)initWithBehaviors:(id)a3 andWeights:(id)a4
+- (GKCompositeBehavior)initWithBehaviors:(id)behaviors andWeights:(id)weights
 {
-  v6 = a4;
-  v7 = [(GKCompositeBehavior *)self initWithBehaviors:a3];
-  if (v7 && [v6 count])
+  weightsCopy = weights;
+  v7 = [(GKCompositeBehavior *)self initWithBehaviors:behaviors];
+  if (v7 && [weightsCopy count])
   {
     v8 = 0;
     do
     {
-      v9 = [v6 objectAtIndexedSubscript:v8];
+      v9 = [weightsCopy objectAtIndexedSubscript:v8];
       [(NSMutableArray *)v7->_subBehaviorWeights setObject:v9 atIndexedSubscript:v8];
 
       ++v8;
     }
 
-    while ([v6 count] > v8);
+    while ([weightsCopy count] > v8);
   }
 
   return v7;

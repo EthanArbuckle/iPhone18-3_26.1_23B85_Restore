@@ -1,14 +1,14 @@
 @interface W5Event
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEvent:(id)a3;
-- (W5Event)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEvent:(id)event;
+- (W5Event)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setInfo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setInfo:(id)info;
 @end
 
 @implementation W5Event
@@ -20,16 +20,16 @@
   [(W5Event *)&v3 dealloc];
 }
 
-- (void)setInfo:(id)a3
+- (void)setInfo:(id)info
 {
   v45 = *MEMORY[0x277D85DE8];
   info = self->_info;
-  if (info != a3)
+  if (info != info)
   {
 
     self->_info = 0;
     v36 = 0;
-    if (a3 && (v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v36]) != 0)
+    if (info && (v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:info requiringSecureCoding:1 error:&v36]) != 0)
     {
       v34 = v6;
       v35 = MEMORY[0x277CCAAC8];
@@ -132,72 +132,72 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   v5.receiver = self;
   v5.super_class = W5Event;
-  if (-[W5Event conformsToProtocol:](&v5, sel_conformsToProtocol_) || ([a3 isEqual:&unk_288343878] & 1) != 0)
+  if (-[W5Event conformsToProtocol:](&v5, sel_conformsToProtocol_) || ([protocol isEqual:&unk_288343878] & 1) != 0)
   {
     return 1;
   }
 
   else
   {
-    return [a3 isEqual:&unk_2883436F0];
+    return [protocol isEqual:&unk_2883436F0];
   }
 }
 
-- (BOOL)isEqualToEvent:(id)a3
+- (BOOL)isEqualToEvent:(id)event
 {
   eventID = self->_eventID;
-  if (eventID != [a3 eventID])
+  if (eventID != [event eventID])
   {
     goto LABEL_9;
   }
 
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_timestamp];
   v7 = MEMORY[0x277CCABB0];
-  [a3 timestamp];
-  LODWORD(v8) = [v6 isEqual:{objc_msgSend(v7, "numberWithDouble:")}];
-  if (!v8)
+  [event timestamp];
+  LODWORD(peer) = [v6 isEqual:{objc_msgSend(v7, "numberWithDouble:")}];
+  if (!peer)
   {
-    return v8;
+    return peer;
   }
 
   peer = self->_peer;
-  if (peer == [a3 peer])
+  if (peer == [event peer])
   {
-    LOBYTE(v8) = 1;
-    return v8;
+    LOBYTE(peer) = 1;
+    return peer;
   }
 
   if (!self->_peer)
   {
 LABEL_9:
-    LOBYTE(v8) = 0;
-    return v8;
+    LOBYTE(peer) = 0;
+    return peer;
   }
 
-  v8 = [a3 peer];
-  if (v8)
+  peer = [event peer];
+  if (peer)
   {
     v10 = self->_peer;
-    v11 = [a3 peer];
+    peer2 = [event peer];
 
-    LOBYTE(v8) = [(W5Peer *)v10 isEqual:v11];
+    LOBYTE(peer) = [(W5Peer *)v10 isEqual:peer2];
   }
 
-  return v8;
+  return peer;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -208,7 +208,7 @@ LABEL_9:
     return 0;
   }
 
-  return [(W5Event *)self isEqualToEvent:a3];
+  return [(W5Event *)self isEqualToEvent:equal];
 }
 
 - (unint64_t)hash
@@ -218,7 +218,7 @@ LABEL_9:
   return v4 ^ eventID ^ [(W5Peer *)self->_peer hash];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[W5Event allocWithZone:?]];
   [(W5Event *)v4 setEventID:self->_eventID];
@@ -228,25 +228,25 @@ LABEL_9:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInteger:self->_eventID forKey:@"_eventID"];
-  [a3 encodeDouble:@"_timestamp" forKey:self->_timestamp];
-  [a3 encodeObject:self->_info forKey:@"_info"];
+  [coder encodeInteger:self->_eventID forKey:@"_eventID"];
+  [coder encodeDouble:@"_timestamp" forKey:self->_timestamp];
+  [coder encodeObject:self->_info forKey:@"_info"];
   peer = self->_peer;
 
-  [a3 encodeObject:peer forKey:@"_peer"];
+  [coder encodeObject:peer forKey:@"_peer"];
 }
 
-- (W5Event)initWithCoder:(id)a3
+- (W5Event)initWithCoder:(id)coder
 {
   v30.receiver = self;
   v30.super_class = W5Event;
   v4 = [(W5Event *)&v30 init];
   if (v4)
   {
-    v4->_eventID = [a3 decodeIntegerForKey:@"_eventID"];
-    [a3 decodeDoubleForKey:@"_timestamp"];
+    v4->_eventID = [coder decodeIntegerForKey:@"_eventID"];
+    [coder decodeDoubleForKey:@"_timestamp"];
     v4->_timestamp = v5;
     v29 = MEMORY[0x277CBEB98];
     v28 = objc_opt_class();
@@ -271,8 +271,8 @@ LABEL_9:
     v11 = objc_opt_class();
     v12 = objc_opt_class();
     v13 = objc_opt_class();
-    v4->_info = [objc_msgSend(a3 decodeObjectOfClasses:objc_msgSend(v29 forKey:{"setWithObjects:", v28, v27, v26, v25, v24, v23, v22, v21, v20, v19, v18, v17, v16, v15, v6, v7, v8, v9, v10, v11, v12, v13, objc_opt_class(), 0), @"_info", "copy"}];
-    v4->_peer = [objc_msgSend(a3 decodeObjectOfClasses:objc_msgSend(MEMORY[0x277CBEB98] forKey:{"setWithObjects:", objc_opt_class(), 0), @"_peer", "copy"}];
+    v4->_info = [objc_msgSend(coder decodeObjectOfClasses:objc_msgSend(v29 forKey:{"setWithObjects:", v28, v27, v26, v25, v24, v23, v22, v21, v20, v19, v18, v17, v16, v15, v6, v7, v8, v9, v10, v11, v12, v13, objc_opt_class(), 0), @"_info", "copy"}];
+    v4->_peer = [objc_msgSend(coder decodeObjectOfClasses:objc_msgSend(MEMORY[0x277CBEB98] forKey:{"setWithObjects:", objc_opt_class(), 0), @"_peer", "copy"}];
   }
 
   return v4;

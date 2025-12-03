@@ -1,5 +1,5 @@
 @interface WDMedicalRecordTimelineAppendixCell
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 - (void)setupSubviews;
 - (void)tintColorDidChange;
 @end
@@ -11,86 +11,86 @@
   v46.receiver = self;
   v46.super_class = WDMedicalRecordTimelineAppendixCell;
   [(WDMedicalRecordGroupableCell *)&v46 setupSubviews];
-  v3 = [MEMORY[0x1E69DD250] makeChevron];
-  [(WDMedicalRecordTimelineAppendixCell *)self setChevronView:v3];
+  makeChevron = [MEMORY[0x1E69DD250] makeChevron];
+  [(WDMedicalRecordTimelineAppendixCell *)self setChevronView:makeChevron];
 
-  v4 = [(WDMedicalRecordTimelineAppendixCell *)self contentView];
-  v5 = [(WDMedicalRecordTimelineAppendixCell *)self chevronView];
-  [v4 addSubview:v5];
+  contentView = [(WDMedicalRecordTimelineAppendixCell *)self contentView];
+  chevronView = [(WDMedicalRecordTimelineAppendixCell *)self chevronView];
+  [contentView addSubview:chevronView];
 
   v6 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [(WDMedicalRecordTimelineAppendixCell *)self setTitleLabel:v6];
 
-  v7 = [(WDMedicalRecordTimelineAppendixCell *)self titleLabel];
-  [v7 setNumberOfLines:2];
+  titleLabel = [(WDMedicalRecordTimelineAppendixCell *)self titleLabel];
+  [titleLabel setNumberOfLines:2];
 
-  v8 = [(WDMedicalRecordTimelineAppendixCell *)self _titleLabelFont];
-  v9 = [(WDMedicalRecordTimelineAppendixCell *)self titleLabel];
-  [v9 setFont:v8];
+  _titleLabelFont = [(WDMedicalRecordTimelineAppendixCell *)self _titleLabelFont];
+  titleLabel2 = [(WDMedicalRecordTimelineAppendixCell *)self titleLabel];
+  [titleLabel2 setFont:_titleLabelFont];
 
-  v10 = [(WDMedicalRecordTimelineAppendixCell *)self tintColor];
-  v11 = [(WDMedicalRecordTimelineAppendixCell *)self titleLabel];
-  [v11 setTextColor:v10];
+  tintColor = [(WDMedicalRecordTimelineAppendixCell *)self tintColor];
+  titleLabel3 = [(WDMedicalRecordTimelineAppendixCell *)self titleLabel];
+  [titleLabel3 setTextColor:tintColor];
 
-  v12 = [(WDMedicalRecordTimelineAppendixCell *)self titleLabel];
-  [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel4 = [(WDMedicalRecordTimelineAppendixCell *)self titleLabel];
+  [titleLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v13 = [(WDMedicalRecordTimelineAppendixCell *)self titleLabel];
-  [v13 setTextAlignment:4];
+  titleLabel5 = [(WDMedicalRecordTimelineAppendixCell *)self titleLabel];
+  [titleLabel5 setTextAlignment:4];
 
-  v14 = [(WDMedicalRecordTimelineAppendixCell *)self contentView];
-  v15 = [(WDMedicalRecordTimelineAppendixCell *)self titleLabel];
-  [v14 addSubview:v15];
+  contentView2 = [(WDMedicalRecordTimelineAppendixCell *)self contentView];
+  titleLabel6 = [(WDMedicalRecordTimelineAppendixCell *)self titleLabel];
+  [contentView2 addSubview:titleLabel6];
 
-  v16 = [(WDMedicalRecordTimelineAppendixCell *)self chevronView];
-  v17 = [v16 trailingAnchor];
-  v18 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v19 = [v18 trailingAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19 constant:-16.0];
+  chevronView2 = [(WDMedicalRecordTimelineAppendixCell *)self chevronView];
+  trailingAnchor = [chevronView2 trailingAnchor];
+  pillBackgroundView = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  trailingAnchor2 = [pillBackgroundView trailingAnchor];
+  v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   [v20 setActive:1];
 
-  v21 = [(WDMedicalRecordTimelineAppendixCell *)self chevronView];
-  v22 = [v21 centerYAnchor];
-  v23 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v24 = [v23 centerYAnchor];
-  v25 = [v22 constraintEqualToAnchor:v24];
+  chevronView3 = [(WDMedicalRecordTimelineAppendixCell *)self chevronView];
+  centerYAnchor = [chevronView3 centerYAnchor];
+  pillBackgroundView2 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  centerYAnchor2 = [pillBackgroundView2 centerYAnchor];
+  v25 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v25 setActive:1];
 
-  v26 = [(WDMedicalRecordTimelineAppendixCell *)self titleLabel];
-  v27 = [v26 leadingAnchor];
-  v28 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v29 = [v28 leadingAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29 constant:16.0];
+  titleLabel7 = [(WDMedicalRecordTimelineAppendixCell *)self titleLabel];
+  leadingAnchor = [titleLabel7 leadingAnchor];
+  pillBackgroundView3 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  leadingAnchor2 = [pillBackgroundView3 leadingAnchor];
+  v30 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   [v30 setActive:1];
 
-  v31 = [(WDMedicalRecordTimelineAppendixCell *)self titleLabel];
-  v32 = [v31 trailingAnchor];
-  v33 = [(WDMedicalRecordTimelineAppendixCell *)self chevronView];
-  v34 = [v33 leadingAnchor];
-  v35 = [v32 constraintEqualToAnchor:v34 constant:-16.0];
+  titleLabel8 = [(WDMedicalRecordTimelineAppendixCell *)self titleLabel];
+  trailingAnchor3 = [titleLabel8 trailingAnchor];
+  chevronView4 = [(WDMedicalRecordTimelineAppendixCell *)self chevronView];
+  leadingAnchor3 = [chevronView4 leadingAnchor];
+  v35 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor3 constant:-16.0];
   [v35 setActive:1];
 
-  v36 = [(WDMedicalRecordTimelineAppendixCell *)self titleLabel];
-  v37 = [v36 topAnchor];
-  v38 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v39 = [v38 topAnchor];
-  v40 = [v37 constraintEqualToAnchor:v39 constant:16.0];
+  titleLabel9 = [(WDMedicalRecordTimelineAppendixCell *)self titleLabel];
+  topAnchor = [titleLabel9 topAnchor];
+  pillBackgroundView4 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  topAnchor2 = [pillBackgroundView4 topAnchor];
+  v40 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
   [v40 setActive:1];
 
-  v41 = [(WDMedicalRecordTimelineAppendixCell *)self titleLabel];
-  v42 = [v41 bottomAnchor];
-  v43 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v44 = [v43 bottomAnchor];
-  v45 = [v42 constraintEqualToAnchor:v44 constant:-16.0];
+  titleLabel10 = [(WDMedicalRecordTimelineAppendixCell *)self titleLabel];
+  bottomAnchor = [titleLabel10 bottomAnchor];
+  pillBackgroundView5 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  bottomAnchor2 = [pillBackgroundView5 bottomAnchor];
+  v45 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-16.0];
   [v45 setActive:1];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  objc_storeStrong(&self->_title, a3);
-  v5 = a3;
-  v6 = [(WDMedicalRecordTimelineAppendixCell *)self titleLabel];
-  [v6 setText:v5];
+  objc_storeStrong(&self->_title, title);
+  titleCopy = title;
+  titleLabel = [(WDMedicalRecordTimelineAppendixCell *)self titleLabel];
+  [titleLabel setText:titleCopy];
 }
 
 - (void)tintColorDidChange
@@ -98,9 +98,9 @@
   v5.receiver = self;
   v5.super_class = WDMedicalRecordTimelineAppendixCell;
   [(WDMedicalRecordTimelineAppendixCell *)&v5 tintColorDidChange];
-  v3 = [(WDMedicalRecordTimelineAppendixCell *)self tintColor];
-  v4 = [(WDMedicalRecordTimelineAppendixCell *)self titleLabel];
-  [v4 setTextColor:v3];
+  tintColor = [(WDMedicalRecordTimelineAppendixCell *)self tintColor];
+  titleLabel = [(WDMedicalRecordTimelineAppendixCell *)self titleLabel];
+  [titleLabel setTextColor:tintColor];
 }
 
 @end

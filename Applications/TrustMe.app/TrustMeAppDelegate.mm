@@ -3,32 +3,32 @@
 - (void)_dismissRemoteAlertController;
 - (void)_killTimerFired;
 - (void)_presentNextQueuedMessage;
-- (void)_presentRemoteAlertWithInfo:(id)a3 replyContext:(id)a4;
-- (void)_queueMessage:(id)a3 withReplyContext:(id)a4;
+- (void)_presentRemoteAlertWithInfo:(id)info replyContext:(id)context;
+- (void)_queueMessage:(id)message withReplyContext:(id)context;
 - (void)_scheduleTimer;
-- (void)_sendResponse:(int)a3;
+- (void)_sendResponse:(int)response;
 - (void)_sheetControllerDidFinishDismissing;
 - (void)_startCenter;
-- (void)_trustInfoMessageReceived:(id)a3 userInfo:(id)a4 auditToken:(id *)a5;
-- (void)application:(id)a3 didFinishLaunchingSuspendedWithOptions:(id)a4;
-- (void)applicationWillTerminate:(id)a3;
+- (void)_trustInfoMessageReceived:(id)received userInfo:(id)info auditToken:(id *)token;
+- (void)application:(id)application didFinishLaunchingSuspendedWithOptions:(id)options;
+- (void)applicationWillTerminate:(id)terminate;
 - (void)dealloc;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
-- (void)trustCertificateViewController:(id)a3 finishedWithReturnCode:(int)a4;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
+- (void)trustCertificateViewController:(id)controller finishedWithReturnCode:(int)code;
 @end
 
 @implementation TrustMeAppDelegate
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v2 = +[NSNotificationCenter defaultCenter];
-  [(NSNotificationCenter *)v2 removeObserver:v5];
+  [(NSNotificationCenter *)v2 removeObserver:selfCopy];
 
-  [(CPDistributedMessagingCenter *)v5->_center unregisterForMessageName:0];
-  [(NSTimer *)v5->_killTimer invalidate];
-  v3.receiver = v5;
+  [(CPDistributedMessagingCenter *)selfCopy->_center unregisterForMessageName:0];
+  [(NSTimer *)selfCopy->_killTimer invalidate];
+  v3.receiver = selfCopy;
   v3.super_class = TrustMeAppDelegate;
   [(TrustMeAppDelegate *)&v3 dealloc];
 }
@@ -42,7 +42,7 @@
 
 - (void)_killTimerFired
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = *(&_CertUILogObjects + 2);
   v5 = 16;
@@ -55,34 +55,34 @@
   }
 
   objc_storeStrong(location, 0);
-  [(TrustMeAppDelegate *)v7 _clearTimer];
+  [(TrustMeAppDelegate *)selfCopy _clearTimer];
   exit(0);
 }
 
-- (void)_sendResponse:(int)a3
+- (void)_sendResponse:(int)response
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
-  v9 = a3;
+  responseCopy = response;
   v4 = [NSDictionary alloc];
-  v5 = [NSNumber numberWithInt:v9];
+  v5 = [NSNumber numberWithInt:responseCopy];
   v7 = 0;
   v3 = [v4 initWithObjectsAndKeys:{kCertUITrustResponseKey, 0}];
   location = &v8;
   v8 = v3;
 
-  [(CPDistributedMessagingCenter *)v11->_center sendDelayedReply:v11->_replyContext dictionary:v8];
+  [(CPDistributedMessagingCenter *)selfCopy->_center sendDelayedReply:selfCopy->_replyContext dictionary:v8];
   objc_storeStrong(location, v7);
 }
 
-- (void)_presentRemoteAlertWithInfo:(id)a3 replyContext:(id)a4
+- (void)_presentRemoteAlertWithInfo:(id)info replyContext:(id)context
 {
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, info);
   v33 = 0;
-  objc_storeStrong(&v33, a4);
+  objc_storeStrong(&v33, context);
   v32 = _CertUILogObjects[2];
   v31 = 1;
   if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
@@ -94,15 +94,15 @@
   }
 
   objc_storeStrong(&v32, 0);
-  objc_storeStrong(&v35->_replyContext, v33);
+  objc_storeStrong(&selfCopy->_replyContext, v33);
   v29 = [location[0] objectForKey:kCertUITrustTitleKey];
   v28 = [location[0] objectForKey:kCertUITrustIssuerKey];
   v27 = [location[0] objectForKey:kCertUITrustPurposeKey];
   v26 = [location[0] objectForKey:kCertUITrustExpirationKey];
   v12 = [location[0] objectForKey:kCertUITrustIsRootCertificateKey];
-  v13 = [v12 BOOLValue];
+  bOOLValue = [v12 BOOLValue];
 
-  v25 = v13;
+  v25 = bOOLValue;
   v24 = [location[0] objectForKey:kCertUITrustPropertiesKey];
   v14 = +[MCProfileConnection sharedConnection];
   v15 = [v14 effectiveBoolValueForSetting:MCFeatureUntrustedTLSPromptAllowed] != 2;
@@ -111,33 +111,33 @@
   v22 = [location[0] objectForKey:kCertUITrustAllowCertificateTrustKey];
   if (v22)
   {
-    v11 = 0;
+    bOOLValue2 = 0;
     if (v23)
     {
-      v11 = [v22 BOOLValue];
+      bOOLValue2 = [v22 BOOLValue];
     }
 
-    v23 = v11 & 1;
+    v23 = bOOLValue2 & 1;
   }
 
   v4 = [TrustCertificateViewController alloc];
-  v21 = [v4 initWithTrustCertificateDelegate:v35 allowTrust:v23 & 1];
+  v21 = [v4 initWithTrustCertificateDelegate:selfCopy allowTrust:v23 & 1];
   LODWORD(v7) = 2;
   [v21 setCertificateInfo:v29 issuer:v28 purpose:v27 expiration:v26 isRoot:v25 & 1 properties:v24 action:v7];
-  objc_storeStrong(&v35->_trustController, v21);
+  objc_storeStrong(&selfCopy->_trustController, v21);
   v8 = [SBSRemoteAlertDefinition alloc];
   v10 = +[NSBundle mainBundle];
-  v9 = [(NSBundle *)v10 bundleIdentifier];
+  bundleIdentifier = [(NSBundle *)v10 bundleIdentifier];
   v20 = [v8 initWithServiceName:? viewControllerClassName:?];
 
   v5 = [SBSRemoteAlertHandle newHandleWithDefinition:v20 configurationContext:?];
-  alertHandle = v35->_alertHandle;
-  v35->_alertHandle = v5;
+  alertHandle = selfCopy->_alertHandle;
+  selfCopy->_alertHandle = v5;
 
-  [(SBSRemoteAlertHandle *)v35->_alertHandle addObserver:v35];
+  [(SBSRemoteAlertHandle *)selfCopy->_alertHandle addObserver:selfCopy];
   v19 = objc_alloc_init(SBSRemoteAlertActivationContext);
   [v19 setReason:@"CertificateTrustApp"];
-  [(SBSRemoteAlertHandle *)v35->_alertHandle activateWithContext:v19];
+  [(SBSRemoteAlertHandle *)selfCopy->_alertHandle activateWithContext:v19];
   objc_storeStrong(&v19, 0);
   objc_storeStrong(&v20, 0);
   objc_storeStrong(&v21, 0);
@@ -156,8 +156,8 @@
   if (self->_trustController)
   {
     self->_remoteAlertControllerIsDismissing = 1;
-    v2 = [(TrustMeAppDelegate *)self currentRemoteAlertController];
-    [(TrustMeRotatingViewController *)v2 dismissSheetAndDismissAlert];
+    currentRemoteAlertController = [(TrustMeAppDelegate *)self currentRemoteAlertController];
+    [(TrustMeRotatingViewController *)currentRemoteAlertController dismissSheetAndDismissAlert];
 
     objc_storeStrong(&self->_trustController, 0);
   }
@@ -180,74 +180,74 @@
   }
 }
 
-- (void)trustCertificateViewController:(id)a3 finishedWithReturnCode:(int)a4
+- (void)trustCertificateViewController:(id)controller finishedWithReturnCode:(int)code
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v5 = 0;
-  if (a4 == 1)
+  if (code == 1)
   {
     v5 = 2;
   }
 
-  [(TrustMeAppDelegate *)v7 _sendResponse:v5];
-  objc_storeStrong(&v7->_replyContext, 0);
-  [(TrustMeAppDelegate *)v7 _dismissRemoteAlertController];
+  [(TrustMeAppDelegate *)selfCopy _sendResponse:v5];
+  objc_storeStrong(&selfCopy->_replyContext, 0);
+  [(TrustMeAppDelegate *)selfCopy _dismissRemoteAlertController];
   objc_storeStrong(location, 0);
 }
 
 - (void)_presentNextQueuedMessage
 {
-  v4 = self;
+  selfCopy = self;
   v3[1] = a2;
   v3[0] = [(NSMutableArray *)self->_queuedMessages objectAtIndex:?];
-  [(NSMutableArray *)v4->_queuedMessages removeObjectAtIndex:0];
-  v2 = [(NSMutableArray *)v4->_queuedReplyContexts objectAtIndex:0];
-  [(NSMutableArray *)v4->_queuedReplyContexts removeObjectAtIndex:0];
-  [(TrustMeAppDelegate *)v4 _presentRemoteAlertWithInfo:v3[0] replyContext:v2];
+  [(NSMutableArray *)selfCopy->_queuedMessages removeObjectAtIndex:0];
+  v2 = [(NSMutableArray *)selfCopy->_queuedReplyContexts objectAtIndex:0];
+  [(NSMutableArray *)selfCopy->_queuedReplyContexts removeObjectAtIndex:0];
+  [(TrustMeAppDelegate *)selfCopy _presentRemoteAlertWithInfo:v3[0] replyContext:v2];
   objc_storeStrong(&v2, 0);
   objc_storeStrong(v3, 0);
 }
 
-- (void)_queueMessage:(id)a3 withReplyContext:(id)a4
+- (void)_queueMessage:(id)message withReplyContext:(id)context
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  if (!v11->_queuedMessages)
+  objc_storeStrong(&v9, context);
+  if (!selfCopy->_queuedMessages)
   {
     v4 = objc_alloc_init(NSMutableArray);
-    queuedMessages = v11->_queuedMessages;
-    v11->_queuedMessages = v4;
+    queuedMessages = selfCopy->_queuedMessages;
+    selfCopy->_queuedMessages = v4;
   }
 
-  if (v11->_queuedReplyContexts)
+  if (selfCopy->_queuedReplyContexts)
   {
     v6 = objc_alloc_init(NSMutableArray);
-    queuedReplyContexts = v11->_queuedReplyContexts;
-    v11->_queuedReplyContexts = v6;
+    queuedReplyContexts = selfCopy->_queuedReplyContexts;
+    selfCopy->_queuedReplyContexts = v6;
   }
 
-  [(NSMutableArray *)v11->_queuedMessages addObject:location[0]];
-  [(NSMutableArray *)v11->_queuedReplyContexts addObject:v9];
+  [(NSMutableArray *)selfCopy->_queuedMessages addObject:location[0]];
+  [(NSMutableArray *)selfCopy->_queuedReplyContexts addObject:v9];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_trustInfoMessageReceived:(id)a3 userInfo:(id)a4 auditToken:(id *)a5
+- (void)_trustInfoMessageReceived:(id)received userInfo:(id)info auditToken:(id *)token
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, received);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v12[1] = a5;
+  objc_storeStrong(&v13, info);
+  v12[1] = token;
   v12[0] = _CertUILogObjects[2];
   v11 = OS_LOG_TYPE_INFO;
   if (os_log_type_enabled(v12[0], OS_LOG_TYPE_INFO))
@@ -259,19 +259,19 @@
   objc_storeStrong(v12, 0);
   if ([location[0] isEqualToString:kCertUIPresentTrustInfoMessage])
   {
-    [(TrustMeAppDelegate *)v15 _clearTimer];
-    v7 = [(CPDistributedMessagingCenter *)v15->_center delayReply];
-    if (v15->_trustController)
+    [(TrustMeAppDelegate *)selfCopy _clearTimer];
+    delayReply = [(CPDistributedMessagingCenter *)selfCopy->_center delayReply];
+    if (selfCopy->_trustController)
     {
-      [(TrustMeAppDelegate *)v15 _queueMessage:v13 withReplyContext:v7];
+      [(TrustMeAppDelegate *)selfCopy _queueMessage:v13 withReplyContext:delayReply];
     }
 
     else
     {
-      [(TrustMeAppDelegate *)v15 _presentRemoteAlertWithInfo:v13 replyContext:v7];
+      [(TrustMeAppDelegate *)selfCopy _presentRemoteAlertWithInfo:v13 replyContext:delayReply];
     }
 
-    objc_storeStrong(&v7, 0);
+    objc_storeStrong(&delayReply, 0);
     v8 = 0;
   }
 
@@ -303,21 +303,21 @@
   [(CPDistributedMessagingCenter *)self->_center runServerOnCurrentThread];
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, deactivate);
   oslog = _CertUILogObjects[2];
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    sub_100001E10(v6, v5->_trustController != 0);
+    sub_100001E10(v6, selfCopy->_trustController != 0);
     _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Alert deactivated while there was a trust controller already :%{BOOL}d", v6, 8u);
   }
 
   objc_storeStrong(&oslog, 0);
-  if (v5->_trustController)
+  if (selfCopy->_trustController)
   {
     exit(0);
   }
@@ -325,31 +325,31 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)applicationWillTerminate:(id)a3
+- (void)applicationWillTerminate:(id)terminate
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(CPDistributedMessagingCenter *)v4->_center unregisterForMessageName:0];
-  objc_storeStrong(&v4->_center, 0);
-  [(TrustMeAppDelegate *)v4 _dismissRemoteAlertController];
+  objc_storeStrong(location, terminate);
+  [(CPDistributedMessagingCenter *)selfCopy->_center unregisterForMessageName:0];
+  objc_storeStrong(&selfCopy->_center, 0);
+  [(TrustMeAppDelegate *)selfCopy _dismissRemoteAlertController];
   objc_storeStrong(location, 0);
 }
 
-- (void)application:(id)a3 didFinishLaunchingSuspendedWithOptions:(id)a4
+- (void)application:(id)application didFinishLaunchingSuspendedWithOptions:(id)options
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, application);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
+  objc_storeStrong(&v6, options);
   v5 = +[NSNotificationCenter defaultCenter];
-  [(NSNotificationCenter *)v5 addObserver:v8 selector:"_sheetControllerDidFinishDismissing" name:kCertificateViewControllerDismissedNotification object:0];
+  [(NSNotificationCenter *)v5 addObserver:selfCopy selector:"_sheetControllerDidFinishDismissing" name:kCertificateViewControllerDismissedNotification object:0];
 
-  [(TrustMeAppDelegate *)v8 _startCenter];
-  [(TrustMeAppDelegate *)v8 _scheduleTimer];
+  [(TrustMeAppDelegate *)selfCopy _startCenter];
+  [(TrustMeAppDelegate *)selfCopy _scheduleTimer];
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }

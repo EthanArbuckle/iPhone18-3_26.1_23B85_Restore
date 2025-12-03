@@ -1,31 +1,31 @@
 @interface CARSettingsOption
-+ (id)optionWithTitle:(id)a3 value:(id)a4;
-- (CARSettingsOption)initWithTitle:(id)a3 value:(id)a4;
++ (id)optionWithTitle:(id)title value:(id)value;
+- (CARSettingsOption)initWithTitle:(id)title value:(id)value;
 @end
 
 @implementation CARSettingsOption
 
-+ (id)optionWithTitle:(id)a3 value:(id)a4
++ (id)optionWithTitle:(id)title value:(id)value
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithTitle:v6 value:v5];
+  valueCopy = value;
+  titleCopy = title;
+  v7 = [objc_alloc(objc_opt_class()) initWithTitle:titleCopy value:valueCopy];
 
   return v7;
 }
 
-- (CARSettingsOption)initWithTitle:(id)a3 value:(id)a4
+- (CARSettingsOption)initWithTitle:(id)title value:(id)value
 {
-  v7 = a3;
-  v8 = a4;
+  titleCopy = title;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = CARSettingsOption;
   v9 = [(CARSettingsOption *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_title, a3);
-    objc_storeStrong(&v10->_value, a4);
+    objc_storeStrong(&v9->_title, title);
+    objc_storeStrong(&v10->_value, value);
   }
 
   return v10;

@@ -4,10 +4,10 @@
 - (NSArray)colors;
 - (NSArray)locations;
 - (id)layer;
-- (void)setColors:(id)a3;
-- (void)setEndPoint:(CGPoint)a3;
-- (void)setLocations:(id)a3;
-- (void)setStartPoint:(CGPoint)a3;
+- (void)setColors:(id)colors;
+- (void)setEndPoint:(CGPoint)point;
+- (void)setLocations:(id)locations;
+- (void)setStartPoint:(CGPoint)point;
 @end
 
 @implementation SBHGradientView
@@ -16,27 +16,27 @@
 {
   v4.receiver = self;
   v4.super_class = SBHGradientView;
-  v2 = [(SBHGradientView *)&v4 layer];
+  layer = [(SBHGradientView *)&v4 layer];
 
-  return v2;
+  return layer;
 }
 
 - (NSArray)colors
 {
-  v2 = [(SBHGradientView *)self layer];
-  v3 = [v2 colors];
-  v4 = [v3 bs_compactMap:&__block_literal_global_37];
+  layer = [(SBHGradientView *)self layer];
+  colors = [layer colors];
+  v4 = [colors bs_compactMap:&__block_literal_global_37];
 
   return v4;
 }
 
-- (void)setColors:(id)a3
+- (void)setColors:(id)colors
 {
-  v4 = a3;
-  v6 = [(SBHGradientView *)self layer];
-  v5 = [v4 bs_compactMap:&__block_literal_global_4_0];
+  colorsCopy = colors;
+  layer = [(SBHGradientView *)self layer];
+  v5 = [colorsCopy bs_compactMap:&__block_literal_global_4_0];
 
-  [v6 setColors:v5];
+  [layer setColors:v5];
 }
 
 uint64_t __29__SBHGradientView_setColors___block_invoke(int a1, id a2)
@@ -48,23 +48,23 @@ uint64_t __29__SBHGradientView_setColors___block_invoke(int a1, id a2)
 
 - (NSArray)locations
 {
-  v2 = [(SBHGradientView *)self layer];
-  v3 = [v2 locations];
+  layer = [(SBHGradientView *)self layer];
+  locations = [layer locations];
 
-  return v3;
+  return locations;
 }
 
-- (void)setLocations:(id)a3
+- (void)setLocations:(id)locations
 {
-  v4 = a3;
-  v5 = [(SBHGradientView *)self layer];
-  [v5 setLocations:v4];
+  locationsCopy = locations;
+  layer = [(SBHGradientView *)self layer];
+  [layer setLocations:locationsCopy];
 }
 
 - (CGPoint)startPoint
 {
-  v2 = [(SBHGradientView *)self layer];
-  [v2 startPoint];
+  layer = [(SBHGradientView *)self layer];
+  [layer startPoint];
   v4 = v3;
   v6 = v5;
 
@@ -75,18 +75,18 @@ uint64_t __29__SBHGradientView_setColors___block_invoke(int a1, id a2)
   return result;
 }
 
-- (void)setStartPoint:(CGPoint)a3
+- (void)setStartPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(SBHGradientView *)self layer];
-  [v5 setStartPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  layer = [(SBHGradientView *)self layer];
+  [layer setStartPoint:{x, y}];
 }
 
 - (CGPoint)endPoint
 {
-  v2 = [(SBHGradientView *)self layer];
-  [v2 endPoint];
+  layer = [(SBHGradientView *)self layer];
+  [layer endPoint];
   v4 = v3;
   v6 = v5;
 
@@ -97,12 +97,12 @@ uint64_t __29__SBHGradientView_setColors___block_invoke(int a1, id a2)
   return result;
 }
 
-- (void)setEndPoint:(CGPoint)a3
+- (void)setEndPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(SBHGradientView *)self layer];
-  [v5 setEndPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  layer = [(SBHGradientView *)self layer];
+  [layer setEndPoint:{x, y}];
 }
 
 @end

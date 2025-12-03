@@ -1,24 +1,24 @@
 @interface CDPDAccount
 - (BOOL)hasDisabledKeychainExplicitly;
-- (BOOL)isICDPEnabledForDSID:(id)a3 checkWithServer:(BOOL)a4;
-- (BOOL)isOTEnabledForContext:(id)a3;
-- (CDPDAccount)initWithContext:(id)a3;
-- (unint64_t)recoveryContactCountForAltDSID:(id)a3;
+- (BOOL)isICDPEnabledForDSID:(id)d checkWithServer:(BOOL)server;
+- (BOOL)isOTEnabledForContext:(id)context;
+- (CDPDAccount)initWithContext:(id)context;
+- (unint64_t)recoveryContactCountForAltDSID:(id)d;
 - (void)hasDisabledKeychainExplicitly;
 @end
 
 @implementation CDPDAccount
 
-- (CDPDAccount)initWithContext:(id)a3
+- (CDPDAccount)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = CDPDAccount;
   v6 = [(CDPDAccount *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
     v8 = v7;
   }
 
@@ -27,10 +27,10 @@
 
 - (BOOL)hasDisabledKeychainExplicitly
 {
-  v3 = [MEMORY[0x277CB8F48] defaultStore];
-  v4 = [(CDPDAccount *)self context];
-  v5 = [v4 altDSID];
-  v6 = [v3 aa_appleAccountWithAltDSID:v5];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  context = [(CDPDAccount *)self context];
+  altDSID = [context altDSID];
+  v6 = [defaultStore aa_appleAccountWithAltDSID:altDSID];
 
   if (!v6)
   {
@@ -42,27 +42,27 @@
   }
 
   v8 = [v6 accountPropertyForKey:@"userDisabledICK"];
-  v9 = [v8 BOOLValue];
+  bOOLValue = [v8 BOOLValue];
 
   v10 = _CDPLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [(CDPDAccount *)v9 hasDisabledKeychainExplicitly];
+    [(CDPDAccount *)bOOLValue hasDisabledKeychainExplicitly];
   }
 
-  return v9;
+  return bOOLValue;
 }
 
-- (BOOL)isICDPEnabledForDSID:(id)a3 checkWithServer:(BOOL)a4
+- (BOOL)isICDPEnabledForDSID:(id)d checkWithServer:(BOOL)server
 {
-  v4 = a4;
+  serverCopy = server;
   v29[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  dCopy = d;
+  v7 = dCopy;
+  if (dCopy)
   {
     v28 = *MEMORY[0x277D430A8];
-    v29[0] = v6;
+    v29[0] = dCopy;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:&v28 count:1];
     v9 = [v8 mutableCopy];
 
@@ -80,7 +80,7 @@
     {
       v14 = v13;
       cf = 0;
-      if (v4)
+      if (serverCopy)
       {
         IsICDPNetwork = PCSIdentitySetIsICDPNetwork();
       }
@@ -120,11 +120,11 @@
   return v16;
 }
 
-- (BOOL)isOTEnabledForContext:(id)a3
+- (BOOL)isOTEnabledForContext:(id)context
 {
   v3 = MEMORY[0x277CFD498];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithContext:v4];
+  contextCopy = context;
+  v5 = [[v3 alloc] initWithContext:contextCopy];
 
   v16 = 0;
   v6 = [v5 cachedCliqueStatus:&v16];
@@ -141,15 +141,15 @@
   return v6 == 1;
 }
 
-- (unint64_t)recoveryContactCountForAltDSID:(id)a3
+- (unint64_t)recoveryContactCountForAltDSID:(id)d
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CF0130] sharedInstance];
-  v5 = [v4 authKitAccountWithAltDSID:v3];
+  dCopy = d;
+  mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+  v5 = [mEMORY[0x277CF0130] authKitAccountWithAltDSID:dCopy];
   if (v5)
   {
-    v13 = v3;
-    v6 = [v4 custodianInfosForAccount:v5];
+    v13 = dCopy;
+    v6 = [mEMORY[0x277CF0130] custodianInfosForAccount:v5];
     if ([v6 count])
     {
       v7 = 0;
@@ -172,7 +172,7 @@
       v8 = 0;
     }
 
-    v3 = v13;
+    dCopy = v13;
   }
 
   else
@@ -187,7 +187,7 @@
 {
   v4 = *MEMORY[0x277D85DE8];
   v3[0] = 67109120;
-  v3[1] = a1 & 1;
+  v3[1] = self & 1;
   _os_log_debug_impl(&dword_24510B000, a2, OS_LOG_TYPE_DEBUG, "User previously disabled iCK: %{BOOL}d", v3, 8u);
   v2 = *MEMORY[0x277D85DE8];
 }

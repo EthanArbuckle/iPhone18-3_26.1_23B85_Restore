@@ -1,19 +1,19 @@
 @interface WDSpinnerTableViewCell
 - (NSString)waitingReason;
-- (WDSpinnerTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (WDSpinnerTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
-- (void)setWaitingReason:(id)a3;
+- (void)setWaitingReason:(id)reason;
 - (void)setupConstraints;
 - (void)setupSubviews;
 @end
 
 @implementation WDSpinnerTableViewCell
 
-- (WDSpinnerTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WDSpinnerTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = WDSpinnerTableViewCell;
-  v4 = [(WDSpinnerTableViewCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(WDSpinnerTableViewCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -30,185 +30,185 @@
   v3 = objc_opt_new();
   [(WDSpinnerTableViewCell *)self setContentContainerView:v3];
 
-  v4 = [(WDSpinnerTableViewCell *)self contentView];
-  v5 = [(WDSpinnerTableViewCell *)self contentContainerView];
-  [v4 addSubview:v5];
+  contentView = [(WDSpinnerTableViewCell *)self contentView];
+  contentContainerView = [(WDSpinnerTableViewCell *)self contentContainerView];
+  [contentView addSubview:contentContainerView];
 
   v6 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
   [(WDSpinnerTableViewCell *)self setSpinner:v6];
 
-  v7 = [(WDSpinnerTableViewCell *)self contentContainerView];
-  v8 = [(WDSpinnerTableViewCell *)self spinner];
-  [v7 addSubview:v8];
+  contentContainerView2 = [(WDSpinnerTableViewCell *)self contentContainerView];
+  spinner = [(WDSpinnerTableViewCell *)self spinner];
+  [contentContainerView2 addSubview:spinner];
 
-  v9 = [(WDSpinnerTableViewCell *)self spinner];
-  [v9 setHidesWhenStopped:0];
+  spinner2 = [(WDSpinnerTableViewCell *)self spinner];
+  [spinner2 setHidesWhenStopped:0];
 
-  v10 = [(WDSpinnerTableViewCell *)self spinner];
-  [v10 startAnimating];
+  spinner3 = [(WDSpinnerTableViewCell *)self spinner];
+  [spinner3 startAnimating];
 }
 
 - (void)setupConstraints
 {
-  v3 = [(WDSpinnerTableViewCell *)self contentView];
-  v4 = [v3 heightAnchor];
-  v48 = [v4 constraintGreaterThanOrEqualToConstant:*MEMORY[0x277D76F38]];
+  contentView = [(WDSpinnerTableViewCell *)self contentView];
+  heightAnchor = [contentView heightAnchor];
+  v48 = [heightAnchor constraintGreaterThanOrEqualToConstant:*MEMORY[0x277D76F38]];
 
   LODWORD(v5) = 1132068864;
   [v48 setPriority:v5];
   [v48 setActive:1];
-  v6 = [(WDSpinnerTableViewCell *)self contentContainerView];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  contentContainerView = [(WDSpinnerTableViewCell *)self contentContainerView];
+  [contentContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [(WDSpinnerTableViewCell *)self contentContainerView];
-  v8 = [v7 centerXAnchor];
-  v9 = [(WDSpinnerTableViewCell *)self contentView];
-  v10 = [v9 centerXAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  contentContainerView2 = [(WDSpinnerTableViewCell *)self contentContainerView];
+  centerXAnchor = [contentContainerView2 centerXAnchor];
+  contentView2 = [(WDSpinnerTableViewCell *)self contentView];
+  centerXAnchor2 = [contentView2 centerXAnchor];
+  v11 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v11 setActive:1];
 
-  v12 = [(WDSpinnerTableViewCell *)self contentContainerView];
-  v13 = [v12 centerYAnchor];
-  v14 = [(WDSpinnerTableViewCell *)self contentView];
-  v15 = [v14 centerYAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  contentContainerView3 = [(WDSpinnerTableViewCell *)self contentContainerView];
+  centerYAnchor = [contentContainerView3 centerYAnchor];
+  contentView3 = [(WDSpinnerTableViewCell *)self contentView];
+  centerYAnchor2 = [contentView3 centerYAnchor];
+  v16 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v16 setActive:1];
 
-  v17 = [(WDSpinnerTableViewCell *)self contentContainerView];
-  v18 = [v17 leadingAnchor];
-  v19 = [(WDSpinnerTableViewCell *)self contentView];
-  v20 = [v19 leadingAnchor];
-  v21 = [v18 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:v20 multiplier:1.0];
+  contentContainerView4 = [(WDSpinnerTableViewCell *)self contentContainerView];
+  leadingAnchor = [contentContainerView4 leadingAnchor];
+  contentView4 = [(WDSpinnerTableViewCell *)self contentView];
+  leadingAnchor2 = [contentView4 leadingAnchor];
+  v21 = [leadingAnchor constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:leadingAnchor2 multiplier:1.0];
   [v21 setActive:1];
 
-  v22 = [(WDSpinnerTableViewCell *)self contentView];
-  v23 = [v22 trailingAnchor];
-  v24 = [(WDSpinnerTableViewCell *)self contentContainerView];
-  v25 = [v24 trailingAnchor];
-  v26 = [v23 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:v25 multiplier:1.0];
+  contentView5 = [(WDSpinnerTableViewCell *)self contentView];
+  trailingAnchor = [contentView5 trailingAnchor];
+  contentContainerView5 = [(WDSpinnerTableViewCell *)self contentContainerView];
+  trailingAnchor2 = [contentContainerView5 trailingAnchor];
+  v26 = [trailingAnchor constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:trailingAnchor2 multiplier:1.0];
   [v26 setActive:1];
 
-  v27 = [(WDSpinnerTableViewCell *)self contentContainerView];
-  v28 = [v27 topAnchor];
-  v29 = [(WDSpinnerTableViewCell *)self contentView];
-  v30 = [v29 topAnchor];
-  v31 = [v28 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:v30 multiplier:1.0];
+  contentContainerView6 = [(WDSpinnerTableViewCell *)self contentContainerView];
+  topAnchor = [contentContainerView6 topAnchor];
+  contentView6 = [(WDSpinnerTableViewCell *)self contentView];
+  topAnchor2 = [contentView6 topAnchor];
+  v31 = [topAnchor constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:topAnchor2 multiplier:1.0];
   [v31 setActive:1];
 
-  v32 = [(WDSpinnerTableViewCell *)self contentView];
-  v33 = [v32 bottomAnchor];
-  v34 = [(WDSpinnerTableViewCell *)self contentContainerView];
-  v35 = [v34 bottomAnchor];
-  v36 = [v33 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:v35 multiplier:1.0];
+  contentView7 = [(WDSpinnerTableViewCell *)self contentView];
+  bottomAnchor = [contentView7 bottomAnchor];
+  contentContainerView7 = [(WDSpinnerTableViewCell *)self contentContainerView];
+  bottomAnchor2 = [contentContainerView7 bottomAnchor];
+  v36 = [bottomAnchor constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:bottomAnchor2 multiplier:1.0];
   [v36 setActive:1];
 
-  v37 = [(WDSpinnerTableViewCell *)self spinner];
-  [v37 setTranslatesAutoresizingMaskIntoConstraints:0];
+  spinner = [(WDSpinnerTableViewCell *)self spinner];
+  [spinner setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v38 = [(WDSpinnerTableViewCell *)self spinner];
-  v39 = [v38 centerXAnchor];
-  v40 = [(WDSpinnerTableViewCell *)self contentContainerView];
-  v41 = [v40 centerXAnchor];
-  v42 = [v39 constraintEqualToAnchor:v41];
+  spinner2 = [(WDSpinnerTableViewCell *)self spinner];
+  centerXAnchor3 = [spinner2 centerXAnchor];
+  contentContainerView8 = [(WDSpinnerTableViewCell *)self contentContainerView];
+  centerXAnchor4 = [contentContainerView8 centerXAnchor];
+  v42 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   [v42 setActive:1];
 
-  v43 = [(WDSpinnerTableViewCell *)self spinner];
-  v44 = [v43 centerYAnchor];
-  v45 = [(WDSpinnerTableViewCell *)self contentContainerView];
-  v46 = [v45 centerYAnchor];
-  v47 = [v44 constraintEqualToAnchor:v46];
+  spinner3 = [(WDSpinnerTableViewCell *)self spinner];
+  centerYAnchor3 = [spinner3 centerYAnchor];
+  contentContainerView9 = [(WDSpinnerTableViewCell *)self contentContainerView];
+  centerYAnchor4 = [contentContainerView9 centerYAnchor];
+  v47 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   [v47 setActive:1];
 }
 
-- (void)setWaitingReason:(id)a3
+- (void)setWaitingReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(WDSpinnerTableViewCell *)self waitingReasonLabel];
+  reasonCopy = reason;
+  waitingReasonLabel = [(WDSpinnerTableViewCell *)self waitingReasonLabel];
 
-  if (!v5)
+  if (!waitingReasonLabel)
   {
-    v6 = [(WDSpinnerTableViewCell *)self contentContainerView];
-    v7 = [(WDSpinnerTableViewCell *)self contentContainerView];
-    v8 = [v7 constraints];
-    [v6 removeConstraints:v8];
+    contentContainerView = [(WDSpinnerTableViewCell *)self contentContainerView];
+    contentContainerView2 = [(WDSpinnerTableViewCell *)self contentContainerView];
+    constraints = [contentContainerView2 constraints];
+    [contentContainerView removeConstraints:constraints];
 
     v9 = objc_opt_new();
     [(WDSpinnerTableViewCell *)self setWaitingReasonLabel:v9];
 
-    v10 = [(WDSpinnerTableViewCell *)self waitingReasonLabel];
-    [v10 setNumberOfLines:0];
+    waitingReasonLabel2 = [(WDSpinnerTableViewCell *)self waitingReasonLabel];
+    [waitingReasonLabel2 setNumberOfLines:0];
 
-    v11 = [MEMORY[0x277D75348] lightGrayColor];
-    v12 = [(WDSpinnerTableViewCell *)self waitingReasonLabel];
-    [v12 setTextColor:v11];
+    lightGrayColor = [MEMORY[0x277D75348] lightGrayColor];
+    waitingReasonLabel3 = [(WDSpinnerTableViewCell *)self waitingReasonLabel];
+    [waitingReasonLabel3 setTextColor:lightGrayColor];
 
-    v13 = [(WDSpinnerTableViewCell *)self waitingReasonLabel];
-    [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+    waitingReasonLabel4 = [(WDSpinnerTableViewCell *)self waitingReasonLabel];
+    [waitingReasonLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v14 = [(WDSpinnerTableViewCell *)self contentContainerView];
-    v15 = [(WDSpinnerTableViewCell *)self waitingReasonLabel];
-    [v14 addSubview:v15];
+    contentContainerView3 = [(WDSpinnerTableViewCell *)self contentContainerView];
+    waitingReasonLabel5 = [(WDSpinnerTableViewCell *)self waitingReasonLabel];
+    [contentContainerView3 addSubview:waitingReasonLabel5];
 
-    v16 = [(WDSpinnerTableViewCell *)self spinner];
-    v17 = [v16 centerYAnchor];
-    v18 = [(WDSpinnerTableViewCell *)self contentContainerView];
-    v19 = [v18 centerYAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19];
+    spinner = [(WDSpinnerTableViewCell *)self spinner];
+    centerYAnchor = [spinner centerYAnchor];
+    contentContainerView4 = [(WDSpinnerTableViewCell *)self contentContainerView];
+    centerYAnchor2 = [contentContainerView4 centerYAnchor];
+    v20 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v20 setActive:1];
 
-    v21 = [(WDSpinnerTableViewCell *)self waitingReasonLabel];
-    v22 = [v21 centerYAnchor];
-    v23 = [(WDSpinnerTableViewCell *)self contentContainerView];
-    v24 = [v23 centerYAnchor];
-    v25 = [v22 constraintEqualToAnchor:v24];
+    waitingReasonLabel6 = [(WDSpinnerTableViewCell *)self waitingReasonLabel];
+    centerYAnchor3 = [waitingReasonLabel6 centerYAnchor];
+    contentContainerView5 = [(WDSpinnerTableViewCell *)self contentContainerView];
+    centerYAnchor4 = [contentContainerView5 centerYAnchor];
+    v25 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     [v25 setActive:1];
 
-    v26 = [(WDSpinnerTableViewCell *)self contentContainerView];
-    v27 = [v26 topAnchor];
-    v28 = [(WDSpinnerTableViewCell *)self waitingReasonLabel];
-    v29 = [v28 topAnchor];
-    v30 = [v27 constraintEqualToAnchor:v29];
+    contentContainerView6 = [(WDSpinnerTableViewCell *)self contentContainerView];
+    topAnchor = [contentContainerView6 topAnchor];
+    waitingReasonLabel7 = [(WDSpinnerTableViewCell *)self waitingReasonLabel];
+    topAnchor2 = [waitingReasonLabel7 topAnchor];
+    v30 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v30 setActive:1];
 
-    v31 = [(WDSpinnerTableViewCell *)self contentContainerView];
-    v32 = [v31 bottomAnchor];
-    v33 = [(WDSpinnerTableViewCell *)self waitingReasonLabel];
-    v34 = [v33 bottomAnchor];
-    v35 = [v32 constraintEqualToAnchor:v34];
+    contentContainerView7 = [(WDSpinnerTableViewCell *)self contentContainerView];
+    bottomAnchor = [contentContainerView7 bottomAnchor];
+    waitingReasonLabel8 = [(WDSpinnerTableViewCell *)self waitingReasonLabel];
+    bottomAnchor2 = [waitingReasonLabel8 bottomAnchor];
+    v35 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v35 setActive:1];
 
-    v36 = [(WDSpinnerTableViewCell *)self contentContainerView];
-    v37 = [v36 leadingAnchor];
-    v38 = [(WDSpinnerTableViewCell *)self waitingReasonLabel];
-    v39 = [v38 leadingAnchor];
-    v40 = [v37 constraintEqualToAnchor:v39];
+    contentContainerView8 = [(WDSpinnerTableViewCell *)self contentContainerView];
+    leadingAnchor = [contentContainerView8 leadingAnchor];
+    waitingReasonLabel9 = [(WDSpinnerTableViewCell *)self waitingReasonLabel];
+    leadingAnchor2 = [waitingReasonLabel9 leadingAnchor];
+    v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v40 setActive:1];
 
-    v41 = [(WDSpinnerTableViewCell *)self spinner];
-    v42 = [v41 leadingAnchor];
-    v43 = [(WDSpinnerTableViewCell *)self waitingReasonLabel];
-    v44 = [v43 trailingAnchor];
-    v45 = [v42 constraintEqualToSystemSpacingAfterAnchor:v44 multiplier:1.0];
+    spinner2 = [(WDSpinnerTableViewCell *)self spinner];
+    leadingAnchor3 = [spinner2 leadingAnchor];
+    waitingReasonLabel10 = [(WDSpinnerTableViewCell *)self waitingReasonLabel];
+    trailingAnchor = [waitingReasonLabel10 trailingAnchor];
+    v45 = [leadingAnchor3 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor multiplier:1.0];
     [v45 setActive:1];
 
-    v46 = [(WDSpinnerTableViewCell *)self spinner];
-    v47 = [v46 trailingAnchor];
-    v48 = [(WDSpinnerTableViewCell *)self contentContainerView];
-    v49 = [v48 trailingAnchor];
-    v50 = [v47 constraintEqualToAnchor:v49];
+    spinner3 = [(WDSpinnerTableViewCell *)self spinner];
+    trailingAnchor2 = [spinner3 trailingAnchor];
+    contentContainerView9 = [(WDSpinnerTableViewCell *)self contentContainerView];
+    trailingAnchor3 = [contentContainerView9 trailingAnchor];
+    v50 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
     [v50 setActive:1];
   }
 
-  v51 = [(WDSpinnerTableViewCell *)self waitingReasonLabel];
-  [v51 setText:v4];
+  waitingReasonLabel11 = [(WDSpinnerTableViewCell *)self waitingReasonLabel];
+  [waitingReasonLabel11 setText:reasonCopy];
 }
 
 - (NSString)waitingReason
 {
-  v2 = [(WDSpinnerTableViewCell *)self waitingReasonLabel];
-  v3 = [v2 text];
+  waitingReasonLabel = [(WDSpinnerTableViewCell *)self waitingReasonLabel];
+  text = [waitingReasonLabel text];
 
-  return v3;
+  return text;
 }
 
 - (void)prepareForReuse
@@ -216,8 +216,8 @@
   v4.receiver = self;
   v4.super_class = WDSpinnerTableViewCell;
   [(WDSpinnerTableViewCell *)&v4 prepareForReuse];
-  v3 = [(WDSpinnerTableViewCell *)self spinner];
-  [v3 startAnimating];
+  spinner = [(WDSpinnerTableViewCell *)self spinner];
+  [spinner startAnimating];
 }
 
 @end

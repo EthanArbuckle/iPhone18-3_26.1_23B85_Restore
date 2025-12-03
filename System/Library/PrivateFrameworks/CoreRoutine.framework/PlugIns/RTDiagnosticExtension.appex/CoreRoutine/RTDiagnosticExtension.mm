@@ -1,18 +1,18 @@
 @interface RTDiagnosticExtension
-+ (BOOL)isLocationMonitoringStudiesComponent:(id)a3;
-+ (BOOL)isLocationWorkoutStudiesComponent:(id)a3;
-- (id)attachmentsForParameters:(id)a3;
++ (BOOL)isLocationMonitoringStudiesComponent:(id)component;
++ (BOOL)isLocationWorkoutStudiesComponent:(id)component;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation RTDiagnosticExtension
 
-+ (BOOL)isLocationWorkoutStudiesComponent:(id)a3
++ (BOOL)isLocationWorkoutStudiesComponent:(id)component
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"componentID"];
+  componentCopy = component;
+  v4 = [componentCopy objectForKeyedSubscript:@"componentID"];
   if (v4)
   {
-    v5 = [v3 objectForKeyedSubscript:@"componentID"];
+    v5 = [componentCopy objectForKeyedSubscript:@"componentID"];
     v6 = [&off_100004290 isEqualToNumber:v5];
   }
 
@@ -24,13 +24,13 @@
   return v6;
 }
 
-+ (BOOL)isLocationMonitoringStudiesComponent:(id)a3
++ (BOOL)isLocationMonitoringStudiesComponent:(id)component
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"componentID"];
+  componentCopy = component;
+  v4 = [componentCopy objectForKeyedSubscript:@"componentID"];
   if (v4)
   {
-    v5 = [v3 objectForKeyedSubscript:@"componentID"];
+    v5 = [componentCopy objectForKeyedSubscript:@"componentID"];
     v6 = [&off_1000042A8 isEqualToNumber:v5];
   }
 
@@ -42,9 +42,9 @@
   return v6;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v51 = 0;
   v52 = &v51;
   v53 = 0x3032000000;
@@ -63,12 +63,12 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v59 = v4;
+      v59 = parametersCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "diagnostic extension parameters, %@", buf, 0xCu);
     }
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"DEExtensionHostAppKey"];
+  v6 = [parametersCopy objectForKeyedSubscript:@"DEExtensionHostAppKey"];
   if ([v6 isEqualToString:@"com.apple.taptoradard"])
   {
     v7 = 1;
@@ -87,7 +87,7 @@
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
       v11 = NSStringFromSelector(a2);
-      v12 = [v4 objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
+      v12 = [parametersCopy objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
       v13 = v12;
       v14 = @"NO";
       *buf = 138413058;
@@ -117,10 +117,10 @@
     }
   }
 
-  if (!v7 || ([v4 objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"], v16 = objc_claimAutoreleasedReturnValue(), v17 = v16 == 0, v16, !v17))
+  if (!v7 || ([parametersCopy objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"], v16 = objc_claimAutoreleasedReturnValue(), v17 = v16 == 0, v16, !v17))
   {
     v18 = [[RTDiagnosticOptions alloc] initWithOptionsMask:0];
-    if ([objc_opt_class() isLocationWorkoutStudiesComponent:v4])
+    if ([objc_opt_class() isLocationWorkoutStudiesComponent:parametersCopy])
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
       {
@@ -144,7 +144,7 @@ LABEL_24:
 
     else
     {
-      v22 = [objc_opt_class() isLocationMonitoringStudiesComponent:v4];
+      v22 = [objc_opt_class() isLocationMonitoringStudiesComponent:parametersCopy];
       v23 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO);
       if (v22)
       {

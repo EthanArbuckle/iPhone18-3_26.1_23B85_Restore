@@ -7,82 +7,82 @@
 - (UIView)sourceView;
 - (unint64_t)sourceLayerRenderId;
 - (unsigned)sourceContextId;
-- (void)setSourceLayerRenderId:(unint64_t)a3;
-- (void)setSourceView:(id)a3;
+- (void)setSourceLayerRenderId:(unint64_t)id;
+- (void)setSourceView:(id)view;
 @end
 
 @implementation PortalView
 
-- (void)setSourceView:(id)a3
+- (void)setSourceView:(id)view
 {
-  v4 = a3;
-  objc_storeWeak(&self->_sourceView, v4);
-  v6 = [v4 layer];
+  viewCopy = view;
+  objc_storeWeak(&self->_sourceView, viewCopy);
+  layer = [viewCopy layer];
 
-  v5 = [(PortalView *)self portalLayer];
-  [v5 setSourceLayer:v6];
+  portalLayer = [(PortalView *)self portalLayer];
+  [portalLayer setSourceLayer:layer];
 }
 
 - (BOOL)hidesSourceView
 {
-  v2 = [(PortalView *)self portalLayer];
-  v3 = [v2 hidesSourceLayer];
+  portalLayer = [(PortalView *)self portalLayer];
+  hidesSourceLayer = [portalLayer hidesSourceLayer];
 
-  return v3;
+  return hidesSourceLayer;
 }
 
 - (BOOL)matchesAlpha
 {
-  v2 = [(PortalView *)self portalLayer];
-  v3 = [v2 matchesOpacity];
+  portalLayer = [(PortalView *)self portalLayer];
+  matchesOpacity = [portalLayer matchesOpacity];
 
-  return v3;
+  return matchesOpacity;
 }
 
 - (BOOL)matchesTransform
 {
-  v2 = [(PortalView *)self portalLayer];
-  v3 = [v2 matchesTransform];
+  portalLayer = [(PortalView *)self portalLayer];
+  matchesTransform = [portalLayer matchesTransform];
 
-  return v3;
+  return matchesTransform;
 }
 
 - (BOOL)matchesPosition
 {
-  v2 = [(PortalView *)self portalLayer];
-  v3 = [v2 matchesPosition];
+  portalLayer = [(PortalView *)self portalLayer];
+  matchesPosition = [portalLayer matchesPosition];
 
-  return v3;
+  return matchesPosition;
 }
 
 - (BOOL)allowsBackdropGroups
 {
-  v2 = [(PortalView *)self portalLayer];
-  v3 = [v2 allowsBackdropGroups];
+  portalLayer = [(PortalView *)self portalLayer];
+  allowsBackdropGroups = [portalLayer allowsBackdropGroups];
 
-  return v3;
+  return allowsBackdropGroups;
 }
 
 - (unsigned)sourceContextId
 {
-  v2 = [(PortalView *)self portalLayer];
-  v3 = [v2 sourceContextId];
+  portalLayer = [(PortalView *)self portalLayer];
+  sourceContextId = [portalLayer sourceContextId];
 
-  return v3;
+  return sourceContextId;
 }
 
-- (void)setSourceLayerRenderId:(unint64_t)a3
+- (void)setSourceLayerRenderId:(unint64_t)id
 {
-  v4 = [(PortalView *)self portalLayer];
-  [v4 setSourceLayerRenderId:a3];
+  portalLayer = [(PortalView *)self portalLayer];
+  [portalLayer setSourceLayerRenderId:id];
 }
 
 - (unint64_t)sourceLayerRenderId
 {
-  v2 = [(PortalView *)self portalLayer];
-  v3 = [v2 sourceLayerRenderId];
+  portalLayer = [(PortalView *)self portalLayer];
+  sourceLayerRenderId = [portalLayer sourceLayerRenderId];
 
-  return v3;
+  return sourceLayerRenderId;
 }
 
 - (UIView)sourceView

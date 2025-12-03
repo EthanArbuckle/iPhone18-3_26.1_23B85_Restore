@@ -1,22 +1,22 @@
 @interface MBRemoteConfiguration
 + (MBRemoteConfiguration)sharedInstance;
-- (BOOL)allowSnapshotFormatSelectionOnGMForAccount:(id)a3;
-- (BOOL)backupVerificationEnabledForAccount:(id)a3;
-- (BOOL)restoreVerificationEnabledForAccount:(id)a3;
-- (BOOL)shouldReloadConfigurationWithAccount:(id)a3;
+- (BOOL)allowSnapshotFormatSelectionOnGMForAccount:(id)account;
+- (BOOL)backupVerificationEnabledForAccount:(id)account;
+- (BOOL)restoreVerificationEnabledForAccount:(id)account;
+- (BOOL)shouldReloadConfigurationWithAccount:(id)account;
 - (MBRemoteConfiguration)init;
-- (double)keyBagValidationPeriodForAccount:(id)a3 defaultValue:(double)a4;
-- (id)_allValuesForKey:(id)a3 account:(id)a4;
-- (id)persistedValueForKey:(id)a3 account:(id)a4;
-- (id)shouldRestoreUsingFileListsForAccount:(id)a3;
-- (id)valueForKey:(id)a3 account:(id)a4;
-- (int64_t)snapshotFormatForBackupWithAccount:(id)a3;
-- (void)loadConfigurationWithContainer:(id)a3 databaseManager:(id)a4 policy:(id)a5 operationGroup:(id)a6 completion:(id)a7;
-- (void)mergeRemoteConfigurationForAccount:(id)a3 response:(id)a4;
-- (void)persistValueForKey:(id)a3 value:(id)a4 account:(id)a5;
-- (void)persistValueIfNeeded:(id)a3 forKey:(id)a4 account:(id)a5;
-- (void)persistValuesIfNeeded:(id)a3 forKey:(id)a4 account:(id)a5;
-- (void)resetCachedConfigurationForAccount:(id)a3;
+- (double)keyBagValidationPeriodForAccount:(id)account defaultValue:(double)value;
+- (id)_allValuesForKey:(id)key account:(id)account;
+- (id)persistedValueForKey:(id)key account:(id)account;
+- (id)shouldRestoreUsingFileListsForAccount:(id)account;
+- (id)valueForKey:(id)key account:(id)account;
+- (int64_t)snapshotFormatForBackupWithAccount:(id)account;
+- (void)loadConfigurationWithContainer:(id)container databaseManager:(id)manager policy:(id)policy operationGroup:(id)group completion:(id)completion;
+- (void)mergeRemoteConfigurationForAccount:(id)account response:(id)response;
+- (void)persistValueForKey:(id)key value:(id)value account:(id)account;
+- (void)persistValueIfNeeded:(id)needed forKey:(id)key account:(id)account;
+- (void)persistValuesIfNeeded:(id)needed forKey:(id)key account:(id)account;
+- (void)resetCachedConfigurationForAccount:(id)account;
 @end
 
 @implementation MBRemoteConfiguration
@@ -27,7 +27,7 @@
   block[1] = 3221225472;
   block[2] = sub_100175DD0;
   block[3] = &unk_1003BBFE8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1004218B8 != -1)
   {
     dispatch_once(&qword_1004218B8, block);
@@ -53,16 +53,16 @@
   return v2;
 }
 
-- (BOOL)shouldReloadConfigurationWithAccount:(id)a3
+- (BOOL)shouldReloadConfigurationWithAccount:(id)account
 {
-  v3 = [a3 persona];
-  v4 = [v3 copyPreferencesValueForKey:@"RemoteConfigurationBuildVersion" class:objc_opt_class()];
+  persona = [account persona];
+  v4 = [persona copyPreferencesValueForKey:@"RemoteConfigurationBuildVersion" class:objc_opt_class()];
   v5 = MBBuildVersion();
   v6 = [v5 isEqualToString:v4];
 
   if (v6)
   {
-    v7 = [v3 copyPreferencesValueForKey:@"RemoteConfigurationExpiration" class:objc_opt_class()];
+    v7 = [persona copyPreferencesValueForKey:@"RemoteConfigurationExpiration" class:objc_opt_class()];
     if (v7)
     {
       v8 = +[NSDate date];
@@ -83,25 +83,25 @@
   return v9;
 }
 
-- (void)loadConfigurationWithContainer:(id)a3 databaseManager:(id)a4 policy:(id)a5 operationGroup:(id)a6 completion:(id)a7
+- (void)loadConfigurationWithContainer:(id)container databaseManager:(id)manager policy:(id)policy operationGroup:(id)group completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v14)
+  containerCopy = container;
+  managerCopy = manager;
+  policyCopy = policy;
+  groupCopy = group;
+  completionCopy = completion;
+  if (!policyCopy)
   {
     __assert_rtn("[MBRemoteConfiguration loadConfigurationWithContainer:databaseManager:policy:operationGroup:completion:]", "MBRemoteConfiguration.m", 87, "policy");
   }
 
-  v17 = v16;
-  if (!v16)
+  v17 = completionCopy;
+  if (!completionCopy)
   {
     __assert_rtn("[MBRemoteConfiguration loadConfigurationWithContainer:databaseManager:policy:operationGroup:completion:]", "MBRemoteConfiguration.m", 88, "completion");
   }
 
-  if (!v13)
+  if (!managerCopy)
   {
     __assert_rtn("[MBRemoteConfiguration loadConfigurationWithContainer:databaseManager:policy:operationGroup:completion:]", "MBRemoteConfiguration.m", 93, "databaseManager");
   }
@@ -121,46 +121,46 @@
 
   else
   {
-    v19 = [v12 account];
-    if ([(MBRemoteConfiguration *)self shouldReloadConfigurationWithAccount:v19])
+    account = [containerCopy account];
+    if ([(MBRemoteConfiguration *)self shouldReloadConfigurationWithAccount:account])
     {
       v20 = objc_opt_new();
-      v21 = [(MBRemoteConfiguration *)self operator];
+      operator = [(MBRemoteConfiguration *)self operator];
       v33[0] = _NSConcreteStackBlock;
       v33[1] = 3221225472;
       v33[2] = sub_1001763A0;
       v33[3] = &unk_1003C01C8;
-      v34 = v19;
-      v35 = self;
+      v34 = account;
+      selfCopy = self;
       v36 = v17;
-      v22 = [v21 operationForRequest:v20 callback:v33];
+      v22 = [operator operationForRequest:v20 callback:v33];
 
       v23 = MBGetDefaultLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
         [v22 operationID];
         v24 = v31 = v22;
-        [v15 operationGroupID];
+        [groupCopy operationGroupID];
         v25 = v32 = v20;
-        v26 = [v15 name];
+        name = [groupCopy name];
         *buf = 138543874;
         v38 = v24;
         v39 = 2114;
         v40 = v25;
         v41 = 2114;
-        v42 = v26;
+        v42 = name;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "Fetching remote configuration id:%{public}@, gid:%{public}@ gn:%{public}@", buf, 0x20u);
 
         v22 = v31;
-        v27 = [v31 operationID];
-        v28 = [v15 operationGroupID];
-        v30 = [v15 name];
+        operationID = [v31 operationID];
+        operationGroupID = [groupCopy operationGroupID];
+        name2 = [groupCopy name];
         _MBLog();
 
         v20 = v32;
       }
 
-      [v13 addDatabaseOperation:v22 container:v12 policy:v14 operationGroup:v15];
+      [managerCopy addDatabaseOperation:v22 container:containerCopy policy:policyCopy operationGroup:groupCopy];
     }
 
     else
@@ -179,20 +179,20 @@
   }
 }
 
-- (void)mergeRemoteConfigurationForAccount:(id)a3 response:(id)a4
+- (void)mergeRemoteConfigurationForAccount:(id)account response:(id)response
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 settings];
-  v9 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v8 count]);
+  accountCopy = account;
+  responseCopy = response;
+  settings = [responseCopy settings];
+  v9 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [settings count]);
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v27 = v7;
-  v10 = [v7 settings];
-  v11 = [v10 countByEnumeratingWithState:&v28 objects:v34 count:16];
+  v27 = responseCopy;
+  settings2 = [responseCopy settings];
+  v11 = [settings2 countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (v11)
   {
     v12 = v11;
@@ -203,13 +203,13 @@
       {
         if (*v29 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(settings2);
         }
 
         v15 = *(*(&v28 + 1) + 8 * i);
-        v16 = [v15 value];
+        value = [v15 value];
 
-        if (v16)
+        if (value)
         {
           v17 = [v15 key];
           v18 = [v9 objectForKeyedSubscript:v17];
@@ -221,15 +221,15 @@
             [v9 setObject:v18 forKeyedSubscript:v19];
           }
 
-          v20 = [v15 value];
-          [v18 addObject:v20];
+          value2 = [v15 value];
+          [v18 addObject:value2];
 
           v21 = [v15 key];
-          [(MBRemoteConfiguration *)self persistValuesIfNeeded:v18 forKey:v21 account:v6];
+          [(MBRemoteConfiguration *)self persistValuesIfNeeded:v18 forKey:v21 account:accountCopy];
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v28 objects:v34 count:16];
+      v12 = [settings2 countByEnumeratingWithState:&v28 objects:v34 count:16];
     }
 
     while (v12);
@@ -247,20 +247,20 @@
   objc_storeStrong(&self->_configuration, v9);
   if ([(NSDictionary *)self->_configuration count])
   {
-    v23 = [v6 persona];
-    [v23 setPreferencesValue:v9 forKey:@"RemoteConfiguration"];
+    persona = [accountCopy persona];
+    [persona setPreferencesValue:v9 forKey:@"RemoteConfiguration"];
     v24 = +[NSDate now];
     v25 = [v24 dateByAddingTimeInterval:86400.0];
-    [v23 setPreferencesValue:v25 forKey:@"RemoteConfigurationExpiration"];
+    [persona setPreferencesValue:v25 forKey:@"RemoteConfigurationExpiration"];
 
     v26 = MBBuildVersion();
-    [v23 setPreferencesValue:v26 forKey:@"RemoteConfigurationBuildVersion"];
+    [persona setPreferencesValue:v26 forKey:@"RemoteConfigurationBuildVersion"];
   }
 }
 
-- (void)resetCachedConfigurationForAccount:(id)a3
+- (void)resetCachedConfigurationForAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = MBGetDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -272,9 +272,9 @@
   configuration = self->_configuration;
   self->_configuration = 0;
 
-  if (v4)
+  if (accountCopy)
   {
-    [v4 persona];
+    [accountCopy persona];
   }
 
   else
@@ -287,58 +287,58 @@
   [v7 setPreferencesValue:0 forKey:@"RemoteConfigurationBuildVersion"];
 }
 
-- (void)persistValuesIfNeeded:(id)a3 forKey:(id)a4 account:(id)a5
+- (void)persistValuesIfNeeded:(id)needed forKey:(id)key account:(id)account
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  neededCopy = needed;
+  keyCopy = key;
+  accountCopy = account;
+  if ([neededCopy count])
   {
-    if ([v8 count] >= 2)
+    if ([neededCopy count] >= 2)
     {
       v11 = MBGetDefaultLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v15 = v9;
+        v15 = keyCopy;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Duplicate value for persisted remote configuration setting '%{public}@' -- arbitrarily picking one of the values", buf, 0xCu);
-        v13 = v9;
+        v13 = keyCopy;
         _MBLog();
       }
     }
 
-    v12 = [v8 firstObject];
-    [(MBRemoteConfiguration *)self persistValueIfNeeded:v12 forKey:v9 account:v10];
+    firstObject = [neededCopy firstObject];
+    [(MBRemoteConfiguration *)self persistValueIfNeeded:firstObject forKey:keyCopy account:accountCopy];
   }
 }
 
-- (void)persistValueIfNeeded:(id)a3 forKey:(id)a4 account:(id)a5
+- (void)persistValueIfNeeded:(id)needed forKey:(id)key account:(id)account
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (sub_100176BE0(v8))
+  neededCopy = needed;
+  keyCopy = key;
+  accountCopy = account;
+  if (sub_100176BE0(keyCopy))
   {
-    [(MBRemoteConfiguration *)self persistValueForKey:v8 value:v10 account:v9];
+    [(MBRemoteConfiguration *)self persistValueForKey:keyCopy value:neededCopy account:accountCopy];
   }
 }
 
-- (void)persistValueForKey:(id)a3 value:(id)a4 account:(id)a5
+- (void)persistValueForKey:(id)key value:(id)value account:(id)account
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [a5 persona];
-  [v9 setPreferencesValue:v7 forKey:v8];
+  valueCopy = value;
+  keyCopy = key;
+  persona = [account persona];
+  [persona setPreferencesValue:valueCopy forKey:keyCopy];
 }
 
-- (id)persistedValueForKey:(id)a3 account:(id)a4
+- (id)persistedValueForKey:(id)key account:(id)account
 {
-  v5 = a3;
-  v6 = a4;
-  if (sub_100176BE0(v5))
+  keyCopy = key;
+  accountCopy = account;
+  if (sub_100176BE0(keyCopy))
   {
-    v7 = [v6 persona];
-    v8 = [v7 copyPreferencesValueForKey:v5 class:objc_opt_class()];
+    persona = [accountCopy persona];
+    v8 = [persona copyPreferencesValueForKey:keyCopy class:objc_opt_class()];
   }
 
   else
@@ -349,19 +349,19 @@
   return v8;
 }
 
-- (id)valueForKey:(id)a3 account:(id)a4
+- (id)valueForKey:(id)key account:(id)account
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MBRemoteConfiguration *)self persistedValueForKey:v6 account:v7];
+  keyCopy = key;
+  accountCopy = account;
+  v8 = [(MBRemoteConfiguration *)self persistedValueForKey:keyCopy account:accountCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = v8;
+    firstObject = v8;
     goto LABEL_25;
   }
 
-  v11 = [(MBRemoteConfiguration *)self _allValuesForKey:v6 account:v7];
+  v11 = [(MBRemoteConfiguration *)self _allValuesForKey:keyCopy account:accountCopy];
   if (!v11)
   {
     goto LABEL_23;
@@ -376,15 +376,15 @@
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v17 = v6;
+        v17 = keyCopy;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Duplicate value for remote configuration setting '%{public}@' -- arbitrarily picking one of the values", buf, 0xCu);
-        v15 = v6;
+        v15 = keyCopy;
         _MBLog();
       }
     }
 
-    v10 = [v11 firstObject];
-    if (!v10)
+    firstObject = [v11 firstObject];
+    if (!firstObject)
     {
       goto LABEL_24;
     }
@@ -401,9 +401,9 @@
       if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
       {
         *buf = 138543618;
-        v17 = v6;
+        v17 = keyCopy;
         v18 = 2114;
-        v19 = v10;
+        v19 = firstObject;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_FAULT, "Unexpected first value for %{public}@: %{public}@ (remote configuration)", buf, 0x16u);
         _MBLog();
       }
@@ -417,38 +417,38 @@
       goto LABEL_23;
     }
 
-    v10 = MBGetDefaultLog();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+    firstObject = MBGetDefaultLog();
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_FAULT))
     {
       *buf = 138543618;
-      v17 = v6;
+      v17 = keyCopy;
       v18 = 2114;
       v19 = v11;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_FAULT, "Unexpected value for %{public}@: %{public}@ (remote configuration)", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, firstObject, OS_LOG_TYPE_FAULT, "Unexpected value for %{public}@: %{public}@ (remote configuration)", buf, 0x16u);
       _MBLog();
     }
   }
 
 LABEL_23:
-  v10 = 0;
+  firstObject = 0;
 LABEL_24:
 
 LABEL_25:
 
-  return v10;
+  return firstObject;
 }
 
-- (id)_allValuesForKey:(id)a3 account:(id)a4
+- (id)_allValuesForKey:(id)key account:(id)account
 {
-  v6 = a3;
-  v7 = [a4 persona];
-  v8 = [v7 copyPreferencesValueForKey:@"RemoteConfiguration" class:objc_opt_class()];
+  keyCopy = key;
+  persona = [account persona];
+  v8 = [persona copyPreferencesValueForKey:@"RemoteConfiguration" class:objc_opt_class()];
   configuration = self->_configuration;
   self->_configuration = v8;
 
-  v10 = [(MBRemoteConfiguration *)self configuration];
+  configuration = [(MBRemoteConfiguration *)self configuration];
 
-  if (!v10)
+  if (!configuration)
   {
     v11 = MBGetDefaultLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -459,23 +459,23 @@ LABEL_25:
     }
   }
 
-  v12 = [(MBRemoteConfiguration *)self configuration];
-  v13 = [v12 objectForKeyedSubscript:v6];
+  configuration2 = [(MBRemoteConfiguration *)self configuration];
+  v13 = [configuration2 objectForKeyedSubscript:keyCopy];
 
   return v13;
 }
 
-- (BOOL)allowSnapshotFormatSelectionOnGMForAccount:(id)a3
+- (BOOL)allowSnapshotFormatSelectionOnGMForAccount:(id)account
 {
-  v3 = [(MBRemoteConfiguration *)self valueForKey:@"AllowRecordModelSelectionOnGM" account:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(MBRemoteConfiguration *)self valueForKey:@"AllowRecordModelSelectionOnGM" account:account];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (int64_t)snapshotFormatForBackupWithAccount:(id)a3
+- (int64_t)snapshotFormatForBackupWithAccount:(id)account
 {
-  v3 = [(MBRemoteConfiguration *)self valueForKey:@"BackupRecordModelSelection" account:a3];
+  v3 = [(MBRemoteConfiguration *)self valueForKey:@"BackupRecordModelSelection" account:account];
   v4 = v3;
   if (!v3)
   {
@@ -518,9 +518,9 @@ LABEL_12:
   return v5;
 }
 
-- (id)shouldRestoreUsingFileListsForAccount:(id)a3
+- (id)shouldRestoreUsingFileListsForAccount:(id)account
 {
-  v3 = [(MBRemoteConfiguration *)self valueForKey:@"RestoreRecordModelSelection" account:a3];
+  v3 = [(MBRemoteConfiguration *)self valueForKey:@"RestoreRecordModelSelection" account:account];
   v4 = v3;
   if (!v3)
   {
@@ -557,35 +557,35 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)backupVerificationEnabledForAccount:(id)a3
+- (BOOL)backupVerificationEnabledForAccount:(id)account
 {
-  v3 = [(MBRemoteConfiguration *)self valueForKey:@"BackupVerificationEnabled" account:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(MBRemoteConfiguration *)self valueForKey:@"BackupVerificationEnabled" account:account];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)restoreVerificationEnabledForAccount:(id)a3
+- (BOOL)restoreVerificationEnabledForAccount:(id)account
 {
-  v3 = [(MBRemoteConfiguration *)self valueForKey:@"RestoreVerificationEnabled" account:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(MBRemoteConfiguration *)self valueForKey:@"RestoreVerificationEnabled" account:account];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (double)keyBagValidationPeriodForAccount:(id)a3 defaultValue:(double)a4
+- (double)keyBagValidationPeriodForAccount:(id)account defaultValue:(double)value
 {
-  v5 = [(MBRemoteConfiguration *)self valueForKey:@"KeyBagReferenceValidationPeriod" account:a3];
+  v5 = [(MBRemoteConfiguration *)self valueForKey:@"KeyBagReferenceValidationPeriod" account:account];
   v6 = v5;
   if (v5)
   {
     [v5 doubleValue];
-    a4 = v7;
+    value = v7;
     v8 = MBGetDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v11 = a4;
+      valueCopy2 = value;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Using server provided keybag validation period %.2f", buf, 0xCu);
 LABEL_6:
       _MBLog();
@@ -598,13 +598,13 @@ LABEL_6:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v11 = a4;
+      valueCopy2 = value;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Using default keybag validation period of %.2f", buf, 0xCu);
       goto LABEL_6;
     }
   }
 
-  return a4;
+  return value;
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface BYODDomainSearchNoteCellView
 + (id)log;
-- (BYODDomainSearchNoteCellView)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)setNote:(id)a3;
-- (void)setNoteWithDomain:(id)a3;
+- (BYODDomainSearchNoteCellView)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)setNote:(id)note;
+- (void)setNoteWithDomain:(id)domain;
 @end
 
 @implementation BYODDomainSearchNoteCellView
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_420E4;
   block[3] = &unk_B8D78;
-  block[4] = a1;
+  block[4] = self;
   if (qword_D6530 != -1)
   {
     dispatch_once(&qword_D6530, block);
@@ -24,12 +24,12 @@
   return v2;
 }
 
-- (BYODDomainSearchNoteCellView)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (BYODDomainSearchNoteCellView)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v34.receiver = self;
   v34.super_class = BYODDomainSearchNoteCellView;
-  v7 = [(BYODDomainSearchNoteCellView *)&v34 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(BYODDomainSearchNoteCellView *)&v34 initWithStyle:style reuseIdentifier:identifierCopy];
   if (v7)
   {
     v37 = NSFontAttributeName;
@@ -52,9 +52,9 @@
     [(BYODDomainSearchNoteCellView *)v7 setBackgroundColor:v14];
 
     [(BYODDomainSearchNoteCellView *)v7 setSelectionStyle:0];
-    v15 = [(BYODDomainSearchNoteCellView *)v7 textLabel];
+    textLabel = [(BYODDomainSearchNoteCellView *)v7 textLabel];
     noteLabel = v7->_noteLabel;
-    v7->_noteLabel = v15;
+    v7->_noteLabel = textLabel;
 
     v17 = v7->_noteLabel;
     v18 = +[UIColor systemGrayColor];
@@ -63,54 +63,54 @@
     [(UILabel *)v7->_noteLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v7->_noteLabel setLineBreakMode:0];
     [(UILabel *)v7->_noteLabel setNumberOfLines:0];
-    v19 = [(UILabel *)v7->_noteLabel topAnchor];
-    v20 = [(BYODDomainSearchNoteCellView *)v7 contentView];
-    v21 = [v20 topAnchor];
-    v22 = [v19 constraintEqualToAnchor:v21 constant:4.0];
+    topAnchor = [(UILabel *)v7->_noteLabel topAnchor];
+    contentView = [(BYODDomainSearchNoteCellView *)v7 contentView];
+    topAnchor2 = [contentView topAnchor];
+    v22 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:4.0];
     [v22 setActive:1];
 
     v23 = MUISolariumFeatureEnabled();
     v24 = v7->_noteLabel;
     if (v23)
     {
-      v25 = [(UILabel *)v24 leadingAnchor];
-      v26 = [(BYODDomainSearchNoteCellView *)v7 contentView];
-      v27 = [v26 leadingAnchor];
-      [v25 constraintEqualToAnchor:v27 constant:-22.0];
+      leadingAnchor = [(UILabel *)v24 leadingAnchor];
+      contentView2 = [(BYODDomainSearchNoteCellView *)v7 contentView];
+      leadingAnchor2 = [contentView2 leadingAnchor];
+      [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:-22.0];
     }
 
     else
     {
-      v25 = [(UILabel *)v24 leadingAnchor];
-      v26 = [(BYODDomainSearchNoteCellView *)v7 contentView];
-      v27 = [v26 leadingAnchor];
-      [v25 constraintEqualToAnchor:v27 constant:-10.0];
+      leadingAnchor = [(UILabel *)v24 leadingAnchor];
+      contentView2 = [(BYODDomainSearchNoteCellView *)v7 contentView];
+      leadingAnchor2 = [contentView2 leadingAnchor];
+      [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:-10.0];
     }
     v28 = ;
     [v28 setActive:1];
 
-    v29 = [(UILabel *)v7->_noteLabel trailingAnchor];
-    v30 = [(BYODDomainSearchNoteCellView *)v7 contentView];
-    v31 = [v30 trailingAnchor];
-    v32 = [v29 constraintEqualToAnchor:v31 constant:-30.0];
+    trailingAnchor = [(UILabel *)v7->_noteLabel trailingAnchor];
+    contentView3 = [(BYODDomainSearchNoteCellView *)v7 contentView];
+    trailingAnchor2 = [contentView3 trailingAnchor];
+    v32 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-30.0];
     [v32 setActive:1];
   }
 
   return v7;
 }
 
-- (void)setNoteWithDomain:(id)a3
+- (void)setNoteWithDomain:(id)domain
 {
-  v4 = a3;
-  if (v4)
+  domainCopy = domain;
+  if (domainCopy)
   {
     v5 = [NSBundle bundleForClass:objc_opt_class()];
     v6 = [v5 localizedStringForKey:@"BYOD_PURCHASE_SEARCH_NAME_UNAVAILABLE" value:&stru_B9FC8 table:@"AccountPreferences"];
-    v7 = [NSString stringWithFormat:v6, v4];
+    domainCopy = [NSString stringWithFormat:v6, domainCopy];
 
-    v8 = [[NSMutableAttributedString alloc] initWithString:v7 attributes:self->_normalAttr];
-    v9 = [v8 mutableString];
-    v10 = [v9 rangeOfString:v4];
+    v8 = [[NSMutableAttributedString alloc] initWithString:domainCopy attributes:self->_normalAttr];
+    mutableString = [v8 mutableString];
+    v10 = [mutableString rangeOfString:domainCopy];
     v12 = v11;
 
     if (v10 != 0x7FFFFFFFFFFFFFFFLL)
@@ -132,10 +132,10 @@
   }
 }
 
-- (void)setNote:(id)a3
+- (void)setNote:(id)note
 {
-  v5 = a3;
-  v4 = [[NSMutableAttributedString alloc] initWithString:v5 attributes:self->_normalAttr];
+  noteCopy = note;
+  v4 = [[NSMutableAttributedString alloc] initWithString:noteCopy attributes:self->_normalAttr];
   [(UILabel *)self->_noteLabel setAttributedText:v4];
 }
 

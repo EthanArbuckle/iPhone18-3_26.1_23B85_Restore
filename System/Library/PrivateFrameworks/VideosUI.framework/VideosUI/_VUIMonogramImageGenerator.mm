@@ -1,9 +1,9 @@
 @interface _VUIMonogramImageGenerator
 - (NSOperationQueue)imageGeneratorQueue;
-- (id)imageKeyForObject:(id)a3;
-- (id)loadImageForObject:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5 imageDirection:(int64_t)a6 completionHandler:(id)a7;
-- (id)loadImageForURL:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5 imageDirection:(int64_t)a6 completionHandler:(id)a7;
-- (void)cancelLoad:(id)a3;
+- (id)imageKeyForObject:(id)object;
+- (id)loadImageForObject:(id)object scaleToSize:(CGSize)size cropToFit:(BOOL)fit imageDirection:(int64_t)direction completionHandler:(id)handler;
+- (id)loadImageForURL:(id)l scaleToSize:(CGSize)size cropToFit:(BOOL)fit imageDirection:(int64_t)direction completionHandler:(id)handler;
+- (void)cancelLoad:(id)load;
 @end
 
 @implementation _VUIMonogramImageGenerator
@@ -23,27 +23,27 @@
   return imageGeneratorQueue;
 }
 
-- (id)loadImageForURL:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5 imageDirection:(int64_t)a6 completionHandler:(id)a7
+- (id)loadImageForURL:(id)l scaleToSize:(CGSize)size cropToFit:(BOOL)fit imageDirection:(int64_t)direction completionHandler:(id)handler
 {
-  v8 = a5;
-  height = a4.height;
-  width = a4.width;
+  fitCopy = fit;
+  height = size.height;
+  width = size.width;
   v12 = MEMORY[0x1E69DF7C0];
-  v13 = a7;
-  v14 = a3;
-  v15 = [v12 sharedInstance];
-  v16 = [v15 loadImageForObject:v14 scaleToSize:v8 cropToFit:a6 imageDirection:v13 completionHandler:{width, height}];
+  handlerCopy = handler;
+  lCopy = l;
+  sharedInstance = [v12 sharedInstance];
+  v16 = [sharedInstance loadImageForObject:lCopy scaleToSize:fitCopy cropToFit:direction imageDirection:handlerCopy completionHandler:{width, height}];
 
   return v16;
 }
 
-- (id)imageKeyForObject:(id)a3
+- (id)imageKeyForObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = objectCopy;
   }
 
   else
@@ -52,27 +52,27 @@
   }
 
   v5 = v4;
-  v6 = [v5 imageURL];
-  if (v6)
+  imageURL = [v5 imageURL];
+  if (imageURL)
   {
-    v7 = [MEMORY[0x1E69DF7C0] sharedInstance];
-    v8 = [v7 imageKeyForObject:v6];
+    mEMORY[0x1E69DF7C0] = [MEMORY[0x1E69DF7C0] sharedInstance];
+    v8 = [mEMORY[0x1E69DF7C0] imageKeyForObject:imageURL];
 
-    v9 = [v5 imageURL];
-    if ([v9 vuicore_isResourceOrSymbolURL])
+    imageURL2 = [v5 imageURL];
+    if ([imageURL2 vuicore_isResourceOrSymbolURL])
     {
-      v10 = [v5 fillColor];
+      fillColor = [v5 fillColor];
 
-      if (v10)
+      if (fillColor)
       {
         v24 = 0.0;
         v22 = 0.0;
         v23 = 0.0;
         v21 = 0;
-        v13 = [v5 fillColor];
-        if (v13)
+        fillColor2 = [v5 fillColor];
+        if (fillColor2)
         {
-          [MEMORY[0x1E69DF6D0] vuiColor:v13 getRed:&v24 green:&v23 blue:&v22 alpha:&v21];
+          [MEMORY[0x1E69DF6D0] vuiColor:fillColor2 getRed:&v24 green:&v23 blue:&v22 alpha:&v21];
           v14 = v21;
           v15 = v24 * 255.0;
           v16 = v23 * 255.0;
@@ -110,39 +110,39 @@
   return v8;
 }
 
-- (id)loadImageForObject:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5 imageDirection:(int64_t)a6 completionHandler:(id)a7
+- (id)loadImageForObject:(id)object scaleToSize:(CGSize)size cropToFit:(BOOL)fit imageDirection:(int64_t)direction completionHandler:(id)handler
 {
-  v9 = a5;
-  height = a4.height;
-  width = a4.width;
-  v13 = a3;
-  v14 = a7;
+  fitCopy = fit;
+  height = size.height;
+  width = size.width;
+  objectCopy = object;
+  handlerCopy = handler;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v16 = 0;
-  if (v13 && (isKindOfClass & 1) != 0)
+  height = 0;
+  if (objectCopy && (isKindOfClass & 1) != 0)
   {
-    v17 = [v13 imageURL];
-    if (v17)
+    imageURL = [objectCopy imageURL];
+    if (imageURL)
     {
-      v16 = [(_VUIMonogramImageGenerator *)self loadImageForURL:v17 scaleToSize:v9 cropToFit:a6 imageDirection:v14 completionHandler:width, height];
+      height = [(_VUIMonogramImageGenerator *)self loadImageForURL:imageURL scaleToSize:fitCopy cropToFit:direction imageDirection:handlerCopy completionHandler:width, height];
     }
 
     else
     {
-      v16 = 0;
+      height = 0;
     }
   }
 
-  return v16;
+  return height;
 }
 
-- (void)cancelLoad:(id)a3
+- (void)cancelLoad:(id)load
 {
   v3 = MEMORY[0x1E69DF7C0];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  [v5 cancelLoad:v4];
+  loadCopy = load;
+  sharedInstance = [v3 sharedInstance];
+  [sharedInstance cancelLoad:loadCopy];
 }
 
 @end

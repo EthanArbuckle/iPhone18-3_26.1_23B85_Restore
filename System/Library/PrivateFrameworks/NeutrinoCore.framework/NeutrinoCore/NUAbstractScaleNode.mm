@@ -1,6 +1,6 @@
 @interface NUAbstractScaleNode
-- (NUAbstractScaleNode)initWithInput:(id)a3 settings:(id)a4;
-- (NUAbstractScaleNode)initWithSettings:(id)a3 inputs:(id)a4;
+- (NUAbstractScaleNode)initWithInput:(id)input settings:(id)settings;
+- (NUAbstractScaleNode)initWithSettings:(id)settings inputs:(id)inputs;
 - (NURenderNode)inputNode;
 @end
 
@@ -8,18 +8,18 @@
 
 - (NURenderNode)inputNode
 {
-  v2 = [(NURenderNode *)self inputs];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
+  inputs = [(NURenderNode *)self inputs];
+  v3 = [inputs objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
 
   return v3;
 }
 
-- (NUAbstractScaleNode)initWithInput:(id)a3 settings:(id)a4
+- (NUAbstractScaleNode)initWithInput:(id)input settings:(id)settings
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  inputCopy = input;
+  settingsCopy = settings;
+  if (!inputCopy)
   {
     v12 = NUAssertLogger_13707();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -40,8 +40,8 @@
         v19 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v32 = v19;
         v33 = 2114;
@@ -52,8 +52,8 @@
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -62,9 +62,9 @@
     _NUAssertFailHandler("[NUAbstractScaleNode initWithInput:settings:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Scale.m", 29, @"Invalid parameter not satisfying: %s", v24, v25, v26, v27, "input != nil");
   }
 
-  v8 = v7;
+  v8 = settingsCopy;
   v29 = *MEMORY[0x1E695FAB0];
-  v30 = v6;
+  v30 = inputCopy;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
   v28.receiver = self;
   v28.super_class = NUAbstractScaleNode;
@@ -73,11 +73,11 @@
   return v10;
 }
 
-- (NUAbstractScaleNode)initWithSettings:(id)a3 inputs:(id)a4
+- (NUAbstractScaleNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_13724);
@@ -121,8 +121,8 @@ LABEL_8:
     {
       v17 = MEMORY[0x1E696AF00];
       v18 = v16;
-      v19 = [v17 callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v17 callStackSymbols];
+      v20 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v35 = v20;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -138,8 +138,8 @@ LABEL_8:
     v23 = MEMORY[0x1E696AF00];
     v24 = specific;
     v25 = v21;
-    v26 = [v23 callStackSymbols];
-    v27 = [v26 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v23 callStackSymbols];
+    v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v35 = specific;
     v36 = 2114;

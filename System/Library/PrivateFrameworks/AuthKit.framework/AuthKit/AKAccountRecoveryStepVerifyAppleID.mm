@@ -1,75 +1,75 @@
 @interface AKAccountRecoveryStepVerifyAppleID
-- (BOOL)canProcessResponse:(id)a3;
-- (id)_promptForUsernameWithModel:(id)a3;
-- (void)_beginVerifyAppleIDWithResponse:(id)a3 model:(id)a4 completion:(id)a5;
-- (void)_verifyAppleIDWithModel:(id)a3 completion:(id)a4;
-- (void)processResponse:(id)a3 model:(id)a4 withCompletion:(id)a5;
+- (BOOL)canProcessResponse:(id)response;
+- (id)_promptForUsernameWithModel:(id)model;
+- (void)_beginVerifyAppleIDWithResponse:(id)response model:(id)model completion:(id)completion;
+- (void)_verifyAppleIDWithModel:(id)model completion:(id)completion;
+- (void)processResponse:(id)response model:(id)model withCompletion:(id)completion;
 @end
 
 @implementation AKAccountRecoveryStepVerifyAppleID
 
-- (void)processResponse:(id)a3 model:(id)a4 withCompletion:(id)a5
+- (void)processResponse:(id)response model:(id)model withCompletion:(id)completion
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, model);
   v7 = 0;
-  objc_storeStrong(&v7, a5);
-  [(AKAccountRecoveryStepVerifyAppleID *)v10 _beginVerifyAppleIDWithResponse:location[0] model:v8 completion:v7];
+  objc_storeStrong(&v7, completion);
+  [(AKAccountRecoveryStepVerifyAppleID *)selfCopy _beginVerifyAppleIDWithResponse:location[0] model:v8 completion:v7];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)canProcessResponse:(id)a3
+- (BOOL)canProcessResponse:(id)response
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [location[0] data];
+  objc_storeStrong(location, response);
+  data = [location[0] data];
   v9 = [AKAppleIDAuthenticationCommandLineContext ruiElementsAttributesWithName:"ruiElementsAttributesWithName:data:error:" data:@"navigationBar" error:?];
-  MEMORY[0x1E69E5920](v4);
-  v7 = [v9 firstObject];
-  v6 = [v7 objectForKeyedSubscript:@"title"];
-  v5 = [v6 lowercaseString];
-  v8 = [v5 containsString:@"forgot password"];
-  MEMORY[0x1E69E5920](v5);
+  MEMORY[0x1E69E5920](data);
+  firstObject = [v9 firstObject];
+  v6 = [firstObject objectForKeyedSubscript:@"title"];
+  lowercaseString = [v6 lowercaseString];
+  v8 = [lowercaseString containsString:@"forgot password"];
+  MEMORY[0x1E69E5920](lowercaseString);
   MEMORY[0x1E69E5920](v6);
-  MEMORY[0x1E69E5920](v7);
+  MEMORY[0x1E69E5920](firstObject);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
   return v8 & 1;
 }
 
-- (void)_beginVerifyAppleIDWithResponse:(id)a3 model:(id)a4 completion:(id)a5
+- (void)_beginVerifyAppleIDWithResponse:(id)response model:(id)model completion:(id)completion
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
+  objc_storeStrong(&v21, model);
   v20 = 0;
-  objc_storeStrong(&v20, a5);
-  v15 = [location[0] data];
+  objc_storeStrong(&v20, completion);
+  data = [location[0] data];
   v19 = [AKAppleIDAuthenticationCommandLineContext ruiElementsAttributesWithName:"ruiElementsAttributesWithName:data:error:" data:@"multiChoice" error:?];
-  MEMORY[0x1E69E5920](v15);
+  MEMORY[0x1E69E5920](data);
   if ([v19 count] == 1)
   {
-    v12 = [v21 cliUtilities];
-    v11 = [v21 configuration];
-    v10 = [v19 firstObject];
-    v9 = [location[0] httpResponse];
-    [v12 updateConfiguration:v11 fromXMLAttributes:v10 response:?];
-    MEMORY[0x1E69E5920](v9);
-    MEMORY[0x1E69E5920](v10);
-    MEMORY[0x1E69E5920](v11);
-    MEMORY[0x1E69E5920](v12);
-    [(AKAccountRecoveryStepVerifyAppleID *)v23 _verifyAppleIDWithModel:v21 completion:v20];
+    cliUtilities = [v21 cliUtilities];
+    configuration = [v21 configuration];
+    firstObject = [v19 firstObject];
+    httpResponse = [location[0] httpResponse];
+    [cliUtilities updateConfiguration:configuration fromXMLAttributes:firstObject response:?];
+    MEMORY[0x1E69E5920](httpResponse);
+    MEMORY[0x1E69E5920](firstObject);
+    MEMORY[0x1E69E5920](configuration);
+    MEMORY[0x1E69E5920](cliUtilities);
+    [(AKAccountRecoveryStepVerifyAppleID *)selfCopy _verifyAppleIDWithModel:v21 completion:v20];
   }
 
   else
@@ -100,16 +100,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_verifyAppleIDWithModel:(id)a3 completion:(id)a4
+- (void)_verifyAppleIDWithModel:(id)model completion:(id)completion
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, model);
   v26 = 0;
-  objc_storeStrong(&v26, a4);
-  v25 = [(AKAccountRecoveryStepVerifyAppleID *)v28 _promptForUsernameWithModel:location[0]];
+  objc_storeStrong(&v26, completion);
+  v25 = [(AKAccountRecoveryStepVerifyAppleID *)selfCopy _promptForUsernameWithModel:location[0]];
   v24 = _AKLogSystem();
   v23 = 2;
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -121,22 +121,22 @@
   }
 
   objc_storeStrong(&v24, 0);
-  v21 = [location[0] configuration];
-  v4 = [v21 request];
-  v20 = [v4 mutableCopy];
-  MEMORY[0x1E69E5920](v4);
-  v7 = [location[0] cliUtilities];
+  configuration = [location[0] configuration];
+  request = [configuration request];
+  v20 = [request mutableCopy];
+  MEMORY[0x1E69E5920](request);
+  cliUtilities = [location[0] cliUtilities];
   v5 = v20;
   v29 = @"id";
   v30[0] = v25;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
-  [v7 signXMLRequest:v5 withPostbackDictionary:?];
+  [cliUtilities signXMLRequest:v5 withPostbackDictionary:?];
   MEMORY[0x1E69E5920](v6);
-  MEMORY[0x1E69E5920](v7);
-  v8 = [v21 resourceLoadDelegate];
-  [v8 signRequest:v20];
-  MEMORY[0x1E69E5920](v8);
-  v10 = [location[0] cliUtilities];
+  MEMORY[0x1E69E5920](cliUtilities);
+  resourceLoadDelegate = [configuration resourceLoadDelegate];
+  [resourceLoadDelegate signRequest:v20];
+  MEMORY[0x1E69E5920](resourceLoadDelegate);
+  cliUtilities2 = [location[0] cliUtilities];
   v9 = v20;
   v14 = MEMORY[0x1E69E9820];
   v15 = -1073741824;
@@ -144,11 +144,11 @@
   v17 = __73__AKAccountRecoveryStepVerifyAppleID__verifyAppleIDWithModel_completion___block_invoke;
   v18 = &unk_1E73D41D8;
   v19 = MEMORY[0x1E69E5928](v26);
-  [v10 beginDataTaskWithRequest:v9 completionHandler:&v14];
-  MEMORY[0x1E69E5920](v10);
+  [cliUtilities2 beginDataTaskWithRequest:v9 completionHandler:&v14];
+  MEMORY[0x1E69E5920](cliUtilities2);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(&v20, 0);
-  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&configuration, 0);
   objc_storeStrong(&v25, 0);
   objc_storeStrong(&v26, 0);
   objc_storeStrong(location, 0);
@@ -174,32 +174,32 @@ void __73__AKAccountRecoveryStepVerifyAppleID__verifyAppleIDWithModel_completion
   objc_storeStrong(location, 0);
 }
 
-- (id)_promptForUsernameWithModel:(id)a3
+- (id)_promptForUsernameWithModel:(id)model
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = [location[0] context];
-  v9 = [v8 username];
-  MEMORY[0x1E69E5920](v8);
-  if (![v9 length])
+  objc_storeStrong(location, model);
+  context = [location[0] context];
+  username = [context username];
+  MEMORY[0x1E69E5920](context);
+  if (![username length])
   {
     AKPrint(@"Enter your email address or phone number: ");
     v3 = AKReadLine(1024);
-    v4 = v9;
-    v9 = v3;
+    v4 = username;
+    username = v3;
     MEMORY[0x1E69E5920](v4);
-    if (v9)
+    if (username)
     {
-      v7 = [location[0] context];
-      [v7 setUsername:v9];
-      MEMORY[0x1E69E5920](v7);
+      context2 = [location[0] context];
+      [context2 setUsername:username];
+      MEMORY[0x1E69E5920](context2);
     }
   }
 
-  v6 = MEMORY[0x1E69E5928](v9);
-  objc_storeStrong(&v9, 0);
+  v6 = MEMORY[0x1E69E5928](username);
+  objc_storeStrong(&username, 0);
   objc_storeStrong(location, 0);
 
   return v6;

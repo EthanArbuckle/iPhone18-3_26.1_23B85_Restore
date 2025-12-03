@@ -1,51 +1,51 @@
 @interface AAUIFollowUpExtensionViewController
 - (AAUIFollowUpExtensionViewController)init;
-- (BOOL)_BOOLeanForKey:(id)a3 inFollowUpItem:(id)a4;
+- (BOOL)_BOOLeanForKey:(id)key inFollowUpItem:(id)item;
 - (BOOL)_shouldContinueRecoveryKeyMismatchRepair;
 - (id)_followUpController;
-- (id)accountsForAccountManager:(id)a3;
-- (void)_beginCustodianAccountRecoveryFlowWithInfo:(id)a3 sessionID:(id)a4 altDSID:(id)a5 completion:(id)a6;
-- (void)_beginRecoveryContactGenerationFlowForWalrusUser:(BOOL)a3;
+- (id)accountsForAccountManager:(id)manager;
+- (void)_beginCustodianAccountRecoveryFlowWithInfo:(id)info sessionID:(id)d altDSID:(id)iD completion:(id)completion;
+- (void)_beginRecoveryContactGenerationFlowForWalrusUser:(BOOL)user;
 - (void)_beginRecoveryKeyGenerationFlow;
 - (void)_beginRecoveryKeyGenerationFlowOnClient;
 - (void)_beginTurnOffRecoveryKeyFlow;
 - (void)_beginTurnOffRecoveryKeyFlowOnClient;
 - (void)_beginVerifyRecoveryKeyFlow;
 - (void)_continueDismissingRenewCredentialsFollowUpForCDP;
-- (void)_continueSettingupCustodianForFollowUpItem:(id)a3;
+- (void)_continueSettingupCustodianForFollowUpItem:(id)item;
 - (void)_dismissRecoveryKeyMismatchCFU;
 - (void)_dismissRecoveryKeyMismatchRepairCFU;
 - (void)_displayCustodianAddNotAllowedAlert;
 - (void)_displayRatchetGenericErrorAlert;
-- (void)_embargoEndHandlerForFollowUpItem:(id)a3;
-- (void)_embargoEndHandlerForFollowUpItem:(id)a3 completion:(id)a4;
+- (void)_embargoEndHandlerForFollowUpItem:(id)item;
+- (void)_embargoEndHandlerForFollowUpItem:(id)item completion:(id)completion;
 - (void)_presentAgeMigrationFlow;
-- (void)_presentRecoveryFactorOptionsSheetForFollowUpItem:(id)a3;
-- (void)_presentSignInControllerForChildAccount:(BOOL)a3;
-- (void)_presentWalrusRecoveryFactorOptionsSheetForFollowUpItem:(id)a3;
-- (void)_processRecoveryFactorsMissingFollowUpAction:(id)a3 selectedAction:(id)a4;
-- (void)_recoveryKeyMismatchForFollowUpItem:(id)a3 selectedAction:(id)a4;
-- (void)_renewCredentialsForFollowUpItem:(id)a3;
-- (void)_renewCredentialsForFollowUpItem:(id)a3 completion:(id)a4;
-- (void)_reviewCustodiansForFollowUpItem:(id)a3;
-- (void)_sendCFUClickedEventWithTelemetryFlowID:(id)a3 altDSID:(id)a4 identifier:(id)a5;
-- (void)_setupCustodianForFollowUpItem:(id)a3;
+- (void)_presentRecoveryFactorOptionsSheetForFollowUpItem:(id)item;
+- (void)_presentSignInControllerForChildAccount:(BOOL)account;
+- (void)_presentWalrusRecoveryFactorOptionsSheetForFollowUpItem:(id)item;
+- (void)_processRecoveryFactorsMissingFollowUpAction:(id)action selectedAction:(id)selectedAction;
+- (void)_recoveryKeyMismatchForFollowUpItem:(id)item selectedAction:(id)action;
+- (void)_renewCredentialsForFollowUpItem:(id)item;
+- (void)_renewCredentialsForFollowUpItem:(id)item completion:(id)completion;
+- (void)_reviewCustodiansForFollowUpItem:(id)item;
+- (void)_sendCFUClickedEventWithTelemetryFlowID:(id)d altDSID:(id)iD identifier:(id)identifier;
+- (void)_setupCustodianForFollowUpItem:(id)item;
 - (void)_setupCustodianSetupFlowController;
-- (void)_showAccountRecoveryScreen:(id)a3;
-- (void)_showBeneficiariesForFollowUpItem:(id)a3;
-- (void)_showBeneficiaryInvitationUIForFollowUpItem:(id)a3;
-- (void)_showCustodianInvitationUIForFollowUpItem:(id)a3;
+- (void)_showAccountRecoveryScreen:(id)screen;
+- (void)_showBeneficiariesForFollowUpItem:(id)item;
+- (void)_showBeneficiaryInvitationUIForFollowUpItem:(id)item;
+- (void)_showCustodianInvitationUIForFollowUpItem:(id)item;
 - (void)_showGenericTermsUI;
-- (void)custodianSetupFlowControllerDidFinish:(id)a3;
+- (void)custodianSetupFlowControllerDidFinish:(id)finish;
 - (void)custodianSetupFlowControllerRecoveryContactInviteSent;
 - (void)finishProcessing;
-- (void)followUpPerformUpdateWithCompletionHandler:(id)a3;
-- (void)genericTermsRemoteUI:(id)a3 didFinishWithSuccess:(BOOL)a4 serverInfo:(id)a5;
-- (void)processAuthenticationResults:(id)a3 error:(id)a4 forContext:(id)a5 completion:(id)a6;
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5;
-- (void)remoteUIRequestComplete:(id)a3 error:(id)a4;
-- (void)signInController:(id)a3 didCompleteWithSuccess:(BOOL)a4 error:(id)a5;
-- (void)signInControllerDidCancel:(id)a3;
+- (void)followUpPerformUpdateWithCompletionHandler:(id)handler;
+- (void)genericTermsRemoteUI:(id)i didFinishWithSuccess:(BOOL)success serverInfo:(id)info;
+- (void)processAuthenticationResults:(id)results error:(id)error forContext:(id)context completion:(id)completion;
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion;
+- (void)remoteUIRequestComplete:(id)complete error:(id)error;
+- (void)signInController:(id)controller didCompleteWithSuccess:(BOOL)success error:(id)error;
+- (void)signInControllerDidCancel:(id)cancel;
 - (void)viewDidLoad;
 @end
 
@@ -96,21 +96,21 @@
   dispatch_async(v3, block);
 }
 
-- (void)_presentSignInControllerForChildAccount:(BOOL)a3
+- (void)_presentSignInControllerForChildAccount:(BOOL)account
 {
-  v3 = a3;
+  accountCopy = account;
   v5 = objc_alloc_init(AAUISignInController);
   [v5 setDelegate:self];
   v6 = +[UIDevice currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  userInterfaceIdiom = [v6 userInterfaceIdiom];
 
-  if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     [v5 setModalPresentationStyle:2];
     [v5 setModalTransitionStyle:0];
   }
 
-  else if (v3)
+  else if (accountCopy)
   {
     [v5 setModalPresentationStyle:0];
   }
@@ -128,11 +128,11 @@
 - (void)_presentAgeMigrationFlow
 {
   v3 = +[ACAccountStore defaultStore];
-  v4 = [v3 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v3 aa_primaryAppleAccount];
 
   v5 = [AAUIAgeMigrationFlowPresenter alloc];
-  v6 = [v4 aa_pendingDOB];
-  v7 = [v5 initWithPendingDOB:v6 viewController:self];
+  aa_pendingDOB = [aa_primaryAppleAccount aa_pendingDOB];
+  v7 = [v5 initWithPendingDOB:aa_pendingDOB viewController:self];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -142,13 +142,13 @@
   [v7 presentAgeMigrationFlowWithCompletion:v8];
 }
 
-- (void)_presentRecoveryFactorOptionsSheetForFollowUpItem:(id)a3
+- (void)_presentRecoveryFactorOptionsSheetForFollowUpItem:(id)item
 {
-  v26 = [(AAUIFollowUpExtensionViewController *)self _BOOLeanForKey:@"hasRecoveryContact" inFollowUpItem:a3];
+  v26 = [(AAUIFollowUpExtensionViewController *)self _BOOLeanForKey:@"hasRecoveryContact" inFollowUpItem:item];
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-  v6 = (v5 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+  v6 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
   v7 = [NSBundle bundleWithIdentifier:@"com.apple.AppleAccountUI"];
   v8 = v7;
   if (v26)
@@ -215,10 +215,10 @@
   [(AAUIFollowUpExtensionViewController *)self presentViewController:v13 animated:1 completion:0];
 }
 
-- (void)_presentWalrusRecoveryFactorOptionsSheetForFollowUpItem:(id)a3
+- (void)_presentWalrusRecoveryFactorOptionsSheetForFollowUpItem:(id)item
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
   v5 = [NSBundle bundleWithIdentifier:@"com.apple.AppleAccountUI"];
   v6 = [v5 localizedStringForKey:@"RECOVERY_KEY_REPAIR_ADP_SHEET_TITLE" value:&stru_100010AB0 table:@"Localizable"];
@@ -226,7 +226,7 @@
   v8 = [v7 localizedStringForKey:@"RECOVERY_KEY_REPAIR_ADP_SHEET_INFORMATIVE" value:&stru_100010AB0 table:@"Localizable"];
   v9 = [UIAlertController alertWithTitle:v6 message:v8];
 
-  [v9 setPreferredStyle:(v4 & 0xFFFFFFFFFFFFFFFBLL) == 1];
+  [v9 setPreferredStyle:(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1];
   v10 = [NSBundle bundleWithIdentifier:@"com.apple.AppleAccountUI"];
   v11 = [v10 localizedStringForKey:@"RECOVERY_KEY_REPAIR_ADP_SHEET_CREATE_RK_ACTION" value:&stru_100010AB0 table:@"Localizable"];
   v22[0] = _NSConcreteStackBlock;
@@ -260,23 +260,23 @@
   [(AAUIFollowUpExtensionViewController *)self presentViewController:v9 animated:1 completion:0];
 }
 
-- (BOOL)_BOOLeanForKey:(id)a3 inFollowUpItem:(id)a4
+- (BOOL)_BOOLeanForKey:(id)key inFollowUpItem:(id)item
 {
-  v5 = a3;
-  v6 = [a4 userInfo];
-  v7 = v6;
-  if (v6)
+  keyCopy = key;
+  userInfo = [item userInfo];
+  v7 = userInfo;
+  if (userInfo)
   {
-    v8 = [v6 objectForKeyedSubscript:v5];
-    v9 = [v8 BOOLValue];
+    v8 = [userInfo objectForKeyedSubscript:keyCopy];
+    bOOLValue = [v8 BOOLValue];
   }
 
   else
   {
-    v9 = 0;
+    bOOLValue = 0;
   }
 
-  return v9;
+  return bOOLValue;
 }
 
 - (void)_beginVerifyRecoveryKeyFlow
@@ -354,13 +354,13 @@
 - (void)_dismissRecoveryKeyMismatchCFU
 {
   objc_initWeak(&location, self);
-  v3 = [(AAUIFollowUpExtensionViewController *)self _followUpController];
+  _followUpController = [(AAUIFollowUpExtensionViewController *)self _followUpController];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100002D18;
   v4[3] = &unk_1000104C8;
   objc_copyWeak(&v5, &location);
-  [v3 dismissFollowUpWithIdentifier:@"com.apple.AAFollowUpIdentifier.RecoveryKeyMismatch" completion:v4];
+  [_followUpController dismissFollowUpWithIdentifier:@"com.apple.AAFollowUpIdentifier.RecoveryKeyMismatch" completion:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -368,8 +368,8 @@
 
 - (void)_showGenericTermsUI
 {
-  v3 = [(FLFollowUpItem *)self->_followUpItem userInfo];
-  v4 = [v3 objectForKeyedSubscript:AIDAAccountPropertyAltDSID];
+  userInfo = [(FLFollowUpItem *)self->_followUpItem userInfo];
+  v4 = [userInfo objectForKeyedSubscript:AIDAAccountPropertyAltDSID];
 
   if ([v4 length])
   {
@@ -379,8 +379,8 @@
     genericTermsRemoteUI = self->_genericTermsRemoteUI;
     self->_genericTermsRemoteUI = v7;
 
-    v9 = [(FLFollowUpItem *)self->_followUpItem userInfo];
-    v10 = [v9 objectForKeyedSubscript:AAFollowUpUserInfoTermsServerProvidedContext];
+    userInfo2 = [(FLFollowUpItem *)self->_followUpItem userInfo];
+    v10 = [userInfo2 objectForKeyedSubscript:AAFollowUpUserInfoTermsServerProvidedContext];
     [(AAUIGenericTermsRemoteUI *)self->_genericTermsRemoteUI setAdditionalHeaders:v10];
 
     [(AAUIGenericTermsRemoteUI *)self->_genericTermsRemoteUI setDelegate:self];
@@ -399,30 +399,30 @@
   }
 }
 
-- (void)_renewCredentialsForFollowUpItem:(id)a3
+- (void)_renewCredentialsForFollowUpItem:(id)item
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100002F8C;
   v4[3] = &unk_100010450;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(AAUIFollowUpExtensionViewController *)v5 _renewCredentialsForFollowUpItem:v3 completion:v4];
+  selfCopy = self;
+  itemCopy = item;
+  v3 = itemCopy;
+  [(AAUIFollowUpExtensionViewController *)selfCopy _renewCredentialsForFollowUpItem:v3 completion:v4];
 }
 
 - (void)_continueDismissingRenewCredentialsFollowUpForCDP
 {
-  v3 = [(AAUIFollowUpExtensionViewController *)self _followUpController];
+  _followUpController = [(AAUIFollowUpExtensionViewController *)self _followUpController];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100003264;
   v4[3] = &unk_100010530;
   v4[4] = self;
-  [v3 dismissFollowUpWithIdentifier:AAFollowUpIdentifierRenewCredentials completion:v4];
+  [_followUpController dismissFollowUpWithIdentifier:AAFollowUpIdentifierRenewCredentials completion:v4];
 }
 
-- (void)_reviewCustodiansForFollowUpItem:(id)a3
+- (void)_reviewCustodiansForFollowUpItem:(id)item
 {
   v4 = _AAUILogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -438,12 +438,12 @@
   [(AAUIFollowUpExtensionViewController *)self finishProcessing];
 }
 
-- (void)_renewCredentialsForFollowUpItem:(id)a3 completion:(id)a4
+- (void)_renewCredentialsForFollowUpItem:(id)item completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 userInfo];
-  v9 = [v8 objectForKeyedSubscript:AAFollowUpUserInfoAccountIdentifier];
+  itemCopy = item;
+  completionCopy = completion;
+  userInfo = [itemCopy userInfo];
+  v9 = [userInfo objectForKeyedSubscript:AAFollowUpUserInfoAccountIdentifier];
 
   if ([v9 length])
   {
@@ -451,11 +451,11 @@
     v11 = [v10 accountWithIdentifier:v9 error:0];
     if (v11)
     {
-      v12 = [v6 userInfo];
-      v25 = [v12 objectForKeyedSubscript:AAFollowUpUserInfoClientName];
+      userInfo2 = [itemCopy userInfo];
+      v25 = [userInfo2 objectForKeyedSubscript:AAFollowUpUserInfoClientName];
 
-      v13 = [v6 userInfo];
-      v14 = [v13 objectForKeyedSubscript:AAFollowUpUserInfoProxiedDeviceData];
+      userInfo3 = [itemCopy userInfo];
+      v14 = [userInfo3 objectForKeyedSubscript:AAFollowUpUserInfoProxiedDeviceData];
 
       if (v14)
       {
@@ -469,20 +469,20 @@
 
       v18 = objc_alloc_init(AKAppleIDAuthenticationInAppContext);
       [v18 setAuthenticationType:0];
-      v19 = [v11 aa_altDSID];
-      [v18 setAltDSID:v19];
+      aa_altDSID = [v11 aa_altDSID];
+      [v18 setAltDSID:aa_altDSID];
 
-      v20 = [v6 userInfo];
-      [v18 setClientInfo:v20];
+      userInfo4 = [itemCopy userInfo];
+      [v18 setClientInfo:userInfo4];
 
-      v21 = [v11 normalizedDSID];
-      [v18 setDSID:v21];
+      normalizedDSID = [v11 normalizedDSID];
+      [v18 setDSID:normalizedDSID];
 
       [v18 setIsUsernameEditable:0];
       [v18 setPresentingViewController:self];
       [v18 setServiceType:1];
-      v22 = [v11 username];
-      [v18 setUsername:v22];
+      username = [v11 username];
+      [v18 setUsername:username];
 
       [v18 _setProxiedAppName:v25];
       [v18 setProxiedDevice:v15];
@@ -502,9 +502,9 @@
       v26[3] = &unk_1000105A8;
       v31 = &v32;
       v26[4] = self;
-      v27 = v6;
+      v27 = itemCopy;
       v28 = v11;
-      v30 = v7;
+      v30 = completionCopy;
       v24 = v15;
       v29 = v24;
       [v23 authenticateWithContext:v18 completion:v26];
@@ -520,7 +520,7 @@
         sub_1000088F8();
       }
 
-      (*(v7 + 2))(v7, 1, 0);
+      (*(completionCopy + 2))(completionCopy, 1, 0);
     }
   }
 
@@ -532,30 +532,30 @@
       sub_100008968();
     }
 
-    (*(v7 + 2))(v7, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 }
 
-- (void)_recoveryKeyMismatchForFollowUpItem:(id)a3 selectedAction:(id)a4
+- (void)_recoveryKeyMismatchForFollowUpItem:(id)item selectedAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  actionCopy = action;
   if ([(AAUIFollowUpExtensionViewController *)self _shouldContinueRecoveryKeyMismatchRepair])
   {
-    v8 = [(AAUIFollowUpExtensionViewController *)self _BOOLeanForKey:@"hasWalrusEnabled" inFollowUpItem:v6];
-    v9 = [v7 userInfo];
-    v10 = [v9 objectForKeyedSubscript:@"type"];
+    v8 = [(AAUIFollowUpExtensionViewController *)self _BOOLeanForKey:@"hasWalrusEnabled" inFollowUpItem:itemCopy];
+    userInfo = [actionCopy userInfo];
+    v10 = [userInfo objectForKeyedSubscript:@"type"];
 
     if ([v10 isEqualToString:@"recoveryKeyMismatchOtherOption"])
     {
       if (v8)
       {
-        [(AAUIFollowUpExtensionViewController *)self _presentWalrusRecoveryFactorOptionsSheetForFollowUpItem:v6];
+        [(AAUIFollowUpExtensionViewController *)self _presentWalrusRecoveryFactorOptionsSheetForFollowUpItem:itemCopy];
       }
 
       else
       {
-        [(AAUIFollowUpExtensionViewController *)self _presentRecoveryFactorOptionsSheetForFollowUpItem:v6];
+        [(AAUIFollowUpExtensionViewController *)self _presentRecoveryFactorOptionsSheetForFollowUpItem:itemCopy];
       }
     }
 
@@ -602,9 +602,9 @@
 - (BOOL)_shouldContinueRecoveryKeyMismatchRepair
 {
   v2 = [AAUICDPHelper helperWithPresenter:self];
-  v3 = [v2 cdpStateControllerForPrimaryAccount];
+  cdpStateControllerForPrimaryAccount = [v2 cdpStateControllerForPrimaryAccount];
   v15 = 0;
-  v4 = [v3 shouldPerformRepairWithOptionForceFetch:1 error:&v15];
+  v4 = [cdpStateControllerForPrimaryAccount shouldPerformRepairWithOptionForceFetch:1 error:&v15];
   v5 = v15;
   if (v4)
   {
@@ -620,7 +620,7 @@
   }
 
   v14 = 0;
-  [v3 verifyRecoveryKeyObservingSystemsHaveMatchingStateWithError:&v14];
+  [cdpStateControllerForPrimaryAccount verifyRecoveryKeyObservingSystemsHaveMatchingStateWithError:&v14];
   v7 = v14;
   v6 = v7;
   if (!v7)
@@ -665,27 +665,27 @@ LABEL_14:
   return v8;
 }
 
-- (void)_embargoEndHandlerForFollowUpItem:(id)a3
+- (void)_embargoEndHandlerForFollowUpItem:(id)item
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100004154;
   v3[3] = &unk_1000105D0;
   v3[4] = self;
-  [(AAUIFollowUpExtensionViewController *)self _embargoEndHandlerForFollowUpItem:a3 completion:v3];
+  [(AAUIFollowUpExtensionViewController *)self _embargoEndHandlerForFollowUpItem:item completion:v3];
 }
 
-- (void)_embargoEndHandlerForFollowUpItem:(id)a3 completion:(id)a4
+- (void)_embargoEndHandlerForFollowUpItem:(id)item completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 userInfo];
-  v9 = [v8 objectForKeyedSubscript:AAFollowUpUserInfoAltDSID];
+  itemCopy = item;
+  completionCopy = completion;
+  userInfo = [itemCopy userInfo];
+  v9 = [userInfo objectForKeyedSubscript:AAFollowUpUserInfoAltDSID];
 
   if ([v9 length])
   {
-    v10 = [v6 userInfo];
-    v11 = [v10 objectForKeyedSubscript:AAFollowUpUserInfoCustodianSessionID];
+    userInfo2 = [itemCopy userInfo];
+    v11 = [userInfo2 objectForKeyedSubscript:AAFollowUpUserInfoCustodianSessionID];
 
     if ([v11 length])
     {
@@ -694,7 +694,7 @@ LABEL_14:
       v15[1] = 3221225472;
       v15[2] = sub_100004554;
       v15[3] = &unk_1000105F8;
-      v18 = v7;
+      v18 = completionCopy;
       v15[4] = self;
       v16 = v11;
       v17 = v9;
@@ -709,7 +709,7 @@ LABEL_14:
         sub_100008A88();
       }
 
-      (*(v7 + 2))(v7, 1);
+      (*(completionCopy + 2))(completionCopy, 1);
     }
   }
 
@@ -721,24 +721,24 @@ LABEL_14:
       sub_100008AC4();
     }
 
-    (*(v7 + 2))(v7, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
-- (void)_beginCustodianAccountRecoveryFlowWithInfo:(id)a3 sessionID:(id)a4 altDSID:(id)a5 completion:(id)a6
+- (void)_beginCustodianAccountRecoveryFlowWithInfo:(id)info sessionID:(id)d altDSID:(id)iD completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  infoCopy = info;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
   v14 = objc_alloc_init(AKAppleIDAuthenticationInAppContext);
   [v14 setAuthenticationType:2];
-  [v14 setAltDSID:v12];
-  v15 = [v10 ownerAppleID];
-  [v14 setUsername:v15];
+  [v14 setAltDSID:iDCopy];
+  ownerAppleID = [infoCopy ownerAppleID];
+  [v14 setUsername:ownerAppleID];
 
-  v16 = [v10 custodianRecoveryToken];
-  [v14 setCustodianRecoveryToken:v16];
+  custodianRecoveryToken = [infoCopy custodianRecoveryToken];
+  [v14 setCustodianRecoveryToken:custodianRecoveryToken];
 
   [v14 setIsUsernameEditable:0];
   [v14 setPresentingViewController:self];
@@ -757,25 +757,25 @@ LABEL_14:
   v19[3] = &unk_100010670;
   v21 = &v22;
   v19[4] = self;
-  v18 = v13;
+  v18 = completionCopy;
   v20 = v18;
   [v17 authenticateWithContext:v14 completion:v19];
 
   _Block_object_dispose(&v22, 8);
 }
 
-- (void)_showCustodianInvitationUIForFollowUpItem:(id)a3
+- (void)_showCustodianInvitationUIForFollowUpItem:(id)item
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:AAFollowUpTrustedContactInvitationURL];
+  userInfo = [item userInfo];
+  v5 = [userInfo objectForKeyedSubscript:AAFollowUpTrustedContactInvitationURL];
   v6 = [NSURL URLWithString:v5];
 
   v7 = _AAUILogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 absoluteString];
+    absoluteString = [v6 absoluteString];
     *buf = 138412290;
-    v12 = v8;
+    v12 = absoluteString;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Showing Custodian invitation with URL - %@", buf, 0xCu);
   }
 
@@ -788,23 +788,23 @@ LABEL_14:
   [v9 openURL:v6 configuration:0 completionHandler:v10];
 }
 
-- (void)_setupCustodianForFollowUpItem:(id)a3
+- (void)_setupCustodianForFollowUpItem:(id)item
 {
-  v4 = a3;
-  v5 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v6 = [v5 objectForKeyedSubscript:AIDAServiceTypeCloud];
+  itemCopy = item;
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v6 = [accounts objectForKeyedSubscript:AIDAServiceTypeCloud];
 
   if (v6)
   {
     dtoHelper = self->dtoHelper;
-    v8 = [v6 aa_altDSID];
+    aa_altDSID = [v6 aa_altDSID];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100004E64;
     v10[3] = &unk_1000106E8;
     v10[4] = self;
-    v11 = v4;
-    [(AAUIDTOHelper *)dtoHelper shouldGateUsingRatchetForAltDSID:v8 completion:v10];
+    v11 = itemCopy;
+    [(AAUIDTOHelper *)dtoHelper shouldGateUsingRatchetForAltDSID:aa_altDSID completion:v10];
   }
 
   else
@@ -817,7 +817,7 @@ LABEL_14:
   }
 }
 
-- (void)_continueSettingupCustodianForFollowUpItem:(id)a3
+- (void)_continueSettingupCustodianForFollowUpItem:(id)item
 {
   v4 = _AAUILogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -835,8 +835,8 @@ LABEL_14:
   }
 
   [(AAUICustodianSetupFlowController *)self->_custodianSetupFlowController startWithoutFirstTimeSetup];
-  v6 = [(AAUICustodianSetupFlowController *)self->_custodianSetupFlowController navigationController];
-  [(AAUIFollowUpExtensionViewController *)self presentViewController:v6 animated:1 completion:0];
+  navigationController = [(AAUICustodianSetupFlowController *)self->_custodianSetupFlowController navigationController];
+  [(AAUIFollowUpExtensionViewController *)self presentViewController:navigationController animated:1 completion:0];
 }
 
 - (void)_setupCustodianSetupFlowController
@@ -856,7 +856,7 @@ LABEL_14:
   }
 }
 
-- (void)_showAccountRecoveryScreen:(id)a3
+- (void)_showAccountRecoveryScreen:(id)screen
 {
   v3 = _AAUILogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -870,9 +870,9 @@ LABEL_14:
   [v5 openSensitiveURL:v4 withOptions:0];
 }
 
-- (void)custodianSetupFlowControllerDidFinish:(id)a3
+- (void)custodianSetupFlowControllerDidFinish:(id)finish
 {
-  v4 = a3;
+  finishCopy = finish;
   v5 = _AAUILogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -885,7 +885,7 @@ LABEL_14:
   v6[2] = sub_100005544;
   v6[3] = &unk_100010428;
   v6[4] = self;
-  [v4 dismissViewControllerAnimated:1 completion:v6];
+  [finishCopy dismissViewControllerAnimated:1 completion:v6];
 }
 
 - (void)custodianSetupFlowControllerRecoveryContactInviteSent
@@ -915,22 +915,22 @@ LABEL_14:
   [v2 pendingFollowUpWithIdentifier:@"com.apple.AAFollowUpIdentifier.RecoveryKeyMismatch" completion:v3];
 }
 
-- (void)_beginRecoveryContactGenerationFlowForWalrusUser:(BOOL)a3
+- (void)_beginRecoveryContactGenerationFlowForWalrusUser:(BOOL)user
 {
-  v5 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v6 = [v5 objectForKeyedSubscript:AIDAServiceTypeCloud];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v6 = [accounts objectForKeyedSubscript:AIDAServiceTypeCloud];
 
   if (v6)
   {
     dtoHelper = self->dtoHelper;
-    v8 = [v6 aa_altDSID];
+    aa_altDSID = [v6 aa_altDSID];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10000590C;
     v10[3] = &unk_1000107A8;
     v10[4] = self;
-    v11 = a3;
-    [(AAUIDTOHelper *)dtoHelper shouldGateUsingRatchetForAltDSID:v8 completion:v10];
+    userCopy = user;
+    [(AAUIDTOHelper *)dtoHelper shouldGateUsingRatchetForAltDSID:aa_altDSID completion:v10];
   }
 
   else
@@ -945,23 +945,23 @@ LABEL_14:
 
 - (void)_displayCustodianAddNotAllowedAlert
 {
-  v3 = [(AAUIDTOHelper *)self->dtoHelper makeCustodianAddOpNotAllowedAlert];
-  [(AAUIFollowUpExtensionViewController *)self presentViewController:v3 animated:1 completion:0];
+  makeCustodianAddOpNotAllowedAlert = [(AAUIDTOHelper *)self->dtoHelper makeCustodianAddOpNotAllowedAlert];
+  [(AAUIFollowUpExtensionViewController *)self presentViewController:makeCustodianAddOpNotAllowedAlert animated:1 completion:0];
 }
 
 - (void)_displayRatchetGenericErrorAlert
 {
-  v4 = [(AAUIDTOHelper *)self->dtoHelper makeGenericRatchetFailedAlert];
-  v3 = [(AAUIFollowUpExtensionViewController *)self presentingViewController];
-  [v3 presentViewController:v4 animated:1 completion:0];
+  makeGenericRatchetFailedAlert = [(AAUIDTOHelper *)self->dtoHelper makeGenericRatchetFailedAlert];
+  presentingViewController = [(AAUIFollowUpExtensionViewController *)self presentingViewController];
+  [presentingViewController presentViewController:makeGenericRatchetFailedAlert animated:1 completion:0];
 }
 
-- (void)_processRecoveryFactorsMissingFollowUpAction:(id)a3 selectedAction:(id)a4
+- (void)_processRecoveryFactorsMissingFollowUpAction:(id)action selectedAction:(id)selectedAction
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [v6 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"type"];
+  actionCopy = action;
+  selectedActionCopy = selectedAction;
+  userInfo = [selectedActionCopy userInfo];
+  v8 = [userInfo objectForKeyedSubscript:@"type"];
   v9 = [v8 isEqualToString:@"addRecoveryKey"];
 
   if (v9)
@@ -971,13 +971,13 @@ LABEL_14:
 
   else
   {
-    v10 = [v6 userInfo];
-    v11 = [v10 objectForKeyedSubscript:@"type"];
+    userInfo2 = [selectedActionCopy userInfo];
+    v11 = [userInfo2 objectForKeyedSubscript:@"type"];
     v12 = [v11 isEqualToString:@"addRecoveryContact"];
 
     if (v12)
     {
-      [(AAUIFollowUpExtensionViewController *)self _beginRecoveryContactGenerationFlowForWalrusUser:[(AAUIFollowUpExtensionViewController *)self _BOOLeanForKey:@"hasWalrusEnabled" inFollowUpItem:v13]];
+      [(AAUIFollowUpExtensionViewController *)self _beginRecoveryContactGenerationFlowForWalrusUser:[(AAUIFollowUpExtensionViewController *)self _BOOLeanForKey:@"hasWalrusEnabled" inFollowUpItem:actionCopy]];
     }
   }
 }
@@ -1033,18 +1033,18 @@ LABEL_14:
   [(AAUIRecoveryFactorController *)v5 authenticateAndGenerateNewRecoveryKeyWithCompletion:v6];
 }
 
-- (void)_showBeneficiaryInvitationUIForFollowUpItem:(id)a3
+- (void)_showBeneficiaryInvitationUIForFollowUpItem:(id)item
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:AAFollowUpTrustedContactInvitationURL];
+  userInfo = [item userInfo];
+  v5 = [userInfo objectForKeyedSubscript:AAFollowUpTrustedContactInvitationURL];
   v6 = [NSURL URLWithString:v5];
 
   v7 = _AAUILogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 absoluteString];
+    absoluteString = [v6 absoluteString];
     *buf = 138412290;
-    v12 = v8;
+    v12 = absoluteString;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Showing Beneficiary invitation with URL - %@", buf, 0xCu);
   }
 
@@ -1057,7 +1057,7 @@ LABEL_14:
   [v9 openURL:v6 configuration:0 completionHandler:v10];
 }
 
-- (void)_showBeneficiariesForFollowUpItem:(id)a3
+- (void)_showBeneficiariesForFollowUpItem:(id)item
 {
   v4 = _AALogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1070,13 +1070,13 @@ LABEL_14:
   v6 = +[LSApplicationWorkspace defaultWorkspace];
   [v6 openSensitiveURL:v5 withOptions:0];
 
-  v7 = [(AAUIFollowUpExtensionViewController *)self _followUpController];
+  _followUpController = [(AAUIFollowUpExtensionViewController *)self _followUpController];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100006674;
   v8[3] = &unk_100010530;
   v8[4] = self;
-  [v7 dismissFollowUpWithIdentifier:AAFollowUpIdentifierBeneficiaryRemoved completion:v8];
+  [_followUpController dismissFollowUpWithIdentifier:AAFollowUpIdentifierBeneficiaryRemoved completion:v8];
 }
 
 - (id)_followUpController
@@ -1094,30 +1094,30 @@ LABEL_14:
   return followUpController;
 }
 
-- (void)_sendCFUClickedEventWithTelemetryFlowID:(id)a3 altDSID:(id)a4 identifier:(id)a5
+- (void)_sendCFUClickedEventWithTelemetryFlowID:(id)d altDSID:(id)iD identifier:(id)identifier
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  identifierCopy = identifier;
+  iDCopy = iD;
+  dCopy = d;
   v12 = objc_alloc_init(AAAFollowUpAnalyticsInfo);
-  [v12 setFlowID:v9];
+  [v12 setFlowID:dCopy];
 
-  [v12 setCfuType:v7];
-  v10 = [AAFAnalyticsEvent analyticsEventWithName:kAAFClickFollowupEvent eventCategory:kCDPRTCEventCategoryAccountDataAccessRecovery followupAnalyticsData:v12 altDSID:v8];
+  [v12 setCfuType:identifierCopy];
+  v10 = [AAFAnalyticsEvent analyticsEventWithName:kAAFClickFollowupEvent eventCategory:kCDPRTCEventCategoryAccountDataAccessRecovery followupAnalyticsData:v12 altDSID:iDCopy];
 
   v11 = +[AAAnalyticsRTCReporter reporter];
   [v11 sendEvent:v10];
 }
 
-- (void)signInController:(id)a3 didCompleteWithSuccess:(BOOL)a4 error:(id)a5
+- (void)signInController:(id)controller didCompleteWithSuccess:(BOOL)success error:(id)error
 {
-  v5 = a4;
-  v7 = a5;
+  successCopy = success;
+  errorCopy = error;
   v8 = _AAUILogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = @"NO";
-    if (v5)
+    if (successCopy)
     {
       v9 = @"YES";
     }
@@ -1125,19 +1125,19 @@ LABEL_14:
     *buf = 138543618;
     v13 = v9;
     v14 = 2114;
-    v15 = v7;
+    v15 = errorCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Sign in controller completed with success: %{public}@, error: %{public}@.", buf, 0x16u);
   }
 
-  if (v5)
+  if (successCopy)
   {
-    v10 = [(AAUIFollowUpExtensionViewController *)self _followUpController];
+    _followUpController = [(AAUIFollowUpExtensionViewController *)self _followUpController];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1000069C0;
     v11[3] = &unk_100010530;
     v11[4] = self;
-    [v10 dismissFollowUpWithIdentifier:AAFollowUpIdentifierStartUsing completion:v11];
+    [_followUpController dismissFollowUpWithIdentifier:AAFollowUpIdentifierStartUsing completion:v11];
   }
 
   else
@@ -1146,7 +1146,7 @@ LABEL_14:
   }
 }
 
-- (void)signInControllerDidCancel:(id)a3
+- (void)signInControllerDidCancel:(id)cancel
 {
   v4 = _AAUILogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1158,39 +1158,39 @@ LABEL_14:
   [(AAUIFollowUpExtensionViewController *)self finishProcessing];
 }
 
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 userInfo];
-  v13 = [v12 objectForKeyedSubscript:AAFollowUpUserInfoAltDSID];
+  itemCopy = item;
+  actionCopy = action;
+  completionCopy = completion;
+  userInfo = [itemCopy userInfo];
+  v13 = [userInfo objectForKeyedSubscript:AAFollowUpUserInfoAltDSID];
 
   v14 = _AAUILogSystem();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138478339;
-    v32 = v9;
+    v32 = itemCopy;
     v33 = 2113;
-    v34 = v10;
+    v34 = actionCopy;
     v35 = 2113;
     v36 = v13;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Processing follow up item: %{private}@, for selected action: %{private}@ for altDSID:%{private}@", buf, 0x20u);
   }
 
   v15 = +[NSUUID UUID];
-  v16 = [v15 UUIDString];
+  uUIDString = [v15 UUIDString];
 
-  v17 = [v9 uniqueIdentifier];
-  [(AAUIFollowUpExtensionViewController *)self _sendCFUClickedEventWithTelemetryFlowID:v16 altDSID:v13 identifier:v17];
+  uniqueIdentifier = [itemCopy uniqueIdentifier];
+  [(AAUIFollowUpExtensionViewController *)self _sendCFUClickedEventWithTelemetryFlowID:uUIDString altDSID:v13 identifier:uniqueIdentifier];
 
-  v18 = [v10 identifier];
-  v19 = [v18 isEqualToString:AAFollowUpActionDismiss];
+  identifier = [actionCopy identifier];
+  v19 = [identifier isEqualToString:AAFollowUpActionDismiss];
 
   if (v19)
   {
-    v20 = [v9 uniqueIdentifier];
-    if ([v20 isEqualToString:AAFollowUpIdentifierCustodianWalrusRemoved])
+    uniqueIdentifier2 = [itemCopy uniqueIdentifier];
+    if ([uniqueIdentifier2 isEqualToString:AAFollowUpIdentifierCustodianWalrusRemoved])
     {
 LABEL_7:
 
@@ -1202,19 +1202,19 @@ LABEL_8:
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Action is dismiss but this is a persisting CFU, not clearing it.", buf, 2u);
       }
 
-      v11[2](v11, 1);
+      completionCopy[2](completionCopy, 1);
       goto LABEL_14;
     }
 
-    v21 = [v9 uniqueIdentifier];
-    if ([v21 isEqualToString:AAFollowUpIdentifierWalrusUserRecoveryFactorsMissing])
+    uniqueIdentifier3 = [itemCopy uniqueIdentifier];
+    if ([uniqueIdentifier3 isEqualToString:AAFollowUpIdentifierWalrusUserRecoveryFactorsMissing])
     {
 
       goto LABEL_7;
     }
 
-    v24 = [v9 uniqueIdentifier];
-    v25 = [v24 isEqualToString:@"com.apple.AAFollowUpIdentifier.adpUserMissingHealthyCustodian"];
+    uniqueIdentifier4 = [itemCopy uniqueIdentifier];
+    v25 = [uniqueIdentifier4 isEqualToString:@"com.apple.AAFollowUpIdentifier.adpUserMissingHealthyCustodian"];
 
     if (v25)
     {
@@ -1228,20 +1228,20 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Action is dismiss, marking the follow up as handled.", buf, 2u);
     }
 
-    v27 = [(AAUIFollowUpExtensionViewController *)self _followUpController];
-    v28 = [v9 uniqueIdentifier];
+    _followUpController = [(AAUIFollowUpExtensionViewController *)self _followUpController];
+    uniqueIdentifier5 = [itemCopy uniqueIdentifier];
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_100006E1C;
     v29[3] = &unk_1000107F0;
-    v30 = v11;
-    [v27 dismissFollowUpWithIdentifier:v28 completion:v29];
+    v30 = completionCopy;
+    [_followUpController dismissFollowUpWithIdentifier:uniqueIdentifier5 completion:v29];
   }
 
   else
   {
-    objc_storeStrong(&self->_followUpItem, a3);
-    objc_storeStrong(&self->_followUpAction, a4);
+    objc_storeStrong(&self->_followUpItem, item);
+    objc_storeStrong(&self->_followUpAction, action);
     v23 = _AAUILogSystem();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
@@ -1249,22 +1249,22 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Action could not be handled silently, asking for UI...", buf, 2u);
     }
 
-    v11[2](v11, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_14:
 }
 
-- (void)genericTermsRemoteUI:(id)a3 didFinishWithSuccess:(BOOL)a4 serverInfo:(id)a5
+- (void)genericTermsRemoteUI:(id)i didFinishWithSuccess:(BOOL)success serverInfo:(id)info
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  successCopy = success;
+  iCopy = i;
+  infoCopy = info;
   v10 = _AAUILogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = @"NO";
-    if (v6)
+    if (successCopy)
     {
       v11 = @"YES";
     }
@@ -1274,43 +1274,43 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "AAUIFollowUpExtension generic terms callback with success: %@", buf, 0xCu);
   }
 
-  if (v6)
+  if (successCopy)
   {
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
     v31[2] = sub_1000070EC;
     v31[3] = &unk_1000106C0;
-    v12 = v8;
+    v12 = iCopy;
     v32 = v12;
-    v33 = self;
+    selfCopy = self;
     v13 = objc_retainBlock(v31);
-    v14 = [v12 account];
-    if (v14)
+    account = [v12 account];
+    if (account)
     {
       v23 = _NSConcreteStackBlock;
       v24 = 3221225472;
       v25 = sub_1000075F8;
       v26 = &unk_100010840;
-      v27 = self;
+      selfCopy2 = self;
       v15 = v12;
       v28 = v15;
-      v16 = v14;
+      v16 = account;
       v29 = v16;
       v30 = v13;
       v17 = objc_retainBlock(&v23);
-      v18 = [v15 accountStore];
+      accountStore = [v15 accountStore];
       v19 = objc_opt_respondsToSelector();
 
-      v20 = [v15 accountStore];
-      v21 = v20;
+      accountStore2 = [v15 accountStore];
+      v21 = accountStore2;
       if (v19)
       {
-        [v20 aa_updatePropertiesForAppleAccount:v16 options:0 serverInfo:v9 completion:v17];
+        [accountStore2 aa_updatePropertiesForAppleAccount:v16 options:0 serverInfo:infoCopy completion:v17];
       }
 
       else
       {
-        [v20 aa_updatePropertiesForAppleAccount:v16 completion:v17];
+        [accountStore2 aa_updatePropertiesForAppleAccount:v16 completion:v17];
       }
     }
 
@@ -1332,12 +1332,12 @@ LABEL_14:
   }
 }
 
-- (void)processAuthenticationResults:(id)a3 error:(id)a4 forContext:(id)a5 completion:(id)a6
+- (void)processAuthenticationResults:(id)results error:(id)error forContext:(id)context completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  if (a4)
+  resultsCopy = results;
+  contextCopy = context;
+  completionCopy = completion;
+  if (error)
   {
     v12 = _AAUILogSystem();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1345,15 +1345,15 @@ LABEL_14:
       sub_10000903C();
     }
 
-    v11[2](v11, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
-    v13 = [v9 objectForKeyedSubscript:AKAuthenticationPasswordKey];
+    v13 = [resultsCopy objectForKeyedSubscript:AKAuthenticationPasswordKey];
     if ([v13 length])
     {
-      v14 = [v9 objectForKeyedSubscript:AKAuthenticationUsernameKey];
+      v14 = [resultsCopy objectForKeyedSubscript:AKAuthenticationUsernameKey];
       if ([v14 length] && objc_msgSend(v13, "length"))
       {
         v15 = _AAUILogSystem();
@@ -1372,7 +1372,7 @@ LABEL_14:
         [v17 attemptUCRTHealing:v16 completion:&stru_100010860];
       }
 
-      v18 = [v9 objectForKeyedSubscript:AKAuthenticationRawPasswordKey];
+      v18 = [resultsCopy objectForKeyedSubscript:AKAuthenticationRawPasswordKey];
       if (![v18 length])
       {
         v19 = _AAUILogSystem();
@@ -1383,8 +1383,8 @@ LABEL_14:
         }
       }
 
-      v20 = [v10 clientInfo];
-      v21 = [v20 objectForKeyedSubscript:AAFollowUpUserInfoAccountIdentifier];
+      clientInfo = [contextCopy clientInfo];
+      v21 = [clientInfo objectForKeyedSubscript:AAFollowUpUserInfoAccountIdentifier];
 
       if ([v21 length])
       {
@@ -1392,13 +1392,13 @@ LABEL_14:
         v23 = [v22 accountWithIdentifier:v21 error:0];
         if (v23)
         {
-          v24 = [v10 proxiedDevice];
+          proxiedDevice = [contextCopy proxiedDevice];
 
-          if (v24)
+          if (proxiedDevice)
           {
             [v23 setAuthenticated:0];
-            v25 = [v23 credential];
-            [v25 setPassword:v18];
+            credential = [v23 credential];
+            [credential setPassword:v18];
 
             v26 = _AAUILogSystem();
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -1408,7 +1408,7 @@ LABEL_14:
             }
 
             [v22 notifyRemoteDevicesOfUpdatedCredentials:v23];
-            v11[2](v11, 1);
+            completionCopy[2](completionCopy, 1);
           }
 
           else
@@ -1438,7 +1438,7 @@ LABEL_14:
             v33[2] = sub_100007EA8;
             v33[3] = &unk_100010888;
             v34 = v22;
-            v36 = v11;
+            v36 = completionCopy;
             v35 = v23;
             [v34 verifyCredentialsForAccount:v35 options:v32 completion:v33];
           }
@@ -1452,7 +1452,7 @@ LABEL_14:
             sub_100009078();
           }
 
-          v11[2](v11, 0);
+          completionCopy[2](completionCopy, 0);
         }
       }
 
@@ -1464,7 +1464,7 @@ LABEL_14:
           sub_1000090E8();
         }
 
-        v11[2](v11, 0);
+        completionCopy[2](completionCopy, 0);
       }
     }
 
@@ -1476,14 +1476,14 @@ LABEL_14:
         sub_100009124();
       }
 
-      v11[2](v11, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }
 
-- (void)followUpPerformUpdateWithCompletionHandler:(id)a3
+- (void)followUpPerformUpdateWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = _AAUILogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -1494,7 +1494,7 @@ LABEL_14:
   v31[1] = 3221225472;
   v31[2] = sub_100008334;
   v31[3] = &unk_1000108B0;
-  v23 = v3;
+  v23 = handlerCopy;
   v32 = v23;
   v22 = objc_retainBlock(v31);
   v30 = 0;
@@ -1532,13 +1532,13 @@ LABEL_14:
         }
 
         v14 = *(*(&v26 + 1) + 8 * i);
-        v15 = [v14 uniqueIdentifier];
-        v16 = [v15 isEqualToString:AAFollowUpIdentifierRenewCredentials];
+        uniqueIdentifier = [v14 uniqueIdentifier];
+        v16 = [uniqueIdentifier isEqualToString:AAFollowUpIdentifierRenewCredentials];
 
         if (v16)
         {
-          v17 = [v14 userInfo];
-          if (([AAFollowUpUtilities hasValidIDMSAccountForUserInfo:v17]& 1) != 0)
+          userInfo = [v14 userInfo];
+          if (([AAFollowUpUtilities hasValidIDMSAccountForUserInfo:userInfo]& 1) != 0)
           {
             v18 = v11;
           }
@@ -1583,7 +1583,7 @@ LABEL_14:
   (v22[2])(v22, (v21 | v11) == 0);
 }
 
-- (id)accountsForAccountManager:(id)a3
+- (id)accountsForAccountManager:(id)manager
 {
   v4 = objc_opt_new();
   v5 = AIDAServiceTypeCloud;
@@ -1598,21 +1598,21 @@ LABEL_14:
   return v7;
 }
 
-- (void)remoteUIRequestComplete:(id)a3 error:(id)a4
+- (void)remoteUIRequestComplete:(id)complete error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  completeCopy = complete;
+  errorCopy = error;
   v8 = _AAUILogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = v6;
+    v10 = completeCopy;
     v11 = 2114;
-    v12 = v7;
+    v12 = errorCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "remoteUI request %@ completed with error: %{public}@", &v9, 0x16u);
   }
 
-  if (v7)
+  if (errorCopy)
   {
     [(AAUIFollowUpExtensionViewController *)self finishProcessing];
   }

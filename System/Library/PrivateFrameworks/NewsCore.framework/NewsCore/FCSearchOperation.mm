@@ -1,28 +1,28 @@
 @interface FCSearchOperation
 - (BOOL)validateOperation;
-- (FCSearchOperation)initWithSearchText:(id)a3 cloudContext:(id)a4 parsecQueryID:(unint64_t)a5;
-- (id)_fetchFullHeadlineResultsForArticles:(id)a3;
-- (id)_fetchResultsForArticlesWithBatchSize:(unint64_t)a3;
-- (id)_fetchResultsForTagsWithBatchSize:(unint64_t)a3;
-- (void)operationWillFinishWithError:(id)a3;
+- (FCSearchOperation)initWithSearchText:(id)text cloudContext:(id)context parsecQueryID:(unint64_t)d;
+- (id)_fetchFullHeadlineResultsForArticles:(id)articles;
+- (id)_fetchResultsForArticlesWithBatchSize:(unint64_t)size;
+- (id)_fetchResultsForTagsWithBatchSize:(unint64_t)size;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
 @implementation FCSearchOperation
 
-- (FCSearchOperation)initWithSearchText:(id)a3 cloudContext:(id)a4 parsecQueryID:(unint64_t)a5
+- (FCSearchOperation)initWithSearchText:(id)text cloudContext:(id)context parsecQueryID:(unint64_t)d
 {
-  v9 = a3;
-  v10 = a4;
+  textCopy = text;
+  contextCopy = context;
   v16.receiver = self;
   v16.super_class = FCSearchOperation;
   v11 = [(FCOperation *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_searchString, a3);
-    objc_storeStrong(&v12->_cloudContext, a4);
-    v12->_parsecQueryID = a5;
+    objc_storeStrong(&v11->_searchString, text);
+    objc_storeStrong(&v12->_cloudContext, context);
+    v12->_parsecQueryID = d;
     v12->_shouldFetchFullHeadline = 0;
     v13 = objc_opt_new();
     searchResult = v12->_searchResult;
@@ -35,9 +35,9 @@
 - (BOOL)validateOperation
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(FCSearchOperation *)self cloudContext];
+  cloudContext = [(FCSearchOperation *)self cloudContext];
 
-  if (!v2 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!cloudContext && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Search operation requires a cloud context"];
     v6 = 136315906;
@@ -51,22 +51,22 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v6, 0x26u);
   }
 
-  result = v2 != 0;
+  result = cloudContext != 0;
   v4 = *MEMORY[0x1E69E9840];
   return result;
 }
 
 - (void)performOperation
 {
-  v3 = [(FCSearchOperation *)self batchSize];
+  batchSize = [(FCSearchOperation *)self batchSize];
   v4 = 20;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __37__FCSearchOperation_performOperation__block_invoke;
   v14[3] = &unk_1E7C3CB30;
-  if (v3 > 0x14)
+  if (batchSize > 0x14)
   {
-    v4 = v3;
+    v4 = batchSize;
   }
 
   v14[4] = self;
@@ -158,20 +158,20 @@ void __37__FCSearchOperation_performOperation__block_invoke_5(uint64_t a1, void 
   [*(a1 + 32) finishedPerformingOperationWithError:v5];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(FCSearchOperation *)self searchResultsBlock];
+  errorCopy = error;
+  searchResultsBlock = [(FCSearchOperation *)self searchResultsBlock];
 
-  if (v4)
+  if (searchResultsBlock)
   {
-    v5 = [(FCSearchOperation *)self searchResultsBlock];
-    v6 = [(FCSearchOperation *)self searchResult];
-    (v5)[2](v5, v6, v7);
+    searchResultsBlock2 = [(FCSearchOperation *)self searchResultsBlock];
+    searchResult = [(FCSearchOperation *)self searchResult];
+    (searchResultsBlock2)[2](searchResultsBlock2, searchResult, errorCopy);
   }
 }
 
-- (id)_fetchResultsForTagsWithBatchSize:(unint64_t)a3
+- (id)_fetchResultsForTagsWithBatchSize:(unint64_t)size
 {
   v5 = objc_alloc(MEMORY[0x1E69B68F8]);
   v8[0] = MEMORY[0x1E69E9820];
@@ -179,7 +179,7 @@ void __37__FCSearchOperation_performOperation__block_invoke_5(uint64_t a1, void 
   v8[2] = __55__FCSearchOperation__fetchResultsForTagsWithBatchSize___block_invoke;
   v8[3] = &unk_1E7C405B8;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = size;
   v6 = [v5 initWithResolver:v8];
 
   return v6;
@@ -292,7 +292,7 @@ void __55__FCSearchOperation__fetchResultsForTagsWithBatchSize___block_invoke_2(
   }
 }
 
-- (id)_fetchResultsForArticlesWithBatchSize:(unint64_t)a3
+- (id)_fetchResultsForArticlesWithBatchSize:(unint64_t)size
 {
   v5 = objc_alloc(MEMORY[0x1E69B68F8]);
   v8[0] = MEMORY[0x1E69E9820];
@@ -300,7 +300,7 @@ void __55__FCSearchOperation__fetchResultsForTagsWithBatchSize___block_invoke_2(
   v8[2] = __59__FCSearchOperation__fetchResultsForArticlesWithBatchSize___block_invoke;
   v8[3] = &unk_1E7C405B8;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = size;
   v6 = [v5 initWithResolver:v8];
 
   return v6;
@@ -357,17 +357,17 @@ void __59__FCSearchOperation__fetchResultsForArticlesWithBatchSize___block_invok
   }
 }
 
-- (id)_fetchFullHeadlineResultsForArticles:(id)a3
+- (id)_fetchFullHeadlineResultsForArticles:(id)articles
 {
-  v4 = a3;
+  articlesCopy = articles;
   v5 = objc_alloc(MEMORY[0x1E69B68F8]);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __58__FCSearchOperation__fetchFullHeadlineResultsForArticles___block_invoke;
   v9[3] = &unk_1E7C3B310;
-  v10 = v4;
-  v11 = self;
-  v6 = v4;
+  v10 = articlesCopy;
+  selfCopy = self;
+  v6 = articlesCopy;
   v7 = [v5 initWithResolver:v9];
 
   return v7;

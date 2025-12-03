@@ -1,7 +1,7 @@
 @interface VICVisualIntelligenceAnalysisResult
 - (VICVisualIntelligenceAnalysisRequest)request;
 - (VICVisualIntelligenceAnalysisResult)init;
-- (void)setRequest:(id)a3;
+- (void)setRequest:(id)request;
 @end
 
 @implementation VICVisualIntelligenceAnalysisResult
@@ -13,13 +13,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setRequest:(id)a3
+- (void)setRequest:(id)request
 {
   v5 = OBJC_IVAR___VICVisualIntelligenceAnalysisResult_request;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = request;
+  requestCopy = request;
 }
 
 - (VICVisualIntelligenceAnalysisResult)init

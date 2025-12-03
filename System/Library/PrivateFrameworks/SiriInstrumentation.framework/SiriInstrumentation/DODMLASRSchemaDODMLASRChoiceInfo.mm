@@ -1,29 +1,29 @@
 @interface DODMLASRSchemaDODMLASRChoiceInfo
-- (BOOL)isEqual:(id)a3;
-- (DODMLASRSchemaDODMLASRChoiceInfo)initWithDictionary:(id)a3;
-- (DODMLASRSchemaDODMLASRChoiceInfo)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DODMLASRSchemaDODMLASRChoiceInfo)initWithDictionary:(id)dictionary;
+- (DODMLASRSchemaDODMLASRChoiceInfo)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addTokens:(id)a3;
-- (void)setHasAcousticCost:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addTokens:(id)tokens;
+- (void)setHasAcousticCost:(BOOL)cost;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DODMLASRSchemaDODMLASRChoiceInfo
 
-- (DODMLASRSchemaDODMLASRChoiceInfo)initWithDictionary:(id)a3
+- (DODMLASRSchemaDODMLASRChoiceInfo)initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = DODMLASRSchemaDODMLASRChoiceInfo;
   v5 = [(DODMLASRSchemaDODMLASRChoiceInfo *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"tokens"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"tokens"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,7 +67,7 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"graphCost", v19}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"graphCost", v19}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -75,7 +75,7 @@
       [(DODMLASRSchemaDODMLASRChoiceInfo *)v5 setGraphCost:?];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"acousticCost"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"acousticCost"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,30 +89,30 @@
   return v5;
 }
 
-- (DODMLASRSchemaDODMLASRChoiceInfo)initWithJSON:(id)a3
+- (DODMLASRSchemaDODMLASRChoiceInfo)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DODMLASRSchemaDODMLASRChoiceInfo *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DODMLASRSchemaDODMLASRChoiceInfo *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DODMLASRSchemaDODMLASRChoiceInfo *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -126,14 +126,14 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = MEMORY[0x1E696AD98];
     [(DODMLASRSchemaDODMLASRChoiceInfo *)self acousticCost];
     v6 = [v5 numberWithFloat:?];
-    [v3 setObject:v6 forKeyedSubscript:@"acousticCost"];
+    [dictionary setObject:v6 forKeyedSubscript:@"acousticCost"];
 
     has = self->_has;
   }
@@ -143,12 +143,12 @@
     v7 = MEMORY[0x1E696AD98];
     [(DODMLASRSchemaDODMLASRChoiceInfo *)self graphCost];
     v8 = [v7 numberWithFloat:?];
-    [v3 setObject:v8 forKeyedSubscript:@"graphCost"];
+    [dictionary setObject:v8 forKeyedSubscript:@"graphCost"];
   }
 
   if ([(NSArray *)self->_tokens count])
   {
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -168,16 +168,16 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          if (v15)
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v9 addObject:v15];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v16 = [MEMORY[0x1E695DFB0] null];
-            [v9 addObject:v16];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -187,12 +187,12 @@
       while (v12);
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"tokens"];
+    [dictionary setObject:array forKeyedSubscript:@"tokens"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v18];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v18];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -278,26 +278,26 @@
   return v6 ^ v3 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRChoiceInfo *)self tokens];
-  v6 = [v4 tokens];
-  v7 = v6;
-  if ((v5 != 0) != (v6 == 0))
+  tokens = [(DODMLASRSchemaDODMLASRChoiceInfo *)self tokens];
+  tokens2 = [equalCopy tokens];
+  v7 = tokens2;
+  if ((tokens != 0) != (tokens2 == 0))
   {
-    v8 = [(DODMLASRSchemaDODMLASRChoiceInfo *)self tokens];
-    if (v8)
+    tokens3 = [(DODMLASRSchemaDODMLASRChoiceInfo *)self tokens];
+    if (tokens3)
     {
-      v9 = v8;
-      v10 = [(DODMLASRSchemaDODMLASRChoiceInfo *)self tokens];
-      v11 = [v4 tokens];
-      v12 = [v10 isEqual:v11];
+      v9 = tokens3;
+      tokens4 = [(DODMLASRSchemaDODMLASRChoiceInfo *)self tokens];
+      tokens5 = [equalCopy tokens];
+      v12 = [tokens4 isEqual:tokens5];
 
       if (!v12)
       {
@@ -310,26 +310,26 @@
     }
 
     has = self->_has;
-    v14 = v4[24];
+    v14 = equalCopy[24];
     if ((*&has & 1) == (v14 & 1))
     {
       if (*&has)
       {
         graphCost = self->_graphCost;
-        [v4 graphCost];
+        [equalCopy graphCost];
         if (graphCost != v16)
         {
           goto LABEL_15;
         }
 
         has = self->_has;
-        v14 = v4[24];
+        v14 = equalCopy[24];
       }
 
       v17 = (*&has >> 1) & 1;
       if (v17 == ((v14 >> 1) & 1))
       {
-        if (!v17 || (acousticCost = self->_acousticCost, [v4 acousticCost], acousticCost == v19))
+        if (!v17 || (acousticCost = self->_acousticCost, [equalCopy acousticCost], acousticCost == v19))
         {
           v20 = 1;
           goto LABEL_16;
@@ -349,10 +349,10 @@ LABEL_16:
   return v20;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -394,9 +394,9 @@ LABEL_16:
   }
 }
 
-- (void)setHasAcousticCost:(BOOL)a3
+- (void)setHasAcousticCost:(BOOL)cost
 {
-  if (a3)
+  if (cost)
   {
     v3 = 2;
   }
@@ -409,32 +409,32 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addTokens:(id)a3
+- (void)addTokens:(id)tokens
 {
-  v4 = a3;
+  tokensCopy = tokens;
   tokens = self->_tokens;
-  v8 = v4;
+  v8 = tokensCopy;
   if (!tokens)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_tokens;
-    self->_tokens = v6;
+    self->_tokens = array;
 
-    v4 = v8;
+    tokensCopy = v8;
     tokens = self->_tokens;
   }
 
-  [(NSArray *)tokens addObject:v4];
+  [(NSArray *)tokens addObject:tokensCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = DODMLASRSchemaDODMLASRChoiceInfo;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(DODMLASRSchemaDODMLASRChoiceInfo *)self tokens:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(DODMLASRSchemaDODMLASRChoiceInfo *)self setTokens:v7];
 

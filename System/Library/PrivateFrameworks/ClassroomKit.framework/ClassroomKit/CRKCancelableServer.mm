@@ -1,22 +1,22 @@
 @interface CRKCancelableServer
-- (CRKCancelableServer)initWithCancelableGenerator:(id)a3;
+- (CRKCancelableServer)initWithCancelableGenerator:(id)generator;
 - (id)makeCountedCancelable;
 - (void)decrementClientCount;
 - (void)makeCountedCancelable;
-- (void)performBlockOnMainThreadIfNeeded:(id)a3;
+- (void)performBlockOnMainThreadIfNeeded:(id)needed;
 @end
 
 @implementation CRKCancelableServer
 
-- (CRKCancelableServer)initWithCancelableGenerator:(id)a3
+- (CRKCancelableServer)initWithCancelableGenerator:(id)generator
 {
-  v4 = a3;
+  generatorCopy = generator;
   v9.receiver = self;
   v9.super_class = CRKCancelableServer;
   v5 = [(CRKCancelableServer *)&v9 init];
   if (v5)
   {
-    v6 = MEMORY[0x245D3AAD0](v4);
+    v6 = MEMORY[0x245D3AAD0](generatorCopy);
     generator = v5->_generator;
     v5->_generator = v6;
   }
@@ -31,12 +31,12 @@
     [(CRKCancelableServer *)a2 makeCountedCancelable];
   }
 
-  v4 = [(CRKCancelableServer *)self cachedCancelable];
+  cachedCancelable = [(CRKCancelableServer *)self cachedCancelable];
 
-  if (!v4)
+  if (!cachedCancelable)
   {
-    v5 = [(CRKCancelableServer *)self generator];
-    v6 = v5[2]();
+    generator = [(CRKCancelableServer *)self generator];
+    v6 = generator[2]();
     [(CRKCancelableServer *)self setCachedCancelable:v6];
   }
 
@@ -62,10 +62,10 @@ uint64_t __44__CRKCancelableServer_makeCountedCancelable__block_invoke(uint64_t 
   return [v1 performBlockOnMainThreadIfNeeded:v3];
 }
 
-- (void)performBlockOnMainThreadIfNeeded:(id)a3
+- (void)performBlockOnMainThreadIfNeeded:(id)needed
 {
   v3 = MEMORY[0x277CCACC8];
-  block = a3;
+  block = needed;
   if ([v3 isMainThread])
   {
     block[2]();
@@ -79,15 +79,15 @@ uint64_t __44__CRKCancelableServer_makeCountedCancelable__block_invoke(uint64_t 
 
 - (void)decrementClientCount
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"CRKCancelableServer.m" lineNumber:66 description:{@"Invalid client count: %ld", objc_msgSend(a1, "clientCount")}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CRKCancelableServer.m" lineNumber:66 description:{@"Invalid client count: %ld", objc_msgSend(self, "clientCount")}];
 }
 
 - (void)makeCountedCancelable
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  v4 = NSStringFromSelector(a1);
-  [v5 handleFailureInMethod:a1 object:a2 file:@"CRKCancelableServer.m" lineNumber:35 description:{@"%@ must be called from the main thread", v4}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  v4 = NSStringFromSelector(self);
+  [currentHandler handleFailureInMethod:self object:a2 file:@"CRKCancelableServer.m" lineNumber:35 description:{@"%@ must be called from the main thread", v4}];
 }
 
 @end

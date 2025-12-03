@@ -2,13 +2,13 @@
 - (CNContactListCollectionView)init;
 - (CNContactListCollectionViewDelegate)contactListCollectionViewDelegate;
 - (CNContactListCountViewDelegate)countViewDelegate;
-- (unint64_t)globalIndexForItemAtIndexPath:(id)a3;
-- (void)deselectItemAtIndexPath:(id)a3 animated:(BOOL)a4;
-- (void)selectItemAtIndexPath:(id)a3 animated:(BOOL)a4 scrollPosition:(unint64_t)a5;
-- (void)setContactCount:(int64_t)a3;
-- (void)setContactCountView:(id)a3;
-- (void)setDuplicateCount:(int64_t)a3;
-- (void)setSelectedCount:(int64_t)a3;
+- (unint64_t)globalIndexForItemAtIndexPath:(id)path;
+- (void)deselectItemAtIndexPath:(id)path animated:(BOOL)animated;
+- (void)selectItemAtIndexPath:(id)path animated:(BOOL)animated scrollPosition:(unint64_t)position;
+- (void)setContactCount:(int64_t)count;
+- (void)setContactCountView:(id)view;
+- (void)setDuplicateCount:(int64_t)count;
+- (void)setSelectedCount:(int64_t)count;
 - (void)updateSelectedContactCount;
 @end
 
@@ -18,8 +18,8 @@
 {
   if (-[CNContactListCollectionView isEditing](self, "isEditing") && -[CNContactListCollectionView allowsMultipleSelectionDuringEditing](self, "allowsMultipleSelectionDuringEditing") && (-[CNContactListCollectionView contactListCollectionViewDelegate](self, "contactListCollectionViewDelegate"), (v3 = objc_claimAutoreleasedReturnValue()) != 0) && (v4 = v3, -[CNContactListCollectionView contactListCollectionViewDelegate](self, "contactListCollectionViewDelegate"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 hasNoContacts], v5, v4, (v6 & 1) == 0))
   {
-    v8 = [(CNContactListCollectionView *)self indexPathsForSelectedItems];
-    v7 = [v8 count];
+    indexPathsForSelectedItems = [(CNContactListCollectionView *)self indexPathsForSelectedItems];
+    v7 = [indexPathsForSelectedItems count];
   }
 
   else
@@ -44,27 +44,27 @@
   return WeakRetained;
 }
 
-- (void)deselectItemAtIndexPath:(id)a3 animated:(BOOL)a4
+- (void)deselectItemAtIndexPath:(id)path animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = CNContactListCollectionView;
-  [(CNContactListCollectionView *)&v5 deselectItemAtIndexPath:a3 animated:a4];
+  [(CNContactListCollectionView *)&v5 deselectItemAtIndexPath:path animated:animated];
   [(CNContactListCollectionView *)self updateSelectedContactCount];
 }
 
-- (void)selectItemAtIndexPath:(id)a3 animated:(BOOL)a4 scrollPosition:(unint64_t)a5
+- (void)selectItemAtIndexPath:(id)path animated:(BOOL)animated scrollPosition:(unint64_t)position
 {
   v6.receiver = self;
   v6.super_class = CNContactListCollectionView;
-  [(CNContactListCollectionView *)&v6 selectItemAtIndexPath:a3 animated:a4 scrollPosition:a5];
+  [(CNContactListCollectionView *)&v6 selectItemAtIndexPath:path animated:animated scrollPosition:position];
   [(CNContactListCollectionView *)self updateSelectedContactCount];
 }
 
-- (void)setSelectedCount:(int64_t)a3
+- (void)setSelectedCount:(int64_t)count
 {
-  if (self->_selectedCount != a3)
+  if (self->_selectedCount != count)
   {
-    self->_selectedCount = a3;
+    self->_selectedCount = count;
     contactCountView = self->_contactCountView;
     if (contactCountView)
     {
@@ -73,11 +73,11 @@
   }
 }
 
-- (void)setDuplicateCount:(int64_t)a3
+- (void)setDuplicateCount:(int64_t)count
 {
-  if (self->_duplicateCount != a3)
+  if (self->_duplicateCount != count)
   {
-    self->_duplicateCount = a3;
+    self->_duplicateCount = count;
     contactCountView = self->_contactCountView;
     if (contactCountView)
     {
@@ -86,11 +86,11 @@
   }
 }
 
-- (void)setContactCount:(int64_t)a3
+- (void)setContactCount:(int64_t)count
 {
-  if (self->_contactCount != a3)
+  if (self->_contactCount != count)
   {
-    self->_contactCount = a3;
+    self->_contactCount = count;
     contactCountView = self->_contactCountView;
     if (contactCountView)
     {
@@ -99,12 +99,12 @@
   }
 }
 
-- (void)setContactCountView:(id)a3
+- (void)setContactCountView:(id)view
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_contactCountView] & 1) == 0)
+  viewCopy = view;
+  if (([viewCopy isEqual:self->_contactCountView] & 1) == 0)
   {
-    objc_storeStrong(&self->_contactCountView, a3);
+    objc_storeStrong(&self->_contactCountView, view);
     [(CNContactListCountFooterView *)self->_contactCountView setContactCount:[(CNContactListCollectionView *)self contactCount]];
     [(CNContactListCollectionView *)self updateSelectedContactCount];
     [(CNContactListCountFooterView *)self->_contactCountView setSelectedCount:[(CNContactListCollectionView *)self selectedCount]];
@@ -112,19 +112,19 @@
   }
 }
 
-- (unint64_t)globalIndexForItemAtIndexPath:(id)a3
+- (unint64_t)globalIndexForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 item];
-  v6 = [v4 section];
-  if (v6 >= [(CNContactListCollectionView *)self numberOfSections]|| v5 >= [(CNContactListCollectionView *)self numberOfItemsInSection:v6])
+  pathCopy = path;
+  item = [pathCopy item];
+  section = [pathCopy section];
+  if (section >= [(CNContactListCollectionView *)self numberOfSections]|| item >= [(CNContactListCollectionView *)self numberOfItemsInSection:section])
   {
     v9 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    if (v6 < 1)
+    if (section < 1)
     {
       v8 = 0;
     }
@@ -138,10 +138,10 @@
         v8 += [(CNContactListCollectionView *)self numberOfItemsInSection:v7++];
       }
 
-      while (v6 != v7);
+      while (section != v7);
     }
 
-    v9 = v8 + v5;
+    v9 = v8 + item;
   }
 
   return v9;

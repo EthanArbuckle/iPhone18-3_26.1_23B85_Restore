@@ -1,7 +1,7 @@
 @interface CNStaticIdentityEditingCell
 + (id)supportedPasteboardTypes;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (void)copy:(id)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (void)copy:(id)copy;
 @end
 
 @implementation CNStaticIdentityEditingCell
@@ -29,29 +29,29 @@ void __55__CNStaticIdentityEditingCell_supportedPasteboardTypes__block_invoke()
   supportedPasteboardTypes_cn_once_object_1 = v1;
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v4 = [a3 identity];
+  identity = [copy identity];
   if ((*(*MEMORY[0x1E6996570] + 16))())
   {
-    v3 = [MEMORY[0x1E69DCD50] generalPasteboard];
-    [v3 setString:v4];
+    generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+    [generalPasteboard setString:identity];
   }
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v5 = a4;
-  if (sel_copy_ == a3)
+  senderCopy = sender;
+  if (sel_copy_ == action)
   {
     v6 = 1;
   }
 
-  else if (sel_paste_ == a3)
+  else if (sel_paste_ == action)
   {
-    v7 = [MEMORY[0x1E69DCD50] generalPasteboard];
-    v8 = [objc_opt_class() supportedPasteboardTypes];
-    v6 = [v7 containsPasteboardTypes:v8];
+    generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+    supportedPasteboardTypes = [objc_opt_class() supportedPasteboardTypes];
+    v6 = [generalPasteboard containsPasteboardTypes:supportedPasteboardTypes];
   }
 
   else

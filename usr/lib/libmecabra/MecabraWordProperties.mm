@@ -1,36 +1,36 @@
 @interface MecabraWordProperties
 + (__IDXIndex)characterInformationDictionary;
 + (__IDXIndex)codeLookupInformationDictionary;
-+ (__IDXIndex)informationDictionaryAtPath:(__CFURL *)a3;
-+ (id)searchResultsForString:(id)a3 dictionary:(__IDXIndex *)a4;
++ (__IDXIndex)informationDictionaryAtPath:(__CFURL *)path;
++ (id)searchResultsForString:(id)string dictionary:(__IDXIndex *)dictionary;
 + (id)sortedRadicalList;
-- (MecabraWordProperties)initWithString:(id)a3 language:(int)a4;
+- (MecabraWordProperties)initWithString:(id)string language:(int)language;
 - (NSArray)characterInformation;
 - (NSArray)codeLookupInformation;
 - (id)bihuaCodes;
 - (id)cangjieCodes;
-- (id)initialsForStrings:(id)a3;
+- (id)initialsForStrings:(id)strings;
 - (id)isIncludedInCurrentLanguage;
-- (id)pinyinInformationForString:(id)a3;
-- (id)radicalInformationForString:(id)a3;
-- (id)separatedInputCodesForString:(id)a3;
-- (id)strokeInformationForString:(id)a3;
-- (id)tonesForString:(id)a3;
+- (id)pinyinInformationForString:(id)string;
+- (id)radicalInformationForString:(id)string;
+- (id)separatedInputCodesForString:(id)string;
+- (id)strokeInformationForString:(id)string;
+- (id)tonesForString:(id)string;
 - (id)wubixingCodes;
-- (id)zhuyinInformationForString:(id)a3;
+- (id)zhuyinInformationForString:(id)string;
 - (void)dealloc;
 @end
 
 @implementation MecabraWordProperties
 
-+ (__IDXIndex)informationDictionaryAtPath:(__CFURL *)a3
++ (__IDXIndex)informationDictionaryAtPath:(__CFURL *)path
 {
-  if (!a3)
+  if (!path)
   {
     return 0;
   }
 
-  v3 = sub_2992432B4(0, a3, 0);
+  v3 = sub_2992432B4(0, path, 0);
   v4 = v3;
   if (v3)
   {
@@ -60,14 +60,14 @@
   return qword_2A1460C70;
 }
 
-+ (id)searchResultsForString:(id)a3 dictionary:(__IDXIndex *)a4
++ (id)searchResultsForString:(id)string dictionary:(__IDXIndex *)dictionary
 {
   v15[1] = *MEMORY[0x29EDCA608];
-  if (a4)
+  if (dictionary)
   {
-    if (sub_299243500(a4, a3, @"IDXExactMatch") && (v15[0] = 0, v12[0] = 0, v12[1] = 0, v13 = 0, (*(**(a4 + 2) + 72))(*(a4 + 2), *(a4 + 5), 1, v15, &v14) >= 1))
+    if (sub_299243500(dictionary, string, @"IDXExactMatch") && (v15[0] = 0, v12[0] = 0, v12[1] = 0, v13 = 0, (*(**(dictionary + 2) + 72))(*(dictionary + 2), *(dictionary + 5), 1, v15, &v14) >= 1))
     {
-      sub_29924388C(a4, v15[0], v14, v12, v11);
+      sub_29924388C(dictionary, v15[0], v14, v12, v11);
       v6 = objc_alloc(MEMORY[0x29EDBA0F8]);
       v8 = objc_msgSend_initWithBytes_length_encoding_(v6, v7, v13, v11[2], 4);
     }
@@ -128,30 +128,30 @@
   return result;
 }
 
-- (id)radicalInformationForString:(id)a3
+- (id)radicalInformationForString:(id)string
 {
-  v4 = objc_msgSend_language(self, a2, a3);
-  v6 = objc_msgSend_componentsByLanguage_(a3, v5, v4);
+  v4 = objc_msgSend_language(self, a2, string);
+  v6 = objc_msgSend_componentsByLanguage_(string, v5, v4);
 
   return objc_msgSend_firstObject(v6, v7, v8);
 }
 
-- (id)strokeInformationForString:(id)a3
+- (id)strokeInformationForString:(id)string
 {
   v4 = MEMORY[0x29EDBA070];
-  v5 = objc_msgSend_language(self, a2, a3);
-  v7 = objc_msgSend_componentsByLanguage_(a3, v6, v5);
+  v5 = objc_msgSend_language(self, a2, string);
+  v7 = objc_msgSend_componentsByLanguage_(string, v6, v5);
   Object = objc_msgSend_firstObject(v7, v8, v9);
   v14 = objc_msgSend_integerValue(Object, v11, v12);
 
   return objc_msgSend_numberWithInteger_(v4, v13, v14);
 }
 
-- (id)pinyinInformationForString:(id)a3
+- (id)pinyinInformationForString:(id)string
 {
   v26 = *MEMORY[0x29EDCA608];
-  v4 = objc_msgSend_language(self, a2, a3);
-  v6 = objc_msgSend_componentsByLanguage_(a3, v5, v4);
+  v4 = objc_msgSend_language(self, a2, string);
+  v6 = objc_msgSend_componentsByLanguage_(string, v5, v4);
   v9 = objc_msgSend_array(MEMORY[0x29EDB8DE8], v7, v8);
   v21 = 0u;
   v22 = 0u;
@@ -188,11 +188,11 @@
   return v9;
 }
 
-- (id)zhuyinInformationForString:(id)a3
+- (id)zhuyinInformationForString:(id)string
 {
   v25 = *MEMORY[0x29EDCA608];
-  v4 = objc_msgSend_language(self, a2, a3);
-  v6 = objc_msgSend_componentsByLanguage_(a3, v5, v4);
+  v4 = objc_msgSend_language(self, a2, string);
+  v6 = objc_msgSend_componentsByLanguage_(string, v5, v4);
   v9 = objc_msgSend_array(MEMORY[0x29EDB8DE8], v7, v8);
   v20 = 0u;
   v21 = 0u;
@@ -233,17 +233,17 @@
   return v9;
 }
 
-- (id)initialsForStrings:(id)a3
+- (id)initialsForStrings:(id)strings
 {
   v32 = *MEMORY[0x29EDCA608];
   v4 = MEMORY[0x29EDB8E20];
-  v5 = objc_msgSend_count(a3, a2, a3);
+  v5 = objc_msgSend_count(strings, a2, strings);
   v7 = objc_msgSend_setWithCapacity_(v4, v6, v5);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v8, &v27, v31, 16);
+  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(strings, v8, &v27, v31, 16);
   if (v9)
   {
     v12 = v9;
@@ -254,7 +254,7 @@
       {
         if (*v28 != v13)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(strings);
         }
 
         v15 = *(*(&v27 + 1) + 8 * i);
@@ -271,7 +271,7 @@
         }
       }
 
-      v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v10, &v27, v31, 16);
+      v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(strings, v10, &v27, v31, 16);
     }
 
     while (v12);
@@ -282,10 +282,10 @@
   return result;
 }
 
-- (id)tonesForString:(id)a3
+- (id)tonesForString:(id)string
 {
   v21 = *MEMORY[0x29EDCA608];
-  v3 = objc_msgSend_componentsSeparatedByString_(a3, a2, @" ");
+  v3 = objc_msgSend_componentsSeparatedByString_(string, a2, @" ");
   v5 = objc_msgSend_setWithCapacity_(MEMORY[0x29EDB8E20], v4, 5);
   v16 = 0u;
   v17 = 0u;
@@ -327,22 +327,22 @@
   return result;
 }
 
-- (id)separatedInputCodesForString:(id)a3
+- (id)separatedInputCodesForString:(id)string
 {
-  v5 = objc_msgSend_language(self, a2, a3);
+  v5 = objc_msgSend_language(self, a2, string);
 
-  return objc_msgSend_componentsByLanguage_(a3, v4, v5);
+  return objc_msgSend_componentsByLanguage_(string, v4, v5);
 }
 
-- (MecabraWordProperties)initWithString:(id)a3 language:(int)a4
+- (MecabraWordProperties)initWithString:(id)string language:(int)language
 {
   v10.receiver = self;
   v10.super_class = MecabraWordProperties;
   v8 = [(MecabraWordProperties *)&v10 init];
   if (v8)
   {
-    v8->_analysisString = objc_msgSend_copy(a3, v6, v7);
-    v8->_language = a4;
+    v8->_analysisString = objc_msgSend_copy(string, v6, v7);
+    v8->_language = language;
   }
 
   return v8;

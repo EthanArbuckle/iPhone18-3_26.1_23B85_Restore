@@ -1,20 +1,20 @@
 @interface BRLTTokenRange
-- (BRLTTokenRange)initWithRange:(_NSRange)a3 token:(int64_t)a4;
+- (BRLTTokenRange)initWithRange:(_NSRange)range token:(int64_t)token;
 - (_NSRange)range;
 @end
 
 @implementation BRLTTokenRange
 
-- (BRLTTokenRange)initWithRange:(_NSRange)a3 token:(int64_t)a4
+- (BRLTTokenRange)initWithRange:(_NSRange)range token:(int64_t)token
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v8.receiver = self;
   v8.super_class = BRLTTokenRange;
   result = [(BRLTTokenRange *)&v8 init];
   result->_range.location = location;
   result->_range.length = length;
-  result->_token = a4;
+  result->_token = token;
   return result;
 }
 

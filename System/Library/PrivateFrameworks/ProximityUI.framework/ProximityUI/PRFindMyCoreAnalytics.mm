@@ -2,29 +2,29 @@
 + (BOOL)isInternalBuild;
 - (BOOL)isRunning;
 - (PRFindMyCoreAnalytics)init;
-- (id)eventDictionaryWithEvent:(id)a3;
-- (void)addLatestTarget:(id)a3;
+- (id)eventDictionaryWithEvent:(id)event;
+- (void)addLatestTarget:(id)target;
 - (void)configureComplete;
-- (void)configureSessionWithProductUUID:(id)a3 withOwner:(id)a4;
+- (void)configureSessionWithProductUUID:(id)d withOwner:(id)owner;
 - (void)deinit;
 - (void)firstArrowFromAoA;
 - (void)firstArrowFromRange;
 - (void)invalidPoseDetected;
-- (void)rangingFailedWithError:(id)a3;
+- (void)rangingFailedWithError:(id)error;
 - (void)resetState;
 - (void)revokeRangeEstimate;
-- (void)sendAnalyticsEvent:(id)a3;
-- (void)sendLiveOnAnalytics:(id)a3;
+- (void)sendAnalyticsEvent:(id)event;
+- (void)sendLiveOnAnalytics:(id)analytics;
 - (void)start;
 - (void)stop;
-- (void)targetComputed:(id)a3;
-- (void)targetMovingStateChanged:(BOOL)a3;
-- (void)targetRevokedWithReason:(unint64_t)a3;
+- (void)targetComputed:(id)computed;
+- (void)targetMovingStateChanged:(BOOL)changed;
+- (void)targetRevokedWithReason:(unint64_t)reason;
 - (void)torchButtonPresented;
-- (void)torchChangedState:(BOOL)a3;
-- (void)updateSOIRSSI:(double)a3;
-- (void)updateTravelDistanceWithPose:(id)a3;
-- (void)updateWithRangeEstimate:(id)a3;
+- (void)torchChangedState:(BOOL)state;
+- (void)updateSOIRSSI:(double)i;
+- (void)updateTravelDistanceWithPose:(id)pose;
+- (void)updateWithRangeEstimate:(id)estimate;
 @end
 
 @implementation PRFindMyCoreAnalytics
@@ -38,26 +38,26 @@
   if (v2)
   {
     [(PRFindMyCoreAnalytics *)v2 resetState];
-    v22 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-    v4 = [MEMORY[0x277CCA8D8] mainBundle];
-    v5 = [v4 bundleIdentifier];
+    defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    v21 = v5;
-    v6 = [objc_alloc(MEMORY[0x277CF0188]) initWithIdentifier:v5];
+    v21 = bundleIdentifier;
+    v6 = [objc_alloc(MEMORY[0x277CF0188]) initWithIdentifier:bundleIdentifier];
     [(PRFindMyCoreAnalytics *)v3 setAuthSession:v6];
 
-    v7 = [(PRFindMyCoreAnalytics *)v3 authSession];
-    [v22 set_appleIDContext:v7];
+    authSession = [(PRFindMyCoreAnalytics *)v3 authSession];
+    [defaultSessionConfiguration set_appleIDContext:authSession];
 
-    v8 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v22];
+    v8 = [MEMORY[0x277CCAD30] sessionWithConfiguration:defaultSessionConfiguration];
     [(PRFindMyCoreAnalytics *)v3 setUrlSession:v8];
 
     v9 = objc_alloc_init(MEMORY[0x277CB8F48]);
-    v10 = [v9 aa_primaryAppleAccount];
-    v11 = [v10 aa_personID];
-    v12 = [v10 credential];
-    v13 = [v12 credentialItemForKey:*MEMORY[0x277CB8F00]];
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", v11, v13];
+    aa_primaryAppleAccount = [v9 aa_primaryAppleAccount];
+    aa_personID = [aa_primaryAppleAccount aa_personID];
+    credential = [aa_primaryAppleAccount credential];
+    v13 = [credential credentialItemForKey:*MEMORY[0x277CB8F00]];
+    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", aa_personID, v13];
     v15 = [v14 dataUsingEncoding:4];
     v16 = [v15 base64EncodedStringWithOptions:0];
 
@@ -106,13 +106,13 @@
   [(PRFindMyCoreAnalytics *)self setLatestTarget:0];
 }
 
-- (id)eventDictionaryWithEvent:(id)a3
+- (id)eventDictionaryWithEvent:(id)event
 {
   v43[10] = *MEMORY[0x277D85DE8];
-  v41 = a3;
-  v4 = [(PRFindMyCoreAnalytics *)self sessionId];
+  eventCopy = event;
+  sessionId = [(PRFindMyCoreAnalytics *)self sessionId];
 
-  if (v4)
+  if (sessionId)
   {
     v5 = MEMORY[0x277CCABB0];
     MachTimeSeconds = PRCommonGetMachTimeSeconds();
@@ -120,80 +120,80 @@
     v39 = [v5 numberWithDouble:MachTimeSeconds - v7];
     v40 = [MEMORY[0x277CCABB0] numberWithInteger:{-[PRFindMyCoreAnalytics eventNumber](self, "eventNumber")}];
     v8 = MEMORY[0x277CCABB0];
-    v9 = [(PRFindMyCoreAnalytics *)self previousPose];
-    [v9 pose];
+    previousPose = [(PRFindMyCoreAnalytics *)self previousPose];
+    [previousPose pose];
     v11 = vmulq_f32(v10, v10);
     v11.f32[0] = sqrtf(v11.f32[2] + vaddv_f32(*v11.f32));
     v37 = [v8 numberWithFloat:*v11.i64];
 
     [(PRFindMyCoreAnalytics *)self setEventNumber:[(PRFindMyCoreAnalytics *)self eventNumber]+ 1];
     v42[0] = @"sessionId";
-    v12 = [(PRFindMyCoreAnalytics *)self sessionId];
-    v13 = [v12 UUIDString];
-    v43[0] = v13;
+    sessionId2 = [(PRFindMyCoreAnalytics *)self sessionId];
+    uUIDString = [sessionId2 UUIDString];
+    v43[0] = uUIDString;
     v42[1] = @"eventNumber";
-    v14 = [v40 stringValue];
-    v43[1] = v14;
+    stringValue = [v40 stringValue];
+    v43[1] = stringValue;
     v43[2] = v39;
     v42[2] = @"timeElapsed";
     v42[3] = @"traveledDistance";
-    v15 = [(PRFindMyCoreAnalytics *)self traveledDistance];
-    v43[3] = v15;
+    traveledDistance = [(PRFindMyCoreAnalytics *)self traveledDistance];
+    v43[3] = traveledDistance;
     v42[4] = @"traveledDistanceOfUser";
-    v16 = [(PRFindMyCoreAnalytics *)self traveledDistanceOfUser];
-    v43[4] = v16;
+    traveledDistanceOfUser = [(PRFindMyCoreAnalytics *)self traveledDistanceOfUser];
+    v43[4] = traveledDistanceOfUser;
     v43[5] = v37;
     v42[5] = @"straightLineDistance";
     v42[6] = @"rangeEstimate";
-    v17 = [(PRFindMyCoreAnalytics *)self rangeEstimate];
-    v43[6] = v17;
+    rangeEstimate = [(PRFindMyCoreAnalytics *)self rangeEstimate];
+    v43[6] = rangeEstimate;
     v42[7] = @"numberOfRanges";
-    v18 = [(PRFindMyCoreAnalytics *)self numberOfRanges];
-    v43[7] = v18;
+    numberOfRanges = [(PRFindMyCoreAnalytics *)self numberOfRanges];
+    v43[7] = numberOfRanges;
     v42[8] = @"numberOfPoses";
-    v19 = [(PRFindMyCoreAnalytics *)self numberOfPoses];
+    numberOfPoses = [(PRFindMyCoreAnalytics *)self numberOfPoses];
     v42[9] = @"eventType";
-    v43[8] = v19;
-    v43[9] = v41;
+    v43[8] = numberOfPoses;
+    v43[9] = eventCopy;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v43 forKeys:v42 count:10];
 
     v21 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v20];
-    v22 = [(PRFindMyCoreAnalytics *)self runId];
-    LOBYTE(v19) = v22 == 0;
+    runId = [(PRFindMyCoreAnalytics *)self runId];
+    LOBYTE(numberOfPoses) = runId == 0;
 
-    if ((v19 & 1) == 0)
+    if ((numberOfPoses & 1) == 0)
     {
-      v23 = [(PRFindMyCoreAnalytics *)self runId];
-      v24 = [v23 UUIDString];
-      [v21 setObject:v24 forKeyedSubscript:@"runId"];
+      runId2 = [(PRFindMyCoreAnalytics *)self runId];
+      uUIDString2 = [runId2 UUIDString];
+      [v21 setObject:uUIDString2 forKeyedSubscript:@"runId"];
     }
 
-    v25 = [(PRFindMyCoreAnalytics *)self customData];
-    v26 = v25 == 0;
+    customData = [(PRFindMyCoreAnalytics *)self customData];
+    v26 = customData == 0;
 
     if (!v26)
     {
-      v27 = [(PRFindMyCoreAnalytics *)self customData];
-      [v21 addEntriesFromDictionary:v27];
+      customData2 = [(PRFindMyCoreAnalytics *)self customData];
+      [v21 addEntriesFromDictionary:customData2];
     }
 
-    v28 = [(PRFindMyCoreAnalytics *)self productUUID];
-    v29 = v28 == 0;
+    productUUID = [(PRFindMyCoreAnalytics *)self productUUID];
+    v29 = productUUID == 0;
 
     if (!v29)
     {
-      v30 = [(PRFindMyCoreAnalytics *)self productUUID];
-      v31 = [v30 UUIDString];
-      [v21 setObject:v31 forKeyedSubscript:@"ProductUUID"];
+      productUUID2 = [(PRFindMyCoreAnalytics *)self productUUID];
+      uUIDString3 = [productUUID2 UUIDString];
+      [v21 setObject:uUIDString3 forKeyedSubscript:@"ProductUUID"];
     }
 
-    v32 = [(PRFindMyCoreAnalytics *)self isOwner];
-    v33 = v32 == 0;
+    isOwner = [(PRFindMyCoreAnalytics *)self isOwner];
+    v33 = isOwner == 0;
 
     if (!v33)
     {
-      v34 = [(PRFindMyCoreAnalytics *)self isOwner];
-      [v21 setObject:v34 forKeyedSubscript:@"IsOwner"];
+      isOwner2 = [(PRFindMyCoreAnalytics *)self isOwner];
+      [v21 setObject:isOwner2 forKeyedSubscript:@"IsOwner"];
     }
   }
 
@@ -207,49 +207,49 @@
   return v21;
 }
 
-- (void)sendAnalyticsEvent:(id)a3
+- (void)sendAnalyticsEvent:(id)event
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  eventCopy = event;
+  if (eventCopy)
   {
     logger = self->_logger;
     if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = v4;
+      v8 = eventCopy;
       _os_log_impl(&dword_2613DF000, logger, OS_LOG_TYPE_DEFAULT, "Logging event %@", &v7, 0xCu);
     }
 
-    [(PRFindMyCoreAnalytics *)self sendLiveOnAnalytics:v4];
+    [(PRFindMyCoreAnalytics *)self sendLiveOnAnalytics:eventCopy];
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureSessionWithProductUUID:(id)a3 withOwner:(id)a4
+- (void)configureSessionWithProductUUID:(id)d withOwner:(id)owner
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCAD78] UUID];
-  [(PRFindMyCoreAnalytics *)self setSessionId:v7];
+  dCopy = d;
+  ownerCopy = owner;
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  [(PRFindMyCoreAnalytics *)self setSessionId:uUID];
 
   [(PRFindMyCoreAnalytics *)self setEventNumber:0];
   [(PRFindMyCoreAnalytics *)self setStartTime:PRCommonGetMachTimeSeconds()];
-  [(PRFindMyCoreAnalytics *)self setProductUUID:v13];
-  [(PRFindMyCoreAnalytics *)self setIsOwner:v6];
+  [(PRFindMyCoreAnalytics *)self setProductUUID:dCopy];
+  [(PRFindMyCoreAnalytics *)self setIsOwner:ownerCopy];
   v8 = objc_alloc_init(CASessionData);
   [(PRFindMyCoreAnalytics *)self setSessionData:v8];
 
-  v9 = [(PRFindMyCoreAnalytics *)self sessionData];
-  [v9 setProductUUID:v13];
+  sessionData = [(PRFindMyCoreAnalytics *)self sessionData];
+  [sessionData setProductUUID:dCopy];
 
-  v10 = [(PRFindMyCoreAnalytics *)self sessionData];
-  [v10 setIsOwner:v6];
+  sessionData2 = [(PRFindMyCoreAnalytics *)self sessionData];
+  [sessionData2 setIsOwner:ownerCopy];
 
   v11 = [(PRFindMyCoreAnalytics *)self eventDictionaryWithEvent:@"Configure"];
-  v12 = [(PRFindMyCoreAnalytics *)self sessionData];
-  [v12 configure:v11];
+  sessionData3 = [(PRFindMyCoreAnalytics *)self sessionData];
+  [sessionData3 configure:v11];
 
   [(PRFindMyCoreAnalytics *)self sendAnalyticsEvent:v11];
 }
@@ -257,16 +257,16 @@
 - (void)configureComplete
 {
   v4 = [(PRFindMyCoreAnalytics *)self eventDictionaryWithEvent:@"ConfigureComplete"];
-  v3 = [(PRFindMyCoreAnalytics *)self sessionData];
-  [v3 configureComplete:v4];
+  sessionData = [(PRFindMyCoreAnalytics *)self sessionData];
+  [sessionData configureComplete:v4];
 
   [(PRFindMyCoreAnalytics *)self sendAnalyticsEvent:v4];
 }
 
 - (BOOL)isRunning
 {
-  v2 = [(PRFindMyCoreAnalytics *)self runId];
-  v3 = v2 != 0;
+  runId = [(PRFindMyCoreAnalytics *)self runId];
+  v3 = runId != 0;
 
   return v3;
 }
@@ -274,57 +274,57 @@
 - (void)start
 {
   [(PRFindMyCoreAnalytics *)self resetState];
-  v6 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   [(PRFindMyCoreAnalytics *)self setRunId:?];
 
   v7 = objc_alloc_init(CARunData);
   [(PRFindMyCoreAnalytics *)self setRunData:?];
 
-  v8 = [(PRFindMyCoreAnalytics *)self productUUID];
-  v3 = [(PRFindMyCoreAnalytics *)self runData];
-  [v3 setProductUUID:v8];
+  productUUID = [(PRFindMyCoreAnalytics *)self productUUID];
+  runData = [(PRFindMyCoreAnalytics *)self runData];
+  [runData setProductUUID:productUUID];
 
-  v9 = [(PRFindMyCoreAnalytics *)self isOwner];
-  v4 = [(PRFindMyCoreAnalytics *)self runData];
-  [v4 setIsOwner:v9];
+  isOwner = [(PRFindMyCoreAnalytics *)self isOwner];
+  runData2 = [(PRFindMyCoreAnalytics *)self runData];
+  [runData2 setIsOwner:isOwner];
 
   v10 = [(PRFindMyCoreAnalytics *)self eventDictionaryWithEvent:@"Start"];
-  v5 = [(PRFindMyCoreAnalytics *)self runData];
-  [v5 start:v10];
+  runData3 = [(PRFindMyCoreAnalytics *)self runData];
+  [runData3 start:v10];
 
   [(PRFindMyCoreAnalytics *)self sendAnalyticsEvent:v10];
 }
 
-- (void)addLatestTarget:(id)a3
+- (void)addLatestTarget:(id)target
 {
   v22[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PRFindMyCoreAnalytics *)self latestTarget];
+  targetCopy = target;
+  latestTarget = [(PRFindMyCoreAnalytics *)self latestTarget];
 
-  if (v5)
+  if (latestTarget)
   {
     v6 = MEMORY[0x277CBEB38];
     v7 = MEMORY[0x277CCABB0];
-    v8 = [(PRFindMyCoreAnalytics *)self latestTarget];
-    [v8 vector];
+    latestTarget2 = [(PRFindMyCoreAnalytics *)self latestTarget];
+    [latestTarget2 vector];
     v9 = [v7 numberWithFloat:?];
     v22[0] = v9;
     v10 = MEMORY[0x277CCABB0];
-    v11 = [(PRFindMyCoreAnalytics *)self latestTarget];
-    [v11 vector];
+    latestTarget3 = [(PRFindMyCoreAnalytics *)self latestTarget];
+    [latestTarget3 vector];
     LODWORD(v12) = HIDWORD(v12);
     v13 = [v10 numberWithFloat:v12];
     v22[1] = v13;
     v14 = MEMORY[0x277CCABB0];
-    v15 = [(PRFindMyCoreAnalytics *)self latestTarget];
-    [v15 vector];
+    latestTarget4 = [(PRFindMyCoreAnalytics *)self latestTarget];
+    [latestTarget4 vector];
     LODWORD(v17) = v16;
     v18 = [v14 numberWithFloat:v17];
     v22[2] = v18;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:3];
     v20 = [v6 dictionaryWithObjectsAndKeys:{v19, @"target", 0}];
 
-    [v4 addEntriesFromDictionary:v20];
+    [targetCopy addEntriesFromDictionary:v20];
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -336,11 +336,11 @@
   {
     v5 = [(PRFindMyCoreAnalytics *)self eventDictionaryWithEvent:@"Stop"];
     [(PRFindMyCoreAnalytics *)self addLatestTarget:?];
-    v3 = [(PRFindMyCoreAnalytics *)self runData];
-    [v3 stop:v5];
+    runData = [(PRFindMyCoreAnalytics *)self runData];
+    [runData stop:v5];
 
-    v4 = [(PRFindMyCoreAnalytics *)self runData];
-    [v4 logData];
+    runData2 = [(PRFindMyCoreAnalytics *)self runData];
+    [runData2 logData];
 
     [(PRFindMyCoreAnalytics *)self setRunData:0];
     [(PRFindMyCoreAnalytics *)self sendAnalyticsEvent:v5];
@@ -353,11 +353,11 @@
 {
   [(PRFindMyCoreAnalytics *)self stop];
   v5 = [(PRFindMyCoreAnalytics *)self eventDictionaryWithEvent:@"Deinit"];
-  v3 = [(PRFindMyCoreAnalytics *)self sessionData];
-  [v3 deinit:v5];
+  sessionData = [(PRFindMyCoreAnalytics *)self sessionData];
+  [sessionData deinit:v5];
 
-  v4 = [(PRFindMyCoreAnalytics *)self sessionData];
-  [v4 logData];
+  sessionData2 = [(PRFindMyCoreAnalytics *)self sessionData];
+  [sessionData2 logData];
 
   [(PRFindMyCoreAnalytics *)self sendAnalyticsEvent:v5];
 }
@@ -375,29 +375,29 @@
   [(PRFindMyCoreAnalytics *)self setOldPreviousPoseOfUser:?];
 
   v8 = [(PRFindMyCoreAnalytics *)self eventDictionaryWithEvent:@"InvalidPose"];
-  v4 = [(PRFindMyCoreAnalytics *)self runData];
-  [v4 invalidPose:v8];
+  runData = [(PRFindMyCoreAnalytics *)self runData];
+  [runData invalidPose:v8];
 
   [(PRFindMyCoreAnalytics *)self sendAnalyticsEvent:v8];
 }
 
-- (void)targetComputed:(id)a3
+- (void)targetComputed:(id)computed
 {
-  v6 = a3;
+  computedCopy = computed;
   [(PRFindMyCoreAnalytics *)self setLatestTarget:?];
   if ([(PRFindMyCoreAnalytics *)self shouldLogTargetFoundEvent])
   {
     v4 = [(PRFindMyCoreAnalytics *)self eventDictionaryWithEvent:@"TargetFound"];
     [(PRFindMyCoreAnalytics *)self addLatestTarget:v4];
-    v5 = [(PRFindMyCoreAnalytics *)self runData];
-    [v5 targetFound:v4];
+    runData = [(PRFindMyCoreAnalytics *)self runData];
+    [runData targetFound:v4];
 
     [(PRFindMyCoreAnalytics *)self sendAnalyticsEvent:v4];
     [(PRFindMyCoreAnalytics *)self setShouldLogTargetFoundEvent:0];
   }
 }
 
-- (void)targetRevokedWithReason:(unint64_t)a3
+- (void)targetRevokedWithReason:(unint64_t)reason
 {
   if ([(PRFindMyCoreAnalytics *)self shouldLogTargetFoundEvent])
   {
@@ -405,43 +405,43 @@
   }
 
   v7 = [(PRFindMyCoreAnalytics *)self eventDictionaryWithEvent:@"TargetRevoked"];
-  v5 = [(PRFindMyCoreAnalytics *)self runData];
-  [v5 targetRevoked:v7];
+  runData = [(PRFindMyCoreAnalytics *)self runData];
+  [runData targetRevoked:v7];
 
-  if (a3 > 2)
+  if (reason > 2)
   {
-    switch(a3)
+    switch(reason)
     {
       case 3uLL:
-        v6 = [(PRFindMyCoreAnalytics *)self runData];
-        [v6 aoaRevoke:v7];
+        runData2 = [(PRFindMyCoreAnalytics *)self runData];
+        [runData2 aoaRevoke:v7];
         goto LABEL_15;
       case 4uLL:
-        v6 = [(PRFindMyCoreAnalytics *)self runData];
-        [v6 straightPathRevoke:v7];
+        runData2 = [(PRFindMyCoreAnalytics *)self runData];
+        [runData2 straightPathRevoke:v7];
         goto LABEL_15;
       case 5uLL:
-        v6 = [(PRFindMyCoreAnalytics *)self runData];
-        [v6 highResidualRevoke:v7];
+        runData2 = [(PRFindMyCoreAnalytics *)self runData];
+        [runData2 highResidualRevoke:v7];
         goto LABEL_15;
     }
   }
 
   else
   {
-    switch(a3)
+    switch(reason)
     {
       case 0uLL:
-        v6 = [(PRFindMyCoreAnalytics *)self runData];
-        [v6 vioRevoke:v7];
+        runData2 = [(PRFindMyCoreAnalytics *)self runData];
+        [runData2 vioRevoke:v7];
         goto LABEL_15;
       case 1uLL:
-        v6 = [(PRFindMyCoreAnalytics *)self runData];
-        [v6 targetMotionRevoke:v7];
+        runData2 = [(PRFindMyCoreAnalytics *)self runData];
+        [runData2 targetMotionRevoke:v7];
         goto LABEL_15;
       case 2uLL:
-        v6 = [(PRFindMyCoreAnalytics *)self runData];
-        [v6 rangeRevoke:v7];
+        runData2 = [(PRFindMyCoreAnalytics *)self runData];
+        [runData2 rangeRevoke:v7];
 LABEL_15:
 
         break;
@@ -455,48 +455,48 @@ LABEL_15:
 - (void)firstArrowFromRange
 {
   v4 = [(PRFindMyCoreAnalytics *)self eventDictionaryWithEvent:@"TargetFoundFromRange"];
-  v3 = [(PRFindMyCoreAnalytics *)self runData];
-  [v3 targetFoundFromRange:v4];
+  runData = [(PRFindMyCoreAnalytics *)self runData];
+  [runData targetFoundFromRange:v4];
 }
 
 - (void)firstArrowFromAoA
 {
   v4 = [(PRFindMyCoreAnalytics *)self eventDictionaryWithEvent:@"TargetFoundFromAoA"];
-  v3 = [(PRFindMyCoreAnalytics *)self runData];
-  [v3 targetFoundFromAoA:v4];
+  runData = [(PRFindMyCoreAnalytics *)self runData];
+  [runData targetFoundFromAoA:v4];
 }
 
 - (void)torchButtonPresented
 {
-  v2 = [(PRFindMyCoreAnalytics *)self runData];
-  [v2 setTorchButtonPresented:1];
+  runData = [(PRFindMyCoreAnalytics *)self runData];
+  [runData setTorchButtonPresented:1];
 }
 
-- (void)torchChangedState:(BOOL)a3
+- (void)torchChangedState:(BOOL)state
 {
-  v3 = a3;
-  v4 = [(PRFindMyCoreAnalytics *)self runData];
-  v5 = v4;
-  if (v3)
+  stateCopy = state;
+  runData = [(PRFindMyCoreAnalytics *)self runData];
+  v5 = runData;
+  if (stateCopy)
   {
-    [v4 setTorchTurnedOn:1];
+    [runData setTorchTurnedOn:1];
   }
 
   else
   {
-    [v4 setTorchTurnedOff:1];
+    [runData setTorchTurnedOff:1];
   }
 }
 
-- (void)rangingFailedWithError:(id)a3
+- (void)rangingFailedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = MEMORY[0x277CBEB38];
-  v13 = v4;
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "code")}];
-  v7 = [v6 stringValue];
-  v8 = [v13 localizedDescription];
-  v9 = [v5 dictionaryWithObjectsAndKeys:{v7, @"status", v8, @"errorDescription", 0}];
+  v13 = errorCopy;
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
+  stringValue = [v6 stringValue];
+  localizedDescription = [v13 localizedDescription];
+  v9 = [v5 dictionaryWithObjectsAndKeys:{stringValue, @"status", localizedDescription, @"errorDescription", 0}];
 
   v10 = [(PRFindMyCoreAnalytics *)self eventDictionaryWithEvent:@"RangingError"];
   v11 = v10;
@@ -519,36 +519,36 @@ LABEL_15:
   }
 }
 
-- (void)updateTravelDistanceWithPose:(id)a3
+- (void)updateTravelDistanceWithPose:(id)pose
 {
-  v40 = a3;
-  v4 = [(PRFindMyCoreAnalytics *)self previousPose];
-  [v4 pose];
+  poseCopy = pose;
+  previousPose = [(PRFindMyCoreAnalytics *)self previousPose];
+  [previousPose pose];
   v37 = v5;
 
-  v6 = [(PRFindMyCoreAnalytics *)self previousPoseOfUser];
-  [v6 pose];
+  previousPoseOfUser = [(PRFindMyCoreAnalytics *)self previousPoseOfUser];
+  [previousPoseOfUser pose];
   v36 = v7;
 
-  v8 = [(PRFindMyCoreAnalytics *)self oldPreviousPoseOfUser];
-  [v8 pose];
+  oldPreviousPoseOfUser = [(PRFindMyCoreAnalytics *)self oldPreviousPoseOfUser];
+  [oldPreviousPoseOfUser pose];
   v35 = v9;
 
-  [v40 pose];
+  [poseCopy pose];
   v38 = v10;
   v11 = MEMORY[0x277CCABB0];
-  v12 = [(PRFindMyCoreAnalytics *)self traveledDistance];
-  [v12 floatValue];
+  traveledDistance = [(PRFindMyCoreAnalytics *)self traveledDistance];
+  [traveledDistance floatValue];
   v13 = vsubq_f32(v37, v38);
   v14 = vmulq_f32(v13, v13);
   *&v16 = sqrtf(v14.f32[2] + vaddv_f32(*v14.f32)) + v15;
   v17 = [v11 numberWithFloat:v16];
   [(PRFindMyCoreAnalytics *)self setTraveledDistance:v17];
 
-  [(PRFindMyCoreAnalytics *)self setPreviousPose:v40];
+  [(PRFindMyCoreAnalytics *)self setPreviousPose:poseCopy];
   v18 = MEMORY[0x277CCABB0];
-  v19 = [(PRFindMyCoreAnalytics *)self numberOfPoses];
-  v20 = [v18 numberWithInt:{objc_msgSend(v19, "intValue") + 1}];
+  numberOfPoses = [(PRFindMyCoreAnalytics *)self numberOfPoses];
+  v20 = [v18 numberWithInt:{objc_msgSend(numberOfPoses, "intValue") + 1}];
   [(PRFindMyCoreAnalytics *)self setNumberOfPoses:v20];
 
   v21 = vsubq_f32(v36, v38);
@@ -561,53 +561,53 @@ LABEL_15:
   if (v22.i32[1] & v22.i32[0])
   {
     v25 = MEMORY[0x277CCABB0];
-    v26 = [(PRFindMyCoreAnalytics *)self traveledDistanceOfUser];
-    [v26 floatValue];
+    traveledDistanceOfUser = [(PRFindMyCoreAnalytics *)self traveledDistanceOfUser];
+    [traveledDistanceOfUser floatValue];
     *&v28 = v39 + v27;
     v29 = [v25 numberWithFloat:v28];
     [(PRFindMyCoreAnalytics *)self setTraveledDistanceOfUser:v29];
 
-    v30 = [(PRFindMyCoreAnalytics *)self previousPoseOfUser];
-    [(PRFindMyCoreAnalytics *)self setOldPreviousPoseOfUser:v30];
+    previousPoseOfUser2 = [(PRFindMyCoreAnalytics *)self previousPoseOfUser];
+    [(PRFindMyCoreAnalytics *)self setOldPreviousPoseOfUser:previousPoseOfUser2];
 
-    [(PRFindMyCoreAnalytics *)self setPreviousPoseOfUser:v40];
+    [(PRFindMyCoreAnalytics *)self setPreviousPoseOfUser:poseCopy];
   }
 
-  v31 = [(PRFindMyCoreAnalytics *)self numberOfPoses];
-  v32 = [v31 intValue];
+  numberOfPoses2 = [(PRFindMyCoreAnalytics *)self numberOfPoses];
+  intValue = [numberOfPoses2 intValue];
 
-  if (v32 == 1)
+  if (intValue == 1)
   {
     v33 = [(PRFindMyCoreAnalytics *)self eventDictionaryWithEvent:@"FirstPose"];
-    v34 = [(PRFindMyCoreAnalytics *)self runData];
-    [v34 firstPose:v33];
+    runData = [(PRFindMyCoreAnalytics *)self runData];
+    [runData firstPose:v33];
 
     [(PRFindMyCoreAnalytics *)self sendAnalyticsEvent:v33];
   }
 }
 
-- (void)updateWithRangeEstimate:(id)a3
+- (void)updateWithRangeEstimate:(id)estimate
 {
-  v4 = a3;
+  estimateCopy = estimate;
   v5 = MEMORY[0x277CCABB0];
-  v16 = v4;
-  [v4 range];
+  v16 = estimateCopy;
+  [estimateCopy range];
   v6 = [v5 numberWithFloat:?];
   [(PRFindMyCoreAnalytics *)self setRangeEstimate:v6];
 
   v7 = MEMORY[0x277CCABB0];
-  v8 = [(PRFindMyCoreAnalytics *)self numberOfRanges];
-  v9 = [v7 numberWithInt:{objc_msgSend(v8, "intValue") + 1}];
+  numberOfRanges = [(PRFindMyCoreAnalytics *)self numberOfRanges];
+  v9 = [v7 numberWithInt:{objc_msgSend(numberOfRanges, "intValue") + 1}];
   [(PRFindMyCoreAnalytics *)self setNumberOfRanges:v9];
 
-  v10 = [(PRFindMyCoreAnalytics *)self numberOfRanges];
-  LODWORD(v9) = [v10 intValue];
+  numberOfRanges2 = [(PRFindMyCoreAnalytics *)self numberOfRanges];
+  LODWORD(v9) = [numberOfRanges2 intValue];
 
   if (v9 == 1)
   {
     v11 = [(PRFindMyCoreAnalytics *)self eventDictionaryWithEvent:@"FirstRange"];
-    v12 = [(PRFindMyCoreAnalytics *)self runData];
-    [v12 firstRange:v11];
+    runData = [(PRFindMyCoreAnalytics *)self runData];
+    [runData firstRange:v11];
 
     [(PRFindMyCoreAnalytics *)self sendAnalyticsEvent:v11];
   }
@@ -617,20 +617,20 @@ LABEL_15:
   {
     v14 = [(PRFindMyCoreAnalytics *)self eventDictionaryWithEvent:@"EnteredArmsReach"];
     [(PRFindMyCoreAnalytics *)self sendAnalyticsEvent:v14];
-    v15 = [(PRFindMyCoreAnalytics *)self runData];
-    [v15 setArmsReachEvent:v14];
+    runData2 = [(PRFindMyCoreAnalytics *)self runData];
+    [runData2 setArmsReachEvent:v14];
 
     [(PRFindMyCoreAnalytics *)self setShouldLogEnteredArmsReachEvent:0];
   }
 }
 
-- (void)updateSOIRSSI:(double)a3
+- (void)updateSOIRSSI:(double)i
 {
   if (![(PRFindMyCoreAnalytics *)self receivedfirstSOIRSSI])
   {
     [(PRFindMyCoreAnalytics *)self setReceivedfirstSOIRSSI:1];
-    v5 = [(PRFindMyCoreAnalytics *)self runData];
-    [v5 logFirstSOIRSSI:a3];
+    runData = [(PRFindMyCoreAnalytics *)self runData];
+    [runData logFirstSOIRSSI:i];
   }
 }
 
@@ -640,15 +640,15 @@ LABEL_15:
   [(PRFindMyCoreAnalytics *)self setRangeEstimate:?];
 }
 
-- (void)targetMovingStateChanged:(BOOL)a3
+- (void)targetMovingStateChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v5 = MEMORY[0x277CBEB38];
   v6 = [MEMORY[0x277CCABB0] numberWithBool:?];
   v9 = [v5 dictionaryWithObjectsAndKeys:{v6, @"status", 0}];
 
   v7 = [(PRFindMyCoreAnalytics *)self eventDictionaryWithEvent:@"TargetMoving"];
-  if (v3)
+  if (changedCopy)
   {
     if (![(PRFindMyCoreAnalytics *)self shouldLogMotionEvent])
     {
@@ -656,13 +656,13 @@ LABEL_15:
     }
 
     [v7 addEntriesFromDictionary:v9];
-    v8 = [(PRFindMyCoreAnalytics *)self runData];
-    [v8 motion:v7];
+    runData = [(PRFindMyCoreAnalytics *)self runData];
+    [runData motion:v7];
 
     [(PRFindMyCoreAnalytics *)self sendAnalyticsEvent:v7];
   }
 
-  [(PRFindMyCoreAnalytics *)self setShouldLogMotionEvent:!v3];
+  [(PRFindMyCoreAnalytics *)self setShouldLogMotionEvent:!changedCopy];
 LABEL_5:
 }
 
@@ -683,13 +683,13 @@ uint64_t __40__PRFindMyCoreAnalytics_isInternalBuild__block_invoke()
   return result;
 }
 
-- (void)sendLiveOnAnalytics:(id)a3
+- (void)sendLiveOnAnalytics:(id)analytics
 {
-  v4 = a3;
-  v5 = [objc_opt_class() isInternalBuild];
-  if (v4)
+  analyticsCopy = analytics;
+  isInternalBuild = [objc_opt_class() isInternalBuild];
+  if (analyticsCopy)
   {
-    v6 = v5;
+    v6 = isInternalBuild;
   }
 
   else
@@ -699,16 +699,16 @@ uint64_t __40__PRFindMyCoreAnalytics_isInternalBuild__block_invoke()
 
   if (v6)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
-    [v7 setObject:@"com.apple.proximity.findmy.itemlocalizer.event" forKeyedSubscript:@"eventName"];
-    [v7 addEntriesFromDictionary:v4];
-    if ([MEMORY[0x277CCAAA0] isValidJSONObject:v7])
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary setObject:@"com.apple.proximity.findmy.itemlocalizer.event" forKeyedSubscript:@"eventName"];
+    [dictionary addEntriesFromDictionary:analyticsCopy];
+    if ([MEMORY[0x277CCAAA0] isValidJSONObject:dictionary])
     {
       v8 = [MEMORY[0x277CBEBC0] URLWithString:@"https://gateway.icloud.com/acsnservice/metrics"];
       v9 = [MEMORY[0x277CCAB70] requestWithURL:v8];
       [v9 setHTTPMethod:@"POST"];
       v20 = 0;
-      v10 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v7 options:1 error:&v20];
+      v10 = [MEMORY[0x277CCAAA0] dataWithJSONObject:dictionary options:1 error:&v20];
       v11 = v20;
       if (v11)
       {
@@ -718,16 +718,16 @@ uint64_t __40__PRFindMyCoreAnalytics_isInternalBuild__block_invoke()
       else
       {
         [v9 setHTTPBody:v10];
-        v12 = [(PRFindMyCoreAnalytics *)self authHeaderValue];
-        [v9 setValue:v12 forHTTPHeaderField:@"Authorization"];
+        authHeaderValue = [(PRFindMyCoreAnalytics *)self authHeaderValue];
+        [v9 setValue:authHeaderValue forHTTPHeaderField:@"Authorization"];
 
-        v13 = [(PRFindMyCoreAnalytics *)self urlSession];
+        urlSession = [(PRFindMyCoreAnalytics *)self urlSession];
         v15 = MEMORY[0x277D85DD0];
         v16 = 3221225472;
         v17 = __45__PRFindMyCoreAnalytics_sendLiveOnAnalytics___block_invoke;
         v18 = &unk_279AD6088;
-        v19 = v7;
-        v14 = [v13 dataTaskWithRequest:v9 completionHandler:&v15];
+        v19 = dictionary;
+        v14 = [urlSession dataTaskWithRequest:v9 completionHandler:&v15];
 
         [v14 resume];
       }

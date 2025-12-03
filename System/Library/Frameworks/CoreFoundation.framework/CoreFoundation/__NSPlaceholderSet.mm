@@ -1,13 +1,13 @@
 @interface __NSPlaceholderSet
 + (void)initialize;
 - (__NSPlaceholderSet)init;
-- (__NSPlaceholderSet)initWithCapacity:(unint64_t)a3;
-- (__NSPlaceholderSet)initWithObjects:(const void *)a3 count:(unint64_t)a4;
-- (id)member:(id)a3;
+- (__NSPlaceholderSet)initWithCapacity:(unint64_t)capacity;
+- (__NSPlaceholderSet)initWithObjects:(const void *)objects count:(unint64_t)count;
+- (id)member:(id)member;
 - (id)objectEnumerator;
 - (unint64_t)count;
-- (void)addObject:(id)a3;
-- (void)removeObject:(id)a3;
+- (void)addObject:(id)object;
+- (void)removeObject:(id)object;
 @end
 
 @implementation __NSPlaceholderSet
@@ -30,7 +30,7 @@
 
 + (void)initialize
 {
-  if (__NSPlaceholderSet == a1)
+  if (__NSPlaceholderSet == self)
   {
     __NSSet0__ = __NSSetI_new(0, 0, 0, 0);
   }
@@ -73,7 +73,7 @@
   objc_exception_throw(v11);
 }
 
-- (id)member:(id)a3
+- (id)member:(id)member
 {
   v5 = "mutable";
   v6 = "NSMutableSet";
@@ -147,7 +147,7 @@
   objc_exception_throw(v11);
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
   v5 = "mutable";
   v6 = "NSMutableSet";
@@ -184,7 +184,7 @@
   objc_exception_throw(v12);
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
   v5 = "mutable";
   v6 = "NSMutableSet";
@@ -221,10 +221,10 @@
   objc_exception_throw(v12);
 }
 
-- (__NSPlaceholderSet)initWithObjects:(const void *)a3 count:(unint64_t)a4
+- (__NSPlaceholderSet)initWithObjects:(const void *)objects count:(unint64_t)count
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  if (!a3 && a4)
+  if (!objects && count)
   {
     v12 = _os_log_pack_size();
     v13 = v21 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -232,12 +232,12 @@
     *v18 = 136315394;
     *(v18 + 4) = "[__NSPlaceholderSet initWithObjects:count:]";
     *(v18 + 12) = 2048;
-    *(v18 + 14) = a4;
-    v15 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[__NSPlaceholderSet initWithObjects:count:]", a4);
+    *(v18 + 14) = count;
+    v15 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[__NSPlaceholderSet initWithObjects:count:]", count);
     goto LABEL_25;
   }
 
-  if (a4 >> 61)
+  if (count >> 61)
   {
     v12 = _os_log_pack_size();
     v13 = v21 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -245,17 +245,17 @@
     *v20 = 136315394;
     *(v20 + 4) = "[__NSPlaceholderSet initWithObjects:count:]";
     *(v20 + 12) = 2048;
-    *(v20 + 14) = a4;
-    v15 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[__NSPlaceholderSet initWithObjects:count:]", a4);
+    *(v20 + 14) = count;
+    v15 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[__NSPlaceholderSet initWithObjects:count:]", count);
     goto LABEL_25;
   }
 
-  if (a4)
+  if (count)
   {
     v4 = 0;
-    while (a3[v4])
+    while (objects[v4])
     {
-      if (a4 == ++v4)
+      if (count == ++v4)
       {
         goto LABEL_8;
       }
@@ -278,19 +278,19 @@ LABEL_25:
 LABEL_8:
   if (self == &___immutablePlaceholderSet)
   {
-    if (a4 == 1)
+    if (count == 1)
     {
-      v8 = *a3;
+      v8 = *objects;
       v9 = *MEMORY[0x1E69E9840];
 
       return __NSSingleObjectSetI_new(v8, 0);
     }
 
-    else if (a4)
+    else if (count)
     {
       v10 = *MEMORY[0x1E69E9840];
 
-      return __NSSetI_new(a3, 0, a4, 0);
+      return __NSSetI_new(objects, 0, count, 0);
     }
 
     else
@@ -306,7 +306,7 @@ LABEL_8:
   {
     v5 = *MEMORY[0x1E69E9840];
 
-    return __NSSetM_new(a3, a4, 0);
+    return __NSSetM_new(objects, count, 0);
   }
 
   else
@@ -317,18 +317,18 @@ LABEL_8:
   return self;
 }
 
-- (__NSPlaceholderSet)initWithCapacity:(unint64_t)a3
+- (__NSPlaceholderSet)initWithCapacity:(unint64_t)capacity
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  if (a3 >> 61)
+  if (capacity >> 61)
   {
     v6 = _os_log_pack_size();
     v7 = _os_log_pack_fill();
     *v7 = 136315394;
     *(v7 + 4) = "[__NSPlaceholderSet initWithCapacity:]";
     *(v7 + 12) = 2048;
-    *(v7 + 14) = a3;
-    v8 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: capacity (%lu) is ridiculous", "[__NSPlaceholderSet initWithCapacity:]", a3);
+    *(v7 + 14) = capacity;
+    v8 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: capacity (%lu) is ridiculous", "[__NSPlaceholderSet initWithCapacity:]", capacity);
     v9 = [NSException exceptionWithName:@"NSInvalidArgumentException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v8) osLogPack:0 size:v10 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0), v6];
     objc_exception_throw(v9);
   }
@@ -347,7 +347,7 @@ LABEL_9:
 
   v3 = *MEMORY[0x1E69E9840];
 
-  return __NSSetM_new(0, a3, 0);
+  return __NSSetM_new(0, capacity, 0);
 }
 
 @end

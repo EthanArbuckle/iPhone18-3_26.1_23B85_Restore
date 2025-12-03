@@ -1,20 +1,20 @@
 @interface PMTextRunMapper
-- (BOOL)_isDefaultFill:(id)a3;
-- (PMTextRunMapper)initWithOadTextRun:(id)a3 parent:(id)a4;
-- (id)copyCharacterStyleWithState:(id)a3;
+- (BOOL)_isDefaultFill:(id)fill;
+- (PMTextRunMapper)initWithOadTextRun:(id)run parent:(id)parent;
+- (id)copyCharacterStyleWithState:(id)state;
 - (id)fontScheme;
-- (void)addFontForLanguageType:(int)a3 toCharacterStyle:(id)a4;
-- (void)mapAt:(id)a3 withState:(id)a4;
+- (void)addFontForLanguageType:(int)type toCharacterStyle:(id)style;
+- (void)mapAt:(id)at withState:(id)state;
 @end
 
 @implementation PMTextRunMapper
 
 - (id)fontScheme
 {
-  v2 = [(CMMapper *)self parent];
-  if (v2)
+  parent = [(CMMapper *)self parent];
+  if (parent)
   {
-    v3 = v2;
+    v3 = parent;
     while (1)
     {
       objc_opt_class();
@@ -23,67 +23,67 @@
         break;
       }
 
-      v4 = [v3 parent];
+      parent2 = [v3 parent];
 
-      v3 = v4;
-      if (!v4)
+      v3 = parent2;
+      if (!parent2)
       {
         goto LABEL_5;
       }
     }
 
-    v6 = [v3 defaultTheme];
+    defaultTheme = [v3 defaultTheme];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v6 fontScheme];
+      fontScheme = [defaultTheme fontScheme];
     }
 
     else
     {
-      v7 = [v6 baseStyles];
-      v5 = [v7 fontScheme];
+      baseStyles = [defaultTheme baseStyles];
+      fontScheme = [baseStyles fontScheme];
     }
   }
 
   else
   {
 LABEL_5:
-    v5 = 0;
+    fontScheme = 0;
   }
 
-  return v5;
+  return fontScheme;
 }
 
-- (PMTextRunMapper)initWithOadTextRun:(id)a3 parent:(id)a4
+- (PMTextRunMapper)initWithOadTextRun:(id)run parent:(id)parent
 {
-  v7 = a3;
+  runCopy = run;
   v11.receiver = self;
   v11.super_class = PMTextRunMapper;
-  v8 = [(CMMapper *)&v11 initWithParent:a4];
+  v8 = [(CMMapper *)&v11 initWithParent:parent];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->mTextRun, a3);
+    objc_storeStrong(&v8->mTextRun, run);
   }
 
   return v9;
 }
 
-- (void)addFontForLanguageType:(int)a3 toCharacterStyle:(id)a4
+- (void)addFontForLanguageType:(int)type toCharacterStyle:(id)style
 {
-  v6 = a4;
-  v7 = [(OADTextRun *)self->mTextRun properties];
-  v8 = v7;
-  if (a3 > 1)
+  styleCopy = style;
+  properties = [(OADTextRun *)self->mTextRun properties];
+  v8 = properties;
+  if (type > 1)
   {
-    switch(a3)
+    switch(type)
     {
       case 2:
-        v9 = [v7 bidiFont];
+        bidiFont = [properties bidiFont];
         break;
       case 3:
-        v9 = [v7 symbolFont];
+        bidiFont = [properties symbolFont];
         break;
       case 4:
         goto LABEL_8;
@@ -92,8 +92,8 @@ LABEL_5:
     }
 
 LABEL_11:
-    v10 = v9;
-    if (v9)
+    latinFont = bidiFont;
+    if (bidiFont)
     {
       goto LABEL_14;
     }
@@ -101,31 +101,31 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ((a3 + 1) < 2)
+  if ((type + 1) < 2)
   {
 LABEL_8:
-    v9 = [v7 latinFont];
+    bidiFont = [properties latinFont];
     goto LABEL_11;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
-    v9 = [v7 eastAsianFont];
+    bidiFont = [properties eastAsianFont];
     goto LABEL_11;
   }
 
 LABEL_12:
-  v10 = [v8 latinFont];
-  if (!v10)
+  latinFont = [v8 latinFont];
+  if (!latinFont)
   {
-    v10 = [v8 symbolFont];
+    latinFont = [v8 symbolFont];
   }
 
 LABEL_14:
-  v11 = [(PMTextRunMapper *)self fontScheme];
-  v22 = v6;
-  v12 = v11;
-  v13 = v10;
+  fontScheme = [(PMTextRunMapper *)self fontScheme];
+  v22 = styleCopy;
+  v12 = fontScheme;
+  v13 = latinFont;
   v15 = v13;
   if (v13)
   {
@@ -144,20 +144,20 @@ LABEL_14:
   }
 }
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v6 = a3;
-  v30 = a4;
-  v7 = [(OADTextRun *)self->mTextRun properties];
-  v8 = [v7 clickHyperlink];
+  atCopy = at;
+  stateCopy = state;
+  properties = [(OADTextRun *)self->mTextRun properties];
+  clickHyperlink = [properties clickHyperlink];
 
-  v31 = v8;
-  if (v8)
+  v31 = clickHyperlink;
+  if (clickHyperlink)
   {
     v9 = [OIXMLElement elementWithType:0];
-    v10 = [v8 targetLocation];
-    v11 = [v10 absoluteString];
-    v12 = [OIXMLAttribute attributeWithName:0x286F07D70 stringValue:v11];
+    targetLocation = [clickHyperlink targetLocation];
+    absoluteString = [targetLocation absoluteString];
+    v12 = [OIXMLAttribute attributeWithName:0x286F07D70 stringValue:absoluteString];
     [v9 addAttribute:v12];
   }
 
@@ -166,21 +166,21 @@ LABEL_14:
     v9 = [OIXMLElement elementWithType:16];
   }
 
-  v13 = v8;
-  v29 = [(PMTextRunMapper *)self copyCharacterStyleWithState:v30];
+  v13 = clickHyperlink;
+  v29 = [(PMTextRunMapper *)self copyCharacterStyleWithState:stateCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v14 = [(OADTextRun *)self->mTextRun text];
-    if ([v14 length])
+    text = [(OADTextRun *)self->mTextRun text];
+    if ([text length])
     {
-      v28 = v6;
+      v28 = atCopy;
       v32 = 0;
       v33 = 0;
-      v15 = [v14 tc_languageTypeAtIndex:0 effectiveRange:&v32];
+      v15 = [text tc_languageTypeAtIndex:0 effectiveRange:&v32];
       v16 = v32;
       v17 = v33;
-      v18 = [v14 length];
+      v18 = [text length];
       if (v16)
       {
         v19 = 0;
@@ -195,7 +195,7 @@ LABEL_14:
       if (v19)
       {
         [(PMTextRunMapper *)self addFontForLanguageType:v15 toCharacterStyle:v29];
-        v21 = [OIXMLTextNode textNodeWithStringValue:v14];
+        v21 = [OIXMLTextNode textNodeWithStringValue:text];
         [v9 addChild:v21];
       }
 
@@ -209,24 +209,24 @@ LABEL_14:
           v23 = objc_alloc_init(CMStyle);
           [(PMTextRunMapper *)self addFontForLanguageType:v15 toCharacterStyle:v23];
           [(CMMapper *)self addStyleUsingGlobalCacheTo:v22 style:v23];
-          v24 = [v14 substringWithRange:{v32, v33}];
+          v24 = [text substringWithRange:{v32, v33}];
           v25 = [OIXMLTextNode textNodeWithStringValue:v24];
           [v22 addChild:v25];
 
           v32 += v33;
           v26 = v32;
-          if (v26 >= [v14 length])
+          if (v26 >= [text length])
           {
             break;
           }
 
-          v15 = [v14 tc_languageTypeAtIndex:v32 effectiveRange:&v32];
+          v15 = [text tc_languageTypeAtIndex:v32 effectiveRange:&v32];
         }
 
         while ((v15 & 0x80000000) == 0);
       }
 
-      v6 = v28;
+      atCopy = v28;
       v13 = v31;
       goto LABEL_23;
     }
@@ -242,20 +242,20 @@ LABEL_14:
       [(CMMapper *)self addStyleUsingGlobalCacheTo:v9 style:v29];
 
 LABEL_23:
-      [v6 addChild:v9];
+      [atCopy addChild:v9];
     }
   }
 }
 
-- (BOOL)_isDefaultFill:(id)a3
+- (BOOL)_isDefaultFill:(id)fill
 {
-  v3 = a3;
+  fillCopy = fill;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 color];
+    color = [fillCopy color];
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [v4 schemeColorIndex] == 1;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [color schemeColorIndex] == 1;
   }
 
   else
@@ -266,13 +266,13 @@ LABEL_23:
   return v5;
 }
 
-- (id)copyCharacterStyleWithState:(id)a3
+- (id)copyCharacterStyleWithState:(id)state
 {
   v39 = *MEMORY[0x277D85DE8];
-  v33 = a3;
+  stateCopy = state;
   v4 = objc_alloc_init(CMStyle);
-  v5 = [(OADTextRun *)self->mTextRun properties];
-  if ([v5 hasBaseline] && (objc_msgSend(v5, "baseline"), v6))
+  properties = [(OADTextRun *)self->mTextRun properties];
+  if ([properties hasBaseline] && (objc_msgSend(properties, "baseline"), v6))
   {
     if (v6 <= 0)
     {
@@ -293,11 +293,11 @@ LABEL_23:
     v8 = 0;
   }
 
-  v9 = [v33 currentRowStyle];
-  v32 = [v9 textStyle];
-  if ([v5 hasSize])
+  currentRowStyle = [stateCopy currentRowStyle];
+  textStyle = [currentRowStyle textStyle];
+  if ([properties hasSize])
   {
-    [v5 size];
+    [properties size];
     v11 = v10;
     v12 = [CMLengthProperty alloc];
     v13 = v11;
@@ -310,25 +310,25 @@ LABEL_23:
     [(CMStyle *)v4 addProperty:v14 forKey:0x286EF73D0];
   }
 
-  v15 = [v5 fill];
+  fill = [properties fill];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (!v9 || ![(PMTextRunMapper *)self _isDefaultFill:v15])
+    if (!currentRowStyle || ![(PMTextRunMapper *)self _isDefaultFill:fill])
     {
-      v17 = [CMColorProperty nsColorFromOADFill:v15 state:v33];
+      v17 = [CMColorProperty nsColorFromOADFill:fill state:stateCopy];
       if (v17)
       {
         v21 = MEMORY[0x277CCACA8];
         v22 = [CMColorProperty cssStringFromTSUColor:v17];
-        v16 = [v21 stringWithString:v22];
+        color = [v21 stringWithString:v22];
 
-        [(CMStyle *)v4 appendPropertyForName:0x286F077B0 stringWithColons:v16];
+        [(CMStyle *)v4 appendPropertyForName:0x286F077B0 stringWithColons:color];
       }
 
       else
       {
-        v16 = 0;
+        color = 0;
       }
 
 LABEL_22:
@@ -337,8 +337,8 @@ LABEL_22:
     }
 
 LABEL_17:
-    v16 = [v32 color];
-    v17 = [CMColorProperty nsColorFromOADColor:v16 state:v33];
+    color = [textStyle color];
+    v17 = [CMColorProperty nsColorFromOADColor:color state:stateCopy];
     if (v17)
     {
       v18 = MEMORY[0x277CCACA8];
@@ -351,23 +351,23 @@ LABEL_17:
     goto LABEL_22;
   }
 
-  if (v9)
+  if (currentRowStyle)
   {
     goto LABEL_17;
   }
 
 LABEL_23:
-  if ([v5 hasIsBold] && (objc_msgSend(v5, "isBold") & 1) != 0 || v32 && !objc_msgSend(v32, "bold"))
+  if ([properties hasIsBold] && (objc_msgSend(properties, "isBold") & 1) != 0 || textStyle && !objc_msgSend(textStyle, "bold"))
   {
     [(CMStyle *)v4 appendPropertyForName:0x286EF7410 stringValue:@"bold"];
   }
 
-  if ([v5 isItalic])
+  if ([properties isItalic])
   {
     [(CMStyle *)v4 appendPropertyForName:0x286EF7450 stringValue:@"italic"];
   }
 
-  [v5 effects];
+  [properties effects];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
@@ -397,7 +397,7 @@ LABEL_23:
     while (v24);
   }
 
-  if ([v5 underlineType])
+  if ([properties underlineType])
   {
     v27 = @"underline";
 LABEL_41:
@@ -405,14 +405,14 @@ LABEL_41:
     goto LABEL_45;
   }
 
-  if ([v5 hasStrikeThroughType] && objc_msgSend(v5, "strikeThroughType"))
+  if ([properties hasStrikeThroughType] && objc_msgSend(properties, "strikeThroughType"))
   {
     v27 = @"line-through";
     goto LABEL_41;
   }
 
 LABEL_45:
-  if ([v5 hasCaps] && objc_msgSend(v5, "caps") == 1)
+  if ([properties hasCaps] && objc_msgSend(properties, "caps") == 1)
   {
     v28 = @":small-caps;";
     v29 = HUPropNmFontVariant;
@@ -421,7 +421,7 @@ LABEL_51:
     goto LABEL_52;
   }
 
-  if ([v5 hasCaps] && objc_msgSend(v5, "caps") == 2)
+  if ([properties hasCaps] && objc_msgSend(properties, "caps") == 2)
   {
     v28 = @":uppercase;";
     v29 = HUPropNmTextTransform;
@@ -429,9 +429,9 @@ LABEL_51:
   }
 
 LABEL_52:
-  if ([v5 hasSpacing])
+  if ([properties hasSpacing])
   {
-    [v5 spacing];
+    [properties spacing];
     if (v30 != 0.0)
     {
       [(CMStyle *)v4 appendPropertyForName:0x286F08070 length:1 unit:v30];

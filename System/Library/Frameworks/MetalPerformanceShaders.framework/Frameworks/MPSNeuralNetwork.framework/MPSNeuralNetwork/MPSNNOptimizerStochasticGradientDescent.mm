@@ -1,15 +1,15 @@
 @interface MPSNNOptimizerStochasticGradientDescent
-- (MPSNNOptimizerStochasticGradientDescent)initWithCoder:(id)a3 device:(id)a4;
+- (MPSNNOptimizerStochasticGradientDescent)initWithCoder:(id)coder device:(id)device;
 - (MPSNNOptimizerStochasticGradientDescent)initWithDevice:(id)device learningRate:(float)learningRate;
 - (MPSNNOptimizerStochasticGradientDescent)initWithDevice:(id)device momentumScale:(float)momentumScale useNesterovMomentum:(BOOL)useNesterovMomentum optimizerDescriptor:(MPSNNOptimizerDescriptor *)optimizerDescriptor;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
 - (void)encodeToCommandBuffer:(id)commandBuffer batchNormalizationGradientState:(MPSCNNBatchNormalizationState *)batchNormalizationGradientState batchNormalizationSourceState:(MPSCNNBatchNormalizationState *)batchNormalizationSourceState inputMomentumVectors:(NSArray *)inputMomentumVectors resultState:(MPSCNNNormalizationGammaAndBetaState *)resultState;
 - (void)encodeToCommandBuffer:(id)commandBuffer batchNormalizationState:(MPSCNNBatchNormalizationState *)batchNormalizationState inputMomentumVectors:(NSArray *)inputMomentumVectors resultState:(MPSCNNNormalizationGammaAndBetaState *)resultState;
 - (void)encodeToCommandBuffer:(id)commandBuffer convolutionGradientState:(MPSCNNConvolutionGradientState *)convolutionGradientState convolutionSourceState:(MPSCNNConvolutionWeightsAndBiasesState *)convolutionSourceState inputMomentumVectors:(NSArray *)inputMomentumVectors resultState:(MPSCNNConvolutionWeightsAndBiasesState *)resultState;
 - (void)encodeToCommandBuffer:(id)commandBuffer inputGradientMatrix:(MPSMatrix *)inputGradientMatrix inputValuesMatrix:(MPSMatrix *)inputValuesMatrix inputMomentumMatrix:(MPSMatrix *)inputMomentumMatrix resultValuesMatrix:(MPSMatrix *)resultValuesMatrix;
 - (void)encodeToCommandBuffer:(id)commandBuffer inputGradientVector:(MPSVector *)inputGradientVector inputValuesVector:(MPSVector *)inputValuesVector inputMomentumVector:(MPSVector *)inputMomentumVector resultValuesVector:(MPSVector *)resultValuesVector;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNNOptimizerStochasticGradientDescent
@@ -35,11 +35,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSNNOptimizerStochasticGradientDescent;
-  result = [(MPSNNOptimizer *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSNNOptimizer *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 31) = *(&self->super._regularizationScale + 1);
@@ -49,22 +49,22 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 1) = 1;
   v17.receiver = self;
   v17.super_class = MPSNNOptimizerStochasticGradientDescent;
   [(MPSNNOptimizer *)&v17 encodeWithCoder:?];
   LODWORD(v5) = *(&self->super._regularizationScale + 1);
-  objc_msgSend_encodeFloat_forKey_(a3, v6, @"kMPSNNOptimizer.momentumScale", v7, v8, v9, v10, v11, v5);
-  objc_msgSend_encodeBool_forKey_(a3, v12, LOBYTE(self->_momentumScale), @"kMPSNNOptimizer.useNestrovMomentum", v13, v14, v15, v16);
+  objc_msgSend_encodeFloat_forKey_(coder, v6, @"kMPSNNOptimizer.momentumScale", v7, v8, v9, v10, v11, v5);
+  objc_msgSend_encodeBool_forKey_(coder, v12, LOBYTE(self->_momentumScale), @"kMPSNNOptimizer.useNestrovMomentum", v13, v14, v15, v16);
 }
 
-- (MPSNNOptimizerStochasticGradientDescent)initWithCoder:(id)a3 device:(id)a4
+- (MPSNNOptimizerStochasticGradientDescent)initWithCoder:(id)coder device:(id)device
 {
   v22.receiver = self;
   v22.super_class = MPSNNOptimizerStochasticGradientDescent;
-  v5 = [(MPSNNOptimizer *)&v22 initWithCoder:a3 device:a4];
+  v5 = [(MPSNNOptimizer *)&v22 initWithCoder:coder device:device];
   v12 = v5;
   if (!v5)
   {
@@ -73,9 +73,9 @@
 
   if (*(&v5->super.super.super.isa + *MEMORY[0x277CD7358] + 1) << 8 == 256)
   {
-    objc_msgSend_decodeFloatForKey_(a3, v6, @"kMPSNNOptimizer.momentumScale", v7, v8, v9, v10, v11);
+    objc_msgSend_decodeFloatForKey_(coder, v6, @"kMPSNNOptimizer.momentumScale", v7, v8, v9, v10, v11);
     *(&v12->super._regularizationScale + 1) = v13;
-    LOBYTE(v12->_momentumScale) = objc_msgSend_decodeBoolForKey_(a3, v14, @"kMPSNNOptimizer.useNestrovMomentum", v15, v16, v17, v18, v19);
+    LOBYTE(v12->_momentumScale) = objc_msgSend_decodeBoolForKey_(coder, v14, @"kMPSNNOptimizer.useNestrovMomentum", v15, v16, v17, v18, v19);
     return v12;
   }
 
@@ -183,7 +183,7 @@ LABEL_16:
   v96 = objc_alloc(MEMORY[0x277CD7210]);
   v108 = objc_msgSend_initWithCommandBuffer_withDispatchType_(v96, v97, commandBuffer, 0, v98, v99, v100, v101);
   v270 = v108;
-  v271 = self;
+  selfCopy = self;
   if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 0x18) != 0)
   {
     v109 = *(&self->super.super.super.isa + *MEMORY[0x277CD7360]);

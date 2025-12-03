@@ -1,27 +1,27 @@
 @interface SBSACalloutBlockAction
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SBSACalloutBlockAction)initWithCalloutBlock:(id)a3 reasons:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SBSACalloutBlockAction)initWithCalloutBlock:(id)block reasons:(id)reasons;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation SBSACalloutBlockAction
 
-- (SBSACalloutBlockAction)initWithCalloutBlock:(id)a3 reasons:(id)a4
+- (SBSACalloutBlockAction)initWithCalloutBlock:(id)block reasons:(id)reasons
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  reasonsCopy = reasons;
   v14.receiver = self;
   v14.super_class = SBSACalloutBlockAction;
   v8 = [(SBSACalloutBlockAction *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [blockCopy copy];
     calloutBlock = v8->_calloutBlock;
     v8->_calloutBlock = v9;
 
-    v11 = [v7 copy];
+    v11 = [reasonsCopy copy];
     reasons = v8->_reasons;
     v8->_reasons = v11;
   }
@@ -29,16 +29,16 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   v6 = MEMORY[0x223D6F7F0](self->_calloutBlock);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __34__SBSACalloutBlockAction_isEqual___block_invoke;
   v19[3] = &unk_2783ACDB8;
-  v7 = v4;
+  v7 = equalCopy;
   v20 = v7;
   v8 = [v5 appendObject:v6 counterpart:v19];
   reasons = self->_reasons;
@@ -56,9 +56,9 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
+  builder = [MEMORY[0x277CF0C40] builder];
   v4 = MEMORY[0x223D6F7F0](self->_calloutBlock);
-  v5 = [v3 appendObject:v4];
+  v5 = [builder appendObject:v4];
   v6 = [v5 appendObject:self->_reasons];
   v7 = [v6 hash];
 
@@ -75,7 +75,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   reasons = self->_reasons;

@@ -1,33 +1,33 @@
 @interface LteCellMetric
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCell:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCell:(id)cell;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation LteCellMetric
 
-- (void)addCell:(id)a3
+- (void)addCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   cells = self->_cells;
-  v8 = v4;
+  v8 = cellCopy;
   if (!cells)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_cells;
     self->_cells = v6;
 
-    v4 = v8;
+    cellCopy = v8;
     cells = self->_cells;
   }
 
-  [(NSMutableArray *)cells addObject:v4];
+  [(NSMutableArray *)cells addObject:cellCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v7.receiver = self;
   v7.super_class = LteCellMetric;
   v3 = [(LteCellMetric *)&v7 description];
-  v4 = [(LteCellMetric *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(LteCellMetric *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -72,8 +72,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -88,30 +88,30 @@
   totalMetric = self->_totalMetric;
   if (totalMetric)
   {
-    v13 = [(CellMetric *)totalMetric dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"total_metric"];
+    dictionaryRepresentation2 = [(CellMetric *)totalMetric dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"total_metric"];
   }
 
   configuredMetric = self->_configuredMetric;
   if (configuredMetric)
   {
-    v15 = [(CellMetric *)configuredMetric dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"configured_metric"];
+    dictionaryRepresentation3 = [(CellMetric *)configuredMetric dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation3 forKey:@"configured_metric"];
   }
 
   activatedMetric = self->_activatedMetric;
   if (activatedMetric)
   {
-    v17 = [(CellMetric *)activatedMetric dictionaryRepresentation];
-    [v3 setObject:v17 forKey:@"activated_metric"];
+    dictionaryRepresentation4 = [(CellMetric *)activatedMetric dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation4 forKey:@"activated_metric"];
   }
 
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     event = self->_event;
@@ -166,23 +166,23 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[8] = self->_event;
-    *(v4 + 48) |= 1u;
+    toCopy[8] = self->_event;
+    *(toCopy + 48) |= 1u;
   }
 
-  v10 = v4;
+  v10 = toCopy;
   if ([(LteCellMetric *)self cellsCount])
   {
     [v10 clearCells];
-    v5 = [(LteCellMetric *)self cellsCount];
-    if (v5)
+    cellsCount = [(LteCellMetric *)self cellsCount];
+    if (cellsCount)
     {
-      v6 = v5;
+      v6 = cellsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(LteCellMetric *)self cellAtIndex:i];
@@ -210,9 +210,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -240,7 +240,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v20 + 1) + 8 * v11) copyWithZone:{a3, v20}];
+        v12 = [*(*(&v20 + 1) + 8 * v11) copyWithZone:{zone, v20}];
         [v6 addCell:v12];
 
         v11 = v11 + 1;
@@ -253,39 +253,39 @@
     while (v9);
   }
 
-  v13 = [(CellMetric *)self->_totalMetric copyWithZone:a3];
+  v13 = [(CellMetric *)self->_totalMetric copyWithZone:zone];
   v14 = v6[5];
   v6[5] = v13;
 
-  v15 = [(CellMetric *)self->_configuredMetric copyWithZone:a3];
+  v15 = [(CellMetric *)self->_configuredMetric copyWithZone:zone];
   v16 = v6[3];
   v6[3] = v15;
 
-  v17 = [(CellMetric *)self->_activatedMetric copyWithZone:a3];
+  v17 = [(CellMetric *)self->_activatedMetric copyWithZone:zone];
   v18 = v6[1];
   v6[1] = v17;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_event != *(v4 + 8))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_event != *(equalCopy + 8))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_15:
     v10 = 0;
@@ -293,13 +293,13 @@ LABEL_15:
   }
 
   cells = self->_cells;
-  if (cells | *(v4 + 2) && ![(NSMutableArray *)cells isEqual:?])
+  if (cells | *(equalCopy + 2) && ![(NSMutableArray *)cells isEqual:?])
   {
     goto LABEL_15;
   }
 
   totalMetric = self->_totalMetric;
-  if (totalMetric | *(v4 + 5))
+  if (totalMetric | *(equalCopy + 5))
   {
     if (![(CellMetric *)totalMetric isEqual:?])
     {
@@ -308,7 +308,7 @@ LABEL_15:
   }
 
   configuredMetric = self->_configuredMetric;
-  if (configuredMetric | *(v4 + 3))
+  if (configuredMetric | *(equalCopy + 3))
   {
     if (![(CellMetric *)configuredMetric isEqual:?])
     {
@@ -317,7 +317,7 @@ LABEL_15:
   }
 
   activatedMetric = self->_activatedMetric;
-  if (activatedMetric | *(v4 + 1))
+  if (activatedMetric | *(equalCopy + 1))
   {
     v10 = [(CellMetric *)activatedMetric isEqual:?];
   }
@@ -350,13 +350,13 @@ LABEL_16:
   return v6 ^ [(CellMetric *)self->_activatedMetric hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 48))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 48))
   {
-    self->_event = *(v4 + 8);
+    self->_event = *(fromCopy + 8);
     *&self->_has |= 1u;
   }
 
@@ -364,7 +364,7 @@ LABEL_16:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {

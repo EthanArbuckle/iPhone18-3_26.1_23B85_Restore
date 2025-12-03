@@ -1,21 +1,21 @@
 @interface IdentityProofingProgressViewController
-- (_TtC9CoreIDVUI38IdentityProofingProgressViewController)initWithCoder:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC9CoreIDVUI38IdentityProofingProgressViewController)initWithCoder:(id)coder;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation IdentityProofingProgressViewController
 
-- (_TtC9CoreIDVUI38IdentityProofingProgressViewController)initWithCoder:(id)a3
+- (_TtC9CoreIDVUI38IdentityProofingProgressViewController)initWithCoder:(id)coder
 {
   result = sub_2459115D4();
   __break(1u);
   return result;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_245896004(a3);
+  selfCopy = self;
+  sub_245896004(appear);
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface FLAlertControllerAction
-+ (id)actionWithTitle:(id)a3 style:(int64_t)a4 handler:(id)a5;
++ (id)actionWithTitle:(id)title style:(int64_t)style handler:(id)handler;
 @end
 
 @implementation FLAlertControllerAction
 
-+ (id)actionWithTitle:(id)a3 style:(int64_t)a4 handler:(id)a5
++ (id)actionWithTitle:(id)title style:(int64_t)style handler:(id)handler
 {
-  v7 = a5;
-  v8 = a3;
+  handlerCopy = handler;
+  titleCopy = title;
   v9 = objc_alloc_init(FLAlertControllerAction);
-  [(FLAlertControllerAction *)v9 setTitle:v8];
+  [(FLAlertControllerAction *)v9 setTitle:titleCopy];
 
-  [(FLAlertControllerAction *)v9 setStyle:a4];
-  [(FLAlertControllerAction *)v9 setHandler:v7];
+  [(FLAlertControllerAction *)v9 setStyle:style];
+  [(FLAlertControllerAction *)v9 setHandler:handlerCopy];
 
   return v9;
 }

@@ -1,15 +1,15 @@
 @interface PKCellAccessoryMultiSelectIndicatorAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation PKCellAccessoryMultiSelectIndicatorAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKCellAccessoryMultiSelectIndicator" hasInstanceVariable:@"_content" withType:"PKMultiSelectIndicatorView"];
-  [v3 validateClass:@"PKMultiSelectIndicatorView" hasInstanceVariable:@"_imageView" withType:"UIImageView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKCellAccessoryMultiSelectIndicator" hasInstanceVariable:@"_content" withType:"PKMultiSelectIndicatorView"];
+  [validationsCopy validateClass:@"PKMultiSelectIndicatorView" hasInstanceVariable:@"_imageView" withType:"UIImageView"];
 }
 
 - (unint64_t)accessibilityTraits
@@ -21,13 +21,13 @@
   {
     objc_opt_class();
     v4 = __UIAccessibilityCastAsClass();
-    v5 = [v4 image];
-    v6 = [v5 accessibilityIdentifier];
+    image = [v4 image];
+    accessibilityIdentifier = [image accessibilityIdentifier];
 
-    LOBYTE(v5) = [v6 isEqualToString:@"checkmark.circle.fill"];
+    LOBYTE(image) = [accessibilityIdentifier isEqualToString:@"checkmark.circle.fill"];
     v7 = *MEMORY[0x29EDC7F70];
 
-    if (v5)
+    if (image)
     {
       v7 |= *MEMORY[0x29EDC7FC0];
     }

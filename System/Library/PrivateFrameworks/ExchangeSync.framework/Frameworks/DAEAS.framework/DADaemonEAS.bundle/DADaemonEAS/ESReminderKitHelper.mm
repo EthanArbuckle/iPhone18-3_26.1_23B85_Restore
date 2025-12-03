@@ -1,58 +1,58 @@
 @interface ESReminderKitHelper
 + (id)sharedReminderKitHelper;
-- (BOOL)_addReminderFolders:(id)a3 forAccount:(id)a4;
-- (BOOL)_deleteList:(id)a3 forAccount:(id)a4;
-- (BOOL)_populateChangeItem:(id)a3 forRecurrence:(id)a4 forReminder:(id)a5 forFolderWithId:(id)a6 forAccount:(id)a7;
-- (BOOL)_populateChangeItem:(id)a3 forReminder:(id)a4 folderWithId:(id)a5 forAccount:(id)a6;
-- (BOOL)addFolder:(id)a3 forAccount:(id)a4;
-- (BOOL)addOrModifyReminder:(id)a3 forFolderWithId:(id)a4 forAccount:(id)a5;
-- (BOOL)bestEffortApplyNewFolders:(id)a3 oldFolders:(id)a4 forAccount:(id)a5 shouldCreateFoldersMissingInDB:(BOOL)a6;
+- (BOOL)_addReminderFolders:(id)folders forAccount:(id)account;
+- (BOOL)_deleteList:(id)list forAccount:(id)account;
+- (BOOL)_populateChangeItem:(id)item forRecurrence:(id)recurrence forReminder:(id)reminder forFolderWithId:(id)id forAccount:(id)account;
+- (BOOL)_populateChangeItem:(id)item forReminder:(id)reminder folderWithId:(id)id forAccount:(id)account;
+- (BOOL)addFolder:(id)folder forAccount:(id)account;
+- (BOOL)addOrModifyReminder:(id)reminder forFolderWithId:(id)id forAccount:(id)account;
+- (BOOL)bestEffortApplyNewFolders:(id)folders oldFolders:(id)oldFolders forAccount:(id)account shouldCreateFoldersMissingInDB:(BOOL)b;
 - (BOOL)commitChangesToStore;
-- (BOOL)deleteFolder:(id)a3 forAccount:(id)a4;
-- (BOOL)deleteReminder:(id)a3 forFolderWithId:(id)a4 forAccount:(id)a5;
-- (BOOL)initialSyncReminder:(id)a3 forFolderWithId:(id)a4 forAccount:(id)a5 resultingAction:(id *)a6;
-- (BOOL)isFolderExistsWithId:(id)a3 forAccount:(id)a4;
-- (BOOL)updateExtenalIDForFolder:(id)a3 forAccount:(id)a4;
-- (BOOL)updateExtenalIDForReminder:(id)a3 forFolderWithId:(id)a4 forAccount:(id)a5;
-- (BOOL)updateSyncKey:(id)a3 forFolderWithId:(id)a4 forAccount:(id)a5;
-- (BOOL)verifyDefaultFolderId:(id)a3 forAccount:(id)a4;
+- (BOOL)deleteFolder:(id)folder forAccount:(id)account;
+- (BOOL)deleteReminder:(id)reminder forFolderWithId:(id)id forAccount:(id)account;
+- (BOOL)initialSyncReminder:(id)reminder forFolderWithId:(id)id forAccount:(id)account resultingAction:(id *)action;
+- (BOOL)isFolderExistsWithId:(id)id forAccount:(id)account;
+- (BOOL)updateExtenalIDForFolder:(id)folder forAccount:(id)account;
+- (BOOL)updateExtenalIDForReminder:(id)reminder forFolderWithId:(id)id forAccount:(id)account;
+- (BOOL)updateSyncKey:(id)key forFolderWithId:(id)id forAccount:(id)account;
+- (BOOL)verifyDefaultFolderId:(id)id forAccount:(id)account;
 - (ESReminderKitHelper)init;
 - (id)_getReminderSaveRequest;
-- (id)_loadAttributesFromReminder:(id)a3 forAccount:(id)a4;
-- (id)_loadAttributesFromRemlist:(id)a3 forAccount:(id)a4;
-- (id)_localDeletedReminderActionsForFolderId:(id)a3 forAccount:(id)a4;
-- (id)_localLazyDeletedReminderActionsForFolderId:(id)a3 forAccount:(id)a4;
-- (id)_localModifiedReminderActionsForFolderId:(id)a3 forAccount:(id)a4;
-- (id)_localUndeletedReminderActionsForFolderId:(id)a3 forAccount:(id)a4;
-- (id)_remDaysOfWeekFromASDayOfWeek:(int)a3 weekOfMonth:(int)a4;
+- (id)_loadAttributesFromReminder:(id)reminder forAccount:(id)account;
+- (id)_loadAttributesFromRemlist:(id)remlist forAccount:(id)account;
+- (id)_localDeletedReminderActionsForFolderId:(id)id forAccount:(id)account;
+- (id)_localLazyDeletedReminderActionsForFolderId:(id)id forAccount:(id)account;
+- (id)_localModifiedReminderActionsForFolderId:(id)id forAccount:(id)account;
+- (id)_localUndeletedReminderActionsForFolderId:(id)id forAccount:(id)account;
+- (id)_remDaysOfWeekFromASDayOfWeek:(int)week weekOfMonth:(int)month;
 - (id)_remExternalRepresentationClasses;
-- (id)_reminderAccountForAccount:(id)a3;
-- (id)_reminderListWithExternalId:(id)a3 forReminderAccount:(id)a4;
-- (id)_reminderListWithObjectUUID:(id)a3 forReminderAccount:(id)a4;
-- (id)_reminderListsForAccount:(id)a3;
-- (id)_reminderMatchingAttributesInReminder:(id)a3 list:(id)a4;
-- (id)_reminderWithExternalId:(id)a3 list:(id)a4;
-- (id)_reminderWithObjectUUID:(id)a3 list:(id)a4;
-- (id)getFolderIdsForAccount:(id)a3;
-- (id)localAddedFoldersForAccount:(id)a3;
-- (id)localChangedReminderActionsForFolderId:(id)a3 forAccount:(id)a4;
-- (id)localDeletedFoldersForAccount:(id)a3;
-- (id)localModifiedFoldersForAccount:(id)a3;
-- (id)localUnsyncedReminderActionsForFolderId:(id)a3 forAccount:(id)a4;
-- (id)pendingLocalAddedFoldersForAccount:(id)a3;
-- (id)syncKeyForFolderWithId:(id)a3 forAccount:(id)a4;
-- (int)_ASMonthOfYearFromREMMonthOfYear:(int64_t)a3;
-- (int64_t)_ASDayOfWeekFromREMDaysOfWeek:(id)a3 outWeekOfMonth:(int64_t *)a4;
-- (int64_t)_remMonthOfYearFromASMonthOfYear:(int)a3;
-- (void)_loadRecurrenceRulesFromReminder:(id)a3 intoTask:(id)a4 forAccount:(id)a5;
-- (void)_processReminderNotification:(id)a3;
-- (void)_setupReminderAccountForAccount:(id)a3;
-- (void)clearFolderAdditionForFolderUUID:(id)a3 folderID:(id)a4 forAccount:(id)a5;
-- (void)clearFolderChangeForFolderID:(id)a3 forAccount:(id)a4;
-- (void)clearReminderChangesForFolderID:(id)a3 forAccount:(id)a4;
-- (void)didReceiveReminderNotification:(id)a3;
-- (void)registerReminderChangeNotificationsForAccount:(id)a3 withChangedBlock:(id)a4;
-- (void)removeReminderChangeNotificationsForAccount:(id)a3;
+- (id)_reminderAccountForAccount:(id)account;
+- (id)_reminderListWithExternalId:(id)id forReminderAccount:(id)account;
+- (id)_reminderListWithObjectUUID:(id)d forReminderAccount:(id)account;
+- (id)_reminderListsForAccount:(id)account;
+- (id)_reminderMatchingAttributesInReminder:(id)reminder list:(id)list;
+- (id)_reminderWithExternalId:(id)id list:(id)list;
+- (id)_reminderWithObjectUUID:(id)d list:(id)list;
+- (id)getFolderIdsForAccount:(id)account;
+- (id)localAddedFoldersForAccount:(id)account;
+- (id)localChangedReminderActionsForFolderId:(id)id forAccount:(id)account;
+- (id)localDeletedFoldersForAccount:(id)account;
+- (id)localModifiedFoldersForAccount:(id)account;
+- (id)localUnsyncedReminderActionsForFolderId:(id)id forAccount:(id)account;
+- (id)pendingLocalAddedFoldersForAccount:(id)account;
+- (id)syncKeyForFolderWithId:(id)id forAccount:(id)account;
+- (int)_ASMonthOfYearFromREMMonthOfYear:(int64_t)year;
+- (int64_t)_ASDayOfWeekFromREMDaysOfWeek:(id)week outWeekOfMonth:(int64_t *)month;
+- (int64_t)_remMonthOfYearFromASMonthOfYear:(int)year;
+- (void)_loadRecurrenceRulesFromReminder:(id)reminder intoTask:(id)task forAccount:(id)account;
+- (void)_processReminderNotification:(id)notification;
+- (void)_setupReminderAccountForAccount:(id)account;
+- (void)clearFolderAdditionForFolderUUID:(id)d folderID:(id)iD forAccount:(id)account;
+- (void)clearFolderChangeForFolderID:(id)d forAccount:(id)account;
+- (void)clearReminderChangesForFolderID:(id)d forAccount:(id)account;
+- (void)didReceiveReminderNotification:(id)notification;
+- (void)registerReminderChangeNotificationsForAccount:(id)account withChangedBlock:(id)block;
+- (void)removeReminderChangeNotificationsForAccount:(id)account;
 @end
 
 @implementation ESReminderKitHelper
@@ -88,97 +88,97 @@
   return v2;
 }
 
-- (void)registerReminderChangeNotificationsForAccount:(id)a3 withChangedBlock:(id)a4
+- (void)registerReminderChangeNotificationsForAccount:(id)account withChangedBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  blockCopy = block;
   v9 = DALoggingwithCategory();
   v10 = _CPLog_to_os_log_type[7];
   if (os_log_type_enabled(v9, v10))
   {
     *buf = 138412290;
-    v24 = v7;
+    v24 = accountCopy;
     _os_log_impl(&dword_0, v9, v10, "Registering reminder change notification for account: %@", buf, 0xCu);
   }
 
-  v11 = self;
-  objc_sync_enter(v11);
-  accountIDToChangeTrackingTable = v11->_accountIDToChangeTrackingTable;
-  v13 = [v7 accountID];
-  v14 = [(NSMutableDictionary *)accountIDToChangeTrackingTable objectForKey:v13];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  accountIDToChangeTrackingTable = selfCopy->_accountIDToChangeTrackingTable;
+  accountID = [accountCopy accountID];
+  v14 = [(NSMutableDictionary *)accountIDToChangeTrackingTable objectForKey:accountID];
   LOBYTE(accountIDToChangeTrackingTable) = v14 == 0;
 
   if ((accountIDToChangeTrackingTable & 1) == 0)
   {
     v21 = +[NSAssertionHandler currentHandler];
-    [v21 handleFailureInMethod:a2 object:v11 file:@"ESReminderKitHelper.m" lineNumber:105 description:{@"Someone registered themselves for the Reminders notification more than once: %@", v7}];
+    [v21 handleFailureInMethod:a2 object:selfCopy file:@"ESReminderKitHelper.m" lineNumber:105 description:{@"Someone registered themselves for the Reminders notification more than once: %@", accountCopy}];
   }
 
-  v15 = [[ESReminderChangeTrackingHelper alloc] initWithAccount:v7 reminderStore:v11->_reminderStore];
-  v16 = [v8 copy];
+  v15 = [[ESReminderChangeTrackingHelper alloc] initWithAccount:accountCopy reminderStore:selfCopy->_reminderStore];
+  v16 = [blockCopy copy];
   [(ESReminderChangeTrackingHelper *)v15 setBlock:v16];
 
-  v17 = v11->_accountIDToChangeTrackingTable;
-  v18 = [v7 accountID];
-  [(NSMutableDictionary *)v17 setObject:v15 forKey:v18];
+  v17 = selfCopy->_accountIDToChangeTrackingTable;
+  accountID2 = [accountCopy accountID];
+  [(NSMutableDictionary *)v17 setObject:v15 forKey:accountID2];
 
-  if ([(NSMutableDictionary *)v11->_accountIDToChangeTrackingTable count]== &dword_0 + 1)
+  if ([(NSMutableDictionary *)selfCopy->_accountIDToChangeTrackingTable count]== &dword_0 + 1)
   {
-    if (!v11->_reminderStore)
+    if (!selfCopy->_reminderStore)
     {
       v22 = +[NSAssertionHandler currentHandler];
-      [v22 handleFailureInMethod:a2 object:v11 file:@"ESReminderKitHelper.m" lineNumber:113 description:@"REMStore was not created!"];
+      [v22 handleFailureInMethod:a2 object:selfCopy file:@"ESReminderKitHelper.m" lineNumber:113 description:@"REMStore was not created!"];
     }
 
     v19 = +[NSNotificationCenter defaultCenter];
     v20 = +[REMStore storeDidChangeNotificationName];
-    [v19 addObserver:v11 selector:"didReceiveReminderNotification:" name:v20 object:0];
+    [v19 addObserver:selfCopy selector:"didReceiveReminderNotification:" name:v20 object:0];
   }
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeReminderChangeNotificationsForAccount:(id)a3
+- (void)removeReminderChangeNotificationsForAccount:(id)account
 {
-  v12 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  accountIDToChangeTrackingTable = v4->_accountIDToChangeTrackingTable;
-  v6 = [v12 accountID];
-  v7 = [(NSMutableDictionary *)accountIDToChangeTrackingTable objectForKey:v6];
+  accountCopy = account;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  accountIDToChangeTrackingTable = selfCopy->_accountIDToChangeTrackingTable;
+  accountID = [accountCopy accountID];
+  v7 = [(NSMutableDictionary *)accountIDToChangeTrackingTable objectForKey:accountID];
 
   if (v7)
   {
-    v8 = v4->_accountIDToChangeTrackingTable;
-    v9 = [v12 accountID];
-    [(NSMutableDictionary *)v8 removeObjectForKey:v9];
+    v8 = selfCopy->_accountIDToChangeTrackingTable;
+    accountID2 = [accountCopy accountID];
+    [(NSMutableDictionary *)v8 removeObjectForKey:accountID2];
   }
 
-  if (![(NSMutableDictionary *)v4->_accountIDToChangeTrackingTable count])
+  if (![(NSMutableDictionary *)selfCopy->_accountIDToChangeTrackingTable count])
   {
     v10 = +[NSNotificationCenter defaultCenter];
     v11 = +[REMStore storeDidChangeNotificationName];
-    [v10 removeObserver:v4 name:v11 object:0];
+    [v10 removeObserver:selfCopy name:v11 object:0];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)didReceiveReminderNotification:(id)a3
+- (void)didReceiveReminderNotification:(id)notification
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_2EE60;
   block[3] = &unk_6D2F8;
   block[4] = self;
-  v6 = a3;
+  notificationCopy = notification;
   v7 = objc_opt_new();
   v3 = v7;
-  v4 = v6;
+  v4 = notificationCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_processReminderNotification:(id)a3
+- (void)_processReminderNotification:(id)notification
 {
   v4 = DALoggingwithCategory();
   v5 = _CPLog_to_os_log_type[7];
@@ -192,17 +192,17 @@
   v7 = DALoggingwithCategory();
   if (os_log_type_enabled(v7, v5))
   {
-    v8 = [v6 transactionId];
+    transactionId = [v6 transactionId];
     *buf = 138412290;
-    v17 = v8;
+    v17 = transactionId;
     _os_log_impl(&dword_0, v7, v5, "ReminderConversion: DADREMLocalDBWatcher: DATransaction starting, ID: %@", buf, 0xCu);
   }
 
-  v9 = [(NSMutableDictionary *)self->_accountIDToChangeTrackingTable objectEnumerator];
-  v10 = [v9 nextObject];
-  if (v10)
+  objectEnumerator = [(NSMutableDictionary *)self->_accountIDToChangeTrackingTable objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v11 = v10;
+    v11 = nextObject;
     do
     {
       if ([v11 fetchChangesSinceLastConsumed])
@@ -216,28 +216,28 @@
         dispatch_async(&_dispatch_main_q, v13);
       }
 
-      v12 = [v9 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
 
-      v11 = v12;
+      v11 = nextObject2;
     }
 
-    while (v12);
+    while (nextObject2);
   }
 }
 
-- (BOOL)bestEffortApplyNewFolders:(id)a3 oldFolders:(id)a4 forAccount:(id)a5 shouldCreateFoldersMissingInDB:(BOOL)a6
+- (BOOL)bestEffortApplyNewFolders:(id)folders oldFolders:(id)oldFolders forAccount:(id)account shouldCreateFoldersMissingInDB:(BOOL)b
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v8, "count")}];
-  v12 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v8, "count")}];
-  v81 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v9, "count")}];
+  foldersCopy = folders;
+  oldFoldersCopy = oldFolders;
+  accountCopy = account;
+  v11 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(foldersCopy, "count")}];
+  v12 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(foldersCopy, "count")}];
+  v81 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(oldFoldersCopy, "count")}];
   v107 = 0u;
   v108 = 0u;
   v109 = 0u;
   v110 = 0u;
-  v13 = v8;
+  v13 = foldersCopy;
   v14 = [v13 countByEnumeratingWithState:&v107 objects:v120 count:16];
   if (v14)
   {
@@ -253,13 +253,13 @@
         }
 
         v18 = *(*(&v107 + 1) + 8 * i);
-        if ([v10 enabledForDADataclass:16] && objc_msgSend(v18, "dataclass") == &dword_10)
+        if ([accountCopy enabledForDADataclass:16] && objc_msgSend(v18, "dataclass") == &dword_10)
         {
-          v19 = [v18 folderName];
-          [v11 setObject:v18 forKeyedSubscript:v19];
+          folderName = [v18 folderName];
+          [v11 setObject:v18 forKeyedSubscript:folderName];
 
-          v20 = [v18 folderID];
-          [v12 setObject:v18 forKeyedSubscript:v20];
+          folderID = [v18 folderID];
+          [v12 setObject:v18 forKeyedSubscript:folderID];
         }
       }
 
@@ -273,7 +273,7 @@
   v106 = 0u;
   v103 = 0u;
   v104 = 0u;
-  v21 = v9;
+  v21 = oldFoldersCopy;
   v22 = [v21 countByEnumeratingWithState:&v103 objects:v119 count:16];
   v91 = v21;
   if (v22)
@@ -290,10 +290,10 @@
         }
 
         v26 = *(*(&v103 + 1) + 8 * j);
-        if ([v10 enabledForDADataclass:16] && objc_msgSend(v26, "dataclass") == &dword_10)
+        if ([accountCopy enabledForDADataclass:16] && objc_msgSend(v26, "dataclass") == &dword_10)
         {
-          v27 = [v26 folderID];
-          [v81 setObject:v26 forKeyedSubscript:v27];
+          folderID2 = [v26 folderID];
+          [v81 setObject:v26 forKeyedSubscript:folderID2];
 
           v21 = v91;
         }
@@ -309,11 +309,11 @@
   v84 = v12;
   v87 = v11;
 
-  v90 = [(ESReminderKitHelper *)self _reminderListsForAccount:v10];
+  v90 = [(ESReminderKitHelper *)self _reminderListsForAccount:accountCopy];
   v89 = objc_opt_new();
   v28 = objc_opt_new();
-  v85 = v10;
-  [(ESReminderKitHelper *)self localAddedFoldersForAccount:v10];
+  v85 = accountCopy;
+  [(ESReminderKitHelper *)self localAddedFoldersForAccount:accountCopy];
   v99 = 0u;
   v100 = 0u;
   v101 = 0u;
@@ -337,14 +337,14 @@
         v35 = DALoggingwithCategory();
         if (os_log_type_enabled(v35, v32))
         {
-          v36 = [v34 localUUID];
+          localUUID = [v34 localUUID];
           *buf = 138412290;
-          v112 = v36;
+          v112 = localUUID;
           _os_log_impl(&dword_0, v35, v32, "Found added folder with local id %@", buf, 0xCu);
         }
 
-        v37 = [v34 localUUID];
-        [v28 addObject:v37];
+        localUUID2 = [v34 localUUID];
+        [v28 addObject:localUUID2];
       }
 
       v30 = [obj countByEnumeratingWithState:&v99 objects:v118 count:16];
@@ -353,7 +353,7 @@
     while (v30);
   }
 
-  [(ESReminderKitHelper *)self pendingLocalAddedFoldersForAccount:v10, v78];
+  [(ESReminderKitHelper *)self pendingLocalAddedFoldersForAccount:accountCopy, v78];
   v95 = 0u;
   v96 = 0u;
   v97 = 0u;
@@ -377,14 +377,14 @@
         v44 = DALoggingwithCategory();
         if (os_log_type_enabled(v44, v41))
         {
-          v45 = [v43 localUUID];
+          localUUID3 = [v43 localUUID];
           *buf = 138412290;
-          v112 = v45;
+          v112 = localUUID3;
           _os_log_impl(&dword_0, v44, v41, "Found pending added folder with local id %@", buf, 0xCu);
         }
 
-        v46 = [v43 localUUID];
-        [v28 addObject:v46];
+        localUUID4 = [v43 localUUID];
+        [v28 addObject:localUUID4];
       }
 
       v39 = [v93 countByEnumeratingWithState:&v95 objects:v117 count:16];
@@ -402,54 +402,54 @@
     while (1)
     {
       v49 = [v47 objectAtIndexedSubscript:v48];
-      v50 = [v49 name];
-      v51 = [v49 externalIdentifier];
-      v52 = [v49 daIsImmutable];
-      if (v51)
+      name = [v49 name];
+      externalIdentifier = [v49 externalIdentifier];
+      daIsImmutable = [v49 daIsImmutable];
+      if (externalIdentifier)
       {
-        if ([v89 containsObject:v51])
+        if ([v89 containsObject:externalIdentifier])
         {
           goto LABEL_53;
         }
 
         v53 = v84;
-        v54 = v51;
+        v54 = externalIdentifier;
       }
 
       else
       {
-        if (!v50)
+        if (!name)
         {
           goto LABEL_53;
         }
 
         v53 = v87;
-        v54 = v50;
+        v54 = name;
       }
 
       v55 = [v53 objectForKeyedSubscript:v54];
-      v56 = v55;
+      objectID = v55;
       if (!v55)
       {
 LABEL_53:
-        v65 = v51;
-        v66 = v50;
-        v56 = [v49 objectID];
-        v67 = [v56 uuid];
-        v68 = [v67 UUIDString];
+        v65 = externalIdentifier;
+        v66 = name;
+        objectID = [v49 objectID];
+        uuid = [objectID uuid];
+        uUIDString = [uuid UUIDString];
 
-        v57 = v68;
-        LODWORD(v67) = [v28 containsObject:v68];
+        folderID3 = uUIDString;
+        LODWORD(uuid) = [v28 containsObject:uUIDString];
         v69 = DALoggingwithCategory();
         v70 = os_log_type_enabled(v69, type);
-        if (v67)
+        if (uuid)
         {
           if (v70)
           {
-            v71 = [v56 uuid];
-            v72 = [v71 UUIDString];
+            uuid2 = [objectID uuid];
+            uUIDString2 = [uuid2 UUIDString];
             *buf = 138412290;
-            v112 = v72;
+            v112 = uUIDString2;
             _os_log_impl(&dword_0, v69, type, "Not deleting reminder list with id %@, as it has a pending add", buf, 0xCu);
           }
         }
@@ -458,10 +458,10 @@ LABEL_53:
         {
           if (v70)
           {
-            v73 = [v56 uuid];
-            v74 = [v73 UUIDString];
+            uuid3 = [objectID uuid];
+            uUIDString3 = [uuid3 UUIDString];
             *buf = 138412802;
-            v112 = v74;
+            v112 = uUIDString3;
             v113 = 2112;
             v114 = v65;
             v115 = 2112;
@@ -473,50 +473,50 @@ LABEL_53:
           v86 = 1;
         }
 
-        v50 = v66;
-        v51 = v65;
+        name = v66;
+        externalIdentifier = v65;
         goto LABEL_61;
       }
 
-      v57 = [v55 folderID];
-      v58 = [v56 folderName];
-      v59 = [v56 isDefault];
-      [v89 addObject:v57];
-      if (![v51 isEqualToString:v57])
+      folderID3 = [v55 folderID];
+      folderName2 = [objectID folderName];
+      isDefault = [objectID isDefault];
+      [v89 addObject:folderID3];
+      if (![externalIdentifier isEqualToString:folderID3])
       {
         goto LABEL_51;
       }
 
-      if (((v59 ^ 1 | v52) & 1) == 0)
+      if (((isDefault ^ 1 | daIsImmutable) & 1) == 0)
       {
         goto LABEL_51;
       }
 
-      if (((v59 | v52 ^ 1) & 1) == 0)
+      if (((isDefault | daIsImmutable ^ 1) & 1) == 0)
       {
         goto LABEL_51;
       }
 
-      v82 = v59;
-      [v81 objectForKeyedSubscript:v51];
-      v83 = v57;
-      v60 = v51;
-      v62 = v61 = v50;
-      v63 = [v62 folderName];
-      v64 = [v63 isEqualToString:v58];
+      v82 = isDefault;
+      [v81 objectForKeyedSubscript:externalIdentifier];
+      v83 = folderID3;
+      v60 = externalIdentifier;
+      v62 = v61 = name;
+      folderName3 = [v62 folderName];
+      v64 = [folderName3 isEqualToString:folderName2];
 
-      v59 = v82;
-      v50 = v61;
-      v51 = v60;
-      v57 = v83;
+      isDefault = v82;
+      name = v61;
+      externalIdentifier = v60;
+      folderID3 = v83;
       if ((v64 & 1) == 0)
       {
 LABEL_51:
-        [(ESReminderKitHelper *)self _updateList:v49 external:v57 name:v58 isDefault:v59];
+        [(ESReminderKitHelper *)self _updateList:v49 external:folderID3 name:folderName2 isDefault:isDefault];
         v86 = 1;
       }
 
-      [v87 removeObjectForKey:v58];
+      [v87 removeObjectForKey:folderName2];
 
 LABEL_61:
       ++v48;
@@ -531,20 +531,20 @@ LABEL_61:
   v86 = 0;
 LABEL_64:
   v75 = v86;
-  if (a6)
+  if (b)
   {
-    v76 = [v87 allValues];
-    v75 = [(ESReminderKitHelper *)self _addReminderFolders:v76 forAccount:v85];
+    allValues = [v87 allValues];
+    v75 = [(ESReminderKitHelper *)self _addReminderFolders:allValues forAccount:v85];
   }
 
   return v75 & 1;
 }
 
-- (id)getFolderIdsForAccount:(id)a3
+- (id)getFolderIdsForAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = objc_opt_new();
-  v6 = [(ESReminderKitHelper *)self _reminderListsForAccount:v4];
+  v6 = [(ESReminderKitHelper *)self _reminderListsForAccount:accountCopy];
   v7 = v6;
   if (v6)
   {
@@ -567,12 +567,12 @@ LABEL_64:
           }
 
           v12 = *(*(&v16 + 1) + 8 * i);
-          v13 = [v12 externalIdentifier];
+          externalIdentifier = [v12 externalIdentifier];
 
-          if (v13)
+          if (externalIdentifier)
           {
-            v14 = [v12 externalIdentifier];
-            [v5 addObject:v14];
+            externalIdentifier2 = [v12 externalIdentifier];
+            [v5 addObject:externalIdentifier2];
           }
         }
 
@@ -586,15 +586,15 @@ LABEL_64:
   return v5;
 }
 
-- (BOOL)verifyDefaultFolderId:(id)a3 forAccount:(id)a4
+- (BOOL)verifyDefaultFolderId:(id)id forAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 length])
+  idCopy = id;
+  accountCopy = account;
+  if (idCopy && [idCopy length])
   {
-    v8 = [(ESReminderKitHelper *)self _reminderListsForAccount:v7];
+    v8 = [(ESReminderKitHelper *)self _reminderListsForAccount:accountCopy];
     v9 = v8;
-    v22 = v7;
+    v22 = accountCopy;
     if (!v8 || (v25 = 0u, v26 = 0u, v23 = 0u, v24 = 0u, (v10 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16]) == 0))
     {
       v12 = 0;
@@ -614,27 +614,27 @@ LABEL_64:
         }
 
         v15 = *(*(&v23 + 1) + 8 * i);
-        v16 = [v15 externalIdentifier];
-        v17 = [v6 isEqualToString:v16];
+        externalIdentifier = [v15 externalIdentifier];
+        v17 = [idCopy isEqualToString:externalIdentifier];
 
-        v18 = [v15 daIsImmutable];
+        daIsImmutable = [v15 daIsImmutable];
         if (!v17)
         {
-          if (!v18)
+          if (!daIsImmutable)
           {
             continue;
           }
 
 LABEL_13:
-          v19 = [v15 externalIdentifier];
-          v20 = [v15 name];
+          externalIdentifier2 = [v15 externalIdentifier];
+          name = [v15 name];
           v12 = 1;
-          [(ESReminderKitHelper *)self _updateList:v15 external:v19 name:v20 isDefault:1];
+          [(ESReminderKitHelper *)self _updateList:v15 external:externalIdentifier2 name:name isDefault:1];
 
           continue;
         }
 
-        if ((v18 & 1) == 0)
+        if ((daIsImmutable & 1) == 0)
         {
           goto LABEL_13;
         }
@@ -645,7 +645,7 @@ LABEL_13:
       {
 LABEL_19:
 
-        v7 = v22;
+        accountCopy = v22;
         goto LABEL_20;
       }
     }
@@ -657,53 +657,53 @@ LABEL_20:
   return v12 & 1;
 }
 
-- (BOOL)_deleteList:(id)a3 forAccount:(id)a4
+- (BOOL)_deleteList:(id)list forAccount:(id)account
 {
-  v5 = a3;
-  v6 = [(ESReminderKitHelper *)self _getReminderSaveRequest];
-  v7 = [v6 updateList:v5];
+  listCopy = list;
+  _getReminderSaveRequest = [(ESReminderKitHelper *)self _getReminderSaveRequest];
+  v7 = [_getReminderSaveRequest updateList:listCopy];
   [v7 removeFromParent];
   v8 = DALoggingwithCategory();
   v9 = _CPLog_to_os_log_type[7];
   if (os_log_type_enabled(v8, v9))
   {
     v11 = 138412290;
-    v12 = v5;
+    v12 = listCopy;
     _os_log_impl(&dword_0, v8, v9, "ReminderSupport: reminder list %@ is deleted", &v11, 0xCu);
   }
 
   return 1;
 }
 
-- (id)_reminderListsForAccount:(id)a3
+- (id)_reminderListsForAccount:(id)account
 {
-  v3 = [(ESReminderKitHelper *)self _reminderAccountForAccount:a3];
+  v3 = [(ESReminderKitHelper *)self _reminderAccountForAccount:account];
   v6 = 0;
   v4 = [v3 fetchListsWithError:&v6];
 
   return v4;
 }
 
-- (BOOL)_addReminderFolders:(id)a3 forAccount:(id)a4
+- (BOOL)_addReminderFolders:(id)folders forAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  foldersCopy = folders;
+  accountCopy = account;
+  if ([foldersCopy count])
   {
-    v8 = [(ESReminderKitHelper *)self _reminderAccountForAccount:v7];
+    v8 = [(ESReminderKitHelper *)self _reminderAccountForAccount:accountCopy];
     v9 = v8 != 0;
     if (v8)
     {
-      v26 = v7;
-      v10 = [(ESReminderKitHelper *)self _getReminderSaveRequest];
+      v26 = accountCopy;
+      _getReminderSaveRequest = [(ESReminderKitHelper *)self _getReminderSaveRequest];
       v25 = v8;
-      v11 = [v10 updateAccount:v8];
+      v11 = [_getReminderSaveRequest updateAccount:v8];
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v27 = v6;
-      obj = v6;
+      v27 = foldersCopy;
+      obj = foldersCopy;
       v12 = [obj countByEnumeratingWithState:&v29 objects:v37 count:16];
       if (v12)
       {
@@ -720,18 +720,18 @@ LABEL_20:
             }
 
             v17 = *(*(&v29 + 1) + 8 * i);
-            v18 = [v17 folderName];
-            v19 = [v17 folderID];
-            v20 = [v10 addListWithName:v18 toAccountChangeItem:v11];
-            [v20 setExternalIdentifier:v19];
+            folderName = [v17 folderName];
+            folderID = [v17 folderID];
+            v20 = [_getReminderSaveRequest addListWithName:folderName toAccountChangeItem:v11];
+            [v20 setExternalIdentifier:folderID];
             [v20 setDaIsImmutable:{objc_msgSend(v17, "isDefault")}];
             v21 = DALoggingwithCategory();
             if (os_log_type_enabled(v21, v15))
             {
               *buf = 138412546;
-              v34 = v18;
+              v34 = folderName;
               v35 = 2112;
-              v36 = v19;
+              v36 = folderID;
               _os_log_impl(&dword_0, v21, v15, "ReminderSupport: reminder list change with folder title: %@ and ID: %@", buf, 0x16u);
             }
           }
@@ -742,22 +742,22 @@ LABEL_20:
         while (v13);
       }
 
-      v7 = v26;
-      v6 = v27;
+      accountCopy = v26;
+      foldersCopy = v27;
       v9 = 1;
       v8 = v25;
     }
 
     else
     {
-      v10 = DALoggingwithCategory();
+      _getReminderSaveRequest = DALoggingwithCategory();
       v22 = _CPLog_to_os_log_type[3];
-      if (os_log_type_enabled(v10, v22))
+      if (os_log_type_enabled(_getReminderSaveRequest, v22))
       {
-        v23 = [v7 accountID];
+        accountID = [accountCopy accountID];
         *buf = 138412290;
-        v34 = v23;
-        _os_log_impl(&dword_0, v10, v22, "ReminderSupport: missing reminder account %@, when adding folders.", buf, 0xCu);
+        v34 = accountID;
+        _os_log_impl(&dword_0, _getReminderSaveRequest, v22, "ReminderSupport: missing reminder account %@, when adding folders.", buf, 0xCu);
       }
     }
   }
@@ -770,67 +770,67 @@ LABEL_20:
   return v9;
 }
 
-- (BOOL)addFolder:(id)a3 forAccount:(id)a4
+- (BOOL)addFolder:(id)folder forAccount:(id)account
 {
-  v6 = a3;
-  v7 = [(ESReminderKitHelper *)self _reminderAccountForAccount:a4];
-  v8 = [(ESReminderKitHelper *)self _getReminderSaveRequest];
-  v9 = [v8 updateAccount:v7];
-  v10 = [v6 folderName];
-  v11 = [v6 folderID];
-  v12 = [v8 addListWithName:v10 toAccountChangeItem:v9];
-  [v12 setExternalIdentifier:v11];
-  v13 = [v6 isDefault];
+  folderCopy = folder;
+  v7 = [(ESReminderKitHelper *)self _reminderAccountForAccount:account];
+  _getReminderSaveRequest = [(ESReminderKitHelper *)self _getReminderSaveRequest];
+  v9 = [_getReminderSaveRequest updateAccount:v7];
+  folderName = [folderCopy folderName];
+  folderID = [folderCopy folderID];
+  v12 = [_getReminderSaveRequest addListWithName:folderName toAccountChangeItem:v9];
+  [v12 setExternalIdentifier:folderID];
+  isDefault = [folderCopy isDefault];
 
-  [v12 setDaIsImmutable:v13];
+  [v12 setDaIsImmutable:isDefault];
   v14 = DALoggingwithCategory();
   v15 = _CPLog_to_os_log_type[7];
   if (os_log_type_enabled(v14, v15))
   {
     v17 = 138412546;
-    v18 = v10;
+    v18 = folderName;
     v19 = 2112;
-    v20 = v11;
+    v20 = folderID;
     _os_log_impl(&dword_0, v14, v15, "ReminderSupport: reminder list added with folder title: %@ and ID: %@", &v17, 0x16u);
   }
 
   return 1;
 }
 
-- (BOOL)updateExtenalIDForFolder:(id)a3 forAccount:(id)a4
+- (BOOL)updateExtenalIDForFolder:(id)folder forAccount:(id)account
 {
-  v6 = a3;
-  v7 = [(ESReminderKitHelper *)self _reminderAccountForAccount:a4];
-  v8 = [(ESReminderKitHelper *)self _getReminderSaveRequest];
-  v9 = [v6 localUUID];
-  v10 = [(ESReminderKitHelper *)self _reminderListWithObjectUUID:v9 forReminderAccount:v7];
+  folderCopy = folder;
+  v7 = [(ESReminderKitHelper *)self _reminderAccountForAccount:account];
+  _getReminderSaveRequest = [(ESReminderKitHelper *)self _getReminderSaveRequest];
+  localUUID = [folderCopy localUUID];
+  v10 = [(ESReminderKitHelper *)self _reminderListWithObjectUUID:localUUID forReminderAccount:v7];
 
-  v11 = [v8 updateList:v10];
-  v12 = [v6 serverID];
-  [v11 setExternalIdentifier:v12];
+  v11 = [_getReminderSaveRequest updateList:v10];
+  serverID = [folderCopy serverID];
+  [v11 setExternalIdentifier:serverID];
 
   v13 = DALoggingwithCategory();
   v14 = _CPLog_to_os_log_type[7];
   if (os_log_type_enabled(v13, v14))
   {
-    v15 = [v6 localUUID];
-    v16 = [v6 serverID];
+    localUUID2 = [folderCopy localUUID];
+    serverID2 = [folderCopy serverID];
     v18 = 138412546;
-    v19 = v15;
+    v19 = localUUID2;
     v20 = 2112;
-    v21 = v16;
+    v21 = serverID2;
     _os_log_impl(&dword_0, v13, v14, "ReminderSupport: reminder list with object ID: %@ and ID: %@", &v18, 0x16u);
   }
 
   return 1;
 }
 
-- (id)_reminderAccountForAccount:(id)a3
+- (id)_reminderAccountForAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = [NSUUID alloc];
-  v6 = [v4 accountID];
-  v7 = [v5 initWithUUIDString:v6];
+  accountID = [accountCopy accountID];
+  v7 = [v5 initWithUUIDString:accountID];
 
   v8 = [REMAccount objectIDWithUUID:v7];
   reminderStore = self->_reminderStore;
@@ -843,9 +843,9 @@ LABEL_20:
     v13 = _CPLog_to_os_log_type[7];
     if (os_log_type_enabled(v12, v13))
     {
-      v14 = [v4 accountID];
+      accountID2 = [accountCopy accountID];
       *buf = 138412546;
-      v21 = v14;
+      v21 = accountID2;
       v22 = 2112;
       v23 = v11;
       _os_log_impl(&dword_0, v12, v13, "Fetch account failed for accountID: %@, with error: %@", buf, 0x16u);
@@ -855,38 +855,38 @@ LABEL_20:
     v16 = _CPLog_to_os_log_type[6];
     if (os_log_type_enabled(v15, v16))
     {
-      v17 = [v4 accountID];
+      accountID3 = [accountCopy accountID];
       *buf = 138412290;
-      v21 = v17;
+      v21 = accountID3;
       _os_log_impl(&dword_0, v15, v16, "Setting reminderAccountMissing to TRUE for account %@ and asking ReminderKit to set up the REMAccount", buf, 0xCu);
     }
 
-    [v4 setReminderAccountMissing:1];
-    [(ESReminderKitHelper *)self _setupReminderAccountForAccount:v4];
+    [accountCopy setReminderAccountMissing:1];
+    [(ESReminderKitHelper *)self _setupReminderAccountForAccount:accountCopy];
   }
 
   return v10;
 }
 
-- (void)_setupReminderAccountForAccount:(id)a3
+- (void)_setupReminderAccountForAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   reminderStore = self->_reminderStore;
-  v6 = [v4 accountID];
+  accountID = [accountCopy accountID];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_308EC;
   v8[3] = &unk_6D348;
-  v9 = v4;
-  v7 = v4;
-  [(REMStore *)reminderStore updateAccountWithAccountID:v6 completion:v8];
+  v9 = accountCopy;
+  v7 = accountCopy;
+  [(REMStore *)reminderStore updateAccountWithAccountID:accountID completion:v8];
 }
 
-- (id)_reminderListWithExternalId:(id)a3 forReminderAccount:(id)a4
+- (id)_reminderListWithExternalId:(id)id forReminderAccount:(id)account
 {
-  v5 = a3;
+  idCopy = id;
   v11 = 0;
-  v6 = [a4 fetchListIncludingSpecialContainerWithExternalIdentifier:v5 error:&v11];
+  v6 = [account fetchListIncludingSpecialContainerWithExternalIdentifier:idCopy error:&v11];
   v7 = v11;
   if (!v6)
   {
@@ -895,7 +895,7 @@ LABEL_20:
     if (os_log_type_enabled(v8, v9))
     {
       *buf = 138412546;
-      v13 = v5;
+      v13 = idCopy;
       v14 = 2112;
       v15 = v7;
       _os_log_impl(&dword_0, v8, v9, "Fetching reminder lists returned nil {folderID: %@, error: %@}", buf, 0x16u);
@@ -905,16 +905,16 @@ LABEL_20:
   return v6;
 }
 
-- (id)_reminderWithObjectUUID:(id)a3 list:(id)a4
+- (id)_reminderWithObjectUUID:(id)d list:(id)list
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[NSUUID alloc] initWithUUIDString:v5];
+  dCopy = d;
+  listCopy = list;
+  v7 = [[NSUUID alloc] initWithUUIDString:dCopy];
   v8 = [REMReminder objectIDWithUUID:v7];
-  v9 = [v6 store];
+  store = [listCopy store];
 
   v15 = 0;
-  v10 = [v9 fetchReminderWithObjectID:v8 error:&v15];
+  v10 = [store fetchReminderWithObjectID:v8 error:&v15];
   v11 = v15;
 
   if (!v10)
@@ -924,7 +924,7 @@ LABEL_20:
     if (os_log_type_enabled(v12, v13))
     {
       *buf = 138412546;
-      v17 = v5;
+      v17 = dCopy;
       v18 = 2112;
       v19 = v11;
       _os_log_impl(&dword_0, v12, v13, "Fetching reminder returned nil {ObjectID: %@, error: %@}", buf, 0x16u);
@@ -934,16 +934,16 @@ LABEL_20:
   return v10;
 }
 
-- (id)_reminderListWithObjectUUID:(id)a3 forReminderAccount:(id)a4
+- (id)_reminderListWithObjectUUID:(id)d forReminderAccount:(id)account
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[NSUUID alloc] initWithUUIDString:v5];
+  dCopy = d;
+  accountCopy = account;
+  v7 = [[NSUUID alloc] initWithUUIDString:dCopy];
   v8 = [REMList objectIDWithUUID:v7];
-  v9 = [v6 store];
+  store = [accountCopy store];
 
   v15 = 0;
-  v10 = [v9 fetchListWithObjectID:v8 error:&v15];
+  v10 = [store fetchListWithObjectID:v8 error:&v15];
   v11 = v15;
 
   if (!v10)
@@ -953,7 +953,7 @@ LABEL_20:
     if (os_log_type_enabled(v12, v13))
     {
       *buf = 138412546;
-      v17 = v5;
+      v17 = dCopy;
       v18 = 2112;
       v19 = v11;
       _os_log_impl(&dword_0, v12, v13, "Fetching list returned nil {ObjectID: %@, error: %@}", buf, 0x16u);
@@ -963,11 +963,11 @@ LABEL_20:
   return v10;
 }
 
-- (id)_reminderWithExternalId:(id)a3 list:(id)a4
+- (id)_reminderWithExternalId:(id)id list:(id)list
 {
-  v5 = a3;
+  idCopy = id;
   v11 = 0;
-  v6 = [a4 fetchReminderWithExternalIdentifier:v5 error:&v11];
+  v6 = [list fetchReminderWithExternalIdentifier:idCopy error:&v11];
   v7 = v11;
   if (!v6)
   {
@@ -976,7 +976,7 @@ LABEL_20:
     if (os_log_type_enabled(v8, v9))
     {
       *buf = 138412546;
-      v13 = v5;
+      v13 = idCopy;
       v14 = 2112;
       v15 = v7;
       _os_log_impl(&dword_0, v8, v9, "Fetching reminder returned nil {serverID: %@, error: %@}", buf, 0x16u);
@@ -986,11 +986,11 @@ LABEL_20:
   return v6;
 }
 
-- (id)_reminderMatchingAttributesInReminder:(id)a3 list:(id)a4
+- (id)_reminderMatchingAttributesInReminder:(id)reminder list:(id)list
 {
-  v5 = a3;
+  reminderCopy = reminder;
   v38 = 0;
-  v6 = [a4 fetchRemindersWithError:&v38];
+  v6 = [list fetchRemindersWithError:&v38];
   v7 = v38;
   if (v7)
   {
@@ -1056,24 +1056,24 @@ LABEL_4:
       }
 
       v21 = *(*(&v34 + 1) + 8 * i);
-      v22 = [v5 subject];
-      v23 = [v21 titleAsString];
-      v24 = [v22 isEqualToString:v23];
+      subject = [reminderCopy subject];
+      titleAsString = [v21 titleAsString];
+      v24 = [subject isEqualToString:titleAsString];
 
       if (v24)
       {
-        v25 = [v21 dueDateComponents];
+        dueDateComponents = [v21 dueDateComponents];
 
-        if (v25)
+        if (dueDateComponents)
         {
-          v26 = [v21 dueDateComponents];
+          dueDateComponents2 = [v21 dueDateComponents];
           v27 = [NSTimeZone timeZoneWithName:@"UTC"];
-          v28 = [NSDateComponents rem_dateWithDateComponents:v26 timeZone:v27];
+          v28 = [NSDateComponents rem_dateWithDateComponents:dueDateComponents2 timeZone:v27];
 
           if (v28)
           {
-            v29 = [v5 utcDueDate];
-            v30 = [v29 isEqualToDate:v28];
+            utcDueDate = [reminderCopy utcDueDate];
+            v30 = [utcDueDate isEqualToDate:v28];
 
             if (v30)
             {
@@ -1105,23 +1105,23 @@ LABEL_6:
   return v14;
 }
 
-- (id)syncKeyForFolderWithId:(id)a3 forAccount:(id)a4
+- (id)syncKeyForFolderWithId:(id)id forAccount:(id)account
 {
-  v6 = a3;
-  v7 = [(ESReminderKitHelper *)self _reminderAccountForAccount:a4];
-  v8 = [(ESReminderKitHelper *)self _reminderListWithExternalId:v6 forReminderAccount:v7];
+  idCopy = id;
+  v7 = [(ESReminderKitHelper *)self _reminderAccountForAccount:account];
+  v8 = [(ESReminderKitHelper *)self _reminderListWithExternalId:idCopy forReminderAccount:v7];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 externalModificationTag];
+    externalModificationTag = [v8 externalModificationTag];
     v11 = DALoggingwithCategory();
     v12 = _CPLog_to_os_log_type[7];
     if (os_log_type_enabled(v11, v12))
     {
       v15 = 138412546;
-      v16 = v10;
+      v16 = externalModificationTag;
       v17 = 2112;
-      v18 = v6;
+      v18 = idCopy;
       _os_log_impl(&dword_0, v11, v12, "_syncKeyForFolderWithId Reminder external tag %@ for folder ID %@", &v15, 0x16u);
     }
   }
@@ -1133,40 +1133,40 @@ LABEL_6:
     if (os_log_type_enabled(v11, v13))
     {
       v15 = 138412290;
-      v16 = v6;
+      v16 = idCopy;
       _os_log_impl(&dword_0, v11, v13, "_syncKeyForFolderWithId Reminder containing folder with folder ID %@ not found", &v15, 0xCu);
     }
 
-    v10 = 0;
+    externalModificationTag = 0;
   }
 
-  return v10;
+  return externalModificationTag;
 }
 
-- (BOOL)isFolderExistsWithId:(id)a3 forAccount:(id)a4
+- (BOOL)isFolderExistsWithId:(id)id forAccount:(id)account
 {
-  v6 = a3;
-  v7 = [(ESReminderKitHelper *)self _reminderAccountForAccount:a4];
-  v8 = [(ESReminderKitHelper *)self _reminderListWithExternalId:v6 forReminderAccount:v7];
+  idCopy = id;
+  v7 = [(ESReminderKitHelper *)self _reminderAccountForAccount:account];
+  v8 = [(ESReminderKitHelper *)self _reminderListWithExternalId:idCopy forReminderAccount:v7];
 
   return v8 != 0;
 }
 
-- (BOOL)deleteFolder:(id)a3 forAccount:(id)a4
+- (BOOL)deleteFolder:(id)folder forAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ESReminderKitHelper *)self _reminderAccountForAccount:v7];
+  folderCopy = folder;
+  accountCopy = account;
+  v8 = [(ESReminderKitHelper *)self _reminderAccountForAccount:accountCopy];
   if (v8)
   {
-    v9 = [(ESReminderKitHelper *)self _getReminderSaveRequest];
-    v10 = [v6 folderID];
-    v11 = [(ESReminderKitHelper *)self _reminderListWithExternalId:v10 forReminderAccount:v8];
+    _getReminderSaveRequest = [(ESReminderKitHelper *)self _getReminderSaveRequest];
+    folderID = [folderCopy folderID];
+    v11 = [(ESReminderKitHelper *)self _reminderListWithExternalId:folderID forReminderAccount:v8];
 
     v12 = v11 != 0;
     if (v11)
     {
-      v13 = [v9 updateList:v11];
+      v13 = [_getReminderSaveRequest updateList:v11];
       [v13 removeFromParent];
     }
 
@@ -1176,9 +1176,9 @@ LABEL_6:
       v16 = _CPLog_to_os_log_type[3];
       if (os_log_type_enabled(v13, v16))
       {
-        v17 = [v6 folderID];
+        folderID2 = [folderCopy folderID];
         v19 = 138412290;
-        v20 = v17;
+        v20 = folderID2;
         _os_log_impl(&dword_0, v13, v16, "Fail to delete a reminder folder because Reminder list doesn't exist. Folder ID: %@", &v19, 0xCu);
       }
     }
@@ -1186,14 +1186,14 @@ LABEL_6:
 
   else
   {
-    v9 = DALoggingwithCategory();
+    _getReminderSaveRequest = DALoggingwithCategory();
     v14 = _CPLog_to_os_log_type[3];
-    if (os_log_type_enabled(v9, v14))
+    if (os_log_type_enabled(_getReminderSaveRequest, v14))
     {
-      v15 = [v7 accountID];
+      accountID = [accountCopy accountID];
       v19 = 138412290;
-      v20 = v15;
-      _os_log_impl(&dword_0, v9, v14, "Fail to delete a reminder folder because Reminder account doesn't exist. Account ID: %@", &v19, 0xCu);
+      v20 = accountID;
+      _os_log_impl(&dword_0, _getReminderSaveRequest, v14, "Fail to delete a reminder folder because Reminder account doesn't exist. Account ID: %@", &v19, 0xCu);
     }
 
     v12 = 0;
@@ -1202,16 +1202,16 @@ LABEL_6:
   return v12;
 }
 
-- (BOOL)updateSyncKey:(id)a3 forFolderWithId:(id)a4 forAccount:(id)a5
+- (BOOL)updateSyncKey:(id)key forFolderWithId:(id)id forAccount:(id)account
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ESReminderKitHelper *)self _reminderAccountForAccount:v10];
+  keyCopy = key;
+  idCopy = id;
+  accountCopy = account;
+  v11 = [(ESReminderKitHelper *)self _reminderAccountForAccount:accountCopy];
   if (v11)
   {
-    v12 = [(ESReminderKitHelper *)self _getReminderSaveRequest];
-    v13 = [(ESReminderKitHelper *)self _reminderListWithExternalId:v9 forReminderAccount:v11];
+    _getReminderSaveRequest = [(ESReminderKitHelper *)self _getReminderSaveRequest];
+    v13 = [(ESReminderKitHelper *)self _reminderListWithExternalId:idCopy forReminderAccount:v11];
     v14 = v13 != 0;
     v15 = DALoggingwithCategory();
     v16 = v15;
@@ -1221,14 +1221,14 @@ LABEL_6:
       if (os_log_type_enabled(v15, v17))
       {
         v23 = 138412546;
-        v24 = v8;
+        v24 = keyCopy;
         v25 = 2112;
-        v26 = v9;
+        v26 = idCopy;
         _os_log_impl(&dword_0, v16, v17, "Updating sync key %@ for reminder folder ID:%@", &v23, 0x16u);
       }
 
-      v16 = [v12 updateList:v13];
-      [v16 setExternalModificationTag:v8];
+      v16 = [_getReminderSaveRequest updateList:v13];
+      [v16 setExternalModificationTag:keyCopy];
     }
 
     else
@@ -1236,11 +1236,11 @@ LABEL_6:
       v20 = _CPLog_to_os_log_type[3];
       if (os_log_type_enabled(v15, v20))
       {
-        v21 = [v10 accountID];
+        accountID = [accountCopy accountID];
         v23 = 138412546;
-        v24 = v21;
+        v24 = accountID;
         v25 = 2112;
-        v26 = v9;
+        v26 = idCopy;
         _os_log_impl(&dword_0, v16, v20, "Fail to set sync key for reminder folder because Reminder list doesn't exist. Account ID: %@, folder ID:%@", &v23, 0x16u);
       }
     }
@@ -1248,16 +1248,16 @@ LABEL_6:
 
   else
   {
-    v12 = DALoggingwithCategory();
+    _getReminderSaveRequest = DALoggingwithCategory();
     v18 = _CPLog_to_os_log_type[3];
-    if (os_log_type_enabled(v12, v18))
+    if (os_log_type_enabled(_getReminderSaveRequest, v18))
     {
-      v19 = [v10 accountID];
+      accountID2 = [accountCopy accountID];
       v23 = 138412546;
-      v24 = v19;
+      v24 = accountID2;
       v25 = 2112;
-      v26 = v9;
-      _os_log_impl(&dword_0, v12, v18, "Fail to set sync key for reminder folder because Reminder account doesn't exist. Account ID: %@, folder ID:%@", &v23, 0x16u);
+      v26 = idCopy;
+      _os_log_impl(&dword_0, _getReminderSaveRequest, v18, "Fail to set sync key for reminder folder because Reminder account doesn't exist. Account ID: %@, folder ID:%@", &v23, 0x16u);
     }
 
     v14 = 0;
@@ -1297,16 +1297,16 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)initialSyncReminder:(id)a3 forFolderWithId:(id)a4 forAccount:(id)a5 resultingAction:(id *)a6
+- (BOOL)initialSyncReminder:(id)reminder forFolderWithId:(id)id forAccount:(id)account resultingAction:(id *)action
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 serverID];
-  if (v12)
+  reminderCopy = reminder;
+  idCopy = id;
+  accountCopy = account;
+  serverID = [reminderCopy serverID];
+  if (serverID)
   {
-    v13 = [(ESReminderKitHelper *)self _getReminderSaveRequest];
-    v14 = [(ESReminderKitHelper *)self _reminderAccountForAccount:v11];
+    _getReminderSaveRequest = [(ESReminderKitHelper *)self _getReminderSaveRequest];
+    v14 = [(ESReminderKitHelper *)self _reminderAccountForAccount:accountCopy];
     if (!v14)
     {
       v15 = DALoggingwithCategory();
@@ -1314,9 +1314,9 @@ LABEL_6:
       if (os_log_type_enabled(v15, v26))
       {
         *buf = 138412546;
-        v35 = v11;
+        v35 = accountCopy;
         v36 = 2112;
-        v37 = v9;
+        v37 = reminderCopy;
         _os_log_impl(&dword_0, v15, v26, "Account %@ does not existing when adding reminder %@", buf, 0x16u);
       }
 
@@ -1324,7 +1324,7 @@ LABEL_6:
       goto LABEL_23;
     }
 
-    v15 = [(ESReminderKitHelper *)self _reminderListWithExternalId:v10 forReminderAccount:v14];
+    v15 = [(ESReminderKitHelper *)self _reminderListWithExternalId:idCopy forReminderAccount:v14];
     if (!v15)
     {
       v17 = DALoggingwithCategory();
@@ -1332,9 +1332,9 @@ LABEL_6:
       if (os_log_type_enabled(v17, v27))
       {
         *buf = 138412546;
-        v35 = v10;
+        v35 = idCopy;
         v36 = 2112;
-        v37 = v9;
+        v37 = reminderCopy;
         _os_log_impl(&dword_0, v17, v27, "Folder %@ does not existing when adding reminder %@", buf, 0x16u);
       }
 
@@ -1342,8 +1342,8 @@ LABEL_6:
       goto LABEL_22;
     }
 
-    v33 = v10;
-    v16 = [(ESReminderKitHelper *)self _reminderWithExternalId:v12 list:v15];
+    v33 = idCopy;
+    v16 = [(ESReminderKitHelper *)self _reminderWithExternalId:serverID list:v15];
     if (v16)
     {
       v17 = v16;
@@ -1352,9 +1352,9 @@ LABEL_6:
       if (os_log_type_enabled(v18, v19))
       {
         *buf = 138412546;
-        v35 = v9;
+        v35 = reminderCopy;
         v36 = 2112;
-        v37 = v12;
+        v37 = serverID;
         v20 = "During initial sync, merge task with existing local reminder with the same external id {task: %@, externalIdentifier: %@}";
         v21 = v18;
         v22 = v19;
@@ -1366,7 +1366,7 @@ LABEL_19:
 
     else
     {
-      v17 = [(ESReminderKitHelper *)self _reminderMatchingAttributesInReminder:v9 list:v15];
+      v17 = [(ESReminderKitHelper *)self _reminderMatchingAttributesInReminder:reminderCopy list:v15];
       v18 = DALoggingwithCategory();
       v28 = _CPLog_to_os_log_type[6];
       v29 = os_log_type_enabled(v18, v28);
@@ -1375,13 +1375,13 @@ LABEL_19:
         if (v29)
         {
           *buf = 138412290;
-          v35 = v9;
+          v35 = reminderCopy;
           _os_log_impl(&dword_0, v18, v28, "Adding new reminder during intial sync %@", buf, 0xCu);
         }
 
-        v17 = [v13 updateList:v15];
-        v32 = [v17 saveRequest];
-        v30 = [v32 addReminderWithTitle:@"__untitled__" toListChangeItem:v17];
+        v17 = [_getReminderSaveRequest updateList:v15];
+        saveRequest = [v17 saveRequest];
+        v30 = [saveRequest addReminderWithTitle:@"__untitled__" toListChangeItem:v17];
 
         goto LABEL_21;
       }
@@ -1389,7 +1389,7 @@ LABEL_19:
       if (v29)
       {
         *buf = 138412290;
-        v35 = v9;
+        v35 = reminderCopy;
         v20 = "Found existing reminder during intial sync %@";
         v21 = v18;
         v22 = v28;
@@ -1398,24 +1398,24 @@ LABEL_19:
       }
     }
 
-    v30 = [v13 updateReminder:v17];
+    v30 = [_getReminderSaveRequest updateReminder:v17];
 LABEL_21:
-    v25 = [(ESReminderKitHelper *)self _populateChangeItem:v30 forReminder:v9 folderWithId:v33 forAccount:v11];
+    v25 = [(ESReminderKitHelper *)self _populateChangeItem:v30 forReminder:reminderCopy folderWithId:v33 forAccount:accountCopy];
 
-    v10 = v33;
+    idCopy = v33;
 LABEL_22:
 
 LABEL_23:
     goto LABEL_24;
   }
 
-  v13 = DALoggingwithCategory();
+  _getReminderSaveRequest = DALoggingwithCategory();
   v24 = _CPLog_to_os_log_type[3];
-  if (os_log_type_enabled(v13, v24))
+  if (os_log_type_enabled(_getReminderSaveRequest, v24))
   {
     *buf = 138412290;
-    v35 = v9;
-    _os_log_impl(&dword_0, v13, v24, "ServerID missing from task. Failed to initial sync reminder {task: %@}", buf, 0xCu);
+    v35 = reminderCopy;
+    _os_log_impl(&dword_0, _getReminderSaveRequest, v24, "ServerID missing from task. Failed to initial sync reminder {task: %@}", buf, 0xCu);
   }
 
   v25 = 0;
@@ -1424,28 +1424,28 @@ LABEL_24:
   return v25;
 }
 
-- (BOOL)_populateChangeItem:(id)a3 forRecurrence:(id)a4 forReminder:(id)a5 forFolderWithId:(id)a6 forAccount:(id)a7
+- (BOOL)_populateChangeItem:(id)item forRecurrence:(id)recurrence forReminder:(id)reminder forFolderWithId:(id)id forAccount:(id)account
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [v10 interval];
-  v12 = [v11 integerValue];
+  itemCopy = item;
+  recurrenceCopy = recurrence;
+  interval = [recurrenceCopy interval];
+  integerValue = [interval integerValue];
 
-  v13 = [v10 firstDayOfWeek];
+  firstDayOfWeek = [recurrenceCopy firstDayOfWeek];
 
-  if (v13)
+  if (firstDayOfWeek)
   {
-    v14 = [v10 firstDayOfWeek];
-    v15 = [v14 intValue];
+    firstDayOfWeek2 = [recurrenceCopy firstDayOfWeek];
+    intValue = [firstDayOfWeek2 intValue];
 
-    if (v15 >= 7)
+    if (intValue >= 7)
     {
       v16 = 1;
     }
 
     else
     {
-      v16 = v15;
+      v16 = intValue;
     }
   }
 
@@ -1485,16 +1485,16 @@ LABEL_24:
     v16 = v20;
   }
 
-  v23 = [v10 type];
-  v24 = [v23 intValue];
+  type = [recurrenceCopy type];
+  intValue2 = [type intValue];
 
-  if (v24 > 2)
+  if (intValue2 > 2)
   {
-    switch(v24)
+    switch(intValue2)
     {
       case 3:
-        v38 = [v10 weekOfMonth];
-        LODWORD(v39) = [v38 intValue];
+        weekOfMonth = [recurrenceCopy weekOfMonth];
+        LODWORD(v39) = [weekOfMonth intValue];
 
         if (v39 == 5)
         {
@@ -1506,12 +1506,12 @@ LABEL_24:
           v39 = v39;
         }
 
-        v40 = [v10 dayOfWeek];
-        v41 = [v40 intValue];
+        dayOfWeek = [recurrenceCopy dayOfWeek];
+        intValue3 = [dayOfWeek intValue];
 
         v69 = v16;
-        v70 = v12;
-        if (v41)
+        v70 = integerValue;
+        if (intValue3)
         {
           if (v39 >= 1)
           {
@@ -1523,7 +1523,7 @@ LABEL_24:
             v42 = 0xFFFFFFFFLL;
           }
 
-          v43 = [(ESReminderKitHelper *)self _remDaysOfWeekFromASDayOfWeek:v41 weekOfMonth:v42];
+          v43 = [(ESReminderKitHelper *)self _remDaysOfWeekFromASDayOfWeek:intValue3 weekOfMonth:v42];
           if (v43)
           {
             v44 = [NSNumber numberWithInt:v39];
@@ -1548,34 +1548,34 @@ LABEL_61:
         v74 = 0;
         v51 = 2;
 LABEL_62:
-        v55 = [v10 occurrences];
-        v56 = [v55 intValue];
+        occurrences = [recurrenceCopy occurrences];
+        intValue4 = [occurrences intValue];
 
-        v57 = [v10 until];
-        v58 = v57;
-        if (v56)
+        until = [recurrenceCopy until];
+        v58 = until;
+        if (intValue4)
         {
-          v59 = [REMRecurrenceEnd recurrenceEndWithOccurrenceCount:v56];
+          v59 = [REMRecurrenceEnd recurrenceEndWithOccurrenceCount:intValue4];
         }
 
         else
         {
-          if (!v57)
+          if (!until)
           {
             v60 = 0;
             goto LABEL_67;
           }
 
-          v59 = [REMRecurrenceEnd recurrenceEndWithEndDate:v57];
+          v59 = [REMRecurrenceEnd recurrenceEndWithEndDate:until];
         }
 
         v60 = v59;
 LABEL_67:
         v61 = +[REMRecurrenceRule newObjectID];
-        v62 = [v9 accountID];
-        v63 = v9;
-        v64 = [v9 objectID];
-        v65 = [[REMRecurrenceRule alloc] initRecurrenceRuleWithObjectID:v61 accountID:v62 reminderID:v64 frequency:v51 interval:v70 firstDayOfTheWeek:v69 daysOfTheWeek:v74 daysOfTheMonth:v71 monthsOfTheYear:v72 weeksOfTheYear:0 daysOfTheYear:0 setPositions:v73 end:v60];
+        accountID = [itemCopy accountID];
+        v63 = itemCopy;
+        objectID = [itemCopy objectID];
+        v65 = [[REMRecurrenceRule alloc] initRecurrenceRuleWithObjectID:v61 accountID:accountID reminderID:objectID frequency:v51 interval:v70 firstDayOfTheWeek:v69 daysOfTheWeek:v74 daysOfTheMonth:v71 monthsOfTheYear:v72 weeksOfTheYear:0 daysOfTheYear:0 setPositions:v73 end:v60];
         v66 = DALoggingwithCategory();
         v67 = _CPLog_to_os_log_type[7];
         if (os_log_type_enabled(v66, v67))
@@ -1585,7 +1585,7 @@ LABEL_67:
           _os_log_impl(&dword_0, v66, v67, "SET recurrence <- %@", buf, 0xCu);
         }
 
-        v9 = v63;
+        itemCopy = v63;
         [v63 removeAllRecurrenceRules];
         [v63 addRecurrenceRule:v65];
 
@@ -1594,32 +1594,32 @@ LABEL_67:
         goto LABEL_70;
       case 5:
         v69 = v16;
-        v70 = v12;
+        v70 = integerValue;
         v72 = 0;
         v73 = 0;
         v71 = 0;
         v74 = 0;
         break;
       case 6:
-        v29 = [v10 weekOfMonth];
-        v30 = [v29 intValue];
+        weekOfMonth2 = [recurrenceCopy weekOfMonth];
+        intValue5 = [weekOfMonth2 intValue];
 
-        v31 = [v10 dayOfWeek];
-        v32 = [v31 intValue];
+        dayOfWeek2 = [recurrenceCopy dayOfWeek];
+        intValue6 = [dayOfWeek2 intValue];
 
-        if (v32)
+        if (intValue6)
         {
-          if (v30 == 5)
+          if (intValue5 == 5)
           {
             v33 = 0xFFFFFFFFLL;
           }
 
           else
           {
-            v33 = v30;
+            v33 = intValue5;
           }
 
-          v34 = [(ESReminderKitHelper *)self _remDaysOfWeekFromASDayOfWeek:v32 weekOfMonth:v33];
+          v34 = [(ESReminderKitHelper *)self _remDaysOfWeekFromASDayOfWeek:intValue6 weekOfMonth:v33];
         }
 
         else
@@ -1629,13 +1629,13 @@ LABEL_67:
 
         v74 = v34;
         v69 = v16;
-        v70 = v12;
-        v52 = [v10 monthOfYear];
-        v53 = [v52 intValue];
+        v70 = integerValue;
+        monthOfYear = [recurrenceCopy monthOfYear];
+        intValue7 = [monthOfYear intValue];
 
-        if (v53)
+        if (intValue7)
         {
-          v54 = [NSNumber numberWithInteger:[(ESReminderKitHelper *)self _remMonthOfYearFromASMonthOfYear:v53]];
+          v54 = [NSNumber numberWithInteger:[(ESReminderKitHelper *)self _remMonthOfYearFromASMonthOfYear:intValue7]];
           v77 = v54;
           v72 = [NSArray arrayWithObjects:&v77 count:1];
         }
@@ -1656,15 +1656,15 @@ LABEL_67:
     goto LABEL_62;
   }
 
-  switch(v24)
+  switch(intValue2)
   {
     case 0:
       v69 = v16;
-      v70 = v12;
-      v35 = [v10 dayOfWeek];
-      v36 = [v35 intValue];
+      v70 = integerValue;
+      dayOfWeek3 = [recurrenceCopy dayOfWeek];
+      intValue8 = [dayOfWeek3 intValue];
 
-      if (!v36)
+      if (!intValue8)
       {
         v72 = 0;
         v73 = 0;
@@ -1674,17 +1674,17 @@ LABEL_67:
         goto LABEL_62;
       }
 
-      v37 = [v10 dayOfWeek];
-      v74 = -[ESReminderKitHelper _remDaysOfWeekFromASDayOfWeek:weekOfMonth:](self, "_remDaysOfWeekFromASDayOfWeek:weekOfMonth:", [v37 intValue], 0);
+      dayOfWeek4 = [recurrenceCopy dayOfWeek];
+      v74 = -[ESReminderKitHelper _remDaysOfWeekFromASDayOfWeek:weekOfMonth:](self, "_remDaysOfWeekFromASDayOfWeek:weekOfMonth:", [dayOfWeek4 intValue], 0);
 
       goto LABEL_46;
     case 1:
       v69 = v16;
-      v70 = v12;
-      v49 = [v10 dayOfWeek];
-      v50 = [v49 intValue];
+      v70 = integerValue;
+      dayOfWeek5 = [recurrenceCopy dayOfWeek];
+      intValue9 = [dayOfWeek5 intValue];
 
-      if (!v50)
+      if (!intValue9)
       {
         v72 = 0;
         v73 = 0;
@@ -1693,7 +1693,7 @@ LABEL_67:
         goto LABEL_57;
       }
 
-      v74 = [(ESReminderKitHelper *)self _remDaysOfWeekFromASDayOfWeek:v50 weekOfMonth:0];
+      v74 = [(ESReminderKitHelper *)self _remDaysOfWeekFromASDayOfWeek:intValue9 weekOfMonth:0];
 LABEL_46:
       v72 = 0;
       v73 = 0;
@@ -1703,20 +1703,20 @@ LABEL_57:
       goto LABEL_62;
     case 2:
       v69 = v16;
-      v70 = v12;
-      v25 = [v10 dayOfMonth];
-      v26 = [v25 intValue];
+      v70 = integerValue;
+      dayOfMonth = [recurrenceCopy dayOfMonth];
+      intValue10 = [dayOfMonth intValue];
 
-      if (v26)
+      if (intValue10)
       {
-        if (v26 == 127)
+        if (intValue10 == 127)
         {
           v27 = 0xFFFFFFFFLL;
         }
 
         else
         {
-          v27 = v26;
+          v27 = intValue10;
         }
 
         v28 = [NSNumber numberWithInt:v27];
@@ -1736,9 +1736,9 @@ LABEL_41:
   v46 = _CPLog_to_os_log_type[3];
   if (os_log_type_enabled(v45, v46))
   {
-    v47 = [v10 type];
+    type2 = [recurrenceCopy type];
     *buf = 138412290;
-    v76 = v47;
+    v76 = type2;
     _os_log_impl(&dword_0, v45, v46, "Recurrence rule has invalid frequency %@", buf, 0xCu);
   }
 
@@ -1748,22 +1748,22 @@ LABEL_70:
   return v48;
 }
 
-- (BOOL)addOrModifyReminder:(id)a3 forFolderWithId:(id)a4 forAccount:(id)a5
+- (BOOL)addOrModifyReminder:(id)reminder forFolderWithId:(id)id forAccount:(id)account
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 serverID];
-  if (v11)
+  reminderCopy = reminder;
+  idCopy = id;
+  accountCopy = account;
+  serverID = [reminderCopy serverID];
+  if (serverID)
   {
-    v12 = [(ESReminderKitHelper *)self _reminderAccountForAccount:v10];
+    v12 = [(ESReminderKitHelper *)self _reminderAccountForAccount:accountCopy];
     if (v12)
     {
-      v13 = [(ESReminderKitHelper *)self _reminderListWithExternalId:v9 forReminderAccount:v12];
+      v13 = [(ESReminderKitHelper *)self _reminderListWithExternalId:idCopy forReminderAccount:v12];
       if (v13)
       {
         log = [(ESReminderKitHelper *)self _getReminderSaveRequest];
-        v14 = [(ESReminderKitHelper *)self _reminderWithExternalId:v11 list:v13];
+        v14 = [(ESReminderKitHelper *)self _reminderWithExternalId:serverID list:v13];
         v15 = DALoggingwithCategory();
         v16 = _CPLog_to_os_log_type[6];
         v17 = os_log_type_enabled(v15, v16);
@@ -1772,15 +1772,15 @@ LABEL_70:
           if (v17)
           {
             *buf = 138412546;
-            v30 = v8;
+            v30 = reminderCopy;
             v31 = 2112;
-            v32 = v11;
+            v32 = serverID;
             _os_log_impl(&dword_0, v15, v16, "Merge task with existing local reminder {task: %@, externalIdentifier: %@}", buf, 0x16u);
           }
 
           v18 = v14;
           v19 = [log updateReminder:v14];
-          v20 = [(ESReminderKitHelper *)self _populateChangeItem:v19 forReminder:v8 folderWithId:v9 forAccount:v10];
+          v20 = [(ESReminderKitHelper *)self _populateChangeItem:v19 forReminder:reminderCopy folderWithId:idCopy forAccount:accountCopy];
         }
 
         else
@@ -1788,17 +1788,17 @@ LABEL_70:
           if (v17)
           {
             *buf = 138412546;
-            v30 = v8;
+            v30 = reminderCopy;
             v31 = 2112;
-            v32 = v11;
+            v32 = serverID;
             _os_log_impl(&dword_0, v15, v16, "Adding a new reminder {task: %@, externalIdentifier: %@}", buf, 0x16u);
           }
 
           v19 = [log updateList:v13];
-          v25 = [v19 saveRequest];
-          v26 = [v25 addReminderWithTitle:@"__untitled__" toListChangeItem:v19];
+          saveRequest = [v19 saveRequest];
+          v26 = [saveRequest addReminderWithTitle:@"__untitled__" toListChangeItem:v19];
 
-          v20 = [(ESReminderKitHelper *)self _populateChangeItem:v26 forReminder:v8 folderWithId:v9 forAccount:v10];
+          v20 = [(ESReminderKitHelper *)self _populateChangeItem:v26 forReminder:reminderCopy folderWithId:idCopy forAccount:accountCopy];
           v18 = 0;
         }
       }
@@ -1811,9 +1811,9 @@ LABEL_70:
         if (os_log_type_enabled(v23, v24))
         {
           *buf = 138412546;
-          v30 = v8;
+          v30 = reminderCopy;
           v31 = 2112;
-          v32 = v9;
+          v32 = idCopy;
           _os_log_impl(&dword_0, log, v24, "Could not get list. Failed to modify reminder {task: %@, folderID: %@}", buf, 0x16u);
         }
 
@@ -1828,9 +1828,9 @@ LABEL_70:
       if (os_log_type_enabled(v13, v22))
       {
         *buf = 138412546;
-        v30 = v8;
+        v30 = reminderCopy;
         v31 = 2112;
-        v32 = v10;
+        v32 = accountCopy;
         _os_log_impl(&dword_0, v13, v22, "Could not fetch account. Failed to modify reminder {task: %@, account: %@}", buf, 0x16u);
       }
 
@@ -1845,7 +1845,7 @@ LABEL_70:
     if (os_log_type_enabled(v12, v21))
     {
       *buf = 138412290;
-      v30 = v8;
+      v30 = reminderCopy;
       _os_log_impl(&dword_0, v12, v21, "ServerID missing from task. Failed to modify reminder {task: %@}", buf, 0xCu);
     }
 
@@ -1855,39 +1855,39 @@ LABEL_70:
   return v20;
 }
 
-- (BOOL)deleteReminder:(id)a3 forFolderWithId:(id)a4 forAccount:(id)a5
+- (BOOL)deleteReminder:(id)reminder forFolderWithId:(id)id forAccount:(id)account
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 serverID];
-  if (v11)
+  reminderCopy = reminder;
+  idCopy = id;
+  accountCopy = account;
+  serverID = [reminderCopy serverID];
+  if (serverID)
   {
-    v12 = [(ESReminderKitHelper *)self _reminderAccountForAccount:v10];
+    v12 = [(ESReminderKitHelper *)self _reminderAccountForAccount:accountCopy];
     if (v12)
     {
-      v13 = [(ESReminderKitHelper *)self _reminderListWithExternalId:v9 forReminderAccount:v12];
+      v13 = [(ESReminderKitHelper *)self _reminderListWithExternalId:idCopy forReminderAccount:v12];
       if (v13)
       {
-        v14 = [(ESReminderKitHelper *)self _reminderWithExternalId:v11 list:v13];
+        v14 = [(ESReminderKitHelper *)self _reminderWithExternalId:serverID list:v13];
         if (v14)
         {
-          v15 = [(ESReminderKitHelper *)self _getReminderSaveRequest];
-          v16 = [v15 updateReminder:v14];
+          _getReminderSaveRequest = [(ESReminderKitHelper *)self _getReminderSaveRequest];
+          v16 = [_getReminderSaveRequest updateReminder:v14];
           [v16 removeFromList];
         }
 
         else
         {
-          v15 = DALoggingwithCategory();
+          _getReminderSaveRequest = DALoggingwithCategory();
           v20 = _CPLog_to_os_log_type[3];
-          if (os_log_type_enabled(v15, v20))
+          if (os_log_type_enabled(_getReminderSaveRequest, v20))
           {
             v22 = 138412546;
-            v23 = v8;
+            v23 = reminderCopy;
             v24 = 2112;
-            v25 = v11;
-            _os_log_impl(&dword_0, v15, v20, "Could not fetch reminder. Failed to delete reminder {task: %@, externalIdentifier: %@}", &v22, 0x16u);
+            v25 = serverID;
+            _os_log_impl(&dword_0, _getReminderSaveRequest, v20, "Could not fetch reminder. Failed to delete reminder {task: %@, externalIdentifier: %@}", &v22, 0x16u);
           }
         }
       }
@@ -1899,9 +1899,9 @@ LABEL_70:
         if (os_log_type_enabled(v14, v19))
         {
           v22 = 138412546;
-          v23 = v8;
+          v23 = reminderCopy;
           v24 = 2112;
-          v25 = v9;
+          v25 = idCopy;
           _os_log_impl(&dword_0, v14, v19, "Could not fetch reminder list. Failed to delete reminder {task: %@, folderID: %@}", &v22, 0x16u);
         }
       }
@@ -1914,9 +1914,9 @@ LABEL_70:
       if (os_log_type_enabled(v13, v18))
       {
         v22 = 138412546;
-        v23 = v8;
+        v23 = reminderCopy;
         v24 = 2112;
-        v25 = v10;
+        v25 = accountCopy;
         _os_log_impl(&dword_0, v13, v18, "Could not fetch reminder account. Failed to delete reminder {task: %@, account: %@}", &v22, 0x16u);
       }
     }
@@ -1929,7 +1929,7 @@ LABEL_70:
     if (os_log_type_enabled(v12, v17))
     {
       v22 = 138412290;
-      v23 = v8;
+      v23 = reminderCopy;
       _os_log_impl(&dword_0, v12, v17, "ServerID missing from task. Failed to delete reminder {task: %@}", &v22, 0xCu);
     }
   }
@@ -1937,42 +1937,42 @@ LABEL_70:
   return 0;
 }
 
-- (BOOL)updateExtenalIDForReminder:(id)a3 forFolderWithId:(id)a4 forAccount:(id)a5
+- (BOOL)updateExtenalIDForReminder:(id)reminder forFolderWithId:(id)id forAccount:(id)account
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 serverID];
-  if (v11)
+  reminderCopy = reminder;
+  idCopy = id;
+  accountCopy = account;
+  serverID = [reminderCopy serverID];
+  if (serverID)
   {
-    v12 = [(ESReminderKitHelper *)self _reminderAccountForAccount:v10];
+    v12 = [(ESReminderKitHelper *)self _reminderAccountForAccount:accountCopy];
     if (v12)
     {
-      v13 = [(ESReminderKitHelper *)self _reminderListWithExternalId:v9 forReminderAccount:v12];
+      v13 = [(ESReminderKitHelper *)self _reminderListWithExternalId:idCopy forReminderAccount:v12];
       if (v13)
       {
-        v14 = [v8 clientID];
-        v15 = [(ESReminderKitHelper *)self _reminderWithObjectUUID:v14 list:v13];
+        clientID = [reminderCopy clientID];
+        v15 = [(ESReminderKitHelper *)self _reminderWithObjectUUID:clientID list:v13];
 
         if (v15)
         {
-          v16 = [(ESReminderKitHelper *)self _getReminderSaveRequest];
-          v17 = [v16 updateReminder:v15];
-          v18 = [v8 serverID];
-          [v17 setExternalIdentifier:v18];
+          _getReminderSaveRequest = [(ESReminderKitHelper *)self _getReminderSaveRequest];
+          v17 = [_getReminderSaveRequest updateReminder:v15];
+          serverID2 = [reminderCopy serverID];
+          [v17 setExternalIdentifier:serverID2];
         }
 
         else
         {
-          v16 = DALoggingwithCategory();
+          _getReminderSaveRequest = DALoggingwithCategory();
           v22 = _CPLog_to_os_log_type[3];
-          if (os_log_type_enabled(v16, v22))
+          if (os_log_type_enabled(_getReminderSaveRequest, v22))
           {
             v24 = 138412546;
-            v25 = v8;
+            v25 = reminderCopy;
             v26 = 2112;
-            v27 = v11;
-            _os_log_impl(&dword_0, v16, v22, "Could not get reminder. Failed to modify reminder {task: %@, externalIdentifier: %@}", &v24, 0x16u);
+            v27 = serverID;
+            _os_log_impl(&dword_0, _getReminderSaveRequest, v22, "Could not get reminder. Failed to modify reminder {task: %@, externalIdentifier: %@}", &v24, 0x16u);
           }
         }
       }
@@ -1984,9 +1984,9 @@ LABEL_70:
         if (os_log_type_enabled(v15, v21))
         {
           v24 = 138412546;
-          v25 = v8;
+          v25 = reminderCopy;
           v26 = 2112;
-          v27 = v9;
+          v27 = idCopy;
           _os_log_impl(&dword_0, v15, v21, "Could not get list. Failed to modify reminder {task: %@, folderID: %@}", &v24, 0x16u);
         }
       }
@@ -1999,9 +1999,9 @@ LABEL_70:
       if (os_log_type_enabled(v13, v20))
       {
         v24 = 138412546;
-        v25 = v8;
+        v25 = reminderCopy;
         v26 = 2112;
-        v27 = v10;
+        v27 = accountCopy;
         _os_log_impl(&dword_0, v13, v20, "Could not fetch account. Failed to modify reminder {task: %@, account: %@}", &v24, 0x16u);
       }
     }
@@ -2014,7 +2014,7 @@ LABEL_70:
     if (os_log_type_enabled(v12, v19))
     {
       v24 = 138412290;
-      v25 = v8;
+      v25 = reminderCopy;
       _os_log_impl(&dword_0, v12, v19, "ServerID missing from task. Failed to modify reminder {task: %@}", &v24, 0xCu);
     }
   }
@@ -2049,25 +2049,25 @@ LABEL_70:
   return v4;
 }
 
-- (id)localAddedFoldersForAccount:(id)a3
+- (id)localAddedFoldersForAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[7];
-  v44 = v4;
+  v44 = accountCopy;
   if (os_log_type_enabled(v5, v6))
   {
-    v7 = [v4 accountID];
+    accountID = [accountCopy accountID];
     *buf = 138412290;
-    v56 = v7;
+    v56 = accountID;
     _os_log_impl(&dword_0, v5, v6, "ReminderSupport: Get local added folders for account %@", buf, 0xCu);
 
-    v4 = v44;
+    accountCopy = v44;
   }
 
   accountIDToChangeTrackingTable = self->_accountIDToChangeTrackingTable;
-  v9 = [v4 accountID];
-  v10 = [(NSMutableDictionary *)accountIDToChangeTrackingTable objectForKeyedSubscript:v9];
+  accountID2 = [accountCopy accountID];
+  v10 = [(NSMutableDictionary *)accountIDToChangeTrackingTable objectForKeyedSubscript:accountID2];
 
   v45 = objc_opt_new();
   v40 = v10;
@@ -2077,7 +2077,7 @@ LABEL_70:
   v52 = 0u;
   obj = v53 = 0u;
   v11 = [obj countByEnumeratingWithState:&v50 objects:v59 count:16];
-  v43 = self;
+  selfCopy = self;
   if (v11)
   {
     v12 = v11;
@@ -2093,7 +2093,7 @@ LABEL_70:
         }
 
         v16 = *(*(&v50 + 1) + 8 * i);
-        v17 = [(ESReminderKitHelper *)self _loadAttributesFromRemlist:v16 forAccount:v4];
+        v17 = [(ESReminderKitHelper *)self _loadAttributesFromRemlist:v16 forAccount:accountCopy];
         v18 = v17;
         if (v17 && ([v17 serverID], v19 = objc_claimAutoreleasedReturnValue(), v19, !v19))
         {
@@ -2106,18 +2106,18 @@ LABEL_70:
           v20 = DALoggingwithCategory();
           if (os_log_type_enabled(v20, v14))
           {
-            v21 = [v16 objectID];
-            v22 = [v21 uuid];
-            v23 = [v22 UUIDString];
-            v24 = [v4 accountID];
+            objectID = [v16 objectID];
+            uuid = [objectID uuid];
+            uUIDString = [uuid UUIDString];
+            accountID3 = [accountCopy accountID];
             *buf = 138412546;
-            v56 = v23;
+            v56 = uUIDString;
             v57 = 2112;
-            v58 = v24;
+            v58 = accountID3;
             _os_log_impl(&dword_0, v20, v14, "ReminderSupport: Could not add folder for a REMList with local ID: %@, for account %@", buf, 0x16u);
 
-            v4 = v44;
-            self = v43;
+            accountCopy = v44;
+            self = selfCopy;
           }
         }
       }
@@ -2128,13 +2128,13 @@ LABEL_70:
     while (v12);
   }
 
-  v25 = [v40 undeletedListsInChangeSet];
+  undeletedListsInChangeSet = [v40 undeletedListsInChangeSet];
 
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v26 = v25;
+  v26 = undeletedListsInChangeSet;
   v27 = [v26 countByEnumeratingWithState:&v46 objects:v54 count:16];
   if (v27)
   {
@@ -2151,7 +2151,7 @@ LABEL_70:
         }
 
         v31 = *(*(&v46 + 1) + 8 * j);
-        v32 = [(ESReminderKitHelper *)self _loadAttributesFromRemlist:v31 forAccount:v4];
+        v32 = [(ESReminderKitHelper *)self _loadAttributesFromRemlist:v31 forAccount:accountCopy];
         v33 = v32;
         if (v32)
         {
@@ -2165,18 +2165,18 @@ LABEL_70:
           v34 = DALoggingwithCategory();
           if (os_log_type_enabled(v34, obja))
           {
-            v35 = [v31 objectID];
-            v36 = [v35 uuid];
-            v37 = [v36 UUIDString];
-            v38 = [v4 accountID];
+            objectID2 = [v31 objectID];
+            uuid2 = [objectID2 uuid];
+            uUIDString2 = [uuid2 UUIDString];
+            accountID4 = [accountCopy accountID];
             *buf = 138412546;
-            v56 = v37;
+            v56 = uUIDString2;
             v57 = 2112;
-            v58 = v38;
+            v58 = accountID4;
             _os_log_impl(&dword_0, v34, obja, "ReminderSupport: Could not add folder for a REMList with local ID: %@, for account %@", buf, 0x16u);
 
-            v4 = v44;
-            self = v43;
+            accountCopy = v44;
+            self = selfCopy;
           }
         }
       }
@@ -2190,25 +2190,25 @@ LABEL_70:
   return v45;
 }
 
-- (id)pendingLocalAddedFoldersForAccount:(id)a3
+- (id)pendingLocalAddedFoldersForAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[7];
-  v44 = v4;
+  v44 = accountCopy;
   if (os_log_type_enabled(v5, v6))
   {
-    v7 = [v4 accountID];
+    accountID = [accountCopy accountID];
     *buf = 138412290;
-    v56 = v7;
+    v56 = accountID;
     _os_log_impl(&dword_0, v5, v6, "ReminderSupport: Peek local added folders for account %@", buf, 0xCu);
 
-    v4 = v44;
+    accountCopy = v44;
   }
 
   accountIDToChangeTrackingTable = self->_accountIDToChangeTrackingTable;
-  v9 = [v4 accountID];
-  v10 = [(NSMutableDictionary *)accountIDToChangeTrackingTable objectForKeyedSubscript:v9];
+  accountID2 = [accountCopy accountID];
+  v10 = [(NSMutableDictionary *)accountIDToChangeTrackingTable objectForKeyedSubscript:accountID2];
 
   v45 = objc_opt_new();
   v40 = v10;
@@ -2218,7 +2218,7 @@ LABEL_70:
   v52 = 0u;
   obj = v53 = 0u;
   v11 = [obj countByEnumeratingWithState:&v50 objects:v59 count:16];
-  v43 = self;
+  selfCopy = self;
   if (v11)
   {
     v12 = v11;
@@ -2234,7 +2234,7 @@ LABEL_70:
         }
 
         v16 = *(*(&v50 + 1) + 8 * i);
-        v17 = [(ESReminderKitHelper *)self _loadAttributesFromRemlist:v16 forAccount:v4];
+        v17 = [(ESReminderKitHelper *)self _loadAttributesFromRemlist:v16 forAccount:accountCopy];
         v18 = v17;
         if (v17 && ([v17 serverID], v19 = objc_claimAutoreleasedReturnValue(), v19, !v19))
         {
@@ -2247,18 +2247,18 @@ LABEL_70:
           v20 = DALoggingwithCategory();
           if (os_log_type_enabled(v20, v14))
           {
-            v21 = [v16 objectID];
-            v22 = [v21 uuid];
-            v23 = [v22 UUIDString];
-            v24 = [v4 accountID];
+            objectID = [v16 objectID];
+            uuid = [objectID uuid];
+            uUIDString = [uuid UUIDString];
+            accountID3 = [accountCopy accountID];
             *buf = 138412546;
-            v56 = v23;
+            v56 = uUIDString;
             v57 = 2112;
-            v58 = v24;
+            v58 = accountID3;
             _os_log_impl(&dword_0, v20, v14, "ReminderSupport: Could not add folder for a REMList with local ID: %@, for account %@", buf, 0x16u);
 
-            v4 = v44;
-            self = v43;
+            accountCopy = v44;
+            self = selfCopy;
           }
         }
       }
@@ -2269,13 +2269,13 @@ LABEL_70:
     while (v12);
   }
 
-  v25 = [v40 peekUndeletedListsInReminderDB];
+  peekUndeletedListsInReminderDB = [v40 peekUndeletedListsInReminderDB];
 
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v26 = v25;
+  v26 = peekUndeletedListsInReminderDB;
   v27 = [v26 countByEnumeratingWithState:&v46 objects:v54 count:16];
   if (v27)
   {
@@ -2292,7 +2292,7 @@ LABEL_70:
         }
 
         v31 = *(*(&v46 + 1) + 8 * j);
-        v32 = [(ESReminderKitHelper *)self _loadAttributesFromRemlist:v31 forAccount:v4];
+        v32 = [(ESReminderKitHelper *)self _loadAttributesFromRemlist:v31 forAccount:accountCopy];
         v33 = v32;
         if (v32)
         {
@@ -2306,18 +2306,18 @@ LABEL_70:
           v34 = DALoggingwithCategory();
           if (os_log_type_enabled(v34, obja))
           {
-            v35 = [v31 objectID];
-            v36 = [v35 uuid];
-            v37 = [v36 UUIDString];
-            v38 = [v4 accountID];
+            objectID2 = [v31 objectID];
+            uuid2 = [objectID2 uuid];
+            uUIDString2 = [uuid2 UUIDString];
+            accountID4 = [accountCopy accountID];
             *buf = 138412546;
-            v56 = v37;
+            v56 = uUIDString2;
             v57 = 2112;
-            v58 = v38;
+            v58 = accountID4;
             _os_log_impl(&dword_0, v34, obja, "ReminderSupport: Could not add folder for a REMList with local ID: %@, for account %@", buf, 0x16u);
 
-            v4 = v44;
-            self = v43;
+            accountCopy = v44;
+            self = selfCopy;
           }
         }
       }
@@ -2331,23 +2331,23 @@ LABEL_70:
   return v45;
 }
 
-- (id)localModifiedFoldersForAccount:(id)a3
+- (id)localModifiedFoldersForAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[7];
   if (os_log_type_enabled(v5, v6))
   {
-    v7 = [v4 accountID];
+    accountID = [accountCopy accountID];
     *buf = 138412290;
-    v39 = v7;
+    v39 = accountID;
     _os_log_impl(&dword_0, v5, v6, "ReminderSupport: Get local modified folders for account %@", buf, 0xCu);
   }
 
   accountIDToChangeTrackingTable = self->_accountIDToChangeTrackingTable;
-  v30 = v4;
-  v9 = [v4 accountID];
-  v10 = [(NSMutableDictionary *)accountIDToChangeTrackingTable objectForKeyedSubscript:v9];
+  v30 = accountCopy;
+  accountID2 = [accountCopy accountID];
+  v10 = [(NSMutableDictionary *)accountIDToChangeTrackingTable objectForKeyedSubscript:accountID2];
 
   v31 = objc_opt_new();
   v28 = v10;
@@ -2388,18 +2388,18 @@ LABEL_70:
           v20 = DALoggingwithCategory();
           if (os_log_type_enabled(v20, type))
           {
-            v21 = [v16 objectID];
-            [v21 uuid];
+            objectID = [v16 objectID];
+            [objectID uuid];
             v23 = v22 = self;
-            v24 = [v23 UUIDString];
-            v25 = [v18 serverID];
-            v26 = [v15 accountID];
+            uUIDString = [v23 UUIDString];
+            serverID = [v18 serverID];
+            accountID3 = [v15 accountID];
             *buf = 138412802;
-            v39 = v24;
+            v39 = uUIDString;
             v40 = 2112;
-            v41 = v25;
+            v41 = serverID;
             v42 = 2112;
-            v43 = v26;
+            v43 = accountID3;
             _os_log_impl(&dword_0, v20, type, "ReminderSupport: Could not modify folder for a REMList with local ID: %@, external ID: %@, for account %@", buf, 0x20u);
 
             v15 = v30;
@@ -2421,27 +2421,27 @@ LABEL_70:
   return v31;
 }
 
-- (id)localDeletedFoldersForAccount:(id)a3
+- (id)localDeletedFoldersForAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = DALoggingwithCategory();
   v5 = _CPLog_to_os_log_type[7];
-  v46 = v3;
+  v46 = accountCopy;
   if (os_log_type_enabled(v4, v5))
   {
-    v6 = [v3 accountID];
+    accountID = [accountCopy accountID];
     *buf = 138412290;
-    v60 = v6;
+    v60 = accountID;
     _os_log_impl(&dword_0, v4, v5, "ReminderSupport: Get local deleted folders for account %@", buf, 0xCu);
 
-    v3 = v46;
+    accountCopy = v46;
   }
 
   accountIDToChangeTrackingTable = self->_accountIDToChangeTrackingTable;
-  v8 = [v3 accountID];
+  accountID2 = [accountCopy accountID];
   v9 = accountIDToChangeTrackingTable;
-  v10 = self;
-  v11 = [(NSMutableDictionary *)v9 objectForKeyedSubscript:v8];
+  selfCopy3 = self;
+  v11 = [(NSMutableDictionary *)v9 objectForKeyedSubscript:accountID2];
 
   v49 = objc_opt_new();
   v42 = v11;
@@ -2466,7 +2466,7 @@ LABEL_70:
         }
 
         v16 = *(*(&v54 + 1) + 8 * i);
-        v17 = [(ESReminderKitHelper *)v10 _loadAttributesFromRemlist:v16 forAccount:v3];
+        v17 = [(ESReminderKitHelper *)selfCopy3 _loadAttributesFromRemlist:v16 forAccount:accountCopy];
         v18 = v17;
         if (v17 && ([v17 serverID], v19 = objc_claimAutoreleasedReturnValue(), v19, v19))
         {
@@ -2479,21 +2479,21 @@ LABEL_70:
           v20 = DALoggingwithCategory();
           if (os_log_type_enabled(v20, type))
           {
-            v21 = [v16 objectID];
-            v22 = [v21 uuid];
-            v23 = [v22 UUIDString];
-            v24 = [v18 serverID];
-            v25 = [v46 accountID];
+            objectID = [v16 objectID];
+            uuid = [objectID uuid];
+            uUIDString = [uuid UUIDString];
+            serverID = [v18 serverID];
+            accountID3 = [v46 accountID];
             *buf = 138412802;
-            v60 = v23;
+            v60 = uUIDString;
             v61 = 2112;
-            v62 = v24;
+            v62 = serverID;
             v63 = 2112;
-            v64 = v25;
+            v64 = accountID3;
             _os_log_impl(&dword_0, v20, type, "ReminderSupport: Could not delete folder for a REMList with local ID: %@, external ID: %@, for account %@", buf, 0x20u);
 
-            v3 = v46;
-            v10 = self;
+            accountCopy = v46;
+            selfCopy3 = self;
           }
         }
       }
@@ -2504,13 +2504,13 @@ LABEL_70:
     while (v13);
   }
 
-  v26 = [v42 lazyDeletedListsInChangeSet];
+  lazyDeletedListsInChangeSet = [v42 lazyDeletedListsInChangeSet];
 
   v52 = 0u;
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v27 = v26;
+  v27 = lazyDeletedListsInChangeSet;
   v28 = [v27 countByEnumeratingWithState:&v50 objects:v58 count:16];
   if (v28)
   {
@@ -2528,11 +2528,11 @@ LABEL_70:
         }
 
         v32 = *(*(&v50 + 1) + 8 * j);
-        v33 = [(ESReminderKitHelper *)v10 _loadAttributesFromRemlist:v32 forAccount:v3];
+        v33 = [(ESReminderKitHelper *)selfCopy3 _loadAttributesFromRemlist:v32 forAccount:accountCopy];
         if (v33)
         {
-          v34 = [v32 externalIdentifierForMarkedForDeletionObject];
-          [v33 setServerID:v34];
+          externalIdentifierForMarkedForDeletionObject = [v32 externalIdentifierForMarkedForDeletionObject];
+          [v33 setServerID:externalIdentifierForMarkedForDeletionObject];
 
           [v33 setChangeType:2];
           [v49 addObject:v33];
@@ -2543,21 +2543,21 @@ LABEL_70:
           v35 = DALoggingwithCategory();
           if (os_log_type_enabled(v35, typea))
           {
-            v36 = [v32 objectID];
-            v37 = [v36 uuid];
-            v38 = [v37 UUIDString];
-            v39 = [v32 externalIdentifierForMarkedForDeletionObject];
-            v40 = [v3 accountID];
+            objectID2 = [v32 objectID];
+            uuid2 = [objectID2 uuid];
+            uUIDString2 = [uuid2 UUIDString];
+            externalIdentifierForMarkedForDeletionObject2 = [v32 externalIdentifierForMarkedForDeletionObject];
+            accountID4 = [accountCopy accountID];
             *buf = 138412802;
-            v60 = v38;
+            v60 = uUIDString2;
             v61 = 2112;
-            v62 = v39;
+            v62 = externalIdentifierForMarkedForDeletionObject2;
             v63 = 2112;
-            v64 = v40;
+            v64 = accountID4;
             _os_log_impl(&dword_0, v35, typea, "ReminderSupport: Could not delete folder for a REMList with local ID: %@, external ID: %@, for account %@", buf, 0x20u);
 
-            v3 = v46;
-            v10 = self;
+            accountCopy = v46;
+            selfCopy3 = self;
 
             v27 = obja;
           }
@@ -2573,29 +2573,29 @@ LABEL_70:
   return v49;
 }
 
-- (id)_loadAttributesFromRemlist:(id)a3 forAccount:(id)a4
+- (id)_loadAttributesFromRemlist:(id)remlist forAccount:(id)account
 {
-  v5 = a3;
-  if (v5)
+  remlistCopy = remlist;
+  if (remlistCopy)
   {
-    v6 = a4;
-    v7 = [v5 externalIdentifier];
-    v8 = [v5 name];
-    v9 = [v6 defaultToDosFolder];
+    accountCopy = account;
+    externalIdentifier = [remlistCopy externalIdentifier];
+    name = [remlistCopy name];
+    defaultToDosFolder = [accountCopy defaultToDosFolder];
 
-    v10 = [v9 folderID];
+    folderID = [defaultToDosFolder folderID];
 
-    if ([v10 isEqualToString:v7])
+    if ([folderID isEqualToString:externalIdentifier])
     {
 
-      v10 = 0;
+      folderID = 0;
     }
 
-    v11 = [[ASFolder alloc] initWithFolderType:15 serverID:v7 parentID:v10 displayName:v8 localID:0];
-    v12 = [v5 objectID];
-    v13 = [v12 uuid];
-    v14 = [v13 UUIDString];
-    [v11 setLocalUUID:v14];
+    v11 = [[ASFolder alloc] initWithFolderType:15 serverID:externalIdentifier parentID:folderID displayName:name localID:0];
+    objectID = [remlistCopy objectID];
+    uuid = [objectID uuid];
+    uUIDString = [uuid UUIDString];
+    [v11 setLocalUUID:uUIDString];
   }
 
   else
@@ -2606,58 +2606,58 @@ LABEL_70:
   return v11;
 }
 
-- (id)localChangedReminderActionsForFolderId:(id)a3 forAccount:(id)a4
+- (id)localChangedReminderActionsForFolderId:(id)id forAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  accountCopy = account;
   v8 = objc_opt_new();
-  v9 = [(ESReminderKitHelper *)self _localModifiedReminderActionsForFolderId:v6 forAccount:v7];
+  v9 = [(ESReminderKitHelper *)self _localModifiedReminderActionsForFolderId:idCopy forAccount:accountCopy];
   [v8 addObjectsFromArray:v9];
   v10 = DALoggingwithCategory();
   v11 = _CPLog_to_os_log_type[7];
   if (os_log_type_enabled(v10, v11))
   {
     v12 = [v9 count];
-    v13 = [v7 accountID];
+    accountID = [accountCopy accountID];
     *buf = 134218498;
     v37 = v12;
     v38 = 2112;
-    v39 = v6;
+    v39 = idCopy;
     v40 = 2112;
-    v41 = v13;
+    v41 = accountID;
     _os_log_impl(&dword_0, v10, v11, "ReminderSupport: Collected %lu updated reminder changes for folder: %@, for account %@", buf, 0x20u);
   }
 
-  v14 = [(ESReminderKitHelper *)self _localUndeletedReminderActionsForFolderId:v6 forAccount:v7];
+  v14 = [(ESReminderKitHelper *)self _localUndeletedReminderActionsForFolderId:idCopy forAccount:accountCopy];
   [v8 addObjectsFromArray:v14];
   v15 = DALoggingwithCategory();
   if (os_log_type_enabled(v15, v11))
   {
     v16 = [v14 count];
-    v17 = [v7 accountID];
+    accountID2 = [accountCopy accountID];
     *buf = 134218498;
     v37 = v16;
     v38 = 2112;
-    v39 = v6;
+    v39 = idCopy;
     v40 = 2112;
-    v41 = v17;
+    v41 = accountID2;
     _os_log_impl(&dword_0, v15, v11, "ReminderSupport: Collected %lu undeleted reminder changes for folder: %@, for account %@", buf, 0x20u);
   }
 
-  v18 = [(ESReminderKitHelper *)self _localLazyDeletedReminderActionsForFolderId:v6 forAccount:v7];
+  v18 = [(ESReminderKitHelper *)self _localLazyDeletedReminderActionsForFolderId:idCopy forAccount:accountCopy];
   [v8 addObjectsFromArray:v18];
   v19 = DALoggingwithCategory();
   if (os_log_type_enabled(v19, v11))
   {
     v20 = [v18 count];
-    [v7 accountID];
+    [accountCopy accountID];
     *type = v8;
     v21 = v14;
     v23 = v22 = v9;
     *buf = 134218498;
     v37 = v20;
     v38 = 2112;
-    v39 = v6;
+    v39 = idCopy;
     v40 = 2112;
     v41 = v23;
     _os_log_impl(&dword_0, v19, v11, "ReminderSupport: Collected %lu lazy deleted reminder changes for folder: %@, for account %@", buf, 0x20u);
@@ -2667,61 +2667,61 @@ LABEL_70:
     v8 = *type;
   }
 
-  v24 = [(ESReminderKitHelper *)self _localDeletedReminderActionsForFolderId:v6 forAccount:v7];
+  v24 = [(ESReminderKitHelper *)self _localDeletedReminderActionsForFolderId:idCopy forAccount:accountCopy];
   [v8 addObjectsFromArray:v24];
   v25 = DALoggingwithCategory();
   if (os_log_type_enabled(v25, v11))
   {
     typea = v11;
-    v26 = v6;
+    v26 = idCopy;
     v27 = v18;
     v28 = v8;
     v29 = v14;
     v30 = v9;
     v31 = [v24 count];
-    v32 = [v7 accountID];
+    accountID3 = [accountCopy accountID];
     *buf = 134218498;
     v37 = v31;
     v9 = v30;
     v14 = v29;
     v8 = v28;
     v18 = v27;
-    v6 = v26;
+    idCopy = v26;
     v38 = 2112;
     v39 = v26;
     v40 = 2112;
-    v41 = v32;
+    v41 = accountID3;
     _os_log_impl(&dword_0, v25, typea, "ReminderSupport: Collected %lu deleted reminder changes for folder: %@, for account %@", buf, 0x20u);
   }
 
   return v8;
 }
 
-- (id)_localModifiedReminderActionsForFolderId:(id)a3 forAccount:(id)a4
+- (id)_localModifiedReminderActionsForFolderId:(id)id forAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
-  v50 = self;
+  idCopy = id;
+  accountCopy = account;
+  selfCopy = self;
   accountIDToChangeTrackingTable = self->_accountIDToChangeTrackingTable;
-  v52 = v7;
-  v9 = [v7 accountID];
-  v10 = [(NSMutableDictionary *)accountIDToChangeTrackingTable objectForKeyedSubscript:v9];
+  v52 = accountCopy;
+  accountID = [accountCopy accountID];
+  v10 = [(NSMutableDictionary *)accountIDToChangeTrackingTable objectForKeyedSubscript:accountID];
 
   v48 = objc_opt_new();
   v46 = v10;
-  v11 = [v10 addedAndModifiedRemindersInChangeSet];
+  addedAndModifiedRemindersInChangeSet = [v10 addedAndModifiedRemindersInChangeSet];
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v12 = [v11 countByEnumeratingWithState:&v55 objects:v67 count:16];
+  v12 = [addedAndModifiedRemindersInChangeSet countByEnumeratingWithState:&v55 objects:v67 count:16];
   if (v12)
   {
     v13 = v12;
     v14 = *v56;
     v15 = _CPLog_to_os_log_type[4];
-    v49 = v6;
-    v51 = v11;
+    v49 = idCopy;
+    v51 = addedAndModifiedRemindersInChangeSet;
     v53 = *v56;
     do
     {
@@ -2731,51 +2731,51 @@ LABEL_70:
       {
         if (*v56 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(addedAndModifiedRemindersInChangeSet);
         }
 
         v17 = *(*(&v55 + 1) + 8 * v16);
-        v18 = [v17 list];
-        v19 = v18;
-        if (v18 && ([v18 externalIdentifier], v20 = objc_claimAutoreleasedReturnValue(), v20, v20))
+        list = [v17 list];
+        v19 = list;
+        if (list && ([list externalIdentifier], v20 = objc_claimAutoreleasedReturnValue(), v20, v20))
         {
-          v21 = [v19 externalIdentifier];
-          v22 = [v6 isEqualToString:v21];
+          externalIdentifier = [v19 externalIdentifier];
+          v22 = [idCopy isEqualToString:externalIdentifier];
 
           if (!v22)
           {
             goto LABEL_23;
           }
 
-          v23 = [(ESReminderKitHelper *)v50 _loadAttributesFromReminder:v17 forAccount:v52];
-          v24 = [v17 externalIdentifier];
-          if (v24 && (v25 = v24, [v17 externalIdentifier], v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "length"), v26, v11 = v51, v25, v27))
+          v23 = [(ESReminderKitHelper *)selfCopy _loadAttributesFromReminder:v17 forAccount:v52];
+          externalIdentifier2 = [v17 externalIdentifier];
+          if (externalIdentifier2 && (v25 = externalIdentifier2, [v17 externalIdentifier], v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "length"), v26, addedAndModifiedRemindersInChangeSet = v51, v25, v27))
           {
             v28 = DALoggingwithCategory();
             if (os_log_type_enabled(v28, v15))
             {
-              v47 = [v17 objectID];
-              v29 = [v47 uuid];
-              v30 = [v29 UUIDString];
-              v31 = [v17 externalIdentifier];
-              v32 = [v52 accountID];
+              objectID = [v17 objectID];
+              uuid = [objectID uuid];
+              uUIDString = [uuid UUIDString];
+              externalIdentifier3 = [v17 externalIdentifier];
+              accountID2 = [v52 accountID];
               *buf = 138413058;
-              v60 = v30;
+              v60 = uUIDString;
               v61 = 2112;
-              v62 = v31;
+              v62 = externalIdentifier3;
               v63 = 2112;
               v64 = v49;
               v65 = 2112;
-              v66 = v32;
+              v66 = accountID2;
               _os_log_impl(&dword_0, v28, v15, "ReminderSupport: Modifying a reminder with local ID: %@, external ID: %@, folder ID: %@, account %@", buf, 0x2Au);
 
-              v11 = v51;
-              v6 = v49;
+              addedAndModifiedRemindersInChangeSet = v51;
+              idCopy = v49;
             }
 
             v33 = [ASAction alloc];
-            v34 = [v17 externalIdentifier];
-            v35 = [v33 initWithItemChangeType:1 changedItem:v23 serverId:v34];
+            externalIdentifier4 = [v17 externalIdentifier];
+            v35 = [v33 initWithItemChangeType:1 changedItem:v23 serverId:externalIdentifier4];
 
             v14 = v53;
           }
@@ -2785,25 +2785,25 @@ LABEL_70:
             v39 = DALoggingwithCategory();
             if (os_log_type_enabled(v39, v15))
             {
-              v40 = [v17 objectID];
-              v41 = [v40 uuid];
-              v42 = [v41 UUIDString];
-              v43 = [v17 externalIdentifier];
-              v44 = [v52 accountID];
+              objectID2 = [v17 objectID];
+              uuid2 = [objectID2 uuid];
+              uUIDString2 = [uuid2 UUIDString];
+              externalIdentifier5 = [v17 externalIdentifier];
+              accountID3 = [v52 accountID];
               *buf = 138413058;
-              v60 = v42;
+              v60 = uUIDString2;
               v61 = 2112;
-              v62 = v43;
+              v62 = externalIdentifier5;
               v63 = 2112;
               v64 = v49;
               v65 = 2112;
-              v66 = v44;
+              v66 = accountID3;
               _os_log_impl(&dword_0, v39, v15, "ReminderSupport: Adding a reminder with local ID: %@, external ID: %@, folder ID: %@, account %@", buf, 0x2Au);
 
-              v6 = v49;
+              idCopy = v49;
               v14 = v53;
 
-              v11 = v51;
+              addedAndModifiedRemindersInChangeSet = v51;
             }
 
             v35 = [[ASAction alloc] initWithItemChangeType:0 changedItem:v23 serverId:0];
@@ -2821,11 +2821,11 @@ LABEL_70:
           v23 = DALoggingwithCategory();
           if (os_log_type_enabled(v23, v15))
           {
-            v36 = [v17 objectID];
-            v37 = [v36 uuid];
-            v38 = [v37 UUIDString];
+            objectID3 = [v17 objectID];
+            uuid3 = [objectID3 uuid];
+            uUIDString3 = [uuid3 UUIDString];
             *buf = 138412290;
-            v60 = v38;
+            v60 = uUIDString3;
             _os_log_impl(&dword_0, v23, v15, "ReminderSupport: Could not modify reminder with local ID: %@", buf, 0xCu);
 
             v13 = v54;
@@ -2838,7 +2838,7 @@ LABEL_23:
       }
 
       while (v13 != v16);
-      v13 = [v11 countByEnumeratingWithState:&v55 objects:v67 count:16];
+      v13 = [addedAndModifiedRemindersInChangeSet countByEnumeratingWithState:&v55 objects:v67 count:16];
     }
 
     while (v13);
@@ -2847,13 +2847,13 @@ LABEL_23:
   return v48;
 }
 
-- (id)_localUndeletedReminderActionsForFolderId:(id)a3 forAccount:(id)a4
+- (id)_localUndeletedReminderActionsForFolderId:(id)id forAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  accountCopy = account;
   accountIDToChangeTrackingTable = self->_accountIDToChangeTrackingTable;
-  v9 = [v7 accountID];
-  v10 = [(NSMutableDictionary *)accountIDToChangeTrackingTable objectForKeyedSubscript:v9];
+  accountID = [accountCopy accountID];
+  v10 = [(NSMutableDictionary *)accountIDToChangeTrackingTable objectForKeyedSubscript:accountID];
 
   v35 = objc_opt_new();
   v33 = v10;
@@ -2869,7 +2869,7 @@ LABEL_23:
     v12 = _CPLog_to_os_log_type[4];
     v37 = *v42;
     type = v12;
-    v34 = v7;
+    v34 = accountCopy;
     do
     {
       for (i = 0; i != v40; i = i + 1)
@@ -2880,42 +2880,42 @@ LABEL_23:
         }
 
         v14 = *(*(&v41 + 1) + 8 * i);
-        v15 = [v14 list];
-        v16 = v15;
-        if (v15 && ([v15 externalIdentifier], v17 = objc_claimAutoreleasedReturnValue(), v17, v17))
+        list = [v14 list];
+        v16 = list;
+        if (list && ([list externalIdentifier], v17 = objc_claimAutoreleasedReturnValue(), v17, v17))
         {
-          v18 = [v16 externalIdentifier];
-          v19 = [v6 isEqualToString:v18];
+          externalIdentifier = [v16 externalIdentifier];
+          v19 = [idCopy isEqualToString:externalIdentifier];
 
           if (!v19)
           {
             goto LABEL_17;
           }
 
-          v20 = [(ESReminderKitHelper *)self _loadAttributesFromReminder:v14 forAccount:v7];
+          v20 = [(ESReminderKitHelper *)self _loadAttributesFromReminder:v14 forAccount:accountCopy];
           v21 = DALoggingwithCategory();
           if (os_log_type_enabled(v21, v12))
           {
-            v36 = [v14 objectID];
-            v22 = [v36 uuid];
-            v23 = [v22 UUIDString];
-            v24 = [v14 externalIdentifier];
-            [v7 accountID];
-            v25 = self;
-            v27 = v26 = v6;
+            objectID = [v14 objectID];
+            uuid = [objectID uuid];
+            uUIDString = [uuid UUIDString];
+            externalIdentifier2 = [v14 externalIdentifier];
+            [accountCopy accountID];
+            selfCopy = self;
+            v27 = v26 = idCopy;
             *buf = 138413058;
-            v46 = v23;
+            v46 = uUIDString;
             v47 = 2112;
-            v48 = v24;
+            v48 = externalIdentifier2;
             v49 = 2112;
             v50 = v26;
             v51 = 2112;
             v52 = v27;
             _os_log_impl(&dword_0, v21, type, "ReminderSupport: Adding a reminder with local ID: %@, external ID: %@, folder ID: %@, account %@", buf, 0x2Au);
 
-            v6 = v26;
-            self = v25;
-            v7 = v34;
+            idCopy = v26;
+            self = selfCopy;
+            accountCopy = v34;
 
             v11 = v37;
             v12 = type;
@@ -2933,11 +2933,11 @@ LABEL_23:
           v20 = DALoggingwithCategory();
           if (os_log_type_enabled(v20, v12))
           {
-            v29 = [v14 objectID];
-            v30 = [v29 uuid];
-            v31 = [v30 UUIDString];
+            objectID2 = [v14 objectID];
+            uuid2 = [objectID2 uuid];
+            uUIDString2 = [uuid2 UUIDString];
             *buf = 138412290;
-            v46 = v31;
+            v46 = uUIDString2;
             _os_log_impl(&dword_0, v20, type, "ReminderSupport: Could not modify reminder with local ID: %@", buf, 0xCu);
 
             v12 = type;
@@ -2957,18 +2957,18 @@ LABEL_17:
   return v35;
 }
 
-- (id)_localLazyDeletedReminderActionsForFolderId:(id)a3 forAccount:(id)a4
+- (id)_localLazyDeletedReminderActionsForFolderId:(id)id forAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  accountCopy = account;
   accountIDToChangeTrackingTable = self->_accountIDToChangeTrackingTable;
-  v9 = [v7 accountID];
-  v10 = [(NSMutableDictionary *)accountIDToChangeTrackingTable objectForKeyedSubscript:v9];
+  accountID = [accountCopy accountID];
+  v10 = [(NSMutableDictionary *)accountIDToChangeTrackingTable objectForKeyedSubscript:accountID];
 
   v33 = objc_opt_new();
   v28 = v10;
-  v31 = v6;
-  [v10 lazyDeletedRemindersInChangeSetForFolderID:v6];
+  v31 = idCopy;
+  [v10 lazyDeletedRemindersInChangeSetForFolderID:idCopy];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -2980,7 +2980,7 @@ LABEL_17:
     v13 = *v37;
     type = _CPLog_to_os_log_type[4];
     v29 = *v37;
-    v30 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v12; i = i + 1)
@@ -2991,37 +2991,37 @@ LABEL_17:
         }
 
         v15 = *(*(&v36 + 1) + 8 * i);
-        v16 = [(ESReminderKitHelper *)self _loadAttributesFromReminder:v15 forAccount:v7];
+        v16 = [(ESReminderKitHelper *)self _loadAttributesFromReminder:v15 forAccount:accountCopy];
         v17 = DALoggingwithCategory();
         if (os_log_type_enabled(v17, type))
         {
-          v34 = [v15 objectID];
-          v18 = [v34 uuid];
-          v19 = [v18 UUIDString];
-          v20 = [v15 externalIdentifier];
-          [v7 accountID];
+          objectID = [v15 objectID];
+          uuid = [objectID uuid];
+          uUIDString = [uuid UUIDString];
+          externalIdentifier = [v15 externalIdentifier];
+          [accountCopy accountID];
           v21 = v12;
-          v23 = v22 = v7;
+          v23 = v22 = accountCopy;
           *buf = 138413058;
-          v41 = v19;
+          v41 = uUIDString;
           v42 = 2112;
-          v43 = v20;
+          v43 = externalIdentifier;
           v44 = 2112;
           v45 = v31;
           v46 = 2112;
           v47 = v23;
           _os_log_impl(&dword_0, v17, type, "ReminderSupport: Adding a reminder with local ID: %@, external ID: %@, folder ID: %@, account %@", buf, 0x2Au);
 
-          v7 = v22;
+          accountCopy = v22;
           v12 = v21;
 
           v13 = v29;
-          self = v30;
+          self = selfCopy;
         }
 
         v24 = [ASAction alloc];
-        v25 = [v15 externalIdentifierForMarkedForDeletionObject];
-        v26 = [v24 initWithItemChangeType:2 changedItem:v16 serverId:v25];
+        externalIdentifierForMarkedForDeletionObject = [v15 externalIdentifierForMarkedForDeletionObject];
+        v26 = [v24 initWithItemChangeType:2 changedItem:v16 serverId:externalIdentifierForMarkedForDeletionObject];
 
         if (v26)
         {
@@ -3038,18 +3038,18 @@ LABEL_17:
   return v33;
 }
 
-- (id)_localDeletedReminderActionsForFolderId:(id)a3 forAccount:(id)a4
+- (id)_localDeletedReminderActionsForFolderId:(id)id forAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  accountCopy = account;
   accountIDToChangeTrackingTable = self->_accountIDToChangeTrackingTable;
-  v9 = [v7 accountID];
-  v10 = [(NSMutableDictionary *)accountIDToChangeTrackingTable objectForKeyedSubscript:v9];
+  accountID = [accountCopy accountID];
+  v10 = [(NSMutableDictionary *)accountIDToChangeTrackingTable objectForKeyedSubscript:accountID];
 
   v33 = objc_opt_new();
   v28 = v10;
-  v31 = v6;
-  [v10 deletedRemindersInChangeSetForFolderID:v6];
+  v31 = idCopy;
+  [v10 deletedRemindersInChangeSetForFolderID:idCopy];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -3061,7 +3061,7 @@ LABEL_17:
     v13 = *v37;
     type = _CPLog_to_os_log_type[4];
     v29 = *v37;
-    v30 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v12; i = i + 1)
@@ -3072,37 +3072,37 @@ LABEL_17:
         }
 
         v15 = *(*(&v36 + 1) + 8 * i);
-        v16 = [(ESReminderKitHelper *)self _loadAttributesFromReminder:v15 forAccount:v7];
+        v16 = [(ESReminderKitHelper *)self _loadAttributesFromReminder:v15 forAccount:accountCopy];
         v17 = DALoggingwithCategory();
         if (os_log_type_enabled(v17, type))
         {
-          v34 = [v15 objectID];
-          v18 = [v34 uuid];
-          v19 = [v18 UUIDString];
-          v20 = [v15 externalIdentifier];
-          [v7 accountID];
+          objectID = [v15 objectID];
+          uuid = [objectID uuid];
+          uUIDString = [uuid UUIDString];
+          externalIdentifier = [v15 externalIdentifier];
+          [accountCopy accountID];
           v21 = v12;
-          v23 = v22 = v7;
+          v23 = v22 = accountCopy;
           *buf = 138413058;
-          v41 = v19;
+          v41 = uUIDString;
           v42 = 2112;
-          v43 = v20;
+          v43 = externalIdentifier;
           v44 = 2112;
           v45 = v31;
           v46 = 2112;
           v47 = v23;
           _os_log_impl(&dword_0, v17, type, "ReminderSupport: Adding a reminder with local ID: %@, external ID: %@, folder ID: %@, account %@", buf, 0x2Au);
 
-          v7 = v22;
+          accountCopy = v22;
           v12 = v21;
 
           v13 = v29;
-          self = v30;
+          self = selfCopy;
         }
 
         v24 = [ASAction alloc];
-        v25 = [v15 externalIdentifierForMarkedForDeletionObject];
-        v26 = [v24 initWithItemChangeType:0 changedItem:v16 serverId:v25];
+        externalIdentifierForMarkedForDeletionObject = [v15 externalIdentifierForMarkedForDeletionObject];
+        v26 = [v24 initWithItemChangeType:0 changedItem:v16 serverId:externalIdentifierForMarkedForDeletionObject];
 
         if (v26)
         {
@@ -3119,14 +3119,14 @@ LABEL_17:
   return v33;
 }
 
-- (id)localUnsyncedReminderActionsForFolderId:(id)a3 forAccount:(id)a4
+- (id)localUnsyncedReminderActionsForFolderId:(id)id forAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ESReminderKitHelper *)self _reminderAccountForAccount:v7];
+  idCopy = id;
+  accountCopy = account;
+  v8 = [(ESReminderKitHelper *)self _reminderAccountForAccount:accountCopy];
   if (v8)
   {
-    v9 = [(ESReminderKitHelper *)self _reminderListWithExternalId:v6 forReminderAccount:v8];
+    v9 = [(ESReminderKitHelper *)self _reminderListWithExternalId:idCopy forReminderAccount:v8];
     if (!v9)
     {
       v12 = DALoggingwithCategory();
@@ -3134,7 +3134,7 @@ LABEL_17:
       if (os_log_type_enabled(v12, v21))
       {
         *buf = 138412290;
-        v42 = v6;
+        v42 = idCopy;
         _os_log_impl(&dword_0, v12, v21, "Could not get list for folderID: %@", buf, 0xCu);
       }
 
@@ -3154,7 +3154,7 @@ LABEL_17:
       if (os_log_type_enabled(v14, v15))
       {
         *buf = 138412546;
-        v42 = v6;
+        v42 = idCopy;
         v43 = 2112;
         v44 = v12;
         v16 = "Error getting reminders for folderID: %@, error: %@";
@@ -3193,11 +3193,11 @@ LABEL_6:
               }
 
               v27 = *(*(&v35 + 1) + 8 * i);
-              v28 = [v27 externalIdentifier];
+              externalIdentifier = [v27 externalIdentifier];
 
-              if (!v28)
+              if (!externalIdentifier)
               {
-                v29 = [(ESReminderKitHelper *)self _loadAttributesFromReminder:v27 forAccount:v7];
+                v29 = [(ESReminderKitHelper *)self _loadAttributesFromReminder:v27 forAccount:accountCopy];
                 v30 = [[ASAction alloc] initWithItemChangeType:0 changedItem:v29 serverId:0];
                 if (v30)
                 {
@@ -3225,7 +3225,7 @@ LABEL_6:
       if (os_log_type_enabled(v14, _CPLog_to_os_log_type[3]))
       {
         *buf = 138412290;
-        v42 = v6;
+        v42 = idCopy;
         v16 = "Could not get reminders for folderID: %@";
         v17 = v14;
         v18 = v31;
@@ -3246,7 +3246,7 @@ LABEL_15:
   if (os_log_type_enabled(v9, v20))
   {
     *buf = 138412290;
-    v42 = v7;
+    v42 = accountCopy;
     _os_log_impl(&dword_0, v9, v20, "Could not fetch reminder account for account: %@", buf, 0xCu);
   }
 
@@ -3256,37 +3256,37 @@ LABEL_16:
   return v10;
 }
 
-- (id)_loadAttributesFromReminder:(id)a3 forAccount:(id)a4
+- (id)_loadAttributesFromReminder:(id)reminder forAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  reminderCopy = reminder;
+  accountCopy = account;
+  if (!reminderCopy)
   {
     v8 = 0;
     goto LABEL_54;
   }
 
   v8 = objc_opt_new();
-  v9 = [v6 objectID];
-  v10 = [v9 uuid];
-  v11 = [v10 UUIDString];
-  [v8 setClientID:v11];
+  objectID = [reminderCopy objectID];
+  uuid = [objectID uuid];
+  uUIDString = [uuid UUIDString];
+  [v8 setClientID:uUIDString];
 
-  v12 = [v6 title];
-  v13 = [v12 string];
-  [v8 setSubject:v13];
+  title = [reminderCopy title];
+  string = [title string];
+  [v8 setSubject:string];
 
-  v14 = [v6 notesAsString];
-  [v8 setBody:v14];
+  notesAsString = [reminderCopy notesAsString];
+  [v8 setBody:notesAsString];
 
-  v15 = [v6 startDateComponents];
-  v16 = [v6 dueDateComponents];
+  startDateComponents = [reminderCopy startDateComponents];
+  dueDateComponents = [reminderCopy dueDateComponents];
   v17 = [NSTimeZone timeZoneForSecondsFromGMT:0];
-  v18 = [v16 timeZone];
+  timeZone = [dueDateComponents timeZone];
 
-  if (v18)
+  if (timeZone)
   {
-    [v16 timeZone];
+    [dueDateComponents timeZone];
   }
 
   else
@@ -3294,63 +3294,63 @@ LABEL_16:
     +[NSTimeZone localTimeZone];
   }
   v19 = ;
-  v20 = [v15 timeZone];
+  timeZone2 = [startDateComponents timeZone];
 
-  if (v20)
+  if (timeZone2)
   {
-    v21 = [v15 timeZone];
+    timeZone3 = [startDateComponents timeZone];
   }
 
   else
   {
-    v22 = [v16 timeZone];
+    timeZone4 = [dueDateComponents timeZone];
 
-    if (v22)
+    if (timeZone4)
     {
-      v21 = v17;
+      timeZone3 = v17;
     }
 
     else
     {
-      v21 = +[NSTimeZone localTimeZone];
+      timeZone3 = +[NSTimeZone localTimeZone];
     }
   }
 
-  v23 = v21;
-  if (v15)
+  v23 = timeZone3;
+  if (startDateComponents)
   {
-    v24 = [NSDateComponents rem_dateWithDateComponents:v15 timeZone:v17];
+    v24 = [NSDateComponents rem_dateWithDateComponents:startDateComponents timeZone:v17];
     [v8 setStartTime:v24];
 
-    v25 = [NSDateComponents rem_dateWithDateComponents:v15 timeZone:v23];
+    v25 = [NSDateComponents rem_dateWithDateComponents:startDateComponents timeZone:v23];
     [v8 setUTCStartTime:v25];
   }
 
-  if (v16)
+  if (dueDateComponents)
   {
-    v26 = [NSDateComponents rem_dateWithDateComponents:v16 timeZone:v17];
+    v26 = [NSDateComponents rem_dateWithDateComponents:dueDateComponents timeZone:v17];
     [v8 setDueDate:v26];
 
-    v27 = [NSDateComponents rem_dateWithDateComponents:v16 timeZone:v19];
+    v27 = [NSDateComponents rem_dateWithDateComponents:dueDateComponents timeZone:v19];
     [v8 setUTCDueDate:v27];
   }
 
-  v28 = [v6 alarms];
-  if (![v28 count])
+  alarms = [reminderCopy alarms];
+  if (![alarms count])
   {
     [v8 setReminderIsSet:&off_6E4C8];
     goto LABEL_32;
   }
 
-  v70 = v15;
+  v70 = startDateComponents;
   v71 = v19;
-  v69 = v16;
+  v69 = dueDateComponents;
   v75 = 0u;
   v76 = 0u;
   v73 = 0u;
   v74 = 0u;
-  v68 = v28;
-  v29 = v28;
+  v68 = alarms;
+  v29 = alarms;
   v30 = [v29 countByEnumeratingWithState:&v73 objects:v79 count:16];
   if (!v30)
   {
@@ -3360,8 +3360,8 @@ LABEL_16:
 
   v31 = v30;
   v32 = *v74;
-  v66 = self;
-  v67 = v6;
+  selfCopy = self;
+  v67 = reminderCopy;
   v65 = v23;
   while (2)
   {
@@ -3373,22 +3373,22 @@ LABEL_16:
       }
 
       v34 = *(*(&v73 + 1) + 8 * i);
-      v35 = [v34 trigger];
+      trigger = [v34 trigger];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
-      v37 = [v34 trigger];
-      v38 = v37;
+      trigger2 = [v34 trigger];
+      trigger3 = trigger2;
       if (isKindOfClass)
       {
-        [v37 timeInterval];
-        v41 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
-        [v8 setReminderDateTime:v41];
+        [trigger2 timeInterval];
+        dateComponents = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
+        [v8 setReminderDateTime:dateComponents];
 LABEL_30:
 
         v40 = 1;
-        self = v66;
-        v6 = v67;
+        self = selfCopy;
+        reminderCopy = v67;
         v23 = v65;
         goto LABEL_31;
       }
@@ -3398,9 +3398,9 @@ LABEL_30:
 
       if (v39)
       {
-        v38 = [v34 trigger];
-        v41 = [v38 dateComponents];
-        v42 = [NSDateComponents rem_dateWithDateComponents:v41 timeZone:v71];
+        trigger3 = [v34 trigger];
+        dateComponents = [trigger3 dateComponents];
+        v42 = [NSDateComponents rem_dateWithDateComponents:dateComponents timeZone:v71];
         [v8 setReminderDateTime:v42];
 
         goto LABEL_30;
@@ -3409,8 +3409,8 @@ LABEL_30:
 
     v31 = [v29 countByEnumeratingWithState:&v73 objects:v79 count:16];
     v40 = 0;
-    self = v66;
-    v6 = v67;
+    self = selfCopy;
+    reminderCopy = v67;
     v23 = v65;
     if (v31)
     {
@@ -3426,13 +3426,13 @@ LABEL_31:
   [v8 setReminderIsSet:v43];
 
   v19 = v71;
-  v16 = v69;
-  v15 = v70;
-  v28 = v68;
+  dueDateComponents = v69;
+  startDateComponents = v70;
+  alarms = v68;
 LABEL_32:
 
   [v8 setSensitivity:&off_6E4C8];
-  [v6 priority];
+  [reminderCopy priority];
   v44 = REMReminderPriorityLevelForPriority();
   if (v44 > 2)
   {
@@ -3453,15 +3453,15 @@ LABEL_38:
     [v8 setImportance:v45];
   }
 
-  [(ESReminderKitHelper *)self _loadRecurrenceRulesFromReminder:v6 intoTask:v8 forAccount:v7];
-  v46 = [v6 completionDate];
-  if (v46)
+  [(ESReminderKitHelper *)self _loadRecurrenceRulesFromReminder:reminderCopy intoTask:v8 forAccount:accountCopy];
+  completionDate = [reminderCopy completionDate];
+  if (completionDate)
   {
-    [v8 setDateCompleted:v46];
+    [v8 setDateCompleted:completionDate];
   }
 
-  v47 = [v8 dateCompleted];
-  [v47 timeIntervalSinceReferenceDate];
+  dateCompleted = [v8 dateCompleted];
+  [dateCompleted timeIntervalSinceReferenceDate];
   v49 = v48;
 
   if (v49 == 0.0)
@@ -3475,30 +3475,30 @@ LABEL_38:
   }
 
   [v8 setComplete:v50];
-  v51 = [v8 complete];
-  v52 = [v51 BOOLValue];
+  complete = [v8 complete];
+  bOOLValue = [complete BOOLValue];
 
-  if (v52)
+  if (bOOLValue)
   {
-    v53 = [v8 recurrence];
-    [v53 setDeadOccur:&off_6E4F8];
+    recurrence = [v8 recurrence];
+    [recurrence setDeadOccur:&off_6E4F8];
 
-    v54 = [v7 protocol];
-    v55 = [v54 allowsReminderOnCompletedTasks];
+    protocol = [accountCopy protocol];
+    allowsReminderOnCompletedTasks = [protocol allowsReminderOnCompletedTasks];
 
-    if ((v55 & 1) == 0)
+    if ((allowsReminderOnCompletedTasks & 1) == 0)
     {
       [v8 setReminderDateTime:0];
       [v8 setReminderIsSet:&off_6E4C8];
     }
   }
 
-  v56 = [v6 importedICSData];
-  if (v56)
+  importedICSData = [reminderCopy importedICSData];
+  if (importedICSData)
   {
     v57 = +[ASEvent calendarItemExternalRepClasses];
     v72 = 0;
-    v58 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v57 fromData:v56 error:&v72];
+    v58 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v57 fromData:importedICSData error:&v72];
     v59 = v72;
 
     if (!v58)
@@ -3523,57 +3523,57 @@ LABEL_54:
   return v8;
 }
 
-- (void)_loadRecurrenceRulesFromReminder:(id)a3 intoTask:(id)a4 forAccount:(id)a5
+- (void)_loadRecurrenceRulesFromReminder:(id)reminder intoTask:(id)task forAccount:(id)account
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 recurrenceRules];
-  v10 = [v9 count];
+  reminderCopy = reminder;
+  taskCopy = task;
+  recurrenceRules = [reminderCopy recurrenceRules];
+  v10 = [recurrenceRules count];
 
   if (!v10)
   {
     goto LABEL_111;
   }
 
-  v11 = [v7 recurrenceRules];
-  v12 = [v11 firstObject];
+  recurrenceRules2 = [reminderCopy recurrenceRules];
+  firstObject = [recurrenceRules2 firstObject];
 
-  v13 = [[ASToDoRecurrence alloc] initWithParentToDo:v8];
+  v13 = [[ASToDoRecurrence alloc] initWithParentToDo:taskCopy];
   v14 = [NSTimeZone timeZoneForSecondsFromGMT:0];
   v15 = +[NSCalendar currentCalendar];
   [v15 setTimeZone:v14];
   v16 = +[NSDate date];
-  v17 = [v7 dueDateComponents];
+  dueDateComponents = [reminderCopy dueDateComponents];
 
-  if (v17)
+  if (dueDateComponents)
   {
-    v18 = [v7 dueDateComponents];
-    v19 = [NSDateComponents rem_dateWithDateComponents:v18 timeZone:v14];
+    dueDateComponents2 = [reminderCopy dueDateComponents];
+    v19 = [NSDateComponents rem_dateWithDateComponents:dueDateComponents2 timeZone:v14];
 
     v16 = v19;
   }
 
   [v13 setStartTime:v16];
   v20 = &PLLogRegisteredEvent_ptr;
-  v21 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v12 interval]);
+  v21 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [firstObject interval]);
   [v13 setInterval:v21];
 
-  v22 = [v12 frequency];
+  frequency = [firstObject frequency];
   v23 = 1;
-  if (v22 > 1)
+  if (frequency > 1)
   {
-    if (v22 != (&dword_0 + 2))
+    if (frequency != (&dword_0 + 2))
     {
-      if (v22 != (&dword_0 + 3))
+      if (frequency != (&dword_0 + 3))
       {
-        if (v22 == &dword_4)
+        if (frequency == &dword_4)
         {
           v24 = DALoggingwithCategory();
           v25 = _CPLog_to_os_log_type[3];
           if (os_log_type_enabled(v24, v25))
           {
             *buf = 138412290;
-            v113 = v12;
+            v113 = firstObject;
             _os_log_impl(&dword_0, v24, v25, "Hourly recurrence is not supported {recurrenceRule: %@}", buf, 0xCu);
           }
 
@@ -3583,33 +3583,33 @@ LABEL_54:
         goto LABEL_97;
       }
 
-      v34 = [v12 daysOfTheMonth];
-      v104 = [v12 monthsOfTheYear];
-      v102 = [v12 daysOfTheWeek];
-      v101 = v34;
-      if ([v34 count] && objc_msgSend(v104, "count") && !objc_msgSend(v102, "count"))
+      daysOfTheMonth = [firstObject daysOfTheMonth];
+      monthsOfTheYear = [firstObject monthsOfTheYear];
+      daysOfTheWeek = [firstObject daysOfTheWeek];
+      v101 = daysOfTheMonth;
+      if ([daysOfTheMonth count] && objc_msgSend(monthsOfTheYear, "count") && !objc_msgSend(daysOfTheWeek, "count"))
       {
         [v13 setType:&off_6E5D0];
-        [v34 firstObject];
+        [daysOfTheMonth firstObject];
         v109 = v16;
         v58 = v57 = v14;
-        v59 = [v58 integerValue];
+        integerValue = [v58 integerValue];
 
-        if (v59 == -1)
+        if (integerValue == -1)
         {
           v60 = 127;
         }
 
         else
         {
-          v60 = v59;
+          v60 = integerValue;
         }
 
         v61 = [NSNumber numberWithInteger:v60];
         [v13 setDayOfMonth:v61];
 
-        v62 = [v104 firstObject];
-        v63 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", -[ESReminderKitHelper _ASMonthOfYearFromREMMonthOfYear:](self, "_ASMonthOfYearFromREMMonthOfYear:", [v62 integerValue]));
+        firstObject2 = [monthsOfTheYear firstObject];
+        v63 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", -[ESReminderKitHelper _ASMonthOfYearFromREMMonthOfYear:](self, "_ASMonthOfYearFromREMMonthOfYear:", [firstObject2 integerValue]));
         [v13 setMonthOfYear:v63];
 
         v14 = v57;
@@ -3618,13 +3618,13 @@ LABEL_54:
 
       else
       {
-        if (![v34 count] && objc_msgSend(v104, "count") && objc_msgSend(v102, "count"))
+        if (![daysOfTheMonth count] && objc_msgSend(monthsOfTheYear, "count") && objc_msgSend(daysOfTheWeek, "count"))
         {
           v108 = v14;
           [v13 setType:&off_6E5E8];
           v111 = -1;
-          v41 = [v12 daysOfTheWeek];
-          v42 = [(ESReminderKitHelper *)self _ASDayOfWeekFromREMDaysOfWeek:v41 outWeekOfMonth:&v111];
+          daysOfTheWeek2 = [firstObject daysOfTheWeek];
+          v42 = [(ESReminderKitHelper *)self _ASDayOfWeekFromREMDaysOfWeek:daysOfTheWeek2 outWeekOfMonth:&v111];
 
           v43 = [NSNumber numberWithInteger:v42];
           [v13 setDayOfWeek:v43];
@@ -3637,7 +3637,7 @@ LABEL_54:
             if (os_log_type_enabled(v65, v66))
             {
               *buf = 138412290;
-              v113 = v7;
+              v113 = reminderCopy;
               _os_log_impl(&dword_0, v65, v66, "Malformed Monthly recurrence (weekDays has multiple weekOfMonths).  reminder is %@", buf, 0xCu);
             }
 
@@ -3661,8 +3661,8 @@ LABEL_54:
 
 LABEL_95:
           v82 = v44[422];
-          v83 = [v104 firstObject];
-          v84 = [v82 numberWithUnsignedInt:{-[ESReminderKitHelper _ASMonthOfYearFromREMMonthOfYear:](self, "_ASMonthOfYearFromREMMonthOfYear:", objc_msgSend(v83, "integerValue"))}];
+          firstObject3 = [monthsOfTheYear firstObject];
+          v84 = [v82 numberWithUnsignedInt:{-[ESReminderKitHelper _ASMonthOfYearFromREMMonthOfYear:](self, "_ASMonthOfYearFromREMMonthOfYear:", objc_msgSend(firstObject3, "integerValue"))}];
           [v13 setMonthOfYear:v84];
 
           v20 = &PLLogRegisteredEvent_ptr;
@@ -3670,16 +3670,16 @@ LABEL_95:
           goto LABEL_96;
         }
 
-        if ([v34 count] || objc_msgSend(v104, "count") || objc_msgSend(v102, "count"))
+        if ([daysOfTheMonth count] || objc_msgSend(monthsOfTheYear, "count") || objc_msgSend(daysOfTheWeek, "count"))
         {
-          if (![v34 count] || objc_msgSend(v104, "count") || objc_msgSend(v34, "count"))
+          if (![daysOfTheMonth count] || objc_msgSend(monthsOfTheYear, "count") || objc_msgSend(daysOfTheMonth, "count"))
           {
             v35 = DALoggingwithCategory();
             v36 = _CPLog_to_os_log_type[3];
             if (os_log_type_enabled(v35, v36))
             {
               *buf = 138412290;
-              v113 = v7;
+              v113 = reminderCopy;
               _os_log_impl(&dword_0, v35, v36, "Malformed Yearly recurrence  (need either (byMonthDayDays && byMonthMonths && !byDayDays) OR (!byMonthDayDays && byMonthMonths && byDayDays) OR (!byMonthDayDays && !byMonthMonths && !byDayDays).  reminder is %@", buf, 0xCu);
             }
 
@@ -3689,18 +3689,18 @@ LABEL_95:
           }
 
           [v13 setType:&off_6E5D0];
-          [v34 firstObject];
+          [daysOfTheMonth firstObject];
           v67 = v110 = v14;
-          v68 = [v67 integerValue];
+          integerValue2 = [v67 integerValue];
 
-          if (v68 == -1)
+          if (integerValue2 == -1)
           {
             v69 = 127;
           }
 
           else
           {
-            v69 = v68;
+            v69 = integerValue2;
           }
 
           v20 = &PLLogRegisteredEvent_ptr;
@@ -3736,27 +3736,27 @@ LABEL_96:
     }
 
     v107 = v14;
-    v29 = [v12 daysOfTheMonth];
-    if ([v29 count])
+    daysOfTheMonth2 = [firstObject daysOfTheMonth];
+    if ([daysOfTheMonth2 count])
     {
-      v30 = [v12 daysOfTheWeek];
-      v31 = [v30 count];
+      daysOfTheWeek3 = [firstObject daysOfTheWeek];
+      v31 = [daysOfTheWeek3 count];
 
       if (!v31)
       {
         [v13 setType:&off_6E4E0];
-        v32 = [v12 daysOfTheMonth];
-        v33 = [v32 firstObject];
+        daysOfTheMonth3 = [firstObject daysOfTheMonth];
+        firstObject4 = [daysOfTheMonth3 firstObject];
 
-        if ([v33 integerValue] == -1)
+        if ([firstObject4 integerValue] == -1)
         {
 
-          v33 = &off_6E5A0;
+          firstObject4 = &off_6E5A0;
         }
 
         v14 = v107;
         v20 = &PLLogRegisteredEvent_ptr;
-        [v13 setDayOfMonth:v33];
+        [v13 setDayOfMonth:firstObject4];
 
         goto LABEL_20;
       }
@@ -3766,21 +3766,21 @@ LABEL_96:
     {
     }
 
-    v37 = [v12 daysOfTheMonth];
-    if ([v37 count])
+    daysOfTheMonth4 = [firstObject daysOfTheMonth];
+    if ([daysOfTheMonth4 count])
     {
 
       goto LABEL_38;
     }
 
-    v46 = [v12 daysOfTheWeek];
-    v47 = [v46 count];
+    daysOfTheWeek4 = [firstObject daysOfTheWeek];
+    v47 = [daysOfTheWeek4 count];
 
     if (!v47)
     {
 LABEL_38:
-      v38 = [v12 daysOfTheMonth];
-      if ([v38 count])
+      daysOfTheMonth5 = [firstObject daysOfTheMonth];
+      if ([daysOfTheMonth5 count])
       {
 
         v20 = &PLLogRegisteredEvent_ptr;
@@ -3788,8 +3788,8 @@ LABEL_38:
 
       else
       {
-        v53 = [v12 daysOfTheWeek];
-        v54 = [v53 count];
+        daysOfTheWeek5 = [firstObject daysOfTheWeek];
+        v54 = [daysOfTheWeek5 count];
 
         v20 = &PLLogRegisteredEvent_ptr;
         if (!v54)
@@ -3810,7 +3810,7 @@ LABEL_60:
       if (os_log_type_enabled(v55, v56))
       {
         *buf = 138412290;
-        v113 = v7;
+        v113 = reminderCopy;
         _os_log_impl(&dword_0, v55, v56, "Malformed Monthly recurrence (both daysOfTheMonth and daysOfTheWeek are set).  reminder is %@", buf, 0xCu);
       }
 
@@ -3820,8 +3820,8 @@ LABEL_60:
 
     [v13 setType:&off_6E5B8];
     v111 = -1;
-    v48 = [v12 daysOfTheWeek];
-    v49 = [(ESReminderKitHelper *)self _ASDayOfWeekFromREMDaysOfWeek:v48 outWeekOfMonth:&v111];
+    daysOfTheWeek6 = [firstObject daysOfTheWeek];
+    v49 = [(ESReminderKitHelper *)self _ASDayOfWeekFromREMDaysOfWeek:daysOfTheWeek6 outWeekOfMonth:&v111];
 
     v20 = &PLLogRegisteredEvent_ptr;
     v50 = [NSNumber numberWithInteger:v49];
@@ -3848,7 +3848,7 @@ LABEL_122:
         if (os_log_type_enabled(v51, v52))
         {
           *buf = 138412290;
-          v113 = v7;
+          v113 = reminderCopy;
           _os_log_impl(&dword_0, v51, v52, "Malformed Monthly recurrence (weekDays has multiple weekOfMonths).  reminder is %@", buf, 0xCu);
         }
 
@@ -3861,19 +3861,19 @@ LABEL_20:
       goto LABEL_97;
     }
 
-    v72 = [v12 setPositions];
-    v105 = v72;
-    if (v72)
+    setPositions = [firstObject setPositions];
+    v105 = setPositions;
+    if (setPositions)
     {
-      v73 = v72;
-      if ([v72 count]== &dword_0 + 1)
+      v73 = setPositions;
+      if ([setPositions count]== &dword_0 + 1)
       {
         v74 = [v73 objectAtIndexedSubscript:0];
-        v75 = [v74 integerValue];
+        integerValue3 = [v74 integerValue];
 
-        if ((v75 - 1) <= 3)
+        if ((integerValue3 - 1) <= 3)
         {
-          v76 = v75;
+          v76 = integerValue3;
           v20 = &PLLogRegisteredEvent_ptr;
           v77 = [NSNumber numberWithInteger:v76];
           [v13 setWeekOfMonth:v77];
@@ -3891,9 +3891,9 @@ LABEL_121:
         if (os_log_type_enabled(v99, v100))
         {
           *buf = 134218242;
-          v113 = v75;
+          v113 = integerValue3;
           v114 = 2112;
-          v115 = v7;
+          v115 = reminderCopy;
           _os_log_impl(&dword_0, v99, v100, "Malformed Monthly recurrence (setPosition is out of bounds (%ld)).  reminder is %@", buf, 0x16u);
         }
 
@@ -3912,7 +3912,7 @@ LABEL_120:
       }
 
       *buf = 138412290;
-      v113 = v7;
+      v113 = reminderCopy;
     }
 
     else
@@ -3925,31 +3925,31 @@ LABEL_120:
       }
 
       *buf = 138412290;
-      v113 = v7;
+      v113 = reminderCopy;
     }
 
     _os_log_impl(&dword_0, v77, v98, "Malformed Monthly recurrence (has dayOfWeek but no setPosition).  reminder is %@", buf, 0xCu);
     goto LABEL_120;
   }
 
-  if (!v22)
+  if (!frequency)
   {
     [v13 setType:&off_6E4C8];
     goto LABEL_97;
   }
 
-  if (v22 != (&dword_0 + 1))
+  if (frequency != (&dword_0 + 1))
   {
     goto LABEL_97;
   }
 
   [v13 setType:&off_6E4F8];
-  v26 = [v12 daysOfTheWeek];
+  daysOfTheWeek7 = [firstObject daysOfTheWeek];
 
-  if (v26)
+  if (daysOfTheWeek7)
   {
-    v27 = [v12 daysOfTheWeek];
-    v28 = [NSNumber numberWithInteger:[(ESReminderKitHelper *)self _ASDayOfWeekFromREMDaysOfWeek:v27 outWeekOfMonth:0]];
+    daysOfTheWeek8 = [firstObject daysOfTheWeek];
+    v28 = [NSNumber numberWithInteger:[(ESReminderKitHelper *)self _ASDayOfWeekFromREMDaysOfWeek:daysOfTheWeek8 outWeekOfMonth:0]];
     [v13 setDayOfWeek:v28];
 
     v20 = &PLLogRegisteredEvent_ptr;
@@ -4011,22 +4011,22 @@ LABEL_120:
 
   [v13 setDayOfWeek:v40];
 LABEL_97:
-  v85 = [v12 recurrenceEnd];
-  v86 = v85;
-  if (v85)
+  recurrenceEnd = [firstObject recurrenceEnd];
+  v86 = recurrenceEnd;
+  if (recurrenceEnd)
   {
     v103 = v23;
-    v106 = v12;
-    v87 = v7;
-    v88 = v8;
+    v106 = firstObject;
+    v87 = reminderCopy;
+    v88 = taskCopy;
     v89 = v15;
     v90 = v14;
-    v91 = [v85 endDate];
+    endDate = [recurrenceEnd endDate];
 
-    if (v91)
+    if (endDate)
     {
-      v92 = [v86 endDate];
-      v93 = [NSDateComponents rem_dateComponentsWithDate:v92 timeZone:v90 isAllDay:1];
+      endDate2 = [v86 endDate];
+      v93 = [NSDateComponents rem_dateComponentsWithDate:endDate2 timeZone:v90 isAllDay:1];
 
       v94 = [NSDateComponents rem_dateWithDateComponents:v93 timeZone:v90];
       [v13 setUntil:v94];
@@ -4040,19 +4040,19 @@ LABEL_97:
 
     v14 = v90;
     v15 = v89;
-    v8 = v88;
-    v7 = v87;
-    v12 = v106;
+    taskCopy = v88;
+    reminderCopy = v87;
+    firstObject = v106;
     v23 = v103;
   }
 
-  if (![v12 firstDayOfTheWeek])
+  if (![firstObject firstDayOfTheWeek])
   {
     v96 = &off_6E4F8;
     goto LABEL_106;
   }
 
-  v95 = [v12 firstDayOfTheWeek] - 1;
+  v95 = [firstObject firstDayOfTheWeek] - 1;
   if (v95 <= 6)
   {
     v96 = off_6D368[v95];
@@ -4070,139 +4070,139 @@ LABEL_106:
     v97 = 0;
   }
 
-  [v8 setRecurrence:v97];
+  [taskCopy setRecurrence:v97];
 
 LABEL_111:
 }
 
-- (void)clearReminderChangesForFolderID:(id)a3 forAccount:(id)a4
+- (void)clearReminderChangesForFolderID:(id)d forAccount:(id)account
 {
-  v9 = a3;
+  dCopy = d;
   accountIDToChangeTrackingTable = self->_accountIDToChangeTrackingTable;
-  v7 = [a4 accountID];
-  v8 = [(NSMutableDictionary *)accountIDToChangeTrackingTable objectForKey:v7];
+  accountID = [account accountID];
+  v8 = [(NSMutableDictionary *)accountIDToChangeTrackingTable objectForKey:accountID];
 
-  if (v8 && [v8 markReminderChangesConsumedForFolderID:v9])
+  if (v8 && [v8 markReminderChangesConsumedForFolderID:dCopy])
   {
     [(ESReminderKitHelper *)self _processReminderNotification:0];
   }
 }
 
-- (void)clearFolderAdditionForFolderUUID:(id)a3 folderID:(id)a4 forAccount:(id)a5
+- (void)clearFolderAdditionForFolderUUID:(id)d folderID:(id)iD forAccount:(id)account
 {
-  v12 = a3;
-  v8 = a4;
+  dCopy = d;
+  iDCopy = iD;
   accountIDToChangeTrackingTable = self->_accountIDToChangeTrackingTable;
-  v10 = [a5 accountID];
-  v11 = [(NSMutableDictionary *)accountIDToChangeTrackingTable objectForKey:v10];
+  accountID = [account accountID];
+  v11 = [(NSMutableDictionary *)accountIDToChangeTrackingTable objectForKey:accountID];
 
-  if (v11 && [v11 markListAdditionConsumedForFolderUUID:v12 folderID:v8])
+  if (v11 && [v11 markListAdditionConsumedForFolderUUID:dCopy folderID:iDCopy])
   {
     [(ESReminderKitHelper *)self _processReminderNotification:0];
   }
 }
 
-- (void)clearFolderChangeForFolderID:(id)a3 forAccount:(id)a4
+- (void)clearFolderChangeForFolderID:(id)d forAccount:(id)account
 {
-  v9 = a3;
+  dCopy = d;
   accountIDToChangeTrackingTable = self->_accountIDToChangeTrackingTable;
-  v7 = [a4 accountID];
-  v8 = [(NSMutableDictionary *)accountIDToChangeTrackingTable objectForKey:v7];
+  accountID = [account accountID];
+  v8 = [(NSMutableDictionary *)accountIDToChangeTrackingTable objectForKey:accountID];
 
-  if (v8 && [v8 markListChangeConsumedForFolderID:v9])
+  if (v8 && [v8 markListChangeConsumedForFolderID:dCopy])
   {
     [(ESReminderKitHelper *)self _processReminderNotification:0];
   }
 }
 
-- (BOOL)_populateChangeItem:(id)a3 forReminder:(id)a4 folderWithId:(id)a5 forAccount:(id)a6
+- (BOOL)_populateChangeItem:(id)item forReminder:(id)reminder folderWithId:(id)id forAccount:(id)account
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  itemCopy = item;
+  reminderCopy = reminder;
+  idCopy = id;
+  accountCopy = account;
   v13 = DALoggingwithCategory();
   v14 = _CPLog_to_os_log_type[5];
   if (os_log_type_enabled(v13, v14))
   {
-    v15 = [v9 objectID];
-    v16 = [v10 serverID];
+    objectID = [itemCopy objectID];
+    serverID = [reminderCopy serverID];
     *buf = 138412546;
-    v107 = v15;
+    v107 = objectID;
     v108 = 2112;
-    v109 = v16;
+    v109 = serverID;
     _os_log_impl(&dword_0, v13, v14, "UPDATE {objectID: %@, task.serverID: %@}", buf, 0x16u);
   }
 
-  v17 = [v10 serverID];
+  serverID2 = [reminderCopy serverID];
 
-  if (v17)
+  if (serverID2)
   {
-    v18 = [v10 serverID];
-    [v9 setExternalIdentifier:v18];
+    serverID3 = [reminderCopy serverID];
+    [itemCopy setExternalIdentifier:serverID3];
 
     v19 = DALoggingwithCategory();
     v20 = _CPLog_to_os_log_type[7];
     if (os_log_type_enabled(v19, v20))
     {
-      v21 = [v10 serverID];
+      serverID4 = [reminderCopy serverID];
       *buf = 138412290;
-      v107 = v21;
+      v107 = serverID4;
       _os_log_impl(&dword_0, v19, v20, "SET externalIdentifier <- %@", buf, 0xCu);
     }
   }
 
-  v103 = v12;
-  v22 = [v10 body];
+  v103 = accountCopy;
+  body = [reminderCopy body];
 
-  if (v22)
+  if (body)
   {
     v23 = DALoggingwithCategory();
     v24 = _CPLog_to_os_log_type[7];
     if (os_log_type_enabled(v23, v24))
     {
-      v25 = [v10 body];
+      body2 = [reminderCopy body];
       *buf = 138412290;
-      v107 = v25;
+      v107 = body2;
       _os_log_impl(&dword_0, v23, v24, "SET notes <- %@", buf, 0xCu);
     }
 
     v26 = [NSAttributedString alloc];
-    v27 = [v10 body];
-    v28 = [v26 initWithString:v27];
-    [v9 setNotes:v28];
+    body3 = [reminderCopy body];
+    v28 = [v26 initWithString:body3];
+    [itemCopy setNotes:v28];
   }
 
-  v29 = [v10 subject];
+  subject = [reminderCopy subject];
 
-  if (v29)
+  if (subject)
   {
     v30 = DALoggingwithCategory();
     v31 = _CPLog_to_os_log_type[7];
     if (os_log_type_enabled(v30, v31))
     {
-      v32 = [v10 subject];
+      subject2 = [reminderCopy subject];
       *buf = 138412290;
-      v107 = v32;
+      v107 = subject2;
       _os_log_impl(&dword_0, v30, v31, "SET title <- %@", buf, 0xCu);
     }
 
     v33 = [NSAttributedString alloc];
-    v34 = [v10 subject];
-    v35 = [v33 initWithString:v34];
-    [v9 setTitle:v35];
+    subject3 = [reminderCopy subject];
+    v35 = [v33 initWithString:subject3];
+    [itemCopy setTitle:v35];
   }
 
-  v36 = [v10 utcStartTime];
+  utcStartTime = [reminderCopy utcStartTime];
 
-  if (v36)
+  if (utcStartTime)
   {
-    v37 = [v10 startTime];
-    v38 = [v10 utcStartTime];
-    v39 = [v10 bestGuessTimeZoneWithLocalDate:v37 utcDate:v38];
+    startTime = [reminderCopy startTime];
+    utcStartTime2 = [reminderCopy utcStartTime];
+    v39 = [reminderCopy bestGuessTimeZoneWithLocalDate:startTime utcDate:utcStartTime2];
 
-    v40 = [v10 utcStartTime];
-    v41 = [NSDateComponents rem_dateComponentsWithDate:v40 timeZone:v39 isAllDay:1];
+    utcStartTime3 = [reminderCopy utcStartTime];
+    v41 = [NSDateComponents rem_dateComponentsWithDate:utcStartTime3 timeZone:v39 isAllDay:1];
 
     [v41 setTimeZone:0];
     v42 = DALoggingwithCategory();
@@ -4214,19 +4214,19 @@ LABEL_111:
       _os_log_impl(&dword_0, v42, v43, "SET startDateComponents <- %@", buf, 0xCu);
     }
 
-    [v9 setStartDateComponents:v41];
+    [itemCopy setStartDateComponents:v41];
   }
 
-  v44 = [v10 utcDueDate];
+  utcDueDate = [reminderCopy utcDueDate];
 
-  if (v44)
+  if (utcDueDate)
   {
-    v45 = [v10 dueDate];
-    v46 = [v10 utcDueDate];
-    v47 = [v10 bestGuessTimeZoneWithLocalDate:v45 utcDate:v46];
+    dueDate = [reminderCopy dueDate];
+    utcDueDate2 = [reminderCopy utcDueDate];
+    v47 = [reminderCopy bestGuessTimeZoneWithLocalDate:dueDate utcDate:utcDueDate2];
 
-    v48 = [v10 utcDueDate];
-    v49 = [NSDateComponents rem_dateComponentsWithDate:v48 timeZone:v47 isAllDay:1];
+    utcDueDate3 = [reminderCopy utcDueDate];
+    v49 = [NSDateComponents rem_dateComponentsWithDate:utcDueDate3 timeZone:v47 isAllDay:1];
 
     [v49 setTimeZone:0];
     v50 = DALoggingwithCategory();
@@ -4238,21 +4238,21 @@ LABEL_111:
       _os_log_impl(&dword_0, v50, v51, "SET dueDateComponents <- %@", buf, 0xCu);
     }
 
-    [v9 setDueDateComponents:v49];
+    [itemCopy setDueDateComponents:v49];
   }
 
-  v52 = [v10 dateCompleted];
+  dateCompleted = [reminderCopy dateCompleted];
 
   v53 = DALoggingwithCategory();
   v54 = _CPLog_to_os_log_type[7];
   v55 = os_log_type_enabled(v53, v54);
-  if (v52)
+  if (dateCompleted)
   {
     if (v55)
     {
-      v56 = [v10 dateCompleted];
+      dateCompleted2 = [reminderCopy dateCompleted];
       *buf = 138412290;
-      v107 = v56;
+      v107 = dateCompleted2;
       _os_log_impl(&dword_0, v53, v54, "SET completionDate <- %@", buf, 0xCu);
     }
 
@@ -4264,8 +4264,8 @@ LABEL_111:
       _os_log_impl(&dword_0, v57, v54, "SET completed <- %@", buf, 0xCu);
     }
 
-    v58 = [v10 dateCompleted];
-    [v9 setCompletionDate:v58];
+    dateCompleted3 = [reminderCopy dateCompleted];
+    [itemCopy setCompletionDate:dateCompleted3];
   }
 
   else
@@ -4285,13 +4285,13 @@ LABEL_111:
       _os_log_impl(&dword_0, v59, v54, "SET completed <- %@", buf, 0xCu);
     }
 
-    [v9 setCompletionDate:0];
+    [itemCopy setCompletionDate:0];
   }
 
-  [v9 setCompleted:v52 != 0];
-  v60 = [v10 importance];
+  [itemCopy setCompleted:dateCompleted != 0];
+  importance = [reminderCopy importance];
 
-  if (v60 && ([v10 importance], v61 = objc_claimAutoreleasedReturnValue(), v62 = objc_msgSend(v61, "intValue"), v61, v62 <= 2))
+  if (importance && ([reminderCopy importance], v61 = objc_claimAutoreleasedReturnValue(), v62 = objc_msgSend(v61, "intValue"), v61, v62 <= 2))
   {
     v63 = REMReminderDefaultPriorityForPriorityLevel();
   }
@@ -4310,19 +4310,19 @@ LABEL_111:
     _os_log_impl(&dword_0, v64, v54, "SET priority <- %@", buf, 0xCu);
   }
 
-  [v9 setPriority:v63];
-  v66 = [v10 reminderIsSet];
-  v101 = v11;
-  if ([v66 BOOLValue])
+  [itemCopy setPriority:v63];
+  reminderIsSet = [reminderCopy reminderIsSet];
+  v101 = idCopy;
+  if ([reminderIsSet BOOLValue])
   {
-    v67 = [v10 reminderDateTime];
+    reminderDateTime = [reminderCopy reminderDateTime];
 
-    if (v67)
+    if (reminderDateTime)
     {
-      [v9 removeAllAlarms];
-      v68 = [v10 reminderDateTime];
+      [itemCopy removeAllAlarms];
+      reminderDateTime2 = [reminderCopy reminderDateTime];
       v69 = +[NSTimeZone localTimeZone];
-      v70 = [NSDateComponents rem_dateComponentsWithDate:v68 timeZone:v69 isAllDay:0];
+      v70 = [NSDateComponents rem_dateComponentsWithDate:reminderDateTime2 timeZone:v69 isAllDay:0];
 
       v71 = [[REMAlarmDateTrigger alloc] initWithDateComponents:v70];
       v72 = DALoggingwithCategory();
@@ -4333,7 +4333,7 @@ LABEL_111:
         _os_log_impl(&dword_0, v72, v54, "SET alarms <- [%@]", buf, 0xCu);
       }
 
-      v73 = [v9 addAlarmWithTrigger:v71];
+      v73 = [itemCopy addAlarmWithTrigger:v71];
       goto LABEL_53;
     }
   }
@@ -4342,17 +4342,17 @@ LABEL_111:
   {
   }
 
-  v74 = [v9 alarms];
-  v75 = [v74 count];
+  alarms = [itemCopy alarms];
+  v75 = [alarms count];
 
   if (v75)
   {
     v76 = DALoggingwithCategory();
     if (os_log_type_enabled(v76, v14))
     {
-      v77 = [v9 objectID];
+      objectID2 = [itemCopy objectID];
       *buf = 138412290;
-      v107 = v77;
+      v107 = objectID2;
       _os_log_impl(&dword_0, v76, v14, "Removing all alarms from reminderChangeItem {objectID: %@}", buf, 0xCu);
     }
   }
@@ -4364,18 +4364,18 @@ LABEL_111:
     _os_log_impl(&dword_0, v78, v54, "SET alarms <- nil", buf, 2u);
   }
 
-  [v9 removeAllAlarms];
+  [itemCopy removeAllAlarms];
 LABEL_53:
-  v79 = [v9 importedICSData];
-  if (!v79)
+  importedICSData = [itemCopy importedICSData];
+  if (!importedICSData)
   {
     v87 = 0;
     goto LABEL_67;
   }
 
-  v80 = [(ESReminderKitHelper *)self _remExternalRepresentationClasses];
+  _remExternalRepresentationClasses = [(ESReminderKitHelper *)self _remExternalRepresentationClasses];
   v105 = 0;
-  v81 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v80 fromData:v79 error:&v105];
+  v81 = [NSKeyedUnarchiver unarchivedObjectOfClasses:_remExternalRepresentationClasses fromData:importedICSData error:&v105];
   v82 = v105;
   v83 = [v81 mutableCopy];
 
@@ -4416,12 +4416,12 @@ LABEL_68:
 LABEL_60:
   [v83 setObject:v87 forKeyedSubscript:kEASExtraProperties];
   v88 = objc_opt_new();
-  v89 = [v10 categories];
+  categories = [reminderCopy categories];
 
-  if (v89)
+  if (categories)
   {
-    v90 = [v10 categories];
-    [v88 addObjectsFromArray:v90];
+    categories2 = [reminderCopy categories];
+    [v88 addObjectsFromArray:categories2];
   }
 
   v91 = [v87 objectForKeyedSubscript:&off_6E510];
@@ -4434,8 +4434,8 @@ LABEL_60:
 
   if ([v88 count])
   {
-    v93 = [v88 allObjects];
-    [v87 setObject:v93 forKeyedSubscript:&off_6E510];
+    allObjects = [v88 allObjects];
+    [v87 setObject:allObjects forKeyedSubscript:&off_6E510];
   }
 
   else
@@ -4452,14 +4452,14 @@ LABEL_60:
     _os_log_impl(&dword_0, v95, v54, "SET importedICSData <- %@", buf, 0xCu);
   }
 
-  [v9 setImportedICSData:v94];
-  v96 = [v10 recurrence];
+  [itemCopy setImportedICSData:v94];
+  recurrence = [reminderCopy recurrence];
 
-  if (v96)
+  if (recurrence)
   {
-    v97 = [v10 recurrence];
+    recurrence2 = [reminderCopy recurrence];
     v98 = v103;
-    [(ESReminderKitHelper *)self _populateChangeItem:v9 forRecurrence:v97 forReminder:v10 forFolderWithId:v102 forAccount:v103];
+    [(ESReminderKitHelper *)self _populateChangeItem:itemCopy forRecurrence:recurrence2 forReminder:reminderCopy forFolderWithId:v102 forAccount:v103];
   }
 
   else
@@ -4471,29 +4471,29 @@ LABEL_60:
       _os_log_impl(&dword_0, v99, v54, "SET recurrenceRules <- nil", buf, 2u);
     }
 
-    [v9 removeAllRecurrenceRules];
+    [itemCopy removeAllRecurrenceRules];
     v98 = v103;
   }
 
   return 1;
 }
 
-- (int64_t)_ASDayOfWeekFromREMDaysOfWeek:(id)a3 outWeekOfMonth:(int64_t *)a4
+- (int64_t)_ASDayOfWeekFromREMDaysOfWeek:(id)week outWeekOfMonth:(int64_t *)month
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  weekCopy = week;
+  v6 = weekCopy;
+  if (weekCopy)
   {
-    if (a4)
+    if (month)
     {
-      *a4 = -2;
+      *month = -2;
     }
 
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v7 = [weekCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = 0;
@@ -4509,22 +4509,22 @@ LABEL_60:
           }
 
           v11 = *(*(&v15 + 1) + 8 * v10);
-          v12 = [v11 dayOfTheWeek];
-          if (v12 <= 3)
+          dayOfTheWeek = [v11 dayOfTheWeek];
+          if (dayOfTheWeek <= 3)
           {
-            if (v12 == (&dword_0 + 1))
+            if (dayOfTheWeek == (&dword_0 + 1))
             {
               v8 |= 1u;
-              if (a4)
+              if (month)
               {
                 goto LABEL_29;
               }
             }
 
-            else if (v12 == (&dword_0 + 2))
+            else if (dayOfTheWeek == (&dword_0 + 2))
             {
               v8 |= 2u;
-              if (a4)
+              if (month)
               {
                 goto LABEL_29;
               }
@@ -4532,51 +4532,51 @@ LABEL_60:
 
             else
             {
-              if (v12 != (&dword_0 + 3))
+              if (dayOfTheWeek != (&dword_0 + 3))
               {
                 goto LABEL_28;
               }
 
               v8 |= 4u;
-              if (a4)
+              if (month)
               {
                 goto LABEL_29;
               }
             }
           }
 
-          else if (v12 > 5)
+          else if (dayOfTheWeek > 5)
           {
-            if (v12 == (&dword_4 + 2))
+            if (dayOfTheWeek == (&dword_4 + 2))
             {
               v8 |= 0x20u;
 LABEL_28:
-              if (!a4)
+              if (!month)
               {
                 goto LABEL_30;
               }
 
 LABEL_29:
-              *a4 = [v11 weekNumber];
+              *month = [v11 weekNumber];
               goto LABEL_30;
             }
 
-            if (v12 != (&dword_4 + 3))
+            if (dayOfTheWeek != (&dword_4 + 3))
             {
               goto LABEL_28;
             }
 
             v8 |= 0x40u;
-            if (a4)
+            if (month)
             {
               goto LABEL_29;
             }
           }
 
-          else if (v12 == &dword_4)
+          else if (dayOfTheWeek == &dword_4)
           {
             v8 |= 8u;
-            if (a4)
+            if (month)
             {
               goto LABEL_29;
             }
@@ -4585,7 +4585,7 @@ LABEL_29:
           else
           {
             v8 |= 0x10u;
-            if (a4)
+            if (month)
             {
               goto LABEL_29;
             }
@@ -4606,9 +4606,9 @@ LABEL_30:
       }
     }
 
-    if (a4 && *a4 == -1)
+    if (month && *month == -1)
     {
-      *a4 = 5;
+      *month = 5;
     }
   }
 
@@ -4620,11 +4620,11 @@ LABEL_30:
   return v7;
 }
 
-- (int)_ASMonthOfYearFromREMMonthOfYear:(int64_t)a3
+- (int)_ASMonthOfYearFromREMMonthOfYear:(int64_t)year
 {
-  if ((a3 - 1) < 0xC)
+  if ((year - 1) < 0xC)
   {
-    return a3;
+    return year;
   }
 
   else
@@ -4633,19 +4633,19 @@ LABEL_30:
   }
 }
 
-- (id)_remDaysOfWeekFromASDayOfWeek:(int)a3 weekOfMonth:(int)a4
+- (id)_remDaysOfWeekFromASDayOfWeek:(int)week weekOfMonth:(int)month
 {
-  v5 = a3;
+  weekCopy = week;
   v6 = objc_alloc_init(NSMutableArray);
-  if (v5)
+  if (weekCopy)
   {
-    v9 = [REMRecurrenceDayOfWeek dayOfWeek:1 weekNumber:a4];
+    v9 = [REMRecurrenceDayOfWeek dayOfWeek:1 weekNumber:month];
     [v6 addObject:v9];
 
-    if ((v5 & 2) == 0)
+    if ((weekCopy & 2) == 0)
     {
 LABEL_3:
-      if ((v5 & 4) == 0)
+      if ((weekCopy & 4) == 0)
       {
         goto LABEL_4;
       }
@@ -4654,18 +4654,18 @@ LABEL_3:
     }
   }
 
-  else if ((v5 & 2) == 0)
+  else if ((weekCopy & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  v10 = [REMRecurrenceDayOfWeek dayOfWeek:2 weekNumber:a4];
+  v10 = [REMRecurrenceDayOfWeek dayOfWeek:2 weekNumber:month];
   [v6 addObject:v10];
 
-  if ((v5 & 4) == 0)
+  if ((weekCopy & 4) == 0)
   {
 LABEL_4:
-    if ((v5 & 8) == 0)
+    if ((weekCopy & 8) == 0)
     {
       goto LABEL_5;
     }
@@ -4674,13 +4674,13 @@ LABEL_4:
   }
 
 LABEL_14:
-  v11 = [REMRecurrenceDayOfWeek dayOfWeek:3 weekNumber:a4];
+  v11 = [REMRecurrenceDayOfWeek dayOfWeek:3 weekNumber:month];
   [v6 addObject:v11];
 
-  if ((v5 & 8) == 0)
+  if ((weekCopy & 8) == 0)
   {
 LABEL_5:
-    if ((v5 & 0x10) == 0)
+    if ((weekCopy & 0x10) == 0)
     {
       goto LABEL_6;
     }
@@ -4689,13 +4689,13 @@ LABEL_5:
   }
 
 LABEL_15:
-  v12 = [REMRecurrenceDayOfWeek dayOfWeek:4 weekNumber:a4];
+  v12 = [REMRecurrenceDayOfWeek dayOfWeek:4 weekNumber:month];
   [v6 addObject:v12];
 
-  if ((v5 & 0x10) == 0)
+  if ((weekCopy & 0x10) == 0)
   {
 LABEL_6:
-    if ((v5 & 0x20) == 0)
+    if ((weekCopy & 0x20) == 0)
     {
       goto LABEL_7;
     }
@@ -4704,13 +4704,13 @@ LABEL_6:
   }
 
 LABEL_16:
-  v13 = [REMRecurrenceDayOfWeek dayOfWeek:5 weekNumber:a4];
+  v13 = [REMRecurrenceDayOfWeek dayOfWeek:5 weekNumber:month];
   [v6 addObject:v13];
 
-  if ((v5 & 0x20) == 0)
+  if ((weekCopy & 0x20) == 0)
   {
 LABEL_7:
-    if ((v5 & 0x40) == 0)
+    if ((weekCopy & 0x40) == 0)
     {
       goto LABEL_9;
     }
@@ -4719,13 +4719,13 @@ LABEL_7:
   }
 
 LABEL_17:
-  v14 = [REMRecurrenceDayOfWeek dayOfWeek:6 weekNumber:a4];
+  v14 = [REMRecurrenceDayOfWeek dayOfWeek:6 weekNumber:month];
   [v6 addObject:v14];
 
-  if ((v5 & 0x40) != 0)
+  if ((weekCopy & 0x40) != 0)
   {
 LABEL_8:
-    v7 = [REMRecurrenceDayOfWeek dayOfWeek:7 weekNumber:a4];
+    v7 = [REMRecurrenceDayOfWeek dayOfWeek:7 weekNumber:month];
     [v6 addObject:v7];
   }
 
@@ -4734,16 +4734,16 @@ LABEL_9:
   return v6;
 }
 
-- (int64_t)_remMonthOfYearFromASMonthOfYear:(int)a3
+- (int64_t)_remMonthOfYearFromASMonthOfYear:(int)year
 {
-  if ((a3 - 1) > 0xB)
+  if ((year - 1) > 0xB)
   {
     return -1;
   }
 
   else
   {
-    return qword_539C8[a3 - 1];
+    return qword_539C8[year - 1];
   }
 }
 

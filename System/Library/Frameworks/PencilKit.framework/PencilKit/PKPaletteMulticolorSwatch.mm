@@ -28,8 +28,8 @@
 {
   v5.receiver = self;
   v5.super_class = PKPaletteMulticolorSwatch;
-  v2 = [(PKPaletteColorSwatch *)&v5 presentationColor];
-  v3 = [v2 colorWithAlphaComponent:1.0];
+  presentationColor = [(PKPaletteColorSwatch *)&v5 presentationColor];
+  v3 = [presentationColor colorWithAlphaComponent:1.0];
 
   return v3;
 }
@@ -54,8 +54,8 @@
     return 1;
   }
 
-  v4 = [(PKPaletteColorSwatch *)self swatchColor];
-  v3 = v4 != 0;
+  swatchColor = [(PKPaletteColorSwatch *)self swatchColor];
+  v3 = swatchColor != 0;
 
   return v3;
 }

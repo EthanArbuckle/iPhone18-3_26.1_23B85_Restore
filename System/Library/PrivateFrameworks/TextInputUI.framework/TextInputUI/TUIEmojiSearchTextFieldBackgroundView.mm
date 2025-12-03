@@ -1,8 +1,8 @@
 @interface TUIEmojiSearchTextFieldBackgroundView
-- (TUIEmojiSearchTextFieldBackgroundView)initWithFrame:(CGRect)a3;
-- (void)_setRenderConfig:(id)a3;
+- (TUIEmojiSearchTextFieldBackgroundView)initWithFrame:(CGRect)frame;
+- (void)_setRenderConfig:(id)config;
 - (void)layoutSubviews;
-- (void)setBackgroundStyle:(unint64_t)a3 animated:(BOOL)a4;
+- (void)setBackgroundStyle:(unint64_t)style animated:(BOOL)animated;
 @end
 
 @implementation TUIEmojiSearchTextFieldBackgroundView
@@ -19,27 +19,27 @@
     v3 = v4 * 0.5;
   }
 
-  v5 = [(TUIEmojiSearchTextFieldBackgroundView *)self layer];
-  [v5 setCornerRadius:v3];
+  layer = [(TUIEmojiSearchTextFieldBackgroundView *)self layer];
+  [layer setCornerRadius:v3];
 }
 
-- (void)setBackgroundStyle:(unint64_t)a3 animated:(BOOL)a4
+- (void)setBackgroundStyle:(unint64_t)style animated:(BOOL)animated
 {
-  if (self->_backgroundStyle != a3)
+  if (self->_backgroundStyle != style)
   {
     v9[8] = v4;
     v9[9] = v5;
-    v6 = a4;
-    self->_backgroundStyle = a3;
+    animatedCopy = animated;
+    self->_backgroundStyle = style;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __69__TUIEmojiSearchTextFieldBackgroundView_setBackgroundStyle_animated___block_invoke;
     v9[3] = &unk_1E72D84B0;
     v9[4] = self;
-    v9[5] = a3;
+    v9[5] = style;
     v7 = _Block_copy(v9);
     v8 = v7;
-    if (v6)
+    if (animatedCopy)
     {
       [MEMORY[0x1E69DD250] animateWithDuration:4 delay:v7 options:0 animations:0.3 completion:0.0];
     }
@@ -103,15 +103,15 @@ id __69__TUIEmojiSearchTextFieldBackgroundView_setBackgroundStyle_animated___blo
   return v6;
 }
 
-- (void)_setRenderConfig:(id)a3
+- (void)_setRenderConfig:(id)config
 {
   v7.receiver = self;
   v7.super_class = TUIEmojiSearchTextFieldBackgroundView;
-  v4 = a3;
-  [(TUIEmojiSearchTextFieldBackgroundView *)&v7 _setRenderConfig:v4];
-  v5 = [v4 lightKeyboard];
+  configCopy = config;
+  [(TUIEmojiSearchTextFieldBackgroundView *)&v7 _setRenderConfig:configCopy];
+  lightKeyboard = [configCopy lightKeyboard];
 
-  if (v5)
+  if (lightKeyboard)
   {
     v6 = 1;
   }
@@ -124,20 +124,20 @@ id __69__TUIEmojiSearchTextFieldBackgroundView_setBackgroundStyle_animated___blo
   [(TUIEmojiSearchTextFieldBackgroundView *)self setOverrideUserInterfaceStyle:v6];
 }
 
-- (TUIEmojiSearchTextFieldBackgroundView)initWithFrame:(CGRect)a3
+- (TUIEmojiSearchTextFieldBackgroundView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
+  height = frame.size.height;
   v17.receiver = self;
   v17.super_class = TUIEmojiSearchTextFieldBackgroundView;
-  v4 = [(TUIEmojiSearchTextFieldBackgroundView *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width];
+  v4 = [(TUIEmojiSearchTextFieldBackgroundView *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width];
   v5 = v4;
   if (v4)
   {
     [(TUIEmojiSearchTextFieldBackgroundView *)v4 setUserInteractionEnabled:0];
     v6 = TUIRemoteEmojiSearchViewControllerEnabled();
     v7 = height * 0.5;
-    v8 = [(TUIEmojiSearchTextFieldBackgroundView *)v5 layer];
-    v9 = v8;
+    layer = [(TUIEmojiSearchTextFieldBackgroundView *)v5 layer];
+    v9 = layer;
     v10 = 12.0;
     if (v6)
     {
@@ -150,15 +150,15 @@ id __69__TUIEmojiSearchTextFieldBackgroundView_setBackgroundStyle_animated___blo
       v11 = MEMORY[0x1E69796E8];
     }
 
-    [v8 setCornerRadius:v10];
+    [layer setCornerRadius:v10];
 
     v12 = *v11;
-    v13 = [(TUIEmojiSearchTextFieldBackgroundView *)v5 layer];
-    [v13 setCornerCurve:v12];
+    layer2 = [(TUIEmojiSearchTextFieldBackgroundView *)v5 layer];
+    [layer2 setCornerCurve:v12];
 
     v14 = *MEMORY[0x1E6979CF8];
-    v15 = [(TUIEmojiSearchTextFieldBackgroundView *)v5 layer];
-    [v15 setCompositingFilter:v14];
+    layer3 = [(TUIEmojiSearchTextFieldBackgroundView *)v5 layer];
+    [layer3 setCompositingFilter:v14];
 
     [(TUIEmojiSearchTextFieldBackgroundView *)v5 setBackgroundStyle:1 animated:0];
   }

@@ -1,12 +1,12 @@
 @interface VCMomentsCollector
-- (VCMomentsCollector)initWithStreamToken:(int64_t)a3;
+- (VCMomentsCollector)initWithStreamToken:(int64_t)token;
 - (void)cleanUpActiveRequests;
 - (void)dealloc;
 @end
 
 @implementation VCMomentsCollector
 
-- (VCMomentsCollector)initWithStreamToken:(int64_t)a3
+- (VCMomentsCollector)initWithStreamToken:(int64_t)token
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -15,11 +15,11 @@
   v5 = v4;
   if (v4)
   {
-    v4->_streamToken = a3;
-    v6 = [[VCMediaRecorder alloc] initWithStreamToken:a3 delegate:0 reportingAgent:0];
+    v4->_streamToken = token;
+    v6 = [[VCMediaRecorder alloc] initWithStreamToken:token delegate:0 reportingAgent:0];
     v5->_mediaRecorder = v6;
     [(VCMediaRecorder *)v6 setCapabilities:0];
-    [+[VCMediaRecorderManager sharedInstance](VCMediaRecorderManager registerMediaRecorder:"registerMediaRecorder:withStreamToken:" withStreamToken:v5->_mediaRecorder, a3];
+    [+[VCMediaRecorderManager sharedInstance](VCMediaRecorderManager registerMediaRecorder:"registerMediaRecorder:withStreamToken:" withStreamToken:v5->_mediaRecorder, token];
   }
 
   return v5;

@@ -1,6 +1,6 @@
 @interface PXProgrammaticNavigationRequest
 - (PXProgrammaticNavigationRequest)init;
-- (PXProgrammaticNavigationRequest)initWithDestination:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
+- (PXProgrammaticNavigationRequest)initWithDestination:(id)destination options:(unint64_t)options completionHandler:(id)handler;
 - (id)description;
 - (void)cancel;
 @end
@@ -9,8 +9,8 @@
 
 - (void)cancel
 {
-  v2 = [(PXProgrammaticNavigationRequest *)self completionHandler];
-  v2[2](v2, 4, 0);
+  completionHandler = [(PXProgrammaticNavigationRequest *)self completionHandler];
+  completionHandler[2](completionHandler, 4, 0);
 }
 
 - (id)description
@@ -18,27 +18,27 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PXProgrammaticNavigationRequest *)self destination];
-  v7 = [v3 stringWithFormat:@"<%@: %p, destination=%@>", v5, self, v6];
+  destination = [(PXProgrammaticNavigationRequest *)self destination];
+  v7 = [v3 stringWithFormat:@"<%@: %p, destination=%@>", v5, self, destination];
 
   return v7;
 }
 
-- (PXProgrammaticNavigationRequest)initWithDestination:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (PXProgrammaticNavigationRequest)initWithDestination:(id)destination options:(unint64_t)options completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
+  destinationCopy = destination;
+  handlerCopy = handler;
   v17.receiver = self;
   v17.super_class = PXProgrammaticNavigationRequest;
   v11 = [(PXProgrammaticNavigationRequest *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_destination, a3);
-    v12->_options = a4;
-    if (v10)
+    objc_storeStrong(&v11->_destination, destination);
+    v12->_options = options;
+    if (handlerCopy)
     {
-      v13 = v10;
+      v13 = handlerCopy;
     }
 
     else
@@ -56,8 +56,8 @@
 
 - (PXProgrammaticNavigationRequest)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXProgrammaticNavigationRequest.m" lineNumber:17 description:{@"%s is not available as initializer", "-[PXProgrammaticNavigationRequest init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXProgrammaticNavigationRequest.m" lineNumber:17 description:{@"%s is not available as initializer", "-[PXProgrammaticNavigationRequest init]"}];
 
   abort();
 }

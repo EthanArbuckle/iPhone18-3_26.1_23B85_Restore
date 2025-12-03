@@ -3,7 +3,7 @@
 - (BOOL)_canSwipeUp;
 - (BOOL)onSupplementaryUIShouldPresent;
 - (VUIMediaPlaybackManagerDelegate)delegate;
-- (VUITransitionalPlaybackUIManager)initWithMediaController:(id)a3;
+- (VUITransitionalPlaybackUIManager)initWithMediaController:(id)controller;
 - (int)_processBackgroundedStateTriggers;
 - (int)_processForegroundedStateTriggers;
 - (int)_processPausedStateTriggers;
@@ -18,22 +18,22 @@
 - (void)dealloc;
 - (void)onAppear;
 - (void)onSupplementaryUIShouldDismiss;
-- (void)setDelegate:(id)a3;
-- (void)setShowcaseFactor:(double)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setShowcaseFactor:(double)factor;
 @end
 
 @implementation VUITransitionalPlaybackUIManager
 
-- (VUITransitionalPlaybackUIManager)initWithMediaController:(id)a3
+- (VUITransitionalPlaybackUIManager)initWithMediaController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = VUITransitionalPlaybackUIManager;
   v6 = [(VUITransitionalPlaybackUIManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mediaController, a3);
+    objc_storeStrong(&v6->_mediaController, controller);
     v7->_isFirstAppearance = 1;
   }
 
@@ -50,10 +50,10 @@
   [(VUITransitionalPlaybackUIManager *)&v4 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
   v5 = objc_opt_respondsToSelector();
 
   self->_delegateFlags.hasShouldEnableUIModeImplicitly = v5 & 1;
@@ -89,11 +89,11 @@
   }
 }
 
-- (void)setShowcaseFactor:(double)a3
+- (void)setShowcaseFactor:(double)factor
 {
-  if (self->_showcaseFactor != a3)
+  if (self->_showcaseFactor != factor)
   {
-    self->_showcaseFactor = a3;
+    self->_showcaseFactor = factor;
     [(VUITransitionalPlaybackUIManager *)self _onShowcaseFactorDidChange];
   }
 }
@@ -108,7 +108,7 @@
     {
       if (mediaPlaybackState == 1)
       {
-        v5 = [(VUITransitionalPlaybackUIManager *)self _processBackgroundedStateTriggers];
+        _processBackgroundedStateTriggers = [(VUITransitionalPlaybackUIManager *)self _processBackgroundedStateTriggers];
       }
 
       else
@@ -118,13 +118,13 @@
           goto LABEL_17;
         }
 
-        v5 = [(VUITransitionalPlaybackUIManager *)self _processForegroundedStateTriggers];
+        _processBackgroundedStateTriggers = [(VUITransitionalPlaybackUIManager *)self _processForegroundedStateTriggers];
       }
     }
 
     else
     {
-      v5 = [(VUITransitionalPlaybackUIManager *)self _processUndefinedStateTriggers];
+      _processBackgroundedStateTriggers = [(VUITransitionalPlaybackUIManager *)self _processUndefinedStateTriggers];
     }
   }
 
@@ -132,7 +132,7 @@
   {
     if (mediaPlaybackState == 5)
     {
-      v5 = [(VUITransitionalPlaybackUIManager *)self _processWillBeForegroundedStateTriggers];
+      _processBackgroundedStateTriggers = [(VUITransitionalPlaybackUIManager *)self _processWillBeForegroundedStateTriggers];
     }
 
     else
@@ -142,21 +142,21 @@
         goto LABEL_17;
       }
 
-      v5 = [(VUITransitionalPlaybackUIManager *)self _processPausedStateTriggers];
+      _processBackgroundedStateTriggers = [(VUITransitionalPlaybackUIManager *)self _processPausedStateTriggers];
     }
   }
 
   else if (mediaPlaybackState == 3)
   {
-    v5 = [(VUITransitionalPlaybackUIManager *)self _processWaitingForTimeoutStateTriggers];
+    _processBackgroundedStateTriggers = [(VUITransitionalPlaybackUIManager *)self _processWaitingForTimeoutStateTriggers];
   }
 
   else
   {
-    v5 = [(VUITransitionalPlaybackUIManager *)self _processWillBeBackgroundedStateTriggers];
+    _processBackgroundedStateTriggers = [(VUITransitionalPlaybackUIManager *)self _processWillBeBackgroundedStateTriggers];
   }
 
-  v3 = v5;
+  v3 = _processBackgroundedStateTriggers;
 LABEL_17:
   self->_mediaPlaybackTrigger = 0;
   self->_mediaPlaybackTriggerModifier = 0;
@@ -187,8 +187,8 @@ LABEL_17:
         return;
       }
 
-      v8 = [(VUITransitionalPlaybackUIManager *)self mediaController];
-      [v8 setShowsVideoControls:1];
+      mediaController = [(VUITransitionalPlaybackUIManager *)self mediaController];
+      [mediaController setShowsVideoControls:1];
     }
 
     self->_mediaPlaybackStateModifier = 0;
@@ -197,16 +197,16 @@ LABEL_17:
 
   if ((mediaPlaybackState - 4) < 2)
   {
-    v4 = [(VUITransitionalPlaybackUIManager *)self delegate];
+    delegate = [(VUITransitionalPlaybackUIManager *)self delegate];
     if (mediaPlaybackState == 5)
     {
-      v5 = [(VUITransitionalPlaybackUIManager *)self mediaController];
-      v6 = [v5 mediaInfo];
-      if ([v6 intent] == 1)
+      mediaController2 = [(VUITransitionalPlaybackUIManager *)self mediaController];
+      mediaInfo = [mediaController2 mediaInfo];
+      if ([mediaInfo intent] == 1)
       {
         hasPresentPlaybackController = self->_delegateFlags.hasPresentPlaybackController;
 
-        if (hasPresentPlaybackController && ([v4 presentForegroundPlaybackControllerForMediaPlaybackManager:self] & 1) != 0)
+        if (hasPresentPlaybackController && ([delegate presentForegroundPlaybackControllerForMediaPlaybackManager:self] & 1) != 0)
         {
           goto LABEL_22;
         }
@@ -227,7 +227,7 @@ LABEL_17:
     v10[2] = __54__VUITransitionalPlaybackUIManager__processStateEnter__block_invoke_2;
     v10[3] = &unk_1E872F758;
     v10[4] = self;
-    [v4 mediaPlaybackManager:self shouldHideUI:mediaPlaybackState == 5 animated:1 animations:v11 completion:v10];
+    [delegate mediaPlaybackManager:self shouldHideUI:mediaPlaybackState == 5 animated:1 animations:v11 completion:v10];
 LABEL_22:
 
     return;
@@ -235,8 +235,8 @@ LABEL_22:
 
   if (mediaPlaybackState == 6)
   {
-    v9 = [(VUITransitionalPlaybackUIManager *)self mediaController];
-    [v9 pause];
+    mediaController3 = [(VUITransitionalPlaybackUIManager *)self mediaController];
+    [mediaController3 pause];
   }
 }
 
@@ -285,16 +285,16 @@ uint64_t __54__VUITransitionalPlaybackUIManager__processStateEnter__block_invoke
   mediaPlaybackState = self->_mediaPlaybackState;
   if ((self->_mediaPlaybackTrigger | 4) == 5)
   {
-    v4 = [(VUITransitionalPlaybackUIManager *)self mediaController];
-    v5 = [v4 state];
+    mediaController = [(VUITransitionalPlaybackUIManager *)self mediaController];
+    state = [mediaController state];
 
-    if (v5)
+    if (state)
     {
-      v6 = [(VUITransitionalPlaybackUIManager *)self mediaController];
-      v7 = [v6 state];
+      mediaController2 = [(VUITransitionalPlaybackUIManager *)self mediaController];
+      state2 = [mediaController2 state];
 
-      v8 = [(VUITransitionalPlaybackUIManager *)self delegate];
-      if (v7 != 1 && self->_isFirstAppearance && -[VUITransitionalPlaybackUIManager goesToForegroundOnFirstAppear](self, "goesToForegroundOnFirstAppear") || self->_delegateFlags.hasShouldEnableUIModeImplicitly && ![v8 mediaPlaybackManager:self shouldEnableUIModeImplicitly:0])
+      delegate = [(VUITransitionalPlaybackUIManager *)self delegate];
+      if (state2 != 1 && self->_isFirstAppearance && -[VUITransitionalPlaybackUIManager goesToForegroundOnFirstAppear](self, "goesToForegroundOnFirstAppear") || self->_delegateFlags.hasShouldEnableUIModeImplicitly && ![delegate mediaPlaybackManager:self shouldEnableUIModeImplicitly:0])
       {
         mediaPlaybackState = 2;
         v9 = 1;
@@ -303,7 +303,7 @@ uint64_t __54__VUITransitionalPlaybackUIManager__processStateEnter__block_invoke
       else
       {
         v9 = 0;
-        if ((v7 - 1) < 2 || v7 == 4)
+        if ((state2 - 1) < 2 || state2 == 4)
         {
           mediaPlaybackState = 1;
         }
@@ -314,7 +314,7 @@ uint64_t __54__VUITransitionalPlaybackUIManager__processStateEnter__block_invoke
         }
       }
 
-      [v8 mediaPlaybackManager:self shouldHideUI:v9 animated:0 animations:0 completion:0];
+      [delegate mediaPlaybackManager:self shouldHideUI:v9 animated:0 animations:0 completion:0];
     }
   }
 
@@ -329,10 +329,10 @@ uint64_t __54__VUITransitionalPlaybackUIManager__processStateEnter__block_invoke
   {
     if (mediaPlaybackTrigger == 5)
     {
-      v5 = [(VUITransitionalPlaybackUIManager *)self mediaController];
-      v6 = [v5 state];
+      mediaController = [(VUITransitionalPlaybackUIManager *)self mediaController];
+      state = [mediaController state];
 
-      if (v6 == 3)
+      if (state == 3)
       {
         return 3;
       }
@@ -377,17 +377,17 @@ uint64_t __54__VUITransitionalPlaybackUIManager__processStateEnter__block_invoke
   switch(mediaPlaybackTrigger)
   {
     case 5:
-      v5 = [(VUITransitionalPlaybackUIManager *)self mediaController];
-      if ([v5 state] == 1)
+      mediaController = [(VUITransitionalPlaybackUIManager *)self mediaController];
+      if ([mediaController state] == 1)
       {
       }
 
       else
       {
-        v6 = [(VUITransitionalPlaybackUIManager *)self mediaController];
-        v7 = [v6 state];
+        mediaController2 = [(VUITransitionalPlaybackUIManager *)self mediaController];
+        state = [mediaController2 state];
 
-        if (v7 != 2)
+        if (state != 2)
         {
           return mediaPlaybackState;
         }
@@ -430,10 +430,10 @@ uint64_t __54__VUITransitionalPlaybackUIManager__processStateEnter__block_invoke
 
   if (mediaPlaybackTrigger == 5)
   {
-    v4 = [(VUITransitionalPlaybackUIManager *)self mediaController];
-    v5 = [v4 state];
+    mediaController = [(VUITransitionalPlaybackUIManager *)self mediaController];
+    state = [mediaController state];
 
-    if (v5 != 3)
+    if (state != 3)
     {
       return 1;
     }
@@ -460,8 +460,8 @@ uint64_t __54__VUITransitionalPlaybackUIManager__processStateEnter__block_invoke
   mediaPlaybackTrigger = self->_mediaPlaybackTrigger;
   if (mediaPlaybackTrigger == 6)
   {
-    v5 = [(VUITransitionalPlaybackUIManager *)self mediaController];
-    if ([v5 state] == 3)
+    mediaController = [(VUITransitionalPlaybackUIManager *)self mediaController];
+    if ([mediaController state] == 3)
     {
       if ((self->_mediaPlaybackStateModifier & 2) != 0)
       {
@@ -518,14 +518,14 @@ uint64_t __54__VUITransitionalPlaybackUIManager__processStateEnter__block_invoke
   mediaPlaybackState = self->_mediaPlaybackState;
   if (self->_mediaPlaybackTrigger == 7 && ![(VUITransitionalPlaybackUIManager *)self _shouldPause])
   {
-    v4 = [(VUITransitionalPlaybackUIManager *)self mediaController];
-    v5 = [v4 state];
+    mediaController = [(VUITransitionalPlaybackUIManager *)self mediaController];
+    state = [mediaController state];
 
-    v6 = [(VUITransitionalPlaybackUIManager *)self mediaController];
-    v7 = [v6 mediaInfo];
-    v8 = [v7 intent];
+    mediaController2 = [(VUITransitionalPlaybackUIManager *)self mediaController];
+    mediaInfo = [mediaController2 mediaInfo];
+    intent = [mediaInfo intent];
 
-    if (v8 == 1 && v5 == 2)
+    if (intent == 1 && state == 2)
     {
       return 3;
     }
@@ -555,29 +555,29 @@ uint64_t __54__VUITransitionalPlaybackUIManager__processStateEnter__block_invoke
     return 0;
   }
 
-  v3 = [(VUITransitionalPlaybackUIManager *)self mediaController];
-  v4 = [v3 state];
+  mediaController = [(VUITransitionalPlaybackUIManager *)self mediaController];
+  state = [mediaController state];
 
-  if (v4 == 4)
+  if (state == 4)
   {
     return 0;
   }
 
-  v6 = v4 & 0xFFFFFFFFFFFFFFFELL;
-  v7 = [(VUITransitionalPlaybackUIManager *)self mediaController];
-  v8 = [v7 mediaInfo];
-  v9 = [v8 intent];
+  v6 = state & 0xFFFFFFFFFFFFFFFELL;
+  mediaController2 = [(VUITransitionalPlaybackUIManager *)self mediaController];
+  mediaInfo = [mediaController2 mediaInfo];
+  intent = [mediaInfo intent];
 
   mediaPlaybackState = self->_mediaPlaybackState;
-  if (mediaPlaybackState != 1 || v9)
+  if (mediaPlaybackState != 1 || intent)
   {
     v11 = 0;
-    if (mediaPlaybackState == 2 && v9 == 1)
+    if (mediaPlaybackState == 2 && intent == 1)
     {
       if (self->_delegateFlags.hasShouldEnableUIModeImplicitly)
       {
-        v12 = [(VUITransitionalPlaybackUIManager *)self delegate];
-        v11 = [v12 mediaPlaybackManager:self shouldEnableUIModeImplicitly:1];
+        delegate = [(VUITransitionalPlaybackUIManager *)self delegate];
+        v11 = [delegate mediaPlaybackManager:self shouldEnableUIModeImplicitly:1];
       }
 
       else
@@ -597,14 +597,14 @@ uint64_t __54__VUITransitionalPlaybackUIManager__processStateEnter__block_invoke
 
 - (BOOL)_canMenu
 {
-  v3 = [(VUITransitionalPlaybackUIManager *)self mediaController];
-  v4 = [v3 mediaInfo];
-  v5 = [v4 intent];
+  mediaController = [(VUITransitionalPlaybackUIManager *)self mediaController];
+  mediaInfo = [mediaController mediaInfo];
+  intent = [mediaInfo intent];
 
   mediaPlaybackState = self->_mediaPlaybackState;
   if (mediaPlaybackState == 2)
   {
-    if (v5 != 1)
+    if (intent != 1)
     {
       return 1;
     }
@@ -614,8 +614,8 @@ uint64_t __54__VUITransitionalPlaybackUIManager__processStateEnter__block_invoke
       return 1;
     }
 
-    v7 = [(VUITransitionalPlaybackUIManager *)self delegate];
-    v8 = [v7 mediaPlaybackManager:self shouldEnableUIModeImplicitly:0];
+    delegate = [(VUITransitionalPlaybackUIManager *)self delegate];
+    v8 = [delegate mediaPlaybackManager:self shouldEnableUIModeImplicitly:0];
 
     if (v8)
     {

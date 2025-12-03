@@ -1,49 +1,49 @@
 @interface _SFPBShowPhotosOneUpViewCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBShowPhotosOneUpViewCommand)initWithDictionary:(id)a3;
-- (_SFPBShowPhotosOneUpViewCommand)initWithFacade:(id)a3;
-- (_SFPBShowPhotosOneUpViewCommand)initWithJSON:(id)a3;
+- (_SFPBShowPhotosOneUpViewCommand)initWithDictionary:(id)dictionary;
+- (_SFPBShowPhotosOneUpViewCommand)initWithFacade:(id)facade;
+- (_SFPBShowPhotosOneUpViewCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addMatchedPeople:(id)a3;
-- (void)addMatchedScenes:(id)a3;
-- (void)setMatchedPeople:(id)a3;
-- (void)setMatchedScenes:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addMatchedPeople:(id)people;
+- (void)addMatchedScenes:(id)scenes;
+- (void)setMatchedPeople:(id)people;
+- (void)setMatchedScenes:(id)scenes;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBShowPhotosOneUpViewCommand
 
-- (_SFPBShowPhotosOneUpViewCommand)initWithFacade:(id)a3
+- (_SFPBShowPhotosOneUpViewCommand)initWithFacade:(id)facade
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBShowPhotosOneUpViewCommand *)self init];
   if (v5)
   {
-    v6 = [v4 photosLibraryImage];
+    photosLibraryImage = [facadeCopy photosLibraryImage];
 
-    if (v6)
+    if (photosLibraryImage)
     {
       v7 = [_SFPBPhotosLibraryImage alloc];
-      v8 = [v4 photosLibraryImage];
-      v9 = [(_SFPBPhotosLibraryImage *)v7 initWithFacade:v8];
+      photosLibraryImage2 = [facadeCopy photosLibraryImage];
+      v9 = [(_SFPBPhotosLibraryImage *)v7 initWithFacade:photosLibraryImage2];
       [(_SFPBShowPhotosOneUpViewCommand *)v5 setPhotosLibraryImage:v9];
     }
 
-    v10 = [v4 matchedPerson];
+    matchedPerson = [facadeCopy matchedPerson];
 
-    if (v10)
+    if (matchedPerson)
     {
       v11 = [_SFPBPerson alloc];
-      v12 = [v4 matchedPerson];
-      v13 = [(_SFPBPerson *)v11 initWithFacade:v12];
+      matchedPerson2 = [facadeCopy matchedPerson];
+      v13 = [(_SFPBPerson *)v11 initWithFacade:matchedPerson2];
       [(_SFPBShowPhotosOneUpViewCommand *)v5 setMatchedPerson:v13];
     }
 
-    v14 = [v4 matchedScenes];
-    if (v14)
+    matchedScenes = [facadeCopy matchedScenes];
+    if (matchedScenes)
     {
       v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -57,8 +57,8 @@
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v16 = [v4 matchedScenes];
-    v17 = [v16 countByEnumeratingWithState:&v41 objects:v46 count:16];
+    matchedScenes2 = [facadeCopy matchedScenes];
+    v17 = [matchedScenes2 countByEnumeratingWithState:&v41 objects:v46 count:16];
     if (v17)
     {
       v18 = v17;
@@ -69,7 +69,7 @@
         {
           if (*v42 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(matchedScenes2);
           }
 
           v21 = [[_SFPBScene alloc] initWithFacade:*(*(&v41 + 1) + 8 * i)];
@@ -79,15 +79,15 @@
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v41 objects:v46 count:16];
+        v18 = [matchedScenes2 countByEnumeratingWithState:&v41 objects:v46 count:16];
       }
 
       while (v18);
     }
 
     [(_SFPBShowPhotosOneUpViewCommand *)v5 setMatchedScenes:v15];
-    v22 = [v4 matchedPeople];
-    if (v22)
+    matchedPeople = [facadeCopy matchedPeople];
+    if (matchedPeople)
     {
       v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -101,8 +101,8 @@
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v24 = [v4 matchedPeople];
-    v25 = [v24 countByEnumeratingWithState:&v37 objects:v45 count:16];
+    matchedPeople2 = [facadeCopy matchedPeople];
+    v25 = [matchedPeople2 countByEnumeratingWithState:&v37 objects:v45 count:16];
     if (v25)
     {
       v26 = v25;
@@ -113,7 +113,7 @@
         {
           if (*v38 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(matchedPeople2);
           }
 
           v29 = [[_SFPBPerson alloc] initWithFacade:*(*(&v37 + 1) + 8 * j)];
@@ -123,20 +123,20 @@
           }
         }
 
-        v26 = [v24 countByEnumeratingWithState:&v37 objects:v45 count:16];
+        v26 = [matchedPeople2 countByEnumeratingWithState:&v37 objects:v45 count:16];
       }
 
       while (v26);
     }
 
     [(_SFPBShowPhotosOneUpViewCommand *)v5 setMatchedPeoples:v23];
-    v30 = [v4 photoFilePunchout];
+    photoFilePunchout = [facadeCopy photoFilePunchout];
 
-    if (v30)
+    if (photoFilePunchout)
     {
       v31 = [_SFPBPunchout alloc];
-      v32 = [v4 photoFilePunchout];
-      v33 = [(_SFPBPunchout *)v31 initWithFacade:v32];
+      photoFilePunchout2 = [facadeCopy photoFilePunchout];
+      v33 = [(_SFPBPunchout *)v31 initWithFacade:photoFilePunchout2];
       [(_SFPBShowPhotosOneUpViewCommand *)v5 setPhotoFilePunchout:v33];
     }
 
@@ -147,16 +147,16 @@
   return v5;
 }
 
-- (_SFPBShowPhotosOneUpViewCommand)initWithDictionary:(id)a3
+- (_SFPBShowPhotosOneUpViewCommand)initWithDictionary:(id)dictionary
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v42.receiver = self;
   v42.super_class = _SFPBShowPhotosOneUpViewCommand;
   v5 = [(_SFPBShowPhotosOneUpViewCommand *)&v42 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"photosLibraryImage"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"photosLibraryImage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -164,7 +164,7 @@
       [(_SFPBShowPhotosOneUpViewCommand *)v5 setPhotosLibraryImage:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"matchedPerson"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"matchedPerson"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -172,7 +172,7 @@
       [(_SFPBShowPhotosOneUpViewCommand *)v5 setMatchedPerson:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"matchedScenes"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"matchedScenes"];
     objc_opt_class();
     v33 = v6;
     if (objc_opt_isKindOfClass())
@@ -216,7 +216,7 @@
       v10 = v11;
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"matchedPeople"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"matchedPeople"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -259,7 +259,7 @@
       v10 = v32;
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"photoFilePunchout"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"photoFilePunchout"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -274,30 +274,30 @@
   return v5;
 }
 
-- (_SFPBShowPhotosOneUpViewCommand)initWithJSON:(id)a3
+- (_SFPBShowPhotosOneUpViewCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBShowPhotosOneUpViewCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBShowPhotosOneUpViewCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBShowPhotosOneUpViewCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -311,10 +311,10 @@
 - (id)dictionaryRepresentation
 {
   v41 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_matchedPeoples count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
@@ -334,16 +334,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v35 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v35 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -353,28 +353,28 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"matchedPeople"];
+    [dictionary setObject:array forKeyedSubscript:@"matchedPeople"];
   }
 
   if (self->_matchedPerson)
   {
-    v12 = [(_SFPBShowPhotosOneUpViewCommand *)self matchedPerson];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    matchedPerson = [(_SFPBShowPhotosOneUpViewCommand *)self matchedPerson];
+    dictionaryRepresentation2 = [matchedPerson dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"matchedPerson"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"matchedPerson"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"matchedPerson"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"matchedPerson"];
     }
   }
 
   if ([(NSArray *)self->_matchedScenes count])
   {
-    v15 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
@@ -394,16 +394,16 @@
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v31 + 1) + 8 * j) dictionaryRepresentation];
-          if (v21)
+          dictionaryRepresentation3 = [*(*(&v31 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation3)
           {
-            [v15 addObject:v21];
+            [array2 addObject:dictionaryRepresentation3];
           }
 
           else
           {
-            v22 = [MEMORY[0x1E695DFB0] null];
-            [v15 addObject:v22];
+            null3 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null3];
           }
         }
 
@@ -413,44 +413,44 @@
       while (v18);
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"matchedScenes"];
+    [dictionary setObject:array2 forKeyedSubscript:@"matchedScenes"];
   }
 
   if (self->_photoFilePunchout)
   {
-    v23 = [(_SFPBShowPhotosOneUpViewCommand *)self photoFilePunchout];
-    v24 = [v23 dictionaryRepresentation];
-    if (v24)
+    photoFilePunchout = [(_SFPBShowPhotosOneUpViewCommand *)self photoFilePunchout];
+    dictionaryRepresentation4 = [photoFilePunchout dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v24 forKeyedSubscript:@"photoFilePunchout"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"photoFilePunchout"];
     }
 
     else
     {
-      v25 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v25 forKeyedSubscript:@"photoFilePunchout"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"photoFilePunchout"];
     }
   }
 
   if (self->_photosLibraryImage)
   {
-    v26 = [(_SFPBShowPhotosOneUpViewCommand *)self photosLibraryImage];
-    v27 = [v26 dictionaryRepresentation];
-    if (v27)
+    photosLibraryImage = [(_SFPBShowPhotosOneUpViewCommand *)self photosLibraryImage];
+    dictionaryRepresentation5 = [photosLibraryImage dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v27 forKeyedSubscript:@"photosLibraryImage"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"photosLibraryImage"];
     }
 
     else
     {
-      v28 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v28 forKeyedSubscript:@"photosLibraryImage"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"photosLibraryImage"];
     }
   }
 
   v29 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -462,28 +462,28 @@
   return v6 ^ [(_SFPBPunchout *)self->_photoFilePunchout hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [(_SFPBShowPhotosOneUpViewCommand *)self photosLibraryImage];
-  v6 = [v4 photosLibraryImage];
-  if ((v5 != 0) == (v6 == 0))
+  photosLibraryImage = [(_SFPBShowPhotosOneUpViewCommand *)self photosLibraryImage];
+  photosLibraryImage2 = [equalCopy photosLibraryImage];
+  if ((photosLibraryImage != 0) == (photosLibraryImage2 == 0))
   {
     goto LABEL_26;
   }
 
-  v7 = [(_SFPBShowPhotosOneUpViewCommand *)self photosLibraryImage];
-  if (v7)
+  photosLibraryImage3 = [(_SFPBShowPhotosOneUpViewCommand *)self photosLibraryImage];
+  if (photosLibraryImage3)
   {
-    v8 = v7;
-    v9 = [(_SFPBShowPhotosOneUpViewCommand *)self photosLibraryImage];
-    v10 = [v4 photosLibraryImage];
-    v11 = [v9 isEqual:v10];
+    v8 = photosLibraryImage3;
+    photosLibraryImage4 = [(_SFPBShowPhotosOneUpViewCommand *)self photosLibraryImage];
+    photosLibraryImage5 = [equalCopy photosLibraryImage];
+    v11 = [photosLibraryImage4 isEqual:photosLibraryImage5];
 
     if (!v11)
     {
@@ -495,20 +495,20 @@
   {
   }
 
-  v5 = [(_SFPBShowPhotosOneUpViewCommand *)self matchedPerson];
-  v6 = [v4 matchedPerson];
-  if ((v5 != 0) == (v6 == 0))
+  photosLibraryImage = [(_SFPBShowPhotosOneUpViewCommand *)self matchedPerson];
+  photosLibraryImage2 = [equalCopy matchedPerson];
+  if ((photosLibraryImage != 0) == (photosLibraryImage2 == 0))
   {
     goto LABEL_26;
   }
 
-  v12 = [(_SFPBShowPhotosOneUpViewCommand *)self matchedPerson];
-  if (v12)
+  matchedPerson = [(_SFPBShowPhotosOneUpViewCommand *)self matchedPerson];
+  if (matchedPerson)
   {
-    v13 = v12;
-    v14 = [(_SFPBShowPhotosOneUpViewCommand *)self matchedPerson];
-    v15 = [v4 matchedPerson];
-    v16 = [v14 isEqual:v15];
+    v13 = matchedPerson;
+    matchedPerson2 = [(_SFPBShowPhotosOneUpViewCommand *)self matchedPerson];
+    matchedPerson3 = [equalCopy matchedPerson];
+    v16 = [matchedPerson2 isEqual:matchedPerson3];
 
     if (!v16)
     {
@@ -520,20 +520,20 @@
   {
   }
 
-  v5 = [(_SFPBShowPhotosOneUpViewCommand *)self matchedScenes];
-  v6 = [v4 matchedScenes];
-  if ((v5 != 0) == (v6 == 0))
+  photosLibraryImage = [(_SFPBShowPhotosOneUpViewCommand *)self matchedScenes];
+  photosLibraryImage2 = [equalCopy matchedScenes];
+  if ((photosLibraryImage != 0) == (photosLibraryImage2 == 0))
   {
     goto LABEL_26;
   }
 
-  v17 = [(_SFPBShowPhotosOneUpViewCommand *)self matchedScenes];
-  if (v17)
+  matchedScenes = [(_SFPBShowPhotosOneUpViewCommand *)self matchedScenes];
+  if (matchedScenes)
   {
-    v18 = v17;
-    v19 = [(_SFPBShowPhotosOneUpViewCommand *)self matchedScenes];
-    v20 = [v4 matchedScenes];
-    v21 = [v19 isEqual:v20];
+    v18 = matchedScenes;
+    matchedScenes2 = [(_SFPBShowPhotosOneUpViewCommand *)self matchedScenes];
+    matchedScenes3 = [equalCopy matchedScenes];
+    v21 = [matchedScenes2 isEqual:matchedScenes3];
 
     if (!v21)
     {
@@ -545,20 +545,20 @@
   {
   }
 
-  v5 = [(_SFPBShowPhotosOneUpViewCommand *)self matchedPeoples];
-  v6 = [v4 matchedPeoples];
-  if ((v5 != 0) == (v6 == 0))
+  photosLibraryImage = [(_SFPBShowPhotosOneUpViewCommand *)self matchedPeoples];
+  photosLibraryImage2 = [equalCopy matchedPeoples];
+  if ((photosLibraryImage != 0) == (photosLibraryImage2 == 0))
   {
     goto LABEL_26;
   }
 
-  v22 = [(_SFPBShowPhotosOneUpViewCommand *)self matchedPeoples];
-  if (v22)
+  matchedPeoples = [(_SFPBShowPhotosOneUpViewCommand *)self matchedPeoples];
+  if (matchedPeoples)
   {
-    v23 = v22;
-    v24 = [(_SFPBShowPhotosOneUpViewCommand *)self matchedPeoples];
-    v25 = [v4 matchedPeoples];
-    v26 = [v24 isEqual:v25];
+    v23 = matchedPeoples;
+    matchedPeoples2 = [(_SFPBShowPhotosOneUpViewCommand *)self matchedPeoples];
+    matchedPeoples3 = [equalCopy matchedPeoples];
+    v26 = [matchedPeoples2 isEqual:matchedPeoples3];
 
     if (!v26)
     {
@@ -570,12 +570,12 @@
   {
   }
 
-  v5 = [(_SFPBShowPhotosOneUpViewCommand *)self photoFilePunchout];
-  v6 = [v4 photoFilePunchout];
-  if ((v5 != 0) != (v6 == 0))
+  photosLibraryImage = [(_SFPBShowPhotosOneUpViewCommand *)self photoFilePunchout];
+  photosLibraryImage2 = [equalCopy photoFilePunchout];
+  if ((photosLibraryImage != 0) != (photosLibraryImage2 == 0))
   {
-    v27 = [(_SFPBShowPhotosOneUpViewCommand *)self photoFilePunchout];
-    if (!v27)
+    photoFilePunchout = [(_SFPBShowPhotosOneUpViewCommand *)self photoFilePunchout];
+    if (!photoFilePunchout)
     {
 
 LABEL_30:
@@ -583,10 +583,10 @@ LABEL_30:
       goto LABEL_28;
     }
 
-    v28 = v27;
-    v29 = [(_SFPBShowPhotosOneUpViewCommand *)self photoFilePunchout];
-    v30 = [v4 photoFilePunchout];
-    v31 = [v29 isEqual:v30];
+    v28 = photoFilePunchout;
+    photoFilePunchout2 = [(_SFPBShowPhotosOneUpViewCommand *)self photoFilePunchout];
+    photoFilePunchout3 = [equalCopy photoFilePunchout];
+    v31 = [photoFilePunchout2 isEqual:photoFilePunchout3];
 
     if (v31)
     {
@@ -606,28 +606,28 @@ LABEL_28:
   return v32;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBShowPhotosOneUpViewCommand *)self photosLibraryImage];
-  if (v5)
+  toCopy = to;
+  photosLibraryImage = [(_SFPBShowPhotosOneUpViewCommand *)self photosLibraryImage];
+  if (photosLibraryImage)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_SFPBShowPhotosOneUpViewCommand *)self matchedPerson];
-  if (v6)
+  matchedPerson = [(_SFPBShowPhotosOneUpViewCommand *)self matchedPerson];
+  if (matchedPerson)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_SFPBShowPhotosOneUpViewCommand *)self matchedScenes];
+  matchedScenes = [(_SFPBShowPhotosOneUpViewCommand *)self matchedScenes];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  v8 = [matchedScenes countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v8)
   {
     v9 = v8;
@@ -639,7 +639,7 @@ LABEL_28:
       {
         if (*v26 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(matchedScenes);
         }
 
         v12 = *(*(&v25 + 1) + 8 * v11);
@@ -648,18 +648,18 @@ LABEL_28:
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v9 = [matchedScenes countByEnumeratingWithState:&v25 objects:v30 count:16];
     }
 
     while (v9);
   }
 
-  v13 = [(_SFPBShowPhotosOneUpViewCommand *)self matchedPeoples];
+  matchedPeoples = [(_SFPBShowPhotosOneUpViewCommand *)self matchedPeoples];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v14 = [v13 countByEnumeratingWithState:&v21 objects:v29 count:16];
+  v14 = [matchedPeoples countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v14)
   {
     v15 = v14;
@@ -671,7 +671,7 @@ LABEL_28:
       {
         if (*v22 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(matchedPeoples);
         }
 
         v18 = *(*(&v21 + 1) + 8 * v17);
@@ -680,14 +680,14 @@ LABEL_28:
       }
 
       while (v15 != v17);
-      v15 = [v13 countByEnumeratingWithState:&v21 objects:v29 count:16];
+      v15 = [matchedPeoples countByEnumeratingWithState:&v21 objects:v29 count:16];
     }
 
     while (v15);
   }
 
-  v19 = [(_SFPBShowPhotosOneUpViewCommand *)self photoFilePunchout];
-  if (v19)
+  photoFilePunchout = [(_SFPBShowPhotosOneUpViewCommand *)self photoFilePunchout];
+  if (photoFilePunchout)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -695,54 +695,54 @@ LABEL_28:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addMatchedPeople:(id)a3
+- (void)addMatchedPeople:(id)people
 {
-  v4 = a3;
+  peopleCopy = people;
   matchedPeoples = self->_matchedPeoples;
-  v8 = v4;
+  v8 = peopleCopy;
   if (!matchedPeoples)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_matchedPeoples;
-    self->_matchedPeoples = v6;
+    self->_matchedPeoples = array;
 
-    v4 = v8;
+    peopleCopy = v8;
     matchedPeoples = self->_matchedPeoples;
   }
 
-  [(NSArray *)matchedPeoples addObject:v4];
+  [(NSArray *)matchedPeoples addObject:peopleCopy];
 }
 
-- (void)setMatchedPeople:(id)a3
+- (void)setMatchedPeople:(id)people
 {
-  v4 = [a3 copy];
+  v4 = [people copy];
   matchedPeoples = self->_matchedPeoples;
   self->_matchedPeoples = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addMatchedScenes:(id)a3
+- (void)addMatchedScenes:(id)scenes
 {
-  v4 = a3;
+  scenesCopy = scenes;
   matchedScenes = self->_matchedScenes;
-  v8 = v4;
+  v8 = scenesCopy;
   if (!matchedScenes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_matchedScenes;
-    self->_matchedScenes = v6;
+    self->_matchedScenes = array;
 
-    v4 = v8;
+    scenesCopy = v8;
     matchedScenes = self->_matchedScenes;
   }
 
-  [(NSArray *)matchedScenes addObject:v4];
+  [(NSArray *)matchedScenes addObject:scenesCopy];
 }
 
-- (void)setMatchedScenes:(id)a3
+- (void)setMatchedScenes:(id)scenes
 {
-  v4 = [a3 copy];
+  v4 = [scenes copy];
   matchedScenes = self->_matchedScenes;
   self->_matchedScenes = v4;
 

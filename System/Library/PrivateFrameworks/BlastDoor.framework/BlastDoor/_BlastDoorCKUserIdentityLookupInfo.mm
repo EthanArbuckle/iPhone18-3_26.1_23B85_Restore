@@ -1,24 +1,24 @@
 @interface _BlastDoorCKUserIdentityLookupInfo
 - (_TtC9BlastDoor34_BlastDoorCKUserIdentityLookupInfo)init;
-- (_TtC9BlastDoor34_BlastDoorCKUserIdentityLookupInfo)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC9BlastDoor34_BlastDoorCKUserIdentityLookupInfo)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _BlastDoorCKUserIdentityLookupInfo
 
-- (_TtC9BlastDoor34_BlastDoorCKUserIdentityLookupInfo)initWithCoder:(id)a3
+- (_TtC9BlastDoor34_BlastDoorCKUserIdentityLookupInfo)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_214637E54(v3);
+  coderCopy = coder;
+  v4 = sub_214637E54(coderCopy);
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_2146352A8(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_2146352A8(coderCopy);
 }
 
 - (_TtC9BlastDoor34_BlastDoorCKUserIdentityLookupInfo)init

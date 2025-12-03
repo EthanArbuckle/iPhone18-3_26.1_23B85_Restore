@@ -1,7 +1,7 @@
 @interface DeviceContext
 + (DeviceContext)sharedInstance;
 - (DeviceContext)init;
-- (id)objectForKeyedSubscript:(id)a3;
+- (id)objectForKeyedSubscript:(id)subscript;
 - (void)getBatteryProperties;
 - (void)handleAdapterDetails;
 - (void)handleBatteryLevelChange;
@@ -14,7 +14,7 @@
 - (void)handlePowerSourceChange;
 - (void)handleTestDefaultsUpdate;
 - (void)handleThermalWarning;
-- (void)handleXPCEvent:(id)a3;
+- (void)handleXPCEvent:(id)event;
 - (void)initCSPNNotifications;
 - (void)initClamshellStateChange;
 - (void)initEarlyThermalWarning;
@@ -25,7 +25,7 @@
 - (void)initTestDefaultsChange;
 - (void)initThermalWarning;
 - (void)initializeMonitors;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
 - (void)start;
 - (void)startInPocketDetection;
 - (void)stopInPocketDetection;
@@ -179,13 +179,13 @@ LABEL_9:
   [(DeviceContext *)self initCSPNNotifications];
 }
 
-- (void)handleXPCEvent:(id)a3
+- (void)handleXPCEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = sub_100001600();
   dispatch_assert_queue_V2(v5);
 
-  string = xpc_dictionary_get_string(v4, _xpc_event_key_name);
+  string = xpc_dictionary_get_string(eventCopy, _xpc_event_key_name);
   if (!strcmp(string, "com.apple.system.powersources.source"))
   {
 
@@ -261,15 +261,15 @@ LABEL_9:
     }
 
     v4 = v10 & 0x20000;
-    v5 = [(DeviceContext *)self currentContext];
-    v6 = [v5 objectForKeyedSubscript:@"kIsChargingContext"];
-    v7 = [v6 BOOLValue];
+    currentContext = [(DeviceContext *)self currentContext];
+    v6 = [currentContext objectForKeyedSubscript:@"kIsChargingContext"];
+    bOOLValue = [v6 BOOLValue];
 
-    if (v7 != v4 >> 17)
+    if (bOOLValue != v4 >> 17)
     {
       v8 = [NSNumber numberWithBool:v4 != 0];
-      v9 = [(DeviceContext *)self currentContext];
-      [v9 setObject:v8 forKeyedSubscript:@"kIsChargingContext"];
+      currentContext2 = [(DeviceContext *)self currentContext];
+      [currentContext2 setObject:v8 forKeyedSubscript:@"kIsChargingContext"];
     }
   }
 }
@@ -289,11 +289,11 @@ LABEL_9:
 
     v4 = state64 & 0x4010000;
     v5 = [(DeviceContext *)self objectForKeyedSubscript:@"kMobileChargerContext"];
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
 
     if (v4 == 0x4000000)
     {
-      if (v6)
+      if (bOOLValue)
       {
         return;
       }
@@ -305,8 +305,8 @@ LABEL_9:
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "MobileCharger attached", v14, 2u);
       }
 
-      v8 = [(DeviceContext *)self overridenKeys];
-      v9 = [v8 containsObject:@"kMobileChargerContext"];
+      overridenKeys = [(DeviceContext *)self overridenKeys];
+      v9 = [overridenKeys containsObject:@"kMobileChargerContext"];
 
       if (!v9)
       {
@@ -326,7 +326,7 @@ LABEL_19:
 
     else
     {
-      if (v6)
+      if (bOOLValue)
       {
         v11 = [(DeviceContext *)self log];
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -336,8 +336,8 @@ LABEL_19:
         }
       }
 
-      v12 = [(DeviceContext *)self overridenKeys];
-      v13 = [v12 containsObject:@"kMobileChargerContext"];
+      overridenKeys2 = [(DeviceContext *)self overridenKeys];
+      v13 = [overridenKeys2 containsObject:@"kMobileChargerContext"];
 
       if (!v13)
       {
@@ -369,14 +369,14 @@ LABEL_19:
 {
   v5 = IOPSCopyExternalPowerAdapterDetails();
   v3 = [(__CFDictionary *)v5 objectForKeyedSubscript:@"IsWireless"];
-  v4 = [(DeviceContext *)self currentContext];
-  [v4 setObject:v3 forKeyedSubscript:@"kWirelessChargerContext"];
+  currentContext = [(DeviceContext *)self currentContext];
+  [currentContext setObject:v3 forKeyedSubscript:@"kWirelessChargerContext"];
 }
 
 - (void)getBatteryProperties
 {
-  v3 = [(DeviceContext *)self currentContext];
-  v4 = [v3 objectForKeyedSubscript:@"kPluggedInContext"];
+  currentContext = [(DeviceContext *)self currentContext];
+  v4 = [currentContext objectForKeyedSubscript:@"kPluggedInContext"];
 
   if (v4)
   {
@@ -390,8 +390,8 @@ LABEL_19:
         v7 = properties;
         if (properties)
         {
-          v8 = [(DeviceContext *)self currentContext];
-          [v8 setObject:v7 forKeyedSubscript:@"kBatteryPropertiesContext"];
+          currentContext2 = [(DeviceContext *)self currentContext];
+          [currentContext2 setObject:v7 forKeyedSubscript:@"kBatteryPropertiesContext"];
         }
       }
     }
@@ -409,13 +409,13 @@ LABEL_19:
     }
   }
 
-  v4 = [(DeviceContext *)self queue];
+  queue = [(DeviceContext *)self queue];
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_100009734;
   handler[3] = &unk_10002C780;
   handler[4] = self;
-  v5 = notify_register_dispatch("com.apple.system.powersources.percent", &dword_100036B5C, v4, handler);
+  v5 = notify_register_dispatch("com.apple.system.powersources.percent", &dword_100036B5C, queue, handler);
 
   if (v5)
   {
@@ -426,13 +426,13 @@ LABEL_19:
     }
   }
 
-  v7 = [(DeviceContext *)self queue];
+  queue2 = [(DeviceContext *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000973C;
   v8[3] = &unk_10002C738;
   v8[4] = self;
-  dispatch_async(v7, v8);
+  dispatch_async(queue2, v8);
 }
 
 - (void)initPSTimeRemainingChange
@@ -586,26 +586,26 @@ LABEL_19:
   v4 = [InPocketMonitor initWithQueue:v3];
   [(DeviceContext *)self setInPocketMonitor:v4];
 
-  v5 = [(DeviceContext *)self inPocketMonitor];
+  inPocketMonitor = [(DeviceContext *)self inPocketMonitor];
 
-  if (v5)
+  if (inPocketMonitor)
   {
-    v6 = [(DeviceContext *)self inPocketMonitor];
-    [v6 addDelegate:self];
+    inPocketMonitor2 = [(DeviceContext *)self inPocketMonitor];
+    [inPocketMonitor2 addDelegate:self];
 
-    v7 = [(DeviceContext *)self inPocketMonitor];
-    [v7 startMonitoring];
+    inPocketMonitor3 = [(DeviceContext *)self inPocketMonitor];
+    [inPocketMonitor3 startMonitoring];
   }
 }
 
 - (void)stopInPocketDetection
 {
-  v3 = [(DeviceContext *)self inPocketMonitor];
+  inPocketMonitor = [(DeviceContext *)self inPocketMonitor];
 
-  if (v3)
+  if (inPocketMonitor)
   {
-    v4 = [(DeviceContext *)self inPocketMonitor];
-    [v4 stopMonitoring];
+    inPocketMonitor2 = [(DeviceContext *)self inPocketMonitor];
+    [inPocketMonitor2 stopMonitoring];
   }
 }
 
@@ -628,8 +628,8 @@ LABEL_19:
 
 - (void)handleTestDefaultsUpdate
 {
-  v3 = [(DeviceContext *)self testDefaults];
-  v4 = [v3 objectForKey:@"devicecontext"];
+  testDefaults = [(DeviceContext *)self testDefaults];
+  v4 = [testDefaults objectForKey:@"devicecontext"];
 
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -643,8 +643,8 @@ LABEL_19:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [v4 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v29 count:16];
+  allKeys = [v4 allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v7)
   {
     v9 = v7;
@@ -657,7 +657,7 @@ LABEL_19:
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
@@ -676,11 +676,11 @@ LABEL_19:
         v16 = [v4 objectForKeyedSubscript:{v12, v20}];
         [(DeviceContext *)self setObject:v16 forKeyedSubscript:v12];
 
-        v17 = [(DeviceContext *)self overridenKeys];
-        [v17 addObject:v12];
+        overridenKeys = [(DeviceContext *)self overridenKeys];
+        [overridenKeys addObject:v12];
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v21 objects:v29 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v21 objects:v29 count:16];
     }
 
     while (v9);
@@ -695,19 +695,19 @@ LABEL_19:
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "no test context. removing keys", buf, 2u);
     }
 
-    v19 = [(DeviceContext *)self overridenKeys];
-    [v19 removeAllObjects];
+    overridenKeys2 = [(DeviceContext *)self overridenKeys];
+    [overridenKeys2 removeAllObjects];
   }
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v4 = a3;
+  subscriptCopy = subscript;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(DeviceContext *)self currentContext];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    currentContext = [(DeviceContext *)self currentContext];
+    v6 = [currentContext objectForKeyedSubscript:subscriptCopy];
   }
 
   else
@@ -718,24 +718,24 @@ LABEL_19:
   return v6;
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  subscriptCopy = subscript;
   [(DeviceContext *)self willChangeValueForKey:@"currentContext"];
-  v8 = [(DeviceContext *)self currentContext];
-  [v8 setObject:v6 forKeyedSubscript:v7];
+  currentContext = [(DeviceContext *)self currentContext];
+  [currentContext setObject:objectCopy forKeyedSubscript:subscriptCopy];
 
   [(DeviceContext *)self didChangeValueForKey:@"currentContext"];
-  if (v7 != @"kBatteryPropertiesContext")
+  if (subscriptCopy != @"kBatteryPropertiesContext")
   {
     v9 = [(DeviceContext *)self log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412546;
-      v11 = v7;
+      v11 = subscriptCopy;
       v12 = 2112;
-      v13 = v6;
+      v13 = objectCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@ is now : %@", &v10, 0x16u);
     }
   }

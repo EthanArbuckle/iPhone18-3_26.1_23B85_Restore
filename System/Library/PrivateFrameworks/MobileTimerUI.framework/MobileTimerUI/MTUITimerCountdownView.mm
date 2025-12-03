@@ -1,11 +1,11 @@
 @interface MTUITimerCountdownView
 - (BOOL)isStarted;
-- (MTUITimerCountdownView)initWithBarColor:(id)a3 backgroundBarColor:(id)a4 barWidth:(double)a5;
-- (MTUITimerCountdownView)initWithBarColor:(id)a3 backgroundBarColor:(id)a4 barWidth:(double)a5 remainingTime:(double)a6 duration:(double)a7;
+- (MTUITimerCountdownView)initWithBarColor:(id)color backgroundBarColor:(id)barColor barWidth:(double)width;
+- (MTUITimerCountdownView)initWithBarColor:(id)color backgroundBarColor:(id)barColor barWidth:(double)width remainingTime:(double)time duration:(double)duration;
 - (void)layoutSubviews;
 - (void)pause;
 - (void)resume;
-- (void)setAnimationRemainingTime:(double)a3 totalTime:(double)a4;
+- (void)setAnimationRemainingTime:(double)time totalTime:(double)totalTime;
 - (void)setupBackgroundCircle;
 - (void)start;
 - (void)stop;
@@ -13,32 +13,32 @@
 
 @implementation MTUITimerCountdownView
 
-- (MTUITimerCountdownView)initWithBarColor:(id)a3 backgroundBarColor:(id)a4 barWidth:(double)a5
+- (MTUITimerCountdownView)initWithBarColor:(id)color backgroundBarColor:(id)barColor barWidth:(double)width
 {
-  v8 = a3;
-  v9 = a4;
+  colorCopy = color;
+  barColorCopy = barColor;
   v13.receiver = self;
   v13.super_class = MTUITimerCountdownView;
   v10 = [(MTUITimerCountdownView *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    [(MTUITimerCountdownView *)v10 setBarColor:v8];
-    [(MTUITimerCountdownView *)v11 setBarWidth:a5];
-    [(MTUITimerCountdownView *)v11 setBackgroundBarColor:v9];
+    [(MTUITimerCountdownView *)v10 setBarColor:colorCopy];
+    [(MTUITimerCountdownView *)v11 setBarWidth:width];
+    [(MTUITimerCountdownView *)v11 setBackgroundBarColor:barColorCopy];
   }
 
   return v11;
 }
 
-- (MTUITimerCountdownView)initWithBarColor:(id)a3 backgroundBarColor:(id)a4 barWidth:(double)a5 remainingTime:(double)a6 duration:(double)a7
+- (MTUITimerCountdownView)initWithBarColor:(id)color backgroundBarColor:(id)barColor barWidth:(double)width remainingTime:(double)time duration:(double)duration
 {
-  v9 = [(MTUITimerCountdownView *)self initWithBarColor:a3 backgroundBarColor:a4 barWidth:a5];
+  v9 = [(MTUITimerCountdownView *)self initWithBarColor:color backgroundBarColor:barColor barWidth:width];
   v10 = v9;
   if (v9)
   {
-    [(MTUITimerCountdownView *)v9 setRemainingTime:a6];
-    [(MTUITimerCountdownView *)v10 setDuration:a7];
+    [(MTUITimerCountdownView *)v9 setRemainingTime:time];
+    [(MTUITimerCountdownView *)v10 setDuration:duration];
   }
 
   return v10;
@@ -49,24 +49,24 @@
   v24.receiver = self;
   v24.super_class = MTUITimerCountdownView;
   [(MTUITimerCountdownView *)&v24 layoutSubviews];
-  v3 = [(MTUITimerCountdownView *)self countdownCircleLayer];
-  [v3 beginTime];
+  countdownCircleLayer = [(MTUITimerCountdownView *)self countdownCircleLayer];
+  [countdownCircleLayer beginTime];
   v5 = v4;
 
   if (v5 > 0.0)
   {
     if ([(MTUITimerCountdownView *)self state]== 2)
     {
-      v6 = [(MTUITimerCountdownView *)self countdownCircleLayer];
-      [v6 timeOffset];
+      countdownCircleLayer2 = [(MTUITimerCountdownView *)self countdownCircleLayer];
+      [countdownCircleLayer2 timeOffset];
       v8 = v7;
     }
 
     else
     {
       v9 = CACurrentMediaTime();
-      v6 = [(MTUITimerCountdownView *)self countdownCircleLayer];
-      [v6 beginTime];
+      countdownCircleLayer2 = [(MTUITimerCountdownView *)self countdownCircleLayer];
+      [countdownCircleLayer2 beginTime];
       v8 = v9 - v10;
     }
 
@@ -74,22 +74,22 @@
     [(MTUITimerCountdownView *)self setRemainingTime:v11 - v8];
   }
 
-  v12 = [(MTUITimerCountdownView *)self mainLayer];
-  [v12 removeFromSuperlayer];
+  mainLayer = [(MTUITimerCountdownView *)self mainLayer];
+  [mainLayer removeFromSuperlayer];
 
   v13 = objc_alloc_init(MEMORY[0x277CD9ED0]);
   [(MTUITimerCountdownView *)self setMainLayer:v13];
 
-  v14 = [(MTUITimerCountdownView *)self layer];
-  v15 = [(MTUITimerCountdownView *)self mainLayer];
-  [v14 addSublayer:v15];
+  layer = [(MTUITimerCountdownView *)self layer];
+  mainLayer2 = [(MTUITimerCountdownView *)self mainLayer];
+  [layer addSublayer:mainLayer2];
 
   [(MTUITimerCountdownView *)self frame];
   v17 = v16;
   [(MTUITimerCountdownView *)self frame];
   v19 = v18;
-  v20 = [(MTUITimerCountdownView *)self mainLayer];
-  [v20 setFrame:{0.0, 0.0, v17, v19}];
+  mainLayer3 = [(MTUITimerCountdownView *)self mainLayer];
+  [mainLayer3 setFrame:{0.0, 0.0, v17, v19}];
 
   [(MTUITimerCountdownView *)self setupBackgroundCircle];
   [(MTUITimerCountdownView *)self remainingTime];
@@ -104,12 +104,12 @@
 
 - (void)setupBackgroundCircle
 {
-  v3 = [(MTUITimerCountdownView *)self backgroundCircleLayer];
+  backgroundCircleLayer = [(MTUITimerCountdownView *)self backgroundCircleLayer];
 
-  if (v3)
+  if (backgroundCircleLayer)
   {
-    v4 = [(MTUITimerCountdownView *)self backgroundCircleLayer];
-    [v4 removeFromSuperlayer];
+    backgroundCircleLayer2 = [(MTUITimerCountdownView *)self backgroundCircleLayer];
+    [backgroundCircleLayer2 removeFromSuperlayer];
   }
 
   v5 = MEMORY[0x277D75208];
@@ -129,45 +129,45 @@
   [(MTUITimerCountdownView *)self setBackgroundCircleLayer:v17];
 
   v18 = v33;
-  v19 = [v33 CGPath];
-  v20 = [(MTUITimerCountdownView *)self backgroundCircleLayer];
-  [v20 setPath:v19];
+  cGPath = [v33 CGPath];
+  backgroundCircleLayer3 = [(MTUITimerCountdownView *)self backgroundCircleLayer];
+  [backgroundCircleLayer3 setPath:cGPath];
 
-  v21 = [MEMORY[0x277D75348] clearColor];
-  v22 = [v21 CGColor];
-  v23 = [(MTUITimerCountdownView *)self backgroundCircleLayer];
-  [v23 setFillColor:v22];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  cGColor = [clearColor CGColor];
+  backgroundCircleLayer4 = [(MTUITimerCountdownView *)self backgroundCircleLayer];
+  [backgroundCircleLayer4 setFillColor:cGColor];
 
-  v24 = [(MTUITimerCountdownView *)self backgroundBarColor];
-  v25 = [v24 CGColor];
-  v26 = [(MTUITimerCountdownView *)self backgroundCircleLayer];
-  [v26 setStrokeColor:v25];
+  backgroundBarColor = [(MTUITimerCountdownView *)self backgroundBarColor];
+  cGColor2 = [backgroundBarColor CGColor];
+  backgroundCircleLayer5 = [(MTUITimerCountdownView *)self backgroundCircleLayer];
+  [backgroundCircleLayer5 setStrokeColor:cGColor2];
 
   [(MTUITimerCountdownView *)self barWidth];
   v28 = v27;
-  v29 = [(MTUITimerCountdownView *)self backgroundCircleLayer];
-  [v29 setLineWidth:v28];
+  backgroundCircleLayer6 = [(MTUITimerCountdownView *)self backgroundCircleLayer];
+  [backgroundCircleLayer6 setLineWidth:v28];
 
-  v30 = [(MTUITimerCountdownView *)self backgroundCircleLayer];
-  [v30 setStrokeEnd:1.0];
+  backgroundCircleLayer7 = [(MTUITimerCountdownView *)self backgroundCircleLayer];
+  [backgroundCircleLayer7 setStrokeEnd:1.0];
 
-  v31 = [(MTUITimerCountdownView *)self mainLayer];
-  v32 = [(MTUITimerCountdownView *)self backgroundCircleLayer];
-  [v31 addSublayer:v32];
+  mainLayer = [(MTUITimerCountdownView *)self mainLayer];
+  backgroundCircleLayer8 = [(MTUITimerCountdownView *)self backgroundCircleLayer];
+  [mainLayer addSublayer:backgroundCircleLayer8];
 }
 
-- (void)setAnimationRemainingTime:(double)a3 totalTime:(double)a4
+- (void)setAnimationRemainingTime:(double)time totalTime:(double)totalTime
 {
   [(MTUITimerCountdownView *)self setRemainingTime:?];
-  [(MTUITimerCountdownView *)self setDuration:a4];
-  [(MTUITimerCountdownView *)self angleForValue:a3 total:a4];
+  [(MTUITimerCountdownView *)self setDuration:totalTime];
+  [(MTUITimerCountdownView *)self angleForValue:time total:totalTime];
   v8 = v7;
-  v9 = [(MTUITimerCountdownView *)self countdownCircleLayer];
+  countdownCircleLayer = [(MTUITimerCountdownView *)self countdownCircleLayer];
 
-  if (v9)
+  if (countdownCircleLayer)
   {
-    v10 = [(MTUITimerCountdownView *)self countdownCircleLayer];
-    [v10 removeFromSuperlayer];
+    countdownCircleLayer2 = [(MTUITimerCountdownView *)self countdownCircleLayer];
+    [countdownCircleLayer2 removeFromSuperlayer];
   }
 
   v11 = MEMORY[0x277D75208];
@@ -187,35 +187,35 @@
   [(MTUITimerCountdownView *)self setCountdownCircleLayer:v23];
 
   v24 = v41;
-  v25 = [v41 CGPath];
-  v26 = [(MTUITimerCountdownView *)self countdownCircleLayer];
-  [v26 setPath:v25];
+  cGPath = [v41 CGPath];
+  countdownCircleLayer3 = [(MTUITimerCountdownView *)self countdownCircleLayer];
+  [countdownCircleLayer3 setPath:cGPath];
 
-  v27 = [MEMORY[0x277D75348] clearColor];
-  v28 = [v27 CGColor];
-  v29 = [(MTUITimerCountdownView *)self countdownCircleLayer];
-  [v29 setFillColor:v28];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  cGColor = [clearColor CGColor];
+  countdownCircleLayer4 = [(MTUITimerCountdownView *)self countdownCircleLayer];
+  [countdownCircleLayer4 setFillColor:cGColor];
 
-  v30 = [(MTUITimerCountdownView *)self barColor];
-  v31 = [v30 CGColor];
-  v32 = [(MTUITimerCountdownView *)self countdownCircleLayer];
-  [v32 setStrokeColor:v31];
+  barColor = [(MTUITimerCountdownView *)self barColor];
+  cGColor2 = [barColor CGColor];
+  countdownCircleLayer5 = [(MTUITimerCountdownView *)self countdownCircleLayer];
+  [countdownCircleLayer5 setStrokeColor:cGColor2];
 
   [(MTUITimerCountdownView *)self barWidth];
   v34 = v33;
-  v35 = [(MTUITimerCountdownView *)self countdownCircleLayer];
-  [v35 setLineWidth:v34];
+  countdownCircleLayer6 = [(MTUITimerCountdownView *)self countdownCircleLayer];
+  [countdownCircleLayer6 setLineWidth:v34];
 
-  v36 = [(MTUITimerCountdownView *)self countdownCircleLayer];
-  [v36 setStrokeEnd:1.0];
+  countdownCircleLayer7 = [(MTUITimerCountdownView *)self countdownCircleLayer];
+  [countdownCircleLayer7 setStrokeEnd:1.0];
 
   v37 = *MEMORY[0x277CDA780];
-  v38 = [(MTUITimerCountdownView *)self countdownCircleLayer];
-  [v38 setLineCap:v37];
+  countdownCircleLayer8 = [(MTUITimerCountdownView *)self countdownCircleLayer];
+  [countdownCircleLayer8 setLineCap:v37];
 
-  v39 = [(MTUITimerCountdownView *)self mainLayer];
-  v40 = [(MTUITimerCountdownView *)self countdownCircleLayer];
-  [v39 addSublayer:v40];
+  mainLayer = [(MTUITimerCountdownView *)self mainLayer];
+  countdownCircleLayer9 = [(MTUITimerCountdownView *)self countdownCircleLayer];
+  [mainLayer addSublayer:countdownCircleLayer9];
 }
 
 - (void)start
@@ -230,68 +230,68 @@
   v3 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7C8]];
   [v10 setTimingFunction:v3];
 
-  v4 = [(MTUITimerCountdownView *)self countdownCircleLayer];
-  [v4 convertTime:0 fromLayer:CACurrentMediaTime()];
+  countdownCircleLayer = [(MTUITimerCountdownView *)self countdownCircleLayer];
+  [countdownCircleLayer convertTime:0 fromLayer:CACurrentMediaTime()];
   v6 = v5;
-  v7 = [(MTUITimerCountdownView *)self countdownCircleLayer];
-  [v7 setBeginTime:v6];
+  countdownCircleLayer2 = [(MTUITimerCountdownView *)self countdownCircleLayer];
+  [countdownCircleLayer2 setBeginTime:v6];
 
-  v8 = [(MTUITimerCountdownView *)self countdownCircleLayer];
-  [v8 setStrokeEnd:0.0];
+  countdownCircleLayer3 = [(MTUITimerCountdownView *)self countdownCircleLayer];
+  [countdownCircleLayer3 setStrokeEnd:0.0];
 
-  v9 = [(MTUITimerCountdownView *)self countdownCircleLayer];
-  [v9 addAnimation:v10 forKey:@"MTUITimerCountdownViewAnimationKey"];
+  countdownCircleLayer4 = [(MTUITimerCountdownView *)self countdownCircleLayer];
+  [countdownCircleLayer4 addAnimation:v10 forKey:@"MTUITimerCountdownViewAnimationKey"];
 }
 
 - (void)pause
 {
   [(MTUITimerCountdownView *)self setState:2];
-  v3 = [(MTUITimerCountdownView *)self countdownCircleLayer];
-  [v3 convertTime:0 fromLayer:CACurrentMediaTime()];
+  countdownCircleLayer = [(MTUITimerCountdownView *)self countdownCircleLayer];
+  [countdownCircleLayer convertTime:0 fromLayer:CACurrentMediaTime()];
   v5 = v4;
 
-  v6 = [(MTUITimerCountdownView *)self countdownCircleLayer];
-  [v6 setSpeed:0.0];
+  countdownCircleLayer2 = [(MTUITimerCountdownView *)self countdownCircleLayer];
+  [countdownCircleLayer2 setSpeed:0.0];
 
-  v7 = [(MTUITimerCountdownView *)self countdownCircleLayer];
-  [v7 setTimeOffset:v5];
+  countdownCircleLayer3 = [(MTUITimerCountdownView *)self countdownCircleLayer];
+  [countdownCircleLayer3 setTimeOffset:v5];
 }
 
 - (void)stop
 {
   [(MTUITimerCountdownView *)self setState:0];
-  v3 = [(MTUITimerCountdownView *)self countdownCircleLayer];
-  [v3 removeAnimationForKey:@"MTUITimerCountdownViewAnimationKey"];
+  countdownCircleLayer = [(MTUITimerCountdownView *)self countdownCircleLayer];
+  [countdownCircleLayer removeAnimationForKey:@"MTUITimerCountdownViewAnimationKey"];
 }
 
 - (void)resume
 {
   [(MTUITimerCountdownView *)self setState:1];
-  v3 = [(MTUITimerCountdownView *)self countdownCircleLayer];
-  v4 = [v3 animationForKey:@"MTUITimerCountdownViewAnimationKey"];
+  countdownCircleLayer = [(MTUITimerCountdownView *)self countdownCircleLayer];
+  v4 = [countdownCircleLayer animationForKey:@"MTUITimerCountdownViewAnimationKey"];
 
   if (v4)
   {
-    v5 = [(MTUITimerCountdownView *)self countdownCircleLayer];
-    [v5 timeOffset];
+    countdownCircleLayer2 = [(MTUITimerCountdownView *)self countdownCircleLayer];
+    [countdownCircleLayer2 timeOffset];
     v7 = v6;
 
-    v8 = [(MTUITimerCountdownView *)self countdownCircleLayer];
+    countdownCircleLayer3 = [(MTUITimerCountdownView *)self countdownCircleLayer];
     LODWORD(v9) = 1.0;
-    [v8 setSpeed:v9];
+    [countdownCircleLayer3 setSpeed:v9];
 
-    v10 = [(MTUITimerCountdownView *)self countdownCircleLayer];
-    [v10 setTimeOffset:0.0];
+    countdownCircleLayer4 = [(MTUITimerCountdownView *)self countdownCircleLayer];
+    [countdownCircleLayer4 setTimeOffset:0.0];
 
-    v11 = [(MTUITimerCountdownView *)self countdownCircleLayer];
-    [v11 setBeginTime:0.0];
+    countdownCircleLayer5 = [(MTUITimerCountdownView *)self countdownCircleLayer];
+    [countdownCircleLayer5 setBeginTime:0.0];
 
-    v12 = [(MTUITimerCountdownView *)self countdownCircleLayer];
-    [v12 convertTime:0 fromLayer:CACurrentMediaTime()];
+    countdownCircleLayer6 = [(MTUITimerCountdownView *)self countdownCircleLayer];
+    [countdownCircleLayer6 convertTime:0 fromLayer:CACurrentMediaTime()];
     v14 = v13 - v7;
 
-    v15 = [(MTUITimerCountdownView *)self countdownCircleLayer];
-    [v15 setBeginTime:v14];
+    countdownCircleLayer7 = [(MTUITimerCountdownView *)self countdownCircleLayer];
+    [countdownCircleLayer7 setBeginTime:v14];
   }
 
   else
@@ -303,13 +303,13 @@
 
 - (BOOL)isStarted
 {
-  v3 = [(MTUITimerCountdownView *)self state];
-  if (v3 != 1)
+  state = [(MTUITimerCountdownView *)self state];
+  if (state != 1)
   {
-    LOBYTE(v3) = [(MTUITimerCountdownView *)self state]== 2;
+    LOBYTE(state) = [(MTUITimerCountdownView *)self state]== 2;
   }
 
-  return v3;
+  return state;
 }
 
 @end

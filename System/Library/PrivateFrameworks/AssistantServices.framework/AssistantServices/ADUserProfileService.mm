@@ -2,16 +2,16 @@
 + (id)sharedService;
 - (ADUserProfileService)init;
 - (id)_init;
-- (void)_withLock:(id)a3;
+- (void)_withLock:(id)lock;
 @end
 
 @implementation ADUserProfileService
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }

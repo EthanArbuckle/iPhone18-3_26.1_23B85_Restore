@@ -1,62 +1,62 @@
 @interface PKRemoteImage
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRemoteImage:(id)a3;
-- (PKRemoteImage)initWithCoder:(id)a3;
-- (PKRemoteImage)initWithDictionary:(id)a3;
-- (PKRemoteImage)initWithRemoteURL:(id)a3 scaleFactor:(unint64_t)a4 width:(double)a5 height:(double)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRemoteImage:(id)image;
+- (PKRemoteImage)initWithCoder:(id)coder;
+- (PKRemoteImage)initWithDictionary:(id)dictionary;
+- (PKRemoteImage)initWithRemoteURL:(id)l scaleFactor:(unint64_t)factor width:(double)width height:(double)height;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)fetchImageWithCompletion:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)fetchImageWithCompletion:(id)completion;
 @end
 
 @implementation PKRemoteImage
 
-- (PKRemoteImage)initWithDictionary:(id)a3
+- (PKRemoteImage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = PKRemoteImage;
   v5 = [(PKRemoteImage *)&v12 init];
   if (v5)
   {
-    v6 = [v4 PKURLForKey:@"url"];
+    v6 = [dictionaryCopy PKURLForKey:@"url"];
     remoteURL = v5->_remoteURL;
     v5->_remoteURL = v6;
 
-    v8 = [v4 PKStringForKey:@"scale"];
+    v8 = [dictionaryCopy PKStringForKey:@"scale"];
     v5->_scaleFactor = PKRemoteImageScaleFactorFromString(v8);
 
-    v9 = [v4 PKNumberForKey:@"width"];
+    v9 = [dictionaryCopy PKNumberForKey:@"width"];
     v5->_width = PKRemoteImageDimensionFromValue(v9);
 
-    v10 = [v4 PKNumberForKey:@"height"];
+    v10 = [dictionaryCopy PKNumberForKey:@"height"];
     v5->_height = PKRemoteImageDimensionFromValue(v10);
   }
 
   return v5;
 }
 
-- (PKRemoteImage)initWithRemoteURL:(id)a3 scaleFactor:(unint64_t)a4 width:(double)a5 height:(double)a6
+- (PKRemoteImage)initWithRemoteURL:(id)l scaleFactor:(unint64_t)factor width:(double)width height:(double)height
 {
-  v11 = a3;
+  lCopy = l;
   v16.receiver = self;
   v16.super_class = PKRemoteImage;
   v12 = [(PKRemoteImage *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    if (!v11)
+    if (!lCopy)
     {
       v14 = 0;
       goto LABEL_6;
     }
 
-    objc_storeStrong(&v12->_remoteURL, a3);
-    v13->_scaleFactor = a4;
-    v13->_width = a5;
-    v13->_height = a6;
+    objc_storeStrong(&v12->_remoteURL, l);
+    v13->_scaleFactor = factor;
+    v13->_width = width;
+    v13->_height = height;
   }
 
   v14 = v13;
@@ -65,11 +65,11 @@ LABEL_6:
   return v14;
 }
 
-- (void)fetchImageWithCompletion:(id)a3
+- (void)fetchImageWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     if (self->_remoteURL)
     {
@@ -106,7 +106,7 @@ LABEL_6:
 
     else
     {
-      (*(v4 + 2))(v4, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -146,33 +146,33 @@ void __42__PKRemoteImage_fetchImageWithCompletion___block_invoke(uint64_t a1, vo
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKRemoteImage *)self isEqualToRemoteImage:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKRemoteImage *)self isEqualToRemoteImage:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToRemoteImage:(id)a3
+- (BOOL)isEqualToRemoteImage:(id)image
 {
-  v4 = a3;
-  if (!v4)
+  imageCopy = image;
+  if (!imageCopy)
   {
     goto LABEL_13;
   }
 
   remoteURL = self->_remoteURL;
-  v6 = *(v4 + 1);
+  v6 = *(imageCopy + 1);
   if (remoteURL)
   {
     v7 = v6 == 0;
@@ -201,12 +201,12 @@ LABEL_13:
   }
 
 LABEL_10:
-  if (self->_scaleFactor != *(v4 + 2) || self->_width != v4[3])
+  if (self->_scaleFactor != *(imageCopy + 2) || self->_width != imageCopy[3])
   {
     goto LABEL_13;
   }
 
-  v8 = self->_height == v4[4];
+  v8 = self->_height == imageCopy[4];
 LABEL_14:
 
   return v8;
@@ -224,35 +224,35 @@ LABEL_14:
   return v7;
 }
 
-- (PKRemoteImage)initWithCoder:(id)a3
+- (PKRemoteImage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = PKRemoteImage;
   v5 = [(PKRemoteImage *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
     remoteURL = v5->_remoteURL;
     v5->_remoteURL = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"scale"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"scale"];
     v5->_scaleFactor = PKRemoteImageScaleFactorFromString(v8);
 
-    [v4 decodeDoubleForKey:@"width"];
+    [coderCopy decodeDoubleForKey:@"width"];
     v5->_width = v9;
-    [v4 decodeDoubleForKey:@"height"];
+    [coderCopy decodeDoubleForKey:@"height"];
     v5->_height = v10;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   remoteURL = self->_remoteURL;
-  v7 = a3;
-  [v7 encodeObject:remoteURL forKey:@"url"];
+  coderCopy = coder;
+  [coderCopy encodeObject:remoteURL forKey:@"url"];
   scaleFactor = self->_scaleFactor;
   if (scaleFactor > 3)
   {
@@ -264,15 +264,15 @@ LABEL_14:
     v6 = off_1E79E13A8[scaleFactor];
   }
 
-  [v7 encodeObject:v6 forKey:@"scale"];
-  [v7 encodeDouble:@"width" forKey:self->_width];
-  [v7 encodeDouble:@"height" forKey:self->_height];
+  [coderCopy encodeObject:v6 forKey:@"scale"];
+  [coderCopy encodeDouble:@"width" forKey:self->_width];
+  [coderCopy encodeDouble:@"height" forKey:self->_height];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSURL *)self->_remoteURL copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSURL *)self->_remoteURL copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 

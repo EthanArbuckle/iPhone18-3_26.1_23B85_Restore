@@ -1,6 +1,6 @@
 @interface RTWorkoutScheduler
-+ (id)taskStateToString:(unint64_t)a3;
-+ (id)taskTypeToString:(unint64_t)a3;
++ (id)taskStateToString:(unint64_t)string;
++ (id)taskTypeToString:(unint64_t)string;
 - (BOOL)_deviceEligible;
 - (BOOL)_didClusterAndSyncOccurInLastInterval;
 - (BOOL)_isEligibibleForRelevanceScoreUpdateRetry;
@@ -10,114 +10,114 @@
 - (BOOL)_isPasscodeDisabled;
 - (BOOL)_isSchedulingWorkDone;
 - (BOOL)_isVersionChangeDetected;
-- (RTWorkoutScheduler)initWithBatteryManager:(id)a3 dataProtectionManager:(id)a4 workoutRouteManager:(id)a5 healthKitManager:(id)a6 locationManager:(id)a7 defaultsManager:(id)a8 platform:(id)a9 xpcActivityManager:(id)a10;
-- (RTWorkoutScheduler)initWithBatteryManager:(id)a3 dataProtectionManager:(id)a4 workoutRouteManager:(id)a5 healthKitManager:(id)a6 locationManager:(id)a7 defaultsManager:(id)a8 timerManager:(id)a9 platform:(id)a10 xpcActivityManager:(id)a11;
+- (RTWorkoutScheduler)initWithBatteryManager:(id)manager dataProtectionManager:(id)protectionManager workoutRouteManager:(id)routeManager healthKitManager:(id)kitManager locationManager:(id)locationManager defaultsManager:(id)defaultsManager platform:(id)platform xpcActivityManager:(id)self0;
+- (RTWorkoutScheduler)initWithBatteryManager:(id)manager dataProtectionManager:(id)protectionManager workoutRouteManager:(id)routeManager healthKitManager:(id)kitManager locationManager:(id)locationManager defaultsManager:(id)defaultsManager timerManager:(id)timerManager platform:(id)self0 xpcActivityManager:(id)self1;
 - (int64_t)_chargerConnectionState;
-- (unint64_t)topNWorkoutsWithIncrement:(unint64_t)a3;
+- (unint64_t)topNWorkoutsWithIncrement:(unint64_t)increment;
 - (void)_clearOutSchedulerState;
 - (void)_evaluateSchedulingTaskPriority;
 - (void)_evaluateVersionChange;
 - (void)_getCurrentLocationAndMonitorForRegion;
 - (void)_handleVersionChange;
 - (void)_onClusteringTimerExpiry;
-- (void)_onCurrentLocationUpdate:(id)a3;
+- (void)_onCurrentLocationUpdate:(id)update;
 - (void)_onDailyXPCActivity;
-- (void)_onDataProtectionNotification:(id)a3;
+- (void)_onDataProtectionNotification:(id)notification;
 - (void)_onHealthKitNotification;
-- (void)_onLayoutMonitorUpdateDisplayBacklightLevelNotification:(int64_t)a3;
+- (void)_onLayoutMonitorUpdateDisplayBacklightLevelNotification:(int64_t)notification;
 - (void)_registerForCircularRegionEvents;
-- (void)_scheduleClusteringTask:(unint64_t)a3;
+- (void)_scheduleClusteringTask:(unint64_t)task;
 - (void)_schedulePruneDistanceMatrix;
 - (void)_scheduleSingleWorkoutClustering;
 - (void)_scheduleUpdateRelevanceScore;
 - (void)_scheduleWorkoutComparisonIfCharging;
 - (void)_setup;
 - (void)_setupDisplayLayoutMonitor;
-- (void)_shutdownWithHandler:(id)a3;
-- (void)_startClusteringDeferralTimerWithLatency:(double)a3;
-- (void)clearTaskStatesWithHandler:(id)a3;
-- (void)handleCircularRegionCallback:(int64_t)a3 region:(id)a4 clientIdentifier:(id)a5;
-- (void)layoutMonitorDidUpdateDisplayLayout:(id)a3 withContext:(id)a4;
+- (void)_shutdownWithHandler:(id)handler;
+- (void)_startClusteringDeferralTimerWithLatency:(double)latency;
+- (void)clearTaskStatesWithHandler:(id)handler;
+- (void)handleCircularRegionCallback:(int64_t)callback region:(id)region clientIdentifier:(id)identifier;
+- (void)layoutMonitorDidUpdateDisplayLayout:(id)layout withContext:(id)context;
 - (void)logTaskStates;
-- (void)onCurrentLocationUpdate:(id)a3;
-- (void)onDataProtectionNotification:(id)a3;
+- (void)onCurrentLocationUpdate:(id)update;
+- (void)onDataProtectionNotification:(id)notification;
 - (void)onHealthKitNotification;
 - (void)readTaskStates;
 - (void)saveTaskStates;
-- (void)setCurrentNWorkouts:(unint64_t)a3;
-- (void)setLastClusterAndSyncDate:(id)a3;
-- (void)setLastPruneDistanceMatrixDate:(id)a3;
-- (void)setLastRelevanceScoreUpdateDate:(id)a3;
-- (void)setLastSingleWorkoutClusteringDate:(id)a3;
-- (void)setLastWorkoutComparisonDate:(id)a3;
-- (void)setSingleWorkoutClusteringTaskState:(unint64_t)a3;
-- (void)setUpdateRelevanceScoreTaskState:(unint64_t)a3;
+- (void)setCurrentNWorkouts:(unint64_t)workouts;
+- (void)setLastClusterAndSyncDate:(id)date;
+- (void)setLastPruneDistanceMatrixDate:(id)date;
+- (void)setLastRelevanceScoreUpdateDate:(id)date;
+- (void)setLastSingleWorkoutClusteringDate:(id)date;
+- (void)setLastWorkoutComparisonDate:(id)date;
+- (void)setSingleWorkoutClusteringTaskState:(unint64_t)state;
+- (void)setUpdateRelevanceScoreTaskState:(unint64_t)state;
 @end
 
 @implementation RTWorkoutScheduler
 
-+ (id)taskStateToString:(unint64_t)a3
++ (id)taskStateToString:(unint64_t)string
 {
-  if (a3 - 1 > 2)
+  if (string - 1 > 2)
   {
     return @"RTWorkoutSchedulerTaskStateUnknown";
   }
 
   else
   {
-    return off_2788D36E0[a3 - 1];
+    return off_2788D36E0[string - 1];
   }
 }
 
-+ (id)taskTypeToString:(unint64_t)a3
++ (id)taskTypeToString:(unint64_t)string
 {
-  if (a3 - 1 > 2)
+  if (string - 1 > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2788D36F8[a3 - 1];
+    return off_2788D36F8[string - 1];
   }
 }
 
-- (RTWorkoutScheduler)initWithBatteryManager:(id)a3 dataProtectionManager:(id)a4 workoutRouteManager:(id)a5 healthKitManager:(id)a6 locationManager:(id)a7 defaultsManager:(id)a8 platform:(id)a9 xpcActivityManager:(id)a10
+- (RTWorkoutScheduler)initWithBatteryManager:(id)manager dataProtectionManager:(id)protectionManager workoutRouteManager:(id)routeManager healthKitManager:(id)kitManager locationManager:(id)locationManager defaultsManager:(id)defaultsManager platform:(id)platform xpcActivityManager:(id)self0
 {
-  v17 = a10;
-  v18 = a9;
-  v19 = a8;
-  v20 = a7;
-  v21 = a6;
-  v22 = a5;
-  v23 = a4;
-  v24 = a3;
+  activityManagerCopy = activityManager;
+  platformCopy = platform;
+  defaultsManagerCopy = defaultsManager;
+  locationManagerCopy = locationManager;
+  kitManagerCopy = kitManager;
+  routeManagerCopy = routeManager;
+  protectionManagerCopy = protectionManager;
+  managerCopy = manager;
   v25 = objc_alloc_init(RTTimerManager);
-  v26 = [(RTWorkoutScheduler *)self initWithBatteryManager:v24 dataProtectionManager:v23 workoutRouteManager:v22 healthKitManager:v21 locationManager:v20 defaultsManager:v19 timerManager:v25 platform:v18 xpcActivityManager:v17];
+  v26 = [(RTWorkoutScheduler *)self initWithBatteryManager:managerCopy dataProtectionManager:protectionManagerCopy workoutRouteManager:routeManagerCopy healthKitManager:kitManagerCopy locationManager:locationManagerCopy defaultsManager:defaultsManagerCopy timerManager:v25 platform:platformCopy xpcActivityManager:activityManagerCopy];
 
   return v26;
 }
 
-- (RTWorkoutScheduler)initWithBatteryManager:(id)a3 dataProtectionManager:(id)a4 workoutRouteManager:(id)a5 healthKitManager:(id)a6 locationManager:(id)a7 defaultsManager:(id)a8 timerManager:(id)a9 platform:(id)a10 xpcActivityManager:(id)a11
+- (RTWorkoutScheduler)initWithBatteryManager:(id)manager dataProtectionManager:(id)protectionManager workoutRouteManager:(id)routeManager healthKitManager:(id)kitManager locationManager:(id)locationManager defaultsManager:(id)defaultsManager timerManager:(id)timerManager platform:(id)self0 xpcActivityManager:(id)self1
 {
-  v17 = a3;
-  obj = a4;
-  v18 = a4;
-  v35 = a5;
-  v19 = a5;
-  v36 = a6;
-  v20 = a6;
-  v37 = a7;
-  v21 = a7;
-  v38 = a8;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
-  v25 = a11;
-  v40 = v17;
-  if (!v17)
+  managerCopy = manager;
+  obj = protectionManager;
+  protectionManagerCopy = protectionManager;
+  routeManagerCopy = routeManager;
+  routeManagerCopy2 = routeManager;
+  kitManagerCopy = kitManager;
+  kitManagerCopy2 = kitManager;
+  locationManagerCopy = locationManager;
+  locationManagerCopy2 = locationManager;
+  defaultsManagerCopy = defaultsManager;
+  defaultsManagerCopy2 = defaultsManager;
+  timerManagerCopy = timerManager;
+  platformCopy = platform;
+  activityManagerCopy = activityManager;
+  v40 = managerCopy;
+  if (!managerCopy)
   {
-    v26 = v25;
+    v26 = activityManagerCopy;
     v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
@@ -131,9 +131,9 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  if (!v18)
+  if (!protectionManagerCopy)
   {
-    v26 = v25;
+    v26 = activityManagerCopy;
     v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
@@ -145,9 +145,9 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  if (!v19)
+  if (!routeManagerCopy2)
   {
-    v26 = v25;
+    v26 = activityManagerCopy;
     v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
@@ -159,9 +159,9 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  if (!v20)
+  if (!kitManagerCopy2)
   {
-    v26 = v25;
+    v26 = activityManagerCopy;
     v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
@@ -173,9 +173,9 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  if (!v21)
+  if (!locationManagerCopy2)
   {
-    v26 = v25;
+    v26 = activityManagerCopy;
     v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
@@ -187,9 +187,9 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  if (!v22)
+  if (!defaultsManagerCopy2)
   {
-    v26 = v25;
+    v26 = activityManagerCopy;
     v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
@@ -201,9 +201,9 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  if (!v23)
+  if (!timerManagerCopy)
   {
-    v26 = v25;
+    v26 = activityManagerCopy;
     v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
@@ -215,9 +215,9 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  if (!v24)
+  if (!platformCopy)
   {
-    v26 = v25;
+    v26 = activityManagerCopy;
     v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
@@ -229,8 +229,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v26 = v25;
-  if (!v25)
+  v26 = activityManagerCopy;
+  if (!activityManagerCopy)
   {
     v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -243,7 +243,7 @@ LABEL_31:
 LABEL_32:
 
     v30 = 0;
-    v29 = self;
+    selfCopy = self;
     goto LABEL_33;
   }
 
@@ -253,20 +253,20 @@ LABEL_32:
   p_isa = &v27->super.super.super.isa;
   if (v27)
   {
-    objc_storeStrong(&v27->_batteryManager, a3);
+    objc_storeStrong(&v27->_batteryManager, manager);
     objc_storeStrong(p_isa + 6, obj);
-    objc_storeStrong(p_isa + 7, v35);
-    objc_storeStrong(p_isa + 8, v36);
-    objc_storeStrong(p_isa + 9, v37);
-    objc_storeStrong(p_isa + 11, v38);
-    objc_storeStrong(p_isa + 10, a9);
-    objc_storeStrong(p_isa + 12, a10);
-    objc_storeStrong(p_isa + 5, a11);
+    objc_storeStrong(p_isa + 7, routeManagerCopy);
+    objc_storeStrong(p_isa + 8, kitManagerCopy);
+    objc_storeStrong(p_isa + 9, locationManagerCopy);
+    objc_storeStrong(p_isa + 11, defaultsManagerCopy);
+    objc_storeStrong(p_isa + 10, timerManager);
+    objc_storeStrong(p_isa + 12, platform);
+    objc_storeStrong(p_isa + 5, activityManager);
     [p_isa setup];
   }
 
-  v29 = p_isa;
-  v30 = v29;
+  selfCopy = p_isa;
+  v30 = selfCopy;
 LABEL_33:
 
   return v30;
@@ -282,8 +282,8 @@ LABEL_33:
   {
     if ([(RTWorkoutScheduler *)self _deviceEligible])
     {
-      v5 = [(RTWorkoutScheduler *)self defaultsManager];
-      [v5 setObject:MEMORY[0x277CBEC38] forKey:@"RTDefaultsWorkoutSchedulerMetricsIsDeviceEligibleKey"];
+      defaultsManager = [(RTWorkoutScheduler *)self defaultsManager];
+      [defaultsManager setObject:MEMORY[0x277CBEC38] forKey:@"RTDefaultsWorkoutSchedulerMetricsIsDeviceEligibleKey"];
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -299,26 +299,26 @@ LABEL_33:
       self->_updateRelevanceScoreTaskState = 0;
       self->_currentNWorkouts = 0;
       [(RTWorkoutScheduler *)self readTaskStates];
-      v7 = [(RTWorkoutScheduler *)self lastPruneDistanceMatrixDate];
+      lastPruneDistanceMatrixDate = [(RTWorkoutScheduler *)self lastPruneDistanceMatrixDate];
 
-      if (!v7)
+      if (!lastPruneDistanceMatrixDate)
       {
         v8 = [MEMORY[0x277CBEAA8] now];
         [(RTWorkoutScheduler *)self setLastPruneDistanceMatrixDate:v8];
       }
 
-      v9 = [(RTWorkoutScheduler *)self healthKitManager];
+      healthKitManager = [(RTWorkoutScheduler *)self healthKitManager];
       v10 = +[(RTNotification *)RTHealthKitManagerNewWorkoutForRaceRouteNotification];
-      [v9 addObserver:self selector:sel_onHealthKitNotification name:v10];
+      [healthKitManager addObserver:self selector:sel_onHealthKitNotification name:v10];
 
-      v11 = [[RTXPCActivityCriteria alloc] initWithInterval:1 gracePeriod:0 priority:0 requireNetworkConnectivity:0 requireInexpensiveNetworkConnectivity:1 networkTransferDirection:1 allowBattery:86400.0 powerNap:60.0];
-      v12 = [(RTWorkoutScheduler *)self xpcActivityManager];
+      defaultsManager2 = [[RTXPCActivityCriteria alloc] initWithInterval:1 gracePeriod:0 priority:0 requireNetworkConnectivity:0 requireInexpensiveNetworkConnectivity:1 networkTransferDirection:1 allowBattery:86400.0 powerNap:60.0];
+      xpcActivityManager = [(RTWorkoutScheduler *)self xpcActivityManager];
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __28__RTWorkoutScheduler__setup__block_invoke;
       v22[3] = &unk_2788D3620;
       v22[4] = self;
-      [v12 registerActivityWithIdentifier:@"com.apple.routined.workoutScheduler.daily" criteria:v11 handler:v22];
+      [xpcActivityManager registerActivityWithIdentifier:@"com.apple.routined.workoutScheduler.daily" criteria:defaultsManager2 handler:v22];
 
       [(RTWorkoutScheduler *)self _registerForCircularRegionEvents];
       [(RTWorkoutScheduler *)self _getCurrentLocationAndMonitorForRegion];
@@ -350,15 +350,15 @@ LABEL_33:
         _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "%@, %@, feature not supported on this device", buf, 0x16u);
       }
 
-      v11 = [(RTWorkoutScheduler *)self defaultsManager];
-      [(RTXPCActivityCriteria *)v11 setObject:MEMORY[0x277CBEC28] forKey:@"RTDefaultsWorkoutSchedulerMetricsIsDeviceEligibleKey"];
+      defaultsManager2 = [(RTWorkoutScheduler *)self defaultsManager];
+      [(RTXPCActivityCriteria *)defaultsManager2 setObject:MEMORY[0x277CBEC28] forKey:@"RTDefaultsWorkoutSchedulerMetricsIsDeviceEligibleKey"];
     }
   }
 
   else
   {
-    v11 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
-    if (os_log_type_enabled(&v11->super, OS_LOG_TYPE_ERROR))
+    defaultsManager2 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
+    if (os_log_type_enabled(&defaultsManager2->super, OS_LOG_TYPE_ERROR))
     {
       v13 = objc_opt_class();
       v14 = NSStringFromClass(v13);
@@ -367,7 +367,7 @@ LABEL_33:
       v24 = v14;
       v25 = 2112;
       v26 = v15;
-      _os_log_error_impl(&dword_2304B3000, &v11->super, OS_LOG_TYPE_ERROR, "%@, %@, feature not enabled", buf, 0x16u);
+      _os_log_error_impl(&dword_2304B3000, &defaultsManager2->super, OS_LOG_TYPE_ERROR, "%@, %@, feature not enabled", buf, 0x16u);
     }
   }
 }
@@ -396,20 +396,20 @@ uint64_t __28__RTWorkoutScheduler__setup__block_invoke_2(uint64_t a1)
 
 - (BOOL)_deviceEligible
 {
-  v3 = [(RTWorkoutScheduler *)self platform];
-  if ([v3 internalInstall])
+  platform = [(RTWorkoutScheduler *)self platform];
+  if ([platform internalInstall])
   {
-    v4 = [(RTWorkoutScheduler *)self defaultsManager];
-    v5 = [v4 objectForKey:@"RTDefaultsWorkoutSchedulerBypassPlatformCheckKey"];
+    defaultsManager = [(RTWorkoutScheduler *)self defaultsManager];
+    v5 = [defaultsManager objectForKey:@"RTDefaultsWorkoutSchedulerBypassPlatformCheckKey"];
 
     if (v5)
     {
-      v6 = [(RTWorkoutScheduler *)self defaultsManager];
-      v7 = v6;
+      defaultsManager2 = [(RTWorkoutScheduler *)self defaultsManager];
+      platform3 = defaultsManager2;
       v8 = @"RTDefaultsWorkoutSchedulerBypassPlatformCheckKey";
 LABEL_8:
-      v12 = [v6 objectForKey:v8];
-      v13 = [v12 BOOLValue];
+      platform4 = [defaultsManager2 objectForKey:v8];
+      bOOLValue = [platform4 BOOLValue];
       goto LABEL_12;
     }
   }
@@ -418,16 +418,16 @@ LABEL_8:
   {
   }
 
-  v9 = [(RTWorkoutScheduler *)self platform];
-  if ([v9 internalInstall])
+  platform2 = [(RTWorkoutScheduler *)self platform];
+  if ([platform2 internalInstall])
   {
-    v10 = [(RTWorkoutScheduler *)self defaultsManager];
-    v11 = [v10 objectForKey:@"RTDefaultsWorkoutSchedulerBypassDeviceEligibility"];
+    defaultsManager3 = [(RTWorkoutScheduler *)self defaultsManager];
+    v11 = [defaultsManager3 objectForKey:@"RTDefaultsWorkoutSchedulerBypassDeviceEligibility"];
 
     if (v11)
     {
-      v6 = [(RTWorkoutScheduler *)self defaultsManager];
-      v7 = v6;
+      defaultsManager2 = [(RTWorkoutScheduler *)self defaultsManager];
+      platform3 = defaultsManager2;
       v8 = @"RTDefaultsWorkoutSchedulerBypassDeviceEligibility";
       goto LABEL_8;
     }
@@ -437,17 +437,17 @@ LABEL_8:
   {
   }
 
-  v7 = [(RTWorkoutScheduler *)self platform];
-  if (![v7 iPhoneDevice])
+  platform3 = [(RTWorkoutScheduler *)self platform];
+  if (![platform3 iPhoneDevice])
   {
     v14 = 0;
     goto LABEL_14;
   }
 
-  v12 = [(RTWorkoutScheduler *)self platform];
-  v13 = [v12 isWatchPaired];
+  platform4 = [(RTWorkoutScheduler *)self platform];
+  bOOLValue = [platform4 isWatchPaired];
 LABEL_12:
-  v14 = v13;
+  v14 = bOOLValue;
 
 LABEL_14:
   return v14;
@@ -467,7 +467,7 @@ LABEL_14:
   v37 = __Block_byref_object_dispose__203;
   v38 = 0;
   v3 = dispatch_semaphore_create(0);
-  v4 = [(RTWorkoutScheduler *)self dataProtectionManager];
+  dataProtectionManager = [(RTWorkoutScheduler *)self dataProtectionManager];
   v26 = MEMORY[0x277D85DD0];
   v27 = 3221225472;
   v28 = __41__RTWorkoutScheduler__isPasscodeDisabled__block_invoke;
@@ -476,7 +476,7 @@ LABEL_14:
   v32 = &v33;
   v5 = v3;
   v30 = v5;
-  [v4 fetchLockStateDisabledWithHandler:&v26];
+  [dataProtectionManager fetchLockStateDisabledWithHandler:&v26];
 
   v6 = v5;
   v7 = [MEMORY[0x277CBEAA8] now];
@@ -488,11 +488,11 @@ LABEL_14:
     v11 = v10;
     v12 = objc_opt_new();
     v13 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_159];
-    v14 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v15 = [v14 filteredArrayUsingPredicate:v13];
-    v16 = [v15 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v15 = [callStackSymbols filteredArrayUsingPredicate:v13];
+    firstObject = [v15 firstObject];
 
-    [v12 submitToCoreAnalytics:v16 type:1 duration:v11];
+    [v12 submitToCoreAnalytics:firstObject type:1 duration:v11];
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
     {
@@ -546,8 +546,8 @@ void __41__RTWorkoutScheduler__isPasscodeDisabled__block_invoke(uint64_t a1, cha
 
 - (BOOL)_isVersionChangeDetected
 {
-  v2 = [(RTWorkoutScheduler *)self defaultsManager];
-  v3 = [v2 objectForKey:@"RTDefaultsWorkoutSchedulerVersionRaceRouteKey"];
+  defaultsManager = [(RTWorkoutScheduler *)self defaultsManager];
+  v3 = [defaultsManager objectForKey:@"RTDefaultsWorkoutSchedulerVersionRaceRouteKey"];
 
   if (v3)
   {
@@ -581,7 +581,7 @@ void __41__RTWorkoutScheduler__isPasscodeDisabled__block_invoke(uint64_t a1, cha
   v43 = __Block_byref_object_dispose__203;
   v44 = 0;
   v4 = dispatch_semaphore_create(0);
-  v5 = [(RTWorkoutScheduler *)self workoutRouteManager];
+  workoutRouteManager = [(RTWorkoutScheduler *)self workoutRouteManager];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __42__RTWorkoutScheduler__handleVersionChange__block_invoke;
@@ -590,7 +590,7 @@ void __41__RTWorkoutScheduler__isPasscodeDisabled__block_invoke(uint64_t a1, cha
   v6 = v4;
   v37 = v6;
   LOBYTE(v35) = 1;
-  [v5 processWorkoutsClearClusters:1 clearExistingDistanceMatrix:1 buildDistanceMatrix:0 syncClustersToHealhtKit:1 syncClustersToWatch:0 filteringDistanceThreshold:0x7FFFFFFFLL topNWorkouts:1.79769313e308 isSchedulerTriggered:v35 handler:v36];
+  [workoutRouteManager processWorkoutsClearClusters:1 clearExistingDistanceMatrix:1 buildDistanceMatrix:0 syncClustersToHealhtKit:1 syncClustersToWatch:0 filteringDistanceThreshold:0x7FFFFFFFLL topNWorkouts:1.79769313e308 isSchedulerTriggered:v35 handler:v36];
 
   v7 = v6;
   v8 = [MEMORY[0x277CBEAA8] now];
@@ -602,11 +602,11 @@ void __41__RTWorkoutScheduler__isPasscodeDisabled__block_invoke(uint64_t a1, cha
     v12 = v11;
     v13 = objc_opt_new();
     v14 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_159];
-    v15 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v16 = [v15 filteredArrayUsingPredicate:v14];
-    v17 = [v16 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v16 = [callStackSymbols filteredArrayUsingPredicate:v14];
+    firstObject = [v16 firstObject];
 
-    [v13 submitToCoreAnalytics:v17 type:1 duration:v12];
+    [v13 submitToCoreAnalytics:firstObject type:1 duration:v12];
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
     {
@@ -654,8 +654,8 @@ void __41__RTWorkoutScheduler__isPasscodeDisabled__block_invoke(uint64_t a1, cha
   else
   {
     [(RTWorkoutScheduler *)self _clearOutSchedulerState];
-    v25 = [(RTWorkoutScheduler *)self defaultsManager];
-    [v25 setObject:&unk_2845A0920 forKey:@"RTDefaultsWorkoutSchedulerVersionRaceRouteKey"];
+    defaultsManager = [(RTWorkoutScheduler *)self defaultsManager];
+    [defaultsManager setObject:&unk_2845A0920 forKey:@"RTDefaultsWorkoutSchedulerVersionRaceRouteKey"];
 
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -668,8 +668,8 @@ void __41__RTWorkoutScheduler__isPasscodeDisabled__block_invoke(uint64_t a1, cha
       v26 = objc_opt_class();
       v27 = NSStringFromClass(v26);
       v28 = NSStringFromSelector(a2);
-      v29 = [(RTWorkoutScheduler *)self defaultsManager];
-      v30 = [v29 objectForKey:@"RTDefaultsWorkoutSchedulerVersionRaceRouteKey"];
+      defaultsManager2 = [(RTWorkoutScheduler *)self defaultsManager];
+      v30 = [defaultsManager2 objectForKey:@"RTDefaultsWorkoutSchedulerVersionRaceRouteKey"];
       *buf = 138412802;
       *&buf[4] = v27;
       v46 = 2112;
@@ -694,24 +694,24 @@ void __42__RTWorkoutScheduler__handleVersionChange__block_invoke(uint64_t a1, vo
 - (void)_clearOutSchedulerState
 {
   [(RTWorkoutScheduler *)self setCurrentNWorkouts:0];
-  v3 = [MEMORY[0x277CBEAA8] distantPast];
-  [(RTWorkoutScheduler *)self setLastWorkoutComparisonDate:v3];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  [(RTWorkoutScheduler *)self setLastWorkoutComparisonDate:distantPast];
 
-  v4 = [MEMORY[0x277CBEAA8] distantPast];
-  [(RTWorkoutScheduler *)self setLastClusterAndSyncDate:v4];
+  distantPast2 = [MEMORY[0x277CBEAA8] distantPast];
+  [(RTWorkoutScheduler *)self setLastClusterAndSyncDate:distantPast2];
 
-  v5 = [MEMORY[0x277CBEAA8] distantPast];
-  [(RTWorkoutScheduler *)self setLastRelevanceScoreUpdateDate:v5];
+  distantPast3 = [MEMORY[0x277CBEAA8] distantPast];
+  [(RTWorkoutScheduler *)self setLastRelevanceScoreUpdateDate:distantPast3];
 
-  v6 = [MEMORY[0x277CBEAA8] distantPast];
-  [(RTWorkoutScheduler *)self setLastSingleWorkoutClusteringDate:v6];
+  distantPast4 = [MEMORY[0x277CBEAA8] distantPast];
+  [(RTWorkoutScheduler *)self setLastSingleWorkoutClusteringDate:distantPast4];
 
   [(RTWorkoutScheduler *)self setUpdateRelevanceScoreTaskState:0];
 
   [(RTWorkoutScheduler *)self setSingleWorkoutClusteringTaskState:0];
 }
 
-- (void)_startClusteringDeferralTimerWithLatency:(double)a3
+- (void)_startClusteringDeferralTimerWithLatency:(double)latency
 {
   v23 = *MEMORY[0x277D85DE8];
   clusteringDeferralTimer = self->_clusteringDeferralTimer;
@@ -723,17 +723,17 @@ void __42__RTWorkoutScheduler__handleVersionChange__block_invoke(uint64_t a1, vo
   }
 
   timerManager = self->_timerManager;
-  v9 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __63__RTWorkoutScheduler__startClusteringDeferralTimerWithLatency___block_invoke;
   v16[3] = &unk_2788C4EA0;
   v16[4] = self;
-  v10 = [(RTTimerManager *)timerManager timerWithIdentifier:@"RTWorkoutSchedulerClusteringTimer" queue:v9 handler:v16];
+  v10 = [(RTTimerManager *)timerManager timerWithIdentifier:@"RTWorkoutSchedulerClusteringTimer" queue:queue handler:v16];
   v11 = self->_clusteringDeferralTimer;
   self->_clusteringDeferralTimer = v10;
 
-  [(RTTimer *)self->_clusteringDeferralTimer fireWithInterval:a3];
+  [(RTTimer *)self->_clusteringDeferralTimer fireWithInterval:latency];
   [(RTTimer *)self->_clusteringDeferralTimer resume];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -748,7 +748,7 @@ void __42__RTWorkoutScheduler__handleVersionChange__block_invoke(uint64_t a1, vo
       v19 = 2112;
       v20 = v15;
       v21 = 2048;
-      v22 = a3;
+      latencyCopy = latency;
       _os_log_impl(&dword_2304B3000, v12, OS_LOG_TYPE_INFO, "%@, %@, interval, %.2f", buf, 0x20u);
     }
   }
@@ -761,9 +761,9 @@ void __42__RTWorkoutScheduler__handleVersionChange__block_invoke(uint64_t a1, vo
   self->_clusteringDeferralTimer = 0;
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
@@ -774,36 +774,36 @@ void __42__RTWorkoutScheduler__handleVersionChange__block_invoke(uint64_t a1, vo
     }
   }
 
-  v6 = [(RTWorkoutScheduler *)self dataProtectionManager];
-  [v6 removeObserver:self];
+  dataProtectionManager = [(RTWorkoutScheduler *)self dataProtectionManager];
+  [dataProtectionManager removeObserver:self];
 
-  v7 = [(RTWorkoutScheduler *)self displayLayoutMonitor];
-  [v7 invalidate];
+  displayLayoutMonitor = [(RTWorkoutScheduler *)self displayLayoutMonitor];
+  [displayLayoutMonitor invalidate];
 
-  v8 = [(RTWorkoutScheduler *)self locationManager];
+  locationManager = [(RTWorkoutScheduler *)self locationManager];
   v10 = 0;
-  [v8 stopMonitoringAllRegionsForClientIdentifier:@"RTWorkoutSchedulerRegionChange" error:&v10];
+  [locationManager stopMonitoringAllRegionsForClientIdentifier:@"RTWorkoutSchedulerRegionChange" error:&v10];
 
-  v9 = [(RTWorkoutScheduler *)self healthKitManager];
-  [v9 removeObserver:self];
+  healthKitManager = [(RTWorkoutScheduler *)self healthKitManager];
+  [healthKitManager removeObserver:self];
 
   [(RTWorkoutScheduler *)self saveTaskStates];
-  v4[2](v4, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)clearTaskStatesWithHandler:(id)a3
+- (void)clearTaskStatesWithHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__RTWorkoutScheduler_clearTaskStatesWithHandler___block_invoke;
   block[3] = &unk_2788C6300;
-  v9 = v5;
+  v9 = handlerCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __49__RTWorkoutScheduler_clearTaskStatesWithHandler___block_invoke(uint64_t a1)
@@ -924,31 +924,31 @@ void __49__RTWorkoutScheduler_clearTaskStatesWithHandler___block_invoke(uint64_t
       v5 = objc_opt_class();
       v6 = NSStringFromClass(v5);
       v7 = NSStringFromSelector(a2);
-      v8 = [(NSDate *)self->_lastClusterAndSyncDate stringFromDate];
-      v9 = [(NSDate *)self->_lastWorkoutComparisonDate stringFromDate];
+      stringFromDate = [(NSDate *)self->_lastClusterAndSyncDate stringFromDate];
+      stringFromDate2 = [(NSDate *)self->_lastWorkoutComparisonDate stringFromDate];
       currentNWorkouts = self->_currentNWorkouts;
       v10 = [RTWorkoutScheduler taskStateToString:self->_singleWorkoutClusteringTaskState];
-      v11 = [(NSDate *)self->_lastSingleWorkoutClusteringDate stringFromDate];
+      stringFromDate3 = [(NSDate *)self->_lastSingleWorkoutClusteringDate stringFromDate];
       v12 = [RTWorkoutScheduler taskStateToString:self->_updateRelevanceScoreTaskState];
-      v13 = [(NSDate *)self->_lastRelevanceScoreUpdateDate stringFromDate];
+      stringFromDate4 = [(NSDate *)self->_lastRelevanceScoreUpdateDate stringFromDate];
       *buf = 138414338;
       v16 = v6;
       v17 = 2112;
       v18 = v7;
       v19 = 2112;
-      v20 = v8;
+      v20 = stringFromDate;
       v21 = 2112;
-      v22 = v9;
+      v22 = stringFromDate2;
       v23 = 2048;
       v24 = currentNWorkouts;
       v25 = 2112;
       v26 = v10;
       v27 = 2112;
-      v28 = v11;
+      v28 = stringFromDate3;
       v29 = 2112;
       v30 = v12;
       v31 = 2112;
-      v32 = v13;
+      v32 = stringFromDate4;
       _os_log_impl(&dword_2304B3000, v4, OS_LOG_TYPE_INFO, "%@, %@, lastClusterAndSyncDate, %@, lastWorkoutComparisonDate, %@, processed workouts, %lu, singleWorkoutClustering, %@, date, %@, relevanceScoreUpdate, %@, date, %@", buf, 0x5Cu);
     }
   }
@@ -956,54 +956,54 @@ void __49__RTWorkoutScheduler_clearTaskStatesWithHandler___block_invoke(uint64_t
 
 - (BOOL)_isSchedulingWorkDone
 {
-  v3 = [(RTWorkoutScheduler *)self lastWorkoutComparisonDate];
-  if (v3)
+  lastWorkoutComparisonDate = [(RTWorkoutScheduler *)self lastWorkoutComparisonDate];
+  if (lastWorkoutComparisonDate)
   {
-    v4 = v3;
-    v5 = [(RTWorkoutScheduler *)self lastClusterAndSyncDate];
+    v4 = lastWorkoutComparisonDate;
+    lastClusterAndSyncDate = [(RTWorkoutScheduler *)self lastClusterAndSyncDate];
 
-    if (!v5 || -[RTWorkoutScheduler _isEligibleForPruneDistanceMatrix](self, "_isEligibleForPruneDistanceMatrix") || -[RTWorkoutScheduler totalWorkouts](self, "totalWorkouts") && ((v6 = -[RTWorkoutScheduler currentNWorkouts](self, "currentNWorkouts"), v6 != -[RTWorkoutScheduler totalWorkouts](self, "totalWorkouts")) || (-[RTWorkoutScheduler lastClusterAndSyncDate](self, "lastClusterAndSyncDate"), v7 = objc_claimAutoreleasedReturnValue(), -[RTWorkoutScheduler lastWorkoutComparisonDate](self, "lastWorkoutComparisonDate"), v8 = objc_claimAutoreleasedReturnValue(), [v7 timeIntervalSinceDate:v8], v10 = v9, v8, v7, v10 <= 0.0)))
+    if (!lastClusterAndSyncDate || -[RTWorkoutScheduler _isEligibleForPruneDistanceMatrix](self, "_isEligibleForPruneDistanceMatrix") || -[RTWorkoutScheduler totalWorkouts](self, "totalWorkouts") && ((v6 = -[RTWorkoutScheduler currentNWorkouts](self, "currentNWorkouts"), v6 != -[RTWorkoutScheduler totalWorkouts](self, "totalWorkouts")) || (-[RTWorkoutScheduler lastClusterAndSyncDate](self, "lastClusterAndSyncDate"), v7 = objc_claimAutoreleasedReturnValue(), -[RTWorkoutScheduler lastWorkoutComparisonDate](self, "lastWorkoutComparisonDate"), v8 = objc_claimAutoreleasedReturnValue(), [v7 timeIntervalSinceDate:v8], v10 = v9, v8, v7, v10 <= 0.0)))
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(lastWorkoutComparisonDate) = 0;
     }
 
     else
     {
-      v11 = [(RTWorkoutScheduler *)self defaultsManager];
+      defaultsManager = [(RTWorkoutScheduler *)self defaultsManager];
       v12 = [MEMORY[0x277CBEAA8] now];
-      [v11 setObject:v12 forKey:@"RTDefaultsWorkoutSchedulerWorldBuildFinishTimeKey"];
+      [defaultsManager setObject:v12 forKey:@"RTDefaultsWorkoutSchedulerWorldBuildFinishTimeKey"];
 
-      LOBYTE(v3) = 1;
+      LOBYTE(lastWorkoutComparisonDate) = 1;
     }
   }
 
-  return v3;
+  return lastWorkoutComparisonDate;
 }
 
 - (BOOL)_isEligibleForInitialClusterAndSync
 {
-  v3 = [(RTWorkoutScheduler *)self currentNWorkouts];
-  if (!v3)
+  currentNWorkouts = [(RTWorkoutScheduler *)self currentNWorkouts];
+  if (!currentNWorkouts)
   {
-    v4 = [(RTWorkoutScheduler *)self defaultsManager];
+    defaultsManager = [(RTWorkoutScheduler *)self defaultsManager];
     v5 = [MEMORY[0x277CBEAA8] now];
-    [v4 setObject:v5 forKey:@"RTDefaultsWorkoutSchedulerWorldBuildStartTimeKey"];
+    [defaultsManager setObject:v5 forKey:@"RTDefaultsWorkoutSchedulerWorldBuildStartTimeKey"];
 
-    v6 = [(RTWorkoutScheduler *)self defaultsManager];
-    v7 = [MEMORY[0x277CBEAA8] distantFuture];
-    [v6 setObject:v7 forKey:@"RTDefaultsWorkoutSchedulerWorldBuildFinishTimeKey"];
+    defaultsManager2 = [(RTWorkoutScheduler *)self defaultsManager];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+    [defaultsManager2 setObject:distantFuture forKey:@"RTDefaultsWorkoutSchedulerWorldBuildFinishTimeKey"];
   }
 
-  return v3 == 0;
+  return currentNWorkouts == 0;
 }
 
 - (BOOL)_didClusterAndSyncOccurInLastInterval
 {
-  v3 = [(RTWorkoutScheduler *)self platform];
-  if ([v3 internalInstall])
+  platform = [(RTWorkoutScheduler *)self platform];
+  if ([platform internalInstall])
   {
-    v4 = [(RTWorkoutScheduler *)self defaultsManager];
-    v5 = [v4 objectForKey:@"RTWorkoutSchedulerClusterAndSyncIntervalOverrideKey"];
+    defaultsManager = [(RTWorkoutScheduler *)self defaultsManager];
+    v5 = [defaultsManager objectForKey:@"RTWorkoutSchedulerClusterAndSyncIntervalOverrideKey"];
 
     if (!v5)
     {
@@ -1011,8 +1011,8 @@ void __49__RTWorkoutScheduler_clearTaskStatesWithHandler___block_invoke(uint64_t
       goto LABEL_6;
     }
 
-    v3 = [(RTWorkoutScheduler *)self defaultsManager];
-    v6 = [v3 objectForKey:@"RTWorkoutSchedulerClusterAndSyncIntervalOverrideKey"];
+    platform = [(RTWorkoutScheduler *)self defaultsManager];
+    v6 = [platform objectForKey:@"RTWorkoutSchedulerClusterAndSyncIntervalOverrideKey"];
     [v6 doubleValue];
     v8 = v7;
   }
@@ -1023,9 +1023,9 @@ void __49__RTWorkoutScheduler_clearTaskStatesWithHandler___block_invoke(uint64_t
   }
 
 LABEL_6:
-  v9 = [MEMORY[0x277CBEAA8] date];
-  v10 = [(RTWorkoutScheduler *)self lastClusterAndSyncDate];
-  [v9 timeIntervalSinceDate:v10];
+  date = [MEMORY[0x277CBEAA8] date];
+  lastClusterAndSyncDate = [(RTWorkoutScheduler *)self lastClusterAndSyncDate];
+  [date timeIntervalSinceDate:lastClusterAndSyncDate];
   v12 = v11 < v8;
 
   return v12;
@@ -1033,8 +1033,8 @@ LABEL_6:
 
 - (BOOL)_isEligibleForClusterAndSync
 {
-  v3 = [(RTWorkoutScheduler *)self lastClusterAndSyncDate];
-  if (v3)
+  lastClusterAndSyncDate = [(RTWorkoutScheduler *)self lastClusterAndSyncDate];
+  if (lastClusterAndSyncDate)
   {
     if ([(RTWorkoutScheduler *)self _didClusterAndSyncOccurInLastInterval])
     {
@@ -1043,9 +1043,9 @@ LABEL_6:
 
     else
     {
-      v5 = [(RTWorkoutScheduler *)self lastWorkoutComparisonDate];
-      v6 = [(RTWorkoutScheduler *)self lastClusterAndSyncDate];
-      [v5 timeIntervalSinceDate:v6];
+      lastWorkoutComparisonDate = [(RTWorkoutScheduler *)self lastWorkoutComparisonDate];
+      lastClusterAndSyncDate2 = [(RTWorkoutScheduler *)self lastClusterAndSyncDate];
+      [lastWorkoutComparisonDate timeIntervalSinceDate:lastClusterAndSyncDate2];
       v4 = v7 > 0.0;
     }
   }
@@ -1060,44 +1060,44 @@ LABEL_6:
 
 - (BOOL)_isEligibibleForRelevanceScoreUpdateRetry
 {
-  v3 = [(RTWorkoutScheduler *)self lastRelevanceScoreUpdateDate];
-  if (v3)
+  lastRelevanceScoreUpdateDate = [(RTWorkoutScheduler *)self lastRelevanceScoreUpdateDate];
+  if (lastRelevanceScoreUpdateDate)
   {
-    v4 = v3;
-    v5 = [(RTWorkoutScheduler *)self lastRelevanceScoreUpdateDate];
-    v6 = [MEMORY[0x277CBEAA8] distantPast];
-    v7 = [v5 isEqualToDate:v6];
-    LOBYTE(v3) = (v7 & 1) == 0 && ([MEMORY[0x277CBEAA8] date], v8 = ;
+    v4 = lastRelevanceScoreUpdateDate;
+    lastRelevanceScoreUpdateDate2 = [(RTWorkoutScheduler *)self lastRelevanceScoreUpdateDate];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
+    v7 = [lastRelevanceScoreUpdateDate2 isEqualToDate:distantPast];
+    LOBYTE(lastRelevanceScoreUpdateDate) = (v7 & 1) == 0 && ([MEMORY[0x277CBEAA8] date], v8 = ;
   }
 
-  return v3;
+  return lastRelevanceScoreUpdateDate;
 }
 
 - (BOOL)_isEligibleForPruneDistanceMatrix
 {
   v3 = [MEMORY[0x277CBEAA8] now];
-  v4 = [(RTWorkoutScheduler *)self lastPruneDistanceMatrixDate];
-  [v3 timeIntervalSinceDate:v4];
+  lastPruneDistanceMatrixDate = [(RTWorkoutScheduler *)self lastPruneDistanceMatrixDate];
+  [v3 timeIntervalSinceDate:lastPruneDistanceMatrixDate];
   v6 = v5 > 604800.0;
 
   return v6;
 }
 
-- (void)onDataProtectionNotification:(id)a3
+- (void)onDataProtectionNotification:(id)notification
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __51__RTWorkoutScheduler_onDataProtectionNotification___block_invoke;
     v10[3] = &unk_2788C4A70;
     v10[4] = self;
-    v11 = v4;
-    dispatch_async(v5, v10);
+    v11 = notificationCopy;
+    dispatch_async(queue, v10);
   }
 
   else
@@ -1105,18 +1105,18 @@ LABEL_6:
     v6 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v8 = [v4 name];
+      name = [notificationCopy name];
       *buf = 138412290;
-      v13 = v8;
+      v13 = name;
       _os_log_error_impl(&dword_2304B3000, v6, OS_LOG_TYPE_ERROR, "unknown notification name, %@", buf, 0xCu);
     }
 
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v9 = [v4 name];
+      name2 = [notificationCopy name];
       *buf = 138412802;
-      v13 = v9;
+      v13 = name2;
       v14 = 2080;
       v15 = "[RTWorkoutScheduler onDataProtectionNotification:]";
       v16 = 1024;
@@ -1126,10 +1126,10 @@ LABEL_6:
   }
 }
 
-- (void)_onDataProtectionNotification:(id)a3
+- (void)_onDataProtectionNotification:(id)notification
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1148,7 +1148,7 @@ LABEL_6:
     }
   }
 
-  -[RTWorkoutScheduler setEncryptedDataAvailability:](self, "setEncryptedDataAvailability:", [v4 availability]);
+  -[RTWorkoutScheduler setEncryptedDataAvailability:](self, "setEncryptedDataAvailability:", [notificationCopy availability]);
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
@@ -1174,11 +1174,11 @@ LABEL_6:
   [(RTWorkoutScheduler *)self logTaskStates];
   if (self->_clusteringDeferralTimer)
   {
-    v4 = [(RTWorkoutScheduler *)self defaultsManager];
-    v5 = [v4 objectForKey:@"RTDefaultsWorkoutSchedulerBypassBackoffTimerKey"];
-    v6 = [v5 BOOLValue];
+    defaultsManager = [(RTWorkoutScheduler *)self defaultsManager];
+    v5 = [defaultsManager objectForKey:@"RTDefaultsWorkoutSchedulerBypassBackoffTimerKey"];
+    bOOLValue = [v5 BOOLValue];
 
-    if ((v6 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -1198,8 +1198,8 @@ LABEL_6:
         }
       }
 
-      v12 = [(RTWorkoutScheduler *)self metrics];
-      v13 = v12;
+      metrics = [(RTWorkoutScheduler *)self metrics];
+      v13 = metrics;
       v14 = @"RTDefaultsWorkoutSchedulerMetricsBackoffTimerDeferralDailyCount";
       goto LABEL_22;
     }
@@ -1229,22 +1229,22 @@ LABEL_6:
       }
     }
 
-    v12 = [(RTWorkoutScheduler *)self metrics];
-    v13 = v12;
+    metrics = [(RTWorkoutScheduler *)self metrics];
+    v13 = metrics;
     v14 = @"RTDefaultsWorkoutSchedulerMetricsMemoryFootprintDeferralDailyCount";
 LABEL_22:
-    [v12 incrementMetricDefaultForKey:v14];
+    [metrics incrementMetricDefaultForKey:v14];
     goto LABEL_23;
   }
 
-  v15 = [(RTWorkoutScheduler *)self healthKitManager];
-  [v15 createNewWorkoutClusterStore];
+  healthKitManager = [(RTWorkoutScheduler *)self healthKitManager];
+  [healthKitManager createNewWorkoutClusterStore];
 
-  v16 = [(RTWorkoutScheduler *)self healthKitManager];
-  v17 = [(RTWorkoutScheduler *)self healthKitManager];
-  v18 = [v17 _getWorkoutDefaultStartDateForRaceRoute];
+  healthKitManager2 = [(RTWorkoutScheduler *)self healthKitManager];
+  healthKitManager3 = [(RTWorkoutScheduler *)self healthKitManager];
+  _getWorkoutDefaultStartDateForRaceRoute = [healthKitManager3 _getWorkoutDefaultStartDateForRaceRoute];
   v46 = 0;
-  v19 = [v16 getWorkoutsCountWithStartDate:v18 nearLocation:0 distanceThreshold:1 onlySourcedFromFitnessApp:0 includePastureModeRoutes:&v46 error:1.79769313e308];
+  v19 = [healthKitManager2 getWorkoutsCountWithStartDate:_getWorkoutDefaultStartDateForRaceRoute nearLocation:0 distanceThreshold:1 onlySourcedFromFitnessApp:0 includePastureModeRoutes:&v46 error:1.79769313e308];
   v13 = v46;
   [(RTWorkoutScheduler *)self setTotalWorkouts:v19];
 
@@ -1256,16 +1256,16 @@ LABEL_22:
       v21 = objc_opt_class();
       v22 = NSStringFromClass(v21);
       v23 = NSStringFromSelector(a2);
-      v24 = [(RTWorkoutScheduler *)self currentNWorkouts];
-      v25 = [(RTWorkoutScheduler *)self totalWorkouts];
+      currentNWorkouts = [(RTWorkoutScheduler *)self currentNWorkouts];
+      totalWorkouts = [(RTWorkoutScheduler *)self totalWorkouts];
       *buf = 138413314;
       v48 = v22;
       v49 = 2112;
       v50 = v23;
       v51 = 2048;
-      v52 = v24;
+      v52 = currentNWorkouts;
       v53 = 2048;
-      v54 = v25;
+      v54 = totalWorkouts;
       v55 = 2112;
       v56 = v13;
       _os_log_impl(&dword_2304B3000, v20, OS_LOG_TYPE_INFO, "%@, %@, remaining work, current, %lu, total, %lu, error, %@", buf, 0x34u);
@@ -1284,8 +1284,8 @@ LABEL_28:
       goto LABEL_23;
     }
 
-    v30 = [(RTWorkoutScheduler *)self currentNWorkouts];
-    if (v30 > [(RTWorkoutScheduler *)self totalWorkouts])
+    currentNWorkouts2 = [(RTWorkoutScheduler *)self currentNWorkouts];
+    if (currentNWorkouts2 > [(RTWorkoutScheduler *)self totalWorkouts])
     {
       v31 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -1293,16 +1293,16 @@ LABEL_28:
         v40 = objc_opt_class();
         v41 = NSStringFromClass(v40);
         v42 = NSStringFromSelector(a2);
-        v43 = [(RTWorkoutScheduler *)self currentNWorkouts];
-        v44 = [(RTWorkoutScheduler *)self totalWorkouts];
+        currentNWorkouts3 = [(RTWorkoutScheduler *)self currentNWorkouts];
+        totalWorkouts2 = [(RTWorkoutScheduler *)self totalWorkouts];
         *buf = 138413314;
         v48 = v41;
         v49 = 2112;
         v50 = v42;
         v51 = 2048;
-        v52 = v43;
+        v52 = currentNWorkouts3;
         v53 = 2048;
-        v54 = v44;
+        v54 = totalWorkouts2;
         v55 = 2112;
         v56 = 0;
         _os_log_error_impl(&dword_2304B3000, v31, OS_LOG_TYPE_ERROR, "%@, %@, Failed Scheduler State; currentNWorkouts(topN) shouldn't be more than totalWorkouts, current %lu, total, %lu, error, %@", buf, 0x34u);
@@ -1345,9 +1345,9 @@ LABEL_28:
       if ([(RTWorkoutScheduler *)self _isEligibleForClusterAndSync])
       {
         [(RTWorkoutScheduler *)self _scheduleClusteringTask:3];
-        v36 = [MEMORY[0x277CBEAA8] date];
-        v37 = [(RTWorkoutScheduler *)self lastRelevanceScoreUpdateDate];
-        [v36 timeIntervalSinceDate:v37];
+        date = [MEMORY[0x277CBEAA8] date];
+        lastRelevanceScoreUpdateDate = [(RTWorkoutScheduler *)self lastRelevanceScoreUpdateDate];
+        [date timeIntervalSinceDate:lastRelevanceScoreUpdateDate];
         v39 = v38;
 
         if (v39 <= 86400.0 || [(RTWorkoutScheduler *)self updateRelevanceScoreTaskState]== 1)
@@ -1403,13 +1403,13 @@ LABEL_23:
 
 - (void)onHealthKitNotification
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__RTWorkoutScheduler_onHealthKitNotification__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_onHealthKitNotification
@@ -1442,28 +1442,28 @@ LABEL_23:
 - (void)_scheduleSingleWorkoutClustering
 {
   [(RTWorkoutScheduler *)self setSingleWorkoutClusteringTaskState:3];
-  v4 = [(RTWorkoutScheduler *)self metrics];
-  [v4 startCollectMetricsTaskType:6 totalNAtStart:{-[RTWorkoutScheduler totalWorkouts](self, "totalWorkouts")}];
+  metrics = [(RTWorkoutScheduler *)self metrics];
+  [metrics startCollectMetricsTaskType:6 totalNAtStart:{-[RTWorkoutScheduler totalWorkouts](self, "totalWorkouts")}];
 
-  v5 = [(RTWorkoutScheduler *)self healthKitManager];
+  healthKitManager = [(RTWorkoutScheduler *)self healthKitManager];
   v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-86400.0];
-  v7 = [(RTWorkoutScheduler *)self healthKitManager];
-  v8 = [v7 _getRTWorkoutDefaultTypesForRaceRoute];
+  healthKitManager2 = [(RTWorkoutScheduler *)self healthKitManager];
+  _getRTWorkoutDefaultTypesForRaceRoute = [healthKitManager2 _getRTWorkoutDefaultTypesForRaceRoute];
   v14 = 0;
-  v9 = [v5 getLatestWorkoutWithStartDate:v6 nearLocation:0 distanceThreshold:1 onlySourcedFromFitnessApp:0 includePastureModeRoutes:v8 workoutTypes:&v14 error:1.79769313e308];
+  v9 = [healthKitManager getLatestWorkoutWithStartDate:v6 nearLocation:0 distanceThreshold:1 onlySourcedFromFitnessApp:0 includePastureModeRoutes:_getRTWorkoutDefaultTypesForRaceRoute workoutTypes:&v14 error:1.79769313e308];
   v10 = v14;
 
   if (v9)
   {
-    v11 = [(RTWorkoutScheduler *)self workoutRouteManager];
-    v12 = [v9 UUID];
+    workoutRouteManager = [(RTWorkoutScheduler *)self workoutRouteManager];
+    uUID = [v9 UUID];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __54__RTWorkoutScheduler__scheduleSingleWorkoutClustering__block_invoke;
     v13[3] = &unk_2788C4D10;
     v13[4] = self;
     v13[5] = a2;
-    [v11 processNewlyAddedWorkout:v12 handler:v13];
+    [workoutRouteManager processNewlyAddedWorkout:uUID handler:v13];
   }
 }
 
@@ -1518,10 +1518,10 @@ void __54__RTWorkoutScheduler__scheduleSingleWorkoutClustering__block_invoke_2(u
   }
 }
 
-- (void)_scheduleClusteringTask:(unint64_t)a3
+- (void)_scheduleClusteringTask:(unint64_t)task
 {
   v6 = 1;
-  switch(a3)
+  switch(task)
   {
     case 1uLL:
       v7 = 30;
@@ -1529,23 +1529,23 @@ void __54__RTWorkoutScheduler__scheduleSingleWorkoutClustering__block_invoke_2(u
     case 3uLL:
       v8 = 0;
       v9 = 0;
-      v10 = 1;
+      taskCopy = 1;
 LABEL_8:
-      v11 = [(RTWorkoutScheduler *)self metrics];
-      [v11 startCollectMetricsTaskType:v10 totalNAtStart:{-[RTWorkoutScheduler totalWorkouts](self, "totalWorkouts")}];
+      metrics = [(RTWorkoutScheduler *)self metrics];
+      [metrics startCollectMetricsTaskType:taskCopy totalNAtStart:{-[RTWorkoutScheduler totalWorkouts](self, "totalWorkouts")}];
 
-      v12 = [(RTWorkoutScheduler *)self workoutRouteManager];
+      workoutRouteManager = [(RTWorkoutScheduler *)self workoutRouteManager];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __46__RTWorkoutScheduler__scheduleClusteringTask___block_invoke;
       v15[3] = &unk_2788D3670;
       v15[4] = self;
       v15[5] = a2;
-      v15[6] = a3;
+      v15[6] = task;
       v15[7] = v9;
-      v15[8] = v10;
+      v15[8] = taskCopy;
       LOBYTE(v14) = 1;
-      [v12 processWorkoutsClearClusters:0 clearExistingDistanceMatrix:0 buildDistanceMatrix:v8 syncClustersToHealhtKit:v6 syncClustersToWatch:v6 filteringDistanceThreshold:v9 topNWorkouts:1.79769313e308 isSchedulerTriggered:v14 handler:v15];
+      [workoutRouteManager processWorkoutsClearClusters:0 clearExistingDistanceMatrix:0 buildDistanceMatrix:v8 syncClustersToHealhtKit:v6 syncClustersToWatch:v6 filteringDistanceThreshold:v9 topNWorkouts:1.79769313e308 isSchedulerTriggered:v14 handler:v15];
 
       return;
     case 2uLL:
@@ -1554,7 +1554,7 @@ LABEL_8:
 LABEL_7:
       v9 = [(RTWorkoutScheduler *)self topNWorkoutsWithIncrement:v7];
       v8 = 1;
-      v10 = a3;
+      taskCopy = task;
       goto LABEL_8;
   }
 
@@ -1708,11 +1708,11 @@ LABEL_12:
     v11 = v10;
     v12 = objc_opt_new();
     v13 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_159];
-    v14 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v15 = [v14 filteredArrayUsingPredicate:v13];
-    v16 = [v15 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v15 = [callStackSymbols filteredArrayUsingPredicate:v13];
+    firstObject = [v15 firstObject];
 
-    [v12 submitToCoreAnalytics:v16 type:1 duration:v11];
+    [v12 submitToCoreAnalytics:firstObject type:1 duration:v11];
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
     {
@@ -1759,10 +1759,10 @@ void __45__RTWorkoutScheduler__chargerConnectionState__block_invoke(uint64_t a1,
 - (void)_scheduleWorkoutComparisonIfCharging
 {
   v81[1] = *MEMORY[0x277D85DE8];
-  v3 = [(RTWorkoutScheduler *)self metrics];
-  [v3 startCollectMetricsTaskType:3 totalNAtStart:{-[RTWorkoutScheduler totalWorkouts](self, "totalWorkouts")}];
+  metrics = [(RTWorkoutScheduler *)self metrics];
+  [metrics startCollectMetricsTaskType:3 totalNAtStart:{-[RTWorkoutScheduler totalWorkouts](self, "totalWorkouts")}];
 
-  v66 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v63 = *MEMORY[0x277D01448];
   v64 = *MEMORY[0x277CCA450];
   v67 = 1;
@@ -1793,8 +1793,8 @@ void __45__RTWorkoutScheduler__chargerConnectionState__block_invoke(uint64_t a1,
         goto LABEL_38;
       }
 
-      v61 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
-      if (os_log_type_enabled(v61, OS_LOG_TYPE_INFO))
+      metrics2 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
+      if (os_log_type_enabled(metrics2, OS_LOG_TYPE_INFO))
       {
         v54 = objc_opt_class();
         v55 = NSStringFromClass(v54);
@@ -1806,15 +1806,15 @@ void __45__RTWorkoutScheduler__chargerConnectionState__block_invoke(uint64_t a1,
         *&buf[14] = v56;
         *&buf[22] = 2112;
         v79 = v57;
-        _os_log_impl(&dword_2304B3000, v61, OS_LOG_TYPE_INFO, "%@, %@, no retry, reason, lock state, %@", buf, 0x20u);
+        _os_log_impl(&dword_2304B3000, metrics2, OS_LOG_TYPE_INFO, "%@, %@, no retry, reason, lock state, %@", buf, 0x20u);
       }
 
       goto LABEL_37;
     }
 
-    v8 = [(RTWorkoutScheduler *)self _chargerConnectionState];
+    _chargerConnectionState = [(RTWorkoutScheduler *)self _chargerConnectionState];
     v9 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
-    if (v8 != 1)
+    if (_chargerConnectionState != 1)
     {
       break;
     }
@@ -1827,16 +1827,16 @@ void __45__RTWorkoutScheduler__chargerConnectionState__block_invoke(uint64_t a1,
         v11 = objc_opt_class();
         v12 = NSStringFromClass(v11);
         v13 = NSStringFromSelector(a2);
-        v14 = [(RTWorkoutScheduler *)self currentNWorkouts];
-        v15 = [(RTWorkoutScheduler *)self totalWorkouts];
+        currentNWorkouts = [(RTWorkoutScheduler *)self currentNWorkouts];
+        totalWorkouts = [(RTWorkoutScheduler *)self totalWorkouts];
         *buf = 138413058;
         *&buf[4] = v12;
         *&buf[12] = 2112;
         *&buf[14] = v13;
         *&buf[22] = 2048;
-        v79 = v14;
+        v79 = currentNWorkouts;
         LOWORD(v80) = 2048;
-        *(&v80 + 2) = v15;
+        *(&v80 + 2) = totalWorkouts;
         _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "%@, %@, Battery State Connected and processing additional workout, current, %lu, total, %lu", buf, 0x2Au);
       }
     }
@@ -1849,7 +1849,7 @@ void __45__RTWorkoutScheduler__chargerConnectionState__block_invoke(uint64_t a1,
     *&v80 = __Block_byref_object_dispose__203;
     *(&v80 + 1) = 0;
     v17 = dispatch_semaphore_create(0);
-    v18 = [(RTWorkoutScheduler *)self workoutRouteManager];
+    workoutRouteManager = [(RTWorkoutScheduler *)self workoutRouteManager];
     v68[0] = MEMORY[0x277D85DD0];
     v68[1] = 3221225472;
     v68[2] = __58__RTWorkoutScheduler__scheduleWorkoutComparisonIfCharging__block_invoke;
@@ -1858,7 +1858,7 @@ void __45__RTWorkoutScheduler__chargerConnectionState__block_invoke(uint64_t a1,
     v19 = v17;
     v69 = v19;
     LOBYTE(v62) = 1;
-    [v18 processWorkoutsClearClusters:0 clearExistingDistanceMatrix:0 buildDistanceMatrix:1 syncClustersToHealhtKit:0 syncClustersToWatch:0 filteringDistanceThreshold:v16 topNWorkouts:1.79769313e308 isSchedulerTriggered:v62 handler:v68];
+    [workoutRouteManager processWorkoutsClearClusters:0 clearExistingDistanceMatrix:0 buildDistanceMatrix:1 syncClustersToHealhtKit:0 syncClustersToWatch:0 filteringDistanceThreshold:v16 topNWorkouts:1.79769313e308 isSchedulerTriggered:v62 handler:v68];
 
     v20 = v19;
     v21 = [MEMORY[0x277CBEAA8] now];
@@ -1870,11 +1870,11 @@ void __45__RTWorkoutScheduler__chargerConnectionState__block_invoke(uint64_t a1,
       v25 = v24;
       v26 = objc_opt_new();
       v27 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_159];
-      v28 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v29 = [v28 filteredArrayUsingPredicate:v27];
-      v30 = [v29 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v29 = [callStackSymbols filteredArrayUsingPredicate:v27];
+      firstObject = [v29 firstObject];
 
-      [v26 submitToCoreAnalytics:v30 type:1 duration:v25];
+      [v26 submitToCoreAnalytics:firstObject type:1 duration:v25];
       v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v31, OS_LOG_TYPE_FAULT))
       {
@@ -1939,16 +1939,16 @@ LABEL_25:
           v44 = objc_opt_class();
           v45 = NSStringFromClass(v44);
           v46 = NSStringFromSelector(a2);
-          v47 = [(RTWorkoutScheduler *)self currentNWorkouts];
-          v48 = [(RTWorkoutScheduler *)self totalWorkouts];
+          currentNWorkouts2 = [(RTWorkoutScheduler *)self currentNWorkouts];
+          totalWorkouts2 = [(RTWorkoutScheduler *)self totalWorkouts];
           *v71 = 138413058;
           *&v71[4] = v45;
           v72 = 2112;
           v73 = v46;
           v74 = 2048;
-          v75 = v47;
+          v75 = currentNWorkouts2;
           v76 = 2048;
-          v77 = v48;
+          v77 = totalWorkouts2;
           _os_log_impl(&dword_2304B3000, v38, OS_LOG_TYPE_INFO, "%@, %@, completed incremental workout comparison, current %lu, total, %lu", v71, 0x2Au);
         }
 
@@ -1956,7 +1956,7 @@ LABEL_25:
       }
     }
 
-    v49 = [(RTWorkoutScheduler *)self _isEligibleForWorkoutComparison];
+    _isEligibleForWorkoutComparison = [(RTWorkoutScheduler *)self _isEligibleForWorkoutComparison];
     if (v37)
     {
       v50 = 0;
@@ -1964,19 +1964,19 @@ LABEL_25:
 
     else
     {
-      v50 = v49;
+      v50 = _isEligibleForWorkoutComparison;
     }
 
-    v51 = [MEMORY[0x277CBEAA8] date];
-    [v51 timeIntervalSinceDate:v66];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [date2 timeIntervalSinceDate:date];
     v53 = v52;
 
     _Block_object_dispose(buf, 8);
     ++v67;
     if (v53 > 600.0 || !v50)
     {
-      v61 = [(RTWorkoutScheduler *)self metrics];
-      [v61 stopCollectMetricsTaskType:3];
+      metrics2 = [(RTWorkoutScheduler *)self metrics];
+      [metrics2 stopCollectMetricsTaskType:3];
       goto LABEL_37;
     }
   }
@@ -1986,8 +1986,8 @@ LABEL_25:
     goto LABEL_38;
   }
 
-  v61 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
-  if (os_log_type_enabled(v61, OS_LOG_TYPE_INFO))
+  metrics2 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
+  if (os_log_type_enabled(metrics2, OS_LOG_TYPE_INFO))
   {
     v58 = objc_opt_class();
     v59 = NSStringFromClass(v58);
@@ -1996,7 +1996,7 @@ LABEL_25:
     *&buf[4] = v59;
     *&buf[12] = 2112;
     *&buf[14] = v60;
-    _os_log_impl(&dword_2304B3000, v61, OS_LOG_TYPE_INFO, "%@, %@, no retry, reason, battery sate, disconnected", buf, 0x16u);
+    _os_log_impl(&dword_2304B3000, metrics2, OS_LOG_TYPE_INFO, "%@, %@, no retry, reason, battery sate, disconnected", buf, 0x16u);
   }
 
 LABEL_37:
@@ -2013,18 +2013,18 @@ void __58__RTWorkoutScheduler__scheduleWorkoutComparisonIfCharging__block_invoke
 
 - (void)_scheduleUpdateRelevanceScore
 {
-  v4 = [(RTWorkoutScheduler *)self metrics];
-  [v4 startCollectMetricsTaskType:5 totalNAtStart:{-[RTWorkoutScheduler totalWorkouts](self, "totalWorkouts")}];
+  metrics = [(RTWorkoutScheduler *)self metrics];
+  [metrics startCollectMetricsTaskType:5 totalNAtStart:{-[RTWorkoutScheduler totalWorkouts](self, "totalWorkouts")}];
 
   [(RTWorkoutScheduler *)self setUpdateRelevanceScoreTaskState:3];
-  v5 = [(RTWorkoutScheduler *)self workoutRouteManager];
+  workoutRouteManager = [(RTWorkoutScheduler *)self workoutRouteManager];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__RTWorkoutScheduler__scheduleUpdateRelevanceScore__block_invoke;
   v6[3] = &unk_2788C4D10;
   v6[4] = self;
   v6[5] = a2;
-  [v5 updateRelevanceScoresWithHandler:v6];
+  [workoutRouteManager updateRelevanceScoresWithHandler:v6];
 }
 
 void __51__RTWorkoutScheduler__scheduleUpdateRelevanceScore__block_invoke(uint64_t a1, void *a2)
@@ -2110,9 +2110,9 @@ void __51__RTWorkoutScheduler__scheduleUpdateRelevanceScore__block_invoke_2(uint
 
   else
   {
-    v10 = [MEMORY[0x277CBEAA8] date];
-    v11 = [(RTWorkoutScheduler *)self lastRelevanceScoreUpdateDate];
-    [v10 timeIntervalSinceDate:v11];
+    date = [MEMORY[0x277CBEAA8] date];
+    lastRelevanceScoreUpdateDate = [(RTWorkoutScheduler *)self lastRelevanceScoreUpdateDate];
+    [date timeIntervalSinceDate:lastRelevanceScoreUpdateDate];
     v13 = v12;
 
     if (v13 > 86400.0)
@@ -2172,29 +2172,29 @@ void __60__RTWorkoutScheduler__getCurrentLocationAndMonitorForRegion__block_invo
   }
 }
 
-- (void)onCurrentLocationUpdate:(id)a3
+- (void)onCurrentLocationUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  updateCopy = update;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__RTWorkoutScheduler_onCurrentLocationUpdate___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = updateCopy;
+  v6 = updateCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onCurrentLocationUpdate:(id)a3
+- (void)_onCurrentLocationUpdate:(id)update
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  [v5 horizontalAccuracy];
+  updateCopy = update;
+  [updateCopy horizontalAccuracy];
   if (v6 <= 200.0)
   {
     v15 = objc_alloc(MEMORY[0x277CBFBC8]);
-    [v5 coordinate];
+    [updateCopy coordinate];
     v7 = [v15 initForLowPowerWithCenter:@"RTWorkoutSchedulerBoundingRegion" radius:? identifier:?];
     locationManager = self->_locationManager;
     v18 = 0;
@@ -2228,7 +2228,7 @@ LABEL_12:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         *buf = 138740227;
-        v20 = v5;
+        v20 = updateCopy;
         v21 = 2117;
         v22 = v7;
         v12 = "Start Low Power Fence Monitoring for workouts, location, %{sensitive}@, region, %{sensitive}@";
@@ -2256,7 +2256,7 @@ LABEL_15:
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     v10 = NSStringFromSelector(a2);
-    [v5 horizontalAccuracy];
+    [updateCopy horizontalAccuracy];
     *buf = 138412802;
     v20 = v9;
     v21 = 2112;
@@ -2272,15 +2272,15 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)handleCircularRegionCallback:(int64_t)a3 region:(id)a4 clientIdentifier:(id)a5
+- (void)handleCircularRegionCallback:(int64_t)callback region:(id)region clientIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  regionCopy = region;
+  identifierCopy = identifier;
+  v11 = identifierCopy;
+  if (regionCopy)
   {
-    if (v10)
+    if (identifierCopy)
     {
       goto LABEL_10;
     }
@@ -2313,18 +2313,18 @@ LABEL_7:
   }
 
 LABEL_10:
-  if (a3 == 2)
+  if (callback == 2)
   {
-    v14 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __75__RTWorkoutScheduler_handleCircularRegionCallback_region_clientIdentifier___block_invoke;
     v15[3] = &unk_2788CCF58;
     v18 = 2;
-    v16 = v9;
-    v17 = self;
+    v16 = regionCopy;
+    selfCopy = self;
     v19 = a2;
-    dispatch_async(v14, v15);
+    dispatch_async(queue, v15);
   }
 }
 
@@ -2393,14 +2393,14 @@ uint64_t __75__RTWorkoutScheduler_handleCircularRegionCallback_region_clientIden
     }
   }
 
-  v5 = [(RTWorkoutScheduler *)self locationManager];
+  locationManager = [(RTWorkoutScheduler *)self locationManager];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__RTWorkoutScheduler__registerForCircularRegionEvents__block_invoke;
   v6[3] = &unk_2788C5298;
   v6[4] = self;
   v6[5] = a2;
-  [v5 registerForRegionEventsWithClientIdentifier:@"RTWorkoutSchedulerRegionChange" handler:v6];
+  [locationManager registerForRegionEventsWithClientIdentifier:@"RTWorkoutSchedulerRegionChange" handler:v6];
 }
 
 void __54__RTWorkoutScheduler__registerForCircularRegionEvents__block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -2475,14 +2475,14 @@ LABEL_12:
 
 - (void)_schedulePruneDistanceMatrix
 {
-  v4 = [(RTWorkoutScheduler *)self workoutRouteManager];
+  workoutRouteManager = [(RTWorkoutScheduler *)self workoutRouteManager];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __50__RTWorkoutScheduler__schedulePruneDistanceMatrix__block_invoke;
   v5[3] = &unk_2788C4D10;
   v5[4] = self;
   v5[5] = a2;
-  [v4 pruneDistanceMatrixWithHandler:v5];
+  [workoutRouteManager pruneDistanceMatrixWithHandler:v5];
 }
 
 void __50__RTWorkoutScheduler__schedulePruneDistanceMatrix__block_invoke(uint64_t a1, void *a2)
@@ -2531,9 +2531,9 @@ void __50__RTWorkoutScheduler__schedulePruneDistanceMatrix__block_invoke_2(uint6
   }
 }
 
-- (unint64_t)topNWorkoutsWithIncrement:(unint64_t)a3
+- (unint64_t)topNWorkoutsWithIncrement:(unint64_t)increment
 {
-  v4 = [(RTWorkoutScheduler *)self currentNWorkouts]+ a3;
+  v4 = [(RTWorkoutScheduler *)self currentNWorkouts]+ increment;
   result = [(RTWorkoutScheduler *)self totalWorkouts];
   if (v4 < result)
   {
@@ -2543,10 +2543,10 @@ void __50__RTWorkoutScheduler__schedulePruneDistanceMatrix__block_invoke_2(uint6
   return result;
 }
 
-- (void)setSingleWorkoutClusteringTaskState:(unint64_t)a3
+- (void)setSingleWorkoutClusteringTaskState:(unint64_t)state
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (self->_singleWorkoutClusteringTaskState != a3)
+  if (self->_singleWorkoutClusteringTaskState != state)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -2554,7 +2554,7 @@ void __50__RTWorkoutScheduler__schedulePruneDistanceMatrix__block_invoke_2(uint6
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v6 = [RTWorkoutScheduler taskStateToString:self->_singleWorkoutClusteringTaskState];
-        v7 = [RTWorkoutScheduler taskStateToString:a3];
+        v7 = [RTWorkoutScheduler taskStateToString:state];
         v8 = 138412802;
         v9 = @"RTDefaultsWorkoutSchedulerSingleWorkoutClusteringKey";
         v10 = 2112;
@@ -2565,15 +2565,15 @@ void __50__RTWorkoutScheduler__schedulePruneDistanceMatrix__block_invoke_2(uint6
       }
     }
 
-    self->_singleWorkoutClusteringTaskState = a3;
+    self->_singleWorkoutClusteringTaskState = state;
     [(RTWorkoutScheduler *)self saveTaskStates];
   }
 }
 
-- (void)setUpdateRelevanceScoreTaskState:(unint64_t)a3
+- (void)setUpdateRelevanceScoreTaskState:(unint64_t)state
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (self->_updateRelevanceScoreTaskState != a3)
+  if (self->_updateRelevanceScoreTaskState != state)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -2581,7 +2581,7 @@ void __50__RTWorkoutScheduler__schedulePruneDistanceMatrix__block_invoke_2(uint6
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v6 = [RTWorkoutScheduler taskStateToString:self->_updateRelevanceScoreTaskState];
-        v7 = [RTWorkoutScheduler taskStateToString:a3];
+        v7 = [RTWorkoutScheduler taskStateToString:state];
         v8 = 138412802;
         v9 = @"RTDefaultsWorkoutSchedulerUpdateRelevanceScoreKey";
         v10 = 2112;
@@ -2592,15 +2592,15 @@ void __50__RTWorkoutScheduler__schedulePruneDistanceMatrix__block_invoke_2(uint6
       }
     }
 
-    self->_updateRelevanceScoreTaskState = a3;
+    self->_updateRelevanceScoreTaskState = state;
     [(RTWorkoutScheduler *)self saveTaskStates];
   }
 }
 
-- (void)setCurrentNWorkouts:(unint64_t)a3
+- (void)setCurrentNWorkouts:(unint64_t)workouts
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (self->_currentNWorkouts != a3)
+  if (self->_currentNWorkouts != workouts)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -2613,167 +2613,167 @@ void __50__RTWorkoutScheduler__schedulePruneDistanceMatrix__block_invoke_2(uint6
         v9 = 2048;
         v10 = currentNWorkouts;
         v11 = 2048;
-        v12 = a3;
+        workoutsCopy = workouts;
         _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%@, changed from %lu to %lu", &v7, 0x20u);
       }
     }
 
-    self->_currentNWorkouts = a3;
+    self->_currentNWorkouts = workouts;
     [(RTWorkoutScheduler *)self saveTaskStates];
   }
 }
 
-- (void)setLastWorkoutComparisonDate:(id)a3
+- (void)setLastWorkoutComparisonDate:(id)date
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_lastWorkoutComparisonDate != v5)
+  dateCopy = date;
+  if (self->_lastWorkoutComparisonDate != dateCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v6 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v7 = [(NSDate *)self->_lastWorkoutComparisonDate stringFromDate];
-        v8 = [(NSDate *)v5 stringFromDate];
+        stringFromDate = [(NSDate *)self->_lastWorkoutComparisonDate stringFromDate];
+        stringFromDate2 = [(NSDate *)dateCopy stringFromDate];
         v9 = 138412802;
         v10 = @"RTDefaultsWorkoutSchedulerIncrementalWorkoutComparisonDateKey";
         v11 = 2112;
-        v12 = v7;
+        v12 = stringFromDate;
         v13 = 2112;
-        v14 = v8;
+        v14 = stringFromDate2;
         _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@, changed from %@ to %@", &v9, 0x20u);
       }
     }
 
-    objc_storeStrong(&self->_lastWorkoutComparisonDate, a3);
+    objc_storeStrong(&self->_lastWorkoutComparisonDate, date);
     [(RTDefaultsManager *)self->_defaultsManager setObject:self->_lastWorkoutComparisonDate forKey:@"RTDefaultsWorkoutSchedulerIncrementalWorkoutComparisonDateKey"];
   }
 }
 
-- (void)setLastClusterAndSyncDate:(id)a3
+- (void)setLastClusterAndSyncDate:(id)date
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_lastClusterAndSyncDate != v5)
+  dateCopy = date;
+  if (self->_lastClusterAndSyncDate != dateCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v6 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v7 = [(NSDate *)self->_lastClusterAndSyncDate stringFromDate];
-        v8 = [(NSDate *)v5 stringFromDate];
+        stringFromDate = [(NSDate *)self->_lastClusterAndSyncDate stringFromDate];
+        stringFromDate2 = [(NSDate *)dateCopy stringFromDate];
         v9 = 138412802;
         v10 = @"RTDefaultsWorkoutSchedulerClusterAndSyncDateKey";
         v11 = 2112;
-        v12 = v7;
+        v12 = stringFromDate;
         v13 = 2112;
-        v14 = v8;
+        v14 = stringFromDate2;
         _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@, changed from %@ to %@", &v9, 0x20u);
       }
     }
 
-    objc_storeStrong(&self->_lastClusterAndSyncDate, a3);
+    objc_storeStrong(&self->_lastClusterAndSyncDate, date);
     [(RTDefaultsManager *)self->_defaultsManager setObject:self->_lastClusterAndSyncDate forKey:@"RTDefaultsWorkoutSchedulerClusterAndSyncDateKey"];
   }
 }
 
-- (void)setLastSingleWorkoutClusteringDate:(id)a3
+- (void)setLastSingleWorkoutClusteringDate:(id)date
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_lastSingleWorkoutClusteringDate != v5)
+  dateCopy = date;
+  if (self->_lastSingleWorkoutClusteringDate != dateCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v6 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v7 = [(NSDate *)self->_lastSingleWorkoutClusteringDate stringFromDate];
-        v8 = [(NSDate *)v5 stringFromDate];
+        stringFromDate = [(NSDate *)self->_lastSingleWorkoutClusteringDate stringFromDate];
+        stringFromDate2 = [(NSDate *)dateCopy stringFromDate];
         v9 = 138412802;
         v10 = @"RTDefaultsWorkoutSchedulerSingleWorkoutClusteringDateKey";
         v11 = 2112;
-        v12 = v7;
+        v12 = stringFromDate;
         v13 = 2112;
-        v14 = v8;
+        v14 = stringFromDate2;
         _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@, changed from %@ to %@", &v9, 0x20u);
       }
     }
 
-    objc_storeStrong(&self->_lastSingleWorkoutClusteringDate, a3);
+    objc_storeStrong(&self->_lastSingleWorkoutClusteringDate, date);
     [(RTDefaultsManager *)self->_defaultsManager setObject:self->_lastSingleWorkoutClusteringDate forKey:@"RTDefaultsWorkoutSchedulerSingleWorkoutClusteringDateKey"];
   }
 }
 
-- (void)setLastRelevanceScoreUpdateDate:(id)a3
+- (void)setLastRelevanceScoreUpdateDate:(id)date
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_lastRelevanceScoreUpdateDate != v5)
+  dateCopy = date;
+  if (self->_lastRelevanceScoreUpdateDate != dateCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v6 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v7 = [(NSDate *)self->_lastRelevanceScoreUpdateDate stringFromDate];
-        v8 = [(NSDate *)v5 stringFromDate];
+        stringFromDate = [(NSDate *)self->_lastRelevanceScoreUpdateDate stringFromDate];
+        stringFromDate2 = [(NSDate *)dateCopy stringFromDate];
         v9 = 138412802;
         v10 = @"RTDefaultsWorkoutSchedulerUpdateRelevanceScoreDateKey";
         v11 = 2112;
-        v12 = v7;
+        v12 = stringFromDate;
         v13 = 2112;
-        v14 = v8;
+        v14 = stringFromDate2;
         _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@, changed from %@ to %@", &v9, 0x20u);
       }
     }
 
-    objc_storeStrong(&self->_lastRelevanceScoreUpdateDate, a3);
+    objc_storeStrong(&self->_lastRelevanceScoreUpdateDate, date);
     [(RTDefaultsManager *)self->_defaultsManager setObject:self->_lastRelevanceScoreUpdateDate forKey:@"RTDefaultsWorkoutSchedulerUpdateRelevanceScoreDateKey"];
   }
 }
 
-- (void)setLastPruneDistanceMatrixDate:(id)a3
+- (void)setLastPruneDistanceMatrixDate:(id)date
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_lastPruneDistanceMatrixDate != v5)
+  dateCopy = date;
+  if (self->_lastPruneDistanceMatrixDate != dateCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v6 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v7 = [(NSDate *)self->_lastPruneDistanceMatrixDate stringFromDate];
-        v8 = [(NSDate *)v5 stringFromDate];
+        stringFromDate = [(NSDate *)self->_lastPruneDistanceMatrixDate stringFromDate];
+        stringFromDate2 = [(NSDate *)dateCopy stringFromDate];
         v9 = 138412802;
         v10 = @"RTDefaultsWorkoutSchedulerUpdateRelevanceScoreDateKey";
         v11 = 2112;
-        v12 = v7;
+        v12 = stringFromDate;
         v13 = 2112;
-        v14 = v8;
+        v14 = stringFromDate2;
         _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@, changed from %@ to %@", &v9, 0x20u);
       }
     }
 
-    objc_storeStrong(&self->_lastPruneDistanceMatrixDate, a3);
+    objc_storeStrong(&self->_lastPruneDistanceMatrixDate, date);
     [(RTDefaultsManager *)self->_defaultsManager setObject:self->_lastPruneDistanceMatrixDate forKey:@"RTDefaultsWorkoutSchedulerPruneDistanceMatrixDateKey"];
   }
 }
 
 - (void)_setupDisplayLayoutMonitor
 {
-  v3 = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
+  configurationForDefaultMainDisplayMonitor = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
   objc_initWeak(&location, self);
   v5 = MEMORY[0x277D85DD0];
   v6 = 3221225472;
   v7 = __48__RTWorkoutScheduler__setupDisplayLayoutMonitor__block_invoke;
   v8 = &unk_2788D36C0;
   objc_copyWeak(&v9, &location);
-  [v3 setTransitionHandler:&v5];
-  v4 = [MEMORY[0x277D0AD08] monitorWithConfiguration:{v3, v5, v6, v7, v8}];
+  [configurationForDefaultMainDisplayMonitor setTransitionHandler:&v5];
+  v4 = [MEMORY[0x277D0AD08] monitorWithConfiguration:{configurationForDefaultMainDisplayMonitor, v5, v6, v7, v8}];
   [(RTWorkoutScheduler *)self setDisplayLayoutMonitor:v4];
 
   objc_destroyWeak(&v9);
@@ -2788,16 +2788,16 @@ void __48__RTWorkoutScheduler__setupDisplayLayoutMonitor__block_invoke(uint64_t 
   [WeakRetained layoutMonitorDidUpdateDisplayLayout:v7 withContext:v6];
 }
 
-- (void)layoutMonitorDidUpdateDisplayLayout:(id)a3 withContext:(id)a4
+- (void)layoutMonitorDidUpdateDisplayLayout:(id)layout withContext:(id)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  layoutCopy = layout;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [v5 elements];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  elements = [layoutCopy elements];
+  v7 = [elements countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2809,28 +2809,28 @@ void __48__RTWorkoutScheduler__setupDisplayLayoutMonitor__block_invoke(uint64_t 
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(elements);
         }
 
-        v12 = [*(*(&v17 + 1) + 8 * i) identifier];
-        v13 = [v12 isEqualToString:v10];
+        identifier = [*(*(&v17 + 1) + 8 * i) identifier];
+        v13 = [identifier isEqualToString:v10];
 
         if (v13)
         {
-          v14 = [(RTNotifier *)self queue];
+          queue = [(RTNotifier *)self queue];
           v15[0] = MEMORY[0x277D85DD0];
           v15[1] = 3221225472;
           v15[2] = __70__RTWorkoutScheduler_layoutMonitorDidUpdateDisplayLayout_withContext___block_invoke;
           v15[3] = &unk_2788C4A70;
           v15[4] = self;
-          v16 = v5;
-          dispatch_async(v14, v15);
+          v16 = layoutCopy;
+          dispatch_async(queue, v15);
 
           goto LABEL_11;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [elements countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v8)
       {
         continue;
@@ -2851,7 +2851,7 @@ uint64_t __70__RTWorkoutScheduler_layoutMonitorDidUpdateDisplayLayout_withContex
   return [v1 _onLayoutMonitorUpdateDisplayBacklightLevelNotification:v2];
 }
 
-- (void)_onLayoutMonitorUpdateDisplayBacklightLevelNotification:(int64_t)a3
+- (void)_onLayoutMonitorUpdateDisplayBacklightLevelNotification:(int64_t)notification
 {
   v8 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -2860,12 +2860,12 @@ uint64_t __70__RTWorkoutScheduler_layoutMonitorDidUpdateDisplayLayout_withContex
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v6 = 134217984;
-      v7 = a3;
+      notificationCopy = notification;
       _os_log_debug_impl(&dword_2304B3000, v5, OS_LOG_TYPE_DEBUG, "Received display backlight level notification, %lu", &v6, 0xCu);
     }
   }
 
-  if (!a3)
+  if (!notification)
   {
     [(RTWorkoutScheduler *)self _evaluateVersionChange];
     [(RTWorkoutScheduler *)self _evaluateSchedulingTaskPriority];

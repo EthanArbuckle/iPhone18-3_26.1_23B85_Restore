@@ -1,21 +1,21 @@
 @interface NSFileManager
-- (void)fm_migrateFileFromURL:(id)a3 toURL:(id)a4;
+- (void)fm_migrateFileFromURL:(id)l toURL:(id)rL;
 @end
 
 @implementation NSFileManager
 
-- (void)fm_migrateFileFromURL:(id)a3 toURL:(id)a4
+- (void)fm_migrateFileFromURL:(id)l toURL:(id)rL
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5 || !v6)
+  lCopy = l;
+  rLCopy = rL;
+  v7 = rLCopy;
+  if (!lCopy || !rLCopy)
   {
     v13 = sub_1000011D8();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v20 = v5;
+      v20 = lCopy;
       v21 = 2112;
       v22 = v7;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Skipping file migration due to nil url, from %@ to %@.", buf, 0x16u);
@@ -25,8 +25,8 @@
   }
 
   v8 = +[NSFileManager defaultManager];
-  v9 = [v5 path];
-  v10 = [v8 fileExistsAtPath:v9];
+  path = [lCopy path];
+  v10 = [v8 fileExistsAtPath:path];
 
   if (v10)
   {
@@ -34,7 +34,7 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v20 = v5;
+      v20 = lCopy;
       v21 = 2112;
       v22 = v7;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Migrating file from %@ to %@", buf, 0x16u);
@@ -42,7 +42,7 @@
 
     v12 = +[NSFileManager defaultManager];
     v18 = 0;
-    [v12 copyItemAtURL:v5 toURL:v7 error:&v18];
+    [v12 copyItemAtURL:lCopy toURL:v7 error:&v18];
     v13 = v18;
 
     if (v13)
@@ -58,7 +58,7 @@
     {
       v15 = +[NSFileManager defaultManager];
       v17 = 0;
-      [v15 removeItemAtURL:v5 error:&v17];
+      [v15 removeItemAtURL:lCopy error:&v17];
       v16 = v17;
 
       if (!v16)

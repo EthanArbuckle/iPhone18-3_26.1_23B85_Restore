@@ -1,49 +1,49 @@
 @interface _UIDiffableDataSourceItemRenderer
-- (_UIDiffableDataSourceItemRenderer)initWithIdentifier:(id)a3 cellClass:(Class)a4 handler:(id)a5;
-- (_UIDiffableDataSourceItemRenderer)initWithIdentifier:(id)a3 cellClass:(Class)a4 handler:(id)a5 cellReuseIdentifier:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_UIDiffableDataSourceItemRenderer)initWithIdentifier:(id)identifier cellClass:(Class)class handler:(id)handler;
+- (_UIDiffableDataSourceItemRenderer)initWithIdentifier:(id)identifier cellClass:(Class)class handler:(id)handler cellReuseIdentifier:(id)reuseIdentifier;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _UIDiffableDataSourceItemRenderer
 
-- (_UIDiffableDataSourceItemRenderer)initWithIdentifier:(id)a3 cellClass:(Class)a4 handler:(id)a5 cellReuseIdentifier:(id)a6
+- (_UIDiffableDataSourceItemRenderer)initWithIdentifier:(id)identifier cellClass:(Class)class handler:(id)handler cellReuseIdentifier:(id)reuseIdentifier
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  reuseIdentifierCopy = reuseIdentifier;
   v19.receiver = self;
   v19.super_class = _UIDiffableDataSourceItemRenderer;
   v14 = [(_UIDiffableDataSourceItemRenderer *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_rendererIdentifier, a3);
-    objc_storeStrong(&v15->_cellClass, a4);
-    v16 = _Block_copy(v12);
+    objc_storeStrong(&v14->_rendererIdentifier, identifier);
+    objc_storeStrong(&v15->_cellClass, class);
+    v16 = _Block_copy(handlerCopy);
     handler = v15->_handler;
     v15->_handler = v16;
 
-    objc_storeStrong(&v15->_cellReuseIdentifier, a6);
+    objc_storeStrong(&v15->_cellReuseIdentifier, reuseIdentifier);
   }
 
   return v15;
 }
 
-- (_UIDiffableDataSourceItemRenderer)initWithIdentifier:(id)a3 cellClass:(Class)a4 handler:(id)a5
+- (_UIDiffableDataSourceItemRenderer)initWithIdentifier:(id)identifier cellClass:(Class)class handler:(id)handler
 {
   v8 = MEMORY[0x1E696AFB0];
-  v9 = a5;
-  v10 = a3;
-  v11 = [v8 UUID];
-  v12 = [v11 UUIDString];
-  v13 = [(_UIDiffableDataSourceItemRenderer *)self initWithIdentifier:v10 cellClass:a4 handler:v9 cellReuseIdentifier:v12];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  uUID = [v8 UUID];
+  uUIDString = [uUID UUIDString];
+  v13 = [(_UIDiffableDataSourceItemRenderer *)self initWithIdentifier:identifierCopy cellClass:class handler:handlerCopy cellReuseIdentifier:uUIDString];
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   rendererIdentifier = self->_rendererIdentifier;
   cellClass = self->_cellClass;
   v7 = [self->_handler copy];

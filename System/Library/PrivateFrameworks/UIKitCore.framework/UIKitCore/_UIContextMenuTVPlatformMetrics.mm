@@ -22,8 +22,8 @@
     [(_UIContextMenuPlatformMetrics *)v2 setSectionSeparatorColor:v4];
 
     [(_UIContextMenuPlatformMetrics *)v2 setItemPrimaryCompositingFilterProvider:&__block_literal_global_4_5];
-    v5 = [(_UIContextMenuPlatformMetrics *)v2 itemPrimaryCompositingFilterProvider];
-    [(_UIContextMenuPlatformMetrics *)v2 setItemSubtitleCompositingFilterProvider:v5];
+    itemPrimaryCompositingFilterProvider = [(_UIContextMenuPlatformMetrics *)v2 itemPrimaryCompositingFilterProvider];
+    [(_UIContextMenuPlatformMetrics *)v2 setItemSubtitleCompositingFilterProvider:itemPrimaryCompositingFilterProvider];
 
     [(_UIContextMenuPlatformMetrics *)v2 setItemTopToFirstBaseline:44.0];
     [(_UIContextMenuPlatformMetrics *)v2 setItemTopToFirstBaselineWithSubtitle:44.0];

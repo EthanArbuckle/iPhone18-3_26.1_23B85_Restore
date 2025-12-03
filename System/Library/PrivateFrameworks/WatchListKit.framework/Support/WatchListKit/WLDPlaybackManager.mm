@@ -1,42 +1,42 @@
 @interface WLDPlaybackManager
 + (id)sharedManager;
 - (BOOL)_isDirectPlaybackReportingDisabled;
-- (BOOL)_isDirectoryPresentAndNonEmpty:(id)a3;
-- (BOOL)_offlineValidation:(id)a3;
-- (BOOL)_serialize:(id)a3;
-- (BOOL)_shouldPromptForBundleID:(id)a3 outAccessStatus:(unint64_t *)a4;
+- (BOOL)_isDirectoryPresentAndNonEmpty:(id)empty;
+- (BOOL)_offlineValidation:(id)validation;
+- (BOOL)_serialize:(id)_serialize;
+- (BOOL)_shouldPromptForBundleID:(id)d outAccessStatus:(unint64_t *)status;
 - (WLDPlaybackManager)init;
-- (id)_getLastSummaryBySessionID:(id)a3;
-- (id)_getReporterBySessionID:(id)a3 isLive:(BOOL)a4;
-- (id)_getSessionReporterBySessionID:(id)a3;
+- (id)_getLastSummaryBySessionID:(id)d;
+- (id)_getReporterBySessionID:(id)d isLive:(BOOL)live;
+- (id)_getSessionReporterBySessionID:(id)d;
 - (id)_queueDir;
-- (id)_queuePathForSummary:(id)a3;
+- (id)_queuePathForSummary:(id)summary;
 - (id)queue;
 - (id)reporter;
-- (void)_catalogSummary:(id)a3;
-- (void)_cleanupSummary:(id)a3;
-- (void)_endSession:(id)a3;
+- (void)_catalogSummary:(id)summary;
+- (void)_cleanupSummary:(id)summary;
+- (void)_endSession:(id)session;
 - (void)_enqueuePendingReports;
-- (void)_enqueuePlaybackSummary:(id)a3 sessionID:(id)a4 serialize:(BOOL)a5;
-- (void)_handleDirectPlaybackAppTermination:(id)a3;
-- (void)_handleReporting:(id)a3 summary:(id)a4 sessionIDKey:(id)a5 isFirstParty:(BOOL)a6;
-- (void)_handleReportingError:(id)a3 forSummary:(id)a4;
-- (void)_networkReachabilityChanged:(id)a3;
-- (void)_onlineValidation:(id)a3 completion:(id)a4;
-- (void)_promptForBundleID:(id)a3 completionHandler:(id)a4;
-- (void)_removeLastSummaryBySessionID:(id)a3;
-- (void)_removeReporterBySessionID:(id)a3;
+- (void)_enqueuePlaybackSummary:(id)summary sessionID:(id)d serialize:(BOOL)serialize;
+- (void)_handleDirectPlaybackAppTermination:(id)termination;
+- (void)_handleReporting:(id)reporting summary:(id)summary sessionIDKey:(id)key isFirstParty:(BOOL)party;
+- (void)_handleReportingError:(id)error forSummary:(id)summary;
+- (void)_networkReachabilityChanged:(id)changed;
+- (void)_onlineValidation:(id)validation completion:(id)completion;
+- (void)_promptForBundleID:(id)d completionHandler:(id)handler;
+- (void)_removeLastSummaryBySessionID:(id)d;
+- (void)_removeReporterBySessionID:(id)d;
 - (void)_scanForPendingReports;
-- (void)_setLastSummaryBySessionID:(id)a3 sessionID:(id)a4;
-- (void)_setSessionReporter:(id)a3 sessionID:(id)a4;
+- (void)_setLastSummaryBySessionID:(id)d sessionID:(id)iD;
+- (void)_setSessionReporter:(id)reporter sessionID:(id)d;
 - (void)checkPendingReports;
 - (void)dealloc;
-- (void)fetchDecoratedNowPlayingSummaries:(id)a3;
-- (void)fetchNowPlayingSummaries:(id)a3;
-- (void)handleDirectPlaybackSummary:(id)a3 sessionID:(id)a4;
-- (void)handlePlaybackSummary:(id)a3 sessionID:(id)a4;
+- (void)fetchDecoratedNowPlayingSummaries:(id)summaries;
+- (void)fetchNowPlayingSummaries:(id)summaries;
+- (void)handleDirectPlaybackSummary:(id)summary sessionID:(id)d;
+- (void)handlePlaybackSummary:(id)summary sessionID:(id)d;
 - (void)handleSubscriptionRegistration;
-- (void)requestToPromptForBundleID:(id)a3 completionHandler:(id)a4;
+- (void)requestToPromptForBundleID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation WLDPlaybackManager
@@ -62,22 +62,22 @@
 
 - (id)queue
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  queue = v2->_queue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  queue = selfCopy->_queue;
   if (!queue)
   {
     v4 = objc_alloc_init(NSOperationQueue);
-    v5 = v2->_queue;
-    v2->_queue = v4;
+    v5 = selfCopy->_queue;
+    selfCopy->_queue = v4;
 
-    [(NSOperationQueue *)v2->_queue setName:@"com.apple.watchlistd.PlaybackManagerQueue"];
-    [(NSOperationQueue *)v2->_queue setMaxConcurrentOperationCount:1];
-    queue = v2->_queue;
+    [(NSOperationQueue *)selfCopy->_queue setName:@"com.apple.watchlistd.PlaybackManagerQueue"];
+    [(NSOperationQueue *)selfCopy->_queue setMaxConcurrentOperationCount:1];
+    queue = selfCopy->_queue;
   }
 
   v6 = queue;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -98,9 +98,9 @@
   objc_sync_exit(obj);
 
   NSLog(@"WLDPlaybackManager: scanning for pending reports");
-  v47 = [(WLDPlaybackManager *)obj _queueDir];
+  _queueDir = [(WLDPlaybackManager *)obj _queueDir];
   v2 = +[NSFileManager defaultManager];
-  v3 = [v2 fileExistsAtPath:v47];
+  v3 = [v2 fileExistsAtPath:_queueDir];
 
   if ((v3 & 1) == 0)
   {
@@ -113,7 +113,7 @@
   }
 
   v4 = +[NSFileManager defaultManager];
-  v5 = [NSURL fileURLWithPath:v47];
+  v5 = [NSURL fileURLWithPath:_queueDir];
   v77[0] = NSURLNameKey;
   v77[1] = NSURLIsDirectoryKey;
   v6 = [NSArray arrayWithObjects:v77 count:2];
@@ -150,9 +150,9 @@
       if (([v12 BOOLValue] & 1) == 0)
       {
         v13 = +[NSFileManager defaultManager];
-        v14 = [v11 path];
+        path = [v11 path];
         v68 = 0;
-        v15 = [v13 attributesOfItemAtPath:v14 error:&v68];
+        v15 = [v13 attributesOfItemAtPath:path error:&v68];
         v16 = v68;
 
         if (v16)
@@ -178,14 +178,14 @@ LABEL_14:
         {
           NSLog(@"WLDPlaybackManager: The last modified time (%f) is greater than max age (%lu). Will delete report.", *&v20, obj->_maximumAgeForReport);
           v21 = +[NSFileManager defaultManager];
-          v22 = [v11 path];
-          [v21 removeItemAtPath:v22 error:0];
+          path2 = [v11 path];
+          [v21 removeItemAtPath:path2 error:0];
 
           goto LABEL_14;
         }
 
-        v23 = [v11 path];
-        v24 = [NSData dataWithContentsOfFile:v23];
+        path3 = [v11 path];
+        v24 = [NSData dataWithContentsOfFile:path3];
 
         v25 = [NSKeyedUnarchiver alloc];
         v67 = 0;
@@ -204,8 +204,8 @@ LABEL_14:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v49 = [v52 accountIDAsNumber];
-            v48 = [TVAppAccountStoreObjC accountWithDSID:v49];
+            accountIDAsNumber = [v52 accountIDAsNumber];
+            v48 = [TVAppAccountStoreObjC accountWithDSID:accountIDAsNumber];
 
             if (v48)
             {
@@ -214,8 +214,8 @@ LABEL_14:
               goto LABEL_30;
             }
 
-            v50 = [v52 accountIDAsNumber];
-            NSLog(@"WLDPlaybackManager: _scanForPendingReports no iTunes account for ID: %@", v50);
+            accountIDAsNumber2 = [v52 accountIDAsNumber];
+            NSLog(@"WLDPlaybackManager: _scanForPendingReports no iTunes account for ID: %@", accountIDAsNumber2);
           }
         }
 
@@ -270,9 +270,9 @@ LABEL_32:
   }
 
   v35 = +[WLKReachabilityMonitor sharedInstance];
-  v36 = [v35 isNetworkReachable];
+  isNetworkReachable = [v35 isNetworkReachable];
 
-  if (v36)
+  if (isNetworkReachable)
   {
     v61 = 0u;
     v62 = 0u;
@@ -317,8 +317,8 @@ LABEL_32:
   objc_copyWeak(&v57, &location);
   v56[4] = v42;
   v43 = [NSBlockOperation blockOperationWithBlock:v56];
-  v44 = [(WLDPlaybackManager *)v42 queue];
-  [v44 addOperation:v43];
+  queue = [(WLDPlaybackManager *)v42 queue];
+  [queue addOperation:v43];
 
   objc_destroyWeak(&v57);
   objc_destroyWeak(&location);
@@ -329,9 +329,9 @@ LABEL_50:
 - (id)_queueDir
 {
   v3 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
-  v5 = [v4 stringByAppendingPathComponent:@"com.apple.watchlistd"];
+  v5 = [firstObject stringByAppendingPathComponent:@"com.apple.watchlistd"];
 
   v6 = [v5 stringByAppendingPathComponent:@"pending"];
 
@@ -361,8 +361,8 @@ LABEL_50:
   v5[3] = &unk_100044DB8;
   v5[4] = self;
   v3 = [WLDTransactionBlockOperation blockOperationWithBlock:v5];
-  v4 = [(WLDPlaybackManager *)self queue];
-  [v4 addOperation:v3];
+  queue = [(WLDPlaybackManager *)self queue];
+  [queue addOperation:v3];
 }
 
 void __35__WLDPlaybackManager_sharedManager__block_invoke(id a1)
@@ -492,10 +492,10 @@ void __26__WLDPlaybackManager_init__block_invoke(uint64_t a1, void *a2, void *a3
   [(WLDPlaybackManager *)&v4 dealloc];
 }
 
-- (void)handleDirectPlaybackSummary:(id)a3 sessionID:(id)a4
+- (void)handleDirectPlaybackSummary:(id)summary sessionID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  summaryCopy = summary;
+  dCopy = d;
   if ([(WLDPlaybackManager *)self _isDirectPlaybackReportingDisabled])
   {
     NSLog(@"WLDPlaybackManager: Direct playback reporting is disabled by user default");
@@ -503,31 +503,31 @@ void __26__WLDPlaybackManager_init__block_invoke(uint64_t a1, void *a2, void *a3
 
   else
   {
-    v8 = [v6 bundleID];
-    if (v8)
+    bundleID = [summaryCopy bundleID];
+    if (bundleID)
     {
-      v9 = [(WLDPlaybackDirectPlayObserver *)self->_directPlayObserver bundleID];
-      v10 = [v9 isEqualToString:v8];
+      bundleID2 = [(WLDPlaybackDirectPlayObserver *)self->_directPlayObserver bundleID];
+      v10 = [bundleID2 isEqualToString:bundleID];
 
       if ((v10 & 1) == 0)
       {
-        NSLog(@"WLDPlaybackManager: Creating directPlay observer for %@", v8);
-        v11 = [[WLDPlaybackDirectPlayObserver alloc] initWithBundleID:v8];
+        NSLog(@"WLDPlaybackManager: Creating directPlay observer for %@", bundleID);
+        v11 = [[WLDPlaybackDirectPlayObserver alloc] initWithBundleID:bundleID];
         v15[0] = _NSConcreteStackBlock;
         v15[1] = 3221225472;
         v15[2] = __60__WLDPlaybackManager_handleDirectPlaybackSummary_sessionID___block_invoke;
         v15[3] = &unk_1000453F8;
         v15[4] = self;
-        v16 = v8;
+        v16 = bundleID;
         [(WLDPlaybackDirectPlayObserver *)v11 setUpdateHandler:v15];
         directPlayObserver = self->_directPlayObserver;
         self->_directPlayObserver = v11;
         v13 = v11;
       }
 
-      [(WLDPlaybackManager *)self _enqueuePlaybackSummary:v6 sessionID:v7 serialize:1];
+      [(WLDPlaybackManager *)self _enqueuePlaybackSummary:summaryCopy sessionID:dCopy serialize:1];
       v14 = +[WLDFederatedPunchoutReporter sharedFederatedPunchoutReporter];
-      [v14 recordPlaybackSummary:v6];
+      [v14 recordPlaybackSummary:summaryCopy];
     }
   }
 }
@@ -542,37 +542,37 @@ id *__60__WLDPlaybackManager_handleDirectPlaybackSummary_sessionID___block_invok
   return result;
 }
 
-- (void)handlePlaybackSummary:(id)a3 sessionID:(id)a4
+- (void)handlePlaybackSummary:(id)summary sessionID:(id)d
 {
-  v23 = a3;
-  v6 = a4;
+  summaryCopy = summary;
+  dCopy = d;
   v7 = +[WLDFederatedPunchoutReporter sharedFederatedPunchoutReporter];
-  [v7 recordPlaybackSummary:v23];
+  [v7 recordPlaybackSummary:summaryCopy];
 
   v8 = +[WLKChannelUtilities sharedInstanceFiltered];
-  v9 = [v23 bundleID];
-  v10 = [v8 channelForBundleID:v9];
+  bundleID = [summaryCopy bundleID];
+  v10 = [v8 channelForBundleID:bundleID];
 
-  v11 = [v10 rateLimit];
-  v12 = [v11 objectForKey:WLKChannelDetailsKeyRateLimitRateKey];
-  v13 = [v12 unsignedIntegerValue];
+  rateLimit = [v10 rateLimit];
+  v12 = [rateLimit objectForKey:WLKChannelDetailsKeyRateLimitRateKey];
+  unsignedIntegerValue = [v12 unsignedIntegerValue];
 
-  v14 = [v10 rateLimit];
-  v15 = [v14 objectForKey:WLKChannelDetailsKeyRateLimitBurstKey];
-  v16 = [v15 unsignedIntegerValue];
+  rateLimit2 = [v10 rateLimit];
+  v15 = [rateLimit2 objectForKey:WLKChannelDetailsKeyRateLimitBurstKey];
+  unsignedIntegerValue2 = [v15 unsignedIntegerValue];
 
-  if (!v13)
+  if (!unsignedIntegerValue)
   {
     goto LABEL_8;
   }
 
-  if (!v16)
+  if (!unsignedIntegerValue2)
   {
     goto LABEL_8;
   }
 
-  v17 = [(WLDPlaybackManager *)self _getLastSummaryBySessionID:v6];
-  v18 = [v17 isEquivalentToSummaryExcludingCursor:v23];
+  v17 = [(WLDPlaybackManager *)self _getLastSummaryBySessionID:dCopy];
+  v18 = [v17 isEquivalentToSummaryExcludingCursor:summaryCopy];
 
   if (!v18)
   {
@@ -582,41 +582,41 @@ id *__60__WLDPlaybackManager_handleDirectPlaybackSummary_sessionID___block_invok
   rateLimiter = self->_rateLimiter;
   if (rateLimiter)
   {
-    [(WLDRateLimiter *)rateLimiter setRate:v13];
-    [(WLDRateLimiter *)self->_rateLimiter setBurst:v16];
+    [(WLDRateLimiter *)rateLimiter setRate:unsignedIntegerValue];
+    [(WLDRateLimiter *)self->_rateLimiter setBurst:unsignedIntegerValue2];
   }
 
   else
   {
-    v20 = [[WLDRateLimiter alloc] initWithRate:v13 burst:v16];
+    v20 = [[WLDRateLimiter alloc] initWithRate:unsignedIntegerValue burst:unsignedIntegerValue2];
     v21 = self->_rateLimiter;
     self->_rateLimiter = v20;
   }
 
   if (![(WLDRateLimiter *)self->_rateLimiter doOperation])
   {
-    v22 = [v10 rateLimit];
-    NSLog(@"WLDPlaybackManager: dropping report. Exceeded rate limit %@ %@", v22, v23);
+    rateLimit3 = [v10 rateLimit];
+    NSLog(@"WLDPlaybackManager: dropping report. Exceeded rate limit %@ %@", rateLimit3, summaryCopy);
   }
 
   else
   {
 LABEL_8:
-    [(WLDPlaybackManager *)self _enqueuePlaybackSummary:v23 sessionID:v6 serialize:1];
+    [(WLDPlaybackManager *)self _enqueuePlaybackSummary:summaryCopy sessionID:dCopy serialize:1];
   }
 }
 
-- (void)fetchNowPlayingSummaries:(id)a3
+- (void)fetchNowPlayingSummaries:(id)summaries
 {
-  v4 = a3;
+  summariesCopy = summaries;
   v5 = dispatch_get_global_queue(0, 0);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __47__WLDPlaybackManager_fetchNowPlayingSummaries___block_invoke;
   v7[3] = &unk_100044FC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = summariesCopy;
+  v6 = summariesCopy;
   dispatch_async(v5, v7);
 }
 
@@ -632,16 +632,16 @@ void __47__WLDPlaybackManager_fetchNowPlayingSummaries___block_invoke(uint64_t a
   }
 }
 
-- (void)fetchDecoratedNowPlayingSummaries:(id)a3
+- (void)fetchDecoratedNowPlayingSummaries:(id)summaries
 {
-  v17 = a3;
+  summariesCopy = summaries;
   v4 = self->_lastSummaryDictionary;
   objc_sync_enter(v4);
   v20 = [(NSMutableDictionary *)self->_lastSummaryDictionary mutableCopy];
   objc_sync_exit(v4);
 
-  v5 = [(WLDPlaybackManager *)self nowPlayingObserver];
-  v18 = [v5 nowPlayingSummaries];
+  nowPlayingObserver = [(WLDPlaybackManager *)self nowPlayingObserver];
+  nowPlayingSummaries = [nowPlayingObserver nowPlayingSummaries];
 
   v34 = 0;
   v35 = &v34;
@@ -649,13 +649,13 @@ void __47__WLDPlaybackManager_fetchNowPlayingSummaries___block_invoke(uint64_t a
   v37 = __Block_byref_object_copy__1;
   v38 = __Block_byref_object_dispose__1;
   v39 = 0;
-  if (v18 && [v18 count])
+  if (nowPlayingSummaries && [nowPlayingSummaries count])
   {
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    obj = v18;
+    obj = nowPlayingSummaries;
     v6 = [obj countByEnumeratingWithState:&v30 objects:v40 count:16];
     if (v6)
     {
@@ -719,9 +719,9 @@ void __47__WLDPlaybackManager_fetchNowPlayingSummaries___block_invoke(uint64_t a
   block[1] = 3221225472;
   block[2] = __56__WLDPlaybackManager_fetchDecoratedNowPlayingSummaries___block_invoke_4;
   block[3] = &unk_1000454D8;
-  v22 = v17;
+  v22 = summariesCopy;
   v23 = v27;
-  v16 = v17;
+  v16 = summariesCopy;
   dispatch_group_notify(v15, v13, block);
 
   _Block_object_dispose(v27, 8);
@@ -837,8 +837,8 @@ void __56__WLDPlaybackManager_fetchDecoratedNowPlayingSummaries___block_invoke_5
   v5[3] = &unk_100044DB8;
   v5[4] = self;
   v3 = [WLDTransactionBlockOperation blockOperationWithBlock:v5];
-  v4 = [(WLDPlaybackManager *)self queue];
-  [v4 addOperation:v3];
+  queue = [(WLDPlaybackManager *)self queue];
+  [queue addOperation:v3];
 }
 
 void __52__WLDPlaybackManager_handleSubscriptionRegistration__block_invoke(uint64_t a1)
@@ -870,20 +870,20 @@ void __52__WLDPlaybackManager_handleSubscriptionRegistration__block_invoke(uint6
   }
 }
 
-- (void)requestToPromptForBundleID:(id)a3 completionHandler:(id)a4
+- (void)requestToPromptForBundleID:(id)d completionHandler:(id)handler
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __67__WLDPlaybackManager_requestToPromptForBundleID_completionHandler___block_invoke;
   v10[3] = &unk_100044ED8;
   v10[4] = self;
-  v11 = a3;
-  v12 = a4;
-  v6 = v12;
-  v7 = v11;
+  dCopy = d;
+  handlerCopy = handler;
+  v6 = handlerCopy;
+  v7 = dCopy;
   v8 = [WLDTransactionBlockOperation blockOperationWithBlock:v10];
-  v9 = [(WLDPlaybackManager *)self queue];
-  [v9 addOperation:v8];
+  queue = [(WLDPlaybackManager *)self queue];
+  [queue addOperation:v8];
 }
 
 - (id)reporter
@@ -893,14 +893,14 @@ void __52__WLDPlaybackManager_handleSubscriptionRegistration__block_invoke(uint6
   return [(WLDPlaybackManager *)self _getReporterBySessionID:@"DefaultPlaybackSessionID" isLive:0];
 }
 
-- (id)_getLastSummaryBySessionID:(id)a3
+- (id)_getLastSummaryBySessionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = self->_lastSummaryDictionary;
   objc_sync_enter(v5);
-  if (v4)
+  if (dCopy)
   {
-    v6 = v4;
+    v6 = dCopy;
   }
 
   else
@@ -914,14 +914,14 @@ void __52__WLDPlaybackManager_handleSubscriptionRegistration__block_invoke(uint6
   return v7;
 }
 
-- (void)_removeLastSummaryBySessionID:(id)a3
+- (void)_removeLastSummaryBySessionID:(id)d
 {
-  v6 = a3;
+  dCopy = d;
   v4 = self->_lastSummaryDictionary;
   objc_sync_enter(v4);
-  if (v6)
+  if (dCopy)
   {
-    v5 = v6;
+    v5 = dCopy;
   }
 
   else
@@ -933,17 +933,17 @@ void __52__WLDPlaybackManager_handleSubscriptionRegistration__block_invoke(uint6
   objc_sync_exit(v4);
 }
 
-- (void)_setSessionReporter:(id)a3 sessionID:(id)a4
+- (void)_setSessionReporter:(id)reporter sessionID:(id)d
 {
-  v9 = a3;
-  v6 = a4;
-  if (v9)
+  reporterCopy = reporter;
+  dCopy = d;
+  if (reporterCopy)
   {
     v7 = self->_reporterDictionary;
     objc_sync_enter(v7);
-    if (v6)
+    if (dCopy)
     {
-      v8 = v6;
+      v8 = dCopy;
     }
 
     else
@@ -951,20 +951,20 @@ void __52__WLDPlaybackManager_handleSubscriptionRegistration__block_invoke(uint6
       v8 = @"DefaultPlaybackSessionID";
     }
 
-    [(NSMutableDictionary *)self->_reporterDictionary setObject:v9 forKey:v8];
+    [(NSMutableDictionary *)self->_reporterDictionary setObject:reporterCopy forKey:v8];
     objc_sync_exit(v7);
   }
 }
 
-- (void)_setLastSummaryBySessionID:(id)a3 sessionID:(id)a4
+- (void)_setLastSummaryBySessionID:(id)d sessionID:(id)iD
 {
-  v9 = a3;
-  v6 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v7 = self->_lastSummaryDictionary;
   objc_sync_enter(v7);
-  if (v6)
+  if (iDCopy)
   {
-    v8 = v6;
+    v8 = iDCopy;
   }
 
   else
@@ -972,18 +972,18 @@ void __52__WLDPlaybackManager_handleSubscriptionRegistration__block_invoke(uint6
     v8 = @"DefaultPlaybackSessionID";
   }
 
-  [(NSMutableDictionary *)self->_lastSummaryDictionary setObject:v9 forKey:v8];
+  [(NSMutableDictionary *)self->_lastSummaryDictionary setObject:dCopy forKey:v8];
   objc_sync_exit(v7);
 }
 
-- (id)_getSessionReporterBySessionID:(id)a3
+- (id)_getSessionReporterBySessionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = self->_reporterDictionary;
   objc_sync_enter(v5);
-  if (v4)
+  if (dCopy)
   {
-    v6 = v4;
+    v6 = dCopy;
   }
 
   else
@@ -997,21 +997,21 @@ void __52__WLDPlaybackManager_handleSubscriptionRegistration__block_invoke(uint6
   return v7;
 }
 
-- (id)_getReporterBySessionID:(id)a3 isLive:(BOOL)a4
+- (id)_getReporterBySessionID:(id)d isLive:(BOOL)live
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
+  liveCopy = live;
+  dCopy = d;
+  v7 = dCopy;
   v8 = @"DefaultPlaybackSessionID";
-  if (v6)
+  if (dCopy)
   {
-    v8 = v6;
+    v8 = dCopy;
   }
 
   v9 = v8;
   v10 = [(WLDPlaybackManager *)self _getSessionReporterBySessionID:v9];
   v11 = [(WLDPlaybackManager *)self _getLastSummaryBySessionID:v9];
-  if (![v11 playbackType] && !v4)
+  if (![v11 playbackType] && !liveCopy)
   {
     v12 = off_1000444B8;
     objc_opt_class();
@@ -1031,7 +1031,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ([v11 playbackType] == 2 || objc_msgSend(v11, "playbackType") == 1 || v4)
+  if ([v11 playbackType] == 2 || objc_msgSend(v11, "playbackType") == 1 || liveCopy)
   {
     v12 = off_1000444B0;
     objc_opt_class();
@@ -1051,15 +1051,15 @@ LABEL_16:
   return v10;
 }
 
-- (void)_removeReporterBySessionID:(id)a3
+- (void)_removeReporterBySessionID:(id)d
 {
-  v8 = a3;
+  dCopy = d;
   v4 = self->_reporterDictionary;
   objc_sync_enter(v4);
   v5 = @"DefaultPlaybackSessionID";
-  if (v8)
+  if (dCopy)
   {
-    v5 = v8;
+    v5 = dCopy;
   }
 
   v6 = v5;
@@ -1070,15 +1070,15 @@ LABEL_16:
   objc_sync_exit(v4);
 }
 
-- (void)_endSession:(id)a3
+- (void)_endSession:(id)session
 {
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
   v9 = __34__WLDPlaybackManager__endSession___block_invoke;
   v10 = &unk_100044E38;
-  v11 = a3;
-  v12 = self;
-  v4 = v11;
+  sessionCopy = session;
+  selfCopy = self;
+  v4 = sessionCopy;
   v5 = [NSBlockOperation blockOperationWithBlock:&v7];
   v6 = [(WLDPlaybackManager *)self queue:v7];
   [v6 addOperation:v5];
@@ -1093,9 +1093,9 @@ id __34__WLDPlaybackManager__endSession___block_invoke(uint64_t a1)
   return +[WLKUpNextWidgetCacheManager requestReload];
 }
 
-- (void)_handleDirectPlaybackAppTermination:(id)a3
+- (void)_handleDirectPlaybackAppTermination:(id)termination
 {
-  v4 = a3;
+  terminationCopy = termination;
   v5 = self->_lastSummaryDictionary;
   objc_sync_enter(v5);
   lastSummaryDictionary = self->_lastSummaryDictionary;
@@ -1103,9 +1103,9 @@ id __34__WLDPlaybackManager__endSession___block_invoke(uint64_t a1)
   v8[1] = 3221225472;
   v8[2] = __58__WLDPlaybackManager__handleDirectPlaybackAppTermination___block_invoke;
   v8[3] = &unk_100045540;
-  v7 = v4;
+  v7 = terminationCopy;
   v9 = v7;
-  v10 = self;
+  selfCopy = self;
   [(NSMutableDictionary *)lastSummaryDictionary enumerateKeysAndObjectsUsingBlock:v8];
 
   objc_sync_exit(v5);
@@ -1136,23 +1136,23 @@ uint64_t __58__WLDPlaybackManager__handleDirectPlaybackAppTermination___block_in
   return _objc_release_x2();
 }
 
-- (void)_enqueuePlaybackSummary:(id)a3 sessionID:(id)a4 serialize:(BOOL)a5
+- (void)_enqueuePlaybackSummary:(id)summary sessionID:(id)d serialize:(BOOL)serialize
 {
-  v8 = a3;
-  v9 = a4;
+  summaryCopy = summary;
+  dCopy = d;
   if ((+[WLKNetworkRequestUtilities isGDPRAccepted]& 1) != 0)
   {
     v10 = @"DefaultPlaybackSessionID";
-    if (v9)
+    if (dCopy)
     {
-      v10 = v9;
+      v10 = dCopy;
     }
 
     v11 = v10;
-    [(WLDPlaybackManager *)self _setLastSummaryBySessionID:v8 sessionID:v11];
-    v12 = -[WLDPlaybackManager _getReporterBySessionID:isLive:](self, "_getReporterBySessionID:isLive:", v11, [v8 isLiveType]);
-    v13 = [v8 shortDescription];
-    NSLog(@"WLDPlaybackManager: enqueue: %@ for sessionID %@", v13, v11);
+    [(WLDPlaybackManager *)self _setLastSummaryBySessionID:summaryCopy sessionID:v11];
+    v12 = -[WLDPlaybackManager _getReporterBySessionID:isLive:](self, "_getReporterBySessionID:isLive:", v11, [summaryCopy isLiveType]);
+    shortDescription = [summaryCopy shortDescription];
+    NSLog(@"WLDPlaybackManager: enqueue: %@ for sessionID %@", shortDescription, v11);
 
     objc_initWeak(&location, self);
     v14 = objc_alloc_init(WLDTransactionBlockOperation);
@@ -1161,15 +1161,15 @@ uint64_t __58__WLDPlaybackManager__handleDirectPlaybackAppTermination___block_in
     v18[2] = __66__WLDPlaybackManager__enqueuePlaybackSummary_sessionID_serialize___block_invoke;
     v18[3] = &unk_1000455B8;
     objc_copyWeak(&v22, &location);
-    v19 = v8;
-    v23 = a5;
+    v19 = summaryCopy;
+    serializeCopy = serialize;
     v15 = v12;
     v20 = v15;
     v16 = v11;
     v21 = v16;
     [(WLDTransactionBlockOperation *)v14 addExecutionBlock:v18];
-    v17 = [(WLDPlaybackManager *)self queue];
-    [v17 addOperation:v14];
+    queue = [(WLDPlaybackManager *)self queue];
+    [queue addOperation:v14];
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(&location);
@@ -1299,26 +1299,26 @@ id __66__WLDPlaybackManager__enqueuePlaybackSummary_sessionID_serialize___block_
   }
 }
 
-- (void)_handleReporting:(id)a3 summary:(id)a4 sessionIDKey:(id)a5 isFirstParty:(BOOL)a6
+- (void)_handleReporting:(id)reporting summary:(id)summary sessionIDKey:(id)key isFirstParty:(BOOL)party
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  reportingCopy = reporting;
+  summaryCopy = summary;
+  keyCopy = key;
   objc_initWeak(&location, self);
   v16 = _NSConcreteStackBlock;
   v17 = 3221225472;
   v18 = __73__WLDPlaybackManager__handleReporting_summary_sessionIDKey_isFirstParty___block_invoke;
   v19 = &unk_1000455E0;
   objc_copyWeak(&v22, &location);
-  v13 = v11;
+  v13 = summaryCopy;
   v20 = v13;
-  v14 = v12;
+  v14 = keyCopy;
   v21 = v14;
-  [v10 reportPlayback:v13 completion:&v16];
-  if (!a6 && ([v13 isFromActivePlayerPath] & 1) == 0)
+  [reportingCopy reportPlayback:v13 completion:&v16];
+  if (!party && ([v13 isFromActivePlayerPath] & 1) == 0)
   {
-    v15 = [v13 bundleID];
-    [VSMetricsManagerObjC recordNowPlayingBrokenEventWithBundleID:v15];
+    bundleID = [v13 bundleID];
+    [VSMetricsManagerObjC recordNowPlayingBrokenEventWithBundleID:bundleID];
   }
 
   objc_destroyWeak(&v22);
@@ -1350,55 +1350,55 @@ void __73__WLDPlaybackManager__handleReporting_summary_sessionIDKey_isFirstParty
   }
 }
 
-- (void)_handleReportingError:(id)a3 forSummary:(id)a4
+- (void)_handleReportingError:(id)error forSummary:(id)summary
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [v14 domain];
-  v8 = [v7 isEqualToString:WLKErrorDomain];
+  errorCopy = error;
+  summaryCopy = summary;
+  domain = [errorCopy domain];
+  v8 = [domain isEqualToString:WLKErrorDomain];
 
-  if ((v8 & 1) != 0 || ([v14 domain], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", AMSErrorDomain), v9, v10) && (WLKHTTPStatusCodeForAMSError() - 400) <= 0xC7)
+  if ((v8 & 1) != 0 || ([errorCopy domain], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", AMSErrorDomain), v9, v10) && (WLKHTTPStatusCodeForAMSError() - 400) <= 0xC7)
   {
-    NSLog(@"WLDPlaybackManager: ErrorHandler: Fatal error. Cleaning up summary: %@", v14);
-    [(WLDPlaybackManager *)self _cleanupSummary:v6];
+    NSLog(@"WLDPlaybackManager: ErrorHandler: Fatal error. Cleaning up summary: %@", errorCopy);
+    [(WLDPlaybackManager *)self _cleanupSummary:summaryCopy];
   }
 
   else
   {
-    NSLog(@"WLDPlaybackManager: ErrorHandler: Non-fatal error. Will attempt report again on reachability change and/or app launch. %@", v14);
-    v11 = self;
-    objc_sync_enter(v11);
-    if (!v11->_pendingReportsTransaction)
+    NSLog(@"WLDPlaybackManager: ErrorHandler: Non-fatal error. Will attempt report again on reachability change and/or app launch. %@", errorCopy);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (!selfCopy->_pendingReportsTransaction)
     {
       v12 = [[WLKTransactionScope alloc] initWithIdentifier:@"WLDPlaybackManager._handleReportingError"];
-      pendingReportsTransaction = v11->_pendingReportsTransaction;
-      v11->_pendingReportsTransaction = v12;
+      pendingReportsTransaction = selfCopy->_pendingReportsTransaction;
+      selfCopy->_pendingReportsTransaction = v12;
     }
 
-    objc_sync_exit(v11);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (BOOL)_offlineValidation:(id)a3
+- (BOOL)_offlineValidation:(id)validation
 {
-  v3 = a3;
+  validationCopy = validation;
   v4 = [LSApplicationRecord alloc];
   v5 = WLKTVAppBundleID();
   v6 = [v4 initWithBundleIdentifier:v5 allowPlaceholder:0 error:0];
 
-  v7 = [v6 applicationState];
-  v8 = [v7 isInstalled];
+  applicationState = [v6 applicationState];
+  isInstalled = [applicationState isInstalled];
 
-  if ((v8 & 1) == 0)
+  if ((isInstalled & 1) == 0)
   {
     NSLog(@"WLDPlaybackManager: Feature disabled because TV app is not installed.");
     goto LABEL_5;
   }
 
   v9 = +[UMUserManager sharedManager];
-  v10 = [v9 isMultiUser];
+  isMultiUser = [v9 isMultiUser];
 
-  if (!v10)
+  if (!isMultiUser)
   {
     v12 = +[WLKSystemPreferencesStore sharedPreferences];
     if ([v12 privateModeEnabled])
@@ -1411,10 +1411,10 @@ LABEL_21:
     }
 
     v13 = +[TVAppAccountStoreObjC activeAccount];
-    if (v3)
+    if (validationCopy)
     {
-      v14 = [v3 accountID];
-      v15 = [v14 length];
+      accountID = [validationCopy accountID];
+      v15 = [accountID length];
 
       if (!v15)
       {
@@ -1422,16 +1422,16 @@ LABEL_21:
         goto LABEL_19;
       }
 
-      v16 = [v3 bundleID];
+      bundleID = [validationCopy bundleID];
 
-      if (!v16)
+      if (!bundleID)
       {
         NSLog(@"WLDPlaybackManager: Error: bundleIdentifier is required.");
         goto LABEL_19;
       }
 
-      v17 = [v3 accountIDAsNumber];
-      v18 = [TVAppAccountStoreObjC accountWithDSID:v17];
+      accountIDAsNumber = [validationCopy accountIDAsNumber];
+      v18 = [TVAppAccountStoreObjC accountWithDSID:accountIDAsNumber];
 
       v13 = v18;
     }
@@ -1467,19 +1467,19 @@ LABEL_22:
   return v11;
 }
 
-- (void)_onlineValidation:(id)a3 completion:(id)a4
+- (void)_onlineValidation:(id)validation completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  validationCopy = validation;
+  completionCopy = completion;
   v7 = objc_opt_class();
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __51__WLDPlaybackManager__onlineValidation_completion___block_invoke;
   v10[3] = &unk_100045630;
-  v11 = v5;
-  v12 = v6;
-  v8 = v5;
-  v9 = v6;
+  v11 = validationCopy;
+  v12 = completionCopy;
+  v8 = validationCopy;
+  v9 = completionCopy;
   [v7 isFullTVAppEnabledWithCompletion:v10];
 }
 
@@ -1614,20 +1614,20 @@ LABEL_15:
 LABEL_16:
 }
 
-- (BOOL)_shouldPromptForBundleID:(id)a3 outAccessStatus:(unint64_t *)a4
+- (BOOL)_shouldPromptForBundleID:(id)d outAccessStatus:(unint64_t *)status
 {
-  v6 = a3;
+  dCopy = d;
   v7 = +[WLKChannelUtilities sharedInstanceFiltered];
-  v8 = [v7 channelForBundleID:v6];
+  v8 = [v7 channelForBundleID:dCopy];
 
-  v9 = [v8 channelID];
+  channelID = [v8 channelID];
   v10 = WLKSubscriptionIdentifierForBundleID();
   v11 = +[WLKSettingsStore sharedSettings];
-  v12 = [v11 settingsForChannelID:v9 externalID:v10];
+  v12 = [v11 settingsForChannelID:channelID externalID:v10];
 
-  if (a4)
+  if (status)
   {
-    *a4 = [v12 accessStatus];
+    *status = [v12 accessStatus];
   }
 
   if (self->_isPrompting)
@@ -1640,42 +1640,42 @@ LABEL_17:
 
   if (!v8)
   {
-    NSLog(@"WLDPlaybackManager: No channel found for: %@", v6);
+    NSLog(@"WLDPlaybackManager: No channel found for: %@", dCopy);
     goto LABEL_17;
   }
 
   if ([v12 accessStatus] == 2)
   {
-    NSLog(@"WLDPlaybackManager: User has denied access for: %@ %@", v6, v9);
+    NSLog(@"WLDPlaybackManager: User has denied access for: %@ %@", dCopy, channelID);
     goto LABEL_17;
   }
 
   if ([v12 accessStatus] == 1)
   {
-    NSLog(@"WLDPlaybackManager: User has allowed access for: %@ %@", v6, v9);
+    NSLog(@"WLDPlaybackManager: User has allowed access for: %@ %@", dCopy, channelID);
     goto LABEL_17;
   }
 
   v13 = +[WLKReachabilityMonitor sharedInstance];
-  v14 = [v13 isNetworkReachable];
+  isNetworkReachable = [v13 isNetworkReachable];
 
-  if ((v14 & 1) == 0)
+  if ((isNetworkReachable & 1) == 0)
   {
     NSLog(@"WLDPlaybackManager: Will not prompt due to network being unavailable");
     goto LABEL_17;
   }
 
-  v15 = [RBSProcessPredicate predicateMatchingBundleIdentifier:v6];
+  v15 = [RBSProcessPredicate predicateMatchingBundleIdentifier:dCopy];
   v22 = 0;
   v16 = [RBSProcessHandle handleForPredicate:v15 error:&v22];
   v17 = v22;
 
   if (v16)
   {
-    v18 = [v16 currentState];
-    v19 = [v18 taskState];
-    v20 = v19 == 4;
-    if (v19 != 4)
+    currentState = [v16 currentState];
+    taskState = [currentState taskState];
+    v20 = taskState == 4;
+    if (taskState != 4)
     {
       NSLog(@"WLDPlaybackManager: Will not prompt because application is not foregrounded");
     }
@@ -1691,24 +1691,24 @@ LABEL_18:
   return v20;
 }
 
-- (void)_promptForBundleID:(id)a3 completionHandler:(id)a4
+- (void)_promptForBundleID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  NSLog(@"WLDPlaybackManager: promptForBundleID: %@", v6);
+  dCopy = d;
+  handlerCopy = handler;
+  NSLog(@"WLDPlaybackManager: promptForBundleID: %@", dCopy);
   self->_isPrompting = 1;
   v8 = objc_alloc_init(WLDRemoteAlertPresenter);
-  if ([(WLDRemoteAlertPresenter *)v8 promptForBundleID:v6])
+  if ([(WLDRemoteAlertPresenter *)v8 promptForBundleID:dCopy])
   {
     v9 = +[WLKSettingsStore sharedSettings];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = __59__WLDPlaybackManager__promptForBundleID_completionHandler___block_invoke;
     v11[3] = &unk_100045658;
-    v12 = v6;
+    v12 = dCopy;
     v13 = v9;
-    v14 = self;
-    v15 = v7;
+    selfCopy = self;
+    v15 = handlerCopy;
     v10 = v9;
     [v10 refreshWithCompletion:v11];
   }
@@ -1716,7 +1716,7 @@ LABEL_18:
   else
   {
     self->_isPrompting = 0;
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -1758,13 +1758,13 @@ void __44__WLDPlaybackManager__scanForPendingReports__block_invoke_2(uint64_t a1
   objc_sync_exit(obj);
 }
 
-- (void)_networkReachabilityChanged:(id)a3
+- (void)_networkReachabilityChanged:(id)changed
 {
   v4 = +[WLKReachabilityMonitor sharedInstance];
-  v5 = [v4 isNetworkReachable];
+  isNetworkReachable = [v4 isNetworkReachable];
 
-  NSLog(@"WLDPlaybackManager: Network reachability changed. Network is reachable:%d", v5);
-  if (v5)
+  NSLog(@"WLDPlaybackManager: Network reachability changed. Network is reachable:%d", isNetworkReachable);
+  if (isNetworkReachable)
   {
     [(WLDPlaybackManager *)self _enqueuePendingReports];
     +[WLKUpNextWidgetCacheManager requestInvalidation];
@@ -1773,13 +1773,13 @@ void __44__WLDPlaybackManager__scanForPendingReports__block_invoke_2(uint64_t a1
   }
 }
 
-- (BOOL)_serialize:(id)a3
+- (BOOL)_serialize:(id)_serialize
 {
-  v4 = a3;
-  v5 = [(WLDPlaybackManager *)self _queuePathForSummary:v4];
-  v6 = [v5 stringByDeletingLastPathComponent];
+  _serializeCopy = _serialize;
+  v5 = [(WLDPlaybackManager *)self _queuePathForSummary:_serializeCopy];
+  stringByDeletingLastPathComponent = [v5 stringByDeletingLastPathComponent];
   v7 = +[NSFileManager defaultManager];
-  v8 = [v7 fileExistsAtPath:v6];
+  v8 = [v7 fileExistsAtPath:stringByDeletingLastPathComponent];
 
   if (v8)
   {
@@ -1789,7 +1789,7 @@ void __44__WLDPlaybackManager__scanForPendingReports__block_invoke_2(uint64_t a1
 
   v10 = +[NSFileManager defaultManager];
   v25 = 0;
-  v11 = [v10 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:&v25];
+  v11 = [v10 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v25];
   v9 = v25;
 
   if (v11)
@@ -1813,7 +1813,7 @@ LABEL_4:
       else
       {
         v19 = [v15 decodeObjectOfClass:objc_opt_class() forKey:NSKeyedArchiveRootObjectKey];
-        v20 = [v4 isEqualToSummary:v19];
+        v20 = [_serializeCopy isEqualToSummary:v19];
 
         if (v20)
         {
@@ -1825,7 +1825,7 @@ LABEL_4:
     }
 
     v23 = v9;
-    v14 = [NSKeyedArchiver archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v23];
+    v14 = [NSKeyedArchiver archivedDataWithRootObject:_serializeCopy requiringSecureCoding:1 error:&v23];
     v21 = v23;
 
     if (!v14)
@@ -1834,7 +1834,7 @@ LABEL_4:
       goto LABEL_15;
     }
 
-    v15 = [(WLDPlaybackManager *)self _queuePathForSummary:v4];
+    v15 = [(WLDPlaybackManager *)self _queuePathForSummary:_serializeCopy];
     v18 = [v14 writeToFile:v15 atomically:1];
 LABEL_13:
 
@@ -1849,28 +1849,28 @@ LABEL_16:
   return v18;
 }
 
-- (void)_cleanupSummary:(id)a3
+- (void)_cleanupSummary:(id)summary
 {
-  v4 = [(WLDPlaybackManager *)self _queuePathForSummary:a3];
+  v4 = [(WLDPlaybackManager *)self _queuePathForSummary:summary];
   v3 = +[NSFileManager defaultManager];
   [v3 removeItemAtPath:v4 error:0];
 }
 
-- (BOOL)_isDirectoryPresentAndNonEmpty:(id)a3
+- (BOOL)_isDirectoryPresentAndNonEmpty:(id)empty
 {
-  v3 = a3;
+  emptyCopy = empty;
   v4 = +[NSFileManager defaultManager];
-  if ([v4 fileExistsAtPath:v3])
+  if ([v4 fileExistsAtPath:emptyCopy])
   {
     v5 = +[NSFileManager defaultManager];
-    v6 = [NSURL fileURLWithPath:v3];
+    v6 = [NSURL fileURLWithPath:emptyCopy];
     v16[0] = NSURLNameKey;
     v16[1] = NSURLIsDirectoryKey;
     v7 = [NSArray arrayWithObjects:v16 count:2];
     v8 = [v5 enumeratorAtURL:v6 includingPropertiesForKeys:v7 options:4 errorHandler:&__block_literal_global_325];
 
-    v9 = [v8 allObjects];
-    v10 = [v9 count];
+    allObjects = [v8 allObjects];
+    v10 = [allObjects count];
     v11 = v10 != 0;
 
     if (v10)
@@ -1882,7 +1882,7 @@ LABEL_16:
     {
       NSLog(@"WLDPlaybackManager: _checkIfUserDirectoryIsEmpty found empty directory. Will delete it to use group container one.");
       v15 = 0;
-      [v4 removeItemAtPath:v3 error:&v15];
+      [v4 removeItemAtPath:emptyCopy error:&v15];
       v12 = v15;
       v13 = v12;
       if (v12)
@@ -1910,17 +1910,17 @@ BOOL __53__WLDPlaybackManager__isDirectoryPresentAndNonEmpty___block_invoke(id a
   return a3 == 0;
 }
 
-- (id)_queuePathForSummary:(id)a3
+- (id)_queuePathForSummary:(id)summary
 {
-  v4 = a3;
-  v5 = [(WLDPlaybackManager *)self _queueDir];
-  v6 = [v4 accountID];
-  v7 = [v5 stringByAppendingPathComponent:v6];
+  summaryCopy = summary;
+  _queueDir = [(WLDPlaybackManager *)self _queueDir];
+  accountID = [summaryCopy accountID];
+  v7 = [_queueDir stringByAppendingPathComponent:accountID];
 
-  v8 = [v4 bundleID];
-  v9 = [v4 contentID];
+  bundleID = [summaryCopy bundleID];
+  contentID = [summaryCopy contentID];
 
-  v10 = [NSString stringWithFormat:@"%@-%@", v8, v9];
+  v10 = [NSString stringWithFormat:@"%@-%@", bundleID, contentID];
 
   v11 = [NSMutableString stringWithString:v10];
   v12 = [v11 length];
@@ -1939,11 +1939,11 @@ BOOL __53__WLDPlaybackManager__isDirectoryPresentAndNonEmpty___block_invoke(id a
   return v15;
 }
 
-- (void)_catalogSummary:(id)a3
+- (void)_catalogSummary:(id)summary
 {
-  v3 = [a3 sanitizedCopy];
+  sanitizedCopy = [summary sanitizedCopy];
   v9 = 0;
-  v4 = [NSKeyedArchiver archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v9];
+  v4 = [NSKeyedArchiver archivedDataWithRootObject:sanitizedCopy requiringSecureCoding:1 error:&v9];
   v5 = v9;
 
   if (v4)
@@ -1967,10 +1967,10 @@ BOOL __53__WLDPlaybackManager__isDirectoryPresentAndNonEmpty___block_invoke(id a
 
 - (BOOL)_isDirectPlaybackReportingDisabled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  disableDirectPlaybackReporting = v2->_disableDirectPlaybackReporting;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  disableDirectPlaybackReporting = selfCopy->_disableDirectPlaybackReporting;
+  objc_sync_exit(selfCopy);
 
   return disableDirectPlaybackReporting;
 }

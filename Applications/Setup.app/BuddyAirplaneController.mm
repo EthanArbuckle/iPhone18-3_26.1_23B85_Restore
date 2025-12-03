@@ -39,12 +39,12 @@
 
 - (void)_turnOffAirplaneModeTapped
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = objc_alloc_init(RadiosPreferences);
   [location[0] setAirplaneMode:0];
-  v2 = [(BuddyWelcomeController *)v4 delegate];
-  [(BFFFlowItemDelegate *)v2 flowItemDone:v4];
+  delegate = [(BuddyWelcomeController *)selfCopy delegate];
+  [(BFFFlowItemDelegate *)delegate flowItemDone:selfCopy];
 
   objc_storeStrong(location, 0);
 }

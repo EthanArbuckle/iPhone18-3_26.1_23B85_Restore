@@ -7,10 +7,10 @@
 - (id)wf_dateFromComponentsInCurrentTimeZone:()ContentKit
 {
   v4 = [a3 copy];
-  v5 = [a1 timeZone];
-  [v4 setTimeZone:v5];
+  timeZone = [self timeZone];
+  [v4 setTimeZone:timeZone];
 
-  v6 = [a1 dateFromComponents:v4];
+  v6 = [self dateFromComponents:v4];
 
   return v6;
 }

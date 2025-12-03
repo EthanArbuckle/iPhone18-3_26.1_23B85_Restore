@@ -1,19 +1,19 @@
 @interface SKUIGiftResultView
-- (SKUIGiftResultView)initWithFrame:(CGRect)a3;
+- (SKUIGiftResultView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setImage:(id)a3;
-- (void)setItemView:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setImage:(id)image;
+- (void)setItemView:(id)view;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SKUIGiftResultView
 
-- (SKUIGiftResultView)initWithFrame:(CGRect)a3
+- (SKUIGiftResultView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIGiftResultView initWithFrame:];
@@ -21,33 +21,33 @@
 
   v14.receiver = self;
   v14.super_class = SKUIGiftResultView;
-  v8 = [(SKUIGiftResultView *)&v14 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUIGiftResultView *)&v14 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = [MEMORY[0x277D75220] buttonWithType:1];
-    giftAgainButton = v8->_giftAgainButton;
-    v8->_giftAgainButton = v9;
+    giftAgainButton = height->_giftAgainButton;
+    height->_giftAgainButton = v9;
 
-    [(UIButton *)v8->_giftAgainButton setAutoresizingMask:5];
-    v11 = [(UIButton *)v8->_giftAgainButton titleLabel];
+    [(UIButton *)height->_giftAgainButton setAutoresizingMask:5];
+    titleLabel = [(UIButton *)height->_giftAgainButton titleLabel];
     v12 = [MEMORY[0x277D74300] systemFontOfSize:18.0];
-    [v11 setFont:v12];
+    [titleLabel setFont:v12];
 
-    [(SKUIGiftResultView *)v8 addSubview:v8->_giftAgainButton];
+    [(SKUIGiftResultView *)height addSubview:height->_giftAgainButton];
   }
 
-  return v8;
+  return height;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v12 = a3;
-  v4 = [(UIImageView *)self->_imageView image];
+  imageCopy = image;
+  image = [(UIImageView *)self->_imageView image];
 
-  if (v4 != v12)
+  if (image != imageCopy)
   {
     imageView = self->_imageView;
-    if (v12)
+    if (imageCopy)
     {
       if (!imageView)
       {
@@ -56,8 +56,8 @@
         self->_imageView = v7;
 
         v9 = self->_imageView;
-        v10 = [(SKUIGiftResultView *)self backgroundColor];
-        [(UIImageView *)v9 setBackgroundColor:v10];
+        backgroundColor = [(SKUIGiftResultView *)self backgroundColor];
+        [(UIImageView *)v9 setBackgroundColor:backgroundColor];
 
         [(SKUIGiftResultView *)self addSubview:self->_imageView];
         imageView = self->_imageView;
@@ -74,28 +74,28 @@
       self->_imageView = 0;
     }
 
-    v5 = [(SKUIGiftResultView *)self setNeedsLayout];
+    setNeedsLayout = [(SKUIGiftResultView *)self setNeedsLayout];
   }
 
-  MEMORY[0x2821F9730](v5);
+  MEMORY[0x2821F9730](setNeedsLayout);
 }
 
-- (void)setItemView:(id)a3
+- (void)setItemView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   itemView = self->_itemView;
-  if (itemView != v5)
+  if (itemView != viewCopy)
   {
-    v9 = v5;
+    v9 = viewCopy;
     if (itemView)
     {
       [(SKUIGiftItemView *)itemView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_itemView, a3);
+    objc_storeStrong(&self->_itemView, view);
     v7 = self->_itemView;
-    v8 = [(SKUIGiftResultView *)self backgroundColor];
-    [(SKUIGiftItemView *)v7 setBackgroundColor:v8];
+    backgroundColor = [(SKUIGiftResultView *)self backgroundColor];
+    [(SKUIGiftItemView *)v7 setBackgroundColor:backgroundColor];
 
     if (self->_itemView)
     {
@@ -103,20 +103,20 @@
     }
 
     itemView = [(SKUIGiftResultView *)self setNeedsLayout];
-    v5 = v9;
+    viewCopy = v9;
   }
 
-  MEMORY[0x2821F96F8](itemView, v5);
+  MEMORY[0x2821F96F8](itemView, viewCopy);
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v15 = a3;
-  v4 = [(SKUIGiftResultView *)self title];
-  if (v4 != v15 && ([v15 isEqualToString:v4] & 1) == 0)
+  titleCopy = title;
+  title = [(SKUIGiftResultView *)self title];
+  if (title != titleCopy && ([titleCopy isEqualToString:title] & 1) == 0)
   {
     titleLabel = self->_titleLabel;
-    if (v15)
+    if (titleCopy)
     {
       if (!titleLabel)
       {
@@ -125,8 +125,8 @@
         self->_titleLabel = v6;
 
         v8 = self->_titleLabel;
-        v9 = [(SKUIGiftResultView *)self backgroundColor];
-        [(UILabel *)v8 setBackgroundColor:v9];
+        backgroundColor = [(SKUIGiftResultView *)self backgroundColor];
+        [(UILabel *)v8 setBackgroundColor:backgroundColor];
 
         v10 = self->_titleLabel;
         v11 = [MEMORY[0x277D74300] boldSystemFontOfSize:16.0];
@@ -135,8 +135,8 @@
         [(UILabel *)self->_titleLabel setNumberOfLines:0];
         [(UILabel *)self->_titleLabel setTextAlignment:1];
         v12 = self->_titleLabel;
-        v13 = [MEMORY[0x277D75348] _labelColor];
-        [(UILabel *)v12 setTextColor:v13];
+        _labelColor = [MEMORY[0x277D75348] _labelColor];
+        [(UILabel *)v12 setTextColor:_labelColor];
 
         [(SKUIGiftResultView *)self addSubview:self->_titleLabel];
         titleLabel = self->_titleLabel;
@@ -158,8 +158,8 @@
 
 - (void)layoutSubviews
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 userInterfaceLayoutDirection];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
   [(SKUIGiftResultView *)self bounds];
   v6 = v5;
@@ -201,7 +201,7 @@
     v30 = floorf(v29);
     v31 = v30;
     v32 = self->_imageView;
-    if (v4)
+    if (userInterfaceLayoutDirection)
     {
       [SKUICGRectHelpers rect:v30 withFlippedOriginXRelativeTo:v23, v25, v26, v55, v57, v9, v11];
     }
@@ -230,7 +230,7 @@
     v28 = v36;
     v37 = self->_itemView;
     v55 = v6;
-    if (v4)
+    if (userInterfaceLayoutDirection)
     {
       v31 = 15.0;
       [SKUICGRectHelpers rect:15.0 withFlippedOriginXRelativeTo:v23, v12, v36, v6, v57, v9, v11];
@@ -264,7 +264,7 @@ LABEL_16:
   v44 = v23;
   v45 = v12;
   v46 = v18;
-  if (v4)
+  if (userInterfaceLayoutDirection)
   {
     [SKUICGRectHelpers rect:15.0 withFlippedOriginXRelativeTo:v23, v12, v18, v6, v57, v9, v56];
   }
@@ -278,7 +278,7 @@ LABEL_16:
   v48 = (v9 - v14) * 0.5;
   v49 = floorf(v48);
   giftAgainButton = self->_giftAgainButton;
-  if (v4)
+  if (userInterfaceLayoutDirection)
   {
     [SKUICGRectHelpers rect:v49 withFlippedOriginXRelativeTo:v47, v14, v16, v6, v57, v9, v56];
     v14 = v51;

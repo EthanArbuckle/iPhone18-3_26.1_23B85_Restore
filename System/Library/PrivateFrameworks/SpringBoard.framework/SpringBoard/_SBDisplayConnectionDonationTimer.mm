@@ -1,38 +1,38 @@
 @interface _SBDisplayConnectionDonationTimer
-- (_SBDisplayConnectionDonationTimer)initWithUniqueId:(id)a3 deviceName:(id)a4 productName:(id)a5 connect:(BOOL)a6 mirroring:(BOOL)a7 handler:(id)a8;
+- (_SBDisplayConnectionDonationTimer)initWithUniqueId:(id)id deviceName:(id)name productName:(id)productName connect:(BOOL)connect mirroring:(BOOL)mirroring handler:(id)handler;
 - (void)dealloc;
-- (void)resetTimerOnConnect:(BOOL)a3;
+- (void)resetTimerOnConnect:(BOOL)connect;
 @end
 
 @implementation _SBDisplayConnectionDonationTimer
 
-- (_SBDisplayConnectionDonationTimer)initWithUniqueId:(id)a3 deviceName:(id)a4 productName:(id)a5 connect:(BOOL)a6 mirroring:(BOOL)a7 handler:(id)a8
+- (_SBDisplayConnectionDonationTimer)initWithUniqueId:(id)id deviceName:(id)name productName:(id)productName connect:(BOOL)connect mirroring:(BOOL)mirroring handler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
+  idCopy = id;
+  nameCopy = name;
+  productNameCopy = productName;
+  handlerCopy = handler;
   v28.receiver = self;
   v28.super_class = _SBDisplayConnectionDonationTimer;
   v18 = [(_SBDisplayConnectionDonationTimer *)&v28 init];
   if (v18)
   {
-    v19 = [v14 copy];
+    v19 = [idCopy copy];
     uniqueId = v18->_uniqueId;
     v18->_uniqueId = v19;
 
-    v21 = [v15 copy];
+    v21 = [nameCopy copy];
     deviceName = v18->_deviceName;
     v18->_deviceName = v21;
 
-    v23 = [v16 copy];
+    v23 = [productNameCopy copy];
     productName = v18->_productName;
     v18->_productName = v23;
 
-    v18->_connect = a6;
-    v18->_mirroring = a7;
+    v18->_connect = connect;
+    v18->_mirroring = mirroring;
     v18->_counter = 0;
-    v25 = [v17 copy];
+    v25 = [handlerCopy copy];
     handler = v18->_handler;
     v18->_handler = v25;
   }
@@ -48,10 +48,10 @@
   [(_SBDisplayConnectionDonationTimer *)&v3 dealloc];
 }
 
-- (void)resetTimerOnConnect:(BOOL)a3
+- (void)resetTimerOnConnect:(BOOL)connect
 {
   counter = self->_counter;
-  if (a3)
+  if (connect)
   {
     v5 = counter + 1;
   }

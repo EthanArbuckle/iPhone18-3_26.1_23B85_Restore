@@ -1,6 +1,6 @@
 @interface CKSignificantIssueHandler
 + (CKSignificantIssueHandler)currentHandler;
-- (void)handleSignificantIssue:(id)a3 actions:(unint64_t)a4;
+- (void)handleSignificantIssue:(id)issue actions:(unint64_t)actions;
 @end
 
 @implementation CKSignificantIssueHandler
@@ -17,11 +17,11 @@
   return v3;
 }
 
-- (void)handleSignificantIssue:(id)a3 actions:(unint64_t)a4
+- (void)handleSignificantIssue:(id)issue actions:(unint64_t)actions
 {
-  v4 = a4;
+  actionsCopy = actions;
   v76[4] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  issueCopy = issue;
   if ((byte_1EA919CC8 & 1) == 0 && (__sTestOverridesAvailable[0] & 1) == 0)
   {
     v75[0] = @"processName";
@@ -29,14 +29,14 @@
     v11 = objc_msgSend_processName(v8, v9, v10);
     v76[0] = v11;
     v75[1] = @"detectedProcessName";
-    v14 = objc_msgSend_processName(v7, v12, v13);
+    v14 = objc_msgSend_processName(issueCopy, v12, v13);
     v76[1] = v14;
     v75[2] = @"sourceCodeLocation";
-    v17 = objc_msgSend_sourceCodeLocation(v7, v15, v16);
+    v17 = objc_msgSend_sourceCodeLocation(issueCopy, v15, v16);
     v20 = objc_msgSend_ckShortDescription(v17, v18, v19);
     v76[2] = v20;
     v75[3] = @"reason";
-    v23 = objc_msgSend_reason(v7, v21, v22);
+    v23 = objc_msgSend_reason(issueCopy, v21, v22);
     v25 = v23;
     v26 = @"Unknown";
     if (v23)
@@ -51,10 +51,10 @@
     v69[1] = 3221225472;
     v69[2] = sub_1886C40D4;
     v69[3] = &unk_1E70BC048;
-    v28 = v7;
+    v28 = issueCopy;
     v70 = v28;
     objc_msgSend_reportWithEventType_event_bundleIdentifier_completionHandler_(CKCloudTelemetryReporter, v29, @"SignificantIssue", v27, 0, v69);
-    if ((v4 & 2) != 0)
+    if ((actionsCopy & 2) != 0)
     {
       v32 = objc_msgSend_defaultReporter(CKSymptomDiagnosticsReporter, v30, v31);
       v35 = objc_msgSend_sourceCodeLocation(v28, v33, v34);
@@ -70,7 +70,7 @@
     }
   }
 
-  if (v4)
+  if (actionsCopy)
   {
     if (ck_log_initialization_predicate != -1)
     {
@@ -81,9 +81,9 @@
     if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_FAULT))
     {
       v47 = v57;
-      v50 = objc_msgSend_sourceCodeLocation(v7, v61, v62);
+      v50 = objc_msgSend_sourceCodeLocation(issueCopy, v61, v62);
       v53 = objc_msgSend_ckShortDescription(v50, v63, v64);
-      v56 = objc_msgSend_reason(v7, v65, v66);
+      v56 = objc_msgSend_reason(issueCopy, v65, v66);
       *buf = 138412546;
       v72 = v53;
       v73 = 2112;
@@ -91,7 +91,7 @@
       _os_log_fault_impl(&dword_1883EA000, v47, OS_LOG_TYPE_FAULT, "Significant issue at %@: %@", buf, 0x16u);
 LABEL_23:
 
-      if ((v4 & 4) == 0)
+      if ((actionsCopy & 4) == 0)
       {
         goto LABEL_19;
       }
@@ -111,9 +111,9 @@ LABEL_23:
     if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_ERROR))
     {
       v47 = v46;
-      v50 = objc_msgSend_sourceCodeLocation(v7, v48, v49);
+      v50 = objc_msgSend_sourceCodeLocation(issueCopy, v48, v49);
       v53 = objc_msgSend_ckShortDescription(v50, v51, v52);
-      v56 = objc_msgSend_reason(v7, v54, v55);
+      v56 = objc_msgSend_reason(issueCopy, v54, v55);
       *buf = 138412546;
       v72 = v53;
       v73 = 2112;
@@ -123,7 +123,7 @@ LABEL_23:
     }
   }
 
-  if ((v4 & 4) == 0)
+  if ((actionsCopy & 4) == 0)
   {
     goto LABEL_19;
   }
@@ -136,7 +136,7 @@ LABEL_17:
   }
 
 LABEL_19:
-  if ((v4 & 8) != 0)
+  if ((actionsCopy & 8) != 0)
   {
     v59 = getpid();
     kill(v59, 5);

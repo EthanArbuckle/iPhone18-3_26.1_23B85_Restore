@@ -1,52 +1,52 @@
 @interface PXComposeRecipientTableViewModel
 - (PXComposeRecipientTableViewModel)init;
-- (PXComposeRecipientTableViewModel)initWithComposeRecipientDataSourceManager:(id)a3;
-- (void)performChanges:(id)a3;
-- (void)setCanAddRecipients:(BOOL)a3;
-- (void)setCanDeleteRecipients:(BOOL)a3;
-- (void)setCanSelectRecipients:(BOOL)a3;
-- (void)setComposeRecipients:(id)a3;
-- (void)setFooterTitle:(id)a3;
-- (void)setHeaderTitle:(id)a3;
-- (void)setRecipients:(id)a3;
-- (void)setUseGroupedBackgroundColor:(BOOL)a3;
+- (PXComposeRecipientTableViewModel)initWithComposeRecipientDataSourceManager:(id)manager;
+- (void)performChanges:(id)changes;
+- (void)setCanAddRecipients:(BOOL)recipients;
+- (void)setCanDeleteRecipients:(BOOL)recipients;
+- (void)setCanSelectRecipients:(BOOL)recipients;
+- (void)setComposeRecipients:(id)recipients;
+- (void)setFooterTitle:(id)title;
+- (void)setHeaderTitle:(id)title;
+- (void)setRecipients:(id)recipients;
+- (void)setUseGroupedBackgroundColor:(BOOL)color;
 @end
 
 @implementation PXComposeRecipientTableViewModel
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXComposeRecipientTableViewModel;
-  [(PXComposeRecipientTableViewModel *)&v3 performChanges:a3];
+  [(PXComposeRecipientTableViewModel *)&v3 performChanges:changes];
 }
 
-- (void)setUseGroupedBackgroundColor:(BOOL)a3
+- (void)setUseGroupedBackgroundColor:(BOOL)color
 {
-  if (self->_useGroupedBackgroundColor != a3)
+  if (self->_useGroupedBackgroundColor != color)
   {
-    self->_useGroupedBackgroundColor = a3;
+    self->_useGroupedBackgroundColor = color;
     [(PXComposeRecipientTableViewModel *)self signalChange:128];
   }
 }
 
-- (void)setFooterTitle:(id)a3
+- (void)setFooterTitle:(id)title
 {
-  v5 = a3;
-  if (!v5)
+  titleCopy = title;
+  if (!titleCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewModel.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"footerTitle"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewModel.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"footerTitle"}];
 
-    v5 = 0;
+    titleCopy = 0;
   }
 
   footerTitle = self->_footerTitle;
-  if (footerTitle != v5)
+  if (footerTitle != titleCopy)
   {
-    v11 = v5;
-    v7 = [(NSString *)footerTitle isEqualToString:v5];
-    v5 = v11;
+    v11 = titleCopy;
+    v7 = [(NSString *)footerTitle isEqualToString:titleCopy];
+    titleCopy = v11;
     if (!v7)
     {
       v8 = [(NSString *)v11 copy];
@@ -54,28 +54,28 @@
       self->_footerTitle = v8;
 
       [(PXComposeRecipientTableViewModel *)self signalChange:64];
-      v5 = v11;
+      titleCopy = v11;
     }
   }
 }
 
-- (void)setHeaderTitle:(id)a3
+- (void)setHeaderTitle:(id)title
 {
-  v5 = a3;
-  if (!v5)
+  titleCopy = title;
+  if (!titleCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewModel.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"headerTitle"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewModel.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"headerTitle"}];
 
-    v5 = 0;
+    titleCopy = 0;
   }
 
   headerTitle = self->_headerTitle;
-  if (headerTitle != v5)
+  if (headerTitle != titleCopy)
   {
-    v11 = v5;
-    v7 = [(NSString *)headerTitle isEqualToString:v5];
-    v5 = v11;
+    v11 = titleCopy;
+    v7 = [(NSString *)headerTitle isEqualToString:titleCopy];
+    titleCopy = v11;
     if (!v7)
     {
       v8 = [(NSString *)v11 copy];
@@ -83,55 +83,55 @@
       self->_headerTitle = v8;
 
       [(PXComposeRecipientTableViewModel *)self signalChange:32];
-      v5 = v11;
+      titleCopy = v11;
     }
   }
 }
 
-- (void)setCanSelectRecipients:(BOOL)a3
+- (void)setCanSelectRecipients:(BOOL)recipients
 {
-  if (self->_canSelectRecipients != a3)
+  if (self->_canSelectRecipients != recipients)
   {
-    self->_canSelectRecipients = a3;
+    self->_canSelectRecipients = recipients;
     [(PXComposeRecipientTableViewModel *)self signalChange:16];
   }
 }
 
-- (void)setCanDeleteRecipients:(BOOL)a3
+- (void)setCanDeleteRecipients:(BOOL)recipients
 {
-  if (self->_canDeleteRecipients != a3)
+  if (self->_canDeleteRecipients != recipients)
   {
-    self->_canDeleteRecipients = a3;
+    self->_canDeleteRecipients = recipients;
     [(PXComposeRecipientTableViewModel *)self signalChange:8];
   }
 }
 
-- (void)setCanAddRecipients:(BOOL)a3
+- (void)setCanAddRecipients:(BOOL)recipients
 {
-  if (self->_canAddRecipients != a3)
+  if (self->_canAddRecipients != recipients)
   {
-    self->_canAddRecipients = a3;
+    self->_canAddRecipients = recipients;
     [(PXComposeRecipientTableViewModel *)self signalChange:4];
   }
 }
 
-- (void)setComposeRecipients:(id)a3
+- (void)setComposeRecipients:(id)recipients
 {
-  v5 = a3;
-  if (!v5)
+  recipientsCopy = recipients;
+  if (!recipientsCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewModel.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"composeRecipients"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewModel.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"composeRecipients"}];
 
-    v5 = 0;
+    recipientsCopy = 0;
   }
 
   composeRecipients = self->_composeRecipients;
-  if (composeRecipients != v5)
+  if (composeRecipients != recipientsCopy)
   {
-    v11 = v5;
-    v7 = [(NSArray *)composeRecipients isEqual:v5];
-    v5 = v11;
+    v11 = recipientsCopy;
+    v7 = [(NSArray *)composeRecipients isEqual:recipientsCopy];
+    recipientsCopy = v11;
     if ((v7 & 1) == 0)
     {
       v8 = [(NSArray *)v11 copy];
@@ -139,28 +139,28 @@
       self->_composeRecipients = v8;
 
       [(PXComposeRecipientTableViewModel *)self signalChange:2];
-      v5 = v11;
+      recipientsCopy = v11;
     }
   }
 }
 
-- (void)setRecipients:(id)a3
+- (void)setRecipients:(id)recipients
 {
-  v5 = a3;
-  if (!v5)
+  recipientsCopy = recipients;
+  if (!recipientsCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewModel.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"recipients"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewModel.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"recipients"}];
 
-    v5 = 0;
+    recipientsCopy = 0;
   }
 
   recipients = self->_recipients;
-  if (recipients != v5)
+  if (recipients != recipientsCopy)
   {
-    v11 = v5;
-    v7 = [(NSArray *)recipients isEqual:v5];
-    v5 = v11;
+    v11 = recipientsCopy;
+    v7 = [(NSArray *)recipients isEqual:recipientsCopy];
+    recipientsCopy = v11;
     if ((v7 & 1) == 0)
     {
       v8 = [(NSArray *)v11 copy];
@@ -168,21 +168,21 @@
       self->_recipients = v8;
 
       [(PXComposeRecipientTableViewModel *)self signalChange:1];
-      v5 = v11;
+      recipientsCopy = v11;
     }
   }
 }
 
-- (PXComposeRecipientTableViewModel)initWithComposeRecipientDataSourceManager:(id)a3
+- (PXComposeRecipientTableViewModel)initWithComposeRecipientDataSourceManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v17.receiver = self;
   v17.super_class = PXComposeRecipientTableViewModel;
   v6 = [(PXComposeRecipientTableViewModel *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_composeRecipientDataSourceManager, a3);
+    objc_storeStrong(&v6->_composeRecipientDataSourceManager, manager);
     recipients = v7->_recipients;
     v9 = MEMORY[0x1E695E0F0];
     v7->_recipients = MEMORY[0x1E695E0F0];
@@ -196,10 +196,10 @@
     footerTitle = v7->_footerTitle;
     v7->_footerTitle = &stru_1F1741150;
 
-    v13 = [(PXComposeRecipientDataSourceManager *)v7->_composeRecipientDataSourceManager peopleSuggestionsDataSourceManager];
-    v14 = [v13 mediaProvider];
+    peopleSuggestionsDataSourceManager = [(PXComposeRecipientDataSourceManager *)v7->_composeRecipientDataSourceManager peopleSuggestionsDataSourceManager];
+    mediaProvider = [peopleSuggestionsDataSourceManager mediaProvider];
     peopleSuggestionsMediaProvider = v7->_peopleSuggestionsMediaProvider;
-    v7->_peopleSuggestionsMediaProvider = v14;
+    v7->_peopleSuggestionsMediaProvider = mediaProvider;
   }
 
   return v7;
@@ -207,8 +207,8 @@
 
 - (PXComposeRecipientTableViewModel)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewModel.m" lineNumber:22 description:{@"%s is not available as initializer", "-[PXComposeRecipientTableViewModel init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewModel.m" lineNumber:22 description:{@"%s is not available as initializer", "-[PXComposeRecipientTableViewModel init]"}];
 
   abort();
 }

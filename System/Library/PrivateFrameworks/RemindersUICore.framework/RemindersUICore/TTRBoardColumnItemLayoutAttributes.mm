@@ -1,7 +1,7 @@
 @interface TTRBoardColumnItemLayoutAttributes
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_TtC15RemindersUICore34TTRBoardColumnItemLayoutAttributes)init;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation TTRBoardColumnItemLayoutAttributes
@@ -15,10 +15,10 @@
   return [(UICollectionViewLayoutAttributes *)&v5 init];
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v4 = self;
-  TTRBoardColumnItemLayoutAttributes.copy(with:)(a3, v7);
+  selfCopy = self;
+  TTRBoardColumnItemLayoutAttributes.copy(with:)(zone, v7);
 
   __swift_project_boxed_opaque_existential_1(v7, v7[3]);
   v5 = sub_21DBFC62C();
@@ -26,11 +26,11 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_21DBFBC1C();
     swift_unknownObjectRelease();
@@ -39,7 +39,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = TTRBoardColumnItemLayoutAttributes.isEqual(_:)(v8);

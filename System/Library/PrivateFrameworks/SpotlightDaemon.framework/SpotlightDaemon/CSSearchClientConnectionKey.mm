@@ -1,38 +1,38 @@
 @interface CSSearchClientConnectionKey
-+ (id)keyWithConnection:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CSSearchClientConnectionKey)initWithConnection:(id)a3;
++ (id)keyWithConnection:(id)connection;
+- (BOOL)isEqual:(id)equal;
+- (CSSearchClientConnectionKey)initWithConnection:(id)connection;
 @end
 
 @implementation CSSearchClientConnectionKey
 
-+ (id)keyWithConnection:(id)a3
++ (id)keyWithConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [[CSSearchClientConnectionKey alloc] initWithConnection:v3];
+  connectionCopy = connection;
+  v4 = [[CSSearchClientConnectionKey alloc] initWithConnection:connectionCopy];
 
   return v4;
 }
 
-- (CSSearchClientConnectionKey)initWithConnection:(id)a3
+- (CSSearchClientConnectionKey)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = CSSearchClientConnectionKey;
   v6 = [(CSSearchClientConnectionKey *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -42,17 +42,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(CSSearchClientConnectionKey *)v4 connection];
+      connection = [(CSSearchClientConnectionKey *)equalCopy connection];
       connection = self->_connection;
-      if (v5 == connection)
+      if (connection == connection)
       {
         v8 = 1;
       }
 
       else
       {
-        v7 = [(CSSearchClientConnectionKey *)v4 connection];
-        v8 = xpc_equal(connection, v7);
+        connection2 = [(CSSearchClientConnectionKey *)equalCopy connection];
+        v8 = xpc_equal(connection, connection2);
       }
     }
 

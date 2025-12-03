@@ -1,19 +1,19 @@
 @interface WCDPrivateClient
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (WCDClientDelegate)delegate;
 - (WCDPrivateClient)init;
-- (id)preferredBundleIDForApplicationInfo:(id)a3;
+- (id)preferredBundleIDForApplicationInfo:(id)info;
 - (unint64_t)hash;
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5;
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply;
 - (void)dealloc;
-- (void)fakeIncomingPayloadOnSubService:(id)a3 ofType:(id)a4 clientData:(id)a5 resource:(id)a6 resourceSandboxToken:(id)a7 completionHandler:(id)a8;
-- (void)handlePairedSyncComplicationsStartedWithCompletionHandler:(id)a3;
-- (void)handlePingForApplicationInfo:(id)a3;
-- (void)isApplicationInfoPrivileged:(id)a3 completionHandler:(id)a4;
+- (void)fakeIncomingPayloadOnSubService:(id)service ofType:(id)type clientData:(id)data resource:(id)resource resourceSandboxToken:(id)token completionHandler:(id)handler;
+- (void)handlePairedSyncComplicationsStartedWithCompletionHandler:(id)handler;
+- (void)handlePingForApplicationInfo:(id)info;
+- (void)isApplicationInfoPrivileged:(id)privileged completionHandler:(id)handler;
 - (void)reconnect;
-- (void)setConnection:(id)a3;
-- (void)shouldWakeAppForApplicationInfo:(id)a3 completionHandler:(id)a4;
+- (void)setConnection:(id)connection;
+- (void)shouldWakeAppForApplicationInfo:(id)info completionHandler:(id)handler;
 @end
 
 @implementation WCDPrivateClient
@@ -40,13 +40,13 @@
   [(WCDPrivateClient *)&v2 dealloc];
 }
 
-- (void)setConnection:(id)a3
+- (void)setConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   p_connection = &self->_connection;
-  if (([(NSXPCConnection *)self->_connection isEqual:v5]& 1) == 0)
+  if (([(NSXPCConnection *)self->_connection isEqual:connectionCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_connection, a3);
+    objc_storeStrong(&self->_connection, connection);
     [(NSXPCConnection *)self->_connection setDelegate:self];
     v7 = +[WCPrivateXPCManager privateDaemonInterface];
     [(NSXPCConnection *)self->_connection setExportedInterface:v7];
@@ -79,16 +79,16 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(WCDPrivateClient *)self connection];
-  v6 = [NSString stringWithFormat:@"<%@: %p, connection: %@>", v4, self, v5];
+  connection = [(WCDPrivateClient *)self connection];
+  v6 = [NSString stringWithFormat:@"<%@: %p, connection: %@>", v4, self, connection];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -98,11 +98,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(WCDPrivateClient *)self connection];
-      v7 = [(WCDPrivateClient *)v5 connection];
+      v5 = equalCopy;
+      connection = [(WCDPrivateClient *)self connection];
+      connection2 = [(WCDPrivateClient *)v5 connection];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [connection isEqual:connection2];
     }
 
     else
@@ -116,22 +116,22 @@
 
 - (unint64_t)hash
 {
-  v2 = [(WCDPrivateClient *)self connection];
-  v3 = [v2 hash];
+  connection = [(WCDPrivateClient *)self connection];
+  v3 = [connection hash];
 
   return v3;
 }
 
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply
 {
-  v5 = a4;
-  [v5 retainArguments];
+  invocationCopy = invocation;
+  [invocationCopy retainArguments];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000F4D0;
   block[3] = &unk_100048A48;
-  v8 = v5;
-  v6 = v5;
+  v8 = invocationCopy;
+  v6 = invocationCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
@@ -145,20 +145,20 @@
   }
 }
 
-- (void)fakeIncomingPayloadOnSubService:(id)a3 ofType:(id)a4 clientData:(id)a5 resource:(id)a6 resourceSandboxToken:(id)a7 completionHandler:(id)a8
+- (void)fakeIncomingPayloadOnSubService:(id)service ofType:(id)type clientData:(id)data resource:(id)resource resourceSandboxToken:(id)token completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v38 = a6;
-  v17 = a7;
+  serviceCopy = service;
+  typeCopy = type;
+  dataCopy = data;
+  resourceCopy = resource;
+  tokenCopy = token;
   v48[0] = _NSConcreteStackBlock;
   v48[1] = 3221225472;
   v48[2] = sub_10000FAA8;
   v48[3] = &unk_100048E30;
-  v18 = v14;
+  v18 = serviceCopy;
   v49 = v18;
-  v19 = a8;
+  handlerCopy = handler;
   v41 = objc_retainBlock(v48);
   v46[0] = _NSConcreteStackBlock;
   v46[1] = 3221225472;
@@ -169,46 +169,46 @@
   v47 = v20;
   v21 = objc_retainBlock(v46);
   v22 = objc_opt_new();
-  v23 = [v22 UUIDString];
+  uUIDString = [v22 UUIDString];
 
-  v40 = v16;
-  if ([v15 isEqual:@"file"])
+  v40 = dataCopy;
+  if ([typeCopy isEqual:@"file"])
   {
     v24 = objc_opt_new();
     [v24 setObject:&off_10004AB28 forKeyedSubscript:@"t"];
-    if (v16)
+    if (dataCopy)
     {
-      [v24 setObject:v16 forKeyedSubscript:@"u"];
+      [v24 setObject:dataCopy forKeyedSubscript:@"u"];
     }
 
     v45 = 0;
-    v25 = v38;
-    (v21[2])(v21, v38, v17, v24, v23, &v45);
+    v25 = resourceCopy;
+    (v21[2])(v21, resourceCopy, tokenCopy, v24, uUIDString, &v45);
     v26 = v45;
     goto LABEL_19;
   }
 
-  if (![v15 isEqual:@"userinfo"])
+  if (![typeCopy isEqual:@"userinfo"])
   {
-    if ([v15 isEqual:@"complication"])
+    if ([typeCopy isEqual:@"complication"])
     {
       v24 = objc_opt_new();
       [v24 setVersion:1];
-      [v24 setClientData:v16];
-      [v24 setTransferIdentifier:v23];
-      v33 = [v24 data];
+      [v24 setClientData:dataCopy];
+      [v24 setTransferIdentifier:uUIDString];
+      data = [v24 data];
       v34 = v41[2];
     }
 
     else
     {
-      if (![v15 isEqual:@"appcontext"])
+      if (![typeCopy isEqual:@"appcontext"])
       {
         v26 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
         v24 = wc_log();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
-          sub_10002A620(v15, v24);
+          sub_10002A620(typeCopy, v24);
         }
 
         goto LABEL_18;
@@ -216,8 +216,8 @@
 
       v24 = objc_opt_new();
       [v24 setVersion:1];
-      [v24 setClientData:v16];
-      v33 = [v24 data];
+      [v24 setClientData:dataCopy];
+      data = [v24 data];
       v34 = v41[2];
     }
 
@@ -225,26 +225,26 @@
 
     v26 = 0;
 LABEL_18:
-    v25 = v38;
+    v25 = resourceCopy;
     goto LABEL_19;
   }
 
-  v35 = v15;
+  v35 = typeCopy;
   v36 = v20;
-  v37 = v17;
+  v37 = tokenCopy;
   v24 = objc_opt_new();
   v44 = 0;
-  [v24 updateUserInfoData:v16 error:&v44];
+  [v24 updateUserInfoData:dataCopy error:&v44];
   v27 = v44;
-  [v24 setTransferIdentifier:v23];
-  v28 = [v24 protobufData];
+  [v24 setTransferIdentifier:uUIDString];
+  protobufData = [v24 protobufData];
   v29 = NSTemporaryDirectory();
   v30 = [v29 stringByAppendingPathComponent:WCUserInfoTransferWireDataFileName];
   v25 = [NSURL fileURLWithPath:v30];
 
   v43 = v27;
-  v39 = v28;
-  LODWORD(v29) = [v28 writeToURL:v25 options:1073741825 error:&v43];
+  v39 = protobufData;
+  LODWORD(v29) = [protobufData writeToURL:v25 options:1073741825 error:&v43];
   v26 = v43;
 
   if (v29)
@@ -253,8 +253,8 @@ LABEL_18:
     v51 = &off_10004AB40;
     v31 = [NSDictionary dictionaryWithObjects:&v51 forKeys:&v50 count:1];
     v42 = v26;
-    v17 = v37;
-    (v21[2])(v21, v25, v37, v31, v23, &v42);
+    tokenCopy = v37;
+    (v21[2])(v21, v25, v37, v31, uUIDString, &v42);
     v32 = v42;
 
     v26 = v32;
@@ -263,74 +263,74 @@ LABEL_18:
   else
   {
     v31 = wc_log();
-    v17 = v37;
+    tokenCopy = v37;
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
       sub_10002A698(v26);
     }
   }
 
-  v15 = v35;
+  typeCopy = v35;
   v20 = v36;
 
 LABEL_19:
-  v19[2](v19, v26);
+  handlerCopy[2](handlerCopy, v26);
 }
 
-- (id)preferredBundleIDForApplicationInfo:(id)a3
+- (id)preferredBundleIDForApplicationInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 watchExtensionBundleIdentifier];
-  v5 = v4;
-  if (v4)
+  infoCopy = info;
+  watchExtensionBundleIdentifier = [infoCopy watchExtensionBundleIdentifier];
+  v5 = watchExtensionBundleIdentifier;
+  if (watchExtensionBundleIdentifier)
   {
-    v6 = v4;
+    watchAppBundleIdentifier = watchExtensionBundleIdentifier;
   }
 
   else
   {
-    v6 = [v3 watchAppBundleIdentifier];
+    watchAppBundleIdentifier = [infoCopy watchAppBundleIdentifier];
   }
 
-  v7 = v6;
+  v7 = watchAppBundleIdentifier;
 
   return v7;
 }
 
-- (void)handlePingForApplicationInfo:(id)a3
+- (void)handlePingForApplicationInfo:(id)info
 {
-  v4 = a3;
-  v6 = [(WCDPrivateClient *)self remoteObjectProxy];
-  v5 = [(WCDPrivateClient *)self preferredBundleIDForApplicationInfo:v4];
+  infoCopy = info;
+  remoteObjectProxy = [(WCDPrivateClient *)self remoteObjectProxy];
+  v5 = [(WCDPrivateClient *)self preferredBundleIDForApplicationInfo:infoCopy];
 
-  [v6 handlePingForExtensionBundleID:v5];
+  [remoteObjectProxy handlePingForExtensionBundleID:v5];
 }
 
-- (void)isApplicationInfoPrivileged:(id)a3 completionHandler:(id)a4
+- (void)isApplicationInfoPrivileged:(id)privileged completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(WCDPrivateClient *)self remoteObjectProxy];
-  v8 = [(WCDPrivateClient *)self preferredBundleIDForApplicationInfo:v7];
+  handlerCopy = handler;
+  privilegedCopy = privileged;
+  remoteObjectProxy = [(WCDPrivateClient *)self remoteObjectProxy];
+  v8 = [(WCDPrivateClient *)self preferredBundleIDForApplicationInfo:privilegedCopy];
 
-  [v9 isExtensionPrivileged:v8 completionHandler:v6];
+  [remoteObjectProxy isExtensionPrivileged:v8 completionHandler:handlerCopy];
 }
 
-- (void)handlePairedSyncComplicationsStartedWithCompletionHandler:(id)a3
+- (void)handlePairedSyncComplicationsStartedWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WCDPrivateClient *)self remoteObjectProxy];
-  [v5 handlePairedSyncComplicationsStartedWithCompletionHandler:v4];
+  handlerCopy = handler;
+  remoteObjectProxy = [(WCDPrivateClient *)self remoteObjectProxy];
+  [remoteObjectProxy handlePairedSyncComplicationsStartedWithCompletionHandler:handlerCopy];
 }
 
-- (void)shouldWakeAppForApplicationInfo:(id)a3 completionHandler:(id)a4
+- (void)shouldWakeAppForApplicationInfo:(id)info completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(WCDPrivateClient *)self remoteObjectProxy];
-  v8 = [(WCDPrivateClient *)self preferredBundleIDForApplicationInfo:v7];
+  handlerCopy = handler;
+  infoCopy = info;
+  remoteObjectProxy = [(WCDPrivateClient *)self remoteObjectProxy];
+  v8 = [(WCDPrivateClient *)self preferredBundleIDForApplicationInfo:infoCopy];
 
-  [v9 shouldWakeAppWithBundleID:v8 completionHandler:v6];
+  [remoteObjectProxy shouldWakeAppWithBundleID:v8 completionHandler:handlerCopy];
 }
 
 - (WCDClientDelegate)delegate

@@ -1,55 +1,55 @@
 @interface ATXSleepSuggestionOccurrence
-- (ATXSleepSuggestionOccurrence)initWithBedtimeComponents:(id)a3 wakeupComponents:(id)a4 weekdays:(unint64_t)a5;
-- (ATXSleepSuggestionOccurrence)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ATXSleepSuggestionOccurrence)initWithBedtimeComponents:(id)components wakeupComponents:(id)wakeupComponents weekdays:(unint64_t)weekdays;
+- (ATXSleepSuggestionOccurrence)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXSleepSuggestionOccurrence
 
-- (ATXSleepSuggestionOccurrence)initWithBedtimeComponents:(id)a3 wakeupComponents:(id)a4 weekdays:(unint64_t)a5
+- (ATXSleepSuggestionOccurrence)initWithBedtimeComponents:(id)components wakeupComponents:(id)wakeupComponents weekdays:(unint64_t)weekdays
 {
-  v9 = a3;
-  v10 = a4;
+  componentsCopy = components;
+  wakeupComponentsCopy = wakeupComponents;
   v14.receiver = self;
   v14.super_class = ATXSleepSuggestionOccurrence;
   v11 = [(ATXSleepSuggestionOccurrence *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_bedtimeComponents, a3);
-    objc_storeStrong(&v12->_wakeUpComponents, a4);
-    v12->_weekdays = a5;
+    objc_storeStrong(&v11->_bedtimeComponents, components);
+    objc_storeStrong(&v12->_wakeUpComponents, wakeupComponents);
+    v12->_weekdays = weekdays;
   }
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bedtimeComponents = self->_bedtimeComponents;
-  v5 = a3;
-  [v5 encodeObject:bedtimeComponents forKey:@"bedtimeComponents"];
-  [v5 encodeObject:self->_wakeUpComponents forKey:@"wakeUpComponents"];
-  [v5 encodeInteger:self->_weekdays forKey:@"weekdays"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bedtimeComponents forKey:@"bedtimeComponents"];
+  [coderCopy encodeObject:self->_wakeUpComponents forKey:@"wakeUpComponents"];
+  [coderCopy encodeInteger:self->_weekdays forKey:@"weekdays"];
 }
 
-- (ATXSleepSuggestionOccurrence)initWithCoder:(id)a3
+- (ATXSleepSuggestionOccurrence)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = ATXSleepSuggestionOccurrence;
   v5 = [(ATXSleepSuggestionOccurrence *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bedtimeComponents"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bedtimeComponents"];
     bedtimeComponents = v5->_bedtimeComponents;
     v5->_bedtimeComponents = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"wakeUpComponents"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"wakeUpComponents"];
     wakeUpComponents = v5->_wakeUpComponents;
     v5->_wakeUpComponents = v8;
 
-    v5->_weekdays = [v4 decodeIntegerForKey:@"weekdays"];
+    v5->_weekdays = [coderCopy decodeIntegerForKey:@"weekdays"];
   }
 
   return v5;

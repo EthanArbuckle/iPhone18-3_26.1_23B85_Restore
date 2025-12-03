@@ -1,6 +1,6 @@
 @interface GetCarClimateIntent
 - (GetCarClimateIntent)init;
-- (GetCarClimateIntent)initWithCoder:(id)a3;
+- (GetCarClimateIntent)initWithCoder:(id)coder;
 @end
 
 @implementation GetCarClimateIntent
@@ -12,12 +12,12 @@
   return [(GetCarClimateIntent *)&v3 init];
 }
 
-- (GetCarClimateIntent)initWithCoder:(id)a3
+- (GetCarClimateIntent)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for GetCarClimateIntent();
-  v4 = a3;
-  v5 = [(GetCarClimateIntent *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(GetCarClimateIntent *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

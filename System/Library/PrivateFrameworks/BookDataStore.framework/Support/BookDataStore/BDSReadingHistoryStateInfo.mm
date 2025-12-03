@@ -1,40 +1,40 @@
 @interface BDSReadingHistoryStateInfo
-- (BDSReadingHistoryStateInfo)initWithCoder:(id)a3;
-- (BDSReadingHistoryStateInfo)initWithCurrentStreak:(int64_t)a3 longestStreak:(id)a4 today:(id)a5 readingHistory:(id)a6;
+- (BDSReadingHistoryStateInfo)initWithCoder:(id)coder;
+- (BDSReadingHistoryStateInfo)initWithCurrentStreak:(int64_t)streak longestStreak:(id)longestStreak today:(id)today readingHistory:(id)history;
 - (BOOL)isEmptyState;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BDSReadingHistoryStateInfo
 
-- (BDSReadingHistoryStateInfo)initWithCurrentStreak:(int64_t)a3 longestStreak:(id)a4 today:(id)a5 readingHistory:(id)a6
+- (BDSReadingHistoryStateInfo)initWithCurrentStreak:(int64_t)streak longestStreak:(id)longestStreak today:(id)today readingHistory:(id)history
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  longestStreakCopy = longestStreak;
+  todayCopy = today;
+  historyCopy = history;
   v17.receiver = self;
   v17.super_class = BDSReadingHistoryStateInfo;
   v14 = [(BDSReadingHistoryStateInfo *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_currentStreak = a3;
-    objc_storeStrong(&v14->_longestStreak, a4);
-    objc_storeStrong(&v15->_today, a5);
-    objc_storeStrong(&v15->_readingHistory, a6);
+    v14->_currentStreak = streak;
+    objc_storeStrong(&v14->_longestStreak, longestStreak);
+    objc_storeStrong(&v15->_today, today);
+    objc_storeStrong(&v15->_readingHistory, history);
   }
 
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self != a3)
+  if (self != equal)
   {
-    v4 = a3;
+    equalCopy = equal;
     objc_opt_class();
     v5 = BUDynamicCast();
 
@@ -44,21 +44,21 @@
       goto LABEL_18;
     }
 
-    v7 = [(BDSReadingHistoryStateInfo *)self currentStreak];
-    if (v7 == [v5 currentStreak])
+    currentStreak = [(BDSReadingHistoryStateInfo *)self currentStreak];
+    if (currentStreak == [v5 currentStreak])
     {
-      v8 = [(BDSReadingHistoryStateInfo *)self longestStreak];
-      v9 = [v5 longestStreak];
-      v10 = v9;
-      if (v8 == v9)
+      longestStreak = [(BDSReadingHistoryStateInfo *)self longestStreak];
+      longestStreak2 = [v5 longestStreak];
+      v10 = longestStreak2;
+      if (longestStreak == longestStreak2)
       {
       }
 
       else
       {
-        v11 = [(BDSReadingHistoryStateInfo *)self longestStreak];
-        v12 = [v5 longestStreak];
-        v13 = [v11 isEqual:v12];
+        longestStreak3 = [(BDSReadingHistoryStateInfo *)self longestStreak];
+        longestStreak4 = [v5 longestStreak];
+        v13 = [longestStreak3 isEqual:longestStreak4];
 
         if (!v13)
         {
@@ -66,18 +66,18 @@
         }
       }
 
-      v14 = [(BDSReadingHistoryStateInfo *)self today];
-      v15 = [v5 today];
-      v16 = v15;
-      if (v14 == v15)
+      today = [(BDSReadingHistoryStateInfo *)self today];
+      today2 = [v5 today];
+      v16 = today2;
+      if (today == today2)
       {
       }
 
       else
       {
-        v17 = [(BDSReadingHistoryStateInfo *)self today];
-        v18 = [v5 today];
-        v19 = [v17 isEqual:v18];
+        today3 = [(BDSReadingHistoryStateInfo *)self today];
+        today4 = [v5 today];
+        v19 = [today3 isEqual:today4];
 
         if (!v19)
         {
@@ -85,18 +85,18 @@
         }
       }
 
-      v20 = [(BDSReadingHistoryStateInfo *)self readingHistory];
-      v21 = [v5 readingHistory];
-      if (v20 == v21)
+      readingHistory = [(BDSReadingHistoryStateInfo *)self readingHistory];
+      readingHistory2 = [v5 readingHistory];
+      if (readingHistory == readingHistory2)
       {
         v6 = 1;
       }
 
       else
       {
-        v22 = [(BDSReadingHistoryStateInfo *)self readingHistory];
-        v23 = [v5 readingHistory];
-        v6 = [v22 isEqualToArray:v23];
+        readingHistory3 = [(BDSReadingHistoryStateInfo *)self readingHistory];
+        readingHistory4 = [v5 readingHistory];
+        v6 = [readingHistory3 isEqualToArray:readingHistory4];
       }
 
       goto LABEL_18;
@@ -121,16 +121,16 @@ LABEL_18:
 
   else
   {
-    v4 = [(BDSReadingHistoryStateInfo *)self longestStreak];
-    if ([v4 length])
+    longestStreak = [(BDSReadingHistoryStateInfo *)self longestStreak];
+    if ([longestStreak length])
     {
       v3 = 0;
     }
 
     else
     {
-      v5 = [(BDSReadingHistoryStateInfo *)self today];
-      v3 = [v5 readingTime] == 0;
+      today = [(BDSReadingHistoryStateInfo *)self today];
+      v3 = [today readingTime] == 0;
     }
   }
 
@@ -138,8 +138,8 @@ LABEL_18:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(BDSReadingHistoryStateInfo *)self readingHistory];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  readingHistory = [(BDSReadingHistoryStateInfo *)self readingHistory];
+  v7 = [readingHistory countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -150,7 +150,7 @@ LABEL_18:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(readingHistory);
         }
 
         if (v3)
@@ -165,7 +165,7 @@ LABEL_18:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [readingHistory countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -174,24 +174,24 @@ LABEL_18:
   return v3;
 }
 
-- (BDSReadingHistoryStateInfo)initWithCoder:(id)a3
+- (BDSReadingHistoryStateInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(BDSReadingHistoryStateInfo *)self init];
   if (v5)
   {
-    v5->_currentStreak = [v4 decodeIntegerForKey:@"currentStreak"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"longestStreak"];
+    v5->_currentStreak = [coderCopy decodeIntegerForKey:@"currentStreak"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"longestStreak"];
     longestStreak = v5->_longestStreak;
     v5->_longestStreak = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"today"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"today"];
     today = v5->_today;
     v5->_today = v8;
 
     v10 = objc_opt_class();
     v11 = [NSSet setWithObjects:v10, objc_opt_class(), 0];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"readingHistory"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"readingHistory"];
     readingHistory = v5->_readingHistory;
     v5->_readingHistory = v12;
   }
@@ -199,34 +199,34 @@ LABEL_18:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[BDSReadingHistoryStateInfo currentStreak](self forKey:{"currentStreak"), @"currentStreak"}];
-  v5 = [(BDSReadingHistoryStateInfo *)self longestStreak];
-  [v4 encodeObject:v5 forKey:@"longestStreak"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[BDSReadingHistoryStateInfo currentStreak](self forKey:{"currentStreak"), @"currentStreak"}];
+  longestStreak = [(BDSReadingHistoryStateInfo *)self longestStreak];
+  [coderCopy encodeObject:longestStreak forKey:@"longestStreak"];
 
-  v6 = [(BDSReadingHistoryStateInfo *)self today];
-  [v4 encodeObject:v6 forKey:@"today"];
+  today = [(BDSReadingHistoryStateInfo *)self today];
+  [coderCopy encodeObject:today forKey:@"today"];
 
-  v7 = [(BDSReadingHistoryStateInfo *)self readingHistory];
-  [v4 encodeObject:v7 forKey:@"readingHistory"];
+  readingHistory = [(BDSReadingHistoryStateInfo *)self readingHistory];
+  [coderCopy encodeObject:readingHistory forKey:@"readingHistory"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(BDSReadingHistoryStateInfo);
   if (v4)
   {
     [(BDSReadingHistoryStateInfo *)v4 setCurrentStreak:[(BDSReadingHistoryStateInfo *)self currentStreak]];
-    v5 = [(BDSReadingHistoryStateInfo *)self longestStreak];
-    [(BDSReadingHistoryStateInfo *)v4 setLongestStreak:v5];
+    longestStreak = [(BDSReadingHistoryStateInfo *)self longestStreak];
+    [(BDSReadingHistoryStateInfo *)v4 setLongestStreak:longestStreak];
 
-    v6 = [(BDSReadingHistoryStateInfo *)self today];
-    [(BDSReadingHistoryStateInfo *)v4 setToday:v6];
+    today = [(BDSReadingHistoryStateInfo *)self today];
+    [(BDSReadingHistoryStateInfo *)v4 setToday:today];
 
-    v7 = [(BDSReadingHistoryStateInfo *)self readingHistory];
-    [(BDSReadingHistoryStateInfo *)v4 setReadingHistory:v7];
+    readingHistory = [(BDSReadingHistoryStateInfo *)self readingHistory];
+    [(BDSReadingHistoryStateInfo *)v4 setReadingHistory:readingHistory];
   }
 
   return v4;
@@ -235,11 +235,11 @@ LABEL_18:
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(BDSReadingHistoryStateInfo *)self currentStreak];
-  v5 = [(BDSReadingHistoryStateInfo *)self longestStreak];
-  v6 = [(BDSReadingHistoryStateInfo *)self today];
-  v7 = [(BDSReadingHistoryStateInfo *)self readingHistory];
-  v8 = [NSString stringWithFormat:@"<%@: %p currentStreak:%ld, longestStreak:%@, today:%@, readingHistory:%@>", v3, self, v4, v5, v6, v7];
+  currentStreak = [(BDSReadingHistoryStateInfo *)self currentStreak];
+  longestStreak = [(BDSReadingHistoryStateInfo *)self longestStreak];
+  today = [(BDSReadingHistoryStateInfo *)self today];
+  readingHistory = [(BDSReadingHistoryStateInfo *)self readingHistory];
+  v8 = [NSString stringWithFormat:@"<%@: %p currentStreak:%ld, longestStreak:%@, today:%@, readingHistory:%@>", v3, self, currentStreak, longestStreak, today, readingHistory];
 
   return v8;
 }

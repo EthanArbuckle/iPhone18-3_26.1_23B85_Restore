@@ -4,10 +4,10 @@
 - (UIScrollView)_scrollView;
 - (id)_newVitalityFilter;
 - (void)_updateVitalityFilters;
-- (void)addPlayerView:(id)a3;
-- (void)performChanges:(id)a3;
-- (void)removePlayerView:(id)a3;
-- (void)setEnabled:(BOOL)a3;
+- (void)addPlayerView:(id)view;
+- (void)performChanges:(id)changes;
+- (void)removePlayerView:(id)view;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation ISScrollViewVitalityController
@@ -30,43 +30,43 @@
 
 - (void)_updateVitalityFilters
 {
-  v3 = [(ISScrollViewVitalityController *)self _scrollView];
-  v4 = [(ISScrollViewVitalityController *)self isScrolling];
-  v5 = [(ISScrollViewVitalityController *)self isDecelerating];
+  _scrollView = [(ISScrollViewVitalityController *)self _scrollView];
+  isScrolling = [(ISScrollViewVitalityController *)self isScrolling];
+  isDecelerating = [(ISScrollViewVitalityController *)self isDecelerating];
   [(ISScrollViewVitalityController *)self targetContentOffset];
   v7 = v6;
   v9 = v8;
-  v10 = [(ISScrollViewVitalityController *)self estimatedScrollEndDate];
-  v11 = [(ISScrollViewVitalityController *)self hasTargetContentOffset];
-  v12 = [(ISScrollViewVitalityController *)self _playerViews];
-  v13 = [v12 allObjects];
+  estimatedScrollEndDate = [(ISScrollViewVitalityController *)self estimatedScrollEndDate];
+  hasTargetContentOffset = [(ISScrollViewVitalityController *)self hasTargetContentOffset];
+  _playerViews = [(ISScrollViewVitalityController *)self _playerViews];
+  allObjects = [_playerViews allObjects];
 
   if ([(ISScrollViewVitalityController *)self canPerformVitality])
   {
-    v14 = [(ISScrollViewVitalityController *)self isEnabled];
+    isEnabled = [(ISScrollViewVitalityController *)self isEnabled];
   }
 
   else
   {
-    v14 = 0;
+    isEnabled = 0;
   }
 
-  v15 = [(ISScrollViewVitalityController *)self visibilityOffsetHelper];
-  [v15 setDirection:1];
+  visibilityOffsetHelper = [(ISScrollViewVitalityController *)self visibilityOffsetHelper];
+  [visibilityOffsetHelper setDirection:1];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __56__ISScrollViewVitalityController__updateVitalityFilters__block_invoke;
   v18[3] = &unk_279A29FA8;
-  v22 = v14;
-  v19 = v13;
-  v20 = self;
-  v23 = v11;
-  v21 = v10;
-  v24 = v4;
-  v25 = v5;
-  v16 = v10;
-  v17 = v13;
-  [v15 computeVisibilityOffsetsInScrollView:v3 withTargetContentOffset:v18 usingBlock:{v7, v9}];
+  v22 = isEnabled;
+  v19 = allObjects;
+  selfCopy = self;
+  v23 = hasTargetContentOffset;
+  v21 = estimatedScrollEndDate;
+  v24 = isScrolling;
+  v25 = isDecelerating;
+  v16 = estimatedScrollEndDate;
+  v17 = allObjects;
+  [visibilityOffsetHelper computeVisibilityOffsetsInScrollView:_scrollView withTargetContentOffset:v18 usingBlock:{v7, v9}];
 }
 
 void __56__ISScrollViewVitalityController__updateVitalityFilters__block_invoke(uint64_t a1, void *a2)
@@ -159,46 +159,46 @@ uint64_t __56__ISScrollViewVitalityController__updateVitalityFilters__block_invo
 - (id)_newVitalityFilter
 {
   v2 = +[ISVitalitySettings sharedInstance];
-  v3 = [v2 oneUpSettings];
+  oneUpSettings = [v2 oneUpSettings];
 
-  v4 = [(ISLivePhotoVitalityFilter *)[ISLivePhotoAutoplayVitalityFilter alloc] initWithSettings:v3];
+  v4 = [(ISLivePhotoVitalityFilter *)[ISLivePhotoAutoplayVitalityFilter alloc] initWithSettings:oneUpSettings];
   return v4;
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v5 = a3;
-  v4 = [(ISScrollViewVitalityController *)self _isPerformingChanges];
+  changesCopy = changes;
+  _isPerformingChanges = [(ISScrollViewVitalityController *)self _isPerformingChanges];
   [(ISScrollViewVitalityController *)self _setPerformingChanges:1];
-  if (v5)
+  if (changesCopy)
   {
-    v5[2](v5);
+    changesCopy[2](changesCopy);
   }
 
-  [(ISScrollViewVitalityController *)self _setPerformingChanges:v4];
-  if (!v4)
+  [(ISScrollViewVitalityController *)self _setPerformingChanges:_isPerformingChanges];
+  if (!_isPerformingChanges)
   {
     [(ISScrollViewVitalityController *)self _updateVitalityFilters];
   }
 }
 
-- (void)removePlayerView:(id)a3
+- (void)removePlayerView:(id)view
 {
-  v4 = a3;
-  v5 = [(ISScrollViewVitalityController *)self _playerViews];
-  [v5 removeObject:v4];
+  viewCopy = view;
+  _playerViews = [(ISScrollViewVitalityController *)self _playerViews];
+  [_playerViews removeObject:viewCopy];
 }
 
-- (void)addPlayerView:(id)a3
+- (void)addPlayerView:(id)view
 {
-  v4 = a3;
-  v5 = [(ISScrollViewVitalityController *)self _playerViews];
-  [v5 addObject:v4];
+  viewCopy = view;
+  _playerViews = [(ISScrollViewVitalityController *)self _playerViews];
+  [_playerViews addObject:viewCopy];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
     v7 = v3;
     v8 = v4;
@@ -207,7 +207,7 @@ uint64_t __56__ISScrollViewVitalityController__updateVitalityFilters__block_invo
     v5[2] = __45__ISScrollViewVitalityController_setEnabled___block_invoke;
     v5[3] = &unk_279A2A4D8;
     v5[4] = self;
-    v6 = a3;
+    enabledCopy = enabled;
     [(ISScrollViewVitalityController *)self performChanges:v5];
   }
 }
@@ -219,9 +219,9 @@ uint64_t __56__ISScrollViewVitalityController__updateVitalityFilters__block_invo
   v2 = [(ISScrollViewVitalityController *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     playerViews = v2->__playerViews;
-    v2->__playerViews = v3;
+    v2->__playerViews = weakObjectsHashTable;
 
     v2->_enabled = 1;
   }

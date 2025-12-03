@@ -1,11 +1,11 @@
 @interface NTKCompanionBundleComplicationSyncCoordinator
 + (NTKCompanionBundleComplicationSyncCoordinator)sharedInstance;
 - (NTKCompanionBundleComplicationSyncCoordinator)init;
-- (id)descriptorsForBundleIdentifier:(id)a3;
+- (id)descriptorsForBundleIdentifier:(id)identifier;
 - (void)_lock_updateLoaded;
 - (void)activeDeviceChanged;
-- (void)complicationCollectionDidLoad:(id)a3;
-- (void)complicationCollectionDidReload:(id)a3;
+- (void)complicationCollectionDidLoad:(id)load;
+- (void)complicationCollectionDidReload:(id)reload;
 - (void)dealloc;
 @end
 
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __63__NTKCompanionBundleComplicationSyncCoordinator_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_21 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_21, block);
@@ -44,8 +44,8 @@ void __63__NTKCompanionBundleComplicationSyncCoordinator_sharedInstance__block_i
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v3 selector:sel_activeDeviceChanged name:*MEMORY[0x277CBB640] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_activeDeviceChanged name:*MEMORY[0x277CBB640] object:0];
 
     [(NTKCompanionBundleComplicationSyncCoordinator *)v3 activeDeviceChanged];
   }
@@ -62,8 +62,8 @@ void __63__NTKCompanionBundleComplicationSyncCoordinator_sharedInstance__block_i
     [(NTKComplicationCollection *)complicationCollection removeObserver:self];
   }
 
-  v4 = [MEMORY[0x277CBBAE8] currentDevice];
-  v5 = [NTKCompanionComplicationCollectionManager sharedBundleComplicationCollectionForDevice:v4];
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  v5 = [NTKCompanionComplicationCollectionManager sharedBundleComplicationCollectionForDevice:currentDevice];
   v6 = self->_complicationCollection;
   self->_complicationCollection = v5;
 
@@ -77,9 +77,9 @@ void __63__NTKCompanionBundleComplicationSyncCoordinator_sharedInstance__block_i
 - (void)_lock_updateLoaded
 {
   loaded = self->_loaded;
-  v4 = [(NTKComplicationCollection *)self->_complicationCollection hasLoaded];
-  self->_loaded = v4;
-  if (!loaded && v4)
+  hasLoaded = [(NTKComplicationCollection *)self->_complicationCollection hasLoaded];
+  self->_loaded = hasLoaded;
+  if (!loaded && hasLoaded)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -92,26 +92,26 @@ void __63__NTKCompanionBundleComplicationSyncCoordinator_sharedInstance__block_i
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CBB640] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBB640] object:0];
 
   v4.receiver = self;
   v4.super_class = NTKCompanionBundleComplicationSyncCoordinator;
   [(NTKCompanionBundleComplicationSyncCoordinator *)&v4 dealloc];
 }
 
-- (id)descriptorsForBundleIdentifier:(id)a3
+- (id)descriptorsForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NTKComplicationCollection *)self->_complicationCollection complicationDescriptorsForClientIdentifier:v4];
+  v5 = [(NTKComplicationCollection *)self->_complicationCollection complicationDescriptorsForClientIdentifier:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (void)complicationCollectionDidLoad:(id)a3
+- (void)complicationCollectionDidLoad:(id)load
 {
   os_unfair_lock_lock(&self->_lock);
   [(NTKCompanionBundleComplicationSyncCoordinator *)self _lock_updateLoaded];
@@ -119,7 +119,7 @@ void __63__NTKCompanionBundleComplicationSyncCoordinator_sharedInstance__block_i
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)complicationCollectionDidReload:(id)a3
+- (void)complicationCollectionDidReload:(id)reload
 {
   os_unfair_lock_lock(&self->_lock);
   [(NTKCompanionBundleComplicationSyncCoordinator *)self _lock_updateLoaded];

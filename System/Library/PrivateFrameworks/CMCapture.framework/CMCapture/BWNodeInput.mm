@@ -1,19 +1,19 @@
 @interface BWNodeInput
-+ (opaqueCMSampleBuffer)newSampleDataToBeDroppedMarkerBufferFromSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (BWNodeInput)initWithMediaType:(unsigned int)a3 node:(id)a4 index:(unint64_t)a5;
++ (opaqueCMSampleBuffer)newSampleDataToBeDroppedMarkerBufferFromSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (BWNodeInput)initWithMediaType:(unsigned int)type node:(id)node index:(unint64_t)index;
 - (NSString)description;
-- (id)mediaConfigurationForAttachedMediaKey:(id)a3;
+- (id)mediaConfigurationForAttachedMediaKey:(id)key;
 - (id)mediaPropertiesByAttachedMediaKey;
-- (id)mediaPropertiesForAttachedMediaKey:(id)a3;
+- (id)mediaPropertiesForAttachedMediaKey:(id)key;
 - (id)osStatePropertyList;
-- (int)_passthroughModeForAttachedMediaKey:(id)a3;
+- (int)_passthroughModeForAttachedMediaKey:(id)key;
 - (int)_passthroughModeForUnspecifiedAttachedMedia;
 - (uint64_t)_handleConfigurationLiveMessage:(uint64_t)result;
 - (void)_clearAllMediaProperties;
-- (void)_setMediaProperties:(id)a3 forAttachedMediaKey:(id)a4;
+- (void)_setMediaProperties:(id)properties forAttachedMediaKey:(id)key;
 - (void)dealloc;
-- (void)handleMessage:(id)a3;
-- (void)setMediaConfiguration:(id)a3 forAttachedMediaKey:(id)a4;
+- (void)handleMessage:(id)message;
+- (void)setMediaConfiguration:(id)configuration forAttachedMediaKey:(id)key;
 @end
 
 @implementation BWNodeInput
@@ -39,14 +39,14 @@
   return v2;
 }
 
-+ (opaqueCMSampleBuffer)newSampleDataToBeDroppedMarkerBufferFromSampleBuffer:(opaqueCMSampleBuffer *)a3
++ (opaqueCMSampleBuffer)newSampleDataToBeDroppedMarkerBufferFromSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   v13 = 0;
-  v4 = CMGetAttachment(a3, @"SampleDataToBeDropped", 0);
+  v4 = CMGetAttachment(buffer, @"SampleDataToBeDropped", 0);
   v5 = *MEMORY[0x1E695E4D0];
   if (v4 == *MEMORY[0x1E695E4D0])
   {
-    FormatDescription = CMSampleBufferGetFormatDescription(a3);
+    FormatDescription = CMSampleBufferGetFormatDescription(buffer);
     v7 = *(MEMORY[0x1E6960CF0] + 48);
     *&sampleTimingArray.presentationTimeStamp.timescale = *(MEMORY[0x1E6960CF0] + 32);
     *&sampleTimingArray.decodeTimeStamp.value = v7;
@@ -54,13 +54,13 @@
     v8 = *(MEMORY[0x1E6960CF0] + 16);
     *&sampleTimingArray.duration.value = *MEMORY[0x1E6960CF0];
     *&sampleTimingArray.duration.epoch = v8;
-    CMSampleBufferGetPresentationTimeStamp(&sampleTimingArray.presentationTimeStamp, a3);
+    CMSampleBufferGetPresentationTimeStamp(&sampleTimingArray.presentationTimeStamp, buffer);
     v9 = CMSampleBufferCreate(*MEMORY[0x1E695E480], 0, 1u, 0, 0, FormatDescription, 1, 1, &sampleTimingArray, 0, 0, &v13);
     result = v13;
     if (!v9 && v13)
     {
       CMSetAttachment(v13, @"SampleDataToBeDropped", v5, 1u);
-      v11 = CMGetAttachment(a3, @"SampleDataToBeDroppedEmitSampleBufferSemaphores", 0);
+      v11 = CMGetAttachment(buffer, @"SampleDataToBeDroppedEmitSampleBufferSemaphores", 0);
       result = v13;
       if (v11)
       {
@@ -79,7 +79,7 @@
   return result;
 }
 
-- (BWNodeInput)initWithMediaType:(unsigned int)a3 node:(id)a4 index:(unint64_t)a5
+- (BWNodeInput)initWithMediaType:(unsigned int)type node:(id)node index:(unint64_t)index
 {
   v13.receiver = self;
   v13.super_class = BWNodeInput;
@@ -87,12 +87,12 @@
   v9 = v8;
   if (v8)
   {
-    v8->_mediaType = a3;
-    v8->_mediaTypeIsVideo = a3 == 1986618469;
-    v8->_mediaTypeIsPointCloud = a3 == 1885564004;
-    v8->_node = a4;
+    v8->_mediaType = type;
+    v8->_mediaTypeIsVideo = type == 1986618469;
+    v8->_mediaTypeIsPointCloud = type == 1885564004;
+    v8->_node = node;
     v8->_enabled = 1;
-    v8->_index = a5;
+    v8->_index = index;
     v10 = objc_alloc_init(BWNodeInputMediaConfiguration);
     v9->_primaryMediaConfiguration = v10;
     [(BWNodeInputMediaConfiguration *)v10 _setAssociatedAttachedMediaKey:@"PrimaryFormat"];
@@ -120,9 +120,9 @@
   return [v4 stringWithFormat:@"<%@ %p> '%@' (idx: %u, owner: %@)", v5, self, BWStringForOSType(), v3, -[BWNodeInput node](self, "node")];
 }
 
-- (void)setMediaConfiguration:(id)a3 forAttachedMediaKey:(id)a4
+- (void)setMediaConfiguration:(id)configuration forAttachedMediaKey:(id)key
 {
-  if (!a4)
+  if (!key)
   {
     v9 = MEMORY[0x1E695DF30];
     v10 = *MEMORY[0x1E695D940];
@@ -130,7 +130,7 @@
     goto LABEL_14;
   }
 
-  if ([a4 isEqualToString:@"PrimaryFormat"])
+  if ([key isEqualToString:@"PrimaryFormat"])
   {
     v9 = MEMORY[0x1E695DF30];
     v10 = *MEMORY[0x1E695D940];
@@ -140,41 +140,41 @@ LABEL_14:
   }
 
   attachedMediaConfigurations = self->_attachedMediaConfigurations;
-  if (a3)
+  if (configuration)
   {
     if (!attachedMediaConfigurations)
     {
       self->_attachedMediaConfigurations = objc_alloc_init(MEMORY[0x1E695DF90]);
     }
 
-    [a3 _setAssociatedAttachedMediaKey:a4];
+    [configuration _setAssociatedAttachedMediaKey:key];
     v8 = self->_attachedMediaConfigurations;
 
-    [(NSMutableDictionary *)v8 setObject:a3 forKeyedSubscript:a4];
+    [(NSMutableDictionary *)v8 setObject:configuration forKeyedSubscript:key];
   }
 
   else
   {
 
-    [(NSMutableDictionary *)attachedMediaConfigurations removeObjectForKey:a4];
+    [(NSMutableDictionary *)attachedMediaConfigurations removeObjectForKey:key];
   }
 }
 
-- (id)mediaConfigurationForAttachedMediaKey:(id)a3
+- (id)mediaConfigurationForAttachedMediaKey:(id)key
 {
-  if (!a3)
+  if (!key)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Cannot set media configuration for nil attachedMediaKey" userInfo:0]);
   }
 
-  if ([a3 isEqualToString:@"PrimaryFormat"])
+  if ([key isEqualToString:@"PrimaryFormat"])
   {
     return self->_primaryMediaConfiguration;
   }
 
   attachedMediaConfigurations = self->_attachedMediaConfigurations;
 
-  return [(NSMutableDictionary *)attachedMediaConfigurations objectForKeyedSubscript:a3];
+  return [(NSMutableDictionary *)attachedMediaConfigurations objectForKeyedSubscript:key];
 }
 
 - (void)_clearAllMediaProperties
@@ -184,27 +184,27 @@ LABEL_14:
   self->_attachedMediaProperties = 0;
 }
 
-- (id)mediaPropertiesForAttachedMediaKey:(id)a3
+- (id)mediaPropertiesForAttachedMediaKey:(id)key
 {
-  if (!a3)
+  if (!key)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Cannot set media configuration for nil attachedMediaKey" userInfo:0]);
   }
 
-  if ([a3 isEqualToString:@"PrimaryFormat"])
+  if ([key isEqualToString:@"PrimaryFormat"])
   {
     return self->_primaryMediaProperties;
   }
 
   attachedMediaProperties = self->_attachedMediaProperties;
 
-  return [(NSMutableDictionary *)attachedMediaProperties objectForKeyedSubscript:a3];
+  return [(NSMutableDictionary *)attachedMediaProperties objectForKeyedSubscript:key];
 }
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  v5 = *(a3 + 2);
-  v6 = *(a3 + 3);
+  v5 = *(message + 2);
+  v6 = *(message + 3);
   if (v5 == 1)
   {
     if (v6 == 4)
@@ -218,7 +218,7 @@ LABEL_14:
       {
         if (v6 == 3)
         {
-          v9 = [(BWNodeInput *)self _handleConfigurationLiveMessage:a3];
+          v9 = [(BWNodeInput *)self _handleConfigurationLiveMessage:message];
           ++self->_numberOfConfigurationDidBecomeLiveMessagesReceived;
           if ((v9 & 1) == 0)
           {
@@ -248,14 +248,14 @@ LABEL_14:
 
   if (self->_discardsSampleDataTaggedToBeDropped && v6 == 1)
   {
-    v10 = [a3 sampleBuffer];
-    if (!v10)
+    sampleBuffer = [message sampleBuffer];
+    if (!sampleBuffer)
     {
       goto LABEL_23;
     }
 
-    v11 = v10;
-    if (CMSampleBufferGetImageBuffer(v10) || CMSampleBufferGetDataBuffer(v11) || CMGetAttachment(v11, @"SampleDataToBeDropped", 0) != *MEMORY[0x1E695E4D0])
+    v11 = sampleBuffer;
+    if (CMSampleBufferGetImageBuffer(sampleBuffer) || CMSampleBufferGetDataBuffer(v11) || CMGetAttachment(v11, @"SampleDataToBeDropped", 0) != *MEMORY[0x1E695E4D0])
     {
       goto LABEL_23;
     }
@@ -310,12 +310,12 @@ LABEL_24:
 LABEL_25:
   node = self->_node;
 
-  [(BWNode *)node _handleMessage:a3 fromInput:self];
+  [(BWNode *)node _handleMessage:message fromInput:self];
 }
 
-- (void)_setMediaProperties:(id)a3 forAttachedMediaKey:(id)a4
+- (void)_setMediaProperties:(id)properties forAttachedMediaKey:(id)key
 {
-  if (!a4)
+  if (!key)
   {
     v8 = MEMORY[0x1E695DF30];
     v9 = *MEMORY[0x1E695D940];
@@ -323,7 +323,7 @@ LABEL_25:
     goto LABEL_14;
   }
 
-  if ([a4 isEqualToString:@"PrimaryFormat"])
+  if ([key isEqualToString:@"PrimaryFormat"])
   {
     v8 = MEMORY[0x1E695DF30];
     v9 = *MEMORY[0x1E695D940];
@@ -331,7 +331,7 @@ LABEL_25:
     goto LABEL_14;
   }
 
-  if (!a3)
+  if (!properties)
   {
     v8 = MEMORY[0x1E695DF30];
     v9 = *MEMORY[0x1E695D940];
@@ -343,7 +343,7 @@ LABEL_14:
   attachedMediaProperties = self->_attachedMediaProperties;
   if (attachedMediaProperties)
   {
-    if ([(NSMutableDictionary *)attachedMediaProperties objectForKeyedSubscript:a4])
+    if ([(NSMutableDictionary *)attachedMediaProperties objectForKeyedSubscript:key])
     {
       v8 = MEMORY[0x1E695DF30];
       v9 = *MEMORY[0x1E695D940];
@@ -357,20 +357,20 @@ LABEL_14:
     self->_attachedMediaProperties = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  [a3 _setOwningNodeInput:self associatedAttachedMediaKey:a4];
+  [properties _setOwningNodeInput:self associatedAttachedMediaKey:key];
   v11 = self->_attachedMediaProperties;
 
-  [(NSMutableDictionary *)v11 setObject:a3 forKeyedSubscript:a4];
+  [(NSMutableDictionary *)v11 setObject:properties forKeyedSubscript:key];
 }
 
-- (int)_passthroughModeForAttachedMediaKey:(id)a3
+- (int)_passthroughModeForAttachedMediaKey:(id)key
 {
-  if (!a3)
+  if (!key)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Cannot get passthrough mode for nil attachedMediaKey" userInfo:0]);
   }
 
-  if ([a3 isEqualToString:@"PrimaryFormat"])
+  if ([key isEqualToString:@"PrimaryFormat"])
   {
     primaryMediaConfiguration = self->_primaryMediaConfiguration;
 LABEL_5:
@@ -378,7 +378,7 @@ LABEL_5:
     return [(BWNodeInputMediaConfiguration *)primaryMediaConfiguration passthroughMode];
   }
 
-  primaryMediaConfiguration = [(NSMutableDictionary *)self->_attachedMediaConfigurations objectForKeyedSubscript:a3];
+  primaryMediaConfiguration = [(NSMutableDictionary *)self->_attachedMediaConfigurations objectForKeyedSubscript:key];
   if (primaryMediaConfiguration)
   {
     goto LABEL_5;
@@ -389,14 +389,14 @@ LABEL_5:
 
 - (id)osStatePropertyList
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:self->_name forKeyedSubscript:@"name"];
-  [v3 setObject:BWStringForOSType() forKeyedSubscript:@"mediaType"];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", self->_requestedConfigurationID), @"requestedConfigurationID"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", self->_liveConfigurationID), @"liveConfigurationID"}];
-  [v3 setObject:-[BWFormat description](-[BWNodeInput liveFormat](self forKeyedSubscript:{"liveFormat"), "description"), @"liveFormat"}];
-  [v3 setObject:-[BWNode osStatePropertyListWithVerbose:](-[BWNodeOutput node](-[BWNodeConnection output](-[BWNodeInput connection](self forKeyedSubscript:{"connection"), "output"), "node"), "osStatePropertyListWithVerbose:", 0), @"node"}];
-  return v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:self->_name forKeyedSubscript:@"name"];
+  [dictionary setObject:BWStringForOSType() forKeyedSubscript:@"mediaType"];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", self->_requestedConfigurationID), @"requestedConfigurationID"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", self->_liveConfigurationID), @"liveConfigurationID"}];
+  [dictionary setObject:-[BWFormat description](-[BWNodeInput liveFormat](self forKeyedSubscript:{"liveFormat"), "description"), @"liveFormat"}];
+  [dictionary setObject:-[BWNode osStatePropertyListWithVerbose:](-[BWNodeOutput node](-[BWNodeConnection output](-[BWNodeInput connection](self forKeyedSubscript:{"connection"), "output"), "node"), "osStatePropertyListWithVerbose:", 0), @"node"}];
+  return dictionary;
 }
 
 - (uint64_t)_handleConfigurationLiveMessage:(uint64_t)result
@@ -404,10 +404,10 @@ LABEL_5:
   if (result)
   {
     v3 = result;
-    v4 = [a2 updatedFormat];
-    if (v4)
+    updatedFormat = [a2 updatedFormat];
+    if (updatedFormat)
     {
-      v5 = v4;
+      v5 = updatedFormat;
       if ([objc_msgSend(v3 "primaryMediaProperties")] && (objc_msgSend(v5, "isEqual:", objc_msgSend(objc_msgSend(v3, "primaryMediaProperties"), "liveFormat")) & 1) != 0)
       {
         return 0;

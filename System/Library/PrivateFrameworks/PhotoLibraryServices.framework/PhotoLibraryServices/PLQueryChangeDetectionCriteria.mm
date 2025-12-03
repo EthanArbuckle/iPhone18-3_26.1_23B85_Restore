@@ -1,37 +1,37 @@
 @interface PLQueryChangeDetectionCriteria
 - (PLQueryChangeDetectionCriteria)init;
-- (void)addAttributeKeyPath:(id)a3 forEntityName:(id)a4;
-- (void)addRelationshipKeyPath:(id)a3 forEntityName:(id)a4;
+- (void)addAttributeKeyPath:(id)path forEntityName:(id)name;
+- (void)addRelationshipKeyPath:(id)path forEntityName:(id)name;
 @end
 
 @implementation PLQueryChangeDetectionCriteria
 
-- (void)addRelationshipKeyPath:(id)a3 forEntityName:(id)a4
+- (void)addRelationshipKeyPath:(id)path forEntityName:(id)name
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_relationshipKeyPathsByEntityNameAffectingFetchResult objectForKeyedSubscript:v6];
+  pathCopy = path;
+  nameCopy = name;
+  v7 = [(NSMutableDictionary *)self->_relationshipKeyPathsByEntityNameAffectingFetchResult objectForKeyedSubscript:nameCopy];
   if (!v7)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    [(NSMutableDictionary *)self->_relationshipKeyPathsByEntityNameAffectingFetchResult setObject:v7 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_relationshipKeyPathsByEntityNameAffectingFetchResult setObject:v7 forKeyedSubscript:nameCopy];
   }
 
-  [v7 addObject:v8];
+  [v7 addObject:pathCopy];
 }
 
-- (void)addAttributeKeyPath:(id)a3 forEntityName:(id)a4
+- (void)addAttributeKeyPath:(id)path forEntityName:(id)name
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_attributeKeyPathsByEntityNameAffectingFetchResult objectForKeyedSubscript:v6];
+  pathCopy = path;
+  nameCopy = name;
+  v7 = [(NSMutableDictionary *)self->_attributeKeyPathsByEntityNameAffectingFetchResult objectForKeyedSubscript:nameCopy];
   if (!v7)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    [(NSMutableDictionary *)self->_attributeKeyPathsByEntityNameAffectingFetchResult setObject:v7 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_attributeKeyPathsByEntityNameAffectingFetchResult setObject:v7 forKeyedSubscript:nameCopy];
   }
 
-  [v7 addObject:v8];
+  [v7 addObject:pathCopy];
 }
 
 - (PLQueryChangeDetectionCriteria)init

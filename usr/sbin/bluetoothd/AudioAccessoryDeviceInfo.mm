@@ -1,6 +1,6 @@
 @interface AudioAccessoryDeviceInfo
 - (id)xpcObjectRepresentation;
-- (unint64_t)updateWithClassicDevice:(void *)a3;
+- (unint64_t)updateWithClassicDevice:(void *)device;
 @end
 
 @implementation AudioAccessoryDeviceInfo
@@ -227,10 +227,10 @@
   identifier = self->_identifier;
   v86 = v84;
   v87 = identifier;
-  v88 = [(NSString *)v87 UTF8String];
-  if (v88)
+  uTF8String = [(NSString *)v87 UTF8String];
+  if (uTF8String)
   {
-    xpc_dictionary_set_string(v86, "aaID", v88);
+    xpc_dictionary_set_string(v86, "aaID", uTF8String);
   }
 
   lastSeenTime = self->_lastSeenTime;
@@ -301,9 +301,9 @@
   return v112;
 }
 
-- (unint64_t)updateWithClassicDevice:(void *)a3
+- (unint64_t)updateWithClassicDevice:(void *)device
 {
-  v5 = *(a3 + 1435);
+  v5 = *(device + 1435);
   if (v5 == [(AudioAccessoryDeviceInfo *)self streamStateAoS])
   {
     v6 = 0;
@@ -315,7 +315,7 @@
     v6 = 0x80000000000;
   }
 
-  v7 = sub_1000E3218(a3, 0xB0u);
+  v7 = sub_1000E3218(device, 0xB0u);
   if (v7 < 3)
   {
     LODWORD(v8) = v7 + 1;
@@ -331,7 +331,7 @@
     LODWORD(v8) = 0;
   }
 
-  v9 = sub_1000E3218(a3, 0x18u);
+  v9 = sub_1000E3218(device, 0x18u);
   if (v9)
   {
     v8 = (v9 + 1);
@@ -348,7 +348,7 @@
     v6 = 0x80000000000;
   }
 
-  v10 = sub_100549574(a3);
+  v10 = sub_100549574(device);
   if (v10)
   {
     if (v10 == 50 || v10 == 100)
@@ -378,7 +378,7 @@
     v6 = 0x80000000000;
   }
 
-  if (sub_1000E3218(a3, 0xF0u) == 1)
+  if (sub_1000E3218(device, 0xF0u) == 1)
   {
     v12 = 2;
   }
@@ -394,7 +394,7 @@
     v6 = 0x80000000000;
   }
 
-  if (sub_1000E3218(a3, 0x23u))
+  if (sub_1000E3218(device, 0x23u))
   {
     v13 = 2;
   }
@@ -410,7 +410,7 @@
     v6 |= 0x80000000000uLL;
   }
 
-  if (sub_1000E012C(a3, 18))
+  if (sub_1000E012C(device, 18))
   {
     v14 = 2;
   }
@@ -426,7 +426,7 @@
     v6 |= 0x80000000000uLL;
   }
 
-  if (sub_1000E3218(a3, 0x29u))
+  if (sub_1000E3218(device, 0x29u))
   {
     v15 = 2;
   }
@@ -442,7 +442,7 @@
     v6 |= 0x80000000000uLL;
   }
 
-  v16 = sub_10054976C(a3);
+  v16 = sub_10054976C(device);
   if (v16 == 1)
   {
     v17 = 1;
@@ -459,7 +459,7 @@
     v6 |= 0x80000000000uLL;
   }
 
-  if (sub_1000E3218(a3, 0x17u))
+  if (sub_1000E3218(device, 0x17u))
   {
     v18 = 2;
   }
@@ -475,7 +475,7 @@
     v6 |= 0x80000000000uLL;
   }
 
-  v19 = sub_1000E3218(a3, 6u);
+  v19 = sub_1000E3218(device, 6u);
   if ((v19 - 1) >= 3)
   {
     v20 = 4 * (v19 == 4);
@@ -492,7 +492,7 @@
     v6 |= 0x80000000000uLL;
   }
 
-  if (sub_1000E3218(a3, 0x25u) == 1)
+  if (sub_1000E3218(device, 0x25u) == 1)
   {
     v21 = 2;
   }
@@ -508,7 +508,7 @@
     v6 |= 0x80000000000uLL;
   }
 
-  if (*(a3 + 1437))
+  if (*(device + 1437))
   {
     v22 = 2;
   }
@@ -524,7 +524,7 @@
     v6 |= 0x80000000000uLL;
   }
 
-  if (sub_1000E3218(a3, 0x24u) == 1)
+  if (sub_1000E3218(device, 0x24u) == 1)
   {
     v23 = 2;
   }
@@ -540,7 +540,7 @@
     v6 |= 0x80000000000uLL;
   }
 
-  if (sub_1000E3218(a3, 0xC0u) == 2)
+  if (sub_1000E3218(device, 0xC0u) == 2)
   {
     v24 = 2;
   }
@@ -556,7 +556,7 @@
     v6 |= 0x80000000000uLL;
   }
 
-  v25 = sub_10054FC88(a3);
+  v25 = sub_10054FC88(device);
   if (v25 == 1)
   {
     v26 = 1;
@@ -573,7 +573,7 @@
     v6 |= 0x80000000000uLL;
   }
 
-  v27 = sub_10054FBB0(a3);
+  v27 = sub_10054FBB0(device);
   if (v27 == 1)
   {
     v28 = 1;
@@ -590,7 +590,7 @@
     v6 |= 0x80000000000uLL;
   }
 
-  v29 = sub_1005495BC(a3);
+  v29 = sub_1005495BC(device);
   if (v29 == 1)
   {
     v30 = 1;
@@ -607,7 +607,7 @@
     v6 |= 0x80000000000uLL;
   }
 
-  v31 = sub_100549604(a3);
+  v31 = sub_100549604(device);
   if (v31 == 1)
   {
     v32 = 1;
@@ -624,7 +624,7 @@
     v6 |= 0x80000000000uLL;
   }
 
-  if (sub_1000E3218(a3, 0x30u) == 1)
+  if (sub_1000E3218(device, 0x30u) == 1)
   {
     v33 = 2;
   }
@@ -640,7 +640,7 @@
     v6 |= 0x80000000000uLL;
   }
 
-  if (sub_1000E3218(a3, 0xD0u) == 2)
+  if (sub_1000E3218(device, 0xD0u) == 2)
   {
     v34 = 2;
   }
@@ -656,7 +656,7 @@
     v6 |= 0x80000000000uLL;
   }
 
-  if (sub_1000E3218(a3, 0x31u))
+  if (sub_1000E3218(device, 0x31u))
   {
     v35 = 2;
   }
@@ -672,7 +672,7 @@
     v6 |= 0x80000000000uLL;
   }
 
-  if (sub_1000E3218(a3, 0x28u) == 1)
+  if (sub_1000E3218(device, 0x28u) == 1)
   {
     v36 = 2;
   }
@@ -688,14 +688,14 @@
     v6 |= 0x80000000000uLL;
   }
 
-  v37 = sub_1005496DC(a3);
+  v37 = sub_1005496DC(device);
   if (v37 != [(AudioAccessoryDeviceInfo *)self hearingProtectionPPECapLevel])
   {
     [(AudioAccessoryDeviceInfo *)self setHearingProtectionPPECapLevel:v37];
     v6 |= 0x80000000000uLL;
   }
 
-  v38 = sub_100549724(a3);
+  v38 = sub_100549724(device);
   if (v38 == 1)
   {
     v39 = 1;
@@ -712,7 +712,7 @@
     v6 |= 0x80000000000uLL;
   }
 
-  if (sub_1000E3218(a3, 0x26u))
+  if (sub_1000E3218(device, 0x26u))
   {
     v40 = 2;
   }
@@ -728,7 +728,7 @@
     v6 |= 0x80000000000uLL;
   }
 
-  v41 = sub_100549694(a3);
+  v41 = sub_100549694(device);
   if (v41 == 1)
   {
     v42 = 1;
@@ -745,7 +745,7 @@
     v6 |= 0x80000000000uLL;
   }
 
-  if (sub_1000E3218(a3, 0x16u))
+  if (sub_1000E3218(device, 0x16u))
   {
     v43 = 2;
   }
@@ -761,7 +761,7 @@
     v6 |= 0x80000000000uLL;
   }
 
-  if (sub_1000E3218(a3, 0x13u) == 1)
+  if (sub_1000E3218(device, 0x13u) == 1)
   {
     v44 = 2;
   }
@@ -777,7 +777,7 @@
     v6 |= 0x80000000000uLL;
   }
 
-  v45 = sub_10054D4E0(a3);
+  v45 = sub_10054D4E0(device);
   if (v45 >= 1)
   {
     v46 = v45;
@@ -788,7 +788,7 @@
     }
   }
 
-  if (sub_1000E012C(a3, 17))
+  if (sub_1000E012C(device, 17))
   {
     v47 = 2;
   }
@@ -804,7 +804,7 @@
     v6 |= 0x80000000000uLL;
   }
 
-  if (sub_1000E3218(a3, 0x15u) == 1)
+  if (sub_1000E3218(device, 0x15u) == 1)
   {
     v48 = 2;
   }
@@ -820,7 +820,7 @@
     v6 |= 0x80000000000uLL;
   }
 
-  if (sub_1000E3218(a3, 0x21u) == 1)
+  if (sub_1000E3218(device, 0x21u) == 1)
   {
     v49 = 2;
   }
@@ -836,7 +836,7 @@
     v6 |= 0x80000000000uLL;
   }
 
-  v50 = sub_10054991C(a3);
+  v50 = sub_10054991C(device);
   if (v50 == 1)
   {
     v51 = 1;
@@ -855,7 +855,7 @@
 
   if (_os_feature_enabled_impl())
   {
-    if (*(a3 + 1045))
+    if (*(device + 1045))
     {
       v52 = 1;
     }

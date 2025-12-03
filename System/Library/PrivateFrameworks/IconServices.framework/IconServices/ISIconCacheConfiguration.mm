@@ -1,33 +1,33 @@
 @interface ISIconCacheConfiguration
-- (ISIconCacheConfiguration)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ISIconCacheConfiguration)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ISIconCacheConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_url forKey:@"url"];
-  [v4 encodeObject:self->_sandboxExtension forKey:@"sandboxExtension"];
-  [v4 encodeObject:self->_salt forKey:@"salt"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_url forKey:@"url"];
+  [coderCopy encodeObject:self->_sandboxExtension forKey:@"sandboxExtension"];
+  [coderCopy encodeObject:self->_salt forKey:@"salt"];
 }
 
-- (ISIconCacheConfiguration)initWithCoder:(id)a3
+- (ISIconCacheConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ISIconCacheConfiguration *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
     url = v5->_url;
     v5->_url = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sandboxExtension"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sandboxExtension"];
     sandboxExtension = v5->_sandboxExtension;
     v5->_sandboxExtension = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"salt"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"salt"];
     salt = v5->_salt;
     v5->_salt = v10;
   }

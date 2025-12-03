@@ -5,7 +5,7 @@
 - (id)bundle;
 - (id)localizedPaneTitle;
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation HPRFSessionTrackerPaceSettingViewController
@@ -13,7 +13,7 @@
 + (id)selectedPaceViewString
 {
   v2 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.nanolifestyle.sessiontrackerapp"];
-  v3 = [v2 synchronize];
+  synchronize = [v2 synchronize];
   v4 = [v2 BOOLForKey:@"ShowAveragePace"];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = v5;
@@ -78,7 +78,7 @@
     v13 = [NSString stringWithFormat:v12];
 
     [v10 setName:v13];
-    v14 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+    synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
     if ([(NPSDomainAccessor *)self->_domainAccessor BOOLForKey:@"ShowAveragePace"])
     {
       v15 = v10;
@@ -93,8 +93,8 @@
     v17 = [v5 specifierForID:@"PACE_VIEW_GROUP_ID"];
     [v17 setProperty:v16 forKey:PSRadioGroupCheckedSpecifierKey];
 
-    v18 = [(HPRFSessionTrackerPaceSettingViewController *)self localizedPaneTitle];
-    [(HPRFSessionTrackerPaceSettingViewController *)self setTitle:v18];
+    localizedPaneTitle = [(HPRFSessionTrackerPaceSettingViewController *)self localizedPaneTitle];
+    [(HPRFSessionTrackerPaceSettingViewController *)self setTitle:localizedPaneTitle];
 
     v19 = *&self->BPSNotificationAppController_opaque[v3];
     *&self->BPSNotificationAppController_opaque[v3] = v5;
@@ -105,21 +105,21 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HPRFSessionTrackerPaceSettingViewController *)self indexForIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(HPRFSessionTrackerPaceSettingViewController *)self indexForIndexPath:pathCopy];
   v9 = [*&self->BPSNotificationAppController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
-  v10 = [v9 identifier];
-  v11 = [v10 isEqualToString:@"AVERAGE_PACE_ID"];
+  identifier = [v9 identifier];
+  v11 = [identifier isEqualToString:@"AVERAGE_PACE_ID"];
 
   if (v11 || ([v9 identifier], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", @"CURRENT_PACE_ID"), v12, v13))
   {
     [(NPSDomainAccessor *)self->_domainAccessor setBool:v11 forKey:@"ShowAveragePace"];
   }
 
-  v14 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
   syncManager = self->_syncManager;
   v21 = @"ShowAveragePace";
   v16 = [NSArray arrayWithObjects:&v21 count:1];
@@ -128,12 +128,12 @@
 
   [(HPRFSessionTrackerPaceSettingViewController *)self reloadSpecifiers];
   WeakRetained = objc_loadWeakRetained(&self->BPSNotificationAppController_opaque[OBJC_IVAR___PSViewController__parentController]);
-  v19 = [(HPRFSessionTrackerPaceSettingViewController *)self specifier];
-  [WeakRetained reloadSpecifier:v19];
+  specifier = [(HPRFSessionTrackerPaceSettingViewController *)self specifier];
+  [WeakRetained reloadSpecifier:specifier];
 
   v20.receiver = self;
   v20.super_class = HPRFSessionTrackerPaceSettingViewController;
-  [(HPRFSessionTrackerPaceSettingViewController *)&v20 tableView:v7 didSelectRowAtIndexPath:v6];
+  [(HPRFSessionTrackerPaceSettingViewController *)&v20 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
 - (id)bundle
@@ -145,10 +145,10 @@
 
 - (id)applicationBundleIdentifier
 {
-  v2 = [(HPRFSessionTrackerPaceSettingViewController *)self bundle];
-  v3 = [v2 bundleIdentifier];
+  bundle = [(HPRFSessionTrackerPaceSettingViewController *)self bundle];
+  bundleIdentifier = [bundle bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 @end

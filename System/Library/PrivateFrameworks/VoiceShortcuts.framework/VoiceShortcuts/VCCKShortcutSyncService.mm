@@ -1,89 +1,89 @@
 @interface VCCKShortcutSyncService
-- (BOOL)mergeLocalOrderingChangesWithRemoteOrderingChangesFromOrderingRecord:(id)a3;
+- (BOOL)mergeLocalOrderingChangesWithRemoteOrderingChangesFromOrderingRecord:(id)record;
 - (CKRecordZoneID)shortcutsZoneID;
 - (Class)cloudKitWorkflowClass;
 - (NSArray)pendingShortcutsZoneChanges;
-- (VCCKShortcutSyncService)initWithContainer:(id)a3 database:(id)a4 applicationObserver:(id)a5 debuggingOptions:(unint64_t)a6 logger:(id)a7;
-- (id)autoShortcutsPreferencesRecordForRecordID:(id)a3;
-- (id)autoShortcutsPreferencesWithCloudKitAutoShortcutsPreferences:(id)a3;
-- (id)collectionIdentifierForRecordID:(id)a3;
+- (VCCKShortcutSyncService)initWithContainer:(id)container database:(id)database applicationObserver:(id)observer debuggingOptions:(unint64_t)options logger:(id)logger;
+- (id)autoShortcutsPreferencesRecordForRecordID:(id)d;
+- (id)autoShortcutsPreferencesWithCloudKitAutoShortcutsPreferences:(id)preferences;
+- (id)collectionIdentifierForRecordID:(id)d;
 - (id)fetchCloudKitRecordIDsForAllVisibleWorkflows;
-- (id)folderRecordForRecordID:(id)a3;
-- (id)libraryRecordForRecordID:(id)a3;
-- (id)recordToSaveForRecordID:(id)a3;
-- (id)syncEngine:(id)a3 nextRecordZoneChangeBatchForContext:(id)a4;
+- (id)folderRecordForRecordID:(id)d;
+- (id)libraryRecordForRecordID:(id)d;
+- (id)recordToSaveForRecordID:(id)d;
+- (id)syncEngine:(id)engine nextRecordZoneChangeBatchForContext:(id)context;
 - (id)syncFlagsRecord;
-- (id)workflowOrderingRecordForRecordID:(id)a3;
-- (id)workflowRecordForRecordID:(id)a3;
-- (id)workflowRecordWithIdentifier:(id)a3 properties:(id)a4;
-- (void)addRecordIDsToSave:(id)a3 recordIDsToDelete:(id)a4;
+- (id)workflowOrderingRecordForRecordID:(id)d;
+- (id)workflowRecordForRecordID:(id)d;
+- (id)workflowRecordWithIdentifier:(id)identifier properties:(id)properties;
+- (void)addRecordIDsToSave:(id)save recordIDsToDelete:(id)delete;
 - (void)createShortcutsZone;
-- (void)databaseDidChange:(id)a3 modified:(id)a4 inserted:(id)a5 removed:(id)a6;
+- (void)databaseDidChange:(id)change modified:(id)modified inserted:(id)inserted removed:(id)removed;
 - (void)dealloc;
 - (void)enableCoherenceSync;
-- (void)fetchChangesInShortcutsZoneWithCompletion:(id)a3;
-- (void)handleDeletedRecordWithID:(id)a3;
-- (void)handleFetchedAutoShortcutsPreferencesRecord:(id)a3;
-- (void)handleFetchedCollectionOrderingRecord:(id)a3;
-- (void)handleFetchedDeletionOfAutoShortcutsPreferencesWithRecordID:(id)a3;
-- (void)handleFetchedDeletionOfRecordWithID:(id)a3;
-- (void)handleFetchedFolderRecord:(id)a3;
-- (void)handleFetchedLegacyOrderingRecord:(id)a3;
-- (void)handleFetchedSyncFlagsRecord:(id)a3;
-- (void)handleFetchedWorkflowRecord:(id)a3;
-- (void)handleSavedAutoShortcutsPreferencesRecord:(id)a3;
-- (void)handleSavedFolderRecord:(id)a3;
-- (void)handleSavedLibraryRecord:(id)a3;
-- (void)handleSavedSyncFlagsRecord:(id)a3;
-- (void)handleSavedWorkflowOrderingRecord:(id)a3;
-- (void)handleSavedWorkflowRecord:(id)a3;
-- (void)handleSendAutoShortcutsPreferencesConflictWithClientRecord:(id)a3 serverRecord:(id)a4 ancestorRecord:(id)a5;
-- (void)handleSendFolderConflictWithClientRecord:(id)a3 serverRecord:(id)a4 ancestorRecord:(id)a5;
-- (void)handleSendLibraryConflictWithClientRecord:(id)a3 serverRecord:(id)a4 ancestorRecord:(id)a5;
-- (void)handleSendSyncFlagsConflictWithClientRecord:(id)a3 serverRecord:(id)a4 ancestorRecord:(id)a5;
-- (void)handleSendWorkflowConflictWithClientRecord:(id)a3 serverRecord:(id)a4 ancestorRecord:(id)a5;
-- (void)handleSendWorkflowOrderingConflictWithClientRecord:(id)a3 serverRecord:(id)a4 ancestorRecord:(id)a5;
-- (void)handleServerRecordChangedError:(id)a3;
-- (void)handleUnknownItemErrorForRecord:(id)a3;
-- (void)modifyPendingChangesInShortcutsZoneWithCompletion:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)fetchChangesInShortcutsZoneWithCompletion:(id)completion;
+- (void)handleDeletedRecordWithID:(id)d;
+- (void)handleFetchedAutoShortcutsPreferencesRecord:(id)record;
+- (void)handleFetchedCollectionOrderingRecord:(id)record;
+- (void)handleFetchedDeletionOfAutoShortcutsPreferencesWithRecordID:(id)d;
+- (void)handleFetchedDeletionOfRecordWithID:(id)d;
+- (void)handleFetchedFolderRecord:(id)record;
+- (void)handleFetchedLegacyOrderingRecord:(id)record;
+- (void)handleFetchedSyncFlagsRecord:(id)record;
+- (void)handleFetchedWorkflowRecord:(id)record;
+- (void)handleSavedAutoShortcutsPreferencesRecord:(id)record;
+- (void)handleSavedFolderRecord:(id)record;
+- (void)handleSavedLibraryRecord:(id)record;
+- (void)handleSavedSyncFlagsRecord:(id)record;
+- (void)handleSavedWorkflowOrderingRecord:(id)record;
+- (void)handleSavedWorkflowRecord:(id)record;
+- (void)handleSendAutoShortcutsPreferencesConflictWithClientRecord:(id)record serverRecord:(id)serverRecord ancestorRecord:(id)ancestorRecord;
+- (void)handleSendFolderConflictWithClientRecord:(id)record serverRecord:(id)serverRecord ancestorRecord:(id)ancestorRecord;
+- (void)handleSendLibraryConflictWithClientRecord:(id)record serverRecord:(id)serverRecord ancestorRecord:(id)ancestorRecord;
+- (void)handleSendSyncFlagsConflictWithClientRecord:(id)record serverRecord:(id)serverRecord ancestorRecord:(id)ancestorRecord;
+- (void)handleSendWorkflowConflictWithClientRecord:(id)record serverRecord:(id)serverRecord ancestorRecord:(id)ancestorRecord;
+- (void)handleSendWorkflowOrderingConflictWithClientRecord:(id)record serverRecord:(id)serverRecord ancestorRecord:(id)ancestorRecord;
+- (void)handleServerRecordChangedError:(id)error;
+- (void)handleUnknownItemErrorForRecord:(id)record;
+- (void)modifyPendingChangesInShortcutsZoneWithCompletion:(id)completion;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)sendChangedFoldersAndCollections;
 - (void)sendChangedWorkflows;
 - (void)sendLibraryIfNeeded;
 - (void)sendSyncFlagsIfNeeded;
 - (void)startObservingUserDefaults;
-- (void)startWithCompletionHandler:(id)a3;
+- (void)startWithCompletionHandler:(id)handler;
 - (void)stopObservingUserDefaults;
-- (void)syncEngine:(id)a3 handleEvent:(id)a4;
-- (void)syncEngineDidDeleteRecordWithID:(id)a3;
-- (void)syncEngineDidDeleteRecordZoneWithID:(id)a3;
-- (void)syncEngineDidFetchRecord:(id)a3;
-- (void)syncEngineDidSaveRecord:(id)a3;
-- (void)syncEngineDidSaveRecordZone:(id)a3;
-- (void)syncEngineDidUpdateMetadata:(id)a3;
-- (void)syncEngineFailedToDeleteRecordWithID:(id)a3 error:(id)a4;
-- (void)syncEngineFailedToDeleteRecordZoneWithID:(id)a3 error:(id)a4;
-- (void)syncEngineFailedToSaveRecord:(id)a3 error:(id)a4;
-- (void)syncEngineFailedToSaveRecordZone:(id)a3 error:(id)a4;
-- (void)syncEngineRecordWithIDWasDeleted:(id)a3 recordType:(id)a4;
-- (void)syncEngineZoneWithIDChanged:(id)a3;
-- (void)syncEngineZoneWithIDWasDeleted:(id)a3;
-- (void)syncEngineZoneWithIDWasPurged:(id)a3;
+- (void)syncEngine:(id)engine handleEvent:(id)event;
+- (void)syncEngineDidDeleteRecordWithID:(id)d;
+- (void)syncEngineDidDeleteRecordZoneWithID:(id)d;
+- (void)syncEngineDidFetchRecord:(id)record;
+- (void)syncEngineDidSaveRecord:(id)record;
+- (void)syncEngineDidSaveRecordZone:(id)zone;
+- (void)syncEngineDidUpdateMetadata:(id)metadata;
+- (void)syncEngineFailedToDeleteRecordWithID:(id)d error:(id)error;
+- (void)syncEngineFailedToDeleteRecordZoneWithID:(id)d error:(id)error;
+- (void)syncEngineFailedToSaveRecord:(id)record error:(id)error;
+- (void)syncEngineFailedToSaveRecordZone:(id)zone error:(id)error;
+- (void)syncEngineRecordWithIDWasDeleted:(id)deleted recordType:(id)type;
+- (void)syncEngineZoneWithIDChanged:(id)changed;
+- (void)syncEngineZoneWithIDWasDeleted:(id)deleted;
+- (void)syncEngineZoneWithIDWasPurged:(id)purged;
 @end
 
 @implementation VCCKShortcutSyncService
 
-- (void)syncEngineDidUpdateMetadata:(id)a3
+- (void)syncEngineDidUpdateMetadata:(id)metadata
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v11 = "[VCCKShortcutSyncService syncEngineDidUpdateMetadata:]";
     v12 = 2048;
-    v13 = [v4 length];
+    v13 = [metadataCopy length];
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_INFO, "%s Received updated metadata from sync engine, length = %lu", buf, 0x16u);
   }
 
@@ -92,8 +92,8 @@
   v8[2] = __55__VCCKShortcutSyncService_syncEngineDidUpdateMetadata___block_invoke;
   v8[3] = &unk_2788FFFC0;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = metadataCopy;
+  v6 = metadataCopy;
   VCCKPerformBlockInsideAutoreleasePoolInTransaction(@"VCCKShortcutSyncService.didUpdateMetadata", v8);
 
   v7 = *MEMORY[0x277D85DE8];
@@ -110,19 +110,19 @@ void __55__VCCKShortcutSyncService_syncEngineDidUpdateMetadata___block_invoke(ui
   [v2 updateSyncTokenWithBlock:v3];
 }
 
-- (void)syncEngineRecordWithIDWasDeleted:(id)a3 recordType:(id)a4
+- (void)syncEngineRecordWithIDWasDeleted:(id)deleted recordType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  deletedCopy = deleted;
+  typeCopy = type;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __71__VCCKShortcutSyncService_syncEngineRecordWithIDWasDeleted_recordType___block_invoke;
   v10[3] = &unk_2789000F8;
-  v11 = v6;
-  v12 = v7;
-  v13 = self;
-  v8 = v7;
-  v9 = v6;
+  v11 = deletedCopy;
+  v12 = typeCopy;
+  selfCopy = self;
+  v8 = typeCopy;
+  v9 = deletedCopy;
   VCCKPerformBlockInsideAutoreleasePoolInTransaction(@"VCCKShortcutSyncService.recordWithIDWasDeleted", v10);
 }
 
@@ -262,16 +262,16 @@ LABEL_11:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncEngineDidFetchRecord:(id)a3
+- (void)syncEngineDidFetchRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__VCCKShortcutSyncService_syncEngineDidFetchRecord___block_invoke;
   v6[3] = &unk_2788FFFC0;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = recordCopy;
+  selfCopy = self;
+  v5 = recordCopy;
   VCCKPerformBlockInsideAutoreleasePoolInTransaction(@"VCCKShortcutSyncService.didFetchRecord", v6);
 }
 
@@ -534,45 +534,45 @@ LABEL_12:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncEngineFailedToDeleteRecordWithID:(id)a3 error:(id)a4
+- (void)syncEngineFailedToDeleteRecordWithID:(id)d error:(id)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  errorCopy = error;
   v8 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    v9 = [v7 domain];
+    domain = [errorCopy domain];
     v13 = 136316162;
     v14 = "[VCCKShortcutSyncService syncEngineFailedToDeleteRecordWithID:error:]";
     v15 = 2114;
-    v16 = v9;
+    v16 = domain;
     v17 = 2050;
-    v18 = [v7 code];
+    code = [errorCopy code];
     v19 = 2114;
-    v20 = v7;
+    v20 = errorCopy;
     v21 = 2114;
-    v22 = v6;
+    v22 = dCopy;
     _os_log_impl(&dword_23103C000, v8, OS_LOG_TYPE_ERROR, "%s Sync engine failed to delete CKRecord: error domain = %{public}@, code = %{public}ld, error = %{public}@, recordID = %{public}@", &v13, 0x34u);
   }
 
   logger = self->_logger;
-  v11 = [v7 description];
-  [(WFCloudKitSyncEventLogger *)logger logRecordDeleteFailed:v6 error:v11];
+  v11 = [errorCopy description];
+  [(WFCloudKitSyncEventLogger *)logger logRecordDeleteFailed:dCopy error:v11];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncEngineDidDeleteRecordWithID:(id)a3
+- (void)syncEngineDidDeleteRecordWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__VCCKShortcutSyncService_syncEngineDidDeleteRecordWithID___block_invoke;
   v6[3] = &unk_2788FFFC0;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = dCopy;
+  selfCopy = self;
+  v5 = dCopy;
   VCCKPerformBlockInsideAutoreleasePoolInTransaction(@"VCCKShortcutSyncService.didDeleteRecordWithID", v6);
 }
 
@@ -596,19 +596,19 @@ uint64_t __59__VCCKShortcutSyncService_syncEngineDidDeleteRecordWithID___block_i
   return result;
 }
 
-- (void)syncEngineFailedToSaveRecord:(id)a3 error:(id)a4
+- (void)syncEngineFailedToSaveRecord:(id)record error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  errorCopy = error;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __62__VCCKShortcutSyncService_syncEngineFailedToSaveRecord_error___block_invoke;
   v10[3] = &unk_2789000F8;
-  v11 = v7;
-  v12 = v6;
-  v13 = self;
-  v8 = v6;
-  v9 = v7;
+  v11 = errorCopy;
+  v12 = recordCopy;
+  selfCopy = self;
+  v8 = recordCopy;
+  v9 = errorCopy;
   VCCKPerformBlockInsideAutoreleasePoolInTransaction(@"VCCKShortcutSyncService.failedToSaveRecord", v10);
 }
 
@@ -763,16 +763,16 @@ LABEL_26:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncEngineDidSaveRecord:(id)a3
+- (void)syncEngineDidSaveRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__VCCKShortcutSyncService_syncEngineDidSaveRecord___block_invoke;
   v6[3] = &unk_2788FFFC0;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = recordCopy;
+  selfCopy = self;
+  v5 = recordCopy;
   VCCKPerformBlockInsideAutoreleasePoolInTransaction(@"VCCKShortcutSyncService.didSaveRecord", v6);
 }
 
@@ -941,9 +941,9 @@ LABEL_33:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (id)recordToSaveForRecordID:(id)a3
+- (id)recordToSaveForRecordID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -954,9 +954,9 @@ LABEL_33:
   v8[1] = 3221225472;
   v8[2] = __51__VCCKShortcutSyncService_recordToSaveForRecordID___block_invoke;
   v8[3] = &unk_278900198;
-  v5 = v4;
+  v5 = dCopy;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
   VCCKPerformBlockInsideAutoreleasePoolInTransaction(@"VCCKShortcutSyncService.recordToSaveForRecordID", v8);
   v6 = v13[5];
@@ -1125,26 +1125,26 @@ LABEL_16:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncEngineZoneWithIDWasPurged:(id)a3
+- (void)syncEngineZoneWithIDWasPurged:(id)purged
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  purgedCopy = purged;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v11 = "[VCCKShortcutSyncService syncEngineZoneWithIDWasPurged:]";
     v12 = 2114;
-    v13 = v4;
+    v13 = purgedCopy;
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_DEFAULT, "%s Sync engine reports that CKRecordZone with identifier %{public}@ was purged", buf, 0x16u);
   }
 
   logger = self->_logger;
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Zone purged: %@", v4];
-  [(WFCloudKitSyncEventLogger *)logger logEvent:v7];
+  purgedCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Zone purged: %@", purgedCopy];
+  [(WFCloudKitSyncEventLogger *)logger logEvent:purgedCopy];
 
-  v8 = [(VCCKShortcutSyncService *)self shortcutsZoneID];
-  LODWORD(logger) = [v4 isEqual:v8];
+  shortcutsZoneID = [(VCCKShortcutSyncService *)self shortcutsZoneID];
+  LODWORD(logger) = [purgedCopy isEqual:shortcutsZoneID];
 
   if (logger)
   {
@@ -1154,145 +1154,145 @@ LABEL_16:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncEngineZoneWithIDWasDeleted:(id)a3
+- (void)syncEngineZoneWithIDWasDeleted:(id)deleted
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deletedCopy = deleted;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v10 = "[VCCKShortcutSyncService syncEngineZoneWithIDWasDeleted:]";
     v11 = 2114;
-    v12 = v4;
+    v12 = deletedCopy;
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_DEFAULT, "%s Sync engine reports that CKRecordZone with identifier %{public}@ was deleted", buf, 0x16u);
   }
 
   logger = self->_logger;
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Zone deleted: %@", v4];
-  [(WFCloudKitSyncEventLogger *)logger logEvent:v7];
+  deletedCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Zone deleted: %@", deletedCopy];
+  [(WFCloudKitSyncEventLogger *)logger logEvent:deletedCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncEngineZoneWithIDChanged:(id)a3
+- (void)syncEngineZoneWithIDChanged:(id)changed
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v10 = "[VCCKShortcutSyncService syncEngineZoneWithIDChanged:]";
     v11 = 2114;
-    v12 = v4;
+    v12 = changedCopy;
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_INFO, "%s Sync engine reports that CKRecordZone with identifier %{public}@ changed", buf, 0x16u);
   }
 
   logger = self->_logger;
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Zone changed: %@", v4];
-  [(WFCloudKitSyncEventLogger *)logger logEvent:v7];
+  changedCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Zone changed: %@", changedCopy];
+  [(WFCloudKitSyncEventLogger *)logger logEvent:changedCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncEngineFailedToDeleteRecordZoneWithID:(id)a3 error:(id)a4
+- (void)syncEngineFailedToDeleteRecordZoneWithID:(id)d error:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  errorCopy = error;
   v8 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
   {
     *buf = 136315650;
     v15 = "[VCCKShortcutSyncService syncEngineFailedToDeleteRecordZoneWithID:error:]";
     v16 = 2114;
-    v17 = v7;
+    v17 = errorCopy;
     v18 = 2114;
-    v19 = v6;
+    v19 = dCopy;
     _os_log_impl(&dword_23103C000, v8, OS_LOG_TYPE_FAULT, "%s Sync engine reports failure to delete CKRecordZone: %{public}@, zoneID = %{public}@. This is unexpected, as we should not be deleting any zones", buf, 0x20u);
   }
 
   logger = self->_logger;
   v10 = MEMORY[0x277CCACA8];
-  v11 = [v7 description];
-  v12 = [v10 stringWithFormat:@"Failed to delete record zone: %@. %@", v6, v11];
+  v11 = [errorCopy description];
+  v12 = [v10 stringWithFormat:@"Failed to delete record zone: %@. %@", dCopy, v11];
   [(WFCloudKitSyncEventLogger *)logger logError:v12];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncEngineFailedToSaveRecordZone:(id)a3 error:(id)a4
+- (void)syncEngineFailedToSaveRecordZone:(id)zone error:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  zoneCopy = zone;
+  errorCopy = error;
   v8 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     *buf = 136315650;
     v16 = "[VCCKShortcutSyncService syncEngineFailedToSaveRecordZone:error:]";
     v17 = 2114;
-    v18 = v7;
+    v18 = errorCopy;
     v19 = 2114;
-    v20 = v6;
+    v20 = zoneCopy;
     _os_log_impl(&dword_23103C000, v8, OS_LOG_TYPE_ERROR, "%s Failed to save CKRecordZone: %{public}@, zone = %{public}@", buf, 0x20u);
   }
 
   logger = self->_logger;
   v10 = MEMORY[0x277CCACA8];
-  v11 = [v6 zoneID];
-  v12 = [v7 description];
-  v13 = [v10 stringWithFormat:@"Failed to save record zone: %@. %@", v11, v12];
+  zoneID = [zoneCopy zoneID];
+  v12 = [errorCopy description];
+  v13 = [v10 stringWithFormat:@"Failed to save record zone: %@. %@", zoneID, v12];
   [(WFCloudKitSyncEventLogger *)logger logError:v13];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncEngineDidDeleteRecordZoneWithID:(id)a3
+- (void)syncEngineDidDeleteRecordZoneWithID:(id)d
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
   {
     *buf = 136315394;
     v10 = "[VCCKShortcutSyncService syncEngineDidDeleteRecordZoneWithID:]";
     v11 = 2114;
-    v12 = v4;
+    v12 = dCopy;
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_FAULT, "%s Sync engine reports successful deletion of CKRecordZone with identifier %{public}@, but we should not be deleting any zones", buf, 0x16u);
   }
 
   logger = self->_logger;
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Deleted record zone: %@", v4];
-  [(WFCloudKitSyncEventLogger *)logger logEvent:v7];
+  dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Deleted record zone: %@", dCopy];
+  [(WFCloudKitSyncEventLogger *)logger logEvent:dCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncEngineDidSaveRecordZone:(id)a3
+- (void)syncEngineDidSaveRecordZone:(id)zone
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  zoneCopy = zone;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v14 = "[VCCKShortcutSyncService syncEngineDidSaveRecordZone:]";
     v15 = 2114;
-    v16 = v4;
+    v16 = zoneCopy;
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_INFO, "%s Successfully saved CKRecordZone %{public}@", buf, 0x16u);
   }
 
   logger = self->_logger;
   v7 = MEMORY[0x277CCACA8];
-  v8 = [v4 zoneID];
-  v9 = [v7 stringWithFormat:@"Saved record zone: %@", v8];
+  zoneID = [zoneCopy zoneID];
+  v9 = [v7 stringWithFormat:@"Saved record zone: %@", zoneID];
   [(WFCloudKitSyncEventLogger *)logger logEvent:v9];
 
-  v10 = [v4 zoneID];
-  v11 = [(VCCKShortcutSyncService *)self shortcutsZoneID];
-  LODWORD(v9) = [v10 isEqual:v11];
+  zoneID2 = [zoneCopy zoneID];
+  shortcutsZoneID = [(VCCKShortcutSyncService *)self shortcutsZoneID];
+  LODWORD(v9) = [zoneID2 isEqual:shortcutsZoneID];
 
   if (v9)
   {
@@ -1302,30 +1302,30 @@ LABEL_16:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)syncEngine:(id)a3 nextRecordZoneChangeBatchForContext:(id)a4
+- (id)syncEngine:(id)engine nextRecordZoneChangeBatchForContext:(id)context
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VCCKShortcutSyncService *)self syncEngine];
+  engineCopy = engine;
+  contextCopy = context;
+  syncEngine = [(VCCKShortcutSyncService *)self syncEngine];
 
-  if (v8 == v6)
+  if (syncEngine == engineCopy)
   {
-    v29 = v7;
-    v30 = v6;
-    v10 = [v7 options];
-    v11 = [v10 scope];
+    v29 = contextCopy;
+    v30 = engineCopy;
+    options = [contextCopy options];
+    scope = [options scope];
 
     v12 = objc_opt_new();
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v13 = [(VCCKShortcutSyncService *)self syncEngine];
-    v14 = [v13 state];
-    v15 = [v14 pendingRecordZoneChanges];
+    syncEngine2 = [(VCCKShortcutSyncService *)self syncEngine];
+    state = [syncEngine2 state];
+    pendingRecordZoneChanges = [state pendingRecordZoneChanges];
 
-    v16 = [v15 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    v16 = [pendingRecordZoneChanges countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v16)
     {
       v17 = v16;
@@ -1336,12 +1336,12 @@ LABEL_16:
         {
           if (*v34 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(pendingRecordZoneChanges);
           }
 
           v20 = *(*(&v33 + 1) + 8 * i);
-          v21 = [v20 recordID];
-          v22 = [v11 containsRecordID:v21];
+          recordID = [v20 recordID];
+          v22 = [scope containsRecordID:recordID];
 
           if (v22)
           {
@@ -1349,7 +1349,7 @@ LABEL_16:
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v17 = [pendingRecordZoneChanges countByEnumeratingWithState:&v33 objects:v37 count:16];
       }
 
       while (v17);
@@ -1365,11 +1365,11 @@ LABEL_16:
     v32 = v23;
     v25 = v23;
     v9 = [v24 initWithPendingChanges:v12 recordProvider:v31];
-    v6 = v30;
-    v26 = [v30 state];
-    [v26 removePendingRecordZoneChanges:v25];
+    engineCopy = v30;
+    state2 = [v30 state];
+    [state2 removePendingRecordZoneChanges:v25];
 
-    v7 = v29;
+    contextCopy = v29;
   }
 
   else
@@ -1396,16 +1396,16 @@ id __74__VCCKShortcutSyncService_syncEngine_nextRecordZoneChangeBatchForContext_
   return v4;
 }
 
-- (void)syncEngine:(id)a3 handleEvent:(id)a4
+- (void)syncEngine:(id)engine handleEvent:(id)event
 {
   v160 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 type];
-  if (v6 <= 2)
+  eventCopy = event;
+  type = [eventCopy type];
+  if (type <= 2)
   {
-    if (!v6)
+    if (!type)
     {
-      v15 = v5;
+      v15 = eventCopy;
       if (v15)
       {
         objc_opt_class();
@@ -1428,20 +1428,20 @@ id __74__VCCKShortcutSyncService_syncEngine_nextRecordZoneChangeBatchForContext_
       v57 = v16;
 
       v58 = MEMORY[0x277CCAAB0];
-      v59 = [v57 stateSerialization];
+      stateSerialization = [v57 stateSerialization];
 
-      v17 = [v58 wf_securelyArchivedDataWithRootObject:v59];
+      v17 = [v58 wf_securelyArchivedDataWithRootObject:stateSerialization];
 
       [(VCCKShortcutSyncService *)self syncEngineDidUpdateMetadata:v17];
       goto LABEL_126;
     }
 
-    if (v6 != 2)
+    if (type != 2)
     {
       goto LABEL_127;
     }
 
-    v9 = v5;
+    v9 = eventCopy;
     if (v9)
     {
       objc_opt_class();
@@ -1467,8 +1467,8 @@ id __74__VCCKShortcutSyncService_syncEngine_nextRecordZoneChangeBatchForContext_
     v147 = 0u;
     v144 = 0u;
     v145 = 0u;
-    v86 = [v17 modifications];
-    v87 = [v86 countByEnumeratingWithState:&v144 objects:v159 count:16];
+    modifications = [v17 modifications];
+    v87 = [modifications countByEnumeratingWithState:&v144 objects:v159 count:16];
     if (v87)
     {
       v88 = v87;
@@ -1479,14 +1479,14 @@ id __74__VCCKShortcutSyncService_syncEngine_nextRecordZoneChangeBatchForContext_
         {
           if (*v145 != v89)
           {
-            objc_enumerationMutation(v86);
+            objc_enumerationMutation(modifications);
           }
 
-          v91 = [*(*(&v144 + 1) + 8 * i) zoneID];
-          [(VCCKShortcutSyncService *)self syncEngineZoneWithIDChanged:v91];
+          zoneID = [*(*(&v144 + 1) + 8 * i) zoneID];
+          [(VCCKShortcutSyncService *)self syncEngineZoneWithIDChanged:zoneID];
         }
 
-        v88 = [v86 countByEnumeratingWithState:&v144 objects:v159 count:16];
+        v88 = [modifications countByEnumeratingWithState:&v144 objects:v159 count:16];
       }
 
       while (v88);
@@ -1496,8 +1496,8 @@ id __74__VCCKShortcutSyncService_syncEngine_nextRecordZoneChangeBatchForContext_
     v143 = 0u;
     v140 = 0u;
     v141 = 0u;
-    v23 = [v17 deletions];
-    v92 = [v23 countByEnumeratingWithState:&v140 objects:v158 count:16];
+    deletions = [v17 deletions];
+    v92 = [deletions countByEnumeratingWithState:&v140 objects:v158 count:16];
     if (!v92)
     {
       goto LABEL_125;
@@ -1511,26 +1511,26 @@ LABEL_115:
     {
       if (*v141 != v94)
       {
-        objc_enumerationMutation(v23);
+        objc_enumerationMutation(deletions);
       }
 
       v96 = *(*(&v140 + 1) + 8 * v95);
-      v97 = [v96 reason];
-      if (v97 == 1)
+      reason = [v96 reason];
+      if (reason == 1)
       {
         break;
       }
 
-      if (!v97)
+      if (!reason)
       {
-        v98 = [v96 zoneID];
-        [(VCCKShortcutSyncService *)self syncEngineZoneWithIDWasDeleted:v98];
+        zoneID2 = [v96 zoneID];
+        [(VCCKShortcutSyncService *)self syncEngineZoneWithIDWasDeleted:zoneID2];
 LABEL_122:
       }
 
       if (v93 == ++v95)
       {
-        v93 = [v23 countByEnumeratingWithState:&v140 objects:v158 count:16];
+        v93 = [deletions countByEnumeratingWithState:&v140 objects:v158 count:16];
         if (!v93)
         {
           goto LABEL_125;
@@ -1540,15 +1540,15 @@ LABEL_122:
       }
     }
 
-    v98 = [v96 zoneID];
-    [(VCCKShortcutSyncService *)self syncEngineZoneWithIDWasPurged:v98];
+    zoneID2 = [v96 zoneID];
+    [(VCCKShortcutSyncService *)self syncEngineZoneWithIDWasPurged:zoneID2];
     goto LABEL_122;
   }
 
-  switch(v6)
+  switch(type)
   {
     case 3:
-      v11 = v5;
+      v11 = eventCopy;
       if (v11)
       {
         objc_opt_class();
@@ -1574,8 +1574,8 @@ LABEL_122:
       v139 = 0u;
       v136 = 0u;
       v137 = 0u;
-      v18 = [v17 modifications];
-      v19 = [v18 countByEnumeratingWithState:&v136 objects:v157 count:16];
+      modifications2 = [v17 modifications];
+      v19 = [modifications2 countByEnumeratingWithState:&v136 objects:v157 count:16];
       if (v19)
       {
         v20 = v19;
@@ -1586,13 +1586,13 @@ LABEL_122:
           {
             if (*v137 != v21)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(modifications2);
             }
 
             [(VCCKShortcutSyncService *)self syncEngineDidFetchRecord:*(*(&v136 + 1) + 8 * j)];
           }
 
-          v20 = [v18 countByEnumeratingWithState:&v136 objects:v157 count:16];
+          v20 = [modifications2 countByEnumeratingWithState:&v136 objects:v157 count:16];
         }
 
         while (v20);
@@ -1602,8 +1602,8 @@ LABEL_122:
       v135 = 0u;
       v132 = 0u;
       v133 = 0u;
-      v23 = [v17 deletions];
-      v24 = [v23 countByEnumeratingWithState:&v132 objects:v156 count:16];
+      deletions = [v17 deletions];
+      v24 = [deletions countByEnumeratingWithState:&v132 objects:v156 count:16];
       if (v24)
       {
         v25 = v24;
@@ -1614,16 +1614,16 @@ LABEL_122:
           {
             if (*v133 != v26)
             {
-              objc_enumerationMutation(v23);
+              objc_enumerationMutation(deletions);
             }
 
             v28 = *(*(&v132 + 1) + 8 * k);
-            v29 = [v28 recordID];
-            v30 = [v28 recordType];
-            [(VCCKShortcutSyncService *)self syncEngineRecordWithIDWasDeleted:v29 recordType:v30];
+            recordID = [v28 recordID];
+            recordType = [v28 recordType];
+            [(VCCKShortcutSyncService *)self syncEngineRecordWithIDWasDeleted:recordID recordType:recordType];
           }
 
-          v25 = [v23 countByEnumeratingWithState:&v132 objects:v156 count:16];
+          v25 = [deletions countByEnumeratingWithState:&v132 objects:v156 count:16];
         }
 
         while (v25);
@@ -1631,7 +1631,7 @@ LABEL_122:
 
       goto LABEL_125;
     case 4:
-      v13 = v5;
+      v13 = eventCopy;
       if (v13)
       {
         objc_opt_class();
@@ -1657,8 +1657,8 @@ LABEL_122:
       v131 = 0u;
       v128 = 0u;
       v129 = 0u;
-      v31 = [v17 savedZones];
-      v32 = [v31 countByEnumeratingWithState:&v128 objects:v155 count:16];
+      savedZones = [v17 savedZones];
+      v32 = [savedZones countByEnumeratingWithState:&v128 objects:v155 count:16];
       if (v32)
       {
         v33 = v32;
@@ -1669,13 +1669,13 @@ LABEL_122:
           {
             if (*v129 != v34)
             {
-              objc_enumerationMutation(v31);
+              objc_enumerationMutation(savedZones);
             }
 
             [(VCCKShortcutSyncService *)self syncEngineDidSaveRecordZone:*(*(&v128 + 1) + 8 * m)];
           }
 
-          v33 = [v31 countByEnumeratingWithState:&v128 objects:v155 count:16];
+          v33 = [savedZones countByEnumeratingWithState:&v128 objects:v155 count:16];
         }
 
         while (v33);
@@ -1685,8 +1685,8 @@ LABEL_122:
       v127 = 0u;
       v124 = 0u;
       v125 = 0u;
-      v36 = [v17 failedZoneSaves];
-      v37 = [v36 countByEnumeratingWithState:&v124 objects:v154 count:16];
+      failedZoneSaves = [v17 failedZoneSaves];
+      v37 = [failedZoneSaves countByEnumeratingWithState:&v124 objects:v154 count:16];
       if (v37)
       {
         v38 = v37;
@@ -1697,16 +1697,16 @@ LABEL_122:
           {
             if (*v125 != v39)
             {
-              objc_enumerationMutation(v36);
+              objc_enumerationMutation(failedZoneSaves);
             }
 
             v41 = *(*(&v124 + 1) + 8 * n);
-            v42 = [v41 recordZone];
-            v43 = [v41 error];
-            [(VCCKShortcutSyncService *)self syncEngineFailedToSaveRecordZone:v42 error:v43];
+            recordZone = [v41 recordZone];
+            error = [v41 error];
+            [(VCCKShortcutSyncService *)self syncEngineFailedToSaveRecordZone:recordZone error:error];
           }
 
-          v38 = [v36 countByEnumeratingWithState:&v124 objects:v154 count:16];
+          v38 = [failedZoneSaves countByEnumeratingWithState:&v124 objects:v154 count:16];
         }
 
         while (v38);
@@ -1716,8 +1716,8 @@ LABEL_122:
       v123 = 0u;
       v120 = 0u;
       v121 = 0u;
-      v44 = [v17 deletedZoneIDs];
-      v45 = [v44 countByEnumeratingWithState:&v120 objects:v153 count:16];
+      deletedZoneIDs = [v17 deletedZoneIDs];
+      v45 = [deletedZoneIDs countByEnumeratingWithState:&v120 objects:v153 count:16];
       if (v45)
       {
         v46 = v45;
@@ -1728,13 +1728,13 @@ LABEL_122:
           {
             if (*v121 != v47)
             {
-              objc_enumerationMutation(v44);
+              objc_enumerationMutation(deletedZoneIDs);
             }
 
             [(VCCKShortcutSyncService *)self syncEngineDidDeleteRecordZoneWithID:*(*(&v120 + 1) + 8 * ii)];
           }
 
-          v46 = [v44 countByEnumeratingWithState:&v120 objects:v153 count:16];
+          v46 = [deletedZoneIDs countByEnumeratingWithState:&v120 objects:v153 count:16];
         }
 
         while (v46);
@@ -1744,10 +1744,10 @@ LABEL_122:
       v119 = 0u;
       v116 = 0u;
       v117 = 0u;
-      v49 = [v17 failedZoneDeletes];
-      v23 = [v49 allKeys];
+      failedZoneDeletes = [v17 failedZoneDeletes];
+      deletions = [failedZoneDeletes allKeys];
 
-      v50 = [v23 countByEnumeratingWithState:&v116 objects:v152 count:16];
+      v50 = [deletions countByEnumeratingWithState:&v116 objects:v152 count:16];
       if (v50)
       {
         v51 = v50;
@@ -1758,16 +1758,16 @@ LABEL_122:
           {
             if (*v117 != v52)
             {
-              objc_enumerationMutation(v23);
+              objc_enumerationMutation(deletions);
             }
 
             v54 = *(*(&v116 + 1) + 8 * jj);
-            v55 = [v17 failedZoneDeletes];
-            v56 = [v55 objectForKey:v54];
+            failedZoneDeletes2 = [v17 failedZoneDeletes];
+            v56 = [failedZoneDeletes2 objectForKey:v54];
             [(VCCKShortcutSyncService *)self syncEngineFailedToDeleteRecordZoneWithID:v54 error:v56];
           }
 
-          v51 = [v23 countByEnumeratingWithState:&v116 objects:v152 count:16];
+          v51 = [deletions countByEnumeratingWithState:&v116 objects:v152 count:16];
         }
 
         while (v51);
@@ -1775,7 +1775,7 @@ LABEL_122:
 
       goto LABEL_125;
     case 5:
-      v7 = v5;
+      v7 = eventCopy;
       if (v7)
       {
         objc_opt_class();
@@ -1801,8 +1801,8 @@ LABEL_122:
       v115 = 0u;
       v112 = 0u;
       v113 = 0u;
-      v60 = [v17 savedRecords];
-      v61 = [v60 countByEnumeratingWithState:&v112 objects:v151 count:16];
+      savedRecords = [v17 savedRecords];
+      v61 = [savedRecords countByEnumeratingWithState:&v112 objects:v151 count:16];
       if (v61)
       {
         v62 = v61;
@@ -1813,13 +1813,13 @@ LABEL_122:
           {
             if (*v113 != v63)
             {
-              objc_enumerationMutation(v60);
+              objc_enumerationMutation(savedRecords);
             }
 
             [(VCCKShortcutSyncService *)self syncEngineDidSaveRecord:*(*(&v112 + 1) + 8 * kk)];
           }
 
-          v62 = [v60 countByEnumeratingWithState:&v112 objects:v151 count:16];
+          v62 = [savedRecords countByEnumeratingWithState:&v112 objects:v151 count:16];
         }
 
         while (v62);
@@ -1829,8 +1829,8 @@ LABEL_122:
       v111 = 0u;
       v108 = 0u;
       v109 = 0u;
-      v65 = [v17 failedRecordSaves];
-      v66 = [v65 countByEnumeratingWithState:&v108 objects:v150 count:16];
+      failedRecordSaves = [v17 failedRecordSaves];
+      v66 = [failedRecordSaves countByEnumeratingWithState:&v108 objects:v150 count:16];
       if (v66)
       {
         v67 = v66;
@@ -1841,16 +1841,16 @@ LABEL_122:
           {
             if (*v109 != v68)
             {
-              objc_enumerationMutation(v65);
+              objc_enumerationMutation(failedRecordSaves);
             }
 
             v70 = *(*(&v108 + 1) + 8 * mm);
-            v71 = [v70 record];
-            v72 = [v70 error];
-            [(VCCKShortcutSyncService *)self syncEngineFailedToSaveRecord:v71 error:v72];
+            record = [v70 record];
+            error2 = [v70 error];
+            [(VCCKShortcutSyncService *)self syncEngineFailedToSaveRecord:record error:error2];
           }
 
-          v67 = [v65 countByEnumeratingWithState:&v108 objects:v150 count:16];
+          v67 = [failedRecordSaves countByEnumeratingWithState:&v108 objects:v150 count:16];
         }
 
         while (v67);
@@ -1860,8 +1860,8 @@ LABEL_122:
       v107 = 0u;
       v104 = 0u;
       v105 = 0u;
-      v73 = [v17 deletedRecordIDs];
-      v74 = [v73 countByEnumeratingWithState:&v104 objects:v149 count:16];
+      deletedRecordIDs = [v17 deletedRecordIDs];
+      v74 = [deletedRecordIDs countByEnumeratingWithState:&v104 objects:v149 count:16];
       if (v74)
       {
         v75 = v74;
@@ -1872,13 +1872,13 @@ LABEL_122:
           {
             if (*v105 != v76)
             {
-              objc_enumerationMutation(v73);
+              objc_enumerationMutation(deletedRecordIDs);
             }
 
             [(VCCKShortcutSyncService *)self syncEngineDidDeleteRecordWithID:*(*(&v104 + 1) + 8 * nn)];
           }
 
-          v75 = [v73 countByEnumeratingWithState:&v104 objects:v149 count:16];
+          v75 = [deletedRecordIDs countByEnumeratingWithState:&v104 objects:v149 count:16];
         }
 
         while (v75);
@@ -1888,10 +1888,10 @@ LABEL_122:
       v103 = 0u;
       v100 = 0u;
       v101 = 0u;
-      v78 = [v17 failedRecordDeletes];
-      v23 = [v78 allKeys];
+      failedRecordDeletes = [v17 failedRecordDeletes];
+      deletions = [failedRecordDeletes allKeys];
 
-      v79 = [v23 countByEnumeratingWithState:&v100 objects:v148 count:16];
+      v79 = [deletions countByEnumeratingWithState:&v100 objects:v148 count:16];
       if (v79)
       {
         v80 = v79;
@@ -1902,16 +1902,16 @@ LABEL_122:
           {
             if (*v101 != v81)
             {
-              objc_enumerationMutation(v23);
+              objc_enumerationMutation(deletions);
             }
 
             v83 = *(*(&v100 + 1) + 8 * i1);
-            v84 = [v17 failedRecordDeletes];
-            v85 = [v84 objectForKey:v83];
+            failedRecordDeletes2 = [v17 failedRecordDeletes];
+            v85 = [failedRecordDeletes2 objectForKey:v83];
             [(VCCKShortcutSyncService *)self syncEngineFailedToDeleteRecordWithID:v83 error:v85];
           }
 
-          v80 = [v23 countByEnumeratingWithState:&v100 objects:v148 count:16];
+          v80 = [deletions countByEnumeratingWithState:&v100 objects:v148 count:16];
         }
 
         while (v80);
@@ -1930,16 +1930,16 @@ LABEL_127:
 
 - (id)fetchCloudKitRecordIDsForAllVisibleWorkflows
 {
-  v3 = [(VCCKShortcutSyncService *)self database];
-  v4 = [v3 sortedVisibleWorkflowsByName];
-  v5 = [v4 descriptors];
+  database = [(VCCKShortcutSyncService *)self database];
+  sortedVisibleWorkflowsByName = [database sortedVisibleWorkflowsByName];
+  descriptors = [sortedVisibleWorkflowsByName descriptors];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __71__VCCKShortcutSyncService_fetchCloudKitRecordIDsForAllVisibleWorkflows__block_invoke;
   v8[3] = &unk_2788FE7B0;
   v8[4] = self;
-  v6 = [v5 if_map:v8];
+  v6 = [descriptors if_map:v8];
 
   return v6;
 }
@@ -1957,23 +1957,23 @@ id __71__VCCKShortcutSyncService_fetchCloudKitRecordIDsForAllVisibleWorkflows__b
   return v8;
 }
 
-- (void)databaseDidChange:(id)a3 modified:(id)a4 inserted:(id)a5 removed:(id)a6
+- (void)databaseDidChange:(id)change modified:(id)modified inserted:(id)inserted removed:(id)removed
 {
   v29 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  modifiedCopy = modified;
+  insertedCopy = inserted;
+  removedCopy = removed;
   v12 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 136315906;
     v22 = "[VCCKShortcutSyncService databaseDidChange:modified:inserted:removed:]";
     v23 = 2114;
-    v24 = v9;
+    v24 = modifiedCopy;
     v25 = 2114;
-    v26 = v10;
+    v26 = insertedCopy;
     v27 = 2114;
-    v28 = v11;
+    v28 = removedCopy;
     _os_log_impl(&dword_23103C000, v12, OS_LOG_TYPE_INFO, "%s Received database change: modified = %{public}@, inserted = %{public}@, removed = %{public}@", buf, 0x2Au);
   }
 
@@ -1982,12 +1982,12 @@ id __71__VCCKShortcutSyncService_fetchCloudKitRecordIDsForAllVisibleWorkflows__b
   v17[2] = __71__VCCKShortcutSyncService_databaseDidChange_modified_inserted_removed___block_invoke;
   v17[3] = &unk_2788FE788;
   v17[4] = self;
-  v18 = v9;
-  v19 = v10;
-  v20 = v11;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
+  v18 = modifiedCopy;
+  v19 = insertedCopy;
+  v20 = removedCopy;
+  v13 = removedCopy;
+  v14 = insertedCopy;
+  v15 = modifiedCopy;
   VCCKPerformBlockInsideAutoreleasePoolInTransaction(@"VCCKShortcutSyncService.databaseResultChange", v17);
 
   v16 = *MEMORY[0x277D85DE8];
@@ -2497,28 +2497,28 @@ LABEL_91:
   v98 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (VCCKShortcutSyncServiceUserDefaultsChangedContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (VCCKShortcutSyncServiceUserDefaultsChangedContext == context)
   {
-    if (([v10 isEqualToString:*MEMORY[0x277D7D078]] & 1) != 0 || objc_msgSend(v10, "isEqualToString:", *MEMORY[0x277D7CC08]))
+    if (([pathCopy isEqualToString:*MEMORY[0x277D7D078]] & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", *MEMORY[0x277D7CC08]))
     {
       [(VCCKShortcutSyncService *)self sendSyncFlagsIfNeeded];
     }
   }
 
-  else if (VCCKShortcutSyncServiceApplicationVisibilityChangedContext == a6)
+  else if (VCCKShortcutSyncServiceApplicationVisibilityChangedContext == context)
   {
-    v13 = [(VCCKShortcutSyncService *)self applicationObserver];
-    v14 = [v13 isApplicationVisible];
+    applicationObserver = [(VCCKShortcutSyncService *)self applicationObserver];
+    isApplicationVisible = [applicationObserver isApplicationVisible];
 
     v15 = getWFCloudKitSyncLogObject();
     v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-    if (v14)
+    if (isApplicationVisible)
     {
       if (v16)
       {
@@ -2550,19 +2550,19 @@ LABEL_91:
   {
     v18.receiver = self;
     v18.super_class = VCCKShortcutSyncService;
-    [(VCCKShortcutSyncService *)&v18 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(VCCKShortcutSyncService *)&v18 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startWithCompletionHandler:(id)a3
+- (void)startWithCompletionHandler:(id)handler
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(VCCKShortcutSyncService *)self database];
-  v6 = [v5 syncToken];
-  v7 = [v6 syncEngineMetadata];
+  handlerCopy = handler;
+  database = [(VCCKShortcutSyncService *)self database];
+  syncToken = [database syncToken];
+  syncEngineMetadata = [syncToken syncEngineMetadata];
 
   v8 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -2570,14 +2570,14 @@ LABEL_91:
     *buf = 136315394;
     v31 = "[VCCKShortcutSyncService startWithCompletionHandler:]";
     v32 = 2048;
-    v33 = [v7 length];
+    v33 = [syncEngineMetadata length];
     _os_log_impl(&dword_23103C000, v8, OS_LOG_TYPE_DEFAULT, "%s Loaded sync engine metadata, length = %lu", buf, 0x16u);
   }
 
-  if ([v7 length])
+  if ([syncEngineMetadata length])
   {
     v29 = 0;
-    v9 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v7 error:&v29];
+    v9 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:syncEngineMetadata error:&v29];
     v10 = v29;
     if (v10)
     {
@@ -2608,16 +2608,16 @@ LABEL_91:
         _os_log_impl(&dword_23103C000, v12, OS_LOG_TYPE_DEBUG, "%s Migrating from old sync engine metadata blob to new sync engine state serialization", buf, 0xCu);
       }
 
-      v9 = [objc_alloc(MEMORY[0x277CBC758]) initWithDeprecatedData:v7];
+      v9 = [objc_alloc(MEMORY[0x277CBC758]) initWithDeprecatedData:syncEngineMetadata];
       v13 = [MEMORY[0x277CCAAB0] wf_securelyArchivedDataWithRootObject:v9];
-      v14 = [(VCCKShortcutSyncService *)self database];
+      database2 = [(VCCKShortcutSyncService *)self database];
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __54__VCCKShortcutSyncService_startWithCompletionHandler___block_invoke;
       v27[3] = &unk_2788FE6E8;
       v28 = v13;
       v11 = v13;
-      [v14 updateSyncTokenWithBlock:v27];
+      [database2 updateSyncTokenWithBlock:v27];
     }
   }
 
@@ -2637,9 +2637,9 @@ LABEL_91:
 LABEL_16:
 
   v15 = objc_alloc(MEMORY[0x277CBC6F0]);
-  v16 = [(VCCKShortcutSyncService *)self container];
-  v17 = [v16 privateCloudDatabase];
-  v18 = [v15 initWithDatabase:v17 stateSerialization:v9 delegate:self];
+  container = [(VCCKShortcutSyncService *)self container];
+  privateCloudDatabase = [container privateCloudDatabase];
+  v18 = [v15 initWithDatabase:privateCloudDatabase stateSerialization:v9 delegate:self];
 
   [v18 setApsMachServiceName:@"com.apple.aps.siriactionsd"];
   if (([(VCCKShortcutSyncService *)self debuggingOptions]& 1) != 0)
@@ -2650,12 +2650,12 @@ LABEL_16:
   v19 = [objc_alloc(MEMORY[0x277CBC6E8]) initWithConfiguration:v18];
   [(VCCKShortcutSyncService *)self setSyncEngine:v19];
 
-  v20 = [(VCCKShortcutSyncService *)self database];
-  [v20 addObjectObserver:self];
+  database3 = [(VCCKShortcutSyncService *)self database];
+  [database3 addObjectObserver:self];
 
   [(VCCKShortcutSyncService *)self startObservingUserDefaults];
-  v21 = [(VCCKShortcutSyncService *)self applicationObserver];
-  [v21 addObserver:self forKeyPath:@"applicationVisible" options:0 context:VCCKShortcutSyncServiceApplicationVisibilityChangedContext];
+  applicationObserver = [(VCCKShortcutSyncService *)self applicationObserver];
+  [applicationObserver addObserver:self forKeyPath:@"applicationVisible" options:0 context:VCCKShortcutSyncServiceApplicationVisibilityChangedContext];
 
   objc_initWeak(buf, self);
   v24[0] = MEMORY[0x277D85DD0];
@@ -2663,7 +2663,7 @@ LABEL_16:
   v24[2] = __54__VCCKShortcutSyncService_startWithCompletionHandler___block_invoke_252;
   v24[3] = &unk_2788FE760;
   objc_copyWeak(&v26, buf);
-  v22 = v4;
+  v22 = handlerCopy;
   v25 = v22;
   [(VCCKShortcutSyncService *)self fetchChangesInShortcutsZoneWithCompletion:v24];
 
@@ -2706,7 +2706,7 @@ void __54__VCCKShortcutSyncService_startWithCompletionHandler___block_invoke_252
 - (void)stopObservingUserDefaults
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEBD0] workflowUserDefaults];
+  workflowUserDefaults = [MEMORY[0x277CBEBD0] workflowUserDefaults];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -2727,7 +2727,7 @@ void __54__VCCKShortcutSyncService_startWithCompletionHandler___block_invoke_252
           objc_enumerationMutation(v4);
         }
 
-        [v3 removeObserver:self forKeyPath:*(*(&v20 + 1) + 8 * v8++) context:VCCKShortcutSyncServiceUserDefaultsChangedContext];
+        [workflowUserDefaults removeObserver:self forKeyPath:*(*(&v20 + 1) + 8 * v8++) context:VCCKShortcutSyncServiceUserDefaultsChangedContext];
       }
 
       while (v6 != v8);
@@ -2737,7 +2737,7 @@ void __54__VCCKShortcutSyncService_startWithCompletionHandler___block_invoke_252
     while (v6);
   }
 
-  v9 = [MEMORY[0x277CBEBD0] systemShortcutsUserDefaults];
+  systemShortcutsUserDefaults = [MEMORY[0x277CBEBD0] systemShortcutsUserDefaults];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -2758,7 +2758,7 @@ void __54__VCCKShortcutSyncService_startWithCompletionHandler___block_invoke_252
           objc_enumerationMutation(v10);
         }
 
-        [v9 removeObserver:self forKeyPath:*(*(&v16 + 1) + 8 * v14++) context:{VCCKShortcutSyncServiceUserDefaultsChangedContext, v16}];
+        [systemShortcutsUserDefaults removeObserver:self forKeyPath:*(*(&v16 + 1) + 8 * v14++) context:{VCCKShortcutSyncServiceUserDefaultsChangedContext, v16}];
       }
 
       while (v12 != v14);
@@ -2774,7 +2774,7 @@ void __54__VCCKShortcutSyncService_startWithCompletionHandler___block_invoke_252
 - (void)startObservingUserDefaults
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEBD0] workflowUserDefaults];
+  workflowUserDefaults = [MEMORY[0x277CBEBD0] workflowUserDefaults];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -2795,7 +2795,7 @@ void __54__VCCKShortcutSyncService_startWithCompletionHandler___block_invoke_252
           objc_enumerationMutation(v4);
         }
 
-        [v3 addObserver:self forKeyPath:*(*(&v20 + 1) + 8 * v8++) options:0 context:VCCKShortcutSyncServiceUserDefaultsChangedContext];
+        [workflowUserDefaults addObserver:self forKeyPath:*(*(&v20 + 1) + 8 * v8++) options:0 context:VCCKShortcutSyncServiceUserDefaultsChangedContext];
       }
 
       while (v6 != v8);
@@ -2805,7 +2805,7 @@ void __54__VCCKShortcutSyncService_startWithCompletionHandler___block_invoke_252
     while (v6);
   }
 
-  v9 = [MEMORY[0x277CBEBD0] systemShortcutsUserDefaults];
+  systemShortcutsUserDefaults = [MEMORY[0x277CBEBD0] systemShortcutsUserDefaults];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -2826,7 +2826,7 @@ void __54__VCCKShortcutSyncService_startWithCompletionHandler___block_invoke_252
           objc_enumerationMutation(v10);
         }
 
-        [v9 addObserver:self forKeyPath:*(*(&v16 + 1) + 8 * v14++) options:0 context:{VCCKShortcutSyncServiceUserDefaultsChangedContext, v16}];
+        [systemShortcutsUserDefaults addObserver:self forKeyPath:*(*(&v16 + 1) + 8 * v14++) options:0 context:{VCCKShortcutSyncServiceUserDefaultsChangedContext, v16}];
       }
 
       while (v12 != v14);
@@ -2839,65 +2839,65 @@ void __54__VCCKShortcutSyncService_startWithCompletionHandler___block_invoke_252
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUnknownItemErrorForRecord:(id)a3
+- (void)handleUnknownItemErrorForRecord:(id)record
 {
   v72 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 recordID];
+    recordID = [recordCopy recordID];
     *buf = 136315650;
     v67 = "[VCCKShortcutSyncService handleUnknownItemErrorForRecord:]";
     v68 = 2114;
-    v69 = v6;
+    v69 = recordID;
     v70 = 2112;
-    v71 = v4;
+    v71 = recordCopy;
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_DEFAULT, "%s Handling CKErrorUnknownItem error for record with identifier %{public}@, record = %@", buf, 0x20u);
   }
 
-  v7 = [v4 recordType];
-  v8 = [MEMORY[0x277D7C1F0] recordType];
-  if ([v7 isEqualToString:v8])
+  recordType = [recordCopy recordType];
+  recordType2 = [MEMORY[0x277D7C1F0] recordType];
+  if ([recordType isEqualToString:recordType2])
   {
 
     goto LABEL_6;
   }
 
-  v9 = [v4 recordType];
-  v10 = [MEMORY[0x277D7C1A0] recordType];
-  v11 = [v9 isEqualToString:v10];
+  recordType3 = [recordCopy recordType];
+  recordType4 = [MEMORY[0x277D7C1A0] recordType];
+  v11 = [recordType3 isEqualToString:recordType4];
 
   if (!v11)
   {
-    v21 = [v4 recordType];
-    v22 = [MEMORY[0x277D7C228] recordType];
-    v23 = [v21 isEqualToString:v22];
+    recordType5 = [recordCopy recordType];
+    recordType6 = [MEMORY[0x277D7C228] recordType];
+    v23 = [recordType5 isEqualToString:recordType6];
 
     if (v23)
     {
-      v24 = [(VCCKShortcutSyncService *)self database];
-      [v24 updateSyncTokenWithBlock:&__block_literal_global_246];
+      database = [(VCCKShortcutSyncService *)self database];
+      [database updateSyncTokenWithBlock:&__block_literal_global_246];
 
       [(VCCKShortcutSyncService *)self sendSyncFlagsIfNeeded];
       goto LABEL_13;
     }
 
-    v25 = [v4 recordType];
-    v26 = [(objc_class *)[(VCCKShortcutSyncService *)self cloudKitWorkflowClass] recordType];
-    v27 = [v25 isEqualToString:v26];
+    recordType7 = [recordCopy recordType];
+    recordType8 = [(objc_class *)[(VCCKShortcutSyncService *)self cloudKitWorkflowClass] recordType];
+    v27 = [recordType7 isEqualToString:recordType8];
 
     if (v27)
     {
-      v28 = [(VCCKShortcutSyncService *)self cloudKitWorkflowClass];
-      v29 = [v4 recordID];
-      v13 = [(objc_class *)v28 workflowIdentifierForRecordID:v29];
+      cloudKitWorkflowClass = [(VCCKShortcutSyncService *)self cloudKitWorkflowClass];
+      recordID2 = [recordCopy recordID];
+      recordID9 = [(objc_class *)cloudKitWorkflowClass workflowIdentifierForRecordID:recordID2];
 
-      v30 = [(VCCKShortcutSyncService *)self database];
-      [v30 setCloudKitMetadata:0 forWorkflowRecordWithIdentifier:v13 error:0];
+      database2 = [(VCCKShortcutSyncService *)self database];
+      [database2 setCloudKitMetadata:0 forWorkflowRecordWithIdentifier:recordID9 error:0];
 
-      v16 = [v4 recordID];
-      v64 = v16;
+      recordID3 = [recordCopy recordID];
+      v64 = recordID3;
       v17 = MEMORY[0x277CBEA60];
       v18 = &v64;
 LABEL_10:
@@ -2910,79 +2910,79 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v31 = [v4 recordType];
-    v32 = [MEMORY[0x277D7C1F8] recordType];
-    v33 = [v31 isEqualToString:v32];
+    recordType9 = [recordCopy recordType];
+    recordType10 = [MEMORY[0x277D7C1F8] recordType];
+    v33 = [recordType9 isEqualToString:recordType10];
 
     if (v33)
     {
       v34 = MEMORY[0x277D7C1F8];
-      v35 = [v4 recordID];
-      v13 = [v34 collectionIdentifierForRecordID:v35];
+      recordID4 = [recordCopy recordID];
+      recordID9 = [v34 collectionIdentifierForRecordID:recordID4];
 
-      if (!v13)
+      if (!recordID9)
       {
-        v16 = getWFCloudKitSyncLogObject();
-        if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+        recordID3 = getWFCloudKitSyncLogObject();
+        if (os_log_type_enabled(recordID3, OS_LOG_TYPE_ERROR))
         {
-          v55 = [v4 recordID];
+          recordID5 = [recordCopy recordID];
           *buf = 136315394;
           v67 = "[VCCKShortcutSyncService handleUnknownItemErrorForRecord:]";
           v68 = 2114;
-          v69 = v55;
-          _os_log_impl(&dword_23103C000, v16, OS_LOG_TYPE_ERROR, "%s Failed to get collection identifier from folder CKRecordID %{public}@", buf, 0x16u);
+          v69 = recordID5;
+          _os_log_impl(&dword_23103C000, recordID3, OS_LOG_TYPE_ERROR, "%s Failed to get collection identifier from folder CKRecordID %{public}@", buf, 0x16u);
         }
 
         goto LABEL_11;
       }
 
-      v36 = [(VCCKShortcutSyncService *)self database];
-      [v36 setCloudKitMetadata:0 forFolderRecordWithIdentifier:v13 error:0];
+      database3 = [(VCCKShortcutSyncService *)self database];
+      [database3 setCloudKitMetadata:0 forFolderRecordWithIdentifier:recordID9 error:0];
 
-      v16 = [v4 recordID];
-      v63 = v16;
+      recordID3 = [recordCopy recordID];
+      v63 = recordID3;
       v17 = MEMORY[0x277CBEA60];
       v18 = &v63;
       goto LABEL_10;
     }
 
-    v37 = [v4 recordType];
-    v38 = [MEMORY[0x277D7C1E8] recordType];
-    v39 = [v37 isEqualToString:v38];
+    recordType11 = [recordCopy recordType];
+    recordType12 = [MEMORY[0x277D7C1E8] recordType];
+    v39 = [recordType11 isEqualToString:recordType12];
 
     if (v39)
     {
       v40 = MEMORY[0x277D7C1E8];
-      v41 = [v4 recordID];
-      v13 = [v40 identifierForRecordID:v41];
+      recordID6 = [recordCopy recordID];
+      recordID9 = [v40 identifierForRecordID:recordID6];
 
-      if (v13)
+      if (recordID9)
       {
-        v42 = [(VCCKShortcutSyncService *)self database];
+        database4 = [(VCCKShortcutSyncService *)self database];
         v60 = 0;
-        v43 = [v42 autoShortcutsPreferencesForIdentifier:v13 error:&v60];
+        v43 = [database4 autoShortcutsPreferencesForIdentifier:recordID9 error:&v60];
         v44 = v60;
 
         if (v43)
         {
           [v43 setCloudKitMetadata:0];
-          v45 = [(VCCKShortcutSyncService *)self database];
+          database5 = [(VCCKShortcutSyncService *)self database];
           v59 = v44;
-          v46 = [v45 updateAutoShortcutsPreferencesWithNewPreferences:v43 error:&v59];
+          v46 = [database5 updateAutoShortcutsPreferencesWithNewPreferences:v43 error:&v59];
           v47 = v59;
 
           if (v46)
           {
-            v48 = [v4 recordID];
-            v62 = v48;
+            recordID7 = [recordCopy recordID];
+            v62 = recordID7;
             v49 = [MEMORY[0x277CBEA60] arrayWithObjects:&v62 count:1];
             [(VCCKShortcutSyncService *)self addRecordIDsToSave:v49 recordIDsToDelete:0];
           }
 
           else
           {
-            v48 = getWFCloudKitSyncLogObject();
-            if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
+            recordID7 = getWFCloudKitSyncLogObject();
+            if (os_log_type_enabled(recordID7, OS_LOG_TYPE_ERROR))
             {
               *buf = 136315650;
               v67 = "[VCCKShortcutSyncService handleUnknownItemErrorForRecord:]";
@@ -2990,7 +2990,7 @@ LABEL_12:
               v69 = v43;
               v70 = 2112;
               v71 = v47;
-              _os_log_impl(&dword_23103C000, v48, OS_LOG_TYPE_ERROR, "%s Failed to update Auto Shortcuts Preferences (%@): %@", buf, 0x20u);
+              _os_log_impl(&dword_23103C000, recordID7, OS_LOG_TYPE_ERROR, "%s Failed to update Auto Shortcuts Preferences (%@): %@", buf, 0x20u);
             }
           }
 
@@ -2999,16 +2999,16 @@ LABEL_12:
 
         else
         {
-          v48 = getWFCloudKitSyncLogObject();
-          if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
+          recordID7 = getWFCloudKitSyncLogObject();
+          if (os_log_type_enabled(recordID7, OS_LOG_TYPE_ERROR))
           {
             *buf = 136315650;
             v67 = "[VCCKShortcutSyncService handleUnknownItemErrorForRecord:]";
             v68 = 2112;
-            v69 = v13;
+            v69 = recordID9;
             v70 = 2112;
             v71 = v44;
-            _os_log_impl(&dword_23103C000, v48, OS_LOG_TYPE_ERROR, "%s Failed to get Auto Shortcuts Preferences from identifier (%@): %@", buf, 0x20u);
+            _os_log_impl(&dword_23103C000, recordID7, OS_LOG_TYPE_ERROR, "%s Failed to get Auto Shortcuts Preferences from identifier (%@): %@", buf, 0x20u);
           }
         }
 
@@ -3018,11 +3018,11 @@ LABEL_12:
       v56 = getWFCloudKitSyncLogObject();
       if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
       {
-        v57 = [v4 recordID];
+        recordID8 = [recordCopy recordID];
         *buf = 136315394;
         v67 = "[VCCKShortcutSyncService handleUnknownItemErrorForRecord:]";
         v68 = 2114;
-        v69 = v57;
+        v69 = recordID8;
         v58 = "%s Failed to get preferences identifier from Auto Shortcuts Preferences CKRecordID %{public}@";
         goto LABEL_37;
       }
@@ -3030,23 +3030,23 @@ LABEL_12:
 
     else
     {
-      v50 = [v4 recordType];
-      v51 = [MEMORY[0x277D7C210] recordType];
-      if ([v50 isEqualToString:v51])
+      recordType13 = [recordCopy recordType];
+      recordType14 = [MEMORY[0x277D7C210] recordType];
+      if ([recordType13 isEqualToString:recordType14])
       {
-        v52 = [(VCCKShortcutSyncService *)self coherenceSyncEnabled];
+        coherenceSyncEnabled = [(VCCKShortcutSyncService *)self coherenceSyncEnabled];
 
-        if (v52)
+        if (coherenceSyncEnabled)
         {
-          v53 = [(VCCKShortcutSyncService *)self database];
-          v54 = [_TtC14VoiceShortcuts26VCCKLibrarySyncCoordinator handleUnknownItemErrorForRecord:v4 database:v53 error:0];
+          database6 = [(VCCKShortcutSyncService *)self database];
+          v54 = [_TtC14VoiceShortcuts26VCCKLibrarySyncCoordinator handleUnknownItemErrorForRecord:recordCopy database:database6 error:0];
 
           if (v54)
           {
-            v13 = [v4 recordID];
-            v61 = v13;
-            v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v61 count:1];
-            [(VCCKShortcutSyncService *)self addRecordIDsToSave:v16 recordIDsToDelete:0];
+            recordID9 = [recordCopy recordID];
+            v61 = recordID9;
+            recordID3 = [MEMORY[0x277CBEA60] arrayWithObjects:&v61 count:1];
+            [(VCCKShortcutSyncService *)self addRecordIDsToSave:recordID3 recordIDsToDelete:0];
             goto LABEL_11;
           }
 
@@ -3056,7 +3056,7 @@ LABEL_12:
             *buf = 136315394;
             v67 = "[VCCKShortcutSyncService handleUnknownItemErrorForRecord:]";
             v68 = 2114;
-            v69 = v4;
+            v69 = recordCopy;
             _os_log_impl(&dword_23103C000, v56, OS_LOG_TYPE_ERROR, "%s Failed to handle unknown item error for library record: %{public}@", buf, 0x16u);
           }
 
@@ -3071,11 +3071,11 @@ LABEL_12:
       v56 = getWFCloudKitSyncLogObject();
       if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
       {
-        v57 = [v4 recordType];
+        recordID8 = [recordCopy recordType];
         *buf = 136315394;
         v67 = "[VCCKShortcutSyncService handleUnknownItemErrorForRecord:]";
         v68 = 2114;
-        v69 = v57;
+        v69 = recordID8;
         v58 = "%s Received unknown item error for CKRecord of unexpected type: %{public}@";
 LABEL_37:
         _os_log_impl(&dword_23103C000, v56, OS_LOG_TYPE_ERROR, v58, buf, 0x16u);
@@ -3088,10 +3088,10 @@ LABEL_38:
   }
 
 LABEL_6:
-  v12 = [v4 recordID];
-  v13 = [(VCCKShortcutSyncService *)self collectionIdentifierForRecordID:v12];
+  recordID10 = [recordCopy recordID];
+  recordID9 = [(VCCKShortcutSyncService *)self collectionIdentifierForRecordID:recordID10];
 
-  if (v13)
+  if (recordID9)
   {
     v14 = getWFCloudKitSyncLogObject();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -3099,15 +3099,15 @@ LABEL_6:
       *buf = 136315394;
       v67 = "[VCCKShortcutSyncService handleUnknownItemErrorForRecord:]";
       v68 = 2114;
-      v69 = v13;
+      v69 = recordID9;
       _os_log_impl(&dword_23103C000, v14, OS_LOG_TYPE_DEFAULT, "%s Handling CKErrorUnknownItem for collection with identifier %{public}@", buf, 0x16u);
     }
 
-    v15 = [(VCCKShortcutSyncService *)self database];
-    [v15 setCloudKitMetadata:0 forOrderingRecordWithIdentifier:v13 error:0];
+    database7 = [(VCCKShortcutSyncService *)self database];
+    [database7 setCloudKitMetadata:0 forOrderingRecordWithIdentifier:recordID9 error:0];
 
-    v16 = [v4 recordID];
-    v65 = v16;
+    recordID3 = [recordCopy recordID];
+    v65 = recordID3;
     v17 = MEMORY[0x277CBEA60];
     v18 = &v65;
     goto LABEL_10;
@@ -3118,12 +3118,12 @@ LABEL_13:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleServerRecordChangedError:(id)a3
+- (void)handleServerRecordChangedError:(id)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277CBBFE0]];
+  errorCopy = error;
+  userInfo = [errorCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CBBFE0]];
 
   if (v6)
   {
@@ -3146,8 +3146,8 @@ LABEL_13:
 
   v8 = v7;
 
-  v9 = [v4 userInfo];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277CBBFE8]];
+  userInfo2 = [errorCopy userInfo];
+  v10 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x277CBBFE8]];
 
   if (v10)
   {
@@ -3170,8 +3170,8 @@ LABEL_13:
 
   v12 = v11;
 
-  v13 = [v4 userInfo];
-  v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277CBBFD8]];
+  userInfo3 = [errorCopy userInfo];
+  v14 = [userInfo3 objectForKeyedSubscript:*MEMORY[0x277CBBFD8]];
 
   if (v14)
   {
@@ -3194,9 +3194,9 @@ LABEL_13:
 
   v16 = v15;
 
-  v17 = [v8 recordType];
-  v18 = [MEMORY[0x277D7C1F0] recordType];
-  v19 = [v17 isEqualToString:v18];
+  recordType = [v8 recordType];
+  recordType2 = [MEMORY[0x277D7C1F0] recordType];
+  v19 = [recordType isEqualToString:recordType2];
 
   if (v19)
   {
@@ -3205,9 +3205,9 @@ LABEL_13:
 
   else
   {
-    v20 = [v8 recordType];
-    v21 = [MEMORY[0x277D7C228] recordType];
-    v22 = [v20 isEqualToString:v21];
+    recordType3 = [v8 recordType];
+    recordType4 = [MEMORY[0x277D7C228] recordType];
+    v22 = [recordType3 isEqualToString:recordType4];
 
     if (v22)
     {
@@ -3216,9 +3216,9 @@ LABEL_13:
 
     else
     {
-      v23 = [v8 recordType];
-      v24 = [(objc_class *)[(VCCKShortcutSyncService *)self cloudKitWorkflowClass] recordType];
-      v25 = [v23 isEqualToString:v24];
+      recordType5 = [v8 recordType];
+      recordType6 = [(objc_class *)[(VCCKShortcutSyncService *)self cloudKitWorkflowClass] recordType];
+      v25 = [recordType5 isEqualToString:recordType6];
 
       if (v25)
       {
@@ -3227,9 +3227,9 @@ LABEL_13:
 
       else
       {
-        v26 = [v8 recordType];
-        v27 = [MEMORY[0x277D7C1F8] recordType];
-        v28 = [v26 isEqualToString:v27];
+        recordType7 = [v8 recordType];
+        recordType8 = [MEMORY[0x277D7C1F8] recordType];
+        v28 = [recordType7 isEqualToString:recordType8];
 
         if (v28)
         {
@@ -3238,9 +3238,9 @@ LABEL_13:
 
         else
         {
-          v29 = [v8 recordType];
-          v30 = [MEMORY[0x277D7C1E8] recordType];
-          v31 = [v29 isEqualToString:v30];
+          recordType9 = [v8 recordType];
+          recordType10 = [MEMORY[0x277D7C1E8] recordType];
+          v31 = [recordType9 isEqualToString:recordType10];
 
           if (v31)
           {
@@ -3249,13 +3249,13 @@ LABEL_13:
 
           else
           {
-            v32 = [v8 recordType];
-            v33 = [MEMORY[0x277D7C210] recordType];
-            if ([v32 isEqualToString:v33])
+            recordType11 = [v8 recordType];
+            recordType12 = [MEMORY[0x277D7C210] recordType];
+            if ([recordType11 isEqualToString:recordType12])
             {
-              v34 = [(VCCKShortcutSyncService *)self coherenceSyncEnabled];
+              coherenceSyncEnabled = [(VCCKShortcutSyncService *)self coherenceSyncEnabled];
 
-              if (v34)
+              if (coherenceSyncEnabled)
               {
                 [(VCCKShortcutSyncService *)self handleSendLibraryConflictWithClientRecord:v8 serverRecord:v12 ancestorRecord:v16];
                 goto LABEL_33;
@@ -3269,11 +3269,11 @@ LABEL_13:
             v35 = getWFCloudKitSyncLogObject();
             if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
             {
-              v36 = [v8 recordType];
+              recordType13 = [v8 recordType];
               v38 = 136315394;
               v39 = "[VCCKShortcutSyncService handleServerRecordChangedError:]";
               v40 = 2114;
-              v41 = v36;
+              v41 = recordType13;
               _os_log_impl(&dword_23103C000, v35, OS_LOG_TYPE_ERROR, "%s Received record changed error for CKRecord of unexpected type: %{public}@", &v38, 0x16u);
             }
           }
@@ -3287,10 +3287,10 @@ LABEL_33:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSendFolderConflictWithClientRecord:(id)a3 serverRecord:(id)a4 ancestorRecord:(id)a5
+- (void)handleSendFolderConflictWithClientRecord:(id)record serverRecord:(id)serverRecord ancestorRecord:(id)ancestorRecord
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  serverRecordCopy = serverRecord;
   v7 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -3300,31 +3300,31 @@ LABEL_33:
   }
 
   v8 = objc_opt_new();
-  [MEMORY[0x277D7C200] hydrateItem:v8 withRecord:v6 setNilValues:0];
+  [MEMORY[0x277D7C200] hydrateItem:v8 withRecord:serverRecordCopy setNilValues:0];
   v9 = MEMORY[0x277D7C1F8];
-  v10 = [v6 recordID];
-  v11 = [v9 collectionIdentifierForRecordID:v10];
+  recordID = [serverRecordCopy recordID];
+  v11 = [v9 collectionIdentifierForRecordID:recordID];
 
   if (v11)
   {
-    v12 = [(VCCKShortcutSyncService *)self database];
-    v13 = [v8 recordSystemFieldsData];
+    database = [(VCCKShortcutSyncService *)self database];
+    recordSystemFieldsData = [v8 recordSystemFieldsData];
     v20 = 0;
-    v14 = [v12 setCloudKitMetadata:v13 forFolderRecordWithIdentifier:v11 error:&v20];
+    v14 = [database setCloudKitMetadata:recordSystemFieldsData forFolderRecordWithIdentifier:v11 error:&v20];
     v15 = v20;
 
     if (v14)
     {
-      v16 = [v6 recordID];
-      v21 = v16;
+      recordID2 = [serverRecordCopy recordID];
+      v21 = recordID2;
       v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v21 count:1];
       [(VCCKShortcutSyncService *)self addRecordIDsToSave:v17 recordIDsToDelete:0];
     }
 
     else
     {
-      v16 = getWFCloudKitSyncLogObject();
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      recordID2 = getWFCloudKitSyncLogObject();
+      if (os_log_type_enabled(recordID2, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315650;
         v23 = "[VCCKShortcutSyncService handleSendFolderConflictWithClientRecord:serverRecord:ancestorRecord:]";
@@ -3332,7 +3332,7 @@ LABEL_33:
         v25 = v11;
         v26 = 2114;
         v27 = v15;
-        _os_log_impl(&dword_23103C000, v16, OS_LOG_TYPE_ERROR, "%s Failed to handle fetched folder record %{public}@: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_23103C000, recordID2, OS_LOG_TYPE_ERROR, "%s Failed to handle fetched folder record %{public}@: %{public}@", buf, 0x20u);
       }
     }
   }
@@ -3342,11 +3342,11 @@ LABEL_33:
     v15 = getWFCloudKitSyncLogObject();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v18 = [v6 recordID];
+      recordID3 = [serverRecordCopy recordID];
       *buf = 136315394;
       v23 = "[VCCKShortcutSyncService handleSendFolderConflictWithClientRecord:serverRecord:ancestorRecord:]";
       v24 = 2114;
-      v25 = v18;
+      v25 = recordID3;
       _os_log_impl(&dword_23103C000, v15, OS_LOG_TYPE_ERROR, "%s Invalid folder record ID: %{public}@", buf, 0x16u);
     }
   }
@@ -3354,32 +3354,32 @@ LABEL_33:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSendWorkflowConflictWithClientRecord:(id)a3 serverRecord:(id)a4 ancestorRecord:(id)a5
+- (void)handleSendWorkflowConflictWithClientRecord:(id)record serverRecord:(id)serverRecord ancestorRecord:(id)ancestorRecord
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recordCopy = record;
+  serverRecordCopy = serverRecord;
+  ancestorRecordCopy = ancestorRecord;
   v11 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 recordChangeTag];
-    v13 = [v9 recordChangeTag];
-    v14 = [v10 recordChangeTag];
+    recordChangeTag = [recordCopy recordChangeTag];
+    recordChangeTag2 = [serverRecordCopy recordChangeTag];
+    recordChangeTag3 = [ancestorRecordCopy recordChangeTag];
     *buf = 136315906;
     v32 = "[VCCKShortcutSyncService handleSendWorkflowConflictWithClientRecord:serverRecord:ancestorRecord:]";
     v33 = 2114;
-    v34 = v12;
+    v34 = recordChangeTag;
     v35 = 2114;
-    v36 = v13;
+    v36 = recordChangeTag2;
     v37 = 2114;
-    v38 = v14;
+    v38 = recordChangeTag3;
     _os_log_impl(&dword_23103C000, v11, OS_LOG_TYPE_DEFAULT, "%s Handling CKErrorServerRecordChanged error for sent workflow, clientRecord.recordChangeTag = %{public}@, serverRecord.recordChangeTag = %{public}@, ancestorRecord.recordChangeTag = %{public}@", buf, 0x2Au);
   }
 
-  v15 = [v8 recordChangeTag];
+  recordChangeTag4 = [recordCopy recordChangeTag];
 
-  if (v15)
+  if (recordChangeTag4)
   {
     v16 = getWFCloudKitSyncLogObject();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -3396,10 +3396,10 @@ LABEL_33:
   {
     [(VCCKShortcutSyncService *)self cloudKitWorkflowClass];
     v17 = objc_opt_new();
-    [MEMORY[0x277D7C200] hydrateItem:v17 withRecord:v9 setNilValues:0];
-    v18 = [(VCCKShortcutSyncService *)self cloudKitWorkflowClass];
-    v19 = [v9 recordID];
-    v20 = [(objc_class *)v18 workflowIdentifierForRecordID:v19];
+    [MEMORY[0x277D7C200] hydrateItem:v17 withRecord:serverRecordCopy setNilValues:0];
+    cloudKitWorkflowClass = [(VCCKShortcutSyncService *)self cloudKitWorkflowClass];
+    recordID = [serverRecordCopy recordID];
+    v20 = [(objc_class *)cloudKitWorkflowClass workflowIdentifierForRecordID:recordID];
 
     v21 = getWFCloudKitSyncLogObject();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -3409,24 +3409,24 @@ LABEL_33:
       _os_log_impl(&dword_23103C000, v21, OS_LOG_TYPE_DEFAULT, "%s Persisting server CKRecord metadata and retrying upload of this change", buf, 0xCu);
     }
 
-    v22 = [(VCCKShortcutSyncService *)self database];
-    v23 = [v17 recordSystemFieldsData];
+    database = [(VCCKShortcutSyncService *)self database];
+    recordSystemFieldsData = [v17 recordSystemFieldsData];
     v29 = 0;
-    v24 = [v22 setCloudKitMetadata:v23 forWorkflowRecordWithIdentifier:v20 error:&v29];
+    v24 = [database setCloudKitMetadata:recordSystemFieldsData forWorkflowRecordWithIdentifier:v20 error:&v29];
     v25 = v29;
 
     if (v24)
     {
-      v26 = [v9 recordID];
-      v30 = v26;
+      recordID2 = [serverRecordCopy recordID];
+      v30 = recordID2;
       v27 = [MEMORY[0x277CBEA60] arrayWithObjects:&v30 count:1];
       [(VCCKShortcutSyncService *)self addRecordIDsToSave:v27 recordIDsToDelete:0];
     }
 
     else
     {
-      v26 = getWFCloudKitSyncLogObject();
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+      recordID2 = getWFCloudKitSyncLogObject();
+      if (os_log_type_enabled(recordID2, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315650;
         v32 = "[VCCKShortcutSyncService handleSendWorkflowConflictWithClientRecord:serverRecord:ancestorRecord:]";
@@ -3434,7 +3434,7 @@ LABEL_33:
         v34 = v20;
         v35 = 2114;
         v36 = v25;
-        _os_log_impl(&dword_23103C000, v26, OS_LOG_TYPE_ERROR, "%s Failed to handle update workflow record cloudkit metadata %{public}@: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_23103C000, recordID2, OS_LOG_TYPE_ERROR, "%s Failed to handle update workflow record cloudkit metadata %{public}@: %{public}@", buf, 0x20u);
       }
     }
   }
@@ -3442,38 +3442,38 @@ LABEL_33:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSendLibraryConflictWithClientRecord:(id)a3 serverRecord:(id)a4 ancestorRecord:(id)a5
+- (void)handleSendLibraryConflictWithClientRecord:(id)record serverRecord:(id)serverRecord ancestorRecord:(id)ancestorRecord
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recordCopy = record;
+  serverRecordCopy = serverRecord;
+  ancestorRecordCopy = ancestorRecord;
   v11 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 recordChangeTag];
-    v13 = [v9 recordChangeTag];
-    v14 = [v10 recordChangeTag];
+    recordChangeTag = [recordCopy recordChangeTag];
+    recordChangeTag2 = [serverRecordCopy recordChangeTag];
+    recordChangeTag3 = [ancestorRecordCopy recordChangeTag];
     *buf = 136315906;
     v21 = "[VCCKShortcutSyncService handleSendLibraryConflictWithClientRecord:serverRecord:ancestorRecord:]";
     v22 = 2114;
-    v23 = v12;
+    v23 = recordChangeTag;
     v24 = 2114;
-    v25 = v13;
+    v25 = recordChangeTag2;
     v26 = 2114;
-    v27 = v14;
+    v27 = recordChangeTag3;
     _os_log_impl(&dword_23103C000, v11, OS_LOG_TYPE_DEFAULT, "%s Handling CKErrorServerRecordChanged error for sent library, clientRecord.recordChangeTag = %{public}@, serverRecord.recordChangeTag = %{public}@, ancestorRecord.recordChangeTag = %{public}@", buf, 0x2Au);
   }
 
-  v15 = [(VCCKShortcutSyncService *)self syncEngine];
-  v16 = [v15 database];
-  v17 = [v9 recordID];
+  syncEngine = [(VCCKShortcutSyncService *)self syncEngine];
+  database = [syncEngine database];
+  recordID = [serverRecordCopy recordID];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __97__VCCKShortcutSyncService_handleSendLibraryConflictWithClientRecord_serverRecord_ancestorRecord___block_invoke;
   v19[3] = &unk_2788FE738;
   v19[4] = self;
-  [v16 fetchRecordWithID:v17 completionHandler:v19];
+  [database fetchRecordWithID:recordID completionHandler:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -3536,40 +3536,40 @@ LABEL_11:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSendAutoShortcutsPreferencesConflictWithClientRecord:(id)a3 serverRecord:(id)a4 ancestorRecord:(id)a5
+- (void)handleSendAutoShortcutsPreferencesConflictWithClientRecord:(id)record serverRecord:(id)serverRecord ancestorRecord:(id)ancestorRecord
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recordCopy = record;
+  serverRecordCopy = serverRecord;
+  ancestorRecordCopy = ancestorRecord;
   v11 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 recordChangeTag];
-    v13 = [v9 recordChangeTag];
-    v14 = [v10 recordChangeTag];
+    recordChangeTag = [recordCopy recordChangeTag];
+    recordChangeTag2 = [serverRecordCopy recordChangeTag];
+    recordChangeTag3 = [ancestorRecordCopy recordChangeTag];
     *buf = 136315906;
     v23 = "[VCCKShortcutSyncService handleSendAutoShortcutsPreferencesConflictWithClientRecord:serverRecord:ancestorRecord:]";
     v24 = 2114;
-    v25 = v12;
+    v25 = recordChangeTag;
     v26 = 2114;
-    v27 = v13;
+    v27 = recordChangeTag2;
     v28 = 2114;
-    v29 = v14;
+    v29 = recordChangeTag3;
     _os_log_impl(&dword_23103C000, v11, OS_LOG_TYPE_DEFAULT, "%s Handling CKErrorServerRecordChanged error for sent auto shortcuts preferences, clientRecord.recordChangeTag = %{public}@, serverRecord.recordChangeTag = %{public}@, ancestorRecord.recordChangeTag = %{public}@", buf, 0x2Au);
   }
 
-  v15 = [(VCCKShortcutSyncService *)self syncEngine];
-  v16 = [v15 database];
-  v17 = [v9 recordID];
+  syncEngine = [(VCCKShortcutSyncService *)self syncEngine];
+  database = [syncEngine database];
+  recordID = [serverRecordCopy recordID];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __114__VCCKShortcutSyncService_handleSendAutoShortcutsPreferencesConflictWithClientRecord_serverRecord_ancestorRecord___block_invoke;
   v20[3] = &unk_2788FE710;
   v20[4] = self;
-  v21 = v9;
-  v18 = v9;
-  [v16 fetchRecordWithID:v17 completionHandler:v20];
+  v21 = serverRecordCopy;
+  v18 = serverRecordCopy;
+  [database fetchRecordWithID:recordID completionHandler:v20];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -3632,10 +3632,10 @@ void __114__VCCKShortcutSyncService_handleSendAutoShortcutsPreferencesConflictWi
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSendSyncFlagsConflictWithClientRecord:(id)a3 serverRecord:(id)a4 ancestorRecord:(id)a5
+- (void)handleSendSyncFlagsConflictWithClientRecord:(id)record serverRecord:(id)serverRecord ancestorRecord:(id)ancestorRecord
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  serverRecordCopy = serverRecord;
   v7 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -3645,16 +3645,16 @@ void __114__VCCKShortcutSyncService_handleSendAutoShortcutsPreferencesConflictWi
   }
 
   v8 = objc_opt_new();
-  [MEMORY[0x277D7C200] hydrateItem:v8 withRecord:v6 setNilValues:0];
+  [MEMORY[0x277D7C200] hydrateItem:v8 withRecord:serverRecordCopy setNilValues:0];
 
-  v9 = [(VCCKShortcutSyncService *)self database];
+  database = [(VCCKShortcutSyncService *)self database];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __99__VCCKShortcutSyncService_handleSendSyncFlagsConflictWithClientRecord_serverRecord_ancestorRecord___block_invoke;
   v12[3] = &unk_2788FE6E8;
   v13 = v8;
   v10 = v8;
-  [v9 updateSyncTokenWithBlock:v12];
+  [database updateSyncTokenWithBlock:v12];
 
   [(VCCKShortcutSyncService *)self sendSyncFlagsIfNeeded];
   v11 = *MEMORY[0x277D85DE8];
@@ -3668,10 +3668,10 @@ void __99__VCCKShortcutSyncService_handleSendSyncFlagsConflictWithClientRecord_s
   [v3 setSyncFlagsCloudKitRecordMetadata:v4];
 }
 
-- (void)handleSendWorkflowOrderingConflictWithClientRecord:(id)a3 serverRecord:(id)a4 ancestorRecord:(id)a5
+- (void)handleSendWorkflowOrderingConflictWithClientRecord:(id)record serverRecord:(id)serverRecord ancestorRecord:(id)ancestorRecord
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  serverRecordCopy = serverRecord;
   v7 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -3680,10 +3680,10 @@ void __99__VCCKShortcutSyncService_handleSendSyncFlagsConflictWithClientRecord_s
     _os_log_impl(&dword_23103C000, v7, OS_LOG_TYPE_DEFAULT, "%s Handling CKErrorServerRecordChanged error for sent workflow ordering", buf, 0xCu);
   }
 
-  if ([(VCCKShortcutSyncService *)self mergeLocalOrderingChangesWithRemoteOrderingChangesFromOrderingRecord:v6])
+  if ([(VCCKShortcutSyncService *)self mergeLocalOrderingChangesWithRemoteOrderingChangesFromOrderingRecord:serverRecordCopy])
   {
-    v8 = [v6 recordID];
-    v11 = v8;
+    recordID = [serverRecordCopy recordID];
+    v11 = recordID;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v11 count:1];
     [(VCCKShortcutSyncService *)self addRecordIDsToSave:v9 recordIDsToDelete:0];
   }
@@ -3691,47 +3691,47 @@ void __99__VCCKShortcutSyncService_handleSendSyncFlagsConflictWithClientRecord_s
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleFetchedDeletionOfAutoShortcutsPreferencesWithRecordID:(id)a3
+- (void)handleFetchedDeletionOfAutoShortcutsPreferencesWithRecordID:(id)d
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v11 = "[VCCKShortcutSyncService handleFetchedDeletionOfAutoShortcutsPreferencesWithRecordID:]";
     v12 = 2114;
-    v13 = v4;
+    v13 = dCopy;
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_INFO, "%s Handling fetched deleted record with CKRecordID: %{public}@", buf, 0x16u);
   }
 
-  v6 = [MEMORY[0x277D7C1E8] identifierForRecordID:v4];
-  v7 = [(VCCKShortcutSyncService *)self database];
+  v6 = [MEMORY[0x277D7C1E8] identifierForRecordID:dCopy];
+  database = [(VCCKShortcutSyncService *)self database];
   v9 = 0;
-  [v7 deleteAutoShortcutsPreferencesForIdentifier:v6 error:&v9];
+  [database deleteAutoShortcutsPreferencesForIdentifier:v6 error:&v9];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleFetchedDeletionOfRecordWithID:(id)a3
+- (void)handleFetchedDeletionOfRecordWithID:(id)d
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v33 = "[VCCKShortcutSyncService handleFetchedDeletionOfRecordWithID:]";
     v34 = 2114;
-    v35 = v4;
+    v35 = dCopy;
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_INFO, "%s Handling fetched deleted record with CKRecordID: %{public}@", buf, 0x16u);
   }
 
-  v6 = [MEMORY[0x277D7C1F8] isFolderRecordID:v4];
-  v7 = [(VCCKShortcutSyncService *)self coherenceSyncEnabled];
+  v6 = [MEMORY[0x277D7C1F8] isFolderRecordID:dCopy];
+  coherenceSyncEnabled = [(VCCKShortcutSyncService *)self coherenceSyncEnabled];
   if (v6)
   {
-    if (v7)
+    if (coherenceSyncEnabled)
     {
       v8 = getWFCloudKitSyncLogObject();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -3751,7 +3751,7 @@ LABEL_23:
       goto LABEL_34;
     }
 
-    v18 = [MEMORY[0x277D7C1F8] collectionIdentifierForRecordID:v4];
+    v18 = [MEMORY[0x277D7C1F8] collectionIdentifierForRecordID:dCopy];
     if (!v18)
     {
       v8 = getWFCloudKitSyncLogObject();
@@ -3763,7 +3763,7 @@ LABEL_23:
       *buf = 136315394;
       v33 = "[VCCKShortcutSyncService handleFetchedDeletionOfRecordWithID:]";
       v34 = 2114;
-      v35 = v4;
+      v35 = dCopy;
       v9 = "%s Malformed folder identifier: %{public}@";
       v24 = v8;
       v25 = OS_LOG_TYPE_ERROR;
@@ -3772,14 +3772,14 @@ LABEL_23:
     }
 
     v8 = v18;
-    v19 = [(VCCKShortcutSyncService *)self database];
-    v11 = [v19 collectionWithIdentifier:v8];
+    database = [(VCCKShortcutSyncService *)self database];
+    v11 = [database collectionWithIdentifier:v8];
 
     if (v11)
     {
-      v20 = [(VCCKShortcutSyncService *)self database];
+      database2 = [(VCCKShortcutSyncService *)self database];
       v31 = 0;
-      v21 = [v20 deleteReference:v11 tombstone:0 error:&v31];
+      v21 = [database2 deleteReference:v11 tombstone:0 error:&v31];
       v17 = v31;
 
       if ((v21 & 1) == 0)
@@ -3805,27 +3805,27 @@ LABEL_23:
     *buf = 136315394;
     v33 = "[VCCKShortcutSyncService handleFetchedDeletionOfRecordWithID:]";
     v34 = 2114;
-    v35 = v4;
+    v35 = dCopy;
     v23 = "%s No local descriptor found for fetched folder deletion with CKRecordID %{public}@";
     goto LABEL_32;
   }
 
-  if (!v7 || ([MEMORY[0x277D7C240] isShortcutV2RecordID:v4] & 1) != 0)
+  if (!coherenceSyncEnabled || ([MEMORY[0x277D7C240] isShortcutV2RecordID:dCopy] & 1) != 0)
   {
-    v8 = [(objc_class *)[(VCCKShortcutSyncService *)self cloudKitWorkflowClass] workflowIdentifierForRecordID:v4];
-    v10 = [(VCCKShortcutSyncService *)self database];
-    v11 = [v10 referenceForWorkflowID:v8 includingTombstones:1];
+    v8 = [(objc_class *)[(VCCKShortcutSyncService *)self cloudKitWorkflowClass] workflowIdentifierForRecordID:dCopy];
+    database3 = [(VCCKShortcutSyncService *)self database];
+    v11 = [database3 referenceForWorkflowID:v8 includingTombstones:1];
 
     if (v11)
     {
-      v12 = [(VCCKShortcutSyncService *)self coherenceSyncEnabled];
-      v13 = [(VCCKShortcutSyncService *)self database];
-      v14 = v13;
-      if (v12)
+      coherenceSyncEnabled2 = [(VCCKShortcutSyncService *)self coherenceSyncEnabled];
+      database4 = [(VCCKShortcutSyncService *)self database];
+      v14 = database4;
+      if (coherenceSyncEnabled2)
       {
-        v15 = [v11 identifier];
+        identifier = [v11 identifier];
         v30 = 0;
-        v16 = [v14 deleteWorkflowRecordWithIdentifier:v15 error:&v30];
+        v16 = [v14 deleteWorkflowRecordWithIdentifier:identifier error:&v30];
         v17 = v30;
 
         if (v16)
@@ -3837,7 +3837,7 @@ LABEL_23:
       else
       {
         v29 = 0;
-        v27 = [v13 deleteReference:v11 tombstone:0 error:&v29];
+        v27 = [database4 deleteReference:v11 tombstone:0 error:&v29];
         v17 = v29;
 
         if (v27)
@@ -3875,7 +3875,7 @@ LABEL_33:
     *buf = 136315394;
     v33 = "[VCCKShortcutSyncService handleFetchedDeletionOfRecordWithID:]";
     v34 = 2114;
-    v35 = v4;
+    v35 = dCopy;
     v23 = "%s No local descriptor found for fetched workflow or folder deletion with CKRecordID %{public}@";
 LABEL_32:
     _os_log_impl(&dword_23103C000, v17, OS_LOG_TYPE_DEFAULT, v23, buf, 0x16u);
@@ -3896,36 +3896,36 @@ LABEL_34:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleFetchedAutoShortcutsPreferencesRecord:(id)a3
+- (void)handleFetchedAutoShortcutsPreferencesRecord:(id)record
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v29 = "[VCCKShortcutSyncService handleFetchedAutoShortcutsPreferencesRecord:]";
     v30 = 2112;
-    v31 = v4;
+    v31 = recordCopy;
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_DEFAULT, "%s Handling fetched auto shortcuts preferences record: %@", buf, 0x16u);
   }
 
   v6 = objc_alloc_init(MEMORY[0x277D7C1E8]);
-  [MEMORY[0x277D7C200] hydrateItem:v6 withRecord:v4 setNilValues:0];
+  [MEMORY[0x277D7C200] hydrateItem:v6 withRecord:recordCopy setNilValues:0];
   v7 = MEMORY[0x277D7C1E8];
-  v8 = [v4 recordID];
-  v9 = [v7 identifierForRecordID:v8];
+  recordID = [recordCopy recordID];
+  v9 = [v7 identifierForRecordID:recordID];
 
-  v10 = [(VCCKShortcutSyncService *)self database];
+  database = [(VCCKShortcutSyncService *)self database];
   v27 = 0;
-  v11 = [v10 autoShortcutsPreferencesForIdentifier:v9 error:&v27];
+  v11 = [database autoShortcutsPreferencesForIdentifier:v9 error:&v27];
   v12 = v27;
 
-  v13 = [v11 cloudKitMetadata];
-  v14 = v4;
-  if (v13)
+  cloudKitMetadata = [v11 cloudKitMetadata];
+  v14 = recordCopy;
+  if (cloudKitMetadata)
   {
-    v15 = [MEMORY[0x277D7C200] recordFromSystemFieldsData:v13 error:0];
+    v15 = [MEMORY[0x277D7C200] recordFromSystemFieldsData:cloudKitMetadata error:0];
   }
 
   else
@@ -3933,10 +3933,10 @@ LABEL_34:
     v15 = 0;
   }
 
-  v16 = [v15 modificationDate];
-  v17 = [v14 modificationDate];
-  v18 = v17;
-  if (v16 && v17 && [v16 compare:v17] != -1)
+  modificationDate = [v15 modificationDate];
+  modificationDate2 = [v14 modificationDate];
+  v18 = modificationDate2;
+  if (modificationDate && modificationDate2 && [modificationDate compare:modificationDate2] != -1)
   {
     v19 = getWFCloudKitSyncLogObject();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
@@ -3946,7 +3946,7 @@ LABEL_34:
       v30 = 2114;
       v31 = v18;
       v32 = 2114;
-      v33 = v16;
+      v33 = modificationDate;
       v34 = 2112;
       v35 = v14;
       v36 = 2112;
@@ -3977,9 +3977,9 @@ LABEL_34:
     }
 
     v20 = [(VCCKShortcutSyncService *)self autoShortcutsPreferencesWithCloudKitAutoShortcutsPreferences:v6];
-    v23 = [(VCCKShortcutSyncService *)self database];
+    database2 = [(VCCKShortcutSyncService *)self database];
     v26 = v12;
-    [v23 updateAutoShortcutsPreferencesWithNewPreferences:v20 error:&v26];
+    [database2 updateAutoShortcutsPreferencesWithNewPreferences:v20 error:&v26];
     v21 = v26;
 
     if (v21)
@@ -3999,30 +3999,30 @@ LABEL_34:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleFetchedSyncFlagsRecord:(id)a3
+- (void)handleFetchedSyncFlagsRecord:(id)record
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v13 = "[VCCKShortcutSyncService handleFetchedSyncFlagsRecord:]";
     v14 = 2114;
-    v15 = v4;
+    v15 = recordCopy;
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_DEFAULT, "%s Handling fetched sync flags CKRecord: %{public}@", buf, 0x16u);
   }
 
   v6 = objc_opt_new();
-  [MEMORY[0x277D7C200] hydrateItem:v6 withRecord:v4 setNilValues:0];
-  v7 = [(VCCKShortcutSyncService *)self database];
+  [MEMORY[0x277D7C200] hydrateItem:v6 withRecord:recordCopy setNilValues:0];
+  database = [(VCCKShortcutSyncService *)self database];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__VCCKShortcutSyncService_handleFetchedSyncFlagsRecord___block_invoke;
   v10[3] = &unk_2788FE6E8;
   v8 = v6;
   v11 = v8;
-  [v7 updateSyncTokenWithBlock:v10];
+  [database updateSyncTokenWithBlock:v10];
 
   if ([v8 migratedVoiceShortcuts])
   {
@@ -4047,41 +4047,41 @@ void __56__VCCKShortcutSyncService_handleFetchedSyncFlagsRecord___block_invoke(u
   [v3 setSyncFlagsCloudKitRecordMetadata:v4];
 }
 
-- (void)handleFetchedFolderRecord:(id)a3
+- (void)handleFetchedFolderRecord:(id)record
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 recordID];
+    recordID = [recordCopy recordID];
     *buf = 136315650;
     v21 = "[VCCKShortcutSyncService handleFetchedFolderRecord:]";
     v22 = 2114;
-    v23 = v6;
+    v23 = recordID;
     v24 = 2112;
-    v25 = v4;
+    v25 = recordCopy;
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_INFO, "%s Handling fetched folder CKRecord with CKRecordID %{public}@, CKRecord = %@", buf, 0x20u);
   }
 
   v7 = MEMORY[0x277D7C1F8];
-  v8 = [v4 recordID];
-  v9 = [v7 collectionIdentifierForRecordID:v8];
+  recordID2 = [recordCopy recordID];
+  v9 = [v7 collectionIdentifierForRecordID:recordID2];
 
   if (v9)
   {
     v10 = objc_opt_new();
-    [MEMORY[0x277D7C200] hydrateItem:v10 withRecord:v4 setNilValues:0];
-    v11 = [(VCCKShortcutSyncService *)self database];
-    v12 = [v10 name];
-    v13 = [v10 icon];
-    v14 = [v10 encryptedSchemaVersion];
-    v15 = [v10 recordSystemFieldsData];
+    [MEMORY[0x277D7C200] hydrateItem:v10 withRecord:recordCopy setNilValues:0];
+    database = [(VCCKShortcutSyncService *)self database];
+    name = [v10 name];
+    icon = [v10 icon];
+    encryptedSchemaVersion = [v10 encryptedSchemaVersion];
+    recordSystemFieldsData = [v10 recordSystemFieldsData];
     v19 = 0;
-    LOBYTE(v14) = [v11 handleFetchedFolderRecordWithIdentifier:v9 name:v12 icon:v13 encryptedSchemaVersion:v14 cloudKitMetadata:v15 error:&v19];
-    v16 = v19;
+    LOBYTE(encryptedSchemaVersion) = [database handleFetchedFolderRecordWithIdentifier:v9 name:name icon:icon encryptedSchemaVersion:encryptedSchemaVersion cloudKitMetadata:recordSystemFieldsData error:&v19];
+    recordID3 = v19;
 
-    if ((v14 & 1) == 0)
+    if ((encryptedSchemaVersion & 1) == 0)
     {
       v17 = getWFCloudKitSyncLogObject();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -4091,7 +4091,7 @@ void __56__VCCKShortcutSyncService_handleFetchedSyncFlagsRecord___block_invoke(u
         v22 = 2114;
         v23 = v9;
         v24 = 2114;
-        v25 = v16;
+        v25 = recordID3;
         _os_log_impl(&dword_23103C000, v17, OS_LOG_TYPE_ERROR, "%s Failed to handle fetched folder record %{public}@: %{public}@", buf, 0x20u);
       }
     }
@@ -4102,11 +4102,11 @@ void __56__VCCKShortcutSyncService_handleFetchedSyncFlagsRecord___block_invoke(u
   v10 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    v16 = [v4 recordID];
+    recordID3 = [recordCopy recordID];
     *buf = 136315394;
     v21 = "[VCCKShortcutSyncService handleFetchedFolderRecord:]";
     v22 = 2114;
-    v23 = v16;
+    v23 = recordID3;
     _os_log_impl(&dword_23103C000, v10, OS_LOG_TYPE_ERROR, "%s Failed to retrieve collection identifier from folder CKRecord, CKRecordID = %{public}@", buf, 0x16u);
 LABEL_10:
   }
@@ -4114,40 +4114,40 @@ LABEL_10:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleFetchedWorkflowRecord:(id)a3
+- (void)handleFetchedWorkflowRecord:(id)record
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 recordID];
+    recordID = [recordCopy recordID];
     *buf = 136315650;
     v30 = "[VCCKShortcutSyncService handleFetchedWorkflowRecord:]";
     v31 = 2114;
-    v32 = v6;
+    v32 = recordID;
     v33 = 2112;
-    v34 = v4;
+    v34 = recordCopy;
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_INFO, "%s Handling fetched workflow CKRecord with CKRecordID %{public}@, CKRecord = %@", buf, 0x20u);
   }
 
   [(VCCKShortcutSyncService *)self cloudKitWorkflowClass];
   v7 = objc_opt_new();
-  [MEMORY[0x277D7C200] hydrateItem:v7 withRecord:v4 setNilValues:0];
+  [MEMORY[0x277D7C200] hydrateItem:v7 withRecord:recordCopy setNilValues:0];
   v28 = 0;
   v8 = [v7 recordRepresentationWithError:&v28];
   v9 = v28;
   if (v8)
   {
-    v10 = [(VCCKShortcutSyncService *)self cloudKitWorkflowClass];
-    v11 = [v4 recordID];
-    v12 = [(objc_class *)v10 workflowIdentifierForRecordID:v11];
+    cloudKitWorkflowClass = [(VCCKShortcutSyncService *)self cloudKitWorkflowClass];
+    recordID2 = [recordCopy recordID];
+    v12 = [(objc_class *)cloudKitWorkflowClass workflowIdentifierForRecordID:recordID2];
 
-    v13 = [(VCCKShortcutSyncService *)self database];
-    v14 = [v4 recordChangeTag];
-    v15 = [v4 modificationDate];
+    database = [(VCCKShortcutSyncService *)self database];
+    recordChangeTag = [recordCopy recordChangeTag];
+    modificationDate = [recordCopy modificationDate];
     v27 = v9;
-    v16 = [v13 handleFetchedWorkflowRecord:v8 identifier:v12 recordChangeTag:v14 modificationDate:v15 error:&v27];
+    v16 = [database handleFetchedWorkflowRecord:v8 identifier:v12 recordChangeTag:recordChangeTag modificationDate:modificationDate error:&v27];
     v26 = v27;
 
     if (v16)
@@ -4156,8 +4156,8 @@ LABEL_10:
       {
         logger = self->_logger;
         v18 = MEMORY[0x277CCACA8];
-        v19 = [v16 reason];
-        v20 = [v18 stringWithFormat:@"conflicted workflow: %@ (reason: %@)", v12, v19];
+        reason = [v16 reason];
+        v20 = [v18 stringWithFormat:@"conflicted workflow: %@ (reason: %@)", v12, reason];
         [(WFCloudKitSyncEventLogger *)logger logEvent:v20];
 
 LABEL_12:
@@ -4173,15 +4173,15 @@ LABEL_12:
 
       v23 = self->_logger;
       v24 = MEMORY[0x277CCACA8];
-      v19 = [v16 reason];
-      v25 = [v24 stringWithFormat:@"ignored workflow: %@ (reason: %@)", v12, v19];
+      reason = [v16 reason];
+      v25 = [v24 stringWithFormat:@"ignored workflow: %@ (reason: %@)", v12, reason];
       [(WFCloudKitSyncEventLogger *)v23 logEvent:v25];
     }
 
     else
     {
-      v19 = getWFCloudKitSyncLogObject();
-      if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+      reason = getWFCloudKitSyncLogObject();
+      if (!os_log_type_enabled(reason, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_12;
       }
@@ -4191,7 +4191,7 @@ LABEL_12:
       v31 = 2114;
       v21 = v26;
       v32 = v26;
-      _os_log_impl(&dword_23103C000, v19, OS_LOG_TYPE_ERROR, "%s Failed to handle fetched workflow record: %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_23103C000, reason, OS_LOG_TYPE_ERROR, "%s Failed to handle fetched workflow record: %{public}@", buf, 0x16u);
     }
 
 LABEL_13:
@@ -4216,25 +4216,25 @@ LABEL_15:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleFetchedLegacyOrderingRecord:(id)a3
+- (void)handleFetchedLegacyOrderingRecord:(id)record
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v14 = "[VCCKShortcutSyncService handleFetchedLegacyOrderingRecord:]";
     v15 = 2114;
-    v16 = v4;
+    v16 = recordCopy;
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_INFO, "%s Handling fetched legacy ordering CKRecord: %{public}@", buf, 0x16u);
   }
 
   v6 = objc_opt_new();
-  [MEMORY[0x277D7C200] hydrateItem:v6 withRecord:v4 setNilValues:0];
-  v7 = [v6 collectionIdentifier];
+  [MEMORY[0x277D7C200] hydrateItem:v6 withRecord:recordCopy setNilValues:0];
+  collectionIdentifier = [v6 collectionIdentifier];
 
-  if (v7)
+  if (collectionIdentifier)
   {
     v8 = getWFCloudKitSyncLogObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -4247,13 +4247,13 @@ LABEL_15:
 
   else
   {
-    v9 = [(VCCKShortcutSyncService *)self database];
+    database = [(VCCKShortcutSyncService *)self database];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __61__VCCKShortcutSyncService_handleFetchedLegacyOrderingRecord___block_invoke;
     v11[3] = &unk_2788FE6E8;
     v12 = v6;
-    [v9 updateSyncTokenWithBlock:v11];
+    [database updateSyncTokenWithBlock:v11];
 
     v8 = v12;
   }
@@ -4269,36 +4269,36 @@ void __61__VCCKShortcutSyncService_handleFetchedLegacyOrderingRecord___block_inv
   [v3 setLastOrdering:v4];
 }
 
-- (void)handleFetchedCollectionOrderingRecord:(id)a3
+- (void)handleFetchedCollectionOrderingRecord:(id)record
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 136315394;
     v8 = "[VCCKShortcutSyncService handleFetchedCollectionOrderingRecord:]";
     v9 = 2114;
-    v10 = v4;
+    v10 = recordCopy;
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_INFO, "%s Handling fetched collection ordering CKRecord: %{public}@", &v7, 0x16u);
   }
 
-  [(VCCKShortcutSyncService *)self mergeLocalOrderingChangesWithRemoteOrderingChangesFromOrderingRecord:v4];
+  [(VCCKShortcutSyncService *)self mergeLocalOrderingChangesWithRemoteOrderingChangesFromOrderingRecord:recordCopy];
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)mergeLocalOrderingChangesWithRemoteOrderingChangesFromOrderingRecord:(id)a3
+- (BOOL)mergeLocalOrderingChangesWithRemoteOrderingChangesFromOrderingRecord:(id)record
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 recordID];
-  v6 = [(VCCKShortcutSyncService *)self collectionIdentifierForRecordID:v5];
+  recordCopy = record;
+  recordID = [recordCopy recordID];
+  v6 = [(VCCKShortcutSyncService *)self collectionIdentifierForRecordID:recordID];
 
   if (v6)
   {
     v20 = v6;
     v7 = objc_opt_new();
-    [MEMORY[0x277D7C200] hydrateItem:v7 withRecord:v4 setNilValues:0];
+    [MEMORY[0x277D7C200] hydrateItem:v7 withRecord:recordCopy setNilValues:0];
     v8 = getWFCloudKitSyncLogObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -4309,14 +4309,14 @@ void __61__VCCKShortcutSyncService_handleFetchedLegacyOrderingRecord___block_inv
       _os_log_impl(&dword_23103C000, v8, OS_LOG_TYPE_INFO, "%s Merging local ordering changes with remote ordering changes from %{public}@", buf, 0x16u);
     }
 
-    v9 = [(VCCKShortcutSyncService *)self database];
-    v10 = [v7 orderedWorkflowIDs];
-    v11 = [v10 array];
-    v12 = [v7 orderedFolderIDs];
-    v13 = [v12 array];
-    v14 = [v7 recordSystemFieldsData];
+    database = [(VCCKShortcutSyncService *)self database];
+    orderedWorkflowIDs = [v7 orderedWorkflowIDs];
+    array = [orderedWorkflowIDs array];
+    orderedFolderIDs = [v7 orderedFolderIDs];
+    array2 = [orderedFolderIDs array];
+    recordSystemFieldsData = [v7 recordSystemFieldsData];
     v21 = 0;
-    v15 = [v9 handleFetchedOrderingRecordWithIdentifier:v20 shortcuts:v11 folders:v13 cloudKitMetadata:v14 error:&v21];
+    v15 = [database handleFetchedOrderingRecordWithIdentifier:v20 shortcuts:array folders:array2 cloudKitMetadata:recordSystemFieldsData error:&v21];
     v16 = v21;
 
     if ((v15 & 1) == 0)
@@ -4327,7 +4327,7 @@ void __61__VCCKShortcutSyncService_handleFetchedLegacyOrderingRecord___block_inv
         *buf = 136315650;
         v23 = "[VCCKShortcutSyncService mergeLocalOrderingChangesWithRemoteOrderingChangesFromOrderingRecord:]";
         v24 = 2114;
-        v25 = v4;
+        v25 = recordCopy;
         v26 = 2114;
         v27 = v16;
         _os_log_impl(&dword_23103C000, v17, OS_LOG_TYPE_ERROR, "%s Failed to handle fetched ordering record collectionIdentifier %{public}@: %{public}@", buf, 0x20u);
@@ -4345,7 +4345,7 @@ void __61__VCCKShortcutSyncService_handleFetchedLegacyOrderingRecord___block_inv
       *buf = 136315394;
       v23 = "[VCCKShortcutSyncService mergeLocalOrderingChangesWithRemoteOrderingChangesFromOrderingRecord:]";
       v24 = 2114;
-      v25 = v4;
+      v25 = recordCopy;
       _os_log_impl(&dword_23103C000, v7, OS_LOG_TYPE_ERROR, "%s Malformed ordering record, missing collectionIdentifier: %{public}@", buf, 0x16u);
     }
 
@@ -4356,25 +4356,25 @@ void __61__VCCKShortcutSyncService_handleFetchedLegacyOrderingRecord___block_inv
   return v15;
 }
 
-- (void)handleDeletedRecordWithID:(id)a3
+- (void)handleDeletedRecordWithID:(id)d
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v21 = "[VCCKShortcutSyncService handleDeletedRecordWithID:]";
     v22 = 2114;
-    v23 = v4;
+    v23 = dCopy;
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_INFO, "%s Handling deleted record CKRecord: %{public}@", buf, 0x16u);
   }
 
-  if (![MEMORY[0x277D7C1F8] isFolderRecordID:v4])
+  if (![MEMORY[0x277D7C1F8] isFolderRecordID:dCopy])
   {
-    v9 = [(objc_class *)[(VCCKShortcutSyncService *)self cloudKitWorkflowClass] workflowIdentifierForRecordID:v4];
-    v10 = [(VCCKShortcutSyncService *)self database];
-    v11 = [v10 referenceForWorkflowID:v9 includingTombstones:1];
+    v9 = [(objc_class *)[(VCCKShortcutSyncService *)self cloudKitWorkflowClass] workflowIdentifierForRecordID:dCopy];
+    database = [(VCCKShortcutSyncService *)self database];
+    v11 = [database referenceForWorkflowID:v9 includingTombstones:1];
 
     if (v11)
     {
@@ -4383,11 +4383,11 @@ void __61__VCCKShortcutSyncService_handleFetchedLegacyOrderingRecord___block_inv
         v16 = getWFCloudKitSyncLogObject();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
-          v17 = [v11 name];
+          name = [v11 name];
           *buf = 136315650;
           v21 = "[VCCKShortcutSyncService handleDeletedRecordWithID:]";
           v22 = 2112;
-          v23 = v17;
+          v23 = name;
           v24 = 2112;
           v25 = v11;
           _os_log_impl(&dword_23103C000, v16, OS_LOG_TYPE_ERROR, "%s Sync engine has finished deleting workflow with name %@, but it is no longer a tombstone, so we're not deleting it, deletedWorkflowReference = %@", buf, 0x20u);
@@ -4398,10 +4398,10 @@ void __61__VCCKShortcutSyncService_handleFetchedLegacyOrderingRecord___block_inv
 
       v9 = v11;
 LABEL_10:
-      v12 = [(VCCKShortcutSyncService *)self database];
+      database2 = [(VCCKShortcutSyncService *)self database];
       v19 = 0;
-      v13 = [v12 deleteReference:v9 tombstone:0 error:&v19];
-      v14 = v19;
+      v13 = [database2 deleteReference:v9 tombstone:0 error:&v19];
+      recordName = v19;
 
       if ((v13 & 1) == 0)
       {
@@ -4413,7 +4413,7 @@ LABEL_10:
           v22 = 2112;
           v23 = v9;
           v24 = 2114;
-          v25 = v14;
+          v25 = recordName;
           _os_log_impl(&dword_23103C000, v15, OS_LOG_TYPE_ERROR, "%s Failed to delete tombstone for descriptor = %@, error = %{public}@", buf, 0x20u);
         }
       }
@@ -4426,7 +4426,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v6 = [MEMORY[0x277D7C1F8] collectionIdentifierForRecordID:v4];
+  v6 = [MEMORY[0x277D7C1F8] collectionIdentifierForRecordID:dCopy];
   if (!v6)
   {
     v9 = 0;
@@ -4434,8 +4434,8 @@ LABEL_15:
   }
 
   v7 = v6;
-  v8 = [(VCCKShortcutSyncService *)self database];
-  v9 = [v8 collectionWithIdentifier:v7];
+  database3 = [(VCCKShortcutSyncService *)self database];
+  v9 = [database3 collectionWithIdentifier:v7];
 
   if (v9)
   {
@@ -4446,11 +4446,11 @@ LABEL_16:
   v9 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    v14 = [v4 recordName];
+    recordName = [dCopy recordName];
     *buf = 136315394;
     v21 = "[VCCKShortcutSyncService handleDeletedRecordWithID:]";
     v22 = 2114;
-    v23 = v14;
+    v23 = recordName;
     _os_log_impl(&dword_23103C000, v9, OS_LOG_TYPE_ERROR, "%s Unable to find descriptor to delete from record ID %{public}@", buf, 0x16u);
 LABEL_18:
   }
@@ -4460,24 +4460,24 @@ LABEL_22:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSavedLibraryRecord:(id)a3
+- (void)handleSavedLibraryRecord:(id)record
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 recordID];
-    v7 = [v6 recordName];
+    recordID = [recordCopy recordID];
+    recordName = [recordID recordName];
     v12 = 136315394;
     v13 = "[VCCKShortcutSyncService handleSavedLibraryRecord:]";
     v14 = 2114;
-    v15 = v7;
+    v15 = recordName;
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_DEFAULT, "%s Handling saved library record: %{public}@", &v12, 0x16u);
   }
 
-  v8 = [(VCCKShortcutSyncService *)self database];
-  v9 = [_TtC14VoiceShortcuts26VCCKLibrarySyncCoordinator handleSavedLibraryRecord:v4 database:v8 error:0];
+  database = [(VCCKShortcutSyncService *)self database];
+  v9 = [_TtC14VoiceShortcuts26VCCKLibrarySyncCoordinator handleSavedLibraryRecord:recordCopy database:database error:0];
 
   if (!v9)
   {
@@ -4487,7 +4487,7 @@ LABEL_22:
       v12 = 136315394;
       v13 = "[VCCKShortcutSyncService handleSavedLibraryRecord:]";
       v14 = 2114;
-      v15 = v4;
+      v15 = recordCopy;
       _os_log_impl(&dword_23103C000, v10, OS_LOG_TYPE_ERROR, "%s Failed to save library record: %{public}@", &v12, 0x16u);
     }
   }
@@ -4495,38 +4495,38 @@ LABEL_22:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSavedAutoShortcutsPreferencesRecord:(id)a3
+- (void)handleSavedAutoShortcutsPreferencesRecord:(id)record
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v21 = "[VCCKShortcutSyncService handleSavedAutoShortcutsPreferencesRecord:]";
     v22 = 2112;
-    v23 = v4;
+    v23 = recordCopy;
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_DEFAULT, "%s Handling saved auto shortcuts preferences record: %@", buf, 0x16u);
   }
 
   v6 = objc_alloc_init(MEMORY[0x277D7C1E8]);
-  [MEMORY[0x277D7C200] hydrateItem:v6 withRecord:v4 setNilValues:0];
+  [MEMORY[0x277D7C200] hydrateItem:v6 withRecord:recordCopy setNilValues:0];
   v7 = MEMORY[0x277D7C1E8];
-  v8 = [v4 recordID];
-  v9 = [v7 identifierForRecordID:v8];
+  recordID = [recordCopy recordID];
+  v9 = [v7 identifierForRecordID:recordID];
 
-  v10 = [(VCCKShortcutSyncService *)self database];
+  database = [(VCCKShortcutSyncService *)self database];
   v19 = 0;
-  v11 = [v10 autoShortcutsPreferencesForIdentifier:v9 error:&v19];
+  v11 = [database autoShortcutsPreferencesForIdentifier:v9 error:&v19];
   v12 = v19;
 
-  v13 = [v6 recordSystemFieldsData];
-  [v11 setCloudKitMetadata:v13];
+  recordSystemFieldsData = [v6 recordSystemFieldsData];
+  [v11 setCloudKitMetadata:recordSystemFieldsData];
 
   [v11 setLastSyncedHash:{objc_msgSend(v11, "computedSyncHash")}];
-  v14 = [(VCCKShortcutSyncService *)self database];
+  database2 = [(VCCKShortcutSyncService *)self database];
   v18 = v12;
-  [v14 updateAutoShortcutsPreferencesWithNewPreferences:v11 error:&v18];
+  [database2 updateAutoShortcutsPreferencesWithNewPreferences:v11 error:&v18];
   v15 = v18;
 
   if (v15)
@@ -4545,30 +4545,30 @@ LABEL_22:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSavedSyncFlagsRecord:(id)a3
+- (void)handleSavedSyncFlagsRecord:(id)record
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v13 = "[VCCKShortcutSyncService handleSavedSyncFlagsRecord:]";
     v14 = 2114;
-    v15 = v4;
+    v15 = recordCopy;
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_INFO, "%s Handling saved sync flags CKRecord: %{public}@", buf, 0x16u);
   }
 
   v6 = objc_opt_new();
-  [MEMORY[0x277D7C200] hydrateItem:v6 withRecord:v4 setNilValues:0];
-  v7 = [(VCCKShortcutSyncService *)self database];
+  [MEMORY[0x277D7C200] hydrateItem:v6 withRecord:recordCopy setNilValues:0];
+  database = [(VCCKShortcutSyncService *)self database];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __54__VCCKShortcutSyncService_handleSavedSyncFlagsRecord___block_invoke;
   v10[3] = &unk_2788FE6E8;
   v8 = v6;
   v11 = v8;
-  [v7 updateSyncTokenWithBlock:v10];
+  [database updateSyncTokenWithBlock:v10];
 
   if ([v8 migratedVoiceShortcuts])
   {
@@ -4593,44 +4593,44 @@ void __54__VCCKShortcutSyncService_handleSavedSyncFlagsRecord___block_invoke(uin
   [v3 setSyncFlagsCloudKitRecordMetadata:v4];
 }
 
-- (void)handleSavedFolderRecord:(id)a3
+- (void)handleSavedFolderRecord:(id)record
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 recordID];
+    recordID = [recordCopy recordID];
     *buf = 136315650;
     v23 = "[VCCKShortcutSyncService handleSavedFolderRecord:]";
     v24 = 2114;
-    v25 = v6;
+    v25 = recordID;
     v26 = 2112;
-    v27 = v4;
+    v27 = recordCopy;
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_INFO, "%s Handling saved folder CKRecord with CKRecordID %{public}@, folderRecord = %@", buf, 0x20u);
   }
 
   v7 = objc_opt_new();
-  [MEMORY[0x277D7C200] hydrateItem:v7 withRecord:v4 setNilValues:0];
+  [MEMORY[0x277D7C200] hydrateItem:v7 withRecord:recordCopy setNilValues:0];
   v8 = MEMORY[0x277D7C1F8];
-  v9 = [v4 recordID];
-  v10 = [v8 collectionIdentifierForRecordID:v9];
+  recordID2 = [recordCopy recordID];
+  v10 = [v8 collectionIdentifierForRecordID:recordID2];
 
   if (v10)
   {
-    v11 = [(VCCKShortcutSyncService *)self database];
-    v12 = [v7 name];
-    v13 = [v7 icon];
-    v14 = [v7 encryptedSchemaVersion];
-    v15 = [v7 recordSystemFieldsData];
+    database = [(VCCKShortcutSyncService *)self database];
+    name = [v7 name];
+    icon = [v7 icon];
+    encryptedSchemaVersion = [v7 encryptedSchemaVersion];
+    recordSystemFieldsData = [v7 recordSystemFieldsData];
     v21 = 0;
-    LOBYTE(v14) = [v11 handleFetchedFolderRecordWithIdentifier:v10 name:v12 icon:v13 encryptedSchemaVersion:v14 cloudKitMetadata:v15 error:&v21];
+    LOBYTE(encryptedSchemaVersion) = [database handleFetchedFolderRecordWithIdentifier:v10 name:name icon:icon encryptedSchemaVersion:encryptedSchemaVersion cloudKitMetadata:recordSystemFieldsData error:&v21];
     v16 = v21;
 
-    if ((v14 & 1) == 0)
+    if ((encryptedSchemaVersion & 1) == 0)
     {
-      v17 = getWFCloudKitSyncLogObject();
-      if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      recordID3 = getWFCloudKitSyncLogObject();
+      if (!os_log_type_enabled(recordID3, OS_LOG_TYPE_ERROR))
       {
 LABEL_10:
 
@@ -4642,7 +4642,7 @@ LABEL_10:
       v24 = 2114;
       v25 = v16;
       v18 = "%s Failed to handle saved folder record: %{public}@";
-      v19 = v17;
+      v19 = recordID3;
 LABEL_9:
       _os_log_impl(&dword_23103C000, v19, OS_LOG_TYPE_ERROR, v18, buf, 0x16u);
       goto LABEL_10;
@@ -4654,11 +4654,11 @@ LABEL_9:
     v16 = getWFCloudKitSyncLogObject();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v4 recordID];
+      recordID3 = [recordCopy recordID];
       *buf = 136315394;
       v23 = "[VCCKShortcutSyncService handleSavedFolderRecord:]";
       v24 = 2114;
-      v25 = v17;
+      v25 = recordID3;
       v18 = "%s Invalid folder record ID: %{public}@";
       v19 = v16;
       goto LABEL_9;
@@ -4670,40 +4670,40 @@ LABEL_11:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSavedWorkflowRecord:(id)a3
+- (void)handleSavedWorkflowRecord:(id)record
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 recordID];
+    recordID = [recordCopy recordID];
     *buf = 136315650;
     v22 = "[VCCKShortcutSyncService handleSavedWorkflowRecord:]";
     v23 = 2114;
-    v24 = v6;
+    v24 = recordID;
     v25 = 2112;
-    v26 = v4;
+    v26 = recordCopy;
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_INFO, "%s Handling saved workflow CKRecord with CKRecordID %{public}@, workflowRecord = %@", buf, 0x20u);
   }
 
   [(VCCKShortcutSyncService *)self cloudKitWorkflowClass];
   v7 = objc_opt_new();
-  [MEMORY[0x277D7C200] hydrateItem:v7 withRecord:v4 setNilValues:0];
-  v8 = [v4 recordID];
-  v9 = [v8 recordName];
+  [MEMORY[0x277D7C200] hydrateItem:v7 withRecord:recordCopy setNilValues:0];
+  recordID2 = [recordCopy recordID];
+  recordName = [recordID2 recordName];
 
-  v10 = [(VCCKShortcutSyncService *)self filesReferencedUntilSaved];
-  [v10 setObject:0 forKeyedSubscript:v9];
+  filesReferencedUntilSaved = [(VCCKShortcutSyncService *)self filesReferencedUntilSaved];
+  [filesReferencedUntilSaved setObject:0 forKeyedSubscript:recordName];
 
-  v11 = [(VCCKShortcutSyncService *)self cloudKitWorkflowClass];
-  v12 = [v4 recordID];
-  v13 = [(objc_class *)v11 workflowIdentifierForRecordID:v12];
+  cloudKitWorkflowClass = [(VCCKShortcutSyncService *)self cloudKitWorkflowClass];
+  recordID3 = [recordCopy recordID];
+  v13 = [(objc_class *)cloudKitWorkflowClass workflowIdentifierForRecordID:recordID3];
 
-  v14 = [(VCCKShortcutSyncService *)self database];
-  v15 = [v7 recordSystemFieldsData];
+  database = [(VCCKShortcutSyncService *)self database];
+  recordSystemFieldsData = [v7 recordSystemFieldsData];
   v20 = 0;
-  v16 = [v14 handleUploadedWorkflowRecordWithIdentifier:v13 cloudKitMetadata:v15 syncHash:objc_msgSend(v7 encryptedSchemaVersion:"cachedSyncHash") error:{objc_msgSend(v7, "encryptedSchemaVersion"), &v20}];
+  v16 = [database handleUploadedWorkflowRecordWithIdentifier:v13 cloudKitMetadata:recordSystemFieldsData syncHash:objc_msgSend(v7 encryptedSchemaVersion:"cachedSyncHash") error:{objc_msgSend(v7, "encryptedSchemaVersion"), &v20}];
   v17 = v20;
 
   if ((v16 & 1) == 0)
@@ -4722,36 +4722,36 @@ LABEL_11:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSavedWorkflowOrderingRecord:(id)a3
+- (void)handleSavedWorkflowOrderingRecord:(id)record
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v23 = "[VCCKShortcutSyncService handleSavedWorkflowOrderingRecord:]";
     v24 = 2114;
-    v25 = v4;
+    v25 = recordCopy;
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_INFO, "%s Handling saved workflow ordering CKRecord: %{public}@", buf, 0x16u);
   }
 
   v6 = objc_opt_new();
-  [MEMORY[0x277D7C200] hydrateItem:v6 withRecord:v4 setNilValues:0];
-  v7 = [v4 recordID];
-  v8 = [(VCCKShortcutSyncService *)self collectionIdentifierForRecordID:v7];
+  [MEMORY[0x277D7C200] hydrateItem:v6 withRecord:recordCopy setNilValues:0];
+  recordID = [recordCopy recordID];
+  v8 = [(VCCKShortcutSyncService *)self collectionIdentifierForRecordID:recordID];
 
   if (v8)
   {
-    v20 = v4;
-    v9 = [(VCCKShortcutSyncService *)self database];
-    v10 = [v6 orderedWorkflowIDs];
-    v11 = [v10 array];
-    v12 = [v6 orderedFolderIDs];
-    v13 = [v12 array];
-    v14 = [v6 recordSystemFieldsData];
+    v20 = recordCopy;
+    database = [(VCCKShortcutSyncService *)self database];
+    orderedWorkflowIDs = [v6 orderedWorkflowIDs];
+    array = [orderedWorkflowIDs array];
+    orderedFolderIDs = [v6 orderedFolderIDs];
+    array2 = [orderedFolderIDs array];
+    recordSystemFieldsData = [v6 recordSystemFieldsData];
     v21 = 0;
-    v15 = [v9 handleFetchedOrderingRecordWithIdentifier:v8 shortcuts:v11 folders:v13 cloudKitMetadata:v14 error:&v21];
+    v15 = [database handleFetchedOrderingRecordWithIdentifier:v8 shortcuts:array folders:array2 cloudKitMetadata:recordSystemFieldsData error:&v21];
     v16 = v21;
 
     if ((v15 & 1) == 0)
@@ -4767,7 +4767,7 @@ LABEL_11:
       }
     }
 
-    v4 = v20;
+    recordCopy = v20;
   }
 
   else
@@ -4775,11 +4775,11 @@ LABEL_11:
     v16 = getWFCloudKitSyncLogObject();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v18 = [v4 recordID];
+      recordID2 = [recordCopy recordID];
       *buf = 136315394;
       v23 = "[VCCKShortcutSyncService handleSavedWorkflowOrderingRecord:]";
       v24 = 2112;
-      v25 = v18;
+      v25 = recordID2;
       _os_log_impl(&dword_23103C000, v16, OS_LOG_TYPE_ERROR, "%s Unable to retrieve collection identifier from ordering CKRecord with identifier %@", buf, 0x16u);
     }
   }
@@ -4787,69 +4787,69 @@ LABEL_11:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)autoShortcutsPreferencesWithCloudKitAutoShortcutsPreferences:(id)a3
+- (id)autoShortcutsPreferencesWithCloudKitAutoShortcutsPreferences:(id)preferences
 {
   v3 = MEMORY[0x277D7C180];
-  v4 = a3;
+  preferencesCopy = preferences;
   v5 = [v3 alloc];
-  v6 = [v4 appDescriptor];
-  v7 = [v4 isSiriEnabled];
-  v8 = [v4 isSpotlightEnabled];
-  v9 = [v4 disabledAutoShortcuts];
-  v10 = [v4 recordSystemFieldsData];
+  appDescriptor = [preferencesCopy appDescriptor];
+  isSiriEnabled = [preferencesCopy isSiriEnabled];
+  isSpotlightEnabled = [preferencesCopy isSpotlightEnabled];
+  disabledAutoShortcuts = [preferencesCopy disabledAutoShortcuts];
+  recordSystemFieldsData = [preferencesCopy recordSystemFieldsData];
 
-  v11 = [v5 initWithAppDescriptor:v6 isSiriEnabled:v7 isSpotlightEnabled:v8 disabledAutoShortcuts:v9 cloudKitMetadata:v10];
+  v11 = [v5 initWithAppDescriptor:appDescriptor isSiriEnabled:isSiriEnabled isSpotlightEnabled:isSpotlightEnabled disabledAutoShortcuts:disabledAutoShortcuts cloudKitMetadata:recordSystemFieldsData];
   [v11 setLastSyncedHash:{objc_msgSend(v11, "computedSyncHash")}];
 
   return v11;
 }
 
-- (id)libraryRecordForRecordID:(id)a3
+- (id)libraryRecordForRecordID:(id)d
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v28 = "[VCCKShortcutSyncService libraryRecordForRecordID:]";
     v29 = 2114;
-    v30 = v4;
+    v30 = dCopy;
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_INFO, "%s Constructing library CKRecord for recordID: %{public}@", buf, 0x16u);
   }
 
   v6 = objc_autoreleasePoolPush();
-  v7 = [MEMORY[0x277D7C210] libraryIdentifierFromRecordID:v4 error:0];
+  v7 = [MEMORY[0x277D7C210] libraryIdentifierFromRecordID:dCopy error:0];
   if (v7)
   {
     v8 = v7;
     v9 = objc_autoreleasePoolPush();
     v10 = [objc_alloc(MEMORY[0x277D79EF0]) initWithIdentifier:v8 objectType:10];
-    v11 = [(VCCKShortcutSyncService *)self database];
+    database = [(VCCKShortcutSyncService *)self database];
     v26 = 0;
-    v12 = [v11 recordWithDescriptor:v10 properties:0 error:&v26];
+    v12 = [database recordWithDescriptor:v10 properties:0 error:&v26];
     v13 = v26;
 
     if (v12)
     {
       v14 = objc_alloc(MEMORY[0x277D7C210]);
-      v15 = [(VCCKShortcutSyncService *)self shortcutsZoneID];
-      v16 = [v14 initWithLibraryRecord:v12 zoneID:v15];
+      shortcutsZoneID = [(VCCKShortcutSyncService *)self shortcutsZoneID];
+      v16 = [v14 initWithLibraryRecord:v12 zoneID:shortcutsZoneID];
 
-      v17 = [v12 cloudKitRecordMetadata];
-      [v16 setRecordSystemFieldsData:v17];
+      cloudKitRecordMetadata = [v12 cloudKitRecordMetadata];
+      [v16 setRecordSystemFieldsData:cloudKitRecordMetadata];
     }
 
     else
     {
-      v17 = getWFCloudKitSyncLogObject();
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      cloudKitRecordMetadata = getWFCloudKitSyncLogObject();
+      if (os_log_type_enabled(cloudKitRecordMetadata, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315394;
         v28 = "[VCCKShortcutSyncService libraryRecordForRecordID:]";
         v29 = 2114;
         v30 = v13;
-        _os_log_impl(&dword_23103C000, v17, OS_LOG_TYPE_ERROR, "%s Failed to fetch library record with error: %{public}@", buf, 0x16u);
+        _os_log_impl(&dword_23103C000, cloudKitRecordMetadata, OS_LOG_TYPE_ERROR, "%s Failed to fetch library record with error: %{public}@", buf, 0x16u);
       }
 
       v16 = 0;
@@ -4858,14 +4858,14 @@ LABEL_11:
     objc_autoreleasePoolPop(v9);
     if (v12 && v16)
     {
-      v18 = [v16 dataFileRepresentation];
-      v19 = [MEMORY[0x277CBEB98] setWithObject:v18];
-      v20 = [(VCCKShortcutSyncService *)self filesReferencedUntilSaved];
-      [v20 setObject:v19 forKeyedSubscript:v8];
+      dataFileRepresentation = [v16 dataFileRepresentation];
+      v19 = [MEMORY[0x277CBEB98] setWithObject:dataFileRepresentation];
+      filesReferencedUntilSaved = [(VCCKShortcutSyncService *)self filesReferencedUntilSaved];
+      [filesReferencedUntilSaved setObject:v19 forKeyedSubscript:v8];
 
       v21 = MEMORY[0x277D7C200];
-      v22 = [(VCCKShortcutSyncService *)self shortcutsZoneID];
-      v23 = [v21 createRecordFromItem:v16 zoneID:v22];
+      shortcutsZoneID2 = [(VCCKShortcutSyncService *)self shortcutsZoneID];
+      v23 = [v21 createRecordFromItem:v16 zoneID:shortcutsZoneID2];
 
       goto LABEL_16;
     }
@@ -4879,7 +4879,7 @@ LABEL_11:
       *buf = 136315394;
       v28 = "[VCCKShortcutSyncService libraryRecordForRecordID:]";
       v29 = 2114;
-      v30 = v4;
+      v30 = dCopy;
       _os_log_impl(&dword_23103C000, v8, OS_LOG_TYPE_ERROR, "%s Failed to get identifier from library CKRecord with CKRecordID %{public}@", buf, 0x16u);
     }
   }
@@ -4893,22 +4893,22 @@ LABEL_16:
   return v23;
 }
 
-- (id)autoShortcutsPreferencesRecordForRecordID:(id)a3
+- (id)autoShortcutsPreferencesRecordForRecordID:(id)d
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v27 = "[VCCKShortcutSyncService autoShortcutsPreferencesRecordForRecordID:]";
     v28 = 2114;
-    v29 = v4;
+    v29 = dCopy;
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_INFO, "%s Constructing auto shortcuts preferences CKRecord for recordID: %{public}@", buf, 0x16u);
   }
 
   v6 = objc_autoreleasePoolPush();
-  v7 = [MEMORY[0x277D7C1E8] identifierForRecordID:v4];
+  v7 = [MEMORY[0x277D7C1E8] identifierForRecordID:dCopy];
   if (!v7)
   {
     v8 = getWFCloudKitSyncLogObject();
@@ -4917,7 +4917,7 @@ LABEL_16:
       *buf = 136315394;
       v27 = "[VCCKShortcutSyncService autoShortcutsPreferencesRecordForRecordID:]";
       v28 = 2114;
-      v29 = v4;
+      v29 = dCopy;
       _os_log_impl(&dword_23103C000, v8, OS_LOG_TYPE_ERROR, "%s Failed to get identifier from auto shortcuts preferences CKRecord with CKRecordID %{public}@", buf, 0x16u);
     }
 
@@ -4926,9 +4926,9 @@ LABEL_16:
 
   v8 = v7;
   v9 = objc_autoreleasePoolPush();
-  v10 = [(VCCKShortcutSyncService *)self database];
+  database = [(VCCKShortcutSyncService *)self database];
   v25 = 0;
-  v11 = [v10 autoShortcutsPreferencesForIdentifier:v8 error:&v25];
+  v11 = [database autoShortcutsPreferencesForIdentifier:v8 error:&v25];
   v12 = v25;
 
   if (!v11)
@@ -4951,28 +4951,28 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v13 = [objc_alloc(MEMORY[0x277D7C1E8]) initWithAutoShortcutsPreferences:v11 identifier:v4];
+  v13 = [objc_alloc(MEMORY[0x277D7C1E8]) initWithAutoShortcutsPreferences:v11 identifier:dCopy];
 
   objc_autoreleasePoolPop(v9);
   v14 = MEMORY[0x277D7C200];
-  v15 = [(VCCKShortcutSyncService *)self shortcutsZoneID];
-  v16 = [v14 createRecordFromItem:v13 zoneID:v15];
+  shortcutsZoneID = [(VCCKShortcutSyncService *)self shortcutsZoneID];
+  v16 = [v14 createRecordFromItem:v13 zoneID:shortcutsZoneID];
 
   v17 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    v18 = [v4 recordName];
+    recordName = [dCopy recordName];
     *buf = 136315394;
     v27 = "[VCCKShortcutSyncService autoShortcutsPreferencesRecordForRecordID:]";
     v28 = 2114;
-    v29 = v18;
+    v29 = recordName;
     _os_log_impl(&dword_23103C000, v17, OS_LOG_TYPE_INFO, "%s Setting file representations for the auto shortcuts preferences record: %{public}@", buf, 0x16u);
   }
 
-  v19 = [(VCCKShortcutSyncService *)self filesReferencedUntilSaved];
-  v20 = [v13 fileRepresentations];
-  v21 = [v4 recordName];
-  [v19 setObject:v20 forKey:v21];
+  filesReferencedUntilSaved = [(VCCKShortcutSyncService *)self filesReferencedUntilSaved];
+  fileRepresentations = [v13 fileRepresentations];
+  recordName2 = [dCopy recordName];
+  [filesReferencedUntilSaved setObject:fileRepresentations forKey:recordName2];
 
 LABEL_14:
   objc_autoreleasePoolPop(v6);
@@ -4982,10 +4982,10 @@ LABEL_14:
   return v16;
 }
 
-- (id)folderRecordForRecordID:(id)a3
+- (id)folderRecordForRecordID:(id)d
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -4995,7 +4995,7 @@ LABEL_14:
   }
 
   v6 = objc_autoreleasePoolPush();
-  v7 = [MEMORY[0x277D7C1F8] collectionIdentifierForRecordID:v4];
+  v7 = [MEMORY[0x277D7C1F8] collectionIdentifierForRecordID:dCopy];
   if (!v7)
   {
     v8 = getWFCloudKitSyncLogObject();
@@ -5004,7 +5004,7 @@ LABEL_14:
       *buf = 136315394;
       v27 = "[VCCKShortcutSyncService folderRecordForRecordID:]";
       v28 = 2114;
-      v29 = v4;
+      v29 = dCopy;
       _os_log_impl(&dword_23103C000, v8, OS_LOG_TYPE_ERROR, "%s Failed to get collection identifier from folder CKRecord with CKRecordID %{public}@", buf, 0x16u);
     }
 
@@ -5012,8 +5012,8 @@ LABEL_14:
   }
 
   v8 = v7;
-  v9 = [(VCCKShortcutSyncService *)self database];
-  v10 = [v9 desiredFolderSyncOperationForCollection:v8];
+  database = [(VCCKShortcutSyncService *)self database];
+  v10 = [database desiredFolderSyncOperationForCollection:v8];
 
   if ([v10 operationType] != 1)
   {
@@ -5035,23 +5035,23 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v11 = [(VCCKShortcutSyncService *)self database];
+  database2 = [(VCCKShortcutSyncService *)self database];
   v25 = 0;
-  v12 = [v11 folderRecordForCollection:v8 error:&v25];
+  v12 = [database2 folderRecordForCollection:v8 error:&v25];
   v13 = v25;
 
   if (v12)
   {
     v14 = objc_alloc(MEMORY[0x277D7C1F8]);
-    v15 = [v12 name];
-    v16 = [v14 initWithIdentifier:v4 name:v15 icon:objc_msgSend(v12 encryptedSchemaVersion:{"icon"), objc_msgSend(v12, "encryptedSchemaVersion")}];
+    name = [v12 name];
+    v16 = [v14 initWithIdentifier:dCopy name:name icon:objc_msgSend(v12 encryptedSchemaVersion:{"icon"), objc_msgSend(v12, "encryptedSchemaVersion")}];
 
-    v17 = [v12 cloudKitMetadata];
-    [v16 setRecordSystemFieldsData:v17];
+    cloudKitMetadata = [v12 cloudKitMetadata];
+    [v16 setRecordSystemFieldsData:cloudKitMetadata];
 
     v18 = MEMORY[0x277D7C200];
-    v19 = [(VCCKShortcutSyncService *)self shortcutsZoneID];
-    v20 = [v18 createRecordFromItem:v16 zoneID:v19];
+    shortcutsZoneID = [(VCCKShortcutSyncService *)self shortcutsZoneID];
+    v20 = [v18 createRecordFromItem:v16 zoneID:shortcutsZoneID];
   }
 
   else
@@ -5084,10 +5084,10 @@ LABEL_14:
   return v22;
 }
 
-- (id)workflowRecordForRecordID:(id)a3
+- (id)workflowRecordForRecordID:(id)d
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -5097,9 +5097,9 @@ LABEL_14:
   }
 
   v6 = objc_autoreleasePoolPush();
-  v7 = [(objc_class *)[(VCCKShortcutSyncService *)self cloudKitWorkflowClass] workflowIdentifierForRecordID:v4];
-  v8 = [(VCCKShortcutSyncService *)self database];
-  v9 = [v8 desiredSyncOperationForWorkflow:v7];
+  v7 = [(objc_class *)[(VCCKShortcutSyncService *)self cloudKitWorkflowClass] workflowIdentifierForRecordID:dCopy];
+  database = [(VCCKShortcutSyncService *)self database];
+  v9 = [database desiredSyncOperationForWorkflow:v7];
 
   if ([v9 operationType] == 1)
   {
@@ -5109,30 +5109,30 @@ LABEL_14:
       v11 = [objc_alloc(-[VCCKShortcutSyncService cloudKitWorkflowClass](self "cloudKitWorkflowClass"))];
       if (([v11 isValidForSyncing]& 1) != 0)
       {
-        v12 = [v11 serializedDataFile];
-        v13 = [v4 recordName];
-        v14 = [MEMORY[0x277CBEB98] setWithObject:v12];
+        serializedDataFile = [v11 serializedDataFile];
+        recordName = [dCopy recordName];
+        v14 = [MEMORY[0x277CBEB98] setWithObject:serializedDataFile];
         [(VCCKShortcutSyncService *)self filesReferencedUntilSaved];
         v15 = v22 = v6;
-        [v15 setObject:v14 forKeyedSubscript:v13];
+        [v15 setObject:v14 forKeyedSubscript:recordName];
 
         v16 = MEMORY[0x277D7C200];
-        v17 = [(VCCKShortcutSyncService *)self shortcutsZoneID];
+        shortcutsZoneID = [(VCCKShortcutSyncService *)self shortcutsZoneID];
         v18 = v16;
         v6 = v22;
-        v19 = [v18 createRecordFromItem:v11 zoneID:v17];
+        v19 = [v18 createRecordFromItem:v11 zoneID:shortcutsZoneID];
       }
 
       else
       {
-        v12 = getWFCloudKitSyncLogObject();
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+        serializedDataFile = getWFCloudKitSyncLogObject();
+        if (os_log_type_enabled(serializedDataFile, OS_LOG_TYPE_ERROR))
         {
           *buf = 136315394;
           v24 = "[VCCKShortcutSyncService workflowRecordForRecordID:]";
           v25 = 2112;
           v26 = v11;
-          _os_log_impl(&dword_23103C000, v12, OS_LOG_TYPE_ERROR, "%s Not creating a CKRecord from WFCloudKitWorkflow instance because it's not valid: %@", buf, 0x16u);
+          _os_log_impl(&dword_23103C000, serializedDataFile, OS_LOG_TYPE_ERROR, "%s Not creating a CKRecord from WFCloudKitWorkflow instance because it's not valid: %@", buf, 0x16u);
         }
 
         v19 = 0;
@@ -5187,26 +5187,26 @@ LABEL_14:
     _os_log_impl(&dword_23103C000, v3, OS_LOG_TYPE_DEFAULT, "%s Constructing sync flags CKRecord", &v12, 0xCu);
   }
 
-  v4 = [(VCCKShortcutSyncService *)self shortcutsZoneID];
-  v5 = [objc_alloc(MEMORY[0x277D7C228]) initWithZoneID:v4];
+  shortcutsZoneID = [(VCCKShortcutSyncService *)self shortcutsZoneID];
+  v5 = [objc_alloc(MEMORY[0x277D7C228]) initWithZoneID:shortcutsZoneID];
   [v5 setMigratedVoiceShortcuts:{objc_msgSend(MEMORY[0x277D7C230], "voiceShortcutMigrationDidRun")}];
   [v5 setDefaultShortcutsVersion:{objc_msgSend(MEMORY[0x277D7C230], "defaultShortcutsVersion")}];
-  v6 = [(VCCKShortcutSyncService *)self database];
-  v7 = [v6 syncToken];
-  v8 = [v7 syncFlagsCloudKitRecordMetadata];
-  [v5 setRecordSystemFieldsData:v8];
+  database = [(VCCKShortcutSyncService *)self database];
+  syncToken = [database syncToken];
+  syncFlagsCloudKitRecordMetadata = [syncToken syncFlagsCloudKitRecordMetadata];
+  [v5 setRecordSystemFieldsData:syncFlagsCloudKitRecordMetadata];
 
-  v9 = [MEMORY[0x277D7C200] createRecordFromItem:v5 zoneID:v4];
+  v9 = [MEMORY[0x277D7C200] createRecordFromItem:v5 zoneID:shortcutsZoneID];
 
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;
 }
 
-- (id)workflowOrderingRecordForRecordID:(id)a3
+- (id)workflowOrderingRecordForRecordID:(id)d
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -5215,17 +5215,17 @@ LABEL_14:
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_INFO, "%s Constructing workflow ordering CKRecord", buf, 0xCu);
   }
 
-  v6 = [(VCCKShortcutSyncService *)self collectionIdentifierForRecordID:v4];
+  v6 = [(VCCKShortcutSyncService *)self collectionIdentifierForRecordID:dCopy];
   if (v6)
   {
-    v7 = [(VCCKShortcutSyncService *)self database];
-    v8 = [v7 desiredOrderingSyncOperationForCollection:v6];
+    database = [(VCCKShortcutSyncService *)self database];
+    v8 = [database desiredOrderingSyncOperationForCollection:v6];
 
     if ([v8 operationType] == 1)
     {
-      v9 = [(VCCKShortcutSyncService *)self database];
+      database2 = [(VCCKShortcutSyncService *)self database];
       v28 = 0;
-      v10 = [v9 orderingRecordForCollection:v6 error:&v28];
+      v10 = [database2 orderingRecordForCollection:v6 error:&v28];
       v11 = v28;
 
       if (v10)
@@ -5233,21 +5233,21 @@ LABEL_14:
         v12 = objc_alloc(MEMORY[0x277D7C1F0]);
         v27 = v8;
         v13 = MEMORY[0x277CBEB70];
-        v14 = [v10 shortcuts];
-        v15 = [v13 orderedSetWithArray:v14];
+        shortcuts = [v10 shortcuts];
+        v15 = [v13 orderedSetWithArray:shortcuts];
         v16 = MEMORY[0x277CBEB70];
-        v17 = [v10 folders];
-        v18 = [v16 orderedSetWithArray:v17];
-        v19 = [v12 initWithIdentifier:v4 orderedWorkflowIDs:v15 orderedFolderIDs:v18];
+        folders = [v10 folders];
+        v18 = [v16 orderedSetWithArray:folders];
+        v19 = [v12 initWithIdentifier:dCopy orderedWorkflowIDs:v15 orderedFolderIDs:v18];
 
-        v20 = [v10 cloudKitMetadata];
-        [v19 setRecordSystemFieldsData:v20];
+        cloudKitMetadata = [v10 cloudKitMetadata];
+        [v19 setRecordSystemFieldsData:cloudKitMetadata];
 
         v21 = MEMORY[0x277D7C200];
-        v22 = [(VCCKShortcutSyncService *)self shortcutsZoneID];
+        shortcutsZoneID = [(VCCKShortcutSyncService *)self shortcutsZoneID];
         v23 = v21;
         v8 = v27;
-        v24 = [v23 createRecordFromItem:v19 zoneID:v22];
+        v24 = [v23 createRecordFromItem:v19 zoneID:shortcutsZoneID];
       }
 
       else
@@ -5294,10 +5294,10 @@ LABEL_14:
   return v24;
 }
 
-- (id)collectionIdentifierForRecordID:(id)a3
+- (id)collectionIdentifierForRecordID:(id)d
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dCopy = d;
   v4 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -5307,7 +5307,7 @@ LABEL_14:
   }
 
   v5 = 0x277D7C1F0;
-  if (([MEMORY[0x277D7C1F0] isOrderingRecordID:v3] & 1) == 0 && (v5 = 0x277D7C1A0, !objc_msgSend(MEMORY[0x277D7C1A0], "isOrderingRecordID:", v3)) || (objc_msgSend(*v5, "collectionIdentifierForRecordID:", v3), (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (([MEMORY[0x277D7C1F0] isOrderingRecordID:dCopy] & 1) == 0 && (v5 = 0x277D7C1A0, !objc_msgSend(MEMORY[0x277D7C1A0], "isOrderingRecordID:", dCopy)) || (objc_msgSend(*v5, "collectionIdentifierForRecordID:", dCopy), (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v7 = getWFCloudKitSyncLogObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -5315,7 +5315,7 @@ LABEL_14:
       v10 = 136315394;
       v11 = "[VCCKShortcutSyncService collectionIdentifierForRecordID:]";
       v12 = 2114;
-      v13 = v3;
+      v13 = dCopy;
       _os_log_impl(&dword_23103C000, v7, OS_LOG_TYPE_ERROR, "%s Failed to get collection identifier from CKRecordID %{public}@", &v10, 0x16u);
     }
 
@@ -5330,11 +5330,11 @@ LABEL_14:
 - (void)sendSyncFlagsIfNeeded
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D7C230] syncedFlagsHash];
-  v4 = [MEMORY[0x277D7C230] lastSyncedFlagsHash];
+  syncedFlagsHash = [MEMORY[0x277D7C230] syncedFlagsHash];
+  lastSyncedFlagsHash = [MEMORY[0x277D7C230] lastSyncedFlagsHash];
   v5 = getWFCloudKitSyncLogObject();
   v6 = v5;
-  if (v3 == v4)
+  if (syncedFlagsHash == lastSyncedFlagsHash)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -5354,8 +5354,8 @@ LABEL_14:
     }
 
     v7 = MEMORY[0x277D7C228];
-    v8 = [(VCCKShortcutSyncService *)self shortcutsZoneID];
-    v6 = [v7 recordIDWithZoneID:v8];
+    shortcutsZoneID = [(VCCKShortcutSyncService *)self shortcutsZoneID];
+    v6 = [v7 recordIDWithZoneID:shortcutsZoneID];
 
     v11 = v6;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v11 count:1];
@@ -5365,12 +5365,12 @@ LABEL_14:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addRecordIDsToSave:(id)a3 recordIDsToDelete:(id)a4
+- (void)addRecordIDsToSave:(id)save recordIDsToDelete:(id)delete
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count] || objc_msgSend(v7, "count"))
+  saveCopy = save;
+  deleteCopy = delete;
+  if ([saveCopy count] || objc_msgSend(deleteCopy, "count"))
   {
     v8 = getWFCloudKitSyncLogObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -5378,18 +5378,18 @@ LABEL_14:
       *buf = 136315650;
       v38 = "[VCCKShortcutSyncService addRecordIDsToSave:recordIDsToDelete:]";
       v39 = 2114;
-      v40 = v6;
+      v40 = saveCopy;
       v41 = 2114;
-      v42 = v7;
+      v42 = deleteCopy;
       _os_log_impl(&dword_23103C000, v8, OS_LOG_TYPE_INFO, "%s Adding identifiers to save: %{public}@, identifiers to delete %{public}@", buf, 0x20u);
     }
 
-    v9 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v10 = v6;
+    v10 = saveCopy;
     v11 = [v10 countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v11)
     {
@@ -5406,7 +5406,7 @@ LABEL_14:
           }
 
           v15 = [objc_alloc(MEMORY[0x277CBC718]) initWithRecordID:*(*(&v31 + 1) + 8 * v14) type:0];
-          [v9 addObject:v15];
+          [array addObject:v15];
 
           ++v14;
         }
@@ -5422,7 +5422,7 @@ LABEL_14:
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v16 = v7;
+    v16 = deleteCopy;
     v17 = [v16 countByEnumeratingWithState:&v27 objects:v35 count:16];
     if (v17)
     {
@@ -5441,7 +5441,7 @@ LABEL_14:
           v21 = *(*(&v27 + 1) + 8 * v20);
           v22 = objc_alloc(MEMORY[0x277CBC718]);
           v23 = [v22 initWithRecordID:v21 type:{1, v27}];
-          [v9 addObject:v23];
+          [array addObject:v23];
 
           ++v20;
         }
@@ -5453,19 +5453,19 @@ LABEL_14:
       while (v18);
     }
 
-    v24 = [(VCCKShortcutSyncService *)self syncEngine];
-    v25 = [v24 state];
-    [v25 addPendingRecordZoneChanges:v9];
+    syncEngine = [(VCCKShortcutSyncService *)self syncEngine];
+    state = [syncEngine state];
+    [state addPendingRecordZoneChanges:array];
   }
 
   else
   {
-    v9 = getWFCloudKitSyncLogObject();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+    array = getWFCloudKitSyncLogObject();
+    if (os_log_type_enabled(array, OS_LOG_TYPE_INFO))
     {
       *buf = 136315138;
       v38 = "[VCCKShortcutSyncService addRecordIDsToSave:recordIDsToDelete:]";
-      _os_log_impl(&dword_23103C000, v9, OS_LOG_TYPE_INFO, "%s No changes to save or delete, bailing out", buf, 0xCu);
+      _os_log_impl(&dword_23103C000, array, OS_LOG_TYPE_INFO, "%s No changes to save or delete, bailing out", buf, 0xCu);
     }
   }
 
@@ -5483,27 +5483,27 @@ LABEL_14:
     _os_log_impl(&dword_23103C000, v3, OS_LOG_TYPE_INFO, "%s Sending library if changed", &v22, 0xCu);
   }
 
-  v4 = [(VCCKShortcutSyncService *)self database];
-  v5 = [v4 latestLibraryIdentifier];
+  database = [(VCCKShortcutSyncService *)self database];
+  latestLibraryIdentifier = [database latestLibraryIdentifier];
 
-  v6 = [objc_alloc(MEMORY[0x277D79EF0]) initWithIdentifier:v5 objectType:10];
-  v7 = [(VCCKShortcutSyncService *)self database];
-  v8 = [v7 recordWithDescriptor:v6 properties:0 error:0];
+  v6 = [objc_alloc(MEMORY[0x277D79EF0]) initWithIdentifier:latestLibraryIdentifier objectType:10];
+  database2 = [(VCCKShortcutSyncService *)self database];
+  v8 = [database2 recordWithDescriptor:v6 properties:0 error:0];
 
   if (v8)
   {
-    v9 = [v8 cloudKitRecordMetadata];
-    if (!v9 || (v10 = v9, v11 = [v8 syncHash], v12 = objc_msgSend(v8, "lastSyncedHash"), v10, v11 != v12))
+    cloudKitRecordMetadata = [v8 cloudKitRecordMetadata];
+    if (!cloudKitRecordMetadata || (v10 = cloudKitRecordMetadata, v11 = [v8 syncHash], v12 = objc_msgSend(v8, "lastSyncedHash"), v10, v11 != v12))
     {
       v13 = objc_opt_new();
       v14 = MEMORY[0x277D7C210];
-      v15 = [(VCCKShortcutSyncService *)self shortcutsZoneID];
-      v16 = [v14 recordIDWithZoneID:v15 libraryIdentifier:v5];
+      shortcutsZoneID = [(VCCKShortcutSyncService *)self shortcutsZoneID];
+      v16 = [v14 recordIDWithZoneID:shortcutsZoneID libraryIdentifier:latestLibraryIdentifier];
 
       [v13 addObject:v16];
-      v17 = [v8 cloudKitRecordMetadata];
+      cloudKitRecordMetadata2 = [v8 cloudKitRecordMetadata];
 
-      if (!v17)
+      if (!cloudKitRecordMetadata2)
       {
         v18 = getWFCloudKitSyncLogObject();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -5513,12 +5513,12 @@ LABEL_14:
           _os_log_impl(&dword_23103C000, v18, OS_LOG_TYPE_INFO, "%s About to upload the library to CloudKit for the first time. Uploading all shortcut records to migrate to the Shortcut_v2 record", &v22, 0xCu);
         }
 
-        v19 = [(VCCKShortcutSyncService *)self fetchCloudKitRecordIDsForAllVisibleWorkflows];
-        [v13 addObjectsFromArray:v19];
+        fetchCloudKitRecordIDsForAllVisibleWorkflows = [(VCCKShortcutSyncService *)self fetchCloudKitRecordIDsForAllVisibleWorkflows];
+        [v13 addObjectsFromArray:fetchCloudKitRecordIDsForAllVisibleWorkflows];
       }
 
-      v20 = [v13 array];
-      [(VCCKShortcutSyncService *)self addRecordIDsToSave:v20 recordIDsToDelete:MEMORY[0x277CBEBF8]];
+      array = [v13 array];
+      [(VCCKShortcutSyncService *)self addRecordIDsToSave:array recordIDsToDelete:MEMORY[0x277CBEBF8]];
     }
   }
 
@@ -5540,14 +5540,14 @@ LABEL_14:
 
   v5 = WFGetBuiltInCollectionIdentifiers();
   v36 = WFGetAzulBuiltInCollectionIdentifiers();
-  v6 = [(VCCKShortcutSyncService *)self database];
-  v7 = [v6 allCollectionIdentifiersForSync];
+  database = [(VCCKShortcutSyncService *)self database];
+  allCollectionIdentifiersForSync = [database allCollectionIdentifiersForSync];
 
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v7;
+  obj = allCollectionIdentifiersForSync;
   v8 = [obj countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v8)
   {
@@ -5575,47 +5575,47 @@ LABEL_14:
 
         else
         {
-          v15 = [(VCCKShortcutSyncService *)self database];
-          v16 = [v15 desiredFolderSyncOperationForCollection:v12];
+          database2 = [(VCCKShortcutSyncService *)self database];
+          v16 = [database2 desiredFolderSyncOperationForCollection:v12];
 
           v17 = MEMORY[0x277D7C1F8];
-          v18 = [(VCCKShortcutSyncService *)self shortcutsZoneID];
-          v19 = [v17 recordIDWithZoneID:v18 collectionIdentifier:v12];
+          shortcutsZoneID = [(VCCKShortcutSyncService *)self shortcutsZoneID];
+          v19 = [v17 recordIDWithZoneID:shortcutsZoneID collectionIdentifier:v12];
 
-          v20 = [v16 operationType];
+          operationType = [v16 operationType];
           v21 = v3;
-          if (v20 == 1 || (v22 = [v16 operationType], v21 = v38, v22 == 2))
+          if (operationType == 1 || (v22 = [v16 operationType], v21 = v38, v22 == 2))
           {
             [v21 addObject:v19];
           }
 
           if ([v16 operationType])
           {
-            v23 = [(VCCKShortcutSyncService *)self logger];
-            [v23 logDesiredSyncOperationWithName:@"folder sync" operation:v16 identifier:v12];
+            logger = [(VCCKShortcutSyncService *)self logger];
+            [logger logDesiredSyncOperationWithName:@"folder sync" operation:v16 identifier:v12];
           }
         }
 
         v14 = 0x277D7C1F0;
 LABEL_18:
         v24 = *v14;
-        v25 = [(VCCKShortcutSyncService *)self shortcutsZoneID];
-        v26 = [v24 recordIDWithZoneID:v25 collectionIdentifier:v12];
+        shortcutsZoneID2 = [(VCCKShortcutSyncService *)self shortcutsZoneID];
+        v26 = [v24 recordIDWithZoneID:shortcutsZoneID2 collectionIdentifier:v12];
 
-        v27 = [(VCCKShortcutSyncService *)self database];
-        v28 = [v27 desiredOrderingSyncOperationForCollection:v12];
+        database3 = [(VCCKShortcutSyncService *)self database];
+        v28 = [database3 desiredOrderingSyncOperationForCollection:v12];
 
-        v29 = [v28 operationType];
+        operationType2 = [v28 operationType];
         v30 = v3;
-        if (v29 == 1 || (v31 = [v28 operationType], v30 = v38, v31 == 2))
+        if (operationType2 == 1 || (v31 = [v28 operationType], v30 = v38, v31 == 2))
         {
           [v30 addObject:v26];
         }
 
         if ([v28 operationType])
         {
-          v32 = [(VCCKShortcutSyncService *)self logger];
-          [v32 logDesiredSyncOperationWithName:@"ordering sync" operation:v28 identifier:v12];
+          logger2 = [(VCCKShortcutSyncService *)self logger];
+          [logger2 logDesiredSyncOperationWithName:@"ordering sync" operation:v28 identifier:v12];
         }
       }
 
@@ -5625,9 +5625,9 @@ LABEL_18:
     while (v9);
   }
 
-  v33 = [v3 allObjects];
-  v34 = [v38 allObjects];
-  [(VCCKShortcutSyncService *)self addRecordIDsToSave:v33 recordIDsToDelete:v34];
+  allObjects = [v3 allObjects];
+  allObjects2 = [v38 allObjects];
+  [(VCCKShortcutSyncService *)self addRecordIDsToSave:allObjects recordIDsToDelete:allObjects2];
 
   v35 = *MEMORY[0x277D85DE8];
 }
@@ -5645,14 +5645,14 @@ LABEL_18:
     _os_log_impl(&dword_23103C000, v4, OS_LOG_TYPE_INFO, "%s Sending changed workflows", buf, 0xCu);
   }
 
-  v5 = [(VCCKShortcutSyncService *)self database];
-  v6 = [v5 allWorkflowIdentifiersForSync];
+  database = [(VCCKShortcutSyncService *)self database];
+  allWorkflowIdentifiersForSync = [database allWorkflowIdentifiersForSync];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v6;
+  obj = allWorkflowIdentifiersForSync;
   v7 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
@@ -5669,15 +5669,15 @@ LABEL_18:
         }
 
         v11 = *(*(&v21 + 1) + 8 * v10);
-        v12 = [(VCCKShortcutSyncService *)self database];
-        v13 = [v12 desiredSyncOperationForWorkflow:v11];
+        database2 = [(VCCKShortcutSyncService *)self database];
+        v13 = [database2 desiredSyncOperationForWorkflow:v11];
 
         v14 = v3;
         if ([v13 operationType] == 1 || (v14 = v19, objc_msgSend(v13, "operationType") == 2))
         {
-          v15 = [(VCCKShortcutSyncService *)self cloudKitWorkflowClass];
-          v16 = [(VCCKShortcutSyncService *)self shortcutsZoneID];
-          v17 = [(objc_class *)v15 recordIDWithZoneID:v16 workflowID:v11];
+          cloudKitWorkflowClass = [(VCCKShortcutSyncService *)self cloudKitWorkflowClass];
+          shortcutsZoneID = [(VCCKShortcutSyncService *)self shortcutsZoneID];
+          v17 = [(objc_class *)cloudKitWorkflowClass recordIDWithZoneID:shortcutsZoneID workflowID:v11];
           [v14 addObject:v17];
         }
 
@@ -5695,16 +5695,16 @@ LABEL_18:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)workflowRecordWithIdentifier:(id)a3 properties:(id)a4
+- (id)workflowRecordWithIdentifier:(id)identifier properties:(id)properties
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = MEMORY[0x277D79EF0];
-  v8 = a4;
-  v9 = [[v7 alloc] initWithIdentifier:v6 objectType:0];
-  v10 = [(VCCKShortcutSyncService *)self database];
+  propertiesCopy = properties;
+  v9 = [[v7 alloc] initWithIdentifier:identifierCopy objectType:0];
+  database = [(VCCKShortcutSyncService *)self database];
   v16 = 0;
-  v11 = [v10 recordWithDescriptor:v9 properties:v8 error:&v16];
+  v11 = [database recordWithDescriptor:v9 properties:propertiesCopy error:&v16];
 
   v12 = v16;
   if (!v11)
@@ -5717,7 +5717,7 @@ LABEL_18:
       v19 = 2114;
       v20 = v12;
       v21 = 2112;
-      v22 = v6;
+      v22 = identifierCopy;
       _os_log_impl(&dword_23103C000, v13, OS_LOG_TYPE_FAULT, "%s Failed to load WFWorkflowRecord from identifier: %{public}@, descriptor = %@", buf, 0x20u);
     }
   }
@@ -5740,15 +5740,15 @@ LABEL_18:
 
   v4 = objc_alloc(MEMORY[0x277CBC728]);
   v5 = objc_alloc(MEMORY[0x277CBC5E8]);
-  v6 = [(VCCKShortcutSyncService *)self shortcutsZoneID];
-  v7 = [v5 initWithZoneID:v6];
+  shortcutsZoneID = [(VCCKShortcutSyncService *)self shortcutsZoneID];
+  v7 = [v5 initWithZoneID:shortcutsZoneID];
   v8 = [v4 initWithZone:v7];
 
-  v9 = [(VCCKShortcutSyncService *)self syncEngine];
-  v10 = [v9 state];
+  syncEngine = [(VCCKShortcutSyncService *)self syncEngine];
+  state = [syncEngine state];
   v13 = v8;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v13 count:1];
-  [v10 addPendingDatabaseChanges:v11];
+  [state addPendingDatabaseChanges:v11];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -5764,11 +5764,11 @@ LABEL_18:
     _os_log_impl(&dword_23103C000, v3, OS_LOG_TYPE_INFO, "%s Enabling coherence sync", &v7, 0xCu);
   }
 
-  v4 = [(VCCKShortcutSyncService *)self logger];
-  [v4 logEvent:@"enable coherence sync (live)"];
+  logger = [(VCCKShortcutSyncService *)self logger];
+  [logger logEvent:@"enable coherence sync (live)"];
 
-  v5 = [(VCCKShortcutSyncService *)self database];
-  [v5 updateSyncTokenWithBlock:&__block_literal_global_1250];
+  database = [(VCCKShortcutSyncService *)self database];
+  [database updateSyncTokenWithBlock:&__block_literal_global_1250];
 
   [MEMORY[0x277CBEBD0] resetSyncUnavailableMessage];
   [(VCCKShortcutSyncService *)self setCoherenceSyncEnabled:1];
@@ -5785,18 +5785,18 @@ LABEL_18:
 
 - (NSArray)pendingShortcutsZoneChanges
 {
-  v2 = [(VCCKShortcutSyncService *)self syncEngine];
-  v3 = [v2 state];
-  v4 = [v3 pendingRecordZoneChanges];
+  syncEngine = [(VCCKShortcutSyncService *)self syncEngine];
+  state = [syncEngine state];
+  pendingRecordZoneChanges = [state pendingRecordZoneChanges];
 
-  return v4;
+  return pendingRecordZoneChanges;
 }
 
 - (Class)cloudKitWorkflowClass
 {
-  v2 = [(VCCKShortcutSyncService *)self coherenceSyncEnabled];
+  coherenceSyncEnabled = [(VCCKShortcutSyncService *)self coherenceSyncEnabled];
   v3 = 0x277D7C240;
-  if (!v2)
+  if (!coherenceSyncEnabled)
   {
     v3 = 0x277D7C248;
   }
@@ -5807,10 +5807,10 @@ LABEL_18:
   return v5;
 }
 
-- (void)modifyPendingChangesInShortcutsZoneWithCompletion:(id)a3
+- (void)modifyPendingChangesInShortcutsZoneWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -5820,17 +5820,17 @@ LABEL_18:
   }
 
   v6 = VCOSTransactionWithName(@"VCCKShortcutSyncService.modifyPendingChangesInShortcutsZoneWithCompletion");
-  v7 = [(VCCKShortcutSyncService *)self syncEngine];
-  v8 = [(VCCKShortcutSyncService *)self sendChangesOptions];
+  syncEngine = [(VCCKShortcutSyncService *)self syncEngine];
+  sendChangesOptions = [(VCCKShortcutSyncService *)self sendChangesOptions];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __77__VCCKShortcutSyncService_modifyPendingChangesInShortcutsZoneWithCompletion___block_invoke;
   v12[3] = &unk_2788FF4B8;
   v13 = v6;
-  v14 = v4;
+  v14 = completionCopy;
   v9 = v6;
-  v10 = v4;
-  [v7 sendChangesWithOptions:v8 completionHandler:v12];
+  v10 = completionCopy;
+  [syncEngine sendChangesWithOptions:sendChangesOptions completionHandler:v12];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -5885,10 +5885,10 @@ LABEL_7:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchChangesInShortcutsZoneWithCompletion:(id)a3
+- (void)fetchChangesInShortcutsZoneWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -5898,18 +5898,18 @@ LABEL_7:
   }
 
   v6 = VCOSTransactionWithName(@"VCCKShortcutSyncService.fetchChangesInShortcutsZoneWithCompletion");
-  v7 = [(VCCKShortcutSyncService *)self syncEngine];
-  v8 = [(VCCKShortcutSyncService *)self fetchChangesOptions];
+  syncEngine = [(VCCKShortcutSyncService *)self syncEngine];
+  fetchChangesOptions = [(VCCKShortcutSyncService *)self fetchChangesOptions];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __69__VCCKShortcutSyncService_fetchChangesInShortcutsZoneWithCompletion___block_invoke;
   v12[3] = &unk_2788FE6C0;
   v13 = v6;
-  v14 = v4;
+  v14 = completionCopy;
   v12[4] = self;
   v9 = v6;
-  v10 = v4;
-  [v7 fetchChangesWithOptions:v8 completionHandler:v12];
+  v10 = completionCopy;
+  [syncEngine fetchChangesWithOptions:fetchChangesOptions completionHandler:v12];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -6012,8 +6012,8 @@ LABEL_13:
   }
 
   [(VCCKShortcutSyncService *)self stopObservingUserDefaults];
-  v4 = [(VCCKShortcutSyncService *)self applicationObserver];
-  [v4 removeObserver:self forKeyPath:@"applicationVisible" context:VCCKShortcutSyncServiceApplicationVisibilityChangedContext];
+  applicationObserver = [(VCCKShortcutSyncService *)self applicationObserver];
+  [applicationObserver removeObserver:self forKeyPath:@"applicationVisible" context:VCCKShortcutSyncServiceApplicationVisibilityChangedContext];
 
   v6.receiver = self;
   v6.super_class = VCCKShortcutSyncService;
@@ -6021,16 +6021,16 @@ LABEL_13:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (VCCKShortcutSyncService)initWithContainer:(id)a3 database:(id)a4 applicationObserver:(id)a5 debuggingOptions:(unint64_t)a6 logger:(id)a7
+- (VCCKShortcutSyncService)initWithContainer:(id)container database:(id)database applicationObserver:(id)observer debuggingOptions:(unint64_t)options logger:(id)logger
 {
   v45[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v42 = a7;
-  if (v14)
+  containerCopy = container;
+  databaseCopy = database;
+  observerCopy = observer;
+  loggerCopy = logger;
+  if (containerCopy)
   {
-    if (v15)
+    if (databaseCopy)
     {
       goto LABEL_3;
     }
@@ -6038,17 +6038,17 @@ LABEL_13:
 
   else
   {
-    v40 = [MEMORY[0x277CCA890] currentHandler];
-    [v40 handleFailureInMethod:a2 object:self file:@"VCCKShortcutSyncService.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"container"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCCKShortcutSyncService.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"container"}];
 
-    if (v15)
+    if (databaseCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v41 = [MEMORY[0x277CCA890] currentHandler];
-  [v41 handleFailureInMethod:a2 object:self file:@"VCCKShortcutSyncService.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"database"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"VCCKShortcutSyncService.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"database"}];
 
 LABEL_3:
   v43.receiver = self;
@@ -6057,15 +6057,15 @@ LABEL_3:
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_container, a3);
-    objc_storeStrong(&v18->_database, a4);
-    objc_storeStrong(&v18->_applicationObserver, a5);
-    v18->_debuggingOptions = a6;
-    objc_storeStrong(&v18->_logger, a7);
+    objc_storeStrong(&v17->_container, container);
+    objc_storeStrong(&v18->_database, database);
+    objc_storeStrong(&v18->_applicationObserver, observer);
+    v18->_debuggingOptions = options;
+    objc_storeStrong(&v18->_logger, logger);
     v19 = objc_alloc(MEMORY[0x277CBC740]);
     v20 = MEMORY[0x277CBEB98];
-    v21 = [(VCCKShortcutSyncService *)v18 shortcutsZoneID];
-    v45[0] = v21;
+    shortcutsZoneID = [(VCCKShortcutSyncService *)v18 shortcutsZoneID];
+    v45[0] = shortcutsZoneID;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:1];
     v23 = [v20 setWithArray:v22];
     v24 = [v19 initWithZoneIDs:v23];
@@ -6076,8 +6076,8 @@ LABEL_3:
 
     v27 = objc_alloc(MEMORY[0x277CBC700]);
     v28 = MEMORY[0x277CBEB98];
-    v29 = [(VCCKShortcutSyncService *)v18 shortcutsZoneID];
-    v44 = v29;
+    shortcutsZoneID2 = [(VCCKShortcutSyncService *)v18 shortcutsZoneID];
+    v44 = shortcutsZoneID2;
     v30 = [MEMORY[0x277CBEA60] arrayWithObjects:&v44 count:1];
     v31 = [v28 setWithArray:v30];
     v32 = [v27 initWithZoneIDs:v31];
@@ -6090,7 +6090,7 @@ LABEL_3:
     filesReferencedUntilSaved = v18->_filesReferencedUntilSaved;
     v18->_filesReferencedUntilSaved = v35;
 
-    v18->_coherenceSyncEnabled = [v15 coherenceSyncEnabled];
+    v18->_coherenceSyncEnabled = [databaseCopy coherenceSyncEnabled];
     v37 = v18;
   }
 

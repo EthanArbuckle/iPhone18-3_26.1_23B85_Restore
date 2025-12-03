@@ -1,54 +1,54 @@
 @interface HKOverlayRoomTrendContext
-+ (id)findInitialDateFromTrendModel:(id)a3;
-+ (int64_t)findStartingTimeScopeFromTrendModel:(id)a3;
-- (BOOL)_timeScopeHasTrendSpans:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (HKOverlayRoomTrendContext)initWithBaseDisplayType:(id)a3 trendModel:(id)a4 overlayChartController:(id)a5 applicationItems:(id)a6 overlayMode:(int64_t)a7;
-- (id)_adjustTrendValueRange:(id)a3 timescope:(int64_t)a4 calendar:(id)a5;
-- (id)_buildAnnotatedHorizontalLineSeriesUsingDisplayType:(id)a3 unitController:(id)a4;
-- (id)_buildTrendDisplayTypeFromModel:(id)a3 baseDisplayType:(id)a4 unitController:(id)a5;
-- (id)_buildTrendOverlayValueFormatterUsingDisplayType:(id)a3 unitController:(id)a4;
-- (id)_buildTrendingLineSeriesStyleWithColor:(id)a3 formattingDisplayType:(id)a4 unitController:(id)a5 annotationFormatter:(id)a6;
-- (id)_durationContextItemWithSummaryPhrase:(id)a3 timeScope:(int64_t)a4;
-- (id)_representativeDisplayTypeFromDisplayType:(id)a3;
-- (id)_summaryGivenChartPoints:(id)a3 timeScope:(int64_t)a4;
++ (id)findInitialDateFromTrendModel:(id)model;
++ (int64_t)findStartingTimeScopeFromTrendModel:(id)model;
+- (BOOL)_timeScopeHasTrendSpans:(int64_t)spans;
+- (BOOL)isEqual:(id)equal;
+- (HKOverlayRoomTrendContext)initWithBaseDisplayType:(id)type trendModel:(id)model overlayChartController:(id)controller applicationItems:(id)items overlayMode:(int64_t)mode;
+- (id)_adjustTrendValueRange:(id)range timescope:(int64_t)timescope calendar:(id)calendar;
+- (id)_buildAnnotatedHorizontalLineSeriesUsingDisplayType:(id)type unitController:(id)controller;
+- (id)_buildTrendDisplayTypeFromModel:(id)model baseDisplayType:(id)type unitController:(id)controller;
+- (id)_buildTrendOverlayValueFormatterUsingDisplayType:(id)type unitController:(id)controller;
+- (id)_buildTrendingLineSeriesStyleWithColor:(id)color formattingDisplayType:(id)type unitController:(id)controller annotationFormatter:(id)formatter;
+- (id)_durationContextItemWithSummaryPhrase:(id)phrase timeScope:(int64_t)scope;
+- (id)_representativeDisplayTypeFromDisplayType:(id)type;
+- (id)_summaryGivenChartPoints:(id)points timeScope:(int64_t)scope;
 - (id)_trendTitle;
-- (id)_trendValueRangeForTimescope:(int64_t)a3 calendar:(id)a4;
-- (id)_unselectedMetricColorsUserInteractive:(BOOL)a3;
-- (void)overlayStateDidChange:(BOOL)a3 contextItem:(id)a4 chartController:(id)a5;
-- (void)updateContextItemForDateInterval:(id)a3 overlayController:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 completion:(id)a7;
+- (id)_trendValueRangeForTimescope:(int64_t)timescope calendar:(id)calendar;
+- (id)_unselectedMetricColorsUserInteractive:(BOOL)interactive;
+- (void)overlayStateDidChange:(BOOL)change contextItem:(id)item chartController:(id)controller;
+- (void)updateContextItemForDateInterval:(id)interval overlayController:(id)controller timeScope:(int64_t)scope resolution:(int64_t)resolution completion:(id)completion;
 @end
 
 @implementation HKOverlayRoomTrendContext
 
-- (HKOverlayRoomTrendContext)initWithBaseDisplayType:(id)a3 trendModel:(id)a4 overlayChartController:(id)a5 applicationItems:(id)a6 overlayMode:(int64_t)a7
+- (HKOverlayRoomTrendContext)initWithBaseDisplayType:(id)type trendModel:(id)model overlayChartController:(id)controller applicationItems:(id)items overlayMode:(int64_t)mode
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  typeCopy = type;
+  modelCopy = model;
+  controllerCopy = controller;
+  itemsCopy = items;
   v26.receiver = self;
   v26.super_class = HKOverlayRoomTrendContext;
   v16 = [(HKOverlayRoomTrendContext *)&v26 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_trendModel, a4);
-    v18 = [v15 unitController];
-    v19 = [(HKOverlayRoomTrendContext *)v17 _buildTrendDisplayTypeFromModel:v13 baseDisplayType:v12 unitController:v18];
+    objc_storeStrong(&v16->_trendModel, model);
+    unitController = [itemsCopy unitController];
+    v19 = [(HKOverlayRoomTrendContext *)v17 _buildTrendDisplayTypeFromModel:modelCopy baseDisplayType:typeCopy unitController:unitController];
     trendDisplayType = v17->_trendDisplayType;
     v17->_trendDisplayType = v19;
 
-    objc_storeStrong(&v17->_overlayChartController, a5);
-    v17->_categoryIdentifier = [v12 categoryIdentifier];
+    objc_storeStrong(&v17->_overlayChartController, controller);
+    v17->_categoryIdentifier = [typeCopy categoryIdentifier];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v21 = [v12 baseDisplayType];
-      v17->_categoryIdentifier = [v21 categoryIdentifier];
+      baseDisplayType = [typeCopy baseDisplayType];
+      v17->_categoryIdentifier = [baseDisplayType categoryIdentifier];
     }
 
-    v17->_overlayMode = a7;
+    v17->_overlayMode = mode;
     v22 = [(HKOverlayRoomTrendContext *)v17 _durationContextItemWithSummaryPhrase:&stru_1F42FFBE0 timeScope:4];
     lastUpdatedItem = v17->_lastUpdatedItem;
     v17->_lastUpdatedItem = v22;
@@ -60,65 +60,65 @@
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  return isKindOfClass & (self == v4);
+  return isKindOfClass & (self == equalCopy);
 }
 
-+ (int64_t)findStartingTimeScopeFromTrendModel:(id)a3
++ (int64_t)findStartingTimeScopeFromTrendModel:(id)model
 {
-  v3 = a3;
-  if ([v3 selectTrendInitially] && (objc_msgSend(v3, "timeScopeTrends"), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "firstObject"), v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  modelCopy = model;
+  if ([modelCopy selectTrendInitially] && (objc_msgSend(modelCopy, "timeScopeTrends"), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "firstObject"), v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
-    v6 = [v3 timeScopeTrends];
-    v7 = [v6 firstObject];
-    v8 = [v7 timeScope];
+    timeScopeTrends = [modelCopy timeScopeTrends];
+    firstObject = [timeScopeTrends firstObject];
+    timeScope = [firstObject timeScope];
   }
 
   else
   {
-    v8 = 8;
+    timeScope = 8;
   }
 
-  return v8;
+  return timeScope;
 }
 
-+ (id)findInitialDateFromTrendModel:(id)a3
++ (id)findInitialDateFromTrendModel:(id)model
 {
-  v3 = a3;
-  v4 = [v3 timeScopeTrends];
-  v5 = [v4 firstObject];
-  v6 = [v5 trendSpans];
-  v7 = [v6 firstObject];
-  v8 = [v7 trendDateInterval];
+  modelCopy = model;
+  timeScopeTrends = [modelCopy timeScopeTrends];
+  firstObject = [timeScopeTrends firstObject];
+  trendSpans = [firstObject trendSpans];
+  firstObject2 = [trendSpans firstObject];
+  trendDateInterval = [firstObject2 trendDateInterval];
 
-  LODWORD(v4) = [v3 selectTrendInitially];
-  v9 = 0;
-  if (v4 && v8)
+  LODWORD(timeScopeTrends) = [modelCopy selectTrendInitially];
+  endDate = 0;
+  if (timeScopeTrends && trendDateInterval)
   {
-    v9 = [v8 endDate];
+    endDate = [trendDateInterval endDate];
   }
 
-  return v9;
+  return endDate;
 }
 
-- (id)_buildTrendDisplayTypeFromModel:(id)a3 baseDisplayType:(id)a4 unitController:(id)a5
+- (id)_buildTrendDisplayTypeFromModel:(id)model baseDisplayType:(id)type unitController:(id)controller
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(HKOverlayRoomTrendContext *)self _representativeDisplayTypeFromDisplayType:a4];
+  controllerCopy = controller;
+  modelCopy = model;
+  v10 = [(HKOverlayRoomTrendContext *)self _representativeDisplayTypeFromDisplayType:type];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __92__HKOverlayRoomTrendContext__buildTrendDisplayTypeFromModel_baseDisplayType_unitController___block_invoke;
   aBlock[3] = &unk_1E81B6DF8;
-  v26 = v8;
+  v26 = controllerCopy;
   v11 = v10;
   v27 = v11;
-  v12 = v8;
+  v12 = controllerCopy;
   v13 = _Block_copy(aBlock);
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
@@ -127,14 +127,14 @@
   v24 = v11;
   v14 = v11;
   v15 = _Block_copy(v23);
-  v16 = [[HKFixedValueDateSpanDataSource alloc] initWithTrendModel:v9 preferredUnitBlock:v13 fixedValueScalingBlock:v15];
+  v16 = [[HKFixedValueDateSpanDataSource alloc] initWithTrendModel:modelCopy preferredUnitBlock:v13 fixedValueScalingBlock:v15];
 
   v17 = [(HKOverlayRoomTrendContext *)self _buildAnnotatedHorizontalLineSeriesUsingDisplayType:v14 unitController:v12];
   [v17 setDataSource:v16];
   v18 = [(HKOverlayRoomTrendContext *)self _buildTrendOverlayValueFormatterUsingDisplayType:v14 unitController:v12];
   v19 = [HKInteractiveChartDisplayType alloc];
-  v20 = [v14 objectType];
-  v21 = -[HKInteractiveChartDisplayType initWithGraphSeries:baseDisplayType:valueFormatter:dataTypeCode:](v19, "initWithGraphSeries:baseDisplayType:valueFormatter:dataTypeCode:", v17, v14, v18, [v20 code]);
+  objectType = [v14 objectType];
+  v21 = -[HKInteractiveChartDisplayType initWithGraphSeries:baseDisplayType:valueFormatter:dataTypeCode:](v19, "initWithGraphSeries:baseDisplayType:valueFormatter:dataTypeCode:", v17, v14, v18, [objectType code]);
 
   return v21;
 }
@@ -149,21 +149,21 @@ id __92__HKOverlayRoomTrendContext__buildTrendDisplayTypeFromModel_baseDisplayTy
   return v5;
 }
 
-- (id)_representativeDisplayTypeFromDisplayType:(id)a3
+- (id)_representativeDisplayTypeFromDisplayType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = v3;
+  v5 = typeCopy;
   v6 = v5;
   v7 = v5;
   if (isKindOfClass)
   {
-    v8 = [v5 baseDisplayType];
-    v9 = v8;
-    if (v8)
+    baseDisplayType = [v5 baseDisplayType];
+    v9 = baseDisplayType;
+    if (baseDisplayType)
     {
-      v10 = v8;
+      v10 = baseDisplayType;
     }
 
     else
@@ -177,62 +177,62 @@ id __92__HKOverlayRoomTrendContext__buildTrendDisplayTypeFromModel_baseDisplayTy
   return v7;
 }
 
-- (id)_buildTrendOverlayValueFormatterUsingDisplayType:(id)a3 unitController:(id)a4
+- (id)_buildTrendOverlayValueFormatterUsingDisplayType:(id)type unitController:(id)controller
 {
-  v5 = a4;
-  v6 = a3;
+  controllerCopy = controller;
+  typeCopy = type;
   v7 = objc_alloc_init(HKInteractiveChartTrendOverlayFormatter);
-  v8 = [MEMORY[0x1E69DB878] hk_chartLollipopValueFont];
-  [(HKInteractiveChartDataFormatter *)v7 setMajorFont:v8];
+  hk_chartLollipopValueFont = [MEMORY[0x1E69DB878] hk_chartLollipopValueFont];
+  [(HKInteractiveChartDataFormatter *)v7 setMajorFont:hk_chartLollipopValueFont];
 
-  v9 = [MEMORY[0x1E69DB878] hk_chartLollipopKeyFont];
-  [(HKInteractiveChartDataFormatter *)v7 setMinorFont:v9];
+  hk_chartLollipopKeyFont = [MEMORY[0x1E69DB878] hk_chartLollipopKeyFont];
+  [(HKInteractiveChartDataFormatter *)v7 setMinorFont:hk_chartLollipopKeyFont];
 
-  [(HKInteractiveChartDataFormatter *)v7 setUnitController:v5];
-  [(HKInteractiveChartDataFormatter *)v7 setDisplayType:v6];
+  [(HKInteractiveChartDataFormatter *)v7 setUnitController:controllerCopy];
+  [(HKInteractiveChartDataFormatter *)v7 setDisplayType:typeCopy];
 
   return v7;
 }
 
-- (id)_buildAnnotatedHorizontalLineSeriesUsingDisplayType:(id)a3 unitController:(id)a4
+- (id)_buildAnnotatedHorizontalLineSeriesUsingDisplayType:(id)type unitController:(id)controller
 {
   v28[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  controllerCopy = controller;
   v26 = objc_alloc_init(HKAnnotatedHorizontalLineSeries);
-  v8 = [MEMORY[0x1E69DC888] systemGrayColor];
-  v9 = [MEMORY[0x1E69DC888] hk_appKeyColor];
-  v25 = [(HKOverlayRoomTrendContext *)self _representativeDisplayTypeFromDisplayType:v6];
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  hk_appKeyColor = [MEMORY[0x1E69DC888] hk_appKeyColor];
+  v25 = [(HKOverlayRoomTrendContext *)self _representativeDisplayTypeFromDisplayType:typeCopy];
   v10 = +[HKDisplayCategory categoryWithID:](HKDisplayCategory, "categoryWithID:", [v25 categoryIdentifier]);
   v24 = v10;
   if (v10)
   {
-    v11 = [v10 color];
+    color = [v10 color];
 
-    v9 = v11;
+    hk_appKeyColor = color;
   }
 
-  v12 = v6;
+  v12 = typeCopy;
   objc_opt_class();
-  v13 = v12;
+  baseDisplayType2 = v12;
   if (objc_opt_isKindOfClass())
   {
     v14 = v12;
-    v15 = [v14 baseDisplayType];
+    baseDisplayType = [v14 baseDisplayType];
 
-    v13 = v14;
-    if (v15)
+    baseDisplayType2 = v14;
+    if (baseDisplayType)
     {
-      v13 = [v14 baseDisplayType];
+      baseDisplayType2 = [v14 baseDisplayType];
     }
   }
 
-  v16 = [[HKDisplayTypeNumberFormatter alloc] initWithDisplayType:v13 unitController:v7];
-  v17 = [[HKUnitlessNumberFormatter alloc] initWithDisplayType:v13 unitPreferenceController:v7];
-  [(HKOverlayRoomTrendContext *)self _buildTrendingLineSeriesStyleWithColor:v9 formattingDisplayType:v13 unitController:v7 annotationFormatter:v17];
+  v16 = [[HKDisplayTypeNumberFormatter alloc] initWithDisplayType:baseDisplayType2 unitController:controllerCopy];
+  v17 = [[HKUnitlessNumberFormatter alloc] initWithDisplayType:baseDisplayType2 unitPreferenceController:controllerCopy];
+  [(HKOverlayRoomTrendContext *)self _buildTrendingLineSeriesStyleWithColor:hk_appKeyColor formattingDisplayType:baseDisplayType2 unitController:controllerCopy annotationFormatter:v17];
   v18 = v23 = v12;
-  v19 = [(HKOverlayRoomTrendContext *)self _buildTrendingLineSeriesStyleWithColor:v8 formattingDisplayType:v13 unitController:v7 annotationFormatter:v16];
-  v20 = [(HKOverlayRoomTrendContext *)self _buildTrendingLineSeriesStyleWithColor:v9 formattingDisplayType:v13 unitController:v7 annotationFormatter:v16];
+  v19 = [(HKOverlayRoomTrendContext *)self _buildTrendingLineSeriesStyleWithColor:systemGrayColor formattingDisplayType:baseDisplayType2 unitController:controllerCopy annotationFormatter:v16];
+  v20 = [(HKOverlayRoomTrendContext *)self _buildTrendingLineSeriesStyleWithColor:hk_appKeyColor formattingDisplayType:baseDisplayType2 unitController:controllerCopy annotationFormatter:v16];
 
   v27[0] = &unk_1F43823C8;
   v27[1] = &unk_1F43823E0;
@@ -248,25 +248,25 @@ id __92__HKOverlayRoomTrendContext__buildTrendDisplayTypeFromModel_baseDisplayTy
   return v26;
 }
 
-- (id)_buildTrendingLineSeriesStyleWithColor:(id)a3 formattingDisplayType:(id)a4 unitController:(id)a5 annotationFormatter:(id)a6
+- (id)_buildTrendingLineSeriesStyleWithColor:(id)color formattingDisplayType:(id)type unitController:(id)controller annotationFormatter:(id)formatter
 {
-  v7 = a3;
-  v8 = a6;
+  colorCopy = color;
+  formatterCopy = formatter;
   v9 = objc_alloc_init(HKStrokeStyle);
-  [(HKStrokeStyle *)v9 setStrokeColor:v7];
+  [(HKStrokeStyle *)v9 setStrokeColor:colorCopy];
   [(HKStrokeStyle *)v9 setLineWidth:4.0];
   [(HKStrokeStyle *)v9 setLineCap:1];
   [(HKStrokeStyle *)v9 setLineJoin:1];
   [(HKStrokeStyle *)v9 setDashStyle:0];
-  v10 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-  v11 = [v10 userInterfaceStyle];
-  if (v11 <= 2)
+  currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+  userInterfaceStyle = [currentTraitCollection userInterfaceStyle];
+  if (userInterfaceStyle <= 2)
   {
-    [(HKStrokeStyle *)v9 setBlendMode:dword_1C3D5D300[v11]];
+    [(HKStrokeStyle *)v9 setBlendMode:dword_1C3D5D300[userInterfaceStyle]];
   }
 
   v12 = [MEMORY[0x1E69DB878] hk_preferredRoundedFontForTextStyle:*MEMORY[0x1E69DDD28] additionalSymbolicTraits:2];
-  v13 = [HKAxisLabelStyle labelStyleWithColor:v7 font:v12 horizontalAlignment:0 verticalAlignment:2 numberFormatter:v8];
+  v13 = [HKAxisLabelStyle labelStyleWithColor:colorCopy font:v12 horizontalAlignment:0 verticalAlignment:2 numberFormatter:formatterCopy];
 
   v14 = objc_alloc_init(HKAnnotationHorizontalLineSeriesStyle);
   [(HKAnnotationHorizontalLineSeriesStyle *)v14 setLineStrokeStyle:v9];
@@ -275,29 +275,29 @@ id __92__HKOverlayRoomTrendContext__buildTrendDisplayTypeFromModel_baseDisplayTy
   return v14;
 }
 
-- (void)updateContextItemForDateInterval:(id)a3 overlayController:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 completion:(id)a7
+- (void)updateContextItemForDateInterval:(id)interval overlayController:(id)controller timeScope:(int64_t)scope resolution:(int64_t)resolution completion:(id)completion
 {
-  v10 = a3;
-  v11 = a7;
-  v12 = [(HKOverlayRoomTrendContext *)self trendDisplayType];
+  intervalCopy = interval;
+  completionCopy = completion;
+  trendDisplayType = [(HKOverlayRoomTrendContext *)self trendDisplayType];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v14 = [(HKOverlayRoomTrendContext *)self trendDisplayType];
-    v15 = [(HKOverlayRoomTrendContext *)self overlayChartController];
-    v16 = [v14 graphSeriesForTimeScope:a5];
-    v17 = [v10 startDate];
-    v18 = [v10 endDate];
+    trendDisplayType2 = [(HKOverlayRoomTrendContext *)self trendDisplayType];
+    overlayChartController = [(HKOverlayRoomTrendContext *)self overlayChartController];
+    v16 = [trendDisplayType2 graphSeriesForTimeScope:scope];
+    startDate = [intervalCopy startDate];
+    endDate = [intervalCopy endDate];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __112__HKOverlayRoomTrendContext_updateContextItemForDateInterval_overlayController_timeScope_resolution_completion___block_invoke;
     v19[3] = &unk_1E81B6E70;
     v19[4] = self;
-    v21 = a5;
-    v20 = v11;
-    [v15 cachedDataForCustomGraphSeries:v16 timeScope:a5 resolution:0 startDate:v17 endDate:v18 completion:v19];
+    scopeCopy = scope;
+    v20 = completionCopy;
+    [overlayChartController cachedDataForCustomGraphSeries:v16 timeScope:scope resolution:0 startDate:startDate endDate:endDate completion:v19];
   }
 }
 
@@ -340,30 +340,30 @@ void __112__HKOverlayRoomTrendContext_updateContextItemForDateInterval_overlayCo
   }
 }
 
-- (void)overlayStateDidChange:(BOOL)a3 contextItem:(id)a4 chartController:(id)a5
+- (void)overlayStateDidChange:(BOOL)change contextItem:(id)item chartController:(id)controller
 {
-  v5 = a3;
-  v14 = a5;
-  v7 = [v14 selectedTimeScopeController];
-  v8 = [v7 selectedTimeScope];
+  changeCopy = change;
+  controllerCopy = controller;
+  selectedTimeScopeController = [controllerCopy selectedTimeScopeController];
+  selectedTimeScope = [selectedTimeScopeController selectedTimeScope];
 
-  if (v5)
+  if (changeCopy)
   {
-    v9 = [v14 fixedRangeForTimeScope:v8];
+    v9 = [controllerCopy fixedRangeForTimeScope:selectedTimeScope];
 
     if (!v9)
     {
-      v10 = [v14 currentCalendar];
-      v11 = [(HKOverlayRoomTrendContext *)self _trendValueRangeForTimescope:v8 calendar:v10];
+      currentCalendar = [controllerCopy currentCalendar];
+      v11 = [(HKOverlayRoomTrendContext *)self _trendValueRangeForTimescope:selectedTimeScope calendar:currentCalendar];
 
       if (v11)
       {
-        [v14 scrollToRange:v11 withVisibleAlignment:1];
+        [controllerCopy scrollToRange:v11 withVisibleAlignment:1];
       }
     }
 
-    v12 = [(HKOverlayRoomTrendContext *)self trendDisplayType];
-    v13 = [v12 graphSeriesForTimeScope:v8];
+    trendDisplayType = [(HKOverlayRoomTrendContext *)self trendDisplayType];
+    v13 = [trendDisplayType graphSeriesForTimeScope:selectedTimeScope];
     [(HKOverlayRoomTrendContext *)self setSeriesForSelectedTrend:v13];
   }
 
@@ -373,19 +373,19 @@ void __112__HKOverlayRoomTrendContext_updateContextItemForDateInterval_overlayCo
   }
 }
 
-- (id)_trendValueRangeForTimescope:(int64_t)a3 calendar:(id)a4
+- (id)_trendValueRangeForTimescope:(int64_t)timescope calendar:(id)calendar
 {
   v43 = *MEMORY[0x1E69E9840];
-  v31 = a4;
+  calendarCopy = calendar;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v4 = [(HKOverlayRoomTrendContext *)self trendModel];
-  v5 = [v4 timeScopeTrends];
+  trendModel = [(HKOverlayRoomTrendContext *)self trendModel];
+  timeScopeTrends = [trendModel timeScopeTrends];
 
-  obj = v5;
-  v6 = [v5 countByEnumeratingWithState:&v37 objects:v42 count:16];
+  obj = timeScopeTrends;
+  v6 = [timeScopeTrends countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v6)
   {
     v7 = v6;
@@ -404,15 +404,15 @@ void __112__HKOverlayRoomTrendContext_updateContextItemForDateInterval_overlayCo
         }
 
         v11 = *(*(&v37 + 1) + 8 * v10);
-        if ([v11 timeScope] == a3)
+        if ([v11 timeScope] == timescope)
         {
           v28 = v10;
           v35 = 0u;
           v36 = 0u;
           v33 = 0u;
           v34 = 0u;
-          v29 = [v11 trendSpans];
-          v12 = [v29 countByEnumeratingWithState:&v33 objects:v41 count:16];
+          trendSpans = [v11 trendSpans];
+          v12 = [trendSpans countByEnumeratingWithState:&v33 objects:v41 count:16];
           if (v12)
           {
             v13 = v12;
@@ -423,17 +423,17 @@ void __112__HKOverlayRoomTrendContext_updateContextItemForDateInterval_overlayCo
               {
                 if (*v34 != v14)
                 {
-                  objc_enumerationMutation(v29);
+                  objc_enumerationMutation(trendSpans);
                 }
 
                 v16 = *(*(&v33 + 1) + 8 * i);
-                v17 = [v16 trendDateInterval];
-                v18 = [v17 startDate];
-                v19 = [v16 trendDateInterval];
-                v20 = [v19 endDate];
-                v21 = [HKValueRange valueRangeWithMinValue:v18 maxValue:v20];
+                trendDateInterval = [v16 trendDateInterval];
+                startDate = [trendDateInterval startDate];
+                trendDateInterval2 = [v16 trendDateInterval];
+                endDate = [trendDateInterval2 endDate];
+                v21 = [HKValueRange valueRangeWithMinValue:startDate maxValue:endDate];
 
-                v22 = [(HKOverlayRoomTrendContext *)self _adjustTrendValueRange:v21 timescope:a3 calendar:v31];
+                v22 = [(HKOverlayRoomTrendContext *)self _adjustTrendValueRange:v21 timescope:timescope calendar:calendarCopy];
                 v23 = v22;
                 if (v8)
                 {
@@ -446,7 +446,7 @@ void __112__HKOverlayRoomTrendContext_updateContextItemForDateInterval_overlayCo
                 }
               }
 
-              v13 = [v29 countByEnumeratingWithState:&v33 objects:v41 count:16];
+              v13 = [trendSpans countByEnumeratingWithState:&v33 objects:v41 count:16];
             }
 
             while (v13);
@@ -475,28 +475,28 @@ void __112__HKOverlayRoomTrendContext_updateContextItemForDateInterval_overlayCo
   return v8;
 }
 
-- (id)_adjustTrendValueRange:(id)a3 timescope:(int64_t)a4 calendar:(id)a5
+- (id)_adjustTrendValueRange:(id)range timescope:(int64_t)timescope calendar:(id)calendar
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (a4 == 4)
+  rangeCopy = range;
+  calendarCopy = calendar;
+  v11 = calendarCopy;
+  if (timescope == 4)
   {
-    v20 = [v9 endDate];
-    v21 = [v11 hk_startOfDateByAddingDays:0 toDate:v20];
+    endDate = [rangeCopy endDate];
+    v21 = [v11 hk_startOfDateByAddingDays:0 toDate:endDate];
 
-    v22 = [v9 endDate];
-    v23 = [v21 hk_isBeforeDate:v22];
+    endDate2 = [rangeCopy endDate];
+    v23 = [v21 hk_isBeforeDate:endDate2];
 
     if (v23)
     {
-      v24 = [v9 endDate];
-      v18 = [v11 hk_startOfDateByAddingDays:1 toDate:v24];
+      endDate3 = [rangeCopy endDate];
+      v18 = [v11 hk_startOfDateByAddingDays:1 toDate:endDate3];
 
-      v25 = [v9 endDate];
-      LODWORD(v24) = [v18 hk_isBeforeDate:v25];
+      endDate4 = [rangeCopy endDate];
+      LODWORD(endDate3) = [v18 hk_isBeforeDate:endDate4];
 
-      if (v24)
+      if (endDate3)
       {
         [HKOverlayRoomTrendContext _adjustTrendValueRange:a2 timescope:self calendar:?];
       }
@@ -508,35 +508,35 @@ void __112__HKOverlayRoomTrendContext_updateContextItemForDateInterval_overlayCo
     }
 
     v27 = [v11 hk_startOfDateByAddingDays:-31 toDate:v18];
-    v29 = [v9 startDate];
-    v30 = [v11 hk_startOfDateByAddingDays:0 toDate:v29];
+    startDate = [rangeCopy startDate];
+    v30 = [v11 hk_startOfDateByAddingDays:0 toDate:startDate];
   }
 
   else
   {
-    if (a4 != 3)
+    if (timescope != 3)
     {
       v26 = 0;
       goto LABEL_17;
     }
 
-    v12 = [v10 firstWeekday];
-    v13 = [v9 endDate];
-    v14 = [v11 hk_startOfWeekWithFirstWeekday:v12 beforeDate:v13 addingWeeks:0];
+    firstWeekday = [calendarCopy firstWeekday];
+    endDate5 = [rangeCopy endDate];
+    v14 = [v11 hk_startOfWeekWithFirstWeekday:firstWeekday beforeDate:endDate5 addingWeeks:0];
 
-    v15 = [v9 endDate];
-    LODWORD(v13) = [v14 hk_isBeforeDate:v15];
+    endDate6 = [rangeCopy endDate];
+    LODWORD(endDate5) = [v14 hk_isBeforeDate:endDate6];
 
-    if (v13)
+    if (endDate5)
     {
-      v16 = [v11 firstWeekday];
-      v17 = [v9 endDate];
-      v18 = [v11 hk_startOfWeekWithFirstWeekday:v16 beforeDate:v17 addingWeeks:1];
+      firstWeekday2 = [v11 firstWeekday];
+      endDate7 = [rangeCopy endDate];
+      v18 = [v11 hk_startOfWeekWithFirstWeekday:firstWeekday2 beforeDate:endDate7 addingWeeks:1];
 
-      v19 = [v9 endDate];
-      LODWORD(v17) = [v18 hk_isBeforeDate:v19];
+      endDate8 = [rangeCopy endDate];
+      LODWORD(endDate7) = [v18 hk_isBeforeDate:endDate8];
 
-      if (v17)
+      if (endDate7)
       {
         [HKOverlayRoomTrendContext _adjustTrendValueRange:a2 timescope:self calendar:?];
       }
@@ -548,9 +548,9 @@ void __112__HKOverlayRoomTrendContext_updateContextItemForDateInterval_overlayCo
     }
 
     v27 = [v11 hk_startOfWeekWithFirstWeekday:objc_msgSend(v11 beforeDate:"firstWeekday") addingWeeks:{v18, -26}];
-    v28 = [v11 firstWeekday];
-    v29 = [v9 startDate];
-    v30 = [v11 hk_startOfWeekWithFirstWeekday:v28 beforeDate:v29 addingWeeks:0];
+    firstWeekday3 = [v11 firstWeekday];
+    startDate = [rangeCopy startDate];
+    v30 = [v11 hk_startOfWeekWithFirstWeekday:firstWeekday3 beforeDate:startDate addingWeeks:0];
   }
 
   v31 = v30;
@@ -569,20 +569,20 @@ LABEL_17:
   return v26;
 }
 
-- (id)_summaryGivenChartPoints:(id)a3 timeScope:(int64_t)a4
+- (id)_summaryGivenChartPoints:(id)points timeScope:(int64_t)scope
 {
-  v6 = a3;
-  if ([(HKOverlayRoomTrendContext *)self _timeScopeMayHaveTrends:a4])
+  pointsCopy = points;
+  if ([(HKOverlayRoomTrendContext *)self _timeScopeMayHaveTrends:scope])
   {
-    v7 = [v6 firstObject];
-    if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    firstObject = [pointsCopy firstObject];
+    if (firstObject && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v8 = MEMORY[0x1E696AAE8];
-      v9 = v7;
+      v9 = firstObject;
       v10 = [v8 bundleWithIdentifier:@"com.apple.HealthUI"];
-      v11 = [v9 localizableTrendDescription];
+      localizableTrendDescription = [v9 localizableTrendDescription];
 
-      v12 = [v10 localizedStringForKey:v11 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
+      v12 = [v10 localizedStringForKey:localizableTrendDescription value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
     }
 
     else
@@ -594,28 +594,28 @@ LABEL_17:
 
   else
   {
-    v7 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    v12 = [v7 localizedStringForKey:@"TREND_NOT_COMPUTED" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
+    firstObject = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
+    v12 = [firstObject localizedStringForKey:@"TREND_NOT_COMPUTED" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
   }
 
   return v12;
 }
 
-- (id)_durationContextItemWithSummaryPhrase:(id)a3 timeScope:(int64_t)a4
+- (id)_durationContextItemWithSummaryPhrase:(id)phrase timeScope:(int64_t)scope
 {
-  v6 = a3;
+  phraseCopy = phrase;
   v7 = objc_alloc_init(HKDisplayTypeContextItem);
-  v8 = [(HKOverlayRoomTrendContext *)self _trendTitle];
-  [(HKDisplayTypeContextItem *)v7 setTitle:v8];
+  _trendTitle = [(HKOverlayRoomTrendContext *)self _trendTitle];
+  [(HKDisplayTypeContextItem *)v7 setTitle:_trendTitle];
 
   v9 = [MEMORY[0x1E696AEC0] hk_chartOverlayAccessibilityIdentifier:@"Trend"];
   [(HKDisplayTypeContextItem *)v7 setAccessibilityIdentifier:v9];
 
   [(HKDisplayTypeContextItem *)v7 setInfoHidden:1];
   [(HKDisplayTypeContextItem *)v7 setUnit:&stru_1F42FFBE0];
-  [(HKDisplayTypeContextItem *)v7 setValue:v6];
+  [(HKDisplayTypeContextItem *)v7 setValue:phraseCopy];
 
-  [(HKDisplayTypeContextItem *)v7 setUserInteractive:[(HKOverlayRoomTrendContext *)self _timeScopeMayHaveTrends:a4]];
+  [(HKDisplayTypeContextItem *)v7 setUserInteractive:[(HKOverlayRoomTrendContext *)self _timeScopeMayHaveTrends:scope]];
   v10 = [(HKOverlayRoomTrendContext *)self _unselectedMetricColorsUserInteractive:[(HKDisplayTypeContextItem *)v7 userInteractive]];
   [(HKDisplayTypeContextItem *)v7 setMetricColors:v10];
 
@@ -625,29 +625,29 @@ LABEL_17:
   return v7;
 }
 
-- (id)_unselectedMetricColorsUserInteractive:(BOOL)a3
+- (id)_unselectedMetricColorsUserInteractive:(BOOL)interactive
 {
-  v5 = [(HKOverlayRoomTrendContext *)self overlayMode];
-  if (v5 >= 3)
+  overlayMode = [(HKOverlayRoomTrendContext *)self overlayMode];
+  if (overlayMode >= 3)
   {
-    if (v5 != 3)
+    if (overlayMode != 3)
     {
       goto LABEL_9;
     }
 
-    if (a3)
+    if (interactive)
     {
-      v6 = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
+      tertiarySystemBackgroundColor = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
       goto LABEL_7;
     }
   }
 
-  else if (a3)
+  else if (interactive)
   {
-    v6 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    tertiarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
 LABEL_7:
-    v7 = v6;
-    v3 = [HKUIMetricColors defaultContextViewColorsUsingColor:v6];
+    v7 = tertiarySystemBackgroundColor;
+    v3 = [HKUIMetricColors defaultContextViewColorsUsingColor:tertiarySystemBackgroundColor];
 
     goto LABEL_9;
   }
@@ -666,17 +666,17 @@ LABEL_9:
   return v3;
 }
 
-- (BOOL)_timeScopeHasTrendSpans:(int64_t)a3
+- (BOOL)_timeScopeHasTrendSpans:(int64_t)spans
 {
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(HKOverlayRoomTrendContext *)self trendModel];
-  v5 = [v4 timeScopeTrends];
+  trendModel = [(HKOverlayRoomTrendContext *)self trendModel];
+  timeScopeTrends = [trendModel timeScopeTrends];
 
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [timeScopeTrends countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -687,14 +687,14 @@ LABEL_9:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(timeScopeTrends);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        if ([v10 timeScope] == a3)
+        if ([v10 timeScope] == spans)
         {
-          v11 = [v10 trendSpans];
-          v12 = [v11 count];
+          trendSpans = [v10 trendSpans];
+          v12 = [trendSpans count];
 
           if (v12)
           {
@@ -704,7 +704,7 @@ LABEL_9:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [timeScopeTrends countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;

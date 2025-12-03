@@ -1,15 +1,15 @@
 @interface WFURLParameter
-- (id)rewriteParameterState:(id)a3 withStrings:(id)a4;
-- (id)userVisibleStringsInParameterState:(id)a3 forUseCase:(unint64_t)a4;
+- (id)rewriteParameterState:(id)state withStrings:(id)strings;
+- (id)userVisibleStringsInParameterState:(id)state forUseCase:(unint64_t)case;
 @end
 
 @implementation WFURLParameter
 
-- (id)userVisibleStringsInParameterState:(id)a3 forUseCase:(unint64_t)a4
+- (id)userVisibleStringsInParameterState:(id)state forUseCase:(unint64_t)case
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  WFURLParameter.userVisibleStrings(in:for:)(a3, a4);
+  selfCopy = self;
+  WFURLParameter.userVisibleStrings(in:for:)(state, case);
   swift_unknownObjectRelease();
 
   type metadata accessor for WFUserVisibleString();
@@ -19,14 +19,14 @@
   return v8;
 }
 
-- (id)rewriteParameterState:(id)a3 withStrings:(id)a4
+- (id)rewriteParameterState:(id)state withStrings:(id)strings
 {
   type metadata accessor for WFUserVisibleString();
   sub_1CA3434EC();
   sub_1CA94C1C8();
   swift_unknownObjectRetain();
-  v6 = self;
-  v7 = WFURLParameter.rewrite(_:withStrings:)(a3);
+  selfCopy = self;
+  v7 = WFURLParameter.rewrite(_:withStrings:)(state);
   swift_unknownObjectRelease();
 
   return v7;

@@ -1,25 +1,25 @@
 @interface ICLightweightMusicSubscriptionStatusRequest
-- (ICLightweightMusicSubscriptionStatusRequest)initWithRequestContext:(id)a3;
-- (void)_finishWithExtendedSubscriptionStatusResponse:(id)a3 error:(id)a4;
+- (ICLightweightMusicSubscriptionStatusRequest)initWithRequestContext:(id)context;
+- (void)_finishWithExtendedSubscriptionStatusResponse:(id)response error:(id)error;
 - (void)execute;
-- (void)performRequestWithResponseHandler:(id)a3;
+- (void)performRequestWithResponseHandler:(id)handler;
 @end
 
 @implementation ICLightweightMusicSubscriptionStatusRequest
 
-- (void)_finishWithExtendedSubscriptionStatusResponse:(id)a3 error:(id)a4
+- (void)_finishWithExtendedSubscriptionStatusResponse:(id)response error:(id)error
 {
-  v9 = a4;
-  if (a3)
+  errorCopy = error;
+  if (response)
   {
-    v6 = a3;
-    v7 = [[ICLightweightMusicSubscriptionStatusResponse alloc] _initWithExtendedSubscriptionStatusResponse:v6];
+    responseCopy = response;
+    v7 = [[ICLightweightMusicSubscriptionStatusResponse alloc] _initWithExtendedSubscriptionStatusResponse:responseCopy];
 
     response = self->_response;
     self->_response = v7;
   }
 
-  [(ICRequestOperation *)self finishWithError:v9];
+  [(ICRequestOperation *)self finishWithError:errorCopy];
 }
 
 - (void)execute
@@ -44,7 +44,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
     v10 = v3;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Performing lightweight subscription status request. Extended request: %{public}@.", buf, 0x16u);
@@ -53,28 +53,28 @@
   [(ICAsyncOperation *)self enqueueChildOperation:v4];
 }
 
-- (void)performRequestWithResponseHandler:(id)a3
+- (void)performRequestWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __81__ICLightweightMusicSubscriptionStatusRequest_performRequestWithResponseHandler___block_invoke;
   v6[3] = &unk_1E7BFA490;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(ICRequestOperation *)self performRequestWithCompletionHandler:v6];
 }
 
-- (ICLightweightMusicSubscriptionStatusRequest)initWithRequestContext:(id)a3
+- (ICLightweightMusicSubscriptionStatusRequest)initWithRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = ICLightweightMusicSubscriptionStatusRequest;
   v5 = [(ICRequestOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [contextCopy copy];
     requestContext = v5->_requestContext;
     v5->_requestContext = v6;
   }

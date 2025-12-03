@@ -1,22 +1,22 @@
 @interface MSPSharedTripSubscriptionToken
-- (MSPSharedTripSubscriptionToken)initWithSharedTripIdentifier:(id)a3 invalidationHandler:(id)a4;
+- (MSPSharedTripSubscriptionToken)initWithSharedTripIdentifier:(id)identifier invalidationHandler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation MSPSharedTripSubscriptionToken
 
-- (MSPSharedTripSubscriptionToken)initWithSharedTripIdentifier:(id)a3 invalidationHandler:(id)a4
+- (MSPSharedTripSubscriptionToken)initWithSharedTripIdentifier:(id)identifier invalidationHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = MSPSharedTripSubscriptionToken;
   v9 = [(MSPSharedTripSubscriptionToken *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sharedTripIdentifier, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_sharedTripIdentifier, identifier);
+    v11 = [handlerCopy copy];
     invalidationHandler = v10->_invalidationHandler;
     v10->_invalidationHandler = v11;
   }

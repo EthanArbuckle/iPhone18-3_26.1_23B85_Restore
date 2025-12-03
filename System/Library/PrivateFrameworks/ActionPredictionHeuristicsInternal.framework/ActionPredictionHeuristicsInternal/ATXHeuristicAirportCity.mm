@@ -1,6 +1,6 @@
 @interface ATXHeuristicAirportCity
-+ (id)cityForAirport:(id)a3;
-+ (id)cityForAirport:(id)a3 language:(id)a4;
++ (id)cityForAirport:(id)airport;
++ (id)cityForAirport:(id)airport language:(id)language;
 + (id)supportedLanguages;
 @end
 
@@ -15,25 +15,25 @@
   return v4;
 }
 
-+ (id)cityForAirport:(id)a3 language:(id)a4
++ (id)cityForAirport:(id)airport language:(id)language
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 length] == 3 && objc_msgSend(v7, "canBeConvertedToEncoding:", 1))
+  airportCopy = airport;
+  languageCopy = language;
+  if ([airportCopy length] == 3 && objc_msgSend(airportCopy, "canBeConvertedToEncoding:", 1))
   {
-    v9 = [v7 uppercaseString];
+    uppercaseString = [airportCopy uppercaseString];
 
-    v10 = [a1 supportedLanguages];
-    v11 = [v10 containsObject:v8];
+    supportedLanguages = [self supportedLanguages];
+    v11 = [supportedLanguages containsObject:languageCopy];
 
     if (v11)
     {
-      v12 = [MEMORY[0x277CCA8D8] bundleForClass:a1];
+      v12 = [MEMORY[0x277CCA8D8] bundleForClass:self];
       v13 = [v12 pathForResource:@"airport-names" ofType:@"dat"];
 
       if (!v13)
       {
-        [ATXHeuristicAirportCity cityForAirport:a2 language:a1];
+        [ATXHeuristicAirportCity cityForAirport:a2 language:self];
       }
 
       v14 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:v13 options:1 error:0];
@@ -43,9 +43,9 @@
       }
 
       __little = 0;
-      v15 = [v9 UTF8String];
-      v16 = *(v15 + 2);
-      v35 = *v15;
+      uTF8String = [uppercaseString UTF8String];
+      v16 = *(uTF8String + 2);
+      v35 = *uTF8String;
       v36 = v16;
       v17 = memmem([v14 bytes], objc_msgSend(v14, "length"), &__little, 4uLL);
       if (!v17)
@@ -54,14 +54,14 @@
       }
 
       v18 = v17;
-      v19 = [v14 bytes];
-      v20 = v19 + [v14 length];
+      bytes = [v14 bytes];
+      v20 = bytes + [v14 length];
       v21 = v18 + 9;
       if ((v18 + 9) < v20)
       {
         v32 = v18[8];
         v33 = *(v18 + 1);
-        v22 = v8;
+        v22 = languageCopy;
         v23 = v18 + 12;
         if ((v18 + 12) < v20)
         {
@@ -80,8 +80,8 @@
               break;
             }
 
-            v26 = [v22 UTF8String];
-            if (v37 == *v26)
+            uTF8String2 = [v22 UTF8String];
+            if (v37 == *uTF8String2)
             {
               v30 = v22;
               v22 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v23 length:v25 encoding:4];
@@ -95,9 +95,9 @@
               v28 = v31;
               if (v31)
               {
-                objc_storeStrong((v31 + 8), v9);
+                objc_storeStrong((v31 + 8), uppercaseString);
                 objc_storeStrong((v28 + 16), v22);
-                objc_storeStrong((v28 + 24), a4);
+                objc_storeStrong((v28 + 24), language);
                 *(v28 + 32) = ((v33 | (v32 << 32)) >> 20) * 0.000171661377 + -90.0;
                 *(v28 + 40) = (v33 & 0xFFFFF) * 0.000343322754 + -180.0;
               }
@@ -134,20 +134,20 @@ LABEL_25:
   else
   {
     v28 = 0;
-    v9 = v7;
+    uppercaseString = airportCopy;
   }
 
   return v28;
 }
 
-+ (id)cityForAirport:(id)a3
++ (id)cityForAirport:(id)airport
 {
   v4 = MEMORY[0x277CBEAF8];
-  v5 = a3;
-  v6 = [v4 autoupdatingCurrentLocale];
-  v7 = [v6 languageCode];
+  airportCopy = airport;
+  autoupdatingCurrentLocale = [v4 autoupdatingCurrentLocale];
+  languageCode = [autoupdatingCurrentLocale languageCode];
 
-  v8 = [a1 cityForAirport:v5 language:v7];
+  v8 = [self cityForAirport:airportCopy language:languageCode];
 
   return v8;
 }

@@ -1,20 +1,20 @@
 @interface PGGraphIngestAOIBlockingProcessor
-- (BOOL)shouldRunWithGraphUpdate:(id)a3;
-- (PGGraphIngestAOIBlockingProcessor)initWithGraphBuilder:(id)a3;
-- (void)processAOIBlockingWithAOINodes:(id)a3 graph:(id)a4 loggingConnection:(id)a5 progressBlock:(id)a6;
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4;
+- (BOOL)shouldRunWithGraphUpdate:(id)update;
+- (PGGraphIngestAOIBlockingProcessor)initWithGraphBuilder:(id)builder;
+- (void)processAOIBlockingWithAOINodes:(id)nodes graph:(id)graph loggingConnection:(id)connection progressBlock:(id)block;
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block;
 @end
 
 @implementation PGGraphIngestAOIBlockingProcessor
 
-- (void)processAOIBlockingWithAOINodes:(id)a3 graph:(id)a4 loggingConnection:(id)a5 progressBlock:(id)a6
+- (void)processAOIBlockingWithAOINodes:(id)nodes graph:(id)graph loggingConnection:(id)connection progressBlock:(id)block
 {
   v48 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = _Block_copy(v12);
+  nodesCopy = nodes;
+  graphCopy = graph;
+  connectionCopy = connection;
+  blockCopy = block;
+  v13 = _Block_copy(blockCopy);
   v38 = 0;
   v39 = &v38;
   v40 = 0x2020000000;
@@ -36,12 +36,12 @@
 
   else
   {
-    v16 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     buf = 0;
     *&v46 = &buf;
     *(&v46 + 1) = 0x2020000000;
     v47 = 0;
-    v17 = [v9 count];
+    v17 = [nodesCopy count];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __106__PGGraphIngestAOIBlockingProcessor_processAOIBlockingWithAOINodes_graph_loggingConnection_progressBlock___block_invoke;
@@ -53,11 +53,11 @@
     v30 = &v34;
     v33 = 0x3F847AE147AE147BLL;
     v31 = &v38;
-    v19 = v16;
+    v19 = dictionary;
     v25 = v19;
-    v26 = v10;
-    v27 = v11;
-    [v9 enumerateNodesUsingBlock:v24];
+    v26 = graphCopy;
+    v27 = connectionCopy;
+    [nodesCopy enumerateNodesUsingBlock:v24];
     if (v13)
     {
       Current = CFAbsoluteTimeGetCurrent();
@@ -448,15 +448,15 @@ uint64_t __106__PGGraphIngestAOIBlockingProcessor_processAOIBlockingWithAOINodes
   return result;
 }
 
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PGGraphBuilder *)self->_graphBuilder graph];
-  v9 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-  v10 = os_signpost_id_generate(v9);
-  v11 = v9;
+  updateCopy = update;
+  blockCopy = block;
+  graph = [(PGGraphBuilder *)self->_graphBuilder graph];
+  loggingConnection = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+  v10 = os_signpost_id_generate(loggingConnection);
+  v11 = loggingConnection;
   v12 = v11;
   v13 = v10 - 1;
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
@@ -468,35 +468,35 @@ uint64_t __106__PGGraphIngestAOIBlockingProcessor_processAOIBlockingWithAOINodes
   info = 0;
   mach_timebase_info(&info);
   v14 = mach_absolute_time();
-  v30 = self;
-  if ([v6 isResumingFullAnalysis])
+  selfCopy = self;
+  if ([updateCopy isResumingFullAnalysis])
   {
-    v15 = [(PGGraphNodeCollection *)PGGraphAreaNodeCollection nodesInGraph:v8];
+    areaNodes = [(PGGraphNodeCollection *)PGGraphAreaNodeCollection nodesInGraph:graph];
   }
 
   else
   {
-    v16 = [v6 momentNodesToProcessInGraph:v8 forMomentUpdateTypes:objc_msgSend(objc_opt_class() includeInsertedNodes:{"requiredMomentUpdateTypes"), 1}];
+    v16 = [updateCopy momentNodesToProcessInGraph:graph forMomentUpdateTypes:objc_msgSend(objc_opt_class() includeInsertedNodes:{"requiredMomentUpdateTypes"), 1}];
     [v16 addressNodes];
     v17 = v10 - 1;
-    v18 = v8;
+    v18 = graph;
     v19 = v10;
-    v20 = v6;
+    v20 = updateCopy;
     v21 = v14;
-    v23 = v22 = v7;
-    v15 = [v23 areaNodes];
+    v23 = v22 = blockCopy;
+    areaNodes = [v23 areaNodes];
 
-    v7 = v22;
+    blockCopy = v22;
     v14 = v21;
-    v6 = v20;
+    updateCopy = v20;
     v10 = v19;
-    v8 = v18;
+    graph = v18;
     v13 = v17;
   }
 
-  if ([v15 count])
+  if ([areaNodes count])
   {
-    [v31 processAOIBlockingWithAOINodes:v15 graph:v8 loggingConnection:v12 progressBlock:v7];
+    [v31 processAOIBlockingWithAOINodes:areaNodes graph:graph loggingConnection:v12 progressBlock:blockCopy];
   }
 
   v24 = mach_absolute_time();
@@ -522,33 +522,33 @@ uint64_t __106__PGGraphIngestAOIBlockingProcessor_processAOIBlockingWithAOINodes
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldRunWithGraphUpdate:(id)a3
+- (BOOL)shouldRunWithGraphUpdate:(id)update
 {
-  v3 = a3;
-  if ([v3 isResumingFullAnalysis] & 1) != 0 || (objc_msgSend(v3, "hasMomentsToInsert"))
+  updateCopy = update;
+  if ([updateCopy isResumingFullAnalysis] & 1) != 0 || (objc_msgSend(updateCopy, "hasMomentsToInsert"))
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [v3 momentUpdateTypes];
-    v4 = ([objc_opt_class() requiredMomentUpdateTypes] & v5) != 0;
+    momentUpdateTypes = [updateCopy momentUpdateTypes];
+    v4 = ([objc_opt_class() requiredMomentUpdateTypes] & momentUpdateTypes) != 0;
   }
 
   return v4;
 }
 
-- (PGGraphIngestAOIBlockingProcessor)initWithGraphBuilder:(id)a3
+- (PGGraphIngestAOIBlockingProcessor)initWithGraphBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   v9.receiver = self;
   v9.super_class = PGGraphIngestAOIBlockingProcessor;
   v6 = [(PGGraphIngestAOIBlockingProcessor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_graphBuilder, a3);
+    objc_storeStrong(&v6->_graphBuilder, builder);
   }
 
   return v7;

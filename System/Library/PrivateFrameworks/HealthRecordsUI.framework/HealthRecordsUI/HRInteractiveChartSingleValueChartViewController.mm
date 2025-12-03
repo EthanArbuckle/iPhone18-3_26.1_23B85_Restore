@@ -1,8 +1,8 @@
 @interface HRInteractiveChartSingleValueChartViewController
-- (id)_colorForDisplayType:(id)a3;
+- (id)_colorForDisplayType:(id)type;
 - (id)makeAnnotationDataSource;
 - (id)makeStandardCurrentValueViewDataSource;
-- (void)updateSelectionAnnotationDataSourceForContext:(id)a3 displayType:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6;
+- (void)updateSelectionAnnotationDataSourceForContext:(id)context displayType:(id)type timeScope:(int64_t)scope resolution:(int64_t)resolution;
 @end
 
 @implementation HRInteractiveChartSingleValueChartViewController
@@ -10,10 +10,10 @@
 - (id)makeStandardCurrentValueViewDataSource
 {
   v3 = [_TtC15HealthRecordsUI37SingleValueCurrentValueViewDataSource alloc];
-  v4 = [(HKInteractiveChartViewController *)self dateCache];
-  v5 = [(HKInteractiveChartViewController *)self healthStore];
-  v6 = [(HKInteractiveChartViewController *)self selectedRangeFormatter];
-  v7 = [(SingleValueCurrentValueViewDataSource *)v3 initWithDateCache:v4 healthStore:v5 selectedRangeFormatter:v6];
+  dateCache = [(HKInteractiveChartViewController *)self dateCache];
+  healthStore = [(HKInteractiveChartViewController *)self healthStore];
+  selectedRangeFormatter = [(HKInteractiveChartViewController *)self selectedRangeFormatter];
+  v7 = [(SingleValueCurrentValueViewDataSource *)v3 initWithDateCache:dateCache healthStore:healthStore selectedRangeFormatter:selectedRangeFormatter];
 
   [(HKCurrentValueViewDataSource *)v7 setDelegate:v7];
 
@@ -35,45 +35,45 @@
   return annotationViewDataSource;
 }
 
-- (void)updateSelectionAnnotationDataSourceForContext:(id)a3 displayType:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6
+- (void)updateSelectionAnnotationDataSourceForContext:(id)context displayType:(id)type timeScope:(int64_t)scope resolution:(int64_t)resolution
 {
-  v15 = a3;
-  v8 = [v15 userInfo];
-  v9 = [v8 count];
+  contextCopy = context;
+  userInfo = [contextCopy userInfo];
+  v9 = [userInfo count];
 
   if (v9 != 1)
   {
-    v11 = [(HRInteractiveChartSingleValueChartViewController *)self annotationViewDataSource];
-    v12 = [v15 userInfo];
-    v13 = [v15 selectedRangeXValues];
-    v14 = [v15 selectedPointValueRange];
-    [v11 updateUsing:v12 valueRange:v13 dateRange:v14 timeScope:a5];
+    annotationViewDataSource = [(HRInteractiveChartSingleValueChartViewController *)self annotationViewDataSource];
+    userInfo2 = [contextCopy userInfo];
+    selectedRangeXValues = [contextCopy selectedRangeXValues];
+    selectedPointValueRange = [contextCopy selectedPointValueRange];
+    [annotationViewDataSource updateUsing:userInfo2 valueRange:selectedRangeXValues dateRange:selectedPointValueRange timeScope:scope];
 
     goto LABEL_6;
   }
 
-  v10 = [v15 userInfo];
-  v11 = [v10 firstObject];
+  userInfo3 = [contextCopy userInfo];
+  annotationViewDataSource = [userInfo3 firstObject];
 
-  if (v11)
+  if (annotationViewDataSource)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [(HRInteractiveChartSingleValueChartViewController *)self annotationViewDataSource];
-      [v12 updateUsing:v11];
+      userInfo2 = [(HRInteractiveChartSingleValueChartViewController *)self annotationViewDataSource];
+      [userInfo2 updateUsing:annotationViewDataSource];
 LABEL_6:
     }
   }
 }
 
-- (id)_colorForDisplayType:(id)a3
+- (id)_colorForDisplayType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 color];
+    [typeCopy color];
   }
 
   else

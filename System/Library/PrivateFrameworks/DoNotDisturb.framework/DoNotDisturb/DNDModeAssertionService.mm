@@ -1,24 +1,24 @@
 @interface DNDModeAssertionService
-+ (id)serviceForClientIdentifier:(id)a3;
-- (BOOL)invalidateAllActiveModeAssertionsWithError:(id *)a3;
-- (id)_initWithClientIdentifier:(id)a3;
-- (id)activeModeAssertionWithError:(id *)a3;
-- (id)allModeAssertionsWithError:(id *)a3;
-- (id)invalidateActiveModeAssertionWithInvalidationDetails:(id)a3 reasonOverride:(unint64_t)a4 error:(id *)a5;
-- (id)latestModeAssertionInvalidationWithError:(id *)a3;
-- (id)takeModeAssertionWithDetails:(id)a3 error:(id *)a4;
-- (void)_handleChangeActiveModeAssertion:(id)a3 invalidation:(id)a4;
-- (void)_registerForAssertionUpdatesIfRequiredWithCompletionHandler:(id)a3;
-- (void)addAssertionUpdateListener:(id)a3 withCompletionHandler:(id)a4;
-- (void)remoteService:(id)a3 didChangeActiveModeAssertion:(id)a4 invalidation:(id)a5;
-- (void)removeAssertionUpdateListener:(id)a3;
++ (id)serviceForClientIdentifier:(id)identifier;
+- (BOOL)invalidateAllActiveModeAssertionsWithError:(id *)error;
+- (id)_initWithClientIdentifier:(id)identifier;
+- (id)activeModeAssertionWithError:(id *)error;
+- (id)allModeAssertionsWithError:(id *)error;
+- (id)invalidateActiveModeAssertionWithInvalidationDetails:(id)details reasonOverride:(unint64_t)override error:(id *)error;
+- (id)latestModeAssertionInvalidationWithError:(id *)error;
+- (id)takeModeAssertionWithDetails:(id)details error:(id *)error;
+- (void)_handleChangeActiveModeAssertion:(id)assertion invalidation:(id)invalidation;
+- (void)_registerForAssertionUpdatesIfRequiredWithCompletionHandler:(id)handler;
+- (void)addAssertionUpdateListener:(id)listener withCompletionHandler:(id)handler;
+- (void)remoteService:(id)service didChangeActiveModeAssertion:(id)assertion invalidation:(id)invalidation;
+- (void)removeAssertionUpdateListener:(id)listener;
 @end
 
 @implementation DNDModeAssertionService
 
-+ (id)serviceForClientIdentifier:(id)a3
++ (id)serviceForClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (serviceForClientIdentifier__onceToken_7 != -1)
   {
     +[DNDModeAssertionService serviceForClientIdentifier:];
@@ -26,11 +26,11 @@
 
   v5 = serviceForClientIdentifier__serviceByClientIdentifier_7;
   objc_sync_enter(v5);
-  v6 = [serviceForClientIdentifier__serviceByClientIdentifier_7 objectForKey:v4];
+  v6 = [serviceForClientIdentifier__serviceByClientIdentifier_7 objectForKey:identifierCopy];
   if (!v6)
   {
-    v6 = [[a1 alloc] _initWithClientIdentifier:v4];
-    [serviceForClientIdentifier__serviceByClientIdentifier_7 setObject:v6 forKey:v4];
+    v6 = [[self alloc] _initWithClientIdentifier:identifierCopy];
+    [serviceForClientIdentifier__serviceByClientIdentifier_7 setObject:v6 forKey:identifierCopy];
   }
 
   objc_sync_exit(v5);
@@ -47,9 +47,9 @@ uint64_t __54__DNDModeAssertionService_serviceForClientIdentifier___block_invoke
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (id)_initWithClientIdentifier:(id)a3
+- (id)_initWithClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = DNDModeAssertionService;
   v5 = [(DNDModeAssertionService *)&v15 init];
@@ -60,7 +60,7 @@ uint64_t __54__DNDModeAssertionService_serviceForClientIdentifier___block_invoke
     calloutQueue = v5->_calloutQueue;
     v5->_calloutQueue = v7;
 
-    v9 = [v4 copy];
+    v9 = [identifierCopy copy];
     clientIdentifier = v5->_clientIdentifier;
     v5->_clientIdentifier = v9;
 
@@ -76,10 +76,10 @@ uint64_t __54__DNDModeAssertionService_serviceForClientIdentifier___block_invoke
   return v5;
 }
 
-- (id)takeModeAssertionWithDetails:(id)a3 error:(id *)a4
+- (id)takeModeAssertionWithDetails:(id)details error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  detailsCopy = details;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v7 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeAssertionService.takeModeAssertion", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -91,7 +91,7 @@ uint64_t __54__DNDModeAssertionService_serviceForClientIdentifier___block_invoke
     *buf = 138543618;
     *&buf[4] = v8;
     *&buf[12] = 2114;
-    *&buf[14] = v6;
+    *&buf[14] = detailsCopy;
     _os_log_impl(&dword_22002F000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Taking mode assertion; details=%{public}@", buf, 0x16u);
   }
 
@@ -114,7 +114,7 @@ uint64_t __54__DNDModeAssertionService_serviceForClientIdentifier___block_invoke
   v16[3] = &unk_27843AA10;
   v16[4] = buf;
   v16[5] = &v17;
-  [v10 takeModeAssertionWithDetails:v6 requestDetails:v8 completionHandler:v16];
+  [v10 takeModeAssertionWithDetails:detailsCopy requestDetails:v8 completionHandler:v16];
 
   if (*(v18[0] + 40))
   {
@@ -123,9 +123,9 @@ uint64_t __54__DNDModeAssertionService_serviceForClientIdentifier___block_invoke
       [DNDModeAssertionService takeModeAssertionWithDetails:v8 error:v18];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = *(v18[0] + 40);
+      *error = *(v18[0] + 40);
     }
   }
 
@@ -164,10 +164,10 @@ void __62__DNDModeAssertionService_takeModeAssertionWithDetails_error___block_in
   *(v9 + 40) = v6;
 }
 
-- (id)invalidateActiveModeAssertionWithInvalidationDetails:(id)a3 reasonOverride:(unint64_t)a4 error:(id *)a5
+- (id)invalidateActiveModeAssertionWithInvalidationDetails:(id)details reasonOverride:(unint64_t)override error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  detailsCopy = details;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v9 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeAssertionService.invalidateActiveModeAssertion", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -194,14 +194,14 @@ void __62__DNDModeAssertionService_takeModeAssertionWithDetails_error___block_in
   v21[3] = __Block_byref_object_dispose__7;
   v22 = 0;
   v12 = +[DNDRemoteServiceConnection sharedInstance];
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:override];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __101__DNDModeAssertionService_invalidateActiveModeAssertionWithInvalidationDetails_reasonOverride_error___block_invoke;
   v19[3] = &unk_27843AA38;
   v19[4] = &buf;
   v19[5] = &v20;
-  [v12 invalidateActiveModeAssertionWithDetails:v8 reasonOverride:v13 requestDetails:v10 completionHandler:v19];
+  [v12 invalidateActiveModeAssertionWithDetails:detailsCopy reasonOverride:v13 requestDetails:v10 completionHandler:v19];
 
   if (*(v21[0] + 40))
   {
@@ -210,9 +210,9 @@ void __62__DNDModeAssertionService_takeModeAssertionWithDetails_error___block_in
       [DNDModeAssertionService invalidateActiveModeAssertionWithInvalidationDetails:v10 reasonOverride:v21 error:?];
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = *(v21[0] + 40);
+      *error = *(v21[0] + 40);
     }
   }
 
@@ -251,7 +251,7 @@ void __101__DNDModeAssertionService_invalidateActiveModeAssertionWithInvalidatio
   *(v9 + 40) = v6;
 }
 
-- (id)activeModeAssertionWithError:(id *)a3
+- (id)activeModeAssertionWithError:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
   state.opaque[0] = 0;
@@ -295,9 +295,9 @@ void __101__DNDModeAssertionService_invalidateActiveModeAssertionWithInvalidatio
       [(DNDModeAssertionService *)v6 activeModeAssertionWithError:v16];
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = *(v16[0] + 40);
+      *error = *(v16[0] + 40);
     }
   }
 
@@ -336,7 +336,7 @@ void __56__DNDModeAssertionService_activeModeAssertionWithError___block_invoke(u
   *(v9 + 40) = v6;
 }
 
-- (id)latestModeAssertionInvalidationWithError:(id *)a3
+- (id)latestModeAssertionInvalidationWithError:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
   state.opaque[0] = 0;
@@ -380,9 +380,9 @@ void __56__DNDModeAssertionService_activeModeAssertionWithError___block_invoke(u
       [(DNDModeAssertionService *)v6 latestModeAssertionInvalidationWithError:v16];
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = *(v16[0] + 40);
+      *error = *(v16[0] + 40);
     }
   }
 
@@ -421,7 +421,7 @@ void __68__DNDModeAssertionService_latestModeAssertionInvalidationWithError___bl
   *(v9 + 40) = v6;
 }
 
-- (BOOL)invalidateAllActiveModeAssertionsWithError:(id *)a3
+- (BOOL)invalidateAllActiveModeAssertionsWithError:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
   state.opaque[0] = 0;
@@ -463,9 +463,9 @@ void __68__DNDModeAssertionService_latestModeAssertionInvalidationWithError___bl
       [(DNDModeAssertionService *)v6 invalidateAllActiveModeAssertionsWithError:?];
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = *(*(&buf + 1) + 40);
+      *error = *(*(&buf + 1) + 40);
     }
   }
 
@@ -498,7 +498,7 @@ void __70__DNDModeAssertionService_invalidateAllActiveModeAssertionsWithError___
   *(v6 + 40) = v5;
 }
 
-- (id)allModeAssertionsWithError:(id *)a3
+- (id)allModeAssertionsWithError:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
   state.opaque[0] = 0;
@@ -542,9 +542,9 @@ void __70__DNDModeAssertionService_invalidateAllActiveModeAssertionsWithError___
       [(DNDModeAssertionService *)v6 allModeAssertionsWithError:v16];
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = *(v16[0] + 40);
+      *error = *(v16[0] + 40);
     }
   }
 
@@ -583,11 +583,11 @@ void __54__DNDModeAssertionService_allModeAssertionsWithError___block_invoke(uin
   *(v9 + 40) = v6;
 }
 
-- (void)addAssertionUpdateListener:(id)a3 withCompletionHandler:(id)a4
+- (void)addAssertionUpdateListener:(id)listener withCompletionHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  handlerCopy = handler;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v8 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeAssertionService.addAssertionUpdateListener", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -599,13 +599,13 @@ void __54__DNDModeAssertionService_allModeAssertionsWithError___block_invoke(uin
     *buf = 138543618;
     v20 = clientIdentifier;
     v21 = 2114;
-    v22 = v6;
+    v22 = listenerCopy;
     _os_log_impl(&dword_22002F000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Adding assertion update listener: listener=%{public}@", buf, 0x16u);
   }
 
   v11 = self->_assertionUpdateListeners;
   objc_sync_enter(v11);
-  [(NSHashTable *)self->_assertionUpdateListeners addObject:v6];
+  [(NSHashTable *)self->_assertionUpdateListeners addObject:listenerCopy];
   objc_sync_exit(v11);
 
   v15[0] = MEMORY[0x277D85DD0];
@@ -613,10 +613,10 @@ void __54__DNDModeAssertionService_allModeAssertionsWithError___block_invoke(uin
   v15[2] = __76__DNDModeAssertionService_addAssertionUpdateListener_withCompletionHandler___block_invoke;
   v15[3] = &unk_27843AAB0;
   v15[4] = self;
-  v16 = v6;
-  v17 = v7;
-  v12 = v7;
-  v13 = v6;
+  v16 = listenerCopy;
+  v17 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = listenerCopy;
   [(DNDModeAssertionService *)self _registerForAssertionUpdatesIfRequiredWithCompletionHandler:v15];
   os_activity_scope_leave(&state);
 
@@ -672,10 +672,10 @@ void __76__DNDModeAssertionService_addAssertionUpdateListener_withCompletionHand
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeAssertionUpdateListener:(id)a3
+- (void)removeAssertionUpdateListener:(id)listener
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  listenerCopy = listener;
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   v5 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeAssertionService.removeAssertionUpdateListener", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -687,25 +687,25 @@ void __76__DNDModeAssertionService_addAssertionUpdateListener_withCompletionHand
     *buf = 138543618;
     v12 = clientIdentifier;
     v13 = 2114;
-    v14 = v4;
+    v14 = listenerCopy;
     _os_log_impl(&dword_22002F000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Removing assertion update listener: listener=%{public}@", buf, 0x16u);
   }
 
   v8 = self->_assertionUpdateListeners;
   objc_sync_enter(v8);
-  [(NSHashTable *)self->_assertionUpdateListeners removeObject:v4, v10.opaque[0], v10.opaque[1]];
+  [(NSHashTable *)self->_assertionUpdateListeners removeObject:listenerCopy, v10.opaque[0], v10.opaque[1]];
   objc_sync_exit(v8);
 
   os_activity_scope_leave(&v10);
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteService:(id)a3 didChangeActiveModeAssertion:(id)a4 invalidation:(id)a5
+- (void)remoteService:(id)service didChangeActiveModeAssertion:(id)assertion invalidation:(id)invalidation
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serviceCopy = service;
+  assertionCopy = assertion;
+  invalidationCopy = invalidation;
   v11 = DNDLogModeAssertion;
   if (os_log_type_enabled(DNDLogModeAssertion, OS_LOG_TYPE_DEFAULT))
   {
@@ -713,25 +713,25 @@ void __76__DNDModeAssertionService_addAssertionUpdateListener_withCompletionHand
     v14 = 138544130;
     v15 = clientIdentifier;
     v16 = 2114;
-    v17 = v8;
+    v17 = serviceCopy;
     v18 = 2114;
-    v19 = v9;
+    v19 = assertionCopy;
     v20 = 2114;
-    v21 = v10;
+    v21 = invalidationCopy;
     _os_log_impl(&dword_22002F000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Remote service got assertion change: service=%{public}@, assertion=%{public}@, invalidation=%{public}@", &v14, 0x2Au);
   }
 
-  [(DNDModeAssertionService *)self _handleChangeActiveModeAssertion:v9 invalidation:v10];
+  [(DNDModeAssertionService *)self _handleChangeActiveModeAssertion:assertionCopy invalidation:invalidationCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleChangeActiveModeAssertion:(id)a3 invalidation:(id)a4
+- (void)_handleChangeActiveModeAssertion:(id)assertion invalidation:(id)invalidation
 {
-  v7 = a3;
-  v8 = a4;
+  assertionCopy = assertion;
+  invalidationCopy = invalidation;
   os_unfair_lock_lock(&self->_activeAssertionLock);
-  objc_storeStrong(&self->_activeAssertion, a3);
+  objc_storeStrong(&self->_activeAssertion, assertion);
   os_unfair_lock_unlock(&self->_activeAssertionLock);
   calloutQueue = self->_calloutQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -739,10 +739,10 @@ void __76__DNDModeAssertionService_addAssertionUpdateListener_withCompletionHand
   block[2] = __73__DNDModeAssertionService__handleChangeActiveModeAssertion_invalidation___block_invoke;
   block[3] = &unk_27843A210;
   block[4] = self;
-  v13 = v8;
-  v14 = v7;
-  v10 = v7;
-  v11 = v8;
+  v13 = invalidationCopy;
+  v14 = assertionCopy;
+  v10 = assertionCopy;
+  v11 = invalidationCopy;
   dispatch_async(calloutQueue, block);
 }
 
@@ -865,10 +865,10 @@ void __73__DNDModeAssertionService__handleChangeActiveModeAssertion_invalidation
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_registerForAssertionUpdatesIfRequiredWithCompletionHandler:(id)a3
+- (void)_registerForAssertionUpdatesIfRequiredWithCompletionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = self->_assertionUpdateListeners;
   objc_sync_enter(v5);
   v6 = [(NSHashTable *)self->_assertionUpdateListeners count];
@@ -876,7 +876,7 @@ void __73__DNDModeAssertionService__handleChangeActiveModeAssertion_invalidation
 
   if (!v6 || (atomic_exchange(&self->_registeredForUpdates._Value, 1u) & 1) != 0)
   {
-    v4[2](v4, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 
   else
@@ -900,7 +900,7 @@ void __73__DNDModeAssertionService__handleChangeActiveModeAssertion_invalidation
     v12[2] = __87__DNDModeAssertionService__registerForAssertionUpdatesIfRequiredWithCompletionHandler___block_invoke;
     v12[3] = &unk_27843AAD8;
     v12[4] = self;
-    v13 = v4;
+    v13 = handlerCopy;
     [v10 registerForAssertionUpdatesWithRequestDetails:v8 completionHandler:v12];
 
     os_activity_scope_leave(&state);

@@ -1,5 +1,5 @@
 @interface StockholmALSCoexHandler
-- (StockholmALSCoexHandler)initWithQueue:(id)a3;
+- (StockholmALSCoexHandler)initWithQueue:(id)queue;
 - (void)dealloc;
 - (void)registerForNFCNotifications;
 - (void)unregisterFromNFCNotifications;
@@ -7,43 +7,43 @@
 
 @implementation StockholmALSCoexHandler
 
-- (StockholmALSCoexHandler)initWithQueue:(id)a3
+- (StockholmALSCoexHandler)initWithQueue:(id)queue
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  queueCopy = queue;
   v5.receiver = self;
   v5.super_class = StockholmALSCoexHandler;
-  v8 = [(StockholmALSCoexHandler *)&v5 init];
-  if (v8)
+  selfCopy = [(StockholmALSCoexHandler *)&v5 init];
+  if (selfCopy)
   {
     v3 = os_log_create("com.apple.CoreBrightness.StockholmALSCoexHandler", "default");
-    *(v8 + 1) = v3;
-    *(v8 + 24) = 0;
-    *(v8 + 2) = v6;
-    dispatch_retain(*(v8 + 2));
+    *(selfCopy + 1) = v3;
+    *(selfCopy + 24) = 0;
+    *(selfCopy + 2) = queueCopy;
+    dispatch_retain(*(selfCopy + 2));
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   if (self->_logHandle)
   {
-    MEMORY[0x1E69E5920](v4->_logHandle);
-    v4->_logHandle = 0;
+    MEMORY[0x1E69E5920](selfCopy->_logHandle);
+    selfCopy->_logHandle = 0;
   }
 
-  if (v4->_queue)
+  if (selfCopy->_queue)
   {
-    dispatch_release(v4->_queue);
-    v4->_queue = 0;
+    dispatch_release(selfCopy->_queue);
+    selfCopy->_queue = 0;
   }
 
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = StockholmALSCoexHandler;
   [(StockholmALSCoexHandler *)&v2 dealloc];
 }

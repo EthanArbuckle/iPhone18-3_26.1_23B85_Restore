@@ -1,32 +1,32 @@
 @interface BKLoupeView
-- (BKLoupeView)initWithTargetView:(id)a3;
-- (CGPoint)loupePointForPoint:(CGPoint)a3;
+- (BKLoupeView)initWithTargetView:(id)view;
+- (CGPoint)loupePointForPoint:(CGPoint)point;
 - (UIImage)loupeMask;
 - (UIImage)loupeSheen;
 - (UIView)targetView;
 - (double)loupeHeight;
 - (double)loupeWidth;
 - (void)dealloc;
-- (void)dismissAnimated:(BOOL)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)moveToPoint:(CGPoint)a3;
-- (void)presentAtPoint:(CGPoint)a3 animated:(BOOL)a4;
+- (void)dismissAnimated:(BOOL)animated;
+- (void)drawRect:(CGRect)rect;
+- (void)moveToPoint:(CGPoint)point;
+- (void)presentAtPoint:(CGPoint)point animated:(BOOL)animated;
 - (void)resetImages;
-- (void)setIsVertical:(BOOL)a3;
+- (void)setIsVertical:(BOOL)vertical;
 @end
 
 @implementation BKLoupeView
 
-- (BKLoupeView)initWithTargetView:(id)a3
+- (BKLoupeView)initWithTargetView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = BKLoupeView;
   v5 = [(BKLoupeView *)&v8 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_targetView, v4);
+    objc_storeWeak(&v5->_targetView, viewCopy);
     [(BKLoupeView *)v6 setOpaque:0];
     [(BKLoupeView *)v6 setUserInteractionEnabled:0];
   }
@@ -86,12 +86,12 @@
   return v7;
 }
 
-- (void)setIsVertical:(BOOL)a3
+- (void)setIsVertical:(BOOL)vertical
 {
-  if (self->_isVertical != a3)
+  if (self->_isVertical != vertical)
   {
     [(BKLoupeView *)self willChangeValueForKey:@"isVertical"];
-    self->_isVertical = a3;
+    self->_isVertical = vertical;
     [(BKLoupeView *)self resetImages];
 
     [(BKLoupeView *)self didChangeValueForKey:@"isVertical"];
@@ -115,8 +115,8 @@
 
 - (double)loupeWidth
 {
-  v2 = [(BKLoupeView *)self loupeMask];
-  [v2 size];
+  loupeMask = [(BKLoupeView *)self loupeMask];
+  [loupeMask size];
   v4 = v3;
 
   return v4;
@@ -124,17 +124,17 @@
 
 - (double)loupeHeight
 {
-  v2 = [(BKLoupeView *)self loupeMask];
-  [v2 size];
+  loupeMask = [(BKLoupeView *)self loupeMask];
+  [loupeMask size];
   v4 = v3;
 
   return v4;
 }
 
-- (void)dismissAnimated:(BOOL)a3
+- (void)dismissAnimated:(BOOL)animated
 {
   v3 = 0.0;
-  if (a3)
+  if (animated)
   {
     v3 = 0.25;
   }
@@ -147,13 +147,13 @@
   [UIView animateWithDuration:v4 animations:v3];
 }
 
-- (CGPoint)loupePointForPoint:(CGPoint)a3
+- (CGPoint)loupePointForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(BKLoupeView *)self isVertical];
+  y = point.y;
+  x = point.x;
+  isVertical = [(BKLoupeView *)self isVertical];
   [(BKLoupeView *)self loupeWidth];
-  if (v6)
+  if (isVertical)
   {
     v8 = x - v7;
     [(BKLoupeView *)self loupeHeight];
@@ -174,21 +174,21 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   CurrentContext = UIGraphicsGetCurrentContext();
-  v9 = [(BKLoupeView *)self superview];
+  superview = [(BKLoupeView *)self superview];
   [(BKLoupeView *)self frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(BKLoupeView *)self targetView];
-  [v9 convertRect:v18 toView:{v11, v13, v15, v17}];
+  targetView = [(BKLoupeView *)self targetView];
+  [superview convertRect:targetView toView:{v11, v13, v15, v17}];
   v20 = v19;
   v22 = v21;
   v45 = v23;
@@ -202,23 +202,23 @@
   CGContextScaleCTM(CurrentContext, 1.0, -1.0);
   [(BKLoupeView *)self loupeHeight];
   CGContextTranslateCTM(CurrentContext, 0.0, -v29);
-  v30 = [(BKLoupeView *)self loupeMask];
-  v31 = [v30 CGImage];
+  loupeMask = [(BKLoupeView *)self loupeMask];
+  cGImage = [loupeMask CGImage];
   v49.origin.x = 0.0;
   v49.origin.y = 0.0;
   v49.size.width = v26;
   v49.size.height = v28;
-  CGContextClipToMask(CurrentContext, v49, v31);
+  CGContextClipToMask(CurrentContext, v49, cGImage);
 
   [(BKLoupeView *)self loupeHeight];
   CGContextTranslateCTM(CurrentContext, 0.0, v32);
   CGContextScaleCTM(CurrentContext, 1.0, -1.0);
-  v33 = [(BKLoupeView *)self shouldInvertContent];
-  v34 = v33;
-  if (v33)
+  shouldInvertContent = [(BKLoupeView *)self shouldInvertContent];
+  v34 = shouldInvertContent;
+  if (shouldInvertContent)
   {
-    v35 = [(BKLoupeView *)self pageColor];
-    [v35 setFill];
+    pageColor = [(BKLoupeView *)self pageColor];
+    [pageColor setFill];
 
     v50.origin.x = x;
     v50.origin.y = y;
@@ -254,14 +254,14 @@
   v51.size.height = height;
   CGContextFillRect(CurrentContext, v51);
   WeakRetained = objc_loadWeakRetained(&self->_targetView);
-  v43 = [WeakRetained layer];
-  [v43 renderInContext:CurrentContext];
+  layer = [WeakRetained layer];
+  [layer renderInContext:CurrentContext];
 
   CGContextRestoreGState(CurrentContext);
   if ((v34 & 1) == 0 && ![(BKLoupeView *)self shouldInvertContent])
   {
-    v44 = [(BKLoupeView *)self pageColor];
-    [v44 setFill];
+    pageColor2 = [(BKLoupeView *)self pageColor];
+    [pageColor2 setFill];
 
     v52.origin.x = x;
     v52.origin.y = y;
@@ -271,21 +271,21 @@
   }
 
   CGContextRestoreGState(CurrentContext);
-  v47 = [(BKLoupeView *)self loupeSheen];
-  [v47 drawInRect:{x, y, width, height}];
+  loupeSheen = [(BKLoupeView *)self loupeSheen];
+  [loupeSheen drawInRect:{x, y, width, height}];
 }
 
-- (void)presentAtPoint:(CGPoint)a3 animated:(BOOL)a4
+- (void)presentAtPoint:(CGPoint)point animated:(BOOL)animated
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  animatedCopy = animated;
+  y = point.y;
+  x = point.x;
   [(BKLoupeView *)self frame];
   v9 = v8;
   v11 = v10;
-  v12 = [(BKLoupeView *)self superview];
-  v13 = [(BKLoupeView *)self targetView];
-  [v12 convertPoint:v13 fromView:{x, y}];
+  superview = [(BKLoupeView *)self superview];
+  targetView = [(BKLoupeView *)self targetView];
+  [superview convertPoint:targetView fromView:{x, y}];
   [(BKLoupeView *)self loupePointForPoint:?];
   v15 = v14;
   v17 = v16;
@@ -294,9 +294,9 @@
   v19 = v15 + floor(v18 * 0.5);
   [(BKLoupeView *)self loupeHeight];
   v21 = v20;
-  v22 = [(BKLoupeView *)self isVertical];
+  isVertical = [(BKLoupeView *)self isVertical];
   v23 = fmax(v19, 0.0);
-  if (!v22)
+  if (!isVertical)
   {
     v23 = v19;
   }
@@ -308,7 +308,7 @@
   v25[0] = _NSConcreteStackBlock;
   v25[2] = sub_109B94;
   v25[3] = &unk_1E2BF8;
-  if (!v4)
+  if (!animatedCopy)
   {
     v24 = 0.0;
   }
@@ -319,23 +319,23 @@
   [UIView animateWithDuration:v25 animations:v24];
 }
 
-- (void)moveToPoint:(CGPoint)a3
+- (void)moveToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(BKLoupeView *)self frame];
   v7 = v6;
   v9 = v8;
-  v10 = [(BKLoupeView *)self superview];
-  v11 = [(BKLoupeView *)self targetView];
-  [v10 convertPoint:v11 fromView:{x, y}];
+  superview = [(BKLoupeView *)self superview];
+  targetView = [(BKLoupeView *)self targetView];
+  [superview convertPoint:targetView fromView:{x, y}];
   [(BKLoupeView *)self loupePointForPoint:?];
   v13 = v12;
   v15 = v14;
 
-  v16 = [(BKLoupeView *)self isVertical];
+  isVertical = [(BKLoupeView *)self isVertical];
   v17 = fmax(v13, 0.0);
-  if (v16)
+  if (isVertical)
   {
     v13 = v17;
   }

@@ -3,18 +3,18 @@
 - (NSOperationQueue)presentedItemOperationQueue;
 - (NSURL)presentedItemURL;
 - (_TtC8Freeform28CRLSEExtensionContextManager)init;
-- (void)setPresentedItemOperationQueue:(id)a3;
-- (void)setPresentedItemURL:(id)a3;
+- (void)setPresentedItemOperationQueue:(id)queue;
+- (void)setPresentedItemURL:(id)l;
 @end
 
 @implementation CRLSEExtensionContextManager
 
 + (NSString)defaultImageFileName
 {
-  v2 = [objc_opt_self() mainBundle];
+  mainBundle = [objc_opt_self() mainBundle];
   v3 = String._bridgeToObjectiveC()();
   v4 = String._bridgeToObjectiveC()();
-  v5 = [v2 localizedStringForKey:v3 value:v4 table:0];
+  v5 = [mainBundle localizedStringForKey:v3 value:v4 table:0];
 
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = String._bridgeToObjectiveC()();
@@ -45,12 +45,12 @@
   return v10;
 }
 
-- (void)setPresentedItemURL:(id)a3
+- (void)setPresentedItemURL:(id)l
 {
   v5 = sub_1005B981C(&unk_1019F33C0);
   __chkstk_darwin(v5 - 8);
   v7 = &v12 - v6;
-  if (a3)
+  if (l)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = type metadata accessor for URL();
@@ -65,24 +65,24 @@
 
   v10 = OBJC_IVAR____TtC8Freeform28CRLSEExtensionContextManager_presentedItemURL;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   sub_10084E778(v7, self + v10);
   swift_endAccess();
 }
 
 - (NSOperationQueue)presentedItemOperationQueue
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10084E378();
 
   return v3;
 }
 
-- (void)setPresentedItemOperationQueue:(id)a3
+- (void)setPresentedItemOperationQueue:(id)queue
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform28CRLSEExtensionContextManager____lazy_storage___presentedItemOperationQueue);
-  *(self + OBJC_IVAR____TtC8Freeform28CRLSEExtensionContextManager____lazy_storage___presentedItemOperationQueue) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform28CRLSEExtensionContextManager____lazy_storage___presentedItemOperationQueue) = queue;
+  queueCopy = queue;
 }
 
 - (_TtC8Freeform28CRLSEExtensionContextManager)init

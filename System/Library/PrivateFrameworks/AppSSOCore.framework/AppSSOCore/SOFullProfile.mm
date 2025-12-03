@@ -1,14 +1,14 @@
 @interface SOFullProfile
-+ (int64_t)authMethodWithString:(id)a3;
-+ (int64_t)profileTypeWithString:(id)a3;
-+ (int64_t)screenLockedBehaviorWithString:(id)a3;
-- (SOFullProfile)initWithCoder:(id)a3;
-- (SOFullProfile)initWithProfileData:(id)a3;
++ (int64_t)authMethodWithString:(id)string;
++ (int64_t)profileTypeWithString:(id)string;
++ (int64_t)screenLockedBehaviorWithString:(id)string;
+- (SOFullProfile)initWithCoder:(id)coder;
+- (SOFullProfile)initWithProfileData:(id)data;
 - (id)copyProfileForClient;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeURLPrefix:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeURLPrefix:(id)prefix;
 @end
 
 @implementation SOFullProfile
@@ -20,15 +20,15 @@
   return [(SOProfile *)&v3 copyWithZone:0];
 }
 
-+ (int64_t)profileTypeWithString:(id)a3
++ (int64_t)profileTypeWithString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Redirect"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"Redirect"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Credential"])
+  else if ([stringCopy isEqualToString:@"Credential"])
   {
     v4 = 2;
   }
@@ -41,15 +41,15 @@
   return v4;
 }
 
-+ (int64_t)screenLockedBehaviorWithString:(id)a3
++ (int64_t)screenLockedBehaviorWithString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Cancel"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"Cancel"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"DoNotHandle"])
+  else if ([stringCopy isEqualToString:@"DoNotHandle"])
   {
     v4 = 2;
   }
@@ -62,25 +62,25 @@
   return v4;
 }
 
-+ (int64_t)authMethodWithString:(id)a3
++ (int64_t)authMethodWithString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Password"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"Password"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"UserSecureEnclaveKey"])
+  else if ([stringCopy isEqualToString:@"UserSecureEnclaveKey"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SmartCard"])
+  else if ([stringCopy isEqualToString:@"SmartCard"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"AccessKey"])
+  else if ([stringCopy isEqualToString:@"AccessKey"])
   {
     v4 = 4;
   }
@@ -93,50 +93,50 @@
   return v4;
 }
 
-- (SOFullProfile)initWithProfileData:(id)a3
+- (SOFullProfile)initWithProfileData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v52.receiver = self;
   v52.super_class = SOFullProfile;
   v5 = [(SOFullProfile *)&v52 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = [v4 objectForKeyedSubscript:@"Type"];
+    v7 = [dataCopy objectForKeyedSubscript:@"Type"];
     -[SOProfile setType:](v5, "setType:", [v6 profileTypeWithString:v7]);
 
-    v8 = [v4 objectForKeyedSubscript:@"URLPrefix"];
+    v8 = [dataCopy objectForKeyedSubscript:@"URLPrefix"];
     [(SOProfile *)v5 setURLPrefix:v8];
 
-    v9 = [v4 objectForKeyedSubscript:@"Hosts"];
+    v9 = [dataCopy objectForKeyedSubscript:@"Hosts"];
     [(SOProfile *)v5 setHosts:v9];
 
-    v10 = [v4 objectForKeyedSubscript:@"ExtensionData"];
+    v10 = [dataCopy objectForKeyedSubscript:@"ExtensionData"];
     [(SOFullProfile *)v5 setExtensionData:v10];
 
-    v11 = [v4 objectForKeyedSubscript:@"Realm"];
+    v11 = [dataCopy objectForKeyedSubscript:@"Realm"];
     [(SOProfile *)v5 setRealm:v11];
 
-    v12 = [v4 objectForKeyedSubscript:@"DeniedBundleIdentifiers"];
+    v12 = [dataCopy objectForKeyedSubscript:@"DeniedBundleIdentifiers"];
     [(SOProfile *)v5 setDeniedBundleIdentifiers:v12];
 
     v13 = objc_opt_class();
-    v14 = [v4 objectForKeyedSubscript:@"ScreenLockedBehavior"];
+    v14 = [dataCopy objectForKeyedSubscript:@"ScreenLockedBehavior"];
     -[SOProfile setScreenLockedBehavior:](v5, "setScreenLockedBehavior:", [v13 screenLockedBehaviorWithString:v14]);
 
-    v15 = [v4 objectForKeyedSubscript:@"RegistrationToken"];
+    v15 = [dataCopy objectForKeyedSubscript:@"RegistrationToken"];
     [(SOFullProfile *)v5 setPssoRegistrationToken:v15];
 
-    v16 = [v4 objectForKeyedSubscript:@"PlatformSSO"];
+    v16 = [dataCopy objectForKeyedSubscript:@"PlatformSSO"];
     [(SOFullProfile *)v5 setPlatformSSO:v16];
 
-    v17 = [(SOFullProfile *)v5 platformSSO];
-    v18 = [v17 objectForKeyedSubscript:@"AuthenticationMethod"];
+    platformSSO = [(SOFullProfile *)v5 platformSSO];
+    v18 = [platformSSO objectForKeyedSubscript:@"AuthenticationMethod"];
 
     if (!v18)
     {
-      v19 = [(SOFullProfile *)v5 platformSSO];
-      v20 = [v19 mutableCopy];
+      platformSSO2 = [(SOFullProfile *)v5 platformSSO];
+      v20 = [platformSSO2 mutableCopy];
 
       if (!v20)
       {
@@ -144,31 +144,31 @@
       }
 
       v21 = objc_opt_class();
-      v22 = [v4 objectForKeyedSubscript:@"AuthenticationMethod"];
+      v22 = [dataCopy objectForKeyedSubscript:@"AuthenticationMethod"];
       -[SOProfile setPssoAuthenticationMethod:](v5, "setPssoAuthenticationMethod:", [v21 authMethodWithString:v22]);
 
-      v23 = [v4 objectForKeyedSubscript:@"AuthenticationMethod"];
+      v23 = [dataCopy objectForKeyedSubscript:@"AuthenticationMethod"];
       [v20 setObject:v23 forKeyedSubscript:@"AuthenticationMethod"];
 
       [(SOFullProfile *)v5 setPlatformSSO:v20];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"Extension"];
+    v24 = [dataCopy objectForKeyedSubscript:@"Extension"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v26 = [v4 objectForKeyedSubscript:@"Extension"];
+      v26 = [dataCopy objectForKeyedSubscript:@"Extension"];
       v27 = [v26 objectForKeyedSubscript:@"BundleIdentifier"];
       [(SOProfile *)v5 setExtensionBundleIdentifier:v27];
 
-      v28 = [v4 objectForKeyedSubscript:@"Extension"];
+      v28 = [dataCopy objectForKeyedSubscript:@"Extension"];
       v29 = [v28 objectForKeyedSubscript:@"TeamIdentifier"];
       [(SOFullProfile *)v5 setExtensionTeamIdentifier:v29];
     }
 
-    v30 = [(SOProfile *)v5 extensionBundleIdentifier];
+    extensionBundleIdentifier = [(SOProfile *)v5 extensionBundleIdentifier];
     objc_opt_class();
     v31 = objc_opt_isKindOfClass();
 
@@ -183,11 +183,11 @@
       goto LABEL_36;
     }
 
-    v32 = [(SOFullProfile *)v5 extensionData];
-    if (v32)
+    extensionData = [(SOFullProfile *)v5 extensionData];
+    if (extensionData)
     {
-      v33 = v32;
-      v34 = [(SOFullProfile *)v5 extensionData];
+      v33 = extensionData;
+      extensionData2 = [(SOFullProfile *)v5 extensionData];
       objc_opt_class();
       v35 = objc_opt_isKindOfClass();
 
@@ -203,11 +203,11 @@
       }
     }
 
-    v36 = [(SOProfile *)v5 realm];
-    if (v36)
+    realm = [(SOProfile *)v5 realm];
+    if (realm)
     {
-      v37 = v36;
-      v38 = [(SOProfile *)v5 realm];
+      v37 = realm;
+      realm2 = [(SOProfile *)v5 realm];
       objc_opt_class();
       v39 = objc_opt_isKindOfClass();
 
@@ -223,11 +223,11 @@
       }
     }
 
-    v40 = [(SOProfile *)v5 deniedBundleIdentifiers];
-    if (v40)
+    deniedBundleIdentifiers = [(SOProfile *)v5 deniedBundleIdentifiers];
+    if (deniedBundleIdentifiers)
     {
-      v41 = v40;
-      v42 = [(SOProfile *)v5 deniedBundleIdentifiers];
+      v41 = deniedBundleIdentifiers;
+      deniedBundleIdentifiers2 = [(SOProfile *)v5 deniedBundleIdentifiers];
       objc_opt_class();
       v43 = objc_opt_isKindOfClass();
 
@@ -245,11 +245,11 @@
 
     if ([(SOProfile *)v5 type]== 1)
     {
-      v44 = [(SOProfile *)v5 URLPrefix];
-      if (v44)
+      uRLPrefix = [(SOProfile *)v5 URLPrefix];
+      if (uRLPrefix)
       {
-        v45 = v44;
-        v46 = [(SOProfile *)v5 URLPrefix];
+        v45 = uRLPrefix;
+        uRLPrefix2 = [(SOProfile *)v5 URLPrefix];
         objc_opt_class();
         v47 = objc_opt_isKindOfClass();
 
@@ -282,7 +282,7 @@ LABEL_36:
 
     if (![(SOProfile *)v5 screenLockedBehavior])
     {
-      v50 = [v4 objectForKeyedSubscript:@"ScreenLockedBehavior"];
+      v50 = [dataCopy objectForKeyedSubscript:@"ScreenLockedBehavior"];
 
       if (v50)
       {
@@ -305,15 +305,15 @@ LABEL_37:
   return v49;
 }
 
-- (void)removeURLPrefix:(id)a3
+- (void)removeURLPrefix:(id)prefix
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SOProfile *)self URLPrefix];
-  v9[0] = v4;
+  prefixCopy = prefix;
+  uRLPrefix = [(SOProfile *)self URLPrefix];
+  v9[0] = prefixCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
 
-  v7 = [v5 arrayByExcludingObjectsInArray:v6];
+  v7 = [uRLPrefix arrayByExcludingObjectsInArray:v6];
   [(SOProfile *)self setURLPrefix:v7];
 
   v8 = *MEMORY[0x1E69E9840];
@@ -326,11 +326,11 @@ LABEL_37:
   v30 = [objc_opt_class() stringWithProfileType:{-[SOProfile type](self, "type")}];
   v32[0] = v30;
   v31[1] = @"URLPrefix";
-  v3 = [(SOProfile *)self URLPrefix];
-  v29 = v3;
-  if (v3)
+  uRLPrefix = [(SOProfile *)self URLPrefix];
+  v29 = uRLPrefix;
+  if (uRLPrefix)
   {
-    v4 = v3;
+    v4 = uRLPrefix;
   }
 
   else
@@ -340,11 +340,11 @@ LABEL_37:
 
   v32[1] = v4;
   v31[2] = @"Hosts";
-  v5 = [(SOProfile *)self hosts];
-  v28 = v5;
-  if (v5)
+  hosts = [(SOProfile *)self hosts];
+  v28 = hosts;
+  if (hosts)
   {
-    v6 = v5;
+    v6 = hosts;
   }
 
   else
@@ -354,11 +354,11 @@ LABEL_37:
 
   v32[2] = v6;
   v31[3] = @"BundleIdentifier";
-  v7 = [(SOProfile *)self extensionBundleIdentifier];
-  v8 = v7;
-  if (v7)
+  extensionBundleIdentifier = [(SOProfile *)self extensionBundleIdentifier];
+  v8 = extensionBundleIdentifier;
+  if (extensionBundleIdentifier)
   {
-    v9 = v7;
+    v9 = extensionBundleIdentifier;
   }
 
   else
@@ -368,11 +368,11 @@ LABEL_37:
 
   v32[3] = v9;
   v31[4] = @"TeamIdentifier";
-  v10 = [(SOFullProfile *)self extensionTeamIdentifier];
-  v11 = v10;
-  if (v10)
+  extensionTeamIdentifier = [(SOFullProfile *)self extensionTeamIdentifier];
+  v11 = extensionTeamIdentifier;
+  if (extensionTeamIdentifier)
   {
-    v12 = v10;
+    v12 = extensionTeamIdentifier;
   }
 
   else
@@ -382,11 +382,11 @@ LABEL_37:
 
   v32[4] = v12;
   v31[5] = @"Realm";
-  v13 = [(SOProfile *)self realm];
-  v14 = v13;
-  if (v13)
+  realm = [(SOProfile *)self realm];
+  v14 = realm;
+  if (realm)
   {
-    v15 = v13;
+    v15 = realm;
   }
 
   else
@@ -396,11 +396,11 @@ LABEL_37:
 
   v32[5] = v15;
   v31[6] = @"DeniedBundleIdentifiers";
-  v16 = [(SOProfile *)self deniedBundleIdentifiers];
-  v17 = v16;
-  if (v16)
+  deniedBundleIdentifiers = [(SOProfile *)self deniedBundleIdentifiers];
+  v17 = deniedBundleIdentifiers;
+  if (deniedBundleIdentifiers)
   {
-    v18 = v16;
+    v18 = deniedBundleIdentifiers;
   }
 
   else
@@ -416,17 +416,17 @@ LABEL_37:
   v20 = [objc_opt_class() stringWithAuthenticationMethod:{-[SOProfile pssoAuthenticationMethod](self, "pssoAuthenticationMethod")}];
   v32[8] = v20;
   v31[9] = @"RegistrationToken";
-  v21 = [(SOFullProfile *)self pssoRegistrationToken];
+  pssoRegistrationToken = [(SOFullProfile *)self pssoRegistrationToken];
   v22 = @"present";
-  if (!v21)
+  if (!pssoRegistrationToken)
   {
     v22 = @"<null>";
   }
 
   v32[9] = v22;
   v31[10] = @"PlatformSSO";
-  v23 = [(SOFullProfile *)self platformSSO];
-  v32[10] = v23;
+  platformSSO = [(SOFullProfile *)self platformSSO];
+  v32[10] = platformSSO;
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:11];
   v25 = [v24 description];
 
@@ -435,24 +435,24 @@ LABEL_37:
   return v25;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   [v4 setType:{-[SOProfile type](self, "type")}];
-  v5 = [(SOProfile *)self URLPrefix];
-  v6 = [v5 copy];
+  uRLPrefix = [(SOProfile *)self URLPrefix];
+  v6 = [uRLPrefix copy];
   [v4 setURLPrefix:v6];
 
-  v7 = [(SOProfile *)self hosts];
-  v8 = [v7 copy];
+  hosts = [(SOProfile *)self hosts];
+  v8 = [hosts copy];
   [v4 setHosts:v8];
 
-  v9 = [(SOProfile *)self realm];
-  v10 = [v9 copy];
+  realm = [(SOProfile *)self realm];
+  v10 = [realm copy];
   [v4 setRealm:v10];
 
-  v11 = [(SOProfile *)self extensionBundleIdentifier];
-  v12 = [v11 copy];
+  extensionBundleIdentifier = [(SOProfile *)self extensionBundleIdentifier];
+  v12 = [extensionBundleIdentifier copy];
   [v4 setExtensionBundleIdentifier:v12];
 
   v13 = [(NSString *)self->_extensionTeamIdentifier copy];
@@ -461,8 +461,8 @@ LABEL_37:
   v14 = [(NSDictionary *)self->_extensionData copy];
   [v4 setExtensionData:v14];
 
-  v15 = [(SOProfile *)self deniedBundleIdentifiers];
-  v16 = [v15 copy];
+  deniedBundleIdentifiers = [(SOProfile *)self deniedBundleIdentifiers];
+  v16 = [deniedBundleIdentifiers copy];
   [v4 setDeniedBundleIdentifiers:v16];
 
   [v4 setScreenLockedBehavior:{-[SOProfile screenLockedBehavior](self, "screenLockedBehavior")}];
@@ -471,17 +471,17 @@ LABEL_37:
   return v4;
 }
 
-- (SOFullProfile)initWithCoder:(id)a3
+- (SOFullProfile)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v32.receiver = self;
   v32.super_class = SOFullProfile;
-  v5 = [(SOProfile *)&v32 initWithCoder:v4];
+  v5 = [(SOProfile *)&v32 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_extensionTeamIdentifier);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     extensionTeamIdentifier = v5->_extensionTeamIdentifier;
     v5->_extensionTeamIdentifier = v8;
 
@@ -492,7 +492,7 @@ LABEL_37:
     v14 = objc_opt_class();
     v15 = [v10 setWithObjects:{v11, v12, v13, v14, objc_opt_class(), 0}];
     v16 = NSStringFromSelector(sel_extensionData);
-    v17 = [v4 decodeObjectOfClasses:v15 forKey:v16];
+    v17 = [coderCopy decodeObjectOfClasses:v15 forKey:v16];
     extensionData = v5->_extensionData;
     v5->_extensionData = v17;
 
@@ -502,13 +502,13 @@ LABEL_37:
     v22 = objc_opt_class();
     v23 = [v19 setWithObjects:{v20, v21, v22, objc_opt_class(), 0}];
     v24 = NSStringFromSelector(sel_platformSSO);
-    v25 = [v4 decodeObjectOfClasses:v23 forKey:v24];
+    v25 = [coderCopy decodeObjectOfClasses:v23 forKey:v24];
     platformSSO = v5->_platformSSO;
     v5->_platformSSO = v25;
 
     v27 = objc_opt_class();
     v28 = NSStringFromSelector(sel_pssoRegistrationToken);
-    v29 = [v4 decodeObjectOfClass:v27 forKey:v28];
+    v29 = [coderCopy decodeObjectOfClass:v27 forKey:v28];
     pssoRegistrationToken = v5->_pssoRegistrationToken;
     v5->_pssoRegistrationToken = v29;
   }
@@ -516,27 +516,27 @@ LABEL_37:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v13.receiver = self;
   v13.super_class = SOFullProfile;
-  v4 = a3;
-  [(SOProfile *)&v13 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(SOProfile *)&v13 encodeWithCoder:coderCopy];
   extensionTeamIdentifier = self->_extensionTeamIdentifier;
   v6 = NSStringFromSelector(sel_extensionTeamIdentifier);
-  [v4 encodeObject:extensionTeamIdentifier forKey:{v6, v13.receiver, v13.super_class}];
+  [coderCopy encodeObject:extensionTeamIdentifier forKey:{v6, v13.receiver, v13.super_class}];
 
   extensionData = self->_extensionData;
   v8 = NSStringFromSelector(sel_extensionData);
-  [v4 encodeObject:extensionData forKey:v8];
+  [coderCopy encodeObject:extensionData forKey:v8];
 
   platformSSO = self->_platformSSO;
   v10 = NSStringFromSelector(sel_platformSSO);
-  [v4 encodeObject:platformSSO forKey:v10];
+  [coderCopy encodeObject:platformSSO forKey:v10];
 
   pssoRegistrationToken = self->_pssoRegistrationToken;
   v12 = NSStringFromSelector(sel_pssoRegistrationToken);
-  [v4 encodeObject:pssoRegistrationToken forKey:v12];
+  [coderCopy encodeObject:pssoRegistrationToken forKey:v12];
 }
 
 - (void)initWithProfileData:.cold.1()

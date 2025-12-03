@@ -1,26 +1,26 @@
 @interface JSAApplication
-+ (id)purchaseEventFieldsWithPageId:(id)a3 pageType:(id)a4 pageContext:(id)a5 topic:(id)a6;
-+ (void)appendPageHistory:(id)a3 completion:(id)a4;
-+ (void)didFinishLaunchingWithMetrics:(BOOL)a3;
-+ (void)getODPTopGenre:(id)a3;
++ (id)purchaseEventFieldsWithPageId:(id)id pageType:(id)type pageContext:(id)context topic:(id)topic;
++ (void)appendPageHistory:(id)history completion:(id)completion;
++ (void)didFinishLaunchingWithMetrics:(BOOL)metrics;
++ (void)getODPTopGenre:(id)genre;
 + (void)openAccountSummaryPage;
-+ (void)openAchievementSheet:(id)a3;
-+ (void)openExternalURL:(id)a3;
++ (void)openAchievementSheet:(id)sheet;
++ (void)openExternalURL:(id)l;
 + (void)openNotificationSettingsPage;
-+ (void)openProductPagesWithIds:(id)a3 contentTypes:(id)a4 focusedIndex:(unint64_t)a5 options:(id)a6;
-+ (void)openURL:(id)a3 referrerURL:(id)a4 referrerApplicationName:(id)a5 options:(id)a6;
-+ (void)openWriteReviewPageWithURL:(id)a3 options:(id)a4;
++ (void)openProductPagesWithIds:(id)ids contentTypes:(id)types focusedIndex:(unint64_t)index options:(id)options;
++ (void)openURL:(id)l referrerURL:(id)rL referrerApplicationName:(id)name options:(id)options;
++ (void)openWriteReviewPageWithURL:(id)l options:(id)options;
 + (void)openYearInReview;
-+ (void)recordNativeEvent:(id)a3 additionalInfo:(id)a4;
-+ (void)searchForTerm:(id)a3;
++ (void)recordNativeEvent:(id)event additionalInfo:(id)info;
++ (void)searchForTerm:(id)term;
 + (void)willTerminate;
 - (JSAApplication)init;
 - (NSDate)lastScriptCacheDate;
 - (void)dealloc;
-- (void)downloadAndCacheScript:(id)a3;
-- (void)reloadWithNewCache:(id)a3;
-- (void)reloadWithNewCacheIfAvailable:(id)a3;
-- (void)setOnUnhandledPromiseRejection:(id)a3;
+- (void)downloadAndCacheScript:(id)script;
+- (void)reloadWithNewCache:(id)cache;
+- (void)reloadWithNewCacheIfAvailable:(id)available;
+- (void)setOnUnhandledPromiseRejection:(id)rejection;
 @end
 
 @implementation JSAApplication
@@ -33,12 +33,12 @@
   if (v2)
   {
     v3 = +[NSBundle mainBundle];
-    v4 = [v3 infoDictionary];
+    infoDictionary = [v3 infoDictionary];
 
-    if (v4)
+    if (infoDictionary)
     {
       objc_opt_class();
-      v5 = [v4 objectForKeyedSubscript:kCFBundleIdentifierKey];
+      v5 = [infoDictionary objectForKeyedSubscript:kCFBundleIdentifierKey];
       v6 = BUDynamicCast();
       v7 = v6;
       if (v6)
@@ -54,7 +54,7 @@
       objc_storeStrong(&v2->_identifier, v8);
 
       objc_opt_class();
-      v9 = [v4 objectForKeyedSubscript:_kCFBundleShortVersionStringKey];
+      v9 = [infoDictionary objectForKeyedSubscript:_kCFBundleShortVersionStringKey];
       v10 = BUDynamicCast();
       v11 = v10;
       if (v10)
@@ -76,10 +76,10 @@
 
 - (void)dealloc
 {
-  v3 = [(JSManagedValue *)self->_onUnhandledPromiseRejection value];
-  v4 = [v3 context];
-  v5 = [v4 virtualMachine];
-  [v5 removeManagedReference:self->_onUnhandledPromiseRejection withOwner:self];
+  value = [(JSManagedValue *)self->_onUnhandledPromiseRejection value];
+  context = [value context];
+  virtualMachine = [context virtualMachine];
+  [virtualMachine removeManagedReference:self->_onUnhandledPromiseRejection withOwner:self];
 
   v6.receiver = self;
   v6.super_class = JSAApplication;
@@ -89,14 +89,14 @@
 - (NSDate)lastScriptCacheDate
 {
   v2 = +[JSABridge sharedInstance];
-  v3 = [v2 lastScriptCacheDate];
+  lastScriptCacheDate = [v2 lastScriptCacheDate];
 
-  return v3;
+  return lastScriptCacheDate;
 }
 
-- (void)setOnUnhandledPromiseRejection:(id)a3
+- (void)setOnUnhandledPromiseRejection:(id)rejection
 {
-  v4 = a3;
+  rejectionCopy = rejection;
   v5 = JSALog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -105,13 +105,13 @@
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%{public}s", v14, 0xCu);
   }
 
-  v6 = [v4 context];
-  v7 = [v6 JSGlobalContextRef];
+  context = [rejectionCopy context];
+  jSGlobalContextRef = [context JSGlobalContextRef];
   *v14 = 0;
-  JSValueToObject(v7, [v4 JSValueRef], v14);
+  JSValueToObject(jSGlobalContextRef, [rejectionCopy JSValueRef], v14);
   if (*v14)
   {
-    onUnhandledPromiseRejection = [JSValue valueWithJSValueRef:*v14 inContext:v6];
+    onUnhandledPromiseRejection = [JSValue valueWithJSValueRef:*v14 inContext:context];
     v9 = JSALog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -124,18 +124,18 @@
     JSGlobalContextSetUnhandledRejectionCallback();
     if (!*v14)
     {
-      v10 = [(JSManagedValue *)self->_onUnhandledPromiseRejection value];
-      v11 = [v10 context];
-      v12 = [v11 virtualMachine];
-      [v12 removeManagedReference:self->_onUnhandledPromiseRejection withOwner:self];
+      value = [(JSManagedValue *)self->_onUnhandledPromiseRejection value];
+      context2 = [value context];
+      virtualMachine = [context2 virtualMachine];
+      [virtualMachine removeManagedReference:self->_onUnhandledPromiseRejection withOwner:self];
 
-      v13 = [JSManagedValue managedValueWithValue:v4 andOwner:self];
+      v13 = [JSManagedValue managedValueWithValue:rejectionCopy andOwner:self];
       onUnhandledPromiseRejection = self->_onUnhandledPromiseRejection;
       self->_onUnhandledPromiseRejection = v13;
       goto LABEL_10;
     }
 
-    onUnhandledPromiseRejection = [JSValue valueWithJSValueRef:*v14 inContext:v6];
+    onUnhandledPromiseRejection = [JSValue valueWithJSValueRef:*v14 inContext:context];
     v9 = JSALog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -146,22 +146,22 @@
 LABEL_10:
 }
 
-+ (void)openExternalURL:(id)a3
++ (void)openExternalURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = JSALog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
     v19 = "+[JSAApplication openExternalURL:]";
     v20 = 2112;
-    v21 = v3;
+    v21 = lCopy;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "%{public}s url=%@", buf, 0x16u);
   }
 
-  if (v3)
+  if (lCopy)
   {
-    v5 = [NSURL URLWithString:v3];
+    v5 = [NSURL URLWithString:lCopy];
   }
 
   else
@@ -201,9 +201,9 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)downloadAndCacheScript:(id)a3
+- (void)downloadAndCacheScript:(id)script
 {
-  v3 = a3;
+  scriptCopy = script;
   v4 = JSALog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -217,14 +217,14 @@ LABEL_11:
   v7[1] = 3221225472;
   v7[2] = sub_22688;
   v7[3] = &unk_B3478;
-  v8 = v3;
-  v6 = v3;
+  v8 = scriptCopy;
+  v6 = scriptCopy;
   [v5 checkForUpgradeWithCompletion:v7];
 }
 
-- (void)reloadWithNewCacheIfAvailable:(id)a3
+- (void)reloadWithNewCacheIfAvailable:(id)available
 {
-  v3 = a3;
+  availableCopy = available;
   v4 = JSALog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -237,14 +237,14 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = sub_22920;
   block[3] = &unk_B20D8;
-  v7 = v3;
-  v5 = v3;
+  v7 = availableCopy;
+  v5 = availableCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)reloadWithNewCache:(id)a3
+- (void)reloadWithNewCache:(id)cache
 {
-  v3 = a3;
+  cacheCopy = cache;
   v4 = JSALog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -257,14 +257,14 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = sub_22D30;
   block[3] = &unk_B20D8;
-  v7 = v3;
-  v5 = v3;
+  v7 = cacheCopy;
+  v5 = cacheCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-+ (void)didFinishLaunchingWithMetrics:(BOOL)a3
++ (void)didFinishLaunchingWithMetrics:(BOOL)metrics
 {
-  v3 = a3;
+  metricsCopy = metrics;
   v4 = BUIsRunningTests();
   if (v4)
   {
@@ -276,7 +276,7 @@ LABEL_11:
     v5 = 0;
   }
 
-  if ((v4 & 1) != 0 || !v3 || (+[JSAMetricsAppLaunchEvent markLaunchEndTime](JSAMetricsAppLaunchEvent, "markLaunchEndTime"), +[JSAMetricsAppLaunchEvent consumePendingLaunchEvent](JSAMetricsAppLaunchEvent, "consumePendingLaunchEvent"), v6 = objc_claimAutoreleasedReturnValue(), [v6 metricsDictionary], v5 = objc_claimAutoreleasedReturnValue(), v6, v5))
+  if ((v4 & 1) != 0 || !metricsCopy || (+[JSAMetricsAppLaunchEvent markLaunchEndTime](JSAMetricsAppLaunchEvent, "markLaunchEndTime"), +[JSAMetricsAppLaunchEvent consumePendingLaunchEvent](JSAMetricsAppLaunchEvent, "consumePendingLaunchEvent"), v6 = objc_claimAutoreleasedReturnValue(), [v6 metricsDictionary], v5 = objc_claimAutoreleasedReturnValue(), v6, v5))
   {
     v7 = +[JSABridge sharedInstance];
     v9[0] = _NSConcreteStackBlock;
@@ -303,21 +303,21 @@ LABEL_11:
 + (void)willTerminate
 {
   v6 = +[JSABridge sharedInstance];
-  v3 = [v6 environment];
-  v4 = [v3 context];
-  v5 = sub_23278(a1, @"onTerminate", &__NSArray0__struct, v4);
+  environment = [v6 environment];
+  context = [environment context];
+  v5 = sub_23278(self, @"onTerminate", &__NSArray0__struct, context);
 }
 
-+ (void)openProductPagesWithIds:(id)a3 contentTypes:(id)a4 focusedIndex:(unint64_t)a5 options:(id)a6
++ (void)openProductPagesWithIds:(id)ids contentTypes:(id)types focusedIndex:(unint64_t)index options:(id)options
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  idsCopy = ids;
+  typesCopy = types;
+  optionsCopy = options;
   v13 = JSALog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v10 componentsJoinedByString:{@", "}];
-    v15 = [NSNumber numberWithUnsignedInteger:a5];
+    v14 = [idsCopy componentsJoinedByString:{@", "}];
+    v15 = [NSNumber numberWithUnsignedInteger:index];
     *buf = 136446978;
     v29 = "+[JSAApplication openProductPagesWithIds:contentTypes:focusedIndex:options:]";
     v30 = 2112;
@@ -325,61 +325,61 @@ LABEL_11:
     v32 = 2112;
     v33 = v15;
     v34 = 2112;
-    v35 = v12;
+    v35 = optionsCopy;
     _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "%{public}s ids=[%@], focusedIndex=%@, options=%@", buf, 0x2Au);
   }
 
-  if ([v10 count])
+  if ([idsCopy count])
   {
-    if ([v11 count])
+    if ([typesCopy count])
     {
-      v16 = [v10 count];
-      if (v16 == [v11 count])
+      v16 = [idsCopy count];
+      if (v16 == [typesCopy count])
       {
-        v17 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v10 count]);
+        v17 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [idsCopy count]);
         v21 = _NSConcreteStackBlock;
         v22 = 3221225472;
         v23 = sub_2388C;
         v24 = &unk_B34A0;
         v25 = v17;
-        v26 = v11;
-        [v10 enumerateObjectsUsingBlock:&v21];
+        v26 = typesCopy;
+        [idsCopy enumerateObjectsUsingBlock:&v21];
         v27[0] = v17;
-        v18 = [NSNumber numberWithUnsignedInteger:a5, v21, v22, v23, v24, v25];
+        v18 = [NSNumber numberWithUnsignedInteger:index, v21, v22, v23, v24, v25];
         v27[1] = v18;
         v19 = [NSArray arrayWithObjects:v27 count:2];
-        v20 = sub_2395C(a1, v19, v12);
+        v20 = sub_2395C(self, v19, optionsCopy);
 
-        sub_23348(a1, @"openProductPagesWithInfo", v20, 0);
+        sub_23348(self, @"openProductPagesWithInfo", v20, 0);
       }
     }
   }
 }
 
-+ (void)openWriteReviewPageWithURL:(id)a3 options:(id)a4
++ (void)openWriteReviewPageWithURL:(id)l options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  optionsCopy = options;
   v8 = JSALog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
     v14 = "+[JSAApplication openWriteReviewPageWithURL:options:]";
     v15 = 2112;
-    v16 = v6;
+    v16 = lCopy;
     v17 = 2112;
-    v18 = v7;
+    v18 = optionsCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "%{public}s url=%@, options=%@", buf, 0x20u);
   }
 
-  v9 = [v6 absoluteString];
-  if ([v9 length])
+  absoluteString = [lCopy absoluteString];
+  if ([absoluteString length])
   {
-    v12 = v9;
+    v12 = absoluteString;
     v10 = [NSArray arrayWithObjects:&v12 count:1];
-    v11 = sub_2395C(a1, v10, v7);
+    v11 = sub_2395C(self, v10, optionsCopy);
 
-    sub_23348(a1, @"openWriteReviewPageWithURL", v11, 0);
+    sub_23348(self, @"openWriteReviewPageWithURL", v11, 0);
   }
 }
 
@@ -393,7 +393,7 @@ LABEL_11:
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "%{public}s", &v4, 0xCu);
   }
 
-  sub_23348(a1, @"openAccountSummaryPage", 0, 0);
+  sub_23348(self, @"openAccountSummaryPage", 0, 0);
 }
 
 + (void)openNotificationSettingsPage
@@ -406,14 +406,14 @@ LABEL_11:
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "%{public}s", &v4, 0xCu);
   }
 
-  sub_23348(a1, @"openNotificationSettingsPage", 0, 0);
+  sub_23348(self, @"openNotificationSettingsPage", 0, 0);
 }
 
-+ (void)openAchievementSheet:(id)a3
++ (void)openAchievementSheet:(id)sheet
 {
-  v4 = a3;
+  sheetCopy = sheet;
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:@"achievementKind"];
+  v5 = [sheetCopy objectForKeyedSubscript:@"achievementKind"];
   v6 = BUDynamicCast();
 
   v7 = JSALog();
@@ -428,9 +428,9 @@ LABEL_11:
   {
     v10 = v6;
     v8 = [NSArray arrayWithObjects:&v10 count:1];
-    v9 = sub_2395C(a1, v8, v4);
+    v9 = sub_2395C(self, v8, sheetCopy);
 
-    sub_23348(a1, @"openAchievementSheet", v9, 0);
+    sub_23348(self, @"openAchievementSheet", v9, 0);
   }
 
   else
@@ -466,36 +466,36 @@ LABEL_11:
   }
 }
 
-+ (void)openURL:(id)a3 referrerURL:(id)a4 referrerApplicationName:(id)a5 options:(id)a6
++ (void)openURL:(id)l referrerURL:(id)rL referrerApplicationName:(id)name options:(id)options
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  rLCopy = rL;
+  nameCopy = name;
+  optionsCopy = options;
   v14 = JSALog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 136447234;
     v20 = "+[JSAApplication openURL:referrerURL:referrerApplicationName:options:]";
     v21 = 2112;
-    v22 = v10;
+    v22 = lCopy;
     v23 = 2112;
-    v24 = v11;
+    v24 = rLCopy;
     v25 = 2112;
-    v26 = v12;
+    v26 = nameCopy;
     v27 = 2112;
-    v28 = v13;
+    v28 = optionsCopy;
     _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "%{public}s url=%@, referrer=%@, referrerApplicationName=%@, options=%@", &v19, 0x34u);
   }
 
   v15 = +[NSMutableArray array];
-  v16 = [v10 absoluteString];
-  [v15 addObject:v16];
+  absoluteString = [lCopy absoluteString];
+  [v15 addObject:absoluteString];
 
-  if (v11)
+  if (rLCopy)
   {
-    [v15 addObject:v11];
-    if (v12)
+    [v15 addObject:rLCopy];
+    if (nameCopy)
     {
       goto LABEL_5;
     }
@@ -504,7 +504,7 @@ LABEL_9:
     v18 = +[NSNull null];
     [v15 addObject:v18];
 
-    if (!v13)
+    if (!optionsCopy)
     {
       goto LABEL_7;
     }
@@ -515,33 +515,33 @@ LABEL_9:
   v17 = +[NSNull null];
   [v15 addObject:v17];
 
-  if (!v12)
+  if (!nameCopy)
   {
     goto LABEL_9;
   }
 
 LABEL_5:
-  [v15 addObject:v12];
-  if (v13)
+  [v15 addObject:nameCopy];
+  if (optionsCopy)
   {
 LABEL_6:
-    [v15 addObject:v13];
+    [v15 addObject:optionsCopy];
   }
 
 LABEL_7:
-  sub_23348(a1, @"openURL", v15, 0);
+  sub_23348(self, @"openURL", v15, 0);
 }
 
-+ (void)searchForTerm:(id)a3
++ (void)searchForTerm:(id)term
 {
-  v3 = a3;
+  termCopy = term;
   v4 = JSALog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
     v12 = "+[JSAApplication searchForTerm:]";
     v13 = 2112;
-    v14 = v3;
+    v14 = termCopy;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "%{public}s term=%@", buf, 0x16u);
   }
 
@@ -549,7 +549,7 @@ LABEL_7:
   [v5 setHost:&stru_B7300];
   [v5 setScheme:@"itms-bookss"];
   v6 = [[NSURLQueryItem alloc] initWithName:@"action" value:@"search"];
-  v7 = [[NSURLQueryItem alloc] initWithName:@"term" value:{v3, v6}];
+  v7 = [[NSURLQueryItem alloc] initWithName:@"term" value:{termCopy, v6}];
   v10[1] = v7;
   v8 = [NSArray arrayWithObjects:v10 count:2];
   [v5 setQueryItems:v8];
@@ -561,32 +561,32 @@ LABEL_7:
   }
 }
 
-+ (void)recordNativeEvent:(id)a3 additionalInfo:(id)a4
++ (void)recordNativeEvent:(id)event additionalInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v10[0] = v6;
-  v8 = v7;
-  if (!v7)
+  eventCopy = event;
+  infoCopy = info;
+  v10[0] = eventCopy;
+  v8 = infoCopy;
+  if (!infoCopy)
   {
     v8 = +[NSNull null];
   }
 
   v10[1] = v8;
   v9 = [NSArray arrayWithObjects:v10 count:2];
-  sub_23348(a1, @"onRecordNativeEvent", v9, 0);
+  sub_23348(self, @"onRecordNativeEvent", v9, 0);
 
-  if (!v7)
+  if (!infoCopy)
   {
   }
 }
 
-+ (id)purchaseEventFieldsWithPageId:(id)a3 pageType:(id)a4 pageContext:(id)a5 topic:(id)a6
++ (id)purchaseEventFieldsWithPageId:(id)id pageType:(id)type pageContext:(id)context topic:(id)topic
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  idCopy = id;
+  typeCopy = type;
+  contextCopy = context;
+  topicCopy = topic;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -598,14 +598,14 @@ LABEL_7:
   v21[1] = 3221225472;
   v21[2] = sub_2461C;
   v21[3] = &unk_B34C8;
-  v27 = a1;
-  v15 = v10;
+  selfCopy = self;
+  v15 = idCopy;
   v22 = v15;
-  v16 = v11;
+  v16 = typeCopy;
   v23 = v16;
-  v17 = v12;
+  v17 = contextCopy;
   v24 = v17;
-  v18 = v13;
+  v18 = topicCopy;
   v25 = v18;
   v26 = &v28;
   [v14 enqueueBlockPrefersSync:v21 file:@"JSAApplication.m" line:349];
@@ -616,30 +616,30 @@ LABEL_7:
   return v19;
 }
 
-+ (void)getODPTopGenre:(id)a3
++ (void)getODPTopGenre:(id)genre
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_24894;
   v5[3] = &unk_B34F0;
-  v6 = a3;
-  v4 = v6;
-  sub_23348(a1, @"getTopGenreFromODPRanker", &__NSArray0__struct, v5);
+  genreCopy = genre;
+  v4 = genreCopy;
+  sub_23348(self, @"getTopGenreFromODPRanker", &__NSArray0__struct, v5);
 }
 
-+ (void)appendPageHistory:(id)a3 completion:(id)a4
++ (void)appendPageHistory:(id)history completion:(id)completion
 {
-  v6 = a4;
-  v12 = a3;
-  v7 = a3;
-  v8 = [NSArray arrayWithObjects:&v12 count:1];
+  completionCopy = completion;
+  historyCopy = history;
+  historyCopy2 = history;
+  v8 = [NSArray arrayWithObjects:&historyCopy count:1];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_24A38;
   v10[3] = &unk_B34F0;
-  v11 = v6;
-  v9 = v6;
-  sub_23348(a1, @"appendPageHistory", v8, v10);
+  v11 = completionCopy;
+  v9 = completionCopy;
+  sub_23348(self, @"appendPageHistory", v8, v10);
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface MXRecognitionToken
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAddSpaceAfter:(BOOL)a3;
-- (void)setHasEndMilliSeconds:(BOOL)a3;
-- (void)setHasSilenceStartMilliSeconds:(BOOL)a3;
-- (void)setHasStartMilliSeconds:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAddSpaceAfter:(BOOL)after;
+- (void)setHasEndMilliSeconds:(BOOL)seconds;
+- (void)setHasSilenceStartMilliSeconds:(BOOL)seconds;
+- (void)setHasStartMilliSeconds:(BOOL)seconds;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MXRecognitionToken
 
-- (void)setHasStartMilliSeconds:(BOOL)a3
+- (void)setHasStartMilliSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 8;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasEndMilliSeconds:(BOOL)a3
+- (void)setHasEndMilliSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 2;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSilenceStartMilliSeconds:(BOOL)a3
+- (void)setHasSilenceStartMilliSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 4;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasAddSpaceAfter:(BOOL)a3
+- (void)setHasAddSpaceAfter:(BOOL)after
 {
-  if (a3)
+  if (after)
   {
     v3 = 16;
   }
@@ -81,20 +81,20 @@
   v8.receiver = self;
   v8.super_class = MXRecognitionToken;
   v4 = [(MXRecognitionToken *)&v8 description];
-  v5 = [(MXRecognitionToken *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MXRecognitionToken *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   tokenText = self->_tokenText;
   if (tokenText)
   {
-    [v3 setObject:tokenText forKey:@"token_text"];
+    [dictionary setObject:tokenText forKey:@"token_text"];
   }
 
   has = self->_has;
@@ -179,14 +179,14 @@ LABEL_9:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v11 = v4;
+  toCopy = to;
+  v11 = toCopy;
   if (self->_tokenText)
   {
     PBDataWriterWriteStringField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   has = self->_has;
@@ -194,7 +194,7 @@ LABEL_9:
   {
     startMilliSeconds = self->_startMilliSeconds;
     PBDataWriterWriteInt32Field();
-    v4 = v11;
+    toCopy = v11;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -215,7 +215,7 @@ LABEL_5:
 
   endMilliSeconds = self->_endMilliSeconds;
   PBDataWriterWriteInt32Field();
-  v4 = v11;
+  toCopy = v11;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -231,7 +231,7 @@ LABEL_6:
 LABEL_18:
   silenceStartMilliSeconds = self->_silenceStartMilliSeconds;
   PBDataWriterWriteInt32Field();
-  v4 = v11;
+  toCopy = v11;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -247,44 +247,44 @@ LABEL_7:
 LABEL_19:
   confidence = self->_confidence;
   PBDataWriterWriteInt32Field();
-  v4 = v11;
+  toCopy = v11;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_8:
     addSpaceAfter = self->_addSpaceAfter;
     PBDataWriterWriteBOOLField();
-    v4 = v11;
+    toCopy = v11;
   }
 
 LABEL_9:
   if (self->_phoneSeq)
   {
     PBDataWriterWriteStringField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_ipaPhoneSeq)
   {
     PBDataWriterWriteStringField();
-    v4 = v11;
+    toCopy = v11;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_tokenText)
   {
-    [v4 setTokenText:?];
-    v4 = v6;
+    [toCopy setTokenText:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(v4 + 9) = self->_startMilliSeconds;
-    *(v4 + 52) |= 8u;
+    *(toCopy + 9) = self->_startMilliSeconds;
+    *(toCopy + 52) |= 8u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -303,8 +303,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 3) = self->_endMilliSeconds;
-  *(v4 + 52) |= 2u;
+  *(toCopy + 3) = self->_endMilliSeconds;
+  *(toCopy + 52) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -318,8 +318,8 @@ LABEL_6:
   }
 
 LABEL_18:
-  *(v4 + 8) = self->_silenceStartMilliSeconds;
-  *(v4 + 52) |= 4u;
+  *(toCopy + 8) = self->_silenceStartMilliSeconds;
+  *(toCopy + 52) |= 4u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -333,33 +333,33 @@ LABEL_7:
   }
 
 LABEL_19:
-  *(v4 + 2) = self->_confidence;
-  *(v4 + 52) |= 1u;
+  *(toCopy + 2) = self->_confidence;
+  *(toCopy + 52) |= 1u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_8:
-    *(v4 + 48) = self->_addSpaceAfter;
-    *(v4 + 52) |= 0x10u;
+    *(toCopy + 48) = self->_addSpaceAfter;
+    *(toCopy + 52) |= 0x10u;
   }
 
 LABEL_9:
   if (self->_phoneSeq)
   {
     [v6 setPhoneSeq:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_ipaPhoneSeq)
   {
     [v6 setIpaPhoneSeq:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_tokenText copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_tokenText copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
@@ -426,27 +426,27 @@ LABEL_6:
   }
 
 LABEL_7:
-  v9 = [(NSString *)self->_phoneSeq copyWithZone:a3];
+  v9 = [(NSString *)self->_phoneSeq copyWithZone:zone];
   v10 = *(v5 + 24);
   *(v5 + 24) = v9;
 
-  v11 = [(NSString *)self->_ipaPhoneSeq copyWithZone:a3];
+  v11 = [(NSString *)self->_ipaPhoneSeq copyWithZone:zone];
   v12 = *(v5 + 16);
   *(v5 + 16) = v11;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
   tokenText = self->_tokenText;
-  if (tokenText | *(v4 + 5))
+  if (tokenText | *(equalCopy + 5))
   {
     if (![(NSString *)tokenText isEqual:?])
     {
@@ -454,62 +454,62 @@ LABEL_7:
     }
   }
 
-  v6 = *(v4 + 52);
+  v6 = *(equalCopy + 52);
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 52) & 8) == 0 || self->_startMilliSeconds != *(v4 + 9))
+    if ((*(equalCopy + 52) & 8) == 0 || self->_startMilliSeconds != *(equalCopy + 9))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 52) & 8) != 0)
+  else if ((*(equalCopy + 52) & 8) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) == 0 || self->_endMilliSeconds != *(v4 + 3))
+    if ((*(equalCopy + 52) & 2) == 0 || self->_endMilliSeconds != *(equalCopy + 3))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 52) & 2) != 0)
+  else if ((*(equalCopy + 52) & 2) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 52) & 4) == 0 || self->_silenceStartMilliSeconds != *(v4 + 8))
+    if ((*(equalCopy + 52) & 4) == 0 || self->_silenceStartMilliSeconds != *(equalCopy + 8))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 52) & 4) != 0)
+  else if ((*(equalCopy + 52) & 4) != 0)
   {
     goto LABEL_31;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_confidence != *(v4 + 2))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_confidence != *(equalCopy + 2))
     {
       goto LABEL_31;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 0x10) == 0)
   {
-    if ((*(v4 + 52) & 0x10) == 0)
+    if ((*(equalCopy + 52) & 0x10) == 0)
     {
       goto LABEL_26;
     }
@@ -519,34 +519,34 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  if ((*(v4 + 52) & 0x10) == 0)
+  if ((*(equalCopy + 52) & 0x10) == 0)
   {
     goto LABEL_31;
   }
 
-  v11 = *(v4 + 48);
+  v11 = *(equalCopy + 48);
   if (self->_addSpaceAfter)
   {
-    if ((*(v4 + 48) & 1) == 0)
+    if ((*(equalCopy + 48) & 1) == 0)
     {
       goto LABEL_31;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_31;
   }
 
 LABEL_26:
   phoneSeq = self->_phoneSeq;
-  if (phoneSeq | *(v4 + 3) && ![(NSString *)phoneSeq isEqual:?])
+  if (phoneSeq | *(equalCopy + 3) && ![(NSString *)phoneSeq isEqual:?])
   {
     goto LABEL_31;
   }
 
   ipaPhoneSeq = self->_ipaPhoneSeq;
-  if (ipaPhoneSeq | *(v4 + 2))
+  if (ipaPhoneSeq | *(equalCopy + 2))
   {
     v9 = [(NSString *)ipaPhoneSeq isEqual:?];
   }
@@ -632,22 +632,22 @@ LABEL_12:
   return v9 ^ [(NSString *)self->_ipaPhoneSeq hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 5))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 5))
   {
     [(MXRecognitionToken *)self setTokenText:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if ((v5 & 8) != 0)
   {
-    self->_startMilliSeconds = *(v4 + 9);
+    self->_startMilliSeconds = *(fromCopy + 9);
     *&self->_has |= 8u;
-    v5 = *(v4 + 52);
+    v5 = *(fromCopy + 52);
     if ((v5 & 2) == 0)
     {
 LABEL_5:
@@ -660,14 +660,14 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 52) & 2) == 0)
+  else if ((*(fromCopy + 52) & 2) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_endMilliSeconds = *(v4 + 3);
+  self->_endMilliSeconds = *(fromCopy + 3);
   *&self->_has |= 2u;
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if ((v5 & 4) == 0)
   {
 LABEL_6:
@@ -680,9 +680,9 @@ LABEL_6:
   }
 
 LABEL_18:
-  self->_silenceStartMilliSeconds = *(v4 + 8);
+  self->_silenceStartMilliSeconds = *(fromCopy + 8);
   *&self->_has |= 4u;
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if ((v5 & 1) == 0)
   {
 LABEL_7:
@@ -695,26 +695,26 @@ LABEL_7:
   }
 
 LABEL_19:
-  self->_confidence = *(v4 + 2);
+  self->_confidence = *(fromCopy + 2);
   *&self->_has |= 1u;
-  if ((*(v4 + 52) & 0x10) != 0)
+  if ((*(fromCopy + 52) & 0x10) != 0)
   {
 LABEL_8:
-    self->_addSpaceAfter = *(v4 + 48);
+    self->_addSpaceAfter = *(fromCopy + 48);
     *&self->_has |= 0x10u;
   }
 
 LABEL_9:
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(MXRecognitionToken *)self setPhoneSeq:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(MXRecognitionToken *)self setIpaPhoneSeq:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

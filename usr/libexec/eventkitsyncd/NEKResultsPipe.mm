@@ -2,9 +2,9 @@
 - (BOOL)changesAffectNext24hrs;
 - (BOOL)isEffectivelyEmpty;
 - (BOOL)isTruncated;
-- (NEKResultsPipe)initWithFIFOLength:(int64_t)a3 name:(id)a4;
+- (NEKResultsPipe)initWithFIFOLength:(int64_t)length name:(id)name;
 - (id)completion;
-- (void)addCompletion:(id)a3;
+- (void)addCompletion:(id)completion;
 - (void)markAsAffectingNext24hrs;
 - (void)markAsDeferrable;
 - (void)markAsNotEffectivelyEmpty;
@@ -14,11 +14,11 @@
 
 @implementation NEKResultsPipe
 
-- (NEKResultsPipe)initWithFIFOLength:(int64_t)a3 name:(id)a4
+- (NEKResultsPipe)initWithFIFOLength:(int64_t)length name:(id)name
 {
   v8.receiver = self;
   v8.super_class = NEKResultsPipe;
-  v4 = [(NDTResultsFIFO *)&v8 initWithFIFOLength:a3 name:a4];
+  v4 = [(NDTResultsFIFO *)&v8 initWithFIFOLength:length name:name];
   if (v4)
   {
     v5 = +[NSMutableArray array];
@@ -41,12 +41,12 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addCompletion:(id)a3
+- (void)addCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   completions = self->_completions;
-  v6 = objc_retainBlock(v4);
+  v6 = objc_retainBlock(completionCopy);
 
   [(NSMutableArray *)completions addObject:v6];
 

@@ -8,11 +8,11 @@
 - (NSString)myGatewayAddress;
 - (NetworkChangeNotifier)init;
 - (id)primaryInterfaceName;
-- (int)linkQualityValueForInterface:(id)a3;
-- (int)linkQualityValueForInterfaceType:(unint64_t)a3;
-- (unint64_t)linkQualityForInterfaceType:(unint64_t)a3;
+- (int)linkQualityValueForInterface:(id)interface;
+- (int)linkQualityValueForInterfaceType:(unint64_t)type;
+- (unint64_t)linkQualityForInterfaceType:(unint64_t)type;
 - (void)_clearIPCache;
-- (void)connectionMonitorDidUpdate:(id)a3;
+- (void)connectionMonitorDidUpdate:(id)update;
 - (void)dealloc;
 @end
 
@@ -29,7 +29,7 @@
 
 + (id)sharedInstance
 {
-  objc_msgSend_enableNotifications(a1, a2, v2);
+  objc_msgSend_enableNotifications(self, a2, v2);
   v3 = qword_1ED517130;
 
   return v3;
@@ -42,7 +42,7 @@
     return 1;
   }
 
-  v3 = objc_alloc_init(a1);
+  v3 = objc_alloc_init(self);
   v4 = qword_1ED517130;
   qword_1ED517130 = v3;
 
@@ -220,9 +220,9 @@ LABEL_6:
   return v10;
 }
 
-- (int)linkQualityValueForInterfaceType:(unint64_t)a3
+- (int)linkQualityValueForInterfaceType:(unint64_t)type
 {
-  if (a3 == 3)
+  if (type == 3)
   {
     v3 = @"pdp_ip0";
   }
@@ -235,11 +235,11 @@ LABEL_6:
   return MEMORY[0x1EEE66B58](self, sel_linkQualityValueForInterface_, v3);
 }
 
-- (int)linkQualityValueForInterface:(id)a3
+- (int)linkQualityValueForInterface:(id)interface
 {
   valuePtr = 0;
   v4 = *MEMORY[0x1E6982358];
-  NetworkInterfaceEntity = SCDynamicStoreKeyCreateNetworkInterfaceEntity(*MEMORY[0x1E695E480], *MEMORY[0x1E69822F0], a3, *MEMORY[0x1E6982358]);
+  NetworkInterfaceEntity = SCDynamicStoreKeyCreateNetworkInterfaceEntity(*MEMORY[0x1E695E480], *MEMORY[0x1E69822F0], interface, *MEMORY[0x1E6982358]);
   v6 = SCDynamicStoreCopyValue(self->_store, NetworkInterfaceEntity);
   v7 = v6;
   if (v6)
@@ -273,9 +273,9 @@ LABEL_6:
   return valuePtr;
 }
 
-- (unint64_t)linkQualityForInterfaceType:(unint64_t)a3
+- (unint64_t)linkQualityForInterfaceType:(unint64_t)type
 {
-  v3 = objc_msgSend_linkQualityValueForInterfaceType_(self, a2, a3);
+  v3 = objc_msgSend_linkQualityValueForInterfaceType_(self, a2, type);
   if (v3 <= 99)
   {
     return v3 > 49;
@@ -287,13 +287,13 @@ LABEL_6:
   }
 }
 
-- (void)connectionMonitorDidUpdate:(id)a3
+- (void)connectionMonitorDidUpdate:(id)update
 {
   v17[1] = *MEMORY[0x1E69E9840];
   connectionMonitor = self->_connectionMonitor;
-  if (connectionMonitor == a3)
+  if (connectionMonitor == update)
   {
-    isImmediatelyReachable = objc_msgSend_isImmediatelyReachable(connectionMonitor, a2, a3);
+    isImmediatelyReachable = objc_msgSend_isImmediatelyReachable(connectionMonitor, a2, update);
     if (self->_lastPostedNetworkUp != isImmediatelyReachable)
     {
       v8 = isImmediatelyReachable;

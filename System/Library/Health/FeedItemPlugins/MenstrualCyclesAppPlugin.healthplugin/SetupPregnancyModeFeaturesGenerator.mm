@@ -1,20 +1,20 @@
 @interface SetupPregnancyModeFeaturesGenerator
-- (void)experienceModelDidUpdate:(id)a3;
-- (void)pregnancyModelDidUpdate:(id)a3;
+- (void)experienceModelDidUpdate:(id)update;
+- (void)pregnancyModelDidUpdate:(id)update;
 @end
 
 @implementation SetupPregnancyModeFeaturesGenerator
 
-- (void)experienceModelDidUpdate:(id)a3
+- (void)experienceModelDidUpdate:(id)update
 {
-  v3 = a3;
+  updateCopy = update;
 
-  sub_29E000188(v3);
+  sub_29E000188(updateCopy);
 }
 
-- (void)pregnancyModelDidUpdate:(id)a3
+- (void)pregnancyModelDidUpdate:(id)update
 {
-  v3 = a3;
+  updateCopy = update;
 
   sub_29E2C10C4();
 }

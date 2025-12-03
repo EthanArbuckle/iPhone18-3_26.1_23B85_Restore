@@ -1,6 +1,6 @@
 @interface IMMutableBagKeySet
 - (IMMutableBagKeySet)init;
-- (void)addBagKey:(id)a3 valueType:(unint64_t)a4 defaultValue:(id)a5;
+- (void)addBagKey:(id)key valueType:(unint64_t)type defaultValue:(id)value;
 @end
 
 @implementation IMMutableBagKeySet
@@ -24,21 +24,21 @@
   return v2;
 }
 
-- (void)addBagKey:(id)a3 valueType:(unint64_t)a4 defaultValue:(id)a5
+- (void)addBagKey:(id)key valueType:(unint64_t)type defaultValue:(id)value
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  keyCopy = key;
+  valueCopy = value;
+  if (valueCopy)
   {
-    [(NSMutableDictionary *)self->_defaultValueMap setObject:v9 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_defaultValueMap setObject:valueCopy forKeyedSubscript:keyCopy];
   }
 
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  [(NSMutableDictionary *)self->_valueTypeMap setObject:v10 forKeyedSubscript:v8];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+  [(NSMutableDictionary *)self->_valueTypeMap setObject:v10 forKeyedSubscript:keyCopy];
 
   v11.receiver = self;
   v11.super_class = IMMutableBagKeySet;
-  [(AMSMutableBagKeySet *)&v11 addBagKey:v8 valueType:a4 defaultValue:v9];
+  [(AMSMutableBagKeySet *)&v11 addBagKey:keyCopy valueType:type defaultValue:valueCopy];
 }
 
 @end

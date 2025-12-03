@@ -1,26 +1,26 @@
 @interface SBFWebClipSanitationReport
-- (SBFWebClipSanitationReport)initWithWebClip:(id)a3 result:(int64_t)a4 error:(id)a5;
+- (SBFWebClipSanitationReport)initWithWebClip:(id)clip result:(int64_t)result error:(id)error;
 - (id)description;
 @end
 
 @implementation SBFWebClipSanitationReport
 
-- (SBFWebClipSanitationReport)initWithWebClip:(id)a3 result:(int64_t)a4 error:(id)a5
+- (SBFWebClipSanitationReport)initWithWebClip:(id)clip result:(int64_t)result error:(id)error
 {
-  v9 = a3;
-  v10 = a5;
+  clipCopy = clip;
+  errorCopy = error;
   v16.receiver = self;
   v16.super_class = SBFWebClipSanitationReport;
   v11 = [(SBFWebClipSanitationReport *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_webClip, a3);
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_webClip, clip);
+    v13 = [errorCopy copy];
     error = v12->_error;
     v12->_error = v13;
 
-    v12->_result = a4;
+    v12->_result = result;
   }
 
   return v12;
@@ -46,23 +46,23 @@
   if (error)
   {
     v9 = [v3 appendObject:error withName:@"error"];
-    v10 = [(NSError *)self->_error code];
-    if (v10 > 2)
+    code = [(NSError *)self->_error code];
+    if (code > 2)
     {
       v11 = @"(Unknown SBFWebClipSanitizationError)";
     }
 
     else
     {
-      v11 = off_1E8080658[v10];
+      v11 = off_1E8080658[code];
     }
 
     v12 = [v3 appendObject:v11 withName:@"errorCode"];
   }
 
-  v13 = [v3 build];
+  build = [v3 build];
 
-  return v13;
+  return build;
 }
 
 @end

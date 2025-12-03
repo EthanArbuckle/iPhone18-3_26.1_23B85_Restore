@@ -2,17 +2,17 @@
 - (CGSize)_hourTickSize;
 - (CGSize)_minuteTickSize;
 - (CGSize)_secondTickSize;
-- (NTKDualTimeView)initWithFrame:(CGRect)a3 style:(unint64_t)a4 andDevice:(id)a5;
+- (NTKDualTimeView)initWithFrame:(CGRect)frame style:(unint64_t)style andDevice:(id)device;
 - (id)_activeTimeView;
-- (id)_dialColorForColorPalette:(id)a3;
+- (id)_dialColorForColorPalette:(id)palette;
 - (id)_digitalLabelFont;
 - (id)_digitalStyle;
-- (id)_digitalTimeLabelColorForColorPalette:(id)a3;
-- (id)_hourMinuteHandFillColorForColorPalette:(id)a3;
-- (id)_hourTickColorForColorPalette:(id)a3;
-- (id)_minuteTickColorForColorPalette:(id)a3;
-- (id)_secondTickActiveColorForColorPalette:(id)a3;
-- (id)_secondTickInactiveColorForColorPalette:(id)a3;
+- (id)_digitalTimeLabelColorForColorPalette:(id)palette;
+- (id)_hourMinuteHandFillColorForColorPalette:(id)palette;
+- (id)_hourTickColorForColorPalette:(id)palette;
+- (id)_minuteTickColorForColorPalette:(id)palette;
+- (id)_secondTickActiveColorForColorPalette:(id)palette;
+- (id)_secondTickInactiveColorForColorPalette:(id)palette;
 - (void)_applyColorToAnalogHands;
 - (void)_applyColorToDigitalLabelAndTicks;
 - (void)_refreshDigitalTimeLabel;
@@ -23,43 +23,43 @@
 - (void)_setupDigitalTimeViews;
 - (void)_tearDownAnalogContainerView;
 - (void)_tearDownDigitalContainerView;
-- (void)applyGossamerColorPalette:(id)a3;
-- (void)applyTransitionFraction:(double)a3 fromColorPalette:(id)a4 toColorPalette:(id)a5 ignoreTimeView:(BOOL)a6;
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5;
+- (void)applyGossamerColorPalette:(id)palette;
+- (void)applyTransitionFraction:(double)fraction fromColorPalette:(id)palette toColorPalette:(id)colorPalette ignoreTimeView:(BOOL)view;
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setColorPalette:(id)a3;
-- (void)setEditing:(BOOL)a3;
-- (void)setForcedNumberSystemForDigitalTimeLabel:(unint64_t)a3;
-- (void)setFrozen:(BOOL)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setSecondsHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setStyle:(unint64_t)a3;
-- (void)setTimeOffset:(double)a3;
-- (void)setUseMonospacedDigitalNumbers:(BOOL)a3;
+- (void)setColorPalette:(id)palette;
+- (void)setEditing:(BOOL)editing;
+- (void)setForcedNumberSystemForDigitalTimeLabel:(unint64_t)label;
+- (void)setFrozen:(BOOL)frozen;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setSecondsHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setStyle:(unint64_t)style;
+- (void)setTimeOffset:(double)offset;
+- (void)setUseMonospacedDigitalNumbers:(BOOL)numbers;
 - (void)setupTimeViews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation NTKDualTimeView
 
-- (NTKDualTimeView)initWithFrame:(CGRect)a3 style:(unint64_t)a4 andDevice:(id)a5
+- (NTKDualTimeView)initWithFrame:(CGRect)frame style:(unint64_t)style andDevice:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
   v22.receiver = self;
   v22.super_class = NTKDualTimeView;
-  v13 = [(NTKDualTimeView *)&v22 initWithFrame:x, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(NTKDualTimeView *)&v22 initWithFrame:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    objc_storeStrong(&v13->_device, a5);
-    v14->_style = a4;
-    v15 = [(NTKDualTimeView *)v14 layer];
-    [v15 setAllowsGroupOpacity:1];
+    objc_storeStrong(&height->_device, device);
+    v14->_style = style;
+    layer = [(NTKDualTimeView *)v14 layer];
+    [layer setAllowsGroupOpacity:1];
 
     [(NTKDualTimeView *)v14 _setupDial];
     [(NTKDualTimeView *)v14 setupTimeViews];
@@ -92,9 +92,9 @@
   [(NTKDualTimeView *)&v3 dealloc];
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  self->_editing = a3;
+  self->_editing = editing;
   [(NTKDualTimeDigitalTicksView *)self->_digitalTicksContainerView setEditing:?];
 
   [(NTKDualTimeView *)self _refreshDigitalTicks];
@@ -114,11 +114,11 @@
   [(UIView *)self->_digitalContainerView ntk_setBoundsAndPositionFromFrame:v4, v6, v8, v10];
   [(UIView *)self->_dialBackgroundView ntk_setBoundsAndPositionFromFrame:v4, v6, v8, v10];
   [(UIView *)self->_dialContainerView ntk_setBoundsAndPositionFromFrame:v4, v6, v8, v10];
-  v11 = [(UIView *)self->_dialContainerView layer];
-  [v11 setCornerRadius:v8 * 0.5];
+  layer = [(UIView *)self->_dialContainerView layer];
+  [layer setCornerRadius:v8 * 0.5];
 
-  v12 = [(UIView *)self->_dialBackgroundView layer];
-  [v12 setCornerRadius:v8 * 0.5];
+  layer2 = [(UIView *)self->_dialBackgroundView layer];
+  [layer2 setCornerRadius:v8 * 0.5];
 
   v13 = MEMORY[0x2318D8E70](v4, v6, v8, v10);
   v15 = v14;
@@ -128,14 +128,14 @@
   [(NTKDualTimeDigitalTicksView *)self->_digitalTicksContainerView setFrame:v4, v6, v8, v10];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = NTKDualTimeView;
-  [(NTKDualTimeView *)&v6 traitCollectionDidChange:a3];
+  [(NTKDualTimeView *)&v6 traitCollectionDidChange:change];
   digitalTimeLabel = self->_digitalTimeLabel;
-  v5 = [(NTKDualTimeView *)self _digitalStyle];
-  [(NTKDigitalTimeLabel *)digitalTimeLabel setStyle:v5];
+  _digitalStyle = [(NTKDualTimeView *)self _digitalStyle];
+  [(NTKDigitalTimeLabel *)digitalTimeLabel setStyle:_digitalStyle];
 
   [(NTKDualTimeView *)self setNeedsLayout];
 }
@@ -157,30 +157,30 @@
   v5 = self->_dialContainerView;
   [(NTKDualTimeView *)self bounds];
   [(UIView *)v5 ntk_setBoundsAndPositionFromFrame:?];
-  v6 = [(UIView *)self->_dialContainerView layer];
+  layer = [(UIView *)self->_dialContainerView layer];
   [(NTKDualTimeView *)self bounds];
-  [v6 setCornerRadius:v7 * 0.5];
+  [layer setCornerRadius:v7 * 0.5];
 
   [(NTKDualTimeView *)self addSubview:self->_dialContainerView];
   if ([(NTKDualTimeView *)self shouldUseCustomDialBackground])
   {
-    v8 = [(NTKDualTimeView *)self _customDialBackgroundView];
+    _customDialBackgroundView = [(NTKDualTimeView *)self _customDialBackgroundView];
   }
 
   else
   {
-    v8 = objc_alloc_init(MEMORY[0x277D75D18]);
+    _customDialBackgroundView = objc_alloc_init(MEMORY[0x277D75D18]);
   }
 
   dialBackgroundView = self->_dialBackgroundView;
-  self->_dialBackgroundView = v8;
+  self->_dialBackgroundView = _customDialBackgroundView;
 
   v10 = self->_dialBackgroundView;
   [(NTKDualTimeView *)self bounds];
   [(UIView *)v10 ntk_setBoundsAndPositionFromFrame:?];
-  v11 = [(UIView *)self->_dialBackgroundView layer];
+  layer2 = [(UIView *)self->_dialBackgroundView layer];
   [(NTKDualTimeView *)self bounds];
-  [v11 setCornerRadius:v12 * 0.5];
+  [layer2 setCornerRadius:v12 * 0.5];
 
   v13 = self->_dialContainerView;
   v14 = self->_dialBackgroundView;
@@ -198,13 +198,13 @@
     analogContainerView = self->_analogContainerView;
     self->_analogContainerView = v4;
 
-    v6 = [(UIView *)self->_analogContainerView layer];
-    [v6 setAllowsGroupOpacity:1];
+    layer = [(UIView *)self->_analogContainerView layer];
+    [layer setAllowsGroupOpacity:1];
 
     [(UIView *)self->_dialContainerView insertSubview:self->_analogContainerView aboveSubview:self->_dialBackgroundView];
     [(NTKDualTimeView *)self _setupAnalogHandsView];
-    v7 = [(NTKDualTimeView *)self _minuteTickCount];
-    v8 = [(NTKDualTimeView *)self _hourTickCount];
+    _minuteTickCount = [(NTKDualTimeView *)self _minuteTickCount];
+    _hourTickCount = [(NTKDualTimeView *)self _hourTickCount];
     [(NTKDualTimeView *)self _minuteTickSize];
     v10 = v9;
     v12 = v11;
@@ -217,8 +217,8 @@
     v20 = v19;
     v21 = [off_27877BF08 alloc];
     [(NTKDualTimeView *)self bounds];
-    v24[0] = v7;
-    v24[1] = v8;
+    v24[0] = _minuteTickCount;
+    v24[1] = _hourTickCount;
     v24[2] = v10;
     v24[3] = v12;
     v24[4] = v14;
@@ -264,8 +264,8 @@
     digitalContainerView = self->_digitalContainerView;
     self->_digitalContainerView = v4;
 
-    v6 = [(UIView *)self->_digitalContainerView layer];
-    [v6 setAllowsGroupOpacity:1];
+    layer = [(UIView *)self->_digitalContainerView layer];
+    [layer setAllowsGroupOpacity:1];
 
     [(UIView *)self->_dialContainerView insertSubview:self->_digitalContainerView aboveSubview:self->_dialBackgroundView];
     v7 = [[NTKDigitalTimeLabel alloc] initWithTimeLabelOptions:1 forDevice:self->_device];
@@ -273,8 +273,8 @@
     self->_digitalTimeLabel = v7;
 
     v9 = self->_digitalTimeLabel;
-    v10 = [(NTKDualTimeView *)self _digitalStyle];
-    [(NTKDigitalTimeLabel *)v9 setStyle:v10];
+    _digitalStyle = [(NTKDualTimeView *)self _digitalStyle];
+    [(NTKDigitalTimeLabel *)v9 setStyle:_digitalStyle];
 
     v11 = self->_digitalTimeLabel;
     MEMORY[0x2318D8E70]([(NTKDualTimeView *)self bounds]);
@@ -314,14 +314,14 @@
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  v22 = [MEMORY[0x277CBB700] sharedInstance];
+  mEMORY[0x277CBB700] = [MEMORY[0x277CBB700] sharedInstance];
   v27[0] = v26;
   v27[1] = v25;
   v27[2] = v6;
   v27[3] = v8;
   v27[4] = v10;
   v27[5] = v12;
-  v23 = [(NTKDualTimeDigitalTicksView *)v13 initWithFrame:v27 configuration:v22 timer:v15, v17, v19, v21];
+  v23 = [(NTKDualTimeDigitalTicksView *)v13 initWithFrame:v27 configuration:mEMORY[0x277CBB700] timer:v15, v17, v19, v21];
   digitalTicksContainerView = self->_digitalTicksContainerView;
   self->_digitalTicksContainerView = v23;
 
@@ -332,18 +332,18 @@
 - (void)_refreshDigitalTimeLabel
 {
   digitalTimeLabel = self->_digitalTimeLabel;
-  v3 = [(NTKDualTimeView *)self _digitalStyle];
-  [(NTKDigitalTimeLabel *)digitalTimeLabel setStyle:v3];
+  _digitalStyle = [(NTKDualTimeView *)self _digitalStyle];
+  [(NTKDigitalTimeLabel *)digitalTimeLabel setStyle:_digitalStyle];
 }
 
-- (void)setUseMonospacedDigitalNumbers:(BOOL)a3
+- (void)setUseMonospacedDigitalNumbers:(BOOL)numbers
 {
-  if (self->_useMonospacedDigitalNumbers != a3)
+  if (self->_useMonospacedDigitalNumbers != numbers)
   {
-    self->_useMonospacedDigitalNumbers = a3;
+    self->_useMonospacedDigitalNumbers = numbers;
     digitalTimeLabel = self->_digitalTimeLabel;
-    v5 = [(NTKDualTimeView *)self _digitalStyle];
-    [(NTKDigitalTimeLabel *)digitalTimeLabel setStyle:v5];
+    _digitalStyle = [(NTKDualTimeView *)self _digitalStyle];
+    [(NTKDigitalTimeLabel *)digitalTimeLabel setStyle:_digitalStyle];
   }
 }
 
@@ -352,27 +352,27 @@
   v3 = MEMORY[0x277CBBB08];
   [(NTKDualTimeView *)self _digitalTimeLabelFontSize];
   v4 = [v3 systemFontOfSize:*MEMORY[0x277CBB6C0] weight:? design:?];
-  v5 = [v4 CLKFontWithAlternativePunctuation];
+  cLKFontWithAlternativePunctuation = [v4 CLKFontWithAlternativePunctuation];
 
   if (self->_useMonospacedDigitalNumbers)
   {
-    v6 = [v5 CLKFontWithMonospacedNumbers];
+    cLKFontWithMonospacedNumbers = [cLKFontWithAlternativePunctuation CLKFontWithMonospacedNumbers];
   }
 
   else
   {
-    v6 = v5;
+    cLKFontWithMonospacedNumbers = cLKFontWithAlternativePunctuation;
   }
 
-  v7 = v6;
+  v7 = cLKFontWithMonospacedNumbers;
 
   return v7;
 }
 
 - (id)_digitalStyle
 {
-  v3 = [(NTKDualTimeView *)self _digitalLabelFont];
-  v4 = [NTKDigitalTimeLabelStyle defaultStyleForBounds:0 withRightSideMargin:v3 applyAdvanceFudge:self->_device withBaselineY:*MEMORY[0x277CBF3A0] withFont:*(MEMORY[0x277CBF3A0] + 8) forDevice:*(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24), 0.0, 0.0];
+  _digitalLabelFont = [(NTKDualTimeView *)self _digitalLabelFont];
+  v4 = [NTKDigitalTimeLabelStyle defaultStyleForBounds:0 withRightSideMargin:_digitalLabelFont applyAdvanceFudge:self->_device withBaselineY:*MEMORY[0x277CBF3A0] withFont:*(MEMORY[0x277CBF3A0] + 8) forDevice:*(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24), 0.0, 0.0];
 
   return v4;
 }
@@ -392,16 +392,16 @@
   return *(&self->super.super.super.isa + *v2);
 }
 
-- (void)setColorPalette:(id)a3
+- (void)setColorPalette:(id)palette
 {
-  v7 = a3;
-  objc_storeStrong(&self->_colorPalette, a3);
+  paletteCopy = palette;
+  objc_storeStrong(&self->_colorPalette, palette);
   if (![(NTKDualTimeView *)self shouldUseCustomDialBackground])
   {
-    v5 = [(NTKDualTimeView *)self _dialColorForColorPalette:v7];
+    v5 = [(NTKDualTimeView *)self _dialColorForColorPalette:paletteCopy];
     [(UIView *)self->_dialBackgroundView setBackgroundColor:v5];
-    v6 = [(CLKUIAnalogHandsView *)self->_analogHandsView secondHandView];
-    [v6 setHandDotColor:v5];
+    secondHandView = [(CLKUIAnalogHandsView *)self->_analogHandsView secondHandView];
+    [secondHandView setHandDotColor:v5];
   }
 
   [(NTKDualTimeView *)self _applyColorToAnalogHands];
@@ -433,72 +433,72 @@
   [(NTKDualTimeView *)self _refreshDigitalTicks];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromColorPalette:(id)a4 toColorPalette:(id)a5 ignoreTimeView:(BOOL)a6
+- (void)applyTransitionFraction:(double)fraction fromColorPalette:(id)palette toColorPalette:(id)colorPalette ignoreTimeView:(BOOL)view
 {
-  v46 = a4;
-  v10 = a5;
-  v11 = [v46 configuration];
-  v12 = [v10 configuration];
-  v13 = [v11 isEqual:v12];
+  paletteCopy = palette;
+  colorPaletteCopy = colorPalette;
+  configuration = [paletteCopy configuration];
+  configuration2 = [colorPaletteCopy configuration];
+  v13 = [configuration isEqual:configuration2];
 
   if (v13)
   {
-    [(NTKDualTimeView *)self setColorPalette:v46];
+    [(NTKDualTimeView *)self setColorPalette:paletteCopy];
   }
 
   else
   {
     if (![(NTKDualTimeView *)self shouldUseCustomDialBackground])
     {
-      v14 = [(NTKDualTimeView *)self _dialColorForColorPalette:v46];
-      v15 = [(NTKDualTimeView *)self _dialColorForColorPalette:v10];
+      v14 = [(NTKDualTimeView *)self _dialColorForColorPalette:paletteCopy];
+      v15 = [(NTKDualTimeView *)self _dialColorForColorPalette:colorPaletteCopy];
       v16 = NTKInterpolateBetweenColors();
       [(UIView *)self->_dialBackgroundView setBackgroundColor:v16];
-      v17 = [(CLKUIAnalogHandsView *)self->_analogHandsView secondHandView];
-      [v17 setHandDotColor:v16];
+      secondHandView = [(CLKUIAnalogHandsView *)self->_analogHandsView secondHandView];
+      [secondHandView setHandDotColor:v16];
     }
 
-    v18 = v46;
-    if (!a6)
+    v18 = paletteCopy;
+    if (!view)
     {
       analogHandsView = self->_analogHandsView;
-      v20 = [(NTKDualTimeView *)self _hourMinuteHandStrokeColorForColorPalette:v46];
-      v21 = [(NTKDualTimeView *)self _hourMinuteHandFillColorForColorPalette:v46];
-      v22 = [(NTKDualTimeView *)self _hourMinuteHandStrokeColorForColorPalette:v10];
-      v23 = [(NTKDualTimeView *)self _hourMinuteHandFillColorForColorPalette:v10];
-      [(NTKAnalogHandsView *)analogHandsView applyHourMinuteHandsTransitionFraction:v20 fromStrokeColor:v21 fromFillColor:v22 toStrokeColor:v23 toFillColor:a3];
+      v20 = [(NTKDualTimeView *)self _hourMinuteHandStrokeColorForColorPalette:paletteCopy];
+      v21 = [(NTKDualTimeView *)self _hourMinuteHandFillColorForColorPalette:paletteCopy];
+      v22 = [(NTKDualTimeView *)self _hourMinuteHandStrokeColorForColorPalette:colorPaletteCopy];
+      v23 = [(NTKDualTimeView *)self _hourMinuteHandFillColorForColorPalette:colorPaletteCopy];
+      [(NTKAnalogHandsView *)analogHandsView applyHourMinuteHandsTransitionFraction:v20 fromStrokeColor:v21 fromFillColor:v22 toStrokeColor:v23 toFillColor:fraction];
 
-      v24 = [(NTKDualTimeView *)self _secondHandColorForColorPalette:v46];
-      v25 = [(NTKDualTimeView *)self _secondHandColorForColorPalette:v10];
+      v24 = [(NTKDualTimeView *)self _secondHandColorForColorPalette:paletteCopy];
+      v25 = [(NTKDualTimeView *)self _secondHandColorForColorPalette:colorPaletteCopy];
       v26 = NTKInterpolateBetweenColors();
       [(NTKAnalogHandsView *)self->_analogHandsView applySecondHandColor:v26];
 
-      v18 = v46;
+      v18 = paletteCopy;
     }
 
     v27 = [(NTKDualTimeView *)self _hourTickColorForColorPalette:v18];
-    v44 = [(NTKDualTimeView *)self _hourTickColorForColorPalette:v10];
+    v44 = [(NTKDualTimeView *)self _hourTickColorForColorPalette:colorPaletteCopy];
     v45 = v27;
     v28 = NTKInterpolateBetweenColors();
-    v29 = [(NTKDualTimeView *)self _minuteTickColorForColorPalette:v46];
-    v40 = [(NTKDualTimeView *)self _minuteTickColorForColorPalette:v10];
+    v29 = [(NTKDualTimeView *)self _minuteTickColorForColorPalette:paletteCopy];
+    v40 = [(NTKDualTimeView *)self _minuteTickColorForColorPalette:colorPaletteCopy];
     v42 = v29;
     v30 = NTKInterpolateBetweenColors();
     v43 = v28;
     [(NTKDualTimeView *)self _colorizeAnalogTicksWithHourColor:v28 minuteColor:v30];
-    if (!a6)
+    if (!view)
     {
-      v31 = [(NTKDualTimeView *)self _digitalTimeLabelColorForColorPalette:v46, v40, v29];
-      v32 = [(NTKDualTimeView *)self _digitalTimeLabelColorForColorPalette:v10];
+      v31 = [(NTKDualTimeView *)self _digitalTimeLabelColorForColorPalette:paletteCopy, v40, v29];
+      v32 = [(NTKDualTimeView *)self _digitalTimeLabelColorForColorPalette:colorPaletteCopy];
       v33 = NTKInterpolateBetweenColors();
       [(NTKDigitalTimeLabel *)self->_digitalTimeLabel setColor:v33];
     }
 
-    v34 = [(NTKDualTimeView *)self _secondTickActiveColorForColorPalette:v46, v40];
-    v35 = [(NTKDualTimeView *)self _secondTickActiveColorForColorPalette:v10];
+    v34 = [(NTKDualTimeView *)self _secondTickActiveColorForColorPalette:paletteCopy, v40];
+    v35 = [(NTKDualTimeView *)self _secondTickActiveColorForColorPalette:colorPaletteCopy];
     v36 = NTKInterpolateBetweenColors();
-    v37 = [(NTKDualTimeView *)self _secondTickInactiveColorForColorPalette:v46];
-    v38 = [(NTKDualTimeView *)self _secondTickInactiveColorForColorPalette:v10];
+    v37 = [(NTKDualTimeView *)self _secondTickInactiveColorForColorPalette:paletteCopy];
+    v38 = [(NTKDualTimeView *)self _secondTickInactiveColorForColorPalette:colorPaletteCopy];
     v39 = NTKInterpolateBetweenColors();
     [(NTKDualTimeDigitalTicksView *)self->_digitalTicksContainerView setActiveTickColor:v36];
     [(NTKDualTimeDigitalTicksView *)self->_digitalTicksContainerView setInactiveTickColor:v39];
@@ -506,54 +506,54 @@
   }
 }
 
-- (void)applyGossamerColorPalette:(id)a3
+- (void)applyGossamerColorPalette:(id)palette
 {
   dialBackgroundView = self->_dialBackgroundView;
-  v5 = a3;
-  v6 = [v5 dialColor];
-  [(UIView *)dialBackgroundView setBackgroundColor:v6];
+  paletteCopy = palette;
+  dialColor = [paletteCopy dialColor];
+  [(UIView *)dialBackgroundView setBackgroundColor:dialColor];
 
-  v7 = [(CLKUIAnalogHandsView *)self->_analogHandsView secondHandView];
-  v8 = [v5 dialColor];
-  [v7 setHandDotColor:v8];
+  secondHandView = [(CLKUIAnalogHandsView *)self->_analogHandsView secondHandView];
+  dialColor2 = [paletteCopy dialColor];
+  [secondHandView setHandDotColor:dialColor2];
 
   analogHandsView = self->_analogHandsView;
-  v10 = [v5 hourMinuteHandStrokeColor];
-  v11 = [v5 hourMinuteHandFillColor];
-  [(CLKUIAnalogHandsView *)analogHandsView applyHourMinuteHandsStrokeColor:v10 fillColor:v11];
+  hourMinuteHandStrokeColor = [paletteCopy hourMinuteHandStrokeColor];
+  hourMinuteHandFillColor = [paletteCopy hourMinuteHandFillColor];
+  [(CLKUIAnalogHandsView *)analogHandsView applyHourMinuteHandsStrokeColor:hourMinuteHandStrokeColor fillColor:hourMinuteHandFillColor];
 
   v12 = self->_analogHandsView;
-  v13 = [v5 secondHandColor];
-  [(NTKAnalogHandsView *)v12 applySecondHandColor:v13];
+  secondHandColor = [paletteCopy secondHandColor];
+  [(NTKAnalogHandsView *)v12 applySecondHandColor:secondHandColor];
 
-  v14 = [v5 hourTickColor];
-  v15 = [v5 minuteTickColor];
-  [(NTKDualTimeView *)self _colorizeAnalogTicksWithHourColor:v14 minuteColor:v15];
+  hourTickColor = [paletteCopy hourTickColor];
+  minuteTickColor = [paletteCopy minuteTickColor];
+  [(NTKDualTimeView *)self _colorizeAnalogTicksWithHourColor:hourTickColor minuteColor:minuteTickColor];
 
   digitalTimeLabel = self->_digitalTimeLabel;
-  v17 = [v5 digitalTimeLabelColor];
-  [(NTKDigitalTimeLabel *)digitalTimeLabel setColor:v17];
+  digitalTimeLabelColor = [paletteCopy digitalTimeLabelColor];
+  [(NTKDigitalTimeLabel *)digitalTimeLabel setColor:digitalTimeLabelColor];
 
-  v18 = [v5 secondTickActiveColor];
-  [(NTKDualTimeDigitalTicksView *)self->_digitalTicksContainerView setActiveTickColor:v18];
+  secondTickActiveColor = [paletteCopy secondTickActiveColor];
+  [(NTKDualTimeDigitalTicksView *)self->_digitalTicksContainerView setActiveTickColor:secondTickActiveColor];
 
-  v19 = [v5 secondTickInactiveColor];
+  secondTickInactiveColor = [paletteCopy secondTickInactiveColor];
 
-  [(NTKDualTimeDigitalTicksView *)self->_digitalTicksContainerView setInactiveTickColor:v19];
+  [(NTKDualTimeDigitalTicksView *)self->_digitalTicksContainerView setInactiveTickColor:secondTickInactiveColor];
 
   [(NTKDualTimeView *)self _refreshDigitalTicks];
 }
 
-- (void)setSecondsHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setSecondsHidden:(BOOL)hidden animated:(BOOL)animated
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __45__NTKDualTimeView_setSecondsHidden_animated___block_invoke;
   v4[3] = &unk_278787040;
   v4[4] = self;
-  v5 = !a3;
-  v6 = a3;
-  [MEMORY[0x277D75D18] animateWithDuration:v4 animations:{a4, 0.1}];
+  v5 = !hidden;
+  hiddenCopy = hidden;
+  [MEMORY[0x277D75D18] animateWithDuration:v4 animations:{animated, 0.1}];
 }
 
 void __45__NTKDualTimeView_setSecondsHidden_animated___block_invoke(uint64_t a1)
@@ -576,10 +576,10 @@ void __45__NTKDualTimeView_setSecondsHidden_animated___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  self->_style = a3;
-  if (a3 == 1)
+  self->_style = style;
+  if (style == 1)
   {
     [(UIView *)self->_analogContainerView setAlpha:0.0];
     [(NTKAnalogHandsView *)self->_analogHandsView setAlpha:0.0];
@@ -593,7 +593,7 @@ void __45__NTKDualTimeView_setSecondsHidden_animated___block_invoke(uint64_t a1)
     [(NTKDualTimeView *)self _startDigitalTicksAnimation];
   }
 
-  else if (!a3)
+  else if (!style)
   {
     [(UIView *)self->_analogContainerView setAlpha:1.0];
     [(NTKAnalogHandsView *)self->_analogHandsView setAlpha:1.0];
@@ -608,12 +608,12 @@ void __45__NTKDualTimeView_setSecondsHidden_animated___block_invoke(uint64_t a1)
   }
 }
 
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle
 {
-  if (a4 == a5)
+  if (style == toStyle)
   {
 
-    [(NTKDualTimeView *)self setStyle:a3];
+    [(NTKDualTimeView *)self setStyle:fraction];
   }
 
   else
@@ -621,7 +621,7 @@ void __45__NTKDualTimeView_setSecondsHidden_animated___block_invoke(uint64_t a1)
     CLKInterpolateBetweenFloatsClipped();
     v9 = v8;
     v10 = &OBJC_IVAR___NTKDualTimeView__digitalContainerView;
-    if (a4)
+    if (style)
     {
       v11 = &OBJC_IVAR___NTKDualTimeView__digitalContainerView;
     }
@@ -633,7 +633,7 @@ void __45__NTKDualTimeView_setSecondsHidden_animated___block_invoke(uint64_t a1)
 
     v12 = *(&self->super.super.super.isa + *v11);
     v13 = 1.0 - v8;
-    if (!a5)
+    if (!toStyle)
     {
       v10 = &OBJC_IVAR___NTKDualTimeView__analogContainerView;
     }
@@ -656,9 +656,9 @@ void __45__NTKDualTimeView_setSecondsHidden_animated___block_invoke(uint64_t a1)
   }
 }
 
-- (id)_dialColorForColorPalette:(id)a3
+- (id)_dialColorForColorPalette:(id)palette
 {
-  if ([a3 isWhiteColor])
+  if ([palette isWhiteColor])
   {
     v3 = 0.898039216;
   }
@@ -675,7 +675,7 @@ void __45__NTKDualTimeView_setSecondsHidden_animated___block_invoke(uint64_t a1)
 
 - (CGSize)_hourTickSize
 {
-  v2 = [(NTKDualTimeView *)self device];
+  device = [(NTKDualTimeView *)self device];
   CLKSizeForDeviceMetrics();
   v4 = v3;
   v6 = v5;
@@ -689,7 +689,7 @@ void __45__NTKDualTimeView_setSecondsHidden_animated___block_invoke(uint64_t a1)
 
 - (CGSize)_minuteTickSize
 {
-  v2 = [(NTKDualTimeView *)self device];
+  device = [(NTKDualTimeView *)self device];
   CLKSizeForDeviceMetrics();
   v4 = v3;
   v6 = v5;
@@ -701,11 +701,11 @@ void __45__NTKDualTimeView_setSecondsHidden_animated___block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)_hourTickColorForColorPalette:(id)a3
+- (id)_hourTickColorForColorPalette:(id)palette
 {
-  v3 = [a3 isWhiteColor];
+  isWhiteColor = [palette isWhiteColor];
   v4 = 1.0;
-  if (v3)
+  if (isWhiteColor)
   {
     v4 = 0.0;
   }
@@ -715,11 +715,11 @@ void __45__NTKDualTimeView_setSecondsHidden_animated___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)_minuteTickColorForColorPalette:(id)a3
+- (id)_minuteTickColorForColorPalette:(id)palette
 {
-  v3 = [a3 isWhiteColor];
+  isWhiteColor = [palette isWhiteColor];
   v4 = 0.4;
-  if (v3)
+  if (isWhiteColor)
   {
     v4 = 0.6;
   }
@@ -729,9 +729,9 @@ void __45__NTKDualTimeView_setSecondsHidden_animated___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)_hourMinuteHandFillColorForColorPalette:(id)a3
+- (id)_hourMinuteHandFillColorForColorPalette:(id)palette
 {
-  if ([a3 isWhiteColor])
+  if ([palette isWhiteColor])
   {
     [MEMORY[0x277D75348] blackColor];
   }
@@ -753,9 +753,9 @@ void __45__NTKDualTimeView_setSecondsHidden_animated___block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)_digitalTimeLabelColorForColorPalette:(id)a3
+- (id)_digitalTimeLabelColorForColorPalette:(id)palette
 {
-  if ([a3 isWhiteColor])
+  if ([palette isWhiteColor])
   {
     [MEMORY[0x277D75348] blackColor];
   }
@@ -769,11 +769,11 @@ void __45__NTKDualTimeView_setSecondsHidden_animated___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)_secondTickActiveColorForColorPalette:(id)a3
+- (id)_secondTickActiveColorForColorPalette:(id)palette
 {
-  v3 = [a3 isWhiteColor];
+  isWhiteColor = [palette isWhiteColor];
   v4 = 1.0;
-  if (v3)
+  if (isWhiteColor)
   {
     v4 = 0.0;
   }
@@ -783,11 +783,11 @@ void __45__NTKDualTimeView_setSecondsHidden_animated___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)_secondTickInactiveColorForColorPalette:(id)a3
+- (id)_secondTickInactiveColorForColorPalette:(id)palette
 {
-  v3 = [a3 isWhiteColor];
+  isWhiteColor = [palette isWhiteColor];
   v4 = 0.4;
-  if (v3)
+  if (isWhiteColor)
   {
     v4 = 0.7;
   }
@@ -797,44 +797,44 @@ void __45__NTKDualTimeView_setSecondsHidden_animated___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
-  v7 = a3;
-  if (self->_overrideDate != v7)
+  dateCopy = date;
+  if (self->_overrideDate != dateCopy)
   {
-    v8 = v7;
-    [(NTKAnalogHandsView *)self->_analogHandsView setOverrideDate:v7 duration:a4];
-    [(NTKDigitalTimeLabel *)self->_digitalTimeLabel setOverrideDate:v8 duration:a4];
-    objc_storeStrong(&self->_overrideDate, a3);
+    v8 = dateCopy;
+    [(NTKAnalogHandsView *)self->_analogHandsView setOverrideDate:dateCopy duration:duration];
+    [(NTKDigitalTimeLabel *)self->_digitalTimeLabel setOverrideDate:v8 duration:duration];
+    objc_storeStrong(&self->_overrideDate, date);
     [(NTKDualTimeDigitalTicksView *)self->_digitalTicksContainerView setOverrideDate:v8];
     [(NTKDualTimeView *)self _refreshDigitalTicks];
-    v7 = v8;
+    dateCopy = v8;
   }
 }
 
-- (void)setTimeOffset:(double)a3
+- (void)setTimeOffset:(double)offset
 {
   [(NTKAnalogHandsView *)self->_analogHandsView setTimeOffset:?];
   digitalTimeLabel = self->_digitalTimeLabel;
 
-  [(NTKDigitalTimeLabel *)digitalTimeLabel setTimeOffset:a3];
+  [(NTKDigitalTimeLabel *)digitalTimeLabel setTimeOffset:offset];
 }
 
-- (void)setFrozen:(BOOL)a3
+- (void)setFrozen:(BOOL)frozen
 {
-  v3 = a3;
-  self->_frozen = a3;
+  frozenCopy = frozen;
+  self->_frozen = frozen;
   [(CLKUIAnalogHandsView *)self->_analogHandsView setFrozen:?];
-  [(NTKDigitalTimeLabel *)self->_digitalTimeLabel setFrozen:v3];
-  [(NTKDualTimeDigitalTicksView *)self->_digitalTicksContainerView setFrozen:v3];
+  [(NTKDigitalTimeLabel *)self->_digitalTimeLabel setFrozen:frozenCopy];
+  [(NTKDualTimeDigitalTicksView *)self->_digitalTicksContainerView setFrozen:frozenCopy];
 
   [(NTKDualTimeView *)self _refreshDigitalTicks];
 }
 
-- (void)setForcedNumberSystemForDigitalTimeLabel:(unint64_t)a3
+- (void)setForcedNumberSystemForDigitalTimeLabel:(unint64_t)label
 {
-  v4 = [(NTKDualTimeView *)self digitalTimeLabel];
-  [v4 setForcedNumberSystem:a3];
+  digitalTimeLabel = [(NTKDualTimeView *)self digitalTimeLabel];
+  [digitalTimeLabel setForcedNumberSystem:label];
 }
 
 @end

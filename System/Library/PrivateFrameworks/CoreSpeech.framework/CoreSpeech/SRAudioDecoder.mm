@@ -1,18 +1,18 @@
 @interface SRAudioDecoder
-+ (unint64_t)totalFrames:(id)a3;
++ (unint64_t)totalFrames:(id)frames;
 - (SRAudioDecoder)init;
-- (SRAudioDecoder)initWithStreamDescription:(AudioStreamBasicDescription *)a3 error:(id *)a4;
-- (id)decodeAudio:(id)a3 error:(id *)a4;
-- (id)endWithError:(id *)a3;
+- (SRAudioDecoder)initWithStreamDescription:(AudioStreamBasicDescription *)description error:(id *)error;
+- (id)decodeAudio:(id)audio error:(id *)error;
+- (id)endWithError:(id *)error;
 @end
 
 @implementation SRAudioDecoder
 
-- (SRAudioDecoder)initWithStreamDescription:(AudioStreamBasicDescription *)a3 error:(id *)a4
+- (SRAudioDecoder)initWithStreamDescription:(AudioStreamBasicDescription *)description error:(id *)error
 {
-  mSampleRate = a3->mSampleRate;
-  v5 = *&a3->mBytesPerFrame;
-  v12 = *&a3->mFormatID;
+  mSampleRate = description->mSampleRate;
+  v5 = *&description->mBytesPerFrame;
+  v12 = *&description->mFormatID;
   v13 = v5;
   v6 = type metadata accessor for OpusDecoder();
   v7 = *(v6 + 48);
@@ -24,28 +24,28 @@
   return [(SRAudioDecoder *)&v10 init];
 }
 
-- (id)decodeAudio:(id)a3 error:(id *)a4
+- (id)decodeAudio:(id)audio error:(id *)error
 {
   v5 = *(&self->super.isa + OBJC_IVAR___SRAudioDecoder_decoder);
-  v6 = a3;
-  v7 = self;
+  audioCopy = audio;
+  selfCopy = self;
   v8 = dispatch thunk of OpusDecoder.decode(audio:)();
 
   return v8;
 }
 
-- (id)endWithError:(id *)a3
+- (id)endWithError:(id *)error
 {
   v3 = *(&self->super.isa + OBJC_IVAR___SRAudioDecoder_decoder);
-  v4 = self;
+  selfCopy = self;
   v5 = dispatch thunk of OpusDecoder.end()();
 
   return v5;
 }
 
-+ (unint64_t)totalFrames:(id)a3
++ (unint64_t)totalFrames:(id)frames
 {
-  v3 = a3;
+  framesCopy = frames;
   v4 = AudioData.sampleCount.getter();
 
   return v4;

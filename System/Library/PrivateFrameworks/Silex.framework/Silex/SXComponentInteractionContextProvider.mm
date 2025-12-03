@@ -1,35 +1,35 @@
 @interface SXComponentInteractionContextProvider
 - (SXComponentInteraction)currentInteraction;
-- (SXComponentInteractionContextProvider)initWithComponentInteractionHandlerManager:(id)a3 actionManager:(id)a4;
-- (id)contextMenuAtLocation:(CGPoint)a3 viewport:(id)a4;
-- (id)targetedPreviewAtLocation:(CGPoint)a3 viewport:(id)a4;
-- (id)toolTipAtLocation:(CGPoint)a3 viewport:(id)a4;
-- (void)commitPreviewViewController:(id)a3;
+- (SXComponentInteractionContextProvider)initWithComponentInteractionHandlerManager:(id)manager actionManager:(id)actionManager;
+- (id)contextMenuAtLocation:(CGPoint)location viewport:(id)viewport;
+- (id)targetedPreviewAtLocation:(CGPoint)location viewport:(id)viewport;
+- (id)toolTipAtLocation:(CGPoint)location viewport:(id)viewport;
+- (void)commitPreviewViewController:(id)controller;
 @end
 
 @implementation SXComponentInteractionContextProvider
 
-- (SXComponentInteractionContextProvider)initWithComponentInteractionHandlerManager:(id)a3 actionManager:(id)a4
+- (SXComponentInteractionContextProvider)initWithComponentInteractionHandlerManager:(id)manager actionManager:(id)actionManager
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  actionManagerCopy = actionManager;
   v12.receiver = self;
   v12.super_class = SXComponentInteractionContextProvider;
   v9 = [(SXComponentInteractionContextProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_componentInteractionHandlerManager, a3);
-    objc_storeStrong(&v10->_actionManager, a4);
+    objc_storeStrong(&v9->_componentInteractionHandlerManager, manager);
+    objc_storeStrong(&v10->_actionManager, actionManager);
   }
 
   return v10;
 }
 
-- (id)contextMenuAtLocation:(CGPoint)a3 viewport:(id)a4
+- (id)contextMenuAtLocation:(CGPoint)location viewport:(id)viewport
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [(SXComponentInteractionHandlerManager *)self->_componentInteractionHandlerManager componentViewForLocation:a4, a3.x, a3.y];
+  v5 = [(SXComponentInteractionHandlerManager *)self->_componentInteractionHandlerManager componentViewForLocation:viewport, location.x, location.y];
   if (v5)
   {
     v17 = 0u;
@@ -52,12 +52,12 @@
           }
 
           v11 = *(*(&v15 + 1) + 8 * i);
-          v12 = [v11 handler];
+          handler = [v11 handler];
           if (objc_opt_respondsToSelector())
           {
             [(SXComponentInteractionContextProvider *)self setCurrentInteraction:v11];
             [v5 bounds];
-            v13 = [v12 contextMenuForComponentView:v5 sourceRect:?];
+            v13 = [handler contextMenuForComponentView:v5 sourceRect:?];
 
             goto LABEL_13;
           }
@@ -82,25 +82,25 @@ LABEL_13:
   return v13;
 }
 
-- (void)commitPreviewViewController:(id)a3
+- (void)commitPreviewViewController:(id)controller
 {
-  v4 = [(SXComponentInteractionContextProvider *)self currentInteraction];
-  v5 = [v4 handler];
-  v6 = [(SXComponentInteractionContextProvider *)self currentInteraction];
-  v7 = [v6 componentView];
-  v8 = [(SXComponentInteractionContextProvider *)self currentInteraction];
-  v9 = [v8 componentView];
-  [v9 bounds];
-  [v5 handleInteractionType:2 sourceView:v7 sourceRect:?];
+  currentInteraction = [(SXComponentInteractionContextProvider *)self currentInteraction];
+  handler = [currentInteraction handler];
+  currentInteraction2 = [(SXComponentInteractionContextProvider *)self currentInteraction];
+  componentView = [currentInteraction2 componentView];
+  currentInteraction3 = [(SXComponentInteractionContextProvider *)self currentInteraction];
+  componentView2 = [currentInteraction3 componentView];
+  [componentView2 bounds];
+  [handler handleInteractionType:2 sourceView:componentView sourceRect:?];
 
   [(SXComponentInteractionContextProvider *)self setCurrentInteraction:0];
 }
 
-- (id)targetedPreviewAtLocation:(CGPoint)a3 viewport:(id)a4
+- (id)targetedPreviewAtLocation:(CGPoint)location viewport:(id)viewport
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = location.y;
+  x = location.x;
+  viewportCopy = viewport;
   v8 = [(SXComponentInteractionHandlerManager *)self->_componentInteractionHandlerManager componentViewForLocation:x, y];
   v9 = v8;
   if (v8)
@@ -110,28 +110,28 @@ LABEL_13:
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [v7 view];
-    v19 = [v18 superview];
-    [v7 convertRect:v19 toView:{v11, v13, v15, v17}];
+    view = [viewportCopy view];
+    superview = [view superview];
+    [viewportCopy convertRect:superview toView:{v11, v13, v15, v17}];
     v21 = v20;
     v23 = v22;
     v25 = v24;
     v27 = v26;
 
-    v28 = [v7 view];
-    v29 = [v28 superview];
-    v30 = [v29 resizableSnapshotViewFromRect:1 afterScreenUpdates:v21 withCapInsets:{v23, v25, v27, *MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
+    view2 = [viewportCopy view];
+    superview2 = [view2 superview];
+    v30 = [superview2 resizableSnapshotViewFromRect:1 afterScreenUpdates:v21 withCapInsets:{v23, v25, v27, *MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
 
     if (v30)
     {
       [v30 setFrame:{v21, v23, v25, v27}];
-      v31 = [v7 view];
-      v32 = [v31 superview];
-      [v32 addSubview:v30];
+      view3 = [viewportCopy view];
+      superview3 = [view3 superview];
+      [superview3 addSubview:v30];
 
       v33 = objc_alloc_init(MEMORY[0x1E69DCE28]);
-      v34 = [MEMORY[0x1E69DC888] clearColor];
-      [v33 setBackgroundColor:v34];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [v33 setBackgroundColor:clearColor];
 
       v35 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:v30 parameters:v33];
     }
@@ -150,10 +150,10 @@ LABEL_13:
   return v35;
 }
 
-- (id)toolTipAtLocation:(CGPoint)a3 viewport:(id)a4
+- (id)toolTipAtLocation:(CGPoint)location viewport:(id)viewport
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [(SXComponentInteractionHandlerManager *)self->_componentInteractionHandlerManager componentViewForLocation:a4, a3.x, a3.y];
+  v5 = [(SXComponentInteractionHandlerManager *)self->_componentInteractionHandlerManager componentViewForLocation:viewport, location.x, location.y];
   if (v5)
   {
     v16 = 0u;
@@ -174,11 +174,11 @@ LABEL_13:
             objc_enumerationMutation(v6);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) handler];
+          handler = [*(*(&v14 + 1) + 8 * i) handler];
           if (objc_opt_respondsToSelector())
           {
             v11 = MEMORY[0x1E69DD170];
-            v12 = [v10 toolTipForComponentView:v5];
+            v12 = [handler toolTipForComponentView:v5];
             [v5 absoluteFrame];
             v7 = [v11 configurationWithToolTip:v12 inRect:?];
 

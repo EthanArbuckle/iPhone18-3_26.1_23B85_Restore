@@ -1,56 +1,56 @@
 @interface Rgon
-+ (id)newInterpolatedRgonFrom:(id)a3 withRgon:(id)a4 param:(float)a5;
-- ($94F468A8D4C62B317260615823C2B210)intersectionEdge:(int)a3 withEdge:(int)a4;
++ (id)newInterpolatedRgonFrom:(id)from withRgon:(id)rgon param:(float)param;
+- ($94F468A8D4C62B317260615823C2B210)intersectionEdge:(int)edge withEdge:(int)withEdge;
 - (BOOL)CollapseOrphans;
-- (BOOL)IntersectionRgonOf:(id)a3 withRgon:(id)a4;
+- (BOOL)IntersectionRgonOf:(id)of withRgon:(id)rgon;
 - (CGRect)boundsFloatRect;
 - (Rgon)init;
-- (Rgon)initWithCoder:(id)a3;
+- (Rgon)initWithCoder:(id)coder;
 - (double)Density;
 - (float)Area;
 - (float)AspectRatio;
-- (float)CommonCenterForIndex:(int)a3;
+- (float)CommonCenterForIndex:(int)index;
 - (float)Diameter;
-- (float)DiameterAtFacetCountMeasuredFromVertical:(int)a3;
-- (float)DistToPointX:(float)a3 Y:(float)a4;
-- (float)DistanceBetweenCenters:(id)a3;
-- (float)DistanceCenterToRGon:(id)a3;
-- (float)DistanceFromRgon:(id)a3;
-- (float)MeanVertexDistFromX:(float)a3 Y:(float)a4;
+- (float)DiameterAtFacetCountMeasuredFromVertical:(int)vertical;
+- (float)DistToPointX:(float)x Y:(float)y;
+- (float)DistanceBetweenCenters:(id)centers;
+- (float)DistanceCenterToRGon:(id)gon;
+- (float)DistanceFromRgon:(id)rgon;
+- (float)MeanVertexDistFromX:(float)x Y:(float)y;
 - (float)MinDiameter;
 - (float)Perimeter;
 - (float)Radius;
-- (float)dASide:(int)a3 movesds:(float)a4;
-- (float)dASide:(int)a3 movesds:(float)a4 retaining:(int)a5 pointsFromArray:(id)a6;
-- (float)vertexAtClockHour:(float)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (float)dASide:(int)side movesds:(float)movesds;
+- (float)dASide:(int)side movesds:(float)movesds retaining:(int)retaining pointsFromArray:(id)array;
+- (float)vertexAtClockHour:(float)hour;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)createWithCollapsedOrphans2;
-- (id)unionRgonOf:(id)a3 withRgon:(id)a4;
-- (int)AdjustForPointX:(float)a3 Y:(float)a4;
+- (id)unionRgonOf:(id)of withRgon:(id)rgon;
+- (int)AdjustForPointX:(float)x Y:(float)y;
 - (int)AspectIndex;
-- (int)OutsideReturnFirstEdgeExcludingX:(float)a3 Y:(float)a4;
-- (int)containsPointX:(float)a3 Y:(float)a4;
-- (int)containsPointX:(float)a3 Y:(float)a4 inArray:(int *)a5 ofCount:(int)a6;
-- (int)containsPointX:(float)a3 Y:(float)a4 withTolerance:(float)a5 returnIndex:(int *)a6;
-- (int)pointX:(float)a3 Y:(float)a4 isOutsideBorderlinesInArray:(int *)a5 ofCount:(int)a6;
-- (void)CalculateAndReturnVertices:(float *)a3;
+- (int)OutsideReturnFirstEdgeExcludingX:(float)x Y:(float)y;
+- (int)containsPointX:(float)x Y:(float)y;
+- (int)containsPointX:(float)x Y:(float)y inArray:(int *)array ofCount:(int)count;
+- (int)containsPointX:(float)x Y:(float)y withTolerance:(float)tolerance returnIndex:(int *)index;
+- (int)pointX:(float)x Y:(float)y isOutsideBorderlinesInArray:(int *)array ofCount:(int)count;
+- (void)CalculateAndReturnVertices:(float *)vertices;
 - (void)CalculateEdges;
 - (void)CalculateFromVertices;
 - (void)CalculateVertices;
-- (void)Dilate:(float)a3;
-- (void)DirectionalDilateByAmount:(float)a3 xDirection:(float)a4 yDirection:(float)a5;
-- (void)IntersectionOfEdge:(int)a3 withEdge:(int)a4 resultPoint:(float)a5[2];
+- (void)Dilate:(float)dilate;
+- (void)DirectionalDilateByAmount:(float)amount xDirection:(float)direction yDirection:(float)yDirection;
+- (void)IntersectionOfEdge:(int)edge withEdge:(int)withEdge resultPoint:(float)point[2];
 - (void)PrintConstraints;
 - (void)PrintVertices;
-- (void)PrintVerticesWithZCoord:(double)a3;
+- (void)PrintVerticesWithZCoord:(double)coord;
 - (void)Reset;
-- (void)RoundToPercent:(float)a3;
-- (void)ShrinkByAmount:(float)a3;
-- (void)UnionWith:(id)a3;
+- (void)RoundToPercent:(float)percent;
+- (void)ShrinkByAmount:(float)amount;
+- (void)UnionWith:(id)with;
 - (void)dealloc;
-- (void)dentRgonInwardByAmount:(float)a3 xDirection:(float)a4 yDirection:(float)a5;
+- (void)dentRgonInwardByAmount:(float)amount xDirection:(float)direction yDirection:(float)yDirection;
 - (void)recalculateMaxMins;
-- (void)translateByAmount:(float)a3 xDirection:(float)a4 yDirection:(float)a5;
+- (void)translateByAmount:(float)amount xDirection:(float)direction yDirection:(float)yDirection;
 @end
 
 @implementation Rgon
@@ -91,7 +91,7 @@
   return v2;
 }
 
-- (Rgon)initWithCoder:(id)a3
+- (Rgon)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = Rgon;
@@ -99,7 +99,7 @@
   if (v4)
   {
     v9 = 0;
-    v5 = [a3 decodeBytesForKey:@"RGON_ARRAY" returnedLength:&v9];
+    v5 = [coder decodeBytesForKey:@"RGON_ARRAY" returnedLength:&v9];
     for (i = 8; i != 904; ++i)
     {
       v7 = *v5++;
@@ -141,29 +141,29 @@
   [(Rgon *)self setRgonPtr:self->rgonArray];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[Rgon allocWithZone:?]];
-  v5 = [(Rgon *)v4 rgonPtr];
-  v6 = [(Rgon *)self rgonPtr];
+  rgonPtr = [(Rgon *)v4 rgonPtr];
+  rgonPtr2 = [(Rgon *)self rgonPtr];
   v7 = 224;
   do
   {
-    v8 = *v6;
-    v6 = (v6 + 4);
-    *v5 = v8;
-    v5 = (v5 + 4);
+    v8 = *rgonPtr2;
+    rgonPtr2 = (rgonPtr2 + 4);
+    *rgonPtr = v8;
+    rgonPtr = (rgonPtr + 4);
     --v7;
   }
 
   while (v7);
-  [(Rgon *)v4 setPointerToRgonArray:v5];
+  [(Rgon *)v4 setPointerToRgonArray:rgonPtr];
   return v4;
 }
 
-- (float)vertexAtClockHour:(float)a3
+- (float)vertexAtClockHour:(float)hour
 {
-  v3 = llroundf(((a3 + -3.0) / -12.0) * 32.0) + 32;
+  v3 = llroundf(((hour + -3.0) / -12.0) * 32.0) + 32;
   v4 = v3 & 0x1F;
   v6 = -v3;
   v5 = v6 < 0;
@@ -181,7 +181,7 @@
   return &self->rgonArray[v8][3];
 }
 
-- (int)AdjustForPointX:(float)a3 Y:(float)a4
+- (int)AdjustForPointX:(float)x Y:(float)y
 {
   v4 = 0;
   v5 = &self->rgonArray[0][2];
@@ -189,7 +189,7 @@
   v7 = -1.0;
   do
   {
-    v8 = (*(v5 - 1) * a4) + (a3 * *(v5 - 2));
+    v8 = (*(v5 - 1) * y) + (x * *(v5 - 2));
     if (v5[1] == 0.0)
     {
       v5[1] = 1.0;
@@ -235,24 +235,24 @@ LABEL_8:
 
   while (v4 != 32);
   self->count = self->count + 1.0;
-  if (self->ymin > a4)
+  if (self->ymin > y)
   {
-    self->ymin = a4;
+    self->ymin = y;
   }
 
-  if (self->ymax < a4)
+  if (self->ymax < y)
   {
-    self->ymax = a4;
+    self->ymax = y;
   }
 
-  if (self->xmin > a3)
+  if (self->xmin > x)
   {
-    self->xmin = a3;
+    self->xmin = x;
   }
 
-  if (self->xmax < a3)
+  if (self->xmax < x)
   {
-    self->xmax = a3;
+    self->xmax = x;
   }
 
   return v6;
@@ -273,16 +273,16 @@ LABEL_8:
   }
 }
 
-- (float)dASide:(int)a3 movesds:(float)a4
+- (float)dASide:(int)side movesds:(float)movesds
 {
   [(Rgon *)self Area];
   v8 = v7;
   v9 = objc_alloc_init(Rgon);
   rgonArray = self->rgonArray;
-  v11 = rgonArray[a3];
+  v11 = rgonArray[side];
   v12 = *v11;
   v13 = v11[1];
-  v14 = v11[2] + a4;
+  v14 = v11[2] + movesds;
   for (i = 1; i != 33; ++i)
   {
     if (((v13 * rgonArray[i & 0x1F][4]) + (v12 * rgonArray[i & 0x1F][3])) > v14)
@@ -299,16 +299,16 @@ LABEL_8:
   return v17;
 }
 
-- (float)dASide:(int)a3 movesds:(float)a4 retaining:(int)a5 pointsFromArray:(id)a6
+- (float)dASide:(int)side movesds:(float)movesds retaining:(int)retaining pointsFromArray:(id)array
 {
   [(Rgon *)self Area];
   v12 = v11;
   v13 = objc_alloc_init(Rgon);
-  v14 = (self + 28 * a3);
+  v14 = (self + 28 * side);
   v16 = v14[2];
   v17 = v14[3];
   v15 = (v14 + 2);
-  v18 = *(v15 + 2) + a4;
+  v18 = *(v15 + 2) + movesds;
   v19 = &self->rgonArray[0][4];
   v20 = 32;
   do
@@ -323,11 +323,11 @@ LABEL_8:
   }
 
   while (v20);
-  [objc_msgSend(a6 objectAtIndex:{0), "getValue:", &v35}];
+  [objc_msgSend(array objectAtIndex:{0), "getValue:", &v35}];
   v21 = v16;
   v22 = v17;
   v23 = v36 * v22 + v21 * v35 - *(v15 + 2);
-  if (v23 >= a4)
+  if (v23 >= movesds)
   {
     v25 = 0;
   }
@@ -337,10 +337,10 @@ LABEL_8:
     v24 = 0;
     do
     {
-      [objc_msgSend(a6 objectAtIndex:{v24), "getValue:", &v35}];
+      [objc_msgSend(array objectAtIndex:{v24), "getValue:", &v35}];
       v25 = v24 + 1;
       v26 = v36 * v22 + v21 * v35 - *(v15 + 2);
-      if (v26 >= a4)
+      if (v26 >= movesds)
       {
         break;
       }
@@ -349,13 +349,13 @@ LABEL_8:
     while (v24++ < 0x63);
   }
 
-  if (a5 >= 1)
+  if (retaining >= 1)
   {
-    v28 = v25 + a5;
+    v28 = v25 + retaining;
     v29 = v25;
     do
     {
-      [objc_msgSend(a6 objectAtIndex:{v29), "getValue:", &v35}];
+      [objc_msgSend(array objectAtIndex:{v29), "getValue:", &v35}];
       HIDWORD(v30) = HIDWORD(v35);
       HIDWORD(v31) = HIDWORD(v36);
       if (v36 * v22 + v21 * v35 > v18)
@@ -379,7 +379,7 @@ LABEL_8:
   return v33;
 }
 
-- (void)CalculateAndReturnVertices:(float *)a3
+- (void)CalculateAndReturnVertices:(float *)vertices
 {
   v3 = &self->rgonArray[0][2];
   v4 = 2;
@@ -392,8 +392,8 @@ LABEL_8:
     v10 = ((v6[1] * *v3) - (*(v3 - 1) * v8)) * 5.1258;
     v6[3] = v10;
     v6[4] = ((v8 * *(v3 - 2)) - (v9 * v7)) * 5.1258;
-    a3[v4 & 0x3E] = v10;
-    a3[v4 & 0x3E | 1] = v6[4];
+    vertices[v4 & 0x3E] = v10;
+    vertices[v4 & 0x3E | 1] = v6[4];
     v3 += 7;
     v4 += 2;
   }
@@ -497,14 +497,14 @@ LABEL_8:
   }
 }
 
-- (void)DirectionalDilateByAmount:(float)a3 xDirection:(float)a4 yDirection:(float)a5
+- (void)DirectionalDilateByAmount:(float)amount xDirection:(float)direction yDirection:(float)yDirection
 {
   for (i = 0; i != 32; ++i)
   {
-    v7 = (self->rgonArray[i][1] * a5) + (self->rgonArray[i][0] * a4);
+    v7 = (self->rgonArray[i][1] * yDirection) + (self->rgonArray[i][0] * direction);
     if (v7 < 0.0)
     {
-      self->rgonArray[i][2] = self->rgonArray[i][2] + (a3 * v7);
+      self->rgonArray[i][2] = self->rgonArray[i][2] + (amount * v7);
     }
   }
 
@@ -514,11 +514,11 @@ LABEL_8:
   [(Rgon *)self recalculateMaxMins];
 }
 
-- (void)translateByAmount:(float)a3 xDirection:(float)a4 yDirection:(float)a5
+- (void)translateByAmount:(float)amount xDirection:(float)direction yDirection:(float)yDirection
 {
   for (i = 0; i != 32; ++i)
   {
-    self->rgonArray[i][2] = self->rgonArray[i][2] + (a3 * ((self->rgonArray[i][1] * a5) + (self->rgonArray[i][0] * a4)));
+    self->rgonArray[i][2] = self->rgonArray[i][2] + (amount * ((self->rgonArray[i][1] * yDirection) + (self->rgonArray[i][0] * direction)));
   }
 
   [(Rgon *)self CalculateVertices];
@@ -526,17 +526,17 @@ LABEL_8:
   [(Rgon *)self CalculateEdges];
 }
 
-- (void)dentRgonInwardByAmount:(float)a3 xDirection:(float)a4 yDirection:(float)a5
+- (void)dentRgonInwardByAmount:(float)amount xDirection:(float)direction yDirection:(float)yDirection
 {
   [(Rgon *)self CalculateVertices];
   v9 = 0;
-  v10 = (self->rgonArray[0][4] * a5) + (self->rgonArray[0][3] * a4);
+  v10 = (self->rgonArray[0][4] * yDirection) + (self->rgonArray[0][3] * direction);
   do
   {
-    v11 = self->rgonArray[v9 + 1][4] * a5;
-    if ((v11 + (self->rgonArray[v9 + 1][3] * a4)) < v10)
+    v11 = self->rgonArray[v9 + 1][4] * yDirection;
+    if ((v11 + (self->rgonArray[v9 + 1][3] * direction)) < v10)
     {
-      v10 = v11 + (self->rgonArray[v9 + 1][3] * a4);
+      v10 = v11 + (self->rgonArray[v9 + 1][3] * direction);
     }
 
     ++v9;
@@ -548,12 +548,12 @@ LABEL_8:
     v13 = (self + i * 28);
     v15 = self->rgonArray[i][3];
     v14 = self->rgonArray[i][4];
-    v16 = ((v14 * a5) + (v15 * a4)) - v10;
-    if (v16 < a3)
+    v16 = ((v14 * yDirection) + (v15 * direction)) - v10;
+    if (v16 < amount)
     {
-      v17 = a3 - v16;
-      v13[5] = v15 + (a4 * v17);
-      v13[6] = v14 + (a5 * v17);
+      v17 = amount - v16;
+      v13[5] = v15 + (direction * v17);
+      v13[6] = v14 + (yDirection * v17);
     }
   }
 
@@ -562,11 +562,11 @@ LABEL_8:
   [(Rgon *)self CalculateEdges];
 }
 
-- (void)Dilate:(float)a3
+- (void)Dilate:(float)dilate
 {
   for (i = 16; i != 912; i += 28)
   {
-    *(&self->super.isa + i) = *(&self->super.isa + i) - a3;
+    *(&self->super.isa + i) = *(&self->super.isa + i) - dilate;
   }
 
   [(Rgon *)self CalculateVertices];
@@ -598,7 +598,7 @@ LABEL_8:
   }
 }
 
-- (int)containsPointX:(float)a3 Y:(float)a4 inArray:(int *)a5 ofCount:(int)a6
+- (int)containsPointX:(float)x Y:(float)y inArray:(int *)array ofCount:(int)count
 {
   v6 = 0;
   rgonArray = self->rgonArray;
@@ -621,12 +621,12 @@ LABEL_8:
     return 0;
   }
 
-  if (a6 < 1)
+  if (count < 1)
   {
     return 1;
   }
 
-  if (((rgonArray[*a5][1] * a4) + (rgonArray[*a5][0] * a3)) < (rgonArray[*a5][2] + -0.00001))
+  if (((rgonArray[*array][1] * y) + (rgonArray[*array][0] * x)) < (rgonArray[*array][2] + -0.00001))
   {
     return 0;
   }
@@ -635,22 +635,22 @@ LABEL_8:
   do
   {
     v12 = v11;
-    if (a6 == v11)
+    if (count == v11)
     {
       break;
     }
 
-    v13 = rgonArray[a5[v11]];
-    v14 = (v13[1] * a4) + (*v13 * a3);
+    v13 = rgonArray[array[v11]];
+    v14 = (v13[1] * y) + (*v13 * x);
     v15 = v13[2] + -0.00001;
     v11 = v12 + 1;
   }
 
   while (v14 >= v15);
-  return v12 >= a6;
+  return v12 >= count;
 }
 
-- (int)pointX:(float)a3 Y:(float)a4 isOutsideBorderlinesInArray:(int *)a5 ofCount:(int)a6
+- (int)pointX:(float)x Y:(float)y isOutsideBorderlinesInArray:(int *)array ofCount:(int)count
 {
   v6 = 0;
   rgonArray = self->rgonArray;
@@ -669,27 +669,27 @@ LABEL_8:
 
   while (v9);
   result = 0;
-  if (v6 >= 3 && a6 >= 1)
+  if (v6 >= 3 && count >= 1)
   {
-    if (((rgonArray[*a5][1] * a4) + (rgonArray[*a5][0] * a3)) >= (rgonArray[*a5][2] + -0.00001))
+    if (((rgonArray[*array][1] * y) + (rgonArray[*array][0] * x)) >= (rgonArray[*array][2] + -0.00001))
     {
       v11 = 1;
       do
       {
         v12 = v11;
-        if (a6 == v11)
+        if (count == v11)
         {
           break;
         }
 
-        v13 = rgonArray[a5[v11]];
-        v14 = (v13[1] * a4) + (*v13 * a3);
+        v13 = rgonArray[array[v11]];
+        v14 = (v13[1] * y) + (*v13 * x);
         v15 = v13[2] + -0.00001;
         v11 = v12 + 1;
       }
 
       while (v14 >= v15);
-      return v12 < a6;
+      return v12 < count;
     }
 
     else
@@ -701,7 +701,7 @@ LABEL_8:
   return result;
 }
 
-- (int)containsPointX:(float)a3 Y:(float)a4
+- (int)containsPointX:(float)x Y:(float)y
 {
   v4 = 0;
   v5 = &self->rgonArray[0][5];
@@ -728,7 +728,7 @@ LABEL_8:
   do
   {
     v10 = self->rgonArray[dword_550E0[lastFaceFlunked]];
-    v11 = (v10[1] * a4) + (*v10 * a3);
+    v11 = (v10[1] * y) + (*v10 * x);
     v12 = v10[2] + -0.01;
   }
 
@@ -736,7 +736,7 @@ LABEL_8:
   return v11 >= v12;
 }
 
-- (int)containsPointX:(float)a3 Y:(float)a4 withTolerance:(float)a5 returnIndex:(int *)a6
+- (int)containsPointX:(float)x Y:(float)y withTolerance:(float)tolerance returnIndex:(int *)index
 {
   v6 = 0;
   lastFaceFlunked = self->lastFaceFlunked;
@@ -767,7 +767,7 @@ LABEL_8:
     while (1)
     {
       v14 = *v13++;
-      if (((self->rgonArray[v14][1] * a4) + (self->rgonArray[v14][0] * a3)) < (self->rgonArray[v14][2] - a5))
+      if (((self->rgonArray[v14][1] * y) + (self->rgonArray[v14][0] * x)) < (self->rgonArray[v14][2] - tolerance))
       {
         break;
       }
@@ -777,7 +777,7 @@ LABEL_8:
       {
         lastFaceFlunked = 0;
         result = 1;
-        if (a6)
+        if (index)
         {
           goto LABEL_9;
         }
@@ -793,30 +793,30 @@ LABEL_8:
   }
 
   result = 0;
-  if (a6)
+  if (index)
   {
 LABEL_9:
-    *a6 = lastFaceFlunked;
+    *index = lastFaceFlunked;
   }
 
   return result;
 }
 
-- (float)CommonCenterForIndex:(int)a3
+- (float)CommonCenterForIndex:(int)index
 {
   v3 = 0.0;
   for (i = 8; i != 904; i += 28)
   {
-    v3 = v3 + *(&self->super.isa + 4 * a3 + i);
+    v3 = v3 + *(&self->super.isa + 4 * index + i);
   }
 
   return v3 * 0.03125;
 }
 
-- (float)MeanVertexDistFromX:(float)a3 Y:(float)a4
+- (float)MeanVertexDistFromX:(float)x Y:(float)y
 {
-  v4 = vdupq_lane_s32(*&a3, 0);
-  v5 = vdupq_lane_s32(*&a4, 0);
+  v4 = vdupq_lane_s32(*&x, 0);
+  v5 = vdupq_lane_s32(*&y, 0);
   v6 = &self->rgonArray[2][3];
   v7 = 0.0;
   v8 = 32;
@@ -940,18 +940,18 @@ LABEL_9:
   return v5;
 }
 
-- (float)DiameterAtFacetCountMeasuredFromVertical:(int)a3
+- (float)DiameterAtFacetCountMeasuredFromVertical:(int)vertical
 {
-  v3 = (a3 + 24) & 0x1F;
-  if (a3 + 24 <= 0)
+  v3 = (vertical + 24) & 0x1F;
+  if (vertical + 24 <= 0)
   {
-    v3 = -(-(a3 + 24) & 0x1F);
+    v3 = -(-(vertical + 24) & 0x1F);
   }
 
   return fabsf(self->rgonArray[v3][2] + self->rgonArray[(v3 + 16 - ((v3 + 16 + (((v3 + 16) >> 10) & 0x1F)) & 0xE0))][2]);
 }
 
-- (void)RoundToPercent:(float)a3
+- (void)RoundToPercent:(float)percent
 {
   [(Rgon *)self XCenter];
   v6 = v5;
@@ -964,7 +964,7 @@ LABEL_9:
   v13 = v12 * 0.91;
   do
   {
-    self->rgonArray[v11][2] = self->rgonArray[v11][2] + (a3 * (((self->rgonArray[v11][1] * (v8 - self->rgonArray[v11][4])) + ((v6 - self->rgonArray[v11][3]) * self->rgonArray[v11][0])) - v13));
+    self->rgonArray[v11][2] = self->rgonArray[v11][2] + (percent * (((self->rgonArray[v11][1] * (v8 - self->rgonArray[v11][4])) + ((v6 - self->rgonArray[v11][3]) * self->rgonArray[v11][0])) - v13));
     ++v11;
   }
 
@@ -973,7 +973,7 @@ LABEL_9:
   [(Rgon *)self CalculateVertices];
 }
 
-- (float)DistToPointX:(float)a3 Y:(float)a4
+- (float)DistToPointX:(float)x Y:(float)y
 {
   v4 = &self->rgonArray[0][3];
   v5 = 1;
@@ -981,12 +981,12 @@ LABEL_9:
   LOBYTE(v7) = 1;
   do
   {
-    v8 = *v4 - a3;
-    v9 = v4[1] - a4;
+    v8 = *v4 - x;
+    v9 = v4[1] - y;
     v10 = self->rgonArray[v5 & 0x1F];
     v11 = sqrtf((v4[3] * v4[3]) + (v4[2] * v4[2]));
     v12 = sqrtf((v9 * v9) + (v8 * v8));
-    v13 = sqrtf(((v10[4] - a4) * (v10[4] - a4)) + ((v10[3] - a3) * (v10[3] - a3)));
+    v13 = sqrtf(((v10[4] - y) * (v10[4] - y)) + ((v10[3] - x) * (v10[3] - x)));
     if ((((v11 * v11) + (v12 * v12)) - (v13 * v13)) <= 0.0 || (((v11 * v11) + (v13 * v13)) - (v12 * v12)) <= 0.0)
     {
       if (v12 < v6)
@@ -1032,9 +1032,9 @@ LABEL_9:
   return result;
 }
 
-- (float)DistanceFromRgon:(id)a3
+- (float)DistanceFromRgon:(id)rgon
 {
-  v5 = [a3 rgonPtr] + 16;
+  v5 = [rgon rgonPtr] + 16;
   v8 = 3.4028e38;
   v9 = 32;
   do
@@ -1058,7 +1058,7 @@ LABEL_9:
   {
     *&v6 = *(v10 - 1);
     *&v7 = *v10;
-    [a3 DistToPointX:v6 Y:v7];
+    [rgon DistToPointX:v6 Y:v7];
     if (*&v6 < v8)
     {
       v8 = *&v6;
@@ -1072,15 +1072,15 @@ LABEL_9:
   return v8;
 }
 
-- (float)DistanceBetweenCenters:(id)a3
+- (float)DistanceBetweenCenters:(id)centers
 {
   [(Rgon *)self XCenter];
   v6 = v5;
   [(Rgon *)self YCenter];
   v8 = v7;
-  [a3 XCenter];
+  [centers XCenter];
   v10 = v9;
-  [a3 YCenter];
+  [centers YCenter];
   return sqrtf(((v11 - v8) * (v11 - v8)) + ((v10 - v6) * (v10 - v6)));
 }
 
@@ -1137,17 +1137,17 @@ LABEL_9:
   return result;
 }
 
-- (void)IntersectionOfEdge:(int)a3 withEdge:(int)a4 resultPoint:(float)a5[2]
+- (void)IntersectionOfEdge:(int)edge withEdge:(int)withEdge resultPoint:(float)point[2]
 {
-  if (a4 != a3)
+  if (withEdge != edge)
   {
     rgonArray = self->rgonArray;
-    v9 = (2 * (a4 - a3)) * 3.14159265 * 0.03125;
+    v9 = (2 * (withEdge - edge)) * 3.14159265 * 0.03125;
     v10 = 1.0 / sinf(v9);
-    v11 = rgonArray[a4];
-    v12 = rgonArray[a3];
-    *a5 = v10 * ((v11[1] * v12[2]) - (v12[1] * v11[2]));
-    a5[1] = v10 * ((*v12 * v11[2]) - (*v11 * v12[2]));
+    v11 = rgonArray[withEdge];
+    v12 = rgonArray[edge];
+    *point = v10 * ((v11[1] * v12[2]) - (v12[1] * v11[2]));
+    point[1] = v10 * ((*v12 * v11[2]) - (*v11 * v12[2]));
   }
 }
 
@@ -1168,20 +1168,20 @@ LABEL_9:
   putchar(10);
 }
 
-- (void)PrintVerticesWithZCoord:(double)a3
+- (void)PrintVerticesWithZCoord:(double)coord
 {
   printf(" Line[ { ");
   v5 = &self->rgonArray[0][4];
   v6 = 32;
   do
   {
-    printf(" {%f,%f,%f},", *(v5 - 1), *v5, a3);
+    printf(" {%f,%f,%f},", *(v5 - 1), *v5, coord);
     v5 += 7;
     --v6;
   }
 
   while (v6);
-  printf(" {%f,%f,%f}", self->rgonArray[0][3], self->rgonArray[0][4], a3);
+  printf(" {%f,%f,%f}", self->rgonArray[0][3], self->rgonArray[0][4], coord);
   printf(" }] ");
 
   putchar(10);
@@ -1198,17 +1198,17 @@ LABEL_9:
   printf(" %f } \n", self->rgonArray[31][2]);
 }
 
-- (void)ShrinkByAmount:(float)a3
+- (void)ShrinkByAmount:(float)amount
 {
   for (i = 16; i != 912; i += 28)
   {
-    *(&self->super.isa + i) = *(&self->super.isa + i) + a3;
+    *(&self->super.isa + i) = *(&self->super.isa + i) + amount;
   }
 
-  v5 = [(Rgon *)self createWithCollapsedOrphans2];
-  v6 = [v5 rgonPtr];
+  createWithCollapsedOrphans2 = [(Rgon *)self createWithCollapsedOrphans2];
+  rgonPtr = [createWithCollapsedOrphans2 rgonPtr];
   v7 = 0;
-  v8 = v6 + 8;
+  v8 = rgonPtr + 8;
   do
   {
     v9 = (self + v7);
@@ -1223,10 +1223,10 @@ LABEL_9:
   [(Rgon *)self CalculateEdges];
 }
 
-- (int)OutsideReturnFirstEdgeExcludingX:(float)a3 Y:(float)a4
+- (int)OutsideReturnFirstEdgeExcludingX:(float)x Y:(float)y
 {
   v5 = 0;
-  for (i = &self->rgonArray[0][2]; ((*(i - 1) * a4) + (*(i - 2) * a3)) >= (*i + -0.00001); i += 7)
+  for (i = &self->rgonArray[0][2]; ((*(i - 1) * y) + (*(i - 2) * x)) >= (*i + -0.00001); i += 7)
   {
     if (++v5 == 32)
     {
@@ -1238,17 +1238,17 @@ LABEL_9:
   return v5;
 }
 
-- ($94F468A8D4C62B317260615823C2B210)intersectionEdge:(int)a3 withEdge:(int)a4
+- ($94F468A8D4C62B317260615823C2B210)intersectionEdge:(int)edge withEdge:(int)withEdge
 {
   v4 = 0.0;
   v5 = 0.0;
-  if (a4 != a3)
+  if (withEdge != edge)
   {
     rgonArray = self->rgonArray;
-    v9 = (2 * (a4 - a3)) * 3.14159265 * 0.03125;
+    v9 = (2 * (withEdge - edge)) * 3.14159265 * 0.03125;
     v10 = 1.0 / sinf(v9);
-    v11 = rgonArray[a4];
-    v12 = rgonArray[a3];
+    v11 = rgonArray[withEdge];
+    v12 = rgonArray[edge];
     v13 = v12[2];
     v14 = v11[2];
     v5 = v10 * ((v11[1] * v13) - (v12[1] * v14));
@@ -1483,9 +1483,9 @@ LABEL_44:
   return 1;
 }
 
-- (void)UnionWith:(id)a3
+- (void)UnionWith:(id)with
 {
-  v4 = [a3 rgonPtr] + 16;
+  v4 = [with rgonPtr] + 16;
   v7 = 32;
   do
   {
@@ -1501,35 +1501,35 @@ LABEL_44:
   [(Rgon *)self CalculateVertices];
 }
 
-- (id)unionRgonOf:(id)a3 withRgon:(id)a4
+- (id)unionRgonOf:(id)of withRgon:(id)rgon
 {
-  v5 = [a4 copy];
-  [v5 UnionWith:a3];
+  v5 = [rgon copy];
+  [v5 UnionWith:of];
 
   return v5;
 }
 
-+ (id)newInterpolatedRgonFrom:(id)a3 withRgon:(id)a4 param:(float)a5
++ (id)newInterpolatedRgonFrom:(id)from withRgon:(id)rgon param:(float)param
 {
-  v8 = [a4 copy];
-  v9 = [a3 rgonPtr];
-  v10 = [a4 rgonPtr];
-  v11 = [v8 rgonPtr];
-  v12 = 1.0 - a5;
-  v13 = (v9 + 16);
-  v14 = (v11 + 16);
-  v15 = (v10 + 16);
+  v8 = [rgon copy];
+  rgonPtr = [from rgonPtr];
+  rgonPtr2 = [rgon rgonPtr];
+  rgonPtr3 = [v8 rgonPtr];
+  v12 = 1.0 - param;
+  v13 = (rgonPtr + 16);
+  v14 = (rgonPtr3 + 16);
+  v15 = (rgonPtr2 + 16);
   v16 = 32;
   do
   {
-    *(v14 - 2) = (*(v15 - 2) * a5) + (v12 * *(v13 - 2));
-    *(v14 - 1) = (*(v15 - 1) * a5) + (v12 * *(v13 - 1));
+    *(v14 - 2) = (*(v15 - 2) * param) + (v12 * *(v13 - 2));
+    *(v14 - 1) = (*(v15 - 1) * param) + (v12 * *(v13 - 1));
     v17 = *v13;
     v13 += 7;
     v18 = v17;
     v19 = *v15;
     v15 += 7;
-    *v14 = (v19 * a5) + (v12 * v18);
+    *v14 = (v19 * param) + (v12 * v18);
     v14 += 7;
     --v16;
   }
@@ -1538,15 +1538,15 @@ LABEL_44:
   return v8;
 }
 
-- (BOOL)IntersectionRgonOf:(id)a3 withRgon:(id)a4
+- (BOOL)IntersectionRgonOf:(id)of withRgon:(id)rgon
 {
-  v6 = [a3 rgonPtr];
-  v7 = [a4 rgonPtr];
+  rgonPtr = [of rgonPtr];
+  rgonPtr2 = [rgon rgonPtr];
   for (i = 0; i != 32; ++i)
   {
-    v9 = *&v6[i * 28 + 8];
+    v9 = *&rgonPtr[i * 28 + 8];
     self->rgonArray[i][2] = v9;
-    v10 = *&v7[i * 28 + 8];
+    v10 = *&rgonPtr2[i * 28 + 8];
     if (v10 > v9)
     {
       self->rgonArray[i][2] = v10;
@@ -1558,22 +1558,22 @@ LABEL_44:
   return [(Rgon *)self CollapseOrphans];
 }
 
-- (float)DistanceCenterToRGon:(id)a3
+- (float)DistanceCenterToRGon:(id)gon
 {
   [(Rgon *)self XCenter];
   v6 = v5;
   [(Rgon *)self YCenter];
   v8 = v7;
-  [a3 XCenter];
+  [gon XCenter];
   v10 = v9;
-  [a3 YCenter];
+  [gon YCenter];
   LODWORD(v12) = v11;
   LODWORD(v13) = v10;
   [(Rgon *)self DistToPointX:v13 Y:v12];
   v15 = v14;
   LODWORD(v16) = v6;
   LODWORD(v17) = v8;
-  [a3 DistToPointX:v16 Y:v17];
+  [gon DistToPointX:v16 Y:v17];
   if (v15 < result)
   {
     return v15;

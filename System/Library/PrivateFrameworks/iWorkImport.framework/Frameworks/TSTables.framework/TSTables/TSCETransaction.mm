@@ -1,15 +1,15 @@
 @interface TSCETransaction
-- (TSCETransaction)initWithCalcEngine:(id)a3;
+- (TSCETransaction)initWithCalcEngine:(id)engine;
 - (id)description;
-- (void)addCellRefToCheck:(const TSCECellRef *)a3;
+- (void)addCellRefToCheck:(const TSCECellRef *)check;
 - (void)dealloc;
 @end
 
 @implementation TSCETransaction
 
-- (TSCETransaction)initWithCalcEngine:(id)a3
+- (TSCETransaction)initWithCalcEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v6.receiver = self;
   v6.super_class = TSCETransaction;
   if ([(TSCETransaction *)&v6 init])
@@ -33,12 +33,12 @@
   [(TSCETransaction *)&v4 dealloc];
 }
 
-- (void)addCellRefToCheck:(const TSCECellRef *)a3
+- (void)addCellRefToCheck:(const TSCECellRef *)check
 {
   cellRefsToCheck = self->_cellRefsToCheck;
   if (cellRefsToCheck)
   {
-    TSCEReferenceSet::insertRef(cellRefsToCheck, a3);
+    TSCEReferenceSet::insertRef(cellRefsToCheck, check);
   }
 }
 

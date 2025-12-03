@@ -1,30 +1,30 @@
 @interface RTVisitConsolidator
-+ (id)consolidateHindsightVisits:(id)a3 constantMonitorVisits:(id)a4 sortDescriptor:(id)a5 filterPairedVisitEntries:(BOOL)a6;
-+ (id)filterConstantMonitorVisits:(id)a3;
-+ (id)getRedactedDateIntervalFromInterval:(id)a3;
-- (RTVisitConsolidator)initWithLearnedLocationManager:(id)a3 visitManager:(id)a4 authorizedLocationManager:(id)a5 accountManager:(id)a6 bluePOITileManager:(id)a7;
-- (void)_fetchConstantMonitorVisitsWithDateInterval:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)_fetchHindsightVisitsWithDateInterval:(id)a3 ascending:(BOOL)a4 handler:(id)a5;
-- (void)_fetchRedactedStoredVisitsWithOptions:(id)a3 redactedVisitsHandler:(id)a4;
-- (void)_fetchStoredVisitsWithOptions:(id)a3 handler:(id)a4;
-- (void)_onAccountChange:(id)a3;
-- (void)_onDailyMetricsNotification:(id)a3;
++ (id)consolidateHindsightVisits:(id)visits constantMonitorVisits:(id)monitorVisits sortDescriptor:(id)descriptor filterPairedVisitEntries:(BOOL)entries;
++ (id)filterConstantMonitorVisits:(id)visits;
++ (id)getRedactedDateIntervalFromInterval:(id)interval;
+- (RTVisitConsolidator)initWithLearnedLocationManager:(id)manager visitManager:(id)visitManager authorizedLocationManager:(id)locationManager accountManager:(id)accountManager bluePOITileManager:(id)tileManager;
+- (void)_fetchConstantMonitorVisitsWithDateInterval:(id)interval options:(id)options handler:(id)handler;
+- (void)_fetchHindsightVisitsWithDateInterval:(id)interval ascending:(BOOL)ascending handler:(id)handler;
+- (void)_fetchRedactedStoredVisitsWithOptions:(id)options redactedVisitsHandler:(id)handler;
+- (void)_fetchStoredVisitsWithOptions:(id)options handler:(id)handler;
+- (void)_onAccountChange:(id)change;
+- (void)_onDailyMetricsNotification:(id)notification;
 - (void)_setup;
-- (void)fetchStoredVisitsWithOptions:(id)a3 handler:(id)a4;
-- (void)onAccountChange:(id)a3;
-- (void)onDailyMetricsNotification:(id)a3;
+- (void)fetchStoredVisitsWithOptions:(id)options handler:(id)handler;
+- (void)onAccountChange:(id)change;
+- (void)onDailyMetricsNotification:(id)notification;
 @end
 
 @implementation RTVisitConsolidator
 
-- (RTVisitConsolidator)initWithLearnedLocationManager:(id)a3 visitManager:(id)a4 authorizedLocationManager:(id)a5 accountManager:(id)a6 bluePOITileManager:(id)a7
+- (RTVisitConsolidator)initWithLearnedLocationManager:(id)manager visitManager:(id)visitManager authorizedLocationManager:(id)locationManager accountManager:(id)accountManager bluePOITileManager:(id)tileManager
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v23 = a7;
-  if (!v13)
+  managerCopy = manager;
+  visitManagerCopy = visitManager;
+  locationManagerCopy = locationManager;
+  accountManagerCopy = accountManager;
+  tileManagerCopy = tileManager;
+  if (!managerCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -39,7 +39,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v14)
+  if (!visitManagerCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -52,7 +52,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!v15)
+  if (!locationManagerCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -65,7 +65,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!v16)
+  if (!accountManagerCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -77,7 +77,7 @@ LABEL_16:
 
 LABEL_17:
 
-    v19 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
@@ -87,37 +87,37 @@ LABEL_17:
   p_isa = &v17->super.super.super.isa;
   if (v17)
   {
-    objc_storeStrong(&v17->_learnedLocationManager, a3);
-    objc_storeStrong(p_isa + 5, a4);
-    objc_storeStrong(p_isa + 6, a5);
-    objc_storeStrong(p_isa + 7, a6);
-    objc_storeStrong(p_isa + 8, a7);
+    objc_storeStrong(&v17->_learnedLocationManager, manager);
+    objc_storeStrong(p_isa + 5, visitManager);
+    objc_storeStrong(p_isa + 6, locationManager);
+    objc_storeStrong(p_isa + 7, accountManager);
+    objc_storeStrong(p_isa + 8, tileManager);
     [p_isa setup];
   }
 
   self = p_isa;
-  v19 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v19;
+  return selfCopy;
 }
 
 - (void)_setup
 {
-  v3 = [(RTVisitConsolidator *)self accountManager];
+  accountManager = [(RTVisitConsolidator *)self accountManager];
   v4 = +[(RTNotification *)RTAccountManagerNotificationAccountChanged];
-  [v3 addObserver:self selector:sel_onAccountChange_ name:v4];
+  [accountManager addObserver:self selector:sel_onAccountChange_ name:v4];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel_onDailyMetricsNotification_ name:@"RTMetricManagerDailyMetricNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_onDailyMetricsNotification_ name:@"RTMetricManagerDailyMetricNotification" object:0];
 
-  v6 = [(RTVisitConsolidator *)self bluePOITileManager];
+  bluePOITileManager = [(RTVisitConsolidator *)self bluePOITileManager];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __29__RTVisitConsolidator__setup__block_invoke;
   v7[3] = &unk_2788CA158;
   v7[4] = self;
-  [v6 fetchPOICategoryDenyListWithHandler:v7];
+  [bluePOITileManager fetchPOICategoryDenyListWithHandler:v7];
 }
 
 void __29__RTVisitConsolidator__setup__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -168,21 +168,21 @@ void __29__RTVisitConsolidator__setup__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)fetchStoredVisitsWithOptions:(id)a3 handler:(id)a4
+- (void)fetchStoredVisitsWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__RTVisitConsolidator_fetchStoredVisitsWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = optionsCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
 void __60__RTVisitConsolidator_fetchStoredVisitsWithOptions_handler___block_invoke(uint64_t a1)
@@ -218,12 +218,12 @@ void __60__RTVisitConsolidator_fetchStoredVisitsWithOptions_handler___block_invo
   (*(v4 + 16))(v4, v6, v5);
 }
 
-- (void)_fetchRedactedStoredVisitsWithOptions:(id)a3 redactedVisitsHandler:(id)a4
+- (void)_fetchRedactedStoredVisitsWithOptions:(id)options redactedVisitsHandler:(id)handler
 {
   v61 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (([v6 redact] & 1) == 0)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (([optionsCopy redact] & 1) == 0)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -236,20 +236,20 @@ void __60__RTVisitConsolidator_fetchStoredVisitsWithOptions_handler___block_invo
     }
   }
 
-  if ([v6 redact] && (objc_msgSend(v6, "labelVisit") & 1) == 0)
+  if ([optionsCopy redact] && (objc_msgSend(optionsCopy, "labelVisit") & 1) == 0)
   {
     v11 = [MEMORY[0x277CCA9B8] rt_errorWithCode:7 description:@"'labelVisit' must also be set when 'redact' is set"];
-    v7[2](v7, 0, v11);
+    handlerCopy[2](handlerCopy, 0, v11);
     goto LABEL_35;
   }
 
-  if ([v6 redact] && (-[RTVisitConsolidator currentAccount](self, "currentAccount"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "underageAccount"), v9, v10))
+  if ([optionsCopy redact] && (-[RTVisitConsolidator currentAccount](self, "currentAccount"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "underageAccount"), v9, v10))
   {
     v11 = [MEMORY[0x277CCA9B8] rt_errorWithCode:1 description:@"cannot return redacted visits for underage account"];
-    v7[2](v7, 0, v11);
+    handlerCopy[2](handlerCopy, 0, v11);
   }
 
-  else if ([v6 redact] && +[RTVisitRedactionUtilities shouldRedactAllVisitsForCurrentRegion](RTVisitRedactionUtilities, "shouldRedactAllVisitsForCurrentRegion"))
+  else if ([optionsCopy redact] && +[RTVisitRedactionUtilities shouldRedactAllVisitsForCurrentRegion](RTVisitRedactionUtilities, "shouldRedactAllVisitsForCurrentRegion"))
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -259,18 +259,18 @@ void __60__RTVisitConsolidator_fetchStoredVisitsWithOptions_handler___block_invo
     }
 
     v11 = [MEMORY[0x277CCA9B8] rt_errorWithCode:13 description:@"redacted stored visits not available in current region"];
-    v7[2](v7, 0, v11);
+    handlerCopy[2](handlerCopy, 0, v11);
   }
 
   else
   {
-    if ([v6 redact])
+    if ([optionsCopy redact])
     {
       v11 = +[RTReferenceTimeProvider referenceTime];
       if (v11)
       {
-        v13 = [MEMORY[0x277CBEAA8] date];
-        [v11 timeIntervalSinceDate:v13];
+        date = [MEMORY[0x277CBEAA8] date];
+        [v11 timeIntervalSinceDate:date];
         v15 = v14;
 
         v16 = -v15;
@@ -282,19 +282,19 @@ void __60__RTVisitConsolidator_fetchStoredVisitsWithOptions_handler___block_invo
         if (v16 > 3600.0)
         {
           v17 = [MEMORY[0x277CCA9B8] rt_errorWithCode:5 description:{@"system time is too offset, denying fetch"}];
-          v7[2](v7, 0, v17);
+          handlerCopy[2](handlerCopy, 0, v17);
 
           goto LABEL_35;
         }
       }
     }
 
-    if ([v6 redact])
+    if ([optionsCopy redact])
     {
       v18 = objc_opt_class();
-      v19 = [v6 dateInterval];
-      v20 = [v18 getRedactedDateIntervalFromInterval:v19];
-      [v6 setDateInterval:v20];
+      dateInterval = [optionsCopy dateInterval];
+      v20 = [v18 getRedactedDateIntervalFromInterval:dateInterval];
+      [optionsCopy setDateInterval:v20];
     }
 
     v21 = dispatch_group_create();
@@ -371,8 +371,8 @@ void __60__RTVisitConsolidator_fetchStoredVisitsWithOptions_handler___block_invo
     v11 = v30;
     v42 = v11;
     v45 = v23;
-    [(RTVisitConsolidator *)self _fetchStoredVisitsWithOptions:v6 handler:v41];
-    v33 = [(RTNotifier *)self queue];
+    [(RTVisitConsolidator *)self _fetchStoredVisitsWithOptions:optionsCopy handler:v41];
+    queue = [(RTNotifier *)self queue];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __83__RTVisitConsolidator__fetchRedactedStoredVisitsWithOptions_redactedVisitsHandler___block_invoke_33;
@@ -382,9 +382,9 @@ void __60__RTVisitConsolidator_fetchStoredVisitsWithOptions_handler___block_invo
     v38 = v53;
     v39 = buf;
     v34[4] = self;
-    v35 = v7;
+    v35 = handlerCopy;
     v40 = v23;
-    dispatch_group_notify(v11, v33, v34);
+    dispatch_group_notify(v11, queue, v34);
 
     _Block_object_dispose(v51, 8);
     _Block_object_dispose(v53, 8);
@@ -483,15 +483,15 @@ void __83__RTVisitConsolidator__fetchRedactedStoredVisitsWithOptions_redactedVis
   }
 }
 
-- (void)_fetchStoredVisitsWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchStoredVisitsWithOptions:(id)options handler:(id)handler
 {
   v76 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aSelector = a2;
-    v44 = self;
+    selfCopy = self;
     v9 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
     v10 = os_signpost_id_generate(v9);
 
@@ -517,7 +517,7 @@ void __83__RTVisitConsolidator__fetchRedactedStoredVisitsWithOptions_redactedVis
         *&buf[12] = 2112;
         *&buf[14] = v17;
         *&buf[22] = 2112;
-        v73 = v7;
+        v73 = optionsCopy;
         _os_log_impl(&dword_2304B3000, v14, OS_LOG_TYPE_INFO, "%@, %@, options, %@", buf, 0x20u);
       }
     }
@@ -558,15 +558,15 @@ void __83__RTVisitConsolidator__fetchRedactedStoredVisitsWithOptions_redactedVis
     v62[3] = __Block_byref_object_copy__63;
     v62[4] = __Block_byref_object_dispose__63;
     v63 = objc_opt_new();
-    v18 = [v7 sources];
-    v19 = [v18 containsObject:&unk_28459DD88];
+    sources = [optionsCopy sources];
+    v19 = [sources containsObject:&unk_28459DD88];
 
-    v20 = [v7 sources];
-    v21 = [v20 containsObject:&unk_28459DDA0];
+    sources2 = [optionsCopy sources];
+    v21 = [sources2 containsObject:&unk_28459DDA0];
 
     if (((v19 | v21) & 1) == 0)
     {
-      (*(v8 + 2))(v8, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
 LABEL_32:
       _Block_object_dispose(v62, 8);
 
@@ -592,22 +592,22 @@ LABEL_32:
       }
 
       dispatch_group_enter(v22);
-      v25 = [v7 dateInterval];
-      v26 = v25;
-      if (v25)
+      dateInterval = [optionsCopy dateInterval];
+      v26 = dateInterval;
+      if (dateInterval)
       {
-        v27 = v25;
+        v27 = dateInterval;
       }
 
       else
       {
         v33 = objc_alloc(MEMORY[0x277CCA970]);
-        v34 = [MEMORY[0x277CBEAA8] distantPast];
-        v35 = [MEMORY[0x277CBEAA8] date];
-        v27 = [v33 initWithStartDate:v34 endDate:v35];
+        distantPast = [MEMORY[0x277CBEAA8] distantPast];
+        date = [MEMORY[0x277CBEAA8] date];
+        v27 = [v33 initWithStartDate:distantPast endDate:date];
       }
 
-      v36 = [v7 ascending];
+      ascending = [optionsCopy ascending];
       v37 = v60;
       v60[0] = MEMORY[0x277D85DD0];
       v60[1] = 3221225472;
@@ -617,7 +617,7 @@ LABEL_32:
       v60[6] = buf;
       v60[4] = v22;
       v60[7] = v10;
-      [(RTVisitConsolidator *)v44 _fetchHindsightVisitsWithDateInterval:v27 ascending:v36 handler:v60];
+      [(RTVisitConsolidator *)selfCopy _fetchHindsightVisitsWithDateInterval:v27 ascending:ascending handler:v60];
     }
 
     else
@@ -625,7 +625,7 @@ LABEL_32:
       if (!v21)
       {
 LABEL_31:
-        v41 = [(RTNotifier *)v44 queue];
+        queue = [(RTNotifier *)selfCopy queue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __61__RTVisitConsolidator__fetchStoredVisitsWithOptions_handler___block_invoke_40;
@@ -636,14 +636,14 @@ LABEL_31:
         v50 = v70;
         v57 = v21;
         v58 = v19;
-        v46 = v7;
-        v47 = v44;
+        v46 = optionsCopy;
+        v47 = selfCopy;
         v51 = v64;
         v52 = v66;
         v53 = v68;
         v54 = v62;
-        v48 = v8;
-        dispatch_group_notify(v22, v41, block);
+        v48 = handlerCopy;
+        dispatch_group_notify(v22, queue, block);
 
         goto LABEL_32;
       }
@@ -657,19 +657,19 @@ LABEL_31:
       }
 
       dispatch_group_enter(v22);
-      v31 = [v7 dateInterval];
-      v32 = v31;
-      if (v31)
+      dateInterval2 = [optionsCopy dateInterval];
+      v32 = dateInterval2;
+      if (dateInterval2)
       {
-        v27 = v31;
+        v27 = dateInterval2;
       }
 
       else
       {
         v38 = objc_alloc(MEMORY[0x277CCA970]);
-        v39 = [MEMORY[0x277CBEAA8] distantPast];
-        v40 = [MEMORY[0x277CBEAA8] date];
-        v27 = [v38 initWithStartDate:v39 endDate:v40];
+        distantPast2 = [MEMORY[0x277CBEAA8] distantPast];
+        date2 = [MEMORY[0x277CBEAA8] date];
+        v27 = [v38 initWithStartDate:distantPast2 endDate:date2];
       }
 
       v37 = v59;
@@ -681,7 +681,7 @@ LABEL_31:
       v59[6] = v70;
       v59[4] = v22;
       v59[7] = v10;
-      [(RTVisitConsolidator *)v44 _fetchConstantMonitorVisitsWithDateInterval:v27 options:v7 handler:v59];
+      [(RTVisitConsolidator *)selfCopy _fetchConstantMonitorVisitsWithDateInterval:v27 options:optionsCopy handler:v59];
     }
 
     goto LABEL_31;
@@ -1190,15 +1190,15 @@ void __61__RTVisitConsolidator__fetchStoredVisitsWithOptions_handler___block_inv
   }
 }
 
-- (void)_fetchHindsightVisitsWithDateInterval:(id)a3 ascending:(BOOL)a4 handler:(id)a5
+- (void)_fetchHindsightVisitsWithDateInterval:(id)interval ascending:(BOOL)ascending handler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (!v9)
+  ascendingCopy = ascending;
+  intervalCopy = interval;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    startDate = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(startDate, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_7;
     }
@@ -1206,14 +1206,14 @@ void __61__RTVisitConsolidator__fetchStoredVisitsWithOptions_handler___block_inv
     *buf = 0;
     v13 = "Invalid parameter not satisfying: handler";
 LABEL_9:
-    _os_log_error_impl(&dword_2304B3000, v10, OS_LOG_TYPE_ERROR, v13, buf, 2u);
+    _os_log_error_impl(&dword_2304B3000, startDate, OS_LOG_TYPE_ERROR, v13, buf, 2u);
     goto LABEL_7;
   }
 
-  if (!v8)
+  if (!intervalCopy)
   {
-    v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    startDate = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(startDate, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_7;
     }
@@ -1223,17 +1223,17 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v10 = [v8 startDate];
-  v11 = [v8 endDate];
-  v12 = [(RTVisitConsolidator *)self learnedLocationManager];
+  startDate = [intervalCopy startDate];
+  endDate = [intervalCopy endDate];
+  learnedLocationManager = [(RTVisitConsolidator *)self learnedLocationManager];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __79__RTVisitConsolidator__fetchHindsightVisitsWithDateInterval_ascending_handler___block_invoke;
   v14[3] = &unk_2788C55A8;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  [v12 fetchHindsightVisitsBetweenStartDate:v10 endDate:v11 ascending:v6 handler:v14];
+  v15 = intervalCopy;
+  v16 = handlerCopy;
+  [learnedLocationManager fetchHindsightVisitsBetweenStartDate:startDate endDate:endDate ascending:ascendingCopy handler:v14];
 
 LABEL_7:
 }
@@ -1280,41 +1280,41 @@ uint64_t __79__RTVisitConsolidator__fetchHindsightVisitsWithDateInterval_ascendi
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)_fetchConstantMonitorVisitsWithDateInterval:(id)a3 options:(id)a4 handler:(id)a5
+- (void)_fetchConstantMonitorVisitsWithDateInterval:(id)interval options:(id)options handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  intervalCopy = interval;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v11 = objc_alloc(MEMORY[0x277D01340]);
-    v12 = v8;
-    v13 = [v9 ascending];
-    v14 = [v9 confidence];
-    v15 = [v9 labelVisit];
-    v16 = [v9 limit];
-    v17 = [v9 sources];
-    v25 = v10;
-    v18 = self;
-    v19 = [v9 redact];
-    BYTE1(v24) = [v9 filterPairedVisitEntries];
-    LOBYTE(v24) = v19;
-    v20 = v13;
-    v8 = v12;
-    v21 = [v11 initWithAscending:v20 confidence:v14 dateInterval:v12 labelVisit:v15 limit:v16 sources:v17 redact:v24 filterPairedVisitEntries:?];
+    v12 = intervalCopy;
+    ascending = [optionsCopy ascending];
+    confidence = [optionsCopy confidence];
+    labelVisit = [optionsCopy labelVisit];
+    limit = [optionsCopy limit];
+    sources = [optionsCopy sources];
+    v25 = handlerCopy;
+    selfCopy = self;
+    redact = [optionsCopy redact];
+    BYTE1(v24) = [optionsCopy filterPairedVisitEntries];
+    LOBYTE(v24) = redact;
+    v20 = ascending;
+    intervalCopy = v12;
+    v21 = [v11 initWithAscending:v20 confidence:confidence dateInterval:v12 labelVisit:labelVisit limit:limit sources:sources redact:v24 filterPairedVisitEntries:?];
 
-    v22 = [(RTVisitConsolidator *)v18 visitManager];
+    visitManager = [(RTVisitConsolidator *)selfCopy visitManager];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __83__RTVisitConsolidator__fetchConstantMonitorVisitsWithDateInterval_options_handler___block_invoke;
     v26[3] = &unk_2788C5848;
-    v26[4] = v18;
+    v26[4] = selfCopy;
     v27 = v21;
-    v10 = v25;
+    handlerCopy = v25;
     v28 = v12;
     v29 = v25;
     v23 = v21;
-    [v22 fetchStoredVisitsWithOptions:v23 handler:v26];
+    [visitManager fetchStoredVisitsWithOptions:v23 handler:v26];
   }
 
   else
@@ -1377,24 +1377,24 @@ void __83__RTVisitConsolidator__fetchConstantMonitorVisitsWithDateInterval_optio
   (*(*(a1 + 64) + 16))();
 }
 
-- (void)onAccountChange:(id)a3
+- (void)onAccountChange:(id)change
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  changeCopy = change;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__RTVisitConsolidator_onAccountChange___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changeCopy;
+  v6 = changeCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onAccountChange:(id)a3
+- (void)_onAccountChange:(id)change
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v6 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
@@ -1404,49 +1404,49 @@ void __83__RTVisitConsolidator__fetchConstantMonitorVisitsWithDateInterval_optio
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = changeCopy;
       _os_log_impl(&dword_2304B3000, &currentAccount->super, OS_LOG_TYPE_DEFAULT, "account changed, %@", &v10, 0xCu);
     }
 
-    v8 = [v4 latestAccount];
+    latestAccount = [changeCopy latestAccount];
     currentAccount = self->_currentAccount;
-    self->_currentAccount = v8;
+    self->_currentAccount = latestAccount;
   }
 
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    v9 = [v4 name];
+    name = [changeCopy name];
     v10 = 138412290;
-    v11 = v9;
+    v11 = name;
     _os_log_error_impl(&dword_2304B3000, &currentAccount->super, OS_LOG_TYPE_ERROR, "unrecognized AccountManager notification, %@", &v10, 0xCu);
   }
 }
 
-+ (id)consolidateHindsightVisits:(id)a3 constantMonitorVisits:(id)a4 sortDescriptor:(id)a5 filterPairedVisitEntries:(BOOL)a6
++ (id)consolidateHindsightVisits:(id)visits constantMonitorVisits:(id)monitorVisits sortDescriptor:(id)descriptor filterPairedVisitEntries:(BOOL)entries
 {
-  v6 = a6;
+  entriesCopy = entries;
   v63 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v42 = a5;
-  if (v6)
+  visitsCopy = visits;
+  monitorVisitsCopy = monitorVisits;
+  descriptorCopy = descriptor;
+  if (entriesCopy)
   {
-    v11 = [objc_opt_class() filterConstantMonitorVisits:v10];
+    v11 = [objc_opt_class() filterConstantMonitorVisits:monitorVisitsCopy];
 
-    v10 = v11;
+    monitorVisitsCopy = v11;
   }
 
   v12 = objc_opt_new();
-  if ([v9 count])
+  if ([visitsCopy count])
   {
-    [v12 addObjectsFromArray:v9];
+    [v12 addObjectsFromArray:visitsCopy];
   }
 
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = v9;
+  obj = visitsCopy;
   v13 = [obj countByEnumeratingWithState:&v48 objects:v62 count:16];
   if (v13)
   {
@@ -1465,19 +1465,19 @@ void __83__RTVisitConsolidator__fetchConstantMonitorVisitsWithDateInterval_optio
         v18 = *(*(&v48 + 1) + 8 * i);
         if (v15)
         {
-          v19 = [*(*(&v48 + 1) + 8 * i) exit];
-          v20 = [v19 laterDate:v15];
-          v21 = [v18 exit];
+          exit = [*(*(&v48 + 1) + 8 * i) exit];
+          v20 = [exit laterDate:v15];
+          exit2 = [v18 exit];
 
-          if (v20 != v21)
+          if (v20 != exit2)
           {
             continue;
           }
         }
 
-        v22 = [v18 exit];
+        exit3 = [v18 exit];
 
-        v15 = v22;
+        v15 = exit3;
       }
 
       v14 = [obj countByEnumeratingWithState:&v48 objects:v62 count:16];
@@ -1495,7 +1495,7 @@ void __83__RTVisitConsolidator__fetchConstantMonitorVisitsWithDateInterval_optio
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v23 = v10;
+  v23 = monitorVisitsCopy;
   v24 = [v23 countByEnumeratingWithState:&v44 objects:v61 count:16];
   if (v24)
   {
@@ -1515,9 +1515,9 @@ void __83__RTVisitConsolidator__fetchConstantMonitorVisitsWithDateInterval_optio
         {
           if (v15)
           {
-            v29 = [v28 entry];
-            v30 = [v29 earlierDate:v15];
-            v31 = [v28 entry];
+            entry = [v28 entry];
+            v30 = [entry earlierDate:v15];
+            entry2 = [v28 entry];
             goto LABEL_28;
           }
         }
@@ -1531,11 +1531,11 @@ void __83__RTVisitConsolidator__fetchConstantMonitorVisitsWithDateInterval_optio
 
           if (v15)
           {
-            v29 = [v28 exit];
-            v30 = [v29 earlierDate:v15];
-            v31 = [v28 exit];
+            entry = [v28 exit];
+            v30 = [entry earlierDate:v15];
+            entry2 = [v28 exit];
 LABEL_28:
-            v32 = v31;
+            v32 = entry2;
 
             if (v30 == v32)
             {
@@ -1553,7 +1553,7 @@ LABEL_28:
     while (v25);
   }
 
-  v60 = v42;
+  v60 = descriptorCopy;
   v33 = [MEMORY[0x277CBEA60] arrayWithObjects:&v60 count:1];
   [v12 sortUsingDescriptors:v33];
 
@@ -1583,11 +1583,11 @@ LABEL_28:
   return v39;
 }
 
-+ (id)filterConstantMonitorVisits:(id)a3
++ (id)filterConstantMonitorVisits:(id)visits
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![v4 count])
+  visitsCopy = visits;
+  if (![visitsCopy count])
   {
     v23 = MEMORY[0x277CBEBF8];
     goto LABEL_30;
@@ -1599,7 +1599,7 @@ LABEL_28:
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v5 = v4;
+  v5 = visitsCopy;
   v6 = [v5 countByEnumeratingWithState:&v32 objects:v42 count:16];
   if (!v6)
   {
@@ -1610,7 +1610,7 @@ LABEL_28:
   }
 
   v7 = v6;
-  v30 = v4;
+  v30 = visitsCopy;
   v8 = 0;
   v9 = 0;
   v10 = *v33;
@@ -1642,9 +1642,9 @@ LABEL_15:
         [v31 addObject:v12];
         if (!v8 || ([v12 exit], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "compare:", v8), v18, v19 == 1))
         {
-          v20 = [v12 exit];
+          exit = [v12 exit];
           v17 = v8;
-          v8 = v20;
+          v8 = exit;
           goto LABEL_15;
         }
       }
@@ -1657,7 +1657,7 @@ LABEL_15:
 
   if (v9)
   {
-    v4 = v30;
+    visitsCopy = v30;
     if (!v8 || ([v9 entry], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "compare:", v8), v21, v22 == 1))
     {
       [v31 addObject:v9];
@@ -1666,7 +1666,7 @@ LABEL_15:
 
   else
   {
-    v4 = v30;
+    visitsCopy = v30;
   }
 
 LABEL_25:
@@ -1695,18 +1695,18 @@ LABEL_30:
   return v23;
 }
 
-+ (id)getRedactedDateIntervalFromInterval:(id)a3
++ (id)getRedactedDateIntervalFromInterval:(id)interval
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [v5 startOfDayAfterAddingUnit:16 value:-RTVisitConsolidatorRedactedLookbackWindowDays];
+  intervalCopy = interval;
+  date = [MEMORY[0x277CBEAA8] date];
+  v6 = [date startOfDayAfterAddingUnit:16 value:-RTVisitConsolidatorRedactedLookbackWindowDays];
 
-  v7 = [v4 startDate];
-  if (v7)
+  startDate = [intervalCopy startDate];
+  if (startDate)
   {
-    v8 = [v4 startDate];
-    v9 = [v8 laterDate:v6];
+    startDate2 = [intervalCopy startDate];
+    v9 = [startDate2 laterDate:v6];
   }
 
   else
@@ -1714,19 +1714,19 @@ LABEL_30:
     v9 = v6;
   }
 
-  v10 = [v4 endDate];
-  v11 = v10;
-  if (v10)
+  endDate = [intervalCopy endDate];
+  v11 = endDate;
+  if (endDate)
   {
-    v12 = v10;
+    date2 = endDate;
   }
 
   else
   {
-    v12 = [MEMORY[0x277CBEAA8] date];
+    date2 = [MEMORY[0x277CBEAA8] date];
   }
 
-  v13 = v12;
+  v13 = date2;
 
   v14 = objc_alloc(MEMORY[0x277CCA970]);
   v23 = 0;
@@ -1743,14 +1743,14 @@ LABEL_30:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
         v19 = NSStringFromSelector(a2);
-        v20 = [v9 stringFromDate];
-        v21 = [v13 stringFromDate];
+        stringFromDate = [v9 stringFromDate];
+        stringFromDate2 = [v13 stringFromDate];
         *buf = 138413058;
         v25 = v19;
         v26 = 2112;
-        v27 = v20;
+        v27 = stringFromDate;
         v28 = 2112;
-        v29 = v21;
+        v29 = stringFromDate2;
         v30 = 2112;
         v31 = v16;
         _os_log_impl(&dword_2304B3000, v18, OS_LOG_TYPE_INFO, "%@, invalid inputs for dateInterval, startDate, %@, endDate, %@, error, %@", buf, 0x2Au);
@@ -1766,29 +1766,29 @@ LABEL_30:
   return v17;
 }
 
-- (void)onDailyMetricsNotification:(id)a3
+- (void)onDailyMetricsNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__RTVisitConsolidator_onDailyMetricsNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onDailyMetricsNotification:(id)a3
+- (void)_onDailyMetricsNotification:(id)notification
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEA80] currentCalendar];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [v4 startOfDayForDate:v5];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v6 = [currentCalendar startOfDayForDate:date];
   v7 = objc_alloc_init(MEMORY[0x277CBEAB8]);
   [v7 setDay:-1];
-  v8 = [v4 dateByAddingComponents:v7 toDate:v6 options:0];
+  v8 = [currentCalendar dateByAddingComponents:v7 toDate:v6 options:0];
   v9 = [v8 dateByAddingUnit:16 value:1];
   v10 = objc_alloc(MEMORY[0x277CCA970]);
   v21 = 0;
@@ -1815,11 +1815,11 @@ LABEL_30:
     v15 = v19 = self;
     [MEMORY[0x277CBEB98] setWithObject:&unk_28459DD88];
     v20 = v6;
-    v17 = v16 = v5;
+    v17 = v16 = date;
     LOBYTE(v18) = 1;
     v13 = [v14 initWithAscending:1 confidence:v15 dateInterval:v11 labelVisit:1 limit:0 sources:v17 redact:v18];
 
-    v5 = v16;
+    date = v16;
     v6 = v20;
 
     [(RTVisitConsolidator *)v19 _fetchRedactedStoredVisitsWithOptions:v13 redactedVisitsHandler:&__block_literal_global_48];

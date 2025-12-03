@@ -20,7 +20,7 @@
   v23 = v7;
   v8 = v6;
   v24 = v8;
-  v25 = a1;
+  selfCopy = self;
   v9 = _Block_copy(aBlock);
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
@@ -28,16 +28,16 @@
   v18 = &unk_2788FEA40;
   v19 = v8;
   v20 = v7;
-  v21 = a1;
+  selfCopy2 = self;
   v10 = v7;
   v11 = v8;
   v12 = _Block_copy(&v15);
-  if ([a1 onFocus] && (v9[2](v9) & 1) != 0)
+  if ([self onFocus] && (v9[2](v9) & 1) != 0)
   {
     v13 = 1;
   }
 
-  else if ([a1 onBackground])
+  else if ([self onBackground])
   {
     v13 = v12[2](v12);
   }
@@ -53,8 +53,8 @@
 - (id)onBackgroundIgnoredLaunchReasons
 {
   v0 = [MEMORY[0x277CBEB18] arrayWithObjects:{@"com.apple.SpringBoard.backlight.transitionReason.lockButton", @"com.apple.SpringBoard.backlight.transitionReason.idleTimer", 0}];
-  v1 = [MEMORY[0x277D79F18] currentDevice];
-  v2 = [v1 hasCapability:*MEMORY[0x277D7A3E0]];
+  currentDevice = [MEMORY[0x277D79F18] currentDevice];
+  v2 = [currentDevice hasCapability:*MEMORY[0x277D7A3E0]];
 
   if ((v2 & 1) == 0)
   {
@@ -67,35 +67,35 @@
 - (id)contextStorePredicate
 {
   v37[2] = *MEMORY[0x277D85DE8];
-  v2 = [a1 selectedBundleIdentifiers];
-  v3 = [a1 contextStoreKeyPathForCurrentState];
+  selectedBundleIdentifiers = [self selectedBundleIdentifiers];
+  contextStoreKeyPathForCurrentState = [self contextStoreKeyPathForCurrentState];
   v34 = MEMORY[0x277CFE360];
   v4 = MEMORY[0x277CCAC30];
-  v31 = [MEMORY[0x277CFE338] appBundleIdKey];
-  v5 = [MEMORY[0x277CFE338] appLaunchReasonKey];
-  v6 = [a1 onFocusIgnoredLaunchReasons];
-  v7 = [v4 predicateWithFormat:@"SELF.%@.value.%K IN %@ AND NOT (SELF.%@.value.%K IN %@)", v3, v31, v2, v3, v5, v6];
+  appBundleIdKey = [MEMORY[0x277CFE338] appBundleIdKey];
+  appLaunchReasonKey = [MEMORY[0x277CFE338] appLaunchReasonKey];
+  onFocusIgnoredLaunchReasons = [self onFocusIgnoredLaunchReasons];
+  v7 = [v4 predicateWithFormat:@"SELF.%@.value.%K IN %@ AND NOT (SELF.%@.value.%K IN %@)", contextStoreKeyPathForCurrentState, appBundleIdKey, selectedBundleIdentifiers, contextStoreKeyPathForCurrentState, appLaunchReasonKey, onFocusIgnoredLaunchReasons];
   v8 = MEMORY[0x277CCAC30];
-  v9 = [MEMORY[0x277CFE338] appBundleIdKey];
-  v10 = [MEMORY[0x277CFE338] appBundleIdKey];
-  v11 = [v8 predicateWithFormat:@"NOT (SELF.value.%K IN %@) AND NOT (SELF.value.%K IN %@)", v9, v2, v10, v2];
-  v35 = [v34 predicateForKeyPath:v3 withPredicate:v7 withPredicateForPreviousState:v11 withMinimumDurationInPreviousState:0.0];
+  appBundleIdKey2 = [MEMORY[0x277CFE338] appBundleIdKey];
+  appBundleIdKey3 = [MEMORY[0x277CFE338] appBundleIdKey];
+  v11 = [v8 predicateWithFormat:@"NOT (SELF.value.%K IN %@) AND NOT (SELF.value.%K IN %@)", appBundleIdKey2, selectedBundleIdentifiers, appBundleIdKey3, selectedBundleIdentifiers];
+  v35 = [v34 predicateForKeyPath:contextStoreKeyPathForCurrentState withPredicate:v7 withPredicateForPreviousState:v11 withMinimumDurationInPreviousState:0.0];
 
   v32 = MEMORY[0x277CFE360];
   v12 = MEMORY[0x277CCAC30];
-  v13 = [MEMORY[0x277CFE338] appBundleIdKey];
-  v14 = [MEMORY[0x277CFE338] appLaunchReasonKey];
-  v15 = [a1 onBackgroundIgnoredLaunchReasons];
-  v16 = [v12 predicateWithFormat:@"NOT (SELF.%@.value.%K IN %@) AND NOT (SELF.%@.value.%K IN %@)", v3, v13, v2, v3, v14, v15];
+  appBundleIdKey4 = [MEMORY[0x277CFE338] appBundleIdKey];
+  appLaunchReasonKey2 = [MEMORY[0x277CFE338] appLaunchReasonKey];
+  onBackgroundIgnoredLaunchReasons = [self onBackgroundIgnoredLaunchReasons];
+  v16 = [v12 predicateWithFormat:@"NOT (SELF.%@.value.%K IN %@) AND NOT (SELF.%@.value.%K IN %@)", contextStoreKeyPathForCurrentState, appBundleIdKey4, selectedBundleIdentifiers, contextStoreKeyPathForCurrentState, appLaunchReasonKey2, onBackgroundIgnoredLaunchReasons];
   v17 = MEMORY[0x277CCAC30];
-  v18 = [MEMORY[0x277CFE338] appBundleIdKey];
-  v19 = [MEMORY[0x277CFE338] appBundleIdKey];
-  v20 = [v17 predicateWithFormat:@"SELF.value.%K IN %@ AND SELF.value.%K IN %@", v18, v2, v19, v2];
+  appBundleIdKey5 = [MEMORY[0x277CFE338] appBundleIdKey];
+  appBundleIdKey6 = [MEMORY[0x277CFE338] appBundleIdKey];
+  v20 = [v17 predicateWithFormat:@"SELF.value.%K IN %@ AND SELF.value.%K IN %@", appBundleIdKey5, selectedBundleIdentifiers, appBundleIdKey6, selectedBundleIdentifiers];
   v21 = v32;
-  v33 = v3;
-  v22 = [v21 predicateForKeyPath:v3 withPredicate:v16 withPredicateForPreviousState:v20 withMinimumDurationInPreviousState:0.0];
+  v33 = contextStoreKeyPathForCurrentState;
+  v22 = [v21 predicateForKeyPath:contextStoreKeyPathForCurrentState withPredicate:v16 withPredicateForPreviousState:v20 withMinimumDurationInPreviousState:0.0];
 
-  if ([a1 onFocus] && objc_msgSend(a1, "onBackground"))
+  if ([self onFocus] && objc_msgSend(self, "onBackground"))
   {
     v23 = MEMORY[0x277CFE360];
     v24 = v35;
@@ -110,7 +110,7 @@ LABEL_6:
     goto LABEL_10;
   }
 
-  if ([a1 onFocus])
+  if ([self onFocus])
   {
     v23 = MEMORY[0x277CFE360];
     v24 = v35;
@@ -122,7 +122,7 @@ LABEL_6:
   }
 
   v24 = v35;
-  if ([a1 onBackground])
+  if ([self onBackground])
   {
     v28 = v22;
   }

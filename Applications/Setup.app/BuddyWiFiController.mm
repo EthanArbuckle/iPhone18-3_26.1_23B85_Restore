@@ -1,45 +1,45 @@
 @interface BuddyWiFiController
-+ (BOOL)isTrailingWithEnvironment:(id)a3;
++ (BOOL)isTrailingWithEnvironment:(id)environment;
 - (BFFFlowItemDelegate)delegate;
 - (BOOL)controllerNeedsToRun;
 - (BuddyWiFiController)init;
 - (void)_clearReturnToServiceTimer;
-- (void)_confirmThenFlowItemDoneWithResetActivationMethod:(BOOL)a3;
-- (void)_flowItemDoneWithResetActivationMethod:(BOOL)a3;
-- (void)_nextTapped:(id)a3;
+- (void)_confirmThenFlowItemDoneWithResetActivationMethod:(BOOL)method;
+- (void)_flowItemDoneWithResetActivationMethod:(BOOL)method;
+- (void)_nextTapped:(id)tapped;
 - (void)_resetWifiControllerTimeoutSpinner;
 - (void)_showNavBarSpinner;
 - (void)_startReturnToServiceTimer;
 - (void)_updateActivationMethod;
-- (void)activationConfigurationChanged:(BOOL)a3 isActivated:(BOOL)a4;
-- (void)buddyViewControllerDidPressAlternateSetupButton:(id)a3;
+- (void)activationConfigurationChanged:(BOOL)changed isActivated:(BOOL)activated;
+- (void)buddyViewControllerDidPressAlternateSetupButton:(id)button;
 - (void)controllerWasPopped;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 operation:(int64_t)a5 animated:(BOOL)a6;
-- (void)reachabilityChanged:(BOOL)a3;
-- (void)setNavigationController:(id)a3;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController operation:(int64_t)operation animated:(BOOL)animated;
+- (void)reachabilityChanged:(BOOL)changed;
+- (void)setNavigationController:(id)controller;
 - (void)startScanningIfNecessary;
 - (void)stopScanning;
 - (void)updateNextButton;
-- (void)wifiNetworkJoinFinished:(id)a3;
-- (void)wifiTimeoutFired:(id)a3;
+- (void)wifiNetworkJoinFinished:(id)finished;
+- (void)wifiTimeoutFired:(id)fired;
 @end
 
 @implementation BuddyWiFiController
 
 - (BOOL)controllerNeedsToRun
 {
-  v2 = [(BuddyWiFiController *)self networkProvider];
-  v3 = [(BuddyNetworkProvider *)v2 connectedOverWiFiAndNetworkReachable];
+  networkProvider = [(BuddyWiFiController *)self networkProvider];
+  connectedOverWiFiAndNetworkReachable = [(BuddyNetworkProvider *)networkProvider connectedOverWiFiAndNetworkReachable];
   v6 = 0;
-  v4 = 0;
-  if ((v3 & 1) == 0)
+  supportsWiFi = 0;
+  if ((connectedOverWiFiAndNetworkReachable & 1) == 0)
   {
-    v7 = [(BuddyWiFiController *)self networkProvider];
+    networkProvider2 = [(BuddyWiFiController *)self networkProvider];
     v6 = 1;
-    v4 = [(BuddyNetworkProvider *)v7 supportsWiFi];
+    supportsWiFi = [(BuddyNetworkProvider *)networkProvider2 supportsWiFi];
   }
 
-  v9 = v4 & 1;
+  v9 = supportsWiFi & 1;
   if (v6)
   {
   }
@@ -47,17 +47,17 @@
   return v9 & 1;
 }
 
-+ (BOOL)isTrailingWithEnvironment:(id)a3
++ (BOOL)isTrailingWithEnvironment:(id)environment
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [location[0] proximitySetupController];
-  v4 = [v3 hasAppliedSettings];
+  objc_storeStrong(location, environment);
+  proximitySetupController = [location[0] proximitySetupController];
+  hasAppliedSettings = [proximitySetupController hasAppliedSettings];
 
   objc_storeStrong(location, 0);
-  return v4 & 1;
+  return hasAppliedSettings & 1;
 }
 
 - (BuddyWiFiController)init
@@ -102,7 +102,7 @@
 
 - (void)startScanningIfNecessary
 {
-  v7 = self;
+  selfCopy = self;
   oslog[1] = a2;
   if ([(BuddyWiFiController *)self controllerNeedsToRun])
   {
@@ -117,13 +117,13 @@
     }
 
     objc_storeStrong(oslog, 0);
-    [(WFNetworkListController *)v7->_wifiManager startScanning];
+    [(WFNetworkListController *)selfCopy->_wifiManager startScanning];
   }
 }
 
 - (void)stopScanning
 {
-  v7 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   v5 = OS_LOG_TYPE_DEFAULT;
@@ -136,23 +136,23 @@
   }
 
   objc_storeStrong(oslog, 0);
-  [(WFNetworkListController *)v7->_wifiManager stopScanning];
+  [(WFNetworkListController *)selfCopy->_wifiManager stopScanning];
 }
 
-- (void)setNavigationController:(id)a3
+- (void)setNavigationController:(id)controller
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  WeakRetained = objc_loadWeakRetained(&v7->_navigationController);
+  objc_storeStrong(location, controller);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_navigationController);
   v4 = WeakRetained == 0;
 
   if (v4)
   {
-    objc_storeWeak(&v7->_navigationController, location[0]);
-    v5 = objc_loadWeakRetained(&v7->_navigationController);
-    [v5 addDelegateObserver:v7];
+    objc_storeWeak(&selfCopy->_navigationController, location[0]);
+    v5 = objc_loadWeakRetained(&selfCopy->_navigationController);
+    [v5 addDelegateObserver:selfCopy];
   }
 
   objc_storeStrong(location, 0);
@@ -164,25 +164,25 @@
   [(BuddyMiscState *)v2 setUserSkippedWiFi:0];
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 operation:(int64_t)a5 animated:(BOOL)a6
+- (void)navigationController:(id)controller willShowViewController:(id)viewController operation:(int64_t)operation animated:(BOOL)animated
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
-  v22 = a5;
-  v21 = a6;
-  if (v23 == v25->_viewController || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  objc_storeStrong(&v23, viewController);
+  operationCopy = operation;
+  animatedCopy = animated;
+  if (v23 == selfCopy->_viewController || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    [(BuddyWiFiController *)v25 setWillPush:0];
-    [(BuddyWiFiController *)v25 setPreventNextButtonCreation:0];
-    [(BuddyWiFiController *)v25 updateNextButton];
-    v10 = [(BuddyWiFiController *)v25 proximitySetupController];
-    v11 = [(ProximitySetupController *)v10 hasConnection];
+    [(BuddyWiFiController *)selfCopy setWillPush:0];
+    [(BuddyWiFiController *)selfCopy setPreventNextButtonCreation:0];
+    [(BuddyWiFiController *)selfCopy updateNextButton];
+    proximitySetupController = [(BuddyWiFiController *)selfCopy proximitySetupController];
+    hasConnection = [(ProximitySetupController *)proximitySetupController hasConnection];
 
-    if (v11)
+    if (hasConnection)
     {
       oslog = _BYLoggingFacility();
       v18 = OS_LOG_TYPE_DEFAULT;
@@ -199,20 +199,20 @@
 
     else
     {
-      v14 = [(BuddyWiFiController *)v25 proximityAutomatedDeviceEnrollmentController];
-      [(BuddyProximityAutomatedDeviceEnrollmentController *)v14 beginAdvertising];
+      proximityAutomatedDeviceEnrollmentController = [(BuddyWiFiController *)selfCopy proximityAutomatedDeviceEnrollmentController];
+      [(BuddyProximityAutomatedDeviceEnrollmentController *)proximityAutomatedDeviceEnrollmentController beginAdvertising];
     }
 
-    [(WFNetworkListController *)v25->_wifiManager startScanning];
-    if (v22 == 1)
+    [(WFNetworkListController *)selfCopy->_wifiManager startScanning];
+    if (operationCopy == 1)
     {
-      [(BuddyWiFiController *)v25 _updateActivationMethod];
-      v15 = [(BuddyWiFiController *)v25 enrollmentCoordinator];
-      v16 = [(BuddyEnrollmentCoordinator *)v15 shouldDoReturnToService];
+      [(BuddyWiFiController *)selfCopy _updateActivationMethod];
+      enrollmentCoordinator = [(BuddyWiFiController *)selfCopy enrollmentCoordinator];
+      shouldDoReturnToService = [(BuddyEnrollmentCoordinator *)enrollmentCoordinator shouldDoReturnToService];
 
-      if (v16)
+      if (shouldDoReturnToService)
       {
-        [(BuddyWiFiController *)v25 _startReturnToServiceTimer];
+        [(BuddyWiFiController *)selfCopy _startReturnToServiceTimer];
       }
     }
 
@@ -221,8 +221,8 @@
 
   else
   {
-    v9 = [(BuddyWiFiController *)v25 proximityAutomatedDeviceEnrollmentController];
-    [(BuddyProximityAutomatedDeviceEnrollmentController *)v9 endAdvertising];
+    proximityAutomatedDeviceEnrollmentController2 = [(BuddyWiFiController *)selfCopy proximityAutomatedDeviceEnrollmentController];
+    [(BuddyProximityAutomatedDeviceEnrollmentController *)proximityAutomatedDeviceEnrollmentController2 endAdvertising];
 
     v20 = 1;
   }
@@ -231,59 +231,59 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_flowItemDoneWithResetActivationMethod:(BOOL)a3
+- (void)_flowItemDoneWithResetActivationMethod:(BOOL)method
 {
   if (![(BuddyWiFiController *)self willPush])
   {
-    if (a3)
+    if (method)
     {
-      v3 = [(BuddyWiFiController *)self miscState];
-      [(BuddyMiscState *)v3 setUserSelectedCellularActivation:0];
+      miscState = [(BuddyWiFiController *)self miscState];
+      [(BuddyMiscState *)miscState setUserSelectedCellularActivation:0];
 
-      v4 = [(BuddyWiFiController *)self miscState];
-      [(BuddyMiscState *)v4 setUserSelectedTetheredActivation:0];
+      miscState2 = [(BuddyWiFiController *)self miscState];
+      [(BuddyMiscState *)miscState2 setUserSelectedTetheredActivation:0];
     }
 
     else
     {
-      v4 = +[BuddyActivationConfiguration currentConfiguration];
-      v5 = [(BuddyMiscState *)v4 supportsCellularActivation];
-      v6 = [(BuddyWiFiController *)self miscState];
-      [(BuddyMiscState *)v6 setUserSelectedCellularActivation:v5 & 1];
+      miscState2 = +[BuddyActivationConfiguration currentConfiguration];
+      supportsCellularActivation = [(BuddyMiscState *)miscState2 supportsCellularActivation];
+      miscState3 = [(BuddyWiFiController *)self miscState];
+      [(BuddyMiscState *)miscState3 setUserSelectedCellularActivation:supportsCellularActivation & 1];
     }
 
     [(BuddyWiFiController *)self setWillPush:1];
-    v7 = [(BuddyWiFiController *)self viewController];
-    v8 = [v7 navigationController];
-    v9 = [v8 topViewController];
+    viewController = [(BuddyWiFiController *)self viewController];
+    navigationController = [viewController navigationController];
+    topViewController = [navigationController topViewController];
     viewController = self->_viewController;
 
-    if (v9 == viewController)
+    if (topViewController == viewController)
     {
-      v11 = [(BuddyWiFiController *)self featureFlags];
-      v12 = [(BuddyFeatureFlags *)v11 isMDMEnrollmentFlowControllerAdoptionEnabled];
+      featureFlags = [(BuddyWiFiController *)self featureFlags];
+      isMDMEnrollmentFlowControllerAdoptionEnabled = [(BuddyFeatureFlags *)featureFlags isMDMEnrollmentFlowControllerAdoptionEnabled];
 
-      if (v12)
+      if (isMDMEnrollmentFlowControllerAdoptionEnabled)
       {
-        v13 = [(BuddyWiFiController *)self enrollmentCoordinator];
-        [(BuddyEnrollmentCoordinator *)v13 networkAcquired];
+        enrollmentCoordinator = [(BuddyWiFiController *)self enrollmentCoordinator];
+        [(BuddyEnrollmentCoordinator *)enrollmentCoordinator networkAcquired];
       }
 
-      v14 = [(BuddyWiFiController *)self delegate];
-      [(BFFFlowItemDelegate *)v14 flowItemDone:self];
+      delegate = [(BuddyWiFiController *)self delegate];
+      [(BFFFlowItemDelegate *)delegate flowItemDone:self];
     }
 
     [(BuddyWiFiController *)self stopScanning];
   }
 }
 
-- (void)_confirmThenFlowItemDoneWithResetActivationMethod:(BOOL)a3
+- (void)_confirmThenFlowItemDoneWithResetActivationMethod:(BOOL)method
 {
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
-  v20 = a3;
-  v3 = [(BuddyWiFiController *)self networkProvider];
-  v4 = ![(BuddyNetworkProvider *)v3 networkReachable];
+  methodCopy = method;
+  networkProvider = [(BuddyWiFiController *)self networkProvider];
+  v4 = ![(BuddyNetworkProvider *)networkProvider networkReachable];
 
   if (v4)
   {
@@ -293,18 +293,18 @@
     v14 = 0;
     v15 = sub_10022ABD4;
     v16 = &unk_10032B688;
-    v17 = v22;
-    v18 = v20;
+    v17 = selfCopy;
+    v18 = methodCopy;
     [location setSkipWiFi:&v12];
     v6 = _NSConcreteStackBlock;
     v7 = -1073741824;
     v8 = 0;
     v9 = sub_10022AC40;
     v10 = &unk_10032B0D0;
-    v11 = v22;
+    v11 = selfCopy;
     [location setUseWiFi:&v6];
-    v5 = [(BuddyWiFiController *)v22 viewController];
-    [v5 presentViewController:location animated:1 completion:0];
+    viewController = [(BuddyWiFiController *)selfCopy viewController];
+    [viewController presentViewController:location animated:1 completion:0];
 
     objc_storeStrong(&v11, 0);
     objc_storeStrong(&v17, 0);
@@ -313,21 +313,21 @@
 
   else
   {
-    [(BuddyWiFiController *)v22 _flowItemDoneWithResetActivationMethod:v20];
+    [(BuddyWiFiController *)selfCopy _flowItemDoneWithResetActivationMethod:methodCopy];
   }
 }
 
-- (void)_nextTapped:(id)a3
+- (void)_nextTapped:(id)tapped
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyWiFiController *)v13 networkProvider];
+  objc_storeStrong(location, tapped);
+  networkProvider = [(BuddyWiFiController *)selfCopy networkProvider];
   v4 = 0;
-  if (![(BuddyNetworkProvider *)v3 networkReachable])
+  if (![(BuddyNetworkProvider *)networkProvider networkReachable])
   {
-    v4 = v13->_wifiTimeoutTimer != 0;
+    v4 = selfCopy->_wifiTimeoutTimer != 0;
   }
 
   if (v4)
@@ -343,24 +343,24 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    v7 = [(BuddyWiFiController *)v13 viewController];
-    v8 = [v7 view];
-    [v8 setUserInteractionEnabled:0];
+    viewController = [(BuddyWiFiController *)selfCopy viewController];
+    view = [viewController view];
+    [view setUserInteractionEnabled:0];
 
-    [(BuddyWiFiController *)v13 _showNavBarSpinner];
+    [(BuddyWiFiController *)selfCopy _showNavBarSpinner];
   }
 
   else
   {
-    [(BuddyWiFiController *)v13 _confirmThenFlowItemDoneWithResetActivationMethod:1];
+    [(BuddyWiFiController *)selfCopy _confirmThenFlowItemDoneWithResetActivationMethod:1];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)reachabilityChanged:(BOOL)a3
+- (void)reachabilityChanged:(BOOL)changed
 {
-  if (a3)
+  if (changed)
   {
     if (self->_showingWifiTimeoutSpinner)
     {
@@ -372,9 +372,9 @@
 
     else
     {
-      v3 = [(BuddyWiFiController *)self enrollmentCoordinator];
+      enrollmentCoordinator = [(BuddyWiFiController *)self enrollmentCoordinator];
       v4 = 1;
-      if (![(BuddyEnrollmentCoordinator *)v3 shouldDoReturnToService])
+      if (![(BuddyEnrollmentCoordinator *)enrollmentCoordinator shouldDoReturnToService])
       {
         v4 = 0;
         if ((+[DMCMultiUserModeUtilities inSharediPadUserSession]& 1) != 0)
@@ -393,15 +393,15 @@
   }
 
   [(BuddyWiFiController *)self updateNextButton];
-  v5 = [(BuddyWiFiController *)self viewController];
-  v6 = [v5 navigationController];
-  v7 = [v6 topViewController];
-  v8 = [v7 presentedViewController];
-  v9 = v8 == self->_badWifiAlert;
+  viewController = [(BuddyWiFiController *)self viewController];
+  navigationController = [viewController navigationController];
+  topViewController = [navigationController topViewController];
+  presentedViewController = [topViewController presentedViewController];
+  v9 = presentedViewController == self->_badWifiAlert;
 
-  v10 = [(BuddyWiFiController *)self networkProvider];
+  networkProvider = [(BuddyWiFiController *)self networkProvider];
   v11 = 0;
-  if ([(BuddyNetworkProvider *)v10 connectedOverWiFiAndNetworkReachable])
+  if ([(BuddyNetworkProvider *)networkProvider connectedOverWiFiAndNetworkReachable])
   {
     v11 = v9;
   }
@@ -415,7 +415,7 @@
 
 - (void)updateNextButton
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v2 = dispatch_get_global_queue(0, 0);
   block = _NSConcreteStackBlock;
@@ -423,7 +423,7 @@
   v5 = 0;
   v6 = sub_10022B064;
   v7 = &unk_10032B0D0;
-  v8[0] = v9;
+  v8[0] = selfCopy;
   dispatch_async(v2, &block);
 
   objc_storeStrong(v8, 0);
@@ -433,8 +433,8 @@
 {
   if (!self->_showingWifiTimeoutSpinner)
   {
-    v2 = [(BuddyWiFiController *)self viewController];
-    [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:v2 identifier:@"WifiSpinner"];
+    viewController = [(BuddyWiFiController *)self viewController];
+    [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:viewController identifier:@"WifiSpinner"];
 
     self->_showingWifiTimeoutSpinner = 1;
   }
@@ -444,9 +444,9 @@
 {
   if (self->_showingWifiTimeoutSpinner)
   {
-    v2 = [(BuddyWiFiController *)self viewController];
-    v3 = [v2 view];
-    [v3 setUserInteractionEnabled:1];
+    viewController = [(BuddyWiFiController *)self viewController];
+    view = [viewController view];
+    [view setUserInteractionEnabled:1];
 
     self->_showingWifiTimeoutSpinner = 0;
     [BFFViewControllerSpinnerManager stopAnimatingSpinnerFor:@"WifiSpinner"];
@@ -454,15 +454,15 @@
   }
 }
 
-- (void)wifiNetworkJoinFinished:(id)a3
+- (void)wifiNetworkJoinFinished:(id)finished
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [location[0] userInfo];
+  objc_storeStrong(location, finished);
+  userInfo = [location[0] userInfo];
   v4 = sub_10022B894();
-  v22 = [v3 objectForKey:v4];
+  v22 = [userInfo objectForKey:v4];
 
   if (v22)
   {
@@ -478,9 +478,9 @@
 
       else
       {
-        v17 = [v22 domain];
+        domain = [v22 domain];
         v16 = 1;
-        v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v17, [v22 code]);
+        v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v22 code]);
         v15 = v13;
         v14 = 1;
       }
@@ -497,18 +497,18 @@
     }
 
     objc_storeStrong(&v18, 0);
-    [(BuddyWiFiController *)v24 _clearWifiTimeoutTimer];
-    [(BuddyWiFiController *)v24 _resetWifiControllerTimeoutSpinner];
+    [(BuddyWiFiController *)selfCopy _clearWifiTimeoutTimer];
+    [(BuddyWiFiController *)selfCopy _resetWifiControllerTimeoutSpinner];
   }
 
   else
   {
-    v5 = [(BuddyWiFiController *)v24 networkProvider];
-    v6 = [(BuddyNetworkProvider *)v5 networkReachable];
+    networkProvider = [(BuddyWiFiController *)selfCopy networkProvider];
+    networkReachable = [(BuddyNetworkProvider *)networkProvider networkReachable];
 
-    if (v6)
+    if (networkReachable)
     {
-      [(BuddyWiFiController *)v24 _flowItemDone];
+      [(BuddyWiFiController *)selfCopy _flowItemDone];
     }
 
     else
@@ -524,16 +524,16 @@
       }
 
       objc_storeStrong(&oslog, 0);
-      [(BuddyWiFiController *)v24 _clearWifiTimeoutTimer];
-      v9 = [NSTimer scheduledTimerWithTimeInterval:v24 target:"wifiTimeoutFired:" selector:0 userInfo:0 repeats:20.0];
-      wifiTimeoutTimer = v24->_wifiTimeoutTimer;
-      v24->_wifiTimeoutTimer = v9;
+      [(BuddyWiFiController *)selfCopy _clearWifiTimeoutTimer];
+      v9 = [NSTimer scheduledTimerWithTimeInterval:selfCopy target:"wifiTimeoutFired:" selector:0 userInfo:0 repeats:20.0];
+      wifiTimeoutTimer = selfCopy->_wifiTimeoutTimer;
+      selfCopy->_wifiTimeoutTimer = v9;
 
-      v11 = [(BuddyWiFiController *)v24 viewController];
-      v12 = [v11 view];
-      [v12 setUserInteractionEnabled:0];
+      viewController = [(BuddyWiFiController *)selfCopy viewController];
+      view = [viewController view];
+      [view setUserInteractionEnabled:0];
 
-      [(BuddyWiFiController *)v24 _showNavBarSpinner];
+      [(BuddyWiFiController *)selfCopy _showNavBarSpinner];
     }
   }
 
@@ -541,32 +541,32 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)wifiTimeoutFired:(id)a3
+- (void)wifiTimeoutFired:(id)fired
 {
-  v55 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyWiFiController *)v55 _clearWifiTimeoutTimer];
-  showingWifiTimeoutSpinner = v55->_showingWifiTimeoutSpinner;
-  [(BuddyWiFiController *)v55 _resetWifiControllerTimeoutSpinner];
-  v3 = [(BuddyWiFiController *)v55 viewController];
-  v4 = [v3 navigationController];
-  v5 = [v4 topViewController];
-  viewController = v55->_viewController;
+  objc_storeStrong(location, fired);
+  [(BuddyWiFiController *)selfCopy _clearWifiTimeoutTimer];
+  showingWifiTimeoutSpinner = selfCopy->_showingWifiTimeoutSpinner;
+  [(BuddyWiFiController *)selfCopy _resetWifiControllerTimeoutSpinner];
+  viewController = [(BuddyWiFiController *)selfCopy viewController];
+  navigationController = [viewController navigationController];
+  topViewController = [navigationController topViewController];
+  viewController = selfCopy->_viewController;
   v51 = 0;
   v49 = 0;
   v47 = 0;
   v7 = 1;
-  if (v5 == viewController)
+  if (topViewController == viewController)
   {
-    v52 = [(BuddyWiFiController *)v55 viewController];
+    viewController2 = [(BuddyWiFiController *)selfCopy viewController];
     v51 = 1;
-    v50 = [v52 navigationController];
+    navigationController2 = [viewController2 navigationController];
     v49 = 1;
-    v48 = [v50 presentedViewController];
+    presentedViewController = [navigationController2 presentedViewController];
     v47 = 1;
-    v7 = v48 != 0;
+    v7 = presentedViewController != 0;
   }
 
   if (v47)
@@ -588,10 +588,10 @@
 
   else
   {
-    v8 = [(BuddyWiFiController *)v55 networkProvider];
-    v9 = [(BuddyNetworkProvider *)v8 connectedOverWiFiAndNetworkReachable];
+    networkProvider = [(BuddyWiFiController *)selfCopy networkProvider];
+    connectedOverWiFiAndNetworkReachable = [(BuddyNetworkProvider *)networkProvider connectedOverWiFiAndNetworkReachable];
 
-    if (v9)
+    if (connectedOverWiFiAndNetworkReachable)
     {
       v46 = 1;
     }
@@ -626,7 +626,7 @@
 
         else
         {
-          [(BuddyWiFiController *)v55 updateNextButton];
+          [(BuddyWiFiController *)selfCopy updateNextButton];
           oslog = _BYLoggingFacility();
           v42 = OS_LOG_TYPE_DEFAULT;
           if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -644,10 +644,10 @@
           v17 = SFLocalizableWAPIStringKeyForKey();
           v18 = [(NSBundle *)v16 localizedStringForKey:v17 value:&stru_10032F900 table:@"Localizable"];
           v19 = [UIAlertController alertControllerWithTitle:v15 message:v18 preferredStyle:1];
-          badWifiAlert = v55->_badWifiAlert;
-          v55->_badWifiAlert = v19;
+          badWifiAlert = selfCopy->_badWifiAlert;
+          selfCopy->_badWifiAlert = v19;
 
-          v21 = v55->_badWifiAlert;
+          v21 = selfCopy->_badWifiAlert;
           v22 = +[NSBundle mainBundle];
           v23 = [(NSBundle *)v22 localizedStringForKey:@"NO_NETWORK_CONNECTION_SETTINGS" value:&stru_10032F900 table:@"Localizable"];
           v35 = _NSConcreteStackBlock;
@@ -655,23 +655,23 @@
           v37 = 0;
           v38 = sub_10022C00C;
           v39 = &unk_10032B598;
-          v40 = v55;
+          v40 = selfCopy;
           v24 = [UIAlertAction actionWithTitle:v23 style:1 handler:&v35];
           [(UIAlertController *)v21 addAction:v24];
 
-          v25 = v55->_badWifiAlert;
+          v25 = selfCopy->_badWifiAlert;
           v26 = +[NSBundle mainBundle];
           v27 = [(NSBundle *)v26 localizedStringForKey:@"OK" value:&stru_10032F900 table:@"Localizable"];
           v30 = _NSConcreteStackBlock;
           v31 = 3221225472;
           v32 = sub_10022C098;
           v33 = &unk_10032B598;
-          v34 = v55;
+          v34 = selfCopy;
           v28 = [UIAlertAction actionWithTitle:v27 style:0 handler:&v30];
           [(UIAlertController *)v25 addAction:v28, v30, v31, v32, v33];
 
-          v29 = [(BuddyWiFiController *)v55 viewController];
-          [v29 presentViewController:v55->_badWifiAlert animated:1 completion:0];
+          viewController3 = [(BuddyWiFiController *)selfCopy viewController];
+          [viewController3 presentViewController:selfCopy->_badWifiAlert animated:1 completion:0];
 
           objc_storeStrong(&v34, 0);
           objc_storeStrong(&v40, 0);
@@ -686,7 +686,7 @@
 
 - (void)_startReturnToServiceTimer
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _BYLoggingFacility();
   v11 = OS_LOG_TYPE_DEFAULT;
@@ -703,17 +703,17 @@
   v5 = 3221225472;
   v6 = sub_10022C23C;
   v7 = &unk_10032CAC0;
-  v8 = v13;
+  v8 = selfCopy;
   v9 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:&v4 block:30.0];
-  [(BuddyWiFiController *)v13 setRtsTimeoutTimer:v9, v4, v5, v6, v7];
+  [(BuddyWiFiController *)selfCopy setRtsTimeoutTimer:v9, v4, v5, v6, v7];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v8, 0);
 }
 
 - (void)_clearReturnToServiceTimer
 {
-  v2 = [(BuddyWiFiController *)self rtsTimeoutTimer];
-  [(NSTimer *)v2 invalidate];
+  rtsTimeoutTimer = [(BuddyWiFiController *)self rtsTimeoutTimer];
+  [(NSTimer *)rtsTimeoutTimer invalidate];
 
   [(BuddyWiFiController *)self setRtsTimeoutTimer:0];
 }
@@ -721,38 +721,38 @@
 - (void)_updateActivationMethod
 {
   v2 = +[BuddyActivationConfiguration currentConfiguration];
-  v3 = [v2 supportsCellularActivation];
+  supportsCellularActivation = [v2 supportsCellularActivation];
 
-  [(WFBuddyViewController *)self->_viewController setSupportsCellularActivation:v3 & 1];
+  [(WFBuddyViewController *)self->_viewController setSupportsCellularActivation:supportsCellularActivation & 1];
 }
 
-- (void)buddyViewControllerDidPressAlternateSetupButton:(id)a3
+- (void)buddyViewControllerDidPressAlternateSetupButton:(id)button
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(WFBuddyViewController *)v6->_viewController supportsCellularActivation]^ 1;
-  v4 = [(BuddyWiFiController *)v6 miscState];
-  [(BuddyMiscState *)v4 setUserSelectedTetheredActivation:v3 & 1];
+  objc_storeStrong(location, button);
+  v3 = [(WFBuddyViewController *)selfCopy->_viewController supportsCellularActivation]^ 1;
+  miscState = [(BuddyWiFiController *)selfCopy miscState];
+  [(BuddyMiscState *)miscState setUserSelectedTetheredActivation:v3 & 1];
 
-  [(BuddyWiFiController *)v6 _confirmThenFlowItemDoneWithResetActivationMethod:0];
+  [(BuddyWiFiController *)selfCopy _confirmThenFlowItemDoneWithResetActivationMethod:0];
   objc_storeStrong(location, 0);
 }
 
-- (void)activationConfigurationChanged:(BOOL)a3 isActivated:(BOOL)a4
+- (void)activationConfigurationChanged:(BOOL)changed isActivated:(BOOL)activated
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
-  v11 = a4;
+  changedCopy = changed;
+  activatedCopy = activated;
   v4 = &_dispatch_main_q;
   v5 = _NSConcreteStackBlock;
   v6 = -1073741824;
   v7 = 0;
   v8 = sub_10022C5F4;
   v9 = &unk_10032B0D0;
-  v10 = v14;
+  v10 = selfCopy;
   dispatch_async(v4, &v5);
 
   objc_storeStrong(&v10, 0);

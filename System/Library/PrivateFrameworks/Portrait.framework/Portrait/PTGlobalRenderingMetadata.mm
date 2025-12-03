@@ -1,42 +1,42 @@
 @interface PTGlobalRenderingMetadata
-+ (id)objectFromData:(id)a3;
-- (PTGlobalRenderingMetadata)initWithMajorVersion:(unsigned int)a3 minorVersion:(unsigned int)a4;
++ (id)objectFromData:(id)data;
+- (PTGlobalRenderingMetadata)initWithMajorVersion:(unsigned int)version minorVersion:(unsigned int)minorVersion;
 @end
 
 @implementation PTGlobalRenderingMetadata
 
-- (PTGlobalRenderingMetadata)initWithMajorVersion:(unsigned int)a3 minorVersion:(unsigned int)a4
+- (PTGlobalRenderingMetadata)initWithMajorVersion:(unsigned int)version minorVersion:(unsigned int)minorVersion
 {
   v10.receiver = self;
   v10.super_class = PTGlobalRenderingMetadata;
   v6 = [(PTGlobalRenderingMetadata *)&v10 init];
   v7 = v6;
   v8 = 0;
-  if (a3 - 3 >= 0xFFFFFFFE && v6)
+  if (version - 3 >= 0xFFFFFFFE && v6)
   {
-    v6->_majorVersion = a3;
-    v6->_minorVersion = a4;
+    v6->_majorVersion = version;
+    v6->_minorVersion = minorVersion;
     v8 = v6;
   }
 
   return v8;
 }
 
-+ (id)objectFromData:(id)a3
++ (id)objectFromData:(id)data
 {
-  v3 = a3;
-  if ([v3 length] < 0x10)
+  dataCopy = data;
+  if ([dataCopy length] < 0x10)
   {
     goto LABEL_6;
   }
 
-  v4 = [v3 bytes];
-  if (*(v4 + 4) != 1684956530)
+  bytes = [dataCopy bytes];
+  if (*(bytes + 4) != 1684956530)
   {
     goto LABEL_6;
   }
 
-  v5 = bswap32(*(v4 + 8));
+  v5 = bswap32(*(bytes + 8));
   if (v5 == 1)
   {
     v6 = off_2785227A0;
@@ -52,7 +52,7 @@ LABEL_6:
 
   v6 = off_2785227A8;
 LABEL_8:
-  v7 = [objc_alloc(*v6) initWithData:v3];
+  v7 = [objc_alloc(*v6) initWithData:dataCopy];
 LABEL_9:
 
   return v7;

@@ -1,16 +1,16 @@
 @interface CloudArtistHeroImageImporter
 + (id)allArtistImagesMapCacheFilePathURL;
-- (CloudArtistHeroImageImporter)initWithConfiguration:(id)a3;
+- (CloudArtistHeroImageImporter)initWithConfiguration:(id)configuration;
 - (CloudArtworkImporter)artworkImporter;
 - (id)userIdentity;
 - (int64_t)_synchronouslyLoadArtistUpdatePollingFrequencyFromBag;
 - (void)_artistHeroImageUpdateFinished;
-- (void)_importHeroImageForArtistType:(int64_t)a3 withPersistentID:(int64_t)a4 clientIdentity:(id)a5 completionHandler:(id)a6;
-- (void)deprioritizeAlbumArtistHeroImageForPersistentID:(int64_t)a3;
-- (void)deprioritizeArtistHeroImageForPersistentID:(int64_t)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)updateArtistHeroImagesForArtistsAddedSinceLastUpdateUsingClientIdentity:(id)a3;
-- (void)updateArtistHeroImagesWithClientIdentity:(id)a3;
+- (void)_importHeroImageForArtistType:(int64_t)type withPersistentID:(int64_t)d clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)deprioritizeAlbumArtistHeroImageForPersistentID:(int64_t)d;
+- (void)deprioritizeArtistHeroImageForPersistentID:(int64_t)d;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)updateArtistHeroImagesForArtistsAddedSinceLastUpdateUsingClientIdentity:(id)identity;
+- (void)updateArtistHeroImagesWithClientIdentity:(id)identity;
 @end
 
 @implementation CloudArtistHeroImageImporter
@@ -25,8 +25,8 @@
   v25 = sub_10006FB44;
   v26 = 0;
   v4 = [ICStoreRequestContext alloc];
-  v5 = [(CloudArtistHeroImageImporter *)self userIdentity];
-  v6 = [v4 initWithIdentity:v5];
+  userIdentity = [(CloudArtistHeroImageImporter *)self userIdentity];
+  v6 = [v4 initWithIdentity:userIdentity];
 
   v7 = +[ICURLBagProvider sharedBagProvider];
   v15 = _NSConcreteStackBlock;
@@ -45,12 +45,12 @@
     v10 = [v9 numberForBagKey:{@"min-artist-update-polling-frequency-secs", v15, v16, v17, v18}];
     if (objc_opt_respondsToSelector())
     {
-      v11 = [v10 integerValue];
+      integerValue = [v10 integerValue];
       v12 = os_log_create("com.apple.amp.itunescloudd", "Artwork");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v28 = v11;
+        v28 = integerValue;
         v13 = "Using polling frequency from bag: %ld";
 LABEL_10:
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, v13, buf, 0xCu);
@@ -59,7 +59,7 @@ LABEL_10:
 
     else
     {
-      v11 = 604800;
+      integerValue = 604800;
       v12 = os_log_create("com.apple.amp.itunescloudd", "Artwork");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
@@ -73,7 +73,7 @@ LABEL_10:
 
   else
   {
-    v11 = 604800;
+    integerValue = 604800;
     v12 = os_log_create("com.apple.amp.itunescloudd", "Artwork");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
@@ -86,103 +86,103 @@ LABEL_10:
   }
 
   _Block_object_dispose(&v21, 8);
-  return v11;
+  return integerValue;
 }
 
 - (id)userIdentity
 {
-  v2 = [(CloudArtistHeroImageImporter *)self configuration];
-  v3 = [v2 userIdentity];
+  configuration = [(CloudArtistHeroImageImporter *)self configuration];
+  userIdentity = [configuration userIdentity];
 
-  return v3;
+  return userIdentity;
 }
 
-- (void)_importHeroImageForArtistType:(int64_t)a3 withPersistentID:(int64_t)a4 clientIdentity:(id)a5 completionHandler:(id)a6
+- (void)_importHeroImageForArtistType:(int64_t)type withPersistentID:(int64_t)d clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
+  identityCopy = identity;
+  handlerCopy = handler;
   v12 = +[ICCloudAvailabilityController sharedController];
   v13 = [v12 isCellularDataRestrictedForMusic] ^ 1;
 
-  v14 = [(CloudArtistHeroImageImporter *)self musicLibrary];
+  musicLibrary = [(CloudArtistHeroImageImporter *)self musicLibrary];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10006F7AC;
   v17[3] = &unk_1001DBED8;
-  v21 = a3;
-  v22 = a4;
-  v19 = self;
-  v20 = v11;
+  typeCopy = type;
+  dCopy = d;
+  selfCopy = self;
+  v20 = handlerCopy;
   v23 = v13;
-  v18 = v10;
-  v15 = v11;
-  v16 = v10;
-  [v14 databaseConnectionAllowingWrites:0 withBlock:v17];
+  v18 = identityCopy;
+  v15 = handlerCopy;
+  v16 = identityCopy;
+  [musicLibrary databaseConnectionAllowingWrites:0 withBlock:v17];
 }
 
 - (void)_artistHeroImageUpdateFinished
 {
-  v3 = [(CloudArtistHeroImageImporter *)self accessQueue];
+  accessQueue = [(CloudArtistHeroImageImporter *)self accessQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10006FC44;
   block[3] = &unk_1001DF578;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(accessQueue, block);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a5;
-  if ([a3 isEqualToString:@"operationCount"])
+  changeCopy = change;
+  if ([path isEqualToString:@"operationCount"])
   {
-    v9 = [v8 objectForKey:NSKeyValueChangeNewKey];
-    v10 = [v9 unsignedIntegerValue];
+    v9 = [changeCopy objectForKey:NSKeyValueChangeNewKey];
+    unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-    v11 = [v8 objectForKey:NSKeyValueChangeOldKey];
-    v12 = [v11 unsignedIntegerValue];
+    v11 = [changeCopy objectForKey:NSKeyValueChangeOldKey];
+    unsignedIntegerValue2 = [v11 unsignedIntegerValue];
 
-    v13 = [(CloudArtistHeroImageImporter *)self accessQueue];
+    accessQueue = [(CloudArtistHeroImageImporter *)self accessQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10006FE44;
     block[3] = &unk_1001DE628;
     block[4] = self;
-    block[5] = v10;
-    block[6] = v12;
-    dispatch_async(v13, block);
+    block[5] = unsignedIntegerValue;
+    block[6] = unsignedIntegerValue2;
+    dispatch_async(accessQueue, block);
   }
 }
 
-- (void)deprioritizeAlbumArtistHeroImageForPersistentID:(int64_t)a3
+- (void)deprioritizeAlbumArtistHeroImageForPersistentID:(int64_t)d
 {
-  v4 = [(CloudArtistHeroImageImporter *)self artworkImporter];
-  [v4 deprioritizeImportArtworkForCloudID:a3 artworkType:4];
+  artworkImporter = [(CloudArtistHeroImageImporter *)self artworkImporter];
+  [artworkImporter deprioritizeImportArtworkForCloudID:d artworkType:4];
 }
 
-- (void)deprioritizeArtistHeroImageForPersistentID:(int64_t)a3
+- (void)deprioritizeArtistHeroImageForPersistentID:(int64_t)d
 {
-  v4 = [(CloudArtistHeroImageImporter *)self artworkImporter];
-  [v4 deprioritizeImportArtworkForCloudID:a3 artworkType:4];
+  artworkImporter = [(CloudArtistHeroImageImporter *)self artworkImporter];
+  [artworkImporter deprioritizeImportArtworkForCloudID:d artworkType:4];
 }
 
-- (void)updateArtistHeroImagesForArtistsAddedSinceLastUpdateUsingClientIdentity:(id)a3
+- (void)updateArtistHeroImagesForArtistsAddedSinceLastUpdateUsingClientIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = [(CloudArtistHeroImageImporter *)self accessQueue];
+  identityCopy = identity;
+  accessQueue = [(CloudArtistHeroImageImporter *)self accessQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100070314;
   v7[3] = &unk_1001DF618;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identityCopy;
+  v6 = identityCopy;
+  dispatch_async(accessQueue, v7);
 }
 
-- (void)updateArtistHeroImagesWithClientIdentity:(id)a3
+- (void)updateArtistHeroImagesWithClientIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v5 = +[ICDeviceInfo currentDeviceInfo];
   if (([v5 isWatch] & 1) == 0)
   {
@@ -191,21 +191,21 @@ LABEL_10:
   }
 
   v6 = +[ICEnvironmentMonitor sharedMonitor];
-  v7 = [v6 isCharging];
+  isCharging = [v6 isCharging];
 
-  if (v7)
+  if (isCharging)
   {
 LABEL_7:
-    v9 = [(CloudArtistHeroImageImporter *)self _synchronouslyLoadArtistUpdatePollingFrequencyFromBag];
-    v10 = [(CloudArtistHeroImageImporter *)self accessQueue];
+    _synchronouslyLoadArtistUpdatePollingFrequencyFromBag = [(CloudArtistHeroImageImporter *)self _synchronouslyLoadArtistUpdatePollingFrequencyFromBag];
+    accessQueue = [(CloudArtistHeroImageImporter *)self accessQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000782A4;
     block[3] = &unk_1001DE600;
     block[4] = self;
-    v13 = v9;
-    v12 = v4;
-    dispatch_async(v10, block);
+    v13 = _synchronouslyLoadArtistUpdatePollingFrequencyFromBag;
+    v12 = identityCopy;
+    dispatch_async(accessQueue, block);
 
     goto LABEL_8;
   }
@@ -226,8 +226,8 @@ LABEL_8:
   if (!artworkImporter)
   {
     v4 = [CloudArtworkImporter alloc];
-    v5 = [(CloudArtistHeroImageImporter *)self configuration];
-    v6 = [(CloudArtworkImporter *)v4 initWithConfiguration:v5 sourceType:500];
+    configuration = [(CloudArtistHeroImageImporter *)self configuration];
+    v6 = [(CloudArtworkImporter *)v4 initWithConfiguration:configuration sourceType:500];
     v7 = self->_artworkImporter;
     self->_artworkImporter = v6;
 
@@ -237,18 +237,18 @@ LABEL_8:
   return artworkImporter;
 }
 
-- (CloudArtistHeroImageImporter)initWithConfiguration:(id)a3
+- (CloudArtistHeroImageImporter)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v24.receiver = self;
   v24.super_class = CloudArtistHeroImageImporter;
   v6 = [(CloudArtistHeroImageImporter *)&v24 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
-    v8 = [v5 userIdentity];
-    v9 = [ML3MusicLibrary musicLibraryForUserAccount:v8];
+    objc_storeStrong(&v6->_configuration, configuration);
+    userIdentity = [configurationCopy userIdentity];
+    v9 = [ML3MusicLibrary musicLibraryForUserAccount:userIdentity];
     musicLibrary = v7->_musicLibrary;
     v7->_musicLibrary = v9;
 

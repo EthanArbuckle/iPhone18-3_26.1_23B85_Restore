@@ -1,7 +1,7 @@
 @interface NPKPaymentProvisioningFlowPickerSection
-+ (id)sectionWithTitle:(id)a3 footer:(id)a4 productType:(id)a5;
-+ (id)sectionWithTitle:(id)a3 footer:(id)a4 productType:(id)a5 items:(id)a6;
-+ (id)sectionWithTitle:(id)a3 productType:(id)a4;
++ (id)sectionWithTitle:(id)title footer:(id)footer productType:(id)type;
++ (id)sectionWithTitle:(id)title footer:(id)footer productType:(id)type items:(id)items;
++ (id)sectionWithTitle:(id)title productType:(id)type;
 - (BOOL)isAppleBalanceSection;
 - (BOOL)isEMoneySection;
 - (BOOL)isPaymentSection;
@@ -11,53 +11,53 @@
 
 @implementation NPKPaymentProvisioningFlowPickerSection
 
-+ (id)sectionWithTitle:(id)a3 productType:(id)a4
++ (id)sectionWithTitle:(id)title productType:(id)type
 {
   v6 = MEMORY[0x277CBEA60];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 array];
-  v10 = [a1 sectionWithTitle:v8 footer:0 productType:v7 items:v9];
+  typeCopy = type;
+  titleCopy = title;
+  array = [v6 array];
+  v10 = [self sectionWithTitle:titleCopy footer:0 productType:typeCopy items:array];
 
   return v10;
 }
 
-+ (id)sectionWithTitle:(id)a3 footer:(id)a4 productType:(id)a5
++ (id)sectionWithTitle:(id)title footer:(id)footer productType:(id)type
 {
   v8 = MEMORY[0x277CBEA60];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 array];
-  v13 = [a1 sectionWithTitle:v11 footer:v10 productType:v9 items:v12];
+  typeCopy = type;
+  footerCopy = footer;
+  titleCopy = title;
+  array = [v8 array];
+  v13 = [self sectionWithTitle:titleCopy footer:footerCopy productType:typeCopy items:array];
 
   return v13;
 }
 
-+ (id)sectionWithTitle:(id)a3 footer:(id)a4 productType:(id)a5 items:(id)a6
++ (id)sectionWithTitle:(id)title footer:(id)footer productType:(id)type items:(id)items
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = objc_alloc_init(a1);
+  titleCopy = title;
+  footerCopy = footer;
+  typeCopy = type;
+  itemsCopy = items;
+  v14 = objc_alloc_init(self);
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [titleCopy copy];
     v16 = *(v14 + 1);
     *(v14 + 1) = v15;
 
-    v17 = [v11 copy];
+    v17 = [footerCopy copy];
     v18 = *(v14 + 2);
     *(v14 + 2) = v17;
 
     v19 = MEMORY[0x277CBEB18];
-    v20 = [v13 copy];
+    v20 = [itemsCopy copy];
     v21 = [v19 arrayWithArray:v20];
     v22 = *(v14 + 3);
     *(v14 + 3) = v21;
 
-    objc_storeStrong(v14 + 4, a5);
+    objc_storeStrong(v14 + 4, type);
   }
 
   return v14;
@@ -67,50 +67,50 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(NPKPaymentProvisioningFlowPickerSection *)self title];
-  v6 = [(NPKPaymentProvisioningFlowPickerSection *)self footer];
-  v7 = [(NPKPaymentProvisioningFlowPickerSection *)self items];
-  v8 = [v3 stringWithFormat:@"<%@: %p title %@ footer %@ items %@>", v4, self, v5, v6, v7];
+  title = [(NPKPaymentProvisioningFlowPickerSection *)self title];
+  footer = [(NPKPaymentProvisioningFlowPickerSection *)self footer];
+  items = [(NPKPaymentProvisioningFlowPickerSection *)self items];
+  v8 = [v3 stringWithFormat:@"<%@: %p title %@ footer %@ items %@>", v4, self, title, footer, items];
 
   return v8;
 }
 
 - (BOOL)isTransitSection
 {
-  v2 = [(NPKPaymentProvisioningFlowPickerSection *)self productType];
-  v3 = [v2 isEqualToNumber:&unk_286CE7618];
+  productType = [(NPKPaymentProvisioningFlowPickerSection *)self productType];
+  v3 = [productType isEqualToNumber:&unk_286CE7618];
 
   return v3;
 }
 
 - (BOOL)isPaymentSection
 {
-  v2 = [(NPKPaymentProvisioningFlowPickerSection *)self productType];
-  v3 = [v2 isEqualToNumber:&unk_286CE7630];
+  productType = [(NPKPaymentProvisioningFlowPickerSection *)self productType];
+  v3 = [productType isEqualToNumber:&unk_286CE7630];
 
   return v3;
 }
 
 - (BOOL)isEMoneySection
 {
-  v2 = [(NPKPaymentProvisioningFlowPickerSection *)self productType];
-  v3 = [v2 isEqualToNumber:&unk_286CE7648];
+  productType = [(NPKPaymentProvisioningFlowPickerSection *)self productType];
+  v3 = [productType isEqualToNumber:&unk_286CE7648];
 
   return v3;
 }
 
 - (BOOL)isAppleBalanceSection
 {
-  v3 = [(NPKPaymentProvisioningFlowPickerSection *)self productType];
-  v4 = [v3 isEqualToNumber:&unk_286CE7660];
+  productType = [(NPKPaymentProvisioningFlowPickerSection *)self productType];
+  v4 = [productType isEqualToNumber:&unk_286CE7660];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(NPKPaymentProvisioningFlowPickerSection *)self items];
-  v6 = [v5 pk_containsObjectPassingTest:&__block_literal_global_3];
+  items = [(NPKPaymentProvisioningFlowPickerSection *)self items];
+  v6 = [items pk_containsObjectPassingTest:&__block_literal_global_3];
 
   return v6;
 }

@@ -1,8 +1,8 @@
 @interface HostCoordinator
 - (_TtC17NFCUISceneService15HostCoordinator)init;
 - (void)dismissScene;
-- (void)hostViewControllerDidActivate:(id)a3;
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4;
+- (void)hostViewControllerDidActivate:(id)activate;
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error;
 - (void)invalidate;
 @end
 
@@ -10,28 +10,28 @@
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000024A4();
 }
 
-- (void)hostViewControllerDidActivate:(id)a3
+- (void)hostViewControllerDidActivate:(id)activate
 {
-  v4 = a3;
-  v5 = self;
-  sub_100002504(v4);
+  activateCopy = activate;
+  selfCopy = self;
+  sub_100002504(activateCopy);
 }
 
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_100003110(v6, a4);
+  deactivateCopy = deactivate;
+  selfCopy = self;
+  errorCopy = error;
+  sub_100003110(deactivateCopy, error);
 }
 
 - (void)dismissScene
 {
-  v2 = self;
+  selfCopy = self;
   sub_100003608();
 }
 

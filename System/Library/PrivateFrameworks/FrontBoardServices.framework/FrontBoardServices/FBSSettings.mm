@@ -6,76 +6,76 @@
 + (Class)subclassExtension;
 + (id)_descriptionProvider;
 + (id)allSettings;
-+ (id)allSettingsFromExtension:(Class)a3;
-+ (id)allSettingsFromProtocol:(id)a3;
-+ (id)settingForProperty:(SEL)a3;
-+ (id)settingForSubclassProperty:(SEL)a3;
++ (id)allSettingsFromExtension:(Class)extension;
++ (id)allSettingsFromProtocol:(id)protocol;
++ (id)settingForProperty:(SEL)property;
++ (id)settingForSubclassProperty:(SEL)property;
 + (id)subclassExtensions;
-+ (void)_setCounterpartClass:(Class)a3;
++ (void)_setCounterpartClass:(Class)class;
 + (void)allSettings;
 + (void)initialize;
 - (BOOL)_hasAnySceneExtension;
 - (BOOL)_indirect_isEmpty;
-- (BOOL)conformsToExtension:(Class)a3;
-- (BOOL)containsSetting:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (FBSSettings)initWithBSXPCCoder:(id)a3;
-- (FBSSettings)initWithSettings:(id)a3;
-- (FBSSettings)initWithXPCDictionary:(id)a3;
-- (_BYTE)_sceneExtensionsCreatingIfNeeded:(_BYTE *)a1;
-- (_BYTE)_underlyingValueForSetting:(_BYTE *)a1;
+- (BOOL)conformsToExtension:(Class)extension;
+- (BOOL)containsSetting:(id)setting;
+- (BOOL)isEqual:(id)equal;
+- (FBSSettings)initWithBSXPCCoder:(id)coder;
+- (FBSSettings)initWithSettings:(id)settings;
+- (FBSSettings)initWithXPCDictionary:(id)dictionary;
+- (_BYTE)_sceneExtensionsCreatingIfNeeded:(_BYTE *)needed;
+- (_BYTE)_underlyingValueForSetting:(_BYTE *)setting;
 - (id)_allSceneExtensions;
-- (id)_copyClearingProgenitor:(id)a3;
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 debug:;
+- (id)_copyClearingProgenitor:(id)progenitor;
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix debug:;
 - (id)_legacyLocalSettings;
-- (id)_legacyLocalSettings:(id)a1;
+- (id)_legacyLocalSettings:(id)settings;
 - (id)_legacyOtherSettings;
-- (id)_legacyOtherSettings:(id)a1;
+- (id)_legacyOtherSettings:(id)settings;
 - (id)_localSettings;
-- (id)_localSettings:(id)a1;
+- (id)_localSettings:(id)settings;
 - (id)_progenitor;
-- (id)_rootSettingsForLocal:(void *)a1 createIfNeeded:(char)a2;
+- (id)_rootSettingsForLocal:(void *)local createIfNeeded:(char)needed;
 - (id)_sceneExtensionNames;
 - (id)_settings;
-- (id)_settings:(id)a1;
-- (id)_subSettingsForKey:(char)a3 local:(int)a4 createIfNeeded:;
-- (id)_valueForSetting:(_BYTE *)a1;
-- (id)copy:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)debugDescriptionWithMultilinePrefix:(void *)a1;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopy:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_settings:(id)_settings;
+- (id)_subSettingsForKey:(char)key local:(int)local createIfNeeded:;
+- (id)_valueForSetting:(_BYTE *)setting;
+- (id)copy:(id)copy;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)debugDescriptionWithMultilinePrefix:(void *)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopy:(id)copy;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
-- (id)valueForProperty:(SEL)a3 expectedClass:(Class)a4;
-- (id)valueForSetting:(id)a3;
-- (uint64_t)_applySettings:(uint64_t)a1;
+- (id)valueForProperty:(SEL)property expectedClass:(Class)class;
+- (id)valueForSetting:(id)setting;
+- (uint64_t)_applySettings:(uint64_t)settings;
 - (uint64_t)_isMutable;
 - (unint64_t)hash;
-- (void)_addSceneExtension:(Class)a3;
-- (void)_addSceneExtension:(Class)a3 applyingSettings:(id)a4;
-- (void)_clearVolatileSettingsFromSettings:(uint64_t)a1;
+- (void)_addSceneExtension:(Class)extension;
+- (void)_addSceneExtension:(Class)extension applyingSettings:(id)settings;
+- (void)_clearVolatileSettingsFromSettings:(uint64_t)settings;
 - (void)_isEmpty;
 - (void)_removeAllSceneExtensions;
-- (void)_removeSceneExtension:(Class)a3;
+- (void)_removeSceneExtension:(Class)extension;
 - (void)_removeVolatileSettings;
-- (void)_setValue:(void *)a3 forSetting:;
-- (void)_setValue:(void *)a3 forSetting:(void *)a4 inSettings:;
-- (void)encodeWithXPCDictionary:(id)a3;
-- (void)setValue:(id)a3 forProperty:(SEL)a4;
+- (void)_setValue:(void *)value forSetting:;
+- (void)_setValue:(void *)value forSetting:(void *)setting inSettings:;
+- (void)encodeWithXPCDictionary:(id)dictionary;
+- (void)setValue:(id)value forProperty:(SEL)property;
 @end
 
 @implementation FBSSettings
 
 - (id)_legacyOtherSettings
 {
-  if (a1)
+  if (self)
   {
-    a1 = [FBSSettings _legacyOtherSettings:a1];
+    self = [FBSSettings _legacyOtherSettings:self];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)_progenitor
@@ -87,30 +87,30 @@
 
 - (id)_legacyLocalSettings
 {
-  if (a1)
+  if (self)
   {
-    a1 = [FBSSettings _legacyLocalSettings:a1];
+    self = [FBSSettings _legacyLocalSettings:self];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 + (id)_descriptionProvider
 {
-  v2 = [a1 _baseClass];
+  _baseClass = [self _baseClass];
 
-  return [v2 subclassExtension];
+  return [_baseClass subclassExtension];
 }
 
 - (id)_sceneExtensionNames
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
   v4 = [(FBSSettings *)self _sceneExtensionsCreatingIfNeeded:?];
-  v5 = [v4 allKeys];
-  v6 = [v5 allObjects];
-  v7 = [v6 sortedArrayUsingComparator:&__block_literal_global_91];
+  allKeys = [v4 allKeys];
+  allObjects = [allKeys allObjects];
+  v7 = [allObjects sortedArrayUsingComparator:&__block_literal_global_91];
 
   v17 = 0u;
   v18 = 0u;
@@ -132,7 +132,7 @@
         }
 
         v13 = [v4 objectForKey:{*(*(&v15 + 1) + 8 * i), v15}];
-        [v3 addObject:v13];
+        [orderedSet addObject:v13];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -141,7 +141,7 @@
     while (v10);
   }
 
-  return v3;
+  return orderedSet;
 }
 
 - (id)_allSceneExtensions
@@ -155,34 +155,34 @@
 
   else
   {
-    v5 = [MEMORY[0x1E695DFA0] orderedSet];
-    v34 = self;
-    v6 = [(FBSSettings *)self _sceneExtensionNames];
+    orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+    selfCopy = self;
+    _sceneExtensionNames = [(FBSSettings *)self _sceneExtensionNames];
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v7 = [v6 countByEnumeratingWithState:&v41 objects:v51 count:16];
+    v7 = [_sceneExtensionNames countByEnumeratingWithState:&v41 objects:v51 count:16];
     if (v7)
     {
       v8 = v7;
       v9 = *v42;
-      v35 = v6;
-      v36 = v5;
+      v35 = _sceneExtensionNames;
+      v36 = orderedSet;
       do
       {
         for (i = 0; i != v8; ++i)
         {
           if (*v42 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(_sceneExtensionNames);
           }
 
           v11 = *(*(&v41 + 1) + 8 * i);
           v12 = NSClassFromString(v11);
           if (v12)
           {
-            [v5 addObject:v12];
+            [orderedSet addObject:v12];
           }
 
           else if (MEMORY[0x1A58E7B00]("[FBSSettings _allSceneExtensions]") && [(NSString *)v11 rangeOfString:@"|"]!= 0x7FFFFFFFFFFFFFFFLL)
@@ -223,8 +223,8 @@
                       if (v24 && (v25 = v24, [(objc_class *)v24 isSubclassOfClass:objc_opt_class()]) && [(objc_class *)v25 softLinkExtensionFrameworkInClient])
                       {
                         v26 = FBLogCommon();
-                        v6 = v35;
-                        v5 = v36;
+                        _sceneExtensionNames = v35;
+                        orderedSet = v36;
                         if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
                         {
                           *buf = 138543618;
@@ -245,8 +245,8 @@
                       else
                       {
                         v29 = FBLogCommon();
-                        v6 = v35;
-                        v5 = v36;
+                        _sceneExtensionNames = v35;
+                        orderedSet = v36;
                         if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
                         {
                           *buf = 138543618;
@@ -284,25 +284,25 @@
                 _os_log_error_impl(&dword_1A2DBB000, v22, OS_LOG_TYPE_ERROR, "Unable to dlopen(%{public}@): %{public}s", buf, 0x16u);
               }
 
-              v6 = v35;
-              v5 = v36;
+              _sceneExtensionNames = v35;
+              orderedSet = v36;
             }
 
 LABEL_33:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v41 objects:v51 count:16];
+        v8 = [_sceneExtensionNames countByEnumeratingWithState:&v41 objects:v51 count:16];
       }
 
       while (v8);
     }
 
-    v31 = [v5 copy];
-    v32 = v34->_orderedExtensions;
-    v34->_orderedExtensions = v31;
+    v31 = [orderedSet copy];
+    v32 = selfCopy->_orderedExtensions;
+    selfCopy->_orderedExtensions = v31;
 
-    v3 = v34->_orderedExtensions;
+    v3 = selfCopy->_orderedExtensions;
   }
 
   return v3;
@@ -320,7 +320,7 @@ LABEL_33:
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"this class is not mutable"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -334,50 +334,50 @@ LABEL_33:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     return;
   }
 
-  v3 = [a1 _baseClass];
-  v4 = [a1 _mutableClass];
-  if (v3 != a1)
+  _baseClass = [self _baseClass];
+  _mutableClass = [self _mutableClass];
+  if (_baseClass != self)
   {
-    if (v4 != a1)
+    if (_mutableClass != self)
     {
-      value = [a1 alloc];
-      value[64] = [a1 isSubclassOfClass:{objc_msgSend(a1, "_mutableClass")}];
-      *(value + 1) = [a1 _baseClass];
-      objc_setAssociatedObject(a1, _FBSLegacyDescriptionProviderKey, value, 1);
+      value = [self alloc];
+      value[64] = [self isSubclassOfClass:{objc_msgSend(self, "_mutableClass")}];
+      *(value + 1) = [self _baseClass];
+      objc_setAssociatedObject(self, _FBSLegacyDescriptionProviderKey, value, 1);
 
       return;
     }
 
-    v4 = [a1 _baseClass];
+    _mutableClass = [self _baseClass];
   }
 
-  objc_setAssociatedObject(a1, _FBSCounterpartKey, v4, 0);
+  objc_setAssociatedObject(self, _FBSCounterpartKey, _mutableClass, 0);
   v5 = _FBSCounterpartKey;
 
-  objc_setAssociatedObject(v4, v5, a1, 0);
+  objc_setAssociatedObject(_mutableClass, v5, self, 0);
 }
 
 - (id)_settings
 {
-  if (a1)
+  if (self)
   {
-    a1 = [FBSSettings _settings:a1];
+    self = [FBSSettings _settings:self];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)_isMutable
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 64);
+    v1 = *(self + 64);
   }
 
   else
@@ -390,13 +390,13 @@ LABEL_33:
 
 - (id)_localSettings
 {
-  if (a1)
+  if (self)
   {
-    a1 = [FBSSettings _localSettings:a1];
+    self = [FBSSettings _localSettings:self];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (BOOL)_indirect_isEmpty
@@ -411,37 +411,37 @@ LABEL_33:
 
 - (void)_isEmpty
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_6_2(a1, a2);
+    return OUTLINED_FUNCTION_6_2(self, a2);
   }
 
-  return a1;
+  return self;
 }
 
-- (id)valueForProperty:(SEL)a3 expectedClass:(Class)a4
+- (id)valueForProperty:(SEL)property expectedClass:(Class)class
 {
-  if (!a4)
+  if (!class)
   {
     [FBSSettings(FBSSceneExtension) valueForProperty:a2 expectedClass:?];
   }
 
-  v6 = FBSSettingForExtensionSelector(self->_baseClass, a3);
+  v6 = FBSSettingForExtensionSelector(self->_baseClass, property);
   if (v6)
   {
     v7 = [(FBSSettings *)self _valueForSetting:v6];
     v8 = v7;
     if (v7)
     {
-      v9 = v7;
+      defaultValue = v7;
     }
 
     else
     {
-      v9 = [(FBSSetting *)v6 defaultValue];
+      defaultValue = [(FBSSetting *)v6 defaultValue];
     }
 
-    v11 = v9;
+    v11 = defaultValue;
   }
 
   else
@@ -449,7 +449,7 @@ LABEL_33:
     v10 = FBLogSceneExtension();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [FBSSettings(FBSSceneExtension) valueForProperty:a3 expectedClass:?];
+      [FBSSettings(FBSSceneExtension) valueForProperty:property expectedClass:?];
     }
 
     v11 = 0;
@@ -471,13 +471,13 @@ LABEL_33:
   return v13;
 }
 
-- (void)setValue:(id)a3 forProperty:(SEL)a4
+- (void)setValue:(id)value forProperty:(SEL)property
 {
-  v6 = a3;
-  v7 = FBSSettingForExtensionSelector(self->_baseClass, a4);
+  valueCopy = value;
+  v7 = FBSSettingForExtensionSelector(self->_baseClass, property);
   if (v7)
   {
-    [(FBSSettings *)self _setValue:v6 forSetting:v7];
+    [(FBSSettings *)self _setValue:valueCopy forSetting:v7];
   }
 
   else
@@ -485,35 +485,35 @@ LABEL_33:
     v8 = FBLogSceneExtension();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [FBSSettings(FBSSceneExtension) valueForProperty:a4 expectedClass:?];
+      [FBSSettings(FBSSceneExtension) valueForProperty:property expectedClass:?];
     }
   }
 }
 
-- (FBSSettings)initWithSettings:(id)a3
+- (FBSSettings)initWithSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v6 = objc_opt_class();
   v7 = objc_opt_class();
-  v8 = [v6 _baseClass];
+  _baseClass = [v6 _baseClass];
   if (v6 == v7)
   {
     [FBSSettings initWithSettings:a2];
   }
 
-  v9 = v8;
-  if (v5 && v8 != *(v5 + 1))
+  v9 = _baseClass;
+  if (settingsCopy && _baseClass != *(settingsCopy + 1))
   {
     v25 = MEMORY[0x1E696AEC0];
     v26 = NSStringFromClass(v6);
-    v27 = [v25 stringWithFormat:@"%@ cannot init with %@", v26, v5];
+    settingsCopy = [v25 stringWithFormat:@"%@ cannot init with %@", v26, settingsCopy];
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       [FBSSettings initWithSettings:a2];
     }
 
-    [v27 UTF8String];
+    [settingsCopy UTF8String];
     _bs_set_crash_log_message();
   }
 
@@ -526,38 +526,38 @@ LABEL_33:
     v10->_baseClass = v9;
     [v6 _mutableClass];
     v11->_mutable = objc_opt_isKindOfClass() & 1;
-    v12 = [v5 _progenitor];
-    v13 = v12;
-    if (v12)
+    _progenitor = [settingsCopy _progenitor];
+    v13 = _progenitor;
+    if (_progenitor)
     {
-      v14 = v12;
+      v14 = _progenitor;
     }
 
     else
     {
-      v14 = v5;
+      v14 = settingsCopy;
     }
 
     objc_storeWeak(&v11->_progenitor, v14);
 
-    if (v5)
+    if (settingsCopy)
     {
       v15 = v11->_mutable;
-      if (v15 && *(v5 + 64) == 1)
+      if (v15 && *(settingsCopy + 64) == 1)
       {
-        v16 = [*(v5 + 2) mutableCopy];
+        v16 = [*(settingsCopy + 2) mutableCopy];
         settings = v11->_settings;
         v11->_settings = v16;
 
-        v18 = [*(v5 + 3) mutableCopy];
+        v18 = [*(settingsCopy + 3) mutableCopy];
         localSettings = v11->_localSettings;
         v11->_localSettings = v18;
 
-        v20 = [*(v5 + 5) mutableCopy];
+        v20 = [*(settingsCopy + 5) mutableCopy];
         legacyOtherSettings = v11->_legacyOtherSettings;
         v11->_legacyOtherSettings = v20;
 
-        v22 = [*(v5 + 4) mutableCopy];
+        v22 = [*(settingsCopy + 4) mutableCopy];
         legacyLocalSettings = v11->_legacyLocalSettings;
         v11->_legacyLocalSettings = v22;
 
@@ -574,9 +574,9 @@ LABEL_33:
   return v11;
 }
 
-- (id)copy:(id)a3
+- (id)copy:(id)copy
 {
-  if (a3)
+  if (copy)
   {
     v4 = [(FBSSettings *)self mutableCopy:?];
     v5 = [v4 copy];
@@ -591,22 +591,22 @@ LABEL_33:
   }
 }
 
-- (id)mutableCopy:(id)a3
+- (id)mutableCopy:(id)copy
 {
-  v4 = a3;
+  copyCopy = copy;
   v5 = [(FBSSettings *)self mutableCopy];
-  if (v4)
+  if (copyCopy)
   {
-    v4[2](v4, v5);
+    copyCopy[2](copyCopy, v5);
   }
 
   return v5;
 }
 
-+ (void)_setCounterpartClass:(Class)a3
++ (void)_setCounterpartClass:(Class)class
 {
   v40 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!class)
   {
     [FBSSettings _setCounterpartClass:a2];
   }
@@ -616,32 +616,32 @@ LABEL_33:
   v22 = __36__FBSSettings__setCounterpartClass___block_invoke;
   v23 = &__block_descriptor_48_e5_v8__0l;
   v24 = a2;
-  v25 = a1;
+  selfCopy = self;
   if (_setCounterpartClass__onceToken != -1)
   {
     dispatch_once(&_setCounterpartClass__onceToken, &v20);
   }
 
   os_unfair_lock_lock(&_setCounterpartClass__lock);
-  v5 = objc_getAssociatedObject(a1, _FBSCounterpartKey);
+  v5 = objc_getAssociatedObject(self, _FBSCounterpartKey);
 
   if (!v5)
   {
-    if (([a1 isSubclassOfClass:{objc_opt_class(), v20, v21, v22, v23, v24, v25}] & 1) != 0 || objc_msgSend(a1, "isSubclassOfClass:", objc_opt_class()))
+    if (([self isSubclassOfClass:{objc_opt_class(), v20, v21, v22, v23, v24, selfCopy}] & 1) != 0 || objc_msgSend(self, "isSubclassOfClass:", objc_opt_class()))
     {
-      class_getMethodImplementation(a1, sel_copyWithZone_);
+      class_getMethodImplementation(self, sel_copyWithZone_);
       v6 = dyld_image_header_containing_address();
-      v7 = a3;
+      selfCopy2 = class;
     }
 
     else
     {
-      class_getMethodImplementation(a3, sel_copyWithZone_);
+      class_getMethodImplementation(class, sel_copyWithZone_);
       v6 = dyld_image_header_containing_address();
-      v7 = a1;
+      selfCopy2 = self;
     }
 
-    class_getMethodImplementation(v7, sel_mutableCopyWithZone_);
+    class_getMethodImplementation(selfCopy2, sel_mutableCopyWithZone_);
     v8 = dyld_image_header_containing_address();
     v9 = v8;
     if (v8 && v8 != _setCounterpartClass__fbsAddress && v8 == v6)
@@ -649,8 +649,8 @@ LABEL_33:
       v10 = FBLogSceneExtension();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = NSStringFromClass(a1);
-        v12 = NSStringFromClass(a3);
+        v11 = NSStringFromClass(self);
+        v12 = NSStringFromClass(class);
         *buf = 138543618;
         v27 = v11;
         v28 = 2114;
@@ -658,33 +658,33 @@ LABEL_33:
         _os_log_impl(&dword_1A2DBB000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ setting counterpart class: %{public}@", buf, 0x16u);
       }
 
-      objc_setAssociatedObject(a1, _FBSCounterpartKey, a3, 0);
-      objc_setAssociatedObject(a3, _FBSCounterpartKey, a1, 0);
+      objc_setAssociatedObject(self, _FBSCounterpartKey, class, 0);
+      objc_setAssociatedObject(class, _FBSCounterpartKey, self, 0);
     }
 
     else
     {
       v13 = [MEMORY[0x1E696AEC0] bs_stringWithUTF8String:dyld_image_path_containing_address()];
-      v14 = [v13 lastPathComponent];
+      lastPathComponent = [v13 lastPathComponent];
 
       v15 = [MEMORY[0x1E696AEC0] bs_stringWithUTF8String:dyld_image_path_containing_address()];
-      v16 = [v15 lastPathComponent];
+      lastPathComponent2 = [v15 lastPathComponent];
 
       v17 = FBLogSceneExtension();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = NSStringFromClass(a1);
-        v19 = NSStringFromClass(a3);
+        v18 = NSStringFromClass(self);
+        v19 = NSStringFromClass(class);
         *buf = 138544898;
         v27 = v18;
         v28 = 2114;
         v29 = v19;
         v30 = 2114;
-        v31 = v14;
+        v31 = lastPathComponent;
         v32 = 2048;
         v33 = v9;
         v34 = 2114;
-        v35 = v16;
+        v35 = lastPathComponent2;
         v36 = 2048;
         v37 = v6;
         v38 = 2048;
@@ -711,60 +711,60 @@ uint64_t __36__FBSSettings__setCounterpartClass___block_invoke(uint64_t a1)
   return result;
 }
 
-- (_BYTE)_underlyingValueForSetting:(_BYTE *)a1
+- (_BYTE)_underlyingValueForSetting:(_BYTE *)setting
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (setting)
   {
     if (!v3)
     {
       [FBSSettings _underlyingValueForSetting:?];
     }
 
-    [(FBSSettings *)a1 _underlyingValueForSetting:v3, &v6];
-    a1 = v6;
+    [(FBSSettings *)setting _underlyingValueForSetting:v3, &v6];
+    setting = v6;
   }
 
-  return a1;
+  return setting;
 }
 
-- (void)_setValue:(void *)a3 forSetting:
+- (void)_setValue:(void *)value forSetting:
 {
   v6 = a2;
-  v5 = a3;
-  if (a1)
+  valueCopy = value;
+  if (self)
   {
-    if (!v5)
+    if (!valueCopy)
     {
       [FBSSettings _setValue:? forSetting:?];
     }
 
-    if ((a1[64] & 1) == 0)
+    if ((self[64] & 1) == 0)
     {
       [FBSSettings _setValue:? forSetting:?];
     }
 
-    [(FBSSettings *)v5 _setValue:a1 forSetting:v6];
+    [(FBSSettings *)valueCopy _setValue:self forSetting:v6];
   }
 }
 
-- (id)_subSettingsForKey:(char)a3 local:(int)a4 createIfNeeded:
+- (id)_subSettingsForKey:(char)key local:(int)local createIfNeeded:
 {
   v7 = a2;
   v8 = v7;
-  if (a1)
+  if (self)
   {
     if (!v7)
     {
       [FBSSettings _subSettingsForKey:? local:? createIfNeeded:?];
     }
 
-    v9 = [FBSSettings _rootSettingsForLocal:a1 createIfNeeded:a3];
+    v9 = [FBSSettings _rootSettingsForLocal:self createIfNeeded:key];
     v10 = [v9 objectForKey:v8];
-    if (!v10 && a4)
+    if (!v10 && local)
     {
-      if ((a1[64] & 1) == 0)
+      if ((self[64] & 1) == 0)
       {
         [FBSSettings _subSettingsForKey:? local:? createIfNeeded:?];
       }
@@ -782,10 +782,10 @@ uint64_t __36__FBSSettings__setCounterpartClass___block_invoke(uint64_t a1)
   return v10;
 }
 
-- (void)_addSceneExtension:(Class)a3
+- (void)_addSceneExtension:(Class)extension
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!extension)
   {
     [FBSSettings _addSceneExtension:a2];
   }
@@ -795,39 +795,39 @@ uint64_t __36__FBSSettings__setCounterpartClass___block_invoke(uint64_t a1)
     [FBSSettings _addSceneExtension:a2];
   }
 
-  if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) == 0)
+  if (([(objc_class *)extension isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
-    [(FBSSettings *)a3 _addSceneExtension:a2];
+    [(FBSSettings *)extension _addSceneExtension:a2];
   }
 
-  FBSRealizeSceneExtension(a3);
-  v6 = [(FBSSettings *)self _allSceneExtensions];
-  v7 = [v6 containsObject:a3];
+  FBSRealizeSceneExtension(extension);
+  _allSceneExtensions = [(FBSSettings *)self _allSceneExtensions];
+  v7 = [_allSceneExtensions containsObject:extension];
 
   if ((v7 & 1) == 0)
   {
-    [(FBSSettings *)self _addSceneExtension:a3, v8, v9];
+    [(FBSSettings *)self _addSceneExtension:extension, v8, v9];
   }
 }
 
-- (void)_addSceneExtension:(Class)a3 applyingSettings:(id)a4
+- (void)_addSceneExtension:(Class)extension applyingSettings:(id)settings
 {
   v13 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (!v7)
+  settingsCopy = settings;
+  if (!settingsCopy)
   {
     [FBSSettings _addSceneExtension:a2 applyingSettings:?];
   }
 
-  v8 = v7;
-  if (self->_baseClass != *(v7 + 1))
+  v8 = settingsCopy;
+  if (self->_baseClass != *(settingsCopy + 1))
   {
     [FBSSettings _addSceneExtension:a2 applyingSettings:?];
   }
 
-  [(FBSSettings *)self _addSceneExtension:a3];
+  [(FBSSettings *)self _addSceneExtension:extension];
   memset(v11, 0, sizeof(v11));
-  v9 = [objc_opt_class() _settingsExtensionsForSceneExtension:{a3, 0}];
+  v9 = [objc_opt_class() _settingsExtensionsForSceneExtension:{extension, 0}];
   if ([v9 countByEnumeratingWithState:v11 objects:v12 count:16])
   {
     v10 = NSStringFromClass(**(&v11[0] + 1));
@@ -837,10 +837,10 @@ uint64_t __36__FBSSettings__setCounterpartClass___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_removeSceneExtension:(Class)a3
+- (void)_removeSceneExtension:(Class)extension
 {
   v37 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!extension)
   {
     [FBSSettings _removeSceneExtension:a2];
   }
@@ -850,20 +850,20 @@ uint64_t __36__FBSSettings__setCounterpartClass___block_invoke(uint64_t a1)
     [FBSSettings _removeSceneExtension:a2];
   }
 
-  if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) == 0)
+  if (([(objc_class *)extension isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
-    [(FBSSettings *)a3 _removeSceneExtension:a2];
+    [(FBSSettings *)extension _removeSceneExtension:a2];
   }
 
-  v6 = [(FBSSettings *)self _allSceneExtensions];
-  v7 = [v6 containsObject:a3];
+  _allSceneExtensions = [(FBSSettings *)self _allSceneExtensions];
+  v7 = [_allSceneExtensions containsObject:extension];
 
   if (v7)
   {
     v8 = [(FBSSettings *)self _sceneExtensionsCreatingIfNeeded:?];
-    v9 = [v8 allKeys];
-    v10 = [v9 allObjects];
-    v11 = [v10 sortedArrayUsingComparator:&__block_literal_global_32];
+    allKeys = [v8 allKeys];
+    allObjects = [allKeys allObjects];
+    v11 = [allObjects sortedArrayUsingComparator:&__block_literal_global_32];
 
     v12 = objc_opt_new();
     v31 = 0u;
@@ -891,7 +891,7 @@ uint64_t __36__FBSSettings__setCounterpartClass___block_invoke(uint64_t a1)
 
           if (v19)
           {
-            v20 = v19 == a3;
+            v20 = v19 == extension;
           }
 
           else
@@ -955,7 +955,7 @@ uint64_t __36__FBSSettings__setCounterpartClass___block_invoke(uint64_t a1)
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"this class is not mutable"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -967,18 +967,18 @@ uint64_t __36__FBSSettings__setCounterpartClass___block_invoke(uint64_t a1)
   _bs_set_crash_log_message();
 }
 
-- (uint64_t)_applySettings:(uint64_t)a1
+- (uint64_t)_applySettings:(uint64_t)settings
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (settings)
   {
-    if ((*(a1 + 64) & 1) == 0)
+    if ((*(settings + 64) & 1) == 0)
     {
       [FBSSettings _applySettings:?];
     }
 
-    if (*(a1 + 8) != v3[1])
+    if (*(settings + 8) != v3[1])
     {
       [FBSSettings _applySettings:?];
     }
@@ -991,25 +991,25 @@ uint64_t __36__FBSSettings__setCounterpartClass___block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (BOOL)conformsToExtension:(Class)a3
+- (BOOL)conformsToExtension:(Class)extension
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v5 = [(FBSSettings *)self _allSceneExtensions];
-  v6 = [v5 containsObject:a3];
+  _allSceneExtensions = [(FBSSettings *)self _allSceneExtensions];
+  v6 = [_allSceneExtensions containsObject:extension];
 
   if (v6)
   {
     return 1;
   }
 
-  if ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)extension isSubclassOfClass:objc_opt_class()])
   {
-    v8 = [objc_opt_class() _settingsExtensionsForSceneExtension:a3];
+    v8 = [objc_opt_class() _settingsExtensionsForSceneExtension:extension];
   }
 
   else
   {
-    v20[0] = a3;
+    v20[0] = extension;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
   }
 
@@ -1055,95 +1055,95 @@ LABEL_16:
   return v7;
 }
 
-+ (id)settingForProperty:(SEL)a3
++ (id)settingForProperty:(SEL)property
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     [FBSSettings settingForProperty:a2];
   }
 
-  return FBSSettingForSelector(a1, a3);
+  return FBSSettingForSelector(self, property);
 }
 
-+ (id)settingForSubclassProperty:(SEL)a3
++ (id)settingForSubclassProperty:(SEL)property
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     [FBSSettings settingForSubclassProperty:a2];
   }
 
-  return FBSSettingForLegacySelector(a1, a3);
+  return FBSSettingForLegacySelector(self, property);
 }
 
 + (id)allSettings
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     +[(FBSSettings *)a2];
   }
 
-  return FBSAllSettings(a1);
+  return FBSAllSettings(self);
 }
 
-+ (id)allSettingsFromProtocol:(id)a3
++ (id)allSettingsFromProtocol:(id)protocol
 {
-  v5 = a3;
-  if (objc_opt_class() == a1)
+  protocolCopy = protocol;
+  if (objc_opt_class() == self)
   {
     [FBSSettings allSettingsFromProtocol:a2];
   }
 
-  v6 = FBSAllSettingsFromProtocol(a1, v5);
+  v6 = FBSAllSettingsFromProtocol(self, protocolCopy);
 
   return v6;
 }
 
-+ (id)allSettingsFromExtension:(Class)a3
++ (id)allSettingsFromExtension:(Class)extension
 {
-  if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) == 0)
+  if (([(objc_class *)extension isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
     [FBSSettings allSettingsFromExtension:a2];
   }
 
-  v6 = [(objc_class *)a3 protocol];
-  v7 = [a1 allSettingsFromProtocol:v6];
+  protocol = [(objc_class *)extension protocol];
+  v7 = [self allSettingsFromProtocol:protocol];
 
   return v7;
 }
 
-- (BOOL)containsSetting:(id)a3
+- (BOOL)containsSetting:(id)setting
 {
-  if (!a3)
+  if (!setting)
   {
     return 0;
   }
 
-  v3 = [(FBSSettings *)self _underlyingValueForSetting:a3];
+  v3 = [(FBSSettings *)self _underlyingValueForSetting:setting];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)valueForSetting:(id)a3
+- (id)valueForSetting:(id)setting
 {
-  v4 = a3;
-  if (!v4)
+  settingCopy = setting;
+  if (!settingCopy)
   {
-    v5 = 0;
+    defaultValue2 = 0;
     goto LABEL_3;
   }
 
-  v7 = [(FBSSettings *)self _valueForSetting:v4];
+  v7 = [(FBSSettings *)self _valueForSetting:settingCopy];
   if (v7)
   {
-    v8 = [(FBSSetting *)v4 type];
-    if (v8 == 64)
+    type = [(FBSSetting *)settingCopy type];
+    if (type == 64)
     {
       v9 = v7;
       if (!_NSIsNSValue() || *[v9 objCType] != 64 || ((v10 = objc_opt_class(), v11 = v9, !v10) ? (v12 = 0) : (objc_opt_isKindOfClass() & 1) == 0 ? (v12 = 0) : (v12 = v11), v19 = v12, v11, objc_msgSend(v19, "weakObjectValue"), v9 = objc_claimAutoreleasedReturnValue(), v11, v19, v9))
       {
-        [(FBSSetting *)v4 expectedClass];
-        if ([(FBSSetting *)v4 specialCollection]== 0x7FFFFFFFFFFFFFFFLL)
+        [(FBSSetting *)settingCopy expectedClass];
+        if ([(FBSSetting *)settingCopy specialCollection]== 0x7FFFFFFFFFFFFFFFLL)
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) != 0 || [v9 count])
@@ -1160,7 +1160,7 @@ LABEL_16:
 
     else
     {
-      if ((v8 & 0xFFFFFFEF) != 0x2A && v8 != 123 && v8 == 35)
+      if ((type & 0xFFFFFFEF) != 0x2A && type != 123 && type == 35)
       {
         v13 = objc_opt_class();
         v14 = v7;
@@ -1220,47 +1220,47 @@ LABEL_16:
     if (v18)
     {
 LABEL_37:
-      v20 = v18;
+      defaultValue = v18;
 LABEL_42:
-      v5 = v20;
+      defaultValue2 = defaultValue;
 
       goto LABEL_43;
     }
 
 LABEL_41:
-    v20 = [(FBSSetting *)v4 defaultValue];
+    defaultValue = [(FBSSetting *)settingCopy defaultValue];
     goto LABEL_42;
   }
 
-  v5 = [(FBSSetting *)v4 defaultValue];
+  defaultValue2 = [(FBSSetting *)settingCopy defaultValue];
 LABEL_43:
 
 LABEL_3:
 
-  return v5;
+  return defaultValue2;
 }
 
 - (unint64_t)hash
 {
-  v4 = 0x94D049BB133111EBLL * ((0xBF58476D1CE4E5B9 * (a1 ^ (a1 >> 30))) ^ ((0xBF58476D1CE4E5B9 * (a1 ^ (a1 >> 30))) >> 27));
+  v4 = 0x94D049BB133111EBLL * ((0xBF58476D1CE4E5B9 * (self ^ (self >> 30))) ^ ((0xBF58476D1CE4E5B9 * (self ^ (self >> 30))) >> 27));
   result = [*(a2 + 16) hash];
   v6 = 0x94D049BB133111EBLL * ((0xBF58476D1CE4E5B9 * (result ^ (result >> 30))) ^ ((0xBF58476D1CE4E5B9 * (result ^ (result >> 30))) >> 27));
   *a3 = v4 ^ ((v6 ^ v4) >> 31) ^ v6;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  p_isa = &v4->super.isa;
-  if (self == v4)
+  equalCopy = equal;
+  p_isa = &equalCopy->super.isa;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_baseClass == p_isa[1] && [(FBSSettings *)self _isEqualToSettings:p_isa];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_baseClass == p_isa[1] && [(FBSSettings *)self _isEqualToSettings:p_isa];
   }
 
   return v6;
@@ -1268,25 +1268,25 @@ LABEL_3:
 
 - (id)succinctDescription
 {
-  v2 = [(FBSSettings *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSSettings *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSSettings *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSSettings *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (self && self->_mutable)
   {
-    v4 = [(objc_class *)self->_baseClass allocWithZone:a3];
+    v4 = [(objc_class *)self->_baseClass allocWithZone:zone];
 
     return [(objc_class *)v4 initWithSettings:self];
   }
@@ -1298,73 +1298,73 @@ LABEL_3:
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   if (self && self->_mutable)
   {
-    v4 = [objc_opt_class() allocWithZone:a3];
+    v4 = [objc_opt_class() allocWithZone:zone];
 
     return [v4 initWithSettings:self];
   }
 
   else
   {
-    [(FBSSettings *)self mutableCopyWithZone:a3, &v6];
+    [(FBSSettings *)self mutableCopyWithZone:zone, &v6];
     return v6;
   }
 }
 
-- (FBSSettings)initWithBSXPCCoder:(id)a3
+- (FBSSettings)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(FBSSettings *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_settings"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_settings"];
     settings = v5->_settings;
     v5->_settings = v6;
 
     v8 = v5->_settings;
-    v9 = [objc_opt_class() _descriptionProvider];
-    [(BSKeyedSettings *)v8 setDescriptionProvider:v9];
+    _descriptionProvider = [objc_opt_class() _descriptionProvider];
+    [(BSKeyedSettings *)v8 setDescriptionProvider:_descriptionProvider];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_legacyOtherSettings"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_legacyOtherSettings"];
     legacyOtherSettings = v5->_legacyOtherSettings;
     v5->_legacyOtherSettings = v10;
 
     v12 = v5->_legacyOtherSettings;
-    v13 = [objc_opt_class() _legacyDescriptionProvider];
-    [(BSSettings *)v12 setDescriptionProvider:v13];
+    _legacyDescriptionProvider = [objc_opt_class() _legacyDescriptionProvider];
+    [(BSSettings *)v12 setDescriptionProvider:_legacyDescriptionProvider];
   }
 
   return v5;
 }
 
-- (FBSSettings)initWithXPCDictionary:(id)a3
+- (FBSSettings)initWithXPCDictionary:(id)dictionary
 {
-  v4 = [off_1E76BCA80 coderWithMessage:a3];
+  v4 = [off_1E76BCA80 coderWithMessage:dictionary];
   v5 = [(FBSSettings *)self initWithBSXPCCoder:v4];
 
   return v5;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v4 = [off_1E76BCA80 coderWithMessage:a3];
+  v4 = [off_1E76BCA80 coderWithMessage:dictionary];
   [(FBSSettings *)self encodeWithBSXPCCoder:v4];
 }
 
-- (id)_copyClearingProgenitor:(id)a3
+- (id)_copyClearingProgenitor:(id)progenitor
 {
-  v4 = a3;
-  v5 = v4;
+  progenitorCopy = progenitor;
+  v5 = progenitorCopy;
   if (self)
   {
     v6 = self->_mutable;
-    if (v4)
+    if (progenitorCopy)
     {
 LABEL_8:
-      v8 = [(FBSSettings *)self copy:v4];
+      selfCopy = [(FBSSettings *)self copy:progenitorCopy];
       goto LABEL_9;
     }
   }
@@ -1372,7 +1372,7 @@ LABEL_8:
   else
   {
     v6 = 0;
-    if (v4)
+    if (progenitorCopy)
     {
       goto LABEL_8;
     }
@@ -1387,17 +1387,17 @@ LABEL_8:
 
   if (WeakRetained)
   {
-    v8 = [objc_alloc(objc_opt_class()) initWithSettings:self];
+    selfCopy = [objc_alloc(objc_opt_class()) initWithSettings:self];
   }
 
   else
   {
-    v8 = self;
+    selfCopy = self;
   }
 
 LABEL_9:
-  v9 = v8;
-  objc_storeWeak(&v8->_progenitor, 0);
+  v9 = selfCopy;
+  objc_storeWeak(&selfCopy->_progenitor, 0);
 
   return v9;
 }
@@ -1418,29 +1418,29 @@ LABEL_9:
   return 0;
 }
 
-- (id)_rootSettingsForLocal:(void *)a1 createIfNeeded:(char)a2
+- (id)_rootSettingsForLocal:(void *)local createIfNeeded:(char)needed
 {
-  if (a1)
+  if (local)
   {
-    if (a2)
+    if (needed)
     {
-      [FBSSettings _localSettings:a1];
+      [FBSSettings _localSettings:local];
     }
 
     else
     {
-      [FBSSettings _settings:a1];
+      [FBSSettings _settings:local];
     }
-    a1 = ;
+    local = ;
     v2 = vars8;
   }
 
-  return a1;
+  return local;
 }
 
-- (id)_localSettings:(id)a1
+- (id)_localSettings:(id)settings
 {
-  if (a1)
+  if (settings)
   {
     OUTLINED_FUNCTION_5_7();
     v4 = !v4 || v3 == 0;
@@ -1464,7 +1464,7 @@ LABEL_9:
       }
 
       v6 = [*(v1 + 24) mutableCopy];
-      v7 = *(v1 + 24);
+      _descriptionProvider = *(v1 + 24);
       *(v1 + 24) = v6;
     }
 
@@ -1475,21 +1475,21 @@ LABEL_9:
       *(v1 + 24) = v8;
 
       v10 = *(v1 + 24);
-      v7 = [objc_opt_class() _descriptionProvider];
-      [v10 setDescriptionProvider:v7];
+      _descriptionProvider = [objc_opt_class() _descriptionProvider];
+      [v10 setDescriptionProvider:_descriptionProvider];
     }
 
 LABEL_13:
-    a1 = *(v1 + 24);
+    settings = *(v1 + 24);
     v2 = vars8;
   }
 
-  return a1;
+  return settings;
 }
 
-- (id)_settings:(id)a1
+- (id)_settings:(id)_settings
 {
-  if (a1)
+  if (_settings)
   {
     OUTLINED_FUNCTION_5_7();
     v4 = !v4 || v3 == 0;
@@ -1513,7 +1513,7 @@ LABEL_13:
       }
 
       v6 = [*(v1 + 16) mutableCopy];
-      v7 = *(v1 + 16);
+      _descriptionProvider = *(v1 + 16);
       *(v1 + 16) = v6;
     }
 
@@ -1524,23 +1524,23 @@ LABEL_13:
       *(v1 + 16) = v8;
 
       v10 = *(v1 + 16);
-      v7 = [objc_opt_class() _descriptionProvider];
-      [v10 setDescriptionProvider:v7];
+      _descriptionProvider = [objc_opt_class() _descriptionProvider];
+      [v10 setDescriptionProvider:_descriptionProvider];
     }
 
 LABEL_13:
-    a1 = *(v1 + 16);
+    _settings = *(v1 + 16);
     v2 = vars8;
   }
 
-  return a1;
+  return _settings;
 }
 
-- (id)_valueForSetting:(_BYTE *)a1
+- (id)_valueForSetting:(_BYTE *)setting
 {
-  if (a1)
+  if (setting)
   {
-    v2 = [(FBSSettings *)a1 _underlyingValueForSetting:a2];
+    v2 = [(FBSSettings *)setting _underlyingValueForSetting:a2];
     if (![@"<explicitly nil>" isEqual:v2])
     {
       goto LABEL_5;
@@ -1553,23 +1553,23 @@ LABEL_5:
   return v2;
 }
 
-- (void)_setValue:(void *)a3 forSetting:(void *)a4 inSettings:
+- (void)_setValue:(void *)value forSetting:(void *)setting inSettings:
 {
   v17 = a2;
-  v7 = a4;
-  if (a1)
+  settingCopy = setting;
+  if (self)
   {
-    v8 = a3;
-    [v7 setDescriptionProvider:-[FBSSetting extension](v8)];
-    v9 = [(FBSSetting *)v8 name];
-    v10 = [(FBSSetting *)v8 defaultValue];
-    v11 = [(FBSSetting *)v8 isNullPreserving];
+    valueCopy = value;
+    [settingCopy setDescriptionProvider:-[FBSSetting extension](valueCopy)];
+    name = [(FBSSetting *)valueCopy name];
+    defaultValue = [(FBSSetting *)valueCopy defaultValue];
+    isNullPreserving = [(FBSSetting *)valueCopy isNullPreserving];
 
-    if (v17 && (v12 = [(__CFString *)v17 isEqual:v10], v13 = v17, !v12))
+    if (v17 && (v12 = [(__CFString *)v17 isEqual:defaultValue], v13 = v17, !v12))
     {
       if (*MEMORY[0x1E695E4D0] == v17 || *MEMORY[0x1E695E4C0] == v17)
       {
-        if (v11)
+        if (isNullPreserving)
         {
           BSSettingFlagForBool();
         }
@@ -1584,29 +1584,29 @@ LABEL_5:
           v16 = 0x7FFFFFFFFFFFFFFFLL;
         }
 
-        [v7 setFlag:v16 forKey:v9];
-        [v7 setObject:0 forKey:v9];
+        [settingCopy setFlag:v16 forKey:name];
+        [settingCopy setObject:0 forKey:name];
         goto LABEL_18;
       }
     }
 
     else
     {
-      if ((v11 & 1) == 0)
+      if ((isNullPreserving & 1) == 0)
       {
-        v14 = v7;
+        v14 = settingCopy;
         v13 = 0;
 LABEL_17:
-        [v14 setObject:v13 forKey:v9];
-        [v7 setFlag:0x7FFFFFFFFFFFFFFFLL forKey:v9];
+        [v14 setObject:v13 forKey:name];
+        [settingCopy setFlag:0x7FFFFFFFFFFFFFFFLL forKey:name];
 LABEL_18:
 
         goto LABEL_19;
       }
 
-      if (v10)
+      if (defaultValue)
       {
-        v13 = v10;
+        v13 = defaultValue;
       }
 
       else
@@ -1615,37 +1615,37 @@ LABEL_18:
       }
     }
 
-    v14 = v7;
+    v14 = settingCopy;
     goto LABEL_17;
   }
 
 LABEL_19:
 }
 
-- (_BYTE)_sceneExtensionsCreatingIfNeeded:(_BYTE *)a1
+- (_BYTE)_sceneExtensionsCreatingIfNeeded:(_BYTE *)needed
 {
-  if (a1)
+  if (needed)
   {
-    a1 = [(FBSSettings *)a1 _subSettingsForKey:0 local:a2 createIfNeeded:?];
+    needed = [(FBSSettings *)needed _subSettingsForKey:0 local:a2 createIfNeeded:?];
     v2 = vars8;
   }
 
-  return a1;
+  return needed;
 }
 
-- (void)_clearVolatileSettingsFromSettings:(uint64_t)a1
+- (void)_clearVolatileSettingsFromSettings:(uint64_t)settings
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (settings)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [v3 allKeys];
-    v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    allKeys = [v3 allKeys];
+    v6 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (!v6)
     {
       goto LABEL_27;
@@ -1659,7 +1659,7 @@ LABEL_19:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
@@ -1669,7 +1669,7 @@ LABEL_19:
           v12 = NSSelectorFromString(v10);
           if (v12)
           {
-            v13 = FBSSettingForExtensionSelector(*(a1 + 8), v12);
+            v13 = FBSSettingForExtensionSelector(*(settings + 8), v12);
             if (([(FBSSetting *)v13 isVolatile]& 1) == 0)
             {
               if (!v13)
@@ -1678,7 +1678,7 @@ LABEL_14:
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  [(FBSSettings *)a1 _clearVolatileSettingsFromSettings:v11];
+                  [(FBSSettings *)settings _clearVolatileSettingsFromSettings:v11];
                 }
 
                 v13 = 0;
@@ -1699,7 +1699,7 @@ LABEL_17:
             }
           }
 
-          [(FBSSettings *)a1 _setValue:v13 forSetting:?];
+          [(FBSSettings *)settings _setValue:v13 forSetting:?];
           goto LABEL_17;
         }
 
@@ -1709,7 +1709,7 @@ LABEL_18:
           v14 = NSSelectorFromString(v10);
           if (v14)
           {
-            v15 = FBSSettingForExtensionSelector(*(a1 + 8), v14);
+            v15 = FBSSettingForExtensionSelector(*(settings + 8), v14);
           }
 
           else
@@ -1719,12 +1719,12 @@ LABEL_18:
 
           if ([(FBSSetting *)v15 isVolatile])
           {
-            [(FBSSettings *)a1 _setValue:v15 forSetting:?];
+            [(FBSSettings *)settings _setValue:v15 forSetting:?];
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (!v7)
       {
 LABEL_27:
@@ -1735,9 +1735,9 @@ LABEL_27:
   }
 }
 
-- (id)_legacyOtherSettings:(id)a1
+- (id)_legacyOtherSettings:(id)settings
 {
-  if (a1)
+  if (settings)
   {
     OUTLINED_FUNCTION_5_7();
     v4 = !v4 || v3 == 0;
@@ -1772,20 +1772,20 @@ LABEL_27:
     *(v1 + 40) = v6;
 
     v8 = *(v1 + 40);
-    v9 = [objc_opt_class() _legacyDescriptionProvider];
-    [v8 setDescriptionProvider:v9];
+    _legacyDescriptionProvider = [objc_opt_class() _legacyDescriptionProvider];
+    [v8 setDescriptionProvider:_legacyDescriptionProvider];
 
 LABEL_13:
-    a1 = *(v1 + 40);
+    settings = *(v1 + 40);
     v2 = vars8;
   }
 
-  return a1;
+  return settings;
 }
 
-- (id)_legacyLocalSettings:(id)a1
+- (id)_legacyLocalSettings:(id)settings
 {
-  if (a1)
+  if (settings)
   {
     OUTLINED_FUNCTION_5_7();
     v4 = !v4 || v3 == 0;
@@ -1820,36 +1820,36 @@ LABEL_13:
     *(v1 + 32) = v6;
 
 LABEL_13:
-    a1 = *(v1 + 32);
+    settings = *(v1 + 32);
     v2 = vars8;
   }
 
-  return a1;
+  return settings;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(void *)a1
+- (id)debugDescriptionWithMultilinePrefix:(void *)prefix
 {
-  if (a1)
+  if (prefix)
   {
-    v2 = [(FBSSettings *)a1 _descriptionBuilderWithMultilinePrefix:a2 debug:1];
-    v3 = [v2 build];
+    v2 = [(FBSSettings *)prefix _descriptionBuilderWithMultilinePrefix:a2 debug:1];
+    build = [v2 build];
   }
 
   else
   {
-    v3 = 0;
+    build = 0;
   }
 
-  return v3;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 debug:
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix debug:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    [a1 succinctDescriptionBuilder];
-    [objc_claimAutoreleasedReturnValue() setUseDebugDescription:a3];
+    [self succinctDescriptionBuilder];
+    [objc_claimAutoreleasedReturnValue() setUseDebugDescription:prefix];
     BSSettingsIsEmpty();
   }
 
@@ -2386,7 +2386,7 @@ LABEL_9:
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"must call on a concrete subclass"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);

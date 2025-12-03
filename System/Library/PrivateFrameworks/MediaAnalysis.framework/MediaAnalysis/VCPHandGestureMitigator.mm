@@ -1,21 +1,21 @@
 @interface VCPHandGestureMitigator
-- (BOOL)checkHandGestureGlobalMotion:(id)a3 forHand:(id)a4;
-- (BOOL)checkHandGestureJitter:(id)a3 forHand:(id)a4;
-- (BOOL)checkHandGestureTemporalInconsistency:(id)a3 forHand:(id)a4;
-- (BOOL)checkHandHoldObject:(id)a3 forHand:(id)a4;
-- (BOOL)handInMitigationQuadrant:(id)a3 withFace:(CGRect)a4;
-- (BOOL)handPalmFacingCamera:(id)a3 rotationInDegrees:(int)a4 useTips:(BOOL)a5;
-- (BOOL)handTouchFace:(id)a3 andFace:(CGRect)a4 rotationInDegrees:(int)a5;
-- (BOOL)handsOverlap:(id)a3 pairedHand:(id)a4;
-- (BOOL)handsTooClose:(id)a3 pairedHand:(id)a4;
-- (BOOL)handsVerticallyAligned:(id)a3 pairedHand:(id)a4;
-- (BOOL)mitigateWithFingerOpennessForHand:(id)a3;
-- (BOOL)mitigateWithFingerTiltingForHand:(id)a3;
+- (BOOL)checkHandGestureGlobalMotion:(id)motion forHand:(id)hand;
+- (BOOL)checkHandGestureJitter:(id)jitter forHand:(id)hand;
+- (BOOL)checkHandGestureTemporalInconsistency:(id)inconsistency forHand:(id)hand;
+- (BOOL)checkHandHoldObject:(id)object forHand:(id)hand;
+- (BOOL)handInMitigationQuadrant:(id)quadrant withFace:(CGRect)face;
+- (BOOL)handPalmFacingCamera:(id)camera rotationInDegrees:(int)degrees useTips:(BOOL)tips;
+- (BOOL)handTouchFace:(id)face andFace:(CGRect)andFace rotationInDegrees:(int)degrees;
+- (BOOL)handsOverlap:(id)overlap pairedHand:(id)hand;
+- (BOOL)handsTooClose:(id)close pairedHand:(id)hand;
+- (BOOL)handsVerticallyAligned:(id)aligned pairedHand:(id)hand;
+- (BOOL)mitigateWithFingerOpennessForHand:(id)hand;
+- (BOOL)mitigateWithFingerTiltingForHand:(id)hand;
 - (VCPHandGestureMitigator)init;
-- (int)mitigate:(id)a3 rightHand:(id)a4 featureProvider:(id)a5 faceRects:(id)a6 faceYaws:(id)a7;
-- (int)mitigateHand:(id)a3 handKey:(id)a4 pairedHand:(id)a5 featureProvider:(id)a6 faceRects:(id)a7 faceYaws:(id)a8;
-- (void)adjustGestureForHand:(id)a3 withFace:(CGRect)a4;
-- (void)adjustGestureForHand:(id)a3 withFaceYaw:(id)a4;
+- (int)mitigate:(id)mitigate rightHand:(id)hand featureProvider:(id)provider faceRects:(id)rects faceYaws:(id)yaws;
+- (int)mitigateHand:(id)hand handKey:(id)key pairedHand:(id)pairedHand featureProvider:(id)provider faceRects:(id)rects faceYaws:(id)yaws;
+- (void)adjustGestureForHand:(id)hand withFace:(CGRect)face;
+- (void)adjustGestureForHand:(id)hand withFaceYaw:(id)yaw;
 @end
 
 @implementation VCPHandGestureMitigator
@@ -27,16 +27,16 @@
   return [(VCPHandGestureMitigator *)&v3 init];
 }
 
-- (BOOL)checkHandGestureJitter:(id)a3 forHand:(id)a4
+- (BOOL)checkHandGestureJitter:(id)jitter forHand:(id)hand
 {
   v58 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v42 = a4;
+  jitterCopy = jitter;
+  handCopy = hand;
   v44 = 1;
-  v43 = v5;
+  v43 = jitterCopy;
   while (1)
   {
-    v6 = [v5 count];
+    v6 = [jitterCopy count];
     v7 = [&unk_1F49BEE48 count];
     v8 = v7 >= v6 ? v6 : v7;
     v9 = v44;
@@ -47,10 +47,10 @@
     }
 
     v10 = [v43 objectAtIndexedSubscript:v44 - 1];
-    v46 = [v10 objectForKeyedSubscript:v42];
+    v46 = [v10 objectForKeyedSubscript:handCopy];
 
     v11 = [v43 objectAtIndexedSubscript:v44];
-    v12 = [v11 objectForKeyedSubscript:v42];
+    v12 = [v11 objectForKeyedSubscript:handCopy];
 
     if (v12)
     {
@@ -89,13 +89,13 @@ LABEL_29:
             objc_enumerationMutation(&unk_1F49BEE60);
           }
 
-          v18 = [*(*(&v47 + 1) + 8 * i) intValue];
+          intValue = [*(*(&v47 + 1) + 8 * i) intValue];
           rotationInDegrees = self->_rotationInDegrees;
           v20 = v46;
-          v21 = [v12 keypoints];
-          v22 = [(VCPHandObservation *)v20 keypoints];
-          v23 = v22;
-          if (v21 && v22 && ([v21 objectAtIndexedSubscript:0], v24 = objc_claimAutoreleasedReturnValue(), v25 = keyPointPosition(v24, rotationInDegrees), v24, objc_msgSend(v21, "objectAtIndexedSubscript:", v18), v26 = objc_claimAutoreleasedReturnValue(), v27 = keyPointPosition(v26, rotationInDegrees), v26, objc_msgSend(v23, "objectAtIndexedSubscript:", v18), v28 = objc_claimAutoreleasedReturnValue(), v29 = keyPointPosition(v28, rotationInDegrees), v28, objc_msgSend(v23, "objectAtIndexedSubscript:", 0), v30 = objc_claimAutoreleasedReturnValue(), v31 = keyPointPosition(v30, rotationInDegrees), v30, v32 = palmScale(v20, rotationInDegrees), v32 >= 0.0))
+          keypoints = [v12 keypoints];
+          keypoints2 = [(VCPHandObservation *)v20 keypoints];
+          v23 = keypoints2;
+          if (keypoints && keypoints2 && ([keypoints objectAtIndexedSubscript:0], v24 = objc_claimAutoreleasedReturnValue(), v25 = keyPointPosition(v24, rotationInDegrees), v24, objc_msgSend(keypoints, "objectAtIndexedSubscript:", intValue), v26 = objc_claimAutoreleasedReturnValue(), v27 = keyPointPosition(v26, rotationInDegrees), v26, objc_msgSend(v23, "objectAtIndexedSubscript:", intValue), v28 = objc_claimAutoreleasedReturnValue(), v29 = keyPointPosition(v28, rotationInDegrees), v28, objc_msgSend(v23, "objectAtIndexedSubscript:", 0), v30 = objc_claimAutoreleasedReturnValue(), v31 = keyPointPosition(v30, rotationInDegrees), v30, v32 = palmScale(v20, rotationInDegrees), v32 >= 0.0))
           {
             v33 = MediaAnalysisLogLevel();
             v34 = vsub_f32(*&v27, *&v25);
@@ -130,7 +130,7 @@ LABEL_29:
       while (v15);
     }
 
-    v5 = v43;
+    jitterCopy = v43;
     ++v44;
   }
 
@@ -139,15 +139,15 @@ LABEL_29:
   return v38 & v40;
 }
 
-- (BOOL)checkHandHoldObject:(id)a3 forHand:(id)a4
+- (BOOL)checkHandHoldObject:(id)object forHand:(id)hand
 {
-  v5 = a3;
-  v6 = a4;
+  objectCopy = object;
+  handCopy = hand;
   v7 = 0;
-  while ([v5 count] > v7)
+  while ([objectCopy count] > v7)
   {
-    v8 = [v5 objectAtIndexedSubscript:v7];
-    v9 = [v8 objectForKeyedSubscript:v6];
+    v8 = [objectCopy objectAtIndexedSubscript:v7];
+    v9 = [v8 objectForKeyedSubscript:handCopy];
 
     if (!v9)
     {
@@ -171,20 +171,20 @@ LABEL_7:
   return v12;
 }
 
-- (BOOL)handsOverlap:(id)a3 pairedHand:(id)a4
+- (BOOL)handsOverlap:(id)overlap pairedHand:(id)hand
 {
   v62 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  overlapCopy = overlap;
+  handCopy = hand;
+  v10 = handCopy;
   v11 = 0;
-  if (!v8 || !v9)
+  if (!overlapCopy || !handCopy)
   {
     goto LABEL_40;
   }
 
   v12 = +[VCPHandObservation twoHandGestureTypes];
-  v13 = [MEMORY[0x1E696AD98] numberWithInt:{-[VCPHandObservation gestureType](v8, "gestureType")}];
+  v13 = [MEMORY[0x1E696AD98] numberWithInt:{-[VCPHandObservation gestureType](overlapCopy, "gestureType")}];
   if ([v12 containsObject:v13])
   {
   }
@@ -204,11 +204,11 @@ LABEL_7:
 
   v17 = 0.2;
 LABEL_7:
-  v18 = [(VCPHandObservation *)v8 keypoints];
-  v19 = [(VCPHandObservation *)v10 keypoints];
-  v20 = v19;
+  keypoints = [(VCPHandObservation *)overlapCopy keypoints];
+  keypoints2 = [(VCPHandObservation *)v10 keypoints];
+  v20 = keypoints2;
   v11 = 0;
-  if (v18 && v19)
+  if (keypoints && keypoints2)
   {
     v21 = 0;
     v52 = 0;
@@ -219,7 +219,7 @@ LABEL_7:
     v48 = 0;
     do
     {
-      v26 = [v18 objectAtIndexedSubscript:{v21, *&v44}];
+      v26 = [keypoints objectAtIndexedSubscript:{v21, *&v44}];
       v45 = COERCE_FLOAT32X2_T(keyPointPosition(v26, self->_rotationInDegrees));
 
       v27 = [v20 objectAtIndexedSubscript:v21];
@@ -283,7 +283,7 @@ LABEL_7:
     v49 = v32;
     v51 = v31;
     v53 = v28;
-    v36 = palmScale(v8, self->_rotationInDegrees);
+    v36 = palmScale(overlapCopy, self->_rotationInDegrees);
     v37 = (v36 + palmScale(v10, self->_rotationInDegrees)) * 0.5;
     if ((*v4.i32 - *v5.i32) >= (v49 - v53))
     {
@@ -335,21 +335,21 @@ LABEL_40:
   return v11;
 }
 
-- (BOOL)handsTooClose:(id)a3 pairedHand:(id)a4
+- (BOOL)handsTooClose:(id)close pairedHand:(id)hand
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  closeCopy = close;
+  handCopy = hand;
+  v8 = handCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (closeCopy && handCopy)
   {
-    if ([(VCPHandObservation *)v6 gestureType]== 13 || [(VCPHandObservation *)v6 gestureType]== 17 || [(VCPHandObservation *)v8 gestureType]== 13 || [(VCPHandObservation *)v8 gestureType]== 17)
+    if ([(VCPHandObservation *)closeCopy gestureType]== 13 || [(VCPHandObservation *)closeCopy gestureType]== 17 || [(VCPHandObservation *)v8 gestureType]== 13 || [(VCPHandObservation *)v8 gestureType]== 17)
     {
       goto LABEL_7;
     }
 
-    if ([(VCPHandGestureMitigator *)self handsOverlap:v6 pairedHand:v8])
+    if ([(VCPHandGestureMitigator *)self handsOverlap:closeCopy pairedHand:v8])
     {
       if (MediaAnalysisLogLevel() < 7 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
@@ -367,15 +367,15 @@ LABEL_25:
       goto LABEL_8;
     }
 
-    v14 = palmCenter(v6, self->_rotationInDegrees);
+    v14 = palmCenter(closeCopy, self->_rotationInDegrees);
     v15 = palmCenter(v8, self->_rotationInDegrees);
-    v16 = palmScale(v6, self->_rotationInDegrees);
+    v16 = palmScale(closeCopy, self->_rotationInDegrees);
     v17 = palmScale(v8, self->_rotationInDegrees);
-    v18 = [(VCPHandObservation *)v6 gestureType];
+    gestureType = [(VCPHandObservation *)closeCopy gestureType];
     v19 = vsub_f32(*&v14, *&v15);
     v20 = sqrtf(vaddv_f32(vmul_f32(v19, v19)));
     v21 = (v16 + v17) * 0.5;
-    if (v18 == 9 || [(VCPHandObservation *)v8 gestureType]== 9)
+    if (gestureType == 9 || [(VCPHandObservation *)v8 gestureType]== 9)
     {
       if (v20 < (v21 * 1.25))
       {
@@ -421,16 +421,16 @@ LABEL_8:
   return v9;
 }
 
-- (BOOL)handsVerticallyAligned:(id)a3 pairedHand:(id)a4
+- (BOOL)handsVerticallyAligned:(id)aligned pairedHand:(id)hand
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  alignedCopy = aligned;
+  handCopy = hand;
+  v8 = handCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (alignedCopy && handCopy)
   {
-    if (([(VCPHandObservation *)v6 gestureType]== 9 && [(VCPHandObservation *)v8 gestureType]== 9 || [(VCPHandObservation *)v6 gestureType]== 12 && [(VCPHandObservation *)v8 gestureType]== 12) && (v10 = palmCenter(v6, self->_rotationInDegrees), v11 = palmCenter(v8, self->_rotationInDegrees), v12 = palmScale(v6, self->_rotationInDegrees), v13 = fabsf(vsub_f32(*&v10, *&v11).f32[0]), v14 = (v12 + palmScale(v8, self->_rotationInDegrees)) * 0.5, v13 < (v14 * 1.25)))
+    if (([(VCPHandObservation *)alignedCopy gestureType]== 9 && [(VCPHandObservation *)v8 gestureType]== 9 || [(VCPHandObservation *)alignedCopy gestureType]== 12 && [(VCPHandObservation *)v8 gestureType]== 12) && (v10 = palmCenter(alignedCopy, self->_rotationInDegrees), v11 = palmCenter(v8, self->_rotationInDegrees), v12 = palmScale(alignedCopy, self->_rotationInDegrees), v13 = fabsf(vsub_f32(*&v10, *&v11).f32[0]), v14 = (v12 + palmScale(v8, self->_rotationInDegrees)) * 0.5, v13 < (v14 * 1.25)))
     {
       if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
@@ -453,11 +453,11 @@ LABEL_8:
   return v9;
 }
 
-- (BOOL)checkHandGestureTemporalInconsistency:(id)a3 forHand:(id)a4
+- (BOOL)checkHandGestureTemporalInconsistency:(id)inconsistency forHand:(id)hand
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  inconsistencyCopy = inconsistency;
+  handCopy = hand;
   [objc_opt_class() getGestureTypeConsistencyLookBackDuration];
   v8 = vcvtms_s32_f32(v7 * 5.0);
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
@@ -467,20 +467,20 @@ LABEL_8:
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "checkHandGestureTemporalInconsistency: frameChannelLookBackCount %d", v18, 8u);
   }
 
-  for (i = [v5 count] - 2; ; --i)
+  for (i = [inconsistencyCopy count] - 2; ; --i)
   {
-    v10 = [v5 count];
+    v10 = [inconsistencyCopy count];
     v11 = (v10 + ~v8) & ~((v10 + ~v8) >> 31);
     if ((i + 1) <= v11)
     {
       break;
     }
 
-    v12 = [v5 objectAtIndexedSubscript:i];
-    v13 = [v12 objectForKeyedSubscript:v6];
+    v12 = [inconsistencyCopy objectAtIndexedSubscript:i];
+    v13 = [v12 objectForKeyedSubscript:handCopy];
 
-    v14 = [v5 objectAtIndexedSubscript:i + 1];
-    v15 = [v14 objectForKeyedSubscript:v6];
+    v14 = [inconsistencyCopy objectAtIndexedSubscript:i + 1];
+    v15 = [v14 objectForKeyedSubscript:handCopy];
 
     if (!v15 || !v13 || (v16 = [v15 gestureType], v16 != objc_msgSend(v13, "gestureType")))
     {
@@ -492,11 +492,11 @@ LABEL_8:
   return (i + 1) > v11;
 }
 
-- (BOOL)checkHandGestureGlobalMotion:(id)a3 forHand:(id)a4
+- (BOOL)checkHandGestureGlobalMotion:(id)motion forHand:(id)hand
 {
   v58 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  motionCopy = motion;
+  handCopy = hand;
   [objc_opt_class() getHandMotionLookBackDuration];
   v9 = v8;
   [objc_opt_class() getPalmScaleChangeThreshold];
@@ -512,19 +512,19 @@ LABEL_8:
   }
 
   v15 = ~v14;
-  for (i = [v6 count] - 2; ; --i)
+  for (i = [motionCopy count] - 2; ; --i)
   {
-    v17 = [v6 count];
+    v17 = [motionCopy count];
     if ((i + 1) <= ((v17 + v15) & ~((v17 + v15) >> 31)))
     {
       break;
     }
 
-    v18 = [v6 objectAtIndexedSubscript:i];
-    v19 = [v18 objectForKeyedSubscript:v7];
+    v18 = [motionCopy objectAtIndexedSubscript:i];
+    v19 = [v18 objectForKeyedSubscript:handCopy];
 
-    v20 = [v6 objectAtIndexedSubscript:i + 1];
-    v21 = [v20 objectForKeyedSubscript:v7];
+    v20 = [motionCopy objectAtIndexedSubscript:i + 1];
+    v21 = [v20 objectForKeyedSubscript:handCopy];
 
     if (!v21 || !v19)
     {
@@ -575,20 +575,20 @@ LABEL_31:
     }
   }
 
-  for (j = [v6 count] - 2; ; --j)
+  for (j = [motionCopy count] - 2; ; --j)
   {
-    v31 = [v6 count];
+    v31 = [motionCopy count];
     if (j < ((v31 + v15) & ~((v31 + v15) >> 31)))
     {
       v44 = 0;
       goto LABEL_33;
     }
 
-    v32 = [v6 objectAtIndexedSubscript:{(objc_msgSend(v6, "count") - 1)}];
-    v19 = [v32 objectForKeyedSubscript:v7];
+    v32 = [motionCopy objectAtIndexedSubscript:{(objc_msgSend(motionCopy, "count") - 1)}];
+    v19 = [v32 objectForKeyedSubscript:handCopy];
 
-    v33 = [v6 objectAtIndexedSubscript:j];
-    v21 = [v33 objectForKeyedSubscript:v7];
+    v33 = [motionCopy objectAtIndexedSubscript:j];
+    v21 = [v33 objectForKeyedSubscript:handCopy];
 
     if (!v21 || !v19)
     {
@@ -636,24 +636,24 @@ LABEL_33:
   return v44;
 }
 
-- (BOOL)mitigateWithFingerTiltingForHand:(id)a3
+- (BOOL)mitigateWithFingerTiltingForHand:(id)hand
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handCopy = hand;
   [objc_opt_class() getMinTiltingAngle];
   v6 = v5 * 3.14159265;
-  if ([v4 gestureType] == 9)
+  if ([handCopy gestureType] == 9)
   {
-    [VCPHandGestureImageRequest tiltingAngleForHand:v4 srcKeypointType:4 dstKeypointType:3 rotationInDegrees:self->_rotationInDegrees];
+    [VCPHandGestureImageRequest tiltingAngleForHand:handCopy srcKeypointType:4 dstKeypointType:3 rotationInDegrees:self->_rotationInDegrees];
   }
 
   else
   {
-    if ([v4 gestureType] == 12)
+    if ([handCopy gestureType] == 12)
     {
       [objc_opt_class() getMinTiltingThumbAngle];
       v9 = v8;
-      [VCPHandGestureImageRequest tiltingAngleForHand:v4 srcKeypointType:4 dstKeypointType:3 rotationInDegrees:self->_rotationInDegrees];
+      [VCPHandGestureImageRequest tiltingAngleForHand:handCopy srcKeypointType:4 dstKeypointType:3 rotationInDegrees:self->_rotationInDegrees];
       v11 = v10;
       v12 = v9 * 3.14159265;
       if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
@@ -669,13 +669,13 @@ LABEL_33:
       goto LABEL_12;
     }
 
-    if ([v4 gestureType] != 2 && objc_msgSend(v4, "gestureType") != 7)
+    if ([handCopy gestureType] != 2 && objc_msgSend(handCopy, "gestureType") != 7)
     {
       v14 = 0;
       goto LABEL_15;
     }
 
-    [VCPHandGestureImageRequest tiltingAngleForHand:v4 srcKeypointType:8 dstKeypointType:5 rotationInDegrees:self->_rotationInDegrees];
+    [VCPHandGestureImageRequest tiltingAngleForHand:handCopy srcKeypointType:8 dstKeypointType:5 rotationInDegrees:self->_rotationInDegrees];
   }
 
   v13 = v7 < v6;
@@ -686,21 +686,21 @@ LABEL_15:
   return v14;
 }
 
-- (BOOL)mitigateWithFingerOpennessForHand:(id)a3
+- (BOOL)mitigateWithFingerOpennessForHand:(id)hand
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_opt_class() heuristicFingerOpenness:v4 rotationInDegrees:self->_rotationInDegrees];
-  [v4 setFingerOpenness:v5];
-  v6 = [v4 chirality];
+  handCopy = hand;
+  v5 = [objc_opt_class() heuristicFingerOpenness:handCopy rotationInDegrees:self->_rotationInDegrees];
+  [handCopy setFingerOpenness:v5];
+  chirality = [handCopy chirality];
   v7 = VCPGestureLeftHandKey;
-  if (v6 != -1)
+  if (chirality != -1)
   {
     v7 = &VCPGestureRightHandKey;
   }
 
   v8 = *v7;
-  if (([v4 gestureType] == 9 || objc_msgSend(v4, "gestureType") == 12) && (v9 = objc_msgSend(objc_opt_class(), "heuristicIsThumbOpenWide:rotationInDegrees:isRelaxed:", v4, self->_rotationInDegrees, objc_msgSend(v4, "gestureType") == 12), objc_msgSend(v4, "setFingerOpenness:", v5 & 0xFFFFFFFFFFFFFFFELL | v9), (((v5 & 0xFFFFFFFFFFFFFFFELL) == 0) & v9) == 0))
+  if (([handCopy gestureType] == 9 || objc_msgSend(handCopy, "gestureType") == 12) && (v9 = objc_msgSend(objc_opt_class(), "heuristicIsThumbOpenWide:rotationInDegrees:isRelaxed:", handCopy, self->_rotationInDegrees, objc_msgSend(handCopy, "gestureType") == 12), objc_msgSend(handCopy, "setFingerOpenness:", v5 & 0xFFFFFFFFFFFFFFFELL | v9), (((v5 & 0xFFFFFFFFFFFFFFFELL) == 0) & v9) == 0))
   {
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
@@ -717,7 +717,7 @@ LABEL_15:
     v10 = 0;
   }
 
-  if ([v4 gestureType] == 2)
+  if ([handCopy gestureType] == 2)
   {
     if (v5 != 6)
     {
@@ -733,7 +733,7 @@ LABEL_15:
       goto LABEL_20;
     }
 
-    if ([objc_opt_class() heuristicIsIndexMiddleTooClose:v4 rotationInDegrees:self->_rotationInDegrees])
+    if ([objc_opt_class() heuristicIsIndexMiddleTooClose:handCopy rotationInDegrees:self->_rotationInDegrees])
     {
       if (MediaAnalysisLogLevel() < 6 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
       {
@@ -751,7 +751,7 @@ LABEL_21:
     }
   }
 
-  if ([v4 gestureType] == 7 && v5 != 18)
+  if ([handCopy gestureType] == 7 && v5 != 18)
   {
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
@@ -766,20 +766,20 @@ LABEL_21:
   return v10;
 }
 
-- (BOOL)handPalmFacingCamera:(id)a3 rotationInDegrees:(int)a4 useTips:(BOOL)a5
+- (BOOL)handPalmFacingCamera:(id)camera rotationInDegrees:(int)degrees useTips:(BOOL)tips
 {
-  v5 = a5;
+  tipsCopy = tips;
   v36 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (v7)
+  cameraCopy = camera;
+  v8 = cameraCopy;
+  if (cameraCopy)
   {
-    [v7 bounds];
+    [cameraCopy bounds];
     if (v9 > 0.0)
     {
-      v10 = [v8 keypoints];
-      v11 = v10;
-      if (!v10)
+      keypoints = [v8 keypoints];
+      v11 = keypoints;
+      if (!keypoints)
       {
         LOBYTE(v24) = 0;
 LABEL_18:
@@ -787,29 +787,29 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v12 = [v10 objectAtIndexedSubscript:0];
-      v13 = keyPointPosition(v12, a4);
+      v12 = [keypoints objectAtIndexedSubscript:0];
+      v13 = keyPointPosition(v12, degrees);
 
       v14 = [v11 objectAtIndexedSubscript:5];
-      v15 = keyPointPosition(v14, a4);
+      v15 = keyPointPosition(v14, degrees);
 
       v16 = [v11 objectAtIndexedSubscript:13];
-      v17 = keyPointPosition(v16, a4);
+      v17 = keyPointPosition(v16, degrees);
 
-      if (v5)
+      if (tipsCopy)
       {
         v18 = [v11 objectAtIndexedSubscript:8];
-        v15 = keyPointPosition(v18, a4);
+        v15 = keyPointPosition(v18, degrees);
 
         v19 = [v11 objectAtIndexedSubscript:12];
-        v17 = keyPointPosition(v19, a4);
+        v17 = keyPointPosition(v19, degrees);
       }
 
-      v20 = [v8 chirality];
+      chirality = [v8 chirality];
       v21 = vsub_f32(*&v15, *&v13);
       v22 = vsub_f32(*&v17, *&v13);
       v23 = (-v21.f32[1] * v22.f32[0]) + (v21.f32[0] * v22.f32[1]);
-      if (v20 == 1)
+      if (chirality == 1)
       {
         if (v23 <= 0.0)
         {
@@ -818,10 +818,10 @@ LABEL_8:
 LABEL_13:
           if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
           {
-            v25 = [v8 chirality];
+            chirality2 = [v8 chirality];
             v26 = "right";
             v28 = 136315906;
-            if (v25 == -1)
+            if (chirality2 == -1)
             {
               v26 = "left";
             }
@@ -832,7 +832,7 @@ LABEL_13:
             v32 = 1024;
             v33 = v24;
             v34 = 1024;
-            v35 = v5;
+            v35 = tipsCopy;
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "VCPHandGestureVideoRequest : chirality %s, cross_product %f, facingCamera %d, usedTips %d", &v28, 0x22u);
           }
 
@@ -856,16 +856,16 @@ LABEL_19:
   return v24;
 }
 
-- (BOOL)handTouchFace:(id)a3 andFace:(CGRect)a4 rotationInDegrees:(int)a5
+- (BOOL)handTouchFace:(id)face andFace:(CGRect)andFace rotationInDegrees:(int)degrees
 {
-  v5 = *&a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  v5 = *&degrees;
+  height = andFace.size.height;
+  width = andFace.size.width;
+  y = andFace.origin.y;
+  x = andFace.origin.x;
   v53 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  if (v11 && (v55.origin.x = x, v55.origin.y = y, v55.size.width = width, v55.size.height = height, !CGRectIsEmpty(v55)))
+  faceCopy = face;
+  if (faceCopy && (v55.origin.x = x, v55.origin.y = y, v55.size.width = width, v55.size.height = height, !CGRectIsEmpty(v55)))
   {
     [objc_opt_class() getFaceExtensionRatio];
     v15 = v14;
@@ -889,8 +889,8 @@ LABEL_19:
           }
 
           v21 = *(*(&v47 + 1) + 8 * i);
-          v22 = [v11 keypoints];
-          v23 = [v22 objectAtIndexedSubscript:{objc_msgSend(v21, "intValue")}];
+          keypoints = [faceCopy keypoints];
+          v23 = [keypoints objectAtIndexedSubscript:{objc_msgSend(v21, "intValue")}];
 
           if (v23)
           {
@@ -928,8 +928,8 @@ LABEL_16:
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v28 = [v11 keypoints];
-    v29 = [v28 countByEnumeratingWithState:&v43 objects:v51 count:16];
+    keypoints2 = [faceCopy keypoints];
+    v29 = [keypoints2 countByEnumeratingWithState:&v43 objects:v51 count:16];
     if (v29)
     {
       v30 = *v44;
@@ -941,7 +941,7 @@ LABEL_16:
         {
           if (*v44 != v30)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(keypoints2);
           }
 
           v34 = *(*(&v43 + 1) + 8 * j);
@@ -952,7 +952,7 @@ LABEL_16:
           v31 = fmax(v37, v31);
         }
 
-        v29 = [v28 countByEnumeratingWithState:&v43 objects:v51 count:16];
+        v29 = [keypoints2 countByEnumeratingWithState:&v43 objects:v51 count:16];
       }
 
       while (v29);
@@ -966,7 +966,7 @@ LABEL_16:
 
     [objc_opt_class() getMinHandFaceRatio];
     v39 = v38;
-    if ([v11 gestureType] != 12 && objc_msgSend(v11, "gestureType") != 9)
+    if ([faceCopy gestureType] != 12 && objc_msgSend(faceCopy, "gestureType") != 9)
     {
       v39 = v39 * 1.2;
     }
@@ -981,18 +981,18 @@ LABEL_16:
       v12 = 0;
     }
 
-    if ([v11 gestureType] == 2)
+    if ([faceCopy gestureType] == 2)
     {
-      if ([(VCPHandGestureMitigator *)self handPalmFacingCamera:v11 rotationInDegrees:v5 useTips:1]&& [(VCPHandGestureMitigator *)self handPalmFacingCamera:v11 rotationInDegrees:v5 useTips:0])
+      if ([(VCPHandGestureMitigator *)self handPalmFacingCamera:faceCopy rotationInDegrees:v5 useTips:1]&& [(VCPHandGestureMitigator *)self handPalmFacingCamera:faceCopy rotationInDegrees:v5 useTips:0])
       {
         v12 = 0;
       }
 
       else
       {
-        [v11 setMitigationType:{objc_msgSend(v11, "mitigationType") | 0x20}];
+        [faceCopy setMitigationType:{objc_msgSend(faceCopy, "mitigationType") | 0x20}];
         LODWORD(v40) = 1036831949;
-        [v11 setGestureConfidence:v40];
+        [faceCopy setGestureConfidence:v40];
         if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
         {
           *v42 = 0;
@@ -1001,9 +1001,9 @@ LABEL_16:
       }
     }
 
-    if ([v11 gestureType] == 7)
+    if ([faceCopy gestureType] == 7)
     {
-      v41 = [(VCPHandGestureMitigator *)self handPalmFacingCamera:v11 rotationInDegrees:v5 useTips:0];
+      v41 = [(VCPHandGestureMitigator *)self handPalmFacingCamera:faceCopy rotationInDegrees:v5 useTips:0];
       if (v41 || (v12 & 1) == 0)
       {
         v12 &= !v41;
@@ -1011,7 +1011,7 @@ LABEL_16:
 
       else
       {
-        [v11 setMitigationType:{objc_msgSend(v11, "mitigationType") | 0x20}];
+        [faceCopy setMitigationType:{objc_msgSend(faceCopy, "mitigationType") | 0x20}];
         if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
         {
           *v42 = 0;
@@ -1029,16 +1029,16 @@ LABEL_16:
   return v12;
 }
 
-- (void)adjustGestureForHand:(id)a3 withFace:(CGRect)a4
+- (void)adjustGestureForHand:(id)hand withFace:(CGRect)face
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = face.size.height;
+  width = face.size.width;
+  y = face.origin.y;
+  x = face.origin.x;
   v17 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = v9;
-  if (v9 && ([v9 gestureType] == 12 || objc_msgSend(v10, "gestureType") == 9 || objc_msgSend(v10, "gestureType") == 2 || objc_msgSend(v10, "gestureType") == 7 || objc_msgSend(v10, "gestureType") == 8) && -[VCPHandGestureMitigator handTouchFace:andFace:rotationInDegrees:](self, "handTouchFace:andFace:rotationInDegrees:", v10, self->_rotationInDegrees, x, y, width, height))
+  handCopy = hand;
+  v10 = handCopy;
+  if (handCopy && ([handCopy gestureType] == 12 || objc_msgSend(v10, "gestureType") == 9 || objc_msgSend(v10, "gestureType") == 2 || objc_msgSend(v10, "gestureType") == 7 || objc_msgSend(v10, "gestureType") == 8) && -[VCPHandGestureMitigator handTouchFace:andFace:rotationInDegrees:](self, "handTouchFace:andFace:rotationInDegrees:", v10, self->_rotationInDegrees, x, y, width, height))
   {
     [v10 gestureConfidence];
     *&v12 = v11 * 0.7;
@@ -1049,7 +1049,7 @@ LABEL_16:
       v14[0] = 67109376;
       v14[1] = [v10 groupID];
       v15 = 1024;
-      v16 = [v10 chirality];
+      chirality = [v10 chirality];
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "VCPHandGestureVideoRequest : adjust gesture confidence based on hand-face position for hand with groupID = %d, chirality = %d", v14, 0xEu);
     }
 
@@ -1061,26 +1061,26 @@ LABEL_16:
   }
 }
 
-- (void)adjustGestureForHand:(id)a3 withFaceYaw:(id)a4
+- (void)adjustGestureForHand:(id)hand withFaceYaw:(id)yaw
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  handCopy = hand;
+  yawCopy = yaw;
+  if (handCopy)
   {
-    if ([v5 gestureType])
+    if ([handCopy gestureType])
     {
-      [v6 floatValue];
-      if ((v7 * 180.0) / 3.14159265 < -45.0 || ([v6 floatValue], (v8 * 180.0) / 3.14159265 > 45.0))
+      [yawCopy floatValue];
+      if ((v7 * 180.0) / 3.14159265 < -45.0 || ([yawCopy floatValue], (v8 * 180.0) / 3.14159265 > 45.0))
       {
-        [v5 setMitigationType:{objc_msgSend(v5, "mitigationType") | 0x1000}];
+        [handCopy setMitigationType:{objc_msgSend(handCopy, "mitigationType") | 0x1000}];
         LODWORD(v9) = 1036831949;
-        [v5 setGestureConfidence:v9];
+        [handCopy setGestureConfidence:v9];
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
         {
-          [v6 floatValue];
+          [yawCopy floatValue];
           v11 = v10;
-          [v6 floatValue];
+          [yawCopy floatValue];
           v13 = 134218240;
           v14 = v11;
           v15 = 2048;
@@ -1092,27 +1092,27 @@ LABEL_16:
   }
 }
 
-- (BOOL)handInMitigationQuadrant:(id)a3 withFace:(CGRect)a4
+- (BOOL)handInMitigationQuadrant:(id)quadrant withFace:(CGRect)face
 {
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  width = face.size.width;
+  y = face.origin.y;
+  x = face.origin.x;
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = v8;
-  if (v8)
+  quadrantCopy = quadrant;
+  v9 = quadrantCopy;
+  if (quadrantCopy)
   {
-    v10 = [v8 keypoints];
+    keypoints = [quadrantCopy keypoints];
 
-    if (v10)
+    if (keypoints)
     {
-      v11 = [v9 keypoints];
+      keypoints2 = [v9 keypoints];
       v31.x = x + width * 0.5;
       v31.y = y;
       transformLocation(v31, 0, self->_rotationInDegrees);
       v13 = v12;
       v15 = v14;
-      v16 = [v11 objectAtIndexedSubscript:4];
+      v16 = [keypoints2 objectAtIndexedSubscript:4];
       v21 = keyPointPosition(v16, self->_rotationInDegrees);
 
       if ([v9 chirality] == -1)
@@ -1181,19 +1181,19 @@ LABEL_23:
   return v19;
 }
 
-- (int)mitigateHand:(id)a3 handKey:(id)a4 pairedHand:(id)a5 featureProvider:(id)a6 faceRects:(id)a7 faceYaws:(id)a8
+- (int)mitigateHand:(id)hand handKey:(id)key pairedHand:(id)pairedHand featureProvider:(id)provider faceRects:(id)rects faceYaws:(id)yaws
 {
   v77 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v67 = a4;
-  v15 = a5;
-  v16 = a6;
-  v66 = a7;
-  v17 = a8;
-  v18 = v17;
-  if (v17)
+  handCopy = hand;
+  keyCopy = key;
+  pairedHandCopy = pairedHand;
+  providerCopy = provider;
+  rectsCopy = rects;
+  yawsCopy = yaws;
+  v18 = yawsCopy;
+  if (yawsCopy)
   {
-    if ([v17 count] == 1)
+    if ([yawsCopy count] == 1)
     {
       v19 = [v18 objectAtIndexedSubscript:0];
       if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
@@ -1206,7 +1206,7 @@ LABEL_23:
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "VCPHandGestureMitigator - faceYaw = %@ (%f degree)", buf, 0x16u);
       }
 
-      [(VCPHandGestureMitigator *)self adjustGestureForHand:v14 withFaceYaw:v19];
+      [(VCPHandGestureMitigator *)self adjustGestureForHand:handCopy withFaceYaw:v19];
     }
   }
 
@@ -1220,7 +1220,7 @@ LABEL_23:
   v71 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v21 = v66;
+  v21 = rectsCopy;
   v22 = [v21 countByEnumeratingWithState:&v68 objects:v72 count:16];
   if (v22)
   {
@@ -1241,7 +1241,7 @@ LABEL_23:
         height = v78.size.height;
         if (!CGRectIsEmpty(v78))
         {
-          [(VCPHandGestureMitigator *)self adjustGestureForHand:v14 withFace:x, y, width, height];
+          [(VCPHandGestureMitigator *)self adjustGestureForHand:handCopy withFace:x, y, width, height];
         }
       }
 
@@ -1251,9 +1251,9 @@ LABEL_23:
     while (v22);
   }
 
-  [(VCPHandObservation *)v14 bounds];
+  [(VCPHandObservation *)handCopy bounds];
   v30 = v29;
-  [(VCPHandObservation *)v14 bounds];
+  [(VCPHandObservation *)handCopy bounds];
   if (v30 >= v31)
   {
     v32 = v30;
@@ -1275,30 +1275,30 @@ LABEL_23:
     }
 
     LODWORD(v33) = 1036831949;
-    [(VCPHandObservation *)v14 setGestureConfidence:v33, v66];
-    [(VCPHandObservation *)v14 setMitigationType:[(VCPHandObservation *)v14 mitigationType]| 8];
+    [(VCPHandObservation *)handCopy setGestureConfidence:v33, rectsCopy];
+    [(VCPHandObservation *)handCopy setMitigationType:[(VCPHandObservation *)handCopy mitigationType]| 8];
   }
 
-  if (!v15)
+  if (!pairedHandCopy)
   {
     v35 = +[VCPHandObservation twoHandGestureTypes];
-    v36 = [MEMORY[0x1E696AD98] numberWithInt:{-[VCPHandObservation gestureType](v14, "gestureType")}];
+    v36 = [MEMORY[0x1E696AD98] numberWithInt:{-[VCPHandObservation gestureType](handCopy, "gestureType")}];
     v37 = [v35 containsObject:v36];
 
     if (v37)
     {
-      [(VCPHandObservation *)v14 setGestureType:0];
+      [(VCPHandObservation *)handCopy setGestureType:0];
     }
   }
 
-  if ([(VCPHandObservation *)v14 gestureType]!= 13 && [(VCPHandObservation *)v14 gestureType]!= 17)
+  if ([(VCPHandObservation *)handCopy gestureType]!= 13 && [(VCPHandObservation *)handCopy gestureType]!= 17)
   {
-    v38 = [v16 observationsForCurrentGroup];
-    v39 = [(VCPHandGestureMitigator *)self checkHandGestureJitter:v38 forHand:v67];
+    observationsForCurrentGroup = [providerCopy observationsForCurrentGroup];
+    v39 = [(VCPHandGestureMitigator *)self checkHandGestureJitter:observationsForCurrentGroup forHand:keyCopy];
 
     if (v39)
     {
-      [(VCPHandObservation *)v14 setMitigationType:[(VCPHandObservation *)v14 mitigationType]| 2];
+      [(VCPHandObservation *)handCopy setMitigationType:[(VCPHandObservation *)handCopy mitigationType]| 2];
       if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
       {
         *buf = 0;
@@ -1306,13 +1306,13 @@ LABEL_23:
       }
 
       LODWORD(v40) = 1036831949;
-      [(VCPHandObservation *)v14 setGestureConfidence:v40];
+      [(VCPHandObservation *)handCopy setGestureConfidence:v40];
     }
   }
 
-  if ([(VCPHandObservation *)v14 gestureType]== 9)
+  if ([(VCPHandObservation *)handCopy gestureType]== 9)
   {
-    if (v15 && [v15 gestureType] == 9)
+    if (pairedHandCopy && [pairedHandCopy gestureType] == 9)
     {
       if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
       {
@@ -1323,12 +1323,12 @@ LABEL_23:
 
     else
     {
-      v41 = [v16 observationsForCurrentGroup];
-      v42 = [(VCPHandGestureMitigator *)self checkHandHoldObject:v41 forHand:v67];
+      observationsForCurrentGroup2 = [providerCopy observationsForCurrentGroup];
+      v42 = [(VCPHandGestureMitigator *)self checkHandHoldObject:observationsForCurrentGroup2 forHand:keyCopy];
 
       if (v42)
       {
-        [(VCPHandObservation *)v14 setMitigationType:[(VCPHandObservation *)v14 mitigationType]| 0x2000];
+        [(VCPHandObservation *)handCopy setMitigationType:[(VCPHandObservation *)handCopy mitigationType]| 0x2000];
         if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
         {
           *buf = 0;
@@ -1336,19 +1336,19 @@ LABEL_23:
         }
 
         LODWORD(v43) = 1036831949;
-        [(VCPHandObservation *)v14 setGestureConfidence:v43];
+        [(VCPHandObservation *)handCopy setGestureConfidence:v43];
       }
     }
   }
 
-  if ([(VCPHandObservation *)v14 gestureType]!= 13 && [(VCPHandObservation *)v14 gestureType]!= 14)
+  if ([(VCPHandObservation *)handCopy gestureType]!= 13 && [(VCPHandObservation *)handCopy gestureType]!= 14)
   {
-    v44 = [v16 observationsForCurrentGroup];
-    v45 = [(VCPHandGestureMitigator *)self checkHandGestureGlobalMotion:v44 forHand:v67];
+    observationsForCurrentGroup3 = [providerCopy observationsForCurrentGroup];
+    v45 = [(VCPHandGestureMitigator *)self checkHandGestureGlobalMotion:observationsForCurrentGroup3 forHand:keyCopy];
 
     if (v45)
     {
-      [(VCPHandObservation *)v14 setMitigationType:[(VCPHandObservation *)v14 mitigationType]| 0x10];
+      [(VCPHandObservation *)handCopy setMitigationType:[(VCPHandObservation *)handCopy mitigationType]| 0x10];
       if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
       {
         *buf = 0;
@@ -1356,15 +1356,15 @@ LABEL_23:
       }
 
       LODWORD(v46) = 1036831949;
-      [(VCPHandObservation *)v14 setGestureConfidence:v46];
+      [(VCPHandObservation *)handCopy setGestureConfidence:v46];
     }
   }
 
-  if ([(VCPHandGestureMitigator *)self mitigateWithFingerOpennessForHand:v14])
+  if ([(VCPHandGestureMitigator *)self mitigateWithFingerOpennessForHand:handCopy])
   {
-    [(VCPHandObservation *)v14 setMitigationType:[(VCPHandObservation *)v14 mitigationType]| 4];
+    [(VCPHandObservation *)handCopy setMitigationType:[(VCPHandObservation *)handCopy mitigationType]| 4];
     LODWORD(v47) = 1036831949;
-    [(VCPHandObservation *)v14 setGestureConfidence:v47];
+    [(VCPHandObservation *)handCopy setGestureConfidence:v47];
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
       *buf = 0;
@@ -1373,10 +1373,10 @@ LABEL_23:
   }
 
   v48 = +[VCPHandObservation twoHandGestureTypes];
-  v49 = [MEMORY[0x1E696AD98] numberWithInt:{-[VCPHandObservation gestureType](v14, "gestureType")}];
+  v49 = [MEMORY[0x1E696AD98] numberWithInt:{-[VCPHandObservation gestureType](handCopy, "gestureType")}];
   if ([v48 containsObject:v49])
   {
-    v50 = [(VCPHandObservation *)v14 gestureType]== 15;
+    v50 = [(VCPHandObservation *)handCopy gestureType]== 15;
 
     if (!v50)
     {
@@ -1388,12 +1388,12 @@ LABEL_23:
   {
   }
 
-  v51 = [v16 observationsForCurrentGroup];
-  v52 = [(VCPHandGestureMitigator *)self checkHandGestureTemporalInconsistency:v51 forHand:v67];
+  observationsForCurrentGroup4 = [providerCopy observationsForCurrentGroup];
+  v52 = [(VCPHandGestureMitigator *)self checkHandGestureTemporalInconsistency:observationsForCurrentGroup4 forHand:keyCopy];
 
   if (v52)
   {
-    [(VCPHandObservation *)v14 setMitigationType:[(VCPHandObservation *)v14 mitigationType]| 0x200];
+    [(VCPHandObservation *)handCopy setMitigationType:[(VCPHandObservation *)handCopy mitigationType]| 0x200];
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
       *buf = 0;
@@ -1401,15 +1401,15 @@ LABEL_23:
     }
 
     LODWORD(v53) = 1036831949;
-    [(VCPHandObservation *)v14 setGestureConfidence:v53];
+    [(VCPHandObservation *)handCopy setGestureConfidence:v53];
   }
 
 LABEL_68:
-  if ([(VCPHandGestureMitigator *)self mitigateWithFingerTiltingForHand:v14])
+  if ([(VCPHandGestureMitigator *)self mitigateWithFingerTiltingForHand:handCopy])
   {
-    [(VCPHandObservation *)v14 setMitigationType:[(VCPHandObservation *)v14 mitigationType]| 0x400];
+    [(VCPHandObservation *)handCopy setMitigationType:[(VCPHandObservation *)handCopy mitigationType]| 0x400];
     LODWORD(v54) = 1036831949;
-    [(VCPHandObservation *)v14 setGestureConfidence:v54];
+    [(VCPHandObservation *)handCopy setGestureConfidence:v54];
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
       *buf = 0;
@@ -1417,14 +1417,14 @@ LABEL_68:
     }
   }
 
-  if ([(VCPHandObservation *)v14 gestureType]== 12)
+  if ([(VCPHandObservation *)handCopy gestureType]== 12)
   {
     LODWORD(v55) = 1058642330;
-    if (![VCPHandGestureImageRequest isFistClosedTight:v14 rotationInDegrees:self->_rotationInDegrees scalingFactor:v55])
+    if (![VCPHandGestureImageRequest isFistClosedTight:handCopy rotationInDegrees:self->_rotationInDegrees scalingFactor:v55])
     {
-      [(VCPHandObservation *)v14 setMitigationType:[(VCPHandObservation *)v14 mitigationType]| 0x800];
+      [(VCPHandObservation *)handCopy setMitigationType:[(VCPHandObservation *)handCopy mitigationType]| 0x800];
       LODWORD(v56) = 1036831949;
-      [(VCPHandObservation *)v14 setGestureConfidence:v56];
+      [(VCPHandObservation *)handCopy setGestureConfidence:v56];
       if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
       {
         *buf = 0;
@@ -1433,7 +1433,7 @@ LABEL_68:
     }
   }
 
-  if (-[VCPHandObservation gestureType](v14, "gestureType") == 9 && [v21 count] == 1)
+  if (-[VCPHandObservation gestureType](handCopy, "gestureType") == 9 && [v21 count] == 1)
   {
     v57 = [v21 objectAtIndexedSubscript:0];
     v79 = NSRectFromString(v57);
@@ -1446,15 +1446,15 @@ LABEL_68:
     v80.origin.y = v59;
     v80.size.width = v60;
     v80.size.height = v61;
-    if (!CGRectIsEmpty(v80) && [(VCPHandGestureMitigator *)self handInMitigationQuadrant:v14 withFace:v58, v59, v60, v61])
+    if (!CGRectIsEmpty(v80) && [(VCPHandGestureMitigator *)self handInMitigationQuadrant:handCopy withFace:v58, v59, v60, v61])
     {
-      LODWORD(v62) = palmScale(v14, self->_rotationInDegrees);
+      LODWORD(v62) = palmScale(handCopy, self->_rotationInDegrees);
       LODWORD(v63) = 1061997773;
-      if (![VCPHandGestureImageRequest isFistClosedTightOccluded:v14 rotationInDegrees:self->_rotationInDegrees scalingFactor:v63 palmScale:v62])
+      if (![VCPHandGestureImageRequest isFistClosedTightOccluded:handCopy rotationInDegrees:self->_rotationInDegrees scalingFactor:v63 palmScale:v62])
       {
-        [(VCPHandObservation *)v14 setMitigationType:[(VCPHandObservation *)v14 mitigationType]| 0x800];
+        [(VCPHandObservation *)handCopy setMitigationType:[(VCPHandObservation *)handCopy mitigationType]| 0x800];
         LODWORD(v64) = 1036831949;
-        [(VCPHandObservation *)v14 setGestureConfidence:v64];
+        [(VCPHandObservation *)handCopy setGestureConfidence:v64];
         if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
         {
           *buf = 0;
@@ -1467,21 +1467,21 @@ LABEL_68:
   return 0;
 }
 
-- (int)mitigate:(id)a3 rightHand:(id)a4 featureProvider:(id)a5 faceRects:(id)a6 faceYaws:(id)a7
+- (int)mitigate:(id)mitigate rightHand:(id)hand featureProvider:(id)provider faceRects:(id)rects faceYaws:(id)yaws
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!(v12 | v13))
+  mitigateCopy = mitigate;
+  handCopy = hand;
+  providerCopy = provider;
+  rectsCopy = rects;
+  yawsCopy = yaws;
+  if (!(mitigateCopy | handCopy))
   {
     goto LABEL_35;
   }
 
-  if (!v12)
+  if (!mitigateCopy)
   {
-    if (!v13)
+    if (!handCopy)
     {
       goto LABEL_35;
     }
@@ -1489,19 +1489,19 @@ LABEL_68:
     goto LABEL_7;
   }
 
-  v17 = [(VCPHandGestureMitigator *)self mitigateHand:v12 handKey:@"leftHand" pairedHand:v13 featureProvider:v14 faceRects:v15 faceYaws:v16];
+  v17 = [(VCPHandGestureMitigator *)self mitigateHand:mitigateCopy handKey:@"leftHand" pairedHand:handCopy featureProvider:providerCopy faceRects:rectsCopy faceYaws:yawsCopy];
   v18 = v17;
-  if (v13 && !v17)
+  if (handCopy && !v17)
   {
 LABEL_7:
-    v18 = [(VCPHandGestureMitigator *)self mitigateHand:v13 handKey:@"rightHand" pairedHand:v12 featureProvider:v14 faceRects:v15 faceYaws:v16];
-    if (v18 || !v12)
+    v18 = [(VCPHandGestureMitigator *)self mitigateHand:handCopy handKey:@"rightHand" pairedHand:mitigateCopy featureProvider:providerCopy faceRects:rectsCopy faceYaws:yawsCopy];
+    if (v18 || !mitigateCopy)
     {
       goto LABEL_36;
     }
 
     v31 = +[VCPHandObservation twoHandGestureTypes];
-    v19 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v12, "gestureType")}];
+    v19 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(mitigateCopy, "gestureType")}];
     if ([v31 containsObject:v19])
     {
     }
@@ -1509,12 +1509,12 @@ LABEL_7:
     else
     {
       v20 = +[VCPHandObservation twoHandGestureTypes];
-      v21 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v13, "gestureType")}];
+      v21 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(handCopy, "gestureType")}];
       v22 = [v20 containsObject:v21];
 
       if (!v22)
       {
-        if ([(VCPHandGestureMitigator *)self handsTooClose:v12 pairedHand:v13])
+        if ([(VCPHandGestureMitigator *)self handsTooClose:mitigateCopy pairedHand:handCopy])
         {
           if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
           {
@@ -1522,15 +1522,15 @@ LABEL_7:
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "VCPHandGestureVideoRequest : gated out hand due to two-hand too close", v33, 2u);
           }
 
-          [v12 setMitigationType:{objc_msgSend(v12, "mitigationType") | 0x80}];
+          [mitigateCopy setMitigationType:{objc_msgSend(mitigateCopy, "mitigationType") | 0x80}];
           LODWORD(v28) = 1036831949;
-          [v12 setGestureConfidence:v28];
-          [v13 setMitigationType:{objc_msgSend(v13, "mitigationType") | 0x80}];
+          [mitigateCopy setGestureConfidence:v28];
+          [handCopy setMitigationType:{objc_msgSend(handCopy, "mitigationType") | 0x80}];
           LODWORD(v29) = 1036831949;
-          [v13 setGestureConfidence:v29];
+          [handCopy setGestureConfidence:v29];
         }
 
-        if ([(VCPHandGestureMitigator *)self handsVerticallyAligned:v12 pairedHand:v13])
+        if ([(VCPHandGestureMitigator *)self handsVerticallyAligned:mitigateCopy pairedHand:handCopy])
         {
           if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
           {
@@ -1538,20 +1538,20 @@ LABEL_7:
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "VCPHandGestureVideoRequest : gated out hand due to two-hand vertically aligned", v32, 2u);
           }
 
-          [v12 setMitigationType:{objc_msgSend(v12, "mitigationType") | 0x4000}];
-          [v13 setMitigationType:{objc_msgSend(v13, "mitigationType") | 0x4000}];
+          [mitigateCopy setMitigationType:{objc_msgSend(mitigateCopy, "mitigationType") | 0x4000}];
+          [handCopy setMitigationType:{objc_msgSend(handCopy, "mitigationType") | 0x4000}];
         }
 
         goto LABEL_35;
       }
     }
 
-    v23 = [v12 gestureType];
-    if (v23 == [v13 gestureType])
+    gestureType = [mitigateCopy gestureType];
+    if (gestureType == [handCopy gestureType])
     {
-      if ([v12 gestureType] == 15)
+      if ([mitigateCopy gestureType] == 15)
       {
-        if (([objc_opt_class() heuristicHeart:v12 andRightHand:v13 rotationInDegrees:objc_msgSend(v14 relax:{"rotationInDegrees"), 1}] & 1) == 0)
+        if (([objc_opt_class() heuristicHeart:mitigateCopy andRightHand:handCopy rotationInDegrees:objc_msgSend(providerCopy relax:{"rotationInDegrees"), 1}] & 1) == 0)
         {
           if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
           {
@@ -1559,15 +1559,15 @@ LABEL_7:
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "VCPHandGestureVideoRequest : gate out heart with heuristic constraints", buf, 2u);
           }
 
-          [v13 setMitigationType:{objc_msgSend(v13, "mitigationType") | 0x40}];
-          [v12 setMitigationType:{objc_msgSend(v12, "mitigationType") | 0x40}];
+          [handCopy setMitigationType:{objc_msgSend(handCopy, "mitigationType") | 0x40}];
+          [mitigateCopy setMitigationType:{objc_msgSend(mitigateCopy, "mitigationType") | 0x40}];
           LODWORD(v24) = 1036831949;
-          [v13 setGestureConfidence:v24];
+          [handCopy setGestureConfidence:v24];
           LODWORD(v25) = 1036831949;
-          [v12 setGestureConfidence:v25];
+          [mitigateCopy setGestureConfidence:v25];
         }
 
-        if ([(VCPHandGestureMitigator *)self handsOverlap:v12 pairedHand:v13])
+        if ([(VCPHandGestureMitigator *)self handsOverlap:mitigateCopy pairedHand:handCopy])
         {
           if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
           {
@@ -1575,20 +1575,20 @@ LABEL_7:
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "VCPHandGestureVideoRequest : gate out heart due to overlapping hands", v34, 2u);
           }
 
-          [v13 setMitigationType:{objc_msgSend(v13, "mitigationType") | 0x100}];
-          [v12 setMitigationType:{objc_msgSend(v12, "mitigationType") | 0x100}];
+          [handCopy setMitigationType:{objc_msgSend(handCopy, "mitigationType") | 0x100}];
+          [mitigateCopy setMitigationType:{objc_msgSend(mitigateCopy, "mitigationType") | 0x100}];
           LODWORD(v26) = 1036831949;
-          [v13 setGestureConfidence:v26];
+          [handCopy setGestureConfidence:v26];
           LODWORD(v27) = 1036831949;
-          [v12 setGestureConfidence:v27];
+          [mitigateCopy setGestureConfidence:v27];
         }
       }
     }
 
     else
     {
-      [v12 setGestureType:0];
-      [v13 setGestureType:0];
+      [mitigateCopy setGestureType:0];
+      [handCopy setGestureType:0];
     }
 
 LABEL_35:

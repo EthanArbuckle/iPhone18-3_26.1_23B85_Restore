@@ -1,40 +1,40 @@
 @interface MFGroupedSenderArchiveTriageInteraction
-- (id)_alertMessageForDisplayName:(id)a3 selectedBucket:(int64_t)a4 categoryMessageCount:(unint64_t)a5 totalMessageCount:(unint64_t)a6;
-- (id)_alertTitleForDisplayName:(id)a3 selectedBucket:(int64_t)a4 categoryMessageCount:(unint64_t)a5 totalMessageCount:(unint64_t)a6;
-- (void)_addMessageDeletionActionsForAlertController:(id)a3 triageInteraction:(id)a4 categoryMessageCount:(unint64_t)a5 continuation:(id)a6;
+- (id)_alertMessageForDisplayName:(id)name selectedBucket:(int64_t)bucket categoryMessageCount:(unint64_t)count totalMessageCount:(unint64_t)messageCount;
+- (id)_alertTitleForDisplayName:(id)name selectedBucket:(int64_t)bucket categoryMessageCount:(unint64_t)count totalMessageCount:(unint64_t)messageCount;
+- (void)_addMessageDeletionActionsForAlertController:(id)controller triageInteraction:(id)interaction categoryMessageCount:(unint64_t)count continuation:(id)continuation;
 @end
 
 @implementation MFGroupedSenderArchiveTriageInteraction
 
-- (id)_alertTitleForDisplayName:(id)a3 selectedBucket:(int64_t)a4 categoryMessageCount:(unint64_t)a5 totalMessageCount:(unint64_t)a6
+- (id)_alertTitleForDisplayName:(id)name selectedBucket:(int64_t)bucket categoryMessageCount:(unint64_t)count totalMessageCount:(unint64_t)messageCount
 {
-  v9 = a3;
-  if (a6 == a5 || a4 == 4 || a4 == 3 || a4 == 2)
+  nameCopy = name;
+  if (messageCount == count || bucket == 4 || bucket == 3 || bucket == 2)
   {
     v10 = _EFLocalizedString();
-    v11 = [NSString stringWithFormat:v10, v9];
+    nameCopy = [NSString stringWithFormat:v10, nameCopy];
   }
 
   else
   {
-    v11 = &stru_100662A88;
+    nameCopy = &stru_100662A88;
   }
 
-  return v11;
+  return nameCopy;
 }
 
-- (id)_alertMessageForDisplayName:(id)a3 selectedBucket:(int64_t)a4 categoryMessageCount:(unint64_t)a5 totalMessageCount:(unint64_t)a6
+- (id)_alertMessageForDisplayName:(id)name selectedBucket:(int64_t)bucket categoryMessageCount:(unint64_t)count totalMessageCount:(unint64_t)messageCount
 {
-  v9 = a3;
-  if (a6 == a5)
+  nameCopy = name;
+  if (messageCount == count)
   {
     v10 = _EFLocalizedStringFromTable();
-    v11 = [NSString localizedStringWithFormat:v10, a6, v9];
+    nameCopy = [NSString localizedStringWithFormat:v10, messageCount, nameCopy];
   }
 
   else
   {
-    if ((a4 - 2) >= 3)
+    if ((bucket - 2) >= 3)
     {
       v10 = 0;
     }
@@ -44,29 +44,29 @@
       v10 = _EFLocalizedStringFromTable();
     }
 
-    v11 = [NSString localizedStringWithFormat:v10, a5, a6, v9];
+    nameCopy = [NSString localizedStringWithFormat:v10, count, messageCount, nameCopy];
   }
 
-  v12 = v11;
+  v12 = nameCopy;
 
   return v12;
 }
 
-- (void)_addMessageDeletionActionsForAlertController:(id)a3 triageInteraction:(id)a4 categoryMessageCount:(unint64_t)a5 continuation:(id)a6
+- (void)_addMessageDeletionActionsForAlertController:(id)controller triageInteraction:(id)interaction categoryMessageCount:(unint64_t)count continuation:(id)continuation
 {
-  v8 = a3;
-  v9 = a6;
+  controllerCopy = controller;
+  continuationCopy = continuation;
   v10 = _EFLocalizedStringFromTable();
-  v11 = [NSString localizedStringWithFormat:v10, a5];
+  v11 = [NSString localizedStringWithFormat:v10, count];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1001CE9B8;
   v19[3] = &unk_1006507D8;
-  v12 = v9;
+  v12 = continuationCopy;
   v20 = v12;
   v13 = [UIAlertAction actionWithTitle:v11 style:2 handler:v19];
 
-  [v8 addAction:v13];
+  [controllerCopy addAction:v13];
   v14 = _EFLocalizedString();
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
@@ -76,7 +76,7 @@
   v18 = v15;
   v16 = [UIAlertAction actionWithTitle:v14 style:1 handler:v17];
 
-  [v8 addAction:v16];
+  [controllerCopy addAction:v16];
 }
 
 @end

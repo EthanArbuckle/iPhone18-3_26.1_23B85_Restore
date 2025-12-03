@@ -1,19 +1,19 @@
 @interface SGReminderDueLocation
-+ (id)mergeDueLocations:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToReminderDueLocation:(id)a3;
-- (SGReminderDueLocation)initWithLocationType:(unsigned __int8)a3 trigger:(unsigned __int8)a4 name:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)mergeDueLocations:(id)locations;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToReminderDueLocation:(id)location;
+- (SGReminderDueLocation)initWithLocationType:(unsigned __int8)type trigger:(unsigned __int8)trigger name:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation SGReminderDueLocation
 
-- (BOOL)isEqualToReminderDueLocation:(id)a3
+- (BOOL)isEqualToReminderDueLocation:(id)location
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (locationType = self->_locationType, locationType == [v4 locationType]) && (trigger = self->_trigger, trigger == objc_msgSend(v5, "trigger")))
+  locationCopy = location;
+  v5 = locationCopy;
+  if (locationCopy && (locationType = self->_locationType, locationType == [locationCopy locationType]) && (trigger = self->_trigger, trigger == objc_msgSend(v5, "trigger")))
   {
     v8 = self->_name;
     v9 = v8;
@@ -36,24 +36,24 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGReminderDueLocation *)self isEqualToReminderDueLocation:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGReminderDueLocation *)self isEqualToReminderDueLocation:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v5 = objc_opt_new();
@@ -62,7 +62,7 @@
   {
     *(v5 + 8) = self->_locationType;
     *(v5 + 9) = self->_trigger;
-    v7 = [(NSString *)self->_name copyWithZone:a3];
+    v7 = [(NSString *)self->_name copyWithZone:zone];
     v8 = v6[2];
     v6[2] = v7;
   }
@@ -80,33 +80,33 @@
   return v6;
 }
 
-- (SGReminderDueLocation)initWithLocationType:(unsigned __int8)a3 trigger:(unsigned __int8)a4 name:(id)a5
+- (SGReminderDueLocation)initWithLocationType:(unsigned __int8)type trigger:(unsigned __int8)trigger name:(id)name
 {
-  v9 = a5;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = SGReminderDueLocation;
   v10 = [(SGReminderDueLocation *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_locationType = a3;
-    v10->_trigger = a4;
-    objc_storeStrong(&v10->_name, a5);
+    v10->_locationType = type;
+    v10->_trigger = trigger;
+    objc_storeStrong(&v10->_name, name);
   }
 
   return v11;
 }
 
-+ (id)mergeDueLocations:(id)a3
++ (id)mergeDueLocations:(id)locations
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  locationsCopy = locations;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [v3 allObjects];
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  allObjects = [locationsCopy allObjects];
+  v5 = [allObjects countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -120,14 +120,14 @@
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allObjects);
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = [v12 locationType];
+        locationType = [v12 locationType];
         if (v7)
         {
-          if (v13 && [v12 locationType] != v7)
+          if (locationType && [v12 locationType] != v7)
           {
             goto LABEL_26;
           }
@@ -135,13 +135,13 @@
 
         else
         {
-          v7 = v13;
+          v7 = locationType;
         }
 
-        v14 = [v12 trigger];
+        trigger = [v12 trigger];
         if (v8)
         {
-          if (v14 && [v12 trigger] != v8)
+          if (trigger && [v12 trigger] != v8)
           {
             goto LABEL_26;
           }
@@ -149,14 +149,14 @@
 
         else
         {
-          v8 = v14;
+          v8 = trigger;
         }
 
-        v15 = [v12 name];
-        v16 = v15;
+        name = [v12 name];
+        v16 = name;
         if (v9)
         {
-          if (v15 && ([v9 isEqualToString:v15] & 1) == 0)
+          if (name && ([v9 isEqualToString:name] & 1) == 0)
           {
 
 LABEL_26:
@@ -167,11 +167,11 @@ LABEL_26:
 
         else
         {
-          v9 = v15;
+          v9 = name;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v6 = [allObjects countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v6)
       {
         continue;

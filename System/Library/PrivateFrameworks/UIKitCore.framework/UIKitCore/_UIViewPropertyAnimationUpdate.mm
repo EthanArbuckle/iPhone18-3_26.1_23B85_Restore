@@ -1,6 +1,6 @@
 @interface _UIViewPropertyAnimationUpdate
 - (_UIViewPropertyAnimationUpdate)init;
-- (_UIViewPropertyAnimationUpdate)initWithPropertyName:(id)a3 implicit:(BOOL)a4 additive:(BOOL)a5;
+- (_UIViewPropertyAnimationUpdate)initWithPropertyName:(id)name implicit:(BOOL)implicit additive:(BOOL)additive;
 @end
 
 @implementation _UIViewPropertyAnimationUpdate
@@ -15,20 +15,20 @@
   return 0;
 }
 
-- (_UIViewPropertyAnimationUpdate)initWithPropertyName:(id)a3 implicit:(BOOL)a4 additive:(BOOL)a5
+- (_UIViewPropertyAnimationUpdate)initWithPropertyName:(id)name implicit:(BOOL)implicit additive:(BOOL)additive
 {
-  v8 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = _UIViewPropertyAnimationUpdate;
   v9 = [(_UIViewPropertyAnimationUpdate *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [nameCopy copy];
     propertyName = v9->_propertyName;
     v9->_propertyName = v10;
 
-    v9->_implicit = a4;
-    v9->_additive = a5;
+    v9->_implicit = implicit;
+    v9->_additive = additive;
     v9->_duration = 0.0;
     v9->_delay = 0.0;
     v9->_startTime = 0.0;

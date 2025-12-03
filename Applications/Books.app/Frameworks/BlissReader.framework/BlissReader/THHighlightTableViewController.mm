@@ -1,22 +1,22 @@
 @interface THHighlightTableViewController
-- (THHighlightTableViewController)initWithOptions:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
+- (THHighlightTableViewController)initWithOptions:(id)options;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
 - (void)contentSizeCategoryDidChange;
 - (void)dealloc;
 - (void)p_updateColors;
-- (void)setTheme:(id)a3;
-- (void)studyOptionsDidChangeFilterOptions:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setTheme:(id)theme;
+- (void)studyOptionsDidChangeFilterOptions:(id)options;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation THHighlightTableViewController
 
-- (THHighlightTableViewController)initWithOptions:(id)a3
+- (THHighlightTableViewController)initWithOptions:(id)options
 {
-  if (!a3)
+  if (!options)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
@@ -26,7 +26,7 @@
   v5 = [(THHighlightTableViewController *)&v10 initWithStyle:0];
   if (v5)
   {
-    v5->_options = a3;
+    v5->_options = options;
     -[THHighlightTableViewController setTitle:](v5, "setTitle:", [THBundle() localizedStringForKey:@"Highlights and Notes" value:&stru_471858 table:0]);
     if (+[UIFont bc_accessibilityFontSizesEnabled])
     {
@@ -62,21 +62,21 @@
   [(THHighlightTableViewController *)&v3 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = THHighlightTableViewController;
-  [(THHighlightTableViewController *)&v4 viewWillAppear:a3];
+  [(THHighlightTableViewController *)&v4 viewWillAppear:appear];
   [(THStudyOptions *)self->_options addObserver:self];
   [+[NSNotificationCenter defaultCenter](NSNotificationCenter addObserver:"addObserver:selector:name:object:" selector:self name:"contentSizeCategoryDidChange" object:UIContentSizeCategoryDidChangeNotification, 0];
   [(THHighlightTableViewController *)self p_updateColors];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = THHighlightTableViewController;
-  [(THHighlightTableViewController *)&v4 viewDidDisappear:a3];
+  [(THHighlightTableViewController *)&v4 viewDidDisappear:disappear];
   [(THStudyOptions *)self->_options removeObserver:self];
   [+[NSNotificationCenter defaultCenter](NSNotificationCenter removeObserver:"removeObserver:name:object:" name:self object:UIContentSizeCategoryDidChangeNotification, 0];
 }
@@ -103,22 +103,22 @@
   [-[THHighlightTableViewController tableView](self "tableView")];
   if (+[UIFont bc_accessibilityFontSizesEnabled])
   {
-    v3 = [(THHighlightTableViewController *)self tableView];
+    tableView = [(THHighlightTableViewController *)self tableView];
 
-    [v3 setRowHeight:UITableViewAutomaticDimension];
+    [tableView setRowHeight:UITableViewAutomaticDimension];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = [a3 dequeueReusableCellWithIdentifier:@"StudyOptionsHighlightTableCell"];
+  v6 = [view dequeueReusableCellWithIdentifier:@"StudyOptionsHighlightTableCell"];
   if (!v6)
   {
     v6 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"StudyOptionsHighlightTableCell"];
   }
 
   [v6 setBackgroundColor:{-[IMThemePage secondaryGroupedBackgroundColor](self->_theme, "secondaryGroupedBackgroundColor")}];
-  if ([a4 row])
+  if ([path row])
   {
     if (qword_567810 != -1)
     {
@@ -126,7 +126,7 @@
     }
 
     v7 = qword_567808;
-    v8 = v7 + 16 * [a4 row];
+    v8 = v7 + 16 * [path row];
     v9 = *(v8 - 16);
     v10 = *(v8 - 8);
     if (v9 == 6)
@@ -164,7 +164,7 @@
     [objc_msgSend(v6 "imageView")];
     UIGraphicsEndImageContext();
     [objc_msgSend(v6 "textLabel")];
-    v21 = [(THStudyOptions *)self->_options shouldShowAnnotationStyle:v9];
+    shouldShowAllAnnotationStyles = [(THStudyOptions *)self->_options shouldShowAnnotationStyle:v9];
   }
 
   else
@@ -174,10 +174,10 @@
     [v6 setIndentationWidth:53.0];
     [v6 indentationWidth];
     [v6 setSeparatorInset:{0.0, v20, 0.0, 0.0}];
-    v21 = [(THStudyOptions *)self->_options shouldShowAllAnnotationStyles];
+    shouldShowAllAnnotationStyles = [(THStudyOptions *)self->_options shouldShowAllAnnotationStyles];
   }
 
-  if (v21)
+  if (shouldShowAllAnnotationStyles)
   {
     v23 = 3;
   }
@@ -191,10 +191,10 @@
   return v6;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v6 = [a3 cellForRowAtIndexPath:a4];
-  if ([a4 row])
+  v6 = [view cellForRowAtIndexPath:path];
+  if ([path row])
   {
     if (qword_567810 != -1)
     {
@@ -202,7 +202,7 @@
     }
 
     v7 = qword_567808;
-    v8 = *(v7 + 16 * [a4 row] - 16);
+    v8 = *(v7 + 16 * [path row] - 16);
     v9 = [(THStudyOptions *)self->_options shouldShowAnnotationStyle:v8];
     options = self->_options;
     if (v9)
@@ -218,9 +218,9 @@
 
   else
   {
-    v11 = [v6 accessoryType];
+    accessoryType = [v6 accessoryType];
     v12 = self->_options;
-    if (v11)
+    if (accessoryType)
     {
       [(THStudyOptions *)v12 hideAllAnnotationStyles];
     }
@@ -231,20 +231,20 @@
     }
   }
 
-  return a4;
+  return path;
 }
 
-- (void)studyOptionsDidChangeFilterOptions:(id)a3
+- (void)studyOptionsDidChangeFilterOptions:(id)options
 {
-  v4 = [(THHighlightTableViewController *)self tableView];
-  v5 = [v4 numberOfRowsInSection:0];
+  tableView = [(THHighlightTableViewController *)self tableView];
+  v5 = [tableView numberOfRowsInSection:0];
   if (v5 >= 2)
   {
     v6 = v5;
     v7 = 0;
     for (i = 1; i != v6; ++i)
     {
-      v9 = [v4 cellForRowAtIndexPath:{+[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", i, 0)}];
+      v9 = [tableView cellForRowAtIndexPath:{+[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", i, 0)}];
       if (qword_567810 != -1)
       {
         sub_29D0C8();
@@ -265,7 +265,7 @@
     }
   }
 
-  v11 = [v4 cellForRowAtIndexPath:{+[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", 0, 0)}];
+  v11 = [tableView cellForRowAtIndexPath:{+[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", 0, 0)}];
   if ([(THStudyOptions *)self->_options shouldShowAllAnnotationStyles])
   {
     v12 = 3;
@@ -283,17 +283,17 @@
 {
   [-[THHighlightTableViewController viewIfLoaded](self "viewIfLoaded")];
   [objc_msgSend(-[THHighlightTableViewController navigationController](self "navigationController")];
-  v3 = [(THHighlightTableViewController *)self tableView];
+  tableView = [(THHighlightTableViewController *)self tableView];
 
-  [v3 reloadData];
+  [tableView reloadData];
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
   if (([(IMThemePage *)self->_theme isEqual:?]& 1) == 0)
   {
 
-    self->_theme = a3;
+    self->_theme = theme;
 
     [(THHighlightTableViewController *)self p_updateColors];
   }

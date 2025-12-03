@@ -1,5 +1,5 @@
 @interface _SBHTodayViewControllerCancelTouchesAssertion
-- (_SBHTodayViewControllerCancelTouchesAssertion)initWithAssertions:(id)a3;
+- (_SBHTodayViewControllerCancelTouchesAssertion)initWithAssertions:(id)assertions;
 - (void)invalidate;
 @end
 
@@ -12,8 +12,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(_SBHTodayViewControllerCancelTouchesAssertion *)self assertions];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  assertions = [(_SBHTodayViewControllerCancelTouchesAssertion *)self assertions];
+  v3 = [assertions countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -25,29 +25,29 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(assertions);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) invalidate];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [assertions countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (_SBHTodayViewControllerCancelTouchesAssertion)initWithAssertions:(id)a3
+- (_SBHTodayViewControllerCancelTouchesAssertion)initWithAssertions:(id)assertions
 {
-  v4 = a3;
+  assertionsCopy = assertions;
   v9.receiver = self;
   v9.super_class = _SBHTodayViewControllerCancelTouchesAssertion;
   v5 = [(_SBHTodayViewControllerCancelTouchesAssertion *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [assertionsCopy copy];
     assertions = v5->_assertions;
     v5->_assertions = v6;
   }

@@ -1,37 +1,37 @@
 @interface UICGPDFNodeAccessibilityElement
-+ (BOOL)_containsOnlyTextChildren:(id)a3;
-+ (BOOL)_isValidTextFieldElement:(id)a3;
-+ (id)_findCaptionChildrenNodesOfFigureNode:(id)a3;
-+ (id)_findFigureChildrenNodesOfTableCellNode:(id)a3;
-+ (id)_findLabelBodyChildNodeOfListItem:(id)a3;
-+ (id)_findLabelChildNodeOfListItem:(id)a3;
-+ (id)_findLinkChildrenNodesOfNode:(id)a3;
-+ (id)_findOverlappingChild:(CGRect)a3 children:(id)a4;
-+ (id)_findTableCellNodesOfTableNode:(id)a3 withHeadersOnly:(BOOL)a4;
-- (BOOL)_accessibilityInsertAnnotation:(id)a3;
-- (BOOL)_accessibilityRemoveAnnotation:(id)a3;
++ (BOOL)_containsOnlyTextChildren:(id)children;
++ (BOOL)_isValidTextFieldElement:(id)element;
++ (id)_findCaptionChildrenNodesOfFigureNode:(id)node;
++ (id)_findFigureChildrenNodesOfTableCellNode:(id)node;
++ (id)_findLabelBodyChildNodeOfListItem:(id)item;
++ (id)_findLabelChildNodeOfListItem:(id)item;
++ (id)_findLinkChildrenNodesOfNode:(id)node;
++ (id)_findOverlappingChild:(CGRect)child children:(id)children;
++ (id)_findTableCellNodesOfTableNode:(id)node withHeadersOnly:(BOOL)only;
+- (BOOL)_accessibilityInsertAnnotation:(id)annotation;
+- (BOOL)_accessibilityRemoveAnnotation:(id)annotation;
 - (BOOL)_isContainerOfOnlyOneLinkNodeChild;
 - (BOOL)_isSubFigure;
 - (BOOL)_pdfElementHasLinkContainer;
 - (BOOL)isAccessibilityElement;
-- (CGRect)_axConvertBoundsFromScreenCoordinatesToPageView:(CGRect)a3;
+- (CGRect)_axConvertBoundsFromScreenCoordinatesToPageView:(CGRect)view;
 - (CGRect)accessibilityFrame;
 - (CGRect)accessibilityFrameForScrolling;
 - (CGRect)bounds;
-- (UICGPDFNodeAccessibilityElement)initWithAccessibilityContainer:(id)a3 pdfNodeRef:(CGPDFTaggedNode *)a4 withPage:(id)a5;
+- (UICGPDFNodeAccessibilityElement)initWithAccessibilityContainer:(id)container pdfNodeRef:(CGPDFTaggedNode *)ref withPage:(id)page;
 - (_NSRange)accessibilityColumnRange;
 - (_NSRange)accessibilityRowRange;
 - (id)_accessibilityHeadingLevel;
 - (id)_accessibilityLinks;
-- (id)_accessibilityStringForListType:(int)a3;
-- (id)_attributedAccessibilityLabelForNode:(CGPDFTaggedNode *)a3;
-- (id)_findTOCIChildNodeOfNode:(id)a3;
+- (id)_accessibilityStringForListType:(int)type;
+- (id)_attributedAccessibilityLabelForNode:(CGPDFTaggedNode *)node;
+- (id)_findTOCIChildNodeOfNode:(id)node;
 - (id)_getPDFPageView;
 - (id)accessibilityCustomRotors;
-- (id)accessibilityDataTableCellElementForRow:(unint64_t)a3 column:(unint64_t)a4;
+- (id)accessibilityDataTableCellElementForRow:(unint64_t)row column:(unint64_t)column;
 - (id)accessibilityElements;
-- (id)accessibilityHeaderElementsForColumn:(unint64_t)a3;
-- (id)accessibilityHeaderElementsForRow:(unint64_t)a3;
+- (id)accessibilityHeaderElementsForColumn:(unint64_t)column;
+- (id)accessibilityHeaderElementsForRow:(unint64_t)row;
 - (id)accessibilityIdentification;
 - (id)accessibilityLabel;
 - (id)accessibilityLanguage;
@@ -41,29 +41,29 @@
 - (unint64_t)accessibilityColumnCount;
 - (unint64_t)accessibilityRowCount;
 - (unint64_t)accessibilityTraits;
-- (unsigned)_accessibilityIndexForInsertingBounds:(CGRect)a3;
-- (void)_axHandleUpdateVisibility:(id)a3;
-- (void)_axInsertChild:(id)a3 atIndex:(unint64_t)a4;
-- (void)_axRemoveChild:(id)a3;
+- (unsigned)_accessibilityIndexForInsertingBounds:(CGRect)bounds;
+- (void)_axHandleUpdateVisibility:(id)visibility;
+- (void)_axInsertChild:(id)child atIndex:(unint64_t)index;
+- (void)_axRemoveChild:(id)child;
 - (void)dealloc;
 @end
 
 @implementation UICGPDFNodeAccessibilityElement
 
-- (UICGPDFNodeAccessibilityElement)initWithAccessibilityContainer:(id)a3 pdfNodeRef:(CGPDFTaggedNode *)a4 withPage:(id)a5
+- (UICGPDFNodeAccessibilityElement)initWithAccessibilityContainer:(id)container pdfNodeRef:(CGPDFTaggedNode *)ref withPage:(id)page
 {
   v9.receiver = self;
   v9.super_class = UICGPDFNodeAccessibilityElement;
-  v6 = [(AXPDFNodeElement *)&v9 initWithAccessibilityContainer:a3 withPage:a5];
-  if (a4)
+  v6 = [(AXPDFNodeElement *)&v9 initWithAccessibilityContainer:container withPage:page];
+  if (ref)
   {
     CGPDFTaggedNodeRetain();
-    [(UICGPDFNodeAccessibilityElement *)v6 setNodeRef:a4];
+    [(UICGPDFNodeAccessibilityElement *)v6 setNodeRef:ref];
     [(UICGPDFNodeAccessibilityElement *)v6 setAltText:CGPDFTaggedNodeGetAltText()];
   }
 
-  v7 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v7 addObserver:v6 selector:sel__axHandleUpdateVisibility_ name:AXPDFVisibiltyUpdatedNotification object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter addObserver:v6 selector:sel__axHandleUpdateVisibility_ name:AXPDFVisibiltyUpdatedNotification object:0];
 
   return v6;
 }
@@ -90,10 +90,10 @@
 
 - (id)accessibilityElements
 {
-  v3 = [(UICGPDFNodeAccessibilityElement *)self cachedAXElements];
-  if (!v3)
+  cachedAXElements = [(UICGPDFNodeAccessibilityElement *)self cachedAXElements];
+  if (!cachedAXElements)
   {
-    v3 = [MEMORY[0x29EDB8DE8] array];
+    cachedAXElements = [MEMORY[0x29EDB8DE8] array];
     [(UICGPDFNodeAccessibilityElement *)self nodeRef];
     if (CGPDFTaggedNodeGetType())
     {
@@ -117,15 +117,15 @@
               if (Type == 800)
               {
                 v16 = [PDFAnnotationAccessibilityElement alloc];
-                v17 = [(AXPDFNodeElement *)self page];
-                v18 = [(PDFAnnotationAccessibilityElement *)v16 initWithAccessibilityContainer:self pdfNodeRef:ChildAtIndex withPage:v17];
+                page = [(AXPDFNodeElement *)self page];
+                v18 = [(PDFAnnotationAccessibilityElement *)v16 initWithAccessibilityContainer:self pdfNodeRef:ChildAtIndex withPage:page];
               }
 
               else
               {
                 v19 = [UICGPDFNodeAccessibilityElement alloc];
-                v20 = [(AXPDFNodeElement *)self page];
-                v18 = [(UICGPDFNodeAccessibilityElement *)v19 initWithAccessibilityContainer:self pdfNodeRef:ChildAtIndex withPage:v20];
+                page2 = [(AXPDFNodeElement *)self page];
+                v18 = [(UICGPDFNodeAccessibilityElement *)v19 initWithAccessibilityContainer:self pdfNodeRef:ChildAtIndex withPage:page2];
 
                 if (v15 == 300)
                 {
@@ -133,7 +133,7 @@
                 }
               }
 
-              [v3 axSafelyAddObject:v18];
+              [cachedAXElements axSafelyAddObject:v18];
             }
 
             ++v6;
@@ -142,7 +142,7 @@
           else
           {
             v7 = [[UICGPDFListContainerAccessibilityElement alloc] initWithAccessibilityContainer:self];
-            v8 = [MEMORY[0x29EDB8DE8] array];
+            array = [MEMORY[0x29EDB8DE8] array];
             if (v6 < v5)
             {
               do
@@ -150,11 +150,11 @@
                 v9 = [UICGPDFNodeAccessibilityElement alloc];
                 [(UICGPDFNodeAccessibilityElement *)self nodeRef];
                 v10 = CGPDFTaggedNodeGetChildAtIndex();
-                v11 = [(AXPDFNodeElement *)self page];
-                v12 = [(UICGPDFNodeAccessibilityElement *)v9 initWithAccessibilityContainer:v7 pdfNodeRef:v10 withPage:v11];
+                page3 = [(AXPDFNodeElement *)self page];
+                v12 = [(UICGPDFNodeAccessibilityElement *)v9 initWithAccessibilityContainer:v7 pdfNodeRef:v10 withPage:page3];
 
                 [(UICGPDFNodeAccessibilityElement *)v12 setListItemNumber:v6];
-                [v8 axSafelyAddObject:v12];
+                [array axSafelyAddObject:v12];
 
                 ++v6;
               }
@@ -163,19 +163,19 @@
               v6 = v5;
             }
 
-            [(UICGPDFListContainerAccessibilityElement *)v7 setAccessibilityElements:v8];
-            [v3 axSafelyAddObject:v7];
+            [(UICGPDFListContainerAccessibilityElement *)v7 setAccessibilityElements:array];
+            [cachedAXElements axSafelyAddObject:v7];
           }
         }
 
         while (v6 < v5);
       }
 
-      [(UICGPDFNodeAccessibilityElement *)self setCachedAXElements:v3];
+      [(UICGPDFNodeAccessibilityElement *)self setCachedAXElements:cachedAXElements];
     }
   }
 
-  return v3;
+  return cachedAXElements;
 }
 
 - (CGRect)accessibilityFrameForScrolling
@@ -212,13 +212,13 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(UICGPDFNodeAccessibilityElement *)self type];
-  if (v3 == 301)
+  type = [(UICGPDFNodeAccessibilityElement *)self type];
+  if (type == 301)
   {
-    v4 = [UICGPDFNodeAccessibilityElement _findLabelChildNodeOfListItem:self];
+    cachedAXFigureChildrenNodesOfTableCellNode = [UICGPDFNodeAccessibilityElement _findLabelChildNodeOfListItem:self];
     v5 = [UICGPDFNodeAccessibilityElement _findLabelBodyChildNodeOfListItem:self];
     v6 = v5;
-    if (v4)
+    if (cachedAXFigureChildrenNodesOfTableCellNode)
     {
       v7 = v5 == 0;
     }
@@ -231,17 +231,17 @@
     if (!v7)
     {
       v11 = MEMORY[0x29EDBD7E8];
-      v12 = [v5 accessibilityLabel];
-      v13 = [v11 axAttributedStringWithString:v12];
+      accessibilityLabel = [v5 accessibilityLabel];
+      string = [v11 axAttributedStringWithString:accessibilityLabel];
 
       [(UICGPDFNodeAccessibilityElement *)self nodeRef];
       v14 = [(UICGPDFNodeAccessibilityElement *)self _accessibilityStringForListType:CGPDFTaggedNodeGetListStyle()];
       v15 = v14;
       if (v14)
       {
-        [v13 setAttribute:v14 forKey:*MEMORY[0x29EDBD928]];
+        [string setAttribute:v14 forKey:*MEMORY[0x29EDBD928]];
         v16 = [MEMORY[0x29EDBA070] numberWithInteger:{-[UICGPDFNodeAccessibilityElement listItemNumber](self, "listItemNumber")}];
-        [v13 setAttribute:v16 forKey:*MEMORY[0x29EDBD920]];
+        [string setAttribute:v16 forKey:*MEMORY[0x29EDBD920]];
       }
 
       goto LABEL_20;
@@ -253,52 +253,52 @@
     goto LABEL_8;
   }
 
-  if ((v3 & 0xFFFFFFFE) == 0x192)
+  if ((type & 0xFFFFFFFE) == 0x192)
   {
-    v13 = [(UICGPDFNodeAccessibilityElement *)self _attributedAccessibilityLabelForNode:[(UICGPDFNodeAccessibilityElement *)self nodeRef]];
-    if (!v13)
+    string = [(UICGPDFNodeAccessibilityElement *)self _attributedAccessibilityLabelForNode:[(UICGPDFNodeAccessibilityElement *)self nodeRef]];
+    if (!string)
     {
-      v13 = [MEMORY[0x29EDBD7E8] string];
+      string = [MEMORY[0x29EDBD7E8] string];
     }
 
-    v4 = [(UICGPDFNodeAccessibilityElement *)self cachedAXFigureChildrenNodesOfTableCellNode];
-    if (!v4)
+    cachedAXFigureChildrenNodesOfTableCellNode = [(UICGPDFNodeAccessibilityElement *)self cachedAXFigureChildrenNodesOfTableCellNode];
+    if (!cachedAXFigureChildrenNodesOfTableCellNode)
     {
-      v4 = [UICGPDFNodeAccessibilityElement _findFigureChildrenNodesOfTableCellNode:self];
-      v9 = [v4 mutableCopy];
+      cachedAXFigureChildrenNodesOfTableCellNode = [UICGPDFNodeAccessibilityElement _findFigureChildrenNodesOfTableCellNode:self];
+      v9 = [cachedAXFigureChildrenNodesOfTableCellNode mutableCopy];
       [(UICGPDFNodeAccessibilityElement *)self setCachedAXFigureChildrenNodesOfTableCellNode:v9];
     }
 
-    if (![v4 count])
+    if (![cachedAXFigureChildrenNodesOfTableCellNode count])
     {
       goto LABEL_30;
     }
 
-    v10 = UIAXStringForAllChildren();
-    [v13 appendStringOrAXAttributedString:v10];
+    altText2 = UIAXStringForAllChildren();
+    [string appendStringOrAXAttributedString:altText2];
     goto LABEL_29;
   }
 
-  switch(v3)
+  switch(type)
   {
     case 107:
-      v21 = accessibilityLocalizedString(@"table.of.contents");
+      accessibilityLabel2 = accessibilityLocalizedString(@"table.of.contents");
       break;
     case 506:
       goto LABEL_36;
     case 700:
-      v4 = [(UICGPDFNodeAccessibilityElement *)self cachedAXCaptionChildrenNodesOfFigureNode];
-      if (!v4)
+      cachedAXFigureChildrenNodesOfTableCellNode = [(UICGPDFNodeAccessibilityElement *)self cachedAXCaptionChildrenNodesOfFigureNode];
+      if (!cachedAXFigureChildrenNodesOfTableCellNode)
       {
-        v4 = [UICGPDFNodeAccessibilityElement _findCaptionChildrenNodesOfFigureNode:self];
-        v17 = [v4 mutableCopy];
+        cachedAXFigureChildrenNodesOfTableCellNode = [UICGPDFNodeAccessibilityElement _findCaptionChildrenNodesOfFigureNode:self];
+        v17 = [cachedAXFigureChildrenNodesOfTableCellNode mutableCopy];
         [(UICGPDFNodeAccessibilityElement *)self setCachedAXCaptionChildrenNodesOfFigureNode:v17];
       }
 
-      if (![v4 count])
+      if (![cachedAXFigureChildrenNodesOfTableCellNode count])
       {
-        v18 = [(UICGPDFNodeAccessibilityElement *)self altText];
-        v19 = [v18 length];
+        altText = [(UICGPDFNodeAccessibilityElement *)self altText];
+        v19 = [altText length];
 
         if (!v19)
         {
@@ -314,7 +314,7 @@
           [(UICGPDFNodeAccessibilityElement *)&v24 accessibilityLabel];
           v8 = LABEL_8:;
 LABEL_9:
-          v13 = v8;
+          string = v8;
 LABEL_20:
 
 LABEL_30:
@@ -322,9 +322,9 @@ LABEL_30:
         }
       }
 
-      v10 = [(UICGPDFNodeAccessibilityElement *)self altText];
-      v22 = MEMORY[0x29C2E44B0](v4);
-      v13 = __UIAXStringForVariables();
+      altText2 = [(UICGPDFNodeAccessibilityElement *)self altText];
+      v22 = MEMORY[0x29C2E44B0](cachedAXFigureChildrenNodesOfTableCellNode);
+      string = __UIAXStringForVariables();
 
 LABEL_29:
       goto LABEL_30;
@@ -332,23 +332,23 @@ LABEL_29:
       if ([UICGPDFNodeAccessibilityElement _containsOnlyTextChildren:self])
       {
 LABEL_36:
-        v21 = [(UICGPDFNodeAccessibilityElement *)self _attributedAccessibilityLabelForNode:[(UICGPDFNodeAccessibilityElement *)self nodeRef]];
+        accessibilityLabel2 = [(UICGPDFNodeAccessibilityElement *)self _attributedAccessibilityLabelForNode:[(UICGPDFNodeAccessibilityElement *)self nodeRef]];
       }
 
       else
       {
         v23.receiver = self;
         v23.super_class = UICGPDFNodeAccessibilityElement;
-        v21 = [(UICGPDFNodeAccessibilityElement *)&v23 accessibilityLabel];
+        accessibilityLabel2 = [(UICGPDFNodeAccessibilityElement *)&v23 accessibilityLabel];
       }
 
       break;
   }
 
-  v13 = v21;
+  string = accessibilityLabel2;
 LABEL_31:
 
-  return v13;
+  return string;
 }
 
 - (unint64_t)accessibilityTraits
@@ -359,25 +359,25 @@ LABEL_31:
   {
     v13.receiver = self;
     v13.super_class = UICGPDFNodeAccessibilityElement;
-    v5 = [(UICGPDFNodeAccessibilityElement *)&v13 accessibilityTraits];
+    accessibilityTraits = [(UICGPDFNodeAccessibilityElement *)&v13 accessibilityTraits];
     if (![(UICGPDFNodeAccessibilityElement *)self isAccessibilityElement])
     {
       v8 = MEMORY[0x29EDC7578];
       goto LABEL_8;
     }
 
-    v6 = [(UICGPDFNodeAccessibilityElement *)self type];
-    if (v6 <= 401)
+    type = [(UICGPDFNodeAccessibilityElement *)self type];
+    if (type <= 401)
     {
-      if ((v6 - 201) < 7)
+      if ((type - 201) < 7)
       {
         v7 = *MEMORY[0x29EDC7F80] | *MEMORY[0x29EDC7FD0];
 LABEL_17:
-        v5 |= v7;
+        accessibilityTraits |= v7;
         goto LABEL_18;
       }
 
-      if (v6 != 1 && v6 != 200)
+      if (type != 1 && type != 200)
       {
         goto LABEL_18;
       }
@@ -388,14 +388,14 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    switch(v6)
+    switch(type)
     {
       case 402:
-        v12 = [(UICGPDFNodeAccessibilityElement *)self _findTraitsForTableCellElements];
-        v5 |= v12 | *MEMORY[0x29EDC7F80];
+        _findTraitsForTableCellElements = [(UICGPDFNodeAccessibilityElement *)self _findTraitsForTableCellElements];
+        accessibilityTraits |= _findTraitsForTableCellElements | *MEMORY[0x29EDC7F80];
         break;
       case 403:
-        v5 |= [(UICGPDFNodeAccessibilityElement *)self _findTraitsForTableCellElements];
+        accessibilityTraits |= [(UICGPDFNodeAccessibilityElement *)self _findTraitsForTableCellElements];
         break;
       case 700:
         v9 = MEMORY[0x29EDC7F88];
@@ -407,7 +407,7 @@ LABEL_16:
 LABEL_18:
     if ([(UICGPDFNodeAccessibilityElement *)self _isContainerOfOnlyOneLinkNodeChild]|| [(UICGPDFNodeAccessibilityElement *)self _pdfElementHasLinkContainer])
     {
-      v5 |= *MEMORY[0x29EDC7F98];
+      accessibilityTraits |= *MEMORY[0x29EDC7F98];
     }
 
     if (![(AXPDFNodeElement *)self pdfViewRequiresPageTurning]|| ![(AXPDFNodeElement *)self isLastNodeInPage])
@@ -417,18 +417,18 @@ LABEL_18:
 
     v8 = MEMORY[0x29EDC7F78];
 LABEL_8:
-    v5 |= *v8;
+    accessibilityTraits |= *v8;
 LABEL_24:
-    v10 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:v5];
+    v10 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:accessibilityTraits];
     [(UICGPDFNodeAccessibilityElement *)self _accessibilitySetRetainedValue:v10 forKey:@"StoredTraits"];
 
     goto LABEL_25;
   }
 
-  v5 = [v3 unsignedLongLongValue];
+  accessibilityTraits = [v3 unsignedLongLongValue];
 LABEL_25:
 
-  return v5;
+  return accessibilityTraits;
 }
 
 - (BOOL)isAccessibilityElement
@@ -440,21 +440,21 @@ LABEL_25:
     return 0;
   }
 
-  v3 = [(UICGPDFNodeAccessibilityElement *)self type];
-  if ((v3 - 103) < 2)
+  type = [(UICGPDFNodeAccessibilityElement *)self type];
+  if ((type - 103) < 2)
   {
     return 0;
   }
 
   v4 = 1;
-  if (v3 <= 401)
+  if (type <= 401)
   {
-    if (v3 == 108)
+    if (type == 108)
     {
       return 0;
     }
 
-    if (v3 == 301)
+    if (type == 301)
     {
       return v4;
     }
@@ -462,14 +462,14 @@ LABEL_25:
 
   else
   {
-    if ((v3 - 402) < 2 || v3 == 506)
+    if ((type - 402) < 2 || type == 506)
     {
       return v4;
     }
 
-    if (v3 == 700)
+    if (type == 700)
     {
-      v6 = [(UICGPDFNodeAccessibilityElement *)self cachedAXCaptionChildrenNodesOfFigureNode];
+      cachedAXCaptionChildrenNodesOfFigureNode = [(UICGPDFNodeAccessibilityElement *)self cachedAXCaptionChildrenNodesOfFigureNode];
       v7 = [(UICGPDFNodeAccessibilityElement *)self _attributedAccessibilityLabelForNode:[(UICGPDFNodeAccessibilityElement *)self nodeRef]];
       if ([v7 length])
       {
@@ -478,15 +478,15 @@ LABEL_16:
         return v4;
       }
 
-      if (!v6)
+      if (!cachedAXCaptionChildrenNodesOfFigureNode)
       {
-        v6 = [UICGPDFNodeAccessibilityElement _findCaptionChildrenNodesOfFigureNode:self];
-        v8 = [v6 mutableCopy];
+        cachedAXCaptionChildrenNodesOfFigureNode = [UICGPDFNodeAccessibilityElement _findCaptionChildrenNodesOfFigureNode:self];
+        v8 = [cachedAXCaptionChildrenNodesOfFigureNode mutableCopy];
         [(UICGPDFNodeAccessibilityElement *)self setCachedAXCaptionChildrenNodesOfFigureNode:v8];
       }
 
-      v9 = [(UICGPDFNodeAccessibilityElement *)self altText];
-      if ([v9 length] || objc_msgSend(v6, "count"))
+      altText = [(UICGPDFNodeAccessibilityElement *)self altText];
+      if ([altText length] || objc_msgSend(cachedAXCaptionChildrenNodesOfFigureNode, "count"))
       {
 
 LABEL_15:
@@ -497,9 +497,9 @@ LABEL_15:
       [(UICGPDFNodeAccessibilityElement *)self nodeRef];
       if (CGPDFTaggedNodeIsImageFigure())
       {
-        v10 = [(UICGPDFNodeAccessibilityElement *)self _isSubFigure];
+        _isSubFigure = [(UICGPDFNodeAccessibilityElement *)self _isSubFigure];
 
-        if (!v10)
+        if (!_isSubFigure)
         {
           goto LABEL_15;
         }
@@ -523,23 +523,23 @@ LABEL_15:
   if (CGPDFTaggedNodeGetLanguageText())
   {
     [(UICGPDFNodeAccessibilityElement *)self nodeRef];
-    v3 = CGPDFTaggedNodeGetLanguageText();
+    accessibilityLanguage = CGPDFTaggedNodeGetLanguageText();
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = UICGPDFNodeAccessibilityElement;
-    v3 = [(UICGPDFNodeAccessibilityElement *)&v5 accessibilityLanguage];
+    accessibilityLanguage = [(UICGPDFNodeAccessibilityElement *)&v5 accessibilityLanguage];
   }
 
-  return v3;
+  return accessibilityLanguage;
 }
 
 - (int64_t)accessibilityContainerType
 {
-  v3 = [(UICGPDFNodeAccessibilityElement *)self type];
-  switch(v3)
+  type = [(UICGPDFNodeAccessibilityElement *)self type];
+  switch(type)
   {
     case 107:
       return 14;
@@ -556,9 +556,9 @@ LABEL_15:
 
 - (id)accessibilityIdentification
 {
-  v2 = [(UICGPDFNodeAccessibilityElement *)self type];
-  v3 = v2;
-  if (v2 <= 302)
+  type = [(UICGPDFNodeAccessibilityElement *)self type];
+  v3 = type;
+  if (type <= 302)
   {
     result = @"AX_Tagged_Node_Paragraph";
     if (v3 <= 109)
@@ -716,13 +716,13 @@ LABEL_15:
     }
   }
 
-  else if (v2 > 504)
+  else if (type > 504)
   {
-    if (v2 <= 602)
+    if (type <= 602)
     {
-      if (v2 <= 599)
+      if (type <= 599)
       {
-        switch(v2)
+        switch(type)
         {
           case 505:
             return @"AX_Tagged_Node_Code";
@@ -735,12 +735,12 @@ LABEL_15:
         return @"AX_Tagged_Unknown";
       }
 
-      if (v2 == 600)
+      if (type == 600)
       {
         return @"AX_Tagged_Node_Ruby";
       }
 
-      else if (v2 == 601)
+      else if (type == 601)
       {
         return @"AX_Tagged_Node_Ruby_B";
       }
@@ -753,16 +753,16 @@ LABEL_15:
 
     else
     {
-      if (v2 > 605)
+      if (type > 605)
       {
-        if (v2 > 700)
+        if (type > 700)
         {
-          if (v2 == 701)
+          if (type == 701)
           {
             return @"AX_Tagged_Node_Formula";
           }
 
-          if (v2 == 702)
+          if (type == 702)
           {
             return @"AX_Tagged_Node_Form";
           }
@@ -770,12 +770,12 @@ LABEL_15:
 
         else
         {
-          if (v2 == 606)
+          if (type == 606)
           {
             return @"AX_Tagged_Node_Warichu_Punctuation";
           }
 
-          if (v2 == 700)
+          if (type == 700)
           {
             return @"AX_Tagged_Node_Figure";
           }
@@ -784,12 +784,12 @@ LABEL_15:
         return @"AX_Tagged_Unknown";
       }
 
-      if (v2 == 603)
+      if (type == 603)
       {
         return @"AX_Tagged_Node_Ruby_Punctuation";
       }
 
-      else if (v2 == 604)
+      else if (type == 604)
       {
         return @"AX_Tagged_Node_Warichu";
       }
@@ -803,13 +803,13 @@ LABEL_15:
 
   else
   {
-    if (v2 > 404)
+    if (type > 404)
     {
-      if (v2 > 500)
+      if (type > 500)
       {
-        if (v2 > 502)
+        if (type > 502)
         {
-          if (v2 == 503)
+          if (type == 503)
           {
             return @"AX_Tagged_Node_Reference";
           }
@@ -820,7 +820,7 @@ LABEL_15:
           }
         }
 
-        else if (v2 == 501)
+        else if (type == 501)
         {
           return @"AX_Tagged_Node_Quote";
         }
@@ -831,7 +831,7 @@ LABEL_15:
         }
       }
 
-      switch(v2)
+      switch(type)
       {
         case 405:
           return @"AX_Tagged_Node_Table_Body";
@@ -844,9 +844,9 @@ LABEL_15:
       return @"AX_Tagged_Unknown";
     }
 
-    if (v2 <= 401)
+    if (type <= 401)
     {
-      switch(v2)
+      switch(type)
       {
         case 303:
           return @"AX_Tagged_Node_List_Item_Body";
@@ -859,12 +859,12 @@ LABEL_15:
       return @"AX_Tagged_Unknown";
     }
 
-    if (v2 == 402)
+    if (type == 402)
     {
       return @"AX_Tagged_Node_Table_Header_Cell";
     }
 
-    else if (v2 == 403)
+    else if (type == 403)
     {
       return @"AX_Tagged_Node_Table_Data_Cell";
     }
@@ -879,13 +879,13 @@ LABEL_15:
 - (id)accessibilityCustomRotors
 {
   v15[1] = *MEMORY[0x29EDCA608];
-  v3 = [(UICGPDFNodeAccessibilityElement *)self _accessibilityLinks];
-  v4 = [v3 count];
+  _accessibilityLinks = [(UICGPDFNodeAccessibilityElement *)self _accessibilityLinks];
+  v4 = [_accessibilityLinks count];
 
   if (v4)
   {
-    v5 = [(UICGPDFNodeAccessibilityElement *)self _accessibilityPDFCustomLinksRotor];
-    if (!v5)
+    _accessibilityPDFCustomLinksRotor = [(UICGPDFNodeAccessibilityElement *)self _accessibilityPDFCustomLinksRotor];
+    if (!_accessibilityPDFCustomLinksRotor)
     {
       objc_initWeak(&location, self);
       v6 = objc_alloc(MEMORY[0x29EDC78E8]);
@@ -894,13 +894,13 @@ LABEL_15:
       v11 = __60__UICGPDFNodeAccessibilityElement_accessibilityCustomRotors__block_invoke;
       v12 = &unk_29F2E0900;
       objc_copyWeak(&v13, &location);
-      v5 = [v6 initWithSystemType:1 itemSearchBlock:&v9];
-      [(UICGPDFNodeAccessibilityElement *)self _accessibilitySetPDFCustomLinksRotor:v5, v9, v10, v11, v12];
+      _accessibilityPDFCustomLinksRotor = [v6 initWithSystemType:1 itemSearchBlock:&v9];
+      [(UICGPDFNodeAccessibilityElement *)self _accessibilitySetPDFCustomLinksRotor:_accessibilityPDFCustomLinksRotor, v9, v10, v11, v12];
       objc_destroyWeak(&v13);
       objc_destroyWeak(&location);
     }
 
-    v15[0] = v5;
+    v15[0] = _accessibilityPDFCustomLinksRotor;
     v7 = [MEMORY[0x29EDB8D80] arrayWithObjects:v15 count:1];
   }
 
@@ -949,9 +949,9 @@ id __60__UICGPDFNodeAccessibilityElement_accessibilityCustomRotors__block_invoke
     return 0;
   }
 
-  v3 = [(UICGPDFNodeAccessibilityElement *)self nodeRef];
+  nodeRef = [(UICGPDFNodeAccessibilityElement *)self nodeRef];
 
-  return MEMORY[0x2A1C5FC40](v3);
+  return MEMORY[0x2A1C5FC40](nodeRef);
 }
 
 - (unint64_t)accessibilityColumnCount
@@ -961,29 +961,29 @@ id __60__UICGPDFNodeAccessibilityElement_accessibilityCustomRotors__block_invoke
     return 0;
   }
 
-  v3 = [(UICGPDFNodeAccessibilityElement *)self nodeRef];
+  nodeRef = [(UICGPDFNodeAccessibilityElement *)self nodeRef];
 
-  return MEMORY[0x2A1C5FC38](v3);
+  return MEMORY[0x2A1C5FC38](nodeRef);
 }
 
-- (id)accessibilityHeaderElementsForRow:(unint64_t)a3
+- (id)accessibilityHeaderElementsForRow:(unint64_t)row
 {
   v33 = *MEMORY[0x29EDCA608];
   v5 = [(UICGPDFNodeAccessibilityElement *)self _accessibilityFindAncestor:&__block_literal_global_1 startWithSelf:0];
-  v6 = [(UICGPDFNodeAccessibilityElement *)self cachedAXPDFTableCellNodes];
-  if (!v6)
+  cachedAXPDFTableCellNodes = [(UICGPDFNodeAccessibilityElement *)self cachedAXPDFTableCellNodes];
+  if (!cachedAXPDFTableCellNodes)
   {
-    v6 = [UICGPDFNodeAccessibilityElement _findTableCellNodesOfTableNode:v5 withHeadersOnly:1];
-    v7 = [v6 mutableCopy];
+    cachedAXPDFTableCellNodes = [UICGPDFNodeAccessibilityElement _findTableCellNodesOfTableNode:v5 withHeadersOnly:1];
+    v7 = [cachedAXPDFTableCellNodes mutableCopy];
     [(UICGPDFNodeAccessibilityElement *)self setCachedAXPDFTableCellNodes:v7];
   }
 
-  v8 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v9 = v6;
+  v9 = cachedAXPDFTableCellNodes;
   v10 = [v9 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v10)
   {
@@ -999,9 +999,9 @@ id __60__UICGPDFNodeAccessibilityElement_accessibilityCustomRotors__block_invoke
         }
 
         v14 = *(*(&v27 + 1) + 8 * i);
-        if ([v14 accessibilityRowRange] == a3)
+        if ([v14 accessibilityRowRange] == row)
         {
-          [v8 axSafelyAddObject:v14];
+          [array axSafelyAddObject:v14];
         }
       }
 
@@ -1015,7 +1015,7 @@ id __60__UICGPDFNodeAccessibilityElement_accessibilityCustomRotors__block_invoke
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v15 = v8;
+  v15 = array;
   v16 = [v15 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v16)
   {
@@ -1033,7 +1033,7 @@ id __60__UICGPDFNodeAccessibilityElement_accessibilityCustomRotors__block_invoke
         if (*(*(&v23 + 1) + 8 * j) == self)
         {
 
-          v20 = [MEMORY[0x29EDB8D80] array];
+          array2 = [MEMORY[0x29EDB8D80] array];
           goto LABEL_22;
         }
       }
@@ -1048,31 +1048,31 @@ id __60__UICGPDFNodeAccessibilityElement_accessibilityCustomRotors__block_invoke
     }
   }
 
-  v20 = v15;
+  array2 = v15;
 LABEL_22:
-  v21 = v20;
+  v21 = array2;
 
   return v21;
 }
 
-- (id)accessibilityHeaderElementsForColumn:(unint64_t)a3
+- (id)accessibilityHeaderElementsForColumn:(unint64_t)column
 {
   v23 = *MEMORY[0x29EDCA608];
   v5 = [(UICGPDFNodeAccessibilityElement *)self _accessibilityFindAncestor:&__block_literal_global_465 startWithSelf:0];
-  v6 = [(UICGPDFNodeAccessibilityElement *)self cachedAXPDFTableCellNodes];
-  if (!v6)
+  cachedAXPDFTableCellNodes = [(UICGPDFNodeAccessibilityElement *)self cachedAXPDFTableCellNodes];
+  if (!cachedAXPDFTableCellNodes)
   {
-    v6 = [UICGPDFNodeAccessibilityElement _findTableCellNodesOfTableNode:v5 withHeadersOnly:1];
-    v7 = [v6 mutableCopy];
+    cachedAXPDFTableCellNodes = [UICGPDFNodeAccessibilityElement _findTableCellNodesOfTableNode:v5 withHeadersOnly:1];
+    v7 = [cachedAXPDFTableCellNodes mutableCopy];
     [(UICGPDFNodeAccessibilityElement *)self setCachedAXPDFTableCellNodes:v7];
   }
 
-  v8 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v6;
+  v9 = cachedAXPDFTableCellNodes;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -1089,9 +1089,9 @@ LABEL_22:
 
         v14 = *(*(&v18 + 1) + 8 * i);
         v15 = [v14 _accessibilityFindAncestor:&__block_literal_global_467 startWithSelf:{1, v18}];
-        if ([v14 accessibilityColumnRange] == a3 && v15 != 0)
+        if ([v14 accessibilityColumnRange] == column && v15 != 0)
         {
-          [v8 axSafelyAddObject:v14];
+          [array axSafelyAddObject:v14];
         }
       }
 
@@ -1101,7 +1101,7 @@ LABEL_22:
     while (v11);
   }
 
-  return v8;
+  return array;
 }
 
 BOOL __72__UICGPDFNodeAccessibilityElement_accessibilityHeaderElementsForColumn___block_invoke_2(uint64_t a1, void *a2)
@@ -1113,7 +1113,7 @@ BOOL __72__UICGPDFNodeAccessibilityElement_accessibilityHeaderElementsForColumn_
   return v3;
 }
 
-- (id)accessibilityDataTableCellElementForRow:(unint64_t)a3 column:(unint64_t)a4
+- (id)accessibilityDataTableCellElementForRow:(unint64_t)row column:(unint64_t)column
 {
   v20 = *MEMORY[0x29EDCA608];
   v6 = [(UICGPDFNodeAccessibilityElement *)self _accessibilityFindAncestor:&__block_literal_global_469 startWithSelf:0];
@@ -1138,10 +1138,10 @@ BOOL __72__UICGPDFNodeAccessibilityElement_accessibilityHeaderElementsForColumn_
 
         v12 = *(*(&v15 + 1) + 8 * i);
         [v12 nodeRef];
-        if (CGPDFTaggedNodeGetTableCellColumnSpan() == a4)
+        if (CGPDFTaggedNodeGetTableCellColumnSpan() == column)
         {
           [v12 nodeRef];
-          if (CGPDFTaggedNodeGetTableCellRowSpan() == a3)
+          if (CGPDFTaggedNodeGetTableCellRowSpan() == row)
           {
             v13 = v12;
             goto LABEL_12;
@@ -1191,10 +1191,10 @@ LABEL_12:
   return result;
 }
 
-- (void)_axHandleUpdateVisibility:(id)a3
+- (void)_axHandleUpdateVisibility:(id)visibility
 {
-  v4 = [a3 name];
-  v5 = [v4 isEqualToString:AXPDFVisibiltyUpdatedNotification];
+  name = [visibility name];
+  v5 = [name isEqualToString:AXPDFVisibiltyUpdatedNotification];
 
   if (v5)
   {
@@ -1205,32 +1205,32 @@ LABEL_12:
 
 - (id)_accessibilityHeadingLevel
 {
-  v3 = [(UICGPDFNodeAccessibilityElement *)self type];
-  if (v3 <= 203)
+  type = [(UICGPDFNodeAccessibilityElement *)self type];
+  if (type <= 203)
   {
-    if (v3 == 201)
+    if (type == 201)
     {
       v11.receiver = self;
       v11.super_class = UICGPDFNodeAccessibilityElement;
-      v8 = [(UICGPDFNodeAccessibilityElement *)&v11 _accessibilityHeadingLevel];
+      _accessibilityHeadingLevel = [(UICGPDFNodeAccessibilityElement *)&v11 _accessibilityHeadingLevel];
     }
 
     else
     {
       v9 = &unk_2A2263F20;
-      if (v3 != 203)
+      if (type != 203)
       {
         v9 = 0;
       }
 
-      if (v3 == 202)
+      if (type == 202)
       {
-        v8 = &unk_2A2263F08;
+        _accessibilityHeadingLevel = &unk_2A2263F08;
       }
 
       else
       {
-        v8 = v9;
+        _accessibilityHeadingLevel = v9;
       }
     }
   }
@@ -1239,45 +1239,45 @@ LABEL_12:
   {
     v4 = &unk_2A2263F68;
     v5 = &unk_2A2263F80;
-    if (v3 != 207)
+    if (type != 207)
     {
       v5 = 0;
     }
 
-    if (v3 != 206)
+    if (type != 206)
     {
       v4 = v5;
     }
 
     v6 = &unk_2A2263F38;
     v7 = &unk_2A2263F50;
-    if (v3 != 205)
+    if (type != 205)
     {
       v7 = 0;
     }
 
-    if (v3 != 204)
+    if (type != 204)
     {
       v6 = v7;
     }
 
-    if (v3 <= 205)
+    if (type <= 205)
     {
-      v8 = v6;
+      _accessibilityHeadingLevel = v6;
     }
 
     else
     {
-      v8 = v4;
+      _accessibilityHeadingLevel = v4;
     }
   }
 
-  return v8;
+  return _accessibilityHeadingLevel;
 }
 
-- (id)_accessibilityStringForListType:(int)a3
+- (id)_accessibilityStringForListType:(int)type
 {
-  if (a3 != 257 && a3)
+  if (type != 257 && type)
   {
     v4 = 0;
   }
@@ -1290,10 +1290,10 @@ LABEL_12:
   return v4;
 }
 
-+ (BOOL)_containsOnlyTextChildren:(id)a3
++ (BOOL)_containsOnlyTextChildren:(id)children
 {
-  v3 = [a3 accessibilityElements];
-  v4 = [v3 count];
+  accessibilityElements = [children accessibilityElements];
+  v4 = [accessibilityElements count];
   if (v4 >= 0x64)
   {
     v5 = 100;
@@ -1310,14 +1310,14 @@ LABEL_12:
     v7 = 0;
     while (1)
     {
-      v8 = [v3 objectAtIndex:v7];
+      v8 = [accessibilityElements objectAtIndex:v7];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         break;
       }
 
-      v9 = [v8 type];
+      type = [v8 type];
       if (v7)
       {
         v10 = 0;
@@ -1325,16 +1325,16 @@ LABEL_12:
 
       else
       {
-        v10 = v9 == 1;
+        v10 = type == 1;
       }
 
       v11 = v10;
       v6 |= v11;
       if (v6)
       {
-        if (v9 != 1)
+        if (type != 1)
         {
-          if (v9 == 700)
+          if (type == 700)
           {
             [v8 nodeRef];
             v12 = CGPDFTaggedNodeIsImageFigure() ^ 1;
@@ -1345,7 +1345,7 @@ LABEL_12:
         }
       }
 
-      else if (v9 != 200 && !IsCGPDFTaggedNodeTypeInline() || ![UICGPDFNodeAccessibilityElement _containsOnlyTextChildren:v8])
+      else if (type != 200 && !IsCGPDFTaggedNodeTypeInline() || ![UICGPDFNodeAccessibilityElement _containsOnlyTextChildren:v8])
       {
         break;
       }
@@ -1369,12 +1369,12 @@ LABEL_20:
   return v12;
 }
 
-- (id)_attributedAccessibilityLabelForNode:(CGPDFTaggedNode *)a3
+- (id)_attributedAccessibilityLabelForNode:(CGPDFTaggedNode *)node
 {
   AttributedString = CGPDFTaggedNodeCreateAttributedString();
   v5 = MEMORY[0x29EDBD7E8];
-  v6 = [AttributedString string];
-  v7 = [v5 axAttributedStringWithString:v6];
+  string = [AttributedString string];
+  v7 = [v5 axAttributedStringWithString:string];
 
   StringRange = CGPDFTaggedNodeGetStringRange();
   v10 = v9;
@@ -1388,21 +1388,21 @@ LABEL_20:
     v11 = StringRange;
   }
 
-  v12 = [(UICGPDFNodeAccessibilityElement *)self accessibilityLanguage];
+  accessibilityLanguage = [(UICGPDFNodeAccessibilityElement *)self accessibilityLanguage];
 
-  if (v12)
+  if (accessibilityLanguage)
   {
-    v13 = [(UICGPDFNodeAccessibilityElement *)self accessibilityLanguage];
-    [v7 setAttribute:v13 forKey:*MEMORY[0x29EDBD950] withRange:{v11, v10}];
+    accessibilityLanguage2 = [(UICGPDFNodeAccessibilityElement *)self accessibilityLanguage];
+    [v7 setAttribute:accessibilityLanguage2 forKey:*MEMORY[0x29EDBD950] withRange:{v11, v10}];
   }
 
-  v14 = [(UICGPDFNodeAccessibilityElement *)self cachedAXPDFLinks];
-  if (!v14)
+  cachedAXPDFLinks = [(UICGPDFNodeAccessibilityElement *)self cachedAXPDFLinks];
+  if (!cachedAXPDFLinks)
   {
-    v14 = [UICGPDFNodeAccessibilityElement _findLinkChildrenNodesOfNode:self];
+    cachedAXPDFLinks = [UICGPDFNodeAccessibilityElement _findLinkChildrenNodesOfNode:self];
   }
 
-  if ([v14 count])
+  if ([cachedAXPDFLinks count])
   {
     v20[0] = MEMORY[0x29EDCA5F8];
     v20[1] = 3221225472;
@@ -1410,7 +1410,7 @@ LABEL_20:
     v20[3] = &__block_descriptor_48_e15_v32__0_8Q16_B24l;
     v20[4] = v11;
     v20[5] = v10;
-    [v14 enumerateObjectsUsingBlock:v20];
+    [cachedAXPDFLinks enumerateObjectsUsingBlock:v20];
   }
 
   v15 = [AttributedString length];
@@ -1484,7 +1484,7 @@ void __72__UICGPDFNodeAccessibilityElement__attributedAccessibilityLabelForNode_
 
 - (BOOL)_isSubFigure
 {
-  v3 = [(UICGPDFNodeAccessibilityElement *)self accessibilityContainer];
+  accessibilityContainer = [(UICGPDFNodeAccessibilityElement *)self accessibilityContainer];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1493,10 +1493,10 @@ void __72__UICGPDFNodeAccessibilityElement__attributedAccessibilityLabelForNode_
     return 0;
   }
 
-  v5 = [(UICGPDFNodeAccessibilityElement *)self accessibilityContainer];
-  if ([v5 type] == 700)
+  accessibilityContainer2 = [(UICGPDFNodeAccessibilityElement *)self accessibilityContainer];
+  if ([accessibilityContainer2 type] == 700)
   {
-    [v5 nodeRef];
+    [accessibilityContainer2 nodeRef];
     IsImageFigure = CGPDFTaggedNodeIsImageFigure();
   }
 
@@ -1508,10 +1508,10 @@ void __72__UICGPDFNodeAccessibilityElement__attributedAccessibilityLabelForNode_
   return IsImageFigure;
 }
 
-+ (BOOL)_isValidTextFieldElement:(id)a3
++ (BOOL)_isValidTextFieldElement:(id)element
 {
-  v3 = a3;
-  if (!v3 || (MEMORY[0x29C2E4220](@"UICGPDFNodeAccessibilityElement"), (objc_opt_isKindOfClass() & 1) == 0))
+  elementCopy = element;
+  if (!elementCopy || (MEMORY[0x29C2E4220](@"UICGPDFNodeAccessibilityElement"), (objc_opt_isKindOfClass() & 1) == 0))
   {
 LABEL_8:
     v6 = 0;
@@ -1520,9 +1520,9 @@ LABEL_8:
 
   objc_opt_class();
   v4 = __UIAccessibilityCastAsClass();
-  v5 = [v4 type];
+  type = [v4 type];
 
-  if (v5 != 200)
+  if (type != 200)
   {
     if ((IsCGPDFTaggedNodeTypeHeader() & 1) == 0 && (IsCGPDFTaggedNodeTypeIllustration() & 1) == 0)
     {
@@ -1532,7 +1532,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v6 = [UICGPDFNodeAccessibilityElement _containsOnlyTextChildren:v3];
+  v6 = [UICGPDFNodeAccessibilityElement _containsOnlyTextChildren:elementCopy];
 LABEL_9:
 
   return v6;
@@ -1540,31 +1540,31 @@ LABEL_9:
 
 - (id)_accessibilityLinks
 {
-  v3 = [(UICGPDFNodeAccessibilityElement *)self cachedAXPDFLinks];
-  if (!v3)
+  cachedAXPDFLinks = [(UICGPDFNodeAccessibilityElement *)self cachedAXPDFLinks];
+  if (!cachedAXPDFLinks)
   {
     if ([(UICGPDFNodeAccessibilityElement *)self isAccessibilityElement]&& ![(UICGPDFNodeAccessibilityElement *)self _isContainerOfOnlyOneLinkNodeChild])
     {
-      v3 = [MEMORY[0x29EDB8DE8] array];
-      v4 = [(UICGPDFNodeAccessibilityElement *)self cachedAXPDFLinkNodes];
-      if (!v4)
+      cachedAXPDFLinks = [MEMORY[0x29EDB8DE8] array];
+      cachedAXPDFLinkNodes = [(UICGPDFNodeAccessibilityElement *)self cachedAXPDFLinkNodes];
+      if (!cachedAXPDFLinkNodes)
       {
-        v4 = [UICGPDFNodeAccessibilityElement _findLinkChildrenNodesOfNode:self];
-        [(UICGPDFNodeAccessibilityElement *)self setCachedAXPDFLinkNodes:v4];
+        cachedAXPDFLinkNodes = [UICGPDFNodeAccessibilityElement _findLinkChildrenNodesOfNode:self];
+        [(UICGPDFNodeAccessibilityElement *)self setCachedAXPDFLinkNodes:cachedAXPDFLinkNodes];
       }
 
-      [v3 axSafelyAddObjectsFromArray:v4];
-      [v3 enumerateObjectsUsingBlock:&__block_literal_global_494];
-      [(UICGPDFNodeAccessibilityElement *)self setCachedAXPDFLinks:v3];
+      [cachedAXPDFLinks axSafelyAddObjectsFromArray:cachedAXPDFLinkNodes];
+      [cachedAXPDFLinks enumerateObjectsUsingBlock:&__block_literal_global_494];
+      [(UICGPDFNodeAccessibilityElement *)self setCachedAXPDFLinks:cachedAXPDFLinks];
     }
 
     else
     {
-      v3 = 0;
+      cachedAXPDFLinks = 0;
     }
   }
 
-  return v3;
+  return cachedAXPDFLinks;
 }
 
 - (BOOL)_isContainerOfOnlyOneLinkNodeChild
@@ -1574,23 +1574,23 @@ LABEL_9:
     return 1;
   }
 
-  v4 = [(UICGPDFNodeAccessibilityElement *)self cachedAXPDFLinkNodes];
-  if (!v4)
+  cachedAXPDFLinkNodes = [(UICGPDFNodeAccessibilityElement *)self cachedAXPDFLinkNodes];
+  if (!cachedAXPDFLinkNodes)
   {
-    v4 = [UICGPDFNodeAccessibilityElement _findLinkChildrenNodesOfNode:self];
-    [(UICGPDFNodeAccessibilityElement *)self setCachedAXPDFLinkNodes:v4];
+    cachedAXPDFLinkNodes = [UICGPDFNodeAccessibilityElement _findLinkChildrenNodesOfNode:self];
+    [(UICGPDFNodeAccessibilityElement *)self setCachedAXPDFLinkNodes:cachedAXPDFLinkNodes];
   }
 
-  if ([v4 count] == 1)
+  if ([cachedAXPDFLinkNodes count] == 1)
   {
-    v5 = [(UICGPDFNodeAccessibilityElement *)self accessibilityLabel];
-    v6 = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
-    v7 = [v5 stringByTrimmingCharactersInSet:v6];
+    accessibilityLabel = [(UICGPDFNodeAccessibilityElement *)self accessibilityLabel];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
+    v7 = [accessibilityLabel stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-    v8 = [v4 objectAtIndex:0];
-    v9 = [v8 accessibilityLabel];
-    v10 = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
-    v11 = [v9 stringByTrimmingCharactersInSet:v10];
+    v8 = [cachedAXPDFLinkNodes objectAtIndex:0];
+    accessibilityLabel2 = [v8 accessibilityLabel];
+    whitespaceAndNewlineCharacterSet2 = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
+    v11 = [accessibilityLabel2 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet2];
 
     v3 = [v7 isEqualToString:v11];
   }
@@ -1605,17 +1605,17 @@ LABEL_9:
 
 - (BOOL)_pdfElementHasLinkContainer
 {
-  v2 = [(UICGPDFNodeAccessibilityElement *)self accessibilityContainer];
+  accessibilityContainer = [(UICGPDFNodeAccessibilityElement *)self accessibilityContainer];
   objc_opt_class();
-  v3 = (objc_opt_isKindOfClass() & 1) != 0 && [v2 type] == 506;
+  v3 = (objc_opt_isKindOfClass() & 1) != 0 && [accessibilityContainer type] == 506;
 
   return v3;
 }
 
 - (id)_getPDFPageView
 {
-  v2 = [(UICGPDFNodeAccessibilityElement *)self accessibilityContainer];
-  if (v2)
+  accessibilityContainer = [(UICGPDFNodeAccessibilityElement *)self accessibilityContainer];
+  if (accessibilityContainer)
   {
     do
     {
@@ -1625,34 +1625,34 @@ LABEL_9:
         break;
       }
 
-      v3 = [v2 accessibilityContainer];
+      v2AccessibilityContainer = [accessibilityContainer accessibilityContainer];
 
-      v2 = v3;
+      accessibilityContainer = v2AccessibilityContainer;
     }
 
-    while (v3);
+    while (v2AccessibilityContainer);
   }
 
-  return v2;
+  return accessibilityContainer;
 }
 
-- (CGRect)_axConvertBoundsFromScreenCoordinatesToPageView:(CGRect)a3
+- (CGRect)_axConvertBoundsFromScreenCoordinatesToPageView:(CGRect)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(UICGPDFNodeAccessibilityElement *)self _getPDFPageView];
-  v9 = [(AXPDFNodeElement *)self pdfView];
-  v10 = [v8 safeValueForKey:@"page"];
-  v11 = [v9 window];
-  [v11 convertRect:v9 toView:{x, y, width, height}];
+  height = view.size.height;
+  width = view.size.width;
+  y = view.origin.y;
+  x = view.origin.x;
+  _getPDFPageView = [(UICGPDFNodeAccessibilityElement *)self _getPDFPageView];
+  pdfView = [(AXPDFNodeElement *)self pdfView];
+  v10 = [_getPDFPageView safeValueForKey:@"page"];
+  window = [pdfView window];
+  [window convertRect:pdfView toView:{x, y, width, height}];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
 
-  [v9 convertRect:v10 toPage:{v13, v15, v17, v19}];
+  [pdfView convertRect:v10 toPage:{v13, v15, v17, v19}];
   v21 = v20;
   v23 = v22;
   v25 = v24;
@@ -1669,17 +1669,17 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)_accessibilityInsertAnnotation:(id)a3
+- (BOOL)_accessibilityInsertAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = [(UICGPDFNodeAccessibilityElement *)self accessibilityElements];
-  [v4 accessibilityFrame];
+  annotationCopy = annotation;
+  accessibilityElements = [(UICGPDFNodeAccessibilityElement *)self accessibilityElements];
+  [annotationCopy accessibilityFrame];
   [(UICGPDFNodeAccessibilityElement *)self _axConvertBoundsFromScreenCoordinatesToPageView:?];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [UICGPDFNodeAccessibilityElement _findOverlappingChild:v5 children:?];
+  v14 = [UICGPDFNodeAccessibilityElement _findOverlappingChild:accessibilityElements children:?];
   v15 = v14;
   if (v14)
   {
@@ -1706,19 +1706,19 @@ LABEL_9:
       StringRange = CGPDFTaggedNodeGetStringRange();
       v48 = v22;
       v49 = StringRange;
-      v23 = self;
-      v24 = [(AXPDFNodeElement *)v23 page];
-      v25 = [v24 selectionForRect:{v17, y, width, height}];
-      v50 = v24;
-      v26 = [v25 rangeAtIndex:0 onPage:v24];
+      selfCopy = self;
+      page = [(AXPDFNodeElement *)selfCopy page];
+      v25 = [page selectionForRect:{v17, y, width, height}];
+      v50 = page;
+      v26 = [v25 rangeAtIndex:0 onPage:page];
       v28 = v27;
-      v29 = [v25 string];
-      if ([v29 length])
+      string = [v25 string];
+      if ([string length])
       {
         v30 = 0;
-        while (([_accessibilityInsertAnnotation__charsToRemove characterIsMember:{objc_msgSend(v29, "characterAtIndex:", v30)}] & 1) != 0)
+        while (([_accessibilityInsertAnnotation__charsToRemove characterIsMember:{objc_msgSend(string, "characterAtIndex:", v30)}] & 1) != 0)
         {
-          if (++v30 >= [v29 length])
+          if (++v30 >= [string length])
           {
             goto LABEL_9;
           }
@@ -1734,10 +1734,10 @@ LABEL_9:
       }
 
 LABEL_9:
-      v31 = [(UICGPDFNodeAccessibilityElement *)v23 accessibilityElements];
-      v47 = [v31 indexOfObject:v15];
+      accessibilityElements2 = [(UICGPDFNodeAccessibilityElement *)selfCopy accessibilityElements];
+      v47 = [accessibilityElements2 indexOfObject:v15];
 
-      [(UICGPDFNodeAccessibilityElement *)v23 _axRemoveChild:v15];
+      [(UICGPDFNodeAccessibilityElement *)selfCopy _axRemoveChild:v15];
       if (v28)
       {
         v32 = v26 + v28;
@@ -1769,17 +1769,17 @@ LABEL_9:
         }
 
         v38 = [UICGPDFNodeAccessibilityElement alloc];
-        v39 = [(AXPDFNodeElement *)v23 page];
-        v40 = [(UICGPDFNodeAccessibilityElement *)v38 initWithAccessibilityContainer:v23 pdfNodeRef:CopyWithStringRange withPage:v39];
+        page2 = [(AXPDFNodeElement *)selfCopy page];
+        v40 = [(UICGPDFNodeAccessibilityElement *)v38 initWithAccessibilityContainer:selfCopy pdfNodeRef:CopyWithStringRange withPage:page2];
 
         CFRelease(CopyWithStringRange);
         v41 = v47 + 1;
-        [(UICGPDFNodeAccessibilityElement *)v23 _axInsertChild:v40 atIndex:?];
+        [(UICGPDFNodeAccessibilityElement *)selfCopy _axInsertChild:v40 atIndex:?];
 
         v37 = v49;
       }
 
-      [(UICGPDFNodeAccessibilityElement *)v23 _axInsertChild:v4 atIndex:v41];
+      [(UICGPDFNodeAccessibilityElement *)selfCopy _axInsertChild:annotationCopy atIndex:v41];
       if (v37 + v48 - 1 <= v32)
       {
 LABEL_24:
@@ -1792,12 +1792,12 @@ LABEL_24:
       if (CopyWithStringRange)
       {
         v42 = [UICGPDFNodeAccessibilityElement alloc];
-        [(AXPDFNodeElement *)v23 page];
+        [(AXPDFNodeElement *)selfCopy page];
         v44 = v43 = v41;
-        v45 = [(UICGPDFNodeAccessibilityElement *)v42 initWithAccessibilityContainer:v23 pdfNodeRef:CopyWithStringRange withPage:v44];
+        v45 = [(UICGPDFNodeAccessibilityElement *)v42 initWithAccessibilityContainer:selfCopy pdfNodeRef:CopyWithStringRange withPage:v44];
 
         CFRelease(CopyWithStringRange);
-        [(UICGPDFNodeAccessibilityElement *)v23 _axInsertChild:v45 atIndex:v43 + 1];
+        [(UICGPDFNodeAccessibilityElement *)selfCopy _axInsertChild:v45 atIndex:v43 + 1];
 
         goto LABEL_24;
       }
@@ -1807,12 +1807,12 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    LOBYTE(CopyWithStringRange) = [v15 _accessibilityInsertAnnotation:v4];
+    LOBYTE(CopyWithStringRange) = [v15 _accessibilityInsertAnnotation:annotationCopy];
   }
 
   else
   {
-    [(UICGPDFNodeAccessibilityElement *)self _axInsertChild:v4 atIndex:[(UICGPDFNodeAccessibilityElement *)self _accessibilityIndexForInsertingBounds:v7, v9, v11, v13]];
+    [(UICGPDFNodeAccessibilityElement *)self _axInsertChild:annotationCopy atIndex:[(UICGPDFNodeAccessibilityElement *)self _accessibilityIndexForInsertingBounds:v7, v9, v11, v13]];
     LOBYTE(CopyWithStringRange) = 1;
   }
 
@@ -1828,19 +1828,19 @@ uint64_t __66__UICGPDFNodeAccessibilityElement__accessibilityInsertAnnotation___
   return MEMORY[0x2A1C71028]();
 }
 
-- (unsigned)_accessibilityIndexForInsertingBounds:(CGRect)a3
+- (unsigned)_accessibilityIndexForInsertingBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(UICGPDFNodeAccessibilityElement *)self accessibilityElements];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  accessibilityElements = [(UICGPDFNodeAccessibilityElement *)self accessibilityElements];
   v23.origin.x = x;
   v23.origin.y = y;
   v23.size.width = width;
   v23.size.height = height;
   MinY = CGRectGetMinY(v23);
-  if ([v7 count])
+  if ([accessibilityElements count])
   {
     v9 = 0;
     v10 = 0;
@@ -1848,7 +1848,7 @@ uint64_t __66__UICGPDFNodeAccessibilityElement__accessibilityInsertAnnotation___
     v12 = (height * 0.25 + v11);
     while (1)
     {
-      v13 = [v7 objectAtIndex:v9];
+      v13 = [accessibilityElements objectAtIndex:v9];
       [v13 accessibilityFrame];
       v15 = v14;
       v17 = v16;
@@ -1864,7 +1864,7 @@ uint64_t __66__UICGPDFNodeAccessibilityElement__accessibilityInsertAnnotation___
       }
 
       v9 = ++v10;
-      if ([v7 count] <= v10)
+      if ([accessibilityElements count] <= v10)
       {
         goto LABEL_12;
       }
@@ -1883,29 +1883,29 @@ LABEL_12:
   return v9;
 }
 
-- (BOOL)_accessibilityRemoveAnnotation:(id)a3
+- (BOOL)_accessibilityRemoveAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = [(UICGPDFNodeAccessibilityElement *)self accessibilityElements];
-  [v4 accessibilityFrame];
+  annotationCopy = annotation;
+  accessibilityElements = [(UICGPDFNodeAccessibilityElement *)self accessibilityElements];
+  [annotationCopy accessibilityFrame];
   [(UICGPDFNodeAccessibilityElement *)self _axConvertBoundsFromScreenCoordinatesToPageView:?];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  if ([v5 containsObject:v4])
+  if ([accessibilityElements containsObject:annotationCopy])
   {
-    [(UICGPDFNodeAccessibilityElement *)self _axRemoveChild:v4];
+    [(UICGPDFNodeAccessibilityElement *)self _axRemoveChild:annotationCopy];
     v14 = 1;
   }
 
   else
   {
-    v15 = [UICGPDFNodeAccessibilityElement _findOverlappingChild:v5 children:v7, v9, v11, v13];
+    v15 = [UICGPDFNodeAccessibilityElement _findOverlappingChild:accessibilityElements children:v7, v9, v11, v13];
     v16 = v15;
     if (v15)
     {
-      v14 = [v15 _accessibilityRemoveAnnotation:v4];
+      v14 = [v15 _accessibilityRemoveAnnotation:annotationCopy];
     }
 
     else
@@ -1917,47 +1917,47 @@ LABEL_12:
   return v14;
 }
 
-- (void)_axInsertChild:(id)a3 atIndex:(unint64_t)a4
+- (void)_axInsertChild:(id)child atIndex:(unint64_t)index
 {
-  if (a3)
+  if (child)
   {
     v6 = MEMORY[0x29EDB8DE8];
-    v7 = a3;
-    v8 = [(UICGPDFNodeAccessibilityElement *)self accessibilityElements];
-    v9 = [v6 arrayWithArray:v8];
+    childCopy = child;
+    accessibilityElements = [(UICGPDFNodeAccessibilityElement *)self accessibilityElements];
+    v9 = [v6 arrayWithArray:accessibilityElements];
 
-    [v9 insertObject:v7 atIndex:a4];
+    [v9 insertObject:childCopy atIndex:index];
     [(UICGPDFNodeAccessibilityElement *)self setCachedAXElements:v9];
     [(UICGPDFNodeAccessibilityElement *)self _accessibilityRemoveValueForKey:@"StoredTraits"];
   }
 }
 
-- (void)_axRemoveChild:(id)a3
+- (void)_axRemoveChild:(id)child
 {
-  if (a3)
+  if (child)
   {
-    v4 = a3;
-    v5 = [(UICGPDFNodeAccessibilityElement *)self cachedAXElements];
-    [v5 removeObject:v4];
+    childCopy = child;
+    cachedAXElements = [(UICGPDFNodeAccessibilityElement *)self cachedAXElements];
+    [cachedAXElements removeObject:childCopy];
 
-    [(UICGPDFNodeAccessibilityElement *)self setCachedAXElements:v5];
+    [(UICGPDFNodeAccessibilityElement *)self setCachedAXElements:cachedAXElements];
     [(UICGPDFNodeAccessibilityElement *)self _accessibilityRemoveValueForKey:@"StoredTraits"];
   }
 }
 
-+ (id)_findOverlappingChild:(CGRect)a3 children:(id)a4
++ (id)_findOverlappingChild:(CGRect)child children:(id)children
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = child.size.height;
+  width = child.size.width;
+  y = child.origin.y;
+  x = child.origin.x;
   v27 = *MEMORY[0x29EDCA608];
-  v8 = a4;
+  childrenCopy = children;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v9 = [childrenCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1970,7 +1970,7 @@ LABEL_12:
       {
         if (*v23 != v13)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(childrenCopy);
         }
 
         v15 = *(*(&v22 + 1) + 8 * i);
@@ -1997,7 +1997,7 @@ LABEL_12:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v10 = [childrenCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v10);
@@ -2011,25 +2011,25 @@ LABEL_12:
   return v12;
 }
 
-+ (id)_findLinkChildrenNodesOfNode:(id)a3
++ (id)_findLinkChildrenNodesOfNode:(id)node
 {
   v20 = *MEMORY[0x29EDCA608];
-  v4 = a3;
-  v5 = [v4 nodeRef];
-  v6 = [MEMORY[0x29EDB8DE8] array];
-  if (v5 && [v4 type] == 506)
+  nodeCopy = node;
+  nodeRef = [nodeCopy nodeRef];
+  array = [MEMORY[0x29EDB8DE8] array];
+  if (nodeRef && [nodeCopy type] == 506)
   {
-    [v6 axSafelyAddObject:v4];
+    [array axSafelyAddObject:nodeCopy];
   }
 
   else
   {
-    v7 = [v4 accessibilityElements];
+    accessibilityElements = [nodeCopy accessibilityElements];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v8 = [accessibilityElements countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -2040,38 +2040,38 @@ LABEL_12:
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(accessibilityElements);
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v13 = [a1 _findLinkChildrenNodesOfNode:v12];
-            [v6 axSafelyAddObjectsFromArray:v13];
+            v13 = [self _findLinkChildrenNodesOfNode:v12];
+            [array axSafelyAddObjectsFromArray:v13];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [accessibilityElements countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v9);
     }
   }
 
-  return v6;
+  return array;
 }
 
-+ (id)_findCaptionChildrenNodesOfFigureNode:(id)a3
++ (id)_findCaptionChildrenNodesOfFigureNode:(id)node
 {
   v17 = *MEMORY[0x29EDCA608];
-  v3 = [a3 accessibilityElements];
-  v4 = [MEMORY[0x29EDB8DE8] array];
+  accessibilityElements = [node accessibilityElements];
+  array = [MEMORY[0x29EDB8DE8] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = accessibilityElements;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -2090,7 +2090,7 @@ LABEL_12:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 && [v10 type] == 106)
         {
-          [v4 axSafelyAddObject:v10];
+          [array axSafelyAddObject:v10];
         }
       }
 
@@ -2100,28 +2100,28 @@ LABEL_12:
     while (v7);
   }
 
-  return v4;
+  return array;
 }
 
-+ (id)_findFigureChildrenNodesOfTableCellNode:(id)a3
++ (id)_findFigureChildrenNodesOfTableCellNode:(id)node
 {
   v20[1] = *MEMORY[0x29EDCA608];
-  v4 = a3;
-  if ([v4 type] == 700 && objc_msgSend(v4, "isAccessibilityElement"))
+  nodeCopy = node;
+  if ([nodeCopy type] == 700 && objc_msgSend(nodeCopy, "isAccessibilityElement"))
   {
-    v20[0] = v4;
-    v5 = [MEMORY[0x29EDB8D80] arrayWithObjects:v20 count:1];
+    v20[0] = nodeCopy;
+    array = [MEMORY[0x29EDB8D80] arrayWithObjects:v20 count:1];
   }
 
   else
   {
-    v6 = [v4 accessibilityElements];
-    v5 = [MEMORY[0x29EDB8DE8] array];
+    accessibilityElements = [nodeCopy accessibilityElements];
+    array = [MEMORY[0x29EDB8DE8] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = v6;
+    v7 = accessibilityElements;
     v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
@@ -2140,8 +2140,8 @@ LABEL_12:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v13 = [a1 _findFigureChildrenNodesOfTableCellNode:{v12, v15}];
-            [v5 axSafelyAddObjectsFromArray:v13];
+            v13 = [self _findFigureChildrenNodesOfTableCellNode:{v12, v15}];
+            [array axSafelyAddObjectsFromArray:v13];
           }
         }
 
@@ -2152,43 +2152,43 @@ LABEL_12:
     }
   }
 
-  return v5;
+  return array;
 }
 
-+ (id)_findTableCellNodesOfTableNode:(id)a3 withHeadersOnly:(BOOL)a4
++ (id)_findTableCellNodesOfTableNode:(id)node withHeadersOnly:(BOOL)only
 {
-  v4 = a4;
+  onlyCopy = only;
   v26[1] = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v7 = [v6 type];
-  if (v4)
+  nodeCopy = node;
+  type = [nodeCopy type];
+  if (onlyCopy)
   {
-    if (v7 == 402)
+    if (type == 402)
     {
-      v26[0] = v6;
+      v26[0] = nodeCopy;
       v8 = MEMORY[0x29EDB8D80];
       v9 = v26;
 LABEL_6:
-      v10 = [v8 arrayWithObjects:v9 count:1];
+      array = [v8 arrayWithObjects:v9 count:1];
       goto LABEL_17;
     }
   }
 
-  else if ((v7 & 0xFFFFFFFE) == 0x192)
+  else if ((type & 0xFFFFFFFE) == 0x192)
   {
-    v25 = v6;
+    v25 = nodeCopy;
     v8 = MEMORY[0x29EDB8D80];
     v9 = &v25;
     goto LABEL_6;
   }
 
-  v11 = [v6 accessibilityElements];
-  v10 = [MEMORY[0x29EDB8DE8] array];
+  accessibilityElements = [nodeCopy accessibilityElements];
+  array = [MEMORY[0x29EDB8DE8] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v12 = v11;
+  v12 = accessibilityElements;
   v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v13)
   {
@@ -2207,8 +2207,8 @@ LABEL_6:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v18 = [a1 _findTableCellNodesOfTableNode:v17 withHeadersOnly:{v4, v20}];
-          [v10 axSafelyAddObjectsFromArray:v18];
+          v18 = [self _findTableCellNodesOfTableNode:v17 withHeadersOnly:{onlyCopy, v20}];
+          [array axSafelyAddObjectsFromArray:v18];
         }
       }
 
@@ -2220,13 +2220,13 @@ LABEL_6:
 
 LABEL_17:
 
-  return v10;
+  return array;
 }
 
-+ (id)_findLabelChildNodeOfListItem:(id)a3
++ (id)_findLabelChildNodeOfListItem:(id)item
 {
   v14 = *MEMORY[0x29EDCA608];
-  [a3 accessibilityElements];
+  [item accessibilityElements];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -2268,10 +2268,10 @@ LABEL_12:
   return v4;
 }
 
-+ (id)_findLabelBodyChildNodeOfListItem:(id)a3
++ (id)_findLabelBodyChildNodeOfListItem:(id)item
 {
   v14 = *MEMORY[0x29EDCA608];
-  [a3 accessibilityElements];
+  [item accessibilityElements];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -2313,12 +2313,12 @@ LABEL_12:
   return v4;
 }
 
-- (id)_findTOCIChildNodeOfNode:(id)a3
+- (id)_findTOCIChildNodeOfNode:(id)node
 {
   v20 = *MEMORY[0x29EDCA608];
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self || [(UICGPDFNodeAccessibilityElement *)v4 type]!= 108)
+  nodeCopy = node;
+  v5 = nodeCopy;
+  if (nodeCopy == self || [(UICGPDFNodeAccessibilityElement *)nodeCopy type]!= 108)
   {
     [(UICGPDFNodeAccessibilityElement *)v5 accessibilityElements];
     v15 = 0u;
@@ -2378,16 +2378,16 @@ LABEL_15:
 {
   v8.receiver = self;
   v8.super_class = UICGPDFNodeAccessibilityElement;
-  v3 = [(UICGPDFNodeAccessibilityElement *)&v8 accessibilityTraits];
-  v4 = [(UICGPDFNodeAccessibilityElement *)self cachedAXFigureChildrenNodesOfTableCellNode];
-  if (!v4)
+  accessibilityTraits = [(UICGPDFNodeAccessibilityElement *)&v8 accessibilityTraits];
+  cachedAXFigureChildrenNodesOfTableCellNode = [(UICGPDFNodeAccessibilityElement *)self cachedAXFigureChildrenNodesOfTableCellNode];
+  if (!cachedAXFigureChildrenNodesOfTableCellNode)
   {
-    v4 = [UICGPDFNodeAccessibilityElement _findFigureChildrenNodesOfTableCellNode:self];
-    v5 = [v4 mutableCopy];
+    cachedAXFigureChildrenNodesOfTableCellNode = [UICGPDFNodeAccessibilityElement _findFigureChildrenNodesOfTableCellNode:self];
+    v5 = [cachedAXFigureChildrenNodesOfTableCellNode mutableCopy];
     [(UICGPDFNodeAccessibilityElement *)self setCachedAXFigureChildrenNodesOfTableCellNode:v5];
   }
 
-  if ([v4 count])
+  if ([cachedAXFigureChildrenNodesOfTableCellNode count])
   {
     v6 = *MEMORY[0x29EDC7F88];
   }
@@ -2397,7 +2397,7 @@ LABEL_15:
     v6 = 0;
   }
 
-  return v6 | v3;
+  return v6 | accessibilityTraits;
 }
 
 @end

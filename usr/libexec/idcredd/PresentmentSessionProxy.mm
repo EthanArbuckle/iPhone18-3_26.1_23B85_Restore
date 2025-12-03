@@ -1,29 +1,29 @@
 @interface PresentmentSessionProxy
 - (_TtC7idcredd23PresentmentSessionProxy)init;
-- (void)buildCredentialResponseFor:(DCPresentmentSelection *)a3 completionHandler:(id)a4;
-- (void)buildErrorResponseWith:(unint64_t)a3 completionHandler:(id)a4;
-- (void)buildGenericDataResponse:(NSData *)a3 completionHandler:(id)a4;
-- (void)buildResponseFor:(DCPresentmentSelection *)a3 completionHandler:(id)a4;
-- (void)configureWithPartitions:(NSArray *)a3 presentmentType:(unint64_t)a4 options:(DCPresentmentSessionOptions *)a5 completionHandler:(id)a6;
-- (void)generateTransportKeyFor:(unint64_t)a3 completionHandler:(id)a4;
-- (void)interpretCredentialRequest:(_TtC10CoreIDCred31XPCCredentialPresentmentRequest *)a3 completionHandler:(id)a4;
-- (void)interpretGenericDataRequest:(NSData *)a3 completionHandler:(id)a4;
-- (void)interpretRequest:(DCPresentmentRequest *)a3 completionHandler:(id)a4;
+- (void)buildCredentialResponseFor:(DCPresentmentSelection *)for completionHandler:(id)handler;
+- (void)buildErrorResponseWith:(unint64_t)with completionHandler:(id)handler;
+- (void)buildGenericDataResponse:(NSData *)response completionHandler:(id)handler;
+- (void)buildResponseFor:(DCPresentmentSelection *)for completionHandler:(id)handler;
+- (void)configureWithPartitions:(NSArray *)partitions presentmentType:(unint64_t)type options:(DCPresentmentSessionOptions *)options completionHandler:(id)handler;
+- (void)generateTransportKeyFor:(unint64_t)for completionHandler:(id)handler;
+- (void)interpretCredentialRequest:(_TtC10CoreIDCred31XPCCredentialPresentmentRequest *)request completionHandler:(id)handler;
+- (void)interpretGenericDataRequest:(NSData *)request completionHandler:(id)handler;
+- (void)interpretRequest:(DCPresentmentRequest *)request completionHandler:(id)handler;
 @end
 
 @implementation PresentmentSessionProxy
 
-- (void)configureWithPartitions:(NSArray *)a3 presentmentType:(unint64_t)a4 options:(DCPresentmentSessionOptions *)a5 completionHandler:(id)a6
+- (void)configureWithPartitions:(NSArray *)partitions presentmentType:(unint64_t)type options:(DCPresentmentSessionOptions *)options completionHandler:(id)handler
 {
   v11 = sub_100004E70(&qword_100201CD0, &qword_1001AC550);
   v12 = *(*(v11 - 8) + 64);
   __chkstk_darwin(v11 - 8);
   v14 = &v23 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(handler);
   v16 = swift_allocObject();
-  v16[2] = a3;
-  v16[3] = a4;
-  v16[4] = a5;
+  v16[2] = partitions;
+  v16[3] = type;
+  v16[4] = options;
   v16[5] = v15;
   v16[6] = self;
   v17 = type metadata accessor for TaskPriority();
@@ -38,21 +38,21 @@
   v19[3] = 0;
   v19[4] = &unk_1001ACBB8;
   v19[5] = v18;
-  v20 = a3;
-  v21 = a5;
-  v22 = self;
+  partitionsCopy = partitions;
+  optionsCopy = options;
+  selfCopy = self;
   sub_100093C54(0, 0, v14, &unk_1001ACBC0, v19);
 }
 
-- (void)generateTransportKeyFor:(unint64_t)a3 completionHandler:(id)a4
+- (void)generateTransportKeyFor:(unint64_t)for completionHandler:(id)handler
 {
   v7 = sub_100004E70(&qword_100201CD0, &qword_1001AC550);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = for;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -67,19 +67,19 @@
   v15[3] = 0;
   v15[4] = &unk_1001ACB90;
   v15[5] = v14;
-  v16 = self;
+  selfCopy = self;
   sub_100093C54(0, 0, v10, &unk_1001ACB98, v15);
 }
 
-- (void)interpretRequest:(DCPresentmentRequest *)a3 completionHandler:(id)a4
+- (void)interpretRequest:(DCPresentmentRequest *)request completionHandler:(id)handler
 {
   v7 = sub_100004E70(&qword_100201CD0, &qword_1001AC550);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = request;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -94,20 +94,20 @@
   v15[3] = 0;
   v15[4] = &unk_1001ACB70;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  requestCopy = request;
+  selfCopy = self;
   sub_100093C54(0, 0, v10, &unk_1001ACB78, v15);
 }
 
-- (void)interpretCredentialRequest:(_TtC10CoreIDCred31XPCCredentialPresentmentRequest *)a3 completionHandler:(id)a4
+- (void)interpretCredentialRequest:(_TtC10CoreIDCred31XPCCredentialPresentmentRequest *)request completionHandler:(id)handler
 {
   v7 = sub_100004E70(&qword_100201CD0, &qword_1001AC550);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = request;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -122,20 +122,20 @@
   v15[3] = 0;
   v15[4] = &unk_1001ACB50;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  requestCopy = request;
+  selfCopy = self;
   sub_100093C54(0, 0, v10, &unk_1001ACB58, v15);
 }
 
-- (void)buildResponseFor:(DCPresentmentSelection *)a3 completionHandler:(id)a4
+- (void)buildResponseFor:(DCPresentmentSelection *)for completionHandler:(id)handler
 {
   v7 = sub_100004E70(&qword_100201CD0, &qword_1001AC550);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = for;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -150,20 +150,20 @@
   v15[3] = 0;
   v15[4] = &unk_1001ACB30;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  forCopy = for;
+  selfCopy = self;
   sub_100093C54(0, 0, v10, &unk_1001ACB38, v15);
 }
 
-- (void)buildCredentialResponseFor:(DCPresentmentSelection *)a3 completionHandler:(id)a4
+- (void)buildCredentialResponseFor:(DCPresentmentSelection *)for completionHandler:(id)handler
 {
   v7 = sub_100004E70(&qword_100201CD0, &qword_1001AC550);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = for;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -178,20 +178,20 @@
   v15[3] = 0;
   v15[4] = &unk_1001ACB10;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  forCopy = for;
+  selfCopy = self;
   sub_100093C54(0, 0, v10, &unk_1001ACB18, v15);
 }
 
-- (void)buildErrorResponseWith:(unint64_t)a3 completionHandler:(id)a4
+- (void)buildErrorResponseWith:(unint64_t)with completionHandler:(id)handler
 {
   v7 = sub_100004E70(&qword_100201CD0, &qword_1001AC550);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = with;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -206,19 +206,19 @@
   v15[3] = 0;
   v15[4] = &unk_1001ACAF0;
   v15[5] = v14;
-  v16 = self;
+  selfCopy = self;
   sub_100093C54(0, 0, v10, &unk_1001ACAF8, v15);
 }
 
-- (void)interpretGenericDataRequest:(NSData *)a3 completionHandler:(id)a4
+- (void)interpretGenericDataRequest:(NSData *)request completionHandler:(id)handler
 {
   v7 = sub_100004E70(&qword_100201CD0, &qword_1001AC550);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = request;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -233,20 +233,20 @@
   v15[3] = 0;
   v15[4] = &unk_1001ACAD0;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  requestCopy = request;
+  selfCopy = self;
   sub_100093C54(0, 0, v10, &unk_1001ACAD8, v15);
 }
 
-- (void)buildGenericDataResponse:(NSData *)a3 completionHandler:(id)a4
+- (void)buildGenericDataResponse:(NSData *)response completionHandler:(id)handler
 {
   v7 = sub_100004E70(&qword_100201CD0, &qword_1001AC550);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = response;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -261,8 +261,8 @@
   v15[3] = 0;
   v15[4] = &unk_1001AC130;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  responseCopy = response;
+  selfCopy = self;
   sub_100093C54(0, 0, v10, &unk_1001AC570, v15);
 }
 

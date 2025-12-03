@@ -1,36 +1,36 @@
 @interface PUParallaxLayerStackDebugViewController
 - (CGRect)initialVisibleRect;
 - (PUParallaxLayerStackDebugViewController)init;
-- (id)_newButtonWithSystemImageName:(id)a3;
-- (void)_presentSheetController:(id)a3;
+- (id)_newButtonWithSystemImageName:(id)name;
+- (void)_presentSheetController:(id)controller;
 - (void)_updateDateTimeView;
 - (void)hideDowloadProgressIndicator;
 - (void)hideProgressIndicator;
-- (void)loadLayerStack:(id)a3;
-- (void)loadLayerStack:(id)a3 segmentationItem:(id)a4;
-- (void)loadPHAsset:(id)a3;
-- (void)loadPartialSegmentationItem:(id)a3 loadingState:(unint64_t)a4;
-- (void)loadSegmentationItem:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)panGesture:(id)a3;
-- (void)pinchGesture:(id)a3;
+- (void)loadLayerStack:(id)stack;
+- (void)loadLayerStack:(id)stack segmentationItem:(id)item;
+- (void)loadPHAsset:(id)asset;
+- (void)loadPartialSegmentationItem:(id)item loadingState:(unint64_t)state;
+- (void)loadSegmentationItem:(id)item;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)panGesture:(id)gesture;
+- (void)pinchGesture:(id)gesture;
 - (void)renderAfterStyleChange;
 - (void)renderAfterVisibleFrameChange;
-- (void)setViewModel:(id)a3;
-- (void)shareLayerStack:(id)a3;
-- (void)showColorPalettes:(id)a3;
+- (void)setViewModel:(id)model;
+- (void)shareLayerStack:(id)stack;
+- (void)showColorPalettes:(id)palettes;
 - (void)showDownloadProgressIndicator;
-- (void)showLayerList:(id)a3;
-- (void)showLooks:(id)a3;
-- (void)showProgressIndicator:(id)a3;
-- (void)tapToRadar:(id)a3;
-- (void)toggleParallaxEnabled:(id)a3;
-- (void)updateDownloadProgressIndicator:(double)a3;
-- (void)updateProgressIndicator:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)showLayerList:(id)list;
+- (void)showLooks:(id)looks;
+- (void)showProgressIndicator:(id)indicator;
+- (void)tapToRadar:(id)radar;
+- (void)toggleParallaxEnabled:(id)enabled;
+- (void)updateDownloadProgressIndicator:(double)indicator;
+- (void)updateProgressIndicator:(id)indicator;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PUParallaxLayerStackDebugViewController
@@ -48,23 +48,23 @@
   return result;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (a5 != "LayerStackViewModelObservationContext")
+  changeCopy = change;
+  observableCopy = observable;
+  if (context != "LayerStackViewModelObservationContext")
   {
     goto LABEL_9;
   }
 
-  v19 = v9;
-  v10 = v9;
+  v19 = observableCopy;
+  v10 = observableCopy;
   if (!v10)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
-    [v14 handleFailureInMethod:a2 object:self file:@"PUParallaxLayerStackDebugViewController.m" lineNumber:542 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"observable", v16}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUParallaxLayerStackDebugViewController.m" lineNumber:542 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"observable", v16}];
 LABEL_14:
 
     goto LABEL_4;
@@ -73,40 +73,40 @@ LABEL_14:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v17 = objc_opt_class();
     v16 = NSStringFromClass(v17);
-    v18 = [v10 px_descriptionForAssertionMessage];
-    [v14 handleFailureInMethod:a2 object:self file:@"PUParallaxLayerStackDebugViewController.m" lineNumber:542 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"observable", v16, v18}];
+    px_descriptionForAssertionMessage = [v10 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUParallaxLayerStackDebugViewController.m" lineNumber:542 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"observable", v16, px_descriptionForAssertionMessage}];
 
     goto LABEL_14;
   }
 
 LABEL_4:
-  v11 = [v10 currentLayerStackPropertiesChange];
-  v12 = [v10 stylePropertiesChange];
-  if (v11 & 0x10 | (v6 & 0x200))
+  currentLayerStackPropertiesChange = [v10 currentLayerStackPropertiesChange];
+  stylePropertiesChange = [v10 stylePropertiesChange];
+  if (currentLayerStackPropertiesChange & 0x10 | (changeCopy & 0x200))
   {
-    v13 = [(PUParallaxLayerStackDebugViewController *)self view];
-    [v13 setNeedsLayout];
+    view = [(PUParallaxLayerStackDebugViewController *)self view];
+    [view setNeedsLayout];
   }
 
-  if ((v12 & 0x11) != 0)
+  if ((stylePropertiesChange & 0x11) != 0)
   {
     [(PUParallaxLayerStackDebugViewController *)self _updateDateTimeView];
   }
 
-  v9 = v19;
+  observableCopy = v19;
 LABEL_9:
 }
 
-- (void)pinchGesture:(id)a3
+- (void)pinchGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [v4 state];
-  if (v5 == 2)
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  if (state == 2)
   {
-    [v4 scale];
+    [gestureCopy scale];
     [(PUParallaxLayerStackViewModel *)self->_viewModel visibleFrame];
     [(PUParallaxLayerStackViewModel *)self->_viewModel extendedImageRect];
     [(PUParallaxLayerStackDebugViewController *)self initialVisibleRect];
@@ -126,32 +126,32 @@ LABEL_9:
     v12[6] = v9;
     v12[7] = v10;
     [(PUParallaxLayerStackViewModel *)viewModel performChanges:v12];
-    v11 = [(PUParallaxLayerStackDebugViewController *)self layerStackView];
-    [v11 layoutIfNeeded];
+    layerStackView = [(PUParallaxLayerStackDebugViewController *)self layerStackView];
+    [layerStackView layoutIfNeeded];
 
     [(PUParallaxLayerStackDebugViewController *)self renderAfterVisibleFrameChange];
   }
 
-  else if (v5 == 1)
+  else if (state == 1)
   {
     [(PUParallaxLayerStackViewModel *)self->_viewModel visibleFrame];
     [(PUParallaxLayerStackDebugViewController *)self setInitialVisibleRect:?];
   }
 }
 
-- (void)panGesture:(id)a3
+- (void)panGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [v4 state];
-  if (v5 == 2)
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  if (state == 2)
   {
-    v6 = [(PUParallaxLayerStackDebugViewController *)self layerStackView];
-    [v4 translationInView:v6];
+    layerStackView = [(PUParallaxLayerStackDebugViewController *)self layerStackView];
+    [gestureCopy translationInView:layerStackView];
 
     [(PUParallaxLayerStackViewModel *)self->_viewModel visibleFrame];
     [(PUParallaxLayerStackViewModel *)self->_viewModel extendedImageRect];
-    v7 = [(PUParallaxLayerStackDebugViewController *)self view];
-    [v7 bounds];
+    view = [(PUParallaxLayerStackDebugViewController *)self view];
+    [view bounds];
 
     [(PUParallaxLayerStackDebugViewController *)self initialVisibleRect];
     [(PUParallaxLayerStackDebugViewController *)self initialVisibleRect];
@@ -166,13 +166,13 @@ LABEL_9:
     v14[6] = v11;
     v14[7] = v12;
     [(PUParallaxLayerStackViewModel *)viewModel performChanges:v14];
-    v13 = [(PUParallaxLayerStackDebugViewController *)self layerStackView];
-    [v13 layoutIfNeeded];
+    layerStackView2 = [(PUParallaxLayerStackDebugViewController *)self layerStackView];
+    [layerStackView2 layoutIfNeeded];
 
     [(PUParallaxLayerStackDebugViewController *)self renderAfterVisibleFrameChange];
   }
 
-  else if (v5 == 1)
+  else if (state == 1)
   {
     [(PUParallaxLayerStackViewModel *)self->_viewModel visibleFrame];
     [(PUParallaxLayerStackDebugViewController *)self setInitialVisibleRect:?];
@@ -181,33 +181,33 @@ LABEL_9:
 
 - (void)renderAfterStyleChange
 {
-  v4 = [(PUParallaxLayerStackDebugViewController *)self viewModelUpdater];
-  v3 = [(PUParallaxLayerStackDebugViewController *)self viewModel];
-  [v4 renderOnscreenModelAfterStyleChange:v3];
+  viewModelUpdater = [(PUParallaxLayerStackDebugViewController *)self viewModelUpdater];
+  viewModel = [(PUParallaxLayerStackDebugViewController *)self viewModel];
+  [viewModelUpdater renderOnscreenModelAfterStyleChange:viewModel];
 }
 
 - (void)renderAfterVisibleFrameChange
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PUParallaxLayerStackDebugViewController *)self viewModelUpdater];
-  v4 = [(PUParallaxLayerStackDebugViewController *)self viewModel];
-  v5 = [(PUParallaxLayerStackDebugViewController *)self viewModel];
-  v7[0] = v5;
+  viewModelUpdater = [(PUParallaxLayerStackDebugViewController *)self viewModelUpdater];
+  viewModel = [(PUParallaxLayerStackDebugViewController *)self viewModel];
+  viewModel2 = [(PUParallaxLayerStackDebugViewController *)self viewModel];
+  v7[0] = viewModel2;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
-  [v3 renderOnscreenModelAfterVisibleFrameChange:v4 recalculateLayoutProperties:1 allViewModels:v6];
+  [viewModelUpdater renderOnscreenModelAfterVisibleFrameChange:viewModel recalculateLayoutProperties:1 allViewModels:v6];
 }
 
-- (void)tapToRadar:(id)a3
+- (void)tapToRadar:(id)radar
 {
-  v4 = [(PUParallaxLayerStackDebugViewController *)self asset];
+  asset = [(PUParallaxLayerStackDebugViewController *)self asset];
 
-  if (v4)
+  if (asset)
   {
     [(PUParallaxLayerStackDebugViewController *)self showProgressIndicator:@"Preparing Attachments…"];
-    v5 = [(PUParallaxLayerStackViewModel *)self->_viewModel compoundLayerStack];
-    v6 = [(PUParallaxLayerStackDebugViewController *)self asset];
-    v7 = [(PUParallaxLayerStackViewModel *)self->_viewModel segmentationItem];
-    v8 = [PUWallpaperRadarAttachmentProvider radarConfigurationForAsset:v6 suggestion:0 compoundLayerStack:v5 segmentationItem:v7 posterDescriptor:0 posterConfiguration:0 component:9 completionHandler:0];
+    compoundLayerStack = [(PUParallaxLayerStackViewModel *)self->_viewModel compoundLayerStack];
+    asset2 = [(PUParallaxLayerStackDebugViewController *)self asset];
+    segmentationItem = [(PUParallaxLayerStackViewModel *)self->_viewModel segmentationItem];
+    v8 = [PUWallpaperRadarAttachmentProvider radarConfigurationForAsset:asset2 suggestion:0 compoundLayerStack:compoundLayerStack segmentationItem:segmentationItem posterDescriptor:0 posterConfiguration:0 component:9 completionHandler:0];
 
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -219,7 +219,7 @@ LABEL_9:
   }
 }
 
-- (void)shareLayerStack:(id)a3
+- (void)shareLayerStack:(id)stack
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -290,70 +290,70 @@ void __59__PUParallaxLayerStackDebugViewController_shareLayerStack___block_invok
   [*(a1 + 32) presentViewController:v8 animated:1 completion:0];
 }
 
-- (void)showColorPalettes:(id)a3
+- (void)showColorPalettes:(id)palettes
 {
   v4 = objc_alloc_init(PUParallaxLayerStackDebugPaletteViewController);
   [(PUParallaxLayerStackDebugPaletteViewController *)v4 setTitle:@"Color Palettes"];
   [(PUParallaxLayerStackDebugViewController *)self _presentSheetController:v4];
 }
 
-- (void)showLayerList:(id)a3
+- (void)showLayerList:(id)list
 {
   v5 = [[PUParallaxLayerStackDebugTableViewController alloc] initWithStyle:0];
-  v4 = [(PUParallaxLayerStackDebugViewController *)self layerStackView];
-  [(PUParallaxLayerStackDebugTableViewController *)v5 setLayerStackView:v4];
+  layerStackView = [(PUParallaxLayerStackDebugViewController *)self layerStackView];
+  [(PUParallaxLayerStackDebugTableViewController *)v5 setLayerStackView:layerStackView];
 
   [(PUParallaxLayerStackDebugTableViewController *)v5 setTitle:@"Layers"];
   [(PUParallaxLayerStackDebugViewController *)self _presentSheetController:v5];
 }
 
-- (void)showLooks:(id)a3
+- (void)showLooks:(id)looks
 {
   v6 = [[PUParallaxLayerStackDebugStyleTableViewController alloc] initWithStyle:0];
-  v4 = [(PUParallaxLayerStackDebugViewController *)self viewModel];
-  [(PUParallaxLayerStackDebugStyleTableViewController *)v6 setViewModel:v4];
+  viewModel = [(PUParallaxLayerStackDebugViewController *)self viewModel];
+  [(PUParallaxLayerStackDebugStyleTableViewController *)v6 setViewModel:viewModel];
 
-  v5 = [(PUParallaxLayerStackDebugViewController *)self viewModelUpdater];
-  [(PUParallaxLayerStackDebugStyleTableViewController *)v6 setViewModelUpdater:v5];
+  viewModelUpdater = [(PUParallaxLayerStackDebugViewController *)self viewModelUpdater];
+  [(PUParallaxLayerStackDebugStyleTableViewController *)v6 setViewModelUpdater:viewModelUpdater];
 
   [(PUParallaxLayerStackDebugStyleTableViewController *)v6 setTitle:@"Looks"];
   [(PUParallaxLayerStackDebugViewController *)self _presentSheetController:v6];
 }
 
-- (void)_presentSheetController:(id)a3
+- (void)_presentSheetController:(id)controller
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  controllerCopy = controller;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v7 = v4;
+  v7 = controllerCopy;
   v8 = v7;
-  if (v6)
+  if (userInterfaceIdiom)
   {
     v8 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v7];
     v9 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel__dismissSheetController_];
     v18[0] = v9;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-    v11 = [v7 navigationItem];
-    [v11 setRightBarButtonItems:v10];
+    navigationItem = [v7 navigationItem];
+    [navigationItem setRightBarButtonItems:v10];
   }
 
   [v8 setModalPresentationStyle:1];
-  v12 = [MEMORY[0x1E69DCF58] mediumDetent];
-  v13 = [MEMORY[0x1E69DCF58] largeDetent];
-  v17[1] = v13;
+  mediumDetent = [MEMORY[0x1E69DCF58] mediumDetent];
+  largeDetent = [MEMORY[0x1E69DCF58] largeDetent];
+  v17[1] = largeDetent;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
-  v15 = [v8 sheetPresentationController];
-  [v15 setDetents:v14];
+  sheetPresentationController = [v8 sheetPresentationController];
+  [sheetPresentationController setDetents:v14];
 
-  v16 = [v8 sheetPresentationController];
-  [v16 setPrefersGrabberVisible:v6 == 0];
+  sheetPresentationController2 = [v8 sheetPresentationController];
+  [sheetPresentationController2 setPrefersGrabberVisible:userInterfaceIdiom == 0];
 
   [(PUParallaxLayerStackDebugViewController *)self presentViewController:v8 animated:1 completion:0];
 }
 
-- (void)toggleParallaxEnabled:(id)a3
+- (void)toggleParallaxEnabled:(id)enabled
 {
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -361,13 +361,13 @@ void __59__PUParallaxLayerStackDebugViewController_shareLayerStack___block_invok
   v12[3] = &unk_1E7B80DD0;
   v12[4] = self;
   [MEMORY[0x1E69DD250] animateWithDuration:v12 animations:0.2];
-  v4 = [(PUParallaxLayerStackDebugViewController *)self parallaxEnabledButton];
-  v5 = [v4 configuration];
-  v6 = [v5 copy];
+  parallaxEnabledButton = [(PUParallaxLayerStackDebugViewController *)self parallaxEnabledButton];
+  configuration = [parallaxEnabledButton configuration];
+  v6 = [configuration copy];
 
   v7 = MEMORY[0x1E69DCAB8];
-  v8 = [(PUParallaxLayerStackViewModel *)self->_viewModel currentLayerStack];
-  if ([v8 parallaxDisabled])
+  currentLayerStack = [(PUParallaxLayerStackViewModel *)self->_viewModel currentLayerStack];
+  if ([currentLayerStack parallaxDisabled])
   {
     v9 = @"square.stack.3d.up.slash";
   }
@@ -380,8 +380,8 @@ void __59__PUParallaxLayerStackDebugViewController_shareLayerStack___block_invok
   v10 = [v7 systemImageNamed:v9];
   [v6 setImage:v10];
 
-  v11 = [(PUParallaxLayerStackDebugViewController *)self parallaxEnabledButton];
-  [v11 setConfiguration:v6];
+  parallaxEnabledButton2 = [(PUParallaxLayerStackDebugViewController *)self parallaxEnabledButton];
+  [parallaxEnabledButton2 setConfiguration:v6];
 }
 
 uint64_t __65__PUParallaxLayerStackDebugViewController_toggleParallaxEnabled___block_invoke(uint64_t a1)
@@ -404,67 +404,67 @@ void __65__PUParallaxLayerStackDebugViewController_toggleParallaxEnabled___block
   [v3 setParallaxDisabled:{objc_msgSend(v4, "parallaxDisabled") ^ 1}];
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v9 = a3;
+  modelCopy = model;
   v5 = self->_viewModel;
   v6 = v5;
-  if (v5 == v9)
+  if (v5 == modelCopy)
   {
   }
 
   else
   {
-    v7 = [(PUParallaxLayerStackViewModel *)v5 isEqual:v9];
+    v7 = [(PUParallaxLayerStackViewModel *)v5 isEqual:modelCopy];
 
     if ((v7 & 1) == 0)
     {
       [(PUParallaxLayerStackViewModel *)self->_viewModel unregisterChangeObserver:self context:"LayerStackViewModelObservationContext"];
-      objc_storeStrong(&self->_viewModel, a3);
-      [(PUParallaxLayerStackViewModel *)v9 registerChangeObserver:self context:"LayerStackViewModelObservationContext"];
-      v8 = [(PUParallaxLayerStackDebugViewController *)self layerStackView];
-      [v8 setViewModel:v9];
+      objc_storeStrong(&self->_viewModel, model);
+      [(PUParallaxLayerStackViewModel *)modelCopy registerChangeObserver:self context:"LayerStackViewModelObservationContext"];
+      layerStackView = [(PUParallaxLayerStackDebugViewController *)self layerStackView];
+      [layerStackView setViewModel:modelCopy];
 
       [(PUParallaxLayerStackDebugViewController *)self _updateDateTimeView];
     }
   }
 }
 
-- (void)loadLayerStack:(id)a3 segmentationItem:(id)a4
+- (void)loadLayerStack:(id)stack segmentationItem:(id)item
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[PUParallaxLayerStackViewModel alloc] initWithSegmentationItem:v6 initialStyle:0 compoundLayerStack:v7 deviceOrientation:1 allowedBehaviors:0];
+  itemCopy = item;
+  stackCopy = stack;
+  v8 = [[PUParallaxLayerStackViewModel alloc] initWithSegmentationItem:itemCopy initialStyle:0 compoundLayerStack:stackCopy deviceOrientation:1 allowedBehaviors:0];
 
   [(PUParallaxLayerStackDebugViewController *)self setViewModel:v8];
-  v9 = [[PUParallaxLayerStackViewModelUpdater alloc] initWithSegmentationItem:v6];
+  v9 = [[PUParallaxLayerStackViewModelUpdater alloc] initWithSegmentationItem:itemCopy];
 
   [(PUParallaxLayerStackDebugViewController *)self setViewModelUpdater:v9];
 }
 
-- (void)loadLayerStack:(id)a3
+- (void)loadLayerStack:(id)stack
 {
-  v4 = a3;
-  v5 = [[PUParallaxLayerStackViewModel alloc] initWithCompoundLayerStack:v4 style:0 deviceOrientation:1 allowedBehaviors:0];
+  stackCopy = stack;
+  v5 = [[PUParallaxLayerStackViewModel alloc] initWithCompoundLayerStack:stackCopy style:0 deviceOrientation:1 allowedBehaviors:0];
 
   [(PUParallaxLayerStackDebugViewController *)self setViewModel:v5];
 }
 
-- (void)loadSegmentationItem:(id)a3
+- (void)loadSegmentationItem:(id)item
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E69BDEA0]) initWithSegmentationItem:v4];
+  itemCopy = item;
+  v5 = [objc_alloc(MEMORY[0x1E69BDEA0]) initWithSegmentationItem:itemCopy];
   [v5 setResponseQueue:MEMORY[0x1E69E96A0]];
   v6 = [objc_alloc(MEMORY[0x1E69B3C00]) initWithLevel:0];
   [v5 setPriority:v6];
 
   [v5 setLayerStackOptions:0xFFFFLL];
-  if ([v4 isSettlingEffectAvailable])
+  if ([itemCopy isSettlingEffectAvailable])
   {
     [v5 setSettlingEffectEnabled:1];
   }
 
-  if ([v4 isSpatialPhotoAvailable])
+  if ([itemCopy isSpatialPhotoAvailable])
   {
     [v5 setSpatialPhotoEnabled:1];
   }
@@ -474,8 +474,8 @@ void __65__PUParallaxLayerStackDebugViewController_toggleParallaxEnabled___block
   v8[2] = __64__PUParallaxLayerStackDebugViewController_loadSegmentationItem___block_invoke;
   v8[3] = &unk_1E7B773D8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = itemCopy;
+  v7 = itemCopy;
   [v5 submit:v8];
 }
 
@@ -576,21 +576,21 @@ void __64__PUParallaxLayerStackDebugViewController_loadSegmentationItem___block_
   [*(a1 + 32) hideProgressIndicator];
 }
 
-- (void)loadPartialSegmentationItem:(id)a3 loadingState:(unint64_t)a4
+- (void)loadPartialSegmentationItem:(id)item loadingState:(unint64_t)state
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  itemCopy = item;
   v7 = PLWallpaperGetLog();
   v8 = v7;
   signpost = self->_signpost;
   if (signpost - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
   {
     *buf = 134217984;
-    v16 = a4;
+    stateCopy2 = state;
     _os_signpost_emit_with_name_impl(&dword_1B36F3000, v8, OS_SIGNPOST_EVENT, signpost, "PUParallaxLayerStackDebugViewController.LoadingState", "state=%lx", buf, 0xCu);
   }
 
-  v10 = [objc_alloc(MEMORY[0x1E69BDEB8]) initWithSegmentationItem:v6];
+  v10 = [objc_alloc(MEMORY[0x1E69BDEB8]) initWithSegmentationItem:itemCopy];
   [v10 setResponseQueue:MEMORY[0x1E69E96A0]];
   v11 = [objc_alloc(MEMORY[0x1E69B3C00]) initWithLevel:0];
   [v10 setPriority:v11];
@@ -602,17 +602,17 @@ void __64__PUParallaxLayerStackDebugViewController_loadSegmentationItem___block_
   v14[3] = &unk_1E7B80440;
   v14[4] = self;
   [v10 submit:v14];
-  if ((a4 & 4) != 0)
+  if ((state & 4) != 0)
   {
     v13 = @"Finishing…";
   }
 
-  else if ((a4 & 2) != 0)
+  else if ((state & 2) != 0)
   {
     v13 = @"Analyzing…";
   }
 
-  else if (a4)
+  else if (state)
   {
     v13 = @"Segmenting…";
   }
@@ -623,7 +623,7 @@ void __64__PUParallaxLayerStackDebugViewController_loadSegmentationItem___block_
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v16 = a4;
+      stateCopy2 = state;
       _os_log_impl(&dword_1B36F3000, v12, OS_LOG_TYPE_ERROR, "Unexpected segmentation loading state; %lx", buf, 0xCu);
     }
 
@@ -660,17 +660,17 @@ void __84__PUParallaxLayerStackDebugViewController_loadPartialSegmentationItem_l
   }
 }
 
-- (void)loadPHAsset:(id)a3
+- (void)loadPHAsset:(id)asset
 {
-  if (a3)
+  if (asset)
   {
-    v4 = a3;
-    [(PUParallaxLayerStackDebugViewController *)self setAsset:v4];
-    v5 = [(PUParallaxLayerStackDebugViewController *)self layerStackView];
-    [v5 setHidden:1];
+    assetCopy = asset;
+    [(PUParallaxLayerStackDebugViewController *)self setAsset:assetCopy];
+    layerStackView = [(PUParallaxLayerStackDebugViewController *)self layerStackView];
+    [layerStackView setHidden:1];
 
     [(PUParallaxLayerStackDebugViewController *)self showProgressIndicator:@"Loading…"];
-    v6 = [objc_alloc(MEMORY[0x1E6978B20]) initWithPhotoAsset:v4];
+    v6 = [objc_alloc(MEMORY[0x1E6978B20]) initWithPhotoAsset:assetCopy];
 
     v7 = [objc_alloc(MEMORY[0x1E69BDF40]) initWithParallaxAsset:v6];
     v10[0] = MEMORY[0x1E69E9820];
@@ -762,27 +762,27 @@ uint64_t __55__PUParallaxLayerStackDebugViewController_loadPHAsset___block_invok
 - (void)hideDowloadProgressIndicator
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(PUParallaxLayerStackDebugViewController *)self downloadProgressIndicator];
-  v4 = [v3 isShowingProgress];
+  downloadProgressIndicator = [(PUParallaxLayerStackDebugViewController *)self downloadProgressIndicator];
+  isShowingProgress = [downloadProgressIndicator isShowingProgress];
 
-  if (v4)
+  if (isShowingProgress)
   {
-    v5 = [(PUParallaxLayerStackDebugViewController *)self downloadProgressIndicator];
+    downloadProgressIndicator2 = [(PUParallaxLayerStackDebugViewController *)self downloadProgressIndicator];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __71__PUParallaxLayerStackDebugViewController_hideDowloadProgressIndicator__block_invoke;
     v16[3] = &unk_1E7B80DD0;
     v16[4] = self;
-    [v5 endShowingProgressImmediately:1 animated:1 withCompletionHandler:v16];
+    [downloadProgressIndicator2 endShowingProgressImmediately:1 animated:1 withCompletionHandler:v16];
 
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(PUParallaxLayerStackDebugViewController *)self buttonStackView];
-    v7 = [v6 arrangedSubviews];
+    buttonStackView = [(PUParallaxLayerStackDebugViewController *)self buttonStackView];
+    arrangedSubviews = [buttonStackView arrangedSubviews];
 
-    v8 = [v7 countByEnumeratingWithState:&v12 objects:v17 count:16];
+    v8 = [arrangedSubviews countByEnumeratingWithState:&v12 objects:v17 count:16];
     if (v8)
     {
       v9 = v8;
@@ -794,14 +794,14 @@ uint64_t __55__PUParallaxLayerStackDebugViewController_loadPHAsset___block_invok
         {
           if (*v13 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(arrangedSubviews);
           }
 
           [*(*(&v12 + 1) + 8 * v11++) setEnabled:1];
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v12 objects:v17 count:16];
+        v9 = [arrangedSubviews countByEnumeratingWithState:&v12 objects:v17 count:16];
       }
 
       while (v9);
@@ -826,10 +826,10 @@ uint64_t __71__PUParallaxLayerStackDebugViewController_hideDowloadProgressIndica
   return [*(a1 + 32) setDownloadProgressIndicator:0];
 }
 
-- (void)updateDownloadProgressIndicator:(double)a3
+- (void)updateDownloadProgressIndicator:(double)indicator
 {
-  v5 = [(PUParallaxLayerStackDebugViewController *)self downloadProgressIndicator];
-  [v5 setCurrentProgress:a3];
+  downloadProgressIndicator = [(PUParallaxLayerStackDebugViewController *)self downloadProgressIndicator];
+  [downloadProgressIndicator setCurrentProgress:indicator];
 
   v6 = PLWallpaperGetLog();
   v7 = v6;
@@ -843,9 +843,9 @@ uint64_t __71__PUParallaxLayerStackDebugViewController_hideDowloadProgressIndica
 
 - (void)showDownloadProgressIndicator
 {
-  v3 = [(PUParallaxLayerStackDebugViewController *)self downloadProgressIndicator];
+  downloadProgressIndicator = [(PUParallaxLayerStackDebugViewController *)self downloadProgressIndicator];
 
-  if (!v3)
+  if (!downloadProgressIndicator)
   {
     v4 = PLWallpaperGetLog();
     v5 = v4;
@@ -859,52 +859,52 @@ uint64_t __71__PUParallaxLayerStackDebugViewController_hideDowloadProgressIndica
     v7 = [[PUProgressIndicatorView alloc] initWithStyle:0];
     [(PUParallaxLayerStackDebugViewController *)self setDownloadProgressIndicator:v7];
 
-    v8 = [(PUParallaxLayerStackDebugViewController *)self downloadProgressIndicator];
-    [v8 setLocalizedMessage:@"Downloading…"];
+    downloadProgressIndicator2 = [(PUParallaxLayerStackDebugViewController *)self downloadProgressIndicator];
+    [downloadProgressIndicator2 setLocalizedMessage:@"Downloading…"];
 
-    v9 = [(PUParallaxLayerStackDebugViewController *)self downloadProgressIndicator];
-    [v9 setDeterminate:1];
+    downloadProgressIndicator3 = [(PUParallaxLayerStackDebugViewController *)self downloadProgressIndicator];
+    [downloadProgressIndicator3 setDeterminate:1];
 
-    v10 = [(PUParallaxLayerStackDebugViewController *)self downloadProgressIndicator];
-    [v10 setCurrentProgress:0.0];
+    downloadProgressIndicator4 = [(PUParallaxLayerStackDebugViewController *)self downloadProgressIndicator];
+    [downloadProgressIndicator4 setCurrentProgress:0.0];
 
-    v11 = [(PUParallaxLayerStackDebugViewController *)self downloadProgressIndicator];
-    [v11 setShowsBackground:1];
+    downloadProgressIndicator5 = [(PUParallaxLayerStackDebugViewController *)self downloadProgressIndicator];
+    [downloadProgressIndicator5 setShowsBackground:1];
 
-    v12 = [(PUParallaxLayerStackDebugViewController *)self downloadProgressIndicator];
-    [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+    downloadProgressIndicator6 = [(PUParallaxLayerStackDebugViewController *)self downloadProgressIndicator];
+    [downloadProgressIndicator6 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v13 = [(PUParallaxLayerStackDebugViewController *)self downloadProgressIndicator];
-    [v13 beginShowingProgressImmediately:1 animated:1];
+    downloadProgressIndicator7 = [(PUParallaxLayerStackDebugViewController *)self downloadProgressIndicator];
+    [downloadProgressIndicator7 beginShowingProgressImmediately:1 animated:1];
 
-    v14 = [(PUParallaxLayerStackDebugViewController *)self view];
-    v15 = [(PUParallaxLayerStackDebugViewController *)self downloadProgressIndicator];
-    [v14 addSubview:v15];
+    view = [(PUParallaxLayerStackDebugViewController *)self view];
+    downloadProgressIndicator8 = [(PUParallaxLayerStackDebugViewController *)self downloadProgressIndicator];
+    [view addSubview:downloadProgressIndicator8];
 
-    v16 = [(PUParallaxLayerStackDebugViewController *)self downloadProgressIndicator];
-    [v16 sizeToFit];
+    downloadProgressIndicator9 = [(PUParallaxLayerStackDebugViewController *)self downloadProgressIndicator];
+    [downloadProgressIndicator9 sizeToFit];
   }
 }
 
 - (void)hideProgressIndicator
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(PUParallaxLayerStackDebugViewController *)self progressIndicator];
+  progressIndicator = [(PUParallaxLayerStackDebugViewController *)self progressIndicator];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __64__PUParallaxLayerStackDebugViewController_hideProgressIndicator__block_invoke;
   v14[3] = &unk_1E7B80DD0;
   v14[4] = self;
-  [v3 endShowingProgressImmediately:1 animated:1 withCompletionHandler:v14];
+  [progressIndicator endShowingProgressImmediately:1 animated:1 withCompletionHandler:v14];
 
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(PUParallaxLayerStackDebugViewController *)self buttonStackView];
-  v5 = [v4 arrangedSubviews];
+  buttonStackView = [(PUParallaxLayerStackDebugViewController *)self buttonStackView];
+  arrangedSubviews = [buttonStackView arrangedSubviews];
 
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  v6 = [arrangedSubviews countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -916,14 +916,14 @@ uint64_t __71__PUParallaxLayerStackDebugViewController_hideDowloadProgressIndica
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         [*(*(&v10 + 1) + 8 * v9++) setEnabled:1];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v7 = [arrangedSubviews countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v7);
@@ -947,20 +947,20 @@ uint64_t __64__PUParallaxLayerStackDebugViewController_hideProgressIndicator__bl
   return [*(a1 + 32) setProgressIndicator:0];
 }
 
-- (void)updateProgressIndicator:(id)a3
+- (void)updateProgressIndicator:(id)indicator
 {
-  v4 = a3;
-  v5 = [(PUParallaxLayerStackDebugViewController *)self progressIndicator];
-  [v5 setLocalizedMessage:v4];
+  indicatorCopy = indicator;
+  progressIndicator = [(PUParallaxLayerStackDebugViewController *)self progressIndicator];
+  [progressIndicator setLocalizedMessage:indicatorCopy];
 }
 
-- (void)showProgressIndicator:(id)a3
+- (void)showProgressIndicator:(id)indicator
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUParallaxLayerStackDebugViewController *)self progressIndicator];
+  indicatorCopy = indicator;
+  progressIndicator = [(PUParallaxLayerStackDebugViewController *)self progressIndicator];
 
-  if (!v5)
+  if (!progressIndicator)
   {
     v6 = PLWallpaperGetLog();
     v7 = v6;
@@ -974,37 +974,37 @@ uint64_t __64__PUParallaxLayerStackDebugViewController_hideProgressIndicator__bl
     v9 = [[PUProgressIndicatorView alloc] initWithStyle:0];
     [(PUParallaxLayerStackDebugViewController *)self setProgressIndicator:v9];
 
-    v10 = [(PUParallaxLayerStackDebugViewController *)self progressIndicator];
-    [v10 setLocalizedMessage:v4];
+    progressIndicator2 = [(PUParallaxLayerStackDebugViewController *)self progressIndicator];
+    [progressIndicator2 setLocalizedMessage:indicatorCopy];
 
-    v11 = [(PUParallaxLayerStackDebugViewController *)self progressIndicator];
-    [v11 setDeterminate:0];
+    progressIndicator3 = [(PUParallaxLayerStackDebugViewController *)self progressIndicator];
+    [progressIndicator3 setDeterminate:0];
 
-    v12 = [(PUParallaxLayerStackDebugViewController *)self progressIndicator];
-    [v12 setShowsBackground:1];
+    progressIndicator4 = [(PUParallaxLayerStackDebugViewController *)self progressIndicator];
+    [progressIndicator4 setShowsBackground:1];
 
-    v13 = [(PUParallaxLayerStackDebugViewController *)self progressIndicator];
-    [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+    progressIndicator5 = [(PUParallaxLayerStackDebugViewController *)self progressIndicator];
+    [progressIndicator5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v14 = [(PUParallaxLayerStackDebugViewController *)self progressIndicator];
-    [v14 beginShowingProgressImmediately:1 animated:1];
+    progressIndicator6 = [(PUParallaxLayerStackDebugViewController *)self progressIndicator];
+    [progressIndicator6 beginShowingProgressImmediately:1 animated:1];
 
-    v15 = [(PUParallaxLayerStackDebugViewController *)self view];
-    v16 = [(PUParallaxLayerStackDebugViewController *)self progressIndicator];
-    [v15 addSubview:v16];
+    view = [(PUParallaxLayerStackDebugViewController *)self view];
+    progressIndicator7 = [(PUParallaxLayerStackDebugViewController *)self progressIndicator];
+    [view addSubview:progressIndicator7];
 
-    v17 = [(PUParallaxLayerStackDebugViewController *)self progressIndicator];
-    [v17 sizeToFit];
+    progressIndicator8 = [(PUParallaxLayerStackDebugViewController *)self progressIndicator];
+    [progressIndicator8 sizeToFit];
   }
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v18 = [(PUParallaxLayerStackDebugViewController *)self buttonStackView];
-  v19 = [v18 arrangedSubviews];
+  buttonStackView = [(PUParallaxLayerStackDebugViewController *)self buttonStackView];
+  arrangedSubviews = [buttonStackView arrangedSubviews];
 
-  v20 = [v19 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  v20 = [arrangedSubviews countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v20)
   {
     v21 = v20;
@@ -1016,14 +1016,14 @@ uint64_t __64__PUParallaxLayerStackDebugViewController_hideProgressIndicator__bl
       {
         if (*v25 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         [*(*(&v24 + 1) + 8 * v23++) setEnabled:0];
       }
 
       while (v21 != v23);
-      v21 = [v19 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v21 = [arrangedSubviews countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v21);
@@ -1032,20 +1032,20 @@ uint64_t __64__PUParallaxLayerStackDebugViewController_hideProgressIndicator__bl
 
 - (void)_updateDateTimeView
 {
-  v10 = [(PUParallaxLayerStackDebugViewController *)self dateTimeView];
-  v3 = [(PUParallaxLayerStackDebugViewController *)self viewModel];
-  v4 = [v3 style];
+  dateTimeView = [(PUParallaxLayerStackDebugViewController *)self dateTimeView];
+  viewModel = [(PUParallaxLayerStackDebugViewController *)self viewModel];
+  style = [viewModel style];
 
-  v5 = [v4 clockFont];
-  v6 = PUPosterSimulatedTimeFontForIdentifier(v5);
-  [v10 setTimeFont:v6];
+  clockFont = [style clockFont];
+  v6 = PUPosterSimulatedTimeFontForIdentifier(clockFont);
+  [dateTimeView setTimeFont:v6];
 
   v7 = MEMORY[0x1E69DC888];
-  v8 = [v4 clockColor];
-  v9 = [v7 colorWithCGColor:{objc_msgSend(v8, "CGColor")}];
-  [v10 setTimeColor:v9];
+  clockColor = [style clockColor];
+  v9 = [v7 colorWithCGColor:{objc_msgSend(clockColor, "CGColor")}];
+  [dateTimeView setTimeColor:v9];
 
-  [v10 setUseVibrantAppearance:0];
+  [dateTimeView setUseVibrantAppearance:0];
 }
 
 - (void)viewDidLayoutSubviews
@@ -1053,61 +1053,61 @@ uint64_t __64__PUParallaxLayerStackDebugViewController_hideProgressIndicator__bl
   v49.receiver = self;
   v49.super_class = PUParallaxLayerStackDebugViewController;
   [(PUParallaxLayerStackDebugViewController *)&v49 viewDidLayoutSubviews];
-  v3 = [(PUParallaxLayerStackDebugViewController *)self view];
-  [v3 bounds];
+  view = [(PUParallaxLayerStackDebugViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(PUParallaxLayerStackDebugViewController *)self layerStackView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  layerStackView = [(PUParallaxLayerStackDebugViewController *)self layerStackView];
+  [layerStackView setFrame:{v5, v7, v9, v11}];
 
-  v13 = [(PUParallaxLayerStackDebugViewController *)self view];
-  [v13 bounds];
+  view2 = [(PUParallaxLayerStackDebugViewController *)self view];
+  [view2 bounds];
   MidX = CGRectGetMidX(v50);
-  v15 = [(PUParallaxLayerStackDebugViewController *)self view];
-  [v15 bounds];
+  view3 = [(PUParallaxLayerStackDebugViewController *)self view];
+  [view3 bounds];
   v16 = CGRectGetMidY(v51) * 0.67;
-  v17 = [(PUParallaxLayerStackDebugViewController *)self progressIndicator];
-  [v17 setCenter:{MidX, v16}];
+  progressIndicator = [(PUParallaxLayerStackDebugViewController *)self progressIndicator];
+  [progressIndicator setCenter:{MidX, v16}];
 
-  v18 = [(PUParallaxLayerStackDebugViewController *)self view];
-  [v18 bounds];
+  view4 = [(PUParallaxLayerStackDebugViewController *)self view];
+  [view4 bounds];
   v19 = CGRectGetMidX(v52);
-  v20 = [(PUParallaxLayerStackDebugViewController *)self view];
-  [v20 bounds];
+  view5 = [(PUParallaxLayerStackDebugViewController *)self view];
+  [view5 bounds];
   v21 = CGRectGetMidY(v53) * 1.33;
-  v22 = [(PUParallaxLayerStackDebugViewController *)self downloadProgressIndicator];
-  [v22 setCenter:{v19, v21}];
+  downloadProgressIndicator = [(PUParallaxLayerStackDebugViewController *)self downloadProgressIndicator];
+  [downloadProgressIndicator setCenter:{v19, v21}];
 
-  v23 = [(PUParallaxLayerStackDebugViewController *)self view];
-  [v23 safeAreaInsets];
+  view6 = [(PUParallaxLayerStackDebugViewController *)self view];
+  [view6 safeAreaInsets];
   v25 = v24;
   v27 = v26;
   v29 = v28;
 
-  v30 = [(PUParallaxLayerStackDebugViewController *)self view];
-  [v30 bounds];
+  view7 = [(PUParallaxLayerStackDebugViewController *)self view];
+  [view7 bounds];
   v31 = CGRectGetMaxY(v54) - v27;
-  v32 = [(PUParallaxLayerStackDebugViewController *)self radarButton];
-  [v32 bounds];
+  radarButton = [(PUParallaxLayerStackDebugViewController *)self radarButton];
+  [radarButton bounds];
   v33 = v31 - CGRectGetHeight(v55);
-  v34 = [(PUParallaxLayerStackDebugViewController *)self view];
-  [v34 bounds];
+  view8 = [(PUParallaxLayerStackDebugViewController *)self view];
+  [view8 bounds];
   v35 = CGRectGetWidth(v56) - v29 - v25;
-  v36 = [(PUParallaxLayerStackDebugViewController *)self radarButton];
-  [v36 bounds];
+  radarButton2 = [(PUParallaxLayerStackDebugViewController *)self radarButton];
+  [radarButton2 bounds];
   Height = CGRectGetHeight(v57);
 
-  v38 = [(PUParallaxLayerStackDebugViewController *)self buttonStackView];
-  [v38 setFrame:{v25, v33, v35, Height}];
+  buttonStackView = [(PUParallaxLayerStackDebugViewController *)self buttonStackView];
+  [buttonStackView setFrame:{v25, v33, v35, Height}];
 
-  v39 = [(PUParallaxLayerStackDebugViewController *)self viewModel];
-  v40 = [v39 currentLayerStack];
+  viewModel = [(PUParallaxLayerStackDebugViewController *)self viewModel];
+  currentLayerStack = [viewModel currentLayerStack];
 
-  v41 = [v40 layout];
-  if (v41)
+  layout = [currentLayerStack layout];
+  if (layout)
   {
     v58.origin.x = v5;
     v58.origin.y = v7;
@@ -1115,38 +1115,38 @@ uint64_t __64__PUParallaxLayerStackDebugViewController_hideProgressIndicator__bl
     v58.size.height = v11;
     if (!CGRectIsEmpty(v58))
     {
-      v42 = [(PUParallaxLayerStackDebugViewController *)self dateTimeView];
-      [v42 layoutWithLayout:v41 inContainerFrame:{v5, v7, v9, v11}];
+      dateTimeView = [(PUParallaxLayerStackDebugViewController *)self dateTimeView];
+      [dateTimeView layoutWithLayout:layout inContainerFrame:{v5, v7, v9, v11}];
 
-      v43 = [(PUParallaxLayerStackDebugViewController *)self viewModel];
-      v44 = [v43 clockAppearsAboveForeground];
+      viewModel2 = [(PUParallaxLayerStackDebugViewController *)self viewModel];
+      clockAppearsAboveForeground = [viewModel2 clockAppearsAboveForeground];
 
       v45 = MEMORY[0x1E69C0C08];
-      if (!v44)
+      if (!clockAppearsAboveForeground)
       {
         v45 = MEMORY[0x1E69C0C00];
       }
 
       v46 = *v45;
-      v47 = [(PUParallaxLayerStackDebugViewController *)self dateTimeView];
-      v48 = [v47 layer];
-      [v48 setZPosition:v46];
+      dateTimeView2 = [(PUParallaxLayerStackDebugViewController *)self dateTimeView];
+      layer = [dateTimeView2 layer];
+      [layer setZPosition:v46];
     }
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = PUParallaxLayerStackDebugViewController;
-  [(PUParallaxLayerStackDebugViewController *)&v3 viewWillDisappear:a3];
+  [(PUParallaxLayerStackDebugViewController *)&v3 viewWillDisappear:disappear];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = PUParallaxLayerStackDebugViewController;
-  [(PUParallaxLayerStackDebugViewController *)&v3 viewDidAppear:a3];
+  [(PUParallaxLayerStackDebugViewController *)&v3 viewDidAppear:appear];
 }
 
 - (void)viewDidLoad
@@ -1155,9 +1155,9 @@ uint64_t __64__PUParallaxLayerStackDebugViewController_hideProgressIndicator__bl
   v49.receiver = self;
   v49.super_class = PUParallaxLayerStackDebugViewController;
   [(PUParallaxLayerStackDebugViewController *)&v49 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] grayColor];
-  v4 = [(PUParallaxLayerStackDebugViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  grayColor = [MEMORY[0x1E69DC888] grayColor];
+  view = [(PUParallaxLayerStackDebugViewController *)self view];
+  [view setBackgroundColor:grayColor];
 
   v5 = [PUParallaxLayerStackView alloc];
   v6 = *MEMORY[0x1E695F058];
@@ -1167,110 +1167,110 @@ uint64_t __64__PUParallaxLayerStackDebugViewController_hideProgressIndicator__bl
   v10 = [(PUParallaxLayerStackView *)v5 initWithFrame:*MEMORY[0x1E695F058], v7, v8, v9];
   [(PUParallaxLayerStackDebugViewController *)self setLayerStackView:v10];
 
-  v11 = [(PUParallaxLayerStackDebugViewController *)self view];
-  v12 = [(PUParallaxLayerStackDebugViewController *)self layerStackView];
-  [v11 addSubview:v12];
+  view2 = [(PUParallaxLayerStackDebugViewController *)self view];
+  layerStackView = [(PUParallaxLayerStackDebugViewController *)self layerStackView];
+  [view2 addSubview:layerStackView];
 
   v13 = [[PUWallpaperPosterDateView alloc] initWithFrame:v6, v7, v8, v9];
   [(PUParallaxLayerStackDebugViewController *)self setDateTimeView:v13];
 
-  v14 = [(PUParallaxLayerStackDebugViewController *)self view];
-  v15 = [(PUParallaxLayerStackDebugViewController *)self dateTimeView];
-  [v14 addSubview:v15];
+  view3 = [(PUParallaxLayerStackDebugViewController *)self view];
+  dateTimeView = [(PUParallaxLayerStackDebugViewController *)self dateTimeView];
+  [view3 addSubview:dateTimeView];
 
   v16 = [(PUParallaxLayerStackDebugViewController *)self _newButtonWithSystemImageName:@"square.stack.3d.up"];
   [(PUParallaxLayerStackDebugViewController *)self setParallaxEnabledButton:v16];
 
-  v17 = [(PUParallaxLayerStackDebugViewController *)self parallaxEnabledButton];
-  [v17 addTarget:self action:sel_toggleParallaxEnabled_ forControlEvents:0x2000];
+  parallaxEnabledButton = [(PUParallaxLayerStackDebugViewController *)self parallaxEnabledButton];
+  [parallaxEnabledButton addTarget:self action:sel_toggleParallaxEnabled_ forControlEvents:0x2000];
 
   v18 = [(PUParallaxLayerStackDebugViewController *)self _newButtonWithSystemImageName:@"slider.horizontal.below.rectangle"];
   [(PUParallaxLayerStackDebugViewController *)self setLooksButton:v18];
 
-  v19 = [(PUParallaxLayerStackDebugViewController *)self looksButton];
-  [v19 addTarget:self action:sel_showLooks_ forControlEvents:0x2000];
+  looksButton = [(PUParallaxLayerStackDebugViewController *)self looksButton];
+  [looksButton addTarget:self action:sel_showLooks_ forControlEvents:0x2000];
 
   v20 = [(PUParallaxLayerStackDebugViewController *)self _newButtonWithSystemImageName:@"list.dash"];
   [(PUParallaxLayerStackDebugViewController *)self setLayerListButton:v20];
 
-  v21 = [(PUParallaxLayerStackDebugViewController *)self layerListButton];
-  [v21 addTarget:self action:sel_showLayerList_ forControlEvents:0x2000];
+  layerListButton = [(PUParallaxLayerStackDebugViewController *)self layerListButton];
+  [layerListButton addTarget:self action:sel_showLayerList_ forControlEvents:0x2000];
 
   v22 = [(PUParallaxLayerStackDebugViewController *)self _newButtonWithSystemImageName:@"eyedropper.full"];
   [(PUParallaxLayerStackDebugViewController *)self setColorPaletteButton:v22];
 
-  v23 = [(PUParallaxLayerStackDebugViewController *)self colorPaletteButton];
-  [v23 addTarget:self action:sel_showColorPalettes_ forControlEvents:0x2000];
+  colorPaletteButton = [(PUParallaxLayerStackDebugViewController *)self colorPaletteButton];
+  [colorPaletteButton addTarget:self action:sel_showColorPalettes_ forControlEvents:0x2000];
 
   v24 = [(PUParallaxLayerStackDebugViewController *)self _newButtonWithSystemImageName:@"square.and.arrow.up"];
   [(PUParallaxLayerStackDebugViewController *)self setShareButton:v24];
 
-  v25 = [(PUParallaxLayerStackDebugViewController *)self shareButton];
-  [v25 addTarget:self action:sel_shareLayerStack_ forControlEvents:0x2000];
+  shareButton = [(PUParallaxLayerStackDebugViewController *)self shareButton];
+  [shareButton addTarget:self action:sel_shareLayerStack_ forControlEvents:0x2000];
 
   v26 = [(PUParallaxLayerStackDebugViewController *)self _newButtonWithSystemImageName:@"ant.fill"];
   [(PUParallaxLayerStackDebugViewController *)self setRadarButton:v26];
 
-  v27 = [(PUParallaxLayerStackDebugViewController *)self radarButton];
-  [v27 addTarget:self action:sel_tapToRadar_ forControlEvents:0x2000];
+  radarButton = [(PUParallaxLayerStackDebugViewController *)self radarButton];
+  [radarButton addTarget:self action:sel_tapToRadar_ forControlEvents:0x2000];
 
   v28 = objc_alloc(MEMORY[0x1E69DCF90]);
-  v29 = [(PUParallaxLayerStackDebugViewController *)self parallaxEnabledButton];
-  v50[0] = v29;
-  v30 = [(PUParallaxLayerStackDebugViewController *)self looksButton];
-  v50[1] = v30;
-  v31 = [(PUParallaxLayerStackDebugViewController *)self layerListButton];
-  v50[2] = v31;
-  v32 = [(PUParallaxLayerStackDebugViewController *)self colorPaletteButton];
-  v50[3] = v32;
-  v33 = [(PUParallaxLayerStackDebugViewController *)self shareButton];
-  v50[4] = v33;
-  v34 = [(PUParallaxLayerStackDebugViewController *)self radarButton];
-  v50[5] = v34;
+  parallaxEnabledButton2 = [(PUParallaxLayerStackDebugViewController *)self parallaxEnabledButton];
+  v50[0] = parallaxEnabledButton2;
+  looksButton2 = [(PUParallaxLayerStackDebugViewController *)self looksButton];
+  v50[1] = looksButton2;
+  layerListButton2 = [(PUParallaxLayerStackDebugViewController *)self layerListButton];
+  v50[2] = layerListButton2;
+  colorPaletteButton2 = [(PUParallaxLayerStackDebugViewController *)self colorPaletteButton];
+  v50[3] = colorPaletteButton2;
+  shareButton2 = [(PUParallaxLayerStackDebugViewController *)self shareButton];
+  v50[4] = shareButton2;
+  radarButton2 = [(PUParallaxLayerStackDebugViewController *)self radarButton];
+  v50[5] = radarButton2;
   v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:6];
   v36 = [v28 initWithArrangedSubviews:v35];
   [(PUParallaxLayerStackDebugViewController *)self setButtonStackView:v36];
 
-  v37 = [MEMORY[0x1E69DC888] clearColor];
-  v38 = [(PUParallaxLayerStackDebugViewController *)self buttonStackView];
-  [v38 setBackgroundColor:v37];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  buttonStackView = [(PUParallaxLayerStackDebugViewController *)self buttonStackView];
+  [buttonStackView setBackgroundColor:clearColor];
 
-  v39 = [(PUParallaxLayerStackDebugViewController *)self buttonStackView];
-  [v39 setAxis:0];
+  buttonStackView2 = [(PUParallaxLayerStackDebugViewController *)self buttonStackView];
+  [buttonStackView2 setAxis:0];
 
-  v40 = [(PUParallaxLayerStackDebugViewController *)self buttonStackView];
-  [v40 setAlignment:3];
+  buttonStackView3 = [(PUParallaxLayerStackDebugViewController *)self buttonStackView];
+  [buttonStackView3 setAlignment:3];
 
-  v41 = [(PUParallaxLayerStackDebugViewController *)self buttonStackView];
-  [v41 setDistribution:1];
+  buttonStackView4 = [(PUParallaxLayerStackDebugViewController *)self buttonStackView];
+  [buttonStackView4 setDistribution:1];
 
-  v42 = [(PUParallaxLayerStackDebugViewController *)self view];
-  v43 = [(PUParallaxLayerStackDebugViewController *)self buttonStackView];
-  [v42 addSubview:v43];
+  view4 = [(PUParallaxLayerStackDebugViewController *)self view];
+  buttonStackView5 = [(PUParallaxLayerStackDebugViewController *)self buttonStackView];
+  [view4 addSubview:buttonStackView5];
 
-  v44 = [(PUParallaxLayerStackDebugViewController *)self buttonStackView];
-  [v44 sizeToFit];
+  buttonStackView6 = [(PUParallaxLayerStackDebugViewController *)self buttonStackView];
+  [buttonStackView6 sizeToFit];
 
   v45 = [objc_alloc(MEMORY[0x1E69DCD28]) initWithTarget:self action:sel_panGesture_];
-  v46 = [(PUParallaxLayerStackDebugViewController *)self layerStackView];
-  [v46 addGestureRecognizer:v45];
+  layerStackView2 = [(PUParallaxLayerStackDebugViewController *)self layerStackView];
+  [layerStackView2 addGestureRecognizer:v45];
 
   v47 = [objc_alloc(MEMORY[0x1E69DCD80]) initWithTarget:self action:sel_pinchGesture_];
-  v48 = [(PUParallaxLayerStackDebugViewController *)self view];
-  [v48 addGestureRecognizer:v47];
+  view5 = [(PUParallaxLayerStackDebugViewController *)self view];
+  [view5 addGestureRecognizer:v47];
 }
 
-- (id)_newButtonWithSystemImageName:(id)a3
+- (id)_newButtonWithSystemImageName:(id)name
 {
   v3 = MEMORY[0x1E69DC740];
-  v4 = a3;
-  v5 = [v3 borderlessButtonConfiguration];
-  [v5 setButtonSize:0];
-  v6 = [MEMORY[0x1E69DCAB8] systemImageNamed:v4];
+  nameCopy = name;
+  borderlessButtonConfiguration = [v3 borderlessButtonConfiguration];
+  [borderlessButtonConfiguration setButtonSize:0];
+  v6 = [MEMORY[0x1E69DCAB8] systemImageNamed:nameCopy];
 
-  [v5 setImage:v6];
+  [borderlessButtonConfiguration setImage:v6];
   v7 = [MEMORY[0x1E69DC738] buttonWithType:1];
-  [v7 setConfiguration:v5];
+  [v7 setConfiguration:borderlessButtonConfiguration];
   [v7 sizeToFit];
 
   return v7;

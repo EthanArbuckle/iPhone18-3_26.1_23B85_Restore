@@ -1,18 +1,18 @@
 @interface TLVibrationPersistenceUtilities
-+ (BOOL)_objectIsValidUserGeneratedVibrationPattern:(id)a3 error:(id *)a4;
-+ (BOOL)_validateObjectWithError:(id *)a3 validationBlock:(id)a4;
-+ (BOOL)objectIsValidUserGeneratedVibrationPatternsDictionary:(id)a3 error:(id *)a4;
++ (BOOL)_objectIsValidUserGeneratedVibrationPattern:(id)pattern error:(id *)error;
++ (BOOL)_validateObjectWithError:(id *)error validationBlock:(id)block;
++ (BOOL)objectIsValidUserGeneratedVibrationPatternsDictionary:(id)dictionary error:(id *)error;
 + (NSURL)userGeneratedVibrationStoreFileURL;
 @end
 
 @implementation TLVibrationPersistenceUtilities
 
-+ (BOOL)_validateObjectWithError:(id *)a3 validationBlock:(id)a4
++ (BOOL)_validateObjectWithError:(id *)error validationBlock:(id)block
 {
   v15 = 0;
   v16 = 0;
   v14 = 0;
-  (*(a4 + 2))(a4, &v16, &v15, &v14);
+  (*(block + 2))(block, &v16, &v15, &v14);
   v5 = v16;
   v6 = v15;
   v7 = v14;
@@ -25,17 +25,17 @@
       goto LABEL_9;
     }
 
-    if (a3)
+    if (error)
     {
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
-      *a3 = [NSError tl_errorWithDomain:@"TLServiceValidationErrorDomain" description:@"Unexpected type for %@: %@ (%@)", v8, v12, v6];
+      *error = [NSError tl_errorWithDomain:@"TLServiceValidationErrorDomain" description:@"Unexpected type for %@: %@ (%@)", v8, v12, v6];
     }
 
     goto LABEL_7;
   }
 
-  if (!a3)
+  if (!error)
   {
 LABEL_7:
     v10 = 0;
@@ -44,37 +44,37 @@ LABEL_7:
 
   v9 = v5;
   v10 = 0;
-  *a3 = v5;
+  *error = v5;
 LABEL_9:
 
   return v10;
 }
 
-+ (BOOL)_objectIsValidUserGeneratedVibrationPattern:(id)a3 error:(id *)a4
++ (BOOL)_objectIsValidUserGeneratedVibrationPattern:(id)pattern error:(id *)error
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000010E8;
   v8[3] = &unk_100008270;
-  v9 = a3;
-  v6 = v9;
-  LOBYTE(a4) = [a1 _validateObjectWithError:a4 validationBlock:v8];
+  patternCopy = pattern;
+  v6 = patternCopy;
+  LOBYTE(error) = [self _validateObjectWithError:error validationBlock:v8];
 
-  return a4;
+  return error;
 }
 
-+ (BOOL)objectIsValidUserGeneratedVibrationPatternsDictionary:(id)a3 error:(id *)a4
++ (BOOL)objectIsValidUserGeneratedVibrationPatternsDictionary:(id)dictionary error:(id *)error
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100001510;
   v8[3] = &unk_100008298;
-  v9 = a3;
-  v10 = a1;
-  v6 = v9;
-  LOBYTE(a4) = [a1 _validateObjectWithError:a4 validationBlock:v8];
+  dictionaryCopy = dictionary;
+  selfCopy = self;
+  v6 = dictionaryCopy;
+  LOBYTE(error) = [self _validateObjectWithError:error validationBlock:v8];
 
-  return a4;
+  return error;
 }
 
 + (NSURL)userGeneratedVibrationStoreFileURL

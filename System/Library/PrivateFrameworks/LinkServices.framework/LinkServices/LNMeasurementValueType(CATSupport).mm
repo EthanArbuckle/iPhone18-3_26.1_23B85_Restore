@@ -9,14 +9,14 @@
   v3 = MEMORY[0x1E696AD30];
   v4 = a3;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 value];
+  value = [v4 value];
 
-  if (v6)
+  if (value)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = value;
     }
 
     else

@@ -1,12 +1,12 @@
 @interface PKPaymentSetupFooterView
-- (BOOL)_setUIButton:(id)a3 forVariable:(id *)a4;
-- (BOOL)_setUIView:(id)a3 forVariable:(id *)a4;
-- (CGSize)_adjacentButtonSizeConstrainedToSize:(CGSize)a3;
-- (CGSize)_layoutSubviewsInBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4;
-- (CGSize)_sizeForLabel:(id)a3 maxText:(id)a4 constrainedToSize:(CGSize)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BOOL)_setUIButton:(id)button forVariable:(id *)variable;
+- (BOOL)_setUIView:(id)view forVariable:(id *)variable;
+- (CGSize)_adjacentButtonSizeConstrainedToSize:(CGSize)size;
+- (CGSize)_layoutSubviewsInBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout;
+- (CGSize)_sizeForLabel:(id)label maxText:(id)text constrainedToSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (PKLegacyButtonInterface)primaryButton;
-- (PKPaymentSetupFooterView)initWithFrame:(CGRect)a3 context:(int64_t)a4;
+- (PKPaymentSetupFooterView)initWithFrame:(CGRect)frame context:(int64_t)context;
 - (UIButton)manualEntryButton;
 - (UIButton)secondaryActionButton;
 - (UIButton)setUpLaterButton;
@@ -14,36 +14,36 @@
 - (UIButton)tertiaryActionButton;
 - (UIEdgeInsets)readableContentInsets;
 - (UILabel)notificationText;
-- (id)createAlternateActionButtonWithTitle:(id)a3;
+- (id)createAlternateActionButtonWithTitle:(id)title;
 - (id)createPrimaryButton;
 - (void)layoutSubviews;
-- (void)pk_applyAppearance:(id)a3;
-- (void)setButtonsEnabled:(BOOL)a3;
-- (void)setPrimaryButtonTintColor:(id)a3;
+- (void)pk_applyAppearance:(id)appearance;
+- (void)setButtonsEnabled:(BOOL)enabled;
+- (void)setPrimaryButtonTintColor:(id)color;
 @end
 
 @implementation PKPaymentSetupFooterView
 
-- (void)pk_applyAppearance:(id)a3
+- (void)pk_applyAppearance:(id)appearance
 {
-  v4 = a3;
-  v5 = [v4 tintColor];
-  [(PKPaymentSetupFooterView *)self setTintColor:v5];
+  appearanceCopy = appearance;
+  tintColor = [appearanceCopy tintColor];
+  [(PKPaymentSetupFooterView *)self setTintColor:tintColor];
 
-  v6 = [v4 continueButtonTintColor];
+  continueButtonTintColor = [appearanceCopy continueButtonTintColor];
 
-  [(PKPaymentSetupFooterView *)self setPrimaryButtonTintColor:v6];
+  [(PKPaymentSetupFooterView *)self setPrimaryButtonTintColor:continueButtonTintColor];
 }
 
-- (PKPaymentSetupFooterView)initWithFrame:(CGRect)a3 context:(int64_t)a4
+- (PKPaymentSetupFooterView)initWithFrame:(CGRect)frame context:(int64_t)context
 {
   v9.receiver = self;
   v9.super_class = PKPaymentSetupFooterView;
-  v5 = [(PKPaymentSetupFooterView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(PKPaymentSetupFooterView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    *(v5 + 59) = a4;
+    *(v5 + 59) = context;
     v7 = *(MEMORY[0x1E69DDCE0] + 16);
     *(v5 + 488) = *MEMORY[0x1E69DDCE0];
     *(v5 + 504) = v7;
@@ -79,18 +79,18 @@
   return notificationText;
 }
 
-- (void)setButtonsEnabled:(BOOL)a3
+- (void)setButtonsEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_buttonsEnabled = a3;
+  enabledCopy = enabled;
+  self->_buttonsEnabled = enabled;
   [(PKLegacyButtonInterface *)self->_primaryButton setEnabled:?];
-  [(UIButton *)self->_setUpLaterButton setEnabled:v3];
-  [(UIButton *)self->_manualEntryButton setEnabled:v3];
-  [(UIButton *)self->_secondaryActionButton setEnabled:v3];
-  [(UIButton *)self->_tertiaryActionButton setEnabled:v3];
+  [(UIButton *)self->_setUpLaterButton setEnabled:enabledCopy];
+  [(UIButton *)self->_manualEntryButton setEnabled:enabledCopy];
+  [(UIButton *)self->_secondaryActionButton setEnabled:enabledCopy];
+  [(UIButton *)self->_tertiaryActionButton setEnabled:enabledCopy];
   skipCardButton = self->_skipCardButton;
 
-  [(UIButton *)skipCardButton setEnabled:v3];
+  [(UIButton *)skipCardButton setEnabled:enabledCopy];
 }
 
 - (PKLegacyButtonInterface)primaryButton
@@ -98,8 +98,8 @@
   primaryButton = self->_primaryButton;
   if (!primaryButton)
   {
-    v4 = [(PKPaymentSetupFooterView *)self createPrimaryButton];
-    [(PKPaymentSetupFooterView *)self setPrimaryButton:v4];
+    createPrimaryButton = [(PKPaymentSetupFooterView *)self createPrimaryButton];
+    [(PKPaymentSetupFooterView *)self setPrimaryButton:createPrimaryButton];
 
     primaryButton = self->_primaryButton;
   }
@@ -107,14 +107,14 @@
   return primaryButton;
 }
 
-- (void)setPrimaryButtonTintColor:(id)a3
+- (void)setPrimaryButtonTintColor:(id)color
 {
-  v6 = a3;
-  objc_storeStrong(&self->_primaryButtonTintColor, a3);
+  colorCopy = color;
+  objc_storeStrong(&self->_primaryButtonTintColor, color);
   primaryButton = self->_primaryButton;
   if (primaryButton)
   {
-    [(PKLegacyButtonInterface *)primaryButton setTintColor:v6];
+    [(PKLegacyButtonInterface *)primaryButton setTintColor:colorCopy];
   }
 }
 
@@ -198,31 +198,31 @@
   return tertiaryActionButton;
 }
 
-- (BOOL)_setUIButton:(id)a3 forVariable:(id *)a4
+- (BOOL)_setUIButton:(id)button forVariable:(id *)variable
 {
-  v6 = a3;
-  v7 = [(PKPaymentSetupFooterView *)self _setUIView:v6 forVariable:a4];
+  buttonCopy = button;
+  v7 = [(PKPaymentSetupFooterView *)self _setUIView:buttonCopy forVariable:variable];
   if (v7)
   {
-    [v6 setEnabled:self->_buttonsEnabled];
+    [buttonCopy setEnabled:self->_buttonsEnabled];
   }
 
   return v7;
 }
 
-- (BOOL)_setUIView:(id)a3 forVariable:(id *)a4
+- (BOOL)_setUIView:(id)view forVariable:(id *)variable
 {
-  v7 = a3;
-  if (!a4 || *a4 == v7)
+  viewCopy = view;
+  if (!variable || *variable == viewCopy)
   {
     v8 = 0;
   }
 
   else
   {
-    [*a4 removeFromSuperview];
-    objc_storeStrong(a4, a3);
-    if (*a4)
+    [*variable removeFromSuperview];
+    objc_storeStrong(variable, view);
+    if (*variable)
     {
       [(PKPaymentSetupFooterView *)self addSubview:?];
     }
@@ -234,36 +234,36 @@
   return v8;
 }
 
-- (CGSize)_sizeForLabel:(id)a3 maxText:(id)a4 constrainedToSize:(CGSize)a5
+- (CGSize)_sizeForLabel:(id)label maxText:(id)text constrainedToSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v25[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  labelCopy = label;
+  textCopy = text;
+  text = textCopy;
   v11 = MEMORY[0x1E695F060];
-  if (v8 && !v9)
+  if (labelCopy && !textCopy)
   {
-    v10 = [v8 text];
+    text = [labelCopy text];
   }
 
   v12 = *v11;
   v13 = v11[1];
-  if (v8 && v10)
+  if (labelCopy && text)
   {
-    v14 = [MEMORY[0x1E69DB7C8] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7C8] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
-    [v15 setAlignment:{objc_msgSend(v8, "textAlignment")}];
+    [v15 setAlignment:{objc_msgSend(labelCopy, "textAlignment")}];
     v16 = objc_alloc(MEMORY[0x1E696AAB0]);
     v24[0] = *MEMORY[0x1E69DB648];
-    v17 = [v8 font];
+    font = [labelCopy font];
     v24[1] = *MEMORY[0x1E69DB688];
-    v25[0] = v17;
+    v25[0] = font;
     v25[1] = v15;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:2];
-    v19 = [v16 initWithString:v10 attributes:v18];
+    v19 = [v16 initWithString:text attributes:v18];
 
     [v19 pkui_sizeThatFits:{width, height}];
     v12 = v20;
@@ -277,10 +277,10 @@
   return result;
 }
 
-- (CGSize)_adjacentButtonSizeConstrainedToSize:(CGSize)a3
+- (CGSize)_adjacentButtonSizeConstrainedToSize:(CGSize)size
 {
-  height = a3.height;
-  v5 = (a3.width + -12.0) * 0.5;
+  height = size.height;
+  v5 = (size.width + -12.0) * 0.5;
   v6 = PKOBKDockButtonMinHeight();
   [(PKLegacyButtonInterface *)self->_primaryButton sizeThatFits:v5, height];
   if (v6 <= v7)
@@ -312,9 +312,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKPaymentSetupFooterView *)self _layoutSubviewsInBounds:1 isTemplateLayout:0.0, 0.0, a3.width, a3.height];
+  [(PKPaymentSetupFooterView *)self _layoutSubviewsInBounds:1 isTemplateLayout:0.0, 0.0, fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -325,11 +325,11 @@
   v17.receiver = self;
   v17.super_class = PKPaymentSetupFooterView;
   [(PKPaymentSetupFooterView *)&v17 layoutSubviews];
-  v3 = [(PKPaymentSetupFooterView *)self traitCollection];
-  if ([v3 userInterfaceIdiom] == 1 && (PKPaymentSetupContextIsSetupAssistant() & 1) != 0)
+  traitCollection = [(PKPaymentSetupFooterView *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 1 && (PKPaymentSetupContextIsSetupAssistant() & 1) != 0)
   {
-    v4 = [(PKPaymentSetupFooterView *)self readableContentGuide];
-    [v4 layoutFrame];
+    readableContentGuide = [(PKPaymentSetupFooterView *)self readableContentGuide];
+    [readableContentGuide layoutFrame];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -348,11 +348,11 @@
   [(PKPaymentSetupFooterView *)self _layoutSubviewsInBounds:0 isTemplateLayout:v6, v8, v10, v12];
 }
 
-- (CGSize)_layoutSubviewsInBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4
+- (CGSize)_layoutSubviewsInBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout
 {
-  width = a3.size.width;
-  y = a3.origin.y;
-  v8 = [(PKPaymentSetupFooterView *)self _shouldReverseLayoutDirection:a3.origin.x];
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  v8 = [(PKPaymentSetupFooterView *)self _shouldReverseLayoutDirection:bounds.origin.x];
   if (v8)
   {
     v9 = CGRectMaxXEdge;
@@ -439,7 +439,7 @@
   aBlock[5] = &v54;
   aBlock[6] = &v42;
   *&aBlock[7] = v11;
-  v41 = a4;
+  layoutCopy = layout;
   v22 = _Block_copy(aBlock);
   v23 = v22;
   if (self->_useAdjacentLayout && self->_primaryButton && self->_setUpLaterButton)
@@ -465,13 +465,13 @@
     memset(&v39, 0, sizeof(v39));
     CGRectDivide(v47[1], &v39, v47 + 1, v27, CGRectMinYEdge);
     CGRectDivide(v39, v55 + 1, &v39, v25, v9);
-    if (!a4)
+    if (!layout)
     {
       [(PKLegacyButtonInterface *)self->_primaryButton setFrame:v55[1].origin.x, v55[1].origin.y, v55[1].size.width, v55[1].size.height];
     }
 
     CGRectDivide(v39, v55 + 1, &v39, v25, v10);
-    if (!a4)
+    if (!layout)
     {
       [(UIButton *)self->_setUpLaterButton setFrame:v55[1].origin.x, v55[1].origin.y, v55[1].size.width, v55[1].size.height];
     }
@@ -557,18 +557,18 @@ void __69__PKPaymentSetupFooterView__layoutSubviewsInBounds_isTemplateLayout___b
 {
   if (_UISolariumFeatureFlagEnabled())
   {
-    v3 = [MEMORY[0x1E69DC738] pkui_tintedGlassButtonConfiguration];
-    [v3 setButtonSize:3];
+    pkui_tintedGlassButtonConfiguration = [MEMORY[0x1E69DC738] pkui_tintedGlassButtonConfiguration];
+    [pkui_tintedGlassButtonConfiguration setButtonSize:3];
     v4 = PKLocalizedPaymentString(&cfstr_Continue.isa);
-    [v3 setTitle:v4];
+    [pkui_tintedGlassButtonConfiguration setTitle:v4];
 
-    [v3 setTitleAlignment:2];
-    [v3 contentInsets];
+    [pkui_tintedGlassButtonConfiguration setTitleAlignment:2];
+    [pkui_tintedGlassButtonConfiguration contentInsets];
     v6 = v5;
-    [v3 contentInsets];
-    [v3 setContentInsets:{v6, 0.0}];
-    v7 = [PKOBKPrimaryButton buttonWithConfiguration:v3 primaryAction:0];
-    [v7 setConfiguration:v3];
+    [pkui_tintedGlassButtonConfiguration contentInsets];
+    [pkui_tintedGlassButtonConfiguration setContentInsets:{v6, 0.0}];
+    v7 = [PKOBKPrimaryButton buttonWithConfiguration:pkui_tintedGlassButtonConfiguration primaryAction:0];
+    [v7 setConfiguration:pkui_tintedGlassButtonConfiguration];
     v8 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC38], *MEMORY[0x1E69DB980]);
     [v7 pkui_updateTitleTextAttributesWithFont:v8];
   }
@@ -589,11 +589,11 @@ void __69__PKPaymentSetupFooterView__layoutSubviewsInBounds_isTemplateLayout___b
     [v7 setTitle:v9 forState:0];
 
     [v7 setContentEdgeInsets:{0.0, 24.0, 0.0, 24.0}];
-    v3 = [v7 titleLabel];
-    [v3 setNumberOfLines:0];
-    [v3 setTextAlignment:1];
+    pkui_tintedGlassButtonConfiguration = [v7 titleLabel];
+    [pkui_tintedGlassButtonConfiguration setNumberOfLines:0];
+    [pkui_tintedGlassButtonConfiguration setTextAlignment:1];
     v8 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD40], *MEMORY[0x1E69DDC38]);
-    [v3 setFont:v8];
+    [pkui_tintedGlassButtonConfiguration setFont:v8];
   }
 
   [v7 setExclusiveTouch:1];
@@ -604,8 +604,8 @@ void __69__PKPaymentSetupFooterView__layoutSubviewsInBounds_isTemplateLayout___b
 
   else
   {
-    v10 = [MEMORY[0x1E69DC888] tintColor];
-    [v7 setTintColor:v10];
+    tintColor = [MEMORY[0x1E69DC888] tintColor];
+    [v7 setTintColor:tintColor];
   }
 
   [v7 setAccessibilityIdentifier:*MEMORY[0x1E69B9AE0]];
@@ -613,42 +613,42 @@ void __69__PKPaymentSetupFooterView__layoutSubviewsInBounds_isTemplateLayout___b
   return v7;
 }
 
-- (id)createAlternateActionButtonWithTitle:(id)a3
+- (id)createAlternateActionButtonWithTitle:(id)title
 {
-  v3 = a3;
+  titleCopy = title;
   if (_UISolariumFeatureFlagEnabled())
   {
-    v4 = [MEMORY[0x1E69DC738] pkui_glassButtonConfiguration];
-    [v4 setTitle:v3];
+    pkui_glassButtonConfiguration = [MEMORY[0x1E69DC738] pkui_glassButtonConfiguration];
+    [pkui_glassButtonConfiguration setTitle:titleCopy];
 
-    [v4 setContentInsets:{15.0, 0.0, 15.0, 0.0}];
-    [v4 setCornerStyle:4];
-    [v4 setTitleAlignment:2];
-    v5 = [MEMORY[0x1E69DC888] labelColor];
-    [v4 setBaseForegroundColor:v5];
+    [pkui_glassButtonConfiguration setContentInsets:{15.0, 0.0, 15.0, 0.0}];
+    [pkui_glassButtonConfiguration setCornerStyle:4];
+    [pkui_glassButtonConfiguration setTitleAlignment:2];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [pkui_glassButtonConfiguration setBaseForegroundColor:labelColor];
 
-    v6 = [MEMORY[0x1E69DC888] systemGray6Color];
-    [v4 setBaseBackgroundColor:v6];
+    systemGray6Color = [MEMORY[0x1E69DC888] systemGray6Color];
+    [pkui_glassButtonConfiguration setBaseBackgroundColor:systemGray6Color];
 
-    v7 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v4 primaryAction:0];
-    [v7 setConfiguration:v4];
+    v7 = [MEMORY[0x1E69DC738] buttonWithConfiguration:pkui_glassButtonConfiguration primaryAction:0];
+    [v7 setConfiguration:pkui_glassButtonConfiguration];
     v8 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC38], *MEMORY[0x1E69DB980]);
     [v7 pkui_updateTitleTextAttributesWithFont:v8];
   }
 
   else
   {
-    v4 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC38]);
-    v8 = [MEMORY[0x1E69DC740] pkui_plainConfigurationWithTitle:v3 font:v4];
+    pkui_glassButtonConfiguration = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC38]);
+    v8 = [MEMORY[0x1E69DC740] pkui_plainConfigurationWithTitle:titleCopy font:pkui_glassButtonConfiguration];
 
     [v8 setContentInsets:{15.0, 0.0, 15.0, 0.0}];
     v7 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v8 primaryAction:0];
     [v7 setConfiguration:v8];
-    v9 = [v7 titleLabel];
-    [v9 setTextAlignment:1];
+    titleLabel = [v7 titleLabel];
+    [titleLabel setTextAlignment:1];
 
-    v10 = [v7 titleLabel];
-    [v10 setFont:v4];
+    titleLabel2 = [v7 titleLabel];
+    [titleLabel2 setFont:pkui_glassButtonConfiguration];
   }
 
   [v7 setExclusiveTouch:1];

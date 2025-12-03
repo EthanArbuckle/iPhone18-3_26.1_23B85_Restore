@@ -18,9 +18,9 @@
   v12 = a4;
   v13 = a3;
   v14 = [v9 alloc];
-  v15 = [v13 rm_RemoteManagementAccountType];
+  rm_RemoteManagementAccountType = [v13 rm_RemoteManagementAccountType];
 
-  v16 = [v14 initWithAccountType:v15];
+  v16 = [v14 initWithAccountType:rm_RemoteManagementAccountType];
   [v16 rm_setAccountScheme:@"Test"];
   [v16 setUsername:v12];
 
@@ -41,9 +41,9 @@
   v15 = a4;
   v16 = a3;
   v17 = [v11 alloc];
-  v18 = [v16 rm_RemoteManagementAccountType];
+  rm_RemoteManagementAccountType = [v16 rm_RemoteManagementAccountType];
 
-  v19 = [v17 initWithAccountType:v18];
+  v19 = [v17 initWithAccountType:rm_RemoteManagementAccountType];
   [v19 rm_setAccountScheme:@"Bearer"];
   [v19 setUsername:v15];
 
@@ -67,9 +67,9 @@
   v21 = a4;
   v22 = a3;
   v23 = [v15 alloc];
-  v24 = [v22 rm_RemoteManagementAccountType];
+  rm_RemoteManagementAccountType = [v22 rm_RemoteManagementAccountType];
 
-  v25 = [v23 initWithAccountType:v24];
+  v25 = [v23 initWithAccountType:rm_RemoteManagementAccountType];
   [v25 rm_setAccountScheme:@"MAID"];
   [v25 setUsername:v21];
 
@@ -87,33 +87,33 @@
 
 - (uint64_t)rm_managedByOlympus
 {
-  v1 = [a1 objectForKeyedSubscript:@"additionalInfo"];
+  v1 = [self objectForKeyedSubscript:@"additionalInfo"];
   v2 = [v1 objectForKeyedSubscript:@"managedByMDM"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)rm_isAccountSchemeTest
 {
-  v1 = [a1 rm_accountScheme];
-  v2 = [v1 isEqualToString:@"Test"];
+  rm_accountScheme = [self rm_accountScheme];
+  v2 = [rm_accountScheme isEqualToString:@"Test"];
 
   return v2;
 }
 
 - (uint64_t)rm_isAccountSchemeBearer
 {
-  v1 = [a1 rm_accountScheme];
-  v2 = [v1 isEqualToString:@"Bearer"];
+  rm_accountScheme = [self rm_accountScheme];
+  v2 = [rm_accountScheme isEqualToString:@"Bearer"];
 
   return v2;
 }
 
 - (uint64_t)rm_isAccountSchemeMAID
 {
-  v1 = [a1 rm_accountScheme];
-  v2 = [v1 isEqualToString:@"MAID"];
+  rm_accountScheme = [self rm_accountScheme];
+  v2 = [rm_accountScheme isEqualToString:@"MAID"];
 
   return v2;
 }

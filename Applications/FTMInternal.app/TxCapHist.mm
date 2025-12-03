@@ -1,19 +1,19 @@
 @interface TxCapHist
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsProxState:(id)a3;
+- (int)StringAsProxState:(id)state;
 - (int)proxState;
 - (unint64_t)hash;
-- (unsigned)pucchCounterAtIndex:(unint64_t)a3;
-- (unsigned)puschCounterAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)pucchCounterAtIndex:(unint64_t)index;
+- (unsigned)puschCounterAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPowerCap10thDbm:(BOOL)a3;
-- (void)setHasProxState:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasPowerCap10thDbm:(BOOL)dbm;
+- (void)setHasProxState:(BOOL)state;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TxCapHist
@@ -40,9 +40,9 @@
   }
 }
 
-- (void)setHasProxState:(BOOL)a3
+- (void)setHasProxState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 4;
   }
@@ -55,20 +55,20 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsProxState:(id)a3
+- (int)StringAsProxState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NONE"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"NONE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"INTERMIDIATE"])
+  else if ([stateCopy isEqualToString:@"INTERMIDIATE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PROX"])
+  else if ([stateCopy isEqualToString:@"PROX"])
   {
     v4 = 2;
   }
@@ -81,9 +81,9 @@
   return v4;
 }
 
-- (void)setHasPowerCap10thDbm:(BOOL)a3
+- (void)setHasPowerCap10thDbm:(BOOL)dbm
 {
-  if (a3)
+  if (dbm)
   {
     v3 = 2;
   }
@@ -96,32 +96,32 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (unsigned)pucchCounterAtIndex:(unint64_t)a3
+- (unsigned)pucchCounterAtIndex:(unint64_t)index
 {
   p_pucchCounters = &self->_pucchCounters;
   count = self->_pucchCounters.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_pucchCounters->list[a3];
+  return p_pucchCounters->list[index];
 }
 
-- (unsigned)puschCounterAtIndex:(unint64_t)a3
+- (unsigned)puschCounterAtIndex:(unint64_t)index
 {
   p_puschCounters = &self->_puschCounters;
   count = self->_puschCounters.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_puschCounters->list[a3];
+  return p_puschCounters->list[index];
 }
 
 - (id)description
@@ -129,8 +129,8 @@
   v7.receiver = self;
   v7.super_class = TxCapHist;
   v3 = [(TxCapHist *)&v7 description];
-  v4 = [(TxCapHist *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(TxCapHist *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -194,9 +194,9 @@ LABEL_5:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -270,9 +270,9 @@ LABEL_5:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -282,8 +282,8 @@ LABEL_5:
     }
 
 LABEL_17:
-    v4[16] = self->_proxState;
-    *(v4 + 68) |= 4u;
+    toCopy[16] = self->_proxState;
+    *(toCopy + 68) |= 4u;
     if ((*&self->_has & 2) == 0)
     {
       goto LABEL_5;
@@ -292,8 +292,8 @@ LABEL_17:
     goto LABEL_4;
   }
 
-  v4[14] = self->_band;
-  *(v4 + 68) |= 1u;
+  toCopy[14] = self->_band;
+  *(toCopy + 68) |= 1u;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -304,19 +304,19 @@ LABEL_3:
   if ((has & 2) != 0)
   {
 LABEL_4:
-    v4[15] = self->_powerCap10thDbm;
-    *(v4 + 68) |= 2u;
+    toCopy[15] = self->_powerCap10thDbm;
+    *(toCopy + 68) |= 2u;
   }
 
 LABEL_5:
-  v12 = v4;
+  v12 = toCopy;
   if ([(TxCapHist *)self pucchCountersCount])
   {
     [v12 clearPucchCounters];
-    v6 = [(TxCapHist *)self pucchCountersCount];
-    if (v6)
+    pucchCountersCount = [(TxCapHist *)self pucchCountersCount];
+    if (pucchCountersCount)
     {
-      v7 = v6;
+      v7 = pucchCountersCount;
       for (i = 0; i != v7; ++i)
       {
         [v12 addPucchCounter:{-[TxCapHist pucchCounterAtIndex:](self, "pucchCounterAtIndex:", i)}];
@@ -327,10 +327,10 @@ LABEL_5:
   if ([(TxCapHist *)self puschCountersCount])
   {
     [v12 clearPuschCounters];
-    v9 = [(TxCapHist *)self puschCountersCount];
-    if (v9)
+    puschCountersCount = [(TxCapHist *)self puschCountersCount];
+    if (puschCountersCount)
     {
-      v10 = v9;
+      v10 = puschCountersCount;
       for (j = 0; j != v10; ++j)
       {
         [v12 addPuschCounter:{-[TxCapHist puschCounterAtIndex:](self, "puschCounterAtIndex:", j)}];
@@ -339,9 +339,9 @@ LABEL_5:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   has = self->_has;
   if ((has & 1) == 0)
@@ -384,50 +384,50 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = *(v4 + 68);
+  v5 = *(equalCopy + 68);
   if (*&self->_has)
   {
-    if ((*(v4 + 68) & 1) == 0 || self->_band != *(v4 + 14))
+    if ((*(equalCopy + 68) & 1) == 0 || self->_band != *(equalCopy + 14))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 68))
+  else if (*(equalCopy + 68))
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 68) & 4) == 0 || self->_proxState != *(v4 + 16))
+    if ((*(equalCopy + 68) & 4) == 0 || self->_proxState != *(equalCopy + 16))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 68) & 4) != 0)
+  else if ((*(equalCopy + 68) & 4) != 0)
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 68) & 2) == 0 || self->_powerCap10thDbm != *(v4 + 15))
+    if ((*(equalCopy + 68) & 2) == 0 || self->_powerCap10thDbm != *(equalCopy + 15))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 68) & 2) != 0)
+  else if ((*(equalCopy + 68) & 2) != 0)
   {
     goto LABEL_19;
   }
@@ -487,15 +487,15 @@ LABEL_8:
   return v5 ^ PBRepeatedUInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 68);
+  fromCopy = from;
+  v5 = *(fromCopy + 68);
   if (v5)
   {
-    self->_band = *(v4 + 14);
+    self->_band = *(fromCopy + 14);
     *&self->_has |= 1u;
-    v5 = *(v4 + 68);
+    v5 = *(fromCopy + 68);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -508,36 +508,36 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 68) & 4) == 0)
+  else if ((*(fromCopy + 68) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_proxState = *(v4 + 16);
+  self->_proxState = *(fromCopy + 16);
   *&self->_has |= 4u;
-  if ((*(v4 + 68) & 2) != 0)
+  if ((*(fromCopy + 68) & 2) != 0)
   {
 LABEL_4:
-    self->_powerCap10thDbm = *(v4 + 15);
+    self->_powerCap10thDbm = *(fromCopy + 15);
     *&self->_has |= 2u;
   }
 
 LABEL_5:
-  v12 = v4;
-  v6 = [v4 pucchCountersCount];
-  if (v6)
+  v12 = fromCopy;
+  pucchCountersCount = [fromCopy pucchCountersCount];
+  if (pucchCountersCount)
   {
-    v7 = v6;
+    v7 = pucchCountersCount;
     for (i = 0; i != v7; ++i)
     {
       -[TxCapHist addPucchCounter:](self, "addPucchCounter:", [v12 pucchCounterAtIndex:i]);
     }
   }
 
-  v9 = [v12 puschCountersCount];
-  if (v9)
+  puschCountersCount = [v12 puschCountersCount];
+  if (puschCountersCount)
   {
-    v10 = v9;
+    v10 = puschCountersCount;
     for (j = 0; j != v10; ++j)
     {
       -[TxCapHist addPuschCounter:](self, "addPuschCounter:", [v12 puschCounterAtIndex:j]);

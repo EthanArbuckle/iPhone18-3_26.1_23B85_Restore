@@ -1,6 +1,6 @@
 @interface IMSpamFilterHelperWrapper
 - (BOOL)isFilterUnknownSendersEnabled;
-- (BOOL)isKnownContact:(id)a3;
+- (BOOL)isKnownContact:(id)contact;
 @end
 
 @implementation IMSpamFilterHelperWrapper
@@ -12,7 +12,7 @@
   return [v2 isFilterUnknownSendersEnabled];
 }
 
-- (BOOL)isKnownContact:(id)a3
+- (BOOL)isKnownContact:(id)contact
 {
   v4 = objc_opt_self();
 

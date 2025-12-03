@@ -1,16 +1,16 @@
 @interface TSCellularPlanProximityTransferController
 - (ESIMProxTransferControllerDelegate)delegate;
-- (TSCellularPlanProximityTransferController)initWithESIMDelegate:(id)a3;
+- (TSCellularPlanProximityTransferController)initWithESIMDelegate:(id)delegate;
 - (void)attemptFailed;
 - (void)userDidTapCancel;
-- (void)viewControllerDidComplete:(id)a3;
+- (void)viewControllerDidComplete:(id)complete;
 @end
 
 @implementation TSCellularPlanProximityTransferController
 
-- (TSCellularPlanProximityTransferController)initWithESIMDelegate:(id)a3
+- (TSCellularPlanProximityTransferController)initWithESIMDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = TSCellularPlanProximityTransferController;
   v5 = [(TSCellularPlanProximityTransferController *)&v10 init];
@@ -22,18 +22,18 @@
     v5->_client = v7;
 
     [(CoreTelephonyClient *)v5->_client setDelegate:v5];
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v5;
 }
 
-- (void)viewControllerDidComplete:(id)a3
+- (void)viewControllerDidComplete:(id)complete
 {
   v10 = *MEMORY[0x277D85DE8];
   v5 = _TSLogDomain();
   WeakRetained = v5;
-  if (a3)
+  if (complete)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {

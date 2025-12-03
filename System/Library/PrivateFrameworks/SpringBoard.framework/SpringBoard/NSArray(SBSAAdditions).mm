@@ -10,37 +10,37 @@
 
 - (uint64_t)sbsa_onlyObjectOrNilAssert
 {
-  if ([a1 count] >= 2)
+  if ([self count] >= 2)
   {
     [(NSArray(SBSAAdditions) *)a2 sbsa_onlyObjectOrNilAssert];
   }
 
-  return [a1 lastObject];
+  return [self lastObject];
 }
 
 - (id)sbsa_onlyObjectOrNil
 {
-  if ([a1 count] == 1)
+  if ([self count] == 1)
   {
-    v2 = [a1 lastObject];
+    lastObject = [self lastObject];
   }
 
   else
   {
-    v2 = 0;
+    lastObject = 0;
   }
 
-  return v2;
+  return lastObject;
 }
 
 - (id)sbsa_arrayByAddingOrReplacingObject:()SBSAAdditions passingTest:
 {
   v6 = a3;
-  v7 = a1;
-  v8 = v7;
+  selfCopy = self;
+  v8 = selfCopy;
   if (v6)
   {
-    v9 = [v7 indexOfObjectPassingTest:a4];
+    v9 = [selfCopy indexOfObjectPassingTest:a4];
     v10 = [v8 mutableCopy];
     v11 = v10;
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
@@ -56,7 +56,7 @@
 
   else
   {
-    v11 = v7;
+    v11 = selfCopy;
   }
 
   return v11;
@@ -71,15 +71,15 @@
   v8[3] = &unk_2783AC6B0;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 sbsa_arrayByAddingOrReplacingObject:v5 passingTest:v8];
+  v6 = [self sbsa_arrayByAddingOrReplacingObject:v5 passingTest:v8];
 
   return v6;
 }
 
 - (void)sbsa_onlyObjectOrNilAssert
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBSystemApertureUtilities.m" lineNumber:200 description:{@"Collection contains more than a single object: %@", a2}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBSystemApertureUtilities.m" lineNumber:200 description:{@"Collection contains more than a single object: %@", a2}];
 }
 
 @end

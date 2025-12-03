@@ -1,6 +1,6 @@
 @interface HearingDeviceDataProvider
 - (AXHearingAidMode)selectedMode;
-- (BOOL)supportProperty:(unint64_t)a3;
+- (BOOL)supportProperty:(unint64_t)property;
 - (HearingDeviceDataProvider)init;
 - (NSArray)modes;
 - (NSString)deviceName;
@@ -12,10 +12,10 @@
 - (double)volumeLevel;
 - (int64_t)micSteps;
 - (int64_t)volumeSteps;
-- (void)setHearingDevice:(id)a3;
-- (void)setMicLevel:(double)a3;
-- (void)setSelectedMode:(id)a3;
-- (void)setVolumeLevel:(double)a3;
+- (void)setHearingDevice:(id)device;
+- (void)setMicLevel:(double)level;
+- (void)setSelectedMode:(id)mode;
+- (void)setVolumeLevel:(double)level;
 @end
 
 @implementation HearingDeviceDataProvider
@@ -42,44 +42,44 @@
   return v2;
 }
 
-- (void)setHearingDevice:(id)a3
+- (void)setHearingDevice:(id)device
 {
-  objc_storeStrong(&self->_hearingDevice, a3);
-  v5 = a3;
-  v6 = [v5 availableEars];
+  objc_storeStrong(&self->_hearingDevice, device);
+  deviceCopy = device;
+  availableEars = [deviceCopy availableEars];
 
-  [(HearingDeviceDataProvider *)self setHearingEar:v6];
+  [(HearingDeviceDataProvider *)self setHearingEar:availableEars];
 }
 
 - (NSString)displayName
 {
-  v3 = [(HearingDeviceDataProvider *)self deviceName];
-  v4 = [(HearingDeviceDataProvider *)self shortDeviceName];
+  deviceName = [(HearingDeviceDataProvider *)self deviceName];
+  shortDeviceName = [(HearingDeviceDataProvider *)self shortDeviceName];
   numberFormatter = self->_numberFormatter;
   [(HearingDeviceDataProvider *)self batteryLevel];
   v6 = [NSNumber numberWithDouble:?];
   v7 = [(NSNumberFormatter *)numberFormatter stringFromNumber:v6];
-  v8 = [NSString stringWithFormat:@"%@\n%@\n%@ battery", v3, v4, v7];
+  v8 = [NSString stringWithFormat:@"%@\n%@\n%@ battery", deviceName, shortDeviceName, v7];
 
   return v8;
 }
 
 - (NSString)deviceName
 {
-  v4 = [(HearingDeviceDataProvider *)self hearingEar];
-  if (v4 <= 6 && ((1 << v4) & 0x55) != 0)
+  hearingEar = [(HearingDeviceDataProvider *)self hearingEar];
+  if (hearingEar <= 6 && ((1 << hearingEar) & 0x55) != 0)
   {
-    v5 = [(HearingDeviceDataProvider *)self hearingDevice];
-    v2 = [v5 name];
+    hearingDevice = [(HearingDeviceDataProvider *)self hearingDevice];
+    name = [hearingDevice name];
   }
 
-  return v2;
+  return name;
 }
 
 - (NSString)shortDeviceName
 {
-  v2 = [(HearingDeviceDataProvider *)self hearingEar];
-  if (v2 == 2 || v2 == 6 || v2 == 4)
+  hearingEar = [(HearingDeviceDataProvider *)self hearingEar];
+  if (hearingEar == 2 || hearingEar == 6 || hearingEar == 4)
   {
     v3 = hearingLocString();
   }
@@ -94,8 +94,8 @@
 
 - (NSString)shortDeviceNameColon
 {
-  v2 = [(HearingDeviceDataProvider *)self hearingEar];
-  if (v2 == 2 || v2 == 6 || v2 == 4)
+  hearingEar = [(HearingDeviceDataProvider *)self hearingEar];
+  if (hearingEar == 2 || hearingEar == 6 || hearingEar == 4)
   {
     v3 = hearingLocString();
   }
@@ -110,19 +110,19 @@
 
 - (double)batteryLevel
 {
-  v3 = [(HearingDeviceDataProvider *)self hearingEar];
-  if (v3 == 4)
+  hearingEar = [(HearingDeviceDataProvider *)self hearingEar];
+  if (hearingEar == 4)
   {
-    v5 = [(HearingDeviceDataProvider *)self hearingDevice];
-    [v5 rightBatteryLevel];
+    hearingDevice = [(HearingDeviceDataProvider *)self hearingDevice];
+    [hearingDevice rightBatteryLevel];
     goto LABEL_5;
   }
 
   v4 = 0.0;
-  if (v3 == 2)
+  if (hearingEar == 2)
   {
-    v5 = [(HearingDeviceDataProvider *)self hearingDevice];
-    [v5 leftBatteryLevel];
+    hearingDevice = [(HearingDeviceDataProvider *)self hearingDevice];
+    [hearingDevice leftBatteryLevel];
 LABEL_5:
     v4 = v6;
   }
@@ -132,19 +132,19 @@ LABEL_5:
 
 - (double)volumeLevel
 {
-  v3 = [(HearingDeviceDataProvider *)self hearingEar];
-  if (v3 == 4)
+  hearingEar = [(HearingDeviceDataProvider *)self hearingEar];
+  if (hearingEar == 4)
   {
-    v5 = [(HearingDeviceDataProvider *)self hearingDevice];
-    [v5 rightMixedVolume];
+    hearingDevice = [(HearingDeviceDataProvider *)self hearingDevice];
+    [hearingDevice rightMixedVolume];
     goto LABEL_5;
   }
 
   v4 = 0.0;
-  if (v3 == 2)
+  if (hearingEar == 2)
   {
-    v5 = [(HearingDeviceDataProvider *)self hearingDevice];
-    [v5 leftMixedVolume];
+    hearingDevice = [(HearingDeviceDataProvider *)self hearingDevice];
+    [hearingDevice leftMixedVolume];
 LABEL_5:
     v4 = v6;
   }
@@ -152,53 +152,53 @@ LABEL_5:
   return v4;
 }
 
-- (void)setVolumeLevel:(double)a3
+- (void)setVolumeLevel:(double)level
 {
-  v5 = [(HearingDeviceDataProvider *)self hearingEar];
-  if (v5 == 4)
+  hearingEar = [(HearingDeviceDataProvider *)self hearingEar];
+  if (hearingEar == 4)
   {
-    v6 = [(HearingDeviceDataProvider *)self hearingDevice];
-    [v6 setRightMixedVolume:a3];
+    hearingDevice = [(HearingDeviceDataProvider *)self hearingDevice];
+    [hearingDevice setRightMixedVolume:level];
   }
 
   else
   {
-    if (v5 != 2)
+    if (hearingEar != 2)
     {
       return;
     }
 
-    v6 = [(HearingDeviceDataProvider *)self hearingDevice];
-    [v6 setLeftMixedVolume:a3];
+    hearingDevice = [(HearingDeviceDataProvider *)self hearingDevice];
+    [hearingDevice setLeftMixedVolume:level];
   }
 }
 
 - (double)micLevel
 {
-  v3 = [(HearingDeviceDataProvider *)self hearingEar];
+  hearingEar = [(HearingDeviceDataProvider *)self hearingEar];
   v4 = 0.0;
-  switch(v3)
+  switch(hearingEar)
   {
     case 6u:
-      v7 = [(HearingDeviceDataProvider *)self hearingDevice];
+      hearingDevice = [(HearingDeviceDataProvider *)self hearingDevice];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v5 = [(HearingDeviceDataProvider *)self hearingDevice];
-        [v5 combinedVolumeForProperty:64];
+        hearingDevice2 = [(HearingDeviceDataProvider *)self hearingDevice];
+        [hearingDevice2 combinedVolumeForProperty:64];
         goto LABEL_8;
       }
 
       break;
     case 4u:
-      v5 = [(HearingDeviceDataProvider *)self hearingDevice];
-      [v5 rightMicrophoneVolume];
+      hearingDevice2 = [(HearingDeviceDataProvider *)self hearingDevice];
+      [hearingDevice2 rightMicrophoneVolume];
       goto LABEL_8;
     case 2u:
-      v5 = [(HearingDeviceDataProvider *)self hearingDevice];
-      [v5 leftMicrophoneVolume];
+      hearingDevice2 = [(HearingDeviceDataProvider *)self hearingDevice];
+      [hearingDevice2 leftMicrophoneVolume];
 LABEL_8:
       v4 = v6;
 
@@ -208,44 +208,44 @@ LABEL_8:
   return v4;
 }
 
-- (void)setMicLevel:(double)a3
+- (void)setMicLevel:(double)level
 {
-  v5 = [(HearingDeviceDataProvider *)self hearingEar];
-  if (v5 == 4)
+  hearingEar = [(HearingDeviceDataProvider *)self hearingEar];
+  if (hearingEar == 4)
   {
-    v6 = [(HearingDeviceDataProvider *)self hearingDevice];
-    [v6 setRightMicrophoneVolume:a3];
+    hearingDevice = [(HearingDeviceDataProvider *)self hearingDevice];
+    [hearingDevice setRightMicrophoneVolume:level];
   }
 
   else
   {
-    if (v5 != 2)
+    if (hearingEar != 2)
     {
       return;
     }
 
-    v6 = [(HearingDeviceDataProvider *)self hearingDevice];
-    [v6 setLeftMicrophoneVolume:a3];
+    hearingDevice = [(HearingDeviceDataProvider *)self hearingDevice];
+    [hearingDevice setLeftMicrophoneVolume:level];
   }
 }
 
 - (NSArray)modes
 {
-  v3 = [(HearingDeviceDataProvider *)self hearingEar];
-  switch(v3)
+  hearingEar = [(HearingDeviceDataProvider *)self hearingEar];
+  switch(hearingEar)
   {
     case 6u:
       goto LABEL_4;
     case 4u:
-      v4 = [(HearingDeviceDataProvider *)self hearingDevice];
-      v5 = [v4 rightPrograms];
+      hearingDevice = [(HearingDeviceDataProvider *)self hearingDevice];
+      rightPrograms = [hearingDevice rightPrograms];
       goto LABEL_6;
     case 2u:
 LABEL_4:
-      v4 = [(HearingDeviceDataProvider *)self hearingDevice];
-      v5 = [v4 leftPrograms];
+      hearingDevice = [(HearingDeviceDataProvider *)self hearingDevice];
+      rightPrograms = [hearingDevice leftPrograms];
 LABEL_6:
-      v6 = v5;
+      v6 = rightPrograms;
 
       goto LABEL_8;
   }
@@ -258,21 +258,21 @@ LABEL_8:
 
 - (AXHearingAidMode)selectedMode
 {
-  v3 = [(HearingDeviceDataProvider *)self hearingEar];
-  switch(v3)
+  hearingEar = [(HearingDeviceDataProvider *)self hearingEar];
+  switch(hearingEar)
   {
     case 6u:
       goto LABEL_4;
     case 4u:
-      v4 = [(HearingDeviceDataProvider *)self hearingDevice];
-      v5 = [v4 rightSelectedProgram];
+      hearingDevice = [(HearingDeviceDataProvider *)self hearingDevice];
+      rightSelectedProgram = [hearingDevice rightSelectedProgram];
       goto LABEL_6;
     case 2u:
 LABEL_4:
-      v4 = [(HearingDeviceDataProvider *)self hearingDevice];
-      v5 = [v4 leftSelectedProgram];
+      hearingDevice = [(HearingDeviceDataProvider *)self hearingDevice];
+      rightSelectedProgram = [hearingDevice leftSelectedProgram];
 LABEL_6:
-      v6 = v5;
+      v6 = rightSelectedProgram;
 
       goto LABEL_8;
   }
@@ -283,66 +283,66 @@ LABEL_8:
   return v6;
 }
 
-- (void)setSelectedMode:(id)a3
+- (void)setSelectedMode:(id)mode
 {
-  v4 = a3;
-  v5 = [(HearingDeviceDataProvider *)self hearingDevice];
-  [v5 selectProgram:v4 forEar:{-[HearingDeviceDataProvider hearingEar](self, "hearingEar")}];
+  modeCopy = mode;
+  hearingDevice = [(HearingDeviceDataProvider *)self hearingDevice];
+  [hearingDevice selectProgram:modeCopy forEar:{-[HearingDeviceDataProvider hearingEar](self, "hearingEar")}];
 }
 
 - (int64_t)volumeSteps
 {
-  v3 = [(HearingDeviceDataProvider *)self hearingEar];
-  if (v3 == 4)
+  hearingEar = [(HearingDeviceDataProvider *)self hearingEar];
+  if (hearingEar == 4)
   {
-    v4 = [(HearingDeviceDataProvider *)self hearingDevice];
-    v5 = [v4 rightMixedVolumeSteps];
+    hearingDevice = [(HearingDeviceDataProvider *)self hearingDevice];
+    rightMixedVolumeSteps = [hearingDevice rightMixedVolumeSteps];
   }
 
   else
   {
-    if (v3 != 2)
+    if (hearingEar != 2)
     {
       return 0;
     }
 
-    v4 = [(HearingDeviceDataProvider *)self hearingDevice];
-    v5 = [v4 leftMixedVolumeSteps];
+    hearingDevice = [(HearingDeviceDataProvider *)self hearingDevice];
+    rightMixedVolumeSteps = [hearingDevice leftMixedVolumeSteps];
   }
 
-  v6 = v5;
+  v6 = rightMixedVolumeSteps;
 
   return v6;
 }
 
 - (int64_t)micSteps
 {
-  v3 = [(HearingDeviceDataProvider *)self hearingEar];
-  if (v3 == 4)
+  hearingEar = [(HearingDeviceDataProvider *)self hearingEar];
+  if (hearingEar == 4)
   {
-    v4 = [(HearingDeviceDataProvider *)self hearingDevice];
-    v5 = [v4 rightMicrophoneVolumeSteps];
+    hearingDevice = [(HearingDeviceDataProvider *)self hearingDevice];
+    rightMicrophoneVolumeSteps = [hearingDevice rightMicrophoneVolumeSteps];
   }
 
   else
   {
-    if (v3 != 2)
+    if (hearingEar != 2)
     {
       return 0;
     }
 
-    v4 = [(HearingDeviceDataProvider *)self hearingDevice];
-    v5 = [v4 leftMicrophoneVolumeSteps];
+    hearingDevice = [(HearingDeviceDataProvider *)self hearingDevice];
+    rightMicrophoneVolumeSteps = [hearingDevice leftMicrophoneVolumeSteps];
   }
 
-  v6 = v5;
+  v6 = rightMicrophoneVolumeSteps;
 
   return v6;
 }
 
-- (BOOL)supportProperty:(unint64_t)a3
+- (BOOL)supportProperty:(unint64_t)property
 {
-  v5 = [(HearingDeviceDataProvider *)self hearingDevice];
+  hearingDevice = [(HearingDeviceDataProvider *)self hearingDevice];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -351,8 +351,8 @@ LABEL_8:
     return 0;
   }
 
-  v7 = [(HearingDeviceDataProvider *)self hearingDevice];
-  v8 = [v7 propertyIsAvailable:a3 forEar:{-[HearingDeviceDataProvider hearingEar](self, "hearingEar")}];
+  hearingDevice2 = [(HearingDeviceDataProvider *)self hearingDevice];
+  v8 = [hearingDevice2 propertyIsAvailable:property forEar:{-[HearingDeviceDataProvider hearingEar](self, "hearingEar")}];
 
   return v8;
 }

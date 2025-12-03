@@ -6,21 +6,21 @@
 
 - (id)hmbDescription
 {
-  if ([a1 environment] == 1)
+  if ([self environment] == 1)
   {
-    v2 = [a1 containerIdentifier];
+    containerIdentifier = [self containerIdentifier];
   }
 
   else
   {
     v3 = MEMORY[0x277CCACA8];
-    [a1 environment];
+    [self environment];
     v4 = CKContainerEnvironmentString();
-    v5 = [a1 containerIdentifier];
-    v2 = [v3 stringWithFormat:@"%@.%@", v4, v5];
+    containerIdentifier2 = [self containerIdentifier];
+    containerIdentifier = [v3 stringWithFormat:@"%@.%@", v4, containerIdentifier2];
   }
 
-  return v2;
+  return containerIdentifier;
 }
 
 @end

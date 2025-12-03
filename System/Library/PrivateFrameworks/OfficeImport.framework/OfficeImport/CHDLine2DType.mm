@@ -1,14 +1,14 @@
 @interface CHDLine2DType
-- (CHDLine2DType)initWithChart:(id)a3;
+- (CHDLine2DType)initWithChart:(id)chart;
 @end
 
 @implementation CHDLine2DType
 
-- (CHDLine2DType)initWithChart:(id)a3
+- (CHDLine2DType)initWithChart:(id)chart
 {
   v4.receiver = self;
   v4.super_class = CHDLine2DType;
-  result = [(CHDLineType *)&v4 initWithChart:a3];
+  result = [(CHDLineType *)&v4 initWithChart:chart];
   if (result)
   {
     LOBYTE(result->super.super.mGrouping) = 1;

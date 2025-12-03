@@ -1,15 +1,15 @@
 @interface DaemonReceiver
-- (void)messagesComposeDidFinishWithDidSend:(BOOL)a3 reply:(id)a4;
+- (void)messagesComposeDidFinishWithDidSend:(BOOL)send reply:(id)reply;
 @end
 
 @implementation DaemonReceiver
 
-- (void)messagesComposeDidFinishWithDidSend:(BOOL)a3 reply:(id)a4
+- (void)messagesComposeDidFinishWithDidSend:(BOOL)send reply:(id)reply
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(reply);
   _Block_copy(v5);
 
-  sub_2258D8164(a3, v5);
+  sub_2258D8164(send, v5);
   _Block_release(v5);
   _Block_release(v5);
 }

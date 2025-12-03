@@ -1,16 +1,16 @@
 @interface MTAgentNotificationManager
 + (double)_schedulingAssertionTimeout;
-+ (double)defaultAssertionTimeOutForNotification:(id)a3 type:(int64_t)a4;
++ (double)defaultAssertionTimeOutForNotification:(id)notification type:(int64_t)type;
 - (MTAgentNotificationManager)init;
-- (void)_handleNotificationWithName:(id)a3 type:(int64_t)a4;
+- (void)_handleNotificationWithName:(id)name type:(int64_t)type;
 - (void)_registerForAlarmNotifications;
 - (void)_registerForDarwinNotifications;
 - (void)_registerForDistributedNotifications;
-- (void)_registerForLiveDarwinNotification:(id)a3;
-- (void)_registerForXPCStream:(id)a3 notificationType:(int64_t)a4;
+- (void)_registerForLiveDarwinNotification:(id)notification;
+- (void)_registerForXPCStream:(id)stream notificationType:(int64_t)type;
 - (void)beginListening;
 - (void)dealloc;
-- (void)registerListener:(id)a3;
+- (void)registerListener:(id)listener;
 @end
 
 @implementation MTAgentNotificationManager
@@ -26,26 +26,26 @@
     serializer = v2->_serializer;
     v2->_serializer = v3;
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     listeners = v2->_listeners;
-    v2->_listeners = v5;
+    v2->_listeners = array;
   }
 
   return v2;
 }
 
-- (void)registerListener:(id)a3
+- (void)registerListener:(id)listener
 {
-  v4 = a3;
-  v5 = [(MTAgentNotificationManager *)self serializer];
+  listenerCopy = listener;
+  serializer = [(MTAgentNotificationManager *)self serializer];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__MTAgentNotificationManager_registerListener___block_invoke;
   v7[3] = &unk_1E7B0C928;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBlock:v7];
+  v8 = listenerCopy;
+  v6 = listenerCopy;
+  [serializer performBlock:v7];
 }
 
 void __47__MTAgentNotificationManager_registerListener___block_invoke(uint64_t a1)
@@ -118,7 +118,7 @@ void __47__MTAgentNotificationManager_registerListener___block_invoke(uint64_t a
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ is registering for distributed notifications", &v5, 0xCu);
   }
 
@@ -133,7 +133,7 @@ void __47__MTAgentNotificationManager_registerListener___block_invoke(uint64_t a
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ is registering for darwin notifications", &v5, 0xCu);
   }
 
@@ -148,7 +148,7 @@ void __47__MTAgentNotificationManager_registerListener___block_invoke(uint64_t a
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ is registering for alarm notifications", &v5, 0xCu);
   }
 
@@ -156,22 +156,22 @@ void __47__MTAgentNotificationManager_registerListener___block_invoke(uint64_t a
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_registerForLiveDarwinNotification:(id)a3
+- (void)_registerForLiveDarwinNotification:(id)notification
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = MTLogForCategory(1);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 2114;
-    v11 = v4;
+    v11 = notificationCopy;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ is registering for darwin notification %{public}@", &v8, 0x16u);
   }
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterAddObserver(DarwinNotifyCenter, self, _handleLiveNotification, v4, self, CFNotificationSuspensionBehaviorDrop);
+  CFNotificationCenterAddObserver(DarwinNotifyCenter, self, _handleLiveNotification, notificationCopy, self, CFNotificationSuspensionBehaviorDrop);
 
   v7 = *MEMORY[0x1E69E9840];
 }
@@ -206,8 +206,8 @@ void __47__MTAgentNotificationManager_registerListener___block_invoke(uint64_t a
           v21 = 0u;
           v18 = 0u;
           v19 = 0u;
-          v8 = [v7 liveDarwinNotifications];
-          v9 = [v8 countByEnumeratingWithState:&v18 objects:v26 count:16];
+          liveDarwinNotifications = [v7 liveDarwinNotifications];
+          v9 = [liveDarwinNotifications countByEnumeratingWithState:&v18 objects:v26 count:16];
           if (v9)
           {
             v10 = v9;
@@ -219,7 +219,7 @@ void __47__MTAgentNotificationManager_registerListener___block_invoke(uint64_t a
               {
                 if (*v19 != v11)
                 {
-                  objc_enumerationMutation(v8);
+                  objc_enumerationMutation(liveDarwinNotifications);
                 }
 
                 v13 = *(*(&v18 + 1) + 8 * v12);
@@ -229,7 +229,7 @@ void __47__MTAgentNotificationManager_registerListener___block_invoke(uint64_t a
               }
 
               while (v10 != v12);
-              v10 = [v8 countByEnumeratingWithState:&v18 objects:v26 count:16];
+              v10 = [liveDarwinNotifications countByEnumeratingWithState:&v18 objects:v26 count:16];
             }
 
             while (v10);
@@ -252,17 +252,17 @@ void __47__MTAgentNotificationManager_registerListener___block_invoke(uint64_t a
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_registerForXPCStream:(id)a3 notificationType:(int64_t)a4
+- (void)_registerForXPCStream:(id)stream notificationType:(int64_t)type
 {
-  v7 = a3;
-  v8 = [a3 UTF8String];
+  streamCopy = stream;
+  uTF8String = [stream UTF8String];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __69__MTAgentNotificationManager__registerForXPCStream_notificationType___block_invoke;
   v9[3] = &unk_1E7B0CCE8;
   v9[4] = self;
-  v9[5] = a4;
-  xpc_set_event_stream_handler(v8, MEMORY[0x1E69E96A0], v9);
+  v9[5] = type;
+  xpc_set_event_stream_handler(uTF8String, MEMORY[0x1E69E96A0], v9);
 }
 
 void __69__MTAgentNotificationManager__registerForXPCStream_notificationType___block_invoke(uint64_t a1, xpc_object_t xdict)
@@ -284,19 +284,19 @@ void __69__MTAgentNotificationManager__registerForXPCStream_notificationType___b
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleNotificationWithName:(id)a3 type:(int64_t)a4
+- (void)_handleNotificationWithName:(id)name type:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(MTAgentNotificationManager *)self serializer];
+  nameCopy = name;
+  serializer = [(MTAgentNotificationManager *)self serializer];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __63__MTAgentNotificationManager__handleNotificationWithName_type___block_invoke;
   v9[3] = &unk_1E7B0CD10;
   v9[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
-  [v7 performBlock:v9];
+  v10 = nameCopy;
+  typeCopy = type;
+  v8 = nameCopy;
+  [serializer performBlock:v9];
 }
 
 void __63__MTAgentNotificationManager__handleNotificationWithName_type___block_invoke(uint64_t a1)
@@ -352,14 +352,14 @@ void __63__MTAgentNotificationManager__handleNotificationWithName_type___block_i
   v13 = *MEMORY[0x1E69E9840];
 }
 
-+ (double)defaultAssertionTimeOutForNotification:(id)a3 type:(int64_t)a4
++ (double)defaultAssertionTimeOutForNotification:(id)notification type:(int64_t)type
 {
-  if (a4 != 2)
+  if (type != 2)
   {
     return 0.0;
   }
 
-  [a1 _schedulingAssertionTimeout];
+  [self _schedulingAssertionTimeout];
   return result;
 }
 
@@ -369,7 +369,7 @@ void __63__MTAgentNotificationManager__handleNotificationWithName_type___block_i
   block[1] = 3221225472;
   block[2] = __57__MTAgentNotificationManager__schedulingAssertionTimeout__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_schedulingAssertionTimeout_onceToken != -1)
   {
     dispatch_once(&_schedulingAssertionTimeout_onceToken, block);

@@ -1,28 +1,28 @@
 @interface PXPostFilesToSharedAlbumAction
-- (PXPostFilesToSharedAlbumAction)initWithSharedAlbum:(id)a3 fileURLs:(id)a4 comment:(id)a5;
-- (void)performAction:(id)a3;
-- (void)performUndo:(id)a3;
+- (PXPostFilesToSharedAlbumAction)initWithSharedAlbum:(id)album fileURLs:(id)ls comment:(id)comment;
+- (void)performAction:(id)action;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXPostFilesToSharedAlbumAction
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
   v4 = MEMORY[0x1E696ABC0];
-  v5 = a3;
+  undoCopy = undo;
   v6 = [v4 px_genericErrorWithDebugDescription:@"No undo support for post actions"];
-  (*(a3 + 2))(v5, 0, v6);
+  (*(undo + 2))(undoCopy, 0, v6);
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = self->_fileURLs;
   if (![(NSArray *)v5 count])
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"NSArray<PHCollectionShareAssetSource *> *_CollectionShareAssetSourcesForFileURLs(NSArray<NSURL *> *__strong, NSError *__autoreleasing *)"}];
-    [v12 handleFailureInFunction:v13 file:@"PXPostFilesToSharedAlbumAction.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"fileURLs.count"}];
+    [currentHandler handleFailureInFunction:v13 file:@"PXPostFilesToSharedAlbumAction.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"fileURLs.count"}];
   }
 
   v21 = 0;
@@ -50,7 +50,7 @@
   v10 = v8;
   if (v7)
   {
-    v11 = [(PXPhotosAction *)self photoLibrary];
+    photoLibrary = [(PXPhotosAction *)self photoLibrary];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __48__PXPostFilesToSharedAlbumAction_performAction___block_invoke;
@@ -61,13 +61,13 @@
     v14[1] = 3221225472;
     v14[2] = __48__PXPostFilesToSharedAlbumAction_performAction___block_invoke_2;
     v14[3] = &unk_1E7747648;
-    v15 = v4;
-    [v11 performChanges:v16 completionHandler:v14];
+    v15 = actionCopy;
+    [photoLibrary performChanges:v16 completionHandler:v14];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, v10);
+    (*(actionCopy + 2))(actionCopy, 0, v10);
   }
 }
 
@@ -77,36 +77,36 @@ void __48__PXPostFilesToSharedAlbumAction_performAction___block_invoke(uint64_t 
   [v2 addNewAssetsToCollectionShareWithAssetSource:*(a1 + 40) withBatchCommentText:*(*(a1 + 32) + 104) outNewAssetIdentifiers:0];
 }
 
-- (PXPostFilesToSharedAlbumAction)initWithSharedAlbum:(id)a3 fileURLs:(id)a4 comment:(id)a5
+- (PXPostFilesToSharedAlbumAction)initWithSharedAlbum:(id)album fileURLs:(id)ls comment:(id)comment
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  albumCopy = album;
+  lsCopy = ls;
+  commentCopy = comment;
+  if (!albumCopy)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PXPostFilesToSharedAlbumAction.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"sharedAlbum"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPostFilesToSharedAlbumAction.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"sharedAlbum"}];
   }
 
-  if (![v11 count])
+  if (![lsCopy count])
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PXPostFilesToSharedAlbumAction.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"fileURLs.count"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPostFilesToSharedAlbumAction.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"fileURLs.count"}];
   }
 
-  v13 = [v10 photoLibrary];
+  photoLibrary = [albumCopy photoLibrary];
   v22.receiver = self;
   v22.super_class = PXPostFilesToSharedAlbumAction;
-  v14 = [(PXPhotosAction *)&v22 initWithPhotoLibrary:v13];
+  v14 = [(PXPhotosAction *)&v22 initWithPhotoLibrary:photoLibrary];
 
   if (v14)
   {
-    objc_storeStrong(&v14->_sharedAlbum, a3);
-    v15 = [v11 copy];
+    objc_storeStrong(&v14->_sharedAlbum, album);
+    v15 = [lsCopy copy];
     fileURLs = v14->_fileURLs;
     v14->_fileURLs = v15;
 
-    v17 = [v12 copy];
+    v17 = [commentCopy copy];
     comment = v14->_comment;
     v14->_comment = v17;
   }

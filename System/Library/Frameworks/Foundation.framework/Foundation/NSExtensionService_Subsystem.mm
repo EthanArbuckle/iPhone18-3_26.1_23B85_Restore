@@ -11,7 +11,7 @@
   v3[1] = 3221225472;
   v3[2] = __46__NSExtensionService_Subsystem_sharedInstance__block_invoke;
   v3[3] = &unk_1E69F2C00;
-  v3[4] = a1;
+  v3[4] = self;
   if (qword_1ED4402C0 != -1)
   {
     dispatch_once(&qword_1ED4402C0, v3);

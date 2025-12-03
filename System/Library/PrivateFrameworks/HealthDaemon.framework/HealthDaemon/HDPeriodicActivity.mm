@@ -1,34 +1,34 @@
 @interface HDPeriodicActivity
 - (BOOL)shouldDefer;
-- (HDPeriodicActivity)initWithProfile:(id)a3 name:(id)a4 interval:(double)a5 delegate:(id)a6 loggingCategory:(id)a7;
+- (HDPeriodicActivity)initWithProfile:(id)profile name:(id)name interval:(double)interval delegate:(id)delegate loggingCategory:(id)category;
 - (HDPeriodicActivityDelegate)delegate;
 - (NSString)description;
-- (id)_criteriaForInterval:(uint64_t)a1;
+- (id)_criteriaForInterval:(uint64_t)interval;
 - (id)diagnosticDescription;
 - (uint64_t)_requiresProtectedData;
-- (void)daemonActivated:(id)a3;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
+- (void)daemonActivated:(id)activated;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
 - (void)dealloc;
-- (void)didPerformActivityWithResult:(int64_t)a3 minimumRetryInterval:(double)a4 activityStartDate:(id)a5 error:(id)a6;
+- (void)didPerformActivityWithResult:(int64_t)result minimumRetryInterval:(double)interval activityStartDate:(id)date error:(id)error;
 - (void)resetInterval;
 @end
 
 @implementation HDPeriodicActivity
 
-- (HDPeriodicActivity)initWithProfile:(id)a3 name:(id)a4 interval:(double)a5 delegate:(id)a6 loggingCategory:(id)a7
+- (HDPeriodicActivity)initWithProfile:(id)profile name:(id)name interval:(double)interval delegate:(id)delegate loggingCategory:(id)category
 {
   v36 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  profileCopy = profile;
+  nameCopy = name;
+  delegateCopy = delegate;
+  categoryCopy = category;
   v33.receiver = self;
   v33.super_class = HDPeriodicActivity;
   v16 = [(HDPeriodicActivity *)&v33 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeWeak(&v16->_profile, v12);
+    objc_storeWeak(&v16->_profile, profileCopy);
     objc_initWeak(&location, v17);
     v18 = objc_alloc(MEMORY[0x277D10BF8]);
     v27 = MEMORY[0x277D85DD0];
@@ -36,26 +36,26 @@
     v29 = __77__HDPeriodicActivity_initWithProfile_name_interval_delegate_loggingCategory___block_invoke;
     v30 = &unk_27862F2E0;
     objc_copyWeak(&v31, &location);
-    v19 = [v18 initWithName:v13 baseInterval:*MEMORY[0x277D86238] criteria:v15 loggingCategory:&v27 handler:a5];
+    v19 = [v18 initWithName:nameCopy baseInterval:*MEMORY[0x277D86238] criteria:categoryCopy loggingCategory:&v27 handler:interval];
     activity = v17->_activity;
     v17->_activity = v19;
 
-    objc_storeWeak(&v17->_delegate, v14);
-    v21 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-    [v21 addObject:v17];
+    objc_storeWeak(&v17->_delegate, delegateCopy);
+    mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+    [mEMORY[0x277D10AF8] addObject:v17];
 
     _HKInitializeLogging();
     loggingCategory = v17->_loggingCategory;
     if (os_log_type_enabled(loggingCategory, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v35 = v13;
+      v35 = nameCopy;
       _os_log_impl(&dword_228986000, loggingCategory, OS_LOG_TYPE_DEFAULT, "Starting up XPC service scheduler (%@)", buf, 0xCu);
     }
 
     WeakRetained = objc_loadWeakRetained(&v17->_profile);
-    v24 = [WeakRetained daemon];
-    [v24 registerDaemonActivatedObserver:v17 queue:0];
+    daemon = [WeakRetained daemon];
+    [daemon registerDaemonActivatedObserver:v17 queue:0];
 
     objc_destroyWeak(&v31);
     objc_destroyWeak(&location);
@@ -107,20 +107,20 @@ void __77__HDPeriodicActivity_initWithProfile_name_interval_delegate_loggingCate
   [(HDPeriodicActivity *)&v3 dealloc];
 }
 
-- (void)didPerformActivityWithResult:(int64_t)a3 minimumRetryInterval:(double)a4 activityStartDate:(id)a5 error:(id)a6
+- (void)didPerformActivityWithResult:(int64_t)result minimumRetryInterval:(double)interval activityStartDate:(id)date error:(id)error
 {
   activity = self->_activity;
-  if (a3 > 3)
+  if (result > 3)
   {
     v7 = 2;
   }
 
   else
   {
-    v7 = qword_229181980[a3];
+    v7 = qword_229181980[result];
   }
 
-  [(HDXPCPeriodicActivity *)activity didPerformActivityWithResult:v7 minimumRetryInterval:a5 activityStartDate:a6 error:a4];
+  [(HDXPCPeriodicActivity *)activity didPerformActivityWithResult:v7 minimumRetryInterval:date activityStartDate:error error:interval];
 }
 
 - (BOOL)shouldDefer
@@ -157,9 +157,9 @@ void __77__HDPeriodicActivity_initWithProfile_name_interval_delegate_loggingCate
   [(HDXPCPeriodicActivity *)activity registerActivity];
 }
 
-- (id)_criteriaForInterval:(uint64_t)a1
+- (id)_criteriaForInterval:(uint64_t)interval
 {
-  if (a1)
+  if (interval)
   {
     v4 = xpc_dictionary_create(0, 0, 0);
     v5 = v4;
@@ -168,13 +168,13 @@ void __77__HDPeriodicActivity_initWithProfile_name_interval_delegate_loggingCate
       xpc_dictionary_set_int64(v4, *MEMORY[0x277D86288], a2);
     }
 
-    if ([(HDPeriodicActivity *)a1 _requiresProtectedData])
+    if ([(HDPeriodicActivity *)interval _requiresProtectedData])
     {
       xpc_dictionary_set_BOOL(v5, *MEMORY[0x277D86370], 1);
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 48));
-    [WeakRetained periodicActivity:a1 configureXPCActivityCriteria:v5];
+    WeakRetained = objc_loadWeakRetained((interval + 48));
+    [WeakRetained periodicActivity:interval configureXPCActivityCriteria:v5];
   }
 
   else
@@ -185,11 +185,11 @@ void __77__HDPeriodicActivity_initWithProfile_name_interval_delegate_loggingCate
   return v5;
 }
 
-- (void)daemonActivated:(id)a3
+- (void)daemonActivated:(id)activated
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained database];
-  [v5 addProtectedDataObserver:self];
+  database = [WeakRetained database];
+  [database addProtectedDataObserver:self];
 
   if (self)
   {
@@ -206,9 +206,9 @@ void __77__HDPeriodicActivity_initWithProfile_name_interval_delegate_loggingCate
   [(HDXPCPeriodicActivity *)self->_activity registerActivity];
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
-  if (a4)
+  if (available)
   {
     [(HDXPCPeriodicActivity *)self->_activity externalConditionsChanged];
   }
@@ -219,16 +219,16 @@ void __77__HDPeriodicActivity_initWithProfile_name_interval_delegate_loggingCate
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HDXPCPeriodicActivity *)self->_activity name];
+  name = [(HDXPCPeriodicActivity *)self->_activity name];
   [(HDXPCPeriodicActivity *)self->_activity baseInterval];
-  v8 = [v3 stringWithFormat:@"<%@:%p %@ (%0.2lfs)>", v5, self, v6, v7];
+  v8 = [v3 stringWithFormat:@"<%@:%p %@ (%0.2lfs)>", v5, self, name, v7];
 
   return v8;
 }
 
 - (uint64_t)_requiresProtectedData
 {
-  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  WeakRetained = objc_loadWeakRetained((self + 48));
   v3 = objc_opt_respondsToSelector();
 
   if ((v3 & 1) == 0)
@@ -236,8 +236,8 @@ void __77__HDPeriodicActivity_initWithProfile_name_interval_delegate_loggingCate
     return 0;
   }
 
-  v4 = objc_loadWeakRetained((a1 + 48));
-  v5 = [v4 periodicActivityRequiresProtectedData:a1];
+  v4 = objc_loadWeakRetained((self + 48));
+  v5 = [v4 periodicActivityRequiresProtectedData:self];
 
   return v5;
 }
@@ -287,12 +287,12 @@ void __51__HDPeriodicActivity__fireWithActivity_completion___block_invoke(void *
 - (id)diagnosticDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HDXPCPeriodicActivity *)self->_activity name];
-  v5 = [(HDXPCPeriodicActivity *)self->_activity lastSuccessfulRunDate];
+  name = [(HDXPCPeriodicActivity *)self->_activity name];
+  lastSuccessfulRunDate = [(HDXPCPeriodicActivity *)self->_activity lastSuccessfulRunDate];
   [(HDXPCPeriodicActivity *)self->_activity baseInterval];
   v7 = v6;
-  v8 = [(HDXPCPeriodicActivity *)self->_activity earliestRunDate];
-  v9 = [v3 stringWithFormat:@"Activity: '%@'\nLast Successful Run: %@\nBase Interval: %lfs\nEarliest Run Date: %@\nError Count: %ld", v4, v5, v7, v8, -[HDXPCPeriodicActivity errorCount](self->_activity, "errorCount")];
+  earliestRunDate = [(HDXPCPeriodicActivity *)self->_activity earliestRunDate];
+  v9 = [v3 stringWithFormat:@"Activity: '%@'\nLast Successful Run: %@\nBase Interval: %lfs\nEarliest Run Date: %@\nError Count: %ld", name, lastSuccessfulRunDate, v7, earliestRunDate, -[HDXPCPeriodicActivity errorCount](self->_activity, "errorCount")];
 
   return v9;
 }

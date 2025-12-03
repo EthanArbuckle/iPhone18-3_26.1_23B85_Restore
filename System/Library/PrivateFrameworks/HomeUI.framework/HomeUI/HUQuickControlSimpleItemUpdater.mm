@@ -1,32 +1,32 @@
 @interface HUQuickControlSimpleItemUpdater
 - (HUQuickControlItemHosting)itemHost;
 - (HUQuickControlSimpleItemUpdater)init;
-- (HUQuickControlSimpleItemUpdater)initWithItemHost:(id)a3;
-- (void)_setExternalItemManagerUpdatesDisabled:(BOOL)a3;
-- (void)itemManager:(id)a3 performUpdateRequest:(id)a4;
+- (HUQuickControlSimpleItemUpdater)initWithItemHost:(id)host;
+- (void)_setExternalItemManagerUpdatesDisabled:(BOOL)disabled;
+- (void)itemManager:(id)manager performUpdateRequest:(id)request;
 @end
 
 @implementation HUQuickControlSimpleItemUpdater
 
 - (HUQuickControlSimpleItemUpdater)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithItemHost_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUQuickControlItemUpdating.m" lineNumber:19 description:{@"%s is unavailable; use %@ instead", "-[HUQuickControlSimpleItemUpdater init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUQuickControlItemUpdating.m" lineNumber:19 description:{@"%s is unavailable; use %@ instead", "-[HUQuickControlSimpleItemUpdater init]", v5}];
 
   return 0;
 }
 
-- (HUQuickControlSimpleItemUpdater)initWithItemHost:(id)a3
+- (HUQuickControlSimpleItemUpdater)initWithItemHost:(id)host
 {
-  v4 = a3;
+  hostCopy = host;
   v17.receiver = self;
   v17.super_class = HUQuickControlSimpleItemUpdater;
   v5 = [(HUQuickControlSimpleItemUpdater *)&v17 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_itemHost, v4);
+    objc_storeWeak(&v5->_itemHost, hostCopy);
     objc_initWeak(&location, v6);
     v7 = objc_alloc(MEMORY[0x277D14B08]);
     v11 = MEMORY[0x277D85DD0];
@@ -61,34 +61,34 @@ id __52__HUQuickControlSimpleItemUpdater_initWithItemHost___block_invoke(uint64_
   return v7;
 }
 
-- (void)_setExternalItemManagerUpdatesDisabled:(BOOL)a3
+- (void)_setExternalItemManagerUpdatesDisabled:(BOOL)disabled
 {
-  v3 = a3;
-  v4 = [(HUQuickControlSimpleItemUpdater *)self itemManager];
-  v5 = v4;
-  if (v3)
+  disabledCopy = disabled;
+  itemManager = [(HUQuickControlSimpleItemUpdater *)self itemManager];
+  v5 = itemManager;
+  if (disabledCopy)
   {
-    [v4 disableExternalUpdatesWithReason:@"HUQuickControlSimpleItemUpdater_NotVisible"];
+    [itemManager disableExternalUpdatesWithReason:@"HUQuickControlSimpleItemUpdater_NotVisible"];
   }
 
   else
   {
-    [v4 endDisableExternalUpdatesWithReason:@"HUQuickControlSimpleItemUpdater_NotVisible"];
+    [itemManager endDisableExternalUpdatesWithReason:@"HUQuickControlSimpleItemUpdater_NotVisible"];
   }
 }
 
-- (void)itemManager:(id)a3 performUpdateRequest:(id)a4
+- (void)itemManager:(id)manager performUpdateRequest:(id)request
 {
-  v5 = a4;
-  v6 = [v5 changes];
-  v7 = [v6 itemOperations];
-  v10 = [v7 na_map:&__block_literal_global_297];
+  requestCopy = request;
+  changes = [requestCopy changes];
+  itemOperations = [changes itemOperations];
+  v10 = [itemOperations na_map:&__block_literal_global_297];
 
-  v8 = [(HUQuickControlSimpleItemUpdater *)self itemHost];
+  itemHost = [(HUQuickControlSimpleItemUpdater *)self itemHost];
   v9 = [MEMORY[0x277CBEB98] setWithArray:v10];
-  [v8 quickControlItemUpdater:self didUpdateResultsForControlItems:v9];
+  [itemHost quickControlItemUpdater:self didUpdateResultsForControlItems:v9];
 
-  [v5 performWithOptions:1];
+  [requestCopy performWithOptions:1];
 }
 
 id __68__HUQuickControlSimpleItemUpdater_itemManager_performUpdateRequest___block_invoke(uint64_t a1, void *a2)

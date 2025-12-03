@@ -1,49 +1,49 @@
 @interface TSPFilePackageWriter
-- (TSPFilePackageWriter)initWithURL:(id)a3 documentTargetURL:(id)a4 relativeURLForExternalData:(id)a5 packageIdentifier:(unsigned __int8)a6 documentProperties:(id)a7 documentMetadata:(id)a8 fileFormatVersion:(unint64_t)a9 updateType:(int64_t)a10 cloneMode:(BOOL)a11 documentSaveValidationPolicy:(id)a12 encryptionKey:(id)a13 originalDocumentPackage:(id)a14 originalSupportPackage:(id)a15 fileCoordinatorDelegate:(id)a16 progress:(id)a17 error:(id *)a18;
+- (TSPFilePackageWriter)initWithURL:(id)l documentTargetURL:(id)rL relativeURLForExternalData:(id)data packageIdentifier:(unsigned __int8)identifier documentProperties:(id)properties documentMetadata:(id)metadata fileFormatVersion:(unint64_t)version updateType:(int64_t)self0 cloneMode:(BOOL)self1 documentSaveValidationPolicy:(id)self2 encryptionKey:(id)self3 originalDocumentPackage:(id)self4 originalSupportPackage:(id)self5 fileCoordinatorDelegate:(id)self6 progress:(id)self7 error:(id *)self8;
 - (id)componentZipArchiveWriter;
 - (id)zipArchiveWriter;
-- (void)closeWithQueue:(id)a3 completion:(id)a4;
-- (void)finalizeComponentAndDataSectionWithCompletionHandler:(id)a3;
-- (void)truncateZipAtFirstDeletedData:(id)a3;
-- (void)willWriteData:(id)a3;
+- (void)closeWithQueue:(id)queue completion:(id)completion;
+- (void)finalizeComponentAndDataSectionWithCompletionHandler:(id)handler;
+- (void)truncateZipAtFirstDeletedData:(id)data;
+- (void)willWriteData:(id)data;
 @end
 
 @implementation TSPFilePackageWriter
 
-- (TSPFilePackageWriter)initWithURL:(id)a3 documentTargetURL:(id)a4 relativeURLForExternalData:(id)a5 packageIdentifier:(unsigned __int8)a6 documentProperties:(id)a7 documentMetadata:(id)a8 fileFormatVersion:(unint64_t)a9 updateType:(int64_t)a10 cloneMode:(BOOL)a11 documentSaveValidationPolicy:(id)a12 encryptionKey:(id)a13 originalDocumentPackage:(id)a14 originalSupportPackage:(id)a15 fileCoordinatorDelegate:(id)a16 progress:(id)a17 error:(id *)a18
+- (TSPFilePackageWriter)initWithURL:(id)l documentTargetURL:(id)rL relativeURLForExternalData:(id)data packageIdentifier:(unsigned __int8)identifier documentProperties:(id)properties documentMetadata:(id)metadata fileFormatVersion:(unint64_t)version updateType:(int64_t)self0 cloneMode:(BOOL)self1 documentSaveValidationPolicy:(id)self2 encryptionKey:(id)self3 originalDocumentPackage:(id)self4 originalSupportPackage:(id)self5 fileCoordinatorDelegate:(id)self6 progress:(id)self7 error:(id *)self8
 {
-  v68 = a6;
-  v22 = a3;
-  v23 = a4;
-  v24 = a5;
-  v25 = a7;
-  v26 = a8;
-  v27 = a12;
-  v28 = a13;
-  v29 = a14;
-  v30 = v24;
-  v31 = a15;
-  v32 = a16;
+  identifierCopy = identifier;
+  lCopy = l;
+  rLCopy = rL;
+  dataCopy = data;
+  propertiesCopy = properties;
+  metadataCopy = metadata;
+  policyCopy = policy;
+  keyCopy = key;
+  packageCopy = package;
+  v30 = dataCopy;
+  supportPackageCopy = supportPackage;
+  delegateCopy = delegate;
   v76.receiver = self;
   v76.super_class = TSPFilePackageWriter;
   v77[0] = 0;
-  v62 = a17;
-  v63 = v32;
-  v64 = v31;
-  v65 = v28;
-  v71 = v29;
-  v61 = v29;
-  v33 = v23;
-  v34 = v22;
+  progressCopy = progress;
+  v63 = delegateCopy;
+  v64 = supportPackageCopy;
+  v65 = keyCopy;
+  v71 = packageCopy;
+  v61 = packageCopy;
+  v33 = rLCopy;
+  v34 = lCopy;
   v35 = v30;
-  v36 = v68;
-  v69 = v25;
-  v66 = v27;
-  v67 = v26;
-  v37 = [(TSPPackageWriter *)&v76 initWithURL:v34 documentTargetURL:v33 relativeURLForExternalData:v30 packageIdentifier:v36 documentProperties:v25 documentMetadata:v26 fileFormatVersion:a9 updateType:a10 cloneMode:a11 documentSaveValidationPolicy:v27 encryptionKey:v28 originalDocumentPackage:v61 originalSupportPackage:v31 fileCoordinatorDelegate:v32 progress:v62 error:v77];
+  v36 = identifierCopy;
+  v69 = propertiesCopy;
+  v66 = policyCopy;
+  v67 = metadataCopy;
+  v37 = [(TSPPackageWriter *)&v76 initWithURL:v34 documentTargetURL:v33 relativeURLForExternalData:v30 packageIdentifier:v36 documentProperties:propertiesCopy documentMetadata:metadataCopy fileFormatVersion:version updateType:type cloneMode:mode documentSaveValidationPolicy:policyCopy encryptionKey:keyCopy originalDocumentPackage:v61 originalSupportPackage:supportPackageCopy fileCoordinatorDelegate:delegateCopy progress:progressCopy error:v77];
   v38 = v77[0];
   v40 = v38;
-  if (v37 && a11)
+  if (v37 && mode)
   {
 
     v41 = objc_alloc(MEMORY[0x277D81318]);
@@ -106,10 +106,10 @@
     v37 = 0;
   }
 
-  if (a18 && !v37)
+  if (error && !v37)
   {
     objc_msgSend_tsp_ensureSaveErrorWithError_(MEMORY[0x277CCA9B8], v39, v40);
-    *a18 = v37 = 0;
+    *error = v37 = 0;
   }
 
   v55 = v71;
@@ -123,17 +123,17 @@ LABEL_17:
   delayedZipArchiveWriter = self->_delayedZipArchiveWriter;
   if (delayedZipArchiveWriter)
   {
-    v3 = delayedZipArchiveWriter;
+    componentZipArchiveWriter = delayedZipArchiveWriter;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = TSPFilePackageWriter;
-    v3 = [(TSPPackageWriter *)&v5 componentZipArchiveWriter];
+    componentZipArchiveWriter = [(TSPPackageWriter *)&v5 componentZipArchiveWriter];
   }
 
-  return v3;
+  return componentZipArchiveWriter;
 }
 
 - (id)zipArchiveWriter
@@ -160,10 +160,10 @@ LABEL_7:
   return v3;
 }
 
-- (void)truncateZipAtFirstDeletedData:(id)a3
+- (void)truncateZipAtFirstDeletedData:(id)data
 {
-  v4 = a3;
-  v7 = objc_msgSend_mutableCopy(v4, v5, v6);
+  dataCopy = data;
+  v7 = objc_msgSend_mutableCopy(dataCopy, v5, v6);
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = sub_276AFBCC0;
@@ -171,15 +171,15 @@ LABEL_7:
   v28[4] = self;
   v8 = v7;
   v29 = v8;
-  objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v4, v9, v28);
+  objc_msgSend_enumerateKeysAndObjectsUsingBlock_(dataCopy, v9, v28);
   v10 = v8;
 
   v27.receiver = self;
   v27.super_class = TSPFilePackageWriter;
-  v11 = [(TSPPackageWriter *)&v27 zipArchiveWriter];
-  v14 = objc_msgSend_entriesCount(v11, v12, v13);
+  zipArchiveWriter = [(TSPPackageWriter *)&v27 zipArchiveWriter];
+  v14 = objc_msgSend_entriesCount(zipArchiveWriter, v12, v13);
   onlyWriteToDelayedZipArchive = self->_onlyWriteToDelayedZipArchive;
-  v20 = objc_msgSend_sortedEntries(v11, v16, v17);
+  v20 = objc_msgSend_sortedEntries(zipArchiveWriter, v16, v17);
   v21 = 0;
   if (onlyWriteToDelayedZipArchive && v14 != 0)
   {
@@ -216,18 +216,18 @@ LABEL_7:
 
   if (v22 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    objc_msgSend_truncateToNumberOfEntries_completion_(v11, v23, v22, &unk_2885C5EE8);
+    objc_msgSend_truncateToNumberOfEntries_completion_(zipArchiveWriter, v23, v22, &unk_2885C5EE8);
   }
 }
 
-- (void)willWriteData:(id)a3
+- (void)willWriteData:(id)data
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  dataCopy = data;
+  v5 = dataCopy;
   if (self->_delayedZipArchiveWriter)
   {
-    v34 = v4;
+    v34 = dataCopy;
     v6 = objc_alloc(MEMORY[0x277CBEB38]);
     v9 = objc_msgSend_count(v5, v7, v8);
     v11 = objc_msgSend_initWithCapacity_(v6, v10, v9);
@@ -285,9 +285,9 @@ LABEL_7:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finalizeComponentAndDataSectionWithCompletionHandler:(id)a3
+- (void)finalizeComponentAndDataSectionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_msgSend_closeCurrentChannel(self, v5, v6);
   delayedZipArchiveWriter = self->_delayedZipArchiveWriter;
   if (delayedZipArchiveWriter && objc_msgSend_entriesCount(delayedZipArchiveWriter, v7, v8))
@@ -319,8 +319,8 @@ LABEL_7:
 LABEL_9:
         v45.receiver = self;
         v45.super_class = TSPFilePackageWriter;
-        v25 = [(TSPPackageWriter *)&v45 zipArchiveWriter];
-        v28 = objc_msgSend_entriesCount(v25, v26, v27);
+        zipArchiveWriter = [(TSPPackageWriter *)&v45 zipArchiveWriter];
+        v28 = objc_msgSend_entriesCount(zipArchiveWriter, v26, v27);
 
         if (v28)
         {
@@ -332,9 +332,9 @@ LABEL_9:
           objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v35, v36);
         }
 
-        if (v4)
+        if (handlerCopy)
         {
-          v4[2](v4, 0);
+          handlerCopy[2](handlerCopy, 0);
         }
 
         goto LABEL_14;
@@ -354,8 +354,8 @@ LABEL_9:
     v40[3] = &unk_27A6E7620;
     v41 = v14;
     v44 = &v47;
-    v42 = self;
-    v43 = v4;
+    selfCopy = self;
+    v43 = handlerCopy;
     objc_msgSend_closeWithQueue_completion_(v37, v39, v38, v40);
 
 LABEL_14:
@@ -363,30 +363,30 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
 LABEL_15:
 }
 
-- (void)closeWithQueue:(id)a3 completion:(id)a4
+- (void)closeWithQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v8 = dispatch_get_global_queue(0, 0);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_276AFC89C;
   v12[3] = &unk_27A6E7648;
-  v13 = v6;
-  v14 = v7;
+  v13 = queueCopy;
+  v14 = completionCopy;
   v12[4] = self;
   v11.receiver = self;
   v11.super_class = TSPFilePackageWriter;
-  v9 = v6;
-  v10 = v7;
+  v9 = queueCopy;
+  v10 = completionCopy;
   [(TSPPackageWriter *)&v11 closeWithQueue:v8 completion:v12];
 }
 

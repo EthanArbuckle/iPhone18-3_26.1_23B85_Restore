@@ -1,13 +1,13 @@
 @interface STNoUsageDataView
-- (STNoUsageDataView)initWithPreferredFontTextStyle:(id)a3;
-- (void)setLocalDevice:(BOOL)a3;
+- (STNoUsageDataView)initWithPreferredFontTextStyle:(id)style;
+- (void)setLocalDevice:(BOOL)device;
 @end
 
 @implementation STNoUsageDataView
 
-- (STNoUsageDataView)initWithPreferredFontTextStyle:(id)a3
+- (STNoUsageDataView)initWithPreferredFontTextStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   v24.receiver = self;
   v24.super_class = STNoUsageDataView;
   v5 = [(STNoUsageDataView *)&v24 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
@@ -20,58 +20,58 @@
     v6->_noDataDetailTextLabel = v7;
 
     [(UILabel *)v6->_noDataDetailTextLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v9 = [MEMORY[0x277D74300] preferredFontForTextStyle:v4];
+    v9 = [MEMORY[0x277D74300] preferredFontForTextStyle:styleCopy];
     [(UILabel *)v6->_noDataDetailTextLabel setFont:v9];
 
-    v10 = [MEMORY[0x277D75348] systemGrayColor];
-    [(UILabel *)v6->_noDataDetailTextLabel setTextColor:v10];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [(UILabel *)v6->_noDataDetailTextLabel setTextColor:systemGrayColor];
 
     [(UILabel *)v6->_noDataDetailTextLabel setLineBreakMode:0];
     [(UILabel *)v6->_noDataDetailTextLabel setTextAlignment:1];
     [(UILabel *)v6->_noDataDetailTextLabel setNumberOfLines:0];
     [(STNoUsageDataView *)v6 addSubview:v6->_noDataDetailTextLabel];
-    v11 = [(UILabel *)v6->_noDataDetailTextLabel topAnchor];
-    v12 = [(STNoUsageDataView *)v6 topAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    topAnchor = [(UILabel *)v6->_noDataDetailTextLabel topAnchor];
+    topAnchor2 = [(STNoUsageDataView *)v6 topAnchor];
+    v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v13 setActive:1];
 
-    v14 = [(UILabel *)v6->_noDataDetailTextLabel leadingAnchor];
-    v15 = [(STNoUsageDataView *)v6 leadingAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    leadingAnchor = [(UILabel *)v6->_noDataDetailTextLabel leadingAnchor];
+    leadingAnchor2 = [(STNoUsageDataView *)v6 leadingAnchor];
+    v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v16 setActive:1];
 
-    v17 = [(UILabel *)v6->_noDataDetailTextLabel bottomAnchor];
-    v18 = [(STNoUsageDataView *)v6 bottomAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    bottomAnchor = [(UILabel *)v6->_noDataDetailTextLabel bottomAnchor];
+    bottomAnchor2 = [(STNoUsageDataView *)v6 bottomAnchor];
+    v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v19 setActive:1];
 
-    v20 = [(UILabel *)v6->_noDataDetailTextLabel trailingAnchor];
-    v21 = [(STNoUsageDataView *)v6 trailingAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    trailingAnchor = [(UILabel *)v6->_noDataDetailTextLabel trailingAnchor];
+    trailingAnchor2 = [(STNoUsageDataView *)v6 trailingAnchor];
+    v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v22 setActive:1];
   }
 
   return v6;
 }
 
-- (void)setLocalDevice:(BOOL)a3
+- (void)setLocalDevice:(BOOL)device
 {
-  v3 = a3;
-  self->_localDevice = a3;
+  deviceCopy = device;
+  self->_localDevice = device;
   v8 = +[STScreenTimeSettingsUIBundle bundle];
-  if (v3)
+  if (deviceCopy)
   {
     v5 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"NoDataDetailTextLabel"];
-    v6 = [v8 localizedStringForKey:v5 value:&stru_28766E5A8 table:0];
-    v7 = [(STNoUsageDataView *)self noDataDetailTextLabel];
-    [v7 setText:v6];
+    noDataDetailTextLabel2 = [v8 localizedStringForKey:v5 value:&stru_28766E5A8 table:0];
+    noDataDetailTextLabel = [(STNoUsageDataView *)self noDataDetailTextLabel];
+    [noDataDetailTextLabel setText:noDataDetailTextLabel2];
   }
 
   else
   {
     v5 = [v8 localizedStringForKey:@"NoDataDetailTextLabel" value:&stru_28766E5A8 table:0];
-    v6 = [(STNoUsageDataView *)self noDataDetailTextLabel];
-    [v6 setText:v5];
+    noDataDetailTextLabel2 = [(STNoUsageDataView *)self noDataDetailTextLabel];
+    [noDataDetailTextLabel2 setText:v5];
   }
 }
 

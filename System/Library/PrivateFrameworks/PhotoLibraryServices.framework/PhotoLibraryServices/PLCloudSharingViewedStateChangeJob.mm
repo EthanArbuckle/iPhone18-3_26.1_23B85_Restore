@@ -1,15 +1,15 @@
 @interface PLCloudSharingViewedStateChangeJob
-+ (void)markAlbum:(id)a3 asHavingUnseenContent:(BOOL)a4;
-+ (void)markAssetCollection:(id)a3 asHavingUnreadComments:(BOOL)a4 inAlbum:(id)a5;
-+ (void)setLastViewedCommentDate:(id)a3 forAssetCollection:(id)a4 inAlbum:(id)a5;
-+ (void)updateUnviewedAssetCollectionCount:(int)a3 forAlbum:(id)a4;
++ (void)markAlbum:(id)album asHavingUnseenContent:(BOOL)content;
++ (void)markAssetCollection:(id)collection asHavingUnreadComments:(BOOL)comments inAlbum:(id)album;
++ (void)setLastViewedCommentDate:(id)date forAssetCollection:(id)collection inAlbum:(id)album;
++ (void)updateUnviewedAssetCollectionCount:(int)count forAlbum:(id)album;
 - (id)description;
-- (id)initFromXPCObject:(id)a3 libraryServicesManager:(id)a4;
+- (id)initFromXPCObject:(id)object libraryServicesManager:(id)manager;
 - (void)_executeAlbumUnviewedAssetCountChangedWithGroup;
 - (void)_executeAlbumViewedStateChanged;
 - (void)_executeAssetCommentsReadStateChangedWithGroup;
 - (void)_executeAssetLastViewedCommentDateChangedWithGroup;
-- (void)encodeToXPCObject:(id)a3;
+- (void)encodeToXPCObject:(id)object;
 - (void)runDaemonSide;
 @end
 
@@ -17,14 +17,14 @@
 
 - (void)_executeAssetLastViewedCommentDateChangedWithGroup
 {
-  v3 = [(PLCloudSharingJob *)self transientPhotoLibrary];
+  transientPhotoLibrary = [(PLCloudSharingJob *)self transientPhotoLibrary];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __88__PLCloudSharingViewedStateChangeJob__executeAssetLastViewedCommentDateChangedWithGroup__block_invoke;
   v5[3] = &unk_1E7578848;
   v5[4] = self;
-  v6 = v3;
-  v4 = v3;
+  v6 = transientPhotoLibrary;
+  v4 = transientPhotoLibrary;
   [v4 performTransactionAndWait:v5];
 }
 
@@ -84,14 +84,14 @@ void __88__PLCloudSharingViewedStateChangeJob__executeAssetLastViewedCommentDate
 
 - (void)_executeAssetCommentsReadStateChangedWithGroup
 {
-  v3 = [(PLCloudSharingJob *)self transientPhotoLibrary];
+  transientPhotoLibrary = [(PLCloudSharingJob *)self transientPhotoLibrary];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __84__PLCloudSharingViewedStateChangeJob__executeAssetCommentsReadStateChangedWithGroup__block_invoke;
   v5[3] = &unk_1E7578848;
   v5[4] = self;
-  v6 = v3;
-  v4 = v3;
+  v6 = transientPhotoLibrary;
+  v4 = transientPhotoLibrary;
   [v4 performTransactionAndWait:v5];
 }
 
@@ -151,14 +151,14 @@ void __84__PLCloudSharingViewedStateChangeJob__executeAssetCommentsReadStateChan
 
 - (void)_executeAlbumUnviewedAssetCountChangedWithGroup
 {
-  v3 = [(PLCloudSharingJob *)self transientPhotoLibrary];
+  transientPhotoLibrary = [(PLCloudSharingJob *)self transientPhotoLibrary];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __85__PLCloudSharingViewedStateChangeJob__executeAlbumUnviewedAssetCountChangedWithGroup__block_invoke;
   v5[3] = &unk_1E7578848;
   v5[4] = self;
-  v6 = v3;
-  v4 = v3;
+  v6 = transientPhotoLibrary;
+  v4 = transientPhotoLibrary;
   [v4 performTransactionAndWait:v5];
 }
 
@@ -200,7 +200,7 @@ void __85__PLCloudSharingViewedStateChangeJob__executeAlbumUnviewedAssetCountCha
 
 - (void)_executeAlbumViewedStateChanged
 {
-  v3 = [(PLCloudSharingJob *)self transientPhotoLibrary];
+  transientPhotoLibrary = [(PLCloudSharingJob *)self transientPhotoLibrary];
   v12[0] = 0;
   v12[1] = v12;
   v12[2] = 0x2020000000;
@@ -217,7 +217,7 @@ void __85__PLCloudSharingViewedStateChangeJob__executeAlbumUnviewedAssetCountCha
   v6[3] = &unk_1E7578898;
   v8 = v10;
   v6[4] = self;
-  v4 = v3;
+  v4 = transientPhotoLibrary;
   v7 = v4;
   v9 = v12;
   v5[0] = MEMORY[0x1E69E9820];
@@ -325,13 +325,13 @@ void __69__PLCloudSharingViewedStateChangeJob__executeAlbumViewedStateChanged__b
     *buf = 138412546;
     v11 = objc_opt_class();
     v12 = 2112;
-    v13 = self;
+    selfCopy = self;
     v4 = v11;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEFAULT, "%@ : runDaemonSide %@", buf, 0x16u);
   }
 
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudSharingViewedStateChangeJob runDaemonSide]"];
-  v6 = [objc_opt_class() lowPriorityOperationQueue];
+  lowPriorityOperationQueue = [objc_opt_class() lowPriorityOperationQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __51__PLCloudSharingViewedStateChangeJob_runDaemonSide__block_invoke;
@@ -339,7 +339,7 @@ void __69__PLCloudSharingViewedStateChangeJob__executeAlbumViewedStateChanged__b
   v8[4] = self;
   v9 = v5;
   v7 = v5;
-  [v6 addOperationWithBlock:v8];
+  [lowPriorityOperationQueue addOperationWithBlock:v8];
 }
 
 void __51__PLCloudSharingViewedStateChangeJob_runDaemonSide__block_invoke(uint64_t a1)
@@ -400,64 +400,64 @@ LABEL_13:
 
 - (id)description
 {
-  v3 = [(PLCloudSharingViewedStateChangeJob *)self jobType];
+  jobType = [(PLCloudSharingViewedStateChangeJob *)self jobType];
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
-  if (v3 > 2)
+  if (jobType > 2)
   {
-    if (v3 == 3)
+    if (jobType == 3)
     {
-      v6 = [(PLCloudSharingViewedStateChangeJob *)self albumGUID];
-      v7 = [(PLCloudSharingViewedStateChangeJob *)self assetCollectionGUID];
-      v12 = [(PLCloudSharingViewedStateChangeJob *)self assetCollectionHasUnreadComments];
+      albumGUID = [(PLCloudSharingViewedStateChangeJob *)self albumGUID];
+      assetCollectionGUID = [(PLCloudSharingViewedStateChangeJob *)self assetCollectionGUID];
+      assetCollectionHasUnreadComments = [(PLCloudSharingViewedStateChangeJob *)self assetCollectionHasUnreadComments];
       v13 = @"NO";
-      if (v12)
+      if (assetCollectionHasUnreadComments)
       {
         v13 = @"YES";
       }
 
-      v9 = [v4 stringWithFormat:@"%@ (PLViewedStateChangeAssetCommentsReadState albumGUID=%@ collectionGUID=%@ hasUnreadComments=%@) ", v5, v6, v7, v13];
+      v9 = [v4 stringWithFormat:@"%@ (PLViewedStateChangeAssetCommentsReadState albumGUID=%@ collectionGUID=%@ hasUnreadComments=%@) ", v5, albumGUID, assetCollectionGUID, v13];
     }
 
     else
     {
-      if (v3 != 4)
+      if (jobType != 4)
       {
         goto LABEL_8;
       }
 
-      v6 = [(PLCloudSharingViewedStateChangeJob *)self albumGUID];
-      v7 = [(PLCloudSharingViewedStateChangeJob *)self assetCollectionGUID];
-      v8 = [(PLCloudSharingViewedStateChangeJob *)self assetCollectionLastViewedCommentDate];
-      v9 = [v4 stringWithFormat:@"%@ (PLViewedStateChangeAssetLastViewedCommentDate albumGUID=%@ collectionGUID=%@ lasViewedCommentDate=%@) ", v5, v6, v7, v8];
+      albumGUID = [(PLCloudSharingViewedStateChangeJob *)self albumGUID];
+      assetCollectionGUID = [(PLCloudSharingViewedStateChangeJob *)self assetCollectionGUID];
+      assetCollectionLastViewedCommentDate = [(PLCloudSharingViewedStateChangeJob *)self assetCollectionLastViewedCommentDate];
+      v9 = [v4 stringWithFormat:@"%@ (PLViewedStateChangeAssetLastViewedCommentDate albumGUID=%@ collectionGUID=%@ lasViewedCommentDate=%@) ", v5, albumGUID, assetCollectionGUID, assetCollectionLastViewedCommentDate];
     }
 
     goto LABEL_17;
   }
 
-  if (v3 == 1)
+  if (jobType == 1)
   {
-    v6 = [(PLCloudSharingViewedStateChangeJob *)self albumGUID];
-    v10 = [(PLCloudSharingViewedStateChangeJob *)self albumHasUnseenContent];
+    albumGUID = [(PLCloudSharingViewedStateChangeJob *)self albumGUID];
+    albumHasUnseenContent = [(PLCloudSharingViewedStateChangeJob *)self albumHasUnseenContent];
     v11 = @"NO";
-    if (v10)
+    if (albumHasUnseenContent)
     {
       v11 = @"YES";
     }
 
-    [v4 stringWithFormat:@"%@ (PLViewedStateChangeAlbumReadState albumGUID=%@ hasUnseenContent=%@) ", v5, v6, v11];
+    [v4 stringWithFormat:@"%@ (PLViewedStateChangeAlbumReadState albumGUID=%@ hasUnseenContent=%@) ", v5, albumGUID, v11];
     goto LABEL_12;
   }
 
-  if (v3 != 2)
+  if (jobType != 2)
   {
 LABEL_8:
     v9 = [v4 stringWithFormat:@"%@ unknown job type %lld ", v5, -[PLCloudSharingViewedStateChangeJob jobType](self, "jobType")];
     goto LABEL_18;
   }
 
-  v6 = [(PLCloudSharingViewedStateChangeJob *)self albumGUID];
-  [v4 stringWithFormat:@"%@ (PLViewedStateChangeAlbumUnviewedAssetCount albumGUID=%@ unviewedAssetCollectionCount=%lld) ", v5, v6, -[PLCloudSharingViewedStateChangeJob albumUnviewedAssetCount](self, "albumUnviewedAssetCount")];
+  albumGUID = [(PLCloudSharingViewedStateChangeJob *)self albumGUID];
+  [v4 stringWithFormat:@"%@ (PLViewedStateChangeAlbumUnviewedAssetCount albumGUID=%@ unviewedAssetCollectionCount=%lld) ", v5, albumGUID, -[PLCloudSharingViewedStateChangeJob albumUnviewedAssetCount](self, "albumUnviewedAssetCount")];
   v9 = LABEL_12:;
 LABEL_17:
 
@@ -466,110 +466,110 @@ LABEL_18:
   return v9;
 }
 
-- (id)initFromXPCObject:(id)a3 libraryServicesManager:(id)a4
+- (id)initFromXPCObject:(id)object libraryServicesManager:(id)manager
 {
-  v6 = a3;
+  objectCopy = object;
   v12.receiver = self;
   v12.super_class = PLCloudSharingViewedStateChangeJob;
-  v7 = [(PLCloudSharingJob *)&v12 initFromXPCObject:v6 libraryServicesManager:a4];
+  v7 = [(PLCloudSharingJob *)&v12 initFromXPCObject:objectCopy libraryServicesManager:manager];
   if (v7)
   {
-    [v7 setJobType:{xpc_dictionary_get_int64(v6, propertyKeyViewStateChangeJobType)}];
+    [v7 setJobType:{xpc_dictionary_get_int64(objectCopy, propertyKeyViewStateChangeJobType)}];
     v8 = PLStringFromXPCDictionary();
     [v7 setAlbumGUID:v8];
 
-    [v7 setAlbumHasUnseenContent:{xpc_dictionary_get_BOOL(v6, propertyKeyAlbumHasUnseenContent)}];
-    [v7 setAlbumUnviewedAssetCount:{xpc_dictionary_get_int64(v6, propertyKeyAlbumUnviewedAssetCount)}];
+    [v7 setAlbumHasUnseenContent:{xpc_dictionary_get_BOOL(objectCopy, propertyKeyAlbumHasUnseenContent)}];
+    [v7 setAlbumUnviewedAssetCount:{xpc_dictionary_get_int64(objectCopy, propertyKeyAlbumUnviewedAssetCount)}];
     v9 = PLStringFromXPCDictionary();
     [v7 setAssetCollectionGUID:v9];
 
-    [v7 setAssetCollectionHasUnreadComments:{xpc_dictionary_get_BOOL(v6, propertyKeyAssetCollectionHasUnreadComments)}];
-    v10 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:{xpc_dictionary_get_date(v6, propertyKeyAssetCollectionLastViewedCommentDate)}];
+    [v7 setAssetCollectionHasUnreadComments:{xpc_dictionary_get_BOOL(objectCopy, propertyKeyAssetCollectionHasUnreadComments)}];
+    v10 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:{xpc_dictionary_get_date(objectCopy, propertyKeyAssetCollectionLastViewedCommentDate)}];
     [v7 setAssetCollectionLastViewedCommentDate:v10];
   }
 
   return v7;
 }
 
-- (void)encodeToXPCObject:(id)a3
+- (void)encodeToXPCObject:(id)object
 {
   v10.receiver = self;
   v10.super_class = PLCloudSharingViewedStateChangeJob;
-  v4 = a3;
-  [(PLDaemonJob *)&v10 encodeToXPCObject:v4];
-  xpc_dictionary_set_int64(v4, propertyKeyViewStateChangeJobType, [(PLCloudSharingViewedStateChangeJob *)self jobType:v10.receiver]);
-  v5 = [(PLCloudSharingViewedStateChangeJob *)self albumGUID];
+  objectCopy = object;
+  [(PLDaemonJob *)&v10 encodeToXPCObject:objectCopy];
+  xpc_dictionary_set_int64(objectCopy, propertyKeyViewStateChangeJobType, [(PLCloudSharingViewedStateChangeJob *)self jobType:v10.receiver]);
+  albumGUID = [(PLCloudSharingViewedStateChangeJob *)self albumGUID];
   PLXPCDictionarySetString();
 
-  xpc_dictionary_set_BOOL(v4, propertyKeyAlbumHasUnseenContent, [(PLCloudSharingViewedStateChangeJob *)self albumHasUnseenContent]);
-  xpc_dictionary_set_int64(v4, propertyKeyAlbumUnviewedAssetCount, [(PLCloudSharingViewedStateChangeJob *)self albumUnviewedAssetCount]);
-  v6 = [(PLCloudSharingViewedStateChangeJob *)self assetCollectionGUID];
+  xpc_dictionary_set_BOOL(objectCopy, propertyKeyAlbumHasUnseenContent, [(PLCloudSharingViewedStateChangeJob *)self albumHasUnseenContent]);
+  xpc_dictionary_set_int64(objectCopy, propertyKeyAlbumUnviewedAssetCount, [(PLCloudSharingViewedStateChangeJob *)self albumUnviewedAssetCount]);
+  assetCollectionGUID = [(PLCloudSharingViewedStateChangeJob *)self assetCollectionGUID];
   PLXPCDictionarySetString();
 
-  xpc_dictionary_set_BOOL(v4, propertyKeyAssetCollectionHasUnreadComments, [(PLCloudSharingViewedStateChangeJob *)self assetCollectionHasUnreadComments]);
+  xpc_dictionary_set_BOOL(objectCopy, propertyKeyAssetCollectionHasUnreadComments, [(PLCloudSharingViewedStateChangeJob *)self assetCollectionHasUnreadComments]);
   v7 = propertyKeyAssetCollectionLastViewedCommentDate;
-  v8 = [(PLCloudSharingViewedStateChangeJob *)self assetCollectionLastViewedCommentDate];
-  [v8 timeIntervalSinceReferenceDate];
-  xpc_dictionary_set_date(v4, v7, v9);
+  assetCollectionLastViewedCommentDate = [(PLCloudSharingViewedStateChangeJob *)self assetCollectionLastViewedCommentDate];
+  [assetCollectionLastViewedCommentDate timeIntervalSinceReferenceDate];
+  xpc_dictionary_set_date(objectCopy, v7, v9);
 }
 
-+ (void)setLastViewedCommentDate:(id)a3 forAssetCollection:(id)a4 inAlbum:(id)a5
++ (void)setLastViewedCommentDate:(id)date forAssetCollection:(id)collection inAlbum:(id)album
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  albumCopy = album;
+  collectionCopy = collection;
+  dateCopy = date;
   v12 = objc_alloc_init(objc_opt_class());
   [v12 setJobType:4];
-  [v12 setAssetCollectionLastViewedCommentDate:v9];
+  [v12 setAssetCollectionLastViewedCommentDate:dateCopy];
 
-  v10 = [v8 GUID];
+  gUID = [collectionCopy GUID];
 
-  [v12 setAssetCollectionGUID:v10];
-  v11 = [v7 GUID];
+  [v12 setAssetCollectionGUID:gUID];
+  gUID2 = [albumCopy GUID];
 
-  [v12 setAlbumGUID:v11];
+  [v12 setAlbumGUID:gUID2];
   [v12 run];
 }
 
-+ (void)markAssetCollection:(id)a3 asHavingUnreadComments:(BOOL)a4 inAlbum:(id)a5
++ (void)markAssetCollection:(id)collection asHavingUnreadComments:(BOOL)comments inAlbum:(id)album
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = a3;
+  commentsCopy = comments;
+  albumCopy = album;
+  collectionCopy = collection;
   v11 = objc_alloc_init(objc_opt_class());
   [v11 setJobType:3];
-  v9 = [v8 GUID];
+  gUID = [collectionCopy GUID];
 
-  [v11 setAssetCollectionGUID:v9];
-  [v11 setAssetCollectionHasUnreadComments:v5];
-  v10 = [v7 GUID];
+  [v11 setAssetCollectionGUID:gUID];
+  [v11 setAssetCollectionHasUnreadComments:commentsCopy];
+  gUID2 = [albumCopy GUID];
 
-  [v11 setAlbumGUID:v10];
+  [v11 setAlbumGUID:gUID2];
   [v11 run];
 }
 
-+ (void)updateUnviewedAssetCollectionCount:(int)a3 forAlbum:(id)a4
++ (void)updateUnviewedAssetCollectionCount:(int)count forAlbum:(id)album
 {
-  v5 = a4;
+  albumCopy = album;
   v7 = objc_alloc_init(objc_opt_class());
   [v7 setJobType:2];
-  v6 = [v5 GUID];
+  gUID = [albumCopy GUID];
 
-  [v7 setAlbumGUID:v6];
-  [v7 setAlbumUnviewedAssetCount:a3];
+  [v7 setAlbumGUID:gUID];
+  [v7 setAlbumUnviewedAssetCount:count];
   [v7 run];
 }
 
-+ (void)markAlbum:(id)a3 asHavingUnseenContent:(BOOL)a4
++ (void)markAlbum:(id)album asHavingUnseenContent:(BOOL)content
 {
-  v4 = a4;
-  v5 = a3;
+  contentCopy = content;
+  albumCopy = album;
   v7 = objc_alloc_init(objc_opt_class());
   [v7 setJobType:1];
-  v6 = [v5 GUID];
+  gUID = [albumCopy GUID];
 
-  [v7 setAlbumGUID:v6];
-  [v7 setAlbumHasUnseenContent:v4];
+  [v7 setAlbumGUID:gUID];
+  [v7 setAlbumHasUnseenContent:contentCopy];
   [v7 run];
 }
 

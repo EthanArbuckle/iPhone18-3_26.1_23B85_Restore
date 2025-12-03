@@ -1,10 +1,10 @@
 @interface ATIOBinding
-- (ATIOBinding)initWithCoder:(id)a3;
-- (ATIOBinding)initWithImpl:(shared_ptr<const AT::IOBinding::Impl>)a3;
-- (BOOL)isEqual:(id)a3;
+- (ATIOBinding)initWithCoder:(id)coder;
+- (ATIOBinding)initWithImpl:(shared_ptr<const AT::IOBinding::Impl>)impl;
+- (BOOL)isEqual:(id)equal;
 - (id).cxx_construct;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATIOBinding
@@ -16,14 +16,14 @@
   return self;
 }
 
-- (ATIOBinding)initWithCoder:(id)a3
+- (ATIOBinding)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = ATIOBinding;
   if ([(ATIOBinding *)&v10 init])
   {
-    v5 = v4;
+    v5 = coderCopy;
     v6 = [v5 decodeIntForKey:@"variant"];
     if (v6 == 2)
     {
@@ -49,30 +49,30 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   ptr = self->mImpl.__ptr_;
-  v7 = a3;
-  [v7 encodeInt:*(ptr + 4) forKey:@"variant"];
+  coderCopy = coder;
+  [coderCopy encodeInt:*(ptr + 4) forKey:@"variant"];
   v4 = *(ptr + 4);
   switch(v4)
   {
     case 1:
-      v5 = [*(ptr + 3) opaqueSessionID];
+      opaqueSessionID = [*(ptr + 3) opaqueSessionID];
       v6 = @"sessionID";
       break;
     case 2:
-      [v7 encodeObject:*(ptr + 4) forKey:@"deviceUID"];
+      [coderCopy encodeObject:*(ptr + 4) forKey:@"deviceUID"];
       goto LABEL_8;
     case 3:
-      v5 = *(ptr + 11);
+      opaqueSessionID = *(ptr + 11);
       v6 = @"useCaseID";
       break;
     default:
       goto LABEL_8;
   }
 
-  [v7 encodeInt32:v5 forKey:v6];
+  [coderCopy encodeInt32:opaqueSessionID forKey:v6];
 LABEL_8:
 }
 
@@ -98,14 +98,14 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     ptr = self->mImpl.__ptr_;
-    v6 = v4[1];
+    v6 = equalCopy[1];
     if (ptr)
     {
       v7 = AT::IOBinding::Impl::operator==(ptr, v6);
@@ -125,10 +125,10 @@ LABEL_8:
   return v7;
 }
 
-- (ATIOBinding)initWithImpl:(shared_ptr<const AT::IOBinding::Impl>)a3
+- (ATIOBinding)initWithImpl:(shared_ptr<const AT::IOBinding::Impl>)impl
 {
-  v5 = *a3.__ptr_;
-  v4 = *(a3.__ptr_ + 1);
+  v5 = *impl.__ptr_;
+  v4 = *(impl.__ptr_ + 1);
   if (v4)
   {
     atomic_fetch_add_explicit((v4 + 8), 1uLL, memory_order_relaxed);

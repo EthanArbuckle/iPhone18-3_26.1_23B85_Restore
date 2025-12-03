@@ -1,6 +1,6 @@
 @interface PFMetadataStateBreadcrumb
 - (NSString)breadcrumbDescription;
-- (PFMetadataStateBreadcrumb)initWithTimeInterval:(double)a3 message:(id)a4;
+- (PFMetadataStateBreadcrumb)initWithTimeInterval:(double)interval message:(id)message;
 @end
 
 @implementation PFMetadataStateBreadcrumb
@@ -53,17 +53,17 @@
   return v10;
 }
 
-- (PFMetadataStateBreadcrumb)initWithTimeInterval:(double)a3 message:(id)a4
+- (PFMetadataStateBreadcrumb)initWithTimeInterval:(double)interval message:(id)message
 {
-  v6 = a4;
+  messageCopy = message;
   v13.receiver = self;
   v13.super_class = PFMetadataStateBreadcrumb;
   v7 = [(PFMetadataStateBreadcrumb *)&v13 init];
   v8 = v7;
   if (v7)
   {
-    v7->_timeInterval = a3;
-    v9 = [v6 copy];
+    v7->_timeInterval = interval;
+    v9 = [messageCopy copy];
     message = v8->_message;
     v8->_message = v9;
 

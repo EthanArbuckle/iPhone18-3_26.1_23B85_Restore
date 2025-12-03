@@ -1,11 +1,11 @@
 @interface CLCondition
 - (BOOL)isAuthorized;
-- (CLCondition)initWithCoder:(id)a3;
+- (CLCondition)initWithCoder:(id)coder;
 - (NSString)monitoredIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initCondition;
 - (void)dealloc;
-- (void)setCallbackHandler:(id)a3;
+- (void)setCallbackHandler:(id)handler;
 - (void)startMonitoring;
 - (void)stopMonitoring;
 @end
@@ -35,32 +35,32 @@
   [(CLCondition *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = CLCondition;
   return [(CLCondition *)&v4 copy];
 }
 
-- (CLCondition)initWithCoder:(id)a3
+- (CLCondition)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = CLCondition;
   return [(CLCondition *)&v4 init];
 }
 
-- (void)setCallbackHandler:(id)a3
+- (void)setCallbackHandler:(id)handler
 {
-  [(CLCondition *)self setOnConditionUpdateCallbackHandler:a3];
+  [(CLCondition *)self setOnConditionUpdateCallbackHandler:handler];
   if ([(CLCondition *)self onConditionUpdateCallbackHandler])
   {
-    v4 = [(CLCondition *)self onConditionUpdateCallbackHandler];
-    v5 = [(CLCondition *)self monitoredIdentifier];
-    v6 = [(CLCondition *)self lastMonitoringState];
-    v7 = [(CLCondition *)self refinement];
-    v8 = v4[2];
+    onConditionUpdateCallbackHandler = [(CLCondition *)self onConditionUpdateCallbackHandler];
+    monitoredIdentifier = [(CLCondition *)self monitoredIdentifier];
+    lastMonitoringState = [(CLCondition *)self lastMonitoringState];
+    refinement = [(CLCondition *)self refinement];
+    v8 = onConditionUpdateCallbackHandler[2];
 
-    v8(v4, v5, self, v6, v7);
+    v8(onConditionUpdateCallbackHandler, monitoredIdentifier, self, lastMonitoringState, refinement);
   }
 }
 
@@ -266,10 +266,10 @@ LABEL_11:
 {
   v19 = *MEMORY[0x1E69E9840];
   v3 = [(NSString *)[(CLCondition *)self identifier] rangeOfString:@"@"];
-  v4 = [(CLCondition *)self identifier];
+  identifier = [(CLCondition *)self identifier];
   if (v3 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = v4;
+    v5 = identifier;
     if (qword_1ED519078 != -1)
     {
       dispatch_once(&qword_1ED519078, &unk_1F0E6EE10);
@@ -283,7 +283,7 @@ LABEL_11:
       v15 = 2082;
       v16 = "";
       v17 = 2114;
-      v18 = [(CLCondition *)self identifier];
+      identifier2 = [(CLCondition *)self identifier];
       _os_log_impl(&dword_19B873000, v6, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:#monitor ill formatted identifier name, fenceName:%{public, location:escape_only}@}", &v13, 0x1Cu);
       if (qword_1ED519078 != -1)
       {
@@ -294,13 +294,13 @@ LABEL_11:
     v7 = qword_1ED519080;
     if (os_signpost_enabled(qword_1ED519080))
     {
-      v8 = [(CLCondition *)self identifier];
+      identifier3 = [(CLCondition *)self identifier];
       v13 = 68289282;
       v14 = 0;
       v15 = 2082;
       v16 = "";
       v17 = 2114;
-      v18 = v8;
+      identifier2 = identifier3;
       _os_signpost_emit_with_name_impl(&dword_19B873000, v7, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "#monitor ill formatted identifier name", "{msg%{public}.0s:#monitor ill formatted identifier name, fenceName:%{public, location:escape_only}@}", &v13, 0x1Cu);
     }
 
@@ -310,10 +310,10 @@ LABEL_11:
 
   else
   {
-    v11 = [(CLCondition *)self identifier];
+    identifier4 = [(CLCondition *)self identifier];
     v12 = *MEMORY[0x1E69E9840];
 
-    return [(NSString *)v11 substringFromIndex:v3 + 1];
+    return [(NSString *)identifier4 substringFromIndex:v3 + 1];
   }
 }
 

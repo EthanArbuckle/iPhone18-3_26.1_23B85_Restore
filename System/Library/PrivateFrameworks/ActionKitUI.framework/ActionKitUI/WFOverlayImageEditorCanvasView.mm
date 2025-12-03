@@ -3,13 +3,13 @@
 - (UIImageView)backgroundImageView;
 - (UIImageView)overlayImageView;
 - (UIRotationGestureRecognizer)rotateRecognizer;
-- (WFOverlayImageEditorCanvasView)initWithBackgroundImage:(id)a3 overlayImage:(id)a4 transform:(id)a5;
-- (void)handlePanGesture:(id)a3;
-- (void)handlePinchGesture:(id)a3;
-- (void)handleRotateGesture:(id)a3;
+- (WFOverlayImageEditorCanvasView)initWithBackgroundImage:(id)image overlayImage:(id)overlayImage transform:(id)transform;
+- (void)handlePanGesture:(id)gesture;
+- (void)handlePinchGesture:(id)gesture;
+- (void)handleRotateGesture:(id)gesture;
 - (void)layoutSubviews;
 - (void)reset;
-- (void)setOverlayImageOpacity:(double)a3;
+- (void)setOverlayImageOpacity:(double)opacity;
 @end
 
 @implementation WFOverlayImageEditorCanvasView
@@ -42,9 +42,9 @@
   [(WFOverlayImageEditorCanvasView *)self setNeedsLayout];
 }
 
-- (void)setOverlayImageOpacity:(double)a3
+- (void)setOverlayImageOpacity:(double)opacity
 {
-  [(WFOverlayImageTransform *)self->_imageTransform setOpacity:a3];
+  [(WFOverlayImageTransform *)self->_imageTransform setOpacity:opacity];
 
   [(WFOverlayImageEditorCanvasView *)self setNeedsLayout];
 }
@@ -52,47 +52,47 @@
 - (BOOL)isRotationEnabled
 {
   WeakRetained = objc_loadWeakRetained(&self->_rotateRecognizer);
-  v3 = [WeakRetained isEnabled];
+  isEnabled = [WeakRetained isEnabled];
 
-  return v3;
+  return isEnabled;
 }
 
-- (void)handlePinchGesture:(id)a3
+- (void)handlePinchGesture:(id)gesture
 {
   imageTransform = self->_imageTransform;
-  v5 = a3;
-  [v5 scale];
+  gestureCopy = gesture;
+  [gestureCopy scale];
   v7 = v6;
   [(WFOverlayImageTransform *)imageTransform scale];
   [(WFOverlayImageTransform *)imageTransform setScale:v7 * v8];
   [(WFOverlayImageTransform *)self->_imageTransform center];
   v14 = v10;
   v15 = v9;
-  [v5 scale];
+  [gestureCopy scale];
   v12 = 1.0 / v11;
-  [v5 scale];
+  [gestureCopy scale];
   CGAffineTransformMakeScale(&v16, v12, 1.0 / v13);
   [(WFOverlayImageTransform *)self->_imageTransform setCenter:vaddq_f64(*&v16.tx, vmlaq_n_f64(vmulq_n_f64(*&v16.c, v14), *&v16.a, v15))];
-  [v5 setScale:1.0];
+  [gestureCopy setScale:1.0];
 
   [(WFOverlayImageEditorCanvasView *)self setNeedsLayout];
 }
 
-- (void)handlePanGesture:(id)a3
+- (void)handlePanGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   [(WFOverlayImageEditorCanvasView *)self bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
   WeakRetained = objc_loadWeakRetained(&self->_backgroundImageView);
-  v14 = [WeakRetained image];
-  [v14 size];
+  image = [WeakRetained image];
+  [image size];
   v16 = v15;
   v18 = v17;
 
-  [v4 translationInView:self];
+  [gestureCopy translationInView:self];
   v20 = v19;
   v22 = v21;
   v33.origin.x = v6;
@@ -105,7 +105,7 @@
   v34.size.width = v10;
   v34.size.height = v12;
   v24 = fmin(v23, CGRectGetHeight(v34) / v18);
-  [v4 setTranslation:self inView:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
+  [gestureCopy setTranslation:self inView:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
 
   [(WFOverlayImageTransform *)self->_imageTransform center];
   v30 = v26;
@@ -118,15 +118,15 @@
   [(WFOverlayImageEditorCanvasView *)self setNeedsLayout];
 }
 
-- (void)handleRotateGesture:(id)a3
+- (void)handleRotateGesture:(id)gesture
 {
   imageTransform = self->_imageTransform;
-  v5 = a3;
-  [v5 rotation];
+  gestureCopy = gesture;
+  [gestureCopy rotation];
   v7 = v6;
   [(WFOverlayImageTransform *)imageTransform rotation];
   [(WFOverlayImageTransform *)imageTransform setRotation:v7 + v8];
-  [v5 setRotation:0.0];
+  [gestureCopy setRotation:0.0];
 
   [(WFOverlayImageEditorCanvasView *)self setNeedsLayout];
 }
@@ -142,8 +142,8 @@
   v8 = v7;
   v10 = v9;
   WeakRetained = objc_loadWeakRetained(&self->_backgroundImageView);
-  v12 = [WeakRetained image];
-  [v12 size];
+  image = [WeakRetained image];
+  [image size];
   v14 = v13;
   v16 = v15;
 
@@ -218,11 +218,11 @@
   [v42 setAlpha:v41];
 }
 
-- (WFOverlayImageEditorCanvasView)initWithBackgroundImage:(id)a3 overlayImage:(id)a4 transform:(id)a5
+- (WFOverlayImageEditorCanvasView)initWithBackgroundImage:(id)image overlayImage:(id)overlayImage transform:(id)transform
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  imageCopy = image;
+  overlayImageCopy = overlayImage;
+  transformCopy = transform;
   v21.receiver = self;
   v21.super_class = WFOverlayImageEditorCanvasView;
   v11 = [(WFOverlayImageEditorCanvasView *)&v21 init];
@@ -230,19 +230,19 @@
   if (v11)
   {
     [(WFOverlayImageEditorCanvasView *)v11 setClipsToBounds:1];
-    v13 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v8];
+    v13 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:imageCopy];
     [v13 setUserInteractionEnabled:1];
     [v13 setClipsToBounds:1];
     [(WFOverlayImageEditorCanvasView *)v12 addSubview:v13];
     objc_storeWeak(&v12->_backgroundImageView, v13);
-    v14 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v9];
+    v14 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:overlayImageCopy];
     [v14 setUserInteractionEnabled:1];
     [v14 setContentMode:1];
     WeakRetained = objc_loadWeakRetained(&v12->_backgroundImageView);
     [WeakRetained addSubview:v14];
 
     objc_storeWeak(&v12->_overlayImageView, v14);
-    objc_storeStrong(&v12->_imageTransform, a5);
+    objc_storeStrong(&v12->_imageTransform, transform);
     v16 = [objc_alloc(MEMORY[0x277D75848]) initWithTarget:v12 action:sel_handlePinchGesture_];
     [v16 setDelegate:v12];
     [(WFOverlayImageEditorCanvasView *)v12 addGestureRecognizer:v16];

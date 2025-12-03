@@ -1,10 +1,10 @@
 @interface GKGameKitDirectoryServicePrivate
 + (Class)interfaceClass;
-- (GKGameKitDirectoryServicePrivate)initWithTransport:(id)a3 forClient:(id)a4 localPlayer:(id)a5 credential:(id)a6;
-- (GKGameKitDirectoryServicePrivate)initWithoutCredentialWithTransport:(id)a3 forClient:(id)a4;
-- (id)resolveURLWithImageURL:(id)a3 gameKitDirectoryURLHint:(id)a4 fileExistsFn:(id)a5;
-- (void)fetchImageForURL:(id)a3 gameKitDirectoryURLHint:(id)a4 completionHandler:(id)a5;
-- (void)fetchMetadataForGameKitDirectoryURL:(id)a3 completionHandler:(id)a4;
+- (GKGameKitDirectoryServicePrivate)initWithTransport:(id)transport forClient:(id)client localPlayer:(id)player credential:(id)credential;
+- (GKGameKitDirectoryServicePrivate)initWithoutCredentialWithTransport:(id)transport forClient:(id)client;
+- (id)resolveURLWithImageURL:(id)l gameKitDirectoryURLHint:(id)hint fileExistsFn:(id)fn;
+- (void)fetchImageForURL:(id)l gameKitDirectoryURLHint:(id)hint completionHandler:(id)handler;
+- (void)fetchMetadataForGameKitDirectoryURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation GKGameKitDirectoryServicePrivate
@@ -16,7 +16,7 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (id)resolveURLWithImageURL:(id)a3 gameKitDirectoryURLHint:(id)a4 fileExistsFn:(id)a5
+- (id)resolveURLWithImageURL:(id)l gameKitDirectoryURLHint:(id)hint fileExistsFn:(id)fn
 {
   v8 = type metadata accessor for URL();
   v9 = *(v8 - 8);
@@ -27,9 +27,9 @@
   v15 = (&v26 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0));
   __chkstk_darwin(v13);
   v17 = &v26 - v16;
-  v18 = _Block_copy(a5);
+  v18 = _Block_copy(fn);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a4)
+  if (hint)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v19 = 0;
@@ -42,7 +42,7 @@
 
   sub_1001A9674(v15, v19, 1, v8);
   _Block_copy(v18);
-  v20 = self;
+  selfCopy = self;
   sub_10027C380(v11, v15, v18, v17);
   _Block_release(v18);
 
@@ -64,7 +64,7 @@
   return v23;
 }
 
-- (void)fetchImageForURL:(id)a3 gameKitDirectoryURLHint:(id)a4 completionHandler:(id)a5
+- (void)fetchImageForURL:(id)l gameKitDirectoryURLHint:(id)hint completionHandler:(id)handler
 {
   v8 = sub_1001A6C04(&qword_1003B5800);
   __chkstk_darwin(v8 - 8);
@@ -73,9 +73,9 @@
   v12 = *(v11 - 8);
   __chkstk_darwin(v11);
   v14 = &v18 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v15 = _Block_copy(a5);
+  v15 = _Block_copy(handler);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a4)
+  if (hint)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v16 = 0;
@@ -88,44 +88,44 @@
 
   sub_1001A9674(v10, v16, 1, v11);
   _Block_copy(v15);
-  v17 = self;
-  sub_10027C910(v14, v10, v17, v15);
+  selfCopy = self;
+  sub_10027C910(v14, v10, selfCopy, v15);
   _Block_release(v15);
 
   sub_1001A974C(v10, &qword_1003B5800);
   (*(v12 + 8))(v14, v11);
 }
 
-- (void)fetchMetadataForGameKitDirectoryURL:(id)a3 completionHandler:(id)a4
+- (void)fetchMetadataForGameKitDirectoryURL:(id)l completionHandler:(id)handler
 {
   v6 = type metadata accessor for URL();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
   _Block_copy(v10);
-  v11 = self;
-  sub_10027CF80(v9, v11, v10);
+  selfCopy = self;
+  sub_10027CF80(v9, selfCopy, v10);
   _Block_release(v10);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (GKGameKitDirectoryServicePrivate)initWithoutCredentialWithTransport:(id)a3 forClient:(id)a4
+- (GKGameKitDirectoryServicePrivate)initWithoutCredentialWithTransport:(id)transport forClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  return sub_10027E980(a3, a4);
+  transportCopy = transport;
+  clientCopy = client;
+  return sub_10027E980(transport, client);
 }
 
-- (GKGameKitDirectoryServicePrivate)initWithTransport:(id)a3 forClient:(id)a4 localPlayer:(id)a5 credential:(id)a6
+- (GKGameKitDirectoryServicePrivate)initWithTransport:(id)transport forClient:(id)client localPlayer:(id)player credential:(id)credential
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  return sub_10027EA3C(a3, a4, a5, a6);
+  transportCopy = transport;
+  clientCopy = client;
+  playerCopy = player;
+  credentialCopy = credential;
+  return sub_10027EA3C(transport, client, player, credential);
 }
 
 @end

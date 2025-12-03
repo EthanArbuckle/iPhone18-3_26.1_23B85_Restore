@@ -1,13 +1,13 @@
 @interface FigCameraViewfinderSessionRemote
 - ($115C4C562B26FF47E01F9F4EA65B5887)clientAuditToken;
-- (id)_initWithRemoteViewfinderSession:(id)a3 clientAuditToken:(id *)a4 usesPhotoOutput:(BOOL)a5 usesMovieFileOutput:(BOOL)a6 delegateStorage:(id)a7;
+- (id)_initWithRemoteViewfinderSession:(id)session clientAuditToken:(id *)token usesPhotoOutput:(BOOL)output usesMovieFileOutput:(BOOL)fileOutput delegateStorage:(id)storage;
 - (uint64_t)_setupStateMachine;
 - (void)_movieRecordingDidFinish;
 - (void)_movieRecordingDidStart;
 - (void)_serverDied;
 - (void)closePreviewStream;
 - (void)dealloc;
-- (void)openPreviewStreamWithOptions:(id)a3;
+- (void)openPreviewStreamWithOptions:(id)options;
 @end
 
 @implementation FigCameraViewfinderSessionRemote
@@ -42,25 +42,25 @@
   return self;
 }
 
-- (id)_initWithRemoteViewfinderSession:(id)a3 clientAuditToken:(id *)a4 usesPhotoOutput:(BOOL)a5 usesMovieFileOutput:(BOOL)a6 delegateStorage:(id)a7
+- (id)_initWithRemoteViewfinderSession:(id)session clientAuditToken:(id *)token usesPhotoOutput:(BOOL)output usesMovieFileOutput:(BOOL)fileOutput delegateStorage:(id)storage
 {
   v15.receiver = self;
   v15.super_class = FigCameraViewfinderSessionRemote;
-  v12 = [(FigCameraViewfinderSession *)&v15 initSubclass];
-  if (v12)
+  initSubclass = [(FigCameraViewfinderSession *)&v15 initSubclass];
+  if (initSubclass)
   {
-    *(v12 + 2) = a3;
-    v14 = *&a4->var0[4];
-    *(v12 + 24) = *a4->var0;
-    *(v12 + 40) = v14;
-    v12[56] = a5;
-    v12[57] = a6;
-    *(v12 + 1) = a7;
-    *(v12 + 19) = 0;
-    [(FigCameraViewfinderSessionRemote *)v12 _setupStateMachine];
+    *(initSubclass + 2) = session;
+    v14 = *&token->var0[4];
+    *(initSubclass + 24) = *token->var0;
+    *(initSubclass + 40) = v14;
+    initSubclass[56] = output;
+    initSubclass[57] = fileOutput;
+    *(initSubclass + 1) = storage;
+    *(initSubclass + 19) = 0;
+    [(FigCameraViewfinderSessionRemote *)initSubclass _setupStateMachine];
   }
 
-  return v12;
+  return initSubclass;
 }
 
 - (void)dealloc
@@ -70,7 +70,7 @@
   [(FigCameraViewfinderSession *)&v3 dealloc];
 }
 
-- (void)openPreviewStreamWithOptions:(id)a3
+- (void)openPreviewStreamWithOptions:(id)options
 {
   if (dword_1ED8446F0)
   {
@@ -83,14 +83,14 @@
 
   if ([(FigStateMachine *)self->_stateMachine transitionToState:2 fromState:1, v6, v7])
   {
-    [(FigCameraViewfinderSessionRemoteObject *)self->_remoteViewfinderSession openPreviewStreamWithOptions:a3];
+    [(FigCameraViewfinderSessionRemoteObject *)self->_remoteViewfinderSession openPreviewStreamWithOptions:options];
   }
 }
 
 - (void)closePreviewStream
 {
-  v3 = [(FigStateMachine *)self->_stateMachine currentState];
-  if (v3 == 4 || v3 == 2)
+  currentState = [(FigStateMachine *)self->_stateMachine currentState];
+  if (currentState == 4 || currentState == 2)
   {
     remoteViewfinderSession = self->_remoteViewfinderSession;
 

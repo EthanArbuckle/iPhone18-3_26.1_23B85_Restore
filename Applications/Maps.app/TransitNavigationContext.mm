@@ -3,30 +3,30 @@
 - (BOOL)_shouldFrameVehiclePositions;
 - (BOOL)_shouldUseManualFraming;
 - (BOOL)isNavigationCameraTracking;
-- (BOOL)updateRouteAnnotationsConfiguration:(id)a3;
+- (BOOL)updateRouteAnnotationsConfiguration:(id)configuration;
 - (ChromeViewController)chromeViewController;
 - (TransitNavigationContext)init;
 - (id)_navCameraController;
 - (id)personalizedItemSources;
-- (id)transitVehicleUpdater:(id)a3 shouldUpdateVehiclePositionsForTripIDs:(id)a4;
-- (void)_checkRouteProximityForManualFraming:(id)a3;
+- (id)transitVehicleUpdater:(id)updater shouldUpdateVehiclePositionsForTripIDs:(id)ds;
+- (void)_checkRouteProximityForManualFraming:(id)framing;
 - (void)_pauseOrResumeRealtimeUpdatesIfNeeded;
-- (void)_sceneDidEnterBackground:(id)a3;
-- (void)_sceneWillEnterForeground:(id)a3;
-- (void)_setupMapView:(id)a3;
+- (void)_sceneDidEnterBackground:(id)background;
+- (void)_sceneWillEnterForeground:(id)foreground;
+- (void)_setupMapView:(id)view;
 - (void)_updateAnnotationsForCurrentRoute;
 - (void)_updateCurrentRouteIfNeeded;
-- (void)_updateNavigationDisplayConfigurationForDisplayedStep:(id)a3;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
+- (void)_updateNavigationDisplayConfigurationForDisplayedStep:(id)step;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
 - (void)dealloc;
-- (void)enterStackInChromeViewController:(id)a3 withAnimation:(id)a4;
+- (void)enterStackInChromeViewController:(id)controller withAnimation:(id)animation;
 - (void)recenterOnActiveStep;
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)temporarilyFrameStep:(id)a3;
-- (void)transitDirectionsStepsListDataSource:(id)a3 didTapRowForItem:(id)a4;
-- (void)transitDirectionsStepsListDataSource:(id)a3 didUpdateActiveGuidanceStep:(id)a4;
-- (void)transitDirectionsStepsListDataSource:(id)a3 didUpdateDisplayedGuidanceStep:(id)a4;
-- (void)transitVehicleUpdater:(id)a3 didUpdateVehiclePositions:(id)a4 forTripIDs:(id)a5;
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)temporarilyFrameStep:(id)step;
+- (void)transitDirectionsStepsListDataSource:(id)source didTapRowForItem:(id)item;
+- (void)transitDirectionsStepsListDataSource:(id)source didUpdateActiveGuidanceStep:(id)step;
+- (void)transitDirectionsStepsListDataSource:(id)source didUpdateDisplayedGuidanceStep:(id)step;
+- (void)transitVehicleUpdater:(id)updater didUpdateVehiclePositions:(id)positions forTripIDs:(id)ds;
 - (void)updateFramingForCurrentStep;
 - (void)updateTransitVehicleUpdaterIfNeeded;
 @end
@@ -40,74 +40,74 @@
   return WeakRetained;
 }
 
-- (void)transitDirectionsStepsListDataSource:(id)a3 didUpdateActiveGuidanceStep:(id)a4
+- (void)transitDirectionsStepsListDataSource:(id)source didUpdateActiveGuidanceStep:(id)step
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TransitNavigationContext *)self activeStep];
-  if (!v8 || (v9 = v8, -[TransitNavigationContext activeStep](self, "activeStep"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 stepIndex], v12 = objc_msgSend(v7, "stepIndex"), v10, v9, v11 != v12))
+  sourceCopy = source;
+  stepCopy = step;
+  activeStep = [(TransitNavigationContext *)self activeStep];
+  if (!activeStep || (v9 = activeStep, -[TransitNavigationContext activeStep](self, "activeStep"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 stepIndex], v12 = objc_msgSend(stepCopy, "stepIndex"), v10, v9, v11 != v12))
   {
     v13 = sub_100799650();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      v14 = [(TransitNavigationContext *)self activeStep];
+      activeStep2 = [(TransitNavigationContext *)self activeStep];
       v17 = 134218240;
-      v18 = [v14 stepIndex];
+      stepIndex = [activeStep2 stepIndex];
       v19 = 2048;
-      v20 = [v7 stepIndex];
+      stepIndex2 = [stepCopy stepIndex];
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "Notified active step changed from %lu to %lu", &v17, 0x16u);
     }
 
-    [(TransitNavigationContext *)self setActiveStep:v7];
+    [(TransitNavigationContext *)self setActiveStep:stepCopy];
     [(TransitNavigationContext *)self canRecenterDidChange];
-    v15 = [(TransitNavigationContext *)self currentUITargetForAnalytics];
-    v16 = [v6 displayedItemIndexForAnalytics];
-    [GEOAPPortal captureUserAction:3066 target:v15 value:0 transitStep:v16];
+    currentUITargetForAnalytics = [(TransitNavigationContext *)self currentUITargetForAnalytics];
+    displayedItemIndexForAnalytics = [sourceCopy displayedItemIndexForAnalytics];
+    [GEOAPPortal captureUserAction:3066 target:currentUITargetForAnalytics value:0 transitStep:displayedItemIndexForAnalytics];
   }
 }
 
-- (void)transitDirectionsStepsListDataSource:(id)a3 didUpdateDisplayedGuidanceStep:(id)a4
+- (void)transitDirectionsStepsListDataSource:(id)source didUpdateDisplayedGuidanceStep:(id)step
 {
-  v5 = a4;
-  v6 = [(TransitNavigationContext *)self displayedStep];
-  if (!v6 || (v7 = v6, -[TransitNavigationContext displayedStep](self, "displayedStep"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 stepIndex], v10 = objc_msgSend(v5, "stepIndex"), v8, v7, v9 != v10))
+  stepCopy = step;
+  displayedStep = [(TransitNavigationContext *)self displayedStep];
+  if (!displayedStep || (v7 = displayedStep, -[TransitNavigationContext displayedStep](self, "displayedStep"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 stepIndex], v10 = objc_msgSend(stepCopy, "stepIndex"), v8, v7, v9 != v10))
   {
     v11 = sub_100799650();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v12 = [(TransitNavigationContext *)self displayedStep];
+      displayedStep2 = [(TransitNavigationContext *)self displayedStep];
       v13 = 134218240;
-      v14 = [v12 stepIndex];
+      stepIndex = [displayedStep2 stepIndex];
       v15 = 2048;
-      v16 = [v5 stepIndex];
+      stepIndex2 = [stepCopy stepIndex];
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Notified displayed step changed from %lu to %lu", &v13, 0x16u);
     }
 
-    [(TransitNavigationContext *)self setDisplayedStep:v5];
+    [(TransitNavigationContext *)self setDisplayedStep:stepCopy];
     [(TransitNavigationContext *)self canRecenterDidChange];
     [(TransitNavigationContext *)self updateTransitVehicleUpdaterIfNeeded];
     [(TransitNavigationContext *)self updateFramingForCurrentStep];
   }
 }
 
-- (void)transitDirectionsStepsListDataSource:(id)a3 didTapRowForItem:(id)a4
+- (void)transitDirectionsStepsListDataSource:(id)source didTapRowForItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 matchingRouteStepIndex];
-  v9 = [(TransitNavigationContext *)self displayedStep];
-  if (v9)
+  sourceCopy = source;
+  itemCopy = item;
+  matchingRouteStepIndex = [itemCopy matchingRouteStepIndex];
+  displayedStep = [(TransitNavigationContext *)self displayedStep];
+  if (displayedStep)
   {
-    v10 = [(TransitNavigationContext *)self displayedStep];
-    v11 = [v10 stepIndex];
+    displayedStep2 = [(TransitNavigationContext *)self displayedStep];
+    stepIndex = [displayedStep2 stepIndex];
   }
 
   else
   {
-    v11 = 0x7FFFFFFFFFFFFFFFLL;
+    stepIndex = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (v11 == v8)
+  if (stepIndex == matchingRouteStepIndex)
   {
     [(TransitNavigationContext *)self didReselectDisplayedStep];
   }
@@ -118,37 +118,37 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       v19 = 134218496;
-      v20 = v8;
+      v20 = matchingRouteStepIndex;
       v21 = 2048;
-      v22 = v11;
+      v22 = stepIndex;
       v23 = 2048;
-      v24 = [v6 activeComposedRouteStepIndex];
+      activeComposedRouteStepIndex = [sourceCopy activeComposedRouteStepIndex];
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Will manually select stepIndex: %lu, previous: %lu, auto-advance: %lu", &v19, 0x20u);
     }
 
-    v13 = [v6 displayedItemIndex];
-    v14 = [v6 indexOfItem:v7];
-    v15 = [(TransitNavigationContext *)self currentUITargetForAnalytics];
-    v16 = [NSNumber numberWithInteger:v14 - v13];
-    v17 = [v16 stringValue];
-    v18 = [v6 displayedItemIndexForAnalytics];
-    [GEOAPPortal captureUserAction:235 target:v15 value:v17 transitStep:v18];
+    displayedItemIndex = [sourceCopy displayedItemIndex];
+    v14 = [sourceCopy indexOfItem:itemCopy];
+    currentUITargetForAnalytics = [(TransitNavigationContext *)self currentUITargetForAnalytics];
+    v16 = [NSNumber numberWithInteger:v14 - displayedItemIndex];
+    stringValue = [v16 stringValue];
+    displayedItemIndexForAnalytics = [sourceCopy displayedItemIndexForAnalytics];
+    [GEOAPPortal captureUserAction:235 target:currentUITargetForAnalytics value:stringValue transitStep:displayedItemIndexForAnalytics];
 
-    [v6 setDisplayedComposedRouteStepIndex:{objc_msgSend(v7, "matchingRouteStepIndex")}];
+    [sourceCopy setDisplayedComposedRouteStepIndex:{objc_msgSend(itemCopy, "matchingRouteStepIndex")}];
     [(TransitNavigationContext *)self canRecenterDidChange];
   }
 }
 
 - (BOOL)_sceneInBackground
 {
-  v2 = [(TransitNavigationContext *)self chromeViewController];
-  v3 = [v2 view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
+  chromeViewController = [(TransitNavigationContext *)self chromeViewController];
+  view = [chromeViewController view];
+  window = [view window];
+  windowScene = [window windowScene];
 
-  if ([v5 activationState])
+  if ([windowScene activationState])
   {
-    v6 = [v5 activationState] != 1;
+    v6 = [windowScene activationState] != 1;
   }
 
   else
@@ -166,8 +166,8 @@
 LABEL_5:
     if (![(TransitNavigationContext *)self _sceneInBackground])
     {
-      v5 = [(TransitNavigationContext *)self chromeViewController];
-      v6 = [v5 isTopContext:self];
+      chromeViewController = [(TransitNavigationContext *)self chromeViewController];
+      v6 = [chromeViewController isTopContext:self];
 
       if (v6)
       {
@@ -188,8 +188,8 @@ LABEL_5:
 
   if (![(TransitNavigationContext *)self _sceneInBackground])
   {
-    v3 = [(TransitNavigationContext *)self chromeViewController];
-    v4 = [v3 isTopContext:self];
+    chromeViewController2 = [(TransitNavigationContext *)self chromeViewController];
+    v4 = [chromeViewController2 isTopContext:self];
 
     if (v4)
     {
@@ -213,33 +213,33 @@ LABEL_5:
   [(TransitNavigationContext *)self stopRequestingRealtimeUpdates];
 }
 
-- (void)_sceneWillEnterForeground:(id)a3
+- (void)_sceneWillEnterForeground:(id)foreground
 {
-  v4 = a3;
-  v5 = [(TransitNavigationContext *)self chromeViewController];
-  v6 = [v5 view];
-  v7 = [v6 window];
-  v9 = [v7 windowScene];
+  foregroundCopy = foreground;
+  chromeViewController = [(TransitNavigationContext *)self chromeViewController];
+  view = [chromeViewController view];
+  window = [view window];
+  windowScene = [window windowScene];
 
-  v8 = [v4 object];
+  object = [foregroundCopy object];
 
-  if (v9 == v8)
+  if (windowScene == object)
   {
     [(TransitNavigationContext *)self _pauseOrResumeRealtimeUpdatesIfNeeded];
   }
 }
 
-- (void)_sceneDidEnterBackground:(id)a3
+- (void)_sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
-  v5 = [(TransitNavigationContext *)self chromeViewController];
-  v6 = [v5 view];
-  v7 = [v6 window];
-  v9 = [v7 windowScene];
+  backgroundCopy = background;
+  chromeViewController = [(TransitNavigationContext *)self chromeViewController];
+  view = [chromeViewController view];
+  window = [view window];
+  windowScene = [window windowScene];
 
-  v8 = [v4 object];
+  object = [backgroundCopy object];
 
-  if (v9 == v8)
+  if (windowScene == object)
   {
     [(TransitNavigationContext *)self _pauseOrResumeRealtimeUpdatesIfNeeded];
   }
@@ -247,10 +247,10 @@ LABEL_5:
 
 - (BOOL)_shouldFrameVehiclePositions
 {
-  v3 = [(TransitNavigationContext *)self _stepForTransitVehicleUpdater];
-  v4 = [v3 stepIndex];
+  _stepForTransitVehicleUpdater = [(TransitNavigationContext *)self _stepForTransitVehicleUpdater];
+  stepIndex = [_stepForTransitVehicleUpdater stepIndex];
 
-  if (v4 == [(GEOComposedRouteStep *)self->_activeStep stepIndex])
+  if (stepIndex == [(GEOComposedRouteStep *)self->_activeStep stepIndex])
   {
     return 1;
   }
@@ -258,7 +258,7 @@ LABEL_5:
   v6 = +[NSUserDefaults standardUserDefaults];
   if ([v6 BOOLForKey:@"NavigationTransitFrameVehiclePositionsForSelectedStep"])
   {
-    v5 = v4 == [(GEOComposedRouteStep *)self->_displayedStep stepIndex];
+    v5 = stepIndex == [(GEOComposedRouteStep *)self->_displayedStep stepIndex];
   }
 
   else
@@ -273,23 +273,23 @@ LABEL_5:
 {
   if (self->_transitVehicleUpdater)
   {
-    v3 = [(TransitNavigationContext *)self _stepForTransitVehicleUpdater];
-    if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    _stepForTransitVehicleUpdater = [(TransitNavigationContext *)self _stepForTransitVehicleUpdater];
+    if (_stepForTransitVehicleUpdater && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v4 = v3;
-      v5 = [v4 vehicleEntries];
-      if (v5)
+      v4 = _stepForTransitVehicleUpdater;
+      vehicleEntries = [v4 vehicleEntries];
+      if (vehicleEntries)
       {
-        v6 = [v4 vehicleEntries];
-        v7 = [v6 tripIDs];
+        vehicleEntries2 = [v4 vehicleEntries];
+        tripIDs = [vehicleEntries2 tripIDs];
       }
 
       else
       {
-        v7 = &__NSArray0__struct;
+        tripIDs = &__NSArray0__struct;
       }
 
-      v8 = [NSSet setWithArray:v7];
+      v8 = [NSSet setWithArray:tripIDs];
       [(GEOTransitVehicleUpdater *)self->_transitVehicleUpdater setTripIDs:v8];
     }
 
@@ -300,8 +300,8 @@ LABEL_5:
     }
 
     [(TransitNavigationContext *)self _updateAnnotationsForCurrentRoute];
-    v9 = [(GEOTransitVehicleUpdater *)self->_transitVehicleUpdater tripIDs];
-    if ([v9 count] && !-[TransitNavigationContext _shouldFrameVehiclePositions](self, "_shouldFrameVehiclePositions"))
+    tripIDs2 = [(GEOTransitVehicleUpdater *)self->_transitVehicleUpdater tripIDs];
+    if ([tripIDs2 count] && !-[TransitNavigationContext _shouldFrameVehiclePositions](self, "_shouldFrameVehiclePositions"))
     {
       v10 = sub_100799650();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -312,53 +312,53 @@ LABEL_5:
 
       v11 = +[NSSet set];
 
-      v9 = v11;
+      tripIDs2 = v11;
     }
 
-    v12 = [(TransitNavigationContext *)self _navCameraController];
-    [v12 filterVehiclePositionsForTripsNotInSet:v9];
+    _navCameraController = [(TransitNavigationContext *)self _navCameraController];
+    [_navCameraController filterVehiclePositionsForTripsNotInSet:tripIDs2];
   }
 }
 
-- (void)transitVehicleUpdater:(id)a3 didUpdateVehiclePositions:(id)a4 forTripIDs:(id)a5
+- (void)transitVehicleUpdater:(id)updater didUpdateVehiclePositions:(id)positions forTripIDs:(id)ds
 {
-  v6 = [a4 allObjects];
-  objc_storeStrong(&self->_lastReceivedVehiclePositions, v6);
+  allObjects = [positions allObjects];
+  objc_storeStrong(&self->_lastReceivedVehiclePositions, allObjects);
   [(TransitNavigationContext *)self _updateAnnotationsForCurrentRoute];
-  if ([v6 count] && !-[TransitNavigationContext _shouldFrameVehiclePositions](self, "_shouldFrameVehiclePositions"))
+  if ([allObjects count] && !-[TransitNavigationContext _shouldFrameVehiclePositions](self, "_shouldFrameVehiclePositions"))
   {
     v7 = sub_100799650();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v9 = 134217984;
-      v10 = [v6 count];
+      v10 = [allObjects count];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Will not frame %lu vehicle positions, displayed step is not active step", &v9, 0xCu);
     }
 
-    v6 = &__NSArray0__struct;
+    allObjects = &__NSArray0__struct;
   }
 
-  v8 = [(TransitNavigationContext *)self _navCameraController];
-  [v8 frameVehiclePositions:v6];
+  _navCameraController = [(TransitNavigationContext *)self _navCameraController];
+  [_navCameraController frameVehiclePositions:allObjects];
 }
 
-- (id)transitVehicleUpdater:(id)a3 shouldUpdateVehiclePositionsForTripIDs:(id)a4
+- (id)transitVehicleUpdater:(id)updater shouldUpdateVehiclePositionsForTripIDs:(id)ds
 {
-  v5 = a4;
-  v6 = [(TransitNavigationContext *)self _stepForTransitVehicleUpdater];
-  if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  dsCopy = ds;
+  _stepForTransitVehicleUpdater = [(TransitNavigationContext *)self _stepForTransitVehicleUpdater];
+  if (_stepForTransitVehicleUpdater && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v7 = v6;
+    v7 = _stepForTransitVehicleUpdater;
     UInteger = GEOConfigGetUInteger();
     v9 = [NSMutableSet setWithCapacity:UInteger];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v10 = [v7 vehicleEntries];
-    v11 = [v10 upcomingTripIDs];
+    vehicleEntries = [v7 vehicleEntries];
+    upcomingTripIDs = [vehicleEntries upcomingTripIDs];
 
-    v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v12 = [upcomingTripIDs countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v12)
     {
       v13 = v12;
@@ -369,11 +369,11 @@ LABEL_5:
       {
         if (*v20 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(upcomingTripIDs);
         }
 
         v16 = *(*(&v19 + 1) + 8 * v15);
-        if ([v5 containsObject:v16])
+        if ([dsCopy containsObject:v16])
         {
           [v9 addObject:v16];
         }
@@ -385,7 +385,7 @@ LABEL_5:
 
         if (v13 == ++v15)
         {
-          v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v13 = [upcomingTripIDs countByEnumeratingWithState:&v19 objects:v23 count:16];
           if (v13)
           {
             goto LABEL_5;
@@ -437,16 +437,16 @@ LABEL_5:
         _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Requesting camera recenter animated", v9, 2u);
       }
 
-      v7 = [(TransitNavigationContext *)self chromeViewController];
-      v8 = [v7 navigationDisplay];
-      [v8 recenterCameraAnimated:1];
+      chromeViewController = [(TransitNavigationContext *)self chromeViewController];
+      navigationDisplay = [chromeViewController navigationDisplay];
+      [navigationDisplay recenterCameraAnimated:1];
     }
   }
 }
 
-- (void)_updateNavigationDisplayConfigurationForDisplayedStep:(id)a3
+- (void)_updateNavigationDisplayConfigurationForDisplayedStep:(id)step
 {
-  v4 = a3;
+  stepCopy = step;
   if (*&self->_displayedStep == 0)
   {
     v9 = sub_100799650();
@@ -459,10 +459,10 @@ LABEL_5:
 
   else
   {
-    v5 = [(TransitNavigationContext *)self _shouldUseManualFraming];
+    _shouldUseManualFraming = [(TransitNavigationContext *)self _shouldUseManualFraming];
     v6 = sub_100799650();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-    if (v5)
+    if (_shouldUseManualFraming)
     {
       if (v7)
       {
@@ -476,8 +476,8 @@ LABEL_5:
         temporarilyFramedStep = self->_displayedStep;
       }
 
-      [v4 setStaticStepIndex:{-[GEOComposedRouteStep stepIndex](temporarilyFramedStep, "stepIndex")}];
-      [v4 setCameraStyle:5];
+      [stepCopy setStaticStepIndex:{-[GEOComposedRouteStep stepIndex](temporarilyFramedStep, "stepIndex")}];
+      [stepCopy setCameraStyle:5];
     }
 
     else
@@ -488,9 +488,9 @@ LABEL_5:
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Configurating for default camera", v10, 2u);
       }
 
-      [v4 setCameraStyle:1];
-      [v4 setStaticStepIndex:0x7FFFFFFFFFFFFFFFLL];
-      [v4 setCameraPaused:&__kCFBooleanFalse];
+      [stepCopy setCameraStyle:1];
+      [stepCopy setStaticStepIndex:0x7FFFFFFFFFFFFFFFLL];
+      [stepCopy setCameraPaused:&__kCFBooleanFalse];
     }
   }
 }
@@ -504,14 +504,14 @@ LABEL_5:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Updating camera behaviour for current step...", buf, 2u);
   }
 
-  v4 = [(TransitNavigationContext *)self chromeViewController];
-  v5 = [v4 navigationDisplay];
+  chromeViewController = [(TransitNavigationContext *)self chromeViewController];
+  navigationDisplay = [chromeViewController navigationDisplay];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100C6846C;
   v9[3] = &unk_10164F208;
   v9[4] = self;
-  [v5 configureDisplay:v9 animated:1];
+  [navigationDisplay configureDisplay:v9 animated:1];
 
   if ([(TransitNavigationContext *)self isNavigationCameraTracking]&& ([(TransitNavigationContext *)self isCameraPanningOrZoomed]& 1) == 0)
   {
@@ -522,19 +522,19 @@ LABEL_5:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Automatically returning to puck, navigation display is unpaused and user has no panned/zoomed map", buf, 2u);
     }
 
-    v7 = [(TransitNavigationContext *)self chromeViewController];
-    v8 = [v7 mapView];
-    [v8 navigationCameraReturnToPuck];
+    chromeViewController2 = [(TransitNavigationContext *)self chromeViewController];
+    mapView = [chromeViewController2 mapView];
+    [mapView navigationCameraReturnToPuck];
   }
 }
 
-- (void)_checkRouteProximityForManualFraming:(id)a3
+- (void)_checkRouteProximityForManualFraming:(id)framing
 {
-  v4 = a3;
-  v5 = [v4 origin];
-  v6 = [v5 isCurrentLocation];
+  framingCopy = framing;
+  origin = [framingCopy origin];
+  isCurrentLocation = [origin isCurrentLocation];
 
-  if (v6)
+  if (isCurrentLocation)
   {
     if (self->_forceManualFraming)
     {
@@ -553,28 +553,28 @@ LABEL_5:
   {
     if (GEOConfigGetBOOL())
     {
-      v8 = v4;
+      v8 = framingCopy;
       if (v8)
       {
         v9 = [[MNRouteProximitySensor alloc] initWithRoute:v8];
         GEOConfigGetDouble();
         [v9 setProximityThreshold:?];
-        v10 = [(TransitNavigationContext *)self fetchLastLocation];
-        v11 = [[GEOLocation alloc] initWithCLLocation:v10];
+        fetchLastLocation = [(TransitNavigationContext *)self fetchLastLocation];
+        v11 = [[GEOLocation alloc] initWithCLLocation:fetchLastLocation];
         [v9 updateForLocation:v11];
-        v12 = [v9 proximity];
-        self->_forceManualFraming = v12 < 2;
+        proximity = [v9 proximity];
+        self->_forceManualFraming = proximity < 2;
         v13 = sub_100799650();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
-          if (v12 > 4)
+          if (proximity > 4)
           {
             v14 = &stru_1016631F0;
           }
 
           else
           {
-            v14 = *(&off_10164F228 + v12);
+            v14 = *(&off_10164F228 + proximity);
           }
 
           if (self->_forceManualFraming)
@@ -614,19 +614,19 @@ LABEL_5:
   }
 }
 
-- (void)temporarilyFrameStep:(id)a3
+- (void)temporarilyFrameStep:(id)step
 {
-  v4 = a3;
+  stepCopy = step;
   v5 = sub_100799650();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 134217984;
-    v8 = [v4 stepIndex];
+    stepIndex = [stepCopy stepIndex];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Asked to temporarily frame step %lu", &v7, 0xCu);
   }
 
   temporarilyFramedStep = self->_temporarilyFramedStep;
-  self->_temporarilyFramedStep = v4;
+  self->_temporarilyFramedStep = stepCopy;
 
   [(TransitNavigationContext *)self canRecenterDidChange];
   [(TransitNavigationContext *)self updateFramingForCurrentStep];
@@ -644,32 +644,32 @@ LABEL_5:
 
 - (BOOL)isNavigationCameraTracking
 {
-  v2 = [(TransitNavigationContext *)self chromeViewController];
-  v3 = [v2 navigationDisplay];
-  v4 = [v3 configuration];
+  chromeViewController = [(TransitNavigationContext *)self chromeViewController];
+  navigationDisplay = [chromeViewController navigationDisplay];
+  configuration = [navigationDisplay configuration];
 
-  v5 = [v4 cameraPaused];
-  LOBYTE(v3) = [v5 BOOLValue];
+  cameraPaused = [configuration cameraPaused];
+  LOBYTE(navigationDisplay) = [cameraPaused BOOLValue];
 
-  return v3 ^ 1;
+  return navigationDisplay ^ 1;
 }
 
 - (id)_navCameraController
 {
-  v2 = [(TransitNavigationContext *)self chromeViewController];
-  v3 = [v2 navigationDisplay];
-  v4 = [v3 cameraController];
+  chromeViewController = [(TransitNavigationContext *)self chromeViewController];
+  navigationDisplay = [chromeViewController navigationDisplay];
+  cameraController = [navigationDisplay cameraController];
 
-  return v4;
+  return cameraController;
 }
 
-- (BOOL)updateRouteAnnotationsConfiguration:(id)a3
+- (BOOL)updateRouteAnnotationsConfiguration:(id)configuration
 {
   lastReceivedVehiclePositions = self->_lastReceivedVehiclePositions;
-  v5 = a3;
-  [v5 setTransitVehiclePositions:lastReceivedVehiclePositions];
-  v6 = [(GEOTransitVehicleUpdater *)self->_transitVehicleUpdater tripIDs];
-  [v5 filterTransitVehiclePositionsForTripsNotInSet:v6];
+  configurationCopy = configuration;
+  [configurationCopy setTransitVehiclePositions:lastReceivedVehiclePositions];
+  tripIDs = [(GEOTransitVehicleUpdater *)self->_transitVehicleUpdater tripIDs];
+  [configurationCopy filterTransitVehiclePositionsForTripsNotInSet:tripIDs];
 
   return 1;
 }
@@ -677,19 +677,19 @@ LABEL_5:
 - (void)_updateAnnotationsForCurrentRoute
 {
   [(GEOComposedRoute *)self->_route setManeuverDisplayEnabled:1];
-  v3 = [(TransitNavigationContext *)self chromeViewController];
-  [v3 setNeedsUpdateComponent:@"routeAnnotations" animated:1];
+  chromeViewController = [(TransitNavigationContext *)self chromeViewController];
+  [chromeViewController setNeedsUpdateComponent:@"routeAnnotations" animated:1];
 }
 
 - (void)_updateCurrentRouteIfNeeded
 {
   obj = [(TransitNavigationContext *)self fetchCurrentRoute];
-  v3 = [obj uniqueRouteID];
+  uniqueRouteID = [obj uniqueRouteID];
   route = self->_route;
   p_route = &self->_route;
-  v6 = [(GEOComposedRoute *)route uniqueRouteID];
-  v7 = v3;
-  v8 = v6;
+  uniqueRouteID2 = [(GEOComposedRoute *)route uniqueRouteID];
+  v7 = uniqueRouteID;
+  v8 = uniqueRouteID2;
   if (v7 | v8)
   {
     v9 = v8;
@@ -704,66 +704,66 @@ LABEL_5:
   }
 }
 
-- (void)_setupMapView:(id)a3
+- (void)_setupMapView:(id)view
 {
-  v3 = a3;
-  [v3 _setApplicationState:3];
-  if ([v3 mapType] != 104)
+  viewCopy = view;
+  [viewCopy _setApplicationState:3];
+  if ([viewCopy mapType] != 104)
   {
-    [v3 setMapType:104];
+    [viewCopy setMapType:104];
   }
 }
 
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100C68BEC;
   v4[3] = &unk_101661B18;
   v4[4] = self;
-  [a4 addPreparation:v4];
+  [animation addPreparation:v4];
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100C68D5C;
   v9[3] = &unk_101661A90;
   v9[4] = self;
-  v10 = a3;
-  v6 = v10;
-  v7 = a4;
-  [v7 addPreparation:v9];
+  controllerCopy = controller;
+  v6 = controllerCopy;
+  animationCopy = animation;
+  [animationCopy addPreparation:v9];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100C68DB8;
   v8[3] = &unk_101661B18;
   v8[4] = self;
-  [v7 addAnimations:v8];
+  [animationCopy addAnimations:v8];
 }
 
-- (void)enterStackInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)enterStackInChromeViewController:(id)controller withAnimation:(id)animation
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100C68E6C;
   v4[3] = &unk_101661B18;
   v4[4] = self;
-  [a4 addPreparation:v4];
+  [animation addPreparation:v4];
 }
 
 - (id)personalizedItemSources
 {
-  v3 = [(TransitNavigationContext *)self chromeViewController];
-  v4 = [v3 searchPinsManager];
+  chromeViewController = [(TransitNavigationContext *)self chromeViewController];
+  searchPinsManager = [chromeViewController searchPinsManager];
 
-  if (v4)
+  if (searchPinsManager)
   {
-    v5 = [(TransitNavigationContext *)self chromeViewController];
-    v6 = [v5 searchPinsManager];
-    v7 = [v6 routeStartEndItemSource];
-    v10 = v7;
+    chromeViewController2 = [(TransitNavigationContext *)self chromeViewController];
+    searchPinsManager2 = [chromeViewController2 searchPinsManager];
+    routeStartEndItemSource = [searchPinsManager2 routeStartEndItemSource];
+    v10 = routeStartEndItemSource;
     v8 = [NSArray arrayWithObjects:&v10 count:1];
   }
 

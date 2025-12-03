@@ -1,40 +1,40 @@
 @interface SBKPushValueResponse
-+ (id)responseWithResponse:(id)a3 transaction:(id)a4;
-- (void)deserializeResponseBodyWithTransaction:(id)a3;
++ (id)responseWithResponse:(id)response transaction:(id)transaction;
+- (void)deserializeResponseBodyWithTransaction:(id)transaction;
 @end
 
 @implementation SBKPushValueResponse
 
-+ (id)responseWithResponse:(id)a3 transaction:(id)a4
++ (id)responseWithResponse:(id)response transaction:(id)transaction
 {
-  v6 = a4;
-  v7 = [a1 responseWithResponse:a3];
-  [v7 deserializeResponseBodyWithTransaction:v6];
+  transactionCopy = transaction;
+  v7 = [self responseWithResponse:response];
+  [v7 deserializeResponseBodyWithTransaction:transactionCopy];
 
   return v7;
 }
 
-- (void)deserializeResponseBodyWithTransaction:(id)a3
+- (void)deserializeResponseBodyWithTransaction:(id)transaction
 {
-  v14 = a3;
-  v5 = [(SBKResponse *)self responseDictionary];
-  v6 = [v5 objectForKeyedSubscript:@"value"];
+  transactionCopy = transaction;
+  responseDictionary = [(SBKResponse *)self responseDictionary];
+  v6 = [responseDictionary objectForKeyedSubscript:@"value"];
   conflictItemValuePayload = self->_conflictItemValuePayload;
   self->_conflictItemValuePayload = v6;
 
   v8 = self->_conflictItemValuePayload;
   if (v8)
   {
-    v3 = [v14 requestItemPayloadPair];
-    v9 = [v3 kvsKey];
+    requestItemPayloadPair = [transactionCopy requestItemPayloadPair];
+    kvsKey = [requestItemPayloadPair kvsKey];
   }
 
   else
   {
-    v9 = 0;
+    kvsKey = 0;
   }
 
-  objc_storeStrong(&self->_conflictItemKey, v9);
+  objc_storeStrong(&self->_conflictItemKey, kvsKey);
   if (v8)
   {
   }
@@ -42,7 +42,7 @@
   v10 = self->_conflictItemValuePayload;
   if (v10)
   {
-    v11 = [v5 objectForKeyedSubscript:@"version"];
+    v11 = [responseDictionary objectForKeyedSubscript:@"version"];
   }
 
   else
@@ -55,7 +55,7 @@
   {
   }
 
-  v12 = [v5 objectForKeyedSubscript:@"domain-version"];
+  v12 = [responseDictionary objectForKeyedSubscript:@"domain-version"];
   domainVersion = self->_domainVersion;
   self->_domainVersion = v12;
 }

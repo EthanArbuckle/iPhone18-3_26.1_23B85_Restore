@@ -1,27 +1,27 @@
 @interface DownloadHandlerClient
 - (BOOL)sessionsNeedPowerAssertion;
 - (BOOL)sessionsShouldBlockOtherDownloads;
-- (DownloadHandlerClient)initWithInputConnection:(id)a3;
+- (DownloadHandlerClient)initWithInputConnection:(id)connection;
 - (NSSet)disavowedSessionProperties;
 - (NSSet)downloadPhasesToIgnore;
 - (id)description;
 - (id)resetDisavowedSessionProperties;
 - (int64_t)handlerIdentifier;
-- (void)addDisavowedSessionProperties:(id)a3;
+- (void)addDisavowedSessionProperties:(id)properties;
 - (void)dealloc;
-- (void)setDownloadPhasesToIgnore:(id)a3;
-- (void)setHandlerIdentifier:(int64_t)a3;
-- (void)setSessionsNeedPowerAssertion:(BOOL)a3;
-- (void)setSessionsShouldBlockOtherDownloads:(BOOL)a3;
+- (void)setDownloadPhasesToIgnore:(id)ignore;
+- (void)setHandlerIdentifier:(int64_t)identifier;
+- (void)setSessionsNeedPowerAssertion:(BOOL)assertion;
+- (void)setSessionsShouldBlockOtherDownloads:(BOOL)downloads;
 @end
 
 @implementation DownloadHandlerClient
 
-- (DownloadHandlerClient)initWithInputConnection:(id)a3
+- (DownloadHandlerClient)initWithInputConnection:(id)connection
 {
   v4.receiver = self;
   v4.super_class = DownloadHandlerClient;
-  result = [(XPCClient *)&v4 initWithInputConnection:a3];
+  result = [(XPCClient *)&v4 initWithInputConnection:connection];
   if (result)
   {
     result->_sessionsNeedPowerAssertion = 1;
@@ -38,7 +38,7 @@
   [(XPCClient *)&v3 dealloc];
 }
 
-- (void)addDisavowedSessionProperties:(id)a3
+- (void)addDisavowedSessionProperties:(id)properties
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -46,7 +46,7 @@
   v4[2] = sub_1000AD348;
   v4[3] = &unk_100327350;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = properties;
   dispatch_sync(dispatchQueue, v4);
 }
 
@@ -170,7 +170,7 @@
   return v3;
 }
 
-- (void)setDownloadPhasesToIgnore:(id)a3
+- (void)setDownloadPhasesToIgnore:(id)ignore
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -178,11 +178,11 @@
   v4[2] = sub_1000ADAB4;
   v4[3] = &unk_100327350;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = ignore;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setHandlerIdentifier:(int64_t)a3
+- (void)setHandlerIdentifier:(int64_t)identifier
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -190,11 +190,11 @@
   v4[2] = sub_1000ADB80;
   v4[3] = &unk_100327808;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = identifier;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setSessionsNeedPowerAssertion:(BOOL)a3
+- (void)setSessionsNeedPowerAssertion:(BOOL)assertion
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -202,11 +202,11 @@
   v4[2] = sub_1000ADC18;
   v4[3] = &unk_100327830;
   v4[4] = self;
-  v5 = a3;
+  assertionCopy = assertion;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setSessionsShouldBlockOtherDownloads:(BOOL)a3
+- (void)setSessionsShouldBlockOtherDownloads:(BOOL)downloads
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -214,7 +214,7 @@
   v4[2] = sub_1000ADCB4;
   v4[3] = &unk_100327830;
   v4[4] = self;
-  v5 = a3;
+  downloadsCopy = downloads;
   dispatch_sync(dispatchQueue, v4);
 }
 

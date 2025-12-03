@@ -1,20 +1,20 @@
 @interface CAMTimerButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
-- (void)startExpansionWithProposedFrame:(CGRect)a3;
+- (void)startExpansionWithProposedFrame:(CGRect)frame;
 @end
 
 @implementation CAMTimerButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMTimerButton" hasInstanceMethod:@"duration" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMTimerButton" hasInstanceMethod:@"setDuration:animated:" withFullSignature:{"v", "q", "B", 0}];
-  [v3 validateClass:@"CAMExpandableMenuButton" hasInstanceMethod:@"startExpansionWithProposedFrame:" withFullSignature:{"v", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"CAMTimerButton" isKindOfClass:@"CAMExpandableMenuButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMTimerButton" hasInstanceMethod:@"duration" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMTimerButton" hasInstanceMethod:@"setDuration:animated:" withFullSignature:{"v", "q", "B", 0}];
+  [validationsCopy validateClass:@"CAMExpandableMenuButton" hasInstanceMethod:@"startExpansionWithProposedFrame:" withFullSignature:{"v", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"CAMTimerButton" isKindOfClass:@"CAMExpandableMenuButton"];
 }
 
 - (BOOL)accessibilityActivate
@@ -22,10 +22,10 @@
   if (AXRequestingClient() == 3)
   {
     v3 = [(CAMTimerButtonAccessibility *)self safeValueForKey:@"duration"];
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
 
     v5 = 3;
-    if (v4 != 1)
+    if (integerValue != 1)
     {
       v5 = 1;
     }
@@ -34,12 +34,12 @@
     v9 = 3221225472;
     v10 = __52__CAMTimerButtonAccessibility_accessibilityActivate__block_invoke;
     v11 = &unk_29F2ACC58;
-    if (v4 == 3)
+    if (integerValue == 3)
     {
       v5 = 0;
     }
 
-    v12 = self;
+    selfCopy = self;
     v13 = v5;
     AXPerformSafeBlock();
     return 1;
@@ -63,16 +63,16 @@ void __52__CAMTimerButtonAccessibility_accessibilityActivate__block_invoke(uint6
 - (id)accessibilityValue
 {
   v2 = [(CAMTimerButtonAccessibility *)self safeValueForKey:@"duration"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return accessibilityStringForTimeDuration(v3, v4);
+  return accessibilityStringForTimeDuration(integerValue, v4);
 }
 
-- (void)startExpansionWithProposedFrame:(CGRect)a3
+- (void)startExpansionWithProposedFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = CAMTimerButtonAccessibility;
-  [(CAMTimerButtonAccessibility *)&v5 startExpansionWithProposedFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CAMTimerButtonAccessibility *)&v5 startExpansionWithProposedFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], 0);
   v4 = [(CAMTimerButtonAccessibility *)self safeArrayForKey:@"_menuItems"];
   [v4 enumerateObjectsUsingBlock:&__block_literal_global_16];

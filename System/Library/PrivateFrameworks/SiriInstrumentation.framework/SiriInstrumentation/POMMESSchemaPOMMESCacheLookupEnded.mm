@@ -1,33 +1,33 @@
 @interface POMMESSchemaPOMMESCacheLookupEnded
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (POMMESSchemaPOMMESCacheLookupEnded)initWithDictionary:(id)a3;
-- (POMMESSchemaPOMMESCacheLookupEnded)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (POMMESSchemaPOMMESCacheLookupEnded)initWithDictionary:(id)dictionary;
+- (POMMESSchemaPOMMESCacheLookupEnded)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation POMMESSchemaPOMMESCacheLookupEnded
 
-- (POMMESSchemaPOMMESCacheLookupEnded)initWithDictionary:(id)a3
+- (POMMESSchemaPOMMESCacheLookupEnded)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = POMMESSchemaPOMMESCacheLookupEnded;
   v5 = [(POMMESSchemaPOMMESCacheLookupEnded *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"status"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"status"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESCacheLookupEnded setStatus:](v5, "setStatus:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"resultDomain"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"resultDomain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(POMMESSchemaPOMMESCacheLookupEnded *)v5 setResultDomain:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"result"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"result"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (POMMESSchemaPOMMESCacheLookupEnded)initWithJSON:(id)a3
+- (POMMESSchemaPOMMESCacheLookupEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(POMMESSchemaPOMMESCacheLookupEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(POMMESSchemaPOMMESCacheLookupEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(POMMESSchemaPOMMESCacheLookupEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,28 +85,28 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_result)
   {
-    v4 = [(POMMESSchemaPOMMESCacheLookupEnded *)self result];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    result = [(POMMESSchemaPOMMESCacheLookupEnded *)self result];
+    dictionaryRepresentation = [result dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"result"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"result"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"result"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"result"];
     }
   }
 
   if (self->_resultDomain)
   {
-    v7 = [(POMMESSchemaPOMMESCacheLookupEnded *)self resultDomain];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"resultDomain"];
+    resultDomain = [(POMMESSchemaPOMMESCacheLookupEnded *)self resultDomain];
+    v8 = [resultDomain copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"resultDomain"];
   }
 
   if (*&self->_has)
@@ -122,12 +122,12 @@
       v10 = off_1E78E0D18[v9];
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"status"];
+    [dictionary setObject:v10 forKeyedSubscript:@"status"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -146,15 +146,15 @@
   return v4 ^ [(POMMESSchemaPOMMESCacheEntry *)self->_result hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -162,26 +162,26 @@
   if (*&self->_has)
   {
     status = self->_status;
-    if (status != [v4 status])
+    if (status != [equalCopy status])
     {
       goto LABEL_15;
     }
   }
 
-  v6 = [(POMMESSchemaPOMMESCacheLookupEnded *)self resultDomain];
-  v7 = [v4 resultDomain];
-  if ((v6 != 0) == (v7 == 0))
+  resultDomain = [(POMMESSchemaPOMMESCacheLookupEnded *)self resultDomain];
+  resultDomain2 = [equalCopy resultDomain];
+  if ((resultDomain != 0) == (resultDomain2 == 0))
   {
     goto LABEL_14;
   }
 
-  v8 = [(POMMESSchemaPOMMESCacheLookupEnded *)self resultDomain];
-  if (v8)
+  resultDomain3 = [(POMMESSchemaPOMMESCacheLookupEnded *)self resultDomain];
+  if (resultDomain3)
   {
-    v9 = v8;
-    v10 = [(POMMESSchemaPOMMESCacheLookupEnded *)self resultDomain];
-    v11 = [v4 resultDomain];
-    v12 = [v10 isEqual:v11];
+    v9 = resultDomain3;
+    resultDomain4 = [(POMMESSchemaPOMMESCacheLookupEnded *)self resultDomain];
+    resultDomain5 = [equalCopy resultDomain];
+    v12 = [resultDomain4 isEqual:resultDomain5];
 
     if (!v12)
     {
@@ -193,12 +193,12 @@
   {
   }
 
-  v6 = [(POMMESSchemaPOMMESCacheLookupEnded *)self result];
-  v7 = [v4 result];
-  if ((v6 != 0) != (v7 == 0))
+  resultDomain = [(POMMESSchemaPOMMESCacheLookupEnded *)self result];
+  resultDomain2 = [equalCopy result];
+  if ((resultDomain != 0) != (resultDomain2 == 0))
   {
-    v13 = [(POMMESSchemaPOMMESCacheLookupEnded *)self result];
-    if (!v13)
+    result = [(POMMESSchemaPOMMESCacheLookupEnded *)self result];
+    if (!result)
     {
 
 LABEL_18:
@@ -206,10 +206,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v14 = v13;
-    v15 = [(POMMESSchemaPOMMESCacheLookupEnded *)self result];
-    v16 = [v4 result];
-    v17 = [v15 isEqual:v16];
+    v14 = result;
+    result2 = [(POMMESSchemaPOMMESCacheLookupEnded *)self result];
+    result3 = [equalCopy result];
+    v17 = [result2 isEqual:result3];
 
     if (v17)
     {
@@ -229,44 +229,44 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = [(POMMESSchemaPOMMESCacheLookupEnded *)self resultDomain];
+  resultDomain = [(POMMESSchemaPOMMESCacheLookupEnded *)self resultDomain];
 
-  if (v4)
+  if (resultDomain)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(POMMESSchemaPOMMESCacheLookupEnded *)self result];
+  result = [(POMMESSchemaPOMMESCacheLookupEnded *)self result];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (result)
   {
-    v7 = [(POMMESSchemaPOMMESCacheLookupEnded *)self result];
+    result2 = [(POMMESSchemaPOMMESCacheLookupEnded *)self result];
     PBDataWriterWriteSubmessage();
 
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = POMMESSchemaPOMMESCacheLookupEnded;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(POMMESSchemaPOMMESCacheLookupEnded *)self result:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(POMMESSchemaPOMMESCacheLookupEnded *)self deleteResult];
   }

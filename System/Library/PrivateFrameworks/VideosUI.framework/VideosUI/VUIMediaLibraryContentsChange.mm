@@ -1,7 +1,7 @@
 @interface VUIMediaLibraryContentsChange
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (VUIMediaLibraryContentsChange)init;
-- (VUIMediaLibraryContentsChange)initWithRevision:(unint64_t)a3;
+- (VUIMediaLibraryContentsChange)initWithRevision:(unint64_t)revision;
 - (id)description;
 @end
 
@@ -17,35 +17,35 @@
   return 0;
 }
 
-- (VUIMediaLibraryContentsChange)initWithRevision:(unint64_t)a3
+- (VUIMediaLibraryContentsChange)initWithRevision:(unint64_t)revision
 {
   v5.receiver = self;
   v5.super_class = VUIMediaLibraryContentsChange;
   result = [(VUIMediaLibraryContentsChange *)&v5 init];
   if (result)
   {
-    result->_revision = a3;
+    result->_revision = revision;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(VUIMediaLibraryContentsChange *)self revision];
-    v8 = [(VUIMediaLibraryContentsChange *)v6 revision];
+    revision = [(VUIMediaLibraryContentsChange *)self revision];
+    revision2 = [(VUIMediaLibraryContentsChange *)v6 revision];
 
-    v9 = v7 == v8;
+    v9 = revision == revision2;
   }
 
   else

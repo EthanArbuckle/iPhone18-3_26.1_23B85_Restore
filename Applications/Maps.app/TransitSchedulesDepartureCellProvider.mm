@@ -1,47 +1,47 @@
 @interface TransitSchedulesDepartureCellProvider
-- (id)_identifierForDeparture:(id)a3;
-- (id)collectionView:(id)a3 departureCellWithIdentifier:(id)a4 indexPath:(id)a5 referenceDate:(id)a6 dataProvider:(id)a7;
-- (id)identifiersForDepartures:(id)a3;
-- (void)collectionView:(id)a3 selectedDeparture:(id)a4 atIndexPath:(id)a5;
-- (void)registerCellsForCollectionView:(id)a3;
+- (id)_identifierForDeparture:(id)departure;
+- (id)collectionView:(id)view departureCellWithIdentifier:(id)identifier indexPath:(id)path referenceDate:(id)date dataProvider:(id)provider;
+- (id)identifiersForDepartures:(id)departures;
+- (void)collectionView:(id)view selectedDeparture:(id)departure atIndexPath:(id)path;
+- (void)registerCellsForCollectionView:(id)view;
 @end
 
 @implementation TransitSchedulesDepartureCellProvider
 
-- (id)collectionView:(id)a3 departureCellWithIdentifier:(id)a4 indexPath:(id)a5 referenceDate:(id)a6 dataProvider:(id)a7
+- (id)collectionView:(id)view departureCellWithIdentifier:(id)identifier indexPath:(id)path referenceDate:(id)date dataProvider:(id)provider
 {
-  v10 = a6;
-  v11 = a7;
-  v12 = a5;
-  v13 = [a3 dequeueReusableCellWithReuseIdentifier:@"TransitSchedulesDepartureCollectionCellIdentifier" forIndexPath:v12];
-  v14 = [v12 row];
+  dateCopy = date;
+  providerCopy = provider;
+  pathCopy = path;
+  v13 = [view dequeueReusableCellWithReuseIdentifier:@"TransitSchedulesDepartureCollectionCellIdentifier" forIndexPath:pathCopy];
+  v14 = [pathCopy row];
 
-  v15 = [v11 departures];
-  v16 = [v15 count];
+  departures = [providerCopy departures];
+  v16 = [departures count];
 
   if (v14 < v16)
   {
-    v17 = [v11 departures];
-    v18 = [v17 objectAtIndexedSubscript:v14];
+    departures2 = [providerCopy departures];
+    v18 = [departures2 objectAtIndexedSubscript:v14];
 
-    v19 = [v11 timeZone];
-    [v13 setDeparture:v18 withReferenceDate:v10 timeZone:v19 timeDisplayStyle:{objc_msgSend(v11, "timeDisplayStyle")}];
+    timeZone = [providerCopy timeZone];
+    [v13 setDeparture:v18 withReferenceDate:dateCopy timeZone:timeZone timeDisplayStyle:{objc_msgSend(providerCopy, "timeDisplayStyle")}];
   }
 
   return v13;
 }
 
-- (void)collectionView:(id)a3 selectedDeparture:(id)a4 atIndexPath:(id)a5
+- (void)collectionView:(id)view selectedDeparture:(id)departure atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a5;
-  v8 = [v7 section];
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [v6 indexPathsForSelectedItems];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  indexPathsForSelectedItems = [viewCopy indexPathsForSelectedItems];
+  v10 = [indexPathsForSelectedItems countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -52,45 +52,45 @@
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(indexPathsForSelectedItems);
         }
 
         v14 = *(*(&v15 + 1) + 8 * i);
-        if ([v14 section] == v8)
+        if ([v14 section] == section)
         {
-          [v6 deselectItemAtIndexPath:v14 animated:0];
+          [viewCopy deselectItemAtIndexPath:v14 animated:0];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v11 = [indexPathsForSelectedItems countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v11);
   }
 
-  [v6 selectItemAtIndexPath:v7 animated:0 scrollPosition:0];
+  [viewCopy selectItemAtIndexPath:pathCopy animated:0 scrollPosition:0];
 }
 
-- (void)registerCellsForCollectionView:(id)a3
+- (void)registerCellsForCollectionView:(id)view
 {
-  v3 = a3;
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"TransitSchedulesDepartureCollectionCellIdentifier"];
+  viewCopy = view;
+  [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:@"TransitSchedulesDepartureCollectionCellIdentifier"];
 }
 
-- (id)_identifierForDeparture:(id)a3
+- (id)_identifierForDeparture:(id)departure
 {
-  v3 = a3;
-  if ([v3 liveStatus] - 1 > 1)
+  departureCopy = departure;
+  if ([departureCopy liveStatus] - 1 > 1)
   {
-    [v3 scheduledDepartureDate];
+    [departureCopy scheduledDepartureDate];
   }
 
   else
   {
-    [v3 liveDepartureDate];
+    [departureCopy liveDepartureDate];
   }
   v4 = ;
-  v5 = [v3 tripIdentifier];
+  tripIdentifier = [departureCopy tripIdentifier];
 
   v6 = @"NA";
   if (v4)
@@ -98,20 +98,20 @@
     v6 = v4;
   }
 
-  v7 = [NSString stringWithFormat:@"%llu_%@", v5, v6];
+  v7 = [NSString stringWithFormat:@"%llu_%@", tripIdentifier, v6];
 
   return v7;
 }
 
-- (id)identifiersForDepartures:(id)a3
+- (id)identifiersForDepartures:(id)departures
 {
-  v4 = a3;
+  departuresCopy = departures;
   v5 = +[NSMutableArray array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = departuresCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {

@@ -1,11 +1,11 @@
 @interface AXSpeechControllerSettingsController
-- (id)showSpeechController:(id)a3;
+- (id)showSpeechController:(id)controller;
 - (id)specifiers;
-- (id)speechControllerDoubleTapActionSummary:(id)a3;
-- (id)speechControllerIdleOpacitySummary:(id)a3;
-- (id)speechControllerLongPressActionSummary:(id)a3;
+- (id)speechControllerDoubleTapActionSummary:(id)summary;
+- (id)speechControllerIdleOpacitySummary:(id)summary;
+- (id)speechControllerLongPressActionSummary:(id)summary;
 - (void)loadView;
-- (void)setShowSpeechController:(id)a3 specifier:(id)a4;
+- (void)setShowSpeechController:(id)controller specifier:(id)specifier;
 @end
 
 @implementation AXSpeechControllerSettingsController
@@ -84,7 +84,7 @@ void __48__AXSpeechControllerSettingsController_loadView__block_invoke_3(uint64_
   return v4;
 }
 
-- (id)showSpeechController:(id)a3
+- (id)showSpeechController:(id)controller
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 showSpeechController]);
@@ -92,14 +92,14 @@ void __48__AXSpeechControllerSettingsController_loadView__block_invoke_3(uint64_
   return v4;
 }
 
-- (void)setShowSpeechController:(id)a3 specifier:(id)a4
+- (void)setShowSpeechController:(id)controller specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [controller BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setShowSpeechController:v4];
+  [v5 setShowSpeechController:bOOLValue];
 }
 
-- (id)speechControllerLongPressActionSummary:(id)a3
+- (id)speechControllerLongPressActionSummary:(id)summary
 {
   v3 = +[AXSettings sharedInstance];
   v4 = AXLocalizedTitleForSpeechControllerAction([v3 speechControllerLongPressAction]);
@@ -107,7 +107,7 @@ void __48__AXSpeechControllerSettingsController_loadView__block_invoke_3(uint64_
   return v4;
 }
 
-- (id)speechControllerDoubleTapActionSummary:(id)a3
+- (id)speechControllerDoubleTapActionSummary:(id)summary
 {
   v3 = +[AXSettings sharedInstance];
   v4 = AXLocalizedTitleForSpeechControllerAction([v3 speechControllerDoubleTapAction]);
@@ -115,7 +115,7 @@ void __48__AXSpeechControllerSettingsController_loadView__block_invoke_3(uint64_
   return v4;
 }
 
-- (id)speechControllerIdleOpacitySummary:(id)a3
+- (id)speechControllerIdleOpacitySummary:(id)summary
 {
   v3 = +[AXSettings sharedInstance];
   [v3 speechControllerIdleOpacity];

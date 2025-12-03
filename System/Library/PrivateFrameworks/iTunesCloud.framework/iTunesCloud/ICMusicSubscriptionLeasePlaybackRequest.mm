@@ -1,13 +1,13 @@
 @interface ICMusicSubscriptionLeasePlaybackRequest
-- (ICMusicSubscriptionLeasePlaybackRequest)initWithRequestContext:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ICMusicSubscriptionLeasePlaybackRequest)initWithRequestContext:(id)context;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ICMusicSubscriptionLeasePlaybackRequest
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -26,15 +26,15 @@
   return v5;
 }
 
-- (ICMusicSubscriptionLeasePlaybackRequest)initWithRequestContext:(id)a3
+- (ICMusicSubscriptionLeasePlaybackRequest)initWithRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = ICMusicSubscriptionLeasePlaybackRequest;
   v5 = [(ICMusicSubscriptionLeasePlaybackRequest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [contextCopy copy];
     requestContext = v5->_requestContext;
     v5->_requestContext = v6;
   }

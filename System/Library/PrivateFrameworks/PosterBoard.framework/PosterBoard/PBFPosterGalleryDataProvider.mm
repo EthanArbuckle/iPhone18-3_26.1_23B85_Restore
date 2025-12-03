@@ -3,25 +3,25 @@
 - (NSOrderedSet)sectionIdentifiers;
 - (PBFPosterGalleryDataProvider)init;
 - (id)buildSnapshot;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)itemsForSectionWithIdentifier:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)itemsForSectionWithIdentifier:(id)identifier;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)posterPreviews;
-- (id)posterPreviewsForPath:(id)a3;
-- (id)preparedComplicationPreviewImagesForPreview:(id)a3;
-- (id)providerForExtensionIdentifier:(id)a3;
-- (id)providerForPath:(id)a3;
-- (id)sectionIdentifierForIndex:(int64_t)a3;
-- (id)snapshotBundleForRequest:(id)a3;
-- (int64_t)sectionTypeForSectionWithIdentifier:(id)a3;
-- (unint64_t)numberOfItemsInSectionWithIdentifier:(id)a3;
-- (void)_decrementTransactionCount:(BOOL)a3;
-- (void)_incrementTransactionCount:(BOOL)a3;
+- (id)posterPreviewsForPath:(id)path;
+- (id)preparedComplicationPreviewImagesForPreview:(id)preview;
+- (id)providerForExtensionIdentifier:(id)identifier;
+- (id)providerForPath:(id)path;
+- (id)sectionIdentifierForIndex:(int64_t)index;
+- (id)snapshotBundleForRequest:(id)request;
+- (int64_t)sectionTypeForSectionWithIdentifier:(id)identifier;
+- (unint64_t)numberOfItemsInSectionWithIdentifier:(id)identifier;
+- (void)_decrementTransactionCount:(BOOL)count;
+- (void)_incrementTransactionCount:(BOOL)count;
 - (void)_notifyObserversDidUpdate;
 - (void)_notifyObserversWillUpdate;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)fetchComplicationPreviewImagesForPreview:(id)a3 complicationSnapshotReceivedHandler:(id)a4 errorHandler:(id)a5 completion:(id)a6;
+- (void)fetchComplicationPreviewImagesForPreview:(id)preview complicationSnapshotReceivedHandler:(id)handler errorHandler:(id)errorHandler completion:(id)completion;
 - (void)invalidate;
 @end
 
@@ -194,7 +194,7 @@ void __51__PBFPosterGalleryDataProvider_demoPreviewProvider__block_invoke()
   [(PBFPosterGalleryDataProvider *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PBFPosterGalleryDataProvider allocWithZone:?]];
   v5 = [(NSMutableOrderedSet *)self->_orderedSectionIdentifiers mutableCopy];
@@ -221,7 +221,7 @@ void __51__PBFPosterGalleryDataProvider_demoPreviewProvider__block_invoke()
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [(PBFPosterGalleryDataProvider *)[PBFGalleryMutableDataProvider allocWithZone:?]];
   v5 = [(NSMutableOrderedSet *)self->_orderedSectionIdentifiers mutableCopy];
@@ -255,58 +255,58 @@ void __51__PBFPosterGalleryDataProvider_demoPreviewProvider__block_invoke()
   return v2;
 }
 
-- (id)sectionIdentifierForIndex:(int64_t)a3
+- (id)sectionIdentifierForIndex:(int64_t)index
 {
-  if (a3 < 0)
+  if (index < 0)
   {
     v6 = 0;
   }
 
   else
   {
-    if ([(NSMutableOrderedSet *)self->_orderedSectionIdentifiers count]<= a3)
+    if ([(NSMutableOrderedSet *)self->_orderedSectionIdentifiers count]<= index)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = [(NSMutableOrderedSet *)self->_orderedSectionIdentifiers objectAtIndex:a3];
+      v6 = [(NSMutableOrderedSet *)self->_orderedSectionIdentifiers objectAtIndex:index];
     }
   }
 
   return v6;
 }
 
-- (id)itemsForSectionWithIdentifier:(id)a3
+- (id)itemsForSectionWithIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_sectionIdentifierToItems objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_sectionIdentifierToItems objectForKey:identifier];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (unint64_t)numberOfItemsInSectionWithIdentifier:(id)a3
+- (unint64_t)numberOfItemsInSectionWithIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_sectionIdentifierToItems objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_sectionIdentifierToItems objectForKey:identifier];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (id)posterPreviewsForPath:(id)a3
+- (id)posterPreviewsForPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = objc_opt_new();
   posterPreviewForPosterUniqueIdentifier = self->_posterPreviewForPosterUniqueIdentifier;
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __54__PBFPosterGalleryDataProvider_posterPreviewsForPath___block_invoke;
   v14 = &unk_2782C9540;
-  v15 = v4;
+  v15 = pathCopy;
   v16 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = pathCopy;
   [(NSMutableDictionary *)posterPreviewForPosterUniqueIdentifier enumerateKeysAndObjectsUsingBlock:&v11];
   v9 = [v7 copy];
 
@@ -344,20 +344,20 @@ void __54__PBFPosterGalleryDataProvider_posterPreviewsForPath___block_invoke(uin
   return v6;
 }
 
-- (int64_t)sectionTypeForSectionWithIdentifier:(id)a3
+- (int64_t)sectionTypeForSectionWithIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_sectionIdentifierToSectionType objectForKey:a3];
-  v4 = [v3 unsignedIntegerValue];
+  v3 = [(NSMutableDictionary *)self->_sectionIdentifierToSectionType objectForKey:identifier];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (id)buildSnapshot
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CFB890]);
-  v4 = [(NSMutableOrderedSet *)self->_orderedSectionIdentifiers array];
-  [v3 appendSectionsWithIdentifiers:v4];
+  array = [(NSMutableOrderedSet *)self->_orderedSectionIdentifiers array];
+  [v3 appendSectionsWithIdentifiers:array];
 
   v16 = 0u;
   v17 = 0u;
@@ -394,22 +394,22 @@ void __54__PBFPosterGalleryDataProvider_posterPreviewsForPath___block_invoke(uin
   return v3;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
 - (void)_notifyObserversWillUpdate
@@ -495,7 +495,7 @@ void __54__PBFPosterGalleryDataProvider_posterPreviewsForPath___block_invoke(uin
   }
 }
 
-- (void)_incrementTransactionCount:(BOOL)a3
+- (void)_incrementTransactionCount:(BOOL)count
 {
   transactionsCount = self->_transactionsCount;
   self->_transactionsCount = transactionsCount + 1;
@@ -506,7 +506,7 @@ void __54__PBFPosterGalleryDataProvider_posterPreviewsForPath___block_invoke(uin
 
   else
   {
-    v4 = !a3;
+    v4 = !count;
   }
 
   if (!v4)
@@ -515,9 +515,9 @@ void __54__PBFPosterGalleryDataProvider_posterPreviewsForPath___block_invoke(uin
   }
 }
 
-- (void)_decrementTransactionCount:(BOOL)a3
+- (void)_decrementTransactionCount:(BOOL)count
 {
-  v3 = a3;
+  countCopy = count;
   p_transactionsCount = &self->_transactionsCount;
   transactionsCount = self->_transactionsCount;
   v7 = transactionsCount - 1;
@@ -532,7 +532,7 @@ void __54__PBFPosterGalleryDataProvider_posterPreviewsForPath___block_invoke(uin
   {
     *p_transactionsCount = 0;
     p_transactionsCount[1] = 0;
-    if (v3)
+    if (countCopy)
     {
 
       [(PBFPosterGalleryDataProvider *)self _notifyObserversDidUpdate];
@@ -540,18 +540,18 @@ void __54__PBFPosterGalleryDataProvider_posterPreviewsForPath___block_invoke(uin
   }
 }
 
-- (id)snapshotBundleForRequest:(id)a3
+- (id)snapshotBundleForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(PBFPosterGalleryDataProvider *)self snapshotProvider];
-  v6 = [v5 snapshotBundleForRequest:v4];
+  requestCopy = request;
+  snapshotProvider = [(PBFPosterGalleryDataProvider *)self snapshotProvider];
+  v6 = [snapshotProvider snapshotBundleForRequest:requestCopy];
 
   if (([v6 isFinished] & 1) == 0)
   {
     v7 = self->_outstandingSnapshotRequests;
     v8 = self->_outstandingSnapshotRequests;
     objc_sync_enter(v8);
-    [(NSMutableSet *)v7 addObject:v4];
+    [(NSMutableSet *)v7 addObject:requestCopy];
     objc_sync_exit(v8);
 
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -559,7 +559,7 @@ void __54__PBFPosterGalleryDataProvider_posterPreviewsForPath___block_invoke(uin
     aBlock[2] = __57__PBFPosterGalleryDataProvider_snapshotBundleForRequest___block_invoke;
     aBlock[3] = &unk_2782C58B0;
     v20 = v7;
-    v21 = v4;
+    v21 = requestCopy;
     v9 = v7;
     v10 = _Block_copy(aBlock);
     v17[0] = MEMORY[0x277D85DD0];
@@ -571,8 +571,8 @@ void __54__PBFPosterGalleryDataProvider_posterPreviewsForPath___block_invoke(uin
     v16 = v18;
     v11 = MEMORY[0x277D3EC60];
     v12 = v18;
-    v13 = [v11 mainThreadScheduler];
-    [v6 addSuccessBlock:v17 andFailureBlock:&v15 scheduler:v13];
+    mainThreadScheduler = [v11 mainThreadScheduler];
+    [v6 addSuccessBlock:v17 andFailureBlock:&v15 scheduler:mainThreadScheduler];
   }
 
   return v6;
@@ -586,40 +586,40 @@ void __57__PBFPosterGalleryDataProvider_snapshotBundleForRequest___block_invoke(
   objc_sync_exit(obj);
 }
 
-- (void)fetchComplicationPreviewImagesForPreview:(id)a3 complicationSnapshotReceivedHandler:(id)a4 errorHandler:(id)a5 completion:(id)a6
+- (void)fetchComplicationPreviewImagesForPreview:(id)preview complicationSnapshotReceivedHandler:(id)handler errorHandler:(id)errorHandler completion:(id)completion
 {
   v44 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  *(&v29 + 1) = a4;
-  *&v29 = a5;
-  v26 = a6;
-  v23 = v9;
-  v27 = [PBFComplicationSnapshotRequest requestsForPreview:v9];
+  previewCopy = preview;
+  *(&v29 + 1) = handler;
+  *&v29 = errorHandler;
+  completionCopy = completion;
+  v23 = previewCopy;
+  v27 = [PBFComplicationSnapshotRequest requestsForPreview:previewCopy];
   v24 = self->_outstandingComplicationSnapshotRequests;
   if ([v27 count])
   {
     v10 = [v27 mutableCopy];
-    v11 = [(PBFPosterGalleryDataProvider *)self complicationSnapshotProvider];
-    v28 = [v11 preparedComplicationSnapshotsForRequests:v10];
+    complicationSnapshotProvider = [(PBFPosterGalleryDataProvider *)self complicationSnapshotProvider];
+    v28 = [complicationSnapshotProvider preparedComplicationSnapshotsForRequests:v10];
     v12 = &v39;
 
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v13 = [v28 keyEnumerator];
-    v14 = [v13 countByEnumeratingWithState:&v39 objects:v43 count:16];
+    keyEnumerator = [v28 keyEnumerator];
+    v14 = [keyEnumerator countByEnumeratingWithState:&v39 objects:v43 count:16];
     if (v14)
     {
       v12 = *v40;
-      a5 = (v29 != 0);
+      errorHandler = (v29 != 0);
       do
       {
         for (i = 0; i != v14; ++i)
         {
           if (*v40 != v12)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v16 = *(*(&v39 + 1) + 8 * i);
@@ -635,12 +635,12 @@ void __57__PBFPosterGalleryDataProvider_snapshotBundleForRequest___block_invoke(
             v36[4] = v16;
             v37 = v18;
             v38 = *(&v29 + 1);
-            v19 = [MEMORY[0x277D3EC60] mainThreadScheduler];
-            [v17 addCompletionBlock:v36 scheduler:v19];
+            mainThreadScheduler = [MEMORY[0x277D3EC60] mainThreadScheduler];
+            [v17 addCompletionBlock:v36 scheduler:mainThreadScheduler];
           }
         }
 
-        v14 = [v13 countByEnumeratingWithState:&v39 objects:v43 count:16];
+        v14 = [keyEnumerator countByEnumeratingWithState:&v39 objects:v43 count:16];
       }
 
       while (v14);
@@ -653,7 +653,7 @@ void __57__PBFPosterGalleryDataProvider_snapshotBundleForRequest___block_invoke(
       [(NSMutableSet *)v20 addObjectsFromArray:v10];
       objc_sync_exit(v20);
 
-      v21 = [(PBFPosterGalleryDataProvider *)self complicationSnapshotProvider];
+      complicationSnapshotProvider2 = [(PBFPosterGalleryDataProvider *)self complicationSnapshotProvider];
       if (*(&v29 + 1))
       {
         v22 = v33;
@@ -663,7 +663,7 @@ void __57__PBFPosterGalleryDataProvider_snapshotBundleForRequest___block_invoke(
         v33[3] = &unk_2782C95B8;
         v12 = &v34;
         v34 = v20;
-        a5 = &v35;
+        errorHandler = &v35;
         v35 = *(&v29 + 1);
       }
 
@@ -678,7 +678,7 @@ void __57__PBFPosterGalleryDataProvider_snapshotBundleForRequest___block_invoke(
       v30[3] = &unk_2782C95E0;
       v31 = v20;
       v32 = v29;
-      [v21 fetchComplicationSnapshotsForRequests:v10 complicationSnapshotReceivedHandler:v22 errorHandler:v30 completionHandler:v26];
+      [complicationSnapshotProvider2 fetchComplicationSnapshotsForRequests:v10 complicationSnapshotReceivedHandler:v22 errorHandler:v30 completionHandler:completionCopy];
 
       if (*(&v29 + 1))
       {
@@ -688,9 +688,9 @@ void __57__PBFPosterGalleryDataProvider_snapshotBundleForRequest___block_invoke(
     }
   }
 
-  if (v26)
+  if (completionCopy)
   {
-    v26[2](v26, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_21:
@@ -760,30 +760,30 @@ void __133__PBFPosterGalleryDataProvider_fetchComplicationPreviewImagesForPrevie
   }
 }
 
-- (id)preparedComplicationPreviewImagesForPreview:(id)a3
+- (id)preparedComplicationPreviewImagesForPreview:(id)preview
 {
-  v4 = [PBFComplicationSnapshotRequest requestsForPreview:a3];
-  v5 = [(PBFPosterGalleryDataProvider *)self complicationSnapshotProvider];
-  v6 = [v5 preparedComplicationSnapshotsForRequests:v4];
+  v4 = [PBFComplicationSnapshotRequest requestsForPreview:preview];
+  complicationSnapshotProvider = [(PBFPosterGalleryDataProvider *)self complicationSnapshotProvider];
+  v6 = [complicationSnapshotProvider preparedComplicationSnapshotsForRequests:v4];
 
   return v6;
 }
 
-- (id)providerForPath:(id)a3
+- (id)providerForPath:(id)path
 {
-  v4 = [a3 identity];
-  v5 = [v4 provider];
-  v6 = [(PBFPosterGalleryDataProvider *)self providerForExtensionIdentifier:v5];
+  identity = [path identity];
+  provider = [identity provider];
+  v6 = [(PBFPosterGalleryDataProvider *)self providerForExtensionIdentifier:provider];
 
   return v6;
 }
 
-- (id)providerForExtensionIdentifier:(id)a3
+- (id)providerForExtensionIdentifier:(id)identifier
 {
   extensionProvider = self->_extensionProvider;
-  v4 = a3;
-  v5 = [(PFPosterExtensionProvider *)extensionProvider extensionForIdentifier];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  extensionForIdentifier = [(PFPosterExtensionProvider *)extensionProvider extensionForIdentifier];
+  v6 = [extensionForIdentifier objectForKey:identifierCopy];
 
   return v6;
 }
@@ -794,8 +794,8 @@ void __133__PBFPosterGalleryDataProvider_fetchComplicationPreviewImagesForPrevie
   objc_sync_enter(obj);
   if ([(NSMutableSet *)self->_outstandingSnapshotRequests count])
   {
-    v3 = [(PBFPosterGalleryDataProvider *)self snapshotProvider];
-    [v3 cancelRequests:self->_outstandingSnapshotRequests reason:@"PBFPosterGalleryDataProvider invalidated"];
+    snapshotProvider = [(PBFPosterGalleryDataProvider *)self snapshotProvider];
+    [snapshotProvider cancelRequests:self->_outstandingSnapshotRequests reason:@"PBFPosterGalleryDataProvider invalidated"];
 
     [(NSMutableSet *)self->_outstandingSnapshotRequests removeAllObjects];
   }
@@ -806,8 +806,8 @@ void __133__PBFPosterGalleryDataProvider_fetchComplicationPreviewImagesForPrevie
   objc_sync_enter(obja);
   if ([(NSMutableSet *)self->_outstandingComplicationSnapshotRequests count])
   {
-    v4 = [(PBFPosterGalleryDataProvider *)self complicationSnapshotProvider];
-    [v4 cancelRequests:self->_outstandingComplicationSnapshotRequests];
+    complicationSnapshotProvider = [(PBFPosterGalleryDataProvider *)self complicationSnapshotProvider];
+    [complicationSnapshotProvider cancelRequests:self->_outstandingComplicationSnapshotRequests];
 
     [(NSMutableSet *)self->_outstandingComplicationSnapshotRequests removeAllObjects];
   }

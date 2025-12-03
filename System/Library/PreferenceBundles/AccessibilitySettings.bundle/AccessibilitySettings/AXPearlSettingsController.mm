@@ -1,18 +1,18 @@
 @interface AXPearlSettingsController
 - (id)_pearlDevice;
-- (id)attentionAware:(id)a3;
-- (id)authenticationHaptics:(id)a3;
-- (id)pearlUnlock:(id)a3;
+- (id)attentionAware:(id)aware;
+- (id)authenticationHaptics:(id)haptics;
+- (id)pearlUnlock:(id)unlock;
 - (id)specifiers;
-- (void)devicePINControllerDidDismissPINPane:(id)a3;
-- (void)didAcceptEnteredPIN:(id)a3;
+- (void)devicePINControllerDidDismissPINPane:(id)pane;
+- (void)didAcceptEnteredPIN:(id)n;
 - (void)didCancelEnteringPIN;
-- (void)setAttentionAware:(id)a3 specifier:(id)a4;
-- (void)setAuthenticationHaptics:(id)a3 specifier:(id)a4;
-- (void)setPearlUnlock:(id)a3 specifier:(id)a4;
-- (void)showPINSheet:(id)a3;
+- (void)setAttentionAware:(id)aware specifier:(id)specifier;
+- (void)setAuthenticationHaptics:(id)haptics specifier:(id)specifier;
+- (void)setPearlUnlock:(id)unlock specifier:(id)specifier;
+- (void)showPINSheet:(id)sheet;
 - (void)updateAttentionSpec;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AXPearlSettingsController
@@ -134,57 +134,57 @@
   return v4;
 }
 
-- (void)setAuthenticationHaptics:(id)a3 specifier:(id)a4
+- (void)setAuthenticationHaptics:(id)haptics specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [haptics BOOLValue];
 
-  __AXSSetPearlAuthenticationHapticsEnabled(v4);
+  __AXSSetPearlAuthenticationHapticsEnabled(bOOLValue);
 }
 
-- (id)authenticationHaptics:(id)a3
+- (id)authenticationHaptics:(id)haptics
 {
   v3 = _AXSPearlAuthenticationHapticsEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (void)setAttentionAware:(id)a3 specifier:(id)a4
+- (void)setAttentionAware:(id)aware specifier:(id)specifier
 {
-  v7 = a3;
-  v6 = a4;
+  awareCopy = aware;
+  specifierCopy = specifier;
   if (+[DevicePINController settingEnabled])
   {
-    objc_storeStrong(&self->_currentPinSpecifier, a4);
+    objc_storeStrong(&self->_currentPinSpecifier, specifier);
     [(AXPearlSettingsController *)self showPINSheet:self->_currentPinSpecifier];
   }
 
   else
   {
-    [v7 BOOLValue];
+    [awareCopy BOOLValue];
     _AXSSetAttentionAwarenessFeaturesEnabled();
     [(AXPearlSettingsController *)self updateAttentionSpec];
   }
 }
 
-- (id)attentionAware:(id)a3
+- (id)attentionAware:(id)aware
 {
   v3 = _AXSAttentionAwarenessFeaturesEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (void)setPearlUnlock:(id)a3 specifier:(id)a4
+- (void)setPearlUnlock:(id)unlock specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  unlockCopy = unlock;
+  specifierCopy = specifier;
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = __54__AXPearlSettingsController_setPearlUnlock_specifier___block_invoke;
   v25[3] = &unk_2561D8;
   v25[4] = self;
-  v8 = v6;
+  v8 = unlockCopy;
   v26 = v8;
-  v9 = v7;
+  v9 = specifierCopy;
   v27 = v9;
   v10 = objc_retainBlock(v25);
   if ([v8 BOOLValue])
@@ -217,10 +217,10 @@
     v18 = [UIAlertAction actionWithTitle:v17 style:0 handler:v22];
 
     [v14 addAction:v18];
-    v19 = [(AXPearlSettingsController *)self view];
-    v20 = [v19 window];
-    v21 = [v20 rootViewController];
-    [v21 presentViewController:v14 animated:1 completion:0];
+    view = [(AXPearlSettingsController *)self view];
+    window = [view window];
+    rootViewController = [window rootViewController];
+    [rootViewController presentViewController:v14 animated:1 completion:0];
   }
 }
 
@@ -275,30 +275,30 @@ void __54__AXPearlSettingsController_setPearlUnlock_specifier___block_invoke_353
   [v1 reloadSpecifier:v2 animated:1];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = AXPearlSettingsController;
-  [(AXPearlSettingsController *)&v4 viewWillAppear:a3];
+  [(AXPearlSettingsController *)&v4 viewWillAppear:appear];
   if (AXDeviceHasPearl())
   {
     [(AXPearlSettingsController *)self updateAttentionSpec];
   }
 }
 
-- (id)pearlUnlock:(id)a3
+- (id)pearlUnlock:(id)unlock
 {
-  v3 = [(AXPearlSettingsController *)self _pearlDevice];
+  _pearlDevice = [(AXPearlSettingsController *)self _pearlDevice];
   v25 = 0;
-  v4 = [v3 protectedConfigurationForUser:getuid() error:&v25];
+  v4 = [_pearlDevice protectedConfigurationForUser:getuid() error:&v25];
   v5 = v25;
 
   if (v5)
   {
     v6 = +[AXSubsystemAXSettings sharedInstance];
-    v7 = [v6 ignoreLogging];
+    ignoreLogging = [v6 ignoreLogging];
 
-    if ((v7 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
       v8 = +[AXSubsystemAXSettings identifier];
       v9 = AXLoggerForFacility();
@@ -320,9 +320,9 @@ void __54__AXPearlSettingsController_setPearlUnlock_specifier___block_invoke_353
   }
 
   v13 = +[AXSubsystemAXSettings sharedInstance];
-  v14 = [v13 ignoreLogging];
+  ignoreLogging2 = [v13 ignoreLogging];
 
-  if ((v14 & 1) == 0)
+  if ((ignoreLogging2 & 1) == 0)
   {
     v15 = +[AXSubsystemAXSettings identifier];
     v16 = AXLoggerForFacility();
@@ -344,29 +344,29 @@ void __54__AXPearlSettingsController_setPearlUnlock_specifier___block_invoke_353
     }
   }
 
-  v20 = [v4 attentionDetectionEnabled];
+  attentionDetectionEnabled = [v4 attentionDetectionEnabled];
 
-  return v20;
+  return attentionDetectionEnabled;
 }
 
-- (void)showPINSheet:(id)a3
+- (void)showPINSheet:(id)sheet
 {
-  objc_storeStrong(&self->_currentPinSpecifier, a3);
-  v5 = a3;
-  [v5 setEditPaneClass:objc_opt_class()];
+  objc_storeStrong(&self->_currentPinSpecifier, sheet);
+  sheetCopy = sheet;
+  [sheetCopy setEditPaneClass:objc_opt_class()];
   v6 = [NSNumber numberWithInt:3];
-  [v5 setProperty:v6 forKey:@"mode"];
+  [sheetCopy setProperty:v6 forKey:@"mode"];
 
-  [v5 setProperty:@"DevicePINController" forKey:PSSetupCustomClassKey];
+  [sheetCopy setProperty:@"DevicePINController" forKey:PSSetupCustomClassKey];
   v7.receiver = self;
   v7.super_class = AXPearlSettingsController;
-  [(AXPearlSettingsController *)&v7 showPINSheet:v5];
+  [(AXPearlSettingsController *)&v7 showPINSheet:sheetCopy];
 }
 
-- (void)didAcceptEnteredPIN:(id)a3
+- (void)didAcceptEnteredPIN:(id)n
 {
-  v5 = a3;
-  objc_storeStrong(&self->_pinCode, a3);
+  nCopy = n;
+  objc_storeStrong(&self->_pinCode, n);
   v6 = PSKeyNameKey;
   v7 = [(PSSpecifier *)self->_currentPinSpecifier propertyForKey:PSKeyNameKey];
   v8 = [v7 isEqualToString:@"PearlUnlockAttention"];
@@ -379,16 +379,16 @@ void __54__AXPearlSettingsController_setPearlUnlock_specifier___block_invoke_353
       v13 = 0;
 LABEL_17:
 
-      v21 = [(AXPearlSettingsController *)self _pearlDevice];
+      _pearlDevice = [(AXPearlSettingsController *)self _pearlDevice];
       updatedConfig = self->_updatedConfig;
       v40[0] = 0;
-      [v21 setProtectedConfiguration:updatedConfig forUser:getuid() credentialSet:v13 error:v40];
+      [_pearlDevice setProtectedConfiguration:updatedConfig forUser:getuid() credentialSet:v13 error:v40];
       v23 = v40[0];
 
       v24 = +[AXSubsystemAXSettings sharedInstance];
-      v25 = [v24 ignoreLogging];
+      ignoreLogging = [v24 ignoreLogging];
 
-      if ((v25 & 1) == 0)
+      if ((ignoreLogging & 1) == 0)
       {
         v26 = +[AXSubsystemAXSettings identifier];
         v27 = AXLoggerForFacility();
@@ -411,9 +411,9 @@ LABEL_17:
       if (v23)
       {
         v31 = +[AXSubsystemAXSettings sharedInstance];
-        v32 = [v31 ignoreLogging];
+        ignoreLogging2 = [v31 ignoreLogging];
 
-        if ((v32 & 1) == 0)
+        if ((ignoreLogging2 & 1) == 0)
         {
           v33 = +[AXSubsystemAXSettings identifier];
           v34 = AXLoggerForFacility();
@@ -448,9 +448,9 @@ LABEL_17:
     if (v10)
     {
       v11 = +[AXSubsystemAXSettings sharedInstance];
-      v12 = [v11 ignoreLogging];
+      ignoreLogging3 = [v11 ignoreLogging];
 
-      if (v12)
+      if (ignoreLogging3)
       {
         v13 = 0;
 LABEL_16:
@@ -517,7 +517,7 @@ LABEL_31:
   self->_currentPinSpecifier = 0;
 }
 
-- (void)devicePINControllerDidDismissPINPane:(id)a3
+- (void)devicePINControllerDidDismissPINPane:(id)pane
 {
   [(AXPearlSettingsController *)self reloadSpecifier:self->_currentPinSpecifier animated:1];
   currentPinSpecifier = self->_currentPinSpecifier;
@@ -564,15 +564,15 @@ LABEL_31:
           v13 = v43;
           if (v13)
           {
-            v14 = [v5[508] sharedInstance];
-            v15 = [v14 ignoreLogging];
+            sharedInstance = [v5[508] sharedInstance];
+            ignoreLogging = [sharedInstance ignoreLogging];
 
-            if ((v15 & 1) == 0)
+            if ((ignoreLogging & 1) == 0)
             {
               v16 = v7;
               v17 = v8;
               v18 = v5;
-              v19 = [v5[508] identifier];
+              identifier = [v5[508] identifier];
               v20 = AXLoggerForFacility();
 
               v21 = AXOSLogLevelFromAXLogLevel();
@@ -596,8 +596,8 @@ LABEL_31:
             }
           }
 
-          v24 = [v12 descriptor];
-          if ([v24 type] == &dword_0 + 2)
+          descriptor = [v12 descriptor];
+          if ([descriptor type] == &dword_0 + 2)
           {
             objc_opt_class();
             isKindOfClass = objc_opt_isKindOfClass();
@@ -605,12 +605,12 @@ LABEL_31:
             if (isKindOfClass)
             {
               objc_storeStrong(&self->_pearlDevice, v12);
-              v28 = [v5[508] sharedInstance];
-              v29 = [v28 ignoreLogging];
+              sharedInstance2 = [v5[508] sharedInstance];
+              ignoreLogging2 = [sharedInstance2 ignoreLogging];
 
-              if ((v29 & 1) == 0)
+              if ((ignoreLogging2 & 1) == 0)
               {
-                v30 = [v5[508] identifier];
+                identifier2 = [v5[508] identifier];
                 v31 = AXLoggerForFacility();
 
                 v32 = AXOSLogLevelFromAXLogLevel();
@@ -651,17 +651,17 @@ LABEL_31:
       }
     }
 
-    v26 = [v5[508] sharedInstance];
-    v27 = [v26 ignoreLogging];
+    sharedInstance3 = [v5[508] sharedInstance];
+    ignoreLogging3 = [sharedInstance3 ignoreLogging];
 
-    if (v27)
+    if (ignoreLogging3)
     {
       v3 = 0;
     }
 
     else
     {
-      v37 = [v5[508] identifier];
+      identifier3 = [v5[508] identifier];
       v35 = AXLoggerForFacility();
 
       v38 = AXOSLogLevelFromAXLogLevel();

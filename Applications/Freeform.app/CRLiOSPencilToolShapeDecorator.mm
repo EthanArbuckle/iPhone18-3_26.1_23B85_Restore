@@ -24,7 +24,7 @@
   v6 = *(v5 + OBJC_IVAR____TtC8Freeform30CRLiOSPencilHoverToolPreviewer_shapeLayer);
   *(v4 + 32) = v6;
   sub_100006370(0, &qword_1019FFFF0);
-  v7 = self;
+  selfCopy = self;
   v8 = v6;
   isa = Array._bridgeToObjectiveC()().super.isa;
 

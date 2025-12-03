@@ -1,12 +1,12 @@
 @interface BLStreamingZipDownloadDataConsumer
-- (BLStreamingZipDownloadDataConsumer)initWithPath:(id)a3 options:(id)a4;
-- (BOOL)consumeData:(id)a3 error:(id *)a4;
-- (BOOL)finish:(id *)a3;
-- (id)_stringWithFileSystemRepresentation:(const char *)a3;
-- (id)_stringWithFileSystemRepresentation:(const char *)a3 length:(unint64_t)a4;
-- (unint64_t)_diskUsageForPath:(id)a3;
+- (BLStreamingZipDownloadDataConsumer)initWithPath:(id)path options:(id)options;
+- (BOOL)consumeData:(id)data error:(id *)error;
+- (BOOL)finish:(id *)finish;
+- (id)_stringWithFileSystemRepresentation:(const char *)representation;
+- (id)_stringWithFileSystemRepresentation:(const char *)representation length:(unint64_t)length;
+- (unint64_t)_diskUsageForPath:(id)path;
 - (unint64_t)diskUsage;
-- (void)extractionCompleteAtArchivePath:(id)a3;
+- (void)extractionCompleteAtArchivePath:(id)path;
 - (void)reset;
 - (void)suspend;
 - (void)truncate;
@@ -14,19 +14,19 @@
 
 @implementation BLStreamingZipDownloadDataConsumer
 
-- (BLStreamingZipDownloadDataConsumer)initWithPath:(id)a3 options:(id)a4
+- (BLStreamingZipDownloadDataConsumer)initWithPath:(id)path options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  optionsCopy = options;
   v27.receiver = self;
   v27.super_class = BLStreamingZipDownloadDataConsumer;
   v8 = [(BLStreamingZipDownloadDataConsumer *)&v27 init];
   if (v8)
   {
     v9 = v8;
-    v10 = [v7 mutableCopy];
+    v10 = [optionsCopy mutableCopy];
     [v10 setObject:&__kCFBooleanTrue forKeyedSubscript:SZExtractorOptionsDenyInvalidSymlinks];
-    v11 = [[SZExtractor alloc] initWithPath:v6 options:v10];
+    v11 = [[SZExtractor alloc] initWithPath:pathCopy options:v10];
     v12 = *(&v9->super._overrideProgress + 1);
     *(&v9->super._overrideProgress + 1) = v11;
 
@@ -40,14 +40,14 @@
       v23[3] = &unk_10011D280;
       v15 = v9;
       v24 = v15;
-      v16 = v6;
+      v16 = pathCopy;
       v25 = v16;
       v26 = v13;
       v17 = v13;
       [v14 prepareForExtraction:v23];
       dispatch_semaphore_wait(v17, 0xFFFFFFFFFFFFFFFFLL);
       [*(&v9->super._overrideProgress + 1) setExtractorDelegate:v15];
-      v18 = [v7 copy];
+      v18 = [optionsCopy copy];
       v19 = *(&v15->_hasConsumedData + 1);
       *(&v15->_hasConsumedData + 1) = v18;
 
@@ -72,9 +72,9 @@
   return v15;
 }
 
-- (BOOL)consumeData:(id)a3 error:(id *)a4
+- (BOOL)consumeData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -95,7 +95,7 @@
   v17 = &v24;
   v9 = v7;
   v15 = v9;
-  [v8 supplyBytes:v6 withCompletionBlock:v14];
+  [v8 supplyBytes:dataCopy withCompletionBlock:v14];
   dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
   v10 = v25;
   if (BYTE1(self->_extractor))
@@ -110,9 +110,9 @@
 
   BYTE1(self->_extractor) = v11 & 1;
   v12 = *(v10 + 24);
-  if (a4 && (v10[3] & 1) == 0)
+  if (error && (v10[3] & 1) == 0)
   {
-    *a4 = v19[5];
+    *error = v19[5];
     v12 = *(v25 + 24);
   }
 
@@ -135,7 +135,7 @@
   return result;
 }
 
-- (BOOL)finish:(id *)a3
+- (BOOL)finish:(id *)finish
 {
   v20 = 0;
   v21 = &v20;
@@ -160,9 +160,9 @@
   [v6 finishStreamWithCompletionBlock:v10];
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   v8 = *(v21 + 24);
-  if (a3 && (v21[3] & 1) == 0)
+  if (finish && (v21[3] & 1) == 0)
   {
-    *a3 = v15[5];
+    *finish = v15[5];
     v8 = *(v21 + 24);
   }
 
@@ -219,21 +219,21 @@
   [v6 prepareForExtraction:v7];
 }
 
-- (void)extractionCompleteAtArchivePath:(id)a3
+- (void)extractionCompleteAtArchivePath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = BLServiceDownloadStreamingZipLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = 138543362;
-    v6 = v3;
+    v6 = pathCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[Download-StreamingZip]: extraction finished and file is at path: %{public}@", &v5, 0xCu);
   }
 }
 
-- (unint64_t)_diskUsageForPath:(id)a3
+- (unint64_t)_diskUsageForPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = [NSMutableSet setWithCapacity:0];
   v5 = [NSMutableArray arrayWithCapacity:1];
   v55 = 0;
@@ -241,10 +241,10 @@
   v54 = 0xA200000900000005;
   v56 = 0x500000002;
   v6 = malloc_type_malloc(0x8000uLL, 0x40EDFB7CuLL);
-  v47 = v3;
-  if (v3)
+  v47 = pathCopy;
+  if (pathCopy)
   {
-    [v5 addObject:v3];
+    [v5 addObject:pathCopy];
   }
 
   else
@@ -570,17 +570,17 @@ LABEL_66:
   return v53;
 }
 
-- (id)_stringWithFileSystemRepresentation:(const char *)a3
+- (id)_stringWithFileSystemRepresentation:(const char *)representation
 {
-  v5 = strlen(a3);
+  v5 = strlen(representation);
 
-  return [(BLStreamingZipDownloadDataConsumer *)self _stringWithFileSystemRepresentation:a3 length:v5];
+  return [(BLStreamingZipDownloadDataConsumer *)self _stringWithFileSystemRepresentation:representation length:v5];
 }
 
-- (id)_stringWithFileSystemRepresentation:(const char *)a3 length:(unint64_t)a4
+- (id)_stringWithFileSystemRepresentation:(const char *)representation length:(unint64_t)length
 {
   v6 = +[NSFileManager defaultManager];
-  v7 = [v6 stringWithFileSystemRepresentation:a3 length:a4];
+  v7 = [v6 stringWithFileSystemRepresentation:representation length:length];
 
   return v7;
 }

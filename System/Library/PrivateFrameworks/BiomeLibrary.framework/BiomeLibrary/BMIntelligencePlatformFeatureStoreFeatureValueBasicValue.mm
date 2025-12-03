@@ -1,40 +1,40 @@
 @interface BMIntelligencePlatformFeatureStoreFeatureValueBasicValue
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMIntelligencePlatformFeatureStoreFeatureValueBasicValue)initWithInt_value:(id)a3 double_value:(id)a4 float_value:(id)a5 string_value:(id)a6;
-- (BMIntelligencePlatformFeatureStoreFeatureValueBasicValue)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMIntelligencePlatformFeatureStoreFeatureValueBasicValue)initWithInt_value:(id)int_value double_value:(id)double_value float_value:(id)float_value string_value:(id)string_value;
+- (BMIntelligencePlatformFeatureStoreFeatureValueBasicValue)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMIntelligencePlatformFeatureStoreFeatureValueBasicValue
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if ((!-[BMIntelligencePlatformFeatureStoreFeatureValueBasicValue hasInt_value](self, "hasInt_value") && ![v5 hasInt_value] || -[BMIntelligencePlatformFeatureStoreFeatureValueBasicValue hasInt_value](self, "hasInt_value") && objc_msgSend(v5, "hasInt_value") && (v6 = -[BMIntelligencePlatformFeatureStoreFeatureValueBasicValue int_value](self, "int_value"), v6 == objc_msgSend(v5, "int_value"))) && (!-[BMIntelligencePlatformFeatureStoreFeatureValueBasicValue hasDouble_value](self, "hasDouble_value") && !objc_msgSend(v5, "hasDouble_value") || -[BMIntelligencePlatformFeatureStoreFeatureValueBasicValue hasDouble_value](self, "hasDouble_value") && objc_msgSend(v5, "hasDouble_value") && (-[BMIntelligencePlatformFeatureStoreFeatureValueBasicValue double_value](self, "double_value"), v8 = v7, objc_msgSend(v5, "double_value"), v8 == v9)) && (!-[BMIntelligencePlatformFeatureStoreFeatureValueBasicValue hasFloat_value](self, "hasFloat_value") && !objc_msgSend(v5, "hasFloat_value") || -[BMIntelligencePlatformFeatureStoreFeatureValueBasicValue hasFloat_value](self, "hasFloat_value") && objc_msgSend(v5, "hasFloat_value") && (-[BMIntelligencePlatformFeatureStoreFeatureValueBasicValue float_value](self, "float_value"), v11 = v10, objc_msgSend(v5, "float_value"), v11 == v12)))
     {
-      v13 = [(BMIntelligencePlatformFeatureStoreFeatureValueBasicValue *)self string_value];
-      v14 = [v5 string_value];
-      if (v13 == v14)
+      string_value = [(BMIntelligencePlatformFeatureStoreFeatureValueBasicValue *)self string_value];
+      string_value2 = [v5 string_value];
+      if (string_value == string_value2)
       {
         v17 = 1;
       }
 
       else
       {
-        v15 = [(BMIntelligencePlatformFeatureStoreFeatureValueBasicValue *)self string_value];
-        v16 = [v5 string_value];
-        v17 = [v15 isEqual:v16];
+        string_value3 = [(BMIntelligencePlatformFeatureStoreFeatureValueBasicValue *)self string_value];
+        string_value4 = [v5 string_value];
+        v17 = [string_value3 isEqual:string_value4];
       }
     }
 
@@ -91,41 +91,41 @@
     v9 = [v8 numberWithDouble:?];
   }
 
-  v10 = [(BMIntelligencePlatformFeatureStoreFeatureValueBasicValue *)self string_value];
+  string_value = [(BMIntelligencePlatformFeatureStoreFeatureValueBasicValue *)self string_value];
   v18[0] = @"int_value";
-  v11 = v3;
+  null = v3;
   if (!v3)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[0] = v11;
+  v19[0] = null;
   v18[1] = @"double_value";
-  v12 = v6;
+  null2 = v6;
   if (!v6)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[1] = v12;
+  v19[1] = null2;
   v18[2] = @"float_value";
-  v13 = v9;
+  null3 = v9;
   if (!v9)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[2] = v13;
+  v19[2] = null3;
   v18[3] = @"string_value";
-  v14 = v10;
-  if (!v10)
+  null4 = string_value;
+  if (!string_value)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[3] = v14;
+  v19[3] = null4;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:4];
-  if (v10)
+  if (string_value)
   {
     if (v9)
     {
@@ -174,38 +174,38 @@ LABEL_24:
   return v15;
 }
 
-- (BMIntelligencePlatformFeatureStoreFeatureValueBasicValue)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMIntelligencePlatformFeatureStoreFeatureValueBasicValue)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"int_value"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"int_value"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"double_value"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"double_value"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v15 = 0;
           goto LABEL_34;
         }
 
         v19 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v33 = a4;
+        errorCopy = error;
         v20 = *MEMORY[0x1E698F240];
         v38 = *MEMORY[0x1E696A578];
         v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"double_value"];
         v39 = v12;
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
         v21 = [v19 initWithDomain:v20 code:2 userInfo:v10];
-        a4 = 0;
+        error = 0;
         v15 = 0;
-        *v33 = v21;
+        *errorCopy = v21;
         goto LABEL_33;
       }
 
@@ -217,22 +217,22 @@ LABEL_4:
       v32 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"float_value"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"float_value"];
     v31 = v7;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v12 = 0;
           v15 = 0;
-          a4 = v32;
+          error = v32;
           goto LABEL_33;
         }
 
-        v11 = self;
+        selfCopy3 = self;
         v29 = objc_alloc(MEMORY[0x1E696ABC0]);
         v22 = *MEMORY[0x1E698F240];
         v36 = *MEMORY[0x1E696A578];
@@ -242,31 +242,31 @@ LABEL_4:
         v23 = [v29 initWithDomain:v22 code:2 userInfo:v13];
         v12 = 0;
         v15 = 0;
-        *a4 = v23;
+        *error = v23;
         goto LABEL_31;
       }
 
-      v11 = self;
+      selfCopy3 = self;
       v12 = v10;
     }
 
     else
     {
-      v11 = self;
+      selfCopy3 = self;
       v12 = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"string_value"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"string_value"];
     if (!v13 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v14 = 0;
 LABEL_13:
-      a4 = v32;
-      v15 = [(BMIntelligencePlatformFeatureStoreFeatureValueBasicValue *)v11 initWithInt_value:v8 double_value:v32 float_value:v12 string_value:v14];
-      v11 = v15;
+      error = v32;
+      v15 = [(BMIntelligencePlatformFeatureStoreFeatureValueBasicValue *)selfCopy3 initWithInt_value:v8 double_value:v32 float_value:v12 string_value:v14];
+      selfCopy3 = v15;
 LABEL_32:
 
-      self = v11;
+      self = selfCopy3;
       v7 = v31;
 LABEL_33:
 
@@ -280,7 +280,7 @@ LABEL_33:
       goto LABEL_13;
     }
 
-    if (a4)
+    if (error)
     {
       v30 = objc_alloc(MEMORY[0x1E696ABC0]);
       v28 = *MEMORY[0x1E698F240];
@@ -288,13 +288,13 @@ LABEL_33:
       v24 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"string_value"];
       v35 = v24;
       v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
-      *a4 = [v30 initWithDomain:v28 code:2 userInfo:v25];
+      *error = [v30 initWithDomain:v28 code:2 userInfo:v25];
     }
 
     v14 = 0;
     v15 = 0;
 LABEL_31:
-    a4 = v32;
+    error = v32;
     goto LABEL_32;
   }
 
@@ -305,7 +305,7 @@ LABEL_31:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v15 = 0;
@@ -320,8 +320,8 @@ LABEL_31:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:&v40 count:1];
   v8 = 0;
   v15 = 0;
-  *a4 = [v16 initWithDomain:v17 code:2 userInfo:v9];
-  a4 = v18;
+  *error = [v16 initWithDomain:v17 code:2 userInfo:v9];
+  error = v18;
 LABEL_34:
 
 LABEL_35:
@@ -333,46 +333,46 @@ LABEL_35:
 {
   v3 = objc_opt_new();
   [(BMIntelligencePlatformFeatureStoreFeatureValueBasicValue *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_hasInt_value)
   {
     int_value = self->_int_value;
     PBDataWriterWriteInt64Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_hasDouble_value)
   {
     double_value = self->_double_value;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_hasFloat_value)
   {
     float_value = self->_float_value;
     PBDataWriterWriteFloatField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_string_value)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v36.receiver = self;
   v36.super_class = BMIntelligencePlatformFeatureStoreFeatureValueBasicValue;
   v5 = [(BMEventBase *)&v36 init];
@@ -381,12 +381,12 @@ LABEL_35:
     goto LABEL_53;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_51;
       }
@@ -397,18 +397,18 @@ LABEL_35:
       while (1)
       {
         LOBYTE(v37) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v37 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v37 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v37) & 0x7F) << v7;
@@ -426,9 +426,9 @@ LABEL_35:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_51;
       }
@@ -443,18 +443,18 @@ LABEL_16:
       {
         v5->_hasFloat_value = 1;
         LODWORD(v37) = 0;
-        v27 = [v4 position] + 4;
-        if (v27 >= [v4 position] && (v28 = objc_msgSend(v4, "position") + 4, v28 <= objc_msgSend(v4, "length")))
+        v27 = [fromCopy position] + 4;
+        if (v27 >= [fromCopy position] && (v28 = objc_msgSend(fromCopy, "position") + 4, v28 <= objc_msgSend(fromCopy, "length")))
         {
-          v32 = [v4 data];
-          [v32 getBytes:&v37 range:{objc_msgSend(v4, "position"), 4}];
+          data2 = [fromCopy data];
+          [data2 getBytes:&v37 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v30 = *&v37;
@@ -480,8 +480,8 @@ LABEL_27:
       v5->_string_value = v18;
 
 LABEL_50:
-      v33 = [v4 position];
-      if (v33 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_51;
       }
@@ -496,18 +496,18 @@ LABEL_50:
       while (1)
       {
         LOBYTE(v37) = 0;
-        v23 = [v4 position] + 1;
-        if (v23 >= [v4 position] && (v24 = objc_msgSend(v4, "position") + 1, v24 <= objc_msgSend(v4, "length")))
+        v23 = [fromCopy position] + 1;
+        if (v23 >= [fromCopy position] && (v24 = objc_msgSend(fromCopy, "position") + 1, v24 <= objc_msgSend(fromCopy, "length")))
         {
-          v25 = [v4 data];
-          [v25 getBytes:&v37 range:{objc_msgSend(v4, "position"), 1}];
+          data3 = [fromCopy data];
+          [data3 getBytes:&v37 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v22 |= (LOBYTE(v37) & 0x7F) << v20;
@@ -525,7 +525,7 @@ LABEL_50:
         }
       }
 
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         v26 = 0;
       }
@@ -547,18 +547,18 @@ LABEL_44:
 
     v5->_hasDouble_value = 1;
     v37 = 0.0;
-    v16 = [v4 position] + 8;
-    if (v16 >= [v4 position] && (v17 = objc_msgSend(v4, "position") + 8, v17 <= objc_msgSend(v4, "length")))
+    v16 = [fromCopy position] + 8;
+    if (v16 >= [fromCopy position] && (v17 = objc_msgSend(fromCopy, "position") + 8, v17 <= objc_msgSend(fromCopy, "length")))
     {
-      v29 = [v4 data];
-      [v29 getBytes:&v37 range:{objc_msgSend(v4, "position"), 8}];
+      data4 = [fromCopy data];
+      [data4 getBytes:&v37 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-      [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+      [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
     }
 
     else
     {
-      [v4 _setError];
+      [fromCopy _setError];
     }
 
     v30 = v37;
@@ -567,7 +567,7 @@ LABEL_44:
   }
 
 LABEL_51:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_52:
     v34 = 0;
@@ -592,41 +592,41 @@ LABEL_53:
   v7 = MEMORY[0x1E696AD98];
   [(BMIntelligencePlatformFeatureStoreFeatureValueBasicValue *)self float_value];
   v8 = [v7 numberWithDouble:?];
-  v9 = [(BMIntelligencePlatformFeatureStoreFeatureValueBasicValue *)self string_value];
-  v10 = [v3 initWithFormat:@"BMIntelligencePlatformFeatureStoreFeatureValueBasicValue with int_value: %@, double_value: %@, float_value: %@, string_value: %@", v4, v6, v8, v9];
+  string_value = [(BMIntelligencePlatformFeatureStoreFeatureValueBasicValue *)self string_value];
+  v10 = [v3 initWithFormat:@"BMIntelligencePlatformFeatureStoreFeatureValueBasicValue with int_value: %@, double_value: %@, float_value: %@, string_value: %@", v4, v6, v8, string_value];
 
   return v10;
 }
 
-- (BMIntelligencePlatformFeatureStoreFeatureValueBasicValue)initWithInt_value:(id)a3 double_value:(id)a4 float_value:(id)a5 string_value:(id)a6
+- (BMIntelligencePlatformFeatureStoreFeatureValueBasicValue)initWithInt_value:(id)int_value double_value:(id)double_value float_value:(id)float_value string_value:(id)string_value
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  int_valueCopy = int_value;
+  double_valueCopy = double_value;
+  float_valueCopy = float_value;
+  string_valueCopy = string_value;
   v20.receiver = self;
   v20.super_class = BMIntelligencePlatformFeatureStoreFeatureValueBasicValue;
   v14 = [(BMEventBase *)&v20 init];
   if (v14)
   {
     v14->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v10)
+    if (int_valueCopy)
     {
       v14->_hasInt_value = 1;
-      v15 = [v10 longLongValue];
+      longLongValue = [int_valueCopy longLongValue];
     }
 
     else
     {
       v14->_hasInt_value = 0;
-      v15 = -1;
+      longLongValue = -1;
     }
 
-    v14->_int_value = v15;
-    if (v11)
+    v14->_int_value = longLongValue;
+    if (double_valueCopy)
     {
       v14->_hasDouble_value = 1;
-      [v11 doubleValue];
+      [double_valueCopy doubleValue];
     }
 
     else
@@ -636,10 +636,10 @@ LABEL_53:
     }
 
     v14->_double_value = v16;
-    if (v12)
+    if (float_valueCopy)
     {
       v14->_hasFloat_value = 1;
-      [v12 floatValue];
+      [float_valueCopy floatValue];
       v18 = v17;
     }
 
@@ -650,7 +650,7 @@ LABEL_53:
     }
 
     v14->_float_value = v18;
-    objc_storeStrong(&v14->_string_value, a6);
+    objc_storeStrong(&v14->_string_value, string_value);
   }
 
   return v14;
@@ -692,9 +692,9 @@ LABEL_53:
   return v6;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -702,8 +702,8 @@ LABEL_53:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMIntelligencePlatformFeatureStoreFeatureValueBasicValue alloc] initByReadFrom:v7];
     v4 = v8;

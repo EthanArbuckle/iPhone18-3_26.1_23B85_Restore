@@ -1,150 +1,150 @@
 @interface UARPSettingsAccessory
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isFusingEqual:(id)a3;
-- (UARPSettingsAccessory)initWithCoder:(id)a3;
-- (UARPSettingsAccessory)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isFusingEqual:(id)equal;
+- (UARPSettingsAccessory)initWithCoder:(id)coder;
+- (UARPSettingsAccessory)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)encodeAsChangedDictionary;
 - (id)encodeAsDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UARPSettingsAccessory
 
-- (UARPSettingsAccessory)initWithDictionary:(id)a3
+- (UARPSettingsAccessory)initWithDictionary:(id)dictionary
 {
   v6.receiver = self;
   v6.super_class = UARPSettingsAccessory;
   v4 = [(UARPSettingsAccessory *)&v6 init];
   if (v4)
   {
-    v4->_name = [objc_msgSend(a3 objectForKeyedSubscript:{@"name", "copy"}];
-    v4->_serialNumber = [objc_msgSend(a3 objectForKeyedSubscript:{@"serialNumber", "copy"}];
-    v4->_modelNumber = [objc_msgSend(a3 objectForKeyedSubscript:{@"modelNumber", "copy"}];
-    v4->_mobileAssetModelNumber = [objc_msgSend(a3 objectForKeyedSubscript:{@"mobileAssetModelNumber", "copy"}];
-    v4->_hwFusing = [objc_msgSend(a3 objectForKeyedSubscript:{@"fusing", "copy"}];
-    v4->_activeVersion = [objc_msgSend(a3 objectForKeyedSubscript:{@"activeVersion", "copy"}];
-    v4->_hwRevision = [objc_msgSend(a3 objectForKeyedSubscript:{@"hwRevision", "copy"}];
-    v4->_partnerSerialNumbers = [objc_msgSend(a3 objectForKeyedSubscript:{@"partnerSerialNumbers", "copy"}];
-    v4->_assetLocation = [objc_msgSend(a3 objectForKeyedSubscript:{@"assetLocation", "copy"}];
-    v4->_customTrain = [objc_msgSend(a3 objectForKeyedSubscript:{@"basejumperTrain", "copy"}];
-    v4->_customBuild = [objc_msgSend(a3 objectForKeyedSubscript:{@"basejumperBuild", "copy"}];
-    v4->_supplementalAssetLocation = [objc_msgSend(a3 objectForKeyedSubscript:{@"supplementalAssetLocation", "copy"}];
-    v4->_supplementalCustomTrain = [objc_msgSend(a3 objectForKeyedSubscript:{@"supplementalBasejumperTrain", "copy"}];
-    v4->_supplementalCustomBuild = [objc_msgSend(a3 objectForKeyedSubscript:{@"supplementalBasejumperBuild", "copy"}];
-    v4->_otaDisabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"isOTADisabled", "BOOLValue"}];
-    v4->_authListingEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"authListingEnabled", "BOOLValue"}];
-    v4->_personalizationRequired = [objc_msgSend(a3 objectForKeyedSubscript:{@"personalizationRequired", "BOOLValue"}];
-    v4->_accessoryReachable = [objc_msgSend(a3 objectForKeyedSubscript:{@"accessoryReachable", "BOOLValue"}];
-    v4->_supportsDeveloperSettings = [objc_msgSend(a3 objectForKeyedSubscript:{@"SupportsDeveloperSettings", "BOOLValue"}];
-    v4->_downloadedVersion = [objc_msgSend(a3 objectForKeyedSubscript:{@"downloadedVersion", "copy"}];
-    v4->_dropboxVersion = [objc_msgSend(a3 objectForKeyedSubscript:{@"dropboxVersion", "copy"}];
-    v4->_assetURLOverride = [objc_msgSend(a3 objectForKeyedSubscript:{@"assetURLOverride", "copy"}];
-    v4->_pallasSupportEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"pallasSupportEnabled", "BOOLValue"}];
-    v4->_pallasInternalAssetVariant = [objc_msgSend(a3 objectForKeyedSubscript:{@"pallasInternalAsset", "BOOLValue"}];
-    v4->_pallasAudience = [objc_msgSend(a3 objectForKeyedSubscript:{@"pallasAudience", "integerValue"}];
-    v4->_pallasAudienceOverride = [objc_msgSend(a3 objectForKeyedSubscript:{@"pallasAudienceOverride", "copy"}];
+    v4->_name = [objc_msgSend(dictionary objectForKeyedSubscript:{@"name", "copy"}];
+    v4->_serialNumber = [objc_msgSend(dictionary objectForKeyedSubscript:{@"serialNumber", "copy"}];
+    v4->_modelNumber = [objc_msgSend(dictionary objectForKeyedSubscript:{@"modelNumber", "copy"}];
+    v4->_mobileAssetModelNumber = [objc_msgSend(dictionary objectForKeyedSubscript:{@"mobileAssetModelNumber", "copy"}];
+    v4->_hwFusing = [objc_msgSend(dictionary objectForKeyedSubscript:{@"fusing", "copy"}];
+    v4->_activeVersion = [objc_msgSend(dictionary objectForKeyedSubscript:{@"activeVersion", "copy"}];
+    v4->_hwRevision = [objc_msgSend(dictionary objectForKeyedSubscript:{@"hwRevision", "copy"}];
+    v4->_partnerSerialNumbers = [objc_msgSend(dictionary objectForKeyedSubscript:{@"partnerSerialNumbers", "copy"}];
+    v4->_assetLocation = [objc_msgSend(dictionary objectForKeyedSubscript:{@"assetLocation", "copy"}];
+    v4->_customTrain = [objc_msgSend(dictionary objectForKeyedSubscript:{@"basejumperTrain", "copy"}];
+    v4->_customBuild = [objc_msgSend(dictionary objectForKeyedSubscript:{@"basejumperBuild", "copy"}];
+    v4->_supplementalAssetLocation = [objc_msgSend(dictionary objectForKeyedSubscript:{@"supplementalAssetLocation", "copy"}];
+    v4->_supplementalCustomTrain = [objc_msgSend(dictionary objectForKeyedSubscript:{@"supplementalBasejumperTrain", "copy"}];
+    v4->_supplementalCustomBuild = [objc_msgSend(dictionary objectForKeyedSubscript:{@"supplementalBasejumperBuild", "copy"}];
+    v4->_otaDisabled = [objc_msgSend(dictionary objectForKeyedSubscript:{@"isOTADisabled", "BOOLValue"}];
+    v4->_authListingEnabled = [objc_msgSend(dictionary objectForKeyedSubscript:{@"authListingEnabled", "BOOLValue"}];
+    v4->_personalizationRequired = [objc_msgSend(dictionary objectForKeyedSubscript:{@"personalizationRequired", "BOOLValue"}];
+    v4->_accessoryReachable = [objc_msgSend(dictionary objectForKeyedSubscript:{@"accessoryReachable", "BOOLValue"}];
+    v4->_supportsDeveloperSettings = [objc_msgSend(dictionary objectForKeyedSubscript:{@"SupportsDeveloperSettings", "BOOLValue"}];
+    v4->_downloadedVersion = [objc_msgSend(dictionary objectForKeyedSubscript:{@"downloadedVersion", "copy"}];
+    v4->_dropboxVersion = [objc_msgSend(dictionary objectForKeyedSubscript:{@"dropboxVersion", "copy"}];
+    v4->_assetURLOverride = [objc_msgSend(dictionary objectForKeyedSubscript:{@"assetURLOverride", "copy"}];
+    v4->_pallasSupportEnabled = [objc_msgSend(dictionary objectForKeyedSubscript:{@"pallasSupportEnabled", "BOOLValue"}];
+    v4->_pallasInternalAssetVariant = [objc_msgSend(dictionary objectForKeyedSubscript:{@"pallasInternalAsset", "BOOLValue"}];
+    v4->_pallasAudience = [objc_msgSend(dictionary objectForKeyedSubscript:{@"pallasAudience", "integerValue"}];
+    v4->_pallasAudienceOverride = [objc_msgSend(dictionary objectForKeyedSubscript:{@"pallasAudienceOverride", "copy"}];
     v4->_originalSettings = [(UARPSettingsAccessory *)v4 encodeAsDictionary];
   }
 
   return v4;
 }
 
-- (UARPSettingsAccessory)initWithCoder:(id)a3
+- (UARPSettingsAccessory)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = UARPSettingsAccessory;
   v4 = [(UARPSettingsAccessory *)&v6 init];
   if (v4)
   {
-    v4->_name = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-    v4->_serialNumber = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
-    v4->_modelNumber = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"modelNumber"];
-    v4->_mobileAssetModelNumber = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"mobileAssetModelNumber"];
-    v4->_hwFusing = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"fusing"];
-    v4->_activeVersion = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"activeVersion"];
-    v4->_hwRevision = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"hwRevision"];
-    v4->_partnerSerialNumbers = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"partnerSerialNumbers"];
-    v4->_assetLocation = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"assetLocation"];
-    v4->_customTrain = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"basejumperTrain"];
-    v4->_customBuild = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"basejumperBuild"];
-    v4->_supplementalAssetLocation = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"supplementalAssetLocation"];
-    v4->_supplementalCustomTrain = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"supplementalBasejumperTrain"];
-    v4->_supplementalCustomBuild = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"supplementalBasejumperBuild"];
-    v4->_otaDisabled = [a3 decodeBoolForKey:@"isOTADisabled"];
-    v4->_authListingEnabled = [a3 decodeBoolForKey:@"authListingEnabled"];
-    v4->_personalizationRequired = [a3 decodeBoolForKey:@"personalizationRequired"];
-    v4->_accessoryReachable = [a3 decodeBoolForKey:@"accessoryReachable"];
-    v4->_supportsDeveloperSettings = [a3 decodeBoolForKey:@"SupportsDeveloperSettings"];
-    v4->_downloadedVersion = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"downloadedVersion"];
-    v4->_dropboxVersion = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"dropboxVersion"];
-    v4->_assetURLOverride = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"assetURLOverride"];
-    v4->_pallasAudience = [a3 decodeIntegerForKey:@"pallasAudience"];
-    v4->_pallasSupportEnabled = [a3 decodeBoolForKey:@"pallasSupportEnabled"];
-    v4->_pallasInternalAssetVariant = [a3 decodeBoolForKey:@"pallasInternalAsset"];
-    v4->_pallasAudienceOverride = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"pallasAudienceOverride"];
+    v4->_name = [coder decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v4->_serialNumber = [coder decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
+    v4->_modelNumber = [coder decodeObjectOfClass:objc_opt_class() forKey:@"modelNumber"];
+    v4->_mobileAssetModelNumber = [coder decodeObjectOfClass:objc_opt_class() forKey:@"mobileAssetModelNumber"];
+    v4->_hwFusing = [coder decodeObjectOfClass:objc_opt_class() forKey:@"fusing"];
+    v4->_activeVersion = [coder decodeObjectOfClass:objc_opt_class() forKey:@"activeVersion"];
+    v4->_hwRevision = [coder decodeObjectOfClass:objc_opt_class() forKey:@"hwRevision"];
+    v4->_partnerSerialNumbers = [coder decodeObjectOfClass:objc_opt_class() forKey:@"partnerSerialNumbers"];
+    v4->_assetLocation = [coder decodeObjectOfClass:objc_opt_class() forKey:@"assetLocation"];
+    v4->_customTrain = [coder decodeObjectOfClass:objc_opt_class() forKey:@"basejumperTrain"];
+    v4->_customBuild = [coder decodeObjectOfClass:objc_opt_class() forKey:@"basejumperBuild"];
+    v4->_supplementalAssetLocation = [coder decodeObjectOfClass:objc_opt_class() forKey:@"supplementalAssetLocation"];
+    v4->_supplementalCustomTrain = [coder decodeObjectOfClass:objc_opt_class() forKey:@"supplementalBasejumperTrain"];
+    v4->_supplementalCustomBuild = [coder decodeObjectOfClass:objc_opt_class() forKey:@"supplementalBasejumperBuild"];
+    v4->_otaDisabled = [coder decodeBoolForKey:@"isOTADisabled"];
+    v4->_authListingEnabled = [coder decodeBoolForKey:@"authListingEnabled"];
+    v4->_personalizationRequired = [coder decodeBoolForKey:@"personalizationRequired"];
+    v4->_accessoryReachable = [coder decodeBoolForKey:@"accessoryReachable"];
+    v4->_supportsDeveloperSettings = [coder decodeBoolForKey:@"SupportsDeveloperSettings"];
+    v4->_downloadedVersion = [coder decodeObjectOfClass:objc_opt_class() forKey:@"downloadedVersion"];
+    v4->_dropboxVersion = [coder decodeObjectOfClass:objc_opt_class() forKey:@"dropboxVersion"];
+    v4->_assetURLOverride = [coder decodeObjectOfClass:objc_opt_class() forKey:@"assetURLOverride"];
+    v4->_pallasAudience = [coder decodeIntegerForKey:@"pallasAudience"];
+    v4->_pallasSupportEnabled = [coder decodeBoolForKey:@"pallasSupportEnabled"];
+    v4->_pallasInternalAssetVariant = [coder decodeBoolForKey:@"pallasInternalAsset"];
+    v4->_pallasAudienceOverride = [coder decodeObjectOfClass:objc_opt_class() forKey:@"pallasAudienceOverride"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_name forKey:@"name"];
-  [a3 encodeObject:self->_serialNumber forKey:@"serialNumber"];
-  [a3 encodeObject:self->_modelNumber forKey:@"modelNumber"];
-  [a3 encodeObject:self->_mobileAssetModelNumber forKey:@"mobileAssetModelNumber"];
-  [a3 encodeObject:self->_hwFusing forKey:@"fusing"];
-  [a3 encodeObject:self->_activeVersion forKey:@"activeVersion"];
-  [a3 encodeObject:self->_hwRevision forKey:@"hwRevision"];
-  [a3 encodeObject:self->_partnerSerialNumbers forKey:@"partnerSerialNumbers"];
-  [a3 encodeObject:self->_assetLocation forKey:@"assetLocation"];
-  [a3 encodeObject:self->_customTrain forKey:@"basejumperTrain"];
-  [a3 encodeObject:self->_customBuild forKey:@"basejumperBuild"];
-  [a3 encodeObject:self->_supplementalAssetLocation forKey:@"supplementalAssetLocation"];
-  [a3 encodeObject:self->_supplementalCustomTrain forKey:@"supplementalBasejumperTrain"];
-  [a3 encodeObject:self->_supplementalCustomBuild forKey:@"supplementalBasejumperBuild"];
-  [a3 encodeBool:self->_otaDisabled forKey:@"isOTADisabled"];
-  [a3 encodeBool:self->_authListingEnabled forKey:@"authListingEnabled"];
-  [a3 encodeBool:self->_personalizationRequired forKey:@"personalizationRequired"];
-  [a3 encodeBool:self->_accessoryReachable forKey:@"accessoryReachable"];
-  [a3 encodeBool:self->_supportsDeveloperSettings forKey:@"SupportsDeveloperSettings"];
-  [a3 encodeObject:self->_downloadedVersion forKey:@"downloadedVersion"];
-  [a3 encodeObject:self->_dropboxVersion forKey:@"dropboxVersion"];
-  [a3 encodeObject:self->_assetURLOverride forKey:@"assetURLOverride"];
-  [a3 encodeInteger:self->_pallasAudience forKey:@"pallasAudience"];
-  [a3 encodeBool:self->_pallasSupportEnabled forKey:@"pallasSupportEnabled"];
-  [a3 encodeBool:self->_pallasInternalAssetVariant forKey:@"pallasInternalAsset"];
+  [coder encodeObject:self->_name forKey:@"name"];
+  [coder encodeObject:self->_serialNumber forKey:@"serialNumber"];
+  [coder encodeObject:self->_modelNumber forKey:@"modelNumber"];
+  [coder encodeObject:self->_mobileAssetModelNumber forKey:@"mobileAssetModelNumber"];
+  [coder encodeObject:self->_hwFusing forKey:@"fusing"];
+  [coder encodeObject:self->_activeVersion forKey:@"activeVersion"];
+  [coder encodeObject:self->_hwRevision forKey:@"hwRevision"];
+  [coder encodeObject:self->_partnerSerialNumbers forKey:@"partnerSerialNumbers"];
+  [coder encodeObject:self->_assetLocation forKey:@"assetLocation"];
+  [coder encodeObject:self->_customTrain forKey:@"basejumperTrain"];
+  [coder encodeObject:self->_customBuild forKey:@"basejumperBuild"];
+  [coder encodeObject:self->_supplementalAssetLocation forKey:@"supplementalAssetLocation"];
+  [coder encodeObject:self->_supplementalCustomTrain forKey:@"supplementalBasejumperTrain"];
+  [coder encodeObject:self->_supplementalCustomBuild forKey:@"supplementalBasejumperBuild"];
+  [coder encodeBool:self->_otaDisabled forKey:@"isOTADisabled"];
+  [coder encodeBool:self->_authListingEnabled forKey:@"authListingEnabled"];
+  [coder encodeBool:self->_personalizationRequired forKey:@"personalizationRequired"];
+  [coder encodeBool:self->_accessoryReachable forKey:@"accessoryReachable"];
+  [coder encodeBool:self->_supportsDeveloperSettings forKey:@"SupportsDeveloperSettings"];
+  [coder encodeObject:self->_downloadedVersion forKey:@"downloadedVersion"];
+  [coder encodeObject:self->_dropboxVersion forKey:@"dropboxVersion"];
+  [coder encodeObject:self->_assetURLOverride forKey:@"assetURLOverride"];
+  [coder encodeInteger:self->_pallasAudience forKey:@"pallasAudience"];
+  [coder encodeBool:self->_pallasSupportEnabled forKey:@"pallasSupportEnabled"];
+  [coder encodeBool:self->_pallasInternalAssetVariant forKey:@"pallasInternalAsset"];
   pallasAudienceOverride = self->_pallasAudienceOverride;
 
-  [a3 encodeObject:pallasAudienceOverride forKey:@"pallasAudienceOverride"];
+  [coder encodeObject:pallasAudienceOverride forKey:@"pallasAudienceOverride"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(UARPSettingsAccessory *)self encodeAsDictionary];
+  encodeAsDictionary = [(UARPSettingsAccessory *)self encodeAsDictionary];
   v4 = [UARPSettingsAccessory alloc];
 
-  return [(UARPSettingsAccessory *)v4 initWithDictionary:v3];
+  return [(UARPSettingsAccessory *)v4 initWithDictionary:encodeAsDictionary];
 }
 
-- (BOOL)isFusingEqual:(id)a3
+- (BOOL)isFusingEqual:(id)equal
 {
   hwFusing = self->_hwFusing;
   if (hwFusing)
   {
-    LOBYTE(v4) = [(NSString *)hwFusing caseInsensitiveCompare:a3]== NSOrderedSame;
+    LOBYTE(v4) = [(NSString *)hwFusing caseInsensitiveCompare:equal]== NSOrderedSame;
   }
 
   else
   {
-    return a3 == 0;
+    return equal == 0;
   }
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -152,15 +152,15 @@
     return 0;
   }
 
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v5 = [(UARPSettingsAccessory *)self encodeAsDictionary];
-  v6 = [a3 encodeAsDictionary];
+  encodeAsDictionary = [(UARPSettingsAccessory *)self encodeAsDictionary];
+  encodeAsDictionary2 = [equal encodeAsDictionary];
 
-  return [v5 isEqualToDictionary:v6];
+  return [encodeAsDictionary isEqualToDictionary:encodeAsDictionary2];
 }
 
 - (id)encodeAsDictionary
@@ -269,7 +269,7 @@
 
 - (id)encodeAsChangedDictionary
 {
-  v3 = [(UARPSettingsAccessory *)self encodeAsDictionary];
+  encodeAsDictionary = [(UARPSettingsAccessory *)self encodeAsDictionary];
   v4 = objc_opt_new();
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -277,13 +277,13 @@
   v8[3] = &unk_100080CD8;
   v8[4] = self;
   v8[5] = v4;
-  [v3 enumerateKeysAndObjectsUsingBlock:v8];
+  [encodeAsDictionary enumerateKeysAndObjectsUsingBlock:v8];
   originalSettings = self->_originalSettings;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000024C4;
   v7[3] = &unk_100080CD8;
-  v7[4] = v3;
+  v7[4] = encodeAsDictionary;
   v7[5] = v4;
   [(NSDictionary *)originalSettings enumerateKeysAndObjectsUsingBlock:v7];
   if ([v4 count])

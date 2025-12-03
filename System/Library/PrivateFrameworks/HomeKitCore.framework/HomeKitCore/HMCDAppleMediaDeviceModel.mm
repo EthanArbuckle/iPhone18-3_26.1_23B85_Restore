@@ -1,14 +1,14 @@
 @interface HMCDAppleMediaDeviceModel
-- (HMCDAppleMediaDeviceModel)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (HMCDAppleMediaDeviceModel)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation HMCDAppleMediaDeviceModel
 
-- (HMCDAppleMediaDeviceModel)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (HMCDAppleMediaDeviceModel)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for HMCDAppleMediaDeviceModel();
-  return [(HMCDAppleMediaDeviceModel *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(HMCDAppleMediaDeviceModel *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

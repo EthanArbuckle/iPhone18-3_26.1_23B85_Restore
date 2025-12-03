@@ -1,42 +1,42 @@
 @interface BTQueuedMessage
-- (BTQueuedMessage)initWithCoder:(id)a3;
-- (BTQueuedMessage)initWithMsg:(unsigned __int16)a3 arguments:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BTQueuedMessage)initWithCoder:(id)coder;
+- (BTQueuedMessage)initWithMsg:(unsigned __int16)msg arguments:(id)arguments;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BTQueuedMessage
 
-- (BTQueuedMessage)initWithMsg:(unsigned __int16)a3 arguments:(id)a4
+- (BTQueuedMessage)initWithMsg:(unsigned __int16)msg arguments:(id)arguments
 {
-  v7 = a4;
+  argumentsCopy = arguments;
   v11.receiver = self;
   v11.super_class = BTQueuedMessage;
   v8 = [(BTQueuedMessage *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_msgId = a3;
-    objc_storeStrong(&v8->_arguments, a4);
+    v8->_msgId = msg;
+    objc_storeStrong(&v8->_arguments, arguments);
   }
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:self->_msgId forKey:@"message"];
-  [v4 encodeObject:self->_arguments forKey:@"arguments"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:self->_msgId forKey:@"message"];
+  [coderCopy encodeObject:self->_arguments forKey:@"arguments"];
 }
 
-- (BTQueuedMessage)initWithCoder:(id)a3
+- (BTQueuedMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(BTQueuedMessage *)self init];
   if (v5)
   {
-    v5->_msgId = [v4 decodeInt64ForKey:@"message"];
-    v6 = [v4 decodeObjectForKey:@"arguments"];
+    v5->_msgId = [coderCopy decodeInt64ForKey:@"message"];
+    v6 = [coderCopy decodeObjectForKey:@"arguments"];
     arguments = v5->_arguments;
     v5->_arguments = v6;
   }

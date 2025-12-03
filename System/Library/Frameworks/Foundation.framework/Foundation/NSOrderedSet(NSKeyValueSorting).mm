@@ -7,7 +7,7 @@
 - (id)sortedArrayUsingDescriptors:()NSKeyValueSorting
 {
   v25[3] = *MEMORY[0x1E69E9840];
-  v5 = [a1 count];
+  v5 = [self count];
   v6 = v5;
   if (v5 >> 60)
   {
@@ -31,7 +31,7 @@
     v10 = 0;
   }
 
-  [a1 getObjects:v9 range:{0, v6, v7}];
+  [self getObjects:v9 range:{0, v6, v7}];
   v11 = [a3 count];
   if (v6 >= 2 && v11)
   {

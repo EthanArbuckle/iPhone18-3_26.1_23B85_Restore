@@ -1,42 +1,42 @@
 @interface BKAppearanceFontViewController
 - (BEHairlineDividerView)dividerView;
-- (BKAppearanceFontViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BKAppearanceFontViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (BKAppearanceFontViewControllerDelegate)delegate;
 - (CGSize)contentSize;
 - (CGSize)desiredContentSize;
 - (CGSize)estimatedContentSize;
 - (CGSize)preferredContentSize;
-- (double)fontSizeForFontFamilyName:(id)a3;
+- (double)fontSizeForFontFamilyName:(id)name;
 - (id)indexPathForSelectedFont;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)dealloc;
-- (void)downloadFont:(id)a3;
-- (void)fontDownloadFailed:(id)a3;
+- (void)downloadFont:(id)font;
+- (void)fontDownloadFailed:(id)failed;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)releaseViews;
-- (void)setTheme:(id)a3;
-- (void)stopDownloadingFont:(id)a3;
+- (void)setTheme:(id)theme;
+- (void)stopDownloadingFont:(id)font;
 - (void)stylizeForTheme;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)useSelectedFont:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)useSelectedFont:(id)font;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation BKAppearanceFontViewController
 
-- (BKAppearanceFontViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (BKAppearanceFontViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = BKAppearanceFontViewController;
-  v4 = [(BKViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(BKViewController *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = AEBundle();
@@ -75,51 +75,51 @@
   v9 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(UITableView *)self->_tableView setTableFooterView:v9];
 
-  v10 = [(BKAppearanceFontViewController *)self view];
+  view = [(BKAppearanceFontViewController *)self view];
   v11 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   arrowBackgroundView = self->_arrowBackgroundView;
   self->_arrowBackgroundView = v11;
 
   [(UIView *)self->_arrowBackgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v10 addSubview:self->_arrowBackgroundView];
-  [v10 addSubview:self->_tableView];
-  v39 = [(UITableView *)self->_tableView leadingAnchor];
-  v38 = [v10 leadingAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38];
+  [view addSubview:self->_arrowBackgroundView];
+  [view addSubview:self->_tableView];
+  leadingAnchor = [(UITableView *)self->_tableView leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v37 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v41[0] = v37;
-  v36 = [(UITableView *)self->_tableView trailingAnchor];
-  v35 = [v10 trailingAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  trailingAnchor = [(UITableView *)self->_tableView trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v34 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v41[1] = v34;
-  v32 = [(UITableView *)self->_tableView topAnchor];
-  v33 = [v10 safeAreaLayoutGuide];
-  v31 = [v33 topAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  topAnchor = [(UITableView *)self->_tableView topAnchor];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v30 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v41[2] = v30;
-  v28 = [(UITableView *)self->_tableView bottomAnchor];
-  v29 = [v10 safeAreaLayoutGuide];
-  v27 = [v29 bottomAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  bottomAnchor = [(UITableView *)self->_tableView bottomAnchor];
+  safeAreaLayoutGuide2 = [view safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide2 bottomAnchor];
+  v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v41[3] = v26;
-  v25 = [(UIView *)self->_arrowBackgroundView topAnchor];
-  v24 = [v10 topAnchor];
-  v22 = [v25 constraintEqualToAnchor:v24];
+  topAnchor3 = [(UIView *)self->_arrowBackgroundView topAnchor];
+  topAnchor4 = [view topAnchor];
+  v22 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v41[4] = v22;
-  v13 = [(UIView *)self->_arrowBackgroundView leadingAnchor];
-  v14 = [v10 leadingAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  leadingAnchor3 = [(UIView *)self->_arrowBackgroundView leadingAnchor];
+  leadingAnchor4 = [view leadingAnchor];
+  v15 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v41[5] = v15;
-  v16 = [(UIView *)self->_arrowBackgroundView trailingAnchor];
-  v17 = [v10 trailingAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  trailingAnchor3 = [(UIView *)self->_arrowBackgroundView trailingAnchor];
+  trailingAnchor4 = [view trailingAnchor];
+  v18 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v41[6] = v18;
-  v19 = [(UIView *)self->_arrowBackgroundView bottomAnchor];
-  v20 = [(UITableView *)self->_tableView topAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  bottomAnchor3 = [(UIView *)self->_arrowBackgroundView bottomAnchor];
+  topAnchor5 = [(UITableView *)self->_tableView topAnchor];
+  v21 = [bottomAnchor3 constraintEqualToAnchor:topAnchor5];
   v41[7] = v21;
   v23 = [NSArray arrayWithObjects:v41 count:8];
 
-  [v10 addConstraints:v23];
+  [view addConstraints:v23];
 }
 
 - (void)viewDidLoad
@@ -130,90 +130,90 @@
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 addObserver:self selector:"fontDownloadFailed:" name:BEFontDownloadFailedNotification object:0];
 
-  v4 = [(BKAppearanceFontViewController *)self navigationController];
-  v5 = [v4 navigationBar];
+  navigationController = [(BKAppearanceFontViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
 
-  v6 = [(BKAppearanceFontViewController *)self dividerView];
-  [v5 _setHidesShadow:1];
-  [v5 addSubview:v6];
-  v21 = [v6 leadingAnchor];
-  v20 = [v5 leadingAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20];
+  dividerView = [(BKAppearanceFontViewController *)self dividerView];
+  [navigationBar _setHidesShadow:1];
+  [navigationBar addSubview:dividerView];
+  leadingAnchor = [dividerView leadingAnchor];
+  leadingAnchor2 = [navigationBar leadingAnchor];
+  v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v23[0] = v19;
-  v18 = [v6 trailingAnchor];
-  v7 = [v5 trailingAnchor];
-  v8 = [v18 constraintEqualToAnchor:v7];
+  trailingAnchor = [dividerView trailingAnchor];
+  trailingAnchor2 = [navigationBar trailingAnchor];
+  v8 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v23[1] = v8;
-  v9 = [v6 bottomAnchor];
-  v10 = [v5 bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  bottomAnchor = [dividerView bottomAnchor];
+  bottomAnchor2 = [navigationBar bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v23[2] = v11;
-  v12 = [v6 heightAnchor];
+  heightAnchor = [dividerView heightAnchor];
   v13 = +[UIScreen mainScreen];
   [v13 scale];
   v15 = 1.0 / v14;
 
-  v16 = [v12 constraintEqualToConstant:v15];
+  v16 = [heightAnchor constraintEqualToConstant:v15];
   v23[3] = v16;
   v17 = [NSArray arrayWithObjects:v23 count:4];
 
   [NSLayoutConstraint activateConstraints:v17];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v14.receiver = self;
   v14.super_class = BKAppearanceFontViewController;
   [(BKAppearanceFontViewController *)&v14 viewWillAppear:?];
   [(BKAppearanceFontViewController *)self stylizeForTheme];
-  v5 = [(BKAppearanceFontViewController *)self ba_analyticsTracker];
+  ba_analyticsTracker = [(BKAppearanceFontViewController *)self ba_analyticsTracker];
 
-  if (!v5)
+  if (!ba_analyticsTracker)
   {
     v6 = [(BKAppearanceFontViewController *)self ba_setupNewAnalyticsTrackerWithName:@"ContentFontSettings"];
   }
 
-  v7 = [(BKAppearanceFontViewController *)self navigationController];
-  [v7 setNavigationBarHidden:0 animated:v3];
+  navigationController = [(BKAppearanceFontViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:0 animated:appearCopy];
 
   [(BKAppearanceFontViewController *)self preferredContentSize];
   v9 = v8;
   v11 = v10;
-  v12 = [(BKAppearanceFontViewController *)self presentingViewController];
-  v13 = [v12 presentedViewController];
-  [v13 setPreferredContentSize:{v9, v11}];
+  presentingViewController = [(BKAppearanceFontViewController *)self presentingViewController];
+  presentedViewController = [presentingViewController presentedViewController];
+  [presentedViewController setPreferredContentSize:{v9, v11}];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = BKAppearanceFontViewController;
   [(BKAppearanceFontViewController *)&v6 viewDidAppear:?];
-  v5 = [(BKAppearanceFontViewController *)self indexPathForSelectedFont];
-  if (v5)
+  indexPathForSelectedFont = [(BKAppearanceFontViewController *)self indexPathForSelectedFont];
+  if (indexPathForSelectedFont)
   {
-    [(UITableView *)self->_tableView scrollToRowAtIndexPath:v5 atScrollPosition:0 animated:v3];
+    [(UITableView *)self->_tableView scrollToRowAtIndexPath:indexPathForSelectedFont atScrollPosition:0 animated:appearCopy];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(BKAppearanceFontViewController *)self setDisappearing:1];
   v5.receiver = self;
   v5.super_class = BKAppearanceFontViewController;
-  [(BKAppearanceFontViewController *)&v5 viewWillDisappear:v3];
+  [(BKAppearanceFontViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(BKAppearanceFontViewController *)self setDisappearing:0];
   v5.receiver = self;
   v5.super_class = BKAppearanceFontViewController;
-  [(BKAppearanceFontViewController *)&v5 viewDidDisappear:v3];
+  [(BKAppearanceFontViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
 - (void)releaseViews
@@ -230,8 +230,8 @@
 
 - (CGSize)preferredContentSize
 {
-  v3 = [(BKAppearanceFontViewController *)self tableView];
-  [v3 layoutIfNeeded];
+  tableView = [(BKAppearanceFontViewController *)self tableView];
+  [tableView layoutIfNeeded];
 
   [(BKAppearanceFontViewController *)self contentSize];
   result.height = v5;
@@ -241,12 +241,12 @@
 
 - (CGSize)contentSize
 {
-  v3 = [(BKAppearanceFontViewController *)self tableView];
-  [v3 contentSize];
+  tableView = [(BKAppearanceFontViewController *)self tableView];
+  [tableView contentSize];
   v5 = v4;
-  v6 = [(BKAppearanceFontViewController *)self navigationController];
-  v7 = [v6 navigationBar];
-  [v7 frame];
+  navigationController = [(BKAppearanceFontViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar frame];
   v8 = v5 + CGRectGetHeight(v14);
 
   [(BKAppearanceFontViewController *)self desiredContentSize];
@@ -265,14 +265,14 @@
 
 - (CGSize)estimatedContentSize
 {
-  v3 = [(BKAppearanceFontViewController *)self tableView];
-  v4 = [v3 visibleCells];
-  v5 = [v4 firstObject];
+  tableView = [(BKAppearanceFontViewController *)self tableView];
+  visibleCells = [tableView visibleCells];
+  firstObject = [visibleCells firstObject];
 
-  if (v5)
+  if (firstObject)
   {
-    v6 = [v5 contentView];
-    [v6 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
+    contentView = [firstObject contentView];
+    [contentView systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
     v8 = v7;
   }
 
@@ -281,8 +281,8 @@
     v8 = 0.0;
   }
 
-  v9 = [(BKAppearanceFontViewController *)self fonts];
-  v10 = [v9 count];
+  fonts = [(BKAppearanceFontViewController *)self fonts];
+  v10 = [fonts count];
   +[IMRadialProgressButton minimumBoundingBox];
   v12 = v11;
   v13 = _BKFontCellAppearanceFontHeight() * 0.55;
@@ -298,13 +298,13 @@
 
   v14 = v13 * v10;
 
-  v15 = [(BKAppearanceFontViewController *)self traitCollection];
-  v16 = [v15 preferredContentSizeCategory];
+  traitCollection = [(BKAppearanceFontViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  v17 = _BKFontTableViewSizePaddingForContentSizeCategory(v16);
-  v18 = [(BKAppearanceFontViewController *)self navigationController];
-  v19 = [v18 navigationBar];
-  [v19 frame];
+  v17 = _BKFontTableViewSizePaddingForContentSizeCategory(preferredContentSizeCategory);
+  navigationController = [(BKAppearanceFontViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar frame];
   v20 = v17 + v14 + CGRectGetHeight(v27);
 
   [(BKAppearanceFontViewController *)self desiredContentSize];
@@ -322,16 +322,16 @@
   return result;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (([v10 isEqualToString:@"state"] & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"downloadProgress"))
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (([pathCopy isEqualToString:@"state"] & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"downloadProgress"))
   {
     if ([(BKAppearanceFontViewController *)self isVisible])
     {
-      v13 = [(NSArray *)self->_fonts indexOfObject:v11];
+      v13 = [(NSArray *)self->_fonts indexOfObject:objectCopy];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_F311C;
@@ -346,17 +346,17 @@
   {
     v14.receiver = self;
     v14.super_class = BKAppearanceFontViewController;
-    [(BKAppearanceFontViewController *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(BKAppearanceFontViewController *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
 - (id)indexPathForSelectedFont
 {
-  v3 = [(BKAppearanceFontViewController *)self styleManager];
-  v4 = [v3 font];
+  styleManager = [(BKAppearanceFontViewController *)self styleManager];
+  font = [styleManager font];
 
-  v5 = [(BKAppearanceFontViewController *)self fonts];
-  v6 = [v5 count];
+  fonts = [(BKAppearanceFontViewController *)self fonts];
+  v6 = [fonts count];
 
   if (v6)
   {
@@ -364,11 +364,11 @@
     v8 = 0;
     do
     {
-      v9 = [(BKAppearanceFontViewController *)self fonts];
-      v10 = [v9 objectAtIndex:v7];
+      fonts2 = [(BKAppearanceFontViewController *)self fonts];
+      v10 = [fonts2 objectAtIndex:v7];
 
-      v11 = [v10 familyName];
-      v12 = [v4 isEqualToString:v11];
+      familyName = [v10 familyName];
+      v12 = [font isEqualToString:familyName];
 
       if (v12)
       {
@@ -378,8 +378,8 @@
       }
 
       ++v7;
-      v14 = [(BKAppearanceFontViewController *)self fonts];
-      v15 = [v14 count];
+      fonts3 = [(BKAppearanceFontViewController *)self fonts];
+      v15 = [fonts3 count];
     }
 
     while (v15 > v7);
@@ -409,63 +409,63 @@
   return dividerView;
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
-  v4 = a3;
-  v5 = [(BKAppearanceFontViewController *)self theme];
+  themeCopy = theme;
+  theme = [(BKAppearanceFontViewController *)self theme];
 
-  if (v5 != v4)
+  if (theme != themeCopy)
   {
     v6.receiver = self;
     v6.super_class = BKAppearanceFontViewController;
-    [(BKAppearanceFontViewController *)&v6 setTheme:v4];
+    [(BKAppearanceFontViewController *)&v6 setTheme:themeCopy];
     [(BKAppearanceFontViewController *)self stylizeForTheme];
   }
 }
 
 - (void)stylizeForTheme
 {
-  v3 = [(BKAppearanceFontViewController *)self themePage];
-  v4 = [(BKAppearanceFontViewController *)self overrideUserInterfaceStyle];
-  v5 = [(BKAppearanceFontViewController *)self navigationController];
-  [v5 setOverrideUserInterfaceStyle:v4];
+  themePage = [(BKAppearanceFontViewController *)self themePage];
+  overrideUserInterfaceStyle = [(BKAppearanceFontViewController *)self overrideUserInterfaceStyle];
+  navigationController = [(BKAppearanceFontViewController *)self navigationController];
+  [navigationController setOverrideUserInterfaceStyle:overrideUserInterfaceStyle];
 
-  [v3 stylizeTableView:self->_tableView];
-  v6 = [v3 tableViewCellBackgroundColor];
-  [(UITableView *)self->_tableView setBackgroundColor:v6];
-  v7 = [(BKAppearanceFontViewController *)self navigationController];
-  v8 = [v7 navigationBar];
+  [themePage stylizeTableView:self->_tableView];
+  tableViewCellBackgroundColor = [themePage tableViewCellBackgroundColor];
+  [(UITableView *)self->_tableView setBackgroundColor:tableViewCellBackgroundColor];
+  navigationController2 = [(BKAppearanceFontViewController *)self navigationController];
+  navigationBar = [navigationController2 navigationBar];
 
-  [v8 setOverrideUserInterfaceStyle:{-[BKAppearanceFontViewController overrideUserInterfaceStyle](self, "overrideUserInterfaceStyle")}];
-  v9 = [v3 keyColor];
-  [v8 setTintColor:v9];
+  [navigationBar setOverrideUserInterfaceStyle:{-[BKAppearanceFontViewController overrideUserInterfaceStyle](self, "overrideUserInterfaceStyle")}];
+  keyColor = [themePage keyColor];
+  [navigationBar setTintColor:keyColor];
 
-  [v8 setBackgroundColor:v6];
-  v10 = [v8 backgroundColor];
-  v11 = [(BKAppearanceFontViewController *)self arrowBackgroundView];
-  [v11 setBackgroundColor:v10];
+  [navigationBar setBackgroundColor:tableViewCellBackgroundColor];
+  backgroundColor = [navigationBar backgroundColor];
+  arrowBackgroundView = [(BKAppearanceFontViewController *)self arrowBackgroundView];
+  [arrowBackgroundView setBackgroundColor:backgroundColor];
 
   v18 = NSForegroundColorAttributeName;
-  v12 = [v3 primaryTextColor];
-  v19 = v12;
+  primaryTextColor = [themePage primaryTextColor];
+  v19 = primaryTextColor;
   v13 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-  [v8 setTitleTextAttributes:v13];
+  [navigationBar setTitleTextAttributes:v13];
 
-  v14 = [v3 separatorColor];
-  v15 = [(BKAppearanceFontViewController *)self dividerView];
-  [v15 setBackgroundColor:v14];
+  separatorColor = [themePage separatorColor];
+  dividerView = [(BKAppearanceFontViewController *)self dividerView];
+  [dividerView setBackgroundColor:separatorColor];
 
-  v16 = [(BKAppearanceFontViewController *)self navigationController];
-  v17 = [v16 viewIfLoaded];
-  [v17 setBackgroundColor:v6];
+  navigationController3 = [(BKAppearanceFontViewController *)self navigationController];
+  viewIfLoaded = [navigationController3 viewIfLoaded];
+  [viewIfLoaded setBackgroundColor:tableViewCellBackgroundColor];
 
   [(UITableView *)self->_tableView reloadData];
 }
 
-- (double)fontSizeForFontFamilyName:(id)a3
+- (double)fontSizeForFontFamilyName:(id)name
 {
-  v3 = a3;
-  if (([v3 isEqualToString:@"Iowan Old Style"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"Charter") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"Athelas") & 1) != 0 || (v4 = 20.0, objc_msgSend(v3, "isEqualToString:", @"Seravek")))
+  nameCopy = name;
+  if (([nameCopy isEqualToString:@"Iowan Old Style"] & 1) != 0 || (objc_msgSend(nameCopy, "isEqualToString:", @"Charter") & 1) != 0 || (objc_msgSend(nameCopy, "isEqualToString:", @"Athelas") & 1) != 0 || (v4 = 20.0, objc_msgSend(nameCopy, "isEqualToString:", @"Seravek")))
   {
     v4 = 22.0;
   }
@@ -477,32 +477,32 @@
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"BKFontTableViewCell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"BKFontTableViewCell"];
   if (!v7)
   {
     v7 = [[BKFontTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"BKFontTableViewCell"];
   }
 
-  v8 = [(BKAppearanceFontViewController *)self fonts];
-  v9 = [v8 objectAtIndex:{objc_msgSend(v6, "row")}];
-  v10 = [v9 familyName];
-  v11 = [(BKAppearanceFontViewController *)self book];
-  v12 = [v11 useGlobalContentStyle];
-  v13 = [v12 BOOLValue];
+  fonts = [(BKAppearanceFontViewController *)self fonts];
+  v9 = [fonts objectAtIndex:{objc_msgSend(pathCopy, "row")}];
+  familyName = [v9 familyName];
+  book = [(BKAppearanceFontViewController *)self book];
+  useGlobalContentStyle = [book useGlobalContentStyle];
+  bOOLValue = [useGlobalContentStyle BOOLValue];
 
-  if (v10)
+  if (familyName)
   {
     v14 = v7;
-    v15 = [v9 displayName];
-    v54 = v8;
+    displayName = [v9 displayName];
+    v54 = fonts;
     if ([v9 kind] == &dword_0 + 1)
     {
       v16 = AEBundle();
       v17 = [v16 localizedStringForKey:@"Original" value:&stru_1E7188 table:0];
-      v18 = v15;
+      v18 = displayName;
       v19 = v17;
 
       v20 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
@@ -510,14 +510,14 @@
       v21 = [UIFont systemFontOfSize:"systemFontOfSize:weight:" weight:?];
       [(BKFontTableViewCell *)v14 setLabelFont:v21];
 
-      v22 = v13 ^ 1;
+      v22 = bOOLValue ^ 1;
       goto LABEL_16;
     }
 
-    [(BKAppearanceFontViewController *)self fontSizeForFontFamilyName:v10];
+    [(BKAppearanceFontViewController *)self fontSizeForFontFamilyName:familyName];
     v24 = v23;
     [(BKFontTableViewCell *)v14 setFont:v9];
-    v51 = v15;
+    v51 = displayName;
     if ([v9 kind] && objc_msgSend(v9, "kind") != &dword_0 + 2)
     {
       if ([v9 kind] != &dword_4)
@@ -526,108 +526,108 @@
         goto LABEL_14;
       }
 
-      v26 = [UIFont systemFontOfSize:kCTFontUIFontDesignSerif weight:v24 design:UIFontWeightRegular];
+      _fontAdjustedForCurrentContentSizeCategory = [UIFont systemFontOfSize:kCTFontUIFontDesignSerif weight:v24 design:UIFontWeightRegular];
     }
 
     else
     {
-      v25 = [UIFont fontWithName:v10 size:v24, v15];
-      v26 = [v25 _fontAdjustedForCurrentContentSizeCategory];
+      v25 = [UIFont fontWithName:familyName size:v24, displayName];
+      _fontAdjustedForCurrentContentSizeCategory = [v25 _fontAdjustedForCurrentContentSizeCategory];
     }
 
-    if (v26)
+    if (_fontAdjustedForCurrentContentSizeCategory)
     {
 LABEL_15:
-      [(BKFontTableViewCell *)v14 setLabelFont:v26, v51];
+      [(BKFontTableViewCell *)v14 setLabelFont:_fontAdjustedForCurrentContentSizeCategory, v51];
 
-      v27 = [(BKAppearanceFontViewController *)self styleManager];
-      v28 = [v27 font];
-      v29 = [v28 isEqualToString:v10];
+      styleManager = [(BKAppearanceFontViewController *)self styleManager];
+      font = [styleManager font];
+      v29 = [font isEqualToString:familyName];
 
-      v22 = v29 & v13;
+      v22 = v29 & bOOLValue;
       v19 = v52;
 LABEL_16:
-      v30 = [(BKFontTableViewCell *)v14 label];
-      [v30 setText:v19];
+      label = [(BKFontTableViewCell *)v14 label];
+      [label setText:v19];
 
-      v31 = [(BKAppearanceFontViewController *)self themePage];
-      v32 = [v31 keyColor];
+      themePage = [(BKAppearanceFontViewController *)self themePage];
+      keyColor = [themePage keyColor];
 
-      v33 = [(BKFontTableViewCell *)v14 selectionView];
-      [v33 setHidden:v22 ^ 1u];
+      selectionView = [(BKFontTableViewCell *)v14 selectionView];
+      [selectionView setHidden:v22 ^ 1u];
 
-      v34 = [(BKFontTableViewCell *)v14 selectionView];
-      [v34 setTintColor:v32];
+      selectionView2 = [(BKFontTableViewCell *)v14 selectionView];
+      [selectionView2 setTintColor:keyColor];
 
       if (v22)
       {
 LABEL_33:
 
-        v8 = v54;
+        fonts = v54;
         goto LABEL_34;
       }
 
       if ([v9 state] == 3)
       {
         v53 = v19;
-        v35 = [(BKFontTableViewCell *)v14 accessoryView];
+        accessoryView = [(BKFontTableViewCell *)v14 accessoryView];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v37 = [(BKFontTableViewCell *)v14 accessoryView];
+          accessoryView2 = [(BKFontTableViewCell *)v14 accessoryView];
         }
 
         else
         {
-          v37 = objc_alloc_init(IMRadialProgressButton);
-          [v37 addTarget:self action:"stopDownloadingFont:" forControlEvents:64];
+          accessoryView2 = objc_alloc_init(IMRadialProgressButton);
+          [accessoryView2 addTarget:self action:"stopDownloadingFont:" forControlEvents:64];
         }
 
         [v9 downloadProgress];
-        [v37 setProgress:?];
+        [accessoryView2 setProgress:?];
       }
 
       else
       {
         if ([v9 state] != 2)
         {
-          v37 = 0;
+          accessoryView2 = 0;
           goto LABEL_27;
         }
 
         v53 = v19;
-        v38 = [v9 familyName];
-        v39 = [v38 isEqualToString:&stru_1E7188];
+        familyName2 = [v9 familyName];
+        v39 = [familyName2 isEqualToString:&stru_1E7188];
 
         if (v39)
         {
-          v37 = 0;
+          accessoryView2 = 0;
         }
 
         else
         {
-          v37 = [UIButton buttonWithType:0];
-          [v37 addTarget:self action:"downloadFont:" forControlEvents:64];
+          accessoryView2 = [UIButton buttonWithType:0];
+          [accessoryView2 addTarget:self action:"downloadFont:" forControlEvents:64];
           v48 = [UIImageSymbolConfiguration configurationWithTextStyle:UIFontTextStyleTitle3];
           v49 = [UIImage systemImageNamed:@"icloud.and.arrow.down"];
           v50 = [v49 bc_imageWithConfiguration:v48 limitedToContentSizeCategory:UIContentSizeCategoryAccessibilityExtraLarge];
 
-          [v37 setImage:v50 forState:0];
-          [v37 setTintColor:v32];
+          [accessoryView2 setImage:v50 forState:0];
+          [accessoryView2 setTintColor:keyColor];
         }
       }
 
       v19 = v53;
 LABEL_27:
-      [v37 setTag:{objc_msgSend(v6, "row")}];
-      if (v37)
+      [accessoryView2 setTag:{objc_msgSend(pathCopy, "row")}];
+      if (accessoryView2)
       {
-        v40 = [(BKFontTableViewCell *)v14 buttonContainerView];
-        [v40 addSubview:v37];
+        buttonContainerView = [(BKFontTableViewCell *)v14 buttonContainerView];
+        [buttonContainerView addSubview:accessoryView2];
 
-        [v37 bc_constraintsToFitInSuperviewCentered];
+        [accessoryView2 bc_constraintsToFitInSuperviewCentered];
         v42 = v41 = v19;
         [NSLayoutConstraint activateConstraints:v42];
 
@@ -646,14 +646,14 @@ LABEL_27:
         v44 = 0.0;
       }
 
-      v46 = [(BKFontTableViewCell *)v14 buttonContainerWidthConstraint];
-      [v46 setConstant:v44];
+      buttonContainerWidthConstraint = [(BKFontTableViewCell *)v14 buttonContainerWidthConstraint];
+      [buttonContainerWidthConstraint setConstant:v44];
 
       goto LABEL_33;
     }
 
 LABEL_14:
-    v26 = [UIFont systemFontOfSize:v24, v51];
+    _fontAdjustedForCurrentContentSizeCategory = [UIFont systemFontOfSize:v24, v51];
     goto LABEL_15;
   }
 
@@ -662,26 +662,26 @@ LABEL_34:
   return v7;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(BKAppearanceFontViewController *)self fonts:a3];
+  v4 = [(BKAppearanceFontViewController *)self fonts:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(BKAppearanceFontViewController *)self fonts];
-  v7 = [v6 objectAtIndex:{objc_msgSend(v5, "row")}];
+  pathCopy = path;
+  fonts = [(BKAppearanceFontViewController *)self fonts];
+  v7 = [fonts objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-  if (![v7 isInstalled] || objc_msgSend(v7, "state") == 2 || (v8 = v5, objc_msgSend(v7, "state") == 4))
+  if (![v7 isInstalled] || objc_msgSend(v7, "state") == 2 || (v8 = pathCopy, objc_msgSend(v7, "state") == 4))
   {
-    v9 = [v7 familyName];
-    v10 = [v9 isEqualToString:&stru_1E7188];
+    familyName = [v7 familyName];
+    v10 = [familyName isEqualToString:&stru_1E7188];
 
-    v8 = v5;
+    v8 = pathCopy;
     if ((v10 & 1) == 0)
     {
 
@@ -692,103 +692,103 @@ LABEL_34:
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BKAppearanceFontViewController *)self fonts];
-  v9 = [v8 objectAtIndex:{objc_msgSend(v6, "row")}];
+  pathCopy = path;
+  viewCopy = view;
+  fonts = [(BKAppearanceFontViewController *)self fonts];
+  v9 = [fonts objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
   [(BKAppearanceFontViewController *)self useSelectedFont:v9];
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 
-  [v7 reloadData];
+  [viewCopy reloadData];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v16 = a4;
-  v7 = a5;
-  v8 = [(BKAppearanceFontViewController *)self theme];
-  [v8 stylizeTableViewCell:v16];
+  cellCopy = cell;
+  pathCopy = path;
+  theme = [(BKAppearanceFontViewController *)self theme];
+  [theme stylizeTableViewCell:cellCopy];
 
-  v9 = [(BKAppearanceFontViewController *)self fonts];
-  v10 = [v7 row];
+  fonts = [(BKAppearanceFontViewController *)self fonts];
+  v10 = [pathCopy row];
 
-  v11 = [v9 objectAtIndex:v10];
+  v11 = [fonts objectAtIndex:v10];
 
-  v12 = [v16 textLabel];
-  v13 = [v12 textColor];
+  textLabel = [cellCopy textLabel];
+  textColor = [textLabel textColor];
 
   if ([v11 state] == 4)
   {
-    v14 = [v13 colorWithAlphaComponent:0.5];
-    v15 = [v16 label];
-    [v15 setTextColor:v14];
+    label2 = [textColor colorWithAlphaComponent:0.5];
+    label = [cellCopy label];
+    [label setTextColor:label2];
   }
 
   else
   {
-    v14 = [v16 label];
-    [v14 setTextColor:v13];
+    label2 = [cellCopy label];
+    [label2 setTextColor:textColor];
   }
 }
 
-- (void)useSelectedFont:(id)a3
+- (void)useSelectedFont:(id)font
 {
-  v12 = a3;
-  v4 = [(BKAppearanceFontViewController *)self styleManager];
-  v5 = [v12 familyName];
-  v6 = [v5 length] != 0;
-  v7 = [(BKAppearanceFontViewController *)self book];
+  fontCopy = font;
+  styleManager = [(BKAppearanceFontViewController *)self styleManager];
+  familyName = [fontCopy familyName];
+  v6 = [familyName length] != 0;
+  book = [(BKAppearanceFontViewController *)self book];
   v8 = [NSNumber numberWithBool:v6];
-  [v7 setUseGlobalContentStyle:v8];
+  [book setUseGlobalContentStyle:v8];
 
-  v9 = [v4 font];
-  LOBYTE(v7) = [v5 isEqualToString:v9];
+  font = [styleManager font];
+  LOBYTE(book) = [familyName isEqualToString:font];
 
-  if (v7)
+  if (book)
   {
-    [v4 notifyStyleChanged];
+    [styleManager notifyStyleChanged];
   }
 
   else
   {
-    [v4 setFont:v5];
-    v10 = [(BKAppearanceFontViewController *)self delegate];
-    v11 = [v12 displayName];
-    [v10 appearanceFontViewController:self didChangeToFontWithName:v11];
+    [styleManager setFont:familyName];
+    delegate = [(BKAppearanceFontViewController *)self delegate];
+    displayName = [fontCopy displayName];
+    [delegate appearanceFontViewController:self didChangeToFontWithName:displayName];
   }
 }
 
-- (void)downloadFont:(id)a3
+- (void)downloadFont:(id)font
 {
-  v4 = a3;
-  v5 = [(BKAppearanceFontViewController *)self fonts];
-  v6 = [v4 tag];
+  fontCopy = font;
+  fonts = [(BKAppearanceFontViewController *)self fonts];
+  v6 = [fontCopy tag];
 
-  v7 = [v5 objectAtIndex:v6];
+  v7 = [fonts objectAtIndex:v6];
 
   self->_shownCannotDownloadFontAlert = 0;
   [v7 download];
 }
 
-- (void)stopDownloadingFont:(id)a3
+- (void)stopDownloadingFont:(id)font
 {
-  v4 = a3;
-  v5 = [(BKAppearanceFontViewController *)self fonts];
-  v6 = [v4 tag];
+  fontCopy = font;
+  fonts = [(BKAppearanceFontViewController *)self fonts];
+  v6 = [fontCopy tag];
 
-  v7 = [v5 objectAtIndex:v6];
+  v7 = [fonts objectAtIndex:v6];
 
   [v7 cancelDownload];
 }
 
-- (void)fontDownloadFailed:(id)a3
+- (void)fontDownloadFailed:(id)failed
 {
   if (!self->_shownCannotDownloadFontAlert)
   {
-    v4 = a3;
+    failedCopy = failed;
     v5 = MGGetBoolAnswer();
     v6 = AEBundle();
     v7 = v6;
@@ -815,9 +815,9 @@ LABEL_34:
 
     [(BKAppearanceFontViewController *)self presentViewController:v11 animated:1 completion:0];
     self->_shownCannotDownloadFontAlert = 1;
-    v15 = [v4 object];
+    object = [failedCopy object];
 
-    [v15 checkStateSynchronously:0];
+    [object checkStateSynchronously:0];
     [(UITableView *)self->_tableView reloadData];
   }
 }

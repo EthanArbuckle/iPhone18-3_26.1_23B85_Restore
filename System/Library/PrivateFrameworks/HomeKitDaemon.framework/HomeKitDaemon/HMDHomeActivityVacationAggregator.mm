@@ -1,25 +1,25 @@
 @interface HMDHomeActivityVacationAggregator
 + (id)logCategory;
-- (BOOL)isStateEquivalentForExistingReport:(id)a3 newReport:(id)a4;
-- (HMDHomeActivityVacationAggregator)initWithDataSource:(id)a3;
-- (HMDHomeActivityVacationAggregator)initWithStorage:(id)a3 dataSource:(id)a4;
+- (BOOL)isStateEquivalentForExistingReport:(id)report newReport:(id)newReport;
+- (HMDHomeActivityVacationAggregator)initWithDataSource:(id)source;
+- (HMDHomeActivityVacationAggregator)initWithStorage:(id)storage dataSource:(id)source;
 - (HMDHomeActivityVacationAggregatorState)computedState;
-- (double)moveToVacationTimeIntervalFromDataSource:(id)a3;
+- (double)moveToVacationTimeIntervalFromDataSource:(id)source;
 - (id)_computedState;
-- (id)_vacationTimestampFromHomeAwayAggregator:(id)a3;
+- (id)_vacationTimestampFromHomeAwayAggregator:(id)aggregator;
 - (id)nextRefreshTimestamp;
 @end
 
 @implementation HMDHomeActivityVacationAggregator
 
-- (BOOL)isStateEquivalentForExistingReport:(id)a3 newReport:(id)a4
+- (BOOL)isStateEquivalentForExistingReport:(id)report newReport:(id)newReport
 {
-  v5 = a3;
-  v6 = a4;
+  reportCopy = report;
+  newReportCopy = newReport;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
+    v7 = reportCopy;
   }
 
   else
@@ -28,7 +28,7 @@
   }
 
   v8 = v7;
-  v9 = v6;
+  v9 = newReportCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -59,8 +59,8 @@
 
   else
   {
-    v13 = [v8 state];
-    v14 = v13 == [v11 state];
+    state = [v8 state];
+    v14 = state == [v11 state];
   }
 
   return v14;
@@ -70,19 +70,19 @@
 {
   v10.receiver = self;
   v10.super_class = HMDHomeActivityVacationAggregator;
-  v3 = [(HMDHomeActivityStateAggregator *)&v10 nextRefreshTimestamp];
-  v4 = [(HMDHomeActivityVacationAggregator *)self homeAwayAggregator];
-  v5 = [v4 computedState];
-  v6 = [(HMDHomeActivityVacationAggregator *)self _vacationTimestampFromHomeAwayAggregator:v5];
+  nextRefreshTimestamp = [(HMDHomeActivityStateAggregator *)&v10 nextRefreshTimestamp];
+  homeAwayAggregator = [(HMDHomeActivityVacationAggregator *)self homeAwayAggregator];
+  computedState = [homeAwayAggregator computedState];
+  v6 = [(HMDHomeActivityVacationAggregator *)self _vacationTimestampFromHomeAwayAggregator:computedState];
 
   if (v6)
   {
-    v7 = [v6 earlierDate:v3];
+    v7 = [v6 earlierDate:nextRefreshTimestamp];
   }
 
   else
   {
-    v7 = v3;
+    v7 = nextRefreshTimestamp;
   }
 
   v8 = v7;
@@ -94,29 +94,29 @@
 {
   v27 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    v7 = [(HMDHomeActivityStateAggregator *)v4 userActivityMap];
+    userActivityMap = [(HMDHomeActivityStateAggregator *)selfCopy userActivityMap];
     *buf = 138543618;
     v24 = v6;
     v25 = 2112;
-    v26 = v7;
+    v26 = userActivityMap;
     _os_log_impl(&dword_229538000, v5, OS_LOG_TYPE_INFO, "%{public}@Computing state from user activity map %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v3);
-  v8 = [(HMDHomeActivityVacationAggregator *)v4 homeAwayAggregator];
-  v9 = [v8 computedState];
-  v10 = [(HMDHomeActivityVacationAggregator *)v4 _vacationTimestampFromHomeAwayAggregator:v9];
+  homeAwayAggregator = [(HMDHomeActivityVacationAggregator *)selfCopy homeAwayAggregator];
+  computedState = [homeAwayAggregator computedState];
+  v10 = [(HMDHomeActivityVacationAggregator *)selfCopy _vacationTimestampFromHomeAwayAggregator:computedState];
 
   if (v10)
   {
-    v11 = [(HMDHomeActivityStateAggregator *)v4 dataSource];
-    v12 = [v11 currentDate];
-    v13 = [v10 compare:v12];
+    dataSource = [(HMDHomeActivityStateAggregator *)selfCopy dataSource];
+    currentDate = [dataSource currentDate];
+    v13 = [v10 compare:currentDate];
 
     if (v13 != 1)
     {
@@ -125,13 +125,13 @@
     }
   }
 
-  v14 = [(HMDHomeActivityStateAggregator *)v4 userActivityMap];
+  userActivityMap2 = [(HMDHomeActivityStateAggregator *)selfCopy userActivityMap];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __51__HMDHomeActivityVacationAggregator__computedState__block_invoke;
   v22[3] = &unk_27866E388;
-  v22[4] = v4;
-  v15 = [v14 na_map:v22];
+  v22[4] = selfCopy;
+  v15 = [userActivityMap2 na_map:v22];
 
   if (![v15 count])
   {
@@ -202,12 +202,12 @@ LABEL_6:
 - (HMDHomeActivityVacationAggregatorState)computedState
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHomeActivityVacationAggregator *)self _computedState];
-  v4 = v3;
+  _computedState = [(HMDHomeActivityVacationAggregator *)self _computedState];
+  v4 = _computedState;
   if (self)
   {
     state = self->_state;
-    if (state == [v3 type])
+    if (state == [_computedState type])
     {
       goto LABEL_11;
     }
@@ -218,26 +218,26 @@ LABEL_6:
     }
   }
 
-  else if (![v3 type])
+  else if (![_computedState type])
   {
     goto LABEL_11;
   }
 
   v6 = -[HMDHomeActivityStateVacationTransitionLogEvent initWithReason:]([HMDHomeActivityStateVacationTransitionLogEvent alloc], "initWithReason:", [v4 changedReason]);
-  v7 = [(HMDHomeActivityStateAggregator *)self dataSource];
-  v8 = [v7 logEventSubmitter];
-  [v8 submitLogEvent:v6];
+  dataSource = [(HMDHomeActivityStateAggregator *)self dataSource];
+  logEventSubmitter = [dataSource logEventSubmitter];
+  [logEventSubmitter submitLogEvent:v6];
 
 LABEL_5:
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
     if (self)
     {
-      v13 = v10->_state;
+      v13 = selfCopy->_state;
     }
 
     else
@@ -257,10 +257,10 @@ LABEL_5:
   }
 
   objc_autoreleasePoolPop(v9);
-  v16 = [v4 type];
+  type = [v4 type];
   if (self)
   {
-    v10->_state = v16;
+    selfCopy->_state = type;
   }
 
 LABEL_11:
@@ -269,16 +269,16 @@ LABEL_11:
   return v4;
 }
 
-- (id)_vacationTimestampFromHomeAwayAggregator:(id)a3
+- (id)_vacationTimestampFromHomeAwayAggregator:(id)aggregator
 {
-  v4 = a3;
-  v5 = [v4 awayChangedTimestamp];
-  if (v5)
+  aggregatorCopy = aggregator;
+  awayChangedTimestamp = [aggregatorCopy awayChangedTimestamp];
+  if (awayChangedTimestamp)
   {
-    v6 = [v4 awayChangedTimestamp];
-    v7 = [(HMDHomeActivityStateAggregator *)self dataSource];
-    [(HMDHomeActivityVacationAggregator *)self moveToVacationTimeIntervalFromDataSource:v7];
-    v8 = [v6 dateByAddingTimeInterval:?];
+    awayChangedTimestamp2 = [aggregatorCopy awayChangedTimestamp];
+    dataSource = [(HMDHomeActivityStateAggregator *)self dataSource];
+    [(HMDHomeActivityVacationAggregator *)self moveToVacationTimeIntervalFromDataSource:dataSource];
+    v8 = [awayChangedTimestamp2 dateByAddingTimeInterval:?];
   }
 
   else
@@ -289,19 +289,19 @@ LABEL_11:
   return v8;
 }
 
-- (double)moveToVacationTimeIntervalFromDataSource:(id)a3
+- (double)moveToVacationTimeIntervalFromDataSource:(id)source
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 preferences];
-  v6 = [v5 preferenceForKey:@"vacationAggregatorDefaultTimerInSec"];
-  v7 = [v6 numberValue];
+  sourceCopy = source;
+  preferences = [sourceCopy preferences];
+  v6 = [preferences preferenceForKey:@"vacationAggregatorDefaultTimerInSec"];
+  numberValue = [v6 numberValue];
 
-  if (v7)
+  if (numberValue)
   {
-    v8 = [v7 integerValue];
+    integerValue = [numberValue integerValue];
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
@@ -309,18 +309,18 @@ LABEL_11:
       v20 = 138543618;
       v21 = v12;
       v22 = 2048;
-      v23 = v8;
+      v23 = integerValue;
       _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_DEBUG, "%{public}@Using user-defined vacation time interval: %ld", &v20, 0x16u);
     }
 
     objc_autoreleasePoolPop(v9);
-    v13 = v8;
+    v13 = integerValue;
   }
 
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy2 = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
@@ -340,11 +340,11 @@ LABEL_11:
   return v13;
 }
 
-- (HMDHomeActivityVacationAggregator)initWithStorage:(id)a3 dataSource:(id)a4
+- (HMDHomeActivityVacationAggregator)initWithStorage:(id)storage dataSource:(id)source
 {
   v5.receiver = self;
   v5.super_class = HMDHomeActivityVacationAggregator;
-  result = [(HMDHomeActivityStateAggregator *)&v5 initWithStorage:a3 dataSource:a4];
+  result = [(HMDHomeActivityStateAggregator *)&v5 initWithStorage:storage dataSource:source];
   if (result)
   {
     result->_state = 0;
@@ -353,11 +353,11 @@ LABEL_11:
   return result;
 }
 
-- (HMDHomeActivityVacationAggregator)initWithDataSource:(id)a3
+- (HMDHomeActivityVacationAggregator)initWithDataSource:(id)source
 {
-  v4 = a3;
-  v5 = [(HMDHomeActivityStateAggregatorStorage *)[HMDHomeActivityVacationAggregatorStorage alloc] initWithDataSource:v4];
-  v6 = [(HMDHomeActivityVacationAggregator *)self initWithStorage:v5 dataSource:v4];
+  sourceCopy = source;
+  v5 = [(HMDHomeActivityStateAggregatorStorage *)[HMDHomeActivityVacationAggregatorStorage alloc] initWithDataSource:sourceCopy];
+  v6 = [(HMDHomeActivityVacationAggregator *)self initWithStorage:v5 dataSource:sourceCopy];
 
   return v6;
 }

@@ -1,23 +1,23 @@
 @interface CRLCanvasRepDragTrackerDelegateWrapper
-- (BOOL)dragTracker:(id)a3 willBeginDraggingReps:(id)a4 atPoint:(CGPoint)a5;
-- (BOOL)dragTrackerContinuedDragging:(id)a3 atPoint:(CGPoint)a4 delegateOffset:(CGPoint *)a5;
-- (CRLCanvasRepDragTrackerDelegateWrapper)initWithInteractiveCanvasController:(id)a3;
-- (id)dragTracker:(id)a3 drawablesToDrag:(id)a4 hitRep:(id)a5;
-- (void)dragTrackerDidFinishDragging:(id)a3 atPoint:(CGPoint)a4;
+- (BOOL)dragTracker:(id)tracker willBeginDraggingReps:(id)reps atPoint:(CGPoint)point;
+- (BOOL)dragTrackerContinuedDragging:(id)dragging atPoint:(CGPoint)point delegateOffset:(CGPoint *)offset;
+- (CRLCanvasRepDragTrackerDelegateWrapper)initWithInteractiveCanvasController:(id)controller;
+- (id)dragTracker:(id)tracker drawablesToDrag:(id)drag hitRep:(id)rep;
+- (void)dragTrackerDidFinishDragging:(id)dragging atPoint:(CGPoint)point;
 @end
 
 @implementation CRLCanvasRepDragTrackerDelegateWrapper
 
-- (CRLCanvasRepDragTrackerDelegateWrapper)initWithInteractiveCanvasController:(id)a3
+- (CRLCanvasRepDragTrackerDelegateWrapper)initWithInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = CRLCanvasRepDragTrackerDelegateWrapper;
   v5 = [(CRLCanvasRepDragTrackerDelegateWrapper *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_interactiveCanvasController, v4);
+    objc_storeWeak(&v5->_interactiveCanvasController, controllerCopy);
     v7 = +[NSMutableSet set];
     itemsToDragInDelegateWrapper = v6->_itemsToDragInDelegateWrapper;
     v6->_itemsToDragInDelegateWrapper = v7;
@@ -26,15 +26,15 @@
   return v6;
 }
 
-- (id)dragTracker:(id)a3 drawablesToDrag:(id)a4 hitRep:(id)a5
+- (id)dragTracker:(id)tracker drawablesToDrag:(id)drag hitRep:(id)rep
 {
-  v6 = a3;
-  v7 = a4;
+  trackerCopy = tracker;
+  dragCopy = drag;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v8 = [dragCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -45,23 +45,23 @@
       {
         if (*v23 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(dragCopy);
         }
 
         v12 = *(*(&v22 + 1) + 8 * i);
         v13 = objc_opt_class();
-        v14 = [v6 rep];
-        v15 = [v14 info];
-        v16 = sub_100014370(v13, v15);
+        v14 = [trackerCopy rep];
+        info = [v14 info];
+        v16 = sub_100014370(v13, info);
 
-        v17 = [v16 parentItem];
-        if (v17)
+        parentItem = [v16 parentItem];
+        if (parentItem)
         {
           if ([v16 isDirectlyAnchoredToTable])
           {
-            v18 = [v16 anchoringTableItemIfAny];
+            anchoringTableItemIfAny = [v16 anchoringTableItemIfAny];
 
-            if (v18 == v17)
+            if (anchoringTableItemIfAny == parentItem)
             {
               [(NSMutableSet *)self->_itemsToDragInDelegateWrapper addObject:v12];
             }
@@ -69,7 +69,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v9 = [dragCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v9);
@@ -80,75 +80,75 @@
   return v19;
 }
 
-- (BOOL)dragTracker:(id)a3 willBeginDraggingReps:(id)a4 atPoint:(CGPoint)a5
+- (BOOL)dragTracker:(id)tracker willBeginDraggingReps:(id)reps atPoint:(CGPoint)point
 {
-  v6 = a3;
+  trackerCopy = tracker;
   v7 = objc_opt_class();
-  v8 = [v6 rep];
-  v9 = [v8 info];
-  v10 = sub_100014370(v7, v9);
+  v8 = [trackerCopy rep];
+  info = [v8 info];
+  v10 = sub_100014370(v7, info);
 
   v11 = [(NSMutableSet *)self->_itemsToDragInDelegateWrapper containsObject:v10];
   if (v11)
   {
-    if (!self->_openedCommandGroup && ([v6 alreadyInCommandGroup] & 1) == 0)
+    if (!self->_openedCommandGroup && ([trackerCopy alreadyInCommandGroup] & 1) == 0)
     {
       self->_openedCommandGroup = 1;
       WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-      v13 = [WeakRetained commandController];
-      [v13 openGroup];
+      commandController = [WeakRetained commandController];
+      [commandController openGroup];
     }
 
     v14 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-    v15 = [v14 commandController];
-    [v15 enableProgressiveEnqueuingInCurrentGroup];
+    commandController2 = [v14 commandController];
+    [commandController2 enableProgressiveEnqueuingInCurrentGroup];
 
     v16 = objc_loadWeakRetained(&self->_interactiveCanvasController);
     v17 = [v16 layoutForInfo:v10];
 
-    v18 = [v17 geometry];
-    v19 = [v18 infoGeometry];
-    v20 = [[_TtC8Freeform25CRLCommandSetInfoGeometry alloc] initWithBoardItem:v10 geometry:v19];
+    geometry = [v17 geometry];
+    infoGeometry = [geometry infoGeometry];
+    v20 = [[_TtC8Freeform25CRLCommandSetInfoGeometry alloc] initWithBoardItem:v10 geometry:infoGeometry];
     v21 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-    v22 = [v21 commandController];
-    [v22 enqueueCommand:v20];
+    commandController3 = [v21 commandController];
+    [commandController3 enqueueCommand:v20];
   }
 
   return v11;
 }
 
-- (BOOL)dragTrackerContinuedDragging:(id)a3 atPoint:(CGPoint)a4 delegateOffset:(CGPoint *)a5
+- (BOOL)dragTrackerContinuedDragging:(id)dragging atPoint:(CGPoint)point delegateOffset:(CGPoint *)offset
 {
-  v6 = [a3 rep];
-  v7 = [v6 info];
+  v6 = [dragging rep];
+  info = [v6 info];
 
-  LOBYTE(self) = [(NSMutableSet *)self->_itemsToDragInDelegateWrapper containsObject:v7];
+  LOBYTE(self) = [(NSMutableSet *)self->_itemsToDragInDelegateWrapper containsObject:info];
   return self;
 }
 
-- (void)dragTrackerDidFinishDragging:(id)a3 atPoint:(CGPoint)a4
+- (void)dragTrackerDidFinishDragging:(id)dragging atPoint:(CGPoint)point
 {
-  v5 = a3;
+  draggingCopy = dragging;
   itemsToDragInDelegateWrapper = self->_itemsToDragInDelegateWrapper;
-  v14 = v5;
-  v7 = [v5 rep];
-  v8 = [v7 info];
-  LODWORD(itemsToDragInDelegateWrapper) = [(NSMutableSet *)itemsToDragInDelegateWrapper containsObject:v8];
+  v14 = draggingCopy;
+  v7 = [draggingCopy rep];
+  info = [v7 info];
+  LODWORD(itemsToDragInDelegateWrapper) = [(NSMutableSet *)itemsToDragInDelegateWrapper containsObject:info];
 
   if (itemsToDragInDelegateWrapper)
   {
     v9 = self->_itemsToDragInDelegateWrapper;
     v10 = [v14 rep];
-    v11 = [v10 info];
-    [(NSMutableSet *)v9 removeObject:v11];
+    info2 = [v10 info];
+    [(NSMutableSet *)v9 removeObject:info2];
 
     if (![(NSMutableSet *)self->_itemsToDragInDelegateWrapper count]&& self->_openedCommandGroup)
     {
       self->_openedCommandGroup = 0;
       WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-      v13 = [WeakRetained commandController];
+      commandController = [WeakRetained commandController];
 
-      [v13 closeGroup];
+      [commandController closeGroup];
     }
   }
 }

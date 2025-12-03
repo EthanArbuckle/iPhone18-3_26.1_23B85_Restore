@@ -1,10 +1,10 @@
 @interface _EARSpeechRecognitionToken
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)ipaPhoneSequence;
 - (NSString)phoneSequence;
 - (NSString)tokenName;
-- (_EARSpeechRecognitionToken)initWithTokenName:(id)a3 start:(double)a4 end:(double)a5 silenceStart:(double)a6 confidence:(double)a7 hasSpaceAfter:(BOOL)a8 hasSpaceBefore:(BOOL)a9 phoneSequence:(id)a10 ipaPhoneSequence:(id)a11 appendedAutoPunctuation:(BOOL)a12;
-- (id)_initWithQuasarToken:(const void *)a3;
+- (_EARSpeechRecognitionToken)initWithTokenName:(id)name start:(double)start end:(double)end silenceStart:(double)silenceStart confidence:(double)confidence hasSpaceAfter:(BOOL)after hasSpaceBefore:(BOOL)before phoneSequence:(id)self0 ipaPhoneSequence:(id)self1 appendedAutoPunctuation:(BOOL)self2;
+- (id)_initWithQuasarToken:(const void *)token;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -13,19 +13,19 @@
 
 - (unint64_t)hash
 {
-  v2 = [(_EARSpeechRecognitionToken *)self tokenName];
-  v3 = [v2 hash];
+  tokenName = [(_EARSpeechRecognitionToken *)self tokenName];
+  v3 = [tokenName hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = quasar::Token::operator==(&self->_quasarToken.tokenName.__rep_.__l.__data_, v4 + 1);
+    v5 = quasar::Token::operator==(&self->_quasarToken.tokenName.__rep_.__l.__data_, equalCopy + 1);
   }
 
   else
@@ -36,15 +36,15 @@
   return v5;
 }
 
-- (_EARSpeechRecognitionToken)initWithTokenName:(id)a3 start:(double)a4 end:(double)a5 silenceStart:(double)a6 confidence:(double)a7 hasSpaceAfter:(BOOL)a8 hasSpaceBefore:(BOOL)a9 phoneSequence:(id)a10 ipaPhoneSequence:(id)a11 appendedAutoPunctuation:(BOOL)a12
+- (_EARSpeechRecognitionToken)initWithTokenName:(id)name start:(double)start end:(double)end silenceStart:(double)silenceStart confidence:(double)confidence hasSpaceAfter:(BOOL)after hasSpaceBefore:(BOOL)before phoneSequence:(id)self0 ipaPhoneSequence:(id)self1 appendedAutoPunctuation:(BOOL)self2
 {
-  v22 = a3;
-  v23 = a10;
-  v24 = a11;
-  if (v22)
+  nameCopy = name;
+  sequenceCopy = sequence;
+  phoneSequenceCopy = phoneSequence;
+  if (nameCopy)
   {
-    [v22 ear_toString];
-    if (v23)
+    [nameCopy ear_toString];
+    if (sequenceCopy)
     {
       goto LABEL_3;
     }
@@ -52,7 +52,7 @@
 LABEL_6:
     v33 = 0uLL;
     v34 = 0;
-    if (v24)
+    if (phoneSequenceCopy)
     {
       goto LABEL_4;
     }
@@ -62,17 +62,17 @@ LABEL_6:
 
   v35 = 0uLL;
   v36 = 0;
-  if (!v23)
+  if (!sequenceCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  [v23 ear_toString];
-  if (v24)
+  [sequenceCopy ear_toString];
+  if (phoneSequenceCopy)
   {
 LABEL_4:
-    [v24 ear_toString];
+    [phoneSequenceCopy ear_toString];
     goto LABEL_8;
   }
 
@@ -82,8 +82,8 @@ LABEL_7:
 LABEL_8:
   memset(v30, 0, sizeof(v30));
   std::string::basic_string[abi:ne200100]<0>(__p, "");
-  v25 = a7;
-  quasar::Token::Token(v37, &v35, (a4 * 1000.0), (a5 * 1000.0), (a6 * 1000.0), a8, a9, &v33, v25, &v31, v30, a12, __p, 0, 0, 0);
+  confidenceCopy = confidence;
+  quasar::Token::Token(v37, &v35, (start * 1000.0), (end * 1000.0), (silenceStart * 1000.0), after, before, &v33, confidenceCopy, &v31, v30, punctuation, __p, 0, 0, 0);
   if (v29 < 0)
   {
     operator delete(__p[0]);
@@ -139,7 +139,7 @@ LABEL_8:
   return v26;
 }
 
-- (id)_initWithQuasarToken:(const void *)a3
+- (id)_initWithQuasarToken:(const void *)token
 {
   v7.receiver = self;
   v7.super_class = _EARSpeechRecognitionToken;
@@ -147,7 +147,7 @@ LABEL_8:
   v5 = v4;
   if (v4)
   {
-    quasar::Token::operator=(&v4->_quasarToken, a3);
+    quasar::Token::operator=(&v4->_quasarToken, token);
   }
 
   return v5;
@@ -201,7 +201,7 @@ LABEL_8:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(_EARSpeechRecognitionToken *)self tokenName];
+  tokenName = [(_EARSpeechRecognitionToken *)self tokenName];
   [(_EARSpeechRecognitionToken *)self start];
   v6 = v5;
   [(_EARSpeechRecognitionToken *)self silenceStart];
@@ -210,17 +210,17 @@ LABEL_8:
   v10 = v9;
   [(_EARSpeechRecognitionToken *)self confidence];
   v12 = v11;
-  v13 = [(_EARSpeechRecognitionToken *)self hasSpaceAfter];
-  v14 = [(_EARSpeechRecognitionToken *)self hasSpaceBefore];
-  v15 = [(_EARSpeechRecognitionToken *)self phoneSequence];
-  v16 = [(_EARSpeechRecognitionToken *)self ipaPhoneSequence];
-  v17 = [(_EARSpeechRecognitionToken *)self appendedAutoPunctuation];
-  v18 = [(_EARSpeechRecognitionToken *)self prependedAutoPunctuation];
-  v19 = [(_EARSpeechRecognitionToken *)self isModifiedByAutoPunctuation];
+  hasSpaceAfter = [(_EARSpeechRecognitionToken *)self hasSpaceAfter];
+  hasSpaceBefore = [(_EARSpeechRecognitionToken *)self hasSpaceBefore];
+  phoneSequence = [(_EARSpeechRecognitionToken *)self phoneSequence];
+  ipaPhoneSequence = [(_EARSpeechRecognitionToken *)self ipaPhoneSequence];
+  appendedAutoPunctuation = [(_EARSpeechRecognitionToken *)self appendedAutoPunctuation];
+  prependedAutoPunctuation = [(_EARSpeechRecognitionToken *)self prependedAutoPunctuation];
+  isModifiedByAutoPunctuation = [(_EARSpeechRecognitionToken *)self isModifiedByAutoPunctuation];
   [(_EARSpeechRecognitionToken *)self graphCost];
   v21 = v20;
   [(_EARSpeechRecognitionToken *)self acousticCost];
-  v23 = [v3 stringWithFormat:@"<_EARSpeechRecognitionToken> tokenName=%@, start=%f, silenceStart=%f, end=%f, confidence=%f, hasSpaceAfter=%d, hasSpaceBefore=%d, phoneSeq=%@, ipaPhoneSeq=%@, appendedAutoPunctuation=%d, prependedAutoPunctuation=%d, isModifiedByAutoPunctuation=%d, graphCost=%f, acousticCost=%f", v4, v6, v8, v10, v12, v13, v14, v15, v16, v17, v18, v19, v21, v22];
+  v23 = [v3 stringWithFormat:@"<_EARSpeechRecognitionToken> tokenName=%@, start=%f, silenceStart=%f, end=%f, confidence=%f, hasSpaceAfter=%d, hasSpaceBefore=%d, phoneSeq=%@, ipaPhoneSeq=%@, appendedAutoPunctuation=%d, prependedAutoPunctuation=%d, isModifiedByAutoPunctuation=%d, graphCost=%f, acousticCost=%f", tokenName, v6, v8, v10, v12, hasSpaceAfter, hasSpaceBefore, phoneSequence, ipaPhoneSequence, appendedAutoPunctuation, prependedAutoPunctuation, isModifiedByAutoPunctuation, v21, v22];
 
   return v23;
 }

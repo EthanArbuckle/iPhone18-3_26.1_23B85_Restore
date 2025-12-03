@@ -23,7 +23,7 @@
   v13 = [v10 stringByAppendingString:v7];
   v14 = [v12 stringByAppendingString:v8];
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
-  v16 = [a1 initWithCandidate:v13 forInput:v14 mecabraCandidatePointerValue:v15 withFlags:FlagsForCandidate()];
+  v16 = [self initWithCandidate:v13 forInput:v14 mecabraCandidatePointerValue:v15 withFlags:FlagsForCandidate()];
 
   if (v16)
   {

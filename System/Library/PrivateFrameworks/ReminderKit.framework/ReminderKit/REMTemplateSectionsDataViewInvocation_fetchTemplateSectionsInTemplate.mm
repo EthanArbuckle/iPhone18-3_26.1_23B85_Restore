@@ -1,72 +1,72 @@
 @interface REMTemplateSectionsDataViewInvocation_fetchTemplateSectionsInTemplate
-- (BOOL)isEqual:(id)a3;
-- (REMTemplateSectionsDataViewInvocation_fetchTemplateSectionsInTemplate)initWithCoder:(id)a3;
-- (REMTemplateSectionsDataViewInvocation_fetchTemplateSectionsInTemplate)initWithParentTemplateObjectID:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMTemplateSectionsDataViewInvocation_fetchTemplateSectionsInTemplate)initWithCoder:(id)coder;
+- (REMTemplateSectionsDataViewInvocation_fetchTemplateSectionsInTemplate)initWithParentTemplateObjectID:(id)d;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMTemplateSectionsDataViewInvocation_fetchTemplateSectionsInTemplate
 
-- (REMTemplateSectionsDataViewInvocation_fetchTemplateSectionsInTemplate)initWithParentTemplateObjectID:(id)a3
+- (REMTemplateSectionsDataViewInvocation_fetchTemplateSectionsInTemplate)initWithParentTemplateObjectID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = REMTemplateSectionsDataViewInvocation_fetchTemplateSectionsInTemplate;
   v6 = [(REMStoreInvocationValueStorage *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_templateObjectID, a3);
+    objc_storeStrong(&v6->_templateObjectID, d);
   }
 
   return v7;
 }
 
-- (REMTemplateSectionsDataViewInvocation_fetchTemplateSectionsInTemplate)initWithCoder:(id)a3
+- (REMTemplateSectionsDataViewInvocation_fetchTemplateSectionsInTemplate)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"templateObjectID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"templateObjectID"];
 
   if (v5)
   {
     self = [(REMTemplateSectionsDataViewInvocation_fetchTemplateSectionsInTemplate *)self initWithParentTemplateObjectID:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMTemplateSectionsDataViewInvocation_fetchTemplateSectionsInTemplate *)self templateObjectID];
-  [v4 encodeObject:v5 forKey:@"templateObjectID"];
+  coderCopy = coder;
+  templateObjectID = [(REMTemplateSectionsDataViewInvocation_fetchTemplateSectionsInTemplate *)self templateObjectID];
+  [coderCopy encodeObject:templateObjectID forKey:@"templateObjectID"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(REMTemplateSectionsDataViewInvocation_fetchTemplateSectionsInTemplate *)self templateObjectID];
-    v6 = [v4 templateObjectID];
-    if (v5 == v6)
+    templateObjectID = [(REMTemplateSectionsDataViewInvocation_fetchTemplateSectionsInTemplate *)self templateObjectID];
+    templateObjectID2 = [equalCopy templateObjectID];
+    if (templateObjectID == templateObjectID2)
     {
       v9 = 1;
     }
 
     else
     {
-      v7 = [(REMTemplateSectionsDataViewInvocation_fetchTemplateSectionsInTemplate *)self templateObjectID];
-      v8 = [v4 templateObjectID];
-      v9 = [v7 isEqual:v8];
+      templateObjectID3 = [(REMTemplateSectionsDataViewInvocation_fetchTemplateSectionsInTemplate *)self templateObjectID];
+      templateObjectID4 = [equalCopy templateObjectID];
+      v9 = [templateObjectID3 isEqual:templateObjectID4];
     }
   }
 
@@ -80,8 +80,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(REMTemplateSectionsDataViewInvocation_fetchTemplateSectionsInTemplate *)self templateObjectID];
-  v3 = [v2 hash];
+  templateObjectID = [(REMTemplateSectionsDataViewInvocation_fetchTemplateSectionsInTemplate *)self templateObjectID];
+  v3 = [templateObjectID hash];
 
   return v3;
 }

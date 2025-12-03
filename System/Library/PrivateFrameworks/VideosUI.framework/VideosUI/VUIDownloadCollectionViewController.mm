@@ -1,7 +1,7 @@
 @interface VUIDownloadCollectionViewController
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (VUIDownloadCollectionViewController)initWithDataSource:(id)a3;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (VUIDownloadCollectionViewController)initWithDataSource:(id)source;
 - (double)_computeBottomMargin;
 - (id)_configureAlertController;
 - (id)_createCollectionView;
@@ -13,45 +13,45 @@
 - (void)_batchSelectToggled;
 - (void)_clearSelections;
 - (void)_configureNavigationBarForEditingMode;
-- (void)_deleteDownloadEntities:(id)a3;
-- (void)_deleteMediaEntitiesInDownloadEntities:(id)a3;
+- (void)_deleteDownloadEntities:(id)entities;
+- (void)_deleteMediaEntitiesInDownloadEntities:(id)entities;
 - (void)_editToggled;
 - (void)_enterEditingMode;
 - (void)_exitEditingMode;
 - (void)_selectAllCells;
 - (void)_toggleRightBarEditItemIfNeeded;
 - (void)_updateAllVisibleCellsForEditingMode;
-- (void)_updateLayoutForSize:(CGSize)a3;
+- (void)_updateLayoutForSize:(CGSize)size;
 - (void)_updateNavigationBarPadding;
 - (void)_updateSelectAllBarButtonItemIfNecessary;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)downloadCellDidRequestCancelDownload:(id)a3;
-- (void)downloadManager:(id)a3 downloadedFetchDidFinishWithEntities:(id)a4;
-- (void)downloadManager:(id)a3 downloadsDidChange:(id)a4;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)downloadCellDidRequestCancelDownload:(id)download;
+- (void)downloadManager:(id)manager downloadedFetchDidFinishWithEntities:(id)entities;
+- (void)downloadManager:(id)manager downloadsDidChange:(id)change;
 - (void)loadView;
-- (void)setDownloadEntities:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setDownloadEntities:(id)entities;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation VUIDownloadCollectionViewController
 
-- (VUIDownloadCollectionViewController)initWithDataSource:(id)a3
+- (VUIDownloadCollectionViewController)initWithDataSource:(id)source
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sourceCopy = source;
   v19.receiver = self;
   v19.super_class = VUIDownloadCollectionViewController;
   v5 = [(VUIDownloadCollectionViewController *)&v19 init];
   v6 = v5;
   if (v5)
   {
-    [(VUIDownloadCollectionViewController *)v5 setDownloadDataSource:v4];
+    [(VUIDownloadCollectionViewController *)v5 setDownloadDataSource:sourceCopy];
     v7 = +[VUILocalizationManager sharedInstance];
     v8 = [v7 localizedStringForKey:@"DOWNLOADED"];
     [(VUIDownloadCollectionViewController *)v6 setTitle:v8];
@@ -66,9 +66,9 @@
     v6->_isEditing = 0;
     v6->_isSelectingAll = 0;
     v6->_lastViewWidth = 0.0;
-    v11 = [(VUIDownloadCollectionViewController *)v6 view];
+    view = [(VUIDownloadCollectionViewController *)v6 view];
     v12 = [MEMORY[0x1E69DF678] makeAccessibilityIdentifierString:*MEMORY[0x1E69DF7C8] additionalString:@"Library.id=Downloaded"];
-    [v11 setAccessibilityIdentifier:v12];
+    [view setAccessibilityIdentifier:v12];
 
     objc_initWeak(&location, v6);
     v20[0] = objc_opt_class();
@@ -95,39 +95,39 @@ void __58__VUIDownloadCollectionViewController_initWithDataSource___block_invoke
   [WeakRetained _updateLayoutForSize:{v2, v3}];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v16.receiver = self;
   v16.super_class = VUIDownloadCollectionViewController;
   [(VUIDownloadCollectionViewController *)&v16 viewWillAppear:?];
   v5 = self->_collectionView;
-  v6 = [(VUILegacyCollectionView *)v5 indexPathsForSelectedItems];
-  v7 = [v6 firstObject];
+  indexPathsForSelectedItems = [(VUILegacyCollectionView *)v5 indexPathsForSelectedItems];
+  firstObject = [indexPathsForSelectedItems firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    v8 = [(VUIDownloadCollectionViewController *)self transitionCoordinator];
-    if (v8)
+    transitionCoordinator = [(VUIDownloadCollectionViewController *)self transitionCoordinator];
+    if (transitionCoordinator)
     {
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __54__VUIDownloadCollectionViewController_viewWillAppear___block_invoke;
       v12[3] = &unk_1E872D878;
       v13 = v5;
-      v14 = v7;
-      v15 = a3;
+      v14 = firstObject;
+      appearCopy = appear;
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __54__VUIDownloadCollectionViewController_viewWillAppear___block_invoke_2;
       v9[3] = &unk_1E872D8A0;
       v10 = v13;
       v11 = v14;
-      [v8 animateAlongsideTransition:v12 completion:v9];
+      [transitionCoordinator animateAlongsideTransition:v12 completion:v9];
     }
 
     else
     {
-      [(VUILegacyCollectionView *)v5 deselectItemAtIndexPath:v7 animated:1];
+      [(VUILegacyCollectionView *)v5 deselectItemAtIndexPath:firstObject animated:1];
     }
   }
 }
@@ -151,14 +151,14 @@ uint64_t __54__VUIDownloadCollectionViewController_viewWillAppear___block_invoke
   v33.receiver = self;
   v33.super_class = VUIDownloadCollectionViewController;
   [(VUIDownloadCollectionViewController *)&v33 loadView];
-  v3 = [(VUIDownloadCollectionViewController *)self contentPresenter];
-  [v3 setRootViewForViewController:self];
+  contentPresenter = [(VUIDownloadCollectionViewController *)self contentPresenter];
+  [contentPresenter setRootViewForViewController:self];
 
-  v4 = [(VUIDownloadCollectionViewController *)self _createCollectionView];
-  [(VUIDownloadCollectionViewController *)self setCollectionView:v4];
+  _createCollectionView = [(VUIDownloadCollectionViewController *)self _createCollectionView];
+  [(VUIDownloadCollectionViewController *)self setCollectionView:_createCollectionView];
 
-  v5 = [(VUIDownloadCollectionViewController *)self _createDiffableDataSource];
-  [(VUIDownloadCollectionViewController *)self setDiffableDataSource:v5];
+  _createDiffableDataSource = [(VUIDownloadCollectionViewController *)self _createDiffableDataSource];
+  [(VUIDownloadCollectionViewController *)self setDiffableDataSource:_createDiffableDataSource];
 
   if (([MEMORY[0x1E69DC668] isRunningInStoreDemoMode] & 1) == 0)
   {
@@ -169,8 +169,8 @@ uint64_t __54__VUIDownloadCollectionViewController_viewWillAppear___block_invoke
     rightBarButtonItem = self->_rightBarButtonItem;
     self->_rightBarButtonItem = v9;
 
-    v11 = [(VUIDownloadCollectionViewController *)self navigationItem];
-    [v11 setRightBarButtonItem:self->_rightBarButtonItem];
+    navigationItem = [(VUIDownloadCollectionViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:self->_rightBarButtonItem];
 
     v12 = objc_alloc(MEMORY[0x1E69DC708]);
     v13 = +[VUILocalizationManager sharedInstance];
@@ -180,10 +180,10 @@ uint64_t __54__VUIDownloadCollectionViewController_viewWillAppear___block_invoke
     self->_selectAllBarButtonItem = v15;
   }
 
-  v17 = [(VUIDownloadCollectionViewController *)self navigationItem];
-  v18 = [v17 leftBarButtonItem];
+  navigationItem2 = [(VUIDownloadCollectionViewController *)self navigationItem];
+  leftBarButtonItem = [navigationItem2 leftBarButtonItem];
   backBarButtonItem = self->_backBarButtonItem;
-  self->_backBarButtonItem = v18;
+  self->_backBarButtonItem = leftBarButtonItem;
 
   v20 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel__cancelPressed];
   leftBarButtonItem = self->_leftBarButtonItem;
@@ -219,12 +219,12 @@ uint64_t __54__VUIDownloadCollectionViewController_viewWillAppear___block_invoke
     [v24 isFullTVAppEnabledwithCompletion:v28];
   }
 
-  v25 = [(VUIDownloadCollectionViewController *)self contentPresenter];
-  [v25 setCurrentContentViewType:1];
+  contentPresenter2 = [(VUIDownloadCollectionViewController *)self contentPresenter];
+  [contentPresenter2 setCurrentContentViewType:1];
 
-  v26 = [(VUIDownloadCollectionViewController *)self contentPresenter];
-  v27 = [(VUIDownloadCollectionViewController *)self collectionView];
-  [v26 setContentView:v27];
+  contentPresenter3 = [(VUIDownloadCollectionViewController *)self contentPresenter];
+  collectionView = [(VUIDownloadCollectionViewController *)self collectionView];
+  [contentPresenter3 setContentView:collectionView];
 
   objc_destroyWeak(&v31);
   objc_destroyWeak(&location);
@@ -316,15 +316,15 @@ void __47__VUIDownloadCollectionViewController_loadView__block_invoke_3(uint64_t
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = VUIDownloadCollectionViewController;
-  [(VUIDownloadCollectionViewController *)&v6 viewDidAppear:a3];
+  [(VUIDownloadCollectionViewController *)&v6 viewDidAppear:appear];
   [(VUIDownloadCollectionViewController *)self _updateNavigationBarPadding];
-  v4 = [(VUIDownloadCollectionViewController *)self navigationController];
-  v5 = [v4 navigationBar];
-  [v5 sizeToFit];
+  navigationController = [(VUIDownloadCollectionViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar sizeToFit];
 
   [VUILibraryMetrics recordPageEventWithPageType:@"LibraryDownloaded"];
 }
@@ -334,42 +334,42 @@ void __47__VUIDownloadCollectionViewController_loadView__block_invoke_3(uint64_t
   v18.receiver = self;
   v18.super_class = VUIDownloadCollectionViewController;
   [(VUIDownloadCollectionViewController *)&v18 viewDidLoad];
-  v3 = [(VUIDownloadCollectionViewController *)self downloadDataSource];
-  [v3 setDownloadDelegate:self];
+  downloadDataSource = [(VUIDownloadCollectionViewController *)self downloadDataSource];
+  [downloadDataSource setDownloadDelegate:self];
 
-  v4 = [(VUIDownloadCollectionViewController *)self downloadDataSource];
-  v5 = [v4 hasCompletedInitialFetch];
+  downloadDataSource2 = [(VUIDownloadCollectionViewController *)self downloadDataSource];
+  hasCompletedInitialFetch = [downloadDataSource2 hasCompletedInitialFetch];
 
-  if (v5)
+  if (hasCompletedInitialFetch)
   {
-    v6 = [(VUIDownloadCollectionViewController *)self downloadDataSource];
-    v7 = [v6 downloadEntities];
-    v8 = [v7 mutableCopy];
+    downloadDataSource3 = [(VUIDownloadCollectionViewController *)self downloadDataSource];
+    downloadEntities = [downloadDataSource3 downloadEntities];
+    v8 = [downloadEntities mutableCopy];
     [(VUIDownloadCollectionViewController *)self setDownloadEntities:v8];
 
-    v9 = [(VUIDownloadCollectionViewController *)self downloadEntities];
-    v10 = [v9 count];
+    downloadEntities2 = [(VUIDownloadCollectionViewController *)self downloadEntities];
+    v10 = [downloadEntities2 count];
 
-    v11 = [(VUIDownloadCollectionViewController *)self contentPresenter];
-    v12 = v11;
+    contentPresenter = [(VUIDownloadCollectionViewController *)self contentPresenter];
+    diffableDataSource = contentPresenter;
     if (v10)
     {
-      v13 = [v11 currentContentViewType];
+      currentContentViewType = [contentPresenter currentContentViewType];
 
-      if (v13 != 3)
+      if (currentContentViewType != 3)
       {
-        v14 = [(VUIDownloadCollectionViewController *)self contentPresenter];
-        [v14 setCurrentContentViewType:3];
+        contentPresenter2 = [(VUIDownloadCollectionViewController *)self contentPresenter];
+        [contentPresenter2 setCurrentContentViewType:3];
       }
 
-      v12 = [(VUIDownloadCollectionViewController *)self diffableDataSource];
-      v15 = [(VUIDownloadCollectionViewController *)self _createDiffableDataSourceSnapshot];
-      [v12 applySnapshot:v15 animatingDifferences:v13 == 3 completion:0];
+      diffableDataSource = [(VUIDownloadCollectionViewController *)self diffableDataSource];
+      _createDiffableDataSourceSnapshot = [(VUIDownloadCollectionViewController *)self _createDiffableDataSourceSnapshot];
+      [diffableDataSource applySnapshot:_createDiffableDataSourceSnapshot animatingDifferences:currentContentViewType == 3 completion:0];
     }
 
     else
     {
-      [v11 setCurrentContentViewType:2];
+      [contentPresenter setCurrentContentViewType:2];
     }
   }
 
@@ -382,8 +382,8 @@ void __47__VUIDownloadCollectionViewController_loadView__block_invoke_3(uint64_t
       _os_log_impl(&dword_1E323F000, v16, OS_LOG_TYPE_DEFAULT, "[VUIDownloadCollectionViewController] Fetching downloads", v17, 2u);
     }
 
-    v12 = [(VUIDownloadCollectionViewController *)self downloadDataSource];
-    [v12 startFetch];
+    diffableDataSource = [(VUIDownloadCollectionViewController *)self downloadDataSource];
+    [diffableDataSource startFetch];
   }
 }
 
@@ -392,28 +392,28 @@ void __47__VUIDownloadCollectionViewController_loadView__block_invoke_3(uint64_t
   v8.receiver = self;
   v8.super_class = VUIDownloadCollectionViewController;
   [(VUIDownloadCollectionViewController *)&v8 viewDidLayoutSubviews];
-  v3 = [(VUIDownloadCollectionViewController *)self contentPresenter];
-  v4 = [(VUIDownloadCollectionViewController *)self view];
-  [v4 bounds];
-  [v3 configureCurrentViewFrameForBounds:?];
+  contentPresenter = [(VUIDownloadCollectionViewController *)self contentPresenter];
+  view = [(VUIDownloadCollectionViewController *)self view];
+  [view bounds];
+  [contentPresenter configureCurrentViewFrameForBounds:?];
 
-  v5 = [(VUIDownloadCollectionViewController *)self view];
-  [v5 bounds];
+  view2 = [(VUIDownloadCollectionViewController *)self view];
+  [view2 bounds];
   [(VUIDownloadCollectionViewController *)self _updateLayoutForSize:v6, v7];
 
   [(VUIDownloadCollectionViewController *)self _updateNavigationBarPadding];
 }
 
-- (void)setDownloadEntities:(id)a3
+- (void)setDownloadEntities:(id)entities
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  entitiesCopy = entities;
+  array = [MEMORY[0x1E695DF70] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v4;
+  v6 = entitiesCopy;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
@@ -429,25 +429,25 @@ void __47__VUIDownloadCollectionViewController_loadView__block_invoke_3(uint64_t
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
-        v12 = [v11 identifier];
-        if (v12)
+        identifier = [v11 identifier];
+        if (identifier)
         {
-          v13 = [(VUIDownloadCollectionViewController *)self identifierToDownloadEntityDictionary];
-          v14 = [v13 objectForKey:v12];
+          identifierToDownloadEntityDictionary = [(VUIDownloadCollectionViewController *)self identifierToDownloadEntityDictionary];
+          v14 = [identifierToDownloadEntityDictionary objectForKey:identifier];
 
           if (v14)
           {
-            v15 = [v11 mediaEntities];
-            v16 = [v15 copy];
+            mediaEntities = [v11 mediaEntities];
+            v16 = [mediaEntities copy];
             [v14 setMediaEntities:v16];
 
-            v17 = v5;
+            v17 = array;
             v18 = v14;
           }
 
           else
           {
-            v17 = v5;
+            v17 = array;
             v18 = v11;
           }
 
@@ -462,10 +462,10 @@ void __47__VUIDownloadCollectionViewController_loadView__block_invoke_3(uint64_t
   }
 
   downloadEntities = self->_downloadEntities;
-  self->_downloadEntities = v5;
+  self->_downloadEntities = array;
 
-  v20 = [(VUIDownloadCollectionViewController *)self _createIdentifierToDownloadEntityDictionary];
-  [(VUIDownloadCollectionViewController *)self setIdentifierToDownloadEntityDictionary:v20];
+  _createIdentifierToDownloadEntityDictionary = [(VUIDownloadCollectionViewController *)self _createIdentifierToDownloadEntityDictionary];
+  [(VUIDownloadCollectionViewController *)self setIdentifierToDownloadEntityDictionary:_createIdentifierToDownloadEntityDictionary];
 
   [(VUIDownloadCollectionViewController *)self _toggleRightBarEditItemIfNeeded];
 }
@@ -473,11 +473,11 @@ void __47__VUIDownloadCollectionViewController_loadView__block_invoke_3(uint64_t
 - (void)_toggleRightBarEditItemIfNeeded
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [(VUIDownloadCollectionViewController *)self downloadEntities];
-  v4 = [v3 count];
+  downloadEntities = [(VUIDownloadCollectionViewController *)self downloadEntities];
+  v4 = [downloadEntities count];
 
-  v5 = [(VUIDownloadCollectionViewController *)self navigationItem];
-  v6 = v5;
+  navigationItem = [(VUIDownloadCollectionViewController *)self navigationItem];
+  v6 = navigationItem;
   if (v4)
   {
     v8[0] = self->_rightBarButtonItem;
@@ -487,24 +487,24 @@ void __47__VUIDownloadCollectionViewController_loadView__block_invoke_3(uint64_t
 
   else
   {
-    [v5 setRightBarButtonItems:MEMORY[0x1E695E0F0]];
+    [navigationItem setRightBarButtonItems:MEMORY[0x1E695E0F0]];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = VUIDownloadCollectionViewController;
-  v7 = a4;
-  [(VUIDownloadCollectionViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(VUIDownloadCollectionViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __90__VUIDownloadCollectionViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_1E872E788;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 void __90__VUIDownloadCollectionViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -515,50 +515,50 @@ void __90__VUIDownloadCollectionViewController_viewWillTransitionToSize_withTran
   [v1 _updateLayoutForSize:{v2, v3}];
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v9 = a4;
-  v7 = a5;
-  [v9 setEditing:{-[VUIDownloadCollectionViewController isEditing](self, "isEditing")}];
+  cellCopy = cell;
+  pathCopy = path;
+  [cellCopy setEditing:{-[VUIDownloadCollectionViewController isEditing](self, "isEditing")}];
   if ([(VUIDownloadCollectionViewController *)self isEditing]&& [(VUIDownloadCollectionViewController *)self isSelectingAll])
   {
-    v8 = [(VUIDownloadCollectionViewController *)self collectionView];
-    [v8 selectItemAtIndexPath:v7 animated:1 scrollPosition:0];
+    collectionView = [(VUIDownloadCollectionViewController *)self collectionView];
+    [collectionView selectItemAtIndexPath:pathCopy animated:1 scrollPosition:0];
 
-    [v9 setSelected:1];
+    [cellCopy setSelected:1];
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v96[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if ([(VUIDownloadCollectionViewController *)self isEditing])
   {
-    v8 = [v6 cellForItemAtIndexPath:v7];
+    v8 = [viewCopy cellForItemAtIndexPath:pathCopy];
     [v8 setSelected:1 animated:1];
     [(VUIDownloadCollectionViewController *)self _updateSelectAllBarButtonItemIfNecessary];
   }
 
   else
   {
-    [v6 deselectItemAtIndexPath:v7 animated:0];
-    v9 = [(VUIDownloadCollectionViewController *)self diffableDataSource];
-    v10 = [v9 itemIdentifierForIndexPath:v7];
+    [viewCopy deselectItemAtIndexPath:pathCopy animated:0];
+    diffableDataSource = [(VUIDownloadCollectionViewController *)self diffableDataSource];
+    rightBarButtonItem2 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
-    v11 = [(VUIDownloadCollectionViewController *)self identifierToDownloadEntityDictionary];
-    v83 = [v11 objectForKey:v10];
+    identifierToDownloadEntityDictionary = [(VUIDownloadCollectionViewController *)self identifierToDownloadEntityDictionary];
+    v83 = [identifierToDownloadEntityDictionary objectForKey:rightBarButtonItem2];
 
-    v12 = [v83 mediaEntities];
-    v13 = [v12 firstObject];
+    mediaEntities = [v83 mediaEntities];
+    firstObject = [mediaEntities firstObject];
 
-    if (!v13)
+    if (!firstObject)
     {
       v24 = VUIDefaultLogObject();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
-        [VUIDownloadCollectionViewController collectionView:v10 didSelectItemAtIndexPath:v24];
+        [VUIDownloadCollectionViewController collectionView:rightBarButtonItem2 didSelectItemAtIndexPath:v24];
       }
 
       goto LABEL_37;
@@ -568,25 +568,25 @@ void __90__VUIDownloadCollectionViewController_viewWillTransitionToSize_withTran
     {
       if ([v83 downloadType] == 1 || objc_msgSend(v83, "downloadType") == 2)
       {
-        [VUILibraryMetrics recordClickOnMediaEntity:v13];
-        v14 = [[VUIDownloadShowDataSource alloc] initWithMediaEntity:v13];
-        v15 = [v13 showIdentifier];
-        v16 = [VUIMediaEntityFetchRequest seasonsFetchRequestWithShowIdentifier:v15];
-        v17 = [v13 mediaLibrary];
-        v18 = [VUIMediaEntitiesDataSourceFactory dataSourceForFetchRequest:v16 withLibrary:v17];
+        [VUILibraryMetrics recordClickOnMediaEntity:firstObject];
+        v14 = [[VUIDownloadShowDataSource alloc] initWithMediaEntity:firstObject];
+        showIdentifier = [firstObject showIdentifier];
+        v16 = [VUIMediaEntityFetchRequest seasonsFetchRequestWithShowIdentifier:showIdentifier];
+        mediaLibrary = [firstObject mediaLibrary];
+        v18 = [VUIMediaEntitiesDataSourceFactory dataSourceForFetchRequest:v16 withLibrary:mediaLibrary];
 
         v19 = [[VUIDownloadShowTableViewController alloc] initWithDataSource:v14 seasonsDataSource:v18];
-        v20 = [v13 showTitle];
+        showTitle = [firstObject showTitle];
 
-        if (v20)
+        if (showTitle)
         {
-          v21 = [(VUIDownloadShowTableViewController *)v19 navigationItem];
-          v22 = [v13 showTitle];
-          [v21 setTitle:v22];
+          navigationItem = [(VUIDownloadShowTableViewController *)v19 navigationItem];
+          showTitle2 = [firstObject showTitle];
+          [navigationItem setTitle:showTitle2];
         }
 
-        v23 = [(VUIDownloadCollectionViewController *)self navigationController];
-        [v23 pushViewController:v19 animated:1];
+        navigationController = [(VUIDownloadCollectionViewController *)self navigationController];
+        [navigationController pushViewController:v19 animated:1];
       }
     }
 
@@ -595,14 +595,14 @@ void __90__VUIDownloadCollectionViewController_viewWillTransitionToSize_withTran
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v82 = v13;
-        v25 = [v82 downloadExpirationDate];
-        v81 = v25;
-        if (v25 && ![v25 vui_isInTheFuture])
+        v82 = firstObject;
+        downloadExpirationDate = [v82 downloadExpirationDate];
+        v81 = downloadExpirationDate;
+        if (downloadExpirationDate && ![downloadExpirationDate vui_isInTheFuture])
         {
-          v30 = [v82 availabilityEndDate];
-          v28 = v30;
-          if (v30 && ![(VUIMediaInfo *)v30 vui_isInTheFuture])
+          availabilityEndDate = [v82 availabilityEndDate];
+          v28 = availabilityEndDate;
+          if (availabilityEndDate && ![(VUIMediaInfo *)availabilityEndDate vui_isInTheFuture])
           {
             objc_initWeak(&location, self);
             aBlock[0] = MEMORY[0x1E69E9820];
@@ -614,8 +614,8 @@ void __90__VUIDownloadCollectionViewController_viewWillTransitionToSize_withTran
             v79 = MEMORY[0x1E696AEC0];
             v58 = +[VUILocalizationManager sharedInstance];
             v59 = [v58 localizedStringForKey:@"DOWNLOAD_MESSAGE_NO_LONGER_AVAILABLE"];
-            v60 = [v82 brandName];
-            v75 = [v79 stringWithValidatedFormat:v59 validFormatSpecifiers:@"%@" error:0, v60];
+            brandName = [v82 brandName];
+            v75 = [v79 stringWithValidatedFormat:v59 validFormatSpecifiers:@"%@" error:0, brandName];
 
             v61 = MEMORY[0x1E69DC650];
             v62 = +[VUILocalizationManager sharedInstance];
@@ -642,10 +642,10 @@ void __90__VUIDownloadCollectionViewController_viewWillTransitionToSize_withTran
 
           else if (+[_TtC8VideosUI38VUINetworkReachabilityMonitorObjCProxy isNetworkReachable])
           {
-            v74 = [v82 allowsManualDownloadRenewal];
+            allowsManualDownloadRenewal = [v82 allowsManualDownloadRenewal];
             v31 = +[VUILocalizationManager sharedInstance];
             v32 = v31;
-            if (v74)
+            if (allowsManualDownloadRenewal)
             {
               v33 = @"RENEW_DOWNLOAD";
             }
@@ -655,7 +655,7 @@ void __90__VUIDownloadCollectionViewController_viewWillTransitionToSize_withTran
               v33 = @"DOWNLOAD_AGAIN";
             }
 
-            if (v74)
+            if (allowsManualDownloadRenewal)
             {
               v34 = @"RENEW_DOWNLOAD";
             }
@@ -666,7 +666,7 @@ void __90__VUIDownloadCollectionViewController_viewWillTransitionToSize_withTran
             }
 
             v35 = @"DOWNLOAD_MESSAGE_REDOWNLOAD";
-            if (v74)
+            if (allowsManualDownloadRenewal)
             {
               v35 = @"DOWNLOAD_MESSAGE_RENEW";
             }
@@ -680,8 +680,8 @@ void __90__VUIDownloadCollectionViewController_viewWillTransitionToSize_withTran
             v69 = MEMORY[0x1E696AEC0];
             v37 = +[VUILocalizationManager sharedInstance];
             v38 = [v37 localizedStringForKey:v76];
-            v39 = [v82 brandName];
-            v70 = [v69 stringWithValidatedFormat:v38 validFormatSpecifiers:@"%@" error:0, v39];
+            brandName2 = [v82 brandName];
+            v70 = [v69 stringWithValidatedFormat:v38 validFormatSpecifiers:@"%@" error:0, brandName2];
 
             v77 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v72 message:v70 preferredStyle:1];
             objc_initWeak(&location, self);
@@ -692,9 +692,9 @@ void __90__VUIDownloadCollectionViewController_viewWillTransitionToSize_withTran
             v88[3] = &unk_1E8733A88;
             objc_copyWeak(&v91, &location);
             v41 = v82;
-            v92 = v74;
+            v92 = allowsManualDownloadRenewal;
             v89 = v41;
-            v90 = self;
+            selfCopy = self;
             v42 = [v40 actionWithTitle:v71 style:0 handler:v88];
             [v77 addAction:v42];
             v43 = MEMORY[0x1E69DC648];
@@ -761,13 +761,13 @@ void __90__VUIDownloadCollectionViewController_viewWillTransitionToSize_withTran
     }
   }
 
-  v47 = [(VUIDownloadCollectionViewController *)self rightBarButtonItem];
-  v48 = [v47 isEnabled];
+  rightBarButtonItem = [(VUIDownloadCollectionViewController *)self rightBarButtonItem];
+  isEnabled = [rightBarButtonItem isEnabled];
 
-  if ((v48 & 1) == 0)
+  if ((isEnabled & 1) == 0)
   {
-    v10 = [(VUIDownloadCollectionViewController *)self rightBarButtonItem];
-    [v10 setEnabled:1];
+    rightBarButtonItem2 = [(VUIDownloadCollectionViewController *)self rightBarButtonItem];
+    [rightBarButtonItem2 setEnabled:1];
 LABEL_37:
   }
 }
@@ -860,41 +860,41 @@ void __79__VUIDownloadCollectionViewController_collectionView_didSelectItemAtInd
   [WeakRetained _exitEditingMode];
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
-  v5 = [a3 cellForItemAtIndexPath:a4];
+  v5 = [view cellForItemAtIndexPath:path];
   [v5 setSelected:0 animated:1];
   [(VUIDownloadCollectionViewController *)self _updateSelectAllBarButtonItemIfNecessary];
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a5;
-  v7 = [(VUIDownloadCollectionViewController *)self sizingCell];
+  pathCopy = path;
+  sizingCell = [(VUIDownloadCollectionViewController *)self sizingCell];
 
-  if (!v7)
+  if (!sizingCell)
   {
     v8 = objc_alloc_init(VUIDownloadCollectionViewCell);
     [(VUIDownloadCollectionViewController *)self setSizingCell:v8];
   }
 
-  v9 = [(VUIDownloadCollectionViewController *)self diffableDataSource];
-  v10 = [v9 itemIdentifierForIndexPath:v6];
+  diffableDataSource = [(VUIDownloadCollectionViewController *)self diffableDataSource];
+  v10 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
-  v11 = [(VUIDownloadCollectionViewController *)self identifierToDownloadEntityDictionary];
-  v12 = [v11 objectForKey:v10];
+  identifierToDownloadEntityDictionary = [(VUIDownloadCollectionViewController *)self identifierToDownloadEntityDictionary];
+  v12 = [identifierToDownloadEntityDictionary objectForKey:v10];
 
-  v13 = [(VUIDownloadCollectionViewController *)self sizingCell];
+  sizingCell2 = [(VUIDownloadCollectionViewController *)self sizingCell];
   [(VUIDownloadCollectionViewController *)self cellWidth];
-  [VUIDownloadCollectionViewCell configureVUIDownloadEntityCollectionViewCell:v13 withDownloadEntity:v12 width:1 forMetrics:?];
+  [VUIDownloadCollectionViewCell configureVUIDownloadEntityCollectionViewCell:sizingCell2 withDownloadEntity:v12 width:1 forMetrics:?];
 
-  v14 = [(VUIDownloadCollectionViewController *)self sizingCell];
-  [v14 setEditing:{-[VUIDownloadCollectionViewController isEditing](self, "isEditing")}];
+  sizingCell3 = [(VUIDownloadCollectionViewController *)self sizingCell];
+  [sizingCell3 setEditing:{-[VUIDownloadCollectionViewController isEditing](self, "isEditing")}];
 
-  v15 = [(VUIDownloadCollectionViewController *)self sizingCell];
+  sizingCell4 = [(VUIDownloadCollectionViewController *)self sizingCell];
   [(VUIDownloadCollectionViewController *)self cellWidth];
-  [v15 sizeThatFits:?];
+  [sizingCell4 sizeThatFits:?];
   v17 = v16;
   v19 = v18;
 
@@ -923,9 +923,9 @@ void __79__VUIDownloadCollectionViewController_collectionView_didSelectItemAtInd
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  [(VUIDownloadCollectionViewController *)self _computeBottomMargin:a3];
+  [(VUIDownloadCollectionViewController *)self _computeBottomMargin:view];
   v6 = v5;
   v7 = 10.0;
   v8 = 0.0;
@@ -937,7 +937,7 @@ void __79__VUIDownloadCollectionViewController_collectionView_didSelectItemAtInd
   return result;
 }
 
-- (void)downloadManager:(id)a3 downloadedFetchDidFinishWithEntities:(id)a4
+- (void)downloadManager:(id)manager downloadedFetchDidFinishWithEntities:(id)entities
 {
   v5 = VUIDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -946,38 +946,38 @@ void __79__VUIDownloadCollectionViewController_collectionView_didSelectItemAtInd
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "[VUIDownloadCollectionViewController] Fetching downloads completed", v16, 2u);
   }
 
-  v6 = [(VUIDownloadCollectionViewController *)self downloadDataSource];
-  v7 = [v6 downloadEntities];
-  v8 = [v7 mutableCopy];
+  downloadDataSource = [(VUIDownloadCollectionViewController *)self downloadDataSource];
+  downloadEntities = [downloadDataSource downloadEntities];
+  v8 = [downloadEntities mutableCopy];
   [(VUIDownloadCollectionViewController *)self setDownloadEntities:v8];
 
-  v9 = [(VUIDownloadCollectionViewController *)self downloadEntities];
-  v10 = [v9 count];
+  downloadEntities2 = [(VUIDownloadCollectionViewController *)self downloadEntities];
+  v10 = [downloadEntities2 count];
 
-  v11 = [(VUIDownloadCollectionViewController *)self contentPresenter];
-  v12 = v11;
+  contentPresenter = [(VUIDownloadCollectionViewController *)self contentPresenter];
+  diffableDataSource = contentPresenter;
   if (v10)
   {
-    v13 = [v11 currentContentViewType];
+    currentContentViewType = [contentPresenter currentContentViewType];
 
-    if (v13 != 3)
+    if (currentContentViewType != 3)
     {
-      v14 = [(VUIDownloadCollectionViewController *)self contentPresenter];
-      [v14 setCurrentContentViewType:3];
+      contentPresenter2 = [(VUIDownloadCollectionViewController *)self contentPresenter];
+      [contentPresenter2 setCurrentContentViewType:3];
     }
 
-    v12 = [(VUIDownloadCollectionViewController *)self diffableDataSource];
-    v15 = [(VUIDownloadCollectionViewController *)self _createDiffableDataSourceSnapshot];
-    [v12 applySnapshot:v15 animatingDifferences:v13 == 3 completion:0];
+    diffableDataSource = [(VUIDownloadCollectionViewController *)self diffableDataSource];
+    _createDiffableDataSourceSnapshot = [(VUIDownloadCollectionViewController *)self _createDiffableDataSourceSnapshot];
+    [diffableDataSource applySnapshot:_createDiffableDataSourceSnapshot animatingDifferences:currentContentViewType == 3 completion:0];
   }
 
   else
   {
-    [v11 setCurrentContentViewType:2];
+    [contentPresenter setCurrentContentViewType:2];
   }
 }
 
-- (void)downloadManager:(id)a3 downloadsDidChange:(id)a4
+- (void)downloadManager:(id)manager downloadsDidChange:(id)change
 {
   v5 = VUIDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -986,61 +986,61 @@ void __79__VUIDownloadCollectionViewController_collectionView_didSelectItemAtInd
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "[VUIDownloadCollectionViewController] Downloads changed", v14, 2u);
   }
 
-  v6 = [(VUIDownloadCollectionViewController *)self downloadDataSource];
-  v7 = [v6 downloadEntities];
-  v8 = [v7 mutableCopy];
+  downloadDataSource = [(VUIDownloadCollectionViewController *)self downloadDataSource];
+  downloadEntities = [downloadDataSource downloadEntities];
+  v8 = [downloadEntities mutableCopy];
   [(VUIDownloadCollectionViewController *)self setDownloadEntities:v8];
 
-  v9 = [(VUIDownloadCollectionViewController *)self downloadEntities];
-  v10 = [v9 count];
+  downloadEntities2 = [(VUIDownloadCollectionViewController *)self downloadEntities];
+  v10 = [downloadEntities2 count];
 
-  v11 = [(VUIDownloadCollectionViewController *)self contentPresenter];
-  v12 = v11;
+  contentPresenter = [(VUIDownloadCollectionViewController *)self contentPresenter];
+  diffableDataSource = contentPresenter;
   if (v10)
   {
-    [v11 setCurrentContentViewType:3];
+    [contentPresenter setCurrentContentViewType:3];
 
-    v12 = [(VUIDownloadCollectionViewController *)self diffableDataSource];
-    v13 = [(VUIDownloadCollectionViewController *)self _createDiffableDataSourceSnapshot];
-    [v12 applySnapshot:v13 animatingDifferences:1 completion:0];
+    diffableDataSource = [(VUIDownloadCollectionViewController *)self diffableDataSource];
+    _createDiffableDataSourceSnapshot = [(VUIDownloadCollectionViewController *)self _createDiffableDataSourceSnapshot];
+    [diffableDataSource applySnapshot:_createDiffableDataSourceSnapshot animatingDifferences:1 completion:0];
   }
 
   else
   {
-    [v11 setCurrentContentViewType:2];
+    [contentPresenter setCurrentContentViewType:2];
   }
 }
 
-- (void)downloadCellDidRequestCancelDownload:(id)a3
+- (void)downloadCellDidRequestCancelDownload:(id)download
 {
-  v4 = a3;
-  v5 = [(VUIDownloadCollectionViewController *)self collectionView];
-  v17 = [v5 indexPathForCell:v4];
+  downloadCopy = download;
+  collectionView = [(VUIDownloadCollectionViewController *)self collectionView];
+  v17 = [collectionView indexPathForCell:downloadCopy];
 
   v6 = v17;
   if (v17)
   {
-    v7 = [(VUIDownloadCollectionViewController *)self downloadEntities];
-    v8 = [v7 objectAtIndex:{objc_msgSend(v17, "row")}];
+    downloadEntities = [(VUIDownloadCollectionViewController *)self downloadEntities];
+    v8 = [downloadEntities objectAtIndex:{objc_msgSend(v17, "row")}];
 
-    v9 = [v8 mediaEntities];
-    v10 = [v9 firstObject];
+    mediaEntities = [v8 mediaEntities];
+    firstObject = [mediaEntities firstObject];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v10;
+      v11 = firstObject;
       if (([v11 markedAsDeleted] & 1) != 0 || (objc_msgSend(v11, "downloadExpirationDate"), v12 = objc_claimAutoreleasedReturnValue(), v12, !v12))
       {
-        v13 = [(VUIDownloadCollectionViewController *)self downloadEntities];
-        [v13 removeObjectAtIndex:{objc_msgSend(v17, "row")}];
+        downloadEntities2 = [(VUIDownloadCollectionViewController *)self downloadEntities];
+        [downloadEntities2 removeObjectAtIndex:{objc_msgSend(v17, "row")}];
 
-        v14 = [(VUIDownloadCollectionViewController *)self _createIdentifierToDownloadEntityDictionary];
-        [(VUIDownloadCollectionViewController *)self setIdentifierToDownloadEntityDictionary:v14];
+        _createIdentifierToDownloadEntityDictionary = [(VUIDownloadCollectionViewController *)self _createIdentifierToDownloadEntityDictionary];
+        [(VUIDownloadCollectionViewController *)self setIdentifierToDownloadEntityDictionary:_createIdentifierToDownloadEntityDictionary];
 
-        v15 = [(VUIDownloadCollectionViewController *)self diffableDataSource];
-        v16 = [(VUIDownloadCollectionViewController *)self _createDiffableDataSourceSnapshot];
-        [v15 applySnapshot:v16 animatingDifferences:1 completion:0];
+        diffableDataSource = [(VUIDownloadCollectionViewController *)self diffableDataSource];
+        _createDiffableDataSourceSnapshot = [(VUIDownloadCollectionViewController *)self _createDiffableDataSourceSnapshot];
+        [diffableDataSource applySnapshot:_createDiffableDataSourceSnapshot animatingDifferences:1 completion:0];
       }
     }
 
@@ -1054,18 +1054,18 @@ void __79__VUIDownloadCollectionViewController_collectionView_didSelectItemAtInd
   [(UICollectionViewFlowLayout *)v3 setScrollDirection:0];
   [(UICollectionViewFlowLayout *)v3 setMinimumLineSpacing:0.0];
   v4 = MEMORY[0x1E69DD2E8];
-  v5 = [(VUIDownloadCollectionViewController *)self gridStyle];
-  v6 = [(VUIDownloadCollectionViewController *)self gridType];
-  v7 = [(VUIDownloadCollectionViewController *)self view];
-  [v7 bounds];
-  [v4 vui_collectionInteritemSpace:v5 gridType:v6 windowWidth:CGRectGetWidth(v18)];
+  gridStyle = [(VUIDownloadCollectionViewController *)self gridStyle];
+  gridType = [(VUIDownloadCollectionViewController *)self gridType];
+  view = [(VUIDownloadCollectionViewController *)self view];
+  [view bounds];
+  [v4 vui_collectionInteritemSpace:gridStyle gridType:gridType windowWidth:CGRectGetWidth(v18)];
   v9 = v8;
 
   [(UICollectionViewFlowLayout *)v3 setMinimumInteritemSpacing:v9];
   v10 = [VUILegacyCollectionView alloc];
   v11 = [(VUILegacyCollectionView *)v10 initWithFrame:v3 collectionViewLayout:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-  v12 = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
-  [(VUILegacyCollectionView *)v11 setBackgroundColor:v12];
+  vui_primaryDynamicBackgroundColor = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
+  [(VUILegacyCollectionView *)v11 setBackgroundColor:vui_primaryDynamicBackgroundColor];
 
   [(VUILegacyCollectionView *)v11 setAllowsMultipleSelection:1];
   [(VUILegacyCollectionView *)v11 setDelegate:self];
@@ -1081,13 +1081,13 @@ void __79__VUIDownloadCollectionViewController_collectionView_didSelectItemAtInd
 - (id)_createDiffableDataSource
 {
   v3 = objc_alloc(MEMORY[0x1E69DC820]);
-  v4 = [(VUIDownloadCollectionViewController *)self collectionView];
+  collectionView = [(VUIDownloadCollectionViewController *)self collectionView];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__VUIDownloadCollectionViewController__createDiffableDataSource__block_invoke;
   v7[3] = &unk_1E8733AB0;
   v7[4] = self;
-  v5 = [v3 initWithCollectionView:v4 cellProvider:v7];
+  v5 = [v3 initWithCollectionView:collectionView cellProvider:v7];
 
   return v5;
 }
@@ -1125,8 +1125,8 @@ id __64__VUIDownloadCollectionViewController__createDiffableDataSource__block_in
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   [v3 appendSectionsWithIdentifiers:v4];
 
-  v5 = [(VUIDownloadCollectionViewController *)self _identifiersForDownloadEntities];
-  [v3 appendItemsWithIdentifiers:v5 intoSectionWithIdentifier:@"DownloadGridMainSection"];
+  _identifiersForDownloadEntities = [(VUIDownloadCollectionViewController *)self _identifiersForDownloadEntities];
+  [v3 appendItemsWithIdentifiers:_identifiersForDownloadEntities intoSectionWithIdentifier:@"DownloadGridMainSection"];
 
   return v3;
 }
@@ -1139,8 +1139,8 @@ id __64__VUIDownloadCollectionViewController__createDiffableDataSource__block_in
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(VUIDownloadCollectionViewController *)self downloadEntities];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  downloadEntities = [(VUIDownloadCollectionViewController *)self downloadEntities];
+  v5 = [downloadEntities countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1151,18 +1151,18 @@ id __64__VUIDownloadCollectionViewController__createDiffableDataSource__block_in
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(downloadEntities);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        if (v10)
+        identifier = [v9 identifier];
+        if (identifier)
         {
-          [v3 setValue:v9 forKey:v10];
+          [v3 setValue:v9 forKey:identifier];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [downloadEntities countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -1181,8 +1181,8 @@ id __64__VUIDownloadCollectionViewController__createDiffableDataSource__block_in
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(VUIDownloadCollectionViewController *)self downloadEntities];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  downloadEntities = [(VUIDownloadCollectionViewController *)self downloadEntities];
+  v5 = [downloadEntities countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1193,64 +1193,64 @@ id __64__VUIDownloadCollectionViewController__createDiffableDataSource__block_in
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(downloadEntities);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) identifier];
-        if (v9)
+        identifier = [*(*(&v12 + 1) + 8 * i) identifier];
+        if (identifier)
         {
-          [v3 addObject:v9];
+          [v3 addObject:identifier];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [downloadEntities countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  v10 = [v3 array];
+  array = [v3 array];
 
-  return v10;
+  return array;
 }
 
 - (double)_computeBottomMargin
 {
   v3 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:0];
-  v4 = [(VUIDownloadCollectionViewController *)self diffableDataSource];
-  v5 = [v4 itemIdentifierForIndexPath:v3];
+  diffableDataSource = [(VUIDownloadCollectionViewController *)self diffableDataSource];
+  v5 = [diffableDataSource itemIdentifierForIndexPath:v3];
 
-  v6 = [(VUIDownloadCollectionViewController *)self identifierToDownloadEntityDictionary];
-  v7 = [v6 objectForKey:v5];
+  identifierToDownloadEntityDictionary = [(VUIDownloadCollectionViewController *)self identifierToDownloadEntityDictionary];
+  v7 = [identifierToDownloadEntityDictionary objectForKey:v5];
 
-  v8 = [(VUIDownloadCollectionViewController *)self sizingCell];
+  sizingCell = [(VUIDownloadCollectionViewController *)self sizingCell];
   [(VUIDownloadCollectionViewController *)self cellWidth];
-  [VUIDownloadCollectionViewCell configureVUIDownloadEntityCollectionViewCell:v8 withDownloadEntity:v7 width:1 forMetrics:?];
+  [VUIDownloadCollectionViewCell configureVUIDownloadEntityCollectionViewCell:sizingCell withDownloadEntity:v7 width:1 forMetrics:?];
 
-  v9 = [(VUIDownloadCollectionViewController *)self sizingCell];
-  [v9 setEditing:{-[VUIDownloadCollectionViewController isEditing](self, "isEditing")}];
+  sizingCell2 = [(VUIDownloadCollectionViewController *)self sizingCell];
+  [sizingCell2 setEditing:{-[VUIDownloadCollectionViewController isEditing](self, "isEditing")}];
 
-  v10 = [(VUIDownloadCollectionViewController *)self sizingCell];
+  sizingCell3 = [(VUIDownloadCollectionViewController *)self sizingCell];
   +[VUIViewSpacer spacerB];
-  [v10 bottomMarginWithBaselineMargin:?];
+  [sizingCell3 bottomMarginWithBaselineMargin:?];
   v12 = v11;
 
   if (v12 == 0.0)
   {
     +[VUIViewSpacer spacerB];
     v14 = v13;
-    v15 = [(VUIDownloadCollectionViewController *)self traitCollection];
-    [VUIUtilities scaleContentSizeValue:v15 forTraitCollection:v14];
+    traitCollection = [(VUIDownloadCollectionViewController *)self traitCollection];
+    [VUIUtilities scaleContentSizeValue:traitCollection forTraitCollection:v14];
     v12 = v16;
   }
 
   return v12;
 }
 
-- (void)_updateLayoutForSize:(CGSize)a3
+- (void)_updateLayoutForSize:(CGSize)size
 {
-  width = a3.width;
-  [(VUIDownloadCollectionViewController *)self lastViewWidth:a3.width];
+  width = size.width;
+  [(VUIDownloadCollectionViewController *)self lastViewWidth:size.width];
   if (v5 != width)
   {
     [(VUIDownloadCollectionViewController *)self setLastViewWidth:width];
@@ -1269,17 +1269,17 @@ id __64__VUIDownloadCollectionViewController__createDiffableDataSource__block_in
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [(VUIDownloadCollectionViewController *)self collectionView];
-    v21 = [v17 collectionViewLayout];
+    collectionView = [(VUIDownloadCollectionViewController *)self collectionView];
+    collectionViewLayout = [collectionView collectionViewLayout];
 
     [MEMORY[0x1E69DD2E8] vui_collectionInteritemSpace:-[VUIDownloadCollectionViewController gridStyle](self gridType:"gridStyle") windowWidth:{-[VUIDownloadCollectionViewController gridType](self, "gridType"), width}];
-    [v21 setMinimumInteritemSpacing:?];
-    v18 = [(VUIDownloadCollectionViewController *)self collectionView];
-    [v18 setContentInset:{v10, v12, v14, v16}];
+    [collectionViewLayout setMinimumInteritemSpacing:?];
+    collectionView2 = [(VUIDownloadCollectionViewController *)self collectionView];
+    [collectionView2 setContentInset:{v10, v12, v14, v16}];
 
-    v19 = [(VUIDownloadCollectionViewController *)self collectionView];
-    v20 = [v19 collectionViewLayout];
-    [v20 invalidateLayout];
+    collectionView3 = [(VUIDownloadCollectionViewController *)self collectionView];
+    collectionViewLayout2 = [collectionView3 collectionViewLayout];
+    [collectionViewLayout2 invalidateLayout];
   }
 }
 
@@ -1287,15 +1287,15 @@ id __64__VUIDownloadCollectionViewController__createDiffableDataSource__block_in
 {
   if ([(VUIDownloadCollectionViewController *)self isEditing])
   {
-    v3 = [(VUIDownloadCollectionViewController *)self collectionView];
-    v4 = [v3 indexPathsForSelectedItems];
-    v5 = [v4 count];
+    collectionView = [(VUIDownloadCollectionViewController *)self collectionView];
+    indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+    v5 = [indexPathsForSelectedItems count];
 
     if (v5)
     {
-      v6 = [(VUIDownloadCollectionViewController *)self _configureAlertController];
+      _configureAlertController = [(VUIDownloadCollectionViewController *)self _configureAlertController];
       alertController = self->_alertController;
-      self->_alertController = v6;
+      self->_alertController = _configureAlertController;
 
       v8 = self->_alertController;
       if (v8)
@@ -1324,10 +1324,10 @@ id __64__VUIDownloadCollectionViewController__createDiffableDataSource__block_in
   if (isSelectingAll)
   {
     [(VUIDownloadCollectionViewController *)self setIsSelectingAll:0];
-    v4 = [(VUIDownloadCollectionViewController *)self selectAllBarButtonItem];
+    selectAllBarButtonItem = [(VUIDownloadCollectionViewController *)self selectAllBarButtonItem];
     v5 = +[VUILocalizationManager sharedInstance];
     v6 = [v5 localizedStringForKey:@"SELECT_ALL"];
-    [v4 setTitle:v6];
+    [selectAllBarButtonItem setTitle:v6];
 
     [(VUIDownloadCollectionViewController *)self _clearSelections];
   }
@@ -1335,16 +1335,16 @@ id __64__VUIDownloadCollectionViewController__createDiffableDataSource__block_in
   else
   {
     [(VUIDownloadCollectionViewController *)self setIsSelectingAll:1];
-    v7 = [(VUIDownloadCollectionViewController *)self selectAllBarButtonItem];
+    selectAllBarButtonItem2 = [(VUIDownloadCollectionViewController *)self selectAllBarButtonItem];
     v8 = +[VUILocalizationManager sharedInstance];
     v9 = [v8 localizedStringForKey:@"DESELECT_ALL"];
-    [v7 setTitle:v9];
+    [selectAllBarButtonItem2 setTitle:v9];
 
     [(VUIDownloadCollectionViewController *)self _selectAllCells];
   }
 
-  v10 = [(VUIDownloadCollectionViewController *)self rightBarButtonItem];
-  [v10 setEnabled:!isSelectingAll];
+  rightBarButtonItem = [(VUIDownloadCollectionViewController *)self rightBarButtonItem];
+  [rightBarButtonItem setEnabled:!isSelectingAll];
 }
 
 - (id)_configureAlertController
@@ -1352,7 +1352,7 @@ id __64__VUIDownloadCollectionViewController__createDiffableDataSource__block_in
   v3 = +[VUILocalizationManager sharedInstance];
   v20 = [v3 localizedStringForKey:@"DELETES_EXPLANATION"];
 
-  v19 = [(VUIDownloadCollectionViewController *)self _deleteActionTitleString];
+  _deleteActionTitleString = [(VUIDownloadCollectionViewController *)self _deleteActionTitleString];
   objc_initWeak(location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -1366,9 +1366,9 @@ id __64__VUIDownloadCollectionViewController__createDiffableDataSource__block_in
   v25[3] = &unk_1E872E4B8;
   objc_copyWeak(&v26, location);
   v5 = _Block_copy(v25);
-  v6 = [(VUIDownloadCollectionViewController *)self collectionView];
-  v7 = [v6 indexPathsForSelectedItems];
-  v8 = [v7 count];
+  collectionView = [(VUIDownloadCollectionViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  v8 = [indexPathsForSelectedItems count];
 
   if (v8)
   {
@@ -1379,7 +1379,7 @@ id __64__VUIDownloadCollectionViewController__createDiffableDataSource__block_in
     v23[2] = __64__VUIDownloadCollectionViewController__configureAlertController__block_invoke_3;
     v23[3] = &unk_1E872E850;
     v24 = v4;
-    v11 = [v10 actionWithTitle:v19 style:2 handler:v23];
+    v11 = [v10 actionWithTitle:_deleteActionTitleString style:2 handler:v23];
     [v9 addAction:v11];
     v12 = MEMORY[0x1E69DC648];
     v13 = +[VUILocalizationManager sharedInstance];
@@ -1393,9 +1393,9 @@ id __64__VUIDownloadCollectionViewController__createDiffableDataSource__block_in
 
     [v9 addAction:v15];
     [v9 setModalPresentationStyle:7];
-    v16 = [v9 popoverPresentationController];
-    v17 = [(VUIDownloadCollectionViewController *)self rightBarButtonItem];
-    [v16 setBarButtonItem:v17];
+    popoverPresentationController = [v9 popoverPresentationController];
+    rightBarButtonItem = [(VUIDownloadCollectionViewController *)self rightBarButtonItem];
+    [popoverPresentationController setBarButtonItem:rightBarButtonItem];
   }
 
   else
@@ -1472,10 +1472,10 @@ void __64__VUIDownloadCollectionViewController__configureAlertController__block_
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [(VUIDownloadCollectionViewController *)self collectionView];
-  v6 = [v5 indexPathsForSelectedItems];
+  collectionView = [(VUIDownloadCollectionViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v7 = [indexPathsForSelectedItems countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (!v7)
   {
     goto LABEL_10;
@@ -1490,21 +1490,21 @@ void __64__VUIDownloadCollectionViewController__configureAlertController__block_
     {
       if (*v23 != v10)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(indexPathsForSelectedItems);
       }
 
       v12 = *(*(&v22 + 1) + 8 * i);
-      v13 = [(VUIDownloadCollectionViewController *)self diffableDataSource];
-      v14 = [v13 itemIdentifierForIndexPath:v12];
+      diffableDataSource = [(VUIDownloadCollectionViewController *)self diffableDataSource];
+      v14 = [diffableDataSource itemIdentifierForIndexPath:v12];
 
-      v15 = [(VUIDownloadCollectionViewController *)self identifierToDownloadEntityDictionary];
-      v16 = [v15 objectForKey:v14];
+      identifierToDownloadEntityDictionary = [(VUIDownloadCollectionViewController *)self identifierToDownloadEntityDictionary];
+      v16 = [identifierToDownloadEntityDictionary objectForKey:v14];
 
-      v17 = [v16 numberOfMediaItems];
-      v9 += [v17 unsignedIntegerValue];
+      numberOfMediaItems = [v16 numberOfMediaItems];
+      v9 += [numberOfMediaItems unsignedIntegerValue];
     }
 
-    v8 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    v8 = [indexPathsForSelectedItems countByEnumeratingWithState:&v22 objects:v26 count:16];
   }
 
   while (v8);
@@ -1512,8 +1512,8 @@ void __64__VUIDownloadCollectionViewController__configureAlertController__block_
   if (v9 >= 2)
   {
     v18 = MEMORY[0x1E696AEC0];
-    v6 = +[VUILocalizationManager sharedInstance];
-    v19 = [v6 localizedStringForKey:@"DELETE_%U_DOWNLOADS"];
+    indexPathsForSelectedItems = +[VUILocalizationManager sharedInstance];
+    v19 = [indexPathsForSelectedItems localizedStringForKey:@"DELETE_%U_DOWNLOADS"];
     v20 = [v18 localizedStringWithValidatedFormat:v19 validFormatSpecifiers:@"%u" error:0, v9];
 
     v4 = v20;
@@ -1528,49 +1528,49 @@ LABEL_10:
   v22[2] = *MEMORY[0x1E69E9840];
   if ([(VUIDownloadCollectionViewController *)self isEditing])
   {
-    v3 = [(VUIDownloadCollectionViewController *)self rightBarButtonItem];
+    rightBarButtonItem = [(VUIDownloadCollectionViewController *)self rightBarButtonItem];
     v4 = +[VUILocalizationManager sharedInstance];
     v5 = [v4 localizedStringForKey:@"DELETE"];
-    [v3 setTitle:v5];
+    [rightBarButtonItem setTitle:v5];
 
-    v6 = [(VUIDownloadCollectionViewController *)self rightBarButtonItem];
-    [v6 setEnabled:0];
+    rightBarButtonItem2 = [(VUIDownloadCollectionViewController *)self rightBarButtonItem];
+    [rightBarButtonItem2 setEnabled:0];
 
-    v7 = [(VUIDownloadCollectionViewController *)self navigationItem];
+    navigationItem = [(VUIDownloadCollectionViewController *)self navigationItem];
     selectAllBarButtonItem = self->_selectAllBarButtonItem;
     v22[0] = self->_rightBarButtonItem;
     v22[1] = selectAllBarButtonItem;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
-    [v7 setRightBarButtonItems:v9];
+    [navigationItem setRightBarButtonItems:v9];
 
-    v10 = [(VUIDownloadCollectionViewController *)self navigationItem];
-    [v10 setLeftBarButtonItem:self->_leftBarButtonItem];
+    navigationItem2 = [(VUIDownloadCollectionViewController *)self navigationItem];
+    [navigationItem2 setLeftBarButtonItem:self->_leftBarButtonItem];
   }
 
   else
   {
     [(VUIDownloadCollectionViewController *)self setIsSelectingAll:0];
-    v11 = [(VUIDownloadCollectionViewController *)self selectAllBarButtonItem];
+    selectAllBarButtonItem = [(VUIDownloadCollectionViewController *)self selectAllBarButtonItem];
     v12 = +[VUILocalizationManager sharedInstance];
     v13 = [v12 localizedStringForKey:@"SELECT_ALL"];
-    [v11 setTitle:v13];
+    [selectAllBarButtonItem setTitle:v13];
 
-    v14 = [(VUIDownloadCollectionViewController *)self rightBarButtonItem];
+    rightBarButtonItem3 = [(VUIDownloadCollectionViewController *)self rightBarButtonItem];
     v15 = +[VUILocalizationManager sharedInstance];
     v16 = [v15 localizedStringForKey:@"EDIT"];
-    [v14 setTitle:v16];
+    [rightBarButtonItem3 setTitle:v16];
 
-    v17 = [(VUIDownloadCollectionViewController *)self rightBarButtonItem];
-    [v17 setEnabled:1];
+    rightBarButtonItem4 = [(VUIDownloadCollectionViewController *)self rightBarButtonItem];
+    [rightBarButtonItem4 setEnabled:1];
 
-    v18 = [(VUIDownloadCollectionViewController *)self navigationItem];
+    navigationItem3 = [(VUIDownloadCollectionViewController *)self navigationItem];
     rightBarButtonItem = self->_rightBarButtonItem;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&rightBarButtonItem count:1];
-    [v18 setRightBarButtonItems:v19];
+    [navigationItem3 setRightBarButtonItems:v19];
 
-    v10 = [(VUIDownloadCollectionViewController *)self navigationItem];
-    v20 = [(VUIDownloadCollectionViewController *)self backBarButtonItem];
-    [v10 setLeftBarButtonItem:v20];
+    navigationItem2 = [(VUIDownloadCollectionViewController *)self navigationItem];
+    backBarButtonItem = [(VUIDownloadCollectionViewController *)self backBarButtonItem];
+    [navigationItem2 setLeftBarButtonItem:backBarButtonItem];
   }
 }
 
@@ -1587,26 +1587,26 @@ LABEL_10:
   [(VUIDownloadCollectionViewController *)self _updateAllVisibleCellsForEditingMode];
   [(VUIDownloadCollectionViewController *)self _clearSelections];
   [(VUIDownloadCollectionViewController *)self _configureNavigationBarForEditingMode];
-  v3 = [(VUIDownloadCollectionViewController *)self alertController];
+  alertController = [(VUIDownloadCollectionViewController *)self alertController];
 
-  if (v3)
+  if (alertController)
   {
-    v4 = [(VUIDownloadCollectionViewController *)self alertController];
-    [v4 dismissViewControllerAnimated:0 completion:0];
+    alertController2 = [(VUIDownloadCollectionViewController *)self alertController];
+    [alertController2 dismissViewControllerAnimated:0 completion:0];
   }
 }
 
 - (void)_clearSelections
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(VUIDownloadCollectionViewController *)self collectionView];
-  v4 = [v3 indexPathsForSelectedItems];
+  collectionView = [(VUIDownloadCollectionViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v4;
+  v5 = indexPathsForSelectedItems;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -1623,11 +1623,11 @@ LABEL_10:
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
-        v11 = [(VUIDownloadCollectionViewController *)self collectionView];
-        [v11 deselectItemAtIndexPath:v10 animated:1];
+        collectionView2 = [(VUIDownloadCollectionViewController *)self collectionView];
+        [collectionView2 deselectItemAtIndexPath:v10 animated:1];
 
-        v12 = [(VUIDownloadCollectionViewController *)self collectionView];
-        v13 = [v12 cellForItemAtIndexPath:v10];
+        collectionView3 = [(VUIDownloadCollectionViewController *)self collectionView];
+        v13 = [collectionView3 cellForItemAtIndexPath:v10];
 
         [v13 setSelected:0 animated:1];
         ++v9;
@@ -1644,14 +1644,14 @@ LABEL_10:
 - (void)_selectAllCells
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(VUIDownloadCollectionViewController *)self collectionView];
-  v4 = [v3 indexPathsForVisibleItems];
+  collectionView = [(VUIDownloadCollectionViewController *)self collectionView];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v4;
+  v5 = indexPathsForVisibleItems;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -1668,11 +1668,11 @@ LABEL_10:
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
-        v11 = [(VUIDownloadCollectionViewController *)self collectionView];
-        [v11 selectItemAtIndexPath:v10 animated:1 scrollPosition:0];
+        collectionView2 = [(VUIDownloadCollectionViewController *)self collectionView];
+        [collectionView2 selectItemAtIndexPath:v10 animated:1 scrollPosition:0];
 
-        v12 = [(VUIDownloadCollectionViewController *)self collectionView];
-        v13 = [v12 cellForItemAtIndexPath:v10];
+        collectionView3 = [(VUIDownloadCollectionViewController *)self collectionView];
+        v13 = [collectionView3 cellForItemAtIndexPath:v10];
 
         [v13 setSelected:1 animated:1];
         ++v9;
@@ -1686,16 +1686,16 @@ LABEL_10:
   }
 }
 
-- (void)_deleteDownloadEntities:(id)a3
+- (void)_deleteDownloadEntities:(id)entities
 {
-  v4 = a3;
+  entitiesCopy = entities;
   v7 = MEMORY[0x1E69E9820];
   v8 = __63__VUIDownloadCollectionViewController__deleteDownloadEntities___block_invoke;
   v9 = &unk_1E872D990;
-  v10 = self;
-  v11 = v4;
+  selfCopy = self;
+  v11 = entitiesCopy;
   v5 = MEMORY[0x1E696AF00];
-  v6 = v4;
+  v6 = entitiesCopy;
   if ([v5 isMainThread])
   {
     v8(&v7);
@@ -1756,10 +1756,10 @@ void __63__VUIDownloadCollectionViewController__deleteDownloadEntities___block_i
   [v9 applySnapshot:v10 animatingDifferences:1 completion:v12];
 }
 
-- (void)_deleteMediaEntitiesInDownloadEntities:(id)a3
+- (void)_deleteMediaEntitiesInDownloadEntities:(id)entities
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  entitiesCopy = entities;
   v5 = objc_opt_new();
   assetControllersToRemove = self->_assetControllersToRemove;
   self->_assetControllersToRemove = v5;
@@ -1768,7 +1768,7 @@ void __63__VUIDownloadCollectionViewController__deleteDownloadEntities___block_i
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v4;
+  obj = entitiesCopy;
   v7 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v7)
   {
@@ -1789,8 +1789,8 @@ void __63__VUIDownloadCollectionViewController__deleteDownloadEntities___block_i
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v12 = [v11 mediaEntities];
-        v13 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        mediaEntities = [v11 mediaEntities];
+        v13 = [mediaEntities countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v13)
         {
           v14 = v13;
@@ -1802,19 +1802,19 @@ void __63__VUIDownloadCollectionViewController__deleteDownloadEntities___block_i
             {
               if (*v21 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(mediaEntities);
               }
 
-              v17 = [*(*(&v20 + 1) + 8 * v16) assetController];
-              v18 = [(VUIDownloadCollectionViewController *)self assetControllersToRemove];
-              [v18 addObject:v17];
+              assetController = [*(*(&v20 + 1) + 8 * v16) assetController];
+              assetControllersToRemove = [(VUIDownloadCollectionViewController *)self assetControllersToRemove];
+              [assetControllersToRemove addObject:assetController];
 
-              [v17 cancelAndRemoveDownload];
+              [assetController cancelAndRemoveDownload];
               ++v16;
             }
 
             while (v14 != v16);
-            v14 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v14 = [mediaEntities countByEnumeratingWithState:&v20 objects:v28 count:16];
           }
 
           while (v14);
@@ -1838,10 +1838,10 @@ void __63__VUIDownloadCollectionViewController__deleteDownloadEntities___block_i
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(VUIDownloadCollectionViewController *)self collectionView];
-  v4 = [v3 visibleCells];
+  collectionView = [(VUIDownloadCollectionViewController *)self collectionView];
+  visibleCells = [collectionView visibleCells];
 
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [visibleCells countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1853,14 +1853,14 @@ void __63__VUIDownloadCollectionViewController__deleteDownloadEntities___block_i
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(visibleCells);
         }
 
         [*(*(&v9 + 1) + 8 * v8++) setEditing:{-[VUIDownloadCollectionViewController isEditing](self, "isEditing")}];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [visibleCells countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -1869,65 +1869,65 @@ void __63__VUIDownloadCollectionViewController__deleteDownloadEntities___block_i
 
 - (void)_updateSelectAllBarButtonItemIfNecessary
 {
-  v3 = [(VUIDownloadCollectionViewController *)self collectionView];
-  v4 = [v3 indexPathsForSelectedItems];
-  v5 = [v4 count];
-  v6 = [(VUIDownloadCollectionViewController *)self downloadEntities];
-  v7 = [v6 count];
+  collectionView = [(VUIDownloadCollectionViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  v5 = [indexPathsForSelectedItems count];
+  downloadEntities = [(VUIDownloadCollectionViewController *)self downloadEntities];
+  v7 = [downloadEntities count];
 
   if (v5 == v7)
   {
     [(VUIDownloadCollectionViewController *)self setIsSelectingAll:1];
-    v8 = [(VUIDownloadCollectionViewController *)self selectAllBarButtonItem];
+    selectAllBarButtonItem = [(VUIDownloadCollectionViewController *)self selectAllBarButtonItem];
     v9 = +[VUILocalizationManager sharedInstance];
     v10 = [v9 localizedStringForKey:@"DESELECT_ALL"];
-    [v8 setTitle:v10];
+    [selectAllBarButtonItem setTitle:v10];
   }
 
   else
   {
     [(VUIDownloadCollectionViewController *)self setIsSelectingAll:0];
-    v11 = [(VUIDownloadCollectionViewController *)self selectAllBarButtonItem];
+    selectAllBarButtonItem2 = [(VUIDownloadCollectionViewController *)self selectAllBarButtonItem];
     v12 = +[VUILocalizationManager sharedInstance];
     v13 = [v12 localizedStringForKey:@"SELECT_ALL"];
-    [v11 setTitle:v13];
+    [selectAllBarButtonItem2 setTitle:v13];
 
-    v14 = [(VUIDownloadCollectionViewController *)self collectionView];
-    v15 = [v14 indexPathsForSelectedItems];
-    v16 = [v15 count];
+    collectionView2 = [(VUIDownloadCollectionViewController *)self collectionView];
+    indexPathsForSelectedItems2 = [collectionView2 indexPathsForSelectedItems];
+    v16 = [indexPathsForSelectedItems2 count];
 
     if (v16)
     {
       return;
     }
 
-    v17 = [(VUIDownloadCollectionViewController *)self rightBarButtonItem];
-    v18 = [v17 isEnabled];
+    rightBarButtonItem = [(VUIDownloadCollectionViewController *)self rightBarButtonItem];
+    isEnabled = [rightBarButtonItem isEnabled];
 
-    if (!v18)
+    if (!isEnabled)
     {
       return;
     }
   }
 
-  v19 = [(VUIDownloadCollectionViewController *)self rightBarButtonItem];
-  [v19 setEnabled:v5 == v7];
+  rightBarButtonItem2 = [(VUIDownloadCollectionViewController *)self rightBarButtonItem];
+  [rightBarButtonItem2 setEnabled:v5 == v7];
 }
 
 - (void)_updateNavigationBarPadding
 {
   v3 = MEMORY[0x1E69DD2E8];
-  v4 = [(VUIDownloadCollectionViewController *)self view];
-  [v4 bounds];
+  view = [(VUIDownloadCollectionViewController *)self view];
+  [view bounds];
   [v3 vui_paddingForWindowWidth:CGRectGetWidth(v27)];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(VUIDownloadCollectionViewController *)self navigationController];
-  v14 = [v13 navigationBar];
-  [v14 layoutMargins];
+  navigationController = [(VUIDownloadCollectionViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar layoutMargins];
   if (v8 == v18 && v6 == v15 && v12 == v17)
   {
     v21 = v16;
@@ -1942,13 +1942,13 @@ void __63__VUIDownloadCollectionViewController__deleteDownloadEntities___block_i
   {
   }
 
-  v22 = [(VUIDownloadCollectionViewController *)self navigationController];
-  v23 = [v22 navigationBar];
-  [v23 setLayoutMargins:{v6, v8, v10, v12}];
+  navigationController2 = [(VUIDownloadCollectionViewController *)self navigationController];
+  navigationBar2 = [navigationController2 navigationBar];
+  [navigationBar2 setLayoutMargins:{v6, v8, v10, v12}];
 
-  v25 = [(VUIDownloadCollectionViewController *)self navigationController];
-  v24 = [v25 navigationBar];
-  [v24 setNeedsLayout];
+  navigationController3 = [(VUIDownloadCollectionViewController *)self navigationController];
+  navigationBar3 = [navigationController3 navigationBar];
+  [navigationBar3 setNeedsLayout];
 }
 
 void __47__VUIDownloadCollectionViewController_loadView__block_invoke_3_cold_1(char a1, uint64_t a2, os_log_t log)

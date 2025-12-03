@@ -1,58 +1,58 @@
 @interface GKSignInViewController
-- (BOOL)authenticationController:(id)a3 shouldContinueWithAuthenticationResults:(id)a4 error:(id)a5 forContext:(id)a6;
-- (BOOL)handleUnderlyingAuthenticationError:(id)a3 playerID:(id)a4;
-- (BOOL)remoteUIController:(id)a3 shouldLoadRequest:(id)a4 redirectResponse:(id)a5;
+- (BOOL)authenticationController:(id)controller shouldContinueWithAuthenticationResults:(id)results error:(id)error forContext:(id)context;
+- (BOOL)handleUnderlyingAuthenticationError:(id)error playerID:(id)d;
+- (BOOL)remoteUIController:(id)controller shouldLoadRequest:(id)request redirectResponse:(id)response;
 - (GKSignInViewController)init;
 - (UIEdgeInsets)contentInsetsBeforeKeyboard;
 - (UIEdgeInsets)currentContentInsets;
 - (UIEdgeInsets)scrollIndicatorInsetsBeforeKeyboard;
-- (void)_systemContentSizeSettingDidChange:(id)a3;
-- (void)accountRemoteUIController:(id)a3 finishedWithError:(id)a4;
-- (void)addCancelButtonToNavigationItem:(id)a3;
-- (void)authenticateRequestCompletedWithErrorResponse:(id)a3 error:(id)a4;
+- (void)_systemContentSizeSettingDidChange:(id)change;
+- (void)accountRemoteUIController:(id)controller finishedWithError:(id)error;
+- (void)addCancelButtonToNavigationItem:(id)item;
+- (void)authenticateRequestCompletedWithErrorResponse:(id)response error:(id)error;
 - (void)createAppleID;
 - (void)createConstraints;
 - (void)createSubviews;
 - (void)dealloc;
-- (void)finishAuthenticationWithError:(id)a3;
+- (void)finishAuthenticationWithError:(id)error;
 - (void)iForgotTapped;
-- (void)keyboardWillHide:(id)a3;
-- (void)keyboardWillShow:(id)a3;
-- (void)loadAccountRemoteUIForPlayer:(id)a3 mode:(int64_t)a4 url:(id)a5 postBody:(id)a6 completionHandler:(id)a7;
+- (void)keyboardWillHide:(id)hide;
+- (void)keyboardWillShow:(id)show;
+- (void)loadAccountRemoteUIForPlayer:(id)player mode:(int64_t)mode url:(id)url postBody:(id)body completionHandler:(id)handler;
 - (void)loadView;
-- (void)presentAccountRemoteUIControllerAnimated:(BOOL)a3;
-- (void)presentError:(id)a3 forAccountRemoteUIController:(id)a4;
-- (void)remoteUIController:(id)a3 didReceiveHTTPResponse:(id)a4;
-- (void)remoteUIController:(id)a3 didReceiveObjectModel:(id)a4 actionSignal:(unint64_t *)a5;
-- (void)remoteUIControllerDidDismiss:(id)a3;
+- (void)presentAccountRemoteUIControllerAnimated:(BOOL)animated;
+- (void)presentError:(id)error forAccountRemoteUIController:(id)controller;
+- (void)remoteUIController:(id)controller didReceiveHTTPResponse:(id)response;
+- (void)remoteUIController:(id)controller didReceiveObjectModel:(id)model actionSignal:(unint64_t *)signal;
+- (void)remoteUIControllerDidDismiss:(id)dismiss;
 - (void)setupAuthKitInlineViewController;
 - (void)showAAUISignInController;
 - (void)showAccountDisabledAlert;
-- (void)showAccountRemoteUIForAccountName:(id)a3 mode:(int64_t)a4 url:(id)a5 postBody:(id)a6;
-- (void)showAccountRemoteUIForLocalPlayer:(id)a3 mode:(int64_t)a4 url:(id)a5 postBody:(id)a6;
-- (void)showAccountRemoteUIForPlayerID:(id)a3 mode:(int64_t)a4;
-- (void)showAuthKitAlertFromGreenBuddyWithAuthInfo:(id)a3 completion:(id)a4;
+- (void)showAccountRemoteUIForAccountName:(id)name mode:(int64_t)mode url:(id)url postBody:(id)body;
+- (void)showAccountRemoteUIForLocalPlayer:(id)player mode:(int64_t)mode url:(id)url postBody:(id)body;
+- (void)showAccountRemoteUIForPlayerID:(id)d mode:(int64_t)mode;
+- (void)showAuthKitAlertFromGreenBuddyWithAuthInfo:(id)info completion:(id)completion;
 - (void)showConnectionFailedAlert;
 - (void)showForgotPasswordAlert;
 - (void)showLoginFailedAlert;
-- (void)showPasswordAlertWithTitle:(id)a3 message:(id)a4;
-- (void)showPasswordChangeAlertWithURL:(id)a3;
-- (void)showPasswordResetAlertWithTitle:(id)a3 message:(id)a4;
-- (void)showViewController:(id)a3;
+- (void)showPasswordAlertWithTitle:(id)title message:(id)message;
+- (void)showPasswordChangeAlertWithURL:(id)l;
+- (void)showPasswordResetAlertWithTitle:(id)title message:(id)message;
+- (void)showViewController:(id)controller;
 - (void)signIn;
-- (void)signInController:(id)a3 didCompleteWithOperationsResults:(id)a4;
-- (void)signInControllerDidCancel:(id)a3;
-- (void)signInViewController:(id)a3 didAuthenticateWithResults:(id)a4 error:(id)a5;
+- (void)signInController:(id)controller didCompleteWithOperationsResults:(id)results;
+- (void)signInControllerDidCancel:(id)cancel;
+- (void)signInViewController:(id)controller didAuthenticateWithResults:(id)results error:(id)error;
 - (void)startLoadingIndicator;
 - (void)stopLoadingIndicator;
-- (void)updateConstraintConstantsForTraitCollection:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)updateConstraintConstantsForTraitCollection:(id)collection;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation GKSignInViewController
@@ -64,12 +64,12 @@
   v2 = [(GKSignInViewController *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D0C048] currentGame];
+    currentGame = [MEMORY[0x277D0C048] currentGame];
     game = v2->_game;
-    v2->_game = v3;
+    v2->_game = currentGame;
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel__systemContentSizeSettingDidChange_ name:*MEMORY[0x277D76810] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__systemContentSizeSettingDidChange_ name:*MEMORY[0x277D76810] object:0];
   }
 
   return v2;
@@ -77,44 +77,44 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = GKSignInViewController;
   [(GKSignInViewController *)&v4 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = GKSignInViewController;
-  [(GKViewController *)&v11 viewWillAppear:a3];
+  [(GKViewController *)&v11 viewWillAppear:appear];
   [(UIScrollView *)self->_scrollView setContentInset:self->_currentContentInsets.top, self->_currentContentInsets.left, self->_currentContentInsets.bottom, self->_currentContentInsets.right];
-  v4 = [(GKSignInViewController *)self signInInputView];
-  [v4 bounds];
+  signInInputView = [(GKSignInViewController *)self signInInputView];
+  [signInInputView bounds];
   [(UIScrollView *)self->_scrollView setContentSize:v5, v6];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:self selector:sel_keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 addObserver:self selector:sel_keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
 
-  v9 = [(GKSignInViewController *)self navigationController];
-  [v9 setNavigationBarHidden:0];
+  navigationController = [(GKSignInViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:0];
 
-  v10 = [(GKSignInViewController *)self navigationItem];
-  [(GKSignInViewController *)self addCancelButtonToNavigationItem:v10];
+  navigationItem = [(GKSignInViewController *)self navigationItem];
+  [(GKSignInViewController *)self addCancelButtonToNavigationItem:navigationItem];
 }
 
-- (void)addCancelButtonToNavigationItem:(id)a3
+- (void)addCancelButtonToNavigationItem:(id)item
 {
   v4 = MEMORY[0x277D751E0];
-  v5 = a3;
+  itemCopy = item;
   v6 = [[v4 alloc] initWithBarButtonSystemItem:1 target:self action:sel_cancelSignIn];
   [v6 setAccessibilityIdentifier:@"UIA.GameCenter.SignIn.cancelButton"];
-  [v5 setLeftBarButtonItem:v6];
+  [itemCopy setLeftBarButtonItem:v6];
 }
 
 - (void)viewWillLayoutSubviews
@@ -127,23 +127,23 @@
   [(UIScrollView *)self->_scrollView setContentSize:v3, v4];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = GKSignInViewController;
-  [(GKViewController *)&v3 viewDidAppear:a3];
+  [(GKViewController *)&v3 viewDidAppear:appear];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = GKSignInViewController;
-  [(GKSignInViewController *)&v6 viewDidDisappear:a3];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D76C60] object:0];
+  [(GKSignInViewController *)&v6 viewDidDisappear:disappear];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C60] object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x277D76C50] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D76C50] object:0];
 }
 
 - (void)loadView
@@ -151,10 +151,10 @@
   v24.receiver = self;
   v24.super_class = GKSignInViewController;
   [(GKViewController *)&v24 loadView];
-  v3 = [MEMORY[0x277D0C1D8] shared];
-  v4 = [v3 easySignInSheetEnabled];
+  mEMORY[0x277D0C1D8] = [MEMORY[0x277D0C1D8] shared];
+  easySignInSheetEnabled = [mEMORY[0x277D0C1D8] easySignInSheetEnabled];
 
-  if (v4)
+  if (easySignInSheetEnabled)
   {
     objc_initWeak(&location, self);
     v5 = [GKSignInView alloc];
@@ -168,13 +168,13 @@
     self->_signInView = v6;
 
     [(GKSignInView *)self->_signInView setTranslatesAutoresizingMaskIntoConstraints:0, v18, v19, v20, v21];
-    v8 = [(GKSignInViewController *)self view];
-    [v8 addSubview:self->_signInView];
+    view = [(GKSignInViewController *)self view];
+    [view addSubview:self->_signInView];
 
     v9 = MEMORY[0x277CCAAD0];
     v10 = self->_signInView;
-    v11 = [(GKSignInViewController *)self view];
-    [v9 _gkInstallEdgeConstraintsForView:v10 containedWithinParentView:v11];
+    view2 = [(GKSignInViewController *)self view];
+    [v9 _gkInstallEdgeConstraintsForView:v10 containedWithinParentView:view2];
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(&location);
@@ -187,19 +187,19 @@
     [(GKSignInViewController *)self createConstraints];
   }
 
-  v12 = [(GKSignInViewController *)self scrollView];
-  [v12 setContentInsetAdjustmentBehavior:0];
+  scrollView = [(GKSignInViewController *)self scrollView];
+  [scrollView setContentInsetAdjustmentBehavior:0];
 
-  v13 = [(GKSignInViewController *)self navigationController];
-  [v13 setNavigationBarHidden:0];
+  navigationController = [(GKSignInViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:0];
 
-  v14 = [(GKSignInViewController *)self navigationController];
-  [v14 makeNavigationBarBackgroundTranslucent];
+  navigationController2 = [(GKSignInViewController *)self navigationController];
+  [navigationController2 makeNavigationBarBackgroundTranslucent];
 
   v15 = objc_opt_new();
-  v16 = [(GKSignInViewController *)self navigationController];
-  v17 = [v16 navigationBar];
-  [v17 setShadowImage:v15];
+  navigationController3 = [(GKSignInViewController *)self navigationController];
+  navigationBar = [navigationController3 navigationBar];
+  [navigationBar setShadowImage:v15];
 
   self->_constraintsCreated = 0;
 }
@@ -217,11 +217,11 @@ void __34__GKSignInViewController_loadView__block_invoke(uint64_t a1)
   self->_inlineSignInViewController = v3;
 
   [(AKInlineSignInViewController *)self->_inlineSignInViewController setWantsAuthenticationProgress:1];
-  v5 = [(AKInlineSignInViewController *)self->_inlineSignInViewController authenticationController];
-  [v5 setDelegate:self];
+  authenticationController = [(AKInlineSignInViewController *)self->_inlineSignInViewController authenticationController];
+  [authenticationController setDelegate:self];
 
-  v6 = [(AKInlineSignInViewController *)self->_inlineSignInViewController view];
-  [v6 setAccessibilityIdentifier:@"UIA.GameCenter.SignIn.form"];
+  view = [(AKInlineSignInViewController *)self->_inlineSignInViewController view];
+  [view setAccessibilityIdentifier:@"UIA.GameCenter.SignIn.form"];
 
   v7 = objc_alloc_init(MEMORY[0x277CF0380]);
   authContext = self->_authContext;
@@ -230,51 +230,51 @@ void __34__GKSignInViewController_loadView__block_invoke(uint64_t a1)
   [(AKAppleIDAuthenticationInAppContext *)self->_authContext setServiceType:6];
   [(AKAppleIDAuthenticationInAppContext *)self->_authContext setPresentingViewController:self];
   [(AKInlineSignInViewController *)self->_inlineSignInViewController setDelegate:self];
-  v9 = [(GKSignInViewController *)self authContext];
-  [(AKInlineSignInViewController *)self->_inlineSignInViewController setContext:v9];
+  authContext = [(GKSignInViewController *)self authContext];
+  [(AKInlineSignInViewController *)self->_inlineSignInViewController setContext:authContext];
 
   [(AKInlineSignInViewController *)self->_inlineSignInViewController setWantsAuthenticationProgress:1];
   [(AKInlineSignInViewController *)self->_inlineSignInViewController setSecondaryButtonTarget:self action:sel_iForgotTapped];
   [(AKInlineSignInViewController *)self->_inlineSignInViewController setTertiaryButtonTarget:self action:sel_createAppleID];
   [(GKSignInViewController *)self addChildViewController:self->_inlineSignInViewController];
-  v10 = [(GKSignInViewController *)self signInInputView];
-  v11 = [(AKInlineSignInViewController *)self->_inlineSignInViewController view];
-  [v10 addSubview:v11];
+  signInInputView = [(GKSignInViewController *)self signInInputView];
+  view2 = [(AKInlineSignInViewController *)self->_inlineSignInViewController view];
+  [signInInputView addSubview:view2];
 
   [(AKInlineSignInViewController *)self->_inlineSignInViewController didMoveToParentViewController:self];
-  v16 = [(AKInlineSignInViewController *)self->_inlineSignInViewController view];
-  v12 = [v16 bottomAnchor];
-  v13 = [(GKSignInViewController *)self signInInputView];
-  v14 = [v13 bottomAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  view3 = [(AKInlineSignInViewController *)self->_inlineSignInViewController view];
+  bottomAnchor = [view3 bottomAnchor];
+  signInInputView2 = [(GKSignInViewController *)self signInInputView];
+  bottomAnchor2 = [signInInputView2 bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v15 setActive:1];
 }
 
-- (void)signInController:(id)a3 didCompleteWithOperationsResults:(id)a4
+- (void)signInController:(id)controller didCompleteWithOperationsResults:(id)results
 {
-  v5 = [a4 objectForKeyedSubscript:*MEMORY[0x277CED1B0]];
-  v6 = [v5 error];
-  if (v6)
+  v5 = [results objectForKeyedSubscript:*MEMORY[0x277CED1B0]];
+  error = [v5 error];
+  if (error)
   {
   }
 
   else if ([v5 success])
   {
-    v7 = [MEMORY[0x277D0C010] proxyForLocalPlayer];
-    v8 = [v7 accountServicePrivate];
+    proxyForLocalPlayer = [MEMORY[0x277D0C010] proxyForLocalPlayer];
+    accountServicePrivate = [proxyForLocalPlayer accountServicePrivate];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __76__GKSignInViewController_signInController_didCompleteWithOperationsResults___block_invoke;
     v13[3] = &unk_27966BBE0;
     v13[4] = self;
-    [v8 authenticatePlayerWithUsername:0 password:0 altDSID:0 usingFastPath:1 handler:v13];
+    [accountServicePrivate authenticatePlayerWithUsername:0 password:0 altDSID:0 usingFastPath:1 handler:v13];
 
     goto LABEL_11;
   }
 
-  v9 = [v5 error];
+  error2 = [v5 error];
 
-  if (v9)
+  if (error2)
   {
     if (!*MEMORY[0x277D0C2A0])
     {
@@ -290,45 +290,45 @@ void __34__GKSignInViewController_loadView__block_invoke(uint64_t a1)
 
   [(GKSignInViewController *)self dismissViewControllerAnimated:1 completion:0];
 LABEL_11:
-  v12 = [(GKSignInViewController *)self signInView];
-  [v12 enablePrimaryButton];
+  signInView = [(GKSignInViewController *)self signInView];
+  [signInView enablePrimaryButton];
 }
 
-- (void)signInControllerDidCancel:(id)a3
+- (void)signInControllerDidCancel:(id)cancel
 {
   [(GKSignInViewController *)self dismissViewControllerAnimated:1 completion:0];
-  v4 = [(GKSignInViewController *)self signInView];
-  [v4 enablePrimaryButton];
+  signInView = [(GKSignInViewController *)self signInView];
+  [signInView enablePrimaryButton];
 }
 
-- (void)signInViewController:(id)a3 didAuthenticateWithResults:(id)a4 error:(id)a5
+- (void)signInViewController:(id)controller didAuthenticateWithResults:(id)results error:(id)error
 {
-  v8 = a3;
-  if (a4 && !a5)
+  controllerCopy = controller;
+  if (results && !error)
   {
     v9 = *MEMORY[0x277CEFFD8];
-    v10 = a4;
-    v11 = [v10 objectForKeyedSubscript:v9];
-    v12 = [v10 objectForKeyedSubscript:*MEMORY[0x277CEFFC8]];
-    v13 = [v10 objectForKeyedSubscript:*MEMORY[0x277CEFF78]];
+    resultsCopy = results;
+    v11 = [resultsCopy objectForKeyedSubscript:v9];
+    v12 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277CEFFC8]];
+    v13 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277CEFF78]];
 
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __80__GKSignInViewController_signInViewController_didAuthenticateWithResults_error___block_invoke;
     block[3] = &unk_279669E48;
     block[4] = self;
-    v14 = v8;
+    v14 = controllerCopy;
     v20 = v14;
     dispatch_async(MEMORY[0x277D85CD0], block);
-    v15 = [MEMORY[0x277D0C010] proxyForLocalPlayer];
-    v16 = [v15 accountServicePrivate];
+    proxyForLocalPlayer = [MEMORY[0x277D0C010] proxyForLocalPlayer];
+    accountServicePrivate = [proxyForLocalPlayer accountServicePrivate];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __80__GKSignInViewController_signInViewController_didAuthenticateWithResults_error___block_invoke_2;
     v17[3] = &unk_27966BC08;
     v17[4] = self;
     v18 = v14;
-    [v16 authenticatePlayerWithUsername:v11 password:v12 altDSID:v13 usingFastPath:1 handler:v17];
+    [accountServicePrivate authenticatePlayerWithUsername:v11 password:v12 altDSID:v13 usingFastPath:1 handler:v17];
   }
 }
 
@@ -353,27 +353,27 @@ void __80__GKSignInViewController_signInViewController_didAuthenticateWithResult
   [*(a1 + 32) authenticateRequestCompletedWithErrorResponse:v7 error:v5];
 }
 
-- (BOOL)remoteUIController:(id)a3 shouldLoadRequest:(id)a4 redirectResponse:(id)a5
+- (BOOL)remoteUIController:(id)controller shouldLoadRequest:(id)request redirectResponse:(id)response
 {
   v5 = MEMORY[0x277CEC7B8];
-  v6 = a4;
+  requestCopy = request;
   v7 = objc_alloc_init(v5);
-  v8 = [v7 clientInfoHeader];
-  [v6 setValue:v8 forHTTPHeaderField:@"X-MMe-Client-Info"];
+  clientInfoHeader = [v7 clientInfoHeader];
+  [requestCopy setValue:clientInfoHeader forHTTPHeaderField:@"X-MMe-Client-Info"];
 
-  v9 = [MEMORY[0x277CBEAF8] currentLocale];
-  v10 = [v9 objectForKey:*MEMORY[0x277CBE690]];
-  v11 = [v10 uppercaseString];
-  [v6 setValue:v11 forHTTPHeaderField:@"X-MMe-Country"];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v10 = [currentLocale objectForKey:*MEMORY[0x277CBE690]];
+  uppercaseString = [v10 uppercaseString];
+  [requestCopy setValue:uppercaseString forHTTPHeaderField:@"X-MMe-Country"];
 
   return 1;
 }
 
-- (void)remoteUIController:(id)a3 didReceiveHTTPResponse:(id)a4
+- (void)remoteUIController:(id)controller didReceiveHTTPResponse:(id)response
 {
-  v5 = [a4 URL];
-  v6 = [v5 absoluteString];
-  v7 = [v6 containsString:@"skipCreateAppleID"];
+  v5 = [response URL];
+  absoluteString = [v5 absoluteString];
+  v7 = [absoluteString containsString:@"skipCreateAppleID"];
 
   if (v7)
   {
@@ -381,12 +381,12 @@ void __80__GKSignInViewController_signInViewController_didAuthenticateWithResult
   }
 }
 
-- (void)remoteUIController:(id)a3 didReceiveObjectModel:(id)a4 actionSignal:(unint64_t *)a5
+- (void)remoteUIController:(id)controller didReceiveObjectModel:(id)model actionSignal:(unint64_t *)signal
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (a5 && *a5 == 2 && ([v9 defaultPages], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v11, !v12))
+  controllerCopy = controller;
+  modelCopy = model;
+  v10 = modelCopy;
+  if (signal && *signal == 2 && ([modelCopy defaultPages], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v11, !v12))
   {
     v18 = MEMORY[0x277D0C2A0];
     v19 = *MEMORY[0x277D0C2A0];
@@ -416,8 +416,8 @@ void __80__GKSignInViewController_signInViewController_didAuthenticateWithResult
     }
 
     [(NSMutableArray *)u13ObjectModels addObject:v10];
-    v16 = [v10 clientInfo];
-    v17 = [v16 objectForKeyedSubscript:@"continue"];
+    clientInfo = [v10 clientInfo];
+    v17 = [clientInfo objectForKeyedSubscript:@"continue"];
 
     if (v17 && ([v17 BOOLValue] & 1) == 0)
     {
@@ -426,12 +426,12 @@ void __80__GKSignInViewController_signInViewController_didAuthenticateWithResult
   }
 }
 
-- (void)remoteUIControllerDidDismiss:(id)a3
+- (void)remoteUIControllerDidDismiss:(id)dismiss
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 navigationController];
-  v6 = [v5 popViewControllerAnimated:1];
+  dismissCopy = dismiss;
+  navigationController = [dismissCopy navigationController];
+  v6 = [navigationController popViewControllerAnimated:1];
 
   if (self->_userShouldSkipCreateAppleID)
   {
@@ -471,40 +471,40 @@ void __80__GKSignInViewController_signInViewController_didAuthenticateWithResult
       while (v10);
     }
 
-    v13 = [MEMORY[0x277CBEAF8] currentLocale];
-    v14 = [v13 objectForKey:*MEMORY[0x277CBE690]];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v14 = [currentLocale objectForKey:*MEMORY[0x277CBE690]];
 
     if (![v14 length])
     {
       [GKSignInViewController remoteUIControllerDidDismiss:];
     }
 
-    v15 = [MEMORY[0x277CCA8D8] _gkPreferredSystemLanguage];
-    if (![v15 length])
+    _gkPreferredSystemLanguage = [MEMORY[0x277CCA8D8] _gkPreferredSystemLanguage];
+    if (![_gkPreferredSystemLanguage length])
     {
       [GKSignInViewController remoteUIControllerDidDismiss:];
     }
 
-    if ([v15 rangeOfString:@"-"] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([_gkPreferredSystemLanguage rangeOfString:@"-"] == 0x7FFFFFFFFFFFFFFFLL)
     {
       v16 = MEMORY[0x277CCACA8];
-      v17 = [v14 lowercaseString];
-      v18 = [v16 stringWithFormat:@"%@-%@", v15, v17];
+      lowercaseString = [v14 lowercaseString];
+      v18 = [v16 stringWithFormat:@"%@-%@", _gkPreferredSystemLanguage, lowercaseString];
 
-      v15 = v18;
+      _gkPreferredSystemLanguage = v18;
     }
 
-    v19 = [MEMORY[0x277CBEBB0] systemTimeZone];
-    v20 = [v19 name];
+    systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+    name = [systemTimeZone name];
 
-    if ([v20 length])
+    if ([name length])
     {
-      [v7 setObject:v20 forKey:*MEMORY[0x277CEC710]];
+      [v7 setObject:name forKey:*MEMORY[0x277CEC710]];
     }
 
-    [v7 setObject:v15 forKey:*MEMORY[0x277CEC708]];
-    v21 = [v14 uppercaseString];
-    [v7 setObject:v21 forKey:*MEMORY[0x277CEC700]];
+    [v7 setObject:_gkPreferredSystemLanguage forKey:*MEMORY[0x277CEC708]];
+    uppercaseString = [v14 uppercaseString];
+    [v7 setObject:uppercaseString forKey:*MEMORY[0x277CEC700]];
 
     v22 = objc_alloc_init(MEMORY[0x277CEC848]);
     v23[0] = MEMORY[0x277D85DD0];
@@ -537,15 +537,15 @@ void __55__GKSignInViewController_remoteUIControllerDidDismiss___block_invoke(ui
   [*(*(a1 + 32) + 1168) leave];
 }
 
-- (BOOL)authenticationController:(id)a3 shouldContinueWithAuthenticationResults:(id)a4 error:(id)a5 forContext:(id)a6
+- (BOOL)authenticationController:(id)controller shouldContinueWithAuthenticationResults:(id)results error:(id)error forContext:(id)context
 {
-  v9 = a6;
+  contextCopy = context;
   v10 = *MEMORY[0x277CEFFC0];
-  v11 = a5;
-  v12 = [a4 objectForKey:v10];
-  v13 = [v11 code];
+  errorCopy = error;
+  v12 = [results objectForKey:v10];
+  code = [errorCopy code];
 
-  if (v13 == -7006)
+  if (code == -7006)
   {
     [(GKSignInViewController *)self showLoginFailedAlert];
   }
@@ -563,8 +563,8 @@ void __55__GKSignInViewController_remoteUIControllerDidDismiss___block_invoke(ui
     v19[2] = __108__GKSignInViewController_authenticationController_shouldContinueWithAuthenticationResults_error_forContext___block_invoke;
     v19[3] = &unk_279669B00;
     v20 = v12;
-    v21 = v9;
-    v22 = self;
+    v21 = contextCopy;
+    selfCopy = self;
     [(GKDispatchGroup *)u13Group perform:v19];
     [(GKDispatchGroup *)self->_u13Group enter];
     [(GKDispatchGroup *)self->_u13Group wait];
@@ -653,9 +653,9 @@ void __108__GKSignInViewController_authenticationController_shouldContinueWithAu
   [(UIScrollView *)self->_scrollView setAlwaysBounceVertical:1];
   [(UIScrollView *)self->_scrollView setDelegate:self];
   [(UIScrollView *)self->_scrollView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v10 = [(GKViewController *)self colorPalette];
-  v11 = [v10 viewBackgroundColor];
-  [(UIScrollView *)self->_scrollView setBackgroundColor:v11];
+  colorPalette = [(GKViewController *)self colorPalette];
+  viewBackgroundColor = [colorPalette viewBackgroundColor];
+  [(UIScrollView *)self->_scrollView setBackgroundColor:viewBackgroundColor];
 
   [(UIScrollView *)self->_scrollView setOpaque:1];
   [(UIScrollView *)self->_scrollView contentInset];
@@ -676,8 +676,8 @@ void __108__GKSignInViewController_authenticationController_shouldContinueWithAu
   self->_signInInputView = v21;
 
   [(GKSignInInputView *)self->_signInInputView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v23 = [MEMORY[0x277D75348] clearColor];
-  [(GKSignInInputView *)self->_signInInputView setBackgroundColor:v23];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(GKSignInInputView *)self->_signInInputView setBackgroundColor:clearColor];
 
   v24 = objc_alloc_init(MEMORY[0x277D756B8]);
   loginPromptLabel = self->_loginPromptLabel;
@@ -686,8 +686,8 @@ void __108__GKSignInViewController_authenticationController_shouldContinueWithAu
   [(UILabel *)self->_loginPromptLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(v26) = 1148846080;
   [(UILabel *)self->_loginPromptLabel setContentCompressionResistancePriority:1 forAxis:v26];
-  v27 = [MEMORY[0x277D75348] clearColor];
-  [(UILabel *)self->_loginPromptLabel setBackgroundColor:v27];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
+  [(UILabel *)self->_loginPromptLabel setBackgroundColor:clearColor2];
 
   [(UILabel *)self->_loginPromptLabel setLineBreakMode:0];
   [(UILabel *)self->_loginPromptLabel setNumberOfLines:0];
@@ -695,11 +695,11 @@ void __108__GKSignInViewController_authenticationController_shouldContinueWithAu
   v28 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
   [(UILabel *)self->_loginPromptLabel setFont:v28];
 
-  v29 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [(UILabel *)self->_loginPromptLabel setTextColor:v29];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [(UILabel *)self->_loginPromptLabel setTextColor:secondaryLabelColor];
 
-  v30 = [MEMORY[0x277D0C850] SIGN_IN_PROMPT_MESSAGE_TEXT];
-  [(UILabel *)self->_loginPromptLabel setText:v30];
+  sIGN_IN_PROMPT_MESSAGE_TEXT = [MEMORY[0x277D0C850] SIGN_IN_PROMPT_MESSAGE_TEXT];
+  [(UILabel *)self->_loginPromptLabel setText:sIGN_IN_PROMPT_MESSAGE_TEXT];
 
   [(UILabel *)self->_loginPromptLabel setAccessibilityIdentifier:@"UIA.GameCenter.SignIn.prompt"];
   v31 = objc_alloc(MEMORY[0x277D755E8]);
@@ -716,8 +716,8 @@ void __108__GKSignInViewController_authenticationController_shouldContinueWithAu
   self->_signInLabel = v37;
 
   [(UILabel *)self->_signInLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v39 = [MEMORY[0x277D75348] clearColor];
-  [(UILabel *)self->_signInLabel setBackgroundColor:v39];
+  clearColor3 = [MEMORY[0x277D75348] clearColor];
+  [(UILabel *)self->_signInLabel setBackgroundColor:clearColor3];
 
   [(UILabel *)self->_signInLabel setLineBreakMode:0];
   [(UILabel *)self->_signInLabel setNumberOfLines:0];
@@ -736,17 +736,17 @@ void __108__GKSignInViewController_authenticationController_shouldContinueWithAu
 
   [(UIActivityIndicatorView *)self->_progressIndicator setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIActivityIndicatorView *)self->_progressIndicator setHidesWhenStopped:1];
-  v45 = [(GKViewController *)self colorPalette];
-  v46 = [v45 activityIndicatorColor];
-  [(UIActivityIndicatorView *)self->_progressIndicator setColor:v46];
+  colorPalette2 = [(GKViewController *)self colorPalette];
+  activityIndicatorColor = [colorPalette2 activityIndicatorColor];
+  [(UIActivityIndicatorView *)self->_progressIndicator setColor:activityIndicatorColor];
 
   [(UIActivityIndicatorView *)self->_progressIndicator setAccessibilityIdentifier:@"UIA.GameCenter.SignIn.progressIndicator"];
-  v49 = [(GKSignInViewController *)self view];
-  v47 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v49 setBackgroundColor:v47];
+  view = [(GKSignInViewController *)self view];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  [v49 addSubview:self->_scrollView];
-  v48 = [v49 _gkApplyFakeStatusBarView];
+  [view addSubview:self->_scrollView];
+  _gkApplyFakeStatusBarView = [view _gkApplyFakeStatusBarView];
   [(UIScrollView *)self->_scrollView addSubview:self->_signInInputView];
   [(GKSignInInputView *)self->_signInInputView addSubview:self->_bubbleImageView];
   [(GKSignInInputView *)self->_signInInputView addSubview:self->_signInLabel];
@@ -756,30 +756,30 @@ void __108__GKSignInViewController_authenticationController_shouldContinueWithAu
 
 - (void)viewSafeAreaInsetsDidChange
 {
-  v3 = [(GKSignInViewController *)self view];
-  [v3 safeAreaInsets];
+  view = [(GKSignInViewController *)self view];
+  [view safeAreaInsets];
   v5 = v4;
-  v6 = [(GKSignInViewController *)self view];
-  [v6 safeAreaInsets];
+  view2 = [(GKSignInViewController *)self view];
+  [view2 safeAreaInsets];
   v8 = v5 + v7;
 
-  v9 = [(GKSignInViewController *)self signInInputView];
-  v10 = [v9 signInInputViewHeightConstraint];
-  [v10 setConstant:-v8];
+  signInInputView = [(GKSignInViewController *)self signInInputView];
+  signInInputViewHeightConstraint = [signInInputView signInInputViewHeightConstraint];
+  [signInInputViewHeightConstraint setConstant:-v8];
 
   v11.receiver = self;
   v11.super_class = GKSignInViewController;
   [(GKSignInViewController *)&v11 viewSafeAreaInsetsDidChange];
 }
 
-- (void)_systemContentSizeSettingDidChange:(id)a3
+- (void)_systemContentSizeSettingDidChange:(id)change
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(GKSignInInputView *)self->_signInInputView subviews:a3];
+  v3 = [(GKSignInInputView *)self->_signInInputView subviews:change];
   v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
@@ -808,22 +808,22 @@ void __108__GKSignInViewController_authenticationController_shouldContinueWithAu
   }
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a3;
+  collectionCopy = collection;
   v9.receiver = self;
   v9.super_class = GKSignInViewController;
-  [(GKSignInViewController *)&v9 willTransitionToTraitCollection:v6 withTransitionCoordinator:a4];
-  if ([v6 userInterfaceIdiom] == 1)
+  [(GKSignInViewController *)&v9 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinator];
+  if ([collectionCopy userInterfaceIdiom] == 1)
   {
-    [(GKSignInViewController *)self updateConstraintConstantsForTraitCollection:v6];
-    v7 = [(GKSignInViewController *)self fullWidthViewConstraints];
+    [(GKSignInViewController *)self updateConstraintConstantsForTraitCollection:collectionCopy];
+    fullWidthViewConstraints = [(GKSignInViewController *)self fullWidthViewConstraints];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __84__GKSignInViewController_willTransitionToTraitCollection_withTransitionCoordinator___block_invoke;
     v8[3] = &unk_27966BC80;
     v8[4] = self;
-    [v7 enumerateObjectsUsingBlock:v8];
+    [fullWidthViewConstraints enumerateObjectsUsingBlock:v8];
   }
 }
 
@@ -835,13 +835,13 @@ void __84__GKSignInViewController_willTransitionToTraitCollection_withTransition
   [v3 setConstant:?];
 }
 
-- (void)updateConstraintConstantsForTraitCollection:(id)a3
+- (void)updateConstraintConstantsForTraitCollection:(id)collection
 {
-  v7 = a3;
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  collectionCopy = collection;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v5 == 1)
+  if (userInterfaceIdiom == 1)
   {
     if (*MEMORY[0x277D0C258])
     {
@@ -850,7 +850,7 @@ void __84__GKSignInViewController_willTransitionToTraitCollection_withTransition
 
     else
     {
-      v6 = dbl_24E3678A0[[v7 horizontalSizeClass] == 2];
+      v6 = dbl_24E3678A0[[collectionCopy horizontalSizeClass] == 2];
     }
   }
 
@@ -867,13 +867,13 @@ void __84__GKSignInViewController_willTransitionToTraitCollection_withTransition
   v51[2] = *MEMORY[0x277D85DE8];
   if (!self->_constraintsCreated)
   {
-    v43 = [(GKSignInViewController *)self view];
+    view = [(GKSignInViewController *)self view];
     v3 = *MEMORY[0x277D768C8];
     v4 = *(MEMORY[0x277D768C8] + 8);
     v5 = *(MEMORY[0x277D768C8] + 16);
     v6 = *(MEMORY[0x277D768C8] + 24);
-    v7 = [MEMORY[0x277CCAAD0] _gkConstraintsForView:self->_scrollView withinView:v43 insets:{*MEMORY[0x277D768C8], v4, v5, v6}];
-    [v43 addConstraints:v7];
+    v7 = [MEMORY[0x277CCAAD0] _gkConstraintsForView:self->_scrollView withinView:view insets:{*MEMORY[0x277D768C8], v4, v5, v6}];
+    [view addConstraints:v7];
 
     v8 = MEMORY[0x277CCAAD0];
     signInInputView = self->_signInInputView;
@@ -884,16 +884,16 @@ void __84__GKSignInViewController_willTransitionToTraitCollection_withTransition
     v12 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_signInInputView attribute:7 relatedBy:0 toItem:v10 attribute:7 multiplier:1.0 constant:0.0];
     [(UIScrollView *)v10 addConstraint:v12];
 
-    v42 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     [(UIImageView *)self->_bubbleImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v13 = [(UIImageView *)self->_bubbleImageView bottomAnchor];
-    v14 = [(UILabel *)self->_signInLabel firstBaselineAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14 constant:-37.0];
+    bottomAnchor = [(UIImageView *)self->_bubbleImageView bottomAnchor];
+    firstBaselineAnchor = [(UILabel *)self->_signInLabel firstBaselineAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:firstBaselineAnchor constant:-37.0];
     [v15 setActive:1];
 
-    v16 = [(UIImageView *)self->_bubbleImageView centerXAnchor];
-    v17 = [(GKSignInInputView *)self->_signInInputView centerXAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17 constant:0.0];
+    centerXAnchor = [(UIImageView *)self->_bubbleImageView centerXAnchor];
+    centerXAnchor2 = [(GKSignInInputView *)self->_signInInputView centerXAnchor];
+    v18 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:0.0];
     [v18 setActive:1];
 
     v19 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_signInLabel attribute:11 relatedBy:0 toItem:self->_signInInputView attribute:3 multiplier:1.0 constant:0.0];
@@ -906,33 +906,33 @@ void __84__GKSignInViewController_willTransitionToTraitCollection_withTransition
     [(GKSignInInputView *)self->_signInInputView setPromptTextToProgressIndicatorTopConstraint:v21];
 
     v22 = MEMORY[0x277CCAAD0];
-    v23 = [(AKInlineSignInViewController *)self->_inlineSignInViewController view];
-    v24 = [v22 constraintWithItem:v23 attribute:12 relatedBy:0 toItem:self->_loginPromptLabel attribute:11 multiplier:1.0 constant:0.0];
+    view2 = [(AKInlineSignInViewController *)self->_inlineSignInViewController view];
+    v24 = [v22 constraintWithItem:view2 attribute:12 relatedBy:0 toItem:self->_loginPromptLabel attribute:11 multiplier:1.0 constant:0.0];
     [(GKSignInInputView *)self->_signInInputView setSignInFormToSignInLabelTopConstraint:v24];
 
-    v25 = [(GKSignInViewController *)self signInInputView];
-    v26 = [v25 heightAnchor];
-    v27 = [(GKSignInViewController *)self view];
-    v28 = [v27 heightAnchor];
-    v29 = [v26 constraintGreaterThanOrEqualToAnchor:v28];
+    signInInputView = [(GKSignInViewController *)self signInInputView];
+    heightAnchor = [signInInputView heightAnchor];
+    view3 = [(GKSignInViewController *)self view];
+    heightAnchor2 = [view3 heightAnchor];
+    v29 = [heightAnchor constraintGreaterThanOrEqualToAnchor:heightAnchor2];
     [(GKSignInInputView *)self->_signInInputView setSignInInputViewHeightConstraint:v29];
 
-    v30 = [(GKSignInInputView *)self->_signInInputView signInInputViewHeightConstraint];
-    [v30 setActive:1];
+    signInInputViewHeightConstraint = [(GKSignInInputView *)self->_signInInputView signInInputViewHeightConstraint];
+    [signInInputViewHeightConstraint setActive:1];
 
-    v31 = [(GKSignInInputView *)self->_signInInputView allVariableConstraints];
-    [v42 addObjectsFromArray:v31];
+    allVariableConstraints = [(GKSignInInputView *)self->_signInInputView allVariableConstraints];
+    [array addObjectsFromArray:allVariableConstraints];
 
-    v32 = [(GKSignInViewController *)self traitCollection];
-    [(GKSignInViewController *)self updateConstraintConstantsForTraitCollection:v32];
+    traitCollection = [(GKSignInViewController *)self traitCollection];
+    [(GKSignInViewController *)self updateConstraintConstantsForTraitCollection:traitCollection];
 
     signInLabel = self->_signInLabel;
     v51[0] = self->_loginPromptLabel;
     v51[1] = signInLabel;
     v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:2];
     v50[0] = self->_progressIndicator;
-    v35 = [(AKInlineSignInViewController *)self->_inlineSignInViewController view];
-    v50[1] = v35;
+    view4 = [(AKInlineSignInViewController *)self->_inlineSignInViewController view];
+    v50[1] = view4;
     v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:2];
     v37 = [v34 arrayByAddingObjectsFromArray:v36];
 
@@ -940,9 +940,9 @@ void __84__GKSignInViewController_willTransitionToTraitCollection_withTransition
     v47[1] = 3221225472;
     v47[2] = __43__GKSignInViewController_createConstraints__block_invoke;
     v47[3] = &unk_27966BCA8;
-    v38 = v42;
+    v38 = array;
     v48 = v38;
-    v49 = self;
+    selfCopy = self;
     [v37 enumerateObjectsUsingBlock:v47];
     v39 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v34, "count")}];
     v44[0] = MEMORY[0x277D85DD0];
@@ -982,30 +982,30 @@ void __43__GKSignInViewController_createConstraints__block_invoke_2(uint64_t a1,
   [*(a1 + 48) addObject:v6];
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   v8.receiver = self;
   v8.super_class = GKSignInViewController;
   [GKSignInViewController willAnimateRotationToInterfaceOrientation:sel_willAnimateRotationToInterfaceOrientation_duration_ duration:?];
-  [(GKSignInInputView *)self->_signInInputView setupConstraintConstantsForOrientation:a3];
+  [(GKSignInInputView *)self->_signInInputView setupConstraintConstantsForOrientation:orientation];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __77__GKSignInViewController_willAnimateRotationToInterfaceOrientation_duration___block_invoke;
   v7[3] = &unk_2796699A8;
   v7[4] = self;
-  [MEMORY[0x277D75D18] animateWithDuration:v7 animations:a4];
+  [MEMORY[0x277D75D18] animateWithDuration:v7 animations:duration];
 }
 
 - (void)startLoadingIndicator
 {
-  v2 = [(GKSignInViewController *)self progressIndicator];
-  [v2 startAnimating];
+  progressIndicator = [(GKSignInViewController *)self progressIndicator];
+  [progressIndicator startAnimating];
 }
 
 - (void)stopLoadingIndicator
 {
-  v2 = [(GKSignInViewController *)self progressIndicator];
-  [v2 stopAnimating];
+  progressIndicator = [(GKSignInViewController *)self progressIndicator];
+  [progressIndicator stopAnimating];
 }
 
 - (void)signIn
@@ -1049,17 +1049,17 @@ void __32__GKSignInViewController_signIn__block_invoke_3(uint64_t a1, uint64_t a
   dispatch_async(MEMORY[0x277D85CD0], v10);
 }
 
-- (void)showPasswordChangeAlertWithURL:(id)a3
+- (void)showPasswordChangeAlertWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = GKGameCenterUIFrameworkBundle();
   v6 = GKGetLocalizedStringFromTableInBundle();
 
   v7 = MEMORY[0x277CCACA8];
   v8 = GKGameCenterUIFrameworkBundle();
   v9 = GKGetLocalizedStringFromTableInBundle();
-  v10 = [v4 host];
-  v11 = [v7 stringWithFormat:v9, v10];
+  host = [lCopy host];
+  v11 = [v7 stringWithFormat:v9, host];
 
   v12 = [MEMORY[0x277D75110] alertControllerWithTitle:v6 message:v11 preferredStyle:1];
   v13 = MEMORY[0x277D750F8];
@@ -1069,8 +1069,8 @@ void __32__GKSignInViewController_signIn__block_invoke_3(uint64_t a1, uint64_t a
   v23[1] = 3221225472;
   v23[2] = __57__GKSignInViewController_showPasswordChangeAlertWithURL___block_invoke;
   v23[3] = &unk_279669C68;
-  v24 = v4;
-  v16 = v4;
+  v24 = lCopy;
+  v16 = lCopy;
   v17 = [v13 actionWithTitle:v15 style:0 handler:v23];
   [v12 addAction:v17];
 
@@ -1101,53 +1101,53 @@ void __57__GKSignInViewController_showPasswordChangeAlertWithURL___block_invoke_
   [v1 finishAuthenticationWithError:v2];
 }
 
-- (void)authenticateRequestCompletedWithErrorResponse:(id)a3 error:(id)a4
+- (void)authenticateRequestCompletedWithErrorResponse:(id)response error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  responseCopy = response;
+  errorCopy = error;
+  if (!errorCopy)
   {
-    if ([MEMORY[0x277D0C048] isGameCenter] && objc_msgSend(v6, "shouldShowLinkAccountsUI"))
+    if ([MEMORY[0x277D0C048] isGameCenter] && objc_msgSend(responseCopy, "shouldShowLinkAccountsUI"))
     {
-      v8 = [v6 playerID];
-      [(GKSignInViewController *)self showAccountRemoteUIForPlayerID:v8 mode:3];
+      playerID = [responseCopy playerID];
+      [(GKSignInViewController *)self showAccountRemoteUIForPlayerID:playerID mode:3];
       goto LABEL_10;
     }
 
-    if (([v6 passwordChangeRequired] & 1) == 0)
+    if (([responseCopy passwordChangeRequired] & 1) == 0)
     {
       [(GKSignInViewController *)self finishAuthenticationWithError:0];
       goto LABEL_11;
     }
 
 LABEL_9:
-    v8 = [v6 passwordChangeURL];
-    [(GKSignInViewController *)self showPasswordChangeAlertWithURL:v8];
+    playerID = [responseCopy passwordChangeURL];
+    [(GKSignInViewController *)self showPasswordChangeAlertWithURL:playerID];
     goto LABEL_10;
   }
 
-  if ([v6 passwordChangeRequired])
+  if ([responseCopy passwordChangeRequired])
   {
     goto LABEL_9;
   }
 
-  if (![v7 gkIsNotConnectedToInternetError])
+  if (![errorCopy gkIsNotConnectedToInternetError])
   {
-    v15 = [v7 domain];
-    v16 = [v15 isEqualToString:*MEMORY[0x277D0BA78]];
+    domain = [errorCopy domain];
+    v16 = [domain isEqualToString:*MEMORY[0x277D0BA78]];
 
     if (v16)
     {
-      v17 = [v7 code];
-      if (v17 > 5)
+      code = [errorCopy code];
+      if (code > 5)
       {
-        if (v17 == 6)
+        if (code == 6)
         {
-          v25 = [v7 userInfo];
-          v8 = [v25 objectForKey:*MEMORY[0x277CCA7E8]];
+          userInfo = [errorCopy userInfo];
+          playerID = [userInfo objectForKey:*MEMORY[0x277CCA7E8]];
 
-          v26 = [v6 playerID];
-          v27 = [(GKSignInViewController *)self handleUnderlyingAuthenticationError:v8 playerID:v26];
+          playerID2 = [responseCopy playerID];
+          v27 = [(GKSignInViewController *)self handleUnderlyingAuthenticationError:playerID playerID:playerID2];
 
           if (!v27)
           {
@@ -1157,12 +1157,12 @@ LABEL_9:
           goto LABEL_10;
         }
 
-        if (v17 == 15)
+        if (code == 15)
         {
           v18 = MEMORY[0x277D75110];
           v19 = GKGameCenterUIFrameworkBundle();
           v20 = GKGetLocalizedStringFromTableInBundle();
-          v8 = [v18 alertControllerWithTitle:v20 message:0 preferredStyle:1];
+          playerID = [v18 alertControllerWithTitle:v20 message:0 preferredStyle:1];
 
           v21 = MEMORY[0x277D750F8];
           v22 = GKGameCenterUIFrameworkBundle();
@@ -1173,21 +1173,21 @@ LABEL_9:
           v28[3] = &unk_279669C68;
           v28[4] = self;
           v24 = [v21 actionWithTitle:v23 style:0 handler:v28];
-          [v8 addAction:v24];
+          [playerID addAction:v24];
 
-          [(GKSignInViewController *)self presentViewController:v8 animated:1 completion:0];
+          [(GKSignInViewController *)self presentViewController:playerID animated:1 completion:0];
           goto LABEL_10;
         }
       }
 
       else
       {
-        if (v17 == 2)
+        if (code == 2)
         {
           goto LABEL_11;
         }
 
-        if (v17 == 5)
+        if (code == 5)
         {
           [(GKSignInViewController *)self showLoginFailedAlert];
           goto LABEL_11;
@@ -1199,7 +1199,7 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  v8 = GKGameCenterUIFrameworkBundle();
+  playerID = GKGameCenterUIFrameworkBundle();
   v9 = GKGetLocalizedStringFromTableInBundle();
   v10 = GKGameCenterUIFrameworkBundle();
   v11 = GKGetLocalizedStringFromTableInBundle();
@@ -1218,9 +1218,9 @@ void __78__GKSignInViewController_authenticateRequestCompletedWithErrorResponse_
   [v1 finishAuthenticationWithError:v2];
 }
 
-- (void)presentError:(id)a3 forAccountRemoteUIController:(id)a4
+- (void)presentError:(id)error forAccountRemoteUIController:(id)controller
 {
-  if (([a4 mode] - 1) > 2)
+  if (([controller mode] - 1) > 2)
   {
     v11 = 0;
     v7 = 0;
@@ -1240,31 +1240,31 @@ void __78__GKSignInViewController_authenticateRequestCompletedWithErrorResponse_
   v10 = [(GKSignInViewController *)self _gkPresentAlertWithTitle:v11 message:v7 buttonTitle:v9];
 }
 
-- (void)accountRemoteUIController:(id)a3 finishedWithError:(id)a4
+- (void)accountRemoteUIController:(id)controller finishedWithError:(id)error
 {
-  v5 = a3;
-  v6 = [v5 playerForRemoteUI];
-  v7 = v6;
-  if (v6)
+  controllerCopy = controller;
+  playerForRemoteUI = [controllerCopy playerForRemoteUI];
+  v7 = playerForRemoteUI;
+  if (playerForRemoteUI)
   {
-    v8 = v6;
+    localPlayer = playerForRemoteUI;
   }
 
   else
   {
-    v8 = [MEMORY[0x277D0C138] localPlayer];
+    localPlayer = [MEMORY[0x277D0C138] localPlayer];
   }
 
-  v9 = v8;
+  v9 = localPlayer;
 
-  if ([v5 isServerAuthenticated])
+  if ([controllerCopy isServerAuthenticated])
   {
     if ([v9 isAuthenticated])
     {
       [(GKSignInViewController *)self finishAuthenticationWithError:0];
     }
 
-    else if ([v5 mode] == 1)
+    else if ([controllerCopy mode] == 1)
     {
       [(GKSignInViewController *)self cancelSignIn];
     }
@@ -1283,13 +1283,13 @@ void __78__GKSignInViewController_authenticateRequestCompletedWithErrorResponse_
   [(GKSignInViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)loadAccountRemoteUIForPlayer:(id)a3 mode:(int64_t)a4 url:(id)a5 postBody:(id)a6 completionHandler:(id)a7
+- (void)loadAccountRemoteUIForPlayer:(id)player mode:(int64_t)mode url:(id)url postBody:(id)body completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v16)
+  playerCopy = player;
+  urlCopy = url;
+  bodyCopy = body;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [GKSignInViewController loadAccountRemoteUIForPlayer:a2 mode:self url:? postBody:? completionHandler:?];
   }
@@ -1300,11 +1300,11 @@ void __78__GKSignInViewController_authenticateRequestCompletedWithErrorResponse_
   v19[2] = __91__GKSignInViewController_loadAccountRemoteUIForPlayer_mode_url_postBody_completionHandler___block_invoke;
   v19[3] = &unk_27966BD70;
   v19[4] = self;
-  v20 = v13;
-  v21 = v16;
-  v17 = v16;
-  v18 = v13;
-  [GKAccountRemoteUIController accountRemoteUIControllerForPlayer:v18 mode:a4 url:v14 postBody:v15 completionHandler:v19];
+  v20 = playerCopy;
+  v21 = handlerCopy;
+  v17 = handlerCopy;
+  v18 = playerCopy;
+  [GKAccountRemoteUIController accountRemoteUIControllerForPlayer:v18 mode:mode url:urlCopy postBody:bodyCopy completionHandler:v19];
 }
 
 void __91__GKSignInViewController_loadAccountRemoteUIForPlayer_mode_url_postBody_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1409,35 +1409,35 @@ void __91__GKSignInViewController_loadAccountRemoteUIForPlayer_mode_url_postBody
   [*(a1 + 32) setAccountController:0];
 }
 
-- (void)presentAccountRemoteUIControllerAnimated:(BOOL)a3
+- (void)presentAccountRemoteUIControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = [GKRemoteUINavigationController alloc];
-  v6 = [(GKSignInViewController *)self accountController];
-  v18 = [(GKRemoteUINavigationController *)v5 initWithRemoteUIController:v6];
+  accountController = [(GKSignInViewController *)self accountController];
+  v18 = [(GKRemoteUINavigationController *)v5 initWithRemoteUIController:accountController];
 
   if (([MEMORY[0x277D0C048] isGameCenter] & 1) == 0)
   {
-    v7 = [MEMORY[0x277D75418] currentDevice];
-    v8 = [v7 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v8 == 1 && (*MEMORY[0x277D0C258] != 1 || (*MEMORY[0x277D0C8F0] & 1) != 0))
+    if (userInterfaceIdiom == 1 && (*MEMORY[0x277D0C258] != 1 || (*MEMORY[0x277D0C8F0] & 1) != 0))
     {
       [(GKRemoteUINavigationController *)v18 setModalPresentationStyle:16];
-      v9 = [MEMORY[0x277D0C8C8] sharedTheme];
-      [v9 formSheetSize];
+      mEMORY[0x277D0C8C8] = [MEMORY[0x277D0C8C8] sharedTheme];
+      [mEMORY[0x277D0C8C8] formSheetSize];
       [(GKRemoteUINavigationController *)v18 setFormSheetSize:?];
 
-      v10 = [(GKRemoteUINavigationController *)v18 view];
-      v11 = [v10 layer];
-      [v11 setMasksToBounds:1];
+      view = [(GKRemoteUINavigationController *)v18 view];
+      layer = [view layer];
+      [layer setMasksToBounds:1];
 
-      v12 = [MEMORY[0x277D0C8C8] sharedTheme];
-      [v12 formSheetCornerRadius];
+      mEMORY[0x277D0C8C8]2 = [MEMORY[0x277D0C8C8] sharedTheme];
+      [mEMORY[0x277D0C8C8]2 formSheetCornerRadius];
       v14 = v13;
-      v15 = [(GKRemoteUINavigationController *)v18 view];
-      v16 = [v15 layer];
-      [v16 setCornerRadius:v14];
+      view2 = [(GKRemoteUINavigationController *)v18 view];
+      layer2 = [view2 layer];
+      [layer2 setCornerRadius:v14];
     }
   }
 
@@ -1451,14 +1451,14 @@ void __91__GKSignInViewController_loadAccountRemoteUIForPlayer_mode_url_postBody
     remoteUIPresentingViewController = self;
   }
 
-  [(GKSignInViewController *)remoteUIPresentingViewController presentViewController:v18 animated:v3 completion:0];
+  [(GKSignInViewController *)remoteUIPresentingViewController presentViewController:v18 animated:animatedCopy completion:0];
 }
 
-- (void)showAccountRemoteUIForPlayerID:(id)a3 mode:(int64_t)a4
+- (void)showAccountRemoteUIForPlayerID:(id)d mode:(int64_t)mode
 {
-  v6 = a3;
-  v7 = [(GKSignInViewController *)self view];
-  [v7 setUserInteractionEnabled:0];
+  dCopy = d;
+  view = [(GKSignInViewController *)self view];
+  [view setUserInteractionEnabled:0];
 
   v16 = 0;
   v17 = &v16;
@@ -1471,12 +1471,12 @@ void __91__GKSignInViewController_loadAccountRemoteUIForPlayer_mode_url_postBody
   v11 = 3221225472;
   v12 = __62__GKSignInViewController_showAccountRemoteUIForPlayerID_mode___block_invoke;
   v13 = &unk_27966BD98;
-  v9 = v6;
+  v9 = dCopy;
   v14 = v9;
   v15 = &v16;
   [v8 enumerateObjectsUsingBlock:&v10];
 
-  [(GKSignInViewController *)self showAccountRemoteUIForLocalPlayer:v17[5] mode:a4 url:0 postBody:0, v10, v11, v12, v13];
+  [(GKSignInViewController *)self showAccountRemoteUIForLocalPlayer:v17[5] mode:mode url:0 postBody:0, v10, v11, v12, v13];
   _Block_object_dispose(&v16, 8);
 }
 
@@ -1493,13 +1493,13 @@ void __62__GKSignInViewController_showAccountRemoteUIForPlayerID_mode___block_in
   }
 }
 
-- (void)showAccountRemoteUIForAccountName:(id)a3 mode:(int64_t)a4 url:(id)a5 postBody:(id)a6
+- (void)showAccountRemoteUIForAccountName:(id)name mode:(int64_t)mode url:(id)url postBody:(id)body
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(GKSignInViewController *)self view];
-  [v13 setUserInteractionEnabled:0];
+  nameCopy = name;
+  urlCopy = url;
+  bodyCopy = body;
+  view = [(GKSignInViewController *)self view];
+  [view setUserInteractionEnabled:0];
 
   v22 = 0;
   v23 = &v22;
@@ -1512,12 +1512,12 @@ void __62__GKSignInViewController_showAccountRemoteUIForPlayerID_mode___block_in
   v17 = 3221225472;
   v18 = __78__GKSignInViewController_showAccountRemoteUIForAccountName_mode_url_postBody___block_invoke;
   v19 = &unk_27966BD98;
-  v15 = v10;
+  v15 = nameCopy;
   v20 = v15;
   v21 = &v22;
   [v14 enumerateObjectsUsingBlock:&v16];
 
-  [(GKSignInViewController *)self showAccountRemoteUIForLocalPlayer:v23[5] mode:a4 url:v11 postBody:v12, v16, v17, v18, v19];
+  [(GKSignInViewController *)self showAccountRemoteUIForLocalPlayer:v23[5] mode:mode url:urlCopy postBody:bodyCopy, v16, v17, v18, v19];
   _Block_object_dispose(&v22, 8);
 }
 
@@ -1533,19 +1533,19 @@ void __78__GKSignInViewController_showAccountRemoteUIForAccountName_mode_url_pos
   }
 }
 
-- (void)showAccountRemoteUIForLocalPlayer:(id)a3 mode:(int64_t)a4 url:(id)a5 postBody:(id)a6
+- (void)showAccountRemoteUIForLocalPlayer:(id)player mode:(int64_t)mode url:(id)url postBody:(id)body
 {
   v10 = MEMORY[0x277D0C010];
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  v14 = [v10 proxyForPlayer:v13];
+  bodyCopy = body;
+  urlCopy = url;
+  playerCopy = player;
+  v14 = [v10 proxyForPlayer:playerCopy];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __78__GKSignInViewController_showAccountRemoteUIForLocalPlayer_mode_url_postBody___block_invoke;
   v15[3] = &unk_279669D38;
   v15[4] = self;
-  [(GKSignInViewController *)self loadAccountRemoteUIForPlayer:v13 mode:a4 url:v12 postBody:v11 completionHandler:v15];
+  [(GKSignInViewController *)self loadAccountRemoteUIForPlayer:playerCopy mode:mode url:urlCopy postBody:bodyCopy completionHandler:v15];
 }
 
 void __78__GKSignInViewController_showAccountRemoteUIForLocalPlayer_mode_url_postBody___block_invoke(uint64_t a1, void *a2)
@@ -1573,17 +1573,17 @@ void __78__GKSignInViewController_showAccountRemoteUIForLocalPlayer_mode_url_pos
   }
 }
 
-- (void)showAuthKitAlertFromGreenBuddyWithAuthInfo:(id)a3 completion:(id)a4
+- (void)showAuthKitAlertFromGreenBuddyWithAuthInfo:(id)info completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectForKeyedSubscript:@"authUsername"];
+  completionCopy = completion;
+  infoCopy = info;
+  v8 = [infoCopy objectForKeyedSubscript:@"authUsername"];
   v9 = MEMORY[0x277CBEBC0];
-  v10 = [v7 objectForKeyedSubscript:@"authOkUrl"];
+  v10 = [infoCopy objectForKeyedSubscript:@"authOkUrl"];
   v11 = [v9 URLWithString:v10];
 
   v12 = MEMORY[0x277CBEBC0];
-  v13 = [v7 objectForKeyedSubscript:@"cancelUrl"];
+  v13 = [infoCopy objectForKeyedSubscript:@"cancelUrl"];
 
   v14 = [v12 URLWithString:v13];
 
@@ -1603,8 +1603,8 @@ void __78__GKSignInViewController_showAccountRemoteUIForLocalPlayer_mode_url_pos
   v22[4] = self;
   v23 = v11;
   v24 = v14;
-  v25 = v6;
-  v19 = v6;
+  v25 = completionCopy;
+  v19 = completionCopy;
   v20 = v14;
   v21 = v11;
   [v18 authenticateUsingAuthUIAllowingAppleIDCreation:0 usernameEditable:0 dismissHandler:0 completionHandler:v22];
@@ -1658,42 +1658,42 @@ void __80__GKSignInViewController_showAuthKitAlertFromGreenBuddyWithAuthInfo_com
   }
 }
 
-- (void)showViewController:(id)a3
+- (void)showViewController:(id)controller
 {
-  v4 = a3;
-  v8 = [[GKNavigationController alloc] initWithRootViewController:v4];
+  controllerCopy = controller;
+  v8 = [[GKNavigationController alloc] initWithRootViewController:controllerCopy];
 
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v6 == 1 && (*MEMORY[0x277D0C258] != 1 || (*MEMORY[0x277D0C8F0] & 1) != 0))
+  if (userInterfaceIdiom == 1 && (*MEMORY[0x277D0C258] != 1 || (*MEMORY[0x277D0C8F0] & 1) != 0))
   {
     [(GKNavigationController *)v8 setModalPresentationStyle:16];
-    v7 = [MEMORY[0x277D0C8C8] sharedTheme];
-    [v7 formSheetSize];
+    mEMORY[0x277D0C8C8] = [MEMORY[0x277D0C8C8] sharedTheme];
+    [mEMORY[0x277D0C8C8] formSheetSize];
     [(GKNavigationController *)v8 setFormSheetSize:?];
   }
 
   [(GKSignInViewController *)self presentViewController:v8 animated:1 completion:0];
 }
 
-- (void)finishAuthenticationWithError:(id)a3
+- (void)finishAuthenticationWithError:(id)error
 {
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    completionHandler[2](completionHandler, a3);
+    completionHandler[2](completionHandler, error);
     [(GKSignInViewController *)self setCompletionHandler:0];
   }
 
   [(GKSignInViewController *)self stopLoadingIndicator];
 }
 
-- (BOOL)handleUnderlyingAuthenticationError:(id)a3 playerID:(id)a4
+- (BOOL)handleUnderlyingAuthenticationError:(id)error playerID:(id)d
 {
-  v6 = a4;
-  v7 = [a3 code];
-  switch(v7)
+  dCopy = d;
+  code = [error code];
+  switch(code)
   {
     case 5048:
       v9 = GKGameCenterUIFrameworkBundle();
@@ -1710,7 +1710,7 @@ LABEL_7:
       break;
     case 5029:
       v8 = 1;
-      [(GKSignInViewController *)self showAccountRemoteUIForPlayerID:v6 mode:1];
+      [(GKSignInViewController *)self showAccountRemoteUIForPlayerID:dCopy mode:1];
       break;
     default:
       v8 = 0;
@@ -1720,19 +1720,19 @@ LABEL_7:
   return v8;
 }
 
-- (void)showPasswordResetAlertWithTitle:(id)a3 message:(id)a4
+- (void)showPasswordResetAlertWithTitle:(id)title message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  messageCopy = message;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__GKSignInViewController_showPasswordResetAlertWithTitle_message___block_invoke;
   block[3] = &unk_27966A9A8;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = titleCopy;
+  v12 = messageCopy;
+  v8 = messageCopy;
+  v9 = titleCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -1753,19 +1753,19 @@ void __66__GKSignInViewController_showPasswordResetAlertWithTitle_message___bloc
   [v1 openURL:v0];
 }
 
-- (void)showPasswordAlertWithTitle:(id)a3 message:(id)a4
+- (void)showPasswordAlertWithTitle:(id)title message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  messageCopy = message;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__GKSignInViewController_showPasswordAlertWithTitle_message___block_invoke;
   block[3] = &unk_27966A9A8;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = titleCopy;
+  v12 = messageCopy;
+  v8 = messageCopy;
+  v9 = titleCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -1825,8 +1825,8 @@ void __51__GKSignInViewController_showConnectionFailedAlert__block_invoke(uint64
 - (void)createAppleID
 {
   [(GKSignInViewController *)self setEditing:0];
-  v2 = [MEMORY[0x277D0BFE0] defaultWorkspace];
-  [v2 openICloudSettings];
+  defaultWorkspace = [MEMORY[0x277D0BFE0] defaultWorkspace];
+  [defaultWorkspace openICloudSettings];
 }
 
 - (void)showAAUISignInController
@@ -1835,10 +1835,10 @@ void __51__GKSignInViewController_showConnectionFailedAlert__block_invoke(uint64
   [(AAUISignInController *)v3 setServiceType:*MEMORY[0x277CED1B0]];
   [(GKAAUISignInController *)v3 setDelegate:self];
   [(AAUISignInController *)v3 _setShouldForceOperation:1];
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v5 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v6 = 18;
   }
@@ -1849,8 +1849,8 @@ void __51__GKSignInViewController_showConnectionFailedAlert__block_invoke(uint64
   }
 
   [(GKAAUISignInController *)v3 setModalPresentationStyle:v6];
-  v7 = [(GKSignInViewController *)self signInView];
-  [v7 disablePrimaryButton];
+  signInView = [(GKSignInViewController *)self signInView];
+  [signInView disablePrimaryButton];
 
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x277D85DD0];
@@ -1887,11 +1887,11 @@ void __50__GKSignInViewController_showAAUISignInController__block_invoke(uint64_
   v3 = objc_alloc_init(MEMORY[0x277CF0380]);
   [v3 setNeedsCredentialRecovery:1];
   [v3 setPresentingViewController:self];
-  v4 = [(GKSignInViewController *)self appleID];
-  [v3 setUsername:v4];
+  appleID = [(GKSignInViewController *)self appleID];
+  [v3 setUsername:appleID];
 
-  v5 = [(GKSignInViewController *)self view];
-  [v5 setUserInteractionEnabled:0];
+  view = [(GKSignInViewController *)self view];
+  [view setUserInteractionEnabled:0];
 
   v6 = objc_alloc_init(MEMORY[0x277CF0178]);
   v7[0] = MEMORY[0x277D85DD0];
@@ -1918,41 +1918,41 @@ void __39__GKSignInViewController_iForgotTapped__block_invoke_2(uint64_t a1)
   [v1 setUserInteractionEnabled:1];
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v33 = [a3 userInfo];
-  v4 = [v33 objectForKey:*MEMORY[0x277D76BB8]];
+  userInfo = [show userInfo];
+  v4 = [userInfo objectForKey:*MEMORY[0x277D76BB8]];
   [v4 CGRectValue];
   v6 = v5;
 
-  v7 = [(GKSignInViewController *)self scrollView];
-  [v7 setContentInset:{0.0, 0.0, v6, 0.0}];
+  scrollView = [(GKSignInViewController *)self scrollView];
+  [scrollView setContentInset:{0.0, 0.0, v6, 0.0}];
 
-  v8 = [(GKSignInViewController *)self scrollView];
-  [v8 setScrollIndicatorInsets:{0.0, 0.0, v6, 0.0}];
+  scrollView2 = [(GKSignInViewController *)self scrollView];
+  [scrollView2 setScrollIndicatorInsets:{0.0, 0.0, v6, 0.0}];
 
   self->_currentContentInsets.top = 0.0;
   self->_currentContentInsets.left = 0.0;
   self->_currentContentInsets.bottom = v6;
   self->_currentContentInsets.right = 0.0;
-  v9 = [(GKSignInViewController *)self view];
-  [v9 frame];
+  view = [(GKSignInViewController *)self view];
+  [view frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
 
   v18 = v17 - v6;
-  v19 = [(GKSignInViewController *)self inlineSignInViewController];
-  v20 = [v19 view];
-  [v20 frame];
+  inlineSignInViewController = [(GKSignInViewController *)self inlineSignInViewController];
+  view2 = [inlineSignInViewController view];
+  [view2 frame];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
 
-  v29 = [(GKSignInViewController *)self scrollView];
-  [v29 contentOffset];
+  scrollView3 = [(GKSignInViewController *)self scrollView];
+  [scrollView3 contentOffset];
   v31 = v24 - v30;
 
   v36.origin.x = v11;
@@ -1963,26 +1963,26 @@ void __39__GKSignInViewController_iForgotTapped__block_invoke_2(uint64_t a1)
   v35.y = v31;
   if (!CGRectContainsPoint(v36, v35))
   {
-    v32 = [(GKSignInViewController *)self scrollView];
-    [v32 scrollRectToVisible:1 animated:{v22, v31, v26, v28}];
+    scrollView4 = [(GKSignInViewController *)self scrollView];
+    [scrollView4 scrollRectToVisible:1 animated:{v22, v31, v26, v28}];
   }
 }
 
-- (void)keyboardWillHide:(id)a3
+- (void)keyboardWillHide:(id)hide
 {
   v4 = *MEMORY[0x277D768C8];
   v5 = *(MEMORY[0x277D768C8] + 8);
   v6 = *(MEMORY[0x277D768C8] + 16);
   v7 = *(MEMORY[0x277D768C8] + 24);
-  v8 = [(GKSignInViewController *)self scrollView];
-  [v8 setContentInset:{v4, v5, v6, v7}];
+  scrollView = [(GKSignInViewController *)self scrollView];
+  [scrollView setContentInset:{v4, v5, v6, v7}];
 
   self->_currentContentInsets.top = v4;
   self->_currentContentInsets.left = v5;
   self->_currentContentInsets.bottom = v6;
   self->_currentContentInsets.right = v7;
-  v9 = [(GKSignInViewController *)self scrollView];
-  [v9 setScrollIndicatorInsets:{v4, v5, v6, v7}];
+  scrollView2 = [(GKSignInViewController *)self scrollView];
+  [scrollView2 setScrollIndicatorInsets:{v4, v5, v6, v7}];
 }
 
 - (UIEdgeInsets)currentContentInsets

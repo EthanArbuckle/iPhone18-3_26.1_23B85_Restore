@@ -1,11 +1,11 @@
 @interface MPSCNNUpsampling
-- (MPSCNNUpsampling)initWithCoder:(id)a3 device:(id)a4;
-- (MPSCNNUpsampling)initWithDevice:(id)a3 filterType:(unint64_t)a4 integerScaleFactorX:(unint64_t)a5 integerScaleFactorY:(unint64_t)a6 alignCorners:(BOOL)a7;
+- (MPSCNNUpsampling)initWithCoder:(id)coder device:(id)device;
 - (MPSCNNUpsampling)initWithDevice:(id)device;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (MPSCNNUpsampling)initWithDevice:(id)device filterType:(unint64_t)type integerScaleFactorX:(unint64_t)x integerScaleFactorY:(unint64_t)y alignCorners:(BOOL)corners;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 sourceOffset:(id *)a6;
-- (void)encodeWithCoder:(id)a3;
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method sourceOffset:(id *)offset;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSCNNUpsampling
@@ -20,26 +20,26 @@
   return 0;
 }
 
-- (MPSCNNUpsampling)initWithDevice:(id)a3 filterType:(unint64_t)a4 integerScaleFactorX:(unint64_t)a5 integerScaleFactorY:(unint64_t)a6 alignCorners:(BOOL)a7
+- (MPSCNNUpsampling)initWithDevice:(id)device filterType:(unint64_t)type integerScaleFactorX:(unint64_t)x integerScaleFactorY:(unint64_t)y alignCorners:(BOOL)corners
 {
   v27.receiver = self;
   v27.super_class = MPSCNNUpsampling;
-  result = [(MPSCNNKernel *)&v27 initWithDevice:a3];
+  result = [(MPSCNNKernel *)&v27 initWithDevice:device];
   if (result)
   {
-    if (a5)
+    if (x)
     {
-      result->_scaleFactorX = a5;
-      if (a6)
+      result->_scaleFactorX = x;
+      if (y)
       {
-        result->_scaleFactorY = a6;
-        if (a4 < 2)
+        result->_scaleFactorY = y;
+        if (type < 2)
         {
-          result->_filterType = a4;
+          result->_filterType = type;
           result->super._isBackwards = 1;
-          result->super._strideInPixelsX = a5;
-          result->super._strideInPixelsY = a6;
-          result->_alignCorners = a7;
+          result->super._strideInPixelsX = x;
+          result->super._strideInPixelsY = y;
+          result->_alignCorners = corners;
           v18 = result;
           v19 = objc_msgSend_paddingWithMethod_(MPSNNDefaultPadding, v12, 28, v13, v14, v15, v16, v17);
           objc_msgSend_setPadding_(v18, v20, v19, v21, v22, v23, v24, v25);
@@ -86,11 +86,11 @@ LABEL_12:
   return result;
 }
 
-- (MPSCNNUpsampling)initWithCoder:(id)a3 device:(id)a4
+- (MPSCNNUpsampling)initWithCoder:(id)coder device:(id)device
 {
   v35.receiver = self;
   v35.super_class = MPSCNNUpsampling;
-  v5 = [(MPSCNNKernel *)&v35 initWithCoder:a3 device:a4];
+  v5 = [(MPSCNNKernel *)&v35 initWithCoder:coder device:device];
   v12 = v5;
   if (!v5)
   {
@@ -99,12 +99,12 @@ LABEL_12:
 
   if (*(&v5->super.super.super.isa + *MEMORY[0x277CD7358] + 2) << 16 == 0x10000)
   {
-    v5->_filterType = objc_msgSend_decodeInt64ForKey_(a3, v6, @"MPSCNNUpsampling.filterType", v7, v8, v9, v10, v11);
-    objc_msgSend_decodeDoubleForKey_(a3, v13, @"MPSCNNUpsampling.scaleFactorX", v14, v15, v16, v17, v18);
+    v5->_filterType = objc_msgSend_decodeInt64ForKey_(coder, v6, @"MPSCNNUpsampling.filterType", v7, v8, v9, v10, v11);
+    objc_msgSend_decodeDoubleForKey_(coder, v13, @"MPSCNNUpsampling.scaleFactorX", v14, v15, v16, v17, v18);
     v12->_scaleFactorX = v19;
-    objc_msgSend_decodeDoubleForKey_(a3, v20, @"MPSCNNUpsampling.scaleFactorY", v21, v22, v23, v24, v25);
+    objc_msgSend_decodeDoubleForKey_(coder, v20, @"MPSCNNUpsampling.scaleFactorY", v21, v22, v23, v24, v25);
     v12->_scaleFactorY = v26;
-    v12->_alignCorners = objc_msgSend_decodeBoolForKey_(a3, v27, @"MPSCNNUpsampling.alignCorners", v28, v29, v30, v31, v32);
+    v12->_alignCorners = objc_msgSend_decodeBoolForKey_(coder, v27, @"MPSCNNUpsampling.alignCorners", v28, v29, v30, v31, v32);
     v12->super._checkFlags |= 2u;
     v12->super._encode = sub_239BEDC70;
     v12->super._encodeData = v12;
@@ -121,23 +121,23 @@ LABEL_12:
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v27.receiver = self;
   v27.super_class = MPSCNNUpsampling;
   [(MPSCNNKernel *)&v27 encodeWithCoder:?];
-  objc_msgSend_encodeInt64_forKey_(a3, v5, self->_filterType, @"MPSCNNUpsampling.filterType", v6, v7, v8, v9);
-  objc_msgSend_encodeDouble_forKey_(a3, v10, @"MPSCNNUpsampling.scaleFactorX", v11, v12, v13, v14, v15, self->_scaleFactorX);
-  objc_msgSend_encodeDouble_forKey_(a3, v16, @"MPSCNNUpsampling.scaleFactorY", v17, v18, v19, v20, v21, self->_scaleFactorY);
-  objc_msgSend_encodeBool_forKey_(a3, v22, self->_alignCorners, @"MPSCNNUpsampling.alignCorners", v23, v24, v25, v26);
+  objc_msgSend_encodeInt64_forKey_(coder, v5, self->_filterType, @"MPSCNNUpsampling.filterType", v6, v7, v8, v9);
+  objc_msgSend_encodeDouble_forKey_(coder, v10, @"MPSCNNUpsampling.scaleFactorX", v11, v12, v13, v14, v15, self->_scaleFactorX);
+  objc_msgSend_encodeDouble_forKey_(coder, v16, @"MPSCNNUpsampling.scaleFactorY", v17, v18, v19, v20, v21, self->_scaleFactorY);
+  objc_msgSend_encodeBool_forKey_(coder, v22, self->_alignCorners, @"MPSCNNUpsampling.alignCorners", v23, v24, v25, v26);
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSCNNUpsampling;
-  result = [(MPSCNNKernel *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSCNNKernel *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 41) = self->_filterType;
@@ -161,12 +161,12 @@ LABEL_12:
   return objc_msgSend_stringWithFormat_(v3, v21, @"%@\n\tscaleFactorX: %f\tscaleFactorY: %f", v22, v23, v24, v25, v26, v4, v13, v27);
 }
 
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 sourceOffset:(id *)a6
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method sourceOffset:(id *)offset
 {
   v46.receiver = self;
   v46.super_class = MPSCNNUpsampling;
-  v8 = [(MPSCNNKernel *)&v46 destinationImageDescriptorForSourceImages:a3 sourceStates:a4 paddingMethod:a5 sourceOffset:a6];
-  v15 = objc_msgSend_objectAtIndexedSubscript_(a3, v9, 0, v10, v11, v12, v13, v14);
+  v8 = [(MPSCNNKernel *)&v46 destinationImageDescriptorForSourceImages:images sourceStates:states paddingMethod:method sourceOffset:offset];
+  v15 = objc_msgSend_objectAtIndexedSubscript_(images, v9, 0, v10, v11, v12, v13, v14);
   if (v15)
   {
     v23 = v15;

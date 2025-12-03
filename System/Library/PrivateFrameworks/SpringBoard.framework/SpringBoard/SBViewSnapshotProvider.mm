@@ -1,26 +1,26 @@
 @interface SBViewSnapshotProvider
-- (SBViewSnapshotProvider)initWithWindowScene:(id)a3 view:(id)a4 orientation:(int64_t)a5;
+- (SBViewSnapshotProvider)initWithWindowScene:(id)scene view:(id)view orientation:(int64_t)orientation;
 - (SBWindowScene)windowScene;
-- (id)_createSnapshotOfWallpaperAndWindow:(id)a3;
+- (id)_createSnapshotOfWallpaperAndWindow:(id)window;
 - (id)snapshot;
-- (void)snapshotAsynchronously:(BOOL)a3 withImageBlock:(id)a4;
+- (void)snapshotAsynchronously:(BOOL)asynchronously withImageBlock:(id)block;
 @end
 
 @implementation SBViewSnapshotProvider
 
-- (SBViewSnapshotProvider)initWithWindowScene:(id)a3 view:(id)a4 orientation:(int64_t)a5
+- (SBViewSnapshotProvider)initWithWindowScene:(id)scene view:(id)view orientation:(int64_t)orientation
 {
-  v8 = a3;
-  v9 = a4;
+  sceneCopy = scene;
+  viewCopy = view;
   v14.receiver = self;
   v14.super_class = SBViewSnapshotProvider;
   v10 = [(SBViewSnapshotProvider *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_windowScene, v8);
-    objc_storeStrong(&v11->_view, a4);
-    v11->_orientation = a5;
+    objc_storeWeak(&v10->_windowScene, sceneCopy);
+    objc_storeStrong(&v11->_view, view);
+    v11->_orientation = orientation;
     v12 = v11;
   }
 
@@ -47,19 +47,19 @@
   return v2;
 }
 
-- (id)_createSnapshotOfWallpaperAndWindow:(id)a3
+- (id)_createSnapshotOfWallpaperAndWindow:(id)window
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  windowCopy = window;
+  array = [MEMORY[0x277CBEB18] array];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v7 = [WeakRetained windows];
+  windows = [WeakRetained windows];
 
-  v8 = [v7 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  v8 = [windows countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v8)
   {
     v9 = v8;
@@ -71,19 +71,19 @@
       {
         if (*v33 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(windows);
         }
 
         v13 = *(*(&v32 + 1) + 8 * i);
         [v13 windowLevel];
         if (v14 == v11)
         {
-          [v5 addObject:v13];
+          [array addObject:v13];
           goto LABEL_11;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v9 = [windows countByEnumeratingWithState:&v32 objects:v36 count:16];
       if (v9)
       {
         continue;
@@ -95,32 +95,32 @@
 
 LABEL_11:
 
-  [v5 addObject:v4];
-  v15 = &v32 - ((4 * [v5 count] + 15) & 0xFFFFFFFFFFFFFFF0);
-  if ([v5 count])
+  [array addObject:windowCopy];
+  v15 = &v32 - ((4 * [array count] + 15) & 0xFFFFFFFFFFFFFFF0);
+  if ([array count])
   {
     v16 = 0;
     do
     {
-      v17 = [v5 objectAtIndex:v16];
+      v17 = [array objectAtIndex:v16];
       *&v15[4 * v16] = [v17 _contextId];
 
       ++v16;
     }
 
-    while (v16 < [v5 count]);
+    while (v16 < [array count]);
   }
 
   SBScreenBoundsRotatedRoundCenter(self->_orientation);
-  v22 = [MEMORY[0x277D75DA0] createIOSurfaceWithContextIds:v15 count:objc_msgSend(v5 frame:{"count"), v18, v19, v20, v21}];
+  v22 = [MEMORY[0x277D75DA0] createIOSurfaceWithContextIds:v15 count:objc_msgSend(array frame:{"count"), v18, v19, v20, v21}];
   if (v22)
   {
     v23 = v22;
     v24 = CFGetTypeID(v22);
     if (v24 == IOSurfaceGetTypeID())
     {
-      v25 = [v4 screen];
-      v26 = SBCreateUIImageFromIOSurfaceResizingIfNecessary(v23, v25, 1, 1, 0, 0.0, 1.0);
+      screen = [windowCopy screen];
+      v26 = SBCreateUIImageFromIOSurfaceResizingIfNecessary(v23, screen, 1, 1, 0, 0.0, 1.0);
     }
 
     else
@@ -132,8 +132,8 @@ LABEL_11:
     if (v27 == CGImageGetTypeID())
     {
       v28 = MEMORY[0x277D755B8];
-      v29 = [v4 screen];
-      [v29 scale];
+      screen2 = [windowCopy screen];
+      [screen2 scale];
       v30 = [v28 imageWithCGImage:v23 scale:0 orientation:?];
 
       v26 = v30;
@@ -150,16 +150,16 @@ LABEL_11:
   return v26;
 }
 
-- (void)snapshotAsynchronously:(BOOL)a3 withImageBlock:(id)a4
+- (void)snapshotAsynchronously:(BOOL)asynchronously withImageBlock:(id)block
 {
-  v4 = a3;
-  v6 = a4;
-  if (v6 && self->_view)
+  asynchronouslyCopy = asynchronously;
+  blockCopy = block;
+  if (blockCopy && self->_view)
   {
-    v7 = [(SBViewSnapshotProvider *)self windowScene];
+    windowScene = [(SBViewSnapshotProvider *)self windowScene];
     SBScreenBounds(self->_orientation);
     BSRectWithSize();
-    v12 = [[SBSnapshotWindow alloc] initWithWindowScene:v7 frame:self->_orientation orientation:v8, v9, v10, v11];
+    v12 = [[SBSnapshotWindow alloc] initWithWindowScene:windowScene frame:self->_orientation orientation:v8, v9, v10, v11];
     [(SBSnapshotWindow *)v12 setWindowLevel:*MEMORY[0x277D772B0] + -3.0 + -1.0];
     [(SBSnapshotWindow *)v12 setHidden:0];
     [(SBSnapshotWindow *)v12 addSubview:self->_view];
@@ -170,10 +170,10 @@ LABEL_11:
     v19[4] = self;
     v13 = v12;
     v20 = v13;
-    v21 = v6;
+    v21 = blockCopy;
     v14 = MEMORY[0x223D6F7F0](v19);
     v15 = v14;
-    if (v4)
+    if (asynchronouslyCopy)
     {
       v16 = *MEMORY[0x277D76620];
       v17[0] = MEMORY[0x277D85DD0];

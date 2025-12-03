@@ -1,17 +1,17 @@
 @interface MKGeoJSONDecoder
-+ (id)_decodeGeometry:(id)a3 error:(id *)a4;
-+ (id)_decodeGeometryCollection:(id)a3 error:(id *)a4;
++ (id)_decodeGeometry:(id)geometry error:(id *)error;
++ (id)_decodeGeometryCollection:(id)collection error:(id *)error;
 - (MKGeoJSONDecoder)init;
 - (NSArray)geoJSONObjectsWithData:(NSData *)data error:(NSError *)errorPtr;
-- (id)_decodeFeatureCollection:(id)a3 error:(id *)a4;
+- (id)_decodeFeatureCollection:(id)collection error:(id *)error;
 @end
 
 @implementation MKGeoJSONDecoder
 
-- (id)_decodeFeatureCollection:(id)a3 error:(id *)a4
+- (id)_decodeFeatureCollection:(id)collection error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = [a3 objectForKeyedSubscript:@"features"];
+  v5 = [collection objectForKeyedSubscript:@"features"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -37,7 +37,7 @@
 
           v12 = *(*(&v19 + 1) + 8 * i);
           v13 = [MKGeoJSONFeature alloc];
-          v14 = [(MKGeoJSONFeature *)v13 _initWithGeoJSONObject:v12 error:a4, v19];
+          v14 = [(MKGeoJSONFeature *)v13 _initWithGeoJSONObject:v12 error:error, v19];
           if (!v14)
           {
 
@@ -63,7 +63,7 @@
 LABEL_15:
   }
 
-  else if (a4)
+  else if (error)
   {
     if (v5)
     {
@@ -76,7 +76,7 @@ LABEL_15:
     }
 
     _errorWithReason(v17);
-    *a4 = v16 = 0;
+    *error = v16 = 0;
   }
 
   else
@@ -198,18 +198,18 @@ LABEL_20:
   return v2;
 }
 
-+ (id)_decodeGeometryCollection:(id)a3 error:(id *)a4
++ (id)_decodeGeometryCollection:(id)collection error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = [a3 objectForKeyedSubscript:@"geometries"];
+  v6 = [collection objectForKeyedSubscript:@"geometries"];
   if (!v6)
   {
-    if (a4)
+    if (error)
     {
       v17 = @"GeometryCollection object is missing 'geometries' value";
 LABEL_20:
       _errorWithReason(v17);
-      *a4 = v16 = 0;
+      *error = v16 = 0;
       goto LABEL_24;
     }
 
@@ -221,7 +221,7 @@ LABEL_21:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       v17 = @"GeometryCollection's 'geometries' value must be an array";
       goto LABEL_20;
@@ -250,7 +250,7 @@ LABEL_21:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [a1 _decodeGeometry:*(*(&v20 + 1) + 8 * i) error:a4];
+        v13 = [self _decodeGeometry:*(*(&v20 + 1) + 8 * i) error:error];
         if (!v13)
         {
 
@@ -290,19 +290,19 @@ LABEL_24:
   return v16;
 }
 
-+ (id)_decodeGeometry:(id)a3 error:(id *)a4
++ (id)_decodeGeometry:(id)geometry error:(id *)error
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  geometryCopy = geometry;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       v12 = @"geometry object must be a dictionary";
 LABEL_10:
       _errorWithReason(v12);
-      *a4 = v6 = 0;
+      *error = v6 = 0;
       goto LABEL_33;
     }
 
@@ -311,7 +311,7 @@ LABEL_23:
     goto LABEL_33;
   }
 
-  v6 = [v5 objectForKeyedSubscript:@"type"];
+  v6 = [geometryCopy objectForKeyedSubscript:@"type"];
   v7 = _geoJSONGeometryType(v6);
 
   if (v7 <= 3)
@@ -320,7 +320,7 @@ LABEL_23:
     {
       if (v7 == 2)
       {
-        v16 = [[MKMultiPoint alloc] _initWithGeoJSONObject:v5 error:a4];
+        v16 = [[MKMultiPoint alloc] _initWithGeoJSONObject:geometryCopy error:error];
         v9 = v16;
         if (v16)
         {
@@ -333,7 +333,7 @@ LABEL_23:
 
       else
       {
-        v14 = [[MKPolyline alloc] _initWithGeoJSONObject:v5 error:a4];
+        v14 = [[MKPolyline alloc] _initWithGeoJSONObject:geometryCopy error:error];
         v9 = v14;
         if (v14)
         {
@@ -354,7 +354,7 @@ LABEL_23:
         goto LABEL_33;
       }
 
-      v8 = [[MKPointAnnotation alloc] _initWithGeoJSONObject:v5 error:a4];
+      v8 = [[MKPointAnnotation alloc] _initWithGeoJSONObject:geometryCopy error:error];
       v9 = v8;
       if (v8)
       {
@@ -371,7 +371,7 @@ LABEL_32:
       goto LABEL_31;
     }
 
-    if (a4)
+    if (error)
     {
       v12 = @"Invalid geometry type";
       goto LABEL_10;
@@ -384,7 +384,7 @@ LABEL_32:
   {
     if (v7 == 4)
     {
-      v15 = [[MKMultiPolyline alloc] _initWithGeoJSONObject:v5 error:a4];
+      v15 = [[MKMultiPolyline alloc] _initWithGeoJSONObject:geometryCopy error:error];
       v9 = v15;
       if (v15)
       {
@@ -397,7 +397,7 @@ LABEL_32:
 
     else
     {
-      v13 = [[MKPolygon alloc] _initWithGeoJSONObject:v5 error:a4];
+      v13 = [[MKPolygon alloc] _initWithGeoJSONObject:geometryCopy error:error];
       v9 = v13;
       if (v13)
       {
@@ -415,7 +415,7 @@ LABEL_31:
 
   if (v7 == 6)
   {
-    v17 = [[MKMultiPolygon alloc] _initWithGeoJSONObject:v5 error:a4];
+    v17 = [[MKMultiPolygon alloc] _initWithGeoJSONObject:geometryCopy error:error];
     v9 = v17;
     if (v17)
     {
@@ -430,7 +430,7 @@ LABEL_31:
 
   if (v7 == 7)
   {
-    v6 = [MKGeoJSONDecoder _decodeGeometryCollection:v5 error:a4];
+    v6 = [MKGeoJSONDecoder _decodeGeometryCollection:geometryCopy error:error];
   }
 
 LABEL_33:

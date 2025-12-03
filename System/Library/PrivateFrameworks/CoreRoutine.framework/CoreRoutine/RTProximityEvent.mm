@@ -1,35 +1,35 @@
 @interface RTProximityEvent
-+ (id)convertContactFrequencyToString:(int64_t)a3;
-+ (id)convertContactRecencyToString:(int64_t)a3;
-+ (id)convertContactSignificanceToString:(int64_t)a3;
-+ (id)convertPersonRelationshipToString:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (RTProximityEvent)initWithCoder:(id)a3;
-- (RTProximityEvent)initWithEventID:(id)a3 startDate:(id)a4 endDate:(id)a5 relationship:(int64_t)a6 socialScore:(double)a7 combinedFrequencyScores:(id)a8 combinedRecencyScores:(id)a9 combinedSignificanceScores:(id)a10;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)convertContactFrequencyToString:(int64_t)string;
++ (id)convertContactRecencyToString:(int64_t)string;
++ (id)convertContactSignificanceToString:(int64_t)string;
++ (id)convertPersonRelationshipToString:(int64_t)string;
+- (BOOL)isEqual:(id)equal;
+- (RTProximityEvent)initWithCoder:(id)coder;
+- (RTProximityEvent)initWithEventID:(id)d startDate:(id)date endDate:(id)endDate relationship:(int64_t)relationship socialScore:(double)score combinedFrequencyScores:(id)scores combinedRecencyScores:(id)recencyScores combinedSignificanceScores:(id)self0;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)descriptionDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTProximityEvent
 
-- (RTProximityEvent)initWithEventID:(id)a3 startDate:(id)a4 endDate:(id)a5 relationship:(int64_t)a6 socialScore:(double)a7 combinedFrequencyScores:(id)a8 combinedRecencyScores:(id)a9 combinedSignificanceScores:(id)a10
+- (RTProximityEvent)initWithEventID:(id)d startDate:(id)date endDate:(id)endDate relationship:(int64_t)relationship socialScore:(double)score combinedFrequencyScores:(id)scores combinedRecencyScores:(id)recencyScores combinedSignificanceScores:(id)self0
 {
-  v18 = a3;
-  v19 = a4;
-  v29 = a5;
-  v28 = a8;
-  v27 = a9;
-  v26 = a10;
-  if (!v18)
+  dCopy = d;
+  dateCopy = date;
+  endDateCopy = endDate;
+  scoresCopy = scores;
+  recencyScoresCopy = recencyScores;
+  significanceScoresCopy = significanceScores;
+  if (!dCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v22 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -40,7 +40,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (!v19)
+  if (!dateCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -55,36 +55,36 @@ LABEL_12:
 
   v30.receiver = self;
   v30.super_class = RTProximityEvent;
-  v20 = [(RTProximityEvent *)&v30 init:v26];
+  v20 = [(RTProximityEvent *)&v30 init:significanceScoresCopy];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_eventID, a3);
-    objc_storeStrong(&v21->_startDate, a4);
-    objc_storeStrong(&v21->_endDate, a5);
-    v21->_relationship = a6;
-    v21->_socialScore = a7;
-    objc_storeStrong(&v21->_combinedFrequencyScores, a8);
-    objc_storeStrong(&v21->_combinedRecencyScores, a9);
-    objc_storeStrong(&v21->_combinedSignificanceScores, a10);
+    objc_storeStrong(&v20->_eventID, d);
+    objc_storeStrong(&v21->_startDate, date);
+    objc_storeStrong(&v21->_endDate, endDate);
+    v21->_relationship = relationship;
+    v21->_socialScore = score;
+    objc_storeStrong(&v21->_combinedFrequencyScores, scores);
+    objc_storeStrong(&v21->_combinedRecencyScores, recencyScores);
+    objc_storeStrong(&v21->_combinedSignificanceScores, significanceScores);
   }
 
   self = v21;
-  v22 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v22;
+  return selfCopy;
 }
 
-+ (id)convertPersonRelationshipToString:(int64_t)a3
++ (id)convertPersonRelationshipToString:(int64_t)string
 {
   v3 = @"Unknown";
-  if (a3 == 1)
+  if (string == 1)
   {
     v3 = @"Family";
   }
 
-  if (a3 == 2)
+  if (string == 2)
   {
     return @"Friend";
   }
@@ -95,49 +95,49 @@ LABEL_10:
   }
 }
 
-+ (id)convertContactFrequencyToString:(int64_t)a3
++ (id)convertContactFrequencyToString:(int64_t)string
 {
-  if ((a3 - 1) > 2)
+  if ((string - 1) > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E80B4F10[a3 - 1];
+    return off_1E80B4F10[string - 1];
   }
 }
 
-+ (id)convertContactRecencyToString:(int64_t)a3
++ (id)convertContactRecencyToString:(int64_t)string
 {
-  if ((a3 - 1) > 2)
+  if ((string - 1) > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E80B4F28[a3 - 1];
+    return off_1E80B4F28[string - 1];
   }
 }
 
-+ (id)convertContactSignificanceToString:(int64_t)a3
++ (id)convertContactSignificanceToString:(int64_t)string
 {
-  if ((a3 - 1) > 2)
+  if ((string - 1) > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E80B4F28[a3 - 1];
+    return off_1E80B4F28[string - 1];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
     goto LABEL_18;
@@ -150,12 +150,12 @@ LABEL_10:
     goto LABEL_18;
   }
 
-  v6 = v5;
-  v7 = [(RTProximityEvent *)self endDate];
-  if (!v7)
+  v6 = equalCopy;
+  endDate = [(RTProximityEvent *)self endDate];
+  if (!endDate)
   {
-    v3 = [(RTProximityEvent *)v6 endDate];
-    if (!v3)
+    endDate2 = [(RTProximityEvent *)v6 endDate];
+    if (!endDate2)
     {
       v10 = 1;
 LABEL_10:
@@ -164,27 +164,27 @@ LABEL_10:
     }
   }
 
-  v8 = [(RTProximityEvent *)self endDate];
-  v9 = [(RTProximityEvent *)v6 endDate];
-  v10 = [v8 isEqualToDate:v9];
+  endDate3 = [(RTProximityEvent *)self endDate];
+  endDate4 = [(RTProximityEvent *)v6 endDate];
+  v10 = [endDate3 isEqualToDate:endDate4];
 
-  if (!v7)
+  if (!endDate)
   {
     goto LABEL_10;
   }
 
 LABEL_11:
 
-  v12 = [(RTProximityEvent *)self eventID];
-  v13 = [(RTProximityEvent *)v6 eventID];
-  if ([v12 isEqual:v13])
+  eventID = [(RTProximityEvent *)self eventID];
+  eventID2 = [(RTProximityEvent *)v6 eventID];
+  if ([eventID isEqual:eventID2])
   {
-    v14 = [(RTProximityEvent *)self startDate];
-    v15 = [(RTProximityEvent *)v6 startDate];
-    if (([v14 isEqualToDate:v15] & v10) == 1)
+    startDate = [(RTProximityEvent *)self startDate];
+    startDate2 = [(RTProximityEvent *)v6 startDate];
+    if (([startDate isEqualToDate:startDate2] & v10) == 1)
     {
-      v16 = [(RTProximityEvent *)self relationship];
-      v11 = v16 == [(RTProximityEvent *)v6 relationship];
+      relationship = [(RTProximityEvent *)self relationship];
+      v11 = relationship == [(RTProximityEvent *)v6 relationship];
     }
 
     else
@@ -205,14 +205,14 @@ LABEL_18:
 - (id)descriptionDictionary
 {
   v3 = objc_opt_new();
-  v4 = [(NSUUID *)self->_eventID UUIDString];
-  [v3 setObject:v4 forKey:@"EventID"];
+  uUIDString = [(NSUUID *)self->_eventID UUIDString];
+  [v3 setObject:uUIDString forKey:@"EventID"];
 
   startDate = self->_startDate;
   if (startDate)
   {
-    v6 = [(NSDate *)startDate getFormattedDateString];
-    [v3 setObject:v6 forKey:@"StartDate"];
+    getFormattedDateString = [(NSDate *)startDate getFormattedDateString];
+    [v3 setObject:getFormattedDateString forKey:@"StartDate"];
   }
 
   else
@@ -223,8 +223,8 @@ LABEL_18:
   endDate = self->_endDate;
   if (endDate)
   {
-    v8 = [(NSDate *)endDate getFormattedDateString];
-    [v3 setObject:v8 forKey:@"EndDate"];
+    getFormattedDateString2 = [(NSDate *)endDate getFormattedDateString];
+    [v3 setObject:getFormattedDateString2 forKey:@"EndDate"];
   }
 
   else
@@ -233,18 +233,18 @@ LABEL_18:
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithDouble:self->_socialScore];
-  v10 = [v9 stringValue];
-  [v3 setObject:v10 forKey:@"SocialScore"];
+  stringValue = [v9 stringValue];
+  [v3 setObject:stringValue forKey:@"SocialScore"];
 
   v11 = [objc_opt_class() convertPersonRelationshipToString:self->_relationship];
   [v3 setObject:v11 forKey:@"Relationship"];
 
-  v12 = [(RTProximityEvent *)self combinedFrequencyScores];
+  combinedFrequencyScores = [(RTProximityEvent *)self combinedFrequencyScores];
 
-  if (v12)
+  if (combinedFrequencyScores)
   {
-    v13 = [(RTProximityEvent *)self combinedFrequencyScores];
-    v14 = [v13 count];
+    combinedFrequencyScores2 = [(RTProximityEvent *)self combinedFrequencyScores];
+    v14 = [combinedFrequencyScores2 count];
 
     if (v14)
     {
@@ -252,34 +252,34 @@ LABEL_18:
       do
       {
         v16 = [objc_opt_class() convertContactFrequencyToString:v15];
-        v17 = [(RTProximityEvent *)self combinedFrequencyScores];
-        v18 = [v17 objectAtIndexedSubscript:v15];
-        v19 = [v18 intValue];
+        combinedFrequencyScores3 = [(RTProximityEvent *)self combinedFrequencyScores];
+        v18 = [combinedFrequencyScores3 objectAtIndexedSubscript:v15];
+        intValue = [v18 intValue];
 
-        if (v19 >= 1)
+        if (intValue >= 1)
         {
-          v20 = [(RTProximityEvent *)self combinedFrequencyScores];
-          v21 = [v20 objectAtIndexedSubscript:v15];
-          v22 = [v21 stringValue];
+          combinedFrequencyScores4 = [(RTProximityEvent *)self combinedFrequencyScores];
+          v21 = [combinedFrequencyScores4 objectAtIndexedSubscript:v15];
+          stringValue2 = [v21 stringValue];
           v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Frequency:%@", v16];
-          [v3 setObject:v22 forKey:v23];
+          [v3 setObject:stringValue2 forKey:v23];
         }
 
         ++v15;
-        v24 = [(RTProximityEvent *)self combinedFrequencyScores];
-        v25 = [v24 count];
+        combinedFrequencyScores5 = [(RTProximityEvent *)self combinedFrequencyScores];
+        v25 = [combinedFrequencyScores5 count];
       }
 
       while (v25 > v15);
     }
   }
 
-  v26 = [(RTProximityEvent *)self combinedRecencyScores];
+  combinedRecencyScores = [(RTProximityEvent *)self combinedRecencyScores];
 
-  if (v26)
+  if (combinedRecencyScores)
   {
-    v27 = [(RTProximityEvent *)self combinedRecencyScores];
-    v28 = [v27 count];
+    combinedRecencyScores2 = [(RTProximityEvent *)self combinedRecencyScores];
+    v28 = [combinedRecencyScores2 count];
 
     if (v28)
     {
@@ -287,34 +287,34 @@ LABEL_18:
       do
       {
         v30 = [RTProximityEvent convertContactRecencyToString:v29];
-        v31 = [(RTProximityEvent *)self combinedRecencyScores];
-        v32 = [v31 objectAtIndexedSubscript:v29];
-        v33 = [v32 intValue];
+        combinedRecencyScores3 = [(RTProximityEvent *)self combinedRecencyScores];
+        v32 = [combinedRecencyScores3 objectAtIndexedSubscript:v29];
+        intValue2 = [v32 intValue];
 
-        if (v33 >= 1)
+        if (intValue2 >= 1)
         {
-          v34 = [(RTProximityEvent *)self combinedRecencyScores];
-          v35 = [v34 objectAtIndexedSubscript:v29];
-          v36 = [v35 stringValue];
+          combinedRecencyScores4 = [(RTProximityEvent *)self combinedRecencyScores];
+          v35 = [combinedRecencyScores4 objectAtIndexedSubscript:v29];
+          stringValue3 = [v35 stringValue];
           v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Recency:%@", v30];
-          [v3 setObject:v36 forKey:v37];
+          [v3 setObject:stringValue3 forKey:v37];
         }
 
         ++v29;
-        v38 = [(RTProximityEvent *)self combinedRecencyScores];
-        v39 = [v38 count];
+        combinedRecencyScores5 = [(RTProximityEvent *)self combinedRecencyScores];
+        v39 = [combinedRecencyScores5 count];
       }
 
       while (v39 > v29);
     }
   }
 
-  v40 = [(RTProximityEvent *)self combinedSignificanceScores];
+  combinedSignificanceScores = [(RTProximityEvent *)self combinedSignificanceScores];
 
-  if (v40)
+  if (combinedSignificanceScores)
   {
-    v41 = [(RTProximityEvent *)self combinedSignificanceScores];
-    v42 = [v41 count];
+    combinedSignificanceScores2 = [(RTProximityEvent *)self combinedSignificanceScores];
+    v42 = [combinedSignificanceScores2 count];
 
     if (v42)
     {
@@ -322,22 +322,22 @@ LABEL_18:
       do
       {
         v44 = [RTProximityEvent convertContactSignificanceToString:v43];
-        v45 = [(RTProximityEvent *)self combinedSignificanceScores];
-        v46 = [v45 objectAtIndexedSubscript:v43];
-        v47 = [v46 intValue];
+        combinedSignificanceScores3 = [(RTProximityEvent *)self combinedSignificanceScores];
+        v46 = [combinedSignificanceScores3 objectAtIndexedSubscript:v43];
+        intValue3 = [v46 intValue];
 
-        if (v47 >= 1)
+        if (intValue3 >= 1)
         {
-          v48 = [(RTProximityEvent *)self combinedSignificanceScores];
-          v49 = [v48 objectAtIndexedSubscript:v43];
-          v50 = [v49 stringValue];
+          combinedSignificanceScores4 = [(RTProximityEvent *)self combinedSignificanceScores];
+          v49 = [combinedSignificanceScores4 objectAtIndexedSubscript:v43];
+          stringValue4 = [v49 stringValue];
           v51 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Significance:%@", v44];
-          [v3 setObject:v50 forKey:v51];
+          [v3 setObject:stringValue4 forKey:v51];
         }
 
         ++v43;
-        v52 = [(RTProximityEvent *)self combinedSignificanceScores];
-        v53 = [v52 count];
+        combinedSignificanceScores5 = [(RTProximityEvent *)self combinedSignificanceScores];
+        v53 = [combinedSignificanceScores5 count];
       }
 
       while (v53 > v43);
@@ -350,9 +350,9 @@ LABEL_18:
 - (id)description
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [(RTProximityEvent *)self descriptionDictionary];
+  descriptionDictionary = [(RTProximityEvent *)self descriptionDictionary];
   v12 = 0;
-  v3 = [MEMORY[0x1E696ACB0] JSONStringFromNSDictionary:v2 error:&v12];
+  v3 = [MEMORY[0x1E696ACB0] JSONStringFromNSDictionary:descriptionDictionary error:&v12];
   v4 = v12;
   if (v4)
   {
@@ -368,70 +368,70 @@ LABEL_18:
       _os_log_error_impl(&dword_1BF1C4000, v5, OS_LOG_TYPE_ERROR, "%@ instance failed to create description:%@", buf, 0x16u);
     }
 
-    v6 = [MEMORY[0x1E696AEC0] string];
+    string = [MEMORY[0x1E696AEC0] string];
   }
 
   else
   {
-    v6 = v3;
+    string = v3;
   }
 
-  v7 = v6;
+  v7 = string;
 
   v8 = *MEMORY[0x1E69E9840];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(RTProximityEvent *)self eventID];
-  v6 = [(RTProximityEvent *)self startDate];
-  v7 = [(RTProximityEvent *)self endDate];
-  v8 = [(RTProximityEvent *)self relationship];
+  eventID = [(RTProximityEvent *)self eventID];
+  startDate = [(RTProximityEvent *)self startDate];
+  endDate = [(RTProximityEvent *)self endDate];
+  relationship = [(RTProximityEvent *)self relationship];
   [(RTProximityEvent *)self socialScore];
   v10 = v9;
-  v11 = [(RTProximityEvent *)self combinedFrequencyScores];
-  v12 = [(RTProximityEvent *)self combinedRecencyScores];
-  v13 = [(RTProximityEvent *)self combinedSignificanceScores];
-  v14 = [v4 initWithEventID:v5 startDate:v6 endDate:v7 relationship:v8 socialScore:v11 combinedFrequencyScores:v12 combinedRecencyScores:v10 combinedSignificanceScores:v13];
+  combinedFrequencyScores = [(RTProximityEvent *)self combinedFrequencyScores];
+  combinedRecencyScores = [(RTProximityEvent *)self combinedRecencyScores];
+  combinedSignificanceScores = [(RTProximityEvent *)self combinedSignificanceScores];
+  v14 = [v4 initWithEventID:eventID startDate:startDate endDate:endDate relationship:relationship socialScore:combinedFrequencyScores combinedFrequencyScores:combinedRecencyScores combinedRecencyScores:v10 combinedSignificanceScores:combinedSignificanceScores];
 
   return v14;
 }
 
-- (RTProximityEvent)initWithCoder:(id)a3
+- (RTProximityEvent)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"EventID"];
-  v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"StartDate"];
-  v10 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"EndDate"];
-  v11 = [v5 decodeInt64ForKey:@"Relationship"];
-  [v5 decodeDoubleForKey:@"SocialScore"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EventID"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"StartDate"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EndDate"];
+  v11 = [coderCopy decodeInt64ForKey:@"Relationship"];
+  [coderCopy decodeDoubleForKey:@"SocialScore"];
   v13 = v12;
-  v14 = [v5 decodeObjectOfClasses:v7 forKey:@"CombinedFrequency"];
-  v15 = [v5 decodeObjectOfClasses:v7 forKey:@"CombinedRecency"];
-  v16 = [v5 decodeObjectOfClasses:v7 forKey:@"ContactSignificance"];
+  v14 = [coderCopy decodeObjectOfClasses:v7 forKey:@"CombinedFrequency"];
+  v15 = [coderCopy decodeObjectOfClasses:v7 forKey:@"CombinedRecency"];
+  v16 = [coderCopy decodeObjectOfClasses:v7 forKey:@"ContactSignificance"];
 
   v17 = [(RTProximityEvent *)self initWithEventID:v8 startDate:v9 endDate:v10 relationship:v11 socialScore:v14 combinedFrequencyScores:v15 combinedRecencyScores:v13 combinedSignificanceScores:v16];
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   eventID = self->_eventID;
-  v5 = a3;
-  [v5 encodeObject:eventID forKey:@"EventID"];
-  [v5 encodeObject:self->_startDate forKey:@"StartDate"];
-  [v5 encodeObject:self->_endDate forKey:@"EndDate"];
-  [v5 encodeInt64:self->_relationship forKey:@"Relationship"];
-  [v5 encodeDouble:@"SocialScore" forKey:self->_socialScore];
-  [v5 encodeObject:self->_combinedFrequencyScores forKey:@"CombinedFrequency"];
-  [v5 encodeObject:self->_combinedRecencyScores forKey:@"CombinedRecency"];
-  [v5 encodeObject:self->_combinedSignificanceScores forKey:@"ContactSignificance"];
+  coderCopy = coder;
+  [coderCopy encodeObject:eventID forKey:@"EventID"];
+  [coderCopy encodeObject:self->_startDate forKey:@"StartDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"EndDate"];
+  [coderCopy encodeInt64:self->_relationship forKey:@"Relationship"];
+  [coderCopy encodeDouble:@"SocialScore" forKey:self->_socialScore];
+  [coderCopy encodeObject:self->_combinedFrequencyScores forKey:@"CombinedFrequency"];
+  [coderCopy encodeObject:self->_combinedRecencyScores forKey:@"CombinedRecency"];
+  [coderCopy encodeObject:self->_combinedSignificanceScores forKey:@"ContactSignificance"];
 }
 
 @end

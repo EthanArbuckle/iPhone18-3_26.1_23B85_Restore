@@ -3,61 +3,61 @@
 - (NSDictionary)certificates;
 - (NSDictionary)keys;
 - (TKTokenKeychainCertificate)certificateForObjectID:(TKTokenObjectID)objectID error:(NSError *)error;
-- (TKTokenKeychainContents)initWithConfiguration:(id)a3;
-- (TKTokenKeychainContents)initWithTokenID:(id)a3 error:(id *)a4;
+- (TKTokenKeychainContents)initWithConfiguration:(id)configuration;
+- (TKTokenKeychainContents)initWithTokenID:(id)d error:(id *)error;
 - (TKTokenKeychainKey)keyForObjectID:(TKTokenObjectID)objectID error:(NSError *)error;
-- (id)certificateForKey:(id)a3;
+- (id)certificateForKey:(id)key;
 - (void)fillWithItems:(NSArray *)items;
 @end
 
 @implementation TKTokenKeychainContents
 
-- (TKTokenKeychainContents)initWithConfiguration:(id)a3
+- (TKTokenKeychainContents)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = TKTokenKeychainContents;
   v6 = [(TKTokenKeychainContents *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
   }
 
   return v7;
 }
 
-- (TKTokenKeychainContents)initWithTokenID:(id)a3 error:(id *)a4
+- (TKTokenKeychainContents)initWithTokenID:(id)d error:(id *)error
 {
-  v6 = a3;
-  v7 = [[TKTokenID alloc] initWithTokenID:v6];
+  dCopy = d;
+  v7 = [[TKTokenID alloc] initWithTokenID:dCopy];
 
   v8 = +[TKTokenDriverConfiguration driverConfigurations];
-  v9 = [(TKTokenID *)v7 classID];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  classID = [(TKTokenID *)v7 classID];
+  v10 = [v8 objectForKeyedSubscript:classID];
 
   if (v10)
   {
-    v11 = [v10 tokenConfigurations];
-    v12 = [(TKTokenID *)v7 instanceID];
-    v13 = [v11 objectForKeyedSubscript:v12];
+    tokenConfigurations = [v10 tokenConfigurations];
+    instanceID = [(TKTokenID *)v7 instanceID];
+    v13 = [tokenConfigurations objectForKeyedSubscript:instanceID];
 
     if (!v13)
     {
-      v14 = [(TKTokenID *)v7 instanceID];
-      v13 = [v10 addTokenConfigurationForTokenInstanceID:v14];
+      instanceID2 = [(TKTokenID *)v7 instanceID];
+      v13 = [v10 addTokenConfigurationForTokenInstanceID:instanceID2];
     }
 
     self = [(TKTokenKeychainContents *)self initWithConfiguration:v13];
 
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-7 userInfo:MEMORY[0x1E695E0F8]];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-7 userInfo:MEMORY[0x1E695E0F8]];
     }
 
     v16 = TK_LOG_token_2();
@@ -66,17 +66,17 @@
       [TKTokenKeychainContents initWithTokenID:v7 error:v16];
     }
 
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 - (void)fillWithItems:(NSArray *)items
 {
   v4 = items;
-  v5 = [(TKTokenKeychainContents *)self configuration];
-  [v5 setKeychainItems:v4];
+  configuration = [(TKTokenKeychainContents *)self configuration];
+  [configuration setKeychainItems:v4];
 
   v6 = self->_items;
   self->_items = v4;
@@ -87,10 +87,10 @@
   items = self->_items;
   if (!items)
   {
-    v4 = [(TKTokenKeychainContents *)self configuration];
-    v5 = [v4 keychainItems];
+    configuration = [(TKTokenKeychainContents *)self configuration];
+    keychainItems = [configuration keychainItems];
     v6 = self->_items;
-    self->_items = v5;
+    self->_items = keychainItems;
 
     items = self->_items;
   }
@@ -106,8 +106,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(TKTokenKeychainContents *)self items];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  items = [(TKTokenKeychainContents *)self items];
+  v5 = [items countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -118,19 +118,19 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(items);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v9 objectID];
-          [v3 setObject:v9 forKeyedSubscript:v10];
+          objectID = [v9 objectID];
+          [v3 setObject:v9 forKeyedSubscript:objectID];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [items countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -150,8 +150,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(TKTokenKeychainContents *)self items];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  items = [(TKTokenKeychainContents *)self items];
+  v5 = [items countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -162,19 +162,19 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(items);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v9 objectID];
-          [v3 setObject:v9 forKeyedSubscript:v10];
+          objectID = [v9 objectID];
+          [v3 setObject:v9 forKeyedSubscript:objectID];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [items countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -189,8 +189,8 @@
 - (TKTokenKeychainCertificate)certificateForObjectID:(TKTokenObjectID)objectID error:(NSError *)error
 {
   v6 = objectID;
-  v7 = [(TKTokenKeychainContents *)self certificates];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  certificates = [(TKTokenKeychainContents *)self certificates];
+  v8 = [certificates objectForKeyedSubscript:v6];
 
   if (v8)
   {
@@ -217,8 +217,8 @@
 - (TKTokenKeychainKey)keyForObjectID:(TKTokenObjectID)objectID error:(NSError *)error
 {
   v6 = objectID;
-  v7 = [(TKTokenKeychainContents *)self keys];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  keys = [(TKTokenKeychainContents *)self keys];
+  v8 = [keys objectForKeyedSubscript:v6];
 
   if (v8)
   {
@@ -242,16 +242,16 @@
   return v8;
 }
 
-- (id)certificateForKey:(id)a3
+- (id)certificateForKey:(id)key
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(TKTokenKeychainContents *)self items];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  items = [(TKTokenKeychainContents *)self items];
+  v6 = [items countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = *v16;
@@ -261,16 +261,16 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(items);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v4 publicKeyHash];
-          v11 = [v9 publicKeyHash];
-          v12 = [v10 isEqualToData:v11];
+          publicKeyHash = [keyCopy publicKeyHash];
+          publicKeyHash2 = [v9 publicKeyHash];
+          v12 = [publicKeyHash isEqualToData:publicKeyHash2];
 
           if (v12)
           {
@@ -280,7 +280,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [items countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         continue;

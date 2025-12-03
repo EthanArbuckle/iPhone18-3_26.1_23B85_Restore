@@ -3,36 +3,36 @@
 - (BOOL)isFindMyASource;
 - (DSNavigationDelegate)delegate;
 - (DSSharingPermissionsController)init;
-- (id)personForIndexPath:(id)a3;
-- (id)sharingTypeForIndexPath:(id)a3;
-- (id)tableIconForPerson:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_fetchCompletedWithError:(id)a3;
+- (id)personForIndexPath:(id)path;
+- (id)sharingTypeForIndexPath:(id)path;
+- (id)tableIconForPerson:(id)person;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_fetchCompletedWithError:(id)error;
 - (void)_pushNextPane;
 - (void)_updateButton;
 - (void)_updateTitle;
-- (void)addUnsharedPerson:(id)a3;
-- (void)addUnsharedSource:(id)a3 resources:(id)a4;
+- (void)addUnsharedPerson:(id)person;
+- (void)addUnsharedSource:(id)source resources:(id)resources;
 - (void)fetchSharingPermissions;
-- (void)filterContentForSearchText:(id)a3 category:(int64_t)a4;
+- (void)filterContentForSearchText:(id)text category:(int64_t)category;
 - (void)postAnalytics;
-- (void)presentFetchErrorMessage:(id)a3;
+- (void)presentFetchErrorMessage:(id)message;
 - (void)registerForNotifications;
 - (void)reloadTableViewData;
-- (void)requestNewFetchImmediately:(BOOL)a3;
+- (void)requestNewFetchImmediately:(BOOL)immediately;
 - (void)reviewSelectedSharing;
 - (void)reviewSelectedSharingFlowCompleted;
-- (void)searchBar:(id)a3 selectedScopeButtonIndexDidChange:(int64_t)a4;
-- (void)sharingStoppedForPerson:(id)a3 sourceNames:(id)a4;
-- (void)sharingStoppedForType:(id)a3 people:(id)a4;
+- (void)searchBar:(id)bar selectedScopeButtonIndexDidChange:(int64_t)change;
+- (void)sharingStoppedForPerson:(id)person sourceNames:(id)names;
+- (void)sharingStoppedForType:(id)type people:(id)people;
 - (void)stopAllSharing;
-- (void)stopSharingFailedWithError:(id)a3;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)stopSharingFailedWithError:(id)error;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)unregisterForNotifications;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
 @end
 
@@ -40,7 +40,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     DSLogSharingPermissions = os_log_create("com.apple.DigitalSeparation", "DSSharingPermissions");
 
@@ -72,9 +72,9 @@
     selectedTypes = v2->_selectedTypes;
     v2->_selectedTypes = v8;
 
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     personIconCache = v2->_personIconCache;
-    v2->_personIconCache = v10;
+    v2->_personIconCache = dictionary;
 
     v12 = DSUILocStringForKey(@"SKIP");
     v13 = [DSUIUtilities setUpBoldButtonForController:v2 title:v12 target:v2 selector:sel__pushNextPane];
@@ -91,14 +91,14 @@
 - (void)postAnalytics
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [(DSSharingPermissionsController *)self permissions];
-  v3 = [v2 elapsedUnfinishedFetchesBySource];
+  permissions = [(DSSharingPermissionsController *)self permissions];
+  elapsedUnfinishedFetchesBySource = [permissions elapsedUnfinishedFetchesBySource];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = v3;
+  v4 = elapsedUnfinishedFetchesBySource;
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -147,24 +147,24 @@ id __47__DSSharingPermissionsController_postAnalytics__block_invoke(uint64_t a1)
 
 - (void)registerForNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_setUrgentFetchNeeded name:*MEMORY[0x277D76758] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_setUrgentFetchNeeded name:*MEMORY[0x277D76758] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel_didEnterBackground name:*MEMORY[0x277D76660] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_didEnterBackground name:*MEMORY[0x277D76660] object:0];
 }
 
 - (void)unregisterForNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
-- (void)requestNewFetchImmediately:(BOOL)a3
+- (void)requestNewFetchImmediately:(BOOL)immediately
 {
   v4 = 0;
   atomic_compare_exchange_strong(&self->_fetchState, &v4, 1u);
-  if (a3)
+  if (immediately)
   {
     [(DSSharingPermissionsController *)self setFetchCompletedTime:0];
     [(DSSharingPermissionsController *)self setCachedFetchError:0];
@@ -184,14 +184,14 @@ id __47__DSSharingPermissionsController_postAnalytics__block_invoke(uint64_t a1)
   v4 = DSUILocStringForKey(@"BY_TYPE");
   v13[1] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
-  v6 = [(DSTableWelcomeController *)self searchController];
-  v7 = [v6 searchBar];
-  [v7 setScopeButtonTitles:v5];
+  searchController = [(DSTableWelcomeController *)self searchController];
+  searchBar = [searchController searchBar];
+  [searchBar setScopeButtonTitles:v5];
 
   v8 = DSUILocStringForKey(@"SEARCH_SHARING_PEOPLE_PLACEHOLDER");
-  v9 = [(DSTableWelcomeController *)self searchController];
-  v10 = [v9 searchBar];
-  [v10 setPlaceholder:v8];
+  searchController2 = [(DSTableWelcomeController *)self searchController];
+  searchBar2 = [searchController2 searchBar];
+  [searchBar2 setPlaceholder:v8];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -200,7 +200,7 @@ id __47__DSSharingPermissionsController_postAnalytics__block_invoke(uint64_t a1)
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = 134349312;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2050;
   v7 = a2;
   _os_log_fault_impl(&dword_248C7E000, log, OS_LOG_TYPE_FAULT, "mach_continuous_time walked backwards (now: %{public}llu, then: %{public}llu)", &v4, 0x16u);
@@ -228,42 +228,42 @@ void __57__DSSharingPermissionsController_fetchSharingPermissions__block_invoke_
   [WeakRetained _fetchCompletedWithError:*(a1 + 32)];
 }
 
-- (void)_fetchCompletedWithError:(id)a3
+- (void)_fetchCompletedWithError:(id)error
 {
-  v6 = a3;
+  errorCopy = error;
   atomic_store(0, &self->_fetchState);
   [(DSSharingPermissionsController *)self setFetchCompletedTime:clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW)];
   [(DSTableWelcomeController *)self stopContentSpinner];
-  if (v6)
+  if (errorCopy)
   {
-    [(DSSharingPermissionsController *)self presentFetchErrorMessage:v6];
+    [(DSSharingPermissionsController *)self presentFetchErrorMessage:errorCopy];
   }
 
-  v4 = [(DSSharingPermissionsController *)self delegate];
+  delegate = [(DSSharingPermissionsController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(DSSharingPermissionsController *)self permissions];
-    [v4 setFetchedSharingPermissions:v5];
+    permissions = [(DSSharingPermissionsController *)self permissions];
+    [delegate setFetchedSharingPermissions:permissions];
   }
 
   [(DSSharingPermissionsController *)self reloadTableViewData];
 }
 
-- (void)presentFetchErrorMessage:(id)a3
+- (void)presentFetchErrorMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(DSSharingPermissionsController *)self navigationController];
-  v6 = [v5 visibleViewController];
+  messageCopy = message;
+  navigationController = [(DSSharingPermissionsController *)self navigationController];
+  visibleViewController = [navigationController visibleViewController];
 
   v7 = DSLogSharingPermissions;
-  if (v6 == self)
+  if (visibleViewController == self)
   {
     if (os_log_type_enabled(DSLogSharingPermissions, OS_LOG_TYPE_ERROR))
     {
-      [(DSSharingPermissionsController *)v4 presentFetchErrorMessage:v7];
+      [(DSSharingPermissionsController *)messageCopy presentFetchErrorMessage:v7];
     }
 
-    v8 = [MEMORY[0x277D75110] ds_alertControllerWithFetchSharingError:v4];
+    v8 = [MEMORY[0x277D75110] ds_alertControllerWithFetchSharingError:messageCopy];
     [(DSTableWelcomeController *)self presentErrorAlertController:v8];
   }
 
@@ -275,38 +275,38 @@ void __57__DSSharingPermissionsController_fetchSharingPermissions__block_invoke_
       _os_log_impl(&dword_248C7E000, v7, OS_LOG_TYPE_INFO, "Caching fetch error until we are the visible view controller", v9, 2u);
     }
 
-    [(DSSharingPermissionsController *)self setCachedFetchError:v4];
+    [(DSSharingPermissionsController *)self setCachedFetchError:messageCopy];
   }
 }
 
 - (void)reloadTableViewData
 {
-  v3 = [(DSSharingPermissionsController *)self permissions];
-  [v3 sort];
+  permissions = [(DSSharingPermissionsController *)self permissions];
+  [permissions sort];
 
-  v4 = [(DSSharingPermissionsController *)self permissions];
-  -[DSTableWelcomeController setIsModelEmpty:](self, "setIsModelEmpty:", [v4 peopleCountWithFilter:0] == 0);
+  permissions2 = [(DSSharingPermissionsController *)self permissions];
+  -[DSTableWelcomeController setIsModelEmpty:](self, "setIsModelEmpty:", [permissions2 peopleCountWithFilter:0] == 0);
 
-  v5 = [(OBTableWelcomeController *)self tableView];
+  tableView = [(OBTableWelcomeController *)self tableView];
   v6 = [MEMORY[0x277CCAA78] indexSetWithIndex:0];
-  [v5 reloadSections:v6 withRowAnimation:100];
+  [tableView reloadSections:v6 withRowAnimation:100];
 
-  v7 = [(OBTableWelcomeController *)self tableView];
-  [v7 layoutIfNeeded];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 layoutIfNeeded];
 
-  v8 = [(DSSharingPermissionsController *)self selectedPeople];
+  selectedPeople = [(DSSharingPermissionsController *)self selectedPeople];
   v9 = MEMORY[0x277CBEB98];
-  v10 = [(DSSharingPermissionsController *)self permissions];
-  v11 = [v10 allPeople];
-  v12 = [v9 setWithArray:v11];
-  [v8 intersectSet:v12];
+  permissions3 = [(DSSharingPermissionsController *)self permissions];
+  allPeople = [permissions3 allPeople];
+  v12 = [v9 setWithArray:allPeople];
+  [selectedPeople intersectSet:v12];
 
-  v13 = [(DSSharingPermissionsController *)self selectedTypes];
+  selectedTypes = [(DSSharingPermissionsController *)self selectedTypes];
   v14 = MEMORY[0x277CBEB98];
-  v15 = [(DSSharingPermissionsController *)self permissions];
-  v16 = [v15 allSharingTypes];
-  v17 = [v14 setWithArray:v16];
-  [v13 intersectSet:v17];
+  permissions4 = [(DSSharingPermissionsController *)self permissions];
+  allSharingTypes = [permissions4 allSharingTypes];
+  v17 = [v14 setWithArray:allSharingTypes];
+  [selectedTypes intersectSet:v17];
 
   [(DSSharingPermissionsController *)self _updateButton];
 }
@@ -318,10 +318,10 @@ void __57__DSSharingPermissionsController_fetchSharingPermissions__block_invoke_
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v2 = [(DSSharingPermissionsController *)self permissions];
-  v3 = [v2 allSharingTypes];
+  permissions = [(DSSharingPermissionsController *)self permissions];
+  allSharingTypes = [permissions allSharingTypes];
 
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v4 = [allSharingTypes countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -333,12 +333,12 @@ void __57__DSSharingPermissionsController_fetchSharingPermissions__block_invoke_
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allSharingTypes);
         }
 
-        v9 = [*(*(&v15 + 1) + 8 * i) source];
-        v10 = [v9 name];
-        v11 = [v10 isEqualToString:v7];
+        source = [*(*(&v15 + 1) + 8 * i) source];
+        name = [source name];
+        v11 = [name isEqualToString:v7];
 
         if (v11)
         {
@@ -347,7 +347,7 @@ void __57__DSSharingPermissionsController_fetchSharingPermissions__block_invoke_
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [allSharingTypes countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v5)
       {
         continue;
@@ -569,17 +569,17 @@ void __48__DSSharingPermissionsController_stopAllSharing__block_invoke_4(id *a1)
 - (void)reviewSelectedSharing
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [(OBTableWelcomeController *)self tableView];
-  v4 = [v3 indexPathsForSelectedRows];
-  v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_384];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
+  v5 = [indexPathsForSelectedRows sortedArrayUsingComparator:&__block_literal_global_384];
 
-  v6 = [(DSTableWelcomeController *)self searchController];
-  v7 = [v6 searchBar];
-  v8 = [v7 selectedScopeButtonIndex];
+  searchController = [(DSTableWelcomeController *)self searchController];
+  searchBar = [searchController searchBar];
+  selectedScopeButtonIndex = [searchBar selectedScopeButtonIndex];
 
-  v9 = [MEMORY[0x277CBEB18] array];
-  v10 = [MEMORY[0x277CBEB18] array];
-  if (v8 == 1)
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  if (selectedScopeButtonIndex == 1)
   {
     v29 = 0u;
     v30 = 0u;
@@ -604,7 +604,7 @@ void __48__DSSharingPermissionsController_stopAllSharing__block_invoke_4(id *a1)
           v23 = [(DSSharingPermissionsController *)self sharingTypeForIndexPath:*(*(&v27 + 1) + 8 * v22), v27];
           if (v23)
           {
-            [v10 addObject:v23];
+            [array2 addObject:v23];
           }
 
           ++v22;
@@ -617,14 +617,14 @@ void __48__DSSharingPermissionsController_stopAllSharing__block_invoke_4(id *a1)
       while (v20);
     }
 
-    if ([v10 count])
+    if ([array2 count])
     {
-      v17 = [DSSharingPermissionsDetailController detailControllerWithSharingTypes:v10 startingViewController:self delegate:self];
+      v17 = [DSSharingPermissionsDetailController detailControllerWithSharingTypes:array2 startingViewController:self delegate:self];
       goto LABEL_25;
     }
   }
 
-  else if (!v8)
+  else if (!selectedScopeButtonIndex)
   {
     v33 = 0u;
     v34 = 0u;
@@ -649,7 +649,7 @@ void __48__DSSharingPermissionsController_stopAllSharing__block_invoke_4(id *a1)
           v16 = [(DSSharingPermissionsController *)self personForIndexPath:*(*(&v31 + 1) + 8 * v15)];
           if (v16)
           {
-            [v9 addObject:v16];
+            [array addObject:v16];
           }
 
           ++v15;
@@ -662,13 +662,13 @@ void __48__DSSharingPermissionsController_stopAllSharing__block_invoke_4(id *a1)
       while (v13);
     }
 
-    if ([v9 count])
+    if ([array count])
     {
-      v17 = [DSSharingPermissionsDetailController detailControllerWithPeople:v9 startingViewController:self delegate:self];
+      v17 = [DSSharingPermissionsDetailController detailControllerWithPeople:array startingViewController:self delegate:self];
 LABEL_25:
       v24 = v17;
-      v25 = [(DSSharingPermissionsController *)self navigationController];
-      [v25 pushViewController:v24 animated:1];
+      navigationController = [(DSSharingPermissionsController *)self navigationController];
+      [navigationController pushViewController:v24 animated:1];
     }
   }
 
@@ -694,70 +694,70 @@ uint64_t __55__DSSharingPermissionsController_reviewSelectedSharing__block_invok
   return v7;
 }
 
-- (id)personForIndexPath:(id)a3
+- (id)personForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(DSSharingPermissionsController *)self permissions];
-  v6 = [v4 row];
+  pathCopy = path;
+  permissions = [(DSSharingPermissionsController *)self permissions];
+  v6 = [pathCopy row];
 
-  v7 = [v5 person:v6 withFilter:{-[DSTableWelcomeController isFiltering](self, "isFiltering")}];
+  v7 = [permissions person:v6 withFilter:{-[DSTableWelcomeController isFiltering](self, "isFiltering")}];
 
   return v7;
 }
 
-- (id)sharingTypeForIndexPath:(id)a3
+- (id)sharingTypeForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(DSSharingPermissionsController *)self permissions];
-  v6 = [v4 row];
+  pathCopy = path;
+  permissions = [(DSSharingPermissionsController *)self permissions];
+  v6 = [pathCopy row];
 
-  v7 = [v5 sharingType:v6 withFilter:{-[DSTableWelcomeController isFiltering](self, "isFiltering")}];
+  v7 = [permissions sharingType:v6 withFilter:{-[DSTableWelcomeController isFiltering](self, "isFiltering")}];
 
   return v7;
 }
 
-- (id)tableIconForPerson:(id)a3
+- (id)tableIconForPerson:(id)person
 {
-  v4 = a3;
-  v5 = [v4 contact];
-  v6 = [v5 identifier];
+  personCopy = person;
+  contact = [personCopy contact];
+  identifier = [contact identifier];
 
-  if (v6)
+  if (identifier)
   {
-    v7 = [(DSSharingPermissionsController *)self personIconCache];
-    v8 = [v7 objectForKeyedSubscript:v6];
+    personIconCache = [(DSSharingPermissionsController *)self personIconCache];
+    iconForTable = [personIconCache objectForKeyedSubscript:identifier];
 
-    if (!v8)
+    if (!iconForTable)
     {
-      v8 = [v4 iconForTable];
-      v9 = [(DSSharingPermissionsController *)self personIconCache];
-      [v9 setObject:v8 forKeyedSubscript:v6];
+      iconForTable = [personCopy iconForTable];
+      personIconCache2 = [(DSSharingPermissionsController *)self personIconCache];
+      [personIconCache2 setObject:iconForTable forKeyedSubscript:identifier];
     }
 
-    v10 = v8;
+    iconForTable2 = iconForTable;
   }
 
   else
   {
-    v10 = [v4 iconForTable];
+    iconForTable2 = [personCopy iconForTable];
   }
 
-  return v10;
+  return iconForTable2;
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v7 = [a3 searchBar];
-  v4 = [v7 text];
-  v5 = [(DSTableWelcomeController *)self searchController];
-  v6 = [v5 searchBar];
-  -[DSSharingPermissionsController filterContentForSearchText:category:](self, "filterContentForSearchText:category:", v4, [v6 selectedScopeButtonIndex]);
+  searchBar = [controller searchBar];
+  text = [searchBar text];
+  searchController = [(DSTableWelcomeController *)self searchController];
+  searchBar2 = [searchController searchBar];
+  -[DSSharingPermissionsController filterContentForSearchText:category:](self, "filterContentForSearchText:category:", text, [searchBar2 selectedScopeButtonIndex]);
 }
 
-- (void)searchBar:(id)a3 selectedScopeButtonIndexDidChange:(int64_t)a4
+- (void)searchBar:(id)bar selectedScopeButtonIndexDidChange:(int64_t)change
 {
-  v20 = a3;
-  if (!a4)
+  barCopy = bar;
+  if (!change)
   {
     v6 = @"SEARCH_SHARING_PEOPLE_PLACEHOLDER";
     v7 = @"SHARING_PERMISSIONS_PEOPLE";
@@ -765,7 +765,7 @@ uint64_t __55__DSSharingPermissionsController_reviewSelectedSharing__block_invok
     goto LABEL_5;
   }
 
-  if (a4 == 1)
+  if (change == 1)
   {
     v6 = @"SEARCH_SHARING_INFORMATION_PLACEHOLDER";
     v7 = @"SHARING_PERMISSIONS_INFORMATION";
@@ -774,9 +774,9 @@ LABEL_5:
     v9 = DSUILocStringForKey(v8);
     v10 = DSUILocStringForKey(v7);
     v11 = DSUILocStringForKey(v6);
-    v12 = [(DSTableWelcomeController *)self searchController];
-    v13 = [v12 searchBar];
-    [v13 setPlaceholder:v11];
+    searchController = [(DSTableWelcomeController *)self searchController];
+    searchBar = [searchController searchBar];
+    [searchBar setPlaceholder:v11];
 
     goto LABEL_7;
   }
@@ -784,33 +784,33 @@ LABEL_5:
   v10 = 0;
   v9 = 0;
 LABEL_7:
-  v14 = [(DSSharingPermissionsController *)self headerView];
-  [v14 setTitle:v10];
+  headerView = [(DSSharingPermissionsController *)self headerView];
+  [headerView setTitle:v10];
 
-  v15 = [(DSSharingPermissionsController *)self headerView];
-  [v15 setDetailText:v9];
+  headerView2 = [(DSSharingPermissionsController *)self headerView];
+  [headerView2 setDetailText:v9];
 
-  v16 = [(DSTableWelcomeController *)self searchController];
-  v17 = [v16 searchBar];
-  v18 = [v17 text];
-  [(DSSharingPermissionsController *)self filterContentForSearchText:v18 category:a4];
+  searchController2 = [(DSTableWelcomeController *)self searchController];
+  searchBar2 = [searchController2 searchBar];
+  text = [searchBar2 text];
+  [(DSSharingPermissionsController *)self filterContentForSearchText:text category:change];
 
-  v19 = [(OBTableWelcomeController *)self tableView];
-  [v19 layoutIfNeeded];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView layoutIfNeeded];
 }
 
-- (void)filterContentForSearchText:(id)a3 category:(int64_t)a4
+- (void)filterContentForSearchText:(id)text category:(int64_t)category
 {
   v21[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4 == 1)
+  textCopy = text;
+  if (category == 1)
   {
-    v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"displayName contains[c] %@", v6];
-    v7 = [(DSSharingPermissionsController *)self permissions];
-    [v7 filterSharingTypesWithPredicate:v12];
+    textCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"displayName contains[c] %@", textCopy];
+    permissions = [(DSSharingPermissionsController *)self permissions];
+    [permissions filterSharingTypesWithPredicate:textCopy];
 LABEL_5:
 
-    if (v12)
+    if (textCopy)
     {
       goto LABEL_9;
     }
@@ -818,24 +818,24 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (!a4)
+  if (!category)
   {
-    v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"displayName contains[c] %@", v6];
+    permissions = [MEMORY[0x277CCAC30] predicateWithFormat:@"displayName contains[c] %@", textCopy];
     v8 = MEMORY[0x277CCAC30];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __70__DSSharingPermissionsController_filterContentForSearchText_category___block_invoke;
     v19[3] = &unk_278F75340;
-    v20 = v6;
+    v20 = textCopy;
     v9 = [v8 predicateWithBlock:v19];
     v10 = MEMORY[0x277CCA920];
-    v21[0] = v7;
+    v21[0] = permissions;
     v21[1] = v9;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
-    v12 = [v10 orPredicateWithSubpredicates:v11];
+    textCopy = [v10 orPredicateWithSubpredicates:v11];
 
-    v13 = [(DSSharingPermissionsController *)self permissions];
-    [v13 filterPeopleWithPredicate:v12];
+    permissions2 = [(DSSharingPermissionsController *)self permissions];
+    [permissions2 filterPeopleWithPredicate:textCopy];
 
     goto LABEL_5;
   }
@@ -844,19 +844,19 @@ LABEL_6:
   v14 = DSLogSharingPermissions;
   if (os_log_type_enabled(DSLogSharingPermissions, OS_LOG_TYPE_FAULT))
   {
-    [DSSharingPermissionsController filterContentForSearchText:a4 category:v14];
+    [DSSharingPermissionsController filterContentForSearchText:category category:v14];
   }
 
-  v12 = 0;
+  textCopy = 0;
 LABEL_9:
-  v15 = [(DSSharingPermissionsController *)self headerView];
-  [v15 setTitle:&stru_285BA4988];
+  headerView = [(DSSharingPermissionsController *)self headerView];
+  [headerView setTitle:&stru_285BA4988];
 
-  v16 = [(DSSharingPermissionsController *)self headerView];
-  [v16 setDetailText:&stru_285BA4988];
+  headerView2 = [(DSSharingPermissionsController *)self headerView];
+  [headerView2 setDetailText:&stru_285BA4988];
 
-  v17 = [(OBTableWelcomeController *)self tableView];
-  [v17 reloadData];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView reloadData];
 
   [(DSSharingPermissionsController *)self _updateButton];
   v18 = *MEMORY[0x277D85DE8];
@@ -892,21 +892,21 @@ uint64_t __70__DSSharingPermissionsController_filterContentForSearchText_categor
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(DSTableWelcomeController *)self searchController];
-  v7 = [v6 searchBar];
-  v8 = [v7 selectedScopeButtonIndex];
+  pathCopy = path;
+  searchController = [(DSTableWelcomeController *)self searchController];
+  searchBar = [searchController searchBar];
+  selectedScopeButtonIndex = [searchBar selectedScopeButtonIndex];
 
-  if (v8 == 1)
+  if (selectedScopeButtonIndex == 1)
   {
-    v9 = [(DSSharingPermissionsController *)self sharingTypeForIndexPath:v5];
-    v10 = [v9 displayName];
-    v11 = [v9 localizedDetailText];
-    v12 = [v9 iconForTable];
-    v16 = [(DSSharingPermissionsController *)self selectedTypes];
-    v17 = [v16 containsObject:v9];
+    v9 = [(DSSharingPermissionsController *)self sharingTypeForIndexPath:pathCopy];
+    displayName = [v9 displayName];
+    localizedDetailText = [v9 localizedDetailText];
+    iconForTable = [v9 iconForTable];
+    selectedTypes = [(DSSharingPermissionsController *)self selectedTypes];
+    v17 = [selectedTypes containsObject:v9];
 
     if (!v17)
     {
@@ -916,14 +916,14 @@ uint64_t __70__DSSharingPermissionsController_filterContentForSearchText_categor
     goto LABEL_4;
   }
 
-  if (!v8)
+  if (!selectedScopeButtonIndex)
   {
-    v9 = [(DSSharingPermissionsController *)self personForIndexPath:v5];
-    v10 = [v9 displayName];
-    v11 = [v9 localizedDetail];
-    v12 = [(DSSharingPermissionsController *)self tableIconForPerson:v9];
-    v13 = [(DSSharingPermissionsController *)self selectedPeople];
-    v14 = [v13 containsObject:v9];
+    v9 = [(DSSharingPermissionsController *)self personForIndexPath:pathCopy];
+    displayName = [v9 displayName];
+    localizedDetailText = [v9 localizedDetail];
+    iconForTable = [(DSSharingPermissionsController *)self tableIconForPerson:v9];
+    selectedPeople = [(DSSharingPermissionsController *)self selectedPeople];
+    v14 = [selectedPeople containsObject:v9];
 
     if ((v14 & 1) == 0)
     {
@@ -933,49 +933,49 @@ LABEL_5:
     }
 
 LABEL_4:
-    v15 = [(OBTableWelcomeController *)self tableView];
-    [v15 selectRowAtIndexPath:v5 animated:1 scrollPosition:0];
+    tableView = [(OBTableWelcomeController *)self tableView];
+    [tableView selectRowAtIndexPath:pathCopy animated:1 scrollPosition:0];
 
     goto LABEL_5;
   }
 
-  v12 = 0;
-  v11 = 0;
-  v10 = 0;
+  iconForTable = 0;
+  localizedDetailText = 0;
+  displayName = 0;
 LABEL_9:
-  v18 = [(OBTableWelcomeController *)self tableView];
-  v19 = [DSIconTableViewCell iconTableViewCellFromTableView:v18 withText:v10 detail:v11 icon:v12];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  v19 = [DSIconTableViewCell iconTableViewCellFromTableView:tableView2 withText:displayName detail:localizedDetailText icon:iconForTable];
 
   [v19 setAccessoryType:0];
 
   return v19;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   v50 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  viewCopy = view;
   v6 = atomic_load(&self->_fetchState);
   if (v6 - 1 < 2)
   {
     goto LABEL_13;
   }
 
-  v7 = [(DSTableWelcomeController *)self searchController];
-  v8 = [v7 searchBar];
-  v9 = [v8 selectedScopeButtonIndex];
+  searchController = [(DSTableWelcomeController *)self searchController];
+  searchBar = [searchController searchBar];
+  selectedScopeButtonIndex = [searchBar selectedScopeButtonIndex];
 
-  if (v9 == 1)
+  if (selectedScopeButtonIndex == 1)
   {
-    v10 = [(DSSharingPermissionsController *)self permissions];
-    v11 = [v10 sharingTypesCountWithFilter:{-[DSTableWelcomeController isFiltering](self, "isFiltering")}];
+    permissions = [(DSSharingPermissionsController *)self permissions];
+    v11 = [permissions sharingTypesCountWithFilter:{-[DSTableWelcomeController isFiltering](self, "isFiltering")}];
     goto LABEL_6;
   }
 
-  if (!v9)
+  if (!selectedScopeButtonIndex)
   {
-    v10 = [(DSSharingPermissionsController *)self permissions];
-    v11 = [v10 peopleCountWithFilter:{-[DSTableWelcomeController isFiltering](self, "isFiltering")}];
+    permissions = [(DSSharingPermissionsController *)self permissions];
+    v11 = [permissions peopleCountWithFilter:{-[DSTableWelcomeController isFiltering](self, "isFiltering")}];
 LABEL_6:
     v12 = v11;
 
@@ -1005,10 +1005,10 @@ LABEL_6:
   if ([(DSTableWelcomeController *)self isFiltering])
   {
 LABEL_12:
-    v13 = [(DSTableWelcomeController *)self searchController];
-    v14 = [v13 searchBar];
-    v15 = [v14 text];
-    [(DSTableWelcomeController *)self showNoResultsViewWithSearchText:v15];
+    searchController2 = [(DSTableWelcomeController *)self searchController];
+    searchBar2 = [searchController2 searchBar];
+    text = [searchBar2 text];
+    [(DSTableWelcomeController *)self showNoResultsViewWithSearchText:text];
 
 LABEL_13:
     v12 = 0;
@@ -1016,20 +1016,20 @@ LABEL_13:
   }
 
 LABEL_15:
-  v40 = v5;
+  v40 = viewCopy;
   v18 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v19 = [(DSSharingPermissionsController *)self cachedFetchError];
-  v20 = [v19 ds_localizedAppNames];
+  cachedFetchError = [(DSSharingPermissionsController *)self cachedFetchError];
+  ds_localizedAppNames = [cachedFetchError ds_localizedAppNames];
 
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v39 = self;
-  v21 = [(DSSharingPermissionsController *)self repo];
-  v22 = [v21 sources];
+  selfCopy = self;
+  repo = [(DSSharingPermissionsController *)self repo];
+  sources = [repo sources];
 
-  v23 = [v22 countByEnumeratingWithState:&v41 objects:v49 count:16];
+  v23 = [sources countByEnumeratingWithState:&v41 objects:v49 count:16];
   if (v23)
   {
     v24 = v23;
@@ -1040,141 +1040,141 @@ LABEL_15:
       {
         if (*v42 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(sources);
         }
 
         v27 = MEMORY[0x277D054C0];
-        v28 = [*(*(&v41 + 1) + 8 * i) name];
-        v29 = [v27 sourceDescriptorForSource:v28];
-        v30 = [v29 localizedAppName];
+        name = [*(*(&v41 + 1) + 8 * i) name];
+        v29 = [v27 sourceDescriptorForSource:name];
+        localizedAppName = [v29 localizedAppName];
 
-        if ([v20 containsObject:v30])
+        if ([ds_localizedAppNames containsObject:localizedAppName])
         {
           v31 = DSLogSharingPermissions;
           if (os_log_type_enabled(DSLogSharingPermissions, OS_LOG_TYPE_INFO))
           {
             *buf = 138543618;
-            v46 = v30;
+            v46 = localizedAppName;
             v47 = 2112;
-            v48 = v20;
+            v48 = ds_localizedAppNames;
             _os_log_impl(&dword_248C7E000, v31, OS_LOG_TYPE_INFO, "Excluding %{public}@ from the no sharing copy because of source errors %@", buf, 0x16u);
           }
         }
 
         else
         {
-          [v18 addObject:v30];
+          [v18 addObject:localizedAppName];
         }
       }
 
-      v24 = [v22 countByEnumeratingWithState:&v41 objects:v49 count:16];
+      v24 = [sources countByEnumeratingWithState:&v41 objects:v49 count:16];
     }
 
     while (v24);
   }
 
   v32 = MEMORY[0x277CCAAF0];
-  v33 = [v18 allObjects];
-  v34 = [v32 localizedStringByJoiningStrings:v33];
+  allObjects = [v18 allObjects];
+  v34 = [v32 localizedStringByJoiningStrings:allObjects];
 
   v35 = MEMORY[0x277CCACA8];
   v36 = DSUILocStringForKey(@"NO_SHARING_INFORMATION");
   v37 = [v35 localizedStringWithFormat:v36, v34];
 
   v38 = [MEMORY[0x277D755B8] systemImageNamed:@"person.3.fill"];
-  [(DSTableWelcomeController *)v39 showNoSharingViewWithText:v37 image:v38];
+  [(DSTableWelcomeController *)selfCopy showNoSharingViewWithText:v37 image:v38];
 
-  [(DSTableWelcomeController *)v39 setIsModelEmpty:1];
-  [(DSSharingPermissionsController *)v39 _updateButton];
+  [(DSTableWelcomeController *)selfCopy setIsModelEmpty:1];
+  [(DSSharingPermissionsController *)selfCopy _updateButton];
 
   v12 = 0;
-  v5 = v40;
+  viewCopy = v40;
 LABEL_14:
 
   v16 = *MEMORY[0x277D85DE8];
   return v12;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v11 = a4;
-  v5 = [(DSTableWelcomeController *)self searchController];
-  v6 = [v5 searchBar];
-  v7 = [v6 selectedScopeButtonIndex];
+  pathCopy = path;
+  searchController = [(DSTableWelcomeController *)self searchController];
+  searchBar = [searchController searchBar];
+  selectedScopeButtonIndex = [searchBar selectedScopeButtonIndex];
 
-  if (v7 == 1)
+  if (selectedScopeButtonIndex == 1)
   {
-    v8 = [(DSSharingPermissionsController *)self selectedTypes];
-    v9 = [(DSSharingPermissionsController *)self sharingTypeForIndexPath:v11];
+    selectedTypes = [(DSSharingPermissionsController *)self selectedTypes];
+    v9 = [(DSSharingPermissionsController *)self sharingTypeForIndexPath:pathCopy];
   }
 
   else
   {
-    if (v7)
+    if (selectedScopeButtonIndex)
     {
       goto LABEL_6;
     }
 
-    v8 = [(DSSharingPermissionsController *)self selectedPeople];
-    v9 = [(DSSharingPermissionsController *)self personForIndexPath:v11];
+    selectedTypes = [(DSSharingPermissionsController *)self selectedPeople];
+    v9 = [(DSSharingPermissionsController *)self personForIndexPath:pathCopy];
   }
 
   v10 = v9;
-  [v8 addObject:v9];
+  [selectedTypes addObject:v9];
 
 LABEL_6:
   [(DSSharingPermissionsController *)self _updateButton];
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  v11 = a4;
-  v5 = [(DSTableWelcomeController *)self searchController];
-  v6 = [v5 searchBar];
-  v7 = [v6 selectedScopeButtonIndex];
+  pathCopy = path;
+  searchController = [(DSTableWelcomeController *)self searchController];
+  searchBar = [searchController searchBar];
+  selectedScopeButtonIndex = [searchBar selectedScopeButtonIndex];
 
-  if (v7 == 1)
+  if (selectedScopeButtonIndex == 1)
   {
-    v8 = [(DSSharingPermissionsController *)self selectedTypes];
-    v9 = [(DSSharingPermissionsController *)self sharingTypeForIndexPath:v11];
+    selectedTypes = [(DSSharingPermissionsController *)self selectedTypes];
+    v9 = [(DSSharingPermissionsController *)self sharingTypeForIndexPath:pathCopy];
   }
 
   else
   {
-    if (v7)
+    if (selectedScopeButtonIndex)
     {
       goto LABEL_6;
     }
 
-    v8 = [(DSSharingPermissionsController *)self selectedPeople];
-    v9 = [(DSSharingPermissionsController *)self personForIndexPath:v11];
+    selectedTypes = [(DSSharingPermissionsController *)self selectedPeople];
+    v9 = [(DSSharingPermissionsController *)self personForIndexPath:pathCopy];
   }
 
   v10 = v9;
-  [v8 removeObject:v9];
+  [selectedTypes removeObject:v9];
 
 LABEL_6:
   [(DSSharingPermissionsController *)self _updateButton];
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   if (![(DSTableWelcomeController *)self isKeyboardActive]&& ![(DSTableWelcomeController *)self isFiltering]|| [(DSTableWelcomeController *)self isShowingNoResultsView])
   {
     v15.receiver = self;
     v15.super_class = DSSharingPermissionsController;
-    v7 = [(DSTableWelcomeController *)&v15 tableView:v6 viewForHeaderInSection:a4];
+    v7 = [(DSTableWelcomeController *)&v15 tableView:viewCopy viewForHeaderInSection:section];
     goto LABEL_12;
   }
 
-  v8 = [(DSTableWelcomeController *)self searchController];
-  v9 = [v8 searchBar];
-  v10 = [v9 selectedScopeButtonIndex];
+  searchController = [(DSTableWelcomeController *)self searchController];
+  searchBar = [searchController searchBar];
+  selectedScopeButtonIndex = [searchBar selectedScopeButtonIndex];
 
-  if (v10)
+  if (selectedScopeButtonIndex)
   {
-    if (v10 != 1)
+    if (selectedScopeButtonIndex != 1)
     {
       v12 = &stru_285BA4988;
       goto LABEL_11;
@@ -1190,10 +1190,10 @@ LABEL_6:
 
   v12 = DSUILocStringForKey(v11);
 LABEL_11:
-  v7 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:@"header"];
-  v13 = [v7 defaultContentConfiguration];
-  [v13 setText:v12];
-  [v7 setContentConfiguration:v13];
+  v7 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:@"header"];
+  defaultContentConfiguration = [v7 defaultContentConfiguration];
+  [defaultContentConfiguration setText:v12];
+  [v7 setContentConfiguration:defaultContentConfiguration];
 
 LABEL_12:
 
@@ -1202,13 +1202,13 @@ LABEL_12:
 
 - (void)_updateTitle
 {
-  v3 = [(DSTableWelcomeController *)self searchController];
-  v4 = [v3 searchBar];
-  v5 = [v4 selectedScopeButtonIndex];
+  searchController = [(DSTableWelcomeController *)self searchController];
+  searchBar = [searchController searchBar];
+  selectedScopeButtonIndex = [searchBar selectedScopeButtonIndex];
 
-  if (v5)
+  if (selectedScopeButtonIndex)
   {
-    if (v5 != 1)
+    if (selectedScopeButtonIndex != 1)
     {
       return;
     }
@@ -1223,31 +1223,31 @@ LABEL_12:
     v7 = @"SHARING_PERMISSIONS_PEOPLE";
   }
 
-  v8 = [(DSSharingPermissionsController *)self headerView];
+  headerView = [(DSSharingPermissionsController *)self headerView];
   v9 = DSUILocStringForKey(v7);
-  [v8 setTitle:v9];
+  [headerView setTitle:v9];
 
-  v11 = [(DSSharingPermissionsController *)self headerView];
+  headerView2 = [(DSSharingPermissionsController *)self headerView];
   v10 = DSUILocStringForKey(v6);
-  [v11 setDetailText:v10];
+  [headerView2 setDetailText:v10];
 }
 
 - (void)_pushNextPane
 {
-  v3 = [(DSSharingPermissionsController *)self delegate];
-  [v3 pushNextPane];
+  delegate = [(DSSharingPermissionsController *)self delegate];
+  [delegate pushNextPane];
 
-  v4 = [(DSTableWelcomeController *)self searchController];
-  [v4 setActive:0];
+  searchController = [(DSTableWelcomeController *)self searchController];
+  [searchController setActive:0];
 }
 
 - (void)_updateButton
 {
-  v3 = [(DSTableWelcomeController *)self searchController];
-  v4 = [v3 searchBar];
-  v5 = [v4 selectedScopeButtonIndex];
+  searchController = [(DSTableWelcomeController *)self searchController];
+  searchBar = [searchController searchBar];
+  selectedScopeButtonIndex = [searchBar selectedScopeButtonIndex];
 
-  if (v5)
+  if (selectedScopeButtonIndex)
   {
     [(DSSharingPermissionsController *)self selectedTypes];
   }
@@ -1259,17 +1259,17 @@ LABEL_12:
   v6 = ;
   v7 = [v6 count];
 
-  v8 = [(DSTableWelcomeController *)self boldButton];
-  [v8 removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
+  boldButton = [(DSTableWelcomeController *)self boldButton];
+  [boldButton removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
 
   if (v7)
   {
-    v9 = [(DSTableWelcomeController *)self boldButton];
+    boldButton2 = [(DSTableWelcomeController *)self boldButton];
     v10 = DSUILocStringForKey(@"REVIEW_SHARING");
-    [v9 setTitle:v10 forState:0];
+    [boldButton2 setTitle:v10 forState:0];
 
-    v11 = [(DSTableWelcomeController *)self boldButton];
-    [v11 addTarget:self action:sel_reviewSelectedSharing forControlEvents:64];
+    boldButton3 = [(DSTableWelcomeController *)self boldButton];
+    [boldButton3 addTarget:self action:sel_reviewSelectedSharing forControlEvents:64];
   }
 
   else
@@ -1284,28 +1284,28 @@ LABEL_12:
       v12 = @"SKIP";
     }
 
-    v11 = DSUILocStringForKey(v12);
-    v13 = [(DSTableWelcomeController *)self boldButton];
-    [v13 setTitle:v11 forState:0];
+    boldButton3 = DSUILocStringForKey(v12);
+    boldButton4 = [(DSTableWelcomeController *)self boldButton];
+    [boldButton4 setTitle:boldButton3 forState:0];
 
-    v14 = [(DSTableWelcomeController *)self boldButton];
-    [v14 addTarget:self action:sel__pushNextPane forControlEvents:64];
+    boldButton5 = [(DSTableWelcomeController *)self boldButton];
+    [boldButton5 addTarget:self action:sel__pushNextPane forControlEvents:64];
   }
 
   [(DSTableWelcomeController *)self hideButtonsIfSearching];
 }
 
-- (void)sharingStoppedForPerson:(id)a3 sourceNames:(id)a4
+- (void)sharingStoppedForPerson:(id)person sourceNames:(id)names
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
+  personCopy = person;
+  namesCopy = names;
+  array = [MEMORY[0x277CBEB18] array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v9 = v7;
+  v9 = namesCopy;
   v10 = [v9 countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v10)
   {
@@ -1329,8 +1329,8 @@ LABEL_12:
 
         if (v17)
         {
-          [v8 addObject:v17];
-          v18 = [v6 sharedResourcesForSourceName:v15];
+          [array addObject:v17];
+          v18 = [personCopy sharedResourcesForSourceName:v15];
           [(DSSharingPermissionsController *)self addUnsharedSource:v15 resources:v18];
         }
 
@@ -1355,30 +1355,30 @@ LABEL_12:
     while (v12);
   }
 
-  v20 = [v6 displayName];
-  [(DSSharingPermissionsController *)self addUnsharedPerson:v20];
+  displayName = [personCopy displayName];
+  [(DSSharingPermissionsController *)self addUnsharedPerson:displayName];
 
-  v21 = [(DSSharingPermissionsController *)self permissions];
-  [v21 removePerson:v6 sources:v8];
+  permissions = [(DSSharingPermissionsController *)self permissions];
+  [permissions removePerson:personCopy sources:array];
 
   [(DSSharingPermissionsController *)self reloadTableViewData];
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sharingStoppedForType:(id)a3 people:(id)a4
+- (void)sharingStoppedForType:(id)type people:(id)people
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DSSharingPermissionsController *)self permissions];
-  [v8 removeSharingType:v6 people:v7];
+  typeCopy = type;
+  peopleCopy = people;
+  permissions = [(DSSharingPermissionsController *)self permissions];
+  [permissions removeSharingType:typeCopy people:peopleCopy];
 
   v9 = [MEMORY[0x277CBEB58] set];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v7;
+  obj = peopleCopy;
   v10 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
@@ -1395,13 +1395,13 @@ LABEL_12:
         }
 
         v14 = *(*(&v23 + 1) + 8 * v13);
-        v15 = [v6 source];
-        v16 = [v15 name];
-        v17 = [v14 sharedResourcesForSourceName:v16];
+        source = [typeCopy source];
+        name = [source name];
+        v17 = [v14 sharedResourcesForSourceName:name];
         [v9 unionSet:v17];
 
-        v18 = [v14 displayName];
-        [(DSSharingPermissionsController *)self addUnsharedPerson:v18];
+        displayName = [v14 displayName];
+        [(DSSharingPermissionsController *)self addUnsharedPerson:displayName];
 
         ++v13;
       }
@@ -1413,17 +1413,17 @@ LABEL_12:
     while (v11);
   }
 
-  v19 = [v6 source];
-  v20 = [v19 name];
-  [(DSSharingPermissionsController *)self addUnsharedSource:v20 resources:v9];
+  source2 = [typeCopy source];
+  name2 = [source2 name];
+  [(DSSharingPermissionsController *)self addUnsharedSource:name2 resources:v9];
 
   [(DSSharingPermissionsController *)self reloadTableViewData];
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopSharingFailedWithError:(id)a3
+- (void)stopSharingFailedWithError:(id)error
 {
-  v4 = [MEMORY[0x277D75110] ds_alertControllerWithStopSharingError:a3];
+  v4 = [MEMORY[0x277D75110] ds_alertControllerWithStopSharingError:error];
   [(DSTableWelcomeController *)self presentErrorAlertController:v4];
 }
 
@@ -1434,10 +1434,10 @@ LABEL_12:
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v3 = [(OBTableWelcomeController *)self tableView];
-  v4 = [v3 indexPathsForSelectedRows];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
 
-  v5 = [v4 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  v5 = [indexPathsForSelectedRows countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1449,18 +1449,18 @@ LABEL_12:
       {
         if (*v29 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(indexPathsForSelectedRows);
         }
 
         v9 = *(*(&v28 + 1) + 8 * v8);
-        v10 = [(OBTableWelcomeController *)self tableView];
-        [v10 deselectRowAtIndexPath:v9 animated:0];
+        tableView2 = [(OBTableWelcomeController *)self tableView];
+        [tableView2 deselectRowAtIndexPath:v9 animated:0];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v6 = [indexPathsForSelectedRows countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v6);
@@ -1472,18 +1472,18 @@ LABEL_12:
   v12 = objc_alloc_init(MEMORY[0x277CBEB58]);
   [(DSSharingPermissionsController *)self setSelectedTypes:v12];
 
-  v13 = [(DSSharingPermissionsController *)self delegate];
-  [v13 pushPaneAfterPaneType:objc_opt_class()];
+  delegate = [(DSSharingPermissionsController *)self delegate];
+  [delegate pushPaneAfterPaneType:objc_opt_class()];
 
   v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v15 = [(DSSharingPermissionsController *)self navigationController];
-  v16 = [v15 viewControllers];
+  navigationController = [(DSSharingPermissionsController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
 
-  v17 = [v16 countByEnumeratingWithState:&v24 objects:v32 count:16];
+  v17 = [viewControllers countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v17)
   {
     v18 = v17;
@@ -1495,7 +1495,7 @@ LABEL_12:
       {
         if (*v25 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(viewControllers);
         }
 
         v21 = *(*(&v24 + 1) + 8 * v20);
@@ -1509,31 +1509,31 @@ LABEL_12:
       }
 
       while (v18 != v20);
-      v18 = [v16 countByEnumeratingWithState:&v24 objects:v32 count:16];
+      v18 = [viewControllers countByEnumeratingWithState:&v24 objects:v32 count:16];
     }
 
     while (v18);
   }
 
-  v22 = [(DSSharingPermissionsController *)self navigationController];
-  [v22 setViewControllers:v14];
+  navigationController2 = [(DSSharingPermissionsController *)self navigationController];
+  [navigationController2 setViewControllers:v14];
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addUnsharedSource:(id)a3 resources:(id)a4
+- (void)addUnsharedSource:(id)source resources:(id)resources
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DSSharingPermissionsController *)self delegate];
+  sourceCopy = source;
+  resourcesCopy = resources;
+  delegate = [(DSSharingPermissionsController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 unsharedResourcesBySource];
-    [v9 setObject:v7 forKeyedSubscript:v6];
+    unsharedResourcesBySource = [delegate unsharedResourcesBySource];
+    [unsharedResourcesBySource setObject:resourcesCopy forKeyedSubscript:sourceCopy];
   }
 
-  v11 = v6;
-  v10 = v6;
+  v11 = sourceCopy;
+  v10 = sourceCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -1549,14 +1549,14 @@ id __62__DSSharingPermissionsController_addUnsharedSource_resources___block_invo
   return v2;
 }
 
-- (void)addUnsharedPerson:(id)a3
+- (void)addUnsharedPerson:(id)person
 {
-  v6 = a3;
-  v4 = [(DSSharingPermissionsController *)self delegate];
+  personCopy = person;
+  delegate = [(DSSharingPermissionsController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 unsharedPeople];
-    [v5 addObject:v6];
+    unsharedPeople = [delegate unsharedPeople];
+    [unsharedPeople addObject:personCopy];
   }
 }
 

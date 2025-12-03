@@ -2,7 +2,7 @@
 - (NSSet)externallyBlockedReasons;
 - (NSSet)stepReasons;
 - (SBUIContinuitySession)init;
-- (SBUIContinuitySession)initWithConnectionFactory:(id)a3 connectionQueue:(id)a4;
+- (SBUIContinuitySession)initWithConnectionFactory:(id)factory connectionQueue:(id)queue;
 - (SBUIContinuitySessionAppearanceSettings)appearanceSettings;
 - (SBUIContinuitySessionDelegate)delegate;
 - (id)acquireScreenRecordingAssertion;
@@ -10,18 +10,18 @@
 - (unint64_t)step;
 - (void)activate;
 - (void)dealloc;
-- (void)didSetDisplayHardwareIdentifier:(id)a3;
-- (void)didUpdateContinuitySessionStep:(id)a3 reasons:(id)a4;
-- (void)didUpdateCurrentInterfaceOrientation:(id)a3 supportedInterfaceOrientations:(id)a4;
-- (void)handleContinuityButtonEvent:(unint64_t)a3;
-- (void)handleLaunchEventOfType:(id)a3 payload:(id)a4;
+- (void)didSetDisplayHardwareIdentifier:(id)identifier;
+- (void)didUpdateContinuitySessionStep:(id)step reasons:(id)reasons;
+- (void)didUpdateCurrentInterfaceOrientation:(id)orientation supportedInterfaceOrientations:(id)orientations;
+- (void)handleContinuityButtonEvent:(unint64_t)event;
+- (void)handleLaunchEventOfType:(id)type payload:(id)payload;
 - (void)invalidate;
 - (void)noteHIDServicesConfigured;
 - (void)noteScreenshotCaptured;
-- (void)setExternallyBlockedReasons:(id)a3;
-- (void)setHostedInterfaceOrientation:(int64_t)a3;
+- (void)setExternallyBlockedReasons:(id)reasons;
+- (void)setHostedInterfaceOrientation:(int64_t)orientation;
 - (void)staging_adoptedMacDrivenScreenCaptureNotifications;
-- (void)updateAppearanceSettings:(id)a3 withCompletion:(id)a4;
+- (void)updateAppearanceSettings:(id)settings withCompletion:(id)completion;
 @end
 
 @implementation SBUIContinuitySession
@@ -35,10 +35,10 @@
   return v5;
 }
 
-- (SBUIContinuitySession)initWithConnectionFactory:(id)a3 connectionQueue:(id)a4
+- (SBUIContinuitySession)initWithConnectionFactory:(id)factory connectionQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  factoryCopy = factory;
+  queueCopy = queue;
   v40.receiver = self;
   v40.super_class = SBUIContinuitySession;
   v8 = [(SBUIContinuitySession *)&v40 init];
@@ -47,7 +47,7 @@
   {
     v8->_lock._os_unfair_lock_opaque = 0;
     v8->_lock_clientCalledActivate = 0;
-    objc_storeStrong(&v8->_connectionQueue, a4);
+    objc_storeStrong(&v8->_connectionQueue, queue);
     v9->_lock_serverStep = 0;
     v10 = [MEMORY[0x1E695DFD8] set];
     lock_serverBlockedReasons = v9->_lock_serverBlockedReasons;
@@ -80,11 +80,11 @@
     [(BSCompoundAssertion *)v21 setLog:v22];
 
     v23 = MEMORY[0x1E698F498];
-    v24 = [MEMORY[0x1E698F498] defaultShellMachName];
+    defaultShellMachName = [MEMORY[0x1E698F498] defaultShellMachName];
     v25 = +[SBUIContinuitySessionServiceSpecification identifier];
-    v26 = [v23 endpointForMachName:v24 service:v25 instance:0];
+    v26 = [v23 endpointForMachName:defaultShellMachName service:v25 instance:0];
 
-    v27 = [v6 connectionWithEndpoint:v26];
+    v27 = [factoryCopy connectionWithEndpoint:v26];
     connection = v9->_connection;
     v9->_connection = v27;
 
@@ -238,7 +238,7 @@ void __67__SBUIContinuitySession_initWithConnectionFactory_connectionQueue___blo
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"already activated"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v5 = NSStringFromSelector(a1);
+    v5 = NSStringFromSelector(self);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v8 = 138544642;
@@ -261,14 +261,14 @@ void __67__SBUIContinuitySession_initWithConnectionFactory_connectionQueue___blo
   __break(0);
 }
 
-- (void)setExternallyBlockedReasons:(id)a3
+- (void)setExternallyBlockedReasons:(id)reasons
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonsCopy = reasons;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (v4)
+  if (reasonsCopy)
   {
-    v5 = [v4 copy];
+    v5 = [reasonsCopy copy];
   }
 
   else
@@ -301,8 +301,8 @@ void __67__SBUIContinuitySession_initWithConnectionFactory_connectionQueue___blo
         _os_log_impl(&dword_1A9A79000, v10, OS_LOG_TYPE_DEFAULT, "Sending updated externally blocked reasons: %{public}@", &v12, 0xCu);
       }
 
-      v11 = [(BSServiceConnection *)self->_connection remoteTarget];
-      [v11 didUpdateExternalBlockedReasons:v6];
+      remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+      [remoteTarget didUpdateExternalBlockedReasons:v6];
     }
   }
 }
@@ -375,31 +375,31 @@ void __67__SBUIContinuitySession_initWithConnectionFactory_connectionQueue___blo
       _os_log_impl(&dword_1A9A79000, v4, OS_LOG_TYPE_DEFAULT, "Sending note that HID services were configured", buf, 2u);
     }
 
-    v6 = [(BSServiceConnection *)self->_connection remoteTarget];
-    [v6 noteHIDServicesConfigured];
+    remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+    [remoteTarget noteHIDServicesConfigured];
 
     self->_hidServicesConfigured = 1;
   }
 }
 
-- (void)handleLaunchEventOfType:(id)a3 payload:(id)a4
+- (void)handleLaunchEventOfType:(id)type payload:(id)payload
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  payloadCopy = payload;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   os_unfair_lock_lock(&self->_lock);
   lock_sessionEnded = self->_lock_sessionEnded;
   os_unfair_lock_unlock(&self->_lock);
-  v9 = SBLogContinuitySessionService();
-  v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
+  remoteTarget = SBLogContinuitySessionService();
+  v10 = os_log_type_enabled(remoteTarget, OS_LOG_TYPE_DEFAULT);
   if (lock_sessionEnded)
   {
     if (v10)
     {
       v11 = 138543362;
-      v12 = v6;
-      _os_log_impl(&dword_1A9A79000, v9, OS_LOG_TYPE_DEFAULT, "Ignoring call to handleLaunchEventOfType - %{public}@ because the session has ended", &v11, 0xCu);
+      v12 = typeCopy;
+      _os_log_impl(&dword_1A9A79000, remoteTarget, OS_LOG_TYPE_DEFAULT, "Ignoring call to handleLaunchEventOfType - %{public}@ because the session has ended", &v11, 0xCu);
     }
   }
 
@@ -408,26 +408,26 @@ void __67__SBUIContinuitySession_initWithConnectionFactory_connectionQueue___blo
     if (v10)
     {
       v11 = 138543362;
-      v12 = v6;
-      _os_log_impl(&dword_1A9A79000, v9, OS_LOG_TYPE_DEFAULT, "Sending launch event: %{public}@", &v11, 0xCu);
+      v12 = typeCopy;
+      _os_log_impl(&dword_1A9A79000, remoteTarget, OS_LOG_TYPE_DEFAULT, "Sending launch event: %{public}@", &v11, 0xCu);
     }
 
-    v9 = [(BSServiceConnection *)self->_connection remoteTarget];
-    [v9 handleLaunchEventOfType:v6 payload:v7];
+    remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+    [remoteTarget handleLaunchEventOfType:typeCopy payload:payloadCopy];
   }
 }
 
-- (void)updateAppearanceSettings:(id)a3 withCompletion:(id)a4
+- (void)updateAppearanceSettings:(id)settings withCompletion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __65__SBUIContinuitySession_updateAppearanceSettings_withCompletion___block_invoke;
   v30[3] = &unk_1E789FFB8;
-  v8 = v7;
+  v8 = completionCopy;
   v31 = v8;
   v9 = MEMORY[0x1AC58E960](v30);
   os_unfair_lock_lock(&self->_lock);
@@ -451,9 +451,9 @@ void __67__SBUIContinuitySession_initWithConnectionFactory_connectionQueue___blo
     v18 = self->_appearanceSettings;
     v19 = [(SBUIContinuitySessionAppearanceSettings *)v18 mutableCopy];
     v20 = objc_alloc_init(SBUIContinuitySessionTransitionContext);
-    if (v6)
+    if (settingsCopy)
     {
-      v6[2](v6, v19, v20);
+      settingsCopy[2](settingsCopy, v19, v20);
       v21 = [v19 copy];
       if ([(SBUIContinuitySessionAppearanceSettings *)v18 isEqual:v21])
       {
@@ -484,13 +484,13 @@ void __67__SBUIContinuitySession_initWithConnectionFactory_connectionQueue___blo
           _os_log_impl(&dword_1A9A79000, v26, OS_LOG_TYPE_DEFAULT, "Appearance settings changed from %{public}@ to %{public}@ - sending appearance update", buf, 0x16u);
         }
 
-        v27 = [(BSServiceConnection *)self->_connection remoteTarget];
+        remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
         v28[0] = MEMORY[0x1E69E9820];
         v28[1] = 3221225472;
         v28[2] = __65__SBUIContinuitySession_updateAppearanceSettings_withCompletion___block_invoke_32;
         v28[3] = &unk_1E78A0008;
         v29 = v9;
-        [v27 updatedAppearanceSettings:v21 transitionContext:v20 completion:v28];
+        [remoteTarget updatedAppearanceSettings:v21 transitionContext:v20 completion:v28];
       }
     }
 
@@ -547,7 +547,7 @@ uint64_t __65__SBUIContinuitySession_updateAppearanceSettings_withCompletion___b
   return appearanceSettings;
 }
 
-- (void)handleContinuityButtonEvent:(unint64_t)a3
+- (void)handleContinuityButtonEvent:(unint64_t)event
 {
   v14 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
@@ -557,42 +557,42 @@ uint64_t __65__SBUIContinuitySession_updateAppearanceSettings_withCompletion___b
   os_unfair_lock_unlock(&self->_lock);
   if (lock_clientCalledActivate)
   {
-    v7 = SBLogContinuitySessionService();
-    v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
+    remoteTarget = SBLogContinuitySessionService();
+    v8 = os_log_type_enabled(remoteTarget, OS_LOG_TYPE_DEFAULT);
     if (!lock_sessionEnded)
     {
       if (v8)
       {
-        v11 = NSStringFromSBUIContinuityButtonEventType(a3);
+        v11 = NSStringFromSBUIContinuityButtonEventType(event);
         v12 = 138543362;
         v13 = v11;
-        _os_log_impl(&dword_1A9A79000, v7, OS_LOG_TYPE_DEFAULT, "Sending button event: %{public}@", &v12, 0xCu);
+        _os_log_impl(&dword_1A9A79000, remoteTarget, OS_LOG_TYPE_DEFAULT, "Sending button event: %{public}@", &v12, 0xCu);
       }
 
-      v7 = [(BSServiceConnection *)self->_connection remoteTarget];
-      v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-      [v7 handleContinuityButtonEvent:v9];
+      remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+      v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:event];
+      [remoteTarget handleContinuityButtonEvent:v9];
       goto LABEL_11;
     }
 
     if (v8)
     {
-      v9 = NSStringFromSBUIContinuityButtonEventType(a3);
+      v9 = NSStringFromSBUIContinuityButtonEventType(event);
       v12 = 138543362;
       v13 = v9;
       v10 = "Ignoring call to handleContinuityButtonEvent - %{public}@ because the session has ended";
 LABEL_7:
-      _os_log_impl(&dword_1A9A79000, v7, OS_LOG_TYPE_DEFAULT, v10, &v12, 0xCu);
+      _os_log_impl(&dword_1A9A79000, remoteTarget, OS_LOG_TYPE_DEFAULT, v10, &v12, 0xCu);
 LABEL_11:
     }
   }
 
   else
   {
-    v7 = SBLogContinuitySessionService();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    remoteTarget = SBLogContinuitySessionService();
+    if (os_log_type_enabled(remoteTarget, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = NSStringFromSBUIContinuityButtonEventType(a3);
+      v9 = NSStringFromSBUIContinuityButtonEventType(event);
       v12 = 138543362;
       v13 = v9;
       v10 = "Ignoring call to handleContinuityButtonEvent - %{public}@ because the session hasn't been activated by the client";
@@ -610,7 +610,7 @@ LABEL_11:
   return lock_hostedInterfaceOrientation;
 }
 
-- (void)setHostedInterfaceOrientation:(int64_t)a3
+- (void)setHostedInterfaceOrientation:(int64_t)orientation
 {
   v12 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
@@ -618,7 +618,7 @@ LABEL_11:
   if (self->_lock_clientCalledActivate)
   {
     lock_sessionEnded = self->_lock_sessionEnded;
-    self->_lock_hostedInterfaceOrientation = a3;
+    self->_lock_hostedInterfaceOrientation = orientation;
     os_unfair_lock_unlock(&self->_lock);
     if (!lock_sessionEnded)
     {
@@ -631,26 +631,26 @@ LABEL_11:
         _os_log_impl(&dword_1A9A79000, v6, OS_LOG_TYPE_DEFAULT, "Setting hosted interface orientation: %{public}@", &v10, 0xCu);
       }
 
-      v8 = [(BSServiceConnection *)self->_connection remoteTarget];
-      v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-      [v8 setHostedInterfaceOrientation:v9];
+      remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+      v9 = [MEMORY[0x1E696AD98] numberWithInteger:orientation];
+      [remoteTarget setHostedInterfaceOrientation:v9];
       goto LABEL_9;
     }
   }
 
   else
   {
-    self->_lock_hostedInterfaceOrientation = a3;
+    self->_lock_hostedInterfaceOrientation = orientation;
     os_unfair_lock_unlock(&self->_lock);
   }
 
-  v8 = SBLogContinuitySessionService();
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  remoteTarget = SBLogContinuitySessionService();
+  if (os_log_type_enabled(remoteTarget, OS_LOG_TYPE_DEFAULT))
   {
     v9 = BSInterfaceOrientationDescription();
     v10 = 138543362;
     v11 = v9;
-    _os_log_impl(&dword_1A9A79000, v8, OS_LOG_TYPE_DEFAULT, "Pending call to set the hosted interface orientation: %{public}@ because the session hasn't been activated by the client or has ended", &v10, 0xCu);
+    _os_log_impl(&dword_1A9A79000, remoteTarget, OS_LOG_TYPE_DEFAULT, "Pending call to set the hosted interface orientation: %{public}@ because the session hasn't been activated by the client or has ended", &v10, 0xCu);
 LABEL_9:
   }
 }
@@ -664,8 +664,8 @@ LABEL_9:
   os_unfair_lock_unlock(&self->_lock);
   if (lock_clientCalledActivate)
   {
-    v5 = SBLogContinuitySessionService();
-    v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
+    remoteTarget = SBLogContinuitySessionService();
+    v6 = os_log_type_enabled(remoteTarget, OS_LOG_TYPE_DEFAULT);
     if (lock_sessionEnded)
     {
       if (v6)
@@ -674,7 +674,7 @@ LABEL_9:
         v7 = "Ignoring call to note screenshot captured because the session has ended";
         v8 = &v10;
 LABEL_7:
-        _os_log_impl(&dword_1A9A79000, v5, OS_LOG_TYPE_DEFAULT, v7, v8, 2u);
+        _os_log_impl(&dword_1A9A79000, remoteTarget, OS_LOG_TYPE_DEFAULT, v7, v8, 2u);
       }
     }
 
@@ -683,18 +683,18 @@ LABEL_7:
       if (v6)
       {
         *v9 = 0;
-        _os_log_impl(&dword_1A9A79000, v5, OS_LOG_TYPE_DEFAULT, "Noting screenshot captured", v9, 2u);
+        _os_log_impl(&dword_1A9A79000, remoteTarget, OS_LOG_TYPE_DEFAULT, "Noting screenshot captured", v9, 2u);
       }
 
-      v5 = [(BSServiceConnection *)self->_connection remoteTarget];
-      [v5 didCaptureScreenshot];
+      remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+      [remoteTarget didCaptureScreenshot];
     }
   }
 
   else
   {
-    v5 = SBLogContinuitySessionService();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    remoteTarget = SBLogContinuitySessionService();
+    if (os_log_type_enabled(remoteTarget, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       v7 = "Ignoring call to note screenshot captured because the session hasn't been activated by the client";
@@ -707,10 +707,10 @@ LABEL_7:
 - (id)acquireScreenRecordingAssertion
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v3 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   screenRecordingAssertions = self->_screenRecordingAssertions;
-  v5 = [v3 UUIDString];
-  v6 = [(BSCompoundAssertion *)screenRecordingAssertions acquireForReason:v5];
+  uUIDString = [uUID UUIDString];
+  v6 = [(BSCompoundAssertion *)screenRecordingAssertions acquireForReason:uUIDString];
 
   return v6;
 }
@@ -747,11 +747,11 @@ LABEL_7:
   self->_screenRecordingAssertions = 0;
 }
 
-- (void)didSetDisplayHardwareIdentifier:(id)a3
+- (void)didSetDisplayHardwareIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_connectionQueue);
-  v5 = v4;
+  v5 = identifierCopy;
   BSDispatchMain();
 }
 
@@ -770,14 +770,14 @@ void __57__SBUIContinuitySession_didSetDisplayHardwareIdentifier___block_invoke(
   objc_storeStrong((*(a1 + 40) + 96), *(a1 + 32));
 }
 
-- (void)didUpdateContinuitySessionStep:(id)a3 reasons:(id)a4
+- (void)didUpdateContinuitySessionStep:(id)step reasons:(id)reasons
 {
-  v6 = a3;
-  v7 = a4;
+  stepCopy = step;
+  reasonsCopy = reasons;
   dispatch_assert_queue_V2(self->_connectionQueue);
-  v10 = v7;
-  v8 = v7;
-  v9 = v6;
+  v10 = reasonsCopy;
+  v8 = reasonsCopy;
+  v9 = stepCopy;
   BSDispatchMain();
 }
 
@@ -833,14 +833,14 @@ void __64__SBUIContinuitySession_didUpdateContinuitySessionStep_reasons___block_
   }
 }
 
-- (void)didUpdateCurrentInterfaceOrientation:(id)a3 supportedInterfaceOrientations:(id)a4
+- (void)didUpdateCurrentInterfaceOrientation:(id)orientation supportedInterfaceOrientations:(id)orientations
 {
-  v6 = a3;
-  v7 = a4;
+  orientationCopy = orientation;
+  orientationsCopy = orientations;
   dispatch_assert_queue_V2(self->_connectionQueue);
-  v10 = v7;
-  v8 = v7;
-  v9 = v6;
+  v10 = orientationsCopy;
+  v8 = orientationsCopy;
+  v9 = orientationCopy;
   BSDispatchMain();
 }
 
@@ -887,14 +887,14 @@ void __93__SBUIContinuitySession_didUpdateCurrentInterfaceOrientation_supportedI
   os_unfair_lock_lock(&self->_lock);
   lock_sessionEnded = self->_lock_sessionEnded;
   os_unfair_lock_unlock(&self->_lock);
-  v4 = SBLogContinuitySessionService();
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
+  remoteTarget = SBLogContinuitySessionService();
+  v5 = os_log_type_enabled(remoteTarget, OS_LOG_TYPE_DEFAULT);
   if (lock_sessionEnded)
   {
     if (v5)
     {
       *buf = 0;
-      _os_log_impl(&dword_1A9A79000, v4, OS_LOG_TYPE_DEFAULT, "Ignoring client telling me they adopted screen capture notifications because the session has ended", buf, 2u);
+      _os_log_impl(&dword_1A9A79000, remoteTarget, OS_LOG_TYPE_DEFAULT, "Ignoring client telling me they adopted screen capture notifications because the session has ended", buf, 2u);
     }
   }
 
@@ -903,11 +903,11 @@ void __93__SBUIContinuitySession_didUpdateCurrentInterfaceOrientation_supportedI
     if (v5)
     {
       *v6 = 0;
-      _os_log_impl(&dword_1A9A79000, v4, OS_LOG_TYPE_DEFAULT, "Client has adopted screen capture notifications", v6, 2u);
+      _os_log_impl(&dword_1A9A79000, remoteTarget, OS_LOG_TYPE_DEFAULT, "Client has adopted screen capture notifications", v6, 2u);
     }
 
-    v4 = [(BSServiceConnection *)self->_connection remoteTarget];
-    [v4 clientHasAdoptedScreenCaptureNotifications];
+    remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+    [remoteTarget clientHasAdoptedScreenCaptureNotifications];
   }
 }
 

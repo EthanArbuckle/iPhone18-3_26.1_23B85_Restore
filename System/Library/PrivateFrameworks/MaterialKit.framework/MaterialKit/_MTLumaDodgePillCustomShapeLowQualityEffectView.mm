@@ -1,16 +1,16 @@
 @interface _MTLumaDodgePillCustomShapeLowQualityEffectView
-- (void)setContentColor:(id)a3;
+- (void)setContentColor:(id)color;
 @end
 
 @implementation _MTLumaDodgePillCustomShapeLowQualityEffectView
 
-- (void)setContentColor:(id)a3
+- (void)setContentColor:(id)color
 {
-  v4 = a3;
-  v6 = [(_MTLumaDodgePillCustomShapeLowQualityEffectView *)self shapeLayer];
-  v5 = [v4 CGColor];
+  colorCopy = color;
+  shapeLayer = [(_MTLumaDodgePillCustomShapeLowQualityEffectView *)self shapeLayer];
+  cGColor = [colorCopy CGColor];
 
-  [v6 setStrokeColor:v5];
+  [shapeLayer setStrokeColor:cGColor];
 }
 
 @end

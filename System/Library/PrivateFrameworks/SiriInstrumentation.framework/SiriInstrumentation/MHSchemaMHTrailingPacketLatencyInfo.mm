@@ -1,73 +1,73 @@
 @interface MHSchemaMHTrailingPacketLatencyInfo
-- (BOOL)isEqual:(id)a3;
-- (MHSchemaMHTrailingPacketLatencyInfo)initWithDictionary:(id)a3;
-- (MHSchemaMHTrailingPacketLatencyInfo)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MHSchemaMHTrailingPacketLatencyInfo)initWithDictionary:(id)dictionary;
+- (MHSchemaMHTrailingPacketLatencyInfo)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAvg:(BOOL)a3;
-- (void)setHasMax:(BOOL)a3;
-- (void)setHasMedian:(BOOL)a3;
-- (void)setHasMin:(BOOL)a3;
-- (void)setHasP95:(BOOL)a3;
-- (void)setHasStd:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAvg:(BOOL)avg;
+- (void)setHasMax:(BOOL)max;
+- (void)setHasMedian:(BOOL)median;
+- (void)setHasMin:(BOOL)min;
+- (void)setHasP95:(BOOL)p95;
+- (void)setHasStd:(BOOL)std;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaMHTrailingPacketLatencyInfo
 
-- (MHSchemaMHTrailingPacketLatencyInfo)initWithDictionary:(id)a3
+- (MHSchemaMHTrailingPacketLatencyInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = MHSchemaMHTrailingPacketLatencyInfo;
   v5 = [(MHSchemaMHTrailingPacketLatencyInfo *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"num"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"num"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHTrailingPacketLatencyInfo setNum:](v5, "setNum:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"max"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"max"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHTrailingPacketLatencyInfo setMax:](v5, "setMax:", [v7 unsignedLongLongValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"min"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"min"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHTrailingPacketLatencyInfo setMin:](v5, "setMin:", [v8 unsignedLongLongValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"avg"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"avg"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHTrailingPacketLatencyInfo setAvg:](v5, "setAvg:", [v9 unsignedLongLongValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"median"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"median"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHTrailingPacketLatencyInfo setMedian:](v5, "setMedian:", [v10 unsignedLongLongValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"p95"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"p95"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHTrailingPacketLatencyInfo setP95:](v5, "setP95:", [v11 unsignedLongLongValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"std"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"std"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -80,30 +80,30 @@
   return v5;
 }
 
-- (MHSchemaMHTrailingPacketLatencyInfo)initWithJSON:(id)a3
+- (MHSchemaMHTrailingPacketLatencyInfo)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaMHTrailingPacketLatencyInfo *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaMHTrailingPacketLatencyInfo *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaMHTrailingPacketLatencyInfo *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -116,12 +116,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHTrailingPacketLatencyInfo avg](self, "avg")}];
-    [v3 setObject:v7 forKeyedSubscript:@"avg"];
+    [dictionary setObject:v7 forKeyedSubscript:@"avg"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -142,7 +142,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHTrailingPacketLatencyInfo max](self, "max")}];
-  [v3 setObject:v8 forKeyedSubscript:@"max"];
+  [dictionary setObject:v8 forKeyedSubscript:@"max"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -158,7 +158,7 @@ LABEL_4:
 
 LABEL_14:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHTrailingPacketLatencyInfo median](self, "median")}];
-  [v3 setObject:v9 forKeyedSubscript:@"median"];
+  [dictionary setObject:v9 forKeyedSubscript:@"median"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -174,7 +174,7 @@ LABEL_5:
 
 LABEL_15:
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHTrailingPacketLatencyInfo min](self, "min")}];
-  [v3 setObject:v10 forKeyedSubscript:@"min"];
+  [dictionary setObject:v10 forKeyedSubscript:@"min"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -190,7 +190,7 @@ LABEL_6:
 
 LABEL_16:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MHSchemaMHTrailingPacketLatencyInfo num](self, "num")}];
-  [v3 setObject:v11 forKeyedSubscript:@"num"];
+  [dictionary setObject:v11 forKeyedSubscript:@"num"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -206,19 +206,19 @@ LABEL_7:
 
 LABEL_17:
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHTrailingPacketLatencyInfo p95](self, "p95")}];
-  [v3 setObject:v12 forKeyedSubscript:@"p95"];
+  [dictionary setObject:v12 forKeyedSubscript:@"p95"];
 
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_8:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHTrailingPacketLatencyInfo std](self, "std")}];
-    [v3 setObject:v5 forKeyedSubscript:@"std"];
+    [dictionary setObject:v5 forKeyedSubscript:@"std"];
   }
 
 LABEL_9:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -317,16 +317,16 @@ LABEL_8:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_30;
   }
 
   has = self->_has;
-  v6 = v4[64];
+  v6 = equalCopy[64];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_30;
@@ -335,13 +335,13 @@ LABEL_8:
   if (*&has)
   {
     num = self->_num;
-    if (num != [v4 num])
+    if (num != [equalCopy num])
     {
       goto LABEL_30;
     }
 
     has = self->_has;
-    v6 = v4[64];
+    v6 = equalCopy[64];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -353,13 +353,13 @@ LABEL_8:
   if (v8)
   {
     max = self->_max;
-    if (max != [v4 max])
+    if (max != [equalCopy max])
     {
       goto LABEL_30;
     }
 
     has = self->_has;
-    v6 = v4[64];
+    v6 = equalCopy[64];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -371,13 +371,13 @@ LABEL_8:
   if (v10)
   {
     min = self->_min;
-    if (min != [v4 min])
+    if (min != [equalCopy min])
     {
       goto LABEL_30;
     }
 
     has = self->_has;
-    v6 = v4[64];
+    v6 = equalCopy[64];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -389,13 +389,13 @@ LABEL_8:
   if (v12)
   {
     avg = self->_avg;
-    if (avg != [v4 avg])
+    if (avg != [equalCopy avg])
     {
       goto LABEL_30;
     }
 
     has = self->_has;
-    v6 = v4[64];
+    v6 = equalCopy[64];
   }
 
   v14 = (*&has >> 4) & 1;
@@ -407,13 +407,13 @@ LABEL_8:
   if (v14)
   {
     median = self->_median;
-    if (median != [v4 median])
+    if (median != [equalCopy median])
     {
       goto LABEL_30;
     }
 
     has = self->_has;
-    v6 = v4[64];
+    v6 = equalCopy[64];
   }
 
   v16 = (*&has >> 5) & 1;
@@ -425,10 +425,10 @@ LABEL_8:
   if (v16)
   {
     p95 = self->_p95;
-    if (p95 == [v4 p95])
+    if (p95 == [equalCopy p95])
     {
       has = self->_has;
-      v6 = v4[64];
+      v6 = equalCopy[64];
       goto LABEL_26;
     }
 
@@ -447,7 +447,7 @@ LABEL_26:
   if (v18)
   {
     std = self->_std;
-    if (std != [v4 std])
+    if (std != [equalCopy std])
     {
       goto LABEL_30;
     }
@@ -459,9 +459,9 @@ LABEL_31:
   return v20;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -550,9 +550,9 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setHasStd:(BOOL)a3
+- (void)setHasStd:(BOOL)std
 {
-  if (a3)
+  if (std)
   {
     v3 = 64;
   }
@@ -565,9 +565,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasP95:(BOOL)a3
+- (void)setHasP95:(BOOL)p95
 {
-  if (a3)
+  if (p95)
   {
     v3 = 32;
   }
@@ -580,9 +580,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasMedian:(BOOL)a3
+- (void)setHasMedian:(BOOL)median
 {
-  if (a3)
+  if (median)
   {
     v3 = 16;
   }
@@ -595,9 +595,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasAvg:(BOOL)a3
+- (void)setHasAvg:(BOOL)avg
 {
-  if (a3)
+  if (avg)
   {
     v3 = 8;
   }
@@ -610,9 +610,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasMin:(BOOL)a3
+- (void)setHasMin:(BOOL)min
 {
-  if (a3)
+  if (min)
   {
     v3 = 4;
   }
@@ -625,9 +625,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasMax:(BOOL)a3
+- (void)setHasMax:(BOOL)max
 {
-  if (a3)
+  if (max)
   {
     v3 = 2;
   }

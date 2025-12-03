@@ -2,17 +2,17 @@
 - (_TtC10FinanceKitP33_82FCA57B9514272BE863607579F9568E15SessionDelegate)init;
 - (_TtC10FinanceKitP33_BBE0122A3E1307DE2D47D62BE8CA3C6615SessionDelegate)init;
 - (_TtC10FinanceKitP33_D792C1975BCD83E251CC308B2A7B211715SessionDelegate)init;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
 @end
 
 @implementation SessionDelegate
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_1B779E7D0(a4);
+  sessionCopy = session;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1B779E7D0(error);
 }
 
 - (_TtC10FinanceKitP33_82FCA57B9514272BE863607579F9568E15SessionDelegate)init

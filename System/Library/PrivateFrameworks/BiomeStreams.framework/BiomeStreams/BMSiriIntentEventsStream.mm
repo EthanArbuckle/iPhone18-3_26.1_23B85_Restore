@@ -13,10 +13,10 @@
   if (v2)
   {
     v3 = BMRootLibraryBridge();
-    v4 = [v3 Siri];
-    v5 = [v4 Remembers];
-    v6 = [v5 Intent];
-    v7 = [v6 storeStreamWithLegacyClass:objc_opt_class()];
+    siri = [v3 Siri];
+    remembers = [siri Remembers];
+    intent = [remembers Intent];
+    v7 = [intent storeStreamWithLegacyClass:objc_opt_class()];
     storeStream = v2->_storeStream;
     v2->_storeStream = v7;
 
@@ -36,8 +36,8 @@
 - (id)publisher
 {
   v3 = [BMDSLStreamPublisher alloc];
-  v4 = [(BMSiriIntentEventsStream *)self identifier];
-  v5 = [(BMDSLStreamPublisher *)v3 initWithIdentifier:v4 streamType:1 eventDataClass:objc_opt_class()];
+  identifier = [(BMSiriIntentEventsStream *)self identifier];
+  v5 = [(BMDSLStreamPublisher *)v3 initWithIdentifier:identifier streamType:1 eventDataClass:objc_opt_class()];
 
   return v5;
 }

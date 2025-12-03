@@ -1,29 +1,29 @@
 @interface SBSceneHostingDisplayPreferences
 - (CGSize)logicalScale;
-- (SBSceneHostingDisplayPreferences)initWithDisplayConfigurationRequest:(id)a3 logicalScale:(CGSize)a4 contentsScale:(double)a5 keepOtherModes:(BOOL)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SBSceneHostingDisplayPreferences)initWithDisplayConfigurationRequest:(id)request logicalScale:(CGSize)scale contentsScale:(double)contentsScale keepOtherModes:(BOOL)modes;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SBSceneHostingDisplayPreferences
 
-- (SBSceneHostingDisplayPreferences)initWithDisplayConfigurationRequest:(id)a3 logicalScale:(CGSize)a4 contentsScale:(double)a5 keepOtherModes:(BOOL)a6
+- (SBSceneHostingDisplayPreferences)initWithDisplayConfigurationRequest:(id)request logicalScale:(CGSize)scale contentsScale:(double)contentsScale keepOtherModes:(BOOL)modes
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a3;
+  height = scale.height;
+  width = scale.width;
+  requestCopy = request;
   v22.receiver = self;
   v22.super_class = SBSceneHostingDisplayPreferences;
   v12 = [(SBSceneHostingDisplayPreferences *)&v22 init];
   if (v12)
   {
-    v13 = [v11 copy];
+    v13 = [requestCopy copy];
     displayConfigurationRequest = v12->_displayConfigurationRequest;
     v12->_displayConfigurationRequest = v13;
 
     v12->_logicalScale.width = width;
     v12->_logicalScale.height = height;
-    v12->_contentsScale = a5;
-    v12->_keepOtherModes = a6;
+    v12->_contentsScale = contentsScale;
+    v12->_keepOtherModes = modes;
     v15 = objc_alloc_init(MEMORY[0x277CD9E50]);
     CADisplayModeCriteria = v12->_CADisplayModeCriteria;
     v12->_CADisplayModeCriteria = v15;
@@ -48,16 +48,16 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = self;
-  displayConfigurationRequest = v3->_displayConfigurationRequest;
-  contentsScale = v3->_contentsScale;
-  keepOtherModes = v3->_keepOtherModes;
-  width = v3->_logicalScale.width;
-  height = v3->_logicalScale.height;
+  selfCopy = self;
+  displayConfigurationRequest = selfCopy->_displayConfigurationRequest;
+  contentsScale = selfCopy->_contentsScale;
+  keepOtherModes = selfCopy->_keepOtherModes;
+  width = selfCopy->_logicalScale.width;
+  height = selfCopy->_logicalScale.height;
 
-  return [(SBSceneHostingDisplayPreferences *)v3 initWithDisplayConfigurationRequest:displayConfigurationRequest logicalScale:keepOtherModes contentsScale:width keepOtherModes:height, contentsScale];
+  return [(SBSceneHostingDisplayPreferences *)selfCopy initWithDisplayConfigurationRequest:displayConfigurationRequest logicalScale:keepOtherModes contentsScale:width keepOtherModes:height, contentsScale];
 }
 
 - (CGSize)logicalScale

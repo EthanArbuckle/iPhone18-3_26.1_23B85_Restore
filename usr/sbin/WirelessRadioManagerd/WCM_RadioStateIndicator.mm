@@ -4,14 +4,14 @@
 - (void)sendBTDataIfChanged;
 - (void)sendThreadDataIfChanged;
 - (void)sendWifiDataIfChanged;
-- (void)updateAWDLState:(BOOL)a3;
-- (void)updateBTConnectedState:(BOOL)a3;
-- (void)updateBTLeADVePAStateChange:(BOOL)a3;
-- (void)updateBTPowerState:(BOOL)a3;
-- (void)updateNANState:(BOOL)a3;
-- (void)updateThreadRadioState:(BOOL)a3;
-- (void)updateWiFiRadioState:(int)a3;
-- (void)updatehostApState:(BOOL)a3;
+- (void)updateAWDLState:(BOOL)state;
+- (void)updateBTConnectedState:(BOOL)state;
+- (void)updateBTLeADVePAStateChange:(BOOL)change;
+- (void)updateBTPowerState:(BOOL)state;
+- (void)updateNANState:(BOOL)state;
+- (void)updateThreadRadioState:(BOOL)state;
+- (void)updateWiFiRadioState:(int)state;
+- (void)updatehostApState:(BOOL)state;
 @end
 
 @implementation WCM_RadioStateIndicator
@@ -21,7 +21,7 @@
   v2 = qword_1002B8200;
   if (!qword_1002B8200)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___WCM_RadioStateIndicator;
     v3 = [objc_msgSendSuper2(&v6 allocWithZone:{0), "init"}];
     v4 = qword_1002B8200;
@@ -75,7 +75,7 @@
   return v2;
 }
 
-- (void)updateBTLeADVePAStateChange:(BOOL)a3
+- (void)updateBTLeADVePAStateChange:(BOOL)change
 {
   if (self->_appleSARHelperAvailable)
   {
@@ -87,7 +87,7 @@
     v6[2] = sub_100100E98;
     v6[3] = &unk_100242298;
     v6[4] = self;
-    v7 = a3;
+    changeCopy = change;
     dispatch_async(btSyncQueue, v6);
   }
 
@@ -98,7 +98,7 @@
   }
 }
 
-- (void)updateBTConnectedState:(BOOL)a3
+- (void)updateBTConnectedState:(BOOL)state
 {
   if (self->_appleSARHelperAvailable)
   {
@@ -110,7 +110,7 @@
     v6[2] = sub_100101090;
     v6[3] = &unk_100242298;
     v6[4] = self;
-    v7 = a3;
+    stateCopy = state;
     dispatch_async(btSyncQueue, v6);
   }
 
@@ -121,7 +121,7 @@
   }
 }
 
-- (void)updateBTPowerState:(BOOL)a3
+- (void)updateBTPowerState:(BOOL)state
 {
   if (self->_appleSARHelperAvailable)
   {
@@ -133,7 +133,7 @@
     v6[2] = sub_100101288;
     v6[3] = &unk_100242298;
     v6[4] = self;
-    v7 = a3;
+    stateCopy = state;
     dispatch_async(btSyncQueue, v6);
   }
 
@@ -144,7 +144,7 @@
   }
 }
 
-- (void)updateNANState:(BOOL)a3
+- (void)updateNANState:(BOOL)state
 {
   if (self->_appleSARHelperAvailable)
   {
@@ -156,7 +156,7 @@
     v6[2] = sub_100101480;
     v6[3] = &unk_100242298;
     v6[4] = self;
-    v7 = a3;
+    stateCopy = state;
     dispatch_async(wifiSyncQueue, v6);
   }
 
@@ -167,7 +167,7 @@
   }
 }
 
-- (void)updateAWDLState:(BOOL)a3
+- (void)updateAWDLState:(BOOL)state
 {
   if (self->_appleSARHelperAvailable)
   {
@@ -179,7 +179,7 @@
     v6[2] = sub_100101678;
     v6[3] = &unk_100242298;
     v6[4] = self;
-    v7 = a3;
+    stateCopy = state;
     dispatch_async(wifiSyncQueue, v6);
   }
 
@@ -190,7 +190,7 @@
   }
 }
 
-- (void)updateWiFiRadioState:(int)a3
+- (void)updateWiFiRadioState:(int)state
 {
   if (self->_appleSARHelperAvailable)
   {
@@ -201,7 +201,7 @@
     v6[1] = 3221225472;
     v6[2] = sub_100101870;
     v6[3] = &unk_1002422C0;
-    v7 = a3;
+    stateCopy = state;
     v6[4] = self;
     dispatch_async(wifiSyncQueue, v6);
   }
@@ -213,7 +213,7 @@
   }
 }
 
-- (void)updatehostApState:(BOOL)a3
+- (void)updatehostApState:(BOOL)state
 {
   if (self->_appleSARHelperAvailable)
   {
@@ -225,7 +225,7 @@
     v6[2] = sub_100101D38;
     v6[3] = &unk_100242298;
     v6[4] = self;
-    v7 = a3;
+    stateCopy = state;
     dispatch_async(wifiSyncQueue, v6);
   }
 
@@ -236,7 +236,7 @@
   }
 }
 
-- (void)updateThreadRadioState:(BOOL)a3
+- (void)updateThreadRadioState:(BOOL)state
 {
   if (self->_appleSARHelperAvailable)
   {
@@ -248,7 +248,7 @@
     v6[2] = sub_100101F30;
     v6[3] = &unk_100242298;
     v6[4] = self;
-    v7 = a3;
+    stateCopy = state;
     dispatch_async(threadSyncQueue, v6);
   }
 
@@ -261,66 +261,66 @@
 
 - (void)sendWifiDataIfChanged
 {
-  v3 = [(WCM_RadioStateIndicator *)self wcmRadioStateIndicatorWrapper];
-  v9 = [v3 getWifiState];
+  wcmRadioStateIndicatorWrapper = [(WCM_RadioStateIndicator *)self wcmRadioStateIndicatorWrapper];
+  getWifiState = [wcmRadioStateIndicatorWrapper getWifiState];
 
-  if (v9)
+  if (getWifiState)
   {
-    v4 = [(WCM_RadioStateIndicator *)self wifidata];
-    v5 = [v4 isEqualToDictionary:v9];
+    wifidata = [(WCM_RadioStateIndicator *)self wifidata];
+    v5 = [wifidata isEqualToDictionary:getWifiState];
 
     if ((v5 & 1) == 0)
     {
-      v6 = [(WCM_RadioStateIndicator *)self wifidata];
-      [WCM_Logging logLevel:2 message:@"WRSI: lastSentData %@ NewData %@", v9, v6];
+      wifidata2 = [(WCM_RadioStateIndicator *)self wifidata];
+      [WCM_Logging logLevel:2 message:@"WRSI: lastSentData %@ NewData %@", getWifiState, wifidata2];
 
-      v7 = [(WCM_RadioStateIndicator *)self wcmRadioStateIndicatorWrapper];
-      v8 = [(WCM_RadioStateIndicator *)self wifidata];
-      [v7 setWifiState:v8];
+      wcmRadioStateIndicatorWrapper2 = [(WCM_RadioStateIndicator *)self wcmRadioStateIndicatorWrapper];
+      wifidata3 = [(WCM_RadioStateIndicator *)self wifidata];
+      [wcmRadioStateIndicatorWrapper2 setWifiState:wifidata3];
     }
   }
 }
 
 - (void)sendBTDataIfChanged
 {
-  v3 = [(WCM_RadioStateIndicator *)self wcmRadioStateIndicatorWrapper];
-  v9 = [v3 getBTState];
+  wcmRadioStateIndicatorWrapper = [(WCM_RadioStateIndicator *)self wcmRadioStateIndicatorWrapper];
+  getBTState = [wcmRadioStateIndicatorWrapper getBTState];
 
-  if (v9)
+  if (getBTState)
   {
-    v4 = [(WCM_RadioStateIndicator *)self btdata];
-    v5 = [v4 isEqualToDictionary:v9];
+    btdata = [(WCM_RadioStateIndicator *)self btdata];
+    v5 = [btdata isEqualToDictionary:getBTState];
 
     if ((v5 & 1) == 0)
     {
-      v6 = [(WCM_RadioStateIndicator *)self btdata];
-      [WCM_Logging logLevel:2 message:@"WRSI: lastSentData %@ NewData %@", v9, v6];
+      btdata2 = [(WCM_RadioStateIndicator *)self btdata];
+      [WCM_Logging logLevel:2 message:@"WRSI: lastSentData %@ NewData %@", getBTState, btdata2];
 
-      v7 = [(WCM_RadioStateIndicator *)self wcmRadioStateIndicatorWrapper];
-      v8 = [(WCM_RadioStateIndicator *)self btdata];
-      [v7 setBTState:v8];
+      wcmRadioStateIndicatorWrapper2 = [(WCM_RadioStateIndicator *)self wcmRadioStateIndicatorWrapper];
+      btdata3 = [(WCM_RadioStateIndicator *)self btdata];
+      [wcmRadioStateIndicatorWrapper2 setBTState:btdata3];
     }
   }
 }
 
 - (void)sendThreadDataIfChanged
 {
-  v3 = [(WCM_RadioStateIndicator *)self wcmRadioStateIndicatorWrapper];
-  v9 = [v3 getThreadState];
+  wcmRadioStateIndicatorWrapper = [(WCM_RadioStateIndicator *)self wcmRadioStateIndicatorWrapper];
+  getThreadState = [wcmRadioStateIndicatorWrapper getThreadState];
 
-  if (v9)
+  if (getThreadState)
   {
-    v4 = [(WCM_RadioStateIndicator *)self threaddata];
-    v5 = [v4 isEqualToDictionary:v9];
+    threaddata = [(WCM_RadioStateIndicator *)self threaddata];
+    v5 = [threaddata isEqualToDictionary:getThreadState];
 
     if ((v5 & 1) == 0)
     {
-      v6 = [(WCM_RadioStateIndicator *)self threaddata];
-      [WCM_Logging logLevel:2 message:@"WRSI: lastSentData %@ NewData %@", v9, v6];
+      threaddata2 = [(WCM_RadioStateIndicator *)self threaddata];
+      [WCM_Logging logLevel:2 message:@"WRSI: lastSentData %@ NewData %@", getThreadState, threaddata2];
 
-      v7 = [(WCM_RadioStateIndicator *)self wcmRadioStateIndicatorWrapper];
-      v8 = [(WCM_RadioStateIndicator *)self threaddata];
-      [v7 setThreadState:v8];
+      wcmRadioStateIndicatorWrapper2 = [(WCM_RadioStateIndicator *)self wcmRadioStateIndicatorWrapper];
+      threaddata3 = [(WCM_RadioStateIndicator *)self threaddata];
+      [wcmRadioStateIndicatorWrapper2 setThreadState:threaddata3];
     }
   }
 }

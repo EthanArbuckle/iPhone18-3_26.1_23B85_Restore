@@ -1,9 +1,9 @@
 @interface VKCustomFeature
-- (VKCustomFeature)initWithCoder:(id)a3;
+- (VKCustomFeature)initWithCoder:(id)coder;
 - (id).cxx_construct;
-- (id)_initWithCoordinate:(id)a3 isInjected:(BOOL)a4;
+- (id)_initWithCoordinate:(id)coordinate isInjected:(BOOL)injected;
 - (id)dataSource;
-- (id)initLineWithCoordinates:(id *)a3 count:(unint64_t)a4;
+- (id)initLineWithCoordinates:(id *)coordinates count:(unint64_t)count;
 - (id)setImageProvider:withKey:;
 - (signed)venueFloorOrdinal;
 - (uint64_t)setImageProvider:withKey:;
@@ -13,27 +13,27 @@
 - (unint64_t)venueID;
 - (unint64_t)venueLevelID;
 - (unsigned)clusteringMode;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)lineFeature;
 - (void)pointFeature;
-- (void)setAnnotationText:(id)a3 locale:(id)a4;
-- (void)setBuildingFaceAzimuth:(float)a3;
-- (void)setBuildingHeight:(float)a3;
-- (void)setBusinessID:(unint64_t)a3;
-- (void)setClusteringMode:(unsigned __int8)a3;
-- (void)setElevationOffset:(double)a3;
-- (void)setFeatureRegion:(id)a3;
-- (void)setImageProvider:(id)a3 withKey:(id)a4;
+- (void)setAnnotationText:(id)text locale:(id)locale;
+- (void)setBuildingFaceAzimuth:(float)azimuth;
+- (void)setBuildingHeight:(float)height;
+- (void)setBusinessID:(unint64_t)d;
+- (void)setClusteringMode:(unsigned __int8)mode;
+- (void)setElevationOffset:(double)offset;
+- (void)setFeatureRegion:(id)region;
+- (void)setImageProvider:(id)provider withKey:(id)key;
 - (void)setImageProvider:withKey:;
-- (void)setPlaceholderIconWithSize:(CGSize)a3 anchorPoint:(CGPoint)a4 isRound:(BOOL)a5;
-- (void)setStyleAttributes:(id)a3;
-- (void)setText:(id)a3 locale:(id)a4;
-- (void)setTextDisplayMode:(unsigned __int8)a3;
-- (void)setVenueBuildingID:(unint64_t)a3;
-- (void)setVenueComponentID:(unint64_t)a3;
-- (void)setVenueFloorOrdinal:(signed __int16)a3;
-- (void)setVenueID:(unint64_t)a3;
-- (void)setVenueLevelID:(unint64_t)a3;
+- (void)setPlaceholderIconWithSize:(CGSize)size anchorPoint:(CGPoint)point isRound:(BOOL)round;
+- (void)setStyleAttributes:(id)attributes;
+- (void)setText:(id)text locale:(id)locale;
+- (void)setTextDisplayMode:(unsigned __int8)mode;
+- (void)setVenueBuildingID:(unint64_t)d;
+- (void)setVenueComponentID:(unint64_t)d;
+- (void)setVenueFloorOrdinal:(signed __int16)ordinal;
+- (void)setVenueID:(unint64_t)d;
+- (void)setVenueLevelID:(unint64_t)d;
 @end
 
 @implementation VKCustomFeature
@@ -60,33 +60,33 @@
   return self;
 }
 
-- (VKCustomFeature)initWithCoder:(id)a3
+- (VKCustomFeature)initWithCoder:(id)coder
 {
   v56 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeInt32ForKey:@"featureType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt32ForKey:@"featureType"];
   if (v5 == 1)
   {
     v49 = 0;
-    v12 = [v4 decodeBytesForKey:@"coordinates" returnedLength:&v49];
-    v13 = [(VKCustomFeature *)self initLineWithCoordinates:v12 count:v49 / 0x18];
+    v12 = [coderCopy decodeBytesForKey:@"coordinates" returnedLength:&v49];
+    0x18 = [(VKCustomFeature *)self initLineWithCoordinates:v12 count:v49 / 0x18];
   }
 
   else
   {
     if (v5)
     {
-      v14 = 0;
+      selfCopy = 0;
       goto LABEL_34;
     }
 
-    [v4 decodeDoubleForKey:@"latitude"];
+    [coderCopy decodeDoubleForKey:@"latitude"];
     v7 = v6;
-    [v4 decodeDoubleForKey:@"longitude"];
+    [coderCopy decodeDoubleForKey:@"longitude"];
     v9 = v8;
-    if ([v4 containsValueForKey:@"altitude"])
+    if ([coderCopy containsValueForKey:@"altitude"])
     {
-      [v4 decodeDoubleForKey:@"altitude"];
+      [coderCopy decodeDoubleForKey:@"altitude"];
       v11 = v10;
     }
 
@@ -95,31 +95,31 @@
       v11 = 1.79769313e308;
     }
 
-    v13 = [(VKCustomFeature *)self initWithCoordinate3D:v7, v9, v11];
-    v15 = [(VKCustomFeature *)v13 pointFeature];
-    [v4 decodeFloatForKey:@"elevationOffset"];
-    [(VKCustomFeature *)v13 setElevationOffset:v16];
-    if ([v4 containsValueForKey:@"buildingHeight"])
+    0x18 = [(VKCustomFeature *)self initWithCoordinate3D:v7, v9, v11];
+    pointFeature = [(VKCustomFeature *)0x18 pointFeature];
+    [coderCopy decodeFloatForKey:@"elevationOffset"];
+    [(VKCustomFeature *)0x18 setElevationOffset:v16];
+    if ([coderCopy containsValueForKey:@"buildingHeight"])
     {
-      [v4 decodeFloatForKey:@"buildingHeight"];
-      [(VKCustomFeature *)v13 setBuildingHeight:?];
+      [coderCopy decodeFloatForKey:@"buildingHeight"];
+      [(VKCustomFeature *)0x18 setBuildingHeight:?];
     }
 
-    if ([v4 containsValueForKey:@"buildingFaceAzimuth"])
+    if ([coderCopy containsValueForKey:@"buildingFaceAzimuth"])
     {
-      [v4 decodeFloatForKey:@"buildingFaceAzimuth"];
-      [(VKCustomFeature *)v13 setBuildingFaceAzimuth:?];
+      [coderCopy decodeFloatForKey:@"buildingFaceAzimuth"];
+      [(VKCustomFeature *)0x18 setBuildingFaceAzimuth:?];
     }
 
-    -[VKCustomFeature setBusinessID:](v13, "setBusinessID:", [v4 decodeInt64ForKey:@"businessId"]);
-    -[VKCustomFeature setVenueID:](v13, "setVenueID:", [v4 decodeInt64ForKey:@"venueId"]);
-    -[VKCustomFeature setVenueLevelID:](v13, "setVenueLevelID:", [v4 decodeInt64ForKey:@"venueLevelId"]);
-    -[VKCustomFeature setVenueComponentID:](v13, "setVenueComponentID:", [v4 decodeInt64ForKey:@"venueComponentId"]);
-    -[VKCustomFeature setVenueFloorOrdinal:](v13, "setVenueFloorOrdinal:", [v4 decodeInt64ForKey:@"venueFloorOrdinal"]);
+    -[VKCustomFeature setBusinessID:](0x18, "setBusinessID:", [coderCopy decodeInt64ForKey:@"businessId"]);
+    -[VKCustomFeature setVenueID:](0x18, "setVenueID:", [coderCopy decodeInt64ForKey:@"venueId"]);
+    -[VKCustomFeature setVenueLevelID:](0x18, "setVenueLevelID:", [coderCopy decodeInt64ForKey:@"venueLevelId"]);
+    -[VKCustomFeature setVenueComponentID:](0x18, "setVenueComponentID:", [coderCopy decodeInt64ForKey:@"venueComponentId"]);
+    -[VKCustomFeature setVenueFloorOrdinal:](0x18, "setVenueFloorOrdinal:", [coderCopy decodeInt64ForKey:@"venueFloorOrdinal"]);
     v17 = MEMORY[0x1E695DFD8];
     v18 = objc_opt_class();
     v19 = [v17 setWithObjects:{v18, objc_opt_class(), 0}];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"iconElements"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"iconElements"];
 
     v52 = 0u;
     v53 = 0u;
@@ -139,8 +139,8 @@
             objc_enumerationMutation(v21);
           }
 
-          v25 = [*(*(&v50 + 1) + 8 * i) element];
-          md::LabelExternalPointFeature::setPlaceholderIcon(v15, v25, (v25 + 8), *(v25 + 16));
+          element = [*(*(&v50 + 1) + 8 * i) element];
+          md::LabelExternalPointFeature::setPlaceholderIcon(pointFeature, element, (element + 8), *(element + 16));
         }
 
         v22 = [v21 countByEnumeratingWithState:&v50 objects:v55 count:16];
@@ -150,19 +150,19 @@
     }
   }
 
-  -[VKCustomFeature setFeatureID:](v13, "setFeatureID:", [v4 decodeInt64ForKey:@"featureId"]);
-  [v4 decodeFloatForKey:@"minZoom"];
-  [(VKCustomFeature *)v13 setMinZoom:?];
-  [v4 decodeFloatForKey:@"maxZoom"];
-  [(VKCustomFeature *)v13 setMaxZoom:?];
-  -[VKCustomFeature setSortKey:](v13, "setSortKey:", [v4 decodeInt32ForKey:@"sortKey"]);
-  -[VKCustomFeature setTextDisplayMode:](v13, "setTextDisplayMode:", [v4 decodeInt32ForKey:@"textDisplayMode"]);
-  v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"styleAttributes"];
-  [(VKCustomFeature *)v13 setStyleAttributes:v26];
+  -[VKCustomFeature setFeatureID:](0x18, "setFeatureID:", [coderCopy decodeInt64ForKey:@"featureId"]);
+  [coderCopy decodeFloatForKey:@"minZoom"];
+  [(VKCustomFeature *)0x18 setMinZoom:?];
+  [coderCopy decodeFloatForKey:@"maxZoom"];
+  [(VKCustomFeature *)0x18 setMaxZoom:?];
+  -[VKCustomFeature setSortKey:](0x18, "setSortKey:", [coderCopy decodeInt32ForKey:@"sortKey"]);
+  -[VKCustomFeature setTextDisplayMode:](0x18, "setTextDisplayMode:", [coderCopy decodeInt32ForKey:@"textDisplayMode"]);
+  v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"styleAttributes"];
+  [(VKCustomFeature *)0x18 setStyleAttributes:v26];
   v27 = MEMORY[0x1E695DFD8];
   v28 = objc_opt_class();
   v29 = [v27 setWithObjects:{v28, objc_opt_class(), 0}];
-  v30 = [v4 decodeObjectOfClasses:v29 forKey:@"textElements"];
+  v30 = [coderCopy decodeObjectOfClasses:v29 forKey:@"textElements"];
 
   v47 = 0u;
   v48 = 0u;
@@ -182,22 +182,22 @@
           objc_enumerationMutation(v31);
         }
 
-        v35 = [*(*(&v45 + 1) + 8 * j) element];
-        v36 = *v35;
-        v37 = *(v35 + 1);
-        if (*(v35 + 31) >= 0)
+        element2 = [*(*(&v45 + 1) + 8 * j) element];
+        v36 = *element2;
+        v37 = *(element2 + 1);
+        if (*(element2 + 31) >= 0)
         {
-          v38 = (v35 + 8);
+          v38 = (element2 + 8);
         }
 
         else
         {
-          v38 = *(v35 + 8);
+          v38 = *(element2 + 8);
         }
 
-        v39 = *(v35 + 55);
-        v42 = *(v35 + 32);
-        v40 = (v35 + 32);
+        v39 = *(element2 + 55);
+        v42 = *(element2 + 32);
+        v40 = (element2 + 32);
         v41 = v42;
         if (v39 >= 0)
         {
@@ -209,7 +209,7 @@
           v43 = v41;
         }
 
-        md::LabelExternalFeature::addTextForZoom(v13->_feature.__ptr_, v36, v37, v38, v43);
+        md::LabelExternalFeature::addTextForZoom(0x18->_feature.__ptr_, v36, v37, v38, v43);
       }
 
       v32 = [v31 countByEnumeratingWithState:&v45 objects:v54 count:16];
@@ -218,21 +218,21 @@
     while (v32);
   }
 
-  self = v13;
-  v14 = self;
+  self = 0x18;
+  selfCopy = self;
 LABEL_34:
 
-  return v14;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   ptr = self->_feature.__ptr_;
   if (ptr)
   {
-    v32 = v4;
-    [v4 encodeInt32:*(ptr + 8) forKey:@"featureType"];
+    v32 = coderCopy;
+    [coderCopy encodeInt32:*(ptr + 8) forKey:@"featureType"];
     v7 = self->_feature.__ptr_;
     v8 = 72;
     if (*(v7 + 112))
@@ -257,8 +257,8 @@ LABEL_34:
 
     [v32 encodeInt32:v10 forKey:@"textDisplayMode"];
     [v32 encodeInt64:*(self->_feature.__ptr_ + 2) forKey:@"featureId"];
-    v11 = [(VKCustomFeature *)self styleAttributes];
-    [v32 encodeObject:v11 forKey:@"styleAttributes"];
+    styleAttributes = [(VKCustomFeature *)self styleAttributes];
+    [v32 encodeObject:styleAttributes forKey:@"styleAttributes"];
 
     v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v13 = self->_feature.__ptr_;
@@ -270,14 +270,14 @@ LABEL_34:
     }
 
     [v32 encodeObject:v12 forKey:@"textElements"];
-    v17 = [(VKCustomFeature *)self pointFeature];
-    v18 = v17;
-    if (v17)
+    pointFeature = [(VKCustomFeature *)self pointFeature];
+    v18 = pointFeature;
+    if (pointFeature)
     {
-      v19 = v17[24];
-      if (v17[25] == v19)
+      v19 = pointFeature[24];
+      if (pointFeature[25] == v19)
       {
-        md::LabelPoint::NullPoint(v17);
+        md::LabelPoint::NullPoint(pointFeature);
         v19 = &md::LabelPoint::NullPoint(void)::kNullLabelPoint;
       }
 
@@ -341,13 +341,13 @@ LABEL_34:
       [v32 encodeObject:v26 forKey:@"iconElements"];
     }
 
-    v30 = [(VKCustomFeature *)self lineFeature];
-    if (v30)
+    lineFeature = [(VKCustomFeature *)self lineFeature];
+    if (lineFeature)
     {
-      [v32 encodeBytes:v30[23] length:v30[24] - v30[23] forKey:@"coordinates"];
+      [v32 encodeBytes:lineFeature[23] length:lineFeature[24] - lineFeature[23] forKey:@"coordinates"];
     }
 
-    v4 = v32;
+    coderCopy = v32;
   }
 }
 
@@ -358,13 +358,13 @@ LABEL_34:
     return 0;
   }
 
-  v3 = [(VKCustomFeature *)self pointFeature];
-  if (v3[239] != 1)
+  pointFeature = [(VKCustomFeature *)self pointFeature];
+  if (pointFeature[239] != 1)
   {
     return 0;
   }
 
-  if (v3[238])
+  if (pointFeature[238])
   {
     return 1;
   }
@@ -372,13 +372,13 @@ LABEL_34:
   return 2;
 }
 
-- (void)setClusteringMode:(unsigned __int8)a3
+- (void)setClusteringMode:(unsigned __int8)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   if ([(VKCustomFeature *)self pointFeature])
   {
-    v5 = [(VKCustomFeature *)self pointFeature];
-    if (v3 == 1)
+    pointFeature = [(VKCustomFeature *)self pointFeature];
+    if (modeCopy == 1)
     {
       v6 = 257;
     }
@@ -388,71 +388,71 @@ LABEL_34:
       v6 = 256;
     }
 
-    if (!v3)
+    if (!modeCopy)
     {
       v6 = 0;
     }
 
-    v5[119] = v6;
+    pointFeature[119] = v6;
   }
 }
 
-- (void)setElevationOffset:(double)a3
+- (void)setElevationOffset:(double)offset
 {
   if ([(VKCustomFeature *)self pointFeature])
   {
-    v5 = [(VKCustomFeature *)self pointFeature];
-    v6 = a3;
-    v5[58] = v6;
+    pointFeature = [(VKCustomFeature *)self pointFeature];
+    offsetCopy = offset;
+    pointFeature[58] = offsetCopy;
   }
 }
 
-- (void)setBuildingFaceAzimuth:(float)a3
+- (void)setBuildingFaceAzimuth:(float)azimuth
 {
   if ([(VKCustomFeature *)self pointFeature])
   {
-    v5 = [(VKCustomFeature *)self pointFeature];
-    v5[56] = a3;
-    *(v5 + 228) = 1;
+    pointFeature = [(VKCustomFeature *)self pointFeature];
+    pointFeature[56] = azimuth;
+    *(pointFeature + 228) = 1;
   }
 }
 
-- (void)setBuildingHeight:(float)a3
+- (void)setBuildingHeight:(float)height
 {
   if ([(VKCustomFeature *)self pointFeature])
   {
-    v5 = [(VKCustomFeature *)self pointFeature];
-    v5[54] = a3;
-    *(v5 + 220) = 1;
+    pointFeature = [(VKCustomFeature *)self pointFeature];
+    pointFeature[54] = height;
+    *(pointFeature + 220) = 1;
   }
 }
 
-- (void)setPlaceholderIconWithSize:(CGSize)a3 anchorPoint:(CGPoint)a4 isRound:(BOOL)a5
+- (void)setPlaceholderIconWithSize:(CGSize)size anchorPoint:(CGPoint)point isRound:(BOOL)round
 {
-  y = a4.y;
-  x = a4.x;
-  height = a3.height;
-  width = a3.width;
+  y = point.y;
+  x = point.x;
+  height = size.height;
+  width = size.width;
   if ([(VKCustomFeature *)self pointFeature])
   {
-    v11 = [(VKCustomFeature *)self pointFeature];
+    pointFeature = [(VKCustomFeature *)self pointFeature];
     *&v12 = width;
     *&v13 = height;
     v17 = __PAIR64__(v13, v12);
     *&v14 = x;
     *&v15 = height - y;
     v16 = __PAIR64__(v15, v14);
-    md::LabelExternalPointFeature::setPlaceholderIcon(v11, &v17, &v16, a5);
+    md::LabelExternalPointFeature::setPlaceholderIcon(pointFeature, &v17, &v16, round);
   }
 }
 
-- (void)setAnnotationText:(id)a3 locale:(id)a4
+- (void)setAnnotationText:(id)text locale:(id)locale
 {
-  v11 = a3;
-  v6 = a4;
+  textCopy = text;
+  localeCopy = locale;
   if ([(VKCustomFeature *)self pointFeature])
   {
-    v7 = v11;
+    v7 = textCopy;
     if ([v7 length] >= 0xC9)
     {
       v8 = [v7 rangeOfComposedCharacterSequenceAtIndex:199];
@@ -461,7 +461,7 @@ LABEL_34:
       v7 = v10;
     }
 
-    md::LabelExternalFeature::addTextForZoom(-[VKCustomFeature pointFeature](self, "pointFeature"), 0, 2, [v7 UTF8String], objc_msgSend(v6, "UTF8String"));
+    md::LabelExternalFeature::addTextForZoom(-[VKCustomFeature pointFeature](self, "pointFeature"), 0, 2, [v7 UTF8String], objc_msgSend(localeCopy, "UTF8String"));
   }
 }
 
@@ -478,11 +478,11 @@ LABEL_34:
   }
 }
 
-- (void)setVenueFloorOrdinal:(signed __int16)a3
+- (void)setVenueFloorOrdinal:(signed __int16)ordinal
 {
   if ([(VKCustomFeature *)self pointFeature])
   {
-    *([(VKCustomFeature *)self pointFeature]+ 280) = a3;
+    *([(VKCustomFeature *)self pointFeature]+ 280) = ordinal;
   }
 }
 
@@ -497,11 +497,11 @@ LABEL_34:
   return result;
 }
 
-- (void)setVenueComponentID:(unint64_t)a3
+- (void)setVenueComponentID:(unint64_t)d
 {
   if ([(VKCustomFeature *)self pointFeature])
   {
-    *([(VKCustomFeature *)self pointFeature]+ 272) = a3;
+    *([(VKCustomFeature *)self pointFeature]+ 272) = d;
   }
 }
 
@@ -516,11 +516,11 @@ LABEL_34:
   return result;
 }
 
-- (void)setVenueLevelID:(unint64_t)a3
+- (void)setVenueLevelID:(unint64_t)d
 {
   if ([(VKCustomFeature *)self pointFeature])
   {
-    *([(VKCustomFeature *)self pointFeature]+ 264) = a3;
+    *([(VKCustomFeature *)self pointFeature]+ 264) = d;
   }
 }
 
@@ -535,11 +535,11 @@ LABEL_34:
   return result;
 }
 
-- (void)setVenueBuildingID:(unint64_t)a3
+- (void)setVenueBuildingID:(unint64_t)d
 {
   if ([(VKCustomFeature *)self pointFeature])
   {
-    *([(VKCustomFeature *)self pointFeature]+ 256) = a3;
+    *([(VKCustomFeature *)self pointFeature]+ 256) = d;
   }
 }
 
@@ -554,11 +554,11 @@ LABEL_34:
   return result;
 }
 
-- (void)setVenueID:(unint64_t)a3
+- (void)setVenueID:(unint64_t)d
 {
   if ([(VKCustomFeature *)self pointFeature])
   {
-    *([(VKCustomFeature *)self pointFeature]+ 248) = a3;
+    *([(VKCustomFeature *)self pointFeature]+ 248) = d;
   }
 }
 
@@ -573,28 +573,28 @@ LABEL_34:
   return result;
 }
 
-- (void)setBusinessID:(unint64_t)a3
+- (void)setBusinessID:(unint64_t)d
 {
   if ([(VKCustomFeature *)self pointFeature])
   {
-    *([(VKCustomFeature *)self pointFeature]+ 184) = a3;
+    *([(VKCustomFeature *)self pointFeature]+ 184) = d;
   }
 }
 
-- (void)setFeatureRegion:(id)a3
+- (void)setFeatureRegion:(id)region
 {
-  v5 = a3;
+  regionCopy = region;
   if ([(VKCustomFeature *)self pointFeature])
   {
-    objc_storeStrong(([(VKCustomFeature *)self pointFeature]+ 240), a3);
+    objc_storeStrong(([(VKCustomFeature *)self pointFeature]+ 240), region);
   }
 }
 
-- (void)setText:(id)a3 locale:(id)a4
+- (void)setText:(id)text locale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
-  v12 = v6;
+  textCopy = text;
+  localeCopy = locale;
+  v12 = textCopy;
   v8 = v12;
   if ([v12 length] >= 0xC9)
   {
@@ -604,35 +604,35 @@ LABEL_34:
     v8 = v11;
   }
 
-  md::LabelExternalFeature::addTextForZoom(self->_feature.__ptr_, 0, 0, [v8 UTF8String], objc_msgSend(v7, "UTF8String"));
+  md::LabelExternalFeature::addTextForZoom(self->_feature.__ptr_, 0, 0, [v8 UTF8String], objc_msgSend(localeCopy, "UTF8String"));
 }
 
-- (void)setTextDisplayMode:(unsigned __int8)a3
+- (void)setTextDisplayMode:(unsigned __int8)mode
 {
-  if (a3 >= 4u)
+  if (mode >= 4u)
   {
-    v3 = 0;
+    modeCopy = 0;
   }
 
   else
   {
-    v3 = a3;
+    modeCopy = mode;
   }
 
-  *(self->_feature.__ptr_ + 88) = v3;
+  *(self->_feature.__ptr_ + 88) = modeCopy;
 }
 
-- (void)setStyleAttributes:(id)a3
+- (void)setStyleAttributes:(id)attributes
 {
-  v11 = a3;
-  if (v11)
+  attributesCopy = attributes;
+  if (attributesCopy)
   {
-    objc_storeStrong(&self->_featureStyleAttributesPtr._obj, a3);
+    objc_storeStrong(&self->_featureStyleAttributesPtr._obj, attributes);
 
     ptr = self->_feature.__ptr_;
-    v6 = [v11 featureStyleAttributesPtr];
-    v7 = *v6;
-    v8 = v6[1];
+    featureStyleAttributesPtr = [attributesCopy featureStyleAttributesPtr];
+    v7 = *featureStyleAttributesPtr;
+    v8 = featureStyleAttributesPtr[1];
     if (v8)
     {
       atomic_fetch_add_explicit(&v8->__shared_owners_, 1uLL, memory_order_relaxed);
@@ -667,15 +667,15 @@ LABEL_34:
   return WeakRetained;
 }
 
-- (void)setImageProvider:(id)a3 withKey:(id)a4
+- (void)setImageProvider:(id)provider withKey:(id)key
 {
   v21[4] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (self->_imageProvider != v7 || ![(NSString *)self->_imageKey isEqualToString:v8])
+  providerCopy = provider;
+  keyCopy = key;
+  if (self->_imageProvider != providerCopy || ![(NSString *)self->_imageKey isEqualToString:keyCopy])
   {
-    objc_storeStrong(&self->_imageProvider, a3);
-    objc_storeStrong(&self->_imageKey, a4);
+    objc_storeStrong(&self->_imageProvider, provider);
+    objc_storeStrong(&self->_imageKey, key);
     if (self->_imageProvider && (imageKey = self->_imageKey) != 0)
     {
       memset(&v19, 0, sizeof(v19));
@@ -740,7 +740,7 @@ LABEL_14:
   LODWORD(a6) = *a3;
   LODWORD(a4) = *a2;
   LODWORD(a5) = a2[1];
-  return [*(a1 + 8) imageForCustomImageKey:*(a1 + 16) suggestedSize:*&a4 contentScale:{*&a5, a6}];
+  return [*(self + 8) imageForCustomImageKey:*(self + 16) suggestedSize:*&a4 contentScale:{*&a5, a6}];
 }
 
 - (void)setImageProvider:withKey:
@@ -752,13 +752,13 @@ LABEL_14:
 - (id)setImageProvider:withKey:
 {
   *a2 = &unk_1F2A1F2D8;
-  a2[1] = *(a1 + 8);
-  result = *(a1 + 16);
+  a2[1] = *(self + 8);
+  result = *(self + 16);
   a2[2] = result;
   return result;
 }
 
-- (id)initLineWithCoordinates:(id *)a3 count:(unint64_t)a4
+- (id)initLineWithCoordinates:(id *)coordinates count:(unint64_t)count
 {
   v5.receiver = self;
   v5.super_class = VKCustomFeature;
@@ -770,10 +770,10 @@ LABEL_14:
   return 0;
 }
 
-- (id)_initWithCoordinate:(id)a3 isInjected:(BOOL)a4
+- (id)_initWithCoordinate:(id)coordinate isInjected:(BOOL)injected
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
   v10.receiver = self;
   v10.super_class = VKCustomFeature;
   v6 = [(VKCustomFeature *)&v10 init];

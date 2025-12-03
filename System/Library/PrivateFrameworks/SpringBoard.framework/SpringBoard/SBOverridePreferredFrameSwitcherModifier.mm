@@ -1,39 +1,39 @@
 @interface SBOverridePreferredFrameSwitcherModifier
 - (CGPoint)newPreferredCenter;
 - (CGRect)newPreferredFrame;
-- (CGRect)preferredFrameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 bounds:(CGRect)a5 interfaceOrientation:(int64_t)a6;
+- (CGRect)preferredFrameForLayoutRole:(int64_t)role inAppLayout:(id)layout bounds:(CGRect)bounds interfaceOrientation:(int64_t)orientation;
 - (CGSize)newPreferredSize;
-- (SBOverridePreferredFrameSwitcherModifier)initWithNewPreferredFrame:(CGRect)a3 forDisplayItem:(id)a4;
-- (SBOverridePreferredFrameSwitcherModifier)initWithNewPreferredSize:(CGSize)a3 newPreferredCenter:(CGPoint)a4 forDisplayItem:(id)a5;
-- (void)setNewPreferredFrame:(CGRect)a3;
+- (SBOverridePreferredFrameSwitcherModifier)initWithNewPreferredFrame:(CGRect)frame forDisplayItem:(id)item;
+- (SBOverridePreferredFrameSwitcherModifier)initWithNewPreferredSize:(CGSize)size newPreferredCenter:(CGPoint)center forDisplayItem:(id)item;
+- (void)setNewPreferredFrame:(CGRect)frame;
 @end
 
 @implementation SBOverridePreferredFrameSwitcherModifier
 
-- (SBOverridePreferredFrameSwitcherModifier)initWithNewPreferredFrame:(CGRect)a3 forDisplayItem:(id)a4
+- (SBOverridePreferredFrameSwitcherModifier)initWithNewPreferredFrame:(CGRect)frame forDisplayItem:(id)item
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v7 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  itemCopy = item;
   UIRectGetCenter();
-  v10 = [(SBOverridePreferredFrameSwitcherModifier *)self initWithNewPreferredSize:v7 newPreferredCenter:width forDisplayItem:height, v8, v9];
+  v10 = [(SBOverridePreferredFrameSwitcherModifier *)self initWithNewPreferredSize:itemCopy newPreferredCenter:width forDisplayItem:height, v8, v9];
 
   return v10;
 }
 
-- (SBOverridePreferredFrameSwitcherModifier)initWithNewPreferredSize:(CGSize)a3 newPreferredCenter:(CGPoint)a4 forDisplayItem:(id)a5
+- (SBOverridePreferredFrameSwitcherModifier)initWithNewPreferredSize:(CGSize)size newPreferredCenter:(CGPoint)center forDisplayItem:(id)item
 {
-  y = a4.y;
-  x = a4.x;
-  height = a3.height;
-  width = a3.width;
-  v12 = a5;
+  y = center.y;
+  x = center.x;
+  height = size.height;
+  width = size.width;
+  itemCopy = item;
   v15.receiver = self;
   v15.super_class = SBOverridePreferredFrameSwitcherModifier;
   v13 = [(SBSwitcherModifier *)&v15 init];
   if (v13)
   {
-    if (!v12)
+    if (!itemCopy)
     {
       [SBOverridePreferredFrameSwitcherModifier initWithNewPreferredSize:a2 newPreferredCenter:v13 forDisplayItem:?];
     }
@@ -42,16 +42,16 @@
     v13->_newPreferredSize.height = height;
     v13->_newPreferredCenter.x = x;
     v13->_newPreferredCenter.y = y;
-    objc_storeStrong(&v13->_displayItem, a5);
+    objc_storeStrong(&v13->_displayItem, item);
   }
 
   return v13;
 }
 
-- (void)setNewPreferredFrame:(CGRect)a3
+- (void)setNewPreferredFrame:(CGRect)frame
 {
-  self->_newPreferredSize.width = a3.size.width;
-  self->_newPreferredSize.height = a3.size.height;
+  self->_newPreferredSize.width = frame.size.width;
+  self->_newPreferredSize.height = frame.size.height;
   p_newPreferredCenter = &self->_newPreferredCenter;
   UIRectGetCenter();
   p_newPreferredCenter->x = v4;
@@ -82,14 +82,14 @@
   return result;
 }
 
-- (CGRect)preferredFrameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 bounds:(CGRect)a5 interfaceOrientation:(int64_t)a6
+- (CGRect)preferredFrameForLayoutRole:(int64_t)role inAppLayout:(id)layout bounds:(CGRect)bounds interfaceOrientation:(int64_t)orientation
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a4;
-  v14 = [v13 itemForLayoutRole:a3];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
+  v14 = [layoutCopy itemForLayoutRole:role];
   if ([(SBDisplayItem *)v14 isEqualToItem:?])
   {
     v15 = self->_newPreferredSize.width == 1.79769313e308;
@@ -104,7 +104,7 @@
       {
         v31.receiver = self;
         v31.super_class = SBOverridePreferredFrameSwitcherModifier;
-        [(SBOverridePreferredFrameSwitcherModifier *)&v31 preferredFrameForLayoutRole:a3 inAppLayout:v13 bounds:a6 interfaceOrientation:x, y, width, height, 1.79769313e308, 1.79769313e308, 1.79769313e308, 1.79769313e308];
+        [(SBOverridePreferredFrameSwitcherModifier *)&v31 preferredFrameForLayoutRole:role inAppLayout:layoutCopy bounds:orientation interfaceOrientation:x, y, width, height, 1.79769313e308, 1.79769313e308, 1.79769313e308, 1.79769313e308];
       }
 
       SBRectWithSize();
@@ -115,7 +115,7 @@
     {
       v30.receiver = self;
       v30.super_class = SBOverridePreferredFrameSwitcherModifier;
-      [(SBOverridePreferredFrameSwitcherModifier *)&v30 preferredFrameForLayoutRole:a3 inAppLayout:v13 bounds:a6 interfaceOrientation:x, y, width, height, 1.79769313e308, 1.79769313e308, 1.79769313e308, 1.79769313e308];
+      [(SBOverridePreferredFrameSwitcherModifier *)&v30 preferredFrameForLayoutRole:role inAppLayout:layoutCopy bounds:orientation interfaceOrientation:x, y, width, height, 1.79769313e308, 1.79769313e308, 1.79769313e308, 1.79769313e308];
       UIRectGetCenter();
       SBRectWithSize();
 LABEL_14:
@@ -126,7 +126,7 @@ LABEL_14:
 
   v29.receiver = self;
   v29.super_class = SBOverridePreferredFrameSwitcherModifier;
-  [(SBOverridePreferredFrameSwitcherModifier *)&v29 preferredFrameForLayoutRole:a3 inAppLayout:v13 bounds:a6 interfaceOrientation:x, y, width, height];
+  [(SBOverridePreferredFrameSwitcherModifier *)&v29 preferredFrameForLayoutRole:role inAppLayout:layoutCopy bounds:orientation interfaceOrientation:x, y, width, height];
 LABEL_15:
   v21 = v17;
   v22 = v18;

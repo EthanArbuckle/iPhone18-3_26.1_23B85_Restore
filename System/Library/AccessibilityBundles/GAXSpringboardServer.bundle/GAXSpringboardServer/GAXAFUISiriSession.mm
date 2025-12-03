@@ -1,17 +1,17 @@
 @interface GAXAFUISiriSession
-- (void)_startRequestWithFinalOptions:(id)a3 completion:(id)a4;
+- (void)_startRequestWithFinalOptions:(id)options completion:(id)completion;
 @end
 
 @implementation GAXAFUISiriSession
 
-- (void)_startRequestWithFinalOptions:(id)a3 completion:(id)a4
+- (void)_startRequestWithFinalOptions:(id)options completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v9 = +[GAXSpringboard sharedInstance];
-  v10 = [v9 isActive];
+  isActive = [v9 isActive];
 
-  if (!v10)
+  if (!isActive)
   {
     goto LABEL_10;
   }
@@ -28,13 +28,13 @@
   v26 = buf;
   v27 = 0x2020000000;
   v28 = 0;
-  if (v8)
+  if (completionCopy)
   {
     v18 = _NSConcreteStackBlock;
     v19 = 3221225472;
     v20 = sub_9608;
     v21 = &unk_2CCB8;
-    v23 = v8;
+    v23 = completionCopy;
     v13 = v12;
     v22 = v13;
     v24 = buf;
@@ -63,7 +63,7 @@
 LABEL_10:
     v17.receiver = self;
     v17.super_class = GAXAFUISiriSession;
-    [(GAXAFUISiriSession *)&v17 _startRequestWithFinalOptions:v7 completion:v8];
+    [(GAXAFUISiriSession *)&v17 _startRequestWithFinalOptions:optionsCopy completion:completionCopy];
   }
 
 LABEL_11:

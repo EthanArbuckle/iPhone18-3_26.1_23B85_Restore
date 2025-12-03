@@ -1,7 +1,7 @@
 @interface Conversation
 - (NSArray)turns;
 - (_TtC26DeepThoughtBiomeFoundation12Conversation)init;
-- (_TtC26DeepThoughtBiomeFoundation12Conversation)initWithTurns:(id)a3;
+- (_TtC26DeepThoughtBiomeFoundation12Conversation)initWithTurns:(id)turns;
 @end
 
 @implementation Conversation
@@ -16,7 +16,7 @@
   return v3;
 }
 
-- (_TtC26DeepThoughtBiomeFoundation12Conversation)initWithTurns:(id)a3
+- (_TtC26DeepThoughtBiomeFoundation12Conversation)initWithTurns:(id)turns
 {
   type metadata accessor for ConversationTurn(0);
   *(self + OBJC_IVAR____TtC26DeepThoughtBiomeFoundation12Conversation_turns) = sub_248731240();

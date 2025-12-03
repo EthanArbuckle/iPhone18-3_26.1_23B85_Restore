@@ -1,14 +1,14 @@
 @interface ICSActionValue
-+ (id)actionParameterFromCode:(int)a3;
-+ (id)actionValueFromICSString:(id)a3;
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4;
++ (id)actionParameterFromCode:(int)code;
++ (id)actionValueFromICSString:(id)string;
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string;
 @end
 
 @implementation ICSActionValue
 
-+ (id)actionValueFromICSString:(id)a3
++ (id)actionValueFromICSString:(id)string
 {
-  v3 = [ICSAlarm actionFromICSString:a3];
+  v3 = [ICSAlarm actionFromICSString:string];
   if (v3 == 5)
   {
     v4 = 0;
@@ -22,19 +22,19 @@
   return v4;
 }
 
-+ (id)actionParameterFromCode:(int)a3
++ (id)actionParameterFromCode:(int)code
 {
-  v3 = [(ICSPredefinedValue *)[ICSActionValue alloc] initWithLong:a3];
+  v3 = [(ICSPredefinedValue *)[ICSActionValue alloc] initWithLong:code];
 
   return v3;
 }
 
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string
 {
-  v4 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  stringCopy = string;
   v7 = [ICSAlarm ICSStringFromAction:[(ICSPredefinedValue *)self longValue]];
-  iCalendarAppendStringToStringWithOptions(v7, v6, v4);
+  iCalendarAppendStringToStringWithOptions(v7, stringCopy, optionsCopy);
 }
 
 @end

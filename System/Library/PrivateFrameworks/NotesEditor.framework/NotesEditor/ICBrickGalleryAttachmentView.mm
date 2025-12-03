@@ -9,16 +9,16 @@
 - (void)openAttachment
 {
   v6 = *MEMORY[0x277D85DE8];
-  v3 = [a1 identifier];
+  identifier = [self identifier];
   v4 = 138412290;
-  v5 = v3;
+  v5 = identifier;
   _os_log_debug_impl(&dword_2151A1000, a2, OS_LOG_TYPE_DEBUG, "No sub attachments downloaded for %@", &v4, 0xCu);
 }
 
 - (void)didChangeAttachmentTitle
 {
-  v3 = [(ICBrickGalleryAttachmentView *)self galleryEditorController];
-  [v3 attachmentTitleDidChange];
+  galleryEditorController = [(ICBrickGalleryAttachmentView *)self galleryEditorController];
+  [galleryEditorController attachmentTitleDidChange];
 
   [(ICBrickTextAttachmentView *)self requestAttachmentContentUpdate];
 }

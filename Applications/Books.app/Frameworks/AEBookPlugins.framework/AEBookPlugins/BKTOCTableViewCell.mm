@@ -1,28 +1,28 @@
 @interface BKTOCTableViewCell
-+ (CGRect)pageLabelFrameForString:(id)a3 font:(id)a4 bounds:(CGRect)a5 layoutDirection:(int64_t)a6;
-+ (CGRect)pageLabelFrameForString:(id)a3 font:(id)a4 bounds:(CGRect)a5 topMargin:(double)a6 layoutDirection:(int64_t)a7;
-+ (CGSize)sizeForText:(id)a3 indentation:(int64_t)a4 font:(id)a5 width:(double)a6;
-+ (CGSize)titleSizeForText:(id)a3 indentation:(int64_t)a4 font:(id)a5 width:(double)a6;
-+ (double)cellHeightForCellWidth:(double)a3 pageLabelWidth:(double)a4 text:(id)a5 indentationLevel:(unint64_t)a6 indentationWidth:(double)a7 font:(id)a8 usesPopoverStyle:(BOOL)a9;
-+ (double)maxSpanForTextWithIndentation:(int64_t)a3 font:(id)a4 width:(double)a5;
++ (CGRect)pageLabelFrameForString:(id)string font:(id)font bounds:(CGRect)bounds layoutDirection:(int64_t)direction;
++ (CGRect)pageLabelFrameForString:(id)string font:(id)font bounds:(CGRect)bounds topMargin:(double)margin layoutDirection:(int64_t)direction;
++ (CGSize)sizeForText:(id)text indentation:(int64_t)indentation font:(id)font width:(double)width;
++ (CGSize)titleSizeForText:(id)text indentation:(int64_t)indentation font:(id)font width:(double)width;
++ (double)cellHeightForCellWidth:(double)width pageLabelWidth:(double)labelWidth text:(id)text indentationLevel:(unint64_t)level indentationWidth:(double)indentationWidth font:(id)font usesPopoverStyle:(BOOL)style;
++ (double)maxSpanForTextWithIndentation:(int64_t)indentation font:(id)font width:(double)width;
 + (id)tocWebTemplate;
-- (BKTOCTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (BKTOCTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UIEdgeInsets)contentInsets;
 - (UILabel)pageLabel;
 - (id)makeSelectedBackgroundView;
 - (void)_adjustLabelTextAlignment;
-- (void)_setHighlightedPopoverAppearance:(BOOL)a3;
-- (void)_setSelectedBackgroundViewFrame:(CGRect)a3;
+- (void)_setHighlightedPopoverAppearance:(BOOL)appearance;
+- (void)_setSelectedBackgroundViewFrame:(CGRect)frame;
 - (void)_syncVerticalLabel;
 - (void)configureFocusRing;
 - (void)configureSelectedBackgroundView;
 - (void)dealloc;
-- (void)displayHTMLWithContents:(id)a3 fontFamily:(id)a4 fontSize:(double)a5 maxSpan:(double)a6 baseURL:(id)a7;
+- (void)displayHTMLWithContents:(id)contents fontFamily:(id)family fontSize:(double)size maxSpan:(double)span baseURL:(id)l;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)setVertical:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)setVertical:(BOOL)vertical;
 - (void)setupSelectedBackgroundNil;
 @end
 
@@ -40,25 +40,25 @@
   return v3;
 }
 
-- (BKTOCTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (BKTOCTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v11.receiver = self;
   v11.super_class = BKTOCTableViewCell;
-  v4 = [(BKTOCTableViewCell *)&v11 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(BKTOCTableViewCell *)&v11 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(BKTOCTableViewCell *)v4 textLabel];
-    [v6 setHighlightedTextColor:0];
+    textLabel = [(BKTOCTableViewCell *)v4 textLabel];
+    [textLabel setHighlightedTextColor:0];
 
-    v7 = [(BKTOCTableViewCell *)v5 textLabel];
-    [v7 setNumberOfLines:0];
+    textLabel2 = [(BKTOCTableViewCell *)v5 textLabel];
+    [textLabel2 setNumberOfLines:0];
 
-    v8 = [(BKTOCTableViewCell *)v5 textLabel];
-    [v8 setContentMode:5];
+    textLabel3 = [(BKTOCTableViewCell *)v5 textLabel];
+    [textLabel3 setContentMode:5];
 
-    v9 = [(BKTOCTableViewCell *)v5 textLabel];
-    [v9 setOpaque:0];
+    textLabel4 = [(BKTOCTableViewCell *)v5 textLabel];
+    [textLabel4 setOpaque:0];
   }
 
   return v5;
@@ -77,9 +77,9 @@
   [(BKTOCTableViewCell *)&v5 dealloc];
 }
 
-+ (CGRect)pageLabelFrameForString:(id)a3 font:(id)a4 bounds:(CGRect)a5 layoutDirection:(int64_t)a6
++ (CGRect)pageLabelFrameForString:(id)string font:(id)font bounds:(CGRect)bounds layoutDirection:(int64_t)direction
 {
-  [a1 pageLabelFrameForString:a3 font:a4 bounds:a6 topMargin:a5.origin.x layoutDirection:{a5.origin.y, a5.size.width, a5.size.height, 16.0}];
+  [self pageLabelFrameForString:string font:font bounds:direction topMargin:bounds.origin.x layoutDirection:{bounds.origin.y, bounds.size.width, bounds.size.height, 16.0}];
   result.size.height = v9;
   result.size.width = v8;
   result.origin.y = v7;
@@ -87,22 +87,22 @@
   return result;
 }
 
-+ (CGRect)pageLabelFrameForString:(id)a3 font:(id)a4 bounds:(CGRect)a5 topMargin:(double)a6 layoutDirection:(int64_t)a7
++ (CGRect)pageLabelFrameForString:(id)string font:(id)font bounds:(CGRect)bounds topMargin:(double)margin layoutDirection:(int64_t)direction
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a3;
-  v14 = a4;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  stringCopy = string;
+  fontCopy = font;
   v15 = CGRectZero.origin.y;
-  if (![(__CFString *)v13 length])
+  if (![(__CFString *)stringCopy length])
   {
 
-    v13 = @" ";
+    stringCopy = @" ";
   }
 
-  [UILabel bkSizeForString:v13 font:v14];
+  [UILabel bkSizeForString:stringCopy font:fontCopy];
   v32.size.width = v16;
   v18 = v17;
   v32.origin.x = CGRectZero.origin.x;
@@ -118,7 +118,7 @@
   v22 = y;
   v23 = width;
   v24 = height;
-  if (a7 == 1)
+  if (direction == 1)
   {
     MinX = CGRectGetMinX(*&v21);
   }
@@ -134,39 +134,39 @@
   }
 
   v27 = MinX;
-  v28 = a6;
+  marginCopy = margin;
   v29 = v19;
   v30 = v20;
   result.size.height = v30;
   result.size.width = v29;
-  result.origin.y = v28;
+  result.origin.y = marginCopy;
   result.origin.x = v27;
   return result;
 }
 
-+ (double)cellHeightForCellWidth:(double)a3 pageLabelWidth:(double)a4 text:(id)a5 indentationLevel:(unint64_t)a6 indentationWidth:(double)a7 font:(id)a8 usesPopoverStyle:(BOOL)a9
++ (double)cellHeightForCellWidth:(double)width pageLabelWidth:(double)labelWidth text:(id)text indentationLevel:(unint64_t)level indentationWidth:(double)indentationWidth font:(id)font usesPopoverStyle:(BOOL)style
 {
-  v9 = a9;
-  v11 = a6 * a7;
-  v12 = a4 + 20.0;
-  v13 = a4 == 0.0;
+  styleCopy = style;
+  v11 = level * indentationWidth;
+  v12 = labelWidth + 20.0;
+  v13 = labelWidth == 0.0;
   v14 = 0.0;
   if (!v13)
   {
     v14 = v12;
   }
 
-  v15 = a3 - v14 - v11;
+  v15 = width - v14 - v11;
   v23 = NSFontAttributeName;
-  v24 = a8;
-  v16 = a8;
-  v17 = a5;
-  v18 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
+  fontCopy = font;
+  fontCopy2 = font;
+  textCopy = text;
+  v18 = [NSDictionary dictionaryWithObjects:&fontCopy forKeys:&v23 count:1];
 
-  [v17 boundingRectWithSize:1 options:v18 attributes:0 context:{v15, 1.79769313e308}];
+  [textCopy boundingRectWithSize:1 options:v18 attributes:0 context:{v15, 1.79769313e308}];
   v20 = v19;
 
-  if (v9)
+  if (styleCopy)
   {
     v21 = 16.0;
   }
@@ -184,15 +184,15 @@
   *&recta.size.height = self;
   v101 = BKTOCTableViewCell;
   [(CGFloat *)&recta.size.height layoutSubviews];
-  v3 = [(BKTOCTableViewCell *)self isVertical];
+  isVertical = [(BKTOCTableViewCell *)self isVertical];
   hasHTMLTitle = self->_hasHTMLTitle;
   vertical = self->_vertical;
-  v6 = [(BKTOCTableViewCell *)self textLabel];
-  [v6 setHidden:vertical | hasHTMLTitle];
+  textLabel = [(BKTOCTableViewCell *)self textLabel];
+  [textLabel setHidden:vertical | hasHTMLTitle];
 
   [(BKVerticalLabel *)self->_verticalLabel setHidden:!self->_vertical];
-  v7 = [(BKTOCTableViewCell *)self contentView];
-  [v7 bounds];
+  contentView = [(BKTOCTableViewCell *)self contentView];
+  [contentView bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -203,8 +203,8 @@
   v21 = v13 - (v16 + v20);
   v23 = v15 - (v18 + v22);
 
-  v24 = [(BKTOCTableViewCell *)self pageLabel];
-  [v24 sizeToFit];
+  pageLabel = [(BKTOCTableViewCell *)self pageLabel];
+  [pageLabel sizeToFit];
 
   [(UILabel *)self->_pageLabel frame];
   v29 = v26;
@@ -212,7 +212,7 @@
   v31 = v28;
   recta.origin.y = v21;
   recta.size.width = v23;
-  if (v3)
+  if (isVertical)
   {
     v99 = v27;
     Height = CGRectGetHeight(*&v25);
@@ -261,13 +261,13 @@
   else
   {
     x = CGRectGetWidth(*&v25);
-    v41 = [(BKTOCTableViewCell *)self effectiveUserInterfaceLayoutDirection];
-    v36 = v41 == &dword_0 + 1;
+    effectiveUserInterfaceLayoutDirection = [(BKTOCTableViewCell *)self effectiveUserInterfaceLayoutDirection];
+    v36 = effectiveUserInterfaceLayoutDirection == &dword_0 + 1;
     v42 = v17;
     v43 = v19;
     v44 = v21;
     v45 = v23;
-    if (v41 == &dword_0 + 1)
+    if (effectiveUserInterfaceLayoutDirection == &dword_0 + 1)
     {
       MinX = CGRectGetMinX(*&v42);
     }
@@ -293,7 +293,7 @@
   v47 = v39;
   v48 = v30;
   v49 = v31;
-  if (v3)
+  if (isVertical)
   {
     MaxX = CGRectGetMaxX(*&v46);
   }
@@ -306,10 +306,10 @@
   v51 = MaxX;
   if (self->_cachedImageView)
   {
-    v52 = [(BKTOCTableViewCell *)self indentationLevel];
+    indentationLevel = [(BKTOCTableViewCell *)self indentationLevel];
     [(BKTOCTableViewCell *)self indentationWidth];
-    v54 = v53 * v52;
-    if (v3)
+    v54 = v53 * indentationLevel;
+    if (isVertical)
     {
       v107.origin.x = v17;
       v107.origin.y = v19;
@@ -383,10 +383,10 @@
     goto LABEL_39;
   }
 
-  v59 = [(BKTOCTableViewCell *)self textLabel];
-  v60 = [(BKTOCTableViewCell *)self indentationLevel];
+  textLabel2 = [(BKTOCTableViewCell *)self textLabel];
+  indentationLevel2 = [(BKTOCTableViewCell *)self indentationLevel];
   [(BKTOCTableViewCell *)self indentationWidth];
-  v62 = v61 * v60;
+  v62 = v61 * indentationLevel2;
   if (x == 0.0)
   {
     v63 = 0.0;
@@ -397,7 +397,7 @@
     v63 = x + 20.0;
   }
 
-  [v59 frame];
+  [textLabel2 frame];
   recta.origin.x = v64;
   v66 = v65;
   if ([(BKTOCTableViewCell *)self usesPopoverStyle])
@@ -431,7 +431,7 @@
     v111.size.height = v66;
     v73 = v72 - CGRectGetWidth(v111) - v71;
 LABEL_35:
-    [v59 sizeThatFits:{v70, v66, *&v98}];
+    [textLabel2 sizeThatFits:{v70, v66, *&v98}];
     v90 = v97;
     goto LABEL_36;
   }
@@ -439,7 +439,7 @@ LABEL_35:
   v98 = v67;
   v84 = v17;
   v85 = recta.size.width;
-  if ((v3 & 1) == 0)
+  if ((isVertical & 1) == 0)
   {
     v95 = v19;
     v96 = recta.origin.y;
@@ -470,8 +470,8 @@ LABEL_35:
   v73 = v91 - CGRectGetWidth(v117) - v88;
   v67 = 0.0;
 LABEL_36:
-  [v59 setFrame:{v73, v67, v70, v90, *&v98}];
-  if (v3)
+  [textLabel2 setFrame:{v73, v67, v70, v90, *&v98}];
+  if (isVertical)
   {
     [(BKTOCTableViewCell *)self _syncVerticalLabel];
   }
@@ -491,15 +491,15 @@ LABEL_39:
   [(BKTOCTableViewCell *)self setFocusEffect:v3];
 }
 
-- (void)_setSelectedBackgroundViewFrame:(CGRect)a3
+- (void)_setSelectedBackgroundViewFrame:(CGRect)frame
 {
-  v10 = CGRectInset(a3, 7.0, 1.0);
+  v10 = CGRectInset(frame, 7.0, 1.0);
   x = v10.origin.x;
   y = v10.origin.y;
   width = v10.size.width;
   height = v10.size.height;
-  v8 = [(BKTOCTableViewCell *)self selectedBackgroundView];
-  [v8 setFrame:{x, y, width, height}];
+  selectedBackgroundView = [(BKTOCTableViewCell *)self selectedBackgroundView];
+  [selectedBackgroundView setFrame:{x, y, width, height}];
 }
 
 - (void)prepareForReuse
@@ -533,62 +533,62 @@ LABEL_39:
   [(BKTOCTableViewCell *)self setBkaxIsExcludedFromSample:0];
 }
 
-- (void)_setHighlightedPopoverAppearance:(BOOL)a3
+- (void)_setHighlightedPopoverAppearance:(BOOL)appearance
 {
-  v3 = a3;
-  v5 = [(BKTOCTableViewCell *)self highlightedBackgroundView];
-  v6 = v5;
-  if (v3)
+  appearanceCopy = appearance;
+  highlightedBackgroundView = [(BKTOCTableViewCell *)self highlightedBackgroundView];
+  v6 = highlightedBackgroundView;
+  if (appearanceCopy)
   {
 
     if (!v6)
     {
-      v7 = [(BKTOCTableViewCell *)self selectedBackgroundView];
-      v8 = [(BKTOCTableViewCell *)self traitCollection];
-      v9 = dbl_193280[[v8 userInterfaceStyle] == &dword_0 + 2];
+      selectedBackgroundView = [(BKTOCTableViewCell *)self selectedBackgroundView];
+      traitCollection = [(BKTOCTableViewCell *)self traitCollection];
+      v9 = dbl_193280[[traitCollection userInterfaceStyle] == &dword_0 + 2];
 
       v10 = +[UIColor tintColor];
       v11 = [v10 colorWithAlphaComponent:v9];
-      [v7 setBackgroundColor:v11];
+      [selectedBackgroundView setBackgroundColor:v11];
 
-      [(BKTOCTableViewCell *)self setHighlightedBackgroundView:v7];
+      [(BKTOCTableViewCell *)self setHighlightedBackgroundView:selectedBackgroundView];
     }
 
-    v14 = [(BKTOCTableViewCell *)self contentView];
-    v12 = [(BKTOCTableViewCell *)self highlightedBackgroundView];
-    v13 = [(BKTOCTableViewCell *)self textLabel];
-    [v14 insertSubview:v12 belowSubview:v13];
+    contentView = [(BKTOCTableViewCell *)self contentView];
+    highlightedBackgroundView2 = [(BKTOCTableViewCell *)self highlightedBackgroundView];
+    textLabel = [(BKTOCTableViewCell *)self textLabel];
+    [contentView insertSubview:highlightedBackgroundView2 belowSubview:textLabel];
   }
 
   else
   {
-    [v5 removeFromSuperview];
+    [highlightedBackgroundView removeFromSuperview];
 
     [(BKTOCTableViewCell *)self setHighlightedBackgroundView:0];
   }
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a3;
+  selectedCopy = selected;
   v6.receiver = self;
   v6.super_class = BKTOCTableViewCell;
-  [(BKTOCTableViewCell *)&v6 setSelected:a3 animated:a4];
-  [(BKTOCTableViewCell *)self _setSelectedAppearance:v4];
+  [(BKTOCTableViewCell *)&v6 setSelected:selected animated:animated];
+  [(BKTOCTableViewCell *)self _setSelectedAppearance:selectedCopy];
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a3;
+  highlightedCopy = highlighted;
   v6.receiver = self;
   v6.super_class = BKTOCTableViewCell;
-  [(BKTOCTableViewCell *)&v6 setHighlighted:a3 animated:a4];
+  [(BKTOCTableViewCell *)&v6 setHighlighted:highlighted animated:animated];
   if ([(BKTOCTableViewCell *)self usesPopoverStyle])
   {
-    [(BKTOCTableViewCell *)self _setHighlightedPopoverAppearance:v4];
+    [(BKTOCTableViewCell *)self _setHighlightedPopoverAppearance:highlightedCopy];
   }
 
-  [(BKTOCTableViewCell *)self _setSelectedAppearance:v4];
+  [(BKTOCTableViewCell *)self _setSelectedAppearance:highlightedCopy];
 }
 
 - (UILabel)pageLabel
@@ -613,8 +613,8 @@ LABEL_39:
     [(UILabel *)self->_pageLabel setTextAlignment:v6];
     [(UILabel *)self->_pageLabel setLineBreakMode:2];
     [(UILabel *)self->_pageLabel setOpaque:0];
-    v7 = [(BKTOCTableViewCell *)self contentView];
-    [v7 addSubview:self->_pageLabel];
+    contentView = [(BKTOCTableViewCell *)self contentView];
+    [contentView addSubview:self->_pageLabel];
 
     pageLabel = self->_pageLabel;
   }
@@ -630,8 +630,8 @@ LABEL_39:
 
 - (void)configureSelectedBackgroundView
 {
-  v3 = [(BKTOCTableViewCell *)self makeSelectedBackgroundView];
-  [(BKTOCTableViewCell *)self setSelectedBackgroundView:v3];
+  makeSelectedBackgroundView = [(BKTOCTableViewCell *)self makeSelectedBackgroundView];
+  [(BKTOCTableViewCell *)self setSelectedBackgroundView:makeSelectedBackgroundView];
 }
 
 - (id)makeSelectedBackgroundView
@@ -649,14 +649,14 @@ LABEL_39:
     v4 = 4.0;
   }
 
-  v5 = [v3 layer];
-  [v5 setCornerRadius:v4];
+  layer = [v3 layer];
+  [layer setCornerRadius:v4];
 
-  v6 = [v3 layer];
-  [v6 setCornerCurve:kCACornerCurveContinuous];
+  layer2 = [v3 layer];
+  [layer2 setCornerCurve:kCACornerCurveContinuous];
 
-  v7 = [(BKTOCTableViewCell *)self traitCollection];
-  v8 = dbl_193280[[v7 userInterfaceStyle] == &dword_0 + 2];
+  traitCollection = [(BKTOCTableViewCell *)self traitCollection];
+  v8 = dbl_193280[[traitCollection userInterfaceStyle] == &dword_0 + 2];
 
   v9 = +[UIColor tintColor];
   v10 = [v9 colorWithAlphaComponent:v8];
@@ -665,22 +665,22 @@ LABEL_39:
   return v3;
 }
 
-- (void)setVertical:(BOOL)a3
+- (void)setVertical:(BOOL)vertical
 {
-  if ([(BKTOCTableViewCell *)self isVertical]!= a3)
+  if ([(BKTOCTableViewCell *)self isVertical]!= vertical)
   {
-    self->_vertical = a3;
+    self->_vertical = vertical;
 
     [(BKTOCTableViewCell *)self _adjustLabelTextAlignment];
   }
 }
 
-- (void)displayHTMLWithContents:(id)a3 fontFamily:(id)a4 fontSize:(double)a5 maxSpan:(double)a6 baseURL:(id)a7
+- (void)displayHTMLWithContents:(id)contents fontFamily:(id)family fontSize:(double)size maxSpan:(double)span baseURL:(id)l
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [(BKTOCTableViewCell *)self contentView];
-  [v12 bounds];
+  familyCopy = family;
+  contentsCopy = contents;
+  contentView = [(BKTOCTableViewCell *)self contentView];
+  [contentView bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -692,8 +692,8 @@ LABEL_39:
   v28 = v20 - (v23 + v27);
 
   vertical = self->_vertical;
-  v30 = [(BKTOCTableViewCell *)self pageLabel];
-  [v30 frame];
+  pageLabel = [(BKTOCTableViewCell *)self pageLabel];
+  [pageLabel frame];
   if (vertical)
   {
     Height = CGRectGetHeight(*&v31);
@@ -716,16 +716,16 @@ LABEL_39:
   v55.size.width = v26;
   v55.size.height = v28;
   Width = CGRectGetWidth(v55);
-  v39 = [(BKTOCTableViewCell *)self indentationLevel];
+  indentationLevel = [(BKTOCTableViewCell *)self indentationLevel];
   [(BKTOCTableViewCell *)self indentationWidth];
   v41 = v40;
   self->_hasHTMLTitle = 1;
   v42 = [NSString alloc];
   v43 = [NSNumber numberWithBool:self->_vertical];
-  v44 = [v42 initWithFormat:@"%@-%f.0-%@-%@", v10, *&a5, v43, v11];
+  contentsCopy = [v42 initWithFormat:@"%@-%f.0-%@-%@", familyCopy, *&size, v43, contentsCopy];
 
   cacheKey = self->_cacheKey;
-  self->_cacheKey = v44;
+  self->_cacheKey = contentsCopy;
 
   v46 = [[NSString alloc] initWithFormat:@"%@-selected", self->_cacheKey];
   selectedCacheKey = self->_selectedCacheKey;
@@ -739,75 +739,75 @@ LABEL_39:
       v48 = 0.0;
     }
 
-    v49 = [[UIImageView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, Width - v48 - v39 * v41, v37}];
+    v49 = [[UIImageView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, Width - v48 - indentationLevel * v41, v37}];
     cachedImageView = self->_cachedImageView;
     self->_cachedImageView = v49;
 
     [(UIImageView *)self->_cachedImageView setAutoresizingMask:2];
     [(UIImageView *)self->_cachedImageView setUserInteractionEnabled:0];
     [(UIImageView *)self->_cachedImageView setContentMode:8];
-    v51 = &dword_0 + 1;
+    isHighlighted = &dword_0 + 1;
     [(UIImageView *)self->_cachedImageView setClipsToBounds:1];
-    v52 = [(BKTOCTableViewCell *)self contentView];
-    [v52 addSubview:self->_cachedImageView];
+    contentView2 = [(BKTOCTableViewCell *)self contentView];
+    [contentView2 addSubview:self->_cachedImageView];
 
     if (([(BKTOCTableViewCell *)self isSelected]& 1) == 0)
     {
-      v51 = [(BKTOCTableViewCell *)self isHighlighted];
+      isHighlighted = [(BKTOCTableViewCell *)self isHighlighted];
     }
 
-    [(BKTOCTableViewCell *)self _setSelectedAppearance:v51];
+    [(BKTOCTableViewCell *)self _setSelectedAppearance:isHighlighted];
   }
 }
 
 - (void)_syncVerticalLabel
 {
-  v3 = [(BKTOCTableViewCell *)self textLabel];
-  [v3 frame];
+  textLabel = [(BKTOCTableViewCell *)self textLabel];
+  [textLabel frame];
   [(BKVerticalLabel *)self->_verticalLabel setFrame:?];
 
-  v4 = [(BKTOCTableViewCell *)self textLabel];
-  v5 = [v4 backgroundColor];
-  [(BKVerticalLabel *)self->_verticalLabel setBackgroundColor:v5];
+  textLabel2 = [(BKTOCTableViewCell *)self textLabel];
+  backgroundColor = [textLabel2 backgroundColor];
+  [(BKVerticalLabel *)self->_verticalLabel setBackgroundColor:backgroundColor];
 
-  v6 = [(BKTOCTableViewCell *)self textLabel];
-  -[BKVerticalLabel setAutoresizingMask:](self->_verticalLabel, "setAutoresizingMask:", [v6 autoresizingMask]);
+  textLabel3 = [(BKTOCTableViewCell *)self textLabel];
+  -[BKVerticalLabel setAutoresizingMask:](self->_verticalLabel, "setAutoresizingMask:", [textLabel3 autoresizingMask]);
 
-  v7 = [(BKTOCTableViewCell *)self textLabel];
-  v8 = [v7 text];
-  [(BKVerticalLabel *)self->_verticalLabel setText:v8];
+  textLabel4 = [(BKTOCTableViewCell *)self textLabel];
+  text = [textLabel4 text];
+  [(BKVerticalLabel *)self->_verticalLabel setText:text];
 
-  v9 = [(BKTOCTableViewCell *)self textLabel];
-  v10 = [v9 font];
-  [(BKVerticalLabel *)self->_verticalLabel setFont:v10];
+  textLabel5 = [(BKTOCTableViewCell *)self textLabel];
+  font = [textLabel5 font];
+  [(BKVerticalLabel *)self->_verticalLabel setFont:font];
 
-  v11 = [(BKTOCTableViewCell *)self textLabel];
-  v12 = [v11 textColor];
-  [(BKVerticalLabel *)self->_verticalLabel setTextColor:v12];
+  textLabel6 = [(BKTOCTableViewCell *)self textLabel];
+  textColor = [textLabel6 textColor];
+  [(BKVerticalLabel *)self->_verticalLabel setTextColor:textColor];
 
-  v13 = [(BKTOCTableViewCell *)self textLabel];
-  v14 = [v13 shadowColor];
-  [(BKVerticalLabel *)self->_verticalLabel setShadowColor:v14];
+  textLabel7 = [(BKTOCTableViewCell *)self textLabel];
+  shadowColor = [textLabel7 shadowColor];
+  [(BKVerticalLabel *)self->_verticalLabel setShadowColor:shadowColor];
 
-  v15 = [(BKVerticalLabel *)self->_verticalLabel text];
-  [v15 rangeOfString:@"“"];
+  text2 = [(BKVerticalLabel *)self->_verticalLabel text];
+  [text2 rangeOfString:@"“"];
   v17 = v16;
 
   if (v17)
   {
-    v18 = [(BKVerticalLabel *)self->_verticalLabel text];
-    v19 = [v18 stringByReplacingOccurrencesOfString:@"“" withString:@"〝"];
+    text3 = [(BKVerticalLabel *)self->_verticalLabel text];
+    v19 = [text3 stringByReplacingOccurrencesOfString:@"“" withString:@"〝"];
     [(BKVerticalLabel *)self->_verticalLabel setText:v19];
   }
 
-  v20 = [(BKVerticalLabel *)self->_verticalLabel text];
-  [v20 rangeOfString:@"”"];
+  text4 = [(BKVerticalLabel *)self->_verticalLabel text];
+  [text4 rangeOfString:@"”"];
   v22 = v21;
 
   if (v22)
   {
-    v24 = [(BKVerticalLabel *)self->_verticalLabel text];
-    v23 = [v24 stringByReplacingOccurrencesOfString:@"”" withString:@"〟"];
+    text5 = [(BKVerticalLabel *)self->_verticalLabel text];
+    v23 = [text5 stringByReplacingOccurrencesOfString:@"”" withString:@"〟"];
     [(BKVerticalLabel *)self->_verticalLabel setText:v23];
   }
 }
@@ -820,14 +820,14 @@ LABEL_39:
     if (!verticalLabel)
     {
       v4 = [BKVerticalLabel alloc];
-      v5 = [(BKTOCTableViewCell *)self textLabel];
-      [v5 frame];
+      textLabel = [(BKTOCTableViewCell *)self textLabel];
+      [textLabel frame];
       v6 = [(BKVerticalLabel *)v4 initWithFrame:?];
       v7 = self->_verticalLabel;
       self->_verticalLabel = v6;
 
-      v8 = [(BKTOCTableViewCell *)self contentView];
-      [v8 addSubview:self->_verticalLabel];
+      contentView = [(BKTOCTableViewCell *)self contentView];
+      [contentView addSubview:self->_verticalLabel];
 
       [(BKTOCTableViewCell *)self _syncVerticalLabel];
       verticalLabel = self->_verticalLabel;
@@ -839,30 +839,30 @@ LABEL_39:
 
   else
   {
-    v10 = [(BKTOCTableViewCell *)self effectiveUserInterfaceLayoutDirection];
+    effectiveUserInterfaceLayoutDirection = [(BKTOCTableViewCell *)self effectiveUserInterfaceLayoutDirection];
     v11 = self->_verticalLabel;
     if (v11)
     {
       [(BKVerticalLabel *)v11 setHidden:1];
     }
 
-    v12 = [(BKTOCTableViewCell *)self textLabel];
-    [v12 setTextAlignment:2 * (v10 == &dword_0 + 1)];
+    textLabel2 = [(BKTOCTableViewCell *)self textLabel];
+    [textLabel2 setTextAlignment:2 * (effectiveUserInterfaceLayoutDirection == &dword_0 + 1)];
 
-    v9 = 2 * (v10 != &dword_0 + 1);
+    v9 = 2 * (effectiveUserInterfaceLayoutDirection != &dword_0 + 1);
   }
 
-  v13 = [(BKTOCTableViewCell *)self pageLabel];
-  [v13 setTextAlignment:v9];
+  pageLabel = [(BKTOCTableViewCell *)self pageLabel];
+  [pageLabel setTextAlignment:v9];
 }
 
-+ (CGSize)titleSizeForText:(id)a3 indentation:(int64_t)a4 font:(id)a5 width:(double)a6
++ (CGSize)titleSizeForText:(id)text indentation:(int64_t)indentation font:(id)font width:(double)width
 {
   v29 = NSFontAttributeName;
-  v30 = a5;
-  v9 = a5;
-  v10 = a3;
-  v11 = [NSDictionary dictionaryWithObjects:&v30 forKeys:&v29 count:1];
+  fontCopy = font;
+  fontCopy2 = font;
+  textCopy = text;
+  v11 = [NSDictionary dictionaryWithObjects:&fontCopy forKeys:&v29 count:1];
   [@"8888" sizeWithAttributes:v11];
   v13 = v12;
   v15 = v14;
@@ -880,12 +880,12 @@ LABEL_39:
     v17 = v13 + 10.0;
   }
 
-  v19 = a6 - v17 - v18 - (10 * a4);
+  v19 = width - v17 - v18 - (10 * indentation);
   v27 = NSFontAttributeName;
-  v28 = v9;
+  v28 = fontCopy2;
   v20 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
 
-  [v10 boundingRectWithSize:3 options:v20 attributes:0 context:{v19, 1000.0}];
+  [textCopy boundingRectWithSize:3 options:v20 attributes:0 context:{v19, 1000.0}];
   v22 = v21;
   v24 = v23;
 
@@ -901,17 +901,17 @@ LABEL_39:
   return result;
 }
 
-+ (CGSize)sizeForText:(id)a3 indentation:(int64_t)a4 font:(id)a5 width:(double)a6
++ (CGSize)sizeForText:(id)text indentation:(int64_t)indentation font:(id)font width:(double)width
 {
-  [a1 titleSizeForText:a3 indentation:a4 font:a5 width:?];
+  [self titleSizeForText:text indentation:indentation font:font width:?];
   v8 = v7 + 24.0;
-  v9 = a6;
+  widthCopy = width;
   result.height = v8;
-  result.width = v9;
+  result.width = widthCopy;
   return result;
 }
 
-+ (double)maxSpanForTextWithIndentation:(int64_t)a3 font:(id)a4 width:(double)a5
++ (double)maxSpanForTextWithIndentation:(int64_t)indentation font:(id)font width:(double)width
 {
   v7 = isPad();
   v8 = 0.0;
@@ -920,7 +920,7 @@ LABEL_39:
     v8 = 26.0;
   }
 
-  return a5 - v8 - (10 * a3);
+  return width - v8 - (10 * indentation);
 }
 
 - (UIEdgeInsets)contentInsets

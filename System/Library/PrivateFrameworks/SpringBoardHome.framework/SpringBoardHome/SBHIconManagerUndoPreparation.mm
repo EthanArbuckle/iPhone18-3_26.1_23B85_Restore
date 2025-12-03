@@ -1,26 +1,26 @@
 @interface SBHIconManagerUndoPreparation
 - (SBHIconManager)iconManager;
-- (SBHIconManagerUndoPreparation)initWithIconManager:(id)a3;
+- (SBHIconManagerUndoPreparation)initWithIconManager:(id)manager;
 - (SBHUndoObserving)observer;
 - (SBRootFolder)originalRootFolder;
-- (void)registerWithUndoManager:(id)a3 actionName:(id)a4 observer:(id)a5;
+- (void)registerWithUndoManager:(id)manager actionName:(id)name observer:(id)observer;
 @end
 
 @implementation SBHIconManagerUndoPreparation
 
-- (SBHIconManagerUndoPreparation)initWithIconManager:(id)a3
+- (SBHIconManagerUndoPreparation)initWithIconManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = SBHIconManagerUndoPreparation;
   v5 = [(SBHIconManagerUndoPreparation *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_iconManager, v4);
-    v7 = [v4 rootFolder];
-    objc_storeWeak(&v6->_originalRootFolder, v7);
-    v8 = [v7 copy];
+    objc_storeWeak(&v5->_iconManager, managerCopy);
+    rootFolder = [managerCopy rootFolder];
+    objc_storeWeak(&v6->_originalRootFolder, rootFolder);
+    v8 = [rootFolder copy];
     unmodifiedOriginalRootFolder = v6->_unmodifiedOriginalRootFolder;
     v6->_unmodifiedOriginalRootFolder = v8;
   }
@@ -28,13 +28,13 @@
   return v6;
 }
 
-- (void)registerWithUndoManager:(id)a3 actionName:(id)a4 observer:(id)a5
+- (void)registerWithUndoManager:(id)manager actionName:(id)name observer:(id)observer
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(SBHIconManagerUndoPreparation *)self iconManager];
-  [v11 undoPreparation:self registerWithUndoManager:v10 actionName:v9 observer:v8];
+  observerCopy = observer;
+  nameCopy = name;
+  managerCopy = manager;
+  iconManager = [(SBHIconManagerUndoPreparation *)self iconManager];
+  [iconManager undoPreparation:self registerWithUndoManager:managerCopy actionName:nameCopy observer:observerCopy];
 }
 
 - (SBHIconManager)iconManager

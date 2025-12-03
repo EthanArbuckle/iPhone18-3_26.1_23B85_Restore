@@ -1,30 +1,30 @@
 @interface APPBMediaAsset
-- (BOOL)isEqual:(id)a3;
-- (id)codecAsString:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)deliveryProtocolAsString:(int)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)codecAsString:(int)string;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)deliveryProtocolAsString:(int)string;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)mIMETypeAsString:(int)a3;
-- (int)StringAsCodec:(id)a3;
-- (int)StringAsDeliveryProtocol:(id)a3;
-- (int)StringAsMIMEType:(id)a3;
+- (id)mIMETypeAsString:(int)string;
+- (int)StringAsCodec:(id)codec;
+- (int)StringAsDeliveryProtocol:(id)protocol;
+- (int)StringAsMIMEType:(id)type;
 - (int)codec;
 - (int)deliveryProtocol;
 - (int)mIMEType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCodec:(BOOL)a3;
-- (void)setHasDeliveryProtocol:(BOOL)a3;
-- (void)setHasHeight:(BOOL)a3;
-- (void)setHasMIMEType:(BOOL)a3;
-- (void)setHasMaintainAspectRatio:(BOOL)a3;
-- (void)setHasMaxBitrate:(BOOL)a3;
-- (void)setHasMinBitrate:(BOOL)a3;
-- (void)setHasScalable:(BOOL)a3;
-- (void)setHasWidth:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCodec:(BOOL)codec;
+- (void)setHasDeliveryProtocol:(BOOL)protocol;
+- (void)setHasHeight:(BOOL)height;
+- (void)setHasMIMEType:(BOOL)type;
+- (void)setHasMaintainAspectRatio:(BOOL)ratio;
+- (void)setHasMaxBitrate:(BOOL)bitrate;
+- (void)setHasMinBitrate:(BOOL)bitrate;
+- (void)setHasScalable:(BOOL)scalable;
+- (void)setHasWidth:(BOOL)width;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBMediaAsset
@@ -42,9 +42,9 @@
   }
 }
 
-- (void)setHasDeliveryProtocol:(BOOL)a3
+- (void)setHasDeliveryProtocol:(BOOL)protocol
 {
-  if (a3)
+  if (protocol)
   {
     v3 = 16;
   }
@@ -57,33 +57,33 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (id)deliveryProtocolAsString:(int)a3
+- (id)deliveryProtocolAsString:(int)string
 {
-  if (a3 == 1)
+  if (string == 1)
   {
     v4 = @"progressive";
   }
 
-  else if (a3 == 2)
+  else if (string == 2)
   {
     v4 = @"streaming";
   }
 
   else
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   return v4;
 }
 
-- (int)StringAsDeliveryProtocol:(id)a3
+- (int)StringAsDeliveryProtocol:(id)protocol
 {
-  v3 = a3;
+  protocolCopy = protocol;
   v4 = 1;
-  if (([v3 isEqualToString:@"progressive"] & 1) == 0)
+  if (([protocolCopy isEqualToString:@"progressive"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"streaming"])
+    if ([protocolCopy isEqualToString:@"streaming"])
     {
       v4 = 2;
     }
@@ -110,9 +110,9 @@
   }
 }
 
-- (void)setHasMIMEType:(BOOL)a3
+- (void)setHasMIMEType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 64;
   }
@@ -125,40 +125,40 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (id)mIMETypeAsString:(int)a3
+- (id)mIMETypeAsString:(int)string
 {
-  if ((a3 - 1) >= 4)
+  if ((string - 1) >= 4)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_10047D0F8 + (a3 - 1));
+    v4 = *(&off_10047D0F8 + (string - 1));
   }
 
   return v4;
 }
 
-- (int)StringAsMIMEType:(id)a3
+- (int)StringAsMIMEType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"mov"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"mov"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"mp4"])
+  else if ([typeCopy isEqualToString:@"mp4"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"m4v"])
+  else if ([typeCopy isEqualToString:@"m4v"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"threeGP"])
+  else if ([typeCopy isEqualToString:@"threeGP"])
   {
     v4 = 4;
   }
@@ -184,9 +184,9 @@
   }
 }
 
-- (void)setHasCodec:(BOOL)a3
+- (void)setHasCodec:(BOOL)codec
 {
-  if (a3)
+  if (codec)
   {
     v3 = 8;
   }
@@ -199,35 +199,35 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (id)codecAsString:(int)a3
+- (id)codecAsString:(int)string
 {
-  if ((a3 - 1) >= 3)
+  if ((string - 1) >= 3)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_10047D118 + (a3 - 1));
+    v4 = *(&off_10047D118 + (string - 1));
   }
 
   return v4;
 }
 
-- (int)StringAsCodec:(id)a3
+- (int)StringAsCodec:(id)codec
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"H264"])
+  codecCopy = codec;
+  if ([codecCopy isEqualToString:@"H264"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"MPEG4"])
+  else if ([codecCopy isEqualToString:@"MPEG4"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"AACLC"])
+  else if ([codecCopy isEqualToString:@"AACLC"])
   {
     v4 = 3;
   }
@@ -240,9 +240,9 @@
   return v4;
 }
 
-- (void)setHasWidth:(BOOL)a3
+- (void)setHasWidth:(BOOL)width
 {
-  if (a3)
+  if (width)
   {
     v3 = 128;
   }
@@ -255,9 +255,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasHeight:(BOOL)a3
+- (void)setHasHeight:(BOOL)height
 {
-  if (a3)
+  if (height)
   {
     v3 = 32;
   }
@@ -270,9 +270,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasMinBitrate:(BOOL)a3
+- (void)setHasMinBitrate:(BOOL)bitrate
 {
-  if (a3)
+  if (bitrate)
   {
     v3 = 4;
   }
@@ -285,9 +285,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasMaxBitrate:(BOOL)a3
+- (void)setHasMaxBitrate:(BOOL)bitrate
 {
-  if (a3)
+  if (bitrate)
   {
     v3 = 2;
   }
@@ -300,9 +300,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasScalable:(BOOL)a3
+- (void)setHasScalable:(BOOL)scalable
 {
-  if (a3)
+  if (scalable)
   {
     v3 = 512;
   }
@@ -315,9 +315,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasMaintainAspectRatio:(BOOL)a3
+- (void)setHasMaintainAspectRatio:(BOOL)ratio
 {
-  if (a3)
+  if (ratio)
   {
     v3 = 256;
   }
@@ -335,8 +335,8 @@
   v7.receiver = self;
   v7.super_class = APPBMediaAsset;
   v3 = [(APPBMediaAsset *)&v7 description];
-  v4 = [(APPBMediaAsset *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBMediaAsset *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -537,15 +537,15 @@ LABEL_31:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_mediaURL)
   {
     sub_100393F3C();
   }
 
-  v7 = v4;
+  v7 = toCopy;
   PBDataWriterWriteStringField();
   if (self->_identifier)
   {
@@ -689,21 +689,21 @@ LABEL_16:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v6 = a3;
-  [v6 setMediaURL:self->_mediaURL];
+  toCopy = to;
+  [toCopy setMediaURL:self->_mediaURL];
   if (self->_identifier)
   {
-    [v6 setIdentifier:?];
+    [toCopy setIdentifier:?];
   }
 
   has = self->_has;
-  v5 = v6;
+  v5 = toCopy;
   if ((has & 0x10) != 0)
   {
-    *(v6 + 11) = self->_deliveryProtocol;
-    *(v6 + 44) |= 0x10u;
+    *(toCopy + 11) = self->_deliveryProtocol;
+    *(toCopy + 44) |= 0x10u;
     has = self->_has;
     if ((has & 0x40) == 0)
     {
@@ -722,8 +722,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v6 + 16) = self->_mIMEType;
-  *(v6 + 44) |= 0x40u;
+  *(toCopy + 16) = self->_mIMEType;
+  *(toCopy + 44) |= 0x40u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -737,8 +737,8 @@ LABEL_6:
   }
 
 LABEL_21:
-  *(v6 + 10) = self->_codec;
-  *(v6 + 44) |= 8u;
+  *(toCopy + 10) = self->_codec;
+  *(toCopy + 44) |= 8u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -752,8 +752,8 @@ LABEL_7:
   }
 
 LABEL_22:
-  *(v6 + 20) = self->_width;
-  *(v6 + 44) |= 0x80u;
+  *(toCopy + 20) = self->_width;
+  *(toCopy + 44) |= 0x80u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -767,8 +767,8 @@ LABEL_8:
   }
 
 LABEL_23:
-  *(v6 + 12) = self->_height;
-  *(v6 + 44) |= 0x20u;
+  *(toCopy + 12) = self->_height;
+  *(toCopy + 44) |= 0x20u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -782,8 +782,8 @@ LABEL_9:
   }
 
 LABEL_24:
-  *(v6 + 1) = *&self->_bitrate;
-  *(v6 + 44) |= 1u;
+  *(toCopy + 1) = *&self->_bitrate;
+  *(toCopy + 44) |= 1u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -797,8 +797,8 @@ LABEL_10:
   }
 
 LABEL_25:
-  *(v6 + 3) = *&self->_minBitrate;
-  *(v6 + 44) |= 4u;
+  *(toCopy + 3) = *&self->_minBitrate;
+  *(toCopy + 44) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -812,8 +812,8 @@ LABEL_11:
   }
 
 LABEL_26:
-  *(v6 + 2) = *&self->_maxBitrate;
-  *(v6 + 44) |= 2u;
+  *(toCopy + 2) = *&self->_maxBitrate;
+  *(toCopy + 44) |= 2u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -827,31 +827,31 @@ LABEL_12:
   }
 
 LABEL_27:
-  *(v6 + 85) = self->_scalable;
-  *(v6 + 44) |= 0x200u;
+  *(toCopy + 85) = self->_scalable;
+  *(toCopy + 44) |= 0x200u;
   if ((*&self->_has & 0x100) != 0)
   {
 LABEL_13:
-    *(v6 + 84) = self->_maintainAspectRatio;
-    *(v6 + 44) |= 0x100u;
+    *(toCopy + 84) = self->_maintainAspectRatio;
+    *(toCopy + 44) |= 0x100u;
   }
 
 LABEL_14:
   if (self->_apiFramework)
   {
-    [v6 setApiFramework:?];
-    v5 = v6;
+    [toCopy setApiFramework:?];
+    v5 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_mediaURL copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_mediaURL copyWithZone:zone];
   v7 = v5[9];
   v5[9] = v6;
 
-  v8 = [(NSString *)self->_identifier copyWithZone:a3];
+  v8 = [(NSString *)self->_identifier copyWithZone:zone];
   v9 = v5[7];
   v5[7] = v8;
 
@@ -993,23 +993,23 @@ LABEL_11:
   }
 
 LABEL_12:
-  v11 = [(NSString *)self->_apiFramework copyWithZone:a3];
+  v11 = [(NSString *)self->_apiFramework copyWithZone:zone];
   v12 = v5[4];
   v5[4] = v11;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_64;
   }
 
   mediaURL = self->_mediaURL;
-  if (mediaURL | *(v4 + 9))
+  if (mediaURL | *(equalCopy + 9))
   {
     if (![(NSString *)mediaURL isEqual:?])
     {
@@ -1018,7 +1018,7 @@ LABEL_12:
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 7))
+  if (identifier | *(equalCopy + 7))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -1027,10 +1027,10 @@ LABEL_12:
   }
 
   has = self->_has;
-  v8 = *(v4 + 44);
+  v8 = *(equalCopy + 44);
   if ((has & 0x10) != 0)
   {
-    if ((v8 & 0x10) == 0 || self->_deliveryProtocol != *(v4 + 11))
+    if ((v8 & 0x10) == 0 || self->_deliveryProtocol != *(equalCopy + 11))
     {
       goto LABEL_64;
     }
@@ -1043,7 +1043,7 @@ LABEL_12:
 
   if ((has & 0x40) != 0)
   {
-    if ((v8 & 0x40) == 0 || self->_mIMEType != *(v4 + 16))
+    if ((v8 & 0x40) == 0 || self->_mIMEType != *(equalCopy + 16))
     {
       goto LABEL_64;
     }
@@ -1056,7 +1056,7 @@ LABEL_12:
 
   if ((has & 8) != 0)
   {
-    if ((v8 & 8) == 0 || self->_codec != *(v4 + 10))
+    if ((v8 & 8) == 0 || self->_codec != *(equalCopy + 10))
     {
       goto LABEL_64;
     }
@@ -1069,7 +1069,7 @@ LABEL_12:
 
   if ((has & 0x80) != 0)
   {
-    if ((v8 & 0x80) == 0 || self->_width != *(v4 + 20))
+    if ((v8 & 0x80) == 0 || self->_width != *(equalCopy + 20))
     {
       goto LABEL_64;
     }
@@ -1082,7 +1082,7 @@ LABEL_12:
 
   if ((has & 0x20) != 0)
   {
-    if ((v8 & 0x20) == 0 || self->_height != *(v4 + 12))
+    if ((v8 & 0x20) == 0 || self->_height != *(equalCopy + 12))
     {
       goto LABEL_64;
     }
@@ -1095,7 +1095,7 @@ LABEL_12:
 
   if (has)
   {
-    if ((v8 & 1) == 0 || self->_bitrate != *(v4 + 1))
+    if ((v8 & 1) == 0 || self->_bitrate != *(equalCopy + 1))
     {
       goto LABEL_64;
     }
@@ -1108,7 +1108,7 @@ LABEL_12:
 
   if ((has & 4) != 0)
   {
-    if ((v8 & 4) == 0 || self->_minBitrate != *(v4 + 3))
+    if ((v8 & 4) == 0 || self->_minBitrate != *(equalCopy + 3))
     {
       goto LABEL_64;
     }
@@ -1121,7 +1121,7 @@ LABEL_12:
 
   if ((has & 2) != 0)
   {
-    if ((v8 & 2) == 0 || self->_maxBitrate != *(v4 + 2))
+    if ((v8 & 2) == 0 || self->_maxBitrate != *(equalCopy + 2))
     {
       goto LABEL_64;
     }
@@ -1134,33 +1134,33 @@ LABEL_12:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 44) & 0x200) == 0)
+    if ((*(equalCopy + 44) & 0x200) == 0)
     {
       goto LABEL_64;
     }
 
     if (self->_scalable)
     {
-      if ((*(v4 + 85) & 1) == 0)
+      if ((*(equalCopy + 85) & 1) == 0)
       {
         goto LABEL_64;
       }
     }
 
-    else if (*(v4 + 85))
+    else if (*(equalCopy + 85))
     {
       goto LABEL_64;
     }
   }
 
-  else if ((*(v4 + 44) & 0x200) != 0)
+  else if ((*(equalCopy + 44) & 0x200) != 0)
   {
     goto LABEL_64;
   }
 
   if ((*&self->_has & 0x100) == 0)
   {
-    if ((*(v4 + 44) & 0x100) == 0)
+    if ((*(equalCopy + 44) & 0x100) == 0)
     {
       goto LABEL_50;
     }
@@ -1170,27 +1170,27 @@ LABEL_64:
     goto LABEL_65;
   }
 
-  if ((*(v4 + 44) & 0x100) == 0)
+  if ((*(equalCopy + 44) & 0x100) == 0)
   {
     goto LABEL_64;
   }
 
   if (self->_maintainAspectRatio)
   {
-    if ((*(v4 + 84) & 1) == 0)
+    if ((*(equalCopy + 84) & 1) == 0)
     {
       goto LABEL_64;
     }
   }
 
-  else if (*(v4 + 84))
+  else if (*(equalCopy + 84))
   {
     goto LABEL_64;
   }
 
 LABEL_50:
   apiFramework = self->_apiFramework;
-  if (apiFramework | *(v4 + 4))
+  if (apiFramework | *(equalCopy + 4))
   {
     v10 = [(NSString *)apiFramework isEqual:?];
   }
@@ -1404,28 +1404,28 @@ LABEL_37:
   return v4 ^ v3 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v16 ^ v17 ^ v21 ^ v25 ^ v26 ^ [(NSString *)self->_apiFramework hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 9))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 9))
   {
     [(APPBMediaAsset *)self setMediaURL:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(APPBMediaAsset *)self setIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x10) != 0)
   {
-    self->_deliveryProtocol = *(v4 + 11);
+    self->_deliveryProtocol = *(fromCopy + 11);
     *&self->_has |= 0x10u;
-    v5 = *(v4 + 44);
+    v5 = *(fromCopy + 44);
     if ((v5 & 0x40) == 0)
     {
 LABEL_7:
@@ -1443,9 +1443,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  self->_mIMEType = *(v4 + 16);
+  self->_mIMEType = *(fromCopy + 16);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 8) == 0)
   {
 LABEL_8:
@@ -1458,9 +1458,9 @@ LABEL_8:
   }
 
 LABEL_23:
-  self->_codec = *(v4 + 10);
+  self->_codec = *(fromCopy + 10);
   *&self->_has |= 8u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x80) == 0)
   {
 LABEL_9:
@@ -1473,9 +1473,9 @@ LABEL_9:
   }
 
 LABEL_24:
-  self->_width = *(v4 + 20);
+  self->_width = *(fromCopy + 20);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x20) == 0)
   {
 LABEL_10:
@@ -1488,9 +1488,9 @@ LABEL_10:
   }
 
 LABEL_25:
-  self->_height = *(v4 + 12);
+  self->_height = *(fromCopy + 12);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 1) == 0)
   {
 LABEL_11:
@@ -1503,9 +1503,9 @@ LABEL_11:
   }
 
 LABEL_26:
-  self->_bitrate = *(v4 + 1);
+  self->_bitrate = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 4) == 0)
   {
 LABEL_12:
@@ -1518,9 +1518,9 @@ LABEL_12:
   }
 
 LABEL_27:
-  self->_minBitrate = *(v4 + 3);
+  self->_minBitrate = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 2) == 0)
   {
 LABEL_13:
@@ -1533,9 +1533,9 @@ LABEL_13:
   }
 
 LABEL_28:
-  self->_maxBitrate = *(v4 + 2);
+  self->_maxBitrate = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x200) == 0)
   {
 LABEL_14:
@@ -1548,20 +1548,20 @@ LABEL_14:
   }
 
 LABEL_29:
-  self->_scalable = *(v4 + 85);
+  self->_scalable = *(fromCopy + 85);
   *&self->_has |= 0x200u;
-  if ((*(v4 + 44) & 0x100) != 0)
+  if ((*(fromCopy + 44) & 0x100) != 0)
   {
 LABEL_15:
-    self->_maintainAspectRatio = *(v4 + 84);
+    self->_maintainAspectRatio = *(fromCopy + 84);
     *&self->_has |= 0x100u;
   }
 
 LABEL_16:
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(APPBMediaAsset *)self setApiFramework:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

@@ -1,36 +1,36 @@
 @interface PCHDBSCANClustering
-- (PCHDBSCANClustering)initWithConfig:(id)a3;
+- (PCHDBSCANClustering)initWithConfig:(id)config;
 - (id)getClusterLabels;
-- (id)getDistanceArrayFrom:(id)a3 toEmbeddings:(id)a4;
+- (id)getDistanceArrayFrom:(id)from toEmbeddings:(id)embeddings;
 - (id)getMembershipProbability;
 - (id)getNormalizedClusterLabels;
 - (id)getOutlierScoreDict;
 - (vector<std::vector<double>,)_getDistanceMatrixFrom:(PCHDBSCANClustering *)self;
-- (void)loadDistanceMatrix:()vector<std:(std::allocator<std::vector<double>>> *)a3 :vector<double>;
-- (void)runHDBSCANClusteringOn:(id)a3;
+- (void)loadDistanceMatrix:()vector<std:(std::allocator<std::vector<double>>> *)std :vector<double>;
+- (void)runHDBSCANClusteringOn:(id)on;
 @end
 
 @implementation PCHDBSCANClustering
 
-- (PCHDBSCANClustering)initWithConfig:(id)a3
+- (PCHDBSCANClustering)initWithConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v8.receiver = self;
   v8.super_class = PCHDBSCANClustering;
   v6 = [(PCHDBSCANClustering *)&v8 init];
   if (v6)
   {
-    objc_storeStrong(&v6->_config, a3);
+    objc_storeStrong(&v6->_config, config);
     operator new();
   }
 
   return 0;
 }
 
-- (void)runHDBSCANClusteringOn:(id)a3
+- (void)runHDBSCANClusteringOn:(id)on
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  onCopy = on;
   v5 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -43,7 +43,7 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = v4;
+  v7 = onCopy;
   v8 = [v7 countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v8)
   {
@@ -58,8 +58,8 @@
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
-        v12 = [v11 bundleIdentifier];
-        v13 = v12 == 0;
+        bundleIdentifier = [v11 bundleIdentifier];
+        v13 = bundleIdentifier == 0;
 
         if (v13)
         {
@@ -74,9 +74,9 @@
           goto LABEL_19;
         }
 
-        v14 = [v11 bundleIdentifier];
-        v15 = [v14 UUIDString];
-        [v6 addObject:v15];
+        bundleIdentifier2 = [v11 bundleIdentifier];
+        uUIDString = [bundleIdentifier2 UUIDString];
+        [v6 addObject:uUIDString];
       }
 
       v8 = [v7 countByEnumeratingWithState:&v24 objects:v30 count:16];
@@ -98,12 +98,12 @@
     [(PCHDBSCANClustering *)self loadDistanceMatrix:v23];
     *v28 = v23;
     std::vector<std::vector<double>>::__destroy_vector::operator()[abi:ne200100](v28);
-    v16 = [(PCDistanceWeightingConfig *)self->_config minPoints];
-    v17 = [(PCDistanceWeightingConfig *)self->_config minClusterSize];
+    minPoints = [(PCDistanceWeightingConfig *)self->_config minPoints];
+    minClusterSize = [(PCDistanceWeightingConfig *)self->_config minClusterSize];
     ptr = self->_HDBSCAN.__ptr_;
     *(&__p.__r_.__value_.__s + 23) = 0;
     __p.__r_.__value_.__s.__data_[0] = 0;
-    Hdbscan::execute(ptr, v16, v17, &__p);
+    Hdbscan::execute(ptr, minPoints, minClusterSize, &__p);
   }
 
   v20 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
@@ -285,8 +285,8 @@ LABEL_19:
         {
           v10 = [v17 objectAtIndexedSubscript:i];
           v11 = [v17 objectAtIndexedSubscript:j];
-          v12 = [(PCDistanceWeightingConfig *)self->_config weights];
-          [v10 getDistanceFrom:v11 withWeights:v12];
+          weights = [(PCDistanceWeightingConfig *)self->_config weights];
+          [v10 getDistanceFrom:v11 withWeights:weights];
           v14 = v13;
 
           var0 = retstr->var0;
@@ -301,19 +301,19 @@ LABEL_19:
   return result;
 }
 
-- (id)getDistanceArrayFrom:(id)a3 toEmbeddings:(id)a4
+- (id)getDistanceArrayFrom:(id)from toEmbeddings:(id)embeddings
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 count];
+  fromCopy = from;
+  embeddingsCopy = embeddings;
+  v8 = [embeddingsCopy count];
   std::vector<double>::vector[abi:ne200100](&v20, v8);
   if (v8)
   {
     for (i = 0; i != v8; ++i)
     {
-      v10 = [v7 objectAtIndexedSubscript:i];
-      v11 = [(PCDistanceWeightingConfig *)self->_config weights];
-      [v6 getDistanceFrom:v10 withWeights:v11];
+      v10 = [embeddingsCopy objectAtIndexedSubscript:i];
+      weights = [(PCDistanceWeightingConfig *)self->_config weights];
+      [fromCopy getDistanceFrom:v10 withWeights:weights];
       v13 = v12;
 
       v14 = v20;
@@ -352,7 +352,7 @@ LABEL_19:
   return v15;
 }
 
-- (void)loadDistanceMatrix:()vector<std:(std::allocator<std::vector<double>>> *)a3 :vector<double>
+- (void)loadDistanceMatrix:()vector<std:(std::allocator<std::vector<double>>> *)std :vector<double>
 {
   ptr = self->_HDBSCAN.__ptr_;
   if (ptr)
@@ -360,7 +360,7 @@ LABEL_19:
     v5 = 0;
     v6 = 0;
     v7 = 0;
-    std::vector<std::vector<double>>::__init_with_size[abi:ne200100]<std::vector<double>*,std::vector<double>*>(&v5, a3->var0, a3->var1, 0xAAAAAAAAAAAAAAABLL * ((a3->var1 - a3->var0) >> 3));
+    std::vector<std::vector<double>>::__init_with_size[abi:ne200100]<std::vector<double>*,std::vector<double>*>(&v5, std->var0, std->var1, 0xAAAAAAAAAAAAAAABLL * ((std->var1 - std->var0) >> 3));
     if ((ptr + 104) != &v5)
     {
       std::vector<std::vector<double>>::__assign_with_size[abi:ne200100]<std::vector<double>*,std::vector<double>*>(ptr + 13, v5, v6, 0xAAAAAAAAAAAAAAABLL * (v6 - v5));

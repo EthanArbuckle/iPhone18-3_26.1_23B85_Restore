@@ -1,17 +1,17 @@
 @interface _PRWidgetEducationHeaderView
-- (_PRWidgetEducationHeaderView)initWithFrame:(CGRect)a3;
+- (_PRWidgetEducationHeaderView)initWithFrame:(CGRect)frame;
 - (id)_makeTimeLabel;
 - (id)_timeLabelText;
 @end
 
 @implementation _PRWidgetEducationHeaderView
 
-- (_PRWidgetEducationHeaderView)initWithFrame:(CGRect)a3
+- (_PRWidgetEducationHeaderView)initWithFrame:(CGRect)frame
 {
   v58[11] = *MEMORY[0x1E69E9840];
   v57.receiver = self;
   v57.super_class = _PRWidgetEducationHeaderView;
-  v3 = [(_PRWidgetEducationHeaderView *)&v57 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_PRWidgetEducationHeaderView *)&v57 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = MEMORY[0x1E69DCAB8];
@@ -24,12 +24,12 @@
 
     if ([*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] == 1)
     {
-      v10 = [v6 imageWithHorizontallyFlippedOrientation];
+      imageWithHorizontallyFlippedOrientation = [v6 imageWithHorizontallyFlippedOrientation];
 
-      v11 = [v9 imageWithHorizontallyFlippedOrientation];
+      imageWithHorizontallyFlippedOrientation2 = [v9 imageWithHorizontallyFlippedOrientation];
 
-      v9 = v11;
-      v6 = v10;
+      v9 = imageWithHorizontallyFlippedOrientation2;
+      v6 = imageWithHorizontallyFlippedOrientation;
     }
 
     v34 = v9;
@@ -40,59 +40,59 @@
     v13 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v9];
     [(_PRWidgetEducationHeaderView *)v3 addSubview:v13];
     [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v14 = [(_PRWidgetEducationHeaderView *)v3 _makeTimeLabel];
-    [v12 addSubview:v14];
-    [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v15 = [(_PRWidgetEducationHeaderView *)v3 _makeTimeLabel];
-    [v13 addSubview:v15];
-    [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+    _makeTimeLabel = [(_PRWidgetEducationHeaderView *)v3 _makeTimeLabel];
+    [v12 addSubview:_makeTimeLabel];
+    [_makeTimeLabel setTranslatesAutoresizingMaskIntoConstraints:0];
+    _makeTimeLabel2 = [(_PRWidgetEducationHeaderView *)v3 _makeTimeLabel];
+    [v13 addSubview:_makeTimeLabel2];
+    [_makeTimeLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
     v40 = MEMORY[0x1E696ACD8];
-    v56 = v14;
-    v55 = [v14 topAnchor];
-    v54 = [v12 topAnchor];
-    v53 = [v55 constraintEqualToAnchor:v54 constant:15.0];
+    v56 = _makeTimeLabel;
+    topAnchor = [_makeTimeLabel topAnchor];
+    topAnchor2 = [v12 topAnchor];
+    v53 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:15.0];
     v58[0] = v53;
-    v52 = [v14 centerXAnchor];
-    v51 = [v12 centerXAnchor];
-    v49 = [v52 constraintEqualToAnchor:v51];
-    v50 = v15;
+    centerXAnchor = [_makeTimeLabel centerXAnchor];
+    centerXAnchor2 = [v12 centerXAnchor];
+    v49 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+    v50 = _makeTimeLabel2;
     v58[1] = v49;
-    v48 = [v15 topAnchor];
-    v47 = [v13 topAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47 constant:12.0];
+    topAnchor3 = [_makeTimeLabel2 topAnchor];
+    topAnchor4 = [v13 topAnchor];
+    v46 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:12.0];
     v58[2] = v46;
-    v45 = [v15 centerXAnchor];
-    v44 = [v13 centerXAnchor];
-    v42 = [v45 constraintEqualToAnchor:v44];
+    centerXAnchor3 = [_makeTimeLabel2 centerXAnchor];
+    centerXAnchor4 = [v13 centerXAnchor];
+    v42 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v58[3] = v42;
-    v41 = [v12 leadingAnchor];
-    v39 = [(_PRWidgetEducationHeaderView *)v3 leadingAnchor];
-    v38 = [v41 constraintEqualToAnchor:v39];
+    leadingAnchor = [v12 leadingAnchor];
+    leadingAnchor2 = [(_PRWidgetEducationHeaderView *)v3 leadingAnchor];
+    v38 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v58[4] = v38;
-    v36 = [v12 topAnchor];
-    v35 = [(_PRWidgetEducationHeaderView *)v3 topAnchor];
-    v33 = [v36 constraintGreaterThanOrEqualToAnchor:v35];
+    topAnchor5 = [v12 topAnchor];
+    topAnchor6 = [(_PRWidgetEducationHeaderView *)v3 topAnchor];
+    v33 = [topAnchor5 constraintGreaterThanOrEqualToAnchor:topAnchor6];
     v58[5] = v33;
     v43 = v12;
-    v32 = [v12 bottomAnchor];
-    v31 = [(_PRWidgetEducationHeaderView *)v3 bottomAnchor];
-    v30 = [v32 constraintEqualToAnchor:v31];
+    bottomAnchor = [v12 bottomAnchor];
+    bottomAnchor2 = [(_PRWidgetEducationHeaderView *)v3 bottomAnchor];
+    v30 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v58[6] = v30;
-    v29 = [v13 leadingAnchor];
-    v28 = [v12 trailingAnchor];
-    v27 = [v29 constraintEqualToAnchor:v28 constant:10.0];
+    leadingAnchor3 = [v13 leadingAnchor];
+    trailingAnchor = [v12 trailingAnchor];
+    v27 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:10.0];
     v58[7] = v27;
-    v26 = [v13 trailingAnchor];
-    v25 = [(_PRWidgetEducationHeaderView *)v3 trailingAnchor];
-    v16 = [v26 constraintEqualToAnchor:v25];
+    trailingAnchor2 = [v13 trailingAnchor];
+    trailingAnchor3 = [(_PRWidgetEducationHeaderView *)v3 trailingAnchor];
+    v16 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
     v58[8] = v16;
-    v17 = [v13 topAnchor];
-    v18 = [(_PRWidgetEducationHeaderView *)v3 topAnchor];
-    v19 = [v17 constraintGreaterThanOrEqualToAnchor:v18];
+    topAnchor7 = [v13 topAnchor];
+    topAnchor8 = [(_PRWidgetEducationHeaderView *)v3 topAnchor];
+    v19 = [topAnchor7 constraintGreaterThanOrEqualToAnchor:topAnchor8];
     v58[9] = v19;
-    v20 = [v13 bottomAnchor];
-    v21 = [(_PRWidgetEducationHeaderView *)v3 bottomAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    bottomAnchor3 = [v13 bottomAnchor];
+    bottomAnchor4 = [(_PRWidgetEducationHeaderView *)v3 bottomAnchor];
+    v22 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v58[10] = v22;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:11];
     [v40 activateConstraints:v23];
@@ -107,11 +107,11 @@
   v4 = [v3 fontWithSize:16.5];
 
   v5 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-  v6 = [(_PRWidgetEducationHeaderView *)self _timeLabelText];
-  [v5 setText:v6];
+  _timeLabelText = [(_PRWidgetEducationHeaderView *)self _timeLabelText];
+  [v5 setText:_timeLabelText];
 
-  v7 = [MEMORY[0x1E69DC888] whiteColor];
-  [v5 setTextColor:v7];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v5 setTextColor:whiteColor];
 
   [v5 setFont:v4];
 
@@ -121,8 +121,8 @@
 - (id)_timeLabelText
 {
   v2 = MEMORY[0x1E698E670];
-  v3 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-  v4 = [v2 formatterForDateAsTimeNoAMPMWithLocale:v3];
+  autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+  v4 = [v2 formatterForDateAsTimeNoAMPMWithLocale:autoupdatingCurrentLocale];
 
   v5 = [MEMORY[0x1E695DFE8] timeZoneWithName:@"America/Los_Angeles"];
   [v4 setTimeZone:v5];

@@ -1,10 +1,10 @@
 @interface CKSendLaterPluginInfo
-- (CKSendLaterPluginInfo)initWithSelectedDate:(id)a3;
+- (CKSendLaterPluginInfo)initWithSelectedDate:(id)date;
 - (NSDate)selectedDate;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSelectedDate:(id)a3;
-- (void)setShowingDatePicker:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSelectedDate:(id)date;
+- (void)setShowingDatePicker:(BOOL)picker;
 @end
 
 @implementation CKSendLaterPluginInfo
@@ -27,24 +27,24 @@
   return v10;
 }
 
-- (void)setSelectedDate:(id)a3
+- (void)setSelectedDate:(id)date
 {
   v4 = sub_190D51840();
   MEMORY[0x1EEE9AC00](v4 - 8);
   v6 = &v8 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_190D517E0();
-  v7 = self;
+  selfCopy = self;
   sub_190CC5DEC(v6);
 }
 
-- (void)setShowingDatePicker:(BOOL)a3
+- (void)setShowingDatePicker:(BOOL)picker
 {
-  *(&self->super.isa + OBJC_IVAR___CKSendLaterPluginInfo_showingDatePicker) = a3;
-  v3 = self;
+  *(&self->super.isa + OBJC_IVAR___CKSendLaterPluginInfo_showingDatePicker) = picker;
+  selfCopy = self;
   sub_190CC6824();
 }
 
-- (CKSendLaterPluginInfo)initWithSelectedDate:(id)a3
+- (CKSendLaterPluginInfo)initWithSelectedDate:(id)date
 {
   v3 = sub_190D51840();
   MEMORY[0x1EEE9AC00](v3 - 8);
@@ -53,20 +53,20 @@
   return sub_190CC6BA4(v5);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.isa + OBJC_IVAR___CKSendLaterPluginInfo__selectedDate);
-  v5 = a3;
-  v8 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v6 = v4;
   v7 = sub_190D56ED0();
-  [v5 encodeObject:v6 forKey:v7];
+  [coderCopy encodeObject:v6 forKey:v7];
 }
 
 - (void)dealloc
 {
   v3 = *(&self->super.isa + OBJC_IVAR___CKSendLaterPluginInfo_updateTimer);
-  v4 = self;
+  selfCopy = self;
   if (v3)
   {
     [v3 invalidate];

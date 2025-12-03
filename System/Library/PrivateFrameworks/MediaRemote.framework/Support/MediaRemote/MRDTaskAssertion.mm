@@ -1,14 +1,14 @@
 @interface MRDTaskAssertion
 + (OS_dispatch_queue)workerQueue;
-- (BOOL)invalidateInDuration:(double)a3;
+- (BOOL)invalidateInDuration:(double)duration;
 - (BOOL)isValid;
 - (double)remainingDuration;
 - (id)description;
 - (id)invalidationHandler;
 - (void)_acquire;
-- (void)callInvalidationHandlerWithReason:(id)a3;
+- (void)callInvalidationHandlerWithReason:(id)reason;
 - (void)dealloc;
-- (void)invalidateWithReason:(id)a3;
+- (void)invalidateWithReason:(id)reason;
 @end
 
 @implementation MRDTaskAssertion
@@ -45,16 +45,16 @@
     [v8 appendFormat:@"hostAssertion=%@", self->_hostAssertion];
   }
 
-  v10 = self;
-  objc_sync_enter(v10);
-  invalidationTimer = v10->_invalidationTimer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  invalidationTimer = selfCopy->_invalidationTimer;
   if (invalidationTimer)
   {
     [(MRSingleShotTimer *)invalidationTimer remainingDuration];
     [v9 appendFormat:@"<%lf more seconds", v12];
   }
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 
   [v9 appendString:@">"];
 
@@ -77,7 +77,7 @@
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v18 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Acquired assertion: %@", buf, 0xCu);
       }
     }
@@ -102,7 +102,7 @@
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v18 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Acquired host assertion: %@", buf, 0xCu);
       }
     }
@@ -149,157 +149,157 @@
   [(MRDTaskAssertion *)&v4 dealloc];
 }
 
-- (void)invalidateWithReason:(id)a3
+- (void)invalidateWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  invalidationTimer = v5->_invalidationTimer;
-  v5->_invalidationTimer = 0;
+  reasonCopy = reason;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  invalidationTimer = selfCopy->_invalidationTimer;
+  selfCopy->_invalidationTimer = 0;
 
-  objc_sync_exit(v5);
-  [(MRDTaskAssertion *)v5 callInvalidationHandlerWithReason:v4];
-  if ([(RBSAssertion *)v5->_assertion isValid])
+  objc_sync_exit(selfCopy);
+  [(MRDTaskAssertion *)selfCopy callInvalidationHandlerWithReason:reasonCopy];
+  if ([(RBSAssertion *)selfCopy->_assertion isValid])
   {
     v7 = _MRLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v9 = 138412546;
-      v10 = v5;
+      v10 = selfCopy;
       v11 = 2112;
-      v12 = v4;
+      v12 = reasonCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Releasing assertion %@ %@", &v9, 0x16u);
     }
 
-    [(RBSAssertion *)v5->_assertion invalidate];
+    [(RBSAssertion *)selfCopy->_assertion invalidate];
   }
 
-  if ([(RBSAssertion *)v5->_hostAssertion isValid])
+  if ([(RBSAssertion *)selfCopy->_hostAssertion isValid])
   {
     v8 = _MRLogForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = 138412546;
-      v10 = v5;
+      v10 = selfCopy;
       v11 = 2112;
-      v12 = v4;
+      v12 = reasonCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Releasing host assertion %@ %@", &v9, 0x16u);
     }
 
-    [(RBSAssertion *)v5->_hostAssertion invalidate];
+    [(RBSAssertion *)selfCopy->_hostAssertion invalidate];
   }
 }
 
-- (BOOL)invalidateInDuration:(double)a3
+- (BOOL)invalidateInDuration:(double)duration
 {
-  if (a3 > 30.0)
+  if (duration > 30.0)
   {
     v5 = _MRLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      sub_1003AA2E8(self, v5, a3);
+      sub_1003AA2E8(self, v5, duration);
     }
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(MRDTaskAssertion *)v6 isValid];
-  if (v7)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isValid = [(MRDTaskAssertion *)selfCopy isValid];
+  if (isValid)
   {
-    [(MRSingleShotTimer *)v6->_invalidationTimer remainingDuration];
-    if (v8 < a3)
+    [(MRSingleShotTimer *)selfCopy->_invalidationTimer remainingDuration];
+    if (v8 < duration)
     {
-      invalidationTimer = v6->_invalidationTimer;
+      invalidationTimer = selfCopy->_invalidationTimer;
       if (invalidationTimer)
       {
         v10 = _MRLogForCategory();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
-          [(MRSingleShotTimer *)v6->_invalidationTimer remainingDuration];
+          [(MRSingleShotTimer *)selfCopy->_invalidationTimer remainingDuration];
           *buf = 134218242;
-          v20 = v11;
+          durationCopy = v11;
           v21 = 2112;
-          v22 = v6;
+          v22 = selfCopy;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Replacing host assertion invalidation timer that was due to fire in %lf seconds %@", buf, 0x16u);
         }
 
-        invalidationTimer = v6->_invalidationTimer;
+        invalidationTimer = selfCopy->_invalidationTimer;
       }
 
-      v6->_invalidationTimer = 0;
+      selfCopy->_invalidationTimer = 0;
 
       v12 = [MRSingleShotTimer alloc];
-      v13 = [objc_opt_class() workerQueue];
+      workerQueue = [objc_opt_class() workerQueue];
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = sub_10013991C;
       v18[3] = &unk_1004BE4C8;
-      v18[4] = v6;
-      v14 = [(MRSingleShotTimer *)v12 initWithInterval:v13 queue:v18 block:a3];
-      v15 = v6->_invalidationTimer;
-      v6->_invalidationTimer = v14;
+      v18[4] = selfCopy;
+      v14 = [(MRSingleShotTimer *)v12 initWithInterval:workerQueue queue:v18 block:duration];
+      v15 = selfCopy->_invalidationTimer;
+      selfCopy->_invalidationTimer = v14;
 
       v16 = _MRLogForCategory();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
         *buf = 134218242;
-        v20 = a3;
+        durationCopy = duration;
         v21 = 2112;
-        v22 = v6;
+        v22 = selfCopy;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "Setting host assertion invalidation timer to fire in %lf seconds %@", buf, 0x16u);
       }
     }
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
-  return v7;
+  return isValid;
 }
 
 - (double)remainingDuration
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(MRSingleShotTimer *)v2->_invalidationTimer remainingDuration];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MRSingleShotTimer *)selfCopy->_invalidationTimer remainingDuration];
   v4 = v3;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 - (id)invalidationHandler
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [v2->_invalidationHandler copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [selfCopy->_invalidationHandler copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)callInvalidationHandlerWithReason:(id)a3
+- (void)callInvalidationHandlerWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v5->_invalidationHandler copy];
-  invalidationHandler = v5->_invalidationHandler;
-  v5->_invalidationHandler = 0;
+  reasonCopy = reason;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [selfCopy->_invalidationHandler copy];
+  invalidationHandler = selfCopy->_invalidationHandler;
+  selfCopy->_invalidationHandler = 0;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   if (v6)
   {
     v8 = _MRLogForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = 138412546;
-      v10 = v5;
+      v10 = selfCopy;
       v11 = 2112;
-      v12 = v4;
+      v12 = reasonCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Calling assertion invalidation handler %@ %@", &v9, 0x16u);
     }
 
-    v6[2](v6, v5, v4);
+    v6[2](v6, selfCopy, reasonCopy);
   }
 }
 

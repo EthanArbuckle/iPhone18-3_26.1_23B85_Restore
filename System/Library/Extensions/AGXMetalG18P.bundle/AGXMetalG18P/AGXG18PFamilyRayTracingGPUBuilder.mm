@@ -1,30 +1,30 @@
 @interface AGXG18PFamilyRayTracingGPUBuilder
-- (AGXG18PFamilyRayTracingGPUBuilder)initWithCommandBuffer:(id)a3 descriptor:(id)a4;
-- (BOOL)writeGenericBVHStructureOfAccelerationStructure:(id)a3 into:(id)a4;
-- (BOOL)writeGenericBVHStructureSizesOfAccelerationStructure:(id)a3 into:(id)a4;
+- (AGXG18PFamilyRayTracingGPUBuilder)initWithCommandBuffer:(id)buffer descriptor:(id)descriptor;
+- (BOOL)writeGenericBVHStructureOfAccelerationStructure:(id)structure into:(id)into;
+- (BOOL)writeGenericBVHStructureSizesOfAccelerationStructure:(id)structure into:(id)into;
 - (void)_beginVirtualSubstream;
 - (void)_endVirtualSubstream;
-- (void)buildAccelerationStructure:(id)a3 descriptor:(id)a4 scratchBuffer:(id)a5 scratchBufferOffset:(unint64_t)a6;
-- (void)copyAccelerationStructure:(id)a3 toAccelerationStructure:(id)a4;
-- (void)copyAndCompactAccelerationStructure:(id)a3 toAccelerationStructure:(id)a4;
+- (void)buildAccelerationStructure:(id)structure descriptor:(id)descriptor scratchBuffer:(id)buffer scratchBufferOffset:(unint64_t)offset;
+- (void)copyAccelerationStructure:(id)structure toAccelerationStructure:(id)accelerationStructure;
+- (void)copyAndCompactAccelerationStructure:(id)structure toAccelerationStructure:(id)accelerationStructure;
 - (void)dealloc;
-- (void)deserializeInstanceAccelerationStructure:(id)a3 primitiveAccelerationStructures:(id)a4 fromBuffer:(id)a5 serializedBufferOffset:(unint64_t)a6;
-- (void)deserializeInstanceAccelerationStructure:(id)a3 primitiveAccelerationStructures:(id)a4 fromBuffer:(id)a5 serializedBufferOffset:(unint64_t)a6 withDescriptor:(id)a7;
-- (void)deserializePrimitiveAccelerationStructure:(id)a3 fromBuffer:(id)a4 serializedBufferOffset:(unint64_t)a5;
-- (void)deserializePrimitiveAccelerationStructure:(id)a3 fromBuffer:(id)a4 serializedBufferOffset:(unint64_t)a5 withDescriptor:(id)a6;
+- (void)deserializeInstanceAccelerationStructure:(id)structure primitiveAccelerationStructures:(id)structures fromBuffer:(id)buffer serializedBufferOffset:(unint64_t)offset;
+- (void)deserializeInstanceAccelerationStructure:(id)structure primitiveAccelerationStructures:(id)structures fromBuffer:(id)buffer serializedBufferOffset:(unint64_t)offset withDescriptor:(id)descriptor;
+- (void)deserializePrimitiveAccelerationStructure:(id)structure fromBuffer:(id)buffer serializedBufferOffset:(unint64_t)offset;
+- (void)deserializePrimitiveAccelerationStructure:(id)structure fromBuffer:(id)buffer serializedBufferOffset:(unint64_t)offset withDescriptor:(id)descriptor;
 - (void)endEncoding;
-- (void)refitAccelerationStructure:(id)a3 descriptor:(id)a4 destination:(id)a5 scratchBuffer:(id)a6 scratchBufferOffset:(unint64_t)a7 options:(unint64_t)a8;
-- (void)serializeInstanceAccelerationStructure:(id)a3 primitiveAccelerationStructures:(id)a4 toBuffer:(id)a5 serializedBufferOffset:(unint64_t)a6;
-- (void)serializePrimitiveAccelerationStructure:(id)a3 toBuffer:(id)a4 serializedBufferOffset:(unint64_t)a5;
-- (void)setLabel:(id)a3;
-- (void)substreamSynchronizeAccelerationStructures:(id)a3 access:(unint64_t)a4;
-- (void)substreamSynchronizeDescriptor:(id)a3 access:(unint64_t)a4;
-- (void)writeAccelerationStructureSerializationData:(id)a3 toBuffer:(id)a4 offset:(unint64_t)a5;
-- (void)writeAccelerationStructureTraversalDepth:(id)a3 toBuffer:(id)a4 offset:(unint64_t)a5;
-- (void)writeCompactedAccelerationStructureSize:(id)a3 toBuffer:(id)a4 offset:(unint64_t)a5;
-- (void)writeCompactedAccelerationStructureSize:(id)a3 toBuffer:(id)a4 offset:(unint64_t)a5 sizeDataType:(unint64_t)a6;
-- (void)writeDeserializedAccelerationStructureSize:(id)a3 serializedOffset:(unint64_t)a4 toBuffer:(id)a5 sizeBufferOffset:(unint64_t)a6;
-- (void)writeSerializedAccelerationStructureSize:(id)a3 toBuffer:(id)a4 sizeBufferOffset:(unint64_t)a5;
+- (void)refitAccelerationStructure:(id)structure descriptor:(id)descriptor destination:(id)destination scratchBuffer:(id)buffer scratchBufferOffset:(unint64_t)offset options:(unint64_t)options;
+- (void)serializeInstanceAccelerationStructure:(id)structure primitiveAccelerationStructures:(id)structures toBuffer:(id)buffer serializedBufferOffset:(unint64_t)offset;
+- (void)serializePrimitiveAccelerationStructure:(id)structure toBuffer:(id)buffer serializedBufferOffset:(unint64_t)offset;
+- (void)setLabel:(id)label;
+- (void)substreamSynchronizeAccelerationStructures:(id)structures access:(unint64_t)access;
+- (void)substreamSynchronizeDescriptor:(id)descriptor access:(unint64_t)access;
+- (void)writeAccelerationStructureSerializationData:(id)data toBuffer:(id)buffer offset:(unint64_t)offset;
+- (void)writeAccelerationStructureTraversalDepth:(id)depth toBuffer:(id)buffer offset:(unint64_t)offset;
+- (void)writeCompactedAccelerationStructureSize:(id)size toBuffer:(id)buffer offset:(unint64_t)offset;
+- (void)writeCompactedAccelerationStructureSize:(id)size toBuffer:(id)buffer offset:(unint64_t)offset sizeDataType:(unint64_t)type;
+- (void)writeDeserializedAccelerationStructureSize:(id)size serializedOffset:(unint64_t)offset toBuffer:(id)buffer sizeBufferOffset:(unint64_t)bufferOffset;
+- (void)writeSerializedAccelerationStructureSize:(id)size toBuffer:(id)buffer sizeBufferOffset:(unint64_t)offset;
 @end
 
 @implementation AGXG18PFamilyRayTracingGPUBuilder
@@ -90,13 +90,13 @@
   }
 }
 
-- (void)writeAccelerationStructureTraversalDepth:(id)a3 toBuffer:(id)a4 offset:(unint64_t)a5
+- (void)writeAccelerationStructureTraversalDepth:(id)depth toBuffer:(id)buffer offset:(unint64_t)offset
 {
   progressBins = self->_progressBins;
   if (progressBins)
   {
     computeEncoder = self->_computeEncoder;
-    v12 = [a3 size];
+    v12 = [depth size];
     v13 = *(progressBins + 20);
     if (v13 < 2)
     {
@@ -125,31 +125,31 @@
     progressBins[11] = v20;
     [(MTLComputeCommandEncoderSPI *)computeEncoder setSubstream:v14];
     v21 = self->_progressBins;
-    v22 = [a3 buffer];
+    buffer = [depth buffer];
     v52[0] = MEMORY[0x29EDCA5F8];
     v52[1] = 3221225472;
     v52[2] = __94__AGXG18PFamilyRayTracingGPUBuilder_writeAccelerationStructureTraversalDepth_toBuffer_offset___block_invoke;
     v52[3] = &unk_29F3420F0;
     v52[4] = self;
-    ProgressBinsSynchronizeBufferAccess(v21, v22, 0, v52);
+    ProgressBinsSynchronizeBufferAccess(v21, buffer, 0, v52);
     v23 = self->_progressBins;
     v51[0] = MEMORY[0x29EDCA5F8];
     v51[1] = 3221225472;
     v51[2] = __94__AGXG18PFamilyRayTracingGPUBuilder_writeAccelerationStructureTraversalDepth_toBuffer_offset___block_invoke_2;
     v51[3] = &unk_29F3420F0;
     v51[4] = self;
-    ProgressBinsSynchronizeBufferAccess(v23, a4, 1, v51);
+    ProgressBinsSynchronizeBufferAccess(v23, buffer, 1, v51);
   }
 
   impl = self->_impl;
   v25 = impl[2];
   v26 = MEMORY[0x29EDC5638];
-  if (a3)
+  if (depth)
   {
-    v27 = a5;
-    if (*(a3 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
+    offsetCopy = offset;
+    if (*(depth + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
     {
-      v28 = *(a3 + 39);
+      v28 = *(depth + 39);
       IOGPUResourceListAddResource();
       v30 = *(v28 + 64);
       v29 = *(v28 + 72);
@@ -165,18 +165,18 @@
       }
     }
 
-    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v25, a3, v5, 1, 1);
+    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v25, depth, v5, 1, 1);
     impl = self->_impl;
     v25 = impl[2];
-    a5 = v27;
+    offset = offsetCopy;
     v26 = MEMORY[0x29EDC5638];
   }
 
-  if (a4)
+  if (buffer)
   {
-    if (*(a4 + *v26 + 16) >> 61 == 3)
+    if (*(buffer + *v26 + 16) >> 61 == 3)
     {
-      v31 = *(a4 + 39);
+      v31 = *(buffer + 39);
       IOGPUResourceListAddResource();
       v33 = *(v31 + 64);
       v32 = *(v31 + 72);
@@ -192,24 +192,24 @@
       }
     }
 
-    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v25, a4, v5, 3, 3);
+    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v25, buffer, v5, 3, 3);
     impl = self->_impl;
   }
 
-  v34 = [a4 gpuAddress];
-  [a4 length];
+  gpuAddress = [buffer gpuAddress];
+  [buffer length];
   if (*(impl + 49) == 1)
   {
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::flush(impl);
   }
 
-  v35 = [a3 buffer];
-  v36 = [a3 bufferOffset];
+  buffer2 = [depth buffer];
+  bufferOffset = [depth bufferOffset];
   Pipeline = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::getOrCreatePipeline(impl, 55, 0);
-  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::setBuffer_impl<AGXBuffer>(impl[2], v35, v36, 0, 0);
+  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::setBuffer_impl<AGXBuffer>(impl[2], buffer2, bufferOffset, 0, 0);
   v38 = impl[2];
-  *(v38 + 26416) = v34 + a5;
-  *(*(v38 + 22488) + 8) = v34 + a5;
+  *(v38 + 26416) = gpuAddress + offset;
+  *(*(v38 + 22488) + 8) = gpuAddress + offset;
   v39 = *(v38 + 27592);
   *(v38 + 22512) = 0;
   *(v38 + 27592) = v39 | 1;
@@ -340,14 +340,14 @@ uint64_t __94__AGXG18PFamilyRayTracingGPUBuilder_writeAccelerationStructureTrave
   }
 }
 
-- (void)writeAccelerationStructureSerializationData:(id)a3 toBuffer:(id)a4 offset:(unint64_t)a5
+- (void)writeAccelerationStructureSerializationData:(id)data toBuffer:(id)buffer offset:(unint64_t)offset
 {
   [(AGXG18PFamilyRayTracingGPUBuilder *)self _beginVirtualSubstream];
   progressBins = self->_progressBins;
   if (progressBins)
   {
     computeEncoder = self->_computeEncoder;
-    v12 = [a3 size];
+    v12 = [data size];
     v13 = *(progressBins + 20);
     if (v13 < 2)
     {
@@ -376,30 +376,30 @@ uint64_t __94__AGXG18PFamilyRayTracingGPUBuilder_writeAccelerationStructureTrave
     progressBins[11] = v20;
     [(MTLComputeCommandEncoderSPI *)computeEncoder setSubstream:v14];
     v21 = self->_progressBins;
-    v22 = [a3 buffer];
+    buffer = [data buffer];
     v64[0] = MEMORY[0x29EDCA5F8];
     v64[1] = 3221225472;
     v64[2] = __97__AGXG18PFamilyRayTracingGPUBuilder_writeAccelerationStructureSerializationData_toBuffer_offset___block_invoke;
     v64[3] = &unk_29F3420F0;
     v64[4] = self;
-    ProgressBinsSynchronizeBufferAccess(v21, v22, 0, v64);
+    ProgressBinsSynchronizeBufferAccess(v21, buffer, 0, v64);
     v23 = self->_progressBins;
     v63[0] = MEMORY[0x29EDCA5F8];
     v63[1] = 3221225472;
     v63[2] = __97__AGXG18PFamilyRayTracingGPUBuilder_writeAccelerationStructureSerializationData_toBuffer_offset___block_invoke_2;
     v63[3] = &unk_29F3420F0;
     v63[4] = self;
-    ProgressBinsSynchronizeBufferAccess(v23, a4, 1, v63);
+    ProgressBinsSynchronizeBufferAccess(v23, buffer, 1, v63);
   }
 
   impl = self->_impl;
   v25 = MEMORY[0x29EDC5638];
-  if (a3)
+  if (data)
   {
     v26 = impl[2];
-    if (*(a3 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
+    if (*(data + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
     {
-      v27 = *(a3 + 39);
+      v27 = *(data + 39);
       IOGPUResourceListAddResource();
       v29 = *(v27 + 64);
       v28 = *(v27 + 72);
@@ -415,19 +415,19 @@ uint64_t __94__AGXG18PFamilyRayTracingGPUBuilder_writeAccelerationStructureTrave
       }
     }
 
-    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v26, a3, v9, 1, 1);
+    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v26, data, v9, 1, 1);
     impl = self->_impl;
     v25 = MEMORY[0x29EDC5638];
   }
 
-  v30 = [a3 buffer];
-  if (v30)
+  buffer2 = [data buffer];
+  if (buffer2)
   {
-    v32 = v30;
+    v32 = buffer2;
     v33 = impl[2];
-    if (*(v30 + *v25 + 16) >> 61 == 3)
+    if (*(buffer2 + *v25 + 16) >> 61 == 3)
     {
-      v34 = *(v30 + 312);
+      v34 = *(buffer2 + 312);
       IOGPUResourceListAddResource();
       v35 = *(v34 + 64);
       v36 = *(v34 + 72);
@@ -447,12 +447,12 @@ uint64_t __94__AGXG18PFamilyRayTracingGPUBuilder_writeAccelerationStructureTrave
   }
 
   v37 = self->_impl;
-  if (a4)
+  if (buffer)
   {
     v38 = v37[2];
-    if (*(a4 + *v25 + 16) >> 61 == 3)
+    if (*(buffer + *v25 + 16) >> 61 == 3)
     {
-      v39 = *(a4 + 39);
+      v39 = *(buffer + 39);
       IOGPUResourceListAddResource();
       v40 = *(v39 + 64);
       v41 = *(v39 + 72);
@@ -468,19 +468,19 @@ uint64_t __94__AGXG18PFamilyRayTracingGPUBuilder_writeAccelerationStructureTrave
       }
     }
 
-    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v38, a4, v31, 3, 3);
+    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v38, buffer, v31, 3, 3);
     v37 = self->_impl;
   }
 
-  v42 = [a4 gpuAddress];
-  [a4 length];
+  gpuAddress = [buffer gpuAddress];
+  [buffer length];
   if (*(v37 + 49) == 1)
   {
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::flush(v37);
   }
 
-  v43 = [a3 buffer];
-  v44 = [a3 bufferOffset];
+  buffer3 = [data buffer];
+  bufferOffset = [data bufferOffset];
   Pipeline = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::getOrCreatePipeline(v37, 179, 0);
   v65 = 0;
   v66 = 0;
@@ -506,8 +506,8 @@ uint64_t __94__AGXG18PFamilyRayTracingGPUBuilder_writeAccelerationStructureTrave
   }
 
   *(v46 + 32) = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::kBvhVersions[AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::getVersionToEncode(BOOL,BOOL,BOOL)::gen] & 0x1FFFFFFF;
-  *v46 = [v43 gpuAddress] + v44;
-  *(v46 + 8) = v42 + a5;
+  *v46 = [buffer3 gpuAddress] + bufferOffset;
+  *(v46 + 8) = gpuAddress + offset;
   v48 = v66;
   v49 = v67;
   v50 = v37[2];
@@ -643,15 +643,15 @@ uint64_t __97__AGXG18PFamilyRayTracingGPUBuilder_writeAccelerationStructureSeria
   }
 }
 
-- (BOOL)writeGenericBVHStructureOfAccelerationStructure:(id)a3 into:(id)a4
+- (BOOL)writeGenericBVHStructureOfAccelerationStructure:(id)structure into:(id)into
 {
   result = 0;
-  if (!a3 || !a4)
+  if (!structure || !into)
   {
     return result;
   }
 
-  if (([a4 version] - 256) > 5)
+  if (([into version] - 256) > 5)
   {
     return 0;
   }
@@ -661,7 +661,7 @@ uint64_t __97__AGXG18PFamilyRayTracingGPUBuilder_writeAccelerationStructureSeria
   if (progressBins)
   {
     computeEncoder = self->_computeEncoder;
-    v11 = [a3 size];
+    v11 = [structure size];
     v12 = *(progressBins + 20);
     if (v12 < 2)
     {
@@ -690,102 +690,102 @@ uint64_t __97__AGXG18PFamilyRayTracingGPUBuilder_writeAccelerationStructureSeria
     progressBins[11] = v19;
     [(MTLComputeCommandEncoderSPI *)computeEncoder setSubstream:v13];
     v20 = self->_progressBins;
-    v21 = [a3 buffer];
+    buffer = [structure buffer];
     v205[0] = MEMORY[0x29EDCA5F8];
     v205[1] = 3221225472;
     v205[2] = __90__AGXG18PFamilyRayTracingGPUBuilder_writeGenericBVHStructureOfAccelerationStructure_into___block_invoke;
     v205[3] = &unk_29F3420F0;
     v205[4] = self;
-    ProgressBinsSynchronizeBufferAccess(v20, v21, 0, v205);
-    if ([a4 innerNodeBuffer])
+    ProgressBinsSynchronizeBufferAccess(v20, buffer, 0, v205);
+    if ([into innerNodeBuffer])
     {
       v22 = self->_progressBins;
-      v23 = [a4 innerNodeBuffer];
+      innerNodeBuffer = [into innerNodeBuffer];
       v204[0] = MEMORY[0x29EDCA5F8];
       v204[1] = 3221225472;
       v204[2] = __90__AGXG18PFamilyRayTracingGPUBuilder_writeGenericBVHStructureOfAccelerationStructure_into___block_invoke_2;
       v204[3] = &unk_29F3420F0;
       v204[4] = self;
-      ProgressBinsSynchronizeBufferAccess(v22, v23, 1, v204);
+      ProgressBinsSynchronizeBufferAccess(v22, innerNodeBuffer, 1, v204);
     }
 
-    if ([a4 leafNodeBuffer])
+    if ([into leafNodeBuffer])
     {
       v24 = self->_progressBins;
-      v25 = [a4 leafNodeBuffer];
+      leafNodeBuffer = [into leafNodeBuffer];
       v203[0] = MEMORY[0x29EDCA5F8];
       v203[1] = 3221225472;
       v203[2] = __90__AGXG18PFamilyRayTracingGPUBuilder_writeGenericBVHStructureOfAccelerationStructure_into___block_invoke_3;
       v203[3] = &unk_29F3420F0;
       v203[4] = self;
-      ProgressBinsSynchronizeBufferAccess(v24, v25, 1, v203);
+      ProgressBinsSynchronizeBufferAccess(v24, leafNodeBuffer, 1, v203);
     }
 
-    if ([a4 primitiveBuffer])
+    if ([into primitiveBuffer])
     {
       v26 = self->_progressBins;
-      v27 = [a4 primitiveBuffer];
+      primitiveBuffer = [into primitiveBuffer];
       v202[0] = MEMORY[0x29EDCA5F8];
       v202[1] = 3221225472;
       v202[2] = __90__AGXG18PFamilyRayTracingGPUBuilder_writeGenericBVHStructureOfAccelerationStructure_into___block_invoke_4;
       v202[3] = &unk_29F3420F0;
       v202[4] = self;
-      ProgressBinsSynchronizeBufferAccess(v26, v27, 1, v202);
+      ProgressBinsSynchronizeBufferAccess(v26, primitiveBuffer, 1, v202);
     }
 
-    if ([a4 geometryBuffer])
+    if ([into geometryBuffer])
     {
       v28 = self->_progressBins;
-      v29 = [a4 geometryBuffer];
+      geometryBuffer = [into geometryBuffer];
       v201[0] = MEMORY[0x29EDCA5F8];
       v201[1] = 3221225472;
       v201[2] = __90__AGXG18PFamilyRayTracingGPUBuilder_writeGenericBVHStructureOfAccelerationStructure_into___block_invoke_5;
       v201[3] = &unk_29F3420F0;
       v201[4] = self;
-      ProgressBinsSynchronizeBufferAccess(v28, v29, 1, v201);
+      ProgressBinsSynchronizeBufferAccess(v28, geometryBuffer, 1, v201);
     }
 
-    if ([a4 instanceTransformBuffer])
+    if ([into instanceTransformBuffer])
     {
       v30 = self->_progressBins;
-      v31 = [a4 instanceTransformBuffer];
+      instanceTransformBuffer = [into instanceTransformBuffer];
       v200[0] = MEMORY[0x29EDCA5F8];
       v200[1] = 3221225472;
       v200[2] = __90__AGXG18PFamilyRayTracingGPUBuilder_writeGenericBVHStructureOfAccelerationStructure_into___block_invoke_6;
       v200[3] = &unk_29F3420F0;
       v200[4] = self;
-      ProgressBinsSynchronizeBufferAccess(v30, v31, 1, v200);
+      ProgressBinsSynchronizeBufferAccess(v30, instanceTransformBuffer, 1, v200);
     }
 
-    if ([a4 perPrimitiveDataBuffer])
+    if ([into perPrimitiveDataBuffer])
     {
       v32 = self->_progressBins;
-      v33 = [a4 perPrimitiveDataBuffer];
+      perPrimitiveDataBuffer = [into perPrimitiveDataBuffer];
       v199[0] = MEMORY[0x29EDCA5F8];
       v199[1] = 3221225472;
       v199[2] = __90__AGXG18PFamilyRayTracingGPUBuilder_writeGenericBVHStructureOfAccelerationStructure_into___block_invoke_7;
       v199[3] = &unk_29F3420F0;
       v199[4] = self;
-      ProgressBinsSynchronizeBufferAccess(v32, v33, 1, v199);
+      ProgressBinsSynchronizeBufferAccess(v32, perPrimitiveDataBuffer, 1, v199);
     }
 
-    if ([a4 controlPointBuffer])
+    if ([into controlPointBuffer])
     {
       v34 = self->_progressBins;
-      v35 = [a4 controlPointBuffer];
+      controlPointBuffer = [into controlPointBuffer];
       v198[0] = MEMORY[0x29EDCA5F8];
       v198[1] = 3221225472;
       v198[2] = __90__AGXG18PFamilyRayTracingGPUBuilder_writeGenericBVHStructureOfAccelerationStructure_into___block_invoke_8;
       v198[3] = &unk_29F3420F0;
       v198[4] = self;
-      ProgressBinsSynchronizeBufferAccess(v34, v35, 1, v198);
+      ProgressBinsSynchronizeBufferAccess(v34, controlPointBuffer, 1, v198);
     }
   }
 
   v36 = *(self->_impl + 2);
-  if (*(a3 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
+  if (*(structure + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
   {
-    v37 = *(a3 + 39);
+    v37 = *(structure + 39);
     IOGPUResourceListAddResource();
     v38 = *(v37 + 64);
     v39 = *(v37 + 72);
@@ -801,17 +801,17 @@ uint64_t __97__AGXG18PFamilyRayTracingGPUBuilder_writeAccelerationStructureSeria
     }
   }
 
-  AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v36, a3, v8, 3, 3);
+  AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v36, structure, v8, 3, 3);
   impl = self->_impl;
-  v190 = a3;
-  v41 = [a3 buffer];
-  if (v41)
+  structureCopy = structure;
+  buffer2 = [structure buffer];
+  if (buffer2)
   {
-    v43 = v41;
+    v43 = buffer2;
     v44 = impl[2];
-    if (*(v41 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
+    if (*(buffer2 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
     {
-      v45 = *(v41 + 312);
+      v45 = *(buffer2 + 312);
       IOGPUResourceListAddResource();
       v46 = *(v45 + 64);
       v47 = *(v45 + 72);
@@ -831,14 +831,14 @@ uint64_t __97__AGXG18PFamilyRayTracingGPUBuilder_writeAccelerationStructureSeria
   }
 
   v48 = self->_impl;
-  v49 = [a4 innerNodeBuffer];
-  if (v49)
+  innerNodeBuffer2 = [into innerNodeBuffer];
+  if (innerNodeBuffer2)
   {
-    v51 = v49;
+    v51 = innerNodeBuffer2;
     v52 = v48[2];
-    if (*(v49 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
+    if (*(innerNodeBuffer2 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
     {
-      v53 = *(v49 + 312);
+      v53 = *(innerNodeBuffer2 + 312);
       IOGPUResourceListAddResource();
       v54 = *(v53 + 64);
       v55 = *(v53 + 72);
@@ -858,14 +858,14 @@ uint64_t __97__AGXG18PFamilyRayTracingGPUBuilder_writeAccelerationStructureSeria
   }
 
   v56 = self->_impl;
-  v57 = [a4 leafNodeBuffer];
-  if (v57)
+  leafNodeBuffer2 = [into leafNodeBuffer];
+  if (leafNodeBuffer2)
   {
-    v59 = v57;
+    v59 = leafNodeBuffer2;
     v60 = v56[2];
-    if (*(v57 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
+    if (*(leafNodeBuffer2 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
     {
-      v61 = *(v57 + 312);
+      v61 = *(leafNodeBuffer2 + 312);
       IOGPUResourceListAddResource();
       v62 = *(v61 + 64);
       v63 = *(v61 + 72);
@@ -885,14 +885,14 @@ uint64_t __97__AGXG18PFamilyRayTracingGPUBuilder_writeAccelerationStructureSeria
   }
 
   v64 = self->_impl;
-  v65 = [a4 primitiveBuffer];
-  if (v65)
+  primitiveBuffer2 = [into primitiveBuffer];
+  if (primitiveBuffer2)
   {
-    v67 = v65;
+    v67 = primitiveBuffer2;
     v68 = v64[2];
-    if (*(v65 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
+    if (*(primitiveBuffer2 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
     {
-      v69 = *(v65 + 312);
+      v69 = *(primitiveBuffer2 + 312);
       IOGPUResourceListAddResource();
       v70 = *(v69 + 64);
       v71 = *(v69 + 72);
@@ -912,14 +912,14 @@ uint64_t __97__AGXG18PFamilyRayTracingGPUBuilder_writeAccelerationStructureSeria
   }
 
   v72 = self->_impl;
-  v73 = [a4 geometryBuffer];
-  if (v73)
+  geometryBuffer2 = [into geometryBuffer];
+  if (geometryBuffer2)
   {
-    v75 = v73;
+    v75 = geometryBuffer2;
     v76 = v72[2];
-    if (*(v73 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
+    if (*(geometryBuffer2 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
     {
-      v77 = *(v73 + 312);
+      v77 = *(geometryBuffer2 + 312);
       IOGPUResourceListAddResource();
       v78 = *(v77 + 64);
       v79 = *(v77 + 72);
@@ -939,14 +939,14 @@ uint64_t __97__AGXG18PFamilyRayTracingGPUBuilder_writeAccelerationStructureSeria
   }
 
   v80 = self->_impl;
-  v81 = [a4 instanceTransformBuffer];
-  if (v81)
+  instanceTransformBuffer2 = [into instanceTransformBuffer];
+  if (instanceTransformBuffer2)
   {
-    v83 = v81;
+    v83 = instanceTransformBuffer2;
     v84 = v80[2];
-    if (*(v81 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
+    if (*(instanceTransformBuffer2 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
     {
-      v85 = *(v81 + 312);
+      v85 = *(instanceTransformBuffer2 + 312);
       IOGPUResourceListAddResource();
       v86 = *(v85 + 64);
       v87 = *(v85 + 72);
@@ -966,14 +966,14 @@ uint64_t __97__AGXG18PFamilyRayTracingGPUBuilder_writeAccelerationStructureSeria
   }
 
   v88 = self->_impl;
-  v89 = [a4 perPrimitiveDataBuffer];
-  if (v89)
+  perPrimitiveDataBuffer2 = [into perPrimitiveDataBuffer];
+  if (perPrimitiveDataBuffer2)
   {
-    v91 = v89;
+    v91 = perPrimitiveDataBuffer2;
     v92 = v88[2];
-    if (*(v89 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
+    if (*(perPrimitiveDataBuffer2 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
     {
-      v93 = *(v89 + 312);
+      v93 = *(perPrimitiveDataBuffer2 + 312);
       IOGPUResourceListAddResource();
       v94 = *(v93 + 64);
       v95 = *(v93 + 72);
@@ -993,14 +993,14 @@ uint64_t __97__AGXG18PFamilyRayTracingGPUBuilder_writeAccelerationStructureSeria
   }
 
   v96 = self->_impl;
-  v97 = [a4 controlPointBuffer];
-  if (v97)
+  controlPointBuffer2 = [into controlPointBuffer];
+  if (controlPointBuffer2)
   {
-    v99 = v97;
+    v99 = controlPointBuffer2;
     v100 = v96[2];
-    if (*(v97 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
+    if (*(controlPointBuffer2 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
     {
-      v101 = *(v97 + 312);
+      v101 = *(controlPointBuffer2 + 312);
       IOGPUResourceListAddResource();
       v102 = *(v101 + 64);
       v103 = *(v101 + 72);
@@ -1019,43 +1019,43 @@ uint64_t __97__AGXG18PFamilyRayTracingGPUBuilder_writeAccelerationStructureSeria
     AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v100, v99, v98, 3, 3);
   }
 
-  v185 = self;
+  selfCopy = self;
   v104 = self->_impl;
-  v189 = [a4 headerBuffer];
-  v188 = [a4 headerBufferOffset];
-  v105 = [a4 innerNodeBuffer];
-  v196 = [a4 innerNodeBufferOffset];
-  v187 = [a4 leafNodeBuffer];
-  v106 = [a4 leafNodeBufferOffset];
-  v186 = [a4 primitiveBuffer];
-  v107 = [a4 primitiveBufferOffset];
-  v108 = [a4 geometryBuffer];
-  v109 = [a4 geometryBufferOffset];
-  v110 = [a4 instanceTransformBuffer];
-  v111 = [a4 instanceTransformBufferOffset];
-  v194 = [a4 perPrimitiveDataBuffer];
-  v192 = [a4 perPrimitiveDataBufferOffset];
-  v195 = [a4 controlPointBuffer];
-  v193 = [a4 controlPointBufferOffset];
-  v197 = [a4 version];
+  headerBuffer = [into headerBuffer];
+  headerBufferOffset = [into headerBufferOffset];
+  innerNodeBuffer3 = [into innerNodeBuffer];
+  innerNodeBufferOffset = [into innerNodeBufferOffset];
+  leafNodeBuffer3 = [into leafNodeBuffer];
+  leafNodeBufferOffset = [into leafNodeBufferOffset];
+  primitiveBuffer3 = [into primitiveBuffer];
+  primitiveBufferOffset = [into primitiveBufferOffset];
+  geometryBuffer3 = [into geometryBuffer];
+  geometryBufferOffset = [into geometryBufferOffset];
+  instanceTransformBuffer3 = [into instanceTransformBuffer];
+  instanceTransformBufferOffset = [into instanceTransformBufferOffset];
+  perPrimitiveDataBuffer3 = [into perPrimitiveDataBuffer];
+  perPrimitiveDataBufferOffset = [into perPrimitiveDataBufferOffset];
+  controlPointBuffer3 = [into controlPointBuffer];
+  controlPointBufferOffset = [into controlPointBufferOffset];
+  version = [into version];
   if (*(v104 + 49) == 1)
   {
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::flush(v104);
   }
 
-  v112 = [v190 buffer];
-  v184 = [v190 bufferOffset];
-  v113 = dword_29D2F53D0[v197];
-  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::setBuffer_impl<AGXBuffer>(*(v104 + 2), v112, v184, 7u, 0);
-  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::setBuffer_impl<AGXBuffer>(*(v104 + 2), v189, v188, 0xAu, 0);
-  v191 = v105;
-  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::setBuffer_impl<AGXBuffer>(*(v104 + 2), v105, v196, 0xBu, 0);
-  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::setBuffer_impl<AGXBuffer>(*(v104 + 2), v187, v106, 0xCu, 0);
-  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::setBuffer_impl<AGXBuffer>(*(v104 + 2), v186, v107, 0xDu, 0);
-  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::setBuffer_impl<AGXBuffer>(*(v104 + 2), v108, v109, 0xEu, 0);
-  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::setBuffer_impl<AGXBuffer>(*(v104 + 2), v110, v111, 0xFu, 0);
-  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::setBuffer_impl<AGXBuffer>(*(v104 + 2), v194, v192, 0x10u, 0);
-  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::setBuffer_impl<AGXBuffer>(*(v104 + 2), v195, v193, 0x11u, 0);
+  buffer3 = [structureCopy buffer];
+  bufferOffset = [structureCopy bufferOffset];
+  v113 = dword_29D2F53D0[version];
+  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::setBuffer_impl<AGXBuffer>(*(v104 + 2), buffer3, bufferOffset, 7u, 0);
+  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::setBuffer_impl<AGXBuffer>(*(v104 + 2), headerBuffer, headerBufferOffset, 0xAu, 0);
+  v191 = innerNodeBuffer3;
+  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::setBuffer_impl<AGXBuffer>(*(v104 + 2), innerNodeBuffer3, innerNodeBufferOffset, 0xBu, 0);
+  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::setBuffer_impl<AGXBuffer>(*(v104 + 2), leafNodeBuffer3, leafNodeBufferOffset, 0xCu, 0);
+  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::setBuffer_impl<AGXBuffer>(*(v104 + 2), primitiveBuffer3, primitiveBufferOffset, 0xDu, 0);
+  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::setBuffer_impl<AGXBuffer>(*(v104 + 2), geometryBuffer3, geometryBufferOffset, 0xEu, 0);
+  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::setBuffer_impl<AGXBuffer>(*(v104 + 2), instanceTransformBuffer3, instanceTransformBufferOffset, 0xFu, 0);
+  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::setBuffer_impl<AGXBuffer>(*(v104 + 2), perPrimitiveDataBuffer3, perPrimitiveDataBufferOffset, 0x10u, 0);
+  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::setBuffer_impl<AGXBuffer>(*(v104 + 2), controlPointBuffer3, controlPointBufferOffset, 0x11u, 0);
   v216 = 0;
   v217 = 0;
   v218 = 0;
@@ -1105,7 +1105,7 @@ LABEL_101:
   *(v122 + 17548) = 8;
   *(v122 + 17704) = 8;
   *(v122 + 17708) = v121 >> 8;
-  *v120 = v197;
+  *v120 = version;
   {
     {
     }
@@ -1274,7 +1274,7 @@ LABEL_121:
     *(v147 + 17548) = 8;
     *(v147 + 17704) = 8;
     *(v147 + 17708) = v146 >> 8;
-    *v145 = v197;
+    *v145 = version;
     v148 = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::getOrCreatePipeline(v104, 45, 0);
     v221 = 0u;
     v222 = 0u;
@@ -1347,7 +1347,7 @@ LABEL_121:
   }
 
   while (v141);
-  v160 = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::getOrCreatePipeline(v104, dword_29D2F53E8[v197], 0);
+  v160 = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::getOrCreatePipeline(v104, dword_29D2F53E8[version], 0);
   v221 = 0u;
   v222 = 0u;
   AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::dispatchWithIndirectThreadCountExtended(v104, v160, v115 + 20, v114, v221.i64, 1, 0, 1);
@@ -1363,10 +1363,10 @@ LABEL_121:
   *&v222 = 8;
   *(&v222 + 1) = v214;
   *v213.i64[0] = 0;
-  v162 = [v112 gpuAddress];
-  v163 = [v112 length];
-  v164 = v162 + v184;
-  if (v194)
+  gpuAddress = [buffer3 gpuAddress];
+  v163 = [buffer3 length];
+  v164 = gpuAddress + bufferOffset;
+  if (perPrimitiveDataBuffer3)
   {
     v210 = 0uLL;
     v211 = 0;
@@ -1384,16 +1384,16 @@ LABEL_121:
     v210.i64[1] = 72;
     v211 = v163;
     v212 = 0;
-    v165 = [v194 gpuAddress];
-    v166 = [v194 length];
-    v206 = v165 + v192;
-    v207 = v192;
+    gpuAddress2 = [perPrimitiveDataBuffer3 gpuAddress];
+    v166 = [perPrimitiveDataBuffer3 length];
+    v206 = gpuAddress2 + perPrimitiveDataBufferOffset;
+    v207 = perPrimitiveDataBufferOffset;
     v208 = v166;
     v209 = 0;
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeStridedCopy(v104, v164, v210.i64, 4, v213.i64, 0, 4, &v206, v221.i64, 4);
   }
 
-  if (v195)
+  if (controlPointBuffer3)
   {
     v210 = 0uLL;
     v211 = 0;
@@ -1412,17 +1412,17 @@ LABEL_121:
     v210.i64[1] = 88;
     v211 = v163;
     v212 = 0;
-    v167 = [v195 gpuAddress];
-    v168 = [v195 length];
-    v206 = v167 + v193;
-    v207 = v193;
+    gpuAddress3 = [controlPointBuffer3 gpuAddress];
+    v168 = [controlPointBuffer3 length];
+    v206 = gpuAddress3 + controlPointBufferOffset;
+    v207 = controlPointBufferOffset;
     v208 = v168;
     v209 = 0;
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeStridedCopy(v104, v164, v210.i64, 16, v213.i64, 0, 16, &v206, v221.i64, 16);
   }
 
-  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::setBuffer_impl<AGXBuffer>(*(v104 + 2), v112, v184, 7u, 0);
-  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::setBuffer_impl<AGXBuffer>(*(v104 + 2), v191, v196, 0xBu, 0);
+  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::setBuffer_impl<AGXBuffer>(*(v104 + 2), buffer3, bufferOffset, 7u, 0);
+  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::setBuffer_impl<AGXBuffer>(*(v104 + 2), v191, innerNodeBufferOffset, 0xBu, 0);
   v169 = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::getOrCreatePipeline(v104, 53, 0);
   v170 = *(v104 + 2);
   v213 = vdupq_n_s64(1uLL);
@@ -1443,7 +1443,7 @@ LABEL_121:
     AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::setPipelineCommon(v170, v171);
   }
 
-  v172 = v185->_progressBins;
+  v172 = selfCopy->_progressBins;
   if (v172)
   {
     v173 = v172[21];
@@ -1503,9 +1503,9 @@ LABEL_121:
       }
 
       *(v172 + 22) = 0;
-      if ((v176 & 0x80000000) == 0 && !v185->virtualSubstreamsEnabled)
+      if ((v176 & 0x80000000) == 0 && !selfCopy->virtualSubstreamsEnabled)
       {
-        [(MTLComputeCommandEncoderSPI *)v185->_computeEncoder signalProgress:v176];
+        [(MTLComputeCommandEncoderSPI *)selfCopy->_computeEncoder signalProgress:v176];
       }
     }
   }
@@ -1673,12 +1673,12 @@ uint64_t __90__AGXG18PFamilyRayTracingGPUBuilder_writeGenericBVHStructureOfAccel
   }
 }
 
-- (BOOL)writeGenericBVHStructureSizesOfAccelerationStructure:(id)a3 into:(id)a4
+- (BOOL)writeGenericBVHStructureSizesOfAccelerationStructure:(id)structure into:(id)into
 {
   result = 0;
-  if (a3 && a4)
+  if (structure && into)
   {
-    if (([a4 version] - 256) > 5)
+    if (([into version] - 256) > 5)
     {
       return 0;
     }
@@ -1719,13 +1719,13 @@ uint64_t __90__AGXG18PFamilyRayTracingGPUBuilder_writeGenericBVHStructureOfAccel
         progressBins[11] = v19;
         [(MTLComputeCommandEncoderSPI *)computeEncoder setSubstream:v13];
         v20 = self->_progressBins;
-        v21 = [a3 buffer];
+        buffer = [structure buffer];
         v53[0] = MEMORY[0x29EDCA5F8];
         v53[1] = 3221225472;
         v53[2] = __95__AGXG18PFamilyRayTracingGPUBuilder_writeGenericBVHStructureSizesOfAccelerationStructure_into___block_invoke;
         v53[3] = &unk_29F3420F0;
         v53[4] = self;
-        ProgressBinsSynchronizeBufferAccess(v20, v21, 0, v53);
+        ProgressBinsSynchronizeBufferAccess(v20, buffer, 0, v53);
         v22 = self->_progressBins;
         v52[0] = MEMORY[0x29EDCA5F8];
         v52[1] = 3221225472;
@@ -1737,9 +1737,9 @@ uint64_t __90__AGXG18PFamilyRayTracingGPUBuilder_writeGenericBVHStructureOfAccel
 
       v23 = MEMORY[0x29EDC5638];
       v24 = *(self->_impl + 2);
-      if (*(a3 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
+      if (*(structure + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
       {
-        v25 = *(a3 + 39);
+        v25 = *(structure + 39);
         IOGPUResourceListAddResource();
         v27 = *(v25 + 64);
         v26 = *(v25 + 72);
@@ -1755,7 +1755,7 @@ uint64_t __90__AGXG18PFamilyRayTracingGPUBuilder_writeGenericBVHStructureOfAccel
         }
       }
 
-      AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v24, a3, v9, 3, 3);
+      AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v24, structure, v9, 3, 3);
       impl = self->_impl;
       if (v8)
       {
@@ -1782,19 +1782,19 @@ uint64_t __90__AGXG18PFamilyRayTracingGPUBuilder_writeGenericBVHStructureOfAccel
         impl = self->_impl;
       }
 
-      v34 = [v8 gpuAddress];
+      gpuAddress = [v8 gpuAddress];
       [v8 length];
-      v35 = [a4 version];
+      version = [into version];
       if (*(impl + 49) == 1)
       {
         AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::flush(impl);
       }
 
-      Pipeline = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::getOrCreatePipeline(impl, dword_29D2F53B8[v35], 0);
-      AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::setBuffer_impl<AGXBuffer>(impl[2], [a3 buffer], objc_msgSend(a3, "bufferOffset"), 0, 0);
+      Pipeline = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::getOrCreatePipeline(impl, dword_29D2F53B8[version], 0);
+      AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::setBuffer_impl<AGXBuffer>(impl[2], [structure buffer], objc_msgSend(structure, "bufferOffset"), 0, 0);
       v37 = impl[2];
-      *(v37 + 26416) = v34;
-      *(*(v37 + 22488) + 8) = v34;
+      *(v37 + 26416) = gpuAddress;
+      *(*(v37 + 22488) + 8) = gpuAddress;
       v38 = *(v37 + 27592);
       *(v37 + 22512) = 0;
       *(v37 + 27592) = v38 | 1;
@@ -1823,7 +1823,7 @@ uint64_t __90__AGXG18PFamilyRayTracingGPUBuilder_writeGenericBVHStructureOfAccel
       v51[2] = __95__AGXG18PFamilyRayTracingGPUBuilder_writeGenericBVHStructureSizesOfAccelerationStructure_into___block_invoke_3;
       v51[3] = &unk_29F342118;
       v51[4] = v8;
-      v51[5] = a4;
+      v51[5] = into;
       [v40 addCompletedHandler:v51];
       v41 = self->_progressBins;
       if (v41)
@@ -1953,14 +1953,14 @@ void __95__AGXG18PFamilyRayTracingGPUBuilder_writeGenericBVHStructureSizesOfAcce
   v3 = *(a1 + 32);
 }
 
-- (void)deserializeInstanceAccelerationStructure:(id)a3 primitiveAccelerationStructures:(id)a4 fromBuffer:(id)a5 serializedBufferOffset:(unint64_t)a6 withDescriptor:(id)a7
+- (void)deserializeInstanceAccelerationStructure:(id)structure primitiveAccelerationStructures:(id)structures fromBuffer:(id)buffer serializedBufferOffset:(unint64_t)offset withDescriptor:(id)descriptor
 {
-  [(AGXG18PFamilyRayTracingGPUBuilder *)self _beginVirtualSubstream:a3];
+  [(AGXG18PFamilyRayTracingGPUBuilder *)self _beginVirtualSubstream:structure];
   progressBins = self->_progressBins;
   if (progressBins)
   {
     computeEncoder = self->_computeEncoder;
-    v14 = [a3 size];
+    v14 = [structure size];
     v15 = *(progressBins + 20);
     if (v15 < 2)
     {
@@ -1989,35 +1989,35 @@ void __95__AGXG18PFamilyRayTracingGPUBuilder_writeGenericBVHStructureSizesOfAcce
     progressBins[11] = v22;
     [(MTLComputeCommandEncoderSPI *)computeEncoder setSubstream:v16];
     v23 = self->_progressBins;
-    v24 = [a3 buffer];
-    v25 = [a3 bufferOffset];
-    v26 = [a3 size];
+    buffer = [structure buffer];
+    bufferOffset = [structure bufferOffset];
+    v26 = [structure size];
     v67[0] = MEMORY[0x29EDCA5F8];
     v67[1] = 3221225472;
     v67[2] = __159__AGXG18PFamilyRayTracingGPUBuilder_deserializeInstanceAccelerationStructure_primitiveAccelerationStructures_fromBuffer_serializedBufferOffset_withDescriptor___block_invoke;
     v67[3] = &unk_29F3420F0;
     v67[4] = self;
-    ProgressBinsSynchronizeBufferAccessRange(v23, v24, v25, v26, 1, v67);
-    [(AGXG18PFamilyRayTracingGPUBuilder *)self substreamSynchronizeAccelerationStructures:a4 access:0];
+    ProgressBinsSynchronizeBufferAccessRange(v23, buffer, bufferOffset, v26, 1, v67);
+    [(AGXG18PFamilyRayTracingGPUBuilder *)self substreamSynchronizeAccelerationStructures:structures access:0];
     v27 = self->_progressBins;
-    v28 = [a3 size];
+    v28 = [structure size];
     v66[0] = MEMORY[0x29EDCA5F8];
     v66[1] = 3221225472;
     v66[2] = __159__AGXG18PFamilyRayTracingGPUBuilder_deserializeInstanceAccelerationStructure_primitiveAccelerationStructures_fromBuffer_serializedBufferOffset_withDescriptor___block_invoke_2;
     v66[3] = &unk_29F3420F0;
     v66[4] = self;
-    ProgressBinsSynchronizeBufferAccessRange(v27, a5, a6, v28, 0, v66);
+    ProgressBinsSynchronizeBufferAccessRange(v27, buffer, offset, v28, 0, v66);
   }
 
-  v64 = a4;
+  structuresCopy = structures;
   impl = self->_impl;
   v30 = MEMORY[0x29EDC5638];
-  if (a3)
+  if (structure)
   {
     v31 = impl[2];
-    if (*(a3 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
+    if (*(structure + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
     {
-      v32 = *(a3 + 39);
+      v32 = *(structure + 39);
       IOGPUResourceListAddResource();
       v34 = *(v32 + 64);
       v33 = *(v32 + 72);
@@ -2033,18 +2033,18 @@ void __95__AGXG18PFamilyRayTracingGPUBuilder_writeGenericBVHStructureSizesOfAcce
       }
     }
 
-    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v31, a3, v11, 3, 3);
+    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v31, structure, v11, 3, 3);
     impl = self->_impl;
   }
 
-  v35 = [a3 buffer];
-  if (v35)
+  buffer2 = [structure buffer];
+  if (buffer2)
   {
-    v37 = v35;
+    v37 = buffer2;
     v38 = impl[2];
-    if (*(v35 + *v30 + 16) >> 61 == 3)
+    if (*(buffer2 + *v30 + 16) >> 61 == 3)
     {
-      v39 = *(v35 + 312);
+      v39 = *(buffer2 + 312);
       IOGPUResourceListAddResource();
       v40 = *(v39 + 64);
       v41 = *(v39 + 72);
@@ -2065,12 +2065,12 @@ void __95__AGXG18PFamilyRayTracingGPUBuilder_writeGenericBVHStructureSizesOfAcce
   }
 
   v42 = self->_impl;
-  if (a5)
+  if (buffer)
   {
     v43 = v42[2];
-    if (*(a5 + *v30 + 16) >> 61 == 3)
+    if (*(buffer + *v30 + 16) >> 61 == 3)
     {
-      v44 = *(a5 + 39);
+      v44 = *(buffer + 39);
       IOGPUResourceListAddResource();
       v45 = *(v44 + 64);
       v46 = *(v44 + 72);
@@ -2086,31 +2086,31 @@ void __95__AGXG18PFamilyRayTracingGPUBuilder_writeGenericBVHStructureSizesOfAcce
       }
     }
 
-    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v43, a5, v36, 1, 1);
+    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v43, buffer, v36, 1, 1);
     v42 = self->_impl;
   }
 
-  v47 = [a5 gpuAddress];
-  v48 = [a5 length];
-  v49 = [a3 accelerationStructureUniqueIdentifier];
+  gpuAddress = [buffer gpuAddress];
+  v48 = [buffer length];
+  accelerationStructureUniqueIdentifier = [structure accelerationStructureUniqueIdentifier];
   if (*(v42 + 49) == 1)
   {
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::flush(v42);
   }
 
-  v50 = [a3 buffer];
-  v51 = [a3 bufferOffset];
-  v52 = [v50 gpuAddress];
-  v53 = [v50 length];
-  v69[0] = v52 + v51;
-  v69[1] = v51;
+  buffer3 = [structure buffer];
+  bufferOffset2 = [structure bufferOffset];
+  gpuAddress2 = [buffer3 gpuAddress];
+  v53 = [buffer3 length];
+  v69[0] = gpuAddress2 + bufferOffset2;
+  v69[1] = bufferOffset2;
   v69[2] = v53;
   v69[3] = 0;
-  v68[0] = v47 + a6;
-  v68[1] = a6;
+  v68[0] = gpuAddress + offset;
+  v68[1] = offset;
   v68[2] = v48;
   v68[3] = 0;
-  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeDeserialize_impl(v42, v69, v64, v68, v49);
+  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeDeserialize_impl(v42, v69, structuresCopy, v68, accelerationStructureUniqueIdentifier);
   v54 = self->_progressBins;
   if (v54)
   {
@@ -2219,14 +2219,14 @@ uint64_t __159__AGXG18PFamilyRayTracingGPUBuilder_deserializeInstanceAcceleratio
   }
 }
 
-- (void)deserializePrimitiveAccelerationStructure:(id)a3 fromBuffer:(id)a4 serializedBufferOffset:(unint64_t)a5 withDescriptor:(id)a6
+- (void)deserializePrimitiveAccelerationStructure:(id)structure fromBuffer:(id)buffer serializedBufferOffset:(unint64_t)offset withDescriptor:(id)descriptor
 {
-  [(AGXG18PFamilyRayTracingGPUBuilder *)self _beginVirtualSubstream:a3];
+  [(AGXG18PFamilyRayTracingGPUBuilder *)self _beginVirtualSubstream:structure];
   progressBins = self->_progressBins;
   if (progressBins)
   {
     computeEncoder = self->_computeEncoder;
-    v13 = [a3 size];
+    v13 = [structure size];
     v14 = *(progressBins + 20);
     if (v14 < 2)
     {
@@ -2255,33 +2255,33 @@ uint64_t __159__AGXG18PFamilyRayTracingGPUBuilder_deserializeInstanceAcceleratio
     progressBins[11] = v21;
     [(MTLComputeCommandEncoderSPI *)computeEncoder setSubstream:v15];
     v22 = self->_progressBins;
-    v23 = [a3 buffer];
-    v24 = [a3 bufferOffset];
-    v25 = [a3 size];
+    buffer = [structure buffer];
+    bufferOffset = [structure bufferOffset];
+    v25 = [structure size];
     v65[0] = MEMORY[0x29EDCA5F8];
     v65[1] = 3221225472;
     v65[2] = __128__AGXG18PFamilyRayTracingGPUBuilder_deserializePrimitiveAccelerationStructure_fromBuffer_serializedBufferOffset_withDescriptor___block_invoke;
     v65[3] = &unk_29F3420F0;
     v65[4] = self;
-    ProgressBinsSynchronizeBufferAccessRange(v22, v23, v24, v25, 1, v65);
+    ProgressBinsSynchronizeBufferAccessRange(v22, buffer, bufferOffset, v25, 1, v65);
     v26 = self->_progressBins;
-    v27 = [a3 size];
+    v27 = [structure size];
     v64[0] = MEMORY[0x29EDCA5F8];
     v64[1] = 3221225472;
     v64[2] = __128__AGXG18PFamilyRayTracingGPUBuilder_deserializePrimitiveAccelerationStructure_fromBuffer_serializedBufferOffset_withDescriptor___block_invoke_2;
     v64[3] = &unk_29F3420F0;
     v64[4] = self;
-    ProgressBinsSynchronizeBufferAccessRange(v26, a4, a5, v27, 0, v64);
+    ProgressBinsSynchronizeBufferAccessRange(v26, buffer, offset, v27, 0, v64);
   }
 
   impl = self->_impl;
   v29 = MEMORY[0x29EDC5638];
-  if (a3)
+  if (structure)
   {
     v30 = impl[2];
-    if (*(a3 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
+    if (*(structure + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
     {
-      v31 = *(a3 + 39);
+      v31 = *(structure + 39);
       IOGPUResourceListAddResource();
       v33 = *(v31 + 64);
       v32 = *(v31 + 72);
@@ -2297,18 +2297,18 @@ uint64_t __159__AGXG18PFamilyRayTracingGPUBuilder_deserializeInstanceAcceleratio
       }
     }
 
-    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v30, a3, v10, 3, 3);
+    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v30, structure, v10, 3, 3);
     impl = self->_impl;
   }
 
-  v34 = [a3 buffer];
-  if (v34)
+  buffer2 = [structure buffer];
+  if (buffer2)
   {
-    v36 = v34;
+    v36 = buffer2;
     v37 = impl[2];
-    if (*(v34 + *v29 + 16) >> 61 == 3)
+    if (*(buffer2 + *v29 + 16) >> 61 == 3)
     {
-      v38 = *(v34 + 312);
+      v38 = *(buffer2 + 312);
       IOGPUResourceListAddResource();
       v39 = *(v38 + 64);
       v40 = *(v38 + 72);
@@ -2329,12 +2329,12 @@ uint64_t __159__AGXG18PFamilyRayTracingGPUBuilder_deserializeInstanceAcceleratio
   }
 
   v41 = self->_impl;
-  if (a4)
+  if (buffer)
   {
     v42 = v41[2];
-    if (*(a4 + *v29 + 16) >> 61 == 3)
+    if (*(buffer + *v29 + 16) >> 61 == 3)
     {
-      v43 = *(a4 + 39);
+      v43 = *(buffer + 39);
       IOGPUResourceListAddResource();
       v44 = *(v43 + 64);
       v45 = *(v43 + 72);
@@ -2350,31 +2350,31 @@ uint64_t __159__AGXG18PFamilyRayTracingGPUBuilder_deserializeInstanceAcceleratio
       }
     }
 
-    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v42, a4, v35, 1, 1);
+    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v42, buffer, v35, 1, 1);
     v41 = self->_impl;
   }
 
-  v46 = [a4 gpuAddress];
-  v47 = [a4 length];
-  v48 = [a3 accelerationStructureUniqueIdentifier];
+  gpuAddress = [buffer gpuAddress];
+  v47 = [buffer length];
+  accelerationStructureUniqueIdentifier = [structure accelerationStructureUniqueIdentifier];
   if (*(v41 + 49) == 1)
   {
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::flush(v41);
   }
 
-  v49 = [a3 buffer];
-  v50 = [a3 bufferOffset];
-  v51 = [v49 gpuAddress];
-  v52 = [v49 length];
-  v67[0] = v51 + v50;
-  v67[1] = v50;
+  buffer3 = [structure buffer];
+  bufferOffset2 = [structure bufferOffset];
+  gpuAddress2 = [buffer3 gpuAddress];
+  v52 = [buffer3 length];
+  v67[0] = gpuAddress2 + bufferOffset2;
+  v67[1] = bufferOffset2;
   v67[2] = v52;
   v67[3] = 0;
-  v66[0] = v46 + v63;
+  v66[0] = gpuAddress + v63;
   v66[1] = v63;
   v66[2] = v47;
   v66[3] = 0;
-  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeDeserialize_impl(v41, v67, 0, v66, v48);
+  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeDeserialize_impl(v41, v67, 0, v66, accelerationStructureUniqueIdentifier);
   v53 = self->_progressBins;
   if (v53)
   {
@@ -2483,14 +2483,14 @@ uint64_t __128__AGXG18PFamilyRayTracingGPUBuilder_deserializePrimitiveAccelerati
   }
 }
 
-- (void)deserializeInstanceAccelerationStructure:(id)a3 primitiveAccelerationStructures:(id)a4 fromBuffer:(id)a5 serializedBufferOffset:(unint64_t)a6
+- (void)deserializeInstanceAccelerationStructure:(id)structure primitiveAccelerationStructures:(id)structures fromBuffer:(id)buffer serializedBufferOffset:(unint64_t)offset
 {
   [(AGXG18PFamilyRayTracingGPUBuilder *)self _beginVirtualSubstream];
   progressBins = self->_progressBins;
   if (progressBins)
   {
     computeEncoder = self->_computeEncoder;
-    v13 = [a3 size];
+    v13 = [structure size];
     v14 = *(progressBins + 20);
     if (v14 < 2)
     {
@@ -2519,35 +2519,35 @@ uint64_t __128__AGXG18PFamilyRayTracingGPUBuilder_deserializePrimitiveAccelerati
     progressBins[11] = v21;
     [(MTLComputeCommandEncoderSPI *)computeEncoder setSubstream:v15];
     v22 = self->_progressBins;
-    v23 = [a3 buffer];
-    v24 = [a3 bufferOffset];
-    v25 = [a3 size];
+    buffer = [structure buffer];
+    bufferOffset = [structure bufferOffset];
+    v25 = [structure size];
     v66[0] = MEMORY[0x29EDCA5F8];
     v66[1] = 3221225472;
     v66[2] = __144__AGXG18PFamilyRayTracingGPUBuilder_deserializeInstanceAccelerationStructure_primitiveAccelerationStructures_fromBuffer_serializedBufferOffset___block_invoke;
     v66[3] = &unk_29F3420F0;
     v66[4] = self;
-    ProgressBinsSynchronizeBufferAccessRange(v22, v23, v24, v25, 1, v66);
-    [(AGXG18PFamilyRayTracingGPUBuilder *)self substreamSynchronizeAccelerationStructures:a4 access:0];
+    ProgressBinsSynchronizeBufferAccessRange(v22, buffer, bufferOffset, v25, 1, v66);
+    [(AGXG18PFamilyRayTracingGPUBuilder *)self substreamSynchronizeAccelerationStructures:structures access:0];
     v26 = self->_progressBins;
-    v27 = [a3 size];
+    v27 = [structure size];
     v65[0] = MEMORY[0x29EDCA5F8];
     v65[1] = 3221225472;
     v65[2] = __144__AGXG18PFamilyRayTracingGPUBuilder_deserializeInstanceAccelerationStructure_primitiveAccelerationStructures_fromBuffer_serializedBufferOffset___block_invoke_2;
     v65[3] = &unk_29F3420F0;
     v65[4] = self;
-    ProgressBinsSynchronizeBufferAccessRange(v26, a5, a6, v27, 0, v65);
+    ProgressBinsSynchronizeBufferAccessRange(v26, buffer, offset, v27, 0, v65);
   }
 
-  v63 = a4;
+  structuresCopy = structures;
   impl = self->_impl;
   v29 = MEMORY[0x29EDC5638];
-  if (a3)
+  if (structure)
   {
     v30 = impl[2];
-    if (*(a3 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
+    if (*(structure + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
     {
-      v31 = *(a3 + 39);
+      v31 = *(structure + 39);
       IOGPUResourceListAddResource();
       v33 = *(v31 + 64);
       v32 = *(v31 + 72);
@@ -2563,18 +2563,18 @@ uint64_t __128__AGXG18PFamilyRayTracingGPUBuilder_deserializePrimitiveAccelerati
       }
     }
 
-    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v30, a3, v10, 3, 3);
+    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v30, structure, v10, 3, 3);
     impl = self->_impl;
   }
 
-  v34 = [a3 buffer];
-  if (v34)
+  buffer2 = [structure buffer];
+  if (buffer2)
   {
-    v36 = v34;
+    v36 = buffer2;
     v37 = impl[2];
-    if (*(v34 + *v29 + 16) >> 61 == 3)
+    if (*(buffer2 + *v29 + 16) >> 61 == 3)
     {
-      v38 = *(v34 + 312);
+      v38 = *(buffer2 + 312);
       IOGPUResourceListAddResource();
       v39 = *(v38 + 64);
       v40 = *(v38 + 72);
@@ -2595,12 +2595,12 @@ uint64_t __128__AGXG18PFamilyRayTracingGPUBuilder_deserializePrimitiveAccelerati
   }
 
   v41 = self->_impl;
-  if (a5)
+  if (buffer)
   {
     v42 = v41[2];
-    if (*(a5 + *v29 + 16) >> 61 == 3)
+    if (*(buffer + *v29 + 16) >> 61 == 3)
     {
-      v43 = *(a5 + 39);
+      v43 = *(buffer + 39);
       IOGPUResourceListAddResource();
       v44 = *(v43 + 64);
       v45 = *(v43 + 72);
@@ -2616,31 +2616,31 @@ uint64_t __128__AGXG18PFamilyRayTracingGPUBuilder_deserializePrimitiveAccelerati
       }
     }
 
-    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v42, a5, v35, 1, 1);
+    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v42, buffer, v35, 1, 1);
     v41 = self->_impl;
   }
 
-  v46 = [a5 gpuAddress];
-  v47 = [a5 length];
-  v48 = [a3 accelerationStructureUniqueIdentifier];
+  gpuAddress = [buffer gpuAddress];
+  v47 = [buffer length];
+  accelerationStructureUniqueIdentifier = [structure accelerationStructureUniqueIdentifier];
   if (*(v41 + 49) == 1)
   {
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::flush(v41);
   }
 
-  v49 = [a3 buffer];
-  v50 = [a3 bufferOffset];
-  v51 = [v49 gpuAddress];
-  v52 = [v49 length];
-  v68[0] = v51 + v50;
-  v68[1] = v50;
+  buffer3 = [structure buffer];
+  bufferOffset2 = [structure bufferOffset];
+  gpuAddress2 = [buffer3 gpuAddress];
+  v52 = [buffer3 length];
+  v68[0] = gpuAddress2 + bufferOffset2;
+  v68[1] = bufferOffset2;
   v68[2] = v52;
   v68[3] = 0;
-  v67[0] = v46 + a6;
-  v67[1] = a6;
+  v67[0] = gpuAddress + offset;
+  v67[1] = offset;
   v67[2] = v47;
   v67[3] = 0;
-  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeDeserialize_impl(v41, v68, v63, v67, v48);
+  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeDeserialize_impl(v41, v68, structuresCopy, v67, accelerationStructureUniqueIdentifier);
   v53 = self->_progressBins;
   if (v53)
   {
@@ -2749,20 +2749,20 @@ uint64_t __144__AGXG18PFamilyRayTracingGPUBuilder_deserializeInstanceAcceleratio
   }
 }
 
-- (void)deserializePrimitiveAccelerationStructure:(id)a3 fromBuffer:(id)a4 serializedBufferOffset:(unint64_t)a5
+- (void)deserializePrimitiveAccelerationStructure:(id)structure fromBuffer:(id)buffer serializedBufferOffset:(unint64_t)offset
 {
   v9 = objc_opt_new();
-  [(AGXG18PFamilyRayTracingGPUBuilder *)self deserializePrimitiveAccelerationStructure:a3 fromBuffer:a4 serializedBufferOffset:a5 withDescriptor:v9];
+  [(AGXG18PFamilyRayTracingGPUBuilder *)self deserializePrimitiveAccelerationStructure:structure fromBuffer:buffer serializedBufferOffset:offset withDescriptor:v9];
 }
 
-- (void)serializeInstanceAccelerationStructure:(id)a3 primitiveAccelerationStructures:(id)a4 toBuffer:(id)a5 serializedBufferOffset:(unint64_t)a6
+- (void)serializeInstanceAccelerationStructure:(id)structure primitiveAccelerationStructures:(id)structures toBuffer:(id)buffer serializedBufferOffset:(unint64_t)offset
 {
   [(AGXG18PFamilyRayTracingGPUBuilder *)self _beginVirtualSubstream];
   progressBins = self->_progressBins;
   if (progressBins)
   {
     computeEncoder = self->_computeEncoder;
-    v14 = [a3 size];
+    v14 = [structure size];
     v15 = *(progressBins + 20);
     if (v15 < 2)
     {
@@ -2791,36 +2791,36 @@ uint64_t __144__AGXG18PFamilyRayTracingGPUBuilder_deserializeInstanceAcceleratio
     progressBins[11] = v22;
     [(MTLComputeCommandEncoderSPI *)computeEncoder setSubstream:v16];
     v23 = self->_progressBins;
-    v24 = [a3 buffer];
-    v25 = [a3 bufferOffset];
-    v26 = [a3 size];
+    buffer = [structure buffer];
+    bufferOffset = [structure bufferOffset];
+    v26 = [structure size];
     v68[0] = MEMORY[0x29EDCA5F8];
     v68[1] = 3221225472;
     v68[2] = __140__AGXG18PFamilyRayTracingGPUBuilder_serializeInstanceAccelerationStructure_primitiveAccelerationStructures_toBuffer_serializedBufferOffset___block_invoke;
     v68[3] = &unk_29F3420F0;
     v68[4] = self;
-    ProgressBinsSynchronizeBufferAccessRange(v23, v24, v25, v26, 0, v68);
-    [(AGXG18PFamilyRayTracingGPUBuilder *)self substreamSynchronizeAccelerationStructures:a4 access:0];
+    ProgressBinsSynchronizeBufferAccessRange(v23, buffer, bufferOffset, v26, 0, v68);
+    [(AGXG18PFamilyRayTracingGPUBuilder *)self substreamSynchronizeAccelerationStructures:structures access:0];
     v27 = self->_progressBins;
-    v28 = [a3 size];
+    v28 = [structure size];
     v67[0] = MEMORY[0x29EDCA5F8];
     v67[1] = 3221225472;
     v67[2] = __140__AGXG18PFamilyRayTracingGPUBuilder_serializeInstanceAccelerationStructure_primitiveAccelerationStructures_toBuffer_serializedBufferOffset___block_invoke_2;
     v67[3] = &unk_29F3420F0;
     v67[4] = self;
-    ProgressBinsSynchronizeBufferAccessRange(v27, a5, a6, v28, 1, v67);
+    ProgressBinsSynchronizeBufferAccessRange(v27, buffer, offset, v28, 1, v67);
   }
 
-  v65 = a6;
-  v66 = a4;
+  offsetCopy = offset;
+  structuresCopy = structures;
   impl = self->_impl;
   v30 = MEMORY[0x29EDC5638];
-  if (a3)
+  if (structure)
   {
     v31 = impl[2];
-    if (*(a3 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
+    if (*(structure + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
     {
-      v32 = *(a3 + 39);
+      v32 = *(structure + 39);
       IOGPUResourceListAddResource();
       v34 = *(v32 + 64);
       v33 = *(v32 + 72);
@@ -2836,21 +2836,21 @@ uint64_t __144__AGXG18PFamilyRayTracingGPUBuilder_deserializeInstanceAcceleratio
       }
     }
 
-    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v31, a3, v11, 1, 1);
+    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v31, structure, v11, 1, 1);
     impl = self->_impl;
     v30 = MEMORY[0x29EDC5638];
   }
 
-  v35 = [a3 buffer];
-  if (v35)
+  buffer2 = [structure buffer];
+  if (buffer2)
   {
-    v37 = v35;
+    v37 = buffer2;
     v64 = 104;
     v38 = impl[2];
     v39 = v30;
-    if (*(v35 + *v30 + 16) >> 61 == 3)
+    if (*(buffer2 + *v30 + 16) >> 61 == 3)
     {
-      v40 = *(v35 + 312);
+      v40 = *(buffer2 + 312);
       IOGPUResourceListAddResource();
       v42 = *(v40 + 64);
       v41 = *(v40 + 72);
@@ -2871,12 +2871,12 @@ uint64_t __144__AGXG18PFamilyRayTracingGPUBuilder_deserializeInstanceAcceleratio
   }
 
   v43 = self->_impl;
-  if (a5)
+  if (buffer)
   {
     v44 = v43[2];
-    if (*(a5 + *v30 + 16) >> 61 == 3)
+    if (*(buffer + *v30 + 16) >> 61 == 3)
     {
-      v45 = *(a5 + 39);
+      v45 = *(buffer + 39);
       IOGPUResourceListAddResource();
       v46 = *(v45 + 64);
       v47 = *(v45 + 72);
@@ -2892,30 +2892,30 @@ uint64_t __144__AGXG18PFamilyRayTracingGPUBuilder_deserializeInstanceAcceleratio
       }
     }
 
-    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v44, a5, v36, 1, 1);
+    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v44, buffer, v36, 1, 1);
     v43 = self->_impl;
   }
 
-  v48 = [a5 gpuAddress];
-  v49 = [a5 length];
+  gpuAddress = [buffer gpuAddress];
+  v49 = [buffer length];
   if (*(v43 + 49) == 1)
   {
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::flush(v43);
   }
 
-  v50 = [a3 buffer];
-  v51 = [a3 bufferOffset];
-  v52 = [v50 gpuAddress];
-  v53 = [v50 length];
-  v70[0] = v52 + v51;
-  v70[1] = v51;
+  buffer3 = [structure buffer];
+  bufferOffset2 = [structure bufferOffset];
+  gpuAddress2 = [buffer3 gpuAddress];
+  v53 = [buffer3 length];
+  v70[0] = gpuAddress2 + bufferOffset2;
+  v70[1] = bufferOffset2;
   v70[2] = v53;
   v70[3] = 0;
-  v69[0] = v48 + v65;
-  v69[1] = v65;
+  v69[0] = gpuAddress + offsetCopy;
+  v69[1] = offsetCopy;
   v69[2] = v49;
   v69[3] = 0;
-  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeSerialize_impl(v43, v70, v66, v69);
+  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeSerialize_impl(v43, v70, structuresCopy, v69);
   v54 = self->_progressBins;
   if (v54)
   {
@@ -3024,14 +3024,14 @@ uint64_t __140__AGXG18PFamilyRayTracingGPUBuilder_serializeInstanceAccelerationS
   }
 }
 
-- (void)serializePrimitiveAccelerationStructure:(id)a3 toBuffer:(id)a4 serializedBufferOffset:(unint64_t)a5
+- (void)serializePrimitiveAccelerationStructure:(id)structure toBuffer:(id)buffer serializedBufferOffset:(unint64_t)offset
 {
   [(AGXG18PFamilyRayTracingGPUBuilder *)self _beginVirtualSubstream];
   progressBins = self->_progressBins;
   if (progressBins)
   {
     computeEncoder = self->_computeEncoder;
-    v12 = [a3 size];
+    v12 = [structure size];
     v13 = *(progressBins + 20);
     if (v13 < 2)
     {
@@ -3060,33 +3060,33 @@ uint64_t __140__AGXG18PFamilyRayTracingGPUBuilder_serializeInstanceAccelerationS
     progressBins[11] = v20;
     [(MTLComputeCommandEncoderSPI *)computeEncoder setSubstream:v14];
     v21 = self->_progressBins;
-    v22 = [a3 buffer];
-    v23 = [a3 bufferOffset];
-    v24 = [a3 size];
+    buffer = [structure buffer];
+    bufferOffset = [structure bufferOffset];
+    v24 = [structure size];
     v62[0] = MEMORY[0x29EDCA5F8];
     v62[1] = 3221225472;
     v62[2] = __109__AGXG18PFamilyRayTracingGPUBuilder_serializePrimitiveAccelerationStructure_toBuffer_serializedBufferOffset___block_invoke;
     v62[3] = &unk_29F3420F0;
     v62[4] = self;
-    ProgressBinsSynchronizeBufferAccessRange(v21, v22, v23, v24, 0, v62);
+    ProgressBinsSynchronizeBufferAccessRange(v21, buffer, bufferOffset, v24, 0, v62);
     v25 = self->_progressBins;
-    v26 = [a3 size];
+    v26 = [structure size];
     v61[0] = MEMORY[0x29EDCA5F8];
     v61[1] = 3221225472;
     v61[2] = __109__AGXG18PFamilyRayTracingGPUBuilder_serializePrimitiveAccelerationStructure_toBuffer_serializedBufferOffset___block_invoke_2;
     v61[3] = &unk_29F3420F0;
     v61[4] = self;
-    ProgressBinsSynchronizeBufferAccessRange(v25, a4, a5, v26, 1, v61);
+    ProgressBinsSynchronizeBufferAccessRange(v25, buffer, offset, v26, 1, v61);
   }
 
   impl = self->_impl;
   v28 = MEMORY[0x29EDC5638];
-  if (a3)
+  if (structure)
   {
     v29 = impl[2];
-    if (*(a3 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
+    if (*(structure + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
     {
-      v30 = *(a3 + 39);
+      v30 = *(structure + 39);
       IOGPUResourceListAddResource();
       v32 = *(v30 + 64);
       v31 = *(v30 + 72);
@@ -3102,19 +3102,19 @@ uint64_t __140__AGXG18PFamilyRayTracingGPUBuilder_serializeInstanceAccelerationS
       }
     }
 
-    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v29, a3, v9, 1, 1);
+    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v29, structure, v9, 1, 1);
     impl = self->_impl;
     v28 = MEMORY[0x29EDC5638];
   }
 
-  v33 = [a3 buffer];
-  if (v33)
+  buffer2 = [structure buffer];
+  if (buffer2)
   {
-    v35 = v33;
+    v35 = buffer2;
     v36 = impl[2];
-    if (*(v33 + *v28 + 16) >> 61 == 3)
+    if (*(buffer2 + *v28 + 16) >> 61 == 3)
     {
-      v37 = *(v33 + 312);
+      v37 = *(buffer2 + 312);
       IOGPUResourceListAddResource();
       v38 = *(v37 + 64);
       v39 = *(v37 + 72);
@@ -3134,12 +3134,12 @@ uint64_t __140__AGXG18PFamilyRayTracingGPUBuilder_serializeInstanceAccelerationS
   }
 
   v40 = self->_impl;
-  if (a4)
+  if (buffer)
   {
     v41 = v40[2];
-    if (*(a4 + *v28 + 16) >> 61 == 3)
+    if (*(buffer + *v28 + 16) >> 61 == 3)
     {
-      v42 = *(a4 + 39);
+      v42 = *(buffer + 39);
       IOGPUResourceListAddResource();
       v43 = *(v42 + 64);
       v44 = *(v42 + 72);
@@ -3155,27 +3155,27 @@ uint64_t __140__AGXG18PFamilyRayTracingGPUBuilder_serializeInstanceAccelerationS
       }
     }
 
-    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v41, a4, v34, 3, 3);
+    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v41, buffer, v34, 3, 3);
     v40 = self->_impl;
   }
 
-  v45 = [a4 gpuAddress];
-  v46 = [a4 length];
+  gpuAddress = [buffer gpuAddress];
+  v46 = [buffer length];
   if (*(v40 + 49) == 1)
   {
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::flush(v40);
   }
 
-  v47 = [a3 buffer];
-  v48 = [a3 bufferOffset];
-  v49 = [v47 gpuAddress];
-  v50 = [v47 length];
-  v64[0] = v49 + v48;
-  v64[1] = v48;
+  buffer3 = [structure buffer];
+  bufferOffset2 = [structure bufferOffset];
+  gpuAddress2 = [buffer3 gpuAddress];
+  v50 = [buffer3 length];
+  v64[0] = gpuAddress2 + bufferOffset2;
+  v64[1] = bufferOffset2;
   v64[2] = v50;
   v64[3] = 0;
-  v63[0] = v45 + a5;
-  v63[1] = a5;
+  v63[0] = gpuAddress + offset;
+  v63[1] = offset;
   v63[2] = v46;
   v63[3] = 0;
   AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeSerialize_impl(v40, v64, 0, v63);
@@ -3287,7 +3287,7 @@ uint64_t __109__AGXG18PFamilyRayTracingGPUBuilder_serializePrimitiveAcceleration
   }
 }
 
-- (void)writeDeserializedAccelerationStructureSize:(id)a3 serializedOffset:(unint64_t)a4 toBuffer:(id)a5 sizeBufferOffset:(unint64_t)a6
+- (void)writeDeserializedAccelerationStructureSize:(id)size serializedOffset:(unint64_t)offset toBuffer:(id)buffer sizeBufferOffset:(unint64_t)bufferOffset
 {
   [(AGXG18PFamilyRayTracingGPUBuilder *)self _beginVirtualSubstream];
   progressBins = self->_progressBins;
@@ -3322,32 +3322,32 @@ uint64_t __109__AGXG18PFamilyRayTracingGPUBuilder_serializePrimitiveAcceleration
     progressBins[11] = v21;
     [(MTLComputeCommandEncoderSPI *)computeEncoder setSubstream:v15];
     v22 = self->_progressBins;
-    v23 = [a3 length];
+    v23 = [size length];
     v57[0] = MEMORY[0x29EDCA5F8];
     v57[1] = 3221225472;
     v57[2] = __123__AGXG18PFamilyRayTracingGPUBuilder_writeDeserializedAccelerationStructureSize_serializedOffset_toBuffer_sizeBufferOffset___block_invoke;
     v57[3] = &unk_29F3420F0;
     v57[4] = self;
-    ProgressBinsSynchronizeBufferAccessRange(v22, a3, a4, v23 - a4, 0, v57);
+    ProgressBinsSynchronizeBufferAccessRange(v22, size, offset, v23 - offset, 0, v57);
     v24 = self->_progressBins;
     v56[0] = MEMORY[0x29EDCA5F8];
     v56[1] = 3221225472;
     v56[2] = __123__AGXG18PFamilyRayTracingGPUBuilder_writeDeserializedAccelerationStructureSize_serializedOffset_toBuffer_sizeBufferOffset___block_invoke_2;
     v56[3] = &unk_29F3420F0;
     v56[4] = self;
-    ProgressBinsSynchronizeBufferAccessRange(v24, a5, a6, 4, 1, v56);
+    ProgressBinsSynchronizeBufferAccessRange(v24, buffer, bufferOffset, 4, 1, v56);
   }
 
-  v52 = a4;
-  v54 = a6;
+  offsetCopy = offset;
+  bufferOffsetCopy = bufferOffset;
   impl = self->_impl;
   v26 = impl[2];
   v27 = MEMORY[0x29EDC5638];
-  if (a3)
+  if (size)
   {
-    if (*(a3 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
+    if (*(size + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
     {
-      v28 = *(a3 + 39);
+      v28 = *(size + 39);
       IOGPUResourceListAddResource();
       v29 = *(v28 + 64);
       v30 = *(v28 + 72);
@@ -3363,16 +3363,16 @@ uint64_t __109__AGXG18PFamilyRayTracingGPUBuilder_serializePrimitiveAcceleration
       }
     }
 
-    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v26, a3, v11, 1, 1);
+    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v26, size, v11, 1, 1);
     impl = self->_impl;
     v26 = impl[2];
   }
 
-  if (a5)
+  if (buffer)
   {
-    if (*(a5 + *v27 + 16) >> 61 == 3)
+    if (*(buffer + *v27 + 16) >> 61 == 3)
     {
-      v31 = *(a5 + 39);
+      v31 = *(buffer + 39);
       IOGPUResourceListAddResource();
       v32 = *(v31 + 64);
       v33 = *(v31 + 72);
@@ -3388,28 +3388,28 @@ uint64_t __109__AGXG18PFamilyRayTracingGPUBuilder_serializePrimitiveAcceleration
       }
     }
 
-    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v26, a5, v11, 3, 3);
+    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v26, buffer, v11, 3, 3);
     impl = self->_impl;
   }
 
-  v34 = [a3 gpuAddress];
-  [a3 length];
-  v35 = [a5 gpuAddress];
-  [a5 length];
+  gpuAddress = [size gpuAddress];
+  [size length];
+  gpuAddress2 = [buffer gpuAddress];
+  [buffer length];
   if (*(impl + 49) == 1)
   {
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::flush(impl);
   }
 
   v36 = impl[2];
-  *(v36 + 26408) = v34 + v53;
+  *(v36 + 26408) = gpuAddress + v53;
   v37 = *(v36 + 22488);
-  *v37 = v34 + v53;
+  *v37 = gpuAddress + v53;
   *(v36 + 22504) = 0u;
   *(v36 + 27560) |= 1uLL;
   v38 = *(v36 + 27592) | 1;
-  *(v36 + 26416) = v35 + v55;
-  v37[1] = v35 + v55;
+  *(v36 + 26416) = gpuAddress2 + v55;
+  v37[1] = gpuAddress2 + v55;
   *(v36 + 27560) |= 2uLL;
   *(v36 + 27592) = v38;
   Pipeline = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::getOrCreatePipeline(impl, 177, 0);
@@ -3540,7 +3540,7 @@ uint64_t __123__AGXG18PFamilyRayTracingGPUBuilder_writeDeserializedAccelerationS
   }
 }
 
-- (void)writeSerializedAccelerationStructureSize:(id)a3 toBuffer:(id)a4 sizeBufferOffset:(unint64_t)a5
+- (void)writeSerializedAccelerationStructureSize:(id)size toBuffer:(id)buffer sizeBufferOffset:(unint64_t)offset
 {
   [(AGXG18PFamilyRayTracingGPUBuilder *)self _beginVirtualSubstream];
   progressBins = self->_progressBins;
@@ -3575,32 +3575,32 @@ uint64_t __123__AGXG18PFamilyRayTracingGPUBuilder_writeDeserializedAccelerationS
     progressBins[11] = v19;
     [(MTLComputeCommandEncoderSPI *)computeEncoder setSubstream:v13];
     v20 = self->_progressBins;
-    v21 = [a3 buffer];
-    v22 = [a3 bufferOffset];
-    v23 = [a3 size];
+    buffer = [size buffer];
+    bufferOffset = [size bufferOffset];
+    v23 = [size size];
     v66[0] = MEMORY[0x29EDCA5F8];
     v66[1] = 3221225472;
     v66[2] = __104__AGXG18PFamilyRayTracingGPUBuilder_writeSerializedAccelerationStructureSize_toBuffer_sizeBufferOffset___block_invoke;
     v66[3] = &unk_29F3420F0;
     v66[4] = self;
-    ProgressBinsSynchronizeBufferAccessRange(v20, v21, v22, v23, 0, v66);
+    ProgressBinsSynchronizeBufferAccessRange(v20, buffer, bufferOffset, v23, 0, v66);
     v24 = self->_progressBins;
     v65[0] = MEMORY[0x29EDCA5F8];
     v65[1] = 3221225472;
     v65[2] = __104__AGXG18PFamilyRayTracingGPUBuilder_writeSerializedAccelerationStructureSize_toBuffer_sizeBufferOffset___block_invoke_2;
     v65[3] = &unk_29F3420F0;
     v65[4] = self;
-    ProgressBinsSynchronizeBufferAccessRange(v24, a4, a5, 4, 1, v65);
+    ProgressBinsSynchronizeBufferAccessRange(v24, buffer, offset, 4, 1, v65);
   }
 
   impl = self->_impl;
   v26 = MEMORY[0x29EDC5638];
-  if (a3)
+  if (size)
   {
     v27 = impl[2];
-    if (*(a3 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
+    if (*(size + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
     {
-      v28 = *(a3 + 39);
+      v28 = *(size + 39);
       IOGPUResourceListAddResource();
       v30 = *(v28 + 64);
       v29 = *(v28 + 72);
@@ -3616,21 +3616,21 @@ uint64_t __123__AGXG18PFamilyRayTracingGPUBuilder_writeDeserializedAccelerationS
       }
     }
 
-    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v27, a3, v9, 1, 1);
+    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v27, size, v9, 1, 1);
     impl = self->_impl;
     v26 = MEMORY[0x29EDC5638];
   }
 
-  v31 = [a3 buffer];
-  if (v31)
+  buffer2 = [size buffer];
+  if (buffer2)
   {
-    v33 = v31;
-    v63 = a5;
+    v33 = buffer2;
+    offsetCopy = offset;
     v64 = 104;
     v34 = impl[2];
-    if (*(v31 + *v26 + 16) >> 61 == 3)
+    if (*(buffer2 + *v26 + 16) >> 61 == 3)
     {
-      v35 = *(v31 + 312);
+      v35 = *(buffer2 + 312);
       IOGPUResourceListAddResource();
       v36 = *(v35 + 64);
       v37 = *(v35 + 72);
@@ -3650,12 +3650,12 @@ uint64_t __123__AGXG18PFamilyRayTracingGPUBuilder_writeDeserializedAccelerationS
   }
 
   v38 = self->_impl;
-  if (a4)
+  if (buffer)
   {
     v39 = v38[2];
-    if (*(a4 + *v26 + 16) >> 61 == 3)
+    if (*(buffer + *v26 + 16) >> 61 == 3)
     {
-      v40 = *(a4 + 39);
+      v40 = *(buffer + 39);
       IOGPUResourceListAddResource();
       v41 = *(v40 + 64);
       v42 = *(v40 + 72);
@@ -3671,21 +3671,21 @@ uint64_t __123__AGXG18PFamilyRayTracingGPUBuilder_writeDeserializedAccelerationS
       }
     }
 
-    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v39, a4, v32, 3, 3);
+    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v39, buffer, v32, 3, 3);
     v38 = self->_impl;
   }
 
-  v43 = [a4 gpuAddress];
-  [a4 length];
+  gpuAddress = [buffer gpuAddress];
+  [buffer length];
   if (*(v38 + 49) == 1)
   {
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::flush(v38);
   }
 
-  v44 = [a3 buffer];
-  v45 = [a3 bufferOffset];
-  v46 = v45 + [v44 gpuAddress];
-  [v44 length];
+  buffer3 = [size buffer];
+  bufferOffset2 = [size bufferOffset];
+  v46 = bufferOffset2 + [buffer3 gpuAddress];
+  [buffer3 length];
   v47 = v38[2];
   *(v47 + 26408) = v46 + 64;
   v48 = *(v47 + 22488);
@@ -3693,8 +3693,8 @@ uint64_t __123__AGXG18PFamilyRayTracingGPUBuilder_writeDeserializedAccelerationS
   *(v47 + 22504) = 0u;
   *(v47 + 27560) |= 1uLL;
   v49 = *(v47 + 27592) | 1;
-  *(v47 + 26416) = v43 + a5;
-  v48[1] = v43 + a5;
+  *(v47 + 26416) = gpuAddress + offset;
+  v48[1] = gpuAddress + offset;
   *(v47 + 27560) |= 2uLL;
   *(v47 + 27592) = v49;
   Pipeline = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::getOrCreatePipeline(v38, 176, 0);
@@ -3825,45 +3825,45 @@ uint64_t __104__AGXG18PFamilyRayTracingGPUBuilder_writeSerializedAccelerationStr
   }
 }
 
-- (void)refitAccelerationStructure:(id)a3 descriptor:(id)a4 destination:(id)a5 scratchBuffer:(id)a6 scratchBufferOffset:(unint64_t)a7 options:(unint64_t)a8
+- (void)refitAccelerationStructure:(id)structure descriptor:(id)descriptor destination:(id)destination scratchBuffer:(id)buffer scratchBufferOffset:(unint64_t)offset options:(unint64_t)options
 {
-  v213 = a8;
+  optionsCopy = options;
   v257 = *MEMORY[0x29EDCA608];
   {
     [AGXG18PFamilyRayTracingGPUBuilder refitAccelerationStructure:descriptor:destination:scratchBuffer:scratchBufferOffset:options:]::forceBuildOnRefit = 0;
   }
 
-  v215 = a3;
+  structureCopy = structure;
   if ([AGXG18PFamilyRayTracingGPUBuilder refitAccelerationStructure:descriptor:destination:scratchBuffer:scratchBufferOffset:options:]::forceBuildOnRefit == 1)
   {
     v218 = 0uLL;
     *&v219 = 0;
     v13 = *MEMORY[0x29EDBB788];
-    v14 = self;
+    selfCopy = self;
     v15 = *(&self->super.super.super.super.isa + v13);
     if (v15)
     {
-      [v15 accelerationStructureSizesWithDescriptor:{a4, a4, a5, a6, a7}];
+      [v15 accelerationStructureSizesWithDescriptor:{descriptor, descriptor, destination, buffer, offset}];
     }
 
-    v16 = a5;
-    if (v218 > [a3 size])
+    destinationCopy = destination;
+    if (v218 > [structure size])
     {
-      v16 = [*(&self->super.super.super.super.isa + v13) newAccelerationStructureWithSize:v218];
+      destinationCopy = [*(&self->super.super.super.super.isa + v13) newAccelerationStructureWithSize:v218];
     }
 
     v17 = [-[MTLComputeCommandEncoderSPI device](self->_computeEncoder "device")];
-    [(AGXG18PFamilyRayTracingGPUBuilder *)v14 buildAccelerationStructure:v16 descriptor:a4 scratchBuffer:v17 scratchBufferOffset:0];
-    if (v16 != a5)
+    [(AGXG18PFamilyRayTracingGPUBuilder *)selfCopy buildAccelerationStructure:destinationCopy descriptor:descriptor scratchBuffer:v17 scratchBufferOffset:0];
+    if (destinationCopy != destination)
     {
-      [(AGXG18PFamilyRayTracingGPUBuilder *)v14 copyAndCompactAccelerationStructure:v16 toAccelerationStructure:a5];
+      [(AGXG18PFamilyRayTracingGPUBuilder *)selfCopy copyAndCompactAccelerationStructure:destinationCopy toAccelerationStructure:destination];
     }
 
     return;
   }
 
-  v210 = [a4 isInstanceDescriptor];
-  if (v210)
+  isInstanceDescriptor = [descriptor isInstanceDescriptor];
+  if (isInstanceDescriptor)
   {
     [(AGXG18PFamilyRayTracingGPUBuilder *)self _endVirtualSubstream];
   }
@@ -3875,7 +3875,7 @@ uint64_t __104__AGXG18PFamilyRayTracingGPUBuilder_writeSerializedAccelerationStr
     if (progressBins)
     {
       computeEncoder = self->_computeEncoder;
-      PrimitiveCountFromDescriptor = ProgressBinsGetPrimitiveCountFromDescriptor(a4);
+      PrimitiveCountFromDescriptor = ProgressBinsGetPrimitiveCountFromDescriptor(descriptor);
       v21 = *(progressBins + 20);
       if (v21 < 2)
       {
@@ -3904,42 +3904,42 @@ uint64_t __104__AGXG18PFamilyRayTracingGPUBuilder_writeSerializedAccelerationStr
       progressBins[11] = v28;
       [(MTLComputeCommandEncoderSPI *)computeEncoder setSubstream:v22];
       v29 = self->_progressBins;
-      v30 = [a3 buffer];
-      v31 = [a3 bufferOffset];
-      v32 = [a3 size];
+      buffer = [structure buffer];
+      bufferOffset = [structure bufferOffset];
+      v32 = [structure size];
       v217[0] = MEMORY[0x29EDCA5F8];
       v217[1] = 3221225472;
       v217[2] = __129__AGXG18PFamilyRayTracingGPUBuilder_refitAccelerationStructure_descriptor_destination_scratchBuffer_scratchBufferOffset_options___block_invoke;
       v217[3] = &unk_29F3420F0;
       v217[4] = self;
-      ProgressBinsSynchronizeBufferAccessRange(v29, v30, v31, v32, 0, v217);
+      ProgressBinsSynchronizeBufferAccessRange(v29, buffer, bufferOffset, v32, 0, v217);
       v33 = self->_progressBins;
-      v34 = [a5 buffer];
-      v35 = [a5 bufferOffset];
-      v36 = [a5 size];
+      buffer2 = [destination buffer];
+      bufferOffset2 = [destination bufferOffset];
+      v36 = [destination size];
       v216[0] = MEMORY[0x29EDCA5F8];
       v216[1] = 3221225472;
       v216[2] = __129__AGXG18PFamilyRayTracingGPUBuilder_refitAccelerationStructure_descriptor_destination_scratchBuffer_scratchBufferOffset_options___block_invoke_2;
       v216[3] = &unk_29F3420F0;
       v216[4] = self;
-      ProgressBinsSynchronizeBufferAccessRange(v33, v34, v35, v36, 1, v216);
-      [(AGXG18PFamilyRayTracingGPUBuilder *)self substreamSynchronizeDescriptor:a4 access:0];
+      ProgressBinsSynchronizeBufferAccessRange(v33, buffer2, bufferOffset2, v36, 1, v216);
+      [(AGXG18PFamilyRayTracingGPUBuilder *)self substreamSynchronizeDescriptor:descriptor access:0];
     }
   }
 
-  v212 = self;
+  selfCopy2 = self;
   impl = self->_impl;
-  v38 = [a3 buffer];
-  v40 = v38;
+  buffer3 = [structure buffer];
+  v40 = buffer3;
   v41 = impl[2];
-  if (a5)
+  if (destination)
   {
     v42 = MEMORY[0x29EDC5638];
-    if (v38)
+    if (buffer3)
     {
-      if (*(v38 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
+      if (*(buffer3 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
       {
-        v43 = *(v38 + 312);
+        v43 = *(buffer3 + 312);
         IOGPUResourceListAddResource();
         v44 = *(v43 + 64);
         v45 = *(v43 + 72);
@@ -3958,16 +3958,16 @@ uint64_t __104__AGXG18PFamilyRayTracingGPUBuilder_writeSerializedAccelerationStr
       AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v41, v40, v39, 1, 1);
     }
 
-    v46 = v212->_impl;
-    v47 = [a5 buffer];
-    v49 = v47;
-    v50 = a5;
-    if (v47)
+    v46 = selfCopy2->_impl;
+    buffer4 = [destination buffer];
+    v49 = buffer4;
+    structureCopy3 = destination;
+    if (buffer4)
     {
       v51 = v46[2];
-      if (*(v47 + *v42 + 16) >> 61 == 3)
+      if (*(buffer4 + *v42 + 16) >> 61 == 3)
       {
-        v52 = *(v47 + 312);
+        v52 = *(buffer4 + 312);
         IOGPUResourceListAddResource();
         v53 = *(v52 + 64);
         v54 = *(v52 + 72);
@@ -3984,18 +3984,18 @@ uint64_t __104__AGXG18PFamilyRayTracingGPUBuilder_writeSerializedAccelerationStr
       }
 
       AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v51, v49, v48, 3, 3);
-      v50 = a5;
+      structureCopy3 = destination;
     }
   }
 
   else
   {
-    v50 = a3;
-    if (v38)
+    structureCopy3 = structure;
+    if (buffer3)
     {
-      if (*(v38 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
+      if (*(buffer3 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
       {
-        v55 = *(v38 + 312);
+        v55 = *(buffer3 + 312);
         IOGPUResourceListAddResource();
         v56 = *(v55 + 64);
         v57 = *(v55 + 72);
@@ -4012,27 +4012,27 @@ uint64_t __104__AGXG18PFamilyRayTracingGPUBuilder_writeSerializedAccelerationStr
       }
 
       AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v41, v40, v39, 3, 3);
-      v50 = a3;
+      structureCopy3 = structure;
     }
   }
 
   context = objc_autoreleasePoolPush();
-  v214 = v212->_impl;
-  [a6 gpuAddress];
-  [a6 length];
-  [a5 accelerationStructureUniqueIdentifier];
-  if (v50 != v215)
+  v214 = selfCopy2->_impl;
+  [buffer gpuAddress];
+  [buffer length];
+  [destination accelerationStructureUniqueIdentifier];
+  if (structureCopy3 != structureCopy)
   {
-    [objc_msgSend(v50 "buffer")];
-    [v50 bufferOffset];
-    [v50 size];
+    [objc_msgSend(structureCopy3 "buffer")];
+    [structureCopy3 bufferOffset];
+    [structureCopy3 size];
   }
 
-  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::newBVHDescriptor(&v239, a4, 1);
+  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::newBVHDescriptor(&v239, descriptor, 1);
   if (BYTE2(v240) == 6 && (v246 - 3) >= 2)
   {
-    v59 = [a4 instancedAccelerationStructures];
-    v60 = [v59 count];
+    instancedAccelerationStructures = [descriptor instancedAccelerationStructures];
+    v60 = [instancedAccelerationStructures count];
     v61 = v60;
     if (v60 <= 1)
     {
@@ -4051,7 +4051,7 @@ uint64_t __104__AGXG18PFamilyRayTracingGPUBuilder_writeSerializedAccelerationStr
       v64 = *(&v218 + 1);
       do
       {
-        v65 = [v59 objectAtIndexedSubscript:v63];
+        v65 = [instancedAccelerationStructures objectAtIndexedSubscript:v63];
         v66 = [objc_msgSend(v65 "buffer")];
         *(v64 + 8 * v63++) = [v65 bufferOffset] + v66;
       }
@@ -4060,15 +4060,15 @@ uint64_t __104__AGXG18PFamilyRayTracingGPUBuilder_writeSerializedAccelerationStr
     }
 
     v207 = v218;
-    v67 = [v59 count];
-    if ([v59 count] < 2)
+    v67 = [instancedAccelerationStructures count];
+    if ([instancedAccelerationStructures count] < 2)
     {
       v68 = 4;
     }
 
     else
     {
-      v68 = 4 * [v59 count];
+      v68 = 4 * [instancedAccelerationStructures count];
     }
 
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::BuilderBufferForPrivateAllocation(&v218, v214, v68, 0);
@@ -4078,7 +4078,7 @@ uint64_t __104__AGXG18PFamilyRayTracingGPUBuilder_writeSerializedAccelerationStr
       v70 = *(&v218 + 1);
       do
       {
-        *(v70 + 4 * v69) = *([v59 objectAtIndexedSubscript:v69] + 360);
+        *(v70 + 4 * v69) = *([instancedAccelerationStructures objectAtIndexedSubscript:v69] + 360);
         ++v69;
       }
 
@@ -4092,19 +4092,19 @@ uint64_t __104__AGXG18PFamilyRayTracingGPUBuilder_writeSerializedAccelerationStr
   {
     v58 = 0;
     v207 = 0;
-    v59 = 0;
+    instancedAccelerationStructures = 0;
   }
 
   v218 = 0u;
   v219 = 0u;
-  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::newResourceBuffer(&v237, v214, &v239, a4, &v218);
+  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::newResourceBuffer(&v237, v214, &v239, descriptor, &v218);
   v71 = v239;
-  if (v50)
+  if (structureCopy3)
   {
-    v72 = [v50 buffer];
-    if (v72)
+    buffer5 = [structureCopy3 buffer];
+    if (buffer5)
     {
-      v73 = v50 == v215;
+      v73 = structureCopy3 == structureCopy;
     }
 
     else
@@ -4112,14 +4112,14 @@ uint64_t __104__AGXG18PFamilyRayTracingGPUBuilder_writeSerializedAccelerationStr
       v73 = 1;
     }
 
-    if (v72)
+    if (buffer5)
     {
-      v74 = v50;
+      v74 = structureCopy3;
     }
 
     else
     {
-      v74 = v215;
+      v74 = structureCopy;
     }
 
     if (v73)
@@ -4129,33 +4129,33 @@ uint64_t __104__AGXG18PFamilyRayTracingGPUBuilder_writeSerializedAccelerationStr
 
     else
     {
-      v75 = [v215 buffer];
+      buffer6 = [structureCopy buffer];
       v208 = 1;
-      if (v75 == [v50 buffer])
+      if (buffer6 == [structureCopy3 buffer])
       {
-        v76 = [v215 bufferOffset];
-        if (v76 == [v50 bufferOffset])
+        bufferOffset3 = [structureCopy bufferOffset];
+        if (bufferOffset3 == [structureCopy3 bufferOffset])
         {
           v208 = 0;
         }
       }
 
-      v74 = v50;
+      v74 = structureCopy3;
     }
   }
 
   else
   {
     v208 = 0;
-    v74 = v215;
+    v74 = structureCopy;
   }
 
   v211 = v74;
-  v77 = [v74 buffer];
-  v78 = [v211 bufferOffset];
-  v79 = [v77 gpuAddress];
-  v80 = [v77 length];
-  if ((BYTE2(v240) & 0xFE) == 6 || (v213 & 3) != 0)
+  buffer7 = [v74 buffer];
+  bufferOffset4 = [v211 bufferOffset];
+  gpuAddress = [buffer7 gpuAddress];
+  v80 = [buffer7 length];
+  if ((BYTE2(v240) & 0xFE) == 6 || (optionsCopy & 3) != 0)
   {
     v255 = 0uLL;
     *&v256 = 0;
@@ -4191,8 +4191,8 @@ uint64_t __104__AGXG18PFamilyRayTracingGPUBuilder_writeSerializedAccelerationStr
 
     *(v85 + 16) = v237;
     *(v85 + 122) = 0;
-    *(v85 + 101) = v213 & 1;
-    *(v85 + 102) = (v213 & 2) != 0;
+    *(v85 + 101) = optionsCopy & 1;
+    *(v85 + 102) = (optionsCopy & 2) != 0;
     v206 = v86;
     {
       v86 = v206;
@@ -4384,7 +4384,7 @@ LABEL_182:
       }
 
       *(v85 + 105) = v123;
-      *v85 = v79 + v78;
+      *v85 = gpuAddress + bufferOffset4;
       *(v85 + 8) = v205;
       v124 = *(v214 + 24);
       if (v124)
@@ -4451,7 +4451,7 @@ LABEL_182:
       v227 = v248;
       v255 = v237;
       v256 = v238;
-      *&v231 = v215;
+      *&v231 = structureCopy;
       v132 = v211;
       v81 = v132;
       v82 = v255;
@@ -4466,7 +4466,7 @@ LABEL_182:
         v133 = 0;
       }
 
-      v134 = v133 & v213 & 1;
+      v134 = v133 & optionsCopy & 1;
       if (v208)
       {
         v135 = 32;
@@ -4479,7 +4479,7 @@ LABEL_182:
 
       *(&v231 + 1) = v132;
       *&v232 = *(&v85 + 1);
-      v83 = (v135 & 0xFFFFFFF3 | (4 * (v213 & 3)) | v204 & 2 | v134) ^ 2;
+      v83 = (v135 & 0xFFFFFFF3 | (4 * (optionsCopy & 3)) | v204 & 2 | v134) ^ 2;
       *(&v232 + 1) = v85;
       *&v233 = 128;
       *(&v233 + 1) = v203;
@@ -4788,7 +4788,7 @@ LABEL_118:
   v219 = v240;
   v255 = v237;
   v256 = v238;
-  *&v231 = v215;
+  *&v231 = structureCopy;
   v81 = v211;
   v232 = 0u;
   v233 = 0u;
@@ -4810,18 +4810,18 @@ LABEL_208:
   v236 = v83;
   if (*(v214 + 49) == 1)
   {
-    if (v50)
+    if (structureCopy3)
     {
-      v136 = v50;
+      v136 = structureCopy3;
     }
 
     else
     {
-      v136 = v215;
+      v136 = structureCopy;
     }
 
     v138 = (BYTE2(v240) & 0xFE) == 6 && (v246 - 3) < 2;
-    BatchForCommand = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::getBatchForCommand(v214, 1, v215, v136, 0, -1, 0, 0, v59, v138);
+    BatchForCommand = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::getBatchForCommand(v214, 1, structureCopy, v136, 0, -1, 0, 0, instancedAccelerationStructures, v138);
     v140 = BatchForCommand;
     v141 = BatchForCommand[16];
     v142 = BatchForCommand[17];
@@ -5008,9 +5008,9 @@ LABEL_208:
   }
 
   objc_autoreleasePoolPop(context);
-  if ((v210 & 1) == 0)
+  if ((isInstanceDescriptor & 1) == 0)
   {
-    v189 = v212->_progressBins;
+    v189 = selfCopy2->_progressBins;
     if (v189)
     {
       v190 = v189[21];
@@ -5070,9 +5070,9 @@ LABEL_208:
         }
 
         *(v189 + 22) = 0;
-        if ((v193 & 0x80000000) == 0 && !v212->virtualSubstreamsEnabled)
+        if ((v193 & 0x80000000) == 0 && !selfCopy2->virtualSubstreamsEnabled)
         {
-          [(MTLComputeCommandEncoderSPI *)v212->_computeEncoder signalProgress:v193];
+          [(MTLComputeCommandEncoderSPI *)selfCopy2->_computeEncoder signalProgress:v193];
         }
       }
     }
@@ -5119,23 +5119,23 @@ uint64_t __129__AGXG18PFamilyRayTracingGPUBuilder_refitAccelerationStructure_des
   }
 }
 
-- (void)copyAndCompactAccelerationStructure:(id)a3 toAccelerationStructure:(id)a4
+- (void)copyAndCompactAccelerationStructure:(id)structure toAccelerationStructure:(id)accelerationStructure
 {
   [(AGXG18PFamilyRayTracingGPUBuilder *)self _beginVirtualSubstream];
   if (self->_progressBins)
   {
-    v8 = [a3 size];
-    if (v8 >= [a4 size])
+    v8 = [structure size];
+    if (v8 >= [accelerationStructure size])
     {
-      v9 = a4;
+      structureCopy = accelerationStructure;
     }
 
     else
     {
-      v9 = a3;
+      structureCopy = structure;
     }
 
-    v10 = [v9 size];
+    v10 = [structureCopy size];
     computeEncoder = self->_computeEncoder;
     progressBins = self->_progressBins;
     v13 = *(progressBins + 20);
@@ -5166,35 +5166,35 @@ uint64_t __129__AGXG18PFamilyRayTracingGPUBuilder_refitAccelerationStructure_des
     progressBins[11] = v20;
     [(MTLComputeCommandEncoderSPI *)computeEncoder setSubstream:v14];
     v21 = self->_progressBins;
-    v22 = [a3 buffer];
-    v23 = [a3 bufferOffset];
-    v24 = [a3 size];
+    buffer = [structure buffer];
+    bufferOffset = [structure bufferOffset];
+    v24 = [structure size];
     v51[0] = MEMORY[0x29EDCA5F8];
     v51[1] = 3221225472;
     v51[2] = __97__AGXG18PFamilyRayTracingGPUBuilder_copyAndCompactAccelerationStructure_toAccelerationStructure___block_invoke;
     v51[3] = &unk_29F3420F0;
     v51[4] = self;
-    ProgressBinsSynchronizeBufferAccessRange(v21, v22, v23, v24, 0, v51);
+    ProgressBinsSynchronizeBufferAccessRange(v21, buffer, bufferOffset, v24, 0, v51);
     v25 = self->_progressBins;
-    v26 = [a4 buffer];
-    v27 = [a4 bufferOffset];
-    v28 = [a4 size];
+    buffer2 = [accelerationStructure buffer];
+    bufferOffset2 = [accelerationStructure bufferOffset];
+    v28 = [accelerationStructure size];
     v50[0] = MEMORY[0x29EDCA5F8];
     v50[1] = 3221225472;
     v50[2] = __97__AGXG18PFamilyRayTracingGPUBuilder_copyAndCompactAccelerationStructure_toAccelerationStructure___block_invoke_2;
     v50[3] = &unk_29F3420F0;
     v50[4] = self;
-    ProgressBinsSynchronizeBufferAccessRange(v25, v26, v27, v28, 1, v50);
+    ProgressBinsSynchronizeBufferAccessRange(v25, buffer2, bufferOffset2, v28, 1, v50);
   }
 
   impl = self->_impl;
   v30 = impl[2];
   v31 = MEMORY[0x29EDC5638];
-  if (a3)
+  if (structure)
   {
-    if (*(a3 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
+    if (*(structure + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
     {
-      v32 = *(a3 + 39);
+      v32 = *(structure + 39);
       IOGPUResourceListAddResource();
       v33 = *(v32 + 64);
       v34 = *(v32 + 72);
@@ -5210,16 +5210,16 @@ uint64_t __129__AGXG18PFamilyRayTracingGPUBuilder_refitAccelerationStructure_des
       }
     }
 
-    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v30, a3, v7, 1, 1);
+    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v30, structure, v7, 1, 1);
     impl = self->_impl;
     v30 = impl[2];
   }
 
-  if (a4)
+  if (accelerationStructure)
   {
-    if (*(a4 + *v31 + 16) >> 61 == 3)
+    if (*(accelerationStructure + *v31 + 16) >> 61 == 3)
     {
-      v35 = *(a4 + 39);
+      v35 = *(accelerationStructure + 39);
       IOGPUResourceListAddResource();
       v36 = *(v35 + 64);
       v37 = *(v35 + 72);
@@ -5235,19 +5235,19 @@ uint64_t __129__AGXG18PFamilyRayTracingGPUBuilder_refitAccelerationStructure_des
       }
     }
 
-    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v30, a4, v7, 3, 3);
+    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v30, accelerationStructure, v7, 3, 3);
     impl = self->_impl;
-    v38 = a3;
-    v39 = a4;
+    structureCopy3 = structure;
+    accelerationStructureCopy2 = accelerationStructure;
   }
 
   else
   {
-    v38 = a3;
-    v39 = 0;
+    structureCopy3 = structure;
+    accelerationStructureCopy2 = 0;
   }
 
-  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeCopyAndCompact(impl, v38, v39, 0);
+  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeCopyAndCompact(impl, structureCopy3, accelerationStructureCopy2, 0);
   v40 = self->_progressBins;
   if (v40)
   {
@@ -5356,23 +5356,23 @@ uint64_t __97__AGXG18PFamilyRayTracingGPUBuilder_copyAndCompactAccelerationStruc
   }
 }
 
-- (void)copyAccelerationStructure:(id)a3 toAccelerationStructure:(id)a4
+- (void)copyAccelerationStructure:(id)structure toAccelerationStructure:(id)accelerationStructure
 {
   [(AGXG18PFamilyRayTracingGPUBuilder *)self _beginVirtualSubstream];
   if (self->_progressBins)
   {
-    v7 = [a3 size];
-    if (v7 >= [a4 size])
+    v7 = [structure size];
+    if (v7 >= [accelerationStructure size])
     {
-      v8 = a4;
+      structureCopy = accelerationStructure;
     }
 
     else
     {
-      v8 = a3;
+      structureCopy = structure;
     }
 
-    v9 = [v8 size];
+    v9 = [structureCopy size];
     computeEncoder = self->_computeEncoder;
     progressBins = self->_progressBins;
     v12 = *(progressBins + 20);
@@ -5403,37 +5403,37 @@ uint64_t __97__AGXG18PFamilyRayTracingGPUBuilder_copyAndCompactAccelerationStruc
     progressBins[11] = v19;
     [(MTLComputeCommandEncoderSPI *)computeEncoder setSubstream:v13];
     v20 = self->_progressBins;
-    v21 = [a3 buffer];
-    v22 = [a3 bufferOffset];
-    v23 = [a3 size];
+    buffer = [structure buffer];
+    bufferOffset = [structure bufferOffset];
+    v23 = [structure size];
     v59[0] = MEMORY[0x29EDCA5F8];
     v59[1] = 3221225472;
     v59[2] = __87__AGXG18PFamilyRayTracingGPUBuilder_copyAccelerationStructure_toAccelerationStructure___block_invoke;
     v59[3] = &unk_29F3420F0;
     v59[4] = self;
-    ProgressBinsSynchronizeBufferAccessRange(v20, v21, v22, v23, 0, v59);
+    ProgressBinsSynchronizeBufferAccessRange(v20, buffer, bufferOffset, v23, 0, v59);
     v24 = self->_progressBins;
-    v25 = [a4 buffer];
-    v26 = [a4 bufferOffset];
-    v27 = [a4 size];
+    buffer2 = [accelerationStructure buffer];
+    bufferOffset2 = [accelerationStructure bufferOffset];
+    v27 = [accelerationStructure size];
     v58[0] = MEMORY[0x29EDCA5F8];
     v58[1] = 3221225472;
     v58[2] = __87__AGXG18PFamilyRayTracingGPUBuilder_copyAccelerationStructure_toAccelerationStructure___block_invoke_2;
     v58[3] = &unk_29F3420F0;
     v58[4] = self;
-    ProgressBinsSynchronizeBufferAccessRange(v24, v25, v26, v27, 1, v58);
+    ProgressBinsSynchronizeBufferAccessRange(v24, buffer2, bufferOffset2, v27, 1, v58);
   }
 
   impl = self->_impl;
-  v29 = [a3 buffer];
+  buffer3 = [structure buffer];
   v31 = MEMORY[0x29EDC5638];
-  if (v29)
+  if (buffer3)
   {
-    v32 = v29;
+    v32 = buffer3;
     v33 = impl[2];
-    if (*(v29 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
+    if (*(buffer3 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
     {
-      v34 = *(v29 + 312);
+      v34 = *(buffer3 + 312);
       IOGPUResourceListAddResource();
       v36 = *(v34 + 64);
       v35 = *(v34 + 72);
@@ -5454,14 +5454,14 @@ uint64_t __97__AGXG18PFamilyRayTracingGPUBuilder_copyAndCompactAccelerationStruc
   }
 
   v37 = self->_impl;
-  v38 = [a4 buffer];
-  if (v38)
+  buffer4 = [accelerationStructure buffer];
+  if (buffer4)
   {
-    v40 = v38;
+    v40 = buffer4;
     v41 = v37[2];
-    if (*(v38 + *v31 + 16) >> 61 == 3)
+    if (*(buffer4 + *v31 + 16) >> 61 == 3)
     {
-      v42 = *(v38 + 312);
+      v42 = *(buffer4 + 312);
       IOGPUResourceListAddResource();
       v43 = *(v42 + 64);
       v44 = *(v42 + 72);
@@ -5481,30 +5481,30 @@ uint64_t __97__AGXG18PFamilyRayTracingGPUBuilder_copyAndCompactAccelerationStruc
   }
 
   v45 = self->_impl;
-  v62 = a3;
-  v61 = a4;
+  structureCopy2 = structure;
+  accelerationStructureCopy2 = accelerationStructure;
   if (v45[49] == 1)
   {
-    BatchForCommand = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::getBatchForCommand(v45, 3, a3, a4, 0, -1, 0, 0, 0, 0);
-    v60 = a3;
-    std::vector<AGXG18PFamilyTexture *>::push_back[abi:nn200100](BatchForCommand + 144, &v60);
-    if (a4)
+    BatchForCommand = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::getBatchForCommand(v45, 3, structure, accelerationStructure, 0, -1, 0, 0, 0, 0);
+    structureCopy3 = structure;
+    std::vector<AGXG18PFamilyTexture *>::push_back[abi:nn200100](BatchForCommand + 144, &structureCopy3);
+    if (accelerationStructure)
     {
-      v47 = a4;
+      structureCopy4 = accelerationStructure;
     }
 
     else
     {
-      v47 = a3;
+      structureCopy4 = structure;
     }
 
-    v60 = v47;
-    std::vector<AGXG18PFamilyTexture *>::push_back[abi:nn200100](BatchForCommand + 168, &v60);
+    structureCopy3 = structureCopy4;
+    std::vector<AGXG18PFamilyTexture *>::push_back[abi:nn200100](BatchForCommand + 168, &structureCopy3);
   }
 
   else
   {
-    AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeCopies(v45, &v62, &v61, 1uLL, v39);
+    AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeCopies(v45, &structureCopy2, &accelerationStructureCopy2, 1uLL, v39);
   }
 
   v48 = self->_progressBins;
@@ -5615,14 +5615,14 @@ uint64_t __87__AGXG18PFamilyRayTracingGPUBuilder_copyAccelerationStructure_toAcc
   }
 }
 
-- (void)writeCompactedAccelerationStructureSize:(id)a3 toBuffer:(id)a4 offset:(unint64_t)a5 sizeDataType:(unint64_t)a6
+- (void)writeCompactedAccelerationStructureSize:(id)size toBuffer:(id)buffer offset:(unint64_t)offset sizeDataType:(unint64_t)type
 {
   [(AGXG18PFamilyRayTracingGPUBuilder *)self _beginVirtualSubstream];
   progressBins = self->_progressBins;
-  v56 = a3;
+  sizeCopy = size;
   if (progressBins)
   {
-    if (a6 == 33)
+    if (type == 33)
     {
       v12 = 4;
     }
@@ -5661,39 +5661,39 @@ uint64_t __87__AGXG18PFamilyRayTracingGPUBuilder_copyAccelerationStructure_toAcc
     progressBins[11] = v21;
     [(MTLComputeCommandEncoderSPI *)computeEncoder setSubstream:v15];
     v22 = self->_progressBins;
-    v23 = [a3 buffer];
-    v24 = [v56 bufferOffset];
-    v25 = [v56 size];
+    buffer = [size buffer];
+    bufferOffset = [sizeCopy bufferOffset];
+    v25 = [sizeCopy size];
     v58[0] = MEMORY[0x29EDCA5F8];
     v58[1] = 3221225472;
     v58[2] = __106__AGXG18PFamilyRayTracingGPUBuilder_writeCompactedAccelerationStructureSize_toBuffer_offset_sizeDataType___block_invoke;
     v58[3] = &unk_29F3420F0;
     v58[4] = self;
-    v26 = v23;
-    a3 = v56;
-    ProgressBinsSynchronizeBufferAccessRange(v22, v26, v24, v25, 0, v58);
+    v26 = buffer;
+    size = sizeCopy;
+    ProgressBinsSynchronizeBufferAccessRange(v22, v26, bufferOffset, v25, 0, v58);
     v27 = self->_progressBins;
     v57[0] = MEMORY[0x29EDCA5F8];
     v57[1] = 3221225472;
     v57[2] = __106__AGXG18PFamilyRayTracingGPUBuilder_writeCompactedAccelerationStructureSize_toBuffer_offset_sizeDataType___block_invoke_2;
     v57[3] = &unk_29F3420F0;
     v57[4] = self;
-    ProgressBinsSynchronizeBufferAccessRange(v27, a4, a5, v12, 1, v57);
+    ProgressBinsSynchronizeBufferAccessRange(v27, buffer, offset, v12, 1, v57);
   }
 
   impl = self->_impl;
-  v29 = [a3 buffer];
+  buffer2 = [size buffer];
   v31 = MEMORY[0x29EDC5638];
-  if (v29)
+  if (buffer2)
   {
-    v32 = v29;
+    v32 = buffer2;
     v55 = 104;
-    v33 = a5;
-    v34 = a6;
+    offsetCopy = offset;
+    typeCopy = type;
     v35 = impl[2];
-    if (*(v29 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
+    if (*(buffer2 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
     {
-      v36 = *(v29 + 312);
+      v36 = *(buffer2 + 312);
       IOGPUResourceListAddResource();
       v38 = *(v36 + 64);
       v37 = *(v36 + 72);
@@ -5710,20 +5710,20 @@ uint64_t __87__AGXG18PFamilyRayTracingGPUBuilder_copyAccelerationStructure_toAcc
     }
 
     AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v35, v32, v30, 1, 1);
-    a6 = v34;
-    a5 = v33;
-    a3 = v56;
+    type = typeCopy;
+    offset = offsetCopy;
+    size = sizeCopy;
     v31 = MEMORY[0x29EDC5638];
   }
 
   v39 = self->_impl;
-  if (a4)
+  if (buffer)
   {
-    v40 = a6;
+    typeCopy2 = type;
     v41 = v39[2];
-    if (*(a4 + *v31 + 16) >> 61 == 3)
+    if (*(buffer + *v31 + 16) >> 61 == 3)
     {
-      v42 = *(a4 + 39);
+      v42 = *(buffer + 39);
       IOGPUResourceListAddResource();
       v43 = *(v42 + 64);
       v44 = *(v42 + 72);
@@ -5739,13 +5739,13 @@ uint64_t __87__AGXG18PFamilyRayTracingGPUBuilder_copyAccelerationStructure_toAcc
       }
     }
 
-    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v41, a4, v30, 3, 3);
+    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v41, buffer, v30, 3, 3);
     v39 = self->_impl;
-    a6 = v40;
-    a3 = v56;
+    type = typeCopy2;
+    size = sizeCopy;
   }
 
-  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeWriteCompactedSize(v39, a3, [a4 gpuAddress], objc_msgSend(a4, "length"), a5, a6);
+  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeWriteCompactedSize(v39, size, [buffer gpuAddress], objc_msgSend(buffer, "length"), offset, type);
   v45 = self->_progressBins;
   if (v45)
   {
@@ -5854,7 +5854,7 @@ uint64_t __106__AGXG18PFamilyRayTracingGPUBuilder_writeCompactedAccelerationStru
   }
 }
 
-- (void)writeCompactedAccelerationStructureSize:(id)a3 toBuffer:(id)a4 offset:(unint64_t)a5
+- (void)writeCompactedAccelerationStructureSize:(id)size toBuffer:(id)buffer offset:(unint64_t)offset
 {
   [(AGXG18PFamilyRayTracingGPUBuilder *)self _beginVirtualSubstream];
   progressBins = self->_progressBins;
@@ -5889,35 +5889,35 @@ uint64_t __106__AGXG18PFamilyRayTracingGPUBuilder_writeCompactedAccelerationStru
     progressBins[11] = v18;
     [(MTLComputeCommandEncoderSPI *)computeEncoder setSubstream:v12];
     v19 = self->_progressBins;
-    v20 = [a3 buffer];
-    v21 = [a3 bufferOffset];
-    v22 = [a3 size];
+    buffer = [size buffer];
+    bufferOffset = [size bufferOffset];
+    v22 = [size size];
     v50[0] = MEMORY[0x29EDCA5F8];
     v50[1] = 3221225472;
     v50[2] = __93__AGXG18PFamilyRayTracingGPUBuilder_writeCompactedAccelerationStructureSize_toBuffer_offset___block_invoke;
     v50[3] = &unk_29F3420F0;
     v50[4] = self;
-    ProgressBinsSynchronizeBufferAccessRange(v19, v20, v21, v22, 0, v50);
+    ProgressBinsSynchronizeBufferAccessRange(v19, buffer, bufferOffset, v22, 0, v50);
     v23 = self->_progressBins;
     v49[0] = MEMORY[0x29EDCA5F8];
     v49[1] = 3221225472;
     v49[2] = __93__AGXG18PFamilyRayTracingGPUBuilder_writeCompactedAccelerationStructureSize_toBuffer_offset___block_invoke_2;
     v49[3] = &unk_29F3420F0;
     v49[4] = self;
-    ProgressBinsSynchronizeBufferAccessRange(v23, a4, a5, 4, 1, v49);
+    ProgressBinsSynchronizeBufferAccessRange(v23, buffer, offset, 4, 1, v49);
   }
 
   impl = self->_impl;
-  v25 = [a3 buffer];
+  buffer2 = [size buffer];
   v27 = MEMORY[0x29EDC5638];
-  if (v25)
+  if (buffer2)
   {
-    v28 = v25;
-    v29 = a5;
+    v28 = buffer2;
+    offsetCopy = offset;
     v30 = impl[2];
-    if (*(v25 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
+    if (*(buffer2 + *MEMORY[0x29EDC5638] + 16) >> 61 == 3)
     {
-      v31 = *(v25 + 312);
+      v31 = *(buffer2 + 312);
       IOGPUResourceListAddResource();
       v32 = *(v31 + 64);
       v33 = *(v31 + 72);
@@ -5934,17 +5934,17 @@ uint64_t __106__AGXG18PFamilyRayTracingGPUBuilder_writeCompactedAccelerationStru
     }
 
     AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v30, v28, v26, 1, 1);
-    a5 = v29;
+    offset = offsetCopy;
     v27 = MEMORY[0x29EDC5638];
   }
 
   v34 = self->_impl;
-  if (a4)
+  if (buffer)
   {
     v35 = v34[2];
-    if (*(a4 + *v27 + 16) >> 61 == 3)
+    if (*(buffer + *v27 + 16) >> 61 == 3)
     {
-      v36 = *(a4 + 39);
+      v36 = *(buffer + 39);
       IOGPUResourceListAddResource();
       v37 = *(v36 + 64);
       v38 = *(v36 + 72);
@@ -5960,11 +5960,11 @@ uint64_t __106__AGXG18PFamilyRayTracingGPUBuilder_writeCompactedAccelerationStru
       }
     }
 
-    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v35, a4, v26, 3, 3);
+    AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::useResourceCommon(v35, buffer, v26, 3, 3);
     v34 = self->_impl;
   }
 
-  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeWriteCompactedSize(v34, a3, [a4 gpuAddress], objc_msgSend(a4, "length"), a5, 33);
+  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::encodeWriteCompactedSize(v34, size, [buffer gpuAddress], objc_msgSend(buffer, "length"), offset, 33);
   v39 = self->_progressBins;
   if (v39)
   {
@@ -6073,7 +6073,7 @@ uint64_t __93__AGXG18PFamilyRayTracingGPUBuilder_writeCompactedAccelerationStruc
   }
 }
 
-- (void)buildAccelerationStructure:(id)a3 descriptor:(id)a4 scratchBuffer:(id)a5 scratchBufferOffset:(unint64_t)a6
+- (void)buildAccelerationStructure:(id)structure descriptor:(id)descriptor scratchBuffer:(id)buffer scratchBufferOffset:(unint64_t)offset
 {
   v6 = MEMORY[0x2A1C7C4A8](self);
   v66 = v7;
@@ -6082,7 +6082,7 @@ uint64_t __93__AGXG18PFamilyRayTracingGPUBuilder_writeCompactedAccelerationStruc
   v13 = v12;
   v14 = v6;
   __src[247] = *MEMORY[0x29EDCA608];
-  v15 = [(MTLAccelerationStructureDescriptor *)v10 isInstanceDescriptor];
+  isInstanceDescriptor = [(MTLAccelerationStructureDescriptor *)v10 isInstanceDescriptor];
   v16 = objc_autoreleasePoolPush();
   AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::newBVHDescriptor(v436, v11, 0);
   v435 = 0;
@@ -6496,8 +6496,8 @@ uint64_t __93__AGXG18PFamilyRayTracingGPUBuilder_writeCompactedAccelerationStruc
     v20 = v19;
   }
 
-  v65 = v15;
-  if (v15)
+  v65 = isInstanceDescriptor;
+  if (isInstanceDescriptor)
   {
     [v14 _endVirtualSubstream];
   }
@@ -6540,15 +6540,15 @@ uint64_t __93__AGXG18PFamilyRayTracingGPUBuilder_writeCompactedAccelerationStruc
       *(v22 + 44) = v33;
       [v24 setSubstream:v27];
       v34 = *(v14 + 104);
-      v35 = [v13 buffer];
-      v36 = [v13 bufferOffset];
+      buffer = [v13 buffer];
+      bufferOffset = [v13 bufferOffset];
       v37 = [v13 size];
       v68[0] = MEMORY[0x29EDCA5F8];
       v68[1] = 3221225472;
       v68[2] = __109__AGXG18PFamilyRayTracingGPUBuilder_buildAccelerationStructure_descriptor_scratchBuffer_scratchBufferOffset___block_invoke;
       v68[3] = &unk_29F3420F0;
       v68[4] = v14;
-      ProgressBinsSynchronizeBufferAccessRange(v34, v35, v36, v37, 1, v68);
+      ProgressBinsSynchronizeBufferAccessRange(v34, buffer, bufferOffset, v37, 1, v68);
       [v14 substreamSynchronizeDescriptor:v11 access:0];
       v38 = *(v14 + 104);
       v67[0] = MEMORY[0x29EDCA5F8];
@@ -6569,8 +6569,8 @@ uint64_t __93__AGXG18PFamilyRayTracingGPUBuilder_writeCompactedAccelerationStruc
   MTLResourceListAddResource();
   IOGPUResourceListAddResource();
   __src[0] = v13;
-  v40 = [v13 buffer];
-  __src[1] = v40;
+  buffer2 = [v13 buffer];
+  __src[1] = buffer2;
   __src[2] = v9;
   v42 = *(*(v14 + 88) + 16);
   if (v13 && *(v13 + *v39 + 16) >> 61 == 3)
@@ -6591,9 +6591,9 @@ uint64_t __93__AGXG18PFamilyRayTracingGPUBuilder_writeCompactedAccelerationStruc
     }
   }
 
-  if (v40 && *(v40 + *v39 + 16) >> 61 == 3)
+  if (buffer2 && *(buffer2 + *v39 + 16) >> 61 == 3)
   {
-    v46 = *(v40 + 312);
+    v46 = *(buffer2 + 312);
     IOGPUResourceListAddResource();
     v48 = *(v46 + 64);
     v47 = *(v46 + 72);
@@ -6741,12 +6741,12 @@ uint64_t __109__AGXG18PFamilyRayTracingGPUBuilder_buildAccelerationStructure_des
   }
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
   v5.receiver = self;
   v5.super_class = AGXG18PFamilyRayTracingGPUBuilder;
   [(_MTLObjectWithLabel *)&v5 setLabel:?];
-  [(MTLComputeCommandEncoderSPI *)self->_computeEncoder setLabel:a3];
+  [(MTLComputeCommandEncoderSPI *)self->_computeEncoder setLabel:label];
 }
 
 - (void)endEncoding
@@ -6931,7 +6931,7 @@ uint64_t __109__AGXG18PFamilyRayTracingGPUBuilder_buildAccelerationStructure_des
   [(_MTLCommandEncoder *)&v27 dealloc];
 }
 
-- (AGXG18PFamilyRayTracingGPUBuilder)initWithCommandBuffer:(id)a3 descriptor:(id)a4
+- (AGXG18PFamilyRayTracingGPUBuilder)initWithCommandBuffer:(id)buffer descriptor:(id)descriptor
 {
   v28.receiver = self;
   v28.super_class = AGXG18PFamilyRayTracingGPUBuilder;
@@ -6941,51 +6941,51 @@ uint64_t __109__AGXG18PFamilyRayTracingGPUBuilder_buildAccelerationStructure_des
     return v6;
   }
 
-  v7 = [a3 device];
+  device = [buffer device];
   v8 = *MEMORY[0x29EDBB788];
-  *(&v6->super.super.super.super.isa + v8) = v7;
-  v9 = a3;
-  *(&v6->super.super.super.super.isa + *MEMORY[0x29EDBB780]) = v9;
-  v10 = [a4 convertToComputePassDescriptor];
-  if (!v10)
+  *(&v6->super.super.super.super.isa + v8) = device;
+  bufferCopy = buffer;
+  *(&v6->super.super.super.super.isa + *MEMORY[0x29EDBB780]) = bufferCopy;
+  convertToComputePassDescriptor = [descriptor convertToComputePassDescriptor];
+  if (!convertToComputePassDescriptor)
   {
-    v10 = objc_alloc_init(MEMORY[0x29EDBB568]);
+    convertToComputePassDescriptor = objc_alloc_init(MEMORY[0x29EDBB568]);
   }
 
   v6->_defersCommands = 1;
   if (objc_opt_respondsToSelector())
   {
-    v11 = [*(&v6->super.super.super.super.isa + v8) maximumComputeSubstreams];
+    maximumComputeSubstreams = [*(&v6->super.super.super.super.isa + v8) maximumComputeSubstreams];
   }
 
   else
   {
-    v11 = 0;
+    maximumComputeSubstreams = 0;
   }
 
   {
-    v26 = v11;
-    v11 = v26;
+    v26 = maximumComputeSubstreams;
+    maximumComputeSubstreams = v26;
     if (v27)
     {
       [AGXG18PFamilyRayTracingGPUBuilder initWithCommandBuffer:descriptor:]::evSubstreamCount = -1;
-      v11 = v26;
+      maximumComputeSubstreams = v26;
     }
   }
 
-  if (v11 >= [AGXG18PFamilyRayTracingGPUBuilder initWithCommandBuffer:descriptor:]::evSubstreamCount)
+  if (maximumComputeSubstreams >= [AGXG18PFamilyRayTracingGPUBuilder initWithCommandBuffer:descriptor:]::evSubstreamCount)
   {
     v12 = [AGXG18PFamilyRayTracingGPUBuilder initWithCommandBuffer:descriptor:]::evSubstreamCount;
   }
 
   else
   {
-    v12 = v11;
+    v12 = maximumComputeSubstreams;
   }
 
-  if (a4)
+  if (descriptor)
   {
-    v13 = [a4 enableSubstreams] ^ 1;
+    v13 = [descriptor enableSubstreams] ^ 1;
     if (v12 < 2)
     {
       goto LABEL_20;
@@ -7013,8 +7013,8 @@ LABEL_15:
   }
 
 LABEL_20:
-  [v10 setSubstreamCount:v12];
-  v6->_computeEncoder = [a3 computeCommandEncoderWithDescriptor:v10];
+  [convertToComputePassDescriptor setSubstreamCount:v12];
+  v6->_computeEncoder = [buffer computeCommandEncoderWithDescriptor:convertToComputePassDescriptor];
   v15 = malloc_type_calloc(0x128uLL, 1uLL, 0x10B00409275CA1FuLL);
   v6->_impl = v15;
   if (v15)
@@ -7022,7 +7022,7 @@ LABEL_20:
     v16 = v15;
     v17 = *(&v6->super.super.super.super.isa + v8);
     computeEncoder = v6->_computeEncoder;
-    v19 = [v10 substreamCount] > 1;
+    v19 = [convertToComputePassDescriptor substreamCount] > 1;
     *v16 = v17;
     *(v16 + 8) = computeEncoder;
     *(v16 + 16) = *(computeEncoder + 11);
@@ -7127,14 +7127,14 @@ LABEL_20:
   return v6;
 }
 
-- (void)substreamSynchronizeAccelerationStructures:(id)a3 access:(unint64_t)a4
+- (void)substreamSynchronizeAccelerationStructures:(id)structures access:(unint64_t)access
 {
   v22 = *MEMORY[0x29EDCA608];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v6 = [structures countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -7145,23 +7145,23 @@ LABEL_20:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(structures);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
         progressBins = self->_progressBins;
-        v12 = [v10 buffer];
-        v13 = [v10 bufferOffset];
+        buffer = [v10 buffer];
+        bufferOffset = [v10 bufferOffset];
         v14 = [v10 size];
         v16[0] = MEMORY[0x29EDCA5F8];
         v16[1] = 3221225472;
         v16[2] = __87__AGXG18PFamilyRayTracingGPUBuilder_substreamSynchronizeAccelerationStructures_access___block_invoke;
         v16[3] = &unk_29F3420F0;
         v16[4] = self;
-        ProgressBinsSynchronizeBufferAccessRange(progressBins, v12, v13, v14, a4, v16);
+        ProgressBinsSynchronizeBufferAccessRange(progressBins, buffer, bufferOffset, v14, access, v16);
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [structures countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);
@@ -7188,16 +7188,16 @@ uint64_t __87__AGXG18PFamilyRayTracingGPUBuilder_substreamSynchronizeAcceleratio
   }
 }
 
-- (void)substreamSynchronizeDescriptor:(id)a3 access:(unint64_t)a4
+- (void)substreamSynchronizeDescriptor:(id)descriptor access:(unint64_t)access
 {
   v7 = objc_opt_class();
   if ([v7 isSubclassOfClass:objc_opt_class()])
   {
-    if (([a3 instanceDescriptorType] - 3) > 1)
+    if (([descriptor instanceDescriptorType] - 3) > 1)
     {
-      v16 = [a3 instancedAccelerationStructures];
+      instancedAccelerationStructures = [descriptor instancedAccelerationStructures];
 
-      [(AGXG18PFamilyRayTracingGPUBuilder *)self substreamSynchronizeAccelerationStructures:v16 access:a4];
+      [(AGXG18PFamilyRayTracingGPUBuilder *)self substreamSynchronizeAccelerationStructures:instancedAccelerationStructures access:access];
       return;
     }
 

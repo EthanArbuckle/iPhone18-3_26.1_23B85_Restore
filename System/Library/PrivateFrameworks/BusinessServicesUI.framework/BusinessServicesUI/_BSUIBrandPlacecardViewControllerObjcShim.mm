@@ -1,23 +1,23 @@
 @interface _BSUIBrandPlacecardViewControllerObjcShim
-+ (id)hoursConfigurationFor:(id)a3;
-+ (id)makeBrandPlacecardViewControllerWithBrandObjcShimOpaqueWrapper:(id)a3;
++ (id)hoursConfigurationFor:(id)for;
++ (id)makeBrandPlacecardViewControllerWithBrandObjcShimOpaqueWrapper:(id)wrapper;
 - (_BSUIBrandPlacecardViewControllerObjcShim)init;
 @end
 
 @implementation _BSUIBrandPlacecardViewControllerObjcShim
 
-+ (id)makeBrandPlacecardViewControllerWithBrandObjcShimOpaqueWrapper:(id)a3
++ (id)makeBrandPlacecardViewControllerWithBrandObjcShimOpaqueWrapper:(id)wrapper
 {
-  v3 = a3;
-  v4 = _s18BusinessServicesUI36BrandPlacecardViewControllerObjcShimC04makedefG005brandhI13OpaqueWrapperSo06UIViewG0CSo08BSOpaqueM0C_tFZ_0(v3);
+  wrapperCopy = wrapper;
+  v4 = _s18BusinessServicesUI36BrandPlacecardViewControllerObjcShimC04makedefG005brandhI13OpaqueWrapperSo06UIViewG0CSo08BSOpaqueM0C_tFZ_0(wrapperCopy);
 
   return v4;
 }
 
-+ (id)hoursConfigurationFor:(id)a3
++ (id)hoursConfigurationFor:(id)for
 {
-  v3 = a3;
-  v4 = _s18BusinessServicesUI36BrandPlacecardViewControllerObjcShimC18hoursConfiguration3foryXlSgSo15BSOpaqueWrapperC_tFZ_0(v3);
+  forCopy = for;
+  v4 = _s18BusinessServicesUI36BrandPlacecardViewControllerObjcShimC18hoursConfiguration3foryXlSgSo15BSOpaqueWrapperC_tFZ_0(forCopy);
 
   return v4;
 }

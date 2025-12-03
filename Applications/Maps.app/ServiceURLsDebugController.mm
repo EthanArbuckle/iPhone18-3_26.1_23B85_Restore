@@ -1,12 +1,12 @@
 @interface ServiceURLsDebugController
 - (ServiceURLsDebugController)init;
 - (id)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)dealloc;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)valueChangedForGEOConfigKey:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)valueChangedForGEOConfigKey:(id)key;
 @end
 
 @implementation ServiceURLsDebugController
@@ -18,47 +18,47 @@
   return WeakRetained;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v22 = a4;
-  [a3 deselectRowAtIndexPath:v22 animated:1];
-  v6 = -[NSArray objectAtIndexedSubscript:](self->_serviceURLs, "objectAtIndexedSubscript:", [v22 section]);
-  if ([v22 row])
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v6 = -[NSArray objectAtIndexedSubscript:](self->_serviceURLs, "objectAtIndexedSubscript:", [pathCopy section]);
+  if ([pathCopy row])
   {
-    v7 = [v22 row] - 1;
+    v7 = [pathCopy row] - 1;
     if (v7 >= [v6 count])
     {
       v15 = [CustomServiceURLDebugController alloc];
-      v16 = [(ServiceURLsDebugController *)self tableView];
-      v8 = -[CustomServiceURLDebugController initWithStyle:](v15, "initWithStyle:", [v16 style]);
+      tableView = [(ServiceURLsDebugController *)self tableView];
+      callback5 = -[CustomServiceURLDebugController initWithStyle:](v15, "initWithStyle:", [tableView style]);
 
-      v17 = [v6 defaultsKey];
-      [(CustomServiceURLDebugController *)v8 setDefaultsKey:v17, v18];
-      v19 = [v6 defaultCustomURLString];
-      [(CustomServiceURLDebugController *)v8 setDefaultURLString:v19];
+      defaultsKey = [v6 defaultsKey];
+      [(CustomServiceURLDebugController *)callback5 setDefaultsKey:defaultsKey, v18];
+      defaultCustomURLString = [v6 defaultCustomURLString];
+      [(CustomServiceURLDebugController *)callback5 setDefaultURLString:defaultCustomURLString];
 
-      v20 = [v6 callback];
-      [(CustomServiceURLDebugController *)v8 setCallback:v20];
+      callback = [v6 callback];
+      [(CustomServiceURLDebugController *)callback5 setCallback:callback];
 
-      v21 = [(ServiceURLsDebugController *)self navigationController];
-      [v21 pushViewController:v8 animated:1];
+      navigationController = [(ServiceURLsDebugController *)self navigationController];
+      [navigationController pushViewController:callback5 animated:1];
     }
 
     else
     {
-      v8 = [v6 URLAtIndex:{objc_msgSend(v22, "row") - 1}];
-      v9 = [v6 infoAtIndex:{objc_msgSend(v22, "row") - 1}];
+      callback5 = [v6 URLAtIndex:{objc_msgSend(pathCopy, "row") - 1}];
+      v9 = [v6 infoAtIndex:{objc_msgSend(pathCopy, "row") - 1}];
       [v6 defaultsKey];
       GEOConfigSetString();
       v10 = +[NSNotificationCenter defaultCenter];
       [v10 postNotificationName:GEOCountryConfigurationProvidersDidChangeNotification object:self userInfo:0];
 
-      v11 = [v6 callback];
+      callback2 = [v6 callback];
 
-      if (v11)
+      if (callback2)
       {
-        v12 = [v6 callback];
-        (v12)[2](v12, v8, v9);
+        callback3 = [v6 callback];
+        (callback3)[2](callback3, callback5, v9);
       }
     }
   }
@@ -70,48 +70,48 @@
     v13 = +[NSNotificationCenter defaultCenter];
     [v13 postNotificationName:GEOCountryConfigurationProvidersDidChangeNotification object:self userInfo:0];
 
-    v14 = [v6 callback];
+    callback4 = [v6 callback];
 
-    if (!v14)
+    if (!callback4)
     {
       goto LABEL_10;
     }
 
-    v8 = [v6 callback];
-    (*&v8->_defaultsKey.key.identifier)(v8, 0, 0);
+    callback5 = [v6 callback];
+    (*&callback5->_defaultsKey.key.identifier)(callback5, 0, 0);
   }
 
 LABEL_10:
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"ServiceURLCell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"ServiceURLCell"];
   if (!v7)
   {
     v7 = [[UITableViewCell alloc] initWithStyle:3 reuseIdentifier:@"ServiceURLCell"];
   }
 
   [v7 setAccessoryView:0];
-  v8 = [v7 detailTextLabel];
-  [v8 setText:0];
+  detailTextLabel = [v7 detailTextLabel];
+  [detailTextLabel setText:0];
 
-  v9 = -[NSArray objectAtIndexedSubscript:](self->_serviceURLs, "objectAtIndexedSubscript:", [v6 section]);
+  v9 = -[NSArray objectAtIndexedSubscript:](self->_serviceURLs, "objectAtIndexedSubscript:", [pathCopy section]);
   [v9 defaultsKey];
   v10 = GEOConfigGetValueWithSourceString();
-  if ([v6 row])
+  if ([pathCopy row])
   {
-    v11 = [v6 row] - 1;
+    v11 = [pathCopy row] - 1;
     if (v11 < [v9 count])
     {
-      v12 = [v9 nameAtIndex:{objc_msgSend(v6, "row") - 1}];
-      v13 = [v7 textLabel];
-      [v13 setText:v12];
+      v12 = [v9 nameAtIndex:{objc_msgSend(pathCopy, "row") - 1}];
+      textLabel = [v7 textLabel];
+      [textLabel setText:v12];
 
-      v14 = [v9 URLAtIndex:{objc_msgSend(v6, "row") - 1}];
-      v15 = [v7 detailTextLabel];
-      [v15 setText:v14];
+      v14 = [v9 URLAtIndex:{objc_msgSend(pathCopy, "row") - 1}];
+      detailTextLabel2 = [v7 detailTextLabel];
+      [detailTextLabel2 setText:v14];
 
       if (v10)
       {
@@ -136,8 +136,8 @@ LABEL_10:
       goto LABEL_26;
     }
 
-    v20 = [v7 textLabel];
-    [v20 setText:@"Custom"];
+    textLabel2 = [v7 textLabel];
+    [textLabel2 setText:@"Custom"];
 
     v21 = 0;
     if ([v9 count])
@@ -165,8 +165,8 @@ LABEL_10:
       while (v22 < [v9 count]);
     }
 
-    v26 = [v7 detailTextLabel];
-    v27 = v26;
+    detailTextLabel3 = [v7 detailTextLabel];
+    v27 = detailTextLabel3;
     if (v21)
     {
       v28 = v10;
@@ -187,7 +187,7 @@ LABEL_10:
       v29 = 0;
     }
 
-    [v26 setText:v28];
+    [detailTextLabel3 setText:v28];
 
     v19 = v7;
     v18 = v29;
@@ -195,8 +195,8 @@ LABEL_10:
 
   else
   {
-    v17 = [v7 textLabel];
-    [v17 setText:@"Default"];
+    textLabel3 = [v7 textLabel];
+    [textLabel3 setText:@"Default"];
 
     v18 = 3;
     v19 = v7;
@@ -208,17 +208,17 @@ LABEL_26:
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_serviceURLs objectAtIndexedSubscript:a4];
-  v5 = [v4 serviceName];
+  v4 = [(NSArray *)self->_serviceURLs objectAtIndexedSubscript:section];
+  serviceName = [v4 serviceName];
 
-  return v5;
+  return serviceName;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_serviceURLs objectAtIndexedSubscript:a4];
+  v4 = [(NSArray *)self->_serviceURLs objectAtIndexedSubscript:section];
   v5 = [v4 count];
 
   return v5 + 2;
@@ -281,9 +281,9 @@ LABEL_26:
   return v2;
 }
 
-- (void)valueChangedForGEOConfigKey:(id)a3
+- (void)valueChangedForGEOConfigKey:(id)key
 {
-  v3 = [(ServiceURLsDebugController *)self tableView:*&a3.var0];
+  v3 = [(ServiceURLsDebugController *)self tableView:*&key.var0];
   [v3 reloadData];
 }
 

@@ -1,57 +1,57 @@
 @interface PLAccountingDistributionDependency
-- (PLAccountingDistributionDependency)initWithDistributionEvent:(id)a3;
+- (PLAccountingDistributionDependency)initWithDistributionEvent:(id)event;
 - (id)ID;
 - (id)activationDate;
 - (id)range;
-- (void)setRange:(id)a3;
+- (void)setRange:(id)range;
 @end
 
 @implementation PLAccountingDistributionDependency
 
 - (id)range
 {
-  v2 = [(PLAccountingDistributionDependency *)self distributionEvent];
-  v3 = [v2 range];
+  distributionEvent = [(PLAccountingDistributionDependency *)self distributionEvent];
+  range = [distributionEvent range];
 
-  return v3;
+  return range;
 }
 
 - (id)ID
 {
-  v2 = [(PLAccountingDistributionDependency *)self distributionEvent];
-  v3 = [v2 distributionID];
+  distributionEvent = [(PLAccountingDistributionDependency *)self distributionEvent];
+  distributionID = [distributionEvent distributionID];
 
-  return v3;
+  return distributionID;
 }
 
 - (id)activationDate
 {
-  v2 = [(PLAccountingDistributionDependency *)self distributionEvent];
-  v3 = [v2 entryDate];
+  distributionEvent = [(PLAccountingDistributionDependency *)self distributionEvent];
+  entryDate = [distributionEvent entryDate];
 
-  return v3;
+  return entryDate;
 }
 
-- (PLAccountingDistributionDependency)initWithDistributionEvent:(id)a3
+- (PLAccountingDistributionDependency)initWithDistributionEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   v9.receiver = self;
   v9.super_class = PLAccountingDistributionDependency;
   v6 = [(PLAccountingDistributionDependency *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_distributionEvent, a3);
+    objc_storeStrong(&v6->_distributionEvent, event);
   }
 
   return v7;
 }
 
-- (void)setRange:(id)a3
+- (void)setRange:(id)range
 {
-  v4 = a3;
-  v5 = [(PLAccountingDistributionDependency *)self distributionEvent];
-  [v5 setRange:v4];
+  rangeCopy = range;
+  distributionEvent = [(PLAccountingDistributionDependency *)self distributionEvent];
+  [distributionEvent setRange:rangeCopy];
 }
 
 @end

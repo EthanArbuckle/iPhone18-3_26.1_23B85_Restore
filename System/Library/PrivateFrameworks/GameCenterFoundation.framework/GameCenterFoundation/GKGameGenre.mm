@@ -1,30 +1,30 @@
 @interface GKGameGenre
 + (id)secureCodedPropertyKeys;
-- (GKGameGenre)initWithGenreID:(id)a3 name:(id)a4 parentID:(id)a5;
+- (GKGameGenre)initWithGenreID:(id)d name:(id)name parentID:(id)iD;
 - (id)description;
 @end
 
 @implementation GKGameGenre
 
-- (GKGameGenre)initWithGenreID:(id)a3 name:(id)a4 parentID:(id)a5
+- (GKGameGenre)initWithGenreID:(id)d name:(id)name parentID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  nameCopy = name;
+  iDCopy = iD;
   v19.receiver = self;
   v19.super_class = GKGameGenre;
   v11 = [(GKGameGenre *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     genreID = v11->_genreID;
     v11->_genreID = v12;
 
-    v14 = [v9 copy];
+    v14 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v14;
 
-    v16 = [v10 copy];
+    v16 = [iDCopy copy];
     parentID = v11->_parentID;
     v11->_parentID = v16;
   }
@@ -65,10 +65,10 @@ void __38__GKGameGenre_secureCodedPropertyKeys__block_invoke()
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(GKGameGenre *)self genreID];
-  v7 = [(GKGameGenre *)self name];
-  v8 = [(GKGameGenre *)self parentID];
-  v9 = [v3 stringWithFormat:@"%@: genreID: %@, name: %@, parentID: %@", v5, v6, v7, v8];
+  genreID = [(GKGameGenre *)self genreID];
+  name = [(GKGameGenre *)self name];
+  parentID = [(GKGameGenre *)self parentID];
+  v9 = [v3 stringWithFormat:@"%@: genreID: %@, name: %@, parentID: %@", v5, genreID, name, parentID];
 
   return v9;
 }

@@ -1,28 +1,28 @@
 @interface CSSPURoadInfo
-- (CSSPURoadInfo)initWithTimestamp:(unint64_t)a3 distanceToNearestRoad:(double)a4 roadClass:(int)a5 horizontalAccuracy:(float)a6 numRoadFeaturesEvaluated:(int)a7 GEOHandlerErrorDomain:(id)a8 GEOHandlerErrorCode:(int64_t)a9;
+- (CSSPURoadInfo)initWithTimestamp:(unint64_t)timestamp distanceToNearestRoad:(double)road roadClass:(int)class horizontalAccuracy:(float)accuracy numRoadFeaturesEvaluated:(int)evaluated GEOHandlerErrorDomain:(id)domain GEOHandlerErrorCode:(int64_t)code;
 @end
 
 @implementation CSSPURoadInfo
 
-- (CSSPURoadInfo)initWithTimestamp:(unint64_t)a3 distanceToNearestRoad:(double)a4 roadClass:(int)a5 horizontalAccuracy:(float)a6 numRoadFeaturesEvaluated:(int)a7 GEOHandlerErrorDomain:(id)a8 GEOHandlerErrorCode:(int64_t)a9
+- (CSSPURoadInfo)initWithTimestamp:(unint64_t)timestamp distanceToNearestRoad:(double)road roadClass:(int)class horizontalAccuracy:(float)accuracy numRoadFeaturesEvaluated:(int)evaluated GEOHandlerErrorDomain:(id)domain GEOHandlerErrorCode:(int64_t)code
 {
-  v10 = a7;
-  v12 = a5;
-  v16 = a8;
+  evaluatedCopy = evaluated;
+  classCopy = class;
+  domainCopy = domain;
   v20.receiver = self;
   v20.super_class = CSSPURoadInfo;
   v17 = [(CSSPURoadInfo *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    v17->_c_struct.timestamp = a3;
-    v17->_c_struct.distanceToNearestRoad = a4;
-    v17->_c_struct.roadClass = v12;
-    v17->_c_struct.horizontalAccuracy = a6;
-    v17->_c_struct.numRoadFeaturesEvaluated = v10;
-    strncpy(v17->_c_struct.GEOHandlerErrorDomain, [v16 UTF8String], 0x40uLL);
+    v17->_c_struct.timestamp = timestamp;
+    v17->_c_struct.distanceToNearestRoad = road;
+    v17->_c_struct.roadClass = classCopy;
+    v17->_c_struct.horizontalAccuracy = accuracy;
+    v17->_c_struct.numRoadFeaturesEvaluated = evaluatedCopy;
+    strncpy(v17->_c_struct.GEOHandlerErrorDomain, [domainCopy UTF8String], 0x40uLL);
     v18->_c_struct.GEOHandlerErrorDomain[63] = 0;
-    v18->_c_struct.GEOHandlerErrorCode = a9;
+    v18->_c_struct.GEOHandlerErrorCode = code;
   }
 
   return v18;

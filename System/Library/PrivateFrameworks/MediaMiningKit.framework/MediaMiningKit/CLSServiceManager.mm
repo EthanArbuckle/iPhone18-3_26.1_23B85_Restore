@@ -1,157 +1,157 @@
 @interface CLSServiceManager
-+ (id)locationCacheForSwiftOnlyWithParentURL:(id)a3;
++ (id)locationCacheForSwiftOnlyWithParentURL:(id)l;
 - (BOOL)hasAddressesForMePerson;
-- (BOOL)isRemoteLocation:(id)a3 inDateInterval:(id)a4;
+- (BOOL)isRemoteLocation:(id)location inDateInterval:(id)interval;
 - (BOOL)routineIsAvailable;
-- (CLSServiceManager)initWithLocationCache:(id)a3;
+- (CLSServiceManager)initWithLocationCache:(id)cache;
 - (double)pinningVisitsRatio;
-- (id)contactsForIdentifiers:(id)a3;
-- (id)eventsForClueCollection:(id)a3;
-- (id)eventsForDates:(id)a3;
+- (id)contactsForIdentifiers:(id)identifiers;
+- (id)eventsForClueCollection:(id)collection;
+- (id)eventsForDates:(id)dates;
 - (id)fetchImportantLocationsOfInterest;
-- (id)fetchLocationOfInterestVisitsAtLocation:(id)a3 inDateInterval:(id)a4;
-- (id)inferredDeviceOwnerForPhotoLibrary:(id)a3 ignoreContactLinking:(BOOL)a4;
+- (id)fetchLocationOfInterestVisitsAtLocation:(id)location inDateInterval:(id)interval;
+- (id)inferredDeviceOwnerForPhotoLibrary:(id)library ignoreContactLinking:(BOOL)linking;
 - (id)lastLocationOfInterestVisit;
-- (id)locationOfInterestAtLocation:(id)a3;
-- (id)locationOfInterestCloseToLocation:(id)a3 inDateInterval:(id)a4;
-- (id)matchingDictionaryForContactIdentifier:(id)a3;
-- (id)mePersonAddressesOfType:(unint64_t)a3;
-- (id)mePersonFetchContactIfNeeeded:(BOOL)a3;
+- (id)locationOfInterestAtLocation:(id)location;
+- (id)locationOfInterestCloseToLocation:(id)location inDateInterval:(id)interval;
+- (id)matchingDictionaryForContactIdentifier:(id)identifier;
+- (id)mePersonAddressesOfType:(unint64_t)type;
+- (id)mePersonFetchContactIfNeeeded:(BOOL)neeeded;
 - (id)mePersonForGraphIngest;
-- (id)personForIdentifier:(id)a3;
-- (id)personForName:(id)a3 inPhotoLibrary:(id)a4;
-- (id)personForPersonHandle:(id)a3;
-- (id)personLocalIdentifierMatchingContactPictureForContactIdentifier:(id)a3;
-- (id)personResultForName:(id)a3 inPhotoLibrary:(id)a4;
-- (id)personResultsForName:(id)a3 inPhotoLibrary:(id)a4;
-- (id)personsFromEventParticipants:(id)a3 excludeCurrentUser:(BOOL)a4;
-- (id)predominantLocationMobilityForDateInterval:(id)a3 confidence:(double *)a4;
-- (id)workCalendarEventsMatchingContactIdentifiers:(id)a3 fromUniversalDate:(id)a4 toUniversalDate:(id)a5;
-- (unint64_t)fetchFinerGranularityBusinessItemNumberForVisitIdentifier:(id)a3;
+- (id)personForIdentifier:(id)identifier;
+- (id)personForName:(id)name inPhotoLibrary:(id)library;
+- (id)personForPersonHandle:(id)handle;
+- (id)personLocalIdentifierMatchingContactPictureForContactIdentifier:(id)identifier;
+- (id)personResultForName:(id)name inPhotoLibrary:(id)library;
+- (id)personResultsForName:(id)name inPhotoLibrary:(id)library;
+- (id)personsFromEventParticipants:(id)participants excludeCurrentUser:(BOOL)user;
+- (id)predominantLocationMobilityForDateInterval:(id)interval confidence:(double *)confidence;
+- (id)workCalendarEventsMatchingContactIdentifiers:(id)identifiers fromUniversalDate:(id)date toUniversalDate:(id)universalDate;
+- (unint64_t)fetchFinerGranularityBusinessItemNumberForVisitIdentifier:(id)identifier;
 - (unint64_t)numberOfCloseByLocationMatches;
 - (unint64_t)numberOfLocationsOfInterest;
 - (unint64_t)numberOfMatchRequests;
 - (unint64_t)numberOfRemoteLocationMatches;
 - (unint64_t)numberOfTimeMatches;
 - (unint64_t)numberOfVisits;
-- (unint64_t)relationshipHintForPerson:(id)a3 usingLocales:(id)a4;
-- (unint64_t)sexHintForPerson:(id)a3 usingLocales:(id)a4;
-- (void)invalidateCacheForPersonInContactStoreWithContactIdentifiers:(id)a3;
+- (unint64_t)relationshipHintForPerson:(id)person usingLocales:(id)locales;
+- (unint64_t)sexHintForPerson:(id)person usingLocales:(id)locales;
+- (void)invalidateCacheForPersonInContactStoreWithContactIdentifiers:(id)identifiers;
 - (void)invalidateMePerson;
 - (void)invalidateMomentaryMemoryCaches;
 - (void)invalidatePermanentMemoryCaches;
-- (void)invalidatePersonsCacheForPersonsWithContactIdentifiers:(id)a3;
-- (void)invalidatePersonsCacheForPersonsWithNames:(id)a3;
+- (void)invalidatePersonsCacheForPersonsWithContactIdentifiers:(id)identifiers;
+- (void)invalidatePersonsCacheForPersonsWithNames:(id)names;
 - (void)postProcessLocationsOfInterest;
 @end
 
 @implementation CLSServiceManager
 
-- (unint64_t)relationshipHintForPerson:(id)a3 usingLocales:(id)a4
+- (unint64_t)relationshipHintForPerson:(id)person usingLocales:(id)locales
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(CLSSocialServiceCoreNameParser *)v8->_coreNameParserService relationshipHintForPerson:v6 usingLocales:v7];
-  objc_sync_exit(v8);
+  personCopy = person;
+  localesCopy = locales;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [(CLSSocialServiceCoreNameParser *)selfCopy->_coreNameParserService relationshipHintForPerson:personCopy usingLocales:localesCopy];
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-- (unint64_t)sexHintForPerson:(id)a3 usingLocales:(id)a4
+- (unint64_t)sexHintForPerson:(id)person usingLocales:(id)locales
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(CLSSocialServiceCoreNameParser *)v8->_coreNameParserService sexHintForPerson:v6 usingLocales:v7];
-  objc_sync_exit(v8);
+  personCopy = person;
+  localesCopy = locales;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [(CLSSocialServiceCoreNameParser *)selfCopy->_coreNameParserService sexHintForPerson:personCopy usingLocales:localesCopy];
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-- (id)mePersonAddressesOfType:(unint64_t)a3
+- (id)mePersonAddressesOfType:(unint64_t)type
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  if (a3 >= 2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (type >= 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(CLSRoutineService *)v4->_routineService placemarksOfInterestOfType:a3];
+    v5 = [(CLSRoutineService *)selfCopy->_routineService placemarksOfInterestOfType:type];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   if (v5)
   {
-    v6 = [v5 allObjects];
+    allObjects = [v5 allObjects];
   }
 
   else
   {
-    v6 = MEMORY[0x277CBEBF8];
+    allObjects = MEMORY[0x277CBEBF8];
   }
 
-  return v6;
+  return allObjects;
 }
 
 - (BOOL)hasAddressesForMePerson
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CLSRoutineService *)v2->_routineService hasLocationsOfInterestInformation];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  hasLocationsOfInterestInformation = [(CLSRoutineService *)selfCopy->_routineService hasLocationsOfInterestInformation];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return hasLocationsOfInterestInformation;
 }
 
-- (id)personForIdentifier:(id)a3
+- (id)personForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(CLSSocialServiceContacts *)v5->_contactsService personForIdentifier:v4];
-  objc_sync_exit(v5);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(CLSSocialServiceContacts *)selfCopy->_contactsService personForIdentifier:identifierCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)personsFromEventParticipants:(id)a3 excludeCurrentUser:(BOOL)a4
+- (id)personsFromEventParticipants:(id)participants excludeCurrentUser:(BOOL)user
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(CLSSocialServiceCalendar *)v7->_calendarService personsFromEventParticipants:v6 excludeCurrentUser:v4 serviceManager:v7];
-  objc_sync_exit(v7);
+  userCopy = user;
+  participantsCopy = participants;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(CLSSocialServiceCalendar *)selfCopy->_calendarService personsFromEventParticipants:participantsCopy excludeCurrentUser:userCopy serviceManager:selfCopy];
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (id)workCalendarEventsMatchingContactIdentifiers:(id)a3 fromUniversalDate:(id)a4 toUniversalDate:(id)a5
+- (id)workCalendarEventsMatchingContactIdentifiers:(id)identifiers fromUniversalDate:(id)date toUniversalDate:(id)universalDate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  objc_sync_enter(v11);
-  v12 = [(CLSSocialServiceCalendar *)v11->_calendarService workCalendarEventsMatchingContactIdentifiers:v8 fromUniversalDate:v9 toUniversalDate:v10 contactsService:v11->_contactsService];
-  objc_sync_exit(v11);
+  identifiersCopy = identifiers;
+  dateCopy = date;
+  universalDateCopy = universalDate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v12 = [(CLSSocialServiceCalendar *)selfCopy->_calendarService workCalendarEventsMatchingContactIdentifiers:identifiersCopy fromUniversalDate:dateCopy toUniversalDate:universalDateCopy contactsService:selfCopy->_contactsService];
+  objc_sync_exit(selfCopy);
 
   return v12;
 }
 
-- (id)eventsForClueCollection:(id)a3
+- (id)eventsForClueCollection:(id)collection
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(CLSSocialServiceCalendar *)v5->_calendarService eventsForClueCollection:v4];
+  collectionCopy = collection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(CLSSocialServiceCalendar *)selfCopy->_calendarService eventsForClueCollection:collectionCopy];
   v7 = v6;
   v8 = MEMORY[0x277CBEBF8];
   if (v6)
@@ -161,19 +161,19 @@
 
   v9 = v8;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
 - (id)lastLocationOfInterestVisit
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CLSRoutineService *)v2->_routineService lastLocationOfInterestVisit];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  lastLocationOfInterestVisit = [(CLSRoutineService *)selfCopy->_routineService lastLocationOfInterestVisit];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return lastLocationOfInterestVisit;
 }
 
 - (void)postProcessLocationsOfInterest
@@ -187,31 +187,31 @@
 - (id)fetchImportantLocationsOfInterest
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(CLSRoutineService *)v4->_routineService locationsOfInterestOfType:0];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(CLSRoutineService *)selfCopy->_routineService locationsOfInterestOfType:0];
   if ([v5 count])
   {
     [v3 unionSet:v5];
   }
 
-  v6 = [(CLSRoutineService *)v4->_routineService locationsOfInterestOfType:1];
+  v6 = [(CLSRoutineService *)selfCopy->_routineService locationsOfInterestOfType:1];
   if ([v6 count])
   {
     [v3 unionSet:v6];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)predominantLocationMobilityForDateInterval:(id)a3 confidence:(double *)a4
+- (id)predominantLocationMobilityForDateInterval:(id)interval confidence:(double *)confidence
 {
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(CLSRoutineService *)v7->_routineService predominantTransportationModeForDateInterval:v6 confidence:a4];
+  intervalCopy = interval;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(CLSRoutineService *)selfCopy->_routineService predominantTransportationModeForDateInterval:intervalCopy confidence:confidence];
   if (v8 > 2)
   {
     v9 = 0;
@@ -222,120 +222,120 @@
     v9 = *off_2788A6DE0[v8];
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-- (unint64_t)fetchFinerGranularityBusinessItemNumberForVisitIdentifier:(id)a3
+- (unint64_t)fetchFinerGranularityBusinessItemNumberForVisitIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(CLSRoutineService *)v5->_routineService fetchFinerGranularityBusinessItemNumberForVisitIdentifier:v4];
-  objc_sync_exit(v5);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(CLSRoutineService *)selfCopy->_routineService fetchFinerGranularityBusinessItemNumberForVisitIdentifier:identifierCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)fetchLocationOfInterestVisitsAtLocation:(id)a3 inDateInterval:(id)a4
+- (id)fetchLocationOfInterestVisitsAtLocation:(id)location inDateInterval:(id)interval
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(CLSRoutineService *)v8->_routineService locationOfInterestVisitsAtLocation:v6 inDateInterval:v7];
-  objc_sync_exit(v8);
+  locationCopy = location;
+  intervalCopy = interval;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [(CLSRoutineService *)selfCopy->_routineService locationOfInterestVisitsAtLocation:locationCopy inDateInterval:intervalCopy];
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-- (id)locationOfInterestCloseToLocation:(id)a3 inDateInterval:(id)a4
+- (id)locationOfInterestCloseToLocation:(id)location inDateInterval:(id)interval
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(CLSRoutineService *)v8->_routineService locationOfInterestCloseToLocation:v6 inDateInterval:v7];
-  objc_sync_exit(v8);
+  locationCopy = location;
+  intervalCopy = interval;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [(CLSRoutineService *)selfCopy->_routineService locationOfInterestCloseToLocation:locationCopy inDateInterval:intervalCopy];
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-- (id)locationOfInterestAtLocation:(id)a3
+- (id)locationOfInterestAtLocation:(id)location
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(CLSRoutineService *)v5->_routineService locationOfInterestAtLocation:v4];
-  objc_sync_exit(v5);
+  locationCopy = location;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(CLSRoutineService *)selfCopy->_routineService locationOfInterestAtLocation:locationCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (BOOL)isRemoteLocation:(id)a3 inDateInterval:(id)a4
+- (BOOL)isRemoteLocation:(id)location inDateInterval:(id)interval
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(CLSRoutineService *)v8->_routineService isRemoteLocation:v6 inDateInterval:v7];
-  objc_sync_exit(v8);
+  locationCopy = location;
+  intervalCopy = interval;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [(CLSRoutineService *)selfCopy->_routineService isRemoteLocation:locationCopy inDateInterval:intervalCopy];
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-- (id)matchingDictionaryForContactIdentifier:(id)a3
+- (id)matchingDictionaryForContactIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(CLSSocialServiceContacts *)v5->_contactsService matchingDictionaryForContactIdentifier:v4];
-  objc_sync_exit(v5);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(CLSSocialServiceContacts *)selfCopy->_contactsService matchingDictionaryForContactIdentifier:identifierCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)contactsForIdentifiers:(id)a3
+- (id)contactsForIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(CLSSocialServiceContacts *)v5->_contactsService contactsForIdentifiers:v4];
-  objc_sync_exit(v5);
+  identifiersCopy = identifiers;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(CLSSocialServiceContacts *)selfCopy->_contactsService contactsForIdentifiers:identifiersCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)personForPersonHandle:(id)a3
+- (id)personForPersonHandle:(id)handle
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(CLSSocialServiceContacts *)v5->_contactsService personForPersonHandle:v4];
-  objc_sync_exit(v5);
+  handleCopy = handle;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(CLSSocialServiceContacts *)selfCopy->_contactsService personForPersonHandle:handleCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)personLocalIdentifierMatchingContactPictureForContactIdentifier:(id)a3
+- (id)personLocalIdentifierMatchingContactPictureForContactIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(CLSSocialServiceContacts *)v5->_contactsService personLocalIdentifierMatchingContactPictureForContactIdentifier:v4];
-  objc_sync_exit(v5);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(CLSSocialServiceContacts *)selfCopy->_contactsService personLocalIdentifierMatchingContactPictureForContactIdentifier:identifierCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)personResultsForName:(id)a3 inPhotoLibrary:(id)a4
+- (id)personResultsForName:(id)name inPhotoLibrary:(id)library
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  libraryCopy = library;
   v8 = self->_personsCache;
   objc_sync_enter(v8);
-  v9 = [(CLSLRUMemoryCache *)self->_personsCache objectForKey:v6];
+  v9 = [(CLSLRUMemoryCache *)self->_personsCache objectForKey:nameCopy];
   v10 = v9;
   if (v9)
   {
@@ -344,13 +344,13 @@
 
   else
   {
-    v12 = self;
-    objc_sync_enter(v12);
-    v13 = [(CLSSocialServiceContacts *)v12->_contactsService personResultsForName:v6 inPhotoLibrary:v7];
-    objc_sync_exit(v12);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v13 = [(CLSSocialServiceContacts *)selfCopy->_contactsService personResultsForName:nameCopy inPhotoLibrary:libraryCopy];
+    objc_sync_exit(selfCopy);
 
     v11 = [MEMORY[0x277CBEB98] setWithArray:v13];
-    [(CLSLRUMemoryCache *)self->_personsCache setObject:v11 forKey:v6];
+    [(CLSLRUMemoryCache *)self->_personsCache setObject:v11 forKey:nameCopy];
   }
 
   objc_sync_exit(v8);
@@ -358,12 +358,12 @@
   return v11;
 }
 
-- (id)personResultForName:(id)a3 inPhotoLibrary:(id)a4
+- (id)personResultForName:(id)name inPhotoLibrary:(id)library
 {
-  v4 = [(CLSServiceManager *)self personResultsForName:a3 inPhotoLibrary:a4];
+  v4 = [(CLSServiceManager *)self personResultsForName:name inPhotoLibrary:library];
   if ([v4 count] == 1)
   {
-    v5 = [v4 anyObject];
+    anyObject = [v4 anyObject];
     goto LABEL_10;
   }
 
@@ -391,26 +391,26 @@ LABEL_8:
     _os_log_impl(&dword_22F907000, v8, OS_LOG_TYPE_INFO, v9, v10, 2u);
   }
 
-  v5 = 0;
+  anyObject = 0;
 LABEL_10:
 
-  return v5;
+  return anyObject;
 }
 
-- (id)personForName:(id)a3 inPhotoLibrary:(id)a4
+- (id)personForName:(id)name inPhotoLibrary:(id)library
 {
-  v4 = [(CLSServiceManager *)self personResultForName:a3 inPhotoLibrary:a4];
-  v5 = [v4 person];
+  v4 = [(CLSServiceManager *)self personResultForName:name inPhotoLibrary:library];
+  person = [v4 person];
 
-  return v5;
+  return person;
 }
 
-- (id)eventsForDates:(id)a3
+- (id)eventsForDates:(id)dates
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(CLSSocialServiceCalendar *)v5->_calendarService eventsForDates:v4];
+  datesCopy = dates;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(CLSSocialServiceCalendar *)selfCopy->_calendarService eventsForDates:datesCopy];
   v7 = v6;
   v8 = MEMORY[0x277CBEBF8];
   if (v6)
@@ -420,21 +420,21 @@ LABEL_10:
 
   v9 = v8;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-- (id)inferredDeviceOwnerForPhotoLibrary:(id)a3 ignoreContactLinking:(BOOL)a4
+- (id)inferredDeviceOwnerForPhotoLibrary:(id)library ignoreContactLinking:(BOOL)linking
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 isSystemPhotoLibrary])
+  linkingCopy = linking;
+  libraryCopy = library;
+  if ([libraryCopy isSystemPhotoLibrary])
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    v8 = [(CLSSocialServiceContacts *)v7->_contactsService inferredDeviceOwnerForPhotoLibrary:v6 ignoreContactLinking:v4];
-    objc_sync_exit(v7);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v8 = [(CLSSocialServiceContacts *)selfCopy->_contactsService inferredDeviceOwnerForPhotoLibrary:libraryCopy ignoreContactLinking:linkingCopy];
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -464,52 +464,52 @@ LABEL_10:
   return v5;
 }
 
-- (id)mePersonFetchContactIfNeeeded:(BOOL)a3
+- (id)mePersonFetchContactIfNeeeded:(BOOL)neeeded
 {
-  v3 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  mePerson = v4->_mePerson;
+  neeededCopy = neeeded;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  mePerson = selfCopy->_mePerson;
   if (!mePerson)
   {
-    if (v3)
+    if (neeededCopy)
     {
-      [(CLSSocialServiceContacts *)v4->_contactsService refreshMeContactIfNeeded];
+      [(CLSSocialServiceContacts *)selfCopy->_contactsService refreshMeContactIfNeeded];
     }
 
-    v6 = [(CLSSocialServiceContacts *)v4->_contactsService mePerson];
-    v7 = v4->_mePerson;
-    v4->_mePerson = v6;
+    mePerson = [(CLSSocialServiceContacts *)selfCopy->_contactsService mePerson];
+    v7 = selfCopy->_mePerson;
+    selfCopy->_mePerson = mePerson;
 
-    mePerson = v4->_mePerson;
+    mePerson = selfCopy->_mePerson;
   }
 
   v8 = mePerson;
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (void)invalidateCacheForPersonInContactStoreWithContactIdentifiers:(id)a3
+- (void)invalidateCacheForPersonInContactStoreWithContactIdentifiers:(id)identifiers
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(CLSSocialServiceContacts *)v4->_contactsService invalidateCacheForPersonInContactStoreWithContactIdentifiers:v5];
-  objc_sync_exit(v4);
+  identifiersCopy = identifiers;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(CLSSocialServiceContacts *)selfCopy->_contactsService invalidateCacheForPersonInContactStoreWithContactIdentifiers:identifiersCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)invalidatePersonsCacheForPersonsWithContactIdentifiers:(id)a3
+- (void)invalidatePersonsCacheForPersonsWithContactIdentifiers:(id)identifiers
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = self->_personsCache;
   objc_sync_enter(v5);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
@@ -535,23 +535,23 @@ LABEL_10:
   }
 
   objc_sync_exit(v5);
-  v10 = self;
-  objc_sync_enter(v10);
-  [(CLSSocialServiceContacts *)v10->_contactsService invalidateCacheForPersonWithContactIdentifiers:v6];
-  objc_sync_exit(v10);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(CLSSocialServiceContacts *)selfCopy->_contactsService invalidateCacheForPersonWithContactIdentifiers:v6];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)invalidatePersonsCacheForPersonsWithNames:(id)a3
+- (void)invalidatePersonsCacheForPersonsWithNames:(id)names
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  namesCopy = names;
   v5 = self->_personsCache;
   objc_sync_enter(v5);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = v4;
+  v6 = namesCopy;
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
@@ -577,10 +577,10 @@ LABEL_10:
   }
 
   objc_sync_exit(v5);
-  v10 = self;
-  objc_sync_enter(v10);
-  [(CLSSocialServiceContacts *)v10->_contactsService invalidateCacheForPersonWithLocalIdentifiers:v6];
-  objc_sync_exit(v10);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(CLSSocialServiceContacts *)selfCopy->_contactsService invalidateCacheForPersonWithLocalIdentifiers:v6];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)invalidateMomentaryMemoryCaches
@@ -614,9 +614,9 @@ LABEL_10:
   objc_sync_exit(obj);
 }
 
-- (CLSServiceManager)initWithLocationCache:(id)a3
+- (CLSServiceManager)initWithLocationCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   v21.receiver = self;
   v21.super_class = CLSServiceManager;
   v5 = [(CLSServiceManager *)&v21 init];
@@ -624,7 +624,7 @@ LABEL_10:
   {
     if (+[CLSSocialServiceContacts canAccessContactsStore])
     {
-      v6 = [[CLSSocialServiceContacts alloc] initWithLocationCache:v4];
+      v6 = [[CLSSocialServiceContacts alloc] initWithLocationCache:cacheCopy];
       contactsService = v5->_contactsService;
       v5->_contactsService = v6;
 
@@ -636,11 +636,11 @@ LABEL_10:
     v5->_calendarService = v8;
 
     v10 = objc_alloc(MEMORY[0x277CCA970]);
-    v11 = [MEMORY[0x277CBEAA8] date];
-    v12 = [v11 dateByAddingTimeInterval:-31536000.0];
+    date = [MEMORY[0x277CBEAA8] date];
+    v12 = [date dateByAddingTimeInterval:-31536000.0];
     v13 = [v10 initWithStartDate:v12 duration:31536000.0];
 
-    v14 = [[CLSRoutineService alloc] initWithFetchDateInterval:v13 locationCache:v4];
+    v14 = [[CLSRoutineService alloc] initWithFetchDateInterval:v13 locationCache:cacheCopy];
     routineService = v5->_routineService;
     v5->_routineService = v14;
 
@@ -656,11 +656,11 @@ LABEL_10:
   return v5;
 }
 
-+ (id)locationCacheForSwiftOnlyWithParentURL:(id)a3
++ (id)locationCacheForSwiftOnlyWithParentURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = [CLSLocationCache alloc];
-  v5 = [(CLSDBCache *)CLSLocationCache urlWithParentURL:v3];
+  v5 = [(CLSDBCache *)CLSLocationCache urlWithParentURL:lCopy];
 
   v6 = [(CLSDBCache *)v4 initWithURL:v5];
 
@@ -754,11 +754,11 @@ LABEL_10:
 - (unint64_t)numberOfLocationsOfInterest
 {
   v5 = 0u;
-  v2 = [(CLSServiceManager *)self routineService];
-  v3 = v2;
-  if (v2)
+  routineService = [(CLSServiceManager *)self routineService];
+  v3 = routineService;
+  if (routineService)
   {
-    [v2 statistics];
+    [routineService statistics];
   }
 
   else
@@ -771,11 +771,11 @@ LABEL_10:
 
 - (BOOL)routineIsAvailable
 {
-  v2 = [(CLSServiceManager *)self routineService];
-  v3 = v2;
-  if (v2)
+  routineService = [(CLSServiceManager *)self routineService];
+  v3 = routineService;
+  if (routineService)
   {
-    [v2 statistics];
+    [routineService statistics];
   }
 
   return 0;

@@ -1,13 +1,13 @@
 @interface MMSMessagingSpecifier
 - (_TtC19AppSystemSettingsUI21MMSMessagingSpecifier)init;
-- (_TtC19AppSystemSettingsUI21MMSMessagingSpecifier)initWithName:(id)a3 target:(id)a4 set:(SEL)a5 get:(SEL)a6 detail:(Class)a7 cell:(int64_t)a8 edit:(Class)a9;
-- (id)isMMSEnabledFor:(id)a3;
-- (void)setMMSEnabled:(id)a3 specifier:(id)a4;
+- (_TtC19AppSystemSettingsUI21MMSMessagingSpecifier)initWithName:(id)name target:(id)target set:(SEL)set get:(SEL)get detail:(Class)detail cell:(int64_t)cell edit:(Class)edit;
+- (id)isMMSEnabledFor:(id)for;
+- (void)setMMSEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation MMSMessagingSpecifier
 
-- (id)isMMSEnabledFor:(id)a3
+- (id)isMMSEnabledFor:(id)for
 {
   sub_21BB230CC();
   sub_21BB230BC();
@@ -17,14 +17,14 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  v7 = sub_21BB11E70(v5);
+  forCopy = for;
+  selfCopy = self;
+  v7 = sub_21BB11E70(forCopy);
 
   return v7;
 }
 
-- (void)setMMSEnabled:(id)a3 specifier:(id)a4
+- (void)setMMSEnabled:(id)enabled specifier:(id)specifier
 {
   sub_21BB230CC();
   sub_21BB230BC();
@@ -34,15 +34,15 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_21BB1221C(v7, v8);
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  selfCopy = self;
+  sub_21BB1221C(enabledCopy, specifierCopy);
 }
 
-- (_TtC19AppSystemSettingsUI21MMSMessagingSpecifier)initWithName:(id)a3 target:(id)a4 set:(SEL)a5 get:(SEL)a6 detail:(Class)a7 cell:(int64_t)a8 edit:(Class)a9
+- (_TtC19AppSystemSettingsUI21MMSMessagingSpecifier)initWithName:(id)name target:(id)target set:(SEL)set get:(SEL)get detail:(Class)detail cell:(int64_t)cell edit:(Class)edit
 {
-  if (a4)
+  if (target)
   {
     swift_unknownObjectRetain();
     sub_21BB2319C();

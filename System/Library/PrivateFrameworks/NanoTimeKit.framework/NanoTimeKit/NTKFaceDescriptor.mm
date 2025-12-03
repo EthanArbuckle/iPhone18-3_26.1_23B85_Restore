@@ -1,37 +1,37 @@
 @interface NTKFaceDescriptor
-- (BOOL)isAvailableForDevice:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isAvailableForDevice:(id)device;
+- (BOOL)isEqual:(id)equal;
 - (Class)faceClass;
-- (NTKFaceDescriptor)initWithBundleIdentifier:(id)a3;
-- (NTKFaceDescriptor)initWithCoder:(id)a3;
-- (NTKFaceDescriptor)initWithFaceStyle:(int64_t)a3;
-- (id)_initWithFaceStyle:(int64_t)a3 bundleIdentifier:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NTKFaceDescriptor)initWithBundleIdentifier:(id)identifier;
+- (NTKFaceDescriptor)initWithCoder:(id)coder;
+- (NTKFaceDescriptor)initWithFaceStyle:(int64_t)style;
+- (id)_initWithFaceStyle:(int64_t)style bundleIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTKFaceDescriptor
 
-- (id)_initWithFaceStyle:(int64_t)a3 bundleIdentifier:(id)a4
+- (id)_initWithFaceStyle:(int64_t)style bundleIdentifier:(id)identifier
 {
-  if (a3 == 44)
+  if (style == 44)
   {
-    v4 = [(NTKFaceDescriptor *)self initWithBundleIdentifier:a4];
+    identifier = [(NTKFaceDescriptor *)self initWithBundleIdentifier:identifier];
   }
 
   else
   {
-    v4 = [(NTKFaceDescriptor *)self initWithFaceStyle:a3, a4];
+    identifier = [(NTKFaceDescriptor *)self initWithFaceStyle:style, identifier];
   }
 
-  v5 = v4;
+  v5 = identifier;
 
   return v5;
 }
 
-- (NTKFaceDescriptor)initWithFaceStyle:(int64_t)a3
+- (NTKFaceDescriptor)initWithFaceStyle:(int64_t)style
 {
   v8.receiver = self;
   v8.super_class = NTKFaceDescriptor;
@@ -40,16 +40,16 @@
   if (v4)
   {
     bundleIdentifier = v4->_bundleIdentifier;
-    v4->_faceStyle = a3;
+    v4->_faceStyle = style;
     v4->_bundleIdentifier = 0;
   }
 
   return v5;
 }
 
-- (NTKFaceDescriptor)initWithBundleIdentifier:(id)a3
+- (NTKFaceDescriptor)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = NTKFaceDescriptor;
   v5 = [(NTKFaceDescriptor *)&v10 init];
@@ -57,7 +57,7 @@
   if (v5)
   {
     v5->_faceStyle = 44;
-    v7 = [v4 copy];
+    v7 = [identifierCopy copy];
     bundleIdentifier = v6->_bundleIdentifier;
     v6->_bundleIdentifier = v7;
   }
@@ -65,50 +65,50 @@
   return v6;
 }
 
-- (NTKFaceDescriptor)initWithCoder:(id)a3
+- (NTKFaceDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"faceStyle"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"faceStyle"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
 
   v7 = [(NTKFaceDescriptor *)self _initWithFaceStyle:v5 bundleIdentifier:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[NTKFaceDescriptor faceStyle](self forKey:{"faceStyle"), @"faceStyle"}];
-  v5 = [(NTKFaceDescriptor *)self bundleIdentifier];
-  [v4 encodeObject:v5 forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[NTKFaceDescriptor faceStyle](self forKey:{"faceStyle"), @"faceStyle"}];
+  bundleIdentifier = [(NTKFaceDescriptor *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(NTKFaceDescriptor *)self faceStyle];
-  v6 = [(NTKFaceDescriptor *)self bundleIdentifier];
-  v7 = [v4 _initWithFaceStyle:v5 bundleIdentifier:v6];
+  faceStyle = [(NTKFaceDescriptor *)self faceStyle];
+  bundleIdentifier = [(NTKFaceDescriptor *)self bundleIdentifier];
+  v7 = [v4 _initWithFaceStyle:faceStyle bundleIdentifier:bundleIdentifier];
 
   return v7;
 }
 
-- (BOOL)isAvailableForDevice:(id)a3
+- (BOOL)isAvailableForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(NTKFaceDescriptor *)self faceStyle];
-  if (v5 == 44)
+  deviceCopy = device;
+  faceStyle = [(NTKFaceDescriptor *)self faceStyle];
+  if (faceStyle == 44)
   {
-    v6 = [(NTKFaceDescriptor *)self bundleIdentifier];
+    bundleIdentifier = [(NTKFaceDescriptor *)self bundleIdentifier];
     v7 = +[NTKFaceBundleManager sharedManager];
-    v8 = [v7 faceBundleForBundleIdentifier:v6 onDevice:v4];
+    v8 = [v7 faceBundleForBundleIdentifier:bundleIdentifier onDevice:deviceCopy];
 
     IsAvailable = v8 != 0;
   }
 
   else
   {
-    IsAvailable = NTKFaceStyleIsAvailable(v5, v4);
+    IsAvailable = NTKFaceStyleIsAvailable(faceStyle, deviceCopy);
   }
 
   return IsAvailable;
@@ -116,22 +116,22 @@
 
 - (unint64_t)hash
 {
-  v3 = [(NTKFaceDescriptor *)self faceStyle];
-  v4 = [(NTKFaceDescriptor *)self bundleIdentifier];
-  v5 = [v4 hash];
+  faceStyle = [(NTKFaceDescriptor *)self faceStyle];
+  bundleIdentifier = [(NTKFaceDescriptor *)self bundleIdentifier];
+  v5 = [bundleIdentifier hash];
 
-  return v5 ^ v3;
+  return v5 ^ faceStyle;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[NTKFaceDescriptor faceStyle](self, "faceStyle"), v5 == [v4 faceStyle]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[NTKFaceDescriptor faceStyle](self, "faceStyle"), v5 == [equalCopy faceStyle]))
   {
-    v6 = [(NTKFaceDescriptor *)self bundleIdentifier];
-    v7 = [v4 bundleIdentifier];
-    v8 = NTKEqualObjects(v6, v7);
+    bundleIdentifier = [(NTKFaceDescriptor *)self bundleIdentifier];
+    bundleIdentifier2 = [equalCopy bundleIdentifier];
+    v8 = NTKEqualObjects(bundleIdentifier, bundleIdentifier2);
   }
 
   else
@@ -144,11 +144,11 @@
 
 - (id)description
 {
-  v3 = [(NTKFaceDescriptor *)self faceStyle];
+  faceStyle = [(NTKFaceDescriptor *)self faceStyle];
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  if (v3 == 44)
+  if (faceStyle == 44)
   {
     [(NTKFaceDescriptor *)self bundleIdentifier];
   }
@@ -165,17 +165,17 @@
 
 - (Class)faceClass
 {
-  v3 = [MEMORY[0x277CBBAE8] currentDevice];
-  v4 = [(NTKFaceDescriptor *)self faceStyle];
-  if (v4 == 44)
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  faceStyle = [(NTKFaceDescriptor *)self faceStyle];
+  if (faceStyle == 44)
   {
-    v5 = [(NTKFaceDescriptor *)self bundleIdentifier];
-    if (v5)
+    bundleIdentifier = [(NTKFaceDescriptor *)self bundleIdentifier];
+    if (bundleIdentifier)
     {
       v6 = +[NTKFaceBundleManager sharedManager];
-      v7 = [v6 faceBundleForBundleIdentifier:v5 onDevice:v3];
+      v7 = [v6 faceBundleForBundleIdentifier:bundleIdentifier onDevice:currentDevice];
 
-      v8 = [v7 faceClass];
+      faceClass = [v7 faceClass];
     }
 
     else
@@ -186,16 +186,16 @@
         [NTKFaceDescriptor faceClass];
       }
 
-      v8 = 0;
+      faceClass = 0;
     }
   }
 
   else
   {
-    v8 = [NTKFace _faceClassForStyle:v4 onDevice:v3];
+    faceClass = [NTKFace _faceClassForStyle:faceStyle onDevice:currentDevice];
   }
 
-  return v8;
+  return faceClass;
 }
 
 @end

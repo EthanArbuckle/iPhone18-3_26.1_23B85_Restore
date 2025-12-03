@@ -1,20 +1,20 @@
 @interface SXDataTableBorderSides
-- (id)borderForValue:(id)a3;
-- (void)setUnitConverter:(id)a3;
+- (id)borderForValue:(id)value;
+- (void)setUnitConverter:(id)converter;
 @end
 
 @implementation SXDataTableBorderSides
 
-- (id)borderForValue:(id)a3
+- (id)borderForValue:(id)value
 {
-  v4 = a3;
-  v5 = [(SXJSONObject *)self jsonDictionary];
-  v6 = [v5 objectForKey:@"all"];
+  valueCopy = value;
+  jsonDictionary = [(SXJSONObject *)self jsonDictionary];
+  v6 = [jsonDictionary objectForKey:@"all"];
 
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = [SXDataTableBorder alloc];
-    v8 = [(SXJSONObject *)self specificationVersion];
+    specificationVersion = [(SXJSONObject *)self specificationVersion];
     v9 = v7;
     v10 = v6;
   }
@@ -22,36 +22,36 @@
   else
   {
     v11 = [SXDataTableBorder alloc];
-    v8 = [(SXJSONObject *)self specificationVersion];
+    specificationVersion = [(SXJSONObject *)self specificationVersion];
     v9 = v11;
-    v10 = v4;
+    v10 = valueCopy;
   }
 
-  v12 = [(SXJSONObject *)v9 initWithJSONObject:v10 andVersion:v8];
+  v12 = [(SXJSONObject *)v9 initWithJSONObject:v10 andVersion:specificationVersion];
 
-  v13 = [(SXDataTableBorderSides *)self unitConverter];
-  [(SXDataTableBorder *)v12 setUnitConverter:v13];
+  unitConverter = [(SXDataTableBorderSides *)self unitConverter];
+  [(SXDataTableBorder *)v12 setUnitConverter:unitConverter];
 
   return v12;
 }
 
-- (void)setUnitConverter:(id)a3
+- (void)setUnitConverter:(id)converter
 {
-  v4 = a3;
+  converterCopy = converter;
   v5 = [(SXDataTableBorderSides *)self top];
-  [v5 setUnitConverter:v4];
+  [v5 setUnitConverter:converterCopy];
 
-  v6 = [(SXDataTableBorderSides *)self right];
-  [v6 setUnitConverter:v4];
+  right = [(SXDataTableBorderSides *)self right];
+  [right setUnitConverter:converterCopy];
 
-  v7 = [(SXDataTableBorderSides *)self bottom];
-  [v7 setUnitConverter:v4];
+  bottom = [(SXDataTableBorderSides *)self bottom];
+  [bottom setUnitConverter:converterCopy];
 
-  v8 = [(SXDataTableBorderSides *)self left];
-  [v8 setUnitConverter:v4];
+  left = [(SXDataTableBorderSides *)self left];
+  [left setUnitConverter:converterCopy];
 
   unitConverter = self->_unitConverter;
-  self->_unitConverter = v4;
+  self->_unitConverter = converterCopy;
 }
 
 @end

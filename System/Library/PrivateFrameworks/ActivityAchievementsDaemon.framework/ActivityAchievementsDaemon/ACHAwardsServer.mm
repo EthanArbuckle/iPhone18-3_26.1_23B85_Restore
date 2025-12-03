@@ -1,66 +1,66 @@
 @interface ACHAwardsServer
-- (ACHAwardsServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
-- (id)_transactionContextForReadingProtectedDataWithIdentifier:(id)a3;
-- (id)_transactionContextForWritingProtectedDataWithIdentifier:(id)a3;
-- (void)protectedDataAvailableWithCompletion:(id)a3;
-- (void)remote_addEarnedInstances:(id)a3 completion:(id)a4;
-- (void)remote_addEarnedInstances:(id)a3 removingEarnedInstances:(id)a4 completion:(id)a5;
-- (void)remote_addOrUpdateTemplates:(id)a3 completion:(id)a4;
-- (void)remote_addTemplates:(id)a3 completion:(id)a4;
-- (void)remote_addTemplates:(id)a3 removingTemplates:(id)a4 completion:(id)a5;
-- (void)remote_countOfEarnedInstancesForTemplateUniqueName:(id)a3 completion:(id)a4;
-- (void)remote_countOfEarnedInstancesForUniqueNames:(id)a3 completion:(id)a4;
-- (void)remote_fetchAllEarnedInstancesWithCompletion:(id)a3;
-- (void)remote_fetchAllTemplatesWithCompletion:(id)a3;
-- (void)remote_fetchEarnedInstancesForAnniversaryDateComponentsString:(id)a3 templateUniqueNames:(id)a4 completion:(id)a5;
-- (void)remote_fetchEarnedInstancesForDateComponentStringsArray:(id)a3 completion:(id)a4;
-- (void)remote_fetchEarnedInstancesForEarnedDateComponentsString:(id)a3 completion:(id)a4;
-- (void)remote_fetchEarnedInstancesForTemplateUniqueName:(id)a3 completion:(id)a4;
-- (void)remote_fetchMostRecentEarnedInstanceForTemplateUniqueName:(id)a3 completion:(id)a4;
-- (void)remote_fetchMostRecentEarnedInstancesForTemplateUniqueNames:(id)a3 completion:(id)a4;
-- (void)remote_removeAllEarnedInstancesWithCompletion:(id)a3;
-- (void)remote_removeAllTemplatesWithCompletion:(id)a3;
-- (void)remote_removeEarnedInstances:(id)a3 completion:(id)a4;
-- (void)remote_removeEarnedInstancesForTemplateUniqueName:(id)a3 completion:(id)a4;
-- (void)remote_removeTemplates:(id)a3 completion:(id)a4;
+- (ACHAwardsServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
+- (id)_transactionContextForReadingProtectedDataWithIdentifier:(id)identifier;
+- (id)_transactionContextForWritingProtectedDataWithIdentifier:(id)identifier;
+- (void)protectedDataAvailableWithCompletion:(id)completion;
+- (void)remote_addEarnedInstances:(id)instances completion:(id)completion;
+- (void)remote_addEarnedInstances:(id)instances removingEarnedInstances:(id)earnedInstances completion:(id)completion;
+- (void)remote_addOrUpdateTemplates:(id)templates completion:(id)completion;
+- (void)remote_addTemplates:(id)templates completion:(id)completion;
+- (void)remote_addTemplates:(id)templates removingTemplates:(id)removingTemplates completion:(id)completion;
+- (void)remote_countOfEarnedInstancesForTemplateUniqueName:(id)name completion:(id)completion;
+- (void)remote_countOfEarnedInstancesForUniqueNames:(id)names completion:(id)completion;
+- (void)remote_fetchAllEarnedInstancesWithCompletion:(id)completion;
+- (void)remote_fetchAllTemplatesWithCompletion:(id)completion;
+- (void)remote_fetchEarnedInstancesForAnniversaryDateComponentsString:(id)string templateUniqueNames:(id)names completion:(id)completion;
+- (void)remote_fetchEarnedInstancesForDateComponentStringsArray:(id)array completion:(id)completion;
+- (void)remote_fetchEarnedInstancesForEarnedDateComponentsString:(id)string completion:(id)completion;
+- (void)remote_fetchEarnedInstancesForTemplateUniqueName:(id)name completion:(id)completion;
+- (void)remote_fetchMostRecentEarnedInstanceForTemplateUniqueName:(id)name completion:(id)completion;
+- (void)remote_fetchMostRecentEarnedInstancesForTemplateUniqueNames:(id)names completion:(id)completion;
+- (void)remote_removeAllEarnedInstancesWithCompletion:(id)completion;
+- (void)remote_removeAllTemplatesWithCompletion:(id)completion;
+- (void)remote_removeEarnedInstances:(id)instances completion:(id)completion;
+- (void)remote_removeEarnedInstancesForTemplateUniqueName:(id)name completion:(id)completion;
+- (void)remote_removeTemplates:(id)templates completion:(id)completion;
 @end
 
 @implementation ACHAwardsServer
 
-- (ACHAwardsServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (ACHAwardsServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
   v12.receiver = self;
   v12.super_class = ACHAwardsServer;
-  v6 = [(HDStandardTaskServer *)&v12 initWithUUID:a3 configuration:a4 client:a5 delegate:a6];
+  v6 = [(HDStandardTaskServer *)&v12 initWithUUID:d configuration:configuration client:client delegate:delegate];
   if (v6)
   {
     v7 = HKCreateSerialDispatchQueue();
     queue = v6->_queue;
     v6->_queue = v7;
 
-    v9 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+    hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
     gregorianCalendar = v6->_gregorianCalendar;
-    v6->_gregorianCalendar = v9;
+    v6->_gregorianCalendar = hk_gregorianCalendar;
   }
 
   return v6;
 }
 
-- (void)protectedDataAvailableWithCompletion:(id)a3
+- (void)protectedDataAvailableWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ACHAwardsServer *)self queue];
-  dispatch_assert_queue_not_V2(v5);
+  completionCopy = completion;
+  queue = [(ACHAwardsServer *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
-  v6 = [(ACHAwardsServer *)self queue];
+  queue2 = [(ACHAwardsServer *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__ACHAwardsServer_protectedDataAvailableWithCompletion___block_invoke;
   v8[3] = &unk_278491258;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = completionCopy;
+  v7 = completionCopy;
+  dispatch_sync(queue2, v8);
 }
 
 void __56__ACHAwardsServer_protectedDataAvailableWithCompletion___block_invoke(uint64_t a1)
@@ -71,14 +71,14 @@ void __56__ACHAwardsServer_protectedDataAvailableWithCompletion___block_invoke(u
   (*(v1 + 16))(v1, [v2 isProtectedDataAvailable]);
 }
 
-- (id)_transactionContextForWritingProtectedDataWithIdentifier:(id)a3
+- (id)_transactionContextForWritingProtectedDataWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HDStandardTaskServer *)self client];
-  v6 = [v5 profile];
-  v7 = [v6 database];
+  identifierCopy = identifier;
+  client = [(HDStandardTaskServer *)self client];
+  profile = [client profile];
+  database = [profile database];
   v13 = 0;
-  v8 = [ACHDatabaseAssertion assertionWithDatabase:v7 identifier:v4 error:&v13];
+  v8 = [ACHDatabaseAssertion assertionWithDatabase:database identifier:identifierCopy error:&v13];
 
   v9 = v13;
   if (v9)
@@ -97,14 +97,14 @@ void __56__ACHAwardsServer_protectedDataAvailableWithCompletion___block_invoke(u
   return v11;
 }
 
-- (id)_transactionContextForReadingProtectedDataWithIdentifier:(id)a3
+- (id)_transactionContextForReadingProtectedDataWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HDStandardTaskServer *)self client];
-  v6 = [v5 profile];
-  v7 = [v6 database];
+  identifierCopy = identifier;
+  client = [(HDStandardTaskServer *)self client];
+  profile = [client profile];
+  database = [profile database];
   v13 = 0;
-  v8 = [ACHDatabaseAssertion assertionWithDatabase:v7 identifier:v4 error:&v13];
+  v8 = [ACHDatabaseAssertion assertionWithDatabase:database identifier:identifierCopy error:&v13];
   v9 = v13;
 
   if (v9)
@@ -112,7 +112,7 @@ void __56__ACHAwardsServer_protectedDataAvailableWithCompletion___block_invoke(u
     v10 = ACHLogXPC();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(ACHAwardsServer *)v4 _transactionContextForReadingProtectedDataWithIdentifier:v9, v10];
+      [(ACHAwardsServer *)identifierCopy _transactionContextForReadingProtectedDataWithIdentifier:v9, v10];
     }
   }
 
@@ -123,24 +123,24 @@ void __56__ACHAwardsServer_protectedDataAvailableWithCompletion___block_invoke(u
   return v11;
 }
 
-- (void)remote_addTemplates:(id)a3 completion:(id)a4
+- (void)remote_addTemplates:(id)templates completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACHAwardsServer *)self queue];
-  dispatch_assert_queue_not_V2(v8);
+  templatesCopy = templates;
+  completionCopy = completion;
+  queue = [(ACHAwardsServer *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
-  v9 = [(ACHAwardsServer *)self queue];
+  queue2 = [(ACHAwardsServer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__ACHAwardsServer_remote_addTemplates_completion___block_invoke;
   block[3] = &unk_278491428;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_sync(v9, block);
+  v13 = templatesCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = templatesCopy;
+  dispatch_sync(queue2, block);
 }
 
 void __50__ACHAwardsServer_remote_addTemplates_completion___block_invoke(uint64_t a1)
@@ -156,12 +156,12 @@ void __50__ACHAwardsServer_remote_addTemplates_completion___block_invoke(uint64_
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)remote_addOrUpdateTemplates:(id)a3 completion:(id)a4
+- (void)remote_addOrUpdateTemplates:(id)templates completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACHAwardsServer *)self queue];
-  dispatch_assert_queue_not_V2(v8);
+  templatesCopy = templates;
+  completionCopy = completion;
+  queue = [(ACHAwardsServer *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v21 = 0;
   v22 = &v21;
@@ -173,7 +173,7 @@ void __50__ACHAwardsServer_remote_addTemplates_completion___block_invoke(uint64_
   v18 = __Block_byref_object_copy__6;
   v19 = __Block_byref_object_dispose__6;
   v20 = 0;
-  v9 = [(ACHAwardsServer *)self queue];
+  queue2 = [(ACHAwardsServer *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __58__ACHAwardsServer_remote_addOrUpdateTemplates_completion___block_invoke;
@@ -181,11 +181,11 @@ void __50__ACHAwardsServer_remote_addTemplates_completion___block_invoke(uint64_
   v11[4] = self;
   v13 = &v21;
   v14 = &v15;
-  v10 = v6;
+  v10 = templatesCopy;
   v12 = v10;
-  dispatch_sync(v9, v11);
+  dispatch_sync(queue2, v11);
 
-  v7[2](v7, *(v22 + 24), v16[5]);
+  completionCopy[2](completionCopy, *(v22 + 24), v16[5]);
   _Block_object_dispose(&v15, 8);
 
   _Block_object_dispose(&v21, 8);
@@ -331,13 +331,13 @@ uint64_t __58__ACHAwardsServer_remote_addOrUpdateTemplates_completion___block_in
   return 0;
 }
 
-- (void)remote_addTemplates:(id)a3 removingTemplates:(id)a4 completion:(id)a5
+- (void)remote_addTemplates:(id)templates removingTemplates:(id)removingTemplates completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ACHAwardsServer *)self queue];
-  dispatch_assert_queue_not_V2(v11);
+  templatesCopy = templates;
+  removingTemplatesCopy = removingTemplates;
+  completionCopy = completion;
+  queue = [(ACHAwardsServer *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v26 = 0;
   v27 = &v26;
@@ -349,7 +349,7 @@ uint64_t __58__ACHAwardsServer_remote_addOrUpdateTemplates_completion___block_in
   v23 = __Block_byref_object_copy__6;
   v24 = __Block_byref_object_dispose__6;
   v25 = 0;
-  v12 = [(ACHAwardsServer *)self queue];
+  queue2 = [(ACHAwardsServer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__ACHAwardsServer_remote_addTemplates_removingTemplates_completion___block_invoke;
@@ -357,13 +357,13 @@ uint64_t __58__ACHAwardsServer_remote_addOrUpdateTemplates_completion___block_in
   block[4] = self;
   v18 = &v26;
   v19 = &v20;
-  v13 = v9;
+  v13 = removingTemplatesCopy;
   v16 = v13;
-  v14 = v8;
+  v14 = templatesCopy;
   v17 = v14;
-  dispatch_sync(v12, block);
+  dispatch_sync(queue2, block);
 
-  v10[2](v10, *(v27 + 24), v21[5]);
+  completionCopy[2](completionCopy, *(v27 + 24), v21[5]);
   _Block_object_dispose(&v20, 8);
 
   _Block_object_dispose(&v26, 8);
@@ -452,11 +452,11 @@ ACHTemplateJournalEntry *__68__ACHAwardsServer_remote_addTemplates_removingTempl
   return v3;
 }
 
-- (void)remote_fetchAllTemplatesWithCompletion:(id)a3
+- (void)remote_fetchAllTemplatesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ACHAwardsServer *)self queue];
-  dispatch_assert_queue_not_V2(v5);
+  completionCopy = completion;
+  queue = [(ACHAwardsServer *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v14 = 0;
   v15 = &v14;
@@ -470,7 +470,7 @@ ACHTemplateJournalEntry *__68__ACHAwardsServer_remote_addTemplates_removingTempl
   v11 = __Block_byref_object_copy__6;
   v12 = __Block_byref_object_dispose__6;
   v13 = 0;
-  v6 = [(ACHAwardsServer *)self queue];
+  queue2 = [(ACHAwardsServer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__ACHAwardsServer_remote_fetchAllTemplatesWithCompletion___block_invoke;
@@ -478,9 +478,9 @@ ACHTemplateJournalEntry *__68__ACHAwardsServer_remote_addTemplates_removingTempl
   block[4] = self;
   block[5] = &v14;
   block[6] = &v8;
-  dispatch_sync(v6, block);
+  dispatch_sync(queue2, block);
 
-  v4[2](v4, v15[5], v9[5]);
+  completionCopy[2](completionCopy, v15[5], v9[5]);
   _Block_object_dispose(&v8, 8);
 
   _Block_object_dispose(&v14, 8);
@@ -498,11 +498,11 @@ void __58__ACHAwardsServer_remote_fetchAllTemplatesWithCompletion___block_invoke
   *(v5 + 40) = v4;
 }
 
-- (void)remote_removeAllTemplatesWithCompletion:(id)a3
+- (void)remote_removeAllTemplatesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ACHAwardsServer *)self queue];
-  dispatch_assert_queue_not_V2(v5);
+  completionCopy = completion;
+  queue = [(ACHAwardsServer *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v14 = 0;
   v15 = &v14;
@@ -514,7 +514,7 @@ void __58__ACHAwardsServer_remote_fetchAllTemplatesWithCompletion___block_invoke
   v11 = __Block_byref_object_copy__6;
   v12 = __Block_byref_object_dispose__6;
   v13 = 0;
-  v6 = [(ACHAwardsServer *)self queue];
+  queue2 = [(ACHAwardsServer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__ACHAwardsServer_remote_removeAllTemplatesWithCompletion___block_invoke;
@@ -522,9 +522,9 @@ void __58__ACHAwardsServer_remote_fetchAllTemplatesWithCompletion___block_invoke
   block[4] = self;
   block[5] = &v8;
   block[6] = &v14;
-  dispatch_sync(v6, block);
+  dispatch_sync(queue2, block);
 
-  v4[2](v4, *(v15 + 24), v9[5]);
+  completionCopy[2](completionCopy, *(v15 + 24), v9[5]);
   _Block_object_dispose(&v8, 8);
 
   _Block_object_dispose(&v14, 8);
@@ -554,12 +554,12 @@ void __59__ACHAwardsServer_remote_removeAllTemplatesWithCompletion___block_invok
   }
 }
 
-- (void)remote_removeTemplates:(id)a3 completion:(id)a4
+- (void)remote_removeTemplates:(id)templates completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACHAwardsServer *)self queue];
-  dispatch_assert_queue_not_V2(v8);
+  templatesCopy = templates;
+  completionCopy = completion;
+  queue = [(ACHAwardsServer *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v22 = 0;
   v23 = &v22;
@@ -571,19 +571,19 @@ void __59__ACHAwardsServer_remote_removeAllTemplatesWithCompletion___block_invok
   v19 = __Block_byref_object_copy__6;
   v20 = __Block_byref_object_dispose__6;
   v21 = 0;
-  v9 = [(ACHAwardsServer *)self queue];
+  queue2 = [(ACHAwardsServer *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __53__ACHAwardsServer_remote_removeTemplates_completion___block_invoke;
   v11[3] = &unk_2784910B0;
   v14 = &v22;
-  v10 = v6;
+  v10 = templatesCopy;
   v12 = v10;
-  v13 = self;
+  selfCopy = self;
   v15 = &v16;
-  dispatch_sync(v9, v11);
+  dispatch_sync(queue2, v11);
 
-  v7[2](v7, *(v23 + 24), v17[5]);
+  completionCopy[2](completionCopy, *(v23 + 24), v17[5]);
   _Block_object_dispose(&v16, 8);
 
   _Block_object_dispose(&v22, 8);
@@ -600,12 +600,12 @@ void __53__ACHAwardsServer_remote_removeTemplates_completion___block_invoke(uint
   *(*(*(a1 + 48) + 8) + 24) = v5;
 }
 
-- (void)remote_addEarnedInstances:(id)a3 completion:(id)a4
+- (void)remote_addEarnedInstances:(id)instances completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACHAwardsServer *)self queue];
-  dispatch_assert_queue_not_V2(v8);
+  instancesCopy = instances;
+  completionCopy = completion;
+  queue = [(ACHAwardsServer *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v21 = 0;
   v22 = &v21;
@@ -617,19 +617,19 @@ void __53__ACHAwardsServer_remote_removeTemplates_completion___block_invoke(uint
   v18 = __Block_byref_object_copy__6;
   v19 = __Block_byref_object_dispose__6;
   v20 = 0;
-  v9 = [(ACHAwardsServer *)self queue];
+  queue2 = [(ACHAwardsServer *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __56__ACHAwardsServer_remote_addEarnedInstances_completion___block_invoke;
   v11[3] = &unk_278491580;
   v11[4] = self;
-  v10 = v6;
+  v10 = instancesCopy;
   v12 = v10;
   v13 = &v15;
   v14 = &v21;
-  dispatch_sync(v9, v11);
+  dispatch_sync(queue2, v11);
 
-  v7[2](v7, *(v22 + 24), v16[5]);
+  completionCopy[2](completionCopy, *(v22 + 24), v16[5]);
   _Block_object_dispose(&v15, 8);
 
   _Block_object_dispose(&v21, 8);
@@ -654,12 +654,12 @@ void __56__ACHAwardsServer_remote_addEarnedInstances_completion___block_invoke(u
   *(*(*(a1 + 56) + 8) + 24) = v7;
 }
 
-- (void)remote_removeEarnedInstances:(id)a3 completion:(id)a4
+- (void)remote_removeEarnedInstances:(id)instances completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACHAwardsServer *)self queue];
-  dispatch_assert_queue_not_V2(v8);
+  instancesCopy = instances;
+  completionCopy = completion;
+  queue = [(ACHAwardsServer *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v22 = 0;
   v23 = &v22;
@@ -671,19 +671,19 @@ void __56__ACHAwardsServer_remote_addEarnedInstances_completion___block_invoke(u
   v19 = __Block_byref_object_copy__6;
   v20 = __Block_byref_object_dispose__6;
   v21 = 0;
-  v9 = [(ACHAwardsServer *)self queue];
+  queue2 = [(ACHAwardsServer *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __59__ACHAwardsServer_remote_removeEarnedInstances_completion___block_invoke;
   v11[3] = &unk_2784910B0;
   v14 = &v22;
-  v10 = v6;
+  v10 = instancesCopy;
   v12 = v10;
-  v13 = self;
+  selfCopy = self;
   v15 = &v16;
-  dispatch_sync(v9, v11);
+  dispatch_sync(queue2, v11);
 
-  v7[2](v7, *(v23 + 24), v17[5]);
+  completionCopy[2](completionCopy, *(v23 + 24), v17[5]);
   _Block_object_dispose(&v16, 8);
 
   _Block_object_dispose(&v22, 8);
@@ -700,13 +700,13 @@ void __59__ACHAwardsServer_remote_removeEarnedInstances_completion___block_invok
   *(*(*(a1 + 48) + 8) + 24) = v5;
 }
 
-- (void)remote_addEarnedInstances:(id)a3 removingEarnedInstances:(id)a4 completion:(id)a5
+- (void)remote_addEarnedInstances:(id)instances removingEarnedInstances:(id)earnedInstances completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ACHAwardsServer *)self queue];
-  dispatch_assert_queue_not_V2(v11);
+  instancesCopy = instances;
+  earnedInstancesCopy = earnedInstances;
+  completionCopy = completion;
+  queue = [(ACHAwardsServer *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v26 = 0;
   v27 = &v26;
@@ -720,21 +720,21 @@ void __59__ACHAwardsServer_remote_removeEarnedInstances_completion___block_invok
   v23 = __Block_byref_object_copy__6;
   v24 = __Block_byref_object_dispose__6;
   v25 = 0;
-  v12 = [(ACHAwardsServer *)self queue];
+  queue2 = [(ACHAwardsServer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__ACHAwardsServer_remote_addEarnedInstances_removingEarnedInstances_completion___block_invoke;
   block[3] = &unk_2784915F0;
   block[4] = self;
   v18 = &v20;
-  v13 = v9;
+  v13 = earnedInstancesCopy;
   v16 = v13;
-  v14 = v8;
+  v14 = instancesCopy;
   v17 = v14;
   v19 = &v26;
-  dispatch_sync(v12, block);
+  dispatch_sync(queue2, block);
 
-  v10[2](v10, v27[5], v21[5]);
+  completionCopy[2](completionCopy, v27[5], v21[5]);
   _Block_object_dispose(&v20, 8);
 
   _Block_object_dispose(&v26, 8);
@@ -818,12 +818,12 @@ ACHEarnedInstanceJournalEntry *__80__ACHAwardsServer_remote_addEarnedInstances_r
   return v3;
 }
 
-- (void)remote_removeEarnedInstancesForTemplateUniqueName:(id)a3 completion:(id)a4
+- (void)remote_removeEarnedInstancesForTemplateUniqueName:(id)name completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACHAwardsServer *)self queue];
-  dispatch_assert_queue_not_V2(v8);
+  nameCopy = name;
+  completionCopy = completion;
+  queue = [(ACHAwardsServer *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v22 = 0;
   v23 = &v22;
@@ -835,19 +835,19 @@ ACHEarnedInstanceJournalEntry *__80__ACHAwardsServer_remote_addEarnedInstances_r
   v19 = __Block_byref_object_copy__6;
   v20 = __Block_byref_object_dispose__6;
   v21 = 0;
-  v9 = [(ACHAwardsServer *)self queue];
+  queue2 = [(ACHAwardsServer *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __80__ACHAwardsServer_remote_removeEarnedInstancesForTemplateUniqueName_completion___block_invoke;
   v11[3] = &unk_2784910B0;
   v14 = &v22;
-  v10 = v6;
+  v10 = nameCopy;
   v12 = v10;
-  v13 = self;
+  selfCopy = self;
   v15 = &v16;
-  dispatch_sync(v9, v11);
+  dispatch_sync(queue2, v11);
 
-  v7[2](v7, *(v23 + 24), v17[5]);
+  completionCopy[2](completionCopy, *(v23 + 24), v17[5]);
   _Block_object_dispose(&v16, 8);
 
   _Block_object_dispose(&v22, 8);
@@ -864,11 +864,11 @@ void __80__ACHAwardsServer_remote_removeEarnedInstancesForTemplateUniqueName_com
   *(*(*(a1 + 48) + 8) + 24) = v5;
 }
 
-- (void)remote_removeAllEarnedInstancesWithCompletion:(id)a3
+- (void)remote_removeAllEarnedInstancesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ACHAwardsServer *)self queue];
-  dispatch_assert_queue_not_V2(v5);
+  completionCopy = completion;
+  queue = [(ACHAwardsServer *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v14 = 0;
   v15 = &v14;
@@ -880,7 +880,7 @@ void __80__ACHAwardsServer_remote_removeEarnedInstancesForTemplateUniqueName_com
   v11 = __Block_byref_object_copy__6;
   v12 = __Block_byref_object_dispose__6;
   v13 = 0;
-  v6 = [(ACHAwardsServer *)self queue];
+  queue2 = [(ACHAwardsServer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__ACHAwardsServer_remote_removeAllEarnedInstancesWithCompletion___block_invoke;
@@ -888,9 +888,9 @@ void __80__ACHAwardsServer_remote_removeEarnedInstancesForTemplateUniqueName_com
   block[4] = self;
   block[5] = &v14;
   block[6] = &v8;
-  dispatch_sync(v6, block);
+  dispatch_sync(queue2, block);
 
-  v4[2](v4, *(v15 + 24), v9[5]);
+  completionCopy[2](completionCopy, *(v15 + 24), v9[5]);
   _Block_object_dispose(&v8, 8);
 
   _Block_object_dispose(&v14, 8);
@@ -906,11 +906,11 @@ void __65__ACHAwardsServer_remote_removeAllEarnedInstancesWithCompletion___block
   *(*(*(a1 + 40) + 8) + 24) = v4;
 }
 
-- (void)remote_fetchAllEarnedInstancesWithCompletion:(id)a3
+- (void)remote_fetchAllEarnedInstancesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ACHAwardsServer *)self queue];
-  dispatch_assert_queue_not_V2(v5);
+  completionCopy = completion;
+  queue = [(ACHAwardsServer *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v14 = 0;
   v15 = &v14;
@@ -924,7 +924,7 @@ void __65__ACHAwardsServer_remote_removeAllEarnedInstancesWithCompletion___block
   v11 = __Block_byref_object_copy__6;
   v12 = __Block_byref_object_dispose__6;
   v13 = 0;
-  v6 = [(ACHAwardsServer *)self queue];
+  queue2 = [(ACHAwardsServer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__ACHAwardsServer_remote_fetchAllEarnedInstancesWithCompletion___block_invoke;
@@ -932,9 +932,9 @@ void __65__ACHAwardsServer_remote_removeAllEarnedInstancesWithCompletion___block
   block[4] = self;
   block[5] = &v14;
   block[6] = &v8;
-  dispatch_sync(v6, block);
+  dispatch_sync(queue2, block);
 
-  v4[2](v4, v15[5], v9[5]);
+  completionCopy[2](completionCopy, v15[5], v9[5]);
   _Block_object_dispose(&v8, 8);
 
   _Block_object_dispose(&v14, 8);
@@ -952,12 +952,12 @@ void __64__ACHAwardsServer_remote_fetchAllEarnedInstancesWithCompletion___block_
   *(v5 + 40) = v4;
 }
 
-- (void)remote_fetchEarnedInstancesForTemplateUniqueName:(id)a3 completion:(id)a4
+- (void)remote_fetchEarnedInstancesForTemplateUniqueName:(id)name completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACHAwardsServer *)self queue];
-  dispatch_assert_queue_not_V2(v8);
+  nameCopy = name;
+  completionCopy = completion;
+  queue = [(ACHAwardsServer *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v22 = 0;
   v23 = &v22;
@@ -971,19 +971,19 @@ void __64__ACHAwardsServer_remote_fetchAllEarnedInstancesWithCompletion___block_
   v19 = __Block_byref_object_copy__6;
   v20 = __Block_byref_object_dispose__6;
   v21 = 0;
-  v9 = [(ACHAwardsServer *)self queue];
+  queue2 = [(ACHAwardsServer *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __79__ACHAwardsServer_remote_fetchEarnedInstancesForTemplateUniqueName_completion___block_invoke;
   v11[3] = &unk_2784910B0;
   v14 = &v22;
-  v10 = v6;
+  v10 = nameCopy;
   v12 = v10;
-  v13 = self;
+  selfCopy = self;
   v15 = &v16;
-  dispatch_sync(v9, v11);
+  dispatch_sync(queue2, v11);
 
-  v7[2](v7, v23[5], v17[5]);
+  completionCopy[2](completionCopy, v23[5], v17[5]);
   _Block_object_dispose(&v16, 8);
 
   _Block_object_dispose(&v22, 8);
@@ -1002,12 +1002,12 @@ void __79__ACHAwardsServer_remote_fetchEarnedInstancesForTemplateUniqueName_comp
   *(v6 + 40) = v5;
 }
 
-- (void)remote_fetchMostRecentEarnedInstanceForTemplateUniqueName:(id)a3 completion:(id)a4
+- (void)remote_fetchMostRecentEarnedInstanceForTemplateUniqueName:(id)name completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACHAwardsServer *)self queue];
-  dispatch_assert_queue_not_V2(v8);
+  nameCopy = name;
+  completionCopy = completion;
+  queue = [(ACHAwardsServer *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v21 = 0;
   v22 = &v21;
@@ -1021,7 +1021,7 @@ void __79__ACHAwardsServer_remote_fetchEarnedInstancesForTemplateUniqueName_comp
   v18 = __Block_byref_object_copy__6;
   v19 = __Block_byref_object_dispose__6;
   v20 = 0;
-  v9 = [(ACHAwardsServer *)self queue];
+  queue2 = [(ACHAwardsServer *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __88__ACHAwardsServer_remote_fetchMostRecentEarnedInstanceForTemplateUniqueName_completion___block_invoke;
@@ -1029,11 +1029,11 @@ void __79__ACHAwardsServer_remote_fetchEarnedInstancesForTemplateUniqueName_comp
   v11[4] = self;
   v13 = &v15;
   v14 = &v21;
-  v10 = v6;
+  v10 = nameCopy;
   v12 = v10;
-  dispatch_sync(v9, v11);
+  dispatch_sync(queue2, v11);
 
-  v7[2](v7, v22[5], v16[5]);
+  completionCopy[2](completionCopy, v22[5], v16[5]);
   _Block_object_dispose(&v15, 8);
 
   _Block_object_dispose(&v21, 8);
@@ -1072,12 +1072,12 @@ BOOL __88__ACHAwardsServer_remote_fetchMostRecentEarnedInstanceForTemplateUnique
   return *a3 == 0;
 }
 
-- (void)remote_fetchMostRecentEarnedInstancesForTemplateUniqueNames:(id)a3 completion:(id)a4
+- (void)remote_fetchMostRecentEarnedInstancesForTemplateUniqueNames:(id)names completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACHAwardsServer *)self queue];
-  dispatch_assert_queue_not_V2(v8);
+  namesCopy = names;
+  completionCopy = completion;
+  queue = [(ACHAwardsServer *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v21 = 0;
   v22 = &v21;
@@ -1091,19 +1091,19 @@ BOOL __88__ACHAwardsServer_remote_fetchMostRecentEarnedInstanceForTemplateUnique
   v18 = __Block_byref_object_copy__6;
   v19 = __Block_byref_object_dispose__6;
   v20 = 0;
-  v9 = [(ACHAwardsServer *)self queue];
+  queue2 = [(ACHAwardsServer *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __90__ACHAwardsServer_remote_fetchMostRecentEarnedInstancesForTemplateUniqueNames_completion___block_invoke;
   v11[3] = &unk_278491668;
   v11[4] = self;
   v13 = &v15;
-  v10 = v6;
+  v10 = namesCopy;
   v12 = v10;
   v14 = &v21;
-  dispatch_sync(v9, v11);
+  dispatch_sync(queue2, v11);
 
-  v7[2](v7, v22[5], v16[5]);
+  completionCopy[2](completionCopy, v22[5], v16[5]);
   _Block_object_dispose(&v15, 8);
 
   _Block_object_dispose(&v21, 8);
@@ -1170,12 +1170,12 @@ BOOL __90__ACHAwardsServer_remote_fetchMostRecentEarnedInstancesForTemplateUniqu
   return result;
 }
 
-- (void)remote_fetchEarnedInstancesForDateComponentStringsArray:(id)a3 completion:(id)a4
+- (void)remote_fetchEarnedInstancesForDateComponentStringsArray:(id)array completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACHAwardsServer *)self queue];
-  dispatch_assert_queue_not_V2(v8);
+  arrayCopy = array;
+  completionCopy = completion;
+  queue = [(ACHAwardsServer *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v21 = 0;
   v22 = &v21;
@@ -1189,7 +1189,7 @@ BOOL __90__ACHAwardsServer_remote_fetchMostRecentEarnedInstancesForTemplateUniqu
   v18 = __Block_byref_object_copy__6;
   v19 = __Block_byref_object_dispose__6;
   v20 = 0;
-  v9 = [(ACHAwardsServer *)self queue];
+  queue2 = [(ACHAwardsServer *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __86__ACHAwardsServer_remote_fetchEarnedInstancesForDateComponentStringsArray_completion___block_invoke;
@@ -1197,11 +1197,11 @@ BOOL __90__ACHAwardsServer_remote_fetchMostRecentEarnedInstancesForTemplateUniqu
   v11[4] = self;
   v13 = &v15;
   v14 = &v21;
-  v10 = v6;
+  v10 = arrayCopy;
   v12 = v10;
-  dispatch_sync(v9, v11);
+  dispatch_sync(queue2, v11);
 
-  v7[2](v7, v22[5], v16[5]);
+  completionCopy[2](completionCopy, v22[5], v16[5]);
   _Block_object_dispose(&v15, 8);
 
   _Block_object_dispose(&v21, 8);
@@ -1240,13 +1240,13 @@ BOOL __86__ACHAwardsServer_remote_fetchEarnedInstancesForDateComponentStringsArr
   return *a3 == 0;
 }
 
-- (void)remote_fetchEarnedInstancesForAnniversaryDateComponentsString:(id)a3 templateUniqueNames:(id)a4 completion:(id)a5
+- (void)remote_fetchEarnedInstancesForAnniversaryDateComponentsString:(id)string templateUniqueNames:(id)names completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ACHAwardsServer *)self queue];
-  dispatch_assert_queue_not_V2(v11);
+  stringCopy = string;
+  namesCopy = names;
+  completionCopy = completion;
+  queue = [(ACHAwardsServer *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v26 = 0;
   v27 = &v26;
@@ -1260,7 +1260,7 @@ BOOL __86__ACHAwardsServer_remote_fetchEarnedInstancesForDateComponentStringsArr
   v23 = __Block_byref_object_copy__6;
   v24 = __Block_byref_object_dispose__6;
   v25 = 0;
-  v12 = [(ACHAwardsServer *)self queue];
+  queue2 = [(ACHAwardsServer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __112__ACHAwardsServer_remote_fetchEarnedInstancesForAnniversaryDateComponentsString_templateUniqueNames_completion___block_invoke;
@@ -1268,13 +1268,13 @@ BOOL __86__ACHAwardsServer_remote_fetchEarnedInstancesForDateComponentStringsArr
   block[4] = self;
   v18 = &v20;
   v19 = &v26;
-  v13 = v8;
+  v13 = stringCopy;
   v16 = v13;
-  v14 = v9;
+  v14 = namesCopy;
   v17 = v14;
-  dispatch_sync(v12, block);
+  dispatch_sync(queue2, block);
 
-  v10[2](v10, v27[5], v21[5]);
+  completionCopy[2](completionCopy, v27[5], v21[5]);
   _Block_object_dispose(&v20, 8);
 
   _Block_object_dispose(&v26, 8);
@@ -1314,12 +1314,12 @@ BOOL __112__ACHAwardsServer_remote_fetchEarnedInstancesForAnniversaryDateCompone
   return *a3 == 0;
 }
 
-- (void)remote_fetchEarnedInstancesForEarnedDateComponentsString:(id)a3 completion:(id)a4
+- (void)remote_fetchEarnedInstancesForEarnedDateComponentsString:(id)string completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACHAwardsServer *)self queue];
-  dispatch_assert_queue_not_V2(v8);
+  stringCopy = string;
+  completionCopy = completion;
+  queue = [(ACHAwardsServer *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v24 = 0;
   v25 = &v24;
@@ -1333,19 +1333,19 @@ BOOL __112__ACHAwardsServer_remote_fetchEarnedInstancesForAnniversaryDateCompone
   v21 = __Block_byref_object_copy__6;
   v22 = __Block_byref_object_dispose__6;
   v23 = 0;
-  v9 = [(ACHAwardsServer *)self queue];
+  queue2 = [(ACHAwardsServer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __87__ACHAwardsServer_remote_fetchEarnedInstancesForEarnedDateComponentsString_completion___block_invoke;
   block[3] = &unk_2784916B8;
-  v10 = v6;
+  v10 = stringCopy;
   v13 = v10;
-  v11 = v7;
-  v14 = self;
+  v11 = completionCopy;
+  selfCopy = self;
   v15 = v11;
   v16 = &v18;
   v17 = &v24;
-  dispatch_sync(v9, block);
+  dispatch_sync(queue2, block);
 
   (*(v11 + 2))(v11, v25[5], v19[5]);
   _Block_object_dispose(&v18, 8);
@@ -1407,12 +1407,12 @@ BOOL __87__ACHAwardsServer_remote_fetchEarnedInstancesForEarnedDateComponentsStr
   return *a3 == 0;
 }
 
-- (void)remote_countOfEarnedInstancesForTemplateUniqueName:(id)a3 completion:(id)a4
+- (void)remote_countOfEarnedInstancesForTemplateUniqueName:(id)name completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACHAwardsServer *)self queue];
-  dispatch_assert_queue_not_V2(v8);
+  nameCopy = name;
+  completionCopy = completion;
+  queue = [(ACHAwardsServer *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v21 = 0;
   v22 = &v21;
@@ -1424,7 +1424,7 @@ BOOL __87__ACHAwardsServer_remote_fetchEarnedInstancesForEarnedDateComponentsStr
   v18 = __Block_byref_object_copy__6;
   v19 = __Block_byref_object_dispose__6;
   v20 = 0;
-  v9 = [(ACHAwardsServer *)self queue];
+  queue2 = [(ACHAwardsServer *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __81__ACHAwardsServer_remote_countOfEarnedInstancesForTemplateUniqueName_completion___block_invoke;
@@ -1432,11 +1432,11 @@ BOOL __87__ACHAwardsServer_remote_fetchEarnedInstancesForEarnedDateComponentsStr
   v11[4] = self;
   v13 = &v15;
   v14 = &v21;
-  v10 = v6;
+  v10 = nameCopy;
   v12 = v10;
-  dispatch_sync(v9, v11);
+  dispatch_sync(queue2, v11);
 
-  v7[2](v7, v22[3], v16[5]);
+  completionCopy[2](completionCopy, v22[3], v16[5]);
   _Block_object_dispose(&v15, 8);
 
   _Block_object_dispose(&v21, 8);
@@ -1472,12 +1472,12 @@ BOOL __81__ACHAwardsServer_remote_countOfEarnedInstancesForTemplateUniqueName_co
   return *a3 == 0;
 }
 
-- (void)remote_countOfEarnedInstancesForUniqueNames:(id)a3 completion:(id)a4
+- (void)remote_countOfEarnedInstancesForUniqueNames:(id)names completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACHAwardsServer *)self queue];
-  dispatch_assert_queue_not_V2(v8);
+  namesCopy = names;
+  completionCopy = completion;
+  queue = [(ACHAwardsServer *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v21 = 0;
   v22 = &v21;
@@ -1491,19 +1491,19 @@ BOOL __81__ACHAwardsServer_remote_countOfEarnedInstancesForTemplateUniqueName_co
   v18 = __Block_byref_object_copy__6;
   v19 = __Block_byref_object_dispose__6;
   v20 = 0;
-  v9 = [(ACHAwardsServer *)self queue];
+  queue2 = [(ACHAwardsServer *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __74__ACHAwardsServer_remote_countOfEarnedInstancesForUniqueNames_completion___block_invoke;
   v11[3] = &unk_278491668;
   v11[4] = self;
   v13 = &v15;
-  v10 = v6;
+  v10 = namesCopy;
   v12 = v10;
   v14 = &v21;
-  dispatch_sync(v9, v11);
+  dispatch_sync(queue2, v11);
 
-  v7[2](v7, v22[5], v16[5]);
+  completionCopy[2](completionCopy, v22[5], v16[5]);
   _Block_object_dispose(&v15, 8);
 
   _Block_object_dispose(&v21, 8);

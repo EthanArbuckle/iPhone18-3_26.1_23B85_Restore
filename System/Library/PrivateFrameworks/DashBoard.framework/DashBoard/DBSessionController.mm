@@ -6,30 +6,30 @@
 - (id)assetBaseURL;
 - (id)clusterThemeDisplays;
 - (id)extraAssetsURL;
-- (id)getURLForAssetWithIdentifier:(id)a3 displayID:(id)a4;
+- (id)getURLForAssetWithIdentifier:(id)identifier displayID:(id)d;
 - (id)themeData;
 - (unint64_t)assetVersion;
 - (void)_applyAXPreferences;
-- (void)_handleSessionConnectRequiringThemeAssetWithCompletion:(id)a3;
-- (void)_handleSessionConnectWithThemeAsset:(id)a3;
-- (void)_pairedVehiclesDidChange:(id)a3;
+- (void)_handleSessionConnectRequiringThemeAssetWithCompletion:(id)completion;
+- (void)_handleSessionConnectWithThemeAsset:(id)asset;
+- (void)_pairedVehiclesDidChange:(id)change;
 - (void)_restoreAXPreferences;
 - (void)_updateLayerMetadataService;
 - (void)_updateVehicleAppearancePreferenceIfNecessary;
-- (void)_updateVehicleInfo:(id)a3 completion:(id)a4;
+- (void)_updateVehicleInfo:(id)info completion:(id)completion;
 - (void)_updateVehicleInfoSync;
-- (void)_updateVehicleInfoWithCompletion:(id)a3;
-- (void)addSessionObserver:(id)a3;
-- (void)removeSessionObserver:(id)a3;
-- (void)session:(id)a3 showUIForScreenInfo:(id)a4 withURL:(id)a5;
-- (void)session:(id)a3 stopUIForScreenInfo:(id)a4;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
-- (void)setNeedsLayerMetadataService:(BOOL)a3 forDisplayIdentity:(id)a4;
-- (void)themeAssetLibrary:(id)a3 attemptingDownloadOfAssetWithVersion:(id)a4;
-- (void)themeAssetLibrary:(id)a3 completedDownloadOfAsset:(id)a4;
-- (void)themeAssetLibrary:(id)a3 didUpdateFromAsset:(id)a4 toAsset:(id)a5;
-- (void)themeAssetLibrary:(id)a3 failedDownloadOfAssetWithVersion:(id)a4 error:(id)a5;
+- (void)_updateVehicleInfoWithCompletion:(id)completion;
+- (void)addSessionObserver:(id)observer;
+- (void)removeSessionObserver:(id)observer;
+- (void)session:(id)session showUIForScreenInfo:(id)info withURL:(id)l;
+- (void)session:(id)session stopUIForScreenInfo:(id)info;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidDisconnect:(id)disconnect;
+- (void)setNeedsLayerMetadataService:(BOOL)service forDisplayIdentity:(id)identity;
+- (void)themeAssetLibrary:(id)library attemptingDownloadOfAssetWithVersion:(id)version;
+- (void)themeAssetLibrary:(id)library completedDownloadOfAsset:(id)asset;
+- (void)themeAssetLibrary:(id)library didUpdateFromAsset:(id)asset toAsset:(id)toAsset;
+- (void)themeAssetLibrary:(id)library failedDownloadOfAssetWithVersion:(id)version error:(id)error;
 @end
 
 @implementation DBSessionController
@@ -46,9 +46,9 @@
     observers = v2->_observers;
     v2->_observers = v4;
 
-    v6 = [objc_alloc(MEMORY[0x277CF89F8]) initForCarPlayShell];
+    initForCarPlayShell = [objc_alloc(MEMORY[0x277CF89F8]) initForCarPlayShell];
     sessionStatus = v2->_sessionStatus;
-    v2->_sessionStatus = v6;
+    v2->_sessionStatus = initForCarPlayShell;
 
     [(CARSessionStatus *)v2->_sessionStatus addSessionObserver:v2];
     v8 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
@@ -64,72 +64,72 @@
     featureAvailability = v2->_featureAvailability;
     v2->_featureAvailability = v13;
 
-    v15 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v15 addObserver:v2 selector:sel__pairedVehiclesDidChange_ name:*MEMORY[0x277CF8970] object:0];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__pairedVehiclesDidChange_ name:*MEMORY[0x277CF8970] object:0];
   }
 
   return v2;
 }
 
-- (void)setNeedsLayerMetadataService:(BOOL)a3 forDisplayIdentity:(id)a4
+- (void)setNeedsLayerMetadataService:(BOOL)service forDisplayIdentity:(id)identity
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(DBSessionController *)self layerMetadataServiceRequesters];
-  v8 = v7;
-  if (v4)
+  serviceCopy = service;
+  identityCopy = identity;
+  layerMetadataServiceRequesters = [(DBSessionController *)self layerMetadataServiceRequesters];
+  layerMetadataServiceRequesters2 = layerMetadataServiceRequesters;
+  if (serviceCopy)
   {
 
-    if (!v8)
+    if (!layerMetadataServiceRequesters2)
     {
       v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
       [(DBSessionController *)self setLayerMetadataServiceRequesters:v9];
     }
 
-    v8 = [(DBSessionController *)self layerMetadataServiceRequesters];
-    [v8 addObject:v6];
+    layerMetadataServiceRequesters2 = [(DBSessionController *)self layerMetadataServiceRequesters];
+    [layerMetadataServiceRequesters2 addObject:identityCopy];
   }
 
   else
   {
-    [v7 removeObject:v6];
+    [layerMetadataServiceRequesters removeObject:identityCopy];
   }
 
   [(DBSessionController *)self _updateLayerMetadataService];
 }
 
-- (void)addSessionObserver:(id)a3
+- (void)addSessionObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBSessionController *)self observers];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  observers = [(DBSessionController *)self observers];
+  [observers addObserver:observerCopy];
 }
 
-- (void)removeSessionObserver:(id)a3
+- (void)removeSessionObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBSessionController *)self observers];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  observers = [(DBSessionController *)self observers];
+  [observers removeObserver:observerCopy];
 }
 
-- (void)session:(id)a3 showUIForScreenInfo:(id)a4 withURL:(id)a5
+- (void)session:(id)session showUIForScreenInfo:(id)info withURL:(id)l
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a5;
+  infoCopy = info;
+  lCopy = l;
   v8 = DBLogForCategory(0x1DuLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 identifier];
+    identifier = [infoCopy identifier];
     v16 = 138412546;
-    v17 = v7;
+    v17 = lCopy;
     v18 = 2112;
-    v19 = v9;
+    v19 = identifier;
     _os_log_impl(&dword_248146000, v8, OS_LOG_TYPE_DEFAULT, "[DBSessionController] Saving showUI URL to defaults: %@ for identifier: %@", &v16, 0x16u);
   }
 
-  v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v11 = [v10 dictionaryForKey:@"DBSessionPreviousShowUIURLDictionary"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v11 = [standardUserDefaults dictionaryForKey:@"DBSessionPreviousShowUIURLDictionary"];
   v12 = [v11 mutableCopy];
 
   if (!v12)
@@ -137,20 +137,20 @@
     v12 = objc_opt_new();
   }
 
-  v13 = [v7 absoluteString];
-  v14 = [v6 identifier];
-  [v12 setObject:v13 forKeyedSubscript:v14];
+  absoluteString = [lCopy absoluteString];
+  identifier2 = [infoCopy identifier];
+  [v12 setObject:absoluteString forKeyedSubscript:identifier2];
 
-  v15 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v15 setObject:v12 forKey:@"DBSessionPreviousShowUIURLDictionary"];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults2 setObject:v12 forKey:@"DBSessionPreviousShowUIURLDictionary"];
 }
 
-- (void)session:(id)a3 stopUIForScreenInfo:(id)a4
+- (void)session:(id)session stopUIForScreenInfo:(id)info
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a4;
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v6 = [v5 dictionaryForKey:@"DBSessionPreviousShowUIURLDictionary"];
+  infoCopy = info;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v6 = [standardUserDefaults dictionaryForKey:@"DBSessionPreviousShowUIURLDictionary"];
   v7 = [v6 mutableCopy];
 
   if (v7)
@@ -158,30 +158,30 @@
     v8 = DBLogForCategory(0x1DuLL);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v4 identifier];
+      identifier = [infoCopy identifier];
       v12 = 138412290;
-      v13 = v9;
+      v13 = identifier;
       _os_log_impl(&dword_248146000, v8, OS_LOG_TYPE_DEFAULT, "[DBSessionController] Removing showUI URL from defaults for identifier: %@", &v12, 0xCu);
     }
 
-    v10 = [v4 identifier];
-    [v7 removeObjectForKey:v10];
+    identifier2 = [infoCopy identifier];
+    [v7 removeObjectForKey:identifier2];
 
-    v11 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v11 setObject:v7 forKey:@"DBSessionPreviousShowUIURLDictionary"];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults2 setObject:v7 forKey:@"DBSessionPreviousShowUIURLDictionary"];
   }
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
-  v4 = a3;
+  connectCopy = connect;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41__DBSessionController_sessionDidConnect___block_invoke;
   v6[3] = &unk_278F014B8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = connectCopy;
+  selfCopy = self;
+  v5 = connectCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -270,16 +270,16 @@ void __41__DBSessionController_sessionDidConnect___block_invoke_319(uint64_t a1)
   [v5 sessionController:WeakRetained didConnectSession:*(a1 + 32)];
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __44__DBSessionController_sessionDidDisconnect___block_invoke;
   v6[3] = &unk_278F014B8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = disconnectCopy;
+  selfCopy = self;
+  v5 = disconnectCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -350,9 +350,9 @@ uint64_t __44__DBSessionController_sessionDidDisconnect___block_invoke(uint64_t 
   return [*(a1 + 40) _restoreAXPreferences];
 }
 
-- (void)_pairedVehiclesDidChange:(id)a3
+- (void)_pairedVehiclesDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = DBLogForCategory(0x1DuLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -389,27 +389,27 @@ void __48__DBSessionController__pairedVehiclesDidChange___block_invoke(uint64_t 
 
 - (void)_updateVehicleAppearancePreferenceIfNecessary
 {
-  v3 = [(DBSessionController *)self currentSession];
-  v4 = [(DBSessionController *)self currentVehicle];
-  v5 = v4;
-  if (v4 && v3)
+  currentSession = [(DBSessionController *)self currentSession];
+  currentVehicle = [(DBSessionController *)self currentVehicle];
+  v5 = currentVehicle;
+  if (currentVehicle && currentSession)
   {
-    v6 = [v3 configuration];
-    v7 = [v6 screens];
-    v8 = [v7 firstObject];
-    v9 = [v8 supportsAppearanceMode];
+    configuration = [currentSession configuration];
+    screens = [configuration screens];
+    firstObject = [screens firstObject];
+    supportsAppearanceMode = [firstObject supportsAppearanceMode];
 
-    v10 = [v5 appearanceModePreference];
-    v11 = DBLogForCategory(0x13uLL);
-    v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-    if (v10 != -1)
+    appearanceModePreference = [v5 appearanceModePreference];
+    pairedVehicleManager = DBLogForCategory(0x13uLL);
+    v12 = os_log_type_enabled(pairedVehicleManager, OS_LOG_TYPE_DEFAULT);
+    if (appearanceModePreference != -1)
     {
       if (v12)
       {
         *v24 = 0;
         v13 = "Appearance preference already stored for this vehicle";
 LABEL_14:
-        _os_log_impl(&dword_248146000, v11, OS_LOG_TYPE_DEFAULT, v13, v24, 2u);
+        _os_log_impl(&dword_248146000, pairedVehicleManager, OS_LOG_TYPE_DEFAULT, v13, v24, 2u);
         goto LABEL_32;
       }
 
@@ -419,10 +419,10 @@ LABEL_14:
     if (v12)
     {
       *v24 = 0;
-      _os_log_impl(&dword_248146000, v11, OS_LOG_TYPE_DEFAULT, "No appearance preference stored for this vehicle", v24, 2u);
+      _os_log_impl(&dword_248146000, pairedVehicleManager, OS_LOG_TYPE_DEFAULT, "No appearance preference stored for this vehicle", v24, 2u);
     }
 
-    if (v9)
+    if (supportsAppearanceMode)
     {
       v15 = DBLogForCategory(0x13uLL);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -437,12 +437,12 @@ LABEL_14:
 
     else
     {
-      v18 = [v3 configuration];
-      v19 = [v18 defaultUserInterfaceStyle];
+      configuration2 = [currentSession configuration];
+      defaultUserInterfaceStyle = [configuration2 defaultUserInterfaceStyle];
 
       v20 = DBLogForCategory(0x13uLL);
       v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
-      if (v19 != -1)
+      if (defaultUserInterfaceStyle != -1)
       {
         if (v21)
         {
@@ -450,8 +450,8 @@ LABEL_14:
           _os_log_impl(&dword_248146000, v20, OS_LOG_TYPE_DEFAULT, "Car supports default appearance, setting preference to provided value", v24, 2u);
         }
 
-        v22 = [v3 configuration];
-        [v5 setAppearanceModePreference:{objc_msgSend(v22, "defaultUserInterfaceStyle")}];
+        configuration3 = [currentSession configuration];
+        [v5 setAppearanceModePreference:{objc_msgSend(configuration3, "defaultUserInterfaceStyle")}];
 
         goto LABEL_29;
       }
@@ -475,14 +475,14 @@ LABEL_29:
       _os_log_impl(&dword_248146000, v23, OS_LOG_TYPE_DEFAULT, "Saving updated vehicle", v24, 2u);
     }
 
-    v11 = [(DBSessionController *)self pairedVehicleManager];
-    [v11 saveVehicle:v5 completion:&__block_literal_global_39];
+    pairedVehicleManager = [(DBSessionController *)self pairedVehicleManager];
+    [pairedVehicleManager saveVehicle:v5 completion:&__block_literal_global_39];
     goto LABEL_32;
   }
 
-  if (v3)
+  if (currentSession)
   {
-    if (!v4)
+    if (!currentVehicle)
     {
       goto LABEL_12;
     }
@@ -500,8 +500,8 @@ LABEL_29:
     if (!v5)
     {
 LABEL_12:
-      v11 = DBLogForCategory(0x13uLL);
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      pairedVehicleManager = DBLogForCategory(0x13uLL);
+      if (os_log_type_enabled(pairedVehicleManager, OS_LOG_TYPE_DEFAULT))
       {
         *v24 = 0;
         v13 = "Current session not available, not updating appearance preference";
@@ -527,10 +527,10 @@ void __68__DBSessionController__updateVehicleAppearancePreferenceIfNecessary__bl
 
 - (void)_applyAXPreferences
 {
-  v3 = [(DBSessionController *)self currentVehicle];
-  v4 = [(DBSessionController *)self currentSession];
-  v5 = v4;
-  if (v3 && v4)
+  currentVehicle = [(DBSessionController *)self currentVehicle];
+  currentSession = [(DBSessionController *)self currentSession];
+  v5 = currentSession;
+  if (currentVehicle && currentSession)
   {
     v6 = objc_opt_new();
     if (_AXSCommandAndControlEnabled())
@@ -557,7 +557,7 @@ void __68__DBSessionController__updateVehicleAppearancePreferenceIfNecessary__bl
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"phone:%@, car:%@", v8, v9];
     [v6 setObject:v10 forKeyedSubscript:@"voiceControl"];
 
-    v11 = [v3 boldTextPreference] == 1;
+    v11 = [currentVehicle boldTextPreference] == 1;
     if (_AXSCarPlayEnhanceTextLegibilityEnabled() != v11)
     {
       _AXSSetCarPlayEnhanceTextLegibilityEnabled();
@@ -589,15 +589,15 @@ void __68__DBSessionController__updateVehicleAppearancePreferenceIfNecessary__bl
 
     MAPreferencesSetDomainOverride();
     v16 = +[DBAnalytics _axPhoneColorFiltersAnalyticsString];
-    v17 = [v3 _axColorFiltersAnalyticsString];
-    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"phone:%@, car:%@", v16, v17];
+    _axColorFiltersAnalyticsString = [currentVehicle _axColorFiltersAnalyticsString];
+    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"phone:%@, car:%@", v16, _axColorFiltersAnalyticsString];
     [v6 setObject:v18 forKeyedSubscript:@"colorFilters"];
 
     MAPreferencesSetDomainOverride();
     MADisplayFilterPrefResetAll();
-    if ([v3 colorFilterPreference])
+    if ([currentVehicle colorFilterPreference])
     {
-      v19 = [v3 colorFilterPreference] != 1;
+      v19 = [currentVehicle colorFilterPreference] != 1;
     }
 
     else
@@ -612,113 +612,113 @@ void __68__DBSessionController__updateVehicleAppearancePreferenceIfNecessary__bl
 
     if (v19)
     {
-      [v3 colorFilterPreference];
+      [currentVehicle colorFilterPreference];
       MADisplayFilterPrefSetType();
     }
 
-    v62 = [v3 colorFilterIntensityPreference];
-    [v62 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_340];
+    colorFilterIntensityPreference = [currentVehicle colorFilterIntensityPreference];
+    [colorFilterIntensityPreference enumerateKeysAndObjectsUsingBlock:&__block_literal_global_340];
     if (CPUIDeviceSupportsSoundRecognition())
     {
       [(DBSessionController *)self setCachedSoundRecognitionPreference:0];
-      v21 = [MEMORY[0x277CE6F98] sharedInstance];
-      -[DBSessionController setCachedSoundRecognitionState:](self, "setCachedSoundRecognitionState:", [v21 soundDetectionState]);
+      mEMORY[0x277CE6F98] = [MEMORY[0x277CE6F98] sharedInstance];
+      -[DBSessionController setCachedSoundRecognitionState:](self, "setCachedSoundRecognitionState:", [mEMORY[0x277CE6F98] soundDetectionState]);
 
       if ((self->_cachedSoundRecognitionState - 1) <= 1)
       {
         [(DBSessionController *)self setCachedSoundRecognitionPreference:[(DBSessionController *)self cachedSoundRecognitionPreference]| 1];
-        v22 = [MEMORY[0x277CE6F98] sharedInstance];
-        v23 = [v22 enabledSoundDetectionTypes];
+        mEMORY[0x277CE6F98]2 = [MEMORY[0x277CE6F98] sharedInstance];
+        enabledSoundDetectionTypes = [mEMORY[0x277CE6F98]2 enabledSoundDetectionTypes];
         v24 = MEMORY[0x277CE6F18];
-        v25 = [v23 containsObject:*MEMORY[0x277CE6F18]];
+        v25 = [enabledSoundDetectionTypes containsObject:*MEMORY[0x277CE6F18]];
 
         if (v25)
         {
           [(DBSessionController *)self setCachedSoundRecognitionPreference:[(DBSessionController *)self cachedSoundRecognitionPreference]| 2];
         }
 
-        v26 = [MEMORY[0x277CE6F98] sharedInstance];
-        v27 = [v26 enabledSoundDetectionTypes];
-        v28 = [v27 containsObject:*MEMORY[0x277CE6F80]];
+        mEMORY[0x277CE6F98]3 = [MEMORY[0x277CE6F98] sharedInstance];
+        enabledSoundDetectionTypes2 = [mEMORY[0x277CE6F98]3 enabledSoundDetectionTypes];
+        v28 = [enabledSoundDetectionTypes2 containsObject:*MEMORY[0x277CE6F80]];
 
         if (v28)
         {
           [(DBSessionController *)self setCachedSoundRecognitionPreference:[(DBSessionController *)self cachedSoundRecognitionPreference]| 4];
         }
 
-        v29 = [MEMORY[0x277CE6F98] sharedInstance];
-        v30 = [v29 enabledSoundDetectionTypes];
-        v31 = [v30 containsObject:*MEMORY[0x277CE6F30]];
+        mEMORY[0x277CE6F98]4 = [MEMORY[0x277CE6F98] sharedInstance];
+        enabledSoundDetectionTypes3 = [mEMORY[0x277CE6F98]4 enabledSoundDetectionTypes];
+        v31 = [enabledSoundDetectionTypes3 containsObject:*MEMORY[0x277CE6F30]];
 
         if (v31)
         {
           [(DBSessionController *)self setCachedSoundRecognitionPreference:[(DBSessionController *)self cachedSoundRecognitionPreference]| 8];
         }
 
-        v32 = [v3 soundRecognitionPreference];
-        v33 = [MEMORY[0x277CE6F98] sharedInstance];
-        v34 = v33;
+        soundRecognitionPreference = [currentVehicle soundRecognitionPreference];
+        mEMORY[0x277CE6F98]5 = [MEMORY[0x277CE6F98] sharedInstance];
+        v34 = mEMORY[0x277CE6F98]5;
         v35 = *v24;
-        if ((v32 & 2) != 0)
+        if ((soundRecognitionPreference & 2) != 0)
         {
-          [v33 addSoundDetectionType:v35];
+          [mEMORY[0x277CE6F98]5 addSoundDetectionType:v35];
         }
 
         else
         {
-          [v33 removeSoundDetectionType:v35];
+          [mEMORY[0x277CE6F98]5 removeSoundDetectionType:v35];
         }
 
-        v36 = [MEMORY[0x277CE6F98] sharedInstance];
-        v37 = v36;
+        mEMORY[0x277CE6F98]6 = [MEMORY[0x277CE6F98] sharedInstance];
+        v37 = mEMORY[0x277CE6F98]6;
         v38 = *MEMORY[0x277CE6F80];
-        if ((v32 & 4) != 0)
+        if ((soundRecognitionPreference & 4) != 0)
         {
-          [v36 addSoundDetectionType:v38];
+          [mEMORY[0x277CE6F98]6 addSoundDetectionType:v38];
         }
 
         else
         {
-          [v36 removeSoundDetectionType:v38];
+          [mEMORY[0x277CE6F98]6 removeSoundDetectionType:v38];
         }
 
-        v39 = [MEMORY[0x277CE6F98] sharedInstance];
-        v40 = v39;
+        mEMORY[0x277CE6F98]7 = [MEMORY[0x277CE6F98] sharedInstance];
+        v40 = mEMORY[0x277CE6F98]7;
         v41 = *MEMORY[0x277CE6F30];
-        if ((v32 & 8) != 0)
+        if ((soundRecognitionPreference & 8) != 0)
         {
-          [v39 addSoundDetectionType:v41];
+          [mEMORY[0x277CE6F98]7 addSoundDetectionType:v41];
         }
 
         else
         {
-          [v39 removeSoundDetectionType:v41];
+          [mEMORY[0x277CE6F98]7 removeSoundDetectionType:v41];
         }
 
-        v42 = (v32 & 8) >> 2;
-        if ((v32 & 4) != 0)
+        v42 = (soundRecognitionPreference & 8) >> 2;
+        if ((soundRecognitionPreference & 4) != 0)
         {
           v42 = 2;
         }
 
-        if ((v32 & 3) == 1)
+        if ((soundRecognitionPreference & 3) == 1)
         {
           v43 = v42;
         }
 
         else
         {
-          v43 = 2 * (v32 & 1);
+          v43 = 2 * (soundRecognitionPreference & 1);
         }
 
-        v44 = [MEMORY[0x277CE6F98] sharedInstance];
-        [v44 setSoundDetectionState:v43];
+        mEMORY[0x277CE6F98]8 = [MEMORY[0x277CE6F98] sharedInstance];
+        [mEMORY[0x277CE6F98]8 setSoundDetectionState:v43];
       }
     }
 
-    if ([v3 voiceControlPreference])
+    if ([currentVehicle voiceControlPreference])
     {
-      [v3 voiceControlPreference];
+      [currentVehicle voiceControlPreference];
       _AXSCommandAndControlCarPlaySetEnabled();
     }
 
@@ -734,16 +734,16 @@ void __68__DBSessionController__updateVehicleAppearancePreferenceIfNecessary__bl
         v45 = 2;
       }
 
-      [v3 setVoiceControlPreference:v45];
-      [v3 voiceControlPreference];
+      [currentVehicle setVoiceControlPreference:v45];
+      [currentVehicle voiceControlPreference];
       _AXSCommandAndControlCarPlaySetEnabled();
-      v46 = [(DBSessionController *)self pairedVehicleManager];
-      [v46 saveVehicle:v3 completion:&__block_literal_global_347];
+      pairedVehicleManager = [(DBSessionController *)self pairedVehicleManager];
+      [pairedVehicleManager saveVehicle:currentVehicle completion:&__block_literal_global_347];
     }
 
-    v47 = [v3 _axSoundRecognitionAnalyticsString];
+    _axSoundRecognitionAnalyticsString = [currentVehicle _axSoundRecognitionAnalyticsString];
     v48 = [DBAnalytics _axPhoneSoundRecognitionAnalyticsString:[(DBSessionController *)self cachedSoundRecognitionPreference]];
-    v49 = [MEMORY[0x277CCACA8] stringWithFormat:@"phone:%@, car:%@", v48, v47];
+    v49 = [MEMORY[0x277CCACA8] stringWithFormat:@"phone:%@, car:%@", v48, _axSoundRecognitionAnalyticsString];
     [v6 setObject:v49 forKeyedSubscript:@"soundRecognition"];
 
     IsReduceMotionEnabled = UIAccessibilityIsReduceMotionEnabled();
@@ -758,7 +758,7 @@ void __68__DBSessionController__updateVehicleAppearancePreferenceIfNecessary__bl
     [v6 setObject:v53 forKeyedSubscript:@"reduceMotion"];
 
     v54 = *MEMORY[0x277D76838];
-    v55 = [v3 textSizePreference] - 2;
+    v55 = [currentVehicle textSizePreference] - 2;
     if (v55 <= 2)
     {
       v56 = **(&unk_278F03E00 + v55);
@@ -766,19 +766,19 @@ void __68__DBSessionController__updateVehicleAppearancePreferenceIfNecessary__bl
       v54 = v56;
     }
 
-    v57 = [MEMORY[0x277CF89D0] contentSize];
-    v58 = [v57 value];
-    v59 = [v54 isEqualToString:v58];
+    contentSize = [MEMORY[0x277CF89D0] contentSize];
+    value = [contentSize value];
+    v59 = [v54 isEqualToString:value];
 
     if ((v59 & 1) == 0)
     {
-      v60 = [MEMORY[0x277CF89D0] contentSize];
-      [v60 setValue:v54];
+      contentSize2 = [MEMORY[0x277CF89D0] contentSize];
+      [contentSize2 setValue:v54];
     }
 
     if (+[DBAnalytics shouldSendAnalyticsEvents])
     {
-      v61 = [v5 analytics_dictionaryRepresentationWithVehicle:v3];
+      v61 = [v5 analytics_dictionaryRepresentationWithVehicle:currentVehicle];
       [v6 addEntriesFromDictionary:v61];
       [v6 setObject:0 forKeyedSubscript:@"supportsDestinationSharing"];
       [v6 setObject:0 forKeyedSubscript:@"systemNightMode"];
@@ -790,9 +790,9 @@ LABEL_70:
     goto LABEL_71;
   }
 
-  if (v4)
+  if (currentSession)
   {
-    if (!v3)
+    if (!currentVehicle)
     {
 LABEL_25:
       v6 = DBLogForCategory(0x13uLL);
@@ -815,7 +815,7 @@ LABEL_25:
       _os_log_impl(&dword_248146000, v20, OS_LOG_TYPE_DEFAULT, "Current session not available, not updating ax appearance preference", buf, 2u);
     }
 
-    if (!v3)
+    if (!currentVehicle)
     {
       goto LABEL_25;
     }
@@ -870,78 +870,78 @@ void __42__DBSessionController__applyAXPreferences__block_invoke_345(uint64_t a1
 {
   if (CPUIDeviceSupportsSoundRecognition())
   {
-    v3 = [MEMORY[0x277CE6F98] sharedInstance];
-    v4 = [v3 soundDetectionState];
+    mEMORY[0x277CE6F98] = [MEMORY[0x277CE6F98] sharedInstance];
+    soundDetectionState = [mEMORY[0x277CE6F98] soundDetectionState];
 
-    if (self->_cachedSoundRecognitionState != v4)
+    if (self->_cachedSoundRecognitionState != soundDetectionState)
     {
-      v5 = [MEMORY[0x277CE6F98] sharedInstance];
-      [v5 setSoundDetectionState:self->_cachedSoundRecognitionState];
+      mEMORY[0x277CE6F98]2 = [MEMORY[0x277CE6F98] sharedInstance];
+      [mEMORY[0x277CE6F98]2 setSoundDetectionState:self->_cachedSoundRecognitionState];
     }
 
     v6 = [(DBSessionController *)self cachedSoundRecognitionPreference]& 2;
-    v7 = [MEMORY[0x277CE6F98] sharedInstance];
-    v8 = [v7 enabledSoundDetectionTypes];
+    mEMORY[0x277CE6F98]3 = [MEMORY[0x277CE6F98] sharedInstance];
+    enabledSoundDetectionTypes = [mEMORY[0x277CE6F98]3 enabledSoundDetectionTypes];
     v9 = MEMORY[0x277CE6F18];
-    v10 = [v8 containsObject:*MEMORY[0x277CE6F18]];
+    v10 = [enabledSoundDetectionTypes containsObject:*MEMORY[0x277CE6F18]];
 
     if (v10 != v6 >> 1)
     {
-      v11 = [MEMORY[0x277CE6F98] sharedInstance];
-      v12 = v11;
+      mEMORY[0x277CE6F98]4 = [MEMORY[0x277CE6F98] sharedInstance];
+      v12 = mEMORY[0x277CE6F98]4;
       v13 = *v9;
       if (v6)
       {
-        [v11 addSoundDetectionType:v13];
+        [mEMORY[0x277CE6F98]4 addSoundDetectionType:v13];
       }
 
       else
       {
-        [v11 removeSoundDetectionType:v13];
+        [mEMORY[0x277CE6F98]4 removeSoundDetectionType:v13];
       }
     }
 
     v14 = [(DBSessionController *)self cachedSoundRecognitionPreference]& 4;
-    v15 = [MEMORY[0x277CE6F98] sharedInstance];
-    v16 = [v15 enabledSoundDetectionTypes];
+    mEMORY[0x277CE6F98]5 = [MEMORY[0x277CE6F98] sharedInstance];
+    enabledSoundDetectionTypes2 = [mEMORY[0x277CE6F98]5 enabledSoundDetectionTypes];
     v17 = MEMORY[0x277CE6F80];
-    v18 = [v16 containsObject:*MEMORY[0x277CE6F80]];
+    v18 = [enabledSoundDetectionTypes2 containsObject:*MEMORY[0x277CE6F80]];
 
     if (v18 != v14 >> 2)
     {
-      v19 = [MEMORY[0x277CE6F98] sharedInstance];
-      v20 = v19;
+      mEMORY[0x277CE6F98]6 = [MEMORY[0x277CE6F98] sharedInstance];
+      v20 = mEMORY[0x277CE6F98]6;
       v21 = *v17;
       if (v14)
       {
-        [v19 addSoundDetectionType:v21];
+        [mEMORY[0x277CE6F98]6 addSoundDetectionType:v21];
       }
 
       else
       {
-        [v19 removeSoundDetectionType:v21];
+        [mEMORY[0x277CE6F98]6 removeSoundDetectionType:v21];
       }
     }
 
     v22 = [(DBSessionController *)self cachedSoundRecognitionPreference]& 8;
-    v23 = [MEMORY[0x277CE6F98] sharedInstance];
-    v24 = [v23 enabledSoundDetectionTypes];
+    mEMORY[0x277CE6F98]7 = [MEMORY[0x277CE6F98] sharedInstance];
+    enabledSoundDetectionTypes3 = [mEMORY[0x277CE6F98]7 enabledSoundDetectionTypes];
     v25 = MEMORY[0x277CE6F30];
-    v26 = [v24 containsObject:*MEMORY[0x277CE6F30]];
+    v26 = [enabledSoundDetectionTypes3 containsObject:*MEMORY[0x277CE6F30]];
 
     if (v26 != v22 >> 3)
     {
-      v27 = [MEMORY[0x277CE6F98] sharedInstance];
-      v28 = v27;
+      mEMORY[0x277CE6F98]8 = [MEMORY[0x277CE6F98] sharedInstance];
+      v28 = mEMORY[0x277CE6F98]8;
       v29 = *v25;
       if (v22)
       {
-        [v27 addSoundDetectionType:v29];
+        [mEMORY[0x277CE6F98]8 addSoundDetectionType:v29];
       }
 
       else
       {
-        [v27 removeSoundDetectionType:v29];
+        [mEMORY[0x277CE6F98]8 removeSoundDetectionType:v29];
       }
     }
   }
@@ -956,26 +956,26 @@ void __42__DBSessionController__applyAXPreferences__block_invoke_345(uint64_t a1
 - (void)_updateVehicleInfoSync
 {
   BSDispatchQueueAssertMain();
-  v3 = [(DBSessionController *)self _sync_pairedVehicle];
-  [(DBSessionController *)self _updateVehicleInfo:v3 completion:0];
+  _sync_pairedVehicle = [(DBSessionController *)self _sync_pairedVehicle];
+  [(DBSessionController *)self _updateVehicleInfo:_sync_pairedVehicle completion:0];
 }
 
-- (void)_updateVehicleInfoWithCompletion:(id)a3
+- (void)_updateVehicleInfoWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(DBSessionController *)self sessionStatus];
-  v6 = [v5 currentSession];
+  completionCopy = completion;
+  sessionStatus = [(DBSessionController *)self sessionStatus];
+  currentSession = [sessionStatus currentSession];
 
-  if (v6)
+  if (currentSession)
   {
-    v7 = [(DBSessionController *)self vehicleUpdateQueue];
+    vehicleUpdateQueue = [(DBSessionController *)self vehicleUpdateQueue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __56__DBSessionController__updateVehicleInfoWithCompletion___block_invoke;
     v9[3] = &unk_278F02D40;
     v9[4] = self;
-    v10 = v4;
-    dispatch_async(v7, v9);
+    v10 = completionCopy;
+    dispatch_async(vehicleUpdateQueue, v9);
   }
 
   else
@@ -1004,30 +1004,30 @@ void __56__DBSessionController__updateVehicleInfoWithCompletion___block_invoke(u
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)_updateVehicleInfo:(id)a3 completion:(id)a4
+- (void)_updateVehicleInfo:(id)info completion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   BSDispatchQueueAssertMain();
-  if (!v6)
+  if (!infoCopy)
   {
-    v8 = [(DBSessionController *)self sessionStatus];
-    v9 = [v8 currentSession];
+    sessionStatus = [(DBSessionController *)self sessionStatus];
+    currentSession = [sessionStatus currentSession];
 
     v10 = DBLogForCategory(0x1DuLL);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v9;
+      v12 = currentSession;
       _os_log_impl(&dword_248146000, v10, OS_LOG_TYPE_DEFAULT, "[DBSessionController] Failed to find a matching vehicle for session %@", &v11, 0xCu);
     }
   }
 
-  [(DBSessionController *)self setCurrentVehicle:v6];
-  if (v7)
+  [(DBSessionController *)self setCurrentVehicle:infoCopy];
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -1048,16 +1048,16 @@ void __56__DBSessionController__updateVehicleInfoWithCompletion___block_invoke(u
 
 - (id)_sync_pairedVehicle
 {
-  v3 = [(DBSessionController *)self sessionStatus];
-  v4 = [v3 currentSession];
+  sessionStatus = [(DBSessionController *)self sessionStatus];
+  currentSession = [sessionStatus currentSession];
 
-  if (v4)
+  if (currentSession)
   {
-    v5 = [v4 MFiCertificateSerialNumber];
-    if (v5)
+    mFiCertificateSerialNumber = [currentSession MFiCertificateSerialNumber];
+    if (mFiCertificateSerialNumber)
     {
-      v6 = [(DBSessionController *)self pairedVehicleManager];
-      v7 = [v6 vehicleForCertificateSerial:v5];
+      pairedVehicleManager = [(DBSessionController *)self pairedVehicleManager];
+      v7 = [pairedVehicleManager vehicleForCertificateSerial:mFiCertificateSerialNumber];
 
       goto LABEL_10;
     }
@@ -1072,11 +1072,11 @@ void __56__DBSessionController__updateVehicleInfoWithCompletion___block_invoke(u
 
   else
   {
-    v5 = DBLogForCategory(0x1DuLL);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    mFiCertificateSerialNumber = DBLogForCategory(0x1DuLL);
+    if (os_log_type_enabled(mFiCertificateSerialNumber, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_DEFAULT, "[DBSessionController] Failed to find paired vehicle - no current session", buf, 2u);
+      _os_log_impl(&dword_248146000, mFiCertificateSerialNumber, OS_LOG_TYPE_DEFAULT, "[DBSessionController] Failed to find paired vehicle - no current session", buf, 2u);
     }
   }
 
@@ -1086,13 +1086,13 @@ LABEL_10:
   return v7;
 }
 
-- (void)_handleSessionConnectRequiringThemeAssetWithCompletion:(id)a3
+- (void)_handleSessionConnectRequiringThemeAssetWithCompletion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DBSessionController *)self themeAssetLibrary];
+  completionCopy = completion;
+  themeAssetLibrary = [(DBSessionController *)self themeAssetLibrary];
 
-  if (v5)
+  if (themeAssetLibrary)
   {
     v6 = DBLogForCategory(0x1DuLL);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1100,27 +1100,27 @@ LABEL_10:
       [DBSessionController _handleSessionConnectRequiringThemeAssetWithCompletion:];
     }
 
-    v7 = [(DBSessionController *)self themeAssetLibrary];
-    [v7 invalidate];
+    themeAssetLibrary2 = [(DBSessionController *)self themeAssetLibrary];
+    [themeAssetLibrary2 invalidate];
 
     [(DBSessionController *)self setThemeAssetLibrary:0];
   }
 
   v8 = objc_alloc(MEMORY[0x277CF8A00]);
-  v9 = [(DBSessionController *)self currentVehicle];
-  v10 = [v8 initWithVehicle:v9];
+  currentVehicle = [(DBSessionController *)self currentVehicle];
+  v10 = [v8 initWithVehicle:currentVehicle];
   themeAssetLibrary = self->_themeAssetLibrary;
   self->_themeAssetLibrary = v10;
 
   [(CARThemeAssetLibrary *)self->_themeAssetLibrary addObserver:self];
-  [(DBSessionController *)self setPendingConnectCompletion:v4];
+  [(DBSessionController *)self setPendingConnectCompletion:completionCopy];
 
   v12 = DBLogForCategory(0x1DuLL);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(DBSessionController *)self currentVehicle];
+    currentVehicle2 = [(DBSessionController *)self currentVehicle];
     *buf = 138412290;
-    v17 = v13;
+    v17 = currentVehicle2;
     _os_log_impl(&dword_248146000, v12, OS_LOG_TYPE_DEFAULT, "[DBSessionController] Fetching theme asset for current vehicle: %@", buf, 0xCu);
   }
 
@@ -1175,13 +1175,13 @@ void __78__DBSessionController__handleSessionConnectRequiringThemeAssetWithCompl
   }
 }
 
-- (void)_handleSessionConnectWithThemeAsset:(id)a3
+- (void)_handleSessionConnectWithThemeAsset:(id)asset
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DBSessionController *)self currentThemeAsset];
+  assetCopy = asset;
+  currentThemeAsset = [(DBSessionController *)self currentThemeAsset];
 
-  if (!v5)
+  if (!currentThemeAsset)
   {
     v7 = objc_alloc_init(MEMORY[0x277CF9290]);
     clusterThemeService = self->_clusterThemeService;
@@ -1192,17 +1192,17 @@ void __78__DBSessionController__handleSessionConnectRequiringThemeAssetWithCompl
     clusterThemeServiceDomainActivationToken = self->_clusterThemeServiceDomainActivationToken;
     self->_clusterThemeServiceDomainActivationToken = v9;
 
-    [(DBSessionController *)self setCurrentThemeAsset:v4];
+    [(DBSessionController *)self setCurrentThemeAsset:assetCopy];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __59__DBSessionController__handleSessionConnectWithThemeAsset___block_invoke;
     aBlock[3] = &unk_278F01580;
     aBlock[4] = self;
     v6 = _Block_copy(aBlock);
-    v11 = [v4 layoutURL];
+    layoutURL = [assetCopy layoutURL];
     v12 = DBLogForCategory(0x1DuLL);
     v13 = v12;
-    if (!v11)
+    if (!layoutURL)
     {
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
@@ -1216,12 +1216,12 @@ void __78__DBSessionController__handleSessionConnectRequiringThemeAssetWithCompl
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v30 = v11;
+      v30 = layoutURL;
       _os_log_impl(&dword_248146000, v13, OS_LOG_TYPE_DEFAULT, "[DBSessionController] Theme asset layout document available at URL %@", buf, 0xCu);
     }
 
     kdebug_trace();
-    v14 = [[DBThemeAssetDocument alloc] initWithDocumentURL:v11];
+    v14 = [[DBThemeAssetDocument alloc] initWithDocumentURL:layoutURL];
     kdebug_trace();
     if (v14)
     {
@@ -1229,12 +1229,12 @@ void __78__DBSessionController__handleSessionConnectRequiringThemeAssetWithCompl
       [(DBSessionController *)self setThemeController:v15];
 
       v16 = self->_clusterThemeService;
-      v17 = [(DBSessionController *)self extraAssetsURL];
-      [(CRSUIClusterThemeService *)v16 updateExtraAssetsURL:v17];
+      extraAssetsURL = [(DBSessionController *)self extraAssetsURL];
+      [(CRSUIClusterThemeService *)v16 updateExtraAssetsURL:extraAssetsURL];
 
-      v18 = [(DBSessionController *)self themeController];
-      v19 = [(DBSessionController *)self currentVehicle];
-      v20 = [v18 needsToUpdateThemeDataOnVehicle:v19];
+      themeController = [(DBSessionController *)self themeController];
+      currentVehicle = [(DBSessionController *)self currentVehicle];
+      v20 = [themeController needsToUpdateThemeDataOnVehicle:currentVehicle];
 
       if (!v20)
       {
@@ -1252,21 +1252,21 @@ LABEL_19:
         _os_log_impl(&dword_248146000, v21, OS_LOG_TYPE_DEFAULT, "Theme data failed validation, updating vehicle.", buf, 2u);
       }
 
-      v22 = [(DBSessionController *)self currentVehicle];
-      v23 = [(DBSessionController *)self themeController];
-      v24 = [(DBSessionController *)self currentVehicle];
-      v25 = [v24 displayThemeData];
-      [v22 setAppearanceModePreference:{objc_msgSend(v23, "defaultAppearanceModePreferenceForThemeData:", v25)}];
+      currentVehicle2 = [(DBSessionController *)self currentVehicle];
+      themeController2 = [(DBSessionController *)self themeController];
+      currentVehicle3 = [(DBSessionController *)self currentVehicle];
+      displayThemeData = [currentVehicle3 displayThemeData];
+      [currentVehicle2 setAppearanceModePreference:{objc_msgSend(themeController2, "defaultAppearanceModePreferenceForThemeData:", displayThemeData)}];
 
-      v26 = [(DBSessionController *)self pairedVehicleManager];
-      v27 = [(DBSessionController *)self currentVehicle];
-      [v26 saveVehicle:v27 completion:&__block_literal_global_379];
+      pairedVehicleManager = [(DBSessionController *)self pairedVehicleManager];
+      currentVehicle4 = [(DBSessionController *)self currentVehicle];
+      [pairedVehicleManager saveVehicle:currentVehicle4 completion:&__block_literal_global_379];
     }
 
     else
     {
-      v26 = DBLogForCategory(0x1DuLL);
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+      pairedVehicleManager = DBLogForCategory(0x1DuLL);
+      if (os_log_type_enabled(pairedVehicleManager, OS_LOG_TYPE_ERROR))
       {
         [DBSessionController _handleSessionConnectWithThemeAsset:];
       }
@@ -1311,15 +1311,15 @@ void __59__DBSessionController__handleSessionConnectWithThemeAsset___block_invok
   }
 }
 
-- (void)themeAssetLibrary:(id)a3 attemptingDownloadOfAssetWithVersion:(id)a4
+- (void)themeAssetLibrary:(id)library attemptingDownloadOfAssetWithVersion:(id)version
 {
-  v4 = a4;
+  versionCopy = version;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __78__DBSessionController_themeAssetLibrary_attemptingDownloadOfAssetWithVersion___block_invoke;
   block[3] = &unk_278F01580;
-  v7 = v4;
-  v5 = v4;
+  v7 = versionCopy;
+  v5 = versionCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -1336,18 +1336,18 @@ void __78__DBSessionController_themeAssetLibrary_attemptingDownloadOfAssetWithVe
   }
 }
 
-- (void)themeAssetLibrary:(id)a3 failedDownloadOfAssetWithVersion:(id)a4 error:(id)a5
+- (void)themeAssetLibrary:(id)library failedDownloadOfAssetWithVersion:(id)version error:(id)error
 {
-  v6 = a4;
-  v7 = a5;
+  versionCopy = version;
+  errorCopy = error;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __80__DBSessionController_themeAssetLibrary_failedDownloadOfAssetWithVersion_error___block_invoke;
   v10[3] = &unk_278F014B8;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = versionCopy;
+  v12 = errorCopy;
+  v8 = errorCopy;
+  v9 = versionCopy;
   dispatch_async(MEMORY[0x277D85CD0], v10);
 }
 
@@ -1360,16 +1360,16 @@ void __80__DBSessionController_themeAssetLibrary_failedDownloadOfAssetWithVersio
   }
 }
 
-- (void)themeAssetLibrary:(id)a3 completedDownloadOfAsset:(id)a4
+- (void)themeAssetLibrary:(id)library completedDownloadOfAsset:(id)asset
 {
-  v5 = a4;
+  assetCopy = asset;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__DBSessionController_themeAssetLibrary_completedDownloadOfAsset___block_invoke;
   v7[3] = &unk_278F014B8;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = assetCopy;
+  selfCopy = self;
+  v6 = assetCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -1388,18 +1388,18 @@ uint64_t __66__DBSessionController_themeAssetLibrary_completedDownloadOfAsset___
   return [*(a1 + 40) _handleSessionConnectWithThemeAsset:*(a1 + 32)];
 }
 
-- (void)themeAssetLibrary:(id)a3 didUpdateFromAsset:(id)a4 toAsset:(id)a5
+- (void)themeAssetLibrary:(id)library didUpdateFromAsset:(id)asset toAsset:(id)toAsset
 {
-  v6 = a4;
-  v7 = a5;
+  assetCopy = asset;
+  toAssetCopy = toAsset;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __68__DBSessionController_themeAssetLibrary_didUpdateFromAsset_toAsset___block_invoke;
   v10[3] = &unk_278F014B8;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = toAssetCopy;
+  v12 = assetCopy;
+  v8 = assetCopy;
+  v9 = toAssetCopy;
   dispatch_async(MEMORY[0x277D85CD0], v10);
 }
 
@@ -1421,28 +1421,28 @@ void __68__DBSessionController_themeAssetLibrary_didUpdateFromAsset_toAsset___bl
 
 - (id)themeData
 {
-  v2 = [(DBSessionController *)self currentVehicle];
-  v3 = [v2 displayThemeData];
+  currentVehicle = [(DBSessionController *)self currentVehicle];
+  displayThemeData = [currentVehicle displayThemeData];
 
-  return v3;
+  return displayThemeData;
 }
 
 - (id)clusterThemeDisplays
 {
-  v2 = [(DBSessionController *)self themeController];
-  v3 = [v2 displays];
+  themeController = [(DBSessionController *)self themeController];
+  displays = [themeController displays];
 
-  return v3;
+  return displays;
 }
 
 - (id)assetBaseURL
 {
-  v2 = [(DBSessionController *)self currentThemeAsset];
-  v3 = [v2 layoutURL];
+  currentThemeAsset = [(DBSessionController *)self currentThemeAsset];
+  layoutURL = [currentThemeAsset layoutURL];
 
-  if (v3)
+  if (layoutURL)
   {
-    v4 = [objc_alloc(MEMORY[0x277CCAC90]) initWithURL:v3];
+    v4 = [objc_alloc(MEMORY[0x277CCAC90]) initWithURL:layoutURL];
   }
 
   else
@@ -1459,23 +1459,23 @@ void __68__DBSessionController_themeAssetLibrary_didUpdateFromAsset_toAsset___bl
   v3 = DBLogForCategory(0x1DuLL);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(DBSessionController *)self themeController];
-    v5 = [(DBSessionController *)self themeController];
-    v6 = [v5 extraAssetsURL];
+    themeController = [(DBSessionController *)self themeController];
+    themeController2 = [(DBSessionController *)self themeController];
+    extraAssetsURL = [themeController2 extraAssetsURL];
     v16 = 138412546;
-    v17 = v4;
+    v17 = themeController;
     v18 = 2112;
-    v19 = v6;
+    v19 = extraAssetsURL;
     _os_log_impl(&dword_248146000, v3, OS_LOG_TYPE_INFO, "controller=%@ extraAssetsURL=%@", &v16, 0x16u);
   }
 
-  v7 = [(DBSessionController *)self themeController];
-  if (v7 && (v8 = v7, -[DBSessionController themeController](self, "themeController"), v9 = objc_claimAutoreleasedReturnValue(), [v9 extraAssetsURL], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v8, v10))
+  themeController3 = [(DBSessionController *)self themeController];
+  if (themeController3 && (v8 = themeController3, -[DBSessionController themeController](self, "themeController"), v9 = objc_claimAutoreleasedReturnValue(), [v9 extraAssetsURL], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v8, v10))
   {
     v11 = objc_alloc(MEMORY[0x277CCAC90]);
-    v12 = [(DBSessionController *)self themeController];
-    v13 = [v12 extraAssetsURL];
-    v14 = [v11 initWithURL:v13];
+    themeController4 = [(DBSessionController *)self themeController];
+    extraAssetsURL2 = [themeController4 extraAssetsURL];
+    v14 = [v11 initWithURL:extraAssetsURL2];
   }
 
   else
@@ -1488,18 +1488,18 @@ void __68__DBSessionController_themeAssetLibrary_didUpdateFromAsset_toAsset___bl
 
 - (unint64_t)assetVersion
 {
-  v2 = [(DBSessionController *)self themeController];
-  v3 = [v2 assetVersion];
+  themeController = [(DBSessionController *)self themeController];
+  assetVersion = [themeController assetVersion];
 
-  return v3;
+  return assetVersion;
 }
 
-- (id)getURLForAssetWithIdentifier:(id)a3 displayID:(id)a4
+- (id)getURLForAssetWithIdentifier:(id)identifier displayID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DBSessionController *)self themeController];
-  v9 = [v8 urlFor:v7 displayID:v6];
+  dCopy = d;
+  identifierCopy = identifier;
+  themeController = [(DBSessionController *)self themeController];
+  v9 = [themeController urlFor:identifierCopy displayID:dCopy];
 
   if (v9)
   {
@@ -1516,8 +1516,8 @@ void __68__DBSessionController_themeAssetLibrary_didUpdateFromAsset_toAsset___bl
 
 - (void)_updateLayerMetadataService
 {
-  v3 = [(DBSessionController *)self layerMetadataServiceRequesters];
-  v4 = [v3 count];
+  layerMetadataServiceRequesters = [(DBSessionController *)self layerMetadataServiceRequesters];
+  v4 = [layerMetadataServiceRequesters count];
 
   keyExistsAndHasValidFormat = 0;
   AppBooleanValue = CFPreferencesGetAppBooleanValue(@"UISyncChannelDisabled", @"com.apple.carplay.internal", &keyExistsAndHasValidFormat);
@@ -1545,14 +1545,14 @@ void __68__DBSessionController_themeAssetLibrary_didUpdateFromAsset_toAsset___bl
 
   if (!v4)
   {
-    v14 = [(DBSessionController *)self layerMetadataService];
-    [v14 invalidate];
+    layerMetadataService = [(DBSessionController *)self layerMetadataService];
+    [layerMetadataService invalidate];
 
     layerMetadataService = self->_layerMetadataService;
     self->_layerMetadataService = 0;
 
-    v16 = [(DBSessionController *)self uisyncChannel];
-    [v16 invalidate];
+    uisyncChannel = [(DBSessionController *)self uisyncChannel];
+    [uisyncChannel invalidate];
 
     p_super = &self->_uisyncChannel->super;
     self->_uisyncChannel = 0;
@@ -1566,21 +1566,21 @@ LABEL_18:
     goto LABEL_21;
   }
 
-  v7 = [(DBSessionController *)self currentSession];
+  currentSession = [(DBSessionController *)self currentSession];
 
-  if (v7)
+  if (currentSession)
   {
     v8 = [DBUISyncChannel alloc];
-    v9 = [(DBSessionController *)self currentSession];
-    v10 = [(DBUISyncChannel *)v8 initWithSession:v9];
+    currentSession2 = [(DBSessionController *)self currentSession];
+    v10 = [(DBUISyncChannel *)v8 initWithSession:currentSession2];
     uisyncChannel = self->_uisyncChannel;
     self->_uisyncChannel = v10;
   }
 
   else
   {
-    v9 = DBLogForCategory(0x15uLL);
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    currentSession2 = DBLogForCategory(0x15uLL);
+    if (os_log_type_enabled(currentSession2, OS_LOG_TYPE_ERROR))
     {
       [DBSessionController _updateLayerMetadataService];
     }

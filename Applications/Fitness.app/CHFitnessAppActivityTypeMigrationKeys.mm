@@ -1,6 +1,6 @@
 @interface CHFitnessAppActivityTypeMigrationKeys
 + (NSArray)migrationKeys;
-+ (void)setMigrationKeys:(id)a3;
++ (void)setMigrationKeys:(id)keys;
 - (CHFitnessAppActivityTypeMigrationKeys)init;
 @end
 
@@ -14,7 +14,7 @@
   return v2.super.isa;
 }
 
-+ (void)setMigrationKeys:(id)a3
++ (void)setMigrationKeys:(id)keys
 {
   off_1008E1158 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
 }

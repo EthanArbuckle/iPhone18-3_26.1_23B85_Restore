@@ -1,74 +1,74 @@
 @interface SetContainerPropertiesResponseParserDelegate
-- (BOOL)parser:(id)a3 shouldParseCode:(unsigned int)a4;
+- (BOOL)parser:(id)parser shouldParseCode:(unsigned int)code;
 - (SetContainerPropertiesResponseParserDelegate)init;
-- (void)parser:(id)a3 didEndContainerCode:(unsigned int)a4;
-- (void)parser:(id)a3 didParseDataCode:(unsigned int)a4 bytes:(char *)a5 contentLength:(unsigned int)a6;
-- (void)parser:(id)a3 didStartContainerCode:(unsigned int)a4 contentLength:(unsigned int)a5;
+- (void)parser:(id)parser didEndContainerCode:(unsigned int)code;
+- (void)parser:(id)parser didParseDataCode:(unsigned int)code bytes:(char *)bytes contentLength:(unsigned int)length;
+- (void)parser:(id)parser didStartContainerCode:(unsigned int)code contentLength:(unsigned int)length;
 @end
 
 @implementation SetContainerPropertiesResponseParserDelegate
 
-- (void)parser:(id)a3 didEndContainerCode:(unsigned int)a4
+- (void)parser:(id)parser didEndContainerCode:(unsigned int)code
 {
-  v6 = a3;
-  if (a4 == 1835821428 && self->_editStatus == 400 && self->_currentCloudID)
+  parserCopy = parser;
+  if (code == 1835821428 && self->_editStatus == 400 && self->_currentCloudID)
   {
     failedItems = self->_failedItems;
-    v9 = v6;
+    v9 = parserCopy;
     v8 = [NSNumber numberWithUnsignedLongLong:?];
     [(NSMutableArray *)failedItems addObject:v8];
 
-    v6 = v9;
+    parserCopy = v9;
   }
 }
 
-- (void)parser:(id)a3 didParseDataCode:(unsigned int)a4 bytes:(char *)a5 contentLength:(unsigned int)a6
+- (void)parser:(id)parser didParseDataCode:(unsigned int)code bytes:(char *)bytes contentLength:(unsigned int)length
 {
-  v10 = a3;
-  if (a4 <= 1835624803)
+  parserCopy = parser;
+  if (code <= 1835624803)
   {
-    if (a4 == 1634357319)
+    if (code == 1634357319)
     {
-      v15 = v10;
-      v14 = [[NSString alloc] initWithBytes:a5 length:a6 encoding:4];
+      v15 = parserCopy;
+      v14 = [[NSString alloc] initWithBytes:bytes length:length encoding:4];
       globalPlaylistID = self->_globalPlaylistID;
       self->_globalPlaylistID = v14;
     }
 
     else
     {
-      if (a4 != 1634358101)
+      if (code != 1634358101)
       {
         goto LABEL_18;
       }
 
-      v15 = v10;
-      v11 = [[NSString alloc] initWithBytes:a5 length:a6 encoding:4];
+      v15 = parserCopy;
+      v11 = [[NSString alloc] initWithBytes:bytes length:length encoding:4];
       globalPlaylistID = self->_subscribedContainerURL;
       self->_subscribedContainerURL = v11;
     }
 
-    v10 = v15;
+    parserCopy = v15;
   }
 
   else
   {
-    switch(a4)
+    switch(code)
     {
       case 0x6D696964u:
-        if (a6 == 8)
+        if (length == 8)
         {
-          v13 = ((*a5 << 56) | (a5[1] << 48) | (a5[2] << 40) | (a5[3] << 32) | (a5[4] << 24) | (a5[5] << 16) | (a5[6] << 8)) + a5[7];
+          v13 = ((*bytes << 56) | (bytes[1] << 48) | (bytes[2] << 40) | (bytes[3] << 32) | (bytes[4] << 24) | (bytes[5] << 16) | (bytes[6] << 8)) + bytes[7];
         }
 
         else
         {
-          if (a6 != 4)
+          if (length != 4)
           {
             break;
           }
 
-          v13 = bswap32(*a5);
+          v13 = bswap32(*bytes);
         }
 
         self->_currentCloudID = v13;
@@ -76,12 +76,12 @@
       case 0x6D737474u:
         if (self->_processingItemListing)
         {
-          self->_editStatus = bswap32(*a5);
+          self->_editStatus = bswap32(*bytes);
         }
 
         break;
       case 0x6D757072u:
-        self->_updateRequired = *a5 != 0;
+        self->_updateRequired = *bytes != 0;
         break;
     }
   }
@@ -89,23 +89,23 @@
 LABEL_18:
 }
 
-- (void)parser:(id)a3 didStartContainerCode:(unsigned int)a4 contentLength:(unsigned int)a5
+- (void)parser:(id)parser didStartContainerCode:(unsigned int)code contentLength:(unsigned int)length
 {
-  if (a4 == 1835821428)
+  if (code == 1835821428)
   {
     self->_currentCloudID = 0;
     self->_processingItemListing = 1;
   }
 }
 
-- (BOOL)parser:(id)a3 shouldParseCode:(unsigned int)a4
+- (BOOL)parser:(id)parser shouldParseCode:(unsigned int)code
 {
   result = 1;
-  if (a4 > 1835819883)
+  if (code > 1835819883)
   {
-    if (a4 > 1836282995)
+    if (code > 1836282995)
     {
-      if (a4 == 1836282996)
+      if (code == 1836282996)
       {
         return result;
       }
@@ -115,7 +115,7 @@ LABEL_18:
 
     else
     {
-      if (a4 == 1835819884)
+      if (code == 1835819884)
       {
         return result;
       }
@@ -124,9 +124,9 @@ LABEL_18:
     }
   }
 
-  else if (a4 > 1835360879)
+  else if (code > 1835360879)
   {
-    if (a4 == 1835360880)
+    if (code == 1835360880)
     {
       return result;
     }
@@ -136,7 +136,7 @@ LABEL_18:
 
   else
   {
-    if (a4 == 1634357319)
+    if (code == 1634357319)
     {
       return result;
     }
@@ -144,7 +144,7 @@ LABEL_18:
     v5 = 1634358101;
   }
 
-  if (a4 != v5)
+  if (code != v5)
   {
     return 0;
   }

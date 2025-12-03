@@ -1,6 +1,6 @@
 @interface PHASETriangleSet
 - (PHASETriangleSet)init;
-- (PHASETriangleSet)initWithTriangleData:(id)a3 color:;
+- (PHASETriangleSet)initWithTriangleData:(id)data color:;
 - (id).cxx_construct;
 @end
 
@@ -13,32 +13,32 @@
   return [(PHASETriangleSet *)&v3 init];
 }
 
-- (PHASETriangleSet)initWithTriangleData:(id)a3 color:
+- (PHASETriangleSet)initWithTriangleData:(id)data color:
 {
   v13 = v3;
-  v5 = a3;
+  dataCopy = data;
   v14.receiver = self;
   v14.super_class = PHASETriangleSet;
   v6 = [(PHASETriangleSet *)&v14 init];
-  v7 = [v5 length];
+  v7 = [dataCopy length];
   _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE6resizeEm(v6->_anon_8, 3 * (v7 / 0x24));
-  v8 = [v5 bytes];
+  bytes = [dataCopy bytes];
   if (v7 >= 0x24)
   {
     v10 = 0;
     v11 = v7 / 0x24;
     do
     {
-      *&v9 = *v8;
-      DWORD2(v9) = *(v8 + 8);
+      *&v9 = *bytes;
+      DWORD2(v9) = *(bytes + 8);
       *(*v6->_anon_8 + v10) = v9;
-      *&v9 = *(v8 + 12);
-      DWORD2(v9) = *(v8 + 20);
+      *&v9 = *(bytes + 12);
+      DWORD2(v9) = *(bytes + 20);
       *(*v6->_anon_8 + v10 + 16) = v9;
-      *&v9 = *(v8 + 24);
-      DWORD2(v9) = *(v8 + 32);
+      *&v9 = *(bytes + 24);
+      DWORD2(v9) = *(bytes + 32);
       *(*v6->_anon_8 + v10 + 32) = v9;
-      v8 += 36;
+      bytes += 36;
       v10 += 48;
       --v11;
     }

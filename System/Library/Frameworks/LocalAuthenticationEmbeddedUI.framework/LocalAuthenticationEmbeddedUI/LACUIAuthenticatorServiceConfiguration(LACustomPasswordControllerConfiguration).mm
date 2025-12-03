@@ -7,39 +7,39 @@
 - (id)initWithCustomPasswordConfiguration:()LACustomPasswordControllerConfiguration context:
 {
   v6 = a3;
-  v7 = [a4 externalizedContext];
-  v8 = [a1 initWithContext:v7 requirement:3];
+  externalizedContext = [a4 externalizedContext];
+  v8 = [self initWithContext:externalizedContext requirement:3];
 
-  v9 = [v6 cancelButtonTitle];
-  [v8 setCancelButtonTitle:v9];
+  cancelButtonTitle = [v6 cancelButtonTitle];
+  [v8 setCancelButtonTitle:cancelButtonTitle];
 
   [v8 setPasscodeLength:{objc_msgSend(v6, "passwordType")}];
-  v10 = [v6 prompt];
-  [v8 setPrompt:v10];
+  prompt = [v6 prompt];
+  [v8 setPrompt:prompt];
 
-  v11 = [v6 verifyPrompt];
-  [v8 setVerifyPrompt:v11];
+  verifyPrompt = [v6 verifyPrompt];
+  [v8 setVerifyPrompt:verifyPrompt];
 
-  v12 = [v6 mode];
-  if (v12 <= 1)
+  mode = [v6 mode];
+  if (mode <= 1)
   {
-    [v8 setMode:v12];
+    [v8 setMode:mode];
   }
 
-  v13 = [v6 style];
-  v14 = [v13 rawValue];
+  style = [v6 style];
+  rawValue = [style rawValue];
 
-  if (!v14)
+  if (!rawValue)
   {
     v15 = 0;
     goto LABEL_7;
   }
 
-  if (v14 == 1)
+  if (rawValue == 1)
   {
     v15 = 1;
 LABEL_7:
-    [v8 setStyle:v14];
+    [v8 setStyle:rawValue];
     [v8 setHeaderHidden:v15];
   }
 

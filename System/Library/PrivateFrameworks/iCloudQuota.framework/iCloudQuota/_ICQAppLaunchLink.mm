@@ -1,37 +1,37 @@
 @interface _ICQAppLaunchLink
 - (BOOL)isEligible;
-- (_ICQAppLaunchLink)initWithCoder:(id)a3;
-- (_ICQAppLaunchLink)initWithServerDictionary:(id)a3;
+- (_ICQAppLaunchLink)initWithCoder:(id)coder;
+- (_ICQAppLaunchLink)initWithServerDictionary:(id)dictionary;
 - (void)cacheLiftUIContentIfNeeded;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)isEligible;
 @end
 
 @implementation _ICQAppLaunchLink
 
-- (_ICQAppLaunchLink)initWithServerDictionary:(id)a3
+- (_ICQAppLaunchLink)initWithServerDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = _ICQAppLaunchLink;
   v5 = [(_ICQAppLaunchLink *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"appId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"appId"];
     appId = v5->_appId;
     v5->_appId = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"action"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"action"];
     v9 = _ICQActionForServerActionString(v8);
 
-    v10 = [v4 objectForKeyedSubscript:@"actParams"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"actParams"];
     v11 = _ICQActionParametersForServerActionParameters(v9, v10, 0);
 
     v12 = [[ICQLink alloc] initWithText:0 action:v9 parameters:v11];
     link = v5->_link;
     v5->_link = v12;
 
-    v5->_minDisplayIntervalDays = [v4 objectForKeyedSubscript:@"minDisplayIntervalDays"];
+    v5->_minDisplayIntervalDays = [dictionaryCopy objectForKeyedSubscript:@"minDisplayIntervalDays"];
   }
 
   return v5;
@@ -62,12 +62,12 @@
 
   else
   {
-    v8 = [(NSNumber *)self->_minDisplayIntervalDays integerValue];
-    v7 = v5 >= v8;
+    integerValue = [(NSNumber *)self->_minDisplayIntervalDays integerValue];
+    v7 = v5 >= integerValue;
     v6 = _ICQGetLogSystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      [(_ICQAppLaunchLink *)v5 >= v8 isEligible];
+      [(_ICQAppLaunchLink *)v5 >= integerValue isEligible];
     }
   }
 
@@ -120,56 +120,56 @@ LABEL_20:
 
 - (void)cacheLiftUIContentIfNeeded
 {
-  v3 = [(_ICQAppLaunchLink *)self link];
-  if ([v3 action] == 121)
+  link = [(_ICQAppLaunchLink *)self link];
+  if ([link action] == 121)
   {
   }
 
   else
   {
-    v4 = [(_ICQAppLaunchLink *)self link];
-    v5 = [v4 action];
+    link2 = [(_ICQAppLaunchLink *)self link];
+    action = [link2 action];
 
-    if (v5 != 115)
+    if (action != 115)
     {
       return;
     }
   }
 
   v8 = +[ICQLiftUICache sharedCache];
-  v6 = [(_ICQAppLaunchLink *)self link];
-  v7 = [v6 serverUIURL];
-  [v8 cacheResponseFromURL:v7];
+  link3 = [(_ICQAppLaunchLink *)self link];
+  serverUIURL = [link3 serverUIURL];
+  [v8 cacheResponseFromURL:serverUIURL];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_ICQAppLaunchLink *)self appId];
-  [v4 encodeObject:v5 forKey:@"appId"];
+  coderCopy = coder;
+  appId = [(_ICQAppLaunchLink *)self appId];
+  [coderCopy encodeObject:appId forKey:@"appId"];
 
-  v6 = [(_ICQAppLaunchLink *)self link];
-  [v4 encodeObject:v6 forKey:@"link"];
+  link = [(_ICQAppLaunchLink *)self link];
+  [coderCopy encodeObject:link forKey:@"link"];
 
-  v7 = [(_ICQAppLaunchLink *)self minDisplayIntervalDays];
-  [v4 encodeObject:v7 forKey:@"minDisplayIntervalDays"];
+  minDisplayIntervalDays = [(_ICQAppLaunchLink *)self minDisplayIntervalDays];
+  [coderCopy encodeObject:minDisplayIntervalDays forKey:@"minDisplayIntervalDays"];
 }
 
-- (_ICQAppLaunchLink)initWithCoder:(id)a3
+- (_ICQAppLaunchLink)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_ICQAppLaunchLink *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appId"];
     appId = v5->_appId;
     v5->_appId = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"link"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"link"];
     link = v5->_link;
     v5->_link = v8;
 
-    v5->_minDisplayIntervalDays = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"minDisplayIntervalDays"];
+    v5->_minDisplayIntervalDays = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"minDisplayIntervalDays"];
   }
 
   return v5;
@@ -179,7 +179,7 @@ LABEL_20:
 {
   v7 = *MEMORY[0x277D85DE8];
   v4[0] = 67109376;
-  v4[1] = a1 & 1;
+  v4[1] = self & 1;
   v5 = 2048;
   v6 = a2;
   _os_log_debug_impl(&dword_275572000, log, OS_LOG_TYPE_DEBUG, "AppLaunchLink eligible %d because it has been shown %ld days ago", v4, 0x12u);

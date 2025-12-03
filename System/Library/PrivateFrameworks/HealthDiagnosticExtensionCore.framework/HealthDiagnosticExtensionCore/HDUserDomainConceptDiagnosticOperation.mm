@@ -1,18 +1,18 @@
 @interface HDUserDomainConceptDiagnosticOperation
-- (BOOL)_enumerateUDCTableInDatabase:(id)a3 appendToFormatter:(id)a4 error:(id *)a5;
-- (void)_logAndAndAppendFormat:(id)a3;
-- (void)_reportCountsForUDCTableRowsInDatabase:(id)a3;
-- (void)_reportUDCTableInDatabase:(id)a3;
+- (BOOL)_enumerateUDCTableInDatabase:(id)database appendToFormatter:(id)formatter error:(id *)error;
+- (void)_logAndAndAppendFormat:(id)format;
+- (void)_reportCountsForUDCTableRowsInDatabase:(id)database;
+- (void)_reportUDCTableInDatabase:(id)database;
 - (void)_reportUserDomainConcepts;
-- (void)_reportUserDomainConceptsForDatabase:(id)a3;
+- (void)_reportUserDomainConceptsForDatabase:(id)database;
 @end
 
 @implementation HDUserDomainConceptDiagnosticOperation
 
 - (void)_reportUserDomainConcepts
 {
-  v6 = [(HDDiagnosticOperation *)self healthDirectoryURL];
-  v3 = [v6 URLByAppendingPathComponent:@"healthdb_secure.sqlite" isDirectory:0];
+  healthDirectoryURL = [(HDDiagnosticOperation *)self healthDirectoryURL];
+  v3 = [healthDirectoryURL URLByAppendingPathComponent:@"healthdb_secure.sqlite" isDirectory:0];
   v4 = [(HDDiagnosticOperation *)self openReadOnlyDatabaseAtURL:v3];
   if (v4)
   {
@@ -21,24 +21,24 @@
 
   else
   {
-    v5 = [v3 path];
-    [(HDDiagnosticOperation *)self appendFormat:@"Unable to open %@ \n", v5];
+    path = [v3 path];
+    [(HDDiagnosticOperation *)self appendFormat:@"Unable to open %@ \n", path];
   }
 
   [v4 close];
 }
 
-- (void)_reportUserDomainConceptsForDatabase:(id)a3
+- (void)_reportUserDomainConceptsForDatabase:(id)database
 {
-  v4 = a3;
-  [(HDUserDomainConceptDiagnosticOperation *)self _reportCountsForUDCTableRowsInDatabase:v4];
-  [(HDUserDomainConceptDiagnosticOperation *)self _reportUDCTableInDatabase:v4];
+  databaseCopy = database;
+  [(HDUserDomainConceptDiagnosticOperation *)self _reportCountsForUDCTableRowsInDatabase:databaseCopy];
+  [(HDUserDomainConceptDiagnosticOperation *)self _reportUDCTableInDatabase:databaseCopy];
 }
 
-- (void)_reportCountsForUDCTableRowsInDatabase:(id)a3
+- (void)_reportCountsForUDCTableRowsInDatabase:(id)database
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  databaseCopy = database;
   [(HDDiagnosticOperation *)self appendString:@"User Domains Concept Table Counts"];
   [(HDDiagnosticOperation *)self appendNewline];
   v7 = objc_opt_class();
@@ -55,7 +55,7 @@
   v18 = objc_opt_class();
   v19 = objc_opt_class();
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:&v7 count:13];
-  [(HDDiagnosticOperation *)self reportCountsForDatabase:v4 entityClasses:v5, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16, v17, v18];
+  [(HDDiagnosticOperation *)self reportCountsForDatabase:databaseCopy entityClasses:v5, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16, v17, v18];
 
   [(HDDiagnosticOperation *)self appendNewline];
   [(HDDiagnosticOperation *)self appendStrongSeparator];
@@ -63,9 +63,9 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reportUDCTableInDatabase:(id)a3
+- (void)_reportUDCTableInDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   [(HDDiagnosticOperation *)self appendString:@"User Domains Concepts"];
   [(HDDiagnosticOperation *)self appendSeparator];
   v5 = objc_alloc(MEMORY[0x277CCDA90]);
@@ -73,14 +73,14 @@
   v7 = [v5 initWithColumnTitles:v6];
 
   v11 = 0;
-  LOBYTE(v6) = [(HDUserDomainConceptDiagnosticOperation *)self _enumerateUDCTableInDatabase:v4 appendToFormatter:v7 error:&v11];
+  LOBYTE(v6) = [(HDUserDomainConceptDiagnosticOperation *)self _enumerateUDCTableInDatabase:databaseCopy appendToFormatter:v7 error:&v11];
 
   v8 = v11;
   v9 = v8;
   if (v6)
   {
-    v10 = [v7 formattedTable];
-    [(HDDiagnosticOperation *)self appendString:v10];
+    formattedTable = [v7 formattedTable];
+    [(HDDiagnosticOperation *)self appendString:formattedTable];
 
     [(HDDiagnosticOperation *)self appendNewline];
     [(HDDiagnosticOperation *)self appendStrongSeparator];
@@ -93,21 +93,21 @@
   }
 }
 
-- (BOOL)_enumerateUDCTableInDatabase:(id)a3 appendToFormatter:(id)a4 error:(id *)a5
+- (BOOL)_enumerateUDCTableInDatabase:(id)database appendToFormatter:(id)formatter error:(id *)error
 {
-  v7 = a4;
+  formatterCopy = formatter;
   v8 = MEMORY[0x277CCACA8];
-  v9 = a3;
+  databaseCopy = database;
   v10 = [v8 stringWithFormat:@"SELECT * FROM user_domain_concepts ORDER BY udc_id LIMIT 500"];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __95__HDUserDomainConceptDiagnosticOperation__enumerateUDCTableInDatabase_appendToFormatter_error___block_invoke;
   v13[3] = &unk_2796C0D00;
-  v14 = v7;
-  v11 = v7;
-  LOBYTE(a5) = [v9 executeSQL:v10 error:a5 bindingHandler:0 enumerationHandler:v13];
+  v14 = formatterCopy;
+  v11 = formatterCopy;
+  LOBYTE(error) = [databaseCopy executeSQL:v10 error:error bindingHandler:0 enumerationHandler:v13];
 
-  return a5;
+  return error;
 }
 
 uint64_t __95__HDUserDomainConceptDiagnosticOperation__enumerateUDCTableInDatabase_appendToFormatter_error___block_invoke(uint64_t a1)
@@ -185,11 +185,11 @@ uint64_t __95__HDUserDomainConceptDiagnosticOperation__enumerateUDCTableInDataba
   return 1;
 }
 
-- (void)_logAndAndAppendFormat:(id)a3
+- (void)_logAndAndAppendFormat:(id)format
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v7];
+  formatCopy = format;
+  v6 = [[v4 alloc] initWithFormat:formatCopy arguments:&v7];
 
   [(HDDiagnosticOperation *)self log:@"%@", v6];
   [(HDDiagnosticOperation *)self appendFormat:@"%@", v6];

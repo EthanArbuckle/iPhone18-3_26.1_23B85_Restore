@@ -1,25 +1,25 @@
 @interface CNDatesDescription
-- (BOOL)abPropertyID:(int *)a3;
-- (BOOL)canUnifyValue:(id)a3 withValue:(id)a4;
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4;
-- (BOOL)isValue:(id)a3 preferredToUnifiedValue:(id)a4;
-- (id)CNLabeledValueValueFromABMultiValueValueBytes:(char *)a3 length:(unint64_t)a4;
+- (BOOL)abPropertyID:(int *)d;
+- (BOOL)canUnifyValue:(id)value withValue:(id)withValue;
+- (BOOL)isEqualForContact:(id)contact other:(id)other;
+- (BOOL)isValue:(id)value preferredToUnifiedValue:(id)unifiedValue;
+- (id)CNLabeledValueValueFromABMultiValueValueBytes:(char *)bytes length:(unint64_t)length;
 - (id)standardLabels;
-- (void)ABMultiValueValueFromCNLabeledValueValue:(id)a3;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (void)ABMultiValueValueFromCNLabeledValueValue:(id)value;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNDatesDescription
 
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualForContact:(id)contact other:(id)other
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 dates];
-  if (!v8)
+  contactCopy = contact;
+  otherCopy = other;
+  dates = [contactCopy dates];
+  if (!dates)
   {
-    v4 = [v7 dates];
-    if (!v4)
+    dates2 = [otherCopy dates];
+    if (!dates2)
     {
       v11 = 1;
 LABEL_6:
@@ -28,11 +28,11 @@ LABEL_6:
     }
   }
 
-  v9 = [v6 dates];
-  v10 = [v7 dates];
-  v11 = [v9 isEqual:v10];
+  dates3 = [contactCopy dates];
+  dates4 = [otherCopy dates];
+  v11 = [dates3 isEqual:dates4];
 
-  if (!v8)
+  if (!dates)
   {
     goto LABEL_6;
   }
@@ -42,11 +42,11 @@ LABEL_7:
   return v11;
 }
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  coderCopy = coder;
+  contactCopy = contact;
   v12 = objc_opt_class();
   v13 = objc_opt_class();
   v14 = objc_opt_class();
@@ -55,25 +55,25 @@ LABEL_7:
   {
   }
 
-  v9 = [v5 decodeObjectOfClasses:v7 forKey:{@"_dates", v12, v13}];
+  v9 = [coderCopy decodeObjectOfClasses:v7 forKey:{@"_dates", v12, v13}];
   v10 = [v9 copy];
-  v11 = v6[51];
-  v6[51] = v10;
+  v11 = contactCopy[51];
+  contactCopy[51] = v10;
 }
 
-- (BOOL)canUnifyValue:(id)a3 withValue:(id)a4
+- (BOOL)canUnifyValue:(id)value withValue:(id)withValue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 day];
-  v9 = [v7 day];
-  v22 = [v6 month];
-  v10 = [v7 month];
-  v11 = [v6 calendar];
-  if (!v11)
+  valueCopy = value;
+  withValueCopy = withValue;
+  v8 = [valueCopy day];
+  v9 = [withValueCopy day];
+  month = [valueCopy month];
+  month2 = [withValueCopy month];
+  calendar = [valueCopy calendar];
+  if (!calendar)
   {
-    v4 = [v7 calendar];
-    if (!v4)
+    calendar2 = [withValueCopy calendar];
+    if (!calendar2)
     {
       v14 = 1;
 LABEL_6:
@@ -82,26 +82,26 @@ LABEL_6:
     }
   }
 
-  v12 = [v6 calendar];
-  v13 = [v7 calendar];
-  v14 = [v12 isEqual:v13];
+  calendar3 = [valueCopy calendar];
+  calendar4 = [withValueCopy calendar];
+  v14 = [calendar3 isEqual:calendar4];
 
-  if (!v11)
+  if (!calendar)
   {
     goto LABEL_6;
   }
 
 LABEL_7:
 
-  v15 = [v6 year];
-  v16 = [v7 year];
-  v17 = [v6 year];
-  v18 = [v7 year];
+  year = [valueCopy year];
+  year2 = [withValueCopy year];
+  year3 = [valueCopy year];
+  year4 = [withValueCopy year];
   v19 = 0;
-  if (v8 == v9 && v22 == v10)
+  if (v8 == v9 && month == month2)
   {
-    v20 = (v15 == 0x7FFFFFFFFFFFFFFFLL) ^ (v16 == 0x7FFFFFFFFFFFFFFFLL);
-    if (v17 == v18)
+    v20 = (year == 0x7FFFFFFFFFFFFFFFLL) ^ (year2 == 0x7FFFFFFFFFFFFFFFLL);
+    if (year3 == year4)
     {
       v20 = 1;
     }
@@ -112,13 +112,13 @@ LABEL_7:
   return v19;
 }
 
-- (BOOL)isValue:(id)a3 preferredToUnifiedValue:(id)a4
+- (BOOL)isValue:(id)value preferredToUnifiedValue:(id)unifiedValue
 {
-  v5 = a4;
-  v6 = [a3 year];
-  v7 = [v5 year];
+  unifiedValueCopy = unifiedValue;
+  year = [value year];
+  year2 = [unifiedValueCopy year];
 
-  return v6 != 0x7FFFFFFFFFFFFFFFLL && v7 == 0x7FFFFFFFFFFFFFFFLL;
+  return year != 0x7FFFFFFFFFFFFFFFLL && year2 == 0x7FFFFFFFFFFFFFFFLL;
 }
 
 - (id)standardLabels
@@ -142,11 +142,11 @@ uint64_t __36__CNDatesDescription_standardLabels__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (id)CNLabeledValueValueFromABMultiValueValueBytes:(char *)a3 length:(unint64_t)a4
+- (id)CNLabeledValueValueFromABMultiValueValueBytes:(char *)bytes length:(unint64_t)length
 {
-  if (a4 == 8)
+  if (length == 8)
   {
-    v5 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:*a3];
+    v5 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:*bytes];
     v6 = [(CNDatesDescription *)self CNLabeledValueValueFromABMultiValueValue:v5];
   }
 
@@ -159,19 +159,19 @@ uint64_t __36__CNDatesDescription_standardLabels__block_invoke()
   return v6;
 }
 
-- (BOOL)abPropertyID:(int *)a3
+- (BOOL)abPropertyID:(int *)d
 {
-  if (a3)
+  if (d)
   {
-    *a3 = *MEMORY[0x1E698A300];
+    *d = *MEMORY[0x1E698A300];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
-- (void)ABMultiValueValueFromCNLabeledValueValue:(id)a3
+- (void)ABMultiValueValueFromCNLabeledValueValue:(id)value
 {
-  v3 = [MEMORY[0x1E6996698] dateFromDayComponents:a3];
+  v3 = [MEMORY[0x1E6996698] dateFromDayComponents:value];
   v4 = v3;
   if (v3 && (v5 = CFRetain(v3)) != 0)
   {

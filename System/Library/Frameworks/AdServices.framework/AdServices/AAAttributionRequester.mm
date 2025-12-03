@@ -1,18 +1,18 @@
 @interface AAAttributionRequester
 + (id)_createInternalError;
-+ (int64_t)_findBucketForDaemonRunningTime:(double)a3;
-+ (int64_t)_tokenStatusFromTokenSource:(int64_t)a3;
-- (void)_reportTokenStatus:(int64_t)a3 storeFront:(id)a4 daemonRunningTime:(double)a5;
-- (void)_sendAnalyticsAndInvalidateConnection:(unint64_t)a3 end:(unint64_t)a4;
++ (int64_t)_findBucketForDaemonRunningTime:(double)time;
++ (int64_t)_tokenStatusFromTokenSource:(int64_t)source;
+- (void)_reportTokenStatus:(int64_t)status storeFront:(id)front daemonRunningTime:(double)time;
+- (void)_sendAnalyticsAndInvalidateConnection:(unint64_t)connection end:(unint64_t)end;
 @end
 
 @implementation AAAttributionRequester
 
-+ (int64_t)_findBucketForDaemonRunningTime:(double)a3
++ (int64_t)_findBucketForDaemonRunningTime:(double)time
 {
   for (result = 0; result != 10; ++result)
   {
-    if (qword_236A45108[result] >= (a3 * 1000.0))
+    if (qword_236A45108[result] >= (time * 1000.0))
     {
       break;
     }
@@ -21,10 +21,10 @@
   return result;
 }
 
-- (void)_reportTokenStatus:(int64_t)a3 storeFront:(id)a4 daemonRunningTime:(double)a5
+- (void)_reportTokenStatus:(int64_t)status storeFront:(id)front daemonRunningTime:(double)time
 {
   v37 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  frontCopy = front;
   v8 = APPerfLogForCategory();
   v15 = objc_msgSend_intervalId(self, v9, v10, v11, v12, v13, v14);
   if ((v15 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
@@ -35,29 +35,29 @@
       *buf = 134349312;
       v34 = objc_msgSend_intervalId(self, v17, v18, v19, v20, v21, v22);
       v35 = 2050;
-      v36 = a3;
+      statusCopy = status;
       _os_signpost_emit_with_name_impl(&dword_236A42000, v8, OS_SIGNPOST_EVENT, v16, "Token Status", "Token Status id=%{public, name=id}lld status=%{public, name=status}ld", buf, 0x16u);
     }
   }
 
   v29 = objc_msgSend_now(MEMORY[0x277CBEAA8], v23, v24, v25, v26, v27, v28);
-  v30 = v7;
+  v30 = frontCopy;
   v31 = v29;
   AnalyticsSendEventLazy();
 
   v32 = *MEMORY[0x277D85DE8];
 }
 
-+ (int64_t)_tokenStatusFromTokenSource:(int64_t)a3
++ (int64_t)_tokenStatusFromTokenSource:(int64_t)source
 {
-  if ((a3 - 1) >= 3)
+  if ((source - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3 + 2;
+    return source + 2;
   }
 }
 
@@ -75,15 +75,15 @@
   return v9;
 }
 
-- (void)_sendAnalyticsAndInvalidateConnection:(unint64_t)a3 end:(unint64_t)a4
+- (void)_sendAnalyticsAndInvalidateConnection:(unint64_t)connection end:(unint64_t)end
 {
-  v10 = objc_msgSend_remoteProxy(self, a2, a3, a4, v4, v5, v6);
+  v10 = objc_msgSend_remoteProxy(self, a2, connection, end, v4, v5, v6);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = sub_236A44948;
   v14[3] = &unk_278A03D48;
   v14[4] = self;
-  objc_msgSend_attributionAnalytics_end_Handler_(v10, v11, a3, a4, v14, v12, v13);
+  objc_msgSend_attributionAnalytics_end_Handler_(v10, v11, connection, end, v14, v12, v13);
 }
 
 @end

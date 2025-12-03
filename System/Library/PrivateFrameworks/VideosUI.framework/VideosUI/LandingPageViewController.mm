@@ -1,64 +1,64 @@
 @interface LandingPageViewController
-- (_TtC8VideosUI25LandingPageViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)handleNLSBubbleTipDidDismissWithNotification:(id)a3;
-- (void)vui_viewDidDisappear:(BOOL)a3;
+- (_TtC8VideosUI25LandingPageViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)handleNLSBubbleTipDidDismissWithNotification:(id)notification;
+- (void)vui_viewDidDisappear:(BOOL)disappear;
 - (void)vui_viewDidLayoutSubviews;
-- (void)vui_viewWillAppear:(BOOL)a3;
-- (void)vui_viewWillDisappear:(BOOL)a3;
-- (void)vui_willMoveToParentViewController:(id)a3;
+- (void)vui_viewWillAppear:(BOOL)appear;
+- (void)vui_viewWillDisappear:(BOOL)disappear;
+- (void)vui_willMoveToParentViewController:(id)controller;
 @end
 
 @implementation LandingPageViewController
 
-- (void)vui_viewWillAppear:(BOOL)a3
+- (void)vui_viewWillAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   v4 = OUTLINED_FUNCTION_10_0();
   sub_1E3F58644(v4);
 }
 
-- (void)vui_viewWillDisappear:(BOOL)a3
+- (void)vui_viewWillDisappear:(BOOL)disappear
 {
-  v3 = self;
+  selfCopy = self;
   v4 = OUTLINED_FUNCTION_10_0();
   sub_1E3F58CF4(v4);
 }
 
-- (void)vui_viewDidDisappear:(BOOL)a3
+- (void)vui_viewDidDisappear:(BOOL)disappear
 {
-  v3 = self;
+  selfCopy = self;
   v4 = OUTLINED_FUNCTION_10_0();
   sub_1E3F58DB0(v4);
 }
 
 - (void)vui_viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3F58EB8();
 }
 
-- (void)vui_willMoveToParentViewController:(id)a3
+- (void)vui_willMoveToParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  sub_1E3F5A678(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1E3F5A678(controller);
 }
 
-- (_TtC8VideosUI25LandingPageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8VideosUI25LandingPageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1E4205F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1E3F5AD08();
 }
 
-- (void)handleNLSBubbleTipDidDismissWithNotification:(id)a3
+- (void)handleNLSBubbleTipDidDismissWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
+  notificationCopy = notification;
+  selfCopy = self;
   sub_1E3F5C1A4();
 }
 

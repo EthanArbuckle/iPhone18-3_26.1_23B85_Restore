@@ -1,11 +1,11 @@
 @interface MSPRidesharingTrip
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MSPRidesharingTrip
@@ -16,83 +16,83 @@
   v8.receiver = self;
   v8.super_class = MSPRidesharingTrip;
   v4 = [(MSPRidesharingTrip *)&v8 description];
-  v5 = [(MSPRidesharingTrip *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MSPRidesharingTrip *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   startWaypoint = self->_startWaypoint;
   if (startWaypoint)
   {
-    v5 = [(GEOComposedWaypoint *)startWaypoint dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"startWaypoint"];
+    dictionaryRepresentation = [(GEOComposedWaypoint *)startWaypoint dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"startWaypoint"];
   }
 
   endWaypoint = self->_endWaypoint;
   if (endWaypoint)
   {
-    v7 = [(GEOComposedWaypoint *)endWaypoint dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"endWaypoint"];
+    dictionaryRepresentation2 = [(GEOComposedWaypoint *)endWaypoint dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"endWaypoint"];
   }
 
   unknownFields = self->_unknownFields;
   if (unknownFields)
   {
-    v9 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"Unknown Fields"];
+    dictionaryRepresentation3 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"Unknown Fields"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_startWaypoint)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_endWaypoint)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
-  [(PBUnknownFields *)self->_unknownFields writeTo:v4];
+  [(PBUnknownFields *)self->_unknownFields writeTo:toCopy];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_startWaypoint)
   {
-    [v4 setStartWaypoint:?];
-    v4 = v5;
+    [toCopy setStartWaypoint:?];
+    toCopy = v5;
   }
 
   if (self->_endWaypoint)
   {
     [v5 setEndWaypoint:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(GEOComposedWaypoint *)self->_startWaypoint copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(GEOComposedWaypoint *)self->_startWaypoint copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(GEOComposedWaypoint *)self->_endWaypoint copyWithZone:a3];
+  v8 = [(GEOComposedWaypoint *)self->_endWaypoint copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
@@ -100,13 +100,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((startWaypoint = self->_startWaypoint, !(startWaypoint | v4[3])) || -[GEOComposedWaypoint isEqual:](startWaypoint, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((startWaypoint = self->_startWaypoint, !(startWaypoint | equalCopy[3])) || -[GEOComposedWaypoint isEqual:](startWaypoint, "isEqual:")))
   {
     endWaypoint = self->_endWaypoint;
-    if (endWaypoint | v4[2])
+    if (endWaypoint | equalCopy[2])
     {
       v7 = [(GEOComposedWaypoint *)endWaypoint isEqual:?];
     }
@@ -125,12 +125,12 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   startWaypoint = self->_startWaypoint;
-  v6 = v4[3];
-  v9 = v4;
+  v6 = fromCopy[3];
+  v9 = fromCopy;
   if (startWaypoint)
   {
     if (!v6)
@@ -151,10 +151,10 @@
     [(MSPRidesharingTrip *)self setStartWaypoint:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   endWaypoint = self->_endWaypoint;
-  v8 = v4[2];
+  v8 = fromCopy[2];
   if (endWaypoint)
   {
     if (v8)

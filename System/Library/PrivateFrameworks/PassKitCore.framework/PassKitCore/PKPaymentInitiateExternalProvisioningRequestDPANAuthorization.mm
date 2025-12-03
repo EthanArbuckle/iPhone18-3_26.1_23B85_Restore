@@ -1,17 +1,17 @@
 @interface PKPaymentInitiateExternalProvisioningRequestDPANAuthorization
-- (PKPaymentInitiateExternalProvisioningRequestDPANAuthorization)initWithDPANID:(id)a3 signatureData:(id)a4 signatureInfo:(id)a5;
+- (PKPaymentInitiateExternalProvisioningRequestDPANAuthorization)initWithDPANID:(id)d signatureData:(id)data signatureInfo:(id)info;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation PKPaymentInitiateExternalProvisioningRequestDPANAuthorization
 
-- (PKPaymentInitiateExternalProvisioningRequestDPANAuthorization)initWithDPANID:(id)a3 signatureData:(id)a4 signatureInfo:(id)a5
+- (PKPaymentInitiateExternalProvisioningRequestDPANAuthorization)initWithDPANID:(id)d signatureData:(id)data signatureInfo:(id)info
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = 0;
-  if (v9 && v10)
+  dCopy = d;
+  dataCopy = data;
+  infoCopy = info;
+  selfCopy = 0;
+  if (dCopy && dataCopy)
   {
     v16.receiver = self;
     v16.super_class = PKPaymentInitiateExternalProvisioningRequestDPANAuthorization;
@@ -19,16 +19,16 @@
     p_isa = &v13->super.isa;
     if (v13)
     {
-      objc_storeStrong(&v13->_dpanIdentifier, a3);
-      objc_storeStrong(p_isa + 2, a4);
-      objc_storeStrong(p_isa + 3, a5);
+      objc_storeStrong(&v13->_dpanIdentifier, d);
+      objc_storeStrong(p_isa + 2, data);
+      objc_storeStrong(p_isa + 3, info);
     }
 
     self = p_isa;
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (id)dictionaryRepresentation
@@ -44,12 +44,12 @@
   v5 = [(NSData *)signatureData base64EncodedStringWithOptions:0];
   v13[2] = v5;
   v12[3] = @"ECDSA";
-  v6 = [(PKSecureElementSignatureInfo *)self->_signatureInfo certificates];
-  v7 = [v6 certificateOfType:0];
+  certificates = [(PKSecureElementSignatureInfo *)self->_signatureInfo certificates];
+  v7 = [certificates certificateOfType:0];
   v13[3] = v7;
   v12[4] = @"RSA";
-  v8 = [(PKSecureElementSignatureInfo *)self->_signatureInfo certificates];
-  v9 = [v8 certificateOfType:1];
+  certificates2 = [(PKSecureElementSignatureInfo *)self->_signatureInfo certificates];
+  v9 = [certificates2 certificateOfType:1];
   v13[4] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:5];
 

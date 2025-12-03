@@ -1,22 +1,22 @@
 @interface NSStoreMapNode
-- (BOOL)isEqual:(id)a3;
-- (NSStoreMapNode)initWithCoder:(id)a3;
-- (NSStoreMapNode)initWithObjectID:(id)a3;
-- (void)_setMap:(uint64_t)a1;
+- (BOOL)isEqual:(id)equal;
+- (NSStoreMapNode)initWithCoder:(id)coder;
+- (NSStoreMapNode)initWithObjectID:(id)d;
+- (void)_setMap:(uint64_t)map;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSStoreMapNode
 
-- (NSStoreMapNode)initWithObjectID:(id)a3
+- (NSStoreMapNode)initWithObjectID:(id)d
 {
   v6.receiver = self;
   v6.super_class = NSStoreMapNode;
   v4 = [(NSStoreMapNode *)&v6 init];
   if (v4)
   {
-    v4->_objectID = a3;
+    v4->_objectID = d;
     v4->_relatedNodes = [objc_allocWithZone(MEMORY[0x1E695DF90]) init];
     v4->_map = 0;
     v4->_version = 1;
@@ -25,13 +25,13 @@
   return v4;
 }
 
-- (NSStoreMapNode)initWithCoder:(id)a3
+- (NSStoreMapNode)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = NSStoreMapNode;
   v4 = [(NSStoreMapNode *)&v9 init];
   v4->_version = 1;
-  v5 = [a3 decodeInt64ForKey:@"NSPrimaryKey64"];
+  v5 = [coder decodeInt64ForKey:@"NSPrimaryKey64"];
   if (v5)
   {
     v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedLongLong:v5];
@@ -39,45 +39,45 @@
 
   else
   {
-    v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSKey"];
+    v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSKey"];
   }
 
   v4->_objectID = v6;
   if (!v6)
   {
-    [a3 failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 4864, &unk_1EF435710)}];
+    [coder failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 4864, &unk_1EF435710)}];
   }
 
-  v7 = [a3 decodeObjectOfClasses:+[_PFRoutines attributeClassesForSecureCoding]() forKey:@"NSRelatedNodes"];
+  v7 = [coder decodeObjectOfClasses:+[_PFRoutines attributeClassesForSecureCoding]() forKey:@"NSRelatedNodes"];
   v4->_relatedNodes = v7;
   if (!v7)
   {
     v4->_relatedNodes = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  v4->_entityName = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSEntityName"];
+  v4->_entityName = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSEntityName"];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = [(NSManagedObjectID *)self->_objectID _referenceData];
-  if ([v5 isNSNumber])
+  _referenceData = [(NSManagedObjectID *)self->_objectID _referenceData];
+  if ([_referenceData isNSNumber])
   {
-    [a3 encodeInt64:objc_msgSend(v5 forKey:{"unsignedLongLongValue"), @"NSPrimaryKey64"}];
+    [coder encodeInt64:objc_msgSend(_referenceData forKey:{"unsignedLongLongValue"), @"NSPrimaryKey64"}];
   }
 
   else
   {
-    [a3 encodeObject:v5 forKey:@"NSKey"];
+    [coder encodeObject:_referenceData forKey:@"NSKey"];
   }
 
-  [a3 encodeObject:-[NSEntityDescription name](-[NSManagedObjectID entity](self->_objectID forKey:{"entity"), "name"), @"NSEntityName"}];
+  [coder encodeObject:-[NSEntityDescription name](-[NSManagedObjectID entity](self->_objectID forKey:{"entity"), "name"), @"NSEntityName"}];
   if ([(NSMutableDictionary *)self->_relatedNodes count])
   {
     relatedNodes = self->_relatedNodes;
 
-    [a3 encodeObject:relatedNodes forKey:@"NSRelatedNodes"];
+    [coder encodeObject:relatedNodes forKey:@"NSRelatedNodes"];
   }
 }
 
@@ -93,7 +93,7 @@
   [(NSStoreMapNode *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = objc_opt_class();
   if (v5 != objc_opt_class() || ![-[NSStoreMapNode objectID](self "objectID")])
@@ -104,7 +104,7 @@
   if (!self)
   {
     relatedNodes = 0;
-    if (a3)
+    if (equal)
     {
       goto LABEL_5;
     }
@@ -115,24 +115,24 @@ LABEL_11:
   }
 
   relatedNodes = self->_relatedNodes;
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_11;
   }
 
 LABEL_5:
-  v7 = *(a3 + 3);
+  v7 = *(equal + 3);
 LABEL_6:
 
   return [(NSMutableDictionary *)relatedNodes isEqual:v7];
 }
 
-- (void)_setMap:(uint64_t)a1
+- (void)_setMap:(uint64_t)map
 {
-  if (a1)
+  if (map)
   {
-    *(a1 + 8) = a2;
-    if (*(a1 + 32))
+    *(map + 8) = a2;
+    if (*(map + 32))
     {
       if (a2)
       {
@@ -144,21 +144,21 @@ LABEL_6:
         v3 = 0;
       }
 
-      v4 = *(a1 + 16);
+      v4 = *(map + 16);
       v5 = [objc_msgSend(v3 "_persistentStoreCoordinator")];
       v6 = v5;
-      if (!v5 || (v7 = [*(v5 + 32) objectForKey:*(a1 + 32)]) == 0)
+      if (!v5 || (v7 = [*(v5 + 32) objectForKey:*(map + 32)]) == 0)
       {
-        v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Can't find entity %@ in model %@", *(a1 + 32), v6];
+        v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Can't find entity %@ in model %@", *(map + 32), v6];
 
-        *(a1 + 32) = 0;
+        *(map + 32) = 0;
         v9 = [_NSCoreDataException exceptionWithName:134020 code:v8 reason:0 userInfo:?];
         objc_exception_throw(v9);
       }
 
-      *(a1 + 16) = [objc_alloc(objc_msgSend(v3 objectIDFactoryForEntity:{v7)), "initWithObject:", v4}];
+      *(map + 16) = [objc_alloc(objc_msgSend(v3 objectIDFactoryForEntity:{v7)), "initWithObject:", v4}];
 
-      *(a1 + 32) = 0;
+      *(map + 32) = 0;
     }
   }
 }

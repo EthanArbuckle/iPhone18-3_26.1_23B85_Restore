@@ -1,7 +1,7 @@
 @interface SSSAnimationParameters
 - (SSSAnimationParameters)init;
-- (id)_animationForKeyPath:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_animationForKeyPath:(id)path;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)timingParameters;
 @end
 
@@ -16,9 +16,9 @@
   return v2;
 }
 
-- (id)_animationForKeyPath:(id)a3
+- (id)_animationForKeyPath:(id)path
 {
-  v4 = [(SSSAnimationParameters *)self animationUsingParametersForKeyPath:a3];
+  v4 = [(SSSAnimationParameters *)self animationUsingParametersForKeyPath:path];
   [(SSSAnimationParameters *)self duration];
   [v4 setDuration:?];
   [v4 speed];
@@ -37,7 +37,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [(SSSAnimationParameters *)self duration];

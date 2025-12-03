@@ -3,8 +3,8 @@
 - (PHNetworkFetcher)init;
 - (void)dealloc;
 - (void)fetchNetworkList;
-- (void)selectNetwork:(id)a3;
-- (void)setState:(unint64_t)a3;
+- (void)selectNetwork:(id)network;
+- (void)setState:(unint64_t)state;
 - (void)updateNetworkSelectionStatus;
 @end
 
@@ -24,9 +24,9 @@
       _os_log_impl(&dword_23C12D000, v3, OS_LOG_TYPE_DEFAULT, "PHNetworkListFetcher initialized", buf, 2u);
     }
 
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     mutableNetworks = v2->_mutableNetworks;
-    v2->_mutableNetworks = v4;
+    v2->_mutableNetworks = array;
 
     v2->_state = 1;
     objc_initWeak(buf, v2);
@@ -201,8 +201,8 @@ void __24__PHNetworkFetcher_init__block_invoke(uint64_t a1, void *a2, void *a3)
 
 - (NSArray)networks
 {
-  v2 = [(PHNetworkFetcher *)self mutableNetworks];
-  v3 = [v2 copy];
+  mutableNetworks = [(PHNetworkFetcher *)self mutableNetworks];
+  v3 = [mutableNetworks copy];
 
   return v3;
 }
@@ -220,8 +220,8 @@ void __24__PHNetworkFetcher_init__block_invoke(uint64_t a1, void *a2, void *a3)
   {
     [(NSMutableArray *)self->_mutableNetworks removeAllObjects];
     [(PHNetworkFetcher *)self setState:2];
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 postNotificationName:@"PHNetworkFetcherNetworksChangedNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"PHNetworkFetcherNetworksChangedNotification" object:self];
 
     server = self->_server;
     _CTServerConnectionFetchNetworkList();
@@ -247,8 +247,8 @@ void __24__PHNetworkFetcher_init__block_invoke(uint64_t a1, void *a2, void *a3)
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = [(PHNetworkFetcher *)self mutableNetworks];
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v27 count:16];
+  mutableNetworks = [(PHNetworkFetcher *)self mutableNetworks];
+  v7 = [mutableNetworks countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v7)
   {
     v8 = v7;
@@ -261,12 +261,12 @@ void __24__PHNetworkFetcher_init__block_invoke(uint64_t a1, void *a2, void *a3)
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(mutableNetworks);
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
-        v13 = [v12 code];
-        v14 = [v13 isEqualToString:v5];
+        code = [v12 code];
+        v14 = [code isEqualToString:v5];
 
         if (v14)
         {
@@ -302,54 +302,54 @@ void __24__PHNetworkFetcher_init__block_invoke(uint64_t a1, void *a2, void *a3)
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v21 objects:v27 count:16];
+      v8 = [mutableNetworks countByEnumeratingWithState:&v21 objects:v27 count:16];
     }
 
     while (v8);
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 postNotificationName:@"PHNetworkFetcherNetworkSelectionChangedNotification" object:0];
+    mutableNetworks = [MEMORY[0x277CCAB98] defaultCenter];
+    [mutableNetworks postNotificationName:@"PHNetworkFetcherNetworkSelectionChangedNotification" object:0];
     v4 = v20;
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   v10 = *MEMORY[0x277D85DE8];
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     v5 = PHDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134217984;
-      v9 = a3;
+      stateCopy = state;
       _os_log_impl(&dword_23C12D000, v5, OS_LOG_TYPE_DEFAULT, "PHNetworkFetcher state changed to %lu", &v8, 0xCu);
     }
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 postNotificationName:@"PHNetworkFetcherStateChangedNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"PHNetworkFetcherStateChangedNotification" object:self];
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)selectNetwork:(id)a3
+- (void)selectNetwork:(id)network
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  networkCopy = network;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = networkCopy;
     _os_log_impl(&dword_23C12D000, v5, OS_LOG_TYPE_DEFAULT, "PHNetworkFetcher asked to select network %@", &v8, 0xCu);
   }
 
   [(PHNetworkFetcher *)self server];
-  v6 = [v4 dictionaryRepresentation];
+  dictionaryRepresentation = [networkCopy dictionaryRepresentation];
   _CTServerConnectionSelectNetwork();
 
   [(PHNetworkFetcher *)self updateNetworkSelectionStatus];

@@ -93,7 +93,7 @@ LABEL_22:
       break;
   }
 
-  v9 = [a1 mui_imageWithSystemSymbolName:v5];
+  v9 = [self mui_imageWithSystemSymbolName:v5];
 
   return v9;
 }
@@ -105,7 +105,7 @@ LABEL_22:
   v9 = MEMORY[0x277D755B8];
   v10 = MEMORY[0x277D755D0];
   v11 = a3;
-  v12 = [v10 configurationWithScale:{objc_msgSend(a1, "_imageSymbolScaleFrom:", a5)}];
+  v12 = [v10 configurationWithScale:{objc_msgSend(self, "_imageSymbolScaleFrom:", a5)}];
   v13 = [v9 systemImageNamed:v11 withConfiguration:v12];
 
   if (v8)
@@ -127,7 +127,7 @@ LABEL_22:
   v17[1] = *MEMORY[0x277D85DE8];
   v8 = a3;
   v9 = a4;
-  v10 = [MEMORY[0x277D755D0] configurationWithScale:{objc_msgSend(a1, "_imageSymbolScaleFrom:", a5)}];
+  v10 = [MEMORY[0x277D755D0] configurationWithScale:{objc_msgSend(self, "_imageSymbolScaleFrom:", a5)}];
   if (v9)
   {
     v11 = MEMORY[0x277D755D0];
@@ -162,7 +162,7 @@ LABEL_22:
   v4 = MEMORY[0x277CCA8D8];
   v5 = a3;
   v6 = [v4 bundleForClass:objc_opt_class()];
-  v7 = [a1 mui_imageNamed:v5 inBundle:v6];
+  v7 = [self mui_imageNamed:v5 inBundle:v6];
 
   return v7;
 }

@@ -1,14 +1,14 @@
 @interface MarketingDynamicViewController
-- (_TtC16FitnessMarketing30MarketingDynamicViewController)initWithBag:(id)a3 URL:(id)a4;
-- (_TtC16FitnessMarketing30MarketingDynamicViewController)initWithBag:(id)a3 bagValue:(id)a4;
-- (_TtC16FitnessMarketing30MarketingDynamicViewController)initWithBag:(id)a3 javaScriptBagValue:(id)a4;
-- (_TtC16FitnessMarketing30MarketingDynamicViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)willMoveToParentViewController:(id)a3;
+- (_TtC16FitnessMarketing30MarketingDynamicViewController)initWithBag:(id)bag URL:(id)l;
+- (_TtC16FitnessMarketing30MarketingDynamicViewController)initWithBag:(id)bag bagValue:(id)value;
+- (_TtC16FitnessMarketing30MarketingDynamicViewController)initWithBag:(id)bag javaScriptBagValue:(id)value;
+- (_TtC16FitnessMarketing30MarketingDynamicViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation MarketingDynamicViewController
 
-- (_TtC16FitnessMarketing30MarketingDynamicViewController)initWithBag:(id)a3 URL:(id)a4
+- (_TtC16FitnessMarketing30MarketingDynamicViewController)initWithBag:(id)bag URL:(id)l
 {
   v4 = sub_20C64CF10();
   v5 = *(*(v4 - 8) + 64);
@@ -19,28 +19,28 @@
   return MarketingDynamicViewController.init(bag:url:)(v8, v7);
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  MarketingDynamicViewController.willMove(toParent:)(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  MarketingDynamicViewController.willMove(toParent:)(controller);
 }
 
-- (_TtC16FitnessMarketing30MarketingDynamicViewController)initWithBag:(id)a3 bagValue:(id)a4
-{
-  result = _swift_stdlib_reportUnimplementedInitializer();
-  __break(1u);
-  return result;
-}
-
-- (_TtC16FitnessMarketing30MarketingDynamicViewController)initWithBag:(id)a3 javaScriptBagValue:(id)a4
+- (_TtC16FitnessMarketing30MarketingDynamicViewController)initWithBag:(id)bag bagValue:(id)value
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC16FitnessMarketing30MarketingDynamicViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16FitnessMarketing30MarketingDynamicViewController)initWithBag:(id)bag javaScriptBagValue:(id)value
+{
+  result = _swift_stdlib_reportUnimplementedInitializer();
+  __break(1u);
+  return result;
+}
+
+- (_TtC16FitnessMarketing30MarketingDynamicViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

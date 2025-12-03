@@ -1,63 +1,63 @@
 @interface _NUVideoAsset
-- (_NUVideoAsset)initWithIdentifier:(id)a3;
-- (_NUVideoAsset)initWithVideoURL:(id)a3;
-- (_NUVideoAsset)initWithVideoURL:(id)a3 identifier:(id)a4;
-- (id)_loadMediaWithOptions:(id)a3 error:(id *)a4;
-- (id)avAssetTrackForResourceID:(id)a3 error:(id *)a4;
+- (_NUVideoAsset)initWithIdentifier:(id)identifier;
+- (_NUVideoAsset)initWithVideoURL:(id)l;
+- (_NUVideoAsset)initWithVideoURL:(id)l identifier:(id)identifier;
+- (id)_loadMediaWithOptions:(id)options error:(id *)error;
+- (id)avAssetTrackForResourceID:(id)d error:(id *)error;
 @end
 
 @implementation _NUVideoAsset
 
-- (id)avAssetTrackForResourceID:(id)a3 error:(id *)a4
+- (id)avAssetTrackForResourceID:(id)d error:(id *)error
 {
-  v5 = a3;
+  dCopy = d;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 track];
+    track = [dCopy track];
   }
 
   else
   {
-    [NUError unknownError:@"Unknown asset resource" object:v5];
-    *a4 = v6 = 0;
+    [NUError unknownError:@"Unknown asset resource" object:dCopy];
+    *error = track = 0;
   }
 
-  return v6;
+  return track;
 }
 
-- (id)_loadMediaWithOptions:(id)a3 error:(id *)a4
+- (id)_loadMediaWithOptions:(id)options error:(id *)error
 {
-  v5 = self;
+  selfCopy = self;
   v123 = *MEMORY[0x1E69E9840];
-  v6 = [(_NUVideoAsset *)self videoURL];
+  videoURL = [(_NUVideoAsset *)self videoURL];
   v120 = 0;
   v7 = *MEMORY[0x1E695DAA0];
   v119 = 0;
-  v8 = [v6 getResourceValue:&v120 forKey:v7 error:&v119];
+  v8 = [videoURL getResourceValue:&v120 forKey:v7 error:&v119];
   v9 = v120;
   v10 = v119;
   if ((v8 & 1) == 0)
   {
-    v79 = [NUError errorWithCode:1 reason:@"Failed to get URL resource value" object:v6 underlyingError:v10];
+    v79 = [NUError errorWithCode:1 reason:@"Failed to get URL resource value" object:videoURL underlyingError:v10];
 LABEL_38:
     v29 = 0;
-    *a4 = v79;
+    *error = v79;
     goto LABEL_55;
   }
 
   if ([v9 conformsToType:*MEMORY[0x1E6982FF8]])
   {
-    v11 = v5;
-    v12 = [MEMORY[0x1E696AC08] defaultManager];
-    v13 = [v6 path];
+    v11 = selfCopy;
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [videoURL path];
     v118 = v10;
-    v14 = [v12 destinationOfSymbolicLinkAtPath:v13 error:&v118];
+    v14 = [defaultManager destinationOfSymbolicLinkAtPath:path error:&v118];
     v15 = v118;
 
     if (v14)
     {
-      v16 = [MEMORY[0x1E695DFF8] fileURLWithPath:v14 relativeToURL:v6];
+      v16 = [MEMORY[0x1E695DFF8] fileURLWithPath:v14 relativeToURL:videoURL];
 
       v116 = 0;
       v117 = 0;
@@ -68,24 +68,24 @@ LABEL_38:
       if (v17)
       {
 
-        v6 = v16;
+        videoURL = v16;
         v9 = v18;
-        v5 = v11;
+        selfCopy = v11;
         goto LABEL_6;
       }
 
       v80 = [NUError errorWithCode:1 reason:@"Failed to get resolved URL resource value" object:v16 underlyingError:v10];
-      v6 = v16;
+      videoURL = v16;
       v9 = v18;
     }
 
     else
     {
-      v80 = [NUError errorWithCode:1 reason:@"Failed to resolve symlink" object:v6 underlyingError:v15];
+      v80 = [NUError errorWithCode:1 reason:@"Failed to resolve symlink" object:videoURL underlyingError:v15];
       v10 = v15;
     }
 
-    *a4 = v80;
+    *error = v80;
 
     v29 = 0;
     goto LABEL_55;
@@ -99,24 +99,24 @@ LABEL_6:
   }
 
   v19 = [NUVideoFileSourceDefinition alloc];
-  v20 = [(_NUVideoAsset *)v5 videoURL];
-  v21 = [v9 identifier];
-  v22 = [(NUFileSourceDefinition *)v19 initWithURL:v20 UTI:v21];
+  videoURL2 = [(_NUVideoAsset *)selfCopy videoURL];
+  identifier = [v9 identifier];
+  v22 = [(NUFileSourceDefinition *)v19 initWithURL:videoURL2 UTI:identifier];
 
-  v23 = [(_NUAsset *)v5 identifier];
+  identifier2 = [(_NUAsset *)selfCopy identifier];
   v115 = 0;
-  v24 = [(NUSingleSourceDefinition *)v22 sourceContainerNodeWithIdentifier:v23 error:&v115];
+  v24 = [(NUSingleSourceDefinition *)v22 sourceContainerNodeWithIdentifier:identifier2 error:&v115];
   v25 = v115;
 
-  sourceContainerNode = v5->_sourceContainerNode;
-  v5->_sourceContainerNode = v24;
+  sourceContainerNode = selfCopy->_sourceContainerNode;
+  selfCopy->_sourceContainerNode = v24;
 
-  if (v5->_sourceContainerNode)
+  if (selfCopy->_sourceContainerNode)
   {
     v27 = objc_alloc_init(NURenderPipelineState);
     [(NURenderPipelineState *)v27 setMediaComponentType:2];
     [(NURenderPipelineState *)v27 setEvaluationMode:0];
-    v28 = v5->_sourceContainerNode;
+    v28 = selfCopy->_sourceContainerNode;
     v114 = 0;
     v29 = [(NUSourceContainerNode *)v28 sourceNodeForPipelineState:v27 error:&v114];
     v30 = v114;
@@ -140,7 +140,7 @@ LABEL_6:
         v92 = v34;
         if (v34)
         {
-          v36 = v5->_sourceContainerNode;
+          v36 = selfCopy->_sourceContainerNode;
           v111 = 0;
           v37 = [(NUSourceContainerNode *)v36 preparedSourceNodeForPipelineState:v27 pipelineSettings:MEMORY[0x1E695E0F8] sourceSettings:MEMORY[0x1E695E0F8] error:&v111];
           v32 = v111;
@@ -161,17 +161,17 @@ LABEL_6:
             if (os_log_type_enabled(_NULogger, OS_LOG_TYPE_DEFAULT))
             {
               v40 = v39;
-              v41 = [v38 auxiliaryVideoTrackProperties];
+              auxiliaryVideoTrackProperties = [v38 auxiliaryVideoTrackProperties];
               *buf = 138412546;
               *&buf[4] = v38;
               *&buf[12] = 2112;
-              *&buf[14] = v41;
+              *&buf[14] = auxiliaryVideoTrackProperties;
               _os_log_impl(&dword_1C0184000, v40, OS_LOG_TYPE_DEFAULT, "Video Properties: %@, Aux Props: %@", buf, 0x16u);
             }
 
             if (v38)
             {
-              v88 = v6;
+              v88 = videoURL;
               v89 = v9;
               obja = objc_alloc_init(MEMORY[0x1E695DF90]);
               v42 = +[NUChannel primary];
@@ -182,32 +182,32 @@ LABEL_6:
               v47 = v27;
               v49 = v48;
               v50 = v38;
-              v51 = [v38 orientation];
+              orientation = [v38 orientation];
               [v50 duration];
-              v84 = [(_NUMediaGeometry *)v44 initWithSize:v45 orientation:v49 duration:v51, buf];
+              v84 = [(_NUMediaGeometry *)v44 initWithSize:v45 orientation:v49 duration:orientation, buf];
               v85 = v43;
-              v83 = [[_NUVideoAssetMedia alloc] initWithVideoAsset:v5 track:v92 format:v43 geometry:v84];
+              v83 = [[_NUVideoAssetMedia alloc] initWithVideoAsset:selfCopy track:v92 format:v43 geometry:v84];
               v52 = [[_NURenderMedia alloc] initWithBaseMedia:v83 renderNode:v46];
               v86 = v42;
-              v53 = [v42 name];
+              name = [v42 name];
               v82 = v52;
-              [obja setObject:v52 forKeyedSubscript:v53];
+              [obja setObject:v52 forKeyedSubscript:name];
 
-              v54 = [v50 auxiliaryVideoTrackProperties];
+              auxiliaryVideoTrackProperties2 = [v50 auxiliaryVideoTrackProperties];
               v104[0] = MEMORY[0x1E69E9820];
               v104[1] = 3221225472;
               v104[2] = __45___NUVideoAsset__loadMediaWithOptions_error___block_invoke;
               v104[3] = &unk_1E810A0C0;
               v105 = v47;
-              v106 = v5;
-              v55 = v5;
+              v106 = selfCopy;
+              v55 = selfCopy;
               v56 = v93;
               v107 = v56;
               v87 = v50;
               v108 = v50;
               v57 = obja;
               v109 = v57;
-              [v54 enumerateKeysAndObjectsUsingBlock:v104];
+              [auxiliaryVideoTrackProperties2 enumerateKeysAndObjectsUsingBlock:v104];
 
               v102 = 0u;
               v103 = 0u;
@@ -234,8 +234,8 @@ LABEL_6:
                   }
 
                   v63 = *(*(&v100 + 1) + 8 * i);
-                  v64 = [v63 mediaType];
-                  v65 = [v64 isEqualToString:v61];
+                  mediaType = [v63 mediaType];
+                  v65 = [mediaType isEqualToString:v61];
 
                   if (v65)
                   {
@@ -262,8 +262,8 @@ LABEL_6:
 
                   else
                   {
-                    v68 = [v63 mediaType];
-                    v69 = [v68 isEqualToString:v96];
+                    mediaType2 = [v63 mediaType];
+                    v69 = [mediaType2 isEqualToString:v96];
 
                     if (!v69)
                     {
@@ -300,11 +300,11 @@ LABEL_6:
 LABEL_36:
 
                   v76 = [_NUContainerMedia alloc];
-                  v77 = [(_NUMedia *)v83 geometry];
-                  v78 = [(_NUContainerMedia *)v76 initWithContainerType:2 components:v57 geometry:v77];
+                  geometry = [(_NUMedia *)v83 geometry];
+                  v78 = [(_NUContainerMedia *)v76 initWithContainerType:2 components:v57 geometry:geometry];
 
                   v29 = [[_NUAssetContainerMedia alloc] initWithAsset:v55 containerMedia:v78];
-                  v6 = v88;
+                  videoURL = v88;
                   v9 = v89;
                   v38 = v87;
                   v27 = v47;
@@ -318,15 +318,15 @@ LABEL_36:
 
             v32 = v90;
             [NUError errorWithCode:1 reason:@"Failed to evaluate video properties" object:v29 underlyingError:v90];
-            *a4 = v29 = 0;
+            *error = v29 = 0;
             v34 = v92;
 LABEL_49:
           }
 
           else
           {
-            [NUError errorWithCode:1 reason:@"Failed to prepare image source node" object:v5 underlyingError:v32];
-            *a4 = v29 = 0;
+            [NUError errorWithCode:1 reason:@"Failed to prepare image source node" object:selfCopy underlyingError:v32];
+            *error = v29 = 0;
           }
 
           v22 = v94;
@@ -334,8 +334,8 @@ LABEL_49:
 
         else
         {
-          [NUError errorWithCode:1 reason:@"Failed to load main video track" object:v5 underlyingError:v35];
-          *a4 = v29 = 0;
+          [NUError errorWithCode:1 reason:@"Failed to load main video track" object:selfCopy underlyingError:v35];
+          *error = v29 = 0;
           v32 = v35;
           v22 = v94;
           v34 = 0;
@@ -346,8 +346,8 @@ LABEL_49:
 
       else
       {
-        [NUError errorWithCode:1 reason:@"Failed to load AVAsset" object:v5 underlyingError:v32];
-        *a4 = v29 = 0;
+        [NUError errorWithCode:1 reason:@"Failed to load AVAsset" object:selfCopy underlyingError:v32];
+        *error = v29 = 0;
         v22 = v94;
       }
 
@@ -356,7 +356,7 @@ LABEL_49:
 
     else
     {
-      *a4 = [NUError errorWithCode:1 reason:@"Failed to create source node" object:v5 underlyingError:v30];
+      *error = [NUError errorWithCode:1 reason:@"Failed to create source node" object:selfCopy underlyingError:v30];
     }
 
     v25 = v30;
@@ -364,8 +364,8 @@ LABEL_49:
 
   else
   {
-    [NUError errorWithCode:1 reason:@"Failed to create source container node" object:v5 underlyingError:v25];
-    *a4 = v29 = 0;
+    [NUError errorWithCode:1 reason:@"Failed to create source container node" object:selfCopy underlyingError:v25];
+    *error = v29 = 0;
   }
 
   v10 = v25;
@@ -374,12 +374,12 @@ LABEL_55:
   return v29;
 }
 
-- (_NUVideoAsset)initWithVideoURL:(id)a3 identifier:(id)a4
+- (_NUVideoAsset)initWithVideoURL:(id)l identifier:(id)identifier
 {
   v49 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  lCopy = l;
+  identifierCopy = identifier;
+  if (!lCopy)
   {
     v12 = NUAssertLogger_10839();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -400,8 +400,8 @@ LABEL_55:
         v26 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v29 = [v27 callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v46 = v26;
         v47 = 2114;
@@ -412,8 +412,8 @@ LABEL_55:
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v46 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -422,8 +422,8 @@ LABEL_55:
     _NUAssertFailHandler("[_NUVideoAsset initWithVideoURL:identifier:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUAsset.m", 366, @"Invalid parameter not satisfying: %s", v31, v32, v33, v34, "fileURL != nil");
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = identifierCopy;
+  if (!identifierCopy)
   {
     v19 = NUAssertLogger_10839();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -444,8 +444,8 @@ LABEL_55:
         v35 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v36 = MEMORY[0x1E696AF00];
         v37 = v35;
-        v38 = [v36 callStackSymbols];
-        v39 = [v38 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v36 callStackSymbols];
+        v39 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v46 = v35;
         v47 = 2114;
@@ -456,8 +456,8 @@ LABEL_55:
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v46 = v25;
       _os_log_error_impl(&dword_1C0184000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -468,26 +468,26 @@ LABEL_55:
 
   v44.receiver = self;
   v44.super_class = _NUVideoAsset;
-  v9 = [(_NUAsset *)&v44 initWithIdentifier:v7];
+  v9 = [(_NUAsset *)&v44 initWithIdentifier:identifierCopy];
   videoURL = v9->_videoURL;
-  v9->_videoURL = v6;
+  v9->_videoURL = lCopy;
 
   return v9;
 }
 
-- (_NUVideoAsset)initWithVideoURL:(id)a3
+- (_NUVideoAsset)initWithVideoURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 absoluteString];
-  v6 = [(_NUVideoAsset *)self initWithVideoURL:v4 identifier:v5];
+  lCopy = l;
+  absoluteString = [lCopy absoluteString];
+  v6 = [(_NUVideoAsset *)self initWithVideoURL:lCopy identifier:absoluteString];
 
   return v6;
 }
 
-- (_NUVideoAsset)initWithIdentifier:(id)a3
+- (_NUVideoAsset)initWithIdentifier:(id)identifier
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_10855);
@@ -531,8 +531,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -548,8 +548,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;

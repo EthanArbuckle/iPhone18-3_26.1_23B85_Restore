@@ -1,10 +1,10 @@
 @interface FitnessSettingsController
 - (id)specifiers;
-- (void)_fitnessFocusModeActionForSpecifier:(id)a3;
-- (void)_fitnessPlusActionForSpecifier:(id)a3;
-- (void)_fitnessPrivacyActionForSpecifier:(id)a3;
-- (void)_moreControlsWatchAppActionForSpecifier:(id)a3;
-- (void)_workoutControlsActionForSpecifier:(id)a3;
+- (void)_fitnessFocusModeActionForSpecifier:(id)specifier;
+- (void)_fitnessPlusActionForSpecifier:(id)specifier;
+- (void)_fitnessPrivacyActionForSpecifier:(id)specifier;
+- (void)_moreControlsWatchAppActionForSpecifier:(id)specifier;
+- (void)_workoutControlsActionForSpecifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -34,19 +34,19 @@
 
   v47 = OBJC_IVAR___PSListController__specifiers;
   v4 = +[NSMutableArray array];
-  v5 = [(FitnessSettingsController *)self appPolicy];
+  appPolicy = [(FitnessSettingsController *)self appPolicy];
 
-  if (!v5)
+  if (!appPolicy)
   {
     v6 = [[PSSystemPolicyForApp alloc] initWithBundleIdentifier:@"com.apple.Fitness"];
     [(FitnessSettingsController *)self setAppPolicy:v6];
 
-    v7 = [(FitnessSettingsController *)self appPolicy];
-    [v7 setDelegate:self];
+    appPolicy2 = [(FitnessSettingsController *)self appPolicy];
+    [appPolicy2 setDelegate:self];
   }
 
-  v8 = [(FitnessSettingsController *)self appPolicy];
-  v9 = [v8 specifiersForPolicyOptions:0x10000818001 force:0];
+  appPolicy3 = [(FitnessSettingsController *)self appPolicy];
+  v9 = [appPolicy3 specifiersForPolicyOptions:0x10000818001 force:0];
 
   v46 = v9;
   [v4 addObjectsFromArray:v9];
@@ -54,9 +54,9 @@
   if ((_os_feature_enabled_impl() & 1) != 0 || (os_variant_has_internal_content() & 1) == 0)
   {
     v11 = +[UIDevice currentDevice];
-    v12 = [v11 userInterfaceIdiom];
+    userInterfaceIdiom = [v11 userInterfaceIdiom];
 
-    if (!v12)
+    if (!userInterfaceIdiom)
     {
       [v4 addObject:v10];
       v13 = [PSSpecifier alloc];
@@ -159,28 +159,28 @@ LABEL_19:
   return v3;
 }
 
-- (void)_workoutControlsActionForSpecifier:(id)a3
+- (void)_workoutControlsActionForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(FitnessSettingsController *)self traitCollection];
-  [(FitnessSettingsController *)self pushWorkoutControlsWithTraitCollection:v5 specifier:v4];
+  specifierCopy = specifier;
+  traitCollection = [(FitnessSettingsController *)self traitCollection];
+  [(FitnessSettingsController *)self pushWorkoutControlsWithTraitCollection:traitCollection specifier:specifierCopy];
 }
 
-- (void)_fitnessPlusActionForSpecifier:(id)a3
+- (void)_fitnessPlusActionForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(FitnessSettingsController *)self traitCollection];
-  [(FitnessSettingsController *)self pushFitnessPlusWithTraitCollection:v5 specifier:v4];
+  specifierCopy = specifier;
+  traitCollection = [(FitnessSettingsController *)self traitCollection];
+  [(FitnessSettingsController *)self pushFitnessPlusWithTraitCollection:traitCollection specifier:specifierCopy];
 }
 
-- (void)_fitnessPrivacyActionForSpecifier:(id)a3
+- (void)_fitnessPrivacyActionForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(FitnessSettingsController *)self traitCollection];
-  [(FitnessSettingsController *)self pushFitnessPrivacyWithTraitCollection:v5 specifier:v4];
+  specifierCopy = specifier;
+  traitCollection = [(FitnessSettingsController *)self traitCollection];
+  [(FitnessSettingsController *)self pushFitnessPrivacyWithTraitCollection:traitCollection specifier:specifierCopy];
 }
 
-- (void)_fitnessFocusModeActionForSpecifier:(id)a3
+- (void)_fitnessFocusModeActionForSpecifier:(id)specifier
 {
   v3 = objc_alloc_init(NSURLComponents);
   [v3 setScheme:@"settings-navigation"];
@@ -198,7 +198,7 @@ LABEL_19:
   [v5 openSensitiveURL:v4 withOptions:0];
 }
 
-- (void)_moreControlsWatchAppActionForSpecifier:(id)a3
+- (void)_moreControlsWatchAppActionForSpecifier:(id)specifier
 {
   v3 = [NSURL URLWithString:@"bridge:root=com.apple.SessionTrackerAppSettings"];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))

@@ -1,10 +1,10 @@
 @interface FeedbackListViewModel
-- (_TtC6MailUI21FeedbackListViewModel)initWithDaemonInterface:(id)a3 diagnosticsHelper:(id)a4 viewModelHelper:(id)a5;
+- (_TtC6MailUI21FeedbackListViewModel)initWithDaemonInterface:(id)interface diagnosticsHelper:(id)helper viewModelHelper:(id)modelHelper;
 - (id)_cancellationHandler;
 - (id)cancellationHandler;
-- (id)messageListItemsForDiagnosticsHelper:(id)a3;
-- (void)setCancellationHandler:(id)a3;
-- (void)set_cancellationHandler:(id)a3;
+- (id)messageListItemsForDiagnosticsHelper:(id)helper;
+- (void)setCancellationHandler:(id)handler;
+- (void)set_cancellationHandler:(id)handler;
 @end
 
 @implementation FeedbackListViewModel
@@ -37,9 +37,9 @@
   return v5;
 }
 
-- (void)set_cancellationHandler:(id)a3
+- (void)set_cancellationHandler:(id)handler
 {
-  v7 = _Block_copy(a3);
+  v7 = _Block_copy(handler);
   MEMORY[0x277D82BE0](self);
   if (v7)
   {
@@ -87,9 +87,9 @@
   return v5;
 }
 
-- (void)setCancellationHandler:(id)a3
+- (void)setCancellationHandler:(id)handler
 {
-  v7 = _Block_copy(a3);
+  v7 = _Block_copy(handler);
   MEMORY[0x277D82BE0](self);
   if (v7)
   {
@@ -109,21 +109,21 @@
   MEMORY[0x277D82BD8](self);
 }
 
-- (_TtC6MailUI21FeedbackListViewModel)initWithDaemonInterface:(id)a3 diagnosticsHelper:(id)a4 viewModelHelper:(id)a5
+- (_TtC6MailUI21FeedbackListViewModel)initWithDaemonInterface:(id)interface diagnosticsHelper:(id)helper viewModelHelper:(id)modelHelper
 {
-  MEMORY[0x277D82BE0](a3);
-  MEMORY[0x277D82BE0](a4);
-  MEMORY[0x277D82BE0](a5);
-  return FeedbackListViewModel.init(daemonInterface:diagnosticsHelper:viewModelHelper:)(a3, a4, a5);
+  MEMORY[0x277D82BE0](interface);
+  MEMORY[0x277D82BE0](helper);
+  MEMORY[0x277D82BE0](modelHelper);
+  return FeedbackListViewModel.init(daemonInterface:diagnosticsHelper:viewModelHelper:)(interface, helper, modelHelper);
 }
 
-- (id)messageListItemsForDiagnosticsHelper:(id)a3
+- (id)messageListItemsForDiagnosticsHelper:(id)helper
 {
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](helper);
   MEMORY[0x277D82BE0](self);
-  v9 = FeedbackListViewModel.messageListItems(for:)(a3);
+  v9 = FeedbackListViewModel.messageListItems(for:)(helper);
   MEMORY[0x277D82BD8](self);
-  MEMORY[0x277D82BD8](a3);
+  MEMORY[0x277D82BD8](helper);
   if (v9)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27CA34E80);

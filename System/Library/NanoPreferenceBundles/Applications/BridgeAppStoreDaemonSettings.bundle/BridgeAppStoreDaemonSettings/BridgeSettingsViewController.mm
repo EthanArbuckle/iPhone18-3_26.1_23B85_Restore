@@ -1,13 +1,13 @@
 @interface BridgeSettingsViewController
-- (BridgeSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BridgeSettingsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)_automaticDownloadsEnabled;
 - (id)_automaticUpdatesEnabled;
 - (id)specifiers;
-- (void)_automaticDownloadsChanged:(id)a3;
-- (void)_automaticUpdatesChanged:(id)a3;
+- (void)_automaticDownloadsChanged:(id)changed;
+- (void)_automaticUpdatesChanged:(id)changed;
 - (void)_reloadForExternalChange;
-- (void)accountPageViewController:(id)a3 financeInterruptionResolved:(BOOL)a4;
-- (void)actionTapped:(id)a3;
+- (void)accountPageViewController:(id)controller financeInterruptionResolved:(BOOL)resolved;
+- (void)actionTapped:(id)tapped;
 - (void)dealloc;
 - (void)loadView;
 @end
@@ -23,13 +23,13 @@
   [(BridgeSettingsViewController *)self setTitle:v3];
 }
 
-- (BridgeSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (BridgeSettingsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v18.receiver = self;
   v18.super_class = BridgeSettingsViewController;
-  v8 = [(BridgeSettingsViewController *)&v18 initWithNibName:v6 bundle:v7];
+  v8 = [(BridgeSettingsViewController *)&v18 initWithNibName:nameCopy bundle:bundleCopy];
   if (v8)
   {
     v9 = +[NSNotificationCenter defaultCenter];
@@ -125,7 +125,7 @@
     }
 
     v47 = v21;
-    v61 = self;
+    selfCopy = self;
     v68 = 0u;
     v69 = 0u;
     v66 = 0u;
@@ -149,14 +149,14 @@
 
           v58 = v24;
           v25 = *(*(&v66 + 1) + 8 * v24);
-          v26 = [v25 identifier];
-          v27 = [PSSpecifier groupSpecifierWithID:v26];
+          identifier = [v25 identifier];
+          v27 = [PSSpecifier groupSpecifierWithID:identifier];
 
           v57 = v27;
           [v23 addObject:v27];
           v28 = [PSSpecifier preferenceSpecifierNamed:&stru_21BE8 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
-          v29 = [v25 identifier];
-          v30 = [NSString stringWithFormat:@"%@-titleCell", v29];
+          identifier2 = [v25 identifier];
+          v30 = [NSString stringWithFormat:@"%@-titleCell", identifier2];
           [v28 setIdentifier:v30];
 
           [v28 setProperty:objc_opt_class() forKey:v53];
@@ -167,8 +167,8 @@
           v65 = 0u;
           v62 = 0u;
           v63 = 0u;
-          v59 = [v25 buttonActions];
-          v31 = [v59 countByEnumeratingWithState:&v62 objects:v71 count:16];
+          buttonActions = [v25 buttonActions];
+          v31 = [buttonActions countByEnumeratingWithState:&v62 objects:v71 count:16];
           if (v31)
           {
             v32 = v31;
@@ -179,13 +179,13 @@
               {
                 if (*v63 != v33)
                 {
-                  objc_enumerationMutation(v59);
+                  objc_enumerationMutation(buttonActions);
                 }
 
                 v35 = *(*(&v62 + 1) + 8 * i);
-                v36 = [v35 title];
-                v37 = [v25 identifier];
-                v38 = [v37 isEqualToString:@"ASDAuthenticateActiveAccount"];
+                title = [v35 title];
+                identifier3 = [v25 identifier];
+                v38 = [identifier3 isEqualToString:@"ASDAuthenticateActiveAccount"];
 
                 if (v38)
                 {
@@ -201,12 +201,12 @@
 
                   v40 = ASDLocalizedString(v39);
 
-                  v36 = v40;
+                  title = v40;
                 }
 
-                v41 = [PSSpecifier preferenceSpecifierNamed:v36 target:v61 set:0 get:0 detail:0 cell:13 edit:0];
-                v42 = [v35 identifier];
-                [v41 setIdentifier:v42];
+                v41 = [PSSpecifier preferenceSpecifierNamed:title target:selfCopy set:0 get:0 detail:0 cell:13 edit:0];
+                identifier4 = [v35 identifier];
+                [v41 setIdentifier:identifier4];
 
                 [v41 setProperty:v35 forKey:@"repairAction"];
                 [v41 setProperty:v25 forKey:@"repairDialog"];
@@ -215,7 +215,7 @@
                 [v60 addObject:v41];
               }
 
-              v32 = [v59 countByEnumeratingWithState:&v62 objects:v71 count:16];
+              v32 = [buttonActions countByEnumeratingWithState:&v62 objects:v71 count:16];
             }
 
             while (v32);
@@ -237,10 +237,10 @@
     }
 
     v43 = [v4 copy];
-    v44 = *&v61->PSListController_opaque[v51];
-    *&v61->PSListController_opaque[v51] = v43;
+    v44 = *&selfCopy->PSListController_opaque[v51];
+    *&selfCopy->PSListController_opaque[v51] = v43;
 
-    v3 = *&v61->PSListController_opaque[v51];
+    v3 = *&selfCopy->PSListController_opaque[v51];
   }
 
   return v3;
@@ -256,13 +256,13 @@
   [(BridgeSettingsViewController *)&v4 dealloc];
 }
 
-- (void)accountPageViewController:(id)a3 financeInterruptionResolved:(BOOL)a4
+- (void)accountPageViewController:(id)controller financeInterruptionResolved:(BOOL)resolved
 {
-  v4 = a4;
-  v6 = a3;
+  resolvedCopy = resolved;
+  controllerCopy = controller;
   v7 = ASDLogHandleForCategory(14);
   v8 = v7;
-  if (!v4)
+  if (!resolvedCopy)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -303,14 +303,14 @@ LABEL_12:
   v10 = self->_activeDialogRequest;
   self->_activeDialogRequest = 0;
 
-  [(BridgeSettingsViewController *)self accountPageViewControllerDidFinish:v6];
+  [(BridgeSettingsViewController *)self accountPageViewControllerDidFinish:controllerCopy];
 }
 
-- (void)actionTapped:(id)a3
+- (void)actionTapped:(id)tapped
 {
-  v38 = a3;
-  v39 = [v38 propertyForKey:@"repairAction"];
-  v37 = [v38 propertyForKey:@"repairDialog"];
+  tappedCopy = tapped;
+  v39 = [tappedCopy propertyForKey:@"repairAction"];
+  v37 = [tappedCopy propertyForKey:@"repairDialog"];
   v3 = v37;
   if (!v39)
   {
@@ -340,12 +340,12 @@ LABEL_12:
     goto LABEL_41;
   }
 
-  v4 = [v39 deepLink];
+  deepLink = [v39 deepLink];
 
-  if (!v4)
+  if (!deepLink)
   {
-    v23 = [v37 identifier];
-    v24 = [v23 isEqualToString:@"ASDAuthenticateActiveAccount"];
+    identifier = [v37 identifier];
+    v24 = [identifier isEqualToString:@"ASDAuthenticateActiveAccount"];
 
     if (v24)
     {
@@ -393,15 +393,15 @@ LABEL_12:
     goto LABEL_39;
   }
 
-  v6 = [v35 deepLink];
-  v34 = [NSURLComponents componentsWithURL:v6 resolvingAgainstBaseURL:0];
+  deepLink2 = [v35 deepLink];
+  v34 = [NSURLComponents componentsWithURL:deepLink2 resolvingAgainstBaseURL:0];
 
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v7 = [v34 queryItems];
-  v8 = [v7 countByEnumeratingWithState:&v51 objects:from count:16];
+  queryItems = [v34 queryItems];
+  v8 = [queryItems countByEnumeratingWithState:&v51 objects:from count:16];
   if (!v8)
   {
 
@@ -421,36 +421,36 @@ LABEL_12:
     {
       if (*v52 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(queryItems);
       }
 
       v12 = *(*(&v51 + 1) + 8 * i);
-      v13 = [v12 name];
-      v14 = [v13 isEqualToString:@"dsid"];
+      name = [v12 name];
+      v14 = [name isEqualToString:@"dsid"];
 
       if (v14)
       {
-        v15 = [v12 value];
-        v16 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v15 longLongValue]);
+        value = [v12 value];
+        v16 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [value longLongValue]);
 
         v9 = v16;
       }
 
       else
       {
-        v17 = [v12 name];
-        v18 = [v17 isEqualToString:@"username"];
+        name2 = [v12 name];
+        v18 = [name2 isEqualToString:@"username"];
 
         if (v18)
         {
           [v12 value];
-          v41 = v15 = v41;
+          v41 = value = v41;
         }
 
         else
         {
-          v19 = [v12 name];
-          v20 = [v19 isEqualToString:@"accountType"];
+          name3 = [v12 name];
+          v20 = [name3 isEqualToString:@"accountType"];
 
           if (!v20)
           {
@@ -458,12 +458,12 @@ LABEL_12:
           }
 
           [v12 value];
-          v40 = v15 = v40;
+          v40 = value = v40;
         }
       }
     }
 
-    v8 = [v7 countByEnumeratingWithState:&v51 objects:from count:16];
+    v8 = [queryItems countByEnumeratingWithState:&v51 objects:from count:16];
   }
 
   while (v8);
@@ -485,14 +485,14 @@ LABEL_12:
       v29 = [[AMSAuthenticateRequest alloc] initWithDSID:v9 altDSID:0 username:v41 options:v28];
       v30 = [objc_alloc(sub_17668()) initWithRequest:v29 presentingViewController:self];
       sub_17748(self);
-      v31 = [v30 performAuthentication];
+      performAuthentication = [v30 performAuthentication];
       *&buf = _NSConcreteStackBlock;
       *(&buf + 1) = 3221225472;
       v56 = sub_179CC;
       v57 = &unk_21688;
-      v58 = self;
+      selfCopy = self;
       v59 = v33;
-      [v31 addFinishBlock:&buf];
+      [performAuthentication addFinishBlock:&buf];
     }
 
     goto LABEL_38;
@@ -527,11 +527,11 @@ LABEL_41:
   return v3;
 }
 
-- (void)_automaticDownloadsChanged:(id)a3
+- (void)_automaticDownloadsChanged:(id)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v4 = sub_13B80();
-  sub_141DC(v4, v3, @"AutoDownloadsEnabled");
+  sub_141DC(v4, changedCopy, @"AutoDownloadsEnabled");
 }
 
 - (id)_automaticUpdatesEnabled
@@ -542,11 +542,11 @@ LABEL_41:
   return v3;
 }
 
-- (void)_automaticUpdatesChanged:(id)a3
+- (void)_automaticUpdatesChanged:(id)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v4 = sub_13B80();
-  sub_141DC(v4, v3, @"AutoUpdatesEnabled");
+  sub_141DC(v4, changedCopy, @"AutoUpdatesEnabled");
 }
 
 - (void)_reloadForExternalChange

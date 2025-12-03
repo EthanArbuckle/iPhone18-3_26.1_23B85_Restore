@@ -13,7 +13,7 @@
     +[NSIndexSet(HKDayIndex) hk_indexSetWithDayIndexRange:];
   }
 
-  return [a1 indexSetWithIndexesInRange:{a3, a4}];
+  return [self indexSetWithIndexesInRange:{a3, a4}];
 }
 
 - (void)hk_enumerateDayIndexRangesUsingBlock:()HKDayIndex
@@ -25,7 +25,7 @@
   v6[3] = &unk_1E7379990;
   v7 = v4;
   v5 = v4;
-  [a1 enumerateRangesUsingBlock:v6];
+  [self enumerateRangesUsingBlock:v6];
 }
 
 - (void)hk_enumerateDayIndexRangesWithOptions:()HKDayIndex usingBlock:
@@ -37,7 +37,7 @@
   v8[3] = &unk_1E7379990;
   v9 = v6;
   v7 = v6;
-  [a1 enumerateRangesWithOptions:a3 usingBlock:v8];
+  [self enumerateRangesWithOptions:a3 usingBlock:v8];
 }
 
 + (void)hk_indexSetWithDayIndexRange:()HKDayIndex .cold.1()

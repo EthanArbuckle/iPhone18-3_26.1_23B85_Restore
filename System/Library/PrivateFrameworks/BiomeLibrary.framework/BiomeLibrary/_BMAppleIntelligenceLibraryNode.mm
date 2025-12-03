@@ -2,7 +2,7 @@
 + (id)Availability;
 + (id)configurationForAvailability;
 + (id)storeConfigurationForAvailability;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -11,7 +11,7 @@
 + (id)Availability
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForAvailability];
+  configurationForAvailability = [self configurationForAvailability];
   v3 = +[BMAppleIntelligenceAvailability columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -23,7 +23,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"AppleIntelligence.Availability" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"AppleIntelligence.Availability" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"AppleIntelligence.Availability" schema:v9 configuration:configurationForAvailability];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -32,13 +32,13 @@
 
 + (id)configurationForAvailability
 {
-  v3 = [a1 storeConfigurationForAvailability];
-  v4 = [a1 syncPolicyForAvailability];
+  storeConfigurationForAvailability = [self storeConfigurationForAvailability];
+  syncPolicyForAvailability = [self syncPolicyForAvailability];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"A1447F72-0E3D-45E8-92A4-C2F2D11485C8"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"AppleIntelligence.Availability" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"AppleIntelligence.Availability" eventClass:objc_opt_class() storeConfig:storeConfigurationForAvailability syncPolicy:syncPolicyForAvailability legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -52,19 +52,19 @@
   return v4;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"Availability"])
+  if ([name isEqualToString:@"Availability"])
   {
-    v4 = [a1 Availability];
+    availability = [self Availability];
   }
 
   else
   {
-    v4 = 0;
+    availability = 0;
   }
 
-  return v4;
+  return availability;
 }
 
 + (id)validKeyPaths

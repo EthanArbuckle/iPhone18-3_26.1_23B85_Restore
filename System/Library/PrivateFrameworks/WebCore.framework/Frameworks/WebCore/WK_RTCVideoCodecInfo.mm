@@ -1,27 +1,27 @@
 @interface WK_RTCVideoCodecInfo
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCodecInfo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCodecInfo:(id)info;
 - (SdpVideoFormat)nativeSdpVideoFormat;
-- (WK_RTCVideoCodecInfo)initWithCoder:(id)a3;
-- (WK_RTCVideoCodecInfo)initWithName:(id)a3 parameters:(id)a4;
-- (WK_RTCVideoCodecInfo)initWithNativeSdpVideoFormat:(SdpVideoFormat *)a3;
+- (WK_RTCVideoCodecInfo)initWithCoder:(id)coder;
+- (WK_RTCVideoCodecInfo)initWithName:(id)name parameters:(id)parameters;
+- (WK_RTCVideoCodecInfo)initWithNativeSdpVideoFormat:(SdpVideoFormat *)format;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WK_RTCVideoCodecInfo
 
-- (WK_RTCVideoCodecInfo)initWithNativeSdpVideoFormat:(SdpVideoFormat *)a3
+- (WK_RTCVideoCodecInfo)initWithNativeSdpVideoFormat:(SdpVideoFormat *)format
 {
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  var0 = a3[1].var0.var0.var1.var0;
-  if (var0 != &a3[1].var0.var0.var1.var1)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  var0 = format[1].var0.var0.var1.var0;
+  if (var0 != &format[1].var0.var0.var1.var1)
   {
     do
     {
       v7 = [MEMORY[0x277CCACA8] rtcStringForStdString:var0 + 56];
       v8 = [MEMORY[0x277CCACA8] rtcStringForStdString:var0 + 32];
-      [v5 setObject:v7 forKey:v8];
+      [dictionary setObject:v7 forKey:v8];
 
       v9 = *(var0 + 1);
       if (v9)
@@ -50,11 +50,11 @@
       var0 = v10;
     }
 
-    while (v10 != &a3[1].var0.var0.var1.var1);
+    while (v10 != &format[1].var0.var0.var1.var1);
   }
 
-  v12 = [MEMORY[0x277CCACA8] rtcStringForStdString:a3];
-  v13 = [(WK_RTCVideoCodecInfo *)self initWithName:v12 parameters:v5];
+  v12 = [MEMORY[0x277CCACA8] rtcStringForStdString:format];
+  v13 = [(WK_RTCVideoCodecInfo *)self initWithName:v12 parameters:dictionary];
 
   return v13;
 }
@@ -70,8 +70,8 @@
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v2 = [v1 parameters];
-  obj = [v2 allKeys];
+  parameters = [v1 parameters];
+  obj = [parameters allKeys];
 
   v3 = [obj countByEnumeratingWithState:&v40 objects:v48 count:16];
   if (!v3)
@@ -93,8 +93,8 @@ LABEL_15:
       v7 = *(*(&v40 + 1) + 8 * i);
       [MEMORY[0x277CCACA8] rtcStdStringForString:v7];
       v8 = MEMORY[0x277CCACA8];
-      v9 = [v35 parameters];
-      v10 = [v9 objectForKeyedSubscript:v7];
+      parameters2 = [v35 parameters];
+      v10 = [parameters2 objectForKeyedSubscript:v7];
       [v8 rtcStdStringForString:v10];
 
       v11 = v45[0];
@@ -252,8 +252,8 @@ LABEL_13:
 LABEL_52:
 
   v25 = MEMORY[0x277CCACA8];
-  v26 = [v35 name];
-  [v25 rtcStdStringForString:v26];
+  name = [v35 name];
+  [v25 rtcStdStringForString:name];
   if (SHIBYTE(v47) < 0)
   {
     std::string::__init_copy_ctor_external(retstr, v46[0], v46[1]);
@@ -314,20 +314,20 @@ LABEL_52:
   return result;
 }
 
-- (WK_RTCVideoCodecInfo)initWithName:(id)a3 parameters:(id)a4
+- (WK_RTCVideoCodecInfo)initWithName:(id)name parameters:(id)parameters
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  parametersCopy = parameters;
   v13.receiver = self;
   v13.super_class = WK_RTCVideoCodecInfo;
   v9 = [(WK_RTCVideoCodecInfo *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    if (v8)
+    objc_storeStrong(&v9->_name, name);
+    if (parametersCopy)
     {
-      v11 = v8;
+      v11 = parametersCopy;
     }
 
     else
@@ -341,18 +341,18 @@ LABEL_52:
   return v10;
 }
 
-- (BOOL)isEqualToCodecInfo:(id)a3
+- (BOOL)isEqualToCodecInfo:(id)info
 {
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
-    v5 = [(WK_RTCVideoCodecInfo *)self name];
-    v6 = [v4 name];
-    if ([v5 isEqualToString:v6])
+    name = [(WK_RTCVideoCodecInfo *)self name];
+    name2 = [infoCopy name];
+    if ([name isEqualToString:name2])
     {
-      v7 = [(WK_RTCVideoCodecInfo *)self parameters];
-      v8 = [v4 parameters];
-      v9 = [v7 isEqualToDictionary:v8];
+      parameters = [(WK_RTCVideoCodecInfo *)self parameters];
+      parameters2 = [infoCopy parameters];
+      v9 = [parameters isEqualToDictionary:parameters2];
     }
 
     else
@@ -369,11 +369,11 @@ LABEL_52:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
 
     return 1;
@@ -399,30 +399,30 @@ LABEL_52:
 
 - (unint64_t)hash
 {
-  v3 = [(WK_RTCVideoCodecInfo *)self name];
-  v4 = [v3 hash];
-  v5 = [(WK_RTCVideoCodecInfo *)self parameters];
-  v6 = [v5 hash];
+  name = [(WK_RTCVideoCodecInfo *)self name];
+  v4 = [name hash];
+  parameters = [(WK_RTCVideoCodecInfo *)self parameters];
+  v6 = [parameters hash];
 
   return v6 ^ v4;
 }
 
-- (WK_RTCVideoCodecInfo)initWithCoder:(id)a3
+- (WK_RTCVideoCodecInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"name"];
-  v6 = [v4 decodeObjectForKey:@"parameters"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"name"];
+  v6 = [coderCopy decodeObjectForKey:@"parameters"];
 
   v7 = [(WK_RTCVideoCodecInfo *)self initWithName:v5 parameters:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
-  [v5 encodeObject:self->_parameters forKey:@"parameters"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeObject:self->_parameters forKey:@"parameters"];
 }
 
 @end

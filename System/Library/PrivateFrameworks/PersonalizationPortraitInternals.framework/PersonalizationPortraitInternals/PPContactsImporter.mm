@@ -1,42 +1,42 @@
 @interface PPContactsImporter
 + (id)defaultInstance;
 + (uint64_t)_shouldImport;
-- (PPContactsImporter)initWithDatabase:(id)a3;
-- (id)_entitiesForScoredContact:(void *)a1;
-- (id)_scoredContactWithContactIdentifier:(uint64_t)a1;
-- (id)_sourceForContactWithContactIdentifier:(void *)a1;
-- (uint64_t)_donateScoredNamedEntities:(void *)a3 source:(void *)a4 error:;
-- (uint64_t)importScoredContact:(void *)a3 contactsIdentifier:(void *)a4 error:;
-- (void)_deleteAndReAddWholeContact:(void *)a3 contactIdentifier:;
+- (PPContactsImporter)initWithDatabase:(id)database;
+- (id)_entitiesForScoredContact:(void *)contact;
+- (id)_scoredContactWithContactIdentifier:(uint64_t)identifier;
+- (id)_sourceForContactWithContactIdentifier:(void *)identifier;
+- (uint64_t)_donateScoredNamedEntities:(void *)entities source:(void *)source error:;
+- (uint64_t)importScoredContact:(void *)contact contactsIdentifier:(void *)identifier error:;
+- (void)_deleteAndReAddWholeContact:(void *)contact contactIdentifier:;
 - (void)_flushNamedEntities;
-- (void)_handleNotificationWithError:(uint64_t)a1;
-- (void)importContactsDataWithShouldContinueBlock:(id)a3;
-- (void)visitAddContactEvent:(id)a3;
-- (void)visitDeleteContactEvent:(id)a3;
-- (void)visitDropEverythingEvent:(id)a3;
-- (void)visitUpdateContactEvent:(id)a3;
+- (void)_handleNotificationWithError:(uint64_t)error;
+- (void)importContactsDataWithShouldContinueBlock:(id)block;
+- (void)visitAddContactEvent:(id)event;
+- (void)visitDeleteContactEvent:(id)event;
+- (void)visitDropEverythingEvent:(id)event;
+- (void)visitUpdateContactEvent:(id)event;
 @end
 
 @implementation PPContactsImporter
 
-- (void)visitDeleteContactEvent:(id)a3
+- (void)visitDeleteContactEvent:(id)event
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v13 = [a3 contactIdentifier];
+  contactIdentifier = [event contactIdentifier];
   if (self)
   {
     v4 = pp_contacts_log_handle();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v17 = v13;
+      v17 = contactIdentifier;
       _os_log_impl(&dword_23224A000, v4, OS_LOG_TYPE_DEFAULT, "PPContactsImporter: _deleteContact: %@", buf, 0xCu);
     }
 
     v15 = 0;
     namedEntityStore = self->_namedEntityStore;
     v6 = *MEMORY[0x277D3A600];
-    v20[0] = v13;
+    v20[0] = contactIdentifier;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
     v14 = 0;
     v8 = [(PPLocalNamedEntityStore *)namedEntityStore deleteAllNamedEntitiesFromSourcesWithBundleId:v6 documentIds:v7 deletedCount:&v15 error:&v14];
@@ -51,7 +51,7 @@
         *buf = 134218242;
         v17 = v15;
         v18 = 2112;
-        v19 = v13;
+        v19 = contactIdentifier;
         _os_log_impl(&dword_23224A000, v11, OS_LOG_TYPE_DEFAULT, "PPContactsImporter: _deleteContact: deleted %tu named entities for %@", buf, 0x16u);
       }
     }
@@ -67,24 +67,24 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)visitUpdateContactEvent:(id)a3
+- (void)visitUpdateContactEvent:(id)event
 {
   v58 = *MEMORY[0x277D85DE8];
-  v47 = [a3 contact];
-  v4 = [v47 identifier];
+  contact = [event contact];
+  identifier = [contact identifier];
   if (self)
   {
     v5 = pp_contacts_log_handle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v4;
+      *(&buf + 4) = identifier;
       _os_log_impl(&dword_23224A000, v5, OS_LOG_TYPE_DEFAULT, "PPContactsImporter: _updateContact: %@", &buf, 0xCu);
     }
 
-    v6 = [(PPContactsImporter *)self _scoredContactWithContactIdentifier:v4];
-    v7 = [v6 contact];
-    v8 = [v7 contactsContactIdentifierWithError:0];
+    v6 = [(PPContactsImporter *)self _scoredContactWithContactIdentifier:identifier];
+    contact2 = [v6 contact];
+    v8 = [contact2 contactsContactIdentifierWithError:0];
 
     if ([v8 length])
     {
@@ -101,28 +101,28 @@
         _os_log_debug_impl(&dword_23224A000, v9, OS_LOG_TYPE_DEBUG, "PPContactsImporter: _updateContact: new set: %tu", &buf, 0xCu);
       }
 
-      v10 = [PPContactsImporter _sourceForContactWithContactIdentifier:v4];
+      v10 = [PPContactsImporter _sourceForContactWithContactIdentifier:identifier];
       v11 = objc_opt_new();
       v12 = objc_autoreleasePoolPush();
       v13 = objc_alloc(MEMORY[0x277CBEB98]);
-      v14 = [v10 bundleId];
-      v15 = [v13 initWithObjects:{v14, 0}];
+      bundleId = [v10 bundleId];
+      v15 = [v13 initWithObjects:{bundleId, 0}];
 
       objc_autoreleasePoolPop(v12);
       [v11 setMatchingSourceBundleIds:v15];
 
       v16 = objc_autoreleasePoolPush();
       v17 = objc_alloc(MEMORY[0x277CBEB98]);
-      v18 = [v10 documentId];
-      v19 = [v17 initWithObjects:{v18, 0}];
+      documentId = [v10 documentId];
+      v19 = [v17 initWithObjects:{documentId, 0}];
 
       objc_autoreleasePoolPop(v16);
       [v11 setMatchingSourceDocumentIds:v19];
 
       v20 = objc_autoreleasePoolPush();
       v21 = objc_alloc(MEMORY[0x277CBEB98]);
-      v22 = [v10 groupId];
-      v23 = [v21 initWithObjects:{v22, 0}];
+      groupId = [v10 groupId];
+      v23 = [v21 initWithObjects:{groupId, 0}];
 
       objc_autoreleasePoolPop(v20);
       [v11 setMatchingSourceGroupIds:v23];
@@ -170,7 +170,7 @@
             _os_log_impl(&dword_23224A000, v32, OS_LOG_TYPE_DEFAULT, "PPContactsImporter: _updateContact: detected deletions, reimporting whole contact.", &v50, 2u);
           }
 
-          [(PPContactsImporter *)self _deleteAndReAddWholeContact:v6 contactIdentifier:v4];
+          [(PPContactsImporter *)self _deleteAndReAddWholeContact:v6 contactIdentifier:identifier];
         }
 
         else
@@ -216,7 +216,7 @@
           _os_log_error_impl(&dword_23224A000, v29, OS_LOG_TYPE_ERROR, "PPContactsImporter: _updateContact: failed to iterate existing records: %@", &v50, 0xCu);
         }
 
-        [(PPContactsImporter *)self _deleteAndReAddWholeContact:v6 contactIdentifier:v4];
+        [(PPContactsImporter *)self _deleteAndReAddWholeContact:v6 contactIdentifier:identifier];
       }
     }
 
@@ -226,7 +226,7 @@
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v4;
+        *(&buf + 4) = identifier;
         _os_log_error_impl(&dword_23224A000, v27, OS_LOG_TYPE_ERROR, "failed to load contact %@", &buf, 0xCu);
       }
     }
@@ -235,7 +235,7 @@
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_scoredContactWithContactIdentifier:(uint64_t)a1
+- (id)_scoredContactWithContactIdentifier:(uint64_t)identifier
 {
   v20[1] = *MEMORY[0x277D85DE8];
   v3 = a2;
@@ -244,7 +244,7 @@
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
   [v4 setMatchingIdentifiers:v5];
 
-  v6 = *(a1 + 16);
+  v6 = *(identifier + 16);
   v15 = 0;
   v7 = [v6 contactsWithQuery:v4 error:&v15];
   v8 = v15;
@@ -265,7 +265,7 @@
       }
     }
 
-    v11 = [v9 firstObject];
+    firstObject = [v9 firstObject];
   }
 
   else
@@ -278,67 +278,67 @@
       _os_log_error_impl(&dword_23224A000, v9, OS_LOG_TYPE_ERROR, "PPContactsImporter: _addContact: failed to load contacts to import from CN: %@", buf, 0xCu);
     }
 
-    v11 = 0;
+    firstObject = 0;
   }
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return firstObject;
 }
 
-- (id)_entitiesForScoredContact:(void *)a1
+- (id)_entitiesForScoredContact:(void *)contact
 {
   v57 = *MEMORY[0x277D85DE8];
-  v1 = a1;
+  contactCopy = contact;
   v2 = objc_alloc(MEMORY[0x277CBEB18]);
-  v3 = [v1 scoredPostalAddresses];
-  v4 = [v2 initWithCapacity:{objc_msgSend(v3, "count") + 2}];
+  scoredPostalAddresses = [contactCopy scoredPostalAddresses];
+  v4 = [v2 initWithCapacity:{objc_msgSend(scoredPostalAddresses, "count") + 2}];
 
-  v5 = [v1 contact];
-  v6 = [v5 localizedFullName];
-  v7 = [v6 length];
+  contact = [contactCopy contact];
+  localizedFullName = [contact localizedFullName];
+  v7 = [localizedFullName length];
 
   if (v7)
   {
     v8 = objc_alloc(MEMORY[0x277D3A420]);
-    v9 = [v1 contact];
-    v10 = [v9 localizedFullName];
-    v11 = [MEMORY[0x277CBEAF8] currentLocale];
-    v12 = [v11 languageCode];
-    v13 = [v8 initWithName:v10 category:1 language:v12];
+    contact2 = [contactCopy contact];
+    localizedFullName2 = [contact2 localizedFullName];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    languageCode = [currentLocale languageCode];
+    v13 = [v8 initWithName:localizedFullName2 category:1 language:languageCode];
 
     v14 = objc_alloc(MEMORY[0x277D3A498]);
-    [v1 score];
+    [contactCopy score];
     v16 = [v14 initWithItem:v13 score:{fmin(v15, 1.0)}];
     [v4 addObject:v16];
   }
 
-  v17 = [v1 contact];
-  v18 = [v17 organizationName];
-  v19 = [v18 length];
+  contact3 = [contactCopy contact];
+  organizationName = [contact3 organizationName];
+  v19 = [organizationName length];
 
   if (v19)
   {
     v20 = objc_alloc(MEMORY[0x277D3A420]);
-    v21 = [v1 contact];
-    v22 = [v21 organizationName];
-    v23 = [MEMORY[0x277CBEAF8] currentLocale];
-    v24 = [v23 languageCode];
-    v25 = [v20 initWithName:v22 category:2 language:v24];
+    contact4 = [contactCopy contact];
+    organizationName2 = [contact4 organizationName];
+    currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+    languageCode2 = [currentLocale2 languageCode];
+    v25 = [v20 initWithName:organizationName2 category:2 language:languageCode2];
 
     v26 = objc_alloc(MEMORY[0x277D3A498]);
-    [v1 score];
+    [contactCopy score];
     v28 = [v26 initWithItem:v25 score:{fmin(v27, 1.0)}];
     [v4 addObject:v28];
   }
 
-  v49 = v1;
+  v49 = contactCopy;
   v50 = v4;
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  obj = [v1 scoredPostalAddresses];
+  obj = [contactCopy scoredPostalAddresses];
   v29 = [obj countByEnumeratingWithState:&v52 objects:v56 count:16];
   if (v29)
   {
@@ -354,24 +354,24 @@
         }
 
         v33 = *(*(&v52 + 1) + 8 * i);
-        v34 = [v33 labeledValue];
-        v35 = [v34 value];
+        labeledValue = [v33 labeledValue];
+        value = [labeledValue value];
 
-        v36 = [v35 singleLineNormalizedAddressString];
-        if (v36)
+        singleLineNormalizedAddressString = [value singleLineNormalizedAddressString];
+        if (singleLineNormalizedAddressString)
         {
-          v37 = [v35 thoroughfare];
-          if ([v37 length])
+          thoroughfare = [value thoroughfare];
+          if ([thoroughfare length])
           {
-            v38 = [v35 locality];
-            if ([v38 length])
+            locality = [value locality];
+            if ([locality length])
             {
             }
 
             else
             {
-              v39 = [v35 postalCode];
-              v40 = [v39 length];
+              postalCode = [value postalCode];
+              v40 = [postalCode length];
 
               if (!v40)
               {
@@ -380,13 +380,13 @@
             }
 
             v41 = objc_alloc(MEMORY[0x277D3A420]);
-            v42 = [MEMORY[0x277CBEAF8] currentLocale];
-            v43 = [v42 languageCode];
-            v37 = [v41 initWithName:v36 category:12 language:v43];
+            currentLocale3 = [MEMORY[0x277CBEAF8] currentLocale];
+            languageCode3 = [currentLocale3 languageCode];
+            thoroughfare = [v41 initWithName:singleLineNormalizedAddressString category:12 language:languageCode3];
 
             v44 = objc_alloc(MEMORY[0x277D3A498]);
             [v33 score];
-            v46 = [v44 initWithItem:v37 score:{fmin(v45, 1.0)}];
+            v46 = [v44 initWithItem:thoroughfare score:{fmin(v45, 1.0)}];
             [v50 addObject:v46];
           }
         }
@@ -405,15 +405,15 @@ LABEL_17:
   return v50;
 }
 
-- (id)_sourceForContactWithContactIdentifier:(void *)a1
+- (id)_sourceForContactWithContactIdentifier:(void *)identifier
 {
   v1 = MEMORY[0x277D3A4E0];
-  v2 = a1;
+  identifierCopy = identifier;
   v3 = [[v1 alloc] initWithDwellTimeSeconds:0 lengthSeconds:0 lengthCharacters:0 donationCount:0 contactHandleCount:0 flags:1];
   v4 = objc_alloc(MEMORY[0x277D3A4D8]);
   v5 = *MEMORY[0x277D3A600];
   v6 = objc_opt_new();
-  v7 = [v4 initWithBundleId:v5 groupId:0 documentId:v2 date:v6 relevanceDate:0 contactHandles:0 language:0 metadata:v3];
+  v7 = [v4 initWithBundleId:v5 groupId:0 documentId:identifierCopy date:v6 relevanceDate:0 contactHandles:0 language:0 metadata:v3];
 
   return v7;
 }
@@ -425,14 +425,14 @@ void __51__PPContactsImporter__updateContactWithIdentifier___block_invoke_74(uin
   [v2 addObject:v3];
 }
 
-- (void)_deleteAndReAddWholeContact:(void *)a3 contactIdentifier:
+- (void)_deleteAndReAddWholeContact:(void *)contact contactIdentifier:
 {
   v20[1] = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  v7 = *(a1 + 24);
+  contactCopy = contact;
+  v7 = *(self + 24);
   v8 = *MEMORY[0x277D3A600];
-  v20[0] = v6;
+  v20[0] = contactCopy;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
   v17 = 0;
   LOBYTE(v8) = [v7 deleteAllNamedEntitiesFromSourcesWithBundleId:v8 documentIds:v9 deletedCount:0 error:&v17];
@@ -450,7 +450,7 @@ void __51__PPContactsImporter__updateContactWithIdentifier___block_invoke_74(uin
   }
 
   v16 = v10;
-  v12 = [(PPContactsImporter *)a1 importScoredContact:v5 contactsIdentifier:v6 error:&v16];
+  v12 = [(PPContactsImporter *)self importScoredContact:v5 contactsIdentifier:contactCopy error:&v16];
   v13 = v16;
 
   if ((v12 & 1) == 0)
@@ -476,34 +476,34 @@ uint64_t __51__PPContactsImporter__updateContactWithIdentifier___block_invoke_76
   return v4;
 }
 
-- (uint64_t)_donateScoredNamedEntities:(void *)a3 source:(void *)a4 error:
+- (uint64_t)_donateScoredNamedEntities:(void *)entities source:(void *)source error:
 {
   v25 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
+  entitiesCopy = entities;
   v9 = pp_contacts_log_handle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = [v7 count];
-    v11 = [v8 documentId];
+    documentId = [entitiesCopy documentId];
     *buf = 134218242;
     v22 = v10;
     v23 = 2112;
-    v24 = v11;
+    v24 = documentId;
     _os_log_impl(&dword_23224A000, v9, OS_LOG_TYPE_DEFAULT, "PPContactsImporter: donating %tu entities from %@", buf, 0x16u);
   }
 
-  v12 = *(a1 + 24);
+  v12 = *(self + 24);
   v20 = 0;
-  v13 = [v12 donateNamedEntities:v7 source:v8 algorithm:14 cloudSync:0 sentimentScore:&v20 error:0.0];
+  v13 = [v12 donateNamedEntities:v7 source:entitiesCopy algorithm:14 cloudSync:0 sentimentScore:&v20 error:0.0];
   v14 = v20;
   v15 = v14;
   if ((v13 & 1) == 0)
   {
-    if (a4)
+    if (source)
     {
       v16 = v14;
-      *a4 = v15;
+      *source = v15;
     }
 
     v17 = pp_contacts_log_handle();
@@ -519,20 +519,20 @@ uint64_t __51__PPContactsImporter__updateContactWithIdentifier___block_invoke_76
   return v13;
 }
 
-- (uint64_t)importScoredContact:(void *)a3 contactsIdentifier:(void *)a4 error:
+- (uint64_t)importScoredContact:(void *)contact contactsIdentifier:(void *)identifier error:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v7 = a2;
-  v8 = [PPContactsImporter _sourceForContactWithContactIdentifier:a3];
+  v8 = [PPContactsImporter _sourceForContactWithContactIdentifier:contact];
   v9 = [PPContactsImporter _entitiesForScoredContact:v7];
 
   if ([v9 count])
   {
-    v10 = [(PPContactsImporter *)a1 _donateScoredNamedEntities:v9 source:v8 error:a4];
+    v10 = [(PPContactsImporter *)self _donateScoredNamedEntities:v9 source:v8 error:identifier];
   }
 
   else
@@ -543,24 +543,24 @@ uint64_t __51__PPContactsImporter__updateContactWithIdentifier___block_invoke_76
   return v10;
 }
 
-- (void)visitAddContactEvent:(id)a3
+- (void)visitAddContactEvent:(id)event
 {
   v22 = *MEMORY[0x277D85DE8];
-  v16 = [a3 contact];
-  v4 = [v16 identifier];
+  contact = [event contact];
+  identifier = [contact identifier];
   if (self)
   {
     v5 = pp_contacts_log_handle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v4;
+      v19 = identifier;
       _os_log_impl(&dword_23224A000, v5, OS_LOG_TYPE_DEFAULT, "PPContactsImporter: _addContact: %@", buf, 0xCu);
     }
 
-    v6 = [(PPContactsImporter *)self _scoredContactWithContactIdentifier:v4];
-    v7 = [v6 contact];
-    v8 = [v7 contactsContactIdentifierWithError:0];
+    v6 = [(PPContactsImporter *)self _scoredContactWithContactIdentifier:identifier];
+    contact2 = [v6 contact];
+    v8 = [contact2 contactsContactIdentifierWithError:0];
 
     if (![v8 length])
     {
@@ -568,7 +568,7 @@ uint64_t __51__PPContactsImporter__updateContactWithIdentifier___block_invoke_76
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v19 = v4;
+        v19 = identifier;
         _os_log_error_impl(&dword_23224A000, v10, OS_LOG_TYPE_ERROR, "failed to load contact %@", buf, 0xCu);
       }
 
@@ -590,10 +590,10 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v13 = [v6 contact];
-      v14 = [v13 identifier];
+      contact3 = [v6 contact];
+      identifier2 = [contact3 identifier];
       *buf = 138412290;
-      v19 = v14;
+      v19 = identifier2;
       _os_log_impl(&dword_23224A000, v12, OS_LOG_TYPE_DEFAULT, "PPContactsImporter: _addContact: imported %@ due to CN change", buf, 0xCu);
     }
 
@@ -604,10 +604,10 @@ LABEL_13:
         goto LABEL_12;
       }
 
-      v13 = [v6 contact];
-      v14 = [v13 identifier];
+      contact3 = [v6 contact];
+      identifier2 = [contact3 identifier];
       *buf = 138412546;
-      v19 = v14;
+      v19 = identifier2;
       v20 = 2112;
       v21 = v10;
       _os_log_error_impl(&dword_23224A000, v12, OS_LOG_TYPE_ERROR, "PPContactsImporter: _addContact: failed to import %@: %@", buf, 0x16u);
@@ -621,7 +621,7 @@ LABEL_14:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)visitDropEverythingEvent:(id)a3
+- (void)visitDropEverythingEvent:(id)event
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = pp_contacts_log_handle();
@@ -659,10 +659,10 @@ LABEL_14:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)importContactsDataWithShouldContinueBlock:(id)a3
+- (void)importContactsDataWithShouldContinueBlock:(id)block
 {
   v45 = *MEMORY[0x277D85DE8];
-  v27 = a3;
+  blockCopy = block;
   v3 = +[PPContactsImporter _shouldImport];
   v4 = pp_contacts_log_handle();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -674,7 +674,7 @@ LABEL_14:
       _os_log_impl(&dword_23224A000, v4, OS_LOG_TYPE_DEFAULT, "PPContactsImporter: performing contacts import.", &buf, 2u);
     }
 
-    v4 = [PPContactScorer mostRelevantContactsWithStore:self->_contactStore shouldContinueBlock:v27];
+    v4 = [PPContactScorer mostRelevantContactsWithStore:self->_contactStore shouldContinueBlock:blockCopy];
     v6 = pp_contacts_log_handle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -741,7 +741,7 @@ LABEL_14:
 
             v16 = *(*(&v28 + 1) + 8 * i);
             v17 = objc_autoreleasePoolPush();
-            if ((v27[2]() & 1) == 0)
+            if ((blockCopy[2]() & 1) == 0)
             {
               if (v12)
               {
@@ -762,8 +762,8 @@ LABEL_14:
               goto LABEL_32;
             }
 
-            v18 = [v16 contact];
-            v19 = [v18 contactsContactIdentifierWithError:0];
+            contact = [v16 contact];
+            v19 = [contact contactsContactIdentifierWithError:0];
 
             if (![v19 length] || (objc_msgSend(v12, "containsObject:", v19) & 1) != 0)
             {
@@ -789,7 +789,7 @@ LABEL_32:
           break;
         }
 
-        v20 = self;
+        selfCopy2 = self;
         if (!self)
         {
           goto LABEL_33;
@@ -799,10 +799,10 @@ LABEL_32:
       else
       {
 
-        v20 = self;
+        selfCopy2 = self;
       }
 
-      [(PPSQLDatabase *)v20->_db writeTransactionWithClient:6 block:&__block_literal_global_64_9047, self];
+      [(PPSQLDatabase *)selfCopy2->_db writeTransactionWithClient:6 block:&__block_literal_global_64_9047, self];
       [(PPContactsImporter *)v26 _flushNamedEntities];
 LABEL_33:
     }
@@ -829,9 +829,9 @@ LABEL_33:
 - (void)_flushNamedEntities
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 24);
+    v1 = *(self + 24);
     v6 = 0;
     v2 = [v1 flushDonationsWithError:&v6];
     v3 = v6;
@@ -930,16 +930,16 @@ void __69__PPContactsImporter__loadContactIdentifiersAlreadyImportedInPastDay__b
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (PPContactsImporter)initWithDatabase:(id)a3
+- (PPContactsImporter)initWithDatabase:(id)database
 {
-  v5 = a3;
+  databaseCopy = database;
   v20.receiver = self;
   v20.super_class = PPContactsImporter;
   v6 = [(PPContactsImporter *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_db, a3);
+    objc_storeStrong(&v6->_db, database);
     v8 = [[PPContactStorage alloc] initWithDatabase:v7->_db foundInAppsHarvestStoreGetter:&__block_literal_global_9066];
     v9 = [[PPLocalContactStore alloc] initWithStorage:v8 namedEntityStoreOverride:0];
     contactStore = v7->_contactStore;
@@ -987,12 +987,12 @@ void __47__PPContactsImporter__registerForNotifications__block_invoke(uint64_t a
   }
 }
 
-- (void)_handleNotificationWithError:(uint64_t)a1
+- (void)_handleNotificationWithError:(uint64_t)error
 {
   v23 = *MEMORY[0x277D85DE8];
   if ((+[PPContactsImporter _shouldImport]& 1) != 0)
   {
-    v2 = *(a1 + 16);
+    v2 = *(error + 16);
     v19 = 0;
     v3 = [v2 contactsChangeHistoryForClient:@"com.apple.proactive.PersonalizationPortrait.PPContactsImporter" error:&v19];
     v4 = v19;
@@ -1002,8 +1002,8 @@ void __47__PPContactsImporter__registerForNotifications__block_invoke(uint64_t a
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v5 = [v3 value];
-      v14 = [v5 countByEnumeratingWithState:&v15 objects:v20 count:16];
+      value = [v3 value];
+      v14 = [value countByEnumeratingWithState:&v15 objects:v20 count:16];
       if (v14)
       {
         v6 = *v16;
@@ -1014,12 +1014,12 @@ LABEL_5:
         {
           if (*v16 != v6)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(value);
           }
 
           v9 = *(*(&v15 + 1) + 8 * v8);
           v10 = objc_autoreleasePoolPush();
-          [v9 acceptEventVisitor:a1];
+          [v9 acceptEventVisitor:error];
           objc_opt_class();
           LOBYTE(v9) = objc_opt_isKindOfClass();
           objc_autoreleasePoolPop(v10);
@@ -1030,7 +1030,7 @@ LABEL_5:
 
           if (v7 == ++v8)
           {
-            v7 = [v5 countByEnumeratingWithState:&v15 objects:v20 count:16];
+            v7 = [value countByEnumeratingWithState:&v15 objects:v20 count:16];
             if (v7)
             {
               goto LABEL_5;
@@ -1041,7 +1041,7 @@ LABEL_5:
         }
       }
 
-      [*(a1 + 16) clearChangeHistoryForClient:@"com.apple.proactive.PersonalizationPortrait.PPContactsImporter" historyResult:v3];
+      [*(error + 16) clearChangeHistoryForClient:@"com.apple.proactive.PersonalizationPortrait.PPContactsImporter" historyResult:v3];
       v11 = pp_contacts_log_handle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
@@ -1051,7 +1051,7 @@ LABEL_5:
 
       if (v14)
       {
-        [(PPContactsImporter *)a1 _flushNamedEntities];
+        [(PPContactsImporter *)error _flushNamedEntities];
       }
     }
 

@@ -1,20 +1,20 @@
 @interface VCExperimentManager
-+ (id)sha256:(id)a3;
-+ (unint64_t)xorSum:(id)a3;
-- (BOOL)isEnabledExperiment:(id)a3 forceDisable:(BOOL)a4;
-- (BOOL)isUUIDSampledForExperimentation:(id)a3;
-- (VCExperimentManager)initWithSamplingUUID:(id)a3;
-- (double)samplingFactor:(id)a3;
-- (id)valueForExperiment:(id)a3 samplingUUID:(id)a4 samplingThreshold:(id)a5;
-- (int)setQRExperimentsDictionary:(id)a3;
++ (id)sha256:(id)sha256;
++ (unint64_t)xorSum:(id)sum;
+- (BOOL)isEnabledExperiment:(id)experiment forceDisable:(BOOL)disable;
+- (BOOL)isUUIDSampledForExperimentation:(id)experimentation;
+- (VCExperimentManager)initWithSamplingUUID:(id)d;
+- (double)samplingFactor:(id)factor;
+- (id)valueForExperiment:(id)experiment samplingUUID:(id)d samplingThreshold:(id)threshold;
+- (int)setQRExperimentsDictionary:(id)dictionary;
 - (void)dealloc;
-- (void)setReportingAgent:(opaqueRTCReporting *)a3;
-- (void)setupInitialClientExperiments:(id)a3 samplingUUID:(id)a4;
+- (void)setReportingAgent:(opaqueRTCReporting *)agent;
+- (void)setupInitialClientExperiments:(id)experiments samplingUUID:(id)d;
 @end
 
 @implementation VCExperimentManager
 
-- (VCExperimentManager)initWithSamplingUUID:(id)a3
+- (VCExperimentManager)initWithSamplingUUID:(id)d
 {
   v27 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
@@ -26,7 +26,7 @@
     pthread_mutex_init(&v4->_stateLock, 0);
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v5->_clientExperiments = v6;
-    [(VCExperimentManager *)v5 setupInitialClientExperiments:v6 samplingUUID:a3];
+    [(VCExperimentManager *)v5 setupInitialClientExperiments:v6 samplingUUID:d];
     if (VRTraceGetErrorLogLevelForModule() >= 6)
     {
       __str = 0;
@@ -108,7 +108,7 @@
     v19 = 2112;
     v20 = v3;
     v21 = 2048;
-    v22 = self;
+    selfCopy = self;
     v6 = " [%s] %s:%d %@(%p) VCFeatureExperimentSetting: ";
     v7 = v10;
     v8 = 48;
@@ -148,14 +148,14 @@ LABEL_12:
   [(VCExperimentManager *)&v12 dealloc];
 }
 
-- (void)setReportingAgent:(opaqueRTCReporting *)a3
+- (void)setReportingAgent:(opaqueRTCReporting *)agent
 {
   pthread_mutex_lock(&self->_stateLock);
   reportingAgent = self->_reportingAgent;
-  self->_reportingAgent = a3;
-  if (a3)
+  self->_reportingAgent = agent;
+  if (agent)
   {
-    CFRetain(a3);
+    CFRetain(agent);
   }
 
   if (reportingAgent)
@@ -172,7 +172,7 @@ LABEL_12:
   pthread_mutex_unlock(&self->_stateLock);
 }
 
-- (int)setQRExperimentsDictionary:(id)a3
+- (int)setQRExperimentsDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x1E69E9840];
   BoolValueForKey = VCDefaults_GetBoolValueForKey(@"disableAllAVCExperiments", 0);
@@ -185,13 +185,13 @@ LABEL_20:
     goto LABEL_17;
   }
 
-  if (!a3)
+  if (!dictionary)
   {
     [(VCExperimentManager *)self setQRExperimentsDictionary:buf];
     goto LABEL_20;
   }
 
-  v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:a3];
+  v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:dictionary];
   if (v6)
   {
     [(NSMutableDictionary *)self->_clientExperiments addEntriesFromDictionary:v6];
@@ -244,10 +244,10 @@ LABEL_17:
   return v13;
 }
 
-- (void)setupInitialClientExperiments:(id)a3 samplingUUID:(id)a4
+- (void)setupInitialClientExperiments:(id)experiments samplingUUID:(id)d
 {
   v55 = *MEMORY[0x1E69E9840];
-  v5 = [(VCExperimentManager *)self isUUIDSampledForExperimentation:a4];
+  v5 = [(VCExperimentManager *)self isUUIDSampledForExperimentation:d];
   obj = VCExperimentDefinitions_ExperimentConfigurations();
   v34 = +[GKSConnectivitySettings getAllSettings];
   BoolValueForKey = VCDefaults_GetBoolValueForKey(@"disableAllAVCExperiments", 0);
@@ -314,7 +314,7 @@ LABEL_17:
     v44 = 2112;
     *v45 = v7;
     *&v45[8] = 2048;
-    v46 = self;
+    selfCopy2 = self;
     v47 = 1024;
     *v48 = v5;
     *&v48[4] = 1024;
@@ -355,7 +355,7 @@ LABEL_12:
       if (v21)
       {
         v22 = v21;
-        [a3 setObject:v21 forKey:v20];
+        [experiments setObject:v21 forKey:v20];
         if (objc_opt_class() == self)
         {
           if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -373,7 +373,7 @@ LABEL_12:
               v44 = 2112;
               *v45 = v20;
               *&v45[8] = 2112;
-              v46 = v22;
+              selfCopy2 = v22;
               v26 = v31;
               v27 = " [%s] %s:%d VCFeatureExperimentSetting: Overriding client experiment setting using user-defaults. name=%@ value=%@";
               v28 = 48;
@@ -406,7 +406,7 @@ LABEL_29:
               v44 = 2112;
               *v45 = v23;
               *&v45[8] = 2048;
-              v46 = self;
+              selfCopy2 = self;
               v47 = 2112;
               *v48 = v20;
               *&v48[8] = 2112;
@@ -425,7 +425,7 @@ LABEL_29:
       v29 = [v34 objectForKeyedSubscript:{objc_msgSend(objc_msgSend(obj, "objectForKeyedSubscript:", v20), "objectForKeyedSubscript:", @"experimentThresholdKey"}];
       if (!((v29 == 0) | (v33 | BoolValueForKey) & 1))
       {
-        [a3 setObject:-[VCExperimentManager valueForExperiment:samplingUUID:samplingThreshold:](self forKey:{"valueForExperiment:samplingUUID:samplingThreshold:", v20, a4, v29), v20}];
+        [experiments setObject:-[VCExperimentManager valueForExperiment:samplingUUID:samplingThreshold:](self forKey:{"valueForExperiment:samplingUUID:samplingThreshold:", v20, d, v29), v20}];
       }
 
 LABEL_31:
@@ -440,10 +440,10 @@ LABEL_31:
   while (v16);
 }
 
-- (BOOL)isUUIDSampledForExperimentation:(id)a3
+- (BOOL)isUUIDSampledForExperimentation:(id)experimentation
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = [a3 UUIDString];
+  uUIDString = [experimentation UUIDString];
   IsInternalOSInstalled = VRTraceIsInternalOSInstalled();
   v6 = 1.0;
   if ((IsInternalOSInstalled & 1) == 0)
@@ -467,9 +467,9 @@ LABEL_31:
 
   [+[GKSConnectivitySettings getStorebagValueForStorebagKey:userDefaultKey:defaultValue:isDoubleType:](GKSConnectivitySettings getStorebagValueForStorebagKey:@"vc-reserved-experiment-space-threshold" userDefaultKey:@"reservedExperimentSpaceFactor" defaultValue:objc_msgSend(MEMORY[0x1E696AD98] isDoubleType:{"numberWithDouble:", v11), 1), "doubleValue"}];
   v13 = v12;
-  if (v4 && ([(__CFString *)v4 isEqualToString:&stru_1F570E008]& 1) == 0)
+  if (uUIDString && ([(__CFString *)uUIDString isEqualToString:&stru_1F570E008]& 1) == 0)
   {
-    [(VCExperimentManager *)self samplingFactor:v4];
+    [(VCExperimentManager *)self samplingFactor:uUIDString];
     v14 = v15;
   }
 
@@ -493,9 +493,9 @@ LABEL_31:
         v29 = 1024;
         v30 = 234;
         v31 = 2112;
-        v32 = v4;
+        v32 = uUIDString;
         v33 = 2048;
-        v34 = *&v9;
+        selfCopy = *&v9;
         v35 = 2048;
         v36 = v13;
         v37 = 2048;
@@ -536,9 +536,9 @@ LABEL_20:
         v31 = 2112;
         v32 = v16;
         v33 = 2048;
-        v34 = self;
+        selfCopy = self;
         v35 = 2112;
-        v36 = *&v4;
+        v36 = *&uUIDString;
         v37 = 2048;
         v38 = v9;
         v39 = 2048;
@@ -556,14 +556,14 @@ LABEL_20:
   return v14 < v9 * v13;
 }
 
-- (id)valueForExperiment:(id)a3 samplingUUID:(id)a4 samplingThreshold:(id)a5
+- (id)valueForExperiment:(id)experiment samplingUUID:(id)d samplingThreshold:(id)threshold
 {
   v43 = *MEMORY[0x1E69E9840];
-  v8 = [a4 UUIDString];
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", v8, a3];
-  [(VCExperimentManager *)self samplingFactor:v9];
+  uUIDString = [d UUIDString];
+  experiment = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", uUIDString, experiment];
+  [(VCExperimentManager *)self samplingFactor:experiment];
   v11 = v10;
-  [a5 doubleValue];
+  [threshold doubleValue];
   if (v11 >= v12)
   {
     v13 = &unk_1F579A458;
@@ -589,13 +589,13 @@ LABEL_20:
         v27 = 1024;
         v28 = 243;
         v29 = 2112;
-        v30 = a3;
+        experimentCopy = experiment;
         v31 = 2112;
-        v32 = v9;
+        selfCopy = experiment;
         v33 = 2048;
         v34 = v11;
         v35 = 2112;
-        v36 = a5;
+        thresholdCopy = threshold;
         v37 = 2112;
         v38 = *&v13;
         v17 = " [%s] %s:%d VCFeatureExperimentSetting: Checking if sampled in for experiment experimentName=%@ concatenatedString=%@ samplingFactor=%f samplingThreshold=%@, isSampledIn=%@";
@@ -632,17 +632,17 @@ LABEL_14:
         v27 = 1024;
         v28 = 243;
         v29 = 2112;
-        v30 = v14;
+        experimentCopy = v14;
         v31 = 2048;
-        v32 = self;
+        selfCopy = self;
         v33 = 2112;
-        v34 = *&a3;
+        v34 = *&experiment;
         v35 = 2112;
-        v36 = v9;
+        thresholdCopy = experiment;
         v37 = 2048;
         v38 = v11;
         v39 = 2112;
-        v40 = a5;
+        thresholdCopy2 = threshold;
         v41 = 2112;
         v42 = v13;
         v17 = " [%s] %s:%d %@(%p) VCFeatureExperimentSetting: Checking if sampled in for experiment experimentName=%@ concatenatedString=%@ samplingFactor=%f samplingThreshold=%@, isSampledIn=%@";
@@ -656,10 +656,10 @@ LABEL_14:
   return v13;
 }
 
-- (double)samplingFactor:(id)a3
+- (double)samplingFactor:(id)factor
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [VCExperimentManager sha256:a3];
+  v3 = [VCExperimentManager sha256:factor];
   v4 = [MEMORY[0x1E695DF88] dataWithCapacity:{objc_msgSend(v3, "length") >> 1}];
   if ([v3 length])
   {
@@ -678,10 +678,10 @@ LABEL_14:
   return ([VCExperimentManager xorSum:v4]% 0x64) / 100.0;
 }
 
-+ (id)sha256:(id)a3
++ (id)sha256:(id)sha256
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [a3 dataUsingEncoding:4];
+  v3 = [sha256 dataUsingEncoding:4];
   *&v4 = 0xAAAAAAAAAAAAAAAALL;
   *(&v4 + 1) = 0xAAAAAAAAAAAAAAAALL;
   *md = v4;
@@ -696,10 +696,10 @@ LABEL_14:
   return v5;
 }
 
-+ (unint64_t)xorSum:(id)a3
++ (unint64_t)xorSum:(id)sum
 {
-  v4 = [a3 bytes];
-  result = [a3 length];
+  bytes = [sum bytes];
+  result = [sum length];
   if (result)
   {
     v6 = result;
@@ -722,7 +722,7 @@ LABEL_14:
       }
 
       v12 = 8 * v8;
-      v13 = v4;
+      v13 = bytes;
       do
       {
         v14 = *v13++;
@@ -733,7 +733,7 @@ LABEL_14:
       while (v12 != v9);
       result ^= v10;
       v7 += 8;
-      v4 += 8;
+      bytes += 8;
       v8 = v11;
     }
 
@@ -743,19 +743,19 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)isEnabledExperiment:(id)a3 forceDisable:(BOOL)a4
+- (BOOL)isEnabledExperiment:(id)experiment forceDisable:(BOOL)disable
 {
-  v4 = a4;
+  disableCopy = disable;
   v26 = *MEMORY[0x1E69E9840];
   v11 = 0;
-  if (a4)
+  if (disable)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [(VCExperimentManager *)self experimentGroup:&v11 forExperiment:a3]< 0 || v11 != 0;
+    v6 = [(VCExperimentManager *)self experimentGroup:&v11 forExperiment:experiment]< 0 || v11 != 0;
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -777,11 +777,11 @@ LABEL_14:
       v16 = 1024;
       v17 = 103;
       v18 = 2112;
-      v19 = a3;
+      experimentCopy = experiment;
       v20 = 1024;
       v21 = v11;
       v22 = 1024;
-      v23 = v4;
+      v23 = disableCopy;
       v24 = 2080;
       v25 = v9;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d VCFeatureExperimentSetting: AB Test for experiment %@=%u. forceDisable=%d Experiment is %s", buf, 0x3Cu);

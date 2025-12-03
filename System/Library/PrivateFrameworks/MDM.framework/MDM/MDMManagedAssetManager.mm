@@ -1,29 +1,29 @@
 @interface MDMManagedAssetManager
-+ (void)promptUserToLoginToiTunesIfNeededTitle:(id)a3 message:(id)a4 assertion:(id)a5 completionBlock:(id)a6;
++ (void)promptUserToLoginToiTunesIfNeededTitle:(id)title message:(id)message assertion:(id)assertion completionBlock:(id)block;
 @end
 
 @implementation MDMManagedAssetManager
 
-+ (void)promptUserToLoginToiTunesIfNeededTitle:(id)a3 message:(id)a4 assertion:(id)a5 completionBlock:(id)a6
++ (void)promptUserToLoginToiTunesIfNeededTitle:(id)title message:(id)message assertion:(id)assertion completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x277D69A20] defaultStore];
-  v15 = [v14 activeAccount];
+  titleCopy = title;
+  messageCopy = message;
+  assertionCopy = assertion;
+  blockCopy = block;
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  activeAccount = [defaultStore activeAccount];
 
-  if (v15)
+  if (activeAccount)
   {
-    if (v13)
+    if (blockCopy)
     {
       v16 = dispatch_get_global_queue(0, 0);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __99__MDMManagedAssetManager_promptUserToLoginToiTunesIfNeededTitle_message_assertion_completionBlock___block_invoke;
       block[3] = &unk_27982B898;
-      v27 = v13;
-      v26 = v12;
+      v27 = blockCopy;
+      v26 = assertionCopy;
       dispatch_async(v16, block);
 
       v17 = v27;
@@ -40,10 +40,10 @@ LABEL_10:
       v20[1] = 3221225472;
       v20[2] = __99__MDMManagedAssetManager_promptUserToLoginToiTunesIfNeededTitle_message_assertion_completionBlock___block_invoke_3;
       v20[3] = &unk_27982BED8;
-      v22 = v13;
-      v23 = a1;
-      v21 = v12;
-      [v19 promptUserToLogIntoiTunesWithTitle:v10 message:v11 assertion:v21 completion:v20];
+      v22 = blockCopy;
+      selfCopy = self;
+      v21 = assertionCopy;
+      [v19 promptUserToLogIntoiTunesWithTitle:titleCopy message:messageCopy assertion:v21 completion:v20];
 
       v17 = v22;
       goto LABEL_10;
@@ -56,9 +56,9 @@ LABEL_10:
       _os_log_impl(&dword_2561F5000, v18, OS_LOG_TYPE_ERROR, "Cannot prompt login to iTunes because device is in a limited apps mode", buf, 2u);
     }
 
-    if (v13)
+    if (blockCopy)
     {
-      (*(v13 + 2))(v13, 0);
+      (*(blockCopy + 2))(blockCopy, 0);
     }
   }
 }

@@ -1,28 +1,28 @@
 @interface HUPrimaryUserItem
-- (HUPrimaryUserItem)initWithHome:(id)a3 mediaProfileContainer:(id)a4 user:(id)a5;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HUPrimaryUserItem)initWithHome:(id)home mediaProfileContainer:(id)container user:(id)user;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HUPrimaryUserItem
 
-- (HUPrimaryUserItem)initWithHome:(id)a3 mediaProfileContainer:(id)a4 user:(id)a5
+- (HUPrimaryUserItem)initWithHome:(id)home mediaProfileContainer:(id)container user:(id)user
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  homeCopy = home;
+  containerCopy = container;
+  userCopy = user;
+  if (homeCopy)
   {
-    if (v10)
+    if (containerCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"HUPrimaryUserItem.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"mediaProfileContainer"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUPrimaryUserItem.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"mediaProfileContainer"}];
 
-    if (v11)
+    if (userCopy)
     {
       goto LABEL_4;
     }
@@ -30,58 +30,58 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v16 = [MEMORY[0x277CCA890] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"HUPrimaryUserItem.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"home"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HUPrimaryUserItem.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"home"}];
 
-  if (!v10)
+  if (!containerCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v11)
+  if (userCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v18 = [MEMORY[0x277CCA890] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"HUPrimaryUserItem.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"user"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"HUPrimaryUserItem.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"user"}];
 
 LABEL_4:
   v12 = objc_alloc(MEMORY[0x277CBEBD0]);
   v13 = [v12 initWithSuiteName:*MEMORY[0x277D139F8]];
   v19.receiver = self;
   v19.super_class = HUPrimaryUserItem;
-  v14 = [(HFUserItem *)&v19 initWithHome:v9 user:v11 nameStyle:2 userDefaults:v13];
+  v14 = [(HFUserItem *)&v19 initWithHome:homeCopy user:userCopy nameStyle:2 userDefaults:v13];
 
   if (v14)
   {
-    objc_storeStrong(&v14->_mediaProfileContainer, a4);
+    objc_storeStrong(&v14->_mediaProfileContainer, container);
   }
 
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(HFUserItem *)self home];
-  v6 = [(HUPrimaryUserItem *)self mediaProfileContainer];
-  v7 = [(HFUserItem *)self user];
-  v8 = [v4 initWithHome:v5 mediaProfileContainer:v6 user:v7];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  home = [(HFUserItem *)self home];
+  mediaProfileContainer = [(HUPrimaryUserItem *)self mediaProfileContainer];
+  user = [(HFUserItem *)self user];
+  v8 = [v4 initWithHome:home mediaProfileContainer:mediaProfileContainer user:user];
 
   [v8 copyLatestResultsFromItem:self];
   return v8;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   objc_initWeak(&location, self);
   v10.receiver = self;
   v10.super_class = HUPrimaryUserItem;
-  v5 = [(HFUserItem *)&v10 _subclass_updateWithOptions:v4];
+  v5 = [(HFUserItem *)&v10 _subclass_updateWithOptions:optionsCopy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __49__HUPrimaryUserItem__subclass_updateWithOptions___block_invoke;

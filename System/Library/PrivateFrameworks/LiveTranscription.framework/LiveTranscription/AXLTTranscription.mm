@@ -1,5 +1,5 @@
 @interface AXLTTranscription
-- (AXLTTranscription)initWithRecognitionTask:(id)a3 transcription:(id)a4 previousTranscription:(id)a5;
+- (AXLTTranscription)initWithRecognitionTask:(id)task transcription:(id)transcription previousTranscription:(id)previousTranscription;
 - (BOOL)_shouldUseNonUpdatingSegments;
 - (NSArray)segments;
 - (NSString)formattedString;
@@ -27,33 +27,33 @@ uint64_t __50__AXLTTranscription__shouldUseNonUpdatingSegments__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (AXLTTranscription)initWithRecognitionTask:(id)a3 transcription:(id)a4 previousTranscription:(id)a5
+- (AXLTTranscription)initWithRecognitionTask:(id)task transcription:(id)transcription previousTranscription:(id)previousTranscription
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  taskCopy = task;
+  transcriptionCopy = transcription;
+  previousTranscriptionCopy = previousTranscription;
   v20.receiver = self;
   v20.super_class = AXLTTranscription;
   v12 = [(AXLTTranscription *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_task, a3);
-    objc_storeStrong(&v13->_transcription, a4);
+    objc_storeStrong(&v12->_task, task);
+    objc_storeStrong(&v13->_transcription, transcription);
     if ([(AXLTTranscription *)v13 _shouldUseNonUpdatingSegments])
     {
-      v14 = [v11 nonUpdatingSegments];
-      v15 = [v10 segments];
-      v16 = [AXLTSegmentUtilities mergeOldSegments:v14 withNewSegments:v15];
+      nonUpdatingSegments = [previousTranscriptionCopy nonUpdatingSegments];
+      segments = [transcriptionCopy segments];
+      v16 = [AXLTSegmentUtilities mergeOldSegments:nonUpdatingSegments withNewSegments:segments];
       nonUpdatingSegments = v13->_nonUpdatingSegments;
       v13->_nonUpdatingSegments = v16;
     }
 
     else
     {
-      v18 = [v10 segments];
-      v14 = v13->_nonUpdatingSegments;
-      v13->_nonUpdatingSegments = v18;
+      segments2 = [transcriptionCopy segments];
+      nonUpdatingSegments = v13->_nonUpdatingSegments;
+      v13->_nonUpdatingSegments = segments2;
     }
   }
 
@@ -62,26 +62,26 @@ uint64_t __50__AXLTTranscription__shouldUseNonUpdatingSegments__block_invoke()
 
 - (NSString)formattedString
 {
-  v2 = [(AXLTTranscription *)self transcription];
-  v3 = [v2 formattedString];
+  transcription = [(AXLTTranscription *)self transcription];
+  formattedString = [transcription formattedString];
 
-  return v3;
+  return formattedString;
 }
 
 - (NSArray)segments
 {
-  v2 = [(AXLTTranscription *)self transcription];
-  v3 = [v2 segments];
+  transcription = [(AXLTTranscription *)self transcription];
+  segments = [transcription segments];
 
-  return v3;
+  return segments;
 }
 
 - (NSString)taskIdentifier
 {
-  v2 = [(AXLTTranscription *)self task];
-  v3 = [v2 requestIdentifier];
+  task = [(AXLTTranscription *)self task];
+  requestIdentifier = [task requestIdentifier];
 
-  return v3;
+  return requestIdentifier;
 }
 
 @end

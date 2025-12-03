@@ -1,58 +1,58 @@
 @interface HFSiriLanguageOptionsManager
-- (BOOL)shouldShowSettingsEntity:(id)a3;
-- (HFSiriLanguageOptionsManager)initWithSettingsController:(id)a3 accessoryIdentifier:(id)a4 home:(id)a5;
-- (HFSiriLanguageOptionsManager)initWithSettingsController:(id)a3 sourceItem:(id)a4 home:(id)a5;
+- (BOOL)shouldShowSettingsEntity:(id)entity;
+- (HFSiriLanguageOptionsManager)initWithSettingsController:(id)controller accessoryIdentifier:(id)identifier home:(id)home;
+- (HFSiriLanguageOptionsManager)initWithSettingsController:(id)controller sourceItem:(id)item home:(id)home;
 - (id)_settingKeyPaths;
 - (id)availableSiriLanguageOptions;
 - (id)preferredOutputVoiceAccentOptionsForSelectedOption;
 - (id)preferredOutputVoiceOptionsForSelectedOption;
 - (id)preferredRecognitionLanguageOptionsForSelectedOption;
-- (id)updateSelectedLanguageOption:(id)a3;
-- (id)updateSelectedLanguageOption:(id)a3 accessoryIdentifier:(id)a4;
+- (id)updateSelectedLanguageOption:(id)option;
+- (id)updateSelectedLanguageOption:(id)option accessoryIdentifier:(id)identifier;
 - (void)_fetchAvailableLanguagesAndGenerateOptions;
 - (void)_subscribeToSiriLanguageSettings;
-- (void)_updateSettingsAndNotifyObservers:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)didReceiveSettingsUpdatesForAccessoryWithIdentifier:(id)a3 settings:(id)a4;
-- (void)removeObserver:(id)a3;
+- (void)_updateSettingsAndNotifyObservers:(id)observers;
+- (void)addObserver:(id)observer;
+- (void)didReceiveSettingsUpdatesForAccessoryWithIdentifier:(id)identifier settings:(id)settings;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation HFSiriLanguageOptionsManager
 
-- (HFSiriLanguageOptionsManager)initWithSettingsController:(id)a3 sourceItem:(id)a4 home:(id)a5
+- (HFSiriLanguageOptionsManager)initWithSettingsController:(id)controller sourceItem:(id)item home:(id)home
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [a4 accessories];
-  v11 = [v10 anyObject];
+  homeCopy = home;
+  controllerCopy = controller;
+  accessories = [item accessories];
+  anyObject = [accessories anyObject];
 
-  v12 = [v11 uniqueIdentifier];
-  v13 = [(HFSiriLanguageOptionsManager *)self initWithSettingsController:v9 accessoryIdentifier:v12 home:v8];
+  uniqueIdentifier = [anyObject uniqueIdentifier];
+  v13 = [(HFSiriLanguageOptionsManager *)self initWithSettingsController:controllerCopy accessoryIdentifier:uniqueIdentifier home:homeCopy];
 
   return v13;
 }
 
-- (HFSiriLanguageOptionsManager)initWithSettingsController:(id)a3 accessoryIdentifier:(id)a4 home:(id)a5
+- (HFSiriLanguageOptionsManager)initWithSettingsController:(id)controller accessoryIdentifier:(id)identifier home:(id)home
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  identifierCopy = identifier;
+  homeCopy = home;
   v20.receiver = self;
   v20.super_class = HFSiriLanguageOptionsManager;
   v12 = [(HFSiriLanguageOptionsManager *)&v20 init];
   if (v12)
   {
     v13 = +[HFHomeKitDispatcher sharedDispatcher];
-    v14 = [v13 accessorySettingsDataSource];
-    [v14 addObserver:v12];
+    accessorySettingsDataSource = [v13 accessorySettingsDataSource];
+    [accessorySettingsDataSource addObserver:v12];
 
-    objc_storeStrong(&v12->_settingsController, a3);
-    objc_storeStrong(&v12->_home, a5);
-    v15 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeStrong(&v12->_settingsController, controller);
+    objc_storeStrong(&v12->_home, home);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v12->_observers;
-    v12->_observers = v15;
+    v12->_observers = weakObjectsHashTable;
 
-    objc_storeStrong(&v12->_accessoryIdentifier, a4);
+    objc_storeStrong(&v12->_accessoryIdentifier, identifier);
     v17 = objc_alloc_init(MEMORY[0x277D2C900]);
     availableLanguagesFuture = v12->_availableLanguagesFuture;
     v12->_availableLanguagesFuture = v17;
@@ -66,21 +66,21 @@
 
 - (id)availableSiriLanguageOptions
 {
-  v3 = [(HFSiriLanguageOptionsManager *)self availableLanguageOptions];
+  availableLanguageOptions = [(HFSiriLanguageOptionsManager *)self availableLanguageOptions];
 
-  if (v3)
+  if (availableLanguageOptions)
   {
     v4 = MEMORY[0x277D2C900];
-    v5 = [(HFSiriLanguageOptionsManager *)self availableLanguageOptions];
-    v6 = [v4 futureWithResult:v5];
+    availableLanguageOptions2 = [(HFSiriLanguageOptionsManager *)self availableLanguageOptions];
+    availableLanguagesFuture = [v4 futureWithResult:availableLanguageOptions2];
   }
 
   else
   {
-    v6 = [(HFSiriLanguageOptionsManager *)self availableLanguagesFuture];
+    availableLanguagesFuture = [(HFSiriLanguageOptionsManager *)self availableLanguagesFuture];
   }
 
-  return v6;
+  return availableLanguagesFuture;
 }
 
 - (id)preferredRecognitionLanguageOptionsForSelectedOption
@@ -91,8 +91,8 @@
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [(HFSiriLanguageOptionsManager *)self availableLanguageOptions];
-  v5 = [v4 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  availableLanguageOptions = [(HFSiriLanguageOptionsManager *)self availableLanguageOptions];
+  v5 = [availableLanguageOptions countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v5)
   {
     v6 = v5;
@@ -103,16 +103,16 @@
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(availableLanguageOptions);
         }
 
         v9 = *(*(&v22 + 1) + 8 * i);
-        v10 = [v9 voiceNameWithDefaultFallback];
-        v11 = [v9 outputLanguage];
-        v12 = v11;
-        if (v10)
+        voiceNameWithDefaultFallback = [v9 voiceNameWithDefaultFallback];
+        outputLanguage = [v9 outputLanguage];
+        v12 = outputLanguage;
+        if (voiceNameWithDefaultFallback)
         {
-          v13 = v11 == 0;
+          v13 = outputLanguage == 0;
         }
 
         else
@@ -122,18 +122,18 @@
 
         if (!v13)
         {
-          v14 = [v11 stringByAppendingString:v10];
+          v14 = [outputLanguage stringByAppendingString:voiceNameWithDefaultFallback];
           [v3 addObject:v14];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v6 = [availableLanguageOptions countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v6);
   }
 
-  v15 = [(HFSiriLanguageOptionsManager *)self availableSiriLanguageOptions];
+  availableSiriLanguageOptions = [(HFSiriLanguageOptionsManager *)self availableSiriLanguageOptions];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __84__HFSiriLanguageOptionsManager_preferredRecognitionLanguageOptionsForSelectedOption__block_invoke;
@@ -141,7 +141,7 @@
   v20[4] = self;
   v21 = v3;
   v16 = v3;
-  v17 = [v15 flatMap:v20];
+  v17 = [availableSiriLanguageOptions flatMap:v20];
 
   v18 = *MEMORY[0x277D85DE8];
 
@@ -237,13 +237,13 @@ uint64_t __84__HFSiriLanguageOptionsManager_preferredRecognitionLanguageOptionsF
 - (id)preferredOutputVoiceAccentOptionsForSelectedOption
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v3 = [(HFSiriLanguageOptionsManager *)self availableSiriLanguageOptions];
+  availableSiriLanguageOptions = [(HFSiriLanguageOptionsManager *)self availableSiriLanguageOptions];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __82__HFSiriLanguageOptionsManager_preferredOutputVoiceAccentOptionsForSelectedOption__block_invoke;
   v6[3] = &unk_277DFC8D8;
   v6[4] = self;
-  v4 = [v3 flatMap:v6];
+  v4 = [availableSiriLanguageOptions flatMap:v6];
 
   return v4;
 }
@@ -353,13 +353,13 @@ uint64_t __82__HFSiriLanguageOptionsManager_preferredOutputVoiceAccentOptionsFor
 - (id)preferredOutputVoiceOptionsForSelectedOption
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v3 = [(HFSiriLanguageOptionsManager *)self availableSiriLanguageOptions];
+  availableSiriLanguageOptions = [(HFSiriLanguageOptionsManager *)self availableSiriLanguageOptions];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __76__HFSiriLanguageOptionsManager_preferredOutputVoiceOptionsForSelectedOption__block_invoke;
   v6[3] = &unk_277DFC8D8;
   v6[4] = self;
-  v4 = [v3 flatMap:v6];
+  v4 = [availableSiriLanguageOptions flatMap:v6];
 
   return v4;
 }
@@ -399,45 +399,45 @@ uint64_t __76__HFSiriLanguageOptionsManager_preferredOutputVoiceOptionsForSelect
   return v10;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFSiriLanguageOptionsManager *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(HFSiriLanguageOptionsManager *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFSiriLanguageOptionsManager *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(HFSiriLanguageOptionsManager *)self observers];
+  [observers removeObject:observerCopy];
 }
 
-- (id)updateSelectedLanguageOption:(id)a3
+- (id)updateSelectedLanguageOption:(id)option
 {
-  v4 = a3;
-  v5 = [(HFSiriLanguageOptionsManager *)self accessoryIdentifier];
-  v6 = [(HFSiriLanguageOptionsManager *)self updateSelectedLanguageOption:v4 accessoryIdentifier:v5];
+  optionCopy = option;
+  accessoryIdentifier = [(HFSiriLanguageOptionsManager *)self accessoryIdentifier];
+  v6 = [(HFSiriLanguageOptionsManager *)self updateSelectedLanguageOption:optionCopy accessoryIdentifier:accessoryIdentifier];
 
   return v6;
 }
 
-- (id)updateSelectedLanguageOption:(id)a3 accessoryIdentifier:(id)a4
+- (id)updateSelectedLanguageOption:(id)option accessoryIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(HFSiriLanguageOptionsManager *)self availableSiriLanguageOptions];
+  optionCopy = option;
+  identifierCopy = identifier;
+  availableSiriLanguageOptions = [(HFSiriLanguageOptionsManager *)self availableSiriLanguageOptions];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __81__HFSiriLanguageOptionsManager_updateSelectedLanguageOption_accessoryIdentifier___block_invoke;
   v14[3] = &unk_277DFC950;
-  v15 = v7;
-  v16 = self;
-  v17 = v8;
+  v15 = optionCopy;
+  selfCopy = self;
+  v17 = identifierCopy;
   v18 = a2;
-  v10 = v8;
-  v11 = v7;
-  v12 = [v9 flatMap:v14];
+  v10 = identifierCopy;
+  v11 = optionCopy;
+  v12 = [availableSiriLanguageOptions flatMap:v14];
 
   return v12;
 }
@@ -634,22 +634,22 @@ void __81__HFSiriLanguageOptionsManager_updateSelectedLanguageOption_accessoryId
 - (void)_fetchAvailableLanguagesAndGenerateOptions
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(HFSiriLanguageOptionsManager *)self _settingKeyPaths];
+  _settingKeyPaths = [(HFSiriLanguageOptionsManager *)self _settingKeyPaths];
   v4 = +[HFHomeKitDispatcher sharedDispatcher];
-  v5 = [v4 accessorySettingsDataSource];
-  v6 = [(HFSiriLanguageOptionsManager *)self home];
-  v7 = [v6 uniqueIdentifier];
-  v8 = [(HFSiriLanguageOptionsManager *)self accessoryIdentifier];
-  v9 = [v5 hf_defaultSettingsWithHomeIdentifier:v7 accessoryIdentifier:v8 keyPaths:v3];
+  accessorySettingsDataSource = [v4 accessorySettingsDataSource];
+  home = [(HFSiriLanguageOptionsManager *)self home];
+  uniqueIdentifier = [home uniqueIdentifier];
+  accessoryIdentifier = [(HFSiriLanguageOptionsManager *)self accessoryIdentifier];
+  v9 = [accessorySettingsDataSource hf_defaultSettingsWithHomeIdentifier:uniqueIdentifier accessoryIdentifier:accessoryIdentifier keyPaths:_settingKeyPaths];
 
   v10 = HFLogForCategory(0x28uLL);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(HFSiriLanguageOptionsManager *)self accessoryIdentifier];
+    accessoryIdentifier2 = [(HFSiriLanguageOptionsManager *)self accessoryIdentifier];
     v13 = 138412802;
-    v14 = v11;
+    v14 = accessoryIdentifier2;
     v15 = 2112;
-    v16 = v3;
+    v16 = _settingKeyPaths;
     v17 = 2112;
     v18 = v9;
     _os_log_impl(&dword_20D9BF000, v10, OS_LOG_TYPE_DEFAULT, "defaultSettings for Siri language option for accessoryUUID [%@] - keyPaths [%@] = [%@]", &v13, 0x20u);
@@ -662,17 +662,17 @@ void __81__HFSiriLanguageOptionsManager_updateSelectedLanguageOption_accessoryId
 - (void)_subscribeToSiriLanguageSettings
 {
   v3 = +[HFHomeKitDispatcher sharedDispatcher];
-  v4 = [v3 accessorySettingsDataSource];
-  v5 = [(HFSiriLanguageOptionsManager *)self home];
-  v6 = [v5 uniqueIdentifier];
-  v7 = [(HFSiriLanguageOptionsManager *)self accessoryIdentifier];
-  v8 = [(HFSiriLanguageOptionsManager *)self _settingKeyPaths];
+  accessorySettingsDataSource = [v3 accessorySettingsDataSource];
+  home = [(HFSiriLanguageOptionsManager *)self home];
+  uniqueIdentifier = [home uniqueIdentifier];
+  accessoryIdentifier = [(HFSiriLanguageOptionsManager *)self accessoryIdentifier];
+  _settingKeyPaths = [(HFSiriLanguageOptionsManager *)self _settingKeyPaths];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __64__HFSiriLanguageOptionsManager__subscribeToSiriLanguageSettings__block_invoke;
   v9[3] = &unk_277DF2D08;
   v9[4] = self;
-  [v4 hf_subscribeToAccessorySettingsWithHomeIdentifier:v6 accessoryIdentifier:v7 keyPaths:v8 options:0 completionHandler:v9];
+  [accessorySettingsDataSource hf_subscribeToAccessorySettingsWithHomeIdentifier:uniqueIdentifier accessoryIdentifier:accessoryIdentifier keyPaths:_settingKeyPaths options:0 completionHandler:v9];
 }
 
 void __64__HFSiriLanguageOptionsManager__subscribeToSiriLanguageSettings__block_invoke(uint64_t a1, void *a2)
@@ -699,23 +699,23 @@ void __64__HFSiriLanguageOptionsManager__subscribeToSiriLanguageSettings__block_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateSettingsAndNotifyObservers:(id)a3
+- (void)_updateSettingsAndNotifyObservers:(id)observers
 {
   v98 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observersCopy = observers;
   v5 = HFLogForCategory(0x28uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v65 = NSStringFromSelector(a2);
-    v66 = [(HFSiriLanguageOptionsManager *)self accessoryIdentifier];
+    accessoryIdentifier = [(HFSiriLanguageOptionsManager *)self accessoryIdentifier];
     *buf = 138413058;
-    v91 = self;
+    selfCopy7 = self;
     v92 = 2112;
     v93 = v65;
     v94 = 2112;
-    v95 = v4;
+    v95 = observersCopy;
     v96 = 2112;
-    v97 = v66;
+    v97 = accessoryIdentifier;
     _os_log_debug_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEBUG, "%@:%@ Updating language settings and notifying observers: %@ for accessoryID [%@]", buf, 0x2Au);
   }
 
@@ -723,7 +723,7 @@ void __64__HFSiriLanguageOptionsManager__subscribeToSiriLanguageSettings__block_
   v86 = 0u;
   v83 = 0u;
   v84 = 0u;
-  obj = v4;
+  obj = observersCopy;
   v6 = [(HFSiriLanguageOption *)obj countByEnumeratingWithState:&v83 objects:v89 count:16];
   if (v6)
   {
@@ -743,10 +743,10 @@ void __64__HFSiriLanguageOptionsManager__subscribeToSiriLanguageSettings__block_
         }
 
         v11 = *(*(&v83 + 1) + 8 * v10);
-        v12 = [v11 value];
+        value = [v11 value];
         v13 = *(v8 + 2656);
         objc_opt_class();
-        v14 = v12;
+        v14 = value;
         if (objc_opt_isKindOfClass())
         {
           v15 = v14;
@@ -781,17 +781,17 @@ void __64__HFSiriLanguageOptionsManager__subscribeToSiriLanguageSettings__block_
           v22 = [v16 na_map:&__block_literal_global_25_8];
           v23 = [v21 setWithArray:v22];
 
-          v24 = [(HFSiriLanguageOptionsManager *)self availableLanguageOptions];
+          availableLanguageOptions = [(HFSiriLanguageOptionsManager *)self availableLanguageOptions];
           v25 = v23;
           v70 = v10;
-          if (v24 == v25)
+          if (availableLanguageOptions == v25)
           {
             v26 = 1;
           }
 
-          else if (v24)
+          else if (availableLanguageOptions)
           {
-            v26 = [(HFSiriLanguageOption *)v24 isEqual:v25];
+            v26 = [(HFSiriLanguageOption *)availableLanguageOptions isEqual:v25];
           }
 
           else
@@ -805,7 +805,7 @@ void __64__HFSiriLanguageOptionsManager__subscribeToSiriLanguageSettings__block_
           {
             v55 = NSStringFromSelector(a2);
             *buf = 138412802;
-            v91 = self;
+            selfCopy7 = self;
             v92 = 2112;
             v93 = v55;
             v94 = 1024;
@@ -823,10 +823,10 @@ void __64__HFSiriLanguageOptionsManager__subscribeToSiriLanguageSettings__block_
             if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
             {
               v56 = NSStringFromSelector(a2);
-              v57 = [(HFSiriLanguageOptionsManager *)self observers];
-              v58 = [v57 copy];
+              observers = [(HFSiriLanguageOptionsManager *)self observers];
+              v58 = [observers copy];
               *buf = 138412802;
-              v91 = self;
+              selfCopy7 = self;
               v92 = 2112;
               v93 = v56;
               v94 = 2112;
@@ -838,8 +838,8 @@ void __64__HFSiriLanguageOptionsManager__subscribeToSiriLanguageSettings__block_
             v82 = 0u;
             v79 = 0u;
             v80 = 0u;
-            v45 = [(HFSiriLanguageOptionsManager *)self observers];
-            v46 = [v45 copy];
+            observers2 = [(HFSiriLanguageOptionsManager *)self observers];
+            v46 = [observers2 copy];
 
             v47 = [v46 countByEnumeratingWithState:&v79 objects:v88 count:16];
             if (v47)
@@ -863,7 +863,7 @@ void __64__HFSiriLanguageOptionsManager__subscribeToSiriLanguageSettings__block_
                     {
                       v53 = NSStringFromSelector(a2);
                       *buf = 138412802;
-                      v91 = self;
+                      selfCopy7 = self;
                       v92 = 2112;
                       v93 = v53;
                       v94 = 2112;
@@ -886,17 +886,17 @@ void __64__HFSiriLanguageOptionsManager__subscribeToSiriLanguageSettings__block_
             v7 = v67;
           }
 
-          v35 = [(HFSiriLanguageOptionsManager *)self availableLanguagesFuture];
-          v54 = [(HFSiriLanguageOptionsManager *)self availableLanguageOptions];
-          [v35 finishWithResult:v54];
+          availableLanguagesFuture = [(HFSiriLanguageOptionsManager *)self availableLanguagesFuture];
+          availableLanguageOptions2 = [(HFSiriLanguageOptionsManager *)self availableLanguageOptions];
+          [availableLanguagesFuture finishWithResult:availableLanguageOptions2];
 
           goto LABEL_57;
         }
 
         if (v20)
         {
-          v27 = [v11 keyPath];
-          v28 = [v27 isEqualToString:HFSiriLanguageSettingKeyPath];
+          keyPath = [v11 keyPath];
+          v28 = [keyPath isEqualToString:HFSiriLanguageSettingKeyPath];
 
           if (v28)
           {
@@ -905,7 +905,7 @@ void __64__HFSiriLanguageOptionsManager__subscribeToSiriLanguageSettings__block_
             {
               v59 = NSStringFromSelector(a2);
               *buf = 138412802;
-              v91 = self;
+              selfCopy7 = self;
               v92 = 2112;
               v93 = v59;
               v94 = 2112;
@@ -913,9 +913,9 @@ void __64__HFSiriLanguageOptionsManager__subscribeToSiriLanguageSettings__block_
               _os_log_debug_impl(&dword_20D9BF000, v29, OS_LOG_TYPE_DEBUG, "%@:%@ siriLanguageSelection: %@", buf, 0x20u);
             }
 
-            v30 = [(HFSiriLanguageOptionsManager *)self selectedLanguageOption];
-            v31 = [v30 settingLanguageValue];
-            v32 = [v31 isEqual:v73];
+            selectedLanguageOption = [(HFSiriLanguageOptionsManager *)self selectedLanguageOption];
+            settingLanguageValue = [selectedLanguageOption settingLanguageValue];
+            v32 = [settingLanguageValue isEqual:v73];
 
             if ((v32 & 1) == 0)
             {
@@ -931,7 +931,7 @@ void __64__HFSiriLanguageOptionsManager__subscribeToSiriLanguageSettings__block_
                 v62 = v61 = v10;
                 v63 = [v62 copy];
                 *buf = 138412802;
-                v91 = self;
+                selfCopy7 = self;
                 v92 = 2112;
                 v93 = v60;
                 v94 = 2112;
@@ -945,10 +945,10 @@ void __64__HFSiriLanguageOptionsManager__subscribeToSiriLanguageSettings__block_
               v78 = 0u;
               v75 = 0u;
               v76 = 0u;
-              v34 = [(HFSiriLanguageOptionsManager *)self observers];
-              v35 = [v34 copy];
+              observers3 = [(HFSiriLanguageOptionsManager *)self observers];
+              availableLanguagesFuture = [observers3 copy];
 
-              v36 = [v35 countByEnumeratingWithState:&v75 objects:v87 count:16];
+              v36 = [availableLanguagesFuture countByEnumeratingWithState:&v75 objects:v87 count:16];
               if (v36)
               {
                 v37 = v36;
@@ -960,7 +960,7 @@ void __64__HFSiriLanguageOptionsManager__subscribeToSiriLanguageSettings__block_
                   {
                     if (*v76 != v38)
                     {
-                      objc_enumerationMutation(v35);
+                      objc_enumerationMutation(availableLanguagesFuture);
                     }
 
                     v40 = *(*(&v75 + 1) + 8 * j);
@@ -971,7 +971,7 @@ void __64__HFSiriLanguageOptionsManager__subscribeToSiriLanguageSettings__block_
                       {
                         v42 = NSStringFromSelector(a2);
                         *buf = 138412802;
-                        v91 = self;
+                        selfCopy7 = self;
                         v92 = 2112;
                         v93 = v42;
                         v94 = 2112;
@@ -983,7 +983,7 @@ void __64__HFSiriLanguageOptionsManager__subscribeToSiriLanguageSettings__block_
                     }
                   }
 
-                  v37 = [v35 countByEnumeratingWithState:&v75 objects:v87 count:16];
+                  v37 = [availableLanguagesFuture countByEnumeratingWithState:&v75 objects:v87 count:16];
                 }
 
                 while (v37);
@@ -1032,11 +1032,11 @@ HFSiriLanguageOption *__66__HFSiriLanguageOptionsManager__updateSettingsAndNotif
   return v2;
 }
 
-- (BOOL)shouldShowSettingsEntity:(id)a3
+- (BOOL)shouldShowSettingsEntity:(id)entity
 {
-  v4 = a3;
-  v5 = [v4 keyPath];
-  v6 = [v5 isEqualToString:@"root.siri.recognitionLanguage"];
+  entityCopy = entity;
+  keyPath = [entityCopy keyPath];
+  v6 = [keyPath isEqualToString:@"root.siri.recognitionLanguage"];
 
   if (v6)
   {
@@ -1044,19 +1044,19 @@ HFSiriLanguageOption *__66__HFSiriLanguageOptionsManager__updateSettingsAndNotif
     v20 = &v19;
     v21 = 0x2020000000;
     v22 = 0;
-    v7 = [(HFSiriLanguageOptionsManager *)self preferredRecognitionLanguageOptionsForSelectedOption];
+    preferredRecognitionLanguageOptionsForSelectedOption = [(HFSiriLanguageOptionsManager *)self preferredRecognitionLanguageOptionsForSelectedOption];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __57__HFSiriLanguageOptionsManager_shouldShowSettingsEntity___block_invoke;
     v18[3] = &unk_277DFC998;
     v18[4] = &v19;
-    v8 = [v7 flatMap:v18];
+    v8 = [preferredRecognitionLanguageOptionsForSelectedOption flatMap:v18];
   }
 
   else
   {
-    v9 = [v4 keyPath];
-    v10 = [v9 isEqualToString:@"root.siri.outputVoice"];
+    keyPath2 = [entityCopy keyPath];
+    v10 = [keyPath2 isEqualToString:@"root.siri.outputVoice"];
 
     if (!v10)
     {
@@ -1068,21 +1068,21 @@ HFSiriLanguageOption *__66__HFSiriLanguageOptionsManager__updateSettingsAndNotif
     v20 = &v19;
     v21 = 0x2020000000;
     v22 = 0;
-    v11 = [(HFSiriLanguageOptionsManager *)self preferredOutputVoiceOptionsForSelectedOption];
+    preferredOutputVoiceOptionsForSelectedOption = [(HFSiriLanguageOptionsManager *)self preferredOutputVoiceOptionsForSelectedOption];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __57__HFSiriLanguageOptionsManager_shouldShowSettingsEntity___block_invoke_2;
     v17[3] = &unk_277DFC998;
     v17[4] = &v19;
-    v12 = [v11 flatMap:v17];
+    v12 = [preferredOutputVoiceOptionsForSelectedOption flatMap:v17];
 
-    v7 = [(HFSiriLanguageOptionsManager *)self preferredOutputVoiceAccentOptionsForSelectedOption];
+    preferredRecognitionLanguageOptionsForSelectedOption = [(HFSiriLanguageOptionsManager *)self preferredOutputVoiceAccentOptionsForSelectedOption];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __57__HFSiriLanguageOptionsManager_shouldShowSettingsEntity___block_invoke_3;
     v16[3] = &unk_277DFC998;
     v16[4] = &v19;
-    v13 = [v7 flatMap:v16];
+    v13 = [preferredRecognitionLanguageOptionsForSelectedOption flatMap:v16];
   }
 
   v14 = *(v20 + 24);
@@ -1128,16 +1128,16 @@ uint64_t __57__HFSiriLanguageOptionsManager_shouldShowSettingsEntity___block_inv
   return [v5 futureWithNoResult];
 }
 
-- (void)didReceiveSettingsUpdatesForAccessoryWithIdentifier:(id)a3 settings:(id)a4
+- (void)didReceiveSettingsUpdatesForAccessoryWithIdentifier:(id)identifier settings:(id)settings
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [(HFSiriLanguageOptionsManager *)self accessoryIdentifier];
-  v8 = [v6 hmf_isEqualToUUID:v7];
+  settingsCopy = settings;
+  identifierCopy = identifier;
+  accessoryIdentifier = [(HFSiriLanguageOptionsManager *)self accessoryIdentifier];
+  v8 = [identifierCopy hmf_isEqualToUUID:accessoryIdentifier];
 
   if (v8)
   {
-    [(HFSiriLanguageOptionsManager *)self _updateSettingsAndNotifyObservers:v9];
+    [(HFSiriLanguageOptionsManager *)self _updateSettingsAndNotifyObservers:settingsCopy];
   }
 }
 

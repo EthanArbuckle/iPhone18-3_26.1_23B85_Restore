@@ -1,14 +1,14 @@
 @interface NTKDigitalWorldClockComplicationBundleDataSource
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4;
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device;
 + (id)complicationDescriptors;
 + (id)localizedComplicationName;
-- (NTKDigitalWorldClockComplicationBundleDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
+- (NTKDigitalWorldClockComplicationBundleDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
 - (id)_city;
-- (id)_graphicTemplateWithOverrideDate:(id)a3;
+- (id)_graphicTemplateWithOverrideDate:(id)date;
 - (id)privacyTemplate;
 - (id)sampleTemplate;
-- (void)getCurrentTimelineEntryWithHandler:(id)a3;
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5;
+- (void)getCurrentTimelineEntryWithHandler:(id)handler;
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler;
 @end
 
 @implementation NTKDigitalWorldClockComplicationBundleDataSource
@@ -21,18 +21,18 @@
   return v3;
 }
 
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device
 {
-  v5 = [a4 supportsPDRCapability:2031260689];
-  v7 = a3 == 10 || a3 == 12;
+  v5 = [device supportsPDRCapability:2031260689];
+  v7 = family == 10 || family == 12;
   return v5 && v7;
 }
 
 + (id)complicationDescriptors
 {
   v2 = +[NTKWorldClockManager sharedManager];
-  v3 = [v2 cities];
-  if (!v3 || (v4 = v3, v5 = [v2 checkIfCitiesModified], v4, v5))
+  cities = [v2 cities];
+  if (!cities || (v4 = cities, v5 = [v2 checkIfCitiesModified], v4, v5))
   {
     [v2 loadCities];
   }
@@ -59,9 +59,9 @@
         }
 
         v9 = *(*(&v25 + 1) + 8 * i);
-        v10 = [v9 alCityId];
-        v11 = [v10 stringValue];
-        v12 = [v9 name];
+        alCityId = [v9 alCityId];
+        stringValue = [alCityId stringValue];
+        name = [v9 name];
         v13 = NTKWorldClockCityAbbreviation();
         v14 = +[NSMutableDictionary dictionary];
         v15 = v14;
@@ -70,14 +70,14 @@
           [v14 setObject:v13 forKey:@"name"];
         }
 
-        if (v10)
+        if (alCityId)
         {
-          [v15 setObject:v10 forKey:@"cityID"];
+          [v15 setObject:alCityId forKey:@"cityID"];
         }
 
         v16 = NTKClockFaceLocalizedString();
-        v17 = [NSString stringWithFormat:v16, v12];
-        v18 = [[CLKComplicationDescriptor alloc] initWithIdentifier:v11 displayName:v17 supportedFamilies:&off_10B40 userInfo:v15];
+        v17 = [NSString stringWithFormat:v16, name];
+        v18 = [[CLKComplicationDescriptor alloc] initWithIdentifier:stringValue displayName:v17 supportedFamilies:&off_10B40 userInfo:v15];
         if (v18)
         {
           [v23 addObject:v18];
@@ -95,12 +95,12 @@
   return v19;
 }
 
-- (NTKDigitalWorldClockComplicationBundleDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (NTKDigitalWorldClockComplicationBundleDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
-  v8 = a5;
+  deviceCopy = device;
   v11.receiver = self;
   v11.super_class = NTKDigitalWorldClockComplicationBundleDataSource;
-  v9 = [(NTKDigitalWorldClockComplicationBundleDataSource *)&v11 initWithComplication:a3 family:a4 forDevice:v8];
+  v9 = [(NTKDigitalWorldClockComplicationBundleDataSource *)&v11 initWithComplication:complication family:family forDevice:deviceCopy];
   if (v9)
   {
     v9->_showGossamerUI = NTKShowGossamerUI();
@@ -119,20 +119,20 @@
 
 - (id)privacyTemplate
 {
-  v2 = [(NTKDigitalWorldClockComplicationBundleDataSource *)self family];
+  family = [(NTKDigitalWorldClockComplicationBundleDataSource *)self family];
   v3 = +[CLKRenderingContext sharedRenderingContext];
-  v4 = [v3 device];
-  v5 = v4;
-  if (v2 == &dword_C)
+  device = [v3 device];
+  v5 = device;
+  if (family == &dword_C)
   {
-    sub_18F0(v4, v4);
+    sub_18F0(device, device);
     v6 = &qword_17D60;
     v7 = CLKComplicationTemplateGraphicExtraLargeCircularImage_ptr;
   }
 
   else
   {
-    sub_1AC8(v4, v4);
+    sub_1AC8(device, device);
     v6 = &qword_17D80;
     v7 = CLKComplicationTemplateGraphicCircularImage_ptr;
   }
@@ -146,9 +146,9 @@
   return v8;
 }
 
-- (void)getCurrentTimelineEntryWithHandler:(id)a3
+- (void)getCurrentTimelineEntryWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8 = +[NSDate date];
   v5 = CLKForcedTime();
 
@@ -159,25 +159,25 @@
 
   v6 = [(NTKDigitalWorldClockComplicationBundleDataSource *)self _graphicTemplateWithOverrideDate:v5];
   v7 = [CLKComplicationTimelineEntry entryWithDate:v8 complicationTemplate:v6];
-  v4[2](v4, v7);
+  handlerCopy[2](handlerCopy, v7);
 }
 
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler
 {
-  v6 = a5;
-  v7 = [(NTKDigitalWorldClockComplicationBundleDataSource *)self _city];
-  v8 = [v7 alCityId];
-  v10 = [NSString stringWithFormat:@"nwc://id/%@", v8];
+  handlerCopy = handler;
+  _city = [(NTKDigitalWorldClockComplicationBundleDataSource *)self _city];
+  alCityId = [_city alCityId];
+  v10 = [NSString stringWithFormat:@"nwc://id/%@", alCityId];
 
   v9 = [NSURL URLWithString:v10];
-  v6[2](v6, v9);
+  handlerCopy[2](handlerCopy, v9);
 }
 
 - (id)_city
 {
-  v2 = [(NTKDigitalWorldClockComplicationBundleDataSource *)self complicationDescriptor];
-  v3 = [v2 userInfo];
-  v4 = [v3 objectForKey:@"cityID"];
+  complicationDescriptor = [(NTKDigitalWorldClockComplicationBundleDataSource *)self complicationDescriptor];
+  userInfo = [complicationDescriptor userInfo];
+  v4 = [userInfo objectForKey:@"cityID"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -192,20 +192,20 @@
   return v5;
 }
 
-- (id)_graphicTemplateWithOverrideDate:(id)a3
+- (id)_graphicTemplateWithOverrideDate:(id)date
 {
-  v4 = a3;
-  v5 = [(NTKDigitalWorldClockComplicationBundleDataSource *)self family];
+  dateCopy = date;
+  family = [(NTKDigitalWorldClockComplicationBundleDataSource *)self family];
   v6 = +[NSMutableDictionary dictionary];
   v7 = v6;
-  if (v4)
+  if (dateCopy)
   {
-    [v6 setObject:v4 forKey:@"NTKDigitalWorldClockGraphicCircularViewOverrideDateKey"];
+    [v6 setObject:dateCopy forKey:@"NTKDigitalWorldClockGraphicCircularViewOverrideDateKey"];
   }
 
-  v27 = [(NTKDigitalWorldClockComplicationBundleDataSource *)self complicationDescriptor];
-  v8 = [v27 userInfo];
-  v9 = [v8 objectForKey:@"name"];
+  complicationDescriptor = [(NTKDigitalWorldClockComplicationBundleDataSource *)self complicationDescriptor];
+  userInfo = [complicationDescriptor userInfo];
+  v9 = [userInfo objectForKey:@"name"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -214,45 +214,45 @@
   }
 
   [v7 setObject:v9 forKey:@"NTKDigitalWorldClockGraphicCircularViewCityNameKey"];
-  v26 = v8;
-  v10 = [v8 objectForKey:@"cityID"];
+  v26 = userInfo;
+  v10 = [userInfo objectForKey:@"cityID"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v11 = [[WorldClockCity alloc] initWithALCityIdentifier:{objc_msgSend(v10, "intValue")}];
-    v12 = [v11 alCity];
+    alCity = [v11 alCity];
 
-    if (v12)
+    if (alCity)
     {
-      [v7 setObject:v12 forKey:@"NTKDigitalWorldClockGraphicCircularViewCityKey"];
+      [v7 setObject:alCity forKey:@"NTKDigitalWorldClockGraphicCircularViewCityKey"];
     }
   }
 
   else
   {
-    v12 = 0;
+    alCity = 0;
   }
 
-  v13 = [v12 timeZone];
+  timeZone = [alCity timeZone];
 
-  if (!v13 || ([v12 timeZone], v14 = objc_claimAutoreleasedReturnValue(), +[NSTimeZone timeZoneWithName:](NSTimeZone, "timeZoneWithName:", v14), v15 = objc_claimAutoreleasedReturnValue(), v14, !v15))
+  if (!timeZone || ([alCity timeZone], v14 = objc_claimAutoreleasedReturnValue(), +[NSTimeZone timeZoneWithName:](NSTimeZone, "timeZoneWithName:", v14), v15 = objc_claimAutoreleasedReturnValue(), v14, !v15))
   {
     v15 = +[NSTimeZone localTimeZone];
   }
 
   v16 = [CLKCurrentTimeTextProvider textProviderWithTimeZone:v15];
   [v16 setDisallowBothMinutesAndDesignator:1];
-  [v16 setOverrideDate:v4];
-  [v16 setPaused:v4 != 0];
+  [v16 setOverrideDate:dateCopy];
+  [v16 setPaused:dateCopy != 0];
   [v7 setObject:v16 forKey:@"NTKDigitalWorldClockGraphicCircularViewTimeTextProviderKey"];
   v17 = &off_10268;
-  if (v5 == &dword_C)
+  if (family == &dword_C)
   {
     v17 = off_10260;
   }
 
   v18 = *v17;
-  if (v5 == &dword_C)
+  if (family == &dword_C)
   {
     v19 = CLKComplicationTemplateGraphicExtraLargeCircularImage_ptr;
   }

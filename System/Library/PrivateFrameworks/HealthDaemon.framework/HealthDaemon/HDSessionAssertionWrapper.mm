@@ -1,19 +1,19 @@
 @interface HDSessionAssertionWrapper
-- (HDSessionAssertionWrapper)initWithCreateAndTakeBlock:(id)a3;
+- (HDSessionAssertionWrapper)initWithCreateAndTakeBlock:(id)block;
 - (void)dealloc;
 @end
 
 @implementation HDSessionAssertionWrapper
 
-- (HDSessionAssertionWrapper)initWithCreateAndTakeBlock:(id)a3
+- (HDSessionAssertionWrapper)initWithCreateAndTakeBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = HDSessionAssertionWrapper;
   v5 = [(HDSessionAssertionWrapper *)&v9 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(blockCopy);
     createAndTakeBlock = v5->_createAndTakeBlock;
     v5->_createAndTakeBlock = v6;
   }

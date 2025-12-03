@@ -1,21 +1,21 @@
 @interface DCMarkupActivityItem
-- (DCMarkupActivityItem)initWithDocumentInfo:(id)a3 imageCache:(id)a4;
+- (DCMarkupActivityItem)initWithDocumentInfo:(id)info imageCache:(id)cache;
 @end
 
 @implementation DCMarkupActivityItem
 
-- (DCMarkupActivityItem)initWithDocumentInfo:(id)a3 imageCache:(id)a4
+- (DCMarkupActivityItem)initWithDocumentInfo:(id)info imageCache:(id)cache
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  cacheCopy = cache;
   v11.receiver = self;
   v11.super_class = DCMarkupActivityItem;
   v8 = [(DCMarkupActivityItem *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(DCMarkupActivityItem *)v8 setDocumentInfo:v6];
-    [(DCMarkupActivityItem *)v9 setImageCache:v7];
+    [(DCMarkupActivityItem *)v8 setDocumentInfo:infoCopy];
+    [(DCMarkupActivityItem *)v9 setImageCache:cacheCopy];
   }
 
   return v9;

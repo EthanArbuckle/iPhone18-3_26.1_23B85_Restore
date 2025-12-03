@@ -8,13 +8,13 @@
 - (id)hf_firstMostCommonObject
 {
   v21 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCA940] setWithArray:a1];
+  v2 = [MEMORY[0x277CCA940] setWithArray:self];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -27,7 +27,7 @@
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
@@ -42,7 +42,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);
@@ -61,14 +61,14 @@
 - (void)hf_fanOutAtIndex:()HFAdditions usingBlock:
 {
   v7 = a4;
-  if ([a1 count] <= a3)
+  if ([self count] <= a3)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"NSArray+HFAdditions.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"index < self.count"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSArray+HFAdditions.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"index < self.count"}];
   }
 
   v16 = 0;
-  v8 = [a1 objectAtIndexedSubscript:a3];
+  v8 = [self objectAtIndexedSubscript:a3];
   v7[2](v7, v8, a3, &v16);
 
   if ((v16 & 1) == 0)
@@ -79,7 +79,7 @@
     {
       if (i <= a3)
       {
-        v13 = [a1 objectAtIndexedSubscript:v9];
+        v13 = [self objectAtIndexedSubscript:v9];
         v7[2](v7, v13, v9, &v16);
 
         if (v16)
@@ -88,7 +88,7 @@
         }
 
         v12 = v10;
-        if (v10 >= [a1 count])
+        if (v10 >= [self count])
         {
           goto LABEL_12;
         }
@@ -96,7 +96,7 @@
 
       else
       {
-        if (v10 >= [a1 count])
+        if (v10 >= [self count])
         {
           break;
         }
@@ -104,7 +104,7 @@
         v12 = i + a3;
       }
 
-      v14 = [a1 objectAtIndexedSubscript:v12];
+      v14 = [self objectAtIndexedSubscript:v12];
       v7[2](v7, v14, v12, &v16);
 
       if (v16)

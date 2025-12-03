@@ -1,19 +1,19 @@
 @interface ATXModeFaceLayoutInlineOnly
-- (BOOL)assignComplicationsFromCandidates:(id)a3 forSuggestedFace:(id)a4;
+- (BOOL)assignComplicationsFromCandidates:(id)candidates forSuggestedFace:(id)face;
 @end
 
 @implementation ATXModeFaceLayoutInlineOnly
 
-- (BOOL)assignComplicationsFromCandidates:(id)a3 forSuggestedFace:(id)a4
+- (BOOL)assignComplicationsFromCandidates:(id)candidates forSuggestedFace:(id)face
 {
-  v5 = a4;
-  v6 = [a3 _pas_filteredArrayWithTest:&__block_literal_global_16];
+  faceCopy = face;
+  v6 = [candidates _pas_filteredArrayWithTest:&__block_literal_global_16];
   v7 = [v6 count];
   if (v7)
   {
-    [v5 setLayoutType:0];
-    v8 = [v6 firstObject];
-    [v5 setSubtitleComplication:v8];
+    [faceCopy setLayoutType:0];
+    firstObject = [v6 firstObject];
+    [faceCopy setSubtitleComplication:firstObject];
   }
 
   return v7 != 0;

@@ -1,26 +1,26 @@
 @interface WRMClient
 - (BOOL)setupServiceConnection;
 - (WRMClient)init;
-- (WRMClient)initWithDelegate:(id)a3;
+- (WRMClient)initWithDelegate:(id)delegate;
 - (void)dealloc;
-- (void)dumpReport:(id)a3;
-- (void)processNotificationList:(id)a3;
-- (void)processWRMCoexMetrics:(id)a3 isAlertedMode:(BOOL)a4;
+- (void)dumpReport:(id)report;
+- (void)processNotificationList:(id)list;
+- (void)processWRMCoexMetrics:(id)metrics isAlertedMode:(BOOL)mode;
 - (void)releaseServiceConnection;
-- (void)reportImmediateMetric:(int)a3 value:(unint64_t)a4;
-- (void)reportMetricsFaceTimeCalling:(id *)a3;
-- (void)reportMetricsWifiCalling:(id *)a3;
+- (void)reportImmediateMetric:(int)metric value:(unint64_t)value;
+- (void)reportMetricsFaceTimeCalling:(id *)calling;
+- (void)reportMetricsWifiCalling:(id *)calling;
 - (void)requestNotificationFaceTimeCalling;
-- (void)sendProcessInfoWithProcessID:(unint64_t)a3;
-- (void)sendReport:(id)a3;
-- (void)sendStatusUpdateFaceTimeCalling:(id *)a3;
-- (void)sendStatusUpdateInfoFaceTimeCalling:(id)a3;
+- (void)sendProcessInfoWithProcessID:(unint64_t)d;
+- (void)sendReport:(id)report;
+- (void)sendStatusUpdateFaceTimeCalling:(id *)calling;
+- (void)sendStatusUpdateInfoFaceTimeCalling:(id)calling;
 - (void)sendSubscriptionInfoFaceTimeCalling;
 - (void)sendUnsubscriptionInfoFaceTimeCalling;
-- (void)setConfiguration:(id *)a3;
-- (void)setPreWarmState:(BOOL)a3;
-- (void)setRSSIThresholdEnabled:(BOOL)a3;
-- (void)startWRMClientWithMode:(int)a3 metricsConfig:(id)a4;
+- (void)setConfiguration:(id *)configuration;
+- (void)setPreWarmState:(BOOL)state;
+- (void)setRSSIThresholdEnabled:(BOOL)enabled;
+- (void)startWRMClientWithMode:(int)mode metricsConfig:(id)config;
 - (void)stopWRMClient;
 @end
 
@@ -60,7 +60,7 @@
   return v2;
 }
 
-- (WRMClient)initWithDelegate:(id)a3
+- (WRMClient)initWithDelegate:(id)delegate
 {
   v18 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -86,7 +86,7 @@
       }
     }
 
-    objc_storeWeak(&v4->_wrmClientDelegate, a3);
+    objc_storeWeak(&v4->_wrmClientDelegate, delegate);
     CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(37);
     v4->_connectionQueue = dispatch_queue_create_with_target_V2("com.apple.AVConference.WRMClient.clientQueue", 0, CustomRootQueue);
   }
@@ -110,7 +110,7 @@
       v10 = 1024;
       v11 = 128;
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d WRMClient[%p] dealloc", buf, 0x26u);
     }
   }
@@ -175,13 +175,13 @@ void __35__WRMClient_setupServiceConnection__block_invoke(uint64_t a1, void *a2)
       v10 = 1024;
       v11 = 167;
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v5, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d WRMClient(%p): stopped.", &v6, 0x26u);
     }
   }
 }
 
-- (void)startWRMClientWithMode:(int)a3 metricsConfig:(id)a4
+- (void)startWRMClientWithMode:(int)mode metricsConfig:(id)config
 {
   v8 = *MEMORY[0x1E69E9840];
   connectionQueue = self->_connectionQueue;
@@ -190,8 +190,8 @@ void __35__WRMClient_setupServiceConnection__block_invoke(uint64_t a1, void *a2)
   block[2] = __50__WRMClient_startWRMClientWithMode_metricsConfig___block_invoke;
   block[3] = &unk_1E85F40E0;
   block[4] = self;
-  v6 = a3;
-  v7 = a4;
+  modeCopy = mode;
+  configCopy = config;
   dispatch_async(connectionQueue, block);
 }
 
@@ -248,11 +248,11 @@ void __50__WRMClient_startWRMClientWithMode_metricsConfig___block_invoke(uint64_
   dispatch_sync(connectionQueue, v3);
 }
 
-- (void)sendProcessInfoWithProcessID:(unint64_t)a3
+- (void)sendProcessInfoWithProcessID:(unint64_t)d
 {
   keys[1] = *MEMORY[0x1E69E9840];
   keys[0] = "kWCMRegisterProcess_ProcessId";
-  v4 = xpc_uint64_create(a3);
+  v4 = xpc_uint64_create(d);
   values = v4;
   v5 = xpc_dictionary_create(keys, &values, 1uLL);
   v9[0] = "kMessageId";
@@ -423,10 +423,10 @@ void __50__WRMClient_sendUnsubscriptionInfoFaceTimeCalling__block_invoke(uint64_
   [(WRMClient *)self sendSubscriptionInfoFaceTimeCalling];
 }
 
-- (void)sendStatusUpdateInfoFaceTimeCalling:(id)a3
+- (void)sendStatusUpdateInfoFaceTimeCalling:(id)calling
 {
   objects[1] = *MEMORY[0x1E69E9840];
-  objects[0] = a3;
+  objects[0] = calling;
   v4 = xpc_array_create(objects, 1uLL);
   keys = "kWRMApplicationTypeList";
   values = v4;
@@ -459,22 +459,22 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
   }
 }
 
-- (void)sendStatusUpdateFaceTimeCalling:(id *)a3
+- (void)sendStatusUpdateFaceTimeCalling:(id *)calling
 {
   if (self->_connection)
   {
     v5 = xpc_dictionary_create(0, 0, 0);
-    xpc_dictionary_set_uint64(v5, "kWRMApplicationType", a3->var0);
-    xpc_dictionary_set_uint64(v5, "kWRMLinkType", a3->var1);
-    xpc_dictionary_set_uint64(v5, "kWRMFaceTimeReactionType", a3->var2);
-    xpc_dictionary_set_uint64(v5, "kWRMFaceTimeTimeDuration", a3->var3);
+    xpc_dictionary_set_uint64(v5, "kWRMApplicationType", calling->var0);
+    xpc_dictionary_set_uint64(v5, "kWRMLinkType", calling->var1);
+    xpc_dictionary_set_uint64(v5, "kWRMFaceTimeReactionType", calling->var2);
+    xpc_dictionary_set_uint64(v5, "kWRMFaceTimeTimeDuration", calling->var3);
     [(WRMClient *)self sendStatusUpdateInfoFaceTimeCalling:v5];
 
     xpc_release(v5);
   }
 }
 
-- (void)dumpReport:(id)a3
+- (void)dumpReport:(id)report
 {
   v150 = *MEMORY[0x1E69E9840];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
@@ -514,7 +514,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        uint64 = xpc_dictionary_get_uint64(a3, "kWRMAVConferencePeriodicReport_CallID");
+        uint64 = xpc_dictionary_get_uint64(report, "kWRMAVConferencePeriodicReport_CallID");
         v142 = 136315906;
         v143 = v10;
         v144 = 2080;
@@ -542,7 +542,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = xpc_dictionary_get_uint64(a3, "kWRMAVConferencePeriodicReport_Timestamp");
+        v17 = xpc_dictionary_get_uint64(report, "kWRMAVConferencePeriodicReport_Timestamp");
         v142 = 136315906;
         v143 = v14;
         v144 = 2080;
@@ -570,7 +570,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = xpc_dictionary_get_uint64(a3, "kWRMAVConferencePeriodicReport_TotalPlaybacks");
+        v21 = xpc_dictionary_get_uint64(report, "kWRMAVConferencePeriodicReport_TotalPlaybacks");
         v142 = 136315906;
         v143 = v18;
         v144 = 2080;
@@ -598,7 +598,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
-        v25 = xpc_dictionary_get_uint64(a3, "kWRMAVConferencePeriodicReport_PlaybacksInSpeech");
+        v25 = xpc_dictionary_get_uint64(report, "kWRMAVConferencePeriodicReport_PlaybacksInSpeech");
         v142 = 136315906;
         v143 = v22;
         v144 = 2080;
@@ -626,7 +626,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
-        v29 = xpc_dictionary_get_uint64(a3, "kWRMAVConferencePeriodicReport_TotalErasures");
+        v29 = xpc_dictionary_get_uint64(report, "kWRMAVConferencePeriodicReport_TotalErasures");
         v142 = 136315906;
         v143 = v26;
         v144 = 2080;
@@ -654,7 +654,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
-        v33 = xpc_dictionary_get_uint64(a3, "kWRMAVConferencePeriodicReport_ErasuresInSpeech");
+        v33 = xpc_dictionary_get_uint64(report, "kWRMAVConferencePeriodicReport_ErasuresInSpeech");
         v142 = 136315906;
         v143 = v30;
         v144 = 2080;
@@ -682,7 +682,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
       {
-        v37 = xpc_dictionary_get_uint64(a3, "kWRMAVConferencePeriodicReport_ErasuresInSilence");
+        v37 = xpc_dictionary_get_uint64(report, "kWRMAVConferencePeriodicReport_ErasuresInSilence");
         v142 = 136315906;
         v143 = v34;
         v144 = 2080;
@@ -710,7 +710,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
       {
-        v41 = xpc_dictionary_get_uint64(a3, "VidErasure");
+        v41 = xpc_dictionary_get_uint64(report, "VidErasure");
         v142 = 136315906;
         v143 = v38;
         v144 = 2080;
@@ -738,7 +738,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
       {
-        v45 = xpc_dictionary_get_uint64(a3, "kWRMAVConferencePeriodicReport_TotalPacketsReceived");
+        v45 = xpc_dictionary_get_uint64(report, "kWRMAVConferencePeriodicReport_TotalPacketsReceived");
         v142 = 136315906;
         v143 = v42;
         v144 = 2080;
@@ -766,7 +766,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
       {
-        v49 = xpc_dictionary_get_uint64(a3, "PriVidRxCnt");
+        v49 = xpc_dictionary_get_uint64(report, "PriVidRxCnt");
         v142 = 136315906;
         v143 = v46;
         v144 = 2080;
@@ -794,7 +794,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
       {
-        v53 = xpc_dictionary_get_uint64(a3, "PriAudRxCnt");
+        v53 = xpc_dictionary_get_uint64(report, "PriAudRxCnt");
         v142 = 136315906;
         v143 = v50;
         v144 = 2080;
@@ -822,7 +822,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
       {
-        v57 = xpc_dictionary_get_uint64(a3, "TotVidRxCnt");
+        v57 = xpc_dictionary_get_uint64(report, "TotVidRxCnt");
         v142 = 136315906;
         v143 = v54;
         v144 = 2080;
@@ -850,7 +850,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
       {
-        v61 = xpc_dictionary_get_uint64(a3, "TotAudRxCnt");
+        v61 = xpc_dictionary_get_uint64(report, "TotAudRxCnt");
         v142 = 136315906;
         v143 = v58;
         v144 = 2080;
@@ -878,7 +878,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
       {
-        v65 = xpc_dictionary_get_uint64(a3, "TotVidRxExpCnt");
+        v65 = xpc_dictionary_get_uint64(report, "TotVidRxExpCnt");
         v142 = 136315906;
         v143 = v62;
         v144 = 2080;
@@ -906,7 +906,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
       {
-        v69 = xpc_dictionary_get_uint64(a3, "TotAudRxExpCnt");
+        v69 = xpc_dictionary_get_uint64(report, "TotAudRxExpCnt");
         v142 = 136315906;
         v143 = v66;
         v144 = 2080;
@@ -934,7 +934,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
       {
-        v73 = xpc_dictionary_get_uint64(a3, "kWRMAVConferencePeriodicReport_SpeechPacketsReceived");
+        v73 = xpc_dictionary_get_uint64(report, "kWRMAVConferencePeriodicReport_SpeechPacketsReceived");
         v142 = 136315906;
         v143 = v70;
         v144 = 2080;
@@ -962,7 +962,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v76, OS_LOG_TYPE_DEFAULT))
       {
-        v77 = xpc_dictionary_get_uint64(a3, "kWRMMAVConferencePeriodicReport_SIDPacketsReceived");
+        v77 = xpc_dictionary_get_uint64(report, "kWRMMAVConferencePeriodicReport_SIDPacketsReceived");
         v142 = 136315906;
         v143 = v74;
         v144 = 2080;
@@ -990,7 +990,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v80, OS_LOG_TYPE_DEFAULT))
       {
-        v81 = xpc_dictionary_get_uint64(a3, "kWRMMAVConferencPeriodicReport_RTT");
+        v81 = xpc_dictionary_get_uint64(report, "kWRMMAVConferencPeriodicReport_RTT");
         v142 = 136315906;
         v143 = v78;
         v144 = 2080;
@@ -1018,7 +1018,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v84, OS_LOG_TYPE_DEFAULT))
       {
-        v85 = xpc_dictionary_get_uint64(a3, "kWRMMAVConferencePeriodicReport_CountSinceRTTupdated");
+        v85 = xpc_dictionary_get_uint64(report, "kWRMMAVConferencePeriodicReport_CountSinceRTTupdated");
         v142 = 136315906;
         v143 = v82;
         v144 = 2080;
@@ -1046,7 +1046,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v88, OS_LOG_TYPE_DEFAULT))
       {
-        v89 = xpc_dictionary_get_uint64(a3, "kWRMAVConferencePeriodicReport_TxPacketsCount");
+        v89 = xpc_dictionary_get_uint64(report, "kWRMAVConferencePeriodicReport_TxPacketsCount");
         v142 = 136315906;
         v143 = v86;
         v144 = 2080;
@@ -1074,7 +1074,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v92, OS_LOG_TYPE_DEFAULT))
       {
-        v93 = xpc_dictionary_get_uint64(a3, "kWRMAVConferencePeriodicReport_TxPacketLoss");
+        v93 = xpc_dictionary_get_uint64(report, "kWRMAVConferencePeriodicReport_TxPacketLoss");
         v142 = 136315906;
         v143 = v90;
         v144 = 2080;
@@ -1102,7 +1102,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v96, OS_LOG_TYPE_DEFAULT))
       {
-        v97 = xpc_dictionary_get_uint64(a3, "kWRMAVConferencePeriodicReport_CountSinceTxPacketLossReported");
+        v97 = xpc_dictionary_get_uint64(report, "kWRMAVConferencePeriodicReport_CountSinceTxPacketLossReported");
         v142 = 136315906;
         v143 = v94;
         v144 = 2080;
@@ -1130,7 +1130,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v100, OS_LOG_TYPE_DEFAULT))
       {
-        v101 = xpc_dictionary_get_uint64(a3, "kWRMAVConferencePeriodicReport_RxJitter");
+        v101 = xpc_dictionary_get_uint64(report, "kWRMAVConferencePeriodicReport_RxJitter");
         v142 = 136315906;
         v143 = v98;
         v144 = 2080;
@@ -1158,7 +1158,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v104, OS_LOG_TYPE_DEFAULT))
       {
-        v105 = xpc_dictionary_get_uint64(a3, "kWRMAVConferencePeriodicReport_TxJitter");
+        v105 = xpc_dictionary_get_uint64(report, "kWRMAVConferencePeriodicReport_TxJitter");
         v142 = 136315906;
         v143 = v102;
         v144 = 2080;
@@ -1186,7 +1186,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v108, OS_LOG_TYPE_DEFAULT))
       {
-        v109 = xpc_dictionary_get_uint64(a3, "kWRMAVConferencePeriodicReport_CountSinceTxJitterUpdated");
+        v109 = xpc_dictionary_get_uint64(report, "kWRMAVConferencePeriodicReport_CountSinceTxJitterUpdated");
         v142 = 136315906;
         v143 = v106;
         v144 = 2080;
@@ -1214,7 +1214,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v112, OS_LOG_TYPE_DEFAULT))
       {
-        v113 = xpc_dictionary_get_uint64(a3, "kWRMAVConferencePeriodicReport_NominalJitterBufferQueueSize");
+        v113 = xpc_dictionary_get_uint64(report, "kWRMAVConferencePeriodicReport_NominalJitterBufferQueueSize");
         v142 = 136315906;
         v143 = v110;
         v144 = 2080;
@@ -1242,7 +1242,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v116, OS_LOG_TYPE_DEFAULT))
       {
-        v117 = xpc_dictionary_get_uint64(a3, "kWRMAVConferencePeriodicReport_TargetJitterQueueSize");
+        v117 = xpc_dictionary_get_uint64(report, "kWRMAVConferencePeriodicReport_TargetJitterQueueSize");
         v142 = 136315906;
         v143 = v114;
         v144 = 2080;
@@ -1270,7 +1270,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v120, OS_LOG_TYPE_DEFAULT))
       {
-        v121 = xpc_dictionary_get_uint64(a3, "kWRMAVConferencePeriodicReport_CallType");
+        v121 = xpc_dictionary_get_uint64(report, "kWRMAVConferencePeriodicReport_CallType");
         v142 = 136315906;
         v143 = v118;
         v144 = 2080;
@@ -1298,7 +1298,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v124, OS_LOG_TYPE_DEFAULT))
       {
-        v125 = xpc_dictionary_get_uint64(a3, "kWRMAVConferencePeriodicReport_BWEstimation");
+        v125 = xpc_dictionary_get_uint64(report, "kWRMAVConferencePeriodicReport_BWEstimation");
         v142 = 136315906;
         v143 = v122;
         v144 = 2080;
@@ -1326,7 +1326,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v128, OS_LOG_TYPE_DEFAULT))
       {
-        v129 = xpc_dictionary_get_uint64(a3, "kWRMAVConferencePeriodicReport_TargetBitRate");
+        v129 = xpc_dictionary_get_uint64(report, "kWRMAVConferencePeriodicReport_TargetBitRate");
         v142 = 136315906;
         v143 = v126;
         v144 = 2080;
@@ -1354,7 +1354,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v132, OS_LOG_TYPE_DEFAULT))
       {
-        v133 = xpc_dictionary_get_uint64(a3, "kWRMAVConferencePeriodicReport_AdaptationPacketLoss");
+        v133 = xpc_dictionary_get_uint64(report, "kWRMAVConferencePeriodicReport_AdaptationPacketLoss");
         v142 = 136315906;
         v143 = v130;
         v144 = 2080;
@@ -1382,7 +1382,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v136, OS_LOG_TYPE_DEFAULT))
       {
-        v137 = xpc_dictionary_get_uint64(a3, "kWRMAVConferencePeriodicReport_OneWayRelativeDelay");
+        v137 = xpc_dictionary_get_uint64(report, "kWRMAVConferencePeriodicReport_OneWayRelativeDelay");
         v142 = 136315906;
         v143 = v134;
         v144 = 2080;
@@ -1410,7 +1410,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
     {
       if (os_log_type_enabled(v140, OS_LOG_TYPE_DEFAULT))
       {
-        v141 = xpc_dictionary_get_uint64(a3, "kWRMAVConferencePeriodicReport_LinkType");
+        v141 = xpc_dictionary_get_uint64(report, "kWRMAVConferencePeriodicReport_LinkType");
         v142 = 136315906;
         v143 = v138;
         v144 = 2080;
@@ -1430,14 +1430,14 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
   }
 }
 
-- (void)sendReport:(id)a3
+- (void)sendReport:(id)report
 {
   keys[2] = *MEMORY[0x1E69E9840];
   keys[0] = "kMessageId";
   keys[1] = "kMessageArgs";
   v5 = xpc_uint64_create(0xCAuLL);
   values[0] = v5;
-  values[1] = a3;
+  values[1] = report;
   v6 = xpc_dictionary_create(keys, values, 2uLL);
   connectionQueue = self->_connectionQueue;
   v8[0] = MEMORY[0x1E69E9820];
@@ -1445,7 +1445,7 @@ void __49__WRMClient_sendStatusUpdateInfoFaceTimeCalling___block_invoke(uint64_t
   v8[2] = __24__WRMClient_sendReport___block_invoke;
   v8[3] = &unk_1E85F3E30;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = report;
   v8[6] = v6;
   dispatch_async(connectionQueue, v8);
   xpc_release(v5);
@@ -1465,46 +1465,46 @@ void __24__WRMClient_sendReport___block_invoke(void *a1)
   }
 }
 
-- (void)reportMetricsWifiCalling:(id *)a3
+- (void)reportMetricsWifiCalling:(id *)calling
 {
   if (self->_connection)
   {
     v5 = xpc_dictionary_create(0, 0, 0);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_CallID", a3->var21);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_Timestamp", a3->var0);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TotalPlaybacks", a3->var1);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_PlaybacksInSpeech", a3->var2);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TotalErasures", a3->var6);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_ErasuresInSpeech", a3->var8);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_ErasuresInSilence", a3->var7);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TotalPacketsReceived", a3->var3);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_SpeechPacketsReceived", a3->var5);
-    xpc_dictionary_set_uint64(v5, "kWRMMAVConferencePeriodicReport_SIDPacketsReceived", a3->var4);
-    xpc_dictionary_set_uint64(v5, "kWRMMAVConferencPeriodicReport_RTT", a3->var17);
-    xpc_dictionary_set_uint64(v5, "kWRMMAVConferencePeriodicReport_CountSinceRTTupdated", a3->var18);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TxPacketsCount", a3->var14);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TxPacketLoss", a3->var12);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_CountSinceTxPacketLossReported", a3->var13);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_RxJitter", a3->var15);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TxJitter", a3->var10);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_CountSinceTxJitterUpdated", a3->var16);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_NominalJitterBufferQueueSize", a3->var19);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TargetJitterQueueSize", a3->var20);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_LinkType", a3->var27);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_CallID", calling->var21);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_Timestamp", calling->var0);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TotalPlaybacks", calling->var1);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_PlaybacksInSpeech", calling->var2);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TotalErasures", calling->var6);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_ErasuresInSpeech", calling->var8);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_ErasuresInSilence", calling->var7);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TotalPacketsReceived", calling->var3);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_SpeechPacketsReceived", calling->var5);
+    xpc_dictionary_set_uint64(v5, "kWRMMAVConferencePeriodicReport_SIDPacketsReceived", calling->var4);
+    xpc_dictionary_set_uint64(v5, "kWRMMAVConferencPeriodicReport_RTT", calling->var17);
+    xpc_dictionary_set_uint64(v5, "kWRMMAVConferencePeriodicReport_CountSinceRTTupdated", calling->var18);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TxPacketsCount", calling->var14);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TxPacketLoss", calling->var12);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_CountSinceTxPacketLossReported", calling->var13);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_RxJitter", calling->var15);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TxJitter", calling->var10);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_CountSinceTxJitterUpdated", calling->var16);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_NominalJitterBufferQueueSize", calling->var19);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TargetJitterQueueSize", calling->var20);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_LinkType", calling->var27);
     [(WRMClient *)self sendReport:v5];
 
     xpc_release(v5);
   }
 }
 
-- (void)reportImmediateMetric:(int)a3 value:(unint64_t)a4
+- (void)reportImmediateMetric:(int)metric value:(unint64_t)value
 {
   keys[2] = *MEMORY[0x1E69E9840];
   if (self->_metricsConfig.reportImmediateMetricsEnabled)
   {
-    if (a3)
+    if (metric)
     {
-      if (a3 != 1)
+      if (metric != 1)
       {
         if (VRTraceGetErrorLogLevelForModule() >= 3)
         {
@@ -1519,9 +1519,9 @@ void __24__WRMClient_sendReport___block_invoke(void *a1)
             v28 = 1024;
             v29 = 481;
             v30 = 1024;
-            *v31 = a3;
+            *v31 = metric;
             *&v31[4] = 2048;
-            *&v31[6] = a4;
+            *&v31[6] = value;
             _os_log_error_impl(&dword_1DB56E000, v22, OS_LOG_TYPE_ERROR, " [%s] %s:%d WRMClient: Immediate reporting not supported for metric type: %d: %llu", buf, 0x2Cu);
           }
         }
@@ -1538,7 +1538,7 @@ void __24__WRMClient_sendReport___block_invoke(void *a1)
     }
 
     v14 = xpc_dictionary_create(0, 0, 0);
-    xpc_dictionary_set_uint64(v14, v7, a4);
+    xpc_dictionary_set_uint64(v14, v7, value);
     keys[0] = "kMessageId";
     keys[1] = "kMessageArgs";
     v15 = xpc_uint64_create(0xC9uLL);
@@ -1580,7 +1580,7 @@ void __24__WRMClient_sendReport___block_invoke(void *a1)
       v30 = 2080;
       *v31 = v7;
       *&v31[8] = 2048;
-      *&v31[10] = a4;
+      *&v31[10] = value;
       v11 = " [%s] %s:%d WRMClient: Immediate metric reported:%s: %llu";
       v12 = v19;
       v13 = 48;
@@ -1598,7 +1598,7 @@ void __24__WRMClient_sendReport___block_invoke(void *a1)
       v30 = 2080;
       *v31 = v7;
       *&v31[8] = 2048;
-      *&v31[10] = a4;
+      *&v31[10] = value;
       _os_log_debug_impl(&dword_1DB56E000, v19, OS_LOG_TYPE_DEBUG, " [%s] %s:%d WRMClient: Immediate metric reported:%s: %llu", buf, 0x30u);
     }
   }
@@ -1649,47 +1649,47 @@ void __41__WRMClient_reportImmediateMetric_value___block_invoke(uint64_t a1)
   }
 }
 
-- (void)reportMetricsFaceTimeCalling:(id *)a3
+- (void)reportMetricsFaceTimeCalling:(id *)calling
 {
   v61 = *MEMORY[0x1E69E9840];
   if (self->_connection)
   {
     v5 = xpc_dictionary_create(0, 0, 0);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_CallID", a3->var21);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_Timestamp", a3->var0);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TotalPlaybacks", a3->var1);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_PlaybacksInSpeech", a3->var2);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TotalErasures", a3->var6);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_ErasuresInSpeech", a3->var8);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_ErasuresInSilence", a3->var7);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TotalPacketsReceived", a3->var3);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_SpeechPacketsReceived", a3->var5);
-    xpc_dictionary_set_uint64(v5, "kWRMMAVConferencePeriodicReport_SIDPacketsReceived", a3->var4);
-    xpc_dictionary_set_uint64(v5, "kWRMMAVConferencPeriodicReport_RTT", a3->var17);
-    xpc_dictionary_set_uint64(v5, "kWRMMAVConferencePeriodicReport_CountSinceRTTupdated", a3->var18);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TxPacketsCount", a3->var14);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TxPacketLoss", a3->var12);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_CountSinceTxPacketLossReported", a3->var13);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_RxJitter", a3->var15);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TxJitter", a3->var10);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_CountSinceTxJitterUpdated", a3->var16);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_NominalJitterBufferQueueSize", a3->var19);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TargetJitterQueueSize", a3->var20);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_CallType", a3->var22);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_BWEstimation", a3->var23);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TargetBitRate", a3->var24);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_AdaptationPacketLoss", a3->var26);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_OneWayRelativeDelay", a3->var25);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_LinkType", a3->var27);
-    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_VideoPause", a3->var28);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_CallID", calling->var21);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_Timestamp", calling->var0);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TotalPlaybacks", calling->var1);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_PlaybacksInSpeech", calling->var2);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TotalErasures", calling->var6);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_ErasuresInSpeech", calling->var8);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_ErasuresInSilence", calling->var7);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TotalPacketsReceived", calling->var3);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_SpeechPacketsReceived", calling->var5);
+    xpc_dictionary_set_uint64(v5, "kWRMMAVConferencePeriodicReport_SIDPacketsReceived", calling->var4);
+    xpc_dictionary_set_uint64(v5, "kWRMMAVConferencPeriodicReport_RTT", calling->var17);
+    xpc_dictionary_set_uint64(v5, "kWRMMAVConferencePeriodicReport_CountSinceRTTupdated", calling->var18);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TxPacketsCount", calling->var14);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TxPacketLoss", calling->var12);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_CountSinceTxPacketLossReported", calling->var13);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_RxJitter", calling->var15);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TxJitter", calling->var10);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_CountSinceTxJitterUpdated", calling->var16);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_NominalJitterBufferQueueSize", calling->var19);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TargetJitterQueueSize", calling->var20);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_CallType", calling->var22);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_BWEstimation", calling->var23);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_TargetBitRate", calling->var24);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_AdaptationPacketLoss", calling->var26);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_OneWayRelativeDelay", calling->var25);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_LinkType", calling->var27);
+    xpc_dictionary_set_uint64(v5, "kWRMAVConferencePeriodicReport_VideoPause", calling->var28);
     if (self->_metricsConfig.reportRtpErasureMetricsEnabled)
     {
-      var29 = a3->var29;
-      var30 = a3->var30;
-      var31 = a3->var31;
-      var32 = a3->var32;
-      var33 = a3->var33;
-      var34 = a3->var34;
+      var29 = calling->var29;
+      var30 = calling->var30;
+      var31 = calling->var31;
+      var32 = calling->var32;
+      var33 = calling->var33;
+      var34 = calling->var34;
     }
 
     else
@@ -1713,7 +1713,7 @@ void __41__WRMClient_reportImmediateMetric_value___block_invoke(uint64_t a1)
     {
       if (self->_metricsConfig.reportRtpErasureMetricsEnabled)
       {
-        var9 = a3->var9;
+        var9 = calling->var9;
       }
 
       else
@@ -1730,15 +1730,15 @@ void __41__WRMClient_reportImmediateMetric_value___block_invoke(uint64_t a1)
       v14 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        var21 = a3->var21;
-        var22 = a3->var22;
-        var27 = a3->var27;
-        var28 = a3->var28;
-        var1 = a3->var1;
-        var6 = a3->var6;
-        var8 = a3->var8;
-        var4 = a3->var4;
-        var19 = a3->var19;
+        var21 = calling->var21;
+        var22 = calling->var22;
+        var27 = calling->var27;
+        var28 = calling->var28;
+        var1 = calling->var1;
+        var6 = calling->var6;
+        var8 = calling->var8;
+        var4 = calling->var4;
+        var19 = calling->var19;
         *buf = 136319490;
         v26 = v13;
         v27 = 2080;
@@ -1784,10 +1784,10 @@ void __41__WRMClient_reportImmediateMetric_value___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setConfiguration:(id *)a3
+- (void)setConfiguration:(id *)configuration
 {
   v4 = MEMORY[0x1E1289F20](&self->_wrmClientDelegate, a2);
-  [v4 setWRMMetricConfig:a3];
+  [v4 setWRMMetricConfig:configuration];
   if (v4)
   {
 
@@ -1795,54 +1795,54 @@ void __41__WRMClient_reportImmediateMetric_value___block_invoke(uint64_t a1)
   }
 }
 
-- (void)processWRMCoexMetrics:(id)a3 isAlertedMode:(BOOL)a4
+- (void)processWRMCoexMetrics:(id)metrics isAlertedMode:(BOOL)mode
 {
-  if (a3)
+  if (metrics)
   {
-    v4 = a4;
-    v7 = [MEMORY[0x1E695DF90] dictionary];
-    [v7 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", v4), @"WRMAlertedMode"}];
-    [v7 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_rssiThreshold), @"WRMwRSSIThreshold"}];
-    if (xpc_dictionary_get_value(a3, "kwRSSI"))
+    modeCopy = mode;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", modeCopy), @"WRMAlertedMode"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_rssiThreshold), @"WRMwRSSIThreshold"}];
+    if (xpc_dictionary_get_value(metrics, "kwRSSI"))
     {
-      [v7 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", xpc_dictionary_get_int64(a3, "kwRSSI")), @"WRMwRSSI"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", xpc_dictionary_get_int64(metrics, "kwRSSI")), @"WRMwRSSI"}];
     }
 
-    if (xpc_dictionary_get_value(a3, "kwSNR"))
+    if (xpc_dictionary_get_value(metrics, "kwSNR"))
     {
-      [v7 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", xpc_dictionary_get_int64(a3, "kwSNR")), @"WRMwSNR"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", xpc_dictionary_get_int64(metrics, "kwSNR")), @"WRMwSNR"}];
     }
 
-    if (xpc_dictionary_get_value(a3, "kwCCA"))
+    if (xpc_dictionary_get_value(metrics, "kwCCA"))
     {
-      [v7 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", xpc_dictionary_get_int64(a3, "kwCCA")), @"WRMwCCA"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", xpc_dictionary_get_int64(metrics, "kwCCA")), @"WRMwCCA"}];
     }
 
-    if (xpc_dictionary_get_value(a3, "kwPER"))
+    if (xpc_dictionary_get_value(metrics, "kwPER"))
     {
-      [v7 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", xpc_dictionary_get_int64(a3, "kwPER")), @"WRMwPacketLoss"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", xpc_dictionary_get_int64(metrics, "kwPER")), @"WRMwPacketLoss"}];
     }
 
-    if (xpc_dictionary_get_value(a3, "kcSigStrength"))
+    if (xpc_dictionary_get_value(metrics, "kcSigStrength"))
     {
-      [v7 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", xpc_dictionary_get_int64(a3, "kcSigStrength")), @"WRMcSigStrength"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", xpc_dictionary_get_int64(metrics, "kcSigStrength")), @"WRMcSigStrength"}];
     }
 
-    if (xpc_dictionary_get_value(a3, "kcSignalBar"))
+    if (xpc_dictionary_get_value(metrics, "kcSignalBar"))
     {
-      [v7 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", xpc_dictionary_get_int64(a3, "kcSignalBar")), @"WRMcSignalBar"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", xpc_dictionary_get_int64(metrics, "kcSignalBar")), @"WRMcSignalBar"}];
     }
 
-    if (xpc_dictionary_get_value(a3, "kcServingCellType"))
+    if (xpc_dictionary_get_value(metrics, "kcServingCellType"))
     {
-      [v7 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", xpc_dictionary_get_int64(a3, "kcServingCellType")), @"WRMcServingCellType"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", xpc_dictionary_get_int64(metrics, "kcServingCellType")), @"WRMcServingCellType"}];
     }
 
-    if ([v7 count])
+    if ([dictionary count])
     {
       v8 = MEMORY[0x1E1289F20](&self->_wrmClientDelegate);
-      [v7 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"WRMCoexIsLocal"];
-      [v8 setWRMCoexMetrics:v7];
+      [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"WRMCoexIsLocal"];
+      [v8 setWRMCoexMetrics:dictionary];
       if (v8)
       {
 
@@ -1852,21 +1852,21 @@ void __41__WRMClient_reportImmediateMetric_value___block_invoke(uint64_t a1)
   }
 }
 
-- (void)processNotificationList:(id)a3
+- (void)processNotificationList:(id)list
 {
   v15 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   memset(v12, 0, sizeof(v12));
-  count = xpc_array_get_count(a3);
+  count = xpc_array_get_count(list);
   if (count >= 1)
   {
     v6 = 0;
     v7 = count & 0x7FFFFFFF;
     do
     {
-      value = xpc_array_get_value(a3, v6);
+      value = xpc_array_get_value(list, v6);
       LODWORD(v11) = xpc_dictionary_get_uint64(value, "kWRMApplicationType");
       DWORD1(v11) = xpc_dictionary_get_uint64(value, "kWRMLinkType");
       *(&v11 + 1) = xpc_dictionary_get_uint64(value, "kWRMLinkTypeChangeReasonCode");
@@ -1889,14 +1889,14 @@ void __41__WRMClient_reportImmediateMetric_value___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setPreWarmState:(BOOL)a3
+- (void)setPreWarmState:(BOOL)state
 {
   v23 = *MEMORY[0x1E69E9840];
   if (self->_metricsConfig.allowPreWarmCellEnabled)
   {
-    v4 = a3;
+    stateCopy = state;
     v5 = MEMORY[0x1E1289F20](&self->_wrmClientDelegate, a2);
-    [v5 setPreWarmState:v4];
+    [v5 setPreWarmState:stateCopy];
     if (v5)
     {
       CFRelease(v5);
@@ -1915,9 +1915,9 @@ void __41__WRMClient_reportImmediateMetric_value___block_invoke(uint64_t a1)
         v17 = 1024;
         v18 = 655;
         v19 = 2048;
-        v20 = self;
+        selfCopy2 = self;
         v21 = 1024;
-        v22 = v4;
+        v22 = stateCopy;
         v8 = " [%s] %s:%d WRMClient(%p): Get PreWarmState %d from iRAT";
         v9 = v7;
         v10 = 44;
@@ -1940,7 +1940,7 @@ LABEL_10:
       v17 = 1024;
       v18 = 648;
       v19 = 2048;
-      v20 = self;
+      selfCopy2 = self;
       v8 = " [%s] %s:%d WRMClient(%p): Ignoring prewarm signal from iRAT as directed by storebagsettings";
       v9 = v12;
       v10 = 38;
@@ -1949,10 +1949,10 @@ LABEL_10:
   }
 }
 
-- (void)setRSSIThresholdEnabled:(BOOL)a3
+- (void)setRSSIThresholdEnabled:(BOOL)enabled
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (enabled)
   {
     v4 = [GKSConnectivitySettings getWRMRSSIThresholdValue:4294967216];
   }
@@ -1977,7 +1977,7 @@ LABEL_10:
       v12 = 1024;
       v13 = 668;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 1024;
       v17 = rssiThreshold;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d WRMClient(%p): Picked WRM RSSI Threshold value %d", &v8, 0x2Cu);

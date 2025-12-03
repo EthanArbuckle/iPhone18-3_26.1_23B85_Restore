@@ -8,8 +8,8 @@
 
 - (id)editingItems
 {
-  v2 = [(CNCardLinkedCardsGroup *)self displayItems];
-  v3 = [v2 mutableCopy];
+  displayItems = [(CNCardLinkedCardsGroup *)self displayItems];
+  v3 = [displayItems mutableCopy];
 
   v4 = objc_alloc_init(CNCardLinkedCardsPlaceholderGroupItem);
   [v3 addObject:v4];
@@ -19,8 +19,8 @@
 
 - (id)displayItems
 {
-  v2 = [(CNCardLinkedCardsGroup *)self linkedContacts];
-  v3 = [v2 _cn_filter:&__block_literal_global_2140];
+  linkedContacts = [(CNCardLinkedCardsGroup *)self linkedContacts];
+  v3 = [linkedContacts _cn_filter:&__block_literal_global_2140];
 
   if ([v3 count] < 2)
   {

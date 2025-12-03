@@ -1,21 +1,21 @@
 @interface EndOfArticleViewController
-- (BOOL)shouldUpdateFocusInContext:(id)a3;
-- (_TtC12NewsArticles26EndOfArticleViewController)initWithCoder:(id)a3;
-- (_TtC12NewsArticles26EndOfArticleViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)sectionItemHeightForSize:(CGSize)a3 traitCollection:(id)a4;
+- (BOOL)shouldUpdateFocusInContext:(id)context;
+- (_TtC12NewsArticles26EndOfArticleViewController)initWithCoder:(id)coder;
+- (_TtC12NewsArticles26EndOfArticleViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)sectionItemHeightForSize:(CGSize)size traitCollection:(id)collection;
 - (void)dealloc;
 - (void)deselect;
 - (void)smartInvertStatusDidChange;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation EndOfArticleViewController
 
-- (_TtC12NewsArticles26EndOfArticleViewController)initWithCoder:(id)a3
+- (_TtC12NewsArticles26EndOfArticleViewController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakInit();
@@ -31,16 +31,16 @@
 {
   ObjectType = swift_getObjectType();
   v4 = objc_opt_self();
-  v5 = self;
-  v6 = [v4 defaultCenter];
-  [v6 removeObserver:v5 name:*MEMORY[0x1E69DD8D8] object:0];
+  selfCopy = self;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter removeObserver:selfCopy name:*MEMORY[0x1E69DD8D8] object:0];
 
-  v7.receiver = v5;
+  v7.receiver = selfCopy;
   v7.super_class = ObjectType;
   [(EndOfArticleViewController *)&v7 dealloc];
 }
 
-- (_TtC12NewsArticles26EndOfArticleViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12NewsArticles26EndOfArticleViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -49,25 +49,25 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   EndOfArticleViewController.viewDidLoad()();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v4 = v7.receiver;
-  [(EndOfArticleViewController *)&v7 viewDidAppear:v3];
+  [(EndOfArticleViewController *)&v7 viewDidAppear:appearCopy];
   v5 = *(*&v4[OBJC_IVAR____TtC12NewsArticles26EndOfArticleViewController_eventHandler] + 40);
   ObjectType = swift_getObjectType();
   (*(v5 + 48))(ObjectType, v5);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   ObjectType = swift_getObjectType();
   v6 = sub_1D7D2B6DC();
   v7 = *(v6 - 8);
@@ -75,34 +75,34 @@
   v10 = &v12 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v11 = self;
-  [(EndOfArticleViewController *)&v12 viewDidDisappear:v3];
+  selfCopy = self;
+  [(EndOfArticleViewController *)&v12 viewDidDisappear:disappearCopy];
   (*(v7 + 104))(v10, *MEMORY[0x1E69D81C8], v6);
   sub_1D7D2B2EC();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   EndOfArticleViewController.viewWillLayoutSubviews()();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = swift_getObjectType();
   v4 = v9.receiver;
-  v5 = a3;
-  [(EndOfArticleViewController *)&v9 traitCollectionDidChange:v5];
+  changeCopy = change;
+  [(EndOfArticleViewController *)&v9 traitCollectionDidChange:changeCopy];
   v6 = *&v4[OBJC_IVAR____TtC12NewsArticles26EndOfArticleViewController_overriddenTraitCollection];
   if (v6)
   {
-    v7 = *&v4[OBJC_IVAR____TtC12NewsArticles26EndOfArticleViewController_overriddenTraitCollection];
+    traitCollection = *&v4[OBJC_IVAR____TtC12NewsArticles26EndOfArticleViewController_overriddenTraitCollection];
   }
 
   else
   {
-    v7 = [v4 traitCollection];
+    traitCollection = [v4 traitCollection];
     v6 = 0;
   }
 
@@ -110,11 +110,11 @@
   sub_1D7B18B28();
 }
 
-- (BOOL)shouldUpdateFocusInContext:(id)a3
+- (BOOL)shouldUpdateFocusInContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = EndOfArticleViewController.shouldUpdateFocus(in:)(v4);
+  contextCopy = context;
+  selfCopy = self;
+  LOBYTE(self) = EndOfArticleViewController.shouldUpdateFocus(in:)(contextCopy);
 
   return self & 1;
 }
@@ -122,20 +122,20 @@
 - (void)smartInvertStatusDidChange
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
-  v5 = [(EndOfArticleViewController *)v4 traitCollection];
-  v9.receiver = v4;
+  selfCopy = self;
+  traitCollection = [(EndOfArticleViewController *)selfCopy traitCollection];
+  v9.receiver = selfCopy;
   v9.super_class = ObjectType;
-  [(EndOfArticleViewController *)&v9 traitCollectionDidChange:v5];
-  v6 = *(v4 + OBJC_IVAR____TtC12NewsArticles26EndOfArticleViewController_overriddenTraitCollection);
+  [(EndOfArticleViewController *)&v9 traitCollectionDidChange:traitCollection];
+  v6 = *(selfCopy + OBJC_IVAR____TtC12NewsArticles26EndOfArticleViewController_overriddenTraitCollection);
   if (v6)
   {
-    v7 = *(v4 + OBJC_IVAR____TtC12NewsArticles26EndOfArticleViewController_overriddenTraitCollection);
+    traitCollection2 = *(selfCopy + OBJC_IVAR____TtC12NewsArticles26EndOfArticleViewController_overriddenTraitCollection);
   }
 
   else
   {
-    v7 = [(EndOfArticleViewController *)v4 traitCollection];
+    traitCollection2 = [(EndOfArticleViewController *)selfCopy traitCollection];
     v6 = 0;
   }
 
@@ -145,22 +145,22 @@
 
 - (void)deselect
 {
-  v3 = self;
+  selfCopy = self;
   sub_1D7D2B2CC();
   v2 = sub_1D7D2AF0C();
 
   [v2 selectItemAtIndexPath:0 animated:0 scrollPosition:0];
 }
 
-- (double)sectionItemHeightForSize:(CGSize)a3 traitCollection:(id)a4
+- (double)sectionItemHeightForSize:(CGSize)size traitCollection:(id)collection
 {
-  v4 = self;
+  selfCopy = self;
   sub_1D7D2B2CC();
   v5 = sub_1D7D2AF0C();
 
-  v6 = [v5 collectionViewLayout];
+  collectionViewLayout = [v5 collectionViewLayout];
 
-  [v6 collectionViewContentSize];
+  [collectionViewLayout collectionViewContentSize];
   v8 = v7;
 
   return fmax(v8, 1.0);

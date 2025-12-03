@@ -1,10 +1,10 @@
 @interface ICLightweightMusicSubscriptionStatus
-- (BOOL)isEqual:(id)a3;
-- (ICLightweightMusicSubscriptionStatus)initWithCoder:(id)a3;
-- (id)_initWithExtendedSubscriptionStatus:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (ICLightweightMusicSubscriptionStatus)initWithCoder:(id)coder;
+- (id)_initWithExtendedSubscriptionStatus:(id)status;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICLightweightMusicSubscriptionStatus
@@ -55,25 +55,25 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   statusType = self->_statusType;
-  v5 = a3;
-  [v5 encodeInteger:statusType forKey:@"statusType"];
-  [v5 encodeInteger:self->_reasonType forKey:@"reasonType"];
-  [v5 encodeObject:self->_eligibleOffers forKey:@"eligibleOffers"];
-  [v5 encodeObject:self->_expirationDate forKey:@"expirationDate"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:statusType forKey:@"statusType"];
+  [coderCopy encodeInteger:self->_reasonType forKey:@"reasonType"];
+  [coderCopy encodeObject:self->_eligibleOffers forKey:@"eligibleOffers"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"expirationDate"];
 }
 
-- (ICLightweightMusicSubscriptionStatus)initWithCoder:(id)a3
+- (ICLightweightMusicSubscriptionStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = ICLightweightMusicSubscriptionStatus;
   v5 = [(ICLightweightMusicSubscriptionStatus *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeIntegerForKey:@"statusType"];
+    v6 = [coderCopy decodeIntegerForKey:@"statusType"];
     if (v6 >= 4)
     {
       v7 = 0;
@@ -85,16 +85,16 @@
     }
 
     v5->_statusType = v7;
-    v5->_reasonType = [v4 decodeIntegerForKey:@"reasonType"];
+    v5->_reasonType = [coderCopy decodeIntegerForKey:@"reasonType"];
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"eligibleOffers"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"eligibleOffers"];
     v12 = [v11 copy];
     eligibleOffers = v5->_eligibleOffers;
     v5->_eligibleOffers = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v14;
   }
@@ -102,10 +102,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
     goto LABEL_11;
@@ -118,7 +118,7 @@
     goto LABEL_11;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   v6 = v5;
   if (self->_statusType != v5->_statusType || self->_reasonType != v5->_reasonType)
   {
@@ -262,24 +262,24 @@ LABEL_11:
   return (v72 + v73) ^ __ROR8__(v72, 47) ^ v75 ^ __ROR8__(v72 + v73, 32) ^ v75 ^ __ROR8__(v73 ^ v74, 43);
 }
 
-- (id)_initWithExtendedSubscriptionStatus:(id)a3
+- (id)_initWithExtendedSubscriptionStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v12.receiver = self;
   v12.super_class = ICLightweightMusicSubscriptionStatus;
   v5 = [(ICLightweightMusicSubscriptionStatus *)&v12 init];
   if (v5)
   {
-    v5->_statusType = [v4 statusType];
-    v5->_reasonType = [v4 reasonType];
-    v6 = [v4 eligibleOffers];
-    v7 = [v6 copy];
+    v5->_statusType = [statusCopy statusType];
+    v5->_reasonType = [statusCopy reasonType];
+    eligibleOffers = [statusCopy eligibleOffers];
+    v7 = [eligibleOffers copy];
     eligibleOffers = v5->_eligibleOffers;
     v5->_eligibleOffers = v7;
 
-    v9 = [v4 expirationDate];
+    expirationDate = [statusCopy expirationDate];
     expirationDate = v5->_expirationDate;
-    v5->_expirationDate = v9;
+    v5->_expirationDate = expirationDate;
   }
 
   return v5;

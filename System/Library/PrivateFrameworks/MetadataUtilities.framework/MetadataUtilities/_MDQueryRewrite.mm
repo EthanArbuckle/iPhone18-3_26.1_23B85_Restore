@@ -1,25 +1,25 @@
 @interface _MDQueryRewrite
 - (NSString)queryString;
-- (_MDQueryRewrite)initWithSearchQueryString:(id)a3 searchQueryContext:(id)a4 score:(float)a5;
+- (_MDQueryRewrite)initWithSearchQueryString:(id)string searchQueryContext:(id)context score:(float)score;
 - (float)score;
 - (id)searchQueryContext;
 - (void)dealloc;
-- (void)setQueryString:(id)a3;
-- (void)setScore:(float)a3;
-- (void)setSearchQueryContext:(id)a3;
+- (void)setQueryString:(id)string;
+- (void)setScore:(float)score;
+- (void)setSearchQueryContext:(id)context;
 @end
 
 @implementation _MDQueryRewrite
 
-- (_MDQueryRewrite)initWithSearchQueryString:(id)a3 searchQueryContext:(id)a4 score:(float)a5
+- (_MDQueryRewrite)initWithSearchQueryString:(id)string searchQueryContext:(id)context score:(float)score
 {
   v11 = *MEMORY[0x1E69E9840];
   if (self)
   {
-    self->_queryString = [a3 copy];
-    self->_searchQueryContext = a4;
-    v8 = a4;
-    self->_score = a5;
+    self->_queryString = [string copy];
+    self->_searchQueryContext = context;
+    contextCopy = context;
+    self->_score = score;
   }
 
   v9 = *MEMORY[0x1E69E9840];
@@ -44,12 +44,12 @@
   return result;
 }
 
-- (void)setQueryString:(id)a3
+- (void)setQueryString:(id)string
 {
   v4 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
 
-  objc_setProperty_nonatomic_copy(self, a2, a3, 16);
+  objc_setProperty_nonatomic_copy(self, a2, string, 16);
 }
 
 - (id)searchQueryContext
@@ -60,12 +60,12 @@
   return result;
 }
 
-- (void)setSearchQueryContext:(id)a3
+- (void)setSearchQueryContext:(id)context
 {
   v4 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
 
-  objc_setProperty_nonatomic(self, a2, a3, 24);
+  objc_setProperty_nonatomic(self, a2, context, 24);
 }
 
 - (float)score
@@ -76,10 +76,10 @@
   return result;
 }
 
-- (void)setScore:(float)a3
+- (void)setScore:(float)score
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_score = a3;
+  self->_score = score;
   v3 = *MEMORY[0x1E69E9840];
 }
 

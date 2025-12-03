@@ -1,16 +1,16 @@
 @interface PKTextInputLanguageSelectionToken
-+ (id)tokenWithStore:(id)a3;
++ (id)tokenWithStore:(id)store;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation PKTextInputLanguageSelectionToken
 
-+ (id)tokenWithStore:(id)a3
++ (id)tokenWithStore:(id)store
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  objc_storeWeak(v5 + 1, v4);
+  storeCopy = store;
+  v5 = objc_alloc_init(self);
+  objc_storeWeak(v5 + 1, storeCopy);
 
   return v5;
 }

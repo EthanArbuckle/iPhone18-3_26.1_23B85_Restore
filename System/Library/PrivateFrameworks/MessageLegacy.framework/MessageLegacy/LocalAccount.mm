@@ -1,11 +1,11 @@
 @interface LocalAccount
 + (id)localAccount;
-- (BOOL)_setChildren:(id)a3 forMailboxUid:(id)a4;
-- (BOOL)renameMailbox:(id)a3 newName:(id)a4 parent:(id)a5;
-- (LocalAccount)initWithLibrary:(id)a3 persistentAccount:(id)a4;
-- (id)_infoForMatchingURL:(id)a3;
-- (id)mailboxUidForFileSystemPath:(id)a3;
-- (void)_synchronouslyLoadListingForParent:(id)a3;
+- (BOOL)_setChildren:(id)children forMailboxUid:(id)uid;
+- (BOOL)renameMailbox:(id)mailbox newName:(id)name parent:(id)parent;
+- (LocalAccount)initWithLibrary:(id)library persistentAccount:(id)account;
+- (id)_infoForMatchingURL:(id)l;
+- (id)mailboxUidForFileSystemPath:(id)path;
+- (void)_synchronouslyLoadListingForParent:(id)parent;
 - (void)resetSpecialMailboxes;
 @end
 
@@ -16,14 +16,14 @@
   +[MailAccount mf_lock];
   if (!localAccount)
   {
-    localAccount = -[MailAccount initWithPath:]([LocalAccount alloc], "initWithPath:", [objc_msgSend(a1 "defaultAccountDirectory")]);
+    localAccount = -[MailAccount initWithPath:]([LocalAccount alloc], "initWithPath:", [objc_msgSend(self "defaultAccountDirectory")]);
   }
 
   +[MailAccount mf_unlock];
   return localAccount;
 }
 
-- (LocalAccount)initWithLibrary:(id)a3 persistentAccount:(id)a4
+- (LocalAccount)initWithLibrary:(id)library persistentAccount:(id)account
 {
   v7 = objc_opt_class();
   if (v7 == objc_opt_class())
@@ -39,7 +39,7 @@
     {
       v11.receiver = self;
       v11.super_class = LocalAccount;
-      v8 = [(MailAccount *)&v11 initWithLibrary:a3 persistentAccount:a4];
+      v8 = [(MailAccount *)&v11 initWithLibrary:library persistentAccount:account];
       localAccount = v8;
     }
 
@@ -50,18 +50,18 @@
   {
     v10.receiver = self;
     v10.super_class = LocalAccount;
-    return [(MailAccount *)&v10 initWithLibrary:a3 persistentAccount:a4];
+    return [(MailAccount *)&v10 initWithLibrary:library persistentAccount:account];
   }
 
   return v8;
 }
 
-- (void)_synchronouslyLoadListingForParent:(id)a3
+- (void)_synchronouslyLoadListingForParent:(id)parent
 {
-  v7 = [objc_msgSend(a3 "fullPath")];
+  v7 = [objc_msgSend(parent "fullPath")];
   if (v7)
   {
-    if ([a3 isStore])
+    if ([parent isStore])
     {
       v5 = [v7 rangeOfString:-[LocalAccount mailboxPathExtension](self options:{"mailboxPathExtension"), 12}];
       if (v5 >= 2 && v5 != 0x7FFFFFFFFFFFFFFFLL)
@@ -70,33 +70,33 @@
       }
     }
 
-    [(MailAccount *)self _loadEntriesFromFileSystemPath:v7 parent:a3];
+    [(MailAccount *)self _loadEntriesFromFileSystemPath:v7 parent:parent];
   }
 }
 
-- (BOOL)_setChildren:(id)a3 forMailboxUid:(id)a4
+- (BOOL)_setChildren:(id)children forMailboxUid:(id)uid
 {
   v8.receiver = self;
   v8.super_class = LocalAccount;
   v6 = [MailAccount _setChildren:sel__setChildren_forMailboxUid_ forMailboxUid:?];
-  if (([a4 isContainer] & 1) == 0 && objc_msgSend(a3, "count"))
+  if (([uid isContainer] & 1) == 0 && objc_msgSend(children, "count"))
   {
-    [a4 setAttributes:{objc_msgSend(a4, "attributes") & 0xFFFFFFFELL}];
+    [uid setAttributes:{objc_msgSend(uid, "attributes") & 0xFFFFFFFELL}];
   }
 
   return v6;
 }
 
-- (BOOL)renameMailbox:(id)a3 newName:(id)a4 parent:(id)a5
+- (BOOL)renameMailbox:(id)mailbox newName:(id)name parent:(id)parent
 {
-  v9 = [a5 childWithName:a4];
-  if (([a4 mf_isSubdirectoryOfPath:{objc_msgSend(a3, "name")}] & 1) == 0)
+  v9 = [parent childWithName:name];
+  if (([name mf_isSubdirectoryOfPath:{objc_msgSend(mailbox, "name")}] & 1) == 0)
   {
-    if (!v9 || (v10 = [v9 isStore], v10 != objc_msgSend(a3, "isStore")) && (v11 = objc_msgSend(v9, "isContainer"), v11 != objc_msgSend(a3, "isContainer")))
+    if (!v9 || (v10 = [v9 isStore], v10 != objc_msgSend(mailbox, "isStore")) && (v11 = objc_msgSend(v9, "isContainer"), v11 != objc_msgSend(mailbox, "isContainer")))
     {
       v14.receiver = self;
       v14.super_class = LocalAccount;
-      return [(MailAccount *)&v14 renameMailbox:a3 newName:a4 parent:a5];
+      return [(MailAccount *)&v14 renameMailbox:mailbox newName:name parent:parent];
     }
 
     v13 = +[MFActivityMonitor currentMonitor];
@@ -106,11 +106,11 @@
   return 0;
 }
 
-- (id)mailboxUidForFileSystemPath:(id)a3
+- (id)mailboxUidForFileSystemPath:(id)path
 {
-  v5 = [a3 pathExtension];
-  v6 = [a3 mf_stringByExpandingTildeWithSharedResourcesDirectoryInPath];
-  if (![v5 isEqualToString:@"mbox"])
+  pathExtension = [path pathExtension];
+  mf_stringByExpandingTildeWithSharedResourcesDirectoryInPath = [path mf_stringByExpandingTildeWithSharedResourcesDirectoryInPath];
+  if (![pathExtension isEqualToString:@"mbox"])
   {
     return 0;
   }
@@ -121,10 +121,10 @@
     return 0;
   }
 
-  v7 = [mailboxUidForFileSystemPath___rootlessMailboxRoot childWithName:v6];
+  v7 = [mailboxUidForFileSystemPath___rootlessMailboxRoot childWithName:mf_stringByExpandingTildeWithSharedResourcesDirectoryInPath];
   if (!v7)
   {
-    v7 = [objc_allocWithZone(_MFRootlessMailboxUid) initWithName:v6 attributes:1 forAccount:0 extraAttributes:0];
+    v7 = [objc_allocWithZone(_MFRootlessMailboxUid) initWithName:mf_stringByExpandingTildeWithSharedResourcesDirectoryInPath attributes:1 forAccount:0 extraAttributes:0];
     [v7 setType:4294967196];
     v8 = mailboxUidForFileSystemPath___rootlessMailboxRoot;
     if (!mailboxUidForFileSystemPath___rootlessMailboxRoot)
@@ -133,9 +133,9 @@
       mailboxUidForFileSystemPath___rootlessMailboxRoot = v8;
     }
 
-    v9 = [(MFMailboxUid *)v8 mutableCopyOfChildren];
-    [v9 addObject:v7];
-    [mailboxUidForFileSystemPath___rootlessMailboxRoot setChildren:v9];
+    mutableCopyOfChildren = [(MFMailboxUid *)v8 mutableCopyOfChildren];
+    [mutableCopyOfChildren addObject:v7];
+    [mailboxUidForFileSystemPath___rootlessMailboxRoot setChildren:mutableCopyOfChildren];
   }
 
   return v7;
@@ -149,11 +149,11 @@
   [(LocalAccount *)self transientDraftsFolderShouldCreate:0];
 }
 
-- (id)_infoForMatchingURL:(id)a3
+- (id)_infoForMatchingURL:(id)l
 {
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [objc_msgSend(a3 "resourceSpecifier")];
-  [v5 setObject:self forKey:@"Account"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v6 = [objc_msgSend(l "resourceSpecifier")];
+  [dictionary setObject:self forKey:@"Account"];
   v7 = [v6 rangeOfString:@"/" options:8];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -162,10 +162,10 @@
 
   if (v6 && ([v6 isEqualToString:&stru_2869ED3E0] & 1) == 0)
   {
-    [v5 setObject:v6 forKey:@"RelativePath"];
+    [dictionary setObject:v6 forKey:@"RelativePath"];
   }
 
-  return v5;
+  return dictionary;
 }
 
 @end

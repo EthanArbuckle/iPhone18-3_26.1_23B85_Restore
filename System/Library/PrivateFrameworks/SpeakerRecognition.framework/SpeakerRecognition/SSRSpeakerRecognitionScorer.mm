@@ -1,19 +1,19 @@
 @interface SSRSpeakerRecognitionScorer
-- (BOOL)resetScorerWithModelFilePath:(id)a3;
+- (BOOL)resetScorerWithModelFilePath:(id)path;
 - (NSString)psrConfigFilePath;
 - (NSString)psrConfigRoot;
-- (SSRSpeakerRecognitionScorer)initWithProfileID:(id)a3 withModelFile:(id)a4 withConfigFile:(id)a5 withResourceFile:(id)a6 configData:(id)a7 memoryIndex:(id)a8 withOffsetsType:(unint64_t)a9 forRetraining:(BOOL)a10;
-- (double)_getFloatValueForNDAPIConfigOption:(id)a3 defaultValue:(double)a4;
-- (double)_getFloatValueFromConfigurationName:(id)a3 defaultTo:(double)a4;
-- (float)analyzeSpeakerVector:(id)a3 withDimensions:(unint64_t)a4 withThresholdType:(unint64_t)a5;
-- (float)analyzeSuperVector:(id)a3 withDimensions:(unint64_t)a4 withThresholdType:(unint64_t)a5;
-- (float)normalizedScoreFromRawScore:(float)a3 forScoreType:(unint64_t)a4;
-- (float)scoreSpeakerVector:(id)a3 withDimensions:(unint64_t)a4 withThresholdType:(unint64_t)a5;
-- (id)_getOptionValueFromConfigurationName:(id)a3;
-- (id)_getStringValueFromConfigurationName:(id)a3 defaultTo:(id)a4;
-- (id)_getValueForNDAPIConfigOption:(id)a3;
-- (id)getSpeakerVectorAtIndex:(unint64_t)a3;
-- (int)_getIntValueFromConfigurationName:(id)a3 defaultTo:(int)a4;
+- (SSRSpeakerRecognitionScorer)initWithProfileID:(id)d withModelFile:(id)file withConfigFile:(id)configFile withResourceFile:(id)resourceFile configData:(id)data memoryIndex:(id)index withOffsetsType:(unint64_t)type forRetraining:(BOOL)self0;
+- (double)_getFloatValueForNDAPIConfigOption:(id)option defaultValue:(double)value;
+- (double)_getFloatValueFromConfigurationName:(id)name defaultTo:(double)to;
+- (float)analyzeSpeakerVector:(id)vector withDimensions:(unint64_t)dimensions withThresholdType:(unint64_t)type;
+- (float)analyzeSuperVector:(id)vector withDimensions:(unint64_t)dimensions withThresholdType:(unint64_t)type;
+- (float)normalizedScoreFromRawScore:(float)score forScoreType:(unint64_t)type;
+- (float)scoreSpeakerVector:(id)vector withDimensions:(unint64_t)dimensions withThresholdType:(unint64_t)type;
+- (id)_getOptionValueFromConfigurationName:(id)name;
+- (id)_getStringValueFromConfigurationName:(id)name defaultTo:(id)to;
+- (id)_getValueForNDAPIConfigOption:(id)option;
+- (id)getSpeakerVectorAtIndex:(unint64_t)index;
+- (int)_getIntValueFromConfigurationName:(id)name defaultTo:(int)to;
 - (unint64_t)getSATVectorCount;
 - (void)dealloc;
 - (void)updateSAT;
@@ -21,14 +21,14 @@
 
 @implementation SSRSpeakerRecognitionScorer
 
-- (id)_getValueForNDAPIConfigOption:(id)a3
+- (id)_getValueForNDAPIConfigOption:(id)option
 {
-  v4 = a3;
-  v5 = v4;
+  optionCopy = option;
+  v5 = optionCopy;
   novDetect = self->_novDetect;
   if (novDetect)
   {
-    [v4 UTF8String];
+    [optionCopy UTF8String];
     v7 = nd_getoption();
     if (v7)
     {
@@ -44,41 +44,41 @@
   return novDetect;
 }
 
-- (double)_getFloatValueForNDAPIConfigOption:(id)a3 defaultValue:(double)a4
+- (double)_getFloatValueForNDAPIConfigOption:(id)option defaultValue:(double)value
 {
-  v5 = [(SSRSpeakerRecognitionScorer *)self _getValueForNDAPIConfigOption:a3];
+  v5 = [(SSRSpeakerRecognitionScorer *)self _getValueForNDAPIConfigOption:option];
   v6 = v5;
   if (v5)
   {
     [v5 floatValue];
-    a4 = v7;
+    value = v7;
   }
 
-  return a4;
+  return value;
 }
 
-- (id)_getStringValueFromConfigurationName:(id)a3 defaultTo:(id)a4
+- (id)_getStringValueFromConfigurationName:(id)name defaultTo:(id)to
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SSRSpeakerRecognitionScorer *)self _getOptionValueFromConfigurationName:v6];
+  nameCopy = name;
+  toCopy = to;
+  v8 = [(SSRSpeakerRecognitionScorer *)self _getOptionValueFromConfigurationName:nameCopy];
   v9 = v8;
   if (!v8)
   {
     v10 = *MEMORY[0x277D01970];
     v11 = os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT);
-    v9 = v7;
+    v9 = toCopy;
     if (v11)
     {
       v15 = 136315650;
       v16 = "[SSRSpeakerRecognitionScorer _getStringValueFromConfigurationName:defaultTo:]";
       v17 = 2114;
-      v18 = v6;
+      v18 = nameCopy;
       v19 = 2114;
-      v20 = v7;
+      v20 = toCopy;
       _os_log_impl(&dword_225E12000, v10, OS_LOG_TYPE_DEFAULT, "%s ::: ndetect config does not define external parameter %{public}@, defaulting to provided value: %{public}@", &v15, 0x20u);
-      v9 = v7;
+      v9 = toCopy;
     }
   }
 
@@ -89,15 +89,15 @@
   return v12;
 }
 
-- (int)_getIntValueFromConfigurationName:(id)a3 defaultTo:(int)a4
+- (int)_getIntValueFromConfigurationName:(id)name defaultTo:(int)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(SSRSpeakerRecognitionScorer *)self _getOptionValueFromConfigurationName:v6];
+  nameCopy = name;
+  v7 = [(SSRSpeakerRecognitionScorer *)self _getOptionValueFromConfigurationName:nameCopy];
   v8 = v7;
   if (v7)
   {
-    a4 = [v7 intValue];
+    to = [v7 intValue];
   }
 
   else
@@ -108,27 +108,27 @@
       v12 = 136315650;
       v13 = "[SSRSpeakerRecognitionScorer _getIntValueFromConfigurationName:defaultTo:]";
       v14 = 2114;
-      v15 = v6;
+      v15 = nameCopy;
       v16 = 1026;
-      v17 = a4;
+      toCopy = to;
       _os_log_impl(&dword_225E12000, v9, OS_LOG_TYPE_DEFAULT, "%s ::: ndetect config does not define external parameter %{public}@, defaulting to provided value: %{public}d", &v12, 0x1Cu);
     }
   }
 
   v10 = *MEMORY[0x277D85DE8];
-  return a4;
+  return to;
 }
 
-- (double)_getFloatValueFromConfigurationName:(id)a3 defaultTo:(double)a4
+- (double)_getFloatValueFromConfigurationName:(id)name defaultTo:(double)to
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(SSRSpeakerRecognitionScorer *)self _getOptionValueFromConfigurationName:v6];
+  nameCopy = name;
+  v7 = [(SSRSpeakerRecognitionScorer *)self _getOptionValueFromConfigurationName:nameCopy];
   v8 = v7;
   if (v7)
   {
     [v7 floatValue];
-    a4 = v9;
+    to = v9;
   }
 
   else
@@ -139,25 +139,25 @@
       v13 = 136315650;
       v14 = "[SSRSpeakerRecognitionScorer _getFloatValueFromConfigurationName:defaultTo:]";
       v15 = 2114;
-      v16 = v6;
+      v16 = nameCopy;
       v17 = 2050;
-      v18 = a4;
+      toCopy = to;
       _os_log_impl(&dword_225E12000, v10, OS_LOG_TYPE_DEFAULT, "%s ::: ndetect config does not define external parameter %{public}@, defaulting to provided value: %{public}f", &v13, 0x20u);
     }
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return a4;
+  return to;
 }
 
-- (id)_getOptionValueFromConfigurationName:(id)a3
+- (id)_getOptionValueFromConfigurationName:(id)name
 {
   v5 = 0;
-  if (a3)
+  if (name)
   {
     if (self->_novDetect)
     {
-      [a3 UTF8String];
+      [name UTF8String];
       v5 = nd_getoption();
       if (v5)
       {
@@ -171,9 +171,9 @@
   return v5;
 }
 
-- (id)getSpeakerVectorAtIndex:(unint64_t)a3
+- (id)getSpeakerVectorAtIndex:(unint64_t)index
 {
-  v3 = a3;
+  indexCopy = index;
   v14 = *MEMORY[0x277D85DE8];
   if (self->_novDetect && (v4 = nd_sat_getspeakervector()) != 0)
   {
@@ -189,7 +189,7 @@
       v10 = 136315394;
       v11 = "[SSRSpeakerRecognitionScorer getSpeakerVectorAtIndex:]";
       v12 = 1024;
-      v13 = v3;
+      v13 = indexCopy;
       v9 = "%s ERR: vector data is nil for index %u";
 LABEL_13:
       _os_log_error_impl(&dword_225E12000, v6, OS_LOG_TYPE_ERROR, v9, &v10, 0x12u);
@@ -204,7 +204,7 @@ LABEL_13:
       v10 = 136315394;
       v11 = "[SSRSpeakerRecognitionScorer getSpeakerVectorAtIndex:]";
       v12 = 1024;
-      v13 = v3;
+      v13 = indexCopy;
       v9 = "%s ERR: ndspeakervector is nil for index %u";
       goto LABEL_13;
     }
@@ -292,8 +292,8 @@ LABEL_7:
   v18 = *MEMORY[0x277D85DE8];
   if (!self->_novDetect)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"SSRSpeakerRecognitionScorer.m" lineNumber:391 description:@"updateSAT called with _novDetect = nullptr"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SSRSpeakerRecognitionScorer.m" lineNumber:391 description:@"updateSAT called with _novDetect = nullptr"];
 
     novDetect = self->_novDetect;
   }
@@ -320,7 +320,7 @@ LABEL_7:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (float)normalizedScoreFromRawScore:(float)a3 forScoreType:(unint64_t)a4
+- (float)normalizedScoreFromRawScore:(float)score forScoreType:(unint64_t)type
 {
   v35 = *MEMORY[0x277D85DE8];
   [(SSRSpeakerRecognitionScorer *)self _satScoreVTScale];
@@ -339,8 +339,8 @@ LABEL_7:
     v10 = v16;
   }
 
-  v17 = v10 + (v8 * a3);
-  if (a4 - 1 > 1)
+  v17 = v10 + (v8 * score);
+  if (type - 1 > 1)
   {
     if ((v12 - v14) >= 0.1)
     {
@@ -387,16 +387,16 @@ LABEL_7:
   return result;
 }
 
-- (float)scoreSpeakerVector:(id)a3 withDimensions:(unint64_t)a4 withThresholdType:(unint64_t)a5
+- (float)scoreSpeakerVector:(id)vector withDimensions:(unint64_t)dimensions withThresholdType:(unint64_t)type
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [MEMORY[0x277D01788] sharedPreferences];
-  v10 = [v9 speakerIdScoreReportingType];
+  vectorCopy = vector;
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  speakerIdScoreReportingType = [mEMORY[0x277D01788] speakerIdScoreReportingType];
 
-  if (v8 && a4)
+  if (vectorCopy && dimensions)
   {
-    [v8 bytes];
+    [vectorCopy bytes];
     if (self->_novDetect)
     {
       v11 = nd_sat_analyze();
@@ -424,14 +424,14 @@ LABEL_7:
 
     else
     {
-      v16 = [MEMORY[0x277CCA890] currentHandler];
-      [v16 handleFailureInMethod:a2 object:self file:@"SSRSpeakerRecognitionScorer.m" lineNumber:332 description:@"Unexpected _novDetect is nil"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SSRSpeakerRecognitionScorer.m" lineNumber:332 description:@"Unexpected _novDetect is nil"];
 
       v13 = -1.0;
     }
 
     *&v12 = v13;
-    [(SSRSpeakerRecognitionScorer *)self normalizedScoreFromRawScore:v10 forScoreType:v12];
+    [(SSRSpeakerRecognitionScorer *)self normalizedScoreFromRawScore:speakerIdScoreReportingType forScoreType:v12];
     v15 = v20;
   }
 
@@ -444,9 +444,9 @@ LABEL_7:
       v23 = 136315650;
       v24 = "[SSRSpeakerRecognitionScorer scoreSpeakerVector:withDimensions:withThresholdType:]";
       v25 = 2112;
-      v26 = v8;
+      v26 = vectorCopy;
       v27 = 2048;
-      v28 = a4;
+      dimensionsCopy = dimensions;
       _os_log_impl(&dword_225E12000, v14, OS_LOG_TYPE_DEFAULT, "%s ERR: speakerVec invalid: %@:%lu", &v23, 0x20u);
     }
   }
@@ -455,16 +455,16 @@ LABEL_7:
   return v15;
 }
 
-- (float)analyzeSuperVector:(id)a3 withDimensions:(unint64_t)a4 withThresholdType:(unint64_t)a5
+- (float)analyzeSuperVector:(id)vector withDimensions:(unint64_t)dimensions withThresholdType:(unint64_t)type
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [MEMORY[0x277D01788] sharedPreferences];
-  v10 = [v9 speakerIdScoreReportingType];
+  vectorCopy = vector;
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  speakerIdScoreReportingType = [mEMORY[0x277D01788] speakerIdScoreReportingType];
 
-  if (v8 && a4)
+  if (vectorCopy && dimensions)
   {
-    [v8 bytes];
+    [vectorCopy bytes];
     if (self->_novDetect)
     {
       v11 = nd_sat_analyze();
@@ -492,14 +492,14 @@ LABEL_7:
 
     else
     {
-      v16 = [MEMORY[0x277CCA890] currentHandler];
-      [v16 handleFailureInMethod:a2 object:self file:@"SSRSpeakerRecognitionScorer.m" lineNumber:291 description:@"Unexpected _novDetect is nil"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SSRSpeakerRecognitionScorer.m" lineNumber:291 description:@"Unexpected _novDetect is nil"];
 
       v13 = -1.0;
     }
 
     *&v12 = v13;
-    [(SSRSpeakerRecognitionScorer *)self normalizedScoreFromRawScore:v10 forScoreType:v12];
+    [(SSRSpeakerRecognitionScorer *)self normalizedScoreFromRawScore:speakerIdScoreReportingType forScoreType:v12];
     v15 = v20;
   }
 
@@ -512,9 +512,9 @@ LABEL_7:
       v23 = 136315650;
       v24 = "[SSRSpeakerRecognitionScorer analyzeSuperVector:withDimensions:withThresholdType:]";
       v25 = 2112;
-      v26 = v8;
+      v26 = vectorCopy;
       v27 = 2048;
-      v28 = a4;
+      dimensionsCopy = dimensions;
       _os_log_impl(&dword_225E12000, v14, OS_LOG_TYPE_DEFAULT, "%s ERR: superVec invalid: %@:%lu", &v23, 0x20u);
     }
   }
@@ -523,16 +523,16 @@ LABEL_7:
   return v15;
 }
 
-- (float)analyzeSpeakerVector:(id)a3 withDimensions:(unint64_t)a4 withThresholdType:(unint64_t)a5
+- (float)analyzeSpeakerVector:(id)vector withDimensions:(unint64_t)dimensions withThresholdType:(unint64_t)type
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [MEMORY[0x277D01788] sharedPreferences];
-  v10 = [v9 speakerIdScoreReportingType];
+  vectorCopy = vector;
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  speakerIdScoreReportingType = [mEMORY[0x277D01788] speakerIdScoreReportingType];
 
-  if (v8 && a4)
+  if (vectorCopy && dimensions)
   {
-    [v8 bytes];
+    [vectorCopy bytes];
     if (self->_novDetect)
     {
       v11 = nd_sat_analyze();
@@ -560,14 +560,14 @@ LABEL_7:
 
     else
     {
-      v16 = [MEMORY[0x277CCA890] currentHandler];
-      [v16 handleFailureInMethod:a2 object:self file:@"SSRSpeakerRecognitionScorer.m" lineNumber:260 description:@"Unexpected _novDetect is nil"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SSRSpeakerRecognitionScorer.m" lineNumber:260 description:@"Unexpected _novDetect is nil"];
 
       v13 = -1.0;
     }
 
     *&v12 = v13;
-    [(SSRSpeakerRecognitionScorer *)self normalizedScoreFromRawScore:v10 forScoreType:v12];
+    [(SSRSpeakerRecognitionScorer *)self normalizedScoreFromRawScore:speakerIdScoreReportingType forScoreType:v12];
     v15 = v20;
   }
 
@@ -580,9 +580,9 @@ LABEL_7:
       v23 = 136315650;
       v24 = "[SSRSpeakerRecognitionScorer analyzeSpeakerVector:withDimensions:withThresholdType:]";
       v25 = 2112;
-      v26 = v8;
+      v26 = vectorCopy;
       v27 = 2048;
-      v28 = a4;
+      dimensionsCopy = dimensions;
       _os_log_impl(&dword_225E12000, v14, OS_LOG_TYPE_DEFAULT, "%s ERR: speakerVec invalid: %@:%lu", &v23, 0x20u);
     }
   }
@@ -591,15 +591,15 @@ LABEL_7:
   return v15;
 }
 
-- (BOOL)resetScorerWithModelFilePath:(id)a3
+- (BOOL)resetScorerWithModelFilePath:(id)path
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  pathCopy = path;
+  v5 = pathCopy;
   if (self->_novDetect)
   {
-    v6 = [v4 path];
-    [v6 UTF8String];
+    path = [pathCopy path];
+    [path UTF8String];
     v7 = nd_sat_initialize();
 
     if (!v7)
@@ -641,7 +641,7 @@ LABEL_7:
     *buf = 136315394;
     v7 = "[SSRSpeakerRecognitionScorer dealloc]";
     v8 = 2114;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_225E12000, v3, OS_LOG_TYPE_DEFAULT, "%s dealloc %{public}@", buf, 0x16u);
   }
 
@@ -657,15 +657,15 @@ LABEL_7:
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (SSRSpeakerRecognitionScorer)initWithProfileID:(id)a3 withModelFile:(id)a4 withConfigFile:(id)a5 withResourceFile:(id)a6 configData:(id)a7 memoryIndex:(id)a8 withOffsetsType:(unint64_t)a9 forRetraining:(BOOL)a10
+- (SSRSpeakerRecognitionScorer)initWithProfileID:(id)d withModelFile:(id)file withConfigFile:(id)configFile withResourceFile:(id)resourceFile configData:(id)data memoryIndex:(id)index withOffsetsType:(unint64_t)type forRetraining:(BOOL)self0
 {
   v103 = *MEMORY[0x277D85DE8];
-  v83 = a3;
-  v17 = a4;
-  v18 = a5;
-  v82 = a6;
-  v19 = a7;
-  v20 = a8;
+  dCopy = d;
+  fileCopy = file;
+  configFileCopy = configFile;
+  resourceFileCopy = resourceFile;
+  dataCopy = data;
+  indexCopy = index;
   v87.receiver = self;
   v87.super_class = SSRSpeakerRecognitionScorer;
   v21 = [(SSRSpeakerRecognitionScorer *)&v87 init];
@@ -675,15 +675,15 @@ LABEL_7:
     goto LABEL_47;
   }
 
-  objc_storeStrong(&v21->_configFilePath, a5);
-  objc_storeStrong(&v22->_resourceFilePath, a6);
-  objc_storeStrong(&v22->_modelFilePath, a4);
-  objc_storeStrong(&v22->_profileID, a3);
-  v81 = [MEMORY[0x277CCAA00] defaultManager];
-  if (!(v19 | v20))
+  objc_storeStrong(&v21->_configFilePath, configFile);
+  objc_storeStrong(&v22->_resourceFilePath, resourceFile);
+  objc_storeStrong(&v22->_modelFilePath, file);
+  objc_storeStrong(&v22->_profileID, d);
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if (!(dataCopy | indexCopy))
   {
-    v23 = [(NSURL *)v22->_configFilePath path];
-    v24 = [v81 fileExistsAtPath:v23];
+    path = [(NSURL *)v22->_configFilePath path];
+    v24 = [defaultManager fileExistsAtPath:path];
 
     if ((v24 & 1) == 0)
     {
@@ -716,7 +716,7 @@ LABEL_7:
     *buf = 136315394;
     *&buf[4] = "[SSRSpeakerRecognitionScorer initWithProfileID:withModelFile:withConfigFile:withResourceFile:configData:memoryIndex:withOffsetsType:forRetraining:]";
     *&buf[12] = 2114;
-    *&buf[14] = v18;
+    *&buf[14] = configFileCopy;
     v36 = "%s ERR: Failed to create NovDetect using %{public}@";
 LABEL_13:
     v38 = v35;
@@ -726,9 +726,9 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v18)
+  if (!configFileCopy)
   {
-    if (!v19 || !v20)
+    if (!dataCopy || !indexCopy)
     {
       v48 = *MEMORY[0x277D015C8];
       if (!os_log_type_enabled(*MEMORY[0x277D015C8], OS_LOG_TYPE_DEFAULT))
@@ -746,20 +746,20 @@ LABEL_14:
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     buf[24] = 1;
-    v41 = [v20 memoryIndexes];
+    memoryIndexes = [indexCopy memoryIndexes];
     v84[0] = MEMORY[0x277D85DD0];
     v84[1] = 3221225472;
     v84[2] = __148__SSRSpeakerRecognitionScorer_initWithProfileID_withModelFile_withConfigFile_withResourceFile_configData_memoryIndex_withOffsetsType_forRetraining___block_invoke;
     v84[3] = &unk_278578A48;
     v86 = buf;
     v85 = v22;
-    [v41 enumerateKeysAndObjectsUsingBlock:v84];
+    [memoryIndexes enumerateKeysAndObjectsUsingBlock:v84];
 
     if (*(*&buf[8] + 24))
     {
       novDetect = v22->_novDetect;
-      v43 = v19;
-      [v19 cStringUsingEncoding:4];
+      v43 = dataCopy;
+      [dataCopy cStringUsingEncoding:4];
       v44 = nd_initialize();
       if (!v44)
       {
@@ -787,12 +787,12 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v26 = [v18 path];
-  v27 = v26;
-  [v26 UTF8String];
-  v28 = [(NSURL *)v22->_resourceFilePath path];
-  v29 = v28;
-  [v28 UTF8String];
+  path2 = [configFileCopy path];
+  v27 = path2;
+  [path2 UTF8String];
+  path3 = [(NSURL *)v22->_resourceFilePath path];
+  v29 = path3;
+  [path3 UTF8String];
   v30 = nd_initialize();
 
   if (v30)
@@ -816,18 +816,18 @@ LABEL_14:
   }
 
 LABEL_27:
-  v49 = [MEMORY[0x277CCAA00] defaultManager];
-  v50 = [v17 path];
-  v51 = [v49 fileExistsAtPath:v50];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+  path4 = [fileCopy path];
+  v51 = [defaultManager2 fileExistsAtPath:path4];
 
   if (v51)
   {
     v22->_satModelAvailable = 1;
 LABEL_33:
     v59 = v22->_novDetect;
-    v60 = [v17 path];
-    v61 = v60;
-    [v60 UTF8String];
+    path5 = [fileCopy path];
+    v61 = path5;
+    [path5 UTF8String];
     v62 = nd_sat_initialize();
 
     if (v62)
@@ -852,7 +852,7 @@ LABEL_33:
 
     v67 = v22->_novDetect;
     v68 = nd_sat_vectorcount();
-    if (!a10)
+    if (!retraining)
     {
       v69 = v68;
       if (v68 <= 0)
@@ -871,31 +871,31 @@ LABEL_33:
       }
     }
 
-    v22->_offsetsType = a9;
-    v71 = [v17 URLByDeletingLastPathComponent];
+    v22->_offsetsType = type;
+    uRLByDeletingLastPathComponent = [fileCopy URLByDeletingLastPathComponent];
     v72 = *MEMORY[0x277D015C8];
     if (os_log_type_enabled(*MEMORY[0x277D015C8], OS_LOG_TYPE_DEFAULT))
     {
       v73 = v72;
-      v79 = [(SSRSpeakerRecognitionScorer *)v22 getSATVectorCount];
-      v74 = [v17 lastPathComponent];
-      v80 = [v71 lastPathComponent];
-      v75 = [v71 URLByDeletingLastPathComponent];
-      v76 = [v75 lastPathComponent];
+      getSATVectorCount = [(SSRSpeakerRecognitionScorer *)v22 getSATVectorCount];
+      lastPathComponent = [fileCopy lastPathComponent];
+      lastPathComponent2 = [uRLByDeletingLastPathComponent lastPathComponent];
+      v71URLByDeletingLastPathComponent = [uRLByDeletingLastPathComponent URLByDeletingLastPathComponent];
+      lastPathComponent3 = [v71URLByDeletingLastPathComponent lastPathComponent];
       *buf = 136316674;
       *&buf[4] = "[SSRSpeakerRecognitionScorer initWithProfileID:withModelFile:withConfigFile:withResourceFile:configData:memoryIndex:withOffsetsType:forRetraining:]";
       *&buf[12] = 2114;
-      *&buf[14] = v83;
+      *&buf[14] = dCopy;
       *&buf[22] = 2114;
       *&buf[24] = v22;
       v89 = 1026;
-      v90 = v79;
+      v90 = getSATVectorCount;
       v91 = 2114;
-      v92 = v74;
+      v92 = lastPathComponent;
       v93 = 2114;
-      v94 = v80;
+      v94 = lastPathComponent2;
       v95 = 2114;
-      v96 = v76;
+      v96 = lastPathComponent3;
       _os_log_impl(&dword_225E12000, v73, OS_LOG_TYPE_DEFAULT, "%s Initialized Scorer for %{public}@ - (%{public}@, %{public}d, %{public}@, %{public}@, %{public}@)", buf, 0x44u);
     }
 
@@ -909,20 +909,20 @@ LABEL_47:
   if (os_log_type_enabled(*MEMORY[0x277D015C8], OS_LOG_TYPE_DEFAULT))
   {
     v54 = v53;
-    v55 = [v17 path];
+    path6 = [fileCopy path];
     *buf = 136315394;
     *&buf[4] = "[SSRSpeakerRecognitionScorer initWithProfileID:withModelFile:withConfigFile:withResourceFile:configData:memoryIndex:withOffsetsType:forRetraining:]";
     *&buf[12] = 2112;
-    *&buf[14] = v55;
+    *&buf[14] = path6;
     _os_log_impl(&dword_225E12000, v54, OS_LOG_TYPE_DEFAULT, "%s %@, satModel doesn't exist", buf, 0x16u);
   }
 
   v22->_satModelAvailable = 0;
-  if (a10)
+  if (retraining)
   {
-    v56 = [v17 URLByDeletingLastPathComponent];
-    v57 = [v56 path];
-    v58 = [SSRUtils createDirectoryIfDoesNotExist:v57];
+    uRLByDeletingLastPathComponent2 = [fileCopy URLByDeletingLastPathComponent];
+    path7 = [uRLByDeletingLastPathComponent2 path];
+    v58 = [SSRUtils createDirectoryIfDoesNotExist:path7];
 
     goto LABEL_33;
   }

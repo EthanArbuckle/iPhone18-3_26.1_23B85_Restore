@@ -1,20 +1,20 @@
 @interface AVMenuButton
-+ (id)buttonWithAccessibilityIdentifier:(id)a3 accessibilityLabel:(id)a4 isFirstGeneration:(BOOL)a5;
++ (id)buttonWithAccessibilityIdentifier:(id)identifier accessibilityLabel:(id)label isFirstGeneration:(BOOL)generation;
 - (AVMenuButtonDelegate)delegate;
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
 - (void)updateContextMenu;
 @end
 
 @implementation AVMenuButton
 
-+ (id)buttonWithAccessibilityIdentifier:(id)a3 accessibilityLabel:(id)a4 isFirstGeneration:(BOOL)a5
++ (id)buttonWithAccessibilityIdentifier:(id)identifier accessibilityLabel:(id)label isFirstGeneration:(BOOL)generation
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___AVMenuButton;
-  v5 = objc_msgSendSuper2(&v7, sel_buttonWithAccessibilityIdentifier_accessibilityLabel_isFirstGeneration_, a3, a4, a5);
+  v5 = objc_msgSendSuper2(&v7, sel_buttonWithAccessibilityIdentifier_accessibilityLabel_isFirstGeneration_, identifier, label, generation);
   [v5 setShowsMenuAsPrimaryAction:1];
   [v5 setContextMenuInteractionEnabled:1];
   [v5 setAutoresizingMask:0];
@@ -30,32 +30,32 @@
   return WeakRetained;
 }
 
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 setPreferredMenuElementOrder:2];
+  configurationCopy = configuration;
+  interactionCopy = interaction;
+  [configurationCopy setPreferredMenuElementOrder:2];
   v10.receiver = self;
   v10.super_class = AVMenuButton;
-  v8 = [(AVMenuButton *)&v10 _contextMenuInteraction:v7 styleForMenuWithConfiguration:v6];
+  v8 = [(AVMenuButton *)&v10 _contextMenuInteraction:interactionCopy styleForMenuWithConfiguration:configurationCopy];
 
   return v8;
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  animatorCopy = animator;
   v16.receiver = self;
   v16.super_class = AVMenuButton;
-  [(AVMenuButton *)&v16 contextMenuInteraction:v8 willEndForConfiguration:v9 animator:v10];
-  objc_storeWeak(&self->_activeMenuInteraction, v8);
-  v11 = [(AVMenuButton *)self delegate];
+  [(AVMenuButton *)&v16 contextMenuInteraction:interactionCopy willEndForConfiguration:configurationCopy animator:animatorCopy];
+  objc_storeWeak(&self->_activeMenuInteraction, interactionCopy);
+  delegate = [(AVMenuButton *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v12 = [[AVKitGlassInteractionAnimating alloc] initWithInteractionAnimation:v10];
-    [v11 menuButtonWillHideMenu:self animator:v12];
+    v12 = [[AVKitGlassInteractionAnimating alloc] initWithInteractionAnimation:animatorCopy];
+    [delegate menuButtonWillHideMenu:self animator:v12];
   }
 
   objc_initWeak(&location, self);
@@ -64,7 +64,7 @@
   v13[2] = __72__AVMenuButton_contextMenuInteraction_willEndForConfiguration_animator___block_invoke;
   v13[3] = &unk_1E7209EA8;
   objc_copyWeak(&v14, &location);
-  [v10 addCompletion:v13];
+  [animatorCopy addCompletion:v13];
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
@@ -85,31 +85,31 @@ void __72__AVMenuButton_contextMenuInteraction_willEndForConfiguration_animator_
   }
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a5;
+  animatorCopy = animator;
   v12.receiver = self;
   v12.super_class = AVMenuButton;
-  v9 = a3;
-  [(AVMenuButton *)&v12 contextMenuInteraction:v9 willDisplayMenuForConfiguration:a4 animator:v8];
-  objc_storeWeak(&self->_activeMenuInteraction, v9);
+  interactionCopy = interaction;
+  [(AVMenuButton *)&v12 contextMenuInteraction:interactionCopy willDisplayMenuForConfiguration:configuration animator:animatorCopy];
+  objc_storeWeak(&self->_activeMenuInteraction, interactionCopy);
 
   v10 = [(AVMenuButton *)self delegate:v12.receiver];
   if (objc_opt_respondsToSelector())
   {
-    v11 = [[AVKitGlassInteractionAnimating alloc] initWithInteractionAnimation:v8];
+    v11 = [[AVKitGlassInteractionAnimating alloc] initWithInteractionAnimation:animatorCopy];
     [v10 menuButtonWillShowMenu:self animator:v11];
   }
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = [(AVMenuButton *)self delegate:a3];
+  v5 = [(AVMenuButton *)self delegate:interaction];
 
   if (v5)
   {
-    v6 = [(AVMenuButton *)self delegate];
-    v7 = [v6 menuForMenuButton:self];
+    delegate = [(AVMenuButton *)self delegate];
+    v7 = [delegate menuForMenuButton:self];
   }
 
   else
@@ -134,8 +134,8 @@ void __72__AVMenuButton_contextMenuInteraction_willEndForConfiguration_animator_
   WeakRetained = objc_loadWeakRetained(&self->_activeMenuInteraction);
   if (WeakRetained)
   {
-    v4 = [(AVMenuButton *)self delegate];
-    v5 = [v4 menuForMenuButton:self];
+    delegate = [(AVMenuButton *)self delegate];
+    v5 = [delegate menuForMenuButton:self];
 
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;

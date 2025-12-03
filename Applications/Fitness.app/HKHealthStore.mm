@@ -1,56 +1,56 @@
 @interface HKHealthStore
-- (void)ch_calculateBMRForDate:(id)a3 useEndOfDay:(BOOL)a4 completion:(id)a5;
-- (void)ch_fetchBodyMassBeforeDate:(id)a3 completion:(id)a4;
-- (void)ch_mostRecentQuantityOfType:(id)a3 beforeDate:(id)a4 completion:(id)a5;
+- (void)ch_calculateBMRForDate:(id)date useEndOfDay:(BOOL)day completion:(id)completion;
+- (void)ch_fetchBodyMassBeforeDate:(id)date completion:(id)completion;
+- (void)ch_mostRecentQuantityOfType:(id)type beforeDate:(id)date completion:(id)completion;
 @end
 
 @implementation HKHealthStore
 
-- (void)ch_calculateBMRForDate:(id)a3 useEndOfDay:(BOOL)a4 completion:(id)a5
+- (void)ch_calculateBMRForDate:(id)date useEndOfDay:(BOOL)day completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (v6)
+  dayCopy = day;
+  dateCopy = date;
+  completionCopy = completion;
+  if (dayCopy)
   {
     v10 = +[NSCalendar currentCalendar];
-    v11 = [v10 dateByAddingUnit:16 value:1 toDate:v8 options:0];
+    v11 = [v10 dateByAddingUnit:16 value:1 toDate:dateCopy options:0];
 
     v12 = +[NSCalendar currentCalendar];
     v13 = [v12 startOfDayForDate:v11];
 
-    v8 = v13;
+    dateCopy = v13;
   }
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000B56EC;
   v15[3] = &unk_10083AA20;
-  v16 = v9;
-  v14 = v9;
-  [(HKHealthStore *)self ch_fetchBodyMassBeforeDate:v8 completion:v15];
+  v16 = completionCopy;
+  v14 = completionCopy;
+  [(HKHealthStore *)self ch_fetchBodyMassBeforeDate:dateCopy completion:v15];
 }
 
-- (void)ch_fetchBodyMassBeforeDate:(id)a3 completion:(id)a4
+- (void)ch_fetchBodyMassBeforeDate:(id)date completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dateCopy = date;
   v8 = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierBodyMass];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000B5954;
   v10[3] = &unk_10083AA48;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [(HKHealthStore *)self ch_mostRecentQuantityOfType:v8 beforeDate:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(HKHealthStore *)self ch_mostRecentQuantityOfType:v8 beforeDate:dateCopy completion:v10];
 }
 
-- (void)ch_mostRecentQuantityOfType:(id)a3 beforeDate:(id)a4 completion:(id)a5
+- (void)ch_mostRecentQuantityOfType:(id)type beforeDate:(id)date completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [NSPredicate predicateWithFormat:@"%K <= %@", HKPredicateKeyPathStartDate, a4];
+  completionCopy = completion;
+  typeCopy = type;
+  date = [NSPredicate predicateWithFormat:@"%K <= %@", HKPredicateKeyPathStartDate, date];
   v11 = [NSSortDescriptor sortDescriptorWithKey:HKSampleSortIdentifierEndDate ascending:0];
   v12 = [HKSampleQuery alloc];
   v18 = v11;
@@ -59,9 +59,9 @@
   v16[1] = 3221225472;
   v16[2] = sub_1000B5B84;
   v16[3] = &unk_10083AA70;
-  v17 = v8;
-  v14 = v8;
-  v15 = [v12 initWithSampleType:v9 predicate:v10 limit:1 sortDescriptors:v13 resultsHandler:v16];
+  v17 = completionCopy;
+  v14 = completionCopy;
+  v15 = [v12 initWithSampleType:typeCopy predicate:date limit:1 sortDescriptors:v13 resultsHandler:v16];
 
   [(HKHealthStore *)self executeQuery:v15];
 }

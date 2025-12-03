@@ -1,5 +1,5 @@
 @interface OSVersion
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (void)description;
 @end
 
@@ -7,30 +7,30 @@
 
 - (void)description
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [NSMutableString stringWithFormat:@"%lu", a1[1]];
+    v2 = [NSMutableString stringWithFormat:@"%lu", self[1]];
     v3 = v2;
-    if (v1[2] > 0 || v1[3] >= 1)
+    if (selfCopy[2] > 0 || selfCopy[3] >= 1)
     {
-      [v2 appendFormat:@".%lu", v1[2]];
-      if (v1[3] >= 1)
+      [v2 appendFormat:@".%lu", selfCopy[2]];
+      if (selfCopy[3] >= 1)
       {
-        [v3 appendFormat:@".%lu", v1[3]];
+        [v3 appendFormat:@".%lu", selfCopy[3]];
       }
     }
 
-    v1 = [v3 copy];
+    selfCopy = [v3 copy];
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(self) = 1;
   }
@@ -40,7 +40,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (self)
       {
         LOBYTE(self) = v5->_version.major == self->_version.major && v5->_version.minor == self->_version.minor && v5->_version.patch == self->_version.patch;

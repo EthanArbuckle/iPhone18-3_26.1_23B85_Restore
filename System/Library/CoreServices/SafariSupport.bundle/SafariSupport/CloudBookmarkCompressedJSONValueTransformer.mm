@@ -2,9 +2,9 @@
 + (id)defaultTransformer;
 + (id)jsonArrayTransformer;
 + (id)jsonDictionaryTransformer;
-- (CloudBookmarkCompressedJSONValueTransformer)initWithRootJSONObjectType:(Class)a3;
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (CloudBookmarkCompressedJSONValueTransformer)initWithRootJSONObjectType:(Class)type;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation CloudBookmarkCompressedJSONValueTransformer
@@ -45,7 +45,7 @@
   return v3;
 }
 
-- (CloudBookmarkCompressedJSONValueTransformer)initWithRootJSONObjectType:(Class)a3
+- (CloudBookmarkCompressedJSONValueTransformer)initWithRootJSONObjectType:(Class)type
 {
   v8.receiver = self;
   v8.super_class = CloudBookmarkCompressedJSONValueTransformer;
@@ -53,33 +53,33 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeStrong(&v4->_rootJSONObjectType, a3);
+    objc_storeStrong(&v4->_rootJSONObjectType, type);
     v6 = v5;
   }
 
   return v5;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v4 = a3;
-  if (v4 && (!self->_rootJSONObjectType || (objc_opt_isKindOfClass() & 1) != 0) && [NSJSONSerialization isValidJSONObject:v4])
+  valueCopy = value;
+  if (valueCopy && (!self->_rootJSONObjectType || (objc_opt_isKindOfClass() & 1) != 0) && [NSJSONSerialization isValidJSONObject:valueCopy])
   {
-    v5 = [NSJSONSerialization dataWithJSONObject:v4 options:0 error:0];
-    v6 = [v5 safari_dataByCompressingData];
+    v5 = [NSJSONSerialization dataWithJSONObject:valueCopy options:0 error:0];
+    safari_dataByCompressingData = [v5 safari_dataByCompressingData];
   }
 
   else
   {
-    v6 = 0;
+    safari_dataByCompressingData = 0;
   }
 
-  return v6;
+  return safari_dataByCompressingData;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -87,8 +87,8 @@
     goto LABEL_18;
   }
 
-  v5 = [v4 safari_dataByDecompressingData];
-  if (!v5)
+  safari_dataByDecompressingData = [valueCopy safari_dataByDecompressingData];
+  if (!safari_dataByDecompressingData)
   {
     v8 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -100,7 +100,7 @@
     goto LABEL_17;
   }
 
-  v6 = [NSJSONSerialization JSONObjectWithData:v5 options:0 error:0];
+  v6 = [NSJSONSerialization JSONObjectWithData:safari_dataByDecompressingData options:0 error:0];
   if (!v6)
   {
     v9 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();

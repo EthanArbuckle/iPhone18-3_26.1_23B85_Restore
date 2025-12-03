@@ -7,7 +7,7 @@
 
 + (void)initialize
 {
-  if (NSUnitConcentrationMass == a1)
+  if (NSUnitConcentrationMass == self)
   {
     objc_opt_class();
   }

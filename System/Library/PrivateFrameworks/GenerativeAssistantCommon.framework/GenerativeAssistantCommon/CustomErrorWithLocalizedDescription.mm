@@ -1,6 +1,6 @@
 @interface CustomErrorWithLocalizedDescription
 - (NSString)localizedDescription;
-- (_TtC25GenerativeAssistantCommon35CustomErrorWithLocalizedDescription)initWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5;
+- (_TtC25GenerativeAssistantCommon35CustomErrorWithLocalizedDescription)initWithDomain:(id)domain code:(int64_t)code userInfo:(id)info;
 @end
 
 @implementation CustomErrorWithLocalizedDescription
@@ -17,7 +17,7 @@
   return v5;
 }
 
-- (_TtC25GenerativeAssistantCommon35CustomErrorWithLocalizedDescription)initWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5
+- (_TtC25GenerativeAssistantCommon35CustomErrorWithLocalizedDescription)initWithDomain:(id)domain code:(int64_t)code userInfo:(id)info
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

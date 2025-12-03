@@ -1,5 +1,5 @@
 @interface UIClassicWindowInvertColorsAccessibility
-- (UIClassicWindowInvertColorsAccessibility)initWithFrame:(CGRect)a3;
+- (UIClassicWindowInvertColorsAccessibility)initWithFrame:(CGRect)frame;
 - (void)_accessibilityLoadInvertColors;
 @end
 
@@ -15,8 +15,8 @@
 
     if (!v5)
     {
-      v6 = [(UIClassicWindowInvertColorsAccessibility *)self backgroundColor];
-      [(UIClassicWindowInvertColorsAccessibility *)self _accessibilitySetRetainedValue:v6 forKey:@"backgroundColor"];
+      backgroundColor = [(UIClassicWindowInvertColorsAccessibility *)self backgroundColor];
+      [(UIClassicWindowInvertColorsAccessibility *)self _accessibilitySetRetainedValue:backgroundColor forKey:@"backgroundColor"];
     }
 
     v7 = +[UIColor whiteColor];
@@ -31,11 +31,11 @@
   }
 }
 
-- (UIClassicWindowInvertColorsAccessibility)initWithFrame:(CGRect)a3
+- (UIClassicWindowInvertColorsAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = UIClassicWindowInvertColorsAccessibility;
-  v3 = [(UIClassicWindowInvertColorsAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIClassicWindowInvertColorsAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(UIClassicWindowInvertColorsAccessibility *)v3 _accessibilityLoadInvertColors];
 
   return v3;

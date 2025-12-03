@@ -1,11 +1,11 @@
 @interface BundleConfiguration
-- (Class)dataSourceClassForKey:(id)a3;
+- (Class)dataSourceClassForKey:(id)key;
 - (_TtC29MindRelevanceEngineDataSource19BundleConfiguration)init;
 @end
 
 @implementation BundleConfiguration
 
-- (Class)dataSourceClassForKey:(id)a3
+- (Class)dataSourceClassForKey:(id)key
 {
   v3 = sub_99DC();
   v5 = v4;

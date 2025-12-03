@@ -1,7 +1,7 @@
 @interface EPUDIDTracker
 - (BOOL)UDIDChanged;
 - (EPUDIDTracker)init;
-- (EPUDIDTracker)initWithCachedEPUDID:(id)a3 systemEPUDID:(id)a4;
+- (EPUDIDTracker)initWithCachedEPUDID:(id)d systemEPUDID:(id)iD;
 - (void)cacheUDID;
 @end
 
@@ -70,18 +70,18 @@
   return v17;
 }
 
-- (EPUDIDTracker)initWithCachedEPUDID:(id)a3 systemEPUDID:(id)a4
+- (EPUDIDTracker)initWithCachedEPUDID:(id)d systemEPUDID:(id)iD
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v12.receiver = self;
   v12.super_class = EPUDIDTracker;
   v9 = [(EPUDIDTracker *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_cachedEPUDID, a3);
-    objc_storeStrong(&v10->_systemEPUDID, a4);
+    objc_storeStrong(&v9->_cachedEPUDID, d);
+    objc_storeStrong(&v10->_systemEPUDID, iD);
   }
 
   return v10;

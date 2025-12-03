@@ -1,22 +1,22 @@
 @interface BDSOSTransactionProvider
 - (BDSOSTransactionDelegate)delegate;
-- (id)createTransactionWithName:(const char *)a3;
+- (id)createTransactionWithName:(const char *)name;
 @end
 
 @implementation BDSOSTransactionProvider
 
-- (id)createTransactionWithName:(const char *)a3
+- (id)createTransactionWithName:(const char *)name
 {
-  v5 = [[BDSOSTransaction alloc] initWithTransactionName:a3];
-  v6 = [(BDSOSTransactionProvider *)self delegate];
+  v5 = [[BDSOSTransaction alloc] initWithTransactionName:name];
+  delegate = [(BDSOSTransactionProvider *)self delegate];
 
-  if (v6)
+  if (delegate)
   {
-    v7 = [(BDSOSTransactionProvider *)self delegate];
-    [(BDSOSTransaction *)v5 setDelegate:v7];
+    delegate2 = [(BDSOSTransactionProvider *)self delegate];
+    [(BDSOSTransaction *)v5 setDelegate:delegate2];
 
-    v8 = [(BDSOSTransactionProvider *)self delegate];
-    [v8 transactionDidBeginWithName:a3];
+    delegate3 = [(BDSOSTransactionProvider *)self delegate];
+    [delegate3 transactionDidBeginWithName:name];
   }
 
   return v5;

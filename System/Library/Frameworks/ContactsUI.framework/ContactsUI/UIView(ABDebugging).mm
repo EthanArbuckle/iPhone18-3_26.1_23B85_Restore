@@ -8,19 +8,19 @@
 
 - (id)tintColorOverrideDarkened
 {
-  v1 = [a1 tintColorOverride];
+  tintColorOverride = [self tintColorOverride];
   v7 = 0.0;
   v8 = 0.0;
   v5 = 0.0;
   v6 = 0.0;
-  if ([v1 getHue:&v8 saturation:&v7 brightness:&v6 alpha:&v5])
+  if ([tintColorOverride getHue:&v8 saturation:&v7 brightness:&v6 alpha:&v5])
   {
     v2 = [MEMORY[0x1E69DC888] colorWithHue:v8 saturation:v7 brightness:v6 * 0.75 alpha:v5];
   }
 
   else
   {
-    v2 = v1;
+    v2 = tintColorOverride;
   }
 
   v3 = v2;
@@ -31,33 +31,33 @@
 - (id)tintColorOverride
 {
   v2 = +[CNContactStyle currentStyle];
-  v3 = [v2 tintColorOverride];
+  tintColorOverride = [v2 tintColorOverride];
 
-  if (!v3)
+  if (!tintColorOverride)
   {
-    v3 = [a1 tintColor];
+    tintColorOverride = [self tintColor];
   }
 
-  return v3;
+  return tintColorOverride;
 }
 
 - (void)abSetLayoutDebuggingColor:()ABDebugging
 {
   v5 = a3;
   v6 = a3;
-  v7 = [v6 CGColor];
-  v8 = [a1 layer];
-  [v8 setBorderColor:v7];
+  cGColor = [v6 CGColor];
+  layer = [self layer];
+  [layer setBorderColor:cGColor];
 
-  v9 = [a1 layer];
-  [v9 setBorderWidth:1.0];
+  layer2 = [self layer];
+  [layer2 setBorderWidth:1.0];
 
   v13 = [v6 colorWithAlphaComponent:0.25];
 
   v10 = v13;
-  v11 = [v13 CGColor];
-  v12 = [a1 layer];
-  [v12 setBackgroundColor:v11];
+  cGColor2 = [v13 CGColor];
+  layer3 = [self layer];
+  [layer3 setBackgroundColor:cGColor2];
 }
 
 @end

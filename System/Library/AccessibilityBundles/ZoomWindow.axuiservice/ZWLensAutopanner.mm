@@ -1,10 +1,10 @@
 @interface ZWLensAutopanner
-- (CGPoint)_lensMovementDeltaForOffset:(CGPoint)a3;
+- (CGPoint)_lensMovementDeltaForOffset:(CGPoint)offset;
 - (ZWLensAutopannerDataSource)dataSource;
 - (ZWLensAutopannerDelegate)delegate;
 - (void)_beginAutomovingZoomLens;
 - (void)_endAutomovingZoomLens;
-- (void)_handleDisplayLinkTimerDidFire:(id)a3;
+- (void)_handleDisplayLinkTimerDidFire:(id)fire;
 @end
 
 @implementation ZWLensAutopanner
@@ -17,65 +17,65 @@
   }
 
   [(ZWLensAutopanner *)self setAutomovingLens:1];
-  v3 = [(ZWLensAutopanner *)self delegate];
-  [v3 willBeginAutopanningLensWithAutopanner:self];
+  delegate = [(ZWLensAutopanner *)self delegate];
+  [delegate willBeginAutopanningLensWithAutopanner:self];
 
-  v4 = [(ZWLensAutopanner *)self displayLinkTimer];
+  displayLinkTimer = [(ZWLensAutopanner *)self displayLinkTimer];
 
-  if (!v4)
+  if (!displayLinkTimer)
   {
     v5 = [CADisplayLink displayLinkWithTarget:self selector:"_handleDisplayLinkTimerDidFire:"];
     [(ZWLensAutopanner *)self setDisplayLinkTimer:v5];
   }
 
-  v7 = [(ZWLensAutopanner *)self displayLinkTimer];
+  displayLinkTimer2 = [(ZWLensAutopanner *)self displayLinkTimer];
   v6 = +[NSRunLoop currentRunLoop];
-  [v7 addToRunLoop:v6 forMode:NSRunLoopCommonModes];
+  [displayLinkTimer2 addToRunLoop:v6 forMode:NSRunLoopCommonModes];
 }
 
 - (void)_endAutomovingZoomLens
 {
-  v3 = [(ZWLensAutopanner *)self displayLinkTimer];
-  [v3 invalidate];
+  displayLinkTimer = [(ZWLensAutopanner *)self displayLinkTimer];
+  [displayLinkTimer invalidate];
 
   [(ZWLensAutopanner *)self setDisplayLinkTimer:0];
   [(ZWLensAutopanner *)self setAutomovingLens:0];
-  v4 = [(ZWLensAutopanner *)self delegate];
-  [v4 didFinishAutopanningLensWithAutopanner:self];
+  delegate = [(ZWLensAutopanner *)self delegate];
+  [delegate didFinishAutopanningLensWithAutopanner:self];
 }
 
-- (void)_handleDisplayLinkTimerDidFire:(id)a3
+- (void)_handleDisplayLinkTimerDidFire:(id)fire
 {
-  v4 = [(ZWLensAutopanner *)self dataSource];
-  [v4 offsetForAutopanner:self];
+  dataSource = [(ZWLensAutopanner *)self dataSource];
+  [dataSource offsetForAutopanner:self];
   v6 = v5;
   v8 = v7;
 
   [(ZWLensAutopanner *)self _lensMovementDeltaForOffset:v6, v8];
   v10 = v9;
   v12 = v11;
-  v13 = [(ZWLensAutopanner *)self delegate];
-  [v13 autopanner:self didAutopanByDelta:{v10, v12}];
+  delegate = [(ZWLensAutopanner *)self delegate];
+  [delegate autopanner:self didAutopanByDelta:{v10, v12}];
 }
 
-- (CGPoint)_lensMovementDeltaForOffset:(CGPoint)a3
+- (CGPoint)_lensMovementDeltaForOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   if (_lensMovementDeltaForOffset__onceToken != -1)
   {
     [ZWLensAutopanner _lensMovementDeltaForOffset:];
   }
 
-  v6 = [(ZWLensAutopanner *)self dataSource];
-  v7 = [v6 offsetValuesAreNormalizedForAutopanner:self];
+  dataSource = [(ZWLensAutopanner *)self dataSource];
+  v7 = [dataSource offsetValuesAreNormalizedForAutopanner:self];
 
   v8 = +[AXSettings sharedInstance];
-  v9 = [v8 zoomAutopannerShouldPanWithAcceleration];
+  zoomAutopannerShouldPanWithAcceleration = [v8 zoomAutopannerShouldPanWithAcceleration];
 
   if (v7)
   {
-    if (!v9)
+    if (!zoomAutopannerShouldPanWithAcceleration)
     {
       x = x * 600.0;
       y = y * 600.0;
@@ -129,7 +129,7 @@
 
   else
   {
-    if (!v9)
+    if (!zoomAutopannerShouldPanWithAcceleration)
     {
       goto LABEL_32;
     }

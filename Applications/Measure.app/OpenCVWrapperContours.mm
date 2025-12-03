@@ -1,12 +1,12 @@
 @interface OpenCVWrapperContours
-- (CGPoint)getPointAtContourIndex:(unint64_t)a3 pointIndex:(unint64_t)a4;
-- (OpenCVWrapperContours)initWithContours:(void *)a3 originalImageSize:(const MatSize *)a4;
+- (CGPoint)getPointAtContourIndex:(unint64_t)index pointIndex:(unint64_t)pointIndex;
+- (OpenCVWrapperContours)initWithContours:(void *)contours originalImageSize:(const MatSize *)size;
 - (id).cxx_construct;
 @end
 
 @implementation OpenCVWrapperContours
 
-- (OpenCVWrapperContours)initWithContours:(void *)a3 originalImageSize:(const MatSize *)a4
+- (OpenCVWrapperContours)initWithContours:(void *)contours originalImageSize:(const MatSize *)size
 {
   v10.receiver = self;
   v10.super_class = OpenCVWrapperContours;
@@ -15,20 +15,20 @@
   if (v6)
   {
     p_contours = &v6->_contours;
-    if (&v7->_contours != a3)
+    if (&v7->_contours != contours)
     {
-      sub_10000A884(p_contours, *a3, *(a3 + 1), 0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 3));
+      sub_10000A884(p_contours, *contours, *(contours + 1), 0xAAAAAAAAAAAAAAABLL * ((*(contours + 1) - *contours) >> 3));
     }
 
-    v7->_originalImageSize = vrev64_s32(*a4->p);
+    v7->_originalImageSize = vrev64_s32(*size->p);
   }
 
   return v7;
 }
 
-- (CGPoint)getPointAtContourIndex:(unint64_t)a3 pointIndex:(unint64_t)a4
+- (CGPoint)getPointAtContourIndex:(unint64_t)index pointIndex:(unint64_t)pointIndex
 {
-  v4 = (*(self->_contours.__begin_ + 3 * a3) + 8 * a4);
+  v4 = (*(self->_contours.__begin_ + 3 * index) + 8 * pointIndex);
   v5 = *v4;
   v6 = v4[1];
   result.y = v6;

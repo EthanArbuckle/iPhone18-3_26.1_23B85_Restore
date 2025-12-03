@@ -1,37 +1,37 @@
 @interface PKMetalBuffer
 - (BOOL)lock;
-- (void)initWithDevice:(uint64_t)a3 length:(uint64_t)a4 bytes:(uint64_t)a5 options:;
+- (void)initWithDevice:(uint64_t)device length:(uint64_t)length bytes:(uint64_t)bytes options:;
 - (void)unlock;
 @end
 
 @implementation PKMetalBuffer
 
-- (void)initWithDevice:(uint64_t)a3 length:(uint64_t)a4 bytes:(uint64_t)a5 options:
+- (void)initWithDevice:(uint64_t)device length:(uint64_t)length bytes:(uint64_t)bytes options:
 {
   v9 = a2;
-  if (a1)
+  if (self)
   {
-    v13.receiver = a1;
+    v13.receiver = self;
     v13.super_class = PKMetalBuffer;
-    a1 = objc_msgSendSuper2(&v13, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v13, sel_init);
+    if (self)
     {
-      if (a4)
+      if (length)
       {
-        v10 = [v9 newBufferWithBytes:a4 length:a3 options:a5];
+        v10 = [v9 newBufferWithBytes:length length:device options:bytes];
       }
 
       else
       {
-        v10 = [v9 newBufferWithLength:a3 options:a5];
+        v10 = [v9 newBufferWithLength:device options:bytes];
       }
 
-      v11 = a1[3];
-      a1[3] = v10;
+      v11 = self[3];
+      self[3] = v10;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (BOOL)lock
@@ -41,10 +41,10 @@
     return 0;
   }
 
-  v5 = self;
-  objc_sync_enter(v5);
-  lockCount = v5->_lockCount;
-  v5->_lockCount = lockCount + 1;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  lockCount = selfCopy->_lockCount;
+  selfCopy->_lockCount = lockCount + 1;
   if (lockCount)
   {
     v3 = 1;
@@ -53,14 +53,14 @@
   else
   {
     v3 = 1;
-    if ([(MTLBuffer *)v5->_metalBuffer setPurgeableState:2]== 4)
+    if ([(MTLBuffer *)selfCopy->_metalBuffer setPurgeableState:2]== 4)
     {
       atomic_store(1u, &self->_isPurged);
       v3 = 0;
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }

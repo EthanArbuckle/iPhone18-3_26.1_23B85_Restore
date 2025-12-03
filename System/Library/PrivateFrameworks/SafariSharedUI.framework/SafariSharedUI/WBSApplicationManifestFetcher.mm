@@ -1,51 +1,51 @@
 @interface WBSApplicationManifestFetcher
-+ (double)_longestEdgeForIcon:(id)a3;
-+ (int64_t)_preferredPurposeForIcons:(id)a3;
-+ (int64_t)_primaryPurposeForPurposes:(id)a3;
-+ (void)downloadImagesForManifest:(id)a3 linkIconParameters:(id)a4 usingWebView:(id)a5 withCompletionHandler:(id)a6;
-- (WBSApplicationManifestFetcher)initWithWebView:(id)a3;
-- (void)getApplicationManifestWithCompletionHandler:(id)a3;
++ (double)_longestEdgeForIcon:(id)icon;
++ (int64_t)_preferredPurposeForIcons:(id)icons;
++ (int64_t)_primaryPurposeForPurposes:(id)purposes;
++ (void)downloadImagesForManifest:(id)manifest linkIconParameters:(id)parameters usingWebView:(id)view withCompletionHandler:(id)handler;
+- (WBSApplicationManifestFetcher)initWithWebView:(id)view;
+- (void)getApplicationManifestWithCompletionHandler:(id)handler;
 @end
 
 @implementation WBSApplicationManifestFetcher
 
-- (WBSApplicationManifestFetcher)initWithWebView:(id)a3
+- (WBSApplicationManifestFetcher)initWithWebView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = WBSApplicationManifestFetcher;
   v5 = [(WBSApplicationManifestFetcher *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_webView, v4);
+    objc_storeWeak(&v5->_webView, viewCopy);
     v7 = v6;
   }
 
   return v6;
 }
 
-- (void)getApplicationManifestWithCompletionHandler:(id)a3
+- (void)getApplicationManifestWithCompletionHandler:(id)handler
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   state = self->_state;
   switch(state)
   {
     case 2:
-      (*(v4 + 2))(v4, self->_manifest);
+      (*(handlerCopy + 2))(handlerCopy, self->_manifest);
       break;
     case 1:
       completionHandlers = self->_completionHandlers;
-      v12 = _Block_copy(v4);
+      v12 = _Block_copy(handlerCopy);
       v13 = [(NSArray *)completionHandlers arrayByAddingObject:v12];
       v14 = self->_completionHandlers;
       self->_completionHandlers = v13;
 
       break;
     case 0:
-      v7 = _Block_copy(v4);
+      v7 = _Block_copy(handlerCopy);
       v16[0] = v7;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
       v9 = self->_completionHandlers;
@@ -107,32 +107,32 @@ void __77__WBSApplicationManifestFetcher_getApplicationManifestWithCompletionHan
   }
 }
 
-+ (void)downloadImagesForManifest:(id)a3 linkIconParameters:(id)a4 usingWebView:(id)a5 withCompletionHandler:(id)a6
++ (void)downloadImagesForManifest:(id)manifest linkIconParameters:(id)parameters usingWebView:(id)view withCompletionHandler:(id)handler
 {
   v93 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v12)
+  manifestCopy = manifest;
+  parametersCopy = parameters;
+  viewCopy = view;
+  handlerCopy = handler;
+  v14 = handlerCopy;
+  if (viewCopy)
   {
     v15 = dispatch_group_create();
-    v16 = [v10 icons];
-    v17 = [a1 _preferredPurposeForIcons:v16];
+    icons = [manifestCopy icons];
+    v17 = [self _preferredPurposeForIcons:icons];
     v90[0] = MEMORY[0x1E69E9820];
     v90[1] = 3221225472;
     v90[2] = __113__WBSApplicationManifestFetcher_downloadImagesForManifest_linkIconParameters_usingWebView_withCompletionHandler___block_invoke;
     v90[3] = &__block_descriptor_40_e36_B16__0___WKApplicationManifestIcon_8l;
     v90[4] = v17;
-    v18 = [v16 safari_filterObjectsUsingBlock:v90];
+    v18 = [icons safari_filterObjectsUsingBlock:v90];
 
-    v63 = v11;
+    v63 = parametersCopy;
     if (![v18 count])
     {
-      v19 = [v10 icons];
+      icons2 = [manifestCopy icons];
 
-      v18 = v19;
+      v18 = icons2;
     }
 
     v59 = v14;
@@ -142,16 +142,16 @@ void __77__WBSApplicationManifestFetcher_getApplicationManifestWithCompletionHan
     aBlock[3] = &unk_1E8283210;
     group = v15;
     v87 = group;
-    v60 = v12;
-    v88 = v12;
-    v61 = v10;
-    v62 = v10;
+    v60 = viewCopy;
+    v88 = viewCopy;
+    v61 = manifestCopy;
+    v62 = manifestCopy;
     v89 = v62;
     v20 = _Block_copy(aBlock);
-    v70 = [MEMORY[0x1E695DF70] array];
-    v66 = [MEMORY[0x1E695DF70] array];
-    v65 = [MEMORY[0x1E695DF70] array];
-    v64 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
+    array4 = [MEMORY[0x1E695DF70] array];
     v82 = 0u;
     v83 = 0u;
     v84 = 0u;
@@ -172,11 +172,11 @@ void __77__WBSApplicationManifestFetcher_getApplicationManifestWithCompletionHan
           }
 
           v25 = *(*(&v82 + 1) + 8 * i);
-          v26 = [v25 purposes];
-          v27 = [v26 containsObject:&unk_1F466C930];
+          purposes = [v25 purposes];
+          v27 = [purposes containsObject:&unk_1F466C930];
 
           v28 = [v25 src];
-          v20[2](v20, v28, v70, v27);
+          v20[2](v20, v28, array, v27);
         }
 
         v22 = [obj countByEnumeratingWithState:&v82 objects:v92 count:16];
@@ -185,16 +185,16 @@ void __77__WBSApplicationManifestFetcher_getApplicationManifestWithCompletionHan
       while (v22);
     }
 
-    v29 = [v62 startURL];
-    v30 = [MEMORY[0x1E695DFF8] URLWithString:@"/favicon.ico" relativeToURL:v29];
-    v31 = [v30 absoluteURL];
+    startURL = [v62 startURL];
+    v30 = [MEMORY[0x1E695DFF8] URLWithString:@"/favicon.ico" relativeToURL:startURL];
+    absoluteURL = [v30 absoluteURL];
 
-    v32 = [MEMORY[0x1E695DFF8] URLWithString:@"/apple-touch-icon.png" relativeToURL:v29];
-    v33 = [v32 absoluteURL];
+    v32 = [MEMORY[0x1E695DFF8] URLWithString:@"/apple-touch-icon.png" relativeToURL:startURL];
+    absoluteURL2 = [v32 absoluteURL];
 
-    v57 = v29;
-    v34 = [MEMORY[0x1E695DFF8] URLWithString:@"/apple-touch-icon-precomposed.png" relativeToURL:v29];
-    v35 = [v34 absoluteURL];
+    v57 = startURL;
+    v34 = [MEMORY[0x1E695DFF8] URLWithString:@"/apple-touch-icon-precomposed.png" relativeToURL:startURL];
+    absoluteURL3 = [v34 absoluteURL];
 
     v80 = 0u;
     v81 = 0u;
@@ -202,7 +202,7 @@ void __77__WBSApplicationManifestFetcher_getApplicationManifestWithCompletionHan
     v79 = 0u;
     v68 = v63;
     v36 = [v68 countByEnumeratingWithState:&v78 objects:v91 count:16];
-    v67 = v35;
+    v67 = absoluteURL3;
     if (v36)
     {
       v37 = v36;
@@ -211,72 +211,72 @@ void __77__WBSApplicationManifestFetcher_getApplicationManifestWithCompletionHan
       {
         for (j = 0; j != v37; ++j)
         {
-          v40 = v33;
-          v41 = v31;
+          v40 = absoluteURL2;
+          v41 = absoluteURL;
           if (*v79 != v38)
           {
             objc_enumerationMutation(v68);
           }
 
           v42 = *(*(&v78 + 1) + 8 * j);
-          v43 = [v42 attributes];
-          v44 = [v43 objectForKeyedSubscript:@"mask"];
+          attributes = [v42 attributes];
+          v44 = [attributes objectForKeyedSubscript:@"mask"];
 
           if (v44)
           {
-            v31 = v41;
-            v33 = v40;
+            absoluteURL = v41;
+            absoluteURL2 = v40;
             continue;
           }
 
           v45 = [v42 url];
-          v46 = [v45 absoluteURL];
+          absoluteURL4 = [v45 absoluteURL];
 
-          v47 = [v42 iconType];
-          if (v47 == 2)
+          iconType = [v42 iconType];
+          if (iconType == 2)
           {
-            v20[2](v20, v46, v64, 0);
-            v31 = v41;
-            if ([v46 isEqual:v67])
+            v20[2](v20, absoluteURL4, array4, 0);
+            absoluteURL = v41;
+            if ([absoluteURL4 isEqual:v67])
             {
 
               v67 = 0;
             }
 
-            v33 = v40;
+            absoluteURL2 = v40;
             goto LABEL_31;
           }
 
-          v31 = v41;
-          if (v47 == 1)
+          absoluteURL = v41;
+          if (iconType == 1)
           {
-            v33 = v40;
-            if ([v46 isEqual:v40])
+            absoluteURL2 = v40;
+            if ([absoluteURL4 isEqual:v40])
             {
 
-              v33 = 0;
+              absoluteURL2 = 0;
             }
 
             v48 = v20[2];
             v49 = v20;
-            v50 = v46;
-            v51 = v65;
+            v50 = absoluteURL4;
+            v51 = array3;
             goto LABEL_27;
           }
 
-          v33 = v40;
-          if (!v47)
+          absoluteURL2 = v40;
+          if (!iconType)
           {
-            if ([v46 isEqual:v31])
+            if ([absoluteURL4 isEqual:absoluteURL])
             {
 
-              v31 = 0;
+              absoluteURL = 0;
             }
 
             v48 = v20[2];
             v49 = v20;
-            v50 = v46;
-            v51 = v66;
+            v50 = absoluteURL4;
+            v51 = array2;
 LABEL_27:
             v48(v49, v50, v51, 0);
           }
@@ -290,35 +290,35 @@ LABEL_31:
       while (v37);
     }
 
-    v20[2](v20, v31, v66, 0);
-    v20[2](v20, v33, v65, 0);
-    v20[2](v20, v67, v64, 0);
+    v20[2](v20, absoluteURL, array2, 0);
+    v20[2](v20, absoluteURL2, array3, 0);
+    v20[2](v20, v67, array4, 0);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __113__WBSApplicationManifestFetcher_downloadImagesForManifest_linkIconParameters_usingWebView_withCompletionHandler___block_invoke_93;
     block[3] = &unk_1E8283238;
-    v72 = v70;
+    v72 = array;
     v73 = v62;
-    v74 = v66;
-    v75 = v65;
-    v76 = v64;
+    v74 = array2;
+    v75 = array3;
+    v76 = array4;
     v14 = v59;
     v77 = v59;
-    v52 = v64;
-    v53 = v65;
-    v54 = v66;
-    v55 = v33;
-    v56 = v70;
+    v52 = array4;
+    v53 = array3;
+    v54 = array2;
+    v55 = absoluteURL2;
+    v56 = array;
     dispatch_group_notify(group, MEMORY[0x1E69E96A0], block);
 
-    v12 = v60;
-    v10 = v61;
-    v11 = v63;
+    viewCopy = v60;
+    manifestCopy = v61;
+    parametersCopy = v63;
   }
 
   else
   {
-    (*(v13 + 2))(v13, v10);
+    (*(handlerCopy + 2))(handlerCopy, manifestCopy);
   }
 }
 
@@ -520,15 +520,15 @@ LABEL_24:
   (*(*(a1 + 72) + 16))();
 }
 
-+ (double)_longestEdgeForIcon:(id)a3
++ (double)_longestEdgeForIcon:(id)icon
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [a3 sizes];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  sizes = [icon sizes];
+  v4 = [sizes countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -540,7 +540,7 @@ LABEL_24:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sizes);
         }
 
         [*(*(&v12 + 1) + 8 * i) floatValue];
@@ -551,7 +551,7 @@ LABEL_24:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [sizes countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -565,15 +565,15 @@ LABEL_24:
   return v7;
 }
 
-+ (int64_t)_preferredPurposeForIcons:(id)a3
++ (int64_t)_preferredPurposeForIcons:(id)icons
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  iconsCopy = icons;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v5 = [iconsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -586,16 +586,16 @@ LABEL_24:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(iconsCopy);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        [a1 _longestEdgeForIcon:v11];
+        [self _longestEdgeForIcon:v11];
         if (v12 >= v8)
         {
           v13 = v12;
-          v14 = [v11 purposes];
-          v15 = [a1 _primaryPurposeForPurposes:v14];
+          purposes = [v11 purposes];
+          v15 = [self _primaryPurposeForPurposes:purposes];
 
           if (v13 != v8 || v15 >= v9)
           {
@@ -605,7 +605,7 @@ LABEL_24:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [iconsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
@@ -619,15 +619,15 @@ LABEL_24:
   return v9;
 }
 
-+ (int64_t)_primaryPurposeForPurposes:(id)a3
++ (int64_t)_primaryPurposeForPurposes:(id)purposes
 {
-  v3 = a3;
-  if ([v3 containsObject:&unk_1F466C948])
+  purposesCopy = purposes;
+  if ([purposesCopy containsObject:&unk_1F466C948])
   {
     v4 = 4;
   }
 
-  else if ([v3 containsObject:&unk_1F466C930])
+  else if ([purposesCopy containsObject:&unk_1F466C930])
   {
     v4 = 2;
   }

@@ -7,8 +7,8 @@
 - (id)_scui_iconImageWithAssetProvider:()ShortcutUIKit
 {
   v4 = a3;
-  v5 = [a1 templateImageName];
-  v6 = [v4 imageNamed:v5];
+  templateImageName = [self templateImageName];
+  v6 = [v4 imageNamed:templateImageName];
 
   v7 = [v6 imageWithRenderingMode:2];
 

@@ -15,11 +15,11 @@
 - (uint64_t)hkmc_integerForKey:()HKMenstrualCycles defaultValue:
 {
   v6 = a3;
-  v7 = [a1 objectForKey:v6];
+  v7 = [self objectForKey:v6];
 
   if (v7)
   {
-    a4 = [a1 integerForKey:v6];
+    a4 = [self integerForKey:v6];
   }
 
   return a4;

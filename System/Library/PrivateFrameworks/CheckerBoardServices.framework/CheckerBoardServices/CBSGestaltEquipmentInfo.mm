@@ -1,24 +1,24 @@
 @interface CBSGestaltEquipmentInfo
 + (id)CurrentEquipmentInfo;
-- (CBSGestaltEquipmentInfo)initWithSerialNumber:(id)a3 andMEID:(id)a4 andIMEIArray:(id)a5;
+- (CBSGestaltEquipmentInfo)initWithSerialNumber:(id)number andMEID:(id)d andIMEIArray:(id)array;
 @end
 
 @implementation CBSGestaltEquipmentInfo
 
-- (CBSGestaltEquipmentInfo)initWithSerialNumber:(id)a3 andMEID:(id)a4 andIMEIArray:(id)a5
+- (CBSGestaltEquipmentInfo)initWithSerialNumber:(id)number andMEID:(id)d andIMEIArray:(id)array
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  numberCopy = number;
+  dCopy = d;
+  arrayCopy = array;
   v15.receiver = self;
   v15.super_class = CBSGestaltEquipmentInfo;
   v12 = [(CBSGestaltEquipmentInfo *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_serialNumber, a3);
-    objc_storeStrong(&v13->_meid, a4);
-    objc_storeStrong(&v13->_imeiArray, a5);
+    objc_storeStrong(&v12->_serialNumber, number);
+    objc_storeStrong(&v13->_meid, d);
+    objc_storeStrong(&v13->_imeiArray, array);
   }
 
   return v13;

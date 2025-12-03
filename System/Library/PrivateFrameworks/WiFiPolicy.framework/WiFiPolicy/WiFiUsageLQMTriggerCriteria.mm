@@ -1,9 +1,9 @@
 @interface WiFiUsageLQMTriggerCriteria
-+ (id)parseCriteria:(id)a3 intoRequiredFields:(id)a4 andFeatures:(id)a5 forFields:(id)a6 withType:(id)a7 isFilter:(BOOL)a8;
-+ (id)predicateNoQuotes:(id)a3;
++ (id)parseCriteria:(id)criteria intoRequiredFields:(id)fields andFeatures:(id)features forFields:(id)forFields withType:(id)type isFilter:(BOOL)filter;
++ (id)predicateNoQuotes:(id)quotes;
 + (void)initialize;
-- (WiFiUsageLQMTriggerCriteria)initWith:(id)a3 forFields:(id)a4 andFeatures:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WiFiUsageLQMTriggerCriteria)initWith:(id)with forFields:(id)fields andFeatures:(id)features;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)redactedDescription;
 - (id)shortPredicate;
@@ -24,38 +24,38 @@
   [v4 setDateFormat:@"HH:mm:ss"];
 }
 
-- (WiFiUsageLQMTriggerCriteria)initWith:(id)a3 forFields:(id)a4 andFeatures:(id)a5
+- (WiFiUsageLQMTriggerCriteria)initWith:(id)with forFields:(id)fields andFeatures:(id)features
 {
   v67 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v52 = a4;
-  v53 = a5;
-  v55 = v7;
-  v8 = [v7 objectForKey:@"type"];
+  withCopy = with;
+  fieldsCopy = fields;
+  featuresCopy = features;
+  v55 = withCopy;
+  v8 = [withCopy objectForKey:@"type"];
   if (v8)
   {
     v9 = +[WiFiUsageLQMTriggerCriteria dataTriggeredTypes];
-    v10 = [v7 objectForKey:@"type"];
+    v10 = [withCopy objectForKey:@"type"];
     v11 = [v9 indexOfObject:v10];
 
     if (v11 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v51 = objc_opt_new();
       v13 = objc_opt_class();
-      v14 = [v7 objectForKey:@"type"];
-      v50 = [v13 parseCriteria:v7 intoRequiredFields:v51 andFeatures:v53 forFields:v52 withType:v14 isFilter:0];
+      v14 = [withCopy objectForKey:@"type"];
+      v50 = [v13 parseCriteria:withCopy intoRequiredFields:v51 andFeatures:featuresCopy forFields:fieldsCopy withType:v14 isFilter:0];
 
       v15 = v50;
       if (!v50)
       {
-        v12 = 0;
+        selfCopy = 0;
 LABEL_30:
 
         goto LABEL_31;
       }
 
       v49 = [MEMORY[0x277CCAC30] predicateWithFormat:?];
-      v16 = [v51 anyObject];
+      anyObject = [v51 anyObject];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -95,7 +95,7 @@ LABEL_30:
 
       else
       {
-        v25 = [v51 anyObject];
+        anyObject2 = [v51 anyObject];
         objc_opt_class();
         v26 = objc_opt_isKindOfClass();
 
@@ -135,8 +135,8 @@ LABEL_30:
                 v33 = &stru_28487EF20;
               }
 
-              v34 = [v32 fieldName];
-              [v27 appendFormat:@"%@$x.fieldName == %@", v33, v34];
+              fieldName = [v32 fieldName];
+              [v27 appendFormat:@"%@$x.fieldName == %@", v33, fieldName];
             }
 
             v29 = [v28 countByEnumeratingWithState:&v57 objects:v65 count:16];
@@ -182,19 +182,19 @@ LABEL_29:
       v36->_bssid = 0;
 
       self = v36;
-      v12 = self;
+      selfCopy = self;
       v15 = v50;
       goto LABEL_30;
     }
   }
 
-  NSLog(&cfstr_SFailedToParse_4.isa, "[WiFiUsageLQMTriggerCriteria initWith:forFields:andFeatures:]", v7);
-  NSLog(&cfstr_SFailedToParse_5.isa, "[WiFiUsageLQMTriggerCriteria initWith:forFields:andFeatures:]", v7);
-  v12 = 0;
+  NSLog(&cfstr_SFailedToParse_4.isa, "[WiFiUsageLQMTriggerCriteria initWith:forFields:andFeatures:]", withCopy);
+  NSLog(&cfstr_SFailedToParse_5.isa, "[WiFiUsageLQMTriggerCriteria initWith:forFields:andFeatures:]", withCopy);
+  selfCopy = 0;
 LABEL_31:
 
   v47 = *MEMORY[0x277D85DE8];
-  return v12;
+  return selfCopy;
 }
 
 - (id)typeAsString
@@ -207,13 +207,13 @@ LABEL_31:
 
 - (id)shortPredicate
 {
-  v2 = self;
-  v3 = [(NSPredicate *)self->_predicate predicateFormat];
+  selfCopy = self;
+  predicateFormat = [(NSPredicate *)self->_predicate predicateFormat];
   v4 = MEMORY[0x277CCAC68];
   v5 = objc_msgSend(MEMORY[0x277CCAC68], "escapedPatternForString:", @"SUBQUERY(SELF, $x, $x.fieldName == ");
   v6 = [v4 regularExpressionWithPattern:v5 options:1 error:0];
 
-  v7 = [v6 stringByReplacingMatchesInString:v3 options:0 range:0 withTemplate:{objc_msgSend(v3, "length"), &stru_28487EF20}];
+  v7 = [v6 stringByReplacingMatchesInString:predicateFormat options:0 range:0 withTemplate:{objc_msgSend(predicateFormat, "length"), &stru_28487EF20}];
 
   v8 = MEMORY[0x277CCAC68];
   v9 = [MEMORY[0x277CCAC68] escapedPatternForString:@" AND $x."];
@@ -232,22 +232,22 @@ LABEL_31:
   v17 = [v16 stringByReplacingMatchesInString:v15 options:0 range:0 withTemplate:{objc_msgSend(v15, "length"), @"$2_$1"}];
 
   v18 = MEMORY[0x277CCACA8];
-  v19 = [v2 filterCriteria];
-  if (v19)
+  filterCriteria = [selfCopy filterCriteria];
+  if (filterCriteria)
   {
     v20 = MEMORY[0x277CCACA8];
-    v2 = [v2 filterCriteria];
-    v21 = [v20 stringWithFormat:@" (where %@)", v2];
+    selfCopy = [selfCopy filterCriteria];
+    selfCopy = [v20 stringWithFormat:@" (where %@)", selfCopy];
   }
 
   else
   {
-    v21 = &stru_28487EF20;
+    selfCopy = &stru_28487EF20;
   }
 
-  v22 = [v18 stringWithFormat:@"%@%@", v17, v21];
+  v22 = [v18 stringWithFormat:@"%@%@", v17, selfCopy];
 
-  if (v19)
+  if (filterCriteria)
   {
   }
 
@@ -256,24 +256,24 @@ LABEL_31:
 
 - (id)shortPredicateNoSpaces
 {
-  v2 = [(WiFiUsageLQMTriggerCriteria *)self shortPredicate];
+  shortPredicate = [(WiFiUsageLQMTriggerCriteria *)self shortPredicate];
   v3 = MEMORY[0x277CCAC68];
   v4 = [MEMORY[0x277CCAC68] escapedPatternForString:@" "];
   v5 = [v3 regularExpressionWithPattern:v4 options:1 error:0];
 
-  v6 = [v5 stringByReplacingMatchesInString:v2 options:0 range:0 withTemplate:{objc_msgSend(v2, "length"), &stru_28487EF20}];
+  v6 = [v5 stringByReplacingMatchesInString:shortPredicate options:0 range:0 withTemplate:{objc_msgSend(shortPredicate, "length"), &stru_28487EF20}];
 
   return v6;
 }
 
-+ (id)predicateNoQuotes:(id)a3
++ (id)predicateNoQuotes:(id)quotes
 {
-  v3 = [a3 predicateFormat];
+  predicateFormat = [quotes predicateFormat];
   v4 = MEMORY[0x277CCAC68];
   v5 = [MEMORY[0x277CCAC68] escapedPatternForString:@""];
   v6 = [v4 regularExpressionWithPattern:v5 options:1 error:0];
 
-  v7 = [v6 stringByReplacingMatchesInString:v3 options:0 range:0 withTemplate:{objc_msgSend(v3, "length"), &stru_28487EF20}];
+  v7 = [v6 stringByReplacingMatchesInString:predicateFormat options:0 range:0 withTemplate:{objc_msgSend(predicateFormat, "length"), &stru_28487EF20}];
 
   return v7;
 }
@@ -282,7 +282,7 @@ LABEL_31:
 {
   v3 = 0x277CCA000;
   v20 = MEMORY[0x277CCACA8];
-  v4 = [(WiFiUsageLQMTriggerCriteria *)self shortPredicate];
+  shortPredicate = [(WiFiUsageLQMTriggerCriteria *)self shortPredicate];
   if (self->_valid)
   {
     if (self->_matched)
@@ -352,7 +352,7 @@ LABEL_31:
   }
 
   v15 = [v7 stringWithFormat:@"%@ %@", v10, v14];
-  v16 = [v20 stringWithFormat:@"%@ on %@ matched:%@ %@", v4, bssid, v5, v15];
+  v16 = [v20 stringWithFormat:@"%@ on %@ matched:%@ %@", shortPredicate, bssid, v5, v15];
 
   if (lastTriggered)
   {
@@ -377,7 +377,7 @@ LABEL_31:
 {
   v3 = 0x277CCA000;
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(WiFiUsageLQMTriggerCriteria *)self shortPredicate];
+  shortPredicate = [(WiFiUsageLQMTriggerCriteria *)self shortPredicate];
   if (self->_valid)
   {
     if (self->_matched)
@@ -446,7 +446,7 @@ LABEL_31:
   }
 
   v15 = [v7 stringWithFormat:@"%@ %@", v10, v14];
-  v16 = [v4 stringWithFormat:@"%@ on <redacted> matched:%@ %@", v5, v6, v15];
+  v16 = [v4 stringWithFormat:@"%@ on <redacted> matched:%@ %@", shortPredicate, v6, v15];
 
   if (lastTriggered)
   {
@@ -467,7 +467,7 @@ LABEL_31:
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   [v4 setType:self->_type];
@@ -483,46 +483,46 @@ LABEL_31:
   return v4;
 }
 
-+ (id)parseCriteria:(id)a3 intoRequiredFields:(id)a4 andFeatures:(id)a5 forFields:(id)a6 withType:(id)a7 isFilter:(BOOL)a8
++ (id)parseCriteria:(id)criteria intoRequiredFields:(id)fields andFeatures:(id)features forFields:(id)forFields withType:(id)type isFilter:(BOOL)filter
 {
-  v8 = a8;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v55 = a6;
-  v16 = a7;
+  filterCopy = filter;
+  criteriaCopy = criteria;
+  fieldsCopy = fields;
+  featuresCopy = features;
+  forFieldsCopy = forFields;
+  typeCopy = type;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:{@"AND", @"&&", @"OR", @"||", 0}];
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:{@"NOT", @"!", 0}];
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:{@"=", @"==", @">=", @"=>", @"<=", @"=<", @">", @"<", @"!=", @"<>", @"contains", 0}];
-  v20 = [v13 objectForKey:@"test"];
+  v20 = [criteriaCopy objectForKey:@"test"];
 
   if (!v20)
   {
     v22 = v17;
     v23 = v19;
-    NSLog(&cfstr_SFailedToParse_6.isa, "+[WiFiUsageLQMTriggerCriteria parseCriteria:intoRequiredFields:andFeatures:forFields:withType:isFilter:]", v13);
+    NSLog(&cfstr_SFailedToParse_6.isa, "+[WiFiUsageLQMTriggerCriteria parseCriteria:intoRequiredFields:andFeatures:forFields:withType:isFilter:]", criteriaCopy);
     v32 = 0;
-    v29 = v14;
+    v29 = fieldsCopy;
     goto LABEL_49;
   }
 
-  v52 = v8;
-  v21 = [v13 objectForKey:@"test"];
+  v52 = filterCopy;
+  v21 = [criteriaCopy objectForKey:@"test"];
   if (([v18 containsObject:v21] & 1) == 0 && !objc_msgSend(v17, "containsObject:", v21))
   {
-    v29 = v14;
-    if (![v19 containsObject:v21] || (objc_msgSend(v13, "objectForKey:", @"field"), v33 = objc_claimAutoreleasedReturnValue(), v33, !v33))
+    v29 = fieldsCopy;
+    if (![v19 containsObject:v21] || (objc_msgSend(criteriaCopy, "objectForKey:", @"field"), v33 = objc_claimAutoreleasedReturnValue(), v33, !v33))
     {
       v22 = v17;
       v23 = v19;
-      NSLog(&cfstr_SFailedToParse_10.isa, "+[WiFiUsageLQMTriggerCriteria parseCriteria:intoRequiredFields:andFeatures:forFields:withType:isFilter:]", v13);
+      NSLog(&cfstr_SFailedToParse_10.isa, "+[WiFiUsageLQMTriggerCriteria parseCriteria:intoRequiredFields:andFeatures:forFields:withType:isFilter:]", criteriaCopy);
 LABEL_47:
       v32 = 0;
       goto LABEL_48;
     }
 
-    v49 = [v13 objectForKey:@"threshold"];
-    v34 = [v13 objectForKey:@"field"];
+    v49 = [criteriaCopy objectForKey:@"threshold"];
+    v34 = [criteriaCopy objectForKey:@"field"];
     if ([v34 hasSuffix:@"PerSecond"])
     {
       v35 = [v34 substringToIndex:{objc_msgSend(v34, "length") - objc_msgSend(@"PerSecond", "length")}];
@@ -530,18 +530,18 @@ LABEL_47:
       v34 = v35;
     }
 
-    if ([v55 containsObject:v34])
+    if ([forFieldsCopy containsObject:v34])
     {
       v47 = v34;
-      v51 = v15;
+      v51 = featuresCopy;
       if (v52)
       {
 
-        v16 = @"value";
+        typeCopy = @"value";
       }
 
       v36 = +[WiFiUsageLQMTriggerCriteria dataTriggeredTypes];
-      v37 = [v36 indexOfObject:v16];
+      v37 = [v36 indexOfObject:typeCopy];
 
       v22 = v17;
       if (!v37)
@@ -560,7 +560,7 @@ LABEL_47:
 
         v39 = v47;
         v32 = [MEMORY[0x277CCACA8] stringWithFormat:v45, v47, v21, v49];
-        v15 = v51;
+        featuresCopy = v51;
         if (v29)
         {
           [v29 addObject:v47];
@@ -569,7 +569,7 @@ LABEL_47:
         goto LABEL_43;
       }
 
-      v15 = v51;
+      featuresCopy = v51;
       v23 = v19;
       if (v37 == 1)
       {
@@ -589,7 +589,7 @@ LABEL_47:
         goto LABEL_43;
       }
 
-      NSLog(&cfstr_SFailedToParse_12.isa, "+[WiFiUsageLQMTriggerCriteria parseCriteria:intoRequiredFields:andFeatures:forFields:withType:isFilter:]", v13);
+      NSLog(&cfstr_SFailedToParse_12.isa, "+[WiFiUsageLQMTriggerCriteria parseCriteria:intoRequiredFields:andFeatures:forFields:withType:isFilter:]", criteriaCopy);
       v34 = v47;
     }
 
@@ -597,7 +597,7 @@ LABEL_47:
     {
       v22 = v17;
       v23 = v19;
-      NSLog(&cfstr_SFailedToParse_11.isa, "+[WiFiUsageLQMTriggerCriteria parseCriteria:intoRequiredFields:andFeatures:forFields:withType:isFilter:]", v34, v13);
+      NSLog(&cfstr_SFailedToParse_11.isa, "+[WiFiUsageLQMTriggerCriteria parseCriteria:intoRequiredFields:andFeatures:forFields:withType:isFilter:]", v34, criteriaCopy);
     }
 
     goto LABEL_47;
@@ -605,34 +605,34 @@ LABEL_47:
 
   v22 = v17;
   v23 = v19;
-  v24 = [v13 objectForKey:@"conditions"];
+  v24 = [criteriaCopy objectForKey:@"conditions"];
   if (v24)
   {
     v25 = v24;
-    [v13 objectForKey:@"conditions"];
-    v26 = v50 = v15;
+    [criteriaCopy objectForKey:@"conditions"];
+    v26 = v50 = featuresCopy;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v15 = v50;
+    featuresCopy = v50;
     if (isKindOfClass)
     {
-      v28 = [v13 objectForKey:@"conditions"];
+      v28 = [criteriaCopy objectForKey:@"conditions"];
       if ([v18 containsObject:v21])
       {
-        v29 = v14;
+        v29 = fieldsCopy;
         if ([v28 count] != 1)
         {
-          NSLog(&cfstr_SFailedToParse_8.isa, "+[WiFiUsageLQMTriggerCriteria parseCriteria:intoRequiredFields:andFeatures:forFields:withType:isFilter:]", v21, [v28 count], v13);
+          NSLog(&cfstr_SFailedToParse_8.isa, "+[WiFiUsageLQMTriggerCriteria parseCriteria:intoRequiredFields:andFeatures:forFields:withType:isFilter:]", v21, [v28 count], criteriaCopy);
 LABEL_37:
 
           goto LABEL_47;
         }
 
         v30 = [v28 objectAtIndexedSubscript:0];
-        v31 = [a1 parseCriteria:v30 intoRequiredFields:v14 andFeatures:v50 forFields:v55 withType:v16 isFilter:v52];
+        v31 = [self parseCriteria:v30 intoRequiredFields:fieldsCopy andFeatures:v50 forFields:forFieldsCopy withType:typeCopy isFilter:v52];
 
-        v15 = v50;
+        featuresCopy = v50;
         if (!v31)
         {
           goto LABEL_37;
@@ -646,7 +646,7 @@ LABEL_37:
       {
         v49 = v28;
         v32 = 0;
-        v29 = v14;
+        v29 = fieldsCopy;
       }
 
       if (![v22 containsObject:v21])
@@ -663,18 +663,18 @@ LABEL_37:
       }
 
       v40 = [v49 objectAtIndexedSubscript:0];
-      v41 = v15;
+      v41 = featuresCopy;
       v42 = v40;
-      v48 = [a1 parseCriteria:v40 intoRequiredFields:v29 andFeatures:v41 forFields:v55 withType:v16 isFilter:v52];
+      v48 = [self parseCriteria:v40 intoRequiredFields:v29 andFeatures:v41 forFields:forFieldsCopy withType:typeCopy isFilter:v52];
 
       v43 = [v49 objectAtIndexedSubscript:1];
-      v44 = [a1 parseCriteria:v43 intoRequiredFields:v29 andFeatures:v50 forFields:v55 withType:v16 isFilter:v52];
+      v44 = [self parseCriteria:v43 intoRequiredFields:v29 andFeatures:v50 forFields:forFieldsCopy withType:typeCopy isFilter:v52];
 
       if (!v48 || !v44)
       {
 
         v28 = v49;
-        v15 = v50;
+        featuresCopy = v50;
         goto LABEL_37;
       }
 
@@ -682,7 +682,7 @@ LABEL_37:
 
       v39 = v48;
       v32 = v54;
-      v15 = v50;
+      featuresCopy = v50;
 LABEL_43:
 
 LABEL_44:
@@ -690,9 +690,9 @@ LABEL_44:
     }
   }
 
-  NSLog(&cfstr_SFailedToParse_7.isa, "+[WiFiUsageLQMTriggerCriteria parseCriteria:intoRequiredFields:andFeatures:forFields:withType:isFilter:]", v13);
+  NSLog(&cfstr_SFailedToParse_7.isa, "+[WiFiUsageLQMTriggerCriteria parseCriteria:intoRequiredFields:andFeatures:forFields:withType:isFilter:]", criteriaCopy);
   v32 = 0;
-  v29 = v14;
+  v29 = fieldsCopy;
 LABEL_48:
 
 LABEL_49:

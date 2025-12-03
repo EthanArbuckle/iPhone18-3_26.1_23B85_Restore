@@ -1,28 +1,28 @@
 @interface CKAssistantSearch
-- (id)_appInfoForMessage:(id)a3;
-- (id)_getPersonAttributeFromHandle:(id)a3;
-- (id)_getRecipientsFromMessage:(id)a3;
-- (id)_getSenderFromMessage:(id)a3;
-- (id)_messageTypeForMessage:(id)a3;
+- (id)_appInfoForMessage:(id)message;
+- (id)_getPersonAttributeFromHandle:(id)handle;
+- (id)_getRecipientsFromMessage:(id)message;
+- (id)_getSenderFromMessage:(id)message;
+- (id)_messageTypeForMessage:(id)message;
 - (id)_perform;
-- (id)_smsForIMSPIMessage:(id)a3;
-- (id)personFromRawAddress:(id)a3;
-- (void)performWithCompletion:(id)a3;
+- (id)_smsForIMSPIMessage:(id)message;
+- (id)personFromRawAddress:(id)address;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation CKAssistantSearch
 
-- (id)personFromRawAddress:(id)a3
+- (id)personFromRawAddress:(id)address
 {
-  v3 = a3;
-  if ([v3 length])
+  addressCopy = address;
+  if ([addressCopy length])
   {
     v4 = +[IMContactStore sharedInstance];
-    v5 = [v4 fetchCNContactForHandleWithID:v3];
+    v5 = [v4 fetchCNContactForHandleWithID:addressCopy];
 
     if (v5)
     {
-      v38 = v3;
+      v38 = addressCopy;
       v40 = objc_alloc_init(SAPerson);
       v6 = +[NSMutableArray array];
       v45 = 0u;
@@ -113,10 +113,10 @@
         [v40 setLastName:v25];
       }
 
-      v26 = [v5 middleName];
-      if ([v26 length])
+      middleName = [v5 middleName];
+      if ([middleName length])
       {
-        [v40 setMiddleName:v26];
+        [v40 setMiddleName:middleName];
       }
 
       v27 = [IMContactStore fullNameForCNContact:v5];
@@ -126,16 +126,16 @@
       }
 
       v36 = v25;
-      v28 = [v5 namePrefix];
-      if ([v28 length])
+      namePrefix = [v5 namePrefix];
+      if ([namePrefix length])
       {
-        [v40 setPrefix:v28];
+        [v40 setPrefix:namePrefix];
       }
 
-      v29 = [v5 nameSuffix];
-      if ([v29 length])
+      nameSuffix = [v5 nameSuffix];
+      if ([nameSuffix length])
       {
-        [v40 setSuffix:v29];
+        [v40 setSuffix:nameSuffix];
       }
 
       v37 = v24;
@@ -145,17 +145,17 @@
         [v40 setNickName:v30];
       }
 
-      v31 = [v5 birthday];
-      if (v31)
+      birthday = [v5 birthday];
+      if (birthday)
       {
         v32 = +[NSCalendar currentCalendar];
-        v33 = [v32 dateFromComponents:v31];
+        v33 = [v32 dateFromComponents:birthday];
         [v40 setBirthday:v33];
 
         v22 = v40;
       }
 
-      v3 = v38;
+      addressCopy = v38;
     }
 
     else
@@ -174,69 +174,69 @@
   return v34;
 }
 
-- (id)_messageTypeForMessage:(id)a3
+- (id)_messageTypeForMessage:(id)message
 {
-  v3 = [a3 messageType];
+  messageType = [message messageType];
   v4 = &SASmsSmsMessageTypeMessageValue;
-  if (v3 <= 108)
+  if (messageType <= 108)
   {
     v5 = &SASmsSmsMessageTypeTapBackEmphasizedValue;
     v13 = &SASmsSmsMessageTypeTapBackLovedValue;
-    if (v3 != &stru_68.sectname[4])
+    if (messageType != &stru_68.sectname[4])
     {
       v13 = &SASmsSmsMessageTypeMessageValue;
     }
 
-    if (v3 != &stru_68.sectname[3])
+    if (messageType != &stru_68.sectname[3])
     {
       v5 = v13;
     }
 
     v14 = &SASmsSmsMessageTypeTapBackLikedValue;
     v15 = &SASmsSmsMessageTypeTapBackDislikedValue;
-    if (v3 != &stru_68.sectname[2])
+    if (messageType != &stru_68.sectname[2])
     {
       v15 = &SASmsSmsMessageTypeMessageValue;
     }
 
-    if (v3 != &stru_68.sectname[1])
+    if (messageType != &stru_68.sectname[1])
     {
       v14 = v15;
     }
 
-    if (v3 <= 106)
+    if (messageType <= 106)
     {
       v5 = v14;
     }
 
     v16 = &SASmsSmsMessageTypeHandwritingValue;
     v17 = &SASmsSmsMessageTypeStickerValue;
-    if (v3 != &stru_68)
+    if (messageType != &stru_68)
     {
       v17 = &SASmsSmsMessageTypeMessageValue;
     }
 
-    if (v3 != (&stru_20.flags + 3))
+    if (messageType != (&stru_20.flags + 3))
     {
       v16 = v17;
     }
 
-    if (v3 == (&stru_20.flags + 2))
+    if (messageType == (&stru_20.flags + 2))
     {
       v4 = &SASmsSmsMessageTypeDigitalTouchValue;
     }
 
-    if (v3 == (&stru_20.flags + 1))
+    if (messageType == (&stru_20.flags + 1))
     {
       v4 = &SASmsSmsMessageTypeAudioMessageValue;
     }
 
-    if (v3 > 102)
+    if (messageType > 102)
     {
       v4 = v16;
     }
 
-    v12 = v3 <= 104;
+    v12 = messageType <= 104;
   }
 
   else
@@ -244,66 +244,66 @@
     v5 = &SASmsSmsMessageTypeMediaTypeAddressCardValue;
     v6 = &SASmsSmsMessageTypeMediaTypePassValue;
     v7 = &SASmsSmsMessageTypeMediaTypeLocationValue;
-    if (v3 != &stru_B8.segname[8])
+    if (messageType != &stru_B8.segname[8])
     {
       v7 = &SASmsSmsMessageTypeMessageValue;
     }
 
-    if (v3 != &stru_B8.segname[5])
+    if (messageType != &stru_B8.segname[5])
     {
       v6 = v7;
     }
 
-    if (v3 != &stru_B8.segname[4])
+    if (messageType != &stru_B8.segname[4])
     {
       v5 = v6;
     }
 
     v8 = &SASmsSmsMessageTypeMediaTypeAudioValue;
     v9 = &SASmsSmsMessageTypeMediaTypeCalendarValue;
-    if (v3 != &stru_B8.segname[3])
+    if (messageType != &stru_B8.segname[3])
     {
       v9 = &SASmsSmsMessageTypeMessageValue;
     }
 
-    if (v3 != &stru_B8.segname[2])
+    if (messageType != &stru_B8.segname[2])
     {
       v8 = v9;
     }
 
-    if (v3 <= 203)
+    if (messageType <= 203)
     {
       v5 = v8;
     }
 
     v10 = &SASmsSmsMessageTypeMediaTypeImageValue;
     v11 = &SASmsSmsMessageTypeMediaTypeVideoValue;
-    if (v3 != &stru_B8.segname[1])
+    if (messageType != &stru_B8.segname[1])
     {
       v11 = &SASmsSmsMessageTypeMessageValue;
     }
 
-    if (v3 != stru_B8.segname)
+    if (messageType != stru_B8.segname)
     {
       v10 = v11;
     }
 
-    if (v3 == &stru_68.sectname[6])
+    if (messageType == &stru_68.sectname[6])
     {
       v4 = &SASmsSmsMessageTypeTapBackLaughedValue;
     }
 
-    if (v3 == &stru_68.sectname[5])
+    if (messageType == &stru_68.sectname[5])
     {
       v4 = &SASmsSmsMessageTypeTapBackQuestionedValue;
     }
 
-    if (v3 > 199)
+    if (messageType > 199)
     {
       v4 = v10;
     }
 
-    v12 = v3 <= 201;
+    v12 = messageType <= 201;
   }
 
   if (!v12)
@@ -316,35 +316,35 @@
   return v18;
 }
 
-- (id)_getPersonAttributeFromHandle:(id)a3
+- (id)_getPersonAttributeFromHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v5 = objc_alloc_init(SAPersonAttribute);
-  v6 = [v4 address];
-  [v5 setData:v6];
+  address = [handleCopy address];
+  [v5 setData:address];
 
-  v7 = [v4 address];
-  v8 = [(CKAssistantSearch *)self personFromRawAddress:v7];
+  address2 = [handleCopy address];
+  v8 = [(CKAssistantSearch *)self personFromRawAddress:address2];
 
-  v9 = [v4 displayName];
+  displayName = [handleCopy displayName];
 
-  [v5 setDisplayText:v9];
+  [v5 setDisplayText:displayName];
   [v5 setObject:v8];
 
   return v5;
 }
 
-- (id)_getRecipientsFromMessage:(id)a3
+- (id)_getRecipientsFromMessage:(id)message
 {
-  v4 = [a3 recipients];
-  if ([v4 count] >= 2)
+  recipients = [message recipients];
+  if ([recipients count] >= 2)
   {
-    v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+    v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(recipients, "count")}];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = v4;
+    v6 = recipients;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -381,82 +381,82 @@
   return v5;
 }
 
-- (id)_getSenderFromMessage:(id)a3
+- (id)_getSenderFromMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_alloc_init(SAPersonAttribute);
-  v6 = [v4 sender];
-  v7 = [v6 address];
-  v8 = [(CKAssistantSearch *)self personFromRawAddress:v7];
+  sender = [messageCopy sender];
+  address = [sender address];
+  v8 = [(CKAssistantSearch *)self personFromRawAddress:address];
 
   [v5 setObject:v8];
-  v9 = [v4 sender];
-  v10 = [v9 address];
-  [v5 setData:v10];
+  sender2 = [messageCopy sender];
+  address2 = [sender2 address];
+  [v5 setData:address2];
 
-  v11 = [v8 fullName];
-  if (v11)
+  fullName = [v8 fullName];
+  if (fullName)
   {
-    v12 = [v8 fullName];
-    [v5 setDisplayText:v12];
+    fullName2 = [v8 fullName];
+    [v5 setDisplayText:fullName2];
   }
 
   else
   {
-    v12 = [v4 sender];
-    v13 = [v12 address];
-    [v5 setDisplayText:v13];
+    fullName2 = [messageCopy sender];
+    address3 = [fullName2 address];
+    [v5 setDisplayText:address3];
   }
 
   return v5;
 }
 
-- (id)_smsForIMSPIMessage:(id)a3
+- (id)_smsForIMSPIMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_alloc_init(SASmsSms);
-  v6 = [v4 date];
-  [v5 setDateSent:v6];
+  date = [messageCopy date];
+  [v5 setDateSent:date];
 
-  v7 = [v4 subject];
-  [v5 setSubject:v7];
+  subject = [messageCopy subject];
+  [v5 setSubject:subject];
 
-  v8 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 isAudioMessage]);
+  v8 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [messageCopy isAudioMessage]);
   [v5 setIsAudioMessage:v8];
 
-  v9 = [v4 displayName];
-  [v5 setHasGroupName:{objc_msgSend(v9, "length") != 0}];
+  displayName = [messageCopy displayName];
+  [v5 setHasGroupName:{objc_msgSend(displayName, "length") != 0}];
 
-  v10 = [v4 lastReadDate];
-  [v5 setDateLastMessageReadInThread:v10];
+  lastReadDate = [messageCopy lastReadDate];
+  [v5 setDateLastMessageReadInThread:lastReadDate];
 
-  v11 = [(CKAssistantSearch *)self _messageTypeForMessage:v4];
+  v11 = [(CKAssistantSearch *)self _messageTypeForMessage:messageCopy];
   [v5 setMessageType:v11];
 
-  v12 = [v4 chatGuids];
-  v13 = [v12 firstObject];
-  [v5 setChatIdentifier:v13];
+  chatGuids = [messageCopy chatGuids];
+  firstObject = [chatGuids firstObject];
+  [v5 setChatIdentifier:firstObject];
 
-  v14 = [v4 lastReadDate];
-  [v5 setDateLastMessageReadInThread:v14];
+  lastReadDate2 = [messageCopy lastReadDate];
+  [v5 setDateLastMessageReadInThread:lastReadDate2];
 
-  v15 = [v4 effect];
-  [v5 setEffect:v15];
+  effect = [messageCopy effect];
+  [v5 setEffect:effect];
 
   if ([v5 hasGroupName])
   {
-    v16 = [v4 displayName];
-    [v5 setGroupName:v16];
+    displayName2 = [messageCopy displayName];
+    [v5 setGroupName:displayName2];
   }
 
-  v17 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"x-apple-sms:guid=%lld", [v4 messageID]);
+  v17 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"x-apple-sms:guid=%lld", [messageCopy messageID]);
   v18 = [NSURL URLWithString:v17];
   [v5 setIdentifier:v18];
 
-  v19 = [(CKAssistantSearch *)self _getSenderFromMessage:v4];
+  v19 = [(CKAssistantSearch *)self _getSenderFromMessage:messageCopy];
   [v5 setMsgSender:v19];
 
-  v20 = [(CKAssistantSearch *)self _getRecipientsFromMessage:v4];
+  v20 = [(CKAssistantSearch *)self _getRecipientsFromMessage:messageCopy];
   [v5 setMsgRecipients:v20];
 
   if (IMOSLoggingEnabled())
@@ -464,8 +464,8 @@
     v21 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
-      v22 = [v5 msgRecipients];
-      v23 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v22 count]);
+      msgRecipients = [v5 msgRecipients];
+      v23 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [msgRecipients count]);
       *buf = 138412290;
       v26 = v23;
       _os_log_impl(&dword_0, v21, OS_LOG_TYPE_INFO, "Message has %@ recipients.", buf, 0xCu);
@@ -475,17 +475,17 @@
   return v5;
 }
 
-- (id)_appInfoForMessage:(id)a3
+- (id)_appInfoForMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 bundleId];
-  if ([v4 length])
+  messageCopy = message;
+  bundleId = [messageCopy bundleId];
+  if ([bundleId length])
   {
     v5 = objc_alloc_init(SASyncAppIdentifyingInfo);
-    [v5 setBundleId:v4];
+    [v5 setBundleId:bundleId];
     v6 = objc_alloc_init(SAAppInfo);
-    v7 = [v3 displayAppName];
-    [v6 setDisplayAppName:v7];
+    displayAppName = [messageCopy displayAppName];
+    [v6 setDisplayAppName:displayAppName];
   }
 
   else
@@ -510,14 +510,14 @@
   dsema = v4;
   v56 = dsema;
   v44 = objc_retainBlock(v54);
-  v5 = [(CKAssistantSearch *)self smsGroup];
-  v6 = [v5 groupNameId];
-  LOBYTE(v3) = [v6 length] == 0;
+  smsGroup = [(CKAssistantSearch *)self smsGroup];
+  groupNameId = [smsGroup groupNameId];
+  LOBYTE(v3) = [groupNameId length] == 0;
 
   if (v3)
   {
-    v14 = [(CKAssistantSearch *)self senders];
-    v15 = [v14 count] == 0;
+    senders = [(CKAssistantSearch *)self senders];
+    v15 = [senders count] == 0;
 
     if (v15)
     {
@@ -536,15 +536,15 @@
 
     else
     {
-      v16 = [(CKAssistantSearch *)self senders];
-      v41 = [v16 objectAtIndex:0];
+      senders2 = [(CKAssistantSearch *)self senders];
+      v41 = [senders2 objectAtIndex:0];
 
       v17 = +[NSMutableArray array];
       v18 = +[NSMutableArray array];
       v19 = +[NSMutableArray array];
       v20 = +[IMContactStore sharedInstance];
-      v21 = [v41 internalGUID];
-      v22 = [v20 fetchCNContactWithIdentifier:v21];
+      internalGUID = [v41 internalGUID];
+      v22 = [v20 fetchCNContactWithIdentifier:internalGUID];
 
       v52 = 0u;
       v53 = 0u;
@@ -638,18 +638,18 @@
       v7 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
-        v8 = [(CKAssistantSearch *)self smsGroup];
-        v9 = [v8 groupNameId];
+        smsGroup2 = [(CKAssistantSearch *)self smsGroup];
+        groupNameId2 = [smsGroup2 groupNameId];
         *buf = 138412290;
-        v58 = v9;
+        v58 = groupNameId2;
         _os_log_impl(&dword_0, v7, OS_LOG_TYPE_INFO, "Searching for imessages with groupID %@", buf, 0xCu);
       }
     }
 
     v10 = [NSArray arrayWithObject:IMSPIiMessageService];
-    v11 = [(CKAssistantSearch *)self smsGroup];
-    v12 = [v11 groupNameId];
-    v13 = [NSArray arrayWithObject:v12];
+    smsGroup3 = [(CKAssistantSearch *)self smsGroup];
+    groupNameId3 = [smsGroup3 groupNameId];
+    v13 = [NSArray arrayWithObject:groupNameId3];
 
     IMSPIQueryMessagesWithChatIdentifiers();
   }
@@ -662,9 +662,9 @@
   return v39;
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -675,10 +675,10 @@
     }
   }
 
-  v6 = [(CKAssistantSearch *)self _validate];
-  if (!v6)
+  _validate = [(CKAssistantSearch *)self _validate];
+  if (!_validate)
   {
-    v6 = [(CKAssistantSearch *)self _perform];
+    _validate = [(CKAssistantSearch *)self _perform];
   }
 
   if (IMOSLoggingEnabled())
@@ -686,15 +686,15 @@
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [v6 dictionary];
+      dictionary = [_validate dictionary];
       v10 = 138412290;
-      v11 = v8;
+      v11 = dictionary;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_INFO, "CKAssistantSearch returning %@", &v10, 0xCu);
     }
   }
 
-  v9 = [v6 dictionary];
-  v4[2](v4, v9);
+  dictionary2 = [_validate dictionary];
+  completionCopy[2](completionCopy, dictionary2);
 }
 
 @end

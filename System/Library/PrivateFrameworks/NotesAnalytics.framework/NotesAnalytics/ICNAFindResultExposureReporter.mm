@@ -1,19 +1,19 @@
 @interface ICNAFindResultExposureReporter
 - (BOOL)hasActiveTrackingFindSession;
 - (ICNAEventReporter)eventReporter;
-- (ICNAFindResultExposureReporter)initWithWindow:(id)a3;
+- (ICNAFindResultExposureReporter)initWithWindow:(id)window;
 - (UIWindow)window;
-- (void)eventReporterLostSession:(id)a3;
+- (void)eventReporterLostSession:(id)session;
 - (void)startTrackingFindSession;
-- (void)submitEventIfApplicableForNote:(id)a3;
-- (void)updateWithSearchQuery:(id)a3;
+- (void)submitEventIfApplicableForNote:(id)note;
+- (void)updateWithSearchQuery:(id)query;
 @end
 
 @implementation ICNAFindResultExposureReporter
 
-- (ICNAFindResultExposureReporter)initWithWindow:(id)a3
+- (ICNAFindResultExposureReporter)initWithWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   v10.receiver = self;
   v10.super_class = ICNAFindResultExposureReporter;
   v5 = [(ICNAFindResultExposureReporter *)&v10 init];
@@ -24,7 +24,7 @@
     isolationQueue = v5->_isolationQueue;
     v5->_isolationQueue = v7;
 
-    objc_storeWeak(&v5->_window, v4);
+    objc_storeWeak(&v5->_window, windowCopy);
   }
 
   return v5;
@@ -32,13 +32,13 @@
 
 - (void)startTrackingFindSession
 {
-  v3 = [(ICNAFindResultExposureReporter *)self isolationQueue];
+  isolationQueue = [(ICNAFindResultExposureReporter *)self isolationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__ICNAFindResultExposureReporter_startTrackingFindSession__block_invoke;
   block[3] = &unk_2799AF130;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(isolationQueue, block);
 }
 
 void __58__ICNAFindResultExposureReporter_startTrackingFindSession__block_invoke(uint64_t a1)
@@ -50,18 +50,18 @@ void __58__ICNAFindResultExposureReporter_startTrackingFindSession__block_invoke
   [v3 startFindInNoteEvent];
 }
 
-- (void)updateWithSearchQuery:(id)a3
+- (void)updateWithSearchQuery:(id)query
 {
-  v4 = a3;
-  v5 = [(ICNAFindResultExposureReporter *)self isolationQueue];
+  queryCopy = query;
+  isolationQueue = [(ICNAFindResultExposureReporter *)self isolationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__ICNAFindResultExposureReporter_updateWithSearchQuery___block_invoke;
   v7[3] = &unk_2799AF050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = queryCopy;
+  v6 = queryCopy;
+  dispatch_async(isolationQueue, v7);
 }
 
 void __56__ICNAFindResultExposureReporter_updateWithSearchQuery___block_invoke(uint64_t a1)
@@ -71,18 +71,18 @@ void __56__ICNAFindResultExposureReporter_updateWithSearchQuery___block_invoke(u
   [v2 setSearchQuery:v1];
 }
 
-- (void)submitEventIfApplicableForNote:(id)a3
+- (void)submitEventIfApplicableForNote:(id)note
 {
-  v4 = a3;
-  v5 = [(ICNAFindResultExposureReporter *)self isolationQueue];
+  noteCopy = note;
+  isolationQueue = [(ICNAFindResultExposureReporter *)self isolationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__ICNAFindResultExposureReporter_submitEventIfApplicableForNote___block_invoke;
   v7[3] = &unk_2799AF050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = noteCopy;
+  v6 = noteCopy;
+  dispatch_async(isolationQueue, v7);
 }
 
 void __65__ICNAFindResultExposureReporter_submitEventIfApplicableForNote___block_invoke(uint64_t a1)
@@ -102,23 +102,23 @@ void __65__ICNAFindResultExposureReporter_submitEventIfApplicableForNote___block
 
 - (BOOL)hasActiveTrackingFindSession
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(ICNAFindResultExposureReporter *)self isolationQueue];
+  isolationQueue = [(ICNAFindResultExposureReporter *)self isolationQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __62__ICNAFindResultExposureReporter_hasActiveTrackingFindSession__block_invoke;
   v5[3] = &unk_2799AF158;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(isolationQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __62__ICNAFindResultExposureReporter_hasActiveTrackingFindSession__block_invoke(uint64_t a1)
@@ -134,13 +134,13 @@ void __62__ICNAFindResultExposureReporter_hasActiveTrackingFindSession__block_in
     v3 = [ICNAEventReporter alloc];
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
-    v6 = [(ICNAFindResultExposureReporter *)self window];
-    v7 = [(ICNAEventReporter *)v3 initWithSubTrackerName:v5 window:v6];
+    window = [(ICNAFindResultExposureReporter *)self window];
+    v7 = [(ICNAEventReporter *)v3 initWithSubTrackerName:v5 window:window];
     eventReporter = self->_eventReporter;
     self->_eventReporter = v7;
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:self selector:sel_eventReporterLostSession_ name:@"ICNAEventReporterLostSessionNotification" object:self->_eventReporter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_eventReporterLostSession_ name:@"ICNAEventReporterLostSessionNotification" object:self->_eventReporter];
   }
 
   v10 = self->_eventReporter;
@@ -148,16 +148,16 @@ void __62__ICNAFindResultExposureReporter_hasActiveTrackingFindSession__block_in
   return v10;
 }
 
-- (void)eventReporterLostSession:(id)a3
+- (void)eventReporterLostSession:(id)session
 {
   eventReporter = self->_eventReporter;
   self->_eventReporter = 0;
-  v5 = a3;
+  sessionCopy = session;
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  v6 = [v5 object];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  object = [sessionCopy object];
 
-  [v7 removeObserver:self name:@"ICNAEventReporterLostSessionNotification" object:v6];
+  [defaultCenter removeObserver:self name:@"ICNAEventReporterLostSessionNotification" object:object];
 }
 
 - (UIWindow)window

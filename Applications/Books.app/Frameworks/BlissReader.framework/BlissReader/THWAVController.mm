@@ -1,20 +1,20 @@
 @interface THWAVController
 + (id)sharedController;
-- (BOOL)p_shouldHandleVantageDidChangeNotification:(id)a3;
+- (BOOL)p_shouldHandleVantageDidChangeNotification:(id)notification;
 - (THWAVController)init;
 - (id)newTransportController;
-- (id)p_documentNavigatorFromNotification:(id)a3;
-- (void)audioPlaybackWillStart:(id)a3;
+- (id)p_documentNavigatorFromNotification:(id)notification;
+- (void)audioPlaybackWillStart:(id)start;
 - (void)dealloc;
-- (void)handleNotificationVantageDidChange:(id)a3;
+- (void)handleNotificationVantageDidChange:(id)change;
 - (void)stopPlayer;
-- (void)stopPlayerNotInDocumentRoot:(id)a3;
+- (void)stopPlayerNotInDocumentRoot:(id)root;
 - (void)togglePlayPause;
-- (void)transportControllerDidBecomeInvalid:(id)a3;
-- (void)transportControllerDidStartAutoplaying:(id)a3;
-- (void)transportControllerDidStartPlaying:(id)a3;
-- (void)transportControllerDidStopAutoplaying:(id)a3;
-- (void)transportControllerDidStopPlaying:(id)a3;
+- (void)transportControllerDidBecomeInvalid:(id)invalid;
+- (void)transportControllerDidStartAutoplaying:(id)autoplaying;
+- (void)transportControllerDidStartPlaying:(id)playing;
+- (void)transportControllerDidStopAutoplaying:(id)autoplaying;
+- (void)transportControllerDidStopPlaying:(id)playing;
 @end
 
 @implementation THWAVController
@@ -69,9 +69,9 @@
 {
   if ([(THWAVController *)self playingTransportController])
   {
-    v3 = [(THWAVController *)self playingTransportController];
+    playingTransportController = [(THWAVController *)self playingTransportController];
 
-    [(THWAVTransportControllable *)v3 togglePlayPause];
+    [(THWAVTransportControllable *)playingTransportController togglePlayPause];
   }
 }
 
@@ -79,43 +79,43 @@
 {
   if ([(THWAVController *)self playingTransportController])
   {
-    v3 = [(THWAVController *)self playingTransportController];
+    playingTransportController = [(THWAVController *)self playingTransportController];
 
-    [(THWAVTransportControllable *)v3 stop];
+    [(THWAVTransportControllable *)playingTransportController stop];
   }
 }
 
-- (void)stopPlayerNotInDocumentRoot:(id)a3
+- (void)stopPlayerNotInDocumentRoot:(id)root
 {
-  if ([(THWAVController *)self playingTransportController]&& [(THWAVTransportControllable *)[(THWAVController *)self playingTransportController] documentRoot]!= a3)
+  if ([(THWAVController *)self playingTransportController]&& [(THWAVTransportControllable *)[(THWAVController *)self playingTransportController] documentRoot]!= root)
   {
-    v5 = [(THWAVController *)self playingTransportController];
+    playingTransportController = [(THWAVController *)self playingTransportController];
 
-    [(THWAVTransportControllable *)v5 stop];
+    [(THWAVTransportControllable *)playingTransportController stop];
   }
 }
 
-- (void)transportControllerDidStartPlaying:(id)a3
+- (void)transportControllerDidStartPlaying:(id)playing
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_169F24;
   v3[3] = &unk_45AF70;
   v3[5] = self;
-  v3[6] = a3;
+  v3[6] = playing;
   [+[BCAudioMuxingCoordinator sharedInstance](BCAudioMuxingCoordinator beginLongAudioSessionWithIdentifier:"beginLongAudioSessionWithIdentifier:completion:" completion:@"THWAVController", v3];
 }
 
-- (void)transportControllerDidStopPlaying:(id)a3
+- (void)transportControllerDidStopPlaying:(id)playing
 {
-  if ([(THWAVController *)self playingTransportController]== a3)
+  if ([(THWAVController *)self playingTransportController]== playing)
   {
     [(THWAVController *)self setPlayingTransportController:0];
   }
 
   else
   {
-    [(NSMutableSet *)[(THWAVController *)self autoplayingTransportControllers] removeObject:a3];
+    [(NSMutableSet *)[(THWAVController *)self autoplayingTransportControllers] removeObject:playing];
   }
 
   v5 = +[BCAudioMuxingCoordinator sharedInstance];
@@ -123,10 +123,10 @@
   [(BCAudioMuxingCoordinator *)v5 endLongAudioSessionWithIdentifier:@"THWAVController"];
 }
 
-- (void)transportControllerDidBecomeInvalid:(id)a3
+- (void)transportControllerDidBecomeInvalid:(id)invalid
 {
-  [(NSMutableArray *)[(THWAVController *)self activeTransportControllers] removeObject:a3];
-  if ([(THWAVController *)self playingTransportController]== a3)
+  [(NSMutableArray *)[(THWAVController *)self activeTransportControllers] removeObject:invalid];
+  if ([(THWAVController *)self playingTransportController]== invalid)
   {
     [(THWAVController *)self setPlayingTransportController:0];
   }
@@ -136,33 +136,33 @@
   [(BCAudioMuxingCoordinator *)v5 endLongAudioSessionWithIdentifier:@"THWAVController"];
 }
 
-- (void)transportControllerDidStartAutoplaying:(id)a3
+- (void)transportControllerDidStartAutoplaying:(id)autoplaying
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_16A160;
   v3[3] = &unk_45AF70;
   v3[5] = self;
-  v3[6] = a3;
+  v3[6] = autoplaying;
   [+[BCAudioMuxingCoordinator sharedInstance](BCAudioMuxingCoordinator beginLongAudioSessionWithIdentifier:"beginLongAudioSessionWithIdentifier:completion:" completion:@"THWAVController", v3];
 }
 
-- (void)transportControllerDidStopAutoplaying:(id)a3
+- (void)transportControllerDidStopAutoplaying:(id)autoplaying
 {
-  [(NSMutableSet *)[(THWAVController *)self autoplayingTransportControllers] removeObject:a3];
+  [(NSMutableSet *)[(THWAVController *)self autoplayingTransportControllers] removeObject:autoplaying];
   v3 = +[BCAudioMuxingCoordinator sharedInstance];
 
   [(BCAudioMuxingCoordinator *)v3 endLongAudioSessionWithIdentifier:@"THWAVController"];
 }
 
-- (id)p_documentNavigatorFromNotification:(id)a3
+- (id)p_documentNavigatorFromNotification:(id)notification
 {
   objc_opt_class();
-  [a3 object];
+  [notification object];
   result = TSUDynamicCast();
   if (!result)
   {
-    [a3 object];
+    [notification object];
     v5 = TSUProtocolCast();
 
     return [v5 documentNavigator];
@@ -171,9 +171,9 @@
   return result;
 }
 
-- (BOOL)p_shouldHandleVantageDidChangeNotification:(id)a3
+- (BOOL)p_shouldHandleVantageDidChangeNotification:(id)notification
 {
-  v5 = [objc_msgSend(a3 "userInfo")];
+  v5 = [objc_msgSend(notification "userInfo")];
   if ([-[THWAVTransportControllable movieLayout](-[THWAVController playingTransportController](self "playingTransportController")])
   {
 
@@ -182,7 +182,7 @@
 
   else
   {
-    v7 = [-[THWAVController p_documentNavigatorFromNotification:](self p_documentNavigatorFromNotification:{a3), "currentAbsolutePageIndex"}];
+    v7 = [-[THWAVController p_documentNavigatorFromNotification:](self p_documentNavigatorFromNotification:{notification), "currentAbsolutePageIndex"}];
     if ([v5 isEqualToString:@"THVantageChangeReasonWindowResize"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"THVantageChangeReasonRotation"))
     {
       LOBYTE(v8) = 0;
@@ -203,9 +203,9 @@
   }
 }
 
-- (void)handleNotificationVantageDidChange:(id)a3
+- (void)handleNotificationVantageDidChange:(id)change
 {
-  if ([(THWAVController *)self p_shouldHandleVantageDidChangeNotification:a3]&& [(THWAVController *)self playingTransportController])
+  if ([(THWAVController *)self p_shouldHandleVantageDidChangeNotification:change]&& [(THWAVController *)self playingTransportController])
   {
     [(THWAVTransportControllable *)[(THWAVController *)self playingTransportController] stop];
 
@@ -213,7 +213,7 @@
   }
 }
 
-- (void)audioPlaybackWillStart:(id)a3
+- (void)audioPlaybackWillStart:(id)start
 {
   objc_opt_class();
   v5 = TSUDynamicCast();
@@ -229,13 +229,13 @@
     }
 
     v10 = [v8 isEqual:v9];
-    if (a3 == self || (v10 & 1) != 0)
+    if (start == self || (v10 & 1) != 0)
     {
       return;
     }
   }
 
-  else if (a3 == self)
+  else if (start == self)
   {
     return;
   }

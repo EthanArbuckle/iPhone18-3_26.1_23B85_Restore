@@ -1,30 +1,30 @@
 @interface HDDismissedDrugInteractionResultInsertOperation
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (HDDismissedDrugInteractionResultInsertOperation)initWithCoder:(id)a3;
-- (HDDismissedDrugInteractionResultInsertOperation)initWithDismissedDrugInteractionResults:(id)a3;
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error;
+- (HDDismissedDrugInteractionResultInsertOperation)initWithCoder:(id)coder;
+- (HDDismissedDrugInteractionResultInsertOperation)initWithDismissedDrugInteractionResults:(id)results;
 @end
 
 @implementation HDDismissedDrugInteractionResultInsertOperation
 
-- (HDDismissedDrugInteractionResultInsertOperation)initWithDismissedDrugInteractionResults:(id)a3
+- (HDDismissedDrugInteractionResultInsertOperation)initWithDismissedDrugInteractionResults:(id)results
 {
-  v5 = a3;
+  resultsCopy = results;
   v9.receiver = self;
   v9.super_class = HDDismissedDrugInteractionResultInsertOperation;
   v6 = [(HDDismissedDrugInteractionResultInsertOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dismissedResults, a3);
+    objc_storeStrong(&v6->_dismissedResults, results);
   }
 
   return v7;
 }
 
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  transactionCopy = transaction;
   if ([(NSArray *)self->_dismissedResults count])
   {
     v18 = 0u;
@@ -46,7 +46,7 @@
             objc_enumerationMutation(v8);
           }
 
-          if (![HDDismissedDrugInteractionResultEntity _insertDismissedDrugInteractionResult:v7 transaction:a5 error:?])
+          if (![HDDismissedDrugInteractionResultEntity _insertDismissedDrugInteractionResult:transactionCopy transaction:error error:?])
           {
             v13 = 0;
             goto LABEL_12;
@@ -76,16 +76,16 @@ LABEL_12:
   return v13;
 }
 
-- (HDDismissedDrugInteractionResultInsertOperation)initWithCoder:(id)a3
+- (HDDismissedDrugInteractionResultInsertOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = HDDismissedDrugInteractionResultInsertOperation;
   v5 = [(HDDismissedDrugInteractionResultInsertOperation *)&v10 init];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] hk_typesForArrayOf:objc_opt_class()];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"dismissed_results"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"dismissed_results"];
     dismissedResults = v5->_dismissedResults;
     v5->_dismissedResults = v7;
   }

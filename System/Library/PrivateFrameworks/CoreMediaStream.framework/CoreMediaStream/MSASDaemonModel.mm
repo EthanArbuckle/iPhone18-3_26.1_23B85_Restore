@@ -4,20 +4,20 @@
 - (id)earliestNextActivityDate;
 - (id)nextActivityDateByPersonID;
 - (void)clearAllNextActivityDates;
-- (void)setNextActivityDate:(id)a3 forPersonID:(id)a4;
+- (void)setNextActivityDate:(id)date forPersonID:(id)d;
 @end
 
 @implementation MSASDaemonModel
 
 - (void)clearAllNextActivityDates
 {
-  v3 = [(MSASModelBase *)self dbQueue];
+  dbQueue = [(MSASModelBase *)self dbQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__MSASDaemonModel_clearAllNextActivityDates__block_invoke;
   block[3] = &unk_278E926D8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(dbQueue, block);
 }
 
 void __44__MSASDaemonModel_clearAllNextActivityDates__block_invoke(uint64_t a1)
@@ -48,21 +48,21 @@ void __44__MSASDaemonModel_clearAllNextActivityDates__block_invoke(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setNextActivityDate:(id)a3 forPersonID:(id)a4
+- (void)setNextActivityDate:(id)date forPersonID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MSASModelBase *)self dbQueue];
+  dateCopy = date;
+  dCopy = d;
+  dbQueue = [(MSASModelBase *)self dbQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__MSASDaemonModel_setNextActivityDate_forPersonID___block_invoke;
   block[3] = &unk_278E92638;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dateCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = dateCopy;
+  dispatch_async(dbQueue, block);
 }
 
 uint64_t __51__MSASDaemonModel_setNextActivityDate_forPersonID___block_invoke(uint64_t a1)
@@ -141,15 +141,15 @@ LABEL_11:
   v9 = 0x3032000000;
   v10 = __Block_byref_object_copy__5141;
   v11 = __Block_byref_object_dispose__5142;
-  v12 = [MEMORY[0x277CBEB38] dictionary];
-  v3 = [(MSASModelBase *)self dbQueue];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dbQueue = [(MSASModelBase *)self dbQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__MSASDaemonModel_nextActivityDateByPersonID__block_invoke;
   v6[3] = &unk_278E92700;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(dbQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -240,18 +240,18 @@ LABEL_12:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v15 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@: Retrieving next activity date.", buf, 0xCu);
   }
 
-  v3 = [(MSASModelBase *)self dbQueue];
+  dbQueue = [(MSASModelBase *)self dbQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__MSASDaemonModel_earliestNextActivityDate__block_invoke;
   v7[3] = &unk_278E92700;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v3, v7);
+  dispatch_sync(dbQueue, v7);
 
   v4 = v9[5];
   _Block_object_dispose(&v8, 8);

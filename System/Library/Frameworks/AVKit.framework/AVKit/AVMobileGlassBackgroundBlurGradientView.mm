@@ -24,29 +24,29 @@
   v16.receiver = self;
   v16.super_class = AVMobileGlassBackgroundBlurGradientView;
   [(AVMobileGlassBackgroundBlurGradientView *)&v16 didMoveToWindow];
-  v3 = [(AVMobileGlassBackgroundBlurGradientView *)self window];
+  window = [(AVMobileGlassBackgroundBlurGradientView *)self window];
 
-  if (v3 && self)
+  if (window && self)
   {
     if (!self->_gradientLayer)
     {
-      v4 = [MEMORY[0x1E6979380] layer];
-      v5 = [MEMORY[0x1E69DC888] clearColor];
-      v6 = [v5 CGColor];
+      layer = [MEMORY[0x1E6979380] layer];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      cGColor = [clearColor CGColor];
 
-      v7 = [MEMORY[0x1E69DC888] blackColor];
-      v8 = [v7 CGColor];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      cGColor2 = [blackColor CGColor];
 
-      v17[0] = v6;
-      v17[1] = v8;
+      v17[0] = cGColor;
+      v17[1] = cGColor2;
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
-      [(CAGradientLayer *)v4 setColors:v9];
-      [(CAGradientLayer *)v4 setLocations:&unk_1EFF12EA8];
-      [(CAGradientLayer *)v4 setStartPoint:0.0, 0.0];
-      [(CAGradientLayer *)v4 setEndPoint:0.0, 1.0];
-      [(CAGradientLayer *)v4 setAnchorPoint:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
+      [(CAGradientLayer *)layer setColors:v9];
+      [(CAGradientLayer *)layer setLocations:&unk_1EFF12EA8];
+      [(CAGradientLayer *)layer setStartPoint:0.0, 0.0];
+      [(CAGradientLayer *)layer setEndPoint:0.0, 1.0];
+      [(CAGradientLayer *)layer setAnchorPoint:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
       gradientLayer = self->_gradientLayer;
-      self->_gradientLayer = v4;
+      self->_gradientLayer = layer;
     }
 
     if (!self->_visualEffectView)
@@ -57,8 +57,8 @@
       self->_visualEffectView = v12;
       v14 = v12;
 
-      v15 = [(UIVisualEffectView *)self->_visualEffectView layer];
-      [v15 setMask:self->_gradientLayer];
+      layer2 = [(UIVisualEffectView *)self->_visualEffectView layer];
+      [layer2 setMask:self->_gradientLayer];
 
       [(AVMobileGlassBackgroundBlurGradientView *)self addSubview:self->_visualEffectView];
     }

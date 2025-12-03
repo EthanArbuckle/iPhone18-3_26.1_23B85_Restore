@@ -1,44 +1,44 @@
 @interface PGBirthdayContextualRule
-- (BOOL)canProvideContextualKeyAssetsWithOptions:(id)a3;
-- (PGBirthdayContextualRule)initWithGraph:(id)a3 photoLibrary:(id)a4 curationManager:(id)a5 loggingConnection:(id)a6;
-- (id)_bestAssetInCuratedAssets:(id)a3 forPerson:(id)a4 contextualScore:(double *)a5;
-- (id)_bestBirthdayCelebrationAssetForHighlightNode:(id)a3 assetCollection:(id)a4 curationContext:(id)a5;
-- (id)_fetchCuratedAssetsForHighlightItem:(id)a3 intersectingAssets:(id)a4;
-- (id)_filterCuratedAssets:(id)a3 forHighlightItem:(id)a4;
+- (BOOL)canProvideContextualKeyAssetsWithOptions:(id)options;
+- (PGBirthdayContextualRule)initWithGraph:(id)graph photoLibrary:(id)library curationManager:(id)manager loggingConnection:(id)connection;
+- (id)_bestAssetInCuratedAssets:(id)assets forPerson:(id)person contextualScore:(double *)score;
+- (id)_bestBirthdayCelebrationAssetForHighlightNode:(id)node assetCollection:(id)collection curationContext:(id)context;
+- (id)_fetchCuratedAssetsForHighlightItem:(id)item intersectingAssets:(id)assets;
+- (id)_filterCuratedAssets:(id)assets forHighlightItem:(id)item;
 @end
 
 @implementation PGBirthdayContextualRule
 
-- (id)_bestBirthdayCelebrationAssetForHighlightNode:(id)a3 assetCollection:(id)a4 curationContext:(id)a5
+- (id)_bestBirthdayCelebrationAssetForHighlightNode:(id)node assetCollection:(id)collection curationContext:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 graph];
-  v12 = [(PGCurationManager *)self->_curationManager curationCriteriaFactory];
-  v13 = [v12 curationCriteriaWithCollection:v10 meaningLabel:@"Birthday" inGraph:v11 client:0];
+  contextCopy = context;
+  collectionCopy = collection;
+  nodeCopy = node;
+  graph = [nodeCopy graph];
+  curationCriteriaFactory = [(PGCurationManager *)self->_curationManager curationCriteriaFactory];
+  v13 = [curationCriteriaFactory curationCriteriaWithCollection:nodeCopy meaningLabel:@"Birthday" inGraph:graph client:0];
 
   v14 = objc_alloc_init(PGKeyAssetCurationOptions);
   curationManager = self->_curationManager;
-  v16 = [v10 UUID];
+  uUID = [nodeCopy UUID];
 
-  v17 = [(PGCurationManager *)curationManager curatedKeyAssetForCollectionUUID:v16 curatedAssetCollection:v9 options:v14 criteria:v13 curationContext:v8];
+  v17 = [(PGCurationManager *)curationManager curatedKeyAssetForCollectionUUID:uUID curatedAssetCollection:collectionCopy options:v14 criteria:v13 curationContext:contextCopy];
 
   return v17;
 }
 
-- (id)_bestAssetInCuratedAssets:(id)a3 forPerson:(id)a4 contextualScore:(double *)a5
+- (id)_bestAssetInCuratedAssets:(id)assets forPerson:(id)person contextualScore:(double *)score
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v41 = a4;
-  v7 = [v41 localIdentifier];
-  v46 = [MEMORY[0x277CD9868] fetchFacesGroupedByAssetLocalIdentifierForAssets:v6 options:0];
+  assetsCopy = assets;
+  personCopy = person;
+  localIdentifier = [personCopy localIdentifier];
+  v46 = [MEMORY[0x277CD9868] fetchFacesGroupedByAssetLocalIdentifierForAssets:assetsCopy options:0];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = v6;
+  obj = assetsCopy;
   v47 = [obj countByEnumeratingWithState:&v53 objects:v58 count:16];
   if (v47)
   {
@@ -56,8 +56,8 @@
         }
 
         v11 = *(*(&v53 + 1) + 8 * i);
-        v12 = [v11 localIdentifier];
-        v13 = [v46 objectForKeyedSubscript:v12];
+        localIdentifier2 = [v11 localIdentifier];
+        v13 = [v46 objectForKeyedSubscript:localIdentifier2];
 
         v48 = [v13 count];
         v49 = 0u;
@@ -80,8 +80,8 @@
               }
 
               v19 = *(*(&v49 + 1) + 8 * j);
-              v20 = [v19 personLocalIdentifier];
-              v21 = [v20 isEqualToString:v7];
+              personLocalIdentifier = [v19 personLocalIdentifier];
+              v21 = [personLocalIdentifier isEqualToString:localIdentifier];
 
               if (v21)
               {
@@ -89,8 +89,8 @@
 
                 if (v22)
                 {
-                  v23 = [v11 pixelWidth];
-                  v24 = 1.3333 / (v23 / [v11 pixelHeight]);
+                  pixelWidth = [v11 pixelWidth];
+                  v24 = 1.3333 / (pixelWidth / [v11 pixelHeight]);
                   [v22 size];
                   v26 = v25 * v24;
                   v27 = 0.0;
@@ -118,7 +118,7 @@
                   {
                     v37 = v11;
 
-                    *a5 = v36;
+                    *score = v36;
                     v44 = v37;
                     v9 = v36;
                   }
@@ -158,17 +158,17 @@ LABEL_27:
   return v44;
 }
 
-- (id)_fetchCuratedAssetsForHighlightItem:(id)a3 intersectingAssets:(id)a4
+- (id)_fetchCuratedAssetsForHighlightItem:(id)item intersectingAssets:(id)assets
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PGBirthdayContextualRule *)self _filterCuratedAssets:v7 forHighlightItem:v6];
+  itemCopy = item;
+  assetsCopy = assets;
+  v8 = [(PGBirthdayContextualRule *)self _filterCuratedAssets:assetsCopy forHighlightItem:itemCopy];
   if ([v8 count])
   {
-    v9 = [v6 extendedCuratedAssets];
-    v10 = [MEMORY[0x277CBEB98] setWithArray:v9];
+    extendedCuratedAssets = [itemCopy extendedCuratedAssets];
+    v10 = [MEMORY[0x277CBEB98] setWithArray:extendedCuratedAssets];
     v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"self in %@", v10];
-    v12 = [v7 filteredArrayUsingPredicate:v11];
+    v12 = [assetsCopy filteredArrayUsingPredicate:v11];
   }
 
   else
@@ -179,37 +179,37 @@ LABEL_27:
   return v12;
 }
 
-- (id)_filterCuratedAssets:(id)a3 forHighlightItem:(id)a4
+- (id)_filterCuratedAssets:(id)assets forHighlightItem:(id)item
 {
   v5 = MEMORY[0x277CCAC30];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 startDate];
-  v9 = [v6 endDate];
+  itemCopy = item;
+  assetsCopy = assets;
+  startDate = [itemCopy startDate];
+  endDate = [itemCopy endDate];
 
-  v10 = [v5 predicateWithFormat:@"creationDate >= %@ && creationDate <= %@", v8, v9];
-  v11 = [v7 filteredArrayUsingPredicate:v10];
+  v10 = [v5 predicateWithFormat:@"creationDate >= %@ && creationDate <= %@", startDate, endDate];
+  v11 = [assetsCopy filteredArrayUsingPredicate:v10];
 
   return v11;
 }
 
-- (BOOL)canProvideContextualKeyAssetsWithOptions:(id)a3
+- (BOOL)canProvideContextualKeyAssetsWithOptions:(id)options
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
-  v7 = [v4 localTodayComponents];
+  localTodayComponents = [optionsCopy localTodayComponents];
 
-  v8 = [v7 month];
-  v9 = [v7 day];
+  month = [localTodayComponents month];
+  v9 = [localTodayComponents day];
   v10 = [PGGraphPersonNodeCollection personNodesIncludingMeInGraph:self->_graph];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __69__PGBirthdayContextualRule_canProvideContextualKeyAssetsWithOptions___block_invoke;
   v35[3] = &unk_2788864B0;
   v35[4] = self;
-  v38 = v8;
+  v38 = month;
   v39 = v9;
   v11 = v5;
   v36 = v11;
@@ -232,16 +232,16 @@ LABEL_27:
   v34 = v17;
   [v11 enumerateObjectsUsingBlock:v32];
   objc_storeStrong(&self->_personNodeByLocalIdentifier, v14);
-  v18 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  v19 = [MEMORY[0x277CD9938] fetchPersonsWithLocalIdentifiers:v12 options:v18];
-  v20 = [v19 fetchedObjects];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  v19 = [MEMORY[0x277CD9938] fetchPersonsWithLocalIdentifiers:v12 options:librarySpecificFetchOptions];
+  fetchedObjects = [v19 fetchedObjects];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __69__PGBirthdayContextualRule_canProvideContextualKeyAssetsWithOptions___block_invoke_2;
   v30[3] = &unk_278886500;
   v21 = v16;
   v31 = v21;
-  v22 = [v20 sortedArrayUsingComparator:v30];
+  v22 = [fetchedObjects sortedArrayUsingComparator:v30];
   availablePersons = self->_availablePersons;
   self->_availablePersons = v22;
 
@@ -251,7 +251,7 @@ LABEL_27:
   {
     v26 = self->_availablePersons;
     *buf = 138413059;
-    v41 = self;
+    selfCopy = self;
     v42 = 1024;
     v43 = v24 != 0;
     v44 = 2048;
@@ -348,22 +348,22 @@ uint64_t __69__PGBirthdayContextualRule_canProvideContextualKeyAssetsWithOptions
   return v12;
 }
 
-- (PGBirthdayContextualRule)initWithGraph:(id)a3 photoLibrary:(id)a4 curationManager:(id)a5 loggingConnection:(id)a6
+- (PGBirthdayContextualRule)initWithGraph:(id)graph photoLibrary:(id)library curationManager:(id)manager loggingConnection:(id)connection
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  graphCopy = graph;
+  libraryCopy = library;
+  managerCopy = manager;
+  connectionCopy = connection;
   v18.receiver = self;
   v18.super_class = PGBirthdayContextualRule;
   v15 = [(PGBirthdayContextualRule *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_graph, a3);
-    objc_storeStrong(&v16->_photoLibrary, a4);
-    objc_storeStrong(&v16->_curationManager, a5);
-    objc_storeStrong(&v16->_loggingConnection, a6);
+    objc_storeStrong(&v15->_graph, graph);
+    objc_storeStrong(&v16->_photoLibrary, library);
+    objc_storeStrong(&v16->_curationManager, manager);
+    objc_storeStrong(&v16->_loggingConnection, connection);
   }
 
   return v16;

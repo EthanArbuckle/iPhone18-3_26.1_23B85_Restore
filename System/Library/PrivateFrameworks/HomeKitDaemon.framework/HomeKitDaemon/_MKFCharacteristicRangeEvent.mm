@@ -1,6 +1,6 @@
 @interface _MKFCharacteristicRangeEvent
-+ (id)modelIDForParentRelationshipTo:(id)a3;
-- (BOOL)validateForInsertOrUpdate:(id *)a3;
++ (id)modelIDForParentRelationshipTo:(id)to;
+- (BOOL)validateForInsertOrUpdate:(id *)update;
 - (MKFCharacteristicRangeEventDatabaseID)databaseID;
 - (MKFHome)home;
 @end
@@ -9,10 +9,10 @@
 
 - (MKFHome)home
 {
-  v2 = [(_MKFCharacteristicRangeEvent *)self trigger];
-  v3 = [v2 home];
+  trigger = [(_MKFCharacteristicRangeEvent *)self trigger];
+  home = [trigger home];
 
-  return v3;
+  return home;
 }
 
 - (MKFCharacteristicRangeEventDatabaseID)databaseID
@@ -22,7 +22,7 @@
   return v2;
 }
 
-- (BOOL)validateForInsertOrUpdate:(id *)a3
+- (BOOL)validateForInsertOrUpdate:(id *)update
 {
   v10.receiver = self;
   v10.super_class = _MKFCharacteristicRangeEvent;
@@ -45,12 +45,12 @@ LABEL_5:
       goto LABEL_5;
     }
 
-    if (a3)
+    if (update)
     {
       v8 = [MEMORY[0x277CCA9B8] hmd_validationErrorWithDescription:@"Must have at least one of min or max"];
       v5 = v8;
       LOBYTE(v5) = 0;
-      *a3 = v8;
+      *update = v8;
     }
 
     else
@@ -62,9 +62,9 @@ LABEL_5:
   return v5;
 }
 
-+ (id)modelIDForParentRelationshipTo:(id)a3
++ (id)modelIDForParentRelationshipTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];

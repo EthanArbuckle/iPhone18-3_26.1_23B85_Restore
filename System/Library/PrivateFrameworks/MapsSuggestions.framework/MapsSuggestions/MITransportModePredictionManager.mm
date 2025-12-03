@@ -1,6 +1,6 @@
 @interface MITransportModePredictionManager
 - (MITransportModePredictionManager)init;
-- (id)transportModeWithOrigin:(id)a3 destination:(id)a4 features:(id)a5 userHash4:(id)a6;
+- (id)transportModeWithOrigin:(id)origin destination:(id)destination features:(id)features userHash4:(id)hash4;
 @end
 
 @implementation MITransportModePredictionManager
@@ -14,15 +14,15 @@
   return [(MITransportModePredictionManager *)&v5 init];
 }
 
-- (id)transportModeWithOrigin:(id)a3 destination:(id)a4 features:(id)a5 userHash4:(id)a6
+- (id)transportModeWithOrigin:(id)origin destination:(id)destination features:(id)features userHash4:(id)hash4
 {
-  if (a6)
+  if (hash4)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v8 = a5;
-  v9 = self;
+  featuresCopy = features;
+  selfCopy = self;
   v10 = MITransportModePredictionManagerWrapper.transportMode(origin:destination:features:userHash4:)();
 
   return v10;

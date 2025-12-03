@@ -2,34 +2,34 @@
 - (BOOL)ableToExtractLongerNdd_;
 - (BOOL)attemptToExtractCountryCallingCode_;
 - (BOOL)attemptToExtractIdd_;
-- (BOOL)createFormattingTemplate_:(id)a3;
-- (BOOL)isDigitOrLeadingPlusSign_:(id)a3;
-- (BOOL)isFormatEligible_:(id)a3;
+- (BOOL)createFormattingTemplate_:(id)template_;
+- (BOOL)isDigitOrLeadingPlusSign_:(id)sign_;
+- (BOOL)isFormatEligible_:(id)eligible_;
 - (BOOL)isNanpaNumberWithNationalPrefix_;
 - (BOOL)maybeCreateNewTemplate_;
 - (_NBAsYouTypeFormatter)init;
-- (_NBAsYouTypeFormatter)initWithRegionCode:(id)a3;
-- (_NBAsYouTypeFormatter)initWithRegionCode:(id)a3 bundle:(id)a4;
-- (id)appendNationalNumber_:(id)a3;
+- (_NBAsYouTypeFormatter)initWithRegionCode:(id)code;
+- (_NBAsYouTypeFormatter)initWithRegionCode:(id)code bundle:(id)bundle;
+- (id)appendNationalNumber_:(id)number_;
 - (id)attemptToChooseFormattingPattern_;
 - (id)attemptToChoosePatternWithPrefixExtracted_;
 - (id)attemptToFormatAccruedDigits_;
-- (id)getFormattingTemplate_:(id)a3 numberFormat:(id)a4;
-- (id)getMetadataForRegion_:(id)a3;
+- (id)getFormattingTemplate_:(id)template_ numberFormat:(id)format;
+- (id)getMetadataForRegion_:(id)region_;
 - (id)inputAccruedNationalNumber_;
-- (id)inputDigit:(id)a3;
-- (id)inputDigitAndRememberPosition:(id)a3;
-- (id)inputDigitHelper_:(id)a3;
-- (id)inputString:(id)a3;
-- (id)inputStringAndRememberPosition:(id)a3;
-- (id)normalizeAndAccrueDigitsAndPlusSign_:(id)a3 rememberPosition:(BOOL)a4;
+- (id)inputDigit:(id)digit;
+- (id)inputDigitAndRememberPosition:(id)position;
+- (id)inputDigitHelper_:(id)helper_;
+- (id)inputString:(id)string;
+- (id)inputStringAndRememberPosition:(id)position;
+- (id)normalizeAndAccrueDigitsAndPlusSign_:(id)sign_ rememberPosition:(BOOL)position;
 - (id)removeLastDigit;
 - (id)removeLastDigitAndRememberPosition;
 - (id)removeNationalPrefixFromNationalNumber_;
 - (unint64_t)getRememberedPosition;
 - (void)clear;
-- (void)getAvailableFormats_:(id)a3;
-- (void)narrowDownPossibleFormats_:(id)a3;
+- (void)getAvailableFormats_:(id)formats_;
+- (void)narrowDownPossibleFormats_:(id)formats_;
 @end
 
 @implementation _NBAsYouTypeFormatter
@@ -101,46 +101,46 @@
   return v3;
 }
 
-- (_NBAsYouTypeFormatter)initWithRegionCode:(id)a3
+- (_NBAsYouTypeFormatter)initWithRegionCode:(id)code
 {
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
-  v6 = [v4 mainBundle];
-  v7 = [(_NBAsYouTypeFormatter *)self initWithRegionCode:v5 bundle:v6];
+  codeCopy = code;
+  mainBundle = [v4 mainBundle];
+  v7 = [(_NBAsYouTypeFormatter *)self initWithRegionCode:codeCopy bundle:mainBundle];
 
   return v7;
 }
 
-- (_NBAsYouTypeFormatter)initWithRegionCode:(id)a3 bundle:(id)a4
+- (_NBAsYouTypeFormatter)initWithRegionCode:(id)code bundle:(id)bundle
 {
-  v5 = a3;
+  codeCopy = code;
   v6 = [(_NBAsYouTypeFormatter *)self init];
   if (v6)
   {
     v7 = +[_NBPhoneNumberUtil sharedInstance];
     [(_NBAsYouTypeFormatter *)v6 setPhoneUtil_:v7];
 
-    [(_NBAsYouTypeFormatter *)v6 setDefaultCountry_:v5];
-    v8 = [(_NBAsYouTypeFormatter *)v6 defaultCountry];
-    v9 = [(_NBAsYouTypeFormatter *)v6 getMetadataForRegion_:v8];
+    [(_NBAsYouTypeFormatter *)v6 setDefaultCountry_:codeCopy];
+    defaultCountry = [(_NBAsYouTypeFormatter *)v6 defaultCountry];
+    v9 = [(_NBAsYouTypeFormatter *)v6 getMetadataForRegion_:defaultCountry];
     [(_NBAsYouTypeFormatter *)v6 setCurrentMetaData_:v9];
 
-    v10 = [(_NBAsYouTypeFormatter *)v6 currentMetaData];
-    [(_NBAsYouTypeFormatter *)v6 setDefaultMetaData_:v10];
+    currentMetaData = [(_NBAsYouTypeFormatter *)v6 currentMetaData];
+    [(_NBAsYouTypeFormatter *)v6 setDefaultMetaData_:currentMetaData];
   }
 
   return v6;
 }
 
-- (id)getMetadataForRegion_:(id)a3
+- (id)getMetadataForRegion_:(id)region_
 {
-  v4 = a3;
+  region_Copy = region_;
   v5 = objc_alloc_init(_NBMetadataHelper);
-  v6 = [(_NBAsYouTypeFormatter *)self phoneUtil];
-  v7 = [v6 getCountryCodeForRegion:v4];
+  phoneUtil = [(_NBAsYouTypeFormatter *)self phoneUtil];
+  v7 = [phoneUtil getCountryCodeForRegion:region_Copy];
 
-  v8 = [(_NBAsYouTypeFormatter *)self phoneUtil];
-  v9 = [v8 getRegionCodeForCountryCode:v7];
+  phoneUtil2 = [(_NBAsYouTypeFormatter *)self phoneUtil];
+  v9 = [phoneUtil2 getRegionCodeForCountryCode:v7];
 
   v10 = [(_NBMetadataHelper *)v5 getMetadataForRegion:v9];
   v11 = v10;
@@ -161,19 +161,19 @@
 
 - (BOOL)maybeCreateNewTemplate_
 {
-  v3 = [(_NBAsYouTypeFormatter *)self possibleFormats];
-  v4 = [v3 count];
+  possibleFormats = [(_NBAsYouTypeFormatter *)self possibleFormats];
+  v4 = [possibleFormats count];
 
   if (v4)
   {
     v5 = 0;
     while (1)
     {
-      v6 = [(_NBAsYouTypeFormatter *)self possibleFormats];
-      v7 = [v6 nb_safeObjectAtIndex:v5 class:objc_opt_class()];
+      possibleFormats2 = [(_NBAsYouTypeFormatter *)self possibleFormats];
+      v7 = [possibleFormats2 nb_safeObjectAtIndex:v5 class:objc_opt_class()];
 
-      v8 = [v7 pattern];
-      if (![v8 length] || (-[_NBAsYouTypeFormatter currentFormattingPattern](self, "currentFormattingPattern"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", v8), v9, (v10 & 1) != 0))
+      pattern = [v7 pattern];
+      if (![pattern length] || (-[_NBAsYouTypeFormatter currentFormattingPattern](self, "currentFormattingPattern"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", pattern), v9, (v10 & 1) != 0))
       {
         v11 = 0;
         goto LABEL_13;
@@ -190,15 +190,15 @@
       }
     }
 
-    [(_NBAsYouTypeFormatter *)self setCurrentFormattingPattern_:v8];
-    v12 = [v7 nationalPrefixFormattingRule];
-    v13 = [v12 length];
+    [(_NBAsYouTypeFormatter *)self setCurrentFormattingPattern_:pattern];
+    nationalPrefixFormattingRule = [v7 nationalPrefixFormattingRule];
+    v13 = [nationalPrefixFormattingRule length];
 
     if (v13)
     {
-      v14 = [(_NBAsYouTypeFormatter *)self NATIONAL_PREFIX_SEPARATORS_PATTERN];
-      v15 = [v7 nationalPrefixFormattingRule];
-      v16 = [v14 firstMatchInString:v15 options:0 range:{0, v13}];
+      nATIONAL_PREFIX_SEPARATORS_PATTERN = [(_NBAsYouTypeFormatter *)self NATIONAL_PREFIX_SEPARATORS_PATTERN];
+      nationalPrefixFormattingRule2 = [v7 nationalPrefixFormattingRule];
+      v16 = [nATIONAL_PREFIX_SEPARATORS_PATTERN firstMatchInString:nationalPrefixFormattingRule2 options:0 range:{0, v13}];
 
       [(_NBAsYouTypeFormatter *)self setShouldAddSpaceAfterNationalPrefix_:v16 != 0];
     }
@@ -223,22 +223,22 @@ LABEL_7:
   return v11;
 }
 
-- (void)getAvailableFormats_:(id)a3
+- (void)getAvailableFormats_:(id)formats_
 {
-  v26 = a3;
+  formats_Copy = formats_;
   if (-[_NBAsYouTypeFormatter isCompleteNumber](self, "isCompleteNumber") && (-[_NBAsYouTypeFormatter currentMetaData](self, "currentMetaData"), v4 = objc_claimAutoreleasedReturnValue(), [v4 intlNumberFormats], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v4, v6))
   {
-    v7 = [(_NBAsYouTypeFormatter *)self currentMetaData];
-    v8 = [v7 intlNumberFormats];
+    currentMetaData = [(_NBAsYouTypeFormatter *)self currentMetaData];
+    intlNumberFormats = [currentMetaData intlNumberFormats];
   }
 
   else
   {
-    v7 = [(_NBAsYouTypeFormatter *)self currentMetaData];
-    v8 = [v7 numberFormats];
+    currentMetaData = [(_NBAsYouTypeFormatter *)self currentMetaData];
+    intlNumberFormats = [currentMetaData numberFormats];
   }
 
-  v9 = v8;
+  v9 = intlNumberFormats;
 
   v10 = [v9 count];
   if (v10)
@@ -248,17 +248,17 @@ LABEL_7:
     while (1)
     {
       v13 = [v9 nb_safeObjectAtIndex:v12 class:objc_opt_class()];
-      v14 = [(_NBAsYouTypeFormatter *)self currentMetaData];
-      v15 = [v14 nationalPrefix];
-      if (!v15)
+      currentMetaData2 = [(_NBAsYouTypeFormatter *)self currentMetaData];
+      nationalPrefix = [currentMetaData2 nationalPrefix];
+      if (!nationalPrefix)
       {
         break;
       }
 
-      v16 = v15;
-      v17 = [(_NBAsYouTypeFormatter *)self currentMetaData];
-      v18 = [v17 nationalPrefix];
-      v19 = [v18 length];
+      v16 = nationalPrefix;
+      currentMetaData3 = [(_NBAsYouTypeFormatter *)self currentMetaData];
+      nationalPrefix2 = [currentMetaData3 nationalPrefix];
+      v19 = [nationalPrefix2 length];
 
       if (!v19)
       {
@@ -275,9 +275,9 @@ LABEL_7:
         goto LABEL_14;
       }
 
-      v20 = [(_NBAsYouTypeFormatter *)self phoneUtil];
-      v21 = [v13 nationalPrefixFormattingRule];
-      v22 = [v20 formattingRuleHasFirstGroupOnly:v21];
+      phoneUtil = [(_NBAsYouTypeFormatter *)self phoneUtil];
+      nationalPrefixFormattingRule = [v13 nationalPrefixFormattingRule];
+      v22 = [phoneUtil formattingRuleHasFirstGroupOnly:nationalPrefixFormattingRule];
 
       if (v22)
       {
@@ -293,29 +293,29 @@ LABEL_16:
     }
 
 LABEL_14:
-    v23 = [v13 format];
-    v24 = [(_NBAsYouTypeFormatter *)self isFormatEligible_:v23];
+    format = [v13 format];
+    v24 = [(_NBAsYouTypeFormatter *)self isFormatEligible_:format];
 
     if (v24)
     {
-      v25 = [(_NBAsYouTypeFormatter *)self possibleFormats];
-      [v25 addObject:v13];
+      possibleFormats = [(_NBAsYouTypeFormatter *)self possibleFormats];
+      [possibleFormats addObject:v13];
     }
 
     goto LABEL_16;
   }
 
 LABEL_17:
-  [(_NBAsYouTypeFormatter *)self narrowDownPossibleFormats_:v26];
+  [(_NBAsYouTypeFormatter *)self narrowDownPossibleFormats_:formats_Copy];
 }
 
-- (BOOL)isFormatEligible_:(id)a3
+- (BOOL)isFormatEligible_:(id)eligible_
 {
-  v4 = a3;
-  if ([v4 length])
+  eligible_Copy = eligible_;
+  if ([eligible_Copy length])
   {
-    v5 = [(_NBAsYouTypeFormatter *)self ELIGIBLE_FORMAT_PATTERN];
-    v6 = [v5 firstMatchInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
+    eLIGIBLE_FORMAT_PATTERN = [(_NBAsYouTypeFormatter *)self ELIGIBLE_FORMAT_PATTERN];
+    v6 = [eLIGIBLE_FORMAT_PATTERN firstMatchInString:eligible_Copy options:0 range:{0, objc_msgSend(eligible_Copy, "length")}];
 
     v7 = v6 != 0;
   }
@@ -328,13 +328,13 @@ LABEL_17:
   return v7;
 }
 
-- (void)narrowDownPossibleFormats_:(id)a3
+- (void)narrowDownPossibleFormats_:(id)formats_
 {
-  v22 = a3;
+  formats_Copy = formats_;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [v22 length];
-  v6 = [(_NBAsYouTypeFormatter *)self possibleFormats];
-  v7 = [v6 count];
+  v5 = [formats_Copy length];
+  possibleFormats = [(_NBAsYouTypeFormatter *)self possibleFormats];
+  v7 = [possibleFormats count];
 
   if (v7)
   {
@@ -342,19 +342,19 @@ LABEL_17:
     v9 = v5 - 3;
     do
     {
-      v10 = [(_NBAsYouTypeFormatter *)self possibleFormats];
-      v11 = [v10 nb_safeObjectAtIndex:v8 class:objc_opt_class()];
+      possibleFormats2 = [(_NBAsYouTypeFormatter *)self possibleFormats];
+      v11 = [possibleFormats2 nb_safeObjectAtIndex:v8 class:objc_opt_class()];
 
-      v12 = [v11 leadingDigitsPatterns];
-      v13 = [v12 count];
+      leadingDigitsPatterns = [v11 leadingDigitsPatterns];
+      v13 = [leadingDigitsPatterns count];
 
       if (v13)
       {
-        v14 = [v11 leadingDigitsPatterns];
-        [v14 count];
+        leadingDigitsPatterns2 = [v11 leadingDigitsPatterns];
+        [leadingDigitsPatterns2 count];
 
-        v15 = [v11 leadingDigitsPatterns];
-        v16 = [v15 count];
+        leadingDigitsPatterns3 = [v11 leadingDigitsPatterns];
+        v16 = [leadingDigitsPatterns3 count];
 
         if (v9 >= v16 - 1)
         {
@@ -366,11 +366,11 @@ LABEL_17:
           v17 = v9;
         }
 
-        v18 = [v11 leadingDigitsPatterns];
-        v19 = [v18 nb_safeStringAtIndex:v17];
+        leadingDigitsPatterns4 = [v11 leadingDigitsPatterns];
+        v19 = [leadingDigitsPatterns4 nb_safeStringAtIndex:v17];
 
-        v20 = [(_NBAsYouTypeFormatter *)self phoneUtil];
-        v21 = [v20 stringPositionByRegex:v22 regex:v19];
+        phoneUtil = [(_NBAsYouTypeFormatter *)self phoneUtil];
+        v21 = [phoneUtil stringPositionByRegex:formats_Copy regex:v19];
 
         if (!v21)
         {
@@ -392,30 +392,30 @@ LABEL_17:
   [(_NBAsYouTypeFormatter *)self setPossibleFormats_:v4];
 }
 
-- (BOOL)createFormattingTemplate_:(id)a3
+- (BOOL)createFormattingTemplate_:(id)template_
 {
-  v4 = a3;
-  v5 = [v4 pattern];
-  if ([v5 rangeOfString:@"|"] == 0x7FFFFFFFFFFFFFFFLL)
+  template_Copy = template_;
+  pattern = [template_Copy pattern];
+  if ([pattern rangeOfString:@"|"] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(_NBAsYouTypeFormatter *)self CHARACTER_CLASS_PATTERN];
-    v7 = [v6 stringByReplacingMatchesInString:v5 options:0 range:0 withTemplate:{objc_msgSend(v5, "length"), @"\\\\d"}];
+    cHARACTER_CLASS_PATTERN = [(_NBAsYouTypeFormatter *)self CHARACTER_CLASS_PATTERN];
+    v7 = [cHARACTER_CLASS_PATTERN stringByReplacingMatchesInString:pattern options:0 range:0 withTemplate:{objc_msgSend(pattern, "length"), @"\\\\d"}];
 
-    v8 = [(_NBAsYouTypeFormatter *)self STANDALONE_DIGIT_PATTERN];
-    v5 = [v8 stringByReplacingMatchesInString:v7 options:0 range:0 withTemplate:{objc_msgSend(v7, "length"), @"\\\\d"}];
+    sTANDALONE_DIGIT_PATTERN = [(_NBAsYouTypeFormatter *)self STANDALONE_DIGIT_PATTERN];
+    pattern = [sTANDALONE_DIGIT_PATTERN stringByReplacingMatchesInString:v7 options:0 range:0 withTemplate:{objc_msgSend(v7, "length"), @"\\\\d"}];
 
-    v9 = [(_NBAsYouTypeFormatter *)self formattingTemplate];
-    [v9 setString:&stru_285461708];
+    formattingTemplate = [(_NBAsYouTypeFormatter *)self formattingTemplate];
+    [formattingTemplate setString:&stru_285461708];
 
-    v10 = [v4 format];
-    v11 = [(_NBAsYouTypeFormatter *)self getFormattingTemplate_:v5 numberFormat:v10];
+    format = [template_Copy format];
+    v11 = [(_NBAsYouTypeFormatter *)self getFormattingTemplate_:pattern numberFormat:format];
 
     v12 = [v11 length];
     v13 = v12 != 0;
     if (v12)
     {
-      v14 = [(_NBAsYouTypeFormatter *)self formattingTemplate];
-      [v14 appendString:v11];
+      formattingTemplate2 = [(_NBAsYouTypeFormatter *)self formattingTemplate];
+      [formattingTemplate2 appendString:v11];
     }
   }
 
@@ -427,25 +427,25 @@ LABEL_17:
   return v13;
 }
 
-- (id)getFormattingTemplate_:(id)a3 numberFormat:(id)a4
+- (id)getFormattingTemplate_:(id)template_ numberFormat:(id)format
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_NBAsYouTypeFormatter *)self phoneUtil];
-  v9 = [v8 matchedStringByRegex:@"999999999999999" regex:v6];
+  template_Copy = template_;
+  formatCopy = format;
+  phoneUtil = [(_NBAsYouTypeFormatter *)self phoneUtil];
+  v9 = [phoneUtil matchedStringByRegex:@"999999999999999" regex:template_Copy];
 
   v10 = [v9 nb_safeStringAtIndex:0];
   v11 = [v10 length];
-  v12 = [(_NBAsYouTypeFormatter *)self nationalNumber];
-  v13 = [v12 length];
+  nationalNumber = [(_NBAsYouTypeFormatter *)self nationalNumber];
+  v13 = [nationalNumber length];
 
   if (v11 >= v13)
   {
-    v15 = [(_NBAsYouTypeFormatter *)self phoneUtil];
-    v16 = [v15 replaceStringByRegex:v10 regex:v6 withTemplate:v7];
+    phoneUtil2 = [(_NBAsYouTypeFormatter *)self phoneUtil];
+    v16 = [phoneUtil2 replaceStringByRegex:v10 regex:template_Copy withTemplate:formatCopy];
 
-    v17 = [(_NBAsYouTypeFormatter *)self phoneUtil];
-    v14 = [v17 replaceStringByRegex:v16 regex:@"9" withTemplate:@" "];
+    phoneUtil3 = [(_NBAsYouTypeFormatter *)self phoneUtil];
+    v14 = [phoneUtil3 replaceStringByRegex:v16 regex:@"9" withTemplate:@" "];
   }
 
   else
@@ -459,23 +459,23 @@ LABEL_17:
 - (void)clear
 {
   [(_NBAsYouTypeFormatter *)self setCurrentOutput_:&stru_285461708];
-  v3 = [(_NBAsYouTypeFormatter *)self accruedInput];
-  [v3 setString:&stru_285461708];
+  accruedInput = [(_NBAsYouTypeFormatter *)self accruedInput];
+  [accruedInput setString:&stru_285461708];
 
-  v4 = [(_NBAsYouTypeFormatter *)self accruedInputWithoutFormatting];
-  [v4 setString:&stru_285461708];
+  accruedInputWithoutFormatting = [(_NBAsYouTypeFormatter *)self accruedInputWithoutFormatting];
+  [accruedInputWithoutFormatting setString:&stru_285461708];
 
-  v5 = [(_NBAsYouTypeFormatter *)self formattingTemplate];
-  [v5 setString:&stru_285461708];
+  formattingTemplate = [(_NBAsYouTypeFormatter *)self formattingTemplate];
+  [formattingTemplate setString:&stru_285461708];
 
   [(_NBAsYouTypeFormatter *)self setLastMatchPosition_:0];
   [(_NBAsYouTypeFormatter *)self setCurrentFormattingPattern_:&stru_285461708];
-  v6 = [(_NBAsYouTypeFormatter *)self prefixBeforeNationalNumber];
-  [v6 setString:&stru_285461708];
+  prefixBeforeNationalNumber = [(_NBAsYouTypeFormatter *)self prefixBeforeNationalNumber];
+  [prefixBeforeNationalNumber setString:&stru_285461708];
 
   [(_NBAsYouTypeFormatter *)self setNationalPrefixExtracted_:&stru_285461708];
-  v7 = [(_NBAsYouTypeFormatter *)self nationalNumber];
-  [v7 setString:&stru_285461708];
+  nationalNumber = [(_NBAsYouTypeFormatter *)self nationalNumber];
+  [nationalNumber setString:&stru_285461708];
 
   [(_NBAsYouTypeFormatter *)self setAbleToFormat_:1];
   [(_NBAsYouTypeFormatter *)self setInputHasFormatting_:0];
@@ -483,25 +483,25 @@ LABEL_17:
   [(_NBAsYouTypeFormatter *)self setOriginalPosition_:0];
   [(_NBAsYouTypeFormatter *)self setIsCompleteNumber_:0];
   [(_NBAsYouTypeFormatter *)self setIsExpectingCountryCallingCode_:0];
-  v8 = [(_NBAsYouTypeFormatter *)self possibleFormats];
-  [v8 removeAllObjects];
+  possibleFormats = [(_NBAsYouTypeFormatter *)self possibleFormats];
+  [possibleFormats removeAllObjects];
 
   [(_NBAsYouTypeFormatter *)self setShouldAddSpaceAfterNationalPrefix_:0];
-  v9 = [(_NBAsYouTypeFormatter *)self currentMetaData];
-  v10 = [(_NBAsYouTypeFormatter *)self defaultMetaData];
+  currentMetaData = [(_NBAsYouTypeFormatter *)self currentMetaData];
+  defaultMetaData = [(_NBAsYouTypeFormatter *)self defaultMetaData];
 
-  if (v9 != v10)
+  if (currentMetaData != defaultMetaData)
   {
-    v12 = [(_NBAsYouTypeFormatter *)self defaultCountry];
-    v11 = [(_NBAsYouTypeFormatter *)self getMetadataForRegion_:v12];
+    defaultCountry = [(_NBAsYouTypeFormatter *)self defaultCountry];
+    v11 = [(_NBAsYouTypeFormatter *)self getMetadataForRegion_:defaultCountry];
     [(_NBAsYouTypeFormatter *)self setCurrentMetaData_:v11];
   }
 }
 
 - (id)removeLastDigitAndRememberPosition
 {
-  v3 = [(_NBAsYouTypeFormatter *)self accruedInput];
-  v4 = [v3 copy];
+  accruedInput = [(_NBAsYouTypeFormatter *)self accruedInput];
+  v4 = [accruedInput copy];
 
   [(_NBAsYouTypeFormatter *)self clear];
   v5 = [v4 length];
@@ -542,8 +542,8 @@ LABEL_17:
 
 - (id)removeLastDigit
 {
-  v3 = [(_NBAsYouTypeFormatter *)self accruedInput];
-  v4 = [v3 copy];
+  accruedInput = [(_NBAsYouTypeFormatter *)self accruedInput];
+  v4 = [accruedInput copy];
 
   [(_NBAsYouTypeFormatter *)self clear];
   v5 = [v4 length];
@@ -582,11 +582,11 @@ LABEL_17:
   return v11;
 }
 
-- (id)inputStringAndRememberPosition:(id)a3
+- (id)inputStringAndRememberPosition:(id)position
 {
-  v4 = a3;
+  positionCopy = position;
   [(_NBAsYouTypeFormatter *)self clear];
-  v5 = [v4 length];
+  v5 = [positionCopy length];
   if (v5)
   {
     v6 = v5;
@@ -594,7 +594,7 @@ LABEL_17:
     v8 = &stru_285461708;
     do
     {
-      v9 = [v4 substringWithRange:{v7, 1}];
+      v9 = [positionCopy substringWithRange:{v7, 1}];
       v10 = [(_NBAsYouTypeFormatter *)self inputDigitAndRememberPosition:v9];
 
       ++v7;
@@ -612,11 +612,11 @@ LABEL_17:
   return v10;
 }
 
-- (id)inputString:(id)a3
+- (id)inputString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   [(_NBAsYouTypeFormatter *)self clear];
-  v5 = [v4 length];
+  v5 = [stringCopy length];
   if (v5)
   {
     v6 = v5;
@@ -624,7 +624,7 @@ LABEL_17:
     v8 = &stru_285461708;
     do
     {
-      v9 = [v4 substringWithRange:{v7, 1}];
+      v9 = [stringCopy substringWithRange:{v7, 1}];
       v10 = [(_NBAsYouTypeFormatter *)self inputDigit:v9];
 
       ++v7;
@@ -642,94 +642,94 @@ LABEL_17:
   return v10;
 }
 
-- (id)inputDigit:(id)a3
+- (id)inputDigit:(id)digit
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  digitCopy = digit;
+  v5 = digitCopy;
+  if (digitCopy && [digitCopy length])
   {
     v6 = [(_NBAsYouTypeFormatter *)self inputDigitWithOptionToRememberPosition_:v5 rememberPosition:0];
     [(_NBAsYouTypeFormatter *)self setCurrentOutput_:v6];
   }
 
-  v7 = [(_NBAsYouTypeFormatter *)self currentOutput];
+  currentOutput = [(_NBAsYouTypeFormatter *)self currentOutput];
 
-  return v7;
+  return currentOutput;
 }
 
-- (id)inputDigitAndRememberPosition:(id)a3
+- (id)inputDigitAndRememberPosition:(id)position
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  positionCopy = position;
+  v5 = positionCopy;
+  if (positionCopy && [positionCopy length])
   {
     v6 = [(_NBAsYouTypeFormatter *)self inputDigitWithOptionToRememberPosition_:v5 rememberPosition:1];
     [(_NBAsYouTypeFormatter *)self setCurrentOutput_:v6];
   }
 
-  v7 = [(_NBAsYouTypeFormatter *)self currentOutput];
+  currentOutput = [(_NBAsYouTypeFormatter *)self currentOutput];
 
-  return v7;
+  return currentOutput;
 }
 
 - (id)attemptToChoosePatternWithPrefixExtracted_
 {
   [(_NBAsYouTypeFormatter *)self setAbleToFormat_:1];
   [(_NBAsYouTypeFormatter *)self setIsExpectingCountryCallingCode_:0];
-  v3 = [(_NBAsYouTypeFormatter *)self possibleFormats];
-  [v3 removeAllObjects];
+  possibleFormats = [(_NBAsYouTypeFormatter *)self possibleFormats];
+  [possibleFormats removeAllObjects];
 
   return [(_NBAsYouTypeFormatter *)self attemptToChooseFormattingPattern];
 }
 
 - (BOOL)ableToExtractLongerNdd_
 {
-  v3 = [(_NBAsYouTypeFormatter *)self nationalPrefixExtracted];
-  v4 = [v3 length];
+  nationalPrefixExtracted = [(_NBAsYouTypeFormatter *)self nationalPrefixExtracted];
+  v4 = [nationalPrefixExtracted length];
 
   if (v4)
   {
     v5 = MEMORY[0x277CCACA8];
-    v6 = [(_NBAsYouTypeFormatter *)self nationalNumber];
-    v7 = [v5 stringWithString:v6];
+    nationalNumber = [(_NBAsYouTypeFormatter *)self nationalNumber];
+    v7 = [v5 stringWithString:nationalNumber];
 
-    v8 = [(_NBAsYouTypeFormatter *)self nationalPrefixExtracted];
-    v9 = [v8 mutableCopy];
+    nationalPrefixExtracted2 = [(_NBAsYouTypeFormatter *)self nationalPrefixExtracted];
+    v9 = [nationalPrefixExtracted2 mutableCopy];
     [(_NBAsYouTypeFormatter *)self setNationalNumber_:v9];
 
-    v10 = [(_NBAsYouTypeFormatter *)self nationalNumber];
-    [v10 appendString:v7];
+    nationalNumber2 = [(_NBAsYouTypeFormatter *)self nationalNumber];
+    [nationalNumber2 appendString:v7];
 
-    v11 = [(_NBAsYouTypeFormatter *)self prefixBeforeNationalNumber];
-    v12 = [v11 copy];
+    prefixBeforeNationalNumber = [(_NBAsYouTypeFormatter *)self prefixBeforeNationalNumber];
+    v12 = [prefixBeforeNationalNumber copy];
 
-    v13 = [(_NBAsYouTypeFormatter *)self nationalPrefixExtracted];
-    v14 = [v12 rangeOfString:v13 options:4];
+    nationalPrefixExtracted3 = [(_NBAsYouTypeFormatter *)self nationalPrefixExtracted];
+    v14 = [v12 rangeOfString:nationalPrefixExtracted3 options:4];
 
     v15 = [v12 substringWithRange:{0, v14}];
     v16 = [v15 mutableCopy];
     [(_NBAsYouTypeFormatter *)self setPrefixBeforeNationalNumber_:v16];
   }
 
-  v17 = [(_NBAsYouTypeFormatter *)self nationalPrefixExtracted];
-  v18 = [(_NBAsYouTypeFormatter *)self removeNationalPrefixFromNationalNumber];
-  v19 = v17 != v18;
+  nationalPrefixExtracted4 = [(_NBAsYouTypeFormatter *)self nationalPrefixExtracted];
+  removeNationalPrefixFromNationalNumber = [(_NBAsYouTypeFormatter *)self removeNationalPrefixFromNationalNumber];
+  v19 = nationalPrefixExtracted4 != removeNationalPrefixFromNationalNumber;
 
   return v19;
 }
 
-- (BOOL)isDigitOrLeadingPlusSign_:(id)a3
+- (BOOL)isDigitOrLeadingPlusSign_:(id)sign_
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [v4 stringWithFormat:@"([%@])", 0x285461688];
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]+", 0x285461668];
-  v8 = [(_NBAsYouTypeFormatter *)self phoneUtil];
-  v9 = [v8 matchesByRegex:v5 regex:v6];
+  sign_Copy = sign_;
+  0x285461688 = [v4 stringWithFormat:@"([%@])", 0x285461688];
+  0x285461668 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]+", 0x285461668];
+  phoneUtil = [(_NBAsYouTypeFormatter *)self phoneUtil];
+  v9 = [phoneUtil matchesByRegex:sign_Copy regex:0x285461688];
   v10 = [v9 count];
 
-  v11 = [(_NBAsYouTypeFormatter *)self phoneUtil];
-  v12 = [v11 matchesByRegex:v5 regex:v7];
+  phoneUtil2 = [(_NBAsYouTypeFormatter *)self phoneUtil];
+  v12 = [phoneUtil2 matchesByRegex:sign_Copy regex:0x285461668];
 
   v13 = [v12 count];
   if (v10)
@@ -739,8 +739,8 @@ LABEL_17:
 
   else
   {
-    v15 = [(_NBAsYouTypeFormatter *)self accruedInput];
-    v14 = [v15 length] == 1 && v13 != 0;
+    accruedInput = [(_NBAsYouTypeFormatter *)self accruedInput];
+    v14 = [accruedInput length] == 1 && v13 != 0;
   }
 
   return v14;
@@ -749,24 +749,24 @@ LABEL_17:
 - (id)attemptToFormatAccruedDigits_
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(_NBAsYouTypeFormatter *)self nationalNumber];
-  v26 = [v3 stringWithString:v4];
+  nationalNumber = [(_NBAsYouTypeFormatter *)self nationalNumber];
+  v26 = [v3 stringWithString:nationalNumber];
 
-  v5 = [(_NBAsYouTypeFormatter *)self possibleFormats];
-  v6 = [v5 count];
+  possibleFormats = [(_NBAsYouTypeFormatter *)self possibleFormats];
+  v6 = [possibleFormats count];
 
   if (v6)
   {
     v7 = 0;
     while (1)
     {
-      v8 = [(_NBAsYouTypeFormatter *)self possibleFormats];
-      v9 = [v8 objectAtIndexedSubscript:v7];
+      possibleFormats2 = [(_NBAsYouTypeFormatter *)self possibleFormats];
+      v9 = [possibleFormats2 objectAtIndexedSubscript:v7];
 
-      v10 = [v9 pattern];
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"^(?:%@)$", v10];
-      v12 = [(_NBAsYouTypeFormatter *)self phoneUtil];
-      v13 = [v12 matchesByRegex:v26 regex:v11];
+      pattern = [v9 pattern];
+      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"^(?:%@)$", pattern];
+      phoneUtil = [(_NBAsYouTypeFormatter *)self phoneUtil];
+      v13 = [phoneUtil matchesByRegex:v26 regex:v11];
       v14 = [v13 count];
 
       if (v14)
@@ -780,15 +780,15 @@ LABEL_17:
       }
     }
 
-    v16 = [v9 nationalPrefixFormattingRule];
-    v17 = [v16 length];
+    nationalPrefixFormattingRule = [v9 nationalPrefixFormattingRule];
+    v17 = [nationalPrefixFormattingRule length];
 
     if (v17)
     {
-      v18 = [(_NBAsYouTypeFormatter *)self NATIONAL_PREFIX_SEPARATORS_PATTERN];
-      v19 = [v9 nationalPrefixFormattingRule];
-      v20 = [v9 nationalPrefixFormattingRule];
-      v21 = [v18 matchesInString:v19 options:0 range:{0, objc_msgSend(v20, "length")}];
+      nATIONAL_PREFIX_SEPARATORS_PATTERN = [(_NBAsYouTypeFormatter *)self NATIONAL_PREFIX_SEPARATORS_PATTERN];
+      nationalPrefixFormattingRule2 = [v9 nationalPrefixFormattingRule];
+      nationalPrefixFormattingRule3 = [v9 nationalPrefixFormattingRule];
+      v21 = [nATIONAL_PREFIX_SEPARATORS_PATTERN matchesInString:nationalPrefixFormattingRule2 options:0 range:{0, objc_msgSend(nationalPrefixFormattingRule3, "length")}];
 
       -[_NBAsYouTypeFormatter setShouldAddSpaceAfterNationalPrefix_:](self, "setShouldAddSpaceAfterNationalPrefix_:", [v21 count] != 0);
     }
@@ -798,9 +798,9 @@ LABEL_17:
       [(_NBAsYouTypeFormatter *)self setShouldAddSpaceAfterNationalPrefix_:0];
     }
 
-    v22 = [(_NBAsYouTypeFormatter *)self phoneUtil];
-    v23 = [v9 format];
-    v24 = [v22 replaceStringByRegex:v26 regex:v10 withTemplate:v23];
+    phoneUtil2 = [(_NBAsYouTypeFormatter *)self phoneUtil];
+    format = [v9 format];
+    v24 = [phoneUtil2 replaceStringByRegex:v26 regex:pattern withTemplate:format];
 
     v15 = [(_NBAsYouTypeFormatter *)self appendNationalNumber_:v24];
   }
@@ -814,25 +814,25 @@ LABEL_5:
   return v15;
 }
 
-- (id)appendNationalNumber_:(id)a3
+- (id)appendNationalNumber_:(id)number_
 {
-  v4 = a3;
-  v5 = [(_NBAsYouTypeFormatter *)self prefixBeforeNationalNumber];
-  v6 = [v5 length];
+  number_Copy = number_;
+  prefixBeforeNationalNumber = [(_NBAsYouTypeFormatter *)self prefixBeforeNationalNumber];
+  v6 = [prefixBeforeNationalNumber length];
 
   v7 = [@" " characterAtIndex:0];
   if (-[_NBAsYouTypeFormatter shouldAddSpaceAfterNationalPrefix](self, "shouldAddSpaceAfterNationalPrefix") && v6 && (-[_NBAsYouTypeFormatter prefixBeforeNationalNumber](self, "prefixBeforeNationalNumber"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 characterAtIndex:v6 - 1], v8, v9 != v7))
   {
     v12 = MEMORY[0x277CCACA8];
-    v11 = [(_NBAsYouTypeFormatter *)self prefixBeforeNationalNumber];
-    [v12 stringWithFormat:@"%@%@%@", v11, @" ", v4];
+    prefixBeforeNationalNumber2 = [(_NBAsYouTypeFormatter *)self prefixBeforeNationalNumber];
+    [v12 stringWithFormat:@"%@%@%@", prefixBeforeNationalNumber2, @" ", number_Copy];
   }
 
   else
   {
     v10 = MEMORY[0x277CCACA8];
-    v11 = [(_NBAsYouTypeFormatter *)self prefixBeforeNationalNumber];
-    [v10 stringWithFormat:@"%@%@", v11, v4, v15];
+    prefixBeforeNationalNumber2 = [(_NBAsYouTypeFormatter *)self prefixBeforeNationalNumber];
+    [v10 stringWithFormat:@"%@%@", prefixBeforeNationalNumber2, number_Copy, v15];
   }
   v13 = ;
 
@@ -843,21 +843,21 @@ LABEL_5:
 {
   if (([(_NBAsYouTypeFormatter *)self ableToFormat]& 1) != 0)
   {
-    v3 = [(_NBAsYouTypeFormatter *)self accruedInputWithoutFormatting];
-    v4 = [(_NBAsYouTypeFormatter *)self currentOutput];
+    accruedInputWithoutFormatting = [(_NBAsYouTypeFormatter *)self accruedInputWithoutFormatting];
+    currentOutput = [(_NBAsYouTypeFormatter *)self currentOutput];
     if ([(_NBAsYouTypeFormatter *)self positionToRemember])
     {
       v5 = 0;
       v6 = 0;
       do
       {
-        if (v6 >= [v4 length])
+        if (v6 >= [currentOutput length])
         {
           break;
         }
 
-        v7 = [v3 characterAtIndex:v5];
-        if (v7 == [v4 characterAtIndex:v6])
+        v7 = [accruedInputWithoutFormatting characterAtIndex:v5];
+        if (v7 == [currentOutput characterAtIndex:v6])
         {
           ++v5;
         }
@@ -885,8 +885,8 @@ LABEL_5:
 
 - (id)attemptToChooseFormattingPattern_
 {
-  v3 = [(_NBAsYouTypeFormatter *)self nationalNumber];
-  v4 = [v3 copy];
+  nationalNumber = [(_NBAsYouTypeFormatter *)self nationalNumber];
+  v4 = [nationalNumber copy];
 
   if ([v4 length] < 3)
   {
@@ -896,10 +896,10 @@ LABEL_5:
   else
   {
     [(_NBAsYouTypeFormatter *)self getAvailableFormats_:v4];
-    v5 = [(_NBAsYouTypeFormatter *)self attemptToFormatAccruedDigits];
-    if ([v5 length])
+    attemptToFormatAccruedDigits = [(_NBAsYouTypeFormatter *)self attemptToFormatAccruedDigits];
+    if ([attemptToFormatAccruedDigits length])
     {
-      v6 = v5;
+      v6 = attemptToFormatAccruedDigits;
     }
 
     else
@@ -924,8 +924,8 @@ LABEL_5:
 
 - (id)inputAccruedNationalNumber_
 {
-  v3 = [(_NBAsYouTypeFormatter *)self nationalNumber];
-  v4 = [v3 copy];
+  nationalNumber = [(_NBAsYouTypeFormatter *)self nationalNumber];
+  v4 = [nationalNumber copy];
 
   v5 = [v4 length];
   if (v5)
@@ -952,30 +952,30 @@ LABEL_5:
     {
       [(_NBAsYouTypeFormatter *)self accruedInput];
     }
-    v11 = ;
+    prefixBeforeNationalNumber = ;
   }
 
   else
   {
-    v11 = [(_NBAsYouTypeFormatter *)self prefixBeforeNationalNumber];
+    prefixBeforeNationalNumber = [(_NBAsYouTypeFormatter *)self prefixBeforeNationalNumber];
   }
 
-  return v11;
+  return prefixBeforeNationalNumber;
 }
 
 - (BOOL)isNanpaNumberWithNationalPrefix_
 {
-  v3 = [(_NBAsYouTypeFormatter *)self currentMetaData];
-  v4 = [v3 countryCode];
-  v5 = [v4 isEqual:&unk_285464A88];
+  currentMetaData = [(_NBAsYouTypeFormatter *)self currentMetaData];
+  countryCode = [currentMetaData countryCode];
+  v5 = [countryCode isEqual:&unk_285464A88];
 
   if (!v5)
   {
     return 0;
   }
 
-  v6 = [(_NBAsYouTypeFormatter *)self nationalNumber];
-  v7 = [v6 copy];
+  nationalNumber = [(_NBAsYouTypeFormatter *)self nationalNumber];
+  v7 = [nationalNumber copy];
 
   v8 = [v7 characterAtIndex:0] == 49 && objc_msgSend(v7, "characterAtIndex:", 1) != 48 && objc_msgSend(v7, "characterAtIndex:", 1) != 49;
   return v8;
@@ -983,84 +983,84 @@ LABEL_5:
 
 - (id)removeNationalPrefixFromNationalNumber_
 {
-  v3 = [(_NBAsYouTypeFormatter *)self nationalNumber];
-  v4 = [v3 copy];
+  nationalNumber = [(_NBAsYouTypeFormatter *)self nationalNumber];
+  v4 = [nationalNumber copy];
 
   if ([(_NBAsYouTypeFormatter *)self isNanpaNumberWithNationalPrefix])
   {
-    v5 = [(_NBAsYouTypeFormatter *)self prefixBeforeNationalNumber];
-    [v5 appendFormat:@"1%@", @" "];
+    prefixBeforeNationalNumber = [(_NBAsYouTypeFormatter *)self prefixBeforeNationalNumber];
+    [prefixBeforeNationalNumber appendFormat:@"1%@", @" "];
 
-    v6 = 1;
+    nationalPrefixForParsing = 1;
     [(_NBAsYouTypeFormatter *)self setIsCompleteNumber_:1];
     goto LABEL_13;
   }
 
-  v7 = [(_NBAsYouTypeFormatter *)self currentMetaData];
-  v6 = [v7 nationalPrefixForParsing];
-  if (v6)
+  currentMetaData = [(_NBAsYouTypeFormatter *)self currentMetaData];
+  nationalPrefixForParsing = [currentMetaData nationalPrefixForParsing];
+  if (nationalPrefixForParsing)
   {
-    v8 = [(_NBAsYouTypeFormatter *)self currentMetaData];
-    v9 = [v8 nationalPrefixForParsing];
-    v10 = [v9 length];
+    currentMetaData2 = [(_NBAsYouTypeFormatter *)self currentMetaData];
+    nationalPrefixForParsing2 = [currentMetaData2 nationalPrefixForParsing];
+    v10 = [nationalPrefixForParsing2 length];
 
     if (!v10)
     {
-      v6 = 0;
+      nationalPrefixForParsing = 0;
       goto LABEL_13;
     }
 
     v11 = MEMORY[0x277CCACA8];
-    v12 = [(_NBAsYouTypeFormatter *)self currentMetaData];
-    v13 = [v12 nationalPrefixForParsing];
-    v7 = [v11 stringWithFormat:@"^(?:%@)", v13];
+    currentMetaData3 = [(_NBAsYouTypeFormatter *)self currentMetaData];
+    nationalPrefixForParsing3 = [currentMetaData3 nationalPrefixForParsing];
+    currentMetaData = [v11 stringWithFormat:@"^(?:%@)", nationalPrefixForParsing3];
 
-    v14 = [(_NBAsYouTypeFormatter *)self phoneUtil];
-    v15 = [v14 matchedStringByRegex:v4 regex:v7];
+    phoneUtil = [(_NBAsYouTypeFormatter *)self phoneUtil];
+    v15 = [phoneUtil matchedStringByRegex:v4 regex:currentMetaData];
 
     v16 = [v15 nb_safeStringAtIndex:0];
     v17 = v16;
-    v6 = 0;
+    nationalPrefixForParsing = 0;
     if (v15 && v16)
     {
       if ([v16 length])
       {
         [(_NBAsYouTypeFormatter *)self setIsCompleteNumber_:1];
-        v6 = [v17 length];
-        v18 = [(_NBAsYouTypeFormatter *)self prefixBeforeNationalNumber];
-        v19 = [v4 substringWithRange:{0, v6}];
-        [v18 appendString:v19];
+        nationalPrefixForParsing = [v17 length];
+        prefixBeforeNationalNumber2 = [(_NBAsYouTypeFormatter *)self prefixBeforeNationalNumber];
+        v19 = [v4 substringWithRange:{0, nationalPrefixForParsing}];
+        [prefixBeforeNationalNumber2 appendString:v19];
       }
 
       else
       {
-        v6 = 0;
+        nationalPrefixForParsing = 0;
       }
     }
   }
 
 LABEL_13:
-  v20 = [v4 substringFromIndex:v6];
+  v20 = [v4 substringFromIndex:nationalPrefixForParsing];
   v21 = [v20 mutableCopy];
   [(_NBAsYouTypeFormatter *)self setNationalNumber_:v21];
 
-  v22 = [v4 substringWithRange:{0, v6}];
+  v22 = [v4 substringWithRange:{0, nationalPrefixForParsing}];
 
   return v22;
 }
 
 - (BOOL)attemptToExtractIdd_
 {
-  v3 = [(_NBAsYouTypeFormatter *)self accruedInputWithoutFormatting];
-  v4 = [v3 copy];
+  accruedInputWithoutFormatting = [(_NBAsYouTypeFormatter *)self accruedInputWithoutFormatting];
+  v4 = [accruedInputWithoutFormatting copy];
 
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(_NBAsYouTypeFormatter *)self currentMetaData];
-  v7 = [v6 internationalPrefix];
-  v8 = [v5 stringWithFormat:@"^(?:\\+|%@)", v7];
+  currentMetaData = [(_NBAsYouTypeFormatter *)self currentMetaData];
+  internationalPrefix = [currentMetaData internationalPrefix];
+  v8 = [v5 stringWithFormat:@"^(?:\\+|%@)", internationalPrefix];
 
-  v9 = [(_NBAsYouTypeFormatter *)self phoneUtil];
-  v10 = [v9 matchedStringByRegex:v4 regex:v8];
+  phoneUtil = [(_NBAsYouTypeFormatter *)self phoneUtil];
+  v10 = [phoneUtil matchedStringByRegex:v4 regex:v8];
 
   v11 = [v10 nb_safeStringAtIndex:0];
   v12 = v11;
@@ -1082,8 +1082,8 @@ LABEL_13:
 
       if ([v4 characterAtIndex:0] != 43)
       {
-        v19 = [(_NBAsYouTypeFormatter *)self prefixBeforeNationalNumber];
-        [v19 appendString:@" "];
+        prefixBeforeNationalNumber = [(_NBAsYouTypeFormatter *)self prefixBeforeNationalNumber];
+        [prefixBeforeNationalNumber appendString:@" "];
       }
     }
 
@@ -1098,15 +1098,15 @@ LABEL_13:
 
 - (BOOL)attemptToExtractCountryCallingCode_
 {
-  v3 = [(_NBAsYouTypeFormatter *)self nationalNumber];
-  v4 = [v3 length];
+  nationalNumber = [(_NBAsYouTypeFormatter *)self nationalNumber];
+  v4 = [nationalNumber length];
 
   if (v4)
   {
-    v5 = [(_NBAsYouTypeFormatter *)self phoneUtil];
-    v6 = [(_NBAsYouTypeFormatter *)self nationalNumber];
+    phoneUtil = [(_NBAsYouTypeFormatter *)self phoneUtil];
+    nationalNumber2 = [(_NBAsYouTypeFormatter *)self nationalNumber];
     v19 = &stru_285461708;
-    v7 = [v5 extractCountryCode:v6 nationalNumber:&v19];
+    v7 = [phoneUtil extractCountryCode:nationalNumber2 nationalNumber:&v19];
     v8 = v19;
 
     v9 = [v7 isEqualToNumber:&unk_285464AA0];
@@ -1121,8 +1121,8 @@ LABEL_10:
     v10 = [(__CFString *)v8 mutableCopy];
     [(_NBAsYouTypeFormatter *)self setNationalNumber_:v10];
 
-    v11 = [(_NBAsYouTypeFormatter *)self phoneUtil];
-    v12 = [v11 getRegionCodeForCountryCode:v7];
+    phoneUtil2 = [(_NBAsYouTypeFormatter *)self phoneUtil];
+    v12 = [phoneUtil2 getRegionCodeForCountryCode:v7];
 
     if ([@"001" isEqualToString:v12])
     {
@@ -1133,13 +1133,13 @@ LABEL_10:
 
     else
     {
-      v16 = [(_NBAsYouTypeFormatter *)self defaultCountry];
+      defaultCountry = [(_NBAsYouTypeFormatter *)self defaultCountry];
 
-      if (v12 == v16)
+      if (v12 == defaultCountry)
       {
 LABEL_9:
-        v17 = [(_NBAsYouTypeFormatter *)self prefixBeforeNationalNumber];
-        [v17 appendFormat:@"%@%@", v7, @" "];
+        prefixBeforeNationalNumber = [(_NBAsYouTypeFormatter *)self prefixBeforeNationalNumber];
+        [prefixBeforeNationalNumber appendFormat:@"%@%@", v7, @" "];
 
         goto LABEL_10;
       }
@@ -1154,21 +1154,21 @@ LABEL_9:
   return 0;
 }
 
-- (id)normalizeAndAccrueDigitsAndPlusSign_:(id)a3 rememberPosition:(BOOL)a4
+- (id)normalizeAndAccrueDigitsAndPlusSign_:(id)sign_ rememberPosition:(BOOL)position
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 isEqualToString:@"+"])
+  positionCopy = position;
+  sign_Copy = sign_;
+  if ([sign_Copy isEqualToString:@"+"])
   {
-    v7 = v6;
-    v8 = [(_NBAsYouTypeFormatter *)self accruedInputWithoutFormatting];
+    v7 = sign_Copy;
+    accruedInputWithoutFormatting = [(_NBAsYouTypeFormatter *)self accruedInputWithoutFormatting];
   }
 
   else
   {
-    v9 = [(_NBAsYouTypeFormatter *)self phoneUtil];
-    v10 = [v9 DIGIT_MAPPINGS];
-    v7 = [v10 objectForKey:v6];
+    phoneUtil = [(_NBAsYouTypeFormatter *)self phoneUtil];
+    dIGIT_MAPPINGS = [phoneUtil DIGIT_MAPPINGS];
+    v7 = [dIGIT_MAPPINGS objectForKey:sign_Copy];
 
     if (!v7)
     {
@@ -1176,19 +1176,19 @@ LABEL_9:
       goto LABEL_8;
     }
 
-    v11 = [(_NBAsYouTypeFormatter *)self accruedInputWithoutFormatting];
-    [v11 appendString:v7];
+    accruedInputWithoutFormatting2 = [(_NBAsYouTypeFormatter *)self accruedInputWithoutFormatting];
+    [accruedInputWithoutFormatting2 appendString:v7];
 
-    v8 = [(_NBAsYouTypeFormatter *)self nationalNumber];
+    accruedInputWithoutFormatting = [(_NBAsYouTypeFormatter *)self nationalNumber];
   }
 
-  v12 = v8;
-  [v8 appendString:v7];
+  v12 = accruedInputWithoutFormatting;
+  [accruedInputWithoutFormatting appendString:v7];
 
-  if (v4)
+  if (positionCopy)
   {
-    v13 = [(_NBAsYouTypeFormatter *)self accruedInputWithoutFormatting];
-    -[_NBAsYouTypeFormatter setPositionToRemember_:](self, "setPositionToRemember_:", [v13 length]);
+    accruedInputWithoutFormatting3 = [(_NBAsYouTypeFormatter *)self accruedInputWithoutFormatting];
+    -[_NBAsYouTypeFormatter setPositionToRemember_:](self, "setPositionToRemember_:", [accruedInputWithoutFormatting3 length]);
   }
 
 LABEL_8:
@@ -1196,11 +1196,11 @@ LABEL_8:
   return v7;
 }
 
-- (id)inputDigitHelper_:(id)a3
+- (id)inputDigitHelper_:(id)helper_
 {
-  v4 = a3;
-  v5 = [(_NBAsYouTypeFormatter *)self formattingTemplate];
-  v6 = [v5 copy];
+  helper_Copy = helper_;
+  formattingTemplate = [(_NBAsYouTypeFormatter *)self formattingTemplate];
+  v6 = [formattingTemplate copy];
 
   v7 = [v6 length];
   if (v7 <= [(_NBAsYouTypeFormatter *)self lastMatchPosition])
@@ -1213,13 +1213,13 @@ LABEL_8:
     v8 = [v6 substringFromIndex:{-[_NBAsYouTypeFormatter lastMatchPosition](self, "lastMatchPosition")}];
   }
 
-  v9 = [(_NBAsYouTypeFormatter *)self phoneUtil];
-  v10 = [v9 stringPositionByRegex:v8 regex:@" "];
+  phoneUtil = [(_NBAsYouTypeFormatter *)self phoneUtil];
+  v10 = [phoneUtil stringPositionByRegex:v8 regex:@" "];
 
   if (v10 < 0)
   {
-    v18 = [(_NBAsYouTypeFormatter *)self possibleFormats];
-    v19 = [v18 count];
+    possibleFormats = [(_NBAsYouTypeFormatter *)self possibleFormats];
+    v19 = [possibleFormats count];
 
     if (v19 == 1)
     {
@@ -1227,24 +1227,24 @@ LABEL_8:
     }
 
     [(_NBAsYouTypeFormatter *)self setCurrentFormattingPattern_:&stru_285461708];
-    v17 = [(_NBAsYouTypeFormatter *)self accruedInput];
+    accruedInput = [(_NBAsYouTypeFormatter *)self accruedInput];
   }
 
   else
   {
-    v11 = [(_NBAsYouTypeFormatter *)self phoneUtil];
-    v12 = [v11 stringPositionByRegex:v6 regex:@" "];
+    phoneUtil2 = [(_NBAsYouTypeFormatter *)self phoneUtil];
+    v12 = [phoneUtil2 stringPositionByRegex:v6 regex:@" "];
 
     v13 = [v6 rangeOfString:@" "];
-    v15 = [v6 stringByReplacingOccurrencesOfString:@" " withString:v4 options:2 range:{v13, v14}];
+    v15 = [v6 stringByReplacingOccurrencesOfString:@" " withString:helper_Copy options:2 range:{v13, v14}];
     v16 = [v15 mutableCopy];
     [(_NBAsYouTypeFormatter *)self setFormattingTemplate_:v16];
 
     [(_NBAsYouTypeFormatter *)self setLastMatchPosition_:v12];
-    v17 = [v15 substringWithRange:{0, -[_NBAsYouTypeFormatter lastMatchPosition](self, "lastMatchPosition") + 1}];
+    accruedInput = [v15 substringWithRange:{0, -[_NBAsYouTypeFormatter lastMatchPosition](self, "lastMatchPosition") + 1}];
   }
 
-  return v17;
+  return accruedInput;
 }
 
 @end

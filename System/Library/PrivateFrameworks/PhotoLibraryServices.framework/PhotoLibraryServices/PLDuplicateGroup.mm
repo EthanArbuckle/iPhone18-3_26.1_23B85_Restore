@@ -2,14 +2,14 @@
 - (NSSet)excludedGroup;
 - (NSSet)group;
 - (NSSet)subGroups;
-- (PLDuplicateGroup)initWithGroupResults:(id)a3;
+- (PLDuplicateGroup)initWithGroupResults:(id)results;
 - (id)debugDescription;
-- (id)printStringListFromOIDs:(id)a3;
-- (void)addManagedObjectID:(id)a3;
-- (void)addSubGroup:(id)a3;
+- (id)printStringListFromOIDs:(id)ds;
+- (void)addManagedObjectID:(id)d;
+- (void)addSubGroup:(id)group;
 - (void)compactSubGroups;
-- (void)excludeManagedObjectID:(id)a3;
-- (void)replaceSubGroups:(id)a3;
+- (void)excludeManagedObjectID:(id)d;
+- (void)replaceSubGroups:(id)groups;
 @end
 
 @implementation PLDuplicateGroup
@@ -50,8 +50,8 @@
           if ([v11 count] == 1)
           {
             mutableExcludedGroup = self->_mutableExcludedGroup;
-            v13 = [v11 anyObject];
-            [(NSMutableSet *)mutableExcludedGroup addObject:v13];
+            anyObject = [v11 anyObject];
+            [(NSMutableSet *)mutableExcludedGroup addObject:anyObject];
           }
 
           else
@@ -83,58 +83,58 @@
   }
 }
 
-- (void)excludeManagedObjectID:(id)a3
+- (void)excludeManagedObjectID:(id)d
 {
-  v4 = a3;
-  [(PLDuplicateGroup *)self addManagedObjectID:v4];
-  [(NSMutableSet *)self->_mutableExcludedGroup addObject:v4];
+  dCopy = d;
+  [(PLDuplicateGroup *)self addManagedObjectID:dCopy];
+  [(NSMutableSet *)self->_mutableExcludedGroup addObject:dCopy];
 }
 
-- (void)replaceSubGroups:(id)a3
+- (void)replaceSubGroups:(id)groups
 {
-  v5 = a3;
-  v9 = v5;
-  if (!v5)
+  groupsCopy = groups;
+  v9 = groupsCopy;
+  if (!groupsCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLDuplicateGroup.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"subGroups"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDuplicateGroup.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"subGroups"}];
 
-    v5 = 0;
+    groupsCopy = 0;
   }
 
-  v6 = [v5 mutableCopy];
+  v6 = [groupsCopy mutableCopy];
   mutableSubGroups = self->_mutableSubGroups;
   self->_mutableSubGroups = v6;
 }
 
-- (void)addSubGroup:(id)a3
+- (void)addSubGroup:(id)group
 {
-  v5 = a3;
-  v7 = v5;
-  if (!v5)
+  groupCopy = group;
+  v7 = groupCopy;
+  if (!groupCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PLDuplicateGroup.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"subGroup"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDuplicateGroup.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"subGroup"}];
 
-    v5 = 0;
+    groupCopy = 0;
   }
 
-  [(NSMutableSet *)self->_mutableSubGroups addObject:v5];
+  [(NSMutableSet *)self->_mutableSubGroups addObject:groupCopy];
 }
 
-- (void)addManagedObjectID:(id)a3
+- (void)addManagedObjectID:(id)d
 {
-  v5 = a3;
-  v7 = v5;
-  if (!v5)
+  dCopy = d;
+  v7 = dCopy;
+  if (!dCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PLDuplicateGroup.m" lineNumber:85 description:{@"Invalid parameter not satisfying: %@", @"objectID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDuplicateGroup.m" lineNumber:85 description:{@"Invalid parameter not satisfying: %@", @"objectID"}];
 
-    v5 = 0;
+    dCopy = 0;
   }
 
-  [(NSMutableSet *)self->_mutableGroup addObject:v5];
+  [(NSMutableSet *)self->_mutableGroup addObject:dCopy];
 }
 
 - (NSSet)subGroups
@@ -167,24 +167,24 @@
   v5 = [v3 initWithString:v4];
 
   [v5 appendString:@" Group:{ "];
-  v6 = [(PLDuplicateGroup *)self group];
-  v7 = [(PLDuplicateGroup *)self printStringListFromOIDs:v6];
+  group = [(PLDuplicateGroup *)self group];
+  v7 = [(PLDuplicateGroup *)self printStringListFromOIDs:group];
   [v5 appendString:v7];
 
   [v5 appendString:{@" }, SubGroup:{ "}];
-  v8 = [(PLDuplicateGroup *)self subGroups];
+  subGroups = [(PLDuplicateGroup *)self subGroups];
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __36__PLDuplicateGroup_debugDescription__block_invoke;
   v17 = &unk_1E756EA78;
   v9 = v5;
   v18 = v9;
-  v19 = self;
-  [v8 enumerateObjectsUsingBlock:&v14];
+  selfCopy = self;
+  [subGroups enumerateObjectsUsingBlock:&v14];
 
   [v9 appendString:{@" }, Excluded Group:{ ", v14, v15, v16, v17}];
-  v10 = [(PLDuplicateGroup *)self excludedGroup];
-  v11 = [(PLDuplicateGroup *)self printStringListFromOIDs:v10];
+  excludedGroup = [(PLDuplicateGroup *)self excludedGroup];
+  v11 = [(PLDuplicateGroup *)self printStringListFromOIDs:excludedGroup];
   [v9 appendString:v11];
 
   [v9 appendString:@" }"];
@@ -207,16 +207,16 @@ uint64_t __36__PLDuplicateGroup_debugDescription__block_invoke(uint64_t a1, void
   return [v7 appendString:@" }"];
 }
 
-- (id)printStringListFromOIDs:(id)a3
+- (id)printStringListFromOIDs:(id)ds
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dsCopy = ds;
   v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = dsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -238,9 +238,9 @@ uint64_t __36__PLDuplicateGroup_debugDescription__block_invoke(uint64_t a1, void
           [v4 appendString:{@", "}];
         }
 
-        v12 = [v11 URIRepresentation];
-        v13 = [v12 relativePath];
-        [v4 appendFormat:@"%@", v13];
+        uRIRepresentation = [v11 URIRepresentation];
+        relativePath = [uRIRepresentation relativePath];
+        [v4 appendFormat:@"%@", relativePath];
 
         v9 = 0;
       }
@@ -255,17 +255,17 @@ uint64_t __36__PLDuplicateGroup_debugDescription__block_invoke(uint64_t a1, void
   return v4;
 }
 
-- (PLDuplicateGroup)initWithGroupResults:(id)a3
+- (PLDuplicateGroup)initWithGroupResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v13.receiver = self;
   v13.super_class = PLDuplicateGroup;
   v5 = [(PLDuplicateGroup *)&v13 init];
   if (v5)
   {
-    if (v4)
+    if (resultsCopy)
     {
-      v6 = [v4 mutableCopy];
+      v6 = [resultsCopy mutableCopy];
     }
 
     else

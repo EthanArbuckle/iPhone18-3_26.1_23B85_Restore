@@ -6,12 +6,12 @@
 
 + (uint64_t)newImageForScreenCorner:()NTKRoundedCornerOverlayView screenScale:cornerRadius:
 {
-  v8 = ceil(a2 * 1.528665 * a1) / a1;
+  v8 = ceil(a2 * 1.528665 * self) / self;
   v17.width = v8 + 0.5;
   v17.height = v8 + 0.5;
-  UIGraphicsBeginImageContextWithOptions(v17, 0, a1);
-  v9 = [MEMORY[0x277D75348] blackColor];
-  [v9 setFill];
+  UIGraphicsBeginImageContextWithOptions(v17, 0, self);
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [blackColor setFill];
 
   v10 = [MEMORY[0x277D75208] bezierPathWithRect:{0.0, 0.0, v8 + 0.5, v8 + 0.5}];
   [v10 fill];

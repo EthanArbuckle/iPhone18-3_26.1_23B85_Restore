@@ -2,8 +2,8 @@
 - (BOOL)_cancelIfNotAlreadyCanceled;
 - (BOOL)cancelIfNotAlreadyCanceled;
 - (BOOL)isCanceled;
-- (INWatchdogTimer)initWithTimeoutInterval:(double)a3 onQueue:(id)a4 timeoutHandler:(id)a5;
-- (INWatchdogTimer)initWithTimeoutInterval:(double)a3 timeoutHandler:(id)a4;
+- (INWatchdogTimer)initWithTimeoutInterval:(double)interval onQueue:(id)queue timeoutHandler:(id)handler;
+- (INWatchdogTimer)initWithTimeoutInterval:(double)interval timeoutHandler:(id)handler;
 - (void)_cancel;
 - (void)_reset;
 - (void)_start;
@@ -24,8 +24,8 @@
     v4 = dispatch_time(0, (self->_remainingInterval * 1000000000.0));
     dispatch_source_set_timer(timerSource, v4, 0xFFFFFFFFFFFFFFFFLL, 0);
     dispatch_resume(self->_timerSource);
-    v5 = [MEMORY[0x1E696AE30] processInfo];
-    [v5 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     self->_startTime = v6;
 
     self->_isStopped = 0;
@@ -53,13 +53,13 @@
 
 - (BOOL)_cancelIfNotAlreadyCanceled
 {
-  v3 = [(INWatchdogTimer *)self _isCanceled];
-  if (!v3)
+  _isCanceled = [(INWatchdogTimer *)self _isCanceled];
+  if (!_isCanceled)
   {
     [(INWatchdogTimer *)self _cancel];
   }
 
-  return !v3;
+  return !_isCanceled;
 }
 
 - (void)_cancel
@@ -152,8 +152,8 @@ uint64_t __45__INWatchdogTimer_cancelIfNotAlreadyCanceled__block_invoke(uint64_t
   if (!self->_isStopped)
   {
     dispatch_suspend(self->_timerSource);
-    v3 = [MEMORY[0x1E696AE30] processInfo];
-    [v3 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     v5 = v4 - self->_startTime;
 
     v6 = self->_interval - v5;
@@ -178,19 +178,19 @@ uint64_t __45__INWatchdogTimer_cancelIfNotAlreadyCanceled__block_invoke(uint64_t
   dispatch_sync(internalQueue, block);
 }
 
-- (INWatchdogTimer)initWithTimeoutInterval:(double)a3 onQueue:(id)a4 timeoutHandler:(id)a5
+- (INWatchdogTimer)initWithTimeoutInterval:(double)interval onQueue:(id)queue timeoutHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  handlerCopy = handler;
   v22.receiver = self;
   v22.super_class = INWatchdogTimer;
   v10 = [(INWatchdogTimer *)&v22 init];
   v11 = v10;
   if (v10)
   {
-    v10->_interval = a3;
-    v10->_remainingInterval = a3;
-    v12 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v8);
+    v10->_interval = interval;
+    v10->_remainingInterval = interval;
+    v12 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, queueCopy);
     timerSource = v11->_timerSource;
     v11->_timerSource = v12;
 
@@ -205,7 +205,7 @@ uint64_t __45__INWatchdogTimer_cancelIfNotAlreadyCanceled__block_invoke(uint64_t
     handler[2] = __66__INWatchdogTimer_initWithTimeoutInterval_onQueue_timeoutHandler___block_invoke;
     handler[3] = &unk_1E7280168;
     objc_copyWeak(&v20, &location);
-    v19 = v9;
+    v19 = handlerCopy;
     dispatch_source_set_event_handler(v16, handler);
     v11->_isStopped = 1;
 
@@ -226,10 +226,10 @@ uint64_t __66__INWatchdogTimer_initWithTimeoutInterval_onQueue_timeoutHandler___
   return v3();
 }
 
-- (INWatchdogTimer)initWithTimeoutInterval:(double)a3 timeoutHandler:(id)a4
+- (INWatchdogTimer)initWithTimeoutInterval:(double)interval timeoutHandler:(id)handler
 {
   v7 = dispatch_get_global_queue(17, 0);
-  v8 = [(INWatchdogTimer *)self initWithTimeoutInterval:v7 onQueue:a4 timeoutHandler:a3];
+  v8 = [(INWatchdogTimer *)self initWithTimeoutInterval:v7 onQueue:handler timeoutHandler:interval];
 
   return v8;
 }

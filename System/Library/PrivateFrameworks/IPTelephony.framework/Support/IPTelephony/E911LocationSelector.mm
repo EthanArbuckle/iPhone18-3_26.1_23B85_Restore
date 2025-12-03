@@ -1,7 +1,7 @@
 @interface E911LocationSelector
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)locationSelectorDidSelectLocation:(id)a3;
+- (void)locationSelectorDidSelectLocation:(id)location;
 @end
 
 @implementation E911LocationSelector
@@ -41,10 +41,10 @@
   [(E911LocationSelector *)&v8 dealloc];
 }
 
-- (void)locationSelectorDidSelectLocation:(id)a3
+- (void)locationSelectorDidSelectLocation:(id)location
 {
   v56 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  locationCopy = location;
   v44 = 0u;
   v45 = 0u;
   v47 = 0u;
@@ -64,22 +64,22 @@
     _os_log_impl(&dword_1E4C3F000, v5, OS_LOG_TYPE_DEFAULT, "updated location available", buf, 2u);
   }
 
-  if (v4)
+  if (locationCopy)
   {
-    [v4 coordinate];
+    [locationCopy coordinate];
     *&v44 = v6;
-    [v4 coordinate];
+    [locationCopy coordinate];
     *(&v44 + 1) = v7;
-    [v4 horizontalAccuracy];
+    [locationCopy horizontalAccuracy];
     *&v45 = v8;
-    v9 = [v4 timestamp];
-    [v9 timeIntervalSince1970];
+    timestamp = [locationCopy timestamp];
+    [timestamp timeIntervalSince1970];
     *&v47 = v10;
 
-    [v4 ellipsoidalAltitude];
+    [locationCopy ellipsoidalAltitude];
     v12 = v11;
     v43 = v11;
-    [v4 verticalAccuracy];
+    [locationCopy verticalAccuracy];
     v14 = v13;
     v42 = v13;
     memset(buf, 0, sizeof(buf));
@@ -129,17 +129,17 @@
     ctu::OsLogContext::~OsLogContext(v55);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      [v4 trustedTimestamp];
+      [locationCopy trustedTimestamp];
       *v55 = 134217984;
       *&v55[4] = v20;
       _os_log_impl(&dword_1E4C3F000, v19, OS_LOG_TYPE_DEFAULT, "absolute timestamp is : %lf", v55, 0xCu);
     }
 
-    [v4 trustedTimestamp];
+    [locationCopy trustedTimestamp];
     if (v21 > 0.0)
     {
       v22 = MEMORY[0x1E695DF00];
-      [v4 trustedTimestamp];
+      [locationCopy trustedTimestamp];
       v23 = [v22 dateWithTimeIntervalSinceReferenceDate:?];
       [v23 timeIntervalSince1970];
       *&v47 = v24;

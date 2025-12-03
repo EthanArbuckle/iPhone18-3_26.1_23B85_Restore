@@ -1,18 +1,18 @@
 @interface MTLBuiltInArgument
-- (BOOL)isEqual:(id)a3;
-- (id)formattedDescription:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)formattedDescription:(unint64_t)description;
 @end
 
 @implementation MTLBuiltInArgument
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v11[3] = *MEMORY[0x1E69E9840];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v6 = MEMORY[0x1E696AEC0];
   v10.receiver = self;
   v10.super_class = MTLBuiltInArgument;
-  v7 = [(MTLBindingInternal *)&v10 formattedDescription:a3];
+  v7 = [(MTLBindingInternal *)&v10 formattedDescription:description];
   v11[0] = v5;
   v11[1] = @"BuiltInArgumentType =";
   v11[2] = MTLBuiltInArgumentTypeString(self->_builtInType);
@@ -21,22 +21,22 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_builtInType != *(a3 + 84) || self->_builtInDataType != *(a3 + 85))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_builtInType != *(equal + 84) || self->_builtInDataType != *(equal + 85))
   {
     return 0;
   }
 
   v6.receiver = self;
   v6.super_class = MTLBuiltInArgument;
-  return [(MTLBindingInternal *)&v6 isEqual:a3];
+  return [(MTLBindingInternal *)&v6 isEqual:equal];
 }
 
 @end

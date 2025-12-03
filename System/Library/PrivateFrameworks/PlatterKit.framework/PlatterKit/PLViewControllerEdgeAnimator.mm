@@ -1,6 +1,6 @@
 @interface PLViewControllerEdgeAnimator
 - (id)_newPropertyAnimator;
-- (void)_animateTransitionToEdge:(unint64_t)a3 withTransitionContext:(id)a4;
+- (void)_animateTransitionToEdge:(unint64_t)edge withTransitionContext:(id)context;
 @end
 
 @implementation PLViewControllerEdgeAnimator
@@ -14,20 +14,20 @@
   return v4;
 }
 
-- (void)_animateTransitionToEdge:(unint64_t)a3 withTransitionContext:(id)a4
+- (void)_animateTransitionToEdge:(unint64_t)edge withTransitionContext:(id)context
 {
-  v5 = a4;
-  v6 = [(PLViewControllerAnimator *)self _presentedViewControllerForPresentation:0 withTransitionContext:v5];
-  v7 = [v6 expandedPlatterPresentationController];
-  [v7 frameOfPresentedViewInContainerView];
+  contextCopy = context;
+  v6 = [(PLViewControllerAnimator *)self _presentedViewControllerForPresentation:0 withTransitionContext:contextCopy];
+  expandedPlatterPresentationController = [v6 expandedPlatterPresentationController];
+  [expandedPlatterPresentationController frameOfPresentedViewInContainerView];
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [v5 containerView];
-  [v14 bounds];
+  containerView = [contextCopy containerView];
+  [containerView bounds];
   MaxY = CGRectGetMaxY(v19);
-  v16 = [(PLViewControllerAnimator *)self _sourceViewForPresentation:0 withTransitionContext:v5];
-  v17 = [(PLViewControllerAnimator *)self _presentedViewForPresentation:0 withTransitionContext:v5];
+  v16 = [(PLViewControllerAnimator *)self _sourceViewForPresentation:0 withTransitionContext:contextCopy];
+  v17 = [(PLViewControllerAnimator *)self _presentedViewForPresentation:0 withTransitionContext:contextCopy];
 
   [v16 setAlpha:1.0];
   PLSetViewFrameMaintainingTransform(v17, v9, MaxY, v11, v13);

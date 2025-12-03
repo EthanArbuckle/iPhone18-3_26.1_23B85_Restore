@@ -1,41 +1,41 @@
 @interface SBFluidSwitcherLayoutContext
 - (BOOL)_shouldUpdateSwitcherModelBasedOnTimeOrUserInteraction;
-- (BOOL)shouldAddAppLayoutToFront:(id)a3 forTransitionWithContext:(id)a4 recentAppLayouts:(id)a5 transitionCompleted:(BOOL)a6 windowManagementContext:(id)a7;
-- (BOOL)shouldAddAppLayoutToFront:(id)a3 whenBeginningGestureOfType:(int64_t)a4 layoutContext:(id)a5;
-- (BOOL)shouldAddAppLayoutToFront:(id)a3 whenEndingGestureOfType:(int64_t)a4 layoutContext:(id)a5;
-- (SBFluidSwitcherLayoutContext)initWithLayoutState:(id)a3;
+- (BOOL)shouldAddAppLayoutToFront:(id)front forTransitionWithContext:(id)context recentAppLayouts:(id)layouts transitionCompleted:(BOOL)completed windowManagementContext:(id)managementContext;
+- (BOOL)shouldAddAppLayoutToFront:(id)front whenBeginningGestureOfType:(int64_t)type layoutContext:(id)context;
+- (BOOL)shouldAddAppLayoutToFront:(id)front whenEndingGestureOfType:(int64_t)type layoutContext:(id)context;
+- (SBFluidSwitcherLayoutContext)initWithLayoutState:(id)state;
 - (double)secondsSinceLastTransitionCompletion;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)supportedOrientationsForGesture;
 - (void)dealloc;
-- (void)didEndTransitioningToLayoutStateWithContext:(id)a3;
-- (void)eventSource:(id)a3 userTouchedApplication:(id)a4;
-- (void)setActiveGesture:(id)a3;
-- (void)willBeginTransitioningToLayoutStateWithContext:(id)a3;
+- (void)didEndTransitioningToLayoutStateWithContext:(id)context;
+- (void)eventSource:(id)source userTouchedApplication:(id)application;
+- (void)setActiveGesture:(id)gesture;
+- (void)willBeginTransitioningToLayoutStateWithContext:(id)context;
 @end
 
 @implementation SBFluidSwitcherLayoutContext
 
 - (BOOL)_shouldUpdateSwitcherModelBasedOnTimeOrUserInteraction
 {
-  v3 = [(SBFluidSwitcherLayoutContext *)self layoutState];
-  if ([v3 unlockedEnvironmentMode] == 3 && (objc_msgSend(v3, "isFloatingSwitcherVisible") & 1) == 0)
+  layoutState = [(SBFluidSwitcherLayoutContext *)self layoutState];
+  if ([layoutState unlockedEnvironmentMode] == 3 && (objc_msgSend(layoutState, "isFloatingSwitcherVisible") & 1) == 0)
   {
-    v4 = [(SBFluidSwitcherLayoutContext *)self activeTransitionContext];
-    if (v4)
+    activeTransitionContext = [(SBFluidSwitcherLayoutContext *)self activeTransitionContext];
+    if (activeTransitionContext)
     {
     }
 
     else
     {
-      v5 = [(SBFluidSwitcherLayoutContext *)self activeGesture];
+      activeGesture = [(SBFluidSwitcherLayoutContext *)self activeGesture];
 
-      if (!v5)
+      if (!activeGesture)
       {
-        v8 = [(SBFluidSwitcherLayoutContext *)self lastTransitionCompletionDate];
-        [v8 timeIntervalSinceNow];
+        lastTransitionCompletionDate = [(SBFluidSwitcherLayoutContext *)self lastTransitionCompletionDate];
+        [lastTransitionCompletionDate timeIntervalSinceNow];
         v10 = -v9;
 
         [(SBHomeGestureSettings *)self->_homeGestureSettings secondsToResetSwitcherListAfterTransition];
@@ -56,25 +56,25 @@ LABEL_7:
 
 - (double)secondsSinceLastTransitionCompletion
 {
-  v2 = [(SBFluidSwitcherLayoutContext *)self lastTransitionCompletionDate];
-  [v2 timeIntervalSinceNow];
+  lastTransitionCompletionDate = [(SBFluidSwitcherLayoutContext *)self lastTransitionCompletionDate];
+  [lastTransitionCompletionDate timeIntervalSinceNow];
   v4 = -v3;
 
   return v4;
 }
 
-- (SBFluidSwitcherLayoutContext)initWithLayoutState:(id)a3
+- (SBFluidSwitcherLayoutContext)initWithLayoutState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   v12.receiver = self;
   v12.super_class = SBFluidSwitcherLayoutContext;
   v6 = [(SBFluidSwitcherLayoutContext *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_currentLayoutState, a3);
-    objc_storeStrong(&v7->_previousLayoutState, a3);
-    v7->_previousInterfaceOrientation = [v5 interfaceOrientation];
+    objc_storeStrong(&v6->_currentLayoutState, state);
+    objc_storeStrong(&v7->_previousLayoutState, state);
+    v7->_previousInterfaceOrientation = [stateCopy interfaceOrientation];
     v8 = +[SBHomeGestureDomain rootSettings];
     homeGestureSettings = v7->_homeGestureSettings;
     v7->_homeGestureSettings = v8;
@@ -96,40 +96,40 @@ LABEL_7:
   [(SBFluidSwitcherLayoutContext *)&v4 dealloc];
 }
 
-- (void)setActiveGesture:(id)a3
+- (void)setActiveGesture:(id)gesture
 {
-  v5 = a3;
-  if (self->_activeGesture != v5)
+  gestureCopy = gesture;
+  if (self->_activeGesture != gestureCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_activeGesture, a3);
+    v7 = gestureCopy;
+    objc_storeStrong(&self->_activeGesture, gesture);
     activeTransitionContext = self->_activeTransitionContext;
     self->_activeTransitionContext = 0;
 
-    v5 = v7;
+    gestureCopy = v7;
   }
 }
 
-- (void)willBeginTransitioningToLayoutStateWithContext:(id)a3
+- (void)willBeginTransitioningToLayoutStateWithContext:(id)context
 {
-  v11 = a3;
-  objc_storeStrong(&self->_activeTransitionContext, a3);
-  v5 = [v11 request];
-  v6 = [v5 source];
+  contextCopy = context;
+  objc_storeStrong(&self->_activeTransitionContext, context);
+  request = [contextCopy request];
+  source = [request source];
 
-  if ((v6 - 27) > 0x32 || ((1 << (v6 - 27)) & 0x4020000000001) == 0)
+  if ((source - 27) > 0x32 || ((1 << (source - 27)) & 0x4020000000001) == 0)
   {
     activeGesture = self->_activeGesture;
     self->_activeGesture = 0;
   }
 
-  v9 = [v11 layoutState];
-  v10 = [v11 previousLayoutState];
-  objc_storeStrong(&self->_currentLayoutState, v9);
-  if (([v9 isEqual:v10] & 1) == 0)
+  layoutState = [contextCopy layoutState];
+  previousLayoutState = [contextCopy previousLayoutState];
+  objc_storeStrong(&self->_currentLayoutState, layoutState);
+  if (([layoutState isEqual:previousLayoutState] & 1) == 0)
   {
-    objc_storeStrong(&self->_previousLayoutState, v10);
-    self->_previousInterfaceOrientation = [v10 interfaceOrientation];
+    objc_storeStrong(&self->_previousLayoutState, previousLayoutState);
+    self->_previousInterfaceOrientation = [previousLayoutState interfaceOrientation];
   }
 
   if (![(SBMainDisplayLayoutState *)self->_currentLayoutState isEqual:self->_previousLayoutState])
@@ -138,22 +138,22 @@ LABEL_7:
   }
 }
 
-- (void)didEndTransitioningToLayoutStateWithContext:(id)a3
+- (void)didEndTransitioningToLayoutStateWithContext:(id)context
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
-  v6 = [v4 date];
+  contextCopy = context;
+  date = [v4 date];
   lastTransitionCompletionDate = self->_lastTransitionCompletionDate;
-  self->_lastTransitionCompletionDate = v6;
+  self->_lastTransitionCompletionDate = date;
 
-  obj = [v5 layoutState];
-  v8 = [v5 previousLayoutState];
+  obj = [contextCopy layoutState];
+  previousLayoutState = [contextCopy previousLayoutState];
 
   objc_storeStrong(&self->_currentLayoutState, obj);
-  if (([obj isEqual:v8] & 1) == 0)
+  if (([obj isEqual:previousLayoutState] & 1) == 0)
   {
-    objc_storeStrong(&self->_previousLayoutState, v8);
-    self->_previousInterfaceOrientation = [v8 interfaceOrientation];
+    objc_storeStrong(&self->_previousLayoutState, previousLayoutState);
+    self->_previousInterfaceOrientation = [previousLayoutState interfaceOrientation];
   }
 
   if (![(SBMainDisplayLayoutState *)self->_currentLayoutState isEqual:self->_previousLayoutState])
@@ -167,12 +167,12 @@ LABEL_7:
 
 - (unint64_t)supportedOrientationsForGesture
 {
-  v4 = [(SBFluidSwitcherLayoutContext *)self layoutState];
-  v5 = 1 << [v4 interfaceOrientation];
+  layoutState = [(SBFluidSwitcherLayoutContext *)self layoutState];
+  v5 = 1 << [layoutState interfaceOrientation];
 
-  v6 = [(SBFluidSwitcherLayoutContext *)self activeTransitionContext];
+  activeTransitionContext = [(SBFluidSwitcherLayoutContext *)self activeTransitionContext];
   [(SBFluidSwitcherLayoutContext *)self secondsSinceLastTransitionCompletion];
-  if (!v6)
+  if (!activeTransitionContext)
   {
     v8 = v7;
     [(SBHomeGestureSettings *)self->_homeGestureSettings secondsToAllowMultipleEdges];
@@ -187,27 +187,27 @@ LABEL_7:
     goto LABEL_32;
   }
 
-  if (v6)
+  if (activeTransitionContext)
   {
-    v10 = [v6 previousLayoutState];
-    v11 = [v6 layoutState];
-    v12 = [(SBLayoutState *)v11 interfaceOrientation];
+    previousLayoutState = [activeTransitionContext previousLayoutState];
+    layoutState2 = [activeTransitionContext layoutState];
+    interfaceOrientation = [(SBLayoutState *)layoutState2 interfaceOrientation];
   }
 
   else
   {
-    v10 = self->_previousLayoutState;
-    v11 = self->_currentLayoutState;
-    v12 = [(SBLayoutState *)self->_currentLayoutState interfaceOrientation];
+    previousLayoutState = self->_previousLayoutState;
+    layoutState2 = self->_currentLayoutState;
+    interfaceOrientation = [(SBLayoutState *)self->_currentLayoutState interfaceOrientation];
   }
 
-  v13 = v12;
-  v14 = [(SBLayoutState *)v10 elements];
+  v13 = interfaceOrientation;
+  elements = [(SBLayoutState *)previousLayoutState elements];
   v27 = v5;
-  if (!v14)
+  if (!elements)
   {
-    v2 = [(SBLayoutState *)v11 elements];
-    if (![v2 count])
+    elements2 = [(SBLayoutState *)layoutState2 elements];
+    if (![elements2 count])
     {
       v17 = 1;
 LABEL_13:
@@ -216,25 +216,25 @@ LABEL_13:
     }
   }
 
-  v15 = [(SBLayoutState *)v10 elements];
-  v16 = [(SBLayoutState *)v11 elements];
-  v17 = [v15 isEqual:v16];
+  elements3 = [(SBLayoutState *)previousLayoutState elements];
+  elements4 = [(SBLayoutState *)layoutState2 elements];
+  v17 = [elements3 isEqual:elements4];
 
-  if (!v14)
+  if (!elements)
   {
     goto LABEL_13;
   }
 
 LABEL_14:
 
-  v18 = [(SBMainDisplayLayoutState *)v10 unlockedEnvironmentMode];
-  v19 = [(SBMainDisplayLayoutState *)v11 unlockedEnvironmentMode];
+  unlockedEnvironmentMode = [(SBMainDisplayLayoutState *)previousLayoutState unlockedEnvironmentMode];
+  unlockedEnvironmentMode2 = [(SBMainDisplayLayoutState *)layoutState2 unlockedEnvironmentMode];
   if (v26 == v13)
   {
     v20 = 0;
   }
 
-  else if (v18 == 3 && v19 == 3 || v19 == 1)
+  else if (unlockedEnvironmentMode == 3 && unlockedEnvironmentMode2 == 3 || unlockedEnvironmentMode2 == 1)
   {
     v20 = v17;
   }
@@ -244,8 +244,8 @@ LABEL_14:
     v20 = 0;
   }
 
-  v23 = [(SBFluidSwitcherLayoutContext *)self layoutState];
-  v24 = [v23 unlockedEnvironmentMode] == 1 && objc_msgSend(SBApp, "homeScreenRotationStyle") != 0;
+  layoutState3 = [(SBFluidSwitcherLayoutContext *)self layoutState];
+  v24 = [layoutState3 unlockedEnvironmentMode] == 1 && objc_msgSend(SBApp, "homeScreenRotationStyle") != 0;
 
   if ((v20 | v24))
   {
@@ -261,87 +261,87 @@ LABEL_32:
   return v5;
 }
 
-- (BOOL)shouldAddAppLayoutToFront:(id)a3 whenBeginningGestureOfType:(int64_t)a4 layoutContext:(id)a5
+- (BOOL)shouldAddAppLayoutToFront:(id)front whenBeginningGestureOfType:(int64_t)type layoutContext:(id)context
 {
-  v9 = a3;
-  v10 = a5;
-  if (!v9)
+  frontCopy = front;
+  contextCopy = context;
+  if (!frontCopy)
   {
     [SBFluidSwitcherLayoutContext shouldAddAppLayoutToFront:a2 whenBeginningGestureOfType:self layoutContext:?];
   }
 
-  v11 = [(SBFluidSwitcherLayoutContext *)self layoutState];
-  if (a4 == 4)
+  layoutState = [(SBFluidSwitcherLayoutContext *)self layoutState];
+  if (type == 4)
   {
     goto LABEL_8;
   }
 
-  if (a4 == 8)
+  if (type == 8)
   {
     v12 = 0;
     goto LABEL_17;
   }
 
-  v13 = [v9 environment];
-  if (a4 == 6 && v13 == 2)
+  environment = [frontCopy environment];
+  if (type == 6 && environment == 2)
   {
 LABEL_8:
     v12 = 1;
     goto LABEL_17;
   }
 
-  v14 = [v11 windowPickerRole];
-  v15 = [v11 bundleIDShowingAppExpose];
-  v12 = [v9 environment] == 2 && v14 == 3 || objc_msgSend(v9, "environment") == 1 && (SBLayoutRoleIsValidForSplitView(v14) & 1) != 0 || objc_msgSend(v9, "environment") == 1 && v15 || -[SBFluidSwitcherLayoutContext _shouldUpdateSwitcherModelBasedOnTimeOrUserInteraction](self, "_shouldUpdateSwitcherModelBasedOnTimeOrUserInteraction");
+  windowPickerRole = [layoutState windowPickerRole];
+  bundleIDShowingAppExpose = [layoutState bundleIDShowingAppExpose];
+  v12 = [frontCopy environment] == 2 && windowPickerRole == 3 || objc_msgSend(frontCopy, "environment") == 1 && (SBLayoutRoleIsValidForSplitView(windowPickerRole) & 1) != 0 || objc_msgSend(frontCopy, "environment") == 1 && bundleIDShowingAppExpose || -[SBFluidSwitcherLayoutContext _shouldUpdateSwitcherModelBasedOnTimeOrUserInteraction](self, "_shouldUpdateSwitcherModelBasedOnTimeOrUserInteraction");
 
 LABEL_17:
   return v12;
 }
 
-- (BOOL)shouldAddAppLayoutToFront:(id)a3 whenEndingGestureOfType:(int64_t)a4 layoutContext:(id)a5
+- (BOOL)shouldAddAppLayoutToFront:(id)front whenEndingGestureOfType:(int64_t)type layoutContext:(id)context
 {
-  v7 = a5;
-  v8 = [a3 environment];
-  v9 = [v7 previousLayoutState];
-  IsStashed = SBFloatingConfigurationIsStashed([v9 floatingConfiguration]);
+  contextCopy = context;
+  environment = [front environment];
+  previousLayoutState = [contextCopy previousLayoutState];
+  IsStashed = SBFloatingConfigurationIsStashed([previousLayoutState floatingConfiguration]);
 
-  v11 = [v7 layoutState];
+  layoutState = [contextCopy layoutState];
 
-  v12 = SBFloatingConfigurationIsStashed([v11 floatingConfiguration]);
-  v14 = a4 != 3 || v8 != 2;
+  v12 = SBFloatingConfigurationIsStashed([layoutState floatingConfiguration]);
+  v14 = type != 3 || environment != 2;
   return !v14 && v12 && !IsStashed;
 }
 
-- (BOOL)shouldAddAppLayoutToFront:(id)a3 forTransitionWithContext:(id)a4 recentAppLayouts:(id)a5 transitionCompleted:(BOOL)a6 windowManagementContext:(id)a7
+- (BOOL)shouldAddAppLayoutToFront:(id)front forTransitionWithContext:(id)context recentAppLayouts:(id)layouts transitionCompleted:(BOOL)completed windowManagementContext:(id)managementContext
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v48 = a7;
-  if (!v13)
+  frontCopy = front;
+  contextCopy = context;
+  layoutsCopy = layouts;
+  managementContextCopy = managementContext;
+  if (!frontCopy)
   {
     [SBFluidSwitcherLayoutContext shouldAddAppLayoutToFront:a2 forTransitionWithContext:self recentAppLayouts:? transitionCompleted:? windowManagementContext:?];
   }
 
-  v16 = [v14 request];
-  v17 = [v14 layoutState];
-  v18 = [v14 previousLayoutState];
-  v19 = [v16 source];
-  if (v19 != 14)
+  request = [contextCopy request];
+  layoutState = [contextCopy layoutState];
+  previousLayoutState = [contextCopy previousLayoutState];
+  source = [request source];
+  if (source != 14)
   {
-    v21 = v19;
-    v44 = self;
-    v45 = a6;
-    v22 = [v18 elements];
-    v23 = [v17 elements];
-    v47 = v15;
-    v24 = [v15 firstObject];
-    v46 = v22;
+    v21 = source;
+    selfCopy = self;
+    completedCopy = completed;
+    elements = [previousLayoutState elements];
+    elements2 = [layoutState elements];
+    v47 = layoutsCopy;
+    firstObject = [layoutsCopy firstObject];
+    v46 = elements;
     if (BSEqualObjects())
     {
       v25 = BSEqualSets();
 
-      v26 = v23;
+      v26 = elements2;
       if (v25)
       {
         goto LABEL_7;
@@ -351,12 +351,12 @@ LABEL_17:
     else
     {
 
-      v26 = v23;
+      v26 = elements2;
     }
 
-    v27 = [v14 preventSwitcherRecencyModelUpdates];
+    preventSwitcherRecencyModelUpdates = [contextCopy preventSwitcherRecencyModelUpdates];
     LOBYTE(v20) = 0;
-    v28 = !v45;
+    v28 = !completedCopy;
     if (v21 != 15)
     {
       v28 = 0;
@@ -367,15 +367,15 @@ LABEL_17:
       goto LABEL_45;
     }
 
-    v15 = v47;
-    if (v27)
+    layoutsCopy = v47;
+    if (preventSwitcherRecencyModelUpdates)
     {
 LABEL_46:
 
       goto LABEL_47;
     }
 
-    if ([v18 unlockedEnvironmentMode] != 2 || (v29 = objc_msgSend(v17, "unlockedEnvironmentMode"), v21 != 27) || v29 != 2)
+    if ([previousLayoutState unlockedEnvironmentMode] != 2 || (v29 = objc_msgSend(layoutState, "unlockedEnvironmentMode"), v21 != 27) || v29 != 2)
     {
       if (v21 != 63)
       {
@@ -388,10 +388,10 @@ LABEL_29:
 
         if (v21 == 52)
         {
-          v30 = [v17 appLayout];
-          v20 = [v30 itemForLayoutRole:4];
+          appLayout = [layoutState appLayout];
+          v20 = [appLayout itemForLayoutRole:4];
 
-          v15 = v47;
+          layoutsCopy = v47;
           if (!v20)
           {
             goto LABEL_46;
@@ -402,10 +402,10 @@ LABEL_29:
         {
           v31 = v21 - 11;
           v32 = v26;
-          if (([v47 containsObject:v13] & 1) != 0 || objc_msgSend(v48, "isFlexibleWindowingEnabled") && (objc_msgSend(v17, "layoutAttributesMap"), v33 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v33, "allValues"), v34 = objc_claimAutoreleasedReturnValue(), LODWORD(v44) = objc_msgSend(v34, "bs_containsObjectPassingTest:", &__block_literal_global_65), v34, v33, v15 = v47, v44))
+          if (([v47 containsObject:frontCopy] & 1) != 0 || objc_msgSend(managementContextCopy, "isFlexibleWindowingEnabled") && (objc_msgSend(layoutState, "layoutAttributesMap"), v33 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v33, "allValues"), v34 = objc_claimAutoreleasedReturnValue(), LODWORD(selfCopy) = objc_msgSend(v34, "bs_containsObjectPassingTest:", &__block_literal_global_65), v34, v33, layoutsCopy = v47, selfCopy))
           {
 LABEL_31:
-            if (v45)
+            if (completedCopy)
             {
               v26 = v32;
               if (v31 > 1)
@@ -413,32 +413,32 @@ LABEL_31:
                 goto LABEL_29;
               }
 
-              v35 = [v18 elements];
-              if (![v35 count])
+              elements3 = [previousLayoutState elements];
+              if (![elements3 count])
               {
 
                 goto LABEL_29;
               }
 
-              v36 = [v17 elements];
-              v37 = [v36 count];
+              elements4 = [layoutState elements];
+              v37 = [elements4 count];
 
               if (v37)
               {
-                if ([v48 isFlexibleWindowingEnabled])
+                if ([managementContextCopy isFlexibleWindowingEnabled])
                 {
-                  v38 = [v17 elements];
+                  elements5 = [layoutState elements];
                   v49[0] = MEMORY[0x277D85DD0];
                   v49[1] = 3221225472;
                   v49[2] = __144__SBFluidSwitcherLayoutContext_shouldAddAppLayoutToFront_forTransitionWithContext_recentAppLayouts_transitionCompleted_windowManagementContext___block_invoke_2;
                   v49[3] = &unk_2783AC4F8;
-                  v50 = v17;
-                  v39 = [v38 bs_firstObjectPassingTest:v49];
+                  v50 = layoutState;
+                  v39 = [elements5 bs_firstObjectPassingTest:v49];
 
                   if (v39)
                   {
-                    v40 = [v18 elements];
-                    LOBYTE(v20) = [v40 containsObject:v39] ^ 1;
+                    elements6 = [previousLayoutState elements];
+                    LOBYTE(v20) = [elements6 containsObject:v39] ^ 1;
 
                     goto LABEL_45;
                   }
@@ -447,7 +447,7 @@ LABEL_31:
 LABEL_7:
                 LOBYTE(v20) = 0;
 LABEL_45:
-                v15 = v47;
+                layoutsCopy = v47;
                 goto LABEL_46;
               }
 
@@ -457,38 +457,38 @@ LABEL_44:
             }
 
             v26 = v32;
-            if ([v13 environment] == 2)
+            if ([frontCopy environment] == 2)
             {
-              if ([v18 isFloatingSwitcherVisible] & 1) == 0 && (objc_msgSend(v17, "isFloatingSwitcherVisible"))
+              if ([previousLayoutState isFloatingSwitcherVisible] & 1) == 0 && (objc_msgSend(layoutState, "isFloatingSwitcherVisible"))
               {
                 goto LABEL_44;
               }
 
-              v41 = [v18 floatingAppLayout];
+              floatingAppLayout = [previousLayoutState floatingAppLayout];
 
-              if (!v41)
+              if (!floatingAppLayout)
               {
                 goto LABEL_44;
               }
             }
 
-            if ([v18 unlockedEnvironmentMode] == 1 && objc_msgSend(v17, "unlockedEnvironmentMode") == 3)
+            if ([previousLayoutState unlockedEnvironmentMode] == 1 && objc_msgSend(layoutState, "unlockedEnvironmentMode") == 3)
             {
               goto LABEL_44;
             }
 
-            v15 = v47;
-            if ([v18 unlockedEnvironmentMode] == 3)
+            layoutsCopy = v47;
+            if ([previousLayoutState unlockedEnvironmentMode] == 3)
             {
-              v43 = [v18 isFloatingSwitcherVisible];
+              isFloatingSwitcherVisible = [previousLayoutState isFloatingSwitcherVisible];
             }
 
             else
             {
-              v43 = 1;
+              isFloatingSwitcherVisible = 1;
             }
 
-            if ([v17 unlockedEnvironmentMode] == 3 && ((v43 | objc_msgSend(v17, "isFloatingSwitcherVisible")) & 1) == 0)
+            if ([layoutState unlockedEnvironmentMode] == 3 && ((isFloatingSwitcherVisible | objc_msgSend(layoutState, "isFloatingSwitcherVisible")) & 1) == 0)
             {
               if (v21 < 0x10)
               {
@@ -509,14 +509,14 @@ LABEL_27:
         }
 
 LABEL_28:
-        if ([(SBFluidSwitcherLayoutContext *)v44 _shouldUpdateSwitcherModelBasedOnTimeOrUserInteraction])
+        if ([(SBFluidSwitcherLayoutContext *)selfCopy _shouldUpdateSwitcherModelBasedOnTimeOrUserInteraction])
         {
           goto LABEL_29;
         }
 
         v31 = v21 - 11;
         v32 = v26;
-        if ([v15 containsObject:v13])
+        if ([layoutsCopy containsObject:frontCopy])
         {
           goto LABEL_31;
         }
@@ -524,7 +524,7 @@ LABEL_28:
         goto LABEL_27;
       }
 
-      if ([v48 isFlexibleWindowingEnabled])
+      if ([managementContextCopy isFlexibleWindowingEnabled])
       {
         goto LABEL_28;
       }
@@ -535,8 +535,8 @@ LABEL_22:
     goto LABEL_46;
   }
 
-  [v18 interfaceOrientation];
-  [v17 interfaceOrientation];
+  [previousLayoutState interfaceOrientation];
+  [layoutState interfaceOrientation];
   LOBYTE(v20) = 0;
 LABEL_47:
 
@@ -552,19 +552,19 @@ uint64_t __144__SBFluidSwitcherLayoutContext_shouldAddAppLayoutToFront_forTransi
   return IsValid;
 }
 
-- (void)eventSource:(id)a3 userTouchedApplication:(id)a4
+- (void)eventSource:(id)source userTouchedApplication:(id)application
 {
-  v5 = a4;
-  v6 = [(SBFluidSwitcherLayoutContext *)self currentLayoutState];
-  v7 = [v6 elements];
+  applicationCopy = application;
+  currentLayoutState = [(SBFluidSwitcherLayoutContext *)self currentLayoutState];
+  elements = [currentLayoutState elements];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __67__SBFluidSwitcherLayoutContext_eventSource_userTouchedApplication___block_invoke;
   v9[3] = &unk_2783AFB50;
-  v10 = v5;
-  v11 = self;
-  v8 = v5;
-  [v7 enumerateObjectsUsingBlock:v9];
+  v10 = applicationCopy;
+  selfCopy = self;
+  v8 = applicationCopy;
+  [elements enumerateObjectsUsingBlock:v9];
 }
 
 void __67__SBFluidSwitcherLayoutContext_eventSource_userTouchedApplication___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -584,32 +584,32 @@ void __67__SBFluidSwitcherLayoutContext_eventSource_userTouchedApplication___blo
 
 - (id)succinctDescription
 {
-  v2 = [(SBFluidSwitcherLayoutContext *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBFluidSwitcherLayoutContext *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBFluidSwitcherLayoutContext *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBFluidSwitcherLayoutContext *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBFluidSwitcherLayoutContext *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBFluidSwitcherLayoutContext *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __70__SBFluidSwitcherLayoutContext_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

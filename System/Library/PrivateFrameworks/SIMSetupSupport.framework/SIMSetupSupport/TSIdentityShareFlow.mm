@@ -1,17 +1,17 @@
 @interface TSIdentityShareFlow
 + (void)showAlert;
-- (TSIdentityShareFlow)initWithOptions:(id)a3;
+- (TSIdentityShareFlow)initWithOptions:(id)options;
 - (id)firstViewController;
-- (id)nextViewControllerFrom:(id)a3;
+- (id)nextViewControllerFrom:(id)from;
 - (void)appBackgrounded;
-- (void)firstViewController:(id)a3;
+- (void)firstViewController:(id)controller;
 @end
 
 @implementation TSIdentityShareFlow
 
-- (TSIdentityShareFlow)initWithOptions:(id)a3
+- (TSIdentityShareFlow)initWithOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   v10.receiver = self;
   v10.super_class = TSIdentityShareFlow;
   v6 = [(TSSIMSetupFlow *)&v10 init];
@@ -21,7 +21,7 @@
     cancelButton = v6->_cancelButton;
     v6->_cancelButton = v7;
 
-    objc_storeStrong(&v6->_options, a3);
+    objc_storeStrong(&v6->_options, options);
   }
 
   return v6;
@@ -49,26 +49,26 @@
   return v3;
 }
 
-- (void)firstViewController:(id)a3
+- (void)firstViewController:(id)controller
 {
-  if (a3)
+  if (controller)
   {
-    v5 = a3;
-    v6 = [(TSIdentityShareFlow *)self firstViewController];
-    (*(a3 + 2))(v5, v6);
+    controllerCopy = controller;
+    firstViewController = [(TSIdentityShareFlow *)self firstViewController];
+    (*(controller + 2))(controllerCopy, firstViewController);
   }
 }
 
-- (id)nextViewControllerFrom:(id)a3
+- (id)nextViewControllerFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = objc_alloc_init(TSPRXIdentityShareViewController);
-    v6 = [v4 navigationController];
-    v7 = [v6 topViewController];
-    v8 = [v7 presentProxCardFlowWithDelegate:self initialViewController:v5];
+    navigationController = [fromCopy navigationController];
+    topViewController = [navigationController topViewController];
+    v8 = [topViewController presentProxCardFlowWithDelegate:self initialViewController:v5];
   }
 
   else

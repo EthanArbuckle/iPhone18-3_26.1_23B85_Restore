@@ -1,7 +1,7 @@
 @interface InstallSoftwareOperation
-- (BOOL)_installPackage:(id *)a3;
-- (BOOL)_verifyApplication:(id)a3 error:(id *)a4;
-- (InstallSoftwareOperation)initWithSoftwareProperties:(id)a3;
+- (BOOL)_installPackage:(id *)package;
+- (BOOL)_verifyApplication:(id)application error:(id *)error;
+- (InstallSoftwareOperation)initWithSoftwareProperties:(id)properties;
 - (SoftwareProperties)softwareProperties;
 - (id)_newInstallationOptions;
 - (void)dealloc;
@@ -11,14 +11,14 @@
 
 @implementation InstallSoftwareOperation
 
-- (InstallSoftwareOperation)initWithSoftwareProperties:(id)a3
+- (InstallSoftwareOperation)initWithSoftwareProperties:(id)properties
 {
   v6.receiver = self;
   v6.super_class = InstallSoftwareOperation;
   v4 = [(InstallSoftwareOperation *)&v6 init];
   if (v4)
   {
-    v4->_softwareProperties = [a3 copy];
+    v4->_softwareProperties = [properties copy];
   }
 
   return v4;
@@ -54,15 +54,15 @@
         v6 = +[SSLogConfig sharedConfig];
       }
 
-      v7 = [v6 shouldLog];
+      shouldLog = [v6 shouldLog];
       if ([v6 shouldLogToDisk])
       {
-        v8 = v7 | 2;
+        v8 = shouldLog | 2;
       }
 
       else
       {
-        v8 = v7;
+        v8 = shouldLog;
       }
 
       if (!os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_INFO))
@@ -102,15 +102,15 @@
         v6 = +[SSLogConfig sharedConfig];
       }
 
-      v13 = [v6 shouldLog];
+      shouldLog2 = [v6 shouldLog];
       if ([v6 shouldLogToDisk])
       {
-        v14 = v13 | 2;
+        v14 = shouldLog2 | 2;
       }
 
       else
       {
-        v14 = v13;
+        v14 = shouldLog2;
       }
 
       if (!os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_INFO))
@@ -181,11 +181,11 @@
   objc_autoreleasePoolPop(v3);
 }
 
-- (BOOL)_installPackage:(id *)a3
+- (BOOL)_installPackage:(id *)package
 {
-  if (a3)
+  if (package)
   {
-    *a3 = SSError();
+    *package = SSError();
   }
 
   return 0;
@@ -194,23 +194,23 @@
 - (id)_newInstallationOptions
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(SoftwareProperties *)self->_softwareProperties artworkData];
-  if (v4)
+  artworkData = [(SoftwareProperties *)self->_softwareProperties artworkData];
+  if (artworkData)
   {
-    [v3 setObject:v4 forKey:LSiTunesArtworkKey];
+    [v3 setObject:artworkData forKey:LSiTunesArtworkKey];
   }
 
-  v5 = [(SoftwareProperties *)self->_softwareProperties transitMapData];
-  if (v5)
+  transitMapData = [(SoftwareProperties *)self->_softwareProperties transitMapData];
+  if (transitMapData)
   {
-    [v3 setObject:v5 forKey:LSGeoJSONKey];
+    [v3 setObject:transitMapData forKey:LSGeoJSONKey];
   }
 
-  v6 = [(SoftwareProperties *)self->_softwareProperties ITunesMetadata];
-  if (v6)
+  iTunesMetadata = [(SoftwareProperties *)self->_softwareProperties ITunesMetadata];
+  if (iTunesMetadata)
   {
     v29 = 0;
-    v7 = [NSPropertyListSerialization dataWithPropertyList:v6 format:200 options:0 error:&v29];
+    v7 = [NSPropertyListSerialization dataWithPropertyList:iTunesMetadata format:200 options:0 error:&v29];
     v8 = v7 != 0;
     if (v7)
     {
@@ -225,15 +225,15 @@
         v20 = +[SSLogConfig sharedConfig];
       }
 
-      v21 = [v20 shouldLog];
+      shouldLog = [v20 shouldLog];
       if ([v20 shouldLogToDisk])
       {
-        v22 = v21 | 2;
+        v22 = shouldLog | 2;
       }
 
       else
       {
-        v22 = v21;
+        v22 = shouldLog;
       }
 
       if (!os_log_type_enabled([v20 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -271,15 +271,15 @@
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v10 = [v9 shouldLog];
+    shouldLog2 = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog2 | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog2;
     }
 
     if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -307,25 +307,25 @@
     v8 = 0;
   }
 
-  v15 = [(SoftwareProperties *)self->_softwareProperties sinfData];
-  if (v15)
+  sinfData = [(SoftwareProperties *)self->_softwareProperties sinfData];
+  if (sinfData)
   {
-    [v3 setObject:v15 forKey:LSApplicationSINFKey];
+    [v3 setObject:sinfData forKey:LSApplicationSINFKey];
   }
 
-  v16 = [(SoftwareProperties *)self->_softwareProperties installType];
-  if (v16)
+  installType = [(SoftwareProperties *)self->_softwareProperties installType];
+  if (installType)
   {
-    [v3 setObject:v16 forKey:LSInstallTypeKey];
+    [v3 setObject:installType forKey:LSInstallTypeKey];
   }
 
   v17 = [NSNumber numberWithBool:1];
   [v3 setObject:v17 forKey:LSSupressNotificationKey];
   [v3 setObject:LSPackageTypeCustomer forKey:LSPackageTypeKey];
-  v18 = [(SoftwareProperties *)self->_softwareProperties bundleIdentifier];
-  if ([(NSString *)v18 length])
+  bundleIdentifier = [(SoftwareProperties *)self->_softwareProperties bundleIdentifier];
+  if ([(NSString *)bundleIdentifier length])
   {
-    [v3 setObject:v18 forKey:@"CFBundleIdentifier"];
+    [v3 setObject:bundleIdentifier forKey:@"CFBundleIdentifier"];
   }
 
   if (!v8)
@@ -337,18 +337,18 @@
   return v3;
 }
 
-- (BOOL)_verifyApplication:(id)a3 error:(id *)a4
+- (BOOL)_verifyApplication:(id)application error:(id *)error
 {
   v7 = objc_opt_new();
-  [v7 setSourceURL:a3];
+  [v7 setSourceURL:application];
   [v7 setBundleIdentifier:{-[SoftwareProperties bundleIdentifier](self->_softwareProperties, "bundleIdentifier")}];
   [v7 setBundleVersion:{-[SoftwareProperties bundleVersion](self->_softwareProperties, "bundleVersion")}];
   v10 = 0;
   v8 = [v7 validate:&v10];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v10;
+    *error = v10;
   }
 
   return v8;

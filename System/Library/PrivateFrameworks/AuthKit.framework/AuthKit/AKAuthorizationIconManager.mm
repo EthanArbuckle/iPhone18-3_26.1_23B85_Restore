@@ -1,15 +1,15 @@
 @interface AKAuthorizationIconManager
 + (id)sharedManager;
 - (AKAuthorizationIconManager)init;
-- (BOOL)_isFetchingIconWithRequestContext:(id)a3;
-- (id)_dataBlockForKey:(id)a3;
-- (id)_serviceIDForRequestContext:(id)a3;
-- (id)_startFetchingIconForBundleID:(id)a3 size:(id)a4 scale:(id)a5;
-- (void)_removeDataBlockForKey:(id)a3;
-- (void)_setDataBlock:(id)a3 forKey:(id)a4;
-- (void)continueFetchingIconWithRequestContext:(id)a3 completion:(id)a4;
-- (void)setFetchIconBlockForPresenter:(id)a3 withContext:(id)a4;
-- (void)startFetchingIconWithRequestContext:(id)a3;
+- (BOOL)_isFetchingIconWithRequestContext:(id)context;
+- (id)_dataBlockForKey:(id)key;
+- (id)_serviceIDForRequestContext:(id)context;
+- (id)_startFetchingIconForBundleID:(id)d size:(id)size scale:(id)scale;
+- (void)_removeDataBlockForKey:(id)key;
+- (void)_setDataBlock:(id)block forKey:(id)key;
+- (void)continueFetchingIconWithRequestContext:(id)context completion:(id)completion;
+- (void)setFetchIconBlockForPresenter:(id)presenter withContext:(id)context;
+- (void)startFetchingIconWithRequestContext:(id)context;
 @end
 
 @implementation AKAuthorizationIconManager
@@ -48,18 +48,18 @@
   return v2;
 }
 
-- (void)startFetchingIconWithRequestContext:(id)a3
+- (void)startFetchingIconWithRequestContext:(id)context
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v24 = [(AKAuthorizationIconManager *)v26 _serviceIDForRequestContext:location[0]];
-  v23 = [location[0] _proxiedClientBundleID];
-  v12 = [location[0] _iconScale];
-  if (v12)
+  objc_storeStrong(location, context);
+  v24 = [(AKAuthorizationIconManager *)selfCopy _serviceIDForRequestContext:location[0]];
+  _proxiedClientBundleID = [location[0] _proxiedClientBundleID];
+  _iconScale = [location[0] _iconScale];
+  if (_iconScale)
   {
-    v3 = _objc_retain(v12);
+    v3 = _objc_retain(_iconScale);
   }
 
   else
@@ -68,30 +68,30 @@
   }
 
   v22 = v3;
-  _objc_release(v12);
-  v21 = [location[0] _iconSize];
+  _objc_release(_iconScale);
+  _iconSize = [location[0] _iconSize];
   v11 = 0;
   if (v24)
   {
     v11 = 0;
-    if (v23)
+    if (_proxiedClientBundleID)
     {
       v11 = v22 != 0;
     }
   }
 
   v20 = v11;
-  v4 = [location[0] _iconData];
-  v9 = v4 != 0;
-  _objc_release(v4);
+  _iconData = [location[0] _iconData];
+  v9 = _iconData != 0;
+  _objc_release(_iconData);
   v19 = v9;
-  v10 = 1;
+  _isSubscriptionLogin = 1;
   if (([location[0] _isWebLogin] & 1) == 0)
   {
-    v10 = [location[0] _isSubscriptionLogin];
+    _isSubscriptionLogin = [location[0] _isSubscriptionLogin];
   }
 
-  v18 = v10 & 1;
+  v18 = _isSubscriptionLogin & 1;
   v8 = 0;
   if (!v19)
   {
@@ -109,13 +109,13 @@
     type = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      sub_10001B098(v28, v26, location[0]);
+      sub_10001B098(v28, selfCopy, location[0]);
       _os_log_impl(&_mh_execute_header, oslog, type, "%@: Starting to fetch icon for request context (%@)", v28, 0x16u);
     }
 
     objc_storeStrong(&oslog, 0);
-    v14 = [(AKAuthorizationIconManager *)v26 _startFetchingIconForBundleID:v23 size:v21 scale:v22];
-    [(AKAuthorizationIconManager *)v26 _setDataBlock:v14 forKey:v24];
+    v14 = [(AKAuthorizationIconManager *)selfCopy _startFetchingIconForBundleID:_proxiedClientBundleID size:_iconSize scale:v22];
+    [(AKAuthorizationIconManager *)selfCopy _setDataBlock:v14 forKey:v24];
     objc_storeStrong(&v14, 0);
   }
 
@@ -154,39 +154,39 @@
         v7 = @"NO";
       }
 
-      sub_10001B0E8(v27, v26, location[0], v5, v6, v7);
+      sub_10001B0E8(v27, selfCopy, location[0], v5, v6, v7);
       _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "%@: Determined request context (%@) is not eligible for remotely fetching icon (hasParameters: %@, hasData: %@, hasFetchContext: %@)", v27, 0x34u);
     }
 
     objc_storeStrong(&v13, 0);
   }
 
-  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&_iconSize, 0);
   objc_storeStrong(&v22, 0);
-  objc_storeStrong(&v23, 0);
+  objc_storeStrong(&_proxiedClientBundleID, 0);
   objc_storeStrong(&v24, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)setFetchIconBlockForPresenter:(id)a3 withContext:(id)a4
+- (void)setFetchIconBlockForPresenter:(id)presenter withContext:(id)context
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, presenter);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
-  v8 = v23;
-  v9 = [v21 credentialRequestContext];
+  objc_storeStrong(&v21, context);
+  v8 = selfCopy;
+  credentialRequestContext = [v21 credentialRequestContext];
   v10 = [(AKAuthorizationIconManager *)v8 _isFetchingIconWithRequestContext:?];
-  _objc_release(v9);
+  _objc_release(credentialRequestContext);
   if (v10)
   {
-    v4 = v23;
-    v5 = [v21 credentialRequestContext];
+    v4 = selfCopy;
+    credentialRequestContext2 = [v21 credentialRequestContext];
     v19 = [(AKAuthorizationIconManager *)v4 _serviceIDForRequestContext:?];
-    _objc_release(v5);
-    objc_initWeak(&v18, v23);
+    _objc_release(credentialRequestContext2);
+    objc_initWeak(&v18, selfCopy);
     v6 = location[0];
     v11 = _NSConcreteStackBlock;
     v12 = -1073741824;
@@ -212,23 +212,23 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)continueFetchingIconWithRequestContext:(id)a3 completion:(id)a4
+- (void)continueFetchingIconWithRequestContext:(id)context completion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  if ([(AKAuthorizationIconManager *)v14 _isFetchingIconWithRequestContext:location[0]])
+  objc_storeStrong(&v12, completion);
+  if ([(AKAuthorizationIconManager *)selfCopy _isFetchingIconWithRequestContext:location[0]])
   {
     v10 = _os_activity_create(&_mh_execute_header, "authkit/icon-fetching", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
     v11 = v10;
     state.opaque[0] = 0;
     state.opaque[1] = 0;
     os_activity_scope_enter(v10, &state);
-    v8 = [(AKAuthorizationIconManager *)v14 _serviceIDForRequestContext:location[0]];
-    v7 = [(AKAuthorizationIconManager *)v14 _dataBlockForKey:v8];
+    v8 = [(AKAuthorizationIconManager *)selfCopy _serviceIDForRequestContext:location[0]];
+    v7 = [(AKAuthorizationIconManager *)selfCopy _dataBlockForKey:v8];
     [v7 setCompletion:v12];
     objc_storeStrong(&v7, 0);
     objc_storeStrong(&v8, 0);
@@ -248,16 +248,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)_startFetchingIconForBundleID:(id)a3 size:(id)a4 scale:(id)a5
+- (id)_startFetchingIconForBundleID:(id)d size:(id)size scale:(id)scale
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, size);
   v21 = 0;
-  objc_storeStrong(&v21, a5);
+  objc_storeStrong(&v21, scale);
   v19 = _os_activity_create(&_mh_execute_header, "authkit/icon-fetching", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v20 = v19;
   state.opaque[0] = 0;
@@ -286,18 +286,18 @@
   return v6;
 }
 
-- (BOOL)_isFetchingIconWithRequestContext:(id)a3
+- (BOOL)_isFetchingIconWithRequestContext:(id)context
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = [(AKAuthorizationIconManager *)v9 _serviceIDForRequestContext:location[0]];
+  objc_storeStrong(location, context);
+  v7 = [(AKAuthorizationIconManager *)selfCopy _serviceIDForRequestContext:location[0]];
   v5 = 0;
   v4 = 0;
   if (v7)
   {
-    v6 = [(AKAuthorizationIconManager *)v9 _dataBlockForKey:v7];
+    v6 = [(AKAuthorizationIconManager *)selfCopy _dataBlockForKey:v7];
     v5 = 1;
     v4 = v6 != 0;
   }
@@ -313,43 +313,43 @@
   return v10;
 }
 
-- (id)_serviceIDForRequestContext:(id)a3
+- (id)_serviceIDForRequestContext:(id)context
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   if ([location[0] _isSubscriptionLogin])
   {
-    v7 = [location[0] _proxiedClientBundleID];
+    _proxiedClientBundleID = [location[0] _proxiedClientBundleID];
   }
 
   else
   {
-    v5 = [location[0] authorizationRequest];
-    v7 = [v5 clientID];
-    _objc_release(v5);
+    authorizationRequest = [location[0] authorizationRequest];
+    _proxiedClientBundleID = [authorizationRequest clientID];
+    _objc_release(authorizationRequest);
   }
 
   objc_storeStrong(location, 0);
-  v3 = v7;
+  v3 = _proxiedClientBundleID;
 
   return v3;
 }
 
-- (id)_dataBlockForKey:(id)a3
+- (id)_dataBlockForKey:(id)key
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = v14;
+  objc_storeStrong(location, key);
+  v4 = selfCopy;
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;
   v9 = sub_10001C110;
   v10 = &unk_10031F028;
-  v11 = _objc_retain(v14);
+  v11 = _objc_retain(selfCopy);
   v12 = _objc_retain(location[0]);
   v5 = sub_10001C060(&v4->_dataBlocksLock, &v6);
   objc_storeStrong(&v12, 0);
@@ -359,21 +359,21 @@
   return v5;
 }
 
-- (void)_setDataBlock:(id)a3 forKey:(id)a4
+- (void)_setDataBlock:(id)block forKey:(id)key
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, block);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  v5 = v16;
+  objc_storeStrong(&v14, key);
+  v5 = selfCopy;
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;
   v9 = sub_10001C314;
   v10 = &unk_10031F050;
-  v11 = _objc_retain(v16);
+  v11 = _objc_retain(selfCopy);
   v12 = _objc_retain(location[0]);
   v13 = _objc_retain(v14);
   sub_10001C2B0(&v5->_dataBlocksLock, &v6);
@@ -384,19 +384,19 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_removeDataBlockForKey:(id)a3
+- (void)_removeDataBlockForKey:(id)key
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v12;
+  objc_storeStrong(location, key);
+  v3 = selfCopy;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_10001C4BC;
   v8 = &unk_10031F078;
-  v9 = _objc_retain(v12);
+  v9 = _objc_retain(selfCopy);
   v10 = _objc_retain(location[0]);
   sub_10001C2B0(&v3->_dataBlocksLock, &v4);
   objc_storeStrong(&v10, 0);

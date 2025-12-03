@@ -1,23 +1,23 @@
 @interface ProfileIconCollectionViewController
-- (ProfileIconCollectionViewController)initWithIcons:(id)a3;
+- (ProfileIconCollectionViewController)initWithIcons:(id)icons;
 - (ProfileIconCollectionViewControllerDelegate)delegate;
 - (id)_indexPathForSelectedSymbolName;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)loadView;
-- (void)setSelectedIndex:(unint64_t)a3;
+- (void)setSelectedIndex:(unint64_t)index;
 @end
 
 @implementation ProfileIconCollectionViewController
 
-- (ProfileIconCollectionViewController)initWithIcons:(id)a3
+- (ProfileIconCollectionViewController)initWithIcons:(id)icons
 {
-  v4 = a3;
+  iconsCopy = icons;
   v10.receiver = self;
   v10.super_class = ProfileIconCollectionViewController;
   v5 = [(ProfileIconCollectionViewController *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [iconsCopy copy];
     iconNames = v5->_iconNames;
     v5->_iconNames = v6;
 
@@ -54,11 +54,11 @@
   [(UICollectionView *)self->_profileIconCollectionView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UICollectionView *)self->_profileIconCollectionView setDelegate:self];
   [(UICollectionView *)self->_profileIconCollectionView setShowsHorizontalScrollIndicator:0];
-  v9 = [(UICollectionView *)self->_profileIconCollectionView layer];
-  [v9 setCornerRadius:10.0];
+  layer = [(UICollectionView *)self->_profileIconCollectionView layer];
+  [layer setCornerRadius:10.0];
 
-  v10 = [(UICollectionView *)self->_profileIconCollectionView layer];
-  [v10 setMasksToBounds:1];
+  layer2 = [(UICollectionView *)self->_profileIconCollectionView layer];
+  [layer2 setMasksToBounds:1];
 
   v11 = [UICollectionViewDiffableDataSource alloc];
   v12 = self->_profileIconCollectionView;
@@ -93,11 +93,11 @@ void __47__ProfileIconCollectionViewController_loadView__block_invoke(uint64_t a
   [v8 setShowsSelection:v9];
 }
 
-- (void)setSelectedIndex:(unint64_t)a3
+- (void)setSelectedIndex:(unint64_t)index
 {
-  if (self->_selectedIndex != a3)
+  if (self->_selectedIndex != index)
   {
-    self->_selectedIndex = a3;
+    self->_selectedIndex = index;
     [(UICollectionView *)self->_profileIconCollectionView reloadData];
   }
 }
@@ -118,14 +118,14 @@ void __47__ProfileIconCollectionViewController_loadView__block_invoke(uint64_t a
   return v5;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  -[ProfileIconCollectionViewController setSelectedIndex:](self, "setSelectedIndex:", [v5 item]);
+  pathCopy = path;
+  -[ProfileIconCollectionViewController setSelectedIndex:](self, "setSelectedIndex:", [pathCopy item]);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [v5 item];
+  item = [pathCopy item];
 
-  [WeakRetained profileIconCollectionViewController:self didSelectIconAtIndex:v6];
+  [WeakRetained profileIconCollectionViewController:self didSelectIconAtIndex:item];
 }
 
 - (ProfileIconCollectionViewControllerDelegate)delegate

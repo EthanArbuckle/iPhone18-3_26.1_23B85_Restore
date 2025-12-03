@@ -1,17 +1,17 @@
 @interface VCControlChannelTransaction
-+ (BOOL)sendUnreliableMessage:(id)a3 sessionID:(unsigned int)a4 participantID:(id)a5 transactionID:(id)a6 transactionDelegate:(id)a7 withOptions:(id)a8;
-- (BOOL)sendReliableMessage:(id)a3 sessionID:(unsigned int)a4 participantID:(id)a5 timeout:(id)a6 useFastRetries:(BOOL)a7 withOptions:(id)a8;
-- (VCControlChannelTransaction)initWithTransportSessionID:(unsigned int)a3 participantID:(id)a4 transactionID:(unint64_t)a5 transactionDelegate:(id)a6;
-- (float)retryTimeoutForRetryAttempt:(unsigned int)a3 usingFastRetries:(BOOL)a4;
-- (unsigned)retryCountUsingFastRetries:(BOOL)a3;
-- (void)confirmedTransactionByParticipantID:(id)a3 sessionID:(unsigned int)a4;
++ (BOOL)sendUnreliableMessage:(id)message sessionID:(unsigned int)d participantID:(id)iD transactionID:(id)transactionID transactionDelegate:(id)delegate withOptions:(id)options;
+- (BOOL)sendReliableMessage:(id)message sessionID:(unsigned int)d participantID:(id)iD timeout:(id)timeout useFastRetries:(BOOL)retries withOptions:(id)options;
+- (VCControlChannelTransaction)initWithTransportSessionID:(unsigned int)d participantID:(id)iD transactionID:(unint64_t)transactionID transactionDelegate:(id)delegate;
+- (float)retryTimeoutForRetryAttempt:(unsigned int)attempt usingFastRetries:(BOOL)retries;
+- (unsigned)retryCountUsingFastRetries:(BOOL)retries;
+- (void)confirmedTransactionByParticipantID:(id)d sessionID:(unsigned int)iD;
 - (void)dealloc;
 - (void)flushTransaction;
 @end
 
 @implementation VCControlChannelTransaction
 
-- (VCControlChannelTransaction)initWithTransportSessionID:(unsigned int)a3 participantID:(id)a4 transactionID:(unint64_t)a5 transactionDelegate:(id)a6
+- (VCControlChannelTransaction)initWithTransportSessionID:(unsigned int)d participantID:(id)iD transactionID:(unint64_t)transactionID transactionDelegate:(id)delegate
 {
   v47 = *MEMORY[0x1E69E9840];
   v34.receiver = self;
@@ -23,10 +23,10 @@
     return v11;
   }
 
-  v10->_sessionID = a3;
-  v10->_participantID = [a4 copy];
-  v11->_transactionID = a5;
-  v11->_weakTransactionDelegate = objc_storeWeak(&v11->_weakTransactionDelegate, a6);
+  v10->_sessionID = d;
+  v10->_participantID = [iD copy];
+  v11->_transactionID = transactionID;
+  v11->_weakTransactionDelegate = objc_storeWeak(&v11->_weakTransactionDelegate, delegate);
   pthread_mutex_init(&v11->_transactionLock, 0);
   pthread_cond_init(&v11->_transactionDone, 0);
   v11->_isConfirmed = 0;
@@ -171,7 +171,7 @@ LABEL_14:
   v3 = *(a2 + 168);
   v4 = *(a2 + 176);
   v5 = 136316162;
-  v6 = a1;
+  selfCopy = self;
   v7 = 2080;
   v8 = "[VCControlChannelTransaction dealloc]";
   v9 = 1024;
@@ -263,10 +263,10 @@ LABEL_11:
   }
 }
 
-- (void)confirmedTransactionByParticipantID:(id)a3 sessionID:(unsigned int)a4
+- (void)confirmedTransactionByParticipantID:(id)d sessionID:(unsigned int)iD
 {
   v35 = *MEMORY[0x1E69E9840];
-  if (self->_sessionID == a4 && ![a3 compare:self->_participantID])
+  if (self->_sessionID == iD && ![d compare:self->_participantID])
   {
     pthread_mutex_lock(&self->_transactionLock);
     self->_isConfirmed = 1;
@@ -287,9 +287,9 @@ LABEL_11:
           v28 = 1024;
           v29 = 85;
           v30 = 1024;
-          *v31 = a4;
+          *v31 = iD;
           *&v31[4] = 2112;
-          *&v31[6] = a3;
+          *&v31[6] = d;
           v12 = " [%s] %s:%d transactionConfirmedByParticipantID: message has been ACKed for sessionID='%d', participantID='%@'";
           v13 = v21;
           v14 = 44;
@@ -327,9 +327,9 @@ LABEL_11:
           *&v31[8] = 2048;
           *&v31[10] = self;
           *&v31[18] = 1024;
-          *v32 = a4;
+          *v32 = iD;
           *&v32[4] = 2112;
-          *&v32[6] = a3;
+          *&v32[6] = d;
           v12 = " [%s] %s:%d %@(%p) transactionConfirmedByParticipantID: message has been ACKed for sessionID='%d', participantID='%@'";
           v13 = v23;
           v14 = 64;
@@ -358,11 +358,11 @@ LABEL_11:
         v30 = 1024;
         *v31 = sessionID;
         *&v31[4] = 1024;
-        *&v31[6] = a4;
+        *&v31[6] = iD;
         *&v31[10] = 2112;
         *&v31[12] = participantID;
         *v32 = 2112;
-        *&v32[2] = a3;
+        *&v32[2] = d;
         v12 = " [%s] %s:%d transactionConfirmedByParticipantID: confirmation mismatch: sessionID '%d'!='%d', participantID '%@'!='%@'";
         v13 = v9;
         v14 = 60;
@@ -405,11 +405,11 @@ LABEL_13:
         *&v31[18] = 1024;
         *v32 = v17;
         *&v32[4] = 1024;
-        *&v32[6] = a4;
+        *&v32[6] = iD;
         *&v32[10] = 2112;
         *&v32[12] = v18;
         v33 = 2112;
-        v34 = a3;
+        dCopy = d;
         v12 = " [%s] %s:%d %@(%p) transactionConfirmedByParticipantID: confirmation mismatch: sessionID '%d'!='%d', participantID '%@'!='%@'";
         v13 = v16;
         v14 = 80;
@@ -419,9 +419,9 @@ LABEL_13:
   }
 }
 
-- (unsigned)retryCountUsingFastRetries:(BOOL)a3
+- (unsigned)retryCountUsingFastRetries:(BOOL)retries
 {
-  if (a3)
+  if (retries)
   {
     return 120;
   }
@@ -432,30 +432,30 @@ LABEL_13:
   }
 }
 
-- (float)retryTimeoutForRetryAttempt:(unsigned int)a3 usingFastRetries:(BOOL)a4
+- (float)retryTimeoutForRetryAttempt:(unsigned int)attempt usingFastRetries:(BOOL)retries
 {
   LODWORD(v4) = 0.25;
-  if (!a4)
+  if (!retries)
   {
-    v6 = [(VCControlChannelTransaction *)self retryCountUsingFastRetries:0, v4]- 1;
-    if (v6 >= a3)
+    attemptCopy = [(VCControlChannelTransaction *)self retryCountUsingFastRetries:0, v4]- 1;
+    if (attemptCopy >= attempt)
     {
-      v6 = a3;
+      attemptCopy = attempt;
     }
 
-    LODWORD(v4) = retryTimeout[v6];
+    LODWORD(v4) = retryTimeout[attemptCopy];
   }
 
   return *&v4;
 }
 
-- (BOOL)sendReliableMessage:(id)a3 sessionID:(unsigned int)a4 participantID:(id)a5 timeout:(id)a6 useFastRetries:(BOOL)a7 withOptions:(id)a8
+- (BOOL)sendReliableMessage:(id)message sessionID:(unsigned int)d participantID:(id)iD timeout:(id)timeout useFastRetries:(BOOL)retries withOptions:(id)options
 {
-  v8 = a7;
+  retriesCopy = retries;
   v101 = *MEMORY[0x1E69E9840];
   v11 = MEMORY[0x1E1289F20](&self->_weakTransactionDelegate, a2);
   v12 = &selRef_isLatencySensitiveModeEnabled;
-  v87 = [(VCControlChannelTransaction *)self retryCountUsingFastRetries:v8];
+  v87 = [(VCControlChannelTransaction *)self retryCountUsingFastRetries:retriesCopy];
   v13 = 0;
   if (!v87)
   {
@@ -468,7 +468,7 @@ LABEL_13:
   v86 = 136316418;
   while (1)
   {
-    if (([v11 isParticipantActive:{objc_msgSend(a5, "unsignedLongLongValue", v86)}] & 1) == 0)
+    if (([v11 isParticipantActive:{objc_msgSend(iD, "unsignedLongLongValue", v86)}] & 1) == 0)
     {
       if (objc_opt_class() == self)
       {
@@ -495,9 +495,9 @@ LABEL_69:
         v93 = 1024;
         v94 = 122;
         v95 = 2112;
-        *v96 = a5;
+        *v96 = iD;
         *&v96[8] = 1024;
-        *&v96[10] = a4;
+        *&v96[10] = d;
         v48 = " [%s] %s:%d Stop sending message to remote participant '%@' which is not part of session '%d'";
         v49 = v47;
         v50 = 44;
@@ -539,9 +539,9 @@ LABEL_69:
         *&v96[8] = 2048;
         *&v96[10] = self;
         *&v96[18] = 2112;
-        *&v96[20] = a5;
+        *&v96[20] = iD;
         *&v96[28] = 1024;
-        *&v96[30] = a4;
+        *&v96[30] = d;
         v48 = " [%s] %s:%d %@(%p) Stop sending message to remote participant '%@' which is not part of session '%d'";
         v49 = v62;
         v50 = 64;
@@ -578,9 +578,9 @@ LABEL_69:
         v95 = 1024;
         *v96 = v13 + 1;
         *&v96[4] = 1024;
-        *&v96[6] = a4;
+        *&v96[6] = d;
         *&v96[10] = 2112;
-        *&v96[12] = a5;
+        *&v96[12] = iD;
         v53 = " [%s] %s:%d Transaction flushed. Not sending message on attempt '%d', sessionID='%d', participantID='%@'";
         v54 = v52;
         v55 = 50;
@@ -624,9 +624,9 @@ LABEL_69:
         *&v96[18] = 1024;
         *&v96[20] = v13 + 1;
         *&v96[24] = 1024;
-        *&v96[26] = a4;
+        *&v96[26] = d;
         *&v96[30] = 2112;
-        *&v96[32] = a5;
+        *&v96[32] = iD;
         v53 = " [%s] %s:%d %@(%p) Transaction flushed. Not sending message on attempt '%d', sessionID='%d', participantID='%@'";
         v54 = v64;
         v55 = 70;
@@ -639,7 +639,7 @@ LABEL_68:
     }
 
     v15 = v11;
-    if (!+[VCControlChannelTransaction sendUnreliableMessage:sessionID:participantID:transactionID:transactionDelegate:withOptions:](VCControlChannelTransaction, "sendUnreliableMessage:sessionID:participantID:transactionID:transactionDelegate:withOptions:", a3, a4, a5, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_transactionID], v11, a8))
+    if (!+[VCControlChannelTransaction sendUnreliableMessage:sessionID:participantID:transactionID:transactionDelegate:withOptions:](VCControlChannelTransaction, "sendUnreliableMessage:sessionID:participantID:transactionID:transactionDelegate:withOptions:", message, d, iD, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_transactionID], v11, options))
     {
       if (objc_opt_class() == self)
       {
@@ -664,9 +664,9 @@ LABEL_68:
         v95 = 1024;
         *v96 = v13 + 1;
         *&v96[4] = 1024;
-        *&v96[6] = a4;
+        *&v96[6] = d;
         *&v96[10] = 2112;
-        *&v96[12] = a5;
+        *&v96[12] = iD;
         v19 = v23;
         v20 = " [%s] %s:%d Network failed to send message on attempt '%d', sessionID='%d', participantID='%@'";
         v21 = 50;
@@ -698,9 +698,9 @@ LABEL_68:
           *&v96[18] = 1024;
           *&v96[20] = v13 + 1;
           *&v96[24] = 1024;
-          *&v96[26] = a4;
+          *&v96[26] = d;
           *&v96[30] = 2112;
-          *&v96[32] = a5;
+          *&v96[32] = iD;
           v19 = v18;
           v20 = " [%s] %s:%d %@(%p) Network failed to send message on attempt '%d', sessionID='%d', participantID='%@'";
           v21 = 70;
@@ -712,15 +712,15 @@ LABEL_15:
 
 LABEL_16:
     pthread_mutex_unlock(&self->_transactionLock);
-    [(VCControlChannelTransaction *)self retryTimeoutForRetryAttempt:v13 usingFastRetries:v8];
+    [(VCControlChannelTransaction *)self retryTimeoutForRetryAttempt:v13 usingFastRetries:retriesCopy];
     v25 = v24;
     v26 = v14 + v24;
-    if (a6)
+    if (timeout)
     {
-      [a6 floatValue];
+      [timeout floatValue];
       if (v26 > v27)
       {
-        [a6 floatValue];
+        [timeout floatValue];
         v25 = v28 - v14;
         v26 = v14 + (v28 - v14);
       }
@@ -773,9 +773,9 @@ LABEL_75:
         v93 = 1024;
         v94 = 168;
         v95 = 1024;
-        *v96 = a4;
+        *v96 = d;
         *&v96[4] = 2112;
-        *&v96[6] = a5;
+        *&v96[6] = iD;
         v58 = " [%s] %s:%d Message has been confirmed for sessionID='%d' by remote participant participantID='%@'";
         v59 = v57;
         v60 = 44;
@@ -817,9 +817,9 @@ LABEL_75:
         *&v96[8] = 2048;
         *&v96[10] = self;
         *&v96[18] = 1024;
-        *&v96[20] = a4;
+        *&v96[20] = d;
         *&v96[24] = 2112;
-        *&v96[26] = a5;
+        *&v96[26] = iD;
         v58 = " [%s] %s:%d %@(%p) Message has been confirmed for sessionID='%d' by remote participant participantID='%@'";
         v59 = v66;
         v60 = 64;
@@ -854,7 +854,7 @@ LABEL_75:
       *&v96[4] = 2048;
       *&v96[6] = v26;
       *&v96[14] = 1024;
-      *&v96[16] = v8;
+      *&v96[16] = retriesCopy;
       v36 = v40;
       v37 = " [%s] %s:%d Attempt '%d' timed out. Aggregated wait is '%f', useFastRetries=%d";
       v38 = 50;
@@ -895,7 +895,7 @@ LABEL_75:
       *&v96[24] = 2048;
       *&v96[26] = v26;
       *&v96[34] = 1024;
-      *&v96[36] = v8;
+      *&v96[36] = retriesCopy;
       v36 = v35;
       v37 = " [%s] %s:%d %@(%p) Attempt '%d' timed out. Aggregated wait is '%f', useFastRetries=%d";
       v38 = 70;
@@ -946,7 +946,7 @@ LABEL_35:
         *&v96[8] = 2048;
         *&v96[10] = self;
         *&v96[18] = 2112;
-        *&v96[20] = a6;
+        *&v96[20] = timeout;
         v69 = " [%s] %s:%d %@(%p) User-specified timeout '%@' has expired. Aborting confirmation wait";
         v70 = v73;
         v71 = 58;
@@ -978,7 +978,7 @@ LABEL_84:
     v93 = 1024;
     v94 = 149;
     v95 = 2112;
-    *v96 = a6;
+    *v96 = timeout;
     v69 = " [%s] %s:%d User-specified timeout '%@' has expired. Aborting confirmation wait";
     v70 = v68;
     v71 = 38;
@@ -1010,9 +1010,9 @@ LABEL_86:
         v93 = 1024;
         v94 = 172;
         v95 = 2112;
-        *v96 = a5;
+        *v96 = iD;
         *&v96[8] = 1024;
-        *&v96[10] = a4;
+        *&v96[10] = d;
         *&v96[14] = 2080;
         *&v96[16] = v78;
         *&v96[24] = 1024;
@@ -1064,9 +1064,9 @@ LABEL_100:
         *&v96[8] = 2048;
         *&v96[10] = self;
         *&v96[18] = 2112;
-        *&v96[20] = a5;
+        *&v96[20] = iD;
         *&v96[28] = 1024;
-        *&v96[30] = a4;
+        *&v96[30] = d;
         *&v96[34] = 2080;
         *&v96[36] = v84;
         v97 = 1024;
@@ -1089,18 +1089,18 @@ LABEL_100:
   return v41;
 }
 
-+ (BOOL)sendUnreliableMessage:(id)a3 sessionID:(unsigned int)a4 participantID:(id)a5 transactionID:(id)a6 transactionDelegate:(id)a7 withOptions:(id)a8
++ (BOOL)sendUnreliableMessage:(id)message sessionID:(unsigned int)d participantID:(id)iD transactionID:(id)transactionID transactionDelegate:(id)delegate withOptions:(id)options
 {
   v70 = *MEMORY[0x1E69E9840];
-  if (a5)
+  if (iD)
   {
-    if (([a7 isParticipantActive:{objc_msgSend(a5, "unsignedLongLongValue")}] & 1) == 0)
+    if (([delegate isParticipantActive:{objc_msgSend(iD, "unsignedLongLongValue")}] & 1) == 0)
     {
-      if (objc_opt_class() != a1)
+      if (objc_opt_class() != self)
       {
         if (objc_opt_respondsToSelector())
         {
-          v22 = [a1 performSelector:sel_logPrefix];
+          v22 = [self performSelector:sel_logPrefix];
         }
 
         else
@@ -1130,11 +1130,11 @@ LABEL_100:
         v41 = 2112;
         *v42 = v22;
         *&v42[8] = 2048;
-        v43 = a1;
+        selfCopy2 = self;
         *v44 = 2112;
-        *&v44[2] = a5;
+        *&v44[2] = iD;
         *&v44[10] = 1024;
-        *v45 = a4;
+        *v45 = d;
         v25 = " [%s] %s:%d %@(%p) sendUnreliableMessage: attempt to send message to remote participant '%@' which is not part of session '%d'";
         v26 = v33;
         v27 = 64;
@@ -1158,9 +1158,9 @@ LABEL_100:
         v39 = 1024;
         v40 = 187;
         v41 = 2112;
-        *v42 = a5;
+        *v42 = iD;
         *&v42[8] = 1024;
-        LODWORD(v43) = a4;
+        LODWORD(selfCopy2) = d;
         v25 = " [%s] %s:%d sendUnreliableMessage: attempt to send message to remote participant '%@' which is not part of session '%d'";
         v26 = v31;
         v27 = 44;
@@ -1194,11 +1194,11 @@ LABEL_34:
     v51 = 0u;
     v50 = 0u;
     v49 = 0u;
-    DWORD2(v49) = a4;
-    BYTE5(v68) = [a8 duplicateMessageOnServerLink];
+    DWORD2(v49) = d;
+    BYTE5(v68) = [options duplicateMessageOnServerLink];
     BYTE14(v61) = 1;
-    *&v62 = [a5 unsignedLongLongValue];
-    if (a6)
+    *&v62 = [iD unsignedLongLongValue];
+    if (transactionID)
     {
       goto LABEL_4;
     }
@@ -1227,28 +1227,28 @@ LABEL_34:
     v51 = 0u;
     v50 = 0u;
     v49 = 0u;
-    DWORD2(v49) = a4;
-    BYTE5(v68) = [a8 duplicateMessageOnServerLink];
-    if (a6)
+    DWORD2(v49) = d;
+    BYTE5(v68) = [options duplicateMessageOnServerLink];
+    if (transactionID)
     {
 LABEL_4:
       BYTE10(v63) = 1;
-      *&v64 = [a6 unsignedLongLongValue];
+      *&v64 = [transactionID unsignedLongLongValue];
     }
   }
 
   memset(v48 + 1, 170, 0x7FFuLL);
-  v15 = [a3 length];
+  v15 = [message length];
   v16 = v15;
   LOBYTE(v48[0]) = 64;
   v17 = v15 + 1;
   if ((v15 + 1) >= 0x801)
   {
-    if (objc_opt_class() != a1)
+    if (objc_opt_class() != self)
     {
       if (objc_opt_respondsToSelector())
       {
-        v21 = [a1 performSelector:sel_logPrefix];
+        v21 = [self performSelector:sel_logPrefix];
       }
 
       else
@@ -1278,15 +1278,15 @@ LABEL_4:
       v41 = 2112;
       *v42 = v21;
       *&v42[8] = 2048;
-      v43 = a1;
+      selfCopy2 = self;
       *v44 = 1024;
       *&v44[2] = 1;
       *&v44[6] = 1024;
       *&v44[8] = v16;
       *v45 = 1024;
-      *&v45[2] = a4;
+      *&v45[2] = d;
       v46 = 2112;
-      v47 = a5;
+      iDCopy = iD;
       v25 = " [%s] %s:%d %@(%p) Message length is too large (header[%d] data[%d]) to be sent. session[%d] particiapnt[%@] ";
       v26 = v29;
       v27 = 76;
@@ -1313,10 +1313,10 @@ LABEL_4:
       *v42 = 1;
       *&v42[4] = 1024;
       *&v42[6] = v16;
-      LOWORD(v43) = 1024;
-      *(&v43 + 2) = a4;
-      HIWORD(v43) = 2112;
-      *v44 = a5;
+      LOWORD(selfCopy2) = 1024;
+      *(&selfCopy2 + 2) = d;
+      HIWORD(selfCopy2) = 2112;
+      *v44 = iD;
       v25 = " [%s] %s:%d Message length is too large (header[%d] data[%d]) to be sent. session[%d] particiapnt[%@] ";
       v26 = v24;
       v27 = 56;
@@ -1326,9 +1326,9 @@ LABEL_4:
     goto LABEL_34;
   }
 
-  [a3 bytes];
+  [message bytes];
   __memcpy_chk();
-  [a7 addToSentStats:v17];
+  [delegate addToSentStats:v17];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     v18 = VRTraceErrorLogLevelToCSTR();
@@ -1342,13 +1342,13 @@ LABEL_4:
       v39 = 1024;
       v40 = 222;
       v41 = 2112;
-      *v42 = a6;
+      *v42 = transactionID;
       *&v42[8] = 2048;
-      v43 = v17;
+      selfCopy2 = v17;
       *v44 = 2112;
-      *&v44[2] = a5;
+      *&v44[2] = iD;
       *&v44[10] = 1024;
-      *v45 = a4;
+      *v45 = d;
       _os_log_impl(&dword_1DB56E000, v19, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d sendUnreliableMessage: send message with transactionID=%@, size=%lu to remote participant=%@ which is part of session=%d", &v35, 0x40u);
     }
   }

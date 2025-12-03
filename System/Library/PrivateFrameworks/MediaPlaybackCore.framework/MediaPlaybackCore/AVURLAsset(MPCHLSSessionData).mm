@@ -57,10 +57,10 @@ LABEL_11:
 - (id)mpc_synchronousHLSSessionDataWithTimeout:()MPCHLSSessionData error:
 {
   v41 = *MEMORY[0x1E69E9840];
-  if ([a1 statusOfValueForKey:@"metadata" error:0] == 2)
+  if ([self statusOfValueForKey:@"metadata" error:0] == 2)
   {
-    v7 = [a1 metadataForFormat:*MEMORY[0x1E69876F0]];
-    v8 = [a1 mpc_HLSAVMetadataItemInMetadata:v7];
+    v7 = [self metadataForFormat:*MEMORY[0x1E69876F0]];
+    v8 = [self mpc_HLSAVMetadataItemInMetadata:v7];
 
     goto LABEL_10;
   }
@@ -82,15 +82,15 @@ LABEL_11:
   v22 = &unk_1E8239078;
   v25 = &v33;
   v26 = &v27;
-  v23 = a1;
+  selfCopy = self;
   v10 = v9;
   v24 = v10;
-  [a1 loadValuesAsynchronouslyForKeys:&unk_1F45999D0 completionHandler:&v19];
+  [self loadValuesAsynchronouslyForKeys:&unk_1F45999D0 completionHandler:&v19];
   v11 = dispatch_time(0, 1000000000 * a3);
   if (dispatch_semaphore_wait(v10, v11))
   {
-    v12 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    selfCopy = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
+    if (!os_log_type_enabled(selfCopy, OS_LOG_TYPE_ERROR))
     {
 LABEL_7:
       v8 = 0;
@@ -98,9 +98,9 @@ LABEL_7:
     }
 
     *buf = 138543362;
-    v38 = a1;
+    selfCopy3 = self;
     v13 = "[AL] Time-out while retrieving HLS session metadata - Asset:%{public}@";
-    v14 = v12;
+    v14 = selfCopy;
     v15 = 12;
 LABEL_6:
     _os_log_impl(&dword_1C5C61000, v14, OS_LOG_TYPE_ERROR, v13, buf, v15);
@@ -115,19 +115,19 @@ LABEL_6:
       *a4 = v28[5];
     }
 
-    v12 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    selfCopy = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
+    if (!os_log_type_enabled(selfCopy, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_7;
     }
 
     v18 = v28[5];
     *buf = 138543618;
-    v38 = a1;
+    selfCopy3 = self;
     v39 = 2114;
     v40 = v18;
     v13 = "[AL] Error retrieving HLS session metadata - Asset:%{public}@ - Error:%{public}@";
-    v14 = v12;
+    v14 = selfCopy;
     v15 = 22;
     goto LABEL_6;
   }
@@ -138,8 +138,8 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  v12 = [a1 metadataForFormat:*MEMORY[0x1E69876F0], v19, v20, v21, v22, v23];
-  v8 = [a1 mpc_HLSAVMetadataItemInMetadata:v12];
+  selfCopy = [self metadataForFormat:*MEMORY[0x1E69876F0], v19, v20, v21, v22, selfCopy];
+  v8 = [self mpc_HLSAVMetadataItemInMetadata:selfCopy];
 LABEL_8:
 
 LABEL_9:

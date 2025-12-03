@@ -1,33 +1,33 @@
 @interface SBExitSlideOverPeekSwitcherModifier
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBExitSlideOverPeekSwitcherModifier)initWithTransitionID:(id)a3 floatingAppLayout:(id)a4 floatingConfiguration:(int64_t)a5;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBExitSlideOverPeekSwitcherModifier)initWithTransitionID:(id)d floatingAppLayout:(id)layout floatingConfiguration:(int64_t)configuration;
 @end
 
 @implementation SBExitSlideOverPeekSwitcherModifier
 
-- (SBExitSlideOverPeekSwitcherModifier)initWithTransitionID:(id)a3 floatingAppLayout:(id)a4 floatingConfiguration:(int64_t)a5
+- (SBExitSlideOverPeekSwitcherModifier)initWithTransitionID:(id)d floatingAppLayout:(id)layout floatingConfiguration:(int64_t)configuration
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v10)
+  dCopy = d;
+  layoutCopy = layout;
+  if (!layoutCopy)
   {
     [SBExitSlideOverPeekSwitcherModifier initWithTransitionID:a2 floatingAppLayout:self floatingConfiguration:?];
   }
 
   v14.receiver = self;
   v14.super_class = SBExitSlideOverPeekSwitcherModifier;
-  v11 = [(SBTransitionSwitcherModifier *)&v14 initWithTransitionID:v9];
+  v11 = [(SBTransitionSwitcherModifier *)&v14 initWithTransitionID:dCopy];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_floatingAppLayout, a4);
-    v12->_floatingConfiguration = a5;
+    objc_storeStrong(&v11->_floatingAppLayout, layout);
+    v12->_floatingConfiguration = configuration;
   }
 
   return v12;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   v23.receiver = self;
   v23.super_class = SBExitSlideOverPeekSwitcherModifier;
@@ -36,8 +36,8 @@
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(SBExitSlideOverPeekSwitcherModifier *)self appLayouts];
-  v14 = [v13 objectAtIndex:a3];
+  appLayouts = [(SBExitSlideOverPeekSwitcherModifier *)self appLayouts];
+  v14 = [appLayouts objectAtIndex:index];
 
   if ([v14 isEqual:self->_floatingAppLayout] && -[SBTransitionSwitcherModifier transitionPhase](self, "transitionPhase") >= 2)
   {

@@ -1,18 +1,18 @@
 @interface AVExportSettingsOutputSettingsAssistantBaseSettings
-- (AVExportSettingsOutputSettingsAssistantBaseSettings)initWithOutputSettingsPreset:(id)a3;
+- (AVExportSettingsOutputSettingsAssistantBaseSettings)initWithOutputSettingsPreset:(id)preset;
 - (void)dealloc;
 @end
 
 @implementation AVExportSettingsOutputSettingsAssistantBaseSettings
 
-- (AVExportSettingsOutputSettingsAssistantBaseSettings)initWithOutputSettingsPreset:(id)a3
+- (AVExportSettingsOutputSettingsAssistantBaseSettings)initWithOutputSettingsPreset:(id)preset
 {
   v7.receiver = self;
   v7.super_class = AVExportSettingsOutputSettingsAssistantBaseSettings;
   v4 = [(AVExportSettingsOutputSettingsAssistantBaseSettings *)&v7 init];
   if (v4)
   {
-    v5 = [AVExportSettingsForOutputSettingsPreset(a3) copy];
+    v5 = [AVExportSettingsForOutputSettingsPreset(preset) copy];
     v4->_exportSettings = v5;
     if (!v5)
     {

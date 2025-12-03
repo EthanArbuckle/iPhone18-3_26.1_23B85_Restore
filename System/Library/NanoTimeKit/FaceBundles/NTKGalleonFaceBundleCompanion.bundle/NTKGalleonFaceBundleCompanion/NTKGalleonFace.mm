@@ -1,28 +1,28 @@
 @interface NTKGalleonFace
-+ (BOOL)isRestrictedForDevice:(id)a3;
-+ (id)_initialDefaultComplicationForSlot:(id)a3 forDevice:(id)a4;
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4;
++ (BOOL)isRestrictedForDevice:(id)device;
++ (id)_initialDefaultComplicationForSlot:(id)slot forDevice:(id)device;
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device;
 + (id)_orderedComplicationSlots;
-+ (id)_richComplicationSlotsForDevice:(id)a3;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
++ (id)_richComplicationSlotsForDevice:(id)device;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
 - (id)_complicationSlotDescriptors;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_faceDescription;
-- (id)_localizedNameForComplicationSlot:(id)a3;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (id)_localizedNameForComplicationSlot:(id)slot;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)nightModeConfiguration;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKGalleonFace
 
-+ (BOOL)isRestrictedForDevice:(id)a3
++ (BOOL)isRestrictedForDevice:(id)device
 {
-  v3 = a3;
-  if (objc_msgSend_deviceCategory(v3, v4, v5, v6) == 4 || objc_msgSend_deviceCategory(v3, v7, v8, v9) == 6)
+  deviceCopy = device;
+  if (objc_msgSend_deviceCategory(deviceCopy, v4, v5, v6) == 4 || objc_msgSend_deviceCategory(deviceCopy, v7, v8, v9) == 6)
   {
-    v10 = objc_msgSend_supportsPDRCapability_(v3, v7, 360081074, v9) ^ 1;
+    v10 = objc_msgSend_supportsPDRCapability_(deviceCopy, v7, 360081074, v9) ^ 1;
   }
 
   else
@@ -90,11 +90,11 @@
   return v32;
 }
 
-+ (id)_initialDefaultComplicationForSlot:(id)a3 forDevice:(id)a4
++ (id)_initialDefaultComplicationForSlot:(id)slot forDevice:(id)device
 {
-  v5 = a3;
-  v6 = a4;
-  if (objc_msgSend_isEqualToString_(v5, v7, *MEMORY[0x277D2BF08], v8))
+  slotCopy = slot;
+  deviceCopy = device;
+  if (objc_msgSend_isEqualToString_(slotCopy, v7, *MEMORY[0x277D2BF08], v8))
   {
     v11 = MEMORY[0x277D2BE68];
 LABEL_3:
@@ -102,16 +102,16 @@ LABEL_3:
     goto LABEL_10;
   }
 
-  if (objc_msgSend_isEqualToString_(v5, v9, *MEMORY[0x277D2BEB8], v10))
+  if (objc_msgSend_isEqualToString_(slotCopy, v9, *MEMORY[0x277D2BEB8], v10))
   {
-    if ((objc_msgSend_isTinker(v6, v13, v14, v15) & 1) == 0)
+    if ((objc_msgSend_isTinker(deviceCopy, v13, v14, v15) & 1) == 0)
     {
       v11 = MEMORY[0x277D2BE90];
       goto LABEL_3;
     }
   }
 
-  else if (objc_msgSend_isEqualToString_(v5, v13, *MEMORY[0x277D2BEC8], v15))
+  else if (objc_msgSend_isEqualToString_(slotCopy, v13, *MEMORY[0x277D2BEC8], v15))
   {
     v11 = MEMORY[0x277D2BE88];
     goto LABEL_3;
@@ -143,7 +143,7 @@ LABEL_10:
   return v6;
 }
 
-+ (id)_richComplicationSlotsForDevice:(id)a3
++ (id)_richComplicationSlotsForDevice:(id)device
 {
   v9[8] = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277D2BF10];
@@ -163,29 +163,29 @@ LABEL_10:
   return v7;
 }
 
-- (id)_localizedNameForComplicationSlot:(id)a3
+- (id)_localizedNameForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  if (objc_msgSend_isEqualToString_(v4, v5, *MEMORY[0x277D2BEF8], v6))
+  slotCopy = slot;
+  if (objc_msgSend_isEqualToString_(slotCopy, v5, *MEMORY[0x277D2BEF8], v6))
   {
     objc_msgSend_localizedStringForKey_comment_(NTKGalleonFaceBundle, v7, @"GALLEON_SLOT_LABEL_SUBDIAL_TOP", @"Sub-dial Top");
     v14 = LABEL_9:;
     goto LABEL_10;
   }
 
-  if (objc_msgSend_isEqualToString_(v4, v7, *MEMORY[0x277D2BEB8], v8))
+  if (objc_msgSend_isEqualToString_(slotCopy, v7, *MEMORY[0x277D2BEB8], v8))
   {
     objc_msgSend_localizedStringForKey_comment_(NTKGalleonFaceBundle, v9, @"GALLEON_SLOT_LABEL_1", @"Slot 1");
     goto LABEL_9;
   }
 
-  if (objc_msgSend_isEqualToString_(v4, v9, *MEMORY[0x277D2BEC0], v10))
+  if (objc_msgSend_isEqualToString_(slotCopy, v9, *MEMORY[0x277D2BEC0], v10))
   {
     objc_msgSend_localizedStringForKey_comment_(NTKGalleonFaceBundle, v11, @"GALLEON_SLOT_LABEL_2", @"Slot 2");
     goto LABEL_9;
   }
 
-  if (objc_msgSend_isEqualToString_(v4, v11, *MEMORY[0x277D2BEC8], v12))
+  if (objc_msgSend_isEqualToString_(slotCopy, v11, *MEMORY[0x277D2BEC8], v12))
   {
     objc_msgSend_localizedStringForKey_comment_(NTKGalleonFaceBundle, v13, @"GALLEON_SLOT_LABEL_3", @"Slot 3");
     goto LABEL_9;
@@ -193,17 +193,17 @@ LABEL_10:
 
   v17.receiver = self;
   v17.super_class = NTKGalleonFace;
-  v14 = [(NTKFace *)&v17 _localizedNameForComplicationSlot:v4];
+  v14 = [(NTKFace *)&v17 _localizedNameForComplicationSlot:slotCopy];
 LABEL_10:
   v15 = v14;
 
   return v15;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = objc_msgSend_device(self, a2, a3, a4);
-  switch(a3)
+  v6 = objc_msgSend_device(self, a2, mode, slot);
+  switch(mode)
   {
     case 11:
       v9 = objc_msgSend_optionWithGalleonTimeMode_forDevice_(NTKGalleonTimeModeEditOption, v5, 1, v6);
@@ -225,37 +225,37 @@ LABEL_9:
   return v10;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = objc_msgSend__optionClassForCustomEditMode_(self, a2, a3, a4);
+  v5 = objc_msgSend__optionClassForCustomEditMode_(self, a2, mode, slot);
   v9 = objc_msgSend_device(self, v6, v7, v8);
   v12 = objc_msgSend_numberOfOptionsForDevice_(v5, v10, v9, v11);
 
   return v12;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = objc_msgSend__optionClassForCustomEditMode_(self, a2, a4, a4, a5);
+  v7 = objc_msgSend__optionClassForCustomEditMode_(self, a2, mode, mode, slot);
   v11 = objc_msgSend_device(self, v8, v9, v10);
-  v13 = objc_msgSend_optionAtIndex_forDevice_(v7, v12, a3, v11);
+  v13 = objc_msgSend_optionAtIndex_forDevice_(v7, v12, index, v11);
 
   return v13;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  v10 = objc_msgSend__optionClassForCustomEditMode_(self, v8, a4, v9);
+  optionCopy = option;
+  v10 = objc_msgSend__optionClassForCustomEditMode_(self, v8, mode, v9);
   v14 = objc_msgSend_device(self, v11, v12, v13);
-  v16 = objc_msgSend_indexOfOption_forDevice_(v10, v15, v7, v14);
+  v16 = objc_msgSend_indexOfOption_forDevice_(v10, v15, optionCopy, v14);
 
   return v16;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 18 || a3 == 12 || a3 == 11)
+  if (mode == 18 || mode == 12 || mode == 11)
   {
     v4 = objc_opt_class();
   }
@@ -268,10 +268,10 @@ LABEL_9:
   return v4;
 }
 
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device
 {
-  v8 = a4;
-  switch(a3)
+  deviceCopy = device;
+  switch(mode)
   {
     case 18:
       v9 = objc_msgSend_stringByAppendingString_(@"EDIT_MODE_LABEL_NIGHT", v6, @"_COMPANION", v7);
@@ -290,9 +290,9 @@ LABEL_8:
       goto LABEL_10;
   }
 
-  v14.receiver = a1;
+  v14.receiver = self;
   v14.super_class = &OBJC_METACLASS___NTKGalleonFace;
-  v12 = objc_msgSendSuper2(&v14, sel__localizedNameOverrideForCustomEditMode_forDevice_, a3, v8);
+  v12 = objc_msgSendSuper2(&v14, sel__localizedNameOverrideForCustomEditMode_forDevice_, mode, deviceCopy);
 LABEL_10:
 
   return v12;
@@ -310,17 +310,17 @@ LABEL_10:
 {
   v11.receiver = self;
   v11.super_class = NTKGalleonFace;
-  v3 = [(NTKFace *)&v11 nightModeConfiguration];
+  nightModeConfiguration = [(NTKFace *)&v11 nightModeConfiguration];
   v5 = objc_msgSend_selectedOptionForCustomEditMode_slot_(self, v4, 18, 0);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v9 = objc_msgSend_analyticsKey(v5, v6, v7, v8);
 
-    v3 = v9;
+    nightModeConfiguration = v9;
   }
 
-  return v3;
+  return nightModeConfiguration;
 }
 
 @end

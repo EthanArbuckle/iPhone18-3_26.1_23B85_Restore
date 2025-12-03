@@ -1,22 +1,22 @@
 @interface CRCameraReaderOutputInternal
 - (CGRect)boundingBox;
-- (void)setFormattedStringValue:(id)a3;
-- (void)setStringValue:(id)a3;
+- (void)setFormattedStringValue:(id)value;
+- (void)setStringValue:(id)value;
 @end
 
 @implementation CRCameraReaderOutputInternal
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
-  if (a3)
+  if (value)
   {
     v4 = [MEMORY[0x277CCACA8] _newZStringWithString:?];
   }
 
   else
   {
-    v5 = [(CRCameraReaderOutputInternal *)self type];
-    NSLog(&cfstr_AttemptToSetNi.isa, v5);
+    type = [(CRCameraReaderOutputInternal *)self type];
+    NSLog(&cfstr_AttemptToSetNi.isa, type);
 
     v4 = 0;
   }
@@ -25,9 +25,9 @@
   self->_stringValue = v4;
 }
 
-- (void)setFormattedStringValue:(id)a3
+- (void)setFormattedStringValue:(id)value
 {
-  v4 = [MEMORY[0x277CCACA8] _newZStringWithString:a3];
+  v4 = [MEMORY[0x277CCACA8] _newZStringWithString:value];
   formattedStringValue = self->_formattedStringValue;
   self->_formattedStringValue = v4;
 }

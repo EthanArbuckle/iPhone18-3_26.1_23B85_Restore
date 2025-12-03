@@ -1,22 +1,22 @@
 @interface STSInAppPaymentRequest
-- (STSInAppPaymentRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (STSInAppPaymentRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STSInAppPaymentRequest
 
-- (STSInAppPaymentRequest)initWithCoder:(id)a3
+- (STSInAppPaymentRequest)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = STSInAppPaymentRequest;
-  return [(STSPaymentRequestBase *)&v4 initWithCoder:a3];
+  return [(STSPaymentRequestBase *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = STSInAppPaymentRequest;
-  [(STSPaymentRequestBase *)&v3 encodeWithCoder:a3];
+  [(STSPaymentRequestBase *)&v3 encodeWithCoder:coder];
 }
 
 @end

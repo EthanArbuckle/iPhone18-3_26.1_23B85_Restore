@@ -1,44 +1,44 @@
 @interface CLKComplicationTemplateBattery
-+ (id)templateWithFamily:(int64_t)a3 textProvider:(id)a4 level:(double)a5 charging:(BOOL)a6;
-- (CLKComplicationTemplateBattery)initWithFamily:(int64_t)a3 textProvider:(id)a4 level:(double)a5 charging:(BOOL)a6;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)templateWithFamily:(int64_t)family textProvider:(id)provider level:(double)level charging:(BOOL)charging;
+- (CLKComplicationTemplateBattery)initWithFamily:(int64_t)family textProvider:(id)provider level:(double)level charging:(BOOL)charging;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CLKComplicationTemplateBattery
 
-- (CLKComplicationTemplateBattery)initWithFamily:(int64_t)a3 textProvider:(id)a4 level:(double)a5 charging:(BOOL)a6
+- (CLKComplicationTemplateBattery)initWithFamily:(int64_t)family textProvider:(id)provider level:(double)level charging:(BOOL)charging
 {
-  v6 = a6;
-  v10 = a4;
+  chargingCopy = charging;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = CLKComplicationTemplateBattery;
-  v11 = [(CLKComplicationTemplate *)&v14 initPrivate];
-  v12 = v11;
-  if (v11)
+  initPrivate = [(CLKComplicationTemplate *)&v14 initPrivate];
+  v12 = initPrivate;
+  if (initPrivate)
   {
-    v11->_family = a3;
-    [(CLKComplicationTemplateBattery *)v11 setTextProvider:v10];
-    [(CLKComplicationTemplateBattery *)v12 setLevel:a5];
-    [(CLKComplicationTemplateBattery *)v12 setCharging:v6];
+    initPrivate->_family = family;
+    [(CLKComplicationTemplateBattery *)initPrivate setTextProvider:providerCopy];
+    [(CLKComplicationTemplateBattery *)v12 setLevel:level];
+    [(CLKComplicationTemplateBattery *)v12 setCharging:chargingCopy];
   }
 
   return v12;
 }
 
-+ (id)templateWithFamily:(int64_t)a3 textProvider:(id)a4 level:(double)a5 charging:(BOOL)a6
++ (id)templateWithFamily:(int64_t)family textProvider:(id)provider level:(double)level charging:(BOOL)charging
 {
-  v6 = a6;
-  v10 = a4;
-  v11 = [[a1 alloc] initWithFamily:a3 textProvider:v10 level:v6 charging:a5];
+  chargingCopy = charging;
+  providerCopy = provider;
+  v11 = [[self alloc] initWithFamily:family textProvider:providerCopy level:chargingCopy charging:level];
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CLKComplicationTemplateBattery;
-  v4 = [(CLKComplicationTemplate *)&v6 copyWithZone:a3];
+  v4 = [(CLKComplicationTemplate *)&v6 copyWithZone:zone];
   *(v4 + 9) = self->_family;
   *(v4 + 12) = *&self->_level;
   *(v4 + 80) = self->_charging;

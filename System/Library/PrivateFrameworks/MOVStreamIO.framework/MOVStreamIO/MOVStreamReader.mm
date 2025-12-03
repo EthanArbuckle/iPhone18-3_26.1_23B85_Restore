@@ -1,117 +1,117 @@
 @interface MOVStreamReader
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)firstPts;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)getMinFrameDurationForStream:(SEL)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)getMinFrameDurationForStream:(SEL)stream;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)sessionStartTimeOfMovie;
-- (BOOL)containsMetadataStream:(id)a3;
-- (BOOL)containsStream:(id)a3;
-- (BOOL)containsStream:(id)a3 withMediaType:(int64_t)a4;
-- (BOOL)copyNextStereoFramesForStream:(id)a3 leftBuffer:(__CVBuffer *)a4 rightBuffer:(__CVBuffer *)a5 timestamp:(id *)a6 error:(id *)a7;
-- (BOOL)getOutputPixelFormatWasGuessedForStream:(id)a3;
-- (BOOL)hasReachedEndOfMetadataStream:(id)a3;
-- (BOOL)hasReachedEndOfStream:(id)a3;
-- (BOOL)hasSynthesizedTimeCodeForStream:(id)a3;
-- (BOOL)hasTimeCodeForStream:(id)a3;
-- (BOOL)isStereoStream:(id)a3;
-- (BOOL)isTrack:(id)a3 byIdInTracks:(id)a4;
-- (BOOL)registerOutput:(id)a3;
-- (BOOL)resetReader:(id *)a3;
-- (BOOL)resetReaderTo:(id *)a3 error:(id *)a4;
-- (BOOL)resetReaderWithTimeRange:(id *)a3 error:(id *)a4;
-- (BOOL)saveStream:(id)a3 toFile:(id)a4 error:(id *)a5;
-- (BOOL)setTestPatternRenderer:(id)a3 forVideoStream:(id)a4 error:(id *)a5;
-- (CGAffineTransform)transformForStream:(SEL)a3;
-- (CGSize)getOutputSizeForStream:(id)a3;
-- (CGSize)getSizeForStream:(id)a3;
-- (CVSMPTETime)grabNextTimeCodeSampleForStream:(SEL)a3 timestamp:(id)a4 error:(id *)a5;
-- (CVSMPTETime)grabNextTimeRangeMetadataSampleOfStream:(SEL)a3 rangeStartTime:(id)a4 rangeEndTime:(unint64_t *)a5 presentationTimeRange:(unint64_t *)a6 error:(id *)a7;
-- (MOVStreamReader)initWithAsset:(id)a3 delegate:(id)a4 error:(id *)a5;
-- (MOVStreamReader)initWithContentsOfFile:(id)a3 delegate:(id)a4 error:(id *)a5;
-- (MOVStreamReader)initWithContentsOfURL:(id)a3 delegate:(id)a4 error:(id *)a5;
-- (MOVStreamReader)initWithURL:(id)a3 delegate:(id)a4 error:(id *)p_isa;
+- (BOOL)containsMetadataStream:(id)stream;
+- (BOOL)containsStream:(id)stream;
+- (BOOL)containsStream:(id)stream withMediaType:(int64_t)type;
+- (BOOL)copyNextStereoFramesForStream:(id)stream leftBuffer:(__CVBuffer *)buffer rightBuffer:(__CVBuffer *)rightBuffer timestamp:(id *)timestamp error:(id *)error;
+- (BOOL)getOutputPixelFormatWasGuessedForStream:(id)stream;
+- (BOOL)hasReachedEndOfMetadataStream:(id)stream;
+- (BOOL)hasReachedEndOfStream:(id)stream;
+- (BOOL)hasSynthesizedTimeCodeForStream:(id)stream;
+- (BOOL)hasTimeCodeForStream:(id)stream;
+- (BOOL)isStereoStream:(id)stream;
+- (BOOL)isTrack:(id)track byIdInTracks:(id)tracks;
+- (BOOL)registerOutput:(id)output;
+- (BOOL)resetReader:(id *)reader;
+- (BOOL)resetReaderTo:(id *)to error:(id *)error;
+- (BOOL)resetReaderWithTimeRange:(id *)range error:(id *)error;
+- (BOOL)saveStream:(id)stream toFile:(id)file error:(id *)error;
+- (BOOL)setTestPatternRenderer:(id)renderer forVideoStream:(id)stream error:(id *)error;
+- (CGAffineTransform)transformForStream:(SEL)stream;
+- (CGSize)getOutputSizeForStream:(id)stream;
+- (CGSize)getSizeForStream:(id)stream;
+- (CVSMPTETime)grabNextTimeCodeSampleForStream:(SEL)stream timestamp:(id)timestamp error:(id *)error;
+- (CVSMPTETime)grabNextTimeRangeMetadataSampleOfStream:(SEL)stream rangeStartTime:(id)time rangeEndTime:(unint64_t *)endTime presentationTimeRange:(unint64_t *)range error:(id *)error;
+- (MOVStreamReader)initWithAsset:(id)asset delegate:(id)delegate error:(id *)error;
+- (MOVStreamReader)initWithContentsOfFile:(id)file delegate:(id)delegate error:(id *)error;
+- (MOVStreamReader)initWithContentsOfURL:(id)l delegate:(id)delegate error:(id *)error;
+- (MOVStreamReader)initWithURL:(id)l delegate:(id)delegate error:(id *)p_isa;
 - (MOVStreamReaderDelegate)delegate;
-- (__CVBuffer)copyNextFrameForStream:(id)a3 timestamp:(id *)a4 error:(id *)a5;
-- (__CVBuffer)copyNextFrameForStream:(id)a3 timestamp:(id *)a4 timeCode:(CVSMPTETime *)a5 tcDropFrame:(BOOL *)a6 error:(id *)a7;
-- (__CVBuffer)nextPixelBufferForStream:(id)a3 attachmentsData:(id *)a4 timestamp:(id *)a5 error:(id *)a6;
+- (__CVBuffer)copyNextFrameForStream:(id)stream timestamp:(id *)timestamp error:(id *)error;
+- (__CVBuffer)copyNextFrameForStream:(id)stream timestamp:(id *)timestamp timeCode:(CVSMPTETime *)code tcDropFrame:(BOOL *)frame error:(id *)error;
+- (__CVBuffer)nextPixelBufferForStream:(id)stream attachmentsData:(id *)data timestamp:(id *)timestamp error:(id *)error;
 - (double)duration;
-- (double)getFrameRateForStream:(id)a3;
-- (id)additionalCompressionPropertiesForStream:(id)a3;
-- (id)attachmentsOutputForStream:(id)a3 mediaType:(int64_t)a4 error:(id *)a5;
-- (id)customTrackMetadataItemsForStream:(id)a3;
+- (double)getFrameRateForStream:(id)stream;
+- (id)additionalCompressionPropertiesForStream:(id)stream;
+- (id)attachmentsOutputForStream:(id)stream mediaType:(int64_t)type error:(id *)error;
+- (id)customTrackMetadataItemsForStream:(id)stream;
 - (id)getAllAudioStreams;
 - (id)getAllMetadataStreams;
 - (id)getAllSceneStreams;
 - (id)getAllStreams;
 - (id)getAllTimeCodeStreams;
-- (id)getMetadataStreamsAssociatedTo:(id)a3;
-- (id)getMetadataStreamsAssociatedTo:(id)a3 error:(id *)a4;
-- (id)getRelatedStreamForStreamId:(id)a3;
-- (id)getRelationSpecifierForStreamId:(id)a3;
-- (id)getStreamsRelatedToStream:(id)a3;
+- (id)getMetadataStreamsAssociatedTo:(id)to;
+- (id)getMetadataStreamsAssociatedTo:(id)to error:(id *)error;
+- (id)getRelatedStreamForStreamId:(id)id;
+- (id)getRelationSpecifierForStreamId:(id)id;
+- (id)getStreamsRelatedToStream:(id)stream;
 - (id)getTimeRangeMetadataStream;
-- (id)getUnknownMetadataStreamsAssociatedTo:(id)a3;
-- (id)grabNextMetadataItemsOfTrackAssociatedWith:(id)a3 withIdentifier:(id)a4 timeRange:(id *)a5 error:(id *)a6;
-- (id)grabNextMetadataOfStream:(id)a3 timeRange:(id *)a4;
-- (id)grabNextMetadataOfStream:(id)a3 timeRange:(id *)a4 error:(id *)a5;
-- (id)grabNextTimedMetadataGroupOfStream:(id)a3 error:(id *)a4;
+- (id)getUnknownMetadataStreamsAssociatedTo:(id)to;
+- (id)grabNextMetadataItemsOfTrackAssociatedWith:(id)with withIdentifier:(id)identifier timeRange:(id *)range error:(id *)error;
+- (id)grabNextMetadataOfStream:(id)stream timeRange:(id *)range;
+- (id)grabNextMetadataOfStream:(id)stream timeRange:(id *)range error:(id *)error;
+- (id)grabNextTimedMetadataGroupOfStream:(id)stream error:(id *)error;
 - (id)metadataForMovie;
-- (id)metadataTrackForStream:(id)a3;
+- (id)metadataTrackForStream:(id)stream;
 - (id)movstreamIOMetadataForMovie;
-- (id)nextAttachmentForStream:(id)a3 error:(id *)a4;
-- (id)outputForAudioStream:(id)a3 error:(id *)a4;
-- (id)outputForMetadataStream:(id)a3 error:(id *)a4;
-- (id)outputForSceneStream:(id)a3 error:(id *)a4;
-- (id)outputForTimeCodeStream:(id)a3 error:(id *)a4;
-- (id)outputForVideoStream:(id)a3 error:(id *)a4;
-- (id)outputsRelatedToOutput:(id)a3 trackAssociation:(id)a4;
-- (id)stereoLayersForStream:(id)a3;
-- (id)streamIdFromTrackStreamTypeIdentifier:(id)a3;
-- (id)timeRangeMetadataForPixelBuffer:(__CVBuffer *)a3;
+- (id)nextAttachmentForStream:(id)stream error:(id *)error;
+- (id)outputForAudioStream:(id)stream error:(id *)error;
+- (id)outputForMetadataStream:(id)stream error:(id *)error;
+- (id)outputForSceneStream:(id)stream error:(id *)error;
+- (id)outputForTimeCodeStream:(id)stream error:(id *)error;
+- (id)outputForVideoStream:(id)stream error:(id *)error;
+- (id)outputsRelatedToOutput:(id)output trackAssociation:(id)association;
+- (id)stereoLayersForStream:(id)stream;
+- (id)streamIdFromTrackStreamTypeIdentifier:(id)identifier;
+- (id)timeRangeMetadataForPixelBuffer:(__CVBuffer *)buffer;
 - (id)timeRangeMetadataKeyHint;
-- (id)timestampsForMetadataStream:(id)a3;
-- (id)timestampsForStream:(id)a3;
-- (id)timestampsForStream:(id)a3 restrictedTimeRange:(id *)a4;
-- (id)trackForStream:(id)a3;
-- (id)trackMetadataForAudioStream:(id)a3;
-- (id)trackMetadataForMetadataStream:(id)a3;
-- (id)trackMetadataForSceneStream:(id)a3;
-- (id)trackMetadataForStream:(id)a3;
-- (id)trackMetadataForStream:(id)a3 withMediaType:(int64_t)a4;
-- (id)trackMetadataForTimeCodeStream:(id)a3;
-- (id)trackMetadataForVideoStream:(id)a3;
-- (opaqueCMFormatDescription)timeCodeFormatDescriptionStream:(id)a3;
-- (opaqueCMSampleBuffer)grabNextSampleBufferForStream:(id)a3 timestamp:(id *)a4 error:(id *)a5;
-- (opaqueCMSampleBuffer)nextSampleBufferForStream:(id)a3 attachmentsData:(id *)a4 timestamp:(id *)a5 error:(id *)a6;
-- (unint64_t)trackTypeInfoForStream:(id)a3;
-- (unsigned)getOutputPixelFormatForStream:(id)a3;
-- (unsigned)pixelFormatForStream:(id)a3;
+- (id)timestampsForMetadataStream:(id)stream;
+- (id)timestampsForStream:(id)stream;
+- (id)timestampsForStream:(id)stream restrictedTimeRange:(id *)range;
+- (id)trackForStream:(id)stream;
+- (id)trackMetadataForAudioStream:(id)stream;
+- (id)trackMetadataForMetadataStream:(id)stream;
+- (id)trackMetadataForSceneStream:(id)stream;
+- (id)trackMetadataForStream:(id)stream;
+- (id)trackMetadataForStream:(id)stream withMediaType:(int64_t)type;
+- (id)trackMetadataForTimeCodeStream:(id)stream;
+- (id)trackMetadataForVideoStream:(id)stream;
+- (opaqueCMFormatDescription)timeCodeFormatDescriptionStream:(id)stream;
+- (opaqueCMSampleBuffer)grabNextSampleBufferForStream:(id)stream timestamp:(id *)timestamp error:(id *)error;
+- (opaqueCMSampleBuffer)nextSampleBufferForStream:(id)stream attachmentsData:(id *)data timestamp:(id *)timestamp error:(id *)error;
+- (unint64_t)trackTypeInfoForStream:(id)stream;
+- (unsigned)getOutputPixelFormatForStream:(id)stream;
+- (unsigned)pixelFormatForStream:(id)stream;
 - (void)clearOutputs;
 - (void)dealloc;
 - (void)movVersionCheck;
-- (void)removePixelBufferPadding:(BOOL)a3 forStream:(id)a4;
-- (void)setBufferCacheMode:(int)a3;
-- (void)setL010OutputFormatRAW14L016:(BOOL)a3;
-- (void)setRawBayerMSBReplication:(BOOL)a3;
-- (void)setSkipSynthesizedTimeCode:(BOOL)a3;
+- (void)removePixelBufferPadding:(BOOL)padding forStream:(id)stream;
+- (void)setBufferCacheMode:(int)mode;
+- (void)setL010OutputFormatRAW14L016:(BOOL)l016;
+- (void)setRawBayerMSBReplication:(BOOL)replication;
+- (void)setSkipSynthesizedTimeCode:(BOOL)code;
 @end
 
 @implementation MOVStreamReader
 
-- (id)streamIdFromTrackStreamTypeIdentifier:(id)a3
+- (id)streamIdFromTrackStreamTypeIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (([(__CFString *)v3 isEqualToString:@"Depth"]& 1) != 0)
+  identifierCopy = identifier;
+  if (([(__CFString *)identifierCopy isEqualToString:@"Depth"]& 1) != 0)
   {
     v4 = @"FrontDepth";
   }
 
-  else if (([(__CFString *)v3 isEqualToString:@"Color"]& 1) != 0)
+  else if (([(__CFString *)identifierCopy isEqualToString:@"Color"]& 1) != 0)
   {
     v4 = @"FrontColor";
   }
 
   else
   {
-    if (![(__CFString *)v3 isEqualToString:@"IR"])
+    if (![(__CFString *)identifierCopy isEqualToString:@"IR"])
     {
       goto LABEL_8;
     }
@@ -119,38 +119,38 @@
     v4 = @"FrontIR";
   }
 
-  v3 = v4;
+  identifierCopy = v4;
 LABEL_8:
 
-  return v3;
+  return identifierCopy;
 }
 
-- (MOVStreamReader)initWithURL:(id)a3 delegate:(id)a4 error:(id *)p_isa
+- (MOVStreamReader)initWithURL:(id)l delegate:(id)delegate error:(id *)p_isa
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  delegateCopy = delegate;
   +[MIOLog recheckDebugEnabled];
-  if (([v8 isFileURL] & 1) == 0)
+  if (([lCopy isFileURL] & 1) == 0)
   {
-    v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"URL must be a file URL type. (%@)", v8];
-    [MEMORY[0x277CCA9B8] populateReaderError:p_isa message:v20 code:5];
+    lCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"URL must be a file URL type. (%@)", lCopy];
+    [MEMORY[0x277CCA9B8] populateReaderError:p_isa message:lCopy code:5];
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
-  v11 = [v8 path];
-  v12 = [v10 fileExistsAtPath:v11];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [lCopy path];
+  v12 = [defaultManager fileExistsAtPath:path];
 
   if ((v12 & 1) == 0)
   {
     v21 = MEMORY[0x277CCACA8];
-    v22 = [v8 path];
-    v20 = [v21 stringWithFormat:@"File doesn't exist. (%@)", v22];
+    path2 = [lCopy path];
+    lCopy = [v21 stringWithFormat:@"File doesn't exist. (%@)", path2];
 
-    [MEMORY[0x277CCA9B8] populateReaderError:p_isa message:v20 code:6];
+    [MEMORY[0x277CCA9B8] populateReaderError:p_isa message:lCopy code:6];
     goto LABEL_10;
   }
 
@@ -163,14 +163,14 @@ LABEL_10:
     goto LABEL_17;
   }
 
-  v14 = objc_storeWeak(&v13->_delegate, v9);
+  v14 = objc_storeWeak(&v13->_delegate, delegateCopy);
 
-  if (!v9)
+  if (!delegateCopy)
   {
     v15 = [MEMORY[0x277CCA9B8] readerWarningWithMessage:@"No MOVStreamReaderDelegate set." code:0];
   }
 
-  v16 = [MEMORY[0x277CE6650] URLAssetWithURL:v8 options:0];
+  v16 = [MEMORY[0x277CE6650] URLAssetWithURL:lCopy options:0];
   m_asset = self->m_asset;
   self->m_asset = v16;
 
@@ -178,19 +178,19 @@ LABEL_10:
   *&self->_l010OutputFormatRAW14L016 = 257;
   self->_bufferCacheMode = 0;
   [(MOVStreamReader *)self setSkipEmptyEditVideoFrame:0];
-  v18 = [(MOVStreamReader *)self timeRangeMetadataKeyHint];
-  if (v18)
+  timeRangeMetadataKeyHint = [(MOVStreamReader *)self timeRangeMetadataKeyHint];
+  if (timeRangeMetadataKeyHint)
   {
-    v19 = [(MOVStreamReader *)self timeRangeMetadataKeyHint];
+    timeRangeMetadataKeyHint2 = [(MOVStreamReader *)self timeRangeMetadataKeyHint];
   }
 
   else
   {
-    v19 = @"RemoteFrameID";
+    timeRangeMetadataKeyHint2 = @"RemoteFrameID";
   }
 
-  [(MOVStreamReader *)self setTimeRangeMetadataKey:v19];
-  if (v18)
+  [(MOVStreamReader *)self setTimeRangeMetadataKey:timeRangeMetadataKeyHint2];
+  if (timeRangeMetadataKeyHint)
   {
   }
 
@@ -228,34 +228,34 @@ LABEL_12:
   return p_isa;
 }
 
-- (MOVStreamReader)initWithContentsOfFile:(id)a3 delegate:(id)a4 error:(id *)a5
+- (MOVStreamReader)initWithContentsOfFile:(id)file delegate:(id)delegate error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  fileCopy = file;
+  delegateCopy = delegate;
   +[MIOLog recheckDebugEnabled];
-  v10 = [MEMORY[0x277CBEBC0] fileURLWithPath:v8];
+  v10 = [MEMORY[0x277CBEBC0] fileURLWithPath:fileCopy];
   if (v10)
   {
-    self = [(MOVStreamReader *)self initWithContentsOfURL:v10 delegate:v9 error:a5];
-    v11 = self;
+    self = [(MOVStreamReader *)self initWithContentsOfURL:v10 delegate:delegateCopy error:error];
+    selfCopy = self;
   }
 
   else
   {
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid file path. (%@)", v8];
-    [MEMORY[0x277CCA9B8] populateReaderError:a5 message:v12 code:5];
+    fileCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid file path. (%@)", fileCopy];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:fileCopy code:5];
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (MOVStreamReader)initWithAsset:(id)a3 delegate:(id)a4 error:(id *)a5
+- (MOVStreamReader)initWithAsset:(id)asset delegate:(id)delegate error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  assetCopy = asset;
+  delegateCopy = delegate;
   +[MIOLog recheckDebugEnabled];
   v22.receiver = self;
   v22.super_class = MOVStreamReader;
@@ -267,31 +267,31 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  v14 = objc_storeWeak(&v11->_delegate, v10);
+  v14 = objc_storeWeak(&v11->_delegate, delegateCopy);
 
-  if (!v10)
+  if (!delegateCopy)
   {
     v15 = [MEMORY[0x277CCA9B8] readerWarningWithMessage:@"No MOVStreamReaderDelegate set." code:0];
   }
 
   [(MOVStreamReader *)v13 setSkipEmptyEditVideoFrame:0];
-  objc_storeStrong(&v12->m_asset, a3);
+  objc_storeStrong(&v12->m_asset, asset);
   [(MOVStreamReader *)v13 movVersionCheck];
   *&v13->_l010OutputFormatRAW14L016 = 256;
   v13->_bufferCacheMode = 0;
-  v16 = [(MOVStreamReader *)v13 timeRangeMetadataKeyHint];
-  if (v16)
+  timeRangeMetadataKeyHint = [(MOVStreamReader *)v13 timeRangeMetadataKeyHint];
+  if (timeRangeMetadataKeyHint)
   {
-    v17 = [(MOVStreamReader *)v13 timeRangeMetadataKeyHint];
+    timeRangeMetadataKeyHint2 = [(MOVStreamReader *)v13 timeRangeMetadataKeyHint];
   }
 
   else
   {
-    v17 = @"RemoteFrameID";
+    timeRangeMetadataKeyHint2 = @"RemoteFrameID";
   }
 
-  [(MOVStreamReader *)v13 setTimeRangeMetadataKey:v17];
-  if (v16)
+  [(MOVStreamReader *)v13 setTimeRangeMetadataKey:timeRangeMetadataKeyHint2];
+  if (timeRangeMetadataKeyHint)
   {
   }
 
@@ -300,66 +300,66 @@ LABEL_12:
 
   *buf = *MEMORY[0x277CC08F8];
   v24 = *(MEMORY[0x277CC08F8] + 16);
-  if (![(MOVStreamReader *)v13 resetReaderTo:buf error:a5])
+  if (![(MOVStreamReader *)v13 resetReaderTo:buf error:error])
   {
-    if (a5)
+    if (error)
     {
       v19 = +[MIOLog defaultLog];
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v20 = *a5;
+        v20 = *error;
         *buf = 138543362;
         *&buf[4] = v20;
         _os_log_impl(&dword_257883000, v19, OS_LOG_TYPE_ERROR, "⛔️⛔️⛔️ ERROR: Cannot initialize reader: %{public}@ ⛔️⛔️⛔️", buf, 0xCu);
       }
 
-      a5 = 0;
+      error = 0;
     }
   }
 
   else
   {
 LABEL_10:
-    a5 = v13;
+    error = v13;
   }
 
-  return a5;
+  return error;
 }
 
-- (MOVStreamReader)initWithContentsOfURL:(id)a3 delegate:(id)a4 error:(id *)a5
+- (MOVStreamReader)initWithContentsOfURL:(id)l delegate:(id)delegate error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  delegateCopy = delegate;
   +[MIOLog recheckDebugEnabled];
-  if (([v8 isFileURL] & 1) == 0)
+  if (([lCopy isFileURL] & 1) == 0)
   {
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"URL must be a file URL type. (%@)", v8];
-    [MEMORY[0x277CCA9B8] populateReaderError:a5 message:v13 code:5];
+    lCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"URL must be a file URL type. (%@)", lCopy];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:lCopy code:5];
 LABEL_6:
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_7;
   }
 
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
-  v11 = [v8 path];
-  v12 = [v10 fileExistsAtPath:v11];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [lCopy path];
+  v12 = [defaultManager fileExistsAtPath:path];
 
   if ((v12 & 1) == 0)
   {
     v15 = MEMORY[0x277CCACA8];
-    v16 = [v8 path];
-    v13 = [v15 stringWithFormat:@"File doesn't exist. (%@)", v16];
+    path2 = [lCopy path];
+    lCopy = [v15 stringWithFormat:@"File doesn't exist. (%@)", path2];
 
-    [MEMORY[0x277CCA9B8] populateReaderError:a5 message:v13 code:6];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:lCopy code:6];
     goto LABEL_6;
   }
 
-  v13 = [MEMORY[0x277CE6650] URLAssetWithURL:v8 options:0];
-  self = [(MOVStreamReader *)self initWithAsset:v13 delegate:v9 error:a5];
-  v14 = self;
+  lCopy = [MEMORY[0x277CE6650] URLAssetWithURL:lCopy options:0];
+  self = [(MOVStreamReader *)self initWithAsset:lCopy delegate:delegateCopy error:error];
+  selfCopy = self;
 LABEL_7:
 
-  return v14;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -370,11 +370,11 @@ LABEL_7:
   [(MOVStreamReader *)&v3 dealloc];
 }
 
-- (BOOL)resetReader:(id *)a3
+- (BOOL)resetReader:(id *)reader
 {
   v4 = *MEMORY[0x277CC08F8];
   v5 = *(MEMORY[0x277CC08F8] + 16);
-  return [(MOVStreamReader *)self resetReaderTo:&v4 error:a3];
+  return [(MOVStreamReader *)self resetReaderTo:&v4 error:reader];
 }
 
 - (void)clearOutputs
@@ -415,12 +415,12 @@ LABEL_7:
   MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)registerOutput:(id)a3
+- (BOOL)registerOutput:(id)output
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  outputCopy = output;
+  v5 = outputCopy;
+  if (!outputCopy)
   {
     v11 = +[MIOLog defaultLog];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -432,68 +432,68 @@ LABEL_7:
     goto LABEL_19;
   }
 
-  v6 = [v4 mediaType];
-  if (v6 <= 1)
+  mediaType = [outputCopy mediaType];
+  if (mediaType <= 1)
   {
-    if (!v6)
+    if (!mediaType)
     {
       orderedVideoStreamIds = self->_orderedVideoStreamIds;
-      v22 = [v5 streamId];
-      [(NSMutableArray *)orderedVideoStreamIds addObject:v22];
+      streamId = [v5 streamId];
+      [(NSMutableArray *)orderedVideoStreamIds addObject:streamId];
 
       sampleStreams = self->_sampleStreams;
-      v10 = [v5 streamId];
-      [(NSMutableDictionary *)sampleStreams setObject:v5 forKey:v10];
+      streamId2 = [v5 streamId];
+      [(NSMutableDictionary *)sampleStreams setObject:v5 forKey:streamId2];
       goto LABEL_16;
     }
 
-    if (v6 == 1)
+    if (mediaType == 1)
     {
       orderedAudioStreamIds = self->_orderedAudioStreamIds;
-      v13 = [v5 streamId];
-      [(NSMutableArray *)orderedAudioStreamIds addObject:v13];
+      streamId3 = [v5 streamId];
+      [(NSMutableArray *)orderedAudioStreamIds addObject:streamId3];
 
       v14 = self->_sampleStreams;
-      v10 = [v5 streamId];
-      [(NSMutableDictionary *)v14 setObject:v5 forKey:v10];
+      streamId2 = [v5 streamId];
+      [(NSMutableDictionary *)v14 setObject:v5 forKey:streamId2];
       goto LABEL_16;
     }
 
     goto LABEL_17;
   }
 
-  if (v6 == 2)
+  if (mediaType == 2)
   {
     orderedMetadataStreamIds = self->_orderedMetadataStreamIds;
-    v16 = [v5 streamId];
-    [(NSMutableArray *)orderedMetadataStreamIds addObject:v16];
+    streamId4 = [v5 streamId];
+    [(NSMutableArray *)orderedMetadataStreamIds addObject:streamId4];
 
     metadataStreams = self->_metadataStreams;
-    v10 = [v5 streamId];
-    [(NSMutableDictionary *)metadataStreams setObject:v5 forKey:v10];
+    streamId2 = [v5 streamId];
+    [(NSMutableDictionary *)metadataStreams setObject:v5 forKey:streamId2];
     goto LABEL_16;
   }
 
-  if (v6 == 3)
+  if (mediaType == 3)
   {
     orderedSceneStreamIds = self->_orderedSceneStreamIds;
-    v19 = [v5 streamId];
-    [(NSMutableArray *)orderedSceneStreamIds addObject:v19];
+    streamId5 = [v5 streamId];
+    [(NSMutableArray *)orderedSceneStreamIds addObject:streamId5];
 
     v20 = self->_sampleStreams;
-    v10 = [v5 streamId];
-    [(NSMutableDictionary *)v20 setObject:v5 forKey:v10];
+    streamId2 = [v5 streamId];
+    [(NSMutableDictionary *)v20 setObject:v5 forKey:streamId2];
     goto LABEL_16;
   }
 
-  if (v6 != 4)
+  if (mediaType != 4)
   {
 LABEL_17:
     v11 = +[MIOLog defaultLog];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v26 = 134217984;
-      v27 = [v5 mediaType];
+      mediaType2 = [v5 mediaType];
       _os_log_impl(&dword_257883000, v11, OS_LOG_TYPE_ERROR, "MOVStreamReader registerOutput unknown media type (%ld).", &v26, 0xCu);
     }
 
@@ -504,12 +504,12 @@ LABEL_19:
   }
 
   orderedTimeCodeStreamIds = self->_orderedTimeCodeStreamIds;
-  v8 = [v5 streamId];
-  [(NSMutableArray *)orderedTimeCodeStreamIds addObject:v8];
+  streamId6 = [v5 streamId];
+  [(NSMutableArray *)orderedTimeCodeStreamIds addObject:streamId6];
 
   v9 = self->_sampleStreams;
-  v10 = [v5 streamId];
-  [(NSMutableDictionary *)v9 setObject:v5 forKey:v10];
+  streamId2 = [v5 streamId];
+  [(NSMutableDictionary *)v9 setObject:v5 forKey:streamId2];
 LABEL_16:
 
   v24 = 1;
@@ -518,30 +518,30 @@ LABEL_20:
   return v24;
 }
 
-- (BOOL)resetReaderTo:(id *)a3 error:(id *)a4
+- (BOOL)resetReaderTo:(id *)to error:(id *)error
 {
   memset(&v9, 0, sizeof(v9));
-  v7.start = *a3;
+  v7.start = *to;
   duration = **&MEMORY[0x277CC08B8];
   CMTimeRangeMake(&v9, &v7.start, &duration);
   v7 = v9;
-  return [(MOVStreamReader *)self resetReaderWithTimeRange:&v7 error:a4];
+  return [(MOVStreamReader *)self resetReaderWithTimeRange:&v7 error:error];
 }
 
-- (BOOL)resetReaderWithTimeRange:(id *)a3 error:(id *)a4
+- (BOOL)resetReaderWithTimeRange:(id *)range error:(id *)error
 {
   v216 = *MEMORY[0x277D85DE8];
   if (!self->m_asset)
   {
-    [MEMORY[0x277CCA9B8] populateReaderError:a4 message:@"MOVStreamReader asset is nil" code:25];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:@"MOVStreamReader asset is nil" code:25];
     return 0;
   }
 
   v5 = *MEMORY[0x277CBECE8];
-  v6 = *&a3->var0.var3;
-  *&range.start.value = *&a3->var0.var0;
+  v6 = *&range->var0.var3;
+  *&range.start.value = *&range->var0.var0;
   *&range.start.epoch = v6;
-  *&range.duration.timescale = *&a3->var1.var1;
+  *&range.duration.timescale = *&range->var1.var1;
   v149 = CMTimeRangeCopyDescription(v5, &range);
   v7 = +[MIOLog defaultLog];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -551,18 +551,18 @@ LABEL_20:
     _os_log_impl(&dword_257883000, v7, OS_LOG_TYPE_INFO, "Set reader to time range: %{public}@", &range, 0xCu);
   }
 
-  if ((a3->var0.var2 & 1) == 0)
+  if ((range->var0.var2 & 1) == 0)
   {
     v8 = @"Time to reset to is invalid";
-    v9 = a4;
+    errorCopy2 = error;
 LABEL_10:
-    [MEMORY[0x277CCA9B8] populateReaderError:v9 message:v8 code:25];
-    v10 = 0;
+    [MEMORY[0x277CCA9B8] populateReaderError:errorCopy2 message:v8 code:25];
+    startReading = 0;
     goto LABEL_11;
   }
 
-  v9 = a4;
-  if ((a3->var1.var2 & 1) == 0 || a3->var1.var3 || a3->var1.var0 < 0)
+  errorCopy2 = error;
+  if ((range->var1.var2 & 1) == 0 || range->var1.var3 || range->var1.var0 < 0)
   {
     v8 = @"Time range to reset to is invalid";
     goto LABEL_10;
@@ -584,10 +584,10 @@ LABEL_10:
 
   if (v145)
   {
-    if (a4)
+    if (error)
     {
-      v10 = 0;
-      *a4 = [v145 copy];
+      startReading = 0;
+      *error = [v145 copy];
     }
 
     else
@@ -600,7 +600,7 @@ LABEL_10:
         _os_log_impl(&dword_257883000, v143, OS_LOG_TYPE_ERROR, "⛔️⛔️⛔️ ERROR: %{public}@ ⛔️⛔️⛔️", &range, 0xCu);
       }
 
-      v10 = 0;
+      startReading = 0;
     }
 
     goto LABEL_186;
@@ -666,8 +666,8 @@ LABEL_10:
 
             if (v32)
             {
-              v33 = [(MOVStreamReader *)self delegate];
-              [v33 reader:self didReceiveWarning:v29];
+              delegate = [(MOVStreamReader *)self delegate];
+              [delegate reader:self didReceiveWarning:v29];
 LABEL_41:
             }
           }
@@ -688,12 +688,12 @@ LABEL_41:
 
           if (![(MOVStreamReader *)self registerOutput:v28])
           {
-            v33 = +[MIOLog defaultLog];
-            if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+            delegate = +[MIOLog defaultLog];
+            if (os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
             {
               LODWORD(range.start.value) = 138543362;
               *(&range.start.value + 4) = v20;
-              _os_log_impl(&dword_257883000, v33, OS_LOG_TYPE_ERROR, "MOVStreamReader: Register time code output for '%{public}@', failed.", &range, 0xCu);
+              _os_log_impl(&dword_257883000, delegate, OS_LOG_TYPE_ERROR, "MOVStreamReader: Register time code output for '%{public}@', failed.", &range, 0xCu);
             }
 
             goto LABEL_41;
@@ -773,8 +773,8 @@ LABEL_41:
 
           if (v52)
           {
-            v53 = [(MOVStreamReader *)self delegate];
-            [v53 reader:self didReceiveWarning:v49];
+            delegate2 = [(MOVStreamReader *)self delegate];
+            [delegate2 reader:self didReceiveWarning:v49];
 LABEL_66:
           }
         }
@@ -795,12 +795,12 @@ LABEL_66:
 
         if (![(MOVStreamReader *)self registerOutput:v48])
         {
-          v53 = +[MIOLog defaultLog];
-          if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
+          delegate2 = +[MIOLog defaultLog];
+          if (os_log_type_enabled(delegate2, OS_LOG_TYPE_ERROR))
           {
             LODWORD(range.start.value) = 138543362;
             *(&range.start.value + 4) = v39;
-            _os_log_impl(&dword_257883000, v53, OS_LOG_TYPE_ERROR, "MOVStreamReader: Register video output for '%{public}@', failed.", &range, 0xCu);
+            _os_log_impl(&dword_257883000, delegate2, OS_LOG_TYPE_ERROR, "MOVStreamReader: Register video output for '%{public}@', failed.", &range, 0xCu);
           }
 
           goto LABEL_66;
@@ -881,8 +881,8 @@ LABEL_69:
 
           if (v71)
           {
-            v72 = [(MOVStreamReader *)self delegate];
-            [v72 reader:self didReceiveWarning:v68];
+            delegate3 = [(MOVStreamReader *)self delegate];
+            [delegate3 reader:self didReceiveWarning:v68];
             goto LABEL_91;
           }
         }
@@ -903,12 +903,12 @@ LABEL_69:
 
         if (![(MOVStreamReader *)self registerOutput:v67])
         {
-          v72 = +[MIOLog defaultLog];
-          if (os_log_type_enabled(v72, OS_LOG_TYPE_ERROR))
+          delegate3 = +[MIOLog defaultLog];
+          if (os_log_type_enabled(delegate3, OS_LOG_TYPE_ERROR))
           {
             LODWORD(range.start.value) = 138543362;
             *(&range.start.value + 4) = v59;
-            _os_log_impl(&dword_257883000, v72, OS_LOG_TYPE_ERROR, "MOVStreamReader: Register audio output for '%{public}@', failed.", &range, 0xCu);
+            _os_log_impl(&dword_257883000, delegate3, OS_LOG_TYPE_ERROR, "MOVStreamReader: Register audio output for '%{public}@', failed.", &range, 0xCu);
           }
 
 LABEL_91:
@@ -999,8 +999,8 @@ LABEL_94:
 
           if (v90)
           {
-            v91 = [(MOVStreamReader *)self delegate];
-            [v91 reader:self didReceiveWarning:v87];
+            delegate4 = [(MOVStreamReader *)self delegate];
+            [delegate4 reader:self didReceiveWarning:v87];
             goto LABEL_116;
           }
         }
@@ -1021,12 +1021,12 @@ LABEL_94:
 
         if (![(MOVStreamReader *)self registerOutput:v86])
         {
-          v91 = +[MIOLog defaultLog];
-          if (os_log_type_enabled(v91, OS_LOG_TYPE_ERROR))
+          delegate4 = +[MIOLog defaultLog];
+          if (os_log_type_enabled(delegate4, OS_LOG_TYPE_ERROR))
           {
             LODWORD(range.start.value) = 138543362;
             *(&range.start.value + 4) = v78;
-            _os_log_impl(&dword_257883000, v91, OS_LOG_TYPE_ERROR, "MOVStreamReader: Register scene output for '%{public}@', failed.", &range, 0xCu);
+            _os_log_impl(&dword_257883000, delegate4, OS_LOG_TYPE_ERROR, "MOVStreamReader: Register scene output for '%{public}@', failed.", &range, 0xCu);
           }
 
 LABEL_116:
@@ -1114,8 +1114,8 @@ LABEL_119:
 
             if (v107)
             {
-              v108 = [(MOVStreamReader *)self delegate];
-              [v108 reader:self didReceiveWarning:v104];
+              delegate5 = [(MOVStreamReader *)self delegate];
+              [delegate5 reader:self didReceiveWarning:v104];
               goto LABEL_149;
             }
           }
@@ -1151,20 +1151,20 @@ LABEL_119:
         }
 
         v111 = [MIOTimeRangeMetadataTrackReader alloc];
-        v112 = [(MOVStreamReaderStreamOutput *)v103 assetTrack];
-        v113 = -[MIOTimeRangeMetadataTrackReader initWithMetadataTrackId:asset:](v111, "initWithMetadataTrackId:asset:", [v112 trackID], self->m_asset);
+        assetTrack = [(MOVStreamReaderStreamOutput *)v103 assetTrack];
+        v113 = -[MIOTimeRangeMetadataTrackReader initWithMetadataTrackId:asset:](v111, "initWithMetadataTrackId:asset:", [assetTrack trackID], self->m_asset);
 
         v180 = 0;
         v114 = [(MIOTimeRangeMetadataTrackReader *)v113 readTimeRangeMetadataSamplesOutError:&v180];
-        v108 = v180;
+        delegate5 = v180;
         timeRangeMetadataSamples = self->_timeRangeMetadataSamples;
         self->_timeRangeMetadataSamples = v114;
 
         if (self->_timeRangeMetadataSamples)
         {
-          v116 = [(MOVStreamReaderStreamOutput *)v103 streamId];
+          streamId = [(MOVStreamReaderStreamOutput *)v103 streamId];
           timeRangeMetadataStream = self->_timeRangeMetadataStream;
-          self->_timeRangeMetadataStream = v116;
+          self->_timeRangeMetadataStream = streamId;
           goto LABEL_147;
         }
 
@@ -1177,7 +1177,7 @@ LABEL_119:
           if (v146)
           {
             timeRangeMetadataStream = [(MOVStreamReader *)self delegate];
-            [timeRangeMetadataStream reader:self didReceiveWarning:v108];
+            [timeRangeMetadataStream reader:self didReceiveWarning:delegate5];
 LABEL_147:
           }
         }
@@ -1211,9 +1211,9 @@ LABEL_157:
   v177 = 0u;
   v178 = 0u;
   v179 = 0u;
-  v121 = [(NSMutableDictionary *)self->_sampleStreams allValues];
-  v150 = v121;
-  v122 = [v121 countByEnumeratingWithState:&v176 objects:v209 count:16];
+  allValues = [(NSMutableDictionary *)self->_sampleStreams allValues];
+  v150 = allValues;
+  v122 = [allValues countByEnumeratingWithState:&v176 objects:v209 count:16];
   if (v122)
   {
     v123 = *v177;
@@ -1232,8 +1232,8 @@ LABEL_157:
         v173 = 0u;
         v174 = 0u;
         v175 = 0u;
-        v127 = [v126 getAssociatedMetadataStreamOutputs];
-        v128 = [v127 countByEnumeratingWithState:&v172 objects:v208 count:16];
+        getAssociatedMetadataStreamOutputs = [v126 getAssociatedMetadataStreamOutputs];
+        v128 = [getAssociatedMetadataStreamOutputs countByEnumeratingWithState:&v172 objects:v208 count:16];
         if (v128)
         {
           v129 = *v173;
@@ -1243,20 +1243,20 @@ LABEL_157:
             {
               if (*v173 != v129)
               {
-                objc_enumerationMutation(v127);
+                objc_enumerationMutation(getAssociatedMetadataStreamOutputs);
               }
 
               [v126 registerForAssociating:*(*(&v172 + 1) + 8 * k) trackRelation:v124];
             }
 
-            v128 = [v127 countByEnumeratingWithState:&v172 objects:v208 count:16];
+            v128 = [getAssociatedMetadataStreamOutputs countByEnumeratingWithState:&v172 objects:v208 count:16];
           }
 
           while (v128);
         }
       }
 
-      v121 = v150;
+      allValues = v150;
       v122 = [v150 countByEnumeratingWithState:&v176 objects:v209 count:16];
     }
 
@@ -1267,9 +1267,9 @@ LABEL_157:
   v171 = 0u;
   v168 = 0u;
   v169 = 0u;
-  v131 = [(NSMutableDictionary *)self->_sampleStreams allValues];
-  v151 = v131;
-  v132 = [v131 countByEnumeratingWithState:&v168 objects:v207 count:16];
+  allValues2 = [(NSMutableDictionary *)self->_sampleStreams allValues];
+  v151 = allValues2;
+  v132 = [allValues2 countByEnumeratingWithState:&v168 objects:v207 count:16];
   if (v132)
   {
     v133 = *v169;
@@ -1280,7 +1280,7 @@ LABEL_157:
       {
         if (*v169 != v133)
         {
-          objc_enumerationMutation(v131);
+          objc_enumerationMutation(allValues2);
         }
 
         v136 = *(*(&v168 + 1) + 8 * m);
@@ -1288,7 +1288,7 @@ LABEL_157:
         {
           objc_initWeak(&range, self);
           dispatch_group_enter(groupe);
-          v137 = [v136 assetTrack];
+          assetTrack2 = [v136 assetTrack];
           v165[0] = MEMORY[0x277D85DD0];
           v165[1] = 3221225472;
           v165[2] = __50__MOVStreamReader_resetReaderWithTimeRange_error___block_invoke;
@@ -1296,15 +1296,15 @@ LABEL_157:
           v165[4] = v136;
           v166 = groupe;
           objc_copyWeak(&v167, &range);
-          v131 = v151;
-          [v137 loadAssociatedTracksOfType:v134 completionHandler:v165];
+          allValues2 = v151;
+          [assetTrack2 loadAssociatedTracksOfType:v134 completionHandler:v165];
 
           objc_destroyWeak(&v167);
           objc_destroyWeak(&range);
         }
       }
 
-      v132 = [v131 countByEnumeratingWithState:&v168 objects:v207 count:16];
+      v132 = [allValues2 countByEnumeratingWithState:&v168 objects:v207 count:16];
     }
 
     while (v132);
@@ -1312,26 +1312,26 @@ LABEL_157:
 
   v138 = groupe;
   dispatch_group_wait(groupe, 0xFFFFFFFFFFFFFFFFLL);
-  v139 = *&a3->var0.var3;
-  *&range.start.value = *&a3->var0.var0;
+  v139 = *&range->var0.var3;
+  *&range.start.value = *&range->var0.var0;
   *&range.start.epoch = v139;
-  *&range.duration.timescale = *&a3->var1.var1;
+  *&range.duration.timescale = *&range->var1.var1;
   [(AVAssetReader *)self->m_assetReader setTimeRange:&range];
-  v10 = [(AVAssetReader *)self->m_assetReader startReading];
-  if (!v10)
+  startReading = [(AVAssetReader *)self->m_assetReader startReading];
+  if (!startReading)
   {
     v140 = MEMORY[0x277CCACA8];
-    v141 = [(AVAssetReader *)self->m_assetReader error];
-    v142 = [v140 stringWithFormat:@"Start Reading (AVAssetReader) Error: %@  Status: %ld", v141, -[AVAssetReader status](self->m_assetReader, "status")];
+    error = [(AVAssetReader *)self->m_assetReader error];
+    v142 = [v140 stringWithFormat:@"Start Reading (AVAssetReader) Error: %@  Status: %ld", error, -[AVAssetReader status](self->m_assetReader, "status")];
 
-    [MEMORY[0x277CCA9B8] populateReaderError:a4 message:v142 code:4];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:v142 code:4];
     v138 = groupe;
   }
 
 LABEL_186:
 LABEL_11:
 
-  return v10;
+  return startReading;
 }
 
 void __50__MOVStreamReader_resetReaderWithTimeRange_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1395,22 +1395,22 @@ void __50__MOVStreamReader_resetReaderWithTimeRange_error___block_invoke(uint64_
   }
 }
 
-- (id)timeRangeMetadataForPixelBuffer:(__CVBuffer *)a3
+- (id)timeRangeMetadataForPixelBuffer:(__CVBuffer *)buffer
 {
   if (self->_timeRangeMetadataSamples)
   {
-    v5 = [(MOVStreamReader *)self timeRangeMetadataKey];
+    timeRangeMetadataKey = [(MOVStreamReader *)self timeRangeMetadataKey];
 
     v6 = 0;
-    if (a3 && v5)
+    if (buffer && timeRangeMetadataKey)
     {
-      v7 = CVBufferCopyAttachments(a3, kCVAttachmentMode_ShouldPropagate);
-      v8 = [(MOVStreamReader *)self timeRangeMetadataKey];
-      v9 = [v7 objectForKeyedSubscript:v8];
+      v7 = CVBufferCopyAttachments(buffer, kCVAttachmentMode_ShouldPropagate);
+      timeRangeMetadataKey2 = [(MOVStreamReader *)self timeRangeMetadataKey];
+      v9 = [v7 objectForKeyedSubscript:timeRangeMetadataKey2];
 
       if (v9)
       {
-        v10 = [v9 unsignedLongLongValue];
+        unsignedLongLongValue = [v9 unsignedLongLongValue];
         v11 = [(NSArray *)self->_timeRangeMetadataSamples count];
         v12 = v11 - 1;
         if (v11 >= 1)
@@ -1420,9 +1420,9 @@ void __50__MOVStreamReader_resetReaderWithTimeRange_error___block_invoke(uint64_
           {
             v14 = v13 + (v12 - v13) / 2;
             v6 = [(NSArray *)self->_timeRangeMetadataSamples objectAtIndexedSubscript:v14];
-            if ([v6 startTime] <= v10)
+            if ([v6 startTime] <= unsignedLongLongValue)
             {
-              if ([v6 endTime] >= v10)
+              if ([v6 endTime] >= unsignedLongLongValue)
               {
                 goto LABEL_13;
               }
@@ -1453,14 +1453,14 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)saveStream:(id)a3 toFile:(id)a4 error:(id *)a5
+- (BOOL)saveStream:(id)stream toFile:(id)file error:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v30 = a3;
-  v31 = a4;
+  streamCopy = stream;
+  fileCopy = file;
   v8 = objc_opt_new();
-  v9 = [(MOVStreamReader *)self trackForStream:v30];
-  if (v9 || ([(MOVStreamReader *)self metadataTrackForStream:v30], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  v9 = [(MOVStreamReader *)self trackForStream:streamCopy];
+  if (v9 || ([(MOVStreamReader *)self metadataTrackForStream:streamCopy], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     [v8 addObject:v9];
     v10 = [MIOMovieMetadataUtility findAllAssociatedMetadataTracksInAsset:self->m_asset forTrack:v9];
@@ -1472,7 +1472,7 @@ LABEL_13:
 
     v11 = objc_alloc(MEMORY[0x277CE6560]);
     v12 = [(AVURLAsset *)self->m_asset URL];
-    v13 = [v11 initWithURL:v12 options:0 error:a5];
+    v13 = [v11 initWithURL:v12 options:0 error:error];
 
     if (v13)
     {
@@ -1509,7 +1509,7 @@ LABEL_13:
 
       v19 = objc_alloc(MEMORY[0x277CE6400]);
       v20 = [v19 initWithAsset:v13 presetName:*MEMORY[0x277CE5C78]];
-      v21 = [MEMORY[0x277CBEBC0] fileURLWithPath:v31];
+      v21 = [MEMORY[0x277CBEBC0] fileURLWithPath:fileCopy];
       [v20 setOutputURL:v21];
 
       [v20 setOutputFileType:*MEMORY[0x277CE5DA8]];
@@ -1523,10 +1523,10 @@ LABEL_13:
       v33 = v23;
       [v20 exportAsynchronouslyWithCompletionHandler:v32];
       dispatch_group_wait(v23, 0xFFFFFFFFFFFFFFFFLL);
-      v24 = [v20 error];
-      v25 = v24 == 0;
+      error = [v20 error];
+      v25 = error == 0;
 
-      if (a5)
+      if (error)
       {
         v26 = v25;
       }
@@ -1538,7 +1538,7 @@ LABEL_13:
 
       if ((v26 & 1) == 0)
       {
-        *a5 = [v20 error];
+        *error = [v20 error];
       }
     }
 
@@ -1550,8 +1550,8 @@ LABEL_13:
 
   else
   {
-    v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain stream '%@'.", v30];
-    [MEMORY[0x277CCA9B8] populateReaderError:a5 message:v28 code:3];
+    streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain stream '%@'.", streamCopy];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:streamCopy code:3];
 
     v25 = 0;
   }
@@ -1559,16 +1559,16 @@ LABEL_13:
   return v25;
 }
 
-- (BOOL)isTrack:(id)a3 byIdInTracks:(id)a4
+- (BOOL)isTrack:(id)track byIdInTracks:(id)tracks
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  trackCopy = track;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  tracksCopy = tracks;
+  v7 = [tracksCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = *v13;
@@ -1578,18 +1578,18 @@ LABEL_13:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(tracksCopy);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) trackID];
-        if (v10 == [v5 trackID])
+        trackID = [*(*(&v12 + 1) + 8 * i) trackID];
+        if (trackID == [trackCopy trackID])
         {
           LOBYTE(v7) = 1;
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [tracksCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         continue;
@@ -1607,7 +1607,7 @@ LABEL_11:
 - (void)movVersionCheck
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [(MOVStreamReader *)self movstreamIOMetadataForMovie];
+  movstreamIOMetadataForMovie = [(MOVStreamReader *)self movstreamIOMetadataForMovie];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
@@ -1626,7 +1626,7 @@ LABEL_3:
         objc_enumerationMutation(v4);
       }
 
-      v8 = [v3 objectForKey:*(*(&v27 + 1) + 8 * v7)];
+      v8 = [movstreamIOMetadataForMovie objectForKey:*(*(&v27 + 1) + 8 * v7)];
       if (v8)
       {
         break;
@@ -1715,13 +1715,13 @@ LABEL_22:
 LABEL_23:
 }
 
-- (void)setL010OutputFormatRAW14L016:(BOOL)a3
+- (void)setL010OutputFormatRAW14L016:(BOOL)l016
 {
-  if (self->_l010OutputFormatRAW14L016 != a3)
+  if (self->_l010OutputFormatRAW14L016 != l016)
   {
     v12 = v3;
     v13 = v4;
-    self->_l010OutputFormatRAW14L016 = a3;
+    self->_l010OutputFormatRAW14L016 = l016;
     m_assetReader = self->m_assetReader;
     if (m_assetReader)
     {
@@ -1741,13 +1741,13 @@ LABEL_23:
   }
 }
 
-- (void)setRawBayerMSBReplication:(BOOL)a3
+- (void)setRawBayerMSBReplication:(BOOL)replication
 {
-  if (self->_rawBayerMSBReplication != a3)
+  if (self->_rawBayerMSBReplication != replication)
   {
     v12 = v3;
     v13 = v4;
-    self->_rawBayerMSBReplication = a3;
+    self->_rawBayerMSBReplication = replication;
     m_assetReader = self->m_assetReader;
     if (m_assetReader)
     {
@@ -1767,13 +1767,13 @@ LABEL_23:
   }
 }
 
-- (void)setBufferCacheMode:(int)a3
+- (void)setBufferCacheMode:(int)mode
 {
-  if (self->_bufferCacheMode != a3)
+  if (self->_bufferCacheMode != mode)
   {
     v12 = v3;
     v13 = v4;
-    self->_bufferCacheMode = a3;
+    self->_bufferCacheMode = mode;
     m_assetReader = self->m_assetReader;
     if (m_assetReader)
     {
@@ -1793,13 +1793,13 @@ LABEL_23:
   }
 }
 
-- (void)setSkipSynthesizedTimeCode:(BOOL)a3
+- (void)setSkipSynthesizedTimeCode:(BOOL)code
 {
-  if (self->_skipSynthesizedTimeCode != a3)
+  if (self->_skipSynthesizedTimeCode != code)
   {
     v12 = v3;
     v13 = v4;
-    self->_skipSynthesizedTimeCode = a3;
+    self->_skipSynthesizedTimeCode = code;
     m_assetReader = self->m_assetReader;
     if (m_assetReader)
     {
@@ -1819,7 +1819,7 @@ LABEL_23:
   }
 }
 
-- (CGAffineTransform)transformForStream:(SEL)a3
+- (CGAffineTransform)transformForStream:(SEL)stream
 {
   v11 = a4;
   if ([(MOVStreamReader *)self containsStream:?])
@@ -1854,14 +1854,14 @@ LABEL_23:
 - (id)metadataForMovie
 {
   v3 = objc_opt_new();
-  v4 = [(AVURLAsset *)self->m_asset metadata];
+  metadata = [(AVURLAsset *)self->m_asset metadata];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __35__MOVStreamReader_metadataForMovie__block_invoke;
   v9[3] = &unk_279848398;
   v5 = v3;
   v10 = v5;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [metadata enumerateObjectsUsingBlock:v9];
 
   if ([v5 count])
   {
@@ -1937,22 +1937,22 @@ void __35__MOVStreamReader_metadataForMovie__block_invoke(uint64_t a1, void *a2)
             }
 
             v11 = *(*(&v32 + 1) + 8 * j);
-            v12 = [v6 identifier];
-            LODWORD(v11) = [v12 isEqualToString:v11];
+            identifier = [v6 identifier];
+            LODWORD(v11) = [identifier isEqualToString:v11];
 
             if (v11)
             {
               v31 = 0;
               v13 = MEMORY[0x277CCAC58];
-              v14 = [v6 value];
-              LODWORD(v13) = [v13 propertyList:v14 isValidForFormat:100];
+              value = [v6 value];
+              LODWORD(v13) = [v13 propertyList:value isValidForFormat:100];
 
               if (v13)
               {
                 v15 = MEMORY[0x277CCAC58];
-                v16 = [v6 value];
+                value2 = [v6 value];
                 v30 = 0;
-                v17 = [v15 propertyListWithData:v16 options:0 format:&v31 error:&v30];
+                v17 = [v15 propertyListWithData:value2 options:0 format:&v31 error:&v30];
                 v18 = v30;
 
                 if (v18)
@@ -1971,9 +1971,9 @@ void __35__MOVStreamReader_metadataForMovie__block_invoke(uint64_t a1, void *a2)
 LABEL_24:
 
                   v22 = MEMORY[0x277CCAAA0];
-                  v23 = [v6 value];
+                  value3 = [v6 value];
                   v29 = 0;
-                  v21 = [v22 JSONObjectWithData:v23 options:1 error:&v29];
+                  v21 = [v22 JSONObjectWithData:value3 options:1 error:&v29];
                   v18 = v29;
 
                   if (v18 && +[MIOLog debugEnabled])
@@ -2036,8 +2036,8 @@ LABEL_30:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(AVURLAsset *)self->m_asset metadata];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  metadata = [(AVURLAsset *)self->m_asset metadata];
+  v5 = [metadata countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = *v14;
@@ -2047,12 +2047,12 @@ LABEL_30:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(metadata);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 identifier];
-        v10 = [v9 isEqualToString:@"mdta/com.apple.framework.mio.session.starttime"];
+        identifier = [v8 identifier];
+        v10 = [identifier isEqualToString:@"mdta/com.apple.framework.mio.session.starttime"];
 
         if (v10)
         {
@@ -2072,7 +2072,7 @@ LABEL_30:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [metadata countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;
@@ -2095,8 +2095,8 @@ LABEL_30:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(AVURLAsset *)self->m_asset metadata];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  metadata = [(AVURLAsset *)self->m_asset metadata];
+  v3 = [metadata countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = *v12;
@@ -2106,21 +2106,21 @@ LABEL_30:
       {
         if (*v12 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(metadata);
         }
 
         v6 = *(*(&v11 + 1) + 8 * i);
-        v7 = [v6 identifier];
-        v8 = [v7 isEqualToString:@"mdta/com.apple.framework.mio.timeRangeMetadataKeyHint"];
+        identifier = [v6 identifier];
+        v8 = [identifier isEqualToString:@"mdta/com.apple.framework.mio.timeRangeMetadataKeyHint"];
 
         if (v8)
         {
-          v9 = [v6 valueAsTimeRangeMetadataKeyHint];
+          valueAsTimeRangeMetadataKeyHint = [v6 valueAsTimeRangeMetadataKeyHint];
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v3 = [metadata countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v3)
       {
         continue;
@@ -2130,10 +2130,10 @@ LABEL_30:
     }
   }
 
-  v9 = 0;
+  valueAsTimeRangeMetadataKeyHint = 0;
 LABEL_11:
 
-  return v9;
+  return valueAsTimeRangeMetadataKeyHint;
 }
 
 - (id)getTimeRangeMetadataStream
@@ -2151,51 +2151,51 @@ LABEL_11:
   return v3;
 }
 
-- (id)getRelatedStreamForStreamId:(id)a3
+- (id)getRelatedStreamForStreamId:(id)id
 {
-  v4 = a3;
-  if ([(MOVStreamReader *)self containsStream:v4])
+  idCopy = id;
+  if ([(MOVStreamReader *)self containsStream:idCopy])
   {
-    v5 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v4];
-    v6 = [v5 relatedStreamId];
+    v5 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:idCopy];
+    relatedStreamId = [v5 relatedStreamId];
   }
 
   else
   {
-    v6 = 0;
+    relatedStreamId = 0;
   }
 
-  return v6;
+  return relatedStreamId;
 }
 
-- (id)getRelationSpecifierForStreamId:(id)a3
+- (id)getRelationSpecifierForStreamId:(id)id
 {
-  v4 = a3;
-  if ([(MOVStreamReader *)self containsStream:v4])
+  idCopy = id;
+  if ([(MOVStreamReader *)self containsStream:idCopy])
   {
-    v5 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v4];
-    v6 = [v5 relationSpecifier];
+    v5 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:idCopy];
+    relationSpecifier = [v5 relationSpecifier];
   }
 
   else
   {
-    v6 = 0;
+    relationSpecifier = 0;
   }
 
-  return v6;
+  return relationSpecifier;
 }
 
-- (id)getStreamsRelatedToStream:(id)a3
+- (id)getStreamsRelatedToStream:(id)stream
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  streamCopy = stream;
   v5 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(NSMutableDictionary *)self->_sampleStreams allValues];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allValues = [(NSMutableDictionary *)self->_sampleStreams allValues];
+  v7 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -2205,21 +2205,21 @@ LABEL_11:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 relatedStreamId];
-        v12 = [v4 isEqualToString:v11];
+        relatedStreamId = [v10 relatedStreamId];
+        v12 = [streamCopy isEqualToString:relatedStreamId];
 
         if (v12)
         {
-          v13 = [v10 streamId];
-          [v5 addObject:v13];
+          streamId = [v10 streamId];
+          [v5 addObject:streamId];
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -2228,128 +2228,128 @@ LABEL_11:
   return v5;
 }
 
-- (id)trackMetadataForStream:(id)a3
+- (id)trackMetadataForStream:(id)stream
 {
-  v4 = a3;
-  if ([(MOVStreamReader *)self containsStream:v4])
+  streamCopy = stream;
+  if ([(MOVStreamReader *)self containsStream:streamCopy])
   {
-    v5 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v4];
-    v6 = [v5 customTrackMetadata];
+    v5 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:streamCopy];
+    customTrackMetadata = [v5 customTrackMetadata];
   }
 
   else
   {
-    v6 = 0;
+    customTrackMetadata = 0;
   }
 
-  return v6;
+  return customTrackMetadata;
 }
 
-- (id)customTrackMetadataItemsForStream:(id)a3
+- (id)customTrackMetadataItemsForStream:(id)stream
 {
-  v4 = a3;
-  if ([(MOVStreamReader *)self containsStream:v4])
+  streamCopy = stream;
+  if ([(MOVStreamReader *)self containsStream:streamCopy])
   {
-    v5 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v4];
-    v6 = [v5 customTrackMetadataItems];
+    v5 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:streamCopy];
+    customTrackMetadataItems = [v5 customTrackMetadataItems];
   }
 
   else
   {
-    v6 = 0;
+    customTrackMetadataItems = 0;
   }
 
-  return v6;
+  return customTrackMetadataItems;
 }
 
-- (id)trackMetadataForMetadataStream:(id)a3
+- (id)trackMetadataForMetadataStream:(id)stream
 {
-  v4 = a3;
-  if ([(MOVStreamReader *)self containsMetadataStream:v4])
+  streamCopy = stream;
+  if ([(MOVStreamReader *)self containsMetadataStream:streamCopy])
   {
-    v5 = [(NSMutableDictionary *)self->_metadataStreams objectForKey:v4];
-    v6 = [v5 customTrackMetadata];
+    v5 = [(NSMutableDictionary *)self->_metadataStreams objectForKey:streamCopy];
+    customTrackMetadata = [v5 customTrackMetadata];
   }
 
   else
   {
-    v6 = 0;
+    customTrackMetadata = 0;
   }
 
-  return v6;
+  return customTrackMetadata;
 }
 
-- (BOOL)hasTimeCodeForStream:(id)a3
+- (BOOL)hasTimeCodeForStream:(id)stream
 {
-  v3 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:stream];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 hasTimeCode];
+    hasTimeCode = [v3 hasTimeCode];
   }
 
   else
   {
-    v5 = 0;
+    hasTimeCode = 0;
   }
 
-  return v5;
+  return hasTimeCode;
 }
 
-- (BOOL)hasSynthesizedTimeCodeForStream:(id)a3
+- (BOOL)hasSynthesizedTimeCodeForStream:(id)stream
 {
-  v3 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:stream];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 timeCodeIsSynthesized];
+    timeCodeIsSynthesized = [v3 timeCodeIsSynthesized];
   }
 
   else
   {
-    v5 = 0;
+    timeCodeIsSynthesized = 0;
   }
 
-  return v5;
+  return timeCodeIsSynthesized;
 }
 
-- (opaqueCMFormatDescription)timeCodeFormatDescriptionStream:(id)a3
+- (opaqueCMFormatDescription)timeCodeFormatDescriptionStream:(id)stream
 {
-  v3 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:stream];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 timeCodeFormatDescription];
+    timeCodeFormatDescription = [v3 timeCodeFormatDescription];
   }
 
   else
   {
-    v5 = 0;
+    timeCodeFormatDescription = 0;
   }
 
-  return v5;
+  return timeCodeFormatDescription;
 }
 
-- (CGSize)getSizeForStream:(id)a3
+- (CGSize)getSizeForStream:(id)stream
 {
-  v3 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:stream];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 assetTrack];
-    [v5 naturalSize];
+    assetTrack = [v3 assetTrack];
+    [assetTrack naturalSize];
     width = v6;
     height = v8;
 
-    v10 = [v4 assetTrack];
-    v11 = [v10 formatDescriptions];
-    v12 = [v11 count];
+    assetTrack2 = [v4 assetTrack];
+    formatDescriptions = [assetTrack2 formatDescriptions];
+    v12 = [formatDescriptions count];
 
     if (v12)
     {
-      v13 = [v4 assetTrack];
-      v14 = [v13 formatDescriptions];
-      v15 = [v14 objectAtIndexedSubscript:0];
+      assetTrack3 = [v4 assetTrack];
+      formatDescriptions2 = [assetTrack3 formatDescriptions];
+      v15 = [formatDescriptions2 objectAtIndexedSubscript:0];
 
       Dimensions = CMVideoFormatDescriptionGetDimensions(v15);
       if (Dimensions.width >= 1 && Dimensions.height >= 1)
@@ -2373,25 +2373,25 @@ LABEL_11:
   return result;
 }
 
-- (CGSize)getOutputSizeForStream:(id)a3
+- (CGSize)getOutputSizeForStream:(id)stream
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v4];
+  streamCopy = stream;
+  v5 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:streamCopy];
   if (v5)
   {
-    [(MOVStreamReader *)self getSizeForStream:v4];
+    [(MOVStreamReader *)self getSizeForStream:streamCopy];
     v7 = v6;
     v9 = v8;
     if (![v5 mediaType])
     {
       v10 = v5;
-      v11 = [v10 postProcessor];
-      v12 = [v11 conformsToProtocol:&unk_2868E86F0];
+      postProcessor = [v10 postProcessor];
+      v12 = [postProcessor conformsToProtocol:&unk_2868E86F0];
 
       if (v12)
       {
-        v13 = [v10 postProcessor];
-        v7 = [v13 adjustedWidthForWidth:v7];
+        postProcessor2 = [v10 postProcessor];
+        v7 = [postProcessor2 adjustedWidthForWidth:v7];
       }
     }
   }
@@ -2409,87 +2409,87 @@ LABEL_11:
   return result;
 }
 
-- (unsigned)getOutputPixelFormatForStream:(id)a3
+- (unsigned)getOutputPixelFormatForStream:(id)stream
 {
-  v4 = a3;
-  if ([(MOVStreamReader *)self containsStream:v4])
+  streamCopy = stream;
+  if ([(MOVStreamReader *)self containsStream:streamCopy])
   {
-    v5 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v4];
-    v6 = [v5 getOutputPixelFormatForStream];
+    v5 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:streamCopy];
+    getOutputPixelFormatForStream = [v5 getOutputPixelFormatForStream];
   }
 
   else
   {
-    v6 = 0;
+    getOutputPixelFormatForStream = 0;
   }
 
-  return v6;
+  return getOutputPixelFormatForStream;
 }
 
-- (BOOL)getOutputPixelFormatWasGuessedForStream:(id)a3
+- (BOOL)getOutputPixelFormatWasGuessedForStream:(id)stream
 {
-  v4 = a3;
-  if ([(MOVStreamReader *)self containsStream:v4])
+  streamCopy = stream;
+  if ([(MOVStreamReader *)self containsStream:streamCopy])
   {
-    v5 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v4];
-    v6 = [v5 getOutputPixelFormatWasGuessedForStream];
+    v5 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:streamCopy];
+    getOutputPixelFormatWasGuessedForStream = [v5 getOutputPixelFormatWasGuessedForStream];
   }
 
   else
   {
-    v6 = 0;
+    getOutputPixelFormatWasGuessedForStream = 0;
   }
 
-  return v6;
+  return getOutputPixelFormatWasGuessedForStream;
 }
 
-- (unint64_t)trackTypeInfoForStream:(id)a3
+- (unint64_t)trackTypeInfoForStream:(id)stream
 {
-  v4 = a3;
-  if ([(MOVStreamReader *)self containsStream:v4])
+  streamCopy = stream;
+  if ([(MOVStreamReader *)self containsStream:streamCopy])
   {
-    v5 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v4];
-    v6 = [v5 trackTypeInfo];
+    v5 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:streamCopy];
+    trackTypeInfo = [v5 trackTypeInfo];
   }
 
   else
   {
-    v6 = 0;
+    trackTypeInfo = 0;
   }
 
-  return v6;
+  return trackTypeInfo;
 }
 
-- (id)attachmentsOutputForStream:(id)a3 mediaType:(int64_t)a4 error:(id *)a5
+- (id)attachmentsOutputForStream:(id)stream mediaType:(int64_t)type error:(id *)error
 {
-  v8 = a3;
-  if (a4 == 2)
+  streamCopy = stream;
+  if (type == 2)
   {
-    [MEMORY[0x277CCA9B8] populateReaderError:a5 message:@"Metadata streams don't have attachment outputs." code:7];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:@"Metadata streams don't have attachment outputs." code:7];
     v9 = 0;
     goto LABEL_10;
   }
 
-  v10 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v8];
-  v11 = v10;
+  v10 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:streamCopy];
+  streamCopy = v10;
   if (!v10)
   {
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Stream not found '%@'.", v8];
-    [MEMORY[0x277CCA9B8] populateReaderError:a5 message:v11 code:7];
+    streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Stream not found '%@'.", streamCopy];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:streamCopy code:7];
 LABEL_8:
     v9 = 0;
     goto LABEL_9;
   }
 
-  if ([v10 mediaType] != a4)
+  if ([v10 mediaType] != type)
   {
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Stream not found for '%@' of type %ld.", v8, a4];
-    [MEMORY[0x277CCA9B8] populateReaderError:a5 message:v12 code:7];
+    type = [MEMORY[0x277CCACA8] stringWithFormat:@"Stream not found for '%@' of type %ld.", streamCopy, type];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:type code:7];
 
     goto LABEL_8;
   }
 
-  v9 = [v11 getAttachmentsOnlyOutputError:a5];
+  v9 = [streamCopy getAttachmentsOnlyOutputError:error];
 LABEL_9:
 
 LABEL_10:
@@ -2497,66 +2497,66 @@ LABEL_10:
   return v9;
 }
 
-- (id)trackForStream:(id)a3
+- (id)trackForStream:(id)stream
 {
-  v3 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:stream];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 assetTrack];
+    assetTrack = [v3 assetTrack];
   }
 
   else
   {
-    v5 = 0;
+    assetTrack = 0;
   }
 
-  return v5;
+  return assetTrack;
 }
 
-- (id)metadataTrackForStream:(id)a3
+- (id)metadataTrackForStream:(id)stream
 {
-  v4 = a3;
-  if ([(MOVStreamReader *)self containsMetadataStream:v4])
+  streamCopy = stream;
+  if ([(MOVStreamReader *)self containsMetadataStream:streamCopy])
   {
-    v5 = [(NSMutableDictionary *)self->_metadataStreams objectForKey:v4];
-    v6 = [v5 assetTrack];
+    v5 = [(NSMutableDictionary *)self->_metadataStreams objectForKey:streamCopy];
+    assetTrack = [v5 assetTrack];
   }
 
   else
   {
-    v6 = 0;
+    assetTrack = 0;
   }
 
-  return v6;
+  return assetTrack;
 }
 
-- (double)getFrameRateForStream:(id)a3
+- (double)getFrameRateForStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v5 = 0.0;
-  if ([(MOVStreamReader *)self containsStream:v4])
+  if ([(MOVStreamReader *)self containsStream:streamCopy])
   {
-    v6 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v4];
-    v7 = [v6 assetTrack];
-    [v7 nominalFrameRate];
+    v6 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:streamCopy];
+    assetTrack = [v6 assetTrack];
+    [assetTrack nominalFrameRate];
     v5 = v8;
   }
 
   return v5;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)getMinFrameDurationForStream:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)getMinFrameDurationForStream:(SEL)stream
 {
   v11 = a4;
   if ([(MOVStreamReader *)self containsStream:?])
   {
     v6 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v11];
-    v7 = [v6 assetTrack];
-    v8 = v7;
-    if (v7)
+    assetTrack = [v6 assetTrack];
+    v8 = assetTrack;
+    if (assetTrack)
     {
-      [v7 minFrameDuration];
+      [assetTrack minFrameDuration];
     }
 
     else
@@ -2577,42 +2577,42 @@ LABEL_10:
   return result;
 }
 
-- (unsigned)pixelFormatForStream:(id)a3
+- (unsigned)pixelFormatForStream:(id)stream
 {
-  v3 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:stream];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 pixelFormatForStream];
+    pixelFormatForStream = [v3 pixelFormatForStream];
   }
 
   else
   {
-    v5 = -1;
+    pixelFormatForStream = -1;
   }
 
-  return v5;
+  return pixelFormatForStream;
 }
 
-- (void)removePixelBufferPadding:(BOOL)a3 forStream:(id)a4
+- (void)removePixelBufferPadding:(BOOL)padding forStream:(id)stream
 {
-  v4 = a3;
-  v7 = a4;
+  paddingCopy = padding;
+  streamCopy = stream;
   if ([(MOVStreamReader *)self containsStream:?])
   {
-    v6 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v7];
-    [v6 removePixelBufferPadding:v4];
+    v6 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:streamCopy];
+    [v6 removePixelBufferPadding:paddingCopy];
   }
 }
 
-- (BOOL)setTestPatternRenderer:(id)a3 forVideoStream:(id)a4 error:(id *)a5
+- (BOOL)setTestPatternRenderer:(id)renderer forVideoStream:(id)stream error:(id *)error
 {
-  v8 = a3;
-  v9 = [(MOVStreamReader *)self outputForVideoStream:a4 error:a5];
+  rendererCopy = renderer;
+  v9 = [(MOVStreamReader *)self outputForVideoStream:stream error:error];
   v10 = v9;
   if (v9)
   {
-    [v9 setTestPatternRenderer:v8];
+    [v9 setTestPatternRenderer:rendererCopy];
   }
 
   return v10 != 0;
@@ -2642,8 +2642,8 @@ LABEL_10:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(AVURLAsset *)self->m_asset tracks];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  tracks = [(AVURLAsset *)self->m_asset tracks];
+  v5 = [tracks countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = *v16;
@@ -2654,7 +2654,7 @@ LABEL_10:
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(tracks);
         }
 
         v8 = *(*(&v15 + 1) + 8 * v7);
@@ -2701,7 +2701,7 @@ LABEL_11:
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [tracks countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
@@ -2710,35 +2710,35 @@ LABEL_11:
   return result;
 }
 
-- (id)timestampsForStream:(id)a3 restrictedTimeRange:(id *)a4
+- (id)timestampsForStream:(id)stream restrictedTimeRange:(id *)range
 {
-  v6 = a3;
+  streamCopy = stream;
   v7 = [MOVStreamTimestamps alloc];
-  v8 = [(MOVStreamReader *)self trackForStream:v6];
-  v9 = *&a4->var0.var3;
-  v12[0] = *&a4->var0.var0;
+  v8 = [(MOVStreamReader *)self trackForStream:streamCopy];
+  v9 = *&range->var0.var3;
+  v12[0] = *&range->var0.var0;
   v12[1] = v9;
-  v12[2] = *&a4->var1.var1;
+  v12[2] = *&range->var1.var1;
   v10 = [(MOVStreamTimestamps *)v7 initWithAssetTrack:v8 restrictedTimeRange:v12];
 
   return v10;
 }
 
-- (id)timestampsForStream:(id)a3
+- (id)timestampsForStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v5 = [MOVStreamTimestamps alloc];
-  v6 = [(MOVStreamReader *)self trackForStream:v4];
+  v6 = [(MOVStreamReader *)self trackForStream:streamCopy];
   v7 = [(MOVStreamTimestamps *)v5 initWithAssetTrack:v6];
 
   return v7;
 }
 
-- (id)timestampsForMetadataStream:(id)a3
+- (id)timestampsForMetadataStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v5 = [MOVStreamTimestamps alloc];
-  v6 = [(MOVStreamReader *)self metadataTrackForStream:v4];
+  v6 = [(MOVStreamReader *)self metadataTrackForStream:streamCopy];
   v7 = [(MOVStreamTimestamps *)v5 initWithAssetTrack:v6];
 
   [(MOVStreamTimestamps *)v7 setShouldStartTimestampsAtZero:0];
@@ -2746,33 +2746,33 @@ LABEL_11:
   return v7;
 }
 
-- (BOOL)containsStream:(id)a3 withMediaType:(int64_t)a4
+- (BOOL)containsStream:(id)stream withMediaType:(int64_t)type
 {
-  v6 = a3;
-  if (a4 >= 5)
+  streamCopy = stream;
+  if (type >= 5)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [*(&self->super.isa + *&a010l010l010l01[8 * a4 + 40]) containsObject:v6];
+    v7 = [*(&self->super.isa + *&a010l010l010l01[8 * type + 40]) containsObject:streamCopy];
   }
 
   return v7;
 }
 
-- (BOOL)containsStream:(id)a3
+- (BOOL)containsStream:(id)stream
 {
-  v3 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:stream];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (BOOL)containsMetadataStream:(id)a3
+- (BOOL)containsMetadataStream:(id)stream
 {
-  v3 = [(NSMutableDictionary *)self->_metadataStreams objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_metadataStreams objectForKey:stream];
   v4 = v3 != 0;
 
   return v4;
@@ -2806,13 +2806,13 @@ LABEL_11:
   return v2;
 }
 
-- (id)trackMetadataForAudioStream:(id)a3
+- (id)trackMetadataForAudioStream:(id)stream
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v4];
+  streamCopy = stream;
+  v5 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:streamCopy];
   if ([v5 mediaType] == 1)
   {
-    v6 = [(MOVStreamReader *)self trackMetadataForStream:v4];
+    v6 = [(MOVStreamReader *)self trackMetadataForStream:streamCopy];
   }
 
   else
@@ -2823,13 +2823,13 @@ LABEL_11:
   return v6;
 }
 
-- (id)trackMetadataForSceneStream:(id)a3
+- (id)trackMetadataForSceneStream:(id)stream
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v4];
+  streamCopy = stream;
+  v5 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:streamCopy];
   if ([v5 mediaType] == 3)
   {
-    v6 = [(MOVStreamReader *)self trackMetadataForStream:v4];
+    v6 = [(MOVStreamReader *)self trackMetadataForStream:streamCopy];
   }
 
   else
@@ -2840,13 +2840,13 @@ LABEL_11:
   return v6;
 }
 
-- (id)trackMetadataForTimeCodeStream:(id)a3
+- (id)trackMetadataForTimeCodeStream:(id)stream
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v4];
+  streamCopy = stream;
+  v5 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:streamCopy];
   if ([v5 mediaType] == 4)
   {
-    v6 = [(MOVStreamReader *)self trackMetadataForStream:v4];
+    v6 = [(MOVStreamReader *)self trackMetadataForStream:streamCopy];
   }
 
   else
@@ -2857,10 +2857,10 @@ LABEL_11:
   return v6;
 }
 
-- (id)trackMetadataForVideoStream:(id)a3
+- (id)trackMetadataForVideoStream:(id)stream
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v4];
+  streamCopy = stream;
+  v5 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:streamCopy];
   if ([v5 mediaType])
   {
     v6 = 0;
@@ -2868,26 +2868,26 @@ LABEL_11:
 
   else
   {
-    v6 = [(MOVStreamReader *)self trackMetadataForStream:v4];
+    v6 = [(MOVStreamReader *)self trackMetadataForStream:streamCopy];
   }
 
   return v6;
 }
 
-- (id)trackMetadataForStream:(id)a3 withMediaType:(int64_t)a4
+- (id)trackMetadataForStream:(id)stream withMediaType:(int64_t)type
 {
-  v6 = a3;
-  if (a4 == 2)
+  streamCopy = stream;
+  if (type == 2)
   {
-    v7 = [(MOVStreamReader *)self trackMetadataForMetadataStream:v6];
+    v7 = [(MOVStreamReader *)self trackMetadataForMetadataStream:streamCopy];
   }
 
   else
   {
-    v8 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v6];
-    if ([v8 mediaType] == a4)
+    v8 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:streamCopy];
+    if ([v8 mediaType] == type)
     {
-      v7 = [(MOVStreamReader *)self trackMetadataForStream:v6];
+      v7 = [(MOVStreamReader *)self trackMetadataForStream:streamCopy];
     }
 
     else
@@ -2906,52 +2906,52 @@ LABEL_11:
   return v2;
 }
 
-- (id)getUnknownMetadataStreamsAssociatedTo:(id)a3
+- (id)getUnknownMetadataStreamsAssociatedTo:(id)to
 {
-  v3 = [(MOVStreamReader *)self getMetadataStreamsAssociatedTo:a3 error:0];
+  v3 = [(MOVStreamReader *)self getMetadataStreamsAssociatedTo:to error:0];
 
   return v3;
 }
 
-- (id)getMetadataStreamsAssociatedTo:(id)a3
+- (id)getMetadataStreamsAssociatedTo:(id)to
 {
-  v3 = [(MOVStreamReader *)self getMetadataStreamsAssociatedTo:a3 error:0];
+  v3 = [(MOVStreamReader *)self getMetadataStreamsAssociatedTo:to error:0];
 
   return v3;
 }
 
-- (id)getMetadataStreamsAssociatedTo:(id)a3 error:(id *)a4
+- (id)getMetadataStreamsAssociatedTo:(id)to error:(id *)error
 {
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v6];
+  toCopy = to;
+  v7 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:toCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 getAssociatedMetadataStreams];
+    getAssociatedMetadataStreams = [v7 getAssociatedMetadataStreams];
   }
 
   else
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain stream '%@'.", v6];
-    [MEMORY[0x277CCA9B8] populateReaderError:a4 message:v10 code:3];
+    toCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain stream '%@'.", toCopy];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:toCopy code:3];
 
-    v9 = 0;
+    getAssociatedMetadataStreams = 0;
   }
 
-  return v9;
+  return getAssociatedMetadataStreams;
 }
 
-- (id)outputForVideoStream:(id)a3 error:(id *)a4
+- (id)outputForVideoStream:(id)stream error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  streamCopy = stream;
+  if (!streamCopy)
   {
-    [MEMORY[0x277CCA9B8] populateReaderError:a4 message:@"Missing stream id." code:7];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:@"Missing stream id." code:7];
     v10 = 0;
     goto LABEL_10;
   }
 
-  v7 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v6];
+  v7 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:streamCopy];
   v8 = v7;
   if (v7)
   {
@@ -2961,14 +2961,14 @@ LABEL_11:
       goto LABEL_9;
     }
 
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Stream '%@' is not a video stream.", v6];
-    [MEMORY[0x277CCA9B8] populateReaderError:a4 message:v9 code:7];
+    streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Stream '%@' is not a video stream.", streamCopy];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:streamCopy code:7];
   }
 
   else
   {
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain data for requested stream '%@'.", v6];
-    [MEMORY[0x277CCA9B8] populateReaderError:a4 message:v9 code:7];
+    streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain data for requested stream '%@'.", streamCopy];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:streamCopy code:7];
   }
 
   v10 = 0;
@@ -2979,22 +2979,22 @@ LABEL_10:
   return v10;
 }
 
-- (id)outputForAudioStream:(id)a3 error:(id *)a4
+- (id)outputForAudioStream:(id)stream error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  streamCopy = stream;
+  if (!streamCopy)
   {
-    [MEMORY[0x277CCA9B8] populateReaderError:a4 message:@"Missing stream id." code:7];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:@"Missing stream id." code:7];
     v9 = 0;
     goto LABEL_10;
   }
 
-  v7 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v6];
+  v7 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:streamCopy];
   v8 = v7;
   if (!v7)
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain data for requested stream '%@'.", v6];
-    [MEMORY[0x277CCA9B8] populateReaderError:a4 message:v10 code:7];
+    streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain data for requested stream '%@'.", streamCopy];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:streamCopy code:7];
 LABEL_8:
 
     v9 = 0;
@@ -3003,8 +3003,8 @@ LABEL_8:
 
   if ([v7 mediaType] != 1)
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Stream '%@' is not an audio stream.", v6];
-    [MEMORY[0x277CCA9B8] populateReaderError:a4 message:v10 code:7];
+    streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Stream '%@' is not an audio stream.", streamCopy];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:streamCopy code:7];
     goto LABEL_8;
   }
 
@@ -3016,22 +3016,22 @@ LABEL_10:
   return v9;
 }
 
-- (id)outputForSceneStream:(id)a3 error:(id *)a4
+- (id)outputForSceneStream:(id)stream error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  streamCopy = stream;
+  if (!streamCopy)
   {
-    [MEMORY[0x277CCA9B8] populateReaderError:a4 message:@"Missing stream id." code:7];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:@"Missing stream id." code:7];
     v9 = 0;
     goto LABEL_10;
   }
 
-  v7 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v6];
+  v7 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:streamCopy];
   v8 = v7;
   if (!v7)
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain data for requested stream '%@'.", v6];
-    [MEMORY[0x277CCA9B8] populateReaderError:a4 message:v10 code:7];
+    streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain data for requested stream '%@'.", streamCopy];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:streamCopy code:7];
 LABEL_8:
 
     v9 = 0;
@@ -3040,8 +3040,8 @@ LABEL_8:
 
   if ([v7 mediaType] != 3)
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Stream '%@' is not a scene stream.", v6];
-    [MEMORY[0x277CCA9B8] populateReaderError:a4 message:v10 code:7];
+    streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Stream '%@' is not a scene stream.", streamCopy];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:streamCopy code:7];
     goto LABEL_8;
   }
 
@@ -3053,22 +3053,22 @@ LABEL_10:
   return v9;
 }
 
-- (id)outputForTimeCodeStream:(id)a3 error:(id *)a4
+- (id)outputForTimeCodeStream:(id)stream error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  streamCopy = stream;
+  if (!streamCopy)
   {
-    [MEMORY[0x277CCA9B8] populateReaderError:a4 message:@"Missing stream id." code:7];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:@"Missing stream id." code:7];
     v9 = 0;
     goto LABEL_10;
   }
 
-  v7 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v6];
+  v7 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:streamCopy];
   v8 = v7;
   if (!v7)
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain data for requested stream '%@'.", v6];
-    [MEMORY[0x277CCA9B8] populateReaderError:a4 message:v10 code:7];
+    streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain data for requested stream '%@'.", streamCopy];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:streamCopy code:7];
 LABEL_8:
 
     v9 = 0;
@@ -3077,8 +3077,8 @@ LABEL_8:
 
   if ([v7 mediaType] != 4)
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Stream '%@' is not a time code stream.", v6];
-    [MEMORY[0x277CCA9B8] populateReaderError:a4 message:v10 code:7];
+    streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Stream '%@' is not a time code stream.", streamCopy];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:streamCopy code:7];
     goto LABEL_8;
   }
 
@@ -3090,22 +3090,22 @@ LABEL_10:
   return v9;
 }
 
-- (id)outputForMetadataStream:(id)a3 error:(id *)a4
+- (id)outputForMetadataStream:(id)stream error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  streamCopy = stream;
+  if (!streamCopy)
   {
-    [MEMORY[0x277CCA9B8] populateReaderError:a4 message:@"Missing stream id." code:7];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:@"Missing stream id." code:7];
     v9 = 0;
     goto LABEL_10;
   }
 
-  v7 = [(NSMutableDictionary *)self->_metadataStreams objectForKey:v6];
+  v7 = [(NSMutableDictionary *)self->_metadataStreams objectForKey:streamCopy];
   v8 = v7;
   if (!v7)
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain data for requested stream '%@'.", v6];
-    [MEMORY[0x277CCA9B8] populateReaderError:a4 message:v10 code:7];
+    streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain data for requested stream '%@'.", streamCopy];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:streamCopy code:7];
 LABEL_8:
 
     v9 = 0;
@@ -3114,8 +3114,8 @@ LABEL_8:
 
   if ([v7 mediaType] != 2)
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Stream '%@' is not a metadata stream.", v6];
-    [MEMORY[0x277CCA9B8] populateReaderError:a4 message:v10 code:7];
+    streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Stream '%@' is not a metadata stream.", streamCopy];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:streamCopy code:7];
     goto LABEL_8;
   }
 
@@ -3127,18 +3127,18 @@ LABEL_10:
   return v9;
 }
 
-- (id)outputsRelatedToOutput:(id)a3 trackAssociation:(id)a4
+- (id)outputsRelatedToOutput:(id)output trackAssociation:(id)association
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  outputCopy = output;
+  associationCopy = association;
   v7 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [v5 associatedOutputs];
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  associatedOutputs = [outputCopy associatedOutputs];
+  v9 = [associatedOutputs countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = *v19;
@@ -3148,21 +3148,21 @@ LABEL_10:
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(associatedOutputs);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
         v13 = [v12 objectAtIndexedSubscript:0];
-        v14 = [v13 nonretainedObjectValue];
+        nonretainedObjectValue = [v13 nonretainedObjectValue];
 
         v15 = [v12 objectAtIndexedSubscript:1];
-        if (v15 == v6)
+        if (v15 == associationCopy)
         {
-          [v7 addObject:v14];
+          [v7 addObject:nonretainedObjectValue];
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [associatedOutputs countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);
@@ -3173,30 +3173,30 @@ LABEL_10:
   return v16;
 }
 
-- (opaqueCMSampleBuffer)nextSampleBufferForStream:(id)a3 attachmentsData:(id *)a4 timestamp:(id *)a5 error:(id *)a6
+- (opaqueCMSampleBuffer)nextSampleBufferForStream:(id)stream attachmentsData:(id *)data timestamp:(id *)timestamp error:(id *)error
 {
-  v10 = a3;
-  v11 = v10;
-  if (a5)
+  streamCopy = stream;
+  v11 = streamCopy;
+  if (timestamp)
   {
     v12 = *MEMORY[0x277CC0890];
-    a5->var3 = *(MEMORY[0x277CC0890] + 16);
-    *&a5->var0 = v12;
+    timestamp->var3 = *(MEMORY[0x277CC0890] + 16);
+    *&timestamp->var0 = v12;
   }
 
-  if (v10)
+  if (streamCopy)
   {
-    v13 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v10];
+    v13 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:streamCopy];
     v14 = v13;
     if (v13)
     {
-      v15 = [v13 nextSampleBufferForStreamAttachmentsData:a4 timestamp:a5 error:a6];
+      v15 = [v13 nextSampleBufferForStreamAttachmentsData:data timestamp:timestamp error:error];
     }
 
     else
     {
       v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain data for requested stream '%@'.", v11];
-      [MEMORY[0x277CCA9B8] populateReaderError:a6 message:v16 code:7];
+      [MEMORY[0x277CCA9B8] populateReaderError:error message:v16 code:7];
 
       v15 = 0;
     }
@@ -3204,37 +3204,37 @@ LABEL_10:
 
   else
   {
-    [MEMORY[0x277CCA9B8] populateReaderError:a6 message:@"Missing stream id for copy next frame." code:7];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:@"Missing stream id for copy next frame." code:7];
     v15 = 0;
   }
 
   return v15;
 }
 
-- (__CVBuffer)nextPixelBufferForStream:(id)a3 attachmentsData:(id *)a4 timestamp:(id *)a5 error:(id *)a6
+- (__CVBuffer)nextPixelBufferForStream:(id)stream attachmentsData:(id *)data timestamp:(id *)timestamp error:(id *)error
 {
-  v10 = a3;
-  v11 = v10;
-  if (a5)
+  streamCopy = stream;
+  v11 = streamCopy;
+  if (timestamp)
   {
     v12 = *MEMORY[0x277CC0890];
-    a5->var3 = *(MEMORY[0x277CC0890] + 16);
-    *&a5->var0 = v12;
+    timestamp->var3 = *(MEMORY[0x277CC0890] + 16);
+    *&timestamp->var0 = v12;
   }
 
-  if (v10)
+  if (streamCopy)
   {
-    v13 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v10];
+    v13 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:streamCopy];
     v14 = v13;
     if (v13)
     {
-      v15 = [v13 nextPixelBufferForStreamAttachmentsData:a4 timestamp:a5 error:a6];
+      v15 = [v13 nextPixelBufferForStreamAttachmentsData:data timestamp:timestamp error:error];
     }
 
     else
     {
       v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain data for requested stream '%@'.", v11];
-      [MEMORY[0x277CCA9B8] populateReaderError:a6 message:v16 code:7];
+      [MEMORY[0x277CCA9B8] populateReaderError:error message:v16 code:7];
 
       v15 = 0;
     }
@@ -3242,29 +3242,29 @@ LABEL_10:
 
   else
   {
-    [MEMORY[0x277CCA9B8] populateReaderError:a6 message:@"Missing stream id for copy next frame." code:7];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:@"Missing stream id for copy next frame." code:7];
     v15 = 0;
   }
 
   return v15;
 }
 
-- (BOOL)copyNextStereoFramesForStream:(id)a3 leftBuffer:(__CVBuffer *)a4 rightBuffer:(__CVBuffer *)a5 timestamp:(id *)a6 error:(id *)a7
+- (BOOL)copyNextStereoFramesForStream:(id)stream leftBuffer:(__CVBuffer *)buffer rightBuffer:(__CVBuffer *)rightBuffer timestamp:(id *)timestamp error:(id *)error
 {
-  v12 = a3;
-  if (v12)
+  streamCopy = stream;
+  if (streamCopy)
   {
-    v13 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v12];
+    v13 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:streamCopy];
     v14 = v13;
     if (v13)
     {
-      v15 = [v13 copyNextStereoFrames:a4 rightBuffer:a5 timestamp:a6 error:a7];
+      v15 = [v13 copyNextStereoFrames:buffer rightBuffer:rightBuffer timestamp:timestamp error:error];
     }
 
     else
     {
-      v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain data for requested stream '%@'.", v12];
-      [MEMORY[0x277CCA9B8] populateReaderError:a7 message:v16 code:7];
+      streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain data for requested stream '%@'.", streamCopy];
+      [MEMORY[0x277CCA9B8] populateReaderError:error message:streamCopy code:7];
 
       v15 = 0;
     }
@@ -3272,55 +3272,55 @@ LABEL_10:
 
   else
   {
-    [MEMORY[0x277CCA9B8] populateReaderError:a7 message:@"Missing stream id for copy next frame." code:7];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:@"Missing stream id for copy next frame." code:7];
     v15 = 0;
   }
 
   return v15;
 }
 
-- (BOOL)isStereoStream:(id)a3
+- (BOOL)isStereoStream:(id)stream
 {
-  v3 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:a3];
-  v4 = [v3 isStereoVideoStream];
+  v3 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:stream];
+  isStereoVideoStream = [v3 isStereoVideoStream];
 
-  return v4;
+  return isStereoVideoStream;
 }
 
-- (id)stereoLayersForStream:(id)a3
+- (id)stereoLayersForStream:(id)stream
 {
-  v3 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:a3];
-  v4 = [v3 videoLayerIds];
+  v3 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:stream];
+  videoLayerIds = [v3 videoLayerIds];
 
-  return v4;
+  return videoLayerIds;
 }
 
-- (id)additionalCompressionPropertiesForStream:(id)a3
+- (id)additionalCompressionPropertiesForStream:(id)stream
 {
-  v3 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:a3];
-  v4 = [v3 additionalCompressionProperties];
+  v3 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:stream];
+  additionalCompressionProperties = [v3 additionalCompressionProperties];
 
-  return v4;
+  return additionalCompressionProperties;
 }
 
-- (__CVBuffer)copyNextFrameForStream:(id)a3 timestamp:(id *)a4 error:(id *)a5
+- (__CVBuffer)copyNextFrameForStream:(id)stream timestamp:(id *)timestamp error:(id *)error
 {
-  v8 = a3;
-  if (v8)
+  streamCopy = stream;
+  if (streamCopy)
   {
-    v9 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v8];
+    v9 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:streamCopy];
     v10 = v9;
     if (v9)
     {
       if (![v9 isStereoVideoStream])
       {
-        v11 = [v10 copyNextFrameForStreamTimestamp:a4 error:a5];
+        v11 = [v10 copyNextFrameForStreamTimestamp:timestamp error:error];
         goto LABEL_10;
       }
 
       texture = 0;
       v15 = 0;
-      if ([v10 copyNextStereoFrames:&v15 rightBuffer:&texture timestamp:a4 error:a5])
+      if ([v10 copyNextStereoFrames:&v15 rightBuffer:&texture timestamp:timestamp error:error])
       {
         CVPixelBufferRelease(texture);
         v11 = v15;
@@ -3332,55 +3332,55 @@ LABEL_10:
 
     else
     {
-      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain data for requested stream '%@'.", v8];
-      [MEMORY[0x277CCA9B8] populateReaderError:a5 message:v12 code:7];
+      streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain data for requested stream '%@'.", streamCopy];
+      [MEMORY[0x277CCA9B8] populateReaderError:error message:streamCopy code:7];
     }
 
     v11 = 0;
     goto LABEL_10;
   }
 
-  [MEMORY[0x277CCA9B8] populateReaderError:a5 message:@"Missing stream id for copy next frame." code:7];
+  [MEMORY[0x277CCA9B8] populateReaderError:error message:@"Missing stream id for copy next frame." code:7];
   v11 = 0;
 LABEL_11:
 
   return v11;
 }
 
-- (__CVBuffer)copyNextFrameForStream:(id)a3 timestamp:(id *)a4 timeCode:(CVSMPTETime *)a5 tcDropFrame:(BOOL *)a6 error:(id *)a7
+- (__CVBuffer)copyNextFrameForStream:(id)stream timestamp:(id *)timestamp timeCode:(CVSMPTETime *)code tcDropFrame:(BOOL *)frame error:(id *)error
 {
-  v12 = a3;
-  if (v12)
+  streamCopy = stream;
+  if (streamCopy)
   {
-    v13 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v12];
+    v13 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:streamCopy];
     v14 = v13;
     if (v13)
     {
-      if (a5)
+      if (code)
       {
-        *&a5->subframes = 0;
-        *&a5->type = 0;
-        *&a5->hours = 0;
+        *&code->subframes = 0;
+        *&code->type = 0;
+        *&code->hours = 0;
       }
 
-      v15 = [v13 copyNextFrameForStreamTimestamp:a4 timeCode:a5 tcDropFrame:a6 error:a7];
-      if (a5 && self->_timeRangeMetadataSamples && self->_timeRangeMetadataKey)
+      v15 = [v13 copyNextFrameForStreamTimestamp:timestamp timeCode:code tcDropFrame:frame error:error];
+      if (code && self->_timeRangeMetadataSamples && self->_timeRangeMetadataKey)
       {
         v16 = [(MOVStreamReader *)self timeRangeMetadataForPixelBuffer:v15];
         v17 = v16;
         if (v16)
         {
           [v16 timeCode];
-          *&a5->subframes = v20;
-          *&a5->hours = v21;
+          *&code->subframes = v20;
+          *&code->hours = v21;
         }
       }
     }
 
     else
     {
-      v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain data for requested stream '%@'.", v12];
-      [MEMORY[0x277CCA9B8] populateReaderError:a7 message:v18 code:7];
+      streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain data for requested stream '%@'.", streamCopy];
+      [MEMORY[0x277CCA9B8] populateReaderError:error message:streamCopy code:7];
 
       v15 = 0;
     }
@@ -3388,16 +3388,16 @@ LABEL_11:
 
   else
   {
-    [MEMORY[0x277CCA9B8] populateReaderError:a7 message:@"Missing stream id for copy next frame." code:7];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:@"Missing stream id for copy next frame." code:7];
     v15 = 0;
   }
 
   return v15;
 }
 
-- (CVSMPTETime)grabNextTimeCodeSampleForStream:(SEL)a3 timestamp:(id)a4 error:(id *)a5
+- (CVSMPTETime)grabNextTimeCodeSampleForStream:(SEL)stream timestamp:(id)timestamp error:(id *)error
 {
-  result = [(MOVStreamReader *)self grabNextSampleBufferForStream:a4 timestamp:a5 error:a6];
+  result = [(MOVStreamReader *)self grabNextSampleBufferForStream:timestamp timestamp:error error:a6];
   if (result)
   {
     v8 = result;
@@ -3419,22 +3419,22 @@ LABEL_11:
   return result;
 }
 
-- (opaqueCMSampleBuffer)grabNextSampleBufferForStream:(id)a3 timestamp:(id *)a4 error:(id *)a5
+- (opaqueCMSampleBuffer)grabNextSampleBufferForStream:(id)stream timestamp:(id *)timestamp error:(id *)error
 {
-  v8 = a3;
-  if (v8)
+  streamCopy = stream;
+  if (streamCopy)
   {
-    v9 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v8];
+    v9 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:streamCopy];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 grabNextSampleBufferForStreamTimestamp:a4 error:a5];
+      v11 = [v9 grabNextSampleBufferForStreamTimestamp:timestamp error:error];
     }
 
     else
     {
-      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain data for requested stream '%@'.", v8];
-      [MEMORY[0x277CCA9B8] populateReaderError:a5 message:v12 code:7];
+      streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain data for requested stream '%@'.", streamCopy];
+      [MEMORY[0x277CCA9B8] populateReaderError:error message:streamCopy code:7];
 
       v11 = 0;
     }
@@ -3442,27 +3442,27 @@ LABEL_11:
 
   else
   {
-    [MEMORY[0x277CCA9B8] populateReaderError:a5 message:@"Missing stream id for copy next frame." code:7];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:@"Missing stream id for copy next frame." code:7];
     v11 = 0;
   }
 
   return v11;
 }
 
-- (CVSMPTETime)grabNextTimeRangeMetadataSampleOfStream:(SEL)a3 rangeStartTime:(id)a4 rangeEndTime:(unint64_t *)a5 presentationTimeRange:(unint64_t *)a6 error:(id *)a7
+- (CVSMPTETime)grabNextTimeRangeMetadataSampleOfStream:(SEL)stream rangeStartTime:(id)time rangeEndTime:(unint64_t *)endTime presentationTimeRange:(unint64_t *)range error:(id *)error
 {
   v52 = *MEMORY[0x277D85DE8];
-  v14 = a4;
-  if (v14)
+  timeCopy = time;
+  if (timeCopy)
   {
-    v39 = v14;
-    v15 = [(NSMutableDictionary *)self->_metadataStreams objectForKey:v14];
+    v39 = timeCopy;
+    v15 = [(NSMutableDictionary *)self->_metadataStreams objectForKey:timeCopy];
     v40 = v15;
     if (v15)
     {
       if ([v15 isTimeRangeMetadataStream])
       {
-        v38 = [(MOVStreamReader *)self grabNextTimedMetadataGroupOfStream:v14 error:a8];
+        v38 = [(MOVStreamReader *)self grabNextTimedMetadataGroupOfStream:timeCopy error:a8];
         if ([v40 endOfStreamReached])
         {
           *&retstr->subframes = 0;
@@ -3485,10 +3485,10 @@ LABEL_40:
         v37 = retstr;
         if (v17)
         {
-          v34 = a6;
-          v35 = a7;
-          v18 = 0;
-          v19 = 0;
+          rangeCopy = range;
+          errorCopy = error;
+          unsignedLongLongValue = 0;
+          unsignedLongLongValue2 = 0;
           v20 = 0;
           v21 = *v46;
           do
@@ -3501,8 +3501,8 @@ LABEL_40:
               }
 
               v23 = *(*(&v45 + 1) + 8 * i);
-              v24 = [v23 identifier];
-              v25 = [@"mdta/com.apple.stream_time_code" isEqualToString:v24];
+              identifier = [v23 identifier];
+              v25 = [@"mdta/com.apple.stream_time_code" isEqualToString:identifier];
 
               if (v25)
               {
@@ -3524,26 +3524,26 @@ LABEL_40:
 
               else
               {
-                v26 = [v23 identifier];
-                v27 = [@"mdta/com.apple.stream_time_range_start" isEqualToString:v26];
+                identifier2 = [v23 identifier];
+                v27 = [@"mdta/com.apple.stream_time_range_start" isEqualToString:identifier2];
 
                 if (v27)
                 {
-                  v28 = [v23 numberValue];
-                  v18 = [v28 unsignedLongLongValue];
+                  numberValue = [v23 numberValue];
+                  unsignedLongLongValue = [numberValue unsignedLongLongValue];
 
                   v20 |= 2u;
                 }
 
                 else
                 {
-                  v29 = [v23 identifier];
-                  v30 = [@"mdta/com.apple.stream_time_range_end" isEqualToString:v29];
+                  identifier3 = [v23 identifier];
+                  v30 = [@"mdta/com.apple.stream_time_range_end" isEqualToString:identifier3];
 
                   if (v30)
                   {
-                    v31 = [v23 numberValue];
-                    v19 = [v31 unsignedLongLongValue];
+                    numberValue2 = [v23 numberValue];
+                    unsignedLongLongValue2 = [numberValue2 unsignedLongLongValue];
 
                     v20 |= 4u;
                   }
@@ -3558,17 +3558,17 @@ LABEL_40:
 
           if (v20 == 7)
           {
-            if (a5)
+            if (endTime)
             {
-              *a5 = v18;
+              *endTime = unsignedLongLongValue;
             }
 
-            if (v34)
+            if (rangeCopy)
             {
-              *v34 = v19;
+              *rangeCopy = unsignedLongLongValue2;
             }
 
-            if (v35)
+            if (errorCopy)
             {
               if (v38)
               {
@@ -3582,9 +3582,9 @@ LABEL_40:
                 v42 = 0u;
               }
 
-              *&v35->var0.var0 = v42;
-              *&v35->var0.var3 = v43;
-              *&v35->var1.var1 = v44;
+              *&errorCopy->var0.var0 = v42;
+              *&errorCopy->var0.var3 = v43;
+              *&errorCopy->var1.var1 = v44;
             }
 
             *&v37->subframes = v49;
@@ -3607,14 +3607,14 @@ LABEL_39:
         goto LABEL_40;
       }
 
-      v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"The metadata stream '%@' is not indicated as time range metadata.", v14];
-      [MEMORY[0x277CCA9B8] populateReaderError:a8 message:v16 code:31];
+      timeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"The metadata stream '%@' is not indicated as time range metadata.", timeCopy];
+      [MEMORY[0x277CCA9B8] populateReaderError:a8 message:timeCopy code:31];
     }
 
     else
     {
-      v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain data for requested stream '%@'.", v14];
-      [MEMORY[0x277CCA9B8] populateReaderError:a8 message:v16 code:7];
+      timeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain data for requested stream '%@'.", timeCopy];
+      [MEMORY[0x277CCA9B8] populateReaderError:a8 message:timeCopy code:7];
     }
 
     *&retstr->subframes = 0;
@@ -3622,7 +3622,7 @@ LABEL_39:
     *&retstr->hours = 0;
 
 LABEL_41:
-    v14 = v39;
+    timeCopy = v39;
     goto LABEL_42;
   }
 
@@ -3635,30 +3635,30 @@ LABEL_42:
   return result;
 }
 
-- (id)grabNextMetadataOfStream:(id)a3 timeRange:(id *)a4
+- (id)grabNextMetadataOfStream:(id)stream timeRange:(id *)range
 {
-  v4 = [(MOVStreamReader *)self grabNextMetadataOfStream:a3 timeRange:a4 error:0];
+  v4 = [(MOVStreamReader *)self grabNextMetadataOfStream:stream timeRange:range error:0];
 
   return v4;
 }
 
-- (id)grabNextMetadataItemsOfTrackAssociatedWith:(id)a3 withIdentifier:(id)a4 timeRange:(id *)a5 error:(id *)a6
+- (id)grabNextMetadataItemsOfTrackAssociatedWith:(id)with withIdentifier:(id)identifier timeRange:(id *)range error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  if (v10)
+  withCopy = with;
+  identifierCopy = identifier;
+  if (withCopy)
   {
-    v12 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v10];
+    v12 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:withCopy];
     v13 = v12;
     if (v12)
     {
-      v14 = [v12 grabNextMetadataItemsOfTrackAssociatedWithStreamWithIdentifier:v11 timeRange:a5 error:a6];
+      v14 = [v12 grabNextMetadataItemsOfTrackAssociatedWithStreamWithIdentifier:identifierCopy timeRange:range error:error];
     }
 
     else
     {
-      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain data for requested stream '%@'.", v10];
-      [MEMORY[0x277CCA9B8] populateReaderError:a6 message:v15 code:7];
+      withCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain data for requested stream '%@'.", withCopy];
+      [MEMORY[0x277CCA9B8] populateReaderError:error message:withCopy code:7];
 
       v14 = 0;
     }
@@ -3666,27 +3666,27 @@ LABEL_42:
 
   else
   {
-    [MEMORY[0x277CCA9B8] populateReaderError:a6 message:@"Missing stream id for copy next frame." code:7];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:@"Missing stream id for copy next frame." code:7];
     v14 = 0;
   }
 
   return v14;
 }
 
-- (id)nextAttachmentForStream:(id)a3 error:(id *)a4
+- (id)nextAttachmentForStream:(id)stream error:(id *)error
 {
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v6];
+  streamCopy = stream;
+  v7 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:streamCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 nextAttachmentWithError:a4];
+    v9 = [v7 nextAttachmentWithError:error];
   }
 
   else
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain data for requested stream '%@'.", v6];
-    [MEMORY[0x277CCA9B8] populateReaderError:a4 message:v10 code:7];
+    streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't contain data for requested stream '%@'.", streamCopy];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:streamCopy code:7];
 
     v9 = 0;
   }
@@ -3694,44 +3694,44 @@ LABEL_42:
   return v9;
 }
 
-- (id)grabNextTimedMetadataGroupOfStream:(id)a3 error:(id *)a4
+- (id)grabNextTimedMetadataGroupOfStream:(id)stream error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  streamCopy = stream;
+  if (streamCopy)
   {
-    v7 = [(NSMutableDictionary *)self->_metadataStreams objectForKey:v6];
-    v8 = [v7 grabNextTimedMetadataGroupOfStreamError:a4];
+    v7 = [(NSMutableDictionary *)self->_metadataStreams objectForKey:streamCopy];
+    v8 = [v7 grabNextTimedMetadataGroupOfStreamError:error];
   }
 
   else
   {
-    [MEMORY[0x277CCA9B8] populateReaderError:a4 message:@"Missing stream id for copy next frame." code:7];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:@"Missing stream id for copy next frame." code:7];
     v8 = 0;
   }
 
   return v8;
 }
 
-- (id)grabNextMetadataOfStream:(id)a3 timeRange:(id *)a4 error:(id *)a5
+- (id)grabNextMetadataOfStream:(id)stream timeRange:(id *)range error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (v8)
+  streamCopy = stream;
+  if (streamCopy)
   {
-    v9 = [(NSMutableDictionary *)self->_metadataStreams objectForKey:v8];
+    v9 = [(NSMutableDictionary *)self->_metadataStreams objectForKey:streamCopy];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 grabNextMetadataOfStreamTimeRange:a4 error:a5];
+      v11 = [v9 grabNextMetadataOfStreamTimeRange:range error:error];
 LABEL_17:
 
       goto LABEL_18;
     }
 
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot grab metadata. Unknown metadata stream '%@'.", v8];
-    if (a5)
+    streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot grab metadata. Unknown metadata stream '%@'.", streamCopy];
+    if (error)
     {
-      *a5 = [MEMORY[0x277CCA9B8] readerWarningWithMessage:v12 code:0];
+      *error = [MEMORY[0x277CCA9B8] readerWarningWithMessage:streamCopy code:0];
     }
 
     if (+[MIOLog debugEnabled])
@@ -3740,7 +3740,7 @@ LABEL_17:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138543362;
-        v16 = v12;
+        v16 = streamCopy;
         _os_log_impl(&dword_257883000, v13, OS_LOG_TYPE_DEBUG, "⚠️⚠️⚠️ WARNING [MOVStreamReader]: %{public}@ ⚠️⚠️⚠️", buf, 0xCu);
       }
     }
@@ -3750,9 +3750,9 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = [MEMORY[0x277CCA9B8] readerWarningWithMessage:@"Cannot grab metadata. Missing metadata stream id." code:0];
+    *error = [MEMORY[0x277CCA9B8] readerWarningWithMessage:@"Cannot grab metadata. Missing metadata stream id." code:0];
   }
 
   if (+[MIOLog debugEnabled])
@@ -3774,38 +3774,38 @@ LABEL_18:
   return v11;
 }
 
-- (BOOL)hasReachedEndOfStream:(id)a3
+- (BOOL)hasReachedEndOfStream:(id)stream
 {
-  v4 = a3;
-  if (v4 && [(MOVStreamReader *)self containsStream:v4])
+  streamCopy = stream;
+  if (streamCopy && [(MOVStreamReader *)self containsStream:streamCopy])
   {
-    v5 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:v4];
-    v6 = [v5 endOfStreamReached];
+    v5 = [(NSMutableDictionary *)self->_sampleStreams objectForKey:streamCopy];
+    endOfStreamReached = [v5 endOfStreamReached];
   }
 
   else
   {
-    v6 = 1;
+    endOfStreamReached = 1;
   }
 
-  return v6;
+  return endOfStreamReached;
 }
 
-- (BOOL)hasReachedEndOfMetadataStream:(id)a3
+- (BOOL)hasReachedEndOfMetadataStream:(id)stream
 {
-  v4 = a3;
-  if (v4 && [(MOVStreamReader *)self containsMetadataStream:v4])
+  streamCopy = stream;
+  if (streamCopy && [(MOVStreamReader *)self containsMetadataStream:streamCopy])
   {
-    v5 = [(NSMutableDictionary *)self->_metadataStreams objectForKey:v4];
-    v6 = [v5 endOfStreamReached];
+    v5 = [(NSMutableDictionary *)self->_metadataStreams objectForKey:streamCopy];
+    endOfStreamReached = [v5 endOfStreamReached];
   }
 
   else
   {
-    v6 = 1;
+    endOfStreamReached = 1;
   }
 
-  return v6;
+  return endOfStreamReached;
 }
 
 - (MOVStreamReaderDelegate)delegate

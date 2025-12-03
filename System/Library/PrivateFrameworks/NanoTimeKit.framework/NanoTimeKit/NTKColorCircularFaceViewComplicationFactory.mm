@@ -1,55 +1,55 @@
 @interface NTKColorCircularFaceViewComplicationFactory
-- (double)_colorCircularEdgeGapForState:(int64_t)a3;
-- (double)_colorCircularKeylinePaddingForState:(int64_t)a3;
-- (double)_colorCircularLisaGapForState:(int64_t)a3;
-- (id)initForDevice:(id)a3;
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5 faceView:(id)a6;
-- (int64_t)keylineStyleForComplicationSlot:(id)a3;
-- (void)configureComplicationView:(id)a3 forSlot:(id)a4 faceView:(id)a5;
-- (void)loadLayoutRulesForFaceView:(id)a3;
+- (double)_colorCircularEdgeGapForState:(int64_t)state;
+- (double)_colorCircularKeylinePaddingForState:(int64_t)state;
+- (double)_colorCircularLisaGapForState:(int64_t)state;
+- (id)initForDevice:(id)device;
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot faceView:(id)view;
+- (int64_t)keylineStyleForComplicationSlot:(id)slot;
+- (void)configureComplicationView:(id)view forSlot:(id)slot faceView:(id)faceView;
+- (void)loadLayoutRulesForFaceView:(id)view;
 @end
 
 @implementation NTKColorCircularFaceViewComplicationFactory
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
   v11.receiver = self;
   v11.super_class = NTKColorCircularFaceViewComplicationFactory;
-  v3 = [(NTKFaceViewComplicationFactory *)&v11 initForDevice:a3];
+  v3 = [(NTKFaceViewComplicationFactory *)&v11 initForDevice:device];
   if (v3)
   {
     v4 = [[NTKFaceColorPalette alloc] initWithDomainName:0 inBundle:0];
     v5 = [NTKPigmentEditOption pigmentNamed:@"seasons.spring2015.white"];
     [(NTKFaceColorPalette *)v4 setPigmentEditOption:v5];
 
-    v6 = [v3 device];
-    v7 = [NTKFaceColorScheme colorSchemeForDevice:v6 withFaceColorPalette:v4 units:51];
+    device = [v3 device];
+    v7 = [NTKFaceColorScheme colorSchemeForDevice:device withFaceColorPalette:v4 units:51];
 
-    v8 = [v7 shiftedForegroundColor];
-    [v3 setForegroundColor:v8];
+    shiftedForegroundColor = [v7 shiftedForegroundColor];
+    [v3 setForegroundColor:shiftedForegroundColor];
 
-    v9 = [v7 shiftedBackgroundColor];
-    [v3 setPlatterColor:v9];
+    shiftedBackgroundColor = [v7 shiftedBackgroundColor];
+    [v3 setPlatterColor:shiftedBackgroundColor];
   }
 
   return v3;
 }
 
-- (void)loadLayoutRulesForFaceView:(id)a3
+- (void)loadLayoutRulesForFaceView:(id)view
 {
-  v4 = a3;
-  [v4 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __74__NTKColorCircularFaceViewComplicationFactory_loadLayoutRulesForFaceView___block_invoke;
   v10[3] = &unk_27877E670;
   v10[4] = self;
-  v11 = v4;
+  v11 = viewCopy;
   v12 = v5;
   v13 = v6;
   v14 = v7;
   v15 = v8;
-  v9 = v4;
+  v9 = viewCopy;
   NTKEnumerateComplicationStates(v10);
 }
 
@@ -94,41 +94,41 @@ void __74__NTKColorCircularFaceViewComplicationFactory_loadLayoutRulesForFaceVie
   [v27 setDefaultLayoutRule:v28 forState:a2];
 }
 
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5 faceView:(id)a6
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot faceView:(id)view
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = +[NTKCircularComplicationView viewForComplicationType:](NTKCircularComplicationView, "viewForComplicationType:", [a3 complicationType]);
-  [(NTKColorCircularFaceViewComplicationFactory *)self configureComplicationView:v11 forSlot:v10 faceView:v9];
+  viewCopy = view;
+  slotCopy = slot;
+  v11 = +[NTKCircularComplicationView viewForComplicationType:](NTKCircularComplicationView, "viewForComplicationType:", [complication complicationType]);
+  [(NTKColorCircularFaceViewComplicationFactory *)self configureComplicationView:v11 forSlot:slotCopy faceView:viewCopy];
 
   return v11;
 }
 
-- (void)configureComplicationView:(id)a3 forSlot:(id)a4 faceView:(id)a5
+- (void)configureComplicationView:(id)view forSlot:(id)slot faceView:(id)faceView
 {
-  v6 = a3;
-  v7 = [(NTKFaceViewComplicationFactory *)self foregroundColor];
-  [v6 setForegroundColor:v7];
+  viewCopy = view;
+  foregroundColor = [(NTKFaceViewComplicationFactory *)self foregroundColor];
+  [viewCopy setForegroundColor:foregroundColor];
 
-  v8 = [(NTKFaceViewComplicationFactory *)self platterColor];
-  [v6 setPlatterColor:v8];
+  platterColor = [(NTKFaceViewComplicationFactory *)self platterColor];
+  [viewCopy setPlatterColor:platterColor];
 }
 
-- (double)_colorCircularEdgeGapForState:(int64_t)a3
+- (double)_colorCircularEdgeGapForState:(int64_t)state
 {
   v3 = 0.0;
-  if ((a3 - 2) >= 2)
+  if ((state - 2) >= 2)
   {
-    if (a3 == 1)
+    if (state == 1)
     {
-      v4 = [(NTKFaceViewComplicationFactory *)self device];
-      v5 = NTKColorFaceViewEdgeGapEditing(v4);
+      device = [(NTKFaceViewComplicationFactory *)self device];
+      v5 = NTKColorFaceViewEdgeGapEditing(device);
     }
 
     else
     {
-      v4 = [(NTKFaceViewComplicationFactory *)self device];
-      v5 = NTKColorFaceViewEdgeGapNormal(v4);
+      device = [(NTKFaceViewComplicationFactory *)self device];
+      v5 = NTKColorFaceViewEdgeGapNormal(device);
     }
 
     v3 = v5;
@@ -137,22 +137,22 @@ void __74__NTKColorCircularFaceViewComplicationFactory_loadLayoutRulesForFaceVie
   return v3;
 }
 
-- (double)_colorCircularKeylinePaddingForState:(int64_t)a3
+- (double)_colorCircularKeylinePaddingForState:(int64_t)state
 {
-  if (a3 == 3)
+  if (state == 3)
   {
     v5 = NTKKeylineWidth();
-    v6 = [(NTKFaceViewComplicationFactory *)self device];
-    v7 = NTKColorFaceViewSelectedKeylineInnerPadding(v6);
+    device = [(NTKFaceViewComplicationFactory *)self device];
+    v7 = NTKColorFaceViewSelectedKeylineInnerPadding(device);
     goto LABEL_5;
   }
 
   v4 = 0.0;
-  if (a3 == 2)
+  if (state == 2)
   {
     v5 = NTKKeylineWidth();
-    v6 = [(NTKFaceViewComplicationFactory *)self device];
-    v7 = NTKColorFaceViewDeselectedKeylineInnerPadding(v6);
+    device = [(NTKFaceViewComplicationFactory *)self device];
+    v7 = NTKColorFaceViewDeselectedKeylineInnerPadding(device);
 LABEL_5:
     v4 = v5 + v7;
   }
@@ -160,32 +160,32 @@ LABEL_5:
   return v4;
 }
 
-- (double)_colorCircularLisaGapForState:(int64_t)a3
+- (double)_colorCircularLisaGapForState:(int64_t)state
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) != 2)
+  if ((state & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
     return 0.0;
   }
 
-  v3 = [(NTKFaceViewComplicationFactory *)self device];
-  v4 = NTKColorFaceViewLisaKeylineGap(v3);
+  device = [(NTKFaceViewComplicationFactory *)self device];
+  v4 = NTKColorFaceViewLisaKeylineGap(device);
 
   return v4;
 }
 
-- (int64_t)keylineStyleForComplicationSlot:(id)a3
+- (int64_t)keylineStyleForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  v5 = [(NTKFaceViewComplicationFactory *)self device];
-  if ([v5 deviceCategory] != 1)
+  slotCopy = slot;
+  device = [(NTKFaceViewComplicationFactory *)self device];
+  if ([device deviceCategory] != 1)
   {
-    if ([v4 isEqualToString:@"top-left"])
+    if ([slotCopy isEqualToString:@"top-left"])
     {
     }
 
     else
     {
-      v7 = [v4 isEqualToString:@"top-right"];
+      v7 = [slotCopy isEqualToString:@"top-right"];
 
       if ((v7 & 1) == 0)
       {

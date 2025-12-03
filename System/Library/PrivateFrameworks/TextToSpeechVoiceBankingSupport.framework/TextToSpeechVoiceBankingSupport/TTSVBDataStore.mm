@@ -1,53 +1,53 @@
 @interface TTSVBDataStore
 - (_TtC31TextToSpeechVoiceBankingSupport14TTSVBDataStore)init;
-- (void)handleDidResetCloudSync:(id)a3;
-- (void)handleManagedObjectContextDidChange:(id)a3;
-- (void)handleManagedObjectContextDidMergeChangesObjectIDs:(id)a3;
-- (void)handlePersistentCloudKitContainerEventChanged:(id)a3;
-- (void)handlePersistentStoreRemoteChange:(id)a3;
-- (void)handleWillResetCloudSync:(id)a3;
+- (void)handleDidResetCloudSync:(id)sync;
+- (void)handleManagedObjectContextDidChange:(id)change;
+- (void)handleManagedObjectContextDidMergeChangesObjectIDs:(id)ds;
+- (void)handlePersistentCloudKitContainerEventChanged:(id)changed;
+- (void)handlePersistentStoreRemoteChange:(id)change;
+- (void)handleWillResetCloudSync:(id)sync;
 @end
 
 @implementation TTSVBDataStore
 
-- (void)handleManagedObjectContextDidChange:(id)a3
+- (void)handleManagedObjectContextDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_2331EC628(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_2331EC628(changeCopy);
 }
 
-- (void)handleManagedObjectContextDidMergeChangesObjectIDs:(id)a3
+- (void)handleManagedObjectContextDidMergeChangesObjectIDs:(id)ds
 {
-  v4 = a3;
-  v5 = self;
-  sub_2331E52F8(v4);
+  dsCopy = ds;
+  selfCopy = self;
+  sub_2331E52F8(dsCopy);
 }
 
-- (void)handlePersistentCloudKitContainerEventChanged:(id)a3
+- (void)handlePersistentCloudKitContainerEventChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
+  changedCopy = changed;
+  selfCopy = self;
   sub_2331E55C8();
 }
 
-- (void)handleWillResetCloudSync:(id)a3
+- (void)handleWillResetCloudSync:(id)sync
 {
-  v4 = a3;
-  v5 = self;
-  sub_2331E604C(v4, " *** Will reset Cloud sync. Reason=%s", 2);
+  syncCopy = sync;
+  selfCopy = self;
+  sub_2331E604C(syncCopy, " *** Will reset Cloud sync. Reason=%s", 2);
 }
 
-- (void)handleDidResetCloudSync:(id)a3
+- (void)handleDidResetCloudSync:(id)sync
 {
-  v4 = a3;
-  v5 = self;
-  sub_2331E604C(v4, " *** Did finish reset Cloud sync. Reason=%s", 3);
+  syncCopy = sync;
+  selfCopy = self;
+  sub_2331E604C(syncCopy, " *** Did finish reset Cloud sync. Reason=%s", 3);
 }
 
-- (void)handlePersistentStoreRemoteChange:(id)a3
+- (void)handlePersistentStoreRemoteChange:(id)change
 {
-  v3 = self;
+  selfCopy = self;
   sub_2331E6708();
 }
 

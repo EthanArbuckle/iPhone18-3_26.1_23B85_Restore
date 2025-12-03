@@ -1,38 +1,38 @@
 @interface CNAutocompleteObservableBuilder
-+ (id)builderWithSearchType:(unint64_t)a3 scheduler:(id)a4 probeProvider:(id)a5;
-- (CNAutocompleteObservableBuilder)initWithBatchingHelper:(id)a3 probeProvider:(id)a4 scheduler:(id)a5;
-- (id)combineObservablesInBatch:(id)a3 scheduler:(id)a4;
++ (id)builderWithSearchType:(unint64_t)type scheduler:(id)scheduler probeProvider:(id)provider;
+- (CNAutocompleteObservableBuilder)initWithBatchingHelper:(id)helper probeProvider:(id)provider scheduler:(id)scheduler;
+- (id)combineObservablesInBatch:(id)batch scheduler:(id)scheduler;
 - (id)makeObservable;
-- (id)probeObservable:(id)a3 forPerformanceWithBlock:(id)a4;
-- (void)addCachedCalendarServerObservable:(id)a3;
-- (void)addCachedDirectoryServerObservable:(id)a3;
-- (void)addCalendarServerObservable:(id)a3;
-- (void)addContactsObservable:(id)a3;
-- (void)addCoreRecentsObservable:(id)a3;
-- (void)addDirectoryServerObservable:(id)a3;
-- (void)addLocalExtensionObservable:(id)a3;
-- (void)addPredictionObservable:(id)a3 doOnTimeout:(id)a4;
-- (void)addStewieObservable:(id)a3;
-- (void)addSuggestionsObservable:(id)a3;
-- (void)addSupplementalObservable:(id)a3;
+- (id)probeObservable:(id)observable forPerformanceWithBlock:(id)block;
+- (void)addCachedCalendarServerObservable:(id)observable;
+- (void)addCachedDirectoryServerObservable:(id)observable;
+- (void)addCalendarServerObservable:(id)observable;
+- (void)addContactsObservable:(id)observable;
+- (void)addCoreRecentsObservable:(id)observable;
+- (void)addDirectoryServerObservable:(id)observable;
+- (void)addLocalExtensionObservable:(id)observable;
+- (void)addPredictionObservable:(id)observable doOnTimeout:(id)timeout;
+- (void)addStewieObservable:(id)observable;
+- (void)addSuggestionsObservable:(id)observable;
+- (void)addSupplementalObservable:(id)observable;
 @end
 
 @implementation CNAutocompleteObservableBuilder
 
 - (id)makeObservable
 {
-  v3 = [(CNAutocompleteObservableBuilder *)self batchingHelper];
-  v4 = [v3 batchedObservables];
+  batchingHelper = [(CNAutocompleteObservableBuilder *)self batchingHelper];
+  batchedObservables = [batchingHelper batchedObservables];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __49__CNAutocompleteObservableBuilder_makeObservable__block_invoke;
   v10[3] = &unk_2781C48B0;
   v10[4] = self;
-  v5 = [v4 _cn_map:v10];
+  v5 = [batchedObservables _cn_map:v10];
 
   v6 = MEMORY[0x277CFBE60];
-  v7 = [(CNAutocompleteObservableBuilder *)self scheduler];
-  v8 = [v6 progressiveForkJoin:v5 scheduler:v7];
+  scheduler = [(CNAutocompleteObservableBuilder *)self scheduler];
+  v8 = [v6 progressiveForkJoin:v5 scheduler:scheduler];
 
   return v8;
 }
@@ -47,48 +47,48 @@ id __49__CNAutocompleteObservableBuilder_makeObservable__block_invoke(uint64_t a
   return v5;
 }
 
-+ (id)builderWithSearchType:(unint64_t)a3 scheduler:(id)a4 probeProvider:(id)a5
++ (id)builderWithSearchType:(unint64_t)type scheduler:(id)scheduler probeProvider:(id)provider
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [CNAutocompleteObservableBuilderBatchingHelperFactory batchingHelperForSearchType:a3];
-  v11 = [[a1 alloc] initWithBatchingHelper:v10 probeProvider:v8 scheduler:v9];
+  providerCopy = provider;
+  schedulerCopy = scheduler;
+  v10 = [CNAutocompleteObservableBuilderBatchingHelperFactory batchingHelperForSearchType:type];
+  v11 = [[self alloc] initWithBatchingHelper:v10 probeProvider:providerCopy scheduler:schedulerCopy];
 
-  [v11 setSupplementalResultsUseNetwork:{objc_msgSend(a1, "supplementalResultsUseNetwork:", a3)}];
+  [v11 setSupplementalResultsUseNetwork:{objc_msgSend(self, "supplementalResultsUseNetwork:", type)}];
 
   return v11;
 }
 
-- (CNAutocompleteObservableBuilder)initWithBatchingHelper:(id)a3 probeProvider:(id)a4 scheduler:(id)a5
+- (CNAutocompleteObservableBuilder)initWithBatchingHelper:(id)helper probeProvider:(id)provider scheduler:(id)scheduler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  helperCopy = helper;
+  providerCopy = provider;
+  schedulerCopy = scheduler;
   v16.receiver = self;
   v16.super_class = CNAutocompleteObservableBuilder;
   v12 = [(CNAutocompleteObservableBuilder *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_batchingHelper, a3);
-    objc_storeStrong(&v13->_probeProvider, a4);
-    objc_storeStrong(&v13->_scheduler, a5);
+    objc_storeStrong(&v12->_batchingHelper, helper);
+    objc_storeStrong(&v13->_probeProvider, provider);
+    objc_storeStrong(&v13->_scheduler, scheduler);
     v14 = v13;
   }
 
   return v13;
 }
 
-- (id)probeObservable:(id)a3 forPerformanceWithBlock:(id)a4
+- (id)probeObservable:(id)observable forPerformanceWithBlock:(id)block
 {
-  v4 = a3;
+  observableCopy = observable;
   v5 = MEMORY[0x277CFBE60];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __75__CNAutocompleteObservableBuilder_probeObservable_forPerformanceWithBlock___block_invoke;
   v9[3] = &unk_2781C4848;
-  v10 = v4;
-  v6 = v4;
+  v10 = observableCopy;
+  v6 = observableCopy;
   v7 = [v5 observableWithBlock:v9];
 
   return v7;
@@ -135,157 +135,157 @@ void __75__CNAutocompleteObservableBuilder_probeObservable_forPerformanceWithBlo
   [*(a1 + 32) observerDidReceiveResult:v3];
 }
 
-- (void)addContactsObservable:(id)a3
+- (void)addContactsObservable:(id)observable
 {
-  v4 = [(CNAutocompleteObservableBuilder *)self probeObservable:a3 forPerformanceWithBlock:&__block_literal_global_18];
-  v5 = [(CNAutocompleteObservableBuilder *)self scheduler];
-  v7 = [v4 localObservableWithScheduler:v5];
+  v4 = [(CNAutocompleteObservableBuilder *)self probeObservable:observable forPerformanceWithBlock:&__block_literal_global_18];
+  scheduler = [(CNAutocompleteObservableBuilder *)self scheduler];
+  v7 = [v4 localObservableWithScheduler:scheduler];
 
-  v6 = [(CNAutocompleteObservableBuilder *)self batchingHelper];
-  [v6 addContactsObservable:v7];
+  batchingHelper = [(CNAutocompleteObservableBuilder *)self batchingHelper];
+  [batchingHelper addContactsObservable:v7];
 }
 
-- (void)addCoreRecentsObservable:(id)a3
+- (void)addCoreRecentsObservable:(id)observable
 {
-  v4 = [(CNAutocompleteObservableBuilder *)self probeObservable:a3 forPerformanceWithBlock:&__block_literal_global_8_0];
-  v5 = [(CNAutocompleteObservableBuilder *)self scheduler];
-  v7 = [v4 localObservableWithScheduler:v5];
+  v4 = [(CNAutocompleteObservableBuilder *)self probeObservable:observable forPerformanceWithBlock:&__block_literal_global_8_0];
+  scheduler = [(CNAutocompleteObservableBuilder *)self scheduler];
+  v7 = [v4 localObservableWithScheduler:scheduler];
 
-  v6 = [(CNAutocompleteObservableBuilder *)self batchingHelper];
-  [v6 addCoreRecentsObservable:v7];
+  batchingHelper = [(CNAutocompleteObservableBuilder *)self batchingHelper];
+  [batchingHelper addCoreRecentsObservable:v7];
 }
 
-- (void)addStewieObservable:(id)a3
+- (void)addStewieObservable:(id)observable
 {
-  v4 = [(CNAutocompleteObservableBuilder *)self probeObservable:a3 forPerformanceWithBlock:&__block_literal_global_10_0];
-  v5 = [(CNAutocompleteObservableBuilder *)self scheduler];
-  v7 = [v4 localObservableWithScheduler:v5];
+  v4 = [(CNAutocompleteObservableBuilder *)self probeObservable:observable forPerformanceWithBlock:&__block_literal_global_10_0];
+  scheduler = [(CNAutocompleteObservableBuilder *)self scheduler];
+  v7 = [v4 localObservableWithScheduler:scheduler];
 
-  v6 = [(CNAutocompleteObservableBuilder *)self batchingHelper];
-  [v6 addStewieObservable:v7];
+  batchingHelper = [(CNAutocompleteObservableBuilder *)self batchingHelper];
+  [batchingHelper addStewieObservable:v7];
 }
 
-- (void)addSuggestionsObservable:(id)a3
+- (void)addSuggestionsObservable:(id)observable
 {
-  v4 = [(CNAutocompleteObservableBuilder *)self probeObservable:a3 forPerformanceWithBlock:&__block_literal_global_12_0];
-  v5 = [(CNAutocompleteObservableBuilder *)self scheduler];
-  v7 = [v4 localObservableWithScheduler:v5];
+  v4 = [(CNAutocompleteObservableBuilder *)self probeObservable:observable forPerformanceWithBlock:&__block_literal_global_12_0];
+  scheduler = [(CNAutocompleteObservableBuilder *)self scheduler];
+  v7 = [v4 localObservableWithScheduler:scheduler];
 
-  v6 = [(CNAutocompleteObservableBuilder *)self batchingHelper];
-  [v6 addSuggestionsObservable:v7];
+  batchingHelper = [(CNAutocompleteObservableBuilder *)self batchingHelper];
+  [batchingHelper addSuggestionsObservable:v7];
 }
 
-- (void)addLocalExtensionObservable:(id)a3
+- (void)addLocalExtensionObservable:(id)observable
 {
-  v4 = a3;
-  v5 = [(CNAutocompleteObservableBuilder *)self scheduler];
-  v7 = [v4 localObservableWithScheduler:v5];
+  observableCopy = observable;
+  scheduler = [(CNAutocompleteObservableBuilder *)self scheduler];
+  v7 = [observableCopy localObservableWithScheduler:scheduler];
 
-  v6 = [(CNAutocompleteObservableBuilder *)self batchingHelper];
-  [v6 addLocalExtensionObservable:v7];
+  batchingHelper = [(CNAutocompleteObservableBuilder *)self batchingHelper];
+  [batchingHelper addLocalExtensionObservable:v7];
 }
 
-- (void)addPredictionObservable:(id)a3 doOnTimeout:(id)a4
+- (void)addPredictionObservable:(id)observable doOnTimeout:(id)timeout
 {
-  v6 = a4;
-  v7 = [(CNAutocompleteObservableBuilder *)self probeObservable:a3 forPerformanceWithBlock:&__block_literal_global_14];
-  v8 = [(CNAutocompleteObservableBuilder *)self scheduler];
-  v10 = [v7 localObservableWithScheduler:v8 doOnTimeout:v6];
+  timeoutCopy = timeout;
+  v7 = [(CNAutocompleteObservableBuilder *)self probeObservable:observable forPerformanceWithBlock:&__block_literal_global_14];
+  scheduler = [(CNAutocompleteObservableBuilder *)self scheduler];
+  v10 = [v7 localObservableWithScheduler:scheduler doOnTimeout:timeoutCopy];
 
-  v9 = [(CNAutocompleteObservableBuilder *)self batchingHelper];
-  [v9 addPredictionObservable:v10];
+  batchingHelper = [(CNAutocompleteObservableBuilder *)self batchingHelper];
+  [batchingHelper addPredictionObservable:v10];
 }
 
-- (void)addSupplementalObservable:(id)a3
+- (void)addSupplementalObservable:(id)observable
 {
-  v4 = [(CNAutocompleteObservableBuilder *)self probeObservable:a3 forPerformanceWithBlock:&__block_literal_global_16_0];
+  v4 = [(CNAutocompleteObservableBuilder *)self probeObservable:observable forPerformanceWithBlock:&__block_literal_global_16_0];
   if ([(CNAutocompleteObservableBuilder *)self supplementalResultsUseNetwork])
   {
-    v5 = [(CNAutocompleteObservableBuilder *)self networkActivityDidStartHandler];
-    v6 = [(CNAutocompleteObservableBuilder *)self networkActivityDidStopHandler];
+    networkActivityDidStartHandler = [(CNAutocompleteObservableBuilder *)self networkActivityDidStartHandler];
+    networkActivityDidStopHandler = [(CNAutocompleteObservableBuilder *)self networkActivityDidStopHandler];
     [(CNAutocompleteObservableBuilder *)self networkActivityStartDelay];
     v8 = v7;
-    v9 = [(CNAutocompleteObservableBuilder *)self scheduler];
-    v11 = [v4 networkObservableWithActivityDidStartHandler:v5 activityDidStopHandler:v6 timeoutDelay:v9 subscriptionDelay:30.0 scheduler:v8];
+    scheduler = [(CNAutocompleteObservableBuilder *)self scheduler];
+    v11 = [v4 networkObservableWithActivityDidStartHandler:networkActivityDidStartHandler activityDidStopHandler:networkActivityDidStopHandler timeoutDelay:scheduler subscriptionDelay:30.0 scheduler:v8];
 
-    v4 = v6;
+    v4 = networkActivityDidStopHandler;
   }
 
   else
   {
-    v5 = [(CNAutocompleteObservableBuilder *)self scheduler];
-    v11 = [v4 localObservableWithScheduler:v5];
+    networkActivityDidStartHandler = [(CNAutocompleteObservableBuilder *)self scheduler];
+    v11 = [v4 localObservableWithScheduler:networkActivityDidStartHandler];
   }
 
-  v10 = [(CNAutocompleteObservableBuilder *)self batchingHelper];
-  [v10 addSupplementalObservable:v11];
+  batchingHelper = [(CNAutocompleteObservableBuilder *)self batchingHelper];
+  [batchingHelper addSupplementalObservable:v11];
 }
 
-- (void)addCachedDirectoryServerObservable:(id)a3
+- (void)addCachedDirectoryServerObservable:(id)observable
 {
-  v4 = a3;
-  v5 = [(CNAutocompleteObservableBuilder *)self batchingHelper];
-  [v5 addCachedDirectoryServerObservable:v4];
+  observableCopy = observable;
+  batchingHelper = [(CNAutocompleteObservableBuilder *)self batchingHelper];
+  [batchingHelper addCachedDirectoryServerObservable:observableCopy];
 }
 
-- (void)addDirectoryServerObservable:(id)a3
+- (void)addDirectoryServerObservable:(id)observable
 {
-  v4 = [(CNAutocompleteObservableBuilder *)self probeObservable:a3 forPerformanceWithBlock:&__block_literal_global_18_0];
-  v5 = [(CNAutocompleteObservableBuilder *)self networkActivityDidStartHandler];
-  v6 = [(CNAutocompleteObservableBuilder *)self networkActivityDidStopHandler];
+  v4 = [(CNAutocompleteObservableBuilder *)self probeObservable:observable forPerformanceWithBlock:&__block_literal_global_18_0];
+  networkActivityDidStartHandler = [(CNAutocompleteObservableBuilder *)self networkActivityDidStartHandler];
+  networkActivityDidStopHandler = [(CNAutocompleteObservableBuilder *)self networkActivityDidStopHandler];
   [(CNAutocompleteObservableBuilder *)self networkActivityStartDelay];
   v8 = v7;
-  v9 = [(CNAutocompleteObservableBuilder *)self scheduler];
-  v11 = [v4 networkObservableWithActivityDidStartHandler:v5 activityDidStopHandler:v6 timeoutDelay:v9 subscriptionDelay:30.0 scheduler:v8];
+  scheduler = [(CNAutocompleteObservableBuilder *)self scheduler];
+  v11 = [v4 networkObservableWithActivityDidStartHandler:networkActivityDidStartHandler activityDidStopHandler:networkActivityDidStopHandler timeoutDelay:scheduler subscriptionDelay:30.0 scheduler:v8];
 
-  v10 = [(CNAutocompleteObservableBuilder *)self batchingHelper];
-  [v10 addDirectoryServerObservable:v11];
+  batchingHelper = [(CNAutocompleteObservableBuilder *)self batchingHelper];
+  [batchingHelper addDirectoryServerObservable:v11];
 }
 
-- (void)addCachedCalendarServerObservable:(id)a3
+- (void)addCachedCalendarServerObservable:(id)observable
 {
-  v4 = a3;
-  v5 = [(CNAutocompleteObservableBuilder *)self networkActivityDidStartHandler];
-  v6 = [(CNAutocompleteObservableBuilder *)self networkActivityDidStopHandler];
+  observableCopy = observable;
+  networkActivityDidStartHandler = [(CNAutocompleteObservableBuilder *)self networkActivityDidStartHandler];
+  networkActivityDidStopHandler = [(CNAutocompleteObservableBuilder *)self networkActivityDidStopHandler];
   [(CNAutocompleteObservableBuilder *)self networkActivityStartDelay];
   v8 = v7;
-  v9 = [(CNAutocompleteObservableBuilder *)self scheduler];
-  v11 = [v4 networkObservableWithActivityDidStartHandler:v5 activityDidStopHandler:v6 timeoutDelay:v9 subscriptionDelay:2.0 scheduler:v8];
+  scheduler = [(CNAutocompleteObservableBuilder *)self scheduler];
+  v11 = [observableCopy networkObservableWithActivityDidStartHandler:networkActivityDidStartHandler activityDidStopHandler:networkActivityDidStopHandler timeoutDelay:scheduler subscriptionDelay:2.0 scheduler:v8];
 
-  v10 = [(CNAutocompleteObservableBuilder *)self batchingHelper];
-  [v10 addCachedCalendarServerObservable:v11];
+  batchingHelper = [(CNAutocompleteObservableBuilder *)self batchingHelper];
+  [batchingHelper addCachedCalendarServerObservable:v11];
 }
 
-- (void)addCalendarServerObservable:(id)a3
+- (void)addCalendarServerObservable:(id)observable
 {
-  v4 = [(CNAutocompleteObservableBuilder *)self probeObservable:a3 forPerformanceWithBlock:&__block_literal_global_20_0];
-  v5 = [(CNAutocompleteObservableBuilder *)self networkActivityDidStartHandler];
-  v6 = [(CNAutocompleteObservableBuilder *)self networkActivityDidStopHandler];
+  v4 = [(CNAutocompleteObservableBuilder *)self probeObservable:observable forPerformanceWithBlock:&__block_literal_global_20_0];
+  networkActivityDidStartHandler = [(CNAutocompleteObservableBuilder *)self networkActivityDidStartHandler];
+  networkActivityDidStopHandler = [(CNAutocompleteObservableBuilder *)self networkActivityDidStopHandler];
   [(CNAutocompleteObservableBuilder *)self networkActivityStartDelay];
   v8 = v7;
-  v9 = [(CNAutocompleteObservableBuilder *)self scheduler];
-  v11 = [v4 networkObservableWithActivityDidStartHandler:v5 activityDidStopHandler:v6 timeoutDelay:v9 subscriptionDelay:30.0 scheduler:v8];
+  scheduler = [(CNAutocompleteObservableBuilder *)self scheduler];
+  v11 = [v4 networkObservableWithActivityDidStartHandler:networkActivityDidStartHandler activityDidStopHandler:networkActivityDidStopHandler timeoutDelay:scheduler subscriptionDelay:30.0 scheduler:v8];
 
-  v10 = [(CNAutocompleteObservableBuilder *)self batchingHelper];
-  [v10 addCalendarServerObservable:v11];
+  batchingHelper = [(CNAutocompleteObservableBuilder *)self batchingHelper];
+  [batchingHelper addCalendarServerObservable:v11];
 }
 
-- (id)combineObservablesInBatch:(id)a3 scheduler:(id)a4
+- (id)combineObservablesInBatch:(id)batch scheduler:(id)scheduler
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  batchCopy = batch;
+  schedulerCopy = scheduler;
+  if ([batchCopy count])
   {
-    v7 = [MEMORY[0x277CFBE60] forkJoin:v5 scheduler:v6];
-    v8 = [v7 map:&__block_literal_global_23];
+    v7 = [MEMORY[0x277CFBE60] forkJoin:batchCopy scheduler:schedulerCopy];
+    emptyObservable = [v7 map:&__block_literal_global_23];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CFBE60] emptyObservable];
+    emptyObservable = [MEMORY[0x277CFBE60] emptyObservable];
   }
 
-  return v8;
+  return emptyObservable;
 }
 
 @end

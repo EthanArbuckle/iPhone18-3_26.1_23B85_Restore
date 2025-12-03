@@ -1,12 +1,12 @@
 @interface NTKAlbumID
 - (NSString)description;
 - (_TtC30NTKParmesanFaceBundleCompanion10NTKAlbumID)init;
-- (_TtC30NTKParmesanFaceBundleCompanion10NTKAlbumID)initWithAlbum:(id)a3 uuidString:(id)a4;
+- (_TtC30NTKParmesanFaceBundleCompanion10NTKAlbumID)initWithAlbum:(id)album uuidString:(id)string;
 @end
 
 @implementation NTKAlbumID
 
-- (_TtC30NTKParmesanFaceBundleCompanion10NTKAlbumID)initWithAlbum:(id)a3 uuidString:(id)a4
+- (_TtC30NTKParmesanFaceBundleCompanion10NTKAlbumID)initWithAlbum:(id)album uuidString:(id)string
 {
   v5 = sub_23BFFA300();
   v7 = v6;
@@ -24,7 +24,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_23BFF36D4();
 
   v3 = sub_23BFFA2C0();

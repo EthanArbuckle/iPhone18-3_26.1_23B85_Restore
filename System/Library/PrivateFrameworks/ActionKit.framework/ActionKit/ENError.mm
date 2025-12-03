@@ -1,60 +1,60 @@
 @interface ENError
 + (id)connectionFailedError;
-+ (id)errorFromException:(id)a3;
-+ (id)localizedDescriptionForENErrorCode:(int64_t)a3;
++ (id)errorFromException:(id)exception;
++ (id)localizedDescriptionForENErrorCode:(int64_t)code;
 + (id)noteSizeLimitReachedError;
-+ (int64_t)sanitizedErrorCodeFromEDAMErrorCode:(int)a3;
++ (int64_t)sanitizedErrorCodeFromEDAMErrorCode:(int)code;
 @end
 
 @implementation ENError
 
-+ (id)localizedDescriptionForENErrorCode:(int64_t)a3
++ (id)localizedDescriptionForENErrorCode:(int64_t)code
 {
-  if ((a3 - 2) > 8)
+  if ((code - 2) > 8)
   {
     return @"Unknown error";
   }
 
   else
   {
-    return off_278C19160[a3 - 2];
+    return off_278C19160[code - 2];
   }
 }
 
-+ (int64_t)sanitizedErrorCodeFromEDAMErrorCode:(int)a3
++ (int64_t)sanitizedErrorCodeFromEDAMErrorCode:(int)code
 {
-  if ((a3 - 2) > 0x11)
+  if ((code - 2) > 0x11)
   {
     return 0;
   }
 
   else
   {
-    return qword_23E24AC70[a3 - 2];
+    return qword_23E24AC70[code - 2];
   }
 }
 
-+ (id)errorFromException:(id)a3
++ (id)errorFromException:(id)exception
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  exceptionCopy = exception;
+  v4 = exceptionCopy;
+  if (!exceptionCopy)
   {
     v15 = 0;
     goto LABEL_25;
   }
 
   v5 = MEMORY[0x277CBEB38];
-  v6 = [v3 userInfo];
-  v7 = [v5 dictionaryWithDictionary:v6];
+  userInfo = [exceptionCopy userInfo];
+  v7 = [v5 dictionaryWithDictionary:userInfo];
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v4 errorCode];
-    v9 = [v8 intValue];
+    errorCode = [v4 errorCode];
+    intValue = [errorCode intValue];
 
-    v10 = [objc_opt_class() sanitizedErrorCodeFromEDAMErrorCode:v9];
-    v11 = [MEMORY[0x277CCABB0] numberWithInt:v9];
+    v10 = [objc_opt_class() sanitizedErrorCodeFromEDAMErrorCode:intValue];
+    v11 = [MEMORY[0x277CCABB0] numberWithInt:intValue];
     [v7 setObject:v11 forKeyedSubscript:@"EDAMErrorCode"];
 
     v12 = *MEMORY[0x277CCA450];
@@ -98,21 +98,21 @@ LABEL_12:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = v4;
-    v19 = [v18 rateLimitDuration];
+    identifier = v4;
+    rateLimitDuration = [identifier rateLimitDuration];
 
-    if (v19)
+    if (rateLimitDuration)
     {
-      v20 = [v18 rateLimitDuration];
-      [v7 setObject:v20 forKeyedSubscript:@"rateLimitDuration"];
+      rateLimitDuration2 = [identifier rateLimitDuration];
+      [v7 setObject:rateLimitDuration2 forKeyedSubscript:@"rateLimitDuration"];
     }
 
-    v21 = [v18 message];
+    message = [identifier message];
 
-    if (v21)
+    if (message)
     {
-      v22 = [v18 message];
-      [v7 setObject:v22 forKeyedSubscript:@"message"];
+      message2 = [identifier message];
+      [v7 setObject:message2 forKeyedSubscript:@"message"];
     }
 
     goto LABEL_19;
@@ -121,18 +121,18 @@ LABEL_12:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = [v4 identifier];
-    [v7 setObject:v18 forKeyedSubscript:@"parameter"];
+    identifier = [v4 identifier];
+    [v7 setObject:identifier forKeyedSubscript:@"parameter"];
     v10 = 4;
 LABEL_19:
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v23 = [v4 parameter];
-    if (v23)
+    parameter = [v4 parameter];
+    if (parameter)
     {
-      [v7 setObject:v23 forKeyedSubscript:@"parameter"];
+      [v7 setObject:parameter forKeyedSubscript:@"parameter"];
     }
   }
 

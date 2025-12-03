@@ -1,11 +1,11 @@
 @interface CIPDF417CodeDescriptor
 + (CIPDF417CodeDescriptor)descriptorWithPayload:(NSData *)errorCorrectedPayload isCompact:(BOOL)isCompact rowCount:(NSInteger)rowCount columnCount:(NSInteger)columnCount;
 - (BOOL)isValid;
-- (CIPDF417CodeDescriptor)initWithCoder:(id)a3;
+- (CIPDF417CodeDescriptor)initWithCoder:(id)coder;
 - (CIPDF417CodeDescriptor)initWithPayload:(NSData *)errorCorrectedPayload isCompact:(BOOL)isCompact rowCount:(NSInteger)rowCount columnCount:(NSInteger)columnCount;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)isValid;
 @end
 
@@ -86,17 +86,17 @@ LABEL_7:
   [(CIPDF417CodeDescriptor *)&v4 dealloc];
 }
 
-- (CIPDF417CodeDescriptor)initWithCoder:(id)a3
+- (CIPDF417CodeDescriptor)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CIPDF417CodeDescriptor;
   v4 = [(CIBarcodeDescriptor *)&v6 initWithCoder:?];
   if (v4)
   {
-    v4->errorCorrectedPayload = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"errorCorrectedPayload"];
-    v4->isCompact = [a3 decodeBoolForKey:@"isCompact"];
-    v4->rowCount = [a3 decodeIntegerForKey:@"rowCount"];
-    v4->columnCount = [a3 decodeIntegerForKey:@"columnCount"];
+    v4->errorCorrectedPayload = [coder decodeObjectOfClass:objc_opt_class() forKey:@"errorCorrectedPayload"];
+    v4->isCompact = [coder decodeBoolForKey:@"isCompact"];
+    v4->rowCount = [coder decodeIntegerForKey:@"rowCount"];
+    v4->columnCount = [coder decodeIntegerForKey:@"columnCount"];
   }
 
   if (![(CIPDF417CodeDescriptor *)v4 isValid])
@@ -108,20 +108,20 @@ LABEL_7:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CIPDF417CodeDescriptor;
   [(CIBarcodeDescriptor *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:self->errorCorrectedPayload forKey:@"errorCorrectedPayload"];
-  [a3 encodeBool:self->isCompact forKey:@"isCompact"];
-  [a3 encodeInteger:self->rowCount forKey:@"rowCount"];
-  [a3 encodeInteger:self->columnCount forKey:@"columnCount"];
+  [coder encodeObject:self->errorCorrectedPayload forKey:@"errorCorrectedPayload"];
+  [coder encodeBool:self->isCompact forKey:@"isCompact"];
+  [coder encodeInteger:self->rowCount forKey:@"rowCount"];
+  [coder encodeInteger:self->columnCount forKey:@"columnCount"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CIPDF417CodeDescriptor allocWithZone:a3];
+  v4 = [CIPDF417CodeDescriptor allocWithZone:zone];
   v5 = [(NSData *)self->errorCorrectedPayload copy];
   v6 = [(CIPDF417CodeDescriptor *)v4 initWithPayload:v5 isCompact:self->isCompact rowCount:self->rowCount columnCount:self->columnCount];
 

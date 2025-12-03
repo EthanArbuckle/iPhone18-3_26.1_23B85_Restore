@@ -7,15 +7,15 @@
 - (id)dictionary
 {
   v2 = objc_opt_new();
-  [a1 batteryWarningLevel];
+  [self batteryWarningLevel];
   v3 = W5DescriptionForBatteryWarningLevel();
   [v2 setValue:v3 forKey:@"power_battery_warning_level"];
 
-  [a1 powerSourceType];
+  [self powerSourceType];
   v4 = W5DescriptionForPowerSourceType();
   [v2 setValue:v4 forKey:@"power_source_type"];
 
-  [a1 powerStateCaps];
+  [self powerStateCaps];
   v5 = W5DescriptionForPowerStateCaps();
   [v2 setValue:v5 forKey:@"power_state_caps"];
 

@@ -1,6 +1,6 @@
 @interface CVAPhotoExceptionMetalResourceUnavailable
 + (id)error;
-+ (id)throwIfNil:(id)a3;
++ (id)throwIfNil:(id)nil;
 - (CVAPhotoExceptionMetalResourceUnavailable)init;
 @end
 
@@ -26,16 +26,16 @@
   return v5;
 }
 
-+ (id)throwIfNil:(id)a3
++ (id)throwIfNil:(id)nil
 {
-  v3 = a3;
-  if (!v3)
+  nilCopy = nil;
+  if (!nilCopy)
   {
     v5 = objc_opt_new();
     objc_exception_throw(v5);
   }
 
-  return v3;
+  return nilCopy;
 }
 
 @end

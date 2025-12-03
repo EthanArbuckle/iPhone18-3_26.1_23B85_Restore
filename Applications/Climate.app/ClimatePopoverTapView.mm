@@ -1,8 +1,8 @@
 @interface ClimatePopoverTapView
 - (_TtC7Climate21ClimatePopoverTapView)init;
-- (_TtC7Climate21ClimatePopoverTapView)initWithCoder:(id)a3;
-- (_TtC7Climate21ClimatePopoverTapView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtC7Climate21ClimatePopoverTapView)initWithCoder:(id)coder;
+- (_TtC7Climate21ClimatePopoverTapView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation ClimatePopoverTapView
@@ -18,7 +18,7 @@
   return [(ClimatePopoverTapView *)&v6 initWithFrame:0.0, 0.0, 0.0, 0.0];
 }
 
-- (_TtC7Climate21ClimatePopoverTapView)initWithCoder:(id)a3
+- (_TtC7Climate21ClimatePopoverTapView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC7Climate21ClimatePopoverTapView_tapHandler);
   *v3 = 0;
@@ -28,12 +28,12 @@
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC7Climate21ClimatePopoverTapView_tapHandler);
   if (v4)
   {
-    v5 = self;
+    selfCopy = self;
     sub_10001B054(v4);
     v4(0);
 
@@ -43,7 +43,7 @@
   return 0;
 }
 
-- (_TtC7Climate21ClimatePopoverTapView)initWithFrame:(CGRect)a3
+- (_TtC7Climate21ClimatePopoverTapView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

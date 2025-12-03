@@ -1,70 +1,70 @@
 @interface UIKeyEvent
-+ (id)stringFromKeyEventType:(int64_t)a3;
-+ (int64_t)modifierFlagsFromWebFlags:(unsigned int)a3;
-+ (int64_t)typeFromWebEventType:(int)a3;
-- (UIKeyEvent)initWithWebEvent:(id)a3;
-- (id)copyWithUpdatedKeyEventType:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)stringFromKeyEventType:(int64_t)type;
++ (int64_t)modifierFlagsFromWebFlags:(unsigned int)flags;
++ (int64_t)typeFromWebEventType:(int)type;
+- (UIKeyEvent)initWithWebEvent:(id)event;
+- (id)copyWithUpdatedKeyEventType:(int64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation UIKeyEvent
 
-- (UIKeyEvent)initWithWebEvent:(id)a3
+- (UIKeyEvent)initWithWebEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   v15.receiver = self;
   v15.super_class = UIKeyEvent;
   v6 = [(UIKeyEvent *)&v15 init];
   if (v6)
   {
-    v6->_type = [objc_opt_class() typeFromWebEventType:{objc_msgSend(v5, "type")}];
-    v7 = [v5 characters];
+    v6->_type = [objc_opt_class() typeFromWebEventType:{objc_msgSend(eventCopy, "type")}];
+    characters = [eventCopy characters];
     characters = v6->_characters;
-    v6->_characters = v7;
+    v6->_characters = characters;
 
-    v9 = [v5 charactersIgnoringModifiers];
+    charactersIgnoringModifiers = [eventCopy charactersIgnoringModifiers];
     charactersIgnoringModifiers = v6->_charactersIgnoringModifiers;
-    v6->_charactersIgnoringModifiers = v9;
+    v6->_charactersIgnoringModifiers = charactersIgnoringModifiers;
 
-    v6->_keyRepeating = [v5 isKeyRepeating];
-    v6->_keyCode = [v5 keyCode];
-    [v5 timestamp];
+    v6->_keyRepeating = [eventCopy isKeyRepeating];
+    v6->_keyCode = [eventCopy keyCode];
+    [eventCopy timestamp];
     v6->_timestamp = v11;
-    v6->_modifierFlags = [objc_opt_class() modifierFlagsFromWebFlags:{objc_msgSend(v5, "modifierFlags")}];
-    objc_storeStrong(&v6->_webEvent, a3);
-    v12 = [v5 inputManagerHint];
+    v6->_modifierFlags = [objc_opt_class() modifierFlagsFromWebFlags:{objc_msgSend(eventCopy, "modifierFlags")}];
+    objc_storeStrong(&v6->_webEvent, event);
+    inputManagerHint = [eventCopy inputManagerHint];
     inputManagerHint = v6->_inputManagerHint;
-    v6->_inputManagerHint = v12;
+    v6->_inputManagerHint = inputManagerHint;
 
-    v6->_inputFlags = [v5 keyboardFlags];
+    v6->_inputFlags = [eventCopy keyboardFlags];
   }
 
   return v6;
 }
 
-- (id)copyWithUpdatedKeyEventType:(int64_t)a3
+- (id)copyWithUpdatedKeyEventType:(int64_t)type
 {
-  if ((a3 - 3) <= 0xFFFFFFFFFFFFFFFDLL)
+  if ((type - 3) <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UIKeyEvent.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"type == UIKeyEventKeyDown || type == UIKeyEventKeyUp"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIKeyEvent.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"type == UIKeyEventKeyDown || type == UIKeyEventKeyUp"}];
   }
 
   v5 = [(UIKeyEvent *)self copy];
-  [v5 setType:a3];
+  [v5 setType:type];
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(UIKeyEvent);
-  v5 = [(UIKeyEvent *)self characters];
-  v6 = [v5 copy];
+  characters = [(UIKeyEvent *)self characters];
+  v6 = [characters copy];
   [(UIKeyEvent *)v4 setCharacters:v6];
 
-  v7 = [(UIKeyEvent *)self charactersIgnoringModifiers];
-  v8 = [v7 copy];
+  charactersIgnoringModifiers = [(UIKeyEvent *)self charactersIgnoringModifiers];
+  v8 = [charactersIgnoringModifiers copy];
   [(UIKeyEvent *)v4 setCharactersIgnoringModifiers:v8];
 
   [(UIKeyEvent *)v4 setType:[(UIKeyEvent *)self type]];
@@ -73,12 +73,12 @@
   [(UIKeyEvent *)self timestamp];
   [(UIKeyEvent *)v4 setTimestamp:?];
   [(UIKeyEvent *)v4 setModifierFlags:[(UIKeyEvent *)self modifierFlags]];
-  v9 = [(UIKeyEvent *)self webEvent];
-  [(UIKeyEvent *)v4 setWebEvent:v9];
+  webEvent = [(UIKeyEvent *)self webEvent];
+  [(UIKeyEvent *)v4 setWebEvent:webEvent];
 
   [(UIKeyEvent *)v4 setInputFlags:[(UIKeyEvent *)self inputFlags]];
-  v10 = [(UIKeyEvent *)self inputManagerHint];
-  v11 = [v10 copy];
+  inputManagerHint = [(UIKeyEvent *)self inputManagerHint];
+  v11 = [inputManagerHint copy];
   [(UIKeyEvent *)v4 setInputManagerHint:v11];
 
   return v4;
@@ -89,20 +89,20 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(UIKeyEvent *)self characters];
-  v7 = [(UIKeyEvent *)self charactersIgnoringModifiers];
+  characters = [(UIKeyEvent *)self characters];
+  charactersIgnoringModifiers = [(UIKeyEvent *)self charactersIgnoringModifiers];
   v8 = [objc_opt_class() stringFromKeyEventType:{-[UIKeyEvent type](self, "type")}];
-  v9 = [(UIKeyEvent *)self isKeyRepeating];
-  v10 = [(UIKeyEvent *)self keyCode];
+  isKeyRepeating = [(UIKeyEvent *)self isKeyRepeating];
+  keyCode = [(UIKeyEvent *)self keyCode];
   [(UIKeyEvent *)self timestamp];
-  v12 = [v3 stringWithFormat:@"<%@: %p chars: %@, charsIgnoringModifiers: %@, type: %@, repeating: %d, keyCode: 0x%.4lX, timestamp: %lf, modifierFlags: %lX>", v5, self, v6, v7, v8, v9, v10, v11, -[UIKeyEvent modifierFlags](self, "modifierFlags")];
+  v12 = [v3 stringWithFormat:@"<%@: %p chars: %@, charsIgnoringModifiers: %@, type: %@, repeating: %d, keyCode: 0x%.4lX, timestamp: %lf, modifierFlags: %lX>", v5, self, characters, charactersIgnoringModifiers, v8, isKeyRepeating, keyCode, v11, -[UIKeyEvent modifierFlags](self, "modifierFlags")];
 
   return v12;
 }
 
-+ (id)stringFromKeyEventType:(int64_t)a3
++ (id)stringFromKeyEventType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     return @"KeyDown";
   }
@@ -113,42 +113,42 @@
   }
 }
 
-+ (int64_t)typeFromWebEventType:(int)a3
++ (int64_t)typeFromWebEventType:(int)type
 {
-  if (a3 == 5)
+  if (type == 5)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 4;
+    return type == 4;
   }
 }
 
-+ (int64_t)modifierFlagsFromWebFlags:(unsigned int)a3
++ (int64_t)modifierFlagsFromWebFlags:(unsigned int)flags
 {
-  if ((a3 & 0x220000) != 0)
+  if ((flags & 0x220000) != 0)
   {
-    v3 = (((a3 & 0x1010000) != 0) << 20) | 0x20000;
+    v3 = (((flags & 0x1010000) != 0) << 20) | 0x20000;
   }
 
   else
   {
-    v3 = ((a3 & 0x1010000) != 0) << 20;
+    v3 = ((flags & 0x1010000) != 0) << 20;
   }
 
-  if ((a3 & 0x480000) != 0)
+  if ((flags & 0x480000) != 0)
   {
     v3 |= 0x80000uLL;
   }
 
-  if ((a3 & 0x900000) != 0)
+  if ((flags & 0x900000) != 0)
   {
     v3 |= 0x40000uLL;
   }
 
-  return v3 | (a3 >> 2) & 0x10000;
+  return v3 | (flags >> 2) & 0x10000;
 }
 
 @end

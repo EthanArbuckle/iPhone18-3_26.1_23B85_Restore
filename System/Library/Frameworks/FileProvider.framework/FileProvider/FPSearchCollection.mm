@@ -1,12 +1,12 @@
 @interface FPSearchCollection
-- (BOOL)isCollectionValidForItem:(id)a3;
+- (BOOL)isCollectionValidForItem:(id)item;
 - (FPSearchCollection)init;
 - (NSFileProviderSearchQuery)searchQuery;
-- (id)_createDescriptorWithSortDescriptors:(id)a3;
+- (id)_createDescriptorWithSortDescriptors:(id)descriptors;
 - (id)_enumerationSettingsPredicate;
-- (id)createDataSourceWithSortDescriptors:(id)a3;
+- (id)createDataSourceWithSortDescriptors:(id)descriptors;
 - (id)scopedSearchQuery;
-- (void)setSearchQuery:(id)a3;
+- (void)setSearchQuery:(id)query;
 @end
 
 @implementation FPSearchCollection
@@ -19,57 +19,57 @@
   return [(FPQueryCollection *)&v5 initWithQueryDescriptorClass:v3 predicate:0 paced:0];
 }
 
-- (id)createDataSourceWithSortDescriptors:(id)a3
+- (id)createDataSourceWithSortDescriptors:(id)descriptors
 {
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(FPSearchCollection *)v6 _enumerationSettingsPredicate];
-  [(FPItemCollection *)v6 setAdditionalItemFilteringPredicate:v7];
+  descriptorsCopy = descriptors;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  _enumerationSettingsPredicate = [(FPSearchCollection *)selfCopy _enumerationSettingsPredicate];
+  [(FPItemCollection *)selfCopy setAdditionalItemFilteringPredicate:_enumerationSettingsPredicate];
 
-  v8 = [(FPSearchCollection *)v6 _createDescriptorWithSortDescriptors:v5];
+  v8 = [(FPSearchCollection *)selfCopy _createDescriptorWithSortDescriptors:descriptorsCopy];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:v6 file:@"FPSearchCollection.m" lineNumber:42 description:@"invalid kind of descriptor class"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"FPSearchCollection.m" lineNumber:42 description:@"invalid kind of descriptor class"];
     }
   }
 
   v9 = [FPSearchQueryDataSource alloc];
-  v10 = [(FPQueryCollection *)v6 predicate];
-  v11 = [(FPSearchQueryDataSource *)v9 initWithQueryDescriptor:v8 predicate:v10];
+  predicate = [(FPQueryCollection *)selfCopy predicate];
+  v11 = [(FPSearchQueryDataSource *)v9 initWithQueryDescriptor:v8 predicate:predicate];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   return v11;
 }
 
-- (id)_createDescriptorWithSortDescriptors:(id)a3
+- (id)_createDescriptorWithSortDescriptors:(id)descriptors
 {
   v14.receiver = self;
   v14.super_class = FPSearchCollection;
-  v4 = [(FPQueryCollection *)&v14 _createDescriptorWithSortDescriptors:a3];
-  v5 = [(FPSearchCollection *)self searchQuery];
-  v6 = [v4 settings];
-  [v6 setSearchQuery:v5];
+  v4 = [(FPQueryCollection *)&v14 _createDescriptorWithSortDescriptors:descriptors];
+  searchQuery = [(FPSearchCollection *)self searchQuery];
+  settings = [v4 settings];
+  [settings setSearchQuery:searchQuery];
 
-  v7 = [(FPSearchCollection *)self searchQuery];
-  v8 = [v7 shouldPerformSemanticSearch];
-  v9 = [v4 settings];
-  [v9 setAllowSemanticSearchResults:v8];
+  searchQuery2 = [(FPSearchCollection *)self searchQuery];
+  shouldPerformSemanticSearch = [searchQuery2 shouldPerformSemanticSearch];
+  settings2 = [v4 settings];
+  [settings2 setAllowSemanticSearchResults:shouldPerformSemanticSearch];
 
-  v10 = [v4 settings];
-  v11 = [v10 searchQuery];
+  settings3 = [v4 settings];
+  searchQuery3 = [settings3 searchQuery];
 
-  v12 = [v11 toSpotlightQueryString];
-  [v4 setSearchQueryString:v12];
+  toSpotlightQueryString = [searchQuery3 toSpotlightQueryString];
+  [v4 setSearchQueryString:toSpotlightQueryString];
 
-  [v4 setThirdPartySearchOnServer:{objc_msgSend(v11, "shouldPerformThirdPartyServerSearch")}];
-  [v4 setAvoidCoreSpotlightSearch:{objc_msgSend(v11, "avoidCoreSpotlightSearch")}];
+  [v4 setThirdPartySearchOnServer:{objc_msgSend(searchQuery3, "shouldPerformThirdPartyServerSearch")}];
+  [v4 setAvoidCoreSpotlightSearch:{objc_msgSend(searchQuery3, "avoidCoreSpotlightSearch")}];
 
   return v4;
 }
@@ -89,8 +89,8 @@
   v15[0] = v4;
   v11.receiver = self;
   v11.super_class = FPSearchCollection;
-  v6 = [(FPQueryCollection *)&v11 _enumerationSettingsPredicate];
-  v15[1] = v6;
+  _enumerationSettingsPredicate = [(FPQueryCollection *)&v11 _enumerationSettingsPredicate];
+  v15[1] = _enumerationSettingsPredicate;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
   v8 = [v5 andPredicateWithSubpredicates:v7];
 
@@ -133,57 +133,57 @@ uint64_t __51__FPSearchCollection__enumerationSettingsPredicate__block_invoke(ui
   return v9;
 }
 
-- (BOOL)isCollectionValidForItem:(id)a3
+- (BOOL)isCollectionValidForItem:(id)item
 {
-  v8 = [v4 enumerationOrigin] == 2 || !self->_filterPredicate || (-[FPQueryCollection settings](self, "settings"), v5 = v4 = a3;
+  v8 = [v4 enumerationOrigin] == 2 || !self->_filterPredicate || (-[FPQueryCollection settings](self, "settings"), v5 = v4 = item;
 
   return v8;
 }
 
-- (void)setSearchQuery:(id)a3
+- (void)setSearchQuery:(id)query
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  queryCopy = query;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = MEMORY[0x1E696AB28];
-  v7 = [v4 filenamePredicate];
-  v17[0] = v7;
-  v8 = [v4 allowedContentTypesPredicate];
-  v17[1] = v8;
+  filenamePredicate = [queryCopy filenamePredicate];
+  v17[0] = filenamePredicate;
+  allowedContentTypesPredicate = [queryCopy allowedContentTypesPredicate];
+  v17[1] = allowedContentTypesPredicate;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
   v10 = [v6 andPredicateWithSubpredicates:v9];
-  filterPredicate = v5->_filterPredicate;
-  v5->_filterPredicate = v10;
+  filterPredicate = selfCopy->_filterPredicate;
+  selfCopy->_filterPredicate = v10;
 
-  v12 = [(FPQueryCollection *)v5 settings];
-  [v12 setSearchQuery:v4];
+  settings = [(FPQueryCollection *)selfCopy settings];
+  [settings setSearchQuery:queryCopy];
 
-  v13 = [v4 allowedContentTypes];
-  v14 = [v13 allObjects];
-  v15 = [(FPQueryCollection *)v5 settings];
-  [v15 setAllowedFileTypes:v14];
+  allowedContentTypes = [queryCopy allowedContentTypes];
+  allObjects = [allowedContentTypes allObjects];
+  settings2 = [(FPQueryCollection *)selfCopy settings];
+  [settings2 setAllowedFileTypes:allObjects];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v16 = *MEMORY[0x1E69E9840];
 }
 
 - (NSFileProviderSearchQuery)searchQuery
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(FPQueryCollection *)v2 settings];
-  v4 = [v3 searchQuery];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  settings = [(FPQueryCollection *)selfCopy settings];
+  searchQuery = [settings searchQuery];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v4;
+  return searchQuery;
 }
 
 - (id)scopedSearchQuery
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"FPSearchCollection.m" lineNumber:135 description:@"UNREACHABLE: A search collection should not provide a search query."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"FPSearchCollection.m" lineNumber:135 description:@"UNREACHABLE: A search collection should not provide a search query."];
 
   return 0;
 }

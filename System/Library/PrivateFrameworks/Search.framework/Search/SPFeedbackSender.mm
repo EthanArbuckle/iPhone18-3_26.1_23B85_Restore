@@ -11,7 +11,7 @@
 {
   v3 = objc_opt_self();
 
-  if (v3 == a1)
+  if (v3 == self)
   {
     v4 = dispatch_queue_attr_make_initially_inactive(0);
     v5 = dispatch_queue_attr_make_with_qos_class(v4, QOS_CLASS_BACKGROUND, 0);
@@ -63,8 +63,8 @@
           v32 = 0u;
           v29 = 0u;
           v30 = 0u;
-          v9 = [v8 feedbackListeners];
-          v10 = [v9 countByEnumeratingWithState:&v29 objects:v37 count:16];
+          feedbackListeners = [v8 feedbackListeners];
+          v10 = [feedbackListeners countByEnumeratingWithState:&v29 objects:v37 count:16];
           if (v10)
           {
             v11 = v10;
@@ -77,7 +77,7 @@
               {
                 if (*v30 != v12)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(feedbackListeners);
                 }
 
                 v5 = [SPFeedbackListenerWrapper wrapperWithFeedbackListener:*(*(&v29 + 1) + 8 * v13)];
@@ -92,7 +92,7 @@
               }
 
               while (v11 != v13);
-              v11 = [v9 countByEnumeratingWithState:&v29 objects:v37 count:16];
+              v11 = [feedbackListeners countByEnumeratingWithState:&v29 objects:v37 count:16];
             }
 
             while (v11);
@@ -227,7 +227,7 @@
   block[1] = 3221225472;
   block[2] = sub_100058558;
   block[3] = &unk_1000923B0;
-  block[4] = a1;
+  block[4] = self;
   dispatch_async(qword_1000A88D8, block);
 }
 
@@ -237,7 +237,7 @@
   block[1] = 3221225472;
   block[2] = sub_100058600;
   block[3] = &unk_1000923B0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000A88F0 != -1)
   {
     dispatch_once(&qword_1000A88F0, block);

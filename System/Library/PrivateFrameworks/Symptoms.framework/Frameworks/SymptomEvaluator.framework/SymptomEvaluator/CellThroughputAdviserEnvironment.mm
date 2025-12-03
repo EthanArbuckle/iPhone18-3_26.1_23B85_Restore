@@ -1,18 +1,18 @@
 @interface CellThroughputAdviserEnvironment
-- (CellThroughputAdviserEnvironment)initWithQueue:(id)a3;
+- (CellThroughputAdviserEnvironment)initWithQueue:(id)queue;
 - (void)dealloc;
-- (void)handleEvent:(id)a3 forEventName:(id)a4;
-- (void)infoHighThroughputStateChanged:(id)a3;
-- (void)monitorSDMActivations:(BOOL)a3;
+- (void)handleEvent:(id)event forEventName:(id)name;
+- (void)infoHighThroughputStateChanged:(id)changed;
+- (void)monitorSDMActivations:(BOOL)activations;
 @end
 
 @implementation CellThroughputAdviserEnvironment
 
-- (CellThroughputAdviserEnvironment)initWithQueue:(id)a3
+- (CellThroughputAdviserEnvironment)initWithQueue:(id)queue
 {
   v8.receiver = self;
   v8.super_class = CellThroughputAdviserEnvironment;
-  v3 = [(ThroughputAdviserEnvironment *)&v8 initWithQueue:a3];
+  v3 = [(ThroughputAdviserEnvironment *)&v8 initWithQueue:queue];
   if (v3)
   {
     v4 = +[CellThroughputAdviser sharedInstance];
@@ -44,33 +44,33 @@
   [(CellThroughputAdviserEnvironment *)&v5 dealloc];
 }
 
-- (void)infoHighThroughputStateChanged:(id)a3
+- (void)infoHighThroughputStateChanged:(id)changed
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = [a3 unsignedShortValue];
+  unsignedShortValue = [changed unsignedShortValue];
   v5 = flowScrutinyLogHandle;
   if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67240192;
-    v11 = v4;
+    v11 = unsignedShortValue;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEFAULT, "CellSDM: Received BB high throughput enable/disable notification: high throughput state = %{public}d", buf, 8u);
   }
 
-  v6 = [(ThroughputAdviserEnvironment *)self queue];
+  queue = [(ThroughputAdviserEnvironment *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __67__CellThroughputAdviserEnvironment_infoHighThroughputStateChanged___block_invoke;
   v8[3] = &unk_27898A3A0;
   v8[4] = self;
-  v9 = v4;
-  dispatch_async(v6, v8);
+  v9 = unsignedShortValue;
+  dispatch_async(queue, v8);
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)monitorSDMActivations:(BOOL)a3
+- (void)monitorSDMActivations:(BOOL)activations
 {
-  if (a3)
+  if (activations)
   {
     if (self->_registeredWithAnalyticsObserver)
     {
@@ -78,8 +78,8 @@
     }
 
     v4 = +[SymptomsCAObserver sharedInstance];
-    v5 = [(ThroughputAdviserEnvironment *)self queue];
-    [v4 addDelegate:self forEvents:&unk_2847EEC70 withQueue:v5 completion:0];
+    queue = [(ThroughputAdviserEnvironment *)self queue];
+    [v4 addDelegate:self forEvents:&unk_2847EEC70 withQueue:queue completion:0];
 
     v6 = 1;
   }
@@ -99,15 +99,15 @@
   self->_registeredWithAnalyticsObserver = v6;
 }
 
-- (void)handleEvent:(id)a3 forEventName:(id)a4
+- (void)handleEvent:(id)event forEventName:(id)name
 {
   v52 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6 && [v6 isEqualToString:@"com.apple.Baseband.cellularNrSDMActivation"])
+  eventCopy = event;
+  nameCopy = name;
+  v7 = nameCopy;
+  if (nameCopy && [nameCopy isEqualToString:@"com.apple.Baseband.cellularNrSDMActivation"])
   {
-    v8 = v5;
+    v8 = eventCopy;
     v9 = flowScrutinyLogHandle;
     if (v8)
     {

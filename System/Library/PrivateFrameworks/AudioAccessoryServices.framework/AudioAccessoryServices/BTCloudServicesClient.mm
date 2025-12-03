@@ -3,29 +3,29 @@
 - (id)_ensureXPCStarted;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)accountInfoWithCompletion:(id)a3;
-- (void)cloudPairingIdentifierForPeripheral:(id)a3 completion:(id)a4;
-- (void)createDeviceRecord:(id)a3 completion:(id)a4;
-- (void)createDeviceSupportInformationRecord:(id)a3 completion:(id)a4;
-- (void)createMagicSettingsRecord:(id)a3 completion:(id)a4;
-- (void)createSoundProfileRecord:(id)a3 completion:(id)a4;
-- (void)deleteDeviceRecord:(id)a3 completion:(id)a4;
-- (void)deleteDeviceSupportInformationRecord:(id)a3 completion:(id)a4;
-- (void)deleteMagicSettingsRecord:(id)a3 completion:(id)a4;
-- (void)deleteSoundProfileRecordWithCompletion:(id)a3;
-- (void)deviceRecord:(id)a3 completion:(id)a4;
-- (void)deviceRecordsWithCompletion:(id)a3;
-- (void)deviceSupportInformationRecord:(id)a3 completion:(id)a4;
-- (void)deviceSupportInformationRecordsWithCompletion:(id)a3;
-- (void)fetchSoundProfileRecordWithCompletion:(id)a3;
-- (void)forceCloudPairingForIdentifiers:(id)a3 completion:(id)a4;
+- (void)accountInfoWithCompletion:(id)completion;
+- (void)cloudPairingIdentifierForPeripheral:(id)peripheral completion:(id)completion;
+- (void)createDeviceRecord:(id)record completion:(id)completion;
+- (void)createDeviceSupportInformationRecord:(id)record completion:(id)completion;
+- (void)createMagicSettingsRecord:(id)record completion:(id)completion;
+- (void)createSoundProfileRecord:(id)record completion:(id)completion;
+- (void)deleteDeviceRecord:(id)record completion:(id)completion;
+- (void)deleteDeviceSupportInformationRecord:(id)record completion:(id)completion;
+- (void)deleteMagicSettingsRecord:(id)record completion:(id)completion;
+- (void)deleteSoundProfileRecordWithCompletion:(id)completion;
+- (void)deviceRecord:(id)record completion:(id)completion;
+- (void)deviceRecordsWithCompletion:(id)completion;
+- (void)deviceSupportInformationRecord:(id)record completion:(id)completion;
+- (void)deviceSupportInformationRecordsWithCompletion:(id)completion;
+- (void)fetchSoundProfileRecordWithCompletion:(id)completion;
+- (void)forceCloudPairingForIdentifiers:(id)identifiers completion:(id)completion;
 - (void)invalidate;
-- (void)magicSettingsRecord:(id)a3 completion:(id)a4;
-- (void)magicSettingsRecordsWithCompletion:(id)a3;
-- (void)modifyDeviceRecord:(id)a3 completion:(id)a4;
-- (void)modifyDeviceSupportInformationRecord:(id)a3 completion:(id)a4;
-- (void)modifyMagicSettingsRecord:(id)a3 completion:(id)a4;
-- (void)modifySoundProfileRecord:(id)a3 completion:(id)a4;
+- (void)magicSettingsRecord:(id)record completion:(id)completion;
+- (void)magicSettingsRecordsWithCompletion:(id)completion;
+- (void)modifyDeviceRecord:(id)record completion:(id)completion;
+- (void)modifyDeviceSupportInformationRecord:(id)record completion:(id)completion;
+- (void)modifyMagicSettingsRecord:(id)record completion:(id)completion;
+- (void)modifySoundProfileRecord:(id)record completion:(id)completion;
 @end
 
 @implementation BTCloudServicesClient
@@ -191,20 +191,20 @@ uint64_t __35__BTCloudServicesClient_invalidate__block_invoke(uint64_t result)
   }
 }
 
-- (void)createDeviceRecord:(id)a3 completion:(id)a4
+- (void)createDeviceRecord:(id)record completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__BTCloudServicesClient_createDeviceRecord_completion___block_invoke;
   block[3] = &unk_278CDDE48;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = recordCopy;
+  v9 = completionCopy;
+  v10 = recordCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -301,20 +301,20 @@ LABEL_7:
   return v5();
 }
 
-- (void)modifyDeviceRecord:(id)a3 completion:(id)a4
+- (void)modifyDeviceRecord:(id)record completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__BTCloudServicesClient_modifyDeviceRecord_completion___block_invoke;
   block[3] = &unk_278CDDE48;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = recordCopy;
+  v9 = completionCopy;
+  v10 = recordCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -411,20 +411,20 @@ LABEL_7:
   return v5();
 }
 
-- (void)deleteDeviceRecord:(id)a3 completion:(id)a4
+- (void)deleteDeviceRecord:(id)record completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__BTCloudServicesClient_deleteDeviceRecord_completion___block_invoke;
   block[3] = &unk_278CDDE48;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = recordCopy;
+  v9 = completionCopy;
+  v10 = recordCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -521,20 +521,20 @@ LABEL_7:
   return v5();
 }
 
-- (void)deviceRecord:(id)a3 completion:(id)a4
+- (void)deviceRecord:(id)record completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__BTCloudServicesClient_deviceRecord_completion___block_invoke;
   block[3] = &unk_278CDDE48;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = recordCopy;
+  v9 = completionCopy;
+  v10 = recordCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -631,17 +631,17 @@ LABEL_7:
   return v5();
 }
 
-- (void)deviceRecordsWithCompletion:(id)a3
+- (void)deviceRecordsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__BTCloudServicesClient_deviceRecordsWithCompletion___block_invoke;
   v7[3] = &unk_278CDD688;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -720,20 +720,20 @@ LABEL_7:
   return v5();
 }
 
-- (void)createDeviceSupportInformationRecord:(id)a3 completion:(id)a4
+- (void)createDeviceSupportInformationRecord:(id)record completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__BTCloudServicesClient_createDeviceSupportInformationRecord_completion___block_invoke;
   block[3] = &unk_278CDDE48;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = recordCopy;
+  v9 = completionCopy;
+  v10 = recordCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -830,20 +830,20 @@ LABEL_7:
   return v5();
 }
 
-- (void)modifyDeviceSupportInformationRecord:(id)a3 completion:(id)a4
+- (void)modifyDeviceSupportInformationRecord:(id)record completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__BTCloudServicesClient_modifyDeviceSupportInformationRecord_completion___block_invoke;
   block[3] = &unk_278CDDE48;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = recordCopy;
+  v9 = completionCopy;
+  v10 = recordCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -940,20 +940,20 @@ LABEL_7:
   return v5();
 }
 
-- (void)deleteDeviceSupportInformationRecord:(id)a3 completion:(id)a4
+- (void)deleteDeviceSupportInformationRecord:(id)record completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__BTCloudServicesClient_deleteDeviceSupportInformationRecord_completion___block_invoke;
   block[3] = &unk_278CDDE48;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = recordCopy;
+  v9 = completionCopy;
+  v10 = recordCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1050,20 +1050,20 @@ LABEL_7:
   return v5();
 }
 
-- (void)deviceSupportInformationRecord:(id)a3 completion:(id)a4
+- (void)deviceSupportInformationRecord:(id)record completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__BTCloudServicesClient_deviceSupportInformationRecord_completion___block_invoke;
   block[3] = &unk_278CDDE48;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = recordCopy;
+  v9 = completionCopy;
+  v10 = recordCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1160,17 +1160,17 @@ LABEL_7:
   return v5();
 }
 
-- (void)deviceSupportInformationRecordsWithCompletion:(id)a3
+- (void)deviceSupportInformationRecordsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__BTCloudServicesClient_deviceSupportInformationRecordsWithCompletion___block_invoke;
   v7[3] = &unk_278CDD688;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1249,20 +1249,20 @@ LABEL_7:
   return v5();
 }
 
-- (void)createMagicSettingsRecord:(id)a3 completion:(id)a4
+- (void)createMagicSettingsRecord:(id)record completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__BTCloudServicesClient_createMagicSettingsRecord_completion___block_invoke;
   block[3] = &unk_278CDDE48;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = recordCopy;
+  v9 = completionCopy;
+  v10 = recordCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1359,20 +1359,20 @@ LABEL_7:
   return v5();
 }
 
-- (void)modifyMagicSettingsRecord:(id)a3 completion:(id)a4
+- (void)modifyMagicSettingsRecord:(id)record completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__BTCloudServicesClient_modifyMagicSettingsRecord_completion___block_invoke;
   block[3] = &unk_278CDDE48;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = recordCopy;
+  v9 = completionCopy;
+  v10 = recordCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1469,20 +1469,20 @@ LABEL_7:
   return v5();
 }
 
-- (void)deleteMagicSettingsRecord:(id)a3 completion:(id)a4
+- (void)deleteMagicSettingsRecord:(id)record completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__BTCloudServicesClient_deleteMagicSettingsRecord_completion___block_invoke;
   block[3] = &unk_278CDDE48;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = recordCopy;
+  v9 = completionCopy;
+  v10 = recordCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1579,20 +1579,20 @@ LABEL_7:
   return v5();
 }
 
-- (void)magicSettingsRecord:(id)a3 completion:(id)a4
+- (void)magicSettingsRecord:(id)record completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__BTCloudServicesClient_magicSettingsRecord_completion___block_invoke;
   block[3] = &unk_278CDDE48;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = recordCopy;
+  v9 = completionCopy;
+  v10 = recordCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1689,17 +1689,17 @@ LABEL_7:
   return v5();
 }
 
-- (void)magicSettingsRecordsWithCompletion:(id)a3
+- (void)magicSettingsRecordsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__BTCloudServicesClient_magicSettingsRecordsWithCompletion___block_invoke;
   v7[3] = &unk_278CDD638;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1724,17 +1724,17 @@ void __60__BTCloudServicesClient_magicSettingsRecordsWithCompletion___block_invo
   }
 }
 
-- (void)accountInfoWithCompletion:(id)a3
+- (void)accountInfoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__BTCloudServicesClient_accountInfoWithCompletion___block_invoke;
   v7[3] = &unk_278CDD688;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1813,20 +1813,20 @@ LABEL_7:
   return v5();
 }
 
-- (void)cloudPairingIdentifierForPeripheral:(id)a3 completion:(id)a4
+- (void)cloudPairingIdentifierForPeripheral:(id)peripheral completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  peripheralCopy = peripheral;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__BTCloudServicesClient_cloudPairingIdentifierForPeripheral_completion___block_invoke;
   block[3] = &unk_278CDDE48;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = peripheralCopy;
+  v9 = completionCopy;
+  v10 = peripheralCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1924,20 +1924,20 @@ LABEL_7:
   return v5();
 }
 
-- (void)forceCloudPairingForIdentifiers:(id)a3 completion:(id)a4
+- (void)forceCloudPairingForIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__BTCloudServicesClient_forceCloudPairingForIdentifiers_completion___block_invoke;
   block[3] = &unk_278CDDE48;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = identifiersCopy;
+  v9 = completionCopy;
+  v10 = identifiersCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -2035,20 +2035,20 @@ LABEL_7:
   return v5();
 }
 
-- (void)createSoundProfileRecord:(id)a3 completion:(id)a4
+- (void)createSoundProfileRecord:(id)record completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__BTCloudServicesClient_createSoundProfileRecord_completion___block_invoke;
   block[3] = &unk_278CDDE48;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = recordCopy;
+  v9 = completionCopy;
+  v10 = recordCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -2251,17 +2251,17 @@ LABEL_7:
   return v5();
 }
 
-- (void)fetchSoundProfileRecordWithCompletion:(id)a3
+- (void)fetchSoundProfileRecordWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__BTCloudServicesClient_fetchSoundProfileRecordWithCompletion___block_invoke;
   v7[3] = &unk_278CDD688;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -2345,20 +2345,20 @@ LABEL_7:
   return v5();
 }
 
-- (void)modifySoundProfileRecord:(id)a3 completion:(id)a4
+- (void)modifySoundProfileRecord:(id)record completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__BTCloudServicesClient_modifySoundProfileRecord_completion___block_invoke;
   block[3] = &unk_278CDDE48;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = recordCopy;
+  v9 = completionCopy;
+  v10 = recordCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -2445,17 +2445,17 @@ LABEL_7:
   return v5();
 }
 
-- (void)deleteSoundProfileRecordWithCompletion:(id)a3
+- (void)deleteSoundProfileRecordWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__BTCloudServicesClient_deleteSoundProfileRecordWithCompletion___block_invoke;
   v7[3] = &unk_278CDD688;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 

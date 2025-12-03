@@ -1,16 +1,16 @@
 @interface PHCarPlayProgressView
-- (PHCarPlayProgressView)initWithFrame:(CGRect)a3;
+- (PHCarPlayProgressView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setProgress:(double)a3;
+- (void)setProgress:(double)progress;
 @end
 
 @implementation PHCarPlayProgressView
 
-- (PHCarPlayProgressView)initWithFrame:(CGRect)a3
+- (PHCarPlayProgressView)initWithFrame:(CGRect)frame
 {
   v61.receiver = self;
   v61.super_class = PHCarPlayProgressView;
-  v3 = [(PHCarPlayProgressView *)&v61 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PHCarPlayProgressView *)&v61 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(UILabel);
@@ -68,51 +68,51 @@
     [(UIView *)v3->_indicatorView setBackgroundColor:v21];
 
     [(PHCarPlayProgressView *)v3 addSubview:v3->_indicatorView];
-    v60 = [(PHCarPlayProgressView *)v3 trackView];
-    v59 = [v60 widthAnchor];
-    v58 = [(PHCarPlayProgressView *)v3 widthAnchor];
-    v57 = [v59 constraintEqualToAnchor:v58];
+    trackView = [(PHCarPlayProgressView *)v3 trackView];
+    widthAnchor = [trackView widthAnchor];
+    widthAnchor2 = [(PHCarPlayProgressView *)v3 widthAnchor];
+    v57 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v62[0] = v57;
-    v56 = [(PHCarPlayProgressView *)v3 trackView];
-    v55 = [v56 heightAnchor];
-    v54 = [v55 constraintEqualToConstant:7.0];
+    trackView2 = [(PHCarPlayProgressView *)v3 trackView];
+    heightAnchor = [trackView2 heightAnchor];
+    v54 = [heightAnchor constraintEqualToConstant:7.0];
     v62[1] = v54;
-    v53 = [(PHCarPlayProgressView *)v3 trackView];
-    v52 = [v53 centerXAnchor];
-    v51 = [(PHCarPlayProgressView *)v3 centerXAnchor];
-    v50 = [v52 constraintEqualToAnchor:v51];
+    trackView3 = [(PHCarPlayProgressView *)v3 trackView];
+    centerXAnchor = [trackView3 centerXAnchor];
+    centerXAnchor2 = [(PHCarPlayProgressView *)v3 centerXAnchor];
+    v50 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v62[2] = v50;
-    v49 = [(PHCarPlayProgressView *)v3 trackView];
-    v48 = [v49 topAnchor];
-    v47 = [(PHCarPlayProgressView *)v3 topAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47];
+    trackView4 = [(PHCarPlayProgressView *)v3 trackView];
+    topAnchor = [trackView4 topAnchor];
+    topAnchor2 = [(PHCarPlayProgressView *)v3 topAnchor];
+    v46 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v62[3] = v46;
-    v45 = [(PHCarPlayProgressView *)v3 elapsedLabel];
-    v44 = [v45 leadingAnchor];
-    v43 = [(PHCarPlayProgressView *)v3 leadingAnchor];
-    v42 = [v44 constraintEqualToAnchor:v43];
+    elapsedLabel = [(PHCarPlayProgressView *)v3 elapsedLabel];
+    leadingAnchor = [elapsedLabel leadingAnchor];
+    leadingAnchor2 = [(PHCarPlayProgressView *)v3 leadingAnchor];
+    v42 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v62[4] = v42;
-    v41 = [(PHCarPlayProgressView *)v3 elapsedLabel];
-    v39 = [v41 firstBaselineAnchor];
-    v40 = [(PHCarPlayProgressView *)v3 trackView];
-    v38 = [v40 bottomAnchor];
-    v37 = [v39 constraintEqualToAnchor:v38 constant:14.0];
+    elapsedLabel2 = [(PHCarPlayProgressView *)v3 elapsedLabel];
+    firstBaselineAnchor = [elapsedLabel2 firstBaselineAnchor];
+    trackView5 = [(PHCarPlayProgressView *)v3 trackView];
+    bottomAnchor = [trackView5 bottomAnchor];
+    v37 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:14.0];
     v62[5] = v37;
-    v36 = [(PHCarPlayProgressView *)v3 remainingLabel];
-    v35 = [v36 trailingAnchor];
-    v34 = [(PHCarPlayProgressView *)v3 trailingAnchor];
-    v33 = [v35 constraintEqualToAnchor:v34];
+    remainingLabel = [(PHCarPlayProgressView *)v3 remainingLabel];
+    trailingAnchor = [remainingLabel trailingAnchor];
+    trailingAnchor2 = [(PHCarPlayProgressView *)v3 trailingAnchor];
+    v33 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v62[6] = v33;
-    v32 = [(PHCarPlayProgressView *)v3 remainingLabel];
-    v22 = [v32 firstBaselineAnchor];
-    v23 = [(PHCarPlayProgressView *)v3 elapsedLabel];
-    v24 = [v23 firstBaselineAnchor];
-    v25 = [v22 constraintEqualToAnchor:v24];
+    remainingLabel2 = [(PHCarPlayProgressView *)v3 remainingLabel];
+    firstBaselineAnchor2 = [remainingLabel2 firstBaselineAnchor];
+    elapsedLabel3 = [(PHCarPlayProgressView *)v3 elapsedLabel];
+    firstBaselineAnchor3 = [elapsedLabel3 firstBaselineAnchor];
+    v25 = [firstBaselineAnchor2 constraintEqualToAnchor:firstBaselineAnchor3];
     v62[7] = v25;
-    v26 = [(PHCarPlayProgressView *)v3 bottomAnchor];
-    v27 = [(PHCarPlayProgressView *)v3 remainingLabel];
-    v28 = [v27 bottomAnchor];
-    v29 = [v26 constraintEqualToAnchor:v28];
+    bottomAnchor2 = [(PHCarPlayProgressView *)v3 bottomAnchor];
+    remainingLabel3 = [(PHCarPlayProgressView *)v3 remainingLabel];
+    bottomAnchor3 = [remainingLabel3 bottomAnchor];
+    v29 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v62[8] = v29;
     v30 = [NSArray arrayWithObjects:v62 count:9];
     [NSLayoutConstraint activateConstraints:v30];
@@ -121,14 +121,14 @@
   return v3;
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  if (a3 < 0.0)
+  if (progress < 0.0)
   {
-    a3 = 0.0;
+    progress = 0.0;
   }
 
-  self->_progress = fmin(a3, 1.0);
+  self->_progress = fmin(progress, 1.0);
   [(PHCarPlayProgressView *)self setNeedsLayout];
 }
 
@@ -143,8 +143,8 @@
   v4 = v3;
   [(PHCarPlayProgressView *)self progress];
   v6 = v5 * v4;
-  v7 = [(PHCarPlayProgressView *)self indicatorView];
-  [v7 setFrame:{v6, 0.0, 2.0, 7.0}];
+  indicatorView = [(PHCarPlayProgressView *)self indicatorView];
+  [indicatorView setFrame:{v6, 0.0, 2.0, 7.0}];
 
   +[CATransaction commit];
 }

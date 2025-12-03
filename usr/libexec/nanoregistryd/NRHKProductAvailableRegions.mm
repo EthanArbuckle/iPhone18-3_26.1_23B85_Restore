@@ -1,25 +1,25 @@
 @interface NRHKProductAvailableRegions
-+ (id)_decodePlistDictionary:(id)a3;
-+ (id)regionsForProductWithName:(id)a3 error:(id *)a4;
++ (id)_decodePlistDictionary:(id)dictionary;
++ (id)regionsForProductWithName:(id)name error:(id *)error;
 @end
 
 @implementation NRHKProductAvailableRegions
 
-+ (id)regionsForProductWithName:(id)a3 error:(id *)a4
++ (id)regionsForProductWithName:(id)name error:(id *)error
 {
-  v6 = a3;
+  nameCopy = name;
   v7 = +[NRHKProductUtilities systemRootDirectory];
   v8 = [v7 stringByAppendingString:@"/System/Library/Health/AvailableRegions"];
   v9 = [NSURL fileURLWithPath:v8 isDirectory:1];
 
-  v10 = [v9 URLByAppendingPathComponent:v6];
+  v10 = [v9 URLByAppendingPathComponent:nameCopy];
 
   v11 = [v10 URLByAppendingPathExtension:@"plist"];
 
-  v12 = [NSDictionary dictionaryWithContentsOfURL:v11 error:a4];
+  v12 = [NSDictionary dictionaryWithContentsOfURL:v11 error:error];
   if (v12)
   {
-    v13 = [a1 _decodePlistDictionary:v12];
+    v13 = [self _decodePlistDictionary:v12];
   }
 
   else
@@ -36,11 +36,11 @@
   return v14;
 }
 
-+ (id)_decodePlistDictionary:(id)a3
++ (id)_decodePlistDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"AvailableRegionsVersion"];
-  v5 = [v3 objectForKeyedSubscript:@"AvailableRegions"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"AvailableRegionsVersion"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"AvailableRegions"];
   v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
   if ([v5 count])
   {

@@ -1,29 +1,29 @@
 @interface CSSafetySOSStateMachine
 - (BOOL)notifySOStoAOP;
-- (CSSafetySOSStateMachine)initWithSilo:(id)a3 vendor:(id)a4 client:(id)a5 aopService:(void *)a6;
+- (CSSafetySOSStateMachine)initWithSilo:(id)silo vendor:(id)vendor client:(id)client aopService:(void *)service;
 - (void)clearAll;
 - (void)dealloc;
 - (void)feedCompanionDetected;
-- (void)feedDetectionDecision:(BOOL)a3 uuid:(id)a4 forMode:(unsigned __int8)a5;
-- (void)feedPotentialEventWithTimestamp:(unint64_t)a3 forMode:(unsigned __int8)a4 martyIsBicycle:(BOOL)a5;
-- (void)notifyCompanionOfSafetyEventType:(int)a3;
+- (void)feedDetectionDecision:(BOOL)decision uuid:(id)uuid forMode:(unsigned __int8)mode;
+- (void)feedPotentialEventWithTimestamp:(unint64_t)timestamp forMode:(unsigned __int8)mode martyIsBicycle:(BOOL)bicycle;
+- (void)notifyCompanionOfSafetyEventType:(int)type;
 - (void)notifySOSDaemon;
-- (void)onCompanionMessage:(int)a3 data:(id)a4 receivedTimestamp:(double)a5;
+- (void)onCompanionMessage:(int)message data:(id)data receivedTimestamp:(double)timestamp;
 - (void)resetAllPersistedValues;
-- (void)startTimer:(double)a3;
+- (void)startTimer:(double)timer;
 - (void)stopTimer;
-- (void)updateCompanionUUID:(id)a3;
-- (void)updateLocalUUID:(id)a3;
-- (void)updatedSOSKappaStatus:(id)a3;
+- (void)updateCompanionUUID:(id)d;
+- (void)updateLocalUUID:(id)d;
+- (void)updatedSOSKappaStatus:(id)status;
 @end
 
 @implementation CSSafetySOSStateMachine
 
-- (CSSafetySOSStateMachine)initWithSilo:(id)a3 vendor:(id)a4 client:(id)a5 aopService:(void *)a6
+- (CSSafetySOSStateMachine)initWithSilo:(id)silo vendor:(id)vendor client:(id)client aopService:(void *)service
 {
-  v82 = a3;
-  v81 = a4;
-  v80 = a5;
+  siloCopy = silo;
+  vendorCopy = vendor;
+  clientCopy = client;
   if (qword_100456948 != -1)
   {
     sub_1002EFAAC();
@@ -37,35 +37,35 @@
   }
 
   self->_valid = 1;
-  objc_storeStrong(&self->_client, a5);
-  objc_storeStrong(&self->_vendor, a4);
-  self->_aopSvc = a6;
-  v11 = [v81 proxyForService:@"CSCompanionService"];
+  objc_storeStrong(&self->_client, client);
+  objc_storeStrong(&self->_vendor, vendor);
+  self->_aopSvc = service;
+  v11 = [vendorCopy proxyForService:@"CSCompanionService"];
   companion = self->_companion;
   self->_companion = v11;
 
-  [(CSCompanionServiceProtocol *)self->_companion registerDelegate:self inSilo:v82];
+  [(CSCompanionServiceProtocol *)self->_companion registerDelegate:self inSilo:siloCopy];
   [(CSCompanionServiceProtocol *)self->_companion registerClient:self];
   v13 = objc_initWeak(&location, self);
-  v14 = [v82 newTimer];
+  newTimer = [siloCopy newTimer];
   timer = self->_timer;
-  self->_timer = v14;
+  self->_timer = newTimer;
 
   v93[0] = _NSConcreteStackBlock;
   v93[1] = 3221225472;
   v93[2] = sub_1002EDE50;
   v93[3] = &unk_100431708;
-  v16 = self;
-  v94 = v16;
+  selfCopy = self;
+  v94 = selfCopy;
   [(CLTimer *)self->_timer setHandler:v93];
   v17 = +[SOSKappaManager sharedInstance];
-  [v17 addObserver:v16];
+  [v17 addObserver:selfCopy];
 
   v91[0] = _NSConcreteStackBlock;
   v91[1] = 3221225472;
   v91[2] = sub_1002EDEE4;
   v91[3] = &unk_1004316E0;
-  v18 = v16;
+  v18 = selfCopy;
   v92 = v18;
   v19 = objc_retainBlock(v91);
   p_idleState = &v18->_idleState;
@@ -288,7 +288,7 @@
   [(CSSafetySOSStateMachine *)&v4 dealloc];
 }
 
-- (void)startTimer:(double)a3
+- (void)startTimer:(double)timer
 {
   if (qword_100456948 != -1)
   {
@@ -302,7 +302,7 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "startTimer", v6, 2u);
   }
 
-  [(CLTimer *)self->_timer setNextFireDelay:a3 interval:1.79769313e308];
+  [(CLTimer *)self->_timer setNextFireDelay:timer interval:1.79769313e308];
 }
 
 - (void)stopTimer
@@ -322,9 +322,9 @@
   [(CLTimer *)self->_timer setNextFireDelay:1.79769313e308 interval:1.79769313e308];
 }
 
-- (void)updateLocalUUID:(id)a3
+- (void)updateLocalUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (qword_100456948 != -1)
   {
     sub_1002EFAAC();
@@ -334,7 +334,7 @@
   if (os_log_type_enabled(qword_100456950, OS_LOG_TYPE_DEBUG))
   {
     v22 = 138412290;
-    v23 = v4;
+    v23 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "updateLocalUUID with %@", &v22, 0xCu);
   }
 
@@ -353,7 +353,7 @@
     }
   }
 
-  if (!v4)
+  if (!dCopy)
   {
     if (qword_100456948 != -1)
     {
@@ -378,15 +378,15 @@
   {
     localTriggerUUID = self->_localTriggerUUID;
     v22 = 138412546;
-    v23 = v4;
+    v23 = dCopy;
     v24 = 2112;
     v25 = localTriggerUUID;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "UUID new: %@ prev: %@", &v22, 0x16u);
   }
 
   v10 = [NSUUID alloc];
-  v11 = [v4 UUIDString];
-  v12 = [v10 initWithUUIDString:v11];
+  uUIDString = [dCopy UUIDString];
+  v12 = [v10 initWithUUIDString:uUIDString];
   v13 = self->_localTriggerUUID;
   self->_localTriggerUUID = v12;
 
@@ -405,16 +405,16 @@
   }
 
   defaults = self->_defaults;
-  v21 = [(NSUUID *)self->_localTriggerUUID UUIDString];
-  [(NSUserDefaults *)defaults setObject:v21 forKey:@"KappaLocalUUID"];
+  uUIDString2 = [(NSUUID *)self->_localTriggerUUID UUIDString];
+  [(NSUserDefaults *)defaults setObject:uUIDString2 forKey:@"KappaLocalUUID"];
 
   [(NSUserDefaults *)self->_defaults setDouble:@"KappaLocalTimestamp" forKey:self->_localDecisionTimestamp];
   [(NSUserDefaults *)self->_defaults setDouble:@"KappaExpirationTimestamp" forKey:v18 + localDecisionTimestamp];
 }
 
-- (void)updateCompanionUUID:(id)a3
+- (void)updateCompanionUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (qword_100456948 != -1)
   {
     sub_1002EFAAC();
@@ -424,7 +424,7 @@
   if (os_log_type_enabled(qword_100456950, OS_LOG_TYPE_DEBUG))
   {
     v17 = 138412290;
-    v18 = v4;
+    v18 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "updateCompanionUUID with %@", &v17, 0xCu);
   }
 
@@ -443,7 +443,7 @@
     }
   }
 
-  if (!v4)
+  if (!dCopy)
   {
     if (qword_100456948 != -1)
     {
@@ -468,22 +468,22 @@
   {
     companionTriggerUUID = self->_companionTriggerUUID;
     v17 = 138412546;
-    v18 = v4;
+    v18 = dCopy;
     v19 = 2112;
     v20 = companionTriggerUUID;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "CompanionUUID new: %@ prev: %@", &v17, 0x16u);
   }
 
   v10 = [NSUUID alloc];
-  v11 = [v4 UUIDString];
-  v12 = [v10 initWithUUIDString:v11];
+  uUIDString = [dCopy UUIDString];
+  v12 = [v10 initWithUUIDString:uUIDString];
   p_companionTriggerUUID = &self->_companionTriggerUUID;
   v13 = self->_companionTriggerUUID;
   self->_companionTriggerUUID = v12;
 
   defaults = self->_defaults;
-  v16 = [(NSUUID *)*p_companionTriggerUUID UUIDString];
-  [(NSUserDefaults *)defaults setObject:v16 forKey:@"KappaCompanionUUID"];
+  uUIDString2 = [(NSUUID *)*p_companionTriggerUUID UUIDString];
+  [(NSUserDefaults *)defaults setObject:uUIDString2 forKey:@"KappaCompanionUUID"];
 }
 
 - (void)notifySOSDaemon
@@ -519,11 +519,11 @@
   objc_destroyWeak(&location);
 }
 
-- (void)notifyCompanionOfSafetyEventType:(int)a3
+- (void)notifyCompanionOfSafetyEventType:(int)type
 {
-  if ((a3 - 3) > 0xFFFFFFFD)
+  if ((type - 3) > 0xFFFFFFFD)
   {
-    v7[0] = a3;
+    v7[0] = type;
     v6 = sub_1000190FC(v7);
     [(CSCompanionServiceProtocol *)self->_companion sendData:v6 type:400];
   }
@@ -539,7 +539,7 @@
     if (os_log_type_enabled(qword_100456870, OS_LOG_TYPE_FAULT))
     {
       v7[0] = 67109120;
-      v7[1] = a3;
+      v7[1] = type;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_FAULT, "invalid mode %d", v7, 8u);
     }
   }
@@ -569,12 +569,12 @@
   [(CSHSMObjc *)self->_hsm signal:4 data:0];
 }
 
-- (void)feedDetectionDecision:(BOOL)a3 uuid:(id)a4 forMode:(unsigned __int8)a5
+- (void)feedDetectionDecision:(BOOL)decision uuid:(id)uuid forMode:(unsigned __int8)mode
 {
-  v5 = a5;
-  v6 = a3;
-  v8 = a4;
-  if (self->_mode != v5)
+  modeCopy = mode;
+  decisionCopy = decision;
+  uuidCopy = uuid;
+  if (self->_mode != modeCopy)
   {
     if (qword_100456948 != -1)
     {
@@ -588,11 +588,11 @@
       LODWORD(v17) = 16777728;
       BYTE4(v17) = mode;
       *(&v17 + 5) = 256;
-      HIBYTE(v17) = v5;
+      HIBYTE(v17) = modeCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_FAULT, "SOS mode switch detected %hhu -> %hhu", &v17, 8u);
     }
 
-    self->_mode = v5;
+    self->_mode = modeCopy;
   }
 
   if (qword_100456948 != -1)
@@ -604,23 +604,23 @@
   if (os_log_type_enabled(qword_100456950, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(v17) = 67109378;
-    HIDWORD(v17) = v6;
+    HIDWORD(v17) = decisionCopy;
     LOWORD(v18[0]) = 2112;
-    *(v18 + 2) = v8;
+    *(v18 + 2) = uuidCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "feedDetectionDecision: decision: %d uuid: %@", &v17, 0x12u);
   }
 
   v17 = 0;
   v18[0] = 0;
-  [v8 getUUIDBytes:&v17];
+  [uuidCopy getUUIDBytes:&v17];
   defaults = self->_defaults;
   v13 = +[SOSKappaManager currentSOSStatus];
-  v14 = [v13 uuid];
-  v15 = [v14 UUIDString];
-  [(NSUserDefaults *)defaults setObject:v15 forKey:@"KappaSOSUUID"];
+  uuid = [v13 uuid];
+  uUIDString = [uuid UUIDString];
+  [(NSUserDefaults *)defaults setObject:uUIDString forKey:@"KappaSOSUUID"];
 
   hsm = self->_hsm;
-  if (v6)
+  if (decisionCopy)
   {
     [(CSHSMObjc *)hsm signal:2 data:&v17];
   }
@@ -631,7 +631,7 @@
   }
 }
 
-- (void)feedPotentialEventWithTimestamp:(unint64_t)a3 forMode:(unsigned __int8)a4 martyIsBicycle:(BOOL)a5
+- (void)feedPotentialEventWithTimestamp:(unint64_t)timestamp forMode:(unsigned __int8)mode martyIsBicycle:(BOOL)bicycle
 {
   if (qword_100456948 != -1)
   {
@@ -642,12 +642,12 @@
   if (os_log_type_enabled(qword_100456950, OS_LOG_TYPE_DEBUG))
   {
     v10 = 134217984;
-    v11 = a3;
+    timestampCopy = timestamp;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "feedPotentialEventWithTimestamp: timestamp %llu", &v10, 0xCu);
   }
 
-  self->_mode = a4;
-  self->_martyIsBicycle = a5;
+  self->_mode = mode;
+  self->_martyIsBicycle = bicycle;
   [(CSHSMObjc *)self->_hsm signal:1 data:0];
 }
 
@@ -695,17 +695,17 @@
   [(CSSafetySOSStateMachine *)self stopTimer];
 }
 
-- (void)onCompanionMessage:(int)a3 data:(id)a4 receivedTimestamp:(double)a5
+- (void)onCompanionMessage:(int)message data:(id)data receivedTimestamp:(double)timestamp
 {
-  v10 = a4;
-  if ((a3 - 305) < 2 || a3 == 6)
+  dataCopy = data;
+  if ((message - 305) < 2 || message == 6)
   {
     v7 = +[CSPermissions sharedInstance];
-    v8 = [v7 firstOrThirdPartyEnabled];
+    firstOrThirdPartyEnabled = [v7 firstOrThirdPartyEnabled];
 
-    if (v8)
+    if (firstOrThirdPartyEnabled)
     {
-      v9 = [[NSUUID alloc] initWithUUIDBytes:{objc_msgSend(v10, "bytes")}];
+      v9 = [[NSUUID alloc] initWithUUIDBytes:{objc_msgSend(dataCopy, "bytes")}];
       [(CSSafetySOSStateMachine *)self updateCompanionUUID:v9];
 
       [(CSSafetySOSStateMachine *)self feedCompanionDetected];
@@ -713,9 +713,9 @@
   }
 }
 
-- (void)updatedSOSKappaStatus:(id)a3
+- (void)updatedSOSKappaStatus:(id)status
 {
-  v5 = a3;
+  statusCopy = status;
   if (qword_100456948 != -1)
   {
     sub_1002EFAAC();
@@ -724,22 +724,22 @@
   v6 = qword_100456950;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v5 sosStatus];
+    sosStatus = [statusCopy sosStatus];
     v13 = 134218496;
-    v14 = [v7 flowState];
+    flowState = [sosStatus flowState];
     v15 = 1024;
-    v16 = [v5 isKappaFlow];
+    isKappaFlow = [statusCopy isKappaFlow];
     v17 = 1024;
-    v18 = [v5 isKappaFlowActive];
+    isKappaFlowActive = [statusCopy isKappaFlowActive];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "updatedSOSSafetyStatus state:%ld, isKappaFlow:%d, isKappaFlowActive:%d", &v13, 0x18u);
   }
 
-  if ([v5 isKappaFlow])
+  if ([statusCopy isKappaFlow])
   {
-    objc_storeStrong(&self->_sosStatus, a3);
-    v8 = [v5 isKappaFlowActive];
+    objc_storeStrong(&self->_sosStatus, status);
+    isKappaFlowActive2 = [statusCopy isKappaFlowActive];
     hsm = self->_hsm;
-    if (v8)
+    if (isKappaFlowActive2)
     {
       v10 = 7;
     }
@@ -750,7 +750,7 @@
     }
 
     [(CSHSMObjc *)self->_hsm signal:v10 data:0];
-    if ([v5 sosKappaState] == 1)
+    if ([statusCopy sosKappaState] == 1)
     {
       if (qword_100456948 != -1)
       {

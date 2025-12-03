@@ -1,42 +1,42 @@
 @interface HKInteractiveChartAudioLevelStatFormatter
-- (id)_attributedCurrentAudioExposureClassificationForChartData:(id)a3;
-- (id)_formatDuration:(double)a3;
-- (id)_formatQuantityAudioData:(id)a3;
-- (id)_formattedCurrentValueForChartData:(id)a3;
-- (id)_formattedStringWithValue:(double)a3 unit:(id)a4 showUnit:(BOOL)a5;
+- (id)_attributedCurrentAudioExposureClassificationForChartData:(id)data;
+- (id)_formatDuration:(double)duration;
+- (id)_formatQuantityAudioData:(id)data;
+- (id)_formattedCurrentValueForChartData:(id)data;
+- (id)_formattedStringWithValue:(double)value unit:(id)unit showUnit:(BOOL)showUnit;
 - (id)_majorAttributes;
 - (id)_minorAttributes;
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4;
-- (id)initForDisplayType:(id)a3 timeScope:(int64_t)a4;
-- (int64_t)_numberOfDaysVisibleInRange:(id)a3;
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context;
+- (id)initForDisplayType:(id)type timeScope:(int64_t)scope;
+- (int64_t)_numberOfDaysVisibleInRange:(id)range;
 @end
 
 @implementation HKInteractiveChartAudioLevelStatFormatter
 
-- (id)initForDisplayType:(id)a3 timeScope:(int64_t)a4
+- (id)initForDisplayType:(id)type timeScope:(int64_t)scope
 {
-  v6 = a3;
+  typeCopy = type;
   v15.receiver = self;
   v15.super_class = HKInteractiveChartAudioLevelStatFormatter;
   v7 = [(HKInteractiveChartAudioLevelStatFormatter *)&v15 init];
   if (v7)
   {
-    v8 = [v6 chartingRules];
-    if ([v8 chartStyleForTimeScope:a4] == 3)
+    chartingRules = [typeCopy chartingRules];
+    if ([chartingRules chartStyleForTimeScope:scope] == 3)
     {
     }
 
     else
     {
-      v9 = [v6 chartingRules];
-      v10 = [v9 chartStyleForTimeScope:a4];
+      chartingRules2 = [typeCopy chartingRules];
+      v10 = [chartingRules2 chartStyleForTimeScope:scope];
 
       if (v10 != 9)
       {
-        v12 = [v6 objectType];
-        v13 = [v12 aggregationStyle];
+        objectType = [typeCopy objectType];
+        aggregationStyle = [objectType aggregationStyle];
 
-        if (v13)
+        if (aggregationStyle)
         {
           v11 = &unk_1F43811B0;
         }
@@ -58,23 +58,23 @@ LABEL_9:
   return v7;
 }
 
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6 || ![v6 count])
+  dataCopy = data;
+  v7 = dataCopy;
+  if (!dataCopy || ![dataCopy count])
   {
     v11 = MEMORY[0x1E695E0F0];
     goto LABEL_15;
   }
 
-  v8 = [v7 firstObject];
+  firstObject = [v7 firstObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v12 = [v7 firstObject];
+    firstObject2 = [v7 firstObject];
     objc_opt_class();
     v11 = objc_opt_isKindOfClass();
 
@@ -82,20 +82,20 @@ LABEL_9:
     {
       v16.receiver = self;
       v16.super_class = HKInteractiveChartAudioLevelStatFormatter;
-      v10 = [(HKInteractiveChartGenericStatFormatter *)&v16 formattedSelectedRangeLabelDataWithChartData:v7 context:a4];
+      v10 = [(HKInteractiveChartGenericStatFormatter *)&v16 formattedSelectedRangeLabelDataWithChartData:v7 context:context];
       goto LABEL_14;
     }
 
     v13 = v7;
     if ([(HKInteractiveChartAudioLevelStatFormatter *)self showsClassificationInCurrentValueView])
     {
-      if (a4 == 1)
+      if (context == 1)
       {
         v14 = [(HKInteractiveChartAudioLevelStatFormatter *)self _formattedCurrentValueForChartData:v13];
         goto LABEL_11;
       }
 
-      if (a4)
+      if (context)
       {
 LABEL_12:
 
@@ -117,12 +117,12 @@ LABEL_15:
   return v11;
 }
 
-- (id)_formattedCurrentValueForChartData:(id)a3
+- (id)_formattedCurrentValueForChartData:(id)data
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v5 = [[HKSelectedRangeData alloc] initWithStatisticsType:4];
-  v6 = [(HKInteractiveChartAudioLevelStatFormatter *)self _attributedCurrentAudioExposureClassificationForChartData:v4];
+  v6 = [(HKInteractiveChartAudioLevelStatFormatter *)self _attributedCurrentAudioExposureClassificationForChartData:dataCopy];
 
   [(HKSelectedRangeData *)v5 setAttributedString:v6];
   [(HKSelectedRangeData *)v5 setValueAsNumber:0];
@@ -132,19 +132,19 @@ LABEL_15:
   return v7;
 }
 
-- (id)_attributedCurrentAudioExposureClassificationForChartData:(id)a3
+- (id)_attributedCurrentAudioExposureClassificationForChartData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [HKDateCache alloc];
-  v6 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v7 = [(HKDateCache *)v5 initWithCalendar:v6];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v7 = [(HKDateCache *)v5 initWithCalendar:currentCalendar];
 
-  v8 = [v4 lastObject];
-  v9 = [v8 endDate];
+  lastObject = [dataCopy lastObject];
+  endDate = [lastObject endDate];
 
-  v10 = [(HKInteractiveChartGenericStatFormatter *)self chartRangeProvider];
-  v11 = [v10 effectiveVisibleRangeActive];
-  v12 = [(HKInteractiveChartAudioLevelStatFormatter *)self _numberOfDaysVisibleInRange:v11];
+  chartRangeProvider = [(HKInteractiveChartGenericStatFormatter *)self chartRangeProvider];
+  effectiveVisibleRangeActive = [chartRangeProvider effectiveVisibleRangeActive];
+  v12 = [(HKInteractiveChartAudioLevelStatFormatter *)self _numberOfDaysVisibleInRange:effectiveVisibleRangeActive];
 
   v23 = 0;
   v24 = &v23;
@@ -155,14 +155,14 @@ LABEL_15:
   v22[2] = __103__HKInteractiveChartAudioLevelStatFormatter__attributedCurrentAudioExposureClassificationForChartData___block_invoke;
   v22[3] = &unk_1E81B6FA0;
   v22[4] = &v23;
-  v13 = [v4 hk_map:v22];
+  v13 = [dataCopy hk_map:v22];
   v14 = [MEMORY[0x1E696BF20] computeLEQFromAudioExposureValues:v13];
   v15 = [HKAudioExposureDataProviderCurrentValue alloc];
-  v16 = [(HKAudioExposureDataProviderCurrentValue *)v15 initWithLEQQuantity:v14 secondsListened:v12 daysAggregated:v9 date:v24[3]];
-  v17 = [(HKInteractiveChartDataFormatter *)self displayType];
-  v18 = [(HKInteractiveChartDataFormatter *)self unitController];
-  v19 = [(HKInteractiveChartDataFormatter *)self majorFont];
-  v20 = [(HKAudioExposureDataProviderCurrentValue *)v16 attributedStringWithDisplayType:v17 unitController:v18 valueFont:v19 unitFont:0 dateCache:v7];
+  v16 = [(HKAudioExposureDataProviderCurrentValue *)v15 initWithLEQQuantity:v14 secondsListened:v12 daysAggregated:endDate date:v24[3]];
+  displayType = [(HKInteractiveChartDataFormatter *)self displayType];
+  unitController = [(HKInteractiveChartDataFormatter *)self unitController];
+  majorFont = [(HKInteractiveChartDataFormatter *)self majorFont];
+  v20 = [(HKAudioExposureDataProviderCurrentValue *)v16 attributedStringWithDisplayType:displayType unitController:unitController valueFont:majorFont unitFont:0 dateCache:v7];
 
   _Block_object_dispose(&v23, 8);
 
@@ -189,11 +189,11 @@ id __103__HKInteractiveChartAudioLevelStatFormatter__attributedCurrentAudioExpos
 {
   v7[2] = *MEMORY[0x1E69E9840];
   v6[0] = *MEMORY[0x1E69DB648];
-  v2 = [(HKInteractiveChartDataFormatter *)self majorFont];
-  v7[0] = v2;
+  majorFont = [(HKInteractiveChartDataFormatter *)self majorFont];
+  v7[0] = majorFont;
   v6[1] = *MEMORY[0x1E69DB650];
-  v3 = [MEMORY[0x1E69DC888] hk_chartLollipopValueColor];
-  v7[1] = v3;
+  hk_chartLollipopValueColor = [MEMORY[0x1E69DC888] hk_chartLollipopValueColor];
+  v7[1] = hk_chartLollipopValueColor;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:2];
 
   return v4;
@@ -203,29 +203,29 @@ id __103__HKInteractiveChartAudioLevelStatFormatter__attributedCurrentAudioExpos
 {
   v7[2] = *MEMORY[0x1E69E9840];
   v6[0] = *MEMORY[0x1E69DB648];
-  v2 = [(HKInteractiveChartDataFormatter *)self minorFont];
-  v7[0] = v2;
+  minorFont = [(HKInteractiveChartDataFormatter *)self minorFont];
+  v7[0] = minorFont;
   v6[1] = *MEMORY[0x1E69DB650];
-  v3 = [MEMORY[0x1E69DC888] hk_chartLollipopLabelColor];
-  v7[1] = v3;
+  hk_chartLollipopLabelColor = [MEMORY[0x1E69DC888] hk_chartLollipopLabelColor];
+  v7[1] = hk_chartLollipopLabelColor;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:2];
 
   return v4;
 }
 
-- (id)_formattedStringWithValue:(double)a3 unit:(id)a4 showUnit:(BOOL)a5
+- (id)_formattedStringWithValue:(double)value unit:(id)unit showUnit:(BOOL)showUnit
 {
-  v5 = a5;
+  showUnitCopy = showUnit;
   v33[1] = *MEMORY[0x1E69E9840];
   v8 = MEMORY[0x1E696AD98];
-  v9 = a4;
-  v10 = [v8 numberWithDouble:a3];
-  v11 = [(HKInteractiveChartDataFormatter *)self displayType];
-  if (v11)
+  unitCopy = unit;
+  v10 = [v8 numberWithDouble:value];
+  displayType = [(HKInteractiveChartDataFormatter *)self displayType];
+  if (displayType)
   {
-    v12 = [(HKInteractiveChartDataFormatter *)self displayType];
-    v13 = [v12 presentation];
-    v14 = [v13 adjustedValueForDaemonValue:v10];
+    displayType2 = [(HKInteractiveChartDataFormatter *)self displayType];
+    presentation = [displayType2 presentation];
+    v14 = [presentation adjustedValueForDaemonValue:v10];
   }
 
   else
@@ -233,26 +233,26 @@ id __103__HKInteractiveChartAudioLevelStatFormatter__attributedCurrentAudioExpos
     v14 = v10;
   }
 
-  v15 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v16 = [(HKInteractiveChartDataFormatter *)self unitStringFromUnit:v9 number:v15];
+  v15 = [MEMORY[0x1E696AD98] numberWithDouble:value];
+  v16 = [(HKInteractiveChartDataFormatter *)self unitStringFromUnit:unitCopy number:v15];
 
   v17 = [(HKInteractiveChartDataFormatter *)self valueStringFromNumber:v14];
   v18 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v19 = [(HKInteractiveChartAudioLevelStatFormatter *)self _majorAttributes];
-  v20 = [v18 initWithString:v17 attributes:v19];
+  _majorAttributes = [(HKInteractiveChartAudioLevelStatFormatter *)self _majorAttributes];
+  v20 = [v18 initWithString:v17 attributes:_majorAttributes];
 
-  if (v5 && [v16 length])
+  if (showUnitCopy && [v16 length])
   {
     v21 = objc_alloc(MEMORY[0x1E696AAB0]);
     v32 = *MEMORY[0x1E69DB648];
-    v22 = [(HKInteractiveChartDataFormatter *)self minorFont];
-    v33[0] = v22;
+    minorFont = [(HKInteractiveChartDataFormatter *)self minorFont];
+    v33[0] = minorFont;
     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:&v32 count:1];
     v24 = [v21 initWithString:@" " attributes:v23];
 
     v25 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v26 = [(HKInteractiveChartAudioLevelStatFormatter *)self _minorAttributes];
-    v27 = [v25 initWithString:v16 attributes:v26];
+    _minorAttributes = [(HKInteractiveChartAudioLevelStatFormatter *)self _minorAttributes];
+    v27 = [v25 initWithString:v16 attributes:_minorAttributes];
 
     v31[0] = v20;
     v31[1] = v24;
@@ -269,16 +269,16 @@ id __103__HKInteractiveChartAudioLevelStatFormatter__attributedCurrentAudioExpos
   return v29;
 }
 
-- (int64_t)_numberOfDaysVisibleInRange:(id)a3
+- (int64_t)_numberOfDaysVisibleInRange:(id)range
 {
-  v3 = a3;
-  v4 = [v3 startDate];
-  if (v4 && (v5 = v4, [v3 endDate], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
+  rangeCopy = range;
+  startDate = [rangeCopy startDate];
+  if (startDate && (v5 = startDate, [rangeCopy endDate], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
   {
-    v7 = [v3 startDate];
-    v8 = [v3 endDate];
-    v9 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v10 = [v9 components:16 fromDate:v7 toDate:v8 options:0];
+    startDate2 = [rangeCopy startDate];
+    endDate = [rangeCopy endDate];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v10 = [currentCalendar components:16 fromDate:startDate2 toDate:endDate options:0];
 
     if ([v10 day] < 1)
     {
@@ -299,21 +299,21 @@ id __103__HKInteractiveChartAudioLevelStatFormatter__attributedCurrentAudioExpos
   return v11;
 }
 
-- (id)_formatQuantityAudioData:(id)a3
+- (id)_formatQuantityAudioData:(id)data
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696C510] decibelAWeightedSoundPressureLevelUnit];
-  v6 = [v4 count];
-  v7 = [v4 firstObject];
-  v8 = v7;
+  dataCopy = data;
+  decibelAWeightedSoundPressureLevelUnit = [MEMORY[0x1E696C510] decibelAWeightedSoundPressureLevelUnit];
+  v6 = [dataCopy count];
+  firstObject = [dataCopy firstObject];
+  v8 = firstObject;
   if (v6 < 2)
   {
-    v22 = [v7 overviewData];
-    if (v22)
+    overviewData = [firstObject overviewData];
+    if (overviewData)
     {
-      v23 = [v8 overviewData];
-      [v23 averageLEQ];
+      overviewData2 = [v8 overviewData];
+      [overviewData2 averageLEQ];
       v25 = v24;
     }
 
@@ -323,11 +323,11 @@ id __103__HKInteractiveChartAudioLevelStatFormatter__attributedCurrentAudioExpos
       v25 = v28;
     }
 
-    v29 = [v8 overviewData];
-    if (v29)
+    overviewData3 = [v8 overviewData];
+    if (overviewData3)
     {
-      v30 = [v8 overviewData];
-      [v30 duration];
+      overviewData4 = [v8 overviewData];
+      [overviewData4 duration];
       v32 = v31;
     }
 
@@ -337,14 +337,14 @@ id __103__HKInteractiveChartAudioLevelStatFormatter__attributedCurrentAudioExpos
       v32 = v33;
     }
 
-    v34 = [(HKInteractiveChartGenericStatFormatter *)self overrideStatFormatterItemOptions];
-    v35 = [v34 count];
+    overrideStatFormatterItemOptions = [(HKInteractiveChartGenericStatFormatter *)self overrideStatFormatterItemOptions];
+    v35 = [overrideStatFormatterItemOptions count];
 
     if (v35 == 1)
     {
-      v36 = [(HKInteractiveChartGenericStatFormatter *)self overrideStatFormatterItemOptions];
-      v37 = [v36 firstObject];
-      v38 = [(HKInteractiveChartGenericStatFormatter *)HKInteractiveChartAudioLevelStatFormatter mapSingleItemToStatisticsType:v37];
+      overrideStatFormatterItemOptions2 = [(HKInteractiveChartGenericStatFormatter *)self overrideStatFormatterItemOptions];
+      firstObject2 = [overrideStatFormatterItemOptions2 firstObject];
+      v38 = [(HKInteractiveChartGenericStatFormatter *)HKInteractiveChartAudioLevelStatFormatter mapSingleItemToStatisticsType:firstObject2];
     }
 
     else
@@ -353,7 +353,7 @@ id __103__HKInteractiveChartAudioLevelStatFormatter__attributedCurrentAudioExpos
     }
 
     v26 = [[HKSelectedRangeData alloc] initWithStatisticsType:v38];
-    v39 = [(HKInteractiveChartAudioLevelStatFormatter *)self _formattedStringWithValue:v5 unit:1 showUnit:v25];
+    v39 = [(HKInteractiveChartAudioLevelStatFormatter *)self _formattedStringWithValue:decibelAWeightedSoundPressureLevelUnit unit:1 showUnit:v25];
     [(HKSelectedRangeData *)v26 setAttributedString:v39];
 
     v40 = [MEMORY[0x1E696AD98] numberWithDouble:v25];
@@ -364,14 +364,14 @@ id __103__HKInteractiveChartAudioLevelStatFormatter__attributedCurrentAudioExpos
 
   else
   {
-    [v7 averageLEQ];
+    [firstObject averageLEQ];
     v10 = v9;
 
     v45 = 0u;
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v11 = v4;
+    v11 = dataCopy;
     v12 = [v11 countByEnumeratingWithState:&v43 objects:v48 count:16];
     if (v12)
     {
@@ -417,7 +417,7 @@ id __103__HKInteractiveChartAudioLevelStatFormatter__attributedCurrentAudioExpos
       v16 = v10;
     }
 
-    v26 = [(HKInteractiveChartGenericStatFormatter *)self _formatMin:v5 max:v16 unit:v10];
+    v26 = [(HKInteractiveChartGenericStatFormatter *)self _formatMin:decibelAWeightedSoundPressureLevelUnit max:v16 unit:v10];
     v27 = [(HKInteractiveChartAudioLevelStatFormatter *)self _formatDuration:v15];
   }
 
@@ -428,16 +428,16 @@ id __103__HKInteractiveChartAudioLevelStatFormatter__attributedCurrentAudioExpos
   return v41;
 }
 
-- (id)_formatDuration:(double)a3
+- (id)_formatDuration:(double)duration
 {
   v5 = [[HKSelectedRangeData alloc] initWithStatisticsType:10];
-  v6 = [(HKInteractiveChartDataFormatter *)self majorFont];
-  v7 = [(HKInteractiveChartDataFormatter *)self minorFont];
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v9 = HKTimePeriodStringWithFonts(v6, v7, v8, 0x14uLL);
+  majorFont = [(HKInteractiveChartDataFormatter *)self majorFont];
+  minorFont = [(HKInteractiveChartDataFormatter *)self minorFont];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:duration];
+  v9 = HKTimePeriodStringWithFonts(majorFont, minorFont, v8, 0x14uLL);
   [(HKSelectedRangeData *)v5 setAttributedString:v9];
 
-  v10 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v10 = [MEMORY[0x1E696AD98] numberWithDouble:duration];
   [(HKSelectedRangeData *)v5 setValueAsNumber:v10];
 
   return v5;

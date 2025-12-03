@@ -1,64 +1,64 @@
 @interface CAARSchemaCAARActionLevelDisambiguationHistory
-- (BOOL)isEqual:(id)a3;
-- (CAARSchemaCAARActionLevelDisambiguationHistory)initWithDictionary:(id)a3;
-- (CAARSchemaCAARActionLevelDisambiguationHistory)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CAARSchemaCAARActionLevelDisambiguationHistory)initWithDictionary:(id)dictionary;
+- (CAARSchemaCAARActionLevelDisambiguationHistory)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasMinutesSinceLastActionDisambiguationForThisAction:(BOOL)a3;
-- (void)setHasMinutesSinceLastDisambiguationForSameActions:(BOOL)a3;
-- (void)setHasNumActionDisambiguationsLasTenMinutes:(BOOL)a3;
-- (void)setHasNumActionDisambiguationsLastInfinity:(BOOL)a3;
-- (void)setHasNumActionDisambiguationsLastOneDay:(BOOL)a3;
-- (void)setHasNumActionDisambiguationsLastOneHour:(BOOL)a3;
-- (void)setHasNumActionDisambiguationsLastSevenDays:(BOOL)a3;
-- (void)setHasNumActionDisambiguationsLastSixHours:(BOOL)a3;
-- (void)setHasNumActionDisambiguationsLastTwentyEightDays:(BOOL)a3;
-- (void)setHasNumSelectedActionDisambiguationsLastInfinity:(BOOL)a3;
-- (void)setHasNumSelectedActionDisambiguationsLastOneDay:(BOOL)a3;
-- (void)setHasNumSelectedActionDisambiguationsLastOneHour:(BOOL)a3;
-- (void)setHasNumSelectedActionDisambiguationsLastSevenDays:(BOOL)a3;
-- (void)setHasNumSelectedActionDisambiguationsLastSixHours:(BOOL)a3;
-- (void)setHasNumSelectedActionDisambiguationsLastTenMinutes:(BOOL)a3;
-- (void)setHasNumSelectedActionDisambiguationsLastTwentyEightDays:(BOOL)a3;
-- (void)setHasNumSelectedActionDisambiguationsLastTwoMinutes:(BOOL)a3;
-- (void)setHasWasActionSelectedInLastDisambiguation:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasMinutesSinceLastActionDisambiguationForThisAction:(BOOL)action;
+- (void)setHasMinutesSinceLastDisambiguationForSameActions:(BOOL)actions;
+- (void)setHasNumActionDisambiguationsLasTenMinutes:(BOOL)minutes;
+- (void)setHasNumActionDisambiguationsLastInfinity:(BOOL)infinity;
+- (void)setHasNumActionDisambiguationsLastOneDay:(BOOL)day;
+- (void)setHasNumActionDisambiguationsLastOneHour:(BOOL)hour;
+- (void)setHasNumActionDisambiguationsLastSevenDays:(BOOL)days;
+- (void)setHasNumActionDisambiguationsLastSixHours:(BOOL)hours;
+- (void)setHasNumActionDisambiguationsLastTwentyEightDays:(BOOL)days;
+- (void)setHasNumSelectedActionDisambiguationsLastInfinity:(BOOL)infinity;
+- (void)setHasNumSelectedActionDisambiguationsLastOneDay:(BOOL)day;
+- (void)setHasNumSelectedActionDisambiguationsLastOneHour:(BOOL)hour;
+- (void)setHasNumSelectedActionDisambiguationsLastSevenDays:(BOOL)days;
+- (void)setHasNumSelectedActionDisambiguationsLastSixHours:(BOOL)hours;
+- (void)setHasNumSelectedActionDisambiguationsLastTenMinutes:(BOOL)minutes;
+- (void)setHasNumSelectedActionDisambiguationsLastTwentyEightDays:(BOOL)days;
+- (void)setHasNumSelectedActionDisambiguationsLastTwoMinutes:(BOOL)minutes;
+- (void)setHasWasActionSelectedInLastDisambiguation:(BOOL)disambiguation;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CAARSchemaCAARActionLevelDisambiguationHistory
 
-- (CAARSchemaCAARActionLevelDisambiguationHistory)initWithDictionary:(id)a3
+- (CAARSchemaCAARActionLevelDisambiguationHistory)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v46.receiver = self;
   v46.super_class = CAARSchemaCAARActionLevelDisambiguationHistory;
   v5 = [(CAARSchemaCAARActionLevelDisambiguationHistory *)&v46 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"numActionDisambiguationsLastTwoMinutes"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"numActionDisambiguationsLastTwoMinutes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARActionLevelDisambiguationHistory setNumActionDisambiguationsLastTwoMinutes:](v5, "setNumActionDisambiguationsLastTwoMinutes:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"numActionDisambiguationsLasTenMinutes"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"numActionDisambiguationsLasTenMinutes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARActionLevelDisambiguationHistory setNumActionDisambiguationsLasTenMinutes:](v5, "setNumActionDisambiguationsLasTenMinutes:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"numActionDisambiguationsLastOneHour"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"numActionDisambiguationsLastOneHour"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARActionLevelDisambiguationHistory setNumActionDisambiguationsLastOneHour:](v5, "setNumActionDisambiguationsLastOneHour:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"numActionDisambiguationsLastSixHours"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"numActionDisambiguationsLastSixHours"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,7 +67,7 @@
 
     v35 = v9;
     v10 = v8;
-    v11 = [v4 objectForKeyedSubscript:@"numActionDisambiguationsLastOneDay"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"numActionDisambiguationsLastOneDay"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -76,7 +76,7 @@
 
     v38 = v11;
     v12 = v7;
-    v13 = [v4 objectForKeyedSubscript:@"numActionDisambiguationsLastSevenDays"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"numActionDisambiguationsLastSevenDays"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -84,14 +84,14 @@
     }
 
     v14 = v6;
-    v15 = [v4 objectForKeyedSubscript:@"numActionDisambiguationsLastTwentyEightDays"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"numActionDisambiguationsLastTwentyEightDays"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARActionLevelDisambiguationHistory setNumActionDisambiguationsLastTwentyEightDays:](v5, "setNumActionDisambiguationsLastTwentyEightDays:", [v15 unsignedIntValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"numActionDisambiguationsLastInfinity"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"numActionDisambiguationsLastInfinity"];
     objc_opt_class();
     v45 = v16;
     if (objc_opt_isKindOfClass())
@@ -99,7 +99,7 @@
       -[CAARSchemaCAARActionLevelDisambiguationHistory setNumActionDisambiguationsLastInfinity:](v5, "setNumActionDisambiguationsLastInfinity:", [v16 unsignedIntValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"numSelectedActionDisambiguationsLastTwoMinutes"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"numSelectedActionDisambiguationsLastTwoMinutes"];
     objc_opt_class();
     v44 = v17;
     v18 = v14;
@@ -108,7 +108,7 @@
       -[CAARSchemaCAARActionLevelDisambiguationHistory setNumSelectedActionDisambiguationsLastTwoMinutes:](v5, "setNumSelectedActionDisambiguationsLastTwoMinutes:", [v44 unsignedIntValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"numSelectedActionDisambiguationsLastTenMinutes"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"numSelectedActionDisambiguationsLastTenMinutes"];
     objc_opt_class();
     v43 = v19;
     v20 = v12;
@@ -117,14 +117,14 @@
       -[CAARSchemaCAARActionLevelDisambiguationHistory setNumSelectedActionDisambiguationsLastTenMinutes:](v5, "setNumSelectedActionDisambiguationsLastTenMinutes:", [v43 unsignedIntValue]);
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"numSelectedActionDisambiguationsLastOneHour"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"numSelectedActionDisambiguationsLastOneHour"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARActionLevelDisambiguationHistory setNumSelectedActionDisambiguationsLastOneHour:](v5, "setNumSelectedActionDisambiguationsLastOneHour:", [v21 unsignedIntValue]);
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"numSelectedActionDisambiguationsLastSixHours"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"numSelectedActionDisambiguationsLastSixHours"];
     objc_opt_class();
     v42 = v22;
     if (objc_opt_isKindOfClass())
@@ -132,7 +132,7 @@
       -[CAARSchemaCAARActionLevelDisambiguationHistory setNumSelectedActionDisambiguationsLastSixHours:](v5, "setNumSelectedActionDisambiguationsLastSixHours:", [v22 unsignedIntValue]);
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"numSelectedActionDisambiguationsLastOneDay"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"numSelectedActionDisambiguationsLastOneDay"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -140,7 +140,7 @@
     }
 
     v37 = v13;
-    v24 = [v4 objectForKeyedSubscript:@"numSelectedActionDisambiguationsLastSevenDays"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"numSelectedActionDisambiguationsLastSevenDays"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -149,7 +149,7 @@
 
     v33 = v24;
     v36 = v15;
-    v25 = [v4 objectForKeyedSubscript:@"numSelectedActionDisambiguationsLastTwentyEightDays"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"numSelectedActionDisambiguationsLastTwentyEightDays"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -157,7 +157,7 @@
     }
 
     v41 = v18;
-    v26 = [v4 objectForKeyedSubscript:@"numSelectedActionDisambiguationsLastInfinity"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"numSelectedActionDisambiguationsLastInfinity"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -165,7 +165,7 @@
     }
 
     v40 = v20;
-    v27 = [v4 objectForKeyedSubscript:@"minutesSinceLastDisambiguationSameActions"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"minutesSinceLastDisambiguationSameActions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -174,21 +174,21 @@
 
     v34 = v21;
     v39 = v10;
-    v28 = [v4 objectForKeyedSubscript:@"minutesSinceLastActionDisambiguationForThisAction"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"minutesSinceLastActionDisambiguationForThisAction"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARActionLevelDisambiguationHistory setMinutesSinceLastActionDisambiguationForThisAction:](v5, "setMinutesSinceLastActionDisambiguationForThisAction:", [v28 unsignedIntValue]);
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"wasActionSelectedInLastDisambiguation"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"wasActionSelectedInLastDisambiguation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARActionLevelDisambiguationHistory setWasActionSelectedInLastDisambiguation:](v5, "setWasActionSelectedInLastDisambiguation:", [v29 BOOLValue]);
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"minutesSinceLastDisambiguationForSameActions"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"minutesSinceLastDisambiguationForSameActions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -201,30 +201,30 @@
   return v5;
 }
 
-- (CAARSchemaCAARActionLevelDisambiguationHistory)initWithJSON:(id)a3
+- (CAARSchemaCAARActionLevelDisambiguationHistory)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CAARSchemaCAARActionLevelDisambiguationHistory *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CAARSchemaCAARActionLevelDisambiguationHistory *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CAARSchemaCAARActionLevelDisambiguationHistory *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -237,13 +237,13 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   p_has = &self->_has;
   v5 = *(&self->_has + 2);
   if ((v5 & 2) != 0)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARActionLevelDisambiguationHistory minutesSinceLastActionDisambiguationForThisAction](self, "minutesSinceLastActionDisambiguationForThisAction")}];
-    [v3 setObject:v11 forKeyedSubscript:@"minutesSinceLastActionDisambiguationForThisAction"];
+    [dictionary setObject:v11 forKeyedSubscript:@"minutesSinceLastActionDisambiguationForThisAction"];
 
     v5 = *(&self->_has + 2);
     if ((v5 & 8) == 0)
@@ -264,13 +264,13 @@ LABEL_3:
   }
 
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARActionLevelDisambiguationHistory minutesSinceLastDisambiguationForSameActions](self, "minutesSinceLastDisambiguationForSameActions")}];
-  [v3 setObject:v12 forKeyedSubscript:@"minutesSinceLastDisambiguationForSameActions"];
+  [dictionary setObject:v12 forKeyedSubscript:@"minutesSinceLastDisambiguationForSameActions"];
 
   if (*(&self->_has + 2))
   {
 LABEL_4:
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAARSchemaCAARActionLevelDisambiguationHistory minutesSinceLastDisambiguationSameActions](self, "minutesSinceLastDisambiguationSameActions")}];
-    [v3 setObject:v6 forKeyedSubscript:@"minutesSinceLastDisambiguationSameActions"];
+    [dictionary setObject:v6 forKeyedSubscript:@"minutesSinceLastDisambiguationSameActions"];
   }
 
 LABEL_5:
@@ -278,7 +278,7 @@ LABEL_5:
   if ((*p_has & 2) != 0)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARActionLevelDisambiguationHistory numActionDisambiguationsLasTenMinutes](self, "numActionDisambiguationsLasTenMinutes")}];
-    [v3 setObject:v13 forKeyedSubscript:@"numActionDisambiguationsLasTenMinutes"];
+    [dictionary setObject:v13 forKeyedSubscript:@"numActionDisambiguationsLasTenMinutes"];
 
     v7 = *p_has;
     if ((*p_has & 0x80) == 0)
@@ -299,7 +299,7 @@ LABEL_7:
   }
 
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARActionLevelDisambiguationHistory numActionDisambiguationsLastInfinity](self, "numActionDisambiguationsLastInfinity")}];
-  [v3 setObject:v14 forKeyedSubscript:@"numActionDisambiguationsLastInfinity"];
+  [dictionary setObject:v14 forKeyedSubscript:@"numActionDisambiguationsLastInfinity"];
 
   v7 = *p_has;
   if ((*p_has & 0x10) == 0)
@@ -315,7 +315,7 @@ LABEL_8:
 
 LABEL_32:
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARActionLevelDisambiguationHistory numActionDisambiguationsLastOneDay](self, "numActionDisambiguationsLastOneDay")}];
-  [v3 setObject:v15 forKeyedSubscript:@"numActionDisambiguationsLastOneDay"];
+  [dictionary setObject:v15 forKeyedSubscript:@"numActionDisambiguationsLastOneDay"];
 
   v7 = *p_has;
   if ((*p_has & 4) == 0)
@@ -331,7 +331,7 @@ LABEL_9:
 
 LABEL_33:
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARActionLevelDisambiguationHistory numActionDisambiguationsLastOneHour](self, "numActionDisambiguationsLastOneHour")}];
-  [v3 setObject:v16 forKeyedSubscript:@"numActionDisambiguationsLastOneHour"];
+  [dictionary setObject:v16 forKeyedSubscript:@"numActionDisambiguationsLastOneHour"];
 
   v7 = *p_has;
   if ((*p_has & 0x20) == 0)
@@ -347,7 +347,7 @@ LABEL_10:
 
 LABEL_34:
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARActionLevelDisambiguationHistory numActionDisambiguationsLastSevenDays](self, "numActionDisambiguationsLastSevenDays")}];
-  [v3 setObject:v17 forKeyedSubscript:@"numActionDisambiguationsLastSevenDays"];
+  [dictionary setObject:v17 forKeyedSubscript:@"numActionDisambiguationsLastSevenDays"];
 
   v7 = *p_has;
   if ((*p_has & 8) == 0)
@@ -363,7 +363,7 @@ LABEL_11:
 
 LABEL_35:
   v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARActionLevelDisambiguationHistory numActionDisambiguationsLastSixHours](self, "numActionDisambiguationsLastSixHours")}];
-  [v3 setObject:v18 forKeyedSubscript:@"numActionDisambiguationsLastSixHours"];
+  [dictionary setObject:v18 forKeyedSubscript:@"numActionDisambiguationsLastSixHours"];
 
   v7 = *p_has;
   if ((*p_has & 0x40) == 0)
@@ -379,7 +379,7 @@ LABEL_12:
 
 LABEL_36:
   v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARActionLevelDisambiguationHistory numActionDisambiguationsLastTwentyEightDays](self, "numActionDisambiguationsLastTwentyEightDays")}];
-  [v3 setObject:v19 forKeyedSubscript:@"numActionDisambiguationsLastTwentyEightDays"];
+  [dictionary setObject:v19 forKeyedSubscript:@"numActionDisambiguationsLastTwentyEightDays"];
 
   v7 = *p_has;
   if ((*p_has & 1) == 0)
@@ -395,7 +395,7 @@ LABEL_13:
 
 LABEL_37:
   v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARActionLevelDisambiguationHistory numActionDisambiguationsLastTwoMinutes](self, "numActionDisambiguationsLastTwoMinutes")}];
-  [v3 setObject:v20 forKeyedSubscript:@"numActionDisambiguationsLastTwoMinutes"];
+  [dictionary setObject:v20 forKeyedSubscript:@"numActionDisambiguationsLastTwoMinutes"];
 
   v7 = *p_has;
   if ((*p_has & 0x8000) == 0)
@@ -411,7 +411,7 @@ LABEL_14:
 
 LABEL_38:
   v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARActionLevelDisambiguationHistory numSelectedActionDisambiguationsLastInfinity](self, "numSelectedActionDisambiguationsLastInfinity")}];
-  [v3 setObject:v21 forKeyedSubscript:@"numSelectedActionDisambiguationsLastInfinity"];
+  [dictionary setObject:v21 forKeyedSubscript:@"numSelectedActionDisambiguationsLastInfinity"];
 
   v7 = *p_has;
   if ((*p_has & 0x1000) == 0)
@@ -427,7 +427,7 @@ LABEL_15:
 
 LABEL_39:
   v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARActionLevelDisambiguationHistory numSelectedActionDisambiguationsLastOneDay](self, "numSelectedActionDisambiguationsLastOneDay")}];
-  [v3 setObject:v22 forKeyedSubscript:@"numSelectedActionDisambiguationsLastOneDay"];
+  [dictionary setObject:v22 forKeyedSubscript:@"numSelectedActionDisambiguationsLastOneDay"];
 
   v7 = *p_has;
   if ((*p_has & 0x400) == 0)
@@ -443,7 +443,7 @@ LABEL_16:
 
 LABEL_40:
   v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARActionLevelDisambiguationHistory numSelectedActionDisambiguationsLastOneHour](self, "numSelectedActionDisambiguationsLastOneHour")}];
-  [v3 setObject:v23 forKeyedSubscript:@"numSelectedActionDisambiguationsLastOneHour"];
+  [dictionary setObject:v23 forKeyedSubscript:@"numSelectedActionDisambiguationsLastOneHour"];
 
   v7 = *p_has;
   if ((*p_has & 0x2000) == 0)
@@ -459,7 +459,7 @@ LABEL_17:
 
 LABEL_41:
   v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARActionLevelDisambiguationHistory numSelectedActionDisambiguationsLastSevenDays](self, "numSelectedActionDisambiguationsLastSevenDays")}];
-  [v3 setObject:v24 forKeyedSubscript:@"numSelectedActionDisambiguationsLastSevenDays"];
+  [dictionary setObject:v24 forKeyedSubscript:@"numSelectedActionDisambiguationsLastSevenDays"];
 
   v7 = *p_has;
   if ((*p_has & 0x800) == 0)
@@ -475,7 +475,7 @@ LABEL_18:
 
 LABEL_42:
   v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARActionLevelDisambiguationHistory numSelectedActionDisambiguationsLastSixHours](self, "numSelectedActionDisambiguationsLastSixHours")}];
-  [v3 setObject:v25 forKeyedSubscript:@"numSelectedActionDisambiguationsLastSixHours"];
+  [dictionary setObject:v25 forKeyedSubscript:@"numSelectedActionDisambiguationsLastSixHours"];
 
   v7 = *p_has;
   if ((*p_has & 0x200) == 0)
@@ -491,7 +491,7 @@ LABEL_19:
 
 LABEL_43:
   v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARActionLevelDisambiguationHistory numSelectedActionDisambiguationsLastTenMinutes](self, "numSelectedActionDisambiguationsLastTenMinutes")}];
-  [v3 setObject:v26 forKeyedSubscript:@"numSelectedActionDisambiguationsLastTenMinutes"];
+  [dictionary setObject:v26 forKeyedSubscript:@"numSelectedActionDisambiguationsLastTenMinutes"];
 
   v7 = *p_has;
   if ((*p_has & 0x4000) == 0)
@@ -507,25 +507,25 @@ LABEL_20:
 
 LABEL_44:
   v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARActionLevelDisambiguationHistory numSelectedActionDisambiguationsLastTwentyEightDays](self, "numSelectedActionDisambiguationsLastTwentyEightDays")}];
-  [v3 setObject:v27 forKeyedSubscript:@"numSelectedActionDisambiguationsLastTwentyEightDays"];
+  [dictionary setObject:v27 forKeyedSubscript:@"numSelectedActionDisambiguationsLastTwentyEightDays"];
 
   if ((*p_has & 0x100) != 0)
   {
 LABEL_21:
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARActionLevelDisambiguationHistory numSelectedActionDisambiguationsLastTwoMinutes](self, "numSelectedActionDisambiguationsLastTwoMinutes")}];
-    [v3 setObject:v8 forKeyedSubscript:@"numSelectedActionDisambiguationsLastTwoMinutes"];
+    [dictionary setObject:v8 forKeyedSubscript:@"numSelectedActionDisambiguationsLastTwoMinutes"];
   }
 
 LABEL_22:
   if ((*(&self->_has + 2) & 4) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAARSchemaCAARActionLevelDisambiguationHistory wasActionSelectedInLastDisambiguation](self, "wasActionSelectedInLastDisambiguation")}];
-    [v3 setObject:v9 forKeyedSubscript:@"wasActionSelectedInLastDisambiguation"];
+    [dictionary setObject:v9 forKeyedSubscript:@"wasActionSelectedInLastDisambiguation"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -795,18 +795,18 @@ LABEL_39:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_81;
   }
 
   p_has = &self->_has;
   has = self->_has;
-  v7 = v4 + 44;
-  v8 = v4[44];
+  v7 = equalCopy + 44;
+  v8 = equalCopy[44];
   if ((*&has & 1) != (v8 & 1))
   {
     goto LABEL_81;
@@ -815,7 +815,7 @@ LABEL_39:
   if (*&has)
   {
     numActionDisambiguationsLastTwoMinutes = self->_numActionDisambiguationsLastTwoMinutes;
-    if (numActionDisambiguationsLastTwoMinutes != [v4 numActionDisambiguationsLastTwoMinutes])
+    if (numActionDisambiguationsLastTwoMinutes != [equalCopy numActionDisambiguationsLastTwoMinutes])
     {
       goto LABEL_81;
     }
@@ -833,7 +833,7 @@ LABEL_39:
   if (v10)
   {
     numActionDisambiguationsLasTenMinutes = self->_numActionDisambiguationsLasTenMinutes;
-    if (numActionDisambiguationsLasTenMinutes != [v4 numActionDisambiguationsLasTenMinutes])
+    if (numActionDisambiguationsLasTenMinutes != [equalCopy numActionDisambiguationsLasTenMinutes])
     {
       goto LABEL_81;
     }
@@ -851,7 +851,7 @@ LABEL_39:
   if (v12)
   {
     numActionDisambiguationsLastOneHour = self->_numActionDisambiguationsLastOneHour;
-    if (numActionDisambiguationsLastOneHour != [v4 numActionDisambiguationsLastOneHour])
+    if (numActionDisambiguationsLastOneHour != [equalCopy numActionDisambiguationsLastOneHour])
     {
       goto LABEL_81;
     }
@@ -869,7 +869,7 @@ LABEL_39:
   if (v14)
   {
     numActionDisambiguationsLastSixHours = self->_numActionDisambiguationsLastSixHours;
-    if (numActionDisambiguationsLastSixHours != [v4 numActionDisambiguationsLastSixHours])
+    if (numActionDisambiguationsLastSixHours != [equalCopy numActionDisambiguationsLastSixHours])
     {
       goto LABEL_81;
     }
@@ -887,7 +887,7 @@ LABEL_39:
   if (v16)
   {
     numActionDisambiguationsLastOneDay = self->_numActionDisambiguationsLastOneDay;
-    if (numActionDisambiguationsLastOneDay != [v4 numActionDisambiguationsLastOneDay])
+    if (numActionDisambiguationsLastOneDay != [equalCopy numActionDisambiguationsLastOneDay])
     {
       goto LABEL_81;
     }
@@ -905,7 +905,7 @@ LABEL_39:
   if (v18)
   {
     numActionDisambiguationsLastSevenDays = self->_numActionDisambiguationsLastSevenDays;
-    if (numActionDisambiguationsLastSevenDays != [v4 numActionDisambiguationsLastSevenDays])
+    if (numActionDisambiguationsLastSevenDays != [equalCopy numActionDisambiguationsLastSevenDays])
     {
       goto LABEL_81;
     }
@@ -923,7 +923,7 @@ LABEL_39:
   if (v20)
   {
     numActionDisambiguationsLastTwentyEightDays = self->_numActionDisambiguationsLastTwentyEightDays;
-    if (numActionDisambiguationsLastTwentyEightDays != [v4 numActionDisambiguationsLastTwentyEightDays])
+    if (numActionDisambiguationsLastTwentyEightDays != [equalCopy numActionDisambiguationsLastTwentyEightDays])
     {
       goto LABEL_81;
     }
@@ -941,7 +941,7 @@ LABEL_39:
   if (v22)
   {
     numActionDisambiguationsLastInfinity = self->_numActionDisambiguationsLastInfinity;
-    if (numActionDisambiguationsLastInfinity != [v4 numActionDisambiguationsLastInfinity])
+    if (numActionDisambiguationsLastInfinity != [equalCopy numActionDisambiguationsLastInfinity])
     {
       goto LABEL_81;
     }
@@ -959,7 +959,7 @@ LABEL_39:
   if (v24)
   {
     numSelectedActionDisambiguationsLastTwoMinutes = self->_numSelectedActionDisambiguationsLastTwoMinutes;
-    if (numSelectedActionDisambiguationsLastTwoMinutes != [v4 numSelectedActionDisambiguationsLastTwoMinutes])
+    if (numSelectedActionDisambiguationsLastTwoMinutes != [equalCopy numSelectedActionDisambiguationsLastTwoMinutes])
     {
       goto LABEL_81;
     }
@@ -977,7 +977,7 @@ LABEL_39:
   if (v26)
   {
     numSelectedActionDisambiguationsLastTenMinutes = self->_numSelectedActionDisambiguationsLastTenMinutes;
-    if (numSelectedActionDisambiguationsLastTenMinutes != [v4 numSelectedActionDisambiguationsLastTenMinutes])
+    if (numSelectedActionDisambiguationsLastTenMinutes != [equalCopy numSelectedActionDisambiguationsLastTenMinutes])
     {
       goto LABEL_81;
     }
@@ -995,7 +995,7 @@ LABEL_39:
   if (v28)
   {
     numSelectedActionDisambiguationsLastOneHour = self->_numSelectedActionDisambiguationsLastOneHour;
-    if (numSelectedActionDisambiguationsLastOneHour != [v4 numSelectedActionDisambiguationsLastOneHour])
+    if (numSelectedActionDisambiguationsLastOneHour != [equalCopy numSelectedActionDisambiguationsLastOneHour])
     {
       goto LABEL_81;
     }
@@ -1013,7 +1013,7 @@ LABEL_39:
   if (v30)
   {
     numSelectedActionDisambiguationsLastSixHours = self->_numSelectedActionDisambiguationsLastSixHours;
-    if (numSelectedActionDisambiguationsLastSixHours != [v4 numSelectedActionDisambiguationsLastSixHours])
+    if (numSelectedActionDisambiguationsLastSixHours != [equalCopy numSelectedActionDisambiguationsLastSixHours])
     {
       goto LABEL_81;
     }
@@ -1031,7 +1031,7 @@ LABEL_39:
   if (v32)
   {
     numSelectedActionDisambiguationsLastOneDay = self->_numSelectedActionDisambiguationsLastOneDay;
-    if (numSelectedActionDisambiguationsLastOneDay != [v4 numSelectedActionDisambiguationsLastOneDay])
+    if (numSelectedActionDisambiguationsLastOneDay != [equalCopy numSelectedActionDisambiguationsLastOneDay])
     {
       goto LABEL_81;
     }
@@ -1049,7 +1049,7 @@ LABEL_39:
   if (v34)
   {
     numSelectedActionDisambiguationsLastSevenDays = self->_numSelectedActionDisambiguationsLastSevenDays;
-    if (numSelectedActionDisambiguationsLastSevenDays != [v4 numSelectedActionDisambiguationsLastSevenDays])
+    if (numSelectedActionDisambiguationsLastSevenDays != [equalCopy numSelectedActionDisambiguationsLastSevenDays])
     {
       goto LABEL_81;
     }
@@ -1067,7 +1067,7 @@ LABEL_39:
   if (v36)
   {
     numSelectedActionDisambiguationsLastTwentyEightDays = self->_numSelectedActionDisambiguationsLastTwentyEightDays;
-    if (numSelectedActionDisambiguationsLastTwentyEightDays != [v4 numSelectedActionDisambiguationsLastTwentyEightDays])
+    if (numSelectedActionDisambiguationsLastTwentyEightDays != [equalCopy numSelectedActionDisambiguationsLastTwentyEightDays])
     {
       goto LABEL_81;
     }
@@ -1084,14 +1084,14 @@ LABEL_39:
   if ((*&has & 0x8000) != 0)
   {
     numSelectedActionDisambiguationsLastInfinity = self->_numSelectedActionDisambiguationsLastInfinity;
-    if (numSelectedActionDisambiguationsLastInfinity != [v4 numSelectedActionDisambiguationsLastInfinity])
+    if (numSelectedActionDisambiguationsLastInfinity != [equalCopy numSelectedActionDisambiguationsLastInfinity])
     {
       goto LABEL_81;
     }
   }
 
   v39 = *(&self->_has + 2);
-  v40 = *(v4 + 90);
+  v40 = *(equalCopy + 90);
   if ((v39 & 1) != (v40 & 1))
   {
     goto LABEL_81;
@@ -1100,13 +1100,13 @@ LABEL_39:
   if (v39)
   {
     minutesSinceLastDisambiguationSameActions = self->_minutesSinceLastDisambiguationSameActions;
-    if (minutesSinceLastDisambiguationSameActions != [v4 minutesSinceLastDisambiguationSameActions])
+    if (minutesSinceLastDisambiguationSameActions != [equalCopy minutesSinceLastDisambiguationSameActions])
     {
       goto LABEL_81;
     }
 
     v39 = *(&self->_has + 2);
-    v40 = *(v4 + 90);
+    v40 = *(equalCopy + 90);
   }
 
   v42 = (v39 >> 1) & 1;
@@ -1118,13 +1118,13 @@ LABEL_39:
   if (v42)
   {
     minutesSinceLastActionDisambiguationForThisAction = self->_minutesSinceLastActionDisambiguationForThisAction;
-    if (minutesSinceLastActionDisambiguationForThisAction != [v4 minutesSinceLastActionDisambiguationForThisAction])
+    if (minutesSinceLastActionDisambiguationForThisAction != [equalCopy minutesSinceLastActionDisambiguationForThisAction])
     {
       goto LABEL_81;
     }
 
     v39 = *(&self->_has + 2);
-    v40 = *(v4 + 90);
+    v40 = *(equalCopy + 90);
   }
 
   v44 = (v39 >> 2) & 1;
@@ -1136,10 +1136,10 @@ LABEL_39:
   if (v44)
   {
     wasActionSelectedInLastDisambiguation = self->_wasActionSelectedInLastDisambiguation;
-    if (wasActionSelectedInLastDisambiguation == [v4 wasActionSelectedInLastDisambiguation])
+    if (wasActionSelectedInLastDisambiguation == [equalCopy wasActionSelectedInLastDisambiguation])
     {
       v39 = *(&self->_has + 2);
-      v40 = *(v4 + 90);
+      v40 = *(equalCopy + 90);
       goto LABEL_77;
     }
 
@@ -1158,7 +1158,7 @@ LABEL_77:
   if (v46)
   {
     minutesSinceLastDisambiguationForSameActions = self->_minutesSinceLastDisambiguationForSameActions;
-    if (minutesSinceLastDisambiguationForSameActions != [v4 minutesSinceLastDisambiguationForSameActions])
+    if (minutesSinceLastDisambiguationForSameActions != [equalCopy minutesSinceLastDisambiguationForSameActions])
     {
       goto LABEL_81;
     }
@@ -1170,9 +1170,9 @@ LABEL_82:
   return v48;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   p_has = &self->_has;
   has = self->_has;
   if (has)
@@ -1433,9 +1433,9 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)setHasMinutesSinceLastDisambiguationForSameActions:(BOOL)a3
+- (void)setHasMinutesSinceLastDisambiguationForSameActions:(BOOL)actions
 {
-  if (a3)
+  if (actions)
   {
     v3 = 8;
   }
@@ -1448,9 +1448,9 @@ LABEL_22:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xF7 | v3;
 }
 
-- (void)setHasWasActionSelectedInLastDisambiguation:(BOOL)a3
+- (void)setHasWasActionSelectedInLastDisambiguation:(BOOL)disambiguation
 {
-  if (a3)
+  if (disambiguation)
   {
     v3 = 4;
   }
@@ -1463,9 +1463,9 @@ LABEL_22:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFB | v3;
 }
 
-- (void)setHasMinutesSinceLastActionDisambiguationForThisAction:(BOOL)a3
+- (void)setHasMinutesSinceLastActionDisambiguationForThisAction:(BOOL)action
 {
-  if (a3)
+  if (action)
   {
     v3 = 2;
   }
@@ -1478,9 +1478,9 @@ LABEL_22:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFD | v3;
 }
 
-- (void)setHasNumSelectedActionDisambiguationsLastInfinity:(BOOL)a3
+- (void)setHasNumSelectedActionDisambiguationsLastInfinity:(BOOL)infinity
 {
-  if (a3)
+  if (infinity)
   {
     v3 = 0x8000;
   }
@@ -1493,9 +1493,9 @@ LABEL_22:
   *&self->_has = v3 & 0x8000 | *&self->_has & 0x7FFF;
 }
 
-- (void)setHasNumSelectedActionDisambiguationsLastTwentyEightDays:(BOOL)a3
+- (void)setHasNumSelectedActionDisambiguationsLastTwentyEightDays:(BOOL)days
 {
-  if (a3)
+  if (days)
   {
     v3 = 0x4000;
   }
@@ -1508,9 +1508,9 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasNumSelectedActionDisambiguationsLastSevenDays:(BOOL)a3
+- (void)setHasNumSelectedActionDisambiguationsLastSevenDays:(BOOL)days
 {
-  if (a3)
+  if (days)
   {
     v3 = 0x2000;
   }
@@ -1523,9 +1523,9 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasNumSelectedActionDisambiguationsLastOneDay:(BOOL)a3
+- (void)setHasNumSelectedActionDisambiguationsLastOneDay:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 4096;
   }
@@ -1538,9 +1538,9 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasNumSelectedActionDisambiguationsLastSixHours:(BOOL)a3
+- (void)setHasNumSelectedActionDisambiguationsLastSixHours:(BOOL)hours
 {
-  if (a3)
+  if (hours)
   {
     v3 = 2048;
   }
@@ -1553,9 +1553,9 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasNumSelectedActionDisambiguationsLastOneHour:(BOOL)a3
+- (void)setHasNumSelectedActionDisambiguationsLastOneHour:(BOOL)hour
 {
-  if (a3)
+  if (hour)
   {
     v3 = 1024;
   }
@@ -1568,9 +1568,9 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasNumSelectedActionDisambiguationsLastTenMinutes:(BOOL)a3
+- (void)setHasNumSelectedActionDisambiguationsLastTenMinutes:(BOOL)minutes
 {
-  if (a3)
+  if (minutes)
   {
     v3 = 512;
   }
@@ -1583,9 +1583,9 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasNumSelectedActionDisambiguationsLastTwoMinutes:(BOOL)a3
+- (void)setHasNumSelectedActionDisambiguationsLastTwoMinutes:(BOOL)minutes
 {
-  if (a3)
+  if (minutes)
   {
     v3 = 256;
   }
@@ -1598,9 +1598,9 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasNumActionDisambiguationsLastInfinity:(BOOL)a3
+- (void)setHasNumActionDisambiguationsLastInfinity:(BOOL)infinity
 {
-  if (a3)
+  if (infinity)
   {
     v3 = 128;
   }
@@ -1613,9 +1613,9 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasNumActionDisambiguationsLastTwentyEightDays:(BOOL)a3
+- (void)setHasNumActionDisambiguationsLastTwentyEightDays:(BOOL)days
 {
-  if (a3)
+  if (days)
   {
     v3 = 64;
   }
@@ -1628,9 +1628,9 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasNumActionDisambiguationsLastSevenDays:(BOOL)a3
+- (void)setHasNumActionDisambiguationsLastSevenDays:(BOOL)days
 {
-  if (a3)
+  if (days)
   {
     v3 = 32;
   }
@@ -1643,9 +1643,9 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasNumActionDisambiguationsLastOneDay:(BOOL)a3
+- (void)setHasNumActionDisambiguationsLastOneDay:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 16;
   }
@@ -1658,9 +1658,9 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasNumActionDisambiguationsLastSixHours:(BOOL)a3
+- (void)setHasNumActionDisambiguationsLastSixHours:(BOOL)hours
 {
-  if (a3)
+  if (hours)
   {
     v3 = 8;
   }
@@ -1673,9 +1673,9 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasNumActionDisambiguationsLastOneHour:(BOOL)a3
+- (void)setHasNumActionDisambiguationsLastOneHour:(BOOL)hour
 {
-  if (a3)
+  if (hour)
   {
     v3 = 4;
   }
@@ -1688,9 +1688,9 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasNumActionDisambiguationsLasTenMinutes:(BOOL)a3
+- (void)setHasNumActionDisambiguationsLasTenMinutes:(BOOL)minutes
 {
-  if (a3)
+  if (minutes)
   {
     v3 = 2;
   }

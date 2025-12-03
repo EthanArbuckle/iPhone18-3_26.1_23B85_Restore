@@ -1,12 +1,12 @@
 @interface _MLCCPUScatter
-+ (BOOL)compileWithDevice:(id)a3 deviceOps:(id)a4 sourceTensors:(id)a5 resultTensor:(id)a6;
++ (BOOL)compileWithDevice:(id)device deviceOps:(id)ops sourceTensors:(id)tensors resultTensor:(id)tensor;
 @end
 
 @implementation _MLCCPUScatter
 
-+ (BOOL)compileWithDevice:(id)a3 deviceOps:(id)a4 sourceTensors:(id)a5 resultTensor:(id)a6
++ (BOOL)compileWithDevice:(id)device deviceOps:(id)ops sourceTensors:(id)tensors resultTensor:(id)tensor
 {
-  v6 = [a4 objectAtIndexedSubscript:0];
+  v6 = [ops objectAtIndexedSubscript:0];
   objc_opt_class();
   v7 = objc_opt_new();
   [v6 setLayer:v7];

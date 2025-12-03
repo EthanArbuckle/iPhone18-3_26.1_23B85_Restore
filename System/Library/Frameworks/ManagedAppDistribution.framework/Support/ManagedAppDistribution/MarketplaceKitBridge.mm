@@ -1,11 +1,11 @@
 @interface MarketplaceKitBridge
-+ (void)requestLicenseRepair:(id)a3 status:(int)a4;
++ (void)requestLicenseRepair:(id)repair status:(int)status;
 - (_TtC19applicensedeliveryd20MarketplaceKitBridge)init;
 @end
 
 @implementation MarketplaceKitBridge
 
-+ (void)requestLicenseRepair:(id)a3 status:(int)a4
++ (void)requestLicenseRepair:(id)repair status:(int)status
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = v4;

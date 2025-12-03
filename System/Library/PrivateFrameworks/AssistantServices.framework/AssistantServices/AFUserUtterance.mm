@@ -1,25 +1,25 @@
 @interface AFUserUtterance
-- (AFUserUtterance)initWithPhrases:(id)a3 correctionIdentifier:(id)a4;
-- (AFUserUtterance)initWithPhrases:(id)a3 sentenceConfidence:(int64_t)a4 utterances:(id)a5 correctionIdentifier:(id)a6;
-- (AFUserUtterance)initWithPhrases:(id)a3 utterances:(id)a4;
-- (AFUserUtterance)initWithString:(id)a3 correctionIdentifier:(id)a4;
-- (AFUserUtterance)initWithTokens:(id)a3 correctionIdentifier:(id)a4;
+- (AFUserUtterance)initWithPhrases:(id)phrases correctionIdentifier:(id)identifier;
+- (AFUserUtterance)initWithPhrases:(id)phrases sentenceConfidence:(int64_t)confidence utterances:(id)utterances correctionIdentifier:(id)identifier;
+- (AFUserUtterance)initWithPhrases:(id)phrases utterances:(id)utterances;
+- (AFUserUtterance)initWithString:(id)string correctionIdentifier:(id)identifier;
+- (AFUserUtterance)initWithTokens:(id)tokens correctionIdentifier:(id)identifier;
 - (NSArray)allPhrases;
 - (NSArray)dictationResult;
 - (id)allRecognitionStringsAndScores;
 - (id)bestTextInterpretation;
 - (id)description;
-- (id)interpretationOfUtteranceAtIndex:(unint64_t)a3;
-- (id)longestCommonSubsequenceBetweenList:(id)a3 andList:(id)a4;
-- (id)rangeListOfDifferingTextFromSpeechInterpretation:(id)a3 comparedToBaseTokenList:(id)a4;
-- (id)rangeListOfDifferingTextFromSpeechInterpretation:(id)a3 comparedToBaseUtteranceAtIndex:(unint64_t)a4;
-- (id)rangeListOfDifferingTextFromTargetTokenList:(id)a3 comparedToBaseTokenList:(id)a4;
-- (id)rangeListOfDifferingTextFromUtteranceAtIndex:(unint64_t)a3 comparedToBaseUtteranceAtIndex:(unint64_t)a4;
-- (id)speechTokensForUtteranceAtIndex:(unint64_t)a3;
-- (id)textOfUtteranceAtIndex:(unint64_t)a3;
-- (id)updateDictationResult:(id)a3 withAlternativeUtteranceAtIndex:(unint64_t)a4;
-- (void)_updatePhraseswithSwapIndices:(id)a3;
-- (void)_updateUtteranceswithAlternativeUtteranceAtIndex:(unint64_t)a3 swapIndices:(id)a4;
+- (id)interpretationOfUtteranceAtIndex:(unint64_t)index;
+- (id)longestCommonSubsequenceBetweenList:(id)list andList:(id)andList;
+- (id)rangeListOfDifferingTextFromSpeechInterpretation:(id)interpretation comparedToBaseTokenList:(id)list;
+- (id)rangeListOfDifferingTextFromSpeechInterpretation:(id)interpretation comparedToBaseUtteranceAtIndex:(unint64_t)index;
+- (id)rangeListOfDifferingTextFromTargetTokenList:(id)list comparedToBaseTokenList:(id)tokenList;
+- (id)rangeListOfDifferingTextFromUtteranceAtIndex:(unint64_t)index comparedToBaseUtteranceAtIndex:(unint64_t)atIndex;
+- (id)speechTokensForUtteranceAtIndex:(unint64_t)index;
+- (id)textOfUtteranceAtIndex:(unint64_t)index;
+- (id)updateDictationResult:(id)result withAlternativeUtteranceAtIndex:(unint64_t)index;
+- (void)_updatePhraseswithSwapIndices:(id)indices;
+- (void)_updateUtteranceswithAlternativeUtteranceAtIndex:(unint64_t)index swapIndices:(id)indices;
 @end
 
 @implementation AFUserUtterance
@@ -31,8 +31,8 @@
   v5 = NSStringFromClass(v4);
   v6 = [(NSMutableArray *)self->_phrases count];
   v7 = [(NSMutableArray *)self->_tokens count];
-  v8 = [(AFUserUtterance *)self bestTextInterpretation];
-  v9 = [v3 stringWithFormat:@"<%@: %p %lu phrases; %lu tokens; text: %@>", v5, self, v6, v7, v8];;
+  bestTextInterpretation = [(AFUserUtterance *)self bestTextInterpretation];
+  v9 = [v3 stringWithFormat:@"<%@: %p %lu phrases; %lu tokens; text: %@>", v5, self, v6, v7, bestTextInterpretation];;
 
   return v9;
 }
@@ -42,7 +42,7 @@
   v29 = *MEMORY[0x1E69E9840];
   if (self->_phrases)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -62,13 +62,13 @@
             objc_enumerationMutation(obj);
           }
 
-          v8 = [*(*(&v23 + 1) + 8 * i) interpretations];
-          v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
+          interpretations = [*(*(&v23 + 1) + 8 * i) interpretations];
+          v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(interpretations, "count")}];
           v19 = 0u;
           v20 = 0u;
           v21 = 0u;
           v22 = 0u;
-          v10 = v8;
+          v10 = interpretations;
           v11 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
           if (v11)
           {
@@ -83,8 +83,8 @@
                   objc_enumerationMutation(v10);
                 }
 
-                v15 = [*(*(&v19 + 1) + 8 * j) text];
-                [v9 addObject:v15];
+                text = [*(*(&v19 + 1) + 8 * j) text];
+                [v9 addObject:text];
               }
 
               v12 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
@@ -93,7 +93,7 @@
             while (v12);
           }
 
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
 
         v5 = [(NSMutableArray *)obj countByEnumeratingWithState:&v23 objects:v28 count:16];
@@ -105,72 +105,72 @@
 
   else
   {
-    v3 = 0;
+    array = 0;
   }
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return array;
 }
 
 - (NSArray)allPhrases
 {
   v2 = [(NSMutableArray *)self->_phrases copy];
-  v3 = [v2 firstObject];
-  v4 = [v3 firstInterpretation];
-  v5 = [v4 tokens];
-  v6 = [v5 firstObject];
-  [v6 setRemoveSpaceBefore:1];
+  firstObject = [v2 firstObject];
+  firstInterpretation = [firstObject firstInterpretation];
+  tokens = [firstInterpretation tokens];
+  firstObject2 = [tokens firstObject];
+  [firstObject2 setRemoveSpaceBefore:1];
 
   return v2;
 }
 
-- (id)updateDictationResult:(id)a3 withAlternativeUtteranceAtIndex:(unint64_t)a4
+- (id)updateDictationResult:(id)result withAlternativeUtteranceAtIndex:(unint64_t)index
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([(NSMutableArray *)self->_utterances count]<= a4)
+  resultCopy = result;
+  if ([(NSMutableArray *)self->_utterances count]<= index)
   {
-    v21 = [(AFUserUtterance *)self allPhrases];
+    allPhrases = [(AFUserUtterance *)self allPhrases];
   }
 
   else
   {
-    v7 = [(NSMutableArray *)self->_utterances objectAtIndex:a4];
-    v8 = [v7 interpretationIndices];
+    v7 = [(NSMutableArray *)self->_utterances objectAtIndex:index];
+    interpretationIndices = [v7 interpretationIndices];
 
-    v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
-    v10 = [v8 count];
-    if (v10 == [v6 count])
+    v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(resultCopy, "count")}];
+    v10 = [interpretationIndices count];
+    if (v10 == [resultCopy count])
     {
-      v25 = a4;
-      v11 = [v8 count];
+      indexCopy = index;
+      v11 = [interpretationIndices count];
       if (v11 >= 1)
       {
         v12 = v11;
         for (i = 0; i != v12; ++i)
         {
-          v14 = [v6 objectAtIndex:i];
-          v15 = [v8 objectAtIndex:i];
-          v16 = [v15 integerValue];
+          v14 = [resultCopy objectAtIndex:i];
+          v15 = [interpretationIndices objectAtIndex:i];
+          integerValue = [v15 integerValue];
 
           [v9 addObject:&unk_1F056D278];
-          if (v16 && v16 < [v14 count])
+          if (integerValue && integerValue < [v14 count])
           {
-            v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v16];
+            v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:integerValue];
             [v9 replaceObjectAtIndex:i withObject:v17];
           }
         }
       }
 
-      [(AFUserUtterance *)self _updateUtteranceswithAlternativeUtteranceAtIndex:v25 swapIndices:v9];
+      [(AFUserUtterance *)self _updateUtteranceswithAlternativeUtteranceAtIndex:indexCopy swapIndices:v9];
       [(AFUserUtterance *)self _updatePhraseswithSwapIndices:v9];
       v18 = [(NSMutableArray *)self->_utterances objectAtIndex:0];
-      v19 = [(NSMutableArray *)self->_utterances objectAtIndex:v25];
-      v20 = [v18 confidenceScore];
+      v19 = [(NSMutableArray *)self->_utterances objectAtIndex:indexCopy];
+      confidenceScore = [v18 confidenceScore];
       [v18 setConfidenceScore:{objc_msgSend(v19, "confidenceScore")}];
-      [v19 setConfidenceScore:v20];
-      v21 = [(AFUserUtterance *)self allPhrases];
+      [v19 setConfidenceScore:confidenceScore];
+      allPhrases = [(AFUserUtterance *)self allPhrases];
     }
 
     else
@@ -181,82 +181,82 @@
         *buf = 136315394;
         v27 = "[AFUserUtterance updateDictationResult:withAlternativeUtteranceAtIndex:]";
         v28 = 2050;
-        v29 = a4;
+        indexCopy2 = index;
         _os_log_error_impl(&dword_1912FE000, v22, OS_LOG_TYPE_ERROR, "%s utterance index %{public}lu out of range", buf, 0x16u);
       }
 
-      v21 = [(AFUserUtterance *)self allPhrases];
+      allPhrases = [(AFUserUtterance *)self allPhrases];
     }
   }
 
   v23 = *MEMORY[0x1E69E9840];
 
-  return v21;
+  return allPhrases;
 }
 
-- (void)_updateUtteranceswithAlternativeUtteranceAtIndex:(unint64_t)a3 swapIndices:(id)a4
+- (void)_updateUtteranceswithAlternativeUtteranceAtIndex:(unint64_t)index swapIndices:(id)indices
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  indicesCopy = indices;
+  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(indicesCopy, "count")}];
   if ([(NSMutableArray *)self->_utterances count])
   {
     v9 = 0;
     *&v8 = 136315650;
     v32 = v8;
-    v33 = self;
+    selfCopy = self;
     v34 = v7;
-    v35 = a3;
+    indexCopy = index;
     do
     {
       v10 = [(NSMutableArray *)self->_utterances objectAtIndex:v9, v32];
       v11 = v10;
-      if (v9 == a3 || !v9)
+      if (v9 == index || !v9)
       {
         [v7 setObject:v10 atIndexedSubscript:v9];
       }
 
       else
       {
-        v12 = [v10 interpretationIndices];
-        v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
-        v14 = [v12 count];
-        if (v14 == [v6 count])
+        interpretationIndices = [v10 interpretationIndices];
+        v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(indicesCopy, "count")}];
+        v14 = [interpretationIndices count];
+        if (v14 == [indicesCopy count])
         {
-          if ([v6 count])
+          if ([indicesCopy count])
           {
             v15 = 0;
             do
             {
-              v16 = [v6 objectAtIndex:v15];
-              v17 = [v16 integerValue];
+              v16 = [indicesCopy objectAtIndex:v15];
+              integerValue = [v16 integerValue];
 
-              v18 = [v12 objectAtIndex:v15];
-              v19 = [v18 integerValue];
+              v18 = [interpretationIndices objectAtIndex:v15];
+              integerValue2 = [v18 integerValue];
 
-              if (v19 == v17)
+              if (integerValue2 == integerValue)
               {
                 v20 = 0;
               }
 
               else
               {
-                v20 = v19;
+                v20 = integerValue2;
               }
 
-              if (!v19)
+              if (!integerValue2)
               {
-                v20 = v17;
+                v20 = integerValue;
               }
 
-              if (v17 >= 1)
+              if (integerValue >= 1)
               {
                 v21 = v20;
               }
 
               else
               {
-                v21 = v19;
+                v21 = integerValue2;
               }
 
               v22 = [MEMORY[0x1E696AD98] numberWithInteger:v21];
@@ -265,7 +265,7 @@
               ++v15;
             }
 
-            while (v15 < [v6 count]);
+            while (v15 < [indicesCopy count]);
           }
 
           v23 = -[AFSpeechUtterance initWithInterpretationIndices:confidenceScore:]([AFSpeechUtterance alloc], "initWithInterpretationIndices:confidenceScore:", v13, [v11 confidenceScore]);
@@ -273,8 +273,8 @@
           v7 = v34;
           [v34 addObject:v23];
 
-          self = v33;
-          a3 = v35;
+          self = selfCopy;
+          index = indexCopy;
         }
 
         else
@@ -283,9 +283,9 @@
           if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
           {
             v25 = v24;
-            v26 = [v11 interpretationIndices];
-            v27 = [v26 count];
-            v28 = [v6 count];
+            interpretationIndices2 = [v11 interpretationIndices];
+            v27 = [interpretationIndices2 count];
+            v28 = [indicesCopy count];
             *buf = v32;
             v37 = "[AFUserUtterance _updateUtteranceswithAlternativeUtteranceAtIndex:swapIndices:]";
             v38 = 2050;
@@ -294,7 +294,7 @@
             v41 = v28;
             _os_log_error_impl(&dword_1912FE000, v25, OS_LOG_TYPE_ERROR, "%s utterance interpretationIndices count (%{public}ld) does not match swapIndices count (%{public}ld)", buf, 0x20u);
 
-            a3 = v35;
+            index = indexCopy;
             v7 = v34;
           }
 
@@ -315,34 +315,34 @@
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updatePhraseswithSwapIndices:(id)a3
+- (void)_updatePhraseswithSwapIndices:(id)indices
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  indicesCopy = indices;
   v5 = [(NSMutableArray *)self->_phrases count];
-  if (v5 == [v4 count])
+  if (v5 == [indicesCopy count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     if ([(NSMutableArray *)self->_phrases count])
     {
       v7 = 0;
       do
       {
-        v8 = [v4 objectAtIndex:v7];
-        v9 = [v8 integerValue];
+        v8 = [indicesCopy objectAtIndex:v7];
+        integerValue = [v8 integerValue];
 
         v10 = [(NSMutableArray *)self->_phrases objectAtIndex:v7];
         v11 = v10;
-        if (v9 && ([v10 interpretations], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), v12, v9 < v13))
+        if (integerValue && ([v10 interpretations], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), v12, integerValue < v13))
         {
-          v14 = [MEMORY[0x1E695DF70] array];
-          v15 = [v11 interpretations];
-          if ([v15 count])
+          array2 = [MEMORY[0x1E695DF70] array];
+          interpretations = [v11 interpretations];
+          if ([interpretations count])
           {
             v16 = 0;
             do
             {
-              if (v9 == v16)
+              if (integerValue == v16)
               {
                 v17 = 0;
               }
@@ -359,25 +359,25 @@
 
               else
               {
-                v18 = v9;
+                v18 = integerValue;
               }
 
-              v19 = [v15 objectAtIndex:v18];
-              [v14 addObject:v19];
+              v19 = [interpretations objectAtIndex:v18];
+              [array2 addObject:v19];
 
               ++v16;
             }
 
-            while (v16 < [v15 count]);
+            while (v16 < [interpretations count]);
           }
 
-          v20 = -[AFSpeechPhrase initWithInterpretations:isLowConfidence:]([AFSpeechPhrase alloc], "initWithInterpretations:isLowConfidence:", v14, [v11 isLowConfidence]);
-          [(NSMutableArray *)v6 addObject:v20];
+          v20 = -[AFSpeechPhrase initWithInterpretations:isLowConfidence:]([AFSpeechPhrase alloc], "initWithInterpretations:isLowConfidence:", array2, [v11 isLowConfidence]);
+          [(NSMutableArray *)array addObject:v20];
         }
 
         else
         {
-          [(NSMutableArray *)v6 addObject:v11];
+          [(NSMutableArray *)array addObject:v11];
         }
 
         ++v7;
@@ -387,7 +387,7 @@
     }
 
     phrases = self->_phrases;
-    self->_phrases = v6;
+    self->_phrases = array;
   }
 
   else
@@ -402,7 +402,7 @@
       v28 = 2050;
       v29 = [(NSMutableArray *)v24 count];
       v30 = 2050;
-      v31 = [v4 count];
+      v31 = [indicesCopy count];
       _os_log_error_impl(&dword_1912FE000, v25, OS_LOG_TYPE_ERROR, "%s _phrase count (%{public}ld) not match swapIndices count (%{public}ld)", &v26, 0x20u);
     }
   }
@@ -425,12 +425,12 @@
         do
         {
           v5 = [(NSMutableArray *)self->_utterances objectAtIndex:v4, v57];
-          v6 = [v5 confidenceScore];
+          confidenceScore = [v5 confidenceScore];
           v7 = [(AFUserUtterance *)self textOfUtteranceAtIndex:v4];
           if (v7)
           {
             v76[0] = @"avg";
-            v8 = [MEMORY[0x1E696AD98] numberWithInteger:v6];
+            v8 = [MEMORY[0x1E696AD98] numberWithInteger:confidenceScore];
             v77[0] = v8;
             v76[1] = @"index";
             v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v4];
@@ -487,13 +487,13 @@ LABEL_22:
         objc_enumerationMutation(v14);
       }
 
-      v25 = [*(*(&v59 + 1) + 8 * v24) allInterpretationStringsAndScores];
+      allInterpretationStringsAndScores = [*(*(&v59 + 1) + 8 * v24) allInterpretationStringsAndScores];
       if ([v3 count])
       {
-        if ([v25 count])
+        if ([allInterpretationStringsAndScores count])
         {
           v26 = v3;
-          v27 = v25;
+          v27 = allInterpretationStringsAndScores;
           if ([v27 count])
           {
             if ([v26 count])
@@ -531,7 +531,7 @@ LABEL_34:
 
       else
       {
-        [v3 setDictionary:v25];
+        [v3 setDictionary:allInterpretationStringsAndScores];
       }
 
 LABEL_35:
@@ -607,10 +607,10 @@ LABEL_35:
             objc_enumerationMutation(v33);
           }
 
-          v39 = [*(*(&v67 + 1) + 8 * j) confidenceScore];
-          if (v39 > v37)
+          confidenceScore2 = [*(*(&v67 + 1) + 8 * j) confidenceScore];
+          if (confidenceScore2 > v37)
           {
-            v37 = v39;
+            v37 = confidenceScore2;
           }
         }
 
@@ -645,10 +645,10 @@ LABEL_35:
             objc_enumerationMutation(v40);
           }
 
-          v46 = [*(*(&v63 + 1) + 8 * k) confidenceScore];
-          if (v46 < v44)
+          confidenceScore3 = [*(*(&v63 + 1) + 8 * k) confidenceScore];
+          if (confidenceScore3 < v44)
           {
-            v44 = v46;
+            v44 = confidenceScore3;
           }
         }
 
@@ -706,31 +706,31 @@ LABEL_68:
   return v3;
 }
 
-- (id)interpretationOfUtteranceAtIndex:(unint64_t)a3
+- (id)interpretationOfUtteranceAtIndex:(unint64_t)index
 {
   utterances = self->_utterances;
-  if (utterances && [(NSMutableArray *)utterances count]> a3)
+  if (utterances && [(NSMutableArray *)utterances count]> index)
   {
-    v6 = [(NSMutableArray *)self->_utterances objectAtIndex:a3];
-    v7 = [v6 interpretationIndices];
-    v8 = [v7 count];
+    v6 = [(NSMutableArray *)self->_utterances objectAtIndex:index];
+    interpretationIndices = [v6 interpretationIndices];
+    v8 = [interpretationIndices count];
     v9 = [(NSMutableArray *)self->_phrases count];
 
     if (v8 == v9)
     {
-      v10 = [MEMORY[0x1E695DF70] array];
-      v11 = [v6 interpretationIndices];
+      array = [MEMORY[0x1E695DF70] array];
+      interpretationIndices2 = [v6 interpretationIndices];
       v15 = MEMORY[0x1E69E9820];
       v16 = 3221225472;
       v17 = __52__AFUserUtterance_interpretationOfUtteranceAtIndex___block_invoke;
       v18 = &unk_1E7342ED0;
-      v19 = self;
-      v20 = v10;
-      v12 = v10;
-      [v11 enumerateObjectsUsingBlock:&v15];
+      selfCopy = self;
+      v20 = array;
+      v12 = array;
+      [interpretationIndices2 enumerateObjectsUsingBlock:&v15];
 
       v13 = objc_alloc_init(AFSpeechInterpretation);
-      [(AFSpeechInterpretation *)v13 setTokens:v12, v15, v16, v17, v18, v19];
+      [(AFSpeechInterpretation *)v13 setTokens:v12, v15, v16, v17, v18, selfCopy];
 
       goto LABEL_7;
     }
@@ -757,17 +757,17 @@ void __52__AFUserUtterance_interpretationOfUtteranceAtIndex___block_invoke(uint6
   [v10 addObjectsFromArray:v11];
 }
 
-- (id)textOfUtteranceAtIndex:(unint64_t)a3
+- (id)textOfUtteranceAtIndex:(unint64_t)index
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (self->_phrases && [(NSMutableArray *)self->_utterances count]> a3)
+  if (self->_phrases && [(NSMutableArray *)self->_utterances count]> index)
   {
-    v5 = [(NSMutableArray *)self->_utterances objectAtIndex:a3];
-    v6 = [v5 interpretationIndices];
-    v7 = [v6 count];
+    v5 = [(NSMutableArray *)self->_utterances objectAtIndex:index];
+    interpretationIndices = [v5 interpretationIndices];
+    v7 = [interpretationIndices count];
     if (v7 == [(NSMutableArray *)self->_phrases count])
     {
-      v8 = [MEMORY[0x1E696AD60] string];
+      string = [MEMORY[0x1E696AD60] string];
       if ([(NSMutableArray *)self->_phrases count])
       {
         v10 = 0;
@@ -775,13 +775,13 @@ void __52__AFUserUtterance_interpretationOfUtteranceAtIndex___block_invoke(uint6
         v22 = v9;
         do
         {
-          v11 = [v6 objectAtIndex:{v10, v22}];
-          v12 = [v11 unsignedIntegerValue];
+          v11 = [interpretationIndices objectAtIndex:{v10, v22}];
+          unsignedIntegerValue = [v11 unsignedIntegerValue];
 
           v13 = [(NSMutableArray *)self->_phrases objectAtIndex:v10];
-          v14 = [v13 interpretations];
+          interpretations = [v13 interpretations];
 
-          if (v12 >= [v14 count])
+          if (unsignedIntegerValue >= [interpretations count])
           {
             v17 = AFSiriLogContextConnection;
             if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
@@ -789,18 +789,18 @@ void __52__AFUserUtterance_interpretationOfUtteranceAtIndex___block_invoke(uint6
               *buf = v22;
               v24 = "[AFUserUtterance textOfUtteranceAtIndex:]";
               v25 = 2050;
-              v26 = v12;
+              v26 = unsignedIntegerValue;
               v27 = 2112;
-              v28 = v14;
+              v28 = interpretations;
               _os_log_error_impl(&dword_1912FE000, v17, OS_LOG_TYPE_ERROR, "%s utterance interpretationIndex (%{public}lu) is out of range of interpretations=%@", buf, 0x20u);
             }
           }
 
           else
           {
-            v15 = [v14 objectAtIndex:v12];
-            v16 = [v15 text];
-            [v8 appendString:v16];
+            v15 = [interpretations objectAtIndex:unsignedIntegerValue];
+            text = [v15 text];
+            [string appendString:text];
           }
 
           ++v10;
@@ -821,35 +821,35 @@ void __52__AFUserUtterance_interpretationOfUtteranceAtIndex___block_invoke(uint6
         v25 = 2112;
         v26 = phrases;
         v27 = 2114;
-        v28 = v6;
+        v28 = interpretationIndices;
         _os_log_error_impl(&dword_1912FE000, v18, OS_LOG_TYPE_ERROR, "%s Phrase length is not the same as interpretationIndices. Phrases=%@, interpretationIndices=%{public}@", buf, 0x20u);
       }
 
-      v8 = 0;
+      string = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    string = 0;
   }
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return string;
 }
 
-- (id)rangeListOfDifferingTextFromTargetTokenList:(id)a3 comparedToBaseTokenList:(id)a4
+- (id)rangeListOfDifferingTextFromTargetTokenList:(id)list comparedToBaseTokenList:(id)tokenList
 {
-  v6 = a3;
-  v21 = [(AFUserUtterance *)self longestCommonSubsequenceBetweenList:v6 andList:a4];
+  listCopy = list;
+  v21 = [(AFUserUtterance *)self longestCommonSubsequenceBetweenList:listCopy andList:tokenList];
   v7 = [v21 count];
-  v20 = [MEMORY[0x1E695DF70] array];
-  if ([v6 count])
+  array = [MEMORY[0x1E695DF70] array];
+  if ([listCopy count])
   {
     v8 = 0;
     v9 = 0;
-    v10 = 0;
+    removeSpaceAfter = 0;
     v11 = 0;
     do
     {
@@ -861,20 +861,20 @@ void __52__AFUserUtterance_interpretationOfUtteranceAtIndex___block_invoke(uint6
       else
       {
         v12 = [v21 objectAtIndex:v9];
-        v13 = [v12 unsignedIntegerValue];
+        unsignedIntegerValue = [v12 unsignedIntegerValue];
 
-        v14 = v11 != v13;
-        if (v11 == v13)
+        v14 = v11 != unsignedIntegerValue;
+        if (v11 == unsignedIntegerValue)
         {
           ++v9;
         }
       }
 
-      v15 = [v6 objectAtIndex:v11];
-      v16 = [v15 text];
-      v17 = [v16 length];
+      v15 = [listCopy objectAtIndex:v11];
+      text = [v15 text];
+      v17 = [text length];
 
-      if (!((v8 == 0) | v10 & 1))
+      if (!((v8 == 0) | removeSpaceAfter & 1))
       {
         v8 += [v15 removeSpaceBefore] ^ 1;
       }
@@ -882,48 +882,48 @@ void __52__AFUserUtterance_interpretationOfUtteranceAtIndex___block_invoke(uint6
       if (v14)
       {
         v18 = [MEMORY[0x1E696B098] valueWithRange:{v8, v17}];
-        [v20 addObject:v18];
+        [array addObject:v18];
       }
 
       v8 += v17;
-      v10 = [v15 removeSpaceAfter];
+      removeSpaceAfter = [v15 removeSpaceAfter];
 
       ++v11;
     }
 
-    while (v11 < [v6 count]);
+    while (v11 < [listCopy count]);
   }
 
-  return v20;
+  return array;
 }
 
-- (id)rangeListOfDifferingTextFromSpeechInterpretation:(id)a3 comparedToBaseTokenList:(id)a4
+- (id)rangeListOfDifferingTextFromSpeechInterpretation:(id)interpretation comparedToBaseTokenList:(id)list
 {
-  v6 = a4;
-  v7 = [a3 tokens];
-  v8 = [(AFUserUtterance *)self rangeListOfDifferingTextFromTargetTokenList:v7 comparedToBaseTokenList:v6];
+  listCopy = list;
+  tokens = [interpretation tokens];
+  v8 = [(AFUserUtterance *)self rangeListOfDifferingTextFromTargetTokenList:tokens comparedToBaseTokenList:listCopy];
 
   return v8;
 }
 
-- (id)rangeListOfDifferingTextFromSpeechInterpretation:(id)a3 comparedToBaseUtteranceAtIndex:(unint64_t)a4
+- (id)rangeListOfDifferingTextFromSpeechInterpretation:(id)interpretation comparedToBaseUtteranceAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(AFUserUtterance *)self speechTokensForUtteranceAtIndex:a4];
-  v8 = [(AFUserUtterance *)self rangeListOfDifferingTextFromSpeechInterpretation:v6 comparedToBaseTokenList:v7];
+  interpretationCopy = interpretation;
+  v7 = [(AFUserUtterance *)self speechTokensForUtteranceAtIndex:index];
+  v8 = [(AFUserUtterance *)self rangeListOfDifferingTextFromSpeechInterpretation:interpretationCopy comparedToBaseTokenList:v7];
 
   return v8;
 }
 
-- (id)longestCommonSubsequenceBetweenList:(id)a3 andList:(id)a4
+- (id)longestCommonSubsequenceBetweenList:(id)list andList:(id)andList
 {
-  v5 = a3;
-  v6 = a4;
-  v42 = [MEMORY[0x1E695DF70] array];
-  v45 = v5;
-  v7 = [v5 count];
-  v44 = v6;
-  v8 = [v6 count];
+  listCopy = list;
+  andListCopy = andList;
+  array = [MEMORY[0x1E695DF70] array];
+  v45 = listCopy;
+  v7 = [listCopy count];
+  v44 = andListCopy;
+  v8 = [andListCopy count];
   v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:v7 + 1];
   if (v7 == -1)
   {
@@ -976,10 +976,10 @@ LABEL_8:
       do
       {
         v17 = [v45 objectAtIndex:v14];
-        v18 = [v17 text];
+        text = [v17 text];
         v19 = [v44 objectAtIndex:v16];
-        v20 = [v19 text];
-        v21 = [v18 isEqualToString:v20];
+        text2 = [v19 text];
+        v21 = [text isEqualToString:text2];
 
         if (v21)
         {
@@ -1042,7 +1042,7 @@ LABEL_8:
         }
 
         v40 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7 - 1];
-        [v42 insertObject:v40 atIndex:0];
+        [array insertObject:v40 atIndex:0];
       }
 
       --v7;
@@ -1053,13 +1053,13 @@ LABEL_8:
 
 LABEL_28:
 
-  return v42;
+  return array;
 }
 
-- (id)speechTokensForUtteranceAtIndex:(unint64_t)a3
+- (id)speechTokensForUtteranceAtIndex:(unint64_t)index
 {
   v27 = *MEMORY[0x1E69E9840];
-  if ([(NSMutableArray *)self->_utterances count]<= a3)
+  if ([(NSMutableArray *)self->_utterances count]<= index)
   {
     v17 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
@@ -1067,18 +1067,18 @@ LABEL_28:
       *buf = 136315394;
       v22 = "[AFUserUtterance speechTokensForUtteranceAtIndex:]";
       v23 = 2050;
-      v24 = a3;
+      indexCopy = index;
       _os_log_error_impl(&dword_1912FE000, v17, OS_LOG_TYPE_ERROR, "%s utterance index (%{public}lu) is out of range", buf, 0x16u);
     }
 
-    v5 = 0;
+    array = 0;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DF70] array];
-    v6 = [(NSMutableArray *)self->_utterances objectAtIndex:a3];
-    v7 = [v6 interpretationIndices];
+    array = [MEMORY[0x1E695DF70] array];
+    v6 = [(NSMutableArray *)self->_utterances objectAtIndex:index];
+    interpretationIndices = [v6 interpretationIndices];
 
     if ([(NSMutableArray *)self->_phrases count])
     {
@@ -1087,13 +1087,13 @@ LABEL_28:
       v20 = v8;
       do
       {
-        v10 = [v7 objectAtIndex:{v9, v20}];
-        v11 = [v10 unsignedIntegerValue];
+        v10 = [interpretationIndices objectAtIndex:{v9, v20}];
+        unsignedIntegerValue = [v10 unsignedIntegerValue];
 
         v12 = [(NSMutableArray *)self->_phrases objectAtIndex:v9];
-        v13 = [v12 interpretations];
+        interpretations = [v12 interpretations];
 
-        if (v11 >= [v13 count])
+        if (unsignedIntegerValue >= [interpretations count])
         {
           v16 = AFSiriLogContextConnection;
           if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
@@ -1101,18 +1101,18 @@ LABEL_28:
             *buf = v20;
             v22 = "[AFUserUtterance speechTokensForUtteranceAtIndex:]";
             v23 = 2050;
-            v24 = v11;
+            indexCopy = unsignedIntegerValue;
             v25 = 2112;
-            v26 = v13;
+            v26 = interpretations;
             _os_log_error_impl(&dword_1912FE000, v16, OS_LOG_TYPE_ERROR, "%s utterance interpretationIndex (%{public}lu) is out of range of interpretations=%@", buf, 0x20u);
           }
         }
 
         else
         {
-          v14 = [v13 objectAtIndex:v11];
-          v15 = [v14 tokens];
-          [v5 addObjectsFromArray:v15];
+          v14 = [interpretations objectAtIndex:unsignedIntegerValue];
+          tokens = [v14 tokens];
+          [array addObjectsFromArray:tokens];
         }
 
         ++v9;
@@ -1124,18 +1124,18 @@ LABEL_28:
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return array;
 }
 
-- (id)rangeListOfDifferingTextFromUtteranceAtIndex:(unint64_t)a3 comparedToBaseUtteranceAtIndex:(unint64_t)a4
+- (id)rangeListOfDifferingTextFromUtteranceAtIndex:(unint64_t)index comparedToBaseUtteranceAtIndex:(unint64_t)atIndex
 {
   v38 = *MEMORY[0x1E69E9840];
-  if (a3 == a4)
+  if (index == atIndex)
   {
     goto LABEL_17;
   }
 
-  if ([(NSMutableArray *)self->_utterances count]<= a3)
+  if ([(NSMutableArray *)self->_utterances count]<= index)
   {
     v25 = AFSiriLogContextConnection;
     if (!os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
@@ -1148,14 +1148,14 @@ LABEL_17:
     *buf = 136315394;
     v33 = "[AFUserUtterance rangeListOfDifferingTextFromUtteranceAtIndex:comparedToBaseUtteranceAtIndex:]";
     v34 = 2050;
-    v35 = a3;
+    atIndexCopy = index;
     v26 = "%s utterance index (%{public}lu) is out of range";
 LABEL_23:
     _os_log_error_impl(&dword_1912FE000, v25, OS_LOG_TYPE_ERROR, v26, buf, 0x16u);
     goto LABEL_17;
   }
 
-  if ([(NSMutableArray *)self->_utterances count]<= a4)
+  if ([(NSMutableArray *)self->_utterances count]<= atIndex)
   {
     v25 = AFSiriLogContextConnection;
     if (!os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
@@ -1166,18 +1166,18 @@ LABEL_23:
     *buf = 136315394;
     v33 = "[AFUserUtterance rangeListOfDifferingTextFromUtteranceAtIndex:comparedToBaseUtteranceAtIndex:]";
     v34 = 2050;
-    v35 = a4;
+    atIndexCopy = atIndex;
     v26 = "%s base utterance index (%{public}lu) is out of range";
     goto LABEL_23;
   }
 
-  v7 = [(NSMutableArray *)self->_utterances objectAtIndex:a3];
-  v8 = [v7 interpretationIndices];
+  v7 = [(NSMutableArray *)self->_utterances objectAtIndex:index];
+  interpretationIndices = [v7 interpretationIndices];
 
-  v9 = [(NSMutableArray *)self->_utterances objectAtIndex:a4];
-  v10 = [v9 interpretationIndices];
+  v9 = [(NSMutableArray *)self->_utterances objectAtIndex:atIndex];
+  interpretationIndices2 = [v9 interpretationIndices];
 
-  v31 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(NSMutableArray *)self->_phrases count])
   {
     v12 = 0;
@@ -1186,16 +1186,16 @@ LABEL_23:
     v30 = v11;
     do
     {
-      v14 = [v8 objectAtIndex:{v13, v30}];
-      v15 = [v14 unsignedIntegerValue];
+      v14 = [interpretationIndices objectAtIndex:{v13, v30}];
+      unsignedIntegerValue = [v14 unsignedIntegerValue];
 
-      v16 = [v10 objectAtIndex:v13];
-      v17 = [v16 unsignedIntegerValue];
+      v16 = [interpretationIndices2 objectAtIndex:v13];
+      unsignedIntegerValue2 = [v16 unsignedIntegerValue];
 
       v18 = [(NSMutableArray *)self->_phrases objectAtIndex:v13];
-      v19 = [v18 interpretations];
+      interpretations = [v18 interpretations];
 
-      if (v15 >= [v19 count])
+      if (unsignedIntegerValue >= [interpretations count])
       {
         v24 = AFSiriLogContextConnection;
         if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
@@ -1203,22 +1203,22 @@ LABEL_23:
           *buf = v30;
           v33 = "[AFUserUtterance rangeListOfDifferingTextFromUtteranceAtIndex:comparedToBaseUtteranceAtIndex:]";
           v34 = 2050;
-          v35 = v15;
+          atIndexCopy = unsignedIntegerValue;
           v36 = 2112;
-          v37 = v19;
+          v37 = interpretations;
           _os_log_error_impl(&dword_1912FE000, v24, OS_LOG_TYPE_ERROR, "%s utterance interpretationIndex (%{public}lu) is out of range of interpretations=%@", buf, 0x20u);
         }
       }
 
       else
       {
-        v20 = [v19 objectAtIndex:v15];
-        v21 = [v20 text];
-        v22 = v21;
-        if (v15 != v17)
+        v20 = [interpretations objectAtIndex:unsignedIntegerValue];
+        text = [v20 text];
+        v22 = text;
+        if (unsignedIntegerValue != unsignedIntegerValue2)
         {
-          v23 = [MEMORY[0x1E696B098] valueWithRange:{v12, objc_msgSend(v21, "length")}];
-          [v31 addObject:v23];
+          v23 = [MEMORY[0x1E696B098] valueWithRange:{v12, objc_msgSend(text, "length")}];
+          [array addObject:v23];
         }
 
         v12 += [v22 length];
@@ -1230,7 +1230,7 @@ LABEL_23:
     while (v13 < [(NSMutableArray *)self->_phrases count]);
   }
 
-  v27 = v31;
+  v27 = array;
 LABEL_18:
   v28 = *MEMORY[0x1E69E9840];
 
@@ -1264,7 +1264,7 @@ LABEL_18:
     goto LABEL_15;
   }
 
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -1284,9 +1284,9 @@ LABEL_18:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v17 + 1) + 8 * i) firstInterpretation];
-        v10 = [v9 tokens];
-        [v3 addObjectsFromArray:v10];
+        firstInterpretation = [*(*(&v17 + 1) + 8 * i) firstInterpretation];
+        tokens = [firstInterpretation tokens];
+        [array addObjectsFromArray:tokens];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -1295,7 +1295,7 @@ LABEL_18:
     while (v6);
   }
 
-  v11 = af_bestTokenInterpretation(v3);
+  v11 = af_bestTokenInterpretation(array);
 
 LABEL_15:
   v15 = *MEMORY[0x1E69E9840];
@@ -1303,20 +1303,20 @@ LABEL_15:
   return v11;
 }
 
-- (AFUserUtterance)initWithString:(id)a3 correctionIdentifier:(id)a4
+- (AFUserUtterance)initWithString:(id)string correctionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = AFUserUtterance;
   v8 = [(AFUserUtterance *)&v14 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [identifierCopy copy];
     correctionIdentifier = v8->_correctionIdentifier;
     v8->_correctionIdentifier = v9;
 
-    v11 = [v6 copy];
+    v11 = [stringCopy copy];
     text = v8->_text;
     v8->_text = v11;
   }
@@ -1324,20 +1324,20 @@ LABEL_15:
   return v8;
 }
 
-- (AFUserUtterance)initWithTokens:(id)a3 correctionIdentifier:(id)a4
+- (AFUserUtterance)initWithTokens:(id)tokens correctionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  tokensCopy = tokens;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = AFUserUtterance;
   v8 = [(AFUserUtterance *)&v14 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [identifierCopy copy];
     correctionIdentifier = v8->_correctionIdentifier;
     v8->_correctionIdentifier = v9;
 
-    v11 = [v6 copy];
+    v11 = [tokensCopy copy];
     tokens = v8->_tokens;
     v8->_tokens = v11;
   }
@@ -1345,48 +1345,48 @@ LABEL_15:
   return v8;
 }
 
-- (AFUserUtterance)initWithPhrases:(id)a3 sentenceConfidence:(int64_t)a4 utterances:(id)a5 correctionIdentifier:(id)a6
+- (AFUserUtterance)initWithPhrases:(id)phrases sentenceConfidence:(int64_t)confidence utterances:(id)utterances correctionIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  phrasesCopy = phrases;
+  utterancesCopy = utterances;
+  identifierCopy = identifier;
   v21.receiver = self;
   v21.super_class = AFUserUtterance;
   v13 = [(AFUserUtterance *)&v21 init];
   if (v13)
   {
-    v14 = [v12 copy];
+    v14 = [identifierCopy copy];
     correctionIdentifier = v13->_correctionIdentifier;
     v13->_correctionIdentifier = v14;
 
-    v16 = [v10 copy];
+    v16 = [phrasesCopy copy];
     phrases = v13->_phrases;
     v13->_phrases = v16;
 
-    v18 = [v11 copy];
+    v18 = [utterancesCopy copy];
     utterances = v13->_utterances;
     v13->_utterances = v18;
 
-    v13->_sentenceConfidence = a4;
+    v13->_sentenceConfidence = confidence;
   }
 
   return v13;
 }
 
-- (AFUserUtterance)initWithPhrases:(id)a3 utterances:(id)a4
+- (AFUserUtterance)initWithPhrases:(id)phrases utterances:(id)utterances
 {
-  v6 = a3;
-  v7 = a4;
+  phrasesCopy = phrases;
+  utterancesCopy = utterances;
   v14.receiver = self;
   v14.super_class = AFUserUtterance;
   v8 = [(AFUserUtterance *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [phrasesCopy copy];
     phrases = v8->_phrases;
     v8->_phrases = v9;
 
-    v11 = [v7 copy];
+    v11 = [utterancesCopy copy];
     utterances = v8->_utterances;
     v8->_utterances = v11;
   }
@@ -1394,20 +1394,20 @@ LABEL_15:
   return v8;
 }
 
-- (AFUserUtterance)initWithPhrases:(id)a3 correctionIdentifier:(id)a4
+- (AFUserUtterance)initWithPhrases:(id)phrases correctionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  phrasesCopy = phrases;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = AFUserUtterance;
   v8 = [(AFUserUtterance *)&v14 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [identifierCopy copy];
     correctionIdentifier = v8->_correctionIdentifier;
     v8->_correctionIdentifier = v9;
 
-    v11 = [v6 copy];
+    v11 = [phrasesCopy copy];
     phrases = v8->_phrases;
     v8->_phrases = v11;
   }

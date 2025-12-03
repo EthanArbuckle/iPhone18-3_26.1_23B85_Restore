@@ -1,26 +1,26 @@
 @interface SBHomeToSwitcherSwitcherModifier
 - (BOOL)isEffectivelyHome;
-- (SBHomeToSwitcherSwitcherModifier)initWithTransitionID:(id)a3 direction:(int64_t)a4 multitaskingModifier:(id)a5;
+- (SBHomeToSwitcherSwitcherModifier)initWithTransitionID:(id)d direction:(int64_t)direction multitaskingModifier:(id)modifier;
 - (double)containerStatusBarAnimationDuration;
 - (double)fadeInDelayForSplitViewHandles;
-- (id)handleTimerEvent:(id)a3;
+- (id)handleTimerEvent:(id)event;
 - (id)transitionWillBegin;
 - (id)transitionWillUpdate;
 @end
 
 @implementation SBHomeToSwitcherSwitcherModifier
 
-- (SBHomeToSwitcherSwitcherModifier)initWithTransitionID:(id)a3 direction:(int64_t)a4 multitaskingModifier:(id)a5
+- (SBHomeToSwitcherSwitcherModifier)initWithTransitionID:(id)d direction:(int64_t)direction multitaskingModifier:(id)modifier
 {
-  v9 = a5;
+  modifierCopy = modifier;
   v18.receiver = self;
   v18.super_class = SBHomeToSwitcherSwitcherModifier;
-  v10 = [(SBTransitionSwitcherModifier *)&v18 initWithTransitionID:a3];
+  v10 = [(SBTransitionSwitcherModifier *)&v18 initWithTransitionID:d];
   v11 = v10;
   if (v10)
   {
-    v10->_direction = a4;
-    objc_storeStrong(&v10->_multitaskingModifier, a5);
+    v10->_direction = direction;
+    objc_storeStrong(&v10->_multitaskingModifier, modifier);
     multitaskingModifier = v11->_multitaskingModifier;
     v13 = objc_opt_class();
     v14 = multitaskingModifier;
@@ -52,13 +52,13 @@
 
 - (double)fadeInDelayForSplitViewHandles
 {
-  v2 = [(SBHomeToSwitcherSwitcherModifier *)self switcherSettings];
-  v3 = [v2 windowingSettings];
-  [v3 percentageOfTransitionForSplitViewHandleFadeInDelay];
+  switcherSettings = [(SBHomeToSwitcherSwitcherModifier *)self switcherSettings];
+  windowingSettings = [switcherSettings windowingSettings];
+  [windowingSettings percentageOfTransitionForSplitViewHandleFadeInDelay];
   v5 = v4;
-  v6 = [v2 animationSettings];
-  v7 = [v6 layoutSettings];
-  [v7 settlingDuration];
+  animationSettings = [switcherSettings animationSettings];
+  layoutSettings = [animationSettings layoutSettings];
+  [layoutSettings settlingDuration];
   v9 = v5 * v8;
 
   return v9;
@@ -66,25 +66,25 @@
 
 - (double)containerStatusBarAnimationDuration
 {
-  v3 = [(SBHomeToSwitcherSwitcherModifier *)self appLayouts];
-  v4 = [v3 count];
+  appLayouts = [(SBHomeToSwitcherSwitcherModifier *)self appLayouts];
+  v4 = [appLayouts count];
 
   if (v4)
   {
     return 0.35;
   }
 
-  v6 = [(SBHomeToSwitcherSwitcherModifier *)self switcherSettings];
-  v7 = [v6 animationSettings];
+  switcherSettings = [(SBHomeToSwitcherSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
 
   if (self->_direction == 1)
   {
-    [v7 statusBarToApexBounceAnimationDuration];
+    [animationSettings statusBarToApexBounceAnimationDuration];
   }
 
   else
   {
-    [v7 statusBarFromApexBounceAnimationDuration];
+    [animationSettings statusBarFromApexBounceAnimationDuration];
   }
 
   v5 = v8;
@@ -96,17 +96,17 @@
 {
   v15.receiver = self;
   v15.super_class = SBHomeToSwitcherSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v15 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v15 transitionWillBegin];
   v4 = objc_alloc_init(SBSwitcherModifierEventResponse);
-  v5 = [(SBHomeToSwitcherSwitcherModifier *)self windowManagementContext];
-  v6 = [v5 isFlexibleWindowingEnabled];
+  windowManagementContext = [(SBHomeToSwitcherSwitcherModifier *)self windowManagementContext];
+  isFlexibleWindowingEnabled = [windowManagementContext isFlexibleWindowingEnabled];
 
-  if ((v6 & 1) == 0)
+  if ((isFlexibleWindowingEnabled & 1) == 0)
   {
-    v7 = [(SBHomeToSwitcherSwitcherModifier *)self appLayoutToScrollToDuringTransition];
-    if (v7)
+    appLayoutToScrollToDuringTransition = [(SBHomeToSwitcherSwitcherModifier *)self appLayoutToScrollToDuringTransition];
+    if (appLayoutToScrollToDuringTransition)
     {
-      v8 = [[SBScrollToAppLayoutSwitcherEventResponse alloc] initWithAppLayout:v7 alignment:0 animated:0];
+      v8 = [[SBScrollToAppLayoutSwitcherEventResponse alloc] initWithAppLayout:appLayoutToScrollToDuringTransition alignment:0 animated:0];
       [(SBChainableModifierEventResponse *)v4 addChildResponse:v8];
     }
   }
@@ -126,7 +126,7 @@
   v12 = [(SBUpdateLayoutSwitcherEventResponse *)v10 initWithOptions:v11 updateMode:2];
   [(SBChainableModifierEventResponse *)v4 addChildResponse:v12];
 
-  v13 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:v3];
+  v13 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:transitionWillBegin];
 
   return v13;
 }
@@ -135,54 +135,54 @@
 {
   v15.receiver = self;
   v15.super_class = SBHomeToSwitcherSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v15 transitionWillUpdate];
+  transitionWillUpdate = [(SBTransitionSwitcherModifier *)&v15 transitionWillUpdate];
   if (self->_direction == 1)
   {
-    v4 = [(SBHomeToSwitcherSwitcherModifier *)self appLayouts];
-    v5 = [v4 count];
+    appLayouts = [(SBHomeToSwitcherSwitcherModifier *)self appLayouts];
+    v5 = [appLayouts count];
 
     if (!v5)
     {
-      v6 = [(SBHomeToSwitcherSwitcherModifier *)self switcherSettings];
-      v7 = [v6 animationSettings];
-      [v7 emptySwitcherDismissDelay];
+      switcherSettings = [(SBHomeToSwitcherSwitcherModifier *)self switcherSettings];
+      animationSettings = [switcherSettings animationSettings];
+      [animationSettings emptySwitcherDismissDelay];
       v9 = v8;
 
       v10 = [SBTimerEventSwitcherEventResponse alloc];
-      v11 = [(SBHomeToSwitcherSwitcherModifier *)self _dismissForEmptySwitcherResponseName];
-      v12 = [(SBTimerEventSwitcherEventResponse *)v10 initWithDelay:0 validator:v11 reason:v9];
+      _dismissForEmptySwitcherResponseName = [(SBHomeToSwitcherSwitcherModifier *)self _dismissForEmptySwitcherResponseName];
+      v12 = [(SBTimerEventSwitcherEventResponse *)v10 initWithDelay:0 validator:_dismissForEmptySwitcherResponseName reason:v9];
 
-      v13 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v12 toResponse:v3];
+      v13 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v12 toResponse:transitionWillUpdate];
 
-      v3 = v13;
+      transitionWillUpdate = v13;
     }
   }
 
-  return v3;
+  return transitionWillUpdate;
 }
 
-- (id)handleTimerEvent:(id)a3
+- (id)handleTimerEvent:(id)event
 {
   v11.receiver = self;
   v11.super_class = SBHomeToSwitcherSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBTransitionSwitcherModifier *)&v11 handleTimerEvent:v4];
-  v6 = [v4 reason];
+  eventCopy = event;
+  v5 = [(SBTransitionSwitcherModifier *)&v11 handleTimerEvent:eventCopy];
+  reason = [eventCopy reason];
 
-  v7 = [(SBHomeToSwitcherSwitcherModifier *)self _dismissForEmptySwitcherResponseName];
-  if ([(SBDismissForEmptySwitcherSwitcherEventResponse *)v6 isEqualToString:v7])
+  _dismissForEmptySwitcherResponseName = [(SBHomeToSwitcherSwitcherModifier *)self _dismissForEmptySwitcherResponseName];
+  if ([(SBDismissForEmptySwitcherSwitcherEventResponse *)reason isEqualToString:_dismissForEmptySwitcherResponseName])
   {
-    v8 = [(SBHomeToSwitcherSwitcherModifier *)self appLayouts];
-    v9 = [v8 count];
+    appLayouts = [(SBHomeToSwitcherSwitcherModifier *)self appLayouts];
+    v9 = [appLayouts count];
 
     if (v9)
     {
       goto LABEL_5;
     }
 
-    v6 = objc_alloc_init(SBDismissForEmptySwitcherSwitcherEventResponse);
-    [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v6 toResponse:v5];
-    v5 = v7 = v5;
+    reason = objc_alloc_init(SBDismissForEmptySwitcherSwitcherEventResponse);
+    [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:reason toResponse:v5];
+    v5 = _dismissForEmptySwitcherResponseName = v5;
   }
 
 LABEL_5:

@@ -8,10 +8,10 @@
 - (void)attachMIS;
 - (void)dealloc;
 - (void)detachMIS;
-- (void)getState:(int *)a3 andReason:(int *)a4;
+- (void)getState:(int *)state andReason:(int *)reason;
 - (void)handleMISStateChanged;
-- (void)readMISState:(int *)a3 andReason:(int *)a4;
-- (void)setState:(int)a3;
+- (void)readMISState:(int *)state andReason:(int *)reason;
+- (void)setState:(int)state;
 - (void)stopService;
 @end
 
@@ -80,34 +80,34 @@
 
 - (void)attachMIS
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_netClient)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_netClient)
   {
     v3 = &_dispatch_main_q;
-    v2->_netClient = _NETRBClientCreate();
+    selfCopy->_netClient = _NETRBClientCreate();
 
     v4 = tethering_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      netClient = v2->_netClient;
+      netClient = selfCopy->_netClient;
       v6 = 138412290;
       v7 = netClient;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Created NETRB client = %@", &v6, 0xCu);
     }
   }
 
-  ++v2->_attachCount;
-  objc_sync_exit(v2);
+  ++selfCopy->_attachCount;
+  objc_sync_exit(selfCopy);
 }
 
 - (void)detachMIS
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  attachCount = v2->_attachCount;
-  v2->_attachCount = attachCount - 1;
-  if (v2->_netClient)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  attachCount = selfCopy->_attachCount;
+  selfCopy->_attachCount = attachCount - 1;
+  if (selfCopy->_netClient)
   {
     v4 = attachCount <= 1;
   }
@@ -120,8 +120,8 @@
   if (v4)
   {
     _NETRBClientDestroy();
-    v2->_netClient = 0;
-    v2->_attachCount = 0;
+    selfCopy->_netClient = 0;
+    selfCopy->_attachCount = 0;
     v5 = tethering_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -130,7 +130,7 @@
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)stopService
@@ -147,7 +147,7 @@
   }
 }
 
-- (void)setState:(int)a3
+- (void)setState:(int)state
 {
   [(SDMISManager *)self attachMIS];
   if (self->_netClient)
@@ -157,7 +157,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6[0] = 67109120;
-      v6[1] = a3;
+      v6[1] = state;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Setting state = %d", v6, 8u);
     }
   }
@@ -165,7 +165,7 @@
   [(SDMISManager *)self detachMIS];
 }
 
-- (void)getState:(int *)a3 andReason:(int *)a4
+- (void)getState:(int *)state andReason:(int *)reason
 {
   if (self->_needStateUpdate)
   {
@@ -173,14 +173,14 @@
     self->_needStateUpdate = 0;
   }
 
-  if (a3)
+  if (state)
   {
-    *a3 = self->_state;
+    *state = self->_state;
   }
 
-  if (a4)
+  if (reason)
   {
-    *a4 = self->_reason;
+    *reason = self->_reason;
   }
 
   v7 = tethering_log();
@@ -191,7 +191,7 @@
     v10[0] = 67109376;
     v10[1] = state;
     v11 = 1024;
-    v12 = reason;
+    reasonCopy = reason;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "state = %d, reason = %d", v10, 0xEu);
   }
 }
@@ -251,7 +251,7 @@
   return v10;
 }
 
-- (void)readMISState:(int *)a3 andReason:(int *)a4
+- (void)readMISState:(int *)state andReason:(int *)reason
 {
   state = self->_state;
   reason = self->_reason;
@@ -266,14 +266,14 @@
     reason = [v10 intValue];
   }
 
-  if (a3)
+  if (state)
   {
-    *a3 = state;
+    *state = state;
   }
 
-  if (a4)
+  if (reason)
   {
-    *a4 = reason;
+    *reason = reason;
   }
 }
 
@@ -307,10 +307,10 @@
 - (void)handleMISStateChanged
 {
   v12 = 0;
-  v3 = [(SDMISManager *)self readConnectHosts];
+  readConnectHosts = [(SDMISManager *)self readConnectHosts];
   [(SDMISManager *)self readMISState:&v12 + 4 andReason:&v12];
   v4 = v12;
-  if (v12 == __PAIR64__(self->_state, self->_reason) && v3 == self->_connectedHosts)
+  if (v12 == __PAIR64__(self->_state, self->_reason) && readConnectHosts == self->_connectedHosts)
   {
     v5 = tethering_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -328,7 +328,7 @@ LABEL_7:
   {
     self->_state = HIDWORD(v12);
     self->_reason = v4;
-    self->_connectedHosts = v3;
+    self->_connectedHosts = readConnectHosts;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained misStateChanged:self];
 

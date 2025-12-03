@@ -1,34 +1,34 @@
 @interface HIDRemoteDeviceServer
-- (BOOL)createRemoteDevice:(id)a3 deviceID:(unint64_t)a4 property:(id)a5;
-- (BOOL)remoteDeviceGetReportHandler:(id)a3 packet:(id *)a4;
-- (BOOL)remoteDeviceReportHandler:(id)a3 header:(id *)a4;
-- (BOOL)remoteDeviceReportHandler:(id)a3 packet:(id *)a4;
-- (BOOL)remoteDeviceSetReportHandler:(id)a3 packet:(id *)a4;
-- (HIDRemoteDeviceServer)initWithQueue:(id)a3;
-- (id)_disconnectEndpointID:(unint64_t)a3;
+- (BOOL)createRemoteDevice:(id)device deviceID:(unint64_t)d property:(id)property;
+- (BOOL)remoteDeviceGetReportHandler:(id)handler packet:(id *)packet;
+- (BOOL)remoteDeviceReportHandler:(id)handler header:(id *)header;
+- (BOOL)remoteDeviceReportHandler:(id)handler packet:(id *)packet;
+- (BOOL)remoteDeviceSetReportHandler:(id)handler packet:(id *)packet;
+- (HIDRemoteDeviceServer)initWithQueue:(id)queue;
+- (id)_disconnectEndpointID:(unint64_t)d;
 - (id)description;
 - (id)endpoints;
-- (id)getEndpoint:(unint64_t)a3;
-- (unint64_t)getRefreshCountForEndpoint:(id)a3 deviceID:(unint64_t)a4;
-- (void)connectEndpoint:(id)a3;
+- (id)getEndpoint:(unint64_t)endpoint;
+- (unint64_t)getRefreshCountForEndpoint:(id)endpoint deviceID:(unint64_t)d;
+- (void)connectEndpoint:(id)endpoint;
 - (void)disconnectAll;
-- (void)disconnectEndpointID:(unint64_t)a3;
-- (void)endpointMessageHandler:(id)a3 data:(char *)a4 size:(unint64_t)a5;
-- (void)setRefreshCountForEndpoint:(id)a3 deviceID:(unint64_t)a4 count:(unint64_t)a5;
+- (void)disconnectEndpointID:(unint64_t)d;
+- (void)endpointMessageHandler:(id)handler data:(char *)data size:(unint64_t)size;
+- (void)setRefreshCountForEndpoint:(id)endpoint deviceID:(unint64_t)d count:(unint64_t)count;
 @end
 
 @implementation HIDRemoteDeviceServer
 
-- (HIDRemoteDeviceServer)initWithQueue:(id)a3
+- (HIDRemoteDeviceServer)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = HIDRemoteDeviceServer;
   v6 = [(HIDRemoteDeviceServer *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = objc_opt_new();
     endpoints = v7->_endpoints;
     v7->_endpoints = v8;
@@ -50,23 +50,23 @@
 - (id)endpoints
 {
   os_unfair_recursive_lock_lock_with_options();
-  v3 = [(NSMutableDictionary *)self->_endpoints allValues];
+  allValues = [(NSMutableDictionary *)self->_endpoints allValues];
   os_unfair_recursive_lock_unlock();
 
-  return v3;
+  return allValues;
 }
 
 - (id)description
 {
   v3 = objc_opt_new();
-  v4 = [(HIDRemoteDeviceServer *)self endpoints];
+  endpoints = [(HIDRemoteDeviceServer *)self endpoints];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __36__HIDRemoteDeviceServer_description__block_invoke;
   v11[3] = &unk_279AFD2C0;
   v12 = v3;
   v5 = v3;
-  [v4 enumerateObjectsUsingBlock:v11];
+  [endpoints enumerateObjectsUsingBlock:v11];
 
   v6 = MEMORY[0x277CCACA8];
   v10.receiver = self;
@@ -84,11 +84,11 @@ void __36__HIDRemoteDeviceServer_description__block_invoke(uint64_t a1, void *a2
   [v2 addObject:v3];
 }
 
-- (id)getEndpoint:(unint64_t)a3
+- (id)getEndpoint:(unint64_t)endpoint
 {
   os_unfair_recursive_lock_lock_with_options();
   endpoints = self->_endpoints;
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:endpoint];
   v7 = [(NSMutableDictionary *)endpoints objectForKeyedSubscript:v6];
 
   os_unfair_recursive_lock_unlock();
@@ -96,14 +96,14 @@ void __36__HIDRemoteDeviceServer_description__block_invoke(uint64_t a1, void *a2
   return v7;
 }
 
-- (void)connectEndpoint:(id)a3
+- (void)connectEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   os_unfair_recursive_lock_lock_with_options();
-  v8 = -[HIDRemoteDeviceServer _disconnectEndpointID:](self, "_disconnectEndpointID:", [v4 endpointID]);
+  v8 = -[HIDRemoteDeviceServer _disconnectEndpointID:](self, "_disconnectEndpointID:", [endpointCopy endpointID]);
   endpoints = self->_endpoints;
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "endpointID")}];
-  [(NSMutableDictionary *)endpoints setObject:v4 forKeyedSubscript:v6];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(endpointCopy, "endpointID")}];
+  [(NSMutableDictionary *)endpoints setObject:endpointCopy forKeyedSubscript:v6];
 
   os_unfair_recursive_lock_unlock();
   v7 = v8;
@@ -114,9 +114,9 @@ void __36__HIDRemoteDeviceServer_description__block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)disconnectEndpointID:(unint64_t)a3
+- (void)disconnectEndpointID:(unint64_t)d
 {
-  v3 = [(HIDRemoteDeviceServer *)self _disconnectEndpointID:a3];
+  v3 = [(HIDRemoteDeviceServer *)self _disconnectEndpointID:d];
   if (v3)
   {
     v4 = v3;
@@ -125,21 +125,21 @@ void __36__HIDRemoteDeviceServer_description__block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (id)_disconnectEndpointID:(unint64_t)a3
+- (id)_disconnectEndpointID:(unint64_t)d
 {
   os_unfair_recursive_lock_lock_with_options();
   endpoints = self->_endpoints;
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:d];
   v7 = [(NSMutableDictionary *)endpoints objectForKeyedSubscript:v6];
 
   if (v7)
   {
     v8 = self->_endpoints;
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:d];
     [(NSMutableDictionary *)v8 removeObjectForKey:v9];
 
     refreshCounts = self->_refreshCounts;
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:d];
     [(NSMutableDictionary *)refreshCounts removeObjectForKey:v11];
   }
 
@@ -151,11 +151,11 @@ void __36__HIDRemoteDeviceServer_description__block_invoke(uint64_t a1, void *a2
 - (void)disconnectAll
 {
   os_unfair_recursive_lock_lock_with_options();
-  v3 = [(NSMutableDictionary *)self->_endpoints allValues];
+  allValues = [(NSMutableDictionary *)self->_endpoints allValues];
   [(NSMutableDictionary *)self->_endpoints removeAllObjects];
   [(NSMutableDictionary *)self->_refreshCounts removeAllObjects];
   os_unfair_recursive_lock_unlock();
-  [v3 enumerateObjectsUsingBlock:&__block_literal_global_159];
+  [allValues enumerateObjectsUsingBlock:&__block_literal_global_159];
   v4 = RemoteHIDLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -163,85 +163,85 @@ void __36__HIDRemoteDeviceServer_description__block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (unint64_t)getRefreshCountForEndpoint:(id)a3 deviceID:(unint64_t)a4
+- (unint64_t)getRefreshCountForEndpoint:(id)endpoint deviceID:(unint64_t)d
 {
-  v6 = a3;
+  endpointCopy = endpoint;
   os_unfair_recursive_lock_lock_with_options();
   refreshCounts = self->_refreshCounts;
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v6, "endpointID")}];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(endpointCopy, "endpointID")}];
   v9 = [(NSMutableDictionary *)refreshCounts objectForKeyedSubscript:v8];
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:d];
   v11 = [v9 objectForKeyedSubscript:v10];
 
   if (v11)
   {
     v12 = self->_refreshCounts;
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v6, "endpointID")}];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(endpointCopy, "endpointID")}];
     v14 = [(NSMutableDictionary *)v12 objectForKeyedSubscript:v13];
-    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
+    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:d];
     v16 = [v14 objectForKeyedSubscript:v15];
-    v17 = [v16 unsignedIntValue];
+    unsignedIntValue = [v16 unsignedIntValue];
   }
 
   else
   {
-    v17 = 0;
+    unsignedIntValue = 0;
   }
 
   os_unfair_recursive_lock_unlock();
 
-  return v17;
+  return unsignedIntValue;
 }
 
-- (void)setRefreshCountForEndpoint:(id)a3 deviceID:(unint64_t)a4 count:(unint64_t)a5
+- (void)setRefreshCountForEndpoint:(id)endpoint deviceID:(unint64_t)d count:(unint64_t)count
 {
-  v19 = a3;
+  endpointCopy = endpoint;
   os_unfair_recursive_lock_lock_with_options();
   refreshCounts = self->_refreshCounts;
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v19, "endpointID")}];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(endpointCopy, "endpointID")}];
   v10 = [(NSMutableDictionary *)refreshCounts objectForKeyedSubscript:v9];
 
   if (!v10)
   {
     v11 = objc_opt_new();
     v12 = self->_refreshCounts;
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v19, "endpointID")}];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(endpointCopy, "endpointID")}];
     [(NSMutableDictionary *)v12 setObject:v11 forKeyedSubscript:v13];
   }
 
-  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count];
   v15 = self->_refreshCounts;
-  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v19, "endpointID")}];
+  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(endpointCopy, "endpointID")}];
   v17 = [(NSMutableDictionary *)v15 objectForKeyedSubscript:v16];
-  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
+  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:d];
   [v17 setObject:v14 forKeyedSubscript:v18];
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (BOOL)createRemoteDevice:(id)a3 deviceID:(unint64_t)a4 property:(id)a5
+- (BOOL)createRemoteDevice:(id)device deviceID:(unint64_t)d property:(id)property
 {
   v48 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  [v9 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D0EF10]];
-  [v9 setObject:&unk_28744E870 forKeyedSubscript:@"ReportInterval"];
-  v10 = [v9 objectForKeyedSubscript:@"SerialNumber"];
+  deviceCopy = device;
+  propertyCopy = property;
+  [propertyCopy setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D0EF10]];
+  [propertyCopy setObject:&unk_28744E870 forKeyedSubscript:@"ReportInterval"];
+  v10 = [propertyCopy objectForKeyedSubscript:@"SerialNumber"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
     v12 = objc_alloc(MEMORY[0x277CCACA8]);
-    v13 = [v9 objectForKeyedSubscript:@"SerialNumber"];
-    v14 = [v13 bytes];
-    v15 = [v9 objectForKeyedSubscript:@"SerialNumber"];
-    v16 = [v12 initWithBytes:v14 length:objc_msgSend(v15 encoding:{"length") - 1, 4}];
-    [v9 setObject:v16 forKeyedSubscript:@"SerialNumber"];
+    v13 = [propertyCopy objectForKeyedSubscript:@"SerialNumber"];
+    bytes = [v13 bytes];
+    v15 = [propertyCopy objectForKeyedSubscript:@"SerialNumber"];
+    v16 = [v12 initWithBytes:bytes length:objc_msgSend(v15 encoding:{"length") - 1, 4}];
+    [propertyCopy setObject:v16 forKeyedSubscript:@"SerialNumber"];
   }
 
-  [v9 setObject:&unk_28744E888 forKeyedSubscript:@"HIDTimeSyncProtocol"];
-  v17 = [[HIDRemoteDevice alloc] initWithProperties:v9];
+  [propertyCopy setObject:&unk_28744E888 forKeyedSubscript:@"HIDTimeSyncProtocol"];
+  v17 = [[HIDRemoteDevice alloc] initWithProperties:propertyCopy];
   if (v17)
   {
     objc_initWeak(&location, v17);
@@ -265,44 +265,44 @@ void __36__HIDRemoteDeviceServer_description__block_invoke(uint64_t a1, void *a2
     v33 = &unk_279AFD3A8;
     objc_copyWeak(&v34, &location);
     [(HIDUserDevice *)v17 setCancelHandler:&v30];
-    v18 = [v9 objectForKeyedSubscript:{@"VersionNumber", v30, v31, v32, v33}];
+    v18 = [propertyCopy objectForKeyedSubscript:{@"VersionNumber", v30, v31, v32, v33}];
     objc_opt_class();
     v19 = objc_opt_isKindOfClass();
 
     if (v19)
     {
-      v20 = [v9 objectForKeyedSubscript:@"VersionNumber"];
+      v20 = [propertyCopy objectForKeyedSubscript:@"VersionNumber"];
       -[HIDRemoteDevice setTransportVersion:](v17, "setTransportVersion:", [v20 unsignedIntegerValue]);
     }
 
-    v21 = [v9 objectForKeyedSubscript:@"Side"];
+    v21 = [propertyCopy objectForKeyedSubscript:@"Side"];
     objc_opt_class();
     v22 = objc_opt_isKindOfClass();
 
     if (v22)
     {
-      v23 = [v9 objectForKeyedSubscript:@"Side"];
+      v23 = [propertyCopy objectForKeyedSubscript:@"Side"];
       -[HIDRemoteDevice setSide:](v17, "setSide:", [v23 unsignedIntegerValue]);
     }
 
-    [(HIDRemoteDevice *)v17 setDeviceID:a4];
-    v24 = [(HIDRemoteDeviceServer *)self queue];
-    [(HIDUserDevice *)v17 setDispatchQueue:v24];
+    [(HIDRemoteDevice *)v17 setDeviceID:d];
+    queue = [(HIDRemoteDeviceServer *)self queue];
+    [(HIDUserDevice *)v17 setDispatchQueue:queue];
 
     [(HIDUserDevice *)v17 activate];
-    [v8 addDevice:v17];
+    [deviceCopy addDevice:v17];
     v25 = RemoteHIDLog();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [(HIDRemoteDevice *)v17 deviceID];
+      deviceID = [(HIDRemoteDevice *)v17 deviceID];
       *buf = 138413058;
       v41 = v17;
       v42 = 2048;
-      v43 = v26;
+      v43 = deviceID;
       v44 = 2112;
-      v45 = v8;
+      v45 = deviceCopy;
       v46 = 2112;
-      v47 = v9;
+      v47 = propertyCopy;
       _os_log_impl(&dword_261D9C000, v25, OS_LOG_TYPE_DEFAULT, "Create device:%@ with id:%llu for endpoint:%@ property:%@", buf, 0x2Au);
     }
 
@@ -625,15 +625,15 @@ void __62__HIDRemoteDeviceServer_createRemoteDevice_deviceID_property___block_in
   [WeakRetained setCancelled:1];
 }
 
-- (BOOL)remoteDeviceReportHandler:(id)a3 packet:(id *)a4
+- (BOOL)remoteDeviceReportHandler:(id)handler packet:(id *)packet
 {
-  v5 = a3;
-  v6 = (a4->var0 >> 7) & 0x3FF;
+  handlerCopy = handler;
+  v6 = (packet->var0 >> 7) & 0x3FF;
   if (v6 > 5)
   {
-    v7 = [MEMORY[0x277CBEA90] dataWithBytes:a4->var2 length:v6 - 5];
+    v7 = [MEMORY[0x277CBEA90] dataWithBytes:packet->var2 length:v6 - 5];
     v12 = 0;
-    v8 = [v5 handleReport:v7 error:&v12];
+    v8 = [handlerCopy handleReport:v7 error:&v12];
     v9 = v12;
     if ((v8 & 1) == 0)
     {
@@ -650,7 +650,7 @@ void __62__HIDRemoteDeviceServer_createRemoteDevice_deviceID_property___block_in
     v7 = RemoteHIDLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [HIDRemoteDeviceServer remoteDeviceReportHandler:a4 packet:?];
+      [HIDRemoteDeviceServer remoteDeviceReportHandler:packet packet:?];
     }
 
     v8 = 0;
@@ -659,25 +659,25 @@ void __62__HIDRemoteDeviceServer_createRemoteDevice_deviceID_property___block_in
   return v8;
 }
 
-- (BOOL)remoteDeviceReportHandler:(id)a3 header:(id *)a4
+- (BOOL)remoteDeviceReportHandler:(id)handler header:(id *)header
 {
-  v6 = [a3 getDevice:*a4 & 0x7FLL];
-  if (!v6)
+  0x7FLL = [handler getDevice:*header & 0x7FLL];
+  if (!0x7FLL)
   {
     v9 = RemoteHIDLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [HIDRemoteDeviceServer remoteDeviceReportHandler:a4 header:?];
+      [HIDRemoteDeviceServer remoteDeviceReportHandler:header header:?];
     }
 
     goto LABEL_8;
   }
 
-  v7 = [(HIDRemoteDeviceServer *)self remoteDeviceReportHandler:v6 packet:a4];
-  [v6 setHandleReportCount:{objc_msgSend(v6, "handleReportCount") + 1}];
+  v7 = [(HIDRemoteDeviceServer *)self remoteDeviceReportHandler:0x7FLL packet:header];
+  [0x7FLL setHandleReportCount:{objc_msgSend(0x7FLL, "handleReportCount") + 1}];
   if (!v7)
   {
-    [v6 setHandleReportError:{objc_msgSend(v6, "handleReportError") + 1}];
+    [0x7FLL setHandleReportError:{objc_msgSend(0x7FLL, "handleReportError") + 1}];
 LABEL_8:
     v8 = 0;
     goto LABEL_9;
@@ -689,17 +689,17 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)remoteDeviceSetReportHandler:(id)a3 packet:(id *)a4
+- (BOOL)remoteDeviceSetReportHandler:(id)handler packet:(id *)packet
 {
-  v5 = a3;
-  v6 = v5;
-  var0 = a4->var0;
-  if ((*&a4->var0 & 0x1FF80u) <= 0x27F)
+  handlerCopy = handler;
+  v6 = handlerCopy;
+  var0 = packet->var0;
+  if ((*&packet->var0 & 0x1FF80u) <= 0x27F)
   {
     v8 = RemoteHIDLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [HIDRemoteDeviceServer remoteDeviceReportHandler:a4 packet:?];
+      [HIDRemoteDeviceServer remoteDeviceReportHandler:packet packet:?];
     }
 
 LABEL_15:
@@ -718,42 +718,42 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v9 = [v5 getDevice:*&var0 & 0x7F];
-  v8 = v9;
-  if (!v9)
+  0x7F = [handlerCopy getDevice:*&var0 & 0x7F];
+  v8 = 0x7F;
+  if (!0x7F)
   {
     v12 = RemoteHIDLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [HIDRemoteDeviceServer remoteDeviceReportHandler:a4 header:?];
+      [HIDRemoteDeviceServer remoteDeviceReportHandler:packet header:?];
     }
 
     goto LABEL_15;
   }
 
   v10 = 0;
-  if ((*&a4->var0 & 0x400000) != 0 && (*&a4->var0 & 0x1FF80u) >= 0x401)
+  if ((*&packet->var0 & 0x400000) != 0 && (*&packet->var0 & 0x1FF80u) >= 0x401)
   {
-    v10 = *a4->var2;
+    v10 = *packet->var2;
   }
 
-  v11 = [v9 setReportHandler:a4->var1 reportID:0 status:v10]== 0;
+  v11 = [0x7F setReportHandler:packet->var1 reportID:0 status:v10]== 0;
 LABEL_16:
 
   return v11;
 }
 
-- (BOOL)remoteDeviceGetReportHandler:(id)a3 packet:(id *)a4
+- (BOOL)remoteDeviceGetReportHandler:(id)handler packet:(id *)packet
 {
-  v5 = a3;
-  v6 = v5;
-  var0 = a4->var0;
-  if ((*&a4->var0 & 0x1FF80u) <= 0x27F)
+  handlerCopy = handler;
+  v6 = handlerCopy;
+  var0 = packet->var0;
+  if ((*&packet->var0 & 0x1FF80u) <= 0x27F)
   {
     v8 = RemoteHIDLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [HIDRemoteDeviceServer remoteDeviceReportHandler:a4 packet:?];
+      [HIDRemoteDeviceServer remoteDeviceReportHandler:packet packet:?];
     }
 
 LABEL_12:
@@ -772,43 +772,43 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v9 = [v5 getDevice:*&var0 & 0x7F];
-  v8 = v9;
-  if (!v9)
+  0x7F = [handlerCopy getDevice:*&var0 & 0x7F];
+  v8 = 0x7F;
+  if (!0x7F)
   {
     v11 = RemoteHIDLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [HIDRemoteDeviceServer remoteDeviceReportHandler:a4 header:?];
+      [HIDRemoteDeviceServer remoteDeviceReportHandler:packet header:?];
     }
 
     goto LABEL_12;
   }
 
-  v10 = [v9 getReportHandler:a4->var1 reportID:0 report:a4->var2 reportLength:((a4->var0 >> 7) & 0x3FF) - 5]== 0;
+  v10 = [0x7F getReportHandler:packet->var1 reportID:0 report:packet->var2 reportLength:((packet->var0 >> 7) & 0x3FF) - 5]== 0;
 LABEL_13:
 
   return v10;
 }
 
-- (void)endpointMessageHandler:(id)a3 data:(char *)a4 size:(unint64_t)a5
+- (void)endpointMessageHandler:(id)handler data:(char *)data size:(unint64_t)size
 {
-  v8 = a3;
-  v9 = v8;
-  if (a5 < 8)
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (size < 8)
   {
     v23 = RemoteHIDLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      [HIDRemoteDeviceServer endpointMessageHandler:a4 data:a5 size:?];
+      [HIDRemoteDeviceServer endpointMessageHandler:data data:size size:?];
     }
   }
 
   else
   {
-    v10 = a4 + 4;
-    v11 = &a4[a5];
-    v12 = a4 + 4;
+    v10 = data + 4;
+    v11 = &data[size];
+    v12 = data + 4;
     while (v12 + 4 <= v11)
     {
       v13 = (*v12 >> 7) & 0x3FF;
@@ -820,7 +820,7 @@ LABEL_13:
 
       if (v12 >= v11)
       {
-        v15 = a4[3];
+        v15 = data[3];
         if ((~v15 & 3) != 0)
         {
           v16 = 1;
@@ -852,7 +852,7 @@ LABEL_13:
           v19 = v17;
         }
 
-        if (v19 != [v8 primarySide])
+        if (v19 != [handlerCopy primarySide])
         {
           [v9 setPrimarySide:v19];
           [v9 removeAllDevices];
@@ -874,7 +874,7 @@ LABEL_13:
         do
         {
           *v10 |= 32 * v18;
-          [(HIDRemoteDeviceServer *)self endpointPacketHandler:v9 packet:v10 transportVersion:*a4 side:v22];
+          [(HIDRemoteDeviceServer *)self endpointPacketHandler:v9 packet:v10 transportVersion:*data side:v22];
           v10 += (*v10 >> 7) & 0x3FF;
         }
 
@@ -886,7 +886,7 @@ LABEL_13:
     v23 = RemoteHIDLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      [HIDRemoteDeviceServer endpointMessageHandler:a4 data:a5 size:?];
+      [HIDRemoteDeviceServer endpointMessageHandler:data data:size size:?];
     }
   }
 

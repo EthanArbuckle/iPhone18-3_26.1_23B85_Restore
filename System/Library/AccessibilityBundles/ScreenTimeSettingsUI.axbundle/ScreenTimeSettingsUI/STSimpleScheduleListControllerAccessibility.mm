@@ -1,23 +1,23 @@
 @interface STSimpleScheduleListControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySelectedSpecifier;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilityMarkSelectedSpecifier;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation STSimpleScheduleListControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STSimpleScheduleListController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"STSimpleScheduleListController" hasInstanceMethod:@"specifiers" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STSimpleScheduleListController" hasInstanceMethod:@"startTimeSpecifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STSimpleScheduleListController" hasInstanceMethod:@"endTimeSpecifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STSimpleScheduleListController" hasInstanceMethod:@"startTimePickerSpecifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STSimpleScheduleListController" hasInstanceMethod:@"endTimePickerSpecifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STSimpleScheduleListController" hasInstanceMethod:@"tableView:didSelectRowAtIndexPath:" withFullSignature:{"v", "@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STSimpleScheduleListController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"STSimpleScheduleListController" hasInstanceMethod:@"specifiers" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STSimpleScheduleListController" hasInstanceMethod:@"startTimeSpecifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STSimpleScheduleListController" hasInstanceMethod:@"endTimeSpecifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STSimpleScheduleListController" hasInstanceMethod:@"startTimePickerSpecifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STSimpleScheduleListController" hasInstanceMethod:@"endTimePickerSpecifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STSimpleScheduleListController" hasInstanceMethod:@"tableView:didSelectRowAtIndexPath:" withFullSignature:{"v", "@", "@", 0}];
 }
 
 - (id)_accessibilitySelectedSpecifier
@@ -64,9 +64,9 @@
   v9 = [(STSimpleScheduleListControllerAccessibility *)self safeValueForKey:@"endTimePickerSpecifier"];
   v10 = __UIAccessibilityCastAsSafeCategory();
 
-  v11 = [(STSimpleScheduleListControllerAccessibility *)self _accessibilitySelectedSpecifier];
-  [v4 _accessibilitySetIsExpandedSTUICell:v8 == v11];
-  [v6 _accessibilitySetIsExpandedSTUICell:v10 == v11];
+  _accessibilitySelectedSpecifier = [(STSimpleScheduleListControllerAccessibility *)self _accessibilitySelectedSpecifier];
+  [v4 _accessibilitySetIsExpandedSTUICell:v8 == _accessibilitySelectedSpecifier];
+  [v6 _accessibilitySetIsExpandedSTUICell:v10 == _accessibilitySelectedSpecifier];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -87,11 +87,11 @@
   [(STSimpleScheduleListControllerAccessibility *)self _accessibilityMarkSelectedSpecifier];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v5.receiver = self;
   v5.super_class = STSimpleScheduleListControllerAccessibility;
-  [(STSimpleScheduleListControllerAccessibility *)&v5 tableView:a3 didSelectRowAtIndexPath:a4];
+  [(STSimpleScheduleListControllerAccessibility *)&v5 tableView:view didSelectRowAtIndexPath:path];
   [(STSimpleScheduleListControllerAccessibility *)self _accessibilityMarkSelectedSpecifier];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }

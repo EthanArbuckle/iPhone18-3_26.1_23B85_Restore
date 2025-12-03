@@ -1,21 +1,21 @@
 @interface PKPaymentSetupCardImageHeaderView
 - (CGSize)_imageSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKPaymentSetupCardImageHeaderView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKPaymentSetupCardImageHeaderView)initWithFrame:(CGRect)frame;
 - (double)_leadingPadding;
 - (void)_createSubviews;
-- (void)configureWithUIImage:(id)a3 title:(id)a4 subtitle:(id)a5;
+- (void)configureWithUIImage:(id)image title:(id)title subtitle:(id)subtitle;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation PKPaymentSetupCardImageHeaderView
 
-- (PKPaymentSetupCardImageHeaderView)initWithFrame:(CGRect)a3
+- (PKPaymentSetupCardImageHeaderView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PKPaymentSetupCardImageHeaderView;
-  v3 = [(PKPaymentSetupCardImageHeaderView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPaymentSetupCardImageHeaderView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -25,22 +25,22 @@
   return v4;
 }
 
-- (void)configureWithUIImage:(id)a3 title:(id)a4 subtitle:(id)a5
+- (void)configureWithUIImage:(id)image title:(id)title subtitle:(id)subtitle
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  imageCopy = image;
+  titleCopy = title;
+  subtitleCopy = subtitle;
   image = self->_image;
-  self->_image = v8;
-  v12 = v8;
+  self->_image = imageCopy;
+  v12 = imageCopy;
 
   title = self->_title;
-  self->_title = v9;
-  v14 = v9;
+  self->_title = titleCopy;
+  v14 = titleCopy;
 
   subtitle = self->_subtitle;
-  self->_subtitle = v10;
-  v16 = v10;
+  self->_subtitle = subtitleCopy;
+  v16 = subtitleCopy;
 
   [(UILabel *)self->_titleLabel setText:self->_title];
   [(UILabel *)self->_subtitleLabel setText:self->_subtitle];
@@ -88,10 +88,10 @@
   [(UILabel *)self->_subtitleLabel setFrame:v26, CGRectGetMaxY(v30) + 15.0, v23, v25];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(PKPaymentSetupCardImageHeaderView *)self _leadingPadding];
   v7 = width + v6 * -2.0;
   [(PKPaymentSetupCardImageHeaderView *)self _imageSize];
@@ -124,15 +124,15 @@
   {
   }
 
-  v17 = [(UIImageView *)self->_passView layer];
-  [v17 setShadowRadius:12.0];
+  layer = [(UIImageView *)self->_passView layer];
+  [layer setShadowRadius:12.0];
   v8 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.15];
-  [v17 setShadowColor:{objc_msgSend(v8, "CGColor")}];
+  [layer setShadowColor:{objc_msgSend(v8, "CGColor")}];
 
-  [v17 setShadowOffset:{0.0, 12.0}];
+  [layer setShadowOffset:{0.0, 12.0}];
   LODWORD(v9) = 1.0;
-  [v17 setShadowOpacity:v9];
-  [v17 setMasksToBounds:0];
+  [layer setShadowOpacity:v9];
+  [layer setMasksToBounds:0];
   [(PKPaymentSetupCardImageHeaderView *)self _imageSize];
   v10 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.1];
   [v10 CGColor];
@@ -164,8 +164,8 @@
 
 - (double)_leadingPadding
 {
-  v2 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
-  [v2 directionalLayoutMargins];
+  valueCellConfiguration = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+  [valueCellConfiguration directionalLayoutMargins];
   v4 = v3;
 
   return v4;

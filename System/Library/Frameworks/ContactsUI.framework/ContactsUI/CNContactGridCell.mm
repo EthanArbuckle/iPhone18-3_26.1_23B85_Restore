@@ -9,8 +9,8 @@
 - (id)completionBlockForHidingActions;
 - (void)_createViewsIfNeeded;
 - (void)_updateActionsMask;
-- (void)setContact:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)setContact:(id)contact;
+- (void)setDelegate:(id)delegate;
 - (void)updateConstraints;
 @end
 
@@ -47,8 +47,8 @@
 
 - (double)maximumActionsWidth
 {
-  v2 = [(CNContactGridCell *)self actionsView];
-  [v2 maximumWidth];
+  actionsView = [(CNContactGridCell *)self actionsView];
+  [actionsView maximumWidth];
   v4 = v3;
 
   return v4;
@@ -56,11 +56,11 @@
 
 - (void)_updateActionsMask
 {
-  v3 = [(CNContactGridCell *)self contact];
-  if (v3)
+  contact = [(CNContactGridCell *)self contact];
+  if (contact)
   {
-    v4 = [(CNContactGridCell *)self contact];
-    v5 = [CNMonogrammer monogramTypeForContact:v4]!= 2;
+    contact2 = [(CNContactGridCell *)self contact];
+    v5 = [CNMonogrammer monogramTypeForContact:contact2]!= 2;
   }
 
   else
@@ -68,21 +68,21 @@
     v5 = 0;
   }
 
-  v6 = [(CNContactGridCell *)self actionsClippingView];
-  [v6 setMasksToAvatar:v5];
+  actionsClippingView = [(CNContactGridCell *)self actionsClippingView];
+  [actionsClippingView setMasksToAvatar:v5];
 }
 
 - (id)completionBlockForHidingActions
 {
-  v3 = [(CNContactGridCell *)self actionsView];
+  actionsView = [(CNContactGridCell *)self actionsView];
   [(CNContactGridCell *)self setActionsView:0];
-  [v3 setAlpha:0.0];
+  [actionsView setAlpha:0.0];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__CNContactGridCell_completionBlockForHidingActions__block_invoke;
   v7[3] = &unk_1E74E6A88;
-  v8 = v3;
-  v4 = v3;
+  v8 = actionsView;
+  v4 = actionsView;
   v5 = [v7 copy];
 
   return v5;
@@ -91,30 +91,30 @@
 - (id)animationBlockForPreparingToShowActions
 {
   v29[2] = *MEMORY[0x1E69E9840];
-  v3 = [(CNContactGridCell *)self actionsView];
+  actionsView = [(CNContactGridCell *)self actionsView];
 
-  if (!v3)
+  if (!actionsView)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v5 = [CNQuickActionsView alloc];
     v6 = [(CNQuickActionsView *)v5 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     [(CNQuickActionsView *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(CNContactGridCell *)self delegate];
-    [(CNQuickActionsView *)v6 setDelegate:v7];
+    delegate = [(CNContactGridCell *)self delegate];
+    [(CNQuickActionsView *)v6 setDelegate:delegate];
 
-    v8 = [(CNContactGridCell *)self nameTextAttributes];
-    [(CNQuickActionsView *)v6 setTitleTextAttributes:v8];
+    nameTextAttributes = [(CNContactGridCell *)self nameTextAttributes];
+    [(CNQuickActionsView *)v6 setTitleTextAttributes:nameTextAttributes];
 
-    v9 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v9 userInterfaceIdiom])
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice userInterfaceIdiom])
     {
       [(CNQuickActionsView *)v6 setInterspace:24.0];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v10 _referenceBounds];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen _referenceBounds];
       if (CGRectGetHeight(v31) <= 568.0)
       {
         [(CNQuickActionsView *)v6 setInterspace:24.0];
@@ -122,16 +122,16 @@
 
       else
       {
-        v11 = [MEMORY[0x1E69DC938] currentDevice];
-        if ([v11 userInterfaceIdiom])
+        currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+        if ([currentDevice2 userInterfaceIdiom])
         {
           [(CNQuickActionsView *)v6 setInterspace:35.0];
         }
 
         else
         {
-          v12 = [MEMORY[0x1E69DCEB0] mainScreen];
-          [v12 _referenceBounds];
+          mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+          [mainScreen2 _referenceBounds];
           v13 = CGRectGetHeight(v32) <= 667.0;
           v14 = 35.0;
           if (!v13)
@@ -144,37 +144,37 @@
       }
     }
 
-    v15 = [(CNContactGridCell *)self actionCategories];
-    [(CNQuickActionsView *)v6 setCategories:v15];
+    actionCategories = [(CNContactGridCell *)self actionCategories];
+    [(CNQuickActionsView *)v6 setCategories:actionCategories];
 
-    v16 = [(CNContactGridCell *)self actionsManager];
-    [(CNQuickActionsView *)v6 setActionsManager:v16];
+    actionsManager = [(CNContactGridCell *)self actionsManager];
+    [(CNQuickActionsView *)v6 setActionsManager:actionsManager];
 
-    v17 = [(CNContactGridCell *)self contact];
-    [(CNQuickActionsView *)v6 setContact:v17];
+    contact = [(CNContactGridCell *)self contact];
+    [(CNQuickActionsView *)v6 setContact:contact];
 
     [(CNQuickActionsView *)v6 setSortsWithDuet:1];
     [(CNQuickActionsView *)v6 setAlpha:0.0];
-    v18 = [(CNContactGridCell *)self actionsContainerView];
-    [v18 addSubview:v6];
+    actionsContainerView = [(CNContactGridCell *)self actionsContainerView];
+    [actionsContainerView addSubview:v6];
 
     [(CNContactGridCell *)self setActionsView:v6];
     v28[0] = @"avatar";
-    v19 = [(CNContactGridCell *)self avatarView];
+    avatarView = [(CNContactGridCell *)self avatarView];
     v28[1] = @"actionsView";
-    v29[0] = v19;
+    v29[0] = avatarView;
     v29[1] = v6;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:2];
 
     v21 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"|-0-[actionsView]-0-|" options:0 metrics:0 views:v20];
-    [v4 addObjectsFromArray:v21];
+    [array addObjectsFromArray:v21];
 
     v22 = MEMORY[0x1E696ACD8];
-    v23 = [(CNContactGridCell *)self avatarView];
-    v24 = [v22 constraintWithItem:v6 attribute:10 relatedBy:0 toItem:v23 attribute:10 multiplier:1.0 constant:10.0];
-    [v4 addObject:v24];
+    avatarView2 = [(CNContactGridCell *)self avatarView];
+    v24 = [v22 constraintWithItem:v6 attribute:10 relatedBy:0 toItem:avatarView2 attribute:10 multiplier:1.0 constant:10.0];
+    [array addObject:v24];
 
-    [MEMORY[0x1E696ACD8] activateConstraints:v4];
+    [MEMORY[0x1E696ACD8] activateConstraints:array];
   }
 
   v27[0] = MEMORY[0x1E69E9820];
@@ -193,46 +193,46 @@ void __60__CNContactGridCell_animationBlockForPreparingToShowActions__block_invo
   [v1 setAlpha:1.0];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_delegate, obj);
-    v5 = [(CNContactGridCell *)self avatarView];
-    [v5 setDelegate:obj];
+    avatarView = [(CNContactGridCell *)self avatarView];
+    [avatarView setDelegate:obj];
 
-    v6 = [(CNContactGridCell *)self actionsView];
-    [v6 setDelegate:obj];
+    actionsView = [(CNContactGridCell *)self actionsView];
+    [actionsView setDelegate:obj];
   }
 }
 
 - (CNContact)contact
 {
-  v2 = [(CNContactGridCell *)self avatarView];
-  v3 = [v2 contact];
+  avatarView = [(CNContactGridCell *)self avatarView];
+  contact = [avatarView contact];
 
-  return v3;
+  return contact;
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
-  v14 = a3;
+  contactCopy = contact;
   [(CNContactGridCell *)self _createViewsIfNeeded];
-  v4 = v14;
-  if (!v14)
+  v4 = contactCopy;
+  if (!contactCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695CF18]);
   }
 
   v15 = v4;
-  v5 = [(CNContactGridCell *)self avatarView];
-  [v5 setContact:v15];
+  avatarView = [(CNContactGridCell *)self avatarView];
+  [avatarView setContact:v15];
 
-  v6 = [(CNContactGridCell *)self contactFormatter];
-  v7 = [v6 stringFromContact:v15];
+  contactFormatter = [(CNContactGridCell *)self contactFormatter];
+  v7 = [contactFormatter stringFromContact:v15];
 
   if (![v7 length])
   {
@@ -243,10 +243,10 @@ void __60__CNContactGridCell_animationBlockForPreparingToShowActions__block_invo
   }
 
   v10 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v11 = [(CNContactGridCell *)self nameTextAttributes];
-  v12 = [v10 initWithString:v7 attributes:v11];
-  v13 = [(CNContactGridCell *)self nameLabel];
-  [v13 setAttributedText:v12];
+  nameTextAttributes = [(CNContactGridCell *)self nameTextAttributes];
+  v12 = [v10 initWithString:v7 attributes:nameTextAttributes];
+  nameLabel = [(CNContactGridCell *)self nameLabel];
+  [nameLabel setAttributedText:v12];
 
   [(CNContactGridCell *)self _updateActionsMask];
 }
@@ -257,7 +257,7 @@ void __60__CNContactGridCell_animationBlockForPreparingToShowActions__block_invo
   v46.receiver = self;
   v46.super_class = CNContactGridCell;
   [(CNContactGridCell *)&v46 updateConstraints];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v49[0] = @"top";
   v4 = MEMORY[0x1E696AD98];
   [(CNContactGridCell *)self avatarMargins];
@@ -305,54 +305,54 @@ void __60__CNContactGridCell_animationBlockForPreparingToShowActions__block_invo
   v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v50 forKeys:v49 count:8];
 
   v47[0] = @"avatar";
-  v29 = [(CNContactGridCell *)self avatarView];
-  v48[0] = v29;
+  avatarView = [(CNContactGridCell *)self avatarView];
+  v48[0] = avatarView;
   v47[1] = @"nameLabel";
-  v30 = [(CNContactGridCell *)self nameLabel];
-  v48[1] = v30;
+  nameLabel = [(CNContactGridCell *)self nameLabel];
+  v48[1] = nameLabel;
   v47[2] = @"actionsClippingView";
-  v31 = [(CNContactGridCell *)self actionsClippingView];
-  v48[2] = v31;
+  actionsClippingView = [(CNContactGridCell *)self actionsClippingView];
+  v48[2] = actionsClippingView;
   v47[3] = @"actionsContainerView";
-  v32 = [(CNContactGridCell *)self actionsContainerView];
-  v48[3] = v32;
+  actionsContainerView = [(CNContactGridCell *)self actionsContainerView];
+  v48[3] = actionsContainerView;
   v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:v47 count:4];
 
   v34 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"|-(left)-[avatar(width)]-(>=right)-|" options:0 metrics:v28 views:v33];
-  [v3 addObjectsFromArray:v34];
+  [array addObjectsFromArray:v34];
 
   v35 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"|-0-[nameLabel(labelWidth)]" options:0 metrics:v28 views:v33];
-  [v3 addObjectsFromArray:v35];
+  [array addObjectsFromArray:v35];
 
   v36 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|-(top)-[avatar(height)]-(bottom)-[nameLabel]-0-|" options:0 metrics:v28 views:v33];
-  [v3 addObjectsFromArray:v36];
+  [array addObjectsFromArray:v36];
 
   v37 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"[actionsClippingView]-(right)-|" options:0 metrics:v28 views:v33];
-  [v3 addObjectsFromArray:v37];
+  [array addObjectsFromArray:v37];
 
   v38 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|-0-[actionsClippingView]-0-|" options:0 metrics:0 views:v33];
-  [v3 addObjectsFromArray:v38];
+  [array addObjectsFromArray:v38];
 
   v39 = MEMORY[0x1E696ACD8];
-  v40 = [(CNContactGridCell *)self actionsClippingView];
-  v41 = [(CNContactGridCell *)self avatarView];
-  v42 = [v39 constraintWithItem:v40 attribute:5 relatedBy:0 toItem:v41 attribute:9 multiplier:1.0 constant:0.0];
-  [v3 addObject:v42];
+  actionsClippingView2 = [(CNContactGridCell *)self actionsClippingView];
+  avatarView2 = [(CNContactGridCell *)self avatarView];
+  v42 = [v39 constraintWithItem:actionsClippingView2 attribute:5 relatedBy:0 toItem:avatarView2 attribute:9 multiplier:1.0 constant:0.0];
+  [array addObject:v42];
 
   v43 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"[avatar]-<=actionsLeftMargin-[actionsContainerView]->=0-|" options:0 metrics:v28 views:v33];
-  [v3 addObjectsFromArray:v43];
+  [array addObjectsFromArray:v43];
 
   v44 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|-0-[actionsContainerView]-0-|" options:0 metrics:0 views:v33];
-  [v3 addObjectsFromArray:v44];
+  [array addObjectsFromArray:v44];
 
-  [MEMORY[0x1E696ACD8] activateConstraints:v3];
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
 }
 
 - (void)_createViewsIfNeeded
 {
-  v3 = [(CNContactGridCell *)self avatarView];
+  avatarView = [(CNContactGridCell *)self avatarView];
 
-  if (!v3)
+  if (!avatarView)
   {
     v4 = [CNContactGridClippingView alloc];
     v5 = *MEMORY[0x1E695F058];
@@ -362,8 +362,8 @@ void __60__CNContactGridCell_animationBlockForPreparingToShowActions__block_invo
     v17 = [(CNContactGridClippingView *)v4 initWithFrame:*MEMORY[0x1E695F058], v6, v7, v8];
     [(CNContactGridClippingView *)v17 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(CNContactGridClippingView *)v17 setClipsToBounds:1];
-    v9 = [(CNContactGridCell *)self contentView];
-    [v9 addSubview:v17];
+    contentView = [(CNContactGridCell *)self contentView];
+    [contentView addSubview:v17];
 
     [(CNContactGridCell *)self setActionsClippingView:v17];
     v10 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v5, v6, v7, v8}];
@@ -373,24 +373,24 @@ void __60__CNContactGridCell_animationBlockForPreparingToShowActions__block_invo
     v11 = [CNAvatarView alloc];
     [(CNContactGridCell *)self bounds];
     v12 = [(CNAvatarView *)v11 initWithFrame:?];
-    v13 = [(CNContactGridCell *)self delegate];
-    [(CNAvatarView *)v12 setDelegate:v13];
+    delegate = [(CNContactGridCell *)self delegate];
+    [(CNAvatarView *)v12 setDelegate:delegate];
 
     [(CNAvatarView *)v12 setAutoUpdateContact:0];
     [(CNAvatarView *)v12 setShowsContactOnTap:[(CNContactGridCell *)self showsContactOnTap]];
     [(CNAvatarView *)v12 setAsynchronousRendering:1];
     [(CNAvatarView *)v12 setForcePressView:v12];
     [(CNAvatarView *)v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v14 = [(CNContactGridCell *)self contentView];
-    [v14 addSubview:v12];
+    contentView2 = [(CNContactGridCell *)self contentView];
+    [contentView2 addSubview:v12];
 
     [(CNContactGridCell *)self setAvatarView:v12];
     [(CNContactGridClippingView *)v17 setAvatarView:v12];
     v15 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v5, v6, v7, v8}];
     [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v15 setTextAlignment:1];
-    v16 = [(CNContactGridCell *)self contentView];
-    [v16 addSubview:v15];
+    contentView3 = [(CNContactGridCell *)self contentView];
+    [contentView3 addSubview:v15];
 
     [(CNContactGridCell *)self setNameLabel:v15];
   }
@@ -398,15 +398,15 @@ void __60__CNContactGridCell_animationBlockForPreparingToShowActions__block_invo
 
 + (double)actionsLeftMargin
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v2 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v3 _referenceBounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _referenceBounds];
     Height = CGRectGetHeight(v9);
 
     result = 20.0;
@@ -416,8 +416,8 @@ void __60__CNContactGridCell_animationBlockForPreparingToShowActions__block_invo
     }
   }
 
-  v6 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v6 userInterfaceIdiom])
+  currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice2 userInterfaceIdiom])
   {
 
     return 16.0;
@@ -425,8 +425,8 @@ void __60__CNContactGridCell_animationBlockForPreparingToShowActions__block_invo
 
   else
   {
-    v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v7 _referenceBounds];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen2 _referenceBounds];
     v8 = CGRectGetHeight(v10);
 
     result = 16.0;

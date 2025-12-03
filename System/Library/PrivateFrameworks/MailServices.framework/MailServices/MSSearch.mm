@@ -1,41 +1,41 @@
 @interface MSSearch
-+ (id)findMessageData:(id)a3 matchingCriterion:(id)a4 options:(unint64_t)a5 delegate:(id)a6;
-+ (id)findMessageData:(id)a3 matchingCriterion:(id)a4 shouldFetch:(BOOL)a5 onServer:(BOOL)a6 delegate:(id)a7;
-+ (id)findMessageData:(id)a3 matchingCriterion:(id)a4 shouldFetch:(BOOL)a5 onServer:(BOOL)a6 onlyInboxes:(BOOL)a7 delegate:(id)a8;
-- (MSSearch)initWithRemoteObjectInterface:(id)a3;
++ (id)findMessageData:(id)data matchingCriterion:(id)criterion options:(unint64_t)options delegate:(id)delegate;
++ (id)findMessageData:(id)data matchingCriterion:(id)criterion shouldFetch:(BOOL)fetch onServer:(BOOL)server delegate:(id)delegate;
++ (id)findMessageData:(id)data matchingCriterion:(id)criterion shouldFetch:(BOOL)fetch onServer:(BOOL)server onlyInboxes:(BOOL)inboxes delegate:(id)delegate;
+- (MSSearch)initWithRemoteObjectInterface:(id)interface;
 - (MSSearchDelegate)delegate;
-- (id)_initWithDelegate:(id)a3;
-- (id)newConnectionForInterface:(id)a3;
-- (void)_delegateDidFindResults:(id)a3;
-- (void)_delegateDidFinishWithError:(id)a3;
-- (void)_findMessageData:(id)a3 matchingCriterion:(id)a4 options:(unint64_t)a5;
+- (id)_initWithDelegate:(id)delegate;
+- (id)newConnectionForInterface:(id)interface;
+- (void)_delegateDidFindResults:(id)results;
+- (void)_delegateDidFinishWithError:(id)error;
+- (void)_findMessageData:(id)data matchingCriterion:(id)criterion options:(unint64_t)options;
 - (void)cancel;
-- (void)foundResults:(id)a3 error:(id)a4;
-- (void)setDelegate:(id)a3;
+- (void)foundResults:(id)results error:(id)error;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation MSSearch
 
-+ (id)findMessageData:(id)a3 matchingCriterion:(id)a4 options:(unint64_t)a5 delegate:(id)a6
++ (id)findMessageData:(id)data matchingCriterion:(id)criterion options:(unint64_t)options delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [[MSSearch alloc] _initWithDelegate:v11];
-  [v12 _findMessageData:v9 matchingCriterion:v10 options:a5];
+  dataCopy = data;
+  criterionCopy = criterion;
+  delegateCopy = delegate;
+  v12 = [[MSSearch alloc] _initWithDelegate:delegateCopy];
+  [v12 _findMessageData:dataCopy matchingCriterion:criterionCopy options:options];
 
   return v12;
 }
 
-+ (id)findMessageData:(id)a3 matchingCriterion:(id)a4 shouldFetch:(BOOL)a5 onServer:(BOOL)a6 delegate:(id)a7
++ (id)findMessageData:(id)data matchingCriterion:(id)criterion shouldFetch:(BOOL)fetch onServer:(BOOL)server delegate:(id)delegate
 {
   v7 = 4;
-  if (a5)
+  if (fetch)
   {
     v7 = 5;
   }
 
-  if (a6)
+  if (server)
   {
     v8 = v7 | 2;
   }
@@ -45,37 +45,37 @@
     v8 = v7;
   }
 
-  v9 = [a1 findMessageData:a3 matchingCriterion:a4 options:v8 delegate:a7];
+  v9 = [self findMessageData:data matchingCriterion:criterion options:v8 delegate:delegate];
 
   return v9;
 }
 
-+ (id)findMessageData:(id)a3 matchingCriterion:(id)a4 shouldFetch:(BOOL)a5 onServer:(BOOL)a6 onlyInboxes:(BOOL)a7 delegate:(id)a8
++ (id)findMessageData:(id)data matchingCriterion:(id)criterion shouldFetch:(BOOL)fetch onServer:(BOOL)server onlyInboxes:(BOOL)inboxes delegate:(id)delegate
 {
-  v8 = a5;
-  if (a6)
+  fetchCopy = fetch;
+  if (server)
   {
-    v8 = a5 | 2;
+    fetchCopy = fetch | 2;
   }
 
-  if (a7)
+  if (inboxes)
   {
-    v9 = v8 | 4;
+    v9 = fetchCopy | 4;
   }
 
   else
   {
-    v9 = v8;
+    v9 = fetchCopy;
   }
 
-  v10 = [a1 findMessageData:a3 matchingCriterion:a4 options:v9 delegate:a8];
+  v10 = [self findMessageData:data matchingCriterion:criterion options:v9 delegate:delegate];
 
   return v10;
 }
 
-- (id)_initWithDelegate:(id)a3
+- (id)_initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F54235D0];
   v10.receiver = self;
   v10.super_class = MSSearch;
@@ -83,25 +83,25 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_delegate, v4);
+    objc_storeWeak(&v6->_delegate, delegateCopy);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (MSSearch)initWithRemoteObjectInterface:(id)a3
+- (MSSearch)initWithRemoteObjectInterface:(id)interface
 {
   v4.receiver = self;
   v4.super_class = MSSearch;
-  return [(MSXPCService *)&v4 initWithRemoteObjectInterface:a3];
+  return [(MSXPCService *)&v4 initWithRemoteObjectInterface:interface];
 }
 
-- (id)newConnectionForInterface:(id)a3
+- (id)newConnectionForInterface:(id)interface
 {
   v18.receiver = self;
   v18.super_class = MSSearch;
-  v4 = [(MSXPCService *)&v18 newConnectionForInterface:a3];
+  v4 = [(MSXPCService *)&v18 newConnectionForInterface:interface];
   v5 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F5421920];
   [v4 setExportedInterface:v5];
   v6 = [[MSSearchProxy alloc] initWithSearch:self];
@@ -167,61 +167,61 @@ void __38__MSSearch_newConnectionForInterface___block_invoke_3(uint64_t a1)
 
 - (void)cancel
 {
-  v2 = [(MSXPCService *)self connection];
-  [v2 invalidate];
+  connection = [(MSXPCService *)self connection];
+  [connection invalidate];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (!obj && WeakRetained)
   {
-    v5 = [(MSXPCService *)self connection];
-    [v5 invalidate];
+    connection = [(MSXPCService *)self connection];
+    [connection invalidate];
   }
 
   objc_storeWeak(&self->_delegate, obj);
 }
 
-- (void)foundResults:(id)a3 error:(id)a4
+- (void)foundResults:(id)results error:(id)error
 {
-  v7 = a3;
-  v6 = a4;
-  if (v7)
+  resultsCopy = results;
+  errorCopy = error;
+  if (resultsCopy)
   {
-    [(MSSearch *)self _delegateDidFindResults:v7];
+    [(MSSearch *)self _delegateDidFindResults:resultsCopy];
   }
 
   else
   {
-    [(MSSearch *)self _delegateDidFinishWithError:v6];
+    [(MSSearch *)self _delegateDidFinishWithError:errorCopy];
   }
 }
 
-- (void)_findMessageData:(id)a3 matchingCriterion:(id)a4 options:(unint64_t)a5
+- (void)_findMessageData:(id)data matchingCriterion:(id)criterion options:(unint64_t)options
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v10)
+  dataCopy = data;
+  criterionCopy = criterion;
+  if (!criterionCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"MSSearch.m" lineNumber:357 description:{@"Invalid parameter not satisfying: %@", @"criterion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSSearch.m" lineNumber:357 description:{@"Invalid parameter not satisfying: %@", @"criterion"}];
 
-    if (v9)
+    if (dataCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"MSSearch.m" lineNumber:358 description:{@"Invalid parameter not satisfying: %@", @"resultKeys"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"MSSearch.m" lineNumber:358 description:{@"Invalid parameter not satisfying: %@", @"resultKeys"}];
 
     goto LABEL_3;
   }
 
-  if (!v9)
+  if (!dataCopy)
   {
     goto LABEL_5;
   }
@@ -233,7 +233,7 @@ LABEL_3:
   v14[3] = &unk_1E855EAD8;
   v14[4] = self;
   v11 = [(MSXPCService *)self remoteObjectProxyWithErrorHandler:v14];
-  [v11 findMessageData:v9 matchingCriterion:v10 options:a5];
+  [v11 findMessageData:dataCopy matchingCriterion:criterionCopy options:options];
 }
 
 void __55__MSSearch__findMessageData_matchingCriterion_options___block_invoke(uint64_t a1, void *a2)
@@ -251,26 +251,26 @@ void __55__MSSearch__findMessageData_matchingCriterion_options___block_invoke(ui
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_delegateDidFinishWithError:(id)a3
+- (void)_delegateDidFinishWithError:(id)error
 {
-  v6 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained search:self didFinishWithError:v6];
+    [WeakRetained search:self didFinishWithError:errorCopy];
   }
 
-  v5 = [(MSXPCService *)self connection];
-  [v5 invalidate];
+  connection = [(MSXPCService *)self connection];
+  [connection invalidate];
 
   objc_storeWeak(&self->_delegate, 0);
 }
 
-- (void)_delegateDidFindResults:(id)a3
+- (void)_delegateDidFindResults:(id)results
 {
-  v5 = a3;
+  resultsCopy = results;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([WeakRetained search:self didFindResults:v5] & 1) == 0)
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([WeakRetained search:self didFindResults:resultsCopy] & 1) == 0)
   {
     [(MSSearch *)self _delegateDidFinishWithError:0];
   }

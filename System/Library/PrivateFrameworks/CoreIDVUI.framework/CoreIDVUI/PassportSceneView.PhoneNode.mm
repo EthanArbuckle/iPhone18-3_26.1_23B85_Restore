@@ -1,12 +1,12 @@
 @interface PassportSceneView.PhoneNode
 - (_TtCC9CoreIDVUI17PassportSceneView9PhoneNode)init;
-- (_TtCC9CoreIDVUI17PassportSceneView9PhoneNode)initWithCoder:(id)a3;
+- (_TtCC9CoreIDVUI17PassportSceneView9PhoneNode)initWithCoder:(id)coder;
 - (void)removeAllActions;
 @end
 
 @implementation PassportSceneView.PhoneNode
 
-- (_TtCC9CoreIDVUI17PassportSceneView9PhoneNode)initWithCoder:(id)a3
+- (_TtCC9CoreIDVUI17PassportSceneView9PhoneNode)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR____TtCC9CoreIDVUI17PassportSceneView9PhoneNode_loadTask) = 0;
   result = sub_2459115D4();

@@ -1,11 +1,11 @@
 @interface CVACMAccelerometerData
-+ (id)withData:(id)a3;
++ (id)withData:(id)data;
 - (CVACMAccelerometerData)init;
-- (CVACMAccelerometerData)initWithCoder:(id)a3;
-- (CVACMAccelerometerData)initWithDictionary:(id)a3;
+- (CVACMAccelerometerData)initWithCoder:(id)coder;
+- (CVACMAccelerometerData)initWithDictionary:(id)dictionary;
 - (id)debugDescription;
 - (id)dictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CVACMAccelerometerData
@@ -25,9 +25,9 @@
   return v2;
 }
 
-- (CVACMAccelerometerData)initWithDictionary:(id)a3
+- (CVACMAccelerometerData)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = CVACMAccelerometerData;
   v5 = [(CVACMAccelerometerData *)&v19 init];
@@ -37,45 +37,45 @@
     acceleration = v5->_acceleration;
     v5->_acceleration = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"x"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"x"];
     [v8 floatValue];
     [(CVACLMotionTypeVector3 *)v5->_acceleration setX:?];
 
-    v9 = [v4 objectForKeyedSubscript:@"y"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"y"];
     [v9 floatValue];
     [(CVACLMotionTypeVector3 *)v5->_acceleration setY:?];
 
-    v10 = [v4 objectForKeyedSubscript:@"z"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"z"];
     [v10 floatValue];
     [(CVACLMotionTypeVector3 *)v5->_acceleration setZ:?];
 
-    v11 = [v4 objectForKeyedSubscript:@"p"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"p"];
     [v11 floatValue];
     v5->_temperature = v12;
 
-    v13 = [v4 objectForKeyedSubscript:@"t"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"t"];
     [v13 doubleValue];
     v5->_timestamp = v14;
 
-    v15 = [v4 objectForKeyedSubscript:@"st"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"st"];
     v5->_syncTimestamp = [v15 unsignedLongLongValue];
 
-    v16 = [v4 objectForKeyedSubscript:@"sn"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"sn"];
     v5->_sequenceNumber = [v16 unsignedLongLongValue];
 
-    v17 = [v4 objectForKeyedSubscript:@"fi"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"fi"];
     v5->_frameId = [v17 unsignedLongLongValue];
   }
 
   return v5;
 }
 
-+ (id)withData:(id)a3
++ (id)withData:(id)data
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dataCopy = data;
   v12 = 0;
-  v4 = [CVAMetadataWrapper decodeClass:v3 class:objc_opt_class() error:&v12];
+  v4 = [CVAMetadataWrapper decodeClass:dataCopy class:objc_opt_class() error:&v12];
   v5 = v12;
   if (v4)
   {
@@ -84,7 +84,7 @@
 
   else
   {
-    v7 = [CVAMetadataWrapper decodeCommon:v3];
+    v7 = [CVAMetadataWrapper decodeCommon:dataCopy];
     if (v7)
     {
       v6 = [[CVACMAccelerometerData alloc] initWithDictionary:v7];
@@ -97,9 +97,9 @@
         v8 = +[AppleCV3DMOVKitLog defaultLog];
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
         {
-          v9 = [v5 localizedDescription];
+          localizedDescription = [v5 localizedDescription];
           *buf = 138412290;
-          v14 = v9;
+          v14 = localizedDescription;
           _os_log_impl(&dword_24016D000, v8, OS_LOG_TYPE_ERROR, "CVACMAccelerometerData - ERROR - cannot deserialize data: %@", buf, 0xCu);
         }
       }
@@ -113,9 +113,9 @@
   return v6;
 }
 
-- (CVACMAccelerometerData)initWithCoder:(id)a3
+- (CVACMAccelerometerData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = CVACMAccelerometerData;
   v5 = [(CVACMAccelerometerData *)&v12 init];
@@ -126,41 +126,41 @@
     acceleration = v5->_acceleration;
     v5->_acceleration = v7;
 
-    [v4 decodeFloatForKey:@"x"];
+    [coderCopy decodeFloatForKey:@"x"];
     [(CVACLMotionTypeVector3 *)v5->_acceleration setX:?];
-    [v4 decodeFloatForKey:@"y"];
+    [coderCopy decodeFloatForKey:@"y"];
     [(CVACLMotionTypeVector3 *)v5->_acceleration setY:?];
-    [v4 decodeFloatForKey:@"z"];
+    [coderCopy decodeFloatForKey:@"z"];
     [(CVACLMotionTypeVector3 *)v5->_acceleration setZ:?];
-    [v4 decodeFloatForKey:@"p"];
+    [coderCopy decodeFloatForKey:@"p"];
     v5->_temperature = v9;
-    [v4 decodeDoubleForKey:@"t"];
+    [coderCopy decodeDoubleForKey:@"t"];
     v5->_timestamp = v10;
-    v5->_syncTimestamp = [v4 decodeInt64ForKey:@"st"];
-    v5->_sequenceNumber = [v4 decodeInt64ForKey:@"sn"];
-    v5->_frameId = [v4 decodeInt64ForKey:@"fi"];
+    v5->_syncTimestamp = [coderCopy decodeInt64ForKey:@"st"];
+    v5->_sequenceNumber = [coderCopy decodeInt64ForKey:@"sn"];
+    v5->_frameId = [coderCopy decodeInt64ForKey:@"fi"];
     objc_autoreleasePoolPop(v6);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   [(CVACLMotionTypeVector3 *)self->_acceleration x];
-  [v6 encodeFloat:@"x" forKey:?];
+  [coderCopy encodeFloat:@"x" forKey:?];
   [(CVACLMotionTypeVector3 *)self->_acceleration y];
-  [v6 encodeFloat:@"y" forKey:?];
+  [coderCopy encodeFloat:@"y" forKey:?];
   [(CVACLMotionTypeVector3 *)self->_acceleration z];
-  [v6 encodeFloat:@"z" forKey:?];
+  [coderCopy encodeFloat:@"z" forKey:?];
   *&v5 = self->_temperature;
-  [v6 encodeFloat:@"p" forKey:v5];
-  [v6 encodeDouble:@"t" forKey:self->_timestamp];
-  [v6 encodeInt64:self->_syncTimestamp forKey:@"st"];
-  [v6 encodeInt64:self->_sequenceNumber forKey:@"sn"];
-  [v6 encodeInt64:self->_frameId forKey:@"fi"];
+  [coderCopy encodeFloat:@"p" forKey:v5];
+  [coderCopy encodeDouble:@"t" forKey:self->_timestamp];
+  [coderCopy encodeInt64:self->_syncTimestamp forKey:@"st"];
+  [coderCopy encodeInt64:self->_sequenceNumber forKey:@"sn"];
+  [coderCopy encodeInt64:self->_frameId forKey:@"fi"];
   objc_autoreleasePoolPop(v4);
 }
 
@@ -209,8 +209,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CVACMAccelerometerData *)self dictionary];
-  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, v5];
+  dictionary = [(CVACMAccelerometerData *)self dictionary];
+  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, dictionary];
 
   return v6;
 }

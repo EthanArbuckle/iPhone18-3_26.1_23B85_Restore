@@ -1,18 +1,18 @@
 @interface CarClusterUpdateLaneGuidance
 + (id)_integersKeyed;
-+ (id)laneGuidanceUpdateWithComposedGuidanceEvent:(id)a3 component:(id)a4;
++ (id)laneGuidanceUpdateWithComposedGuidanceEvent:(id)event component:(id)component;
 - (NSUUID)uniqueID;
 - (id)debugProperties;
-- (void)setInstructionText:(id)a3;
+- (void)setInstructionText:(id)text;
 @end
 
 @implementation CarClusterUpdateLaneGuidance
 
 - (id)debugProperties
 {
-  v2 = [(CarClusterUpdateLaneGuidance *)self hasBeenSent];
+  hasBeenSent = [(CarClusterUpdateLaneGuidance *)self hasBeenSent];
   v3 = @"NO";
-  if (v2)
+  if (hasBeenSent)
   {
     v3 = @"YES";
   }
@@ -20,19 +20,19 @@
   return [NSString stringWithFormat:@"hasBeenSent=%@", v3];
 }
 
-- (void)setInstructionText:(id)a3
+- (void)setInstructionText:(id)text
 {
-  v4 = [a3 stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
+  v4 = [text stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
   instructionText = self->_instructionText;
   self->_instructionText = v4;
 }
 
 - (NSUUID)uniqueID
 {
-  v2 = [(CarClusterUpdateLaneGuidance *)self composedGuidanceEvent];
-  v3 = [v2 uniqueID];
+  composedGuidanceEvent = [(CarClusterUpdateLaneGuidance *)self composedGuidanceEvent];
+  uniqueID = [composedGuidanceEvent uniqueID];
 
-  return v3;
+  return uniqueID;
 }
 
 + (id)_integersKeyed
@@ -47,20 +47,20 @@
   return v3;
 }
 
-+ (id)laneGuidanceUpdateWithComposedGuidanceEvent:(id)a3 component:(id)a4
++ (id)laneGuidanceUpdateWithComposedGuidanceEvent:(id)event component:(id)component
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 lanes];
-  v8 = [v7 count];
+  eventCopy = event;
+  componentCopy = component;
+  lanes = [eventCopy lanes];
+  v8 = [lanes count];
 
   if (v8)
   {
     v9 = objc_opt_new();
-    [v9 setComponent:v6];
-    [v9 setComposedGuidanceEvent:v5];
-    v10 = [v5 lanes];
-    v11 = [CarClusterUpdateLaneGuidanceLaneInfo laneGuidanceLaneInfoUpdateWithComposedRouteLaneInfos:v10];
+    [v9 setComponent:componentCopy];
+    [v9 setComposedGuidanceEvent:eventCopy];
+    lanes2 = [eventCopy lanes];
+    v11 = [CarClusterUpdateLaneGuidanceLaneInfo laneGuidanceLaneInfoUpdateWithComposedRouteLaneInfos:lanes2];
     [v9 setLaneInfoList:v11];
   }
 
